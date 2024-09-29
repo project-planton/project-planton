@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package project.planton.apis.provider.aws.s3bucket.v1;
+
+import "project/planton/apis/provider/aws/s3bucket/v1/api.proto";
+import "project/planton/apis/credential/awscredential/v1/spec.proto";
+import "project/planton/apis/shared/pulumi/pulumi.proto";
+
+//s3-bucket stack-input
+message S3BucketStackInput {
+  //pulumi input
+  project.planton.apis.shared.pulumi.PulumiStackInfo pulumi = 1;
+  //target api-resource
+  S3Bucket target = 2;
+  //aws-credential
+  project.planton.apis.credential.awscredential.v1.AwsCredentialSpec aws_credential = 3;
+}

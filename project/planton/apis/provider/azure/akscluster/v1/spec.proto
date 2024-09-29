@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package project.planton.apis.provider.azure.akscluster.v1;
+
+import "buf/validate/validate.proto";
+import "project/planton/apis/shared/pulumi/pulumi.proto";
+import "project/planton/apis/shared/shared.proto";
+
+// AksClusterSpec is a message type that defines the specifications for a aks-cluster on Planton Cloud.
+message AksClusterSpec {
+  //environment-info
+  project.planton.apis.shared.ApiResourceEnvironmentInfo environment_info = 99;
+
+  //stack-job settings
+  project.planton.apis.shared.pulumi.StackJobSettings stack_job_settings = 98;
+
+  //azure-credential-id to be used for setting up azure-provider in stack-job
+  string azure_credential_id = 97;
+}

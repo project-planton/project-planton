@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package project.planton.apis.provider.gcp.gcsbucket.v1;
+
+//gcs-bucket stack outputs
+message GcsBucketStackOutputs {
+  //id of the storage-bucket created on aws
+  string bucket_id = 1;
+}

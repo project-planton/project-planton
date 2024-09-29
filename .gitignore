@@ -1,0 +1,7 @@
+.idea
+generated/
+internal/
+zzjava/bin
+zzjava/build
+zzjava/.gradle
+.planton-build-engine/

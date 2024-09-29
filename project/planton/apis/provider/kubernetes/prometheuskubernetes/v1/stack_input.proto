@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package project.planton.apis.provider.kubernetes.prometheuskubernetes.v1;
+
+import "project/planton/apis/provider/kubernetes/prometheuskubernetes/v1/api.proto";
+import "project/planton/apis/credential/kubernetesclustercredential/v1/spec.proto";
+import "project/planton/apis/shared/pulumi/pulumi.proto";
+
+//prometheus-kubernetes stack-input
+message PrometheusKubernetesStackInput {
+  //pulumi input
+  project.planton.apis.shared.pulumi.PulumiStackInfo pulumi = 1;
+  //target api-resource
+  PrometheusKubernetes target = 2;
+  //kubernetes-cluster-credential
+  project.planton.apis.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec kubernetes_cluster = 3;
+}

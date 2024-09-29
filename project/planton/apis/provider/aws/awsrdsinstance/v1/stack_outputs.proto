@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package project.planton.apis.provider.aws.awsrdsinstance.v1;
+
+//aws_rds_instance stack outputs
+message AwsRdsInstanceStackOutputs {
+  // The DNS endpoint of the RDS instance, which is used to connect to the database.
+  string rds_instance_endpoint = 1;
+  // The unique identifier of the RDS instance in AWS, used for referencing the instance in API calls and other operations.
+  string rds_instance_id = 2;
+  // The Amazon Resource Name (ARN) of the RDS instance, which is a unique identifier that allows access and management of the instance.
+  string rds_instance_arn = 3;
+  // The public or private IP address or DNS address of the RDS instance, which applications use to communicate with the database.
+  string rds_instance_address = 4;
+  // The name of the subnet group associated with the RDS instance, which defines the VPC subnets in which the instance is deployed.
+  string rds_subnet_group = 5;
+  // The security group associated with the RDS instance, which controls inbound and outbound traffic rules for the instance.
+  string rds_security_group = 6;
+  // The parameter group assigned to the RDS instance, which contains configuration settings for managing the database engine.
+  string rds_parameter_group = 7;
+  // The options group assigned to the RDS instance.
+  string rds_options_group = 8;
+}

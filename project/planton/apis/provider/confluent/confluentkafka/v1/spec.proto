@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+package project.planton.apis.provider.confluent.confluentkafka.v1;
+
+import "buf/validate/validate.proto";
+import "project/planton/apis/shared/pulumi/pulumi.proto";
+import "project/planton/apis/shared/shared.proto";
+
+//confluent-kafka spec
+message ConfluentKafkaSpec {
+  //environment-info
+  project.planton.apis.shared.ApiResourceEnvironmentInfo environment_info = 99;
+
+  //stack-job settings
+  project.planton.apis.shared.pulumi.StackJobSettings stack_job_settings = 98;
+
+  //confluent-credential-id to be used for setting up confluent-provider in stack-job
+  string confluent_credential_id = 97;
+
+  //cloud provider
+  //https://www.pulumi.com/registry/packages/confluentcloud/api-docs/kafkacluster/#cloud_yaml
+  string cloud = 1 [
+    (buf.validate.field).ignore = IGNORE_DEFAULT,
+    (buf.validate.field).string = {
+      in: ["AWS", "AZURE", "GCP"]
+    }
+  ];
+
+  //availability
+  //https://www.pulumi.com/registry/packages/confluentcloud/api-docs/kafkacluster/#availability_yaml
+  string availability = 2 [
+    (buf.validate.field).ignore = IGNORE_DEFAULT,
+    (buf.validate.field).string = {
+      in: ["SINGLE_ZONE", "MULTI_ZONE", "LOW", "HIGH"]
+    }
+  ];
+
+  //environment objects represent an isolated namespace for your confluent resources for organizational purposes.
+  //https://www.pulumi.com/registry/packages/confluentcloud/api-docs/kafkacluster/#environment_yaml
+  string environment = 3;
+}

@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package project.planton.apis.provider.aws.ekscluster.v1;
+
+import "buf/validate/validate.proto";
+import "project/planton/apis/provider/aws/ekscluster/v1/enum.proto";
+import "project/planton/apis/shared/pulumi/pulumi.proto";
+import "project/planton/apis/shared/shared.proto";
+
+// EksClusterSpec is a message type that defines the specifications for a eks-cluster on Planton Cloud.
+message EksClusterSpec {
+  //environment-info
+  project.planton.apis.shared.ApiResourceEnvironmentInfo environment_info = 99;
+
+  //stack-job settings
+  project.planton.apis.shared.pulumi.StackJobSettings stack_job_settings = 98;
+
+  //aws-credential-id to be used for setting up aws-provider in stack-job
+  string aws_credential_id = 97;
+
+  // valid aws region in which to create the eks-cluster.
+  // warning: eks-cluster will recreated if this value is updated.
+  // https://aws.amazon.com/about-aws/global-infrastructure/regions_az/
+  string region = 1 [
+    (buf.validate.field).required = true
+  ];
+
+  // (optional) id of the vpc to be used for creating eks-cluster.
+  // if an id is not provided, a new vpc will be created.
+  // warning: eks-cluster will be recreated if this is updated.
+  string vpc_id = 2;
+
+  // aws eks worker node-groups management mode
+  EksWorkersManagementMode workers_management_mode = 3 [
+    (buf.validate.field).required = true
+  ];
+}

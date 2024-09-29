@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package project.planton.apis.provider.snowflake.snowflakedatabase.v1;
+
+import "project/planton/apis/provider/snowflake/snowflakedatabase/v1/api.proto";
+import "project/planton/apis/credential/snowflakecredential/v1/spec.proto";
+import "project/planton/apis/shared/pulumi/pulumi.proto";
+
+//snowflake-database stack-input
+message SnowflakeDatabaseStackInput {
+  //pulumi input
+  project.planton.apis.shared.pulumi.PulumiStackInfo pulumi = 1;
+  //target api-resource
+  SnowflakeDatabase target = 2;
+  //snowflake-credential
+  project.planton.apis.credential.snowflakecredential.v1.SnowflakeCredentialSpec snowflake_credential = 3;
+}

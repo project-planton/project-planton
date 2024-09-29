@@ -1,0 +1,212 @@
+syntax = "proto3";
+
+package project.planton.apis.provider.aws.awsrdscluster.v1;
+
+import "buf/validate/validate.proto";
+import "project/planton/apis/shared/pulumi/pulumi.proto";
+import "project/planton/apis/shared/shared.proto";
+
+//aws-rds-cluster spec
+message AwsRdsClusterSpec {
+  option (buf.validate.message).cel = {
+    id: "rds_cluster.rds_monitoring_interval",
+    expression: "this.enhanced_monitoring_role_enabled && this.rds_monitoring_interval == 0"
+        "? 'rds monitoring interval is mandatory if enhanced monitoring role is enabled'"
+        ": ''"
+  };
+  //environment-info
+  project.planton.apis.shared.ApiResourceEnvironmentInfo environment_info = 99;
+
+  //stack-job settings
+  project.planton.apis.shared.pulumi.StackJobSettings stack_job_settings = 98;
+
+  //aws-credential-id to be used for setting up aws-provider in stack-job
+  string aws_credential_id = 97;
+
+  // Engine of the aws rds cluster
+  string engine = 1;
+  // Engine version of the Aurora global database
+  string engine_version = 2;
+  // The database engine mode. Valid values: `global`, `multimaster`, `parallelquery`, `provisioned`, `serverless`
+  string engine_mode = 3 [
+    (buf.validate.field).ignore = IGNORE_DEFAULT,
+    (buf.validate.field).string = {
+      in: ["global", "multimaster", "parallelquery", "provisioned", "serverless"]
+    }
+  ];
+  // Family of the DB parameter group.
+  string cluster_family = 4;
+  // EC2 instance type for aws rds cluster
+  // https://aws.amazon.com/rds/aurora/pricing
+  string instance_type = 5;
+  // aws rds cluster size
+  int32 cluster_size = 6;
+  // Set to true to allow RDS to manage the master user password in Secrets Manager. Cannot be set if master_password is provided
+  bool manage_master_user_password = 7;
+  // Amazon Web Services KMS key identifier is the key ARN, key ID, alias ARN, or alias name for the KMS key.
+  // To use a KMS key in a different Amazon Web Services account, specify the key ARN or alias ARN.
+  // If not specified, the default KMS key for your Amazon Web Services account is used.
+  string master_user_secret_kms_key_id = 8;
+  // Username for the master DB user. Ignored if snapshot_identifier or replication_source_identifier is provided
+  string master_user = 9;
+  // Password for the master DB user. Ignored if snapshot_identifier or replication_source_identifier is provided
+  string master_password = 10;
+  // Database name (default is not to create a database)
+  string database_name = 11;
+
+  // Set true to make this database accessible from the public internet
+  bool is_publicly_accessible = 12;
+  // database port
+  int32 database_port = 13;
+
+  // VPC ID to create the cluster in (e.g. `vpc-a22222ee`)
+  string vpc_id = 14;
+  // List of subnet IDs for the DB. DB instance will be created in the VPC associated with the DB subnet group
+  // provisioned using the subnet IDs. Specify one of `subnet_ids`, `db_subnet_group_name`
+  repeated string subnet_ids = 15;
+  // Name of DB subnet group. DB instance will be created in the VPC associated with the DB subnet group.
+  // Specify one of `subnet_ids`, `db_subnet_group_name`
+  string db_subnet_group_name = 16;
+
+  // The IDs of the security groups from which to allow `ingress` traffic to the DB instance
+  repeated string security_group_ids = 17;
+  // Whether to allow traffic between resources inside the database's security group.
+  bool intra_security_group_traffic_enabled = 18;
+  // List of CIDRs allowed to access the database (in addition to security groups and subnets)
+  repeated string allowed_cidr_blocks = 19;
+  // The IDs of the existing security groups to associate with the DB instance
+  repeated string associate_security_group_ids = 20;
+
+  // Specifies whether or mappings of AWS Identity and Access Management (IAM) accounts to database accounts is enabled
+  bool iam_database_authentication_enabled = 21;
+
+  // Specifies whether the DB cluster is encrypted
+  bool storage_encrypted = 22;
+  // The ARN for the KMS encryption key. When specifying `kms_key_arn`, `storage_encrypted` needs to be set to `true`
+  string storage_kms_key_arn = 23;
+
+  // Whether to enable Performance Insights
+  bool is_performance_insights_enabled = 24;
+  // The ARN for the KMS encryption key. When specifying `kms_key_arn`, `is_performance_insights_enabled` needs to be set to `true`
+  string performance_insights_kms_key_id = 25;
+
+  // Weekly time range during which system maintenance can occur, in UTC
+  string maintenance_window = 26;
+
+  // List of log types to enable for exporting to CloudWatch logs. If omitted, no logs will be exported.
+  // Valid values (depending on engine): alert, audit, error, general, listener, slowquery, trace, postgresql (PostgreSQL),
+  // upgrade (PostgreSQL).
+  repeated string enabled_cloudwatch_logs_exports = 27;
+  // A boolean flag to enable/disable the creation of the enhanced monitoring IAM role.
+  bool enhanced_monitoring_role_enabled = 28;
+  // Attributes used to format the Enhanced Monitoring IAM role.
+  // If this role hits IAM role length restrictions (max 64 characters),
+  // consider shortening these strings.
+  repeated string enhanced_monitoring_attributes = 29;
+  // The interval, in seconds, between points when enhanced monitoring metrics are collected for the DB instance.
+  // To disable collecting Enhanced Monitoring metrics, specify 0. The default is 0. Valid Values: 0, 1, 5, 10, 15, 30, 60
+  int32 rds_monitoring_interval = 30 [
+    (buf.validate.field).ignore = IGNORE_DEFAULT,
+    (buf.validate.field).int32 = {
+      in: [0, 1, 5, 10, 15, 30, 60]
+    }
+  ];
+  // Normally AWS makes a snapshot of the database before deleting it. Set this to `true` in order to skip this.
+  // NOTE: The final snapshot has a name derived from the cluster name. If you delete a cluster, get a final snapshot,
+  // then create a cluster of the same name, its final snapshot will fail with a name collision unless you delete
+  // the previous final snapshot first.
+  bool skip_final_snapshot = 31;
+  // Specifies whether the Cluster should have deletion protection enabled. The database can't be deleted when this value is set to `true`
+  bool deletion_protection = 32;
+  // Specifies whether or not to create this cluster from a snapshot
+  string snapshot_identifier = 33;
+  // Enable to allow major engine version upgrades when changing engine versions. Defaults to false.
+  bool allow_major_version_upgrade = 34;
+  // The identifier of the CA certificate for the DB instance
+  string ca_cert_identifier = 35;
+  // Number of days to retain backups for
+  int32 retention_period = 36;
+  // Daily time range during which the backups happen, UTC
+  string backup_window = 37;
+
+  AwsRdsClusterAutoScaling auto_scaling = 38;
+  // List of nested attributes with scaling properties. Only valid when `engine_mode` is set to `serverless`. This is required for Serverless v1
+  AwsRdsClusterScalingConfiguration scaling_configuration = 39;
+  // Nested attribute with scaling properties for ServerlessV2. Only valid when `engine_mode` is set to `provisioned.` This is required for Serverless v2
+  AwsRdsClusterServerless2ScalingConfiguration serverlessv2_scaling_configuration = 40;
+  // Name of the DB cluster parameter group to associate.
+  string cluster_parameter_group_name = 41;
+  // List of DB cluster parameters to apply
+  repeated AwsRdsClusterParameterGroupParameter cluster_parameters = 42;
+}
+
+message AwsRdsClusterAutoScaling {
+  // Whether to enable cluster autoscaling
+  bool is_enabled = 1;
+  // Autoscaling policy type. `TargetTrackingScaling` and `StepScaling` are supported
+  string policy_type = 2;
+  // The metrics type to use. If this value isn't provided the default is CPU utilization
+  string target_metrics = 3;
+  // The target value to scale with respect to target metrics
+  double target_value = 4;
+  // The amount of time, in seconds, after a scaling activity completes and before the next scaling down activity can start. Default is 300s
+  int32 scale_in_cooldown = 5;
+  // The amount of time, in seconds, after a scaling activity completes and before the next scaling up activity can start. Default is 300s
+  int32 scale_out_cooldown = 6;
+  // Minimum number of instances to be maintained by the autoscaler
+  int32 min_capacity = 7;
+  // Maximum number of instances to be maintained by the autoscaler
+  int32 max_capacity = 8;
+}
+
+message AwsRdsClusterScalingConfiguration {
+  // Whether to enable automatic pause. A DB cluster can be paused only when it's idle (it has no connections).
+  // If a DB cluster is paused for more than seven days, the DB cluster might be backed up with a snapshot.
+  // In this case, the DB cluster is restored when there is a request to connect to it.
+  bool auto_pause = 1;
+  // Maximum capacity for an Aurora DB cluster in `serverless` DB engine mode.
+  // The maximum capacity must be greater than or equal to the minimum capacity.
+  // Valid Aurora PostgreSQL capacity values are (`2`, `4`, `8`, `16`, `32`, `64`, `192`, and `384`). Defaults to `16`.
+  int32 max_capacity = 2;
+  // Minimum capacity for an Aurora DB cluster in `serverless` DB engine mode.
+  // The minimum capacity must be lesser than or equal to the maximum capacity.
+  // Valid Aurora PostgreSQL capacity values are (`2`, `4`, `8`, `16`, `32`, `64`, `192`, and `384`). Defaults to `2`.
+  int32 min_capacity = 3;
+  // Time, in seconds, before an Aurora DB cluster in serverless mode is paused. Valid values are `300` through `86400`. Defaults to `300`.
+  int32 seconds_until_auto_pause = 4 [
+    (buf.validate.field).ignore = IGNORE_DEFAULT,
+    (buf.validate.field).int32.gte = 300,
+    (buf.validate.field).int32.lte = 86400
+  ];
+  // Action to take when the timeout is reached. Valid values: `ForceApplyCapacityChange`, `RollbackCapacityChange`.
+  // Defaults to `RollbackCapacityChange`.
+  // See [documentation](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-serverless-v1.how-it-works.html#aurora-serverless.how-it-works.timeout-action).
+  string timeout_action = 5[
+    (buf.validate.field).ignore = IGNORE_DEFAULT,
+    (buf.validate.field).string = {
+      in: ["ForceApplyCapacityChange", "RollbackCapacityChange"]
+    }
+  ];
+}
+
+message AwsRdsClusterServerless2ScalingConfiguration {
+  // Minimum capacity for an Aurora DB cluster in `provisioned` DB engine mode. The minimum capacity must be
+  // lesser than or equal to the maximum capacity. Valid capacity values are in a range of `0.5` up to `128` in steps of `0.5`.
+  double max_capacity = 1;
+  // Maximum capacity for an Aurora DB cluster in `provisioned` DB engine mode. The maximum capacity must be
+  // greater than or equal to the minimum capacity. Valid capacity values are in a range of `0.5` up to `128` in steps of `0.5`.
+  double min_capacity = 2;
+}
+
+message AwsRdsClusterParameterGroupParameter {
+  // "immediate" (default), or "pending-reboot". Some
+  // engines can't apply some parameters without a reboot, and you will need to
+  // specify "pending-reboot" here.
+  string apply_method = 1;
+  // The name of the DB parameter.
+  string name = 2;
+  // The value of the DB parameter.
+  string value = 3;
+}
+
+

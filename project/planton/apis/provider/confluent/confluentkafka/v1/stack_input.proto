@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package project.planton.apis.provider.confluent.confluentkafka.v1;
+
+import "project/planton/apis/provider/confluent/confluentkafka/v1/api.proto";
+import "project/planton/apis/credential/confluentcredential/v1/spec.proto";
+import "project/planton/apis/shared/pulumi/pulumi.proto";
+
+//confluent-kafka stack-input
+message ConfluentKafkaStackInput {
+  //pulumi input
+  project.planton.apis.shared.pulumi.PulumiStackInfo pulumi = 1;
+  //target api-resource
+  ConfluentKafka target = 2;
+  //confluent-credential
+  project.planton.apis.credential.confluentcredential.v1.ConfluentCredentialSpec confluent_credential = 3;
+}

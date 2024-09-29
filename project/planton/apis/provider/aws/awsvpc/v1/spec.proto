@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package project.planton.apis.provider.aws.awsvpc.v1;
+
+import "buf/validate/validate.proto";
+import "project/planton/apis/shared/pulumi/pulumi.proto";
+import "project/planton/apis/shared/shared.proto";
+
+//aws-vpc spec
+message AwsVpcSpec {
+  //environment-info
+  project.planton.apis.shared.ApiResourceEnvironmentInfo environment_info = 99;
+
+  //stack-job settings
+  project.planton.apis.shared.pulumi.StackJobSettings stack_job_settings = 98;
+
+  //aws-credential-id to be used for setting up aws-provider in stack-job
+  string aws_credential_id = 97;
+
+  //cidr block for vpc
+  // example: 10.0.0.0/16
+  string vpc_cidr = 1;
+  //availability zones to span the vpc
+  //example: {"us-west-2a", "us-west-2b"}
+  repeated string availability_zones = 2;
+  //number of subnets to be created in each az
+  int32 subnets_per_availability_zone = 3;
+  //number of hosts in each subnet
+  int32 subnet_size = 4;
+  //toggle to enable/disable an nat gateway for private subnets created in the vpc
+  bool is_nat_gateway_enabled = 5;
+  //toggle to enable/disable [dns hostnames](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-dns.html#vpc-dns-hostnames) in the vpc
+  bool is_dns_hostnames_enabled = 6;
+  //toggle to enable/disable dns resolution in the vpc through the amazon provided dns server
+  bool is_dns_support_enabled = 7;
+}

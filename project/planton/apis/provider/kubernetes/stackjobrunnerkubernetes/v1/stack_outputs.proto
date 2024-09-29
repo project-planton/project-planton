@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package project.planton.apis.provider.kubernetes.stackjobrunnerkubernetes.v1;
+
+// stack-job-runner-kubernetes stack-outputs
+message StackJobRunnerKubernetesStackOutputs {
+  //kubernetes namespace in which stack-job-runner-kubernetes is deployed.
+  string namespace = 1;
+}
