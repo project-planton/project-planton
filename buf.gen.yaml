@@ -19,7 +19,5 @@ managed:
       value: true
     - file_option: java_string_check_utf8
       value: false
-    - file_option: java_package_prefix
-      value: build.buf.gen
     - file_option: optimize_for
       value: SPEED
