@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package project.planton.apis.provider.gcp.gcpartifactregistry;
+
+import "buf/validate/validate.proto";
+import "project/planton/apis/shared/pulumi/pulumi.proto";
+import "project/planton/apis/shared/shared.proto";
+
+//gcp-artifact-registry spec
+message GcpArtifactRegistrySpec {
+  //environment-info
+  project.planton.apis.shared.ApiResourceEnvironmentInfo environment_info = 99;
+
+  //stack-job settings
+  project.planton.apis.shared.pulumi.StackJobSettings stack_job_settings = 98;
+
+  //gcp-credential-id to be used for setting up gcp-provider in stack-job
+  string gcp_credential_id = 97;
+
+  //id of the gcp project in which the artifact-registry resources are to be created.
+  string project_id = 1 [
+    (buf.validate.field).required = true
+  ];
+
+  //gcp region in which the gcp-artifact-registry is to be created ex: us-west2.
+  //choosing the closest region for the kube-clusters in which the environments are
+  //hosted reduces the service startup time as the container images are downloaded faster.
+  string region = 2 [
+    (buf.validate.field).required = true
+  ];
+
+  //flag to control access to artifacts published to repositories without any authentication.
+  //this is useful for publishing artifacts for opensource projects.
+  bool is_external = 3;
+}

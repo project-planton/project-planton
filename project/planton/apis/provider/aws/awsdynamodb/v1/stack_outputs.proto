@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package project.planton.apis.provider.aws.awsdynamodb;
+
+//aws_dynamodb stack outputs
+message AwsDynamodbStackOutputs {
+  // DynamoDB table name
+  string table_name = 1;
+  // DynamoDB table ARN
+  string table_arn = 2;
+  // DynamoDB table stream ARN
+  string table_stream_arn = 3;
+  // Autoscaling read policy ARN
+  string autoscaling_read_policy_arn = 4;
+  // Autoscaling write policy ARN
+  string autoscaling_write_policy_arn = 5;
+  // Autoscaling index read policy ARN list
+  string autoscaling_index_read_policy_arn_list = 6;
+  // Autoscaling index write policy ARN list
+  string autoscaling_index_write_policy_arn_list = 7;
+}

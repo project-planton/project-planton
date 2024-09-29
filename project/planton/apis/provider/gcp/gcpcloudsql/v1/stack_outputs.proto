@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package project.planton.apis.provider.gcp.gcpcloudsql;
+
+//gcp-cloud-sql stack outputs
+message GcpCloudSqlStackOutputs {
+  //id of the lambda function created on gcp
+  string lambda_function_id = 1;
+}

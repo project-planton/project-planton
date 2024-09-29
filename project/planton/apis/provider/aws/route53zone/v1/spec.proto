@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+package project.planton.apis.provider.aws.route53zone;
+
+import "buf/validate/validate.proto";
+import "project/planton/apis/shared/apiresource/options/apiresourcefieldoptions/api_resource_field_options.proto";
+import "cloud/planton/apis/commons/networking/enums/dnsrecordtype/dns_record_type.proto";
+import "project/planton/apis/shared/shared.proto";
+
+// Specification for the Route53 Zone
+message Route53ZoneSpec {
+  //environment-info
+  project.planton.apis.shared.ApiResourceEnvironmentInfo environment_info = 99;
+
+  //stack-job settings
+  project.planton.apis.shared.pulumi.StackJobSettings stack_job_settings = 98;
+
+  //aws-credential-id to be used for setting up aws-provider in stack-job
+  string aws_credential_id = 97;
+
+  // The DNS records that are added to the Zone.
+  repeated Route53DnsRecord records = 1;
+}
+
+// route53-zone dns-record
+message Route53DnsRecord {
+  // dns record type.
+  project.planton.apis.shared.networking.enums.dnsrecordtype.DnsRecordType record_type = 1 [
+    (buf.validate.field).required = true
+  ];
+
+  // name of the route53-zone ex: example.com or dev.example.com.
+  // this value should always end with a dot.
+  string name = 2 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).cel = {
+      id: "name",
+      message: "Name should be any valid DNS Domain Name",
+      expression: "this.matches('^(?:[*][.])?(?:[_a-z0-9](?:[_a-z0-9-]{0,61}[a-z0-9])?[.])+(?:[a-z](?:[a-z0-9-]{0,61}[a-z0-9])?)?$')"
+    }
+  ];
+
+  // values for the route53-zone record.
+  // if the route53_zone_record_type is cname then each value in the list should end with a dot.
+  repeated string values = 3;
+
+  // ttl for the domain record in seconds.
+  int32 ttl_seconds = 4 [
+    (project.planton.apis.shared.options.apiresourcefieldoptions.int32_default) = 60
+  ];
+}

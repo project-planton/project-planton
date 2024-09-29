@@ -1,0 +1,80 @@
+syntax = "proto3";
+
+package project.planton.apis.provider.kubernetes.solrkubernetes;
+
+import "buf/validate/validate.proto";
+import "project/planton/apis/provider/kubernetes/solrkubernetes/v1/spec.proto";
+import "project/planton/apis/provider/kubernetes/solrkubernetes/v1/stack_outputs.proto";
+import "project/planton/apis/shared/shared.proto";
+
+//solr-kubernetes
+message SolrKubernetes {
+  //api-version
+  string api_version = 1 [
+    (buf.validate.field).string.const = 'kubernetes.project.planton/v1'
+  ];
+
+  //resource-kind
+  string kind = 2;
+
+  //metadata
+  project.planton.apis.shared.ApiResourceMetadata metadata = 3 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).cel = {
+      id: "metadata.name",
+      message: "Only lowercase letters, numbers, and hyphens are allowed",
+      // https://regex101.com/r/NKTohE/1
+      expression: "this.name.matches('^[a-z0-9-]+$')"
+    },
+    (buf.validate.field).cel = {
+      id: "metadata.name",
+      message: "Must start with a lowercase letter",
+      // https://regex101.com/r/qpK7XF/1
+      expression: "this.name.matches('^[a-z].*$')"
+    },
+    (buf.validate.field).cel = {
+      id: "metadata.name",
+      message: "Must not end with a hyphen",
+      // https://regex101.com/r/reQjcB/1
+      expression: "this.name.matches('[^-]$')"
+    },
+    (buf.validate.field).cel = {
+      id: "metadata.name",
+      message: "Name must be between 1 and 30 characters long",
+      expression: "size(this.name) > 0 && size(this.name) <= 30"
+    },
+    (buf.validate.field).cel = {
+      id: "metadata.version.message",
+      message: "Version message is mandatory and cannot be empty",
+      expression: "has(this.version.message)"
+    }
+  ];
+
+  //spec
+  SolrKubernetesSpec spec = 4 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).cel = {
+      id: "spec.kubernetes_cluster_credential_id",
+      message: "Kubernetes Cluster Credential Id is mandatory",
+      expression: "has(this.kubernetes_cluster_credential_id)"
+    }
+  ];
+
+  //status
+  SolrKubernetesStatus status = 5;
+}
+
+//solr-kubernetes status
+message SolrKubernetesStatus {
+  //lifecycle
+  project.planton.apis.shared.ApiResourceLifecycle lifecycle = 99;
+
+  //audit-info
+  project.planton.apis.shared.ApiResourceAudit audit = 98;
+
+  //stack-job id
+  string stack_job_id = 97;
+
+  //stack-outputs
+  SolrKubernetesStackOutputs stack_outputs = 1;
+}

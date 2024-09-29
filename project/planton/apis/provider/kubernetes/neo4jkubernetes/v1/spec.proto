@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package project.planton.apis.provider.kubernetes.neo4jkubernetes;
+
+import "buf/validate/validate.proto";
+import "project/planton/apis/shared/kubernetes/kubernetes.proto";
+import "project/planton/apis/shared/shared.proto";
+
+//neo4j-kubernetes spec
+message Neo4jKubernetesSpec {
+  //environment-info
+  project.planton.apis.shared.ApiResourceEnvironmentInfo environment_info = 99;
+
+  //kubernetes-cluster-credential-id to be used for setting up kubernetes-provider in stack-job
+  string kubernetes_cluster_credential_id = 97;
+
+  //neo4j-container spec
+  Neo4jKubernetesContainer container = 1;
+
+  //neo4j-kubernetes ingress-spec
+  project.planton.apis.shared.kubernetes.IngressSpec ingress = 2;
+}
+
+// neo4j-kubernetes kubernetes neo4j-container spec
+message Neo4jKubernetesContainer {
+  //neo4j container cpu and memory resources.
+  //recommended default "cpu-requests: 50m, memory-requests: 256Mi, cpu-limits: 1, memory-limits: 1Gi"
+  project.planton.apis.shared.kubernetes.ContainerResources resources = 1 [
+    (buf.validate.field).required = true
+  ];
+}

@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+package project.planton.apis.provider.azure.akscluster;
+
+// aks-cluster stack-outputs
+message AksClusterStackOutputs {
+}

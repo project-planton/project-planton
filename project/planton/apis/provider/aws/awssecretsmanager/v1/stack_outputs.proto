@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package project.planton.apis.provider.aws.awssecretsmanager;
+
+//aws-secrets-manager stack outputs
+message AwsSecretsManagerStackOutputs {
+  //map containing secret-name and its corresponding secret-arn on aws secrets-manager
+  map<string, string> secret_arn_map = 1;
+}

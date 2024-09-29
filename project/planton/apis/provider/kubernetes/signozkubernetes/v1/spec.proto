@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package project.planton.apis.provider.kubernetes.signozkubernetes;
+
+import "buf/validate/validate.proto";
+import "project/planton/apis/shared/pulumi/pulumi.proto";
+import "project/planton/apis/shared/shared.proto";
+
+//signoz-kubernetes spec
+message SignozKubernetesSpec {
+  //environment-info
+  project.planton.apis.shared.ApiResourceEnvironmentInfo environment_info = 99;
+
+  //kubernetes-cluster-credential-id to be used for setting up kubernetes-provider in stack-job
+  string kubernetes_cluster_credential_id = 97;
+}

@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+package project.planton.apis.provider.kubernetes.openfgakubernetes;
+
+import "buf/validate/validate.proto";
+import "project/planton/apis/shared/kubernetes/kubernetes.proto";
+import "project/planton/apis/shared/shared.proto";
+
+//openfga-kubernetes spec
+message OpenfgaKubernetesSpec {
+  //environment-info
+  project.planton.apis.shared.ApiResourceEnvironmentInfo environment_info = 99;
+
+  //kubernetes-cluster-credential-id to be used for setting up kubernetes-provider in stack-job
+  string kubernetes_cluster_credential_id = 97;
+
+  //openfga-container spec
+  OpenfgaKubernetesContainer container = 1 [
+    (buf.validate.field).required = true
+  ];
+
+  //openfga-kubernetes ingress-spec
+  project.planton.apis.shared.kubernetes.IngressSpec ingress = 2;
+
+  OpenfgaKubernetesDataStore datastore = 3;
+}
+
+// openfga-kubernetes kubernetes openfga-container spec
+message OpenfgaKubernetesContainer {
+  //openfga container cpu and memory resources.
+  //recommended default "cpu-requests: 50m, memory-requests: 256Mi, cpu-limits: 1, memory-limits: 1Gi"
+  project.planton.apis.shared.kubernetes.ContainerResources resources = 1 [
+    (buf.validate.field).required = true
+  ];
+
+  int32 replicas = 2 [
+    (buf.validate.field).required = true
+  ];
+}
+
+// Represents the configuration for the OpenFGA data store in a Kubernetes deployment.
+message OpenfgaKubernetesDataStore {
+
+  // Specifies the type of data store engine to use.
+  // Allowed values are "mysql" for MySQL database and "postgres" for PostgreSQL database.
+  string engine = 1 [
+    (buf.validate.field).cel = {
+      id: "spec.datastore.engine",
+      message: 'the datastore engine must be one of "postgres" and "mysql"',
+      expression: 'this in ["postgres", "mysql"]',
+    }
+  ];
+
+  // Specifies the URI to connect to the selected data store engine.
+  // The URI format should be appropriate for the specified engine:
+  // For MySQL: mysql://user:password@host:port/database
+  // For PostgreSQL: postgres://user:password@host:port/database
+  string uri = 2;
+}

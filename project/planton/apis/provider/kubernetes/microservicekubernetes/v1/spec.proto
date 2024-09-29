@@ -1,0 +1,148 @@
+syntax = "proto3";
+
+package project.planton.apis.provider.kubernetes.microservicekubernetes;
+
+import "buf/validate/validate.proto";
+import "project/planton/apis/shared/kubernetes/kubernetes.proto";
+import "project/planton/apis/shared/shared.proto";
+
+//microservice-kubernetes spec
+message MicroserviceKubernetesSpec {
+  //environment-info
+  project.planton.apis.shared.ApiResourceEnvironmentInfo environment_info = 99;
+
+  //kubernetes-cluster-credential-id to be used for setting up kubernetes-provider in stack-job
+  string kubernetes_cluster_credential_id = 97;
+
+  //docker-credential-id to be used for setting up docker image-pull-secret on kubernetes
+  string docker_credential_id = 96;
+
+  //version of the microservice being deployed. this is usually either "main" which is the default git branch name or
+  //review-<id> where id is the merge request number
+  string version = 1 [
+    (buf.validate.field).string.min_len = 1,
+    (buf.validate.field).string.max_len = 20,
+    (buf.validate.field).cel = {
+      id: "spec.version.chars",
+      message: "Only lowercase letters, numbers, and hyphens are allowed",
+      // https://regex101.com/r/NKTohE/1
+      expression: "this.matches('^[a-z0-9-]+$')"
+    },
+    (buf.validate.field).cel = {
+      id: "spec.version.no-hyphen-ending",
+      message: "Must not end with a hyphen",
+      // https://regex101.com/r/reQjcB/1
+      expression: "this.matches('[^-]$')"
+    }
+  ];
+
+  //container spec
+  MicroserviceKubernetesContainer container = 3 [
+    (buf.validate.field).required = true
+  ];
+
+  //microservice kubernetes ingress configuration on kubernetes
+  project.planton.apis.shared.kubernetes.IngressSpec ingress = 4;
+
+  //microservice kubernetes availability configuration on kubernetes
+  MicroserviceKubernetesAvailability availability = 5;
+}
+
+//microservice-kubernetes-spec kubernetes container spec
+message MicroserviceKubernetesContainer {
+  //microservice app container
+  MicroserviceKubernetesContainerApp app = 1 [
+    (buf.validate.field).required = true
+  ];
+
+  //sidecar containers
+  repeated project.planton.apis.shared.kubernetes.Container sidecars = 2;
+}
+
+//microservice-kubernetes-spec kubernetes app container spec
+message MicroserviceKubernetesContainerApp {
+  //container image. this value is computed during creation but is allowed for updates.
+  //value is computed by combining the docker-repo of the artifact-store configured for environment and code project path.
+  //
+  //pull-secret-name: name of the image pull secret to be configured in kubernetes Deployment resource.
+  //computed by looking up the container_image_artifact_store_id from the environment to which the
+  //microservice deployment is created.
+  project.planton.apis.shared.kubernetes.ContainerImage image = 1;
+
+  //container resources
+  project.planton.apis.shared.kubernetes.ContainerResources resources = 2;
+
+  //microservice-kubernetes environment variables and secrets.
+  MicroserviceKubernetesContainerAppEnv env = 3;
+
+  //list of ports to be configured for the app container
+  repeated MicroserviceKubernetesContainerAppPort ports = 4;
+}
+
+//microservice-kubernetes-spec kubernetes app container environment variables spec
+message MicroserviceKubernetesContainerAppEnv {
+  //map of variable
+  map<string, string> variables = 1;
+  //map of secrets
+  map<string, string> secrets = 2;
+}
+
+//microservice-kubernetes-spec kubernetes container port spec
+message MicroserviceKubernetesContainerAppPort {
+  //name for the port ex: http, grpc
+  string name = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).cel = {
+      id: "spec.kubernetes.container.app.ports.name",
+      message: "name for ports must only contain lowercase alphanumeric characters and -. Port names must also start and end with an alphanumeric character. For example, the names 123-abc and web are valid, but 123_abc and -web are not.",
+      // https://regex101.com/r/dugcdl/1
+      expression: "this.matches('^[a-z0-9][a-z0-9-]*[a-z0-9]$')"
+    }
+  ];
+  //container port
+  int32 container_port = 2 [
+    (buf.validate.field).required = true
+  ];
+
+  string network_protocol = 3 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).cel = {
+      id: "spec.kubernetes.container.app.ports.network_protocol",
+      message: 'the network protocol must be one of "SCTP", "TCP" and "UDP"',
+      expression: 'this in ["SCTP", "TCP", "UDP"]',
+    }
+  ];
+  //(required) application protocol for the microservice.
+  //the default is set to "http"
+  //https://kubernetes.io/docs/concepts/services-networking/service/#application-protocol.
+  //this field is used for setting up the name of the service port in kubernetes.
+  //this attribute is used during microservice deployment.
+  //this attribute is only relevant for deployment and stateful-set pod_managers.
+  string app_protocol = 4 [
+    (buf.validate.field).required = true
+  ];
+  //kubernetes service port
+  int32 service_port = 5 [
+    (buf.validate.field).required = true
+  ];
+  // flag to tag the port as ingress port
+  bool is_ingress_port = 6;
+}
+
+//microservice-kubernetes-spec kubernetes availability spec
+message MicroserviceKubernetesAvailability {
+  //minimum number of pod replicas
+  int32 min_replicas = 1;
+  //horizontal pod autoscaling configuration
+  MicroserviceKubernetesAvailabilityHpa horizontal_pod_autoscaling = 2;
+}
+
+//microservice-kubernetes-spec kubernetes availability spec horizontal pod autoscaling
+message MicroserviceKubernetesAvailabilityHpa {
+  //flag to toggle horizontal pod autoscaling
+  bool is_enabled = 1;
+  //percentage for target cpu utilization to trigger auto scaling. ex: 60.0
+  double target_cpu_utilization_percent = 2;
+  //target memory utilization to trigger auto scaling. ex: 1Gi
+  string target_memory_utilization = 3;
+}

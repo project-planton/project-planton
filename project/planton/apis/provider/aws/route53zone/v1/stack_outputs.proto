@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package project.planton.apis.provider.aws.route53zone;
+
+// Status for the Route53 Zone
+message Route53ZoneStackOutputs {
+  // The list of nameservers for the Managed Zone created for the DNS Domain.
+  repeated string nameservers = 1;
+}

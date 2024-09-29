@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package project.planton.apis.provider.kubernetes.signozkubernetes;
+
+// signoz-kubernetes stack-outputs
+message SignozKubernetesStackOutputs {
+  //kubernetes namespace in which signoz-kubernetes is deployed.
+  string namespace = 1;
+}

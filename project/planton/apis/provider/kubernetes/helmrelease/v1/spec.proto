@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package project.planton.apis.provider.kubernetes.helmrelease;
+
+import "buf/validate/validate.proto";
+import "project/planton/apis/shared/pulumi/pulumi.proto";
+import "project/planton/apis/shared/shared.proto";
+
+//helm-release spec
+message HelmReleaseSpec {
+  //environment-info
+  project.planton.apis.shared.ApiResourceEnvironmentInfo environment_info = 99;
+
+  //kubernetes-cluster-credential-id to be used for setting up kubernetes-provider in stack-job
+  string kubernetes_cluster_credential_id = 97;
+
+  //helm-chart spec
+  HelmReleaseSpecChartSpec helm_chart = 1 [
+    (buf.validate.field).required = true
+  ];
+}
+
+//helm-chart spec
+message HelmReleaseSpecChartSpec {
+  //helm chart repo
+  string repo = 1;
+
+  //helm chart name
+  string name = 2;
+
+  //helm chart version
+  string version = 3;
+
+  //map of key values for helm input
+  map<string, string> values = 4;
+}

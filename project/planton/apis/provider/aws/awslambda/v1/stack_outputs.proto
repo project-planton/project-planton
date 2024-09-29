@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package project.planton.apis.provider.aws.awslambda;
+
+//aws-lambda stack outputs
+message AwsLambdaStackOutputs {
+  //id of the lambda function created on aws
+  string lambda_function_id = 1;
+}

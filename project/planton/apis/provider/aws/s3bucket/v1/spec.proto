@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package project.planton.apis.provider.aws.s3bucket;
+
+import "buf/validate/validate.proto";
+import "project/planton/apis/shared/pulumi/pulumi.proto";
+import "project/planton/apis/shared/shared.proto";
+
+//s3-bucket spec
+message S3BucketSpec {
+  //environment-info
+  project.planton.apis.shared.ApiResourceEnvironmentInfo environment_info = 99;
+
+  //stack-job settings
+  project.planton.apis.shared.pulumi.StackJobSettings stack_job_settings = 98;
+
+  //aws-credential-id to be used for setting up aws-provider in stack-job
+  string aws_credential_id = 97;
+
+  //flag to indicate if s3-bucket should have external(public) access.
+  //defaults to "false"
+  bool is_public = 1;
+
+  //aws region
+  string aws_region = 2;
+}
