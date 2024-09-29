@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package project.planton.apis.provider.aws.elasticcontainerservice;
+package project.planton.apis.provider.aws.elasticcontainerservice.v1;
 
 //aws-ecs stack outputs
 message ElasticContainerServiceStackOutputs {

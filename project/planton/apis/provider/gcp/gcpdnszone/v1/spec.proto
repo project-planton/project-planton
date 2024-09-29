@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package project.planton.apis.provider.gcp.gcpdnszone;
+package project.planton.apis.provider.gcp.gcpdnszone.v1;
 
 import "buf/validate/validate.proto";
 import "project/planton/apis/shared/networking/enums/dnsrecordtype/dns_record_type.proto";

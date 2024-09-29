@@ -63,4 +63,4 @@ syntax = "proto3";
 //- **Multi-Environment Deployments**: Deploy microservices consistently across different environments with environment-specific configurations.
 //- **Microservice Updates and Rollbacks**: Easily update microservices to new versions or roll back to previous ones by changing the version specification.
 //- **Resource Optimization**: Adjust resource allocations and scaling policies to optimize cost and performance based on usage patterns.
-package project.planton.apis.provider.kubernetes.microservicekubernetes;
+package project.planton.apis.provider.kubernetes.microservicekubernetes.v1;

@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package project.planton.apis.provider.snowflake.snowflakedatabase;
+package project.planton.apis.provider.snowflake.snowflakedatabase.v1;
 
 import "buf/validate/validate.proto";
 import "project/planton/apis/shared/pulumi/pulumi.proto";

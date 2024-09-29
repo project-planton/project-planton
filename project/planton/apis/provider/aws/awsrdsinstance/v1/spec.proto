@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package project.planton.apis.provider.aws.awsrdsinstance;
+package project.planton.apis.provider.aws.awsrdsinstance.v1;
 
 import "buf/validate/validate.proto";
 import "project/planton/apis/shared/pulumi/pulumi.proto";

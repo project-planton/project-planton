@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package project.planton.apis.provider.kubernetes.prometheuskubernetes;
+package project.planton.apis.provider.kubernetes.prometheuskubernetes.v1;
 
 //prometheus-kubernetes kubernetes status
 message PrometheusKubernetesStackOutputs {

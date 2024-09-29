@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package project.planton.apis.provider.kubernetes.locustkubernetes;
+package project.planton.apis.provider.kubernetes.locustkubernetes.v1;
 
 //locust-kubernetes stack outputs.
 message LocustKubernetesStackOutputs {

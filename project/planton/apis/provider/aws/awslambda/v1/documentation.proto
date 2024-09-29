@@ -68,4 +68,4 @@ syntax = "proto3";
 //- **Security**: Integrate with AWS IAM, KMS, and VPCs to enhance security and compliance.
 //- **Flexibility**: Customize functions extensively to meet specific application requirements.
 //- **Cost Efficiency**: Optimize resource allocation and billing by configuring memory size and execution timeouts.
-package project.planton.apis.provider.aws.awslambda;
+package project.planton.apis.provider.aws.awslambda.v1;

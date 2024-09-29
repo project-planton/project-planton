@@ -38,4 +38,4 @@ syntax = "proto3";
 //- **Monitoring and Logging**: Improved support for logging, tracing, and monitoring using Kubernetes-native tools.
 //- **Automation and CI/CD Integration**: Streamlined processes for integrating with continuous integration and deployment pipelines.
 //- **Comprehensive Documentation**: Expanded usage examples, best practices, and troubleshooting guides.
-package project.planton.apis.provider.kubernetes.argocdkubernetes;
+package project.planton.apis.provider.kubernetes.argocdkubernetes.v1;

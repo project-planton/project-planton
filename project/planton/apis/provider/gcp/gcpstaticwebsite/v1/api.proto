@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package project.planton.apis.provider.gcp.gcpstaticwebsite;
+package project.planton.apis.provider.gcp.gcpstaticwebsite.v1;
 
 import "buf/validate/validate.proto";
 import "project/planton/apis/provider/gcp/gcpstaticwebsite/v1/spec.proto";

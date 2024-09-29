@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package project.planton.apis.provider.confluent.confluentkafka;
+package project.planton.apis.provider.confluent.confluentkafka.v1;
 
 //confluent-kafka stack outputs
 //https://www.pulumi.com/registry/packages/confluentcloud/api-docs/kafkacluster/#outputs

@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package project.planton.apis.provider.aws.awssecretsmanager;
+package project.planton.apis.provider.aws.awssecretsmanager.v1;
 
 import "buf/validate/validate.proto";
 import "project/planton/apis/shared/pulumi/pulumi.proto";

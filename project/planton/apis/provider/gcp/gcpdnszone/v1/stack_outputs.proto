@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package project.planton.apis.provider.gcp.gcpdnszone;
+package project.planton.apis.provider.gcp.gcpdnszone.v1;
 
 //gcp-dns-zone stack-outputs
 message GcpDnsZoneStackOutputs {

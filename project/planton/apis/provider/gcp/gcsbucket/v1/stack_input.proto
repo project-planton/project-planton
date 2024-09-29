@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package project.planton.apis.provider.gcp.gcsbucket;
+package project.planton.apis.provider.gcp.gcsbucket.v1;
 
 import "project/planton/apis/credential/gcpcredential/v1/spec.proto";
 import "project/planton/apis/credential/gitcredential/v1/api.proto";

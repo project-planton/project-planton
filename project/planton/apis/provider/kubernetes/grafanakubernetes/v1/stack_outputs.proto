@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package project.planton.apis.provider.kubernetes.grafanakubernetes;
+package project.planton.apis.provider.kubernetes.grafanakubernetes.v1;
 
 //grafana-kubernetes stack outputs.
 message GrafanaKubernetesStackOutputs {

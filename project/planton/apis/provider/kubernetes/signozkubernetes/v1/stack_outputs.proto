@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package project.planton.apis.provider.kubernetes.signozkubernetes;
+package project.planton.apis.provider.kubernetes.signozkubernetes.v1;
 
 // signoz-kubernetes stack-outputs
 message SignozKubernetesStackOutputs {

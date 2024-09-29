@@ -35,4 +35,4 @@ syntax = "proto3";
 //- **Enhanced Security Features**: Integration with AWS IAM roles, security groups, and secrets management.
 //- **Monitoring and Logging**: Improved support for logging, metrics, and tracing with AWS CloudWatch and other tools.
 //- **Comprehensive Documentation**: Expanded usage examples, best practices, and troubleshooting guides.
-package project.planton.apis.provider.aws.elasticcontainerservice;
+package project.planton.apis.provider.aws.elasticcontainerservice.v1;

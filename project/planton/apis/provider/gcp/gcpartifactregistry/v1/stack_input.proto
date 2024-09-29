@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package project.planton.apis.provider.gcp.gcpartifactregistry;
+package project.planton.apis.provider.gcp.gcpartifactregistry.v1;
 
 import "project/planton/apis/provider/gcp/gcpartifactregistry/v1/api.proto";
 import "project/planton/apis/credential/gcpcredential/v1/spec.proto";

@@ -51,4 +51,4 @@ syntax = "proto3";
 //- **Security**: Provides options to configure network isolation, control internet access, and manage DNS settings securely.
 //- **Flexibility**: Customize VPCs extensively to meet specific application requirements without compromising best practices.
 //- **Cost Efficiency**: Optimize resource allocation by precisely controlling subnet sizes and NAT gateway usage.
-package project.planton.apis.provider.aws.awsvpc;
+package project.planton.apis.provider.aws.awsvpc.v1;

@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package project.planton.apis.provider.kubernetes.stackjobrunnerkubernetes;
+package project.planton.apis.provider.kubernetes.stackjobrunnerkubernetes.v1;
 
 // stack-job-runner-kubernetes stack-outputs
 message StackJobRunnerKubernetesStackOutputs {

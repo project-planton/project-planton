@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package project.planton.apis.provider.kubernetes.solrkubernetes;
+package project.planton.apis.provider.kubernetes.solrkubernetes.v1;
 
 import "project/planton/apis/provider/kubernetes/solrkubernetes/v1/api.proto";
 import "project/planton/apis/credential/kubernetesclustercredential/v1/spec.proto";

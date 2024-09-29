@@ -47,4 +47,4 @@ syntax = "proto3";
 //- **Security**: Manages DNS configurations securely using specified GCP credentials and IAM service accounts, reducing the risk of unauthorized changes.
 //- **Flexibility**: Customize DNS records extensively to meet specific application requirements without compromising on best practices.
 //- **Compliance**: Helps maintain compliance with DNS standards and organizational policies through input validation and enforced field requirements.
-package project.planton.apis.provider.gcp.gcpdnszone;
+package project.planton.apis.provider.gcp.gcpdnszone.v1;

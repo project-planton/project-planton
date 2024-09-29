@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package project.planton.apis.provider.aws.awslambda;
+package project.planton.apis.provider.aws.awslambda.v1;
 
 //aws-lambda stack outputs
 message AwsLambdaStackOutputs {

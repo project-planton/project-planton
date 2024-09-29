@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package project.planton.apis.provider.snowflake.snowflakedatabase;
+package project.planton.apis.provider.snowflake.snowflakedatabase.v1;
 
 //snowflake-database stack outputs
 //https://www.pulumi.com/registry/packages/snowflakecloud/api-docs/kafkacluster/#outputs

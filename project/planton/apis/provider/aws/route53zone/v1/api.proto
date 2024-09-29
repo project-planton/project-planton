@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package project.planton.apis.provider.aws.route53zone;
+package project.planton.apis.provider.aws.route53zone.v1;
 
 import "buf/validate/validate.proto";
 import "project/planton/apis/provider/aws/route53zone/v1/spec.proto";

@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package project.planton.apis.provider.kubernetes.prometheuskubernetes;
+package project.planton.apis.provider.kubernetes.prometheuskubernetes.v1;
 
 import "buf/validate/validate.proto";
 import "project/planton/apis/provider/kubernetes/prometheuskubernetes/v1/spec.proto";

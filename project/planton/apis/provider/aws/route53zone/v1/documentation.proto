@@ -45,4 +45,4 @@ syntax = "proto3";
 //- **Security**: Manages DNS configurations securely using specified AWS credentials, reducing the risk of unauthorized changes.
 //- **Flexibility**: Customize DNS records extensively to meet specific application requirements without compromising on best practices.
 //- **Compliance**: Helps maintain compliance with DNS standards and organizational policies through input validation and enforced field requirements.
-package project.planton.apis.provider.aws.route53zone;
+package project.planton.apis.provider.aws.route53zone.v1;

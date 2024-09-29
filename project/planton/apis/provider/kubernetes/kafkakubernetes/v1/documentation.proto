@@ -70,4 +70,4 @@ syntax = "proto3";
 //- **Microservices Communication**: Use Kafka as a messaging backbone for microservices architecture.
 //- **Event Sourcing and CQRS**: Implement event-driven systems requiring reliable message storage and retrieval.
 //- **Log Aggregation**: Collect and manage logs from various services in a centralized Kafka cluster.
-package project.planton.apis.provider.kubernetes.kafkakubernetes;
+package project.planton.apis.provider.kubernetes.kafkakubernetes.v1;

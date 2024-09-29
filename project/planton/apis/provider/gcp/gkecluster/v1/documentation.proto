@@ -74,4 +74,4 @@ syntax = "proto3";
 //- **Cost Optimization**: Utilize spot instances and autoscaling to optimize resource usage and reduce costs.
 //- **Flexibility**: Provides extensive customization to meet specific application requirements without compromising best practices.
 //- **Enhanced Observability**: Optionally enable workload logs and install monitoring add-ons like Kubecost for better visibility into cluster operations.
-package project.planton.apis.provider.gcp.gkecluster;
+package project.planton.apis.provider.gcp.gkecluster.v1;

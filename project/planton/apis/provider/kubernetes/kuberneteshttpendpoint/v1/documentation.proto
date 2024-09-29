@@ -50,4 +50,4 @@ syntax = "proto3";
 //- **Flexible Routing**: Supports path-based routing, allowing traffic to be directed to different services based on URL patterns.
 //- **Security**: Optional TLS support provides secure communication channels, and certificate management is simplified via cluster issuers.
 //- **gRPC-Web Support**: Seamlessly integrates gRPC-web traffic handling, making it easier to build services that rely on gRPC over HTTP.
-package project.planton.apis.provider.kubernetes.kuberneteshttpendpoint;
+package project.planton.apis.provider.kubernetes.kuberneteshttpendpoint.v1;

@@ -45,4 +45,4 @@ syntax = "proto3";
 //- **Consistency**: Ensures that all applications and services have access to the required secrets in a standardized manner.
 //- **Compliance**: Helps in meeting regulatory requirements by securely managing sensitive information.
 //- **Productivity**: Frees up development and operations teams to focus on core tasks rather than managing secrets infrastructure.
-package project.planton.apis.provider.gcp.gcpsecretsmanager;
+package project.planton.apis.provider.gcp.gcpsecretsmanager.v1;

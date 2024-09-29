@@ -37,4 +37,4 @@ syntax = "proto3";
 //- **Monitoring and Logging**: Improved support for logging, tracing, and monitoring using Google Cloud Logging and Monitoring.
 //- **Automation and CI/CD Integration**: Streamlined deployment processes with integration into continuous deployment pipelines.
 //- **Comprehensive Documentation**: Expanded usage examples, best practices, and troubleshooting guides.
-package project.planton.apis.provider.gcp.gcpcloudrun;
+package project.planton.apis.provider.gcp.gcpcloudrun.v1;

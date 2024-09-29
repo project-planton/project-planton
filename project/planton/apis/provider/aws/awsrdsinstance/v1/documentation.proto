@@ -92,4 +92,4 @@ syntax = "proto3";
 //- **Security**: Integrates with AWS KMS, IAM, and VPCs to enhance security and compliance.
 //- **Cost Optimization**: Allows fine-grained control over instance types, storage options, and scaling policies to optimize costs.
 //- **Flexibility**: Provides extensive customization to meet specific application requirements without compromising best practices.
-package project.planton.apis.provider.aws.awsrdsinstance;
+package project.planton.apis.provider.aws.awsrdsinstance.v1;

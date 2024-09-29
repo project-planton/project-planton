@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package project.planton.apis.provider.kubernetes.kuberneteshttpendpoint;
+package project.planton.apis.provider.kubernetes.kuberneteshttpendpoint.v1;
 
 //kubernetes-http-endpoint stack outputs
 message KubernetesHttpEndpointStackOutputs {

@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package project.planton.apis.provider.aws.ekscluster;
+package project.planton.apis.provider.aws.ekscluster.v1;
 
 import "project/planton/apis/provider/aws/ekscluster/v1/api.proto";
 import "project/planton/apis/credential/awscredential/v1/spec.proto";

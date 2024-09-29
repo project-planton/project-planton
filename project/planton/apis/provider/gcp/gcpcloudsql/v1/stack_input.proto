@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package project.planton.apis.provider.gcp.gcpcloudsql;
+package project.planton.apis.provider.gcp.gcpcloudsql.v1;
 
 import "project/planton/apis/provider/gcp/gcpcloudsql/v1/api.proto";
 import "project/planton/apis/credential/gcpcredential/v1/spec.proto";

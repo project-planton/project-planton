@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package project.planton.apis.provider.kubernetes.mongodbkubernetes;
+package project.planton.apis.provider.kubernetes.mongodbkubernetes.v1;
 
 import "project/planton/apis/shared/kubernetes/kubernetes.proto";
 

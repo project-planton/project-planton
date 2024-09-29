@@ -58,4 +58,4 @@ syntax = "proto3";
 //- **Resource Optimization**: Enables precise control over resource allocation for containers, optimizing performance and cost.
 //- **Flexibility**: Customize Grafana configurations to meet specific monitoring requirements without compromising best practices.
 //- **Enhanced Observability**: Provides a centralized platform for visualizing metrics and logs, improving system observability and facilitating proactive issue detection.
-package project.planton.apis.provider.kubernetes.grafanakubernetes;
+package project.planton.apis.provider.kubernetes.grafanakubernetes.v1;

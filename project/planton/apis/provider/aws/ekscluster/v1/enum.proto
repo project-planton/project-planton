@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package project.planton.apis.provider.aws.ekscluster;
+package project.planton.apis.provider.aws.ekscluster.v1;
 
 enum EksWorkersManagementMode {
   eks_workers_management_mode_unspecified = 0;

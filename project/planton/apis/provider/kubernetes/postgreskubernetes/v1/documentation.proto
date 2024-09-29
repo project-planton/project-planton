@@ -47,4 +47,4 @@ syntax = "proto3";
 //- **Consistent Configuration**: Ensures PostgreSQL deployments follow a consistent configuration across different Kubernetes clusters and environments.
 //- **Resource Optimization**: Enables fine-tuning of CPU, memory, and storage allocations to optimize the performance of PostgreSQL instances.
 //- **Secure Access**: Configures ingress rules to allow secure and controlled access to PostgreSQL instances.
-package project.planton.apis.provider.kubernetes.postgreskubernetes;
+package project.planton.apis.provider.kubernetes.postgreskubernetes.v1;

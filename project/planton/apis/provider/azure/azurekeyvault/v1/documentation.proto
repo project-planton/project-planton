@@ -38,4 +38,4 @@ syntax = "proto3";
 //- **Monitoring and Auditing**: Integration with Azure Monitor and Azure Security Center for tracking secret access and changes.
 //- **Automation**: Support for automatic secret rotation and integration with Azure DevOps.
 //- **Comprehensive Documentation**: Expanded usage examples, best practices, and troubleshooting guides.
-package project.planton.apis.provider.azure.azurekeyvault;
+package project.planton.apis.provider.azure.azurekeyvault.v1;

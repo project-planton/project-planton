@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package project.planton.apis.provider.gcp.gkecluster;
+package project.planton.apis.provider.gcp.gkecluster.v1;
 
 import "project/planton/apis/provider/gcp/gkecluster/v1/spec.proto";
 

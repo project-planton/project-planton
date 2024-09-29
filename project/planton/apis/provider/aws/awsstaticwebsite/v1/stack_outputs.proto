@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package project.planton.apis.provider.aws.awsstaticwebsite;
+package project.planton.apis.provider.aws.awsstaticwebsite.v1;
 
 //aws-static-website stack outputs
 message AwsStaticWebsiteStackOutputs {
