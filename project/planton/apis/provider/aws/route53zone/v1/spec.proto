@@ -3,8 +3,8 @@ syntax = "proto3";
 package project.planton.apis.provider.aws.route53zone.v1;
 
 import "buf/validate/validate.proto";
-import "project/planton/apis/shared/apiresource/options/apiresourcefieldoptions/api_resource_field_options.proto";
-import "cloud/planton/apis/commons/networking/enums/dnsrecordtype/dns_record_type.proto";
+import "project/planton/apis/shared/networking/enums/dnsrecordtype/dns_record_type.proto";
+import "project/planton/apis/shared/pulumi/pulumi.proto";
 import "project/planton/apis/shared/shared.proto";
 
 // Specification for the Route53 Zone
@@ -45,7 +45,5 @@ message Route53DnsRecord {
   repeated string values = 3;
 
   // ttl for the domain record in seconds.
-  int32 ttl_seconds = 4 [
-    (project.planton.apis.shared.options.apiresourcefieldoptions.int32_default) = 60
-  ];
+  int32 ttl_seconds = 4;
 }

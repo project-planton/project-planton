@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package project.planton.apis.shared.v1;
+package project.planton.apis.shared;
 
 import "google/protobuf/timestamp.proto";
 
@@ -86,8 +86,8 @@ message ApiResourceLifecycle {
 // api-resource status containing just the lifecycle and audit messages.
 message ApiResourceLifecycleAndAuditStatus {
   //lifecycle
-  project.planton.apis.shared.ApiResourceLifecycle lifecycle = 99;
+  ApiResourceLifecycle lifecycle = 99;
 
   //audit info
-  project.planton.apis.shared.ApiResourceAudit audit = 98;
+  ApiResourceAudit audit = 98;
 }

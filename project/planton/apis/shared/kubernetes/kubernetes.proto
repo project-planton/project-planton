@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package project.planton.apis.shared.kubernetes.v1;
+package project.planton.apis.shared.kubernetes;
 
 import "buf/validate/validate.proto";
 

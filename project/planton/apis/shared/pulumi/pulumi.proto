@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package project.planton.apis.shared.pulumi.v1;
+package project.planton.apis.shared.pulumi;
 
 import "buf/validate/validate.proto";
 import "project/planton/apis/credential/gitcredential/v1/spec.proto";

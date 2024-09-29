@@ -9,10 +9,6 @@ import "project/planton/apis/shared/shared.proto";
 
 //aws-rds-cluster
 message AwsRdsCluster {
-  option (project.planton.apis.shared.options.apiresourcemessageoptions.resource_kind) = aws_rds_cluster;
-  option (project.planton.apis.shared.options.apiresourcemessageoptions.owner).resource_kind = environment;
-  option (project.planton.apis.shared.options.apiresourcemessageoptions.owner).id_field_path = "spec.environment_info.env_id";
-
   //api-version
   string api_version = 1[
     (buf.validate.field).string.const = 'aws.project.planton/v1'
