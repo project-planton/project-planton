@@ -4,12 +4,16 @@ package project.planton.apis.provider.kubernetes.mongodbkubernetes.v1;
 
 import "buf/validate/validate.proto";
 import "project/planton/apis/shared/kubernetes/kubernetes.proto";
+import "project/planton/apis/shared/pulumi/pulumi.proto";
 import "project/planton/apis/shared/shared.proto";
 
 //mongodb-kubernetes spec
 message MongodbKubernetesSpec {
   //environment-info
   project.planton.apis.shared.ApiResourceEnvironmentInfo environment_info = 99;
+
+  //stack-job settings
+  project.planton.apis.shared.pulumi.StackJobSettings stack_job_settings = 98;
 
   //kubernetes-cluster-credential-id to be used for setting up kubernetes-provider in stack-job
   string kubernetes_cluster_credential_id = 97;

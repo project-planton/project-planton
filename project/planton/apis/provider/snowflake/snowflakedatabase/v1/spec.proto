@@ -11,6 +11,9 @@ message SnowflakeDatabaseSpec {
   //environment-info
   project.planton.apis.shared.ApiResourceEnvironmentInfo environment_info = 99;
 
+  //stack-job settings
+  project.planton.apis.shared.pulumi.StackJobSettings stack_job_settings = 98;
+
   //snowflake-credential-id to be used for setting up snowflake-provider in stack-job
   string snowflake_credential_id = 97;
 
