@@ -9,6 +9,9 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/auto"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/tokens"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/workspace"
+	"gopkg.in/yaml.v3"
+	"io/ioutil"
+	"os"
 	"strings"
 )
 
@@ -22,8 +25,18 @@ func ExtractProjectName(stackFqdn string) (string, error) {
 }
 
 func Run(stackFqdn, stackInputYamlPath string, pulumiOperation pulumi.PulumiOperationType, isUpdatePreview bool) error {
+	kindName, err := extractKindFromYaml(stackInputYamlPath)
+	if err != nil {
+		return errors.Wrapf(err, "failed to extract kind from %s stack input yaml", stackInputYamlPath)
+	}
+
+	cloneUrl, err := pulumimodule.GetCloneUrl(kindName)
+	if err != nil {
+		return errors.Wrapf(err, "failed to get clone url for %s kind", kindName)
+	}
+
 	gitRepo := auto.GitRepo{
-		URL:     string(pulumimodule.DefaultGitRepoMap["coming-soon"]),
+		URL:     cloneUrl,
 		Shallow: false,
 	}
 
@@ -78,4 +91,38 @@ func Run(stackFqdn, stackInputYamlPath string, pulumiOperation pulumi.PulumiOper
 		}
 	}
 	return nil
+}
+
+// extractKindFromYaml reads a YAML file from the given path and returns the value of the 'kind' key.
+func extractKindFromYaml(yamlPath string) (string, error) {
+	// Check if the file exists
+	if _, err := os.Stat(yamlPath); os.IsNotExist(err) {
+		return "", errors.Wrapf(err, "file not found: %s", yamlPath)
+	}
+
+	// Read the YAML file
+	fileContent, err := ioutil.ReadFile(yamlPath)
+	if err != nil {
+		return "", errors.Wrapf(err, "failed to read file: %s", yamlPath)
+	}
+
+	// Parse the YAML content
+	var yamlData map[string]interface{}
+	if err := yaml.Unmarshal(fileContent, &yamlData); err != nil {
+		return "", errors.Wrapf(err, "failed to unmarshal YAML content from file: %s", yamlPath)
+	}
+
+	// Extract the 'kind' key
+	kind, ok := yamlData["kind"]
+	if !ok {
+		return "", errors.Errorf("key 'kind' not found in YAML file: %s", yamlPath)
+	}
+
+	// Ensure the 'kind' key is a string
+	kindStr, ok := kind.(string)
+	if !ok {
+		return "", errors.Errorf("value of 'kind' key is not a string in YAML file: %s", yamlPath)
+	}
+
+	return kindStr, nil
 }
