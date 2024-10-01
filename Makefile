@@ -93,4 +93,4 @@ release: build upload-binaries release-buf release-github
 
 .PHONY: update-deps
 update-deps:
-	go get github.com/plantoncloud-inc/planton-cloud-apis@latest
+	 go get buf.build/gen/go/plantoncloud/project-planton/protocolbuffers/go@latest
