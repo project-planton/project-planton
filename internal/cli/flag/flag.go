@@ -7,8 +7,8 @@ import (
 type Flag string
 
 const (
-	Stack Flag = "stack"
-	Input Flag = "input"
+	Stack  Flag = "stack"
+	Target Flag = "input"
 )
 
 func HandleFlagErrAndValue(err error, flag Flag, flagVal string) {

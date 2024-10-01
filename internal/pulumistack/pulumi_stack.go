@@ -24,10 +24,10 @@ func ExtractProjectName(stackFqdn string) (string, error) {
 	return parts[1], nil
 }
 
-func Run(stackFqdn, stackInputYamlPath string, pulumiOperation pulumi.PulumiOperationType, isUpdatePreview bool) error {
-	kindName, err := extractKindFromYaml(stackInputYamlPath)
+func Run(stackFqdn, targetManifestPath string, pulumiOperation pulumi.PulumiOperationType, isUpdatePreview bool) error {
+	kindName, err := extractKindFromYaml(targetManifestPath)
 	if err != nil {
-		return errors.Wrapf(err, "failed to extract kind from %s stack input yaml", stackInputYamlPath)
+		return errors.Wrapf(err, "failed to extract kind from %s stack input yaml", targetManifestPath)
 	}
 
 	cloneUrl, err := pulumimodule.GetCloneUrl(kindName)
@@ -64,7 +64,7 @@ func Run(stackFqdn, stackInputYamlPath string, pulumiOperation pulumi.PulumiOper
 		}),
 		auto.WorkDir(stackWorkspaceDir),
 		auto.EnvVars(map[string]string{
-			"STACK_INPUT": stackInputYamlPath,
+			"STACK_INPUT": targetManifestPath,
 		}))
 	if err != nil {
 		return errors.Wrapf(err, "failed to setup pulumi automation-api stack %s", stackFqdn)

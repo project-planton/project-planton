@@ -13,7 +13,7 @@ var Pulumi = &cobra.Command{
 
 func init() {
 	Pulumi.PersistentFlags().String(string(flag.Stack), "", "pulumi stack fqdn in the format of <org>/<project>/<stack>")
-	Pulumi.PersistentFlags().String(string(flag.Input), "", "path of the stack input file")
+	Pulumi.PersistentFlags().String(string(flag.Target), "", "path of the deployment-component manifest file")
 	Pulumi.AddCommand(
 		pulumi.Refresh,
 		pulumi.Preview,
