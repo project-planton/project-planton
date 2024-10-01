@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package apis.project.planton.provider.aws.ekscluster.v1;
+
+import "apis/project/planton/provider/aws/ekscluster/v1/api.proto";
+import "apis/project/planton/credential/awscredential/v1/spec.proto";
+import "apis/project/planton/shared/pulumi/pulumi.proto";
+
+//eks-cluster stack-input
+message EksClusterStackInput {
+  //pulumi input
+  apis.project.planton.shared.pulumi.PulumiStackInfo pulumi = 1;
+  //target api-resource
+  EksCluster target = 2;
+  //aws-credential
+  apis.project.planton.credential.awscredential.v1.AwsCredentialSpec aws_credential = 3;
+}

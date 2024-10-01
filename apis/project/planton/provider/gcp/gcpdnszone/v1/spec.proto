@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+package apis.project.planton.provider.gcp.gcpdnszone.v1;
+
+import "buf/validate/validate.proto";
+import "apis/project/planton/shared/networking/enums/dnsrecordtype/dns_record_type.proto";
+import "apis/project/planton/shared/pulumi/pulumi.proto";
+import "apis/project/planton/shared/shared.proto";
+
+//gcp-dns-zone spec
+message GcpDnsZoneSpec {
+  //environment-info
+  apis.project.planton.shared.ApiResourceEnvironmentInfo environment_info = 99;
+
+  //stack-job settings
+  apis.project.planton.shared.pulumi.StackJobSettings stack_job_settings = 98;
+
+  //gcp-credential-id to be used for setting up gcp-provider in stack-job
+  string gcp_credential_id = 97;
+
+  // The ID of the GCP Project where the Managed Zone is created.
+  string project_id = 1 [
+    (buf.validate.field).required = true
+  ];
+
+  // An optional list of GCP service accounts to be granted permissions to manage DNS records in the Managed Zone.
+  // These accounts are primarily created as workload identities like cert-manager,
+  // and are added when new environments are created or updated.
+  repeated string iam_service_accounts = 2;
+
+  // The DNS records that are added to the Zone.
+  repeated GcpDnsRecord records = 3;
+}
+
+//gcp-dns-zone dns-record
+message GcpDnsRecord {
+  // dns record type.
+  apis.project.planton.shared.networking.enums.dnsrecordtype.DnsRecordType record_type = 1 [
+    (buf.validate.field).required = true
+  ];
+
+  // name of the gcp-dns-zone ex: example.com or dev.example.com.
+  // this value should always end with a dot.
+  string name = 2 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).cel = {
+      id: "name",
+      message: "Name should be any valid DNS Domain Name",
+      expression: "this.matches('^(?:[*][.])?(?:[_a-z0-9](?:[_a-z0-9-]{0,61}[a-z0-9])?[.])+(?:[a-z](?:[a-z0-9-]{0,61}[a-z0-9])?)?$')"
+    }
+  ];
+
+  // values for the gcp-dns-zone record.
+  // if the gcp_dns_zone_record_type is cname then each value in the list should end with a dot.
+  repeated string values = 3;
+
+  // ttl for the domain record in seconds.
+  int32 ttl_seconds = 4;
+}

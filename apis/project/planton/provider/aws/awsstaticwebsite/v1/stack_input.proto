@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package apis.project.planton.provider.aws.awsstaticwebsite.v1;
+
+import "apis/project/planton/provider/aws/awsstaticwebsite/v1/api.proto";
+import "apis/project/planton/credential/awscredential/v1/spec.proto";
+import "apis/project/planton/shared/pulumi/pulumi.proto";
+
+//aws-static-website stack-input
+message AwsStaticWebsiteStackInput {
+  //pulumi input
+  apis.project.planton.shared.pulumi.PulumiStackInfo pulumi = 1;
+  //target api-resource
+  AwsStaticWebsite target = 2;
+  //aws-credential
+  apis.project.planton.credential.awscredential.v1.AwsCredentialSpec aws_credential = 3;
+}

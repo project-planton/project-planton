@@ -1,0 +1,62 @@
+syntax = "proto3";
+
+package apis.project.planton.provider.aws.awsdynamodb.v1;
+
+import "buf/validate/validate.proto";
+import "apis/project/planton/provider/aws/awsdynamodb/v1/spec.proto";
+import "apis/project/planton/provider/aws/awsdynamodb/v1/stack_outputs.proto";
+import "apis/project/planton/shared/shared.proto";
+
+//aws-dynamodb
+message AwsDynamodb {
+  //api-version
+  string api_version = 1[
+    (buf.validate.field).string.const = 'aws.project.planton/v1'
+  ];
+
+  //resource-kind
+  string kind = 2;
+
+  //metadata
+  apis.project.planton.shared.ApiResourceMetadata metadata = 3 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).cel = {
+      id: "metadata.name",
+      message: "Name must be between 3 and 63 characters long",
+      expression: "size(this.name) > 2 && size(this.name) <= 63"
+    },
+    (buf.validate.field).cel = {
+      id: "metadata.version.message",
+      message: "Version message is mandatory and cannot be empty",
+      expression: "has(this.version.message)"
+    }
+  ];
+
+  //spec
+  AwsDynamodbSpec spec = 4 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).cel = {
+      id: "spec.aws_credential_id",
+      message: "AWS Credential Id is mandatory",
+      expression: "has(this.aws_credential_id)"
+    }
+  ];
+
+  //status
+  AwsDynamodbStatus status = 5;
+}
+
+//aws-dynamodb status
+message AwsDynamodbStatus {
+  //lifecycle
+  apis.project.planton.shared.ApiResourceLifecycle lifecycle = 99;
+
+  //audit-info
+  apis.project.planton.shared.ApiResourceAudit audit = 98;
+
+  //stack-job id
+  string stack_job_id = 97;
+
+  //stack-outputs
+  AwsDynamodbStackOutputs stack_outputs = 1;
+}

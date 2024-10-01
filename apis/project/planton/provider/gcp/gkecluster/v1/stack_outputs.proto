@@ -1,0 +1,69 @@
+syntax = "proto3";
+
+package apis.project.planton.provider.gcp.gkecluster.v1;
+
+import "apis/project/planton/provider/gcp/gkecluster/v1/spec.proto";
+
+// status of the gke-cluster in gcp
+message GkeClusterStackOutputs {
+  // a folder is created with the credential folder as parent for the gke-cluster.
+  // resources created for gke-cluster are linked to this folder as the parent.
+  // children for a credential are the gcp projects in the gke-cluster.
+  string folder_id = 1;
+
+  // projects created on google cloud for this gke-cluster
+  // this value is updated upon successful gke-cluster creation stack-job.
+  // gcp project info for the gke-cluster project
+  GcpProject container_cluster_project = 2;
+
+  // gcp project info for vpc-network project
+  // note: a separate project is only created when the gke-cluster is configured to use shared-vpc.
+  // if the gke-cluster is not configured to use a shared-vpc, this project info will be same as
+  // gke-cluster project details as the vpc-network is created in the same project as the gke-cluster.
+  GcpProject vpc_network_project = 3;
+
+  // gke-cluster endpoint.
+  string cluster_endpoint = 4;
+
+  // gke-cluster certificate-authority-data.
+  // this value is updated upon successful gke-cluster creation stack-job.
+  string cluster_ca_data = 5;
+
+  // ip address of the NAT for egress traffic.
+  // this is the ip addresses attached to all network requests originating from the gke-cluster.
+  // if server receiving requires the exact ip of the microservice to add it the firewall rules, this is the one.
+  // this value is updated upon successful gke-cluster creation stack-job.
+  string external_nat_ip = 6;
+
+  // internal ingress ip.
+  string internal_ingress_ip = 7;
+
+  // internal ingress ip.
+  string external_ingress_ip = 8;
+
+  // google service account email created for cert-manager addon workload identity.
+  // this is the service account that is used by cert-manager component to update dns records
+  // to issue ssl certificates from letsencrypt provided for gke-cluster ingress-dns-domains.
+  // this service account is configured with permissions required to manage dns entries for issuing certs.
+  string cert_manager_gsa_email = 9;
+
+  // google service account email created for external-secrets addon workload identity.
+  // this is the service account that is used by external-secrets component to fetch secrets from the
+  // secrets-manager on the cloud provider and make them available to the microservices.
+  string external_secrets_gsa_email = 10;
+
+  // google service account email created for external-secrets addon workload identity.
+  // this key for this service account is used for deploying workloads like microservices,
+  // postgres clusters, kafka clusters onto the gke-cluster gke-cluster/s.
+  string workload_deployer_gsa_email = 11;
+
+  // base64 encoded workload deployer google service account key.
+  // this service account key is used as a credential for deploying workloads like microservices,
+  // postgres clusters, kafka clusters onto the gke-cluster gke-cluster/s.
+  string workload_deployer_gsa_key_base64 = 12;
+
+  // google service account email created for external-dns addon workload identity.
+  // this is the service account that is used by external-dns component to insert dns records in
+  // google cloud dns when selected services or ingress resources are created on the GKE cluster.
+  string external_dns_gsa_email = 13;
+}

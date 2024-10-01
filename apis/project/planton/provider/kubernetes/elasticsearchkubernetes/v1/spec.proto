@@ -1,0 +1,92 @@
+syntax = "proto3";
+
+package apis.project.planton.provider.kubernetes.elasticsearchkubernetes.v1;
+
+import "buf/validate/validate.proto";
+import "apis/project/planton/shared/kubernetes/kubernetes.proto";
+import "apis/project/planton/shared/pulumi/pulumi.proto";
+import "apis/project/planton/shared/shared.proto";
+
+//elasticsearch-kubernetes spec
+message ElasticsearchKubernetesSpec {
+  //environment-info
+  apis.project.planton.shared.ApiResourceEnvironmentInfo environment_info = 99;
+
+  //stack-job settings
+  apis.project.planton.shared.pulumi.StackJobSettings stack_job_settings = 98;
+
+  //kubernetes-cluster-credential-id to be used for setting up kubernetes-provider in stack-job
+  string kubernetes_cluster_credential_id = 97;
+
+  //elasticsearch-container spec
+  ElasticsearchKubernetesElasticsearchContainer elasticsearch_container = 1 [
+    (buf.validate.field).required = true
+  ];
+
+  //kibana-container spec
+  ElasticsearchKubernetesKibanaContainer kibana_container = 2 [
+    (buf.validate.field).required = true
+  ];
+
+  //elasticsearch-kubernetes ingress-spec
+  apis.project.planton.shared.kubernetes.IngressSpec ingress = 3;
+}
+
+//elasticsearch-container
+message ElasticsearchKubernetesElasticsearchContainer {
+  option (buf.validate.message).cel = {
+    id: "spec.container.disk_size.mandatory",
+    expression: "this.is_persistence_enabled && size(this.disk_size) == 0"
+        "? 'disk size is mandatory to enable persistence'"
+        ": ''"
+  };
+  //number of elasticsearch pods.
+  //recommended default 1
+  int32 replicas = 1 [
+    (buf.validate.field).required = true
+  ];
+
+  //elasticsearch container cpu and memory resources.
+  //recommended default "cpu-requests: 50m, memory-requests: 256Mi, cpu-limits: 1, memory-limits: 1Gi"
+  apis.project.planton.shared.kubernetes.ContainerResources resources = 2 [
+    (buf.validate.field).required = true
+  ];
+
+  //flag to toggle persistence for elasticsearch data.
+  //when enabled, elasticsearch in-memory data will be persisted to a storage volume.
+  //the backup data from persistent volume is restored into elasticsearch memory between pod restarts.
+  //defaults to false.
+  bool is_persistence_enabled = 3;
+
+  //size of persistent volume attached to each elasticsearch pod
+  //if the client does not provide a value, the default value is configured.
+  //this attribute is ignored when persistence is not enabled.
+  //this persistent volume is used for backing up in-memory data.
+  //data from the persistent volume will be restored into memory between pod restarts.
+  //this value can not be modified as kubernetes does not allow updating the stateful-set specification after creation.
+  string disk_size = 4[
+    (buf.validate.field).cel = {
+      id: "spec.container.disk_size.is_valid",
+      message: "disk size value is invalid",
+      // https://regex101.com/r/EqH2xa/1
+      expression: "this.matches('^\\\\d+(\\\\.\\\\d+)?\\\\s?(Ki|Mi|Gi|Ti|Pi|Ei|K|M|G|T|P|E)$') && size(this) > 0"
+    }
+  ];
+}
+
+//kibana-container
+message ElasticsearchKubernetesKibanaContainer {
+  //flag to control if kibana is created for the elasticsearch.
+  //defaults to "false".
+  bool is_enabled = 1;
+  //number of kibana pods.
+  int32 replicas = 2 [
+    (buf.validate.field).required = true
+  ];
+
+  //kibana container cpu and memory resources.
+  //recommended default "cpu-requests: 50m, memory-requests: 256Mi, cpu-limits: 1, memory-limits: 1Gi"
+  apis.project.planton.shared.kubernetes.ContainerResources resources = 3 [
+    (buf.validate.field).required = true
+  ];
+}

@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package apis.project.planton.provider.azure.azurekeyvault.v1;
+
+//azure-key-vault stack outputs
+message AzureKeyVaultStackOutputs {
+  //map containing secret-name and its corresponding secret-id on secrets-manager
+  map<string, string> secret_id_map = 1;
+}

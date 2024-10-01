@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package apis.project.planton.provider.azure.azurekeyvault.v1;
+
+import "buf/validate/validate.proto";
+import "apis/project/planton/shared/pulumi/pulumi.proto";
+import "apis/project/planton/shared/shared.proto";
+
+//azure-key-vault spec
+message AzureKeyVaultSpec {
+  //environment-info
+  apis.project.planton.shared.ApiResourceEnvironmentInfo environment_info = 99;
+
+  //stack-job settings
+  apis.project.planton.shared.pulumi.StackJobSettings stack_job_settings = 98;
+
+  //azure-credential-id to be used for setting up azure-provider in stack-job
+  string azure_credential_id = 97;
+
+  //list of secret names to create in azure secrets-manager
+  repeated string secret_names = 1;
+}

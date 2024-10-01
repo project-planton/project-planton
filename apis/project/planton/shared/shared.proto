@@ -1,0 +1,93 @@
+syntax = "proto3";
+
+package apis.project.planton.shared;
+
+import "google/protobuf/timestamp.proto";
+
+//metadata for all resource objects on planton-cloud
+message ApiResourceMetadata {
+  // name of the resource
+  string name = 1;
+  // id of the resource
+  string id = 2;
+  // labels for the resource
+  map<string, string> labels = 3;
+  // tags for the resource
+  repeated string tags = 4;
+  //metadata for resource version
+  ApiResourceMetadataVersion version = 5;
+}
+
+// version information for api-resource to be used in api-resource metadata
+message ApiResourceMetadataVersion {
+  string id = 1;
+  string message = 2;
+}
+
+// api-resource environment info
+message ApiResourceEnvironmentInfo {
+  //organization to which the api-resource belongs to.
+  string org_id = 1;
+
+  //environment id
+  string env_id = 2;
+
+  //environment name
+  string env_name = 3;
+}
+
+// ResourceAudit represents auditing information for a resource,
+// containing both specification-level and status-level audit details.
+message ApiResourceAudit {
+  // spec_audit holds the auditing information related to the resource's desired state or specification.
+  ApiResourceAuditInfo spec_audit = 1;
+
+  // status_audit holds the auditing information related to the resource's status.
+  ApiResourceAuditInfo status_audit = 2;
+}
+
+// Audit represents the system-level auditing information for an object.
+// This includes details about the creation and last update of the object,
+// as well as the type of the last event associated with the object.
+message ApiResourceAuditInfo {
+  // created_by is the identifier of the user or system process that created the object.
+  ApiResourceAuditActor created_by = 1;
+
+  // created_at is the timestamp indicating when the object was created.
+  google.protobuf.Timestamp created_at = 2;
+
+  // updated_by is the identifier of the user or system process that last updated the object.
+  ApiResourceAuditActor updated_by = 3;
+
+  // updated_at is the timestamp indicating when the object was last updated.
+  google.protobuf.Timestamp updated_at = 4;
+
+  // event_type is the type of the last event associated with the object.
+  // This is typically a string code representing specific events in the system.
+  string event = 5;
+}
+
+// actor in the audit
+message ApiResourceAuditActor {
+  //id of the actor
+  string id = 1;
+  //avatar url of the actor
+  string avatar = 2;
+}
+
+//lifecycle
+message ApiResourceLifecycle {
+  // flag to indicate if the resource is not deleted and is active
+  bool is_active = 1;
+  // flag to indicate if the resource is paused
+  bool is_paused = 2;
+}
+
+// api-resource status containing just the lifecycle and audit messages.
+message ApiResourceLifecycleAndAuditStatus {
+  //lifecycle
+  ApiResourceLifecycle lifecycle = 99;
+
+  //audit info
+  ApiResourceAudit audit = 98;
+}

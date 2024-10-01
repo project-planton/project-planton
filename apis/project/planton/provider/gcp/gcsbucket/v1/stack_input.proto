@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package apis.project.planton.provider.gcp.gcsbucket.v1;
+
+import "apis/project/planton/credential/gcpcredential/v1/spec.proto";
+import "apis/project/planton/credential/gitcredential/v1/api.proto";
+import "apis/project/planton/credential/pulumibackendcredential/v1/api.proto";
+import "apis/project/planton/provider/gcp/gcsbucket/v1/api.proto";
+import "apis/project/planton/provider/gcp/gcsbucket/v1/stack_outputs.proto";
+import "apis/project/planton/shared/pulumi/pulumi.proto";
+
+//gcs-bucket stack-input
+message GcsBucketStackInput {
+  //pulumi input
+  apis.project.planton.shared.pulumi.PulumiStackInfo pulumi = 1;
+  //target api-resource
+  GcsBucket target = 2;
+  //gcp-credential
+  apis.project.planton.credential.gcpcredential.v1.GcpCredentialSpec gcp_credential = 3;
+}

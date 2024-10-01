@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package apis.project.planton.provider.aws.awsstaticwebsite.v1;
+
+//aws-static-website stack outputs
+message AwsStaticWebsiteStackOutputs {
+  //id of the storage-bucket created on aws
+  string bucket_id = 1;
+}

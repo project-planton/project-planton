@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package apis.project.planton.provider.aws.awscloudfront.v1;
+
+//aws-cloud-front stack output
+message AwsCloudFrontStackOutputs {
+  //id of the cloud-front distribution created on aws
+  string cloud_front_distribution_id = 1;
+}

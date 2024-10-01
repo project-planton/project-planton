@@ -16,8 +16,15 @@ deps:
 build_darwin: vet
 	GOOS=darwin ${build_cmd} -o ${build_dir}/${name}-darwin .
 
+.PHONY: build-apis
+build-apis:
+	buf generate
+
+.PHONY: build-cli
+build-cli: ${build_dir}/${name}
+
 .PHONY: build
-build: ${build_dir}/${name}
+build: build-apis build-cli
 
 ${build_dir}/${name}: deps vet
 	GOOS=darwin GOARCH=arm64 ${build_cmd} -o ${build_dir}/${name}-darwin-arm64 .

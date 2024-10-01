@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package apis.project.planton.provider.azure.azurekeyvault.v1;
+
+import "apis/project/planton/provider/azure/azurekeyvault/v1/api.proto";
+import "apis/project/planton/credential/azurecredential/v1/spec.proto";
+import "apis/project/planton/shared/pulumi/pulumi.proto";
+
+//azure-key-vault stack-input
+message AzureKeyVaultStackInput {
+  //pulumi input
+  apis.project.planton.shared.pulumi.PulumiStackInfo pulumi = 1;
+  //target api-resource
+  AzureKeyVault target = 2;
+  //azure-credential
+  apis.project.planton.credential.azurecredential.v1.AzureCredentialSpec azure_credential = 3;
+}

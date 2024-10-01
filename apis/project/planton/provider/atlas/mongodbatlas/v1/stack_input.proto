@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package apis.project.planton.provider.atlas.mongodbatlas.v1;
+
+import "apis/project/planton/provider/atlas/mongodbatlas/v1/api.proto";
+import "apis/project/planton/credential/mongodbatlascredential/v1/spec.proto";
+import "apis/project/planton/shared/pulumi/pulumi.proto";
+
+//mongodb-atlas stack-input
+message MongodbAtlasStackInput {
+  //pulumi input
+  apis.project.planton.shared.pulumi.PulumiStackInfo pulumi = 1;
+  //target api-resource
+  MongodbAtlas target = 2;
+  //mongodb-atlas-credential
+  apis.project.planton.credential.mongodbatlascredential.v1.MongodbAtlasCredentialSpec mongodb_atlas_credential = 3;
+}

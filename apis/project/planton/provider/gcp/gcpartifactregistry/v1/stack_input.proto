@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package apis.project.planton.provider.gcp.gcpartifactregistry.v1;
+
+import "apis/project/planton/provider/gcp/gcpartifactregistry/v1/api.proto";
+import "apis/project/planton/credential/gcpcredential/v1/spec.proto";
+import "apis/project/planton/shared/pulumi/pulumi.proto";
+
+//gcp-artifact-registry stack-input
+message GcpArtifactRegistryStackInput {
+  //pulumi input
+  apis.project.planton.shared.pulumi.PulumiStackInfo pulumi = 1;
+  //target api-resource
+  GcpArtifactRegistry target = 2;
+  //gcp-credential
+  apis.project.planton.credential.gcpcredential.v1.GcpCredentialSpec gcp_credential = 3;
+}

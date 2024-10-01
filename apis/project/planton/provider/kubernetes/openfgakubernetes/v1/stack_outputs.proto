@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package apis.project.planton.provider.kubernetes.openfgakubernetes.v1;
+
+//openfga-kubernetes kubernetes status
+message OpenfgaKubernetesStackOutputs {
+  //kubernetes namespace in which openfga-kubernetes is created.
+  string namespace = 1;
+
+  //kubernetes service name for openfga-kubernetes.
+  //ex: main-openfga-kubernetes
+  //in the above example, "main" is the name of the openfga-kubernetes
+  string service = 2;
+
+  //command to setup port-forwarding to open openfga-kubernetes from developers laptop.
+  //this might come handy when openfga-kubernetes ingress is disabled for security reasons.
+  //this is rendered by combining openfga_kubernetes_kubernetes_service and kubernetes_namespace
+  //ex: kubectl port-forward svc/openfga_kubernetes_kubernetes_service -n kubernetes_namespace 6379:6379
+  //running the command from this attribute makes it possible to access openfga-kubernetes using http://localhost:8080/openfga
+  string port_forward_command = 3;
+
+  //kubernetes endpoint to connect to openfga-kubernetes from the web browser.
+  //ex: main-openfga-kubernetes.namespace.svc.cluster.local:6379
+  string kube_endpoint = 4;
+
+  //public endpoint to open openfga-kubernetes from clients outside kubernetes.
+  //ex: https://rdc-planton-pcs-dev-main.data.dev.planton.live
+  string external_hostname = 5;
+
+  //private endpoint to open openfga-kubernetes from clients inside kubernetes.
+  //ex: https://rdc-planton-pcs-dev-main.data-internal.dev.planton.live
+  string internal_hostname = 6;
+}

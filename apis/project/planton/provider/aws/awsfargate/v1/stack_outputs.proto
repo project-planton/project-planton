@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+package apis.project.planton.provider.aws.awsfargate.v1;
+
+//aws-fargate stack outputs
+message AwsFargateStackOutputs {
+}

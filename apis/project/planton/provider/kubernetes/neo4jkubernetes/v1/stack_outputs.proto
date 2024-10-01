@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package apis.project.planton.provider.kubernetes.neo4jkubernetes.v1;
+
+//neo4j-kubernetes stack outputs.
+message Neo4jKubernetesStackOutputs {
+  //kubernetes namespace in which neo4j-kubernetes is created.
+  string namespace = 1;
+
+  //kubernetes service name for neo4j-kubernetes.
+  //ex: main-neo4j-kubernetes
+  //in the above example, "main" is the name of the neo4j-kubernetes
+  string service = 2;
+
+  //command to setup port-forwarding to open neo4j-kubernetes from developers laptop.
+  //this might come handy when neo4j-kubernetes ingress is disabled for security reasons.
+  //this is rendered by combining neo4j_kubernetes_kubernetes_service and kubernetes_namespace
+  //ex: kubectl port-forward svc/neo4j_kubernetes_kubernetes_service -n kubernetes_namespace 6379:6379
+  //running the command from this attribute makes it possible to access neo4j-kubernetes using http://localhost:8080/neo4j
+  string port_forward_command = 3;
+
+  //kubernetes endpoint to connect to neo4j-kubernetes from the web browser.
+  //ex: main-neo4j-kubernetes.namespace.svc.cluster.local:6379
+  string kube_endpoint = 4;
+
+  //public endpoint to open neo4j-kubernetes from clients outside kubernetes.
+  //ex: https://kck8s-planton-pcs-dev-main.data.dev.planton.live
+  string external_hostname = 5;
+
+  //internal endpoint to open neo4j-kubernetes from clients inside kubernetes.
+  //ex: https://kck8s-planton-pcs-dev-main.data-internal.dev.planton.live
+  string internal_hostname = 6;
+}

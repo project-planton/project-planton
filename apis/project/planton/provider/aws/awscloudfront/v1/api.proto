@@ -1,0 +1,68 @@
+syntax = "proto3";
+
+package apis.project.planton.provider.aws.awscloudfront.v1;
+
+import "buf/validate/validate.proto";
+import "apis/project/planton/provider/aws/awscloudfront/v1/spec.proto";
+import "apis/project/planton/provider/aws/awscloudfront/v1/stack_outputs.proto";
+import "apis/project/planton/shared/shared.proto";
+
+//aws-cloud-front
+message AwsCloudFront {
+  //api-version
+  string api_version = 1[
+    (buf.validate.field).string.const = 'aws.project.planton/v1'
+  ];
+
+  //resource-kind
+  string kind = 2;
+
+  //metadata
+  apis.project.planton.shared.ApiResourceMetadata metadata = 3 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).cel = {
+      id: "metadata.name",
+      message: "Name must be a Valid Bucket Name on AWS/AWS/AZURE/Others",
+      //https://regex101.com/r/d1Viju/1
+      expression: "this.name.matches('^[a-z0-9](?:[a-z0-9_-]*[a-z0-9])?$')"
+    },
+    (buf.validate.field).cel = {
+      id: "metadata.name",
+      message: "Name must be between 3 and 63 characters long",
+      expression: "size(this.name) > 2 && size(this.name) <= 63"
+    },
+    (buf.validate.field).cel = {
+      id: "metadata.version.message",
+      message: "Version message is mandatory and cannot be empty",
+      expression: "has(this.version.message)"
+    }
+  ];
+
+  //spec
+  AwsCloudFrontSpec spec = 4 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).cel = {
+      id: "spec.aws_credential_id",
+      message: "AWS Credential Id is mandatory",
+      expression: "has(this.aws_credential_id)"
+    }
+  ];
+
+  //status
+  AwsCloudFrontStatus status = 5;
+}
+
+//aws-cloud-front status
+message AwsCloudFrontStatus {
+  //lifecycle
+  apis.project.planton.shared.ApiResourceLifecycle lifecycle = 99;
+
+  //audit-info
+  apis.project.planton.shared.ApiResourceAudit audit = 98;
+
+  //stack-job id
+  string stack_job_id = 97;
+
+  //stack-outputs
+  AwsCloudFrontStackOutputs stack_outputs = 1;
+}

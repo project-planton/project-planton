@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package apis.project.planton.provider.azure.akscluster.v1;
+
+import "apis/project/planton/provider/azure/akscluster/v1/api.proto";
+import "apis/project/planton/credential/azurecredential/v1/spec.proto";
+import "apis/project/planton/shared/pulumi/pulumi.proto";
+
+//aks-cluster stack-input
+message AksClusterStackInput {
+  //pulumi input
+  apis.project.planton.shared.pulumi.PulumiStackInfo pulumi = 1;
+  //target api-resource
+  AksCluster target = 2;
+  //azure-credential
+  apis.project.planton.credential.azurecredential.v1.AzureCredentialSpec azure_credential = 3;
+}

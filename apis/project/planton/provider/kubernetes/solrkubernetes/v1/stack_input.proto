@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package apis.project.planton.provider.kubernetes.solrkubernetes.v1;
+
+import "apis/project/planton/provider/kubernetes/solrkubernetes/v1/api.proto";
+import "apis/project/planton/credential/kubernetesclustercredential/v1/spec.proto";
+import "apis/project/planton/shared/pulumi/pulumi.proto";
+
+//solr-kubernetes stack-input
+message SolrKubernetesStackInput {
+  //pulumi input
+  apis.project.planton.shared.pulumi.PulumiStackInfo pulumi = 1;
+  //target api-resource
+  SolrKubernetes target = 2;
+  //kubernetes-cluster-credential
+  apis.project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec kubernetes_cluster = 3;
+}

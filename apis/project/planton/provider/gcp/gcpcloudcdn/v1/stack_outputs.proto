@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+package apis.project.planton.provider.gcp.gcpcloudcdn.v1;
+
+//gcp-cloud-cdn stack outputs
+message GcpCloudCdnStackOutputs {
+}
