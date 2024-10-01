@@ -1,5 +1,5 @@
 atlas:
-	mongodb-atlas: https://github.com/plantoncloud/mongodb-atlas-pulumi-module.git
+  mongodb-atlas: https://github.com/plantoncloud/mongodb-atlas-pulumi-module.git
 aws:
   aws-cloud-front: https://github.com/plantoncloud/aws-cloud-front-pulumi-module.git
   aws-dynamodb: https://github.com/plantoncloud/aws-dynamodb-pulumi-module.git
