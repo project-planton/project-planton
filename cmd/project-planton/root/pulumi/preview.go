@@ -18,10 +18,14 @@ func previewHandler(cmd *cobra.Command, args []string) {
 	stackFqdn, err := cmd.Flags().GetString(string(flag.Stack))
 	flag.HandleFlagErrAndValue(err, flag.Stack, stackFqdn)
 
-	stackInputYamlPath, err := cmd.Flags().GetString(string(flag.Input))
-	flag.HandleFlagErrAndValue(err, flag.Input, stackInputYamlPath)
+	targetManifestPath, err := cmd.Flags().GetString(string(flag.Target))
+	flag.HandleFlagErrAndValue(err, flag.Target, targetManifestPath)
 
-	err = pulumistack.Run(stackFqdn, stackInputYamlPath, pulumi.PulumiOperationType_update, true)
+	kubernetesCluster, err := cmd.Flags().GetString(string(flag.KubernetesCluster))
+	flag.HandleFlagErrAndValue(err, flag.KubernetesCluster, kubernetesCluster)
+
+	err = pulumistack.Run(stackFqdn, targetManifestPath, kubernetesCluster,
+		pulumi.PulumiOperationType_update, true)
 	if err != nil {
 		log.Fatalf("failed to run pulumi: %v", err)
 	}

@@ -7,8 +7,9 @@ import (
 type Flag string
 
 const (
-	Stack Flag = "stack"
-	Input Flag = "input"
+	KubernetesCluster Flag = "kubernetes-cluster"
+	Stack             Flag = "stack"
+	Target            Flag = "target"
 )
 
 func HandleFlagErrAndValue(err error, flag Flag, flagVal string) {
