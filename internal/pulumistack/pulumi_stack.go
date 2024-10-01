@@ -55,11 +55,14 @@ func Run(stackFqdn, targetManifestPath, kubernetesClusterManifestPath string,
 	// Check if the cloned repository directory already exists
 	pulumiModuleRepoPath := stackWorkspaceDir + "/" + gitRepoName
 	if _, err := os.Stat(pulumiModuleRepoPath); os.IsNotExist(err) {
-		gitCloneCommand := exec.Command("git", "clone", cloneUrl, stackWorkspaceDir)
+		gitCloneCommand := exec.Command("git", "clone", cloneUrl, pulumiModuleRepoPath)
+		gitCloneCommand.Stdout = os.Stdout
+		gitCloneCommand.Stderr = os.Stderr
 		if err := gitCloneCommand.Run(); err != nil {
 			return errors.Wrapf(err, "failed to clone repository from %s to %s", cloneUrl, stackWorkspaceDir)
 		}
 	}
+
 	if err := updateProjectNameInPulumiYaml(pulumiModuleRepoPath, pulumiProjectName); err != nil {
 		return errors.Wrapf(err, "failed to update project name in %s/Pulumi.yaml", pulumiModuleRepoPath)
 	}
@@ -77,6 +80,8 @@ func Run(stackFqdn, targetManifestPath, kubernetesClusterManifestPath string,
 	// Set the working directory to the repository path
 	pulumiCmd.Dir = pulumiModuleRepoPath
 
+	// Set stdin, stdout, and stderr to the current terminal to make it an interactive shell
+	pulumiCmd.Stdin = os.Stdin
 	pulumiCmd.Stdout = os.Stdout
 	pulumiCmd.Stderr = os.Stderr
 
