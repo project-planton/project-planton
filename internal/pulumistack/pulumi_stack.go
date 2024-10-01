@@ -5,13 +5,12 @@ import (
 	"context"
 	"github.com/pkg/errors"
 	"github.com/plantoncloud/project-planton/internal/pulumimodule"
+	"github.com/plantoncloud/project-planton/internal/stackinput"
 	cliworkspace "github.com/plantoncloud/project-planton/internal/workspace"
+	commonsstackinput "github.com/plantoncloud/pulumi-module-golang-commons/pkg/stackinput"
 	"github.com/pulumi/pulumi/sdk/v3/go/auto"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/tokens"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/workspace"
-	"gopkg.in/yaml.v3"
-	"io/ioutil"
-	"os"
 	"strings"
 )
 
@@ -24,8 +23,9 @@ func ExtractProjectName(stackFqdn string) (string, error) {
 	return parts[1], nil
 }
 
-func Run(stackFqdn, targetManifestPath string, pulumiOperation pulumi.PulumiOperationType, isUpdatePreview bool) error {
-	kindName, err := extractKindFromYaml(targetManifestPath)
+func Run(stackFqdn, targetManifestPath, kubernetesClusterManifestPath string,
+	pulumiOperation pulumi.PulumiOperationType, isUpdatePreview bool) error {
+	kindName, err := stackinput.ExtractKindFromTargetManifest(targetManifestPath)
 	if err != nil {
 		return errors.Wrapf(err, "failed to extract kind from %s stack input yaml", targetManifestPath)
 	}
@@ -50,6 +50,11 @@ func Run(stackFqdn, targetManifestPath string, pulumiOperation pulumi.PulumiOper
 		return errors.Wrapf(err, "failed to extract project name from %s stack fqdn", stackFqdn)
 	}
 
+	stackInputYamlContent, err := stackinput.BuildStackInputYaml(targetManifestPath, kubernetesClusterManifestPath)
+	if err != nil {
+		return errors.Wrap(err, "failed to build stack input yaml")
+	}
+
 	//setup pulumi automation-api stack
 	pulumiStack, err := auto.UpsertStackLocalSource(
 		context.Background(),
@@ -64,8 +69,9 @@ func Run(stackFqdn, targetManifestPath string, pulumiOperation pulumi.PulumiOper
 		}),
 		auto.WorkDir(stackWorkspaceDir),
 		auto.EnvVars(map[string]string{
-			"STACK_INPUT": targetManifestPath,
+			commonsstackinput.YamlContentEnvVar: stackInputYamlContent,
 		}))
+
 	if err != nil {
 		return errors.Wrapf(err, "failed to setup pulumi automation-api stack %s", stackFqdn)
 	}
@@ -91,38 +97,4 @@ func Run(stackFqdn, targetManifestPath string, pulumiOperation pulumi.PulumiOper
 		}
 	}
 	return nil
-}
-
-// extractKindFromYaml reads a YAML file from the given path and returns the value of the 'kind' key.
-func extractKindFromYaml(yamlPath string) (string, error) {
-	// Check if the file exists
-	if _, err := os.Stat(yamlPath); os.IsNotExist(err) {
-		return "", errors.Wrapf(err, "file not found: %s", yamlPath)
-	}
-
-	// Read the YAML file
-	fileContent, err := ioutil.ReadFile(yamlPath)
-	if err != nil {
-		return "", errors.Wrapf(err, "failed to read file: %s", yamlPath)
-	}
-
-	// Parse the YAML content
-	var yamlData map[string]interface{}
-	if err := yaml.Unmarshal(fileContent, &yamlData); err != nil {
-		return "", errors.Wrapf(err, "failed to unmarshal YAML content from file: %s", yamlPath)
-	}
-
-	// Extract the 'kind' key
-	kind, ok := yamlData["kind"]
-	if !ok {
-		return "", errors.Errorf("key 'kind' not found in YAML file: %s", yamlPath)
-	}
-
-	// Ensure the 'kind' key is a string
-	kindStr, ok := kind.(string)
-	if !ok {
-		return "", errors.Errorf("value of 'kind' key is not a string in YAML file: %s", yamlPath)
-	}
-
-	return kindStr, nil
 }
