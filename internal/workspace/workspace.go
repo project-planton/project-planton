@@ -2,10 +2,8 @@ package workspace
 
 import (
 	"github.com/pkg/errors"
-	"github.com/plantoncloud/project-planton/internal/ulidgen"
 	"os"
 	"path/filepath"
-	"strings"
 )
 
 const (
@@ -18,9 +16,8 @@ func GetWorkspaceDir(stackFqdn string) (string, error) {
 	if err != nil {
 		return "", errors.Wrap(err, "failed to get home directory")
 	}
-	generator := ulidgen.NewGenerator()
 	//base directory will always be ${HOME}/.planton-cloud/pulumi
-	stackWorkspaceDir := filepath.Join(homeDir, ProjectPlantonDir, "pulumi", stackFqdn, strings.ToLower(generator.Generate().String()))
+	stackWorkspaceDir := filepath.Join(homeDir, ProjectPlantonDir, "pulumi", stackFqdn)
 	if !isDirExists(stackWorkspaceDir) {
 		if err := os.MkdirAll(stackWorkspaceDir, os.ModePerm); err != nil {
 			return "", errors.Wrapf(err, "failed to ensure %s dir", stackWorkspaceDir)
