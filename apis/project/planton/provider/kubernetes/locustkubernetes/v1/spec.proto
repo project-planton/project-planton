@@ -1,21 +1,21 @@
 syntax = "proto3";
 
-package apis.project.planton.provider.kubernetes.locustkubernetes.v1;
+package project.planton.provider.kubernetes.locustkubernetes.v1;
 
 import "buf/validate/validate.proto";
-import "apis/project/planton/shared/kubernetes/kubernetes.proto";
-import "apis/project/planton/shared/pulumi/pulumi.proto";
-import "apis/project/planton/shared/shared.proto";
+import "project/planton/shared/kubernetes/kubernetes.proto";
+import "project/planton/shared/pulumi/pulumi.proto";
+import "project/planton/shared/shared.proto";
 
 // LocustKubernetesSpec defines the overall configuration for a Locust load testing cluster.
 // This message encapsulates the environmental context, Kubernetes deployment specifications,
 // load testing parameters, and Helm chart values for customizing the deployment.
 message LocustKubernetesSpec {
   //environment-info
-  apis.project.planton.shared.ApiResourceEnvironmentInfo environment_info = 99;
+  project.planton.shared.ApiResourceEnvironmentInfo environment_info = 99;
 
   //stack-job settings
-  apis.project.planton.shared.pulumi.StackJobSettings stack_job_settings = 98;
+  project.planton.shared.pulumi.StackJobSettings stack_job_settings = 98;
 
   //kubernetes-cluster-credential-id to be used for setting up kubernetes-provider in stack-job
   string kubernetes_cluster_credential_id = 97;
@@ -30,7 +30,7 @@ message LocustKubernetesSpec {
     (buf.validate.field).required = true
   ];
   //locust-kubernetes ingress-spec
-  apis.project.planton.shared.kubernetes.IngressSpec ingress = 3;
+  project.planton.shared.kubernetes.IngressSpec ingress = 3;
 
   // load_test defines the parameters of the load test itself, including the main test script,
   // any additional library files, and extra Python pip packages needed for the test execution.
@@ -49,7 +49,7 @@ message LocustKubernetesSpec {
 message LocustKubernetesContainer {
   //locust container cpu and memory resources.
   //recommended default "cpu-requests: 50m, memory-requests: 256Mi, cpu-limits: 1, memory-limits: 1Gi"
-  apis.project.planton.shared.kubernetes.ContainerResources resources = 1 [
+  project.planton.shared.kubernetes.ContainerResources resources = 1 [
     (buf.validate.field).required = true
   ];
   // number of replicas

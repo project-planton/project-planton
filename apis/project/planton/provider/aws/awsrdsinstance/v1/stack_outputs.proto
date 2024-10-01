@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package apis.project.planton.provider.aws.awsrdsinstance.v1;
+package project.planton.provider.aws.awsrdsinstance.v1;
 
 //aws_rds_instance stack outputs
 message AwsRdsInstanceStackOutputs {

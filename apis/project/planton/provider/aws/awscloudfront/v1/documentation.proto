@@ -34,4 +34,4 @@ syntax = "proto3";
 //- Enhanced customization options for caching and routing behaviors
 //- Integration with additional AWS services and features
 //- Comprehensive documentation and usage examples
-package apis.project.planton.provider.aws.awscloudfront.v1;
+package project.planton.provider.aws.awscloudfront.v1;

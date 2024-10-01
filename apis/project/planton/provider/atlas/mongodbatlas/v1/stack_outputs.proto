@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package apis.project.planton.provider.atlas.mongodbatlas.v1;
+package project.planton.provider.atlas.mongodbatlas.v1;
 
 //mongodb-atlas stack outputs
 //https://www.pulumi.com/registry/packages/atlascloud/api-docs/kafkacluster/#outputs

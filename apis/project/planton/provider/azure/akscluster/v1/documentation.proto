@@ -35,4 +35,4 @@ syntax = "proto3";
 //- **Enhanced Security Features**: Integration with Azure Active Directory and security policies for cluster management.
 //- **Monitoring and Logging**: Improved support for cluster monitoring and logging using Azure Monitor and other tools.
 //- **Comprehensive Documentation**: Expanded usage examples, best practices, and troubleshooting guides.
-package apis.project.planton.provider.azure.akscluster.v1;
+package project.planton.provider.azure.akscluster.v1;

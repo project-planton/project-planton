@@ -38,4 +38,4 @@ syntax = "proto3";
 //- **Monitoring and Logging**: Improved support for logging access requests and integrating with Google Cloud Monitoring.
 //- **Automation and CI/CD Integration**: Streamlined deployment processes with integration into continuous deployment pipelines.
 //- **Comprehensive Documentation**: Expanded usage examples, best practices, and troubleshooting guides.
-package apis.project.planton.provider.gcp.gcpcloudcdn.v1;
+package project.planton.provider.gcp.gcpcloudcdn.v1;

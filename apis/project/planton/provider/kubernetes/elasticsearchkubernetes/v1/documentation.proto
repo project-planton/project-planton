@@ -58,4 +58,4 @@ syntax = "proto3";
 //- **Data Persistence**: Provides options for data persistence to ensure data is retained across pod restarts and failures.
 //- **Resource Optimization**: Enables precise control over resource allocation for containers, optimizing performance and cost.
 //- **Flexibility**: Customize Elasticsearch and Kibana configurations to meet specific application requirements without compromising best practices.
-package apis.project.planton.provider.kubernetes.elasticsearchkubernetes.v1;
+package project.planton.provider.kubernetes.elasticsearchkubernetes.v1;

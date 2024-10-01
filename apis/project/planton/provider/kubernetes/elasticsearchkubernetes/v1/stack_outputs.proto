@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package apis.project.planton.provider.kubernetes.elasticsearchkubernetes.v1;
+package project.planton.provider.kubernetes.elasticsearchkubernetes.v1;
 
-import "apis/project/planton/shared/kubernetes/kubernetes.proto";
+import "project/planton/shared/kubernetes/kubernetes.proto";
 
 //elasticsearch-kubernetes stack-outputs
 message ElasticsearchKubernetesStackOutputs {
@@ -46,7 +46,7 @@ message ElasticsearchKubernetesElasticsearchStackOutputs {
   string username = 6;
 
   //kubernetes secret key for the password.
-  apis.project.planton.shared.kubernetes.KubernetesSecretKey password_secret = 7;
+  project.planton.shared.kubernetes.KubernetesSecretKey password_secret = 7;
 }
 
 //kibana outputs

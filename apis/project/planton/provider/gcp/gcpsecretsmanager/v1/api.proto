@@ -1,12 +1,12 @@
 syntax = "proto3";
 
-package apis.project.planton.provider.gcp.gcpsecretsmanager.v1;
+package project.planton.provider.gcp.gcpsecretsmanager.v1;
 
 import "buf/validate/validate.proto";
-import "apis/project/planton/provider/gcp/gcpsecretsmanager/v1/spec.proto";
-import "apis/project/planton/provider/gcp/gcpsecretsmanager/v1/stack_outputs.proto";
-import "apis/project/planton/shared/pulumi/pulumi.proto";
-import "apis/project/planton/shared/shared.proto";
+import "project/planton/provider/gcp/gcpsecretsmanager/v1/spec.proto";
+import "project/planton/provider/gcp/gcpsecretsmanager/v1/stack_outputs.proto";
+import "project/planton/shared/pulumi/pulumi.proto";
+import "project/planton/shared/shared.proto";
 
 //gcp-secrets-manager
 message GcpSecretsManager {
@@ -19,7 +19,7 @@ message GcpSecretsManager {
   string kind = 2;
 
   //metadata
-  apis.project.planton.shared.ApiResourceMetadata metadata = 3 [
+  project.planton.shared.ApiResourceMetadata metadata = 3 [
     (buf.validate.field).required = true,
     (buf.validate.field).cel = {
       id: "metadata.name",
@@ -68,10 +68,10 @@ message GcpSecretsManager {
 //gcp-secrets-manager status
 message GcpSecretsManagerStatus {
   //lifecycle
-  apis.project.planton.shared.ApiResourceLifecycle lifecycle = 99;
+  project.planton.shared.ApiResourceLifecycle lifecycle = 99;
 
   //audit-info
-  apis.project.planton.shared.ApiResourceAudit audit = 98;
+  project.planton.shared.ApiResourceAudit audit = 98;
 
   //stack-job id
   string stack_job_id = 97;

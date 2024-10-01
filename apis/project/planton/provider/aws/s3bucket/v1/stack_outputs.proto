@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package apis.project.planton.provider.aws.s3bucket.v1;
+package project.planton.provider.aws.s3bucket.v1;
 
 //s3-bucket stack outputs
 message S3BucketStackOutputs {

@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package apis.project.planton.provider.kubernetes.jenkinskubernetes.v1;
+package project.planton.provider.kubernetes.jenkinskubernetes.v1;
 
-import "apis/project/planton/shared/kubernetes/kubernetes.proto";
+import "project/planton/shared/kubernetes/kubernetes.proto";
 
 //jenkins-kubernetes stack outputs.
 message JenkinsKubernetesStackOutputs {
@@ -37,5 +37,5 @@ message JenkinsKubernetesStackOutputs {
   string username = 7;
 
   //kubernetes secret key for the password.
-  apis.project.planton.shared.kubernetes.KubernetesSecretKey password_secret = 8;
+  project.planton.shared.kubernetes.KubernetesSecretKey password_secret = 8;
 }

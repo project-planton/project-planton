@@ -18,7 +18,7 @@ build_darwin: vet
 
 .PHONY: build-apis
 build-apis:
-	buf generate
+	pushd apis;buf generate;popd
 
 .PHONY: build-cli
 build-cli: ${build_dir}/${name}
@@ -81,8 +81,7 @@ upload-binaries:
 
 .PHONY: release-buf
 release-buf:
-	buf push
-	buf push --label ${version}
+	pushd apis;buf push;buf push --label ${version};popd
 
 .PHONY: release-github
 release-github:

@@ -1,19 +1,19 @@
 syntax = "proto3";
 
-package apis.project.planton.provider.aws.route53zone.v1;
+package project.planton.provider.aws.route53zone.v1;
 
 import "buf/validate/validate.proto";
-import "apis/project/planton/shared/networking/enums/dnsrecordtype/dns_record_type.proto";
-import "apis/project/planton/shared/pulumi/pulumi.proto";
-import "apis/project/planton/shared/shared.proto";
+import "project/planton/shared/networking/enums/dnsrecordtype/dns_record_type.proto";
+import "project/planton/shared/pulumi/pulumi.proto";
+import "project/planton/shared/shared.proto";
 
 // Specification for the Route53 Zone
 message Route53ZoneSpec {
   //environment-info
-  apis.project.planton.shared.ApiResourceEnvironmentInfo environment_info = 99;
+  project.planton.shared.ApiResourceEnvironmentInfo environment_info = 99;
 
   //stack-job settings
-  apis.project.planton.shared.pulumi.StackJobSettings stack_job_settings = 98;
+  project.planton.shared.pulumi.StackJobSettings stack_job_settings = 98;
 
   //aws-credential-id to be used for setting up aws-provider in stack-job
   string aws_credential_id = 97;
@@ -25,7 +25,7 @@ message Route53ZoneSpec {
 // route53-zone dns-record
 message Route53DnsRecord {
   // dns record type.
-  apis.project.planton.shared.networking.enums.dnsrecordtype.DnsRecordType record_type = 1 [
+  project.planton.shared.networking.enums.dnsrecordtype.DnsRecordType record_type = 1 [
     (buf.validate.field).required = true
   ];
 

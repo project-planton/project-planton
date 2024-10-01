@@ -1,19 +1,19 @@
 syntax = "proto3";
 
-package apis.project.planton.provider.kubernetes.microservicekubernetes.v1;
+package project.planton.provider.kubernetes.microservicekubernetes.v1;
 
 import "buf/validate/validate.proto";
-import "apis/project/planton/shared/kubernetes/kubernetes.proto";
-import "apis/project/planton/shared/pulumi/pulumi.proto";
-import "apis/project/planton/shared/shared.proto";
+import "project/planton/shared/kubernetes/kubernetes.proto";
+import "project/planton/shared/pulumi/pulumi.proto";
+import "project/planton/shared/shared.proto";
 
 //microservice-kubernetes spec
 message MicroserviceKubernetesSpec {
   //environment-info
-  apis.project.planton.shared.ApiResourceEnvironmentInfo environment_info = 99;
+  project.planton.shared.ApiResourceEnvironmentInfo environment_info = 99;
 
   //stack-job settings
-  apis.project.planton.shared.pulumi.StackJobSettings stack_job_settings = 98;
+  project.planton.shared.pulumi.StackJobSettings stack_job_settings = 98;
 
   //kubernetes-cluster-credential-id to be used for setting up kubernetes-provider in stack-job
   string kubernetes_cluster_credential_id = 97;
@@ -46,7 +46,7 @@ message MicroserviceKubernetesSpec {
   ];
 
   //microservice kubernetes ingress configuration on kubernetes
-  apis.project.planton.shared.kubernetes.IngressSpec ingress = 4;
+  project.planton.shared.kubernetes.IngressSpec ingress = 4;
 
   //microservice kubernetes availability configuration on kubernetes
   MicroserviceKubernetesAvailability availability = 5;
@@ -60,7 +60,7 @@ message MicroserviceKubernetesContainer {
   ];
 
   //sidecar containers
-  repeated apis.project.planton.shared.kubernetes.Container sidecars = 2;
+  repeated project.planton.shared.kubernetes.Container sidecars = 2;
 }
 
 //microservice-kubernetes-spec kubernetes app container spec
@@ -71,10 +71,10 @@ message MicroserviceKubernetesContainerApp {
   //pull-secret-name: name of the image pull secret to be configured in kubernetes Deployment resource.
   //computed by looking up the container_image_artifact_store_id from the environment to which the
   //microservice deployment is created.
-  apis.project.planton.shared.kubernetes.ContainerImage image = 1;
+  project.planton.shared.kubernetes.ContainerImage image = 1;
 
   //container resources
-  apis.project.planton.shared.kubernetes.ContainerResources resources = 2;
+  project.planton.shared.kubernetes.ContainerResources resources = 2;
 
   //microservice-kubernetes environment variables and secrets.
   MicroserviceKubernetesContainerAppEnv env = 3;

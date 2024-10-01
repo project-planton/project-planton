@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package apis.project.planton.provider.aws.awsvpc.v1;
+package project.planton.provider.aws.awsvpc.v1;
 
 //aws-vpc stack outputs
 message AwsVpcStackOutputs {

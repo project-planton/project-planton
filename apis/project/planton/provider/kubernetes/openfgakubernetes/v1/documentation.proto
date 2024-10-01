@@ -53,4 +53,4 @@ syntax = "proto3";
 //- **Resource Optimization**: Allows for fine-tuning resource allocations to optimize performance and cost-efficiency.
 //- **Data Store Flexibility**: Supports both MySQL and PostgreSQL as data store engines, providing flexibility in database management.
 //- **Secure Access**: Configures ingress rules for secure and controlled access to the OpenFGA instance.
-package apis.project.planton.provider.kubernetes.openfgakubernetes.v1;
+package project.planton.provider.kubernetes.openfgakubernetes.v1;

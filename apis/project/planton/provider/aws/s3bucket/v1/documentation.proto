@@ -41,4 +41,4 @@ syntax = "proto3";
 //- **Security**: Provides control over public accessibility, reducing the risk of unauthorized data access.
 //- **Flexibility**: Customize bucket settings to meet specific application requirements without compromising best practices.
 //- **Cost Efficiency**: Optimize resource allocation by specifying the appropriate AWS region for your storage needs.
-package apis.project.planton.provider.aws.s3bucket.v1;
+package project.planton.provider.aws.s3bucket.v1;

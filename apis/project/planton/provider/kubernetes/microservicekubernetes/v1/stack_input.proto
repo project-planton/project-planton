@@ -1,20 +1,20 @@
 syntax = "proto3";
 
-package apis.project.planton.provider.kubernetes.microservicekubernetes.v1;
+package project.planton.provider.kubernetes.microservicekubernetes.v1;
 
-import "apis/project/planton/provider/kubernetes/microservicekubernetes/v1/api.proto";
-import "apis/project/planton/credential/dockercredential/v1/spec.proto";
-import "apis/project/planton/credential/kubernetesclustercredential/v1/spec.proto";
-import "apis/project/planton/shared/pulumi/pulumi.proto";
+import "project/planton/provider/kubernetes/microservicekubernetes/v1/api.proto";
+import "project/planton/credential/dockercredential/v1/spec.proto";
+import "project/planton/credential/kubernetesclustercredential/v1/spec.proto";
+import "project/planton/shared/pulumi/pulumi.proto";
 
 //microservice-kubernetes stack-input
 message MicroserviceKubernetesStackInput {
   //pulumi input
-  apis.project.planton.shared.pulumi.PulumiStackInfo pulumi = 1;
+  project.planton.shared.pulumi.PulumiStackInfo pulumi = 1;
   //target api-resource
   MicroserviceKubernetes target = 2;
   //kubernetes-cluster-credential
-  apis.project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec kubernetes_cluster = 3;
+  project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec kubernetes_cluster = 3;
   //docker-credential
-  apis.project.planton.credential.dockercredential.v1.DockerCredentialSpec docker_credential = 4;
+  project.planton.credential.dockercredential.v1.DockerCredentialSpec docker_credential = 4;
 }

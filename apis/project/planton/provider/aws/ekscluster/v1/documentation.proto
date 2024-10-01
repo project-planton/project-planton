@@ -35,4 +35,4 @@ syntax = "proto3";
 //- **Enhanced Security Features**: Integration with AWS IAM and security policies for cluster and node management.
 //- **Monitoring and Logging**: Improved support for cluster monitoring and logging using AWS CloudWatch and other tools.
 //- **Comprehensive Documentation**: Expanded usage examples, best practices, and troubleshooting guides.
-package apis.project.planton.provider.aws.ekscluster.v1;
+package project.planton.provider.aws.ekscluster.v1;

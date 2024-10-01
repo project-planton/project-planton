@@ -1,19 +1,19 @@
 syntax = "proto3";
 
-package apis.project.planton.provider.kubernetes.kafkakubernetes.v1;
+package project.planton.provider.kubernetes.kafkakubernetes.v1;
 
 import "buf/validate/validate.proto";
-import "apis/project/planton/shared/kubernetes/kubernetes.proto";
-import "apis/project/planton/shared/pulumi/pulumi.proto";
-import "apis/project/planton/shared/shared.proto";
+import "project/planton/shared/kubernetes/kubernetes.proto";
+import "project/planton/shared/pulumi/pulumi.proto";
+import "project/planton/shared/shared.proto";
 
 //kafka-kubernetes spec
 message KafkaKubernetesSpec {
   //environment-info
-  apis.project.planton.shared.ApiResourceEnvironmentInfo environment_info = 99;
+  project.planton.shared.ApiResourceEnvironmentInfo environment_info = 99;
 
   //stack-job settings
-  apis.project.planton.shared.pulumi.StackJobSettings stack_job_settings = 98;
+  project.planton.shared.pulumi.StackJobSettings stack_job_settings = 98;
 
   //kubernetes-cluster-credential-id to be used for setting up kubernetes-provider in stack-job
   string kubernetes_cluster_credential_id = 97;
@@ -36,7 +36,7 @@ message KafkaKubernetesSpec {
   KafkaKubernetesSchemaRegistryContainer schema_registry_container = 4;
 
   //kafka-kubernetes ingress spec
-  apis.project.planton.shared.kubernetes.IngressSpec ingress = 5;
+  project.planton.shared.kubernetes.IngressSpec ingress = 5;
 
   //flag to toggle deploying kafka ui component.
   bool is_deploy_kafka_ui = 6;
@@ -53,7 +53,7 @@ message KafkaKubernetesBrokerContainer {
 
   //kafka broker container cpu and memory resources.
   //recommended default "cpu-requests: 50m, memory-requests: 256Mi, cpu-limits: 1, memory-limits: 1Gi"
-  apis.project.planton.shared.kubernetes.ContainerResources resources = 2 [
+  project.planton.shared.kubernetes.ContainerResources resources = 2 [
     (buf.validate.field).required = true
   ];
 
@@ -82,7 +82,7 @@ message KafkaKubernetesZookeeperContainer {
 
   //zookeeper container cpu and memory resources.
   //recommended default "cpu-requests: 50m, memory-requests: 256Mi, cpu-limits: 1, memory-limits: 1Gi"
-  apis.project.planton.shared.kubernetes.ContainerResources resources = 2 [
+  project.planton.shared.kubernetes.ContainerResources resources = 2 [
     (buf.validate.field).required = true
   ];
 
@@ -114,7 +114,7 @@ message KafkaKubernetesSchemaRegistryContainer {
 
   //schema-registry container cpu and memory resources.
   //recommended default "cpu-requests: 50m, memory-requests: 256Mi, cpu-limits: 1, memory-limits: 1Gi"
-  apis.project.planton.shared.kubernetes.ContainerResources resources = 3 [
+  project.planton.shared.kubernetes.ContainerResources resources = 3 [
     (buf.validate.field).required = true
   ];
 }

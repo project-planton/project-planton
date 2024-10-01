@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package apis.project.planton.provider.kubernetes.argocdkubernetes.v1;
+package project.planton.provider.kubernetes.argocdkubernetes.v1;
 
 message ArgocdKubernetesStackOutputs {
   //kubernetes namespace in which argocd-kubernetes is created.

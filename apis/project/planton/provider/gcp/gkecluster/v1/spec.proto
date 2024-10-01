@@ -1,18 +1,18 @@
 syntax = "proto3";
 
-package apis.project.planton.provider.gcp.gkecluster.v1;
+package project.planton.provider.gcp.gkecluster.v1;
 
 import "buf/validate/validate.proto";
-import "apis/project/planton/shared/pulumi/pulumi.proto";
-import "apis/project/planton/shared/shared.proto";
+import "project/planton/shared/pulumi/pulumi.proto";
+import "project/planton/shared/shared.proto";
 
 // GkeClusterSpec is a message type that defines the specifications for a gke-cluster on Planton Cloud.
 message GkeClusterSpec {
   //environment-info
-  apis.project.planton.shared.ApiResourceEnvironmentInfo environment_info = 99;
+  project.planton.shared.ApiResourceEnvironmentInfo environment_info = 99;
 
   //stack-job settings
-  apis.project.planton.shared.pulumi.StackJobSettings stack_job_settings = 98;
+  project.planton.shared.pulumi.StackJobSettings stack_job_settings = 98;
 
   //gcp-credential-id to be used for setting up gcp-provider in stack-job
   string gcp_credential_id = 97;

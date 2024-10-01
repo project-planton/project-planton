@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package apis.project.planton.provider.gcp.gcpartifactregistry.v1;
+package project.planton.provider.gcp.gcpartifactregistry.v1;
 
 //gcp-artifact-registry stack outputs
 message GcpArtifactRegistryStackOutputs {

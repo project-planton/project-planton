@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package apis.project.planton.provider.kubernetes.kafkakubernetes.v1;
+package project.planton.provider.kubernetes.kafkakubernetes.v1;
 
-import "apis/project/planton/shared/kubernetes/kubernetes.proto";
+import "project/planton/shared/kubernetes/kubernetes.proto";
 
 //kafka-kubernetes stack outputs
 message KafkaKubernetesStackOutputs {
@@ -13,7 +13,7 @@ message KafkaKubernetesStackOutputs {
   string username = 2;
 
   //kubernetes secret key for the password.
-  apis.project.planton.shared.kubernetes.KubernetesSecretKey password_secret = 3;
+  project.planton.shared.kubernetes.KubernetesSecretKey password_secret = 3;
 
   //external hostname of kafka bootstrap server.
   string bootstrap_server_external_hostname = 4;

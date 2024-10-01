@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package apis.project.planton.provider.aws.awsdynamodb.v1;
+package project.planton.provider.aws.awsdynamodb.v1;
 
 //aws_dynamodb stack outputs
 message AwsDynamodbStackOutputs {

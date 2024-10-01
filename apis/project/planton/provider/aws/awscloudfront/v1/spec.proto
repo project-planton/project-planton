@@ -1,18 +1,18 @@
 syntax = "proto3";
 
-package apis.project.planton.provider.aws.awscloudfront.v1;
+package project.planton.provider.aws.awscloudfront.v1;
 
 import "buf/validate/validate.proto";
-import "apis/project/planton/shared/pulumi/pulumi.proto";
-import "apis/project/planton/shared/shared.proto";
+import "project/planton/shared/pulumi/pulumi.proto";
+import "project/planton/shared/shared.proto";
 
 //aws-cloud-front spec
 message AwsCloudFrontSpec {
   //environment-info
-  apis.project.planton.shared.ApiResourceEnvironmentInfo environment_info = 99;
+  project.planton.shared.ApiResourceEnvironmentInfo environment_info = 99;
 
   //stack-job settings
-  apis.project.planton.shared.pulumi.StackJobSettings stack_job_settings = 98;
+  project.planton.shared.pulumi.StackJobSettings stack_job_settings = 98;
 
   //aws-credential-id to be used for setting up aws-provider in stack-job
   string aws_credential_id = 97;

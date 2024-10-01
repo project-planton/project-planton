@@ -58,4 +58,4 @@ syntax = "proto3";
 //- **Scalability**: Leverage auto-scaling features to handle varying workloads efficiently.
 //- **Security**: Integrate with AWS KMS for encryption and manage credentials securely.
 //- **Flexibility**: Customize tables extensively to meet specific application requirements without compromising on best practices.
-package apis.project.planton.provider.aws.awsdynamodb.v1;
+package project.planton.provider.aws.awsdynamodb.v1;

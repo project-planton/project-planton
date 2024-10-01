@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package apis.project.planton.provider.aws.awscloudfront.v1;
+package project.planton.provider.aws.awscloudfront.v1;
 
 //aws-cloud-front stack output
 message AwsCloudFrontStackOutputs {

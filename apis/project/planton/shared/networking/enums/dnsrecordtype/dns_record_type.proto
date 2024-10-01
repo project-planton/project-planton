@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package apis.project.planton.shared.networking.enums.dnsrecordtype;
+package project.planton.shared.networking.enums.dnsrecordtype;
 
 // dns record type
 // the recommended best practice to prefix the entry with enum name has been intentionally ignored to ensure that the enum's value matches the dns record type.

@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package apis.project.planton.provider.kubernetes.microservicekubernetes.v1;
+package project.planton.provider.kubernetes.microservicekubernetes.v1;
 
 //microservice-kubernetes-stack outputs
 message MicroserviceKubernetesStackOutputs {

@@ -51,4 +51,4 @@ syntax = "proto3";
 //- **High Availability**: By defining replicas and resource limits, Redis instances can be highly available and resilient.
 //- **Data Reliability**: With persistence enabled, Redis data is backed up to a persistent volume, ensuring that data is not lost during restarts or failures.
 //- **Secure Access**: Securely configure ingress rules to control access to Redis services.
-package apis.project.planton.provider.kubernetes.rediskubernetes.v1;
+package project.planton.provider.kubernetes.rediskubernetes.v1;

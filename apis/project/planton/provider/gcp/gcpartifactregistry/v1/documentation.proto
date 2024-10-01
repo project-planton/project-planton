@@ -37,4 +37,4 @@ syntax = "proto3";
 //- **Security**: Provides control over external accessibility, reducing the risk of unauthorized access when necessary.
 //- **Flexibility**: Customize repository settings to meet specific application requirements without compromising best practices.
 //- **Performance Optimization**: By selecting the appropriate region, you can optimize artifact retrieval times, improving application startup performance.
-package apis.project.planton.provider.gcp.gcpartifactregistry.v1;
+package project.planton.provider.gcp.gcpartifactregistry.v1;

@@ -1,17 +1,17 @@
 syntax = "proto3";
 
-package apis.project.planton.provider.aws.awscloudfront.v1;
+package project.planton.provider.aws.awscloudfront.v1;
 
-import "apis/project/planton/provider/aws/awscloudfront/v1/api.proto";
-import "apis/project/planton/credential/awscredential/v1/spec.proto";
-import "apis/project/planton/shared/pulumi/pulumi.proto";
+import "project/planton/provider/aws/awscloudfront/v1/api.proto";
+import "project/planton/credential/awscredential/v1/spec.proto";
+import "project/planton/shared/pulumi/pulumi.proto";
 
 //aws-cloud-front stack-input
 message AwsCloudFrontStackInput {
   //pulumi input
-  apis.project.planton.shared.pulumi.PulumiStackInfo pulumi = 1;
+  project.planton.shared.pulumi.PulumiStackInfo pulumi = 1;
   //target api-resource
   AwsCloudFront target = 2;
   //aws-credential
-  apis.project.planton.credential.awscredential.v1.AwsCredentialSpec aws_credential = 3;
+  project.planton.credential.awscredential.v1.AwsCredentialSpec aws_credential = 3;
 }

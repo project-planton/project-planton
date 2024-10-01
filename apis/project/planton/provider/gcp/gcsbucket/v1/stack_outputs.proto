@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package apis.project.planton.provider.gcp.gcsbucket.v1;
+package project.planton.provider.gcp.gcsbucket.v1;
 
 //gcs-bucket stack outputs
 message GcsBucketStackOutputs {

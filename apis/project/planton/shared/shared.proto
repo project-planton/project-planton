@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package apis.project.planton.shared;
+package project.planton.shared;
 
 import "google/protobuf/timestamp.proto";
 

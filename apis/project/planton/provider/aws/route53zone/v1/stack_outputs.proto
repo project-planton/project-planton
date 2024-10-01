@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package apis.project.planton.provider.aws.route53zone.v1;
+package project.planton.provider.aws.route53zone.v1;
 
 // Status for the Route53 Zone
 message Route53ZoneStackOutputs {

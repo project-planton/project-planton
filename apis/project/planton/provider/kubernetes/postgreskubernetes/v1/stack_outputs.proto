@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package apis.project.planton.provider.kubernetes.postgreskubernetes.v1;
+package project.planton.provider.kubernetes.postgreskubernetes.v1;
 
-import "apis/project/planton/shared/kubernetes/kubernetes.proto";
+import "project/planton/shared/kubernetes/kubernetes.proto";
 
 //postgres-kubernetes stack outputs
 message PostgresKubernetesStackOutputs {
@@ -30,8 +30,8 @@ message PostgresKubernetesStackOutputs {
   string internal_hostname = 6;
 
   //kubernetes secret key for the username.
-  apis.project.planton.shared.kubernetes.KubernetesSecretKey username_secret = 8;
+  project.planton.shared.kubernetes.KubernetesSecretKey username_secret = 8;
 
   //kubernetes secret key for the password.
-  apis.project.planton.shared.kubernetes.KubernetesSecretKey password_secret = 9;
+  project.planton.shared.kubernetes.KubernetesSecretKey password_secret = 9;
 }

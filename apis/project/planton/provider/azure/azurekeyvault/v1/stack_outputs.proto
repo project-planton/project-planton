@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package apis.project.planton.provider.azure.azurekeyvault.v1;
+package project.planton.provider.azure.azurekeyvault.v1;
 
 //azure-key-vault stack outputs
 message AzureKeyVaultStackOutputs {

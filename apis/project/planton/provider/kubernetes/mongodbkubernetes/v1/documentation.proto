@@ -57,4 +57,4 @@ syntax = "proto3";
 //- **Microservices Architecture**: Use MongoDB in a microservices environment where each service may require its own database instance.
 //- **Data Persistence and Backups**: Ensure data durability and facilitate backup strategies by enabling persistence.
 //- **Development and Testing Environments**: Quickly spin up MongoDB instances for development or testing purposes with environment-specific configurations.
-package apis.project.planton.provider.kubernetes.mongodbkubernetes.v1;
+package project.planton.provider.kubernetes.mongodbkubernetes.v1;

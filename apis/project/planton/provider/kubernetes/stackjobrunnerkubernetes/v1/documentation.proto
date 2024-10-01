@@ -38,4 +38,4 @@ syntax = "proto3";
 //- **Monitoring and Logging**: Improved support for logging and monitoring of stack job executions using Kubernetes-native tools.
 //- **Automation and CI/CD Integration**: Streamlined processes for integrating with continuous integration and deployment pipelines.
 //- **Comprehensive Documentation**: Expanded usage examples, best practices, and troubleshooting guides.
-package apis.project.planton.provider.kubernetes.stackjobrunnerkubernetes.v1;
+package project.planton.provider.kubernetes.stackjobrunnerkubernetes.v1;

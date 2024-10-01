@@ -1,19 +1,19 @@
 syntax = "proto3";
 
-package apis.project.planton.provider.kubernetes.neo4jkubernetes.v1;
+package project.planton.provider.kubernetes.neo4jkubernetes.v1;
 
 import "buf/validate/validate.proto";
-import "apis/project/planton/shared/kubernetes/kubernetes.proto";
-import "apis/project/planton/shared/pulumi/pulumi.proto";
-import "apis/project/planton/shared/shared.proto";
+import "project/planton/shared/kubernetes/kubernetes.proto";
+import "project/planton/shared/pulumi/pulumi.proto";
+import "project/planton/shared/shared.proto";
 
 //neo4j-kubernetes spec
 message Neo4jKubernetesSpec {
   //environment-info
-  apis.project.planton.shared.ApiResourceEnvironmentInfo environment_info = 99;
+  project.planton.shared.ApiResourceEnvironmentInfo environment_info = 99;
 
   //stack-job settings
-  apis.project.planton.shared.pulumi.StackJobSettings stack_job_settings = 98;
+  project.planton.shared.pulumi.StackJobSettings stack_job_settings = 98;
 
   //kubernetes-cluster-credential-id to be used for setting up kubernetes-provider in stack-job
   string kubernetes_cluster_credential_id = 97;
@@ -22,14 +22,14 @@ message Neo4jKubernetesSpec {
   Neo4jKubernetesContainer container = 1;
 
   //neo4j-kubernetes ingress-spec
-  apis.project.planton.shared.kubernetes.IngressSpec ingress = 2;
+  project.planton.shared.kubernetes.IngressSpec ingress = 2;
 }
 
 // neo4j-kubernetes kubernetes neo4j-container spec
 message Neo4jKubernetesContainer {
   //neo4j container cpu and memory resources.
   //recommended default "cpu-requests: 50m, memory-requests: 256Mi, cpu-limits: 1, memory-limits: 1Gi"
-  apis.project.planton.shared.kubernetes.ContainerResources resources = 1 [
+  project.planton.shared.kubernetes.ContainerResources resources = 1 [
     (buf.validate.field).required = true
   ];
 }

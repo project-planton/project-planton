@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package apis.project.planton.provider.kubernetes.helmrelease.v1;
+package project.planton.provider.kubernetes.helmrelease.v1;
 
 //helm-release status on kubernetes cluster.
 message HelmReleaseStackOutputs {

@@ -37,4 +37,4 @@ syntax = "proto3";
 //- **Enhanced Security Features**: Integration with AWS Secrets Manager and IAM roles for task execution.
 //- **Monitoring and Logging**: Improved support for logging, metrics, and tracing with AWS CloudWatch and X-Ray.
 //- **Comprehensive Documentation**: Expanded usage examples, best practices, and troubleshooting guides.
-package apis.project.planton.provider.aws.awsfargate.v1;
+package project.planton.provider.aws.awsfargate.v1;

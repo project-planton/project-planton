@@ -1,11 +1,11 @@
 syntax = "proto3";
 
-package apis.project.planton.shared.pulumi;
+package project.planton.shared.pulumi;
 
 import "buf/validate/validate.proto";
-import "apis/project/planton/credential/gitcredential/v1/spec.proto";
-import "apis/project/planton/credential/pulumibackendcredential/v1/spec.proto";
-import "apis/project/planton/shared/pulumi/enums.proto";
+import "project/planton/credential/gitcredential/v1/spec.proto";
+import "project/planton/credential/pulumibackendcredential/v1/spec.proto";
+import "project/planton/shared/pulumi/enums.proto";
 
 //pulumi stack info
 message PulumiStackInfo {
@@ -14,7 +14,7 @@ message PulumiStackInfo {
   //run preview of pulumi operation
   bool preview = 2;
   //pulumi backend
-  apis.project.planton.credential.pulumibackendcredential.v1.PulumiBackendCredentialSpec backend = 3;
+  project.planton.credential.pulumibackendcredential.v1.PulumiBackendCredentialSpec backend = 3;
   //pulumi project
   PulumiProject project = 4;
   //pulumi stack name
@@ -29,7 +29,7 @@ message PulumiProject {
   //name of the pulumi project to be used for setting name attribute in Pulumi.yaml
   string name = 1;
   //name of the pulumi project to be used for setting runtime attribute in Pulumi.yaml
-  apis.project.planton.shared.pulumi.PulumiProjectRuntime runtime = 2;
+  project.planton.shared.pulumi.PulumiProjectRuntime runtime = 2;
 }
 
 //pulumi module git-repo
@@ -43,7 +43,7 @@ message PulumiGitRepo {
   //path of the directory containing the main entry point for the pulumi module inside the git repo
   string project_dir = 4;
   //git-auth for pulumi-module private git-repositories
-  apis.project.planton.credential.gitcredential.v1.GitCredentialSpec auth = 5;
+  project.planton.credential.gitcredential.v1.GitCredentialSpec auth = 5;
 }
 
 //stack-job-settings for api-resource
