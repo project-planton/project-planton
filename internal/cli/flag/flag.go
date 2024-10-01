@@ -9,7 +9,7 @@ type Flag string
 const (
 	KubernetesCluster Flag = "kubernetes-cluster"
 	Stack             Flag = "stack"
-	Target            Flag = "input"
+	Target            Flag = "target"
 )
 
 func HandleFlagErrAndValue(err error, flag Flag, flagVal string) {
