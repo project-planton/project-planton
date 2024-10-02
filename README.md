@@ -1,1 +1,2 @@
-# Unified APIs for Multi-Cloud Infrastructure
+# Multi-Cloud Unified Resource Model (MURM)
+
