@@ -138,6 +138,17 @@ Pulumi modules and a simple CLI tool. Here's an overview of how the system opera
 6. **Status Reporting**: After deployment, the `status` field in the manifest can be updated to reflect the current
    state of the resources, providing feedback to the user.
 
+```mermaid
+flowchart TD
+    A[User Defines YAML Manifest] --> B[Project Planton CLI]
+    B --> C{Identify Deployment Components}
+    C --> D[Fetch Corresponding Pulumi Modules]
+    D --> E[Execute Pulumi Modules]
+    E --> F[Provision Resources on Cloud Providers]
+    F --> G[Infrastructure & Applications Deployed]
+    G --> H[Update Status in Manifest]
+```
+
 ### Advantages of This Approach
 
 - **Consistency Across Clouds**: By abstracting cloud-specific details, developers can deploy resources to any supported
