@@ -28,6 +28,7 @@ build-cli: ${build_dir}/${name}
 build: build-apis build-cli
 
 ${build_dir}/${name}: deps vet
+	GOOS=darwin GOARCH=amd64 ${build_cmd} -o ${build_dir}/${name}-darwin-amd64 .
 	GOOS=darwin GOARCH=arm64 ${build_cmd} -o ${build_dir}/${name}-darwin-arm64 .
 	GOOS=linux GOARCH=amd64 ${build_cmd} -o ${build_dir}/${name}-linux .
 	openssl dgst -sha256 ${build_dir}/${name}-darwin-arm64
