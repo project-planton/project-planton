@@ -2,11 +2,13 @@ package credentials
 
 import (
 	"github.com/pkg/errors"
+	"github.com/plantoncloud/project-planton/internal/fileutil"
 	"os"
 )
 
 const (
-	snowflakeCredentialKey = "snowflakeCredential"
+	snowflakeCredentialKey  = "snowflakeCredential"
+	snowflakeCredentialYaml = "snowflake_credential.yaml"
 )
 
 func AddSnowflakeCredential(stackInputContentMap map[string]string, stackInputOptions StackInputCredentialOptions) (map[string]string, error) {
@@ -18,4 +20,16 @@ func AddSnowflakeCredential(stackInputContentMap map[string]string, stackInputOp
 		stackInputContentMap[snowflakeCredentialKey] = string(credentialContent)
 	}
 	return stackInputContentMap, nil
+}
+
+func LoadSnowflakeCredential(dir string) (string, error) {
+	path := dir + "/" + snowflakeCredentialYaml
+	isExists, err := fileutil.IsExists(path)
+	if err != nil {
+		return "", errors.Wrapf(err, "failed to check file: %s", path)
+	}
+	if !isExists {
+		return "", nil
+	}
+	return path, nil
 }

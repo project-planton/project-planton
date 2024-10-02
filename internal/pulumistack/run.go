@@ -2,6 +2,7 @@ package pulumistack
 
 import (
 	"buf.build/gen/go/plantoncloud/project-planton/protocolbuffers/go/project/planton/shared/pulumi"
+	"fmt"
 	"github.com/pkg/errors"
 	"github.com/plantoncloud/project-planton/internal/pulumimodule"
 	"github.com/plantoncloud/project-planton/internal/stackinput"
@@ -53,6 +54,8 @@ func Run(moduleDir, stackFqdn, targetManifestPath string, pulumiOperation pulumi
 	pulumiCmd.Stdin = os.Stdin
 	pulumiCmd.Stdout = os.Stdout
 	pulumiCmd.Stderr = os.Stderr
+
+	fmt.Printf("\npulumi module directory: %s \n", pulumiModuleRepoPath)
 
 	if err := pulumiCmd.Run(); err != nil {
 		return errors.Wrapf(err, "failed to execute pulumi command %s", op)

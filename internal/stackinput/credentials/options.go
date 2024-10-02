@@ -67,7 +67,7 @@ func WithSnowflakeCredential(snowflakeCredential string) StackInputCredentialOpt
 	}
 }
 
-func BuildOptions(commandFlagSet *pflag.FlagSet) ([]StackInputCredentialOption, error) {
+func BuildWithFlags(commandFlagSet *pflag.FlagSet) ([]StackInputCredentialOption, error) {
 	resp := make([]StackInputCredentialOption, 0)
 
 	awsCredential, err := commandFlagSet.GetString(string(flag.AwsCredential))
@@ -129,6 +129,75 @@ func BuildOptions(commandFlagSet *pflag.FlagSet) ([]StackInputCredentialOption, 
 	snowflakeCredential, err := commandFlagSet.GetString(string(flag.SnowflakeCredential))
 	if err != nil {
 		return nil, errors.Wrapf(err, "failed to read %s flag", flag.SnowflakeCredential)
+	}
+	if snowflakeCredential != "" {
+		resp = append(resp, WithSnowflakeCredential(snowflakeCredential))
+	}
+	return resp, nil
+}
+
+func BuildWithInputDir(inputDir string) ([]StackInputCredentialOption, error) {
+	resp := make([]StackInputCredentialOption, 0)
+
+	awsCredential, err := LoadAwsCredential(inputDir)
+	if err != nil {
+		return nil, errors.Wrapf(err, "failed to look up aws-credential in %s", inputDir)
+	}
+	if awsCredential != "" {
+		resp = append(resp, WithAwsCredential(awsCredential))
+	}
+
+	azureCredential, err := LoadAzureCredential(inputDir)
+	if err != nil {
+		return nil, errors.Wrapf(err, "failed to look up azure-credential in %s", inputDir)
+	}
+	if azureCredential != "" {
+		resp = append(resp, WithAzureCredential(azureCredential))
+	}
+
+	confluentCredential, err := LoadConfluentCredential(inputDir)
+	if err != nil {
+		return nil, errors.Wrapf(err, "failed to look up confluent-credential in %s", inputDir)
+	}
+	if confluentCredential != "" {
+		resp = append(resp, WithConfluentCredential(confluentCredential))
+	}
+
+	dockerCredential, err := LoadDockerCredential(inputDir)
+	if err != nil {
+		return nil, errors.Wrapf(err, "failed to look up docker-credential in %s", inputDir)
+	}
+	if dockerCredential != "" {
+		resp = append(resp, WithDockerCredential(dockerCredential))
+	}
+
+	gcpCredential, err := LoadGcpCredential(inputDir)
+	if err != nil {
+		return nil, errors.Wrapf(err, "failed to look up gcp-credential in %s", inputDir)
+	}
+	if gcpCredential != "" {
+		resp = append(resp, WithGcpCredential(gcpCredential))
+	}
+
+	kubernetesCluster, err := LoadKubernetesCluster(inputDir)
+	if err != nil {
+		return nil, errors.Wrapf(err, "failed to look up kubernetes-cluster credential in %s", inputDir)
+	}
+	if kubernetesCluster != "" {
+		resp = append(resp, WithKubernetesCluster(kubernetesCluster))
+	}
+
+	mongodbAtlasCredential, err := LoadMongodbAtlasCredential(inputDir)
+	if err != nil {
+		return nil, errors.Wrapf(err, "failed to look up mongodb-atlas-credential in %s", inputDir)
+	}
+	if mongodbAtlasCredential != "" {
+		resp = append(resp, WithMongodbAtlasCredential(mongodbAtlasCredential))
+	}
+
+	snowflakeCredential, err := LoadSnowflakeCredential(inputDir)
+	if err != nil {
+		return nil, errors.Wrapf(err, "failed to look up snowflake-credential in %s", inputDir)
 	}
 	if snowflakeCredential != "" {
 		resp = append(resp, WithSnowflakeCredential(snowflakeCredential))

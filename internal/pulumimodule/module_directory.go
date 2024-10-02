@@ -2,6 +2,7 @@ package pulumimodule
 
 import (
 	"github.com/pkg/errors"
+	"github.com/plantoncloud/project-planton/internal/fileutil"
 	"github.com/plantoncloud/project-planton/internal/stackinput"
 	"github.com/plantoncloud/project-planton/internal/workspace"
 	"os"
@@ -55,12 +56,9 @@ func GetPath(moduleDir string, stackFqdn, targetManifestPath string) (string, er
 // It returns true if the file exists, false otherwise. If an error occurs during the check, it returns an error.
 func IsPulumiModuleDirectory(moduleDir string) (bool, error) {
 	pulumiYamlPath := moduleDir + "/Pulumi.yaml"
-	_, err := os.Stat(pulumiYamlPath)
-	if err != nil && os.IsNotExist(err) {
-		return false, nil
-	}
+	isExists, err := fileutil.IsExists(pulumiYamlPath)
 	if err != nil {
-		return false, errors.Wrapf(err, "failed to lookup Pulumi.yaml file")
+		return false, errors.Wrapf(err, "failed to check if %s exists", pulumiYamlPath)
 	}
-	return true, nil
+	return isExists, nil
 }

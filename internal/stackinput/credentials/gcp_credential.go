@@ -2,11 +2,13 @@ package credentials
 
 import (
 	"github.com/pkg/errors"
+	"github.com/plantoncloud/project-planton/internal/fileutil"
 	"os"
 )
 
 const (
-	gcpCredentialKey = "gcpCredential"
+	gcpCredentialKey  = "gcpCredential"
+	gcpCredentialYaml = "gcp-credential.yaml"
 )
 
 func AddGcpCredential(stackInputContentMap map[string]string, stackInputOptions StackInputCredentialOptions) (map[string]string, error) {
@@ -18,4 +20,16 @@ func AddGcpCredential(stackInputContentMap map[string]string, stackInputOptions 
 		stackInputContentMap[gcpCredentialKey] = string(credentialContent)
 	}
 	return stackInputContentMap, nil
+}
+
+func LoadGcpCredential(dir string) (string, error) {
+	path := dir + "/" + gcpCredentialYaml
+	isExists, err := fileutil.IsExists(path)
+	if err != nil {
+		return "", errors.Wrapf(err, "failed to check file: %s", path)
+	}
+	if !isExists {
+		return "", nil
+	}
+	return path, nil
 }

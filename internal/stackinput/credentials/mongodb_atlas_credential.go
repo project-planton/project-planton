@@ -2,11 +2,13 @@ package credentials
 
 import (
 	"github.com/pkg/errors"
+	"github.com/plantoncloud/project-planton/internal/fileutil"
 	"os"
 )
 
 const (
-	mongodbAtlasCredentialKey = "mongodbAtlasCredential"
+	mongodbAtlasCredentialKey  = "mongodbAtlasCredential"
+	mongodbAtlasCredentialYaml = "mongodb-atlas-credential.yaml"
 )
 
 func AddAtlasCredential(stackInputContentMap map[string]string, stackInputOptions StackInputCredentialOptions) (map[string]string, error) {
@@ -18,4 +20,16 @@ func AddAtlasCredential(stackInputContentMap map[string]string, stackInputOption
 		stackInputContentMap[mongodbAtlasCredentialKey] = string(credentialContent)
 	}
 	return stackInputContentMap, nil
+}
+
+func LoadMongodbAtlasCredential(dir string) (string, error) {
+	path := dir + "/" + mongodbAtlasCredentialYaml
+	isExists, err := fileutil.IsExists(path)
+	if err != nil {
+		return "", errors.Wrapf(err, "failed to check file: %s", path)
+	}
+	if !isExists {
+		return "", nil
+	}
+	return path, nil
 }
