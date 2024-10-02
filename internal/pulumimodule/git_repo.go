@@ -1,4 +1,4 @@
-package pulumistack
+package pulumimodule
 
 import (
 	"github.com/pkg/errors"

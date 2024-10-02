@@ -16,6 +16,9 @@ var Preview = &cobra.Command{
 }
 
 func previewHandler(cmd *cobra.Command, args []string) {
+	moduleDir, err := cmd.Flags().GetString(string(flag.ModuleDir))
+	flag.HandleFlagErrAndValue(err, flag.ModuleDir, moduleDir)
+
 	stackFqdn, err := cmd.Flags().GetString(string(flag.Stack))
 	flag.HandleFlagErrAndValue(err, flag.Stack, stackFqdn)
 
@@ -27,7 +30,7 @@ func previewHandler(cmd *cobra.Command, args []string) {
 		log.Fatalf("failed to build credentiaal options: %v", err)
 	}
 
-	err = pulumistack.Run(stackFqdn, targetManifestPath,
+	err = pulumistack.Run(moduleDir, stackFqdn, targetManifestPath,
 		pulumi.PulumiOperationType_update, true, credentialOptions...)
 	if err != nil {
 		log.Fatalf("failed to run pulumi: %v", err)

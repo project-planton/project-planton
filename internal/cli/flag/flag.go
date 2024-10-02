@@ -14,6 +14,7 @@ const (
 	GcpCredential          Flag = "gcp-credential"
 	GitCredential          Flag = "git-credential"
 	KubernetesCluster      Flag = "kubernetes-cluster"
+	ModuleDir              Flag = "module-dir"
 	MongodbAtlasCredential Flag = "mongodb-atlas-credential"
 	SnowflakeCredential    Flag = "snowflake-credential"
 	Stack                  Flag = "stack"
