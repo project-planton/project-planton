@@ -4,6 +4,7 @@ import (
 	"buf.build/gen/go/plantoncloud/project-planton/protocolbuffers/go/project/planton/shared/pulumi"
 	"github.com/plantoncloud/project-planton/internal/cli/flag"
 	"github.com/plantoncloud/project-planton/internal/pulumistack"
+	"github.com/plantoncloud/project-planton/internal/stackinput/credentials"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
@@ -21,11 +22,13 @@ func previewHandler(cmd *cobra.Command, args []string) {
 	targetManifestPath, err := cmd.Flags().GetString(string(flag.Target))
 	flag.HandleFlagErrAndValue(err, flag.Target, targetManifestPath)
 
-	kubernetesCluster, err := cmd.Flags().GetString(string(flag.KubernetesCluster))
-	flag.HandleFlagErrAndValue(err, flag.KubernetesCluster, kubernetesCluster)
+	credentialOptions, err := credentials.BuildOptions(cmd.Flags())
+	if err != nil {
+		log.Fatalf("failed to build credentiaal options: %v", err)
+	}
 
-	err = pulumistack.Run(stackFqdn, targetManifestPath, kubernetesCluster,
-		pulumi.PulumiOperationType_update, true)
+	err = pulumistack.Run(stackFqdn, targetManifestPath,
+		pulumi.PulumiOperationType_update, true, credentialOptions...)
 	if err != nil {
 		log.Fatalf("failed to run pulumi: %v", err)
 	}

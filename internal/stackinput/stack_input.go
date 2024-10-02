@@ -3,30 +3,29 @@ package stackinput
 import (
 	"fmt"
 	"github.com/pkg/errors"
+	"github.com/plantoncloud/project-planton/internal/stackinput/credentials"
 	"gopkg.in/yaml.v3"
 	"os"
 )
 
 // BuildStackInputYaml reads two YAML files, combines their contents,
-// and returns a new YAML string with "target" and "kubernetesCluster" keys.
-// todo: this will soon be converted into options to accommodate different credentials as input
-func BuildStackInputYaml(targetManifestPath, kubernetesCluster string) (string, error) {
+// and returns a new YAML string with "target" and all the credential keys.
+func BuildStackInputYaml(targetManifestPath string, stackInputOptions credentials.StackInputCredentialOptions) (string, error) {
 	targetContent, err := os.ReadFile(targetManifestPath)
 	if err != nil {
 		return "", fmt.Errorf("failed to read target manifest file: %w", err)
 	}
 
-	kubernetesClusterContent, err := os.ReadFile(kubernetesCluster)
+	stackInputContentMap := map[string]string{
+		"target": string(targetContent),
+	}
+
+	stackInputContentMap, err = addCredentials(stackInputContentMap, stackInputOptions)
 	if err != nil {
-		return "", fmt.Errorf("failed to read Kubernetes cluster file: %w", err)
+		return "", errors.Wrapf(err, "failed to add credentials to stack-input yaml")
 	}
 
-	finalMap := map[string]interface{}{
-		"target":            string(targetContent),
-		"kubernetesCluster": string(kubernetesClusterContent),
-	}
-
-	finalStackInputYaml, err := yaml.Marshal(finalMap)
+	finalStackInputYaml, err := yaml.Marshal(stackInputContentMap)
 	if err != nil {
 		return "", errors.Wrap(err, "failed to marshal final stack-input yaml")
 	}

@@ -7,9 +7,17 @@ import (
 type Flag string
 
 const (
-	KubernetesCluster Flag = "kubernetes-cluster"
-	Stack             Flag = "stack"
-	Target            Flag = "target"
+	AwsCredential          Flag = "aws-credential"
+	AzureCredential        Flag = "azure-credential"
+	ConfluentCredential    Flag = "confluent-credential"
+	DockerCredential       Flag = "docker-credential"
+	GcpCredential          Flag = "gcp-credential"
+	GitCredential          Flag = "git-credential"
+	KubernetesCluster      Flag = "kubernetes-cluster"
+	MongodbAtlasCredential Flag = "mongodb-atlas-credential"
+	SnowflakeCredential    Flag = "snowflake-credential"
+	Stack                  Flag = "stack"
+	Target                 Flag = "target"
 )
 
 func HandleFlagErrAndValue(err error, flag Flag, flagVal string) {
