@@ -19,6 +19,26 @@ developer can focus on writing the application and its configuration once, and d
 supported cloud environment without dealing with cloud-specific nuances. This accelerates development, reduces the
 learning curve for multi-cloud deployment, and ensures that infrastructure remains consistent and manageable.
 
+## Configuration as Data
+
+**Kelsey Hightower**, champions the concept
+of [Configuration as Data](https://cloud.google.com/blog/products/containers-kubernetes/understanding-configuration-as-data-in-kubernetes).
+This approach treats configuration files as declarative data—specifying **what** you want rather than **how** to achieve
+it.
+
+In **Project Planton**, we embrace this philosophy by allowing you to define your multi-cloud infrastructure and
+applications using simple YAML manifests that resemble Kubernetes resources. This means:
+
+- **Simplicity**: You focus on declaring the desired state, and the system handles the rest.
+- **Consistency**: Use the same configurations across different cloud providers without worrying about underlying
+  complexities.
+- **Automation**: The Pulumi modules interpret your configurations and automate the provisioning process.
+
+![Configuration as Data](docs/config-as-data.png)
+
+By following Kelsey Hightower's insights on Configuration as Data, Project Planton simplifies multi-cloud deployments,
+making them more manageable and efficient.
+
 ## Key Features
 
 - **Declarative Multi-Cloud Deployments**: Define your infrastructure and application configurations using
