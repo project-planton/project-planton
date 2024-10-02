@@ -1,5 +1,6 @@
 version?=v0.0.1
 name=project-planton
+gcs_bucket=project-planton-downloads
 name_local=project-planton
 pkg=github.com/plantoncloud/project-planton
 build_dir=build
@@ -75,9 +76,9 @@ show-todo:
 
 .PHONY: upload-binaries
 upload-binaries:
-	gsutil -h "Cache-Control:no-cache" cp build/${name}-linux gs://${name}/cli/${version}/${name}-${version}-linux
-	gsutil -h "Cache-Control:no-cache" cp build/${name}-darwin-amd64 gs://${name}/cli/${version}/${name}-${version}-amd64
-	gsutil -h "Cache-Control:no-cache" cp build/${name}-darwin-arm64 gs://${name}/cli/${version}/${name}-${version}-arm64
+	gsutil -h "Cache-Control:no-cache" cp build/${name}-linux gs://${gcs_bucket}/cli/${version}/${name}-${version}-linux
+	gsutil -h "Cache-Control:no-cache" cp build/${name}-darwin-amd64 gs://${gcs_bucket}/cli/${version}/${name}-${version}-amd64
+	gsutil -h "Cache-Control:no-cache" cp build/${name}-darwin-arm64 gs://${gcs_bucket}/cli/${version}/${name}-${version}-arm64
 
 .PHONY: release-buf
 release-buf:
