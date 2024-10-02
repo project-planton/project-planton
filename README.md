@@ -506,6 +506,6 @@ We would like to thank:
 - **Brian Grant** and **Kelsey Hightower** for their foundational work on the Kubernetes Resource Model and insights
   into declarative configuration.
 - The **Pulumi** team for providing a powerful infrastructure as code platform that enables multi-language support.
-- **Megan** for her insightful blog post on building developer platforms with KRM.
+- The **Buf Team** for their Protobuf tooling—including BSR Docs, BSR SDKs, and Protovalidate—which collectively made
+  this project possible and valuable.
 - All the contributors and community members who have helped shape and improve Project Planton.
-
