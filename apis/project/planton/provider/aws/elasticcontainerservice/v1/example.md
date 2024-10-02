@@ -11,7 +11,7 @@ planton apply -f <yaml-path>
 This basic example creates an AWS Elastic Container Service (ECS) resource with default settings.
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: aws.project.planton/v1
 kind: ElasticContainerService
 metadata:
   name: my-basic-ecs
@@ -24,7 +24,7 @@ spec:
 Even though the `spec` is currently empty, here's an example that includes an environment variable reference.
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: aws.project.planton/v1
 kind: ElasticContainerService
 metadata:
   name: my-env-ecs

@@ -13,7 +13,7 @@ planton apply -f <yaml-path>
 This example demonstrates a simple microservice configuration using a basic container running `nginx`.
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: gcp.project.planton/v1
 kind: MicroserviceKubernetes
 metadata:
   name: todo-list-api
@@ -45,7 +45,7 @@ spec:
 This example includes environment variables passed to the container for configuring database information.
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: gcp.project.planton/v1
 kind: MicroserviceKubernetes
 metadata:
   name: todo-list-api
@@ -82,7 +82,7 @@ spec:
 This example shows how to use secrets managed by Planton Cloud's GCP Secrets Manager module to securely pass sensitive data to the application.
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: gcp.project.planton/v1
 kind: MicroserviceKubernetes
 metadata:
   name: todo-list-api

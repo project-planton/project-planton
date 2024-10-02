@@ -9,7 +9,7 @@ planton apply -f <yaml-path>
 # Basic Example
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: aws.project.planton/v1
 kind: AwsRdsInstance
 metadata:
   name: my-rds-instance
@@ -34,7 +34,7 @@ spec:
 # Example with Multi-AZ and Backup Settings
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: aws.project.planton/v1
 kind: AwsRdsInstance
 metadata:
   name: my-rds-instance
@@ -64,7 +64,7 @@ spec:
 # Example with Replication
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: aws.project.planton/v1
 kind: AwsRdsInstance
 metadata:
   name: replica-rds-instance
@@ -85,7 +85,7 @@ spec:
 # Example with Performance Insights and Monitoring
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: aws.project.planton/v1
 kind: AwsRdsInstance
 metadata:
   name: monitored-rds-instance

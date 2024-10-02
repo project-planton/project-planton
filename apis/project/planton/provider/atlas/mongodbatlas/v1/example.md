@@ -3,7 +3,7 @@
 This example demonstrates a basic setup of a Snowflake database with minimal configuration.
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: atlas.project.planton/v1
 kind: MongodbAtlas
 metadata:
   name: analytics-db
@@ -33,7 +33,7 @@ spec:
 This example includes advanced configurations such as environment isolation and detailed security settings.
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: atlas.project.planton/v1
 kind: MongodbAtlas
 metadata:
   name: finance-db

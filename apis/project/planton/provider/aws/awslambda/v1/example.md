@@ -11,7 +11,7 @@ planton apply -f <yaml-path>
 This basic example creates an AWS Lambda function with minimal configuration.
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: aws.project.planton/v1
 kind: AwsLambda
 metadata:
   name: my-basic-lambda
@@ -29,7 +29,7 @@ spec:
 This example creates an AWS Lambda function and sets environment variables that can be accessed within the function code.
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: aws.project.planton/v1
 kind: AwsLambda
 metadata:
   name: my-env-lambda
@@ -50,7 +50,7 @@ spec:
 The below example assumes that the secrets are managed by Planton Cloud's [GCP Secrets Manager](https://buf.build/plantoncloud/planton-cloud-apis/docs/main:cloud.planton.apis.code2cloud.v1.gcp.gcpsecretsmanager) deployment module.
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: aws.project.planton/v1
 kind: AwsLambda
 metadata:
   name: my-secret-lambda
@@ -75,7 +75,7 @@ In this example:
 This example deploys a Lambda function within a VPC, specifying subnet IDs and security group IDs.
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: aws.project.planton/v1
 kind: AwsLambda
 metadata:
   name: my-vpc-lambda
@@ -99,7 +99,7 @@ spec:
 This example specifies an IAM role with custom policies for the Lambda function.
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: aws.project.planton/v1
 kind: AwsLambda
 metadata:
   name: my-custom-iam-lambda
@@ -134,7 +134,7 @@ spec:
 This comprehensive example includes multiple configurations to demonstrate the full capabilities of the `AwsLambda` resource.
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: aws.project.planton/v1
 kind: AwsLambda
 metadata:
   name: my-full-config-lambda

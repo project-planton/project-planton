@@ -22,7 +22,7 @@ This example demonstrates a basic deployment of Redis within a Kubernetes cluste
 ### YAML Configuration
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: kubernetes.project.planton/v1
 kind: RedisKubernetes
 metadata:
   name: basic-redis
@@ -70,7 +70,7 @@ This example illustrates how to deploy Redis with data persistence enabled. It c
 ### YAML Configuration
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: kubernetes.project.planton/v1
 kind: RedisKubernetes
 metadata:
   name: persistent-redis

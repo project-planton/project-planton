@@ -220,7 +220,7 @@ performance considerations.
 Here's an example of a manifest that deploys a backend api application and its required database:
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: kubernetes.project.planton/v1
 kind: MicroserviceKubernetes
 metadata:
   name: todo-list-api

@@ -15,7 +15,7 @@ planton apply -f <yaml-path>
 This basic example demonstrates a minimal configuration for deploying a MongoDB Kubernetes instance using the default settings, including 1 replica and no persistence.
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: kubernetes.project.planton/v1
 kind: MongodbKubernetes
 metadata:
   name: basic-mongodb
@@ -39,7 +39,7 @@ spec:
 In this example, MongoDB persistence is enabled, and a persistent volume is created for each MongoDB pod to ensure data durability. The `disk_size` field defines the storage size allocated to the MongoDB pods.
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: kubernetes.project.planton/v1
 kind: MongodbKubernetes
 metadata:
   name: persistent-mongodb
@@ -65,7 +65,7 @@ spec:
 This example demonstrates how to customize the MongoDB deployment using Helm chart values. In this case, we use `helm_values` to set specific resource limits and other options available in the Helm chart for MongoDB.
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: kubernetes.project.planton/v1
 kind: MongodbKubernetes
 metadata:
   name: custom-mongodb
@@ -95,7 +95,7 @@ spec:
 In this example, ingress is enabled to allow external access to the MongoDB service. This is particularly useful when MongoDB needs to be accessed by clients outside the Kubernetes cluster.
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: kubernetes.project.planton/v1
 kind: MongodbKubernetes
 metadata:
   name: ingress-mongodb
@@ -123,7 +123,7 @@ spec:
 This example demonstrates how to automatically generate a random password for MongoDB using Kubernetes secrets. The password is securely stored in the Kubernetes secret and used for MongoDB authentication.
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: kubernetes.project.planton/v1
 kind: MongodbKubernetes
 metadata:
   name: secret-mongodb

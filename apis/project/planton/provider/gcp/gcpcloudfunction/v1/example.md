@@ -15,7 +15,7 @@ planton apply -f <yaml-path>
 This basic example demonstrates how to create a simple **MicroserviceKubernetes** resource for deploying an application using the `nginx` container image. The container listens on port 8080, with a service exposing it on port 80.
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: gcp.project.planton/v1
 kind: MicroserviceKubernetes
 metadata:
   name: todo-list-api
@@ -47,7 +47,7 @@ spec:
 In this example, an environment variable `DATABASE_NAME` is added to the container configuration. The container is still based on `nginx`, and it listens on port 8080 with the service on port 80.
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: gcp.project.planton/v1
 kind: MicroserviceKubernetes
 metadata:
   name: todo-list-api
@@ -84,7 +84,7 @@ spec:
 In this example, secrets are injected into the container using GCP Secrets Manager. The `DATABASE_PASSWORD` is pulled from the GCP Secrets Manager using the secret `gcpsm-my-org-prod-gcp-secrets.database-password`.
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: gcp.project.planton/v1
 kind: MicroserviceKubernetes
 metadata:
   name: todo-list-api

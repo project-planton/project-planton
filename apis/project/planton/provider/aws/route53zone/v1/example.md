@@ -9,7 +9,7 @@ planton apply -f <yaml-path>
 # Basic Example
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: aws.project.planton/v1
 kind: MicroserviceKubernetes
 metadata:
   name: todo-list-api
@@ -39,7 +39,7 @@ spec:
 # Example with Environment Variables
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: aws.project.planton/v1
 kind: MicroserviceKubernetes
 metadata:
   name: todo-list-api
@@ -76,7 +76,7 @@ spec:
 The following example assumes that the secrets are managed by Planton Cloud's [GCP Secrets Manager](https://buf.build/plantoncloud/planton-cloud-apis/docs/main:cloud.planton.apis.code2cloud.v1.gcp.gcpsecretsmanager) deployment module:
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: aws.project.planton/v1
 kind: MicroserviceKubernetes
 metadata:
   name: todo-list-api

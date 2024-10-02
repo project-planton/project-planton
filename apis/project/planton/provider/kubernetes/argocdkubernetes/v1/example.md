@@ -5,7 +5,7 @@ Here are a few examples for the `ArgocdKubernetes` API resource, modeled in a si
 # Example 1: Basic ArgoCD Deployment
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: kubernetes.project.planton/v1
 kind: ArgocdKubernetes
 metadata:
   name: argocd-instance
@@ -26,7 +26,7 @@ spec:
 # Example 2: ArgoCD with Ingress Enabled
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: kubernetes.project.planton/v1
 kind: ArgocdKubernetes
 metadata:
   name: argocd-prod
@@ -50,7 +50,7 @@ spec:
 # Example 3: ArgoCD Deployment with Custom Resources
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: kubernetes.project.planton/v1
 kind: ArgocdKubernetes
 metadata:
   name: argocd-custom
@@ -71,7 +71,7 @@ spec:
 # Example 4: Minimal ArgoCD Deployment (Empty Spec)
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: kubernetes.project.planton/v1
 kind: ArgocdKubernetes
 metadata:
   name: minimal-argocd

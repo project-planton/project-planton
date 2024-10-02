@@ -9,7 +9,7 @@ planton apply -f <yaml-path>
 # Basic Example
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: aws.project.planton/v1
 kind: AwsCloudFront
 metadata:
   name: my-cloudfront-distribution
@@ -20,7 +20,7 @@ spec:
 # Example with Environment Information
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: aws.project.planton/v1
 kind: AwsCloudFront
 metadata:
   name: my-env-cloudfront-distribution
@@ -33,7 +33,7 @@ spec:
 # Example with Stack Job Settings
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: aws.project.planton/v1
 kind: AwsCloudFront
 metadata:
   name: advanced-cloudfront-distribution
@@ -47,7 +47,7 @@ spec:
 # Example with All Available Fields
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: aws.project.planton/v1
 kind: AwsCloudFront
 metadata:
   name: full-config-cloudfront-distribution

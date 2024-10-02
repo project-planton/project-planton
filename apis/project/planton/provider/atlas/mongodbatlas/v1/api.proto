@@ -11,7 +11,7 @@ import "project/planton/shared/shared.proto";
 message MongodbAtlas {
   //api-version
   string api_version = 1[
-    (buf.validate.field).string.const = 'code2cloud.planton.cloud/v1'
+    (buf.validate.field).string.const = 'atlas.project.planton/v1'
   ];
 
   //resource-kind

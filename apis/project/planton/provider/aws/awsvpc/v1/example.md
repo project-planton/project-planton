@@ -11,7 +11,7 @@ planton apply -f <yaml-path>
 This basic example creates an AWS VPC with default settings.
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: aws.project.planton/v1
 kind: AwsVpc
 metadata:
   name: my-basic-vpc
@@ -33,7 +33,7 @@ spec:
 This example uses environment variables to parameterize the VPC configuration.
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: aws.project.planton/v1
 kind: AwsVpc
 metadata:
   name: my-env-vpc
@@ -57,7 +57,7 @@ In this example, replace the placeholders like `${AWS_CREDENTIAL_ID}` with your 
 The below example assumes that the secrets are managed by Planton Cloud's [AWS Secrets Manager](https://buf.build/plantoncloud/planton-cloud-apis/docs/main:cloud.planton.apis.code2cloud.v1.aws.awssecretsmanager) deployment module.
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: aws.project.planton/v1
 kind: AwsVpc
 metadata:
   name: my-secret-vpc
@@ -86,7 +86,7 @@ In this example:
 This comprehensive example demonstrates the full capabilities of the `AwsVpc` resource.
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: aws.project.planton/v1
 kind: AwsVpc
 metadata:
   name: my-full-config-vpc

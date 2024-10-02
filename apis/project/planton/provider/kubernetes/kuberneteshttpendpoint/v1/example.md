@@ -1,7 +1,7 @@
 # Example 1: Basic Kubernetes HTTP Endpoint
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: kubernetes.project.planton/v1
 kind: KubernetesHttpEndpoint
 metadata:
   name: basic-http-endpoint
@@ -19,7 +19,7 @@ spec:
 # Example 2: HTTPS-Enabled Kubernetes HTTP Endpoint with TLS
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: kubernetes.project.planton/v1
 kind: KubernetesHttpEndpoint
 metadata:
   name: secure-http-endpoint
@@ -38,7 +38,7 @@ spec:
 # Example 3: Kubernetes HTTP Endpoint with Multiple Routes
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: kubernetes.project.planton/v1
 kind: KubernetesHttpEndpoint
 metadata:
   name: multi-route-http-endpoint
@@ -61,7 +61,7 @@ spec:
 # Example 4: gRPC-Web Compatible Kubernetes HTTP Endpoint
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: kubernetes.project.planton/v1
 kind: KubernetesHttpEndpoint
 metadata:
   name: grpc-web-endpoint
@@ -81,7 +81,7 @@ spec:
 # Example 5: Minimal Kubernetes HTTP Endpoint Configuration
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: kubernetes.project.planton/v1
 kind: KubernetesHttpEndpoint
 metadata:
   name: minimal-http-endpoint
