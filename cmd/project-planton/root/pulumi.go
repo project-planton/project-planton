@@ -19,6 +19,7 @@ func init() {
 		log.Fatal("failed to get current working directory")
 	}
 
+	Pulumi.PersistentFlags().String(string(flag.InputDir), pwd, "directory containing target.yaml and credential yaml files")
 	Pulumi.PersistentFlags().String(string(flag.ModuleDir), pwd, "directory containing the pulumi module")
 	Pulumi.PersistentFlags().String(string(flag.Stack), "", "pulumi stack fqdn in the format of <org>/<project>/<stack>")
 	Pulumi.PersistentFlags().String(string(flag.Target), "", "path of the deployment-component manifest file")

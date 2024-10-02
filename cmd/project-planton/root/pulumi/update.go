@@ -16,19 +16,33 @@ var Update = &cobra.Command{
 }
 
 func updateHandler(cmd *cobra.Command, args []string) {
+	inputDir, err := cmd.Flags().GetString(string(flag.InputDir))
+	flag.HandleFlagErr(err, flag.InputDir)
+
 	moduleDir, err := cmd.Flags().GetString(string(flag.ModuleDir))
 	flag.HandleFlagErrAndValue(err, flag.ModuleDir, moduleDir)
 
 	stackFqdn, err := cmd.Flags().GetString(string(flag.Stack))
 	flag.HandleFlagErrAndValue(err, flag.Stack, stackFqdn)
 
-	targetManifestPath, err := cmd.Flags().GetString(string(flag.Target))
-	flag.HandleFlagErrAndValue(err, flag.Target, targetManifestPath)
+	credentialOptions := make([]credentials.StackInputCredentialOption, 0)
+	targetManifestPath := inputDir + "/target.yaml"
 
-	credentialOptions, err := credentials.BuildOptions(cmd.Flags())
-	if err != nil {
-		log.Fatalf("failed to build credentiaal options: %v", err)
+	if inputDir == "" {
+		targetManifestPath, err = cmd.Flags().GetString(string(flag.Target))
+		flag.HandleFlagErrAndValue(err, flag.Target, targetManifestPath)
+
+		credentialOptions, err = credentials.BuildWithFlags(cmd.Flags())
+		if err != nil {
+			log.Fatalf("failed to build credentiaal options: %v", err)
+		}
+	} else {
+		credentialOptions, err = credentials.BuildWithFlags(cmd.Flags())
+		if err != nil {
+			log.Fatalf("failed to build credentiaal options: %v", err)
+		}
 	}
+
 	err = pulumistack.Run(moduleDir, stackFqdn, targetManifestPath,
 		pulumi.PulumiOperationType_update, false, credentialOptions...)
 	if err != nil {
