@@ -1,7 +1,10 @@
 # Multi-Cloud Unified Resource Model (MURM)
 
-Project Planton is an open-source framework that brings the declarative design principles of the Kubernetes Resource
-Model (KRM) to multi-cloud environments. By leveraging Pulumi modules and a straightforward CLI tool, Project Planton
+Project Planton is an open-source framework that brings the declarative design principles of the [Kubernetes Resource
+Model (KRM)](https://github.com/kubernetes/design-proposals-archive/blob/acc25e14ca83dfda4f66d8cb1f1b491f26e78ffe/architecture/resource-management.md)
+to multi-cloud environments. By leveraging
+well-written [Pulumi Modules](https://github.com/orgs/plantoncloud/repositories?q=pulumi-module) and a straightforward
+CLI tool, Project Planton
 enables developers to define and deploy infrastructure and applications across multiple cloud providers using
 declarative configurations.
 
@@ -49,14 +52,9 @@ To start using **Project Planton**, follow the steps below to set up your enviro
 
 - **Pulumi Installed**: Ensure you have [Pulumi](https://www.pulumi.com/docs/get-started/install/) installed on your
   machine.
-- **Project Planton CLI**: Install the Project Planton CLI using Homebrew:
-
-  ```bash
-  brew install plantoncloud/tap/project-planton
-  ```
-
 - **Cloud Provider Credentials**: Set up credentials for the cloud providers you plan to use (e.g., AWS, Azure, Google
-  Cloud). Refer to Pulumi's documentation on [cloud provider setup](https://www.pulumi.com/docs/intro/cloud-providers/)
+  Cloud, Kubernetes, Confluent Cloud etc). Refer to Pulumi's documentation
+  on [cloud provider setup](https://www.pulumi.com/docs/intro/cloud-providers/)
   for guidance.
 
 ### Installation
@@ -102,7 +100,7 @@ project-planton pulumi up --manifest manifest.yaml --gcp-credential gcp-credenti
 
 This command will:
 
-- Download the appropriate Pulumi module based on the `componentType` specified in your manifest.
+- Download the appropriate Pulumi module based on the `kind` specified in your manifest.
 - Pass the manifest and Kubernetes cluster information to the Pulumi module.
 - Execute the Pulumi stack to provision the resources as declared in your manifest.
 
@@ -141,12 +139,11 @@ Pulumi modules and a simple CLI tool. Here's an overview of how the system opera
 ```mermaid
 flowchart TD
     A[User Defines YAML Manifest] --> B[Project Planton CLI]
-    B --> C{Identify Deployment Components}
-    C --> D[Fetch Corresponding Pulumi Modules]
-    D --> E[Execute Pulumi Modules]
-    E --> F[Provision Resources on Cloud Providers]
+    B --> C{Identify Deployment Component}
+    C --> D[Fetch Corresponding Pulumi Module]
+    D --> E[Execute Pulumi Module]
+    E --> F[Provision Resources on Cloud Provider]
     F --> G[Infrastructure & Applications Deployed]
-    G --> H[Update Status in Manifest]
 ```
 
 ### Advantages of This Approach
