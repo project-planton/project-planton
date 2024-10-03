@@ -11,7 +11,8 @@ const (
 	confluentCredentialYaml = "confluent-credential.yaml"
 )
 
-func AddConfluentCredential(stackInputContentMap map[string]string, stackInputOptions StackInputCredentialOptions) (map[string]string, error) {
+func AddConfluentCredential(stackInputContentMap map[string]interface{},
+	stackInputOptions StackInputCredentialOptions) (map[string]interface{}, error) {
 	if stackInputOptions.ConfluentCredential != "" {
 		credentialContent, err := os.ReadFile(stackInputOptions.ConfluentCredential)
 		if err != nil {

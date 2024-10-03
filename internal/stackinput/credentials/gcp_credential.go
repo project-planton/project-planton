@@ -11,7 +11,8 @@ const (
 	gcpCredentialYaml = "gcp-credential.yaml"
 )
 
-func AddGcpCredential(stackInputContentMap map[string]string, stackInputOptions StackInputCredentialOptions) (map[string]string, error) {
+func AddGcpCredential(stackInputContentMap map[string]interface{},
+	stackInputOptions StackInputCredentialOptions) (map[string]interface{}, error) {
 	if stackInputOptions.GcpCredential != "" {
 		credentialContent, err := os.ReadFile(stackInputOptions.GcpCredential)
 		if err != nil {

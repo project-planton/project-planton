@@ -11,7 +11,8 @@ const (
 	dockerCredentialYaml = "docker-credential.yaml"
 )
 
-func AddDockerCredential(stackInputContentMap map[string]string, stackInputOptions StackInputCredentialOptions) (map[string]string, error) {
+func AddDockerCredential(stackInputContentMap map[string]interface{},
+	stackInputOptions StackInputCredentialOptions) (map[string]interface{}, error) {
 	if stackInputOptions.DockerCredential != "" {
 		credentialContent, err := os.ReadFile(stackInputOptions.DockerCredential)
 		if err != nil {

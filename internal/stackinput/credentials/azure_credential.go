@@ -11,7 +11,8 @@ const (
 	azureCredentialYaml = "azure-credential.yaml"
 )
 
-func AddAzureCredential(stackInputContentMap map[string]string, stackInputOptions StackInputCredentialOptions) (map[string]string, error) {
+func AddAzureCredential(stackInputContentMap map[string]interface{},
+	stackInputOptions StackInputCredentialOptions) (map[string]interface{}, error) {
 	if stackInputOptions.AzureCredential != "" {
 		credentialContent, err := os.ReadFile(stackInputOptions.AzureCredential)
 		if err != nil {

@@ -1,7 +1,6 @@
 package stackinput
 
 import (
-	"fmt"
 	"github.com/pkg/errors"
 	"github.com/plantoncloud/project-planton/internal/stackinput/credentials"
 	"gopkg.in/yaml.v3"
@@ -13,11 +12,17 @@ import (
 func BuildStackInputYaml(targetManifestPath string, stackInputOptions credentials.StackInputCredentialOptions) (string, error) {
 	targetContent, err := os.ReadFile(targetManifestPath)
 	if err != nil {
-		return "", fmt.Errorf("failed to read target manifest file: %w", err)
+		return "", errors.Wrapf(err, "failed to read target manifest file")
 	}
 
-	stackInputContentMap := map[string]string{
-		"target": string(targetContent),
+	var targetContentMap map[string]interface{}
+	err = yaml.Unmarshal(targetContent, &targetContentMap)
+	if err != nil {
+		return "", errors.Wrapf(err, "failed to unmarshal target manifest file")
+	}
+
+	stackInputContentMap := map[string]interface{}{
+		"target": targetContentMap,
 	}
 
 	stackInputContentMap, err = addCredentials(stackInputContentMap, stackInputOptions)
@@ -29,7 +34,6 @@ func BuildStackInputYaml(targetManifestPath string, stackInputOptions credential
 	if err != nil {
 		return "", errors.Wrap(err, "failed to marshal final stack-input yaml")
 	}
-
 	return string(finalStackInputYaml), nil
 }
 

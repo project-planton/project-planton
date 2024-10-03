@@ -11,7 +11,8 @@ const (
 	mongodbAtlasCredentialYaml = "mongodb-atlas-credential.yaml"
 )
 
-func AddAtlasCredential(stackInputContentMap map[string]string, stackInputOptions StackInputCredentialOptions) (map[string]string, error) {
+func AddAtlasCredential(stackInputContentMap map[string]interface{},
+	stackInputOptions StackInputCredentialOptions) (map[string]interface{}, error) {
 	if stackInputOptions.MongodbAtlasCredential != "" {
 		credentialContent, err := os.ReadFile(stackInputOptions.MongodbAtlasCredential)
 		if err != nil {

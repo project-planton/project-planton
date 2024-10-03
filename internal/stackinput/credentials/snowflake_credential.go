@@ -11,7 +11,7 @@ const (
 	snowflakeCredentialYaml = "snowflake_credential.yaml"
 )
 
-func AddSnowflakeCredential(stackInputContentMap map[string]string, stackInputOptions StackInputCredentialOptions) (map[string]string, error) {
+func AddSnowflakeCredential(stackInputContentMap map[string]interface{}, stackInputOptions StackInputCredentialOptions) (map[string]interface{}, error) {
 	if stackInputOptions.SnowflakeCredential != "" {
 		credentialContent, err := os.ReadFile(stackInputOptions.SnowflakeCredential)
 		if err != nil {

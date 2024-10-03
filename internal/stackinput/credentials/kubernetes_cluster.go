@@ -11,7 +11,8 @@ const (
 	kubernetesClusterYaml = "kubernetes-cluster.yaml"
 )
 
-func AddKubernetesCluster(stackInputContentMap map[string]string, stackInputOptions StackInputCredentialOptions) (map[string]string, error) {
+func AddKubernetesCluster(stackInputContentMap map[string]interface{},
+	stackInputOptions StackInputCredentialOptions) (map[string]interface{}, error) {
 	if stackInputOptions.KubernetesCluster != "" {
 		credentialContent, err := os.ReadFile(stackInputOptions.KubernetesCluster)
 		if err != nil {

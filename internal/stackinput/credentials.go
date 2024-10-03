@@ -5,8 +5,8 @@ import (
 	"github.com/plantoncloud/project-planton/internal/stackinput/credentials"
 )
 
-func addCredentials(stackInputContentMap map[string]string,
-	credentialOptions credentials.StackInputCredentialOptions) (updatedStackInputContentMap map[string]string, err error) {
+func addCredentials(stackInputContentMap map[string]interface{},
+	credentialOptions credentials.StackInputCredentialOptions) (updatedStackInputContentMap map[string]interface{}, err error) {
 	updatedStackInputContentMap, err = credentials.AddAtlasCredential(stackInputContentMap, credentialOptions)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to add atlas-credential")
