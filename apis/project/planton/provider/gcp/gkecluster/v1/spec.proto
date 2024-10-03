@@ -17,31 +17,9 @@ message GkeClusterSpec {
   //gcp-credential-id to be used for setting up gcp-provider in stack-job
   string gcp_credential_id = 97;
 
-  // gcp billing account id required to link gke-cluster projects.
-  // planton-cloud creates one/two gcp projects per gke-cluster.
-  // these projects will be linked to this billing account.
-  // soon more documentation will be added.
-  string billing_account_id = 1 [
-    (buf.validate.field).ignore_empty = true,
-    (buf.validate.field).cel = {
-      id: "spec.gcp.billing_account_id",
-      message: "Only alphanumeric characters (A-Z,a-z, 0-9) and hyphens are allowed",
-      // https://regex101.com/r/NKTohE/1
-      expression: "this.matches('^[A-Za-z0-9-]+$')"
-    },
-    (buf.validate.field).cel = {
-      id: "spec.gcp.billing_account_id",
-      message: "Must not start with a hyphen",
-      // https://regex101.com/r/t1LOCE/1
-      expression: "this.matches('^[^-].*$')"
-    },
-    (buf.validate.field).cel = {
-      id: "spec.gcp.billing_account_id",
-      message: "Must not end with a hyphen",
-      // https://regex101.com/r/reQjcB/1
-      expression: "this.matches('[^-]$')"
-    }
-  ];
+
+  //gcp project in which the gke-cluster is to be created
+  string cluster_project_id = 1;
 
   // valid gcp region in which to create the gke-cluster.
   // warning: gke-cluster will recreated if this value is updated.
