@@ -19,6 +19,11 @@ developer can focus on writing the application and its configuration once, and d
 supported cloud environment without dealing with cloud-specific nuances. This accelerates development, reduces the
 learning curve for multi-cloud deployment, and ensures that infrastructure remains consistent and manageable.
 
+## Quick Examples
+
+* [Deploy Redis on Kubernetes](./docs/getting-started/kubernetes/redis/README.md)
+* [Deploy GKE Cluster](./docs/getting-started/gcp/README.md)
+
 ## Configuration as Data
 
 **Kelsey Hightower**, champions the concept
