@@ -11,7 +11,8 @@ const (
 	awsCredentialYaml = "aws-credential.yaml"
 )
 
-func AddAwsCredential(stackInputContentMap map[string]string, stackInputOptions StackInputCredentialOptions) (map[string]string, error) {
+func AddAwsCredential(stackInputContentMap map[string]interface{},
+	stackInputOptions StackInputCredentialOptions) (map[string]interface{}, error) {
 	if stackInputOptions.AwsCredential != "" {
 		credentialContent, err := os.ReadFile(stackInputOptions.AwsCredential)
 		if err != nil {
