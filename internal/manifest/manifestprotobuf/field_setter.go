@@ -1,6 +1,7 @@
 package manifestprotobuf
 
 import (
+	"github.com/iancoleman/strcase"
 	"github.com/pkg/errors"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
@@ -15,8 +16,15 @@ func SetProtoField(msg proto.Message, fieldPath string, value interface{}) (prot
 	fieldParts := strings.Split(fieldPath, ".")
 
 	for i, part := range fieldParts {
-		// Get the descriptor for the current field
+		// Try finding the field descriptor as-is
 		fieldDescriptor := msgReflect.Descriptor().Fields().ByName(protoreflect.Name(part))
+
+		// If not found, attempt to convert the field to snake_case and retry
+		if fieldDescriptor == nil {
+			snakeCasePart := strcase.ToSnake(part)
+			fieldDescriptor = msgReflect.Descriptor().Fields().ByName(protoreflect.Name(snakeCasePart))
+		}
+
 		if fieldDescriptor == nil {
 			return nil, errors.Errorf("field %s not found in message %s", part, msgReflect.Descriptor().FullName())
 		}

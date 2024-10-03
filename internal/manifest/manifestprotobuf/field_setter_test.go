@@ -17,7 +17,23 @@ func TestSetProtoField(t *testing.T) {
 		expectErr bool
 	}{
 		{
-			name: "Set existing string field",
+			name: "Set existing string field in snake case",
+			message: &rediskubernetesv1.RedisKubernetes{Spec: &rediskubernetesv1.RedisKubernetesSpec{
+				Container: &rediskubernetesv1.RedisKubernetesContainer{
+					DiskSize: "1Gi",
+				},
+			}},
+			fieldPath: "spec.container.disk_size",
+			value:     "2Gi",
+			expected: &rediskubernetesv1.RedisKubernetes{Spec: &rediskubernetesv1.RedisKubernetesSpec{
+				Container: &rediskubernetesv1.RedisKubernetesContainer{
+					DiskSize: "2Gi",
+				},
+			}},
+			expectErr: false,
+		},
+		{
+			name: "Set existing string field in camel case",
 			message: &rediskubernetesv1.RedisKubernetes{Spec: &rediskubernetesv1.RedisKubernetesSpec{
 				Container: &rediskubernetesv1.RedisKubernetesContainer{
 					DiskSize: "1Gi",
