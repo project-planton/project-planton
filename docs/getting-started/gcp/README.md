@@ -11,6 +11,7 @@ install golang since pulumi modules are written in golang
 ## GKE Cluster
 
 1. Create a project on google cloud or select an existing project on google cloud
+2. The project should be linked to a billing account
 
 ```yaml
 apiVersion: gcp.project.planton/v1
