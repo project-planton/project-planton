@@ -10,13 +10,15 @@ install golang since pulumi modules are written in golang
 
 ## GKE Cluster
 
+1. Create a project on google cloud or select an existing project on google cloud
+
 ```yaml
 apiVersion: gcp.project.planton/v1
 kind: GkeCluster
 metadata:
   name: dev-cluster
 spec:
-  billingAccountId: <enter billing account>
+  clusterProjectId: <enter gcp project id>
   region: asia-south1
   zone: asia-south1-a
   clusterAutoscalingConfig:
@@ -40,6 +42,6 @@ spec:
 ```
 
 ```shell
-project-planton pulumi refresh --stack inherenc/federyse-dev/dev-gke-cluster --manifest manifest-path.yaml
+project-planton pulumi refresh --stack <pulumi-org>/<pulumi-project>/<pulumi-stack-name> --manifest manifest-path.yaml
 ```
 
