@@ -7,3 +7,7 @@
 ## Run `pulumi up`
 
 ![Run Pulumi Up](https://storage.googleapis.com/project-planton-downloads/media/demos/redis-on-kubernetes/pulumi-up.gif)
+
+## Verify
+
+![Verify](https://storage.googleapis.com/project-planton-downloads/media/demos/redis-on-kubernetes/verify-deploy.gif)
