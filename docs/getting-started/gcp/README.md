@@ -164,7 +164,7 @@ spec:
 
 ## Kafka on Kubernetes
 
-```shell
+```yaml
 apiVersion: kubernetes.project.planton/v1
 kind: KafkaKubernetes
 metadata:
