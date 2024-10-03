@@ -72,6 +72,33 @@ spec:
         - some-other.example.com.
 ```
 
+## GCS Bucket
+
+```yaml
+apiVersion: gcp.project.planton/v1
+kind: GcsBucket
+metadata:
+  # this will be the name of the bucket on google cloud and it should be unique on google cloud
+  name: my-bucket-name
+spec:
+  gcpProjectId: <gcp-project-id>
+  gcpRegion: asia-south1
+  isPublic: false
+```
+
+## GCP Artifact Registry
+
+```yaml
+apiVersion: gcp..cloud/v1
+kind: GcpArtifactRegistry
+metadata:
+  #artifact-repositories will be created using this name ex: primary-docker, primary-maven etc
+  name: primary
+spec:
+  projectId: <gcp-project-id>
+  region: asia-south1
+```
+
 ## Redis on Kubenrnetes
 
 ```yaml
@@ -94,6 +121,81 @@ spec:
         memory: 100Mi
     isPersistenceEnabled: true
     diskSize: 1Gi
+  ingress:
+    isEnabled: false
+    #final ingress endpoint would be <metadata.id>.<spec.ingress.endpointDomainName>
+    #if metadata.id is not provided metadata.name is used in place of metadata.id 
+    endpointDomainName: example.com
 ```
 
+## Postgres on Kubernetes
+
+```yaml
+apiVersion: kubernetes.project.planton/v1
+kind: PostgresKubernetes
+metadata:
+  name: payments
+  #id is used for naming the namespace
+  #if metadata.id is not specified metadata.name is used for naming namespace
+  id: payments-pg-database
+spec:
+  container:
+    diskSize: 1Gi
+    replicas: 1
+    resources:
+      limits:
+        cpu: 3000m
+        memory: 3Gi
+      requests:
+        cpu: 250m
+        memory: 250Mi
+  ingress:
+    isEnabled: false
+    #final ingress endpoint would be <metadata.id>.<spec.ingress.endpointDomainName>
+    #if metadata.id is not provided metadata.name is used in place of metadata.id 
+    endpointDomainName: example.com
+```
+
+## Kafka on Kubernetes
+
+```shell
+apiVersion: kubernetes.project.planton/v1
+kind: KafkaKubernetes
+metadata:
+  name: primary
+  #metadata.id is used for naming the namespace
+  #if metadata.id is not specified metadata.name is used for naming namespace
+  id: primary-kafka-cluster
+spec:
+  brokerContainer:
+    diskSize: 1Gi
+    replicas: 1
+    resources:
+      limits:
+        cpu: 2000m
+        memory: 2Gi
+      requests:
+        cpu: 250m
+        memory: 250Mi
+  zookeeperContainer:
+    diskSize: 1Gi
+    replicas: 1
+    resources:
+      limits:
+        cpu: 1000m
+        memory: 1Gi
+      requests:
+        cpu: 50m
+        memory: 100Mi
+  kafkaTopics:
+    - name: example-topic-one
+      partitions: 1
+      replicas: 1
+  isDeployKafkaUi: false
+  ingress:
+    isEnabled: false
+    #final ingress endpoint would be <metadata.id>.<spec.ingress.endpointDomainName>
+    #if metadata.id is not provided metadata.name is used in place of metadata.id 
+    endpointDomainName: example.com
+```
 
