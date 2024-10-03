@@ -42,7 +42,7 @@ func Run(moduleDir, stackFqdn, targetManifestPath string, pulumiOperation pulumi
 		op = "preview"
 	}
 
-	pulumiCmd := exec.Command("pulumi", op, "--stack", stackFqdn, "--yes")
+	pulumiCmd := exec.Command("pulumi", op, "--stack", stackFqdn)
 
 	// Set the STACK_INPUT_YAML environment variable
 	pulumiCmd.Env = append(os.Environ(), "STACK_INPUT_YAML="+stackInputYamlContent)
