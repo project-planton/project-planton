@@ -1,4 +1,4 @@
-package manifestyaml
+package manifest
 
 import (
 	"github.com/pkg/errors"

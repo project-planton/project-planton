@@ -3,7 +3,7 @@ package pulumimodule
 import (
 	"github.com/pkg/errors"
 	"github.com/plantoncloud/project-planton/internal/fileutil"
-	"github.com/plantoncloud/project-planton/internal/manifestyaml"
+	"github.com/plantoncloud/project-planton/internal/manifest"
 	"github.com/plantoncloud/project-planton/internal/workspace"
 	"os"
 	"os/exec"
@@ -18,7 +18,7 @@ func GetPath(moduleDir string, stackFqdn, targetManifestPath string) (string, er
 		return moduleDir, nil
 	}
 
-	kindName, err := manifestyaml.ExtractKindFromTargetManifest(targetManifestPath)
+	kindName, err := manifest.ExtractKindFromTargetManifest(targetManifestPath)
 	if err != nil {
 		return "", errors.Wrapf(err, "failed to extract kind from %s stack input yaml", targetManifestPath)
 	}

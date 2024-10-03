@@ -1,4 +1,4 @@
-package manifestyaml
+package manifest
 
 import (
 	"fmt"

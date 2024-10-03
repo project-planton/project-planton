@@ -2,7 +2,7 @@ package pulumimodule
 
 import (
 	"github.com/pkg/errors"
-	"github.com/plantoncloud/project-planton/internal/manifestyaml"
+	"github.com/plantoncloud/project-planton/internal/manifest"
 	"gopkg.in/yaml.v3"
 	"io"
 	"net/http"
@@ -56,7 +56,7 @@ func downloadModuleInfo(url string) (DefaultPulumiModules, error) {
 }
 
 func getCloneUrlFromModules(modules DefaultPulumiModules, kindName string) (string, error) {
-	formattedKindName := manifestyaml.ConvertKindName(kindName)
+	formattedKindName := manifest.ConvertKindName(kindName)
 
 	if url, found := modules.Atlas[formattedKindName]; found {
 		return url, nil

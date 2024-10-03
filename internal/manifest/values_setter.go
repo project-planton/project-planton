@@ -1,8 +1,8 @@
-package manifestyaml
+package manifest
 
 import (
 	"github.com/pkg/errors"
-	"github.com/plantoncloud/project-planton/internal/manifestyaml/manifestprotobuf"
+	"github.com/plantoncloud/project-planton/internal/manifest/manifestprotobuf"
 	"google.golang.org/protobuf/proto"
 )
 

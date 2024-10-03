@@ -2,7 +2,7 @@ package stackinput
 
 import (
 	"github.com/pkg/errors"
-	"github.com/plantoncloud/project-planton/internal/manifestyaml"
+	"github.com/plantoncloud/project-planton/internal/manifest"
 	"github.com/plantoncloud/project-planton/internal/stackinput/credentials"
 	"google.golang.org/protobuf/encoding/protojson"
 	"gopkg.in/yaml.v3"
@@ -12,7 +12,7 @@ import (
 // and returns a new YAML string with "target" and all the credential keys.
 func BuildStackInputYaml(targetManifestPath string, valueOverrides map[string]string,
 	stackInputOptions credentials.StackInputCredentialOptions) (string, error) {
-	manifestObject, err := manifestyaml.OverrideValues(targetManifestPath, valueOverrides)
+	manifestObject, err := manifest.OverrideValues(targetManifestPath, valueOverrides)
 	if err != nil {
 		return "", errors.Wrapf(err, "failed to override values in target manifest file")
 	}
