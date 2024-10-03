@@ -89,7 +89,7 @@ spec:
 ## GCP Artifact Registry
 
 ```yaml
-apiVersion: gcp..cloud/v1
+apiVersion: gcp.project.planton/v1
 kind: GcpArtifactRegistry
 metadata:
   #artifact-repositories will be created using this name ex: primary-docker, primary-maven etc
@@ -97,6 +97,12 @@ metadata:
 spec:
   projectId: <gcp-project-id>
   region: asia-south1
+```
+
+### Get Service Account Key from Outputs
+
+```shell
+pulumi stack output --show-secrets --stack <stack-name>
 ```
 
 ## Redis on Kubenrnetes
@@ -199,3 +205,64 @@ spec:
     endpointDomainName: example.com
 ```
 
+## GCP Secrets Manager
+
+```yaml
+apiVersion: gcp.project.planton/v1
+kind: GcpSecretsManager
+metadata:
+  name: main
+  #each secret in spec.secretNames is prefixed with this id when it is created on gcp secrets-manager
+  # if metadata.id is not provided metadata.name is used in its place
+  id: gcpsm-planton-cloud-app-prod-main
+spec:
+  projectId: <gcp-project-id>
+  secretNames:
+    - db-password
+    - kafka-password
+```
+
+## Microservice on Kubernetes
+
+```yaml
+apiVersion: kubernetes.project.planton/v1
+kind: MicroserviceKubernetes
+metadata:
+  name: my-web-app
+  #metadata.id is used for naming the namespace
+  #if metadata.id is not specified metadata.name is used for naming namespace
+  id: my-web-app-dev-main
+spec:
+  version: main
+  availability:
+    minReplicas: 1
+  container:
+    app:
+      env:
+        secrets:
+          KAFKA_PASSWORD: <secret-id-on-secrets-manager>
+        variables:
+          KAFKA_BOOTSTRAP_SERVER: <kafka-bootstrap-server-hostname>
+      image:
+        repo: nginx
+        tag: latest
+      ports:
+        - appProtocol: http
+          containerPort: 8080
+          isIngressPort: true
+          name: nginx
+          networkProtocol: TCP
+          servicePort: 80
+      resources:
+        limits:
+          cpu: 2000m
+          memory: 4Gi
+        requests:
+          cpu: 60m
+          memory: 100Mi
+  ingress:
+    isEnabled: true
+    #final ingress endpoint would be <metadata.id>.<spec.ingress.endpointDomainName>
+    #if metadata.id is not provided metadata.name is used in place of metadata.id 
+    endpointDomainName: example.com
+```
