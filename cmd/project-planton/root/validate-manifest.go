@@ -7,8 +7,8 @@ import (
 )
 
 var ValidateManifest = &cobra.Command{
-	Use:   "validate",
-	Short: "validate input",
+	Use:   "validate-manifest",
+	Short: "validate a project-planton manifest",
 	Aliases: []string{
 		"validate",
 	},
