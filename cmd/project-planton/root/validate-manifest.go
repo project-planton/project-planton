@@ -1,8 +1,8 @@
 package root
 
 import (
+	"fmt"
 	"github.com/plantoncloud/project-planton/internal/manifestvalidator"
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -20,7 +20,10 @@ var ValidateManifest = &cobra.Command{
 }
 
 func validateHandler(cmd *cobra.Command, args []string) {
-	if err := manifestvalidator.Validate(args[0]); err != nil {
-		log.Fatal(err)
+	err := manifestvalidator.Validate(args[0])
+	if err != nil {
+		fmt.Printf("%v\n", err)
+		return
 	}
+	println("Manifest is valid")
 }

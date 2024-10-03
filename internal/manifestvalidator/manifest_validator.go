@@ -36,17 +36,18 @@ func Validate(manifestPath string) error {
 		return errors.Wrap(err, "failed to load json into proto message")
 	}
 
+	spec, err := ExtractSpec(manifest)
+	if err != nil {
+		return errors.Wrap(err, "failed to extract spec from manifest")
+	}
+
 	v, err := protovalidate.New(
 		protovalidate.WithDisableLazy(true),
-		protovalidate.WithMessages(manifest),
+		protovalidate.WithMessages(spec),
 	)
 	if err != nil {
 		fmt.Println("failed to initialize validator:", err)
 	}
 
-	if err = v.Validate(manifest); err != nil {
-		return errors.Wrap(err, "validation failed")
-	}
-
-	return nil
+	return v.Validate(spec)
 }
