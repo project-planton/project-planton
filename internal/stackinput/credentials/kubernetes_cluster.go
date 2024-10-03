@@ -3,6 +3,7 @@ package credentials
 import (
 	"github.com/pkg/errors"
 	"github.com/plantoncloud/project-planton/internal/fileutil"
+	"gopkg.in/yaml.v3"
 	"os"
 )
 
@@ -18,7 +19,12 @@ func AddKubernetesCluster(stackInputContentMap map[string]interface{},
 		if err != nil {
 			return nil, errors.Wrapf(err, "failed to read file: %s", stackInputOptions.KubernetesCluster)
 		}
-		stackInputContentMap[kubernetesClusterKey] = string(credentialContent)
+		var credentialContentMap map[string]interface{}
+		err = yaml.Unmarshal(credentialContent, &credentialContentMap)
+		if err != nil {
+			return nil, errors.Wrapf(err, "failed to unmarshal target manifest file")
+		}
+		stackInputContentMap[kubernetesClusterKey] = credentialContentMap
 	}
 	return stackInputContentMap, nil
 }

@@ -3,6 +3,7 @@ package credentials
 import (
 	"github.com/pkg/errors"
 	"github.com/plantoncloud/project-planton/internal/fileutil"
+	"gopkg.in/yaml.v3"
 	"os"
 )
 
@@ -18,7 +19,12 @@ func AddGcpCredential(stackInputContentMap map[string]interface{},
 		if err != nil {
 			return nil, errors.Wrapf(err, "failed to read file: %s", stackInputOptions.GcpCredential)
 		}
-		stackInputContentMap[gcpCredentialKey] = string(credentialContent)
+		var credentialContentMap map[string]interface{}
+		err = yaml.Unmarshal(credentialContent, &credentialContentMap)
+		if err != nil {
+			return nil, errors.Wrapf(err, "failed to unmarshal target manifest file")
+		}
+		stackInputContentMap[gcpCredentialKey] = credentialContentMap
 	}
 	return stackInputContentMap, nil
 }

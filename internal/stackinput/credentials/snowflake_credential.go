@@ -3,6 +3,7 @@ package credentials
 import (
 	"github.com/pkg/errors"
 	"github.com/plantoncloud/project-planton/internal/fileutil"
+	"gopkg.in/yaml.v3"
 	"os"
 )
 
@@ -17,7 +18,12 @@ func AddSnowflakeCredential(stackInputContentMap map[string]interface{}, stackIn
 		if err != nil {
 			return nil, errors.Wrapf(err, "failed to read file: %s", stackInputOptions.SnowflakeCredential)
 		}
-		stackInputContentMap[snowflakeCredentialKey] = string(credentialContent)
+		var credentialContentMap map[string]interface{}
+		err = yaml.Unmarshal(credentialContent, &credentialContentMap)
+		if err != nil {
+			return nil, errors.Wrapf(err, "failed to unmarshal target manifest file")
+		}
+		stackInputContentMap[snowflakeCredentialKey] = credentialContentMap
 	}
 	return stackInputContentMap, nil
 }
