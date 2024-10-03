@@ -12,7 +12,8 @@ import (
 )
 
 func Run(moduleDir, stackFqdn, targetManifestPath string, pulumiOperation pulumi.PulumiOperationType,
-	isUpdatePreview bool, stackInputOptions ...credentials.StackInputCredentialOption) error {
+	isUpdatePreview bool, valueOverrides map[string]string,
+	stackInputOptions ...credentials.StackInputCredentialOption) error {
 	opts := credentials.StackInputCredentialOptions{}
 	for _, opt := range stackInputOptions {
 		opt(&opts)
@@ -28,7 +29,7 @@ func Run(moduleDir, stackFqdn, targetManifestPath string, pulumiOperation pulumi
 		return errors.Wrapf(err, "failed to extract project name from %s stack fqdn", stackFqdn)
 	}
 
-	stackInputYamlContent, err := stackinput.BuildStackInputYaml(targetManifestPath, opts)
+	stackInputYamlContent, err := stackinput.BuildStackInputYaml(targetManifestPath, valueOverrides, opts)
 	if err != nil {
 		return errors.Wrap(err, "failed to build stack input yaml")
 	}

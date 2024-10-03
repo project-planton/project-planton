@@ -211,10 +211,10 @@ spec:
 apiVersion: gcp.project.planton/v1
 kind: GcpSecretsManager
 metadata:
-  name: main
-  #each secret in spec.secretNames is prefixed with this id when it is created on gcp secrets-manager
-  # if metadata.id is not provided metadata.name is used in its place
-  id: gcpsm-planton-cloud-app-prod-main
+  #each secret in spec.secretNames is prefixed with this name when it is created on gcp secrets-manager
+  #as an example for 'db-password' in the spec.secretNames, a secret with name dev-secret-db-password is created
+  # on gcp secrets manager.
+  name: dev-secrets
 spec:
   projectId: <gcp-project-id>
   secretNames:

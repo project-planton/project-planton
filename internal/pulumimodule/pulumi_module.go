@@ -2,11 +2,10 @@ package pulumimodule
 
 import (
 	"github.com/pkg/errors"
+	"github.com/plantoncloud/project-planton/internal/manifest"
 	"gopkg.in/yaml.v3"
 	"io"
 	"net/http"
-	"regexp"
-	"strings"
 )
 
 const (
@@ -34,18 +33,6 @@ func GetCloneUrl(kindName string) (string, error) {
 	return cloneUrl, nil
 }
 
-func ConvertKindName(kindName string) string {
-	// This uses a Regex to find places where there is an uppercase letter
-	// that is followed by a lowercase letter and separates the words using a hyphen
-	re := regexp.MustCompile("([a-z])([A-Z])")
-	// Replace the matches found by the regex with a hyphen and the matched uppercase letter in lowercase
-	formattedName := re.ReplaceAllStringFunc(kindName, func(match string) string {
-		return match[:1] + "-" + strings.ToLower(match[1:])
-	})
-	// Convert the final string to lowercase and return it
-	return strings.ToLower(formattedName)
-}
-
 func downloadModuleInfo(url string) (DefaultPulumiModules, error) {
 	resp, err := http.Get(url)
 	if err != nil {
@@ -69,7 +56,7 @@ func downloadModuleInfo(url string) (DefaultPulumiModules, error) {
 }
 
 func getCloneUrlFromModules(modules DefaultPulumiModules, kindName string) (string, error) {
-	formattedKindName := ConvertKindName(kindName)
+	formattedKindName := manifest.ConvertKindName(kindName)
 
 	if url, found := modules.Atlas[formattedKindName]; found {
 		return url, nil

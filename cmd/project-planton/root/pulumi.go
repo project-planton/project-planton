@@ -22,6 +22,7 @@ func init() {
 	Pulumi.PersistentFlags().String(string(flag.InputDir), "", "directory containing target.yaml and credential yaml files")
 	Pulumi.PersistentFlags().String(string(flag.ModuleDir), pwd, "directory containing the pulumi module")
 	Pulumi.PersistentFlags().String(string(flag.Stack), "", "pulumi stack fqdn in the format of <org>/<project>/<stack>")
+	Pulumi.PersistentFlags().StringToString(string(flag.Set), map[string]string{}, "override resource manifest values using key=value pairs")
 	Pulumi.PersistentFlags().String(string(flag.Manifest), "", "path of the deployment-component manifest file")
 	Pulumi.PersistentFlags().String(string(flag.AwsCredential), "", "path of the aws-credential file")
 	Pulumi.PersistentFlags().String(string(flag.AzureCredential), "", "path of the azure-credential file")
