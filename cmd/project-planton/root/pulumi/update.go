@@ -26,6 +26,9 @@ func updateHandler(cmd *cobra.Command, args []string) {
 	stackFqdn, err := cmd.Flags().GetString(string(flag.Stack))
 	flag.HandleFlagErrAndValue(err, flag.Stack, stackFqdn)
 
+	valueOverrides, err := cmd.Flags().GetStringToString(string(flag.Set))
+	flag.HandleFlagErr(err, flag.Set)
+
 	credentialOptions := make([]credentials.StackInputCredentialOption, 0)
 	targetManifestPath := inputDir + "/target.yaml"
 
@@ -45,7 +48,7 @@ func updateHandler(cmd *cobra.Command, args []string) {
 	}
 
 	err = pulumistack.Run(moduleDir, stackFqdn, targetManifestPath,
-		pulumi.PulumiOperationType_update, false, credentialOptions...)
+		pulumi.PulumiOperationType_update, false, valueOverrides, credentialOptions...)
 	if err != nil {
 		log.Fatalf("failed to run pulumi: %v", err)
 	}

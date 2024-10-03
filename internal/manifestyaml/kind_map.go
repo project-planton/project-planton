@@ -1,4 +1,4 @@
-package manifestvalidator
+package manifestyaml
 
 import (
 	mongodbatlasv1 "buf.build/gen/go/plantoncloud/project-planton/protocolbuffers/go/project/planton/provider/atlas/mongodbatlas/v1"

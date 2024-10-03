@@ -18,6 +18,7 @@ const (
 	MongodbAtlasCredential Flag = "mongodb-atlas-credential"
 	SnowflakeCredential    Flag = "snowflake-credential"
 	Stack                  Flag = "stack"
+	Set                    Flag = "set"
 	Manifest               Flag = "manifest"
 )
 

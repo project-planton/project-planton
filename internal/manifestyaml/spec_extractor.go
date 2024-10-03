@@ -1,4 +1,4 @@
-package manifestvalidator
+package manifestyaml
 
 import (
 	"github.com/pkg/errors"
