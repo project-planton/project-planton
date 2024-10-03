@@ -18,7 +18,7 @@ const (
 	MongodbAtlasCredential Flag = "mongodb-atlas-credential"
 	SnowflakeCredential    Flag = "snowflake-credential"
 	Stack                  Flag = "stack"
-	Target                 Flag = "target"
+	Manifest               Flag = "manifest"
 )
 
 func HandleFlagErrAndValue(err error, flag Flag, flagVal string) {

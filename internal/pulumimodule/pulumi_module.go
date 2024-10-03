@@ -34,7 +34,7 @@ func GetCloneUrl(kindName string) (string, error) {
 	return cloneUrl, nil
 }
 
-func convertKindName(kindName string) string {
+func ConvertKindName(kindName string) string {
 	// This uses a Regex to find places where there is an uppercase letter
 	// that is followed by a lowercase letter and separates the words using a hyphen
 	re := regexp.MustCompile("([a-z])([A-Z])")
@@ -69,7 +69,7 @@ func downloadModuleInfo(url string) (DefaultPulumiModules, error) {
 }
 
 func getCloneUrlFromModules(modules DefaultPulumiModules, kindName string) (string, error) {
-	formattedKindName := convertKindName(kindName)
+	formattedKindName := ConvertKindName(kindName)
 
 	if url, found := modules.Atlas[formattedKindName]; found {
 		return url, nil

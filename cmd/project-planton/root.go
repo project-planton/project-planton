@@ -17,6 +17,7 @@ func init() {
 	rootCmd.DisableSuggestions = true
 	rootCmd.AddCommand(
 		root.Pulumi,
+		root.ValidateManifest,
 	)
 }
 

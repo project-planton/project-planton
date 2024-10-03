@@ -29,8 +29,8 @@ func refreshHandler(cmd *cobra.Command, args []string) {
 	targetManifestPath := inputDir + "/target.yaml"
 
 	if inputDir == "" {
-		targetManifestPath, err = cmd.Flags().GetString(string(flag.Target))
-		flag.HandleFlagErrAndValue(err, flag.Target, targetManifestPath)
+		targetManifestPath, err = cmd.Flags().GetString(string(flag.Manifest))
+		flag.HandleFlagErrAndValue(err, flag.Manifest, targetManifestPath)
 
 		credentialOptions, err = credentials.BuildWithFlags(cmd.Flags())
 		if err != nil {
