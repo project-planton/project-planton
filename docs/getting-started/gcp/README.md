@@ -12,6 +12,11 @@ install golang since pulumi modules are written in golang
 
 1. Create a project on google cloud or select an existing project on google cloud
 2. The project should be linked to a billing account
+3. Install exec plugins
+
+```shell
+sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/plantoncloud/kube-client-go-exec-plugins/9ee982a053439bd60b1eead65c73936a57d25735/install.sh)"
+```
 
 ```yaml
 apiVersion: gcp.project.planton/v1
@@ -45,4 +50,50 @@ spec:
 ```shell
 project-planton pulumi refresh --stack <pulumi-org>/<pulumi-project>/<pulumi-stack-name> --manifest manifest-path.yaml
 ```
+
+## GCP DNS Zone
+
+```yaml
+apiVersion: gcp.project.planton/v1
+kind: GcpDnsZone
+metadata:
+  #metadata.name should be the dns domain name
+  name: example.com
+spec:
+  projectId: <enter-gcp-project-id>
+  records:
+    - name: test-a.example.com.
+      recordType: A
+      values:
+        - 1.1.1.1
+    - name: test-cname.example.com.
+      recordType: CNAME
+      values:
+        - some-other.example.com.
+```
+
+## Redis on Kubenrnetes
+
+```yaml
+apiVersion: kubernetes.project.planton/v1
+kind: RedisKubernetes
+metadata:
+  name: payments
+  #id is used for naming the namespace
+  # if id is not set, metadata.name is used for naming the namespace
+  id: payments-namespace
+spec:
+  container:
+    replicas: 1
+    resources:
+      limits:
+        cpu: 50m
+        memory: 2Gi
+      requests:
+        cpu: 50m
+        memory: 100Mi
+    isPersistenceEnabled: true
+    diskSize: 1Gi
+```
+
 
