@@ -1,0 +1,16 @@
+apiVersion: kubernetes.project.planton/v1
+kind: RedisKubernetes
+metadata:
+  name: payments
+spec:
+  container:
+    replicas: 1
+    resources:
+      limits:
+        cpu: 50m
+        memory: 2Gi
+      requests:
+        cpu: 50m
+        memory: 100Mi
+    isPersistenceEnabled: false
+    diskSize: 1Gi

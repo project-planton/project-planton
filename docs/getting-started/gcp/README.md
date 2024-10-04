@@ -105,7 +105,7 @@ spec:
 pulumi stack output --show-secrets --stack <stack-name>
 ```
 
-## Redis on Kubenrnetes
+## Redis on Kubernetes
 
 ```yaml
 apiVersion: kubernetes.project.planton/v1

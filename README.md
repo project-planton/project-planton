@@ -1,3 +1,118 @@
+# Project Planton: Simplify Multi-Cloud Infrastructure Deployment
+
+**Effortlessly deploy complex infrastructure across any cloud provider using simple YAML manifests and powerful
+automation.**
+
+## TL;DR
+
+Project Planton is an open-source framework that brings the simplicity of Kubernetes-like declarative configuration to
+multi-cloud environments. It enables you to:
+
+- **Define Once, Deploy Anywhere**: Write your infrastructure configurations in YAML manifests and deploy seamlessly
+  across AWS, Azure, GCP, and more.
+- **Leverage Unified Resource Model (MURM)**: Use a consistent API to manage resources across different cloud providers.
+- **Automate with Pulumi Modules**: Benefit from well-crafted Pulumi modules that handle the heavy lifting of
+  infrastructure provisioning.
+- **Use an Intuitive CLI**: Deploy and manage your infrastructure effortlessly with a command-line tool that understands
+  your manifests.
+
+**Get Started in 3 Easy Steps:**
+
+1. **Install the CLI Tool**
+
+   ```bash
+   brew install plantoncloud/tap/project-planton
+   ```
+
+2. **Create a YAML Manifest**
+
+   Define your infrastructure in a simple YAML file for any of the
+   available [Deployment Components](https://github.com/plantoncloud/project-planton/tree/main/apis/project/planton/provider)
+   using familiar Kubernetes-like resources. Here is the example
+   for [Redis On Kubernetes](https://github.com/plantoncloud/project-planton/tree/main/apis/project/planton/provider/kubernetes/rediskubernetes/v1)
+   deployment component.
+
+   You can create similar manifests
+   for [AWS VPC](https://github.com/plantoncloud/project-planton/tree/main/apis/project/planton/provider/aws/awsvpcv1), [GKE Cluster](https://github.com/plantoncloud/project-planton/tree/main/apis/project/planton/provider/gcp/gkecluster/v1), [Kafka on Kubernetes](https://github.com/plantoncloud/project-planton/tree/main/apis/project/planton/provider/kubernetes/kafkakubernetes/v1)
+   or [Kafka On ConfluentCloud](https://github.com/plantoncloud/project-planton/tree/main/apis/project/planton/provider/confluent/kafkaconfluent/v1)
+   and [many more](https://github.com/plantoncloud/project-planton/tree/main/apis/project/planton/provider).
+
+```yaml
+apiVersion: kubernetes.project.planton/v1
+kind: RedisKubernetes
+metadata:
+  name: payments
+  id: payments-namespace
+spec:
+  container:
+    replicas: 1
+    resources:
+      limits:
+        cpu: 50m
+        memory: 2Gi
+      requests:
+        cpu: 50m
+        memory: 100Mi
+    isPersistenceEnabled: true
+    diskSize: 1Gi
+```
+
+3. **Deploy Your Infrastructure**
+
+The above manifest is the input
+for [redis-kubernetes-pulumi-module](https://github.com/plantoncloud/redis-kubernetes-pulumi-module). Running the
+following command will read the manifest and set it up as input for the pulumi module.
+
+   ```bash
+   project-planton pulumi up --manifest redis.yaml
+   ```
+
+![pulumi-up.png](docs/getting-started/kubernetes/redis/pulumi-up.png)
+
+## Core Tenets
+
+Project Planton is built upon three foundational pillars that collectively provide a seamless multi-cloud deployment
+experience:
+
+1. **Multi-Cloud Unified Resource Model (MURM)**
+    - **Consistent Declarative APIs**: Define infrastructure and deployment components using a unified set of APIs
+      across all cloud providers.
+    - **Simplified Configuration**: Abstract away cloud-specific complexities with a model inspired by Kubernetes
+      Resource Model (KRM), allowing you to focus on what you want to deploy rather than how to deploy it.
+
+2. **Well-Written Pulumi Modules**
+    - **Robust Infrastructure as Code**: Each deployment component is backed by meticulously crafted Pulumi modules.
+    - **Cross-Language Support**: Leverage Pulumi's multi-language capabilities to handle the provisioning of resources
+      on various cloud platforms seamlessly.
+    - **Abstraction of Complexity**: Let the Pulumi modules manage the intricate details of cloud services so you can
+      concentrate on your application's needs.
+
+3. **Intuitive CLI Tooling**
+    - **Simplified Deployment Process**: Use a command-line interface that understands both the MURM and the Pulumi
+      modules to deploy infrastructure with ease.
+    - **YAML Manifest Configuration**: Write your deployment component configurations in simple YAML manifests, making
+      it accessible and easy to version control.
+    - **Instant Feedback and Iteration**: Modify your config manifests and re-run deployments to preview changes before
+      applying them, facilitating rapid development and testing.
+
+**By integrating these three core tenets, Project Planton enables you to define your infrastructure once and deploy it
+anywhere, significantly reducing the complexity and overhead of multi-cloud management.**
+
+*Skip the complexity of multi-cloud deployment. Focus on building great applications while Project Planton handles the
+infrastructure.*
+
+# Table of Contents
+
+- [Multi-Cloud Unified Resource Model (MURM)](#multi-cloud-unified-resource-model-murm)
+- [Configuration as Data](#configuration-as-data)
+- [Quick Examples](#quick-examples)
+- [How It Works](#how-it-works)
+- [Use Cases and Examples](#use-cases-and-examples)
+- [Comparison with Similar Tools](#comparison-with-similar-tools)
+- [FAQ](#faq)
+- [Community and Support](#community-and-support)
+- [Acknowledgments](#acknowledgments)
+
 # Multi-Cloud Unified Resource Model (MURM)
 
 Project Planton is an open-source framework that brings the declarative design principles of the [Kubernetes Resource
@@ -19,11 +134,6 @@ developer can focus on writing the application and its configuration once, and d
 supported cloud environment without dealing with cloud-specific nuances. This accelerates development, reduces the
 learning curve for multi-cloud deployment, and ensures that infrastructure remains consistent and manageable.
 
-## Quick Examples
-
-* [Deploy Redis on Kubernetes](./docs/getting-started/kubernetes/redis/README.md)
-* [Deploy GKE Cluster](./docs/getting-started/gcp/README.md)
-
 ## Configuration as Data
 
 **Kelsey Hightower**, champions the concept
@@ -43,6 +153,11 @@ applications using simple YAML manifests that resemble Kubernetes resources. Thi
 
 By following Kelsey Hightower's insights on Configuration as Data, Project Planton simplifies multi-cloud deployments,
 making them more manageable and efficient.
+
+## Quick Examples
+
+* [Deploy Redis on Kubernetes](./docs/getting-started/kubernetes/redis/README.md)
+* [Deploy GKE Cluster](./docs/getting-started/gcp/README.md)
 
 ## Key Features
 
