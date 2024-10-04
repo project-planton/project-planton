@@ -1,0 +1,24 @@
+## Key Features
+
+- **Declarative Multi-Cloud Deployments**: Define your infrastructure and application configurations using
+Kubernetes-like YAML manifests. Deploy across multiple cloud providers seamlessly, ensuring consistency and reducing
+complexity.
+
+- **Pulumi Module Integration**: Leverage Pulumi modules versioned and hosted in their own repositories. These modules
+handle the provisioning of resources declared in your manifests, bringing your desired state into reality when you
+trigger them.
+
+- **Familiar API Design**: Utilize API resources modeled after the Kubernetes Resource Model (KRM), including `version`,
+`kind`, `metadata`, `spec`, and `status` fields. This familiar structure makes it easier for developers with
+Kubernetes experience to adopt and use.
+
+- **CLI Tooling**: Install the `project-planton` CLI via Homebrew (`brew install plantoncloud/tap/project-planton`) to
+manage your deployments effortlessly. The CLI handles fetching the necessary Pulumi modules and orchestrates the
+deployment process based on your manifests.
+
+- **Extensible and Open Source**: All APIs are defined using Protocol Buffers and published to the Buf Schema Registry (
+BSR), providing readily available documentation and SDK generation in multiple languages. The open-source nature
+encourages community contributions and transparency.
+
+- **Advanced Validation**: Field validations are embedded within the protobuf definitions using Protovalidate and Common
+Expression Language (CEL). This ensures configurations are correct and reduces errors during deployment.
