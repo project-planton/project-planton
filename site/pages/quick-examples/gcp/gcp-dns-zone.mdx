@@ -1,0 +1,20 @@
+# GCP DNS Zone
+
+```yaml
+apiVersion: gcp.project.planton/v1
+kind: GcpDnsZone
+metadata:
+  #metadata.name should be the dns domain name
+  name: example.com
+spec:
+  projectId: <enter-gcp-project-id>
+  records:
+    - name: test-a.example.com.
+      recordType: A
+      values:
+        - 1.1.1.1
+    - name: test-cname.example.com.
+      recordType: CNAME
+      values:
+        - some-other.example.com.
+```
