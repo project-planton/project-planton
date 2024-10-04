@@ -1,4 +1,4 @@
 export default {
-  index: 'Project Planton',
-  "quick-examples": 'Quick Examples'
+  index: 'Introduction',
+  "platform": 'Platforms'
 }
