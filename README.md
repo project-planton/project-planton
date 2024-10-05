@@ -91,7 +91,7 @@ pulumi module.
    project-planton pulumi up --manifest redis.yaml
    ```
 
-![pulumi-up.png](site/public/images/provider/kubernetes/redis/pulumi-up.png)
+![pulumi-up.png](docs/public/images/provider/kubernetes/redis/pulumi-up.png)
 
 ## Contributing
 
