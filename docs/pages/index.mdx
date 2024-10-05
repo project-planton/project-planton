@@ -1,20 +1,29 @@
-# Framework for Multi-Cloud Infrastructure Deployments
+# Framework for Multi-Cloud Deployments
 
 **Effortlessly deploy complex infrastructure across any cloud provider using simple YAML manifests and powerful
 automation.**
 
 ## TL;DR
 
-`Project Planton` is an open-source framework that brings the simplicity of Kubernetes-like declarative configuration to
+ProjectPlanton is an open-source framework that brings the simplicity of Kubernetes-like declarative configuration to
 multi-cloud environments. It enables you to:
 
-- **Define Once, Deploy Anywhere**: Write your infrastructure configurations in YAML manifests and deploy seamlessly
+- **Multi-Cloud Unified Resource Model (MURM)**: Leverage simple, consistent [API](https://buf.build/plantoncloud/project-planton/tree/main:project/planton/provider)
+  written in [protobuf](https://protobuf.dev/) and published
+  to [Buf Schema Registry](https://buf.build/product/bsr) to manage resources across different cloud providers. In
+  short, Kubernetes like Manifests, but for Multi-Cloud. Write your infrastructure configurations in YAML manifests and
+  deploy seamlessly
   across AWS, Azure, GCP, and more.
-- **Leverage Unified Resource Model (MURM)**: Use a consistent API to manage resources across different cloud providers.
-- **Automate with Pulumi Modules**: Benefit from well-crafted Pulumi modules that handle the heavy lifting of
-  infrastructure provisioning.
-- **Use an Intuitive CLI**: Deploy and manage your infrastructure effortlessly with a command-line tool that understands
-  your manifests.
+
+- **Automate with Pulumi Modules**: Benefit
+  from [pre-written pulumi modules](module-git-repos.yaml) which takes
+  [project-planton api](https://buf.build/plantoncloud/project-planton/tree/main:project/planton/provider) manifests as
+  input and handle the heavy lifting of infrastructure provisioning.
+
+- **ProjectPlanton APIs & Pulumi Modules aware CLI**: Deploy and manage your infrastructure effortlessly with a
+  command-line tool that understands project-planton manifests and also knows which one of
+  the [pre-written pulumi module](module-git-repos.yaml)
+  to execute for the deployment.
 
 ## Multi-Cloud Unified Resource Model (MURM)
 
