@@ -2,15 +2,10 @@
 
 ```yaml
 apiVersion: gcp.project.planton/v1
-kind: GcpSecretsManager
+kind: GcpArtifactRegistry
 metadata:
-  #each secret in spec.secretNames is prefixed with this name when it is created on gcp secrets-manager
-  #as an example for 'db-password' in the spec.secretNames, a secret with name dev-secret-db-password is created
-  # on gcp secrets manager.
-  name: dev-secrets
+  name: primary
 spec:
   projectId: <gcp-project-id>
-  secretNames:
-    - db-password
-    - kafka-password
+  region: asia-south1
 ```

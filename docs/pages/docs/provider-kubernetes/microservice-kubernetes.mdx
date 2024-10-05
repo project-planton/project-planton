@@ -5,9 +5,6 @@ apiVersion: kubernetes.project.planton/v1
 kind: MicroserviceKubernetes
 metadata:
   name: my-web-app
-  #metadata.id is used for naming the namespace
-  #if metadata.id is not specified metadata.name is used for naming namespace
-  id: my-web-app-dev-main
 spec:
   version: main
   availability:
@@ -38,7 +35,5 @@ spec:
           memory: 100Mi
   ingress:
     isEnabled: true
-    #final ingress endpoint would be <metadata.id>.<spec.ingress.endpointDomainName>
-    #if metadata.id is not provided metadata.name is used in place of metadata.id
     endpointDomainName: example.com
 ```

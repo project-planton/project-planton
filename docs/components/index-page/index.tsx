@@ -1,73 +1,34 @@
 import { Feature, Features } from '@components/features'
 import { ArrowRightIcon } from '@components/icons'
-import cn from 'clsx'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import { Link } from 'nextra-theme-docs'
-import docsCardDark from 'public/assets/card-1.dark.png'
-import docsCard from 'public/assets/card-1.png'
-import { useState } from 'react'
+import manifestsCardDark from 'public/images/landing/manifests-dark.png'
+import manifestsCard from 'public/images/landing/manifests-light.png'
 import styles from './index.module.css'
-
-const LANGUAGES = [
-    { lang: 'en', name: 'English' },
-    { lang: 'de', name: 'Deutsch' },
-    { lang: 'ja', name: '日本語' }
-]
-
-function I18n() {
-    const [active, setActive] = useState('')
-
-    return (
-        <div className={styles.comparison}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '.5rem' }}>
-                {LANGUAGES.map(({ lang }) => (
-                    <span
-                        key={lang}
-                        onPointerOver={() => setActive(lang)}
-                        className={cn(styles.file, active === lang && styles.active)}
-                    >
-            /{lang}/hello.mdx
-          </span>
-                ))}
-            </div>
-            <ArrowRightIcon width="1.2em" />
-            <div className="overflow-auto rounded-md bg-white py-1 text-sm shadow-lg ring-1 ring-black/5 dark:bg-neutral-800 dark:ring-white/20">
-                {LANGUAGES.map(({ lang, name }) => (
-                    <div
-                        key={lang}
-                        onPointerOver={() => setActive(lang)}
-                        // eslint-disable-next-line tailwindcss/no-custom-classname -- TODO: configure eslint-plugin-tailwindcss to import nextra-theme-docs styles so below classes could be removed
-                        className={cn(
-                            'relative cursor-default select-none whitespace-nowrap px-4 py-1.5',
-                            active === lang
-                                ? '_text-primary-600 _bg-primary-50 dark:_bg-primary-500/10'
-                                : 'text-gray-800 dark:text-gray-100 '
-                        )}
-                    >
-                        {name}
-                    </div>
-                ))}
-            </div>
-        </div>
-    )
-}
 
 export const IndexPage = () => (
     <div className="home-content">
         <div className="content-container">
             <h1 className="headline">
-                Make beautiful websites <br className="sm:block hidden" />
-                with Next.js & MDX
+                OpenSource Multi-Cloud <br className="sm:block hidden"/>
+                Deployment Framework
             </h1>
             <p className="subtitle">
-                Simple, powerful and flexible site generation framework{' '}
-                <br className="max-md:hidden" />
-                with everything you love from{' '}
+                Built w/ everything you love from{' '}
                 <Link href="https://nextjs.org" className="text-current">
-                    Next.js
+                    Kubernetes Resource Model (KRM)
+                </Link>{' , '}
+                <br className="max-md:hidden"/>
+                <Link href="https://nextjs.org" className="text-current">
+                    Protobuf
+                </Link>{' , '}
+                <Link href="https://nextjs.org" className="text-current">
+                    Buf Schema Registry
+                </Link>{' & '}
+                <Link href="https://nextjs.org" className="text-current">
+                    Pulumi
                 </Link>
-                .
             </p>
             <p className="subtitle">
                 <Link className={styles.cta} href="/docs">
@@ -82,19 +43,23 @@ export const IndexPage = () => (
                 padding-right: max(env(safe-area-inset-right), 1.5rem);
                 margin: 0 auto;
             }
+
             .features-container {
                 margin: 8rem 0 0;
                 padding: 4rem 0;
                 background-color: #f3f4f6;
                 border-bottom: 1px solid #e5e7eb;
             }
+
             .features-container .content-container {
                 margin-top: -8rem;
             }
+
             :global(.dark) .features-container {
                 background-color: #000;
                 border-bottom: 1px solid rgb(38, 38, 38);
             }
+
             .headline {
                 display: inline-flex;
                 font-size: 3.125rem;
@@ -110,19 +75,23 @@ export const IndexPage = () => (
                 -webkit-text-fill-color: transparent;
                 background-clip: text;
             }
+
             :global(.dark) .headline {
                 background-image: linear-gradient(146deg, #fff, #757a7d);
             }
+
             .subtitle {
                 font-size: 1.3rem;
                 font-size: min(1.3rem, max(3.5vw, 1.2rem));
                 font-feature-settings: initial;
                 line-height: 1.6;
             }
+
             :global(#docs-card) {
                 color: #fff;
                 text-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
             }
+
             :global(#docs-card img) {
                 object-fit: cover;
                 object-position: left;
@@ -136,15 +105,19 @@ export const IndexPage = () => (
                 user-select: none;
                 pointer-events: none;
             }
+
             :global(#docs-card img:nth-child(2)) {
                 display: none;
             }
+
             :global(.dark #docs-card img:nth-child(2)) {
                 display: initial;
             }
+
             :global(.dark #docs-card img:nth-child(1)) {
                 display: none;
             }
+
             :global(#highlighting-card) {
                 min-height: 300px;
                 background-image: linear-gradient(to top, transparent, #fff 50%),
@@ -153,24 +126,30 @@ export const IndexPage = () => (
                 background-position: -6px calc(100% + 4px);
                 background-repeat: no-repeat;
             }
+
             :global(.dark #highlighting-card) {
                 background-image: linear-gradient(to top, transparent, #202020 50%),
                 url(/assets/syntax-highlighting.svg);
             }
+
             :global(.feat-darkmode) {
                 min-height: 300px;
             }
+
             :global(.feat-darkmode h3) {
                 font-size: 48px;
             }
+
             :global(#search-card) {
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
             }
+
             :global(#search-card p) {
                 max-width: 320px;
             }
+
             :global(#search-card video) {
                 position: absolute;
                 right: 0;
@@ -179,70 +158,86 @@ export const IndexPage = () => (
                 pointer-events: none;
                 max-width: 60%;
             }
+
             :global(#fs-card) {
                 min-height: 240px;
             }
+
             :global(#fs-card h3) {
                 text-align: left;
                 width: min(300px, 41%);
                 min-width: 155px;
             }
+
             :global(#a11y-card) {
                 background-image: url(/assets/high-contrast.png);
                 background-position: -160px 160px;
             }
+
             @media screen and (max-width: 1300px) {
                 :global(#a11y-card) {
                     background-image: linear-gradient(to bottom, white, transparent),
                     url(/assets/high-contrast.png);
                 }
             }
+
             @media screen and (max-width: 1200px) {
                 :global(#highlighting-card) {
                     aspect-ratio: auto;
                 }
+
                 :global(.feat-darkmode h3) {
                     font-size: 4vw;
                     font-size: min(48px, max(4vw, 30px));
                 }
+
                 :global(#search-card video) {
                     aspect-ratio: 787/623;
                     height: auto;
                 }
+
                 .headline {
                     letter-spacing: -0.08rem;
                 }
             }
+
             @media screen and (max-width: 1024px) {
                 :global(#docs-card) {
                     aspect-ratio: 135/86;
                 }
+
                 :global(#search-card) {
                     aspect-ratio: 8/3;
                 }
+
                 :global(#search-card h3) {
                     text-align: left;
                 }
+
                 :global(#highlighting-card) {
                     background-size: 136%;
                 }
+
                 :global(#a11y-card) {
                     background-image: url(/assets/high-contrast.png);
                     background-position: center 160px;
                 }
             }
+
             @media screen and (max-width: 768px) {
                 :global(#docs-card) {
                     min-height: 348px;
                     width: 100%;
                     aspect-ratio: auto;
                 }
+
                 :global(#docs-card img) {
                     object-position: -26px 0;
                     width: 250%;
                     max-width: initial;
                 }
             }
+
             @media screen and (max-width: 640px) {
                 :global(#search-card) {
                     aspect-ratio: 2.5/2;
@@ -250,17 +245,21 @@ export const IndexPage = () => (
                     align-items: stretch;
                     min-height: 350px;
                 }
+
                 :global(#search-card h3) {
                     text-align: center;
                 }
+
                 :global(#search-card p) {
                     max-width: 100%;
                 }
+
                 :global(#search-card video) {
                     position: relative;
                     margin: 0.75em -1.75em 0;
                     max-width: calc(100% + 3.5em);
                 }
+
                 :global(.dark #search-card video) {
                     mix-blend-mode: lighten;
                 }
@@ -276,16 +275,15 @@ export const IndexPage = () => (
                         id="docs-card"
                         href="/docs/docs-theme/start"
                     >
-                        <Image src={docsCard} alt="Background" loading="eager" />
-                        <Image src={docsCardDark} alt="Background (Dark)" loading="eager" />
+                        <Image src={manifestsCard} alt="Background" loading="eager"/>
+                        <Image src={manifestsCardDark} alt="Background (Dark)" loading="eager"/>
                         <h3>
-                            Full-power documentation <br className="show-on-mobile" />
-                            in minutes
+                            Everything is a Simple Manifest
                         </h3>
                     </Feature>
                     <Feature index={1} centered href="/docs/guide/image">
                         <h3>
-                            Links and images are <br className="show-on-mobile" />
+                            Links and images are <br className="show-on-mobile"/>
                             always <span className="font-light">optimized</span>
                         </h3>
                         <p className="text-left mb-8">
@@ -301,9 +299,9 @@ export const IndexPage = () => (
                         </p>
                         <div>
                             <div className={styles.optimization}>
-                                <div style={{ fontSize: '.9rem' }} className="leading-8">
+                                <div style={{fontSize: '.9rem'}} className="leading-8">
                                     <code>[Learn more](/more)</code>
-                                    <br />
+                                    <br/>
                                     <code>![Hero](/hero.png)</code>
                                 </div>
                             </div>
@@ -312,9 +310,9 @@ export const IndexPage = () => (
                                 className="text-neutral-400 rotate-90 my-6 mx-auto"
                             />
                             <div className={styles.optimization}>
-                                <div style={{ fontSize: '.9rem' }} className="leading-8">
+                                <div style={{fontSize: '.9rem'}} className="leading-8">
                                     <code>{'<Link .../>'}</code>
-                                    <br />
+                                    <br/>
                                     <code>{'<Image .../>'}</code>
                                 </div>
                             </div>
@@ -326,7 +324,7 @@ export const IndexPage = () => (
                         href="/docs/guide/syntax-highlighting"
                     >
                         <h3>
-                            Advanced syntax <br className="show-on-mobile" />
+                            Advanced syntax <br className="show-on-mobile"/>
                             highlighting solution
                         </h3>
                         <p>
@@ -336,14 +334,13 @@ export const IndexPage = () => (
                     </Feature>
                     <Feature index={3} href="/docs/guide/i18n">
                         <h3>
-                            I18n as easy as <br className="show-on-mobile" />
+                            I18n as easy as <br className="show-on-mobile"/>
                             creating new files
                         </h3>
                         <p className="mb-4">
                             Name your page files with locales suffixed, Nextra and Next.js
                             will do the rest for you.
                         </p>
-                        <I18n />
                     </Feature>
                     <Feature
                         index={4}
@@ -385,7 +382,7 @@ export const IndexPage = () => (
                                 MDX 3
                             </Link>{' '}
                             lets you use Components inside Markdown,{' '}
-                            <br className="hide-medium" />
+                            <br className="hide-medium"/>
                             with huge performance boost since v1.
                         </p>
                     </Feature>
@@ -457,8 +454,8 @@ export const IndexPage = () => (
                                 mixBlendMode: 'difference'
                             }}
                         >
-                            Dark <br />
-                            mode <br />
+                            Dark <br/>
+                            mode <br/>
                             included
                         </motion.h3>
                     </Feature>
@@ -468,9 +465,9 @@ export const IndexPage = () => (
                         id="search-card"
                         href="/docs/docs-theme/theme-configuration#search"
                     >
-                        <div style={{ zIndex: 2 }}>
+                        <div style={{zIndex: 2}}>
                             <h3>
-                                Full-text search, <br />
+                                Full-text search, <br/>
                                 zero-config needed
                             </h3>
                             <p>
@@ -482,7 +479,8 @@ export const IndexPage = () => (
                                 .
                             </p>
                         </div>
-                        <div className="absolute size-full inset-0 hidden sm:block bg-[linear-gradient(to_right,white_250px,_transparent)] dark:bg-[linear-gradient(to_right,#202020_250px,_transparent)] z-[1]" />
+                        <div
+                            className="absolute size-full inset-0 hidden sm:block bg-[linear-gradient(to_right,white_250px,_transparent)] dark:bg-[linear-gradient(to_right,#202020_250px,_transparent)] z-[1]"/>
                         <video
                             autoPlay
                             loop
@@ -490,7 +488,7 @@ export const IndexPage = () => (
                             playsInline
                             className="nextra-focus dark:hidden block"
                         >
-                            <source src="/assets/search.mp4" type="video/mp4" />
+                            <source src="/assets/search.mp4" type="video/mp4"/>
                         </video>
                         <video
                             autoPlay
@@ -499,7 +497,7 @@ export const IndexPage = () => (
                             playsInline
                             className="nextra-focus dark:block hidden -translate-x-4"
                         >
-                            <source src="/assets/search-dark.mp4" type="video/mp4" />
+                            <source src="/assets/search-dark.mp4" type="video/mp4"/>
                         </video>
                     </Feature>
                     <Feature
@@ -519,7 +517,7 @@ export const IndexPage = () => (
                         href="/docs/docs-theme/page-configuration"
                     >
                         <h3>
-                            Organize pages intuitively, <br />
+                            Organize pages intuitively, <br/>
                             with file-system routing from Next.js
                         </h3>
                     </Feature>
@@ -534,13 +532,13 @@ export const IndexPage = () => (
                     >
                         <h3>A11y as a top priority</h3>
                         <p>
-                            Nextra respects system options <br className="show-on-mobile" />
+                            Nextra respects system options <br className="show-on-mobile"/>
                             such as <b>Increase Contrast</b> and <b>Reduce Motion</b>.
                         </p>
                     </Feature>
                     <Feature index={9} href="/docs/guide/ssg">
                         <h3>
-                            Hybrid rendering, <br />
+                            Hybrid rendering, <br/>
                             next generation
                         </h3>
                         <p className="mr-6">
@@ -554,7 +552,8 @@ export const IndexPage = () => (
                                 SSR
                             </Link>
                             , and{' '}
-                            <Link href="https://nextjs.org/docs/basic-features/data-fetching/incremental-static-regeneration">
+                            <Link
+                                href="https://nextjs.org/docs/basic-features/data-fetching/incremental-static-regeneration">
                                 ISR
                             </Link>
                             .
@@ -565,7 +564,7 @@ export const IndexPage = () => (
                         <p>
                             SEO / RTL Layout / Pluggable Themes / Built-in Components / Last
                             Git Edit Time / Multi-Docs...
-                            <br />A lot of new possibilities to be explored.
+                            <br/>A lot of new possibilities to be explored.
                         </p>
                         <p className="subtitle">
                             <Link className="no-underline" href="/docs">

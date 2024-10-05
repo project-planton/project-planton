@@ -5,8 +5,6 @@ apiVersion: kubernetes.project.planton/v1
 kind: PostgresKubernetes
 metadata:
   name: payments
-  #id is used for naming the namespace
-  #if metadata.id is not specified metadata.name is used for naming namespace
   id: payments-pg-database
 spec:
   container:
@@ -21,7 +19,5 @@ spec:
         memory: 250Mi
   ingress:
     isEnabled: false
-    #final ingress endpoint would be <metadata.id>.<spec.ingress.endpointDomainName>
-    #if metadata.id is not provided metadata.name is used in place of metadata.id
     endpointDomainName: example.com
 ```
