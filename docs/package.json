@@ -1,5 +1,5 @@
 {
-  "name": "ProjectPlanton Docs",
+  "name": "project-planton",
   "license": "MIT",
   "scripts": {
     "dev": "next",
