@@ -1,15 +1,13 @@
-# ProjectPlanton
-
-<p align="center">
-  <img src="docs/public/images/logo/logo-full.png" alt="logo-interstellar.gif">
-</p>
-
 Simple, powerful and flexible `Multi-Cloud Deployments` framework with everything you love
 from [Kubernetes Resource Model (KRM)](https://github.com/kubernetes/design-proposals-archive/blob/main/architecture/resource-management.md), [Protobuf](https://protobuf.dev/), [Buf Schema Registry](https://buf.build/product/bsr)
 and [Pulumi](https://github.com/pulumi/pulumi).
 
 **Effortlessly deploy complex infrastructure across any cloud provider using simple YAML manifests and powerful
 automation.**
+
+<p align="center">
+  <img src="docs/public/images/logo/logo-full.png" alt="logo-interstellar.gif">
+</p>
 
 ## Documentation
 
