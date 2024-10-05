@@ -1,0 +1,23 @@
+# Deploy Postgres on Kubernetes
+
+```yaml
+apiVersion: kubernetes.project.planton/v1
+kind: PostgresKubernetes
+metadata:
+  name: payments
+  id: payments-pg-database
+spec:
+  container:
+    diskSize: 1Gi
+    replicas: 1
+    resources:
+      limits:
+        cpu: 3000m
+        memory: 3Gi
+      requests:
+        cpu: 250m
+        memory: 250Mi
+  ingress:
+    isEnabled: false
+    endpointDomainName: example.com
+```

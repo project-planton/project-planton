@@ -1,0 +1,39 @@
+# Deploy Microservice on Kubernetes
+
+```yaml
+apiVersion: kubernetes.project.planton/v1
+kind: MicroserviceKubernetes
+metadata:
+  name: my-web-app
+spec:
+  version: main
+  availability:
+    minReplicas: 1
+  container:
+    app:
+      env:
+        secrets:
+          KAFKA_PASSWORD: <secret-id-on-secrets-manager>
+        variables:
+          KAFKA_BOOTSTRAP_SERVER: <kafka-bootstrap-server-hostname>
+      image:
+        repo: nginx
+        tag: latest
+      ports:
+        - appProtocol: http
+          containerPort: 8080
+          isIngressPort: true
+          name: nginx
+          networkProtocol: TCP
+          servicePort: 80
+      resources:
+        limits:
+          cpu: 2000m
+          memory: 4Gi
+        requests:
+          cpu: 60m
+          memory: 100Mi
+  ingress:
+    isEnabled: true
+    endpointDomainName: example.com
+```

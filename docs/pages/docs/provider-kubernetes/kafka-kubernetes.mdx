@@ -1,0 +1,37 @@
+# Deploy Kafka on Kubernetes
+
+```yaml
+apiVersion: kubernetes.project.planton/v1
+kind: KafkaKubernetes
+metadata:
+  name: primary
+spec:
+  brokerContainer:
+    diskSize: 1Gi
+    replicas: 1
+    resources:
+      limits:
+        cpu: 2000m
+        memory: 2Gi
+      requests:
+        cpu: 250m
+        memory: 250Mi
+  zookeeperContainer:
+    diskSize: 1Gi
+    replicas: 1
+    resources:
+      limits:
+        cpu: 1000m
+        memory: 1Gi
+      requests:
+        cpu: 50m
+        memory: 100Mi
+  kafkaTopics:
+    - name: example-topic-one
+      partitions: 1
+      replicas: 1
+  isDeployKafkaUi: false
+  ingress:
+    isEnabled: false
+    endpointDomainName: example.com
+```
