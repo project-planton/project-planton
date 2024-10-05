@@ -1,0 +1,20 @@
+## Multi-Cloud Unified Resource Model (MURM)
+
+Project Planton is an open-source framework that brings the declarative design principles of the [Kubernetes Resource
+Model (KRM)](https://github.com/kubernetes/design-proposals-archive/blob/acc25e14ca83dfda4f66d8cb1f1b491f26e78ffe/architecture/resource-management.md)
+to multi-cloud environments. By leveraging
+well-written [Pulumi Modules](https://project-planton.org/pulumi-modules) and a straightforward
+CLI tool, Project Planton
+enables developers to define and deploy infrastructure and applications across multiple cloud providers using
+declarative configurations.
+
+Project Planton aims to simplify the deployment of microservices, popular open-source software infrastructure, cloud
+infrastructure across multiple cloud providers using a consistent, declarative approach. Developers often struggle with
+the complexity and inconsistencies of deploying infrastructure on different clouds like AWS, Azure, and Google Cloud.
+
+With Project Planton, a developer can define their infrastructure and application configurations in a YAML manifest
+using familiar Kubernetes-like API resources. By running a single CLI command, the specified Pulumi modules are
+automatically fetched and executed to bring the desired state to reality on the target cloud platforms. This means a
+developer can focus on writing the application and its configuration once, and deploy it consistently across any
+supported cloud environment without dealing with cloud-specific nuances. This accelerates development, reduces the
+learning curve for multi-cloud deployment, and ensures that infrastructure remains consistent and manageable.

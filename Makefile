@@ -97,3 +97,11 @@ release: build upload-binaries release-buf release-github
 update-deps:
 	go get buf.build/gen/go/plantoncloud/project-planton/protocolbuffers/go@latest
 	go get github.com/plantoncloud/pulumi-module-golang-commons
+
+.PHONY: run-docs
+run-docs:
+	pushd docs;make run;popd
+
+.PHONY: build-docs
+build-docs:
+	pushd docs;make build;popd

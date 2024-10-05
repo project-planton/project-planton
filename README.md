@@ -13,33 +13,30 @@ https://project-planton.org
 
 ## TL;DR
 
-ProjectPlanton is an open-source framework that brings the simplicity of Kubernetes-like declarative configuration to
-multi-cloud environments. It enables you to:
+ProjectPlanton is an open-source framework that simplifies the deployment of multi-cloud environments with
+Kubernetes-like declarative configuration. It enables you to:
 
-- **Multi-Cloud Unified Resource Model (MURM)**: Leverage simple, consistent [API](apis/project/planton/provider)
-  written in [protobuf](https://protobuf.dev/) and published
-  to [Buf Schema Registry](https://buf.build/product/bsr) to manage resources across different cloud providers. In
-  short, Kubernetes like Manifests, but for Multi-Cloud. Write your infrastructure configurations in YAML manifests and
-  deploy seamlessly
-  across AWS, Azure, GCP, and more.
+- **Define Configuration**: Create Kubernetes-like manifests based
+  on [ProjectPlanton APIs](apis/project/planton/provider), using simple, consistent APIs written
+  in [protobuf](https://protobuf.dev/) and published on the [Buf Schema Registry](https://buf.build/product/bsr) to
+  manage resources across various cloud providers. Essentially, Kubernetes manifests for multi-cloud deployments.
 
-- **Automate with Pulumi Modules**: Benefit
-  from [pre-written pulumi modules](module-git-repos.yaml) which takes
-  [project-planton api](https://buf.build/plantoncloud/project-planton/tree/main:project/planton/provider) manifests as
-  input and handle the heavy lifting of infrastructure provisioning.
+- **Deploy Infrastructure**: Utilize
+  pre-written [Pulumi modules](https://project-planton.org/pulumi-modules) that take
+  your YAML configuration manifests as input and handle the complex infrastructure provisioning. Avoid the complexity of
+  learning intricate deployments with the `project-planton` CLI. The
+  CLI reads your manifest and determines the appropriate [Pulumi module](https://project-planton.org/pulumi-modules) for
+  deployment.
 
-- **ProjectPlanton APIs & Pulumi Modules aware CLI**: Deploy and manage your infrastructure effortlessly with a
-  command-line tool that understands project-planton manifests and also knows which one of
-  the [pre-written pulumi module](module-git-repos.yaml)
-  to execute for the deployment.
-
-**Get Started in 3 Easy Steps:**
-
-1. **Install the CLI Tool**
-
-   ```bash
-   brew install plantoncloud/tap/project-planton
-   ```
+```mermaid
+flowchart TD
+    A[User Defines YAML Manifest] --> B[Project Planton CLI]
+    B --> C[Identify Deployment Component]
+    C --> D[Fetch Corresponding Pulumi Module]
+    D --> E[Execute Pulumi Module]
+    E --> F[Provision Resources on Cloud Provider]
+    F --> G[Infrastructure & Applications Deployed]
+```
 
 2. **Create a YAML Manifest**
 
