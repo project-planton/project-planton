@@ -1,5 +1,9 @@
 # ProjectPlanton
 
+<p align="center">
+  <img src="docs/public/images/logo/logo-full.png" alt="logo-interstellar.gif">
+</p>
+
 Simple, powerful and flexible `Multi-Cloud Deployments` framework with everything you love
 from [Kubernetes Resource Model (KRM)](https://github.com/kubernetes/design-proposals-archive/blob/main/architecture/resource-management.md), [Protobuf](https://protobuf.dev/), [Buf Schema Registry](https://buf.build/product/bsr)
 and [Pulumi](https://github.com/pulumi/pulumi).
@@ -95,104 +99,12 @@ pulumi module.
 
 ## Contributing
 
-We welcome contributions from the community to enhance **Project Planton**. Whether you want to fix bugs, add new
-features, or improve documentation, your efforts are appreciated and will help make this project better for everyone.
-
-### How to Contribute
-
-1. **Fork the Repository**
-
-   Start by forking the [Project Planton GitHub repository](https://github.com/plantoncloud/project-planton) to your own
-   GitHub account.
-
-2. **Clone the Repository**
-
-   Clone your forked repository to your local machine:
-
-   ```bash
-   git clone https://github.com/yourusername/project-planton.git
-   ```
-
-3. **Create a Branch**
-
-   Create a new branch for your feature or bug fix:
-
-   ```bash
-   git checkout -b feature/your-feature-name
-   ```
-
-4. **Make Changes**
-
-    - Implement your changes, following the project's coding standards and guidelines.
-    - Ensure that any new code is well-documented and adheres to the existing style.
-
-5. **Run Tests**
-
-    - Before committing your changes, run existing tests to ensure nothing is broken.
-    - Add new tests if you're introducing new features or modifying existing functionality.
-
-6. **Commit Changes**
-
-   Commit your changes with clear and descriptive messages:
-
-   ```bash
-   git commit -m "Add feature X to improve Y"
-   ```
-
-7. **Push to GitHub**
-
-   Push your branch to your forked repository:
-
-   ```bash
-   git push origin feature/your-feature-name
-   ```
-
-8. **Create a Pull Request**
-
-    - Go to the original repository and click on "New Pull Request."
-    - Select your branch and provide a detailed description of your changes.
-    - Include any relevant issue numbers or context that helps reviewers understand your contribution.
-
-9. **Review Process**
-
-    - Your pull request will be reviewed by the maintainers.
-    - Be prepared to make adjustments based on feedback.
-    - Once approved, your changes will be merged into the main branch.
-
-### Contribution Guidelines
-
-- **Coding Standards**: Follow the established coding conventions and style guides for the project.
-- **Documentation**: Update or add documentation to reflect your changes, especially in code comments and README files.
-- **Commit Messages**: Write clear and concise commit messages that explain the "what" and "why" of your changes.
-- **Issue Reporting**: If you encounter a bug or have a feature request, please open an issue before working on it to
-  discuss the best approach.
-
-### Code of Conduct
-
-By participating in this project, you agree to abide by our [Code of Conduct](CODE-OF-CONDUCT.md), which outlines
-expectations for respectful and collaborative behavior.
-
-### Getting Help
-
-If you need assistance or have questions, feel free to:
-
-- Open an issue on GitHub.
-- Join our community discussions (link to forums, Slack, Discord, etc.).
-- Contact the maintainers directly via email.
+Visit [CONTRIBUTING.md](CONTRIBUTING.md) for information on building ProjectPlanton from source or contributing improvements.
 
 ## License
 
 Project Planton is released under the [Apache 2.0 license](LICENSE). You are free to use, modify,
 and distribute this software in accordance with the license terms.
-
-## Community and Support
-
-We encourage you to join our community and contribute to the project:
-
-- **GitHub Issues**: Report bugs or request new features by opening an issue
-  on [GitHub](https://github.com/plantoncloud/project-planton/issues).
-- **Discussions**: Engage with other users and contributors in
-  our [GitHub Discussions](https://github.com/plantoncloud/project-planton/discussions) forum.
 
 ## Acknowledgments
 
