@@ -1,17 +1,34 @@
 {
-  "name": "site",
-  "packageManager": "yarn@3.6.1",
+  "name": "ProjectPlanton Docs",
+  "license": "MIT",
   "scripts": {
     "dev": "next",
     "build": "next build",
     "start": "next start"
   },
   "dependencies": {
-    "next": "^14.2.14",
+    "@vercel/og": "^0.6.0",
+    "clsx": "^2.0.0",
+    "framer-motion": "^11.0.0",
+    "next": "^14.2.5",
     "nextra": "^3.0.3",
     "nextra-theme-docs": "^3.0.3",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "sharp": "^0.33.0",
     "typescript": "^5.6.2"
-  }
+  },
+  "devDependencies": {
+    "@svgr/webpack": "^8.0.1",
+    "@types/node": "^20.0.0",
+    "@types/react": "^18.2.23",
+    "autoprefixer": "^10.4.16",
+    "postcss": "^8.4.33",
+    "tailwindcss": "^3.4.1",
+    "typescript": "5.6.2"
+  },
+  "browserslist": [
+    ">= .25%",
+    "not dead"
+  ]
 }
