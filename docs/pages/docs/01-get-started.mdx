@@ -1,23 +1,26 @@
-**Get Started in 3 Easy Steps:**
+import { Steps } from 'nextra/components'
 
-1. **Install the CLI Tool**
+### Get Started in 3 Easy Steps
 
-```bash
+<Steps>
+### Install CLI
+
+```shell
 brew install plantoncloud/tap/project-planton
-   ```
+```
 
-2. **Create a YAML Manifest**
+### Create a YAML Manifest
 
-Define your infrastructure in a simple YAML file for any of the
-available [Deployment Components](https://github.com/plantoncloud/project-planton/tree/main/apis/project/planton/provider)
-using familiar Kubernetes-like resources. Here is the example
-for [Redis On Kubernetes](https://github.com/plantoncloud/project-planton/tree/main/apis/project/planton/provider/kubernetes/rediskubernetes/v1)
-deployment component.
+    Define your infrastructure in a simple YAML file for any of the
+    available [Deployment Components](https://github.com/plantoncloud/project-planton/tree/main/apis/project/planton/provider)
+    using familiar Kubernetes-like resources. Here is the example
+    for [Redis On Kubernetes](https://github.com/plantoncloud/project-planton/tree/main/apis/project/planton/provider/kubernetes/rediskubernetes/v1)
+    deployment component.
 
-You can create similar manifests
-for [AWS VPC](https://github.com/plantoncloud/project-planton/tree/main/apis/project/planton/provider/aws/awsvpcv1), [GKE Cluster](https://github.com/plantoncloud/project-planton/tree/main/apis/project/planton/provider/gcp/gkecluster/v1), [Kafka on Kubernetes](https://github.com/plantoncloud/project-planton/tree/main/apis/project/planton/provider/kubernetes/kafkakubernetes/v1)
-or [Kafka On ConfluentCloud](https://github.com/plantoncloud/project-planton/tree/main/apis/project/planton/provider/confluent/kafkaconfluent/v1)
-and [many more](https://github.com/plantoncloud/project-planton/tree/main/apis/project/planton/provider).
+    You can create similar manifests
+    for [AWS VPC](https://github.com/plantoncloud/project-planton/tree/main/apis/project/planton/provider/aws/awsvpcv1), [GKE Cluster](https://github.com/plantoncloud/project-planton/tree/main/apis/project/planton/provider/gcp/gkecluster/v1), [Kafka on Kubernetes](https://github.com/plantoncloud/project-planton/tree/main/apis/project/planton/provider/kubernetes/kafkakubernetes/v1)
+    or [Kafka On ConfluentCloud](https://github.com/plantoncloud/project-planton/tree/main/apis/project/planton/provider/confluent/kafkaconfluent/v1)
+    and [many more](https://github.com/plantoncloud/project-planton/tree/main/apis/project/planton/provider).
 
 ```yaml
 apiVersion: kubernetes.project.planton/v1
@@ -39,17 +42,19 @@ spec:
     diskSize: 1Gi
 ```
 
-3. **Deploy Your Infrastructure**
+### Deploy Your Infrastructure
 
-The above manifest is the input
-for [redis-kubernetes-pulumi-module](https://github.com/plantoncloud/redis-kubernetes-pulumi-module). Running the
-following command will read the manifest and set it up as input for the pulumi module.
+    The above manifest is the input
+    for [redis-kubernetes-pulumi-module](https://github.com/plantoncloud/redis-kubernetes-pulumi-module). Running the
+    following command will read the manifest and set it up as input for the pulumi module.
 
-   ```bash
-   project-planton pulumi up --manifest redis.yaml
-   ```
+    ```bash
+    project-planton pulumi up --manifest redis.yaml
+    ```
 
-![pulumi-up.png](/images/provider/kubernetes/redis/pulumi-up.png)
+    ![pulumi-up.png](/images/provider/kubernetes/redis/pulumi-up.png)
+
+</Steps>
 
 ## How It Works
 
