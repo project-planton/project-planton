@@ -31,12 +31,20 @@ Kubernetes-like declarative configuration. It enables you to:
 ```mermaid
 flowchart TD
     A[User Defines YAML Manifest] --> B[Project Planton CLI]
-    B --> C[Identify Deployment Component]
+    B --> C{Identify Deployment Component}
     C --> D[Fetch Corresponding Pulumi Module]
     D --> E[Execute Pulumi Module]
     E --> F[Provision Resources on Cloud Provider]
     F --> G[Infrastructure & Applications Deployed]
 ```
+
+**Get Started in 3 Easy Steps:**
+
+1. **Install the CLI Tool**
+
+   ```bash
+   brew install plantoncloud/tap/project-planton
+   ```
 
 2. **Create a YAML Manifest**
 
