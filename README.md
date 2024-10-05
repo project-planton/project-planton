@@ -24,11 +24,13 @@ multi-cloud environments. It enables you to:
   across AWS, Azure, GCP, and more.
 
 - **Automate with Pulumi Modules**: Benefit
-  from [pre-written pulumi modules]((https://github.com/orgs/plantoncloud/repositories?q=pulumi-module)) which takes
-  MURM Manifests as input and handle the heavy lifting of infrastructure provisioning.
+  from [pre-written pulumi modules](module-git-repos.yaml) which takes
+  [project-planton api](https://buf.build/plantoncloud/project-planton/tree/main:project/planton/provider) manifests as
+  input and handle the heavy lifting of infrastructure provisioning.
 
 - **ProjectPlanton APIs & Pulumi Modules aware CLI**: Deploy and manage your infrastructure effortlessly with a
-  command-line tool that understands project-planton manifests and also knows which one of the pre-written pulumi module
+  command-line tool that understands project-planton manifests and also knows which one of
+  the [pre-written pulumi module](module-git-repos.yaml)
   to execute for the deployment.
 
 **Get Started in 3 Easy Steps:**
@@ -42,7 +44,8 @@ multi-cloud environments. It enables you to:
 2. **Create a YAML Manifest**
 
    Example manifest
-   for deploying [Redis On Kubernetes](https://github.com/plantoncloud/project-planton/tree/main/apis/project/planton/provider/kubernetes/rediskubernetes/v1)
+   for
+   deploying [Redis On Kubernetes](https://github.com/plantoncloud/project-planton/tree/main/apis/project/planton/provider/kubernetes/rediskubernetes/v1)
    deployment component.
 
    You can create similar manifests
@@ -73,7 +76,9 @@ spec:
 3. **Deploy Your Infrastructure**
 
 The above manifest is the input
-for [redis-kubernetes-pulumi-module](https://github.com/plantoncloud/redis-kubernetes-pulumi-module). Running `project-planton pulumi up` command will read the manifest and set it up as input for the pulumi module and also run the pulumi module.
+for [redis-kubernetes-pulumi-module](https://github.com/plantoncloud/redis-kubernetes-pulumi-module). Running
+`project-planton pulumi up` command will read the manifest and set it up as input for the pulumi module and also run the
+pulumi module.
 
    ```bash
    project-planton pulumi up --manifest redis.yaml
@@ -185,7 +190,10 @@ We encourage you to join our community and contribute to the project:
 ## Acknowledgments
 
 - **Brian Grant & Kubernetes API team** for their foundational work on the Kubernetes Resource Model.
-- The **[Protobuf Team](https://alpha-t9kmve036m159v8u4una.sandstorm.io/)** for laying the foundation for a powerful language neutral contract definition language.
-- The **[Buf](https://github.com/bufbuild/buf) Team** for their Protobuf tooling—including BSR Docs, BSR SDKs, and ProtoValidate — which collectively democratized protobuf adoption and made this project possible.
-- The **[Pulumi](https://github.com/pulumi/pulumi)** team for providing a powerful infrastructure as code platform that enables multi-language support.
+- The **[Protobuf Team](https://alpha-t9kmve036m159v8u4una.sandstorm.io/)** for laying the foundation for a powerful
+  language neutral contract definition language.
+- The **[Buf](https://github.com/bufbuild/buf) Team** for their Protobuf tooling—including BSR Docs, BSR SDKs, and
+  ProtoValidate — which collectively democratized protobuf adoption and made this project possible.
+- The **[Pulumi](https://github.com/pulumi/pulumi)** team for providing a powerful infrastructure as code platform that
+  enables multi-language support.
 - The **[spf13/cobra](https://github.com/spf13/cobra)** team for making building command line tools a bliss.
