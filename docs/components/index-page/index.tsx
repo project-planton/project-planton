@@ -4,7 +4,9 @@ import { motion } from 'framer-motion'
 import Image from 'next/image'
 import { Link } from 'nextra-theme-docs'
 import manifestsCardDark from 'public/images/landing/manifests-dark.png'
+import pulumiCodeDark from 'public/images/landing/pulumi-code-block.png'
 import manifestsCard from 'public/images/landing/manifests-light.png'
+import pulumiUpCard from 'public/images/landing/pulumi-up.png'
 import styles from './index.module.css'
 
 export const IndexPage = () => (
@@ -273,7 +275,7 @@ export const IndexPage = () => (
                         large
                         centered
                         id="docs-card"
-                        href="/docs/docs-theme/start"
+                        href="/docs/core-tenets-01-config-as-data"
                     >
                         <Image src={manifestsCard} alt="Background" loading="eager"/>
                         <Image src={manifestsCardDark} alt="Background (Dark)" loading="eager"/>
@@ -281,224 +283,19 @@ export const IndexPage = () => (
                             Everything is a Simple Manifest
                         </h3>
                     </Feature>
-                    <Feature index={1} centered href="/docs/guide/image">
+                    <Feature index={1} centered href="/docs/core-tenets-02-pulumi-modules">
                         <h3>
-                            Links and images are <br className="show-on-mobile"/>
-                            always <span className="font-light">optimized</span>
+                            Pulumi Modules <br className="show-on-mobile"/>
+                            <span className="font-light">for all Deployment Components</span>
                         </h3>
                         <p className="text-left mb-8">
-                            Nextra automatically converts Markdown links and images to use{' '}
-                            <Link href="https://nextjs.org/docs/routing/introduction#linking-between-pages">
-                                Next.js Link
+                            Every API Resource has a well-written and customizable{' '}
+                            <Link href="https://github.com/orgs/plantoncloud/repositories?q=pulumi-module">
+                                Pulumi Module
                             </Link>{' '}
-                            and{' '}
-                            <Link href="https://nextjs.org/docs/basic-features/image-optimization#local-images">
-                                Next.js Image
-                            </Link>{' '}
-                            when possible. No slow navigation or layout shift.
+                            configured as default.
                         </p>
-                        <div>
-                            <div className={styles.optimization}>
-                                <div style={{fontSize: '.9rem'}} className="leading-8">
-                                    <code>[Learn more](/more)</code>
-                                    <br/>
-                                    <code>![Hero](/hero.png)</code>
-                                </div>
-                            </div>
-                            <ArrowRightIcon
-                                width="1.2em"
-                                className="text-neutral-400 rotate-90 my-6 mx-auto"
-                            />
-                            <div className={styles.optimization}>
-                                <div style={{fontSize: '.9rem'}} className="leading-8">
-                                    <code>{'<Link .../>'}</code>
-                                    <br/>
-                                    <code>{'<Image .../>'}</code>
-                                </div>
-                            </div>
-                        </div>
-                    </Feature>
-                    <Feature
-                        index={2}
-                        id="highlighting-card"
-                        href="/docs/guide/syntax-highlighting"
-                    >
-                        <h3>
-                            Advanced syntax <br className="show-on-mobile"/>
-                            highlighting solution
-                        </h3>
-                        <p>
-                            Performant and reliable build-time syntax highlighting powered by{' '}
-                            <Link href="https://shiki.style">Shiki</Link>.
-                        </p>
-                    </Feature>
-                    <Feature index={3} href="/docs/guide/i18n">
-                        <h3>
-                            I18n as easy as <br className="show-on-mobile"/>
-                            creating new files
-                        </h3>
-                        <p className="mb-4">
-                            Name your page files with locales suffixed, Nextra and Next.js
-                            will do the rest for you.
-                        </p>
-                    </Feature>
-                    <Feature
-                        index={4}
-                        centered
-                        style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            backgroundImage: 'url(/assets/gradient-bg.jpeg)',
-                            backgroundSize: 'cover',
-                            backgroundPosition: 'center',
-                            color: '#fff'
-                        }}
-                        href="/docs/guide/markdown"
-                    >
-                        <svg
-                            width="70%"
-                            viewBox="0 0 69 29"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                            style={{
-                                filter: 'drop-shadow(0 2px 10px rgba(0, 0, 0, .1))'
-                            }}
-                        >
-                            <path
-                                fillRule="evenodd"
-                                clipRule="evenodd"
-                                d="M66.375 0.375H2.625C1.38236 0.375 0.375 1.38236 0.375 2.625V25.875C0.375 27.1176 1.38236 28.125 2.625 28.125H66.375C67.6176 28.125 68.625 27.1176 68.625 25.875V2.625C68.625 1.38236 67.6176 0.375 66.375 0.375ZM23.625 5.75368V9.375V21.875H20.625V12.9963L16.1857 17.4357L15.125 18.4963L14.0643 17.4357L9.75 13.1213V22H6.75V9.5V5.87868L9.31066 8.43934L15.125 14.2537L21.0643 8.31434L23.625 5.75368ZM29.5607 12.5643L33.75 16.7537V5.375H36.75V16.7537L40.9393 12.5643L43.0607 14.6857L36.3107 21.4357L35.25 22.4963L34.1893 21.4357L27.4393 14.6857L29.5607 12.5643ZM62.3105 19.5592L56.1228 13.3736L62.4357 7.06066L60.3143 4.93934L54.0011 11.2526L47.6855 4.93916L45.5645 7.06084L51.8798 13.3739L45.6893 19.5643L47.8107 21.6857L54.0014 15.4949L60.1895 21.6808L62.3105 19.5592Z"
-                                fill="#fff"
-                            />
-                        </svg>
-                        <p
-                            style={{
-                                textShadow: '0 2px 4px rgb(0 0 0 / 20%)'
-                            }}
-                        >
-                            <Link href="https://mdxjs.com/blog/v3" className="text-current">
-                                MDX 3
-                            </Link>{' '}
-                            lets you use Components inside Markdown,{' '}
-                            <br className="hide-medium"/>
-                            with huge performance boost since v1.
-                        </p>
-                    </Feature>
-                    <Feature
-                        index={5}
-                        centered
-                        className="feat-darkmode"
-                        style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center'
-                        }}
-                    >
-                        <motion.div
-                            animate={{
-                                backgroundPosition: [
-                                    '0% 0%',
-                                    '50% 40%',
-                                    '50% 40%',
-                                    '100% 100%'
-                                ],
-                                backgroundImage: [
-                                    'radial-gradient(farthest-corner, #e2e5ea, #e2e5ea)',
-                                    'radial-gradient(farthest-corner, #06080a, #e2e5ea)',
-                                    'radial-gradient(farthest-corner, #06080a, #e2e5ea)',
-                                    'radial-gradient(farthest-corner, #e2e5ea, #e2e5ea)'
-                                ]
-                            }}
-                            transition={{
-                                backgroundPosition: {
-                                    times: [0, 0.5, 0.5, 1],
-                                    repeat: Infinity,
-                                    duration: 10,
-                                    delay: 1
-                                },
-                                backgroundImage: {
-                                    times: [0, 0.2, 0.8, 1],
-                                    repeat: Infinity,
-                                    duration: 10,
-                                    delay: 1
-                                }
-                            }}
-                            style={{
-                                position: 'absolute',
-                                top: 0,
-                                left: 0,
-                                width: '100%',
-                                height: '100%',
-                                backgroundImage:
-                                    'radial-gradient(farthest-corner, #06080a, #e2e5ea)',
-                                backgroundSize: '400% 400%',
-                                backgroundRepeat: 'no-repeat'
-                            }}
-                        />
-                        <motion.h3
-                            animate={{
-                                color: ['#dae5ff', '#fff', '#fff', '#dae5ff']
-                            }}
-                            transition={{
-                                color: {
-                                    times: [0.25, 0.35, 0.7, 0.8],
-                                    repeat: Infinity,
-                                    duration: 10,
-                                    delay: 1
-                                }
-                            }}
-                            style={{
-                                position: 'relative',
-                                mixBlendMode: 'difference'
-                            }}
-                        >
-                            Dark <br/>
-                            mode <br/>
-                            included
-                        </motion.h3>
-                    </Feature>
-                    <Feature
-                        index={6}
-                        large
-                        id="search-card"
-                        href="/docs/docs-theme/theme-configuration#search"
-                    >
-                        <div style={{zIndex: 2}}>
-                            <h3>
-                                Full-text search, <br/>
-                                zero-config needed
-                            </h3>
-                            <p>
-                                Nextra indexes your content automatically at build-time and
-                                performs incredibly fast full-text search via{' '}
-                                <Link href="https://github.com/nextapps-de/flexsearch">
-                                    FlexSearch
-                                </Link>
-                                .
-                            </p>
-                        </div>
-                        <div
-                            className="absolute size-full inset-0 hidden sm:block bg-[linear-gradient(to_right,white_250px,_transparent)] dark:bg-[linear-gradient(to_right,#202020_250px,_transparent)] z-[1]"/>
-                        <video
-                            autoPlay
-                            loop
-                            muted
-                            playsInline
-                            className="nextra-focus dark:hidden block"
-                        >
-                            <source src="/assets/search.mp4" type="video/mp4"/>
-                        </video>
-                        <video
-                            autoPlay
-                            loop
-                            muted
-                            playsInline
-                            className="nextra-focus dark:block hidden -translate-x-4"
-                        >
-                            <source src="/assets/search-dark.mp4" type="video/mp4"/>
-                        </video>
+                        <Image src={pulumiCodeDark} alt="Background (Dark)" loading="eager"/>
                     </Feature>
                     <Feature
                         index={7}
@@ -507,7 +304,7 @@ export const IndexPage = () => (
                         style={{
                             color: 'white',
                             backgroundImage:
-                                'url(/assets/routing.png), url(/assets/gradient-bg.jpeg)',
+                                'url(/images/landing/pulumi-up.png), url(/images/landing/cli-tie-bg.png)',
                             backgroundSize: '140%, 180%',
                             backgroundPosition: '130px -8px, top',
                             backgroundRepeat: 'no-repeat',
@@ -517,61 +314,242 @@ export const IndexPage = () => (
                         href="/docs/docs-theme/page-configuration"
                     >
                         <h3>
-                            Organize pages intuitively, <br/>
-                            with file-system routing from Next.js
+                            A CLI ties it all, <br/>
+                            to deliver the Magic!!
                         </h3>
                     </Feature>
                     <Feature
                         index={8}
-                        id="a11y-card"
                         style={{
                             backgroundSize: 750,
                             backgroundRepeat: 'no-repeat',
                             minHeight: 288
                         }}
                     >
-                        <h3>A11y as a top priority</h3>
+                        <h3>Opinionated only at API</h3>
                         <p>
-                            Nextra respects system options <br className="show-on-mobile"/>
-                            such as <b>Increase Contrast</b> and <b>Reduce Motion</b>.
+                            ProjectPlanton avoids unneeded abstractions <br className="show-on-mobile"/>
+                             for <b>Maximum Customizability</b> and <b>Flexibility</b>.
                         </p>
                     </Feature>
-                    <Feature index={9} href="/docs/guide/ssg">
-                        <h3>
-                            Hybrid rendering, <br/>
-                            next generation
-                        </h3>
-                        <p className="mr-6">
-                            You can leverage the hybrid rendering power from Next.js with your
-                            Markdown content including{' '}
-                            <Link href="https://nextjs.org/docs/basic-features/pages#static-generation-recommended">
-                                SSG
-                            </Link>
-                            ,{' '}
-                            <Link href="https://nextjs.org/docs/basic-features/pages#server-side-rendering">
-                                SSR
-                            </Link>
-                            , and{' '}
-                            <Link
-                                href="https://nextjs.org/docs/basic-features/data-fetching/incremental-static-regeneration">
-                                ISR
-                            </Link>
-                            .
-                        </p>
-                    </Feature>
-                    <Feature index={10} large>
-                        <h3>And more...</h3>
-                        <p>
-                            SEO / RTL Layout / Pluggable Themes / Built-in Components / Last
-                            Git Edit Time / Multi-Docs...
-                            <br/>A lot of new possibilities to be explored.
-                        </p>
-                        <p className="subtitle">
-                            <Link className="no-underline" href="/docs">
-                                Start using Nextra →
-                            </Link>
-                        </p>
-                    </Feature>
+                    {/*<Feature*/}
+                    {/*    index={2}*/}
+                    {/*    id="highlighting-card"*/}
+                    {/*    href="/docs/core-tenets-03-cli"*/}
+                    {/*>*/}
+                    {/*    <h3>*/}
+                    {/*        Advanced syntax <br className="show-on-mobile"/>*/}
+                    {/*        highlighting solution*/}
+                    {/*    </h3>*/}
+                    {/*    <p>*/}
+                    {/*        Performant and reliable build-time syntax highlighting powered by{' '}*/}
+                    {/*        <Link href="https://shiki.style">Shiki</Link>.*/}
+                    {/*    </p>*/}
+                    {/*</Feature>*/}
+                    {/*<Feature index={3} href="/docs/guide/i18n">*/}
+                    {/*    <h3>*/}
+                    {/*        I18n as easy as <br className="show-on-mobile"/>*/}
+                    {/*        creating new files*/}
+                    {/*    </h3>*/}
+                    {/*    <p className="mb-4">*/}
+                    {/*        Name your page files with locales suffixed, Nextra and Next.js*/}
+                    {/*        will do the rest for you.*/}
+                    {/*    </p>*/}
+                    {/*</Feature>*/}
+                    {/*<Feature*/}
+                    {/*    index={4}*/}
+                    {/*    centered*/}
+                    {/*    style={{*/}
+                    {/*        display: 'flex',*/}
+                    {/*        flexDirection: 'column',*/}
+                    {/*        alignItems: 'center',*/}
+                    {/*        justifyContent: 'center',*/}
+                    {/*        backgroundImage: 'url(/assets/gradient-bg.jpeg)',*/}
+                    {/*        backgroundSize: 'cover',*/}
+                    {/*        backgroundPosition: 'center',*/}
+                    {/*        color: '#fff'*/}
+                    {/*    }}*/}
+                    {/*    href="/docs/guide/markdown"*/}
+                    {/*>*/}
+                    {/*    <svg*/}
+                    {/*        width="70%"*/}
+                    {/*        viewBox="0 0 69 29"*/}
+                    {/*        fill="none"*/}
+                    {/*        xmlns="http://www.w3.org/2000/svg"*/}
+                    {/*        style={{*/}
+                    {/*            filter: 'drop-shadow(0 2px 10px rgba(0, 0, 0, .1))'*/}
+                    {/*        }}*/}
+                    {/*    >*/}
+                    {/*        <path*/}
+                    {/*            fillRule="evenodd"*/}
+                    {/*            clipRule="evenodd"*/}
+                    {/*            d="M66.375 0.375H2.625C1.38236 0.375 0.375 1.38236 0.375 2.625V25.875C0.375 27.1176 1.38236 28.125 2.625 28.125H66.375C67.6176 28.125 68.625 27.1176 68.625 25.875V2.625C68.625 1.38236 67.6176 0.375 66.375 0.375ZM23.625 5.75368V9.375V21.875H20.625V12.9963L16.1857 17.4357L15.125 18.4963L14.0643 17.4357L9.75 13.1213V22H6.75V9.5V5.87868L9.31066 8.43934L15.125 14.2537L21.0643 8.31434L23.625 5.75368ZM29.5607 12.5643L33.75 16.7537V5.375H36.75V16.7537L40.9393 12.5643L43.0607 14.6857L36.3107 21.4357L35.25 22.4963L34.1893 21.4357L27.4393 14.6857L29.5607 12.5643ZM62.3105 19.5592L56.1228 13.3736L62.4357 7.06066L60.3143 4.93934L54.0011 11.2526L47.6855 4.93916L45.5645 7.06084L51.8798 13.3739L45.6893 19.5643L47.8107 21.6857L54.0014 15.4949L60.1895 21.6808L62.3105 19.5592Z"*/}
+                    {/*            fill="#fff"*/}
+                    {/*        />*/}
+                    {/*    </svg>*/}
+                    {/*    <p*/}
+                    {/*        style={{*/}
+                    {/*            textShadow: '0 2px 4px rgb(0 0 0 / 20%)'*/}
+                    {/*        }}*/}
+                    {/*    >*/}
+                    {/*        <Link href="https://mdxjs.com/blog/v3" className="text-current">*/}
+                    {/*            MDX 3*/}
+                    {/*        </Link>{' '}*/}
+                    {/*        lets you use Components inside Markdown,{' '}*/}
+                    {/*        <br className="hide-medium"/>*/}
+                    {/*        with huge performance boost since v1.*/}
+                    {/*    </p>*/}
+                    {/*</Feature>*/}
+                    {/*<Feature*/}
+                    {/*    index={5}*/}
+                    {/*    centered*/}
+                    {/*    className="feat-darkmode"*/}
+                    {/*    style={{*/}
+                    {/*        display: 'flex',*/}
+                    {/*        alignItems: 'center',*/}
+                    {/*        justifyContent: 'center'*/}
+                    {/*    }}*/}
+                    {/*>*/}
+                    {/*    <motion.div*/}
+                    {/*        animate={{*/}
+                    {/*            backgroundPosition: [*/}
+                    {/*                '0% 0%',*/}
+                    {/*                '50% 40%',*/}
+                    {/*                '50% 40%',*/}
+                    {/*                '100% 100%'*/}
+                    {/*            ],*/}
+                    {/*            backgroundImage: [*/}
+                    {/*                'radial-gradient(farthest-corner, #e2e5ea, #e2e5ea)',*/}
+                    {/*                'radial-gradient(farthest-corner, #06080a, #e2e5ea)',*/}
+                    {/*                'radial-gradient(farthest-corner, #06080a, #e2e5ea)',*/}
+                    {/*                'radial-gradient(farthest-corner, #e2e5ea, #e2e5ea)'*/}
+                    {/*            ]*/}
+                    {/*        }}*/}
+                    {/*        transition={{*/}
+                    {/*            backgroundPosition: {*/}
+                    {/*                times: [0, 0.5, 0.5, 1],*/}
+                    {/*                repeat: Infinity,*/}
+                    {/*                duration: 10,*/}
+                    {/*                delay: 1*/}
+                    {/*            },*/}
+                    {/*            backgroundImage: {*/}
+                    {/*                times: [0, 0.2, 0.8, 1],*/}
+                    {/*                repeat: Infinity,*/}
+                    {/*                duration: 10,*/}
+                    {/*                delay: 1*/}
+                    {/*            }*/}
+                    {/*        }}*/}
+                    {/*        style={{*/}
+                    {/*            position: 'absolute',*/}
+                    {/*            top: 0,*/}
+                    {/*            left: 0,*/}
+                    {/*            width: '100%',*/}
+                    {/*            height: '100%',*/}
+                    {/*            backgroundImage:*/}
+                    {/*                'radial-gradient(farthest-corner, #06080a, #e2e5ea)',*/}
+                    {/*            backgroundSize: '400% 400%',*/}
+                    {/*            backgroundRepeat: 'no-repeat'*/}
+                    {/*        }}*/}
+                    {/*    />*/}
+                    {/*    <motion.h3*/}
+                    {/*        animate={{*/}
+                    {/*            color: ['#dae5ff', '#fff', '#fff', '#dae5ff']*/}
+                    {/*        }}*/}
+                    {/*        transition={{*/}
+                    {/*            color: {*/}
+                    {/*                times: [0.25, 0.35, 0.7, 0.8],*/}
+                    {/*                repeat: Infinity,*/}
+                    {/*                duration: 10,*/}
+                    {/*                delay: 1*/}
+                    {/*            }*/}
+                    {/*        }}*/}
+                    {/*        style={{*/}
+                    {/*            position: 'relative',*/}
+                    {/*            mixBlendMode: 'difference'*/}
+                    {/*        }}*/}
+                    {/*    >*/}
+                    {/*        Dark <br/>*/}
+                    {/*        mode <br/>*/}
+                    {/*        included*/}
+                    {/*    </motion.h3>*/}
+                    {/*</Feature>*/}
+                    {/*<Feature*/}
+                    {/*    index={6}*/}
+                    {/*    large*/}
+                    {/*    id="search-card"*/}
+                    {/*    href="/docs/docs-theme/theme-configuration#search"*/}
+                    {/*>*/}
+                    {/*    <div style={{zIndex: 2}}>*/}
+                    {/*        <h3>*/}
+                    {/*            Full-text search, <br/>*/}
+                    {/*            zero-config needed*/}
+                    {/*        </h3>*/}
+                    {/*        <p>*/}
+                    {/*            Nextra indexes your content automatically at build-time and*/}
+                    {/*            performs incredibly fast full-text search via{' '}*/}
+                    {/*            <Link href="https://github.com/nextapps-de/flexsearch">*/}
+                    {/*                FlexSearch*/}
+                    {/*            </Link>*/}
+                    {/*            .*/}
+                    {/*        </p>*/}
+                    {/*    </div>*/}
+                    {/*    <div*/}
+                    {/*        className="absolute size-full inset-0 hidden sm:block bg-[linear-gradient(to_right,white_250px,_transparent)] dark:bg-[linear-gradient(to_right,#202020_250px,_transparent)] z-[1]"/>*/}
+                    {/*    <video*/}
+                    {/*        autoPlay*/}
+                    {/*        loop*/}
+                    {/*        muted*/}
+                    {/*        playsInline*/}
+                    {/*        className="nextra-focus dark:hidden block"*/}
+                    {/*    >*/}
+                    {/*        <source src="/assets/search.mp4" type="video/mp4"/>*/}
+                    {/*    </video>*/}
+                    {/*    <video*/}
+                    {/*        autoPlay*/}
+                    {/*        loop*/}
+                    {/*        muted*/}
+                    {/*        playsInline*/}
+                    {/*        className="nextra-focus dark:block hidden -translate-x-4"*/}
+                    {/*    >*/}
+                    {/*        <source src="/assets/search-dark.mp4" type="video/mp4"/>*/}
+                    {/*    </video>*/}
+                    {/*</Feature>*/}
+                    {/*<Feature index={9} href="/docs/guide/ssg">*/}
+                    {/*    <h3>*/}
+                    {/*        Hybrid rendering, <br/>*/}
+                    {/*        next generation*/}
+                    {/*    </h3>*/}
+                    {/*    <p className="mr-6">*/}
+                    {/*        You can leverage the hybrid rendering power from Next.js with your*/}
+                    {/*        Markdown content including{' '}*/}
+                    {/*        <Link href="https://nextjs.org/docs/basic-features/pages#static-generation-recommended">*/}
+                    {/*            SSG*/}
+                    {/*        </Link>*/}
+                    {/*        ,{' '}*/}
+                    {/*        <Link href="https://nextjs.org/docs/basic-features/pages#server-side-rendering">*/}
+                    {/*            SSR*/}
+                    {/*        </Link>*/}
+                    {/*        , and{' '}*/}
+                    {/*        <Link*/}
+                    {/*            href="https://nextjs.org/docs/basic-features/data-fetching/incremental-static-regeneration">*/}
+                    {/*            ISR*/}
+                    {/*        </Link>*/}
+                    {/*        .*/}
+                    {/*    </p>*/}
+                    {/*</Feature>*/}
+                    {/*<Feature index={10} large>*/}
+                    {/*    <h3>And more...</h3>*/}
+                    {/*    <p>*/}
+                    {/*        SEO / RTL Layout / Pluggable Themes / Built-in Components / Last*/}
+                    {/*        Git Edit Time / Multi-Docs...*/}
+                    {/*        <br/>A lot of new possibilities to be explored.*/}
+                    {/*    </p>*/}
+                    {/*    <p className="subtitle">*/}
+                    {/*        <Link className="no-underline" href="/docs">*/}
+                    {/*            Start using Nextra →*/}
+                    {/*        </Link>*/}
+                    {/*    </p>*/}
+                    {/*</Feature>*/}
                 </Features>
             </div>
         </div>
