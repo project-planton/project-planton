@@ -46,7 +46,9 @@ multi-cloud environments. It enables you to:
    Example manifest
    for
    deploying [Redis On Kubernetes](https://github.com/plantoncloud/project-planton/tree/main/apis/project/planton/provider/kubernetes/rediskubernetes/v1)
-   deployment component.
+   as per
+   the [redis-kubernetes](https://buf.build/plantoncloud/project-planton/file/main:project/planton/provider/kubernetes/rediskubernetes/v1/spec.proto)
+   deployment component
 
    You can create similar manifests
    for [AWS VPC](https://github.com/plantoncloud/project-planton/tree/main/apis/project/planton/provider/aws/awsvpcv1), [GKE Cluster](https://github.com/plantoncloud/project-planton/tree/main/apis/project/planton/provider/gcp/gkecluster/v1), [Kafka on Kubernetes](https://github.com/plantoncloud/project-planton/tree/main/apis/project/planton/provider/kubernetes/kafkakubernetes/v1)
