@@ -83,16 +83,6 @@ that the infrastructure matches the desired specifications.
 6. **Status Reporting**: After deployment, the `status` field in the manifest can be updated to reflect the current
 state of the resources, providing feedback to the user.
 
-```mermaid
-flowchart TD
-    A[User Defines YAML Manifest] --> B[Project Planton CLI]
-    B --> C[Identify Deployment Component]
-    C --> D[Fetch Corresponding Pulumi Module]
-    D --> E[Execute Pulumi Module]
-    E --> F[Provision Resources on Cloud Provider]
-    F --> G[Infrastructure & Applications Deployed]
-```
-
 ## Advantages of This Approach
 
 - **Consistency Across Clouds**: By abstracting cloud-specific details, developers can deploy resources to any supported

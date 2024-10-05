@@ -17,3 +17,14 @@ your YAML configuration manifests as input and handle the complex infrastructure
 learning intricate deployments with the `project-planton` CLI. The
 CLI reads your manifest and determines the appropriate [Pulumi module](https://project-planton.org/pulumi-modules) for
 deployment.
+
+
+```mermaid
+flowchart TD
+    A[User Defines YAML Manifest] --> B[Project Planton CLI]
+    B --> C[Identify Deployment Component]
+    C --> D[Fetch Corresponding Pulumi Module]
+    D --> E[Execute Pulumi Module]
+    E --> F[Provision Resources on Cloud Provider]
+    F --> G[Infrastructure & Applications Deployed]
+```
