@@ -18,17 +18,17 @@ export const IndexPage = () => (
             </h1>
             <p className="subtitle">
                 Built w/ everything you love from{' '}
-                <Link href="https://nextjs.org" className="text-current">
+                <Link href="https://github.com/kubernetes/design-proposals-archive/blob/main/architecture/resource-management.md" className="text-current">
                     Kubernetes Resource Model (KRM)
                 </Link>{' , '}
                 <br className="max-md:hidden"/>
-                <Link href="https://nextjs.org" className="text-current">
+                <Link href="https://protobuf.dev/" className="text-current">
                     Protobuf
                 </Link>{' , '}
-                <Link href="https://nextjs.org" className="text-current">
+                <Link href="https://buf.build/product/bsr" className="text-current">
                     Buf Schema Registry
                 </Link>{' & '}
-                <Link href="https://nextjs.org" className="text-current">
+                <Link href="https://github.com/pulumi/pulumi" className="text-current">
                     Pulumi
                 </Link>
             </p>

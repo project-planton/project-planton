@@ -2708,29 +2708,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ProjectPlanton Docs@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "ProjectPlanton Docs@workspace:."
-  dependencies:
-    "@svgr/webpack": ^8.0.1
-    "@types/node": ^20.0.0
-    "@types/react": ^18.2.23
-    "@vercel/og": ^0.6.0
-    autoprefixer: ^10.4.16
-    clsx: ^2.0.0
-    framer-motion: ^11.0.0
-    next: ^14.2.5
-    nextra: ^3.0.3
-    nextra-theme-docs: ^3.0.3
-    postcss: ^8.4.33
-    react: ^18.2.0
-    react-dom: ^18.2.0
-    sharp: ^0.33.0
-    tailwindcss: ^3.4.1
-    typescript: 5.6.2
-  languageName: unknown
-  linkType: soft
-
 "abbrev@npm:^2.0.0":
   version: 2.0.0
   resolution: "abbrev@npm:2.0.0"
@@ -6840,6 +6817,29 @@ __metadata:
   languageName: node
   linkType: hard
 
+"project-planton@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "project-planton@workspace:."
+  dependencies:
+    "@svgr/webpack": ^8.0.1
+    "@types/node": ^20.0.0
+    "@types/react": ^18.2.23
+    "@vercel/og": ^0.6.0
+    autoprefixer: ^10.4.16
+    clsx: ^2.0.0
+    framer-motion: ^11.0.0
+    next: ^14.2.5
+    nextra: ^3.0.3
+    nextra-theme-docs: ^3.0.3
+    postcss: ^8.4.33
+    react: ^18.2.0
+    react-dom: ^18.2.0
+    sharp: ^0.33.0
+    tailwindcss: ^3.4.1
+    typescript: 5.6.2
+  languageName: unknown
+  linkType: soft
+
 "promise-retry@npm:^2.0.1":
   version: 2.0.1
   resolution: "promise-retry@npm:2.0.1"
@@ -7962,7 +7962,7 @@ __metadata:
 
 "typescript@patch:typescript@5.6.2#~builtin<compat/typescript>":
   version: 5.6.2
-  resolution: "typescript@patch:typescript@npm%3A5.6.2#~builtin<compat/typescript>::version=5.6.2&hash=14eedb"
+  resolution: "typescript@patch:typescript@npm%3A5.6.2#~builtin<compat/typescript>::version=5.6.2&hash=29ae49"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
