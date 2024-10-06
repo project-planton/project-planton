@@ -1,1 +1,67 @@
-Details steps and information about setting up pulumi backend will be explained here.
+import {Callout} from "nextra/components";
+
+Pulumi requires a state backend to manage infrastructure state across deployments. Setting up a state backend is essential for keeping track of infrastructure changes and ensures safe updates.
+Even though you can refer to [Pulumi's official documentation](https://www.pulumi.com/docs/iac/concepts/state-and-backends/) to set it up, we have provided this guide to help you get started easily.
+
+<Callout type="info" emoji="ℹ️">
+    The `project-planton pulumi up` command simply runs the `pulumi up` command internally. There are no additional
+    abstractions provided by ProjectPlanton for this process.
+</Callout>
+
+## Choose Backend Type
+
+Pulumi offers several backend options to store the infrastructure state:
+
+- [**Local File Backend**](https://www.pulumi.com/docs/iac/concepts/state-and-backends/#local-filesystem): Stores the state on your local machine.
+- [**Pulumi Service Backend**]((https://www.pulumi.com/docs/iac/concepts/state-and-backends/#pulumi-cloud-backend)): Pulumi's own managed service to handle state and collaboration features.
+- **Other Cloud Backends**: State can be stored in a cloud storage service such as AWS S3, Google Cloud Storage, or Azure Blob Storage.
+
+For first-time users, it is recommended to use the [Pulumi Service Backend](https://www.pulumi.com/docs/iac/concepts/state-and-backends/#pulumi-cloud-backend) for simplicity and ease of collaboration.
+
+## Create a Pulumi Account
+
+If you choose the **Pulumi Service Backend**:
+
+- Navigate to [Pulumi Signup Page](https://app.pulumi.com/signup).
+- Sign up using your preferred method (GitHub, GitLab, Azure AD, etc.).
+- Once registered, create an organization if you are setting this up for a team.
+
+## Run `pulumi login`
+
+Run the following command to log in to the Pulumi Service Backend:
+
+```shell
+pulumi login
+```
+
+This will open-up the browser and authenticate your session and set up Pulumi to use the service backend.
+
+## Other Cloud Backends
+
+- If you are using a cloud backend, make sure you have created the necessary cloud storage bucket:
+
+- **AWS S3**: Create an S3 bucket and configure access permissions.
+- **Google Cloud Storage**: Create a bucket and set up the appropriate IAM roles.
+- **Azure Blob Storage**: Create a container and set up access permissions.
+
+- Update your Pulumi configuration to point to your cloud backend:
+
+```shell
+pulumi login s3://your-bucket-name
+# or for Google Cloud Storage
+pulumi login gs://your-bucket-name
+# or for Azure Blob Storage
+pulumi login azblob://your-container-name
+  ```
+
+## Conclusion
+
+Once the backend is configured, you can run the command to deploy your infrastructure.
+
+```shell
+project-planton pulumi up
+  ```
+
+<Callout type="info" emoji="ℹ️">
+    Pulumi will use the configured state backend to track the current state of your infrastructure.
+</Callout>
