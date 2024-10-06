@@ -2,6 +2,7 @@ import {
     FilesIcon,
     RowsIcon,
     BoxIcon,
+    GearIcon,
 } from '@components/icons'
 import { Cards } from 'nextra/components'
 
@@ -9,8 +10,13 @@ import { Cards } from 'nextra/components'
 
 <Cards>
     <Cards.Card
+        icon={<GearIcon />}
+        title="API Design"
+        href="/docs/api/design"
+    />
+    <Cards.Card
         icon={<FilesIcon />}
-        title="Documentation"
+        title="API Documentation"
         href="/docs/api/docs"
     />
     <Cards.Card
