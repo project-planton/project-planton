@@ -125,12 +125,12 @@ Expression Language (CEL). This ensures that the configurations adhere to the ex
 deployment.
 
 4. **CLI Execution**: When the user runs the `project-planton` CLI command, the tool performs the following actions:
- - **Module Retrieval**: It identifies the appropriate Pulumi module repository for the specified deployment
+    - **Module Retrieval**: It identifies the appropriate Pulumi module repository for the specified deployment
 component (e.g., a Kubernetes cluster, database service, etc.).
- - **Pulumi Module Execution**: It clones the Pulumi module and passes the manifest and any additional configuration
+    - **Pulumi Module Execution**: It clones the Pulumi module and passes the manifest and any additional configuration
 to it.
- - **State Management**: Users manage the Pulumi state backend, ensuring that state is preserved across deployments.
- - **Provisioning**: The Pulumi module uses the provided configurations to interact with the target cloud providers'
+    - **State Management**: Users manage the Pulumi state backend, ensuring that state is preserved across deployments.
+    - **Provisioning**: The Pulumi module uses the provided configurations to interact with the target cloud providers'
 APIs, provisioning the resources as declared.
 
 5. **Desired State Realization**: Pulumi modules act similarly to Kubernetes controllers but are triggered manually by
