@@ -10,11 +10,12 @@ ProjectPlanton's core API design philosophy centers on providing a **standardize
 ## Declarative Configuration
 
 - **Standard Structure**: Resources are defined using a simplified, standard structure with familiar fields:
-- `apiVersion`
-- `kind`
-- `metadata`
-- `spec`
-- `status`
+    - `apiVersion`
+    - `kind`
+    - `metadata`
+    - `spec`
+    - `status`
+
 - **Desired State Focus**: Developers declare **what** they want to achieve, and Project Planton handles **how** to achieve it.
 
 ## Configuration as Data
@@ -50,8 +51,3 @@ spec:
 
 - **Kubernetes-Like Experience**: By mirroring the Kubernetes API structure, developers familiar with Kubernetes can easily adopt Project Planton without a steep learning curve.
 - **Reduced Complexity**: The standardized approach minimizes the need to learn different APIs for each cloud provider.
-
-## Extensibility & Modularity
-
-- **Custom Resources**: The API design allows for the creation of custom resource definitions, enabling extensibility to meet specific needs.
-- **Separation of Concerns**: Infrastructure definitions are decoupled from implementation, allowing well-crafted Pulumi modules to handle the provisioning logic.
