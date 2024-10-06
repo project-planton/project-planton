@@ -1,2 +1,113 @@
-Deploy Open Source
+Deploying resources on AWS, GCP, or Azure often means learning cloud-specific details like resource hierarchy, network design, and configuration models, which can be a frustrating experience. ProjectPlanton simplifies this by offering a standardized, declarative API architecture and a consistent deployment experience for provisioning various cloud infrastructure components. It provides a higher level of abstraction compared to tools like Terraform and Pulumi, enabling a seamless deployment experience without the hassle of multiple paradigms.
 
+This use case shows how ProjectPlanton makes cloud infrastructure deployment consistent and manageable, giving developers and platform engineers a unified approach without needing to adopt different deployment tools and methods.
+
+**Benefits of Using ProjectPlanton for Cloud Infrastructure**
+
+## Standardized & Declarative APIs
+
+ProjectPlanton's APIs are designed to be standardized and declarative, making it easy to define and deploy infrastructure components across different cloud platforms. Instead of having to learn different tools and configurations for each cloud service, ProjectPlanton uses Kubernetes-like manifests that provide a consistent, user-friendly structure, reducing complexity and speeding up development.
+
+## Consistent Deployment Experience
+
+ProjectPlanton offers consistent deployment experience, no matter what kind of infrastructure you are deploying. Whether it’s a DNS Zone, a Kubernetes cluster, or a virtual network, the deployment workflow remains uniform, reducing the learning curve and increasing productivity. This consistency is similar to what tools like Terraform and Pulumi offer, but ProjectPlanton adds an extra layer of abstraction through unified APIs that make deployments even easier.
+
+## Higher-Level Abstraction
+
+With ProjectPlanton, you don't have to worry about the details of cloud-specific resources or learning the syntax for each provider. Instead, ProjectPlanton provides well-defined APIs that make deployments more intuitive and less error-prone. This additional abstraction layer simplifies the deployment process, making it accessible even for those who may not be experts in cloud infrastructure.
+
+**Example Manifests for Deploying Cloud Infrastructure**
+
+The following examples demonstrate how ProjectPlanton uses consistent API definitions to deploy different cloud infrastructure components.
+
+- **AWS Route53 DNS Zone**:
+
+```yaml
+apiVersion: aws.project.planton/v1
+kind: Route53Zone
+metadata:
+  name: example.com
+spec:
+  records:
+    - name: test-a.example.com.
+      recordType: A
+      values:
+        - 1.1.1.1
+    - name: test-cname.example.com.
+      recordType: CNAME
+      values:
+        - some-other.example.com.
+  ```
+
+- **GCP DNS Zone**:
+
+```yaml
+apiVersion: gcp.project.planton/v1
+kind: GcpDnsZone
+metadata:
+  name: example.com
+spec:
+  projectId: <enter-gcp-project-id>
+  records:
+    - name: test-a.example.com.
+      recordType: A
+      values:
+        - 1.1.1.1
+    - name: test-cname.example.com.
+      recordType: CNAME
+      values:
+        - some-other.example.com.
+  ```
+
+- **GCP GKE Cluster**:
+
+```yaml
+apiVersion: gcp.project.planton/v1
+kind: GkeCluster
+metadata:
+  name: dev-cluster
+spec:
+  clusterProjectId: <enter gcp project id>
+  region: asia-south1
+  zone: asia-south1-a
+  clusterAutoscalingConfig:
+    isEnabled: false
+  kubernetesAddons:
+    isInstallCertManager: true
+    isInstallExternalDns: true
+    isInstallExternalSecrets: true
+    isInstallIstio: true
+    isInstallKafkaOperator: true
+    isInstallPostgresOperator: true
+  nodePools:
+    - machineType: n2-custom-8-8192
+      maxNodeCount: 2
+      minNodeCount: 1
+      name: n2-custom-8-8192
+  ingressDnsDomains:
+    - name: <enter dns domain name>
+      dnsZoneGcpProjectId: <enter-dns-project>
+      isTlsEnabled: true
+  ```
+
+**Comparison with Traditional Alternatives (e.g., Pulumi and Terraform)**:
+
+### Standardization & Abstraction
+
+- **Pulumi and Terraform**: These tools are powerful but require learning different configurations for each cloud provider.
+- **ProjectPlanton**: Provides a higher-level abstraction, reducing complexity by offering consistent APIs for different cloud platforms.
+
+### Declarative Configuration
+
+- **Pulumi and Terraform**: Pulumi uses multiple programming languages, and Terraform has its own syntax, which requires learning and managing new scripts.
+- **ProjectPlanton**: Uses a declarative YAML approach similar to Kubernetes manifests, making it easy to define infrastructure without platform-specific knowledge.
+
+### Default Pulumi Modules for Every Component
+
+- **Pulumi and Terraform**: Users need to either find well-written modules and understand their inputs, or if no well-maintained module is found, write the module from scratch.
+
+- **ProjectPlanton**: Every deployment component has a default Pulumi module. If customizations are required, users can fork the default module and use it as a baseline, making it easier to adapt to specific requirements.
+
+**Summary**:
+
+ProjectPlanton provides a unified, consistent approach to deploying cloud infrastructure across platforms. With its standardized declarative APIs, added abstraction, and consistent deployment workflow, ProjectPlanton makes managing cloud infrastructure easier and more efficient, saving time and reducing complexity. Whether deploying a GKE cluster, an AWS Route53 DNS zone, or any other cloud resource, ProjectPlanton offers a streamlined solution that boosts productivity and minimizes the challenges associated with learning different tools for each cloud provider.

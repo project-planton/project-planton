@@ -1,1 +1,65 @@
-Deploy Open Source
+Serverless functions provide a highly scalable, cost-efficient way to deploy event-driven services without managing the underlying infrastructure. However, deploying serverless functions across multiple platforms like AWS Lambda, Google Cloud Functions, and Azure Functions can be complex due to platform-specific details and configurations. ProjectPlanton provides a consistent, unified framework to deploy serverless functions across different cloud platforms using the same familiar approach it offers for deploying microservices and other infrastructure components. By leveraging ProjectPlanton's APIs, users can deploy serverless functions in a standardized, declarative way, without the hassle of learning unique configurations for each platform.
+
+**Benefits of Using ProjectPlanton for Serverless Deployments**:
+
+## Consistent Deployment
+
+ProjectPlanton abstracts away the complexities of deploying serverless functions to different cloud providers, such as AWS Lambda, Google Cloud Functions, and Azure Functions. Developers can use the same declarative YAML structure to define functions and deploy them consistently, without worrying about the specific requirements of each cloud platform.
+
+## Standardized APIs
+
+ProjectPlanton provides well-defined, standardized APIs for deploying serverless functions. This means that whether you're deploying an AWS Lambda function or a Google Cloud Function, you use the same familiar structure and workflow. This consistency reduces the need for specialized knowledge of each cloud provider, allowing teams to focus on developing and deploying serverless applications without getting bogged down by platform-specific details.
+
+## Extensibility
+
+Similar to how ProjectPlanton handles microservice deployments, serverless functions can be extended to other platforms as well. Currently, the framework supports AWS Lambda and Google Cloud Functions, but it can easily be extended to support other platforms by creating additional APIs. This means ProjectPlanton evolves with your infrastructure needs, providing a flexible, scalable solution for serverless deployments.
+
+**Example Manifest for Deploying an AWS Lambda Function**:
+
+Below is an example of the `AwsLambda` manifest, which illustrates the capabilities offered by ProjectPlanton for deploying serverless functions on AWS. This manifest allows users to configure aspects like environment variables, IAM roles, cloud watch log groups, and more:
+
+```yaml
+apiVersion: aws.project.planton/v1
+kind: AwsLambda
+metadata:
+  name: example-lambda-function
+spec:
+  function:
+    handler: "index.handler"
+    memorySize: 256
+    runtime: "nodejs14.x"
+    timeout: 10
+    variables:
+      ENVIRONMENT: "development"
+      LOG_LEVEL: "info"
+iamRole:
+    cloudwatchLambdaInsightsEnabled: true
+    customIamPolicyArns:
+      - "arn:aws:iam::123456789012:policy/ExamplePolicy"
+    cloudwatchLogGroup:
+      retentionInDays: 14
+```
+
+## Compare
+
+Let's compare ProjectPlanton framework with Traditional Alternatives (e.g., AWS Console, Serverless Framework)
+
+### Standardization & Abstraction
+
+- **AWS Console, Serverless Framework**: Each platform has its own distinct configurations and UI for deploying serverless functions, making the deployment process inconsistent and requiring expertise in multiple tools.
+- **ProjectPlanton**: Provides a unified and abstracted way to deploy serverless functions, using the same declarative approach across all supported cloud providers.
+
+### Simplified Workflow
+
+- **AWS Console, Serverless Framework**: Requires manual configuration for each function, which can be time-consuming and prone to errors.
+- **ProjectPlanton**: Uses Kubernetes-like YAML manifests to define functions, making it easy to automate deployments and integrate with CI/CD pipelines.
+
+### Default Pulumi Modules
+
+- **Pulumi, Serverless Framework**: Users must either find suitable modules for deployment or create them from scratch if none are available.
+- **ProjectPlanton**: Every serverless component has a default Pulumi module. Customizations can be made by forking the default module, providing a quick and straightforward baseline for developers to adapt to their specific needs.
+
+**Summary**:
+
+ProjectPlanton provides a unified, consistent, and simplified approach for deploying serverless functions across multiple cloud providers. By leveraging declarative manifests and standardized APIs, ProjectPlanton eliminates the complexity and inconsistencies associated with traditional serverless deployment methods. Whether deploying AWS Lambda functions, Google Cloud Functions, or any other serverless component, ProjectPlanton offers a streamlined solution that enhances productivity and simplifies the entire deployment process.
+
