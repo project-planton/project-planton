@@ -1,5 +1,8 @@
 export default {
-    'deploy-open-source': 'Deploy OpenSource',
-    'get-started-on-aws': 'Get Started on AWS',
-    'get-started-on-gcp': 'Get Started on GCP',
+    'microservices': 'Microservices',
+    'open-source': 'OpenSource',
+    'cloud-infra': 'Cloud Infrastructure',
+    'serverless': 'Serverless',
+    'managed-services': 'Managed Services',
+    'developer-self-service': 'Developer Self-Service',
 }
