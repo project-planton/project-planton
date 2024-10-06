@@ -1,22 +1,16 @@
 export default {
     index: 'Introduction',
-    'guide': 'Guide',
-    '01-get-started': 'Get Started',
-    '05-key-features': 'Key Features',
-    '06-use-cases': 'Use Cases',
-    '07-compare': 'Compare',
-    '-- Core Tenets': {
+    'guide': '',
+    'api': '',
+    'use-cases': '',
+    'providers': '',
+    '-- More': {
         type: 'separator',
-        title: 'Core Tenets',
+        title: 'More',
     },
-    'core-tenets-00-overview': 'Overview',
-    'core-tenets-01-config-as-data': 'Config as Data',
-    'core-tenets-02-pulumi-modules': 'Pulumi Modules',
-    'core-tenets-03-cli': 'CLI',
-    '-- Providers': {
-        type: 'separator',
-        title: 'Providers'
-    },
-    'provider-gcp': 'GCP',
-    'provider-kubernetes': 'Kubernetes',
+    'buf.build-docs-link': {
+        title: 'API Docs ↗',
+        href: 'https://buf.build/plantoncloud/project-planton/docs',
+        newWindow: true
+    }
 }

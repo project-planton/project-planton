@@ -1,0 +1,46 @@
+import {
+    AwsIcon,
+    GcpIcon,
+    AzureIcon,
+    SnowflakeIcon,
+    KubernetesIcon,
+    AtlasIcon,
+} from '@components/icons/project-planton/providers'
+import { Cards } from 'nextra/components'
+
+# Providers
+
+API Resources have been created to model deployment components for the following providers at the moment. More resources for these providers and new providers will be added over time.
+
+<Cards>
+    <Cards.Card
+        icon={<AwsIcon />}
+        title="Amazon Web Services"
+        href="/docs/providers/aws"
+    />
+    <Cards.Card
+        icon={<GcpIcon />}
+        title="Google Cloud Platform"
+        href="/docs/providers/gcp"
+    />
+    <Cards.Card
+        icon={<AzureIcon />}
+        title="Microsoft Azure"
+        href="/docs/providers/azure"
+    />
+    <Cards.Card
+        icon={<KubernetesIcon />}
+        title="Kubernetes"
+        href="/docs/providers/kubernetes"
+    />
+    <Cards.Card
+        icon={<SnowflakeIcon />}
+        title="Snowflake"
+        href="/docs/providers/snowflake"
+    />
+    <Cards.Card
+        icon={<AtlasIcon />}
+        title="Atlas"
+        href="/docs/providers/mongodb-atlas"
+    />
+</Cards>

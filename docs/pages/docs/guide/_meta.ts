@@ -1,5 +1,5 @@
 export default {
     'pulumi-backend': 'Pulumi Backend',
-    'pulumi-providers': 'Pulumi Providers',
+    'provider-credentials': 'Provider Credentials',
     'github-actions': 'GitHub Actions',
 }

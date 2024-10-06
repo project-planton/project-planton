@@ -1,0 +1,34 @@
+import {
+    CodeIcon,
+    StarsIcon,
+} from '@components/icons'
+import {
+    AwsIcon,
+    GcpIcon,
+} from '@components/icons/project-planton/providers'
+import { Cards } from 'nextra/components'
+
+# Guide
+
+<Cards>
+    <Cards.Card
+        icon={<CodeIcon />}
+        title="Deploy OpenSource"
+        href="/use-cases/open-source"
+    />
+    <Cards.Card
+        icon={<StarsIcon />}
+        title="Microservice Architecture"
+        href="/use-cases/microservice-architecture"
+    />
+    <Cards.Card
+        icon={<AwsIcon />}
+        title="Get Started on AWS"
+        href="/use-cases/get-started-on-aws"
+    />
+    <Cards.Card
+        icon={<GcpIcon />}
+        title="Get Started on GCP"
+        href="/use-cases/get-started-on-gcp"
+    />
+</Cards>
