@@ -13,6 +13,9 @@ const config: DocsThemeConfig = {
             <img src="/images/logo/full-logo-transparent.png" alt="ProjectPlanton Logo" width="300" />
         </div>
     ),
+    nextThemes: {
+      defaultTheme: 'light'
+    },
     head: function useHead() {
         const config = useConfig()
         const {route} = useRouter()

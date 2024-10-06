@@ -1,7 +1,7 @@
 export default {
     index: {
         type: 'page',
-        title: 'Project Planton',
+        title: 'ProjectPlanton',
         display: 'hidden',
         theme: {
             layout: 'raw'

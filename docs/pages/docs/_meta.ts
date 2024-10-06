@@ -1,5 +1,6 @@
 export default {
     index: 'Introduction',
+    'guide': 'Guide',
     '01-get-started': 'Get Started',
     '05-key-features': 'Key Features',
     '06-use-cases': 'Use Cases',
