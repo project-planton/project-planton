@@ -151,19 +151,19 @@ allowing for better planning and coordination.
 
 ## Compare
 
-| Tool                       | Key Features                                                          | ProjectPlanton Advantages                                                                              |
-|----------------------------|-----------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------|
-| **Crossplane**             | Requires Kubernetes Cluster                                           | No Kubernetes dependency: reduces complexity and resources required                                    |
-|                            | Controller-based reconciliation adds operational overhead             | On-demand execution: more control over when and how changes are applied                                |
-|                            | Multi-cloud support but tightly coupled with Kubernetes               | Simplified architecture: no need for continuously running controllers                                  |
-| **GCP Config Connector**   | GCP-specific, manages Google Cloud resources                          | Multi-cloud support: works across various cloud providers, not limited to GCP                          |
-|                            | Requires Kubernetes Cluster                                           | No Kubernetes requirement: operates independently, simplifying deployment and management               |
-| **SST (Serverless Stack)** | AWS-only, focuses on serverless apps                                  | Cloud-agnostic: supports multiple cloud providers for flexibility                                      |
-|                            | Opinionated framework: may not fit all use cases                      | Language flexibility: YAML manifests and Pulumi modules can be written in various languages            |
-|                            | TypeScript only: infrastructure defined in TypeScript                 | Declarative approach: familiar to developers used to Kubernetes Resource Model (KRM)                   |
-| **Cloud Posse**            | AWS-specific Terraform modules                                        | Declarative YAML configuration: promotes readability and ease of use                                   |
-|                            | Terraform-based: uses HCL, steeper learning curve                     | Protocol Buffers and validations: uses Protobuf definitions with Protovalidate and CEL for reliability |
-|                            | Variable-based configuration: can become complex in large deployments | Multi-cloud support: enables deployments across various cloud environments                             |
+| Tool                                                                                | Key Features                                                          | ProjectPlanton Advantages                                                                              |
+|-------------------------------------------------------------------------------------|-----------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------|
+| [**Crossplane**](https://www.crossplane.io/)                                        | Requires Kubernetes Cluster                                           | No Kubernetes dependency: reduces complexity and resources required                                    |
+|                                                                                     | Controller-based reconciliation adds operational overhead             | On-demand execution: more control over when and how changes are applied                                |
+|                                                                                     | Multi-cloud support but tightly coupled with Kubernetes               | Simplified architecture: no need for continuously running controllers                                  |
+| [**GCP Config Connector**](https://cloud.google.com/config-connector/docs/overview) | GCP-specific, manages Google Cloud resources                          | Multi-cloud support: works across various cloud providers, not limited to GCP                          |
+|                                                                                     | Requires Kubernetes Cluster                                           | No Kubernetes requirement: operates independently, simplifying deployment and management               |
+| [**SST**](https://sst.dev/)                                                         | AWS-only, focuses on serverless apps                                  | Cloud-agnostic: supports multiple cloud providers for flexibility                                      |
+|                                                                                     | Opinionated framework: may not fit all use cases                      | Language flexibility: YAML manifests and Pulumi modules can be written in various languages            |
+|                                                                                     | TypeScript only: infrastructure defined in TypeScript                 | Declarative approach: familiar to developers used to Kubernetes Resource Model (KRM)                   |
+| [**Cloud Posse**](https://github.com/cloudposse)                                    | AWS-specific Terraform modules                                        | Declarative YAML configuration: promotes readability and ease of use                                   |
+|                                                                                     | Terraform-based: uses HCL, steeper learning curve                     | Protocol Buffers and validations: uses Protobuf definitions with Protovalidate and CEL for reliability |
+|                                                                                     | Variable-based configuration: can become complex in large deployments | Multi-cloud support: enables deployments across various cloud environments                             |
 
 ## FAQ
 
