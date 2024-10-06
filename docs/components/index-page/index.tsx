@@ -25,8 +25,8 @@ export const IndexPage = () => (
                 <Link href="https://protobuf.dev/" className="text-current">
                     Protobuf
                 </Link>{' , '}
-                <Link href="https://buf.build/product/bsr" className="text-current">
-                    Buf Schema Registry
+                <Link href="https://github.com/bufbuild/buf" className="text-current">
+                    Buf
                 </Link>{' & '}
                 <Link href="https://github.com/pulumi/pulumi" className="text-current">
                     Pulumi

@@ -1,11 +1,14 @@
 export default {
     index: {
-        type: 'page',
-        title: 'Project Planton',
-        display: 'hidden',
+        title: "ProjectPlanton",
+        type: "page",
+        display: "hidden",
         theme: {
-            layout: 'raw'
-        }
+            breadcrumb: false,
+            sidebar: false,
+            footer: false,
+            layout: "raw",
+        },
     },
     docs: {
         type: 'page',

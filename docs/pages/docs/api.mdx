@@ -1,0 +1,26 @@
+import {
+    FilesIcon,
+    RowsIcon,
+    BoxIcon,
+} from '@components/icons'
+import { Cards } from 'nextra/components'
+
+# ProjectPlanton APIs
+
+<Cards>
+    <Cards.Card
+        icon={<FilesIcon />}
+        title="Documentation"
+        href="/docs/api/docs"
+    />
+    <Cards.Card
+        icon={<RowsIcon />}
+        title="Configuration Validation"
+        href="/docs/api/config-validation"
+    />
+    <Cards.Card
+        icon={<BoxIcon />}
+        title="SDKs"
+        href="/docs/api/sdk"
+    />
+</Cards>
