@@ -42,7 +42,6 @@ export function Feature({
         <Link
           className={cn('nextra-focus', styles.link)}
           href={href}
-          target="_blank"
           rel="noreferrer"
         >
           <ArrowRightIcon height="24" />

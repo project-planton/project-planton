@@ -275,7 +275,7 @@ export const IndexPage = () => (
                         large
                         centered
                         id="docs-card"
-                        href="/docs/core-tenets-01-config-as-data"
+                        href="/docs/api/design"
                     >
                         <Image src={manifestsCard} alt="Background" loading="eager"/>
                         <Image src={manifestsCardDark} alt="Background (Dark)" loading="eager"/>

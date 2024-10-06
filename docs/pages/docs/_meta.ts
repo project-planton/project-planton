@@ -3,7 +3,14 @@ export default {
     'guide': '',
     'api': '',
     'use-cases': '',
-    'providers': '',
+    '-- Deploy': {
+        type: 'separator',
+        title: 'Deploy',
+    },
+    'providers': 'Providers',
+    'deploy-aws': 'AWS',
+    'deploy-gcp': 'GCP',
+    'deploy-kubernetes': 'Kubernetes',
     '-- More': {
         type: 'separator',
         title: 'More',

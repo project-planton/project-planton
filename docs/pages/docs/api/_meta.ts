@@ -1,5 +1,6 @@
 export default {
-    docs: 'Documentation',
+    design: 'API Design',
+    docs: 'API Documentation',
     'config-validation': 'Configuration Validation',
     'sdk': 'SDKs',
 }

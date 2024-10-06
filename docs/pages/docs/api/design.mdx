@@ -1,0 +1,57 @@
+**Simplifying Multi-Cloud Infrastructure Deployment with a Standardized, Declarative API**
+
+ProjectPlanton's core API design philosophy centers on providing a **standardized and simplified structure** for defining infrastructure resources, repurposed for seamless multi-cloud deployment. Inspired by the Kubernetes Resource Model (KRM), the API abstracts the complexities of different cloud providers, allowing developers to define their desired infrastructure in a consistent and declarative manner.
+
+## Unified Resource Model (MURM)
+
+- **Consistency Across Clouds**: The API offers a **Multi-Cloud Unified Resource Model (MURM)** that standardizes how resources are defined, regardless of the underlying cloud provider.
+- **Abstraction of Cloud-Specific Details**: By abstracting provider-specific nuances, developers can focus on the desired state of their infrastructure without worrying about implementation details.
+
+## Declarative Configuration
+
+- **Standard Structure**: Resources are defined using a simplified, standard structure with familiar fields:
+- `apiVersion`
+- `kind`
+- `metadata`
+- `spec`
+- `status`
+- **Desired State Focus**: Developers declare **what** they want to achieve, and Project Planton handles **how** to achieve it.
+
+## Configuration as Data
+
+- **Immutable Manifests**: Treats configuration files as immutable data, which can be version-controlled, audited, and shared.
+- **Best Practices Alignment**: Embraces industry best practices by promoting declarative infrastructure and immutable deployments.
+- **YAML Manifests**: Developers write manifests in YAML, using the standard structure to define infrastructure components like databases, clusters, and services.
+- **Unified Definitions**: The `spec` field contains the desired configuration, abstracted from provider-specific implementations.
+
+**Example Manifest Structure:**
+
+```yaml
+apiVersion: gcp.project.planton/v1
+kind: GkeCluster
+metadata:
+  name: my-cluster
+spec:
+  projectId: my-gcp-project
+  region: us-central1
+  nodePools:
+    - name: default-pool
+      machineType: n1-standard-1
+      nodeCount: 3
+```
+
+## Protocol Buffer Definitions
+
+- **Strong Typing and Validation**: Using Protobuf ensures that resource definitions are strongly typed, enabling robust validation and error checking.
+- **Language-Agnostic SDKs**: Protobuf allows for the generation of SDKs in multiple programming languages, facilitating broader adoption and integration.
+- **Versioning and Documentation**: Protobuf schemas are published to the Buf Schema Registry (BSR), aiding in version control and automatic documentation generation.
+
+## Simplification & Familiarity
+
+- **Kubernetes-Like Experience**: By mirroring the Kubernetes API structure, developers familiar with Kubernetes can easily adopt Project Planton without a steep learning curve.
+- **Reduced Complexity**: The standardized approach minimizes the need to learn different APIs for each cloud provider.
+
+## Extensibility & Modularity
+
+- **Custom Resources**: The API design allows for the creation of custom resource definitions, enabling extensibility to meet specific needs.
+- **Separation of Concerns**: Infrastructure definitions are decoupled from implementation, allowing well-crafted Pulumi modules to handle the provisioning logic.
