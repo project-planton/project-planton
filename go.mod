@@ -3,7 +3,7 @@ module github.com/plantoncloud/project-planton
 go 1.23.1
 
 require (
-	buf.build/gen/go/plantoncloud/project-planton/protocolbuffers/go v1.34.2-20241003094048-890f92dd6eb4.2
+	buf.build/gen/go/plantoncloud/project-planton/protocolbuffers/go v1.34.2-20241007155551-8c41b14da4be.2
 	github.com/bufbuild/protovalidate-go v0.7.2
 	github.com/iancoleman/strcase v0.3.0
 	github.com/oklog/ulid/v2 v2.1.0
@@ -24,6 +24,7 @@ require (
 	github.com/google/cel-go v0.21.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/kr/pretty v0.3.1 // indirect
+	github.com/plantoncloud/pulumi-module-golang-commons v0.0.0-20241003135220-d540f3f192f8 // indirect
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
 	github.com/rogpeppe/go-internal v1.12.0 // indirect
 	github.com/stoewer/go-strcase v1.3.0 // indirect

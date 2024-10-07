@@ -2,6 +2,8 @@ buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.34.2-2024092016423
 buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.34.2-20240920164238-5a7b106cbb87.2/go.mod h1:ylS4c28ACSI59oJrOdW4pHS4n0Hw4TgSPHn8rpHl4Yw=
 buf.build/gen/go/plantoncloud/project-planton/protocolbuffers/go v1.34.2-20241003094048-890f92dd6eb4.2 h1:5vl994ZRbCUKd5eFc0tFd5QiGGrFio8YtNyuubdqoVE=
 buf.build/gen/go/plantoncloud/project-planton/protocolbuffers/go v1.34.2-20241003094048-890f92dd6eb4.2/go.mod h1:amr7GkxWn2Soztjf4H6SMO5fYPNc/ODLGMqAcK7S+1I=
+buf.build/gen/go/plantoncloud/project-planton/protocolbuffers/go v1.34.2-20241007155551-8c41b14da4be.2 h1:335UMkYc5KlOEXaR7Cme4RFaCsf6gorXwIwuJ/3JRjs=
+buf.build/gen/go/plantoncloud/project-planton/protocolbuffers/go v1.34.2-20241007155551-8c41b14da4be.2/go.mod h1:amr7GkxWn2Soztjf4H6SMO5fYPNc/ODLGMqAcK7S+1I=
 github.com/antlr4-go/antlr/v4 v4.13.0 h1:lxCg3LAv+EUK6t1i0y1V6/SLeUi0eKEKdhQAlS8TVTI=
 github.com/antlr4-go/antlr/v4 v4.13.0/go.mod h1:pfChB/xh/Unjila75QW7+VU4TSnWnnk9UTnmpPaOR2g=
 github.com/bufbuild/protovalidate-go v0.7.2 h1:UuvKyZHl5p7u3ztEjtRtqtDxOjRKX5VUOgKFq6p6ETk=
@@ -36,6 +38,8 @@ github.com/pborman/getopt v0.0.0-20170112200414-7148bc3a4c30/go.mod h1:85jBQOZwp
 github.com/pkg/diff v0.0.0-20210226163009-20ebb0f2a09e/go.mod h1:pJLUxLENpZxwdsKMEsNbx1VGcRFpLqf3715MtcvvzbA=
 github.com/pkg/errors v0.9.1 h1:FEBLx1zS214owpjy7qsBeixbURkuhQAwrK5UwLGTwt4=
 github.com/pkg/errors v0.9.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
+github.com/plantoncloud/pulumi-module-golang-commons v0.0.0-20241003135220-d540f3f192f8 h1:1QpwISIlOU5wqNzxwVNiJiN9jYWxcleBK0HJbuI3z98=
+github.com/plantoncloud/pulumi-module-golang-commons v0.0.0-20241003135220-d540f3f192f8/go.mod h1:nNMwY4QsXltcCPHgm3LwKOY1HawYV88MONPHagRepM0=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 h1:Jamvg5psRIccs7FGNTlIRMkT8wgtp5eCXdBlqhYGL6U=
 github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
