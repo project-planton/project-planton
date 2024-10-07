@@ -6,7 +6,7 @@ import (
 	"google.golang.org/protobuf/proto"
 )
 
-func OverrideValues(manifestPath string, valueOverrides map[string]string) (proto.Message, error) {
+func LoadWithOverrides(manifestPath string, valueOverrides map[string]string) (proto.Message, error) {
 	manifest, err := LoadManifest(manifestPath)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to load manifest")

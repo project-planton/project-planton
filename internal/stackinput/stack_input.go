@@ -12,7 +12,7 @@ import (
 // and returns a new YAML string with "target" and all the credential keys.
 func BuildStackInputYaml(targetManifestPath string, valueOverrides map[string]string,
 	stackInputOptions credentials.StackInputCredentialOptions) (string, error) {
-	manifestObject, err := manifest.OverrideValues(targetManifestPath, valueOverrides)
+	manifestObject, err := manifest.LoadWithOverrides(targetManifestPath, valueOverrides)
 	if err != nil {
 		return "", errors.Wrapf(err, "failed to override values in target manifest file")
 	}

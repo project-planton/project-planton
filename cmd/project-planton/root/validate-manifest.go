@@ -15,7 +15,7 @@ var ValidateManifest = &cobra.Command{
 	Example: `
 	project-planton validate manifest.yaml
 	`,
-	Args: cobra.ExactArgs(1), //path of the manifest to validate
+	Args: cobra.ExactArgs(1), //path or url of the manifest to validate
 	Run:  validateHandler,
 }
 

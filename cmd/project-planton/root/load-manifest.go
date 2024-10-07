@@ -26,7 +26,7 @@ func loadManifestHandler(cmd *cobra.Command, args []string) {
 	flag.HandleFlagErr(err, flag.Set)
 
 	manifestPath := args[0]
-	updatedManifest, err := manifest.OverrideValues(manifestPath, valueOverrides)
+	updatedManifest, err := manifest.LoadWithOverrides(manifestPath, valueOverrides)
 	if err != nil {
 		log.Fatal(err)
 	}
