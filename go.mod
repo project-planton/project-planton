@@ -6,6 +6,7 @@ require (
 	buf.build/gen/go/plantoncloud/project-planton/protocolbuffers/go v1.34.2-20241003094048-890f92dd6eb4.2
 	github.com/bufbuild/protovalidate-go v0.7.2
 	github.com/iancoleman/strcase v0.3.0
+	github.com/oklog/ulid/v2 v2.1.0
 	github.com/pkg/errors v0.9.1
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/cobra v1.8.1

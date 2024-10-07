@@ -41,3 +41,11 @@ func isDirExists(d string) bool {
 	}
 	return info.IsDir()
 }
+
+func GetManifestDownloadDir() (string, error) {
+	homeDir, err := os.UserHomeDir()
+	if err != nil {
+		return "", errors.Wrap(err, "failed to get home directory")
+	}
+	return filepath.Join(homeDir, ProjectPlantonDir, "downloads"), nil
+}

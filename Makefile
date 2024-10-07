@@ -75,8 +75,8 @@ local: build_darwin
 show-todo:
 	grep -r "TODO:" cmd internal
 
-.PHONY: upload-binaries
-upload-binaries:
+.PHONY: upload-cli-binaries
+upload-cli-binaries:
 	gsutil -h "Cache-Control:no-cache" cp build/${name}-linux gs://${gcs_bucket}/cli/${version}/${name}-${version}-linux
 	gsutil -h "Cache-Control:no-cache" cp build/${name}-darwin-amd64 gs://${gcs_bucket}/cli/${version}/${name}-${version}-amd64
 	gsutil -h "Cache-Control:no-cache" cp build/${name}-darwin-arm64 gs://${gcs_bucket}/cli/${version}/${name}-${version}-arm64
@@ -91,10 +91,10 @@ release-github:
 	git push origin ${version}
 
 .PHONY: release
-release: build upload-binaries release-buf release-github
+release: build-apis release-buf update-cli-deps build-cli upload-cli-binaries release-github
 
-.PHONY: update-deps
-update-deps:
+.PHONY: update-cli-deps
+update-cli-deps:
 	go get buf.build/gen/go/plantoncloud/project-planton/protocolbuffers/go@latest
 	go get github.com/plantoncloud/pulumi-module-golang-commons
 
