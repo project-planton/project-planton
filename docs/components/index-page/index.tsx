@@ -1,12 +1,9 @@
 import { Feature, Features } from '@components/features'
-import { ArrowRightIcon } from '@components/icons'
-import { motion } from 'framer-motion'
 import Image from 'next/image'
 import { Link } from 'nextra-theme-docs'
 import manifestsCardDark from 'public/images/landing/manifests-dark.png'
 import pulumiCodeDark from 'public/images/landing/pulumi-code-block.png'
 import manifestsCard from 'public/images/landing/manifests-light.png'
-import pulumiUpCard from 'public/images/landing/pulumi-up.png'
 import styles from './index.module.css'
 
 export const IndexPage = () => (

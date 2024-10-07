@@ -1,0 +1,39 @@
+# ProjectPlanton
+
+Modern software typically consists of three major elements:
+
+- **Services**: APIs and web apps built using frameworks like Next.js.
+- **Third-Party Dependencies**: Open-source software such as Redis, PostgreSQL, Kafka, and more, which services depend on.
+- **Infrastructure**: Components to host the software and its third-party dependencies, often provided by cloud providers like AWS, GCP, or Azure.
+
+ProjectPlanton brings together all three types of components into a single, cohesive deployment framework that can operate seamlessly on any cloud platform. The goal is to simplify the deployment journey for developers and DevOps teams alike, enabling a consistent experience, no matter the cloud provider.
+
+ProjectPlanton was built with a simple yet ambitious vision: to bring consistency and efficiency to the deployment of cloud-native software components across multiple environments. Whether deploying services, third-party open-source software, or the underlying infrastructure itself, ProjectPlanton provides a unified framework that standardizes deployments across cloud providers like AWS, GCP, and Azure.
+
+## Chapter 1: The APIs
+
+The Kubernetes success story has been an inspiration for ProjectPlanton. Kubernetes' resource model (KRM) is a familiar paradigm for the tech industry, using YAML manifests to describe deployments. Given Kubernetes' popularity, it made sense to use the same structure—apiVersion, kind, metadata, spec, and status—as the foundation for ProjectPlanton's APIs. This decision ensured that developers wouldn't need to learn a new interface but could instead build on something they were already comfortable with.
+
+However, rather than using Kubernetes' OpenAPI-based API standards, ProjectPlanton chose Protocol Buffers (Protobuf) combined with buf tooling. Protobuf, especially with buf's modern tooling, provides significant advantages, such as enhanced code generation capabilities. These APIs, unlike Kubernetes' often complex abstractions, were designed to be developer-friendly and straightforward, providing a higher level of abstraction specifically suited to deploying different components.
+
+This **new abstraction layer** is the first pillar of the ProjectPlanton Multi-Cloud Deployment Framework, providing consistency and simplicity across different environments.
+
+## Chapter II: The IaC
+
+The Kubernetes approach, where controllers translate configuration into actual resources, served as a model for ProjectPlanton's infrastructure as code (IaC) layer. ProjectPlanton relies on Pulumi to act as its "controller" equivalent. Pulumi is well-suited for this task because it supports multiple programming languages, and buf's remote code generation capabilities integrate smoothly with Pulumi's multi-language support. This integration enables a client-only counterpart of Kubernetes controllers—handling everything from desired state to reconciliation.
+
+In this model, **pulumi-modules** act as the reconciliation logic of Kubernetes controllers, taking care of resource creation and updates. Just like Kubernetes abstracts users from the underlying complexities, ProjectPlanton ensures that developers don't need to understand or create Pulumi modules. Instead, every deployment component defined in ProjectPlanton's API has a corresponding default Pulumi module, simplifying deployments to their core.
+
+## Chapter III: The CLI
+
+To complete the framework, ProjectPlanton needed a simple way for users to submit their configuration and trigger deployments—much like Kubernetes uses `kubectl`. The `project-planton` CLI was created for this purpose. Its primary function is to allow users to deploy their components using the configuration defined in their manifests.
+
+When users run `project-planton pulumi up --manifest <manifest.yaml>`, the CLI reads the manifest, understands the API resource kind, locates the corresponding default Pulumi module, and delegates the action to Pulumi. By keeping the command simple and easy to use, ProjectPlanton lowers the barrier to entry and makes deployments accessible to everyone.
+
+## Core Design Philosophy
+
+One of the core design philosophies behind ProjectPlanton was to avoid unnecessary abstractions. The focus was on providing simplicity and power without creating a steep learning curve. This philosophy allows DevOps engineers to write Pulumi modules without restrictions, while developers can deploy components without needing to understand the underlying complexities. The framework avoids abstracting essential aspects like Pulumi backend setup or cloud provider credentials, leaving those responsibilities to the user—ensuring flexibility without compromising on simplicity.
+
+## Summary
+
+ProjectPlanton is a powerful framework designed to simplify and standardize multi-cloud deployments for modern software. By leveraging Kubernetes-like APIs, Pulumi-based infrastructure management, and an intuitive CLI, ProjectPlanton brings consistency across services, third-party dependencies, and infrastructure components. Built with the developer experience in mind, ProjectPlanton is transforming the way teams manage cloud-native deployments, making them easier, faster, and more efficient.

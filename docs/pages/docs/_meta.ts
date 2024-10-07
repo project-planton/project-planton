@@ -1,6 +1,7 @@
 export default {
     index: 'Introduction',
     'guide': '',
+    'cli': 'CLI',
     'api': '',
     'use-cases': '',
     '-- Deploy': {
