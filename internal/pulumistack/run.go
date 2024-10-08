@@ -4,6 +4,7 @@ import (
 	"buf.build/gen/go/plantoncloud/project-planton/protocolbuffers/go/project/planton/shared/pulumi"
 	"fmt"
 	"github.com/pkg/errors"
+	"github.com/plantoncloud/project-planton/internal/manifest"
 	"github.com/plantoncloud/project-planton/internal/pulumimodule"
 	"github.com/plantoncloud/project-planton/internal/stackinput"
 	"github.com/plantoncloud/project-planton/internal/stackinput/credentials"
@@ -19,7 +20,17 @@ func Run(moduleDir, stackFqdn, targetManifestPath string, pulumiOperation pulumi
 		opt(&opts)
 	}
 
-	pulumiModuleRepoPath, err := pulumimodule.GetPath(moduleDir, stackFqdn, targetManifestPath)
+	manifestObject, err := manifest.LoadWithOverrides(targetManifestPath, valueOverrides)
+	if err != nil {
+		return errors.Wrapf(err, "failed to override values in target manifest file")
+	}
+
+	kindName, err := manifest.ExtractKindFromProto(manifestObject)
+	if err != nil {
+		return errors.Wrapf(err, "failed to extract kind name from manifest proto")
+	}
+
+	pulumiModuleRepoPath, err := pulumimodule.GetPath(moduleDir, stackFqdn, kindName)
 	if err != nil {
 		return errors.Wrapf(err, "failed to get pulumi-module directory")
 	}
@@ -29,7 +40,7 @@ func Run(moduleDir, stackFqdn, targetManifestPath string, pulumiOperation pulumi
 		return errors.Wrapf(err, "failed to extract project name from %s stack fqdn", stackFqdn)
 	}
 
-	stackInputYamlContent, err := stackinput.BuildStackInputYaml(targetManifestPath, valueOverrides, opts)
+	stackInputYamlContent, err := stackinput.BuildStackInputYaml(manifestObject, opts)
 	if err != nil {
 		return errors.Wrap(err, "failed to build stack input yaml")
 	}

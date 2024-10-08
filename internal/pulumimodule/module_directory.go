@@ -3,24 +3,18 @@ package pulumimodule
 import (
 	"github.com/pkg/errors"
 	"github.com/plantoncloud/project-planton/internal/fileutil"
-	"github.com/plantoncloud/project-planton/internal/manifest"
 	"github.com/plantoncloud/project-planton/internal/workspace"
 	"os"
 	"os/exec"
 )
 
-func GetPath(moduleDir string, stackFqdn, targetManifestPath string) (string, error) {
+func GetPath(moduleDir string, stackFqdn, kindName string) (string, error) {
 	isPulumiModuleDir, err := IsPulumiModuleDirectory(moduleDir)
 	if err != nil {
 		return "", errors.Wrapf(err, "failed to check if %s is a valid pulumi module directory", moduleDir)
 	}
 	if isPulumiModuleDir {
 		return moduleDir, nil
-	}
-
-	kindName, err := manifest.ExtractKindFromTargetManifest(targetManifestPath)
-	if err != nil {
-		return "", errors.Wrapf(err, "failed to extract kind from %s stack input yaml", targetManifestPath)
 	}
 
 	stackWorkspaceDir, err := workspace.GetWorkspaceDir(stackFqdn)

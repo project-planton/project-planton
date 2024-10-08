@@ -6,6 +6,8 @@ Modern `Cloud-Native` Software uses:
 2. **Third-Party Open Source Software**: Dependencies such as [Redis](https://redis.io/), [PostgreSQL](https://www.postgresql.org/), [Solr](https://solr.apache.org/), [Kafka](https://kafka.apache.org/), and more.
 3. **Infrastructure**: Components to host the software and its third-party dependencies, typically provided by cloud providers like [AWS](https://aws.amazon.com/), [GCP](https://cloud.google.com/), or [Azure](https://azure.microsoft.com/). The infrastructure components required depend on the choice of cloud provider. For example, on AWS, you might use VPC, EC2 instances, or a container orchestrator like Kubernetes, ECS, or Fargate, Route53 zones, S3 buckets, etc. On GCP, it could be Cloud DNS Zone, GCS Bucket, GKE Cluster, Compute instances, and more.
 
+![cloud-native-components.png](/images/about/cloud-native-components.png)
+
 Deploying components of all three categories is a requirement to make the software available to its target users. There are several ways to deploy these components.
 
 ProjectPlanton is a new framework created with the purpose of streamlining the deployment process to bring a consistent experience when deploying components of all three types, and even retaining consistency across cloud providers.
