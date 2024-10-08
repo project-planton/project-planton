@@ -2,20 +2,16 @@ package stackinput
 
 import (
 	"github.com/pkg/errors"
-	"github.com/plantoncloud/project-planton/internal/manifest"
 	"github.com/plantoncloud/project-planton/internal/stackinput/credentials"
 	"google.golang.org/protobuf/encoding/protojson"
+	"google.golang.org/protobuf/proto"
 	"gopkg.in/yaml.v3"
 )
 
 // BuildStackInputYaml reads two YAML files, combines their contents,
 // and returns a new YAML string with "target" and all the credential keys.
-func BuildStackInputYaml(targetManifestPath string, valueOverrides map[string]string,
+func BuildStackInputYaml(manifestObject proto.Message,
 	stackInputOptions credentials.StackInputCredentialOptions) (string, error) {
-	manifestObject, err := manifest.LoadWithOverrides(targetManifestPath, valueOverrides)
-	if err != nil {
-		return "", errors.Wrapf(err, "failed to override values in target manifest file")
-	}
 
 	var targetContentMap map[string]interface{}
 	targetContent, err := protojson.Marshal(manifestObject)
