@@ -52,9 +52,9 @@ export const IndexPage = () => (
                     </Link>
                 </p>
             </div>
-            <div className="video-container">
+            {/* <div className="video-container">
                 <YouTubeEmbed videoId="rbdMs56uGNI?si=MlGaV1xZukYlYmpX" />
-            </div>
+            </div> */}
         </div>
         <style jsx>{`
             .grid-box {
