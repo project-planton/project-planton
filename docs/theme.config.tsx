@@ -9,7 +9,7 @@ const config: DocsThemeConfig = {
   docsRepositoryBase: 'https://github.com/plantoncloud/project-planton/tree/main/docs',
     logo: (
         <div className="flex flex-row items-center">
-            <img src="/images/logo/full-logo-transparent.png" alt="ProjectPlanton Logo" width="300" />
+            <img src="/images/logo/header-logo.png" alt="ProjectPlanton Logo" width="300" />
         </div>
     ),
     nextThemes: {

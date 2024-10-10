@@ -6,36 +6,66 @@ import pulumiCodeDark from 'public/images/landing/pulumi-code-block.png'
 import manifestsCard from 'public/images/landing/manifests-light.png'
 import styles from './index.module.css'
 
+
+const YouTubeEmbed = ({ videoId }) => {
+    return (
+        <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, overflow: 'hidden', maxWidth: '100%', background: '#000', borderRadius: '1.5rem' }}>
+            <iframe
+                src={`https://www.youtube.com/embed/${videoId}`}
+                style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                title="Embedded YouTube"
+            />
+        </div>
+    );
+};
+
 export const IndexPage = () => (
     <div className="home-content">
-        <div className="content-container">
-            <h1 className="headline">
-                OpenSource Multi-Cloud <br className="sm:block hidden"/>
-                Deployment Framework
-            </h1>
-            <p className="subtitle">
-                Built w/ everything you love from{' '}
-                <Link href="https://github.com/kubernetes/design-proposals-archive/blob/main/architecture/resource-management.md" className="text-current">
-                    Kubernetes Resource Model (KRM)
-                </Link>{' , '}
-                <br className="max-md:hidden"/>
-                <Link href="https://protobuf.dev/" className="text-current">
-                    Protobuf
-                </Link>{' , '}
-                <Link href="https://github.com/bufbuild/buf" className="text-current">
-                    Buf
-                </Link>{' & '}
-                <Link href="https://github.com/pulumi/pulumi" className="text-current">
-                    Pulumi
-                </Link>
-            </p>
-            <p className="subtitle">
-                <Link className={styles.cta} href="/docs">
-                    Get started <span>→</span>
-                </Link>
-            </p>
+        <div className="content-container grid-box">
+            <div>
+                <h1 className="headline">
+                    OpenSource Multi-Cloud <br className="sm:block hidden"/>
+                    Deployment Framework
+                </h1>
+                <p className="subtitle">
+                    Built w/ everything you love from{' '}
+                    <Link href="https://github.com/kubernetes/design-proposals-archive/blob/main/architecture/resource-management.md" className="text-current">
+                        Kubernetes Resource Model (KRM)
+                    </Link>{' , '}
+                    <br className="max-md:hidden"/>
+                    <Link href="https://protobuf.dev/" className="text-current">
+                        Protobuf
+                    </Link>{' , '}
+                    <Link href="https://github.com/bufbuild/buf" className="text-current">
+                        Buf
+                    </Link>{' & '}
+                    <Link href="https://github.com/pulumi/pulumi" className="text-current">
+                        Pulumi
+                    </Link>
+                </p>
+                <p className="subtitle">
+                    <Link className={styles.cta} href="/docs">
+                        Get started <span>→</span>
+                    </Link>
+                </p>
+            </div>
+            <div className="video-container">
+                <YouTubeEmbed videoId="rbdMs56uGNI?si=MlGaV1xZukYlYmpX" />
+            </div>
         </div>
         <style jsx>{`
+            .grid-box {
+                display: flex;
+                justify-content: space-between;
+            }
+            .video-container {
+                width: 40%;
+                margin: auto 0;
+                margin-top: 4rem;
+            }
             .content-container {
                 max-width: 90rem;
                 padding-left: max(env(safe-area-inset-left), 1.5rem);
