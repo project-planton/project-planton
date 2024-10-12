@@ -71,7 +71,7 @@ spec:
 
 # Example 4: Grafana with Environment Secrets
 
-The below example assumes that secrets are managed by Planton Cloud’s [GCP Secrets Manager](https://buf.build/plantoncloud/planton-cloud-apis/docs/main:cloud.planton.apis.code2cloud.v1.gcp.gcpsecretsmanager) deployment module.
+The below example assumes that secrets are managed by Planton Cloud’s [GCP Secrets Manager](https://buf.build/project-planton/apis/docs/main:cloud.planton.apis.code2cloud.v1.gcp.gcpsecretsmanager) deployment module.
 
 ```yaml
 apiVersion: kubernetes.project.planton/v1

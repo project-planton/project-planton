@@ -317,7 +317,7 @@ export const IndexPage = () => (
                         </h3>
                         <p className="text-left mb-8">
                             Every API Resource has a well-written and customizable{' '}
-                            <Link href="https://github.com/orgs/plantoncloud/repositories?q=pulumi-module">
+                            <Link href="https://github.com/orgs/project-planton/repositories?q=pulumi-module">
                                 Pulumi Module
                             </Link>{' '}
                             configured as default.

@@ -56,7 +56,7 @@ In this example, replace the placeholders like `${AWS_CREDENTIAL_ID}` with your 
 
 # Example with Environment Secrets
 
-The below example assumes that the secrets are managed by Planton Cloud's [AWS Secrets Manager](https://buf.build/plantoncloud/planton-cloud-apis/docs/main:cloud.planton.apis.code2cloud.v1.aws.awssecretsmanager) deployment module.
+The below example assumes that the secrets are managed by Planton Cloud's [AWS Secrets Manager](https://buf.build/project-planton/apis/docs/main:cloud.planton.apis.code2cloud.v1.aws.awssecretsmanager) deployment module.
 
 ```yaml
 apiVersion: aws.project.planton/v1

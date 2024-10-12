@@ -50,7 +50,7 @@ spec:
 
 ## Example with Environment Secrets
 
-*Note: This example assumes that secrets are managed by Planton Cloud's [GCP Secrets Manager](https://buf.build/plantoncloud/planton-cloud-apis/docs/main:cloud.planton.apis.code2cloud.v1.gcp.gcpsecretsmanager) deployment module.*
+*Note: This example assumes that secrets are managed by Planton Cloud's [GCP Secrets Manager](https://buf.build/project-planton/apis/docs/main:cloud.planton.apis.code2cloud.v1.gcp.gcpsecretsmanager) deployment module.*
 
 ### Create using CLI
 
