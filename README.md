@@ -45,7 +45,7 @@ flowchart TD
 1. **Install the CLI Tool**
 
    ```bash
-   brew install plantoncloud/tap/project-planton
+   brew install project-planton/tap/cli
    ```
 
 2. **Create a YAML Manifest**
