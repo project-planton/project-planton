@@ -4,9 +4,9 @@ import { useConfig } from 'nextra-theme-docs'
 
 const config: DocsThemeConfig = {
   project: {
-    link: 'https://github.com/plantoncloud/project-planton'
+    link: 'https://github.com/project-planton/project-planton'
   },
-  docsRepositoryBase: 'https://github.com/plantoncloud/project-planton/tree/main/docs',
+  docsRepositoryBase: 'https://github.com/project-planton/project-planton/tree/main/docs',
     logo: (
         <div className="flex flex-row items-center">
             <img src="/images/logo/header-logo.png" alt="ProjectPlanton Logo" width="300" />

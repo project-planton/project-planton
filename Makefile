@@ -2,7 +2,7 @@ version?=v0.0.1
 name=project-planton
 gcs_bucket=project-planton-downloads
 name_local=project-planton
-pkg=github.com/plantoncloud/project-planton
+pkg=github.com/project-planton/project-planton
 build_dir=build
 LDFLAGS=-ldflags "-X ${pkg}/internal/cli/version.Version=${version}"
 
@@ -96,7 +96,7 @@ release: build-apis release-buf update-cli-deps build-cli upload-cli-binaries re
 .PHONY: update-cli-deps
 update-cli-deps:
 	go get buf.build/gen/go/plantoncloud/project-planton/protocolbuffers/go@latest
-	go get github.com/plantoncloud/pulumi-module-golang-commons
+	go get github.com/project-planton/pulumi-module-golang-commons
 
 .PHONY: run-docs
 run-docs:

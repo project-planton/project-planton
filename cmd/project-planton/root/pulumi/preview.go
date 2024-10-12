@@ -2,9 +2,9 @@ package pulumi
 
 import (
 	"buf.build/gen/go/plantoncloud/project-planton/protocolbuffers/go/project/planton/shared/pulumi"
-	"github.com/plantoncloud/project-planton/internal/cli/flag"
-	"github.com/plantoncloud/project-planton/internal/pulumistack"
-	"github.com/plantoncloud/project-planton/internal/stackinput/credentials"
+	"github.com/project-planton/project-planton/internal/cli/flag"
+	"github.com/project-planton/project-planton/internal/pulumistack"
+	"github.com/project-planton/project-planton/internal/stackinput/credentials"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )

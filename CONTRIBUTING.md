@@ -10,7 +10,7 @@ Please make sure to read and observe our [Contributor Code of Conduct](CODE-OF-C
 ## Communications
 
 You are welcome to join the [Discord Server](https://discord.gg/pwcSapdQAp) for questions and a community of like-minded folks.
-We discuss features and file bugs on GitHub via [Issues](https://github.com/plantoncloud/project-planton/issues) as well as [Discussions](https://github.com/plantoncloud/project-planton/discussions).
+We discuss features and file bugs on GitHub via [Issues](https://github.com/project-planton/project-planton/issues) as well as [Discussions](https://github.com/project-planton/project-planton/discussions).
 
 We welcome contributions from the community to enhance **Project Planton**. Whether you want to fix bugs, add new
 features, or improve documentation, your efforts are appreciated and will help make this project better for everyone.
@@ -19,7 +19,7 @@ features, or improve documentation, your efforts are appreciated and will help m
 
 1. **Fork the Repository**
 
-   Start by forking the [Project Planton GitHub repository](https://github.com/plantoncloud/project-planton) to your own
+   Start by forking the [Project Planton GitHub repository](https://github.com/project-planton/project-planton) to your own
    GitHub account.
 
 2. **Clone the Repository**
@@ -89,6 +89,6 @@ features, or improve documentation, your efforts are appreciated and will help m
 We encourage you to join our community and contribute to the project:
 
 - **GitHub Issues**: Report bugs or request new features by opening an issue
-  on [GitHub](https://github.com/plantoncloud/project-planton/issues).
+  on [GitHub](https://github.com/project-planton/project-planton/issues).
 - **Discussions**: Engage with other users and contributors in
-  our [GitHub Discussions](https://github.com/plantoncloud/project-planton/discussions) forum.
+  our [GitHub Discussions](https://github.com/project-planton/project-planton/discussions) forum.

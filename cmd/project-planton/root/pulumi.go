@@ -1,8 +1,8 @@
 package root
 
 import (
-	"github.com/plantoncloud/project-planton/cmd/project-planton/root/pulumi"
-	"github.com/plantoncloud/project-planton/internal/cli/flag"
+	"github.com/project-planton/project-planton/cmd/project-planton/root/pulumi"
+	"github.com/project-planton/project-planton/internal/cli/flag"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"os"

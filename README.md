@@ -52,15 +52,15 @@ flowchart TD
 
    Example manifest
    for
-   deploying [Redis On Kubernetes](https://github.com/plantoncloud/project-planton/tree/main/apis/project/planton/provider/kubernetes/rediskubernetes/v1)
+   deploying [Redis On Kubernetes](https://github.com/project-planton/project-planton/tree/main/apis/project/planton/provider/kubernetes/rediskubernetes/v1)
    as per
-   the [redis-kubernetes](https://buf.build/plantoncloud/project-planton/file/main:project/planton/provider/kubernetes/rediskubernetes/v1/spec.proto)
+   the [redis-kubernetes](https://buf.build/project-planton/apis/file/main:project/planton/provider/kubernetes/rediskubernetes/v1/spec.proto)
    deployment component
 
    You can create similar manifests
-   for [AWS VPC](https://github.com/plantoncloud/project-planton/tree/main/apis/project/planton/provider/aws/awsvpcv1), [GKE Cluster](https://github.com/plantoncloud/project-planton/tree/main/apis/project/planton/provider/gcp/gkecluster/v1), [Kafka on Kubernetes](https://github.com/plantoncloud/project-planton/tree/main/apis/project/planton/provider/kubernetes/kafkakubernetes/v1)
-   or [Kafka On ConfluentCloud](https://github.com/plantoncloud/project-planton/tree/main/apis/project/planton/provider/confluent/kafkaconfluent/v1)
-   and [many more](https://github.com/plantoncloud/project-planton/tree/main/apis/project/planton/provider).
+   for [AWS VPC](https://github.com/project-planton/project-planton/tree/main/apis/project/planton/provider/aws/awsvpcv1), [GKE Cluster](https://github.com/project-planton/project-planton/tree/main/apis/project/planton/provider/gcp/gkecluster/v1), [Kafka on Kubernetes](https://github.com/project-planton/project-planton/tree/main/apis/project/planton/provider/kubernetes/kafkakubernetes/v1)
+   or [Kafka On ConfluentCloud](https://github.com/project-planton/project-planton/tree/main/apis/project/planton/provider/confluent/kafkaconfluent/v1)
+   and [many more](https://github.com/project-planton/project-planton/tree/main/apis/project/planton/provider).
 
 ```yaml
 apiVersion: kubernetes.project.planton/v1
@@ -85,7 +85,7 @@ spec:
 3. **Deploy Your Infrastructure**
 
 The above manifest is the input
-for [redis-kubernetes-pulumi-module](https://github.com/plantoncloud/redis-kubernetes-pulumi-module). Running
+for [redis-kubernetes-pulumi-module](https://github.com/project-planton/redis-kubernetes-pulumi-module). Running
 `project-planton pulumi up` command will read the manifest and set it up as input for the pulumi module and also run the
 pulumi module.
 

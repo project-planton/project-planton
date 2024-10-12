@@ -2,7 +2,7 @@ package pulumimodule
 
 import (
 	"github.com/pkg/errors"
-	"github.com/plantoncloud/project-planton/internal/manifest"
+	"github.com/project-planton/project-planton/internal/manifest"
 	"gopkg.in/yaml.v3"
 	"io"
 	"net/http"

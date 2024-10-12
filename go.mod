@@ -1,4 +1,4 @@
-module github.com/plantoncloud/project-planton
+module github.com/project-planton/project-planton
 
 go 1.23.1
 

@@ -2,7 +2,7 @@ package stackinput
 
 import (
 	"github.com/pkg/errors"
-	"github.com/plantoncloud/project-planton/internal/stackinput/credentials"
+	"github.com/project-planton/project-planton/internal/stackinput/credentials"
 )
 
 func addCredentials(stackInputContentMap map[string]interface{},

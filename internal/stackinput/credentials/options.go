@@ -2,7 +2,7 @@ package credentials
 
 import (
 	"github.com/pkg/errors"
-	"github.com/plantoncloud/project-planton/internal/cli/flag"
+	"github.com/project-planton/project-planton/internal/cli/flag"
 	"github.com/spf13/pflag"
 )
 

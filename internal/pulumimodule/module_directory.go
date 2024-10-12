@@ -2,8 +2,8 @@ package pulumimodule
 
 import (
 	"github.com/pkg/errors"
-	"github.com/plantoncloud/project-planton/internal/fileutil"
-	"github.com/plantoncloud/project-planton/internal/workspace"
+	"github.com/project-planton/project-planton/internal/fileutil"
+	"github.com/project-planton/project-planton/internal/workspace"
 	"os"
 	"os/exec"
 )

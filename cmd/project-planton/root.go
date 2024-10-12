@@ -2,7 +2,7 @@ package project_planton
 
 import (
 	"fmt"
-	"github.com/plantoncloud/project-planton/cmd/project-planton/root"
+	"github.com/project-planton/project-planton/cmd/project-planton/root"
 	"github.com/spf13/cobra"
 	"os"
 )

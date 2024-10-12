@@ -18,7 +18,7 @@ export default {
     },
     'buf.build-docs-link': {
         title: 'API Docs ↗',
-        href: 'https://buf.build/plantoncloud/project-planton/docs',
+        href: 'https://buf.build/project-planton/apis/docs',
         newWindow: true
     }
 }

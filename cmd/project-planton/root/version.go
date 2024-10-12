@@ -2,7 +2,7 @@ package root
 
 import (
 	"fmt"
-	"github.com/plantoncloud/project-planton/internal/cli/version"
+	"github.com/project-planton/project-planton/internal/cli/version"
 
 	"github.com/spf13/cobra"
 )
