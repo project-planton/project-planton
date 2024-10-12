@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	DownloadUrl = "https://raw.githubusercontent.com/project-planton/project-planton/ca48cc8be896bd51d398f13f5bbb541d72cb334a/module-git-repos.yaml"
+	DownloadUrl = "https://raw.githubusercontent.com/project-planton/project-planton/b1337e0a5084f3afbf8015dd08884861b5e19ad1/module-git-repos.yaml"
 )
 
 type DefaultPulumiModules struct {
