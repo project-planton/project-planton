@@ -95,7 +95,7 @@ release: build-apis release-buf update-cli-deps build-cli upload-cli-binaries re
 
 .PHONY: update-cli-deps
 update-cli-deps:
-	go get buf.build/gen/go/plantoncloud/project-planton/protocolbuffers/go@latest
+	go get buf.build/gen/go/project-planton/apis/protocolbuffers/go@latest
 	go get github.com/project-planton/pulumi-module-golang-commons
 
 .PHONY: run-docs

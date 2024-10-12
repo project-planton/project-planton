@@ -3,7 +3,7 @@ module github.com/project-planton/project-planton
 go 1.23.1
 
 require (
-	buf.build/gen/go/plantoncloud/project-planton/protocolbuffers/go v1.34.2-20241007155551-8c41b14da4be.2
+	buf.build/gen/go/project-planton/apis/protocolbuffers/go v1.35.1-20241012091823-fbe6fb0746f9.1
 	github.com/bufbuild/protovalidate-go v0.7.2
 	github.com/iancoleman/strcase v0.3.0
 	github.com/oklog/ulid/v2 v2.1.0
@@ -12,13 +12,13 @@ require (
 	github.com/spf13/cobra v1.8.1
 	github.com/spf13/pflag v1.0.5
 	github.com/stretchr/testify v1.9.0
-	google.golang.org/protobuf v1.34.2
+	google.golang.org/protobuf v1.35.1
 	gopkg.in/yaml.v3 v3.0.1
 	sigs.k8s.io/yaml v1.4.0
 )
 
 require (
-	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.34.2-20240920164238-5a7b106cbb87.2 // indirect
+	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.35.1-20240920164238-5a7b106cbb87.1 // indirect
 	github.com/antlr4-go/antlr/v4 v4.13.0 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/google/cel-go v0.21.0 // indirect
