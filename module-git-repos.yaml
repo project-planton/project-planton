@@ -12,6 +12,7 @@ aws:
   aws-vpc: https://github.com/project-planton/aws-vpc-pulumi-module.git
   eks-cluster: https://github.com/project-planton/eks-cluster-pulumi-module.git
   route53-zone: https://github.com/project-planton/route53-zone-pulumi-module.git
+  s3-bucket: https://github.com/project-planton/s3-bucket-pulumi-module.git
 
 confluent:
   confluent-kafka: https://github.com/project-planton/confluent-kafka-pulumi-module.git
