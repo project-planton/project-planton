@@ -57,11 +57,6 @@ message MicroserviceKubernetes {
       id: "spec.kubernetes_cluster_credential_id",
       message: "Kubernetes Cluster Credential Id is mandatory",
       expression: "has(this.kubernetes_cluster_credential_id)"
-    },
-    (buf.validate.field).cel = {
-      id: "spec.docker_credential_id",
-      message: "Docker Credential Id is mandatory",
-      expression: "has(this.docker_credential_id)"
     }
   ];
 
