@@ -50,6 +50,7 @@ import (
 	stackjobrunnerkubernetesv1 "buf.build/gen/go/project-planton/apis/protocolbuffers/go/project/planton/provider/kubernetes/stackjobrunnerkubernetes/v1"
 	snowflakedatabasev1 "buf.build/gen/go/project-planton/apis/protocolbuffers/go/project/planton/provider/snowflake/snowflakedatabase/v1"
 	"google.golang.org/protobuf/proto"
+	"strings"
 )
 
 type DeploymentComponent string
@@ -141,4 +142,24 @@ var providerKubernetesMap = map[DeploymentComponent]proto.Message{
 	"signoz-kubernetes":           &signozkubernetesv1.SignozKubernetes{},
 	"solr-kubernetes":             &solrkubernetesv1.SolrKubernetes{},
 	"stack-job-runner-kubernetes": &stackjobrunnerkubernetesv1.StackJobRunnerKubernetes{},
+}
+
+// sanitizeString removes hyphens, spaces, and underscores, and converts the string to lowercase
+func sanitizeString(str string) string {
+	str = strings.ToLower(str)
+	str = strings.ReplaceAll(str, "-", "")
+	str = strings.ReplaceAll(str, " ", "")
+	str = strings.ReplaceAll(str, "_", "")
+	return str
+}
+
+func FindMatchingComponent(input string) DeploymentComponent {
+	sanitizedInput := sanitizeString(input)
+	for key, _ := range DeploymentComponentMap {
+		sanitizedKey := sanitizeString(string(key))
+		if sanitizedKey == sanitizedInput {
+			return key
+		}
+	}
+	return ""
 }

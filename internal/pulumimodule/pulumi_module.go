@@ -2,14 +2,14 @@ package pulumimodule
 
 import (
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/internal/manifest"
 	"gopkg.in/yaml.v3"
 	"io"
 	"net/http"
+	"strings"
 )
 
 const (
-	DownloadUrl = "https://raw.githubusercontent.com/project-planton/project-planton/b1337e0a5084f3afbf8015dd08884861b5e19ad1/module-git-repos.yaml"
+	DownloadUrl = "https://raw.githubusercontent.com/project-planton/project-planton/6f050fbdff8580150cf396da581b1566a198531e/module-git-repos.yaml"
 )
 
 type DefaultPulumiModules struct {
@@ -55,26 +55,26 @@ func downloadModuleInfo(url string) (DefaultPulumiModules, error) {
 	return modules, nil
 }
 
-func getCloneUrlFromModules(modules DefaultPulumiModules, kindName string) (string, error) {
-	formattedKindName := manifest.ConvertKindName(kindName)
+func normalizeString(s string) string {
+	return strings.ReplaceAll(strings.ReplaceAll(strings.ToLower(strings.TrimSpace(s)), "_", ""), "-", "")
+}
 
-	if url, found := modules.Atlas[formattedKindName]; found {
-		return url, nil
-	}
-	if url, found := modules.Aws[formattedKindName]; found {
-		return url, nil
-	}
-	if url, found := modules.Confluent[formattedKindName]; found {
-		return url, nil
-	}
-	if url, found := modules.Gcp[formattedKindName]; found {
-		return url, nil
-	}
-	if url, found := modules.Kubernetes[formattedKindName]; found {
-		return url, nil
-	}
-	if url, found := modules.Snowflake[formattedKindName]; found {
-		return url, nil
+func getCloneUrlFromModules(modules DefaultPulumiModules, kindName string) (string, error) {
+	normalizedKindName := normalizeString(kindName)
+
+	for _, moduleMap := range []map[string]string{
+		modules.Atlas,
+		modules.Aws,
+		modules.Confluent,
+		modules.Gcp,
+		modules.Kubernetes,
+		modules.Snowflake,
+	} {
+		for key, url := range moduleMap {
+			if normalizeString(key) == normalizedKindName {
+				return url, nil
+			}
+		}
 	}
 
 	return "", errors.New("clone url not found for the provided kind name")

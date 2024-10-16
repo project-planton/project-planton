@@ -42,7 +42,7 @@ func LoadManifest(manifestPath string) (proto.Message, error) {
 		return nil, errors.Wrapf(err, "failed to extract kind from %s stack input yaml", manifestPath)
 	}
 
-	manifest := DeploymentComponentMap[DeploymentComponent(ConvertKindName(kindName))]
+	manifest := DeploymentComponentMap[FindMatchingComponent(ConvertKindName(kindName))]
 
 	if manifest == nil {
 		return nil, errors.Errorf("deployment-component does not contain %s", ConvertKindName(kindName))
