@@ -80,13 +80,9 @@ message ElasticsearchKubernetesKibanaContainer {
   //defaults to "false".
   bool is_enabled = 1;
   //number of kibana pods.
-  int32 replicas = 2 [
-    (buf.validate.field).required = true
-  ];
+  int32 replicas = 2;
 
   //kibana container cpu and memory resources.
   //recommended default "cpu-requests: 50m, memory-requests: 256Mi, cpu-limits: 1, memory-limits: 1Gi"
-  project.planton.shared.kubernetes.ContainerResources resources = 3 [
-    (buf.validate.field).required = true
-  ];
+  project.planton.shared.kubernetes.ContainerResources resources = 3;
 }
