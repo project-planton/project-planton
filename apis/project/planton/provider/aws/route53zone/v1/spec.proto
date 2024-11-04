@@ -4,20 +4,9 @@ package project.planton.provider.aws.route53zone.v1;
 
 import "buf/validate/validate.proto";
 import "project/planton/shared/networking/enums/dnsrecordtype/dns_record_type.proto";
-import "project/planton/shared/pulumi/pulumi.proto";
-import "project/planton/shared/shared.proto";
 
 // Specification for the Route53 Zone
 message Route53ZoneSpec {
-  //environment-info
-  project.planton.shared.ApiResourceEnvironmentInfo environment_info = 99;
-
-  //stack-job settings
-  project.planton.shared.pulumi.StackJobSettings stack_job_settings = 98;
-
-  //aws-credential-id to be used for setting up aws-provider in stack-job
-  string aws_credential_id = 97;
-
   // The DNS records that are added to the Zone.
   repeated Route53DnsRecord records = 1;
 }

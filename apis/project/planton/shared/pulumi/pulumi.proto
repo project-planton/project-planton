@@ -45,35 +45,3 @@ message PulumiGitRepo {
   //git-auth for pulumi-module private git-repositories
   project.planton.credential.gitcredential.v1.GitCredentialSpec auth = 5;
 }
-
-//stack-job-settings for api-resource
-message StackJobSettings {
-  //stack-jobs will always require a manual approval before starting execution.
-  //this is useful when automatic running of pulumi operations on state changes is not desirable.
-  //this control is different from 'is_disabled_on_lifecycle_events' in the sense that a new stack-job is
-  //created on lifecycle events but waits for manual approval to begin executing.
-  bool is_manual = 1;
-  //disable stack-jobs on api-resource lifecycle events i.e create, update, delete and restore
-  //new stack-jobs can still be created by invoking createStackJob rpc
-  bool is_disabled_on_lifecycle_events = 2;
-  // id of pulumi-backend-credential to be used to store state for api-resource's pulumi-stack state
-  string pulumi_backend_credential_id = 3;
-  //stack-job id-runner to be used to run stack-jobs
-  string stack_job_runner_id = 4;
-  //key value pairs to configure custom-inputs for the stack-job which are not included in the api-resource spec
-  map<string, string> custom_inputs = 5;
-  //skip refresh for preview, update and destroy steps.
-  //defaults to false.
-  //refresh is always executed for all stack-jobs unless disabled.
-  bool skip_refresh = 6;
-  //always run preview step for update or destroy.
-  //defaults to true.
-  bool preview_before_update_or_destroy = 7;
-  //if the stack-job includes update or destroy and if preview-before-update-or-destroy is enabled,
-  // pause after preview is execute but before update/destroy is executed.
-  //defaults to false.
-  bool pause_between_preview_and_update_or_destroy = 8;
-  //id of the pulumi-module
-  //default module will be used when this is not specified
-  string pulumi_module_id = 9;
-}

@@ -4,20 +4,9 @@ package project.planton.provider.kubernetes.openfgakubernetes.v1;
 
 import "buf/validate/validate.proto";
 import "project/planton/shared/kubernetes/kubernetes.proto";
-import "project/planton/shared/pulumi/pulumi.proto";
-import "project/planton/shared/shared.proto";
 
 //openfga-kubernetes spec
 message OpenfgaKubernetesSpec {
-  //environment-info
-  project.planton.shared.ApiResourceEnvironmentInfo environment_info = 99;
-
-  //stack-job settings
-  project.planton.shared.pulumi.StackJobSettings stack_job_settings = 98;
-
-  //kubernetes-cluster-credential-id to be used for setting up kubernetes-provider in stack-job
-  string kubernetes_cluster_credential_id = 97;
-
   //openfga-container spec
   OpenfgaKubernetesContainer container = 1 [
     (buf.validate.field).required = true
@@ -44,7 +33,6 @@ message OpenfgaKubernetesContainer {
 
 // Represents the configuration for the OpenFGA data store in a Kubernetes deployment.
 message OpenfgaKubernetesDataStore {
-
   // Specifies the type of data store engine to use.
   // Allowed values are "mysql" for MySQL database and "postgres" for PostgreSQL database.
   string engine = 1 [

@@ -3,20 +3,9 @@ syntax = "proto3";
 package project.planton.provider.snowflake.snowflakedatabase.v1;
 
 import "buf/validate/validate.proto";
-import "project/planton/shared/pulumi/pulumi.proto";
-import "project/planton/shared/shared.proto";
 
 //snowflake-database spec
 message SnowflakeDatabaseSpec {
-  //environment-info
-  project.planton.shared.ApiResourceEnvironmentInfo environment_info = 99;
-
-  //stack-job settings
-  project.planton.shared.pulumi.StackJobSettings stack_job_settings = 98;
-
-  //snowflake-credential-id to be used for setting up snowflake-provider in stack-job
-  string snowflake_credential_id = 97;
-
   //The database parameter that specifies the default catalog to use for Iceberg tables
   //https://www.pulumi.com/registry/packages/snowflake/api-docs/database/#catalog_yaml
   //https://docs.snowflake.com/en/sql-reference/parameters#catalog

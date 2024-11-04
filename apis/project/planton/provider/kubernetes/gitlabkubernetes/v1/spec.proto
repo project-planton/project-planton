@@ -4,20 +4,9 @@ package project.planton.provider.kubernetes.gitlabkubernetes.v1;
 
 import "buf/validate/validate.proto";
 import "project/planton/shared/kubernetes/kubernetes.proto";
-import "project/planton/shared/pulumi/pulumi.proto";
-import "project/planton/shared/shared.proto";
 
 //gitlab-kubernetes spec
 message GitlabKubernetesSpec {
-  //environment-info
-  project.planton.shared.ApiResourceEnvironmentInfo environment_info = 99;
-
-  //stack-job settings
-  project.planton.shared.pulumi.StackJobSettings stack_job_settings = 98;
-
-  //kubernetes-cluster-credential-id to be used for setting up kubernetes-provider in stack-job
-  string kubernetes_cluster_credential_id = 97;
-
   //gitlab-container spec
   GitlabKubernetesSpecContainer container = 1 [
     (buf.validate.field).required = true

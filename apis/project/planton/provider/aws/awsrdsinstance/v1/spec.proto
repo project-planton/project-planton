@@ -3,8 +3,6 @@ syntax = "proto3";
 package project.planton.provider.aws.awsrdsinstance.v1;
 
 import "buf/validate/validate.proto";
-import "project/planton/shared/pulumi/pulumi.proto";
-import "project/planton/shared/shared.proto";
 
 //aws-rds-instance spec
 message AwsRdsInstanceSpec {
@@ -14,14 +12,6 @@ message AwsRdsInstanceSpec {
         "? 'cannot set password if manager master password is set to true'"
         ": ''"
   };
-  //environment-info
-  project.planton.shared.ApiResourceEnvironmentInfo environment_info = 99;
-
-  //stack-job settings
-  project.planton.shared.pulumi.StackJobSettings stack_job_settings = 98;
-
-  //aws-credential-id to be used for setting up aws-provider in stack-job
-  string aws_credential_id = 97;
 
   // The name of the database to create when the DB instance is created.
   // If this parameter is not specified, no database is created in the DB instance.

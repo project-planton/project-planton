@@ -10,30 +10,22 @@ message ApiResourceMetadata {
   string name = 1;
   // id of the resource
   string id = 2;
+  // id of the organization to which the api-resource belongs to
+  string org = 3;
+  // environment to which the resource belongs to
+  ApiResourceEnvironment env = 4;
   // labels for the resource
-  map<string, string> labels = 3;
+  map<string, string> labels = 5;
   // tags for the resource
-  repeated string tags = 4;
+  repeated string tags = 6;
   //metadata for resource version
-  ApiResourceMetadataVersion version = 5;
+  ApiResourceMetadataVersion version = 7;
 }
 
 // version information for api-resource to be used in api-resource metadata
 message ApiResourceMetadataVersion {
   string id = 1;
   string message = 2;
-}
-
-// api-resource environment info
-message ApiResourceEnvironmentInfo {
-  //organization to which the api-resource belongs to.
-  string org_id = 1;
-
-  //environment id
-  string env_id = 2;
-
-  //environment name
-  string env_name = 3;
 }
 
 // ResourceAudit represents auditing information for a resource,
@@ -90,4 +82,12 @@ message ApiResourceLifecycleAndAuditStatus {
 
   //audit info
   ApiResourceAudit audit = 98;
+}
+
+//api-resource environment
+message ApiResourceEnvironment {
+  //name of the environment
+  string name = 1;
+  //id of the environment
+  string id = 2;
 }

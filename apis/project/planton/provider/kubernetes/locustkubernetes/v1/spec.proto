@@ -4,22 +4,11 @@ package project.planton.provider.kubernetes.locustkubernetes.v1;
 
 import "buf/validate/validate.proto";
 import "project/planton/shared/kubernetes/kubernetes.proto";
-import "project/planton/shared/pulumi/pulumi.proto";
-import "project/planton/shared/shared.proto";
 
 // LocustKubernetesSpec defines the overall configuration for a Locust load testing cluster.
 // This message encapsulates the environmental context, Kubernetes deployment specifications,
 // load testing parameters, and Helm chart values for customizing the deployment.
 message LocustKubernetesSpec {
-  //environment-info
-  project.planton.shared.ApiResourceEnvironmentInfo environment_info = 99;
-
-  //stack-job settings
-  project.planton.shared.pulumi.StackJobSettings stack_job_settings = 98;
-
-  //kubernetes-cluster-credential-id to be used for setting up kubernetes-provider in stack-job
-  string kubernetes_cluster_credential_id = 97;
-
   // kubernetes specifies the configuration settings specific to Kubernetes.
   //master-locust-container spec
   LocustKubernetesContainer master_container = 1 [
@@ -62,7 +51,6 @@ message LocustKubernetesContainer {
 // This message includes the primary Python script for Locust and any additional library files
 // necessary to execute the load test.
 message LocustKubernetesLoadTest {
-
   // name specifies the unique identifier or name for this particular load test specification.
   // It is used to reference or distinguish this test configuration among others within a testing suite or environment.
   string name = 1 [
