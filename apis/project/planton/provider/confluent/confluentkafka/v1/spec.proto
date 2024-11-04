@@ -3,20 +3,9 @@ syntax = "proto3";
 package project.planton.provider.confluent.confluentkafka.v1;
 
 import "buf/validate/validate.proto";
-import "project/planton/shared/pulumi/pulumi.proto";
-import "project/planton/shared/shared.proto";
 
 //confluent-kafka spec
 message ConfluentKafkaSpec {
-  //environment-info
-  project.planton.shared.ApiResourceEnvironmentInfo environment_info = 99;
-
-  //stack-job settings
-  project.planton.shared.pulumi.StackJobSettings stack_job_settings = 98;
-
-  //confluent-credential-id to be used for setting up confluent-provider in stack-job
-  string confluent_credential_id = 97;
-
   //cloud provider
   //https://www.pulumi.com/registry/packages/confluentcloud/api-docs/kafkacluster/#cloud_yaml
   string cloud = 1 [

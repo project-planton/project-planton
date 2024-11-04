@@ -3,20 +3,9 @@ syntax = "proto3";
 package project.planton.provider.kubernetes.kuberneteshttpendpoint.v1;
 
 import "buf/validate/validate.proto";
-import "project/planton/shared/pulumi/pulumi.proto";
-import "project/planton/shared/shared.proto";
 
 //kubernetes-http-endpoint spec
 message KubernetesHttpEndpointSpec {
-  //environment-info
-  project.planton.shared.ApiResourceEnvironmentInfo environment_info = 99;
-
-  //stack-job settings
-  project.planton.shared.pulumi.StackJobSettings stack_job_settings = 98;
-
-  //kubernetes-cluster-credential-id to be used for setting up kubernetes-provider in stack-job
-  string kubernetes_cluster_credential_id = 97;
-
   //(optional for create) flag to toggle tls for istio-http-endpoint.
   //defaults to "false".
   //(important note) certificates are not created for endpoints that do not need tls.

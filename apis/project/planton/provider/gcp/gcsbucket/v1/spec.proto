@@ -3,20 +3,9 @@ syntax = "proto3";
 package project.planton.provider.gcp.gcsbucket.v1;
 
 import "buf/validate/validate.proto";
-import "project/planton/shared/pulumi/pulumi.proto";
-import "project/planton/shared/shared.proto";
 
 //gcs-bucket spec
 message GcsBucketSpec {
-  //environment-info
-  project.planton.shared.ApiResourceEnvironmentInfo environment_info = 99;
-
-  //stack-job settings
-  project.planton.shared.pulumi.StackJobSettings stack_job_settings = 98;
-
-  //gcp-credential-id to be used for setting up gcp-provider in stack-job
-  string gcp_credential_id = 97;
-
   //gcp project in which the storage-bucket is to be created.
   string gcp_project_id = 1 [
     (buf.validate.field).required = true

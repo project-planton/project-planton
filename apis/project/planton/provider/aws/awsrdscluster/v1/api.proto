@@ -34,12 +34,7 @@ message AwsRdsCluster {
 
   //spec
   AwsRdsClusterSpec spec = 4 [
-    (buf.validate.field).required = true,
-    (buf.validate.field).cel = {
-      id: "spec.aws_credential_id",
-      message: "AWS Credential Id is mandatory",
-      expression: "has(this.aws_credential_id)"
-    }
+    (buf.validate.field).required = true
   ];
 
   //status

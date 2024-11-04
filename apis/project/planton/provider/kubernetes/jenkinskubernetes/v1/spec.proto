@@ -4,20 +4,9 @@ package project.planton.provider.kubernetes.jenkinskubernetes.v1;
 
 import "buf/validate/validate.proto";
 import "project/planton/shared/kubernetes/kubernetes.proto";
-import "project/planton/shared/pulumi/pulumi.proto";
-import "project/planton/shared/shared.proto";
 
 //jenkins-kubernetes spec
 message JenkinsKubernetesSpec {
-  //environment-info
-  project.planton.shared.ApiResourceEnvironmentInfo environment_info = 99;
-
-  //stack-job settings
-  project.planton.shared.pulumi.StackJobSettings stack_job_settings = 98;
-
-  //kubernetes-cluster-credential-id to be used for setting up kubernetes-provider in stack-job
-  string kubernetes_cluster_credential_id = 97;
-
   //jenkins-container spec
   JenkinsKubernetesSpecContainer container = 1 [
     (buf.validate.field).required = true
