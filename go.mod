@@ -3,7 +3,7 @@ module github.com/project-planton/project-planton
 go 1.23.1
 
 require (
-	buf.build/gen/go/project-planton/apis/protocolbuffers/go v1.35.1-20241104170717-6a4cb5ac2a40.1
+	buf.build/gen/go/project-planton/apis/protocolbuffers/go v1.35.1-20241106042319-91bc33237f01.1
 	github.com/bufbuild/protovalidate-go v0.7.2
 	github.com/iancoleman/strcase v0.3.0
 	github.com/oklog/ulid/v2 v2.1.0
