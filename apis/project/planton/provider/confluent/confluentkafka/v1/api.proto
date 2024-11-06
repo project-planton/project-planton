@@ -40,12 +40,7 @@ message ConfluentKafka {
 
   //spec
   ConfluentKafkaSpec spec = 4 [
-    (buf.validate.field).required = true,
-    (buf.validate.field).cel = {
-      id: "spec.confluent_credential_id",
-      message: "Confluent Credential Id is mandatory",
-      expression: "has(this.confluent_credential_id)"
-    }
+    (buf.validate.field).required = true
   ];
 
   //status

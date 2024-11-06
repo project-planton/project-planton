@@ -52,12 +52,7 @@ message KeycloakKubernetes {
 
   //spec
   KeycloakKubernetesSpec spec = 4 [
-    (buf.validate.field).required = true,
-    (buf.validate.field).cel = {
-      id: "spec.kubernetes_cluster_credential_id",
-      message: "Kubernetes Cluster Credential Id is mandatory",
-      expression: "has(this.kubernetes_cluster_credential_id)"
-    }
+    (buf.validate.field).required = true
   ];
 
   //status

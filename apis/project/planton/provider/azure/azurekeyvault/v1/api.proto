@@ -52,12 +52,7 @@ message AzureKeyVault {
 
   //spec
   AzureKeyVaultSpec spec = 4 [
-    (buf.validate.field).required = true,
-    (buf.validate.field).cel = {
-      id: "spec.azure_credential_id",
-      message: "Azure Credential Id is mandatory",
-      expression: "has(this.azure_credential_id)"
-    }
+    (buf.validate.field).required = true
   ];
 
   //status

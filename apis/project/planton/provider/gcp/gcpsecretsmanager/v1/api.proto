@@ -53,12 +53,7 @@ message GcpSecretsManager {
 
   //spec
   GcpSecretsManagerSpec spec = 4 [
-    (buf.validate.field).required = true,
-    (buf.validate.field).cel = {
-      id: "spec.gcp_credential_id",
-      message: "GCP Credential Id is mandatory",
-      expression: "has(this.gcp_credential_id)"
-    }
+    (buf.validate.field).required = true
   ];
 
   //status
