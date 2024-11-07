@@ -19,8 +19,38 @@ message EksClusterSpec {
   // warning: eks-cluster will be recreated if this is updated.
   string vpc_id = 2;
 
+  // Security Groups for the EKS cluster
+  repeated string security_groups = 3;
+
+  // Subnets for the EKS cluster
+  repeated string subnets = 4;
+
+  // role arn for the EKS cluster
+  string role_arn = 5 [
+    (buf.validate.field).required = true
+  ];
+
+  // Worker Node Role ARN
+  string node_role_arn = 6 [
+    (buf.validate.field).required = true
+  ];
+
+  // Instance type for the EKS worker nodes
+  string instance_type = 7 [
+   (buf.validate.field).required = true
+  ];
+
+  // Desired size of the EKS worker node group
+  int32 desired_size = 8;
+
+  // Maximum size of the EKS worker node group
+  int32 max_size = 9;
+
+  // Minimum size of the EKS worker node group
+  int32 min_size = 10;
+
   // aws eks worker node-groups management mode
-  EksWorkersManagementMode workers_management_mode = 3 [
+  EksWorkersManagementMode workers_management_mode = 11 [
     (buf.validate.field).required = true
   ];
 }
