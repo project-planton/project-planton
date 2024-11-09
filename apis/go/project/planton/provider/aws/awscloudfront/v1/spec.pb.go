@@ -20,7 +20,8 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// aws-cloud-front spec
+// AwsCloudFrontSpec defines the specification required to deploy an AWS Cloud Front resource, encapsulating all
+// configurations for the Aws Cloud Front settings.
 type AwsCloudFrontSpec struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

@@ -4,7 +4,8 @@ package project.planton.provider.aws.awslambda.v1;
 
 import "buf/validate/validate.proto";
 
-//aws-lambda spec
+// AwsLambdaSpec defines the specification required to deploy an AWS Lambda function, encapsulating all configurations
+// including the function itself, IAM roles, logging configurations, and permissions for invoking the function.
 message AwsLambdaSpec {
   // aws lambda function spec
   AwsLambdaFunction function = 1 [
@@ -21,6 +22,9 @@ message AwsLambdaSpec {
   repeated AwsLambdaInvokeFunctionPermission invoke_function_permissions = 4;
 }
 
+// AwsLambdaFunction represents the configuration of an AWS Lambda function, including properties such as
+// architectures, handler, runtime, memory size, timeouts, environment variables, VPC configuration, and other
+// optional settings.
 message AwsLambdaFunction {
   // Instruction set architecture for your Lambda function. Valid values are `["x8664"]` and `["arm64"]`.
   // Default is `["x8664"]`. Removing this attribute, function's architecture stay the same.
@@ -91,6 +95,8 @@ message AwsLambdaFunction {
   int32 ephemeral_storage_size = 23;
 }
 
+// AwsLambdaFunctionFileSystemConfig configures the file system access for the Lambda function, allowing it to
+// access an Amazon EFS file system via an Access Point.
 message AwsLambdaFunctionFileSystemConfig {
   // Amazon Resource Name (ARN) of the Amazon EFS Access Point that provides access to the file system.
   string arn = 1;
@@ -98,6 +104,8 @@ message AwsLambdaFunctionFileSystemConfig {
   string local_mount_path = 2;
 }
 
+// AwsLambdaFunctionImageConfig specifies the image configuration values for a container image Lambda function,
+// including command overrides, entry point, and working directory.
 message AwsLambdaFunctionImageConfig {
   // Parameters that you want to pass in with `entryPoint`.
   repeated string commands = 1;
@@ -107,6 +115,8 @@ message AwsLambdaFunctionImageConfig {
   string working_directory = 3;
 }
 
+// AwsLambdaFunctionVpcConfig provides VPC configuration for the Lambda function, specifying the VPC, subnets, and
+// security groups for the function's network interface.
 message AwsLambdaFunctionVpcConfig {
   // List of security group IDs associated with the Lambda function.
   repeated string security_group_ids = 1;
@@ -116,6 +126,8 @@ message AwsLambdaFunctionVpcConfig {
   string vpc_id = 3;
 }
 
+// AwsLambdaIamRole defines the IAM role configuration for the Lambda function, including permissions boundaries,
+// custom policies, and settings for Lambda@Edge and CloudWatch Lambda Insights.
 message AwsLambdaIamRole {
   // ARN of the policy that is used to set the permissions boundary for the role
   string permissions_boundary = 1;
@@ -134,6 +146,8 @@ message AwsLambdaIamRole {
   string inline_iam_policy = 6;
 }
 
+// AwsLambdaCloudwatchLogGroup configures the CloudWatch Log Group for the Lambda function, including retention
+// settings and KMS key for encrypting log data.
 message AwsLambdaCloudwatchLogGroup {
   // The ARN of the KMS Key to use when encrypting log data.
   // Please note, after the AWS KMS CMK is disassociated from the log group, AWS CloudWatch Logs stops encrypting newly
@@ -145,6 +159,8 @@ message AwsLambdaCloudwatchLogGroup {
   int32 retention_in_days = 2;
 }
 
+// AwsLambdaInvokeFunctionPermission defines which external sources can invoke the Lambda function, specifying the
+// principal and source ARN.
 message AwsLambdaInvokeFunctionPermission {
   //  The principal who is getting this permission e.g., `s3.amazonaws.com`,
   // an AWS account ID, or AWS IAM principal, or AWS service principal such as `events.amazonaws.com` or `sns.amazonaws.com`.

@@ -4,7 +4,8 @@ package project.planton.provider.aws.awsdynamodb.v1;
 
 import "buf/validate/validate.proto";
 
-//aws-dynamodb spec
+// AwsDynamodbSpec defines the specification required to deploy an AWS DynamoDB resource, encapsulating all
+// configurations for the DynamoDB table and related settings.
 message AwsDynamodbSpec {
   // Aws Dynamodb table spec
   AwsDynamodbTable table = 1 [
@@ -12,6 +13,9 @@ message AwsDynamodbSpec {
   ];
 }
 
+// AwsDynamodbTable represents the configuration of an AWS DynamoDB table, including properties such as table name,
+// billing mode, key schema, indexes, and various optional settings like streams, encryption, and time-to-live
+// (TTL) configuration.
 message AwsDynamodbTable {
   //Table name. If provided, the bucket will be created with this name instead of generating the name from the context
   string table_name = 1;
@@ -65,6 +69,8 @@ message AwsDynamodbTable {
   AwsDynamodbTableImport import_table = 15;
 }
 
+// AwsDynamodbTableServerSideEncryption configures the server-side encryption settings for the DynamoDB table,
+// allowing the specification of whether encryption is enabled and the KMS key ARN to use for encryption.
 message AwsDynamodbTableServerSideEncryption {
   // Whether or not to enable encryption at rest using an AWS managed KMS customer master key (CMK).
   // If `enabled` is `false` then server-side encryption is set to
@@ -81,6 +87,8 @@ message AwsDynamodbTableServerSideEncryption {
   string kms_key_arn = 2;
 }
 
+// AwsDynamodbTableTtl specifies the Time to Live (TTL) settings for the DynamoDB table, allowing you to define an
+// attribute that DynamoDB will use to automatically delete expired items.
 message AwsDynamodbTableTtl {
   // Whether TTL is enabled. Default value is `false`.
   bool is_enabled = 1;
@@ -89,6 +97,8 @@ message AwsDynamodbTableTtl {
   string attribute_name = 2;
 }
 
+// AwsDynamodbTableAttribute defines an attribute for the DynamoDB table, specifying the attribute's name and data
+// type, which is used in key schemas and indexes.
 message AwsDynamodbTableAttribute {
   // Name of the attribute
   string name = 1;
@@ -100,6 +110,8 @@ message AwsDynamodbTableAttribute {
   ];
 }
 
+// AwsDynamodbTableGlobalSecondaryIndex defines a global secondary index (GSI) for the DynamoDB table, allowing
+// queries on alternative key attributes and providing additional read/write capacity configurations.
 message AwsDynamodbTableGlobalSecondaryIndex {
   // Name of the index.
   string name = 1;
@@ -126,6 +138,8 @@ message AwsDynamodbTableGlobalSecondaryIndex {
   int32 write_capacity = 7;
 }
 
+// AwsDynamodbTableLocalSecondaryIndex defines a local secondary index (LSI) for the DynamoDB table,
+// allowing alternative sort keys for queries on the primary hash key, which must be defined at table creation.
 message AwsDynamodbTableLocalSecondaryIndex {
   // Name of the index.
   string name = 1;
@@ -146,6 +160,8 @@ message AwsDynamodbTableLocalSecondaryIndex {
   string range_key = 4;
 }
 
+// AwsDynamodbTablePointInTimeRecovery configures point-in-time recovery settings for the DynamoDB table, allowing
+// restoration of the table to any point in time within the last 35 days.
 message AwsDynamodbTablePointInTimeRecovery {
   // Whether to enable point-in-time recovery. It can take 10 minutes to enable for
   // new tables. If the `pointInTimeRecovery` block is not provided,
@@ -153,6 +169,8 @@ message AwsDynamodbTablePointInTimeRecovery {
   bool is_enabled = 1;
 }
 
+// AwsDynamodbTableImport defines settings to import data from Amazon S3 into a new DynamoDB table, including
+// compression type, data format, and source S3 bucket information.
 message AwsDynamodbTableImport {
   // Type of compression to be used on the input coming from the imported table.
   // Valid values are `GZIP`, `ZSTD` and `NONE`.
@@ -175,11 +193,15 @@ message AwsDynamodbTableImport {
   AwsDynamodbTableImportS3BucketSource s3_bucket_source = 4;
 }
 
+// AwsDynamodbTableImportInputFormatOptions specifies additional format options for the data being imported, such as
+// CSV format settings.
 message AwsDynamodbTableImportInputFormatOptions {
   // This block contains the processing options for the CSV file being imported:
   AwsDynamodbTableImportInputFormatOptionsCsv csv = 1;
 }
 
+// AwsDynamodbTableImportInputFormatOptionsCsv defines the CSV format options for the data being imported,
+// including delimiter and headers.
 message AwsDynamodbTableImportInputFormatOptionsCsv {
   // The delimiter used for separating items in the CSV file being imported.
   string delimiter = 1;
@@ -187,6 +209,8 @@ message AwsDynamodbTableImportInputFormatOptionsCsv {
   repeated string headers = 2;
 }
 
+// AwsDynamodbTableImportS3BucketSource specifies the S3 bucket source from which data is imported into the
+// DynamoDB table, including bucket name, owner account, and key prefix.
 message AwsDynamodbTableImportS3BucketSource {
   // The S3 bucket that is being imported from.
   string bucket = 1;
@@ -196,6 +220,8 @@ message AwsDynamodbTableImportS3BucketSource {
   string key_prefix = 3;
 }
 
+// AwsDynamodbAutoScaleCapacity configures the auto-scaling settings for the DynamoDB table's read and write
+// capacity units, including minimum and maximum capacity and target utilization.
 message AwsDynamodbAutoScaleCapacity {
   bool is_enabled = 1;
   // auto scale capacity for read
@@ -204,6 +230,8 @@ message AwsDynamodbAutoScaleCapacity {
   AutoScaleCapacity write_capacity = 3;
 }
 
+// AutoScaleCapacity defines the auto-scaling capacity settings, specifying minimum and maximum capacity units and
+// the target utilization percentage for scaling.
 message AutoScaleCapacity {
   // Min capacity of the scalable target.
   int32 min_capacity = 1;

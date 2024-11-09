@@ -4,7 +4,9 @@ package project.planton.provider.aws.awsrdsinstance.v1;
 
 import "buf/validate/validate.proto";
 
-//aws-rds-instance spec
+// AwsRdsInstanceSpec defines the specification required to deploy an AWS RDS (Relational Database Service) instance.
+// This message encapsulates all configurations necessary for setting up an RDS instance, including engine settings,
+// instance configurations, networking, security, backup and maintenance options, and performance monitoring settings.
 message AwsRdsInstanceSpec {
   option (buf.validate.message).cel = {
     id: "spec.rds_instance.password",
@@ -210,6 +212,8 @@ message AwsRdsInstanceSpec {
   ];
 }
 
+// AwsRdsInstanceParameterGroupParameter represents a parameter to apply to the DB parameter group,
+// allowing customization of database settings.
 message AwsRdsInstanceParameterGroupParameter {
   // "immediate" (default), or "pending-reboot". Some
   // engines can't apply some parameters without a reboot, and you will need to
@@ -221,6 +225,8 @@ message AwsRdsInstanceParameterGroupParameter {
   string value = 3;
 }
 
+// AwsRdsInstanceOptionGroupOption defines an option within a DB option group, specifying settings such as option name,
+// version, port, and security group memberships.
 message AwsRdsInstanceOptionGroupOption {
   // List of DB Security Groups for which the option is enabled.
   repeated string db_security_group_memberships = 1;
@@ -242,6 +248,8 @@ message AwsRdsInstanceOptionGroupOption {
   repeated AwsRdsInstanceOptionGroupOptionSettings option_settings = 6;
 }
 
+// AwsRdsInstanceOptionGroupOptionSettings represents a setting within an option of a DB option group,
+// allowing customization of specific option parameters.
 message AwsRdsInstanceOptionGroupOptionSettings {
   // Name of the setting.
   string name = 1;
@@ -249,6 +257,8 @@ message AwsRdsInstanceOptionGroupOptionSettings {
   string value = 2;
 }
 
+// AwsRdsInstancePerformanceInsights configures Performance Insights for the RDS instance,
+// allowing performance monitoring and analysis.
 message AwsRdsInstancePerformanceInsights {
   // Specifies whether Performance Insights are enabled.
   bool is_enabled = 1;
@@ -258,6 +268,8 @@ message AwsRdsInstancePerformanceInsights {
   int32 retention_period = 3;
 }
 
+// AwsRdsInstanceMonitoring configures enhanced monitoring for the RDS instance,
+// allowing collection of additional metrics for monitoring.
 message AwsRdsInstanceMonitoring {
   // The interval, in seconds, between points when Enhanced Monitoring metrics are collected for the DB instance.
   // To disable collecting Enhanced Monitoring metrics, specify 0. Valid Values are 0, 1, 5, 10, 15, 30, 60.
@@ -266,6 +278,8 @@ message AwsRdsInstanceMonitoring {
   string monitoring_role_arn = 2;
 }
 
+// AwsRdsInstanceRestoreToPointInTime specifies the restore point in time for restoring the DB instance,
+// allowing point-in-time recovery.
 message AwsRdsInstanceRestoreToPointInTime {
   // The date and time to restore from. Value must be a time in Universal Coordinated Time (UTC) format and must be
   // before the latest restorable time for the DB instance. Cannot be specified with `useLatestRestorableTime`.

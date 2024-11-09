@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package project.planton.provider.aws.awsfargate.v1;
 
-//aws-fargate spec
+// AwsFargateSpec defines the specification required to deploy an AWS Fargate resource, encapsulating all
+// configurations for the Aws Fargate settings.
 message AwsFargateSpec {
 }

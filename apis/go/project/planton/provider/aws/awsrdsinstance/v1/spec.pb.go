@@ -21,7 +21,9 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// aws-rds-instance spec
+// AwsRdsInstanceSpec defines the specification required to deploy an AWS RDS (Relational Database Service) instance.
+// This message encapsulates all configurations necessary for setting up an RDS instance, including engine settings,
+// instance configurations, networking, security, backup and maintenance options, and performance monitoring settings.
 type AwsRdsInstanceSpec struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -578,6 +580,8 @@ func (x *AwsRdsInstanceSpec) GetLicenseModel() string {
 	return ""
 }
 
+// AwsRdsInstanceParameterGroupParameter represents a parameter to apply to the DB parameter group,
+// allowing customization of database settings.
 type AwsRdsInstanceParameterGroupParameter struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -646,6 +650,8 @@ func (x *AwsRdsInstanceParameterGroupParameter) GetValue() string {
 	return ""
 }
 
+// AwsRdsInstanceOptionGroupOption defines an option within a DB option group, specifying settings such as option name,
+// version, port, and security group memberships.
 type AwsRdsInstanceOptionGroupOption struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -745,6 +751,8 @@ func (x *AwsRdsInstanceOptionGroupOption) GetOptionSettings() []*AwsRdsInstanceO
 	return nil
 }
 
+// AwsRdsInstanceOptionGroupOptionSettings represents a setting within an option of a DB option group,
+// allowing customization of specific option parameters.
 type AwsRdsInstanceOptionGroupOptionSettings struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -802,6 +810,8 @@ func (x *AwsRdsInstanceOptionGroupOptionSettings) GetValue() string {
 	return ""
 }
 
+// AwsRdsInstancePerformanceInsights configures Performance Insights for the RDS instance,
+// allowing performance monitoring and analysis.
 type AwsRdsInstancePerformanceInsights struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -868,6 +878,8 @@ func (x *AwsRdsInstancePerformanceInsights) GetRetentionPeriod() int32 {
 	return 0
 }
 
+// AwsRdsInstanceMonitoring configures enhanced monitoring for the RDS instance,
+// allowing collection of additional metrics for monitoring.
 type AwsRdsInstanceMonitoring struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -926,6 +938,8 @@ func (x *AwsRdsInstanceMonitoring) GetMonitoringRoleArn() string {
 	return ""
 }
 
+// AwsRdsInstanceRestoreToPointInTime specifies the restore point in time for restoring the DB instance,
+// allowing point-in-time recovery.
 type AwsRdsInstanceRestoreToPointInTime struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

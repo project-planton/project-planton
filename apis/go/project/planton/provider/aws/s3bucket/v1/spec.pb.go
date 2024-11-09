@@ -20,16 +20,31 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// s3-bucket spec
+// S3BucketSpec defines the specification required to deploy an AWS S3 Bucket.
+// This message encapsulates all configurations necessary for setting up an S3 bucket,
+// including settings for public access and the AWS region where the bucket will be created.
+// Amazon S3 (Simple Storage Service) provides object storage through a web service interface,
+// allowing you to store and retrieve any amount of data from anywhere on the web.
+// With this specification, you can automate the creation and configuration of S3 buckets,
+// ensuring that your storage resources are correctly set up according to your requirements.
+// This is particularly useful for managing large-scale storage needs, hosting static websites,
+// or storing data for backup and archiving.
 type S3BucketSpec struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// flag to indicate if s3-bucket should have external(public) access.
-	// defaults to "false"
+	// Flag to indicate if the S3 bucket should have external (public) access.
+	// When set to `true`, the bucket will be accessible publicly over the internet,
+	// allowing anyone to access the objects stored within it.
+	// When set to `false` (default), the bucket is private, and access is restricted
+	// based on AWS Identity and Access Management (IAM) policies and bucket policies.
+	// Public access should be used cautiously to avoid unintended data exposure.
 	IsPublic bool `protobuf:"varint,1,opt,name=is_public,json=isPublic,proto3" json:"is_public,omitempty"`
-	// aws region
+	// The AWS region where the S3 bucket will be created.
+	// This must be a valid AWS region where S3 is available.
+	// Specifying the region is important because it affects data latency and costs.
+	// For a list of AWS regions, see: https://aws.amazon.com/about-aws/global-infrastructure/regions_az/
 	AwsRegion string `protobuf:"bytes,2,opt,name=aws_region,json=awsRegion,proto3" json:"aws_region,omitempty"`
 }
 

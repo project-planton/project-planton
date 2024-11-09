@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package project.planton.provider.aws.awsstaticwebsite.v1;
 
-//aws-static-website spec
+// AwsStaticWebsiteSpec defines the specification required to deploy an AWS Static Website.
+// This message encapsulates all configurations necessary for setting up an AWS Static Website
 message AwsStaticWebsiteSpec {
 }

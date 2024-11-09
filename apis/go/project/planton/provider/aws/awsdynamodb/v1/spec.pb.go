@@ -21,7 +21,8 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// aws-dynamodb spec
+// AwsDynamodbSpec defines the specification required to deploy an AWS DynamoDB resource, encapsulating all
+// configurations for the DynamoDB table and related settings.
 type AwsDynamodbSpec struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -70,6 +71,9 @@ func (x *AwsDynamodbSpec) GetTable() *AwsDynamodbTable {
 	return nil
 }
 
+// AwsDynamodbTable represents the configuration of an AWS DynamoDB table, including properties such as table name,
+// billing mode, key schema, indexes, and various optional settings like streams, encryption, and time-to-live
+// (TTL) configuration.
 type AwsDynamodbTable struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -252,6 +256,8 @@ func (x *AwsDynamodbTable) GetImportTable() *AwsDynamodbTableImport {
 	return nil
 }
 
+// AwsDynamodbTableServerSideEncryption configures the server-side encryption settings for the DynamoDB table,
+// allowing the specification of whether encryption is enabled and the KMS key ARN to use for encryption.
 type AwsDynamodbTableServerSideEncryption struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -318,6 +324,8 @@ func (x *AwsDynamodbTableServerSideEncryption) GetKmsKeyArn() string {
 	return ""
 }
 
+// AwsDynamodbTableTtl specifies the Time to Live (TTL) settings for the DynamoDB table, allowing you to define an
+// attribute that DynamoDB will use to automatically delete expired items.
 type AwsDynamodbTableTtl struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -376,6 +384,8 @@ func (x *AwsDynamodbTableTtl) GetAttributeName() string {
 	return ""
 }
 
+// AwsDynamodbTableAttribute defines an attribute for the DynamoDB table, specifying the attribute's name and data
+// type, which is used in key schemas and indexes.
 type AwsDynamodbTableAttribute struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -433,6 +443,8 @@ func (x *AwsDynamodbTableAttribute) GetType() string {
 	return ""
 }
 
+// AwsDynamodbTableGlobalSecondaryIndex defines a global secondary index (GSI) for the DynamoDB table, allowing
+// queries on alternative key attributes and providing additional read/write capacity configurations.
 type AwsDynamodbTableGlobalSecondaryIndex struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -540,6 +552,8 @@ func (x *AwsDynamodbTableGlobalSecondaryIndex) GetWriteCapacity() int32 {
 	return 0
 }
 
+// AwsDynamodbTableLocalSecondaryIndex defines a local secondary index (LSI) for the DynamoDB table,
+// allowing alternative sort keys for queries on the primary hash key, which must be defined at table creation.
 type AwsDynamodbTableLocalSecondaryIndex struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -620,6 +634,8 @@ func (x *AwsDynamodbTableLocalSecondaryIndex) GetRangeKey() string {
 	return ""
 }
 
+// AwsDynamodbTablePointInTimeRecovery configures point-in-time recovery settings for the DynamoDB table, allowing
+// restoration of the table to any point in time within the last 35 days.
 type AwsDynamodbTablePointInTimeRecovery struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -670,6 +686,8 @@ func (x *AwsDynamodbTablePointInTimeRecovery) GetIsEnabled() bool {
 	return false
 }
 
+// AwsDynamodbTableImport defines settings to import data from Amazon S3 into a new DynamoDB table, including
+// compression type, data format, and source S3 bucket information.
 type AwsDynamodbTableImport struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -748,6 +766,8 @@ func (x *AwsDynamodbTableImport) GetS3BucketSource() *AwsDynamodbTableImportS3Bu
 	return nil
 }
 
+// AwsDynamodbTableImportInputFormatOptions specifies additional format options for the data being imported, such as
+// CSV format settings.
 type AwsDynamodbTableImportInputFormatOptions struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -796,6 +816,8 @@ func (x *AwsDynamodbTableImportInputFormatOptions) GetCsv() *AwsDynamodbTableImp
 	return nil
 }
 
+// AwsDynamodbTableImportInputFormatOptionsCsv defines the CSV format options for the data being imported,
+// including delimiter and headers.
 type AwsDynamodbTableImportInputFormatOptionsCsv struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -853,6 +875,8 @@ func (x *AwsDynamodbTableImportInputFormatOptionsCsv) GetHeaders() []string {
 	return nil
 }
 
+// AwsDynamodbTableImportS3BucketSource specifies the S3 bucket source from which data is imported into the
+// DynamoDB table, including bucket name, owner account, and key prefix.
 type AwsDynamodbTableImportS3BucketSource struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -919,6 +943,8 @@ func (x *AwsDynamodbTableImportS3BucketSource) GetKeyPrefix() string {
 	return ""
 }
 
+// AwsDynamodbAutoScaleCapacity configures the auto-scaling settings for the DynamoDB table's read and write
+// capacity units, including minimum and maximum capacity and target utilization.
 type AwsDynamodbAutoScaleCapacity struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -984,6 +1010,8 @@ func (x *AwsDynamodbAutoScaleCapacity) GetWriteCapacity() *AutoScaleCapacity {
 	return nil
 }
 
+// AutoScaleCapacity defines the auto-scaling capacity settings, specifying minimum and maximum capacity units and
+// the target utilization percentage for scaling.
 type AutoScaleCapacity struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

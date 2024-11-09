@@ -4,7 +4,9 @@ package project.planton.provider.aws.awsrdscluster.v1;
 
 import "buf/validate/validate.proto";
 
-//aws-rds-cluster spec
+// AwsRdsClusterSpec defines the specification required to deploy an AWS RDS (Relational Database Service) Cluster.
+// This message encapsulates all configurations necessary for setting up an RDS cluster, including engine settings,
+// instance configurations, networking, security, backup and maintenance options, and scaling configurations.
 message AwsRdsClusterSpec {
   option (buf.validate.message).cel = {
     id: "rds_cluster.rds_monitoring_interval",
@@ -131,6 +133,8 @@ message AwsRdsClusterSpec {
   repeated AwsRdsClusterParameterGroupParameter cluster_parameters = 42;
 }
 
+// AwsRdsClusterAutoScaling defines the auto-scaling settings for the RDS cluster, allowing dynamic scaling of instances
+// based on specified metrics and policies.
 message AwsRdsClusterAutoScaling {
   // Whether to enable cluster autoscaling
   bool is_enabled = 1;
@@ -150,6 +154,8 @@ message AwsRdsClusterAutoScaling {
   int32 max_capacity = 8;
 }
 
+// AwsRdsClusterScalingConfiguration defines the scaling properties for Serverless v1 RDS clusters, allowing automatic
+// scaling based on usage patterns.
 message AwsRdsClusterScalingConfiguration {
   // Whether to enable automatic pause. A DB cluster can be paused only when it's idle (it has no connections).
   // If a DB cluster is paused for more than seven days, the DB cluster might be backed up with a snapshot.
@@ -180,6 +186,8 @@ message AwsRdsClusterScalingConfiguration {
   ];
 }
 
+// AwsRdsClusterServerless2ScalingConfiguration defines the scaling properties for Serverless v2 RDS clusters, allowing
+// fine-grained automatic scaling.
 message AwsRdsClusterServerless2ScalingConfiguration {
   // Minimum capacity for an Aurora DB cluster in `provisioned` DB engine mode. The minimum capacity must be
   // lesser than or equal to the maximum capacity. Valid capacity values are in a range of `0.5` up to `128` in steps of `0.5`.
@@ -189,6 +197,8 @@ message AwsRdsClusterServerless2ScalingConfiguration {
   double min_capacity = 2;
 }
 
+// AwsRdsClusterParameterGroupParameter represents a parameter to apply to the DB cluster parameter group, allowing
+// customization of database settings.
 message AwsRdsClusterParameterGroupParameter {
   // "immediate" (default), or "pending-reboot". Some
   // engines can't apply some parameters without a reboot, and you will need to

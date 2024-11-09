@@ -22,13 +22,21 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// Specification for the Route53 Zone
+// Route53ZoneSpec defines the specification required to create and manage a Route53 DNS Zone in AWS.
+// This message encapsulates the configurations necessary for setting up DNS records within the zone,
+// allowing you to specify multiple DNS records of various types.
+// AWS Route53 is a scalable and highly available Domain Name System (DNS) web service that can be used
+// to route users to internet applications by translating domain names into IP addresses.
+// This specification helps in automating the creation and management of DNS records within a Route53 zone,
+// ensuring that your domain names are correctly mapped to your resources.
 type Route53ZoneSpec struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// The DNS records that are added to the Zone.
+	// The DNS records that are added to the zone.
+	// Each record represents a DNS resource record, such as A, AAAA, CNAME, MX, TXT, etc.
+	// These records define how your domain or subdomains are routed to your resources.
 	Records []*Route53DnsRecord `protobuf:"bytes,1,rep,name=records,proto3" json:"records,omitempty"`
 }
 
@@ -71,21 +79,31 @@ func (x *Route53ZoneSpec) GetRecords() []*Route53DnsRecord {
 	return nil
 }
 
-// route53-zone dns-record
+// Route53DnsRecord represents a DNS resource record in the Route53 zone.
+// It defines the type of DNS record, the domain name, the values associated with the record,
+// and the Time To Live (TTL) for caching purposes.
+// This message allows you to specify detailed DNS configurations for your domain,
+// enabling fine-grained control over how your domain name resolves.
 type Route53DnsRecord struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// dns record type.
+	// The DNS record type.
+	// This specifies the type of DNS record, such as A, AAAA, CNAME, MX, TXT, etc.
+	// The record type determines how the DNS query is processed and what kind of data is returned.
 	RecordType dnsrecordtype.DnsRecordType `protobuf:"varint,1,opt,name=record_type,json=recordType,proto3,enum=project.planton.shared.networking.enums.dnsrecordtype.DnsRecordType" json:"record_type,omitempty"`
-	// name of the route53-zone ex: example.com or dev.example.com.
-	// this value should always end with a dot.
+	// The name of the DNS record, e.g., "example.com." or "dev.example.com.".
+	// This is the domain name or subdomain for which the DNS record applies.
+	// The value should always end with a dot, following DNS standards to denote a fully qualified domain name.
 	Name string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	// values for the route53-zone record.
-	// if the route53_zone_record_type is cname then each value in the list should end with a dot.
+	// The values for the DNS record.
+	// This field contains the data associated with the DNS record type.
+	// For example, for an A record, it would be the IP address(es) the domain resolves to.
+	// If the record type is CNAME, each value in the list should end with a dot to denote a fully qualified domain name.
 	Values []string `protobuf:"bytes,3,rep,name=values,proto3" json:"values,omitempty"`
-	// ttl for the domain record in seconds.
+	// The Time To Live (TTL) for the DNS record, in seconds.
+	// TTL specifies how long DNS resolvers should cache the DNS record before querying again.
 	TtlSeconds int32 `protobuf:"varint,4,opt,name=ttl_seconds,json=ttlSeconds,proto3" json:"ttl_seconds,omitempty"`
 }
 
