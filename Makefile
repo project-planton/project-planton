@@ -91,12 +91,7 @@ release-github:
 	git push origin ${version}
 
 .PHONY: release
-release: build-apis release-buf update-cli-deps build-cli upload-cli-binaries release-github
-
-.PHONY: update-cli-deps
-update-cli-deps:
-	go get github.com/project-planton/project-planton/apis/go@latest
-	go get github.com/project-planton/pulumi-module-golang-commons
+release: build-apis release-buf build-cli upload-cli-binaries release-github
 
 .PHONY: run-docs
 run-docs:
