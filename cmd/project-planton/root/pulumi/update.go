@@ -1,7 +1,7 @@
 package pulumi
 
 import (
-	"buf.build/gen/go/project-planton/apis/protocolbuffers/go/project/planton/shared/pulumi"
+	"github.com/project-planton/project-planton/apis/go/project/planton/shared/pulumi"
 	"github.com/project-planton/project-planton/internal/cli/flag"
 	"github.com/project-planton/project-planton/internal/pulumistack"
 	"github.com/project-planton/project-planton/internal/stackinput/credentials"

@@ -19,7 +19,7 @@ build_darwin: vet
 
 .PHONY: build-apis
 build-apis:
-	pushd apis;buf generate;popd
+	pushd apis;make build;popd
 
 .PHONY: build-cli
 build-cli: ${build_dir}/${name}
@@ -95,7 +95,7 @@ release: build-apis release-buf update-cli-deps build-cli upload-cli-binaries re
 
 .PHONY: update-cli-deps
 update-cli-deps:
-	go get buf.build/gen/go/project-planton/apis/protocolbuffers/go@latest
+	go get github.com/project-planton/project-planton/apis/go@latest
 	go get github.com/project-planton/pulumi-module-golang-commons
 
 .PHONY: run-docs

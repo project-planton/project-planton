@@ -1,9 +1,9 @@
 package pulumistack
 
 import (
-	"buf.build/gen/go/project-planton/apis/protocolbuffers/go/project/planton/shared/pulumi"
 	"fmt"
 	"github.com/pkg/errors"
+	"github.com/project-planton/project-planton/apis/go/project/planton/shared/pulumi"
 	"github.com/project-planton/project-planton/internal/manifest"
 	"github.com/project-planton/project-planton/internal/pulumimodule"
 	"github.com/project-planton/project-planton/internal/stackinput"
