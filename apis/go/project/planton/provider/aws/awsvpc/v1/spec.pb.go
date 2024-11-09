@@ -20,27 +20,43 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// aws-vpc spec
+// AwsVpcSpec defines the specification required to deploy an AWS Virtual Private Cloud (VPC).
+// This message encapsulates all configurations necessary for setting up a VPC, including CIDR blocks,
+// availability zones, subnets, and various networking features like NAT gateways, DNS hostnames, and DNS support.
+// An AWS VPC allows you to create a virtual network in the AWS cloud, where you can launch AWS resources in a
+// logically isolated section with complete control over your virtual networking environment.
+// With VPC, you can define your own IP address range, create subnets, and configure route tables and network gateways.
+// This specification helps in automating the VPC creation process with specified configurations, ensuring a consistent
+// and repeatable setup for your AWS environment.
 type AwsVpcSpec struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// cidr block for vpc
-	// example: 10.0.0.0/16
+	// The CIDR (Classless Inter-Domain Routing) block for the VPC.
+	// This defines the IP address range for the VPC.
+	// Example: "10.0.0.0/16" allows IP addresses from 10.0.0.0 to 10.0.255.255.
 	VpcCidr string `protobuf:"bytes,1,opt,name=vpc_cidr,json=vpcCidr,proto3" json:"vpc_cidr,omitempty"`
-	// availability zones to span the vpc
-	// example: {"us-west-2a", "us-west-2b"}
+	// The list of availability zones where the VPC will be spanned.
+	// AWS regions are divided into multiple availability zones (AZs) for high availability.
+	// Example: ["us-west-2a", "us-west-2b"] indicates that resources will be spread across these two AZs.
 	AvailabilityZones []string `protobuf:"bytes,2,rep,name=availability_zones,json=availabilityZones,proto3" json:"availability_zones,omitempty"`
-	// number of subnets to be created in each az
+	// The number of subnets to be created in each availability zone.
+	// Subnets are segments of the VPC's IP address range where you can place groups of isolated resources.
 	SubnetsPerAvailabilityZone int32 `protobuf:"varint,3,opt,name=subnets_per_availability_zone,json=subnetsPerAvailabilityZone,proto3" json:"subnets_per_availability_zone,omitempty"`
-	// number of hosts in each subnet
+	// The number of hosts (IP addresses) in each subnet.
+	// This determines the size of each subnet's CIDR block.
 	SubnetSize int32 `protobuf:"varint,4,opt,name=subnet_size,json=subnetSize,proto3" json:"subnet_size,omitempty"`
-	// toggle to enable/disable an nat gateway for private subnets created in the vpc
+	// Toggle to enable or disable a NAT (Network Address Translation) gateway for private subnets created in the VPC.
+	// A NAT gateway allows instances in a private subnet to connect to the internet or other AWS services, but prevents
+	// the internet from initiating a connection with those instances.
 	IsNatGatewayEnabled bool `protobuf:"varint,5,opt,name=is_nat_gateway_enabled,json=isNatGatewayEnabled,proto3" json:"is_nat_gateway_enabled,omitempty"`
-	// toggle to enable/disable [dns hostnames](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-dns.html#vpc-dns-hostnames) in the vpc
+	// Toggle to enable or disable DNS hostnames in the VPC.
+	// When enabled, instances with public IP addresses receive corresponding public DNS hostnames.
+	// See AWS documentation: https://docs.aws.amazon.com/vpc/latest/userguide/vpc-dns.html#vpc-dns-hostnames
 	IsDnsHostnamesEnabled bool `protobuf:"varint,6,opt,name=is_dns_hostnames_enabled,json=isDnsHostnamesEnabled,proto3" json:"is_dns_hostnames_enabled,omitempty"`
-	// toggle to enable/disable dns resolution in the vpc through the amazon provided dns server
+	// Toggle to enable or disable DNS resolution in the VPC through the Amazon-provided DNS server.
+	// When enabled, the Amazon DNS server resolves DNS hostnames for your instances.
 	IsDnsSupportEnabled bool `protobuf:"varint,7,opt,name=is_dns_support_enabled,json=isDnsSupportEnabled,proto3" json:"is_dns_support_enabled,omitempty"`
 }
 

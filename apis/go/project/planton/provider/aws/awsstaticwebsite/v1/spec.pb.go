@@ -20,7 +20,8 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// aws-static-website spec
+// AwsStaticWebsiteSpec defines the specification required to deploy an AWS Static Website.
+// This message encapsulates all configurations necessary for setting up an AWS Static Website
 type AwsStaticWebsiteSpec struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

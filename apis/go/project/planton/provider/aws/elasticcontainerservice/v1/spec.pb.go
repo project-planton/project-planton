@@ -20,7 +20,8 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// aws-ecs spec
+// ElasticContainerServiceSpec defines the specification required to deploy an AWS Elastic Container Service.
+// This message encapsulates all configurations necessary for setting up an AWS Elastic Container Service.
 type ElasticContainerServiceSpec struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

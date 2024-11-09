@@ -21,7 +21,9 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// aws-rds-cluster spec
+// AwsRdsClusterSpec defines the specification required to deploy an AWS RDS (Relational Database Service) Cluster.
+// This message encapsulates all configurations necessary for setting up an RDS cluster, including engine settings,
+// instance configurations, networking, security, backup and maintenance options, and scaling configurations.
 type AwsRdsClusterSpec struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -451,6 +453,8 @@ func (x *AwsRdsClusterSpec) GetClusterParameters() []*AwsRdsClusterParameterGrou
 	return nil
 }
 
+// AwsRdsClusterAutoScaling defines the auto-scaling settings for the RDS cluster, allowing dynamic scaling of instances
+// based on specified metrics and policies.
 type AwsRdsClusterAutoScaling struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -562,6 +566,8 @@ func (x *AwsRdsClusterAutoScaling) GetMaxCapacity() int32 {
 	return 0
 }
 
+// AwsRdsClusterScalingConfiguration defines the scaling properties for Serverless v1 RDS clusters, allowing automatic
+// scaling based on usage patterns.
 type AwsRdsClusterScalingConfiguration struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -654,6 +660,8 @@ func (x *AwsRdsClusterScalingConfiguration) GetTimeoutAction() string {
 	return ""
 }
 
+// AwsRdsClusterServerless2ScalingConfiguration defines the scaling properties for Serverless v2 RDS clusters, allowing
+// fine-grained automatic scaling.
 type AwsRdsClusterServerless2ScalingConfiguration struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -713,6 +721,8 @@ func (x *AwsRdsClusterServerless2ScalingConfiguration) GetMinCapacity() float64 
 	return 0
 }
 
+// AwsRdsClusterParameterGroupParameter represents a parameter to apply to the DB cluster parameter group, allowing
+// customization of database settings.
 type AwsRdsClusterParameterGroupParameter struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

@@ -20,13 +20,20 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// aws-secrets-manager spec
+// AwsSecretsManagerSpec defines the specification required to create and manage secrets in AWS Secrets Manager.
+// This message encapsulates configurations necessary for creating secrets, allowing you to specify a list of
+// secret names that need to be created. Each secret represents sensitive information that needs to be securely
+// stored and accessed, such as database credentials, API keys, or other confidential data. AWS Secrets Manager
+// provides secure, scalable, and auditable storage for these secrets, supports automatic rotation, and helps
+// manage access through fine-grained permissions.
 type AwsSecretsManagerSpec struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// list of secret names to create in aws secrets-manager
+	// List of secret names to create in AWS Secrets Manager.
+	// Each name corresponds to a unique secret that will be securely stored and managed.
+	// Secret names must be unique within your AWS account and region.
 	SecretNames []string `protobuf:"bytes,1,rep,name=secret_names,json=secretNames,proto3" json:"secret_names,omitempty"`
 }
 

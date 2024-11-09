@@ -20,7 +20,8 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// aws-fargate spec
+// AwsFargateSpec defines the specification required to deploy an AWS Fargate resource, encapsulating all
+// configurations for the Aws Fargate settings.
 type AwsFargateSpec struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

@@ -5,21 +5,40 @@ package project.planton.provider.aws.ekscluster.v1;
 import "buf/validate/validate.proto";
 import "project/planton/provider/aws/ekscluster/v1/enum.proto";
 
-// EksClusterSpec is a message type that defines the specifications for a eks-cluster on Planton Cloud.
+// EksClusterSpec defines the specification required to deploy an Amazon Elastic Kubernetes Service (EKS) cluster
+// on Planton Cloud.
+// This message encapsulates all configurations necessary for setting up an EKS cluster, including the AWS region
+// where the cluster will be deployed,
+// the VPC (Virtual Private Cloud) settings, and the management mode for worker nodes.
+// Amazon EKS is a managed Kubernetes service that simplifies running Kubernetes on AWS without needing to install,
+// operate, and maintain your own Kubernetes control plane or nodes.
+// By providing this specification, users can automate the EKS cluster creation process with specified configurations,
+// ensuring a consistent and repeatable setup for their AWS environment.
+// This is particularly useful for organizations looking to deploy containerized applications in a scalable and
+// highly available manner.
 message EksClusterSpec {
-  // valid aws region in which to create the eks-cluster.
-  // warning: eks-cluster will recreated if this value is updated.
-  // https://aws.amazon.com/about-aws/global-infrastructure/regions_az/
+  // The AWS region in which to create the EKS cluster.
+  // This must be a valid AWS region where EKS is available.
+  // Note: The EKS cluster will be recreated if this value is updated.
+  // For a list of AWS regions, see: https://aws.amazon.com/about-aws/global-infrastructure/regions_az/
   string region = 1 [
     (buf.validate.field).required = true
   ];
 
-  // (optional) id of the vpc to be used for creating eks-cluster.
-  // if an id is not provided, a new vpc will be created.
-  // warning: eks-cluster will be recreated if this is updated.
+  // (Optional) The ID of the VPC to be used for creating the EKS cluster.
+  // If an ID is not provided, a new VPC will be created automatically.
+  // The VPC is the virtual network in which your EKS cluster and nodes will reside.
+  // Note: The EKS cluster will be recreated if this value is updated.
   string vpc_id = 2;
 
-  // aws eks worker node-groups management mode
+  // The management mode for AWS EKS worker node groups.
+  // This defines how the worker nodes are managed within the EKS cluster.
+  // The management mode is specified using the EksWorkersManagementMode enum,
+  // which can define modes such as "MANAGED", "SELF_MANAGED", or "FARGATE".
+  // - MANAGED: AWS manages the worker nodes for you.
+  // - SELF_MANAGED: You are responsible for managing the worker nodes.
+  // - FARGATE: Use AWS Fargate to run Kubernetes pods without managing nodes.
+  // Note: This field is required to determine how the cluster's compute resources are provisioned and managed.
   EksWorkersManagementMode workers_management_mode = 3 [
     (buf.validate.field).required = true
   ];

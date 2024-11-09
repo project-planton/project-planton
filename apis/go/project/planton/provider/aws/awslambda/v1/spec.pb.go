@@ -21,7 +21,8 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// aws-lambda spec
+// AwsLambdaSpec defines the specification required to deploy an AWS Lambda function, encapsulating all configurations
+// including the function itself, IAM roles, logging configurations, and permissions for invoking the function.
 type AwsLambdaSpec struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -100,6 +101,9 @@ func (x *AwsLambdaSpec) GetInvokeFunctionPermissions() []*AwsLambdaInvokeFunctio
 	return nil
 }
 
+// AwsLambdaFunction represents the configuration of an AWS Lambda function, including properties such as
+// architectures, handler, runtime, memory size, timeouts, environment variables, VPC configuration, and other
+// optional settings.
 type AwsLambdaFunction struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -367,6 +371,8 @@ func (x *AwsLambdaFunction) GetEphemeralStorageSize() int32 {
 	return 0
 }
 
+// AwsLambdaFunctionFileSystemConfig configures the file system access for the Lambda function, allowing it to
+// access an Amazon EFS file system via an Access Point.
 type AwsLambdaFunctionFileSystemConfig struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -424,6 +430,8 @@ func (x *AwsLambdaFunctionFileSystemConfig) GetLocalMountPath() string {
 	return ""
 }
 
+// AwsLambdaFunctionImageConfig specifies the image configuration values for a container image Lambda function,
+// including command overrides, entry point, and working directory.
 type AwsLambdaFunctionImageConfig struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -490,6 +498,8 @@ func (x *AwsLambdaFunctionImageConfig) GetWorkingDirectory() string {
 	return ""
 }
 
+// AwsLambdaFunctionVpcConfig provides VPC configuration for the Lambda function, specifying the VPC, subnets, and
+// security groups for the function's network interface.
 type AwsLambdaFunctionVpcConfig struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -556,6 +566,8 @@ func (x *AwsLambdaFunctionVpcConfig) GetVpcId() string {
 	return ""
 }
 
+// AwsLambdaIamRole defines the IAM role configuration for the Lambda function, including permissions boundaries,
+// custom policies, and settings for Lambda@Edge and CloudWatch Lambda Insights.
 type AwsLambdaIamRole struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -652,6 +664,8 @@ func (x *AwsLambdaIamRole) GetInlineIamPolicy() string {
 	return ""
 }
 
+// AwsLambdaCloudwatchLogGroup configures the CloudWatch Log Group for the Lambda function, including retention
+// settings and KMS key for encrypting log data.
 type AwsLambdaCloudwatchLogGroup struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -713,6 +727,8 @@ func (x *AwsLambdaCloudwatchLogGroup) GetRetentionInDays() int32 {
 	return 0
 }
 
+// AwsLambdaInvokeFunctionPermission defines which external sources can invoke the Lambda function, specifying the
+// principal and source ARN.
 type AwsLambdaInvokeFunctionPermission struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
