@@ -5,87 +5,131 @@ package project.planton.provider.kubernetes.solrkubernetes.v1;
 import "buf/validate/validate.proto";
 import "project/planton/shared/kubernetes/kubernetes.proto";
 
-//solr-kubernetes spec
+/**
+ * **SolrKubernetesSpec** defines the configuration for deploying Apache Solr on a Kubernetes cluster.
+ * This message includes specifications for the Solr container, Zookeeper container, and ingress settings.
+ * By configuring these parameters, you can set up a Solr deployment tailored to your application's needs,
+ * including resource allocation, data persistence, and external access through ingress.
+ */
 message SolrKubernetesSpec {
+  /**
+   * **Required.** The specifications for the Solr container deployment.
+   */
   SolrKubernetesSolrContainer solr_container = 1 [
     (buf.validate.field).required = true
   ];
 
-  //zookeeper container spec
+  /**
+   * **Required.** The specifications for the Zookeeper container deployment.
+   */
   SolrKubernetesZookeeperContainer zookeeper_container = 2 [
     (buf.validate.field).required = true
   ];
 
-  //ingress spec
+  /**
+   * The ingress configuration for the Solr deployment.
+   */
   project.planton.shared.kubernetes.IngressSpec ingress = 3;
 }
 
-//solr container spec
+/**
+ * **SolrKubernetesSolrContainer** specifies the configuration for the Solr container.
+ * It includes settings such as the number of replicas, container image, resource allocations,
+ * disk size for data persistence, and Solr-specific configurations.
+ * Proper configuration ensures optimal performance and data reliability for your Solr deployment.
+ */
 message SolrKubernetesSolrContainer {
-  //number of solr pods in solr-kubernetes
-  //recommended default 1.
+  /**
+   * **Required.** The number of Solr pods in the Solr Kubernetes deployment.
+   * Recommended default is 1.
+   */
   int32 replicas = 1 [
     (buf.validate.field).required = true
   ];
 
-  //solr container image
-  //example repo: solr example tag: 8.7.0
+  /**
+   * The container image for the Solr deployment.
+   * Example repository: "solr", example tag: "8.7.0".
+   */
   project.planton.shared.kubernetes.ContainerImage image = 2;
 
-  //solr container cpu and memory resources.
-  //recommended default "cpu-requests: 50m, memory-requests: 256Mi, cpu-limits: 1, memory-limits: 1Gi"
+  /**
+   * **Required.** The CPU and memory resources allocated to the Solr container.
+   * Recommended defaults: "cpu-requests: 50m", "memory-requests: 256Mi", "cpu-limits: 1", "memory-limits: 1Gi".
+   */
   project.planton.shared.kubernetes.ContainerResources resources = 3 [
     (buf.validate.field).required = true
   ];
 
-  //size of persistent volume attached to each solr pod.
-  //recommended default 1Gi
+  /**
+   * The size of the persistent volume attached to each Solr pod (e.g., "1Gi").
+   * Recommended default is "1Gi".
+   */
   string disk_size = 4 [
     (buf.validate.field).cel = {
       id: "spec.kubernetes.container.disk_size.is_valid",
-      message: "disk size value is invalid",
-      // https://regex101.com/r/EqH2xa/1
-      expression: "this.matches('^\\\\d+(\\\\.\\\\d+)?\\\\s?(Ki|Mi|Gi|Ti|Pi|Ei|K|M|G|T|P|E)$') && size(this) > 0"
+      message: "Disk size value is invalid",
+      // Validation regex for disk size.
+      expression: "this.matches('^\\d+(\\.\\d+)?\\s?(Ki|Mi|Gi|Ti|Pi|Ei|K|M|G|T|P|E)$') && size(this) > 0"
     }
   ];
 
-  //solr config
+  /**
+   * The Solr-specific configuration options.
+   */
   SolrKubernetesSolrConfig config = 5;
 }
 
-// solr config
+/**
+ * **SolrKubernetesSolrConfig** specifies the configuration settings for Solr.
+ * It includes JVM memory settings, custom Solr options, and garbage collection tuning parameters.
+ */
 message SolrKubernetesSolrConfig {
-  //jvm memory settings for solr
+  /**
+   * JVM memory settings for Solr.
+   */
   string java_mem = 1;
 
-  //custom solr options
-  //ex: "-Dsolr.autoSoftCommit.maxTime=10000"
+  /**
+   * Custom Solr options (e.g., "-Dsolr.autoSoftCommit.maxTime=10000").
+   */
   string opts = 2;
 
-  //solr garbage collection tuning configuration
-  //ex: "-XX:SurvivorRatio=4 -XX:TargetSurvivorRatio=90 -XX:MaxTenuringThreshold=8"
+  /**
+   * Solr garbage collection tuning configuration (e.g., "-XX:SurvivorRatio=4 -XX:TargetSurvivorRatio=90 -XX:MaxTenuringThreshold=8").
+   */
   string garbage_collection_tuning = 3;
 }
 
-//solr-kubernetes kubernetes zookeeper container spec
+/**
+ * **SolrKubernetesZookeeperContainer** specifies the configuration for the Zookeeper container used by Solr.
+ * It includes settings such as the number of replicas, resource allocations, and disk size for data persistence.
+ * Proper configuration ensures high availability and reliability for your Solr cluster.
+ */
 message SolrKubernetesZookeeperContainer {
-  //number of zookeeper pods in zookeeper cluster.
-  //recommended default 1
+  /**
+   * **Required.** The number of Zookeeper pods in the Zookeeper cluster.
+   * Recommended default is 1.
+   */
   int32 replicas = 1;
 
-  //zookeeper container cpu and memory resources.
-  //recommended default "cpu-request: 50m, memory-request: 256Mi, cpu-limit: 1, memory-limit: 1Gi"
+  /**
+   * **Required.** The CPU and memory resources allocated to the Zookeeper container.
+   * Recommended defaults: "cpu-requests: 50m", "memory-requests: 256Mi", "cpu-limits: 1", "memory-limits: 1Gi".
+   */
   project.planton.shared.kubernetes.ContainerResources resources = 2 [
     (buf.validate.field).required = true
   ];
 
-  //size of persistent volume attached to each zookeeper pod
+  /**
+   * The size of the persistent volume attached to each Zookeeper pod (e.g., "1Gi").
+   */
   string disk_size = 3 [
     (buf.validate.field).cel = {
       id: "spec.kubernetes.container.disk_size.is_valid",
-      message: "disk size value is invalid",
-      // https://regex101.com/r/EqH2xa/1
-      expression: "this.matches('^\\\\d+(\\\\.\\\\d+)?\\\\s?(Ki|Mi|Gi|Ti|Pi|Ei|K|M|G|T|P|E)$') && size(this) > 0"
+      message: "Disk size value is invalid",
+      // Validation regex for disk size.
+      expression: "this.matches('^\\d+(\\.\\d+)?\\s?(Ki|Mi|Gi|Ti|Pi|Ei|K|M|G|T|P|E)$') && size(this) > 0"
     }
   ];
 }

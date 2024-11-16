@@ -22,20 +22,26 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// mongodb-kubernetes spec
+// *
+// **MongodbKubernetesSpec** defines the configuration for deploying MongoDB on a Kubernetes cluster.
+// This message specifies the parameters needed to create and manage a MongoDB deployment within a Kubernetes environment.
+// It includes container specifications, ingress settings, and Helm chart customization options.
 type MongodbKubernetesSpec struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// mongodb-container spec
+	// *
+	// **Required.** The specifications for the MongoDB container deployment.
 	Container *MongodbKubernetesContainer `protobuf:"bytes,1,opt,name=container,proto3" json:"container,omitempty"`
-	// mongodb-kubernetes ingress-spec
+	// *
+	// The ingress configuration for the MongoDB deployment.
 	Ingress *kubernetes.IngressSpec `protobuf:"bytes,2,opt,name=ingress,proto3" json:"ingress,omitempty"`
-	// helm_values is a map of key-value pairs that provide additional customization options for the Helm chart used
-	// to deploy the Mongodb Kubernetes. These values allow for further refinement of the deployment, such as customizing
-	// resource limits, setting environment variables, or specifying version tags. For detailed information on the available
-	// options, refer to the Helm chart documentation at:
+	// *
+	// A map of key-value pairs that provide additional customization options for the Helm chart used
+	// to deploy MongoDB on Kubernetes. These values allow for further refinement of the deployment,
+	// such as customizing resource limits, setting environment variables, or specifying version tags.
+	// For detailed information on the available options, refer to the Helm chart documentation at:
 	// https://artifacthub.io/packages/helm/bitnami/mongodb
 	HelmValues map[string]string `protobuf:"bytes,3,rep,name=helm_values,json=helmValues,proto3" json:"helm_values,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 }
@@ -93,29 +99,33 @@ func (x *MongodbKubernetesSpec) GetHelmValues() map[string]string {
 	return nil
 }
 
-// mongodb-kubernetes kubernetes mongodb-container spec
+// *
+// **MongodbKubernetesContainer** specifies the container configuration for the MongoDB application.
+// It includes settings such as the number of replicas, resource allocations, data persistence options, and disk size.
+// Proper configuration ensures optimal performance and data reliability for your MongoDB deployment.
 type MongodbKubernetesContainer struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// number of mongodb pods.
-	// recommended default 1
+	// *
+	// **Required.** The number of MongoDB pods to deploy.
+	// Recommended default is 1.
 	Replicas int32 `protobuf:"varint,1,opt,name=replicas,proto3" json:"replicas,omitempty"`
-	// mongodb container cpu and memory resources.
-	// recommended default "cpu-requests: 50m, memory-requests: 256Mi, cpu-limits: 1, memory-limits: 1Gi"
+	// *
+	// **Required.** The CPU and memory resources allocated to the MongoDB container.
+	// Recommended defaults: "cpu-requests: 50m", "memory-requests: 256Mi", "cpu-limits: 1", "memory-limits: 1Gi".
 	Resources *kubernetes.ContainerResources `protobuf:"bytes,2,opt,name=resources,proto3" json:"resources,omitempty"`
-	// flag to toggle persistence for mongodb data.
-	// when enabled, mongodb in-memory data will be persisted to a storage volume.
-	// the backup data from persistent volume is restored into mongodb memory between pod restarts.
-	// defaults to false.
+	// *
+	// A flag to enable or disable data persistence for MongoDB.
+	// When enabled, in-memory data is persisted to a storage volume, allowing data to survive pod restarts.
+	// Defaults to `false`.
 	IsPersistenceEnabled bool `protobuf:"varint,3,opt,name=is_persistence_enabled,json=isPersistenceEnabled,proto3" json:"is_persistence_enabled,omitempty"`
-	// size of persistent volume attached to each mongodb pod
-	// if the client does not provide a value, the default value is configured.
-	// this attribute is ignored when persistence is not enabled.
-	// this persistent volume is used for backing up in-memory data.
-	// data from the persistent volume will be restored into memory between pod restarts.
-	// this value can not be modified as kubernetes does not allow updating the stateful-set specification after creation.
+	// *
+	// The size of the persistent volume attached to each MongoDB pod (e.g., "10Gi").
+	// Required if `is_persistence_enabled` is `true`.
+	// This value specifies the disk size for data persistence.
+	// **Note:** This value cannot be modified after creation due to Kubernetes limitations on stateful sets.
 	DiskSize string `protobuf:"bytes,4,opt,name=disk_size,json=diskSize,proto3" json:"disk_size,omitempty"`
 }
 
@@ -239,7 +249,7 @@ var file_project_planton_provider_kubernetes_mongodbkubernetes_v1_spec_proto_raw
 	0x48, 0xa5, 0x01, 0xba, 0x01, 0xa1, 0x01, 0x0a, 0x2c, 0x73, 0x70, 0x65, 0x63, 0x2e, 0x6b, 0x75,
 	0x62, 0x65, 0x72, 0x6e, 0x65, 0x74, 0x65, 0x73, 0x2e, 0x63, 0x6f, 0x6e, 0x74, 0x61, 0x69, 0x6e,
 	0x65, 0x72, 0x2e, 0x64, 0x69, 0x73, 0x6b, 0x5f, 0x73, 0x69, 0x7a, 0x65, 0x2e, 0x69, 0x73, 0x5f,
-	0x76, 0x61, 0x6c, 0x69, 0x64, 0x12, 0x1a, 0x64, 0x69, 0x73, 0x6b, 0x20, 0x73, 0x69, 0x7a, 0x65,
+	0x76, 0x61, 0x6c, 0x69, 0x64, 0x12, 0x1a, 0x44, 0x69, 0x73, 0x6b, 0x20, 0x73, 0x69, 0x7a, 0x65,
 	0x20, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x20, 0x69, 0x73, 0x20, 0x69, 0x6e, 0x76, 0x61, 0x6c, 0x69,
 	0x64, 0x1a, 0x55, 0x74, 0x68, 0x69, 0x73, 0x2e, 0x6d, 0x61, 0x74, 0x63, 0x68, 0x65, 0x73, 0x28,
 	0x27, 0x5e, 0x5c, 0x5c, 0x64, 0x2b, 0x28, 0x5c, 0x5c, 0x2e, 0x5c, 0x5c, 0x64, 0x2b, 0x29, 0x3f,
@@ -254,7 +264,7 @@ var file_project_planton_provider_kubernetes_mongodbkubernetes_v1_spec_proto_raw
 	0x73, 0x2e, 0x69, 0x73, 0x5f, 0x70, 0x65, 0x72, 0x73, 0x69, 0x73, 0x74, 0x65, 0x6e, 0x63, 0x65,
 	0x5f, 0x65, 0x6e, 0x61, 0x62, 0x6c, 0x65, 0x64, 0x20, 0x26, 0x26, 0x20, 0x73, 0x69, 0x7a, 0x65,
 	0x28, 0x74, 0x68, 0x69, 0x73, 0x2e, 0x64, 0x69, 0x73, 0x6b, 0x5f, 0x73, 0x69, 0x7a, 0x65, 0x29,
-	0x20, 0x3d, 0x3d, 0x20, 0x30, 0x3f, 0x20, 0x27, 0x64, 0x69, 0x73, 0x6b, 0x20, 0x73, 0x69, 0x7a,
+	0x20, 0x3d, 0x3d, 0x20, 0x30, 0x3f, 0x20, 0x27, 0x44, 0x69, 0x73, 0x6b, 0x20, 0x73, 0x69, 0x7a,
 	0x65, 0x20, 0x69, 0x73, 0x20, 0x6d, 0x61, 0x6e, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x79, 0x20, 0x74,
 	0x6f, 0x20, 0x65, 0x6e, 0x61, 0x62, 0x6c, 0x65, 0x20, 0x70, 0x65, 0x72, 0x73, 0x69, 0x73, 0x74,
 	0x65, 0x6e, 0x63, 0x65, 0x27, 0x3a, 0x20, 0x27, 0x27, 0x42, 0xd1, 0x03, 0x0a, 0x3c, 0x63, 0x6f,

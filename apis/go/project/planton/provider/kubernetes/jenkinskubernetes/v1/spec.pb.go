@@ -22,21 +22,23 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// jenkins-kubernetes spec
+// **JenkinsKubernetesSpec** defines the configuration for deploying Jenkins on a Kubernetes cluster.
+// This message specifies the parameters needed to create and manage a Jenkins deployment within a Kubernetes environment.
+// It includes container specifications, Helm chart customization options, and ingress settings to control resource allocation
+// and external access.
 type JenkinsKubernetesSpec struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// jenkins-container spec
+	// **Required.** The container specifications for the Jenkins deployment.
 	Container *JenkinsKubernetesSpecContainer `protobuf:"bytes,1,opt,name=container,proto3" json:"container,omitempty"`
-	// helm_values is a map of key-value pairs that provide additional customization options for the Helm chart used
-	// to deploy the Jenkins Kubernetes. These values allow for further refinement of the deployment, such as customizing
-	// resource limits, setting environment variables, or specifying version tags. For detailed information on the available
-	// options, refer to the Helm chart documentation at:
+	// A map of key-value pairs that provide additional customization options for the Helm chart used to deploy Jenkins.
+	// These values allow for further refinement of the deployment, such as customizing resource limits, setting environment variables,
+	// or specifying version tags. For detailed information on the available options, refer to the Helm chart documentation at:
 	// https://github.com/jenkinsci/helm-charts/blob/main/charts/jenkins/values.yaml
 	HelmValues map[string]string `protobuf:"bytes,3,rep,name=helm_values,json=helmValues,proto3" json:"helm_values,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
-	// jenkins-kubernetes ingress-spec
+	// The ingress configuration for the Jenkins deployment.
 	Ingress *kubernetes.IngressSpec `protobuf:"bytes,4,opt,name=ingress,proto3" json:"ingress,omitempty"`
 }
 
@@ -93,14 +95,16 @@ func (x *JenkinsKubernetesSpec) GetIngress() *kubernetes.IngressSpec {
 	return nil
 }
 
-// jenkins-kubernetes jenkins-container spec
+// **JenkinsKubernetesSpecContainer** specifies the container configuration for the Jenkins application.
+// It includes resource allocations for CPU and memory to ensure the application runs efficiently.
+// Recommended defaults: CPU requests - 50m, Memory requests - 256Mi, CPU limits - 1, Memory limits - 1Gi.
 type JenkinsKubernetesSpecContainer struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// jenkins container cpu and memory resources.
-	// recommended default "cpu-requests: 50m, memory-requests: 256Mi, cpu-limits: 1, memory-limits: 1Gi"
+	// **Required.** The CPU and memory resources allocated to the Jenkins container.
+	// Recommended defaults: "cpu-requests: 50m", "memory-requests: 256Mi", "cpu-limits: 1", "memory-limits: 1Gi".
 	Resources *kubernetes.ContainerResources `protobuf:"bytes,1,opt,name=resources,proto3" json:"resources,omitempty"`
 }
 

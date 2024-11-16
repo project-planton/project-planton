@@ -5,10 +5,18 @@ package project.planton.provider.kubernetes.microservicekubernetes.v1;
 import "buf/validate/validate.proto";
 import "project/planton/shared/kubernetes/kubernetes.proto";
 
-//microservice-kubernetes spec
+/**
+ * **MicroserviceKubernetesSpec** defines the configuration for deploying a microservice on a Kubernetes cluster.
+ * This message includes specifications for the microservice version, container configurations, ingress settings,
+ * and availability options. By setting these parameters, you can manage how your microservice is deployed,
+ * scaled, and accessed within the Kubernetes environment.
+ */
 message MicroserviceKubernetesSpec {
-  //version of the microservice being deployed. this is usually either "main" which is the default git branch name or
-  //review-<id> where id is the merge request number
+  /**
+   * **Required.** The version of the microservice being deployed.
+   * This is usually either "main" (the default git branch name) or "review-<id>" where <id> is the merge request number.
+   * It must be between 1 and 20 characters and can only contain lowercase letters, numbers, and hyphens.
+   */
   string version = 1 [
     (buf.validate.field).string.min_len = 1,
     (buf.validate.field).string.max_len = 20,
@@ -26,113 +34,187 @@ message MicroserviceKubernetesSpec {
     }
   ];
 
-  //container spec
+  /**
+   * **Required.** The container specifications for the microservice deployment.
+   * This includes configurations for the main application container and any sidecar containers.
+   */
   MicroserviceKubernetesContainer container = 3 [
     (buf.validate.field).required = true
   ];
 
-  //microservice kubernetes ingress configuration on kubernetes
+  /**
+   * The ingress configuration for the microservice.
+   * This defines how the microservice can be accessed externally.
+   */
   project.planton.shared.kubernetes.IngressSpec ingress = 4;
 
-  //microservice kubernetes availability configuration on kubernetes
+  /**
+   * The availability configuration for the microservice.
+   * This includes settings for minimum replicas and autoscaling options.
+   */
   MicroserviceKubernetesAvailability availability = 5;
 }
 
-//microservice-kubernetes-spec kubernetes container spec
+/**
+ * **MicroserviceKubernetesContainer** specifies the container configuration for the microservice.
+ * It includes the main application container and any sidecar containers that need to run alongside it.
+ */
 message MicroserviceKubernetesContainer {
-  //microservice app container
+  /**
+   * **Required.** The main application container specifications.
+   */
   MicroserviceKubernetesContainerApp app = 1 [
     (buf.validate.field).required = true
   ];
 
-  //sidecar containers
+  /**
+   * A list of sidecar containers to be deployed alongside the main application container.
+   */
   repeated project.planton.shared.kubernetes.Container sidecars = 2;
 }
 
-//microservice-kubernetes-spec kubernetes app container spec
+/**
+ * **MicroserviceKubernetesContainerApp** specifies the configuration for the main application container.
+ * It includes the container image, resource allocations, environment variables, and ports.
+ */
 message MicroserviceKubernetesContainerApp {
-  //container image. this value is computed during creation but is allowed for updates.
-  //value is computed by combining the docker-repo of the artifact-store configured for environment and code project path.
-  //
-  //pull-secret-name: name of the image pull secret to be configured in kubernetes Deployment resource.
-  //computed by looking up the container_image_artifact_store_id from the environment to which the
-  //microservice deployment is created.
+  /**
+   * The container image to be used for the application.
+   * This value is computed during creation but can be updated.
+   * It is derived by combining the Docker repository of the artifact store configured for the environment and the code project path.
+   * The `pull_secret_name` is the name of the image pull secret to be configured in the Kubernetes Deployment resource.
+   * It is determined by looking up the `container_image_artifact_store_id` from the environment where the microservice is deployed.
+   */
   project.planton.shared.kubernetes.ContainerImage image = 1;
 
-  //container resources
+  /**
+   * The CPU and memory resources allocated to the application container.
+   */
   project.planton.shared.kubernetes.ContainerResources resources = 2;
 
-  //microservice-kubernetes environment variables and secrets.
+  /**
+   * The environment variables and secrets for the application container.
+   */
   MicroserviceKubernetesContainerAppEnv env = 3;
 
-  //list of ports to be configured for the app container
+  /**
+   * A list of ports to be configured for the application container.
+   */
   repeated MicroserviceKubernetesContainerAppPort ports = 4;
 }
 
-//microservice-kubernetes-spec kubernetes app container environment variables spec
+/**
+ * **MicroserviceKubernetesContainerAppEnv** defines the environment variables and secrets for the application container.
+ */
 message MicroserviceKubernetesContainerAppEnv {
-  //map of variable
+  /**
+   * A map of environment variable names to their values.
+   */
   map<string, string> variables = 1;
-  //map of secrets
+
+  /**
+   * A map of secret names to their values.
+   */
   map<string, string> secrets = 2;
 }
 
-//microservice-kubernetes-spec kubernetes container port spec
+/**
+ * **MicroserviceKubernetesContainerAppPort** specifies the port configuration for the application container.
+ * It includes details such as the port name, container port, network protocol, application protocol, and service port.
+ */
 message MicroserviceKubernetesContainerAppPort {
-  //name for the port ex: http, grpc
+  /**
+   * **Required.** The name of the port (e.g., "http", "grpc").
+   * The name must only contain lowercase alphanumeric characters and hyphens.
+   * Port names must also start and end with an alphanumeric character.
+   * For example, "123-abc" and "web" are valid, but "123_abc" and "-web" are not.
+   */
   string name = 1 [
     (buf.validate.field).required = true,
     (buf.validate.field).cel = {
       id: "spec.kubernetes.container.app.ports.name",
-      message: "name for ports must only contain lowercase alphanumeric characters and -. Port names must also start and end with an alphanumeric character. For example, the names 123-abc and web are valid, but 123_abc and -web are not.",
+      message: "Name for ports must only contain lowercase alphanumeric characters and hyphens. Port names must also start and end with an alphanumeric character. For example, '123-abc' and 'web' are valid, but '123_abc' and '-web' are not.",
       // https://regex101.com/r/dugcdl/1
       expression: "this.matches('^[a-z0-9][a-z0-9-]*[a-z0-9]$')"
     }
   ];
-  //container port
+
+  /**
+   * **Required.** The port number on the container.
+   */
   int32 container_port = 2 [
     (buf.validate.field).required = true
   ];
 
+  /**
+   * **Required.** The network protocol used by the port (e.g., "TCP", "UDP", "SCTP").
+   * Must be one of "TCP", "UDP", or "SCTP".
+   */
   string network_protocol = 3 [
     (buf.validate.field).required = true,
     (buf.validate.field).cel = {
       id: "spec.kubernetes.container.app.ports.network_protocol",
-      message: 'the network protocol must be one of "SCTP", "TCP" and "UDP"',
+      message: 'The network protocol must be one of "SCTP", "TCP", or "UDP".',
       expression: 'this in ["SCTP", "TCP", "UDP"]',
     }
   ];
-  //(required) application protocol for the microservice.
-  //the default is set to "http"
-  //https://kubernetes.io/docs/concepts/services-networking/service/#application-protocol.
-  //this field is used for setting up the name of the service port in kubernetes.
-  //this attribute is used during microservice deployment.
-  //this attribute is only relevant for deployment and stateful-set pod_managers.
+
+  /**
+   * **Required.** The application protocol for the microservice (e.g., "http").
+   * This field is used for setting up the name of the service port in Kubernetes.
+   * It is used during microservice deployment and is relevant for deployment and stateful set pod managers.
+   * Refer to: https://kubernetes.io/docs/concepts/services-networking/service/#application-protocol
+   */
   string app_protocol = 4 [
     (buf.validate.field).required = true
   ];
-  //kubernetes service port
+
+  /**
+   * **Required.** The port number on the Kubernetes service.
+   */
   int32 service_port = 5 [
     (buf.validate.field).required = true
   ];
-  // flag to tag the port as ingress port
+
+  /**
+   * A flag indicating whether this port should be exposed via ingress.
+   */
   bool is_ingress_port = 6;
 }
 
-//microservice-kubernetes-spec kubernetes availability spec
+/**
+ * **MicroserviceKubernetesAvailability** specifies the availability configuration for the microservice.
+ * It includes settings for minimum replicas and horizontal pod autoscaling.
+ */
 message MicroserviceKubernetesAvailability {
-  //minimum number of pod replicas
+  /**
+   * The minimum number of pod replicas to maintain.
+   */
   int32 min_replicas = 1;
-  //horizontal pod autoscaling configuration
+
+  /**
+   * The configuration for horizontal pod autoscaling.
+   */
   MicroserviceKubernetesAvailabilityHpa horizontal_pod_autoscaling = 2;
 }
 
-//microservice-kubernetes-spec kubernetes availability spec horizontal pod autoscaling
+/**
+ * **MicroserviceKubernetesAvailabilityHpa** specifies the horizontal pod autoscaling configuration.
+ * It includes settings to enable autoscaling based on CPU and memory utilization.
+ */
 message MicroserviceKubernetesAvailabilityHpa {
-  //flag to toggle horizontal pod autoscaling
+  /**
+   * A flag to enable or disable horizontal pod autoscaling.
+   */
   bool is_enabled = 1;
-  //percentage for target cpu utilization to trigger auto scaling. ex: 60.0
+
+  /**
+   * The target CPU utilization percentage to trigger autoscaling (e.g., 60.0).
+   */
   double target_cpu_utilization_percent = 2;
-  //target memory utilization to trigger auto scaling. ex: 1Gi
+
+  /**
+   * The target memory utilization to trigger autoscaling (e.g., "1Gi").
+   */
   string target_memory_utilization = 3;
 }

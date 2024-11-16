@@ -22,15 +22,17 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// keycloak-kubernetes spec
+// **KeycloakKubernetesSpec** defines the configuration for deploying Keycloak on a Kubernetes cluster.
+// This message specifies the parameters needed to create and manage a Keycloak deployment within a Kubernetes environment.
+// It includes container specifications and ingress settings to control resource allocation and external access.
 type KeycloakKubernetesSpec struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// keycloak-container spec
+	// The container specifications for the Keycloak deployment.
 	Container *KeycloakKubernetesContainer `protobuf:"bytes,1,opt,name=container,proto3" json:"container,omitempty"`
-	// keycloak-kubernetes ingress-spec
+	// The ingress configuration for the Keycloak deployment.
 	Ingress *kubernetes.IngressSpec `protobuf:"bytes,2,opt,name=ingress,proto3" json:"ingress,omitempty"`
 }
 
@@ -80,14 +82,16 @@ func (x *KeycloakKubernetesSpec) GetIngress() *kubernetes.IngressSpec {
 	return nil
 }
 
-// keycloak-kubernetes kubernetes keycloak-container spec
+// **KeycloakKubernetesContainer** specifies the container configuration for the Keycloak application.
+// It includes resource allocations for CPU and memory to ensure the application runs efficiently.
+// Recommended defaults: CPU requests - 50m, Memory requests - 256Mi, CPU limits - 1, Memory limits - 1Gi.
 type KeycloakKubernetesContainer struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// keycloak container cpu and memory resources.
-	// recommended default "cpu-requests: 50m, memory-requests: 256Mi, cpu-limits: 1, memory-limits: 1Gi"
+	// **Required.** The CPU and memory resources allocated to the Keycloak container.
+	// Recommended defaults: "cpu-requests: 50m", "memory-requests: 256Mi", "cpu-limits: 1", "memory-limits: 1Gi".
 	Resources *kubernetes.ContainerResources `protobuf:"bytes,1,opt,name=resources,proto3" json:"resources,omitempty"`
 }
 

@@ -22,15 +22,20 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// redis-kubernetes spec
+// *
+// **RedisKubernetesSpec** defines the configuration for deploying Redis on a Kubernetes cluster.
+// This message specifies the parameters needed to create and manage a Redis deployment within a Kubernetes environment.
+// It includes container specifications and ingress settings to control resource allocation and external access.
 type RedisKubernetesSpec struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// redis-container spec
+	// *
+	// **Required.** The container specifications for the Redis deployment.
 	Container *RedisKubernetesContainer `protobuf:"bytes,1,opt,name=container,proto3" json:"container,omitempty"`
-	// redis-kubernetes ingress-spec
+	// *
+	// The ingress configuration for the Redis deployment.
 	Ingress *kubernetes.IngressSpec `protobuf:"bytes,2,opt,name=ingress,proto3" json:"ingress,omitempty"`
 }
 
@@ -80,29 +85,36 @@ func (x *RedisKubernetesSpec) GetIngress() *kubernetes.IngressSpec {
 	return nil
 }
 
-// redis-kubernetes kubernetes redis-container spec
+// *
+// **RedisKubernetesContainer** specifies the container configuration for the Redis application.
+// It includes resource allocations for CPU and memory, the number of replicas, data persistence options, and disk size.
+// Proper configuration ensures optimal performance and data reliability for your Redis deployment.
 type RedisKubernetesContainer struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// number of redis pods.
-	// recommended default 1
+	// *
+	// **Required.** The number of Redis pods to deploy.
+	// Recommended default is 1.
 	Replicas int32 `protobuf:"varint,1,opt,name=replicas,proto3" json:"replicas,omitempty"`
-	// redis container cpu and memory resources.
-	// recommended default "cpu-requests: 50m, memory-requests: 256Mi, cpu-limits: 1, memory-limits: 1Gi"
+	// *
+	// **Required.** The CPU and memory resources allocated to the Redis container.
+	// Recommended defaults: "cpu-requests: 50m", "memory-requests: 256Mi", "cpu-limits: 1", "memory-limits: 1Gi".
 	Resources *kubernetes.ContainerResources `protobuf:"bytes,2,opt,name=resources,proto3" json:"resources,omitempty"`
-	// flag to toggle persistence for redis data.
-	// when enabled, redis in-memory data will be persisted to a storage volume.
-	// the backup data from persistent volume is restored into redis memory between pod restarts.
-	// defaults to false.
+	// *
+	// A flag to enable or disable data persistence for Redis.
+	// When enabled, in-memory data is persisted to a storage volume, allowing data to survive pod restarts.
+	// The backup data from the persistent volume is restored into Redis memory between pod restarts.
+	// Defaults to `false`.
 	IsPersistenceEnabled bool `protobuf:"varint,3,opt,name=is_persistence_enabled,json=isPersistenceEnabled,proto3" json:"is_persistence_enabled,omitempty"`
-	// size of persistent volume attached to each redis pod
-	// if the client does not provide a value, the default value is configured.
-	// this attribute is ignored when persistence is not enabled.
-	// this persistent volume is used for backing up in-memory data.
-	// data from the persistent volume will be restored into memory between pod restarts.
-	// this value can not be modified as kubernetes does not allow updating the stateful-set specification after creation.
+	// *
+	// The size of the persistent volume attached to each Redis pod (e.g., "10Gi").
+	// If the client does not provide a value, a default value is configured.
+	// This attribute is ignored when persistence is not enabled.
+	// This persistent volume is used for backing up in-memory data.
+	// Data from the persistent volume will be restored into memory between pod restarts.
+	// **Note:** This value cannot be modified after creation due to Kubernetes limitations on stateful sets.
 	DiskSize string `protobuf:"bytes,4,opt,name=disk_size,json=diskSize,proto3" json:"disk_size,omitempty"`
 }
 

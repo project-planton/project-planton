@@ -21,7 +21,10 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// kubernetes-http-endpoint spec
+// **KubernetesHttpEndpointSpec** defines the configuration for deploying an HTTP endpoint in Kubernetes.
+// This message specifies the parameters required to create and manage an HTTP endpoint within a Kubernetes cluster.
+// It allows you to configure TLS settings, specify the certificate issuer, enable gRPC-Web compatibility,
+// and define routing rules to direct traffic to different backend services based on URL paths.
 type KubernetesHttpEndpointSpec struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -42,14 +45,13 @@ type KubernetesHttpEndpointSpec struct {
 	// certificate for the http-endpoint domain name.
 	// for all other scenarios, the devops team can deploy a customized pulumi module.
 	CertClusterIssuerName string `protobuf:"bytes,2,opt,name=cert_cluster_issuer_name,json=certClusterIssuerName,proto3" json:"cert_cluster_issuer_name,omitempty"`
-	// flag to control virtual service configuration compatible for grpc-web clients.
-	// grpc-web clients would rely on extra headers added by envoy proxy.
+	// A flag to enable virtual service configuration compatible with gRPC-Web clients.
+	// gRPC-Web clients rely on extra headers added by the Envoy proxy.
 	IsGrpcWebCompatible bool `protobuf:"varint,3,opt,name=is_grpc_web_compatible,json=isGrpcWebCompatible,proto3" json:"is_grpc_web_compatible,omitempty"`
-	// routes to configure backends for url paths of the domain.
-	// routes allow configuring requests to be routed to different microservices based on the url path.
-	// ex: if the endpoint domain name is console.example.com, then console.example.com/public/api/* can be
-	// to be sent to public-api microservice and console.example.com/private/api/* can be configured to route to
-	// route to private-api microservice.
+	// A list of routing rules to configure backends for URL paths of the domain.
+	// Routes allow configuring requests to be routed to different microservices based on the URL path.
+	// For example, if the endpoint domain name is `console.example.com`, then `console.example.com/public/api/*` can be
+	// routed to the `public-api` microservice, and `console.example.com/private/api/*` can be routed to the `private-api` microservice.
 	RoutingRules []*KubernetesHttpEndpointRoutingRule `protobuf:"bytes,4,rep,name=routing_rules,json=routingRules,proto3" json:"routing_rules,omitempty"`
 }
 
@@ -113,16 +115,18 @@ func (x *KubernetesHttpEndpointSpec) GetRoutingRules() []*KubernetesHttpEndpoint
 	return nil
 }
 
-// kubernetes-http-endpoint routing-rule
+// **KubernetesHttpEndpointRoutingRule** represents a routing rule for the HTTP endpoint.
+// It defines how requests matching a specific URL path prefix should be routed to a backend Kubernetes service.
 type KubernetesHttpEndpointRoutingRule struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// if endpoint domain name is console.example.com, and if the url_path_prefix is /api, then
-	// all requests that match console.example.com/api/* are forwarded to the configured kubernetes service.
+	// **Required.** The URL path prefix to match.
+	// For example, if the endpoint domain name is `console.example.com`, and the `url_path_prefix` is `/api`,
+	// then all requests matching `console.example.com/api/*` are forwarded to the configured Kubernetes service.
 	UrlPathPrefix string `protobuf:"bytes,1,opt,name=url_path_prefix,json=urlPathPrefix,proto3" json:"url_path_prefix,omitempty"`
-	// backend-service
+	// **Required.** The backend service to which the requests should be forwarded.
 	BackendService *KubernetesHttpEndpointRoutingRuleBackendService `protobuf:"bytes,2,opt,name=backend_service,json=backendService,proto3" json:"backend_service,omitempty"`
 }
 
@@ -172,17 +176,18 @@ func (x *KubernetesHttpEndpointRoutingRule) GetBackendService() *KubernetesHttpE
 	return nil
 }
 
-// backend-service spec for kubernetes-http-endpoint routing-rule
+// **KubernetesHttpEndpointRoutingRuleBackendService** specifies the backend Kubernetes service details
+// for a routing rule. It includes the service name, namespace, and port.
 type KubernetesHttpEndpointRoutingRuleBackendService struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// name of the kubernetes service
+	// The name of the Kubernetes service.
 	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	// namespace of the kubernetes service
+	// The namespace of the Kubernetes service.
 	Namespace string `protobuf:"bytes,2,opt,name=namespace,proto3" json:"namespace,omitempty"`
-	// kubernetes service port
+	// The port on which the Kubernetes service is exposed.
 	Port int32 `protobuf:"varint,3,opt,name=port,proto3" json:"port,omitempty"`
 }
 

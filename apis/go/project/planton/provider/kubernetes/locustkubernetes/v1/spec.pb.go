@@ -22,29 +22,31 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// LocustKubernetesSpec defines the overall configuration for a Locust load testing cluster.
-// This message encapsulates the environmental context, Kubernetes deployment specifications,
-// load testing parameters, and Helm chart values for customizing the deployment.
+// **LocustKubernetesSpec** defines the overall configuration for deploying a Locust load testing cluster on Kubernetes.
+// This message encapsulates environmental context, Kubernetes deployment specifications, load testing parameters,
+// and Helm chart values for customizing the deployment. By configuring these parameters, you can set up a scalable
+// and customizable load testing environment to simulate user traffic and measure application performance.
 type LocustKubernetesSpec struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// kubernetes specifies the configuration settings specific to Kubernetes.
-	// master-locust-container spec
+	// **Required.** The master container specifications for the Locust cluster.
+	// This defines the resource allocation and number of replicas for the master node.
 	MasterContainer *LocustKubernetesContainer `protobuf:"bytes,1,opt,name=master_container,json=masterContainer,proto3" json:"master_container,omitempty"`
-	// worker-locust-container spec
+	// **Required.** The worker container specifications for the Locust cluster.
+	// This defines the resource allocation and number of replicas for the worker nodes.
 	WorkerContainer *LocustKubernetesContainer `protobuf:"bytes,2,opt,name=worker_container,json=workerContainer,proto3" json:"worker_container,omitempty"`
-	// locust-kubernetes ingress-spec
+	// The ingress configuration for the Locust deployment.
 	Ingress *kubernetes.IngressSpec `protobuf:"bytes,3,opt,name=ingress,proto3" json:"ingress,omitempty"`
-	// load_test defines the parameters of the load test itself, including the main test script,
-	// any additional library files, and extra Python pip packages needed for the test execution.
-	// This specification directs how the Locust nodes will simulate traffic and interact with the target application.
+	// The load test parameters, including the main test script, additional library files,
+	// and extra Python pip packages needed for test execution.
+	// This specifies how the Locust nodes will simulate traffic and interact with the target application.
 	LoadTest *LocustKubernetesLoadTest `protobuf:"bytes,4,opt,name=load_test,json=loadTest,proto3" json:"load_test,omitempty"`
-	// helm_values is a map of key-value pairs that provide additional customization options for the Helm chart used
-	// to deploy the Locust cluster. These values allow for further refinement of the deployment, such as customizing
-	// resource limits, setting environment variables, or specifying version tags. For detailed information on the available
-	// options, refer to the Helm chart documentation at:
+	// A map of key-value pairs providing additional customization options for the Helm chart used
+	// to deploy the Locust cluster. These values allow for further refinement of the deployment,
+	// such as customizing resource limits, setting environment variables, or specifying version tags.
+	// For detailed information on the available options, refer to the Helm chart documentation at:
 	// https://github.com/deliveryhero/helm-charts/tree/master/stable/locust#values
 	HelmValues map[string]string `protobuf:"bytes,5,rep,name=helm_values,json=helmValues,proto3" json:"helm_values,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 }
@@ -116,16 +118,19 @@ func (x *LocustKubernetesSpec) GetHelmValues() map[string]string {
 	return nil
 }
 
-// locust-kubernetes kubernetes locust-container spec
+// **LocustKubernetesContainer** specifies the container configuration for Locust master and worker nodes.
+// It includes resource allocations for CPU and memory, as well as the number of replicas to deploy.
+// Proper configuration ensures optimal performance and scalability of your load testing environment.
 type LocustKubernetesContainer struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// locust container cpu and memory resources.
-	// recommended default "cpu-requests: 50m, memory-requests: 256Mi, cpu-limits: 1, memory-limits: 1Gi"
+	// **Required.** The CPU and memory resources allocated to the Locust container.
+	// Recommended defaults: "cpu-requests: 50m", "memory-requests: 256Mi", "cpu-limits: 1", "memory-limits: 1Gi".
 	Resources *kubernetes.ContainerResources `protobuf:"bytes,1,opt,name=resources,proto3" json:"resources,omitempty"`
-	// number of replicas
+	// **Required.** The number of replicas for the container.
+	// This determines the level of concurrency and load generation capabilities.
 	Replicas int32 `protobuf:"varint,2,opt,name=replicas,proto3" json:"replicas,omitempty"`
 }
 
@@ -175,25 +180,26 @@ func (x *LocustKubernetesContainer) GetReplicas() int32 {
 	return 0
 }
 
-// LocustKubernetesSpecLoadTestSpec defines the specification for a load test using a Locust cluster.
+// **LocustKubernetesLoadTest** defines the specification for a load test using a Locust cluster.
 // This message includes the primary Python script for Locust and any additional library files
-// necessary to execute the load test.
+// necessary to execute the load test. By providing these details, you can define the behavior
+// of simulated users and customize the load test according to your application's requirements.
 type LocustKubernetesLoadTest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// name specifies the unique identifier or name for this particular load test specification.
+	// **Required.** A unique identifier or name for this particular load test specification.
 	// It is used to reference or distinguish this test configuration among others within a testing suite or environment.
 	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	// main_py_content contains the Python code for the main Locust test script.
+	// **Required.** The Python code for the main Locust test script.
 	// This script defines the behavior of the simulated users and is crucial for executing the load test.
 	MainPyContent string `protobuf:"bytes,2,opt,name=main_py_content,json=mainPyContent,proto3" json:"main_py_content,omitempty"`
-	// lib_files_content is a map where each entry consists of a filename and its associated Python code content.
+	// **Required.** A map where each entry consists of a filename and its associated Python code content.
 	// These files typically contain additional classes or functions required by the main_py_content script.
 	// The key of the map is the filename, and the value is the file content.
 	LibFilesContent map[string]string `protobuf:"bytes,3,rep,name=lib_files_content,json=libFilesContent,proto3" json:"lib_files_content,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
-	// pip_packages lists extra python pip packages that are required for the load test.
+	// A list of extra Python pip packages that are required for the load test.
 	// These packages will be installed in the environment where the load test is executed,
 	// allowing for extended functionality or custom dependencies to be included easily.
 	PipPackages []string `protobuf:"bytes,4,rep,name=pip_packages,json=pipPackages,proto3" json:"pip_packages,omitempty"`

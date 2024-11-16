@@ -22,15 +22,17 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// grafana-kubernetes spec
+// **GrafanaKubernetesSpec** defines the configuration for deploying Grafana on a Kubernetes cluster.
+// This message specifies the parameters needed to create and manage a Grafana deployment within a Kubernetes environment.
+// It includes container specifications and ingress settings to control resource allocation and external access.
 type GrafanaKubernetesSpec struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// grafana-container spec
+	// **Required.** The container specifications for the Grafana deployment.
 	Container *GrafanaKubernetesSpecContainer `protobuf:"bytes,1,opt,name=container,proto3" json:"container,omitempty"`
-	// grafana-kubernetes ingress-spec
+	// The ingress configuration for the Grafana deployment.
 	Ingress *kubernetes.IngressSpec `protobuf:"bytes,3,opt,name=ingress,proto3" json:"ingress,omitempty"`
 }
 
@@ -80,14 +82,16 @@ func (x *GrafanaKubernetesSpec) GetIngress() *kubernetes.IngressSpec {
 	return nil
 }
 
-// grafana-kubernetes kubernetes grafana-container spec
+// **GrafanaKubernetesSpecContainer** specifies the container configuration for the Grafana application.
+// It includes resource allocations for CPU and memory to ensure the application runs efficiently.
+// Recommended defaults: CPU requests - 50m, Memory requests - 256Mi, CPU limits - 1, Memory limits - 1Gi.
 type GrafanaKubernetesSpecContainer struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// grafana container cpu and memory resources.
-	// recommended default "cpu-requests: 50m, memory-requests: 256Mi, cpu-limits: 1, memory-limits: 1Gi"
+	// **Required.** The CPU and memory resources allocated to the Grafana container.
+	// Recommended defaults: "cpu-requests: 50m", "memory-requests: 256Mi", "cpu-limits: 1", "memory-limits: 1Gi".
 	Resources *kubernetes.ContainerResources `protobuf:"bytes,1,opt,name=resources,proto3" json:"resources,omitempty"`
 }
 

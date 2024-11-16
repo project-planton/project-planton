@@ -22,17 +22,20 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// elasticsearch-kubernetes spec
+// **ElasticsearchKubernetesSpec** defines the configuration for deploying Elasticsearch on a Kubernetes cluster.
+// This message includes specifications for the Elasticsearch container, optional Kibana container, and ingress settings.
+// By configuring these parameters, you can set up an Elasticsearch deployment tailored to your application's needs,
+// including resource allocation, persistence settings, and external access through ingress.
 type ElasticsearchKubernetesSpec struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// elasticsearch-container spec
+	// **Required.** The specifications for the Elasticsearch container deployment.
 	ElasticsearchContainer *ElasticsearchKubernetesElasticsearchContainer `protobuf:"bytes,1,opt,name=elasticsearch_container,json=elasticsearchContainer,proto3" json:"elasticsearch_container,omitempty"`
-	// kibana-container spec
+	// **Required.** The specifications for the Kibana container deployment.
 	KibanaContainer *ElasticsearchKubernetesKibanaContainer `protobuf:"bytes,2,opt,name=kibana_container,json=kibanaContainer,proto3" json:"kibana_container,omitempty"`
-	// elasticsearch-kubernetes ingress-spec
+	// The ingress configuration for the Elasticsearch deployment.
 	Ingress *kubernetes.IngressSpec `protobuf:"bytes,3,opt,name=ingress,proto3" json:"ingress,omitempty"`
 }
 
@@ -89,29 +92,28 @@ func (x *ElasticsearchKubernetesSpec) GetIngress() *kubernetes.IngressSpec {
 	return nil
 }
 
-// elasticsearch-container
+// **ElasticsearchKubernetesElasticsearchContainer** specifies the configuration for the Elasticsearch container.
+// It includes settings such as the number of replicas, resource allocations, data persistence options, and disk size.
+// Proper configuration ensures optimal performance and data reliability for your Elasticsearch deployment.
 type ElasticsearchKubernetesElasticsearchContainer struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// number of elasticsearch pods.
-	// recommended default 1
+	// **Required.** The number of Elasticsearch pods to deploy.
+	// Recommended default is 1.
 	Replicas int32 `protobuf:"varint,1,opt,name=replicas,proto3" json:"replicas,omitempty"`
-	// elasticsearch container cpu and memory resources.
-	// recommended default "cpu-requests: 50m, memory-requests: 256Mi, cpu-limits: 1, memory-limits: 1Gi"
+	// **Required.** The CPU and memory resources allocated to the Elasticsearch container.
+	// Recommended defaults: "cpu-requests: 50m", "memory-requests: 256Mi", "cpu-limits: 1", "memory-limits: 1Gi".
 	Resources *kubernetes.ContainerResources `protobuf:"bytes,2,opt,name=resources,proto3" json:"resources,omitempty"`
-	// flag to toggle persistence for elasticsearch data.
-	// when enabled, elasticsearch in-memory data will be persisted to a storage volume.
-	// the backup data from persistent volume is restored into elasticsearch memory between pod restarts.
-	// defaults to false.
+	// A flag to enable or disable data persistence for Elasticsearch.
+	// When enabled, in-memory data is persisted to a storage volume, allowing data to survive pod restarts.
+	// Defaults to `false`.
 	IsPersistenceEnabled bool `protobuf:"varint,3,opt,name=is_persistence_enabled,json=isPersistenceEnabled,proto3" json:"is_persistence_enabled,omitempty"`
-	// size of persistent volume attached to each elasticsearch pod
-	// if the client does not provide a value, the default value is configured.
-	// this attribute is ignored when persistence is not enabled.
-	// this persistent volume is used for backing up in-memory data.
-	// data from the persistent volume will be restored into memory between pod restarts.
-	// this value can not be modified as kubernetes does not allow updating the stateful-set specification after creation.
+	// The size of the persistent volume attached to each Elasticsearch pod.
+	// Required if `is_persistence_enabled` is `true`.
+	// This value specifies the disk size for data persistence (e.g., "10Gi").
+	// Note: This value cannot be modified after creation due to Kubernetes limitations on stateful sets.
 	DiskSize string `protobuf:"bytes,4,opt,name=disk_size,json=diskSize,proto3" json:"disk_size,omitempty"`
 }
 
@@ -175,19 +177,22 @@ func (x *ElasticsearchKubernetesElasticsearchContainer) GetDiskSize() string {
 	return ""
 }
 
-// kibana-container
+// **ElasticsearchKubernetesKibanaContainer** specifies the configuration for the Kibana container.
+// Kibana provides visualization capabilities for data stored in Elasticsearch.
+// This message allows you to enable Kibana, set the number of replicas, and allocate resources accordingly.
 type ElasticsearchKubernetesKibanaContainer struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// flag to control if kibana is created for the elasticsearch.
-	// defaults to "false".
+	// A flag to enable or disable the deployment of Kibana for Elasticsearch.
+	// Defaults to `false`.
 	IsEnabled bool `protobuf:"varint,1,opt,name=is_enabled,json=isEnabled,proto3" json:"is_enabled,omitempty"`
-	// number of kibana pods.
+	// The number of Kibana pods to deploy.
+	// Recommended default is 1.
 	Replicas int32 `protobuf:"varint,2,opt,name=replicas,proto3" json:"replicas,omitempty"`
-	// kibana container cpu and memory resources.
-	// recommended default "cpu-requests: 50m, memory-requests: 256Mi, cpu-limits: 1, memory-limits: 1Gi"
+	// The CPU and memory resources allocated to the Kibana container.
+	// Recommended defaults: "cpu-requests: 50m", "memory-requests: 256Mi", "cpu-limits: 1", "memory-limits: 1Gi".
 	Resources *kubernetes.ContainerResources `protobuf:"bytes,3,opt,name=resources,proto3" json:"resources,omitempty"`
 }
 
@@ -307,7 +312,7 @@ var file_project_planton_provider_kubernetes_elasticsearchkubernetes_v1_spec_pro
 	0x42, 0x9e, 0x01, 0xba, 0x48, 0x9a, 0x01, 0xba, 0x01, 0x96, 0x01, 0x0a, 0x21, 0x73, 0x70, 0x65,
 	0x63, 0x2e, 0x63, 0x6f, 0x6e, 0x74, 0x61, 0x69, 0x6e, 0x65, 0x72, 0x2e, 0x64, 0x69, 0x73, 0x6b,
 	0x5f, 0x73, 0x69, 0x7a, 0x65, 0x2e, 0x69, 0x73, 0x5f, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x12, 0x1a,
-	0x64, 0x69, 0x73, 0x6b, 0x20, 0x73, 0x69, 0x7a, 0x65, 0x20, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x20,
+	0x44, 0x69, 0x73, 0x6b, 0x20, 0x73, 0x69, 0x7a, 0x65, 0x20, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x20,
 	0x69, 0x73, 0x20, 0x69, 0x6e, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x1a, 0x55, 0x74, 0x68, 0x69, 0x73,
 	0x2e, 0x6d, 0x61, 0x74, 0x63, 0x68, 0x65, 0x73, 0x28, 0x27, 0x5e, 0x5c, 0x5c, 0x64, 0x2b, 0x28,
 	0x5c, 0x5c, 0x2e, 0x5c, 0x5c, 0x64, 0x2b, 0x29, 0x3f, 0x5c, 0x5c, 0x73, 0x3f, 0x28, 0x4b, 0x69,
@@ -321,7 +326,7 @@ var file_project_planton_provider_kubernetes_elasticsearchkubernetes_v1_spec_pro
 	0x69, 0x73, 0x5f, 0x70, 0x65, 0x72, 0x73, 0x69, 0x73, 0x74, 0x65, 0x6e, 0x63, 0x65, 0x5f, 0x65,
 	0x6e, 0x61, 0x62, 0x6c, 0x65, 0x64, 0x20, 0x26, 0x26, 0x20, 0x73, 0x69, 0x7a, 0x65, 0x28, 0x74,
 	0x68, 0x69, 0x73, 0x2e, 0x64, 0x69, 0x73, 0x6b, 0x5f, 0x73, 0x69, 0x7a, 0x65, 0x29, 0x20, 0x3d,
-	0x3d, 0x20, 0x30, 0x3f, 0x20, 0x27, 0x64, 0x69, 0x73, 0x6b, 0x20, 0x73, 0x69, 0x7a, 0x65, 0x20,
+	0x3d, 0x20, 0x30, 0x3f, 0x20, 0x27, 0x44, 0x69, 0x73, 0x6b, 0x20, 0x73, 0x69, 0x7a, 0x65, 0x20,
 	0x69, 0x73, 0x20, 0x6d, 0x61, 0x6e, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x79, 0x20, 0x74, 0x6f, 0x20,
 	0x65, 0x6e, 0x61, 0x62, 0x6c, 0x65, 0x20, 0x70, 0x65, 0x72, 0x73, 0x69, 0x73, 0x74, 0x65, 0x6e,
 	0x63, 0x65, 0x27, 0x3a, 0x20, 0x27, 0x27, 0x22, 0xb8, 0x01, 0x0a, 0x26, 0x45, 0x6c, 0x61, 0x73,

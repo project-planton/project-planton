@@ -22,15 +22,17 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// gitlab-kubernetes spec
+// **GitlabKubernetesSpec** defines the configuration for deploying GitLab on a Kubernetes cluster.
+// This message specifies the parameters needed to create and manage a GitLab deployment within a Kubernetes environment.
+// It includes container specifications and ingress settings to control resource allocation and external access.
 type GitlabKubernetesSpec struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// gitlab-container spec
+	// **Required.** The container specifications for the GitLab deployment.
 	Container *GitlabKubernetesSpecContainer `protobuf:"bytes,1,opt,name=container,proto3" json:"container,omitempty"`
-	// gitlab-kubernetes ingress-spec
+	// The ingress configuration for the GitLab deployment.
 	Ingress *kubernetes.IngressSpec `protobuf:"bytes,3,opt,name=ingress,proto3" json:"ingress,omitempty"`
 }
 
@@ -80,14 +82,16 @@ func (x *GitlabKubernetesSpec) GetIngress() *kubernetes.IngressSpec {
 	return nil
 }
 
-// gitlab-kubernetes container spec
+// **GitlabKubernetesSpecContainer** specifies the container configuration for the GitLab application.
+// It includes resource allocations for CPU and memory to ensure the application runs efficiently.
+// Recommended defaults: CPU requests - 50m, Memory requests - 256Mi, CPU limits - 1, Memory limits - 1Gi.
 type GitlabKubernetesSpecContainer struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// gitlab container cpu and memory resources.
-	// recommended default "cpu-requests: 50m, memory-requests: 256Mi, cpu-limits: 1, memory-limits: 1Gi"
+	// **Required.** The CPU and memory resources allocated to the GitLab container.
+	// Recommended defaults: "cpu-requests: 50m", "memory-requests: 256Mi", "cpu-limits: 1", "memory-limits: 1Gi".
 	Resources *kubernetes.ContainerResources `protobuf:"bytes,1,opt,name=resources,proto3" json:"resources,omitempty"`
 }
 

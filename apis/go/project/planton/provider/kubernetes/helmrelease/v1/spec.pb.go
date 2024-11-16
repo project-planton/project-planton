@@ -21,13 +21,12 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// helm-release spec
 type HelmReleaseSpec struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// helm-chart spec
+	// **Required.** The specifications for the Helm chart to be deployed.
 	HelmChart *HelmReleaseSpecChartSpec `protobuf:"bytes,1,opt,name=helm_chart,json=helmChart,proto3" json:"helm_chart,omitempty"`
 }
 
@@ -70,19 +69,22 @@ func (x *HelmReleaseSpec) GetHelmChart() *HelmReleaseSpecChartSpec {
 	return nil
 }
 
-// helm-chart spec
 type HelmReleaseSpecChartSpec struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// helm chart repo
+	// The repository URL where the Helm chart is hosted.
+	// For example, "https://charts.helm.sh/stable".
 	Repo string `protobuf:"bytes,1,opt,name=repo,proto3" json:"repo,omitempty"`
-	// helm chart name
+	// The name of the Helm chart to deploy.
+	// For example, "nginx-ingress".
 	Name string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	// helm chart version
+	// The version of the Helm chart to deploy.
+	// For example, "1.41.3".
 	Version string `protobuf:"bytes,3,opt,name=version,proto3" json:"version,omitempty"`
-	// map of key values for helm input
+	// A map of key-value pairs representing custom values for the Helm chart.
+	// These values override the default settings in the chart's values.yaml file.
 	Values map[string]string `protobuf:"bytes,4,rep,name=values,proto3" json:"values,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 }
 
