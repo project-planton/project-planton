@@ -99,6 +99,8 @@ pulumi module.
 
 Visit [CONTRIBUTING.md](CONTRIBUTING.md) for information on building ProjectPlanton from source or contributing improvements.
 
+Also, refer to this [Contributor Guide](contributor-guide.md) for detailed information about becoming a contributor to Project-Planton.
+
 ## License
 
 Project Planton is released under the [Apache 2.0 license](LICENSE). You are free to use, modify,
