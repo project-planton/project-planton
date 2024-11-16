@@ -5,19 +5,33 @@ package project.planton.provider.kubernetes.neo4jkubernetes.v1;
 import "buf/validate/validate.proto";
 import "project/planton/shared/kubernetes/kubernetes.proto";
 
-//neo4j-kubernetes spec
+/**
+ * **Neo4jKubernetesSpec** defines the configuration for deploying Neo4j on a Kubernetes cluster.
+ * This message specifies the parameters needed to create and manage a Neo4j deployment within a Kubernetes environment.
+ * It includes container specifications and ingress settings to control resource allocation and external access.
+ */
 message Neo4jKubernetesSpec {
-  //neo4j-container spec
+  /**
+   * **Required.** The container specifications for the Neo4j deployment.
+   */
   Neo4jKubernetesContainer container = 1;
 
-  //neo4j-kubernetes ingress-spec
+  /**
+   * The ingress configuration for the Neo4j deployment.
+   */
   project.planton.shared.kubernetes.IngressSpec ingress = 2;
 }
 
-// neo4j-kubernetes kubernetes neo4j-container spec
+/**
+ * **Neo4jKubernetesContainer** specifies the container configuration for the Neo4j application.
+ * It includes resource allocations for CPU and memory to ensure the application runs efficiently.
+ * Recommended defaults: CPU requests - 50m, Memory requests - 256Mi, CPU limits - 1, Memory limits - 1Gi.
+ */
 message Neo4jKubernetesContainer {
-  //neo4j container cpu and memory resources.
-  //recommended default "cpu-requests: 50m, memory-requests: 256Mi, cpu-limits: 1, memory-limits: 1Gi"
+  /**
+   * **Required.** The CPU and memory resources allocated to the Neo4j container.
+   * Recommended defaults: "cpu-requests: 50m", "memory-requests: 256Mi", "cpu-limits: 1", "memory-limits: 1Gi".
+   */
   project.planton.shared.kubernetes.ContainerResources resources = 1 [
     (buf.validate.field).required = true
   ];

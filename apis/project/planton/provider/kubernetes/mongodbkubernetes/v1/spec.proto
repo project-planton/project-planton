@@ -5,62 +5,81 @@ package project.planton.provider.kubernetes.mongodbkubernetes.v1;
 import "buf/validate/validate.proto";
 import "project/planton/shared/kubernetes/kubernetes.proto";
 
-//mongodb-kubernetes spec
+/**
+ * **MongodbKubernetesSpec** defines the configuration for deploying MongoDB on a Kubernetes cluster.
+ * This message specifies the parameters needed to create and manage a MongoDB deployment within a Kubernetes environment.
+ * It includes container specifications, ingress settings, and Helm chart customization options.
+ */
 message MongodbKubernetesSpec {
-  //mongodb-container spec
+  /**
+   * **Required.** The specifications for the MongoDB container deployment.
+   */
   MongodbKubernetesContainer container = 1 [
     (buf.validate.field).required = true
   ];
 
-  //mongodb-kubernetes ingress-spec
+  /**
+   * The ingress configuration for the MongoDB deployment.
+   */
   project.planton.shared.kubernetes.IngressSpec ingress = 2;
 
-  // helm_values is a map of key-value pairs that provide additional customization options for the Helm chart used
-  // to deploy the Mongodb Kubernetes. These values allow for further refinement of the deployment, such as customizing
-  // resource limits, setting environment variables, or specifying version tags. For detailed information on the available
-  // options, refer to the Helm chart documentation at:
-  // https://artifacthub.io/packages/helm/bitnami/mongodb
+  /**
+   * A map of key-value pairs that provide additional customization options for the Helm chart used
+   * to deploy MongoDB on Kubernetes. These values allow for further refinement of the deployment,
+   * such as customizing resource limits, setting environment variables, or specifying version tags.
+   * For detailed information on the available options, refer to the Helm chart documentation at:
+   * https://artifacthub.io/packages/helm/bitnami/mongodb
+   */
   map<string, string> helm_values = 3;
 }
 
-// mongodb-kubernetes kubernetes mongodb-container spec
+/**
+ * **MongodbKubernetesContainer** specifies the container configuration for the MongoDB application.
+ * It includes settings such as the number of replicas, resource allocations, data persistence options, and disk size.
+ * Proper configuration ensures optimal performance and data reliability for your MongoDB deployment.
+ */
 message MongodbKubernetesContainer {
   option (buf.validate.message).cel = {
     id: "spec.kubernetes.container.disk_size.mandatory",
     expression: "this.is_persistence_enabled && size(this.disk_size) == 0"
-        "? 'disk size is mandatory to enable persistence'"
+        "? 'Disk size is mandatory to enable persistence'"
         ": ''"
   };
 
-  //number of mongodb pods.
-  //recommended default 1
+  /**
+   * **Required.** The number of MongoDB pods to deploy.
+   * Recommended default is 1.
+   */
   int32 replicas = 1 [
     (buf.validate.field).required = true
   ];
 
-  //mongodb container cpu and memory resources.
-  //recommended default "cpu-requests: 50m, memory-requests: 256Mi, cpu-limits: 1, memory-limits: 1Gi"
+  /**
+   * **Required.** The CPU and memory resources allocated to the MongoDB container.
+   * Recommended defaults: "cpu-requests: 50m", "memory-requests: 256Mi", "cpu-limits: 1", "memory-limits: 1Gi".
+   */
   project.planton.shared.kubernetes.ContainerResources resources = 2 [
     (buf.validate.field).required = true
   ];
 
-  //flag to toggle persistence for mongodb data.
-  //when enabled, mongodb in-memory data will be persisted to a storage volume.
-  //the backup data from persistent volume is restored into mongodb memory between pod restarts.
-  //defaults to false.
+  /**
+   * A flag to enable or disable data persistence for MongoDB.
+   * When enabled, in-memory data is persisted to a storage volume, allowing data to survive pod restarts.
+   * Defaults to `false`.
+   */
   bool is_persistence_enabled = 3;
 
-  //size of persistent volume attached to each mongodb pod
-  //if the client does not provide a value, the default value is configured.
-  //this attribute is ignored when persistence is not enabled.
-  //this persistent volume is used for backing up in-memory data.
-  //data from the persistent volume will be restored into memory between pod restarts.
-  //this value can not be modified as kubernetes does not allow updating the stateful-set specification after creation.
-  string disk_size = 4[
+  /**
+   * The size of the persistent volume attached to each MongoDB pod (e.g., "10Gi").
+   * Required if `is_persistence_enabled` is `true`.
+   * This value specifies the disk size for data persistence.
+   * **Note:** This value cannot be modified after creation due to Kubernetes limitations on stateful sets.
+   */
+  string disk_size = 4 [
     (buf.validate.field).cel = {
       id: "spec.kubernetes.container.disk_size.is_valid",
-      message: "disk size value is invalid",
-      // https://regex101.com/r/EqH2xa/1
+      message: "Disk size value is invalid",
+      // Validation regex for disk size.
       expression: "this.matches('^\\\\d+(\\\\.\\\\d+)?\\\\s?(Ki|Mi|Gi|Ti|Pi|Ei|K|M|G|T|P|E)$') && size(this) > 0"
     }
   ];

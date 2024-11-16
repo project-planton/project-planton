@@ -22,15 +22,20 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// neo4j-kubernetes spec
+// *
+// **Neo4jKubernetesSpec** defines the configuration for deploying Neo4j on a Kubernetes cluster.
+// This message specifies the parameters needed to create and manage a Neo4j deployment within a Kubernetes environment.
+// It includes container specifications and ingress settings to control resource allocation and external access.
 type Neo4JKubernetesSpec struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// neo4j-container spec
+	// *
+	// **Required.** The container specifications for the Neo4j deployment.
 	Container *Neo4JKubernetesContainer `protobuf:"bytes,1,opt,name=container,proto3" json:"container,omitempty"`
-	// neo4j-kubernetes ingress-spec
+	// *
+	// The ingress configuration for the Neo4j deployment.
 	Ingress *kubernetes.IngressSpec `protobuf:"bytes,2,opt,name=ingress,proto3" json:"ingress,omitempty"`
 }
 
@@ -80,14 +85,18 @@ func (x *Neo4JKubernetesSpec) GetIngress() *kubernetes.IngressSpec {
 	return nil
 }
 
-// neo4j-kubernetes kubernetes neo4j-container spec
+// *
+// **Neo4jKubernetesContainer** specifies the container configuration for the Neo4j application.
+// It includes resource allocations for CPU and memory to ensure the application runs efficiently.
+// Recommended defaults: CPU requests - 50m, Memory requests - 256Mi, CPU limits - 1, Memory limits - 1Gi.
 type Neo4JKubernetesContainer struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// neo4j container cpu and memory resources.
-	// recommended default "cpu-requests: 50m, memory-requests: 256Mi, cpu-limits: 1, memory-limits: 1Gi"
+	// *
+	// **Required.** The CPU and memory resources allocated to the Neo4j container.
+	// Recommended defaults: "cpu-requests: 50m", "memory-requests: 256Mi", "cpu-limits: 1", "memory-limits: 1Gi".
 	Resources *kubernetes.ContainerResources `protobuf:"bytes,1,opt,name=resources,proto3" json:"resources,omitempty"`
 }
 

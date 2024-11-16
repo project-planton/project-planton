@@ -5,53 +5,74 @@ package project.planton.provider.kubernetes.prometheuskubernetes.v1;
 import "buf/validate/validate.proto";
 import "project/planton/shared/kubernetes/kubernetes.proto";
 
-//prometheus-kubernetes spec
+/**
+ * **PrometheusKubernetesSpec** defines the configuration for deploying Prometheus on a Kubernetes cluster.
+ * This message specifies the parameters needed to create and manage a Prometheus deployment within a Kubernetes environment.
+ * It includes container specifications and ingress settings to control resource allocation and external access.
+ */
 message PrometheusKubernetesSpec {
+  /**
+   * **Required.** The container specifications for the Prometheus deployment.
+   */
   PrometheusKubernetesContainer container = 1 [
     (buf.validate.field).required = true
   ];
 
-  //prometheus-kubernetes ingress-spec
+  /**
+   * The ingress configuration for the Prometheus deployment.
+   */
   project.planton.shared.kubernetes.IngressSpec ingress = 2;
 }
 
-// prometheus-kubernetes kubernetes prometheus-container spec
+/**
+ * **PrometheusKubernetesContainer** specifies the container configuration for the Prometheus application.
+ * It includes resource allocations for CPU and memory, the number of replicas, data persistence options, and disk size.
+ * Proper configuration ensures optimal performance and data reliability for your Prometheus deployment.
+ */
 message PrometheusKubernetesContainer {
   option (buf.validate.message).cel = {
     id: "spec.kubernetes.container.disk_size.mandatory",
     expression: "this.is_persistence_enabled && size(this.disk_size) == 0"
-        "? 'disk size is mandatory to enable persistence'"
+        "? 'Disk size is mandatory to enable persistence'"
         ": ''"
   };
-  //number of prometheus pods.
-  //recommended default 1
+
+  /**
+   * **Required.** The number of Prometheus pods to deploy.
+   * Recommended default is 1.
+   */
   int32 replicas = 1 [
     (buf.validate.field).required = true
   ];
 
-  //prometheus container cpu and memory resources.
-  //recommended default "cpu-requests: 50m, memory-requests: 256Mi, cpu-limits: 1, memory-limits: 1Gi"
+  /**
+   * **Required.** The CPU and memory resources allocated to the Prometheus container.
+   * Recommended defaults: "cpu-requests: 50m", "memory-requests: 256Mi", "cpu-limits: 1", "memory-limits: 1Gi".
+   */
   project.planton.shared.kubernetes.ContainerResources resources = 2 [
     (buf.validate.field).required = true
   ];
 
-  //flag to toggle persistence for prometheus data.
-  //when enabled, prometheus in-memory data will be persisted to a storage volume.
-  //the backup data from persistent volume is restored into prometheus memory between pod restarts.
-  //defaults to false.
+  /**
+   * A flag to enable or disable data persistence for Prometheus.
+   * When enabled, in-memory data is persisted to a storage volume, allowing data to survive pod restarts.
+   * The backup data from the persistent volume is restored into Prometheus memory between pod restarts.
+   * Defaults to `false`.
+   */
   bool is_persistence_enabled = 3;
 
-  //size of persistent volume attached to each prometheus pod
-  //if the client does not provide a value, the default value is configured.
-  //this attribute is ignored when persistence is not enabled.
-  //this persistent volume is used for backing up in-memory data.
-  //data from the persistent volume will be restored into memory between pod restarts.
-  //this value can not be modified as kubernetes does not allow updating the stateful-set specification after creation.
-  string disk_size = 4[
+  /**
+   * The size of the persistent volume attached to each Prometheus pod (e.g., "10Gi").
+   * Required if `is_persistence_enabled` is `true`.
+   * This value specifies the disk size for data persistence.
+   * **Note:** This attribute is ignored when persistence is not enabled.
+   * **Important:** This value cannot be modified after creation due to Kubernetes limitations on stateful sets.
+   */
+  string disk_size = 4 [
     (buf.validate.field).cel = {
       id: "spec.kubernetes.container.disk_size.is_valid",
-      message: "disk size value is invalid",
-      // https://regex101.com/r/EqH2xa/1
+      message: "Disk size value is invalid",
+      // Validation regex for disk size.
       expression: "this.matches('^\\\\d+(\\\\.\\\\d+)?\\\\s?(Ki|Mi|Gi|Ti|Pi|Ei|K|M|G|T|P|E)$') && size(this) > 0"
     }
   ];

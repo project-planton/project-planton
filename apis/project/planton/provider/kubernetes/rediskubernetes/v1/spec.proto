@@ -5,42 +5,62 @@ package project.planton.provider.kubernetes.rediskubernetes.v1;
 import "buf/validate/validate.proto";
 import "project/planton/shared/kubernetes/kubernetes.proto";
 
-//redis-kubernetes spec
+/**
+ * **RedisKubernetesSpec** defines the configuration for deploying Redis on a Kubernetes cluster.
+ * This message specifies the parameters needed to create and manage a Redis deployment within a Kubernetes environment.
+ * It includes container specifications and ingress settings to control resource allocation and external access.
+ */
 message RedisKubernetesSpec {
-  //redis-container spec
+  /**
+   * **Required.** The container specifications for the Redis deployment.
+   */
   RedisKubernetesContainer container = 1 [
     (buf.validate.field).required = true
   ];
 
-  //redis-kubernetes ingress-spec
+  /**
+   * The ingress configuration for the Redis deployment.
+   */
   project.planton.shared.kubernetes.IngressSpec ingress = 2;
 }
 
-// redis-kubernetes kubernetes redis-container spec
+/**
+ * **RedisKubernetesContainer** specifies the container configuration for the Redis application.
+ * It includes resource allocations for CPU and memory, the number of replicas, data persistence options, and disk size.
+ * Proper configuration ensures optimal performance and data reliability for your Redis deployment.
+ */
 message RedisKubernetesContainer {
-  //number of redis pods.
-  //recommended default 1
+  /**
+   * **Required.** The number of Redis pods to deploy.
+   * Recommended default is 1.
+   */
   int32 replicas = 1 [
     (buf.validate.field).required = true
   ];
 
-  //redis container cpu and memory resources.
-  //recommended default "cpu-requests: 50m, memory-requests: 256Mi, cpu-limits: 1, memory-limits: 1Gi"
+  /**
+   * **Required.** The CPU and memory resources allocated to the Redis container.
+   * Recommended defaults: "cpu-requests: 50m", "memory-requests: 256Mi", "cpu-limits: 1", "memory-limits: 1Gi".
+   */
   project.planton.shared.kubernetes.ContainerResources resources = 2 [
     (buf.validate.field).required = true
   ];
 
-  //flag to toggle persistence for redis data.
-  //when enabled, redis in-memory data will be persisted to a storage volume.
-  //the backup data from persistent volume is restored into redis memory between pod restarts.
-  //defaults to false.
+  /**
+   * A flag to enable or disable data persistence for Redis.
+   * When enabled, in-memory data is persisted to a storage volume, allowing data to survive pod restarts.
+   * The backup data from the persistent volume is restored into Redis memory between pod restarts.
+   * Defaults to `false`.
+   */
   bool is_persistence_enabled = 3;
 
-  //size of persistent volume attached to each redis pod
-  //if the client does not provide a value, the default value is configured.
-  //this attribute is ignored when persistence is not enabled.
-  //this persistent volume is used for backing up in-memory data.
-  //data from the persistent volume will be restored into memory between pod restarts.
-  //this value can not be modified as kubernetes does not allow updating the stateful-set specification after creation.
+  /**
+   * The size of the persistent volume attached to each Redis pod (e.g., "10Gi").
+   * If the client does not provide a value, a default value is configured.
+   * This attribute is ignored when persistence is not enabled.
+   * This persistent volume is used for backing up in-memory data.
+   * Data from the persistent volume will be restored into memory between pod restarts.
+   * **Note:** This value cannot be modified after creation due to Kubernetes limitations on stateful sets.
+   */
   string disk_size = 4;
 }

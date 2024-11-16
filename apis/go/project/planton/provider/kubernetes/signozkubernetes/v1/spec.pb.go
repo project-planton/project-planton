@@ -21,7 +21,13 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// signoz-kubernetes spec
+// *
+// **SignozKubernetesSpec** defines the configuration for deploying SigNoz on a Kubernetes cluster.
+// This message specifies the parameters needed to create and manage a SigNoz deployment within a Kubernetes environment.
+// SigNoz is an open-source APM (Application Performance Monitoring) tool that helps you monitor your applications'
+// performance and troubleshoot issues using metrics, traces, and logs.
+//
+// **Note:** Currently, no fields are specified. will be added soon in coming days
 type SignozKubernetesSpec struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

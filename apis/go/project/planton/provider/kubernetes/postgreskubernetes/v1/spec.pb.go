@@ -22,15 +22,20 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// postgres-kubernetes spec
+// *
+// **PostgresKubernetesSpec** defines the configuration for deploying PostgreSQL on a Kubernetes cluster.
+// This message specifies the parameters needed to create and manage a PostgreSQL deployment within a Kubernetes environment.
+// It includes container specifications and ingress settings to control resource allocation and external access.
 type PostgresKubernetesSpec struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// postgres-container spec
+	// *
+	// **Required.** The container specifications for the PostgreSQL deployment.
 	Container *PostgresKubernetesContainer `protobuf:"bytes,1,opt,name=container,proto3" json:"container,omitempty"`
-	// postgres-kubernetes ingress
+	// *
+	// The ingress configuration for the PostgreSQL deployment.
 	Ingress *kubernetes.IngressSpec `protobuf:"bytes,2,opt,name=ingress,proto3" json:"ingress,omitempty"`
 }
 
@@ -80,20 +85,26 @@ func (x *PostgresKubernetesSpec) GetIngress() *kubernetes.IngressSpec {
 	return nil
 }
 
-// postgres-kubernetes kubernetes ingress spec
+// *
+// **PostgresKubernetesContainer** specifies the container configuration for the PostgreSQL application.
+// It includes resource allocations for CPU and memory, the number of replicas, and disk size for data persistence.
+// Proper configuration ensures optimal performance and data reliability for your PostgreSQL deployment.
 type PostgresKubernetesContainer struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// number of replicas of postgres pods
-	// recommended default is 1
+	// *
+	// **Required.** The number of replicas of PostgreSQL pods.
+	// Recommended default is 1.
 	Replicas int32 `protobuf:"varint,1,opt,name=replicas,proto3" json:"replicas,omitempty"`
-	// postgres container cpu and memory resources.
-	// recommended default "cpu-requests: 50m, memory-requests: 256Mi, cpu-limits: 1, memory-limits: 1Gi"
+	// *
+	// **Required.** The CPU and memory resources allocated to the PostgreSQL container.
+	// Recommended defaults: "cpu-requests: 50m", "memory-requests: 256Mi", "cpu-limits: 1", "memory-limits: 1Gi".
 	Resources *kubernetes.ContainerResources `protobuf:"bytes,2,opt,name=resources,proto3" json:"resources,omitempty"`
-	// storage to allocate for each postgres instance in gb. ex: 1Gi
-	// default is set if the client does not provide a value.
+	// *
+	// The storage size to allocate for each PostgreSQL instance (e.g., "1Gi").
+	// A default value is set if the client does not provide a value.
 	DiskSize string `protobuf:"bytes,3,opt,name=disk_size,json=diskSize,proto3" json:"disk_size,omitempty"`
 }
 
@@ -195,7 +206,7 @@ var file_project_planton_provider_kubernetes_postgreskubernetes_v1_spec_proto_ra
 	0x01, 0xba, 0x01, 0xa1, 0x01, 0x0a, 0x2c, 0x73, 0x70, 0x65, 0x63, 0x2e, 0x6b, 0x75, 0x62, 0x65,
 	0x72, 0x6e, 0x65, 0x74, 0x65, 0x73, 0x2e, 0x63, 0x6f, 0x6e, 0x74, 0x61, 0x69, 0x6e, 0x65, 0x72,
 	0x2e, 0x64, 0x69, 0x73, 0x6b, 0x5f, 0x73, 0x69, 0x7a, 0x65, 0x2e, 0x69, 0x73, 0x5f, 0x76, 0x61,
-	0x6c, 0x69, 0x64, 0x12, 0x1a, 0x64, 0x69, 0x73, 0x6b, 0x20, 0x73, 0x69, 0x7a, 0x65, 0x20, 0x76,
+	0x6c, 0x69, 0x64, 0x12, 0x1a, 0x44, 0x69, 0x73, 0x6b, 0x20, 0x73, 0x69, 0x7a, 0x65, 0x20, 0x76,
 	0x61, 0x6c, 0x75, 0x65, 0x20, 0x69, 0x73, 0x20, 0x69, 0x6e, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x1a,
 	0x55, 0x74, 0x68, 0x69, 0x73, 0x2e, 0x6d, 0x61, 0x74, 0x63, 0x68, 0x65, 0x73, 0x28, 0x27, 0x5e,
 	0x5c, 0x5c, 0x64, 0x2b, 0x28, 0x5c, 0x5c, 0x2e, 0x5c, 0x5c, 0x64, 0x2b, 0x29, 0x3f, 0x5c, 0x5c,

@@ -5,112 +5,129 @@ package project.planton.provider.kubernetes.kafkakubernetes.v1;
 import "buf/validate/validate.proto";
 import "project/planton/shared/kubernetes/kubernetes.proto";
 
-//kafka-kubernetes spec
+
+// **KafkaKubernetesSpec** defines the configuration for deploying Apache Kafka on a Kubernetes cluster.
+// This message includes specifications for Kafka topics, broker containers, Zookeeper containers, schema registry,
+// ingress settings, and the option to deploy a Kafka UI.
+// By configuring these parameters, you can set up a Kafka cluster tailored to your application's needs, including
+// resource allocation, data persistence, and external access.
 message KafkaKubernetesSpec {
-  //list of kafka topics.
+  // A list of Kafka topics to be created in the Kafka cluster.
   repeated KafkaTopic kafka_topics = 1;
 
-
-  //kafka-broker container spec
+  // **Required.** The specifications for the Kafka broker containers.
   KafkaKubernetesBrokerContainer broker_container = 2 [
     (buf.validate.field).required = true
   ];
 
-  //zookeeper container spec
+  // **Required.** The specifications for the Zookeeper containers.
   KafkaKubernetesZookeeperContainer zookeeper_container = 3 [
     (buf.validate.field).required = true
   ];
 
-  //schema-registry container spec
+  // The specifications for the Schema Registry containers.
   KafkaKubernetesSchemaRegistryContainer schema_registry_container = 4;
 
-  //kafka-kubernetes ingress spec
+  // The ingress configuration for the Kafka deployment.
   project.planton.shared.kubernetes.IngressSpec ingress = 5;
 
-  //flag to toggle deploying kafka ui component.
+  // A flag to toggle the deployment of the Kafka UI component.
   bool is_deploy_kafka_ui = 6;
 }
 
-//kafka-kubernetes kubernetes kafka-broker spec
+// **KafkaKubernetesBrokerContainer** specifies the configuration for the Kafka broker containers.
+// It includes settings such as the number of replicas, resource allocations, and disk size.
+// Proper configuration ensures optimal performance and data reliability for your Kafka brokers.
+
 message KafkaKubernetesBrokerContainer {
-  //(optional for create) number of brokers required to setup kafka-kubernetes.
-  //defaults value "1" is set if client sets the value to 0.
-  //recommended default value is "1".
+  // **Required.** The number of Kafka brokers to deploy.
+  // Defaults to 1 if the client sets the value to 0.
+  // Recommended default value is 1.
   int32 replicas = 1 [
     (buf.validate.field).required = true
   ];
 
-  //kafka broker container cpu and memory resources.
-  //recommended default "cpu-requests: 50m, memory-requests: 256Mi, cpu-limits: 1, memory-limits: 1Gi"
+  // **Required.** The CPU and memory resources allocated to the Kafka broker containers.
+  // Recommended defaults: "cpu-requests: 50m", "memory-requests: 256Mi", "cpu-limits: 1", "memory-limits: 1Gi".
   project.planton.shared.kubernetes.ContainerResources resources = 2 [
     (buf.validate.field).required = true
   ];
 
-  //size of the disk to be attached to each broker instance. ex: 30Gi
-  //defaults value is set if not provided by the client.
+  // **Required.** The size of the disk to be attached to each broker instance (e.g., "30Gi").
+  // A default value is set if not provided by the client.
   string disk_size = 3 [
     (buf.validate.field).required = true,
     (buf.validate.field).cel = {
       id: "spec.kubernetes.container.disk_size.is_valid",
-      message: "disk size value is invalid",
-      // https://regex101.com/r/EqH2xa/1
+      message: "Disk size value is invalid",
+      // Validation regex for disk size.
       expression: "this.matches('^\\\\d+(\\\\.\\\\d+)?\\\\s?(Ki|Mi|Gi|Ti|Pi|Ei|K|M|G|T|P|E)$') && size(this) > 0"
     }
   ];
 }
 
-//kafka-kubernetes kubernetes zookeeper spec
+// **KafkaKubernetesZookeeperContainer** specifies the configuration for the Zookeeper containers.
+// Zookeeper is required for Kafka cluster management and coordination.
+// Proper configuration ensures high availability and reliability of your Kafka cluster.
+
 message KafkaKubernetesZookeeperContainer {
-  //number or zookeeper container replicas
-  //zookeeper requires latest 3 replicas for high availability(ha) mode.
-  //zookeeper is built using raft consensus algorithm.
-  //refer to https://raft.github.io/ to learn more on how replica count affect availability.
+  // **Required.** The number of Zookeeper container replicas.
+  // Zookeeper requires at least 3 replicas for high availability (HA) mode.
+  // Zookeeper uses the Raft consensus algorithm; refer to https://raft.github.io/ for more information on how replica
+  // count affects availability.
   int32 replicas = 1 [
     (buf.validate.field).required = true
   ];
 
-  //zookeeper container cpu and memory resources.
-  //recommended default "cpu-requests: 50m, memory-requests: 256Mi, cpu-limits: 1, memory-limits: 1Gi"
+  // **Required.** The CPU and memory resources allocated to the Zookeeper containers.
+  // Recommended defaults: "cpu-requests: 50m", "memory-requests: 256Mi", "cpu-limits: 1", "memory-limits: 1Gi".
   project.planton.shared.kubernetes.ContainerResources resources = 2 [
     (buf.validate.field).required = true
   ];
 
-  //size of the disk to be attached to each zookeeper instance. ex: 30Gi
-  //defaults value is set if not provided by the client.
+  // **Required.** The size of the disk to be attached to each Zookeeper instance (e.g., "30Gi").
+  // A default value is set if not provided by the client.
   string disk_size = 3 [
     (buf.validate.field).required = true,
     (buf.validate.field).cel = {
       id: "spec.kubernetes.container.disk_size.is_valid",
-      message: "disk size value is invalid",
-      // https://regex101.com/r/EqH2xa/1
+      message: "Disk size value is invalid",
+      // Validation regex for disk size.
       expression: "this.matches('^\\\\d+(\\\\.\\\\d+)?\\\\s?(Ki|Mi|Gi|Ti|Pi|Ei|K|M|G|T|P|E)$') && size(this) > 0"
     }
   ];
 }
 
-//kafka-kubernetes kubernetes schema-registry spec
+// **KafkaKubernetesSchemaRegistryContainer** specifies the configuration for the Schema Registry containers.
+// The Schema Registry provides a serving layer for your metadata, allowing data producers and consumers to evolve independently.
+
 message KafkaKubernetesSchemaRegistryContainer {
-  //flag to control if schema registry is created for the kafka-kubernetes.
-  //defaults to "false".
+  // A flag to control whether the Schema Registry is created for the Kafka deployment.
+  // Defaults to `false`.
   bool is_enabled = 1;
 
-  //number of schema registry replicas.
-  //recommended default value is "1".
-  //this value has no effect if the is_schema_registry_enabled is set to false.
+  // **Required.** The number of Schema Registry replicas.
+  // Recommended default value is "1".
+  // This value has no effect if `is_enabled` is set to `false`.
   int32 replicas = 2 [
     (buf.validate.field).required = true
   ];
 
-  //schema-registry container cpu and memory resources.
-  //recommended default "cpu-requests: 50m, memory-requests: 256Mi, cpu-limits: 1, memory-limits: 1Gi"
+  // **Required.** The CPU and memory resources allocated to the Schema Registry containers.
+  // Recommended defaults: "cpu-requests: 50m", "memory-requests: 256Mi", "cpu-limits: 1", "memory-limits: 1Gi".
   project.planton.shared.kubernetes.ContainerResources resources = 3 [
     (buf.validate.field).required = true
   ];
 }
 
-//kafka-topic
+// **KafkaTopic** represents a Kafka topic to be created in the Kafka cluster.
+// It includes configurations such as the topic name, number of partitions, replicas, and additional configurations.
+
 message KafkaTopic {
-  //topic name
+  // **Required.** The name of the Kafka topic.
+  // Must be between 1 and 249 characters in length.
+  // The name must start and end with an alphanumeric character, can contain alphanumeric characters, '.', '_', and '-'.
+  // Must not contain '..' or non-ASCII characters.
   string name = 1 [
     (buf.validate.field).required = true,
     (buf.validate.field).string.min_len = 1,
@@ -118,50 +135,47 @@ message KafkaTopic {
     (buf.validate.field).cel = {
       id: "topic.name",
       message: "Should start with an alphanumeric character",
-      // https://regex101.com/r/cXprYc/1
       expression: "this.matches('^[a-zA-Z0-9].*$')"
     },
     (buf.validate.field).cel = {
       id: "topic.name",
       message: "Only alphanumeric and ('.', '_' and '-') characters are allowed",
-      // https://regex101.com/r/hheWzb/1
       expression: "this.matches('^[a-zA-Z0-9._-]+$')"
     },
     (buf.validate.field).cel = {
       id: "topic.name",
       message: "Must not contain '..'",
-      // https://regex101.com/r/ILMhoL/1
       expression: "!this.contains('..')"
     },
     (buf.validate.field).cel = {
       id: "topic.name",
       message: "Must not contain non-ASCII characters",
-      // https://regex101.com/r/FhCKeZ/1
-      expression: "this.matches('^[\x00-\x7F]+$')"
+      expression: "this.matches('^[\\x00-\\x7F]+$')"
     },
     (buf.validate.field).cel = {
       id: "topic.name",
       message: "Should end with an alphanumeric character",
-      // https://regex101.com/r/DEA7Of/1
-      expression: "this.matches('[a-zA-Z0-9]$')"
+      expression: "this.matches('.*[a-zA-Z0-9]$')"
     }
   ];
 
-  //topic partitions.
-  //recommended default is 1.
+  // The number of partitions for the topic.
+  // Recommended default is 1.
   int32 partitions = 2;
 
-  //topic replicas.
-  //recommended default is 1.
+  // The number of replicas for the topic.
+  // Recommended default is 1.
   int32 replicas = 3;
 
-  //additional configuration of kafka topic
-  //if not provided then default values will be set
-  //for example default delete.policy is `delete` and can be set up as `compact`
+  // Additional configuration for the Kafka topic.
+  // If not provided, default values will be set.
+  // For example, the default `delete.policy` is `delete`, but it can be set to `compact`.
   map<string, string> config = 4;
 }
 
-//wrapper for kafka topic config
+// **KafkaTopicConfig** is a wrapper for the Kafka topic configuration.
+// It allows you to specify additional key-value pairs for topic settings.
+
 message KafkaTopicConfig {
   map<string, string> value = 1;
 }

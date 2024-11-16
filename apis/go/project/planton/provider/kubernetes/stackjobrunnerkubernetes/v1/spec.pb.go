@@ -21,7 +21,12 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// stack-job-runner-kubernetes spec
+// *
+// **StackJobRunnerKubernetesSpec** defines the configuration for deploying the Stack Job Runner on a Kubernetes cluster.
+// This message specifies the parameters needed to create and manage a Stack Job Runner deployment within a Kubernetes environment.
+// The Stack Job Runner is responsible for executing jobs within the Planton Cloud stack, facilitating automated tasks and workflows.
+//
+// **Note:** Currently, no fields are specified. will be added soon in coming days
 type StackJobRunnerKubernetesSpec struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
