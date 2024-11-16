@@ -21,18 +21,23 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// gcs-bucket spec
+// **GcsBucketSpec** defines the configuration for creating a Google Cloud Storage (GCS) bucket.
+// This message specifies the parameters required to create and manage a GCS bucket within a specified GCP project
+// and region.
+// By setting properties such as the project ID, region, and access control, you can configure the bucket to store
+// and serve data
+// with the desired accessibility, whether it's public or private, catering to your application's needs.
 type GcsBucketSpec struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// gcp project in which the storage-bucket is to be created.
+	// **Required.** The ID of the GCP project where the storage bucket will be created.
 	GcpProjectId string `protobuf:"bytes,1,opt,name=gcp_project_id,json=gcpProjectId,proto3" json:"gcp_project_id,omitempty"`
-	// gcp region
+	// **Required.** The GCP region where the storage bucket will be created.
 	GcpRegion string `protobuf:"bytes,2,opt,name=gcp_region,json=gcpRegion,proto3" json:"gcp_region,omitempty"`
-	// flag to indicate if gcs-bucket should have external(public) access.
-	// defaults to "false"
+	// A flag indicating whether the GCS bucket should have external (public) access.
+	// Defaults to `false`, meaning the bucket is private by default.
 	IsPublic bool `protobuf:"varint,3,opt,name=is_public,json=isPublic,proto3" json:"is_public,omitempty"`
 }
 

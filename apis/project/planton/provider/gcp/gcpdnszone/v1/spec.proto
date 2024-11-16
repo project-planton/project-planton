@@ -5,31 +5,35 @@ package project.planton.provider.gcp.gcpdnszone.v1;
 import "buf/validate/validate.proto";
 import "project/planton/shared/networking/enums/dnsrecordtype/dns_record_type.proto";
 
-//gcp-dns-zone spec
+
+// **GcpDnsZoneSpec** defines the configuration for creating a Google Cloud DNS Managed Zone.
+// This message specifies the parameters needed to create and manage a DNS zone within a specified GCP project.
+// It includes the project ID, optional service accounts for IAM permissions, and DNS records to be added to the zone.
 message GcpDnsZoneSpec {
-  // The ID of the GCP Project where the Managed Zone is created.
+  // **Required.** The ID of the GCP project where the Managed Zone is created.
   string project_id = 1 [
     (buf.validate.field).required = true
   ];
 
-  // An optional list of GCP service accounts to be granted permissions to manage DNS records in the Managed Zone.
-  // These accounts are primarily created as workload identities like cert-manager,
+  // An optional list of GCP service accounts that are granted permissions to manage DNS records in the Managed Zone.
+  // These accounts are typically workload identities, such as those used by cert-manager,
   // and are added when new environments are created or updated.
   repeated string iam_service_accounts = 2;
 
-  // The DNS records that are added to the Zone.
+  // The DNS records to be added to the Managed Zone.
   repeated GcpDnsRecord records = 3;
 }
 
-//gcp-dns-zone dns-record
+// **GcpDnsRecord** represents a DNS record to be added to the Managed Zone.
+// It includes the record type, name, values, and TTL (Time To Live) settings.
 message GcpDnsRecord {
-  // dns record type.
+  // **Required.** The DNS record type (e.g., A, AAAA, CNAME).
   project.planton.shared.networking.enums.dnsrecordtype.DnsRecordType record_type = 1 [
     (buf.validate.field).required = true
   ];
 
-  // name of the gcp-dns-zone ex: example.com or dev.example.com.
-  // this value should always end with a dot.
+  // **Required.** The name of the DNS record (e.g., "example.com." or "dev.example.com.").
+  // This value should always end with a dot to signify a fully qualified domain name.
   string name = 2 [
     (buf.validate.field).required = true,
     (buf.validate.field).cel = {
@@ -39,10 +43,10 @@ message GcpDnsRecord {
     }
   ];
 
-  // values for the gcp-dns-zone record.
-  // if the gcp_dns_zone_record_type is cname then each value in the list should end with a dot.
+  // The list of values for the DNS record.
+  // If the record type is CNAME, each value in the list should end with a dot.
   repeated string values = 3;
 
-  // ttl for the domain record in seconds.
+  // The Time To Live (TTL) for the DNS record, in seconds.
   int32 ttl_seconds = 4;
 }

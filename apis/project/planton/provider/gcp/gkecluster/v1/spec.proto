@@ -4,180 +4,195 @@ package project.planton.provider.gcp.gkecluster.v1;
 
 import "buf/validate/validate.proto";
 
-// GkeClusterSpec is a message type that defines the specifications for a gke-cluster on Planton Cloud.
+// **GkeClusterSpec** defines the specifications for a Google Kubernetes Engine (GKE) cluster on Planton Cloud.
+// This message includes necessary parameters to create and manage a GKE cluster within a specified GCP project.
+// It covers details like project IDs, region, zone, networking configurations, logging options, autoscaling settings,
+// node pools, Kubernetes addons, and ingress DNS domains.
 message GkeClusterSpec {
-  //gcp project in which the gke-cluster is to be created
+  // The GCP project ID in which the GKE cluster will be created.
   string cluster_project_id = 1;
 
-  // valid gcp region in which to create the gke-cluster.
-  // warning: gke-cluster will recreated if this value is updated.
-  // https://cloud.google.com/compute/docs/regions-zones
+  // **Required.** The GCP region where the GKE cluster will be created.
+  // **Warning:** The GKE cluster will be recreated if this value is updated.
+  // Refer to: https://cloud.google.com/compute/docs/regions-zones
   string region = 2 [
     (buf.validate.field).required = true
   ];
 
-  // valid gcp zone in which to create the gke-cluster.
-  // https://cloud.google.com/compute/docs/regions-zones
+  // **Required.** The GCP zone where the GKE cluster will be created.
+  // Refer to: https://cloud.google.com/compute/docs/regions-zones
   string zone = 3 [
     (buf.validate.field).required = true
   ];
 
-  // flag to indicate that the cluster should be created in a shared vpc network.
-  // warning: gke-cluster will be recreated if this is updated.
-  // note: vpc network is created in a separate project when this is enabled.
+  // A flag indicating whether the cluster should be created in a shared VPC network.
+  // **Warning:** The GKE cluster will be recreated if this is updated.
+  // **Note:** The VPC network is created in a separate project when this is enabled.
   bool is_create_shared_vpc = 4;
 
-  // flag to toggle workload logs for gke-cluster environment.
-  // when workload logs is enabled, the logs from kubernetes pods would be sent to google cloud logging.
-  // warning: enabling log forwarding increases cloud bills depending on the log volume.
+  // A flag to toggle workload logs for the GKE cluster environment.
+  // When enabled, logs from Kubernetes pods will be sent to Google Cloud Logging.
+  // **Warning:** Enabling log forwarding may increase cloud bills depending on the log volume.
   bool is_workload_logs_enabled = 5;
 
-  // cluster autoscaling configuration
+  // Configuration for cluster autoscaling.
   GkeClusterAutoscalingConfig cluster_autoscaling_config = 6;
 
-  // gke-cluster node pools
+  // A list of node pools for the GKE cluster.
   repeated GkeClusterNodePool node_pools = 7;
 
-  // gke-cluster kubernetes addons spec
+  // Specifications for Kubernetes addons in the GKE cluster.
   GkeClusterAddons kubernetes_addons = 8;
 
-  // ingress dns-domains to be configured in gke cluster.
+  // Ingress DNS domains to be configured in the GKE cluster.
   repeated GkeClusterIngressDnsDomain ingress_dns_domains = 9;
 }
 
-// gcp project
+// **GcpProject** represents a Google Cloud Platform project.
 message GcpProject {
-  // name of the gcp project
+  // The name of the GCP project.
   string name = 1;
-  // id of the gcp project
+
+  // The ID of the GCP project.
   string id = 2;
-  // number of the gcp project
+
+  // The number associated with the GCP project.
   string number = 3;
-  // id of the billing account
+
+  // The ID of the billing account linked to the project.
   string billing_account_id = 4;
 }
 
-//cluster autoscaling configuration for gke clusters.
-// https://cloud.google.com/kubernetes-engine/docs/how-to/node-auto-provisioning
+// **GkeClusterAutoscalingConfig** specifies the autoscaling settings for GKE clusters.
+// For more details, visit: https://cloud.google.com/kubernetes-engine/docs/how-to/node-auto-provisioning
 message GkeClusterAutoscalingConfig {
-  // Flag to control autoscaling of kubernetes worker nodes.
-  // When set to true, the cluster will automatically scale up or down based on the resource requirements.
+  // A flag to enable or disable autoscaling of Kubernetes worker nodes.
+  // When set to true, the cluster will automatically scale up or down based on resource requirements.
   bool is_enabled = 1;
 
-  // The minimum number of CPU cores that the cluster can down up to when autoscaling is enabled.
-  // The number of CPU cores is a sum across all nodes in the cluster.
+  // The minimum number of CPU cores the cluster can scale down to when autoscaling is enabled.
+  // This is the total number of CPU cores across all nodes in the cluster.
   int64 cpu_min_cores = 2;
 
-  // The maximum number of CPU cores that the cluster can scale up to when autoscaling is enabled.
-  // The number of CPU cores is a sum across all nodes in the cluster.
+  // The maximum number of CPU cores the cluster can scale up to when autoscaling is enabled.
+  // This is the total number of CPU cores across all nodes in the cluster.
   int64 cpu_max_cores = 3;
 
-  // The minimum amount of memory in gigabytes (GB) that the cluster can scale down to when autoscaling is enabled.
-  // The memory size is a sum across all nodes in the cluster.
+  // The minimum amount of memory in gigabytes (GB) the cluster can scale down to when autoscaling is enabled.
+  // This is the total memory across all nodes in the cluster.
   int64 memory_min_gb = 4;
 
-  // The maximum amount of memory in gigabytes (GB) that the cluster can scale up to when autoscaling is enabled.
-  // The memory size is a sum across all nodes in the cluster.
+  // The maximum amount of memory in gigabytes (GB) the cluster can scale up to when autoscaling is enabled.
+  // This is the total memory across all nodes in the cluster.
   int64 memory_max_gb = 5;
 }
 
-// gcp gke-cluster node pool
-message GkeClusterNodePool  {
-  // Name of the node pool. The name is added as a label to the node pool that can be used to schedule workloads.
-  string name = 1[
+// **GkeClusterNodePool** defines a node pool within the GKE cluster.
+message GkeClusterNodePool {
+  // The name of the node pool.
+  // This name is added as a label to the node pool and can be used to schedule workloads.
+  string name = 1 [
     (buf.validate.field).string.min_len = 1,
     (buf.validate.field).string.max_len = 25,
     (buf.validate.field).cel = {
       id: "gcp.node_pool.name",
-      message: "Only alphanumeric characters (A-Z,a-z, 0-9) and hyphens are allowed",
-      // https://regex101.com/r/NKTohE/1
+      message: "Only alphanumeric characters (A-Z, a-z, 0-9) and hyphens are allowed",
       expression: "this.matches('^[A-Za-z0-9-]+$')"
     },
     (buf.validate.field).cel = {
       id: "gcp.node_pool.name",
       message: "Must not start with a hyphen",
-      // https://regex101.com/r/t1LOCE/1
       expression: "this.matches('^[^-].*$')"
     },
     (buf.validate.field).cel = {
       id: "gcp.node_pool.name",
       message: "Must not end with a hyphen",
-      // https://regex101.com/r/reQjcB/1
       expression: "this.matches('[^-]$')"
     }
   ];
 
-  // Type of machine for the node pool. For example, 'n2-custom-8-16234'.
+  // **Required.** The machine type for the node pool (e.g., 'n2-custom-8-16234').
   string machine_type = 2 [
     (buf.validate.field).required = true
   ];
 
-  // Minimum number of nodes in the node pool. Defaults to 1.
+  // The minimum number of nodes in the node pool. Defaults to 1.
   int32 min_node_count = 3;
 
-  // Maximum number of nodes in the node pool. Defaults to 1.
+  // The maximum number of nodes in the node pool. Defaults to 1.
   int32 max_node_count = 4;
 
-  // Flag to enable spot instances on the node pool. Defaults to false.
+  // A flag to enable spot instances on the node pool. Defaults to false.
   bool is_spot_enabled = 5;
 }
 
-//ingress dns domain
+// **GkeClusterIngressDnsDomain** represents an ingress DNS domain configuration.
 message GkeClusterIngressDnsDomain {
-  // unique identifier of ingress-dns-domain
+  // A unique identifier for the ingress DNS domain.
   string id = 1;
 
-  // dns domain name
+  // **Required.** The DNS domain name (e.g., 'example.com').
   string name = 2 [
     (buf.validate.field).required = true
   ];
 
-  //flag to toggle tls for endpoint-domain.
-  //defaults to "false".
-  //(important note) certificates are not created for endpoints that do not need tls.
-  //(important note) ingress-dns-domains with out tls enabled are not eligible to be used for
-  //creating endpoints for microservice-instances, postgres-clusters, kafka-clusters, redis-clusters or solr-clouds
+  // A flag to enable TLS for the endpoint domain. Defaults to false.
+  // **Important:** Certificates are not created for endpoints that do not require TLS.
+  // Also, ingress DNS domains without TLS enabled cannot be used for creating endpoints for microservice instances,
+  // PostgreSQL clusters, Kafka clusters, Redis clusters, or Solr clouds.
   bool is_tls_enabled = 3;
 
-  //id of the project on google cloud containing the dns zone for the endpoint-domain.
-  //this value is looked up from the dns-domains in the organization dns data.
-  //this value is required for configuring the cert-issuer to perform dns validations.
+  // The GCP project ID containing the DNS zone for the endpoint domain.
+  // This value is retrieved from the DNS domains in the organization's DNS data.
+  // It is required for configuring the certificate issuer to perform DNS validations.
   string dns_zone_gcp_project_id = 4;
 }
 
-//gke-cluster kubernetes addons
+// **GkeClusterAddons** specifies the Kubernetes addons to be installed on the GKE cluster.
 message GkeClusterAddons {
-  //flag to control postgres-operator installation
+  // A flag to control the installation of the PostgreSQL operator.
   bool is_install_postgres_operator = 1;
-  //flag to control kafka-operator installation
+
+  // A flag to control the installation of the Kafka operator.
   bool is_install_kafka_operator = 2;
-  //flag to control solr-operator installation
+
+  // A flag to control the installation of the Solr operator.
   bool is_install_solr_operator = 3;
-  //flag to control kubecost
+
+  // A flag to control the installation of Kubecost.
   bool is_install_kubecost = 4;
-  //planton-cloud-kube-agent addon spec
+
+  // Configuration for the Planton Cloud Kube Agent addon.
   GkeClusterAddonsPlantonCloudKubeAgent planton_cloud_kube_agent = 5;
-  //flag to control ingress-nginx
+
+  // A flag to control the installation of Ingress NGINX.
   bool is_install_ingress_nginx = 6;
-  //flag to control istio
+
+  // A flag to control the installation of Istio.
   bool is_install_istio = 7;
-  //flag to control cert-manager
+
+  // A flag to control the installation of Cert-Manager.
   bool is_install_cert_manager = 8;
-  //flag to control external-dns
+
+  // A flag to control the installation of External DNS.
   bool is_install_external_dns = 9;
-  //flag to control external-secrets
+
+  // A flag to control the installation of External Secrets.
   bool is_install_external_secrets = 10;
-  //flag to control elastic-operator installation
+
+  // A flag to control the installation of the Elastic operator.
   bool is_install_elastic_operator = 11;
-  //flag to control keycloak-operator installation
+
+  // A flag to control the installation of the Keycloak operator.
   bool is_install_keycloak_operator = 12;
 }
 
-//planton-cloud-kube-agent addon spec
+// **GkeClusterAddonsPlantonCloudKubeAgent** specifies the configuration for the Planton Cloud Kube Agent addon.
 message GkeClusterAddonsPlantonCloudKubeAgent {
-  // flag to control planton-cloud-kube-agent installation
+  // A flag to control the installation of the Planton Cloud Kube Agent.
   bool is_install = 1;
-  // machine_account_email is the email of the machine-account to be used by planton-cloud-kube-agent.
-  // this is only created if the is_install is true.
+
+  // The email of the machine account to be used by the Planton Cloud Kube Agent.
+  // This account is created only if `is_install` is true.
   string machine_account_email = 2;
 }

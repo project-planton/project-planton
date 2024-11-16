@@ -21,13 +21,17 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// gcp-cloud-function spec
+// **GcpCloudFunctionSpec** defines the configuration for deploying a Google Cloud Function.
+// This message specifies the necessary parameters to create and manage Cloud Functions within a
+// specified GCP project. By providing the project ID, you can set up serverless functions that
+// execute in response to events, enabling scalable and cost-effective solutions without the need
+// to manage underlying infrastructure.
 type GcpCloudFunctionSpec struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// gcp project in which the storage-bucket is to be created.
+	// **Required.** The ID of the GCP project where the Cloud Function resources will be created.
 	GcpProjectId string `protobuf:"bytes,1,opt,name=gcp_project_id,json=gcpProjectId,proto3" json:"gcp_project_id,omitempty"`
 }
 

@@ -21,20 +21,24 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// gcp-artifact-registry spec
+// **GcpArtifactRegistrySpec** defines the configuration for deploying a Google Cloud Artifact Registry.
+// This message specifies the necessary parameters to create and manage an Artifact Registry within a
+// specified GCP project and region. It allows you to set the project ID and region, and configure
+// access settings such as enabling unauthenticated external access, which is particularly useful for
+// open-source projects that require public availability of their artifacts.
 type GcpArtifactRegistrySpec struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// id of the gcp project in which the artifact-registry resources are to be created.
+	// **Required.** The ID of the GCP project where the Artifact Registry resources will be created.
 	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
-	// gcp region in which the gcp-artifact-registry is to be created ex: us-west2.
-	// choosing the closest region for the kube-clusters in which the environments are
-	// hosted reduces the service startup time as the container images are downloaded faster.
+	// **Required.** The GCP region where the Artifact Registry will be created (e.g., "us-west2").
+	// Selecting a region close to your Kubernetes clusters can reduce service startup time
+	// by enabling faster downloads of container images.
 	Region string `protobuf:"bytes,2,opt,name=region,proto3" json:"region,omitempty"`
-	// flag to control access to artifacts published to repositories without any authentication.
-	// this is useful for publishing artifacts for opensource projects.
+	// A flag indicating whether to allow unauthenticated access to artifacts published in the repositories.
+	// Enable this for publishing artifacts for open-source projects that require public access.
 	IsExternal bool `protobuf:"varint,3,opt,name=is_external,json=isExternal,proto3" json:"is_external,omitempty"`
 }
 
