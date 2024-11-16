@@ -21,15 +21,19 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// gcp-secrets-manager spec
+// **GcpSecretsManagerSpec** defines the configuration for managing secrets using Google Cloud Secrets Manager.
+// This message specifies the parameters required to create and manage secrets within a specified GCP project.
+// By providing the project ID and a list of secret names, you can automate the creation and handling of secrets,
+// enabling secure storage and access control for sensitive information like API keys, passwords, and certificates.
 type GcpSecretsManagerSpec struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// gcp project in which the secrets are to be created.
+	// **Required.** The ID of the GCP project where the secrets will be created.
 	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
-	// list of secret names to create in google cloud secrets-manager
+	// A list of secret names to create in Google Cloud Secrets Manager.
+	// Each name represents a unique secret that can store sensitive data securely.
 	SecretNames []string `protobuf:"bytes,2,rep,name=secret_names,json=secretNames,proto3" json:"secret_names,omitempty"`
 }
 

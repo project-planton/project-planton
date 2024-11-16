@@ -21,13 +21,16 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// gcp-static-website spec
+// **GcpStaticWebsiteSpec** defines the configuration for deploying a static website using Google Cloud Storage.
+// This message specifies the parameters required to create and manage a static website hosted on Google Cloud Platform (GCP).
+// By providing the GCP project ID, you can set up a storage bucket configured to serve static content,
+// allowing you to host scalable and cost-effective websites without the need to manage any server infrastructure.
 type GcpStaticWebsiteSpec struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// gcp project in which the storage-bucket is to be created.
+	// **Required.** The ID of the GCP project where the storage bucket for the static website will be created.
 	GcpProjectId string `protobuf:"bytes,1,opt,name=gcp_project_id,json=gcpProjectId,proto3" json:"gcp_project_id,omitempty"`
 }
 

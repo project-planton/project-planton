@@ -22,19 +22,21 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// gcp-dns-zone spec
+// **GcpDnsZoneSpec** defines the configuration for creating a Google Cloud DNS Managed Zone.
+// This message specifies the parameters needed to create and manage a DNS zone within a specified GCP project.
+// It includes the project ID, optional service accounts for IAM permissions, and DNS records to be added to the zone.
 type GcpDnsZoneSpec struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// The ID of the GCP Project where the Managed Zone is created.
+	// **Required.** The ID of the GCP project where the Managed Zone is created.
 	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
-	// An optional list of GCP service accounts to be granted permissions to manage DNS records in the Managed Zone.
-	// These accounts are primarily created as workload identities like cert-manager,
+	// An optional list of GCP service accounts that are granted permissions to manage DNS records in the Managed Zone.
+	// These accounts are typically workload identities, such as those used by cert-manager,
 	// and are added when new environments are created or updated.
 	IamServiceAccounts []string `protobuf:"bytes,2,rep,name=iam_service_accounts,json=iamServiceAccounts,proto3" json:"iam_service_accounts,omitempty"`
-	// The DNS records that are added to the Zone.
+	// The DNS records to be added to the Managed Zone.
 	Records []*GcpDnsRecord `protobuf:"bytes,3,rep,name=records,proto3" json:"records,omitempty"`
 }
 
@@ -91,21 +93,22 @@ func (x *GcpDnsZoneSpec) GetRecords() []*GcpDnsRecord {
 	return nil
 }
 
-// gcp-dns-zone dns-record
+// **GcpDnsRecord** represents a DNS record to be added to the Managed Zone.
+// It includes the record type, name, values, and TTL (Time To Live) settings.
 type GcpDnsRecord struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// dns record type.
+	// **Required.** The DNS record type (e.g., A, AAAA, CNAME).
 	RecordType dnsrecordtype.DnsRecordType `protobuf:"varint,1,opt,name=record_type,json=recordType,proto3,enum=project.planton.shared.networking.enums.dnsrecordtype.DnsRecordType" json:"record_type,omitempty"`
-	// name of the gcp-dns-zone ex: example.com or dev.example.com.
-	// this value should always end with a dot.
+	// **Required.** The name of the DNS record (e.g., "example.com." or "dev.example.com.").
+	// This value should always end with a dot to signify a fully qualified domain name.
 	Name string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	// values for the gcp-dns-zone record.
-	// if the gcp_dns_zone_record_type is cname then each value in the list should end with a dot.
+	// The list of values for the DNS record.
+	// If the record type is CNAME, each value in the list should end with a dot.
 	Values []string `protobuf:"bytes,3,rep,name=values,proto3" json:"values,omitempty"`
-	// ttl for the domain record in seconds.
+	// The Time To Live (TTL) for the DNS record, in seconds.
 	TtlSeconds int32 `protobuf:"varint,4,opt,name=ttl_seconds,json=ttlSeconds,proto3" json:"ttl_seconds,omitempty"`
 }
 

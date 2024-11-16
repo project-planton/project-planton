@@ -21,13 +21,17 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// gcp-cloud-cdn spec
+// **GcpCloudCdnSpec** defines the configuration for deploying a Google Cloud CDN (Content Delivery Network).
+// This message specifies the necessary parameters to create and manage a Cloud CDN within a
+// specified GCP project. By providing the project ID, you can set up CDN resources to accelerate
+// content delivery by caching content at edge locations globally, improving load times and
+// reducing latency for end-users.
 type GcpCloudCdnSpec struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// gcp project in which the storage-bucket is to be created.
+	// **Required.** The ID of the GCP project where the Cloud CDN resources will be created.
 	GcpProjectId string `protobuf:"bytes,1,opt,name=gcp_project_id,json=gcpProjectId,proto3" json:"gcp_project_id,omitempty"`
 }
 

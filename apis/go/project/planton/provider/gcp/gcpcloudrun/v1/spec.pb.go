@@ -21,13 +21,17 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// gcp-cloud-run spec
+// **GcpCloudRunSpec** defines the configuration for deploying a Google Cloud Run service.
+// This message specifies the necessary parameters to create and manage Cloud Run services within a
+// specified GCP project. By providing the project ID, you can deploy containerized applications
+// that scale automatically in a fully managed environment, allowing you to focus on writing code
+// without worrying about the underlying infrastructure.
 type GcpCloudRunSpec struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// gcp project in which the storage-bucket is to be created.
+	// **Required.** The ID of the GCP project where the Cloud Run resources will be created.
 	GcpProjectId string `protobuf:"bytes,1,opt,name=gcp_project_id,json=gcpProjectId,proto3" json:"gcp_project_id,omitempty"`
 }
 
