@@ -5,21 +5,25 @@ package project.planton.provider.kubernetes.grafanakubernetes.v1;
 import "buf/validate/validate.proto";
 import "project/planton/shared/kubernetes/kubernetes.proto";
 
-//grafana-kubernetes spec
+// **GrafanaKubernetesSpec** defines the configuration for deploying Grafana on a Kubernetes cluster.
+// This message specifies the parameters needed to create and manage a Grafana deployment within a Kubernetes environment.
+// It includes container specifications and ingress settings to control resource allocation and external access.
 message GrafanaKubernetesSpec {
-  //grafana-container spec
+  // **Required.** The container specifications for the Grafana deployment.
   GrafanaKubernetesSpecContainer container = 1 [
     (buf.validate.field).required = true
   ];
 
-  //grafana-kubernetes ingress-spec
+  // The ingress configuration for the Grafana deployment.
   project.planton.shared.kubernetes.IngressSpec ingress = 3;
 }
 
-// grafana-kubernetes kubernetes grafana-container spec
+// **GrafanaKubernetesSpecContainer** specifies the container configuration for the Grafana application.
+// It includes resource allocations for CPU and memory to ensure the application runs efficiently.
+// Recommended defaults: CPU requests - 50m, Memory requests - 256Mi, CPU limits - 1, Memory limits - 1Gi.
 message GrafanaKubernetesSpecContainer {
-  //grafana container cpu and memory resources.
-  //recommended default "cpu-requests: 50m, memory-requests: 256Mi, cpu-limits: 1, memory-limits: 1Gi"
+  // **Required.** The CPU and memory resources allocated to the Grafana container.
+  // Recommended defaults: "cpu-requests: 50m", "memory-requests: 256Mi", "cpu-limits: 1", "memory-limits: 1Gi".
   project.planton.shared.kubernetes.ContainerResources resources = 1 [
     (buf.validate.field).required = true
   ];

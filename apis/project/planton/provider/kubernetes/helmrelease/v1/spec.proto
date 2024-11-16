@@ -4,25 +4,35 @@ package project.planton.provider.kubernetes.helmrelease.v1;
 
 import "buf/validate/validate.proto";
 
-//helm-release spec
+// **HelmReleaseSpec** defines the configuration for deploying a Helm release on a Kubernetes cluster.
+// This message specifies the parameters needed to create and manage a Helm chart deployment within a Kubernetes environment.
+// By configuring the Helm chart specifications, you can deploy applications packaged as Helm charts with customized values.
+
 message HelmReleaseSpec {
-  //helm-chart spec
+  // **Required.** The specifications for the Helm chart to be deployed.
   HelmReleaseSpecChartSpec helm_chart = 1 [
     (buf.validate.field).required = true
   ];
 }
 
-//helm-chart spec
+// **HelmReleaseSpecChartSpec** specifies the details of the Helm chart to be deployed.
+// It includes the repository URL, chart name, version, and custom values to be applied during the release.
+// By providing these details, you can fetch the correct chart and configure it according to your application's requirements.
+
 message HelmReleaseSpecChartSpec {
-  //helm chart repo
+  // The repository URL where the Helm chart is hosted.
+  // For example, "https://charts.helm.sh/stable".
   string repo = 1;
 
-  //helm chart name
+  // The name of the Helm chart to deploy.
+  // For example, "nginx-ingress".
   string name = 2;
 
-  //helm chart version
+  // The version of the Helm chart to deploy.
+  // For example, "1.41.3".
   string version = 3;
 
-  //map of key values for helm input
+  // A map of key-value pairs representing custom values for the Helm chart.
+  // These values override the default settings in the chart's values.yaml file.
   map<string, string> values = 4;
 }
