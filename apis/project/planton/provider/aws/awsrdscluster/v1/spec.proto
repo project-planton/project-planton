@@ -3,60 +3,96 @@ syntax = "proto3";
 package project.planton.provider.aws.awsrdscluster.v1;
 
 import "buf/validate/validate.proto";
+import "project/planton/shared/options/options.proto";
 
 // AwsRdsClusterSpec defines the specification required to deploy an AWS RDS (Relational Database Service) Cluster.
 // This message encapsulates all configurations necessary for setting up an RDS cluster, including engine settings,
 // instance configurations, networking, security, backup and maintenance options, and scaling configurations.
 message AwsRdsClusterSpec {
-  option (buf.validate.message).cel = {
-    id: "rds_cluster.rds_monitoring_interval",
-    expression: "this.enhanced_monitoring_role_enabled && this.rds_monitoring_interval == 0"
-        "? 'rds monitoring interval is mandatory if enhanced monitoring role is enabled'"
-        ": ''"
-  };
+  // Name of the database engine to be used for this DB cluster. Valid Values: `aurora-mysql`,
+  // `aurora-postgresql`, `mysql`, `postgres`. (Note that `mysql` and `postgres` are Multi-AZ RDS clusters).
+  string engine = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string = {
+      in: ["aurora-mysql", "aurora-postgresql", "mysql", "postgres"]
+    }
+  ];
 
+  // Database engine version. Updating this argument results in an outage.
+  // See the [Aurora MySQL](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/AuroraMySQL.Updates.html) and
+  // [Aurora Postgres](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/AuroraPostgreSQL.Updates.html)
+  // documentation for your configured engine to determine this value, or by running
+  // `aws rds describe-db-engine-versions`. For example with Aurora MySQL 2, a potential value for this
+  // argument is `5.7.mysql_aurora.2.03.2`. The value can contain a partial version where supported by the API.
+  // The actual engine version used is returned in the attribute `engineVersionActual`
+  string engine_version = 2 [
+    (buf.validate.field).required = true
+  ];
 
-  // Engine of the aws rds cluster
-  string engine = 1;
-  // Engine version of the Aurora global database
-  string engine_version = 2;
-  // The database engine mode. Valid values: `global`, `multimaster`, `parallelquery`, `provisioned`, `serverless`
+  // Database engine mode. Valid values: `global` (only valid for Aurora MySQL 1.21 and earlier),
+  // `parallelquery`, `provisioned`, `serverless`. Defaults to: `provisioned`.
+  // See the [RDS User Guide](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-serverless.html)
+  // for limitations when using `serverless`.
   string engine_mode = 3 [
-    (buf.validate.field).ignore = IGNORE_DEFAULT,
+    (buf.validate.field).ignore = IGNORE_IF_DEFAULT_VALUE,
     (buf.validate.field).string = {
       in: ["global", "multimaster", "parallelquery", "provisioned", "serverless"]
     }
   ];
+
   // Family of the DB parameter group.
-  string cluster_family = 4;
+  string cluster_family = 4 [
+    (buf.validate.field).required = true
+  ];
+
+  // Instance class to use. For details on CPU and memory, see [Scaling Aurora DB Instances](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Aurora.Managing.html).
+  // Aurora uses `db.*` instance classes/types. Please see [AWS Documentation](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html)
+  // for currently available instance classes and complete details. For Aurora Serverless v2 use `db.serverless`.
   // EC2 instance type for aws rds cluster
   // https://aws.amazon.com/rds/aurora/pricing
-  string instance_type = 5;
+  string instance_type = 5 [
+    (buf.validate.field).required = true
+  ];
+
   // aws rds cluster size
-  int32 cluster_size = 6;
+  int32 cluster_size = 6 [
+    (planton.shared.int32_default) = 1
+  ];
+
   // Set to true to allow RDS to manage the master user password in Secrets Manager. Cannot be set if master_password is provided
-  bool manage_master_user_password = 7;
+  bool manage_master_user_password = 7 [
+    (planton.shared.chat_ops_create_default) = "true"
+  ];
+
   // Amazon Web Services KMS key identifier is the key ARN, key ID, alias ARN, or alias name for the KMS key.
   // To use a KMS key in a different Amazon Web Services account, specify the key ARN or alias ARN.
   // If not specified, the default KMS key for your Amazon Web Services account is used.
   string master_user_secret_kms_key_id = 8;
+
   // Username for the master DB user. Ignored if snapshot_identifier or replication_source_identifier is provided
   string master_user = 9;
+
   // Password for the master DB user. Ignored if snapshot_identifier or replication_source_identifier is provided
   string master_password = 10;
+
   // Database name (default is not to create a database)
   string database_name = 11;
 
   // Set true to make this database accessible from the public internet
-  bool is_publicly_accessible = 12;
+  bool is_publicly_accessible = 12 [
+    (planton.shared.chat_ops_create_default) = "true"
+  ];
+
   // database port
   int32 database_port = 13;
 
-  // VPC ID to create the cluster in (e.g. `vpc-a22222ee`)
+  // VPC ID to create the cluster in (e.g. `vpc-a22222ee`). Defaults to the region's default VPC.
   string vpc_id = 14;
+
   // List of subnet IDs for the DB. DB instance will be created in the VPC associated with the DB subnet group
   // provisioned using the subnet IDs. Specify one of `subnet_ids`, `db_subnet_group_name`
   repeated string subnet_ids = 15;
+
   // Name of DB subnet group. DB instance will be created in the VPC associated with the DB subnet group.
   // Specify one of `subnet_ids`, `db_subnet_group_name`
   string db_subnet_group_name = 16;
@@ -96,8 +132,15 @@ message AwsRdsClusterSpec {
   // If this role hits IAM role length restrictions (max 64 characters),
   // consider shortening these strings.
   repeated string enhanced_monitoring_attributes = 29;
+
   // The interval, in seconds, between points when enhanced monitoring metrics are collected for the DB instance.
   // To disable collecting Enhanced Monitoring metrics, specify 0. The default is 0. Valid Values: 0, 1, 5, 10, 15, 30, 60
+  option (buf.validate.message).cel = {
+    id: "rds_monitoring_interval",
+    expression: "this.enhanced_monitoring_role_enabled && this.rds_monitoring_interval == 0"
+        "? 'rds_monitoring_interval should be greater than 0 if enhanced monitoring role is enabled'"
+        ": ''"
+  };
   int32 rds_monitoring_interval = 30 [
     (buf.validate.field).ignore = IGNORE_DEFAULT,
     (buf.validate.field).int32 = {
@@ -209,5 +252,3 @@ message AwsRdsClusterParameterGroupParameter {
   // The value of the DB parameter.
   string value = 3;
 }
-
-
