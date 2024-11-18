@@ -34,6 +34,7 @@ message AwsRdsClusterSpec {
   // See the [RDS User Guide](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-serverless.html)
   // for limitations when using `serverless`.
   string engine_mode = 3 [
+    (planton.shared.string_default) = "provisioned",
     (buf.validate.field).ignore = IGNORE_IF_DEFAULT_VALUE,
     (buf.validate.field).string = {
       in: ["global", "multimaster", "parallelquery", "provisioned", "serverless"]
