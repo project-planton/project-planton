@@ -29,17 +29,35 @@ message EksClusterSpec {
   // If an ID is not provided, a new VPC will be created automatically.
   // The VPC is the virtual network in which your EKS cluster and nodes will reside.
   // Note: The EKS cluster will be recreated if this value is updated.
-  string vpc_id = 2;
 
-  // The management mode for AWS EKS worker node groups.
-  // This defines how the worker nodes are managed within the EKS cluster.
-  // The management mode is specified using the EksWorkersManagementMode enum,
-  // which can define modes such as "MANAGED", "SELF_MANAGED", or "FARGATE".
-  // - MANAGED: AWS manages the worker nodes for you.
-  // - SELF_MANAGED: You are responsible for managing the worker nodes.
-  // - FARGATE: Use AWS Fargate to run Kubernetes pods without managing nodes.
-  // Note: This field is required to determine how the cluster's compute resources are provisioned and managed.
-  EksWorkersManagementMode workers_management_mode = 3 [
+  // Security Groups for the EKS cluster
+  repeated string security_groups = 2;
+
+  // Subnets for the EKS cluster
+  repeated string subnets = 3;
+
+  // role arn for the EKS cluster
+  string role_arn = 4 [
     (buf.validate.field).required = true
   ];
+
+  // Worker Node Role ARN
+  string node_role_arn = 5 [
+    (buf.validate.field).required = true
+  ];
+
+  // Instance type for the EKS worker nodes
+  string instance_type = 6 [
+    (buf.validate.field).required = true
+  ];
+
+  // Desired size of the EKS worker node group
+  int32 desired_size = 7;
+
+  // Maximum size of the EKS worker node group
+  int32 max_size = 8;
+
+  // Minimum size of the EKS worker node group
+  int32 min_size = 9;
+
 }
