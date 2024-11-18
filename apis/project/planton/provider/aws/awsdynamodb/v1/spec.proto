@@ -3,6 +3,7 @@ syntax = "proto3";
 package project.planton.provider.aws.awsdynamodb.v1;
 
 import "buf/validate/validate.proto";
+import "project/planton/shared/options/options.proto";
 
 // AwsDynamodbSpec defines the specification required to deploy an AWS DynamoDB resource, encapsulating all
 // configurations for the DynamoDB table and related settings.
@@ -23,7 +24,8 @@ message AwsDynamodbTable {
   // capacity. The valid values are `PROVISIONED` and `PAY_PER_REQUEST`. Defaults
   // to `PROVISIONED`.
   string billing_mode = 2 [
-    (buf.validate.field).ignore = IGNORE_DEFAULT,
+    (project.planton.shared.options.string_default) = "PROVISIONED",
+    (buf.validate.field).ignore = IGNORE_IF_DEFAULT_VALUE,
     (buf.validate.field).string = {
       in: ["PROVISIONED", "PAY_PER_REQUEST"]
     }
@@ -40,7 +42,7 @@ message AwsDynamodbTable {
   // is written to the table's stream. Valid values are
   // `KEYS_ONLY`, `NEW_IMAGE`, `OLD_IMAGE`, `NEW_AND_OLD_IMAGES`.
   string stream_view_type = 6 [
-    (buf.validate.field).ignore = IGNORE_DEFAULT,
+    (buf.validate.field).ignore = IGNORE_IF_DEFAULT_VALUE,
     (buf.validate.field).string = {
       in: ["NEW_IMAGE", "OLD_IMAGE", "NEW_AND_OLD_IMAGES", "KEYS_ONLY"]
     }
@@ -101,12 +103,16 @@ message AwsDynamodbTableTtl {
 // type, which is used in key schemas and indexes.
 message AwsDynamodbTableAttribute {
   // Name of the attribute
-  string name = 1;
+  string name = 1 [
+    (buf.validate.field).required = true
+  ];
   // Attribute type. Valid values are `S` (string), `N` (number), `B` (binary).
   string type = 2 [
+    (buf.validate.field).ignore = IGNORE_IF_DEFAULT_VALUE,
     (buf.validate.field).string = {
       in: ["S", "N", "B"]
-    }
+    },
+    (project.planton.shared.options.string_default) = "S"
   ];
 }
 

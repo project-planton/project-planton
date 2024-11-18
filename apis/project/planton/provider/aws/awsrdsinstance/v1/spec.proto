@@ -126,7 +126,7 @@ message AwsRdsInstanceSpec {
   // or "io1" (provisioned IOPS SSD). The default is "io1" if `iops` is specified,
   // "gp2" if not.
   string storage_type = 29 [
-    (buf.validate.field).ignore = IGNORE_DEFAULT,
+    (buf.validate.field).ignore = IGNORE_IF_DEFAULT_VALUE,
     (buf.validate.field).string = {
       in: ["gp2", "gp3", "io1", "io2", "standard"]
     }
@@ -205,7 +205,7 @@ message AwsRdsInstanceSpec {
   // License model for this DB. Optional, but required for some DB Engines.
   // Valid values: license-included | bring-your-own-license | general-public-license
   string license_model = 51 [
-    (buf.validate.field).ignore = IGNORE_DEFAULT,
+    (buf.validate.field).ignore = IGNORE_IF_DEFAULT_VALUE,
     (buf.validate.field).string = {
       in: ["license-included", "bring-your-own-license", "general-public-license"]
     }
