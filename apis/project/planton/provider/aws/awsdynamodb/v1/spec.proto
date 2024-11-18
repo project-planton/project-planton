@@ -24,7 +24,7 @@ message AwsDynamodbTable {
   // capacity. The valid values are `PROVISIONED` and `PAY_PER_REQUEST`. Defaults
   // to `PROVISIONED`.
   string billing_mode = 2 [
-    (project.planton.shared.options.string_default) = "PROVISIONED",
+    (project.planton.shared.options.default) = "PROVISIONED",
     (buf.validate.field).ignore = IGNORE_IF_DEFAULT_VALUE,
     (buf.validate.field).string = {
       in: ["PROVISIONED", "PAY_PER_REQUEST"]
@@ -112,7 +112,7 @@ message AwsDynamodbTableAttribute {
     (buf.validate.field).string = {
       in: ["S", "N", "B"]
     },
-    (project.planton.shared.options.string_default) = "S"
+    (project.planton.shared.options.default) = "S"
   ];
 }
 

@@ -34,7 +34,7 @@ message AwsRdsClusterSpec {
   // See the [RDS User Guide](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-serverless.html)
   // for limitations when using `serverless`.
   string engine_mode = 3 [
-    (planton.shared.string_default) = "provisioned",
+    (planton.shared.options.default) = "provisioned",
     (buf.validate.field).ignore = IGNORE_IF_DEFAULT_VALUE,
     (buf.validate.field).string = {
       in: ["global", "multimaster", "parallelquery", "provisioned", "serverless"]
@@ -57,12 +57,12 @@ message AwsRdsClusterSpec {
 
   // aws rds cluster size
   int32 cluster_size = 6 [
-    (planton.shared.int32_default) = 1
+    (planton.shared.options.default) = "1"
   ];
 
   // Set to true to allow RDS to manage the master user password in Secrets Manager. Cannot be set if master_password is provided
   bool manage_master_user_password = 7 [
-    (planton.shared.chat_ops_create_default) = "true"
+    (planton.shared.options.recommended_default) = "true"
   ];
 
   // Amazon Web Services KMS key identifier is the key ARN, key ID, alias ARN, or alias name for the KMS key.
@@ -72,7 +72,7 @@ message AwsRdsClusterSpec {
 
   // Username for the master DB user. Ignored if snapshot_identifier or replication_source_identifier is provided
   string master_user = 9 [
-    (planton.shared.string_default) = "master"
+    (planton.shared.options.default) = "master"
   ];
 
   // Password for the master DB user. Ignored if snapshot_identifier or replication_source_identifier is provided
@@ -83,7 +83,7 @@ message AwsRdsClusterSpec {
 
   // Set true to make this database accessible from the public internet
   bool is_publicly_accessible = 12 [
-    (planton.shared.chat_ops_create_default) = "true"
+    (planton.shared.options.recommended_default) = "true"
   ];
 
   // database port
