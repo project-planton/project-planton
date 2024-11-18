@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package project.planton.shared.options;
+
+import "google/protobuf/descriptor.proto";
+
+extend google.protobuf.FieldOptions {
+  string default = 60001;
+  string recommended_default = 60002;
+}
