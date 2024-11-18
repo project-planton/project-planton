@@ -71,7 +71,9 @@ message AwsRdsClusterSpec {
   string master_user_secret_kms_key_id = 8;
 
   // Username for the master DB user. Ignored if snapshot_identifier or replication_source_identifier is provided
-  string master_user = 9;
+  string master_user = 9 [
+    (planton.shared.string_default) = "master"
+  ];
 
   // Password for the master DB user. Ignored if snapshot_identifier or replication_source_identifier is provided
   string master_password = 10;
