@@ -1,18 +1,12 @@
 # Debug ProjectPlanton Pulumi Modules
 
-Project Planton is an open-source framework designed to simplify multi-cloud deployments by providing a consistent
-developer experience across different cloud providers. One of the key advantages of using Pulumi within Project Planton
-is the ability to debug infrastructure as code (IaC) programs using standard debugging tools. This powerful capability
-enhances productivity and accelerates troubleshooting.
+ProjectPlanton is an open-source framework designed to simplify multi-cloud deployments by providing a consistent developer experience across different cloud providers. One of the key advantages of using Pulumi within ProjectPlanton is the ability to debug infrastructure as code (IaC) programs using standard debugging tools. This powerful capability enhances productivity and accelerates troubleshooting.
 
-Pulumi recently introduced the ability to debug programs using breakpoints when running them via the Pulumi CLI. This
-feature allows developers to step through their code, inspect variables, and understand the execution flow in real-time.
+Pulumi recently introduced the ability to debug programs using breakpoints when running them via the Pulumi CLI. This feature allows developers to step through their code, inspect variables, and understand the execution flow in real-time.
 
 **Announcement Blog Post:** [Next-level IaC: Breakpoint Debugging for Pulumi Programs](https://www.pulumi.com/blog/next-level-iac-breakpoint-debugging/)
 
-In this guide, we'll provide a detailed walkthrough on how to debug Project Planton Pulumi modules written in Go using
-GoLand. We'll cover enabling debugging in your existing modules, configuring your environment, and running your Pulumi
-program in debug mode.
+In this guide, we'll provide a detailed walkthrough on how to debug ProjectPlanton Pulumi modules written in Go using GoLand. We'll cover enabling debugging in your existing modules, configuring your environment, setting up necessary environment variables, and running your Pulumi program in debug mode.
 
 ## Prerequisites
 
@@ -25,21 +19,20 @@ Before you begin, ensure you have the following installed and configured:
 
 ## Overview
 
-Debugging Pulumi programs involves attaching a debugger to the process that runs your IaC code. Since Pulumi executes
-your program via the Pulumi CLI, we need to:
+Debugging Pulumi programs involves attaching a debugger to the process that runs your IaC code. Since Pulumi executes your program via the Pulumi CLI, we need to:
 
 1. **Enable the debugging configuration** in your existing Pulumi modules.
-2. **Configure GoLand** to attach to the running Delve debugger.
-3. **Run Pulumi** with debugging enabled.
+2. **Set the `STACK_INPUT_FILE_PATH` environment variable** to point to your stack input file.
+3. **Configure GoLand** to attach to the running Delve debugger.
+4. **Run Pulumi** with debugging enabled.
 
-By following these steps, you can set breakpoints, inspect variables, and step through your code just like you would
-with any other Go application.
+By following these steps, you can set breakpoints, inspect variables, and step through your code just like you would with any other Go application.
 
 ## Step-by-Step Guide
 
 ### 1. Prepare Your Pulumi Module for Debugging
 
-The Pulumi modules maintained by Project Planton already include:
+The Pulumi modules maintained by ProjectPlanton already include:
 
 - A `debug.sh` script in the root directory.
 - A `Pulumi.yaml` file with the `binary` option configured but commented out.
@@ -57,10 +50,8 @@ exec dlv --listen=:2345 --headless=true --api-version=2 exec ./goapp
 ```
 
 - **Explanation:**
-    - `go build -o goapp -gcflags "all=-N -l" .` compiles your Go program into an executable named `goapp` with
-      optimizations and inlining disabled (`-N -l`), which is crucial for debugging.
-    - `exec dlv --listen=:2345 --headless=true --api-version=2 exec ./goapp` runs the `goapp` binary under Delve in
-      headless mode, listening on port `2345`.
+    - `go build -o goapp -gcflags "all=-N -l" .` compiles your Go program into an executable named `goapp` with optimizations and inlining disabled (`-N -l`), which is crucial for debugging.
+    - `exec dlv --listen=:2345 --headless=true --api-version=2 exec ./goapp` runs the `goapp` binary under Delve in headless mode, listening on port `2345`.
 
 #### Check `Pulumi.yaml` Configuration
 
@@ -102,7 +93,75 @@ To enable debugging:
 
     - This step may have already been done, but it's good to verify.
 
-### 3. Run Pulumi
+### 3. Set the `STACK_INPUT_FILE_PATH` Environment Variable
+
+All ProjectPlanton maintained Pulumi modules rely on an environment variable called `STACK_INPUT_FILE_PATH`, which contains the path to the stack input file. This file defines the configuration for the deployment component, following the protobuf definitions specified by ProjectPlanton.
+
+Before running `pulumi up`, you need to set this environment variable.
+
+#### Example `stack-input.yaml` File
+
+Create a `stack-input.yaml` file with your deployment configuration. Here's an example:
+
+```yaml
+target:
+  apiVersion: aws.project.planton/v1
+  kind: AwsDynamodb
+  metadata:
+    name: example-dynamodb-test
+  spec:
+    table:
+      billingMode: PROVISIONED
+      hashKey:
+        name: id
+        type: S
+```
+
+- **Explanation:**
+    - The `stack-input.yaml` contains a `target` field that includes the API resource definition.
+    - It specifies the `apiVersion`, `kind`, `metadata`, and `spec` for the deployment component.
+    - This configuration follows the protobuf definitions for the deployment component.
+    - Adjust the values according to your specific deployment requirements.
+
+#### Set Up Stack Input
+
+Set the `STACK_INPUT_FILE_PATH` environment variable to point to your `stack-input.yaml` file.
+
+```bash
+export STACK_INPUT_FILE_PATH=/path/to/your/stack-input.yaml
+```
+
+- **Note:**
+    - Ensure that the path is correct and accessible.
+    - run it in the terminal before running `pulumi up`.
+
+### 4. Configure Remote Debugging in GoLand
+
+#### 4.1 Create a New Run/Debug Configuration
+
+- Go to **Run** > **Edit Configurations...** in the menu bar.
+- Click the **+** icon to add a new configuration.
+- Select **Go Remote** from the list.
+
+![GoLand New Run/Debug Configuration](/images/guide/debug-pulumi-modules/img.png)
+
+#### 4.2 Set Up the Configuration
+
+- **Name**: `Pulumi Remote Debug`
+- **Host**: `127.0.0.1`
+- **Port**: `2345` (must match the port specified in your `debug.sh` script)
+- **Mode**: `Attach to running remote Delve debugger`
+- **API Version**: Ensure it's set to `2` to match the `--api-version=2` in your script.
+
+**Configuration should look like this:**
+
+![GoLand Remote Debug Configuration](/images/guide/debug-pulumi-modules/img_1.png)
+
+#### 4.3 Apply and Save
+
+- Click **Apply** and then **OK** to save the configuration.
+
+### 5. Run Pulumi
 
 Run your Pulumi program with the desired stack:
 
@@ -115,45 +174,13 @@ pulumi up --stack <stack-fqdn>
     - The Pulumi execution will start and wait until a debugger is attached before proceeding.
     - Pulumi will block execution and display a message indicating it's waiting for a debugger to attach.
 
-### 4. Set Breakpoints in GoLand
-
-- Open your Pulumi project in GoLand.
-- Navigate to the Go source files where you want to debug.
-- Click in the gutter next to the line numbers to set breakpoints at the desired lines.
-
-### 5. Configure Remote Debugging in GoLand
-
-#### 5.1 Create a New Run/Debug Configuration
-
-- Go to **Run** > **Edit Configurations...** in the menu bar.
-- Click the **+** icon to add a new configuration.
-- Select **Go Remote** from the list.
-
-![img.png](/images/guide/debug-pulumi-modules/img.png)
-
-#### 5.2 Set Up the Configuration
-
-- **Name**: `Pulumi Remote Debug`
-- **Host**: `127.0.0.1`
-- **Port**: `2345` (must match the port specified in your `debug.sh` script)
-- **Mode**: `Attach to running remote Delve debugger`
-- **API Version**: Ensure it's set to `2` to match the `--api-version=2` in your script.
-
-**Configuration should look like this:**
-
-![img_1.png](/images/guide/debug-pulumi-modules/img_1.png)
-
-#### 5.3 Apply and Save
-
-- Click **Apply** and then **OK** to save the configuration.
-
 ### 6. Attach the Debugger
 
 - In the top-right corner of GoLand, select your new `Pulumi Remote Debug` configuration.
 - Click the **Debug** button (green bug icon) to start the debugging session.
 - GoLand will connect to the Delve debugger running your Pulumi program.
 
-![img_2.png](/images/guide/debug-pulumi-modules/img_2.png)
+![GoLand Attach Debugger](/images/guide/debug-pulumi-modules/img_2.png)
 
 **Observation:**
 
@@ -243,21 +270,17 @@ go install github.com/go-delve/delve/cmd/dlv@latest
 
 ### Highlighting Pulumi's Powerful Capabilities
 
-By leveraging Pulumi's debugging capabilities, Project Planton provides:
+By leveraging Pulumi's debugging capabilities, ProjectPlanton provides:
 
 - **Enhanced Developer Experience**: Debugging infrastructure code as you would any application code.
 - **Faster Troubleshooting**: Quickly identify and resolve issues in your deployment logic.
 - **Consistent Multi-Cloud Deployments**: Debug across different cloud providers using the same tools.
 
-This aligns with Project Planton's goal of simplifying multi-cloud deployments and delivering a consistent developer
-experience. Pulumi's powerful features, such as breakpoint debugging, are a significant factor in choosing it as the IaC
-tool for Project Planton.
+This aligns with ProjectPlanton's goal of simplifying multi-cloud deployments and delivering a consistent developer experience. Pulumi's powerful features, such as breakpoint debugging, are a significant factor in choosing it as the IaC tool for ProjectPlanton.
 
 ## Conclusion
 
-Debugging Pulumi modules in Project Planton allows you to harness the full power of Go's debugging tools to inspect and
-understand your infrastructure code. Since the modules already include the `debug.sh` script and the `Pulumi.yaml` file
-with the `binary` option commented out, enabling debugging is straightforward.
+Debugging Pulumi modules in ProjectPlanton allows you to harness the full power of Go's debugging tools to inspect and understand your infrastructure code. Since the modules already include the `debug.sh` script and the `Pulumi.yaml` file with the `binary` option commented out, enabling debugging is straightforward.
 
 By integrating standard debugging practices into your IaC workflows, you can:
 
@@ -265,13 +288,11 @@ By integrating standard debugging practices into your IaC workflows, you can:
 - **Enhance Productivity**: Reduce time spent diagnosing issues.
 - **Achieve Greater Insight**: Understand the behavior of your deployments at a granular level.
 
-We hope this guide helps you effectively debug your Pulumi modules within Project Planton. Happy debugging!
+Remember to set the `STACK_INPUT_FILE_PATH` environment variable to point to your stack input file before running `pulumi up`. This ensures that the Pulumi modules have access to the necessary configuration for your deployment.
+
+We hope this guide helps you effectively debug your Pulumi modules within ProjectPlanton. Happy debugging!
 
 ## References
 
 - **GoLand Documentation**: [Debugging Code](https://www.jetbrains.com/help/go/debugging-your-code.html)
 - **Delve Debugger**: [Delve GitHub Repository](https://github.com/go-delve/delve)
-
----
-
-*Last updated on November 19, 2024.*
