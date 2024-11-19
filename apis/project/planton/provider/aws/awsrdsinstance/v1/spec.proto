@@ -70,7 +70,9 @@ message AwsRdsInstanceSpec {
   // The allocated storage in gibibytes. If `maxAllocatedStorage` is configured, this argument represents the initial
   // storage allocation and differences from the configuration will be ignored automatically when Storage Autoscaling
   // occurs. If `replicateSourceDb` is set, the value is ignored during the creation of the instance.
-  int32 allocated_storage = 12;
+  int32 allocated_storage = 12 [
+    (planton.shared.options.default) = "10"
+  ];
   // When configured, the upper limit to which Amazon RDS can automatically scale the storage of the DB instance.
   // Configuring this will automatically ignore differences to `allocatedStorage`. Must be greater than or equal to
   // `allocatedStorage` or `0` to disable Storage Autoscaling.
@@ -111,7 +113,9 @@ message AwsRdsInstanceSpec {
   // The DB parameter group family name. The value depends on DB engine used.
   // See [DBParameterGroupFamily](https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_CreateDBParameterGroup.html#API_CreateDBParameterGroup_RequestParameters)
   // for instructions on how to retrieve applicable value.
-  string db_parameter_group = 24;
+  string db_parameter_group = 24 [
+    (buf.validate.field).required = true
+  ];
   // A list of DB parameters to apply. Note that parameters may differ from a DB family to another
   repeated AwsRdsInstanceParameterGroupParameter parameters = 25;
 
