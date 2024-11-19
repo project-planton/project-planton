@@ -1,0 +1,277 @@
+# Debug ProjectPlanton Pulumi Modules
+
+Project Planton is an open-source framework designed to simplify multi-cloud deployments by providing a consistent
+developer experience across different cloud providers. One of the key advantages of using Pulumi within Project Planton
+is the ability to debug infrastructure as code (IaC) programs using standard debugging tools. This powerful capability
+enhances productivity and accelerates troubleshooting.
+
+Pulumi recently introduced the ability to debug programs using breakpoints when running them via the Pulumi CLI. This
+feature allows developers to step through their code, inspect variables, and understand the execution flow in real-time.
+
+**Announcement Blog Post:** [Next-level IaC: Breakpoint Debugging for Pulumi Programs](https://www.pulumi.com/blog/next-level-iac-breakpoint-debugging/)
+
+In this guide, we'll provide a detailed walkthrough on how to debug Project Planton Pulumi modules written in Go using
+GoLand. We'll cover enabling debugging in your existing modules, configuring your environment, and running your Pulumi
+program in debug mode.
+
+## Prerequisites
+
+Before you begin, ensure you have the following installed and configured:
+
+- **GoLand IDE**: Installed and configured for Go development.
+- **Go Programming Language**: Compatible version with your Pulumi modules.
+- **Pulumi CLI**: Installed and authenticated with your Pulumi backend.
+- **Delve Debugger (`dlv`)**: Installed and accessible in your system's `PATH`.
+
+## Overview
+
+Debugging Pulumi programs involves attaching a debugger to the process that runs your IaC code. Since Pulumi executes
+your program via the Pulumi CLI, we need to:
+
+1. **Enable the debugging configuration** in your existing Pulumi modules.
+2. **Configure GoLand** to attach to the running Delve debugger.
+3. **Run Pulumi** with debugging enabled.
+
+By following these steps, you can set breakpoints, inspect variables, and step through your code just like you would
+with any other Go application.
+
+## Step-by-Step Guide
+
+### 1. Prepare Your Pulumi Module for Debugging
+
+The Pulumi modules maintained by Project Planton already include:
+
+- A `debug.sh` script in the root directory.
+- A `Pulumi.yaml` file with the `binary` option configured but commented out.
+
+This setup is designed to make it easy for developers to enable debugging when needed.
+
+#### Examine the `debug.sh` Script
+
+The `debug.sh` script typically contains:
+
+```bash
+#!/bin/bash
+go build -o goapp -gcflags "all=-N -l" .
+exec dlv --listen=:2345 --headless=true --api-version=2 exec ./goapp
+```
+
+- **Explanation:**
+    - `go build -o goapp -gcflags "all=-N -l" .` compiles your Go program into an executable named `goapp` with
+      optimizations and inlining disabled (`-N -l`), which is crucial for debugging.
+    - `exec dlv --listen=:2345 --headless=true --api-version=2 exec ./goapp` runs the `goapp` binary under Delve in
+      headless mode, listening on port `2345`.
+
+#### Check `Pulumi.yaml` Configuration
+
+Your `Pulumi.yaml` file should look like this:
+
+```yaml
+name: aws-module-test-pulumi-project
+runtime:
+  name: go
+#  options:
+#    binary: ./debug.sh
+```
+
+- **Note:**
+    - The `binary` option is commented out by default to facilitate normal execution.
+    - When you need to debug, you can simply uncomment the `binary` option.
+
+### 2. Enable Debugging in `Pulumi.yaml`
+
+To enable debugging:
+
+1. **Uncomment the `binary` option** in your `Pulumi.yaml` file:
+
+   ```yaml
+   name: aws-module-test-pulumi-project
+   runtime:
+     name: go
+     options:
+       binary: ./debug.sh
+   ```
+
+    - This tells Pulumi to execute the custom `debug.sh` script instead of the default Go runtime.
+
+2. **Ensure the `debug.sh` Script is Executable**
+
+   ```bash
+   chmod +x debug.sh
+   ```
+
+    - This step may have already been done, but it's good to verify.
+
+### 3. Run Pulumi
+
+Run your Pulumi program with the desired stack:
+
+```bash
+pulumi up --stack <stack-fqdn>
+```
+
+- **Important:**
+    - Replace `<stack-fqdn>` with your fully qualified stack name (e.g., `yourOrg/yourProject/yourStack`).
+    - The Pulumi execution will start and wait until a debugger is attached before proceeding.
+    - Pulumi will block execution and display a message indicating it's waiting for a debugger to attach.
+
+### 4. Set Breakpoints in GoLand
+
+- Open your Pulumi project in GoLand.
+- Navigate to the Go source files where you want to debug.
+- Click in the gutter next to the line numbers to set breakpoints at the desired lines.
+
+### 5. Configure Remote Debugging in GoLand
+
+#### 5.1 Create a New Run/Debug Configuration
+
+- Go to **Run** > **Edit Configurations...** in the menu bar.
+- Click the **+** icon to add a new configuration.
+- Select **Go Remote** from the list.
+
+![img.png](/images/guide/debug-pulumi-modules/img.png)
+
+#### 5.2 Set Up the Configuration
+
+- **Name**: `Pulumi Remote Debug`
+- **Host**: `127.0.0.1`
+- **Port**: `2345` (must match the port specified in your `debug.sh` script)
+- **Mode**: `Attach to running remote Delve debugger`
+- **API Version**: Ensure it's set to `2` to match the `--api-version=2` in your script.
+
+**Configuration should look like this:**
+
+![img_1.png](/images/guide/debug-pulumi-modules/img_1.png)
+
+#### 5.3 Apply and Save
+
+- Click **Apply** and then **OK** to save the configuration.
+
+### 6. Attach the Debugger
+
+- In the top-right corner of GoLand, select your new `Pulumi Remote Debug` configuration.
+- Click the **Debug** button (green bug icon) to start the debugging session.
+- GoLand will connect to the Delve debugger running your Pulumi program.
+
+![img_2.png](/images/guide/debug-pulumi-modules/img_2.png)
+
+**Observation:**
+
+- Pulumi execution is blocked until the remote debugger is connected.
+- Once you start the debugger in GoLand, the Pulumi program will proceed with execution.
+
+### 7. Debug Your Program
+
+Once connected:
+
+- Execution will pause at your breakpoints.
+- Use GoLand's debugging tools to:
+
+    - **Step Over** (`F8`): Execute the next line of code without entering any functions.
+    - **Step Into** (`F7`): Dive into functions to debug them line by line.
+    - **Step Out** (`Shift+F8`): Exit the current function and return to the caller.
+    - **Resume Program** (`F9`): Continue execution until the next breakpoint or program termination.
+
+- Inspect variables, evaluate expressions, and monitor the call stack.
+- Use the **Variables** pane to view local and global variables.
+- Use the **Watches** pane to monitor specific expressions or variables.
+
+### 8. Continue Execution
+
+- After you've finished debugging, resume the program's execution by clicking **Resume Program** or pressing `F9`.
+- Let the Pulumi CLI complete its execution and update your infrastructure accordingly.
+- Check the Pulumi CLI output to verify the deployment results.
+
+### 9. Disable Debugging for Normal Execution
+
+When you want to run your program without debugging:
+
+1. **Comment Out the `binary` Option** in `Pulumi.yaml`:
+
+   ```yaml
+   name: aws-module-test-pulumi-project
+   runtime:
+     name: go
+   #  options:
+   #    binary: ./debug.sh
+   ```
+
+2. **Run Pulumi Normally**:
+
+   ```bash
+   pulumi up --stack <stack-fqdn>
+   ```
+
+- This will execute your Pulumi program without invoking the `debug.sh` script.
+
+### 10. Iterating and Debugging Again
+
+- If you need to debug again, simply uncomment the `binary` option in `Pulumi.yaml` and repeat the steps.
+- This approach makes it easy for developers to switch between normal execution and debugging mode.
+
+## Additional Notes
+
+### Using `pulumi preview` and `pulumi up`
+
+- **Pulumi runs your program twice during `pulumi up`**: once for the preview and once for the actual update.
+- Both runs will trigger the debugger and wait for you to attach.
+- To debug only one of these runs:
+
+    - Debug only the preview: `pulumi preview`
+    - Debug only the update without preview: `pulumi up --skip-preview`
+
+### Ensuring Delve Is Installed
+
+If Delve (`dlv`) is not installed, install it with:
+
+```bash
+go install github.com/go-delve/delve/cmd/dlv@latest
+```
+
+- Ensure that `$GOPATH/bin` or `$HOME/go/bin` is in your system's `PATH`.
+- Verify the installation with:
+
+  ```bash
+  dlv version
+  ```
+
+### Understanding Build Flags
+
+- The `-gcflags "all=-N -l"` flags in the `go build` command disable optimizations and inlining.
+- This ensures the debugger can accurately step through your code line by line.
+- Without these flags, the compiler might optimize away certain variables or rearrange code, making debugging difficult.
+
+### Highlighting Pulumi's Powerful Capabilities
+
+By leveraging Pulumi's debugging capabilities, Project Planton provides:
+
+- **Enhanced Developer Experience**: Debugging infrastructure code as you would any application code.
+- **Faster Troubleshooting**: Quickly identify and resolve issues in your deployment logic.
+- **Consistent Multi-Cloud Deployments**: Debug across different cloud providers using the same tools.
+
+This aligns with Project Planton's goal of simplifying multi-cloud deployments and delivering a consistent developer
+experience. Pulumi's powerful features, such as breakpoint debugging, are a significant factor in choosing it as the IaC
+tool for Project Planton.
+
+## Conclusion
+
+Debugging Pulumi modules in Project Planton allows you to harness the full power of Go's debugging tools to inspect and
+understand your infrastructure code. Since the modules already include the `debug.sh` script and the `Pulumi.yaml` file
+with the `binary` option commented out, enabling debugging is straightforward.
+
+By integrating standard debugging practices into your IaC workflows, you can:
+
+- **Improve Code Quality**: Catch errors early in the development process.
+- **Enhance Productivity**: Reduce time spent diagnosing issues.
+- **Achieve Greater Insight**: Understand the behavior of your deployments at a granular level.
+
+We hope this guide helps you effectively debug your Pulumi modules within Project Planton. Happy debugging!
+
+## References
+
+- **GoLand Documentation**: [Debugging Code](https://www.jetbrains.com/help/go/debugging-your-code.html)
+- **Delve Debugger**: [Delve GitHub Repository](https://github.com/go-delve/delve)
+
+---
+
+*Last updated on November 19, 2024.*
