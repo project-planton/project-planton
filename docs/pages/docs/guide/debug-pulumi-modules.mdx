@@ -22,7 +22,7 @@ Before you begin, ensure you have the following installed and configured:
 Debugging Pulumi programs involves attaching a debugger to the process that runs your IaC code. Since Pulumi executes your program via the Pulumi CLI, we need to:
 
 1. **Enable the debugging configuration** in your existing Pulumi modules.
-2. **Set the `STACK_INPUT_FILE_PATH` environment variable** to point to your stack input file.
+2. **create manifest yaml file** for the deployment component.
 3. **Configure GoLand** to attach to the running Delve debugger.
 4. **Run Pulumi** with debugging enabled.
 
@@ -30,7 +30,7 @@ Debugging Pulumi programs involves attaching a debugger to the process that runs
 
 Watch this video or follow the step-by-step guide in the next section
 
-<iframe width="640" height="360" src="https://www.loom.com/embed/80bdb123c9d34e6e8ed453fd466effcb?sid=f752ad17-b9f6-4586-a9ee-6442fdb3e4db" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+<iframe width="640" height="360" src="https://www.loom.com/embed/43046350760d4ad9b42f18b0fee09377?sid=2836dbfc-85f0-4643-acfe-ac6c64cf5429" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
 
 ## Step-by-Step Guide
 
@@ -99,47 +99,34 @@ To enable debugging:
 
     - This step may have already been done, but it's good to verify.
 
-### 3. Set the `STACK_INPUT_FILE_PATH` Environment Variable
+### 3. Set up deployment-component manifest file
 
-All ProjectPlanton maintained Pulumi modules rely on an environment variable called `STACK_INPUT_FILE_PATH`, which contains the path to the stack input file. This file defines the configuration for the deployment component, following the protobuf definitions specified by ProjectPlanton.
+All `project-planton` pulumi operations would require `--manifest` flag, which contains the path to the deployment-component manifest file. This file defines the configuration for the deployment component, following the protobuf definitions specified by ProjectPlanton.
 
-Before running `pulumi up`, you need to set this environment variable.
+Before running `project-planton pulumi up`, you need to set up this file.
 
-#### Example `stack-input.yaml` File
+#### Example `manifest.yaml` File
 
-Create a `stack-input.yaml` file with your deployment configuration. Here's an example:
+Create a `manifest.yaml` file with your deployment configuration. Here's an example:
 
 ```yaml
-target:
-  apiVersion: aws.project.planton/v1
-  kind: AwsDynamodb
-  metadata:
+apiVersion: aws.project.planton/v1
+kind: AwsDynamodb
+metadata:
     name: example-dynamodb-test
-  spec:
+spec:
     table:
-      billingMode: PROVISIONED
-      hashKey:
+    billingMode: PROVISIONED
+    hashKey:
         name: id
         type: S
 ```
 
 - **Explanation:**
-    - The `stack-input.yaml` contains a `target` field that includes the API resource definition.
+    - The `manifest.yaml` contains the API resource definition.
     - It specifies the `apiVersion`, `kind`, `metadata`, and `spec` for the deployment component.
     - This configuration follows the protobuf definitions for the deployment component.
     - Adjust the values according to your specific deployment requirements.
-
-#### Set Up Stack Input
-
-Set the `STACK_INPUT_FILE_PATH` environment variable to point to your `stack-input.yaml` file.
-
-```bash
-export STACK_INPUT_FILE_PATH=/path/to/your/stack-input.yaml
-```
-
-- **Note:**
-    - Ensure that the path is correct and accessible.
-    - run it in the terminal before running `pulumi up`.
 
 ### 4. Configure Remote Debugging in GoLand
 
@@ -172,7 +159,7 @@ export STACK_INPUT_FILE_PATH=/path/to/your/stack-input.yaml
 Run your Pulumi program with the desired stack:
 
 ```bash
-pulumi up --stack <stack-fqdn>
+project-planton pulumi up --stack <stack-fqdn> --manifest <manifest-yaml-path>
 ```
 
 - **Important:**
@@ -232,7 +219,7 @@ When you want to run your program without debugging:
 2. **Run Pulumi Normally**:
 
    ```bash
-   pulumi up --stack <stack-fqdn>
+   project-planton pulumi up --stack <stack-fqdn> --manifest <manifest-yaml-path>
    ```
 
 - This will execute your Pulumi program without invoking the `debug.sh` script.
@@ -244,14 +231,14 @@ When you want to run your program without debugging:
 
 ## Additional Notes
 
-### Using `pulumi preview` and `pulumi up`
+### Using `project-planton pulumi preview` and `project-planton pulumi up`
 
-- **Pulumi runs your program twice during `pulumi up`**: once for the preview and once for the actual update.
+- **Pulumi runs your program twice during `project-planton pulumi up`**: once for the preview and once for the actual update.
 - Both runs will trigger the debugger and wait for you to attach.
 - To debug only one of these runs:
 
-    - Debug only the preview: `pulumi preview`
-    - Debug only the update without preview: `pulumi up --skip-preview`
+    - Debug only the preview: `project-planton pulumi preview`
+    - Debug only the update without preview: `project-planton pulumi up --skip-preview`
 
 ### Ensuring Delve Is Installed
 
@@ -293,8 +280,6 @@ By integrating standard debugging practices into your IaC workflows, you can:
 - **Improve Code Quality**: Catch errors early in the development process.
 - **Enhance Productivity**: Reduce time spent diagnosing issues.
 - **Achieve Greater Insight**: Understand the behavior of your deployments at a granular level.
-
-Remember to set the `STACK_INPUT_FILE_PATH` environment variable to point to your stack input file before running `pulumi up`. This ensures that the Pulumi modules have access to the necessary configuration for your deployment.
 
 We hope this guide helps you effectively debug your Pulumi modules within ProjectPlanton. Happy debugging!
 
