@@ -37,14 +37,10 @@ message EksClusterSpec {
   repeated string subnets = 3;
 
   // role arn for the EKS cluster
-  string role_arn = 4 [
-    (buf.validate.field).required = true
-  ];
+  string role_arn = 4;
 
   // Worker Node Role ARN
-  string node_role_arn = 5 [
-    (buf.validate.field).required = true
-  ];
+  string node_role_arn = 5;
 
   // Instance type for the EKS worker nodes
   string instance_type = 6 [
@@ -59,5 +55,7 @@ message EksClusterSpec {
 
   // Minimum size of the EKS worker node group
   int32 min_size = 9;
+
+  map<string, string> tags = 10;
 
 }
