@@ -1,6 +1,7 @@
 {
   "name": "project-planton",
   "license": "MIT",
+  "packageManager": "yarn@3.6.1",
   "scripts": {
     "dev": "next",
     "build": "next build",
