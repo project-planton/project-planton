@@ -211,7 +211,7 @@ git checkout -b <your-feature-branch>
 
 #### 3. Make Changes
 
-- Navigate to the `cmd/projectplanton` directory. Each command has its own `.go` file.
+- Navigate to the `cmd/project-planton` directory. Each command has its own `.go` file.
 - For example, to modify the `load manifest` command, edit `loadManifest.go`.
 - Add or modify code as needed.
 
@@ -235,7 +235,7 @@ git checkout -b <your-feature-branch>
 - Test your changes by running the command:
 
   ```bash
-  projectplanton <your-command>
+  project-planton <your-command>
   ```
 
 #### 5. Commit and Push
@@ -309,7 +309,7 @@ git checkout -b <your-feature-branch>
 - To use your local module instead of the one from GitHub, specify the `--module` flag when running the CLI:
 
   ```bash
-  projectplanton pulumi up --module /path/to/your/local/module
+  project-planton pulumi up --module /path/to/your/local/module
   ```
 
 #### 5. Commit and Push
@@ -365,7 +365,7 @@ git checkout -b <your-feature-branch>
 
 - Navigate to the `apis` directory within the repository.
 - Find the relevant `.proto` file for the resource you wish to modify.
-    - For example: `apis/projectplanton/provider/aws/vpc/spec.proto`
+    - For example: `apis/project/planton/provider/aws/vpc/spec.proto`
 - Add or modify fields as needed.
     - Ensure you increment the field numbers correctly.
 
