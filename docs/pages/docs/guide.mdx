@@ -2,11 +2,20 @@ import {
     PulumiIcon,
     GitHubIcon,
 } from '@components/icons/project-planton'
+import {
+    CodeIcon,
+    StarsIcon,
+} from '@components/icons'
 import { Cards } from 'nextra/components'
 
 # Guide
 
 <Cards>
+    <Cards.Card
+        icon={<StarsIcon />}
+        title="Contributor Guide"
+        href="/docs/guide/contributor-guide"
+    />
     <Cards.Card
         icon={<PulumiIcon />}
         title="Pulumi Backend"
@@ -21,5 +30,10 @@ import { Cards } from 'nextra/components'
         icon={<GitHubIcon />}
         title="GitHub Actions"
         href="/docs/guide/github-actions"
+    />
+    <Cards.Card
+        icon={<CodeIcon />}
+        title="Debug Pulumi Modules"
+        href="/docs/guide/debug-pulumi-modules"
     />
 </Cards>

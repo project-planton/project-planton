@@ -99,7 +99,7 @@ pulumi module.
 
 Visit [CONTRIBUTING.md](CONTRIBUTING.md) for information on building ProjectPlanton from source or contributing improvements.
 
-Also, refer to this [Contributor Guide](contributor-guide.md) for detailed information about becoming a contributor to Project-Planton.
+Also, refer to this [Contributor Guide](https://project-planton.org/docs/guide/contributor-guide) for detailed information about becoming a contributor to Project-Planton.
 
 ## License
 
