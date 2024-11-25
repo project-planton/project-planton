@@ -14,15 +14,6 @@ syntax = "proto3";
 //
 //## Key Features
 //
-//### Environment Integration
-//
-//- **Environment Info**: Automatically integrates with the Planton Cloud environment management system, ensuring that PostgreSQL is deployed in the right context.
-//- **Stack Job Settings**: Supports stack job settings for consistent infrastructure-as-code deployments.
-//
-//### Kubernetes Credential Management
-//
-//- **Kubernetes Cluster Credential ID**: Specifies the Kubernetes credentials (`kubernetes_cluster_credential_id`) for securely deploying and managing the PostgreSQL container in Kubernetes.
-//
 //### PostgreSQL Container Configuration
 //
 //#### Resource Management

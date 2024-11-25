@@ -20,7 +20,7 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// AksClusterSpec is a message type that defines the specifications for a aks-cluster on Planton Cloud.
+// AksClusterSpec is a message type that defines the specifications for a aks-cluster.
 type AksClusterSpec struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
