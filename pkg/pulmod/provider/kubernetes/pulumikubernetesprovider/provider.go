@@ -27,8 +27,8 @@ func GetWithKubernetesClusterCredential(ctx *pulumi.Context,
 		return provider, nil
 	}
 
-	if kubernetesClusterCredentialSpec.KubernetesProvider == kubernetesclustercredentialv1.KubernetesProvider_gcp_gke &&
-		kubernetesClusterCredentialSpec.GkeCluster == nil {
+	if kubernetesClusterCredentialSpec.Provider == kubernetesclustercredentialv1.KubernetesProvider_gcp_gke &&
+		kubernetesClusterCredentialSpec.GcpGke == nil {
 		provider, err := kubernetes.NewProvider(ctx,
 			providerName,
 			&kubernetes.ProviderArgs{
@@ -42,8 +42,8 @@ func GetWithKubernetesClusterCredential(ctx *pulumi.Context,
 
 	kubeConfigString := ""
 
-	if kubernetesClusterCredentialSpec.KubernetesProvider == kubernetesclustercredentialv1.KubernetesProvider_gcp_gke {
-		c := kubernetesClusterCredentialSpec.GkeCluster
+	if kubernetesClusterCredentialSpec.Provider == kubernetesclustercredentialv1.KubernetesProvider_gcp_gke {
+		c := kubernetesClusterCredentialSpec.GcpGke
 
 		kubeConfigString = fmt.Sprintf(pulumigkekubernetesprovider.GcpExecPluginKubeConfigTemplate,
 			c.ClusterEndpoint,

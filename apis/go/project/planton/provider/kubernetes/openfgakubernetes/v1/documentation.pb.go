@@ -18,16 +18,6 @@
 //- **Enabling Flexible Data Store Options**: Supports both MySQL and PostgreSQL for OpenFGA data storage.
 //
 //## Key Features
-//
-//### Environment Integration
-//
-//- **Environment Info**: Integrates with Planton Cloud's environment management system to deploy OpenFGA in a specific environment.
-//- **Stack Job Settings**: Supports stack job settings to ensure consistent and repeatable deployments using infrastructure-as-code.
-//
-//### Kubernetes Credential Management
-//
-//- **Kubernetes Cluster Credential ID**: Specifies the Kubernetes credentials (`kubernetes_cluster_credential_id`) for securely deploying and managing the OpenFGA container within a Kubernetes cluster.
-//
 //### OpenFGA Container Configuration
 //
 //#### Resource Management

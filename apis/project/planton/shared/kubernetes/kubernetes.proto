@@ -84,21 +84,21 @@ message ContainerImage {
   string pull_secret_name = 3;
 }
 
-// **IngressSpec** defines the ingress configuration for a Planton Cloud API resource to be deployed in Kubernetes.
+// **IngressSpec** defines the ingress configuration for an API resource to be deployed in Kubernetes.
 // It allows you to enable or disable ingress and specify the endpoint domain name for internal and external access.
 message IngressSpec {
   option (buf.validate.message).cel = {
-    id: "ingress.enabled.endpoint_domain_name.mandatory",
-    expression: "this.is_enabled && size(this.endpoint_domain_name) == 0"
-        "? 'Endpoint domain name is mandatory to enable ingress'"
+    id: "ingress.enabled.dns_domain.mandatory",
+    expression: "this.is_enabled && size(this.dns_domain) == 0"
+        "? 'DNS Domain is mandatory to enable ingress'"
         ": ''"
   };
 
   // A flag to enable or disable ingress.
   bool is_enabled = 1;
 
-  // The endpoint domain name used for creating internal and external endpoints for the Planton Cloud API resource.
-  string endpoint_domain_name = 2;
+  // The dns domain.
+  string dns_domain = 2;
 }
 
 // **KubernetesSecretKey** is a wrapper for referencing a specific key within a Kubernetes Secret.

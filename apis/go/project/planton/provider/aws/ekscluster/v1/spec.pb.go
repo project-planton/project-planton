@@ -21,8 +21,7 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// EksClusterSpec defines the specification required to deploy an Amazon Elastic Kubernetes Service (EKS) cluster
-// on Planton Cloud.
+// EksClusterSpec defines the specification required to deploy an Amazon Elastic Kubernetes Service (EKS) cluster.
 // This message encapsulates all configurations necessary for setting up an EKS cluster, including the AWS region
 // where the cluster will be deployed,
 // the VPC (Virtual Private Cloud) settings, and the management mode for worker nodes.

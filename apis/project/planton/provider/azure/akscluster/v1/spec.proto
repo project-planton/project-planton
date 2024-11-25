@@ -2,6 +2,6 @@ syntax = "proto3";
 
 package project.planton.provider.azure.akscluster.v1;
 
-// AksClusterSpec is a message type that defines the specifications for a aks-cluster on Planton Cloud.
+// AksClusterSpec is a message type that defines the specifications for a aks-cluster.
 message AksClusterSpec {
 }

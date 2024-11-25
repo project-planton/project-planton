@@ -36,7 +36,7 @@ spec:
 
 ### Description
 
-This example illustrates how to deploy Signoz with additional stack job settings. Although the `SignozKubernetesSpec` is minimal, this configuration includes stack job settings to customize the deployment process, such as specifying deployment parameters or environment configurations managed by Planton Cloud.
+This example illustrates how to deploy Signoz with additional stack job settings. Although the `SignozKubernetesSpec` is minimal, this configuration includes stack job settings to customize the deployment process, such as specifying deployment parameters.
 
 ### Create and Apply
 
@@ -46,19 +46,3 @@ This example illustrates how to deploy Signoz with additional stack job settings
     ```shell
     planton apply -f <yaml-path>
     ```
-
-### YAML Configuration
-
-```yaml
-apiVersion: kubernetes.project.planton/v1
-kind: SignozKubernetes
-metadata:
-  name: enhanced-signoz
-spec:
-  kubernetes_cluster_credential_id: my-cluster-credential
-  stack_job_settings:
-    retries: 3
-    timeout: 600
-```
-
-*Note: Replace `<yaml-path>` with the actual path to your YAML configuration file when applying the configurations.*

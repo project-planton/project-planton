@@ -32,7 +32,7 @@
 //
 //#### Cluster Configuration
 //
-//- **Billing Account ID**: Links GKE cluster projects to a specified GCP billing account. Planton Cloud creates one or two GCP projects per GKE cluster, which are linked to this billing account.
+//- **Billing Account ID**: Links GKE cluster projects to a specified GCP billing account.
 //- **Region and Zone**: Specify the GCP region and zone where the GKE cluster will be created. Selecting the appropriate region and zone optimizes performance and complies with data residency requirements.
 //- **Shared VPC**: Option to create the cluster in a shared VPC network by setting `is_create_shared_vpc` to true. This allows multiple projects to share a common VPC network for better resource management.
 //- **Workload Logs**: Toggle workload logs for the GKE cluster environment using `is_workload_logs_enabled`. When enabled, logs from Kubernetes pods are sent to Google Cloud Logging. Note that enabling log forwarding may increase cloud costs depending on log volume.
@@ -58,7 +58,6 @@
 //- **Kafka Operator**: Install the Kafka operator (`is_install_kafka_operator`) for managing Apache Kafka clusters.
 //- **Solr Operator**: Install the Solr operator (`is_install_solr_operator`) for managing Apache Solr instances.
 //- **Kubecost**: Install Kubecost (`is_install_kubecost`) for cost monitoring and optimization.
-//- **Planton Cloud Kube Agent**: Configure the Planton Cloud Kube Agent add-on using `planton_cloud_kube_agent`.
 //- **Install Agent**: Set `is_install` to true to install the agent.
 //- **Machine Account Email**: The agent uses a machine account email (`machine_account_email`), which is created if the agent is installed.
 //- **Ingress Controllers and Other Add-ons**: Enable or disable other add-ons like Ingress NGINX (`is_install_ingress_nginx`), Istio (`is_install_istio`), Cert Manager (`is_install_cert_manager`), External DNS (`is_install_external_dns`), External Secrets (`is_install_external_secrets`), Elastic Operator (`is_install_elastic_operator`), and Keycloak Operator (`is_install_keycloak_operator`).

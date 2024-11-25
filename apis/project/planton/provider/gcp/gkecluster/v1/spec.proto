@@ -4,7 +4,7 @@ package project.planton.provider.gcp.gkecluster.v1;
 
 import "buf/validate/validate.proto";
 
-// **GkeClusterSpec** defines the specifications for a Google Kubernetes Engine (GKE) cluster on Planton Cloud.
+// **GkeClusterSpec** defines the specifications for a Google Kubernetes Engine (GKE) cluster.
 // This message includes necessary parameters to create and manage a GKE cluster within a specified GCP project.
 // It covers details like project IDs, region, zone, networking configurations, logging options, autoscaling settings,
 // node pools, Kubernetes addons, and ingress DNS domains.
@@ -162,37 +162,24 @@ message GkeClusterAddons {
   // A flag to control the installation of Kubecost.
   bool is_install_kubecost = 4;
 
-  // Configuration for the Planton Cloud Kube Agent addon.
-  GkeClusterAddonsPlantonCloudKubeAgent planton_cloud_kube_agent = 5;
-
   // A flag to control the installation of Ingress NGINX.
-  bool is_install_ingress_nginx = 6;
+  bool is_install_ingress_nginx = 5;
 
   // A flag to control the installation of Istio.
-  bool is_install_istio = 7;
+  bool is_install_istio = 6;
 
   // A flag to control the installation of Cert-Manager.
-  bool is_install_cert_manager = 8;
+  bool is_install_cert_manager = 7;
 
   // A flag to control the installation of External DNS.
-  bool is_install_external_dns = 9;
+  bool is_install_external_dns = 8;
 
   // A flag to control the installation of External Secrets.
-  bool is_install_external_secrets = 10;
+  bool is_install_external_secrets = 9;
 
   // A flag to control the installation of the Elastic operator.
-  bool is_install_elastic_operator = 11;
+  bool is_install_elastic_operator = 10;
 
   // A flag to control the installation of the Keycloak operator.
-  bool is_install_keycloak_operator = 12;
-}
-
-// **GkeClusterAddonsPlantonCloudKubeAgent** specifies the configuration for the Planton Cloud Kube Agent addon.
-message GkeClusterAddonsPlantonCloudKubeAgent {
-  // A flag to control the installation of the Planton Cloud Kube Agent.
-  bool is_install = 1;
-
-  // The email of the machine account to be used by the Planton Cloud Kube Agent.
-  // This account is created only if `is_install` is true.
-  string machine_account_email = 2;
+  bool is_install_keycloak_operator = 11;
 }

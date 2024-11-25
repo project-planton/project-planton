@@ -11,13 +11,6 @@ syntax = "proto3";
 //
 //### Environment and Stack Integration
 //
-//- **Environment Info**: The resource integrates seamlessly with Planton Cloud's environment management, ensuring that the Solr clusters are appropriately deployed within the correct environment.
-//- **Stack Job Settings**: The stack job settings ensure that the Solr and Zookeeper clusters are deployed consistently using infrastructure-as-code principles.
-//
-//### Kubernetes Cluster Credential Management
-//
-//- **Kubernetes Cluster Credential ID**: Required for securely managing the Kubernetes provider and deploying Solr in the correct cluster.
-//
 //### Solr Container Configuration
 //
 //- **Replicas**: Configure the number of Solr pod replicas, with a recommended default of 1 for initial deployments.
