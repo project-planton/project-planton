@@ -19,7 +19,9 @@ message AwsDynamodbSpec {
 // (TTL) configuration.
 message AwsDynamodbTable {
   //Table name. If provided, the bucket will be created with this name instead of generating the name from the context
-  string table_name = 1;
+  string table_name = 1 [
+    (buf.validate.field).required = true
+  ];
   // Controls how you are charged for read and write throughput and how you manage
   // capacity. The valid values are `PROVISIONED` and `PAY_PER_REQUEST`. Defaults
   // to `PROVISIONED`.
