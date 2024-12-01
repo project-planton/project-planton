@@ -4,6 +4,7 @@ package project.planton.provider.kubernetes.openfgakubernetes.v1;
 
 import "buf/validate/validate.proto";
 import "project/planton/shared/kubernetes/kubernetes.proto";
+import "project/planton/shared/kubernetes/options.proto";
 
 /**
  * **OpenfgaKubernetesSpec** defines the configuration for deploying OpenFGA on a Kubernetes cluster.
@@ -38,12 +39,18 @@ message OpenfgaKubernetesSpec {
  * Recommended defaults: CPU requests - 50m, Memory requests - 256Mi, CPU limits - 1, Memory limits - 1Gi.
  */
 message OpenfgaKubernetesContainer {
-  /**
-   * **Required.** The CPU and memory resources allocated to the OpenFGA container.
-   * Recommended defaults: "cpu-requests: 50m", "memory-requests: 256Mi", "cpu-limits: 1", "memory-limits: 1Gi".
-   */
+   //The CPU and memory resources allocated to the OpenFGA container.
   project.planton.shared.kubernetes.ContainerResources resources = 1 [
-    (buf.validate.field).required = true
+    (project.planton.shared.kubernetes.default_container_resources) = {
+      limits {
+        cpu: "1000m"
+        memory: "1Gi"
+      },
+      requests {
+        cpu: "50m"
+        memory: "100Mi"
+      }
+    }
   ];
 
   /**

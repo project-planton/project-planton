@@ -4,6 +4,7 @@ package project.planton.provider.kubernetes.elasticsearchkubernetes.v1;
 
 import "buf/validate/validate.proto";
 import "project/planton/shared/kubernetes/kubernetes.proto";
+import "project/planton/shared/kubernetes/options.proto";
 import "project/planton/shared/options/options.proto";
 
 // **ElasticsearchKubernetesSpec** defines the configuration for deploying Elasticsearch on a Kubernetes cluster.
@@ -35,9 +36,17 @@ message ElasticsearchKubernetesElasticsearchContainer {
   ];
 
   // The CPU and memory resources allocated to the Elasticsearch container.
-  // Recommended defaults: "cpu-requests: 50m", "memory-requests: 256Mi", "cpu-limits: 1", "memory-limits: 1Gi".
   project.planton.shared.kubernetes.ContainerResources resources = 2 [
-    (buf.validate.field).required = true
+    (project.planton.shared.kubernetes.default_container_resources) = {
+      limits {
+        cpu: "1000m"
+        memory: "1Gi"
+      },
+      requests {
+        cpu: "50m"
+        memory: "100Mi"
+      }
+    }
   ];
 
   // A flag to enable or disable data persistence for Elasticsearch.
@@ -84,8 +93,16 @@ message ElasticsearchKubernetesKibanaContainer {
   ];
 
   // The CPU and memory resources allocated to the Kibana container.
-  // Recommended defaults: "cpu-requests: 50m", "memory-requests: 256Mi", "cpu-limits: 1", "memory-limits: 1Gi".
   project.planton.shared.kubernetes.ContainerResources resources = 3 [
-    (buf.validate.field).required = true
+    (project.planton.shared.kubernetes.default_container_resources) = {
+      limits {
+        cpu: "1000m"
+        memory: "1Gi"
+      },
+      requests {
+        cpu: "50m"
+        memory: "100Mi"
+      }
+    }
   ];
 }
