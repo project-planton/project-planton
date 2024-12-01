@@ -12,14 +12,10 @@ import "project/planton/shared/kubernetes/options.proto";
  * It includes container specifications and ingress settings to control resource allocation and external access.
  */
 message Neo4jKubernetesSpec {
-  /**
-   * **Required.** The container specifications for the Neo4j deployment.
-   */
+  // The container specifications for the Neo4j deployment.
   Neo4jKubernetesContainer container = 1;
 
-  /**
-   * The ingress configuration for the Neo4j deployment.
-   */
+  //The ingress configuration for the Neo4j deployment.
   project.planton.shared.kubernetes.IngressSpec ingress = 2;
 }
 

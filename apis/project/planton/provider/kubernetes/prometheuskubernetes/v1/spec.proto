@@ -13,9 +13,7 @@ import "project/planton/shared/options/options.proto";
  * It includes container specifications and ingress settings to control resource allocation and external access.
  */
 message PrometheusKubernetesSpec {
-  /**
-   * **Required.** The container specifications for the Prometheus deployment.
-   */
+  // The container specifications for the Prometheus deployment.
   PrometheusKubernetesContainer container = 1 [
     (buf.validate.field).required = true
   ];
@@ -39,10 +37,7 @@ message PrometheusKubernetesContainer {
         ": ''"
   };
 
-  /**
-   * **Required.** The number of Prometheus pods to deploy.
-   * Recommended default is 1.
-   */
+  // The number of Prometheus pods to deploy.
   int32 replicas = 1 [
     (project.planton.shared.options.recommended_default) = "1"
   ];
@@ -78,7 +73,7 @@ message PrometheusKubernetesContainer {
    */
   string disk_size = 4 [
     (buf.validate.field).cel = {
-      id: "spec.kubernetes.container.disk_size.is_valid",
+      id: "spec.kubernetes.container.disk_size.format",
       message: "Disk size value is invalid",
       // Validation regex for disk size.
       expression: "this.matches('^\\\\d+(\\\\.\\\\d+)?\\\\s?(Ki|Mi|Gi|Ti|Pi|Ei|K|M|G|T|P|E)$') && size(this) > 0"

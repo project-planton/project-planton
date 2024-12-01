@@ -3,9 +3,15 @@ syntax = "proto3";
 package project.planton.provider.kubernetes.elasticsearchkubernetes.v1;
 
 import "buf/validate/validate.proto";
+import "google/protobuf/descriptor.proto";
 import "project/planton/shared/kubernetes/kubernetes.proto";
 import "project/planton/shared/kubernetes/options.proto";
 import "project/planton/shared/options/options.proto";
+
+extend google.protobuf.FieldOptions {
+  ElasticsearchKubernetesElasticsearchContainer default_elasticsearch_container = 509001;
+  ElasticsearchKubernetesKibanaContainer default_kibana_container = 509002;
+}
 
 // **ElasticsearchKubernetesSpec** defines the configuration for deploying Elasticsearch on a Kubernetes cluster.
 // This message includes specifications for the Elasticsearch container, optional Kibana container, and ingress settings.
@@ -14,12 +20,38 @@ import "project/planton/shared/options/options.proto";
 message ElasticsearchKubernetesSpec {
   //The specifications for the Elasticsearch container deployment.
   ElasticsearchKubernetesElasticsearchContainer elasticsearch_container = 1 [
-    (buf.validate.field).required = true
+    (default_elasticsearch_container) = {
+      replicas: 1,
+      resources:  {
+        limits {
+          cpu: "1000m"
+          memory: "1Gi"
+        },
+        requests {
+          cpu: "50m"
+          memory: "100Mi"
+        }
+      },
+      is_persistence_enabled: true,
+      disk_size: "1Gi"
+    }
   ];
 
   // The specifications for the Kibana container deployment.
   ElasticsearchKubernetesKibanaContainer kibana_container = 2 [
-    (buf.validate.field).required = true
+    (default_kibana_container) = {
+      replicas: 1,
+      resources:  {
+        limits {
+          cpu: "1000m"
+          memory: "1Gi"
+        },
+        requests {
+          cpu: "50m"
+          memory: "100Mi"
+        }
+      },
+    }
   ];
 
   // The ingress configuration for the Elasticsearch deployment.
@@ -31,29 +63,14 @@ message ElasticsearchKubernetesSpec {
 // Proper configuration ensures optimal performance and data reliability for your Elasticsearch deployment.
 message ElasticsearchKubernetesElasticsearchContainer {
   // The number of Elasticsearch pods to deploy
-  int32 replicas = 1 [
-    (project.planton.shared.options.recommended_default) = "1"
-  ];
+  int32 replicas = 1;
 
   // The CPU and memory resources allocated to the Elasticsearch container.
-  project.planton.shared.kubernetes.ContainerResources resources = 2 [
-    (project.planton.shared.kubernetes.default_container_resources) = {
-      limits {
-        cpu: "1000m"
-        memory: "1Gi"
-      },
-      requests {
-        cpu: "50m"
-        memory: "100Mi"
-      }
-    }
-  ];
+  project.planton.shared.kubernetes.ContainerResources resources = 2;
 
   // A flag to enable or disable data persistence for Elasticsearch.
   // When enabled, in-memory data is persisted to a storage volume, allowing data to survive pod restarts.
-  bool is_persistence_enabled = 3 [
-    (project.planton.shared.options.recommended_default) = "true"
-  ];
+  bool is_persistence_enabled = 3;
 
   // The size of the persistent volume attached to each Elasticsearch pod.
   // Required if `is_persistence_enabled` is `true`.
@@ -66,7 +83,6 @@ message ElasticsearchKubernetesElasticsearchContainer {
         ": ''"
   };
   string disk_size = 4 [
-    (project.planton.shared.options.recommended_default) = "1Gi",
     (buf.validate.field).cel = {
       id: "spec.elasticsearch_container.disk_size.format",
       message: "Disk size value is invalid",
@@ -82,27 +98,12 @@ message ElasticsearchKubernetesElasticsearchContainer {
 message ElasticsearchKubernetesKibanaContainer {
   // A flag to enable or disable the deployment of Kibana for Elasticsearch.
   // Defaults to `false`.
-  bool is_enabled = 1 [
-    (project.planton.shared.options.recommended_default) = "true"
-  ];
+  bool is_enabled = 1;
 
   // The number of Kibana pods to deploy.
   // Recommended default is 1.
-  int32 replicas = 2 [
-    (project.planton.shared.options.recommended_default) = "1"
-  ];
+  int32 replicas = 2;
 
   // The CPU and memory resources allocated to the Kibana container.
-  project.planton.shared.kubernetes.ContainerResources resources = 3 [
-    (project.planton.shared.kubernetes.default_container_resources) = {
-      limits {
-        cpu: "1000m"
-        memory: "1Gi"
-      },
-      requests {
-        cpu: "50m"
-        memory: "100Mi"
-      }
-    }
-  ];
+  project.planton.shared.kubernetes.ContainerResources resources = 3;
 }
