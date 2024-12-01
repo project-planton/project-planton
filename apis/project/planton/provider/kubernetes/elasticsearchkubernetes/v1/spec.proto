@@ -40,6 +40,7 @@ message ElasticsearchKubernetesSpec {
   // The specifications for the Kibana container deployment.
   ElasticsearchKubernetesKibanaContainer kibana_container = 2 [
     (default_kibana_container) = {
+      is_enabled: true,
       replicas: 1,
       resources:  {
         limits {
