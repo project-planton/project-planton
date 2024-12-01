@@ -3,6 +3,7 @@ syntax = "proto3";
 package project.planton.shared.kubernetes;
 
 import "buf/validate/validate.proto";
+import "project/planton/shared/options/options.proto";
 
 // **Container** defines the specifications for a container within a microservice deployment configuration.
 // This message mirrors the Kubernetes container spec (https://pkg.go.dev/k8s.io/api/core/v1#Container),
@@ -30,11 +31,15 @@ message Container {
 message ContainerResources {
   // The resource limits for the container.
   // Specify the maximum amount of CPU and memory that the container can use.
-  CpuMemory limits = 1;
+  CpuMemory limits = 1 [
+    (buf.validate.field).required = true
+  ];
 
   // The resource requests for the container.
   // Specify the minimum amount of CPU and memory that the container is guaranteed.
-  CpuMemory requests = 2;
+  CpuMemory requests = 2 [
+    (buf.validate.field).required = true
+  ];
 }
 
 // **ContainerEnvVar** represents an environment variable to be set in the container.
@@ -65,10 +70,14 @@ message ContainerPort {
 // It is used to specify the limits and requests for CPU and memory resources.
 message CpuMemory {
   // The amount of CPU allocated (e.g., "500m" for 0.5 CPU cores).
-  string cpu = 1;
+  string cpu = 1 [
+    (project.planton.shared.options.default) = "100m"
+  ];
 
   // The amount of memory allocated (e.g., "256Mi" for 256 mebibytes).
-  string memory = 2;
+  string memory = 2 [
+    (project.planton.shared.options.default) = "50Mi"
+  ];
 }
 
 // **ContainerImage** represents the container image information.
