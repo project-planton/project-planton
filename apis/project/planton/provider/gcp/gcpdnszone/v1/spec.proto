@@ -4,13 +4,13 @@ package project.planton.provider.gcp.gcpdnszone.v1;
 
 import "buf/validate/validate.proto";
 import "project/planton/shared/networking/enums/dnsrecordtype/dns_record_type.proto";
-
+import "project/planton/shared/options/options.proto";
 
 // **GcpDnsZoneSpec** defines the configuration for creating a Google Cloud DNS Managed Zone.
 // This message specifies the parameters needed to create and manage a DNS zone within a specified GCP project.
 // It includes the project ID, optional service accounts for IAM permissions, and DNS records to be added to the zone.
 message GcpDnsZoneSpec {
-  // **Required.** The ID of the GCP project where the Managed Zone is created.
+  // The ID of the GCP project where the Managed Zone is created.
   string project_id = 1 [
     (buf.validate.field).required = true
   ];
@@ -45,8 +45,12 @@ message GcpDnsRecord {
 
   // The list of values for the DNS record.
   // If the record type is CNAME, each value in the list should end with a dot.
-  repeated string values = 3;
+  repeated string values = 3 [
+    (buf.validate.field).repeated.min_items = 1
+  ];
 
   // The Time To Live (TTL) for the DNS record, in seconds.
-  int32 ttl_seconds = 4;
+  int32 ttl_seconds = 4 [
+    (project.planton.shared.options.default) = "60"
+  ];
 }
