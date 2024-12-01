@@ -3,8 +3,14 @@ syntax = "proto3";
 package project.planton.provider.kubernetes.locustkubernetes.v1;
 
 import "buf/validate/validate.proto";
+import "google/protobuf/descriptor.proto";
 import "project/planton/shared/kubernetes/kubernetes.proto";
 import "project/planton/shared/kubernetes/options.proto";
+
+extend google.protobuf.FieldOptions {
+  LocustKubernetesContainer default_master_container = 528001;
+  LocustKubernetesContainer default_worker_container = 528002;
+}
 
 // **LocustKubernetesSpec** defines the overall configuration for deploying a Locust load testing cluster on Kubernetes.
 // This message encapsulates environmental context, Kubernetes deployment specifications, load testing parameters,
@@ -14,13 +20,37 @@ message LocustKubernetesSpec {
   // The master container specifications for the Locust cluster.
   // This defines the resource allocation and number of replicas for the master node.
   LocustKubernetesContainer master_container = 1 [
-    (buf.validate.field).required = true
+    (default_master_container) = {
+      replicas: 1,
+      resources:  {
+        limits {
+          cpu: "1000m"
+          memory: "1Gi"
+        },
+        requests {
+          cpu: "50m"
+          memory: "100Mi"
+        }
+      },
+    }
   ];
 
   // The worker container specifications for the Locust cluster.
   // This defines the resource allocation and number of replicas for the worker nodes.
   LocustKubernetesContainer worker_container = 2 [
-    (buf.validate.field).required = true
+    (default_worker_container) = {
+      replicas: 1,
+      resources:  {
+        limits {
+          cpu: "1000m"
+          memory: "1Gi"
+        },
+        requests {
+          cpu: "50m"
+          memory: "100Mi"
+        }
+      },
+    }
   ];
 
   // The ingress configuration for the Locust deployment.
@@ -29,7 +59,9 @@ message LocustKubernetesSpec {
   // The load test parameters, including the main test script, additional library files,
   // and extra Python pip packages needed for test execution.
   // This specifies how the Locust nodes will simulate traffic and interact with the target application.
-  LocustKubernetesLoadTest load_test = 4;
+  LocustKubernetesLoadTest load_test = 4 [
+    (buf.validate.field).required = true
+  ];
 
   // A map of key-value pairs providing additional customization options for the Helm chart used
   // to deploy the Locust cluster. These values allow for further refinement of the deployment,
@@ -39,32 +71,16 @@ message LocustKubernetesSpec {
   map<string, string> helm_values = 5;
 }
 
-
 // **LocustKubernetesContainer** specifies the container configuration for Locust master and worker nodes.
 // It includes resource allocations for CPU and memory, as well as the number of replicas to deploy.
 // Proper configuration ensures optimal performance and scalability of your load testing environment.
 message LocustKubernetesContainer {
-  // The CPU and memory resources allocated to the Locust container.
-  project.planton.shared.kubernetes.ContainerResources resources = 1 [
-    (project.planton.shared.kubernetes.default_container_resources) = {
-      limits {
-        cpu: "1000m"
-        memory: "1Gi"
-      },
-      requests {
-        cpu: "50m"
-        memory: "100Mi"
-      }
-    }
-  ];
-
   // The number of replicas for the container.
   // This determines the level of concurrency and load generation capabilities.
-  int32 replicas = 2 [
-    (buf.validate.field).required = true
-  ];
+  int32 replicas = 1;
+  // The CPU and memory resources allocated to the Locust container.
+  project.planton.shared.kubernetes.ContainerResources resources = 2;
 }
-
 
 // **LocustKubernetesLoadTest** defines the specification for a load test using a Locust cluster.
 // This message includes the primary Python script for Locust and any additional library files

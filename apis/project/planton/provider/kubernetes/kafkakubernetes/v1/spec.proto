@@ -3,9 +3,15 @@ syntax = "proto3";
 package project.planton.provider.kubernetes.kafkakubernetes.v1;
 
 import "buf/validate/validate.proto";
+import "google/protobuf/descriptor.proto";
 import "project/planton/shared/kubernetes/kubernetes.proto";
-import "project/planton/shared/options/options.proto";
 import "project/planton/shared/kubernetes/options.proto";
+import "project/planton/shared/options/options.proto";
+
+extend google.protobuf.FieldOptions {
+  KafkaKubernetesBrokerContainer default_broker_container = 524001;
+  KafkaKubernetesZookeeperContainer default_zookeeper_container = 524002;
+}
 
 // **KafkaKubernetesSpec** defines the configuration for deploying Apache Kafka on a Kubernetes cluster.
 // This message includes specifications for Kafka topics, broker containers, Zookeeper containers, schema registry,
@@ -18,12 +24,38 @@ message KafkaKubernetesSpec {
 
   // The specifications for the Kafka broker containers.
   KafkaKubernetesBrokerContainer broker_container = 2 [
-    (buf.validate.field).required = true
+    (default_broker_container) = {
+      replicas: 1,
+      resources:  {
+        limits {
+          cpu: "1000m"
+          memory: "1Gi"
+        },
+        requests {
+          cpu: "50m"
+          memory: "100Mi"
+        }
+      },
+      disk_size: "1Gi"
+    }
   ];
 
   // The specifications for the Zookeeper containers.
   KafkaKubernetesZookeeperContainer zookeeper_container = 3 [
-    (buf.validate.field).required = true
+    (default_zookeeper_container) = {
+      replicas: 1,
+      resources:  {
+        limits {
+          cpu: "1000m"
+          memory: "1Gi"
+        },
+        requests {
+          cpu: "50m"
+          memory: "100Mi"
+        }
+      },
+      disk_size: "1Gi"
+    }
   ];
 
   // The specifications for the Schema Registry containers.
@@ -45,28 +77,14 @@ message KafkaKubernetesBrokerContainer {
   // The number of Kafka brokers to deploy.
   // Defaults to 1 if the client sets the value to 0.
   // Recommended default value is 1.
-  int32 replicas = 1 [
-    (project.planton.shared.options.recommended_default) = "1"
-  ];
+  int32 replicas = 1;
 
   // The CPU and memory resources allocated to the Kafka broker containers.
-  project.planton.shared.kubernetes.ContainerResources resources = 2 [
-    (project.planton.shared.kubernetes.default_container_resources) = {
-      limits {
-        cpu: "1000m"
-        memory: "1Gi"
-      },
-      requests {
-        cpu: "50m"
-        memory: "100Mi"
-      }
-    }
-  ];
+  project.planton.shared.kubernetes.ContainerResources resources = 2;
 
   // The size of the disk to be attached to each broker instance (e.g., "30Gi").
   // A default value is set if not provided by the client.
   string disk_size = 3 [
-    (project.planton.shared.options.default) = "1Gi",
     (buf.validate.field).cel = {
       id: "spec.broker_container.disk_size.format",
       message: "Disk size value is invalid",
@@ -84,28 +102,14 @@ message KafkaKubernetesZookeeperContainer {
   // Zookeeper requires at least 3 replicas for high availability (HA) mode.
   // Zookeeper uses the Raft consensus algorithm; refer to https://raft.github.io/ for more information on how replica
   // count affects availability.
-  int32 replicas = 1 [
-    (project.planton.shared.options.recommended_default) = "1"
-  ];
+  int32 replicas = 1;
 
   // The CPU and memory resources allocated to the Zookeeper containers.
-  project.planton.shared.kubernetes.ContainerResources resources = 2 [
-    (project.planton.shared.kubernetes.default_container_resources) = {
-      limits {
-        cpu: "1000m"
-        memory: "1Gi"
-      },
-      requests {
-        cpu: "50m"
-        memory: "100Mi"
-      }
-    }
-  ];
+  project.planton.shared.kubernetes.ContainerResources resources = 2;
 
   // The size of the disk to be attached to each Zookeeper instance (e.g., "30Gi").
   // A default value is set if not provided by the client.
   string disk_size = 3 [
-    (project.planton.shared.options.default) = "1Gi",
     (buf.validate.field).cel = {
       id: "spec.broker_container.disk_size.format",
       message: "Disk size value is invalid",

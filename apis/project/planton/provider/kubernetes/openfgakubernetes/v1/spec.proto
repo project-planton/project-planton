@@ -3,8 +3,13 @@ syntax = "proto3";
 package project.planton.provider.kubernetes.openfgakubernetes.v1;
 
 import "buf/validate/validate.proto";
+import "google/protobuf/descriptor.proto";
 import "project/planton/shared/kubernetes/kubernetes.proto";
 import "project/planton/shared/kubernetes/options.proto";
+
+extend google.protobuf.FieldOptions {
+  OpenfgaKubernetesContainer default_container = 531001;
+}
 
 /**
  * **OpenfgaKubernetesSpec** defines the configuration for deploying OpenFGA on a Kubernetes cluster.
@@ -13,11 +18,21 @@ import "project/planton/shared/kubernetes/options.proto";
  * external access, and backend storage options.
  */
 message OpenfgaKubernetesSpec {
-  /**
-   * **Required.** The container specifications for the OpenFGA deployment.
-   */
+  // The container specifications for the OpenFGA deployment.
   OpenfgaKubernetesContainer container = 1 [
-    (buf.validate.field).required = true
+    (default_container) = {
+      replicas: 1,
+      resources:  {
+        limits {
+          cpu: "1000m"
+          memory: "1Gi"
+        },
+        requests {
+          cpu: "50m"
+          memory: "100Mi"
+        }
+      },
+    }
   ];
 
   /**
@@ -29,7 +44,9 @@ message OpenfgaKubernetesSpec {
    * The data store configuration for OpenFGA.
    * This specifies the backend database engine and connection details.
    */
-  OpenfgaKubernetesDataStore datastore = 3;
+  OpenfgaKubernetesDataStore datastore = 3 [
+    (buf.validate.field).required = true
+  ];
 }
 
 /**
@@ -39,27 +56,10 @@ message OpenfgaKubernetesSpec {
  * Recommended defaults: CPU requests - 50m, Memory requests - 256Mi, CPU limits - 1, Memory limits - 1Gi.
  */
 message OpenfgaKubernetesContainer {
+  // The number of OpenFGA replicas to deploy. This determines the level of concurrency and availability.
+  int32 replicas = 1;
    //The CPU and memory resources allocated to the OpenFGA container.
-  project.planton.shared.kubernetes.ContainerResources resources = 1 [
-    (project.planton.shared.kubernetes.default_container_resources) = {
-      limits {
-        cpu: "1000m"
-        memory: "1Gi"
-      },
-      requests {
-        cpu: "50m"
-        memory: "100Mi"
-      }
-    }
-  ];
-
-  /**
-   * **Required.** The number of OpenFGA replicas to deploy.
-   * This determines the level of concurrency and availability.
-   */
-  int32 replicas = 2 [
-    (buf.validate.field).required = true
-  ];
+  project.planton.shared.kubernetes.ContainerResources resources = 2;
 }
 
 /**
@@ -72,6 +72,7 @@ message OpenfgaKubernetesDataStore {
    * Allowed values are "mysql" for MySQL database and "postgres" for PostgreSQL database.
    */
   string engine = 1 [
+    (buf.validate.field).required = true,
     (buf.validate.field).cel = {
       id: "spec.datastore.engine",
       message: 'The datastore engine must be one of "postgres" and "mysql".',
@@ -85,5 +86,7 @@ message OpenfgaKubernetesDataStore {
    * - For MySQL: `mysql://user:password@host:port/database`
    * - For PostgreSQL: `postgres://user:password@host:port/database`
    */
-  string uri = 2;
+  string uri = 2 [
+    (buf.validate.field).required = true
+  ];
 }
