@@ -11,13 +11,13 @@ import "project/planton/shared/kubernetes/kubernetes.proto";
 // and Helm chart values for customizing the deployment. By configuring these parameters, you can set up a scalable
 // and customizable load testing environment to simulate user traffic and measure application performance.
 message LocustKubernetesSpec {
-  // **Required.** The master container specifications for the Locust cluster.
+  // The master container specifications for the Locust cluster.
   // This defines the resource allocation and number of replicas for the master node.
   LocustKubernetesContainer master_container = 1 [
     (buf.validate.field).required = true
   ];
 
-  // **Required.** The worker container specifications for the Locust cluster.
+  // The worker container specifications for the Locust cluster.
   // This defines the resource allocation and number of replicas for the worker nodes.
   LocustKubernetesContainer worker_container = 2 [
     (buf.validate.field).required = true
@@ -44,13 +44,13 @@ message LocustKubernetesSpec {
 // It includes resource allocations for CPU and memory, as well as the number of replicas to deploy.
 // Proper configuration ensures optimal performance and scalability of your load testing environment.
 message LocustKubernetesContainer {
-  // **Required.** The CPU and memory resources allocated to the Locust container.
+  // The CPU and memory resources allocated to the Locust container.
   // Recommended defaults: "cpu-requests: 50m", "memory-requests: 256Mi", "cpu-limits: 1", "memory-limits: 1Gi".
   project.planton.shared.kubernetes.ContainerResources resources = 1 [
     (buf.validate.field).required = true
   ];
 
-  // **Required.** The number of replicas for the container.
+  // The number of replicas for the container.
   // This determines the level of concurrency and load generation capabilities.
   int32 replicas = 2 [
     (buf.validate.field).required = true
@@ -63,19 +63,19 @@ message LocustKubernetesContainer {
 // necessary to execute the load test. By providing these details, you can define the behavior
 // of simulated users and customize the load test according to your application's requirements.
 message LocustKubernetesLoadTest {
-  // **Required.** A unique identifier or name for this particular load test specification.
+  // A unique identifier or name for this particular load test specification.
   // It is used to reference or distinguish this test configuration among others within a testing suite or environment.
   string name = 1 [
     (buf.validate.field).required = true
   ];
 
-  // **Required.** The Python code for the main Locust test script.
+  // The Python code for the main Locust test script.
   // This script defines the behavior of the simulated users and is crucial for executing the load test.
   string main_py_content = 2 [
     (buf.validate.field).required = true
   ];
 
-  // **Required.** A map where each entry consists of a filename and its associated Python code content.
+  // A map where each entry consists of a filename and its associated Python code content.
   // These files typically contain additional classes or functions required by the main_py_content script.
   // The key of the map is the filename, and the value is the file content.
   map<string,string> lib_files_content = 3 [

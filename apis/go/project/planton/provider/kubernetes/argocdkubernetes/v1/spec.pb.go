@@ -30,7 +30,7 @@ type ArgocdKubernetesSpec struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// **Required.** The container specifications for the Argo CD deployment.
+	// The container specifications for the Argo CD deployment.
 	Container *ArgocdKubernetesArgocdContainer `protobuf:"bytes,1,opt,name=container,proto3" json:"container,omitempty"`
 	// The ingress configuration for the Argo CD deployment.
 	Ingress *kubernetes.IngressSpec `protobuf:"bytes,3,opt,name=ingress,proto3" json:"ingress,omitempty"`
@@ -90,7 +90,7 @@ type ArgocdKubernetesArgocdContainer struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// **Required.** The CPU and memory resources allocated to the Argo CD container.
+	// The CPU and memory resources allocated to the Argo CD container.
 	// Recommended defaults: "cpu-requests: 50m, memory-requests: 256Mi, cpu-limits: 1, memory-limits: 1Gi".
 	Resources *kubernetes.ContainerResources `protobuf:"bytes,1,opt,name=resources,proto3" json:"resources,omitempty"`
 }

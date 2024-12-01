@@ -122,11 +122,11 @@ type KubernetesHttpEndpointRoutingRule struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// **Required.** The URL path prefix to match.
+	// The URL path prefix to match.
 	// For example, if the endpoint domain name is `console.example.com`, and the `url_path_prefix` is `/api`,
 	// then all requests matching `console.example.com/api/*` are forwarded to the configured Kubernetes service.
 	UrlPathPrefix string `protobuf:"bytes,1,opt,name=url_path_prefix,json=urlPathPrefix,proto3" json:"url_path_prefix,omitempty"`
-	// **Required.** The backend service to which the requests should be forwarded.
+	// The backend service to which the requests should be forwarded.
 	BackendService *KubernetesHttpEndpointRoutingRuleBackendService `protobuf:"bytes,2,opt,name=backend_service,json=backendService,proto3" json:"backend_service,omitempty"`
 }
 

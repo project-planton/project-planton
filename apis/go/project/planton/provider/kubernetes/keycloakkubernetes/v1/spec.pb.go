@@ -90,7 +90,7 @@ type KeycloakKubernetesContainer struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// **Required.** The CPU and memory resources allocated to the Keycloak container.
+	// The CPU and memory resources allocated to the Keycloak container.
 	// Recommended defaults: "cpu-requests: 50m", "memory-requests: 256Mi", "cpu-limits: 1", "memory-limits: 1Gi".
 	Resources *kubernetes.ContainerResources `protobuf:"bytes,1,opt,name=resources,proto3" json:"resources,omitempty"`
 }
