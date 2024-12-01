@@ -4,6 +4,7 @@ package project.planton.provider.kubernetes.mongodbkubernetes.v1;
 
 import "buf/validate/validate.proto";
 import "project/planton/shared/kubernetes/kubernetes.proto";
+import "project/planton/shared/kubernetes/options.proto";
 import "project/planton/shared/options/options.proto";
 
 /**
@@ -55,12 +56,18 @@ message MongodbKubernetesContainer {
     (project.planton.shared.options.recommended_default) = "1"
   ];
 
-  /**
-   * **Required.** The CPU and memory resources allocated to the MongoDB container.
-   * Recommended defaults: "cpu-requests: 50m", "memory-requests: 256Mi", "cpu-limits: 1", "memory-limits: 1Gi".
-   */
+  //The CPU and memory resources allocated to the MongoDB container.
   project.planton.shared.kubernetes.ContainerResources resources = 2 [
-    (buf.validate.field).required = true
+    (project.planton.shared.kubernetes.default_container_resources) = {
+      limits {
+        cpu: "1000m"
+        memory: "1Gi"
+      },
+      requests {
+        cpu: "50m"
+        memory: "100Mi"
+      }
+    }
   ];
 
   /**

@@ -4,7 +4,7 @@ package project.planton.provider.kubernetes.locustkubernetes.v1;
 
 import "buf/validate/validate.proto";
 import "project/planton/shared/kubernetes/kubernetes.proto";
-
+import "project/planton/shared/kubernetes/options.proto";
 
 // **LocustKubernetesSpec** defines the overall configuration for deploying a Locust load testing cluster on Kubernetes.
 // This message encapsulates environmental context, Kubernetes deployment specifications, load testing parameters,
@@ -45,9 +45,17 @@ message LocustKubernetesSpec {
 // Proper configuration ensures optimal performance and scalability of your load testing environment.
 message LocustKubernetesContainer {
   // The CPU and memory resources allocated to the Locust container.
-  // Recommended defaults: "cpu-requests: 50m", "memory-requests: 256Mi", "cpu-limits: 1", "memory-limits: 1Gi".
   project.planton.shared.kubernetes.ContainerResources resources = 1 [
-    (buf.validate.field).required = true
+    (project.planton.shared.kubernetes.default_container_resources) = {
+      limits {
+        cpu: "1000m"
+        memory: "1Gi"
+      },
+      requests {
+        cpu: "50m"
+        memory: "100Mi"
+      }
+    }
   ];
 
   // The number of replicas for the container.

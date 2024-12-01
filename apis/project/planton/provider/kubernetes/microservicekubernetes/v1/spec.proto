@@ -4,6 +4,7 @@ package project.planton.provider.kubernetes.microservicekubernetes.v1;
 
 import "buf/validate/validate.proto";
 import "project/planton/shared/kubernetes/kubernetes.proto";
+import "project/planton/shared/kubernetes/options.proto";
 
 /**
  * **MicroserviceKubernetesSpec** defines the configuration for deploying a microservice on a Kubernetes cluster.
@@ -87,11 +88,18 @@ message MicroserviceKubernetesContainerApp {
    */
   project.planton.shared.kubernetes.ContainerImage image = 1;
 
-  /**
-   * The CPU and memory resources allocated to the application container.
-   */
+  // The CPU and memory resources allocated to the application container.
   project.planton.shared.kubernetes.ContainerResources resources = 2 [
-    (buf.validate.field).required = true
+    (project.planton.shared.kubernetes.default_container_resources) = {
+      limits {
+        cpu: "1000m"
+        memory: "1Gi"
+      },
+      requests {
+        cpu: "50m"
+        memory: "100Mi"
+      }
+    }
   ];
 
   /**

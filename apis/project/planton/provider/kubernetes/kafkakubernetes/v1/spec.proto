@@ -5,6 +5,7 @@ package project.planton.provider.kubernetes.kafkakubernetes.v1;
 import "buf/validate/validate.proto";
 import "project/planton/shared/kubernetes/kubernetes.proto";
 import "project/planton/shared/options/options.proto";
+import "project/planton/shared/kubernetes/options.proto";
 
 // **KafkaKubernetesSpec** defines the configuration for deploying Apache Kafka on a Kubernetes cluster.
 // This message includes specifications for Kafka topics, broker containers, Zookeeper containers, schema registry,
@@ -49,9 +50,17 @@ message KafkaKubernetesBrokerContainer {
   ];
 
   // The CPU and memory resources allocated to the Kafka broker containers.
-  // Recommended defaults: "cpu-requests: 50m", "memory-requests: 256Mi", "cpu-limits: 1", "memory-limits: 1Gi".
   project.planton.shared.kubernetes.ContainerResources resources = 2 [
-    (buf.validate.field).required = true
+    (project.planton.shared.kubernetes.default_container_resources) = {
+      limits {
+        cpu: "1000m"
+        memory: "1Gi"
+      },
+      requests {
+        cpu: "50m"
+        memory: "100Mi"
+      }
+    }
   ];
 
   // The size of the disk to be attached to each broker instance (e.g., "30Gi").
@@ -80,9 +89,17 @@ message KafkaKubernetesZookeeperContainer {
   ];
 
   // The CPU and memory resources allocated to the Zookeeper containers.
-  // Recommended defaults: "cpu-requests: 50m", "memory-requests: 256Mi", "cpu-limits: 1", "memory-limits: 1Gi".
   project.planton.shared.kubernetes.ContainerResources resources = 2 [
-    (buf.validate.field).required = true
+    (project.planton.shared.kubernetes.default_container_resources) = {
+      limits {
+        cpu: "1000m"
+        memory: "1Gi"
+      },
+      requests {
+        cpu: "50m"
+        memory: "100Mi"
+      }
+    }
   ];
 
   // The size of the disk to be attached to each Zookeeper instance (e.g., "30Gi").
@@ -113,9 +130,17 @@ message KafkaKubernetesSchemaRegistryContainer {
   ];
 
   // The CPU and memory resources allocated to the Schema Registry containers.
-  // Recommended defaults: "cpu-requests: 50m", "memory-requests: 256Mi", "cpu-limits: 1", "memory-limits: 1Gi".
   project.planton.shared.kubernetes.ContainerResources resources = 3 [
-    (buf.validate.field).required = true
+    (project.planton.shared.kubernetes.default_container_resources) = {
+      limits {
+        cpu: "1000m"
+        memory: "1Gi"
+      },
+      requests {
+        cpu: "50m"
+        memory: "100Mi"
+      }
+    }
   ];
 }
 
