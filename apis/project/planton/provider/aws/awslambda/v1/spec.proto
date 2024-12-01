@@ -11,10 +11,13 @@ message AwsLambdaSpec {
   AwsLambdaFunction function = 1 [
     (buf.validate.field).required = true
   ];
+
   // aws lambda function iam spec
   AwsLambdaIamRole iam_role = 2;
+
   // aws lambda cloud watch log group
   AwsLambdaCloudwatchLogGroup cloudwatch_log_group = 3;
+
   // Defines which external source(s) can invoke this function (action 'lambda:InvokeFunction'). Attributes map to
   // those of https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_permission.
   // NOTE: to keep things simple, we only expose a subset of said attributes. If a more complex configuration is

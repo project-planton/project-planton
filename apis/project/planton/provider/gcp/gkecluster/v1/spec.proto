@@ -3,6 +3,7 @@ syntax = "proto3";
 package project.planton.provider.gcp.gkecluster.v1;
 
 import "buf/validate/validate.proto";
+import "project/planton/shared/options/options.proto";
 
 // **GkeClusterSpec** defines the specifications for a Google Kubernetes Engine (GKE) cluster.
 // This message includes necessary parameters to create and manage a GKE cluster within a specified GCP project.
@@ -10,19 +11,21 @@ import "buf/validate/validate.proto";
 // node pools, Kubernetes addons, and ingress DNS domains.
 message GkeClusterSpec {
   // The GCP project ID in which the GKE cluster will be created.
-  string cluster_project_id = 1;
+  string cluster_project_id = 1 [
+    (buf.validate.field).required = true
+  ];
 
   // **Required.** The GCP region where the GKE cluster will be created.
   // **Warning:** The GKE cluster will be recreated if this value is updated.
   // Refer to: https://cloud.google.com/compute/docs/regions-zones
   string region = 2 [
-    (buf.validate.field).required = true
+    (project.planton.shared.options.default) = "us-central1"
   ];
 
   // **Required.** The GCP zone where the GKE cluster will be created.
   // Refer to: https://cloud.google.com/compute/docs/regions-zones
   string zone = 3 [
-    (buf.validate.field).required = true
+    (project.planton.shared.options.default) = "us-central1-a"
   ];
 
   // A flag indicating whether the cluster should be created in a shared VPC network.

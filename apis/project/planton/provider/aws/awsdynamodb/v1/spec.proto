@@ -8,20 +8,11 @@ import "project/planton/shared/options/options.proto";
 // AwsDynamodbSpec defines the specification required to deploy an AWS DynamoDB resource, encapsulating all
 // configurations for the DynamoDB table and related settings.
 message AwsDynamodbSpec {
-  // Aws Dynamodb table spec
-  AwsDynamodbTable table = 1 [
-    (buf.validate.field).required = true
-  ];
-}
-
-// AwsDynamodbTable represents the configuration of an AWS DynamoDB table, including properties such as table name,
-// billing mode, key schema, indexes, and various optional settings like streams, encryption, and time-to-live
-// (TTL) configuration.
-message AwsDynamodbTable {
   //Table name. If provided, the bucket will be created with this name instead of generating the name from the context
   string table_name = 1 [
     (buf.validate.field).required = true
   ];
+
   // Controls how you are charged for read and write throughput and how you manage
   // capacity. The valid values are `PROVISIONED` and `PAY_PER_REQUEST`. Defaults
   // to `PROVISIONED`.
@@ -32,14 +23,18 @@ message AwsDynamodbTable {
       in: ["PROVISIONED", "PAY_PER_REQUEST"]
     }
   ];
+
   // Attribute to use as the hash (partition) key. Must also be defined as an `attribute`.
   AwsDynamodbTableAttribute hash_key = 3 [
     (buf.validate.field).required = true
   ];
+
   // Attribute to use as the range (sort) key. Must also be defined as an `attribute`, see below.
   AwsDynamodbTableAttribute range_key = 4;
+
   // Whether Streams are enabled.
   bool enable_streams = 5;
+
   // When an item in the table is modified, StreamViewType determines what information
   // is written to the table's stream. Valid values are
   // `KEYS_ONLY`, `NEW_IMAGE`, `OLD_IMAGE`, `NEW_AND_OLD_IMAGES`.
@@ -49,26 +44,35 @@ message AwsDynamodbTable {
       in: ["NEW_IMAGE", "OLD_IMAGE", "NEW_AND_OLD_IMAGES", "KEYS_ONLY"]
     }
   ];
+
   // Encryption at rest options. AWS DynamoDB tables are automatically
   // encrypted at rest with an AWS-owned Customer Master Key if this argument
   // isn't specified.
   AwsDynamodbTableServerSideEncryption server_side_encryption = 7;
+
   // Enable point-in-time recovery options.
   AwsDynamodbTablePointInTimeRecovery point_in_time_recovery = 8;
+
   // Configuration block for TTL.
   AwsDynamodbTableTtl ttl = 9;
+
   // Dynamodb auto scale config
   AwsDynamodbAutoScaleCapacity auto_scale = 10;
+
   // Set of nested attribute definitions. Only required for `hashKey` and `rangeKey` attributes.
   repeated AwsDynamodbTableAttribute attributes = 11;
+
   // Describe a GSI for the table; subject to the normal limits on the number of GSIs, projected attributes, etc.
   repeated AwsDynamodbTableGlobalSecondaryIndex global_secondary_indexes = 12;
+
   // Describe an LSI on the table; these can only be allocated _at creation_
   // so you cannot change this definition after you have created the resource.
   repeated AwsDynamodbTableLocalSecondaryIndex local_secondary_indexes = 13;
+
   // Configuration block(s) with [DynamoDB Global Tables V2 (version 2019.11.21)]
   // (https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/globaltables.V2.html) replication configurations.
   repeated string replica_region_names = 14;
+
   // Import Amazon S3 data into a new table. See below.
   AwsDynamodbTableImport import_table = 15;
 }
@@ -110,11 +114,10 @@ message AwsDynamodbTableAttribute {
   ];
   // Attribute type. Valid values are `S` (string), `N` (number), `B` (binary).
   string type = 2 [
-    (buf.validate.field).ignore = IGNORE_IF_DEFAULT_VALUE,
+    (buf.validate.field).required = true,
     (buf.validate.field).string = {
       in: ["S", "N", "B"]
-    },
-    (project.planton.shared.options.default) = "S"
+    }
   ];
 }
 
@@ -248,5 +251,3 @@ message AutoScaleCapacity {
   // target capacity utilization percentage
   double target_utilization = 3;
 }
-
-
