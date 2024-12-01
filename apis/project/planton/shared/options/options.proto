@@ -4,7 +4,13 @@ package project.planton.shared.options;
 
 import "google/protobuf/descriptor.proto";
 
+message KeyValuePair {
+  string key = 1;
+  string value = 2;
+}
+
 extend google.protobuf.FieldOptions {
   string default = 60001;
   string recommended_default = 60002;
+  repeated KeyValuePair recommended_default_map = 60003;
 }

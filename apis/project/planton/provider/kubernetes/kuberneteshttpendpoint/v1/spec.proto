@@ -40,14 +40,14 @@ message KubernetesHttpEndpointSpec {
 // **KubernetesHttpEndpointRoutingRule** represents a routing rule for the HTTP endpoint.
 // It defines how requests matching a specific URL path prefix should be routed to a backend Kubernetes service.
 message KubernetesHttpEndpointRoutingRule {
-  // **Required.** The URL path prefix to match.
+  // The URL path prefix to match.
   // For example, if the endpoint domain name is `console.example.com`, and the `url_path_prefix` is `/api`,
   // then all requests matching `console.example.com/api/*` are forwarded to the configured Kubernetes service.
   string url_path_prefix = 1 [
     (buf.validate.field).required = true
   ];
 
-  // **Required.** The backend service to which the requests should be forwarded.
+  // The backend service to which the requests should be forwarded.
   KubernetesHttpEndpointRoutingRuleBackendService backend_service = 2 [
     (buf.validate.field).required = true
   ];

@@ -90,7 +90,9 @@ message MicroserviceKubernetesContainerApp {
   /**
    * The CPU and memory resources allocated to the application container.
    */
-  project.planton.shared.kubernetes.ContainerResources resources = 2;
+  project.planton.shared.kubernetes.ContainerResources resources = 2 [
+    (buf.validate.field).required = true
+  ];
 
   /**
    * The environment variables and secrets for the application container.

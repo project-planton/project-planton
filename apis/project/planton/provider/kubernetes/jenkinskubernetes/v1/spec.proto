@@ -5,13 +5,12 @@ package project.planton.provider.kubernetes.jenkinskubernetes.v1;
 import "buf/validate/validate.proto";
 import "project/planton/shared/kubernetes/kubernetes.proto";
 
-
 // **JenkinsKubernetesSpec** defines the configuration for deploying Jenkins on a Kubernetes cluster.
 // This message specifies the parameters needed to create and manage a Jenkins deployment within a Kubernetes environment.
 // It includes container specifications, Helm chart customization options, and ingress settings to control resource allocation
 // and external access.
 message JenkinsKubernetesSpec {
-  // **Required.** The container specifications for the Jenkins deployment.
+  // The container specifications for the Jenkins deployment.
   JenkinsKubernetesSpecContainer container = 1 [
     (buf.validate.field).required = true
   ];
@@ -30,7 +29,7 @@ message JenkinsKubernetesSpec {
 // It includes resource allocations for CPU and memory to ensure the application runs efficiently.
 // Recommended defaults: CPU requests - 50m, Memory requests - 256Mi, CPU limits - 1, Memory limits - 1Gi.
 message JenkinsKubernetesSpecContainer {
-  // **Required.** The CPU and memory resources allocated to the Jenkins container.
+  // The CPU and memory resources allocated to the Jenkins container.
   // Recommended defaults: "cpu-requests: 50m", "memory-requests: 256Mi", "cpu-limits: 1", "memory-limits: 1Gi".
   project.planton.shared.kubernetes.ContainerResources resources = 1 [
     (buf.validate.field).required = true

@@ -4,6 +4,7 @@ package project.planton.provider.kubernetes.rediskubernetes.v1;
 
 import "buf/validate/validate.proto";
 import "project/planton/shared/kubernetes/kubernetes.proto";
+import "project/planton/shared/options/options.proto";
 
 /**
  * **RedisKubernetesSpec** defines the configuration for deploying Redis on a Kubernetes cluster.
@@ -35,7 +36,7 @@ message RedisKubernetesContainer {
    * Recommended default is 1.
    */
   int32 replicas = 1 [
-    (buf.validate.field).required = true
+    (project.planton.shared.options.recommended_default) = "1"
   ];
 
   /**

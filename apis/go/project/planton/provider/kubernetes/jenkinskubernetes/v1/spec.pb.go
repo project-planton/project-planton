@@ -31,7 +31,7 @@ type JenkinsKubernetesSpec struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// **Required.** The container specifications for the Jenkins deployment.
+	// The container specifications for the Jenkins deployment.
 	Container *JenkinsKubernetesSpecContainer `protobuf:"bytes,1,opt,name=container,proto3" json:"container,omitempty"`
 	// A map of key-value pairs that provide additional customization options for the Helm chart used to deploy Jenkins.
 	// These values allow for further refinement of the deployment, such as customizing resource limits, setting environment variables,
@@ -103,7 +103,7 @@ type JenkinsKubernetesSpecContainer struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// **Required.** The CPU and memory resources allocated to the Jenkins container.
+	// The CPU and memory resources allocated to the Jenkins container.
 	// Recommended defaults: "cpu-requests: 50m", "memory-requests: 256Mi", "cpu-limits: 1", "memory-limits: 1Gi".
 	Resources *kubernetes.ContainerResources `protobuf:"bytes,1,opt,name=resources,proto3" json:"resources,omitempty"`
 }

@@ -30,7 +30,7 @@ type GitlabKubernetesSpec struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// **Required.** The container specifications for the GitLab deployment.
+	// The container specifications for the GitLab deployment.
 	Container *GitlabKubernetesSpecContainer `protobuf:"bytes,1,opt,name=container,proto3" json:"container,omitempty"`
 	// The ingress configuration for the GitLab deployment.
 	Ingress *kubernetes.IngressSpec `protobuf:"bytes,3,opt,name=ingress,proto3" json:"ingress,omitempty"`
@@ -90,7 +90,7 @@ type GitlabKubernetesSpecContainer struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// **Required.** The CPU and memory resources allocated to the GitLab container.
+	// The CPU and memory resources allocated to the GitLab container.
 	// Recommended defaults: "cpu-requests: 50m", "memory-requests: 256Mi", "cpu-limits: 1", "memory-limits: 1Gi".
 	Resources *kubernetes.ContainerResources `protobuf:"bytes,1,opt,name=resources,proto3" json:"resources,omitempty"`
 }

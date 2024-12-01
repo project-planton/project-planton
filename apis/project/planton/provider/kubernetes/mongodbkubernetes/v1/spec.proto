@@ -4,6 +4,7 @@ package project.planton.provider.kubernetes.mongodbkubernetes.v1;
 
 import "buf/validate/validate.proto";
 import "project/planton/shared/kubernetes/kubernetes.proto";
+import "project/planton/shared/options/options.proto";
 
 /**
  * **MongodbKubernetesSpec** defines the configuration for deploying MongoDB on a Kubernetes cluster.
@@ -51,7 +52,7 @@ message MongodbKubernetesContainer {
    * Recommended default is 1.
    */
   int32 replicas = 1 [
-    (buf.validate.field).required = true
+    (project.planton.shared.options.recommended_default) = "1"
   ];
 
   /**

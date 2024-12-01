@@ -31,10 +31,10 @@ type LocustKubernetesSpec struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// **Required.** The master container specifications for the Locust cluster.
+	// The master container specifications for the Locust cluster.
 	// This defines the resource allocation and number of replicas for the master node.
 	MasterContainer *LocustKubernetesContainer `protobuf:"bytes,1,opt,name=master_container,json=masterContainer,proto3" json:"master_container,omitempty"`
-	// **Required.** The worker container specifications for the Locust cluster.
+	// The worker container specifications for the Locust cluster.
 	// This defines the resource allocation and number of replicas for the worker nodes.
 	WorkerContainer *LocustKubernetesContainer `protobuf:"bytes,2,opt,name=worker_container,json=workerContainer,proto3" json:"worker_container,omitempty"`
 	// The ingress configuration for the Locust deployment.
@@ -126,10 +126,10 @@ type LocustKubernetesContainer struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// **Required.** The CPU and memory resources allocated to the Locust container.
+	// The CPU and memory resources allocated to the Locust container.
 	// Recommended defaults: "cpu-requests: 50m", "memory-requests: 256Mi", "cpu-limits: 1", "memory-limits: 1Gi".
 	Resources *kubernetes.ContainerResources `protobuf:"bytes,1,opt,name=resources,proto3" json:"resources,omitempty"`
-	// **Required.** The number of replicas for the container.
+	// The number of replicas for the container.
 	// This determines the level of concurrency and load generation capabilities.
 	Replicas int32 `protobuf:"varint,2,opt,name=replicas,proto3" json:"replicas,omitempty"`
 }
@@ -189,13 +189,13 @@ type LocustKubernetesLoadTest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// **Required.** A unique identifier or name for this particular load test specification.
+	// A unique identifier or name for this particular load test specification.
 	// It is used to reference or distinguish this test configuration among others within a testing suite or environment.
 	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	// **Required.** The Python code for the main Locust test script.
+	// The Python code for the main Locust test script.
 	// This script defines the behavior of the simulated users and is crucial for executing the load test.
 	MainPyContent string `protobuf:"bytes,2,opt,name=main_py_content,json=mainPyContent,proto3" json:"main_py_content,omitempty"`
-	// **Required.** A map where each entry consists of a filename and its associated Python code content.
+	// A map where each entry consists of a filename and its associated Python code content.
 	// These files typically contain additional classes or functions required by the main_py_content script.
 	// The key of the map is the filename, and the value is the file content.
 	LibFilesContent map[string]string `protobuf:"bytes,3,rep,name=lib_files_content,json=libFilesContent,proto3" json:"lib_files_content,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`

@@ -16,7 +16,7 @@ message ElasticsearchKubernetesSpec {
     (buf.validate.field).required = true
   ];
 
-  // **Required.** The specifications for the Kibana container deployment.
+  // The specifications for the Kibana container deployment.
   ElasticsearchKubernetesKibanaContainer kibana_container = 2 [
     (buf.validate.field).required = true
   ];
@@ -31,7 +31,7 @@ message ElasticsearchKubernetesSpec {
 message ElasticsearchKubernetesElasticsearchContainer {
   // The number of Elasticsearch pods to deploy
   int32 replicas = 1 [
-    (project.planton.shared.options.default) = "1"
+    (project.planton.shared.options.recommended_default) = "1"
   ];
 
   // The CPU and memory resources allocated to the Elasticsearch container.

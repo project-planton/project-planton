@@ -4,6 +4,7 @@ package project.planton.provider.kubernetes.prometheuskubernetes.v1;
 
 import "buf/validate/validate.proto";
 import "project/planton/shared/kubernetes/kubernetes.proto";
+import "project/planton/shared/options/options.proto";
 
 /**
  * **PrometheusKubernetesSpec** defines the configuration for deploying Prometheus on a Kubernetes cluster.
@@ -42,7 +43,7 @@ message PrometheusKubernetesContainer {
    * Recommended default is 1.
    */
   int32 replicas = 1 [
-    (buf.validate.field).required = true
+    (project.planton.shared.options.recommended_default) = "1"
   ];
 
   /**
