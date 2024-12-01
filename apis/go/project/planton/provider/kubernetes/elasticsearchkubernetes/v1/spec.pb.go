@@ -25,7 +25,7 @@ const (
 )
 
 // **ElasticsearchKubernetesSpec** defines the configuration for deploying Elasticsearch on a Kubernetes cluster.
-// This message includes specifications for the Elasticsearch container, optional Kibana container, and ingress settings.
+// This message includes specifications for the Elasticsearch container, Kibana container, and ingress settings.
 // By configuring these parameters, you can set up an Elasticsearch deployment tailored to your application's needs,
 // including resource allocation, persistence settings, and external access through ingress.
 type ElasticsearchKubernetesSpec struct {
