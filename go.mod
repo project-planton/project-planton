@@ -4,6 +4,7 @@ go 1.23.1
 
 require (
 	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.35.1-20240920164238-5a7b106cbb87.1
+	github.com/blang/semver v3.5.1+incompatible
 	github.com/bufbuild/protovalidate-go v0.7.2
 	github.com/go-task/slim-sprig/v3 v3.0.0
 	github.com/iancoleman/strcase v0.3.0
@@ -34,7 +35,6 @@ require (
 	github.com/apparentlymart/go-textseg/v13 v13.0.0 // indirect
 	github.com/atotto/clipboard v0.1.4 // indirect
 	github.com/aymanbagabas/go-osc52/v2 v2.0.1 // indirect
-	github.com/blang/semver v3.5.1+incompatible // indirect
 	github.com/charmbracelet/bubbles v0.16.1 // indirect
 	github.com/charmbracelet/bubbletea v0.25.0 // indirect
 	github.com/charmbracelet/lipgloss v0.7.1 // indirect
