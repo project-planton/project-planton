@@ -21,11 +21,15 @@ build_darwin: vet
 build-apis:
 	pushd apis;make build;popd
 
+.PHONY: generate-kubernetes-types
+generate-kubernetes-types:
+	pushd pkg/kubernetestypes;make build;popd
+
 .PHONY: build-cli
 build-cli: ${build_dir}/${name}
 
 .PHONY: build
-build: build-apis build-cli
+build: build-apis generate-kubernetes-types build-cli
 
 ${build_dir}/${name}: deps vet
 	GOOS=darwin GOARCH=amd64 ${build_cmd} -o ${build_dir}/${name}-darwin-amd64 .
