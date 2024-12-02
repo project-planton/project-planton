@@ -71,9 +71,9 @@ message RedisKubernetesContainer {
    * **Note:** This value cannot be modified after creation due to Kubernetes limitations on stateful sets.
    */
   option (buf.validate.message).cel = {
-    id: "spec.container.disk_size.mandatory",
+    id: "spec.container.disk_size.required",
     expression: "this.is_persistence_enabled && size(this.disk_size) == 0"
-        "? 'Disk size is mandatory to enable persistence'"
+        "? 'Disk size is required to enable persistence'"
         ": ''"
   };
   string disk_size = 4 [

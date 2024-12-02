@@ -128,7 +128,7 @@ message MicroserviceKubernetesContainerAppPort {
   string name = 1 [
     (buf.validate.field).required = true,
     (buf.validate.field).cel = {
-      id: "spec.kubernetes.container.app.ports.name",
+      id: "spec.container.app.ports.name",
       message: "Name for ports must only contain lowercase alphanumeric characters and hyphens. Port names must also start and end with an alphanumeric character. For example, '123-abc' and 'web' are valid, but '123_abc' and '-web' are not.",
       // https://regex101.com/r/dugcdl/1
       expression: "this.matches('^[a-z0-9][a-z0-9-]*[a-z0-9]$')"
@@ -145,7 +145,7 @@ message MicroserviceKubernetesContainerAppPort {
   string network_protocol = 3 [
     (buf.validate.field).required = true,
     (buf.validate.field).cel = {
-      id: "spec.kubernetes.container.app.ports.network_protocol",
+      id: "spec.container.app.ports.network_protocol",
       message: 'The network protocol must be one of "SCTP", "TCP", or "UDP".',
       expression: 'this in ["SCTP", "TCP", "UDP"]',
     }
