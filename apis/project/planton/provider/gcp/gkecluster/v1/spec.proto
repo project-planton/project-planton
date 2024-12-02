@@ -28,10 +28,7 @@ message GkeClusterSpec {
     (project.planton.shared.options.default) = "us-central1-a"
   ];
 
-  // A flag indicating whether the cluster should be created in a shared VPC network.
-  // **Warning:** The GKE cluster will be recreated if this is updated.
-  // **Note:** The VPC network is created in a separate project when this is enabled.
-  bool is_create_shared_vpc = 4;
+  GkeClusterSharedVpcConfig shared_vpc_config = 4;
 
   // A flag to toggle workload logs for the GKE cluster environment.
   // When enabled, logs from Kubernetes pods will be sent to Google Cloud Logging.
@@ -51,19 +48,24 @@ message GkeClusterSpec {
   repeated GkeClusterIngressDnsDomain ingress_dns_domains = 9;
 }
 
-// **GcpProject** represents a Google Cloud Platform project.
-message GcpProject {
-  // The name of the GCP project.
-  string name = 1;
+// **GkeClusterSharedVpcConfig** specifies the shared VPC network settings for GKE clusters.
+// This message includes the project ID for the shared VPC network where the GKE cluster is created.
+// For more details, visit: https://cloud.google.com/kubernetes-engine/docs/how-to/cluster-shared-vpc
+message GkeClusterSharedVpcConfig {
+  // A flag indicating whether the cluster should be created in a shared VPC network.
+  // **Warning:** The GKE cluster will be recreated if this is updated.
+  bool is_enabled = 1;
 
-  // The ID of the GCP project.
-  string id = 2;
-
-  // The number associated with the GCP project.
-  string number = 3;
-
-  // The ID of the billing account linked to the project.
-  string billing_account_id = 4;
+  // The GCP project ID in which the GKE cluster will be created.
+  option (buf.validate.message).cel = {
+    id: "spec.shared_vpc_config.vpc_project_id.required",
+    expression: "this.is_enabled && size(this.vpc_project_id) == 0"
+        "? 'VPC Project Id is required to setup shared-vpc'"
+        ": ''"
+  };
+  string vpc_project_id = 2 [
+    (buf.validate.field).required = true
+  ];
 }
 
 // **GkeClusterAutoscalingConfig** specifies the autoscaling settings for GKE clusters.
