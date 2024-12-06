@@ -1,4 +1,4 @@
-package pulumibackendcredential
+package credential
 
 import (
 	"github.com/bufbuild/protovalidate-go"
