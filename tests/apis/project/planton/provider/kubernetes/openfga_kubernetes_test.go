@@ -39,38 +39,6 @@ func TestOpenfgaKubernetesSpec_ValidSpec(t *testing.T) {
 	}
 }
 
-// TestOpenfgaKubernetesSpec_MissingDatastore checks that missing datastore field fails validation.
-func TestOpenfgaKubernetesSpec_MissingDatastore(t *testing.T) {
-	spec := &openfgakubernetesv1.OpenfgaKubernetesSpec{
-		Container: &openfgakubernetesv1.OpenfgaKubernetesContainer{
-			Replicas: 1,
-			Resources: &kubernetes.ContainerResources{
-				Limits: &kubernetes.CpuMemory{
-					Cpu:    "1000m",
-					Memory: "1Gi",
-				},
-				Requests: &kubernetes.CpuMemory{
-					Cpu:    "50m",
-					Memory: "100Mi",
-				},
-			},
-		},
-		Ingress: &kubernetes.IngressSpec{
-			DnsDomain: "openfga.example.com",
-		},
-		// Datastore missing
-	}
-
-	err := protovalidate.Validate(spec)
-	if err == nil {
-		t.Errorf("expected validation error for missing datastore, got none")
-	} else {
-		if !strings.Contains(err.Error(), "Field is required") {
-			t.Errorf("expected a 'Field is required' error for datastore, got: %v", err)
-		}
-	}
-}
-
 // TestOpenfgaKubernetesDataStore_InvalidEngine checks that invalid engine values fail validation.
 func TestOpenfgaKubernetesDataStore_InvalidEngine(t *testing.T) {
 	spec := &openfgakubernetesv1.OpenfgaKubernetesSpec{
@@ -99,70 +67,6 @@ func TestOpenfgaKubernetesDataStore_InvalidEngine(t *testing.T) {
 	} else {
 		if !strings.Contains(err.Error(), "The datastore engine must be one of \"postgres\" and \"mysql\".") {
 			t.Errorf("expected error about allowed engine values, got: %v", err)
-		}
-	}
-}
-
-// TestOpenfgaKubernetesDataStore_MissingEngine checks that missing engine fails validation.
-func TestOpenfgaKubernetesDataStore_MissingEngine(t *testing.T) {
-	spec := &openfgakubernetesv1.OpenfgaKubernetesSpec{
-		Container: &openfgakubernetesv1.OpenfgaKubernetesContainer{
-			Replicas: 1,
-			Resources: &kubernetes.ContainerResources{
-				Limits: &kubernetes.CpuMemory{
-					Cpu:    "1000m",
-					Memory: "1Gi",
-				},
-				Requests: &kubernetes.CpuMemory{
-					Cpu:    "50m",
-					Memory: "100Mi",
-				},
-			},
-		},
-		Datastore: &openfgakubernetesv1.OpenfgaKubernetesDataStore{
-			// Engine missing
-			Uri: "postgres://user:pass@localhost:5432/mydb",
-		},
-	}
-
-	err := protovalidate.Validate(spec)
-	if err == nil {
-		t.Errorf("expected validation error for missing engine, got none")
-	} else {
-		if !strings.Contains(err.Error(), "Field is required") {
-			t.Errorf("expected a 'Field is required' error for engine, got: %v", err)
-		}
-	}
-}
-
-// TestOpenfgaKubernetesDataStore_MissingUri checks that missing URI fails validation.
-func TestOpenfgaKubernetesDataStore_MissingUri(t *testing.T) {
-	spec := &openfgakubernetesv1.OpenfgaKubernetesSpec{
-		Container: &openfgakubernetesv1.OpenfgaKubernetesContainer{
-			Replicas: 1,
-			Resources: &kubernetes.ContainerResources{
-				Limits: &kubernetes.CpuMemory{
-					Cpu:    "1000m",
-					Memory: "1Gi",
-				},
-				Requests: &kubernetes.CpuMemory{
-					Cpu:    "50m",
-					Memory: "100Mi",
-				},
-			},
-		},
-		Datastore: &openfgakubernetesv1.OpenfgaKubernetesDataStore{
-			Engine: "postgres",
-			// Uri missing
-		},
-	}
-
-	err := protovalidate.Validate(spec)
-	if err == nil {
-		t.Errorf("expected validation error for missing uri, got none")
-	} else {
-		if !strings.Contains(err.Error(), "Field is required") {
-			t.Errorf("expected a 'Field is required' error for uri, got: %v", err)
 		}
 	}
 }

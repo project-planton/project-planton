@@ -84,7 +84,7 @@ message SolrKubernetesSolrContainer {
   //The size of the persistent volume attached to each Solr pod (e.g., "1Gi").
   string disk_size = 3 [
     (buf.validate.field).cel = {
-      id: "spec.container.disk_size.format",
+      id: "spec.container.disk_size.required",
       message: "Disk size value is invalid",
       // Regex to validate disk size format (e.g., "10Gi", "500Mi")
       expression: "this.matches('^\\\\d+(\\\\.\\\\d+)?\\\\s?(Ki|Mi|Gi|Ti|Pi|Ei|K|M|G|T|P|E)$') && size(this) > 0"
@@ -126,7 +126,7 @@ message SolrKubernetesZookeeperContainer {
   //The size of the persistent volume attached to each Zookeeper pod (e.g., "1Gi").
   string disk_size = 3 [
     (buf.validate.field).cel = {
-      id: "spec.container.disk_size.format",
+      id: "spec.container.disk_size.required",
       message: "Disk size value is invalid",
       // Regex to validate disk size format (e.g., "10Gi", "500Mi")
       expression: "this.matches('^\\\\d+(\\\\.\\\\d+)?\\\\s?(Ki|Mi|Gi|Ti|Pi|Ei|K|M|G|T|P|E)$') && size(this) > 0"

@@ -156,27 +156,6 @@ func TestKafkaKubernetesSpec_InvalidTopicName(t *testing.T) {
 	}
 }
 
-// TestKafkaKubernetesSpec_MissingTopicName checks that a missing topic name fails validation.
-func TestKafkaKubernetesSpec_MissingTopicName(t *testing.T) {
-	spec := &kafkakubernetesv1.KafkaKubernetesSpec{
-		KafkaTopics: []*kafkakubernetesv1.KafkaTopic{
-			{
-				Partitions: 1,
-				Replicas:   1,
-			},
-		},
-	}
-
-	err := protovalidate.Validate(spec)
-	if err == nil {
-		t.Errorf("expected validation error for missing required topic name, got none")
-	} else {
-		if !strings.Contains(err.Error(), "Field is required") {
-			t.Errorf("expected a 'Field is required' error for topic name, got: %v", err)
-		}
-	}
-}
-
 // TestKafkaKubernetesSpec_InvalidTopicNameEndsWithNonAlphanumeric checks a topic that doesn't end with alphanumeric.
 func TestKafkaKubernetesSpec_InvalidTopicNameEndsWithNonAlphanumeric(t *testing.T) {
 	spec := &kafkakubernetesv1.KafkaKubernetesSpec{

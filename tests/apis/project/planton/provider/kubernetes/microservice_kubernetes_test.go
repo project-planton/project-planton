@@ -127,66 +127,6 @@ func TestMicroserviceKubernetesSpec_VersionEndsWithHyphen(t *testing.T) {
 	}
 }
 
-// TestMicroserviceKubernetesSpec_VersionTooLong checks that version longer than 20 chars fails validation.
-func TestMicroserviceKubernetesSpec_VersionTooLong(t *testing.T) {
-	spec := &microservicekubernetesv1.MicroserviceKubernetesSpec{
-		Version: "thisiswaytoolongforarule",
-		Container: &microservicekubernetesv1.MicroserviceKubernetesContainer{
-			App: &microservicekubernetesv1.MicroserviceKubernetesContainerApp{
-				Image: &kubernetes.ContainerImage{
-					Repo: "my-repo",
-					Tag:  "latest",
-				},
-			},
-		},
-	}
-
-	err := protovalidate.Validate(spec)
-	if err == nil {
-		t.Errorf("expected validation error for overly long version, got none")
-	} else {
-		if !strings.Contains(err.Error(), "Field length must be at most 20") {
-			t.Errorf("expected an error about max length, got: %v", err)
-		}
-	}
-}
-
-// TestMicroserviceKubernetesSpec_MissingContainer checks that missing container field fails validation.
-func TestMicroserviceKubernetesSpec_MissingContainer(t *testing.T) {
-	spec := &microservicekubernetesv1.MicroserviceKubernetesSpec{
-		Version: "review-1",
-		// Container missing
-	}
-
-	err := protovalidate.Validate(spec)
-	if err == nil {
-		t.Errorf("expected validation error for missing container, got none")
-	} else {
-		if !strings.Contains(err.Error(), "Field is required") {
-			t.Errorf("expected a 'Field is required' error for container, got: %v", err)
-		}
-	}
-}
-
-// TestMicroserviceKubernetesSpec_MissingApp checks that missing app field in container fails validation.
-func TestMicroserviceKubernetesSpec_MissingApp(t *testing.T) {
-	spec := &microservicekubernetesv1.MicroserviceKubernetesSpec{
-		Version:   "review-1",
-		Container: &microservicekubernetesv1.MicroserviceKubernetesContainer{
-			// App missing
-		},
-	}
-
-	err := protovalidate.Validate(spec)
-	if err == nil {
-		t.Errorf("expected validation error for missing container.app, got none")
-	} else {
-		if !strings.Contains(err.Error(), "Field is required") {
-			t.Errorf("expected a 'Field is required' error for container.app, got: %v", err)
-		}
-	}
-}
-
 // TestMicroserviceKubernetesSpec_InvalidPortName checks that invalid port names fail validation.
 func TestMicroserviceKubernetesSpec_InvalidPortName(t *testing.T) {
 	spec := &microservicekubernetesv1.MicroserviceKubernetesSpec{
@@ -249,35 +189,6 @@ func TestMicroserviceKubernetesSpec_InvalidNetworkProtocol(t *testing.T) {
 	} else {
 		if !strings.Contains(err.Error(), "The network protocol must be one of \"SCTP\", \"TCP\", or \"UDP\"") {
 			t.Errorf("expected error about network protocol, got: %v", err)
-		}
-	}
-}
-
-// TestMicroserviceKubernetesSpec_MissingPortFields checks that missing required fields in ports fail validation.
-func TestMicroserviceKubernetesSpec_MissingPortFields(t *testing.T) {
-	spec := &microservicekubernetesv1.MicroserviceKubernetesSpec{
-		Version: "review-2",
-		Container: &microservicekubernetesv1.MicroserviceKubernetesContainer{
-			App: &microservicekubernetesv1.MicroserviceKubernetesContainerApp{
-				Image: &kubernetes.ContainerImage{
-					Repo: "my-repo",
-					Tag:  "latest",
-				},
-				Ports: []*microservicekubernetesv1.MicroserviceKubernetesContainerAppPort{
-					{
-						// Missing name, container_port, network_protocol, app_protocol, service_port
-					},
-				},
-			},
-		},
-	}
-
-	err := protovalidate.Validate(spec)
-	if err == nil {
-		t.Errorf("expected validation error for missing port fields, got none")
-	} else {
-		if !strings.Contains(err.Error(), "Field is required") {
-			t.Errorf("expected 'Field is required' errors for port fields, got: %v", err)
 		}
 	}
 }

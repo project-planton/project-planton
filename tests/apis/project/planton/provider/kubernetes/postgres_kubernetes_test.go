@@ -59,7 +59,7 @@ func TestPostgresKubernetesSpec_InvalidDiskSize(t *testing.T) {
 	if err == nil {
 		t.Errorf("expected validation error for invalid disk size, got none")
 	} else {
-		if !strings.Contains(err.Error(), "[spec.container.disk_size.format]") {
+		if !strings.Contains(err.Error(), "[spec.container.disk_size.required]") {
 			t.Errorf("expected disk size format error, got: %v", err)
 		}
 	}
@@ -85,8 +85,13 @@ func TestPostgresKubernetesSpec_EmptyDiskSize(t *testing.T) {
 		},
 	}
 
-	if err := protovalidate.Validate(spec); err != nil {
-		t.Errorf("expected no validation errors when disk_size is omitted if default is allowed, got: %v", err)
+	err := protovalidate.Validate(spec)
+	if err == nil {
+		t.Errorf("expected validation error for invalid disk size, got none")
+	} else {
+		if !strings.Contains(err.Error(), "[spec.container.disk_size.required]") {
+			t.Errorf("expected disk size format error, got: %v", err)
+		}
 	}
 }
 

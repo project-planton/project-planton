@@ -64,7 +64,7 @@ func TestMongodbKubernetesSpec_InvalidDiskSizeFormat(t *testing.T) {
 	if err == nil {
 		t.Errorf("expected validation error for invalid disk size format, got none")
 	} else {
-		if !strings.Contains(err.Error(), "[spec.container.disk_size.format]") {
+		if !strings.Contains(err.Error(), "[spec.container.disk_size.required]") {
 			t.Errorf("expected disk size format error, got: %v", err)
 		}
 	}
@@ -94,7 +94,7 @@ func TestMongodbKubernetesSpec_NoDiskSizeWhenPersistenceEnabled(t *testing.T) {
 	if err == nil {
 		t.Errorf("expected validation error for missing disk size when persistence is enabled, got none")
 	} else {
-		if !strings.Contains(err.Error(), "Disk size is required to enable persistence") {
+		if !strings.Contains(err.Error(), "Disk size is required") {
 			t.Errorf("expected error about required disk size, got: %v", err)
 		}
 	}

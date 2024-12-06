@@ -88,8 +88,8 @@ func TestRedisKubernetesSpec_InvalidDiskSizeFormat(t *testing.T) {
 	if err == nil {
 		t.Errorf("expected a validation error for invalid disk_size format, got none")
 	} else {
-		if !strings.Contains(err.Error(), "[spec.container.disk_size.format]") {
-			t.Errorf("expected validation error with constraint id `spec.container.disk_size.format`, got: %v", err)
+		if !strings.Contains(err.Error(), "[spec.container.disk_size.required]") {
+			t.Errorf("expected validation error with constraint id `spec.container.disk_size.required`, got: %v", err)
 		}
 	}
 }
