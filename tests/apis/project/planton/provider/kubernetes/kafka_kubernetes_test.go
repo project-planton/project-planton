@@ -5,8 +5,8 @@ import (
 	"testing"
 
 	"github.com/bufbuild/protovalidate-go"
-	kafkakubernetesv1 "github.com/project-planton/project-planton/apis/go/project/planton/provider/kubernetes/kafkakubernetes/v1"
-	"github.com/project-planton/project-planton/apis/go/project/planton/shared/kubernetes"
+	kafkakubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/kafkakubernetes/v1"
+	"github.com/project-planton/project-planton/apis/project/planton/shared/kubernetes"
 )
 
 // TestKafkaKubernetesSpec_ValidSpec ensures a fully valid spec passes validation.

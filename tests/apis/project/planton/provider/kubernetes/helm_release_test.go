@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/bufbuild/protovalidate-go"
-	helmreleasev1 "github.com/project-planton/project-planton/apis/go/project/planton/provider/kubernetes/helmrelease/v1"
+	helmreleasev1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/helmrelease/v1"
 )
 
 func TestHelmReleaseSpec_ValidSpec(t *testing.T) {

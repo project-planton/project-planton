@@ -5,8 +5,8 @@ import (
 	"testing"
 
 	"github.com/bufbuild/protovalidate-go"
-	elasticsearchkubernetesv1 "github.com/project-planton/project-planton/apis/go/project/planton/provider/kubernetes/elasticsearchkubernetes/v1"
-	"github.com/project-planton/project-planton/apis/go/project/planton/shared/kubernetes"
+	elasticsearchkubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/elasticsearchkubernetes/v1"
+	"github.com/project-planton/project-planton/apis/project/planton/shared/kubernetes"
 )
 
 func TestElasticsearchKubernetesSpec_ValidSpec(t *testing.T) {

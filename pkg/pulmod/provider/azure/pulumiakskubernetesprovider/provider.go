@@ -2,7 +2,7 @@ package pulumiakskubernetesprovider
 
 import (
 	"github.com/pkg/errors"
-	azurecredentialv1 "github.com/project-planton/project-planton/apis/go/project/planton/credential/azurecredential/v1"
+	azurecredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/azurecredential/v1"
 	"github.com/pulumi/pulumi-azure/sdk/v5/go/azure/containerservice"
 	"github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"

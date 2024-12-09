@@ -2,7 +2,7 @@ package credential
 
 import (
 	"github.com/bufbuild/protovalidate-go"
-	pulumibackendcredentialv1 "github.com/project-planton/project-planton/apis/go/project/planton/credential/pulumibackendcredential/v1"
+	pulumibackendcredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/pulumibackendcredential/v1"
 	"strings"
 	"testing"
 )

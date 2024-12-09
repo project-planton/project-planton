@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"reflect"
 
-	gcpcredentialv1 "github.com/project-planton/project-planton/apis/go/project/planton/credential/gcpcredential/v1"
+	gcpcredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/gcpcredential/v1"
 	"github.com/project-planton/project-planton/pkg/pulmod/pulumi/pulumioutput"
 
 	"github.com/pkg/errors"
