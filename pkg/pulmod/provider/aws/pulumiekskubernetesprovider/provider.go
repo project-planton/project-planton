@@ -2,7 +2,7 @@ package pulumiekskubernetesprovider
 
 import (
 	"github.com/pkg/errors"
-	awscredentialv1 "github.com/project-planton/project-planton/apis/go/project/planton/credential/awscredential/v1"
+	awscredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/awscredential/v1"
 	"github.com/pulumi/pulumi-aws/sdk/v6/go/aws/eks"
 	"github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"

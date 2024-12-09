@@ -5,8 +5,8 @@ import (
 	"testing"
 
 	"github.com/bufbuild/protovalidate-go"
-	microservicekubernetesv1 "github.com/project-planton/project-planton/apis/go/project/planton/provider/kubernetes/microservicekubernetes/v1"
-	"github.com/project-planton/project-planton/apis/go/project/planton/shared/kubernetes"
+	microservicekubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/microservicekubernetes/v1"
+	"github.com/project-planton/project-planton/apis/project/planton/shared/kubernetes"
 )
 
 // TestMicroserviceKubernetesSpec_ValidSpec ensures a fully valid spec passes validation.

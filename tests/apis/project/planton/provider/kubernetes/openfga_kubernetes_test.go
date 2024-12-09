@@ -5,8 +5,8 @@ import (
 	"testing"
 
 	"github.com/bufbuild/protovalidate-go"
-	openfgakubernetesv1 "github.com/project-planton/project-planton/apis/go/project/planton/provider/kubernetes/openfgakubernetes/v1"
-	"github.com/project-planton/project-planton/apis/go/project/planton/shared/kubernetes"
+	openfgakubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/openfgakubernetes/v1"
+	"github.com/project-planton/project-planton/apis/project/planton/shared/kubernetes"
 )
 
 // TestOpenfgaKubernetesSpec_ValidSpec ensures that a fully valid spec passes validation.

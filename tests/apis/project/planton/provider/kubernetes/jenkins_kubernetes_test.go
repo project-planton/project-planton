@@ -4,8 +4,8 @@ import (
 	"testing"
 
 	"github.com/bufbuild/protovalidate-go"
-	jenkinskubernetesv1 "github.com/project-planton/project-planton/apis/go/project/planton/provider/kubernetes/jenkinskubernetes/v1"
-	"github.com/project-planton/project-planton/apis/go/project/planton/shared/kubernetes"
+	jenkinskubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/jenkinskubernetes/v1"
+	"github.com/project-planton/project-planton/apis/project/planton/shared/kubernetes"
 )
 
 func TestJenkinsKubernetesSpec_ValidSpec(t *testing.T) {

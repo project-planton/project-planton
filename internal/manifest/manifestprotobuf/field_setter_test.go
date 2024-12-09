@@ -1,7 +1,7 @@
 package manifestprotobuf
 
 import (
-	rediskubernetesv1 "github.com/project-planton/project-planton/apis/go/project/planton/provider/kubernetes/rediskubernetes/v1"
+	rediskubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/rediskubernetes/v1"
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/protobuf/proto"
 	"testing"
