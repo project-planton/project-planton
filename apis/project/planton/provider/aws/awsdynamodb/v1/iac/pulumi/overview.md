@@ -1,0 +1,5 @@
+# Overview
+
+The AWS DynamoDB Pulumi module enables developers to define and deploy DynamoDB tables on AWS using a standardized, Kubernetes-like API resource model. By specifying the desired table configuration in a YAML file—such as table name, billing mode, key attributes, encryption settings, and autoscaling options—the module automates the creation and management of DynamoDB resources. It accepts the `AwsDynamodb` API resource as input and uses Pulumi to provision the necessary AWS resources based on the provided specifications, capturing outputs like table names and ARNs in `status.stackOutputs`.
+
+By abstracting the complexities of AWS service interactions, this module allows developers to deploy complex database infrastructure with minimal effort. It integrates seamlessly with unified APIs and adheres to a consistent resource structure across multi-cloud environments. This approach enhances productivity by enabling developers to focus on their application's data models and performance requirements while the module handles the underlying infrastructure provisioning and configuration.

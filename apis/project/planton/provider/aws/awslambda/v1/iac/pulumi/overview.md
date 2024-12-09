@@ -1,0 +1,5 @@
+# Overview
+
+The AWS Lambda Pulumi module allows developers to define and deploy AWS Lambda functions using a standardized, Kubernetes-like API resource model. By specifying configurations in a YAML file—such as function details, IAM roles, environment variables, and invocation permissions—the module automates the provisioning of AWS Lambda resources. It accepts the `AwsLambda` API resource as input and utilizes Pulumi to create the necessary AWS infrastructure based on the provided specifications, capturing outputs like the Lambda function ID in `status.stackOutputs`.
+
+By abstracting the complexities of AWS service interactions, this module enables developers to deploy serverless functions efficiently with minimal effort. It integrates seamlessly with our unified APIs and adheres to a consistent resource structure across multi-cloud environments. This approach enhances productivity by allowing developers to focus on their application's code and functionality while the module handles the underlying infrastructure provisioning and configuration.

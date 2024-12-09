@@ -4,4 +4,3 @@ build:
 	mkdir -p internal/generated
 	buf generate
 	cp -R internal/generated/go/github.com/project-planton/project-planton/apis/. .
-	go vet ./...;go fmt ./...
