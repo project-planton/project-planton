@@ -1,0 +1,5 @@
+# Overview
+
+The provided Pulumi module automates the creation and management of Amazon RDS instances using our Unified APIs that follow a Kubernetes-like resource modeling structure. This module takes an `AwsRdsInstance` API resource as input, configuring parameters such as database engine, version, instance class, storage options, networking, security settings, and more. Upon execution, the module creates the required security groups and provisions an Amazon RDS instance using the AWS credentials supplied in the `spec`. 
+
+The module simplifies the complex task of provisioning and managing relational databases in AWS by enabling users to define the desired state in a YAML configuration file. Outputs from the Pulumi stack, such as the RDS instance endpoint, ID, and other key configurations, are captured and exported into `status.stackOutputs`. These outputs can be used for further integration with other services or workflows, allowing for seamless management of cloud resources across multiple environments. The module leverages Pulumi’s infrastructure-as-code capabilities to ensure consistency and efficiency in AWS RDS instance deployments.

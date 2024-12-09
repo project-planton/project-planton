@@ -1,7 +1,6 @@
 .PHONY: build
 build:
-	rm -rf internal/generated go
-	mkdir -p internal/generated go
+	rm -rf internal/generated
+	mkdir -p internal/generated
 	buf generate
-	cp -R internal/generated/go/github.com/project-planton/project-planton/apis/go/. go/
-	pushd go;go vet ./...;go fmt ./...;popd
+	cp -R internal/generated/go/github.com/project-planton/project-planton/apis/. .

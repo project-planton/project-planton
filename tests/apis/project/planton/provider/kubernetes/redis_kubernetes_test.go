@@ -5,8 +5,8 @@ import (
 	"testing"
 
 	"github.com/bufbuild/protovalidate-go"
-	rediskubernetesv1 "github.com/project-planton/project-planton/apis/go/project/planton/provider/kubernetes/rediskubernetes/v1"
-	"github.com/project-planton/project-planton/apis/go/project/planton/shared/kubernetes"
+	rediskubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/rediskubernetes/v1"
+	"github.com/project-planton/project-planton/apis/project/planton/shared/kubernetes"
 )
 
 func TestRedisKubernetesSpec_ValidSpec(t *testing.T) {

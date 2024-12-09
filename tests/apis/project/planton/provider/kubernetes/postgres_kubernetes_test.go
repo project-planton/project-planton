@@ -5,8 +5,8 @@ import (
 	"testing"
 
 	"github.com/bufbuild/protovalidate-go"
-	postgreskubernetesv1 "github.com/project-planton/project-planton/apis/go/project/planton/provider/kubernetes/postgreskubernetes/v1"
-	"github.com/project-planton/project-planton/apis/go/project/planton/shared/kubernetes"
+	postgreskubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/postgreskubernetes/v1"
+	"github.com/project-planton/project-planton/apis/project/planton/shared/kubernetes"
 )
 
 // TestPostgresKubernetesSpec_ValidSpec ensures that a fully valid spec passes validation.

@@ -3,7 +3,7 @@ package pulumistack
 import (
 	"fmt"
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/apis/go/project/planton/shared/pulumi"
+	"github.com/project-planton/project-planton/apis/project/planton/shared/pulumi"
 	"github.com/project-planton/project-planton/internal/manifest"
 	"github.com/project-planton/project-planton/internal/pulumimodule"
 	"github.com/project-planton/project-planton/internal/stackinput"

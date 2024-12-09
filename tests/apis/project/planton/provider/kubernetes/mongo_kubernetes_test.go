@@ -5,8 +5,8 @@ import (
 	"testing"
 
 	"github.com/bufbuild/protovalidate-go"
-	mongodbkubernetesv1 "github.com/project-planton/project-planton/apis/go/project/planton/provider/kubernetes/mongodbkubernetes/v1"
-	"github.com/project-planton/project-planton/apis/go/project/planton/shared/kubernetes"
+	mongodbkubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/mongodbkubernetes/v1"
+	"github.com/project-planton/project-planton/apis/project/planton/shared/kubernetes"
 )
 
 // TestMongodbKubernetesSpec_ValidSpec ensures that a fully valid spec passes validation.

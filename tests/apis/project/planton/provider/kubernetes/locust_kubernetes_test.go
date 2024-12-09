@@ -4,8 +4,8 @@ import (
 	"testing"
 
 	"github.com/bufbuild/protovalidate-go"
-	locustkubernetesv1 "github.com/project-planton/project-planton/apis/go/project/planton/provider/kubernetes/locustkubernetes/v1"
-	"github.com/project-planton/project-planton/apis/go/project/planton/shared/kubernetes"
+	locustkubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/locustkubernetes/v1"
+	"github.com/project-planton/project-planton/apis/project/planton/shared/kubernetes"
 )
 
 // TestLocustKubernetesSpec_ValidSpec ensures a fully valid spec passes validation.

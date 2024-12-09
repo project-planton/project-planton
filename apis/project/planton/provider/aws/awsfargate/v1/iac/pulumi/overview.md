@@ -1,0 +1,5 @@
+# Overview
+
+The AWS Fargate Pulumi module enables developers to define and deploy containerized applications on AWS Fargate using a standardized, Kubernetes-like API resource model. By specifying configurations in a YAML file—including the AWS credential ID through the `aws_credential_id` field in the `AwsFargateSpec`—the module automates the provisioning of AWS Fargate resources. It accepts the `AwsFargate` API resource as input and utilizes Pulumi to create the necessary AWS infrastructure based on the provided specifications, capturing outputs like the Fargate service endpoint in `status.stackOutputs`.
+
+By abstracting the complexities of AWS service interactions, this module allows developers to deploy scalable, serverless containerized applications with minimal effort. It integrates seamlessly with our unified APIs and adheres to a consistent resource structure across multi-cloud environments. This approach enhances productivity by enabling developers to focus on their application's code and functionality while the module handles the underlying infrastructure provisioning and configuration.

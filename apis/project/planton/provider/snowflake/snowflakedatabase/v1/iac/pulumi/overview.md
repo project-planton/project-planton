@@ -1,0 +1,7 @@
+# Overview
+
+*This module is not completely implemented. Certain features may be missing or not fully functional. Future updates will address these limitations.*
+
+The **Snowflake Database Pulumi Module** is designed to simplify the deployment and management of Snowflake databases within a multi-cloud environment. Leveraging Planton Cloud's unified API framework, this module models every API resource using a Kubernetes-like structure with `apiVersion`, `kind`, `metadata`, `spec`, and `status` fields. The `SnowflakeDatabase` resource defines the necessary specifications for provisioning Snowflake databases, enabling developers to manage their data infrastructure as code effortlessly.
+
+By utilizing this Pulumi module, developers can automate the creation and configuration of Snowflake databases with specified parameters such as catalog settings, data retention policies, and security configurations. The module interacts with Snowflake credentials and other necessary configurations provided in the resource definition, ensuring a streamlined and consistent deployment process. Additionally, the outputs from the deployment, such as database IDs and endpoints, are captured in the resource's `status.stackOutputs`, allowing users to monitor and manage their Snowflake infrastructure directly through the `SnowflakeDatabase` resource.https://github.com/project-planton/snowflake-database-pulumi-module/blob/main/pkg/main.go
