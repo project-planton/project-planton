@@ -18,6 +18,7 @@ func init() {
 	rootCmd.AddCommand(
 		root.LoadManifest,
 		root.Pulumi,
+		root.Tofu,
 		root.ValidateManifest,
 		root.Version,
 	)
