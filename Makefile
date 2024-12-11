@@ -17,8 +17,8 @@ deps:
 build_darwin: vet
 	GOOS=darwin ${build_cmd} -o ${build_dir}/${name}-darwin .
 
-.PHONY: build-apis
-build-apis:
+.PHONY: protos
+protos:
 	pushd apis;make build;popd
 
 .PHONY: generate-kubernetes-types
@@ -29,7 +29,7 @@ generate-kubernetes-types:
 build-cli: ${build_dir}/${name}
 
 .PHONY: build
-build: build-apis generate-kubernetes-types build-cli
+build: protos build-cli
 
 ${build_dir}/${name}: deps vet
 	GOOS=darwin GOARCH=amd64 ${build_cmd} -o ${build_dir}/${name}-darwin-amd64 .
@@ -95,7 +95,7 @@ release-github:
 	git push origin ${version}
 
 .PHONY: release
-release: build-apis release-buf build-cli upload-cli-binaries release-github
+release: protos release-buf build-cli upload-cli-binaries release-github
 
 .PHONY: run-docs
 run-docs:
