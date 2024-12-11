@@ -3,6 +3,7 @@ package pulumimodule
 import (
 	"github.com/pkg/errors"
 	"github.com/project-planton/project-planton/apis/project/planton/shared"
+	"github.com/project-planton/project-planton/internal/cli/version"
 	"github.com/project-planton/project-planton/internal/deploymentcomponent"
 	"github.com/project-planton/project-planton/internal/fileutil"
 	"github.com/project-planton/project-planton/internal/iac/gitrepo"
@@ -24,7 +25,7 @@ func GetPath(moduleDir string, stackFqdn, kindName string) (string, error) {
 
 	stackWorkspaceDir, err := workspace.GetWorkspaceDir(stackFqdn)
 	if err != nil {
-		return "", errors.Wrapf(err, "failed to get %s stack worspace directory", stackFqdn)
+		return "", errors.Wrapf(err, "failed to get %s stack workspace directory", stackFqdn)
 	}
 
 	gitRepoName, err := extractGitRepoName(gitrepo.CloneUrl)
@@ -33,15 +34,23 @@ func GetPath(moduleDir string, stackFqdn, kindName string) (string, error) {
 	}
 
 	// Check if the cloned repository directory already exists
-	pulumiModuleRepoPath := stackWorkspaceDir + "/" + gitRepoName
+	pulumiModuleRepoPath := filepath.Join(stackWorkspaceDir, gitRepoName)
 
-	if _, err := os.Stat(pulumiModuleRepoPath); os.IsNotExist(err) {
+	if _, statErr := os.Stat(pulumiModuleRepoPath); os.IsNotExist(statErr) {
 		gitCloneCommand := exec.Command("git", "clone", gitrepo.CloneUrl, pulumiModuleRepoPath)
 		gitCloneCommand.Stdout = os.Stdout
 		gitCloneCommand.Stderr = os.Stderr
 		if err := gitCloneCommand.Run(); err != nil {
 			return "", errors.Wrapf(err, "failed to clone repository from %s to %s", gitrepo.CloneUrl, stackWorkspaceDir)
 		}
+	}
+
+	//checkout the project-planton version tag
+	gitCheckoutCommand := exec.Command("git", "-C", pulumiModuleRepoPath, "checkout", version.Version)
+	gitCheckoutCommand.Stdout = os.Stdout
+	gitCheckoutCommand.Stderr = os.Stderr
+	if err := gitCheckoutCommand.Run(); err != nil {
+		return "", errors.Wrapf(err, "failed to checkout tag %s in %s", version.Version, pulumiModuleRepoPath)
 	}
 
 	pulumiModulePath, err := getPulumiModulePath(pulumiModuleRepoPath, kindName)
