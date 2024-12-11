@@ -16,3 +16,4 @@ apis/internal/
 site/!.yarn/cache
 #.pnp.*
 
+.terraform.lock.hcl
