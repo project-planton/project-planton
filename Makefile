@@ -1,4 +1,4 @@
-version?=v0.0.1
+version?=dev
 name=project-planton
 gcs_bucket=project-planton-downloads
 name_local=project-planton

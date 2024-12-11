@@ -45,12 +45,14 @@ func GetPath(moduleDir string, stackFqdn, kindName string) (string, error) {
 		}
 	}
 
-	//checkout the project-planton version tag
-	gitCheckoutCommand := exec.Command("git", "-C", pulumiModuleRepoPath, "checkout", version.Version)
-	gitCheckoutCommand.Stdout = os.Stdout
-	gitCheckoutCommand.Stderr = os.Stderr
-	if err := gitCheckoutCommand.Run(); err != nil {
-		return "", errors.Wrapf(err, "failed to checkout tag %s in %s", version.Version, pulumiModuleRepoPath)
+	//checkout the project-planton version tag if it is not the default version
+	if version.Version != version.DefaultVersion {
+		gitCheckoutCommand := exec.Command("git", "-C", pulumiModuleRepoPath, "checkout", version.Version)
+		gitCheckoutCommand.Stdout = os.Stdout
+		gitCheckoutCommand.Stderr = os.Stderr
+		if err := gitCheckoutCommand.Run(); err != nil {
+			return "", errors.Wrapf(err, "failed to checkout tag %s in %s", version.Version, pulumiModuleRepoPath)
+		}
 	}
 
 	pulumiModulePath, err := getPulumiModulePath(pulumiModuleRepoPath, kindName)
