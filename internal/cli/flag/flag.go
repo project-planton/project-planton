@@ -15,6 +15,7 @@ const (
 	KubernetesCluster      Flag = "kubernetes-cluster"
 	ModuleDir              Flag = "module-dir"
 	InputDir               Flag = "input-dir"
+	VarFile                Flag = "var-file"
 	MongodbAtlasCredential Flag = "mongodb-atlas-credential"
 	SnowflakeCredential    Flag = "snowflake-credential"
 	Stack                  Flag = "stack"
