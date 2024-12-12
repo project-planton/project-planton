@@ -2,8 +2,8 @@ package provider
 
 import "github.com/project-planton/project-planton/apis/project/planton/shared"
 
-func GetProvider(kindName KindName) shared.KindProvider_KindProvider {
-	for provider, kinds := range ProviderToKindMap {
+func GetProvider(kindName KindName) shared.KindProvider {
+	for provider, kinds := range ToKindMap {
 		for _, kn := range kinds {
 			if kn == kindName {
 				return provider

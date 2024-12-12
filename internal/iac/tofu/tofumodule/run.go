@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/pkg/errors"
 	"github.com/project-planton/project-planton/apis/project/planton/shared/tofu"
-	"github.com/project-planton/project-planton/internal/iac/pulumi/pulumimodule"
 	"github.com/project-planton/project-planton/internal/iac/pulumi/stackinput/credentials"
 	"github.com/project-planton/project-planton/internal/manifest"
 	"os"
@@ -32,7 +31,7 @@ func Run(moduleDir, targetManifestPath string, tofuOperation tofu.TofuOperationT
 
 	//todo: update this to get the tofu module path
 
-	tofuModuleRepoPath, err := pulumimodule.GetPath(moduleDir, "stackFqdn", kindName)
+	tofuModuleRepoPath, err := getModulePath(moduleDir, "stackFqdn", kindName)
 	if err != nil {
 		return errors.Wrapf(err, "failed to get pulumi-module directory")
 	}
