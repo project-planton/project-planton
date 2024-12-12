@@ -4,7 +4,7 @@ import (
 	"github.com/pkg/errors"
 	gitlabkubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/gitlabkubernetes/v1"
 	"github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/gitlabkubernetes/v1/iac/pulumi/module"
-	"github.com/project-planton/project-planton/pkg/pulmod/stackinput"
+	"github.com/project-planton/project-planton/internal/iac/pulumi/pulumimodule/stackinput"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 

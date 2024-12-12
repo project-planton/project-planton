@@ -5,8 +5,8 @@ import (
 	"fmt"
 	gcpcredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/gcpcredential/v1"
 	gkeclusterv1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gkecluster/v1"
-	"github.com/project-planton/project-planton/pkg/pulmod/provider/gcp/gcplabelkeys"
-	"github.com/project-planton/project-planton/pkg/pulmod/provider/kubernetes/kuberneteslabelkeys"
+	"github.com/project-planton/project-planton/internal/iac/pulumi/pulumimodule/provider/gcp/gcplabelkeys"
+	"github.com/project-planton/project-planton/internal/iac/pulumi/pulumimodule/provider/kubernetes/kuberneteslabelkeys"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"strconv"
 )

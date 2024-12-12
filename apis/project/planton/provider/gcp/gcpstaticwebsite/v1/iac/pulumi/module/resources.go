@@ -3,7 +3,7 @@ package module
 import (
 	"github.com/pkg/errors"
 	gcpstaticwebsitev1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpstaticwebsite/v1"
-	"github.com/project-planton/project-planton/pkg/pulmod/provider/gcp/pulumigoogleprovider"
+	"github.com/project-planton/project-planton/internal/iac/pulumi/pulumimodule/provider/gcp/pulumigoogleprovider"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 

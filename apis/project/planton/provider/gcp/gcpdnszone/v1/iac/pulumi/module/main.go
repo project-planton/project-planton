@@ -5,7 +5,7 @@ import (
 	"github.com/pkg/errors"
 	gcpdnszonev1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpdnszone/v1"
 	"github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpdnszone/v1/iac/pulumi/module/outputs"
-	"github.com/project-planton/project-planton/pkg/pulmod/provider/gcp/pulumigoogleprovider"
+	"github.com/project-planton/project-planton/internal/iac/pulumi/pulumimodule/provider/gcp/pulumigoogleprovider"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/dns"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/projects"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"

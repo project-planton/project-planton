@@ -2,7 +2,7 @@ package credentials
 
 import (
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/internal/fileutil"
+	"github.com/project-planton/project-planton/pkg/fileutil"
 	"gopkg.in/yaml.v3"
 	"os"
 )

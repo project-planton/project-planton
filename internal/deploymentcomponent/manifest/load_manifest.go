@@ -2,8 +2,8 @@ package manifest
 
 import (
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/internal/ulidgen"
-	"github.com/project-planton/project-planton/internal/workspace"
+	"github.com/project-planton/project-planton/internal/cli/workspace"
+	"github.com/project-planton/project-planton/pkg/ulidgen"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
 	"io"

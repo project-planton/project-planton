@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"github.com/pkg/errors"
 	"github.com/project-planton/project-planton/apis/project/planton/shared/pulumi"
+	"github.com/project-planton/project-planton/internal/deploymentcomponent/manifest"
 	"github.com/project-planton/project-planton/internal/iac/pulumi/pulumimodule"
 	"github.com/project-planton/project-planton/internal/iac/pulumi/stackinput"
 	"github.com/project-planton/project-planton/internal/iac/pulumi/stackinput/credentials"
-	"github.com/project-planton/project-planton/internal/manifest"
 	"os"
 	"os/exec"
 )
