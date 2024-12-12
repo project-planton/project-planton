@@ -5,9 +5,12 @@ import (
 	"github.com/pkg/errors"
 	"github.com/project-planton/project-planton/apis/project/planton/shared/tofu"
 	"github.com/project-planton/project-planton/internal/iac/pulumi/stackinput/credentials"
+	"github.com/project-planton/project-planton/internal/iac/tofu/tfvars"
 	"github.com/project-planton/project-planton/internal/manifest"
+	"github.com/project-planton/project-planton/pkg/ulidgen"
 	"os"
 	"os/exec"
+	"path/filepath"
 )
 
 const TofuCommand = "tofu"
@@ -29,39 +32,46 @@ func Run(moduleDir, targetManifestPath string, tofuOperation tofu.TofuOperationT
 		return errors.Wrapf(err, "failed to extract kind name from manifest proto")
 	}
 
-	//todo: update this to get the tofu module path
-
-	tofuModuleRepoPath, err := getModulePath(moduleDir, "stackFqdn", kindName)
+	tofuModulePath, err := getModulePath(moduleDir, kindName)
 	if err != nil {
 		return errors.Wrapf(err, "failed to get pulumi-module directory")
 	}
 
-	//todo: replce this logic with generating tfvars and saving to to a file and passing the location of the file to tofu command
+	tfvarsString, err := tfvars.ProtoToTFVars(manifestObject)
+	if err != nil {
+		return errors.Wrap(err, "failed to convert manifest proto to tfvars")
+	}
 
-	//stackInputYamlContent, err := stackinput.BuildStackInputYaml(manifestObject, opts)
-	//if err != nil {
-	//	return errors.Wrap(err, "failed to build stack input yaml")
-	//}
-
-	tfVarsFile := ""
+	tfVarsFile, err := writeVarFile(tfvarsString)
+	if err != nil {
+		return errors.Wrap(err, "failed to write tfvars file")
+	}
 
 	op := tofuOperation.String()
 
 	tofuCmd := exec.Command(TofuCommand, op, "--var-file", tfVarsFile)
 
 	// Set the working directory to the repository path
-	tofuCmd.Dir = tofuModuleRepoPath
+	tofuCmd.Dir = tofuModulePath
 
 	// Set stdin, stdout, and stderr to the current terminal to make it an interactive shell
 	tofuCmd.Stdin = os.Stdin
 	tofuCmd.Stdout = os.Stdout
 	tofuCmd.Stderr = os.Stderr
 
-	fmt.Printf("\ntofu module directory: %s \n", tofuModuleRepoPath)
+	fmt.Printf("\ntofu module directory: %s \n", tofuModulePath)
 
 	if err := tofuCmd.Run(); err != nil {
 		return errors.Wrapf(err, "failed to execute tofu command %s", op)
 	}
 
 	return nil
+}
+
+func writeVarFile(tfvarsString string) (string, error) {
+	tofuWorkspaceDir, err := getWorkspaceDir()
+	if err != nil {
+		return "", errors.Wrapf(err, "failed to get tofu workspace directory")
+	}
+	return filepath.Join(tofuWorkspaceDir, ulidgen.NewGenerator().Generate().String(), "terraform.tfvars"), nil
 }
