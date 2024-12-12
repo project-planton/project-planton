@@ -3,8 +3,8 @@ package module
 import (
 	"github.com/pkg/errors"
 	helmreleasev1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/helmrelease/v1"
-	"github.com/project-planton/project-planton/pkg/pulmod/datatypes/stringmaps/convertstringmaps"
-	"github.com/project-planton/project-planton/pkg/pulmod/provider/kubernetes/pulumikubernetesprovider"
+	"github.com/project-planton/project-planton/internal/iac/pulumi/pulumimodule/datatypes/stringmaps/convertstringmaps"
+	"github.com/project-planton/project-planton/internal/iac/pulumi/pulumimodule/provider/kubernetes/pulumikubernetesprovider"
 	kubernetescorev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
 	helmv3 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/helm/v3"
 	metav1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/meta/v1"

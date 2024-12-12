@@ -5,7 +5,7 @@ import (
 
 	"github.com/pkg/errors"
 	kubernetesclustercredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/kubernetesclustercredential/v1"
-	"github.com/project-planton/project-planton/pkg/pulmod/provider/gcp/pulumigkekubernetesprovider"
+	"github.com/project-planton/project-planton/internal/iac/pulumi/pulumimodule/provider/gcp/pulumigkekubernetesprovider"
 	"github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )

@@ -6,7 +6,7 @@ import (
 	"reflect"
 
 	gcpcredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/gcpcredential/v1"
-	"github.com/project-planton/project-planton/pkg/pulmod/pulumi/pulumioutput"
+	"github.com/project-planton/project-planton/internal/iac/pulumi/pulumimodule/pulumi/pulumioutput"
 
 	"github.com/pkg/errors"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp"

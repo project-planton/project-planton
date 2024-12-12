@@ -1,4 +1,4 @@
-package deploymentcomponent
+package provider
 
 import "github.com/project-planton/project-planton/apis/project/planton/shared"
 

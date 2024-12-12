@@ -9,6 +9,19 @@ import (
 	"strings"
 )
 
+// toSnakeCase converts a camelCase or PascalCase string into snake_case.
+func toSnakeCase(s string) string {
+	var snake []rune
+	for i, r := range s {
+		if i > 0 && r >= 'A' && r <= 'Z' {
+			snake = append(snake, '_', r+('a'-'A'))
+		} else {
+			snake = append(snake, r)
+		}
+	}
+	return strings.ToLower(string(snake))
+}
+
 // ProtoToTFVars converts a given protobuf message into a Terraform tfvars-compatible
 // string. The primary use case is to take a structured proto, typically loaded and validated
 // from a YAML or JSON input, and produce a corresponding tfvars file that can serve as input
@@ -145,6 +158,7 @@ func writeHCL(buf *bytes.Buffer, data interface{}, indentLevel int) error {
 		// - If the value is a map or array, we print the key and open a block with either { ... } or [ ... ].
 		// - If the value is a primitive (string, bool, number, null), we print key = value directly.
 		for k, val := range v {
+			snakeKey := toSnakeCase(k) // Convert key to snake case here.
 			switch val.(type) {
 
 			case map[string]interface{}, []interface{}:
@@ -161,7 +175,7 @@ func writeHCL(buf *bytes.Buffer, data interface{}, indentLevel int) error {
 				//   "elem1",
 				//   "elem2",
 				// ]
-				buf.WriteString(fmt.Sprintf("%s%s = ", indent, k))
+				buf.WriteString(fmt.Sprintf("%s%s = ", indent, snakeKey))
 				if m, ok := val.(map[string]interface{}); ok {
 					// Nested map block
 					buf.WriteString("{\n")
@@ -181,23 +195,23 @@ func writeHCL(buf *bytes.Buffer, data interface{}, indentLevel int) error {
 			case string:
 				// If the value is a string, we must quote it.
 				// Example: key = "some string"
-				buf.WriteString(fmt.Sprintf("%s%s = %q\n", indent, k, val))
+				buf.WriteString(fmt.Sprintf("%s%s = %q\n", indent, snakeKey, val))
 
 			case bool:
 				// Boolean values are printed as true or false.
 				// Example: key = true
-				buf.WriteString(fmt.Sprintf("%s%s = %t\n", indent, k, val))
+				buf.WriteString(fmt.Sprintf("%s%s = %t\n", indent, snakeKey, val))
 
 			case float64:
 				// Numbers (in JSON) are float64. We just print them as-is.
 				// Example: key = 100 or key = 3.14
-				buf.WriteString(fmt.Sprintf("%s%s = %v\n", indent, k, val))
+				buf.WriteString(fmt.Sprintf("%s%s = %v\n", indent, snakeKey, val))
 
 			case nil:
 				// If the value is null, we print null.
 				// Terraform supports null values in tfvars.
 				// Example: key = null
-				buf.WriteString(fmt.Sprintf("%s%s = null\n", indent, k))
+				buf.WriteString(fmt.Sprintf("%s%s = null\n", indent, snakeKey))
 
 			default:
 				// If we encounter a type that is not handled above, return an error.

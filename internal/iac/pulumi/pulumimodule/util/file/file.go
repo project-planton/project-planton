@@ -11,7 +11,7 @@ import (
 	"text/template"
 
 	sprig "github.com/go-task/slim-sprig/v3"
-	"github.com/project-planton/project-planton/pkg/pulmod/util/shell"
+	"github.com/project-planton/project-planton/internal/iac/pulumi/pulumimodule/util/shell"
 
 	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
