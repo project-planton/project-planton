@@ -5,8 +5,8 @@ import (
 	"github.com/project-planton/project-planton/apis/project/planton/shared"
 	"github.com/project-planton/project-planton/internal/cli/version"
 	"github.com/project-planton/project-planton/internal/cli/workspace"
-	"github.com/project-planton/project-planton/internal/deploymentcomponent"
 	"github.com/project-planton/project-planton/internal/iac/gitrepo"
+	"github.com/project-planton/project-planton/internal/provider"
 	"github.com/project-planton/project-planton/pkg/fileutil"
 	"os"
 	"os/exec"
@@ -75,7 +75,7 @@ func IsPulumiModuleDirectory(moduleDir string) (bool, error) {
 }
 
 func getPulumiModulePath(moduleRepoDir, kindName string) (string, error) {
-	kindProvider := deploymentcomponent.GetProvider(deploymentcomponent.KindName(kindName))
+	kindProvider := provider.GetProvider(provider.KindName(kindName))
 	if kindProvider == shared.KindProvider_kind_provider_unspecified {
 		return "", errors.New("failed to get kind provider")
 	}

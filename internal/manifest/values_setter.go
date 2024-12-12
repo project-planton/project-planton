@@ -2,7 +2,7 @@ package manifest
 
 import (
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/internal/deploymentcomponent/manifest/manifestprotobuf"
+	"github.com/project-planton/project-planton/internal/manifest/manifestprotobuf"
 	"google.golang.org/protobuf/proto"
 )
 
