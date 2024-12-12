@@ -4,17 +4,15 @@ package project.planton.shared;
 
 import "google/protobuf/timestamp.proto";
 
-message KindProvider {
-  enum KindProvider {
-    kind_provider_unspecified = 0;
-    aws = 1;
-    gcp = 2;
-    azure = 3;
-    kubernetes = 4;
-    confluent = 5;
-    snowflake = 6;
-    atlas = 7;
-  }
+enum KindProvider {
+  kind_provider_unspecified = 0;
+  kind_provider_aws = 1;
+  kind_provider_gcp = 2;
+  kind_provider_azure = 3;
+  kind_provider_kubernetes = 4;
+  kind_provider_confluent = 5;
+  kind_provider_snowflake = 6;
+  kind_provider_atlas = 7;
 }
 
 //metadata for all resource objects on planton-cloud

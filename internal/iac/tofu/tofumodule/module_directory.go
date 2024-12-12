@@ -1,4 +1,4 @@
-package pulumimodule
+package tofumodule
 
 import (
 	"github.com/pkg/errors"
@@ -14,7 +14,7 @@ import (
 	"strings"
 )
 
-func GetPath(moduleDir string, stackFqdn, kindName string) (string, error) {
+func getModulePath(moduleDir string, stackFqdn, kindName string) (string, error) {
 	isPulumiModuleDir, err := IsPulumiModuleDirectory(moduleDir)
 	if err != nil {
 		return "", errors.Wrapf(err, "failed to check if %s is a valid pulumi module directory", moduleDir)
