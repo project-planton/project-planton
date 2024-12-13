@@ -4,8 +4,12 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/pkg/errors"
+	"github.com/project-planton/project-planton/pkg/fileutil"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
+	"os"
+	"path/filepath"
 	"strings"
 )
 
@@ -269,5 +273,23 @@ func writeHCL(buf *bytes.Buffer, data interface{}, indentLevel int) error {
 		return fmt.Errorf("top-level must be map[string]interface{}, got %T", data)
 	}
 
+	return nil
+}
+
+func WriteVarFile(msg proto.Message, tfvarsFile string) error {
+	tfvarsString, err := ProtoToTFVars(msg)
+	if err != nil {
+		return errors.Wrap(err, "failed to convert manifest proto to tfvars")
+	}
+
+	if !fileutil.IsDirExists(filepath.Dir(tfvarsFile)) {
+		if err := os.MkdirAll(filepath.Dir(tfvarsFile), 0755); err != nil {
+			return errors.Wrapf(err, "failed to create directory %s", filepath.Dir(tfvarsFile))
+		}
+	}
+
+	if err := os.WriteFile(tfvarsFile, []byte(tfvarsString), 0644); err != nil {
+		return errors.Wrapf(err, "failed to write tfvars file %s", tfvarsFile)
+	}
 	return nil
 }

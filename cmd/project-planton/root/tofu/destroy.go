@@ -15,6 +15,10 @@ var Destroy = &cobra.Command{
 	Run:   destroyHandler,
 }
 
+func init() {
+	Destroy.PersistentFlags().Bool(string(flag.AutoApprove), false, "Skip interactive approval of plan before applying")
+}
+
 func destroyHandler(cmd *cobra.Command, args []string) {
 	inputDir, err := cmd.Flags().GetString(string(flag.InputDir))
 	flag.HandleFlagErr(err, flag.InputDir)
@@ -43,7 +47,7 @@ func destroyHandler(cmd *cobra.Command, args []string) {
 		}
 	}
 
-	err = tofumodule.Run(moduleDir, targetManifestPath, tofu.TofuOperationType_destroy, valueOverrides,
+	err = tofumodule.RunOperation(moduleDir, targetManifestPath, tofu.TofuOperationType_destroy, valueOverrides,
 		credentialOptions...)
 	if err != nil {
 		log.Fatalf("failed to run pulumi: %v", err)

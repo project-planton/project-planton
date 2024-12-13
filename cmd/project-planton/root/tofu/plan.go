@@ -43,7 +43,7 @@ func planHandler(cmd *cobra.Command, args []string) {
 		}
 	}
 
-	err = tofumodule.Run(moduleDir, targetManifestPath, tofu.TofuOperationType_plan, valueOverrides,
+	err = tofumodule.RunOperation(moduleDir, targetManifestPath, tofu.TofuOperationType_plan, valueOverrides,
 		credentialOptions...)
 	if err != nil {
 		log.Fatalf("failed to run pulumi: %v", err)
