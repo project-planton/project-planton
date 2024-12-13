@@ -25,7 +25,7 @@ func getModulePath(moduleDir, kindName string) (string, error) {
 
 	tofuModuleWorkspaceDir, err := getWorkspaceDir()
 	if err != nil {
-		return "", errors.Wrapf(err, "failed to get %s stack workspace directory")
+		return "", errors.Wrapf(err, "failed to get tofu module workspace directory")
 	}
 
 	gitRepoName, err := gitrepo.ExtractRepoName(gitrepo.CloneUrl)
@@ -63,15 +63,20 @@ func getModulePath(moduleDir, kindName string) (string, error) {
 	return terraformModulePath, nil
 }
 
-// isTerraformModuleDirectory checks if the given directory contains any files with .tf extension.
-// It returns true if any .tf files exists, false otherwise. If an error occurs during the check, it returns an error.
+// IsTerraformModuleDirectory checks if the given directory contains any files with .tf extension.
+// It returns true if any .tf file exists, false otherwise. If an error occurs during the check, it returns an error.
 func isTerraformModuleDirectory(moduleDir string) (bool, error) {
-	pulumiYamlPath := moduleDir + "/Pulumi.yaml"
-	isExists, err := fileutil.IsExists(pulumiYamlPath)
+	entries, err := os.ReadDir(moduleDir)
 	if err != nil {
-		return false, errors.Wrapf(err, "failed to check if %s exists", pulumiYamlPath)
+		return false, errors.Wrapf(err, "failed to read directory %s", moduleDir)
 	}
-	return isExists, nil
+
+	for _, entry := range entries {
+		if !entry.IsDir() && strings.HasSuffix(entry.Name(), ".tf") {
+			return true, nil
+		}
+	}
+	return false, nil
 }
 
 func getTerraformModulePath(moduleRepoDir, kindName string) (string, error) {
@@ -80,8 +85,13 @@ func getTerraformModulePath(moduleRepoDir, kindName string) (string, error) {
 		return "", errors.New("failed to get kind provider")
 	}
 
-	terraformModulePath := filepath.Join(moduleRepoDir, "apis/project/planton/provider",
-		kindProvider.String(), strings.ToLower(kindName), "v1/iac/tofu")
+	terraformModulePath := filepath.Join(
+		moduleRepoDir,
+		"apis/project/planton/provider",
+		strings.TrimPrefix(strings.ToLower(kindProvider.String()), "kind_provider_"),
+		strings.ToLower(kindName),
+		"v1/iac/tf",
+	)
 
 	if _, err := os.Stat(terraformModulePath); os.IsNotExist(err) {
 		return "", errors.Wrapf(err, "failed to get %s module directory", kindName)
@@ -96,7 +106,7 @@ func getWorkspaceDir() (string, error) {
 	if err != nil {
 		return "", errors.Wrapf(err, "failed to get cli workspace directory")
 	}
-	//base directory will always be ${HOME}/.planton-cloud/pulumi
+	//base directory will always be ${HOME}/.planton-cloud/tofu
 	tofuModuleWorkspaceDir := filepath.Join(cliWorkspaceDir, "tofu")
 	if !fileutil.IsDirExists(tofuModuleWorkspaceDir) {
 		if err := os.MkdirAll(tofuModuleWorkspaceDir, os.ModePerm); err != nil {

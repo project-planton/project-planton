@@ -7,10 +7,12 @@ import (
 	"github.com/project-planton/project-planton/internal/iac/pulumi/stackinput/credentials"
 	"github.com/project-planton/project-planton/internal/iac/tofu/tfvars"
 	"github.com/project-planton/project-planton/internal/manifest"
+	"github.com/project-planton/project-planton/pkg/fileutil"
 	"github.com/project-planton/project-planton/pkg/ulidgen"
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strings"
 )
 
 const TofuCommand = "tofu"
@@ -73,5 +75,19 @@ func writeVarFile(tfvarsString string) (string, error) {
 	if err != nil {
 		return "", errors.Wrapf(err, "failed to get tofu workspace directory")
 	}
-	return filepath.Join(tofuWorkspaceDir, ulidgen.NewGenerator().Generate().String(), "terraform.tfvars"), nil
+
+	tfvarsDir := filepath.Join(tofuWorkspaceDir, strings.ToLower(ulidgen.NewGenerator().Generate().String()))
+
+	if !fileutil.IsDirExists(tfvarsDir) {
+		if err := os.MkdirAll(tfvarsDir, 0755); err != nil {
+			return "", errors.Wrapf(err, "failed to create tfvars directory %s", tfvarsDir)
+		}
+	}
+
+	tfvarsFile := filepath.Join(tfvarsDir, "terraform.tfvars")
+
+	if err := os.WriteFile(tfvarsFile, []byte(tfvarsString), 0644); err != nil {
+		return "", errors.Wrapf(err, "failed to write tfvars file %s", tfvarsFile)
+	}
+	return tfvarsFile, nil
 }

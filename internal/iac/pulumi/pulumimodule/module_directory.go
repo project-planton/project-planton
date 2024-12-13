@@ -80,8 +80,13 @@ func getPulumiModulePath(moduleRepoDir, kindName string) (string, error) {
 		return "", errors.New("failed to get kind provider")
 	}
 
-	pulumiModulePath := filepath.Join(moduleRepoDir, "apis/project/planton/provider",
-		kindProvider.String(), strings.ToLower(kindName), "v1/iac/pulumi")
+	pulumiModulePath := filepath.Join(
+		moduleRepoDir,
+		"apis/project/planton/provider",
+		strings.TrimPrefix(strings.ToLower(kindProvider.String()), "kind_provider_"),
+		strings.ToLower(kindName),
+		"v1/iac/pulumi",
+	)
 
 	if _, err := os.Stat(pulumiModulePath); os.IsNotExist(err) {
 		return "", errors.Wrapf(err, "failed to get %s module directory", kindName)
