@@ -94,8 +94,10 @@ func toSnakeCase(s string) string {
 //
 // Note: This function assumes the proto message is already validated and contains the expected structure.
 func ProtoToTFVars(msg proto.Message) (string, error) {
-	// Convert the proto message to JSON
-	jsonBytes, err := protojson.Marshal(msg)
+	// Convert the proto message to JSON, including zero-value fields
+	jsonBytes, err := protojson.MarshalOptions{
+		EmitUnpopulated: true,
+	}.Marshal(msg)
 	if err != nil {
 		return "", fmt.Errorf("failed to marshal proto to json: %w", err)
 	}
@@ -152,39 +154,23 @@ func writeHCL(buf *bytes.Buffer, data interface{}, indentLevel int) error {
 	switch v := data.(type) {
 
 	case map[string]interface{}:
-		// If we have a map at this level, we treat each key-value pair as a Terraform variable (or nested attribute).
-		//
-		// For each entry:
-		// - If the value is a map or array, we print the key and open a block with either { ... } or [ ... ].
-		// - If the value is a primitive (string, bool, number, null), we print key = value directly.
 		for k, val := range v {
+			// Skip apiVersion, kind, and status fields.
+			if k == "apiVersion" || k == "kind" || k == "status" {
+				continue
+			}
+
 			snakeKey := toSnakeCase(k) // Convert key to snake case here.
 			switch val.(type) {
-
 			case map[string]interface{}, []interface{}:
-				// Complex types (maps and arrays) require nested formatting:
-				//
-				// For maps:
-				// key = {
-				//   nested_key = "value"
-				//   ...
-				// }
-				//
-				// For arrays:
-				// key = [
-				//   "elem1",
-				//   "elem2",
-				// ]
 				buf.WriteString(fmt.Sprintf("%s%s = ", indent, snakeKey))
 				if m, ok := val.(map[string]interface{}); ok {
-					// Nested map block
 					buf.WriteString("{\n")
 					if err := writeHCL(buf, m, indentLevel+1); err != nil {
 						return err
 					}
 					buf.WriteString(fmt.Sprintf("%s}\n", indent))
 				} else if arr, ok := val.([]interface{}); ok {
-					// Nested array block
 					buf.WriteString("[\n")
 					if err := writeHCL(buf, arr, indentLevel+1); err != nil {
 						return err
@@ -193,28 +179,18 @@ func writeHCL(buf *bytes.Buffer, data interface{}, indentLevel int) error {
 				}
 
 			case string:
-				// If the value is a string, we must quote it.
-				// Example: key = "some string"
 				buf.WriteString(fmt.Sprintf("%s%s = %q\n", indent, snakeKey, val))
 
 			case bool:
-				// Boolean values are printed as true or false.
-				// Example: key = true
 				buf.WriteString(fmt.Sprintf("%s%s = %t\n", indent, snakeKey, val))
 
 			case float64:
-				// Numbers (in JSON) are float64. We just print them as-is.
-				// Example: key = 100 or key = 3.14
 				buf.WriteString(fmt.Sprintf("%s%s = %v\n", indent, snakeKey, val))
 
 			case nil:
-				// If the value is null, we print null.
-				// Terraform supports null values in tfvars.
-				// Example: key = null
 				buf.WriteString(fmt.Sprintf("%s%s = null\n", indent, snakeKey))
 
 			default:
-				// If we encounter a type that is not handled above, return an error.
 				return fmt.Errorf("unsupported type for key %q: %T", k, val)
 			}
 		}

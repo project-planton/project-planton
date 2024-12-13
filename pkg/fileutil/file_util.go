@@ -15,3 +15,19 @@ func IsExists(filePath string) (bool, error) {
 	}
 	return true, nil
 }
+
+// IsDirExists check if a directory exists
+func IsDirExists(d string) bool {
+	if d == "" {
+		return false
+	}
+	info, err := os.Stat(d)
+	if err != nil {
+		if os.IsNotExist(err) {
+			return false
+		}
+		//todo: should return an error instead
+		return false
+	}
+	return info.IsDir()
+}

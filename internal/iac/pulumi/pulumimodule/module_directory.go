@@ -23,7 +23,7 @@ func GetPath(moduleDir string, stackFqdn, kindName string) (string, error) {
 		return moduleDir, nil
 	}
 
-	stackWorkspaceDir, err := workspace.GetWorkspaceDir(stackFqdn)
+	stackWorkspaceDir, err := getWorkspaceDir(stackFqdn)
 	if err != nil {
 		return "", errors.Wrapf(err, "failed to get %s stack workspace directory", stackFqdn)
 	}
@@ -80,12 +80,33 @@ func getPulumiModulePath(moduleRepoDir, kindName string) (string, error) {
 		return "", errors.New("failed to get kind provider")
 	}
 
-	pulumiModulePath := filepath.Join(moduleRepoDir, "apis/project/planton/provider",
-		kindProvider.String(), strings.ToLower(kindName), "v1/iac/pulumi")
+	pulumiModulePath := filepath.Join(
+		moduleRepoDir,
+		"apis/project/planton/provider",
+		strings.TrimPrefix(strings.ToLower(kindProvider.String()), "kind_provider_"),
+		strings.ToLower(kindName),
+		"v1/iac/pulumi",
+	)
 
 	if _, err := os.Stat(pulumiModulePath); os.IsNotExist(err) {
 		return "", errors.Wrapf(err, "failed to get %s module directory", kindName)
 	}
 
 	return pulumiModulePath, nil
+}
+
+// getWorkspaceDir returns the path of the workspace directory to be used while initializing stack using automation api.
+func getWorkspaceDir(stackFqdn string) (string, error) {
+	cliWorkspaceDir, err := workspace.GetWorkspaceDir()
+	if err != nil {
+		return "", errors.Wrapf(err, "failed to get %s stack workspace directory", stackFqdn)
+	}
+	//base directory will always be ${HOME}/.planton-cloud/pulumi
+	stackWorkspaceDir := filepath.Join(cliWorkspaceDir, "pulumi", stackFqdn)
+	if !fileutil.IsDirExists(stackWorkspaceDir) {
+		if err := os.MkdirAll(stackWorkspaceDir, os.ModePerm); err != nil {
+			return "", errors.Wrapf(err, "failed to ensure %s dir", stackWorkspaceDir)
+		}
+	}
+	return stackWorkspaceDir, nil
 }
