@@ -43,7 +43,7 @@ func refreshHandler(cmd *cobra.Command, args []string) {
 		}
 	}
 
-	err = tofumodule.Run(moduleDir, targetManifestPath, tofu.TofuOperationType_refresh, valueOverrides,
+	err = tofumodule.RunOperation(moduleDir, targetManifestPath, tofu.TofuOperationType_refresh, valueOverrides,
 		credentialOptions...)
 	if err != nil {
 		log.Fatalf("failed to run pulumi: %v", err)

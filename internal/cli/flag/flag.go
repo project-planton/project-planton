@@ -7,20 +7,22 @@ import (
 type Flag string
 
 const (
+	AutoApprove            Flag = "auto-approve"
 	AwsCredential          Flag = "aws-credential"
 	AzureCredential        Flag = "azure-credential"
+	BackendConfig          Flag = "backend-config"
 	ConfluentCredential    Flag = "confluent-credential"
 	DockerCredential       Flag = "docker-credential"
 	GcpCredential          Flag = "gcp-credential"
-	KubernetesCluster      Flag = "kubernetes-cluster"
-	ModuleDir              Flag = "module-dir"
 	InputDir               Flag = "input-dir"
-	VarFile                Flag = "var-file"
+	KubernetesCluster      Flag = "kubernetes-cluster"
+	Manifest               Flag = "manifest"
+	ModuleDir              Flag = "module-dir"
 	MongodbAtlasCredential Flag = "mongodb-atlas-credential"
+	Set                    Flag = "set"
 	SnowflakeCredential    Flag = "snowflake-credential"
 	Stack                  Flag = "stack"
-	Set                    Flag = "set"
-	Manifest               Flag = "manifest"
+	Yes                    Flag = "yes"
 )
 
 func HandleFlagErrAndValue(err error, flag Flag, flagVal string) {

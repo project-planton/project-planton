@@ -12,9 +12,9 @@ import (
 	"path/filepath"
 )
 
-const TofuCommand = "tofu"
-
-func RunOperation(moduleDir, targetManifestPath string, tofuOperation tofu.TofuOperationType, valueOverrides map[string]string,
+func TofuInit(moduleDir, targetManifestPath string,
+	valueOverrides map[string]string,
+	backendConfigInput []string,
 	stackInputOptions ...credentials.StackInputCredentialOption) error {
 	opts := credentials.StackInputCredentialOptions{}
 	for _, opt := range stackInputOptions {
@@ -42,9 +42,7 @@ func RunOperation(moduleDir, targetManifestPath string, tofuOperation tofu.TofuO
 		return errors.Wrapf(err, "failed to write %s file", tfVarsFile)
 	}
 
-	op := tofuOperation.String()
-
-	tofuCmd := exec.Command(TofuCommand, op, "--var-file", tfVarsFile)
+	tofuCmd := exec.Command(TofuCommand, tofu.TofuOperationType_init.String(), "--var-file", tfVarsFile)
 
 	// Set the working directory to the repository path
 	tofuCmd.Dir = tofuModulePath
@@ -53,6 +51,10 @@ func RunOperation(moduleDir, targetManifestPath string, tofuOperation tofu.TofuO
 	tofuCmd.Stdin = os.Stdin
 	tofuCmd.Stdout = os.Stdout
 	tofuCmd.Stderr = os.Stderr
+
+	for _, backendConfig := range backendConfigInput {
+		tofuCmd.Args = append(tofuCmd.Args, "--backend-config", backendConfig)
+	}
 
 	fmt.Printf("\ntofu module directory: %s \n", tofuModulePath)
 

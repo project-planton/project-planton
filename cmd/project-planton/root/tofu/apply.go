@@ -15,6 +15,10 @@ var Apply = &cobra.Command{
 	Run:   applyHandler,
 }
 
+func init() {
+	Apply.PersistentFlags().Bool(string(flag.AutoApprove), false, "Skip interactive approval of plan before applying")
+}
+
 func applyHandler(cmd *cobra.Command, args []string) {
 	inputDir, err := cmd.Flags().GetString(string(flag.InputDir))
 	flag.HandleFlagErr(err, flag.InputDir)
@@ -43,7 +47,7 @@ func applyHandler(cmd *cobra.Command, args []string) {
 		}
 	}
 
-	err = tofumodule.Run(moduleDir, targetManifestPath, tofu.TofuOperationType_apply, valueOverrides,
+	err = tofumodule.RunOperation(moduleDir, targetManifestPath, tofu.TofuOperationType_apply, valueOverrides,
 		credentialOptions...)
 	if err != nil {
 		log.Fatalf("failed to run pulumi: %v", err)
