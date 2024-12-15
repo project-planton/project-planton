@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/pkg/errors"
 	"github.com/project-planton/project-planton/apis/project/planton/shared/tofu"
-	"github.com/project-planton/project-planton/internal/iac/pulumi/stackinput/credentials"
+	"github.com/project-planton/project-planton/internal/iac/stackinput/credentials"
 	"github.com/project-planton/project-planton/internal/iac/tofu/tfvars"
 	"github.com/project-planton/project-planton/internal/manifest"
 	"os"
@@ -33,7 +33,7 @@ func TofuInit(moduleDir, targetManifestPath string,
 
 	tofuModulePath, err := getModulePath(moduleDir, kindName)
 	if err != nil {
-		return errors.Wrapf(err, "failed to get pulumi-module directory")
+		return errors.Wrapf(err, "failed to get tofu module directory")
 	}
 
 	tfVarsFile := filepath.Join(tofuModulePath, ".terraform", "terraform.tfvars")

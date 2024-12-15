@@ -3,7 +3,7 @@ package tofu
 import (
 	"github.com/project-planton/project-planton/apis/project/planton/shared/tofu"
 	"github.com/project-planton/project-planton/internal/cli/flag"
-	"github.com/project-planton/project-planton/internal/iac/pulumi/stackinput/credentials"
+	"github.com/project-planton/project-planton/internal/iac/stackinput/credentials"
 	"github.com/project-planton/project-planton/internal/iac/tofu/tofumodule"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -44,8 +44,9 @@ func refreshHandler(cmd *cobra.Command, args []string) {
 	}
 
 	err = tofumodule.RunOperation(moduleDir, targetManifestPath, tofu.TofuOperationType_refresh, valueOverrides,
+		true,
 		credentialOptions...)
 	if err != nil {
-		log.Fatalf("failed to run pulumi: %v", err)
+		log.Fatalf("failed to run tofu operation: %v", err)
 	}
 }
