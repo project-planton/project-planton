@@ -11,21 +11,24 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-func Resources(ctx *pulumi.Context, stackInput *eksclusterv1.EksClusterStackInput) error {
+func Resources(ctx *pulumi.Context, stackInput *eksclusterv1.EksClusterStackInput) (err error) {
 	// Create a variable with descriptive name for the API resource in the input
 	eksCluster := stackInput.Target
 
 	awsCredential := stackInput.AwsCredential
 
-	//create aws provider using the credentials from the input
-	provider, err := aws.NewProvider(ctx,
-		"classic-provider",
-		&aws.ProviderArgs{})
-	if err != nil {
-		return errors.Wrap(err, "failed to create aws native provider")
-	}
+	var provider *aws.Provider
 
-	if awsCredential != nil {
+	//create aws provider using the credentials from the input
+	if awsCredential == nil {
+		//create aws provider using the credentials from the input
+		provider, err = aws.NewProvider(ctx,
+			"classic-provider",
+			&aws.ProviderArgs{})
+		if err != nil {
+			return errors.Wrap(err, "failed to create aws native provider")
+		}
+	} else {
 		//create aws provider using the credentials from the input
 		provider, err = aws.NewProvider(ctx,
 			"classic-provider",

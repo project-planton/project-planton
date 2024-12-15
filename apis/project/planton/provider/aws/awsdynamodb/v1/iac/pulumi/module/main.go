@@ -7,20 +7,22 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-func Resources(ctx *pulumi.Context, stackInput *awsdynamodbv1.AwsDynamodbStackInput) error {
+func Resources(ctx *pulumi.Context, stackInput *awsdynamodbv1.AwsDynamodbStackInput) (err error) {
 	locals := initializeLocals(ctx, stackInput)
 
 	awsCredential := stackInput.AwsCredential
 
-	//create aws provider using the credentials from the input
-	provider, err := aws.NewProvider(ctx,
-		"classic-provider",
-		&aws.ProviderArgs{})
-	if err != nil {
-		return errors.Wrap(err, "failed to create aws native provider")
-	}
+	var provider *aws.Provider
 
-	if awsCredential != nil {
+	if awsCredential == nil {
+		//create aws provider using the credentials from the input
+		provider, err = aws.NewProvider(ctx,
+			"classic-provider",
+			&aws.ProviderArgs{})
+		if err != nil {
+			return errors.Wrap(err, "failed to create aws native provider")
+		}
+	} else {
 		//create aws provider using the credentials from the input
 		provider, err = aws.NewProvider(ctx,
 			"classic-provider",
