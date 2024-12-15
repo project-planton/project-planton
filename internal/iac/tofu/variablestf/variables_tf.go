@@ -3,14 +3,13 @@ package variablestf
 import (
 	"bytes"
 	"fmt"
-	"github.com/project-planton/project-planton/internal/apidocs"
-	"strings"
-
 	"github.com/pkg/errors"
+	"github.com/project-planton/project-planton/internal/apidocs"
 	"github.com/project-planton/project-planton/pkg/strings/caseconverter"
 	"github.com/pseudomuto/protoc-gen-doc"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
+	"strings"
 )
 
 var fieldDescriptions = map[string]string{
@@ -38,8 +37,15 @@ func (l tfList) format(indentLevel int) string {
 	return fmt.Sprintf("list(%s)", l.elem.format(indentLevel))
 }
 
+// tfField holds a field's terraform type and description for inline comments
+type tfField struct {
+	name        string
+	description string
+	t           terraformType
+}
+
 type tfObject struct {
-	fields map[string]terraformType
+	fields []tfField
 }
 
 func (o tfObject) format(indentLevel int) string {
@@ -51,16 +57,25 @@ func (o tfObject) format(indentLevel int) string {
 	nextIndent := strings.Repeat("  ", indentLevel+1)
 
 	var fieldLines []string
-	for k, v := range o.fields {
-		fieldStr := v.format(indentLevel + 1)
-		fieldLines = append(fieldLines, fmt.Sprintf("%s%s = %s", nextIndent, k, fieldStr))
+	for _, f := range o.fields {
+		// Add a comment line if description is present
+		if f.description != "" {
+			// We indent comments at the same level as the field definition
+			commentLines := strings.Split(f.description, "\n")
+			for _, cl := range commentLines {
+				fieldLines = append(fieldLines, fmt.Sprintf("%s# %s", nextIndent, cl))
+			}
+		}
+
+		fieldStr := f.t.format(indentLevel + 1)
+		fieldLines = append(fieldLines, fmt.Sprintf("%s%s = %s", nextIndent, f.name, fieldStr))
 	}
 
 	return fmt.Sprintf("object({\n%s\n%s})", strings.Join(fieldLines, "\n"), indent)
 }
 
 // ProtoToVariablesTF uses proto reflection to determine the Terraform variable schema.
-// It now also uses gendoc.Template to include message and field descriptions from proto comments.
+// It now also includes proto field comments as inline comments for object fields.
 func ProtoToVariablesTF(msg proto.Message) (string, error) {
 	apiDocsJson, err := apidocs.GetApiDocsJson()
 	if err != nil {
@@ -91,18 +106,12 @@ func ProtoToVariablesTF(msg proto.Message) (string, error) {
 			return "", errors.Wrapf(err, "failed to convert field %q to terraform type", fieldName)
 		}
 
-		// Get description from template if available
 		desc := findFieldDescription(apiDocsJson, string(md.FullName()), fieldName)
-
-		// If the field is a complex message and we didn't get a field-level doc,
-		// try to get the referenced message's doc
 		if desc == "" && fd.Kind() == protoreflect.MessageKind {
 			desc = findMessageDescription(apiDocsJson, string(fd.Message().FullName()))
 		}
 
-		// Fallback logic
 		if desc == "" {
-			// If still empty, fallback to predefined or generic description
 			desc = fieldDescriptions[fieldName]
 			if desc == "" {
 				desc = fmt.Sprintf("Description for %s", fieldName)
@@ -163,10 +172,12 @@ func scalarOrMessageToTFType(parentMsg protoreflect.MessageDescriptor, fd protor
 
 func messageToTerraformObject(md protoreflect.MessageDescriptor, fd protoreflect.FieldDescriptor, tmpl *gendoc.Template) (terraformType, error) {
 	fields := md.Fields()
-	obj := tfObject{fields: make(map[string]terraformType)}
+	obj := tfObject{}
 
 	// Skip metadata.version if needed
 	shouldSkipVersion := (md.Name() == "Metadata")
+
+	parentFullName := string(md.FullName())
 
 	for i := 0; i < fields.Len(); i++ {
 		f := fields.Get(i)
@@ -180,7 +191,24 @@ func messageToTerraformObject(md protoreflect.MessageDescriptor, fd protoreflect
 			return nil, err
 		}
 		snakeKey := caseconverter.ToSnakeCase(fieldName)
-		obj.fields[snakeKey] = valType
+
+		// Get description for nested fields
+		desc := findFieldDescription(tmpl, parentFullName, fieldName)
+		if desc == "" && f.Kind() == protoreflect.MessageKind {
+			desc = findMessageDescription(tmpl, string(f.Message().FullName()))
+		}
+		if desc == "" {
+			desc = fieldDescriptions[fieldName]
+			if desc == "" {
+				desc = fmt.Sprintf("Description for %s", fieldName)
+			}
+		}
+
+		obj.fields = append(obj.fields, tfField{
+			name:        snakeKey,
+			description: desc,
+			t:           valType,
+		})
 	}
 	return obj, nil
 }
