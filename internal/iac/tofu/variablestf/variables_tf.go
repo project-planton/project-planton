@@ -58,9 +58,9 @@ func (o tfObject) format(indentLevel int) string {
 
 	var fieldLines []string
 	for _, f := range o.fields {
-		// Add a comment line if description is present
+		// Add a blank line before comments to improve readability
 		if f.description != "" {
-			// We indent comments at the same level as the field definition
+			fieldLines = append(fieldLines, "")
 			commentLines := strings.Split(f.description, "\n")
 			for _, cl := range commentLines {
 				fieldLines = append(fieldLines, fmt.Sprintf("%s# %s", nextIndent, cl))
@@ -131,20 +131,20 @@ func ProtoToVariablesTF(msg proto.Message) (string, error) {
 	return strings.TrimSpace(buf.String()), nil
 }
 
-func fieldDescriptorToTerraformType(fd protoreflect.FieldDescriptor, parentMsg protoreflect.MessageDescriptor, tmpl *gendoc.Template) (terraformType, error) {
+func fieldDescriptorToTerraformType(fd protoreflect.FieldDescriptor, parentMsg protoreflect.MessageDescriptor, apiDocsJson *gendoc.Template) (terraformType, error) {
 	// If repeated -> list
 	if fd.IsList() {
-		elemType, err := scalarOrMessageToTFType(parentMsg, fd, tmpl)
+		elemType, err := scalarOrMessageToTFType(parentMsg, fd, apiDocsJson)
 		if err != nil {
 			return nil, err
 		}
 		return tfList{elem: elemType}, nil
 	}
 
-	return scalarOrMessageToTFType(parentMsg, fd, tmpl)
+	return scalarOrMessageToTFType(parentMsg, fd, apiDocsJson)
 }
 
-func scalarOrMessageToTFType(parentMsg protoreflect.MessageDescriptor, fd protoreflect.FieldDescriptor, tmpl *gendoc.Template) (terraformType, error) {
+func scalarOrMessageToTFType(parentMsg protoreflect.MessageDescriptor, fd protoreflect.FieldDescriptor, apiDocsJson *gendoc.Template) (terraformType, error) {
 	kind := fd.Kind()
 
 	switch kind {
@@ -164,13 +164,13 @@ func scalarOrMessageToTFType(parentMsg protoreflect.MessageDescriptor, fd protor
 	case protoreflect.EnumKind:
 		return tfPrimitive("string"), nil
 	case protoreflect.MessageKind:
-		return messageToTerraformObject(fd.Message(), fd, tmpl)
+		return messageToTerraformObject(fd.Message(), fd, apiDocsJson)
 	default:
 		return nil, fmt.Errorf("unsupported field kind: %v", kind)
 	}
 }
 
-func messageToTerraformObject(md protoreflect.MessageDescriptor, fd protoreflect.FieldDescriptor, tmpl *gendoc.Template) (terraformType, error) {
+func messageToTerraformObject(md protoreflect.MessageDescriptor, fd protoreflect.FieldDescriptor, apiDocsJson *gendoc.Template) (terraformType, error) {
 	fields := md.Fields()
 	obj := tfObject{}
 
@@ -186,16 +186,16 @@ func messageToTerraformObject(md protoreflect.MessageDescriptor, fd protoreflect
 			continue
 		}
 
-		valType, err := fieldDescriptorToTerraformType(f, md, tmpl)
+		valType, err := fieldDescriptorToTerraformType(f, md, apiDocsJson)
 		if err != nil {
 			return nil, err
 		}
 		snakeKey := caseconverter.ToSnakeCase(fieldName)
 
 		// Get description for nested fields
-		desc := findFieldDescription(tmpl, parentFullName, fieldName)
+		desc := findFieldDescription(apiDocsJson, parentFullName, fieldName)
 		if desc == "" && f.Kind() == protoreflect.MessageKind {
-			desc = findMessageDescription(tmpl, string(f.Message().FullName()))
+			desc = findMessageDescription(apiDocsJson, string(f.Message().FullName()))
 		}
 		if desc == "" {
 			desc = fieldDescriptions[fieldName]
@@ -214,12 +214,12 @@ func messageToTerraformObject(md protoreflect.MessageDescriptor, fd protoreflect
 }
 
 // findMessageDescription returns the description of a message from the template
-func findMessageDescription(tmpl *gendoc.Template, fullName string) string {
-	if tmpl == nil {
+func findMessageDescription(apiDocsJson *gendoc.Template, fullName string) string {
+	if apiDocsJson == nil {
 		return ""
 	}
 
-	for _, f := range tmpl.Files {
+	for _, f := range apiDocsJson.Files {
 		for _, m := range f.Messages {
 			if m.FullName == fullName {
 				return strings.TrimSpace(m.Description)
@@ -230,12 +230,12 @@ func findMessageDescription(tmpl *gendoc.Template, fullName string) string {
 }
 
 // findFieldDescription returns the description of a field within a message from the template
-func findFieldDescription(tmpl *gendoc.Template, messageFullName, fieldName string) string {
-	if tmpl == nil {
+func findFieldDescription(apiDocsJson *gendoc.Template, messageFullName, fieldName string) string {
+	if apiDocsJson == nil {
 		return ""
 	}
 
-	for _, f := range tmpl.Files {
+	for _, f := range apiDocsJson.Files {
 		for _, m := range f.Messages {
 			if m.FullName == messageFullName {
 				// found the message, now find the field
