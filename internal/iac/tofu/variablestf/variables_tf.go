@@ -19,7 +19,6 @@ var fieldDescriptions = map[string]string{
 
 // terraformType is an interface representing a Terraform type.
 type terraformType interface {
-	// format returns a string representing this type, formatted nicely.
 	format(indentLevel int) string
 }
 
@@ -58,8 +57,8 @@ func (o tfObject) format(indentLevel int) string {
 
 	var fieldLines []string
 	for _, f := range o.fields {
-		// Add a blank line before comments to improve readability
 		if f.description != "" {
+			// Add a blank line before comments to improve readability
 			fieldLines = append(fieldLines, "")
 			commentLines := strings.Split(f.description, "\n")
 			for _, cl := range commentLines {
@@ -75,7 +74,8 @@ func (o tfObject) format(indentLevel int) string {
 }
 
 // ProtoToVariablesTF uses proto reflection to determine the Terraform variable schema.
-// It now also includes proto field comments as inline comments for object fields.
+// It now also includes proto field comments as inline comments for object fields and
+// will skip the 'version' field inside a 'Metadata' message.
 func ProtoToVariablesTF(msg proto.Message) (string, error) {
 	apiDocsJson, err := apidocs.GetApiDocsJson()
 	if err != nil {
@@ -174,14 +174,15 @@ func messageToTerraformObject(md protoreflect.MessageDescriptor, fd protoreflect
 	fields := md.Fields()
 	obj := tfObject{}
 
-	// Skip metadata.version if needed
-	shouldSkipVersion := (md.Name() == "Metadata")
-
+	// Now uses a suffix check on the message name to detect Metadata messages
+	shouldSkipVersion := strings.HasSuffix(strings.ToLower(string(md.Name())), "metadata")
 	parentFullName := string(md.FullName())
 
 	for i := 0; i < fields.Len(); i++ {
 		f := fields.Get(i)
 		fieldName := string(f.Name())
+
+		// If this is a metadata message, skip the 'version' field
 		if shouldSkipVersion && fieldName == "version" {
 			continue
 		}
@@ -192,7 +193,6 @@ func messageToTerraformObject(md protoreflect.MessageDescriptor, fd protoreflect
 		}
 		snakeKey := caseconverter.ToSnakeCase(fieldName)
 
-		// Get description for nested fields
 		desc := findFieldDescription(apiDocsJson, parentFullName, fieldName)
 		if desc == "" && f.Kind() == protoreflect.MessageKind {
 			desc = findMessageDescription(apiDocsJson, string(f.Message().FullName()))
@@ -213,7 +213,6 @@ func messageToTerraformObject(md protoreflect.MessageDescriptor, fd protoreflect
 	return obj, nil
 }
 
-// findMessageDescription returns the description of a message from the template
 func findMessageDescription(apiDocsJson *gendoc.Template, fullName string) string {
 	if apiDocsJson == nil {
 		return ""
@@ -229,7 +228,6 @@ func findMessageDescription(apiDocsJson *gendoc.Template, fullName string) strin
 	return ""
 }
 
-// findFieldDescription returns the description of a field within a message from the template
 func findFieldDescription(apiDocsJson *gendoc.Template, messageFullName, fieldName string) string {
 	if apiDocsJson == nil {
 		return ""
@@ -238,7 +236,6 @@ func findFieldDescription(apiDocsJson *gendoc.Template, messageFullName, fieldNa
 	for _, f := range apiDocsJson.Files {
 		for _, m := range f.Messages {
 			if m.FullName == messageFullName {
-				// found the message, now find the field
 				for _, fld := range m.Fields {
 					if fld.Name == fieldName {
 						return strings.TrimSpace(fld.Description)
