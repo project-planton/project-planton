@@ -93,6 +93,13 @@ release-buf:
 release-github:
 	git tag ${version}
 	git push origin ${version}
+	gh release create ${version} \
+         --title ${version} \
+         --target ${version} \
+         build/project-planton-darwin-amd64 \
+         build/project-planton-darwin-arm64 \
+         build/project-planton-linux \
+         apis/internal/generated/docs/docs.json
 
 .PHONY: release
 release: protos release-buf build-cli upload-cli-binaries release-github
