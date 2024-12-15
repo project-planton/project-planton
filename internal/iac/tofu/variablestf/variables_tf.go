@@ -2,200 +2,133 @@ package variablestf
 
 import (
 	"bytes"
-	"encoding/json"
 	"fmt"
-	"github.com/project-planton/project-planton/pkg/strings/caseconverter"
 	"strings"
 
 	"github.com/pkg/errors"
-	"google.golang.org/protobuf/encoding/protojson"
+	"github.com/project-planton/project-planton/pkg/strings/caseconverter"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
-// ProtoToVariablesTF takes a protobuf message, inspects its structure,
-// and returns the content of a `variables.tf` file that defines Terraform
-// variables based on the top-level fields (except apiVersion, kind, and status).
-//
-// Each top-level field (like `metadata`, `spec`) becomes a Terraform variable block.
-//
-// Terraform types are inferred from the JSON data structure:
-// - string -> string
-// - bool -> bool
-// - number -> number
-// - array -> list(...)
-// – - map -> object({ ... }) or map(type) if homogeneous primitive map
-//
-// The function tries to produce a meaningful `description` for each variable,
-// but you may customize it further.
-func ProtoToVariablesTF(msg proto.Message) (string, error) {
-	jsonBytes, err := protojson.MarshalOptions{
-		EmitUnpopulated: true,
-	}.Marshal(msg)
-	if err != nil {
-		return "", errors.Wrap(err, "failed to marshal proto to json")
-	}
+// Known descriptions for certain top-level variables. You can customize or extend this.
+var fieldDescriptions = map[string]string{
+	"metadata": "Metadata for the resource, including name and labels",
+	"spec":     "Specification for Deployment Component",
+}
 
-	var data map[string]interface{}
-	if err := json.Unmarshal(jsonBytes, &data); err != nil {
-		return "", errors.Wrap(err, "failed to unmarshal json")
-	}
+// ProtoToVariablesTF uses proto reflection to determine the Terraform variable schema from a proto message's fields.
+// It produces a `variables.tf`-style output with variable blocks for each top-level field (except apiVersion, kind, and status).
+func ProtoToVariablesTF(msg proto.Message) (string, error) {
+	md := msg.ProtoReflect().Descriptor()
 
 	// We skip apiVersion, kind, and status as variables.
-	delete(data, "apiVersion")
-	delete(data, "kind")
-	delete(data, "status")
+	skipFields := map[string]bool{
+		"api_version": true,
+		"kind":        true,
+		"status":      true,
+	}
 
-	// For each remaining top-level key, generate a variable block.
 	var buf bytes.Buffer
-	for k, val := range data {
-		snakeKey := caseconverter.ToSnakeCase(k)
-		tfType, err := inferTerraformType(val)
-		if err != nil {
-			return "", errors.Wrapf(err, "failed to infer type for key %q", k)
+	// Iterate over top-level fields
+	fields := md.Fields()
+	for i := 0; i < fields.Len(); i++ {
+		fd := fields.Get(i)
+		fieldName := string(fd.Name())
+
+		if skipFields[fieldName] {
+			continue
 		}
 
-		// Construct a variable block
-		// You can enhance the description logic to be more meaningful for your schema.
-		description := fmt.Sprintf("Description for %s", snakeKey)
-		buf.WriteString(fmt.Sprintf(`variable "%s" {
+		terraformType, err := fieldDescriptorToTerraformType(fd)
+		if err != nil {
+			return "", errors.Wrapf(err, "failed to convert field %q to terraform type", fieldName)
+		}
+
+		snakeKey := caseconverter.ToSnakeCase(fieldName)
+		desc := fieldDescriptions[fieldName]
+		if desc == "" {
+			desc = fmt.Sprintf("Description for %s", snakeKey)
+		}
+
+		fmt.Fprintf(&buf, `variable "%s" {
   description = %q
   type = %s
 }
 
-`, snakeKey, description, tfType))
+`, snakeKey, desc, terraformType)
 	}
 
 	return strings.TrimSpace(buf.String()), nil
 }
 
-// inferTerraformType inspects a Go value (from JSON) and returns a Terraform type string.
-// Supported conversions:
-// - string -> "string"
-// - bool -> "bool"
-// - float64 -> "number"
-// - []interface{} -> "list(<type>)" (type inferred from elements; if heterogeneous, fallback to list(any))
-// - map[string]interface{} -> "object({ ... })" or "map(<type>)"
-//
-// If a map is homogeneous (all values the same primitive type), we use map(type).
-// If not homogeneous or contains nested objects/lists, we use object({ ... }).
-func inferTerraformType(v interface{}) (string, error) {
-	switch val := v.(type) {
-	case string:
+// fieldDescriptorToTerraformType takes a proto field descriptor and returns a Terraform type string.
+func fieldDescriptorToTerraformType(fd protoreflect.FieldDescriptor) (string, error) {
+	// Handle repeated fields as lists
+	if fd.IsList() {
+		elemType, err := scalarOrMessageToTFType(fd)
+		if err != nil {
+			return "", err
+		}
+		return fmt.Sprintf("list(%s)", elemType), nil
+	}
+
+	// For singular fields, just convert directly
+	return scalarOrMessageToTFType(fd)
+}
+
+// scalarOrMessageToTFType converts either a scalar or message field into a Terraform type.
+// If it's a message, recursively build an object schema.
+func scalarOrMessageToTFType(fd protoreflect.FieldDescriptor) (string, error) {
+	kind := fd.Kind()
+
+	switch kind {
+	case protoreflect.StringKind:
 		return "string", nil
-	case bool:
+	case protoreflect.BoolKind:
 		return "bool", nil
-	case float64:
+	case protoreflect.Int32Kind, protoreflect.Int64Kind,
+		protoreflect.Uint32Kind, protoreflect.Uint64Kind,
+		protoreflect.Sint32Kind, protoreflect.Sint64Kind,
+		protoreflect.Fixed32Kind, protoreflect.Fixed64Kind,
+		protoreflect.Sfixed32Kind, protoreflect.Sfixed64Kind:
+		// All integers map to "number" in Terraform
 		return "number", nil
-	case nil:
-		// null could be anything; default to string (or any) if you want.
-		// Terraform 0.12+ doesn't have a direct 'any' type in this context,
-		// so we must pick a type. Let's pick "string" as a fallback.
+	case protoreflect.FloatKind, protoreflect.DoubleKind:
+		// Floating-point types map to number
+		return "number", nil
+	case protoreflect.BytesKind:
+		// Bytes can be represented as a string (e.g., base64-encoded)
 		return "string", nil
-	case []interface{}:
-		// Infer the type of elements. If empty, assume list(any), but we must pick a type.
-		if len(val) == 0 {
-			return "list(string)", nil
-		}
-		elementType, err := inferListElementType(val)
-		if err != nil {
-			return "", err
-		}
-		return fmt.Sprintf("list(%s)", elementType), nil
-	case map[string]interface{}:
-		// Check if map is homogeneous and all primitive => map(<type>)
-		// Otherwise, object({ ... })
-		return inferMapType(val)
+	case protoreflect.EnumKind:
+		// Enums map to string (you could refine this if you know the allowed values)
+		return "string", nil
+	case protoreflect.MessageKind:
+		// For messages, we build an object type
+		return messageToTerraformObject(fd.Message())
 	default:
-		return "", errors.Errorf("unsupported type: %T", v)
+		return "", fmt.Errorf("unsupported field kind: %v", kind)
 	}
 }
 
-// inferListElementType checks the elements of a list.
-// If all elements are the same primitive type, returns that type.
-// If elements differ or contain objects/lists, fallback to a broader type.
-//
-// For simplicity, if we have heterogeneous primitives or complex structures,
-// we could fallback to list(string) or try object. Realistically, you'd tailor
-// this logic to your known schemas.
-func inferListElementType(arr []interface{}) (string, error) {
-	if len(arr) == 0 {
-		return "string", nil
-	}
-
-	firstType, err := inferTerraformType(arr[0])
-	if err != nil {
-		return "", err
-	}
-
-	// If first element is primitive (string, bool, number) or complex (object/list),
-	// check all others match:
-	for _, elem := range arr[1:] {
-		elemType, err := inferTerraformType(elem)
-		if err != nil {
-			return "", err
-		}
-		if elemType != firstType {
-			// If there's a mismatch, you have two choices:
-			// 1. Return an error.
-			// 2. Fallback to a generic type (like list(string)).
-			// Here, we fallback to "string" for simplicity.
-			return "string", nil
-		}
-	}
-
-	return firstType, nil
-}
-
-// inferMapType checks a map to determine if it can be a simple map(type) or must be object({ ... }).
-func inferMapType(m map[string]interface{}) (string, error) {
-	// If empty map, object({}) is fine:
-	if len(m) == 0 {
+// messageToTerraformObject takes a message descriptor and constructs a Terraform object({ ... }) type.
+func messageToTerraformObject(md protoreflect.MessageDescriptor) (string, error) {
+	fields := md.Fields()
+	if fields.Len() == 0 {
 		return "object({})", nil
 	}
 
-	// Let's see if we can form a uniform map(type) first:
-	var firstValType string
-	allSameType := true
-
-	for _, val := range m {
-		valType, err := inferTerraformType(val)
+	var fieldSpecs []string
+	for i := 0; i < fields.Len(); i++ {
+		f := fields.Get(i)
+		fieldName := string(f.Name())
+		valType, err := fieldDescriptorToTerraformType(f)
 		if err != nil {
 			return "", err
 		}
-		// Check if valType is a primitive type (string, bool, number)
-		// If it's object(...) or list(...), we must use object({}) instead
-		if strings.HasPrefix(valType, "object(") || strings.HasPrefix(valType, "list(") {
-			// Complex type found, so we do object({ ... }) and recurse
-			return inferObjectType(m)
-		}
-
-		if firstValType == "" {
-			firstValType = valType
-		} else if valType != firstValType {
-			allSameType = false
-		}
+		snakeKey := caseconverter.ToSnakeCase(fieldName)
+		fieldSpecs = append(fieldSpecs, fmt.Sprintf("%s = %s", snakeKey, valType))
 	}
 
-	if allSameType && firstValType != "" {
-		// It's a homogeneous map of primitive values:
-		return fmt.Sprintf("map(%s)", firstValType), nil
-	}
-
-	// If not all same type, fallback to object:
-	return inferObjectType(m)
-}
-
-// inferObjectType constructs an object({ ... }) type from a map.
-// For each key, infer its type and build up the object definition.
-func inferObjectType(m map[string]interface{}) (string, error) {
-	var fields []string
-	for k, val := range m {
-		valType, err := inferTerraformType(val)
-		if err != nil {
-			return "", err
-		}
-		snakeKey := caseconverter.ToSnakeCase(k)
-		fields = append(fields, fmt.Sprintf("%s = %s", snakeKey, valType))
-	}
-	return fmt.Sprintf("object({ %s })", strings.Join(fields, ", ")), nil
+	return fmt.Sprintf("object({ %s })", strings.Join(fieldSpecs, ", ")), nil
 }
