@@ -79,12 +79,6 @@ local: build_darwin
 show-todo:
 	grep -r "TODO:" cmd internal
 
-.PHONY: upload-cli-binaries
-upload-cli-binaries:
-	gsutil -h "Cache-Control:no-cache" cp build/${name}-linux gs://${gcs_bucket}/cli/${version}/${name}-${version}-linux
-	gsutil -h "Cache-Control:no-cache" cp build/${name}-darwin-amd64 gs://${gcs_bucket}/cli/${version}/${name}-${version}-amd64
-	gsutil -h "Cache-Control:no-cache" cp build/${name}-darwin-arm64 gs://${gcs_bucket}/cli/${version}/${name}-${version}-arm64
-
 .PHONY: release-buf
 release-buf:
 	pushd apis;buf push;buf push --label ${version};popd
@@ -93,9 +87,16 @@ release-buf:
 release-github:
 	git tag ${version}
 	git push origin ${version}
+	gh release create ${version} \
+		 --generate-notes \
+         --title ${version} \
+         build/project-planton-darwin-amd64 \
+         build/project-planton-darwin-arm64 \
+         build/project-planton-linux \
+         apis/internal/generated/docs/docs.json
 
 .PHONY: release
-release: protos release-buf build-cli upload-cli-binaries release-github
+release: protos build-cli release-github release-buf
 
 .PHONY: run-docs
 run-docs:

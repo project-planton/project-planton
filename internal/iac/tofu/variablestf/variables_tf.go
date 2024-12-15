@@ -3,12 +3,13 @@ package variablestf
 import (
 	"bytes"
 	"fmt"
-	"strings"
-
 	"github.com/pkg/errors"
+	"github.com/project-planton/project-planton/internal/apidocs"
 	"github.com/project-planton/project-planton/pkg/strings/caseconverter"
+	"github.com/pseudomuto/protoc-gen-doc"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
+	"strings"
 )
 
 var fieldDescriptions = map[string]string{
@@ -18,7 +19,6 @@ var fieldDescriptions = map[string]string{
 
 // terraformType is an interface representing a Terraform type.
 type terraformType interface {
-	// format returns a string representing this type, formatted nicely.
 	format(indentLevel int) string
 }
 
@@ -36,8 +36,15 @@ func (l tfList) format(indentLevel int) string {
 	return fmt.Sprintf("list(%s)", l.elem.format(indentLevel))
 }
 
+// tfField holds a field's terraform type and description for inline comments
+type tfField struct {
+	name        string
+	description string
+	t           terraformType
+}
+
 type tfObject struct {
-	fields map[string]terraformType
+	fields []tfField
 }
 
 func (o tfObject) format(indentLevel int) string {
@@ -49,29 +56,32 @@ func (o tfObject) format(indentLevel int) string {
 	nextIndent := strings.Repeat("  ", indentLevel+1)
 
 	var fieldLines []string
-	for k, v := range o.fields {
-		fieldStr := v.format(indentLevel + 1)
-		if strings.HasPrefix(fieldStr, "object(") || strings.HasPrefix(fieldStr, "list(") {
-			// Complex type: put field type in multiline format
-			// We'll try to keep formatting tidy:
-			if strings.HasPrefix(fieldStr, "object({") {
-				// If object is multiline, we can rely on its own formatting.
-				fieldLines = append(fieldLines, fmt.Sprintf("%s%s = %s", nextIndent, k, fieldStr))
-			} else {
-				// just inline for lists or simpler objects
-				fieldLines = append(fieldLines, fmt.Sprintf("%s%s = %s", nextIndent, k, fieldStr))
+	for _, f := range o.fields {
+		if f.description != "" {
+			// Add a blank line before comments to improve readability
+			fieldLines = append(fieldLines, "")
+			commentLines := strings.Split(f.description, "\n")
+			for _, cl := range commentLines {
+				fieldLines = append(fieldLines, fmt.Sprintf("%s# %s", nextIndent, cl))
 			}
-		} else {
-			// Primitive type on the same line
-			fieldLines = append(fieldLines, fmt.Sprintf("%s%s = %s", nextIndent, k, fieldStr))
 		}
+
+		fieldStr := f.t.format(indentLevel + 1)
+		fieldLines = append(fieldLines, fmt.Sprintf("%s%s = %s", nextIndent, f.name, fieldStr))
 	}
 
 	return fmt.Sprintf("object({\n%s\n%s})", strings.Join(fieldLines, "\n"), indent)
 }
 
 // ProtoToVariablesTF uses proto reflection to determine the Terraform variable schema.
+// It now also includes proto field comments as inline comments for object fields and
+// will skip the 'version' field inside a 'Metadata' message.
 func ProtoToVariablesTF(msg proto.Message) (string, error) {
+	apiDocsJson, err := apidocs.GetApiDocsJson()
+	if err != nil {
+		return "", errors.Wrap(err, "failed to get api docs")
+	}
+
 	md := msg.ProtoReflect().Descriptor()
 
 	skipFields := map[string]bool{
@@ -82,6 +92,7 @@ func ProtoToVariablesTF(msg proto.Message) (string, error) {
 
 	var buf bytes.Buffer
 	fields := md.Fields()
+
 	for i := 0; i < fields.Len(); i++ {
 		fd := fields.Get(i)
 		fieldName := string(fd.Name())
@@ -90,17 +101,23 @@ func ProtoToVariablesTF(msg proto.Message) (string, error) {
 			continue
 		}
 
-		tfType, err := fieldDescriptorToTerraformType(fd, md)
+		tfType, err := fieldDescriptorToTerraformType(fd, md, apiDocsJson)
 		if err != nil {
 			return "", errors.Wrapf(err, "failed to convert field %q to terraform type", fieldName)
 		}
 
-		desc := fieldDescriptions[fieldName]
-		if desc == "" {
-			desc = fmt.Sprintf("Description for %s", fieldName)
+		desc := findFieldDescription(apiDocsJson, string(md.FullName()), fieldName)
+		if desc == "" && fd.Kind() == protoreflect.MessageKind {
+			desc = findMessageDescription(apiDocsJson, string(fd.Message().FullName()))
 		}
 
-		// Pretty-print the type with indentation
+		if desc == "" {
+			desc = fieldDescriptions[fieldName]
+			if desc == "" {
+				desc = fmt.Sprintf("Description for %s", fieldName)
+			}
+		}
+
 		typeStr := tfType.format(1)
 
 		fmt.Fprintf(&buf, `variable "%s" {
@@ -114,20 +131,20 @@ func ProtoToVariablesTF(msg proto.Message) (string, error) {
 	return strings.TrimSpace(buf.String()), nil
 }
 
-func fieldDescriptorToTerraformType(fd protoreflect.FieldDescriptor, parentMsg protoreflect.MessageDescriptor) (terraformType, error) {
+func fieldDescriptorToTerraformType(fd protoreflect.FieldDescriptor, parentMsg protoreflect.MessageDescriptor, apiDocsJson *gendoc.Template) (terraformType, error) {
 	// If repeated -> list
 	if fd.IsList() {
-		elemType, err := scalarOrMessageToTFType(fd.Message(), fd)
+		elemType, err := scalarOrMessageToTFType(parentMsg, fd, apiDocsJson)
 		if err != nil {
 			return nil, err
 		}
 		return tfList{elem: elemType}, nil
 	}
 
-	return scalarOrMessageToTFType(fd.Message(), fd)
+	return scalarOrMessageToTFType(parentMsg, fd, apiDocsJson)
 }
 
-func scalarOrMessageToTFType(parentMsg protoreflect.MessageDescriptor, fd protoreflect.FieldDescriptor) (terraformType, error) {
+func scalarOrMessageToTFType(parentMsg protoreflect.MessageDescriptor, fd protoreflect.FieldDescriptor, apiDocsJson *gendoc.Template) (terraformType, error) {
 	kind := fd.Kind()
 
 	switch kind {
@@ -147,32 +164,86 @@ func scalarOrMessageToTFType(parentMsg protoreflect.MessageDescriptor, fd protor
 	case protoreflect.EnumKind:
 		return tfPrimitive("string"), nil
 	case protoreflect.MessageKind:
-		return messageToTerraformObject(fd.Message(), fd)
+		return messageToTerraformObject(fd.Message(), fd, apiDocsJson)
 	default:
 		return nil, fmt.Errorf("unsupported field kind: %v", kind)
 	}
 }
 
-func messageToTerraformObject(md protoreflect.MessageDescriptor, fd protoreflect.FieldDescriptor) (terraformType, error) {
+func messageToTerraformObject(md protoreflect.MessageDescriptor, fd protoreflect.FieldDescriptor, apiDocsJson *gendoc.Template) (terraformType, error) {
 	fields := md.Fields()
-	obj := tfObject{fields: make(map[string]terraformType)}
+	obj := tfObject{}
 
-	// Skip metadata.version
-	shouldSkipVersion := (md.Name() == "Metadata")
+	// Now uses a suffix check on the message name to detect Metadata messages
+	shouldSkipVersion := strings.HasSuffix(strings.ToLower(string(md.Name())), "metadata")
+	parentFullName := string(md.FullName())
 
 	for i := 0; i < fields.Len(); i++ {
 		f := fields.Get(i)
 		fieldName := string(f.Name())
+
+		// If this is a metadata message, skip the 'version' field
 		if shouldSkipVersion && fieldName == "version" {
 			continue
 		}
 
-		valType, err := fieldDescriptorToTerraformType(f, md)
+		valType, err := fieldDescriptorToTerraformType(f, md, apiDocsJson)
 		if err != nil {
 			return nil, err
 		}
 		snakeKey := caseconverter.ToSnakeCase(fieldName)
-		obj.fields[snakeKey] = valType
+
+		desc := findFieldDescription(apiDocsJson, parentFullName, fieldName)
+		if desc == "" && f.Kind() == protoreflect.MessageKind {
+			desc = findMessageDescription(apiDocsJson, string(f.Message().FullName()))
+		}
+		if desc == "" {
+			desc = fieldDescriptions[fieldName]
+			if desc == "" {
+				desc = fmt.Sprintf("Description for %s", fieldName)
+			}
+		}
+
+		obj.fields = append(obj.fields, tfField{
+			name:        snakeKey,
+			description: desc,
+			t:           valType,
+		})
 	}
 	return obj, nil
+}
+
+func findMessageDescription(apiDocsJson *gendoc.Template, fullName string) string {
+	if apiDocsJson == nil {
+		return ""
+	}
+
+	for _, f := range apiDocsJson.Files {
+		for _, m := range f.Messages {
+			if m.FullName == fullName {
+				return strings.TrimSpace(m.Description)
+			}
+		}
+	}
+	return ""
+}
+
+func findFieldDescription(apiDocsJson *gendoc.Template, messageFullName, fieldName string) string {
+	if apiDocsJson == nil {
+		return ""
+	}
+
+	for _, f := range apiDocsJson.Files {
+		for _, m := range f.Messages {
+			if m.FullName == messageFullName {
+				for _, fld := range m.Fields {
+					if fld.Name == fieldName {
+						return strings.TrimSpace(fld.Description)
+					}
+				}
+			}
+		}
+	}
+
+	return ""
 }
