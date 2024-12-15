@@ -6,25 +6,13 @@ import (
 	"fmt"
 	"github.com/pkg/errors"
 	"github.com/project-planton/project-planton/pkg/fileutil"
+	"github.com/project-planton/project-planton/pkg/strings/caseconverter"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
 	"os"
 	"path/filepath"
 	"strings"
 )
-
-// toSnakeCase converts a camelCase or PascalCase string into snake_case.
-func toSnakeCase(s string) string {
-	var snake []rune
-	for i, r := range s {
-		if i > 0 && r >= 'A' && r <= 'Z' {
-			snake = append(snake, '_', r+('a'-'A'))
-		} else {
-			snake = append(snake, r)
-		}
-	}
-	return strings.ToLower(string(snake))
-}
 
 // ProtoToTFVars converts a given protobuf message into a Terraform tfvars-compatible
 // string. The primary use case is to take a structured proto, typically loaded and validated
@@ -103,19 +91,19 @@ func ProtoToTFVars(msg proto.Message) (string, error) {
 		EmitUnpopulated: true,
 	}.Marshal(msg)
 	if err != nil {
-		return "", fmt.Errorf("failed to marshal proto to json: %w", err)
+		return "", errors.Wrap(err, "failed to marshal proto to json")
 	}
 
 	// Unmarshal JSON into a generic map
 	var data map[string]interface{}
 	if err := json.Unmarshal(jsonBytes, &data); err != nil {
-		return "", fmt.Errorf("failed to unmarshal json: %w", err)
+		return "", errors.Wrap(err, "failed to unmarshal json")
 	}
 
 	// Convert the map into tfvars HCL format
 	var buf bytes.Buffer
 	if err := writeHCL(&buf, data, 0); err != nil {
-		return "", fmt.Errorf("failed to convert map to hcl: %w", err)
+		return "", errors.Wrap(err, "failed to convert map to hcl")
 	}
 
 	return buf.String(), nil
@@ -164,7 +152,7 @@ func writeHCL(buf *bytes.Buffer, data interface{}, indentLevel int) error {
 				continue
 			}
 
-			snakeKey := toSnakeCase(k) // Convert key to snake case here.
+			snakeKey := caseconverter.ToSnakeCase(k) // Convert key to snake case here.
 			switch val.(type) {
 			case map[string]interface{}, []interface{}:
 				buf.WriteString(fmt.Sprintf("%s%s = ", indent, snakeKey))
@@ -195,7 +183,7 @@ func writeHCL(buf *bytes.Buffer, data interface{}, indentLevel int) error {
 				buf.WriteString(fmt.Sprintf("%s%s = null\n", indent, snakeKey))
 
 			default:
-				return fmt.Errorf("unsupported type for key %q: %T", k, val)
+				return errors.Errorf("unsupported type for key %q: %T", k, val)
 			}
 		}
 
@@ -263,14 +251,14 @@ func writeHCL(buf *bytes.Buffer, data interface{}, indentLevel int) error {
 
 			default:
 				// Unsupported element type in the array.
-				return fmt.Errorf("unsupported array element type: %T", elemVal)
+				return errors.Errorf("unsupported array element type: %T", elemVal)
 			}
 		}
 
 	default:
 		// The top-level data structure must be a map or an array of supported types.
 		// If we get a different type here, it's invalid.
-		return fmt.Errorf("top-level must be map[string]interface{}, got %T", data)
+		return errors.Errorf("top-level must be map[string]interface{}, got %T", data)
 	}
 
 	return nil

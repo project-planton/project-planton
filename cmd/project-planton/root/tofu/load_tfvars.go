@@ -25,7 +25,7 @@ func loadTfVarsHandler(cmd *cobra.Command, args []string) {
 	}
 	tfvarsString, err := tfvars.ProtoToTFVars(updatedManifest)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("failed to generate Terraform variables: ", err)
 	}
 	println(tfvarsString)
 }

@@ -2,7 +2,6 @@ package module
 
 import (
 	"encoding/base64"
-	"fmt"
 	"github.com/pkg/errors"
 	mongodbkubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/mongodbkubernetes/v1"
 	"github.com/project-planton/project-planton/internal/iac/pulumi/pulumimodule/provider/kubernetes/pulumikubernetesprovider"
@@ -54,7 +53,7 @@ func Resources(ctx *pulumi.Context, stackInput *mongodbkubernetesv1.MongodbKuber
 			MinLower:   pulumi.Int(2),
 		}, pulumi.Parent(createdNamespace))
 	if err != nil {
-		return fmt.Errorf("failed to generate random password value: %w", err)
+		return errors.Wrap(err, "failed to generate random password value")
 	}
 
 	// Encode the password in Base64
