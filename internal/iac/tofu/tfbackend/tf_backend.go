@@ -2,6 +2,7 @@ package tfbackend
 
 import (
 	"fmt"
+	"github.com/pkg/errors"
 	"github.com/project-planton/project-planton/apis/project/planton/shared/tofu"
 	"os"
 	"path/filepath"
@@ -20,7 +21,7 @@ func WriteBackendFile(projectDir string, tofuBackendType tofu.TofuBackendType) e
 
 	backendFilePath := filepath.Join(projectDir, "backend.tf")
 	if err := os.WriteFile(backendFilePath, []byte(backendContent), 0644); err != nil {
-		return fmt.Errorf("failed to write backend file: %w", err)
+		return errors.Wrap(err, "failed to write backend file")
 	}
 
 	return nil

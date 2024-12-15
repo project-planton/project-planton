@@ -32,12 +32,12 @@ func ProtoToVariablesTF(msg proto.Message) (string, error) {
 		EmitUnpopulated: true,
 	}.Marshal(msg)
 	if err != nil {
-		return "", fmt.Errorf("failed to marshal proto to json: %w", err)
+		return "", errors.Wrap(err, "failed to marshal proto to json")
 	}
 
 	var data map[string]interface{}
 	if err := json.Unmarshal(jsonBytes, &data); err != nil {
-		return "", fmt.Errorf("failed to unmarshal json: %w", err)
+		return "", errors.Wrap(err, "failed to unmarshal json")
 	}
 
 	// We skip apiVersion, kind, and status as variables.
@@ -106,7 +106,7 @@ func inferTerraformType(v interface{}) (string, error) {
 		// Otherwise, object({ ... })
 		return inferMapType(val)
 	default:
-		return "", fmt.Errorf("unsupported type: %T", v)
+		return "", errors.Errorf("unsupported type: %T", v)
 	}
 }
 

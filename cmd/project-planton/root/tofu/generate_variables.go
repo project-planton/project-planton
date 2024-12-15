@@ -36,6 +36,8 @@ func generateVariablesHandler(cmd *cobra.Command, args []string) {
 	manifestObject := apiresourcekind.DeploymentComponentMap[apiresourcekind.FindMatchingComponent(
 		apiresourcekind.ConvertKindName(kindName))]
 	variablesTfContent, err := variablestf.ProtoToVariablesTF(manifestObject)
-	log.Fatal("failed to generate Terraform variables: ", err)
+	if err != nil {
+		log.Fatal("failed to generate Terraform variables: ", err)
+	}
 	println(variablesTfContent)
 }

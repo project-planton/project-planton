@@ -91,19 +91,19 @@ func ProtoToTFVars(msg proto.Message) (string, error) {
 		EmitUnpopulated: true,
 	}.Marshal(msg)
 	if err != nil {
-		return "", fmt.Errorf("failed to marshal proto to json: %w", err)
+		return "", errors.Wrap(err, "failed to marshal proto to json")
 	}
 
 	// Unmarshal JSON into a generic map
 	var data map[string]interface{}
 	if err := json.Unmarshal(jsonBytes, &data); err != nil {
-		return "", fmt.Errorf("failed to unmarshal json: %w", err)
+		return "", errors.Wrap(err, "failed to unmarshal json")
 	}
 
 	// Convert the map into tfvars HCL format
 	var buf bytes.Buffer
 	if err := writeHCL(&buf, data, 0); err != nil {
-		return "", fmt.Errorf("failed to convert map to hcl: %w", err)
+		return "", errors.Wrap(err, "failed to convert map to hcl")
 	}
 
 	return buf.String(), nil
@@ -183,7 +183,7 @@ func writeHCL(buf *bytes.Buffer, data interface{}, indentLevel int) error {
 				buf.WriteString(fmt.Sprintf("%s%s = null\n", indent, snakeKey))
 
 			default:
-				return fmt.Errorf("unsupported type for key %q: %T", k, val)
+				return errors.Errorf("unsupported type for key %q: %T", k, val)
 			}
 		}
 
@@ -251,14 +251,14 @@ func writeHCL(buf *bytes.Buffer, data interface{}, indentLevel int) error {
 
 			default:
 				// Unsupported element type in the array.
-				return fmt.Errorf("unsupported array element type: %T", elemVal)
+				return errors.Errorf("unsupported array element type: %T", elemVal)
 			}
 		}
 
 	default:
 		// The top-level data structure must be a map or an array of supported types.
 		// If we get a different type here, it's invalid.
-		return fmt.Errorf("top-level must be map[string]interface{}, got %T", data)
+		return errors.Errorf("top-level must be map[string]interface{}, got %T", data)
 	}
 
 	return nil
