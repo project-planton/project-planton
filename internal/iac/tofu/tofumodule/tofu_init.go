@@ -5,6 +5,7 @@ import (
 	"github.com/pkg/errors"
 	"github.com/project-planton/project-planton/apis/project/planton/shared/tofu"
 	"github.com/project-planton/project-planton/internal/iac/stackinput/credentials"
+	"github.com/project-planton/project-planton/internal/iac/tofu/tfbackend"
 	"github.com/project-planton/project-planton/internal/iac/tofu/tfvars"
 	"github.com/project-planton/project-planton/internal/manifest"
 	"os"
@@ -14,6 +15,7 @@ import (
 
 func TofuInit(moduleDir, targetManifestPath string,
 	valueOverrides map[string]string,
+	backendType tofu.TofuBackendType,
 	backendConfigInput []string,
 	stackInputOptions ...credentials.StackInputCredentialOption) error {
 	opts := credentials.StackInputCredentialOptions{}
@@ -34,6 +36,10 @@ func TofuInit(moduleDir, targetManifestPath string,
 	tofuModulePath, err := getModulePath(moduleDir, kindName)
 	if err != nil {
 		return errors.Wrapf(err, "failed to get tofu module directory")
+	}
+
+	if err := tfbackend.WriteBackendFile(tofuModulePath, backendType); err != nil {
+		return errors.Wrapf(err, "failed to write backend file")
 	}
 
 	tfVarsFile := filepath.Join(tofuModulePath, ".terraform", "terraform.tfvars")

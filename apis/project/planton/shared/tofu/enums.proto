@@ -13,3 +13,44 @@ enum TofuOperationType {
   apply = 4;
   destroy = 5;
 }
+
+enum TofuBackendType {
+  // Unspecified or unknown backend type.
+  tofu_backend_type_unspecified = 0;
+
+  // Local filesystem backend (the default if none is configured).
+  local = 1;
+
+  // Amazon S3-based backend for remote state storage.
+  s3 = 2;
+
+  // Terraform Cloud or Terraform Enterprise remote backend.
+  remote = 3;
+
+  // Google Cloud Storage backend for storing state.
+  gcs = 4;
+
+  // Azure Resource Manager backend using Azure Blob Storage.
+  azurerm = 5;
+
+  // Consul key-value store backend for state storage and locking.
+  consul = 6;
+
+  // Generic HTTP backend for state storage.
+  http = 7;
+
+  // etcdv3 key-value store backend.
+  etcdv3 = 8;
+
+  // Joyent Manta object storage backend.
+  manta = 9;
+
+  // OpenStack Swift object storage backend.
+  swift = 10;
+
+  // JFrog Artifactory-based backend for state storage.
+  artifactory = 11;
+
+  // Alibaba Cloud Object Storage Service (OSS) backend.
+  oss = 12;
+}
