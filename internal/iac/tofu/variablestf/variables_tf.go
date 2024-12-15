@@ -3,10 +3,12 @@ package variablestf
 import (
 	"bytes"
 	"fmt"
+	"github.com/project-planton/project-planton/internal/apidocs"
 	"strings"
 
 	"github.com/pkg/errors"
 	"github.com/project-planton/project-planton/pkg/strings/caseconverter"
+	"github.com/pseudomuto/protoc-gen-doc"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
 )
@@ -51,27 +53,20 @@ func (o tfObject) format(indentLevel int) string {
 	var fieldLines []string
 	for k, v := range o.fields {
 		fieldStr := v.format(indentLevel + 1)
-		if strings.HasPrefix(fieldStr, "object(") || strings.HasPrefix(fieldStr, "list(") {
-			// Complex type: put field type in multiline format
-			// We'll try to keep formatting tidy:
-			if strings.HasPrefix(fieldStr, "object({") {
-				// If object is multiline, we can rely on its own formatting.
-				fieldLines = append(fieldLines, fmt.Sprintf("%s%s = %s", nextIndent, k, fieldStr))
-			} else {
-				// just inline for lists or simpler objects
-				fieldLines = append(fieldLines, fmt.Sprintf("%s%s = %s", nextIndent, k, fieldStr))
-			}
-		} else {
-			// Primitive type on the same line
-			fieldLines = append(fieldLines, fmt.Sprintf("%s%s = %s", nextIndent, k, fieldStr))
-		}
+		fieldLines = append(fieldLines, fmt.Sprintf("%s%s = %s", nextIndent, k, fieldStr))
 	}
 
 	return fmt.Sprintf("object({\n%s\n%s})", strings.Join(fieldLines, "\n"), indent)
 }
 
 // ProtoToVariablesTF uses proto reflection to determine the Terraform variable schema.
+// It now also uses gendoc.Template to include message and field descriptions from proto comments.
 func ProtoToVariablesTF(msg proto.Message) (string, error) {
+	apiDocsJson, err := apidocs.GetApiDocsJson()
+	if err != nil {
+		return "", errors.Wrap(err, "failed to get api docs")
+	}
+
 	md := msg.ProtoReflect().Descriptor()
 
 	skipFields := map[string]bool{
@@ -82,6 +77,7 @@ func ProtoToVariablesTF(msg proto.Message) (string, error) {
 
 	var buf bytes.Buffer
 	fields := md.Fields()
+
 	for i := 0; i < fields.Len(); i++ {
 		fd := fields.Get(i)
 		fieldName := string(fd.Name())
@@ -90,17 +86,29 @@ func ProtoToVariablesTF(msg proto.Message) (string, error) {
 			continue
 		}
 
-		tfType, err := fieldDescriptorToTerraformType(fd, md)
+		tfType, err := fieldDescriptorToTerraformType(fd, md, apiDocsJson)
 		if err != nil {
 			return "", errors.Wrapf(err, "failed to convert field %q to terraform type", fieldName)
 		}
 
-		desc := fieldDescriptions[fieldName]
-		if desc == "" {
-			desc = fmt.Sprintf("Description for %s", fieldName)
+		// Get description from template if available
+		desc := findFieldDescription(apiDocsJson, string(md.FullName()), fieldName)
+
+		// If the field is a complex message and we didn't get a field-level doc,
+		// try to get the referenced message's doc
+		if desc == "" && fd.Kind() == protoreflect.MessageKind {
+			desc = findMessageDescription(apiDocsJson, string(fd.Message().FullName()))
 		}
 
-		// Pretty-print the type with indentation
+		// Fallback logic
+		if desc == "" {
+			// If still empty, fallback to predefined or generic description
+			desc = fieldDescriptions[fieldName]
+			if desc == "" {
+				desc = fmt.Sprintf("Description for %s", fieldName)
+			}
+		}
+
 		typeStr := tfType.format(1)
 
 		fmt.Fprintf(&buf, `variable "%s" {
@@ -114,20 +122,20 @@ func ProtoToVariablesTF(msg proto.Message) (string, error) {
 	return strings.TrimSpace(buf.String()), nil
 }
 
-func fieldDescriptorToTerraformType(fd protoreflect.FieldDescriptor, parentMsg protoreflect.MessageDescriptor) (terraformType, error) {
+func fieldDescriptorToTerraformType(fd protoreflect.FieldDescriptor, parentMsg protoreflect.MessageDescriptor, tmpl *gendoc.Template) (terraformType, error) {
 	// If repeated -> list
 	if fd.IsList() {
-		elemType, err := scalarOrMessageToTFType(fd.Message(), fd)
+		elemType, err := scalarOrMessageToTFType(parentMsg, fd, tmpl)
 		if err != nil {
 			return nil, err
 		}
 		return tfList{elem: elemType}, nil
 	}
 
-	return scalarOrMessageToTFType(fd.Message(), fd)
+	return scalarOrMessageToTFType(parentMsg, fd, tmpl)
 }
 
-func scalarOrMessageToTFType(parentMsg protoreflect.MessageDescriptor, fd protoreflect.FieldDescriptor) (terraformType, error) {
+func scalarOrMessageToTFType(parentMsg protoreflect.MessageDescriptor, fd protoreflect.FieldDescriptor, tmpl *gendoc.Template) (terraformType, error) {
 	kind := fd.Kind()
 
 	switch kind {
@@ -147,17 +155,17 @@ func scalarOrMessageToTFType(parentMsg protoreflect.MessageDescriptor, fd protor
 	case protoreflect.EnumKind:
 		return tfPrimitive("string"), nil
 	case protoreflect.MessageKind:
-		return messageToTerraformObject(fd.Message(), fd)
+		return messageToTerraformObject(fd.Message(), fd, tmpl)
 	default:
 		return nil, fmt.Errorf("unsupported field kind: %v", kind)
 	}
 }
 
-func messageToTerraformObject(md protoreflect.MessageDescriptor, fd protoreflect.FieldDescriptor) (terraformType, error) {
+func messageToTerraformObject(md protoreflect.MessageDescriptor, fd protoreflect.FieldDescriptor, tmpl *gendoc.Template) (terraformType, error) {
 	fields := md.Fields()
 	obj := tfObject{fields: make(map[string]terraformType)}
 
-	// Skip metadata.version
+	// Skip metadata.version if needed
 	shouldSkipVersion := (md.Name() == "Metadata")
 
 	for i := 0; i < fields.Len(); i++ {
@@ -167,7 +175,7 @@ func messageToTerraformObject(md protoreflect.MessageDescriptor, fd protoreflect
 			continue
 		}
 
-		valType, err := fieldDescriptorToTerraformType(f, md)
+		valType, err := fieldDescriptorToTerraformType(f, md, tmpl)
 		if err != nil {
 			return nil, err
 		}
@@ -175,4 +183,42 @@ func messageToTerraformObject(md protoreflect.MessageDescriptor, fd protoreflect
 		obj.fields[snakeKey] = valType
 	}
 	return obj, nil
+}
+
+// findMessageDescription returns the description of a message from the template
+func findMessageDescription(tmpl *gendoc.Template, fullName string) string {
+	if tmpl == nil {
+		return ""
+	}
+
+	for _, f := range tmpl.Files {
+		for _, m := range f.Messages {
+			if m.FullName == fullName {
+				return strings.TrimSpace(m.Description)
+			}
+		}
+	}
+	return ""
+}
+
+// findFieldDescription returns the description of a field within a message from the template
+func findFieldDescription(tmpl *gendoc.Template, messageFullName, fieldName string) string {
+	if tmpl == nil {
+		return ""
+	}
+
+	for _, f := range tmpl.Files {
+		for _, m := range f.Messages {
+			if m.FullName == messageFullName {
+				// found the message, now find the field
+				for _, fld := range m.Fields {
+					if fld.Name == fieldName {
+						return strings.TrimSpace(fld.Description)
+					}
+				}
+			}
+		}
+	}
+
+	return ""
 }

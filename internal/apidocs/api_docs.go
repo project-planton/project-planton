@@ -11,11 +11,12 @@ import (
 )
 
 const downloadUrlFormatString = "https://github.com/project-planton/project-planton/releases/download/%s/docs.json"
+const latestReleaseDownloadUrl = "https://github.com/project-planton/project-planton/releases/latest/download/docs.json"
 
-// getApiDocsJson downloads the docs.json from GitHub, parses it into a gendoc.Template, and returns it.
+// GetApiDocsJson downloads the docs.json from GitHub, parses it into a gendoc.Template, and returns it.
 // If docsJsonPath is not empty, you could alternatively load from a local file instead,
 // but here we focus on downloading from GitHub.
-func getApiDocsJson() (*gendoc.Template, error) {
+func GetApiDocsJson() (*gendoc.Template, error) {
 	var data []byte
 	var err error
 
@@ -33,7 +34,11 @@ func getApiDocsJson() (*gendoc.Template, error) {
 }
 
 func downloadDocsJson() ([]byte, error) {
-	downloadUrl := fmt.Sprintf(downloadUrlFormatString, version.Version)
+	downloadUrl := latestReleaseDownloadUrl
+	if version.Version != version.DefaultVersion {
+		downloadUrl = fmt.Sprintf(downloadUrlFormatString, version.Version)
+	}
+
 	resp, err := http.Get(downloadUrl)
 	if err != nil {
 		return nil, errors.Wrap(err, "http GET request failed")
