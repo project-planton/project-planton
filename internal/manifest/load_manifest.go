@@ -2,6 +2,7 @@ package manifest
 
 import (
 	"github.com/pkg/errors"
+	"github.com/project-planton/project-planton/internal/apiresourcekind"
 	"github.com/project-planton/project-planton/internal/cli/workspace"
 	"github.com/project-planton/project-planton/pkg/ulidgen"
 	"google.golang.org/protobuf/encoding/protojson"
@@ -37,15 +38,15 @@ func LoadManifest(manifestPath string) (proto.Message, error) {
 		return nil, errors.Wrap(err, "failed to load yaml to json")
 	}
 
-	kindName, err := ExtractKindFromTargetManifest(manifestPath)
+	kindName, err := apiresourcekind.ExtractKindFromTargetManifest(manifestPath)
 	if err != nil {
 		return nil, errors.Wrapf(err, "failed to extract kind from %s stack input yaml", manifestPath)
 	}
 
-	manifest := DeploymentComponentMap[FindMatchingComponent(ConvertKindName(kindName))]
+	manifest := apiresourcekind.DeploymentComponentMap[apiresourcekind.FindMatchingComponent(apiresourcekind.ConvertKindName(kindName))]
 
 	if manifest == nil {
-		return nil, errors.Errorf("deployment-component does not contain %s", ConvertKindName(kindName))
+		return nil, errors.Errorf("deployment-component does not contain %s", apiresourcekind.ConvertKindName(kindName))
 	}
 
 	if err := protojson.Unmarshal(jsonBytes, manifest); err != nil {

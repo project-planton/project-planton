@@ -1,4 +1,4 @@
-package manifest
+package apiresourcekind
 
 import (
 	mongodbatlasv1 "github.com/project-planton/project-planton/apis/project/planton/provider/atlas/mongodbatlas/v1"

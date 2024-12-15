@@ -1,4 +1,4 @@
-package manifest
+package apiresourcekind
 
 import (
 	"github.com/pkg/errors"

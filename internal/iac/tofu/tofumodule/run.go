@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/pkg/errors"
 	"github.com/project-planton/project-planton/apis/project/planton/shared/tofu"
+	"github.com/project-planton/project-planton/internal/apiresourcekind"
 	"github.com/project-planton/project-planton/internal/iac/stackinput/credentials"
 	"github.com/project-planton/project-planton/internal/iac/tofu/tfvars"
 	"github.com/project-planton/project-planton/internal/manifest"
@@ -28,7 +29,7 @@ func RunOperation(moduleDir, targetManifestPath string, tofuOperation tofu.TofuO
 		return errors.Wrapf(err, "failed to override values in target manifest file")
 	}
 
-	kindName, err := manifest.ExtractKindFromProto(manifestObject)
+	kindName, err := apiresourcekind.ExtractKindFromProto(manifestObject)
 	if err != nil {
 		return errors.Wrapf(err, "failed to extract kind name from manifest proto")
 	}
