@@ -1,6 +1,16 @@
 package apiresourcekind
 
 import (
+	awscredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/awscredential/v1"
+	azurecredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/azurecredential/v1"
+	confluentcredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/confluentcredential/v1"
+	dockercredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/dockercredential/v1"
+	gcpcredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/gcpcredential/v1"
+	gitcredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/gitcredential/v1"
+	kubernetesclustercredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/kubernetesclustercredential/v1"
+	mongodbatlascredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/mongodbatlascredential/v1"
+	pulumibackendcredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/pulumibackendcredential/v1"
+	snowflakecredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/snowflakecredential/v1"
 	mongodbatlasv1 "github.com/project-planton/project-planton/apis/project/planton/provider/atlas/mongodbatlas/v1"
 	awscloudfrontv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awscloudfront/v1"
 	awsdynamodbv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsdynamodb/v1"
@@ -53,9 +63,10 @@ import (
 	"strings"
 )
 
-type DeploymentComponent string
+type ApiResourceKind string
 
-var DeploymentComponentMap = merge(
+var ToMessageMap = merge(
+	credentialMap,
 	providerAtlasMap,
 	providerAwsMap,
 	providerAzureMap,
@@ -65,8 +76,8 @@ var DeploymentComponentMap = merge(
 	providerSnowflakeMap,
 )
 
-func merge(items ...map[DeploymentComponent]proto.Message) map[DeploymentComponent]proto.Message {
-	resp := make(map[DeploymentComponent]proto.Message)
+func merge(items ...map[ApiResourceKind]proto.Message) map[ApiResourceKind]proto.Message {
+	resp := make(map[ApiResourceKind]proto.Message)
 	for _, i := range items {
 		for k, v := range i {
 			resp[k] = v
@@ -75,11 +86,24 @@ func merge(items ...map[DeploymentComponent]proto.Message) map[DeploymentCompone
 	return resp
 }
 
-var providerAtlasMap = map[DeploymentComponent]proto.Message{
+var credentialMap = map[ApiResourceKind]proto.Message{
+	"aws-credential":                &awscredentialv1.AwsCredential{},
+	"azure-credential":              &azurecredentialv1.AzureCredential{},
+	"confluent-credential":          &confluentcredentialv1.ConfluentCredential{},
+	"docker-credential":             &dockercredentialv1.DockerCredential{},
+	"gcp-credential":                &gcpcredentialv1.GcpCredential{},
+	"git-credential":                &gitcredentialv1.GitCredential{},
+	"kubernetes-cluster-credential": &kubernetesclustercredentialv1.KubernetesClusterCredential{},
+	"mongodb-atlas-credential":      &mongodbatlascredentialv1.MongodbAtlasCredential{},
+	"pulumi-backend-credential":     &pulumibackendcredentialv1.PulumiBackendCredential{},
+	"snowflake-credential":          &snowflakecredentialv1.SnowflakeCredential{},
+}
+
+var providerAtlasMap = map[ApiResourceKind]proto.Message{
 	"mongodb-atlas": &mongodbatlasv1.MongodbAtlas{},
 }
 
-var providerAwsMap = map[DeploymentComponent]proto.Message{
+var providerAwsMap = map[ApiResourceKind]proto.Message{
 	"aws-cloud-front":           &awscloudfrontv1.AwsCloudFront{},
 	"aws-dynamodb":              &awsdynamodbv1.AwsDynamodb{},
 	"aws-fargate":               &awsfargatev1.AwsFargate{},
@@ -95,20 +119,20 @@ var providerAwsMap = map[DeploymentComponent]proto.Message{
 	"s3-bucket":                 &s3bucketv1.S3Bucket{},
 }
 
-var providerConfluentMap = map[DeploymentComponent]proto.Message{
+var providerConfluentMap = map[ApiResourceKind]proto.Message{
 	"confluent-kafka": &confluentkafkav1.ConfluentKafka{},
 }
 
-var providerSnowflakeMap = map[DeploymentComponent]proto.Message{
+var providerSnowflakeMap = map[ApiResourceKind]proto.Message{
 	"snowflake-database": &snowflakedatabasev1.SnowflakeDatabase{},
 }
 
-var providerAzureMap = map[DeploymentComponent]proto.Message{
+var providerAzureMap = map[ApiResourceKind]proto.Message{
 	"aks-cluster":     &aksclusterv1.AksCluster{},
 	"azure-key-vault": &azurekeyvaultv1.AzureKeyVault{},
 }
 
-var providerGcpMap = map[DeploymentComponent]proto.Message{
+var providerGcpMap = map[ApiResourceKind]proto.Message{
 	"gcp-artifact-registry": &gcpartifactregistryv1.GcpArtifactRegistry{},
 	"gcp-cloud-cdn":         &gcpcloudcdnv1.GcpCloudCdn{},
 	"gcp-cloud-function":    &gcpcloudfunctionv1.GcpCloudFunction{},
@@ -121,7 +145,7 @@ var providerGcpMap = map[DeploymentComponent]proto.Message{
 	"gke-cluster":           &gkeclusterv1.GkeCluster{},
 }
 
-var providerKubernetesMap = map[DeploymentComponent]proto.Message{
+var providerKubernetesMap = map[ApiResourceKind]proto.Message{
 	"argocd-kubernetes":           &argocdkubernetesv1.ArgocdKubernetes{},
 	"elasticsearch-kubernetes":    &elasticsearchkubernetesv1.ElasticsearchKubernetes{},
 	"gitlab-kubernetes":           &gitlabkubernetesv1.GitlabKubernetes{},
@@ -153,9 +177,9 @@ func sanitizeString(str string) string {
 	return str
 }
 
-func FindMatchingComponent(input string) DeploymentComponent {
+func FindMatchingComponent(input string) ApiResourceKind {
 	sanitizedInput := sanitizeString(input)
-	for key, _ := range DeploymentComponentMap {
+	for key, _ := range ToMessageMap {
 		sanitizedKey := sanitizeString(string(key))
 		if sanitizedKey == sanitizedInput {
 			return key

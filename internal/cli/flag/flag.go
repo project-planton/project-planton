@@ -20,6 +20,7 @@ const (
 	Manifest               Flag = "manifest"
 	ModuleDir              Flag = "module-dir"
 	MongodbAtlasCredential Flag = "mongodb-atlas-credential"
+	OutputFile             Flag = "output-file"
 	Set                    Flag = "set"
 	SnowflakeCredential    Flag = "snowflake-credential"
 	Stack                  Flag = "stack"
