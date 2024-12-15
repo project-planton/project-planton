@@ -11,18 +11,69 @@ import (
 	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
-// Known descriptions for certain top-level variables. You can customize or extend this.
 var fieldDescriptions = map[string]string{
 	"metadata": "Metadata for the resource, including name and labels",
 	"spec":     "Specification for Deployment Component",
 }
 
-// ProtoToVariablesTF uses proto reflection to determine the Terraform variable schema from a proto message's fields.
-// It produces a `variables.tf`-style output with variable blocks for each top-level field (except apiVersion, kind, and status).
+// terraformType is an interface representing a Terraform type.
+type terraformType interface {
+	// format returns a string representing this type, formatted nicely.
+	format(indentLevel int) string
+}
+
+type tfPrimitive string
+
+func (p tfPrimitive) format(indentLevel int) string {
+	return string(p)
+}
+
+type tfList struct {
+	elem terraformType
+}
+
+func (l tfList) format(indentLevel int) string {
+	return fmt.Sprintf("list(%s)", l.elem.format(indentLevel))
+}
+
+type tfObject struct {
+	fields map[string]terraformType
+}
+
+func (o tfObject) format(indentLevel int) string {
+	if len(o.fields) == 0 {
+		return "object({})"
+	}
+
+	indent := strings.Repeat("  ", indentLevel)
+	nextIndent := strings.Repeat("  ", indentLevel+1)
+
+	var fieldLines []string
+	for k, v := range o.fields {
+		fieldStr := v.format(indentLevel + 1)
+		if strings.HasPrefix(fieldStr, "object(") || strings.HasPrefix(fieldStr, "list(") {
+			// Complex type: put field type in multiline format
+			// We'll try to keep formatting tidy:
+			if strings.HasPrefix(fieldStr, "object({") {
+				// If object is multiline, we can rely on its own formatting.
+				fieldLines = append(fieldLines, fmt.Sprintf("%s%s = %s", nextIndent, k, fieldStr))
+			} else {
+				// just inline for lists or simpler objects
+				fieldLines = append(fieldLines, fmt.Sprintf("%s%s = %s", nextIndent, k, fieldStr))
+			}
+		} else {
+			// Primitive type on the same line
+			fieldLines = append(fieldLines, fmt.Sprintf("%s%s = %s", nextIndent, k, fieldStr))
+		}
+	}
+
+	return fmt.Sprintf("object({\n%s\n%s})", strings.Join(fieldLines, "\n"), indent)
+}
+
+// ProtoToVariablesTF uses proto reflection to determine the Terraform variable schema.
 func ProtoToVariablesTF(msg proto.Message) (string, error) {
 	md := msg.ProtoReflect().Descriptor()
 
-	// We skip apiVersion, kind, and status as variables.
 	skipFields := map[string]bool{
 		"api_version": true,
 		"kind":        true,
@@ -30,7 +81,6 @@ func ProtoToVariablesTF(msg proto.Message) (string, error) {
 	}
 
 	var buf bytes.Buffer
-	// Iterate over top-level fields
 	fields := md.Fields()
 	for i := 0; i < fields.Len(); i++ {
 		fd := fields.Get(i)
@@ -40,95 +90,89 @@ func ProtoToVariablesTF(msg proto.Message) (string, error) {
 			continue
 		}
 
-		terraformType, err := fieldDescriptorToTerraformType(fd)
+		tfType, err := fieldDescriptorToTerraformType(fd, md)
 		if err != nil {
 			return "", errors.Wrapf(err, "failed to convert field %q to terraform type", fieldName)
 		}
 
-		snakeKey := caseconverter.ToSnakeCase(fieldName)
 		desc := fieldDescriptions[fieldName]
 		if desc == "" {
-			desc = fmt.Sprintf("Description for %s", snakeKey)
+			desc = fmt.Sprintf("Description for %s", fieldName)
 		}
+
+		// Pretty-print the type with indentation
+		typeStr := tfType.format(1)
 
 		fmt.Fprintf(&buf, `variable "%s" {
   description = %q
   type = %s
 }
 
-`, snakeKey, desc, terraformType)
+`, caseconverter.ToSnakeCase(fieldName), desc, typeStr)
 	}
 
 	return strings.TrimSpace(buf.String()), nil
 }
 
-// fieldDescriptorToTerraformType takes a proto field descriptor and returns a Terraform type string.
-func fieldDescriptorToTerraformType(fd protoreflect.FieldDescriptor) (string, error) {
-	// Handle repeated fields as lists
+func fieldDescriptorToTerraformType(fd protoreflect.FieldDescriptor, parentMsg protoreflect.MessageDescriptor) (terraformType, error) {
+	// If repeated -> list
 	if fd.IsList() {
-		elemType, err := scalarOrMessageToTFType(fd)
+		elemType, err := scalarOrMessageToTFType(fd.Message(), fd)
 		if err != nil {
-			return "", err
+			return nil, err
 		}
-		return fmt.Sprintf("list(%s)", elemType), nil
+		return tfList{elem: elemType}, nil
 	}
 
-	// For singular fields, just convert directly
-	return scalarOrMessageToTFType(fd)
+	return scalarOrMessageToTFType(fd.Message(), fd)
 }
 
-// scalarOrMessageToTFType converts either a scalar or message field into a Terraform type.
-// If it's a message, recursively build an object schema.
-func scalarOrMessageToTFType(fd protoreflect.FieldDescriptor) (string, error) {
+func scalarOrMessageToTFType(parentMsg protoreflect.MessageDescriptor, fd protoreflect.FieldDescriptor) (terraformType, error) {
 	kind := fd.Kind()
 
 	switch kind {
 	case protoreflect.StringKind:
-		return "string", nil
+		return tfPrimitive("string"), nil
 	case protoreflect.BoolKind:
-		return "bool", nil
+		return tfPrimitive("bool"), nil
 	case protoreflect.Int32Kind, protoreflect.Int64Kind,
 		protoreflect.Uint32Kind, protoreflect.Uint64Kind,
 		protoreflect.Sint32Kind, protoreflect.Sint64Kind,
 		protoreflect.Fixed32Kind, protoreflect.Fixed64Kind,
-		protoreflect.Sfixed32Kind, protoreflect.Sfixed64Kind:
-		// All integers map to "number" in Terraform
-		return "number", nil
-	case protoreflect.FloatKind, protoreflect.DoubleKind:
-		// Floating-point types map to number
-		return "number", nil
+		protoreflect.Sfixed32Kind, protoreflect.Sfixed64Kind,
+		protoreflect.FloatKind, protoreflect.DoubleKind:
+		return tfPrimitive("number"), nil
 	case protoreflect.BytesKind:
-		// Bytes can be represented as a string (e.g., base64-encoded)
-		return "string", nil
+		return tfPrimitive("string"), nil
 	case protoreflect.EnumKind:
-		// Enums map to string (you could refine this if you know the allowed values)
-		return "string", nil
+		return tfPrimitive("string"), nil
 	case protoreflect.MessageKind:
-		// For messages, we build an object type
-		return messageToTerraformObject(fd.Message())
+		return messageToTerraformObject(fd.Message(), fd)
 	default:
-		return "", fmt.Errorf("unsupported field kind: %v", kind)
+		return nil, fmt.Errorf("unsupported field kind: %v", kind)
 	}
 }
 
-// messageToTerraformObject takes a message descriptor and constructs a Terraform object({ ... }) type.
-func messageToTerraformObject(md protoreflect.MessageDescriptor) (string, error) {
+func messageToTerraformObject(md protoreflect.MessageDescriptor, fd protoreflect.FieldDescriptor) (terraformType, error) {
 	fields := md.Fields()
-	if fields.Len() == 0 {
-		return "object({})", nil
-	}
+	obj := tfObject{fields: make(map[string]terraformType)}
 
-	var fieldSpecs []string
+	// Skip metadata.version
+	shouldSkipVersion := (md.Name() == "Metadata")
+
 	for i := 0; i < fields.Len(); i++ {
 		f := fields.Get(i)
 		fieldName := string(f.Name())
-		valType, err := fieldDescriptorToTerraformType(f)
+		if shouldSkipVersion && fieldName == "version" {
+			continue
+		}
+
+		valType, err := fieldDescriptorToTerraformType(f, md)
 		if err != nil {
-			return "", err
+			return nil, err
 		}
 		snakeKey := caseconverter.ToSnakeCase(fieldName)
-		fieldSpecs = append(fieldSpecs, fmt.Sprintf("%s = %s", snakeKey, valType))
+		obj.fields[snakeKey] = valType
 	}
-
-	return fmt.Sprintf("object({ %s })", strings.Join(fieldSpecs, ", ")), nil
+	return obj, nil
 }
