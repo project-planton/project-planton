@@ -11,6 +11,7 @@ const (
 	AwsCredential          Flag = "aws-credential"
 	AzureCredential        Flag = "azure-credential"
 	BackendConfig          Flag = "backend-config"
+	BackendType            Flag = "backend-type"
 	ConfluentCredential    Flag = "confluent-credential"
 	DockerCredential       Flag = "docker-credential"
 	GcpCredential          Flag = "gcp-credential"
