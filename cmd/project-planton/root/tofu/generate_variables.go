@@ -1,6 +1,9 @@
 package tofu
 
 import (
+	"github.com/project-planton/project-planton/internal/apiresourcekind"
+	"github.com/project-planton/project-planton/internal/iac/tofu/variablestf"
+	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -29,4 +32,10 @@ declarative workflow.`,
 }
 
 func generateVariablesHandler(cmd *cobra.Command, args []string) {
+	kindName := args[0]
+	manifestObject := apiresourcekind.DeploymentComponentMap[apiresourcekind.FindMatchingComponent(
+		apiresourcekind.ConvertKindName(kindName))]
+	variablesTfContent, err := variablestf.ProtoToVariablesTF(manifestObject)
+	log.Fatal("failed to generate Terraform variables: ", err)
+	println(variablesTfContent)
 }
