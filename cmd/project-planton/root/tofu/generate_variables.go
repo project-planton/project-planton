@@ -2,9 +2,11 @@ package tofu
 
 import (
 	"github.com/project-planton/project-planton/internal/apiresourcekind"
+	"github.com/project-planton/project-planton/internal/cli/flag"
 	"github.com/project-planton/project-planton/internal/iac/tofu/variablestf"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
+	"os"
 )
 
 var GenerateVariables = &cobra.Command{
@@ -31,13 +33,28 @@ declarative workflow.`,
 	Run:  generateVariablesHandler,
 }
 
+func init() {
+	GenerateVariables.Flags().String(string(flag.OutputFile), "", "output file for Terraform variables")
+}
+
 func generateVariablesHandler(cmd *cobra.Command, args []string) {
 	kindName := args[0]
-	manifestObject := apiresourcekind.DeploymentComponentMap[apiresourcekind.FindMatchingComponent(
+
+	outputFile, err := cmd.Flags().GetString(string(flag.OutputFile))
+	flag.HandleFlagErr(err, flag.OutputFile)
+
+	manifestObject := apiresourcekind.ToMessageMap[apiresourcekind.FindMatchingComponent(
 		apiresourcekind.ConvertKindName(kindName))]
 	variablesTfContent, err := variablestf.ProtoToVariablesTF(manifestObject)
 	if err != nil {
 		log.Fatal("failed to generate Terraform variables: ", err)
 	}
-	println(variablesTfContent)
+	if outputFile != "" {
+		if err := os.WriteFile(outputFile, []byte(variablesTfContent), 0644); err != nil {
+			log.Fatalf("failed to write Terraform variables to file %s: %v", outputFile, err)
+		}
+		log.Infof("Terraform variables written to file %s", outputFile)
+	} else {
+		println(variablesTfContent)
+	}
 }
