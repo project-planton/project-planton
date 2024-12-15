@@ -6,25 +6,13 @@ import (
 	"fmt"
 	"github.com/pkg/errors"
 	"github.com/project-planton/project-planton/pkg/fileutil"
+	"github.com/project-planton/project-planton/pkg/strings/caseconverter"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
 	"os"
 	"path/filepath"
 	"strings"
 )
-
-// toSnakeCase converts a camelCase or PascalCase string into snake_case.
-func toSnakeCase(s string) string {
-	var snake []rune
-	for i, r := range s {
-		if i > 0 && r >= 'A' && r <= 'Z' {
-			snake = append(snake, '_', r+('a'-'A'))
-		} else {
-			snake = append(snake, r)
-		}
-	}
-	return strings.ToLower(string(snake))
-}
 
 // ProtoToTFVars converts a given protobuf message into a Terraform tfvars-compatible
 // string. The primary use case is to take a structured proto, typically loaded and validated
@@ -164,7 +152,7 @@ func writeHCL(buf *bytes.Buffer, data interface{}, indentLevel int) error {
 				continue
 			}
 
-			snakeKey := toSnakeCase(k) // Convert key to snake case here.
+			snakeKey := caseconverter.ToSnakeCase(k) // Convert key to snake case here.
 			switch val.(type) {
 			case map[string]interface{}, []interface{}:
 				buf.WriteString(fmt.Sprintf("%s%s = ", indent, snakeKey))
