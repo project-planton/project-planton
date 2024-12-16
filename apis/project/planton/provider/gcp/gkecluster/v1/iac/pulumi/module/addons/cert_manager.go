@@ -56,7 +56,7 @@ func CertManager(ctx *pulumi.Context, locals *localz.Locals,
 	}
 
 	//export cert-manager gsa email
-	ctx.Export(outputs.CertManagerGsaEmail, createdGoogleServiceAccount.Email)
+	ctx.Export(outputs.CERT_MANAGER_GSA_EMAIL, createdGoogleServiceAccount.Email)
 
 	//create workload-identity binding
 	_, err = serviceaccount.NewIAMBinding(ctx,

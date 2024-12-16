@@ -1,13 +1,14 @@
 package outputs
 
 const (
-	Namespace                         = "namespace"
-	Service                           = "service"
-	KubePortForwardCommand            = "kube-port-forward-command"
-	KubeEndpoint                      = "kube-endpoint"
-	IngressExternalHostname           = "ingress-external-hostname"
-	IngressInternalHostname           = "ingress-internal-hostname"
-	PostgresUserCredentialsSecretName = "postgres-user-credentials-secret-name"
-	PostgresUsernameSecretKey         = "postgres-username-secret-key"
-	PostgresPasswordSecretKey         = "postgres-password-secret-key"
+	NAMESPACE            = "namespace"
+	SERVICE              = "service"
+	PORT_FORWARD_COMMAND = "port_forward_command"
+	KUBE_ENDPOINT        = "kube_endpoint"
+	EXTERNAL_HOSTNAME    = "external_hostname"
+	INTERNAL_HOSTNAME    = "internal_hostname"
+	PASSWORD_SECRET_NAME = "password_secret.name"
+	PASSWORD_SECRET_KEY  = "password_secret.key"
+	USERNAME_SECRET_NAME = "username_secret.name"
+	USERNAME_SECRET_KEY  = "username_secret.key"
 )

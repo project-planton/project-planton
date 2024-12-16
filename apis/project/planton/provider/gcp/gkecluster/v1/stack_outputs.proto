@@ -50,4 +50,19 @@ message GkeClusterStackOutputs {
   // this is the service account that is used by external-dns component to insert dns records in
   // google cloud dns when selected services or ingress resources are created on the GKE cluster.
   string external_dns_gsa_email = 10;
+
+  // Self-link URL for firewall rules related to GKE webhooks.
+  string gke_webhooks_firewall_self_link = 11;
+
+  // Self-link URL for the VPC network associated with the cluster.
+  string network_self_link = 12;
+
+  // Self-link URL for the subnetwork associated with the cluster.
+  string sub_network_self_link = 13;
+
+  // Name of the Cloud Router NAT configuration used by the cluster.
+  string router_nat_name = 14;
+
+  // Self-link URL for the Cloud Router associated with the cluster.
+  string router_self_link = 15;
 }

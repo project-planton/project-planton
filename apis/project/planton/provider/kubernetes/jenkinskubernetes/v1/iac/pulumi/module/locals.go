@@ -44,19 +44,19 @@ func initializeLocals(ctx *pulumi.Context, stackInput *jenkinskubernetesv1.Jenki
 	locals.KubeServiceName = jenkinsKubernetes.Metadata.Name
 
 	//export kubernetes service name
-	ctx.Export(outputs.Service, pulumi.String(locals.KubeServiceName))
+	ctx.Export(outputs.SERVICE, pulumi.String(locals.KubeServiceName))
 
 	locals.KubeServiceFqdn = fmt.Sprintf("%s.%s.svc.cluster.local",
 		jenkinsKubernetes.Metadata.Name, locals.Namespace)
 
 	//export kubernetes endpoint
-	ctx.Export(outputs.KubeEndpoint, pulumi.String(locals.KubeServiceFqdn))
+	ctx.Export(outputs.KUBE_ENDPOINT, pulumi.String(locals.KubeServiceFqdn))
 
 	locals.KubePortForwardCommand = fmt.Sprintf("kubectl port-forward -n %s service/%s 8080:8080",
 		locals.Namespace, jenkinsKubernetes.Metadata.Name)
 
 	//export kube-port-forward command
-	ctx.Export(outputs.PortForwardCommand, pulumi.String(locals.KubePortForwardCommand))
+	ctx.Export(outputs.PORT_FORWARD_COMMAND, pulumi.String(locals.KubePortForwardCommand))
 
 	if jenkinsKubernetes.Spec.Ingress == nil ||
 		!jenkinsKubernetes.Spec.Ingress.IsEnabled ||
@@ -76,8 +76,8 @@ func initializeLocals(ctx *pulumi.Context, stackInput *jenkinskubernetesv1.Jenki
 	}
 
 	//export ingress hostnames
-	ctx.Export(outputs.IngressExternalHostname, pulumi.String(locals.IngressExternalHostname))
-	ctx.Export(outputs.IngressInternalHostname, pulumi.String(locals.IngressInternalHostname))
+	ctx.Export(outputs.EXTERNAL_HOSTNAME, pulumi.String(locals.IngressExternalHostname))
+	ctx.Export(outputs.INTERNAL_HOSTNAME, pulumi.String(locals.IngressInternalHostname))
 
 	//note: a ClusterIssuer resource should have already exist on the kubernetes-cluster.
 	//this is typically taken care of by the kubernetes cluster administrator.

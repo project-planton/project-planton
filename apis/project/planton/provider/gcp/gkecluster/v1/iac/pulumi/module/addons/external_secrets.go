@@ -58,7 +58,7 @@ func ExternalSecrets(ctx *pulumi.Context, locals *localz.Locals,
 	}
 
 	//export external-secrets gsa email
-	ctx.Export(outputs.ExternalSecretsGsaEmail, createdGoogleServiceAccount.Email)
+	ctx.Export(outputs.EXTERNAL_SECRETS_GSA_EMAIL, createdGoogleServiceAccount.Email)
 
 	//add iam binding for secrets accessor role
 	_, err = projects.NewIAMBinding(ctx,

@@ -52,34 +52,38 @@ func initializeLocals(ctx *pulumi.Context, stackInput *postgreskubernetesv1.Post
 	//decide on the namespace
 	locals.Namespace = postgresKubernetes.Metadata.Id
 
-	ctx.Export(outputs.Namespace, pulumi.String(locals.Namespace))
+	ctx.Export(outputs.NAMESPACE, pulumi.String(locals.Namespace))
 
 	locals.PostgresPodSectorLabels = map[string]string{
 		"planton.cloud/resource-kind": "postgres_kubernetes",
 		"planton.cloud/resource-id":   postgresKubernetes.Metadata.Id,
 	}
 
-	ctx.Export(outputs.PostgresUserCredentialsSecretName,
+	ctx.Export(outputs.USERNAME_SECRET_NAME,
 		pulumi.Sprintf("postgres.db-%s.credentials.postgresql.acid.zalan.do",
 			postgresKubernetes.Metadata.Id))
-	ctx.Export(outputs.PostgresUsernameSecretKey, pulumi.String("username"))
-	ctx.Export(outputs.PostgresPasswordSecretKey, pulumi.String("password"))
+	ctx.Export(outputs.USERNAME_SECRET_KEY, pulumi.String("username"))
+
+	ctx.Export(outputs.PASSWORD_SECRET_NAME,
+		pulumi.Sprintf("postgres.db-%s.credentials.postgresql.acid.zalan.do",
+			postgresKubernetes.Metadata.Id))
+	ctx.Export(outputs.PASSWORD_SECRET_KEY, pulumi.String("password"))
 
 	locals.KubeServiceName = fmt.Sprintf("%s-master", postgresKubernetes.Metadata.Name)
 
 	//export kubernetes service name
-	ctx.Export(outputs.Service, pulumi.String(locals.KubeServiceName))
+	ctx.Export(outputs.SERVICE, pulumi.String(locals.KubeServiceName))
 
 	locals.KubeServiceFqdn = fmt.Sprintf("%s.%s.svc.cluster.local", locals.KubeServiceName, locals.Namespace)
 
 	//export kubernetes endpoint
-	ctx.Export(outputs.KubeEndpoint, pulumi.String(locals.KubeServiceFqdn))
+	ctx.Export(outputs.KUBE_ENDPOINT, pulumi.String(locals.KubeServiceFqdn))
 
 	locals.KubePortForwardCommand = fmt.Sprintf("kubectl port-forward -n %s service/%s 8080:8080",
 		locals.Namespace, locals.KubeServiceName)
 
 	//export kube-port-forward command
-	ctx.Export(outputs.KubePortForwardCommand, pulumi.String(locals.KubePortForwardCommand))
+	ctx.Export(outputs.PORT_FORWARD_COMMAND, pulumi.String(locals.KubePortForwardCommand))
 
 	if postgresKubernetes.Spec.Ingress == nil ||
 		!postgresKubernetes.Spec.Ingress.IsEnabled ||
@@ -94,8 +98,8 @@ func initializeLocals(ctx *pulumi.Context, stackInput *postgreskubernetesv1.Post
 		postgresKubernetes.Spec.Ingress.DnsDomain)
 
 	//export ingress hostnames
-	ctx.Export(outputs.IngressExternalHostname, pulumi.String(locals.IngressExternalHostname))
-	ctx.Export(outputs.IngressInternalHostname, pulumi.String(locals.IngressInternalHostname))
+	ctx.Export(outputs.EXTERNAL_HOSTNAME, pulumi.String(locals.IngressExternalHostname))
+	ctx.Export(outputs.INTERNAL_HOSTNAME, pulumi.String(locals.IngressInternalHostname))
 
 	return locals
 }

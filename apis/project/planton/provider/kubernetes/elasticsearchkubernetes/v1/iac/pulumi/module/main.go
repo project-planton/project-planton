@@ -32,7 +32,7 @@ func Resources(ctx *pulumi.Context, stackInput *elasticsearchkubernetesv1.Elasti
 	}
 
 	//export name of the namespace
-	ctx.Export(outputs.Namespace, createdNamespace.Metadata.Name())
+	ctx.Export(outputs.NAMESPACE, createdNamespace.Metadata.Name())
 
 	if err := elasticsearch(ctx, locals, createdNamespace); err != nil {
 		return errors.Wrap(err, "failed to create elastic search resources")

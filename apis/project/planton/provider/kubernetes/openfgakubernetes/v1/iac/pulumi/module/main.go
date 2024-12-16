@@ -34,7 +34,7 @@ func Resources(ctx *pulumi.Context, stackInput *openfgakubernetesv1.OpenfgaKuber
 	}
 
 	//export name of the namespace
-	ctx.Export(outputs.Namespace, createdNamespace.Metadata.Name())
+	ctx.Export(outputs.NAMESPACE, createdNamespace.Metadata.Name())
 
 	//install the openfga helm-chart
 	if err := helmChart(ctx, locals, createdNamespace); err != nil {

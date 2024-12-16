@@ -73,10 +73,10 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kafkakubernetesv1.KafkaKu
 	//decide on the namespace
 	locals.Namespace = kafkaKubernetes.Metadata.Id
 
-	ctx.Export(outputs.Namespace, pulumi.String(locals.Namespace))
-	ctx.Export(outputs.KafkaAdminUsername, pulumi.String(vars.AdminUsername))
-	ctx.Export(outputs.KafkaAdminPasswordSecretName, pulumi.String(vars.SaslPasswordSecretName))
-	ctx.Export(outputs.KafkaAdminPasswordSecretKey, pulumi.String(vars.SaslPasswordKeyInSecret))
+	ctx.Export(outputs.NAMESPACE, pulumi.String(locals.Namespace))
+	ctx.Export(outputs.USERNAME, pulumi.String(vars.AdminUsername))
+	ctx.Export(outputs.PASSWORD_SECRET_NAME, pulumi.String(vars.SaslPasswordSecretName))
+	ctx.Export(outputs.PASSWORD_SECRET_KEY, pulumi.String(vars.SaslPasswordKeyInSecret))
 
 	locals.BootstrapKubeServiceName = fmt.Sprintf("%s-kafka-bootstrap", kafkaKubernetes.Metadata.Id)
 
@@ -92,8 +92,8 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kafkakubernetesv1.KafkaKu
 
 		locals.IngressInternalSchemaRegistryHostname = fmt.Sprintf("%s-schema-registry-internal.%s", kafkaKubernetes.Metadata.Id, kafkaKubernetes.Spec.Ingress.DnsDomain)
 
-		ctx.Export(outputs.IngressExternalSchemaRegistryUrl, pulumi.Sprintf("https://%s", locals.IngressExternalSchemaRegistryHostname))
-		ctx.Export(outputs.IngressInternalSchemaRegistryUrl, pulumi.Sprintf("https://%s", locals.IngressInternalSchemaRegistryHostname))
+		ctx.Export(outputs.SCHEMA_REGISTRY_EXTERNAL_URL, pulumi.Sprintf("https://%s", locals.IngressExternalSchemaRegistryHostname))
+		ctx.Export(outputs.SCHEMA_REGISTRY_INTERNAL_URL, pulumi.Sprintf("https://%s", locals.IngressInternalSchemaRegistryHostname))
 
 		locals.IngressSchemaRegistryHostnames = []string{
 			locals.IngressExternalSchemaRegistryHostname,
@@ -109,7 +109,7 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kafkakubernetesv1.KafkaKu
 
 		locals.IngressExternalKowlHostname = fmt.Sprintf("%s-kowl.%s", kafkaKubernetes.Metadata.Id, kafkaKubernetes.Spec.Ingress.DnsDomain)
 
-		ctx.Export(outputs.IngressKafkaUiExternalUrl, pulumi.Sprintf("https://%s", locals.IngressExternalKowlHostname))
+		ctx.Export(outputs.KAFKA_UI_EXTERNAL_URL, pulumi.Sprintf("https://%s", locals.IngressExternalKowlHostname))
 
 		locals.KowlKubeServiceFqdn = fmt.Sprintf("%s.%s.svc.cluster.local", vars.KowlKubeServiceName, locals.Namespace)
 	}
@@ -124,8 +124,8 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kafkakubernetesv1.KafkaKu
 
 	locals.IngressInternalBootstrapHostname = fmt.Sprintf("%s-bootstrap-internal.%s", kafkaKubernetes.Metadata.Id, kafkaKubernetes.Spec.Ingress.DnsDomain)
 
-	ctx.Export(outputs.IngressExternalBootStrapHostname, pulumi.String(locals.IngressExternalBootstrapHostname))
-	ctx.Export(outputs.IngressInternalBootStrapHostname, pulumi.String(locals.IngressInternalBootstrapHostname))
+	ctx.Export(outputs.BOOTSTRAP_SERVER_EXTERNAL_HOSTNAME, pulumi.String(locals.IngressExternalBootstrapHostname))
+	ctx.Export(outputs.BOOTSTRAP_SERVER_INTERNAL_HOSTNAME, pulumi.String(locals.IngressInternalBootstrapHostname))
 
 	// Creating internal broker hostnames
 	ingressInternalBrokerHostnames := make([]string, int(kafkaKubernetes.Spec.BrokerContainer.Replicas))

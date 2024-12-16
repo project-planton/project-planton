@@ -1,19 +1,18 @@
 package outputs
 
 const (
-	Namespace                            = "namespace"
-	ElasticUsername                      = "username"
-	ElasticPasswordSecretName            = "password-secret-name"
-	ElasticPasswordSecretKey             = "password-secret-key"
-	ElasticsearchService                 = "elasticsearch-service"
-	ElasticsearchPortForwardCommand      = "elasticsearch-port-forward-command"
-	ElasticsearchKubeEndpoint            = "elasticsearch-kube-endpoint"
-	ElasticsearchIngressExternalHostname = "elasticsearch-ingress-external-hostname"
-	ElasticsearchIngressInternalHostname = "elasticsearch-ingress-internal-hostname"
-
-	KibanaService                 = "kibana-service"
-	KibanaPortForwardCommand      = "kibana-port-forward-command"
-	KibanaKubeEndpoint            = "kibana-kube-endpoint"
-	KibanaIngressExternalHostname = "kibana-ingress-external-hostname"
-	KibanaIngressInternalHostname = "kibana-ingress-internal-hostname"
+	NAMESPACE                          = "namespace"
+	ELASTICSEARCH_SERVICE              = "elasticsearch.service"
+	ELASTICSEARCH_PORT_FORWARD_COMMAND = "elasticsearch.port_forward_command"
+	ELASTICSEARCH_KUBE_ENDPOINT        = "elasticsearch.kube_endpoint"
+	ELASTICSEARCH_EXTERNAL_HOSTNAME    = "elasticsearch.external_hostname"
+	ELASTICSEARCH_INTERNAL_HOSTNAME    = "elasticsearch.internal_hostname"
+	ELASTICSEARCH_USERNAME             = "elasticsearch.username"
+	ELASTICSEARCH_PASSWORD_SECRET_NAME = "elasticsearch.password_secret.name"
+	ELASTICSEARCH_PASSWORD_SECRET_KEY  = "elasticsearch.password_secret.key"
+	KIBANA_SERVICE                     = "kibana.service"
+	KIBANA_PORT_FORWARD_COMMAND        = "kibana.port_forward_command"
+	KIBANA_KUBE_ENDPOINT               = "kibana.kube_endpoint"
+	KIBANA_EXTERNAL_HOSTNAME           = "kibana.external_hostname"
+	KIBANA_INTERNAL_HOSTNAME           = "kibana.internal_hostname"
 )
