@@ -34,7 +34,7 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kuberneteshttpendpointv1.
 
 	locals.IngressCertSecretName = fmt.Sprintf("cert-%s", locals.KubernetesHttpEndpoint.Metadata.Name)
 
-	ctx.Export(outputs.NAMESPACE, pulumi.String(vars.IstioIngressNamespace))
+	ctx.Export(outputs.Namespace, pulumi.String(vars.IstioIngressNamespace))
 
 	return locals
 }

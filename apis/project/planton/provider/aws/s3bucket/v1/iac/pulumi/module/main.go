@@ -34,6 +34,6 @@ func Resources(ctx *pulumi.Context, stackInput *s3bucketv1.S3BucketStackInput) e
 	}
 
 	// Export the bucket id
-	ctx.Export(outputs.BUCKET_ID, createdBucket.ID())
+	ctx.Export(outputs.BucketId, createdBucket.ID())
 	return nil
 }

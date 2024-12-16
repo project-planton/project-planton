@@ -202,9 +202,9 @@ func table(ctx *pulumi.Context, locals *Locals, awsProvider *aws.Provider) (*dyn
 		return nil, errors.Wrap(err, "failed to create dynamo table resources")
 	}
 
-	ctx.Export(outputs.TABLE_NAME, createdDynamodbTable.Name)
-	ctx.Export(outputs.TABLE_ARN, createdDynamodbTable.Arn)
-	ctx.Export(outputs.TABLE_STREAM_ARN, createdDynamodbTable.StreamArn)
+	ctx.Export(outputs.TableName, createdDynamodbTable.Name)
+	ctx.Export(outputs.TableArn, createdDynamodbTable.Arn)
+	ctx.Export(outputs.TableStreamArn, createdDynamodbTable.StreamArn)
 
 	return createdDynamodbTable, nil
 }

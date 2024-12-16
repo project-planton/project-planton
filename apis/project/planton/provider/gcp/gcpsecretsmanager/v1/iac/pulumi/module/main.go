@@ -62,6 +62,6 @@ func Resources(ctx *pulumi.Context, stackInput *gcpsecretsmanagerv1.GcpSecretsMa
 		secretIdMap[secretName] = secretId
 	}
 	//export the id of the secret
-	ctx.Export(outputs.SECRET_ID_MAP, pulumi.ToStringMap(secretIdMap))
+	ctx.Export(outputs.SecretIdMap, pulumi.ToStringMap(secretIdMap))
 	return nil
 }

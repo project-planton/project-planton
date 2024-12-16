@@ -35,7 +35,7 @@ func ExternalDns(ctx *pulumi.Context, locals *localz.Locals,
 	}
 
 	//export cert-manager gsa email
-	ctx.Export(outputs.EXTERNAL_DNS_GSA_EMAIL, createdGoogleServiceAccount.Email)
+	ctx.Export(outputs.ExternalDnsGsaEmail, createdGoogleServiceAccount.Email)
 
 	//create workload-identity binding
 	_, err = serviceaccount.NewIAMBinding(ctx,

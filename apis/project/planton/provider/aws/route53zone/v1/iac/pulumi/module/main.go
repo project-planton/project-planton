@@ -48,7 +48,7 @@ func Resources(ctx *pulumi.Context, stackInput *route53zonev1.Route53ZoneStackIn
 	}
 
 	//export important information about created hosted-zone as outputs
-	ctx.Export(outputs.HOSTED_ZONE_NAME, createdHostedZone.Name)
+	ctx.Export(outputs.HostedZoneName, createdHostedZone.Name)
 	// todo: add nameservers export
 
 	//for each dns-record in the input spec, insert the record in the created hosted-zone

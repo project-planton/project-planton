@@ -33,18 +33,18 @@ func subnets(ctx *pulumi.Context, locals *localz.Locals, createdVpc *ec2.Vpc,
 			if err != nil {
 				return errors.Wrapf(err, "error creating private subnet %s", subnetName)
 			}
-			ctx.Export(fmt.Sprintf("%s.%d", outputs.PRIVATE_SUBNETS_NAME, i), pulumi.String(subnetName))
-			ctx.Export(fmt.Sprintf("%s.%d", outputs.PRIVATE_SUBNETS_ID, i), createdSubnet.ID())
-			ctx.Export(fmt.Sprintf("%s.%d", outputs.PRIVATE_SUBNETS_CIDR, i), createdSubnet.CidrBlock)
+			ctx.Export(fmt.Sprintf("%s.%d", outputs.PrivateSubnetsName, i), pulumi.String(subnetName))
+			ctx.Export(fmt.Sprintf("%s.%d", outputs.PrivateSubnetsId, i), createdSubnet.ID())
+			ctx.Export(fmt.Sprintf("%s.%d", outputs.PrivateSubnetsCidr, i), createdSubnet.CidrBlock)
 
 			if locals.AwsVpc.Spec.IsNatGatewayEnabled {
 				createdNatGateway, err := natGateway(ctx, locals, createdVpc, subnetName, createdSubnet)
 				if err != nil {
 					return errors.Wrapf(err, "failed to create nat-gateway for %s subnet", subnetName)
 				}
-				ctx.Export(fmt.Sprintf("%s.%d", outputs.PRIVATE_SUBNETS_NAT_GATEWAY_ID, i), createdNatGateway.ID())
-				ctx.Export(fmt.Sprintf("%s.%d", outputs.PRIVATE_SUBNETS_NAT_GATEWAY_PUBLIC_IP, i), createdNatGateway.PublicIp)
-				ctx.Export(fmt.Sprintf("%s.%d", outputs.PRIVATE_SUBNETS_NAT_GATEWAY_PRIVATE_IP, i), createdNatGateway.PrivateIp)
+				ctx.Export(fmt.Sprintf("%s.%d", outputs.PrivateSubnetsNatGatewayId, i), createdNatGateway.ID())
+				ctx.Export(fmt.Sprintf("%s.%d", outputs.PrivateSubnetsNatGatewayPublicIp, i), createdNatGateway.PublicIp)
+				ctx.Export(fmt.Sprintf("%s.%d", outputs.PrivateSubnetsNatGatewayPrivateIp, i), createdNatGateway.PrivateIp)
 			}
 		}
 	}
@@ -71,9 +71,9 @@ func subnets(ctx *pulumi.Context, locals *localz.Locals, createdVpc *ec2.Vpc,
 				return errors.Wrapf(err, "error creating public subnet %s", subnetName)
 			}
 
-			ctx.Export(fmt.Sprintf("%s.%d", outputs.PUBLIC_SUBNETS_NAME, i), pulumi.String(subnetName))
-			ctx.Export(fmt.Sprintf("%s.%d", outputs.PUBLIC_SUBNETS_ID, i), createdSubnet.ID())
-			ctx.Export(fmt.Sprintf("%s.%d", outputs.PUBLIC_SUBNETS_CIDR, i), createdSubnet.CidrBlock)
+			ctx.Export(fmt.Sprintf("%s.%d", outputs.PublicSubnetsName, i), pulumi.String(subnetName))
+			ctx.Export(fmt.Sprintf("%s.%d", outputs.PublicSubnetsId, i), createdSubnet.ID())
+			ctx.Export(fmt.Sprintf("%s.%d", outputs.PublicSubnetsCidr, i), createdSubnet.CidrBlock)
 
 			_, err = ec2.NewRouteTableAssociation(ctx,
 				fmt.Sprintf("public-route-assoc-%s", subnetName),

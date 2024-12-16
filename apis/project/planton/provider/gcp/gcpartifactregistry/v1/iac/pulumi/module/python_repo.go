@@ -76,7 +76,7 @@ func pythonRepo(ctx *pulumi.Context, locals *Locals, gcpProvider *pulumigcp.Prov
 	}
 
 	//export the name of the python repository as output
-	ctx.Export(outputs.PYTHON_REPO_NAME, createdPythonRepo.RepositoryId)
+	ctx.Export(outputs.PythonRepoName, createdPythonRepo.RepositoryId)
 
 	return nil
 }

@@ -34,7 +34,7 @@ func Resources(ctx *pulumi.Context, stackInput *gcsbucketv1.GcsBucketStackInput)
 		return errors.Wrap(err, "failed to create bucket resource")
 	}
 
-	ctx.Export(outputs.BUCKET_ID, createdBucket.ID())
+	ctx.Export(outputs.BucketId, createdBucket.ID())
 
 	if !gcsBucket.Spec.IsPublic {
 		return nil

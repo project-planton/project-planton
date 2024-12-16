@@ -19,6 +19,6 @@ func cloudwatchLogGroup(ctx *pulumi.Context, locals *Locals, awsProvider *aws.Pr
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to create cloudwatch log group")
 	}
-	ctx.Export(outputs.CLOUDWATCH_LOG_GROUP_NAME, createdCloudwatchLogGroup.Name)
+	ctx.Export(outputs.CloudwatchLogGroupName, createdCloudwatchLogGroup.Name)
 	return createdCloudwatchLogGroup, nil
 }

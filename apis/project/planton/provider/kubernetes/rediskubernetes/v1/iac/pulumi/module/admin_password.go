@@ -49,9 +49,9 @@ func adminPassword(ctx *pulumi.Context, locals *Locals, createdNamespace *kubern
 		return errors.Wrap(err, "failed to admin secret")
 	}
 
-	ctx.Export(outputs.USERNAME, pulumi.String("default"))
-	ctx.Export(outputs.PASSWORD_SECRET_NAME, createdSecret.Metadata.Name())
-	ctx.Export(outputs.PASSWORD_SECRET_KEY, pulumi.String(vars.RedisPasswordSecretKey))
+	ctx.Export(outputs.Username, pulumi.String("default"))
+	ctx.Export(outputs.PasswordSecretName, createdSecret.Metadata.Name())
+	ctx.Export(outputs.PasswordSecretKey, pulumi.String(vars.RedisPasswordSecretKey))
 
 	return nil
 }

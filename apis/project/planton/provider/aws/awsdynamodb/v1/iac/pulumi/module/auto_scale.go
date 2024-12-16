@@ -103,7 +103,7 @@ func autoScale(ctx *pulumi.Context, locals *Locals,
 		return errors.Wrap(err, "failed to create read policy")
 	}
 
-	ctx.Export(outputs.AUTOSCALING_READ_POLICY_ARN, readPolicy.Arn)
+	ctx.Export(outputs.AutoscalingReadPolicyArn, readPolicy.Arn)
 
 	indexReadPolicyArnList := pulumi.StringArray{}
 	for _, index := range awsDynamodb.Spec.GlobalSecondaryIndexes {
@@ -142,7 +142,7 @@ func autoScale(ctx *pulumi.Context, locals *Locals,
 		indexReadPolicyArnList = append(indexReadPolicyArnList, indexPolicy.Arn)
 	}
 
-	ctx.Export(outputs.AUTOSCALING_INDEX_READ_POLICY_ARN_LIST, indexReadPolicyArnList)
+	ctx.Export(outputs.AutoscalingIndexReadPolicyArnList, indexReadPolicyArnList)
 
 	writeTarget, err := appautoscaling.NewTarget(ctx, "writeTarget", &appautoscaling.TargetArgs{
 		MaxCapacity:       pulumi.Int(autoScaleMaxWriteCapacity),
@@ -177,7 +177,7 @@ func autoScale(ctx *pulumi.Context, locals *Locals,
 		return errors.Wrap(err, "failed to create write policy")
 	}
 
-	ctx.Export(outputs.AUTOSCALING_WRITE_POLICY_ARN, writePolicy.Arn)
+	ctx.Export(outputs.AutoscalingWritePolicyArn, writePolicy.Arn)
 
 	indexWritePolicyArnList := pulumi.StringArray{}
 	for _, index := range awsDynamodb.Spec.GlobalSecondaryIndexes {
@@ -215,6 +215,6 @@ func autoScale(ctx *pulumi.Context, locals *Locals,
 		}
 		indexWritePolicyArnList = append(indexWritePolicyArnList, indexPolicy.Arn)
 	}
-	ctx.Export(outputs.AUTOSCALING_INDEX_WRITE_POLICY_ARN_LIST, indexWritePolicyArnList)
+	ctx.Export(outputs.AutoscalingIndexWritePolicyArnList, indexWritePolicyArnList)
 	return nil
 }

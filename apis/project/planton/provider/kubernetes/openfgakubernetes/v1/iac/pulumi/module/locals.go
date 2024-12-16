@@ -44,20 +44,20 @@ func initializeLocals(ctx *pulumi.Context, stackInput *openfgakubernetesv1.Openf
 	locals.KubeServiceName = openfgaKubernetes.Metadata.Name
 
 	//export kubernetes service name
-	ctx.Export(outputs.SERVICE, pulumi.String(locals.KubeServiceName))
-	ctx.Export(outputs.NAMESPACE, pulumi.String(locals.Namespace))
+	ctx.Export(outputs.Service, pulumi.String(locals.KubeServiceName))
+	ctx.Export(outputs.Namespace, pulumi.String(locals.Namespace))
 
 	locals.KubeServiceFqdn = fmt.Sprintf("%s.%s.svc.cluster.local",
 		openfgaKubernetes.Metadata.Name, locals.Namespace)
 
 	//export kubernetes endpoint
-	ctx.Export(outputs.KUBE_ENDPOINT, pulumi.String(locals.KubeServiceFqdn))
+	ctx.Export(outputs.KubeEndpoint, pulumi.String(locals.KubeServiceFqdn))
 
 	locals.KubePortForwardCommand = fmt.Sprintf("kubectl port-forward -n %s service/%s 8080:8080",
 		locals.Namespace, openfgaKubernetes.Metadata.Name)
 
 	//export kube-port-forward command
-	ctx.Export(outputs.PORT_FORWARD_COMMAND, pulumi.String(locals.KubePortForwardCommand))
+	ctx.Export(outputs.PortForwardCommand, pulumi.String(locals.KubePortForwardCommand))
 
 	if openfgaKubernetes.Spec.Ingress == nil ||
 		!openfgaKubernetes.Spec.Ingress.IsEnabled ||
@@ -77,8 +77,8 @@ func initializeLocals(ctx *pulumi.Context, stackInput *openfgakubernetesv1.Openf
 	}
 
 	//export ingress hostnames
-	ctx.Export(outputs.EXTERNAL_HOSTNAME, pulumi.String(locals.IngressExternalHostname))
-	ctx.Export(outputs.INTERNAL_HOSTNAME, pulumi.String(locals.IngressInternalHostname))
+	ctx.Export(outputs.ExternalHostname, pulumi.String(locals.IngressExternalHostname))
+	ctx.Export(outputs.InternalHostname, pulumi.String(locals.IngressInternalHostname))
 
 	//note: a ClusterIssuer resource should have already exist on the kubernetes-cluster.
 	//this is typically taken care of by the kubernetes cluster administrator.

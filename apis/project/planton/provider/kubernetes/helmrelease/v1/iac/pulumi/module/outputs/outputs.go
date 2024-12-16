@@ -1,5 +1,5 @@
 package outputs
 
 const (
-	NAMESPACE = "namespace"
+	Namespace = "namespace"
 )

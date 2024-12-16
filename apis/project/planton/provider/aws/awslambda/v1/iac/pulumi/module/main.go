@@ -46,9 +46,9 @@ func Resources(ctx *pulumi.Context, stackInput *awslambdav1.AwsLambdaStackInput)
 		return errors.Wrap(err, "failed to create invoke function permissions")
 	}
 
-	ctx.Export(outputs.LAMBDA_FUNCTION_ARN, createdLambdaFunction.Arn)
-	ctx.Export(outputs.LAMBDA_FUNCTION_NAME, createdLambdaFunction.Name)
-	ctx.Export(outputs.IAM_ROLE_NAME, createdIamRole.Name)
+	ctx.Export(outputs.LambdaFunctionArn, createdLambdaFunction.Arn)
+	ctx.Export(outputs.LambdaFunctionName, createdLambdaFunction.Name)
+	ctx.Export(outputs.IamRoleName, createdIamRole.Name)
 
 	return nil
 }

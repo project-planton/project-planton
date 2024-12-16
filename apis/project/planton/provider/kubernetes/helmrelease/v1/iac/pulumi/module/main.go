@@ -27,7 +27,7 @@ func Resources(ctx *pulumi.Context, stackInput *helmreleasev1.HelmReleaseStackIn
 
 	//decide on the name of the namespace
 	namespaceName := helmRelease.Metadata.Id
-	ctx.Export(helmreleaseoutputs.NAMESPACE, pulumi.String(namespaceName))
+	ctx.Export(helmreleaseoutputs.Namespace, pulumi.String(namespaceName))
 
 	//create namespace resource
 	createdNamespace, err := kubernetescorev1.NewNamespace(ctx,

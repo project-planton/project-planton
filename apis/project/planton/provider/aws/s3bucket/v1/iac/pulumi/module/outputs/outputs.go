@@ -1,5 +1,5 @@
 package outputs
 
 const (
-	BUCKET_ID = "bucket_id"
+	BucketId = "bucket_id"
 )

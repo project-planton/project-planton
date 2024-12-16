@@ -42,7 +42,7 @@ func workloadDeployer(ctx *pulumi.Context, createdCluster *container.Cluster) (*
 	}
 
 	//export email of the created workload deployer service account
-	ctx.Export(outputs.WORKLOAD_DEPLOYER_GSA_EMAIL, createdWorkloadDeployerServiceAccount.Email)
+	ctx.Export(outputs.WorkloadDeployerGsaEmail, createdWorkloadDeployerServiceAccount.Email)
 
 	//create key for workload deployer service account.
 	createdWorkloadDeployerServiceAccountKey, err := serviceaccount.NewKey(ctx,
@@ -55,7 +55,7 @@ func workloadDeployer(ctx *pulumi.Context, createdCluster *container.Cluster) (*
 	}
 
 	//export workload deployer google service account key
-	ctx.Export(outputs.WORKLOAD_DEPLOYER_GSA_KEY_BASE64, createdWorkloadDeployerServiceAccountKey.PrivateKey)
+	ctx.Export(outputs.WorkloadDeployerGsaKeyBase64, createdWorkloadDeployerServiceAccountKey.PrivateKey)
 
 	// create iam-binding for workload-deployer to manage the container cluster itself
 	_, err = projects.NewIAMBinding(ctx,

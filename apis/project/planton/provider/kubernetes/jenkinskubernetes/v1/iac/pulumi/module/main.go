@@ -34,7 +34,7 @@ func Resources(ctx *pulumi.Context, stackInput *jenkinskubernetesv1.JenkinsKuber
 	}
 
 	//export name of the namespace
-	ctx.Export(outputs.NAMESPACE, createdNamespace.Metadata.Name())
+	ctx.Export(outputs.Namespace, createdNamespace.Metadata.Name())
 
 	//create admin-password secret
 	createdAdminPasswordSecret, err := adminCredentials(ctx, locals, createdNamespace)

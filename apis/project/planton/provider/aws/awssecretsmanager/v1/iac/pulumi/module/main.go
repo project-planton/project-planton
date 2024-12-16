@@ -74,7 +74,7 @@ func Resources(ctx *pulumi.Context, stackInput *awssecretsmanagerv1.AwsSecretsMa
 		secretArnMap[secretName] = createdSecretArn
 	}
 
-	ctx.Export(outputs.SECRET_ARN_MAP, pulumi.ToStringMap(secretArnMap))
+	ctx.Export(outputs.SecretArnMap, pulumi.ToStringMap(secretArnMap))
 
 	return nil
 }

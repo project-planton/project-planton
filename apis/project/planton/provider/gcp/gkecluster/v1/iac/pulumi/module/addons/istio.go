@@ -258,7 +258,7 @@ func Istio(ctx *pulumi.Context, locals *localz.Locals,
 	}
 
 	//export ingress-internal ip
-	ctx.Export(outputs.INGRESS_INTERNAL_IP, createdIngressInternalLoadBalancerIp.Address)
+	ctx.Export(outputs.IngressInternalIp, createdIngressInternalLoadBalancerIp.Address)
 
 	//create load-balancer service for internal load-balancer
 	_, err = corev1.NewService(ctx,
@@ -296,7 +296,7 @@ func Istio(ctx *pulumi.Context, locals *localz.Locals,
 	}
 
 	//export ingress-external ip
-	ctx.Export(outputs.INGRESS_EXTERNAL_IP, createdIngressExternalLoadBalancerIp.Address)
+	ctx.Export(outputs.IngressExternalIp, createdIngressExternalLoadBalancerIp.Address)
 
 	//create load-balancer service for external load-balancer
 	_, err = corev1.NewService(ctx,

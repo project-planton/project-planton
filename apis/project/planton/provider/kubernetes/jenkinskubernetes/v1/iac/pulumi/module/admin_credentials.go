@@ -54,9 +54,9 @@ func adminCredentials(ctx *pulumi.Context,
 	}
 
 	//export admin credentials to outputs
-	ctx.Export(outputs.USERNAME, pulumi.String(vars.JenkinsAdminUsername))
-	ctx.Export(outputs.PASSWORD_SECRET_NAME, createdAdminPasswordSecret.Metadata.Name())
-	ctx.Export(outputs.PASSWORD_SECRET_KEY, pulumi.String(vars.JenkinsAdminPasswordSecretKey))
+	ctx.Export(outputs.Username, pulumi.String(vars.JenkinsAdminUsername))
+	ctx.Export(outputs.PasswordSecretName, createdAdminPasswordSecret.Metadata.Name())
+	ctx.Export(outputs.PasswordSecretKey, pulumi.String(vars.JenkinsAdminPasswordSecretKey))
 
 	return createdAdminPasswordSecret, nil
 }
