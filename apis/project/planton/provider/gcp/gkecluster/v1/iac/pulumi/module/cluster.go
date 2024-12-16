@@ -158,7 +158,7 @@ func cluster(ctx *pulumi.Context, locals *localz.Locals, gcpProvider *gcp.Provid
 	}
 
 	//export router nat ip
-	ctx.Export(outputs.NatIpAddress, createdRouterNatIp.Address)
+	ctx.Export(outputs.ExternalNatIp, createdRouterNatIp.Address)
 
 	//create router nat
 	createdRouterNat, err := compute.NewRouterNat(ctx,

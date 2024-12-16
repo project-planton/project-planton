@@ -56,7 +56,7 @@ func initializeLocals(ctx *pulumi.Context, stackInput *locustkubernetesv1.Locust
 		locals.Namespace, locustKubernetes.Metadata.Name)
 
 	//export kube-port-forward command
-	ctx.Export(outputs.KubePortForwardCommand, pulumi.String(locals.KubePortForwardCommand))
+	ctx.Export(outputs.PortForwardCommand, pulumi.String(locals.KubePortForwardCommand))
 
 	if locustKubernetes.Spec.Ingress == nil ||
 		!locustKubernetes.Spec.Ingress.IsEnabled ||
@@ -76,8 +76,8 @@ func initializeLocals(ctx *pulumi.Context, stackInput *locustkubernetesv1.Locust
 	}
 
 	//export ingress hostnames
-	ctx.Export(outputs.IngressExternalHostname, pulumi.String(locals.IngressExternalHostname))
-	ctx.Export(outputs.IngressInternalHostname, pulumi.String(locals.IngressInternalHostname))
+	ctx.Export(outputs.ExternalHostname, pulumi.String(locals.IngressExternalHostname))
+	ctx.Export(outputs.InternalHostname, pulumi.String(locals.IngressInternalHostname))
 
 	//note: a ClusterIssuer resource should have already exist on the kubernetes-cluster.
 	//this is typically taken care of by the kubernetes cluster administrator.

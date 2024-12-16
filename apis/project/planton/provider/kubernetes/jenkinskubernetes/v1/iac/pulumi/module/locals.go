@@ -76,8 +76,8 @@ func initializeLocals(ctx *pulumi.Context, stackInput *jenkinskubernetesv1.Jenki
 	}
 
 	//export ingress hostnames
-	ctx.Export(outputs.IngressExternalHostname, pulumi.String(locals.IngressExternalHostname))
-	ctx.Export(outputs.IngressInternalHostname, pulumi.String(locals.IngressInternalHostname))
+	ctx.Export(outputs.ExternalHostname, pulumi.String(locals.IngressExternalHostname))
+	ctx.Export(outputs.InternalHostname, pulumi.String(locals.IngressInternalHostname))
 
 	//note: a ClusterIssuer resource should have already exist on the kubernetes-cluster.
 	//this is typically taken care of by the kubernetes cluster administrator.

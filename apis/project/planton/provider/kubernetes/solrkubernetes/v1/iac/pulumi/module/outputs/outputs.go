@@ -1,10 +1,10 @@
 package outputs
 
 const (
-	Namespace               = "namespace"
-	Service                 = "service"
-	KubePortForwardCommand  = "port-forward-command"
-	KubeEndpoint            = "kube-endpoint"
-	IngressExternalHostname = "ingress-external-hostname"
-	IngressInternalHostname = "ingress-internal-hostname"
+	Namespace          = "namespace"
+	Service            = "service"
+	PortForwardCommand = "port_forward_command"
+	KubeEndpoint       = "kube_endpoint"
+	ExternalHostname   = "external_hostname"
+	InternalHostname   = "internal_hostname"
 )

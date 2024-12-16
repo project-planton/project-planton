@@ -1,3 +1,3 @@
 package outputs
 
-const BucketIdOutputName = "bucket-id"
+const BucketId = "bucket_id"

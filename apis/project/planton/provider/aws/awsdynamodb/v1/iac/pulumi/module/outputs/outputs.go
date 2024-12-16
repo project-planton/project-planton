@@ -1,11 +1,11 @@
 package outputs
 
 const (
-	TableName                          = "table-name"
-	TableArn                           = "table-arn"
-	TableStreamArn                     = "table-stream-arn"
-	AutoscalingReadPolicyArn           = "autoscaling-read-policy-arn"
-	AutoscalingWritePolicyArn          = "autoscaling-write-policy-arn"
-	AutoscalingIndexReadPolicyArnList  = "autoscaling-index-read-policy-arn-list"
-	AutoscalingIndexWritePolicyArnList = "autoscaling-index-write-policy-arn-list"
+	TableName                          = "table_name"
+	TableArn                           = "table_arn"
+	TableStreamArn                     = "table_stream_arn"
+	AutoscalingReadPolicyArn           = "autoscaling_read_policy_arn"
+	AutoscalingWritePolicyArn          = "autoscaling_write_policy_arn"
+	AutoscalingIndexReadPolicyArnList  = "autoscaling_index_read_policy_arn_list"
+	AutoscalingIndexWritePolicyArnList = "autoscaling_index_write_policy_arn_list"
 )

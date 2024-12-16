@@ -19,7 +19,7 @@ func subnets(ctx *pulumi.Context, locals *localz.Locals, createdVpc *ec2.Vpc,
 	for _, availabilityZone := range sortedPrivateAzKeys {
 		azSubnetMap := locals.PrivateAzSubnetMap[localz.AvailabilityZone(availabilityZone)]
 		sortedSubnetNames := localz.GetSortedSubnetNameKeys(azSubnetMap)
-		for _, subnetName := range sortedSubnetNames {
+		for i, subnetName := range sortedSubnetNames {
 			// create private subnet in az
 			createdSubnet, err := ec2.NewSubnet(ctx,
 				subnetName,
@@ -33,13 +33,18 @@ func subnets(ctx *pulumi.Context, locals *localz.Locals, createdVpc *ec2.Vpc,
 			if err != nil {
 				return errors.Wrapf(err, "error creating private subnet %s", subnetName)
 			}
-			ctx.Export(outputs.SubnetIdOutputKey(subnetName), createdSubnet.ID())
-			ctx.Export(outputs.SubnetCidrOutputKey(subnetName), createdSubnet.CidrBlock)
+			ctx.Export(fmt.Sprintf("%s.%d", outputs.PrivateSubnetsName, i), pulumi.String(subnetName))
+			ctx.Export(fmt.Sprintf("%s.%d", outputs.PrivateSubnetsId, i), createdSubnet.ID())
+			ctx.Export(fmt.Sprintf("%s.%d", outputs.PrivateSubnetsCidr, i), createdSubnet.CidrBlock)
 
 			if locals.AwsVpc.Spec.IsNatGatewayEnabled {
-				if err := natGateway(ctx, locals, createdVpc, subnetName, createdSubnet); err != nil {
+				createdNatGateway, err := natGateway(ctx, locals, createdVpc, subnetName, createdSubnet)
+				if err != nil {
 					return errors.Wrapf(err, "failed to create nat-gateway for %s subnet", subnetName)
 				}
+				ctx.Export(fmt.Sprintf("%s.%d", outputs.PrivateSubnetsNatGatewayId, i), createdNatGateway.ID())
+				ctx.Export(fmt.Sprintf("%s.%d", outputs.PrivateSubnetsNatGatewayPublicIp, i), createdNatGateway.PublicIp)
+				ctx.Export(fmt.Sprintf("%s.%d", outputs.PrivateSubnetsNatGatewayPrivateIp, i), createdNatGateway.PrivateIp)
 			}
 		}
 	}
@@ -49,7 +54,7 @@ func subnets(ctx *pulumi.Context, locals *localz.Locals, createdVpc *ec2.Vpc,
 	for _, availabilityZone := range sortedPublicAzKeys {
 		azSubnetMap := locals.PublicAzSubnetMap[localz.AvailabilityZone(availabilityZone)]
 		sortedSubnetNames := localz.GetSortedSubnetNameKeys(azSubnetMap)
-		for _, subnetName := range sortedSubnetNames {
+		for i, subnetName := range sortedSubnetNames {
 			// create public subnet in az
 			createdSubnet, err := ec2.NewSubnet(ctx,
 				subnetName,
@@ -66,8 +71,9 @@ func subnets(ctx *pulumi.Context, locals *localz.Locals, createdVpc *ec2.Vpc,
 				return errors.Wrapf(err, "error creating public subnet %s", subnetName)
 			}
 
-			ctx.Export(outputs.SubnetIdOutputKey(subnetName), createdSubnet.ID())
-			ctx.Export(outputs.SubnetCidrOutputKey(subnetName), createdSubnet.CidrBlock)
+			ctx.Export(fmt.Sprintf("%s.%d", outputs.PublicSubnetsName, i), pulumi.String(subnetName))
+			ctx.Export(fmt.Sprintf("%s.%d", outputs.PublicSubnetsId, i), createdSubnet.ID())
+			ctx.Export(fmt.Sprintf("%s.%d", outputs.PublicSubnetsCidr, i), createdSubnet.CidrBlock)
 
 			_, err = ec2.NewRouteTableAssociation(ctx,
 				fmt.Sprintf("public-route-assoc-%s", subnetName),

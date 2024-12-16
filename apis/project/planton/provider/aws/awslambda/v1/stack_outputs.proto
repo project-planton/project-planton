@@ -4,6 +4,12 @@ package project.planton.provider.aws.awslambda.v1;
 
 //aws-lambda stack outputs
 message AwsLambdaStackOutputs {
-  //id of the lambda function created on aws
-  string lambda_function_id = 1;
+  //arn of the lambda function created on aws
+  string lambda_function_arn = 1;
+  //name of the lambda function created on aws
+  string lambda_function_name = 2;
+  // iam role name
+  string iam_role_name = 3;
+  // cloud watch log group name
+  string cloudwatch_log_group_name = 4;
 }

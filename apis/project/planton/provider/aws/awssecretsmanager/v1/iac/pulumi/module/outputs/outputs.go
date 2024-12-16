@@ -1,5 +1,5 @@
 package outputs
 
 const (
-	OutputKey = "value"
+	SecretArnMap = "secret_arn_map"
 )

@@ -43,9 +43,9 @@ func initializeLocals(ctx *pulumi.Context, stackInput *elasticsearchkubernetesv1
 		kuberneteslabelkeys.ResourceKind: "elasticsearch_kubernetes",
 	}
 
-	ctx.Export(outputs.ElasticUsername, pulumi.String("elastic"))
-	ctx.Export(outputs.ElasticPasswordSecretName, pulumi.Sprintf("%s-es-elastic-user", elasticsearchKubernetes.Metadata.Name))
-	ctx.Export(outputs.ElasticPasswordSecretKey, pulumi.String("elastic"))
+	ctx.Export(outputs.ElasticsearchUsername, pulumi.String("elastic"))
+	ctx.Export(outputs.ElasticsearchPasswordSecretName, pulumi.Sprintf("%s-es-elastic-user", elasticsearchKubernetes.Metadata.Name))
+	ctx.Export(outputs.ElasticsearchPasswordSecretKey, pulumi.String("elastic"))
 
 	//decide on the namespace
 	locals.Namespace = elasticsearchKubernetes.Metadata.Id
@@ -112,10 +112,10 @@ func initializeLocals(ctx *pulumi.Context, stackInput *elasticsearchkubernetesv1
 	locals.IngressCertSecretName = elasticsearchKubernetes.Metadata.Id
 
 	//export ingress hostnames
-	ctx.Export(outputs.ElasticsearchIngressExternalHostname, pulumi.String(locals.ElasticsearchIngressExternalHostname))
-	ctx.Export(outputs.ElasticsearchIngressInternalHostname, pulumi.String(locals.ElasticsearchIngressInternalHostname))
-	ctx.Export(outputs.KibanaIngressExternalHostname, pulumi.String(locals.KibanaIngressExternalHostname))
-	ctx.Export(outputs.KibanaIngressInternalHostname, pulumi.String(locals.KibanaIngressInternalHostname))
+	ctx.Export(outputs.ElasticsearchExternalHostname, pulumi.String(locals.ElasticsearchIngressExternalHostname))
+	ctx.Export(outputs.ElasticsearchInternalHostname, pulumi.String(locals.ElasticsearchIngressInternalHostname))
+	ctx.Export(outputs.KibanaExternalHostname, pulumi.String(locals.KibanaIngressExternalHostname))
+	ctx.Export(outputs.KibanaInternalHostname, pulumi.String(locals.KibanaIngressInternalHostname))
 
 	return locals
 }

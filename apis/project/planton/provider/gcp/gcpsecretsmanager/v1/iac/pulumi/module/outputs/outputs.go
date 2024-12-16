@@ -1,5 +1,5 @@
 package outputs
 
 const (
-	OutputKey = "value"
+	SecretIdMap = "secret_id_map"
 )

@@ -1,12 +1,12 @@
 package outputs
 
 const (
-	RdsInstanceEndpoint = "rds-instance-endpoint"
-	RdsInstanceId       = "rds-instance-id"
-	RdsInstanceArn      = "rds-instance-arn"
-	RdsInstanceAddress  = "rds-instance-address"
-	RdsSubnetGroup      = "rds-subnet-group"
-	RdsSecurityGroup    = "rds-security-group"
-	RdsParameterGroup   = "rds-parameter-group"
-	RdsOptionsGroup     = "rds-options-group"
+	RdsInstanceEndpoint = "rds_instance_endpoint"
+	RdsInstanceId       = "rds_instance_id"
+	RdsInstanceArn      = "rds_instance_arn"
+	RdsInstanceAddress  = "rds_instance_address"
+	RdsSubnetGroup      = "rds_subnet_group"
+	RdsSecurityGroup    = "rds_security_group"
+	RdsParameterGroup   = "rds_parameter_group"
+	RdsOptionsGroup     = "rds_options_group"
 )

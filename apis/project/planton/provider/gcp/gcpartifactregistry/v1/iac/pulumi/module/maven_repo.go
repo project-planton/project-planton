@@ -75,8 +75,8 @@ func mavenRepo(ctx *pulumi.Context, locals *Locals, gcpProvider *pulumigcp.Provi
 		return errors.Wrap(err, "failed to grant admin role on maven repo for writer service account")
 	}
 
-	//export the name of the maven repository as output
 	ctx.Export(outputs.MavenRepoName, createdMavenRepo.RepositoryId)
+	ctx.Export(outputs.MavenRepoUrl, createdMavenRepo.URN())
 
 	return nil
 }

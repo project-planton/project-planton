@@ -45,6 +45,7 @@ func initializeLocals(ctx *pulumi.Context, stackInput *openfgakubernetesv1.Openf
 
 	//export kubernetes service name
 	ctx.Export(outputs.Service, pulumi.String(locals.KubeServiceName))
+	ctx.Export(outputs.Namespace, pulumi.String(locals.Namespace))
 
 	locals.KubeServiceFqdn = fmt.Sprintf("%s.%s.svc.cluster.local",
 		openfgaKubernetes.Metadata.Name, locals.Namespace)
@@ -76,8 +77,8 @@ func initializeLocals(ctx *pulumi.Context, stackInput *openfgakubernetesv1.Openf
 	}
 
 	//export ingress hostnames
-	//ctx.Export(outputs.IngressExternalHostname, pulumi.String(locals.IngressExternalHostname))
-	//ctx.Export(outputs.IngressInternalHostname, pulumi.String(locals.IngressInternalHostname))
+	ctx.Export(outputs.ExternalHostname, pulumi.String(locals.IngressExternalHostname))
+	ctx.Export(outputs.InternalHostname, pulumi.String(locals.IngressInternalHostname))
 
 	//note: a ClusterIssuer resource should have already exist on the kubernetes-cluster.
 	//this is typically taken care of by the kubernetes cluster administrator.

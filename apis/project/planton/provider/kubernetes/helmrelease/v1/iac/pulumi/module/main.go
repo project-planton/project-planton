@@ -3,6 +3,7 @@ package module
 import (
 	"github.com/pkg/errors"
 	helmreleasev1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/helmrelease/v1"
+	helmreleaseoutputs "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/helmrelease/v1/iac/pulumi/module/outputs"
 	"github.com/project-planton/project-planton/internal/iac/pulumi/pulumimodule/datatypes/stringmaps/convertstringmaps"
 	"github.com/project-planton/project-planton/internal/iac/pulumi/pulumimodule/provider/kubernetes/pulumikubernetesprovider"
 	kubernetescorev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
@@ -26,6 +27,7 @@ func Resources(ctx *pulumi.Context, stackInput *helmreleasev1.HelmReleaseStackIn
 
 	//decide on the name of the namespace
 	namespaceName := helmRelease.Metadata.Id
+	ctx.Export(helmreleaseoutputs.Namespace, pulumi.String(namespaceName))
 
 	//create namespace resource
 	createdNamespace, err := kubernetescorev1.NewNamespace(ctx,

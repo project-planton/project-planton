@@ -1,5 +1,5 @@
 package outputs
 
 const (
-	OutputKey = "value"
+	BucketId = "bucket_id"
 )

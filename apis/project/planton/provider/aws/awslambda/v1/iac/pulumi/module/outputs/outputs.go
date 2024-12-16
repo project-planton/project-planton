@@ -1,8 +1,8 @@
 package outputs
 
 const (
-	IamRoleName            = "iam-role-name"
-	LambdaFunctionArn      = "lambda-function-arn"
-	LambdaFunctionName     = "lambda-function-name"
-	CloudwatchLogGroupName = "cloudwatch-log-group-name"
+	IamRoleName            = "iam_role_name"
+	LambdaFunctionArn      = "lambda_function_arn"
+	LambdaFunctionName     = "lambda_function_name"
+	CloudwatchLogGroupName = "cloudwatch_log_group_name"
 )

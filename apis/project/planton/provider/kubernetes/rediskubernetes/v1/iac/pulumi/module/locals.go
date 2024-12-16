@@ -73,7 +73,7 @@ func initializeLocals(ctx *pulumi.Context, stackInput *rediskubernetesv1.RedisKu
 		locals.Namespace, locals.KubeServiceName)
 
 	//export kube-port-forward command
-	ctx.Export(outputs.KubePortForwardCommand, pulumi.String(locals.KubePortForwardCommand))
+	ctx.Export(outputs.PortForwardCommand, pulumi.String(locals.KubePortForwardCommand))
 
 	if redisKubernetes.Spec.Ingress == nil ||
 		!redisKubernetes.Spec.Ingress.IsEnabled ||
@@ -88,8 +88,8 @@ func initializeLocals(ctx *pulumi.Context, stackInput *rediskubernetesv1.RedisKu
 		redisKubernetes.Spec.Ingress.DnsDomain)
 
 	//export ingress hostnames
-	ctx.Export(outputs.IngressExternalHostname, pulumi.String(locals.IngressExternalHostname))
-	ctx.Export(outputs.IngressInternalHostname, pulumi.String(locals.IngressInternalHostname))
+	ctx.Export(outputs.ExternalHostname, pulumi.String(locals.IngressExternalHostname))
+	ctx.Export(outputs.InternalHostname, pulumi.String(locals.IngressInternalHostname))
 
 	return locals
 }

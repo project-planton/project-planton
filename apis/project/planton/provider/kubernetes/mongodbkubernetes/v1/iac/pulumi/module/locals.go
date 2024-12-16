@@ -40,9 +40,9 @@ func initializeLocals(ctx *pulumi.Context, stackInput *mongodbkubernetesv1.Mongo
 	locals.Namespace = mongodbKubernetes.Metadata.Id
 
 	ctx.Export(outputs.Namespace, pulumi.String(locals.Namespace))
-	ctx.Export(outputs.RootUsername, pulumi.String(vars.RootUsername))
-	ctx.Export(outputs.RootPasswordSecretName, pulumi.String(mongodbKubernetes.Metadata.Name))
-	ctx.Export(outputs.RootPasswordSecretKey, pulumi.String(vars.MongodbRootPasswordKey))
+	ctx.Export(outputs.Username, pulumi.String(vars.RootUsername))
+	ctx.Export(outputs.PasswordSecretName, pulumi.String(mongodbKubernetes.Metadata.Name))
+	ctx.Export(outputs.PasswordSecretKey, pulumi.String(vars.MongodbRootPasswordKey))
 
 	locals.KubeServiceName = mongodbKubernetes.Metadata.Name
 
@@ -64,7 +64,7 @@ func initializeLocals(ctx *pulumi.Context, stackInput *mongodbkubernetesv1.Mongo
 		locals.Namespace, mongodbKubernetes.Metadata.Name)
 
 	//export kube-port-forward command
-	ctx.Export(outputs.KubePortForwardCommand, pulumi.String(locals.KubePortForwardCommand))
+	ctx.Export(outputs.PortForwardCommand, pulumi.String(locals.KubePortForwardCommand))
 
 	if mongodbKubernetes.Spec.Ingress == nil ||
 		!mongodbKubernetes.Spec.Ingress.IsEnabled ||
@@ -79,8 +79,8 @@ func initializeLocals(ctx *pulumi.Context, stackInput *mongodbkubernetesv1.Mongo
 		mongodbKubernetes.Spec.Ingress.DnsDomain)
 
 	//export ingress hostnames
-	ctx.Export(outputs.IngressExternalHostname, pulumi.String(locals.IngressExternalHostname))
-	ctx.Export(outputs.IngressInternalHostname, pulumi.String(locals.IngressInternalHostname))
+	ctx.Export(outputs.ExternalHostname, pulumi.String(locals.IngressExternalHostname))
+	ctx.Export(outputs.InternalHostname, pulumi.String(locals.IngressInternalHostname))
 
 	return locals
 }

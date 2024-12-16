@@ -1,30 +1,19 @@
 package outputs
 
-import (
-	"fmt"
-)
-
 const (
-	VpcId             = "vpc-id"
-	InternetGatewayId = "internet-gateway-id"
+	VpcId                             = "vpc_id"
+	InternetGatewayId                 = "internet_gateway_id"
+	PrivateSubnetsName                = "private_subnets.name"
+	PrivateSubnetsId                  = "private_subnets.id"
+	PrivateSubnetsCidr                = "private_subnets.cidr"
+	PrivateSubnetsNatGatewayId        = "private_subnets.nat_gateway.id"
+	PrivateSubnetsNatGatewayPrivateIp = "private_subnets.nat_gateway.private_ip"
+	PrivateSubnetsNatGatewayPublicIp  = "private_subnets.nat_gateway.public_ip"
+
+	PublicSubnetsName                = "public_subnets.name"
+	PublicSubnetsId                  = "public_subnets.id"
+	PublicSubnetsCidr                = "public_subnets.cidr"
+	PublicSubnetsNatGatewayId        = "public_subnets.nat_gateway.id"
+	PublicSubnetsNatGatewayPrivateIp = "public_subnets.nat_gateway.private_ip"
+	PublicSubnetsNatGatewayPublicIp  = "public_subnets.nat_gateway.public_ip"
 )
-
-func SubnetIdOutputKey(subnetName string) string {
-	return fmt.Sprintf("%s-id", subnetName)
-}
-
-func SubnetCidrOutputKey(subnetName string) string {
-	return fmt.Sprintf("%s-cidr", subnetName)
-}
-
-func NatGatewayIdOutputKey(subnetName string) string {
-	return fmt.Sprintf("%s-nat-gw-id", subnetName)
-}
-
-func NatGatewayPrivateIpOutputKey(subnetName string) string {
-	return fmt.Sprintf("%s-nat-gw-private-ip", subnetName)
-}
-
-func NatGatewayPublicIpOutputKey(subnetName string) string {
-	return fmt.Sprintf("%s-nat-gw-public-ip", subnetName)
-}

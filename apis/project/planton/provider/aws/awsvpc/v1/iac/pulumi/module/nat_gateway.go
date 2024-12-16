@@ -4,13 +4,12 @@ import (
 	"fmt"
 	"github.com/pkg/errors"
 	"github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsvpc/v1/iac/pulumi/module/localz"
-	"github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsvpc/v1/iac/pulumi/module/outputs"
 	"github.com/pulumi/pulumi-aws/sdk/v6/go/aws/ec2"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
 func natGateway(ctx *pulumi.Context, locals *localz.Locals, createdVpc *ec2.Vpc,
-	subnetName string, createdPrivateSubnet *ec2.Subnet) error {
+	subnetName string, createdPrivateSubnet *ec2.Subnet) (*ec2.NatGateway, error) {
 
 	//create elastic ip for nat gateway
 	createdElasticIp, err := ec2.NewEip(ctx,
@@ -20,7 +19,7 @@ func natGateway(ctx *pulumi.Context, locals *localz.Locals, createdVpc *ec2.Vpc,
 				pulumi.Sprintf("%s-nat", createdPrivateSubnet.ID())),
 		}, pulumi.Parent(createdPrivateSubnet))
 	if err != nil {
-		return errors.Wrap(err, "error creating eip for nat gateway")
+		return nil, errors.Wrap(err, "error creating eip for nat gateway")
 	}
 
 	//create nat gateway
@@ -33,12 +32,8 @@ func natGateway(ctx *pulumi.Context, locals *localz.Locals, createdVpc *ec2.Vpc,
 				"Name", createdPrivateSubnet.ID()),
 		}, pulumi.Parent(createdPrivateSubnet))
 	if err != nil {
-		return errors.Wrap(err, "error creating nat gateway")
+		return nil, errors.Wrap(err, "error creating nat gateway")
 	}
-
-	ctx.Export(outputs.NatGatewayIdOutputKey(subnetName), createdNatGateway.ID())
-	ctx.Export(outputs.NatGatewayPublicIpOutputKey(subnetName), createdNatGateway.PublicIp)
-	ctx.Export(outputs.NatGatewayPrivateIpOutputKey(subnetName), createdNatGateway.PrivateIp)
 
 	// private route table to route traffic through nat gateway
 	createdPrivateRouteTable, err := ec2.NewRouteTable(ctx,
@@ -55,7 +50,7 @@ func natGateway(ctx *pulumi.Context, locals *localz.Locals, createdVpc *ec2.Vpc,
 				pulumi.Sprintf("%s-private", createdPrivateSubnet.ID())),
 		}, pulumi.Parent(createdNatGateway))
 	if err != nil {
-		return errors.Wrap(err, "error creating private route table")
+		return nil, errors.Wrap(err, "error creating private route table")
 	}
 
 	// associate private route table with private subnets
@@ -66,9 +61,9 @@ func natGateway(ctx *pulumi.Context, locals *localz.Locals, createdVpc *ec2.Vpc,
 			SubnetId:     createdPrivateSubnet.ID(),
 		}, pulumi.Parent(createdPrivateRouteTable))
 	if err != nil {
-		return errors.Wrap(err, "error associating private route table")
+		return nil, errors.Wrap(err, "error associating private route table")
 	}
-	return nil
+	return createdNatGateway, nil
 }
 
 func AddIdValueEntryToPulumiStringMap(m pulumi.StringMap, key string, id pulumi.IDOutput) pulumi.StringMap {

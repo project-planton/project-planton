@@ -1,6 +1,6 @@
 package outputs
 
 const (
-	HostedZoneNameservers = "nameservers"
-	HostedZoneName        = "hosted-zone-name"
+	HostedNameservers = "hosted_nameservers"
+	HostedZoneName    = "hosted_zone_name"
 )

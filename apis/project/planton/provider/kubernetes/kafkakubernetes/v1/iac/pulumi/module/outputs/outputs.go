@@ -1,13 +1,13 @@
 package outputs
 
 const (
-	Namespace                        = "namespace"
-	IngressExternalBootStrapHostname = "external-bootstrap-hostname"
-	IngressInternalBootStrapHostname = "internal-bootstrap-hostname"
-	IngressExternalSchemaRegistryUrl = "external-schema-registry-url"
-	IngressInternalSchemaRegistryUrl = "internal-schema-registry-url"
-	IngressKafkaUiExternalUrl        = "kafka-ui-ingress-external-url"
-	KafkaAdminUsername               = "kafka-admin-username"
-	KafkaAdminPasswordSecretName     = "kafka-admin-user-secret-name"
-	KafkaAdminPasswordSecretKey      = "kafka-admin-user-secret-key"
+	Namespace                       = "namespace"
+	Username                        = "username"
+	PasswordSecretName              = "password_secret.name"
+	PasswordSecretKey               = "password_secret.key"
+	BootstrapServerExternalHostname = "bootstrap_server_external_hostname"
+	BootstrapServerInternalHostname = "bootstrap_server_internal_hostname"
+	SchemaRegistryExternalUrl       = "schema_registry_external_url"
+	SchemaRegistryInternalUrl       = "schema_registry_internal_url"
+	KafkaUiExternalUrl              = "kafka_ui_external_url"
 )

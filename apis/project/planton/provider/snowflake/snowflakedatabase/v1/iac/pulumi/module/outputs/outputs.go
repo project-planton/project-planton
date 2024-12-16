@@ -1,8 +1,8 @@
 package outputs
 
 const (
-	ProviderAssignedId      = "id"
-	BootstrapEndpoint       = "bootstrap-endpoint"
-	SnowflakeResourceNumber = "crn"
-	RestEndpoint            = "rest-endpoint"
+	ID                 = "id"
+	BOOTSTRAP_ENDPOINT = "bootstrap_endpoint"
+	CRN                = "crn"
+	REST_ENDPOINT      = "rest_endpoint"
 )
