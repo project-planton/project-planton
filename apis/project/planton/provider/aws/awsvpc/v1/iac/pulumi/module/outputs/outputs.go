@@ -1,9 +1,5 @@
 package outputs
 
-import (
-	"fmt"
-)
-
 const (
 	VPC_ID                                 = "vpc_id"
 	INTERNET_GATEWAY_ID                    = "internet_gateway_id"
@@ -21,23 +17,3 @@ const (
 	PUBLIC_SUBNETS_NAT_GATEWAY_PRIVATE_IP = "public_subnets.nat_gateway.private_ip"
 	PUBLIC_SUBNETS_NAT_GATEWAY_PUBLIC_IP  = "public_subnets.nat_gateway.public_ip"
 )
-
-func SubnetIdOutputKey(subnetName string) string {
-	return fmt.Sprintf("%s-id", subnetName)
-}
-
-func SubnetCidrOutputKey(subnetName string) string {
-	return fmt.Sprintf("%s-cidr", subnetName)
-}
-
-func NatGatewayIdOutputKey(subnetName string) string {
-	return fmt.Sprintf("%s-nat-gw-id", subnetName)
-}
-
-func NatGatewayPrivateIpOutputKey(subnetName string) string {
-	return fmt.Sprintf("%s-nat-gw-private-ip", subnetName)
-}
-
-func NatGatewayPublicIpOutputKey(subnetName string) string {
-	return fmt.Sprintf("%s-nat-gw-public-ip", subnetName)
-}

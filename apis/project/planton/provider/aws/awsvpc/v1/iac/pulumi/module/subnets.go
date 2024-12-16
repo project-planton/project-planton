@@ -43,7 +43,7 @@ func subnets(ctx *pulumi.Context, locals *localz.Locals, createdVpc *ec2.Vpc,
 					return errors.Wrapf(err, "failed to create nat-gateway for %s subnet", subnetName)
 				}
 				ctx.Export(fmt.Sprintf("%s.%d", outputs.PRIVATE_SUBNETS_NAT_GATEWAY_ID, i), createdNatGateway.ID())
-				ctx.Export(fmt.Sprintf("%s.%d", outputs.PRIVATE_SUBNETS_NAT_GATEWAY_PRIVATE_IP, i), createdNatGateway.PublicIp)
+				ctx.Export(fmt.Sprintf("%s.%d", outputs.PRIVATE_SUBNETS_NAT_GATEWAY_PUBLIC_IP, i), createdNatGateway.PublicIp)
 				ctx.Export(fmt.Sprintf("%s.%d", outputs.PRIVATE_SUBNETS_NAT_GATEWAY_PRIVATE_IP, i), createdNatGateway.PrivateIp)
 			}
 		}
