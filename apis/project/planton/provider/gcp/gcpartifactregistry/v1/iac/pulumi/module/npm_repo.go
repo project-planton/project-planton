@@ -76,7 +76,7 @@ func npmRepo(ctx *pulumi.Context, locals *Locals, gcpProvider *pulumigcp.Provide
 	}
 
 	//export the name of the npm repository as output
-	ctx.Export(outputs.NpmRepoName, createdNpmRepo.RepositoryId)
+	ctx.Export(outputs.NPM_REPO_NAME, createdNpmRepo.RepositoryId)
 
 	return nil
 }

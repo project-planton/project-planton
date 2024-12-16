@@ -41,9 +41,9 @@ func Resources(ctx *pulumi.Context, stackInput *gcpdnszonev1.GcpDnsZoneStackInpu
 	}
 
 	//export important managed-zone attributes as outputs
-	ctx.Export(outputs.ManagedZoneName, createdManagedZone.Name)
-	ctx.Export(outputs.ManagedZoneNameservers, createdManagedZone.NameServers)
-	ctx.Export(outputs.ManagedZoneGcpProjectId, createdManagedZone.Project)
+	ctx.Export(outputs.MANAGED_ZONE_NAME, createdManagedZone.Name)
+	ctx.Export(outputs.GCP_PROJECT_ID, createdManagedZone.Project)
+	// todo: export nameservers as per new outputs handler logic
 
 	//create IAM binding for the gcp service-accounts to be granted permissions to manage the records in the zone.
 	//with this binding each gcp service-account will be granted permissions to create/delete/update dns-records.

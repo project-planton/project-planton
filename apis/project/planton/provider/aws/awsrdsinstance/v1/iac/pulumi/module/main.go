@@ -37,13 +37,13 @@ func Resources(ctx *pulumi.Context, stackInput *awsrdsinstancev1.AwsRdsInstanceS
 	}
 
 	// Export Outputs
-	ctx.Export(outputs.RdsInstanceEndpoint, createRdsInstance.Endpoint)
-	ctx.Export(outputs.RdsInstanceId, createRdsInstance.ResourceId)
-	ctx.Export(outputs.RdsInstanceArn, createRdsInstance.Arn)
-	ctx.Export(outputs.RdsInstanceAddress, createRdsInstance.Address)
-	ctx.Export(outputs.RdsSecurityGroup, createdSecurityGroup.Name)
-	ctx.Export(outputs.RdsParameterGroup, createRdsInstance.ParameterGroupName)
-	ctx.Export(outputs.RdsSubnetGroup, createRdsInstance.DbSubnetGroupName)
-	ctx.Export(outputs.RdsOptionsGroup, createRdsInstance.OptionGroupName)
+	ctx.Export(outputs.RDS_INSTANCE_ENDPOINT, createRdsInstance.Endpoint)
+	ctx.Export(outputs.RDS_INSTANCE_ID, createRdsInstance.ResourceId)
+	ctx.Export(outputs.RDS_INSTANCE_ARN, createRdsInstance.Arn)
+	ctx.Export(outputs.RDS_INSTANCE_ADDRESS, createRdsInstance.Address)
+	ctx.Export(outputs.RDS_SECURITY_GROUP, createdSecurityGroup.Name)
+	ctx.Export(outputs.RDS_PARAMETER_GROUP, createRdsInstance.ParameterGroupName)
+	ctx.Export(outputs.RDS_SUBNET_GROUP, createRdsInstance.DbSubnetGroupName)
+	ctx.Export(outputs.RDS_OPTIONS_GROUP, createRdsInstance.OptionGroupName)
 	return nil
 }

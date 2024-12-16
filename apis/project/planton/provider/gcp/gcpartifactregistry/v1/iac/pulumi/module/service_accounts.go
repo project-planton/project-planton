@@ -58,8 +58,8 @@ func serviceAccounts(ctx *pulumi.Context, locals *Locals, gcpProvider *pulumigcp
 	}
 
 	//export outputs for email and private key as outputs for the "reader" service account
-	ctx.Export(outputs.ReaderServiceAccountEmail, createdReaderServiceAccount.Email)
-	ctx.Export(outputs.ReaderServiceAccountKey, createdReaderServiceAccountKey.PrivateKey)
+	ctx.Export(outputs.READER_SERVICE_ACCOUNT_EMAIL, createdReaderServiceAccount.Email)
+	ctx.Export(outputs.READER_SERVICE_ACCOUNT_KEY_BASE64, createdReaderServiceAccountKey.PrivateKey)
 
 	//create a name for the google service account to be used for "write"
 	//operations on the artifact-registry repositories.
@@ -94,8 +94,8 @@ func serviceAccounts(ctx *pulumi.Context, locals *Locals, gcpProvider *pulumigcp
 	}
 
 	//export outputs for email and private key as outputs for the "writer" service account
-	ctx.Export(outputs.WriterServiceAccountEmail, createdWriterServiceAccount.Email)
-	ctx.Export(outputs.WriterServiceAccountKey, createdWriterServiceAccountKey.PrivateKey)
+	ctx.Export(outputs.WRITER_SERVICE_ACCOUNT_EMAIL, createdWriterServiceAccount.Email)
+	ctx.Export(outputs.WRITER_SERVICE_ACCOUNT_KEY_BASE64, createdWriterServiceAccountKey.PrivateKey)
 
 	return createdReaderServiceAccount, createdWriterServiceAccount, nil
 }

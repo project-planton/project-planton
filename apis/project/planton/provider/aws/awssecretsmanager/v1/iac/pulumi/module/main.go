@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/pkg/errors"
 	awssecretsmanagerv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awssecretsmanager/v1"
+	"github.com/project-planton/project-planton/apis/project/planton/provider/aws/awssecretsmanager/v1/iac/pulumi/module/outputs"
 	"github.com/pulumi/pulumi-aws/sdk/v6/go/aws"
 	"github.com/pulumi/pulumi-aws/sdk/v6/go/aws/secretsmanager"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
@@ -29,6 +30,8 @@ func Resources(ctx *pulumi.Context, stackInput *awssecretsmanagerv1.AwsSecretsMa
 	if err != nil {
 		return errors.Wrap(err, "failed to create aws provider")
 	}
+
+	secretArnMap := map[string]string{}
 
 	// For each secret in the input spec, create a secret in AWS Secrets Manager
 	for _, secretName := range locals.AwsSecretsManager.Spec.SecretNames {
@@ -59,9 +62,19 @@ func Resources(ctx *pulumi.Context, stackInput *awssecretsmanagerv1.AwsSecretsMa
 			return errors.Wrap(err, "failed to create placeholder secret version")
 		}
 
-		// Export the secret ID
-		ctx.Export(fmt.Sprintf("%s-arn", secretName), createdSecret.Arn)
+		var createdSecretArn string
+
+		createdSecret.Arn.ApplyT(func(arn string) (string, error) {
+			// Here arn is a real string value, available at runtime.
+			createdSecretArn = arn
+			fmt.Println("The resolved ARN is:", arn)
+			return arn, nil
+		})
+
+		secretArnMap[secretName] = createdSecretArn
 	}
+
+	ctx.Export(outputs.SECRET_ARN_MAP, pulumi.ToStringMap(secretArnMap))
 
 	return nil
 }

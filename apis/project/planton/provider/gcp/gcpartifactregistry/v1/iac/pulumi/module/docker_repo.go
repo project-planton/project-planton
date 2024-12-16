@@ -94,13 +94,13 @@ func dockerRepo(ctx *pulumi.Context, locals *Locals, gcpProvider *pulumigcp.Prov
 	}
 
 	//export important attributes of the docker repository as outputs
-	ctx.Export(outputs.DockerRepoName, createdDockerRepo.RepositoryId)
+	ctx.Export(outputs.DOCKER_REPO_NAME, createdDockerRepo.RepositoryId)
 	//export docker-repo hostname
-	ctx.Export(outputs.DockerRepoHostname, pulumi.Sprintf(
+	ctx.Export(outputs.DOCKER_REPO_HOSTNAME, pulumi.Sprintf(
 		"%s-docker.pkg.dev", createdDockerRepo.Location))
 	//export complete docker repo url based on the attributes of the created docker-repo
 	// ex: artifactregistry://us-central1-docker.pkg.dev/my-gcp-project-id/my-company-docker-repo
-	ctx.Export(outputs.DockerRepoUrl, pulumi.Sprintf(
+	ctx.Export(outputs.DOCKER_REPO_URL, pulumi.Sprintf(
 		"%s-docker.pkg.dev/%s/%s",
 		createdDockerRepo.Location, createdDockerRepo.Project, createdDockerRepo.Name))
 

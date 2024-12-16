@@ -1,7 +1,7 @@
 package outputs
 
 const (
-	RdsClusterMasterEndpoint = "rds-cluster-master-endpoint"
-	RdsClusterIdentifier     = "rds-cluster-identifier"
-	RdsClusterReaderEndpoint = "rds-cluster-reader-endpoint"
+	MASTER_ENDPOINT    = "master_endpoint"
+	CLUSTER_IDENTIFIER = "cluster_identifier"
+	READER_ENDPOINT    = "reader_endpoint"
 )

@@ -3,6 +3,7 @@ package module
 import (
 	"github.com/pkg/errors"
 	s3bucketv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/s3bucket/v1"
+	"github.com/project-planton/project-planton/apis/project/planton/provider/aws/s3bucket/v1/iac/pulumi/module/outputs"
 	"github.com/pulumi/pulumi-aws-native/sdk/go/aws"
 	"github.com/pulumi/pulumi-aws-native/sdk/go/aws/s3"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
@@ -32,7 +33,7 @@ func Resources(ctx *pulumi.Context, stackInput *s3bucketv1.S3BucketStackInput) e
 		return errors.Wrap(err, "failed to create S3 bucket")
 	}
 
-	// Export the bucket name
-	ctx.Export("bucketName", createdBucket.ID())
+	// Export the bucket id
+	ctx.Export(outputs.BUCKET_ID, createdBucket.ID())
 	return nil
 }

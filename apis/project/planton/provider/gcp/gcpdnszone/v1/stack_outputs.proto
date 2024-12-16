@@ -6,4 +6,8 @@ package project.planton.provider.gcp.gcpdnszone.v1;
 message GcpDnsZoneStackOutputs {
   // The list of nameservers for the Managed Zone created for the DNS Domain.
   repeated string nameservers = 1;
+  // gcp project id of the dns zone
+  string gcp_project_id = 2;
+  // managed zone name
+  string managed_zone_name = 3;
 }

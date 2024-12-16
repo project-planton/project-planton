@@ -45,7 +45,7 @@ func Resources(ctx *pulumi.Context, stackInput *awsvpcv1.AwsVpcStackInput) error
 	}
 
 	//add vpc id to outputs
-	ctx.Export(outputs.VpcId, createdVpc.ID())
+	ctx.Export(outputs.VPC_ID, createdVpc.ID())
 
 	// internet gateway for public subnets
 	createdInternetGateway, err := ec2.NewInternetGateway(ctx,
@@ -60,7 +60,7 @@ func Resources(ctx *pulumi.Context, stackInput *awsvpcv1.AwsVpcStackInput) error
 	}
 
 	//add internet-gateway id to outputs
-	ctx.Export(outputs.InternetGatewayId, createdInternetGateway.ID())
+	ctx.Export(outputs.INTERNET_GATEWAY_ID, createdInternetGateway.ID())
 
 	// public route table for internet access
 	createdPublicRouteTable, err := ec2.NewRouteTable(ctx,

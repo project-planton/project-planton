@@ -35,9 +35,9 @@ func Resources(ctx *pulumi.Context, stackInput *awsrdsclusterv1.AwsRdsClusterSta
 		return errors.Wrap(err, "failed to create rds cluster")
 	}
 
-	ctx.Export(outputs.RdsClusterIdentifier, createdRdsCluster.ClusterIdentifier)
-	ctx.Export(outputs.RdsClusterMasterEndpoint, createdRdsCluster.Endpoint)
-	ctx.Export(outputs.RdsClusterReaderEndpoint, createdRdsCluster.ReaderEndpoint)
+	ctx.Export(outputs.CLUSTER_IDENTIFIER, createdRdsCluster.ClusterIdentifier)
+	ctx.Export(outputs.MASTER_ENDPOINT, createdRdsCluster.Endpoint)
+	ctx.Export(outputs.READER_ENDPOINT, createdRdsCluster.ReaderEndpoint)
 
 	// Create RDS Cluster Instance
 	_, err = rdsClusterInstance(ctx, locals, awsProvider, createdRdsCluster)
