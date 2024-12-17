@@ -25,4 +25,3 @@ resource "aws_internet_gateway" "this" {
     { "Name" = "${var.metadata.name}-igw" }
   )
 }
-
