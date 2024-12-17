@@ -32,7 +32,7 @@ variable "metadata" {
     })
 
     # tags for the resource
-    tags = list(string)
+    tags = map(string)
   })
 }
 
