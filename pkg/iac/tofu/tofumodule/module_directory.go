@@ -15,20 +15,19 @@ import (
 )
 
 func getModulePath(moduleDir, kindName string) (string, error) {
+
 	// If the module directory is provided, check if it is a valid terraform module directory
 	if moduleDir != "" {
-		return moduleDir, nil
-	}
+		// If the module directory is not provided, clone the repository and get the terraform module path
+		isTerraformModuleDir, err := isTerraformModuleDirectory(moduleDir)
+		if err != nil {
+			return "", errors.Wrapf(err, "failed to check if %s is a valid terraform module directory", moduleDir)
+		}
 
-	// If the module directory is not provided, clone the repository and get the terraform module path
-	isTerraformModuleDir, err := isTerraformModuleDirectory(moduleDir)
-	if err != nil {
-		return "", errors.Wrapf(err, "failed to check if %s is a valid terraform module directory", moduleDir)
-	}
-
-	// If the module directory is a valid terraform module directory, return the module directory
-	if isTerraformModuleDir {
-		return moduleDir, nil
+		// If the module directory is a valid terraform module directory, return the module directory
+		if isTerraformModuleDir {
+			return moduleDir, nil
+		}
 	}
 
 	// If the module directory is not a valid terraform module directory,
@@ -58,7 +57,7 @@ func getModulePath(moduleDir, kindName string) (string, error) {
 	}
 
 	//checkout the project-planton version tag if it is not the default version
-	if version.Version != version.DefaultVersion {
+	if version.Version != "" && version.Version != version.DefaultVersion {
 		gitCheckoutCommand := exec.Command("git", "-C", terraformModuleRepoPath, "checkout", version.Version)
 		gitCheckoutCommand.Stdout = os.Stdout
 		gitCheckoutCommand.Stderr = os.Stderr
