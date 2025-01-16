@@ -15,19 +15,30 @@ import (
 )
 
 func getModulePath(moduleDir, kindName string) (string, error) {
+	// If the module directory is provided, check if it is a valid terraform module directory
+	if moduleDir != "" {
+		return moduleDir, nil
+	}
+
+	// If the module directory is not provided, clone the repository and get the terraform module path
 	isTerraformModuleDir, err := isTerraformModuleDirectory(moduleDir)
 	if err != nil {
 		return "", errors.Wrapf(err, "failed to check if %s is a valid terraform module directory", moduleDir)
 	}
+
+	// If the module directory is a valid terraform module directory, return the module directory
 	if isTerraformModuleDir {
 		return moduleDir, nil
 	}
 
+	// If the module directory is not a valid terraform module directory,
+	//clone the repository and get the terraform module path
 	tofuModuleWorkspaceDir, err := getWorkspaceDir()
 	if err != nil {
 		return "", errors.Wrapf(err, "failed to get tofu module workspace directory")
 	}
 
+	// Clone the repository to the workspace directory
 	gitRepoName, err := gitrepo.ExtractRepoName(gitrepo.CloneUrl)
 	if err != nil {
 		return "", errors.Wrapf(err, "failed to extract git repo name from %s", gitrepo.CloneUrl)
@@ -36,6 +47,7 @@ func getModulePath(moduleDir, kindName string) (string, error) {
 	// Check if the cloned repository directory already exists
 	terraformModuleRepoPath := filepath.Join(tofuModuleWorkspaceDir, gitRepoName)
 
+	// If the cloned repository directory does not exist, clone the repository
 	if _, statErr := os.Stat(terraformModuleRepoPath); os.IsNotExist(statErr) {
 		gitCloneCommand := exec.Command("git", "clone", gitrepo.CloneUrl, terraformModuleRepoPath)
 		gitCloneCommand.Stdout = os.Stdout

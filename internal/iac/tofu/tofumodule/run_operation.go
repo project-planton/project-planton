@@ -7,7 +7,7 @@ import (
 	"github.com/project-planton/project-planton/internal/apiresourcekind"
 	"github.com/project-planton/project-planton/internal/iac/stackinput/credentials"
 	"github.com/project-planton/project-planton/internal/iac/tofu/tfvars"
-	"github.com/project-planton/project-planton/internal/manifest"
+	"google.golang.org/protobuf/proto"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -15,18 +15,16 @@ import (
 
 const TofuCommand = "tofu"
 
-func RunOperation(moduleDir, targetManifestPath string, tofuOperation tofu.TofuOperationType,
-	valueOverrides map[string]string,
+func RunOperation(inputModuleDir string, tofuOperation tofu.TofuOperationType,
 	isAutoApprove bool,
+	manifestObject proto.Message,
 	stackInputOptions ...credentials.StackInputCredentialOption) error {
+
+	//currently, these credential options are not utilized, and these are going to be used once we figure out
+	//how to create terraform provider blocs based on these credential options passed by a command line args.
 	opts := credentials.StackInputCredentialOptions{}
 	for _, opt := range stackInputOptions {
 		opt(&opts)
-	}
-
-	manifestObject, err := manifest.LoadWithOverrides(targetManifestPath, valueOverrides)
-	if err != nil {
-		return errors.Wrapf(err, "failed to override values in target manifest file")
 	}
 
 	kindName, err := apiresourcekind.ExtractKindFromProto(manifestObject)
@@ -34,14 +32,14 @@ func RunOperation(moduleDir, targetManifestPath string, tofuOperation tofu.TofuO
 		return errors.Wrapf(err, "failed to extract kind name from manifest proto")
 	}
 
-	tofuModulePath, err := getModulePath(moduleDir, kindName)
+	tofuModulePath, err := getModulePath(inputModuleDir, kindName)
 	if err != nil {
 		return errors.Wrapf(err, "failed to get tofu module directory")
 	}
 
 	tfVarsFile := filepath.Join(tofuModulePath, ".terraform", "terraform.tfvars")
 
-	if err = tfvars.WriteVarFile(manifestObject, tfVarsFile); err != nil {
+	if err := tfvars.WriteVarFile(manifestObject, tfVarsFile); err != nil {
 		return errors.Wrapf(err, "failed to write %s file", tfVarsFile)
 	}
 

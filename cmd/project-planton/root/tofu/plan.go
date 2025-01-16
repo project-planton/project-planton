@@ -43,7 +43,7 @@ func planHandler(cmd *cobra.Command, args []string) {
 		}
 	}
 
-	err = tofumodule.RunOperation(moduleDir, targetManifestPath, tofu.TofuOperationType_plan, valueOverrides,
+	err = tofumodule.RunCommand(moduleDir, targetManifestPath, tofu.TofuOperationType_plan, valueOverrides,
 		true,
 		credentialOptions...)
 	if err != nil {

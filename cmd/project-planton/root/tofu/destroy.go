@@ -50,7 +50,7 @@ func destroyHandler(cmd *cobra.Command, args []string) {
 		}
 	}
 
-	err = tofumodule.RunOperation(moduleDir, targetManifestPath, tofu.TofuOperationType_destroy, valueOverrides,
+	err = tofumodule.RunCommand(moduleDir, targetManifestPath, tofu.TofuOperationType_destroy, valueOverrides,
 		isAutoApprove,
 		credentialOptions...)
 	if err != nil {

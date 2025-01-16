@@ -43,7 +43,7 @@ func refreshHandler(cmd *cobra.Command, args []string) {
 		}
 	}
 
-	err = tofumodule.RunOperation(moduleDir, targetManifestPath, tofu.TofuOperationType_refresh, valueOverrides,
+	err = tofumodule.RunCommand(moduleDir, targetManifestPath, tofu.TofuOperationType_refresh, valueOverrides,
 		true,
 		credentialOptions...)
 	if err != nil {

@@ -50,7 +50,7 @@ func applyHandler(cmd *cobra.Command, args []string) {
 		}
 	}
 
-	err = tofumodule.RunOperation(moduleDir, targetManifestPath, tofu.TofuOperationType_apply,
+	err = tofumodule.RunCommand(moduleDir, targetManifestPath, tofu.TofuOperationType_apply,
 		valueOverrides,
 		isAutoApprove,
 		credentialOptions...)
