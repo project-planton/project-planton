@@ -1,8 +1,8 @@
 package tofu
 
 import (
-	"github.com/project-planton/project-planton/internal/iac/tofu/tfvars"
 	"github.com/project-planton/project-planton/internal/manifest"
+	"github.com/project-planton/project-planton/pkg/iac/tofu/tfvars"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	postgreskubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/postgreskubernetes/v1"
 	"github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/postgreskubernetes/v1/iac/pulumi/module/outputs"
-	"github.com/project-planton/project-planton/internal/iac/pulumi/pulumimodule/provider/kubernetes/kuberneteslabelkeys"
+	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/kuberneteslabelkeys"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"strconv"
 )
