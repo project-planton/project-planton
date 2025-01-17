@@ -3,6 +3,7 @@ package tofumodule
 import (
 	"github.com/pkg/errors"
 	"github.com/project-planton/project-planton/apis/project/planton/shared/iac/terraform"
+	"github.com/project-planton/project-planton/internal/apiresourcekind"
 	"github.com/project-planton/project-planton/internal/manifest"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput/credentials"
 )
@@ -21,7 +22,17 @@ func RunCommand(inputModuleDir, targetManifestPath string, terraformOperation te
 		return errors.Wrapf(err, "failed to override values in target manifest file")
 	}
 
-	err = RunOperation(inputModuleDir, terraformOperation, isAutoApprove, manifestObject, stackInputOptions...)
+	kindName, err := apiresourcekind.ExtractKindFromProto(manifestObject)
+	if err != nil {
+		return errors.Wrapf(err, "failed to extract kind name from manifest proto")
+	}
+
+	tofuModulePath, err := GetModulePath(inputModuleDir, kindName)
+	if err != nil {
+		return errors.Wrapf(err, "failed to get tofu module directory")
+	}
+
+	err = RunOperation(tofuModulePath, terraformOperation, isAutoApprove, manifestObject, stackInputOptions...)
 	if err != nil {
 		return errors.Wrapf(err, "failed to run tofu operation")
 	}

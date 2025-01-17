@@ -2,6 +2,7 @@ package tofu
 
 import (
 	terraformbackendcredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/terraformbackendcredential/v1"
+	"github.com/project-planton/project-planton/internal/apiresourcekind"
 	"github.com/project-planton/project-planton/internal/cli/flag"
 	"github.com/project-planton/project-planton/internal/manifest"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput/credentials"
@@ -86,7 +87,17 @@ func initHandler(cmd *cobra.Command, args []string) {
 		log.Fatalf("failed to override values in target manifest file")
 	}
 
-	err = tofumodule.TofuInit(moduleDir, manifestObject, backendType, backendConfigList, credentialOptions...)
+	kindName, err := apiresourcekind.ExtractKindFromProto(manifestObject)
+	if err != nil {
+		log.Fatalf("failed to extract kind name from manifest proto %v", err)
+	}
+
+	tofuModulePath, err := tofumodule.GetModulePath(moduleDir, kindName)
+	if err != nil {
+		log.Fatalf("failed to get tofu module directory %v", err)
+	}
+
+	err = tofumodule.TofuInit(tofuModulePath, manifestObject, backendType, backendConfigList, credentialOptions...)
 	if err != nil {
 		log.Fatalf("failed to run tofu operation: %v", err)
 	}

@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/pkg/errors"
 	"github.com/project-planton/project-planton/apis/project/planton/shared/iac/terraform"
-	"github.com/project-planton/project-planton/internal/apiresourcekind"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput/credentials"
 	"github.com/project-planton/project-planton/pkg/iac/tofu/tfvars"
 	"google.golang.org/protobuf/proto"
@@ -15,7 +14,7 @@ import (
 
 const TofuCommand = "tofu"
 
-func RunOperation(inputModuleDir string, terraformOperation terraform.TerraformOperationType,
+func RunOperation(tofuModulePath string, terraformOperation terraform.TerraformOperationType,
 	isAutoApprove bool,
 	manifestObject proto.Message,
 	stackInputOptions ...credentials.StackInputCredentialOption) error {
@@ -25,16 +24,6 @@ func RunOperation(inputModuleDir string, terraformOperation terraform.TerraformO
 	opts := credentials.StackInputCredentialOptions{}
 	for _, opt := range stackInputOptions {
 		opt(&opts)
-	}
-
-	kindName, err := apiresourcekind.ExtractKindFromProto(manifestObject)
-	if err != nil {
-		return errors.Wrapf(err, "failed to extract kind name from manifest proto")
-	}
-
-	tofuModulePath, err := getModulePath(inputModuleDir, kindName)
-	if err != nil {
-		return errors.Wrapf(err, "failed to get tofu module directory")
 	}
 
 	tfVarsFile := filepath.Join(tofuModulePath, ".terraform", "terraform.tfvars")

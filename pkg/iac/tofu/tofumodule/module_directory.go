@@ -14,7 +14,7 @@ import (
 	"strings"
 )
 
-func getModulePath(moduleDir, kindName string) (string, error) {
+func GetModulePath(moduleDir, kindName string) (string, error) {
 
 	// If the module directory is provided, check if it is a valid terraform module directory
 	if moduleDir != "" {
