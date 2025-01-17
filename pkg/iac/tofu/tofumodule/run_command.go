@@ -2,12 +2,12 @@ package tofumodule
 
 import (
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/apis/project/planton/shared/tofu"
+	"github.com/project-planton/project-planton/apis/project/planton/shared/terraform"
 	"github.com/project-planton/project-planton/internal/manifest"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput/credentials"
 )
 
-func RunCommand(inputModuleDir, targetManifestPath string, tofuOperation tofu.TofuOperationType,
+func RunCommand(inputModuleDir, targetManifestPath string, terraformOperation terraform.TerraformOperationType,
 	valueOverrides map[string]string,
 	isAutoApprove bool,
 	stackInputOptions ...credentials.StackInputCredentialOption) error {
@@ -21,7 +21,7 @@ func RunCommand(inputModuleDir, targetManifestPath string, tofuOperation tofu.To
 		return errors.Wrapf(err, "failed to override values in target manifest file")
 	}
 
-	err = RunOperation(inputModuleDir, tofuOperation, isAutoApprove, manifestObject, stackInputOptions...)
+	err = RunOperation(inputModuleDir, terraformOperation, isAutoApprove, manifestObject, stackInputOptions...)
 	if err != nil {
 		return errors.Wrapf(err, "failed to run tofu operation")
 	}

@@ -1,12 +1,12 @@
 syntax = "proto3";
 
-package project.planton.shared.tofu;
+package project.planton.shared.terraform;
 
-// tofu operation type
+// terraform operation type
 // the recommended best practice to prefix the entry with enum name has been intentionally ignored
 // to allow users to specify a user-friendly name in the input.
-enum TofuOperationType {
-  tofu_operation_type_unspecified = 0;
+enum TerraformOperationType {
+  terraform_operation_type_unspecified = 0;
   init = 1;
   refresh = 2;
   plan = 3;

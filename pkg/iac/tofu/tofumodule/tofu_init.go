@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/pkg/errors"
 	"github.com/project-planton/project-planton/apis/project/planton/credential/terraformbackendcredential/v1"
-	"github.com/project-planton/project-planton/apis/project/planton/shared/tofu"
+	"github.com/project-planton/project-planton/apis/project/planton/shared/terraform"
 	"github.com/project-planton/project-planton/internal/apiresourcekind"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput/credentials"
 	"github.com/project-planton/project-planton/pkg/iac/tofu/tfbackend"
@@ -44,7 +44,7 @@ func TofuInit(moduleDir string, manifestObject proto.Message,
 		return errors.Wrapf(err, "failed to write %s file", tfVarsFile)
 	}
 
-	tofuCmd := exec.Command(TofuCommand, tofu.TofuOperationType_init.String(), "--var-file", tfVarsFile)
+	tofuCmd := exec.Command(TofuCommand, terraform.TerraformOperationType_init.String(), "--var-file", tfVarsFile)
 
 	// Set the working directory to the repository path
 	tofuCmd.Dir = tofuModulePath

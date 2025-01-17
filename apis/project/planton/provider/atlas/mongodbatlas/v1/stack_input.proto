@@ -2,9 +2,10 @@ syntax = "proto3";
 
 package project.planton.provider.atlas.mongodbatlas.v1;
 
-import "project/planton/provider/atlas/mongodbatlas/v1/api.proto";
 import "project/planton/credential/mongodbatlascredential/v1/spec.proto";
+import "project/planton/provider/atlas/mongodbatlas/v1/api.proto";
 import "project/planton/shared/pulumi/pulumi.proto";
+import "project/planton/shared/shared.proto";
 
 //mongodb-atlas stack-input
 message MongodbAtlasStackInput {

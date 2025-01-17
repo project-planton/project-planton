@@ -3,7 +3,7 @@ package tofumodule
 import (
 	"fmt"
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/apis/project/planton/shared/tofu"
+	"github.com/project-planton/project-planton/apis/project/planton/shared/terraform"
 	"github.com/project-planton/project-planton/internal/apiresourcekind"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput/credentials"
 	"github.com/project-planton/project-planton/pkg/iac/tofu/tfvars"
@@ -15,7 +15,7 @@ import (
 
 const TofuCommand = "tofu"
 
-func RunOperation(inputModuleDir string, tofuOperation tofu.TofuOperationType,
+func RunOperation(inputModuleDir string, terraformOperation terraform.TerraformOperationType,
 	isAutoApprove bool,
 	manifestObject proto.Message,
 	stackInputOptions ...credentials.StackInputCredentialOption) error {
@@ -43,12 +43,12 @@ func RunOperation(inputModuleDir string, tofuOperation tofu.TofuOperationType,
 		return errors.Wrapf(err, "failed to write %s file", tfVarsFile)
 	}
 
-	op := tofuOperation.String()
+	op := terraformOperation.String()
 
 	tofuCmd := exec.Command(TofuCommand, op, "--var-file", tfVarsFile)
 
-	if (tofuOperation == tofu.TofuOperationType_apply ||
-		tofuOperation == tofu.TofuOperationType_destroy) && isAutoApprove {
+	if (terraformOperation == terraform.TerraformOperationType_apply ||
+		terraformOperation == terraform.TerraformOperationType_destroy) && isAutoApprove {
 		tofuCmd.Args = append(tofuCmd.Args, "--auto-approve")
 	}
 

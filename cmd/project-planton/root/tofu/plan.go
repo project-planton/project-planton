@@ -1,7 +1,7 @@
 package tofu
 
 import (
-	"github.com/project-planton/project-planton/apis/project/planton/shared/tofu"
+	"github.com/project-planton/project-planton/apis/project/planton/shared/terraform"
 	"github.com/project-planton/project-planton/internal/cli/flag"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput/credentials"
 	"github.com/project-planton/project-planton/pkg/iac/tofu/tofumodule"
@@ -43,7 +43,7 @@ func planHandler(cmd *cobra.Command, args []string) {
 		}
 	}
 
-	err = tofumodule.RunCommand(moduleDir, targetManifestPath, tofu.TofuOperationType_plan, valueOverrides,
+	err = tofumodule.RunCommand(moduleDir, targetManifestPath, terraform.TerraformOperationType_plan, valueOverrides,
 		true,
 		credentialOptions...)
 	if err != nil {
