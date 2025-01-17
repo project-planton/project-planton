@@ -32,11 +32,11 @@ func BackendTypeFromString(backendTypeStr string) terraformbackendcredentialv1.T
 	case "local":
 		return terraformbackendcredentialv1.TerraformBackendType_local
 	case "s3":
-		return terraformbackendcredentialv1.TerraformBackendType_aws_s3
+		return terraformbackendcredentialv1.TerraformBackendType_s3
 	case "gcs":
-		return terraformbackendcredentialv1.TerraformBackendType_google_cloud_storage
+		return terraformbackendcredentialv1.TerraformBackendType_gcs
 	case "azurerm":
-		return terraformbackendcredentialv1.TerraformBackendType_azure_blob_storage
+		return terraformbackendcredentialv1.TerraformBackendType_azurerm
 	default:
 		return terraformbackendcredentialv1.TerraformBackendType_terraform_backend_type_unspecified
 	}
