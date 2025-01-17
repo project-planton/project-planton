@@ -2,16 +2,22 @@ syntax = "proto3";
 
 package project.planton.provider.aws.awslambda.v1;
 
-import "project/planton/provider/aws/awslambda/v1/api.proto";
 import "project/planton/credential/awscredential/v1/spec.proto";
+import "project/planton/provider/aws/awslambda/v1/api.proto";
 import "project/planton/shared/pulumi/pulumi.proto";
+import "project/planton/shared/shared.proto";
+import "project/planton/shared/terraform/terraform.proto";
 
 //aws-lambda stack-input
 message AwsLambdaStackInput {
-  //pulumi input
-  project.planton.shared.pulumi.PulumiStackInfo pulumi = 1;
+  //iac-provisioner
+  project.planton.shared.IacProvisioner iac_provisioner = 1;
+  //pulumi input required when the iac_provisioner is pulumi
+  project.planton.shared.pulumi.PulumiStackInfo pulumi = 2;
+  //terraform input required when the iac_provisioner is terraform
+  project.planton.shared.terraform.TerraformStackInfo terraform = 3;
   //target api-resource
-  AwsLambda target = 2;
+  AwsLambda target = 4;
   //aws-credential
-  project.planton.credential.awscredential.v1.AwsCredentialSpec aws_credential = 3;
+  project.planton.credential.awscredential.v1.AwsCredentialSpec aws_credential = 5;
 }

@@ -2,17 +2,23 @@ syntax = "proto3";
 
 package project.planton.provider.gcp.gcpdnszone.v1;
 
-import "project/planton/provider/gcp/gcpdnszone/v1/stack_outputs.proto";
-import "project/planton/provider/gcp/gcpdnszone/v1/api.proto";
 import "project/planton/credential/gcpcredential/v1/spec.proto";
+import "project/planton/provider/gcp/gcpdnszone/v1/api.proto";
+import "project/planton/provider/gcp/gcpdnszone/v1/stack_outputs.proto";
 import "project/planton/shared/pulumi/pulumi.proto";
+import "project/planton/shared/shared.proto";
+import "project/planton/shared/terraform/terraform.proto";
 
 //gcp-dns-zone stack-input
 message GcpDnsZoneStackInput {
-  //pulumi input
-  project.planton.shared.pulumi.PulumiStackInfo pulumi = 1;
+  //iac-provisioner
+  project.planton.shared.IacProvisioner iac_provisioner = 1;
+  //pulumi input required when the iac_provisioner is pulumi
+  project.planton.shared.pulumi.PulumiStackInfo pulumi = 2;
+  //terraform input required when the iac_provisioner is terraform
+  project.planton.shared.terraform.TerraformStackInfo terraform = 3;
   //target api-resource
-  GcpDnsZone target = 2;
+  GcpDnsZone target = 4;
   //gcp-credential
-  project.planton.credential.gcpcredential.v1.GcpCredentialSpec gcp_credential = 3;
+  project.planton.credential.gcpcredential.v1.GcpCredentialSpec gcp_credential = 5;
 }

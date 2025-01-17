@@ -2,16 +2,22 @@ syntax = "proto3";
 
 package project.planton.provider.kubernetes.stackjobrunnerkubernetes.v1;
 
-import "project/planton/provider/kubernetes/stackjobrunnerkubernetes/v1/api.proto";
 import "project/planton/credential/kubernetesclustercredential/v1/spec.proto";
+import "project/planton/provider/kubernetes/stackjobrunnerkubernetes/v1/api.proto";
 import "project/planton/shared/pulumi/pulumi.proto";
+import "project/planton/shared/shared.proto";
+import "project/planton/shared/terraform/terraform.proto";
 
 //input for stack-job-runner-kubernetes stack
 message StackJobRunnerKubernetesStackInput {
-  //pulumi input
-  project.planton.shared.pulumi.PulumiStackInfo pulumi = 1;
+  //iac-provisioner
+  project.planton.shared.IacProvisioner iac_provisioner = 1;
+  //pulumi input required when the iac_provisioner is pulumi
+  project.planton.shared.pulumi.PulumiStackInfo pulumi = 2;
+  //terraform input required when the iac_provisioner is terraform
+  project.planton.shared.terraform.TerraformStackInfo terraform = 3;
   //target api-resource
-  StackJobRunnerKubernetes target = 2;
+  StackJobRunnerKubernetes target = 4;
   //kubernetes-cluster-credential
-  project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec kubernetes_cluster = 3;
+  project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec kubernetes_cluster = 5;
 }
