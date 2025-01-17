@@ -1,10 +1,10 @@
 package tofu
 
 import (
-	"github.com/project-planton/project-planton/apis/project/planton/shared/tofu"
+	"github.com/project-planton/project-planton/apis/project/planton/shared/iac/terraform"
 	"github.com/project-planton/project-planton/internal/cli/flag"
-	"github.com/project-planton/project-planton/internal/iac/stackinput/credentials"
-	"github.com/project-planton/project-planton/internal/iac/tofu/tofumodule"
+	"github.com/project-planton/project-planton/pkg/iac/stackinput/credentials"
+	"github.com/project-planton/project-planton/pkg/iac/tofu/tofumodule"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
@@ -50,7 +50,7 @@ func destroyHandler(cmd *cobra.Command, args []string) {
 		}
 	}
 
-	err = tofumodule.RunOperation(moduleDir, targetManifestPath, tofu.TofuOperationType_destroy, valueOverrides,
+	err = tofumodule.RunCommand(moduleDir, targetManifestPath, terraform.TerraformOperationType_destroy, valueOverrides,
 		isAutoApprove,
 		credentialOptions...)
 	if err != nil {

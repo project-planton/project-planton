@@ -1,11 +1,12 @@
 package tofu
 
 import (
-	"github.com/project-planton/project-planton/apis/project/planton/shared/tofu"
+	terraformbackendcredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/terraformbackendcredential/v1"
 	"github.com/project-planton/project-planton/internal/cli/flag"
-	"github.com/project-planton/project-planton/internal/iac/stackinput/credentials"
-	"github.com/project-planton/project-planton/internal/iac/tofu/tfbackend"
-	"github.com/project-planton/project-planton/internal/iac/tofu/tofumodule"
+	"github.com/project-planton/project-planton/internal/manifest"
+	"github.com/project-planton/project-planton/pkg/iac/stackinput/credentials"
+	"github.com/project-planton/project-planton/pkg/iac/tofu/tfbackend"
+	"github.com/project-planton/project-planton/pkg/iac/tofu/tofumodule"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
@@ -25,7 +26,7 @@ func init() {
 			"specified multiple\n                          times. The backend type must be in the "+
 			"configuration\n                          itself.")
 
-	Init.PersistentFlags().String(string(flag.BackendType), tofu.TofuBackendType_local.String(),
+	Init.PersistentFlags().String(string(flag.BackendType), terraformbackendcredentialv1.TerraformBackendType_local.String(),
 		"Specifies the backend type that Terraform will use to store and manage the state.\n"+
 			"This must match one of the supported Terraform backends, such as 'local', 's3', 'gcs',\n"+
 			"'azurerm', 'remote', 'consul', 'http', 'etcdv3', 'manta', 'swift', 'artifactory', or\n"+
@@ -80,9 +81,12 @@ func initHandler(cmd *cobra.Command, args []string) {
 		}
 	}
 
-	err = tofumodule.TofuInit(moduleDir, targetManifestPath, valueOverrides,
-		backendType, backendConfigList,
-		credentialOptions...)
+	manifestObject, err := manifest.LoadWithOverrides(targetManifestPath, valueOverrides)
+	if err != nil {
+		log.Fatalf("failed to override values in target manifest file")
+	}
+
+	err = tofumodule.TofuInit(moduleDir, manifestObject, backendType, backendConfigList, credentialOptions...)
 	if err != nil {
 		log.Fatalf("failed to run tofu operation: %v", err)
 	}

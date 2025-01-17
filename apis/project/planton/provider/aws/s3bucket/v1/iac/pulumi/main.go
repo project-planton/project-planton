@@ -4,7 +4,7 @@ import (
 	"github.com/pkg/errors"
 	s3bucketv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/s3bucket/v1"
 	"github.com/project-planton/project-planton/apis/project/planton/provider/aws/s3bucket/v1/iac/pulumi/module"
-	"github.com/project-planton/project-planton/internal/iac/pulumi/pulumimodule/stackinput"
+	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/stackinput"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 

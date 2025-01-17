@@ -4,6 +4,12 @@ package project.planton.shared;
 
 import "google/protobuf/timestamp.proto";
 
+enum IacProvisioner {
+  iac_provisioner_unspecified = 0;
+  terraform = 1;
+  pulumi = 2;
+}
+
 enum KindProvider {
   kind_provider_unspecified = 0;
   kind_provider_aws = 1;

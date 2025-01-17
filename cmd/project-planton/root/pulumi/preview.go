@@ -1,10 +1,10 @@
 package pulumi
 
 import (
-	"github.com/project-planton/project-planton/apis/project/planton/shared/pulumi"
+	"github.com/project-planton/project-planton/apis/project/planton/shared/iac/pulumi"
 	"github.com/project-planton/project-planton/internal/cli/flag"
-	"github.com/project-planton/project-planton/internal/iac/pulumi/pulumistack"
-	"github.com/project-planton/project-planton/internal/iac/stackinput/credentials"
+	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumistack"
+	"github.com/project-planton/project-planton/pkg/iac/stackinput/credentials"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )

@@ -2,16 +2,22 @@ syntax = "proto3";
 
 package project.planton.provider.azure.akscluster.v1;
 
-import "project/planton/provider/azure/akscluster/v1/api.proto";
 import "project/planton/credential/azurecredential/v1/spec.proto";
-import "project/planton/shared/pulumi/pulumi.proto";
+import "project/planton/provider/azure/akscluster/v1/api.proto";
+import "project/planton/shared/iac/pulumi/pulumi.proto";
+import "project/planton/shared/shared.proto";
+import "project/planton/shared/iac/terraform/terraform.proto";
 
 //aks-cluster stack-input
 message AksClusterStackInput {
-  //pulumi input
-  project.planton.shared.pulumi.PulumiStackInfo pulumi = 1;
+  //iac-provisioner
+  project.planton.shared.IacProvisioner provisioner = 1;
+  //pulumi input required when the iac_provisioner is pulumi
+  project.planton.shared.iac.pulumi.PulumiStackInfo pulumi = 2;
+  //terraform input required when the iac_provisioner is terraform
+  project.planton.shared.iac.terraform.TerraformStackInfo terraform = 3;
   //target api-resource
-  AksCluster target = 2;
+  AksCluster target = 4;
   //azure-credential
-  project.planton.credential.azurecredential.v1.AzureCredentialSpec azure_credential = 3;
+  project.planton.credential.azurecredential.v1.AzureCredentialSpec azure_credential = 5;
 }

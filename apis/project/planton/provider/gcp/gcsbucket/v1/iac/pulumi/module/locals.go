@@ -2,7 +2,7 @@ package module
 
 import (
 	gcsbucketv1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcsbucket/v1"
-	"github.com/project-planton/project-planton/internal/iac/pulumi/pulumimodule/provider/gcp/gcplabelkeys"
+	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/gcp/gcplabelkeys"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"strconv"
 )

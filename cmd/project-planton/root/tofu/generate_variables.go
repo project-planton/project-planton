@@ -3,7 +3,7 @@ package tofu
 import (
 	"github.com/project-planton/project-planton/internal/apiresourcekind"
 	"github.com/project-planton/project-planton/internal/cli/flag"
-	"github.com/project-planton/project-planton/internal/iac/tofu/variablestf"
+	"github.com/project-planton/project-planton/pkg/iac/tofu/variablestf"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"os"

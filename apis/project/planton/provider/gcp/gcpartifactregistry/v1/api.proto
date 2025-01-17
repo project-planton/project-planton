@@ -5,7 +5,7 @@ package project.planton.provider.gcp.gcpartifactregistry.v1;
 import "buf/validate/validate.proto";
 import "project/planton/provider/gcp/gcpartifactregistry/v1/spec.proto";
 import "project/planton/provider/gcp/gcpartifactregistry/v1/stack_outputs.proto";
-import "project/planton/shared/pulumi/pulumi.proto";
+import "project/planton/shared/iac/pulumi/pulumi.proto";
 import "project/planton/shared/shared.proto";
 
 //gcp-artifact-registry

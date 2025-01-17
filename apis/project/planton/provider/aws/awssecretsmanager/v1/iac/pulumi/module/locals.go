@@ -2,7 +2,7 @@ package module
 
 import (
 	awssecretsmanagerv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awssecretsmanager/v1"
-	"github.com/project-planton/project-planton/internal/iac/pulumi/pulumimodule/provider/aws/awstagkeys"
+	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/aws/awstagkeys"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"strconv"
 )

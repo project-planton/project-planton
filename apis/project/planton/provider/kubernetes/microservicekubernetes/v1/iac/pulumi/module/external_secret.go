@@ -3,7 +3,7 @@ package module
 import (
 	"fmt"
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/internal/iac/pulumi/pulumimodule/datatypes/stringmaps/sortstringmap"
+	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/datatypes/stringmaps/sortstringmap"
 	externalsecretsv1beta1 "github.com/project-planton/project-planton/pkg/kubernetestypes/externalsecrets/kubernetes/external_secrets/v1beta1"
 	kubernetescorev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
 	metav1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/meta/v1"
