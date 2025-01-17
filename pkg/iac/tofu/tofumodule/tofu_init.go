@@ -5,28 +5,22 @@ import (
 	"github.com/pkg/errors"
 	"github.com/project-planton/project-planton/apis/project/planton/shared/tofu"
 	"github.com/project-planton/project-planton/internal/apiresourcekind"
-	"github.com/project-planton/project-planton/internal/manifest"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput/credentials"
 	"github.com/project-planton/project-planton/pkg/iac/tofu/tfbackend"
 	"github.com/project-planton/project-planton/pkg/iac/tofu/tfvars"
+	"google.golang.org/protobuf/proto"
 	"os"
 	"os/exec"
 	"path/filepath"
 )
 
-func TofuInit(moduleDir, targetManifestPath string,
-	valueOverrides map[string]string,
+func TofuInit(moduleDir string, manifestObject proto.Message,
 	backendType tofu.TofuBackendType,
 	backendConfigInput []string,
 	stackInputOptions ...credentials.StackInputCredentialOption) error {
 	opts := credentials.StackInputCredentialOptions{}
 	for _, opt := range stackInputOptions {
 		opt(&opts)
-	}
-
-	manifestObject, err := manifest.LoadWithOverrides(targetManifestPath, valueOverrides)
-	if err != nil {
-		return errors.Wrapf(err, "failed to override values in target manifest file")
 	}
 
 	kindName, err := apiresourcekind.ExtractKindFromProto(manifestObject)

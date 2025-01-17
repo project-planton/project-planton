@@ -3,6 +3,7 @@ package tofu
 import (
 	"github.com/project-planton/project-planton/apis/project/planton/shared/tofu"
 	"github.com/project-planton/project-planton/internal/cli/flag"
+	"github.com/project-planton/project-planton/internal/manifest"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput/credentials"
 	"github.com/project-planton/project-planton/pkg/iac/tofu/tfbackend"
 	"github.com/project-planton/project-planton/pkg/iac/tofu/tofumodule"
@@ -80,9 +81,12 @@ func initHandler(cmd *cobra.Command, args []string) {
 		}
 	}
 
-	err = tofumodule.TofuInit(moduleDir, targetManifestPath, valueOverrides,
-		backendType, backendConfigList,
-		credentialOptions...)
+	manifestObject, err := manifest.LoadWithOverrides(targetManifestPath, valueOverrides)
+	if err != nil {
+		log.Fatalf("failed to override values in target manifest file")
+	}
+
+	err = tofumodule.TofuInit(moduleDir, manifestObject, backendType, backendConfigList, credentialOptions...)
 	if err != nil {
 		log.Fatalf("failed to run tofu operation: %v", err)
 	}
