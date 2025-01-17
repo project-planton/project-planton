@@ -3,6 +3,7 @@ package tofumodule
 import (
 	"fmt"
 	"github.com/pkg/errors"
+	"github.com/project-planton/project-planton/apis/project/planton/credential/terraformbackendcredential/v1"
 	"github.com/project-planton/project-planton/apis/project/planton/shared/tofu"
 	"github.com/project-planton/project-planton/internal/apiresourcekind"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput/credentials"
@@ -15,7 +16,7 @@ import (
 )
 
 func TofuInit(moduleDir string, manifestObject proto.Message,
-	backendType tofu.TofuBackendType,
+	backendType terraformbackendcredentialv1.TerraformBackendType,
 	backendConfigInput []string,
 	stackInputOptions ...credentials.StackInputCredentialOption) error {
 	opts := credentials.StackInputCredentialOptions{}

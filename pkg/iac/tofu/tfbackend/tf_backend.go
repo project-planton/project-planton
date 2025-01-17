@@ -3,13 +3,13 @@ package tfbackend
 import (
 	"fmt"
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/apis/project/planton/shared/tofu"
+	"github.com/project-planton/project-planton/apis/project/planton/credential/terraformbackendcredential/v1"
 	"os"
 	"path/filepath"
 )
 
 // WriteBackendFile creates a `backend.tf` file in projectDir using the backend type specified by tofuBackendType.
-func WriteBackendFile(projectDir string, tofuBackendType tofu.TofuBackendType) error {
+func WriteBackendFile(projectDir string, tofuBackendType terraformbackendcredentialv1.TerraformBackendType) error {
 	backendName := tofuBackendType.String()
 
 	// Construct a minimal backend configuration.
@@ -27,33 +27,17 @@ func WriteBackendFile(projectDir string, tofuBackendType tofu.TofuBackendType) e
 	return nil
 }
 
-func BackendTypeFromString(backendTypeStr string) tofu.TofuBackendType {
+func BackendTypeFromString(backendTypeStr string) terraformbackendcredentialv1.TerraformBackendType {
 	switch backendTypeStr {
 	case "local":
-		return tofu.TofuBackendType_local
+		return terraformbackendcredentialv1.TerraformBackendType_local
 	case "s3":
-		return tofu.TofuBackendType_s3
-	case "remote":
-		return tofu.TofuBackendType_remote
+		return terraformbackendcredentialv1.TerraformBackendType_aws_s3
 	case "gcs":
-		return tofu.TofuBackendType_gcs
+		return terraformbackendcredentialv1.TerraformBackendType_google_cloud_storage
 	case "azurerm":
-		return tofu.TofuBackendType_azurerm
-	case "consul":
-		return tofu.TofuBackendType_consul
-	case "http":
-		return tofu.TofuBackendType_http
-	case "etcdv3":
-		return tofu.TofuBackendType_etcdv3
-	case "manta":
-		return tofu.TofuBackendType_manta
-	case "swift":
-		return tofu.TofuBackendType_swift
-	case "artifactory":
-		return tofu.TofuBackendType_artifactory
-	case "oss":
-		return tofu.TofuBackendType_oss
+		return terraformbackendcredentialv1.TerraformBackendType_azure_blob_storage
 	default:
-		return tofu.TofuBackendType_tofu_backend_type_unspecified
+		return terraformbackendcredentialv1.TerraformBackendType_terraform_backend_type_unspecified
 	}
 }
