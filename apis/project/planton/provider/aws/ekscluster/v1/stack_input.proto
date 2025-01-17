@@ -11,7 +11,7 @@ import "project/planton/shared/terraform/terraform.proto";
 //eks-cluster stack-input
 message EksClusterStackInput {
   //iac-provisioner
-  project.planton.shared.IacProvisioner iac_provisioner = 1;
+  project.planton.shared.IacProvisioner provisioner = 1;
   //pulumi input required when the iac_provisioner is pulumi
   project.planton.shared.pulumi.PulumiStackInfo pulumi = 2;
   //terraform input required when the iac_provisioner is terraform
