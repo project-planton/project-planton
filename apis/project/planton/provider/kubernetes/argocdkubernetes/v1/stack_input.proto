@@ -4,18 +4,18 @@ package project.planton.provider.kubernetes.argocdkubernetes.v1;
 
 import "project/planton/credential/kubernetesclustercredential/v1/spec.proto";
 import "project/planton/provider/kubernetes/argocdkubernetes/v1/api.proto";
-import "project/planton/shared/pulumi/pulumi.proto";
+import "project/planton/shared/iac/pulumi/pulumi.proto";
 import "project/planton/shared/shared.proto";
-import "project/planton/shared/terraform/terraform.proto";
+import "project/planton/shared/iac/terraform/terraform.proto";
 
 //input for argocd-kubernetes stack
 message ArgocdKubernetesStackInput {
   //iac-provisioner
   project.planton.shared.IacProvisioner provisioner = 1;
   //pulumi input required when the iac_provisioner is pulumi
-  project.planton.shared.pulumi.PulumiStackInfo pulumi = 2;
+  project.planton.shared.iac.pulumi.PulumiStackInfo pulumi = 2;
   //terraform input required when the iac_provisioner is terraform
-  project.planton.shared.terraform.TerraformStackInfo terraform = 3;
+  project.planton.shared.iac.terraform.TerraformStackInfo terraform = 3;
   //target api-resource
   ArgocdKubernetes target = 4;
   //kubernetes-cluster-credential

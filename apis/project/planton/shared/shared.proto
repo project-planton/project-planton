@@ -6,8 +6,8 @@ import "google/protobuf/timestamp.proto";
 
 enum IacProvisioner {
   iac_provisioner_unspecified = 0;
-  iac_provisioner_terraform = 1;
-  iac_provisioner_pulumi = 2;
+  terraform = 1;
+  pulumi = 2;
 }
 
 enum KindProvider {

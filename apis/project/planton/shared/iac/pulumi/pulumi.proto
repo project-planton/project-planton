@@ -1,11 +1,11 @@
 syntax = "proto3";
 
-package project.planton.shared.pulumi;
+package project.planton.shared.iac.pulumi;
 
 import "buf/validate/validate.proto";
 import "project/planton/credential/gitcredential/v1/spec.proto";
 import "project/planton/credential/pulumibackendcredential/v1/spec.proto";
-import "project/planton/shared/pulumi/enums.proto";
+import "project/planton/shared/iac/pulumi/enums.proto";
 
 //pulumi stack info
 message PulumiStackInfo {
@@ -29,7 +29,7 @@ message PulumiProject {
   //name of the pulumi project to be used for setting name attribute in Pulumi.yaml
   string name = 1;
   //name of the pulumi project to be used for setting runtime attribute in Pulumi.yaml
-  project.planton.shared.pulumi.PulumiProjectRuntime runtime = 2;
+  project.planton.shared.iac.pulumi.PulumiProjectRuntime runtime = 2;
 }
 
 //pulumi module git-repo

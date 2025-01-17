@@ -1,7 +1,7 @@
 package tofu
 
 import (
-	"github.com/project-planton/project-planton/apis/project/planton/shared/terraform"
+	"github.com/project-planton/project-planton/apis/project/planton/shared/iac/terraform"
 	"github.com/project-planton/project-planton/internal/cli/flag"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput/credentials"
 	"github.com/project-planton/project-planton/pkg/iac/tofu/tofumodule"

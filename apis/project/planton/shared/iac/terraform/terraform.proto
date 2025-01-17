@@ -1,11 +1,11 @@
 syntax = "proto3";
 
-package project.planton.shared.terraform;
+package project.planton.shared.iac.terraform;
 
 import "buf/validate/validate.proto";
 import "project/planton/credential/gitcredential/v1/spec.proto";
 import "project/planton/credential/terraformbackendcredential/v1/spec.proto";
-import "project/planton/shared/terraform/enums.proto";
+import "project/planton/shared/iac/terraform/enums.proto";
 
 //Terraform stack info
 message TerraformStackInfo {

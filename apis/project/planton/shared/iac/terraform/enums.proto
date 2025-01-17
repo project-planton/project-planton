@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package project.planton.shared.terraform;
+package project.planton.shared.iac.terraform;
 
 // terraform operation type
 // the recommended best practice to prefix the entry with enum name has been intentionally ignored

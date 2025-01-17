@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package project.planton.shared.pulumi;
+package project.planton.shared.iac.pulumi;
 
 // pulumi operation type
 // the recommended best practice to prefix the entry with enum name has been intentionally ignored
