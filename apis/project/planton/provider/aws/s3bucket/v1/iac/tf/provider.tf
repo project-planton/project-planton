@@ -5,7 +5,11 @@ variable "aws_credential" {
     secret_access_key = string
     region            = string
   })
-  default = null
+  default = {
+    access_key_id     = null
+    secret_access_key = null
+    region            = null
+  }
 }
 
 terraform {
