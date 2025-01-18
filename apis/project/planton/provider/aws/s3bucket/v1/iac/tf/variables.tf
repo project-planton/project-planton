@@ -5,9 +5,9 @@ variable "metadata" {
     id = optional(string),
     org = optional(string),
     env = optional(object({
-      name = string,
-      id = string }
-    )),
+      name = optional(string),
+      id = optional(string),
+    })),
     labels = optional(object({
       key = string, value = string
     })),
