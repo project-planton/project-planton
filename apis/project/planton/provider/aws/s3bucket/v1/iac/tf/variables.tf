@@ -2,17 +2,17 @@ variable "metadata" {
   description = "Metadata for the resource, including name and labels"
   type = object({
     name = string,
-    id = string,
-    org = string,
-    env = object({
+    id = optional(string),
+    org = optional(string),
+    env = optional(object({
       name = string,
       id = string }
-    ),
-    labels = object({
+    )),
+    labels = optional(object({
       key = string, value = string
-    }),
-    tags = list(string),
-    version = object({ id = string, message = string })
+    })),
+    tags = optional(list(string)),
+    version = optional(object({ id = string, message = string }))
   })
 }
 
