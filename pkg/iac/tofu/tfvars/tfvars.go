@@ -88,7 +88,7 @@ import (
 func ProtoToTFVars(msg proto.Message) (string, error) {
 	// Convert the proto message to JSON, including zero-value fields
 	jsonBytes, err := protojson.MarshalOptions{
-		EmitUnpopulated: true,
+		EmitUnpopulated: false,
 	}.Marshal(msg)
 	if err != nil {
 		return "", errors.Wrap(err, "failed to marshal proto to json")

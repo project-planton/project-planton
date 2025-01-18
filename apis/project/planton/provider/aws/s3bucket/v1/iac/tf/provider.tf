@@ -1,10 +1,10 @@
 variable "aws_credential" {
   description = "AWS Credential data, including account_id, access_key_id, secret_access_key, and region. Optional."
-  type = optional(object({
-    access_key_id     = string
-    secret_access_key = string
-    region            = string
-  }))
+  type = object({
+    access_key_id     = optional(string)
+    secret_access_key = optional(string)
+    region            = optional(string)
+  })
 }
 
 terraform {
