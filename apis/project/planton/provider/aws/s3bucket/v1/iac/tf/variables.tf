@@ -19,7 +19,11 @@ variable "metadata" {
 variable "spec" {
   description = "Specification for the S3Bucket, including whether it's public and its AWS region"
   type = object({
-    is_public  = bool,
+    is_public  = optional(bool),
     aws_region = string
   })
+  default = {
+    is_public  = false,
+    aws_region = "us-west-2"
+  }
 }
