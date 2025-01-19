@@ -32,7 +32,8 @@ func RunCommand(inputModuleDir, targetManifestPath string, terraformOperation te
 		return errors.Wrapf(err, "failed to get tofu module directory")
 	}
 
-	err = RunOperation(tofuModulePath, terraformOperation, isAutoApprove, manifestObject, stackInputOptions...)
+	err = RunOperation(tofuModulePath, terraformOperation, isAutoApprove, manifestObject, false, nil,
+		stackInputOptions...)
 	if err != nil {
 		return errors.Wrapf(err, "failed to run tofu operation")
 	}

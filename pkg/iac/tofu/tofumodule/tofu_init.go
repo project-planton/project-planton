@@ -33,7 +33,7 @@ func TofuInit(tofuModulePath string, manifestObject proto.Message,
 		return errors.Wrapf(err, "failed to write %s file", tfVarsFile)
 	}
 
-	tofuCmd := exec.Command(TofuCommand, terraform.TerraformOperationType_init.String(), "--var-file", tfVarsFile)
+	tofuCmd := exec.Command(TofuCommand, terraform.TerraformOperationType_init.String(), "--var-file", tfVarsFile, "-json")
 
 	// Set the working directory to the repository path
 	tofuCmd.Dir = tofuModulePath
