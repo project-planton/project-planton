@@ -3,12 +3,12 @@ package stackinputcredentials
 import (
 	"github.com/pkg/errors"
 	"github.com/project-planton/project-planton/pkg/fileutil"
-	"gopkg.in/yaml.v3"
 	"os"
+	"sigs.k8s.io/yaml"
 )
 
 const (
-	dockerCredentialKey  = "dockerCredential"
+	DockerCredentialKey  = "dockerCredential"
 	dockerCredentialYaml = "docker-credential.yaml"
 )
 
@@ -24,7 +24,7 @@ func AddDockerCredential(stackInputContentMap map[string]interface{},
 		if err != nil {
 			return nil, errors.Wrapf(err, "failed to unmarshal target manifest file")
 		}
-		stackInputContentMap[dockerCredentialKey] = credentialContentMap
+		stackInputContentMap[DockerCredentialKey] = credentialContentMap
 	}
 	return stackInputContentMap, nil
 }

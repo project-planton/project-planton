@@ -2,18 +2,23 @@ package providercredentials
 
 import (
 	"github.com/pkg/errors"
+	awscredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/awscredential/v1"
+	"github.com/project-planton/project-planton/pkg/iac/stackinput"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput/stackinputcredentials"
 )
 
 func AddAwsCredentialEnvVars(stackInputContentMap map[string]interface{},
 	credentialEnvVars map[string]string) (map[string]string, error) {
-	credentialSpec, err := stackinputcredentials.GetAwsCredential(stackInputContentMap)
+	credentialSpec := new(awscredentialv1.AwsCredentialSpec)
+
+	isCredentialLoaded, err := stackinput.LoadCredential(stackInputContentMap,
+		stackinputcredentials.AwsCredentialKey, credentialSpec)
 	if err != nil {
-		return nil, errors.Wrap(err, "failed to get aws credential spec from stack-input content")
+		return nil, errors.Wrap(err, "failed to get credential spec from stack-input content")
 	}
 
 	//this means that the stack input does not contain the provider credential, so no environment variables will be added.
-	if credentialSpec == nil {
+	if !isCredentialLoaded {
 		return credentialEnvVars, nil
 	}
 

@@ -3,21 +3,25 @@ package providercredentials
 import (
 	"github.com/pkg/errors"
 	kubernetesclustercredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/kubernetesclustercredential/v1"
+	"github.com/project-planton/project-planton/pkg/iac/stackinput"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput/stackinputcredentials"
 )
 
 func AddKubernetesCredentialEnvVars(stackInputContentMap map[string]interface{},
 	credentialEnvVars map[string]string) (map[string]string, error) {
-	credentialSpec, err := stackinputcredentials.GetKubernetesClusterCredential(stackInputContentMap)
+	credentialSpec := new(kubernetesclustercredentialv1.KubernetesClusterCredentialSpec)
+
+	isCredentialLoaded, err := stackinput.LoadCredential(stackInputContentMap,
+		stackinputcredentials.KubernetesClusterKey, credentialSpec)
 	if err != nil {
-		return nil, errors.Wrap(err, "failed to get kubernetes credential spec from stack-input content")
+		return nil, errors.Wrap(err, "failed to get credential spec from stack-input content")
 	}
 
 	//this means that the stack input does not contain the provider credential, so no environment variables will be added.
-	if credentialSpec == nil {
+	if !isCredentialLoaded {
 		return credentialEnvVars, nil
 	}
-	
+
 	var kubeconfig string
 
 	switch credentialSpec.Provider {

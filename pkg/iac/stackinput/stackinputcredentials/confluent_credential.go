@@ -2,14 +2,13 @@ package stackinputcredentials
 
 import (
 	"github.com/pkg/errors"
-	confluentcredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/confluentcredential/v1"
 	"github.com/project-planton/project-planton/pkg/fileutil"
-	"gopkg.in/yaml.v3"
 	"os"
+	"sigs.k8s.io/yaml"
 )
 
 const (
-	confluentCredentialKey  = "confluentCredential"
+	ConfluentCredentialKey  = "confluentCredential"
 	confluentCredentialYaml = "confluent-credential.yaml"
 )
 
@@ -25,7 +24,7 @@ func AddConfluentCredential(stackInputContentMap map[string]interface{},
 		if err != nil {
 			return nil, errors.Wrapf(err, "failed to unmarshal target manifest file")
 		}
-		stackInputContentMap[confluentCredentialKey] = credentialContentMap
+		stackInputContentMap[ConfluentCredentialKey] = credentialContentMap
 	}
 	return stackInputContentMap, nil
 }
@@ -40,25 +39,4 @@ func LoadConfluentCredential(dir string) (string, error) {
 		return "", nil
 	}
 	return path, nil
-}
-
-func GetConfluentCredential(stackInputContentMap map[string]interface{}) (*confluentcredentialv1.ConfluentCredentialSpec, error) {
-	confluentCredential, ok := stackInputContentMap[confluentCredentialKey]
-	if !ok {
-		return nil, nil
-	}
-
-	confluentCredentialBytes, err := yaml.Marshal(confluentCredential)
-	if err != nil {
-		return nil, errors.Wrap(err, "failed to marshal confluent credential content")
-	}
-
-	confluentCredentialSpec := new(confluentcredentialv1.ConfluentCredentialSpec)
-
-	err = yaml.Unmarshal(confluentCredentialBytes, confluentCredentialSpec)
-	if err != nil {
-		return nil, errors.Wrap(err, "failed to unmarshal confluent credential content")
-	}
-
-	return confluentCredentialSpec, nil
 }

@@ -2,14 +2,13 @@ package stackinputcredentials
 
 import (
 	"github.com/pkg/errors"
-	azurecredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/azurecredential/v1"
 	"github.com/project-planton/project-planton/pkg/fileutil"
-	"gopkg.in/yaml.v3"
 	"os"
+	"sigs.k8s.io/yaml"
 )
 
 const (
-	azureCredentialKey  = "azureCredential"
+	AzureCredentialKey  = "azureCredential"
 	azureCredentialYaml = "azure-credential.yaml"
 )
 
@@ -25,7 +24,7 @@ func AddAzureCredential(stackInputContentMap map[string]interface{},
 		if err != nil {
 			return nil, errors.Wrapf(err, "failed to unmarshal target manifest file")
 		}
-		stackInputContentMap[azureCredentialKey] = credentialContentMap
+		stackInputContentMap[AzureCredentialKey] = credentialContentMap
 	}
 	return stackInputContentMap, nil
 }
@@ -40,24 +39,4 @@ func LoadAzureCredential(dir string) (string, error) {
 		return "", nil
 	}
 	return path, nil
-}
-
-func GetAzureCredential(stackInputContentMap map[string]interface{}) (*azurecredentialv1.AzureCredentialSpec, error) {
-	azureCredential, ok := stackInputContentMap[azureCredentialKey]
-	if !ok {
-		return nil, nil
-	}
-
-	azureCredentialBytes, err := yaml.Marshal(azureCredential)
-	if err != nil {
-		return nil, errors.Wrap(err, "failed to marshal azure credential content")
-	}
-
-	azureCredentialSpec := new(azurecredentialv1.AzureCredentialSpec)
-	err = yaml.Unmarshal(azureCredentialBytes, azureCredentialSpec)
-	if err != nil {
-		return nil, errors.Wrap(err, "failed to unmarshal azure credential content")
-	}
-
-	return azureCredentialSpec, nil
 }

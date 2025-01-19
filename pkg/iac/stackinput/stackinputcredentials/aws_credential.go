@@ -2,14 +2,13 @@ package stackinputcredentials
 
 import (
 	"github.com/pkg/errors"
-	awscredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/awscredential/v1"
 	"github.com/project-planton/project-planton/pkg/fileutil"
 	"gopkg.in/yaml.v3"
 	"os"
 )
 
 const (
-	awsCredentialKey  = "awsCredential"
+	AwsCredentialKey  = "awsCredential"
 	awsCredentialYaml = "aws-credential.yaml"
 )
 
@@ -25,7 +24,7 @@ func AddAwsCredential(stackInputContentMap map[string]interface{},
 		if err != nil {
 			return nil, errors.Wrapf(err, "failed to unmarshal target manifest file")
 		}
-		stackInputContentMap[awsCredentialKey] = credentialContentMap
+		stackInputContentMap[AwsCredentialKey] = credentialContentMap
 	}
 	return stackInputContentMap, nil
 }
@@ -40,24 +39,4 @@ func LoadAwsCredential(dir string) (string, error) {
 		return "", nil
 	}
 	return path, nil
-}
-
-func GetAwsCredential(stackInputContentMap map[string]interface{}) (*awscredentialv1.AwsCredentialSpec, error) {
-	awsCredential, ok := stackInputContentMap[awsCredentialKey]
-	if !ok {
-		return nil, nil
-	}
-
-	awsCredentialBytes, err := yaml.Marshal(awsCredential)
-	if err != nil {
-		return nil, errors.Wrap(err, "failed to marshal aws credential content")
-	}
-
-	var awsCredentialSpec awscredentialv1.AwsCredentialSpec
-	err = yaml.Unmarshal(awsCredentialBytes, &awsCredentialSpec)
-	if err != nil {
-		return nil, errors.Wrap(err, "failed to unmarshal aws credential content")
-	}
-
-	return &awsCredentialSpec, nil
 }

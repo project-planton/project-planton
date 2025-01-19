@@ -33,3 +33,14 @@ func Load(inputFile string, obj proto.Message) error {
 	}
 	return nil
 }
+
+func LoadYamlBytes(yamlBytes []byte, obj proto.Message) error {
+	jsonBytes, err := yaml.YAMLToJSON(yamlBytes)
+	if err != nil {
+		return errors.Wrap(err, "failed to load yaml to json")
+	}
+	if err := protojson.Unmarshal(jsonBytes, obj); err != nil {
+		return errors.Wrap(err, "failed to load json into proto message")
+	}
+	return nil
+}

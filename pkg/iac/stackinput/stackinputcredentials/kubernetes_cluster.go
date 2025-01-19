@@ -2,14 +2,13 @@ package stackinputcredentials
 
 import (
 	"github.com/pkg/errors"
-	kubernetesclustercredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/kubernetesclustercredential/v1"
 	"github.com/project-planton/project-planton/pkg/fileutil"
-	"gopkg.in/yaml.v3"
 	"os"
+	"sigs.k8s.io/yaml"
 )
 
 const (
-	kubernetesClusterKey  = "kubernetesCluster"
+	KubernetesClusterKey  = "kubernetesCluster"
 	kubernetesClusterYaml = "kubernetes-cluster.yaml"
 )
 
@@ -25,7 +24,7 @@ func AddKubernetesCluster(stackInputContentMap map[string]interface{},
 		if err != nil {
 			return nil, errors.Wrapf(err, "failed to unmarshal target manifest file")
 		}
-		stackInputContentMap[kubernetesClusterKey] = credentialContentMap
+		stackInputContentMap[KubernetesClusterKey] = credentialContentMap
 	}
 	return stackInputContentMap, nil
 }
@@ -40,23 +39,4 @@ func LoadKubernetesCluster(dir string) (string, error) {
 		return "", nil
 	}
 	return path, nil
-}
-
-func GetKubernetesClusterCredential(stackInputContentMap map[string]interface{}) (*kubernetesclustercredentialv1.KubernetesClusterCredentialSpec, error) {
-	kubernetesCluster, ok := stackInputContentMap[kubernetesClusterKey]
-	if !ok {
-		return nil, nil
-	}
-
-	kubernetesClusterSpecBytes, err := yaml.Marshal(kubernetesCluster)
-	if err != nil {
-		return nil, errors.Wrap(err, "failed to marshal kubernetes cluster content")
-	}
-	kubernetesClusterCredentialSpec := new(kubernetesclustercredentialv1.KubernetesClusterCredentialSpec)
-	err = yaml.Unmarshal(kubernetesClusterSpecBytes, kubernetesClusterCredentialSpec)
-	if err != nil {
-		return nil, errors.Wrap(err, "failed to unmarshal kubernetes cluster content")
-	}
-
-	return kubernetesClusterCredentialSpec, nil
 }
