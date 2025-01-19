@@ -5,15 +5,15 @@ import (
 	"github.com/project-planton/project-planton/apis/project/planton/shared/iac/terraform"
 	"github.com/project-planton/project-planton/internal/apiresourcekind"
 	"github.com/project-planton/project-planton/internal/manifest"
-	"github.com/project-planton/project-planton/pkg/iac/stackinput/credentials"
+	"github.com/project-planton/project-planton/pkg/iac/stackinput/stackinputcredentials"
 )
 
 func RunCommand(inputModuleDir, targetManifestPath string, terraformOperation terraform.TerraformOperationType,
 	valueOverrides map[string]string,
 	isAutoApprove bool,
-	stackInputOptions ...credentials.StackInputCredentialOption) error {
-	opts := credentials.StackInputCredentialOptions{}
-	for _, opt := range stackInputOptions {
+	credentialOptions ...stackinputcredentials.StackInputCredentialOption) error {
+	opts := stackinputcredentials.StackInputCredentialOptions{}
+	for _, opt := range credentialOptions {
 		opt(&opts)
 	}
 
@@ -33,7 +33,7 @@ func RunCommand(inputModuleDir, targetManifestPath string, terraformOperation te
 	}
 
 	err = RunOperation(tofuModulePath, terraformOperation, isAutoApprove, manifestObject, false, nil,
-		stackInputOptions...)
+		credentialOptions...)
 	if err != nil {
 		return errors.Wrapf(err, "failed to run tofu operation")
 	}

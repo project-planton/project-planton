@@ -4,7 +4,7 @@ import (
 	"github.com/project-planton/project-planton/apis/project/planton/shared/iac/pulumi"
 	"github.com/project-planton/project-planton/internal/cli/flag"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumistack"
-	"github.com/project-planton/project-planton/pkg/iac/stackinput/credentials"
+	"github.com/project-planton/project-planton/pkg/iac/stackinput/stackinputcredentials"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
@@ -29,7 +29,7 @@ func updateHandler(cmd *cobra.Command, args []string) {
 	valueOverrides, err := cmd.Flags().GetStringToString(string(flag.Set))
 	flag.HandleFlagErr(err, flag.Set)
 
-	credentialOptions := make([]credentials.StackInputCredentialOption, 0)
+	credentialOptions := make([]stackinputcredentials.StackInputCredentialOption, 0)
 	targetManifestPath := inputDir + "/target.yaml"
 
 	if inputDir == "" {
@@ -37,7 +37,7 @@ func updateHandler(cmd *cobra.Command, args []string) {
 		flag.HandleFlagErrAndValue(err, flag.Manifest, targetManifestPath)
 	}
 
-	credentialOptions, err = credentials.BuildWithFlags(cmd.Flags())
+	credentialOptions, err = stackinputcredentials.BuildWithFlags(cmd.Flags())
 	if err != nil {
 		log.Fatalf("failed to build credentiaal options: %v", err)
 	}

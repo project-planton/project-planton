@@ -1,8 +1,12 @@
 package fileutil
 
 import (
+	"bytes"
+	"github.com/Masterminds/sprig"
 	"github.com/pkg/errors"
+	log "github.com/sirupsen/logrus"
 	"os"
+	"text/template"
 )
 
 func IsExists(filePath string) (bool, error) {
@@ -30,4 +34,18 @@ func IsDirExists(d string) bool {
 		return false
 	}
 	return info.IsDir()
+}
+
+func RenderTemplate(input interface{}, templateString string) ([]byte, error) {
+	log.Debugf("rendering template")
+	t := template.New("template").Funcs(template.FuncMap(sprig.FuncMap()))
+	t, err := t.Parse(templateString)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to parse template")
+	}
+	var renderedBytes bytes.Buffer
+	if err := t.Execute(&renderedBytes, input); err != nil {
+		return nil, errors.Wrapf(err, "failed to render template")
+	}
+	return renderedBytes.Bytes(), nil
 }

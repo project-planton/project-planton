@@ -5,7 +5,7 @@ import (
 	"github.com/project-planton/project-planton/internal/apiresourcekind"
 	"github.com/project-planton/project-planton/internal/cli/flag"
 	"github.com/project-planton/project-planton/internal/manifest"
-	"github.com/project-planton/project-planton/pkg/iac/stackinput/credentials"
+	"github.com/project-planton/project-planton/pkg/iac/stackinput/stackinputcredentials"
 	"github.com/project-planton/project-planton/pkg/iac/tofu/tfbackend"
 	"github.com/project-planton/project-planton/pkg/iac/tofu/tofumodule"
 	log "github.com/sirupsen/logrus"
@@ -64,7 +64,7 @@ func initHandler(cmd *cobra.Command, args []string) {
 
 	backendType := tfbackend.BackendTypeFromString(backendTypeString)
 
-	credentialOptions := make([]credentials.StackInputCredentialOption, 0)
+	credentialOptions := make([]stackinputcredentials.StackInputCredentialOption, 0)
 	targetManifestPath := inputDir + "/target.yaml"
 
 	if inputDir == "" {
@@ -72,7 +72,7 @@ func initHandler(cmd *cobra.Command, args []string) {
 		flag.HandleFlagErrAndValue(err, flag.Manifest, targetManifestPath)
 	}
 
-	credentialOptions, err = credentials.BuildWithFlags(cmd.Flags())
+	credentialOptions, err = stackinputcredentials.BuildWithFlags(cmd.Flags())
 	if err != nil {
 		log.Fatalf("failed to build credentiaal options: %v", err)
 	}
