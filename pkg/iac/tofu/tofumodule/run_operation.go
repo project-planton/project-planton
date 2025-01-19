@@ -11,18 +11,20 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"runtime/debug"
 )
 
 const TofuCommand = "tofu"
 
 // RunOperation runs a tofu command, optionally adding -json flag and streaming output lines.
+// It also recovers from any panic in the stdout-reading goroutine and returns it as an error.
 func RunOperation(
 	tofuModulePath string,
 	terraformOperation terraform.TerraformOperationType,
 	isAutoApprove bool,
 	manifestObject proto.Message,
 	isJsonOutput bool,
-	linesChan chan string,
+	jsonLogEventsChan chan string, // channel for streaming output
 	stackInputOptions ...credentials.StackInputCredentialOption,
 ) error {
 	// Gather credential options (currently unused, but left for future usage)
@@ -62,42 +64,60 @@ func RunOperation(
 	fmt.Printf("tofu module directory: %s\n", tofuModulePath)
 	fmt.Printf("running command: %s\n", tofuCmd.String())
 
+	// If JSON output, capture stdout in a goroutine with panic recovery
 	if isJsonOutput {
-		// If we want JSON output, we’ll capture stdout via a pipe
 		stdoutPipe, err := tofuCmd.StdoutPipe()
 		if err != nil {
 			return errors.Wrap(err, "failed to create stdout pipe")
 		}
 
-		// Start the command before we begin reading
+		// Start the tofu command
 		if err := tofuCmd.Start(); err != nil {
 			return errors.Wrapf(err, "failed to start tofu command %s", tofuCmd.String())
 		}
 
-		// Goroutine to read lines from stdout and push them to linesChan
+		// We'll capture errors (panic or scanner errors) in errChan
+		errChan := make(chan error, 1)
+
 		go func() {
+			defer func() {
+				if r := recover(); r != nil {
+					stack := debug.Stack()
+					panicErr := fmt.Errorf(
+						"panic recovered in RunOperation stdout reader goroutine: %v\nstack trace:\n%s",
+						r, string(stack),
+					)
+					errChan <- panicErr
+				}
+				close(errChan)
+			}()
+
 			scanner := bufio.NewScanner(stdoutPipe)
 			for scanner.Scan() {
 				line := scanner.Text()
-				// If a linesChan was provided, send the line
-				if linesChan != nil {
-					linesChan <- line
+				if jsonLogEventsChan != nil {
+					jsonLogEventsChan <- line
 				} else {
-					// If no channel, you could log or do something else
-					// For now, just print
 					fmt.Println(line)
 				}
 			}
 			if err := scanner.Err(); err != nil {
-				fmt.Fprintf(os.Stderr, "error reading tofu output: %v\n", err)
+				errChan <- fmt.Errorf("error reading tofu output: %v", err)
 			}
-			close(linesChan) // channel is closed here
 		}()
 
 		// Wait for the command to finish
 		if err := tofuCmd.Wait(); err != nil {
 			return errors.Wrapf(err, "failed to execute tofu command %s", tofuCmd.String())
 		}
+
+		// See if the goroutine reported any error or panic
+		if readErr, ok := <-errChan; ok && readErr != nil {
+			return readErr
+		}
+
+		// Optionally close jsonLogEventsChan if you want to end streaming here
+		// close(jsonLogEventsChan)
 
 	} else {
 		// If we do NOT want JSON output, simply stream stdout to console

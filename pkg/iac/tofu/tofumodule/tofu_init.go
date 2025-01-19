@@ -13,6 +13,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"runtime/debug"
 )
 
 // TofuInit initializes a tofu module with optional JSON streaming.
@@ -22,27 +23,20 @@ func TofuInit(
 	backendType terraformbackendcredentialv1.TerraformBackendType,
 	backendConfigInput []string,
 	isJsonOutput bool,
-	linesChan chan string,
+	jsonLogEventsChan chan string, // channel for streaming output
 	stackInputOptions ...credentials.StackInputCredentialOption,
 ) error {
-	// Gather credential options (currently unused in this snippet, but left for future usage)
-	opts := credentials.StackInputCredentialOptions{}
-	for _, opt := range stackInputOptions {
-		opt(&opts)
-	}
-
-	// 1. Write the backend file
+	// (1) Process backend & tfvars as usual...
 	if err := tfbackend.WriteBackendFile(tofuModulePath, backendType); err != nil {
 		return errors.Wrapf(err, "failed to write backend file")
 	}
 
-	// 2. Write or update terraform.tfvars
 	tfVarsFile := filepath.Join(tofuModulePath, ".terraform", "terraform.tfvars")
 	if err := tfvars.WriteVarFile(manifestObject, tfVarsFile); err != nil {
 		return errors.Wrapf(err, "failed to write %s file", tfVarsFile)
 	}
 
-	// 3. Build the 'tofu init' command with optional -json
+	// (2) Build the Tofu 'init' command
 	cmdArgs := []string{
 		terraform.TerraformOperationType_init.String(),
 		"--var-file", tfVarsFile,
@@ -50,52 +44,75 @@ func TofuInit(
 	if isJsonOutput {
 		cmdArgs = append(cmdArgs, "-json")
 	}
-
-	// 4. Append backend configs if any
 	for _, backendConfig := range backendConfigInput {
 		cmdArgs = append(cmdArgs, "--backend-config", backendConfig)
 	}
 
 	tofuCmd := exec.Command(TofuCommand, cmdArgs...)
 	tofuCmd.Dir = tofuModulePath
-	// Keep stdin/stderr for interactive usage and error reporting
 	tofuCmd.Stdin = os.Stdin
 	tofuCmd.Stderr = os.Stderr
 
 	fmt.Printf("tofu module directory: %s\n", tofuModulePath)
 	fmt.Printf("running command: %s\n", tofuCmd.String())
 
-	// 5. Branch: capture lines to channel (if provided) or stream to stdout
-	if linesChan != nil {
-		// a) linesChan is non-nil → capture line-by-line via a pipe
+	// (3) If jsonLogEventsChan is provided, read stdout in a goroutine with panic recovery.
+	if jsonLogEventsChan != nil {
 		stdoutPipe, err := tofuCmd.StdoutPipe()
 		if err != nil {
 			return errors.Wrap(err, "failed to create stdout pipe")
 		}
-		// Start command before reading pipe
+
 		if err := tofuCmd.Start(); err != nil {
 			return errors.Wrapf(err, "failed to start tofu command %s", tofuCmd.String())
 		}
 
-		// Read stdout lines in a separate goroutine
+		// We'll use errChan to propagate any panic or scanning error back to this function.
+		errChan := make(chan error, 1)
+
 		go func() {
+			defer func() {
+				if r := recover(); r != nil {
+					// Convert panic to an error, including stack trace
+					stack := debug.Stack()
+					panicErr := fmt.Errorf(
+						"panic recovered in TofuInit stdout reader goroutine: %v\nstack trace:\n%s",
+						r, string(stack),
+					)
+					// Send the panic error to errChan
+					errChan <- panicErr
+				}
+				// Close errChan so we can detect completion
+				close(errChan)
+			}()
+
 			scanner := bufio.NewScanner(stdoutPipe)
 			for scanner.Scan() {
 				line := scanner.Text()
-				linesChan <- line
+				jsonLogEventsChan <- line
 			}
 			if err := scanner.Err(); err != nil {
-				fmt.Fprintf(os.Stderr, "error reading tofu output: %v\n", err)
+				// Send scanner error (only if there's no panic)
+				errChan <- fmt.Errorf("error reading tofu output: %v", err)
 			}
 		}()
 
-		// Wait for command completion
+		// Wait for tofuCmd to finish executing.
 		if err := tofuCmd.Wait(); err != nil {
 			return errors.Wrapf(err, "failed to execute tofu command %s", tofuCmd.String())
 		}
 
+		// After tofuCmd finishes, read from errChan to see if the goroutine reported any error.
+		if readErr, ok := <-errChan; ok && readErr != nil {
+			// This will be either the recovered panic error or the scanner error
+			return readErr
+		}
+
+		// Optionally close jsonLogEventsChan if TofuInit owns it
+		// close(jsonLogEventsChan)
+
 	} else {
-		// b) linesChan is nil → just stream stdout directly
+		// (4) No channel → just stream stdout to console
 		tofuCmd.Stdout = os.Stdout
 		if err := tofuCmd.Run(); err != nil {
 			return errors.Wrapf(err, "failed to execute tofu command %s", tofuCmd.String())
