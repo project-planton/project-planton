@@ -12,6 +12,11 @@ func AddConfluentCredentialEnvVars(stackInputContentMap map[string]interface{},
 		return nil, errors.Wrap(err, "failed to get confluent credential spec from stack-input content")
 	}
 
+	//this means that the stack input does not contain the provider credential, so no environment variables will be added.
+	if credentialSpec == nil {
+		return credentialEnvVars, nil
+	}
+	
 	credentialEnvVars["CONFLUENT_API_KEY"] = credentialSpec.ApiKey
 	credentialEnvVars["CONFLUENT_API_SECRET"] = credentialSpec.ApiSecret
 

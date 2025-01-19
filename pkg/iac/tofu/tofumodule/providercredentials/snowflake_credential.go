@@ -12,6 +12,11 @@ func AddSnowflakeCredentialEnvVars(stackInputContentMap map[string]interface{},
 		return nil, errors.Wrap(err, "failed to get snowflake credential spec from stack-input content")
 	}
 
+	//this means that the stack input does not contain the provider credential, so no environment variables will be added.
+	if credentialSpec == nil {
+		return credentialEnvVars, nil
+	}
+	
 	credentialEnvVars["SNOWFLAKE_ACCOUNT"] = credentialSpec.Account
 	credentialEnvVars["SNOWFLAKE_REGION"] = credentialSpec.Region
 	credentialEnvVars["SNOWFLAKE_USERNAME"] = credentialSpec.Username

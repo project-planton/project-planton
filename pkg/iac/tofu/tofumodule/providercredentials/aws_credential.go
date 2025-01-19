@@ -12,6 +12,11 @@ func AddAwsCredentialEnvVars(stackInputContentMap map[string]interface{},
 		return nil, errors.Wrap(err, "failed to get aws credential spec from stack-input content")
 	}
 
+	//this means that the stack input does not contain the provider credential, so no environment variables will be added.
+	if credentialSpec == nil {
+		return credentialEnvVars, nil
+	}
+
 	credentialEnvVars["AWS_REGION"] = credentialSpec.Region
 	credentialEnvVars["AWS_ACCESS_KEY_ID"] = credentialSpec.AccessKeyId
 	credentialEnvVars["AWS_SECRET_ACCESS_KEY"] = credentialSpec.SecretAccessKey

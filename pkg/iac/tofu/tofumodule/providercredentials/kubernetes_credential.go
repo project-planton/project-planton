@@ -13,6 +13,11 @@ func AddKubernetesCredentialEnvVars(stackInputContentMap map[string]interface{},
 		return nil, errors.Wrap(err, "failed to get kubernetes credential spec from stack-input content")
 	}
 
+	//this means that the stack input does not contain the provider credential, so no environment variables will be added.
+	if credentialSpec == nil {
+		return credentialEnvVars, nil
+	}
+	
 	var kubeconfig string
 
 	switch credentialSpec.Provider {
