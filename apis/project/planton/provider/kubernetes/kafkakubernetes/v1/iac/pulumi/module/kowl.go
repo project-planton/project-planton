@@ -3,7 +3,7 @@ package module
 import (
 	"fmt"
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/util/file"
+	"github.com/project-planton/project-planton/pkg/fileutil"
 	certmanagerv1 "github.com/project-planton/project-planton/pkg/kubernetestypes/certmanager/kubernetes/cert_manager/v1"
 	gatewayv1 "github.com/project-planton/project-planton/pkg/kubernetestypes/gatewayapis/kubernetes/gateway/v1"
 	"github.com/project-planton/project-planton/pkg/kubernetestypes/strimzioperator/kubernetes/kafka/v1beta2"
@@ -27,7 +27,7 @@ func kowl(ctx *pulumi.Context, locals *Locals, kubernetesProvider *kubernetes.Pr
 		IsSchemaRegistryEnabled        bool
 	}
 
-	kowlConfig, err := file.RenderTemplate(&kowlConfigTemplateInput{
+	kowlConfig, err := fileutil.RenderTemplate(&kowlConfigTemplateInput{
 		BootstrapKubeServiceFqdn:       locals.BootstrapKubeServiceFqdn,
 		BootstrapServerKubeServicePort: vars.InternalListenerPortNumber,
 		SaslUsername:                   vars.AdminUsername,

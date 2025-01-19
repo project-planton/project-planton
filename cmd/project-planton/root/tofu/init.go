@@ -5,7 +5,7 @@ import (
 	"github.com/project-planton/project-planton/internal/apiresourcekind"
 	"github.com/project-planton/project-planton/internal/cli/flag"
 	"github.com/project-planton/project-planton/internal/manifest"
-	"github.com/project-planton/project-planton/pkg/iac/stackinput/credentials"
+	"github.com/project-planton/project-planton/pkg/iac/stackinput/stackinputcredentials"
 	"github.com/project-planton/project-planton/pkg/iac/tofu/tfbackend"
 	"github.com/project-planton/project-planton/pkg/iac/tofu/tofumodule"
 	log "github.com/sirupsen/logrus"
@@ -64,22 +64,17 @@ func initHandler(cmd *cobra.Command, args []string) {
 
 	backendType := tfbackend.BackendTypeFromString(backendTypeString)
 
-	credentialOptions := make([]credentials.StackInputCredentialOption, 0)
+	credentialOptions := make([]stackinputcredentials.StackInputCredentialOption, 0)
 	targetManifestPath := inputDir + "/target.yaml"
 
 	if inputDir == "" {
 		targetManifestPath, err = cmd.Flags().GetString(string(flag.Manifest))
 		flag.HandleFlagErrAndValue(err, flag.Manifest, targetManifestPath)
+	}
 
-		credentialOptions, err = credentials.BuildWithFlags(cmd.Flags())
-		if err != nil {
-			log.Fatalf("failed to build credentiaal options: %v", err)
-		}
-	} else {
-		credentialOptions, err = credentials.BuildWithFlags(cmd.Flags())
-		if err != nil {
-			log.Fatalf("failed to build credentiaal options: %v", err)
-		}
+	credentialOptions, err = stackinputcredentials.BuildWithFlags(cmd.Flags())
+	if err != nil {
+		log.Fatalf("failed to build credentiaal options: %v", err)
 	}
 
 	manifestObject, err := manifest.LoadWithOverrides(targetManifestPath, valueOverrides)
@@ -97,7 +92,10 @@ func initHandler(cmd *cobra.Command, args []string) {
 		log.Fatalf("failed to get tofu module directory %v", err)
 	}
 
-	err = tofumodule.TofuInit(tofuModulePath, manifestObject, backendType, backendConfigList, credentialOptions...)
+	err = tofumodule.TofuInit(tofuModulePath, manifestObject,
+		backendType,
+		backendConfigList,
+		false, nil, credentialOptions...)
 	if err != nil {
 		log.Fatalf("failed to run tofu operation: %v", err)
 	}

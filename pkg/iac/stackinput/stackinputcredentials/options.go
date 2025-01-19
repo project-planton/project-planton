@@ -1,4 +1,4 @@
-package credentials
+package stackinputcredentials
 
 import (
 	"github.com/pkg/errors"
@@ -161,14 +161,6 @@ func BuildWithInputDir(inputDir string) ([]StackInputCredentialOption, error) {
 	}
 	if confluentCredential != "" {
 		resp = append(resp, WithConfluentCredential(confluentCredential))
-	}
-
-	dockerCredential, err := LoadDockerCredential(inputDir)
-	if err != nil {
-		return nil, errors.Wrapf(err, "failed to look up docker-credential in %s", inputDir)
-	}
-	if dockerCredential != "" {
-		resp = append(resp, WithDockerCredential(dockerCredential))
 	}
 
 	gcpCredential, err := LoadGcpCredential(inputDir)

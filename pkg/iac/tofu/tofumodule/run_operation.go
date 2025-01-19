@@ -1,60 +1,138 @@
 package tofumodule
 
 import (
+	"bufio"
 	"fmt"
 	"github.com/pkg/errors"
 	"github.com/project-planton/project-planton/apis/project/planton/shared/iac/terraform"
-	"github.com/project-planton/project-planton/pkg/iac/stackinput/credentials"
+	"github.com/project-planton/project-planton/pkg/iac/stackinput/stackinputcredentials"
 	"github.com/project-planton/project-planton/pkg/iac/tofu/tfvars"
 	"google.golang.org/protobuf/proto"
 	"os"
 	"os/exec"
 	"path/filepath"
+	"runtime/debug"
 )
 
 const TofuCommand = "tofu"
 
-func RunOperation(tofuModulePath string, terraformOperation terraform.TerraformOperationType,
+// RunOperation runs a tofu command, optionally adding -json flag and streaming output lines.
+// It also recovers from any panic in the stdout-reading goroutine and returns it as an error.
+func RunOperation(
+	tofuModulePath string,
+	terraformOperation terraform.TerraformOperationType,
 	isAutoApprove bool,
 	manifestObject proto.Message,
-	stackInputOptions ...credentials.StackInputCredentialOption) error {
-
-	//currently, these credential options are not utilized, and these are going to be used once we figure out
-	//how to create terraform provider blocs based on these credential options passed by a command line args.
-	opts := credentials.StackInputCredentialOptions{}
-	for _, opt := range stackInputOptions {
+	isJsonOutput bool,
+	jsonLogEventsChan chan string, // channel for streaming output
+	credentialOptions ...stackinputcredentials.StackInputCredentialOption,
+) (err error) {
+	// Gather credential options (currently unused, but left for future usage)
+	opts := stackinputcredentials.StackInputCredentialOptions{}
+	for _, opt := range credentialOptions {
 		opt(&opts)
 	}
 
+	// Write or update terraform.tfvars
 	tfVarsFile := filepath.Join(tofuModulePath, ".terraform", "terraform.tfvars")
-
 	if err := tfvars.WriteVarFile(manifestObject, tfVarsFile); err != nil {
 		return errors.Wrapf(err, "failed to write %s file", tfVarsFile)
 	}
 
+	// Determine command and arguments
 	op := terraformOperation.String()
+	args := []string{op, "--var-file", tfVarsFile}
 
-	tofuCmd := exec.Command(TofuCommand, op, "--var-file", tfVarsFile)
-
+	// Add --auto-approve if needed
 	if (terraformOperation == terraform.TerraformOperationType_apply ||
 		terraformOperation == terraform.TerraformOperationType_destroy) && isAutoApprove {
-		tofuCmd.Args = append(tofuCmd.Args, "--auto-approve")
+		args = append(args, "--auto-approve")
 	}
 
-	// Set the working directory to the repository path
+	// If the caller wants JSON output, add the -json flag
+	if isJsonOutput {
+		args = append(args, "-json")
+	}
+
+	tofuCmd := exec.Command(TofuCommand, args...)
+
+	tofuCmd, err = AddCredentials(tofuCmd, manifestObject, opts)
+	if err != nil {
+		return errors.Wrapf(err, "failed to add credentials to tofu command env")
+	}
+
 	tofuCmd.Dir = tofuModulePath
 
-	// Set stdin, stdout, and stderr to the current terminal to make it an interactive shell
+	// Keep stdin/stderr for interactive prompt or error streaming
 	tofuCmd.Stdin = os.Stdin
-	tofuCmd.Stdout = os.Stdout
 	tofuCmd.Stderr = os.Stderr
 
-	fmt.Printf("\ntofu module directory: %s \n", tofuModulePath)
+	fmt.Printf("tofu module directory: %s\n", tofuModulePath)
+	fmt.Printf("running command: %s\n", tofuCmd.String())
 
-	fmt.Printf("\nrunning command: %s \n", tofuCmd.String())
+	// If JSON output, capture stdout in a goroutine with panic recovery
+	if isJsonOutput {
+		stdoutPipe, err := tofuCmd.StdoutPipe()
+		if err != nil {
+			return errors.Wrap(err, "failed to create stdout pipe")
+		}
 
-	if err := tofuCmd.Run(); err != nil {
-		return errors.Wrapf(err, "failed to execute tofu command %s", tofuCmd.String())
+		// Start the tofu command
+		if err := tofuCmd.Start(); err != nil {
+			return errors.Wrapf(err, "failed to start tofu command %s", tofuCmd.String())
+		}
+
+		// We'll capture errors (panic or scanner errors) in errChan
+		errChan := make(chan error, 1)
+
+		go func() {
+			defer func() {
+				if r := recover(); r != nil {
+					stack := debug.Stack()
+					panicErr := fmt.Errorf(
+						"panic recovered in RunOperation stdout reader goroutine: %v\nstack trace:\n%s",
+						r, string(stack),
+					)
+					errChan <- panicErr
+				}
+				close(errChan)
+			}()
+
+			scanner := bufio.NewScanner(stdoutPipe)
+			for scanner.Scan() {
+				line := scanner.Text()
+				if jsonLogEventsChan != nil {
+					jsonLogEventsChan <- line
+				} else {
+					fmt.Println(line)
+				}
+			}
+			if err := scanner.Err(); err != nil {
+				errChan <- fmt.Errorf("error reading tofu output: %v", err)
+			}
+		}()
+
+		// Wait for the command to finish
+		if err := tofuCmd.Wait(); err != nil {
+			return errors.Wrapf(err, "failed to execute tofu command %s", tofuCmd.String())
+		}
+
+		// See if the goroutine reported any error or panic
+		if readErr, ok := <-errChan; ok && readErr != nil {
+			return readErr
+		}
+
+		// Optionally close jsonLogEventsChan if you want to end streaming here
+		// close(jsonLogEventsChan)
+
+	} else {
+		// If we do NOT want JSON output, simply stream stdout to console
+		tofuCmd.Stdout = os.Stdout
+
+		// Run+Wait in one go
+		if err := tofuCmd.Run(); err != nil {
+			return errors.Wrapf(err, "failed to execute tofu command %s", tofuCmd.String())
+		}
 	}
 
 	return nil

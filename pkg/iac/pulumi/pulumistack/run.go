@@ -8,16 +8,16 @@ import (
 	"github.com/project-planton/project-planton/internal/manifest"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput"
-	"github.com/project-planton/project-planton/pkg/iac/stackinput/credentials"
+	"github.com/project-planton/project-planton/pkg/iac/stackinput/stackinputcredentials"
 	"os"
 	"os/exec"
 )
 
 func Run(moduleDir, stackFqdn, targetManifestPath string, pulumiOperation pulumi.PulumiOperationType,
 	isUpdatePreview bool, valueOverrides map[string]string,
-	stackInputOptions ...credentials.StackInputCredentialOption) error {
-	opts := credentials.StackInputCredentialOptions{}
-	for _, opt := range stackInputOptions {
+	credentialOptions ...stackinputcredentials.StackInputCredentialOption) error {
+	opts := stackinputcredentials.StackInputCredentialOptions{}
+	for _, opt := range credentialOptions {
 		opt(&opts)
 	}
 

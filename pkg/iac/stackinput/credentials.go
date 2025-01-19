@@ -2,40 +2,40 @@ package stackinput
 
 import (
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/pkg/iac/stackinput/credentials"
+	"github.com/project-planton/project-planton/pkg/iac/stackinput/stackinputcredentials"
 )
 
 func addCredentials(stackInputContentMap map[string]interface{},
-	credentialOptions credentials.StackInputCredentialOptions) (updatedStackInputContentMap map[string]interface{}, err error) {
-	updatedStackInputContentMap, err = credentials.AddAtlasCredential(stackInputContentMap, credentialOptions)
+	credentialOptions stackinputcredentials.StackInputCredentialOptions) (updatedStackInputContentMap map[string]interface{}, err error) {
+	updatedStackInputContentMap, err = stackinputcredentials.AddAtlasCredential(stackInputContentMap, credentialOptions)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to add atlas-credential")
 	}
-	updatedStackInputContentMap, err = credentials.AddAwsCredential(updatedStackInputContentMap, credentialOptions)
+	updatedStackInputContentMap, err = stackinputcredentials.AddAwsCredential(updatedStackInputContentMap, credentialOptions)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to add aws-credential")
 	}
-	updatedStackInputContentMap, err = credentials.AddAzureCredential(updatedStackInputContentMap, credentialOptions)
+	updatedStackInputContentMap, err = stackinputcredentials.AddAzureCredential(updatedStackInputContentMap, credentialOptions)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to add azure-credential")
 	}
-	updatedStackInputContentMap, err = credentials.AddConfluentCredential(updatedStackInputContentMap, credentialOptions)
+	updatedStackInputContentMap, err = stackinputcredentials.AddConfluentCredential(updatedStackInputContentMap, credentialOptions)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to add confluent-credential")
 	}
-	updatedStackInputContentMap, err = credentials.AddDockerCredential(updatedStackInputContentMap, credentialOptions)
+	updatedStackInputContentMap, err = stackinputcredentials.AddDockerCredential(updatedStackInputContentMap, credentialOptions)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to add docker-credential")
 	}
-	updatedStackInputContentMap, err = credentials.AddGcpCredential(updatedStackInputContentMap, credentialOptions)
+	updatedStackInputContentMap, err = stackinputcredentials.AddGcpCredential(updatedStackInputContentMap, credentialOptions)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to add gcp-credential")
 	}
-	updatedStackInputContentMap, err = credentials.AddKubernetesCluster(updatedStackInputContentMap, credentialOptions)
+	updatedStackInputContentMap, err = stackinputcredentials.AddKubernetesCluster(updatedStackInputContentMap, credentialOptions)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to add kubernetes-cluster")
 	}
-	updatedStackInputContentMap, err = credentials.AddSnowflakeCredential(updatedStackInputContentMap, credentialOptions)
+	updatedStackInputContentMap, err = stackinputcredentials.AddSnowflakeCredential(updatedStackInputContentMap, credentialOptions)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to add snowflake-credential")
 	}

@@ -5,9 +5,9 @@ go 1.23.1
 require (
 	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.35.1-20240920164238-5a7b106cbb87.1
 	github.com/Azure/go-autorest/autorest/to v0.4.0
+	github.com/Masterminds/sprig v2.15.0+incompatible
 	github.com/blang/semver v3.5.1+incompatible
 	github.com/bufbuild/protovalidate-go v0.7.2
-	github.com/go-task/slim-sprig/v3 v3.0.0
 	github.com/hashicorp/hcl/v2 v2.22.0
 	github.com/iancoleman/strcase v0.3.0
 	github.com/oklog/ulid/v2 v2.1.0
@@ -36,7 +36,6 @@ require (
 	github.com/Azure/go-autorest v14.2.0+incompatible // indirect
 	github.com/BurntSushi/toml v1.2.1 // indirect
 	github.com/Masterminds/semver v1.4.2 // indirect
-	github.com/Masterminds/sprig v2.15.0+incompatible // indirect
 	github.com/Microsoft/go-winio v0.6.1 // indirect
 	github.com/ProtonMail/go-crypto v1.0.0 // indirect
 	github.com/aead/chacha20 v0.0.0-20180709150244-8b13a72661da // indirect

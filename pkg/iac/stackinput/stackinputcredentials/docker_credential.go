@@ -1,4 +1,4 @@
-package credentials
+package stackinputcredentials
 
 import (
 	"github.com/pkg/errors"
@@ -8,29 +8,29 @@ import (
 )
 
 const (
-	mongodbAtlasCredentialKey  = "mongodbAtlasCredential"
-	mongodbAtlasCredentialYaml = "mongodb-atlas-credential.yaml"
+	dockerCredentialKey  = "dockerCredential"
+	dockerCredentialYaml = "docker-credential.yaml"
 )
 
-func AddAtlasCredential(stackInputContentMap map[string]interface{},
+func AddDockerCredential(stackInputContentMap map[string]interface{},
 	stackInputOptions StackInputCredentialOptions) (map[string]interface{}, error) {
-	if stackInputOptions.MongodbAtlasCredential != "" {
-		credentialContent, err := os.ReadFile(stackInputOptions.MongodbAtlasCredential)
+	if stackInputOptions.DockerCredential != "" {
+		credentialContent, err := os.ReadFile(stackInputOptions.DockerCredential)
 		if err != nil {
-			return nil, errors.Wrapf(err, "failed to read file: %s", stackInputOptions.MongodbAtlasCredential)
+			return nil, errors.Wrapf(err, "failed to read file: %s", stackInputOptions.DockerCredential)
 		}
 		var credentialContentMap map[string]interface{}
 		err = yaml.Unmarshal(credentialContent, &credentialContentMap)
 		if err != nil {
 			return nil, errors.Wrapf(err, "failed to unmarshal target manifest file")
 		}
-		stackInputContentMap[mongodbAtlasCredentialKey] = credentialContentMap
+		stackInputContentMap[dockerCredentialKey] = credentialContentMap
 	}
 	return stackInputContentMap, nil
 }
 
-func LoadMongodbAtlasCredential(dir string) (string, error) {
-	path := dir + "/" + mongodbAtlasCredentialYaml
+func LoadDockerCredential(dir string) (string, error) {
+	path := dir + "/" + dockerCredentialYaml
 	isExists, err := fileutil.IsExists(path)
 	if err != nil {
 		return "", errors.Wrapf(err, "failed to check file: %s", path)
