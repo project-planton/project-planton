@@ -31,16 +31,11 @@ func refreshHandler(cmd *cobra.Command, args []string) {
 	if inputDir == "" {
 		targetManifestPath, err = cmd.Flags().GetString(string(flag.Manifest))
 		flag.HandleFlagErrAndValue(err, flag.Manifest, targetManifestPath)
+	}
 
-		credentialOptions, err = credentials.BuildWithFlags(cmd.Flags())
-		if err != nil {
-			log.Fatalf("failed to build credentiaal options: %v", err)
-		}
-	} else {
-		credentialOptions, err = credentials.BuildWithFlags(cmd.Flags())
-		if err != nil {
-			log.Fatalf("failed to build credentiaal options: %v", err)
-		}
+	credentialOptions, err = credentials.BuildWithFlags(cmd.Flags())
+	if err != nil {
+		log.Fatalf("failed to build credentiaal options: %v", err)
 	}
 
 	err = tofumodule.RunCommand(moduleDir, targetManifestPath, terraform.TerraformOperationType_refresh, valueOverrides,
