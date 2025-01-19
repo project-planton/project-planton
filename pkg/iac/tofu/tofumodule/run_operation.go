@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"github.com/pkg/errors"
 	"github.com/project-planton/project-planton/apis/project/planton/shared/iac/terraform"
-	"github.com/project-planton/project-planton/pkg/iac/stackinput/stackinputcredentials"
 	"github.com/project-planton/project-planton/pkg/iac/tofu/tfvars"
 	"google.golang.org/protobuf/proto"
 	"os"
@@ -23,16 +22,10 @@ func RunOperation(
 	terraformOperation terraform.TerraformOperationType,
 	isAutoApprove bool,
 	manifestObject proto.Message,
+	credentialEnvVars []string,
 	isJsonOutput bool,
 	jsonLogEventsChan chan string, // channel for streaming output
-	credentialOptions ...stackinputcredentials.StackInputCredentialOption,
 ) (err error) {
-	// Gather credential options (currently unused, but left for future usage)
-	opts := stackinputcredentials.StackInputCredentialOptions{}
-	for _, opt := range credentialOptions {
-		opt(&opts)
-	}
-
 	// Write or update terraform.tfvars
 	tfVarsFile := filepath.Join(tofuModulePath, ".terraform", "terraform.tfvars")
 	if err := tfvars.WriteVarFile(manifestObject, tfVarsFile); err != nil {
@@ -55,13 +48,8 @@ func RunOperation(
 	}
 
 	tofuCmd := exec.Command(TofuCommand, args...)
-
-	tofuCmd, err = AddCredentials(tofuCmd, manifestObject, opts)
-	if err != nil {
-		return errors.Wrapf(err, "failed to add credentials to tofu command env")
-	}
-
 	tofuCmd.Dir = tofuModulePath
+	tofuCmd.Env = append(tofuCmd.Env, credentialEnvVars...)
 
 	// Keep stdin/stderr for interactive prompt or error streaming
 	tofuCmd.Stdin = os.Stdin

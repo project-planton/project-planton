@@ -5,6 +5,7 @@ import (
 	"github.com/project-planton/project-planton/internal/apiresourcekind"
 	"github.com/project-planton/project-planton/internal/cli/flag"
 	"github.com/project-planton/project-planton/internal/manifest"
+	"github.com/project-planton/project-planton/pkg/iac/stackinput"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput/stackinputcredentials"
 	"github.com/project-planton/project-planton/pkg/iac/tofu/tfbackend"
 	"github.com/project-planton/project-planton/pkg/iac/tofu/tofumodule"
@@ -92,10 +93,27 @@ func initHandler(cmd *cobra.Command, args []string) {
 		log.Fatalf("failed to get tofu module directory %v", err)
 	}
 
+	// Gather credential options (currently unused, but left for future usage)
+	opts := stackinputcredentials.StackInputCredentialOptions{}
+	for _, opt := range credentialOptions {
+		opt(&opts)
+	}
+
+	stackInputYaml, err := stackinput.BuildStackInputYaml(manifestObject, opts)
+	if err != nil {
+		log.Fatalf("failed to build stack input yaml %v", err)
+	}
+
+	credentialEnvVars, err := tofumodule.GetCredentialEnvVars(stackInputYaml)
+	if err != nil {
+		log.Fatalf("failed to get credential env vars %v", err)
+	}
+
 	err = tofumodule.TofuInit(tofuModulePath, manifestObject,
 		backendType,
 		backendConfigList,
-		false, nil, credentialOptions...)
+		credentialEnvVars,
+		false, nil)
 	if err != nil {
 		log.Fatalf("failed to run tofu operation: %v", err)
 	}
