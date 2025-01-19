@@ -49,6 +49,8 @@ func TofuInit(
 
 	tofuCmd := exec.Command(TofuCommand, cmdArgs...)
 	tofuCmd.Dir = tofuModulePath
+	//https://stackoverflow.com/a/41133244
+	tofuCmd.Env = os.Environ()
 	tofuCmd.Env = append(tofuCmd.Env, credentialEnvVars...)
 
 	tofuCmd.Stdin = os.Stdin

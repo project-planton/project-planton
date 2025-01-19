@@ -49,6 +49,8 @@ func RunOperation(
 
 	tofuCmd := exec.Command(TofuCommand, args...)
 	tofuCmd.Dir = tofuModulePath
+	//https://stackoverflow.com/a/41133244
+	tofuCmd.Env = os.Environ()
 	tofuCmd.Env = append(tofuCmd.Env, credentialEnvVars...)
 
 	// Keep stdin/stderr for interactive prompt or error streaming
