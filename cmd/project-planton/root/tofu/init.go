@@ -97,7 +97,10 @@ func initHandler(cmd *cobra.Command, args []string) {
 		log.Fatalf("failed to get tofu module directory %v", err)
 	}
 
-	err = tofumodule.TofuInit(tofuModulePath, manifestObject, backendType, backendConfigList, credentialOptions...)
+	err = tofumodule.TofuInit(tofuModulePath, manifestObject,
+		backendType,
+		backendConfigList,
+		false, nil, credentialOptions...)
 	if err != nil {
 		log.Fatalf("failed to run tofu operation: %v", err)
 	}

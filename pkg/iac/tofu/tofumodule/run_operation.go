@@ -22,7 +22,7 @@ func RunOperation(
 	isAutoApprove bool,
 	manifestObject proto.Message,
 	isJsonOutput bool,
-	linesChan chan string, // may be nil if you don't need channel output
+	linesChan chan string,
 	stackInputOptions ...credentials.StackInputCredentialOption,
 ) error {
 	// Gather credential options (currently unused, but left for future usage)
