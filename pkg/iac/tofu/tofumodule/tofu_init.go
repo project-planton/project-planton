@@ -6,7 +6,6 @@ import (
 	"github.com/pkg/errors"
 	terraformbackendcredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/terraformbackendcredential/v1"
 	"github.com/project-planton/project-planton/apis/project/planton/shared/iac/terraform"
-	"github.com/project-planton/project-planton/pkg/iac/stackinput/stackinputcredentials"
 	"github.com/project-planton/project-planton/pkg/iac/tofu/tfbackend"
 	"github.com/project-planton/project-planton/pkg/iac/tofu/tfvars"
 	"google.golang.org/protobuf/proto"
@@ -22,16 +21,10 @@ func TofuInit(
 	manifestObject proto.Message,
 	backendType terraformbackendcredentialv1.TerraformBackendType,
 	backendConfigInput []string,
+	credentialEnvVars []string,
 	isJsonOutput bool,
 	jsonLogEventsChan chan string, // channel for streaming output
-	credentialOptions ...stackinputcredentials.StackInputCredentialOption,
 ) (err error) {
-	// Gather credential options (currently unused, but left for future usage)
-	opts := stackinputcredentials.StackInputCredentialOptions{}
-	for _, opt := range credentialOptions {
-		opt(&opts)
-	}
-
 	// (1) Process backend & tfvars as usual...
 	if err := tfbackend.WriteBackendFile(tofuModulePath, backendType); err != nil {
 		return errors.Wrapf(err, "failed to write backend file")
@@ -55,13 +48,9 @@ func TofuInit(
 	}
 
 	tofuCmd := exec.Command(TofuCommand, cmdArgs...)
-
-	tofuCmd, err = AddCredentials(tofuCmd, manifestObject, opts)
-	if err != nil {
-		return errors.Wrapf(err, "failed to add credentials to tofu command env")
-	}
-
 	tofuCmd.Dir = tofuModulePath
+	tofuCmd.Env = append(tofuCmd.Env, credentialEnvVars...)
+
 	tofuCmd.Stdin = os.Stdin
 	tofuCmd.Stderr = os.Stderr
 

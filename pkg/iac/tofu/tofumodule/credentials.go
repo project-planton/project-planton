@@ -2,24 +2,13 @@ package tofumodule
 
 import (
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/pkg/iac/stackinput"
-	"github.com/project-planton/project-planton/pkg/iac/stackinput/stackinputcredentials"
 	"github.com/project-planton/project-planton/pkg/iac/tofu/tofumodule/providercredentials"
-	"google.golang.org/protobuf/proto"
 	"gopkg.in/yaml.v3"
-	"os/exec"
 )
 
-func AddCredentials(tofuCmd *exec.Cmd, manifestObject proto.Message,
-	credentialOptions stackinputcredentials.StackInputCredentialOptions) (*exec.Cmd, error) {
-
-	stackInputYaml, err := stackinput.BuildStackInputYaml(manifestObject, credentialOptions)
-	if err != nil {
-		return nil, errors.Wrap(err, "failed to build stack input yaml")
-	}
-
+func GetCredentialEnvVars(stackInputYaml string) ([]string, error) {
 	stackInputContentMap := map[string]interface{}{}
-	err = yaml.Unmarshal([]byte(stackInputYaml), &stackInputContentMap)
+	err := yaml.Unmarshal([]byte(stackInputYaml), &stackInputContentMap)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to unmarshal stack input yaml to map")
 	}
@@ -61,9 +50,7 @@ func AddCredentials(tofuCmd *exec.Cmd, manifestObject proto.Message,
 		return nil, errors.Wrap(err, "failed to get Snowflake provider credentials")
 	}
 
-	tofuCmd.Env = append(tofuCmd.Env, mapToSlice(credentialEnvVars)...)
-
-	return tofuCmd, nil
+	return mapToSlice(credentialEnvVars), nil
 }
 
 // mapToSlice converts a map of string to string into a slice of string slices by joining key-value pairs with an equals sign.
