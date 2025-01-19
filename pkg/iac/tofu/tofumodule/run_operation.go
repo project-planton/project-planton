@@ -91,10 +91,7 @@ func RunOperation(
 			if err := scanner.Err(); err != nil {
 				fmt.Fprintf(os.Stderr, "error reading tofu output: %v\n", err)
 			}
-			// If a linesChan was provided, optionally close it after done
-			if linesChan != nil {
-				close(linesChan)
-			}
+			close(linesChan) // channel is closed here
 		}()
 
 		// Wait for the command to finish

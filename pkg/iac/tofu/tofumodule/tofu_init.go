@@ -87,8 +87,6 @@ func TofuInit(
 			if err := scanner.Err(); err != nil {
 				fmt.Fprintf(os.Stderr, "error reading tofu output: %v\n", err)
 			}
-			// If you want to signal done, close channel
-			close(linesChan)
 		}()
 
 		// Wait for command completion
