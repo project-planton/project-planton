@@ -2,9 +2,8 @@ syntax = "proto3";
 
 package project.planton.shared.iac.pulumi;
 
-import "buf/validate/validate.proto";
-import "project/planton/credential/gitcredential/v1/spec.proto";
 import "project/planton/credential/pulumibackendcredential/v1/spec.proto";
+import "project/planton/shared/iac/iacgitrepo/iac_git_repo.proto";
 import "project/planton/shared/iac/pulumi/enums.proto";
 
 //pulumi stack info
@@ -19,8 +18,8 @@ message PulumiStackInfo {
   PulumiProject project = 4;
   //pulumi stack name
   string stack_name = 5;
-  //pulumi-module git-repo
-  PulumiGitRepo git_repo = 6;
+  //iac-module git-repo
+  project.planton.shared.iac.iacgitrepo.IacGitRepo git_repo = 6;
 }
 
 //pulumi project
@@ -30,18 +29,4 @@ message PulumiProject {
   string name = 1;
   //name of the pulumi project to be used for setting runtime attribute in Pulumi.yaml
   project.planton.shared.iac.pulumi.PulumiProjectRuntime runtime = 2;
-}
-
-//pulumi module git-repo
-message PulumiGitRepo {
-  //url to clone the repository using git
-  string clone_url = 1;
-  //git branch
-  string branch = 2;
-  //git commit-sha
-  string commit_sha = 3;
-  //path of the directory containing the main entry point for the pulumi module inside the git repo
-  string project_dir = 4;
-  //git-auth for pulumi-module private git-repositories
-  project.planton.credential.gitcredential.v1.GitCredentialSpec auth = 5;
 }

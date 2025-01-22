@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package project.planton.shared.iac.iacgitrepo;
+
+import "project/planton/credential/gitcredential/v1/spec.proto";
+
+//iac module git-repo
+message IacGitRepo {
+  //url to clone the repository using git
+  string clone_url = 1;
+  //git branch
+  string branch = 2;
+  //git commit-sha
+  string commit_sha = 3;
+  //path of the directory containing the main entry point for the pulumi/terraform module inside the git repo
+  string project_dir = 4;
+  //git-auth for iac-module private git-repositories
+  project.planton.credential.gitcredential.v1.GitCredentialSpec auth = 5;
+}
