@@ -2,9 +2,9 @@ syntax = "proto3";
 
 package project.planton.shared.iac.terraform;
 
-import "buf/validate/validate.proto";
 import "project/planton/credential/gitcredential/v1/spec.proto";
 import "project/planton/credential/terraformbackendcredential/v1/spec.proto";
+import "project/planton/shared/iac/iacgitrepo/iac_git_repo.proto";
 import "project/planton/shared/iac/terraform/enums.proto";
 
 //Terraform stack info
@@ -15,20 +15,6 @@ message TerraformStackInfo {
   bool preview = 2;
   //terraform backend
   project.planton.credential.terraformbackendcredential.v1.TerraformBackendCredentialSpec backend = 3;
-  //terraform-module git-repo
-  TerraformGitRepo git_repo = 6;
-}
-
-//terraform module git-repo
-message TerraformGitRepo {
-  //url to clone the repository using git
-  string clone_url = 1;
-  //git branch
-  string branch = 2;
-  //git commit-sha
-  string commit_sha = 3;
-  //path of the directory containing the main entry point for the terraform module inside the git repo
-  string project_dir = 4;
-  //git-auth for terraform-module private git-repositories
-  project.planton.credential.gitcredential.v1.GitCredentialSpec auth = 5;
+  //iac-module git-repo
+  project.planton.shared.iac.iacgitrepo.IacGitRepo git_repo = 4;
 }
