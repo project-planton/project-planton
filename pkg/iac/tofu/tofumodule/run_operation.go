@@ -36,6 +36,10 @@ func RunOperation(
 	op := terraformOperation.String()
 	args := []string{op, "--var-file", tfVarsFile}
 
+	if terraformOperation == terraform.TerraformOperationType_plan {
+		args = append(args, "--out", "terraform.tfplan")
+	}
+
 	// Add --auto-approve if needed
 	if (terraformOperation == terraform.TerraformOperationType_apply ||
 		terraformOperation == terraform.TerraformOperationType_destroy) && isAutoApprove {

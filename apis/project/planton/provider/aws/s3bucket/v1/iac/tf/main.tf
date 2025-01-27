@@ -13,8 +13,16 @@ resource "aws_route53_record" "my_record" {
   zone_id = aws_route53_zone.my_zone.zone_id
   name    = "www"
   type    = "A"
-  ttl     = "300"
+  ttl     = "600"
   records = ["192.0.2.44"]
+}
+
+resource "aws_route53_record" "my_record_two" {
+  zone_id = aws_route53_zone.my_zone.zone_id
+  name    = "host"
+  type    = "A"
+  ttl     = "200"
+  records = ["1.1.1.1"]
 }
 
 resource "aws_dynamodb_table" "my_table" {
