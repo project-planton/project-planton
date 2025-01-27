@@ -5,6 +5,40 @@ resource "aws_s3_bucket" "my_bucket" {
   # tags = var.metadata.labels
 }
 
+resource "aws_route53_zone" "my_zone" {
+  name = "project-planton.com"
+}
+
+resource "aws_route53_record" "my_record" {
+  zone_id = aws_route53_zone.my_zone.zone_id
+  name    = "www"
+  type    = "A"
+  ttl     = "600"
+  records = ["192.0.2.44"]
+}
+
+resource "aws_route53_record" "my_record_two" {
+  zone_id = aws_route53_zone.my_zone.zone_id
+  name    = "host"
+  type    = "A"
+  ttl     = "200"
+  records = ["1.1.1.1"]
+}
+
+resource "aws_dynamodb_table" "my_table" {
+  name           = "example-table"
+  billing_mode   = "PAY_PER_REQUEST"
+  hash_key       = "id"
+  attribute {
+    name = "id"
+    type = "S"
+  }
+}
+
+resource "aws_s3_bucket" "another_bucket" {
+  bucket = "another-example-bucket"
+}
+
 output "bucketName" {
   value = aws_s3_bucket.my_bucket.bucket
 }
