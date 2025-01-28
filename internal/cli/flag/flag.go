@@ -13,6 +13,7 @@ const (
 	BackendConfig          Flag = "backend-config"
 	BackendType            Flag = "backend-type"
 	ConfluentCredential    Flag = "confluent-credential"
+	Destroy                Flag = "destroy"
 	DockerCredential       Flag = "docker-credential"
 	GcpCredential          Flag = "gcp-credential"
 	InputDir               Flag = "input-dir"

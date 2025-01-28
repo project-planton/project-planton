@@ -21,6 +21,7 @@ func RunOperation(
 	tofuModulePath string,
 	terraformOperation terraform.TerraformOperationType,
 	isAutoApprove bool,
+	isDestroyPlan bool,
 	manifestObject proto.Message,
 	credentialEnvVars []string,
 	isJsonOutput bool,
@@ -38,6 +39,9 @@ func RunOperation(
 
 	if terraformOperation == terraform.TerraformOperationType_plan {
 		args = append(args, "--out", "terraform.tfplan")
+		if isDestroyPlan {
+			args = append(args, "--destroy")
+		}
 	}
 
 	// Add --auto-approve if needed

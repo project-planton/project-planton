@@ -15,6 +15,12 @@ var Plan = &cobra.Command{
 	Run:   planHandler,
 }
 
+func init() {
+	Plan.PersistentFlags().Bool(string(flag.Destroy), false, "Select the \"destroy\" planning mode, which "+
+		"creates a plan\n  to destroy all objects currently managed by this\n  OpenTofu configuration instead "+
+		"of the usual behavior.")
+}
+
 func planHandler(cmd *cobra.Command, args []string) {
 	inputDir, err := cmd.Flags().GetString(string(flag.InputDir))
 	flag.HandleFlagErr(err, flag.InputDir)
@@ -24,6 +30,9 @@ func planHandler(cmd *cobra.Command, args []string) {
 
 	valueOverrides, err := cmd.Flags().GetStringToString(string(flag.Set))
 	flag.HandleFlagErr(err, flag.Set)
+
+	isDestroyPlan, err := cmd.Flags().GetBool(string(flag.Destroy))
+	flag.HandleFlagErr(err, flag.Destroy)
 
 	credentialOptions := make([]stackinputcredentials.StackInputCredentialOption, 0)
 	targetManifestPath := inputDir + "/target.yaml"
@@ -38,8 +47,13 @@ func planHandler(cmd *cobra.Command, args []string) {
 		log.Fatalf("failed to build credentiaal options: %v", err)
 	}
 
-	err = tofumodule.RunCommand(moduleDir, targetManifestPath, terraform.TerraformOperationType_plan, valueOverrides,
+	err = tofumodule.RunCommand(
+		moduleDir,
+		targetManifestPath,
+		terraform.TerraformOperationType_plan,
+		valueOverrides,
 		true,
+		isDestroyPlan,
 		credentialOptions...)
 	if err != nil {
 		log.Fatalf("failed to run tofu operation: %v", err)

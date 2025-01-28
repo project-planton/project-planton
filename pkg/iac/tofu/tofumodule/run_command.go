@@ -9,9 +9,10 @@ import (
 	"github.com/project-planton/project-planton/pkg/iac/stackinput/stackinputcredentials"
 )
 
-func RunCommand(inputModuleDir, targetManifestPath string, terraformOperation terraform.TerraformOperationType,
+func RunCommand(inputModuleDir, targetManifestPath string,
+	terraformOperation terraform.TerraformOperationType,
 	valueOverrides map[string]string,
-	isAutoApprove bool,
+	isAutoApprove, isDestroyPlan bool,
 	credentialOptions ...stackinputcredentials.StackInputCredentialOption) error {
 
 	manifestObject, err := manifest.LoadWithOverrides(targetManifestPath, valueOverrides)
@@ -45,7 +46,9 @@ func RunCommand(inputModuleDir, targetManifestPath string, terraformOperation te
 		return errors.Wrap(err, "failed to get credential env vars")
 	}
 
-	err = RunOperation(tofuModulePath, terraformOperation, isAutoApprove, manifestObject,
+	err = RunOperation(tofuModulePath, terraformOperation,
+		isAutoApprove,
+		isDestroyPlan, manifestObject,
 		credentialEnvVars, false, nil)
 	if err != nil {
 		return errors.Wrapf(err, "failed to run tofu operation")
