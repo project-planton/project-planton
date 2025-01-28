@@ -40,6 +40,7 @@ func refreshHandler(cmd *cobra.Command, args []string) {
 
 	err = tofumodule.RunCommand(moduleDir, targetManifestPath, terraform.TerraformOperationType_refresh, valueOverrides,
 		true,
+		false,
 		credentialOptions...)
 	if err != nil {
 		log.Fatalf("failed to run tofu operation: %v", err)

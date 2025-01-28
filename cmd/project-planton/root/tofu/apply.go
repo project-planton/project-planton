@@ -48,6 +48,7 @@ func applyHandler(cmd *cobra.Command, args []string) {
 	err = tofumodule.RunCommand(moduleDir, targetManifestPath, terraform.TerraformOperationType_apply,
 		valueOverrides,
 		isAutoApprove,
+		false,
 		credentialOptions...)
 	if err != nil {
 		log.Fatalf("failed to run tofu operation: %v", err)
