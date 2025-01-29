@@ -28,6 +28,6 @@ resource "aws_dynamodb_table" "my_table" {
   }
 }
 
-output "bucketName" {
-  value = aws_s3_bucket.my_bucket.bucket
+output "zoneId" {
+  value = aws_route53_zone.my_zone.arn
 }
