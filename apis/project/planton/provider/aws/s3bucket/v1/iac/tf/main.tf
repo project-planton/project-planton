@@ -1,10 +1,3 @@
-resource "aws_s3_bucket" "my_bucket" {
-  bucket = var.metadata.name
-
-  # If you want to reference other attributes (e.g., tags) from metadata or spec:
-  # tags = var.metadata.labels
-}
-
 resource "aws_route53_zone" "my_zone" {
   name = "project-planton.com"
 }
@@ -33,10 +26,6 @@ resource "aws_dynamodb_table" "my_table" {
     name = "id"
     type = "S"
   }
-}
-
-resource "aws_s3_bucket" "another_bucket" {
-  bucket = "another-example-bucket"
 }
 
 output "bucketName" {
