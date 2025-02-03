@@ -1,38 +1,18 @@
 variable "metadata" {
-  description = "metadata"
+  description = "Metadata for the resource, including name and labels"
   type = object({
-
-    # name of the resource
-    name = string
-
-    # id of the resource
-    id = string
-
-    # id of the organization to which the api-resource belongs to
-    org = string
-
-    # environment to which the resource belongs to
-    env = object({
-
-      # name of the environment
-      name = string
-
-      # id of the environment
-      id = string
-    })
-
-    # labels for the resource
-    labels = object({
-
-      # Description for key
-      key = string
-
-      # Description for value
-      value = string
-    })
-
-    # tags for the resource
-    tags = list(string)
+    name = string,
+    id = optional(string),
+    org = optional(string),
+    env = optional(object({
+      name = optional(string),
+      id = optional(string),
+    })),
+    labels = optional(object({
+      key = string, value = string
+    })),
+    tags = optional(list(string)),
+    version = optional(object({ id = string, message = string }))
   })
 }
 
