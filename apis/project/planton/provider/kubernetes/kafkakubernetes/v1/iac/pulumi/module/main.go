@@ -29,7 +29,6 @@ func Resources(ctx *pulumi.Context, stackInput *kafkakubernetesv1.KafkaKubernete
 					Labels: pulumi.ToStringMap(locals.Labels),
 				}),
 		},
-		pulumi.Timeouts(&pulumi.CustomTimeouts{Create: "5s", Update: "5s", Delete: "5s"}),
 		pulumi.Provider(kubernetesProvider))
 	if err != nil {
 		return errors.Wrapf(err, "failed to create %s namespace", locals.Namespace)

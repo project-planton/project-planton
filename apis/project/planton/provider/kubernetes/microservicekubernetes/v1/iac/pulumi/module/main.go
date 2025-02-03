@@ -31,9 +31,7 @@ func Resources(ctx *pulumi.Context, stackInput *microservicekubernetesv1.Microse
 					Name:   pulumi.String(locals.Namespace),
 					Labels: pulumi.ToStringMap(locals.Labels),
 				}),
-		},
-		pulumi.Timeouts(&pulumi.CustomTimeouts{Create: "5s", Update: "5s", Delete: "5s"}),
-		pulumi.Provider(kubernetesProvider))
+		}, pulumi.Provider(kubernetesProvider))
 	if err != nil {
 		return errors.Wrapf(err, "failed to create %s namespace", locals.Namespace)
 	}

@@ -37,7 +37,7 @@ func Resources(ctx *pulumi.Context, stackInput *helmreleasev1.HelmReleaseStackIn
 				Name:   pulumi.String(namespaceName),
 				Labels: pulumi.ToStringMap(locals.Labels),
 			}),
-		}, pulumi.Timeouts(&pulumi.CustomTimeouts{Create: "5s", Update: "5s", Delete: "5s"}),
+		},
 		pulumi.Provider(kubernetesProvider))
 	if err != nil {
 		return errors.Wrapf(err, "failed to create %s namespace", namespaceName)

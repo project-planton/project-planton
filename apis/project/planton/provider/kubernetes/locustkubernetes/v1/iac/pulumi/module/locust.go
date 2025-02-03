@@ -22,8 +22,7 @@ func locust(ctx *pulumi.Context, locals *Locals,
 		Data: pulumi.StringMap{
 			"main.py": pulumi.String(locals.LocustKubernetes.Spec.LoadTest.MainPyContent),
 		},
-	}, pulumi.Timeouts(&pulumi.CustomTimeouts{Create: "10s", Update: "10s", Delete: "10s"}),
-		pulumi.Parent(createdNamespace))
+	}, pulumi.Parent(createdNamespace))
 	if err != nil {
 		return errors.Wrap(err, "failed to create main py configmap")
 	}
@@ -36,8 +35,7 @@ func locust(ctx *pulumi.Context, locals *Locals,
 			Labels:    pulumi.ToStringMap(locals.Labels),
 		}),
 		Data: pulumi.ToStringMap(locals.LocustKubernetes.Spec.LoadTest.LibFilesContent),
-	}, pulumi.Timeouts(&pulumi.CustomTimeouts{Create: "10s", Update: "10s", Delete: "10s"}),
-		pulumi.Parent(createdNamespace))
+	}, pulumi.Parent(createdNamespace))
 
 	if err != nil {
 		return errors.Wrap(err, "failed to create lib files configmap")
@@ -73,7 +71,7 @@ func locust(ctx *pulumi.Context, locals *Locals,
 		FetchArgs: helmv3.FetchArgs{
 			Repo: pulumi.String("https://charts.deliveryhero.io"), // The URL for the Helm chart repository
 		},
-	}, pulumi.Timeouts(&pulumi.CustomTimeouts{Create: "2m", Update: "2m", Delete: "2m"}), pulumi.Parent(createdNamespace))
+	}, pulumi.Parent(createdNamespace))
 
 	if err != nil {
 		return errors.Wrap(err, "failed to create locust resource")

@@ -43,8 +43,7 @@ func mongodb(ctx *pulumi.Context, locals *Locals,
 		FetchArgs: helmv3.FetchArgs{
 			Repo: pulumi.String(vars.HelmChartRepoUrl),
 		},
-	}, pulumi.Parent(createdNamespace),
-		pulumi.Timeouts(&pulumi.CustomTimeouts{Create: "2m", Update: "2m", Delete: "2m"}))
+	}, pulumi.Parent(createdNamespace))
 
 	if err != nil {
 		return errors.Wrap(err, "failed to create mongodb helm-chart")
