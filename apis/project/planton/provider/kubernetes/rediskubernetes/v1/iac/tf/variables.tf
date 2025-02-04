@@ -66,10 +66,10 @@ variable "spec" {
     ingress = object({
 
       # A flag to enable or disable ingress.
-      is_enabled = bool
+      is_enabled = optional(bool)
 
       # The dns domain.
-      dns_domain = string
+      dns_domain = optional(string)
     })
   })
 }
