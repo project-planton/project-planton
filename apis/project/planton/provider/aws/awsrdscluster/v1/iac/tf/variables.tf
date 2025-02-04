@@ -16,231 +16,168 @@ variable "metadata" {
   })
 }
 
-
 variable "spec" {
-  description = "spec"
+  description = "The specification for the AWS RDS Cluster."
   type = object({
 
-    # Name of the database engine to be used for this DB cluster. Valid Values: `aurora-mysql`,
-    # `aurora-postgresql`, `mysql`, `postgres`. (Note that `mysql` and `postgres` are Multi-AZ RDS clusters).
-    engine = string
+    # The engine to use; e.g. aurora-mysql, aurora-postgresql, mysql, postgres.
+    engine = optional(string, "")
 
-    # Database engine version. Updating this argument results in an outage.
-    # See the [Aurora MySQL](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/AuroraMySQL.Updates.html) and
-    # [Aurora Postgres](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/AuroraPostgreSQL.Updates.html)
-    # documentation for your configured engine to determine this value, or by running
-    # `aws rds describe-db-engine-versions`. For example with Aurora MySQL 2, a potential value for this
-    # argument is `5.7.mysql_aurora.2.03.2`. The value can contain a partial version where supported by the API.
-    # The actual engine version used is returned in the attribute `engineVersionActual`
-    engine_version = string
+    # Engine version (e.g. 5.7.mysql_aurora.2.03.2)
+    engine_version = optional(string, "")
 
-    # Database engine mode. Valid values: `global` (only valid for Aurora MySQL 1.21 and earlier),
-    # `parallelquery`, `provisioned`, `serverless`. Defaults to: `provisioned`.
-    # See the [RDS User Guide](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-serverless.html)
-    # for limitations when using `serverless`.
-    engine_mode = string
+    # Engine mode: global, parallelquery, provisioned, serverless (default "provisioned")
+    engine_mode = optional(string, "provisioned")
 
-    # Family of the DB parameter group.
-    cluster_family = string
+    # Cluster parameter group family
+    cluster_family = optional(string, "")
 
-    # Instance class to use. For details on CPU and memory, see [Scaling Aurora DB Instances](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Aurora.Managing.html).
-    # Aurora uses `db.*` instance classes/types. Please see [AWS Documentation](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html)
-    # for currently available instance classes and complete details. For Aurora Serverless v2 use `db.serverless`.
-    # EC2 instance type for aws rds cluster
-    # https://aws.amazon.com/rds/aurora/pricing
-    instance_type = string
+    # Instance class (e.g. db.r5.large). For Serverless v2, use "db.serverless"
+    instance_type = optional(string, "")
 
-    # aws rds cluster size
-    cluster_size = number
+    # Number of instances in the cluster
+    cluster_size = optional(number, 0)
 
-    # Set to true to allow RDS to manage the master user password in Secrets Manager. Cannot be set if master_password is provided
-    manage_master_user_password = bool
+    # Manage master user password in Secrets Manager
+    manage_master_user_password = optional(bool, false)
 
-    # Amazon Web Services KMS key identifier is the key ARN, key ID, alias ARN, or alias name for the KMS key.
-    # To use a KMS key in a different Amazon Web Services account, specify the key ARN or alias ARN.
-    # If not specified, the default KMS key for your Amazon Web Services account is used.
-    master_user_secret_kms_key_id = string
+    # The KMS key ID for master user secret, if manage_master_user_password = true
+    master_user_secret_kms_key_id = optional(string, "")
 
-    # Username for the master DB user. Ignored if snapshot_identifier or replication_source_identifier is provided
-    master_user = string
+    # Master username
+    master_user = optional(string, "master")
 
-    # Password for the master DB user. Ignored if snapshot_identifier or replication_source_identifier is provided
-    master_password = string
+    # Master password (ignored if manage_master_user_password = true)
+    master_password = optional(string, "")
 
-    # Database name (default is not to create a database)
-    database_name = string
+    # Database name
+    database_name = optional(string, "")
 
-    # Set true to make this database accessible from the public internet
-    is_publicly_accessible = bool
+    # Publicly accessible?
+    is_publicly_accessible = optional(bool, false)
 
-    # database port
-    database_port = number
+    # Database port
+    database_port = optional(number, 0)
 
-    # VPC ID to create the cluster in (e.g. `vpc-a22222ee`). Defaults to the region's default VPC.
-    vpc_id = string
+    # The VPC ID where this cluster should be placed
+    vpc_id = optional(string, "")
 
-    # List of subnet IDs for the DB. DB instance will be created in the VPC associated with the DB subnet group
-    # provisioned using the subnet IDs. Specify one of `subnet_ids`, `db_subnet_group_name`
-    subnet_ids = list(string)
+    # Subnet IDs (if using a custom DB subnet group)
+    subnet_ids = optional(list(string), [])
 
-    # Name of DB subnet group. DB instance will be created in the VPC associated with the DB subnet group.
-    # Specify one of `subnet_ids`, `db_subnet_group_name`
-    db_subnet_group_name = string
+    # Existing DB subnet group name (alternative to subnet_ids)
+    db_subnet_group_name = optional(string, "")
 
-    # The IDs of the security groups from which to allow `ingress` traffic to the DB instance
-    security_group_ids = list(string)
+    # Security groups from which to allow ingress
+    security_group_ids = optional(list(string), [])
 
-    # Whether to allow traffic between resources inside the database's security group.
-    intra_security_group_traffic_enabled = bool
+    # Whether to allow traffic among resources within the same security group
+    intra_security_group_traffic_enabled = optional(bool, false)
 
-    # List of CIDRs allowed to access the database (in addition to security groups and subnets)
-    allowed_cidr_blocks = list(string)
+    # List of CIDR blocks allowed to connect
+    allowed_cidr_blocks = optional(list(string), [])
 
-    # The IDs of the existing security groups to associate with the DB instance
-    associate_security_group_ids = list(string)
+    # Additional SGs to associate with the DB
+    associate_security_group_ids = optional(list(string), [])
 
-    # Specifies whether or mappings of AWS Identity and Access Management (IAM) accounts to database accounts is enabled
-    iam_database_authentication_enabled = bool
+    # IAM DB Authentication
+    iam_database_authentication_enabled = optional(bool, false)
 
-    # Specifies whether the DB cluster is encrypted
-    storage_encrypted = bool
+    # Whether the cluster is encrypted at rest
+    storage_encrypted = optional(bool, false)
 
-    # The ARN for the KMS encryption key. When specifying `kms_key_arn`, `storage_encrypted` needs to be set to `true`
-    storage_kms_key_arn = string
+    # KMS key ARN for encryption at rest
+    storage_kms_key_arn = optional(string, "")
 
-    # Whether to enable Performance Insights
-    is_performance_insights_enabled = bool
+    # Enable Performance Insights
+    is_performance_insights_enabled = optional(bool, false)
 
-    # The ARN for the KMS encryption key. When specifying `kms_key_arn`, `is_performance_insights_enabled` needs to be set to `true`
-    performance_insights_kms_key_id = string
+    # KMS key for Performance Insights
+    performance_insights_kms_key_id = optional(string, "")
 
-    # Weekly time range during which system maintenance can occur, in UTC
-    maintenance_window = string
+    # Weekly maintenance window
+    maintenance_window = optional(string, "")
 
-    # List of log types to enable for exporting to CloudWatch logs. If omitted, no logs will be exported.
-    # Valid values (depending on engine): alert, audit, error, general, listener, slowquery, trace, postgresql (PostgreSQL),
-    # upgrade (PostgreSQL).
-    enabled_cloudwatch_logs_exports = list(string)
+    # CloudWatch logs exports
+    enabled_cloudwatch_logs_exports = optional(list(string), [])
 
-    # A boolean flag to enable/disable the creation of the enhanced monitoring IAM role.
-    enhanced_monitoring_role_enabled = bool
+    # Whether to create the Enhanced Monitoring IAM role
+    enhanced_monitoring_role_enabled = optional(bool, false)
 
-    # Attributes used to format the Enhanced Monitoring IAM role.
-    # If this role hits IAM role length restrictions (max 64 characters),
-    # consider shortening these strings.
-    enhanced_monitoring_attributes = list(string)
+    # Attributes used in naming the Enhanced Monitoring IAM role
+    enhanced_monitoring_attributes = optional(list(string), [])
 
-    # Description for rds_monitoring_interval
-    rds_monitoring_interval = number
+    # Monitoring interval if Enhanced Monitoring is enabled
+    rds_monitoring_interval = optional(number, 0)
 
-    # Normally AWS makes a snapshot of the database before deleting it. Set this to `true` in order to skip this.
-    # NOTE: The final snapshot has a name derived from the cluster name. If you delete a cluster, get a final snapshot,
-    # then create a cluster of the same name, its final snapshot will fail with a name collision unless you delete
-    # the previous final snapshot first.
-    skip_final_snapshot = bool
+    # Skip final snapshot on deletion
+    skip_final_snapshot = optional(bool, false)
 
-    # Specifies whether the Cluster should have deletion protection enabled. The database can't be deleted when this value is set to `true`
-    deletion_protection = bool
+    # Deletion protection
+    deletion_protection = optional(bool, false)
 
-    # Specifies whether or not to create this cluster from a snapshot
-    snapshot_identifier = string
+    # Use an existing snapshot to create the cluster
+    snapshot_identifier = optional(string, "")
 
-    # Enable to allow major engine version upgrades when changing engine versions. Defaults to false.
-    allow_major_version_upgrade = bool
+    # Allow major version upgrade
+    allow_major_version_upgrade = optional(bool, false)
 
-    # The identifier of the CA certificate for the DB instance
-    ca_cert_identifier = string
+    # CA certificate identifier
+    ca_cert_identifier = optional(string, "")
 
-    # Number of days to retain backups for
-    retention_period = number
+    # Retention period for backups (days)
+    retention_period = optional(number, 0)
 
-    # Daily time range during which the backups happen, UTC
-    backup_window = string
+    # Daily backup window
+    backup_window = optional(string, "")
 
-    # AwsRdsClusterAutoScaling defines the auto-scaling settings for the RDS cluster, allowing dynamic scaling of instances
-    # based on specified metrics and policies.
-    auto_scaling = object({
-
-      # Whether to enable cluster autoscaling
-      is_enabled = bool
-
-      # Autoscaling policy type. `TargetTrackingScaling` and `StepScaling` are supported
-      policy_type = string
-
-      # The metrics type to use. If this value isn't provided the default is CPU utilization
-      target_metrics = string
-
-      # The target value to scale with respect to target metrics
-      target_value = number
-
-      # The amount of time, in seconds, after a scaling activity completes and before the next scaling down activity can start. Default is 300s
-      scale_in_cooldown = number
-
-      # The amount of time, in seconds, after a scaling activity completes and before the next scaling up activity can start. Default is 300s
-      scale_out_cooldown = number
-
-      # Minimum number of instances to be maintained by the autoscaler
-      min_capacity = number
-
-      # Maximum number of instances to be maintained by the autoscaler
-      max_capacity = number
+    # Auto-scaling configuration
+    auto_scaling = optional(object({
+      is_enabled = optional(bool, false)
+      policy_type = optional(string, "")
+      target_metrics = optional(string, "")
+      target_value = optional(number, 0)
+      scale_in_cooldown = optional(number, 0)
+      scale_out_cooldown = optional(number, 0)
+      min_capacity = optional(number, 0)
+      max_capacity = optional(number, 0)
+    }), {
+      is_enabled         = false,
+      policy_type        = "",
+      target_metrics     = "",
+      target_value       = 0,
+      scale_in_cooldown  = 0,
+      scale_out_cooldown = 0,
+      min_capacity       = 0,
+      max_capacity       = 0
     })
 
-    # List of nested attributes with scaling properties. Only valid when `engine_mode` is set to `serverless`. This is required for Serverless v1
-    scaling_configuration = object({
+    # Serverless v1 scaling configuration
+    scaling_configuration = optional(object({
+      auto_pause = optional(bool, false)
+      max_capacity = optional(number, 0)
+      min_capacity = optional(number, 0)
+      seconds_until_auto_pause = optional(number, 0)
+      timeout_action = optional(string, "")
+    }), null)
 
-      # Whether to enable automatic pause. A DB cluster can be paused only when it's idle (it has no connections).
-      # If a DB cluster is paused for more than seven days, the DB cluster might be backed up with a snapshot.
-      # In this case, the DB cluster is restored when there is a request to connect to it.
-      auto_pause = bool
+    # Serverless v2 scaling configuration
+    serverlessv2_scaling_configuration = optional(object({
+      max_capacity = optional(number, 0)
+      min_capacity = optional(number, 0)
+    }), null)
 
-      # Maximum capacity for an Aurora DB cluster in `serverless` DB engine mode.
-      # The maximum capacity must be greater than or equal to the minimum capacity.
-      # Valid Aurora PostgreSQL capacity values are (`2`, `4`, `8`, `16`, `32`, `64`, `192`, and `384`). Defaults to `16`.
-      max_capacity = number
+    # DB cluster parameter group name
+    cluster_parameter_group_name = optional(string, "")
 
-      # Minimum capacity for an Aurora DB cluster in `serverless` DB engine mode.
-      # The minimum capacity must be lesser than or equal to the maximum capacity.
-      # Valid Aurora PostgreSQL capacity values are (`2`, `4`, `8`, `16`, `32`, `64`, `192`, and `384`). Defaults to `2`.
-      min_capacity = number
-
-      # Time, in seconds, before an Aurora DB cluster in serverless mode is paused. Valid values are `300` through `86400`. Defaults to `300`.
-      seconds_until_auto_pause = number
-
-      # Action to take when the timeout is reached. Valid values: `ForceApplyCapacityChange`, `RollbackCapacityChange`.
-      # Defaults to `RollbackCapacityChange`.
-      # See [documentation](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-serverless-v1.how-it-works.html#aurora-serverless.how-it-works.timeout-action).
-      timeout_action = string
-    })
-
-    # Nested attribute with scaling properties for ServerlessV2. Only valid when `engine_mode` is set to `provisioned.` This is required for Serverless v2
-    serverlessv2_scaling_configuration = object({
-
-      # Minimum capacity for an Aurora DB cluster in `provisioned` DB engine mode. The minimum capacity must be
-      # lesser than or equal to the maximum capacity. Valid capacity values are in a range of `0.5` up to `128` in steps of `0.5`.
-      max_capacity = number
-
-      # Maximum capacity for an Aurora DB cluster in `provisioned` DB engine mode. The maximum capacity must be
-      # greater than or equal to the minimum capacity. Valid capacity values are in a range of `0.5` up to `128` in steps of `0.5`.
-      min_capacity = number
-    })
-
-    # Name of the DB cluster parameter group to associate.
-    cluster_parameter_group_name = string
-
-    # List of DB cluster parameters to apply
-    cluster_parameters = list(object({
-
-      # "immediate" (default), or "pending-reboot". Some
-      # engines can't apply some parameters without a reboot, and you will need to
-      # specify "pending-reboot" here.
-      apply_method = string
-
-      # The name of the DB parameter.
-      name = string
-
-      # The value of the DB parameter.
-      value = string
-    }))
+    # List of cluster parameters
+    cluster_parameters = optional(list(object({
+      apply_method = optional(string, "")
+      name = optional(string, "")
+      value = optional(string, "")
+    })), [])
   })
+
+  # Default to empty object if not provided
+  default = {}
 }
