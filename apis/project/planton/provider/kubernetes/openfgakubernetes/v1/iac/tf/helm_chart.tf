@@ -1,16 +1,9 @@
-##############################################
-# helm_release.tf
-#
-# Installs the OpenFGA Helm chart with a
-# single values block using yamlencode.
-##############################################
-
-resource "helm_release" "this" {
+resource "helm_release" "openfga_helm_chart" {
   name             = local.resource_id
   repository       = "https://openfga.github.io/helm-charts"
   chart            = "openfga"
   version          = "0.2.12"
-  namespace        = kubernetes_namespace.this.metadata[0].name
+  namespace        = kubernetes_namespace.openfga_namespace.metadata[0].name
   create_namespace = false
 
   values = [
@@ -35,6 +28,6 @@ resource "helm_release" "this" {
   ]
 
   depends_on = [
-    kubernetes_namespace.
+    kubernetes_namespace.openfga_namespace
   ]
 }
