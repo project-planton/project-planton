@@ -5,64 +5,60 @@ metadata:
 spec:
   function:
     architectures:
-      - x8664
-    description: Description..
-    fileSystemConfig:
-      arn: efsArn
-      localMountPath: localMountPath
-    handler: handler
-    imageUri: image.url
-    kmsKeyArn: kmskeyarn
+      - "x86_64"  # Valid architecture: "x86_64" or "arm64"
+    description: "Example Lambda function"
+    file_system_config:
+      arn: "arn:aws:elasticfilesystem:us-east-1:123456789012:access-point/fsap-1234abcd"
+      local_mount_path: "/mnt/data"  # Must start with /mnt/
+    handler: "index.handler"
+    image_uri: ""  # Empty string is okay if using S3-based code instead of an ECR image
+    kms_key_arn: "arn:aws:kms:us-east-1:123456789012:key/8c3c63ac-88d6-4f31-9b1a-72fcf3449ec9"
     layers:
-      - value-1
-      - value-2
-    memorySize: 1
-    packageType: Zip
+      - "arn:aws:lambda:us-east-1:123456789012:layer:MyLayer:1"
+    memory_size: 512  # Within 128-10240
+    package_type: "Zip"
     publish: true
-    reservedConcurrentExecutions: 1
-    runtime: runtime
-    s3Bucket: bName
-    s3Key: oKey
-    s3ObjectVersion: oVersion
-    sourceCodeHash: hash
-    timeout: 1
+    reserved_concurrent_executions: 5
+    runtime: "python3.9"  # Must be a valid AWS runtime
+    s3_bucket: "my-lambda-bucket"
+    s3_key: "my-lambda-code.zip"  # Must exist in that bucket
+    s3_object_version: "v1"       # Example version string if versioning is enabled; else can be ""
+    source_code_hash: "IcG6x1KCNMqhlmZVLPkkA8nPe9AT2BN4cx1r5897/mQ="
+    timeout: 10
     variables:
-      key-2: value-2
-      key-3: value-3
-    deadLetterConfigTargetArn: targetArn
-    imageConfig:
+      ENV_STAGE: "dev"
+      FOO: "bar"
+    dead_letter_config_target_arn: "arn:aws:sqs:us-east-1:123456789012:MyQueue"
+    image_config:
       commands:
-        - value-2
-        - value-3
-      entryPoints:
-        - value-1
-        - value-2
-      workingDirectory: work/ing/directoryyy
-    tracingConfigMode: PassThrough
-    vpcConfig:
-      securityGroupIds:
-        - value-1
-        - value-2
-      subnetIds:
-        - value-1
-        - value-2
-      vpcId: vpcId
-    ephemeralStorageSize: 1
-  iamRole:
-    permissionsBoundary: permission boundary
-    lambdaAtEdgeEnabled: true
-    ssmParameterNames:
-      - value-1
-      - value-2
-    customIamPolicyArns:
-      - value-1
-      - value-2
-    inlineIamPolicy: Inline iam policy.........
-  cloudwatchLogGroup:
-    kmsKeyArn: kmskeyArn
-    retentionInDays: 1
-  invokeFunctionPermissions:
-    - principal: pr-22
-      sourceArn: arn-22
-    - principal: pr-3
-      sourceArn: arn-3
+        - "run"
+      entry_points:
+        - "/entrypoint.sh"
+      working_directory: "/var/task"
+    tracing_config_mode: "PassThrough"
+    vpc_config:
+      security_group_ids:
+        - "sg-0123456789abcdef0"
+      subnet_ids:
+        - "subnet-111111111111abcd0"
+      vpc_id: "vpc-0abcdef1234567890"
+    ephemeral_storage_size: 512  # Valid range 512-10240
+
+  iam_role:
+    permissions_boundary: "arn:aws:iam::123456789012:policy/MyPermissionsBoundary"
+    lambda_at_edge_enabled: false
+    # This is optional, so if you want it explicitly off, set false
+    cloudwatch_lambda_insights_enabled: false
+    ssm_parameter_names: []
+    custom_iam_policy_arns: []
+    inline_iam_policy: "{}"  # Empty JSON object is valid if you don't need inline policies
+
+  cloudwatch_log_group:
+    kms_key_arn: ""          # Empty means no custom KMS key; you can omit or set a real ARN
+    retention_in_days: 3
+
+  invoke_function_permissions:
+    - principal: "s3.amazonaws.com"
+      source_arn: "arn:aws:s3:::my-event-bucket"
+    - principal: "events.amazonaws.com"
+      source_arn: "arn:aws:events:us-east-1:123456789012:rule/MyEventRule"

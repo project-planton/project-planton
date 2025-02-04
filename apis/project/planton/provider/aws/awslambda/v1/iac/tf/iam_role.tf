@@ -1,5 +1,5 @@
 ###############################################################################
-# Data Sources
+# Data sources used in IAM
 ###############################################################################
 data "aws_partition" "current" {}
 
@@ -7,48 +7,42 @@ data "aws_region" "current" {}
 
 data "aws_caller_identity" "current" {}
 
-
-###############################################################################
-# IAM Role - for Lambda
-###############################################################################
-# Only create the IAM Role if var.spec.iam_role is non-null (locals.create_iam_role)
-resource "aws_iam_role" "lambda" {
-  count = local.create_iam_role ? 1 : 0
-
-  name               = "${local.resource_id}-lambda-iam-role"
-  assume_role_policy = data.aws_iam_policy_document.lambda_assume_role[count.index].json
-}
-
-# Trust policy for Lambda to assume this role
 data "aws_iam_policy_document" "lambda_assume_role" {
   statement {
     actions = ["sts:AssumeRole"]
     principals {
-      type = "Service"
+      type        = "Service"
       identifiers = ["lambda.amazonaws.com"]
     }
   }
 }
 
 ###############################################################################
-# Attach the AWSLambdaBasicExecutionRole policy
+# IAM Role (always created, matching Pulumi)
+###############################################################################
+resource "aws_iam_role" "lambda" {
+  name               = "${local.resource_id}-lambda-iam-role"
+  assume_role_policy = data.aws_iam_policy_document.lambda_assume_role.json
+
+  # Always attach final_tags if you wish
+  tags = local.final_tags
+}
+
+###############################################################################
+# Attach the AWSLambdaBasicExecutionRole policy (always)
 ###############################################################################
 resource "aws_iam_role_policy_attachment" "cloudwatch_logs" {
-  count = local.create_iam_role ? 1 : 0
-
-  role       = aws_iam_role.lambda[count.index].name
+  role       = aws_iam_role.lambda.name
   policy_arn = "arn:${data.aws_partition.current.partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
 
 ###############################################################################
-# Optional: VPC Access (AWSLambdaVPCAccessExecutionRole)
+# Optional: VPC Access
 ###############################################################################
 resource "aws_iam_role_policy_attachment" "vpc_access" {
-  count = (
-  local.create_iam_role && local.lambda_vpc_config != null
-  ) ? 1 : 0
+  count = local.lambda_vpc_config != null ? 1 : 0
 
-  role       = aws_iam_role.lambda[count.index].name
+  role       = aws_iam_role.lambda.name
   policy_arn = "arn:${data.aws_partition.current.partition}:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
 }
 
@@ -57,22 +51,24 @@ resource "aws_iam_role_policy_attachment" "vpc_access" {
 ###############################################################################
 resource "aws_iam_role_policy_attachment" "xray" {
   count = (
-  local.create_iam_role && local.lambda_tracing_config_mode != null && local.lambda_tracing_config_mode != ""
+  local.lambda_tracing_config_mode != null
+  && local.lambda_tracing_config_mode != ""
   ) ? 1 : 0
 
-  role       = aws_iam_role.lambda[count.index].name
+  role       = aws_iam_role.lambda.name
   policy_arn = "arn:${data.aws_partition.current.partition}:iam::aws:policy/AWSXRayDaemonWriteAccess"
 }
 
 ###############################################################################
-# Optional: CloudWatch Lambda Insights
+# Optional: CloudWatch Lambda Insights (only if IAM role is provided and enabled)
 ###############################################################################
 resource "aws_iam_role_policy_attachment" "cloudwatch_lambda_insights" {
   count = (
-  local.create_iam_role && local.iam_role_cloudwatch_lambda_insights_enabled
+  local.iam_role_provided
+  && local.iam_role_cloudwatch_lambda_insights_enabled
   ) ? 1 : 0
 
-  role       = aws_iam_role.lambda[count.index].name
+  role       = aws_iam_role.lambda.name
   policy_arn = "arn:${data.aws_partition.current.partition}:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy"
 }
 
@@ -81,15 +77,12 @@ resource "aws_iam_role_policy_attachment" "cloudwatch_lambda_insights" {
 ###############################################################################
 data "aws_iam_policy_document" "ssm" {
   count = (
-  local.create_iam_role && length(local.iam_role_ssm_parameter_names) > 0
+  local.iam_role_provided
+  && length(local.iam_role_ssm_parameter_names) > 0
   ) ? 1 : 0
 
   statement {
-    actions = [
-      "ssm:GetParameter",
-      "ssm:GetParameters",
-      "ssm:GetParametersByPath",
-    ]
+    actions   = ["ssm:GetParameter", "ssm:GetParameters", "ssm:GetParametersByPath"]
     resources = [
       for param_name in local.iam_role_ssm_parameter_names :
       "arn:${data.aws_partition.current.partition}:ssm:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:parameter${param_name}"
@@ -99,21 +92,23 @@ data "aws_iam_policy_document" "ssm" {
 
 resource "aws_iam_policy" "ssm" {
   count = (
-  local.create_iam_role && length(local.iam_role_ssm_parameter_names) > 0
+  local.iam_role_provided
+  && length(local.iam_role_ssm_parameter_names) > 0
   ) ? 1 : 0
 
   name        = "${local.resource_id}-ssm-policy-${data.aws_region.current.name}"
   description = "Provides read access to specific SSM parameters for Lambda."
-  policy      = data.aws_iam_policy_document.ssm[0].json
+  policy      = data.aws_iam_policy_document.ssm[count.index].json
   tags        = local.final_tags
 }
 
 resource "aws_iam_role_policy_attachment" "ssm_attach" {
   count = (
-  local.create_iam_role && length(local.iam_role_ssm_parameter_names) > 0
+  local.iam_role_provided
+  && length(local.iam_role_ssm_parameter_names) > 0
   ) ? 1 : 0
 
-  role       = aws_iam_role.lambda[count.index].name
+  role       = aws_iam_role.lambda.name
   policy_arn = aws_iam_policy.ssm[count.index].arn
 }
 
@@ -121,10 +116,10 @@ resource "aws_iam_role_policy_attachment" "ssm_attach" {
 # Optional: Custom IAM Policy ARNs
 ###############################################################################
 resource "aws_iam_role_policy_attachment" "custom" {
-  count = local.create_iam_role ? length(local.iam_role_custom_iam_policy_arns) : 0
+  count = local.iam_role_provided ? length(local.iam_role_custom_iam_policy_arns) : 0
 
-  role = aws_iam_role.lambda[0].name
-  policy_arn = local.iam_role_custom_iam_policy_arns[count.index]
+  role       = aws_iam_role.lambda.name
+  policy_arn = element(local.iam_role_custom_iam_policy_arns, count.index)
 }
 
 ###############################################################################
@@ -132,10 +127,12 @@ resource "aws_iam_role_policy_attachment" "custom" {
 ###############################################################################
 resource "aws_iam_role_policy" "inline" {
   count = (
-  local.create_iam_role && local.iam_role_inline_iam_policy != null && local.iam_role_inline_iam_policy != ""
+  local.iam_role_provided
+  && local.iam_role_inline_iam_policy != null
+  && local.iam_role_inline_iam_policy != ""
   ) ? 1 : 0
 
   name   = "${local.resource_id}-inline"
-  role   = aws_iam_role.lambda[count.index].name
+  role   = aws_iam_role.lambda.name
   policy = local.iam_role_inline_iam_policy
 }

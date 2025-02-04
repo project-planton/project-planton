@@ -1,6 +1,9 @@
+###############################################################################
+# Outputs
+###############################################################################
 output "iam_role_name" {
   description = "Name of the IAM Role created for the Lambda Function"
-  value       = local.create_iam_role ? aws_iam_role.lambda[0].name : null
+  value       = aws_iam_role.lambda.name
 }
 
 output "cloudwatch_log_group_name" {
