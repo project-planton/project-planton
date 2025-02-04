@@ -1,4 +1,4 @@
-# Terraform Module to Deploy Redis on Kubernetes
+# Terraform Module to Deploy Postgres on Kubernetes
 
 ```shell
 project-planton tofu init --manifest hack/manifest.yaml --backend-type s3 \
