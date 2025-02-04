@@ -6,7 +6,6 @@ kind: KubernetesHttpEndpoint
 metadata:
   name: basic-http-endpoint
 spec:
-  kubernetes_cluster_credential_id: my-cluster-creds
   is_tls_enabled: false
   routing_rules:
     - url_path_prefix: /api
@@ -24,7 +23,6 @@ kind: KubernetesHttpEndpoint
 metadata:
   name: secure-http-endpoint
 spec:
-  kubernetes_cluster_credential_id: my-cluster-creds
   is_tls_enabled: true
   cert_cluster_issuer_name: my-cluster-issuer
   routing_rules:
@@ -43,7 +41,6 @@ kind: KubernetesHttpEndpoint
 metadata:
   name: multi-route-http-endpoint
 spec:
-  kubernetes_cluster_credential_id: my-cluster-creds
   is_tls_enabled: false
   routing_rules:
     - url_path_prefix: /public
@@ -66,7 +63,6 @@ kind: KubernetesHttpEndpoint
 metadata:
   name: grpc-web-endpoint
 spec:
-  kubernetes_cluster_credential_id: my-cluster-creds
   is_tls_enabled: true
   cert_cluster_issuer_name: my-cluster-issuer
   is_grpc_web_compatible: true
@@ -86,6 +82,5 @@ kind: KubernetesHttpEndpoint
 metadata:
   name: minimal-http-endpoint
 spec:
-  kubernetes_cluster_credential_id: my-cluster-creds
   is_tls_enabled: false
 ```

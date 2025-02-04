@@ -6,7 +6,6 @@ kind: LocustKubernetes
 metadata:
   name: locust-basic
 spec:
-  kubernetes_cluster_credential_id: my-cluster-creds
   master_container:
     resources:
       requests:
@@ -46,7 +45,6 @@ kind: LocustKubernetes
 metadata:
   name: locust-custom
 spec:
-  kubernetes_cluster_credential_id: my-cluster-creds
   master_container:
     resources:
       requests:
@@ -98,7 +96,6 @@ kind: LocustKubernetes
 metadata:
   name: locust-tls
 spec:
-  kubernetes_cluster_credential_id: my-cluster-creds
   master_container:
     resources:
       requests:
@@ -147,7 +144,6 @@ kind: LocustKubernetes
 metadata:
   name: locust-external-lib
 spec:
-  kubernetes_cluster_credential_id: my-cluster-creds
   master_container:
     resources:
       requests:
@@ -196,7 +192,6 @@ kind: LocustKubernetes
 metadata:
   name: locust-minimal
 spec:
-  kubernetes_cluster_credential_id: my-cluster-creds
   master_container:
     resources:
       requests:

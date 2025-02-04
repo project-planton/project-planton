@@ -51,14 +51,7 @@ variable "spec" {
     # These values allow for further refinement of the deployment, such as customizing resource limits, setting environment variables,
     # or specifying version tags. For detailed information on the available options, refer to the Helm chart documentation at:
     # https://github.com/jenkinsci/helm-charts/blob/main/charts/jenkins/values.yaml
-    helm_values = object({
-
-      # Description for key
-      key = string
-
-      # Description for value
-      value = string
-    })
+    helm_values = optional(map(string))
 
     # The ingress configuration for the Jenkins deployment.
     ingress = object({

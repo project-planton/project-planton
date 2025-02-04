@@ -6,7 +6,6 @@ kind: JenkinsKubernetes
 metadata:
   name: jenkins-instance-basic
 spec:
-  kubernetes_cluster_credential_id: my-cluster-creds
   container:
     resources:
       requests:
@@ -31,7 +30,6 @@ kind: JenkinsKubernetes
 metadata:
   name: jenkins-instance-custom
 spec:
-  kubernetes_cluster_credential_id: my-cluster-creds
   container:
     resources:
       requests:
@@ -65,7 +63,6 @@ kind: JenkinsKubernetes
 metadata:
   name: jenkins-no-ingress
 spec:
-  kubernetes_cluster_credential_id: my-cluster-creds
   container:
     resources:
       requests:
@@ -90,7 +87,6 @@ kind: JenkinsKubernetes
 metadata:
   name: jenkins-high-resources
 spec:
-  kubernetes_cluster_credential_id: my-cluster-creds
   container:
     resources:
       requests:
@@ -123,7 +119,6 @@ kind: JenkinsKubernetes
 metadata:
   name: jenkins-minimal
 spec:
-  kubernetes_cluster_credential_id: my-cluster-creds
   container:
     resources:
       requests:

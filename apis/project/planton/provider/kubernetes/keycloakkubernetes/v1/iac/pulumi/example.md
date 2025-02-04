@@ -6,7 +6,6 @@ kind: KeycloakKubernetes
 metadata:
   name: keycloak-instance-basic
 spec:
-  kubernetes_cluster_credential_id: my-cluster-creds
   container:
     resources:
       requests:
@@ -27,7 +26,6 @@ kind: KeycloakKubernetes
 metadata:
   name: keycloak-instance-ingress
 spec:
-  kubernetes_cluster_credential_id: my-cluster-creds
   container:
     resources:
       requests:
@@ -53,7 +51,6 @@ kind: KeycloakKubernetes
 metadata:
   name: keycloak-minimal
 spec:
-  kubernetes_cluster_credential_id: my-cluster-creds
   container:
     resources:
       requests:
@@ -72,7 +69,6 @@ kind: KeycloakKubernetes
 metadata:
   name: keycloak-high-resources
 spec:
-  kubernetes_cluster_credential_id: my-cluster-creds
   container:
     resources:
       requests:
@@ -98,7 +94,6 @@ kind: KeycloakKubernetes
 metadata:
   name: keycloak-port-forward
 spec:
-  kubernetes_cluster_credential_id: my-cluster-creds
   container:
     resources:
       requests:
