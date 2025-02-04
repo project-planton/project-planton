@@ -1,0 +1,29 @@
+apiVersion: kubernetes.project.planton/v1
+kind: ElasticsearchKubernetes
+metadata:
+  name: test-elasticsearch-cluster
+spec:
+  elasticsearchContainer:
+    diskSize: 5Gi
+    isPersistenceEnabled: true
+    replicas: 1
+    resources:
+      limits:
+        cpu: 1000m
+        memory: 1Gi
+      requests:
+        cpu: 100m
+        memory: 50Mi
+  ingress:
+    dnsDomain: example.com
+    isEnabled: true
+  kibanaContainer:
+    isEnabled: true
+    replicas: 1
+    resources:
+      limits:
+        cpu: 1000m
+        memory: 1Gi
+      requests:
+        cpu: 100m
+        memory: 50Mi
