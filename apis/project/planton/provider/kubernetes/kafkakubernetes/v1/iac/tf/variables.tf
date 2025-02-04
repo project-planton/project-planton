@@ -41,14 +41,7 @@ variable "spec" {
       # Additional configuration for the Kafka topic.
       # If not provided, default values will be set.
       # For example, the default `delete.policy` is `delete`, but it can be set to `compact`.
-      config = object({
-
-        # Description for key
-        key = string
-
-        # Description for value
-        value = string
-      })
+      config = optional(map(string))
     }))
 
     # The specifications for the Kafka broker containers.

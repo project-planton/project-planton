@@ -1,4 +1,4 @@
-# Terraform Module to Deploy Apache Solr on Kubernetes
+# Terraform Module to Deploy a HelmChart
 
 ```shell
 project-planton tofu init --manifest hack/manifest.yaml --backend-type s3 \

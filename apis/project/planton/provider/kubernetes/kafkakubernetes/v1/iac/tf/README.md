@@ -1,11 +1,11 @@
-# Terraform Module to Deploy Elasticsearch on Kubernetes
+# Terraform Module to Deploy Apache Kafka on Kubernetes
 
 ```shell
 project-planton tofu init --manifest hack/manifest.yaml --backend-type s3 \
   --backend-config="bucket=planton-cloud-tf-state-backend" \
   --backend-config="dynamodb_table=planton-cloud-tf-state-backend-lock" \
   --backend-config="region=ap-south-2" \
-  --backend-config="key=kubernetes-stacks/test-elasticsearch-cluster.tfstate"
+  --backend-config="key=kubernetes-stacks/test-kafka-cluster.tfstate"
 ```
 
 ```shell
