@@ -76,13 +76,6 @@ variable "spec" {
     # such as customizing resource limits, setting environment variables, or specifying version tags.
     # For detailed information on the available options, refer to the Helm chart documentation at:
     # https://artifacthub.io/packages/helm/bitnami/mongodb
-    helm_values = object({
-
-      # Description for key
-      key = string
-
-      # Description for value
-      value = string
-    })
+    helm_values = optional(map(string))
   })
 }
