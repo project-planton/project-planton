@@ -1,0 +1,68 @@
+apiVersion: aws.project.planton/v1
+kind: AwsLambda
+metadata:
+  name: test-aws-lambda
+spec:
+  function:
+    architectures:
+      - x8664
+    description: Description..
+    fileSystemConfig:
+      arn: efsArn
+      localMountPath: localMountPath
+    handler: handler
+    imageUri: image.url
+    kmsKeyArn: kmskeyarn
+    layers:
+      - value-1
+      - value-2
+    memorySize: 1
+    packageType: Zip
+    publish: true
+    reservedConcurrentExecutions: 1
+    runtime: runtime
+    s3Bucket: bName
+    s3Key: oKey
+    s3ObjectVersion: oVersion
+    sourceCodeHash: hash
+    timeout: 1
+    variables:
+      key-2: value-2
+      key-3: value-3
+    deadLetterConfigTargetArn: targetArn
+    imageConfig:
+      commands:
+        - value-2
+        - value-3
+      entryPoints:
+        - value-1
+        - value-2
+      workingDirectory: work/ing/directoryyy
+    tracingConfigMode: PassThrough
+    vpcConfig:
+      securityGroupIds:
+        - value-1
+        - value-2
+      subnetIds:
+        - value-1
+        - value-2
+      vpcId: vpcId
+    ephemeralStorageSize: 1
+  iamRole:
+    permissionsBoundary: permission boundary
+    lambdaAtEdgeEnabled: true
+    ssmParameterNames:
+      - value-1
+      - value-2
+    customIamPolicyArns:
+      - value-1
+      - value-2
+    inlineIamPolicy: Inline iam policy.........
+  cloudwatchLogGroup:
+    kmsKeyArn: kmskeyArn
+    retentionInDays: 1
+  invokeFunctionPermissions:
+    - principal: pr-22
+      sourceArn: arn-22
+    - principal: pr-3
+      sourceArn: arn-3

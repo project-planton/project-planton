@@ -40,27 +40,27 @@ variable "spec" {
     })
 
     # Attribute to use as the range (sort) key. Must also be defined as an `attribute`, see below.
-    range_key = object({
+    range_key = optional(object({
 
       # Name of the attribute
       name = string
 
       # Attribute type. Valid values are `S` (string), `N` (number), `B` (binary).
       type = string
-    })
+    }))
 
     # Whether Streams are enabled.
-    enable_streams = bool
+    enable_streams = optional(bool)
 
     # When an item in the table is modified, StreamViewType determines what information
     # is written to the table's stream. Valid values are
     # `KEYS_ONLY`, `NEW_IMAGE`, `OLD_IMAGE`, `NEW_AND_OLD_IMAGES`.
-    stream_view_type = string
+    stream_view_type = optional(string)
 
     # Encryption at rest options. AWS DynamoDB tables are automatically
     # encrypted at rest with an AWS-owned Customer Master Key if this argument
     # isn't specified.
-    server_side_encryption = object({
+    server_side_encryption = optional(object({
 
       # Whether or not to enable encryption at rest using an AWS managed KMS customer master key (CMK).
       # If `enabled` is `false` then server-side encryption is set to
@@ -76,19 +76,19 @@ variable "spec" {
       # `alias/aws/dynamodb`.
       # **Note:** This attribute will _not_ be populated with the ARN of _default_ keys.
       kms_key_arn = string
-    })
+    }))
 
     # Enable point-in-time recovery options.
-    point_in_time_recovery = object({
+    point_in_time_recovery = optional(object({
 
       # Whether to enable point-in-time recovery. It can take 10 minutes to enable for
       # new tables. If the `pointInTimeRecovery` block is not provided,
       # this defaults to `false`.
       is_enabled = bool
-    })
+    }))
 
     # Configuration block for TTL.
-    ttl = object({
+    ttl = optional(object({
 
       # Whether TTL is enabled. Default value is `false`.
       is_enabled = bool
@@ -96,10 +96,10 @@ variable "spec" {
       # Name of the table attribute to store the TTL timestamp in.
       # Required if `enabled` is `true`, must not be set otherwise.
       attribute_name = string
-    })
+    }))
 
     # Dynamodb auto scale config
-    auto_scale = object({
+    auto_scale = optional(object({
 
       # Description for is_enabled
       is_enabled = bool
@@ -129,20 +129,20 @@ variable "spec" {
         # target capacity utilization percentage
         target_utilization = number
       })
-    })
+    }))
 
     # Set of nested attribute definitions. Only required for `hashKey` and `rangeKey` attributes.
-    attributes = list(object({
+    attributes = optional(list(object({
 
       # Name of the attribute
       name = string
 
       # Attribute type. Valid values are `S` (string), `N` (number), `B` (binary).
       type = string
-    }))
+    })))
 
     # Describe a GSI for the table; subject to the normal limits on the number of GSIs, projected attributes, etc.
-    global_secondary_indexes = list(object({
+    global_secondary_indexes = optional(list(object({
 
       # Name of the index.
       name = string
@@ -162,18 +162,18 @@ variable "spec" {
       hash_key = string
 
       # Name of the range key; must be defined
-      range_key = string
+      range_key = optional(string)
 
       # Number of read units for this index. Must be set if billingMode is set to PROVISIONED.
       read_capacity = number
 
       # Number of write units for this index. Must be set if billingMode is set to PROVISIONED.
       write_capacity = number
-    }))
+    })))
 
     # Describe an LSI on the table; these can only be allocated _at creation_
     # so you cannot change this definition after you have created the resource.
-    local_secondary_indexes = list(object({
+    local_secondary_indexes = optional(list(object({
 
       # Name of the index.
       name = string
@@ -190,15 +190,15 @@ variable "spec" {
       non_key_attributes = list(string)
 
       # Name of the range key; must be defined
-      range_key = string
-    }))
+      range_key = optional(string)
+    })))
 
     # Configuration block(s) with [DynamoDB Global Tables V2 (version 2019.11.21)]
     # (https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/globaltables.V2.html) replication configurations.
-    replica_region_names = list(string)
+    replica_region_names = optional(list(string))
 
     # Import Amazon S3 data into a new table. See below.
-    import_table = object({
+    import_table = optional(object({
 
       # Type of compression to be used on the input coming from the imported table.
       # Valid values are `GZIP`, `ZSTD` and `NONE`.
@@ -235,6 +235,6 @@ variable "spec" {
         # The key prefix shared by all S3 Objects that are being imported.
         key_prefix = string
       })
-    })
+    }))
   })
 }
