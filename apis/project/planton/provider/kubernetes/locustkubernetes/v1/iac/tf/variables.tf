@@ -16,7 +16,6 @@ variable "metadata" {
   })
 }
 
-
 variable "spec" {
   description = "spec"
   type = object({
@@ -117,19 +116,12 @@ variable "spec" {
       # A map where each entry consists of a filename and its associated Python code content.
       # These files typically contain additional classes or functions required by the main_py_content script.
       # The key of the map is the filename, and the value is the file content.
-      lib_files_content = object({
-
-        # Description for key
-        key = string
-
-        # Description for value
-        value = string
-      })
+      lib_files_content = optional(map(string))
 
       # A list of extra Python pip packages that are required for the load test.
       # These packages will be installed in the environment where the load test is executed,
       # allowing for extended functionality or custom dependencies to be included easily.
-      pip_packages = list(string)
+      pip_packages = optional(list(string))
     })
 
     # A map of key-value pairs providing additional customization options for the Helm chart used
@@ -137,13 +129,6 @@ variable "spec" {
     # such as customizing resource limits, setting environment variables, or specifying version tags.
     # For detailed information on the available options, refer to the Helm chart documentation at:
     # https://github.com/deliveryhero/helm-charts/tree/master/stable/locust#values
-    helm_values = object({
-
-      # Description for key
-      key = string
-
-      # Description for value
-      value = string
-    })
+    helm_values = optional(map(string))
   })
 }
