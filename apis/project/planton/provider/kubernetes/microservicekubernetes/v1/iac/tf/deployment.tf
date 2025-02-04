@@ -10,31 +10,6 @@ resource "kubernetes_service_account" "this" {
   ]
 }
 
-# 2) (Optional) Create an image pull secret
-# if local.image_pull_secret_data is provided
-resource "kubernetes_secret" "image_pull_secret" {
-  count = local.image_pull_secret_data != null ? 1 : 0
-
-  metadata {
-    name      = "image-pull-secret"
-    namespace = kubernetes_namespace.this.metadata[0].name
-    labels    = local.final_labels
-  }
-
-  type = "kubernetes.io/dockerconfigjson"
-
-  # For older Terraform Kubernetes providers that do
-  # not support `string_data`, we must use `data`.
-  # This field must be base64-encoded manually.
-  data = {
-    ".dockerconfigjson" = base64encode(local.image_pull_secret_data[".dockerconfigjson"])
-  }
-
-  depends_on = [
-    kubernetes_namespace.this
-  ]
-}
-
 # 3) Create the Deployment
 resource "kubernetes_deployment" "this" {
   metadata {
@@ -63,14 +38,6 @@ resource "kubernetes_deployment" "this" {
       spec {
         service_account_name             = kubernetes_service_account.this.metadata[0].name
         termination_grace_period_seconds = 60
-
-        # Reference the image pull secret only if it exists
-        dynamic "image_pull_secrets" {
-          for_each = length(kubernetes_secret.image_pull_secret) > 0 ? [1] : []
-          content {
-            name = kubernetes_secret.image_pull_secret[0].metadata[0].name
-          }
-        }
 
         container {
           name  = "microservice"

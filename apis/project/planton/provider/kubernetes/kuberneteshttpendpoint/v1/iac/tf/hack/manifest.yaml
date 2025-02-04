@@ -1,0 +1,14 @@
+apiVersion: kubernetes.project.planton/v1
+kind: KubernetesHttpEndpoint
+metadata:
+  name: sub-domain.example.com
+spec:
+  isTlsEnabled: true
+  certClusterIssuerName: Issuer-test
+  isGrpcWebCompatible: true
+  routingRules:
+    - urlPathPrefix: /url-path-prefix-2
+      backendService:
+        name: servicename-2
+        namespace: namespace-2
+        port: 8081

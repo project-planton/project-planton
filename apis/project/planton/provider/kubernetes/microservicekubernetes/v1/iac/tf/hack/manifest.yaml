@@ -8,8 +8,6 @@ spec:
   container:
     app:
       env:
-        secrets:
-          SOME_ENV_SECRET_ONE: some-env-secret-id-on-secrets-manager
         variables:
           SOME_ENV_VAR_ONE: some-env-var-value-one
       image:

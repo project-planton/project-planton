@@ -68,3 +68,21 @@ variable "spec" {
     }))
   })
 }
+
+variable "gateway_external_load_balancer_service_hostname" {
+  type        = string
+  description = "The hostname of the external load balancer service used by the Gateway."
+  default     = "ingress-external.istio-ingress.svc.cluster.local"
+}
+
+variable "gateway_ingress_class_name" {
+  type        = string
+  description = "The name of the GatewayIngress class (e.g. 'istio')."
+  default     = "istio"
+}
+
+variable "istio_ingress_namespace" {
+  type        = string
+  description = "The namespace where the Istio ingress Gateway is deployed."
+  default     = "istio-ingress"
+}
