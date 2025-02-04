@@ -4,10 +4,19 @@ terraform {
       source  = "hashicorp/kubernetes"
       version = "~> 2.21"
     }
-    # If you need helm or other providers, declare them here as well.
+    helm = {
+      source  = "hashicorp/helm"
+      version = "~> 2.9"
+    }
   }
 }
 
 provider "kubernetes" {
   config_path      = "~/.kube/config"
+}
+
+provider "helm" {
+  kubernetes {
+    config_path      = "~/.kube/config"
+  }
 }
