@@ -208,38 +208,3 @@ variable "spec" {
     }))
   })
 }
-
-##############################################
-# variables.tf
-#
-# Declares a `docker_credential` variable
-# that aligns with DockerCredentialSpec.
-##############################################
-
-variable "docker_credential" {
-  type = object({
-    provider = string
-
-    gcp_artifact_registry = object({
-      gcp_project_id         = string
-      gcp_region             = string
-      service_account_key_base64 = string
-    })
-
-    aws_elastic_container_registry = object({}) # Expand if needed
-    azure_container_registry       = object({}) # Expand if needed
-    jfrog_artifactory             = object({}) # Expand if needed
-  })
-
-  # (optional) default = null
-  # or some valid default object if you want to avoid
-  # the user having to always specify it.
-  default = null
-
-  description = <<EOT
-Docker credential object describing how to pull images
-from various repository providers. If null, the module
-will assume no special Docker credential is needed
-(for a public repo or other configuration).
-EOT
-}
