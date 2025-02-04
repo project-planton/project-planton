@@ -6,7 +6,6 @@ kind: KafkaKubernetes
 metadata:
   name: kafka-cluster-basic
 spec:
-  kubernetes_cluster_credential_id: my-cluster-creds
   kafka_topics:
     - name: my-topic
       partitions: 3
@@ -44,7 +43,6 @@ kind: KafkaKubernetes
 metadata:
   name: kafka-cluster-with-schema-registry
 spec:
-  kubernetes_cluster_credential_id: my-cluster-creds
   kafka_topics:
     - name: my-topic
       partitions: 3
@@ -97,7 +95,6 @@ kind: KafkaKubernetes
 metadata:
   name: kafka-minimal
 spec:
-  kubernetes_cluster_credential_id: my-cluster-creds
   broker_container:
     replicas: 1
     resources:
@@ -131,7 +128,6 @@ kind: KafkaKubernetes
 metadata:
   name: kafka-custom-topics
 spec:
-  kubernetes_cluster_credential_id: my-cluster-creds
   kafka_topics:
     - name: logs
       partitions: 5
@@ -178,7 +174,6 @@ kind: KafkaKubernetes
 metadata:
   name: kafka-with-schema-registry
 spec:
-  kubernetes_cluster_credential_id: my-cluster-creds
   kafka_topics:
     - name: transactions
       partitions: 3
