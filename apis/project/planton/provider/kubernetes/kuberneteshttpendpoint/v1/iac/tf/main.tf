@@ -17,7 +17,7 @@ resource "kubernetes_manifest" "ingress_certificate" {
       labels    = local.final_labels
     }
     spec = {
-      dnsNames   = [local.endpoint_domain_name]
+      dnsNames = [local.endpoint_domain_name]
       secretName = local.ingress_cert_secret_name
       issuerRef = {
         kind = "ClusterIssuer"
@@ -47,8 +47,7 @@ resource "kubernetes_manifest" "gateway" {
           value = var.gateway_external_load_balancer_service_hostname
         }
       ]
-      # The final array is set in locals.tf so that Terraform sees
-      # one consistent type for both the "true" and "false" branches.
+      # Use the final array from locals.tf
       listeners = local.gateway_listeners
     }
   }
@@ -68,7 +67,7 @@ resource "kubernetes_manifest" "http_external_redirect" {
     apiVersion = "gateway.networking.k8s.io/v1"
     kind       = "HTTPRoute"
     metadata = {
-      name      = "http-external-redirect"
+      name      = "${local.resource_id}-http-external-redirect"
       namespace = var.istio_ingress_namespace
       labels    = local.final_labels
     }
@@ -85,7 +84,7 @@ resource "kubernetes_manifest" "http_external_redirect" {
         {
           filters = [
             {
-              type            = "RequestRedirect"
+              type = "RequestRedirect"
               requestRedirect = {
                 scheme     = "https"
                 statusCode = 301
@@ -103,7 +102,7 @@ resource "kubernetes_manifest" "http_external_redirect" {
 }
 
 # ------------------------------------------------------------------------------
-# 4) Primary HTTPRoute (always created)
+# 4) Primary HTTPRoute
 # ------------------------------------------------------------------------------
 resource "kubernetes_manifest" "primary_http_route" {
   manifest = {

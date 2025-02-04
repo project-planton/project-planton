@@ -109,7 +109,7 @@ func Resources(ctx *pulumi.Context, stackInput *kuberneteshttpendpointv1.Kuberne
 			"http-external-redirect",
 			&gatewayv1.HTTPRouteArgs{
 				Metadata: metav1.ObjectMetaArgs{
-					Name:      pulumi.String("http-external-redirect"),
+					Name:      pulumi.Sprintf("%s-http-external-redirect", locals.KubernetesHttpEndpoint.Metadata.Id),
 					Namespace: pulumi.String(vars.IstioIngressNamespace),
 					Labels:    pulumi.ToStringMap(locals.Labels),
 				},

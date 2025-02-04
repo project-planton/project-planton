@@ -3,28 +3,27 @@
 ###############################################
 
 locals {
-  # Derive a stable resource ID
+  # --------------------------------------------------------------------------
+  # Basic resource/label logic
+  # --------------------------------------------------------------------------
   resource_id = (
     var.metadata.id != null && var.metadata.id != ""
     ? var.metadata.id
     : var.metadata.name
   )
 
-  # Base labels
   base_labels = {
     "resource"      = "true"
     "resource_id"   = local.resource_id
     "resource_kind" = "kubernetes_http_endpoint"
   }
 
-  # Organization label only if var.metadata.org is non-empty
   org_label = (
   var.metadata.org != null && var.metadata.org != ""
   ) ? {
     "organization" = var.metadata.org
   } : {}
 
-  # Environment label only if var.metadata.env.id is non-empty
   env_label = (
   var.metadata.env != null &&
   try(var.metadata.env.id, "") != ""
@@ -32,34 +31,23 @@ locals {
     "environment" = var.metadata.env.id
   } : {}
 
-  # Merge base, org, and environment labels
   final_labels = merge(local.base_labels, local.org_label, local.env_label)
 
-  # The endpoint domain name (used for Gateway, HTTPRoute, etc.)
-  endpoint_domain_name = var.metadata.name
+  endpoint_domain_name       = var.metadata.name
+  is_tls_enabled             = try(var.spec.is_tls_enabled, false)
+  is_grpc_web_compatible     = try(var.spec.is_grpc_web_compatible, false)
+  cert_cluster_issuer_name   = try(var.spec.cert_cluster_issuer_name, "")
+  ingress_cert_secret_name   = "cert-${local.endpoint_domain_name}"
+  routing_rules              = try(var.spec.routing_rules, [])
 
-  # TLS and gRPC-Web flags
-  is_tls_enabled         = try(var.spec.is_tls_enabled, false)
-  is_grpc_web_compatible = try(var.spec.is_grpc_web_compatible, false)
-
-  # Name of the ClusterIssuer to use for TLS, if needed
-  cert_cluster_issuer_name = try(var.spec.cert_cluster_issuer_name, "")
-
-  # Certificate secret name (only relevant if TLS is enabled)
-  ingress_cert_secret_name = "cert-${local.endpoint_domain_name}"
-
-  # The array of routing rules from the proto-based input
-  routing_rules = try(var.spec.routing_rules, [])
-
-  # For the primary HTTPRoute, if TLS is enabled, we attach to "https-external";
-  # otherwise "http-external".
+  # For the primary HTTPRoute parentRef section:
   route_section_name = local.is_tls_enabled ? "https-external" : "http-external"
 
-  # ----------------------------------------------------------------------------
-  # GATEWAY LISTENERS
-  # ----------------------------------------------------------------------------
-  # 1) Base HTTP listener (always present)
-  base_http_listener = {
+  # --------------------------------------------------------------------------
+  # Gateway Listeners
+  # --------------------------------------------------------------------------
+  # 1) Base HTTP listener (for protocol=HTTP). Must NOT have any tls block.
+  http_listener = {
     name        = "http-external"
     hostname    = local.endpoint_domain_name
     port        = 80
@@ -69,12 +57,10 @@ locals {
         from = "All"
       }
     }
-    # For consistent object shape, define `tls` as an empty map here
-    tls = {}
+    # Omit tls entirely for HTTP
   }
 
-  # 2) Optional HTTPS listener (only if TLS is enabled)
-  #    Same object shape: name, hostname, port, protocol, allowedRoutes, tls
+  # 2) Optional HTTPS listener (for protocol=HTTPS) if TLS is enabled
   https_listener = {
     name        = "https-external"
     hostname    = local.endpoint_domain_name
@@ -85,8 +71,12 @@ locals {
         from = "All"
       }
     }
+
+    # TLS is only valid when protocol=HTTPS
     tls = {
       mode = "Terminate"
+      # Note: "certificateRefs" is correct for Gateway API v1,
+      # but older CRDs might require "certificateRef" instead.
       certificateRefs = [
         {
           name = local.ingress_cert_secret_name
@@ -95,20 +85,16 @@ locals {
     }
   }
 
-  # 3) Conditionally include the HTTPS listener
-  maybe_https_listener = local.is_tls_enabled ? [local.https_listener] : []
-
-  # 4) Final array of listeners for the Gateway
-  #    We always have the base HTTP listener, plus 0 or 1 HTTPS listener
+  # 3) Create a list with the base HTTP listener,
+  # and append the HTTPS listener only if TLS is enabled.
   gateway_listeners = concat(
-    [local.base_http_listener],
-    local.maybe_https_listener
+    [local.http_listener],
+      local.is_tls_enabled ? [local.https_listener] : []
   )
 
-  # ----------------------------------------------------------------------------
-  # HTTP ROUTE RULES
-  # ----------------------------------------------------------------------------
-  # Convert each item in routing_rules into a Gateway-API style "rules" entry
+  # --------------------------------------------------------------------------
+  # HTTPRoute rules array
+  # --------------------------------------------------------------------------
   http_route_rules = [
     for rule in local.routing_rules : {
       matches = [
