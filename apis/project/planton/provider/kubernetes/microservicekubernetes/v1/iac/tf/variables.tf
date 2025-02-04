@@ -47,7 +47,7 @@ variable "spec" {
           tag = string
 
           # The name of the image pull secret for private image repositories.
-          pull_secret_name = string
+          pull_secret_name = optional(string)
         })
 
         # The CPU and memory resources allocated to the application container.
@@ -78,26 +78,10 @@ variable "spec" {
 
         # The environment variables and secrets for the application container.
         env = object({
-
           # A map of environment variable names to their values.
-          variables = object({
-
-            # Description for key
-            key = string
-
-            # Description for value
-            value = string
-          })
-
+          variables = optional(map(string))
           # A map of secret names to their values.
-          secrets = object({
-
-            # Description for key
-            key = string
-
-            # Description for value
-            value = string
-          })
+          secrets = optional(map(string))
         })
 
         # A list of ports to be configured for the application container.
@@ -131,7 +115,7 @@ variable "spec" {
       })
 
       # A list of sidecar containers to be deployed alongside the main application container.
-      sidecars = list(object({
+      sidecars = optional(list(object({
 
         # The name of the container.
         name = string
@@ -188,7 +172,7 @@ variable "spec" {
           # The value of the environment variable.
           value = string
         }))
-      }))
+      })))
     })
 
     # The ingress configuration for the microservice.
@@ -204,13 +188,13 @@ variable "spec" {
 
     # The availability configuration for the microservice.
     # This includes settings for minimum replicas and autoscaling options.
-    availability = object({
+    availability = optional(object({
 
       # The minimum number of pod replicas to maintain.
       min_replicas = number
 
       # The configuration for horizontal pod autoscaling.
-      horizontal_pod_autoscaling = object({
+      horizontal_pod_autoscaling = optional(object({
 
         # A flag to enable or disable horizontal pod autoscaling.
         is_enabled = bool
@@ -220,7 +204,42 @@ variable "spec" {
 
         # The target memory utilization to trigger autoscaling (e.g., "1Gi").
         target_memory_utilization = string
-      })
-    })
+      }))
+    }))
   })
+}
+
+##############################################
+# variables.tf
+#
+# Declares a `docker_credential` variable
+# that aligns with DockerCredentialSpec.
+##############################################
+
+variable "docker_credential" {
+  type = object({
+    provider = string
+
+    gcp_artifact_registry = object({
+      gcp_project_id         = string
+      gcp_region             = string
+      service_account_key_base64 = string
+    })
+
+    aws_elastic_container_registry = object({}) # Expand if needed
+    azure_container_registry       = object({}) # Expand if needed
+    jfrog_artifactory             = object({}) # Expand if needed
+  })
+
+  # (optional) default = null
+  # or some valid default object if you want to avoid
+  # the user having to always specify it.
+  default = null
+
+  description = <<EOT
+Docker credential object describing how to pull images
+from various repository providers. If null, the module
+will assume no special Docker credential is needed
+(for a public repo or other configuration).
+EOT
 }
