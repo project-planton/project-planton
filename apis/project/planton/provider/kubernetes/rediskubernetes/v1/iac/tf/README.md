@@ -11,3 +11,7 @@ project-planton tofu init --manifest hack/manifest.yaml --backend-type s3 \
 ```shell
 project-planton tofu plan --manifest hack/manifest.yaml
 ```
+
+```shell
+project-planton tofu apply --manifest hack/manifest.yaml --auto-approve
+```
