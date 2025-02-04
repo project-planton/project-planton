@@ -1,0 +1,76 @@
+apiVersion: aws.project.planton/v1
+kind: AwsLambda
+metadata:
+  name: test-aws-lambda
+spec:
+  function:
+    architectures:
+      - "x86_64"  # Valid architectures: "x86_64" or "arm64"
+    description: "Example Lambda function"
+    file_system_config:
+      # Fixed ARN with 17 hex chars after fsap-
+      arn: "arn:aws:elasticfilesystem:us-east-1:123456789012:access-point/fsap-1234567890abcdef1"
+      # Must start with /mnt/
+      local_mount_path: "/mnt/data"
+    handler: "index.handler"
+    image_uri: ""  # If empty, we use S3-based code, not a container image
+    kms_key_arn: "arn:aws:kms:us-east-1:123456789012:key/8c3c63ac-88d6-4f31-9b1a-72fcf3449ec9"
+    layers:
+      - "arn:aws:lambda:us-east-1:123456789012:layer:MyLayer:1"
+    memory_size: 512
+    package_type: "Zip"
+    publish: true
+    reserved_concurrent_executions: 5
+    runtime: "python3.9"  # Must be a valid AWS Lambda runtime
+    s3_bucket: "my-lambda-bucket"
+    s3_key: "my-lambda-code.zip"
+    s3_object_version: "v1"
+    source_code_hash: "IcG6x1KCNMqhlmZVLPkkA8nPe9AT2BN4cx1r5897/mQ="
+    timeout: 10
+    variables:
+      ENV_STAGE: "dev"
+      FOO: "bar"
+    dead_letter_config_target_arn: "arn:aws:sqs:us-east-1:123456789012:MyQueue"
+    image_config:
+      commands:
+        - "run"
+      entry_points:
+        - "/entrypoint.sh"
+      working_directory: "/var/task"
+    tracing_config_mode: "PassThrough"
+    vpc_config:
+      security_group_ids:
+        - "sg-0123456789abcdef0"
+      subnet_ids:
+        - "subnet-111111111111abcd0"
+      vpc_id: "vpc-0abcdef1234567890"
+    ephemeral_storage_size: 512
+
+  iam_role:
+    permissions_boundary: "arn:aws:iam::123456789012:policy/MyPermissionsBoundary"
+    lambda_at_edge_enabled: false
+    cloudwatch_lambda_insights_enabled: false
+    ssm_parameter_names: []
+    custom_iam_policy_arns: []
+    # Valid ASCII/JSON inline IAM policy
+    inline_iam_policy: |
+      {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Action": ["s3:ListBucket"],
+            "Resource": ["arn:aws:s3:::my-lambda-bucket"]
+          }
+        ]
+      }
+
+  cloudwatch_log_group:
+    kms_key_arn: ""
+    retention_in_days: 3
+
+  invoke_function_permissions:
+    - principal: "s3.amazonaws.com"
+      source_arn: "arn:aws:s3:::my-event-bucket"
+    - principal: "events.amazonaws.com"
+      source_arn: "arn:aws:events:us-east-1:123456789012:rule/MyEventRule"
