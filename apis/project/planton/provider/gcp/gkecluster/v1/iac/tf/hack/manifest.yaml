@@ -17,19 +17,3 @@ spec:
       machineType: n2-custom-8-8192
       minNodeCount: 1
       maxNodeCount: 2
-  kubernetesAddons:
-    isInstallPostgresOperator: true
-    isInstallKafkaOperator: true
-    isInstallSolrOperator: true
-    isInstallIstio: true
-    isInstallCertManager: true
-    isInstallExternalDns: true
-    isInstallExternalSecrets: true
-    isInstallElasticOperator: true
-#  ingressDnsDomains:
-#    - name: planton.cloud
-#      isTlsEnabled: true
-#      dnsZoneGcpProjectId: ca-planton-gcp-sh-zg
-#    - name: planton.live
-#      isTlsEnabled: true
-#      dnsZoneGcpProjectId: ca-planton-gcp-sh-zg

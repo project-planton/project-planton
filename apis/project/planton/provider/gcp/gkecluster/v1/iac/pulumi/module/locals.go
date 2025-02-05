@@ -1,5 +1,5 @@
 // Package localz instead of locals to avoid naming collision w/ "locals" for the instance name created for the struct.
-package localz
+package module
 
 import (
 	"fmt"
@@ -22,7 +22,7 @@ type Locals struct {
 	NetworkTag                            string
 }
 
-func Initialize(ctx *pulumi.Context, stackInput *gkeclusterv1.GkeClusterStackInput) *Locals {
+func initializeLocals(ctx *pulumi.Context, stackInput *gkeclusterv1.GkeClusterStackInput) *Locals {
 	gkeCluster := stackInput.Target
 
 	locals := &Locals{}

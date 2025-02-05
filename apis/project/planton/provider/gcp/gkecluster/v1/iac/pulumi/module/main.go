@@ -3,7 +3,6 @@ package module
 import (
 	"github.com/pkg/errors"
 	gkeclusterv1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gkecluster/v1"
-	"github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gkecluster/v1/iac/pulumi/module/localz"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/gcp/pulumigoogleprovider"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
@@ -24,7 +23,7 @@ import (
 // 5. Creates the node pools for the GKE cluster.
 // 6. Creates a service account and key for deploying workloads to the cluster.
 func Resources(ctx *pulumi.Context, stackInput *gkeclusterv1.GkeClusterStackInput) error {
-	locals := localz.Initialize(ctx, stackInput)
+	locals := initializeLocals(ctx, stackInput)
 
 	//create gcp-provider using the gcp-credential from input
 	gcpProvider, err := pulumigoogleprovider.Get(ctx, stackInput.GcpCredential)
@@ -39,7 +38,7 @@ func Resources(ctx *pulumi.Context, stackInput *gkeclusterv1.GkeClusterStackInpu
 	}
 
 	//create node-pools
-	if err = clusterNodePools(ctx, locals, createdCluster); err != nil {
+	if err = nodePools(ctx, locals, createdCluster); err != nil {
 		return errors.Wrap(err, "failed to create cluster node-pools")
 	}
 

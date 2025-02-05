@@ -2,12 +2,11 @@ package module
 
 import (
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gkecluster/v1/iac/pulumi/module/localz"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/container"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// clusterNodePools creates node pools for the given GKE cluster based on the specifications provided.
+// nodePools creates node pools for the given GKE cluster based on the specifications provided.
 // It iterates over each node pool specification and configures the node pool with autoscaling, management, and node settings.
 //
 // Parameters:
@@ -26,8 +25,8 @@ import (
 //  4. Sets node pool management options, such as auto-repair and auto-upgrade.
 //  5. Configures upgrade settings for the node pool with max surge and max unavailable settings.
 //  6. Handles errors and returns a slice of created node pool resources and any errors encountered.
-func clusterNodePools(ctx *pulumi.Context,
-	locals *localz.Locals,
+func nodePools(ctx *pulumi.Context,
+	locals *Locals,
 	createdCluster *container.Cluster) error {
 
 	for _, nodePoolSpec := range locals.GkeCluster.Spec.NodePools {

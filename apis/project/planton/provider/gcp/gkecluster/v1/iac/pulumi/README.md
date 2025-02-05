@@ -18,14 +18,6 @@ The module is written in Golang and integrates seamlessly with Pulumi for infras
 - **Shared VPC Support**: Configurable shared VPC setups for network segmentation and isolation.
 - **Custom Networking**: Sets up VPC networks, subnets, firewall rules, and NAT configurations based on specifications.
 
-### Kubernetes Addons Installation
-
-- **Ingress Controllers**: Installs Ingress Nginx and Istio for traffic management and service mesh capabilities.
-- **Cert Manager**: Automates TLS certificate management and integrates with Let's Encrypt.
-- **External DNS**: Manages DNS records for Kubernetes resources using External DNS.
-- **Operators Support**: Deploys operators for Postgres, Kafka, Solr, ElasticSearch, and Keycloak.
-- **Workload Identity Integration**: Configures workload identities for secure and seamless access to Google Cloud services.
-
 ### Secure and Scalable
 
 - **IAM Management**: Automates the creation and assignment of IAM roles and service accounts.
@@ -62,31 +54,9 @@ The module relies on a `GkeCluster` API resource that defines the desired state 
     - **Kubernetes Addons**: Specifies which addons and operators to install on the cluster.
     - **Ingress DNS Domains**: Defines domains for ingress resources, including TLS settings.
 
-## Addons and Operators
-
-The module supports the installation of various Kubernetes addons and operators:
-
-- **Ingress Nginx**: Deploys the Nginx ingress controller for HTTP load balancing.
-- **Istio**: Sets up the Istio service mesh for advanced traffic management and security.
-- **Cert Manager**: Automates the issuance and renewal of TLS certificates.
-- **External DNS**: Keeps DNS records in sync with Kubernetes ingresses and services.
-- **Operators**: Installs operators for databases and middleware like Postgres, Kafka, Solr, ElasticSearch, and Keycloak.
-
 ## Customization and Extensibility
 
 - **Workload Logs**: Optionally enable logging for workloads to Google Cloud Logging.
 - **Shared VPC Configuration**: Choose whether to deploy the cluster within a shared VPC network.
 - **Custom Labels**: Apply custom labels to Google Cloud resources for better organization and billing.
 - **Workload Identity**: Leverage Google Cloud's Workload Identity for secure access to cloud services from Kubernetes pods.
-
-## Contributing
-
-Contributions are welcome! Please read the [contribution guidelines](CONTRIBUTING.md) and submit pull requests for any enhancements or bug fixes.
-
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
-## Support
-
-For any questions or support, please open an issue in the repository or contact the maintainers directly.

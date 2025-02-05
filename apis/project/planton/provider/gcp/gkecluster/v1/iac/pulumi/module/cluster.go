@@ -3,7 +3,6 @@ package module
 import (
 	"fmt"
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gkecluster/v1/iac/pulumi/module/localz"
 	"github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gkecluster/v1/iac/pulumi/module/outputs"
 	"github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gkecluster/v1/iac/pulumi/module/vars"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp"
@@ -37,7 +36,7 @@ import (
 //  8. Configures the cluster with autoscaling, network policies, logging, and other settings.
 //  9. Exports important attributes of the created resources, such as network self-link, subnetwork self-link,
 //     firewall self-link, router self-link, NAT IP address, and cluster name.
-func cluster(ctx *pulumi.Context, locals *localz.Locals, gcpProvider *gcp.Provider) (*container.Cluster, error) {
+func cluster(ctx *pulumi.Context, locals *Locals, gcpProvider *gcp.Provider) (*container.Cluster, error) {
 
 	//keep track of all the apis enabled to add as dependencies
 	createdGoogleApiResources := make([]pulumi.Resource, 0)
