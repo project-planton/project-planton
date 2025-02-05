@@ -1,5 +1,35 @@
-
 locals {
+  # Derive a stable resource ID
+  resource_id = (
+    var.metadata.id != null && var.metadata.id != ""
+    ? var.metadata.id
+    : var.metadata.name
+  )
+
+  # Base tags
+  base_tags = {
+    "resource"      = "true"
+    "resource_id"   = local.resource_id
+    "resource_kind" = "aws_secrets_manager"
+  }
+
+  # Organization tag only if var.metadata.org is non-empty
+  org_tag = (
+  var.metadata.org != null && var.metadata.org != ""
+  ) ? {
+    "organization" = var.metadata.org
+  } : {}
+
+  # Environment tag only if var.metadata.env.id is non-empty
+  env_tag = (
+  var.metadata.env != null &&
+  try(var.metadata.env.id, "") != ""
+  ) ? {
+    "environment" = var.metadata.env.id
+  } : {}
+
+  # Merge base, org, and environment tags
+  final_tags = merge(local.base_tags, local.org_tag, local.env_tag)
 
   # replace '.' with '-' in hosted zone name
 
@@ -11,7 +41,7 @@ locals {
   # 3. replace '*' with 'wildcard'
 
   normalized_records = {
-    for rec in local.records :
+    for rec in var.spec.records :
     format(
       "%s_%s",
       replace(
@@ -24,7 +54,4 @@ locals {
       rec.record_type
     ) => rec
   }
-
-  records = var.spec.records
-
 }

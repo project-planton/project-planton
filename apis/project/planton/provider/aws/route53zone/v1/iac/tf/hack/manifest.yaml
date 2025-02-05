@@ -1,0 +1,31 @@
+apiVersion: aws.project-planton.org/v1
+kind: Route53Zone
+metadata:
+  name: route53.project-planton.org
+spec:
+  records:
+    - recordType: A
+      name: test-a.route53.project-planton.org.
+      values:
+        - 1.1.1.1
+    - recordType: CNAME
+      name: test-cname.route53.project-planton.org.
+      values:
+        - someother-c.route53.project-planton.org.
+    - recordType: MX
+      name: route53.project-planton.org.
+      values:
+        - 10 alt3.aspmx.l.google.com.
+        - 5 alt2.aspmx.l.google.com.
+        - 1 aspmx.l.google.com.
+        - 5 alt1.aspmx.l.google.com.
+        - 10 alt4.aspmx.l.google.com.
+    - recordType: TXT
+      name: test-txt.route53.project-planton.org.
+      values:
+        - someother.route53.project-planton.org.
+    - recordType: A
+      name: dns.record.test1
+      values:
+        - 1.1.1.1
+      ttlSeconds: 60
