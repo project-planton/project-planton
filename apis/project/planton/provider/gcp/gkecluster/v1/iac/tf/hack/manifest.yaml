@@ -1,7 +1,35 @@
 apiVersion: gcp.project-planton.org/v1
-kind: GcpArtifactRegistry
+kind: GkeCluster
 metadata:
-  name: test-gcp-artifact-registry
+  name: test-20250205
 spec:
-  projectId: pc-artifact-registry
+  clusterProjectId: project-planton-testing
   region: asia-south1
+  zone: asia-south1-a
+  clusterAutoscalingConfig:
+    isEnabled: true
+    cpuMinCores: "8"
+    cpuMaxCores: "24"
+    memoryMinGb: "10"
+    memoryMaxGb: "50"
+  nodePools:
+    - name: n2-custom-8-8192
+      machineType: n2-custom-8-8192
+      minNodeCount: 1
+      maxNodeCount: 2
+  kubernetesAddons:
+    isInstallPostgresOperator: true
+    isInstallKafkaOperator: true
+    isInstallSolrOperator: true
+    isInstallIstio: true
+    isInstallCertManager: true
+    isInstallExternalDns: true
+    isInstallExternalSecrets: true
+    isInstallElasticOperator: true
+#  ingressDnsDomains:
+#    - name: planton.cloud
+#      isTlsEnabled: true
+#      dnsZoneGcpProjectId: ca-planton-gcp-sh-zg
+#    - name: planton.live
+#      isTlsEnabled: true
+#      dnsZoneGcpProjectId: ca-planton-gcp-sh-zg
