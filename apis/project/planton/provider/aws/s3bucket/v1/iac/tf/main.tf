@@ -1,44 +1,30 @@
-resource "aws_s3_bucket" "my_bucket" {
+resource "aws_s3_bucket" "this" {
   bucket = var.metadata.name
-
-  # If you want to reference other attributes (e.g., tags) from metadata or spec:
-  # tags = var.metadata.labels
 }
 
-resource "aws_route53_zone" "my_zone" {
-  name = "project-planton.com"
-}
-
-resource "aws_route53_record" "my_record" {
-  zone_id = aws_route53_zone.my_zone.zone_id
-  name    = "www"
-  type    = "A"
-  ttl     = "600"
-  records = ["192.0.2.44"]
-}
-
-resource "aws_route53_record" "my_record_two" {
-  zone_id = aws_route53_zone.my_zone.zone_id
-  name    = "host"
-  type    = "A"
-  ttl     = "200"
-  records = ["1.1.1.1"]
-}
-
-resource "aws_dynamodb_table" "my_table" {
-  name           = "example-table"
-  billing_mode   = "PAY_PER_REQUEST"
-  hash_key       = "id"
-  attribute {
-    name = "id"
-    type = "S"
+resource "aws_s3_bucket_ownership_controls" "this" {
+  bucket = aws_s3_bucket.this.id
+  rule {
+    object_ownership = "BucketOwnerPreferred"
   }
 }
 
-resource "aws_s3_bucket" "another_bucket" {
-  bucket = "another-example-bucket"
+resource "aws_s3_bucket_public_access_block" "this" {
+  bucket = aws_s3_bucket.this.id
+
+  block_public_acls       =  !var.spec.is_public
+  block_public_policy     =  !var.spec.is_public
+  ignore_public_acls      =  !var.spec.is_public
+  restrict_public_buckets =  !var.spec.is_public
 }
 
-output "bucketName" {
-  value = aws_s3_bucket.my_bucket.bucket
+resource "aws_s3_bucket_acl" "public_read" {
+  count = var.spec.is_public ? 1 : 0
+  depends_on = [
+    aws_s3_bucket_ownership_controls.this,
+    aws_s3_bucket_public_access_block.this,
+  ]
+
+  bucket = aws_s3_bucket.this.id
+  acl    = "public-read"
 }

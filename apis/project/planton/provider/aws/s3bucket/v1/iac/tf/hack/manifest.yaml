@@ -1,11 +1,7 @@
 apiVersion: aws.project-planton.org/v1
-kind: AwsVpc
+kind: S3Bucket
 metadata:
-  name: test-aws-vpc
+  name: project-planton-org-test-s3-bucket
 spec:
-  vpcCidr: 10.0.0.0/16
-  subnetsPerAvailabilityZone: 2
-  subnetSize: 12
-  availabilityZones:
-    - ap-south-1a
-    - ap-south-1b
+  awsRegion: us-east-1
+  isPublic: true

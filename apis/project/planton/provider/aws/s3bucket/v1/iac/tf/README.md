@@ -5,7 +5,7 @@ project-planton tofu init --manifest hack/manifest.yaml --backend-type s3 \
   --backend-config="bucket=planton-cloud-tf-state-backend" \
   --backend-config="dynamodb_table=planton-cloud-tf-state-backend-lock" \
   --backend-config="region=ap-south-2" \
-  --backend-config="key=project-planton/aws-stacks/test-aws-vpc.tfstate"
+  --backend-config="key=project-planton/aws-stacks/test-s3-bucket.tfstate"
 ```
 
 ```shell
