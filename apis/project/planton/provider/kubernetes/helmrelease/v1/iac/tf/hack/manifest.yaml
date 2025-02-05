@@ -1,4 +1,4 @@
-apiVersion: kubernetes.project.planton/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: HelmRelease
 metadata:
   name: test-helm-release

@@ -12,7 +12,7 @@ import "project/planton/shared/shared.proto";
 message GcpSecretsManager {
   //api-version
   string api_version = 1[
-    (buf.validate.field).string.const = 'gcp.project.planton/v1'
+    (buf.validate.field).string.const = 'gcp.project-planton.org/v1'
   ];
 
   //resource-kind

@@ -11,7 +11,7 @@ import "project/planton/shared/shared.proto";
 message EksCluster {
   //api-version
   string api_version = 1 [
-    (buf.validate.field).string.const = 'aws.project.planton/v1'
+    (buf.validate.field).string.const = 'aws.project-planton.org/v1'
   ];
 
   //resource-kind

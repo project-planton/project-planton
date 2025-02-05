@@ -177,7 +177,4 @@ variable "spec" {
       value = optional(string, "")
     })), [])
   })
-
-  # Default to empty object if not provided
-  default = {}
 }

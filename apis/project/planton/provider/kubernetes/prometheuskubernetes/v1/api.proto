@@ -11,7 +11,7 @@ import "project/planton/shared/shared.proto";
 message PrometheusKubernetes {
   //api-version
   string api_version = 1 [
-    (buf.validate.field).string.const = 'kubernetes.project.planton/v1'
+    (buf.validate.field).string.const = 'kubernetes.project-planton.org/v1'
   ];
 
   //resource-kind

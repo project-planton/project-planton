@@ -11,7 +11,7 @@ planton apply -f <yaml-path>
 This basic example creates a private S3 bucket with default settings.
 
 ```yaml
-apiVersion: aws.project.planton/v1
+apiVersion: aws.project-planton.org/v1
 kind: S3Bucket
 metadata:
   name: my-private-bucket
@@ -26,7 +26,7 @@ spec:
 This example demonstrates how to use environment variables to parameterize the S3 bucket configuration.
 
 ```yaml
-apiVersion: aws.project.planton/v1
+apiVersion: aws.project-planton.org/v1
 kind: S3Bucket
 metadata:
   name: my-env-bucket
@@ -43,7 +43,7 @@ In this example, replace the placeholders like `${AWS_CREDENTIAL_ID}` with your 
 The below example assumes that the secrets are managed by Planton Cloud's [AWS Secrets Manager](https://buf.build/project-planton/apis/docs/main:cloud.planton.apis.code2cloud.v1.aws.awssecretsmanager) deployment module.
 
 ```yaml
-apiVersion: aws.project.planton/v1
+apiVersion: aws.project-planton.org/v1
 kind: S3Bucket
 metadata:
   name: my-secret-bucket
@@ -65,7 +65,7 @@ In this example:
 This example creates a public S3 bucket.
 
 ```yaml
-apiVersion: aws.project.planton/v1
+apiVersion: aws.project-planton.org/v1
 kind: S3Bucket
 metadata:
   name: my-public-bucket
@@ -80,7 +80,7 @@ spec:
 This comprehensive example demonstrates the full capabilities of the `S3Bucket` resource.
 
 ```yaml
-apiVersion: aws.project.planton/v1
+apiVersion: aws.project-planton.org/v1
 kind: S3Bucket
 metadata:
   name: my-full-config-bucket

@@ -9,7 +9,7 @@ planton apply -f <yaml-path>
 # Basic Example
 
 ```yaml
-apiVersion: aws.project.planton/v1
+apiVersion: aws.project-planton.org/v1
 kind: AwsCloudFront
 metadata:
   name: my-cloudfront-distribution
@@ -20,7 +20,7 @@ spec:
 # Example with Custom AWS Credential
 
 ```yaml
-apiVersion: aws.project.planton/v1
+apiVersion: aws.project-planton.org/v1
 kind: AwsCloudFront
 metadata:
   name: custom-cloudfront-distribution
@@ -31,7 +31,7 @@ spec:
 # Example with Additional Metadata
 
 ```yaml
-apiVersion: aws.project.planton/v1
+apiVersion: aws.project-planton.org/v1
 kind: AwsCloudFront
 metadata:
   name: another-cloudfront-instance

@@ -11,7 +11,7 @@ planton apply -f <yaml-path>
 This basic example creates an AWS Fargate service with minimal configuration.
 
 ```yaml
-apiVersion: aws.project.planton/v1
+apiVersion: aws.project-planton.org/v1
 kind: AwsFargate
 metadata:
   name: my-fargate-service
@@ -24,7 +24,7 @@ spec:
 This example includes environment information, specifying the environment ID.
 
 ```yaml
-apiVersion: aws.project.planton/v1
+apiVersion: aws.project-planton.org/v1
 kind: AwsFargate
 metadata:
   name: my-env-fargate-service
@@ -39,7 +39,7 @@ spec:
 This example includes stack job settings for more advanced configurations.
 
 ```yaml
-apiVersion: aws.project.planton/v1
+apiVersion: aws.project-planton.org/v1
 kind: AwsFargate
 metadata:
   name: my-advanced-fargate-service

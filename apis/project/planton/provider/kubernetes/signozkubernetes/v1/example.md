@@ -22,7 +22,7 @@ This example demonstrates a basic deployment of Signoz within a Kubernetes clust
 ### YAML Configuration
 
 ```yaml
-apiVersion: kubernetes.project.planton/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: SignozKubernetes
 metadata:
   name: basic-signoz

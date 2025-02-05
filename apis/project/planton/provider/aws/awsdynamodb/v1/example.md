@@ -11,7 +11,7 @@ planton apply -f <yaml-path>
 This basic example creates a DynamoDB table with a simple primary key.
 
 ```yaml
-apiVersion: aws.project.planton/v1
+apiVersion: aws.project-planton.org/v1
 kind: AwsDynamodb
 metadata:
   name: my-simple-table
@@ -33,7 +33,7 @@ spec:
 This example creates a DynamoDB table with provisioned read and write capacity, along with autoscaling configurations.
 
 ```yaml
-apiVersion: aws.project.planton/v1
+apiVersion: aws.project-planton.org/v1
 kind: AwsDynamodb
 metadata:
   name: my-autoscaling-table
@@ -67,7 +67,7 @@ spec:
 This example creates a DynamoDB table with a global secondary index (GSI) to enable queries on a non-primary key attribute.
 
 ```yaml
-apiVersion: aws.project.planton/v1
+apiVersion: aws.project-planton.org/v1
 kind: AwsDynamodb
 metadata:
   name: my-gsi-table
@@ -97,7 +97,7 @@ spec:
 This example creates a DynamoDB table with stream enabled and server-side encryption using a specified AWS KMS key.
 
 ```yaml
-apiVersion: aws.project.planton/v1
+apiVersion: aws.project-planton.org/v1
 kind: AwsDynamodb
 metadata:
   name: my-secure-table
@@ -124,7 +124,7 @@ spec:
 This example creates a DynamoDB table with TTL enabled on a specified attribute.
 
 ```yaml
-apiVersion: aws.project.planton/v1
+apiVersion: aws.project-planton.org/v1
 kind: AwsDynamodb
 metadata:
   name: my-ttl-table
@@ -151,7 +151,7 @@ spec:
 This example creates a DynamoDB table with point-in-time recovery enabled for data protection.
 
 ```yaml
-apiVersion: aws.project.planton/v1
+apiVersion: aws.project-planton.org/v1
 kind: AwsDynamodb
 metadata:
   name: my-pitr-table
@@ -175,7 +175,7 @@ spec:
 This example creates a DynamoDB table with a local secondary index (LSI).
 
 ```yaml
-apiVersion: aws.project.planton/v1
+apiVersion: aws.project-planton.org/v1
 kind: AwsDynamodb
 metadata:
   name: my-lsi-table
@@ -210,7 +210,7 @@ spec:
 This example creates a DynamoDB table and imports data from an S3 bucket.
 
 ```yaml
-apiVersion: aws.project.planton/v1
+apiVersion: aws.project-planton.org/v1
 kind: AwsDynamodb
 metadata:
   name: my-import-table
@@ -238,7 +238,7 @@ spec:
 This example creates a DynamoDB Global Table with replicas in multiple regions.
 
 ```yaml
-apiVersion: aws.project.planton/v1
+apiVersion: aws.project-planton.org/v1
 kind: AwsDynamodb
 metadata:
   name: my-global-table
