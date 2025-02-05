@@ -8,8 +8,10 @@ resource "aws_vpc" "this" {
   enable_dns_hostnames = var.spec.is_dns_hostnames_enabled
 
   tags = merge(
-    var.metadata.tags,
-    { "Name" = var.metadata.name }
+      var.metadata.labels != null ? var.metadata.labels : {},
+    {
+      Name = var.metadata.name
+    }
   )
 }
 
@@ -20,8 +22,11 @@ resource "aws_vpc" "this" {
 resource "aws_internet_gateway" "this" {
   vpc_id = aws_vpc.this.id
 
+  # Use metadata.labels instead of metadata.tags:
   tags = merge(
-    var.metadata.tags,
-    { "Name" = "${var.metadata.name}-igw" }
+      var.metadata.labels != null ? var.metadata.labels : {},
+    {
+      Name = "${var.metadata.name}-igw"
+    }
   )
 }
