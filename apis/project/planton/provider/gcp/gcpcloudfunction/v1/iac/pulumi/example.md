@@ -5,7 +5,7 @@ Here are a few examples for the `GcpCloudFunction` API resource, showcasing diff
 ### Basic Example
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: gcp.project-planton.org/v1
 kind: GcpCloudFunction
 metadata:
   name: my-cloud-function
@@ -19,7 +19,7 @@ spec:
 ### Example with Environment Variables
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: gcp.project-planton.org/v1
 kind: GcpCloudFunction
 metadata:
   name: my-cloud-function-env-vars
@@ -36,7 +36,7 @@ spec:
 ### Example with Secrets from GCP Secret Manager
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: gcp.project-planton.org/v1
 kind: GcpCloudFunction
 metadata:
   name: my-cloud-function-secrets
@@ -53,7 +53,7 @@ spec:
 ### Example with an Empty Spec
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: gcp.project-planton.org/v1
 kind: GcpCloudFunction
 metadata:
   name: empty-spec-function

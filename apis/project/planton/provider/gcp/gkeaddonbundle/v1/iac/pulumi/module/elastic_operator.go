@@ -1,9 +1,8 @@
-package addons
+package module
 
 import (
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gkecluster/v1/iac/pulumi/module/localz"
-	"github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gkecluster/v1/iac/pulumi/module/vars"
+	"github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gkeaddonbundle/v1/iac/pulumi/module/vars"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/kuberneteslabelkeys"
 	pulumikubernetes "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes"
 	kubernetescorev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
@@ -12,7 +11,7 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-func ElasticOperator(ctx *pulumi.Context, locals *localz.Locals,
+func elasticOperator(ctx *pulumi.Context, locals *Locals,
 	kubernetesProvider *pulumikubernetes.Provider) error {
 
 	createdNamespace, err := kubernetescorev1.NewNamespace(ctx, vars.ElasticOperator.Namespace,

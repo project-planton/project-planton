@@ -5,7 +5,7 @@
 This example sets up a simple static website hosted on Google Cloud Storage with public access. It provisions a storage bucket configured to serve static content as a public website.
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: gcp.project-planton.org/v1
 kind: GcpStaticWebsite
 metadata:
   name: basic-static-website
@@ -26,7 +26,7 @@ spec:
 This example provisions a static website on GCP Storage with a custom domain and enables SSL for secure connections. It assumes that the SSL certificate is managed via GCP.
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: gcp.project-planton.org/v1
 kind: GcpStaticWebsite
 metadata:
   name: custom-domain-static-website
@@ -50,7 +50,7 @@ spec:
 This example sets up a static website on Google Cloud Storage but configures the bucket for private access. This is useful for situations where you want to restrict access to the static content.
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: gcp.project-planton.org/v1
 kind: GcpStaticWebsite
 metadata:
   name: private-static-website
@@ -73,7 +73,7 @@ spec:
 This example configures the GCP Storage bucket for a static website with versioning enabled, which allows for multiple versions of objects to be stored and accessed. This setup is useful for rollback or archiving purposes.
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: gcp.project-planton.org/v1
 kind: GcpStaticWebsite
 metadata:
   name: versioned-static-website
@@ -95,7 +95,7 @@ spec:
 This example configures a static website hosted on GCP Storage with Cross-Origin Resource Sharing (CORS) settings. This setup allows the website to serve resources to specified domains.
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: gcp.project-planton.org/v1
 kind: GcpStaticWebsite
 metadata:
   name: cors-enabled-static-website
@@ -123,7 +123,7 @@ spec:
 This example provisions a GCP Storage bucket for a static website and configures lifecycle rules to automatically delete objects after a specified period.
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: gcp.project-planton.org/v1
 kind: GcpStaticWebsite
 metadata:
   name: lifecycle-static-website
@@ -147,7 +147,7 @@ spec:
 This example sets up a static website hosted on a multi-region Google Cloud Storage bucket, providing high availability and redundancy for the website content.
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: gcp.project-planton.org/v1
 kind: GcpStaticWebsite
 metadata:
   name: multi-region-static-website
@@ -169,7 +169,7 @@ spec:
 This example configures a static website on GCP Storage with logging enabled to track and monitor access to the website content.
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: gcp.project-planton.org/v1
 kind: GcpStaticWebsite
 metadata:
   name: logging-enabled-static-website
@@ -193,7 +193,7 @@ spec:
 This example provisions a static website on GCP Storage and configures custom error pages to be displayed for specific HTTP errors, such as 404 (Not Found) and 403 (Forbidden).
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: gcp.project-planton.org/v1
 kind: GcpStaticWebsite
 metadata:
   name: custom-error-pages-static-website

@@ -1,9 +1,8 @@
-package addons
+package module
 
 import (
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gkecluster/v1/iac/pulumi/module/localz"
-	"github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gkecluster/v1/iac/pulumi/module/vars"
+	"github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gkeaddonbundle/v1/iac/pulumi/module/vars"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/kuberneteslabelkeys"
 	pulumikubernetes "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes"
 	corev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
@@ -12,7 +11,7 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// ZalandoPostgresOperator installs the Zalando Postgres Operator in the Kubernetes cluster using Helm.
+// zalandoPostgresOperator installs the Zalando Postgres Operator in the Kubernetes cluster using Helm.
 // It creates the necessary namespace and deploys the Helm chart with specific values.
 //
 // Parameters:
@@ -28,7 +27,7 @@ import (
 // 2. Deploys the Zalando Postgres Operator Helm chart into the created namespace with specific inherited labels and other configurations.
 // 3. Uses Helm chart repository and version specified in the vars package.
 // 4. Handles errors and returns any errors encountered during the namespace creation or Helm release deployment.
-func ZalandoPostgresOperator(ctx *pulumi.Context, locals *localz.Locals,
+func zalandoPostgresOperator(ctx *pulumi.Context, locals *Locals,
 	kubernetesProvider *pulumikubernetes.Provider) error {
 	//create namespace resource
 	createdNamespace, err := corev1.NewNamespace(ctx,

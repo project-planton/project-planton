@@ -18,7 +18,6 @@ import (
 // - createdCluster: The GKE cluster to which workloads will be deployed.
 //
 // Returns:
-// - *serviceaccount.Key: A pointer to the created service account key.
 // - error: An error object if there is any issue during the service account or key creation.
 //
 // The function performs the following steps:
@@ -27,7 +26,7 @@ import (
 // 3. Creates a key for the service account and exports the private key.
 // 4. Creates IAM bindings to grant the service account the roles of container admin and cluster admin.
 // 5. Handles errors and returns the created service account key and any errors encountered.
-func workloadDeployer(ctx *pulumi.Context, createdCluster *container.Cluster) (*serviceaccount.Key, error) {
+func workloadDeployer(ctx *pulumi.Context, createdCluster *container.Cluster) error {
 	//create workload deployer service account
 	createdWorkloadDeployerServiceAccount, err := serviceaccount.NewAccount(ctx,
 		vars.WorkloadDeployServiceAccountName,
@@ -38,7 +37,7 @@ func workloadDeployer(ctx *pulumi.Context, createdCluster *container.Cluster) (*
 			DisplayName: pulumi.String(vars.WorkloadDeployServiceAccountName),
 		}, pulumi.Parent(createdCluster))
 	if err != nil {
-		return nil, errors.Wrapf(err, "failed to create workload deployer service account")
+		return errors.Wrapf(err, "failed to create workload deployer service account")
 	}
 
 	//export email of the created workload deployer service account
@@ -51,7 +50,7 @@ func workloadDeployer(ctx *pulumi.Context, createdCluster *container.Cluster) (*
 			ServiceAccountId: createdWorkloadDeployerServiceAccount.Name,
 		}, pulumi.Parent(createdWorkloadDeployerServiceAccount))
 	if err != nil {
-		return nil, errors.Wrap(err, "failed to create key for workload-deployer service account")
+		return errors.Wrap(err, "failed to create key for workload-deployer service account")
 	}
 
 	//export workload deployer google service account key
@@ -66,7 +65,7 @@ func workloadDeployer(ctx *pulumi.Context, createdCluster *container.Cluster) (*
 			Role:    pulumi.String("roles/container.admin"),
 		}, pulumi.Parent(createdWorkloadDeployerServiceAccount))
 	if err != nil {
-		return nil, errors.Wrapf(err, "failed to create container-admin iam binding for workload deployer")
+		return errors.Wrapf(err, "failed to create container-admin iam binding for workload deployer")
 	}
 
 	// create iam-binding for workload-deployer to manage resources inside container clusters
@@ -78,8 +77,8 @@ func workloadDeployer(ctx *pulumi.Context, createdCluster *container.Cluster) (*
 			Role:    pulumi.String("roles/container.clusterAdmin"),
 		}, pulumi.Parent(createdWorkloadDeployerServiceAccount))
 	if err != nil {
-		return nil, errors.Wrapf(err, "failed to create cluster-admin iam binding for workload deployer")
+		return errors.Wrapf(err, "failed to create cluster-admin iam binding for workload deployer")
 	}
 
-	return createdWorkloadDeployerServiceAccountKey, nil
+	return nil
 }

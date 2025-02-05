@@ -5,7 +5,7 @@ Here are a few examples for the `GcpCloudCdn` API resource, showcasing different
 ### Basic Example
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: gcp.project-planton.org/v1
 kind: GcpCloudCdn
 metadata:
   name: basic-cloud-cdn
@@ -19,7 +19,7 @@ spec:
 ### Example with Custom Project and Credentials
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: gcp.project-planton.org/v1
 kind: GcpCloudCdn
 metadata:
   name: custom-cloud-cdn
@@ -33,7 +33,7 @@ spec:
 ### Example with Empty Spec
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: gcp.project-planton.org/v1
 kind: GcpCloudCdn
 metadata:
   name: empty-spec-cdn

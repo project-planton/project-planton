@@ -40,12 +40,6 @@ message GkeClusterSpec {
 
   // A list of node pools for the GKE cluster.
   repeated GkeClusterNodePool node_pools = 7;
-
-  // Specifications for Kubernetes addons in the GKE cluster.
-  GkeClusterAddons kubernetes_addons = 8;
-
-  // Ingress DNS domains to be configured in the GKE cluster.
-  repeated GkeClusterIngressDnsDomain ingress_dns_domains = 9;
 }
 
 // **GkeClusterSharedVpcConfig** specifies the shared VPC network settings for GKE clusters.
@@ -129,62 +123,4 @@ message GkeClusterNodePool {
 
   // A flag to enable spot instances on the node pool. Defaults to false.
   bool is_spot_enabled = 5;
-}
-
-// **GkeClusterIngressDnsDomain** represents an ingress DNS domain configuration.
-message GkeClusterIngressDnsDomain {
-  // A unique identifier for the ingress DNS domain.
-  string id = 1;
-
-  // **Required.** The DNS domain name (e.g., 'example.com').
-  string name = 2 [
-    (buf.validate.field).required = true
-  ];
-
-  // A flag to enable TLS for the endpoint domain. Defaults to false.
-  // **Important:** Certificates are not created for endpoints that do not require TLS.
-  // Also, ingress DNS domains without TLS enabled cannot be used for creating endpoints for microservice instances,
-  // PostgreSQL clusters, Kafka clusters, Redis clusters, or Solr clouds.
-  bool is_tls_enabled = 3;
-
-  // The GCP project ID containing the DNS zone for the endpoint domain.
-  // This value is retrieved from the DNS domains in the organization's DNS data.
-  // It is required for configuring the certificate issuer to perform DNS validations.
-  string dns_zone_gcp_project_id = 4;
-}
-
-// **GkeClusterAddons** specifies the Kubernetes addons to be installed on the GKE cluster.
-message GkeClusterAddons {
-  // A flag to control the installation of the PostgreSQL operator.
-  bool is_install_postgres_operator = 1;
-
-  // A flag to control the installation of the Kafka operator.
-  bool is_install_kafka_operator = 2;
-
-  // A flag to control the installation of the Solr operator.
-  bool is_install_solr_operator = 3;
-
-  // A flag to control the installation of Kubecost.
-  bool is_install_kubecost = 4;
-
-  // A flag to control the installation of Ingress NGINX.
-  bool is_install_ingress_nginx = 5;
-
-  // A flag to control the installation of Istio.
-  bool is_install_istio = 6;
-
-  // A flag to control the installation of Cert-Manager.
-  bool is_install_cert_manager = 7;
-
-  // A flag to control the installation of External DNS.
-  bool is_install_external_dns = 8;
-
-  // A flag to control the installation of External Secrets.
-  bool is_install_external_secrets = 9;
-
-  // A flag to control the installation of the Elastic operator.
-  bool is_install_elastic_operator = 10;
-
-  // A flag to control the installation of the Keycloak operator.
-  bool is_install_keycloak_operator = 11;
 }

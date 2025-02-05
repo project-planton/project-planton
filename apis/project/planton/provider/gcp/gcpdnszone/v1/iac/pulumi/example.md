@@ -3,7 +3,7 @@ Here are several examples for the `GcpDnsZone` API resource, similar to how you'
 ### Example 1: Basic Google Cloud DNS Zone
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: gcp.project-planton.org/v1
 kind: GcpDnsZone
 metadata:
   name: example-com
@@ -21,7 +21,7 @@ spec:
 ### Example 2: Google Cloud DNS Zone with Multiple Records
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: gcp.project-planton.org/v1
 kind: GcpDnsZone
 metadata:
   name: example-com
@@ -49,7 +49,7 @@ spec:
 ### Example 3: Google Cloud DNS Zone with IAM Service Accounts
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: gcp.project-planton.org/v1
 kind: GcpDnsZone
 metadata:
   name: prod-example-com
@@ -75,7 +75,7 @@ spec:
 ### Example 4: Minimal Google Cloud DNS Zone
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: gcp.project-planton.org/v1
 kind: GcpDnsZone
 metadata:
   name: dev-example-com
