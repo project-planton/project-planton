@@ -3,14 +3,15 @@
 ##############################
 
 resource "aws_subnet" "public" {
-  for_each                = local.public_subnets
-  vpc_id                  = aws_vpc.this.id
-  cidr_block              = each.value.cidr_block
-  availability_zone       = each.value.availability_zone
+  for_each          = local.public_subnets
+  vpc_id            = aws_vpc.this.id
+  cidr_block        = each.value.cidr_block
+  availability_zone = each.value.availability_zone
   map_public_ip_on_launch = true
 
+  # Use metadata.labels instead of metadata.tags
   tags = merge(
-    var.metadata.tags,
+      var.metadata.labels != null ? var.metadata.labels : {},
     { "Name" = each.key }
   )
 }
@@ -22,8 +23,9 @@ resource "aws_subnet" "public" {
 resource "aws_route_table" "public" {
   vpc_id = aws_vpc.this.id
 
+  # Use metadata.labels instead of metadata.tags
   tags = merge(
-    var.metadata.tags,
+      var.metadata.labels != null ? var.metadata.labels : {},
     { "Name" = "${var.metadata.name}-public-RT" }
   )
 
@@ -38,7 +40,8 @@ resource "aws_route_table" "public" {
 ##############################
 
 resource "aws_route_table_association" "public" {
-  for_each      = aws_subnet.public
+  for_each = aws_subnet.public
+
   route_table_id = aws_route_table.public.id
   subnet_id      = each.value.id
 }
@@ -48,13 +51,14 @@ resource "aws_route_table_association" "public" {
 ##############################
 
 resource "aws_subnet" "private" {
-  for_each          = local.private_subnets
-  vpc_id            = aws_vpc.this.id
-  cidr_block        = each.value.cidr_block
+  for_each   = local.private_subnets
+  vpc_id     = aws_vpc.this.id
+  cidr_block = each.value.cidr_block
   availability_zone = each.value.availability_zone
 
+  # Use metadata.labels instead of metadata.tags
   tags = merge(
-    var.metadata.tags,
+      var.metadata.labels != null ? var.metadata.labels : {},
     { "Name" = each.key }
   )
 }
@@ -63,25 +67,24 @@ resource "aws_subnet" "private" {
 # Private Route Tables with route to NAT gateway
 #################################################
 
-# For each private subnet, we need a route table that routes to the NAT gateway in its AZ.
-# Each private subnet is defined as:
-# aws_subnet.private[<key>] = {
-#   cidr_block        = ...
-#   availability_zone = ...
-# }
-
 resource "aws_route_table" "private" {
   for_each = aws_subnet.private
 
   vpc_id = aws_vpc.this.id
+
+  # Use metadata.labels instead of metadata.tags
   tags = merge(
-    var.metadata.tags,
+      var.metadata.labels != null ? var.metadata.labels : {},
     { "Name" = "${each.key}-RT" }
   )
 
-  route {
-    cidr_block     = "0.0.0.0/0"
-    nat_gateway_id = lookup(local.az_to_nat_gw, each.value.availability_zone, null)
+  # Conditionally add the NAT route only if NAT is enabled
+  dynamic "route" {
+    for_each = var.spec.is_nat_gateway_enabled ? [true] : []
+    content {
+      cidr_block = "0.0.0.0/0"
+      nat_gateway_id = lookup(local.az_to_nat_gw, each.value.availability_zone, null)
+    }
   }
 }
 

@@ -1,38 +1,16 @@
 variable "metadata" {
-  description = "metadata"
+  description = "Metadata for the resource, including name and labels"
   type = object({
-
-    # name of the resource
-    name = string
-
-    # id of the resource
-    id = string
-
-    # id of the organization to which the api-resource belongs to
-    org = string
-
-    # environment to which the resource belongs to
-    env = object({
-
-      # name of the environment
-      name = string
-
-      # id of the environment
-      id = string
-    })
-
-    # labels for the resource
-    labels = object({
-
-      # Description for key
-      key = string
-
-      # Description for value
-      value = string
-    })
-
-    # tags for the resource
-    tags = map(string)
+    name = string,
+    id = optional(string),
+    org = optional(string),
+    env = optional(object({
+      name = optional(string),
+      id = optional(string),
+    })),
+    labels = optional(map(string)),
+    tags = optional(list(string)),
+    version = optional(object({ id = string, message = string }))
   })
 }
 
@@ -61,15 +39,15 @@ variable "spec" {
     # Toggle to enable or disable a NAT (Network Address Translation) gateway for private subnets created in the VPC.
     # A NAT gateway allows instances in a private subnet to connect to the internet or other AWS services, but prevents
     # the internet from initiating a connection with those instances.
-    is_nat_gateway_enabled = bool
+    is_nat_gateway_enabled = optional(bool, false)
 
     # Toggle to enable or disable DNS hostnames in the VPC.
     # When enabled, instances with public IP addresses receive corresponding public DNS hostnames.
     # See AWS documentation: https://docs.aws.amazon.com/vpc/latest/userguide/vpc-dns.html#vpc-dns-hostnames
-    is_dns_hostnames_enabled = bool
+    is_dns_hostnames_enabled = optional(bool, false)
 
     # Toggle to enable or disable DNS resolution in the VPC through the Amazon-provided DNS server.
     # When enabled, the Amazon DNS server resolves DNS hostnames for your instances.
-    is_dns_support_enabled = bool
+    is_dns_support_enabled = optional(bool, false)
   })
 }

@@ -8,9 +8,7 @@ variable "metadata" {
       name = optional(string),
       id = optional(string),
     })),
-    labels = optional(object({
-      key = string, value = string
-    })),
+    labels = optional(map(string)),
     tags = optional(list(string)),
     version = optional(object({ id = string, message = string }))
   })
