@@ -29,6 +29,6 @@ variable "spec" {
 
     # A flag indicating whether to allow unauthenticated access to artifacts published in the repositories.
     # Enable this for publishing artifacts for open-source projects that require public access.
-    is_external = bool
+    is_external = optional(bool, false)
   })
 }
