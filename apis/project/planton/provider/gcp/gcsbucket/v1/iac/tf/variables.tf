@@ -27,6 +27,6 @@ variable "spec" {
 
     # A flag indicating whether the GCS bucket should have external (public) access.
     # Defaults to `false`, meaning the bucket is private by default.
-    is_public = bool
+    is_public = optional(bool, false)
   })
 }

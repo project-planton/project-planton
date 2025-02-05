@@ -1,7 +1,8 @@
 apiVersion: gcp.project-planton.org/v1
-kind: GcpArtifactRegistry
+kind: GcsBucket
 metadata:
-  name: test-gcp-artifact-registry
+  name: project-planton-test-gcs-bucket
 spec:
-  projectId: pc-artifact-registry
-  region: asia-south1
+  gcpProjectId: planton-cloud-public-downloads
+  gcpRegion: asia-south1
+  isPublic: false
