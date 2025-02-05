@@ -38,7 +38,7 @@ variable "spec" {
 
       # A flag indicating whether the cluster should be created in a shared VPC network.
       # **Warning:** The GKE cluster will be recreated if this is updated.
-      is_enabled = bool
+      is_enabled = optional(bool, false)
 
       # Description for vpc_project_id
       vpc_project_id = string
@@ -54,7 +54,7 @@ variable "spec" {
 
       # A flag to enable or disable autoscaling of Kubernetes worker nodes.
       # When set to true, the cluster will automatically scale up or down based on resource requirements.
-      is_enabled = bool
+      is_enabled = optional(bool, false)
 
       # The minimum number of CPU cores the cluster can scale down to when autoscaling is enabled.
       # This is the total number of CPU cores across all nodes in the cluster.
@@ -90,44 +90,44 @@ variable "spec" {
       max_node_count = number
 
       # A flag to enable spot instances on the node pool. Defaults to false.
-      is_spot_enabled = bool
-    })))
+      is_spot_enabled = optional(bool, false)
+    })), [])
 
     # Specifications for Kubernetes addons in the GKE cluster.
     kubernetes_addons = optional(object({
 
       # A flag to control the installation of the PostgreSQL operator.
-      is_install_postgres_operator = bool
+      is_install_postgres_operator = optional(bool, false)
 
       # A flag to control the installation of the Kafka operator.
-      is_install_kafka_operator = bool
+      is_install_kafka_operator = optional(bool, false)
 
       # A flag to control the installation of the Solr operator.
-      is_install_solr_operator = bool
+      is_install_solr_operator = optional(bool, false)
 
       # A flag to control the installation of Kubecost.
-      is_install_kubecost = bool
+      is_install_kubecost = optional(bool, false)
 
       # A flag to control the installation of Ingress NGINX.
-      is_install_ingress_nginx = bool
+      is_install_ingress_nginx = optional(bool, false)
 
       # A flag to control the installation of Istio.
-      is_install_istio = bool
+      is_install_istio = optional(bool, false)
 
       # A flag to control the installation of Cert-Manager.
-      is_install_cert_manager = bool
+      is_install_cert_manager = optional(bool, false)
 
       # A flag to control the installation of External DNS.
-      is_install_external_dns = bool
+      is_install_external_dns = optional(bool, false)
 
       # A flag to control the installation of External Secrets.
-      is_install_external_secrets = bool
+      is_install_external_secrets = optional(bool, false)
 
       # A flag to control the installation of the Elastic operator.
-      is_install_elastic_operator = bool
+      is_install_elastic_operator = optional(bool, false)
 
       # A flag to control the installation of the Keycloak operator.
-      is_install_keycloak_operator = bool
+      is_install_keycloak_operator = optional(bool, false)
     }))
 
     # Ingress DNS domains to be configured in the GKE cluster.
@@ -143,12 +143,12 @@ variable "spec" {
       # **Important:** Certificates are not created for endpoints that do not require TLS.
       # Also, ingress DNS domains without TLS enabled cannot be used for creating endpoints for microservice instances,
       # PostgreSQL clusters, Kafka clusters, Redis clusters, or Solr clouds.
-      is_tls_enabled = bool
+      is_tls_enabled = optional(bool, false)
 
       # The GCP project ID containing the DNS zone for the endpoint domain.
       # This value is retrieved from the DNS domains in the organization's DNS data.
       # It is required for configuring the certificate issuer to perform DNS validations.
       dns_zone_gcp_project_id = string
-    })))
+    })), [])
   })
 }

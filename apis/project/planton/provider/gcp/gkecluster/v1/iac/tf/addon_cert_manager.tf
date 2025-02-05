@@ -1,11 +1,5 @@
 ###############################################################################
-# Cert Manager
-#
-# 1. Create a Google Service Account (GSA) for cert-manager, with Workload Identity binding.
-# 2. Create a namespace for cert-manager, labeled with our final_kubernetes_labels.
-# 3. Create a Kubernetes Service Account (KSA) in that namespace, annotated with the GSA email.
-# 4. Deploy the cert-manager Helm chart with CRDs enabled, linking to the KSA.
-# 5. For each ingress DNS domain that has is_tls_enabled = true, create a ClusterIssuer.
+# Cert Manager (Fully Inline ClusterIssuer)
 ###############################################################################
 
 ##############################################
@@ -18,7 +12,6 @@ resource "google_service_account" "cert_manager_gsa" {
   description  = "Service Account for Cert-Manager to solve DNS challenges"
 }
 
-# IAM binding granting "iam.workloadIdentityUser" to the KSA identity
 resource "google_service_account_iam_binding" "cert_manager_workload_identity_binding" {
   service_account_id = google_service_account.cert_manager_gsa.name
   role               = "roles/iam.workloadIdentityUser"
@@ -53,6 +46,7 @@ resource "kubernetes_service_account_v1" "cert_manager_ksa" {
     annotations = {
       "iam.gke.io/gcp-service-account" = google_service_account.cert_manager_gsa.email
     }
+
     labels = local.final_kubernetes_labels
   }
 }
@@ -70,14 +64,13 @@ resource "helm_release" "cert_manager" {
   timeout          = 180
   cleanup_on_fail  = true
   atomic           = false
-  wait             = true
+  wait = true
 
-  # We disable the creation of a service account in the Helm chart, since we
-  # create it ourselves with the GSA annotation for Workload Identity.
+  # Disabling the chart's default ServiceAccount creation
   values = [
     yamlencode({
       installCRDs = true
-      extraArgs   = [
+      extraArgs = [
         "--dns01-recursive-nameservers-only=true",
         "--dns01-recursive-nameservers=8.8.8.8:53,1.1.1.1:53"
       ]
@@ -102,56 +95,52 @@ resource "helm_release" "cert_manager" {
 }
 
 ##############################################
-# 5. ClusterIssuer for each TLS-enabled domain
+# 5. Fully Inline ClusterIssuer for each TLS-enabled domain
 ##############################################
-# For each domain where is_tls_enabled = true, create a cert-manager ClusterIssuer resource
 resource "kubernetes_manifest" "cert_manager_cluster_issuer" {
+  # Create a resource for each domain that has is_tls_enabled = true
   for_each = {
     for domain in var.spec.ingress_dns_domains :
     domain.name => domain
     if domain.is_tls_enabled
   }
 
-  manifest = yamldecode(
-    templatefile(
-      "${path.module}/templates/cluster_issuer.yaml.tpl",
-      {
-        issuer_name                = each.key
-        dns_zone_gcp_project_id    = each.value.dns_zone_gcp_project_id
+  # Use a direct HCL object for the YAML manifest (Terraform converts to JSON or YAML automatically)
+  manifest = {
+    apiVersion = "cert-manager.io/v1"
+    kind       = "ClusterIssuer"
+    metadata = {
+      name   = each.key
+      labels = local.final_kubernetes_labels
+    }
+    spec = {
+      acme = {
+        server         = "https://acme-v02.api.letsencrypt.org/directory"
+        preferredChain = ""
+        privateKeySecretRef = {
+          name = "letsencrypt-production"
+        }
+        solvers = [
+          {
+            dns01 = {
+              cloudDNS = {
+                project = each.value.dns_zone_gcp_project_id
+              }
+            }
+          },
+          {
+            http01 = {
+              ingress = {
+                class = "istio"
+              }
+            }
+          }
+        ]
       }
-    )
-  )
+    }
+  }
 
   depends_on = [
     helm_release.cert_manager
   ]
 }
-
-# Optional example of the cluster_issuer.yaml.tpl template:
-#
-#  apiVersion: cert-manager.io/v1
-#  kind: ClusterIssuer
-#  metadata:
-#    name: ${issuer_name}
-#    labels:
-#      <<LABELS>>
-#  spec:
-#    acme:
-#      server: https://acme-v02.api.letsencrypt.org/directory
-#      preferredChain: ""
-#      privateKeySecretRef:
-#        name: "letsencrypt-production"
-#      solvers:
-#      - dns01:
-#          cloudDNS:
-#            project: ${dns_zone_gcp_project_id}
-#      - http01:
-#          ingress:
-#            class: istio
-#
-#  NOTE: In your actual usage, replace <<LABELS>> with local.final_kubernetes_labels
-#        or merge them similarly. If you're using a single-blob template, you'd
-#        embed them just like in other resources. Or you can construct them
-#        via string interpolation in the templatefile() call if desired.
-#
-# The above approach allows dynamic creation of ClusterIssuers for each domain that has TLS enabled.

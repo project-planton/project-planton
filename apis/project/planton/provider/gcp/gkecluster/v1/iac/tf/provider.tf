@@ -33,6 +33,10 @@ provider "kubernetes" {
     "^autopilot\\.gke\\.io\\/.*",
     "^cloud\\.google\\.com\\/.*"
   ]
+
+  depends_on = [
+    google_container_cluster.gke_cluster
+  ]
 }
 
 provider "helm" {

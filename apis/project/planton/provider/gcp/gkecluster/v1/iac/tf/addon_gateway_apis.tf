@@ -30,10 +30,8 @@ data "http" "gateway_api_crds" {
   url      = "https://raw.githubusercontent.com/kubernetes-sigs/gateway-api/v1.1.0/config/crd/standard/${each.value}"
 }
 
-resource "kubernetes_manifest" "gateway_api_crds" {
-  for_each = data.http.gateway_api_crds
-  manifest = yamldecode(each.value.response_body)
-
-  # Optionally, ensure the cluster is ready before applying CRDs
-  # depends_on = [google_container_cluster.gke_cluster]
-}
+# issue: https://github.com/hashicorp/terraform-provider-kubernetes/issues/1428
+# resource "kubernetes_manifest" "gateway_api_crds" {
+#   for_each = data.http.gateway_api_crds
+#   manifest = yamldecode(each.value.response_body)
+# }

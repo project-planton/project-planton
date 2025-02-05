@@ -46,4 +46,5 @@ output "workload_deployer_gsa_email" {
 output "workload_deployer_gsa_key_base64" {
   description = "Base64-encoded private key of the Workload Deployer SA"
   value       = google_service_account_key.workload_deployer_sa_key.private_key
+  sensitive   = true
 }
