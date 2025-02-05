@@ -2,7 +2,6 @@ package module
 
 import (
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gkecluster/v1/iac/pulumi/module/localz"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/compute"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/organizations"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/projects"
@@ -31,7 +30,7 @@ import (
 //  3. Grants the container-engine-robot service account the container.hostServiceAgentUser role in the network project.
 //  4. Binds the custom network admin role to the container-engine-robot service accounts from the cluster project.
 func sharedVpcIam(ctx *pulumi.Context,
-	locals *localz.Locals,
+	locals *Locals,
 	createdClusterProject, createdNetworkProject *organizations.Project,
 	createdSubNetwork *compute.Subnetwork) ([]pulumi.Resource, error) {
 
