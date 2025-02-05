@@ -1,9 +1,8 @@
-package addons
+package module
 
 import (
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gkecluster/v1/iac/pulumi/module/localz"
-	"github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gkecluster/v1/iac/pulumi/module/vars"
+	"github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gkeaddonbundle/v1/iac/pulumi/module/vars"
 	pulumikubernetes "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes"
 	corev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
 	"github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/helm/v3"
@@ -12,7 +11,7 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// SolrOperator installs the Solr Operator in the Kubernetes cluster using Helm.
+// solrOperator installs the Solr Operator in the Kubernetes cluster using Helm.
 // It creates the necessary namespace, applies CRD resources, and deploys the Helm chart.
 //
 // Parameters:
@@ -29,7 +28,7 @@ import (
 // 3. Deploys the Solr Operator Helm chart into the created namespace with specific values.
 // 4. Uses Helm chart repository and version specified in the vars package.
 // 5. Handles errors and returns any errors encountered during the namespace creation, CRD application, or Helm release deployment.
-func SolrOperator(ctx *pulumi.Context, locals *localz.Locals,
+func solrOperator(ctx *pulumi.Context, locals *Locals,
 	kubernetesProvider *pulumikubernetes.Provider) error {
 	//create namespace resource
 	createdNamespace, err := corev1.NewNamespace(ctx,

@@ -3,7 +3,7 @@ Here are a few examples for the `GcpCloudSql` API resource, following a similar 
 ### Example 1: Basic Google Cloud SQL Instance
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: gcp.project-planton.org/v1
 kind: GcpCloudSql
 metadata:
   name: my-sql-instance
@@ -22,7 +22,7 @@ spec:
 ### Example 2: Google Cloud SQL Instance with Environment Variables
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: gcp.project-planton.org/v1
 kind: GcpCloudSql
 metadata:
   name: ecommerce-db
@@ -50,7 +50,7 @@ spec:
 ### Example 3: Google Cloud SQL Instance with Secrets
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: gcp.project-planton.org/v1
 kind: GcpCloudSql
 metadata:
   name: secure-sql-instance
@@ -76,7 +76,7 @@ spec:
 ### Example 4: Minimal Google Cloud SQL Deployment
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: gcp.project-planton.org/v1
 kind: GcpCloudSql
 metadata:
   name: minimal-sql-instance

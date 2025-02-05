@@ -1,14 +1,11 @@
-package addons
+package module
 
 import (
 	"fmt"
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gkecluster/v1/iac/pulumi/module/localz"
-	"github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gkecluster/v1/iac/pulumi/module/outputs"
-	"github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gkecluster/v1/iac/pulumi/module/vars"
-	certmanagerv1 "github.com/project-planton/project-planton/pkg/kubernetestypes/certmanager/kubernetes/cert_manager/v1"
+	"github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gkeaddonbundle/v1/iac/pulumi/module/outputs"
+	"github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gkeaddonbundle/v1/iac/pulumi/module/vars"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp"
-	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/container"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/serviceaccount"
 	pulumikubernetes "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes"
 	corev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
@@ -17,7 +14,7 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// CertManager installs Cert Manager in the Kubernetes cluster using Helm, sets up the necessary Google Service Account (GSA),
+// certManager installs Cert Manager in the Kubernetes cluster using Helm, sets up the necessary Google Service Account (GSA),
 // Kubernetes Service Account (KSA), and creates a self-signed ClusterIssuer.
 //
 // Parameters:
@@ -37,8 +34,7 @@ import (
 // 4. Creates a namespace for Cert Manager and labels it with metadata from locals.
 // 5. Creates a Kubernetes Service Account (KSA) and adds the Google Workload Identity annotation with the GSA email.
 // 6. Deploys the Cert Manager Helm chart into the created namespace with specific values for CRDs, service account.
-func CertManager(ctx *pulumi.Context, locals *localz.Locals,
-	createdCluster *container.Cluster,
+func certManager(ctx *pulumi.Context, locals *Locals,
 	gcpProvider *gcp.Provider,
 	kubernetesProvider *pulumikubernetes.Provider) error {
 
@@ -46,11 +42,11 @@ func CertManager(ctx *pulumi.Context, locals *localz.Locals,
 	createdGoogleServiceAccount, err := serviceaccount.NewAccount(ctx,
 		vars.CertManager.KsaName,
 		&serviceaccount.AccountArgs{
-			Project:     createdCluster.Project,
+			Project:     pulumi.String(locals.GkeAddonBundle.Spec.ClusterProjectId),
 			Description: pulumi.String("cert-manager service account for solving dns challenges to issue certificates"),
 			AccountId:   pulumi.String(vars.CertManager.KsaName),
 			DisplayName: pulumi.String(vars.CertManager.KsaName),
-		}, pulumi.Parent(createdCluster), pulumi.Provider(gcpProvider))
+		}, pulumi.Provider(gcpProvider))
 	if err != nil {
 		return errors.Wrap(err, "failed to create cert-manager google service account")
 	}
@@ -66,13 +62,12 @@ func CertManager(ctx *pulumi.Context, locals *localz.Locals,
 			Role:             pulumi.String("roles/iam.workloadIdentityUser"),
 			Members: pulumi.StringArray{
 				pulumi.Sprintf("serviceAccount:%s.svc.id.goog[%s/%s]",
-					createdCluster.Project,
+					locals.GkeAddonBundle.Spec.ClusterProjectId,
 					vars.CertManager.Namespace,
 					vars.CertManager.KsaName),
 			},
 		},
-		pulumi.Parent(createdGoogleServiceAccount),
-		pulumi.DependsOn([]pulumi.Resource{createdCluster}))
+		pulumi.Parent(createdGoogleServiceAccount))
 	if err != nil {
 		return errors.Wrap(err, "failed to create workload-identity binding for cert-manager")
 	}
@@ -113,7 +108,7 @@ func CertManager(ctx *pulumi.Context, locals *localz.Locals,
 	}
 
 	//created helm-release
-	createdCertManagerHelmRelease, err := helm.NewRelease(ctx, "cert-manager",
+	_, err = helm.NewRelease(ctx, "cert-manager",
 		&helm.ReleaseArgs{
 			Name:            pulumi.String(vars.CertManager.HelmChartName),
 			Namespace:       createdNamespace.Metadata.Name(),
@@ -146,50 +141,5 @@ func CertManager(ctx *pulumi.Context, locals *localz.Locals,
 	if err != nil {
 		return errors.Wrap(err, "failed to create cert-manager helm release")
 	}
-
-	//for each ingress-domain, create a cluster-issuer
-	for _, i := range locals.GkeCluster.Spec.IngressDnsDomains {
-		//do not create a cluster-issuer resource if tls is not enabled.
-		if !i.IsTlsEnabled {
-			continue
-		}
-		_, err := certmanagerv1.NewClusterIssuer(ctx,
-			i.Name,
-			&certmanagerv1.ClusterIssuerArgs{
-				Metadata: metav1.ObjectMetaArgs{
-					Name:   pulumi.String(i.Name),
-					Labels: pulumi.ToStringMap(locals.KubernetesLabels),
-				},
-				Spec: certmanagerv1.ClusterIssuerSpecArgs{
-					Acme: certmanagerv1.ClusterIssuerSpecAcmeArgs{
-						PreferredChain: pulumi.String(""),
-						PrivateKeySecretRef: certmanagerv1.ClusterIssuerSpecAcmePrivateKeySecretRefArgs{
-							Name: pulumi.String(vars.CertManager.LetsEncryptClusterIssuerSecretName),
-						},
-						Server: pulumi.String(vars.CertManager.LetsEncryptServer),
-						Solvers: certmanagerv1.ClusterIssuerSpecAcmeSolversArray{
-							certmanagerv1.ClusterIssuerSpecAcmeSolversArgs{
-								Dns01: certmanagerv1.ClusterIssuerSpecAcmeSolversDns01Args{
-									CloudDNS: certmanagerv1.ClusterIssuerSpecAcmeSolversDns01CloudDNSArgs{
-										Project: pulumi.String(i.DnsZoneGcpProjectId),
-									},
-								},
-							},
-							certmanagerv1.ClusterIssuerSpecAcmeSolversArgs{
-								Http01: certmanagerv1.ClusterIssuerSpecAcmeSolversHttp01Args{
-									Ingress: certmanagerv1.ClusterIssuerSpecAcmeSolversHttp01IngressArgs{
-										Class: pulumi.String(vars.CertManager.Http01ChallengeSolverIngressClass),
-									},
-								},
-							},
-						},
-					},
-				},
-			}, pulumi.Parent(createdCertManagerHelmRelease))
-		if err != nil {
-			return errors.Wrapf(err, "failed to create cluster-issuer for %s ingress-domain", i.Name)
-		}
-	}
-
 	return nil
 }

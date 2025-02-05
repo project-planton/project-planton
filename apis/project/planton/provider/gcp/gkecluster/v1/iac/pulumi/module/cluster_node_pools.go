@@ -16,7 +16,6 @@ import (
 // - createdCluster: The GKE cluster for which the node pools are being created.
 //
 // Returns:
-// - []pulumi.Resource: A slice of created node pool resources.
 // - error: An error object if there is any issue during the node pool creation.
 //
 // The function performs the following steps:
@@ -29,11 +28,10 @@ import (
 //  6. Handles errors and returns a slice of created node pool resources and any errors encountered.
 func clusterNodePools(ctx *pulumi.Context,
 	locals *localz.Locals,
-	createdCluster *container.Cluster) ([]pulumi.Resource, error) {
-	createdNodePoolResources := make([]pulumi.Resource, 0)
+	createdCluster *container.Cluster) error {
 
 	for _, nodePoolSpec := range locals.GkeCluster.Spec.NodePools {
-		createdNodePool, err := container.NewNodePool(ctx, nodePoolSpec.Name, &container.NodePoolArgs{
+		_, err := container.NewNodePool(ctx, nodePoolSpec.Name, &container.NodePoolArgs{
 			Location:  pulumi.String(locals.GkeCluster.Spec.Zone),
 			Project:   createdCluster.Project,
 			Cluster:   createdCluster.Name,
@@ -74,11 +72,10 @@ func clusterNodePools(ctx *pulumi.Context,
 			pulumi.DeleteBeforeReplace(true),
 		)
 		if err != nil {
-			return nil, errors.Wrap(err, "failed to create node-pool")
+			return errors.Wrap(err, "failed to create node-pool")
 		}
 
-		createdNodePoolResources = append(createdNodePoolResources, createdNodePool)
 	}
 
-	return createdNodePoolResources, nil
+	return nil
 }

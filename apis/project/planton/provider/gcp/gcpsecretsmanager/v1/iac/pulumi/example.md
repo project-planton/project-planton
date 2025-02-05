@@ -3,7 +3,7 @@ Here are a few examples for the `GcpSecretsManager` API resource, modeled in a s
 ### Example 1: Basic Google Cloud Secrets Manager Setup
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: gcp.project-planton.org/v1
 kind: GcpSecretsManager
 metadata:
   name: prod-secrets
@@ -18,7 +18,7 @@ spec:
 ### Example 2: Google Cloud Secrets Manager with Multiple Secrets
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: gcp.project-planton.org/v1
 kind: GcpSecretsManager
 metadata:
   name: dev-secrets
@@ -34,7 +34,7 @@ spec:
 ### Example 3: Google Cloud Secrets Manager with Empty Spec
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: gcp.project-planton.org/v1
 kind: GcpSecretsManager
 metadata:
   name: minimal-secrets

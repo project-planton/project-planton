@@ -1,0 +1,63 @@
+syntax = "proto3";
+
+package project.planton.provider.gcp.gkeaddonbundle.v1;
+
+import "buf/validate/validate.proto";
+import "project/planton/provider/gcp/gkeaddonbundle/v1/spec.proto";
+import "project/planton/provider/gcp/gkeaddonbundle/v1/stack_outputs.proto";
+import "project/planton/shared/shared.proto";
+
+//gke-addon-bundle
+message GkeAddonBundle {
+  //api-version
+  string api_version = 1 [
+    (buf.validate.field).string.const = 'gcp.project-planton.org/v1'
+  ];
+
+  //resource-kind
+  string kind = 2;
+
+  //metadata
+  project.planton.shared.ApiResourceMetadata metadata = 3[
+    (buf.validate.field).required = true,
+    (buf.validate.field).cel = {
+      id: "metadata.name",
+      message: "Name should be any valid DNS Domain Name",
+      // https://regex101.com/library/SEg6KL
+      expression: "this.name.matches('^(?:[_a-z0-9](?:[_a-z0-9-]{0,61}[a-z0-9])?[.])+(?:[a-z](?:[a-z0-9-]{0,61}[a-z0-9])?)?$')"
+    },
+    (buf.validate.field).cel = {
+      id: "metadata.name",
+      message: "Name must be between 1 and 65 characters long",
+      expression: "size(this.name) > 0 && size(this.name) <= 65"
+    },
+    (buf.validate.field).cel = {
+      id: "metadata.version.message",
+      message: "Version message is mandatory and cannot be empty",
+      expression: "has(this.version.message)"
+    }
+  ];
+
+  //spec
+  GkeAddonBundleSpec spec = 4 [
+    (buf.validate.field).required = true
+  ];
+
+  //status
+  GkeAddonBundleStatus status = 5;
+}
+
+//gke-addon-bundle status.
+message GkeAddonBundleStatus {
+  //lifecycle
+  project.planton.shared.ApiResourceLifecycle lifecycle = 99;
+
+  //audit-info
+  project.planton.shared.ApiResourceAudit audit = 98;
+
+  //stack-job id
+  string stack_job_id = 97;
+
+  //stack-outputs
+  GkeAddonBundleStackOutputs stack_outputs = 1;
+}

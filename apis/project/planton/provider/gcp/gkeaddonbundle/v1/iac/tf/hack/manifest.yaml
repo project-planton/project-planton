@@ -1,0 +1,14 @@
+apiVersion: gcp.project-planton.org/v1
+kind: GkeAddonBundle
+metadata:
+  name: test-20250205
+spec:
+  clusterProjectId: project-planton-testing
+  isInstallPostgresOperator: true
+  isInstallKafkaOperator: true
+  isInstallSolrOperator: true
+  isInstallIstio: true
+  isInstallCertManager: true
+  isInstallExternalDns: true
+  isInstallExternalSecrets: true
+  isInstallElasticOperator: true

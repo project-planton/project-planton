@@ -19,50 +19,28 @@ message GkeClusterStackOutputs {
   // this value is updated upon successful gke-cluster creation stack-job.
   string external_nat_ip = 3;
 
-  // internal ingress ip.
-  string internal_ingress_ip = 4;
+  // Self-link URL for firewall rules related to GKE webhooks.
+  string gke_webhooks_firewall_self_link = 4;
 
-  // internal ingress ip.
-  string external_ingress_ip = 5;
+  // Self-link URL for the VPC network associated with the cluster.
+  string network_self_link = 5;
 
-  // google service account email created for cert-manager addon workload identity.
-  // this is the service account that is used by cert-manager component to update dns records
-  // to issue ssl certificates from letsencrypt provided for gke-cluster ingress-dns-domains.
-  // this service account is configured with permissions required to manage dns entries for issuing certs.
-  string cert_manager_gsa_email = 6;
+  // Self-link URL for the subnetwork associated with the cluster.
+  string sub_network_self_link = 6;
 
-  // google service account email created for external-secrets addon workload identity.
-  // this is the service account that is used by external-secrets component to fetch secrets from the
-  // secrets-manager on the cloud provider and make them available to the microservices.
-  string external_secrets_gsa_email = 7;
+  // Name of the Cloud Router NAT configuration used by the cluster.
+  string router_nat_name = 7;
+
+  // Self-link URL for the Cloud Router associated with the cluster.
+  string router_self_link = 8;
 
   // google service account email created for external-secrets addon workload identity.
   // this key for this service account is used for deploying workloads like microservices,
   // postgres clusters, kafka clusters onto the gke-cluster gke-cluster/s.
-  string workload_deployer_gsa_email = 8;
+  string workload_deployer_gsa_email = 9;
 
   // base64 encoded workload deployer google service account key.
   // this service account key is used as a credential for deploying workloads like microservices,
   // postgres clusters, kafka clusters onto the gke-cluster gke-cluster/s.
-  string workload_deployer_gsa_key_base64 = 9;
-
-  // google service account email created for external-dns addon workload identity.
-  // this is the service account that is used by external-dns component to insert dns records in
-  // google cloud dns when selected services or ingress resources are created on the GKE cluster.
-  string external_dns_gsa_email = 10;
-
-  // Self-link URL for firewall rules related to GKE webhooks.
-  string gke_webhooks_firewall_self_link = 11;
-
-  // Self-link URL for the VPC network associated with the cluster.
-  string network_self_link = 12;
-
-  // Self-link URL for the subnetwork associated with the cluster.
-  string sub_network_self_link = 13;
-
-  // Name of the Cloud Router NAT configuration used by the cluster.
-  string router_nat_name = 14;
-
-  // Self-link URL for the Cloud Router associated with the cluster.
-  string router_self_link = 15;
+  string workload_deployer_gsa_key_base64 = 10;
 }

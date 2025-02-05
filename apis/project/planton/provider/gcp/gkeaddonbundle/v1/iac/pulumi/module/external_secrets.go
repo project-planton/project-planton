@@ -1,14 +1,12 @@
-package addons
+package module
 
 import (
 	"fmt"
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gkecluster/v1/iac/pulumi/module/localz"
-	"github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gkecluster/v1/iac/pulumi/module/outputs"
-	"github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gkecluster/v1/iac/pulumi/module/vars"
+	"github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gkeaddonbundle/v1/iac/pulumi/module/outputs"
+	"github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gkeaddonbundle/v1/iac/pulumi/module/vars"
 	externalsecretsv1 "github.com/project-planton/project-planton/pkg/kubernetestypes/externalsecrets/kubernetes/external_secrets/v1beta1"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp"
-	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/container"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/projects"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/serviceaccount"
 	pulumikubernetes "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes"
@@ -18,7 +16,7 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// ExternalSecrets installs the External Secrets operator in the Kubernetes cluster using Helm, sets up the necessary
+// externalSecrets installs the External Secrets operator in the Kubernetes cluster using Helm, sets up the necessary
 // Google Service Account (GSA), Kubernetes Service Account (KSA), and creates a ClusterSecretStore for GCP Secrets Manager.
 //
 // Parameters:
@@ -40,19 +38,18 @@ import (
 // 6. Deploys the External Secrets Helm chart into the created namespace with specific values for CRDs, environment variables, and RBAC.
 // 7. Creates a ClusterSecretStore to configure the GCP project from which secrets need to be looked up.
 // 8. Handles errors and returns any errors encountered during the creation of resources or Helm release deployment.
-func ExternalSecrets(ctx *pulumi.Context, locals *localz.Locals,
-	createdCluster *container.Cluster, gcpProvider *gcp.Provider,
+func externalSecrets(ctx *pulumi.Context, locals *Locals, gcpProvider *gcp.Provider,
 	kubernetesProvider *pulumikubernetes.Provider) error {
 
 	//create google service account required to create workload identity binding
 	createdGoogleServiceAccount, err := serviceaccount.NewAccount(ctx,
 		vars.ExternalSecrets.KsaName,
 		&serviceaccount.AccountArgs{
-			Project:     createdCluster.Project,
+			Project:     pulumi.String(locals.GkeAddonBundle.Spec.ClusterProjectId),
 			Description: pulumi.String("external-secrets service account for solving dns challenges to issue certificates"),
 			AccountId:   pulumi.String(vars.ExternalSecrets.KsaName),
 			DisplayName: pulumi.String(vars.ExternalSecrets.KsaName),
-		}, pulumi.Parent(createdCluster), pulumi.Provider(gcpProvider))
+		}, pulumi.Provider(gcpProvider))
 	if err != nil {
 		return errors.Wrap(err, "failed to create external-secrets google service account")
 	}
@@ -67,7 +64,7 @@ func ExternalSecrets(ctx *pulumi.Context, locals *localz.Locals,
 			Members: pulumi.StringArray{
 				pulumi.Sprintf("serviceAccount:%s", createdGoogleServiceAccount.Email),
 			},
-			Project: createdCluster.Project,
+			Project: pulumi.String(locals.GkeAddonBundle.Spec.ClusterProjectId),
 			Role:    pulumi.String("roles/secretmanager.secretAccessor"),
 		}, pulumi.Parent(createdGoogleServiceAccount))
 	if err != nil {
@@ -82,13 +79,12 @@ func ExternalSecrets(ctx *pulumi.Context, locals *localz.Locals,
 			Role:             pulumi.String("roles/iam.workloadIdentityUser"),
 			Members: pulumi.StringArray{
 				pulumi.Sprintf("serviceAccount:%s.svc.id.goog[%s/%s]",
-					createdCluster.Project,
+					locals.GkeAddonBundle.Spec.ClusterProjectId,
 					vars.ExternalSecrets.Namespace,
 					vars.ExternalSecrets.KsaName),
 			},
 		},
-		pulumi.Parent(createdGoogleServiceAccount),
-		pulumi.DependsOn([]pulumi.Resource{createdCluster}))
+		pulumi.Parent(createdGoogleServiceAccount))
 	if err != nil {
 		return errors.Wrap(err, "failed to create workload-identity binding for external-secrets")
 	}
@@ -181,7 +177,7 @@ func ExternalSecrets(ctx *pulumi.Context, locals *localz.Locals,
 			Spec: externalsecretsv1.ClusterSecretStoreSpecArgs{
 				Provider: externalsecretsv1.ClusterSecretStoreSpecProviderArgs{
 					Gcpsm: externalsecretsv1.ClusterSecretStoreSpecProviderGcpsmArgs{
-						ProjectID: createdCluster.Project,
+						ProjectID: pulumi.String(locals.GkeAddonBundle.Spec.ClusterProjectId),
 					},
 				},
 				RefreshInterval: pulumi.Int(vars.ExternalSecrets.SecretsPollingIntervalSeconds),

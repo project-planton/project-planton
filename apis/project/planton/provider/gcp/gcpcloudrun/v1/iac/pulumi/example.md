@@ -3,7 +3,7 @@ Here are a few examples of the `GcpCloudRun` API resource based on the informati
 ### Example 1: Basic Google Cloud Run Deployment
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: gcp.project-planton.org/v1
 kind: GcpCloudRun
 metadata:
   name: simple-api
@@ -32,7 +32,7 @@ spec:
 ### Example 2: Google Cloud Run with Environment Variables
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: gcp.project-planton.org/v1
 kind: GcpCloudRun
 metadata:
   name: todo-list-api
@@ -65,7 +65,7 @@ spec:
 ### Example 3: Google Cloud Run with Secrets
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: gcp.project-planton.org/v1
 kind: GcpCloudRun
 metadata:
   name: todo-list-api
@@ -99,7 +99,7 @@ spec:
 ### Example 4: Minimal Google Cloud Run Deployment
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: gcp.project-planton.org/v1
 kind: GcpCloudRun
 metadata:
   name: minimal-app

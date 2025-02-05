@@ -1,16 +1,16 @@
-package addons
+package module
 
 import (
 	"fmt"
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gkecluster/v1/iac/pulumi/module/vars"
+	"github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gkeaddonbundle/v1/iac/pulumi/module/vars"
 	pulumikubernetes "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes"
 	pulumiyaml "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/yaml"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// GatewayApis installs kubernetes gateway-api crds
-func GatewayApis(ctx *pulumi.Context,
+// gatewayApis installs kubernetes gateway-api crds
+func gatewayApis(ctx *pulumi.Context,
 	kubernetesProvider *pulumikubernetes.Provider) error {
 	//create gateway-api crd resources
 	for _, crdFile := range vars.GatewayApis.CrdFiles {

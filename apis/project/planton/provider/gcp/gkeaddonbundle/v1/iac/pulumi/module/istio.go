@@ -1,13 +1,12 @@
-package addons
+package module
 
 import (
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gkecluster/v1/iac/pulumi/module/localz"
-	"github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gkecluster/v1/iac/pulumi/module/outputs"
-	"github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gkecluster/v1/iac/pulumi/module/vars"
+	"github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gkeaddonbundle/v1/iac/pulumi/module/outputs"
+	"github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gkeaddonbundle/v1/iac/pulumi/module/vars"
 	istiov1alpha3 "github.com/project-planton/project-planton/pkg/kubernetestypes/istio/kubernetes/networking/v1alpha3"
+	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/compute"
-	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/container"
 	pulumikubernetes "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes"
 	corev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
 	"github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/helm/v3"
@@ -15,7 +14,7 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// Istio installs the Istio service mesh in the Kubernetes cluster using Helm. It creates the necessary namespaces,
+// istio installs the Istio service mesh in the Kubernetes cluster using Helm. It creates the necessary namespaces,
 // installs the Helm charts for Istio base, Istiod, and gateway components, and sets up load balancers for ingress.
 //
 // Parameters:
@@ -39,8 +38,8 @@ import (
 // 8. Creates a compute IP address for the external load balancer and exports its address.
 // 9. Creates a Kubernetes service for the external load balancer using the created IP address and service port configurations.
 // 10. Handles errors and returns any errors encountered during the namespace creation, Helm release deployment, or service setup.
-func Istio(ctx *pulumi.Context, locals *localz.Locals,
-	createdCluster *container.Cluster,
+func istio(ctx *pulumi.Context, locals *Locals,
+	gcpProvider *gcp.Provider,
 	kubernetesProvider *pulumikubernetes.Provider) error {
 	//create istio-system namespace resource
 	createdIstioSystemNamespace, err := corev1.NewNamespace(ctx,
@@ -246,13 +245,13 @@ func Istio(ctx *pulumi.Context, locals *localz.Locals,
 	createdIngressInternalLoadBalancerIp, err := compute.NewAddress(ctx,
 		vars.Istio.IngressInternalLoadBalancerServiceName,
 		&compute.AddressArgs{
-			Name:        pulumi.Sprintf("gke-%s-ingress-internal", locals.GkeCluster.Metadata.Name),
-			Project:     createdCluster.Project,
-			Region:      pulumi.String(locals.GkeCluster.Spec.Region),
+			Name:        pulumi.Sprintf("gke-%s-ingress-internal", locals.GkeAddonBundle.Metadata.Name),
+			Project:     pulumi.String(locals.GkeAddonBundle.Spec.ClusterProjectId),
+			Region:      pulumi.String(locals.GkeAddonBundle.Spec.Istio.ClusterRegion),
 			AddressType: pulumi.String("INTERNAL"),
 			Labels:      pulumi.ToStringMap(locals.GcpLabels),
-			Subnetwork:  createdCluster.Subnetwork,
-		}, pulumi.Parent(createdCluster))
+			Subnetwork:  pulumi.String(locals.GkeAddonBundle.Spec.Istio.SubNetworkSelfLink),
+		}, pulumi.Provider(gcpProvider))
 	if err != nil {
 		return errors.Wrap(err, "failed to create ip address for ingress-internal load-balancer")
 	}
@@ -285,12 +284,12 @@ func Istio(ctx *pulumi.Context, locals *localz.Locals,
 	createdIngressExternalLoadBalancerIp, err := compute.NewAddress(ctx,
 		vars.Istio.IngressExternalLoadBalancerServiceName,
 		&compute.AddressArgs{
-			Name:        pulumi.Sprintf("gke-%s-ingress-external", locals.GkeCluster.Metadata.Name),
-			Project:     createdCluster.Project,
-			Region:      pulumi.String(locals.GkeCluster.Spec.Region),
+			Name:        pulumi.Sprintf("gke-%s-ingress-external", locals.GkeAddonBundle.Metadata.Name),
+			Project:     pulumi.String(locals.GkeAddonBundle.Spec.ClusterProjectId),
+			Region:      pulumi.String(locals.GkeAddonBundle.Spec.Istio.ClusterRegion),
 			AddressType: pulumi.String("EXTERNAL"),
 			Labels:      pulumi.ToStringMap(locals.GcpLabels),
-		}, pulumi.Parent(createdCluster))
+		}, pulumi.Provider(gcpProvider))
 	if err != nil {
 		return errors.Wrap(err, "failed to create ip address for ingress-internal load-balancer")
 	}
