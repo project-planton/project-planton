@@ -1,13 +1,22 @@
-# Create the Route53 hosted zone
+##############################
+# Route53 Hosted Zone
+##############################
 resource "aws_route53_zone" "r53_zone" {
-  # var.metadata.name is expected to be something like "planton.net"
+  # var.metadata.name is expected to be something like "example.com"
   name = var.metadata.name
 
-  # Convert list(string) tags to map(string) if needed.
-  # Assuming tags are just keys, you might assign a simple value like "true" to each:
-  tags = var.metadata.tags
+  # Use metadata.labels for tags, fallback to {} if null
+  tags = merge(
+      var.metadata.labels != null ? var.metadata.labels : {},
+    {
+      "Name" = var.metadata.name
+    }
+  )
 }
 
+##############################
+# Route53 Records
+##############################
 resource "aws_route53_record" "records" {
   for_each = local.normalized_records
 
