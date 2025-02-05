@@ -24,6 +24,6 @@ variable "spec" {
     # List of secret names to create in AWS Secrets Manager.
     # Each name corresponds to a unique secret that will be securely stored and managed.
     # Secret names must be unique within your AWS account and region.
-    secret_names = list(string)
+    secret_names = optional(list(string))
   })
 }
