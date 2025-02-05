@@ -1,7 +1,10 @@
 apiVersion: gcp.project-planton.org/v1
-kind: GcpArtifactRegistry
+kind: GcpSecretsManager
 metadata:
-  name: test-gcp-artifact-registry
+  name: test-gcp-secret-manager
 spec:
-  projectId: pc-artifact-registry
-  region: asia-south1
+  projectId: gke-mumbai-20240816-cte
+  secretNames:
+    - secret-1
+    - secret-2
+    - secret-3
