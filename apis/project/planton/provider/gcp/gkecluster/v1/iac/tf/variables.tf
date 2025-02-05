@@ -34,27 +34,27 @@ variable "spec" {
     # GkeClusterSharedVpcConfig** specifies the shared VPC network settings for GKE clusters.
     # This message includes the project ID for the shared VPC network where the GKE cluster is created.
     # For more details, visit: https://cloud.google.com/kubernetes-engine/docs/how-to/cluster-shared-vpc
-    shared_vpc_config = object({
+    shared_vpc_config = optional(object({
 
       # A flag indicating whether the cluster should be created in a shared VPC network.
       # **Warning:** The GKE cluster will be recreated if this is updated.
-      is_enabled = bool
+      is_enabled = optional(bool, false)
 
       # Description for vpc_project_id
       vpc_project_id = string
-    })
+    }))
 
     # A flag to toggle workload logs for the GKE cluster environment.
     # When enabled, logs from Kubernetes pods will be sent to Google Cloud Logging.
     # **Warning:** Enabling log forwarding may increase cloud bills depending on the log volume.
-    is_workload_logs_enabled = bool
+    is_workload_logs_enabled = optional(bool, false)
 
     # Configuration for cluster autoscaling.
-    cluster_autoscaling_config = object({
+    cluster_autoscaling_config = optional(object({
 
       # A flag to enable or disable autoscaling of Kubernetes worker nodes.
       # When set to true, the cluster will automatically scale up or down based on resource requirements.
-      is_enabled = bool
+      is_enabled = optional(bool, false)
 
       # The minimum number of CPU cores the cluster can scale down to when autoscaling is enabled.
       # This is the total number of CPU cores across all nodes in the cluster.
@@ -71,10 +71,10 @@ variable "spec" {
       # The maximum amount of memory in gigabytes (GB) the cluster can scale up to when autoscaling is enabled.
       # This is the total memory across all nodes in the cluster.
       memory_max_gb = number
-    })
+    }))
 
     # A list of node pools for the GKE cluster.
-    node_pools = list(object({
+    node_pools = optional(list(object({
 
       # The name of the node pool.
       # This name is added as a label to the node pool and can be used to schedule workloads.
@@ -90,48 +90,48 @@ variable "spec" {
       max_node_count = number
 
       # A flag to enable spot instances on the node pool. Defaults to false.
-      is_spot_enabled = bool
-    }))
+      is_spot_enabled = optional(bool, false)
+    })), [])
 
     # Specifications for Kubernetes addons in the GKE cluster.
-    kubernetes_addons = object({
+    kubernetes_addons = optional(object({
 
       # A flag to control the installation of the PostgreSQL operator.
-      is_install_postgres_operator = bool
+      is_install_postgres_operator = optional(bool, false)
 
       # A flag to control the installation of the Kafka operator.
-      is_install_kafka_operator = bool
+      is_install_kafka_operator = optional(bool, false)
 
       # A flag to control the installation of the Solr operator.
-      is_install_solr_operator = bool
+      is_install_solr_operator = optional(bool, false)
 
       # A flag to control the installation of Kubecost.
-      is_install_kubecost = bool
+      is_install_kubecost = optional(bool, false)
 
       # A flag to control the installation of Ingress NGINX.
-      is_install_ingress_nginx = bool
+      is_install_ingress_nginx = optional(bool, false)
 
       # A flag to control the installation of Istio.
-      is_install_istio = bool
+      is_install_istio = optional(bool, false)
 
       # A flag to control the installation of Cert-Manager.
-      is_install_cert_manager = bool
+      is_install_cert_manager = optional(bool, false)
 
       # A flag to control the installation of External DNS.
-      is_install_external_dns = bool
+      is_install_external_dns = optional(bool, false)
 
       # A flag to control the installation of External Secrets.
-      is_install_external_secrets = bool
+      is_install_external_secrets = optional(bool, false)
 
       # A flag to control the installation of the Elastic operator.
-      is_install_elastic_operator = bool
+      is_install_elastic_operator = optional(bool, false)
 
       # A flag to control the installation of the Keycloak operator.
-      is_install_keycloak_operator = bool
-    })
+      is_install_keycloak_operator = optional(bool, false)
+    }))
 
     # Ingress DNS domains to be configured in the GKE cluster.
-    ingress_dns_domains = list(object({
+    ingress_dns_domains = optional(list(object({
 
       # A unique identifier for the ingress DNS domain.
       id = string
@@ -143,12 +143,12 @@ variable "spec" {
       # **Important:** Certificates are not created for endpoints that do not require TLS.
       # Also, ingress DNS domains without TLS enabled cannot be used for creating endpoints for microservice instances,
       # PostgreSQL clusters, Kafka clusters, Redis clusters, or Solr clouds.
-      is_tls_enabled = bool
+      is_tls_enabled = optional(bool, false)
 
       # The GCP project ID containing the DNS zone for the endpoint domain.
       # This value is retrieved from the DNS domains in the organization's DNS data.
       # It is required for configuring the certificate issuer to perform DNS validations.
       dns_zone_gcp_project_id = string
-    }))
+    })), [])
   })
 }
