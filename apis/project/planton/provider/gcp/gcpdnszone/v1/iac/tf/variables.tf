@@ -25,10 +25,10 @@ variable "spec" {
     # An optional list of GCP service accounts that are granted permissions to manage DNS records in the Managed Zone.
     # These accounts are typically workload identities, such as those used by cert-manager,
     # and are added when new environments are created or updated.
-    iam_service_accounts = list(string)
+    iam_service_accounts = optional(list(string), [])
 
     # The DNS records to be added to the Managed Zone.
-    records = list(object({
+    records = optional(list(object({
 
       # Required.** The DNS record type (e.g., A, AAAA, CNAME).
       record_type = string
@@ -42,7 +42,7 @@ variable "spec" {
       values = list(string)
 
       # The Time To Live (TTL) for the DNS record, in seconds.
-      ttl_seconds = number
-    }))
+      ttl_seconds = optional(number, 60)
+    })), [])
   })
 }
