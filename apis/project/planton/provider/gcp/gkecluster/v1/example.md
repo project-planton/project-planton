@@ -9,7 +9,7 @@ platon apply -f <yaml-path>
 # Basic Example
 
 ```yaml
-apiVersion: gcp.project.planton/v1
+apiVersion: gcp.project-planton.org/v1
 kind: GkeCluster
 metadata:
   name: example-gke-cluster
@@ -37,7 +37,7 @@ Nginx controller and sets up an ingress DNS domain with TLS enabled.
 # Example with Cluster Autoscaling
 
 ```yaml
-apiVersion: gcp.project.planton/v1
+apiVersion: gcp.project-planton.org/v1
 kind: GkeCluster
 metadata:
   name: autoscaling-cluster
@@ -67,7 +67,7 @@ In this example, cluster autoscaling is enabled with specified CPU and memory li
 # Example with Multiple Node Pools
 
 ```yaml
-apiVersion: gcp.project.planton/v1
+apiVersion: gcp.project-planton.org/v1
 kind: GkeCluster
 metadata:
   name: multi-nodepool-cluster
@@ -100,7 +100,7 @@ Manager for certificate management.
 # Example with Kubernetes Addons
 
 ```yaml
-apiVersion: gcp.project.planton/v1
+apiVersion: gcp.project-planton.org/v1
 kind: GkeCluster
 metadata:
   name: addons-enabled-cluster
@@ -136,7 +136,7 @@ deploying various applications and services.
 # Example with Shared VPC
 
 ```yaml
-apiVersion: gcp.project.planton/v1
+apiVersion: gcp.project-planton.org/v1
 kind: GkeCluster
 metadata:
   name: shared-vpc-cluster
@@ -165,7 +165,7 @@ isolation across projects.
 # Example with Workload Logs Enabled
 
 ```yaml
-apiVersion: gcp.project.planton/v1
+apiVersion: gcp.project-planton.org/v1
 kind: GkeCluster
 metadata:
   name: logging-enabled-cluster
@@ -188,7 +188,7 @@ enabling log forwarding may increase cloud billing costs.
 # Example with Custom Cluster Autoscaling and Node Pools
 
 ```yaml
-apiVersion: gcp.project.planton/v1
+apiVersion: gcp.project-planton.org/v1
 kind: GkeCluster
 metadata:
   name: custom-autoscaling-cluster
@@ -226,7 +226,7 @@ This example showcases a cluster with custom autoscaling settings and specialize
 # Example with Ingress DNS Domains without TLS
 
 ```yaml
-apiVersion: gcp.project.planton/v1
+apiVersion: gcp.project-planton.org/v1
 kind: GkeCluster
 metadata:
   name: no-tls-cluster
@@ -252,7 +252,7 @@ function with this domain configuration.
 # Example with Custom Machine Types and Labels
 
 ```yaml
-apiVersion: gcp.project.planton/v1
+apiVersion: gcp.project-planton.org/v1
 kind: GkeCluster
 metadata:
   name: custom-machinetype-cluster
@@ -276,7 +276,7 @@ Operator is installed for managing Elasticsearch clusters.
 # Example with Environment Information
 
 ```yaml
-apiVersion: gcp.project.planton/v1
+apiVersion: gcp.project-planton.org/v1
 kind: GkeCluster
 metadata:
   name: env-info-cluster
@@ -302,7 +302,7 @@ according to organizational structures.
 # Example with Stack Job Settings
 
 ```yaml
-apiVersion: gcp.project.planton/v1
+apiVersion: gcp.project-planton.org/v1
 kind: GkeCluster
 metadata:
   name: stackjob-cluster

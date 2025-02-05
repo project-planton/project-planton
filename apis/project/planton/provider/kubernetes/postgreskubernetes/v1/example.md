@@ -13,7 +13,7 @@ planton apply -f <yaml-path>
 ### YAML Configuration
 
 ```yaml
-apiVersion: kubernetes.project.planton/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: MicroserviceKubernetes
 metadata:
   name: todo-list-api
@@ -63,7 +63,7 @@ planton apply -f <yaml-path>
 ### YAML Configuration
 
 ```yaml
-apiVersion: kubernetes.project.planton/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: MicroserviceKubernetes
 metadata:
   name: todo-list-api
@@ -113,7 +113,7 @@ planton apply -f <yaml-path>
 ### YAML Configuration
 
 ```yaml
-apiVersion: kubernetes.project.planton/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: MicroserviceKubernetes
 metadata:
   name: multi-container-app
@@ -181,7 +181,7 @@ planton apply -f <yaml-path>
 ### YAML Configuration
 
 ```yaml
-apiVersion: kubernetes.project.planton/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: MicroserviceKubernetes
 metadata:
   name: custom-ingress-app
@@ -238,7 +238,7 @@ planton apply -f <yaml-path>
 ### YAML Configuration
 
 ```yaml
-apiVersion: kubernetes.project.planton/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: MicroserviceKubernetes
 metadata:
   name: datastore-config-app
@@ -290,7 +290,7 @@ planton apply -f <yaml-path>
 ### YAML Configuration
 
 ```yaml
-apiVersion: kubernetes.project.planton/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: MicroserviceKubernetes
 metadata:
   name: minimal-app
@@ -312,7 +312,7 @@ planton apply -f <yaml-path>
 ### YAML Configuration
 
 ```yaml
-apiVersion: kubernetes.project.planton/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: MicroserviceKubernetes
 metadata:
   name: advanced-resources-app
@@ -360,7 +360,7 @@ planton apply -f <yaml-path>
 ### YAML Configuration
 
 ```yaml
-apiVersion: kubernetes.project.planton/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: MicroserviceKubernetes
 metadata:
   name: multi-ingress-host-app
@@ -427,7 +427,7 @@ planton apply -f <yaml-path>
 ### YAML Configuration
 
 ```yaml
-apiVersion: kubernetes.project.planton/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: MicroserviceKubernetes
 metadata:
   name: scalable-app
@@ -478,7 +478,7 @@ planton apply -f <yaml-path>
 ### YAML Configuration
 
 ```yaml
-apiVersion: kubernetes.project.planton/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: MicroserviceKubernetes
 metadata:
   name: monitoring-app
@@ -532,7 +532,7 @@ planton apply -f <yaml-path>
 ### YAML Configuration
 
 ```yaml
-apiVersion: kubernetes.project.planton/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: MicroserviceKubernetes
 metadata:
   name: service-mesh-app
@@ -590,7 +590,7 @@ planton apply -f <yaml-path>
 ### YAML Configuration
 
 ```yaml
-apiVersion: kubernetes.project.planton/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: MicroserviceKubernetes
 metadata:
   name: feature-flag-app
@@ -645,7 +645,7 @@ planton apply -f <yaml-path>
 ### YAML Configuration
 
 ```yaml
-apiVersion: kubernetes.project.planton/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: MicroserviceKubernetes
 metadata:
   name: empty-spec-app

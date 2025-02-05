@@ -14,7 +14,7 @@ import (
 func TestGeneratedTFVarsParsing(t *testing.T) {
 	// Create a test proto message with some fields.
 	msg := &rediskubernetesv1.RedisKubernetes{
-		ApiVersion: "kubernetes.project.planton/v1",
+		ApiVersion: "kubernetes.project-planton.org/v1",
 		Kind:       "RedisKubernetes",
 		Metadata: &shared.ApiResourceMetadata{
 			Name: "red-one",
@@ -48,7 +48,7 @@ func TestGeneratedTFVarsParsing(t *testing.T) {
 
 	// For demonstration, let's assume got looks like:
 	got = `
-apiVersion = "kubernetes.project.planton/v1"
+apiVersion = "kubernetes.project-planton.org/v1"
 kind = "RedisKubernetes"
 metadata = {
   name = "red-one"
@@ -100,8 +100,8 @@ spec = {
 
 	// Validate top-level fields
 	apiVersion := val.GetAttr("apiVersion").AsString()
-	if apiVersion != "kubernetes.project.planton/v1" {
-		t.Errorf("expected apiVersion = 'kubernetes.project.planton/v1', got %q", apiVersion)
+	if apiVersion != "kubernetes.project-planton.org/v1" {
+		t.Errorf("expected apiVersion = 'kubernetes.project-planton.org/v1', got %q", apiVersion)
 	}
 
 	kind := val.GetAttr("kind").AsString()

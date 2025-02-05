@@ -38,7 +38,7 @@ import (
 // Example:
 // Given a proto message representing a resource configuration:
 //
-//	apiVersion: "kubernetes.project.planton/v1"
+//	apiVersion: "kubernetes.project-planton.org/v1"
 //	kind: "RedisKubernetes"
 //	metadata:
 //	  name: "red-one"
@@ -52,7 +52,7 @@ import (
 //
 // This might produce tfvars output:
 //
-//	apiVersion = "kubernetes.project.planton/v1"
+//	apiVersion = "kubernetes.project-planton.org/v1"
 //	kind = "RedisKubernetes"
 //	metadata = {
 //	  labels = {

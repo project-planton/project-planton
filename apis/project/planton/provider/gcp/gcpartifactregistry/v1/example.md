@@ -5,7 +5,7 @@
 Create a YAML file (`artifact-registry.yaml`) with the desired configuration:
 
 ```yaml
-apiVersion: gcp.project.planton/v1
+apiVersion: gcp.project-planton.org/v1
 kind: GcpArtifactRegistry
 metadata:
   id: my-artifact-registry

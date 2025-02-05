@@ -1,4 +1,4 @@
-apiVersion: aws.project.planton/v1
+apiVersion: aws.project-planton.org/v1
 kind: AwsDynamodb
 metadata:
   name: project-planton-test-dynamodb-table

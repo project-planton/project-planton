@@ -2,7 +2,7 @@
 # Example 1: Basic Helm Release Deployment
 
 ```yaml
-apiVersion: kubernetes.project.planton/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: HelmRelease
 metadata:
   name: my-helm-release
@@ -20,7 +20,7 @@ spec:
 # Example 2: Helm Release with Custom Values
 
 ```yaml
-apiVersion: kubernetes.project.planton/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: HelmRelease
 metadata:
   name: my-nginx-helm-release
@@ -41,7 +41,7 @@ spec:
 # Example 3: Helm Release with Ingress Configuration
 
 ```yaml
-apiVersion: kubernetes.project.planton/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: HelmRelease
 metadata:
   name: my-app-helm-release
@@ -62,7 +62,7 @@ spec:
 # Example 4: Helm Release with Multiple Values
 
 ```yaml
-apiVersion: kubernetes.project.planton/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: HelmRelease
 metadata:
   name: multi-value-helm-release
@@ -85,7 +85,7 @@ spec:
 # Example 5: Minimal Helm Release (Empty Spec)
 
 ```yaml
-apiVersion: kubernetes.project.planton/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: HelmRelease
 metadata:
   name: minimal-helm-release

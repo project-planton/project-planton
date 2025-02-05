@@ -2,7 +2,7 @@
 # Example 1: Basic Grafana Deployment
 
 ```yaml
-apiVersion: kubernetes.project.planton/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: GrafanaKubernetes
 metadata:
   name: grafana-instance
@@ -23,7 +23,7 @@ spec:
 # Example 2: Grafana with Ingress Enabled
 
 ```yaml
-apiVersion: kubernetes.project.planton/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: GrafanaKubernetes
 metadata:
   name: grafana-prod
@@ -47,7 +47,7 @@ spec:
 # Example 3: Grafana Deployment with Environment Variables
 
 ```yaml
-apiVersion: kubernetes.project.planton/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: GrafanaKubernetes
 metadata:
   name: grafana-with-env
@@ -74,7 +74,7 @@ spec:
 The below example assumes that secrets are managed by Planton Cloud’s [GCP Secrets Manager](https://buf.build/project-planton/apis/docs/main:cloud.planton.apis.code2cloud.v1.gcp.gcpsecretsmanager) deployment module.
 
 ```yaml
-apiVersion: kubernetes.project.planton/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: GrafanaKubernetes
 metadata:
   name: grafana-secure
@@ -100,7 +100,7 @@ spec:
 # Example 5: Minimal Grafana Deployment (Empty Spec)
 
 ```yaml
-apiVersion: kubernetes.project.planton/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: GrafanaKubernetes
 metadata:
   name: minimal-grafana

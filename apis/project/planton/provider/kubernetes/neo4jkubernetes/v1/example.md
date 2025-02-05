@@ -15,7 +15,7 @@ planton apply -f <yaml-path>
 This is a basic configuration for deploying a Neo4j instance on Kubernetes. It specifies the necessary resources like CPU and memory, along with the Kubernetes cluster credential.
 
 ```yaml
-apiVersion: kubernetes.project.planton/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: Neo4jKubernetes
 metadata:
   name: basic-neo4j
@@ -38,7 +38,7 @@ spec:
 In this example, ingress is enabled to allow external access to the Neo4j instance. This setup is particularly useful if the Neo4j database needs to be accessed from outside the Kubernetes cluster.
 
 ```yaml
-apiVersion: kubernetes.project.planton/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: Neo4jKubernetes
 metadata:
   name: ingress-neo4j
@@ -63,7 +63,7 @@ spec:
 This example demonstrates how to configure custom resource limits for the Neo4j instance, tailoring the deployment to specific performance needs.
 
 ```yaml
-apiVersion: kubernetes.project.planton/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: Neo4jKubernetes
 metadata:
   name: custom-resources-neo4j
@@ -86,7 +86,7 @@ spec:
 This minimal example specifies only the mandatory fields for deploying a Neo4j instance on Kubernetes. Although functional, additional configurations like ingress and persistence can be added as needed.
 
 ```yaml
-apiVersion: kubernetes.project.planton/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: Neo4jKubernetes
 metadata:
   name: minimal-neo4j

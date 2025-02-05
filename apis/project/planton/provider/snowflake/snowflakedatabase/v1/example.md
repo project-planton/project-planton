@@ -3,7 +3,7 @@
 This example demonstrates a basic setup of a Snowflake database with minimal configuration.
 
 ```yaml
-apiVersion: snowflake.project.planton/v1
+apiVersion: snowflake.project-planton.org/v1
 kind: SnowflakeDatabase
 metadata:
   name: analytics-db
@@ -33,7 +33,7 @@ spec:
 This example includes advanced configurations such as environment isolation and detailed security settings.
 
 ```yaml
-apiVersion: snowflake.project.planton/v1
+apiVersion: snowflake.project-planton.org/v1
 kind: SnowflakeDatabase
 metadata:
   name: finance-db

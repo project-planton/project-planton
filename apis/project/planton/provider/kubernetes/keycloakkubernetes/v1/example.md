@@ -1,7 +1,7 @@
 # Example 1: Basic Keycloak Kubernetes Setup
 
 ```yaml
-apiVersion: kubernetes.project.planton/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: KeycloakKubernetes
 metadata:
   name: keycloak-instance-basic
@@ -21,7 +21,7 @@ spec:
 # Example 2: Keycloak Kubernetes with Ingress Enabled
 
 ```yaml
-apiVersion: kubernetes.project.planton/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: KeycloakKubernetes
 metadata:
   name: keycloak-instance-ingress
@@ -46,7 +46,7 @@ spec:
 # Example 3: Keycloak Kubernetes with Minimal Configuration
 
 ```yaml
-apiVersion: kubernetes.project.planton/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: KeycloakKubernetes
 metadata:
   name: keycloak-minimal
@@ -64,7 +64,7 @@ spec:
 # Example 4: Keycloak Kubernetes with High Resource Allocation
 
 ```yaml
-apiVersion: kubernetes.project.planton/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: KeycloakKubernetes
 metadata:
   name: keycloak-high-resources
@@ -89,7 +89,7 @@ spec:
 # Example 5: Keycloak Kubernetes with Port Forwarding for Local Access
 
 ```yaml
-apiVersion: kubernetes.project.planton/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: KeycloakKubernetes
 metadata:
   name: keycloak-port-forward

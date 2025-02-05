@@ -1,0 +1,13 @@
+apiVersion: aws.project-planton.org/v1
+kind: AwsRdsInstance
+metadata:
+  name: test-aws-rds-instance
+spec:
+  allocatedStorage: 10
+  dbParameterGroup: postgres11
+  engine: postgres
+  engineVersion: "11.22"
+  instanceClass: db.t3.medium
+  manageMasterUserPassword: true
+  skipFinalSnapshot: true
+  username: master

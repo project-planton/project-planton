@@ -1,6 +1,6 @@
 # Minimal YAML for deploying an Aurora MySQL 8.0 cluster.
 # Comments explain each field. Adjust values as needed for your environment.
-apiVersion: aws.project.planton/v1
+apiVersion: aws.project-planton.org/v1
 kind: AwsRdsCluster
 metadata:
   # The name of this RDS cluster resource
@@ -21,7 +21,7 @@ spec:
   clusterFamily: aurora-mysql8.0
 
   # DB instance class for Aurora MySQL (ensure it's valid in your region)
-  instanceType: db.t3
+  instanceType: db.t3.medium
 
   # Number of instances to create in the cluster
   clusterSize: 1

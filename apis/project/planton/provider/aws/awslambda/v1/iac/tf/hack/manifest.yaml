@@ -1,4 +1,4 @@
-apiVersion: aws.project.planton/v1
+apiVersion: aws.project-planton.org/v1
 kind: AwsLambda
 metadata:
   name: test-aws-lambda
