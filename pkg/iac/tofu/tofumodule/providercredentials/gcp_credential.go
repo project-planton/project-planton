@@ -28,7 +28,7 @@ func AddGcpCredentialEnvVars(stackInputContentMap map[string]interface{},
 		return nil, errors.Wrap(err, "failed to decode service account key from base64")
 	}
 
-	credentialEnvVars["GOOGLE_CREDENTIAL"] = string(serviceAccountKey)
+	credentialEnvVars["GOOGLE_CREDENTIALS"] = string(serviceAccountKey)
 
 	return credentialEnvVars, nil
 }
