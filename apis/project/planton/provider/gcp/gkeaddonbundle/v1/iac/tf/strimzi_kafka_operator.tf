@@ -10,6 +10,8 @@
 # 1. strimzi-operator Namespace
 ##############################################
 resource "kubernetes_namespace_v1" "strimzi_operator_namespace" {
+  count = var.spec.install_kafka_operator ? 1 : 0
+
   metadata {
     name   = "strimzi-operator"
     labels = local.final_kubernetes_labels
@@ -20,16 +22,17 @@ resource "kubernetes_namespace_v1" "strimzi_operator_namespace" {
 # 2. Helm Release for the Strimzi Kafka Operator
 ##############################################
 resource "helm_release" "strimzi_kafka_operator" {
+  count            = var.spec.install_kafka_operator ? 1 : 0
   name             = "strimzi-kafka-operator"
   repository       = "https://strimzi.io/charts/"
   chart            = "strimzi-kafka-operator"
   version          = "0.42.0"
   create_namespace = false
-  namespace        = kubernetes_namespace_v1.strimzi_operator_namespace.metadata[0].name
+  namespace        = kubernetes_namespace_v1.strimzi_operator_namespace[count.index].metadata[0].name
   timeout          = 180
   cleanup_on_fail  = true
   atomic           = false
-  wait             = true
+  wait = true
 
   # Provide any custom values if needed
   values = [
@@ -37,13 +40,6 @@ resource "helm_release" "strimzi_kafka_operator" {
       watchAnyNamespace = true
     })
   ]
-
-  lifecycle {
-    ignore_changes = [
-      status,
-      description
-    ]
-  }
 
   depends_on = [
     kubernetes_namespace_v1.strimzi_operator_namespace

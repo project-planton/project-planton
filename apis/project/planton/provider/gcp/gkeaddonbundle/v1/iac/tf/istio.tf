@@ -15,6 +15,8 @@
 # 1. istio-system Namespace
 ###############################################
 resource "kubernetes_namespace_v1" "istio_system_namespace" {
+  count = var.spec.istio.enabled ? 1 : 0
+
   metadata {
     name   = "istio-system"
     labels = local.final_kubernetes_labels
@@ -25,35 +27,30 @@ resource "kubernetes_namespace_v1" "istio_system_namespace" {
 # 2. Istio Base Helm Chart
 ###############################################
 resource "helm_release" "istio_base" {
+  count            = var.spec.istio.enabled ? 1 : 0
   name             = "base"
   repository       = "https://istio-release.storage.googleapis.com/charts"
   chart            = "base"
   version          = "1.22.3"
   create_namespace = false
-  namespace        = kubernetes_namespace_v1.istio_system_namespace.metadata[0].name
+  namespace        = kubernetes_namespace_v1.istio_system_namespace[count.index].metadata[0].name
   timeout          = 180
   cleanup_on_fail  = true
   atomic           = false
   wait             = true
-
-  lifecycle {
-    ignore_changes = [
-      status,
-      description
-    ]
-  }
 }
 
 ###############################################
 # 3. Istiod Helm Chart
 ###############################################
 resource "helm_release" "istiod" {
+  count            = var.spec.istio.enabled ? 1 : 0
   name             = "istiod"
   repository       = "https://istio-release.storage.googleapis.com/charts"
   chart            = "istiod"
   version          = "1.22.3"
   create_namespace = false
-  namespace        = kubernetes_namespace_v1.istio_system_namespace.metadata[0].name
+  namespace        = kubernetes_namespace_v1.istio_system_namespace[count.index].metadata[0].name
   timeout          = 180
   cleanup_on_fail  = true
   atomic           = false
@@ -71,13 +68,6 @@ resource "helm_release" "istiod" {
     })
   ]
 
-  lifecycle {
-    ignore_changes = [
-      status,
-      description
-    ]
-  }
-
   depends_on = [
     helm_release.istio_base
   ]
@@ -87,6 +77,8 @@ resource "helm_release" "istiod" {
 # 4. istio-ingress Namespace
 ###############################################
 resource "kubernetes_namespace_v1" "istio_gateway_namespace" {
+  count = var.spec.istio.enabled ? 1 : 0
+
   metadata {
     name   = "istio-ingress"
     labels = local.final_kubernetes_labels
@@ -97,12 +89,13 @@ resource "kubernetes_namespace_v1" "istio_gateway_namespace" {
 # 5. Istio Gateway Helm Chart
 ###############################################
 resource "helm_release" "istio_gateway" {
+  count            = var.spec.istio.enabled ? 1 : 0
   name             = "gateway"
   repository       = "https://istio-release.storage.googleapis.com/charts"
   chart            = "gateway"
   version          = "1.22.3"
   create_namespace = false
-  namespace        = kubernetes_namespace_v1.istio_gateway_namespace.metadata[0].name
+  namespace        = kubernetes_namespace_v1.istio_gateway_namespace[count.index].metadata[0].name
   timeout          = 180
   cleanup_on_fail  = true
   atomic           = false
@@ -143,13 +136,6 @@ resource "helm_release" "istio_gateway" {
     })
   ]
 
-  lifecycle {
-    ignore_changes = [
-      status,
-      description
-    ]
-  }
-
   depends_on = [
     helm_release.istiod
   ]
@@ -159,16 +145,14 @@ resource "helm_release" "istio_gateway" {
 # 6. EnvoyFilter to support gRPC-Web traffic
 ###############################################
 resource "kubernetes_manifest" "istio_grpc_web_envoy_filter" {
+  count = var.spec.istio.enabled ? 1 : 0
+
   manifest = yamldecode(<<-EOT
 apiVersion: networking.istio.io/v1alpha3
 kind: EnvoyFilter
 metadata:
   name: grpc-web
   namespace: istio-ingress
-  labels:
-${join("\n", [
-    for k, v in local.final_kubernetes_labels : "    \"${k}\": \"${v}\""
-])}
 spec:
   workloadSelector:
     labels:
@@ -202,23 +186,26 @@ EOT
 # 7. Internal Load Balancer IP address
 ###############################################
 resource "google_compute_address" "istio_ingress_internal_lb_ip" {
+  count        = var.spec.istio.enabled ? 1 : 0
   name         = "gke-${local.resource_id}-ingress-internal"
   project      = var.spec.cluster_project_id
-  region       = var.spec.region
+  region       = var.spec.istio.cluster_region
   address_type = "INTERNAL"
   labels = local.final_gcp_labels
 
   # Must reference the same subnetwork if you want an internal LB
-  subnetwork = google_compute_subnetwork.gke_subnetwork.self_link
+  subnetwork = var.spec.istio.sub_network_self_link
 }
 
 ###############################################
 # 8. Internal LB Service in "istio-ingress" NS
 ###############################################
 resource "kubernetes_service_v1" "istio_ingress_internal_lb" {
+  count = var.spec.istio.enabled ? 1 : 0
+
   metadata {
     name = "ingress-internal"
-    namespace = kubernetes_namespace_v1.istio_gateway_namespace.metadata[0].name
+    namespace = kubernetes_namespace_v1.istio_gateway_namespace[count.index].metadata[0].name
 
     # Merge final_kubernetes_labels with the app/istio labels
     labels = merge(
@@ -236,7 +223,7 @@ resource "kubernetes_service_v1" "istio_ingress_internal_lb" {
 
   spec {
     type             = "LoadBalancer"
-    load_balancer_ip = google_compute_address.istio_ingress_internal_lb_ip.address
+    load_balancer_ip = google_compute_address.istio_ingress_internal_lb_ip[count.index].address
 
     selector = {
       "app"   = "gateway"
@@ -268,9 +255,10 @@ resource "kubernetes_service_v1" "istio_ingress_internal_lb" {
 # 9. External Load Balancer IP address
 ###############################################
 resource "google_compute_address" "istio_ingress_external_lb_ip" {
+  count        = var.spec.istio.enabled ? 1 : 0
   name         = "gke-${local.resource_id}-ingress-external"
   project      = var.spec.cluster_project_id
-  region       = var.spec.region
+  region       = var.spec.istio.cluster_region
   address_type = "EXTERNAL"
   labels       = local.final_gcp_labels
 }
@@ -279,9 +267,11 @@ resource "google_compute_address" "istio_ingress_external_lb_ip" {
 # 10. External LB Service in "istio-ingress" NS
 ###############################################
 resource "kubernetes_service_v1" "istio_ingress_external_lb" {
+  count = var.spec.istio.enabled ? 1 : 0
+
   metadata {
     name = "ingress-external"
-    namespace = kubernetes_namespace_v1.istio_gateway_namespace.metadata[0].name
+    namespace = kubernetes_namespace_v1.istio_gateway_namespace[count.index].metadata[0].name
 
     # Merge final_kubernetes_labels with the app/istio labels
     labels = merge(
@@ -299,7 +289,7 @@ resource "kubernetes_service_v1" "istio_ingress_external_lb" {
 
   spec {
     type             = "LoadBalancer"
-    load_balancer_ip = google_compute_address.istio_ingress_external_lb_ip.address
+    load_balancer_ip = google_compute_address.istio_ingress_external_lb_ip[count.index].address
 
     selector = {
       "app"   = "gateway"
@@ -332,10 +322,10 @@ resource "kubernetes_service_v1" "istio_ingress_external_lb" {
 ###############################################
 output "ingress_internal_ip" {
   description = "Internal IP for the istio ingress internal load balancer"
-  value       = google_compute_address.istio_ingress_internal_lb_ip.address
+  value       = var.spec.istio.enabled ? google_compute_address.istio_ingress_internal_lb_ip[0].address : null
 }
 
 output "ingress_external_ip" {
   description = "External IP for the istio ingress external load balancer"
-  value       = google_compute_address.istio_ingress_external_lb_ip.address
+  value       = var.spec.istio.enabled ? google_compute_address.istio_ingress_external_lb_ip[0].address : null
 }
