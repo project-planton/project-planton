@@ -41,7 +41,7 @@ variable "spec" {
       is_enabled = optional(bool, false)
 
       # Description for vpc_project_id
-      vpc_project_id = string
+      vpc_project_id = optional(string, "")
     }), {})
 
     # A flag to toggle workload logs for the GKE cluster environment.
@@ -58,19 +58,19 @@ variable "spec" {
 
       # The minimum number of CPU cores the cluster can scale down to when autoscaling is enabled.
       # This is the total number of CPU cores across all nodes in the cluster.
-      cpu_min_cores = number
+      cpu_min_cores = optional(number, 0)
 
       # The maximum number of CPU cores the cluster can scale up to when autoscaling is enabled.
       # This is the total number of CPU cores across all nodes in the cluster.
-      cpu_max_cores = number
+      cpu_max_cores = optional(number, 0)
 
       # The minimum amount of memory in gigabytes (GB) the cluster can scale down to when autoscaling is enabled.
       # This is the total memory across all nodes in the cluster.
-      memory_min_gb = number
+      memory_min_gb = optional(number, 0)
 
       # The maximum amount of memory in gigabytes (GB) the cluster can scale up to when autoscaling is enabled.
       # This is the total memory across all nodes in the cluster.
-      memory_max_gb = number
+      memory_max_gb = optional(number, 0)
     }), {})
 
     # A list of node pools for the GKE cluster.
