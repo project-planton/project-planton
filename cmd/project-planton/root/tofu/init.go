@@ -4,6 +4,7 @@ import (
 	terraformbackendcredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/terraformbackendcredential/v1"
 	"github.com/project-planton/project-planton/internal/apiresourcekind"
 	"github.com/project-planton/project-planton/internal/cli/flag"
+	"github.com/project-planton/project-planton/internal/cli/workspace"
 	"github.com/project-planton/project-planton/internal/manifest"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput/stackinputcredentials"
@@ -104,7 +105,12 @@ func initHandler(cmd *cobra.Command, args []string) {
 		log.Fatalf("failed to build stack input yaml %v", err)
 	}
 
-	credentialEnvVars, err := tofumodule.GetCredentialEnvVars(stackInputYaml)
+	workspaceDir, err := workspace.GetWorkspaceDir()
+	if err != nil {
+		log.Fatalf("failed to get workspace directory")
+	}
+
+	credentialEnvVars, err := tofumodule.GetCredentialEnvVars(stackInputYaml, workspaceDir)
 	if err != nil {
 		log.Fatalf("failed to get credential env vars %v", err)
 	}
