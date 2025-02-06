@@ -8,18 +8,24 @@ import "project/planton/shared/iac/pulumi/enums.proto";
 
 //pulumi stack info
 message PulumiStackInfo {
+  //pulumi stack operations
+  repeated PulumiStackOperation operations = 1;
+  //pulumi backend
+  project.planton.credential.pulumibackendcredential.v1.PulumiBackendCredentialSpec backend = 2;
+  //pulumi project
+  PulumiProject project = 3;
+  //pulumi stack name
+  string stack_name = 4;
+  //iac-module git-repo
+  project.planton.shared.iac.iacgitrepo.IacGitRepo git_repo = 5;
+}
+
+// pulumi stack operation
+message PulumiStackOperation {
   //pulumi operation
   PulumiOperationType operation = 1;
   //run preview of pulumi operation
   bool preview = 2;
-  //pulumi backend
-  project.planton.credential.pulumibackendcredential.v1.PulumiBackendCredentialSpec backend = 3;
-  //pulumi project
-  PulumiProject project = 4;
-  //pulumi stack name
-  string stack_name = 5;
-  //iac-module git-repo
-  project.planton.shared.iac.iacgitrepo.IacGitRepo git_repo = 6;
 }
 
 //pulumi project

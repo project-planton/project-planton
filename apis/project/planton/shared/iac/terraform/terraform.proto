@@ -9,12 +9,18 @@ import "project/planton/shared/iac/terraform/enums.proto";
 
 //Terraform stack info
 message TerraformStackInfo {
+  //terraform stack operations
+  repeated TerraformStackOperation operations = 1;
+  //terraform backend
+  project.planton.credential.terraformbackendcredential.v1.TerraformBackendCredentialSpec backend = 2;
+  //iac-module git-repo
+  project.planton.shared.iac.iacgitrepo.IacGitRepo git_repo = 3;
+}
+
+// terraform stack operation
+message TerraformStackOperation {
   //terraform operation
   TerraformOperationType operation = 1;
   //run preview of terraform operation
   bool preview = 2;
-  //terraform backend
-  project.planton.credential.terraformbackendcredential.v1.TerraformBackendCredentialSpec backend = 3;
-  //iac-module git-repo
-  project.planton.shared.iac.iacgitrepo.IacGitRepo git_repo = 4;
 }
