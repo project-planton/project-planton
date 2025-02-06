@@ -23,7 +23,7 @@ func GetCredentialEnvVars(backendCredentialSpec *terraformbackendcredentialv1.Te
 			return nil, errors.New("S3 credential spec is nil")
 		}
 		credentialEnvVars["AWS_REGION"] = backendCredentialSpec.S3.Region
-		credentialEnvVars["AWS_ACCESS_KEY_ID"] = backendCredentialSpec.S3.AwsSecretAccessKey
+		credentialEnvVars["AWS_ACCESS_KEY_ID"] = backendCredentialSpec.S3.AwsAccessKeyId
 		credentialEnvVars["AWS_SECRET_ACCESS_KEY"] = backendCredentialSpec.S3.AwsSecretAccessKey
 	case terraformbackendcredentialv1.TerraformBackendType_azurerm:
 		if backendCredentialSpec.Azurerm == nil {
