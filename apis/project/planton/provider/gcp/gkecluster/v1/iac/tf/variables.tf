@@ -42,7 +42,7 @@ variable "spec" {
 
       # Description for vpc_project_id
       vpc_project_id = string
-    }))
+    }), {})
 
     # A flag to toggle workload logs for the GKE cluster environment.
     # When enabled, logs from Kubernetes pods will be sent to Google Cloud Logging.
@@ -71,7 +71,7 @@ variable "spec" {
       # The maximum amount of memory in gigabytes (GB) the cluster can scale up to when autoscaling is enabled.
       # This is the total memory across all nodes in the cluster.
       memory_max_gb = number
-    }))
+    }), {})
 
     # A list of node pools for the GKE cluster.
     node_pools = optional(list(object({
