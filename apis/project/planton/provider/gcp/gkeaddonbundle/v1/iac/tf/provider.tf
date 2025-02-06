@@ -20,15 +20,12 @@ terraform {
 }
 
 provider "kubernetes" {
-  config_path = "/Users/swarup/Desktop/deleteme/kcon/project-planton-cluster.config"
 }
 
 provider "kubectl" {
-  config_path = "/Users/swarup/Desktop/deleteme/kcon/project-planton-cluster.config"
 }
 
 provider "helm" {
   kubernetes {
-    config_path = "/Users/swarup/Desktop/deleteme/kcon/project-planton-cluster.config"
   }
 }
