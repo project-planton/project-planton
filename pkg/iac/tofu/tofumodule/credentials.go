@@ -6,7 +6,7 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-func GetCredentialEnvVars(stackInputYaml string) ([]string, error) {
+func GetCredentialEnvVars(stackInputYaml, fileCacheLoc string) ([]string, error) {
 	stackInputContentMap := map[string]interface{}{}
 	err := yaml.Unmarshal([]byte(stackInputYaml), &stackInputContentMap)
 	if err != nil {
@@ -35,7 +35,7 @@ func GetCredentialEnvVars(stackInputYaml string) ([]string, error) {
 		return nil, errors.Wrap(err, "failed to add Confluent provider credentials")
 	}
 
-	credentialEnvVars, err = providercredentials.AddKubernetesCredentialEnvVars(stackInputContentMap, credentialEnvVars)
+	credentialEnvVars, err = providercredentials.AddKubernetesCredentialEnvVars(stackInputContentMap, credentialEnvVars, fileCacheLoc)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to get Kubernetes provider credentials")
 	}

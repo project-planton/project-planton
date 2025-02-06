@@ -20,7 +20,7 @@ terraform {
 }
 
 provider "kubernetes" {
-  config_raw = file("/Users/swarup/Desktop/deleteme/kcon/project-planton-cluster.config")
+  config_path = "/Users/swarup/Desktop/deleteme/kcon/project-planton-cluster.config"
 }
 
 provider "kubectl" {
