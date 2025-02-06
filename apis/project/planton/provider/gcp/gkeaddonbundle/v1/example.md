@@ -9,12 +9,12 @@ spec:
   clusterProjectId: id-of-the-gcp-project
   istio:
     enabled: false
-  isInstallIngressNginx: true
-  isInstallCertManager: true
-  isInstallExternalDns: true
-  isInstallExternalSecrets: true
-  isInstallKafkaOperator: true
-  isInstallPostgresOperator: true
-  isInstallSolrOperator: true
-  isInstallElasticOperator: true
+  installIngressNginx: true
+  installCertManager: true
+  installExternalDns: true
+  installExternalSecrets: true
+  installKafkaOperator: true
+  installPostgresOperator: true
+  installSolrOperator: true
+  installElasticOperator: true
 ```

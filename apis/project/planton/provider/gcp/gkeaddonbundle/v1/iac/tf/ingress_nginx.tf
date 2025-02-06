@@ -7,6 +7,9 @@
 ###############################################################################
 
 resource "kubernetes_namespace_v1" "ingress_nginx_namespace" {
+  # Conditionally create this namespace
+  count = var.spec.install_ingress_nginx ? 1 : 0
+
   metadata {
     name   = "ingress-nginx"
     labels = local.final_kubernetes_labels
@@ -14,12 +17,14 @@ resource "kubernetes_namespace_v1" "ingress_nginx_namespace" {
 }
 
 resource "helm_release" "ingress_nginx" {
+  # Conditionally create this helm_release
+  count            = var.spec.install_ingress_nginx ? 1 : 0
   name             = "ingress-nginx"
   repository       = "https://kubernetes.github.io/ingress-nginx"
   chart            = "ingress-nginx"
   version          = "4.11.1"
   create_namespace = false
-  namespace        = kubernetes_namespace_v1.ingress_nginx_namespace.metadata[0].name
+  namespace        = kubernetes_namespace_v1.ingress_nginx_namespace[count.index].metadata[0].name
   timeout          = 180
   cleanup_on_fail  = true
   atomic           = false
@@ -39,14 +44,4 @@ resource "helm_release" "ingress_nginx" {
       }
     })
   ]
-
-  lifecycle {
-    ignore_changes = [
-      # The helm_release resource often sees ephemeral changes in
-      # "status", "description", or related fields. Ignoring these prevents
-      # unwanted diffs.
-      status,
-      description
-    ]
-  }
 }

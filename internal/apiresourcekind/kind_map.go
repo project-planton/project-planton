@@ -37,6 +37,7 @@ import (
 	gcpsecretsmanagerv1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpsecretsmanager/v1"
 	gcpstaticwebsitev1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpstaticwebsite/v1"
 	gcsbucketv1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcsbucket/v1"
+	gkeaddonbundlev1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gkeaddonbundle/v1"
 	gkeclusterv1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gkecluster/v1"
 	argocdkubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/argocdkubernetes/v1"
 	elasticsearchkubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/elasticsearchkubernetes/v1"
@@ -143,6 +144,7 @@ var providerGcpMap = map[ApiResourceKind]proto.Message{
 	"gcp-static-website":    &gcpstaticwebsitev1.GcpStaticWebsite{},
 	"gcs-bucket":            &gcsbucketv1.GcsBucket{},
 	"gke-cluster":           &gkeclusterv1.GkeCluster{},
+	"gke-addon-bundle":      &gkeaddonbundlev1.GkeAddonBundle{},
 }
 
 var providerKubernetesMap = map[ApiResourceKind]proto.Message{

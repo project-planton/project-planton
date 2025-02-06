@@ -1,12 +1,12 @@
 terraform {
   required_providers {
-    google = {
-      source  = "hashicorp/google"
-      version = "6.19.0"
-    }
     kubernetes = {
       source  = "hashicorp/kubernetes"
       version = "~> 2.35"
+    }
+    kubectl = {
+      source  = "gavinbunney/kubectl"
+      version = ">= 1.19.0"
     }
     helm = {
       source  = "hashicorp/helm"
@@ -19,14 +19,16 @@ terraform {
   }
 }
 
-provider "google" {
+provider "kubernetes" {
+  config_path = "/Users/swarup/Desktop/deleteme/kcon/project-planton-cluster.config"
 }
 
-
-provider "kubernetes" {
+provider "kubectl" {
+  config_path = "/Users/swarup/Desktop/deleteme/kcon/project-planton-cluster.config"
 }
 
 provider "helm" {
   kubernetes {
+    config_path = "/Users/swarup/Desktop/deleteme/kcon/project-planton-cluster.config"
   }
 }

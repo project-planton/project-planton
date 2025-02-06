@@ -4,11 +4,12 @@ metadata:
   name: test-20250205
 spec:
   clusterProjectId: project-planton-testing
-  isInstallPostgresOperator: true
-  isInstallKafkaOperator: true
-  isInstallSolrOperator: true
-  isInstallIstio: true
-  isInstallCertManager: true
-  isInstallExternalDns: true
-  isInstallExternalSecrets: true
-  isInstallElasticOperator: true
+  istio:
+    enabled: false
+  installPostgresOperator: true
+  installKafkaOperator: true
+  installSolrOperator: true
+  installCertManager: true
+  installExternalDns: true
+  installExternalSecrets: true
+  installElasticOperator: true

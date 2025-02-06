@@ -10,6 +10,8 @@
 # 1. postgres-operator Namespace
 ##############################################
 resource "kubernetes_namespace_v1" "zalando_postgres_operator_namespace" {
+  count = var.spec.install_postgres_operator ? 1 : 0
+
   metadata {
     name   = "postgres-operator"
     labels = local.final_kubernetes_labels
@@ -20,12 +22,13 @@ resource "kubernetes_namespace_v1" "zalando_postgres_operator_namespace" {
 # 2. Helm Release for Zalando Postgres Operator
 ##############################################
 resource "helm_release" "zalando_postgres_operator" {
+  count            = var.spec.install_postgres_operator ? 1 : 0
   name             = "postgres-operator"
   repository       = "https://opensource.zalando.com/postgres-operator/charts/postgres-operator"
   chart            = "postgres-operator"
   version          = "1.12.2"
   create_namespace = false
-  namespace        = kubernetes_namespace_v1.zalando_postgres_operator_namespace.metadata[0].name
+  namespace        = kubernetes_namespace_v1.zalando_postgres_operator_namespace[count.index].metadata[0].name
   timeout          = 180
   cleanup_on_fail  = true
   atomic           = false
@@ -45,13 +48,6 @@ resource "helm_release" "zalando_postgres_operator" {
       }
     })
   ]
-
-  lifecycle {
-    ignore_changes = [
-      status,
-      description
-    ]
-  }
 
   depends_on = [
     kubernetes_namespace_v1.zalando_postgres_operator_namespace

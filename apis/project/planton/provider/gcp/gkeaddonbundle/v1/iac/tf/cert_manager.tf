@@ -1,11 +1,8 @@
-###############################################################################
-# Cert Manager (Fully Inline ClusterIssuer)
-###############################################################################
-
 ##############################################
 # 1. Google Service Account for cert-manager
 ##############################################
 resource "google_service_account" "cert_manager_gsa" {
+  count        = var.spec.install_cert_manager ? 1 : 0
   project      = var.spec.cluster_project_id
   account_id   = "cert-manager"
   display_name = "cert-manager"
@@ -13,22 +10,26 @@ resource "google_service_account" "cert_manager_gsa" {
 }
 
 resource "google_service_account_iam_binding" "cert_manager_workload_identity_binding" {
-  service_account_id = google_service_account.cert_manager_gsa.name
+  count              = var.spec.install_cert_manager ? 1 : 0
+  service_account_id = google_service_account.cert_manager_gsa[count.index].name
   role               = "roles/iam.workloadIdentityUser"
   members = [
     "serviceAccount:${var.spec.cluster_project_id}.svc.id.goog[cert-manager/cert-manager]"
   ]
 }
 
+# Optionally export the GSA email (will be null if install_cert_manager is false)
 output "cert_manager_gsa_email" {
   description = "Email of the Cert Manager GSA"
-  value       = google_service_account.cert_manager_gsa.email
+  value       = var.spec.install_cert_manager ? google_service_account.cert_manager_gsa[0].email : null
 }
 
 ##############################################
 # 2. cert-manager Namespace
 ##############################################
 resource "kubernetes_namespace_v1" "cert_manager_namespace" {
+  count = var.spec.install_cert_manager ? 1 : 0
+
   metadata {
     name   = "cert-manager"
     labels = local.final_kubernetes_labels
@@ -39,12 +40,15 @@ resource "kubernetes_namespace_v1" "cert_manager_namespace" {
 # 3. KSA annotated with the GSA email
 ##############################################
 resource "kubernetes_service_account_v1" "cert_manager_ksa" {
+  count = var.spec.install_cert_manager ? 1 : 0
+
   metadata {
-    name      = "cert-manager"
-    namespace = kubernetes_namespace_v1.cert_manager_namespace.metadata[0].name
+    name = "cert-manager"
+    # Refer to the cert-manager namespace created above
+    namespace = kubernetes_namespace_v1.cert_manager_namespace[count.index].metadata[0].name
 
     annotations = {
-      "iam.gke.io/gcp-service-account" = google_service_account.cert_manager_gsa.email
+      "iam.gke.io/gcp-service-account" = google_service_account.cert_manager_gsa[count.index].email
     }
 
     labels = local.final_kubernetes_labels
@@ -55,15 +59,17 @@ resource "kubernetes_service_account_v1" "cert_manager_ksa" {
 # 4. Helm Release for cert-manager
 ##############################################
 resource "helm_release" "cert_manager" {
-  name             = "cert-manager"
-  repository       = "https://charts.jetstack.io"
-  chart            = "cert-manager"
-  version          = "v1.15.2"
+  count           = var.spec.install_cert_manager ? 1 : 0
+  name            = "cert-manager"
+  repository      = "https://charts.jetstack.io"
+  chart           = "cert-manager"
+  version         = "v1.15.2"
   create_namespace = false
-  namespace        = kubernetes_namespace_v1.cert_manager_namespace.metadata[0].name
-  timeout          = 180
-  cleanup_on_fail  = true
-  atomic           = false
+  # Refer to the cert-manager namespace created above
+  namespace       = kubernetes_namespace_v1.cert_manager_namespace[count.index].metadata[0].name
+  timeout         = 180
+  cleanup_on_fail = true
+  atomic          = false
   wait = true
 
   # Disabling the chart's default ServiceAccount creation
@@ -81,66 +87,8 @@ resource "helm_release" "cert_manager" {
     })
   ]
 
-  lifecycle {
-    ignore_changes = [
-      status,
-      description
-    ]
-  }
-
   depends_on = [
     kubernetes_service_account_v1.cert_manager_ksa,
     google_service_account_iam_binding.cert_manager_workload_identity_binding
-  ]
-}
-
-##############################################
-# 5. Fully Inline ClusterIssuer for each TLS-enabled domain
-##############################################
-resource "kubernetes_manifest" "cert_manager_cluster_issuer" {
-  # Create a resource for each domain that has is_tls_enabled = true
-  for_each = {
-    for domain in var.spec.ingress_dns_domains :
-    domain.name => domain
-    if domain.is_tls_enabled
-  }
-
-  # Use a direct HCL object for the YAML manifest (Terraform converts to JSON or YAML automatically)
-  manifest = {
-    apiVersion = "cert-manager.io/v1"
-    kind       = "ClusterIssuer"
-    metadata = {
-      name   = each.key
-      labels = local.final_kubernetes_labels
-    }
-    spec = {
-      acme = {
-        server         = "https://acme-v02.api.letsencrypt.org/directory"
-        preferredChain = ""
-        privateKeySecretRef = {
-          name = "letsencrypt-production"
-        }
-        solvers = [
-          {
-            dns01 = {
-              cloudDNS = {
-                project = each.value.dns_zone_gcp_project_id
-              }
-            }
-          },
-          {
-            http01 = {
-              ingress = {
-                class = "istio"
-              }
-            }
-          }
-        ]
-      }
-    }
-  }
-
-  depends_on = [
-    helm_release.cert_manager
   ]
 }
