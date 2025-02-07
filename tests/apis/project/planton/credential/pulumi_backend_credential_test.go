@@ -9,7 +9,7 @@ import (
 
 func TestInitiate_PulumiBackendSpec_Without_HttpDetails(t *testing.T) {
 	pulumiBackendCredentialSpec := &pulumibackendcredentialv1.PulumiBackendCredentialSpec{
-		PulumiBackendType: pulumibackendcredentialv1.PulumiBackendType_http,
+		Type: pulumibackendcredentialv1.PulumiBackendType_http,
 	}
 	if err := protovalidate.Validate(pulumiBackendCredentialSpec); err != nil {
 		if !strings.Contains(err.Error(), "[http.mandatory]") {
@@ -22,7 +22,7 @@ func TestInitiate_PulumiBackendSpec_Without_HttpDetails(t *testing.T) {
 
 func TestInitiate_PulumiBackendSpec_Without_AwsS3Details(t *testing.T) {
 	pulumiBackendCredentialSpec := &pulumibackendcredentialv1.PulumiBackendCredentialSpec{
-		PulumiBackendType: pulumibackendcredentialv1.PulumiBackendType_s3,
+		Type: pulumibackendcredentialv1.PulumiBackendType_s3,
 	}
 	if err := protovalidate.Validate(pulumiBackendCredentialSpec); err != nil {
 		if !strings.Contains(err.Error(), "[s3.mandatory]") {
@@ -35,7 +35,7 @@ func TestInitiate_PulumiBackendSpec_Without_AwsS3Details(t *testing.T) {
 
 func TestInitiate_PulumiBackendSpec_Without_GoogleCloudStorageDetails(t *testing.T) {
 	pulumiBackendCredentialSpec := &pulumibackendcredentialv1.PulumiBackendCredentialSpec{
-		PulumiBackendType: pulumibackendcredentialv1.PulumiBackendType_gcs,
+		Type: pulumibackendcredentialv1.PulumiBackendType_gcs,
 	}
 	if err := protovalidate.Validate(pulumiBackendCredentialSpec); err != nil {
 		if !strings.Contains(err.Error(), "[gcs.mandatory]") {
@@ -48,7 +48,7 @@ func TestInitiate_PulumiBackendSpec_Without_GoogleCloudStorageDetails(t *testing
 
 func TestInitiate_PulumiBackendSpec_Without_AzureBlobStorageDetails(t *testing.T) {
 	pulumiBackendCredentialSpec := &pulumibackendcredentialv1.PulumiBackendCredentialSpec{
-		PulumiBackendType: pulumibackendcredentialv1.PulumiBackendType_azurerm,
+		Type: pulumibackendcredentialv1.PulumiBackendType_azurerm,
 	}
 	if err := protovalidate.Validate(pulumiBackendCredentialSpec); err != nil {
 		if !strings.Contains(err.Error(), "[azurerm.mandatory]") {
