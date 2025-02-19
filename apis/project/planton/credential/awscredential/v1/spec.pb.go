@@ -37,17 +37,21 @@ type AwsCredentialSpec struct {
 	// The AWS Account ID, which uniquely identifies the AWS account.
 	// This is a mandatory field and must be a numeric string.
 	// The value cannot be empty and must only contain numbers (0-9).
+	// For more information do refer this link https://docs.aws.amazon.com/accounts/latest/reference/manage-acct-identifiers.html
 	AccountId string `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id,omitempty"`
 	// The AWS Access Key ID, which is used to authenticate API requests to AWS services.
 	// This is a required field, and it must always start with 'AKIA' followed by 16 alphanumeric characters.
 	// This field must contain exactly 20 characters, and validation rules ensure the correctness of the format.
+	// For more information do refer this link https://docs.aws.amazon.com/IAM/latest/UserGuide/access-keys-admin-managed.html
 	AccessKeyId string `protobuf:"bytes,2,opt,name=access_key_id,json=accessKeyId,proto3" json:"access_key_id,omitempty"`
 	// The AWS Secret Access Key, which is used in combination with the access key ID to authenticate API requests to AWS services.
 	// This is a required field, and the value must be exactly 40 characters long.
 	// The secret access key can include numbers, lowercase and uppercase letters, slashes (/), and plus signs (+).
+	// For more information do refer this link https://docs.aws.amazon.com/IAM/latest/UserGuide/access-keys-admin-managed.html
 	SecretAccessKey string `protobuf:"bytes,3,opt,name=secret_access_key,json=secretAccessKey,proto3" json:"secret_access_key,omitempty"`
 	// The AWS region to be used when configuring this AWS credential.
 	// This optional field allows specifying the region in which resources will be created or managed.
+	// For more information do refer this link https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.RegionsAndAvailabilityZones.html
 	Region string `protobuf:"bytes,4,opt,name=region,proto3" json:"region,omitempty"`
 }
 
