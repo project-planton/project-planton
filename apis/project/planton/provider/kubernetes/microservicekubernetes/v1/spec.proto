@@ -15,10 +15,10 @@ import "project/planton/shared/kubernetes/options.proto";
 message MicroserviceKubernetesSpec {
   //The version of the microservice being deployed.
   //This is usually either "main" (the default git branch name) or "review-<id>" where <id> is the merge request number.
-  //It must be between 1 and 20 characters and can only contain lowercase letters, numbers, and hyphens.
+  //It must be between 1 and 30 characters and can only contain lowercase letters, numbers, and hyphens.
   string version = 1 [
     (buf.validate.field).string.min_len = 1,
-    (buf.validate.field).string.max_len = 20,
+    (buf.validate.field).string.max_len = 30,
     (buf.validate.field).cel = {
       id: "spec.version.chars",
       message: "Only lowercase letters, numbers, and hyphens are allowed",
