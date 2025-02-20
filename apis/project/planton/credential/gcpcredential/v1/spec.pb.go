@@ -35,6 +35,7 @@ type GcpCredentialSpec struct {
 
 	// The Google Service Account Base64 Encoded Key, which is used to authenticate API requests to GCP services.
 	// This is a required field, and the value must be a valid base64 encoded string.
+	// // For more information do refer this link https://cloud.google.com/iam/docs/keys-create-delete
 	ServiceAccountKeyBase64 string `protobuf:"bytes,1,opt,name=service_account_key_base64,json=serviceAccountKeyBase64,proto3" json:"service_account_key_base64,omitempty"`
 }
 
