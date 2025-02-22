@@ -44,8 +44,8 @@ func initializeLocals(ctx *pulumi.Context, stackInput *postgreskubernetesv1.Post
 		locals.Labels[kuberneteslabelkeys.Organization] = postgresKubernetes.Metadata.Org
 	}
 
-	if postgresKubernetes.Metadata.Env != nil {
-		locals.Labels[kuberneteslabelkeys.Environment] = postgresKubernetes.Metadata.Env.Id
+	if postgresKubernetes.Metadata.Env != "" {
+		locals.Labels[kuberneteslabelkeys.Environment] = postgresKubernetes.Metadata.Env
 
 	}
 

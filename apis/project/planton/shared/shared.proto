@@ -30,7 +30,7 @@ message ApiResourceMetadata {
   // id of the organization to which the api-resource belongs to
   string org = 3;
   // environment to which the resource belongs to
-  ApiResourceEnvironment env = 4;
+  string env = 4;
   // labels for the resource
   map<string, string> labels = 5;
   // tags for the resource
@@ -99,12 +99,4 @@ message ApiResourceLifecycleAndAuditStatus {
 
   //audit info
   ApiResourceAudit audit = 98;
-}
-
-//api-resource environment
-message ApiResourceEnvironment {
-  //name of the environment
-  string name = 1;
-  //id of the environment
-  string id = 2;
 }

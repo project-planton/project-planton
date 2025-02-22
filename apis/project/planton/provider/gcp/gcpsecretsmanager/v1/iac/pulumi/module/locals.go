@@ -32,8 +32,8 @@ func initializeLocals(ctx *pulumi.Context, stackInput *gcpsecretsmanagerv1.GcpSe
 		locals.GcpLabels[gcplabelkeys.Organization] = locals.GcpSecretsManager.Metadata.Org
 	}
 
-	if locals.GcpSecretsManager.Metadata.Env != nil {
-		locals.GcpLabels[gcplabelkeys.Environment] = locals.GcpSecretsManager.Metadata.Env.Id
+	if locals.GcpSecretsManager.Metadata.Env != "" {
+		locals.GcpLabels[gcplabelkeys.Environment] = locals.GcpSecretsManager.Metadata.Env
 	}
 
 	return locals

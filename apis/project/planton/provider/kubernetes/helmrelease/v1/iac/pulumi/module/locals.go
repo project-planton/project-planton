@@ -15,7 +15,7 @@ func initializeLocals(ctx *pulumi.Context, stackInput *helmreleasev1.HelmRelease
 	locals := &Locals{}
 
 	locals.Labels = map[string]string{
-		kuberneteslabelkeys.Environment:  stackInput.Target.Metadata.Env.Id,
+		kuberneteslabelkeys.Environment:  stackInput.Target.Metadata.Env,
 		kuberneteslabelkeys.Organization: stackInput.Target.Metadata.Org,
 		kuberneteslabelkeys.Resource:     strconv.FormatBool(true),
 		kuberneteslabelkeys.ResourceId:   stackInput.Target.Metadata.Id,
