@@ -44,8 +44,8 @@ func initializeLocals(ctx *pulumi.Context, stackInput *rediskubernetesv1.RedisKu
 		locals.Labels[kuberneteslabelkeys.Organization] = redisKubernetes.Metadata.Org
 	}
 
-	if redisKubernetes.Metadata.Env != nil {
-		locals.Labels[kuberneteslabelkeys.Environment] = redisKubernetes.Metadata.Env.Id
+	if redisKubernetes.Metadata.Env != "" {
+		locals.Labels[kuberneteslabelkeys.Environment] = redisKubernetes.Metadata.Env
 	}
 
 	//decide on the namespace

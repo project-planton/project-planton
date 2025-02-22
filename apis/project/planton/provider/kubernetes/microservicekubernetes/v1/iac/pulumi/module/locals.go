@@ -50,8 +50,8 @@ func initializeLocals(ctx *pulumi.Context, stackInput *microservicekubernetesv1.
 		locals.Labels[kuberneteslabelkeys.Organization] = microserviceKubernetes.Metadata.Org
 	}
 
-	if microserviceKubernetes.Metadata.Env != nil {
-		locals.Labels[kuberneteslabelkeys.Environment] = microserviceKubernetes.Metadata.Env.Id
+	if microserviceKubernetes.Metadata.Env != "" {
+		locals.Labels[kuberneteslabelkeys.Environment] = microserviceKubernetes.Metadata.Env
 	}
 
 	if stackInput.DockerCredential != nil &&
