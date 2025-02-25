@@ -33,10 +33,12 @@ message ApiResourceMetadata {
   string env = 4;
   // labels for the resource
   map<string, string> labels = 5;
+  // annotations for the resource
+  map<string, string> annotations = 6;
   // tags for the resource
-  repeated string tags = 6;
+  repeated string tags = 7;
   //metadata for resource version
-  ApiResourceMetadataVersion version = 7;
+  ApiResourceMetadataVersion version = 8;
 }
 
 // version information for api-resource to be used in api-resource metadata
