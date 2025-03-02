@@ -12,9 +12,9 @@ import "project/planton/shared/iac/terraform/terraform.proto";
 message GkeClusterStackInput {
   //iac-provisioner
   project.planton.shared.IacProvisioner provisioner = 1;
-  //pulumi input required when the iac_provisioner is pulumi
+  //pulumi input required when the provisioner is pulumi
   project.planton.shared.iac.pulumi.PulumiStackInfo pulumi = 2;
-  //terraform input required when the iac_provisioner is terraform
+  //terraform input required when the provisioner is terraform
   project.planton.shared.iac.terraform.TerraformStackInfo terraform = 3;
   //target api-resource
   GkeCluster target = 4;

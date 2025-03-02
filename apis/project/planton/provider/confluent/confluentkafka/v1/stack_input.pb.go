@@ -32,9 +32,9 @@ type ConfluentKafkaStackInput struct {
 
 	// iac-provisioner
 	Provisioner shared.IacProvisioner `protobuf:"varint,1,opt,name=provisioner,proto3,enum=project.planton.shared.IacProvisioner" json:"provisioner,omitempty"`
-	// pulumi input required when the iac_provisioner is pulumi
+	// pulumi input required when the provisioner is pulumi
 	Pulumi *pulumi.PulumiStackInfo `protobuf:"bytes,2,opt,name=pulumi,proto3" json:"pulumi,omitempty"`
-	// terraform input required when the iac_provisioner is terraform
+	// terraform input required when the provisioner is terraform
 	Terraform *terraform.TerraformStackInfo `protobuf:"bytes,3,opt,name=terraform,proto3" json:"terraform,omitempty"`
 	// target api-resource
 	Target *ConfluentKafka `protobuf:"bytes,4,opt,name=target,proto3" json:"target,omitempty"`
