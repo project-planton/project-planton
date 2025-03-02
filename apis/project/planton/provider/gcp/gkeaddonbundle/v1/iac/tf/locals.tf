@@ -19,14 +19,12 @@ locals {
     "organization" = var.metadata.org
   } : {}
 
-  # Environment label only if var.metadata.env is non-empty and var.metadata.env.id is non-empty
+  # Environment label only if var.metadata.env is non-empty and var.metadata.env is non-empty
   env_label = (
-  var.metadata.env != null &&
-  try(var.metadata.env.id, "") != ""
+  var.metadata.env != null && var.metadata.env != ""
   ) ? {
-    "environment" = var.metadata.env.id
+    "organization" = var.metadata.env
   } : {}
-
   # Merge base, org, environment labels and add resource_id
   final_gcp_labels = merge(
     local.base_gcp_labels,

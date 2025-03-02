@@ -31,7 +31,7 @@ type GcpCloudCdnSpec struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// **Required.** The ID of the GCP project where the Cloud CDN resources will be created.
+	// The ID of the GCP project where the Cloud CDN resources will be created.
 	GcpProjectId string `protobuf:"bytes,1,opt,name=gcp_project_id,json=gcpProjectId,proto3" json:"gcp_project_id,omitempty"`
 }
 

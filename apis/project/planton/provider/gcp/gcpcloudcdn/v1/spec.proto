@@ -10,7 +10,7 @@ import "buf/validate/validate.proto";
 // content delivery by caching content at edge locations globally, improving load times and
 // reducing latency for end-users.
 message GcpCloudCdnSpec {
-  // **Required.** The ID of the GCP project where the Cloud CDN resources will be created.
+  // The ID of the GCP project where the Cloud CDN resources will be created.
   string gcp_project_id = 1 [
     (buf.validate.field).required = true
   ];

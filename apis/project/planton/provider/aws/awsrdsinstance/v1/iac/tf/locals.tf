@@ -27,11 +27,11 @@ locals {
   )
 
   #############################################################################
-  # Environment label only if var.metadata.env.id is non-empty
+  # Environment label only if var.metadata.env is non-empty
   #############################################################################
   env_label = (
-    (var.metadata.env != null && try(var.metadata.env.id, "") != "")
-    ? { "environment" = var.metadata.env.id }
+    (var.metadata.env != null && try(var.metadata.env, "") != "")
+    ? { "environment" = var.metadata.env }
     : {}
   )
 

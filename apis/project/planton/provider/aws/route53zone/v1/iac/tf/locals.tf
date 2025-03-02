@@ -20,12 +20,12 @@ locals {
     "organization" = var.metadata.org
   } : {}
 
-  # Environment tag only if var.metadata.env.id is non-empty
+  # Environment tag only if var.metadata.env is non-empty
   env_tag = (
   var.metadata.env != null &&
-  try(var.metadata.env.id, "") != ""
+  try(var.metadata.env, "") != ""
   ) ? {
-    "environment" = var.metadata.env.id
+    "environment" = var.metadata.env
   } : {}
 
   # Merge base, org, and environment tags

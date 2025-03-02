@@ -8,7 +8,6 @@ kind: GcpCloudRun
 metadata:
   name: simple-api
 spec:
-  gcp_credential_id: my-gcp-credentials
   gcp_project_id: my-gcp-project
   container:
     app:
@@ -37,7 +36,6 @@ kind: GcpCloudRun
 metadata:
   name: todo-list-api
 spec:
-  gcp_credential_id: my-gcp-credentials
   gcp_project_id: my-gcp-project
   container:
     app:
@@ -70,7 +68,6 @@ kind: GcpCloudRun
 metadata:
   name: todo-list-api
 spec:
-  gcp_credential_id: my-gcp-credentials
   gcp_project_id: my-gcp-project
   container:
     app:
@@ -104,6 +101,5 @@ kind: GcpCloudRun
 metadata:
   name: minimal-app
 spec:
-  gcp_credential_id: my-gcp-credentials
   gcp_project_id: my-gcp-project
 ```

@@ -28,7 +28,7 @@ import (
 	aksclusterv1 "github.com/project-planton/project-planton/apis/project/planton/provider/azure/akscluster/v1"
 	azurekeyvaultv1 "github.com/project-planton/project-planton/apis/project/planton/provider/azure/azurekeyvault/v1"
 	confluentkafkav1 "github.com/project-planton/project-planton/apis/project/planton/provider/confluent/confluentkafka/v1"
-	gcpartifactregistryv1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpartifactregistry/v1"
+	gcpartifactregistryrepov1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpartifactregistryrepo/v1"
 	gcpcloudcdnv1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpcloudcdn/v1"
 	gcpcloudfunctionv1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpcloudfunction/v1"
 	gcpcloudrunv1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpcloudrun/v1"
@@ -134,17 +134,17 @@ var providerAzureMap = map[ApiResourceKind]proto.Message{
 }
 
 var providerGcpMap = map[ApiResourceKind]proto.Message{
-	"gcp-artifact-registry": &gcpartifactregistryv1.GcpArtifactRegistry{},
-	"gcp-cloud-cdn":         &gcpcloudcdnv1.GcpCloudCdn{},
-	"gcp-cloud-function":    &gcpcloudfunctionv1.GcpCloudFunction{},
-	"gcp-cloud-run":         &gcpcloudrunv1.GcpCloudRun{},
-	"gcp-cloud-sql":         &gcpcloudsqlv1.GcpCloudSql{},
-	"gcp-dns-zone":          &gcpdnszonev1.GcpDnsZone{},
-	"gcp-secrets-manager":   &gcpsecretsmanagerv1.GcpSecretsManager{},
-	"gcp-static-website":    &gcpstaticwebsitev1.GcpStaticWebsite{},
-	"gcs-bucket":            &gcsbucketv1.GcsBucket{},
-	"gke-cluster":           &gkeclusterv1.GkeCluster{},
-	"gke-addon-bundle":      &gkeaddonbundlev1.GkeAddonBundle{},
+	"gcp-artifact-registry-repo": &gcpartifactregistryrepov1.GcpArtifactRegistryRepo{},
+	"gcp-cloud-cdn":              &gcpcloudcdnv1.GcpCloudCdn{},
+	"gcp-cloud-function":         &gcpcloudfunctionv1.GcpCloudFunction{},
+	"gcp-cloud-run":              &gcpcloudrunv1.GcpCloudRun{},
+	"gcp-cloud-sql":              &gcpcloudsqlv1.GcpCloudSql{},
+	"gcp-dns-zone":               &gcpdnszonev1.GcpDnsZone{},
+	"gcp-secrets-manager":        &gcpsecretsmanagerv1.GcpSecretsManager{},
+	"gcp-static-website":         &gcpstaticwebsitev1.GcpStaticWebsite{},
+	"gcs-bucket":                 &gcsbucketv1.GcsBucket{},
+	"gke-cluster":                &gkeclusterv1.GkeCluster{},
+	"gke-addon-bundle":           &gkeaddonbundlev1.GkeAddonBundle{},
 }
 
 var providerKubernetesMap = map[ApiResourceKind]proto.Message{

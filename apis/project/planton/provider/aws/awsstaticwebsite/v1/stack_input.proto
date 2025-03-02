@@ -5,7 +5,7 @@ package project.planton.provider.aws.awsstaticwebsite.v1;
 import "project/planton/credential/awscredential/v1/spec.proto";
 import "project/planton/provider/aws/awsstaticwebsite/v1/api.proto";
 import "project/planton/shared/iac/pulumi/pulumi.proto";
-import "project/planton/shared/shared.proto";
+import "project/planton/shared/iac.proto";
 import "project/planton/shared/iac/terraform/terraform.proto";
 
 //aws-static-website stack-input

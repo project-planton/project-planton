@@ -3,6 +3,7 @@ syntax = "proto3";
 package project.planton.provider.gcp.gkecluster.v1;
 
 import "project/planton/provider/gcp/gkecluster/v1/spec.proto";
+import "project/planton/shared/gcp/gcp.proto";
 
 // status of the gke-cluster in gcp
 message GkeClusterStackOutputs {
@@ -34,13 +35,6 @@ message GkeClusterStackOutputs {
   // Self-link URL for the Cloud Router associated with the cluster.
   string router_self_link = 8;
 
-  // google service account email created for external-secrets addon workload identity.
-  // this key for this service account is used for deploying workloads like microservices,
-  // postgres clusters, kafka clusters onto the gke-cluster gke-cluster/s.
-  string workload_deployer_gsa_email = 9;
-
-  // base64 encoded workload deployer google service account key.
-  // this service account key is used as a credential for deploying workloads like microservices,
-  // postgres clusters, kafka clusters onto the gke-cluster gke-cluster/s.
-  string workload_deployer_gsa_key_base64 = 10;
+  // google service account created for deploying workloads to the gke-cluster.
+  planton.shared.gcp.GoogleServiceAccount workload_deployer_service_account = 9;
 }

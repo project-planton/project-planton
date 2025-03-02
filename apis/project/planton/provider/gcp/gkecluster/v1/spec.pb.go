@@ -33,11 +33,11 @@ type GkeClusterSpec struct {
 
 	// The GCP project ID in which the GKE cluster will be created.
 	ClusterProjectId string `protobuf:"bytes,1,opt,name=cluster_project_id,json=clusterProjectId,proto3" json:"cluster_project_id,omitempty"`
-	// **Required.** The GCP region where the GKE cluster will be created.
+	// The GCP region where the GKE cluster will be created.
 	// **Warning:** The GKE cluster will be recreated if this value is updated.
 	// Refer to: https://cloud.google.com/compute/docs/regions-zones
 	Region string `protobuf:"bytes,2,opt,name=region,proto3" json:"region,omitempty"`
-	// **Required.** The GCP zone where the GKE cluster will be created.
+	// The GCP zone where the GKE cluster will be created.
 	// Refer to: https://cloud.google.com/compute/docs/regions-zones
 	Zone            string                     `protobuf:"bytes,3,opt,name=zone,proto3" json:"zone,omitempty"`
 	SharedVpcConfig *GkeClusterSharedVpcConfig `protobuf:"bytes,4,opt,name=shared_vpc_config,json=sharedVpcConfig,proto3" json:"shared_vpc_config,omitempty"`
@@ -292,7 +292,7 @@ type GkeClusterNodePool struct {
 	// The name of the node pool.
 	// This name is added as a label to the node pool and can be used to schedule workloads.
 	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	// **Required.** The machine type for the node pool (e.g., 'n2-custom-8-16234').
+	// The machine type for the node pool (e.g., 'n2-custom-8-16234').
 	MachineType string `protobuf:"bytes,2,opt,name=machine_type,json=machineType,proto3" json:"machine_type,omitempty"`
 	// The minimum number of nodes in the node pool. Defaults to 1.
 	MinNodeCount int32 `protobuf:"varint,3,opt,name=min_node_count,json=minNodeCount,proto3" json:"min_node_count,omitempty"`

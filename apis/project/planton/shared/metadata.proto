@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package project.planton.shared;
+
+//metadata for all resource objects on planton-cloud
+message ApiResourceMetadata {
+  // name of the resource
+  string name = 1;
+  // id of the resource
+  string id = 2;
+  // id of the organization to which the api-resource belongs to
+  string org = 3;
+  // environment to which the resource belongs to
+  string env = 4;
+  // labels for the resource
+  map<string, string> labels = 5;
+  // annotations for the resource
+  map<string, string> annotations = 6;
+  // tags for the resource
+  repeated string tags = 7;
+  //metadata for resource version
+  ApiResourceMetadataVersion version = 8;
+}
+
+// version information for api-resource to be used in api-resource metadata
+message ApiResourceMetadataVersion {
+  string id = 1;
+  string message = 2;
+}

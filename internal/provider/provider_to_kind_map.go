@@ -35,7 +35,7 @@ var ToKindMap = map[shared.KindProvider][]KindName{
 	},
 
 	shared.KindProvider_kind_provider_gcp: {
-		"GcpArtifactRegistry",
+		"GcpArtifactRegistryRepo",
 		"GcpCloudCdn",
 		"GcpCloudFunction",
 		"GcpCloudRun",

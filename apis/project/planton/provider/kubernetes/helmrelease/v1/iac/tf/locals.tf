@@ -22,9 +22,9 @@ locals {
 
   # Environment label if env is provided and env.id is non-empty
   env_label = (
-  var.metadata.env != null && try(var.metadata.env.id, "") != ""
+  var.metadata.env != null && try(var.metadata.env, "") != ""
   ) ? {
-    "environment" = var.metadata.env.id
+    "environment" = var.metadata.env
   } : {}
 
   # Merge all into final_labels

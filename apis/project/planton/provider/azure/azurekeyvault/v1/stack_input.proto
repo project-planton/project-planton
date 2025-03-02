@@ -5,7 +5,7 @@ package project.planton.provider.azure.azurekeyvault.v1;
 import "project/planton/credential/azurecredential/v1/spec.proto";
 import "project/planton/provider/azure/azurekeyvault/v1/api.proto";
 import "project/planton/shared/iac/pulumi/pulumi.proto";
-import "project/planton/shared/shared.proto";
+import "project/planton/shared/iac.proto";
 import "project/planton/shared/iac/terraform/terraform.proto";
 
 //azure-key-vault stack-input

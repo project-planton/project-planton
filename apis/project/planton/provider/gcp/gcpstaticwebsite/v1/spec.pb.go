@@ -30,7 +30,7 @@ type GcpStaticWebsiteSpec struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// **Required.** The ID of the GCP project where the storage bucket for the static website will be created.
+	// The ID of the GCP project where the storage bucket for the static website will be created.
 	GcpProjectId string `protobuf:"bytes,1,opt,name=gcp_project_id,json=gcpProjectId,proto3" json:"gcp_project_id,omitempty"`
 }
 

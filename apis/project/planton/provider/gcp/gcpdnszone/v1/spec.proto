@@ -27,12 +27,12 @@ message GcpDnsZoneSpec {
 // **GcpDnsRecord** represents a DNS record to be added to the Managed Zone.
 // It includes the record type, name, values, and TTL (Time To Live) settings.
 message GcpDnsRecord {
-  // **Required.** The DNS record type (e.g., A, AAAA, CNAME).
+  // The DNS record type (e.g., A, AAAA, CNAME).
   project.planton.shared.networking.enums.dnsrecordtype.DnsRecordType record_type = 1 [
     (buf.validate.field).required = true
   ];
 
-  // **Required.** The name of the DNS record (e.g., "example.com." or "dev.example.com.").
+  // The name of the DNS record (e.g., "example.com." or "dev.example.com.").
   // This value should always end with a dot to signify a fully qualified domain name.
   string name = 2 [
     (buf.validate.field).required = true,

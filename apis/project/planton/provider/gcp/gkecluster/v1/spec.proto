@@ -15,14 +15,14 @@ message GkeClusterSpec {
     (buf.validate.field).required = true
   ];
 
-  // **Required.** The GCP region where the GKE cluster will be created.
+  // The GCP region where the GKE cluster will be created.
   // **Warning:** The GKE cluster will be recreated if this value is updated.
   // Refer to: https://cloud.google.com/compute/docs/regions-zones
   string region = 2 [
     (project.planton.shared.options.default) = "us-central1"
   ];
 
-  // **Required.** The GCP zone where the GKE cluster will be created.
+  // The GCP zone where the GKE cluster will be created.
   // Refer to: https://cloud.google.com/compute/docs/regions-zones
   string zone = 3 [
     (project.planton.shared.options.default) = "us-central1-a"
@@ -110,7 +110,7 @@ message GkeClusterNodePool {
     }
   ];
 
-  // **Required.** The machine type for the node pool (e.g., 'n2-custom-8-16234').
+  // The machine type for the node pool (e.g., 'n2-custom-8-16234').
   string machine_type = 2 [
     (buf.validate.field).required = true
   ];
