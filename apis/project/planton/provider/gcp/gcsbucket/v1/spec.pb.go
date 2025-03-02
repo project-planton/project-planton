@@ -32,9 +32,9 @@ type GcsBucketSpec struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// **Required.** The ID of the GCP project where the storage bucket will be created.
+	// The ID of the GCP project where the storage bucket will be created.
 	GcpProjectId string `protobuf:"bytes,1,opt,name=gcp_project_id,json=gcpProjectId,proto3" json:"gcp_project_id,omitempty"`
-	// **Required.** The GCP region where the storage bucket will be created.
+	// The GCP region where the storage bucket will be created.
 	GcpRegion string `protobuf:"bytes,2,opt,name=gcp_region,json=gcpRegion,proto3" json:"gcp_region,omitempty"`
 	// A flag indicating whether the GCS bucket should have external (public) access.
 	// Defaults to `false`, meaning the bucket is private by default.

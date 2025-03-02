@@ -10,7 +10,7 @@ import "buf/validate/validate.proto";
 // execute in response to events, enabling scalable and cost-effective solutions without the need
 // to manage underlying infrastructure.
 message GcpCloudFunctionSpec {
-  // **Required.** The ID of the GCP project where the Cloud Function resources will be created.
+  // The ID of the GCP project where the Cloud Function resources will be created.
   string gcp_project_id = 1 [
     (buf.validate.field).required = true
   ];

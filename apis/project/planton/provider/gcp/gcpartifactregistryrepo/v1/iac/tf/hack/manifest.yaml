@@ -1,0 +1,8 @@
+apiVersion: gcp.project-planton.org/v1
+kind: GcpArtifactRegistryRepo
+metadata:
+  name: pp-test-gcpart
+spec:
+  format: DOCKER
+  projectId: pc-artifact-registry
+  region: asia-south1

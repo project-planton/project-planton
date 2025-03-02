@@ -1,5 +1,5 @@
 apiVersion: gcp.project-planton.org/v1
-kind: GcpArtifactRegistry
+kind: GcpArtifactRegistryRepo
 metadata:
   name: test-gcp-artifact-registry
 spec:

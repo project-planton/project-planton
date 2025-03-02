@@ -30,7 +30,7 @@ type GcpSecretsManagerSpec struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// **Required.** The ID of the GCP project where the secrets will be created.
+	// The ID of the GCP project where the secrets will be created.
 	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	// A list of secret names to create in Google Cloud Secrets Manager.
 	// Each name represents a unique secret that can store sensitive data securely.

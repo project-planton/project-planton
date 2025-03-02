@@ -5,16 +5,16 @@ package project.planton.provider.kubernetes.mongodbkubernetes.v1;
 import "project/planton/credential/kubernetesclustercredential/v1/spec.proto";
 import "project/planton/provider/kubernetes/mongodbkubernetes/v1/api.proto";
 import "project/planton/shared/iac/pulumi/pulumi.proto";
-import "project/planton/shared/shared.proto";
+import "project/planton/shared/iac.proto";
 import "project/planton/shared/iac/terraform/terraform.proto";
 
 //mongodb-kubernetes stack-input
 message MongodbKubernetesStackInput {
   //iac-provisioner
   project.planton.shared.IacProvisioner provisioner = 1;
-  //pulumi input required when the iac_provisioner is pulumi
+  //pulumi input required when the provisioner is pulumi
   project.planton.shared.iac.pulumi.PulumiStackInfo pulumi = 2;
-  //terraform input required when the iac_provisioner is terraform
+  //terraform input required when the provisioner is terraform
   project.planton.shared.iac.terraform.TerraformStackInfo terraform = 3;
   //target api-resource
   MongodbKubernetes target = 4;

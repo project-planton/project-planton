@@ -8,7 +8,6 @@ kind: GcpDnsZone
 metadata:
   name: example-com
 spec:
-  gcp_credential_id: my-gcp-credentials
   project_id: my-gcp-project
   records:
     - record_type: A
@@ -26,7 +25,6 @@ kind: GcpDnsZone
 metadata:
   name: example-com
 spec:
-  gcp_credential_id: my-gcp-credentials
   project_id: my-gcp-project
   records:
     - record_type: A
@@ -54,7 +52,6 @@ kind: GcpDnsZone
 metadata:
   name: prod-example-com
 spec:
-  gcp_credential_id: my-gcp-credentials
   project_id: prod-gcp-project
   iam_service_accounts:
     - service-account1@example-project.iam.gserviceaccount.com
@@ -80,6 +77,5 @@ kind: GcpDnsZone
 metadata:
   name: dev-example-com
 spec:
-  gcp_credential_id: my-gcp-credentials
   project_id: dev-gcp-project
 ```

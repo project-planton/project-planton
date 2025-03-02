@@ -101,9 +101,9 @@ type GcpDnsRecord struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// **Required.** The DNS record type (e.g., A, AAAA, CNAME).
+	// The DNS record type (e.g., A, AAAA, CNAME).
 	RecordType dnsrecordtype.DnsRecordType `protobuf:"varint,1,opt,name=record_type,json=recordType,proto3,enum=project.planton.shared.networking.enums.dnsrecordtype.DnsRecordType" json:"record_type,omitempty"`
-	// **Required.** The name of the DNS record (e.g., "example.com." or "dev.example.com.").
+	// The name of the DNS record (e.g., "example.com." or "dev.example.com.").
 	// This value should always end with a dot to signify a fully qualified domain name.
 	Name string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 	// The list of values for the DNS record.

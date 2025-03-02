@@ -8,7 +8,6 @@ kind: GcpCloudSql
 metadata:
   name: my-sql-instance
 spec:
-  gcp_credential_id: my-gcp-credentials
   gcp_project_id: my-gcp-project
   instance:
     database_version: POSTGRES_13
@@ -27,7 +26,6 @@ kind: GcpCloudSql
 metadata:
   name: ecommerce-db
 spec:
-  gcp_credential_id: my-gcp-credentials
   gcp_project_id: my-gcp-project
   instance:
     database_version: MYSQL_8_0
@@ -55,7 +53,6 @@ kind: GcpCloudSql
 metadata:
   name: secure-sql-instance
 spec:
-  gcp_credential_id: my-gcp-credentials
   gcp_project_id: my-gcp-project
   instance:
     database_version: POSTGRES_12
@@ -81,6 +78,5 @@ kind: GcpCloudSql
 metadata:
   name: minimal-sql-instance
 spec:
-  gcp_credential_id: my-gcp-credentials
   gcp_project_id: my-gcp-project
 ```

@@ -25,12 +25,10 @@ locals {
 
   # Environment label only if env and env.id are provided
   env_label = (
-  var.metadata.env != null &&
-  try(var.metadata.env.id, "") != ""
+  var.metadata.env != null && var.metadata.env != ""
   ) ? {
-    "environment" = var.metadata.env.id
+    "organization" = var.metadata.env
   } : {}
-
   final_labels = merge(local.base_labels, local.org_label, local.env_label)
 
   # Namespace set to resource_id

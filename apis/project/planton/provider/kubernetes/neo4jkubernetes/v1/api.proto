@@ -5,7 +5,8 @@ package project.planton.provider.kubernetes.neo4jkubernetes.v1;
 import "buf/validate/validate.proto";
 import "project/planton/provider/kubernetes/neo4jkubernetes/v1/spec.proto";
 import "project/planton/provider/kubernetes/neo4jkubernetes/v1/stack_outputs.proto";
-import "project/planton/shared/shared.proto";
+import "project/planton/shared/status.proto";
+import "project/planton/shared/metadata.proto";
 
 //neo4j-kubernetes
 message Neo4jKubernetes {

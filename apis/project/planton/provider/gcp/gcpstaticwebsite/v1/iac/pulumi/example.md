@@ -10,7 +10,6 @@ kind: GcpStaticWebsite
 metadata:
   name: basic-static-website
 spec:
-  gcp_credential_id: gcp-basic-cred
   project_id: my-gcp-project
   bucket_config:
     bucket_name: my-static-site
@@ -31,7 +30,6 @@ kind: GcpStaticWebsite
 metadata:
   name: custom-domain-static-website
 spec:
-  gcp_credential_id: gcp-ssl-cred
   project_id: my-custom-domain-project
   bucket_config:
     bucket_name: custom-domain-static-site
@@ -55,7 +53,6 @@ kind: GcpStaticWebsite
 metadata:
   name: private-static-website
 spec:
-  gcp_credential_id: gcp-private-cred
   project_id: private-gcp-project
   bucket_config:
     bucket_name: my-private-static-site
@@ -78,7 +75,6 @@ kind: GcpStaticWebsite
 metadata:
   name: versioned-static-website
 spec:
-  gcp_credential_id: gcp-versioning-cred
   project_id: versioned-site-project
   bucket_config:
     bucket_name: versioned-static-site
@@ -100,7 +96,6 @@ kind: GcpStaticWebsite
 metadata:
   name: cors-enabled-static-website
 spec:
-  gcp_credential_id: gcp-cors-cred
   project_id: cors-site-project
   bucket_config:
     bucket_name: cors-static-site
@@ -128,7 +123,6 @@ kind: GcpStaticWebsite
 metadata:
   name: lifecycle-static-website
 spec:
-  gcp_credential_id: gcp-lifecycle-cred
   project_id: lifecycle-project
   bucket_config:
     bucket_name: lifecycle-static-site
@@ -152,7 +146,6 @@ kind: GcpStaticWebsite
 metadata:
   name: multi-region-static-website
 spec:
-  gcp_credential_id: gcp-multi-region-cred
   project_id: ha-project
   bucket_config:
     bucket_name: multi-region-static-site
@@ -174,7 +167,6 @@ kind: GcpStaticWebsite
 metadata:
   name: logging-enabled-static-website
 spec:
-  gcp_credential_id: gcp-logging-cred
   project_id: logging-project
   bucket_config:
     bucket_name: logging-static-site
@@ -198,7 +190,6 @@ kind: GcpStaticWebsite
 metadata:
   name: custom-error-pages-static-website
 spec:
-  gcp_credential_id: gcp-custom-error-cred
   project_id: custom-error-project
   bucket_config:
     bucket_name: custom-error-static-site

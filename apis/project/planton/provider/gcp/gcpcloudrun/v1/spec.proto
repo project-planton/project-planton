@@ -10,7 +10,7 @@ import "buf/validate/validate.proto";
 // that scale automatically in a fully managed environment, allowing you to focus on writing code
 // without worrying about the underlying infrastructure.
 message GcpCloudRunSpec {
-  // **Required.** The ID of the GCP project where the Cloud Run resources will be created.
+  // The ID of the GCP project where the Cloud Run resources will be created.
   string gcp_project_id = 1 [
     (buf.validate.field).required = true
   ];

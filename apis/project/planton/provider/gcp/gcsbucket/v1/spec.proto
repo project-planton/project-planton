@@ -11,12 +11,12 @@ import "buf/validate/validate.proto";
 // and serve data
 // with the desired accessibility, whether it's public or private, catering to your application's needs.
 message GcsBucketSpec {
-  // **Required.** The ID of the GCP project where the storage bucket will be created.
+  // The ID of the GCP project where the storage bucket will be created.
   string gcp_project_id = 1 [
     (buf.validate.field).required = true
   ];
 
-  // **Required.** The GCP region where the storage bucket will be created.
+  // The GCP region where the storage bucket will be created.
   string gcp_region = 2 [
     (buf.validate.field).required = true
   ];

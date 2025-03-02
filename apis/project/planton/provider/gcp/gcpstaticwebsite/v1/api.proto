@@ -6,7 +6,8 @@ import "buf/validate/validate.proto";
 import "project/planton/provider/gcp/gcpstaticwebsite/v1/spec.proto";
 import "project/planton/provider/gcp/gcpstaticwebsite/v1/stack_outputs.proto";
 import "project/planton/shared/iac/pulumi/pulumi.proto";
-import "project/planton/shared/shared.proto";
+import "project/planton/shared/status.proto";
+import "project/planton/shared/metadata.proto";
 
 //gcp-static-website
 message GcpStaticWebsite {

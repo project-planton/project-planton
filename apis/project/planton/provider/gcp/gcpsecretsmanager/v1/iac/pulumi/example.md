@@ -8,7 +8,6 @@ kind: GcpSecretsManager
 metadata:
   name: prod-secrets
 spec:
-  gcp_credential_id: my-gcp-credentials
   project_id: my-gcp-project
   secret_names:
     - database-password
@@ -23,7 +22,6 @@ kind: GcpSecretsManager
 metadata:
   name: dev-secrets
 spec:
-  gcp_credential_id: my-dev-gcp-credentials
   project_id: dev-gcp-project
   secret_names:
     - jwt-secret
@@ -39,6 +37,5 @@ kind: GcpSecretsManager
 metadata:
   name: minimal-secrets
 spec:
-  gcp_credential_id: my-gcp-credentials
   project_id: my-gcp-project
 ```
