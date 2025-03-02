@@ -18,6 +18,6 @@ message ElasticContainerServiceStackInput {
   project.planton.shared.iac.terraform.TerraformStackInfo terraform = 3;
   //target api-resource
   ElasticContainerService target = 4;
-  //aws-credential
-  project.planton.credential.awscredential.v1.AwsCredentialSpec aws_credential = 5;
+  //provider-credential
+  project.planton.credential.awscredential.v1.AwsCredentialSpec provider_credential = 5;
 }

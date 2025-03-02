@@ -18,6 +18,6 @@ message AzureKeyVaultStackInput {
   project.planton.shared.iac.terraform.TerraformStackInfo terraform = 3;
   //target api-resource
   AzureKeyVault target = 4;
-  //azure-credential
-  project.planton.credential.azurecredential.v1.AzureCredentialSpec azure_credential = 5;
+  //provider-credential
+  project.planton.credential.azurecredential.v1.AzureCredentialSpec provider_credential = 5;
 }

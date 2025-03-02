@@ -16,7 +16,7 @@ import (
 func Resources(ctx *pulumi.Context, stackInput *awsvpcv1.AwsVpcStackInput) error {
 	locals := localz.Initialize(ctx, stackInput)
 
-	awsCredential := stackInput.AwsCredential
+	awsCredential := stackInput.ProviderCredential
 
 	//create aws provider using the credentials from the input
 	awsProvider, err := aws.NewProvider(ctx,

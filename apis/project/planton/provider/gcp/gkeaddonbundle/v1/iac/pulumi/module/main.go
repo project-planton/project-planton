@@ -19,7 +19,7 @@ func Resources(ctx *pulumi.Context, stackInput *gkeaddonbundlev1.GkeAddonBundleS
 
 	//create kubernetes-provider from the credential in the stack-input
 	kubernetesProvider, err := pulumikubernetesprovider.GetWithKubernetesClusterCredential(ctx,
-		stackInput.KubernetesCluster, "kubernetes")
+		stackInput.KubernetesClusterCredential, "kubernetes")
 	if err != nil {
 		return errors.Wrap(err, "failed to setup kubernetes provider")
 	}

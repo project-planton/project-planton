@@ -10,7 +10,7 @@ import (
 func Resources(ctx *pulumi.Context, stackInput *awsdynamodbv1.AwsDynamodbStackInput) (err error) {
 	locals := initializeLocals(ctx, stackInput)
 
-	awsCredential := stackInput.AwsCredential
+	awsCredential := stackInput.ProviderCredential
 
 	var provider *aws.Provider
 

@@ -9,7 +9,7 @@ import (
 
 func Resources(ctx *pulumi.Context, stackInput *gcpcloudrunv1.GcpCloudRunStackInput) error {
 	//create gcp provider using the credentials from the input
-	_, err := pulumigoogleprovider.Get(ctx, stackInput.GcpCredential)
+	_, err := pulumigoogleprovider.Get(ctx, stackInput.ProviderCredential)
 	if err != nil {
 		return errors.Wrap(err, "failed to setup gcp provider")
 	}

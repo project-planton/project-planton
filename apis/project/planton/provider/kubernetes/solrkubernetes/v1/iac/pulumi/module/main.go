@@ -14,7 +14,7 @@ func Resources(ctx *pulumi.Context, stackInput *solrkubernetesv1.SolrKubernetesS
 
 	//create kubernetes-provider from the credential in the stack-input
 	kubernetesProvider, err := pulumikubernetesprovider.GetWithKubernetesClusterCredential(ctx,
-		stackInput.KubernetesCluster, "kubernetes")
+		stackInput.ProviderCredential, "kubernetes")
 	if err != nil {
 		return errors.Wrap(err, "failed to create kubernetes provider")
 	}

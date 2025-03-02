@@ -26,7 +26,7 @@ func Resources(ctx *pulumi.Context, stackInput *gkeclusterv1.GkeClusterStackInpu
 	locals := initializeLocals(ctx, stackInput)
 
 	//create gcp-provider using the gcp-credential from input
-	gcpProvider, err := pulumigoogleprovider.Get(ctx, stackInput.GcpCredential)
+	gcpProvider, err := pulumigoogleprovider.Get(ctx, stackInput.ProviderCredential)
 	if err != nil {
 		return errors.Wrap(err, "failed to setup google provider")
 	}

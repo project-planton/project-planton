@@ -18,6 +18,6 @@ message MongodbAtlasStackInput {
   project.planton.shared.iac.terraform.TerraformStackInfo terraform = 3;
   //target api-resource
   MongodbAtlas target = 4;
-  //mongodb-atlas-credential
-  project.planton.credential.mongodbatlascredential.v1.MongodbAtlasCredentialSpec mongodb_atlas_credential = 5;
+  //provider-credential
+  project.planton.credential.mongodbatlascredential.v1.MongodbAtlasCredentialSpec provider_credential = 5;
 }

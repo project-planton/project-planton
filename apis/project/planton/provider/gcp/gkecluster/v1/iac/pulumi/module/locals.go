@@ -27,7 +27,7 @@ func initializeLocals(ctx *pulumi.Context, stackInput *gkeclusterv1.GkeClusterSt
 
 	locals := &Locals{}
 
-	locals.GcpCredentialSpec = stackInput.GcpCredential
+	locals.GcpCredentialSpec = stackInput.ProviderCredential
 	locals.GkeCluster = stackInput.Target
 
 	locals.GcpLabels = map[string]string{

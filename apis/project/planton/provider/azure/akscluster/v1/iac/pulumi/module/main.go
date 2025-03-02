@@ -8,7 +8,7 @@ import (
 )
 
 func Resources(ctx *pulumi.Context, stackInput *aksclusterv1.AksClusterStackInput) error {
-	azureCredential := stackInput.AzureCredential
+	azureCredential := stackInput.ProviderCredential
 	//create azure provider using the credentials from the input
 	_, err := azure.NewProvider(ctx,
 		"azure",

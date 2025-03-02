@@ -14,7 +14,7 @@ import (
 
 func Resources(ctx *pulumi.Context, stackInput *gcpdnszonev1.GcpDnsZoneStackInput) error {
 	//create gcp provider using credentials from the input
-	gcpProvider, err := pulumigoogleprovider.Get(ctx, stackInput.GcpCredential)
+	gcpProvider, err := pulumigoogleprovider.Get(ctx, stackInput.ProviderCredential)
 	if err != nil {
 		return errors.Wrap(err, "failed to setup gcp provider")
 	}

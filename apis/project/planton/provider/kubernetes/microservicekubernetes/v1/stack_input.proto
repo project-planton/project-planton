@@ -19,8 +19,8 @@ message MicroserviceKubernetesStackInput {
   project.planton.shared.iac.terraform.TerraformStackInfo terraform = 3;
   //target api-resource
   MicroserviceKubernetes target = 4;
-  //kubernetes-cluster-credential
-  project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec kubernetes_cluster = 5;
+  //provider-credential
+  project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec provider_credential = 5;
   //docker-credential
   project.planton.credential.dockercredential.v1.DockerCredentialSpec docker_credential = 6;
 }

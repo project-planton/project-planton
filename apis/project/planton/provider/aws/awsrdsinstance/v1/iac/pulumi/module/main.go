@@ -11,7 +11,7 @@ import (
 func Resources(ctx *pulumi.Context, stackInput *awsrdsinstancev1.AwsRdsInstanceStackInput) error {
 	locals := initializeLocals(ctx, stackInput)
 
-	awsCredential := stackInput.AwsCredential
+	awsCredential := stackInput.ProviderCredential
 
 	//create aws provider using the credentials from the input
 	awsProvider, err := aws.NewProvider(ctx,

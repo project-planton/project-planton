@@ -18,6 +18,6 @@ message GcpSecretsManagerStackInput {
   project.planton.shared.iac.terraform.TerraformStackInfo terraform = 3;
   //target api-resource
   GcpSecretsManager target = 4;
-  //gcp-credential
-  project.planton.credential.gcpcredential.v1.GcpCredentialSpec gcp_credential = 5;
+  //provider-credential
+  project.planton.credential.gcpcredential.v1.GcpCredentialSpec provider_credential = 5;
 }

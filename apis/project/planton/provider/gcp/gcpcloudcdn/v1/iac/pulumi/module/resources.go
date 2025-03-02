@@ -13,7 +13,7 @@ type ResourceStack struct {
 
 func Resources(ctx *pulumi.Context, stackInput *gcpcloudcdnv1.GcpCloudCdnStackInput) error {
 	//create gcp provider using the credentials from the input
-	_, err := pulumigoogleprovider.Get(ctx, stackInput.GcpCredential)
+	_, err := pulumigoogleprovider.Get(ctx, stackInput.ProviderCredential)
 	if err != nil {
 		return errors.Wrap(err, "failed to setup gcp provider")
 	}

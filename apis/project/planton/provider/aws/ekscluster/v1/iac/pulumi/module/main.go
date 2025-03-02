@@ -15,7 +15,7 @@ func Resources(ctx *pulumi.Context, stackInput *eksclusterv1.EksClusterStackInpu
 	// Create a variable with descriptive name for the API resource in the input
 	eksCluster := stackInput.Target
 
-	awsCredential := stackInput.AwsCredential
+	awsCredential := stackInput.ProviderCredential
 
 	var provider *aws.Provider
 

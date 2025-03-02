@@ -10,7 +10,7 @@ import (
 )
 
 func Resources(ctx *pulumi.Context, stackInput *s3bucketv1.S3BucketStackInput) error {
-	awsCredential := stackInput.AwsCredential
+	awsCredential := stackInput.ProviderCredential
 
 	//create aws provider using the credentials from the input
 	nativeProvider, err := aws.NewProvider(ctx,

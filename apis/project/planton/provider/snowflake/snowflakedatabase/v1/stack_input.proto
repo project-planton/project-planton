@@ -18,6 +18,6 @@ message SnowflakeDatabaseStackInput {
   project.planton.shared.iac.terraform.TerraformStackInfo terraform = 3;
   //target api-resource
   SnowflakeDatabase target = 4;
-  //snowflake-credential
-  project.planton.credential.snowflakecredential.v1.SnowflakeCredentialSpec snowflake_credential = 5;
+  //provider-credential
+  project.planton.credential.snowflakecredential.v1.SnowflakeCredentialSpec provider_credential = 5;
 }

@@ -17,7 +17,7 @@ func Resources(ctx *pulumi.Context, stackInput *route53zonev1.Route53ZoneStackIn
 	//create a variable with descriptive name for the api-resource in the input
 	route53Zone := stackInput.Target
 
-	awsCredential := stackInput.AwsCredential
+	awsCredential := stackInput.ProviderCredential
 
 	//create aws provider using the credentials from the input
 	awsNativeProvider, err := aws.NewProvider(ctx,

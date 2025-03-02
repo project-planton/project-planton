@@ -8,7 +8,7 @@ import (
 )
 
 func Resources(ctx *pulumi.Context, stackInput *awsfargatev1.AwsFargateStackInput) error {
-	awsCredential := stackInput.AwsCredential
+	awsCredential := stackInput.ProviderCredential
 
 	//create aws provider using the credentials from the input
 	_, err := aws.NewProvider(ctx,

@@ -18,6 +18,6 @@ message ConfluentKafkaStackInput {
   project.planton.shared.iac.terraform.TerraformStackInfo terraform = 3;
   //target api-resource
   ConfluentKafka target = 4;
-  //confluent-credential
-  project.planton.credential.confluentcredential.v1.ConfluentCredentialSpec confluent_credential = 5;
+  //provider-credential
+  project.planton.credential.confluentcredential.v1.ConfluentCredentialSpec provider_credential = 5;
 }

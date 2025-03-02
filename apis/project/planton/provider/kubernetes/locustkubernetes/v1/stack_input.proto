@@ -18,6 +18,6 @@ message LocustKubernetesStackInput {
   project.planton.shared.iac.terraform.TerraformStackInfo terraform = 3;
   //target api-resource
   LocustKubernetes target = 4;
-  //kubernetes-cluster-credential
-  project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec kubernetes_cluster = 5;
+  //provider-credential
+  project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec provider_credential = 5;
 }

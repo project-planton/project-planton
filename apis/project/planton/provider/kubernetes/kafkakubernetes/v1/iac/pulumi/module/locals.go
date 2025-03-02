@@ -161,7 +161,7 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kafkakubernetesv1.KafkaKu
 	//ingress-domain-names for the GkeCluster/EksCluster/AksCluster spec.
 	locals.IngressCertClusterIssuerName = kafkaKubernetes.Spec.Ingress.DnsDomain
 
-	switch stackInput.KubernetesCluster.Provider {
+	switch stackInput.ProviderCredential.Provider {
 	case kubernetesclustercredentialv1.KubernetesProvider_gcp_gke:
 		locals.KafkaIngressPrivateListenerLoadBalancerAnnotationKey = "cloud.google.com/load-balancer-type"
 		locals.KafkaIngressPrivateListenerLoadBalancerAnnotationValue = "Internal"
