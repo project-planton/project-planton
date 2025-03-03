@@ -2,7 +2,6 @@ syntax = "proto3";
 
 package project.planton.shared.iac.terraform;
 
-import "project/planton/credential/gitcredential/v1/spec.proto";
 import "project/planton/credential/terraformbackendcredential/v1/spec.proto";
 import "project/planton/shared/iac/iacgitrepo/iac_git_repo.proto";
 import "project/planton/shared/iac/terraform/enums.proto";

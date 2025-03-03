@@ -1,10 +1,7 @@
 package module
 
 import (
-	b64 "encoding/base64"
 	"fmt"
-	"github.com/pkg/errors"
-	dockercredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/dockercredential/v1"
 	microservicekubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/microservicekubernetes/v1"
 	"github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/microservicekubernetes/v1/iac/pulumi/module/outputs"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/kuberneteslabelkeys"
@@ -54,27 +51,8 @@ func initializeLocals(ctx *pulumi.Context, stackInput *microservicekubernetesv1.
 		locals.Labels[kuberneteslabelkeys.Environment] = microserviceKubernetes.Metadata.Env
 	}
 
-	if stackInput.DockerCredential != nil &&
-		dockercredentialv1.DockerRepoProvider_gcp_artifact_registry == stackInput.DockerCredential.Provider {
-		decodedStringBytes, err := b64.StdEncoding.DecodeString(stackInput.DockerCredential.GcpArtifactRegistry.ServiceAccountKeyBase64)
-		if err != nil {
-			return nil, errors.Wrap(err, "failed to decode gcp service account key base64")
-		}
-		dockerConfigAuth := fmt.Sprintf("_json_key:%s", string(decodedStringBytes))
-
-		dockerConfigAuth = b64.StdEncoding.EncodeToString([]byte(dockerConfigAuth))
-
-		dockerRepoHostname := fmt.Sprintf("%s-docker.pkg.dev", stackInput.DockerCredential.GcpArtifactRegistry.GcpRegion)
-
-		locals.ImagePullSecretData = map[string]string{".dockerconfigjson": fmt.Sprintf(`
-			{
-  				"auths": {
-    				"%s": {
-      					"username": "_json_key",
-						"auth": "%s"
-					}
-  				}
-			}`, dockerRepoHostname, dockerConfigAuth)}
+	if stackInput.DockerConfigJson != "" {
+		locals.ImagePullSecretData = map[string]string{".dockerconfigjson": stackInput.DockerConfigJson}
 	}
 
 	//decide on the namespace

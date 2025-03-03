@@ -26,10 +26,6 @@ func addCredentials(stackInputContentMap map[string]interface{},
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to add confluent-credential")
 	}
-	updatedStackInputContentMap, err = stackinputcredentials.AddDockerCredential(updatedStackInputContentMap, credentialOptions)
-	if err != nil {
-		return nil, errors.Wrap(err, "failed to add docker-credential")
-	}
 	updatedStackInputContentMap, err = stackinputcredentials.AddGcpCredential(updatedStackInputContentMap, credentialOptions)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to add gcp-credential")

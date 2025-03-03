@@ -4,9 +4,7 @@ import (
 	awscredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/awscredential/v1"
 	azurecredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/azurecredential/v1"
 	confluentcredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/confluentcredential/v1"
-	dockercredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/dockercredential/v1"
 	gcpcredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/gcpcredential/v1"
-	gitcredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/gitcredential/v1"
 	kubernetesclustercredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/kubernetesclustercredential/v1"
 	mongodbatlascredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/mongodbatlascredential/v1"
 	pulumibackendcredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/pulumibackendcredential/v1"
@@ -91,9 +89,7 @@ var credentialMap = map[ApiResourceKind]proto.Message{
 	"aws-credential":                &awscredentialv1.AwsCredential{},
 	"azure-credential":              &azurecredentialv1.AzureCredential{},
 	"confluent-credential":          &confluentcredentialv1.ConfluentCredential{},
-	"docker-credential":             &dockercredentialv1.DockerCredential{},
 	"gcp-credential":                &gcpcredentialv1.GcpCredential{},
-	"git-credential":                &gitcredentialv1.GitCredential{},
 	"kubernetes-cluster-credential": &kubernetesclustercredentialv1.KubernetesClusterCredential{},
 	"mongodb-atlas-credential":      &mongodbatlascredentialv1.MongodbAtlasCredential{},
 	"pulumi-backend-credential":     &pulumibackendcredentialv1.PulumiBackendCredential{},
