@@ -41,7 +41,7 @@ func Resources(ctx *pulumi.Context, stackInput *postgreskubernetesv1.PostgresKub
 			Metadata: metav1.ObjectMetaArgs{
 				// for zolando operator the name is required to be always prefixed by teamId
 				// a kubernetes service with the same name is created by the operator
-				Name:      pulumi.Sprintf("%s-%s", vars.TeamId, locals.PostgresKubernetes.Metadata.Id),
+				Name:      pulumi.Sprintf("%s-%s", vars.TeamId, locals.PostgresKubernetes.Metadata.Name),
 				Namespace: createdNamespace.Metadata.Name(),
 				Labels:    pulumi.ToStringMap(locals.Labels),
 			},
@@ -49,7 +49,7 @@ func Resources(ctx *pulumi.Context, stackInput *postgreskubernetesv1.PostgresKub
 				NumberOfInstances: pulumi.Int(locals.PostgresKubernetes.Spec.Container.Replicas),
 				Patroni:           zalandov1.PostgresqlSpecPatroniArgs{},
 				PodAnnotations: pulumi.ToStringMap(map[string]string{
-					"postgres-cluster-id": locals.PostgresKubernetes.Metadata.Id,
+					"postgres-cluster-id": locals.PostgresKubernetes.Metadata.Name,
 				}),
 				Postgresql: zalandov1.PostgresqlSpecPostgresqlArgs{
 					Version: pulumi.String(vars.PostgresVersion),

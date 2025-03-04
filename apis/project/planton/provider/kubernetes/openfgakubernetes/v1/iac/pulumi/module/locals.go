@@ -5,6 +5,7 @@ import (
 	openfgakubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/openfgakubernetes/v1"
 	"github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/openfgakubernetes/v1/iac/pulumi/module/outputs"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/kuberneteslabelkeys"
+	"github.com/project-planton/project-planton/pkg/overridelabels"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"strconv"
 )
@@ -25,27 +26,42 @@ type Locals struct {
 
 func initializeLocals(ctx *pulumi.Context, stackInput *openfgakubernetesv1.OpenfgaKubernetesStackInput) *Locals {
 	locals := &Locals{}
-	//assign value for the local variable to make it available across the project
+
 	locals.OpenfgaKubernetes = stackInput.Target
 
 	openfgaKubernetes := stackInput.Target
 
 	locals.Labels = map[string]string{
-		kuberneteslabelkeys.Environment:  stackInput.Target.Metadata.Env,
-		kuberneteslabelkeys.Organization: stackInput.Target.Metadata.Org,
 		kuberneteslabelkeys.Resource:     strconv.FormatBool(true),
-		kuberneteslabelkeys.ResourceId:   stackInput.Target.Metadata.Id,
+		kuberneteslabelkeys.ResourceName: openfgaKubernetes.Metadata.Name,
 		kuberneteslabelkeys.ResourceKind: "openfga_kubernetes",
 	}
 
-	//decide on the namespace
-	locals.Namespace = openfgaKubernetes.Metadata.Id
+	if openfgaKubernetes.Metadata.Id != "" {
+		locals.Labels[kuberneteslabelkeys.ResourceId] = openfgaKubernetes.Metadata.Id
+	}
+
+	if openfgaKubernetes.Metadata.Org != "" {
+		locals.Labels[kuberneteslabelkeys.Organization] = openfgaKubernetes.Metadata.Org
+	}
+
+	if openfgaKubernetes.Metadata.Env != "" {
+		locals.Labels[kuberneteslabelkeys.Environment] = openfgaKubernetes.Metadata.Env
+	}
+
+	locals.Namespace = openfgaKubernetes.Metadata.Name
+
+	if openfgaKubernetes.Metadata.Labels != nil &&
+		openfgaKubernetes.Metadata.Labels[overridelabels.KubernetesNamespaceLabelKey] != "" {
+		locals.Namespace = openfgaKubernetes.Metadata.Labels[overridelabels.KubernetesNamespaceLabelKey]
+	}
+
+	ctx.Export(outputs.Namespace, pulumi.String(locals.Namespace))
 
 	locals.KubeServiceName = openfgaKubernetes.Metadata.Name
 
 	//export kubernetes service name
 	ctx.Export(outputs.Service, pulumi.String(locals.KubeServiceName))
-	ctx.Export(outputs.Namespace, pulumi.String(locals.Namespace))
 
 	locals.KubeServiceFqdn = fmt.Sprintf("%s.%s.svc.cluster.local",
 		openfgaKubernetes.Metadata.Name, locals.Namespace)

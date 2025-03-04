@@ -14,11 +14,6 @@ type Locals struct {
 func initializeLocals(ctx *pulumi.Context, stackInput *gcsbucketv1.GcsBucketStackInput) *Locals {
 	locals := &Locals{}
 
-	//if the id is empty, use name as id
-	if stackInput.Target.Metadata.Id == "" {
-		stackInput.Target.Metadata.Id = stackInput.Target.Metadata.Name
-	}
-
 	gcsBucket := stackInput.Target
 	locals.GcpLabels = map[string]string{
 		gcplabelkeys.Resource:     strconv.FormatBool(true),

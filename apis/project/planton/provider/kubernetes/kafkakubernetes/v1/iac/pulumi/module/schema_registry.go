@@ -154,7 +154,7 @@ func schemaRegistry(ctx *pulumi.Context, locals *Locals, kubernetesProvider *kub
 		&certmanagerv1.CertificateArgs{
 			Metadata: metav1.ObjectMetaArgs{
 				Name: pulumi.String(fmt.Sprintf("%s-schema-registry",
-					locals.KafkaKubernetes.Metadata.Id)),
+					locals.Namespace)),
 				Namespace: pulumi.String(vars.IstioIngressNamespace),
 				Labels:    pulumi.ToStringMap(labels),
 			},
@@ -176,7 +176,7 @@ func schemaRegistry(ctx *pulumi.Context, locals *Locals, kubernetesProvider *kub
 		"schema-registry",
 		&gatewayv1.GatewayArgs{
 			Metadata: metav1.ObjectMetaArgs{
-				Name: pulumi.Sprintf("%s-schema-registry-external", locals.KafkaKubernetes.Metadata.Id),
+				Name: pulumi.Sprintf("%s-schema-registry-external", locals.Namespace),
 				// All gateway resources should be created in the ingress deployment namespace
 				Namespace: pulumi.String(vars.IstioIngressNamespace),
 				Labels:    pulumi.ToStringMap(labels),
@@ -241,7 +241,7 @@ func schemaRegistry(ctx *pulumi.Context, locals *Locals, kubernetesProvider *kub
 				Hostnames: pulumi.StringArray{pulumi.String(locals.IngressExternalSchemaRegistryHostname)},
 				ParentRefs: gatewayv1.HTTPRouteSpecParentRefsArray{
 					gatewayv1.HTTPRouteSpecParentRefsArgs{
-						Name:      pulumi.Sprintf("%s-schema-registry-external", locals.KafkaKubernetes.Metadata.Id),
+						Name:      pulumi.Sprintf("%s-schema-registry-external", locals.Namespace),
 						Namespace: createdGateway.Metadata.Namespace(),
 					},
 				},

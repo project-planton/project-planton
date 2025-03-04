@@ -175,7 +175,7 @@ func kowl(ctx *pulumi.Context, locals *Locals, kubernetesProvider *kubernetes.Pr
 		"kowl-ingress-certificate",
 		&certmanagerv1.CertificateArgs{
 			Metadata: metav1.ObjectMetaArgs{
-				Name:      pulumi.String(fmt.Sprintf("%s-kowl", locals.KafkaKubernetes.Metadata.Id)),
+				Name:      pulumi.String(fmt.Sprintf("%s-kowl", locals.Namespace)),
 				Namespace: pulumi.String(vars.IstioIngressNamespace),
 				Labels:    pulumi.ToStringMap(labels),
 			},
@@ -199,7 +199,7 @@ func kowl(ctx *pulumi.Context, locals *Locals, kubernetesProvider *kubernetes.Pr
 		"kowl",
 		&gatewayv1.GatewayArgs{
 			Metadata: metav1.ObjectMetaArgs{
-				Name: pulumi.Sprintf("%s-kowl-external", locals.KafkaKubernetes.Metadata.Id),
+				Name: pulumi.Sprintf("%s-kowl-external", locals.Namespace),
 				// All gateway resources should be created in the ingress deployment namespace
 				Namespace: pulumi.String(vars.IstioIngressNamespace),
 				Labels:    pulumi.ToStringMap(labels),
@@ -264,7 +264,7 @@ func kowl(ctx *pulumi.Context, locals *Locals, kubernetesProvider *kubernetes.Pr
 				Hostnames: pulumi.StringArray{pulumi.String(locals.IngressExternalKowlHostname)},
 				ParentRefs: gatewayv1.HTTPRouteSpecParentRefsArray{
 					gatewayv1.HTTPRouteSpecParentRefsArgs{
-						Name:      pulumi.Sprintf("%s-kowl-external", locals.KafkaKubernetes.Metadata.Id),
+						Name:      pulumi.Sprintf("%s-kowl-external", locals.Namespace),
 						Namespace: createdGateway.Metadata.Namespace(),
 					},
 				},

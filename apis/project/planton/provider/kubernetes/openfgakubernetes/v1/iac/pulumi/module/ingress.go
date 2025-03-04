@@ -20,7 +20,7 @@ func ingress(ctx *pulumi.Context,
 		"ingress-certificate",
 		&certmanagerv1.CertificateArgs{
 			Metadata: metav1.ObjectMetaArgs{
-				Name:      pulumi.String(locals.OpenfgaKubernetes.Metadata.Id),
+				Name:      pulumi.String(locals.Namespace),
 				Namespace: pulumi.String(vars.IstioIngressNamespace),
 				Labels:    pulumi.ToStringMap(locals.Labels),
 			},
@@ -42,7 +42,7 @@ func ingress(ctx *pulumi.Context,
 		"external",
 		&gatewayv1.GatewayArgs{
 			Metadata: metav1.ObjectMetaArgs{
-				Name:      pulumi.Sprintf("%s-external", locals.OpenfgaKubernetes.Metadata.Id),
+				Name:      pulumi.Sprintf("%s-external", locals.Namespace),
 				Namespace: pulumi.String(vars.IstioIngressNamespace),
 				Labels:    pulumi.ToStringMap(locals.Labels),
 			},
@@ -105,7 +105,7 @@ func ingress(ctx *pulumi.Context,
 				Hostnames: pulumi.StringArray{pulumi.String(locals.IngressExternalHostname)},
 				ParentRefs: gatewayv1.HTTPRouteSpecParentRefsArray{
 					gatewayv1.HTTPRouteSpecParentRefsArgs{
-						Name:        pulumi.Sprintf("%s-external", locals.OpenfgaKubernetes.Metadata.Id),
+						Name:        pulumi.Sprintf("%s-external", locals.Namespace),
 						Namespace:   createdGateway.Metadata.Namespace(),
 						SectionName: pulumi.String("http-external"),
 					},
@@ -139,7 +139,7 @@ func ingress(ctx *pulumi.Context,
 				Hostnames: pulumi.StringArray{pulumi.String(locals.IngressExternalHostname)},
 				ParentRefs: gatewayv1.HTTPRouteSpecParentRefsArray{
 					gatewayv1.HTTPRouteSpecParentRefsArgs{
-						Name:        pulumi.Sprintf("%s-external", locals.OpenfgaKubernetes.Metadata.Id),
+						Name:        pulumi.Sprintf("%s-external", locals.Namespace),
 						Namespace:   createdGateway.Metadata.Namespace(),
 						SectionName: pulumi.String("https-external"),
 					},

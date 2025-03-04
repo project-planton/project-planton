@@ -5,6 +5,7 @@ import (
 	mongodbkubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/mongodbkubernetes/v1"
 	"github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/mongodbkubernetes/v1/iac/pulumi/module/outputs"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/kuberneteslabelkeys"
+	"github.com/project-planton/project-planton/pkg/overridelabels"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"strconv"
 )
@@ -19,25 +20,40 @@ type Locals struct {
 	MongodbKubernetes        *mongodbkubernetesv1.MongodbKubernetes
 	Namespace                string
 	MongodbPodSelectorLabels map[string]string
+	Labels                   map[string]string
 }
 
 func initializeLocals(ctx *pulumi.Context, stackInput *mongodbkubernetesv1.MongodbKubernetesStackInput) *Locals {
 	locals := &Locals{}
-	//assign value for the locals variable to make it available across the project
+
 	locals.MongodbKubernetes = stackInput.Target
 
 	mongodbKubernetes := stackInput.Target
 
-	locals.KubernetesLabels = map[string]string{
+	locals.Labels = map[string]string{
 		kuberneteslabelkeys.Resource:     strconv.FormatBool(true),
-		kuberneteslabelkeys.Organization: mongodbKubernetes.Metadata.Org,
-		kuberneteslabelkeys.Environment:  mongodbKubernetes.Metadata.Env,
+		kuberneteslabelkeys.ResourceName: mongodbKubernetes.Metadata.Name,
 		kuberneteslabelkeys.ResourceKind: "mongodb_kubernetes",
-		kuberneteslabelkeys.ResourceId:   mongodbKubernetes.Metadata.Id,
 	}
 
-	//decide on the namespace
-	locals.Namespace = mongodbKubernetes.Metadata.Id
+	if mongodbKubernetes.Metadata.Id != "" {
+		locals.Labels[kuberneteslabelkeys.ResourceId] = mongodbKubernetes.Metadata.Id
+	}
+
+	if mongodbKubernetes.Metadata.Org != "" {
+		locals.Labels[kuberneteslabelkeys.Organization] = mongodbKubernetes.Metadata.Org
+	}
+
+	if mongodbKubernetes.Metadata.Env != "" {
+		locals.Labels[kuberneteslabelkeys.Environment] = mongodbKubernetes.Metadata.Env
+	}
+
+	locals.Namespace = mongodbKubernetes.Metadata.Name
+
+	if mongodbKubernetes.Metadata.Labels != nil &&
+		mongodbKubernetes.Metadata.Labels[overridelabels.KubernetesNamespaceLabelKey] != "" {
+		locals.Namespace = mongodbKubernetes.Metadata.Labels[overridelabels.KubernetesNamespaceLabelKey]
+	}
 
 	ctx.Export(outputs.Namespace, pulumi.String(locals.Namespace))
 	ctx.Export(outputs.Username, pulumi.String(vars.RootUsername))

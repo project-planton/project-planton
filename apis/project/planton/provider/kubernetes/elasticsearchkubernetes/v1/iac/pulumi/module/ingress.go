@@ -19,7 +19,7 @@ func ingress(ctx *pulumi.Context,
 		"ingress-certificate",
 		&certmanagerv1.CertificateArgs{
 			Metadata: metav1.ObjectMetaArgs{
-				Name:      pulumi.String(locals.ElasticsearchKubernetes.Metadata.Id),
+				Name:      pulumi.String(locals.Namespace),
 				Namespace: pulumi.String(vars.IstioIngressNamespace),
 				Labels:    pulumi.ToStringMap(locals.Labels),
 			},
@@ -41,7 +41,7 @@ func ingress(ctx *pulumi.Context,
 		"elasticsearch-external",
 		&gatewayv1.GatewayArgs{
 			Metadata: metav1.ObjectMetaArgs{
-				Name:      pulumi.Sprintf("%s-external", locals.ElasticsearchKubernetes.Metadata.Id),
+				Name:      pulumi.Sprintf("%s-external", locals.Namespace),
 				Namespace: pulumi.String(vars.IstioIngressNamespace),
 				Labels:    pulumi.ToStringMap(locals.Labels),
 			},
@@ -104,7 +104,7 @@ func ingress(ctx *pulumi.Context,
 				Hostnames: pulumi.StringArray{pulumi.String(locals.ElasticsearchIngressExternalHostname)},
 				ParentRefs: gatewayv1.HTTPRouteSpecParentRefsArray{
 					gatewayv1.HTTPRouteSpecParentRefsArgs{
-						Name:        pulumi.Sprintf("%s-external", locals.ElasticsearchKubernetes.Metadata.Id),
+						Name:        pulumi.Sprintf("%s-external", locals.Namespace),
 						Namespace:   elasticsearchCreatedGateway.Metadata.Namespace(),
 						SectionName: pulumi.String("http-external"),
 					},
@@ -138,7 +138,7 @@ func ingress(ctx *pulumi.Context,
 				Hostnames: pulumi.StringArray{pulumi.String(locals.ElasticsearchIngressExternalHostname)},
 				ParentRefs: gatewayv1.HTTPRouteSpecParentRefsArray{
 					gatewayv1.HTTPRouteSpecParentRefsArgs{
-						Name:        pulumi.Sprintf("%s-external", locals.ElasticsearchKubernetes.Metadata.Id),
+						Name:        pulumi.Sprintf("%s-external", locals.Namespace),
 						Namespace:   elasticsearchCreatedGateway.Metadata.Namespace(),
 						SectionName: pulumi.String("https-external"),
 					},
@@ -174,7 +174,7 @@ func ingress(ctx *pulumi.Context,
 		"kibana-external",
 		&gatewayv1.GatewayArgs{
 			Metadata: metav1.ObjectMetaArgs{
-				Name:      pulumi.Sprintf("%s-kb-external", locals.ElasticsearchKubernetes.Metadata.Id),
+				Name:      pulumi.Sprintf("%s-kb-external", locals.Namespace),
 				Namespace: pulumi.String(vars.IstioIngressNamespace),
 				Labels:    pulumi.ToStringMap(locals.Labels),
 			},
@@ -237,7 +237,7 @@ func ingress(ctx *pulumi.Context,
 				Hostnames: pulumi.StringArray{pulumi.String(locals.KibanaIngressExternalHostname)},
 				ParentRefs: gatewayv1.HTTPRouteSpecParentRefsArray{
 					gatewayv1.HTTPRouteSpecParentRefsArgs{
-						Name:        pulumi.Sprintf("%s-kb-external", locals.ElasticsearchKubernetes.Metadata.Id),
+						Name:        pulumi.Sprintf("%s-kb-external", locals.Namespace),
 						Namespace:   kibanaCreatedGateway.Metadata.Namespace(),
 						SectionName: pulumi.String("http-external"),
 					},
@@ -271,7 +271,7 @@ func ingress(ctx *pulumi.Context,
 				Hostnames: pulumi.StringArray{pulumi.String(locals.KibanaIngressExternalHostname)},
 				ParentRefs: gatewayv1.HTTPRouteSpecParentRefsArray{
 					gatewayv1.HTTPRouteSpecParentRefsArgs{
-						Name:        pulumi.Sprintf("%s-kb-external", locals.ElasticsearchKubernetes.Metadata.Id),
+						Name:        pulumi.Sprintf("%s-kb-external", locals.Namespace),
 						Namespace:   kibanaCreatedGateway.Metadata.Namespace(),
 						SectionName: pulumi.String("https-external"),
 					},

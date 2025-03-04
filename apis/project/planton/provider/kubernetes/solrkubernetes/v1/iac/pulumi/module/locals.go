@@ -5,6 +5,7 @@ import (
 	solrkubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/solrkubernetes/v1"
 	"github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/solrkubernetes/v1/iac/pulumi/module/outputs"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/kuberneteslabelkeys"
+	"github.com/project-planton/project-planton/pkg/overridelabels"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"strconv"
 )
@@ -31,15 +32,29 @@ func initializeLocals(ctx *pulumi.Context, stackInput *solrkubernetesv1.SolrKube
 	solrKubernetes := stackInput.Target
 
 	locals.Labels = map[string]string{
-		kuberneteslabelkeys.Environment:  stackInput.Target.Metadata.Env,
-		kuberneteslabelkeys.Organization: stackInput.Target.Metadata.Org,
 		kuberneteslabelkeys.Resource:     strconv.FormatBool(true),
-		kuberneteslabelkeys.ResourceId:   stackInput.Target.Metadata.Id,
+		kuberneteslabelkeys.ResourceName: solrKubernetes.Metadata.Name,
 		kuberneteslabelkeys.ResourceKind: "solr_kubernetes",
 	}
 
-	//decide on the namespace
-	locals.Namespace = solrKubernetes.Metadata.Id
+	if solrKubernetes.Metadata.Id != "" {
+		locals.Labels[kuberneteslabelkeys.ResourceId] = solrKubernetes.Metadata.Id
+	}
+
+	if solrKubernetes.Metadata.Org != "" {
+		locals.Labels[kuberneteslabelkeys.Organization] = solrKubernetes.Metadata.Org
+	}
+
+	if solrKubernetes.Metadata.Env != "" {
+		locals.Labels[kuberneteslabelkeys.Environment] = solrKubernetes.Metadata.Env
+	}
+
+	locals.Namespace = solrKubernetes.Metadata.Name
+
+	if solrKubernetes.Metadata.Labels != nil &&
+		solrKubernetes.Metadata.Labels[overridelabels.KubernetesNamespaceLabelKey] != "" {
+		locals.Namespace = solrKubernetes.Metadata.Labels[overridelabels.KubernetesNamespaceLabelKey]
+	}
 
 	ctx.Export(outputs.Namespace, pulumi.String(locals.Namespace))
 
@@ -66,10 +81,10 @@ func initializeLocals(ctx *pulumi.Context, stackInput *solrkubernetesv1.SolrKube
 		return locals
 	}
 
-	locals.IngressExternalHostname = fmt.Sprintf("%s.%s", solrKubernetes.Metadata.Id,
+	locals.IngressExternalHostname = fmt.Sprintf("%s.%s", locals.Namespace,
 		solrKubernetes.Spec.Ingress.DnsDomain)
 
-	locals.IngressInternalHostname = fmt.Sprintf("%s-internal.%s", solrKubernetes.Metadata.Id,
+	locals.IngressInternalHostname = fmt.Sprintf("%s-internal.%s", locals.Namespace,
 		solrKubernetes.Spec.Ingress.DnsDomain)
 
 	locals.IngressHostnames = []string{
@@ -88,7 +103,7 @@ func initializeLocals(ctx *pulumi.Context, stackInput *solrkubernetesv1.SolrKube
 	//ingress-domain-names for the GkeCluster/EksCluster/AksCluster spec.
 	locals.IngressCertClusterIssuerName = solrKubernetes.Spec.Ingress.DnsDomain
 
-	locals.IngressCertSecretName = fmt.Sprintf("cert-%s", solrKubernetes.Metadata.Id)
+	locals.IngressCertSecretName = fmt.Sprintf("cert-%s", locals.Namespace)
 
 	return locals
 }

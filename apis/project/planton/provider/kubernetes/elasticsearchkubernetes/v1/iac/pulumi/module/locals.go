@@ -5,6 +5,7 @@ import (
 	elasticsearchkubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/elasticsearchkubernetes/v1"
 	"github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/elasticsearchkubernetes/v1/iac/pulumi/module/outputs"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/kuberneteslabelkeys"
+	"github.com/project-planton/project-planton/pkg/overridelabels"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"strconv"
 )
@@ -36,19 +37,35 @@ func initializeLocals(ctx *pulumi.Context, stackInput *elasticsearchkubernetesv1
 	elasticsearchKubernetes := stackInput.Target
 
 	locals.Labels = map[string]string{
-		kuberneteslabelkeys.Environment:  stackInput.Target.Metadata.Env,
-		kuberneteslabelkeys.Organization: stackInput.Target.Metadata.Org,
 		kuberneteslabelkeys.Resource:     strconv.FormatBool(true),
-		kuberneteslabelkeys.ResourceId:   stackInput.Target.Metadata.Id,
+		kuberneteslabelkeys.ResourceName: elasticsearchKubernetes.Metadata.Name,
 		kuberneteslabelkeys.ResourceKind: "elasticsearch_kubernetes",
 	}
+
+	if elasticsearchKubernetes.Metadata.Id != "" {
+		locals.Labels[kuberneteslabelkeys.ResourceId] = elasticsearchKubernetes.Metadata.Id
+	}
+
+	if elasticsearchKubernetes.Metadata.Org != "" {
+		locals.Labels[kuberneteslabelkeys.Organization] = elasticsearchKubernetes.Metadata.Org
+	}
+
+	if elasticsearchKubernetes.Metadata.Env != "" {
+		locals.Labels[kuberneteslabelkeys.Environment] = elasticsearchKubernetes.Metadata.Env
+	}
+
+	locals.Namespace = elasticsearchKubernetes.Metadata.Name
+
+	if elasticsearchKubernetes.Metadata.Labels != nil &&
+		elasticsearchKubernetes.Metadata.Labels[overridelabels.KubernetesNamespaceLabelKey] != "" {
+		locals.Namespace = elasticsearchKubernetes.Metadata.Labels[overridelabels.KubernetesNamespaceLabelKey]
+	}
+
+	ctx.Export(outputs.Namespace, pulumi.String(locals.Namespace))
 
 	ctx.Export(outputs.ElasticsearchUsername, pulumi.String("elastic"))
 	ctx.Export(outputs.ElasticsearchPasswordSecretName, pulumi.Sprintf("%s-es-elastic-user", elasticsearchKubernetes.Metadata.Name))
 	ctx.Export(outputs.ElasticsearchPasswordSecretKey, pulumi.String("elastic"))
-
-	//decide on the namespace
-	locals.Namespace = elasticsearchKubernetes.Metadata.Id
 
 	locals.ElasticsearchKubeServiceName = fmt.Sprintf("%s-es-http", elasticsearchKubernetes.Metadata.Name)
 

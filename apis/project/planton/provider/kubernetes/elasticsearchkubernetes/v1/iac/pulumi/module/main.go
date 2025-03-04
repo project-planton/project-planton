@@ -19,11 +19,11 @@ func Resources(ctx *pulumi.Context, stackInput *elasticsearchkubernetesv1.Elasti
 		return errors.Wrap(err, "failed to setup gcp provider")
 	}
 
-	createdNamespace, err := kubernetescorev1.NewNamespace(ctx, locals.ElasticsearchKubernetes.Metadata.Id,
+	createdNamespace, err := kubernetescorev1.NewNamespace(ctx, locals.Namespace,
 		&kubernetescorev1.NamespaceArgs{
 			Metadata: metav1.ObjectMetaPtrInput(
 				&metav1.ObjectMetaArgs{
-					Name:   pulumi.String(locals.ElasticsearchKubernetes.Metadata.Id),
+					Name:   pulumi.String(locals.Namespace),
 					Labels: pulumi.ToStringMap(locals.Labels),
 				}),
 		}, pulumi.Provider(kubernetesProvider))

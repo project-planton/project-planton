@@ -25,13 +25,13 @@ type Locals struct {
 func initializeLocals(ctx *pulumi.Context, stackInput *rediskubernetesv1.RedisKubernetesStackInput) *Locals {
 	locals := &Locals{}
 
-	redisKubernetes := stackInput.Target
+	locals.RedisKubernetes = stackInput.Target
 
-	//assign value for the local variable to make it available across the module.
-	locals.RedisKubernetes = redisKubernetes
+	redisKubernetes := stackInput.Target
 
 	locals.Labels = map[string]string{
 		kuberneteslabelkeys.Resource:     strconv.FormatBool(true),
+		kuberneteslabelkeys.ResourceName: redisKubernetes.Metadata.Name,
 		kuberneteslabelkeys.ResourceKind: "redis_kubernetes",
 	}
 

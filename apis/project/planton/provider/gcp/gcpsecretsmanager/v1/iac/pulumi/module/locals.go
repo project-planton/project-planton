@@ -15,11 +15,6 @@ type Locals struct {
 func initializeLocals(ctx *pulumi.Context, stackInput *gcpsecretsmanagerv1.GcpSecretsManagerStackInput) *Locals {
 	locals := &Locals{}
 
-	//if the id is empty, use name as id
-	if stackInput.Target.Metadata.Id == "" {
-		stackInput.Target.Metadata.Id = stackInput.Target.Metadata.Name
-	}
-
 	locals.GcpSecretsManager = stackInput.Target
 
 	locals.GcpLabels = map[string]string{
