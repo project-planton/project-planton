@@ -13,7 +13,7 @@ func helmChart(ctx *pulumi.Context, locals *Locals,
 	createdNamespace *kubernetescorev1.Namespace) error {
 	//install helm-chart
 	_, err := helmv3.NewChart(ctx,
-		locals.RedisKubernetes.Metadata.Id,
+		locals.RedisKubernetes.Metadata.Name,
 		helmv3.ChartArgs{
 			Chart:     pulumi.String(vars.HelmChartName),
 			Version:   pulumi.String(vars.HelmChartVersion),
