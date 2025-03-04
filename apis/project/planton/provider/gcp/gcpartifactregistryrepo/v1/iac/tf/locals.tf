@@ -6,7 +6,7 @@ locals {
   base_labels = {
     "resource"      = "true"
     "resource_id"   = local.resource_id
-    "resource_kind" = "gcp_artifact_registry"
+    "resource_kind" = "gcp_artifact_registry_repo"
   }
 
   org_label = (

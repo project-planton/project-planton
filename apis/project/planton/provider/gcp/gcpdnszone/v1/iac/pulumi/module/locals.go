@@ -1,7 +1,7 @@
 package module
 
 import (
-	gcpsecretsmanagerv1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpsecretsmanager/v1"
+	gcpdnszonev1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpdnszone/v1"
 	"github.com/project-planton/project-planton/internal/apiresourcekind"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/gcp/gcplabelkeys"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
@@ -9,21 +9,21 @@ import (
 )
 
 type Locals struct {
-	GcpSecretsManager *gcpsecretsmanagerv1.GcpSecretsManager
-	GcpLabels         map[string]string
+	GcpDnsZone *gcpdnszonev1.GcpDnsZone
+	GcpLabels  map[string]string
 }
 
-func initializeLocals(ctx *pulumi.Context, stackInput *gcpsecretsmanagerv1.GcpSecretsManagerStackInput) *Locals {
+func initializeLocals(ctx *pulumi.Context, stackInput *gcpdnszonev1.GcpDnsZoneStackInput) *Locals {
 	locals := &Locals{}
 
-	locals.GcpSecretsManager = stackInput.Target
+	locals.GcpDnsZone = stackInput.Target
 
 	target := stackInput.Target
 
 	locals.GcpLabels = map[string]string{
 		gcplabelkeys.Resource:     strconv.FormatBool(true),
 		gcplabelkeys.ResourceName: target.Metadata.Name,
-		gcplabelkeys.ResourceKind: string(apiresourcekind.GcpSecretsManagerKind),
+		gcplabelkeys.ResourceKind: string(apiresourcekind.GcpDnsZoneKind),
 	}
 
 	if target.Metadata.Id != "" {

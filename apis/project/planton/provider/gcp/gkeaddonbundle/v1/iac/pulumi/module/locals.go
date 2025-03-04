@@ -3,6 +3,7 @@ package module
 import (
 	gcpcredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/gcpcredential/v1"
 	gkeaddonbundlev1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gkeaddonbundle/v1"
+	"github.com/project-planton/project-planton/internal/apiresourcekind"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/gcp/gcplabelkeys"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/kuberneteslabelkeys"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
@@ -19,28 +20,38 @@ type Locals struct {
 func initializeLocals(ctx *pulumi.Context, stackInput *gkeaddonbundlev1.GkeAddonBundleStackInput) *Locals {
 	locals := &Locals{}
 
-	locals.GcpCredentialSpec = stackInput.GcpCredential
 	locals.GkeAddonBundle = stackInput.Target
+
+	target := stackInput.Target
 
 	locals.GcpLabels = map[string]string{
 		gcplabelkeys.Resource:     strconv.FormatBool(true),
-		gcplabelkeys.ResourceKind: "gke-cluster",
+		gcplabelkeys.ResourceName: target.Metadata.Name,
+		gcplabelkeys.ResourceKind: string(apiresourcekind.GkeAddonBundleKind),
 	}
 
 	locals.KubernetesLabels = map[string]string{
 		kuberneteslabelkeys.Resource:     strconv.FormatBool(true),
-		kuberneteslabelkeys.ResourceKind: "gke-cluster",
+		kuberneteslabelkeys.ResourceName: target.Metadata.Name,
+		kuberneteslabelkeys.ResourceKind: string(apiresourcekind.GkeAddonBundleKind),
 	}
 
-	if locals.GkeAddonBundle.Metadata.Org != "" {
-		locals.GcpLabels[gcplabelkeys.Organization] = locals.GkeAddonBundle.Metadata.Org
-		locals.KubernetesLabels[kuberneteslabelkeys.Organization] = locals.GkeAddonBundle.Metadata.Org
+	if target.Metadata.Id != "" {
+		locals.GcpLabels[gcplabelkeys.ResourceId] = target.Metadata.Id
+		locals.KubernetesLabels[kuberneteslabelkeys.ResourceId] = target.Metadata.Id
 	}
 
-	if locals.GkeAddonBundle.Metadata.Id != "" {
-		locals.GcpLabels[gcplabelkeys.ResourceId] = locals.GkeAddonBundle.Metadata.Id
-		locals.KubernetesLabels[kuberneteslabelkeys.ResourceId] = locals.GkeAddonBundle.Metadata.Id
+	if target.Metadata.Org != "" {
+		locals.GcpLabels[gcplabelkeys.Organization] = target.Metadata.Org
+		locals.KubernetesLabels[kuberneteslabelkeys.Organization] = target.Metadata.Org
 	}
+
+	if target.Metadata.Env != "" {
+		locals.GcpLabels[gcplabelkeys.Environment] = target.Metadata.Env
+		locals.KubernetesLabels[kuberneteslabelkeys.Environment] = target.Metadata.Env
+	}
+
+	locals.GcpCredentialSpec = stackInput.GcpCredential
 
 	return locals
 }

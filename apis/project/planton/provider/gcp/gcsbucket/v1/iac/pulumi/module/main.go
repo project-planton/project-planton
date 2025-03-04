@@ -18,17 +18,15 @@ func Resources(ctx *pulumi.Context, stackInput *gcsbucketv1.GcsBucketStackInput)
 		return errors.Wrap(err, "failed to setup gcp provider")
 	}
 
-	gcsBucket := stackInput.Target
-
 	createdBucket, err := storage.NewBucket(ctx,
-		gcsBucket.Metadata.Name,
+		locals.GcsBucket.Metadata.Name,
 		&storage.BucketArgs{
 			ForceDestroy:             pulumi.Bool(true),
 			Labels:                   pulumi.ToStringMap(locals.GcpLabels),
-			Location:                 pulumi.String(gcsBucket.Spec.GcpRegion),
-			Name:                     pulumi.String(gcsBucket.Metadata.Name),
-			Project:                  pulumi.String(gcsBucket.Spec.GcpProjectId),
-			UniformBucketLevelAccess: pulumi.Bool(!gcsBucket.Spec.IsPublic),
+			Location:                 pulumi.String(locals.GcsBucket.Spec.GcpRegion),
+			Name:                     pulumi.String(locals.GcsBucket.Metadata.Name),
+			Project:                  pulumi.String(locals.GcsBucket.Spec.GcpProjectId),
+			UniformBucketLevelAccess: pulumi.Bool(!locals.GcsBucket.Spec.IsPublic),
 		}, pulumi.Provider(gcpProvider))
 	if err != nil {
 		return errors.Wrap(err, "failed to create bucket resource")
@@ -36,13 +34,13 @@ func Resources(ctx *pulumi.Context, stackInput *gcsbucketv1.GcsBucketStackInput)
 
 	ctx.Export(outputs.BucketId, createdBucket.ID())
 
-	if !gcsBucket.Spec.IsPublic {
+	if !locals.GcsBucket.Spec.IsPublic {
 		return nil
 	}
 
 	//grant bucket-reader role to allUsers
 	_, err = storage.NewBucketAccessControl(ctx,
-		fmt.Sprintf("%s-public", gcsBucket.Metadata.Name),
+		fmt.Sprintf("%s-public", locals.GcsBucket.Metadata.Name),
 		&storage.BucketAccessControlArgs{
 			Bucket: createdBucket.Name,
 			Role:   pulumi.String("READER"),
@@ -54,7 +52,7 @@ func Resources(ctx *pulumi.Context, stackInput *gcsbucketv1.GcsBucketStackInput)
 
 	//grant object-reader role to allUsers
 	_, err = storage.NewBucketAccessControl(ctx,
-		fmt.Sprintf("%s-public-object-reader", gcsBucket.Metadata.Name),
+		fmt.Sprintf("%s-public-object-reader", locals.GcsBucket.Metadata.Name),
 		&storage.BucketAccessControlArgs{
 			Bucket: createdBucket.Name,
 			Role:   pulumi.String("READER"),

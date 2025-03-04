@@ -4,6 +4,7 @@ import (
 	"fmt"
 	elasticsearchkubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/elasticsearchkubernetes/v1"
 	"github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/elasticsearchkubernetes/v1/iac/pulumi/module/outputs"
+	"github.com/project-planton/project-planton/internal/apiresourcekind"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/kuberneteslabelkeys"
 	"github.com/project-planton/project-planton/pkg/overridelabels"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
@@ -31,43 +32,43 @@ type Locals struct {
 
 func initializeLocals(ctx *pulumi.Context, stackInput *elasticsearchkubernetesv1.ElasticsearchKubernetesStackInput) *Locals {
 	locals := &Locals{}
-	//assign value for the local variable to make it available across the module.
+
 	locals.ElasticsearchKubernetes = stackInput.Target
 
-	elasticsearchKubernetes := stackInput.Target
+	target := stackInput.Target
 
 	locals.Labels = map[string]string{
 		kuberneteslabelkeys.Resource:     strconv.FormatBool(true),
-		kuberneteslabelkeys.ResourceName: elasticsearchKubernetes.Metadata.Name,
-		kuberneteslabelkeys.ResourceKind: "elasticsearch_kubernetes",
+		kuberneteslabelkeys.ResourceName: target.Metadata.Name,
+		kuberneteslabelkeys.ResourceKind: string(apiresourcekind.ElasticsearchKubernetesKind),
 	}
 
-	if elasticsearchKubernetes.Metadata.Id != "" {
-		locals.Labels[kuberneteslabelkeys.ResourceId] = elasticsearchKubernetes.Metadata.Id
+	if target.Metadata.Id != "" {
+		locals.Labels[kuberneteslabelkeys.ResourceId] = target.Metadata.Id
 	}
 
-	if elasticsearchKubernetes.Metadata.Org != "" {
-		locals.Labels[kuberneteslabelkeys.Organization] = elasticsearchKubernetes.Metadata.Org
+	if target.Metadata.Org != "" {
+		locals.Labels[kuberneteslabelkeys.Organization] = target.Metadata.Org
 	}
 
-	if elasticsearchKubernetes.Metadata.Env != "" {
-		locals.Labels[kuberneteslabelkeys.Environment] = elasticsearchKubernetes.Metadata.Env
+	if target.Metadata.Env != "" {
+		locals.Labels[kuberneteslabelkeys.Environment] = target.Metadata.Env
 	}
 
-	locals.Namespace = elasticsearchKubernetes.Metadata.Name
+	locals.Namespace = target.Metadata.Name
 
-	if elasticsearchKubernetes.Metadata.Labels != nil &&
-		elasticsearchKubernetes.Metadata.Labels[overridelabels.KubernetesNamespaceLabelKey] != "" {
-		locals.Namespace = elasticsearchKubernetes.Metadata.Labels[overridelabels.KubernetesNamespaceLabelKey]
+	if target.Metadata.Labels != nil &&
+		target.Metadata.Labels[overridelabels.KubernetesNamespaceLabelKey] != "" {
+		locals.Namespace = target.Metadata.Labels[overridelabels.KubernetesNamespaceLabelKey]
 	}
 
 	ctx.Export(outputs.Namespace, pulumi.String(locals.Namespace))
 
 	ctx.Export(outputs.ElasticsearchUsername, pulumi.String("elastic"))
-	ctx.Export(outputs.ElasticsearchPasswordSecretName, pulumi.Sprintf("%s-es-elastic-user", elasticsearchKubernetes.Metadata.Name))
+	ctx.Export(outputs.ElasticsearchPasswordSecretName, pulumi.Sprintf("%s-es-elastic-user", target.Metadata.Name))
 	ctx.Export(outputs.ElasticsearchPasswordSecretKey, pulumi.String("elastic"))
 
-	locals.ElasticsearchKubeServiceName = fmt.Sprintf("%s-es-http", elasticsearchKubernetes.Metadata.Name)
+	locals.ElasticsearchKubeServiceName = fmt.Sprintf("%s-es-http", target.Metadata.Name)
 
 	//export kubernetes service name
 	ctx.Export(outputs.ElasticsearchService, pulumi.String(locals.ElasticsearchKubeServiceName))
@@ -83,7 +84,7 @@ func initializeLocals(ctx *pulumi.Context, stackInput *elasticsearchkubernetesv1
 	//export kube-port-forward command
 	ctx.Export(outputs.ElasticsearchPortForwardCommand, pulumi.String(locals.ElasticsearchKubePortForwardCommand))
 
-	locals.KibanaKubeServiceName = fmt.Sprintf("%s-kb-http", elasticsearchKubernetes.Metadata.Name)
+	locals.KibanaKubeServiceName = fmt.Sprintf("%s-kb-http", target.Metadata.Name)
 
 	//export kubernetes service name
 	ctx.Export(outputs.KibanaService, pulumi.String(locals.KibanaKubeServiceName))
@@ -99,23 +100,23 @@ func initializeLocals(ctx *pulumi.Context, stackInput *elasticsearchkubernetesv1
 	//export kube-port-forward command
 	ctx.Export(outputs.KibanaPortForwardCommand, pulumi.String(locals.KibanaKubePortForwardCommand))
 
-	if elasticsearchKubernetes.Spec.Ingress == nil ||
-		!elasticsearchKubernetes.Spec.Ingress.IsEnabled ||
-		elasticsearchKubernetes.Spec.Ingress.DnsDomain == "" {
+	if target.Spec.Ingress == nil ||
+		!target.Spec.Ingress.IsEnabled ||
+		target.Spec.Ingress.DnsDomain == "" {
 		return locals
 	}
 
-	locals.ElasticsearchIngressExternalHostname = fmt.Sprintf("%s.%s", elasticsearchKubernetes.Metadata.Id,
-		elasticsearchKubernetes.Spec.Ingress.DnsDomain)
+	locals.ElasticsearchIngressExternalHostname = fmt.Sprintf("%s.%s", target.Metadata.Id,
+		target.Spec.Ingress.DnsDomain)
 
-	locals.ElasticsearchIngressInternalHostname = fmt.Sprintf("%s-internal.%s", elasticsearchKubernetes.Metadata.Id,
-		elasticsearchKubernetes.Spec.Ingress.DnsDomain)
+	locals.ElasticsearchIngressInternalHostname = fmt.Sprintf("%s-internal.%s", target.Metadata.Id,
+		target.Spec.Ingress.DnsDomain)
 
-	locals.KibanaIngressExternalHostname = fmt.Sprintf("%s-kb.%s", elasticsearchKubernetes.Metadata.Id,
-		elasticsearchKubernetes.Spec.Ingress.DnsDomain)
+	locals.KibanaIngressExternalHostname = fmt.Sprintf("%s-kb.%s", target.Metadata.Id,
+		target.Spec.Ingress.DnsDomain)
 
-	locals.KibanaIngressInternalHostname = fmt.Sprintf("%s-kb-internal.%s", elasticsearchKubernetes.Metadata.Id,
-		elasticsearchKubernetes.Spec.Ingress.DnsDomain)
+	locals.KibanaIngressInternalHostname = fmt.Sprintf("%s-kb-internal.%s", target.Metadata.Id,
+		target.Spec.Ingress.DnsDomain)
 
 	locals.IngressHostnames = []string{
 		locals.ElasticsearchIngressExternalHostname,
@@ -124,9 +125,9 @@ func initializeLocals(ctx *pulumi.Context, stackInput *elasticsearchkubernetesv1
 		locals.KibanaIngressInternalHostname,
 	}
 
-	locals.IngressCertClusterIssuerName = elasticsearchKubernetes.Spec.Ingress.DnsDomain
+	locals.IngressCertClusterIssuerName = target.Spec.Ingress.DnsDomain
 
-	locals.IngressCertSecretName = elasticsearchKubernetes.Metadata.Id
+	locals.IngressCertSecretName = target.Metadata.Id
 
 	//export ingress hostnames
 	ctx.Export(outputs.ElasticsearchExternalHostname, pulumi.String(locals.ElasticsearchIngressExternalHostname))

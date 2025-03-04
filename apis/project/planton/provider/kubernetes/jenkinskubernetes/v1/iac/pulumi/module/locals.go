@@ -4,6 +4,7 @@ import (
 	"fmt"
 	jenkinskubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/jenkinskubernetes/v1"
 	"github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/jenkinskubernetes/v1/iac/pulumi/module/outputs"
+	"github.com/project-planton/project-planton/internal/apiresourcekind"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/kuberneteslabelkeys"
 	"github.com/project-planton/project-planton/pkg/overridelabels"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
@@ -29,63 +30,63 @@ func initializeLocals(ctx *pulumi.Context, stackInput *jenkinskubernetesv1.Jenki
 	//assign value for the local variable to make it available across the project
 	locals.JenkinsKubernetes = stackInput.Target
 
-	jenkinsKubernetes := stackInput.Target
+	target := stackInput.Target
 
 	locals.Labels = map[string]string{
 		kuberneteslabelkeys.Resource:     strconv.FormatBool(true),
-		kuberneteslabelkeys.ResourceName: jenkinsKubernetes.Metadata.Name,
-		kuberneteslabelkeys.ResourceKind: "jenkins_kubernetes",
+		kuberneteslabelkeys.ResourceName: target.Metadata.Name,
+		kuberneteslabelkeys.ResourceKind: string(apiresourcekind.JenkinsKubernetesKind),
 	}
 
-	if jenkinsKubernetes.Metadata.Id != "" {
-		locals.Labels[kuberneteslabelkeys.ResourceId] = jenkinsKubernetes.Metadata.Id
+	if target.Metadata.Id != "" {
+		locals.Labels[kuberneteslabelkeys.ResourceId] = target.Metadata.Id
 	}
 
-	if jenkinsKubernetes.Metadata.Org != "" {
-		locals.Labels[kuberneteslabelkeys.Organization] = jenkinsKubernetes.Metadata.Org
+	if target.Metadata.Org != "" {
+		locals.Labels[kuberneteslabelkeys.Organization] = target.Metadata.Org
 	}
 
-	if jenkinsKubernetes.Metadata.Env != "" {
-		locals.Labels[kuberneteslabelkeys.Environment] = jenkinsKubernetes.Metadata.Env
+	if target.Metadata.Env != "" {
+		locals.Labels[kuberneteslabelkeys.Environment] = target.Metadata.Env
 	}
 
-	locals.Namespace = jenkinsKubernetes.Metadata.Name
+	locals.Namespace = target.Metadata.Name
 
-	if jenkinsKubernetes.Metadata.Labels != nil &&
-		jenkinsKubernetes.Metadata.Labels[overridelabels.KubernetesNamespaceLabelKey] != "" {
-		locals.Namespace = jenkinsKubernetes.Metadata.Labels[overridelabels.KubernetesNamespaceLabelKey]
+	if target.Metadata.Labels != nil &&
+		target.Metadata.Labels[overridelabels.KubernetesNamespaceLabelKey] != "" {
+		locals.Namespace = target.Metadata.Labels[overridelabels.KubernetesNamespaceLabelKey]
 	}
 
 	ctx.Export(outputs.Namespace, pulumi.String(locals.Namespace))
 
-	locals.KubeServiceName = jenkinsKubernetes.Metadata.Name
+	locals.KubeServiceName = target.Metadata.Name
 
 	//export kubernetes service name
 	ctx.Export(outputs.Service, pulumi.String(locals.KubeServiceName))
 
 	locals.KubeServiceFqdn = fmt.Sprintf("%s.%s.svc.cluster.local",
-		jenkinsKubernetes.Metadata.Name, locals.Namespace)
+		target.Metadata.Name, locals.Namespace)
 
 	//export kubernetes endpoint
 	ctx.Export(outputs.KubeEndpoint, pulumi.String(locals.KubeServiceFqdn))
 
 	locals.KubePortForwardCommand = fmt.Sprintf("kubectl port-forward -n %s service/%s 8080:8080",
-		locals.Namespace, jenkinsKubernetes.Metadata.Name)
+		locals.Namespace, target.Metadata.Name)
 
 	//export kube-port-forward command
 	ctx.Export(outputs.PortForwardCommand, pulumi.String(locals.KubePortForwardCommand))
 
-	if jenkinsKubernetes.Spec.Ingress == nil ||
-		!jenkinsKubernetes.Spec.Ingress.IsEnabled ||
-		jenkinsKubernetes.Spec.Ingress.DnsDomain == "" {
+	if target.Spec.Ingress == nil ||
+		!target.Spec.Ingress.IsEnabled ||
+		target.Spec.Ingress.DnsDomain == "" {
 		return locals
 	}
 
-	locals.IngressExternalHostname = fmt.Sprintf("%s.%s", jenkinsKubernetes.Metadata.Id,
-		jenkinsKubernetes.Spec.Ingress.DnsDomain)
+	locals.IngressExternalHostname = fmt.Sprintf("%s.%s", target.Metadata.Id,
+		target.Spec.Ingress.DnsDomain)
 
-	locals.IngressInternalHostname = fmt.Sprintf("%s-internal.%s", jenkinsKubernetes.Metadata.Id,
-		jenkinsKubernetes.Spec.Ingress.DnsDomain)
+	locals.IngressInternalHostname = fmt.Sprintf("%s-internal.%s", target.Metadata.Id,
+		target.Spec.Ingress.DnsDomain)
 
 	locals.IngressHostnames = []string{
 		locals.IngressExternalHostname,
@@ -101,9 +102,9 @@ func initializeLocals(ctx *pulumi.Context, stackInput *jenkinskubernetesv1.Jenki
 	//if the kubernetes-cluster is created using Planton Cloud, then the cluster-issuer name will be
 	//same as the ingress-domain-name as long as the same ingress-domain-name is added to the list of
 	//ingress-domain-names for the GkeCluster/EksCluster/AksCluster spec.
-	locals.IngressCertClusterIssuerName = jenkinsKubernetes.Spec.Ingress.DnsDomain
+	locals.IngressCertClusterIssuerName = target.Spec.Ingress.DnsDomain
 
-	locals.IngressCertSecretName = jenkinsKubernetes.Metadata.Id
+	locals.IngressCertSecretName = target.Metadata.Id
 
 	return locals
 }

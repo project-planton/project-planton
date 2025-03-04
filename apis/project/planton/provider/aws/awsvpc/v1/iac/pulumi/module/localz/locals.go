@@ -3,6 +3,7 @@ package localz
 import (
 	"fmt"
 	awsvpcv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsvpc/v1"
+	"github.com/project-planton/project-planton/internal/apiresourcekind"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/aws/awstagkeys"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"sort"
@@ -30,7 +31,7 @@ func Initialize(ctx *pulumi.Context, stackInput *awsvpcv1.AwsVpcStackInput) *Loc
 		awstagkeys.Resource:     strconv.FormatBool(true),
 		awstagkeys.Organization: locals.AwsVpc.Metadata.Org,
 		awstagkeys.Environment:  locals.AwsVpc.Metadata.Env,
-		awstagkeys.ResourceKind: "aws_vpc",
+		awstagkeys.ResourceKind: string(apiresourcekind.AwsVpcKind),
 		awstagkeys.ResourceId:   locals.AwsVpc.Metadata.Id,
 	}
 

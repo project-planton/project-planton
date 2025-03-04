@@ -9,10 +9,10 @@ import (
 	mongodbatlascredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/mongodbatlascredential/v1"
 	pulumibackendcredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/pulumibackendcredential/v1"
 	snowflakecredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/snowflakecredential/v1"
+	terraformbackendcredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/terraformbackendcredential/v1"
 	mongodbatlasv1 "github.com/project-planton/project-planton/apis/project/planton/provider/atlas/mongodbatlas/v1"
 	awscloudfrontv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awscloudfront/v1"
 	awsdynamodbv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsdynamodb/v1"
-	awsfargatev1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsfargate/v1"
 	awslambdav1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awslambda/v1"
 	awsrdsclusterv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsrdscluster/v1"
 	awsrdsinstancev1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsrdsinstance/v1"
@@ -64,6 +64,74 @@ import (
 
 type ApiResourceKind string
 
+const (
+	AwsCredentialKind               ApiResourceKind = "aws-credential"
+	AzureCredentialKind             ApiResourceKind = "azure-credential"
+	ConfluentCredentialKind         ApiResourceKind = "confluent-credential"
+	GcpCredentialKind               ApiResourceKind = "gcp-credential"
+	KubernetesClusterCredentialKind ApiResourceKind = "kubernetes-cluster-credential"
+	MongodbAtlasCredentialKind      ApiResourceKind = "mongodb-atlas-credential"
+	PulumiBackendCredentialKind     ApiResourceKind = "pulumi-backend-credential"
+	SnowflakeCredentialKind         ApiResourceKind = "snowflake-credential"
+	TerraformBackendCredentialKind  ApiResourceKind = "terraform-backend-credential"
+
+	MongodbAtlasKind ApiResourceKind = "mongodb-atlas"
+
+	AwsCloudFrontKind           ApiResourceKind = "aws-cloud-front"
+	AwsDynamodbKind             ApiResourceKind = "aws-dynamodb"
+	AwsFargateKind              ApiResourceKind = "aws-fargate"
+	AwsLambdaKind               ApiResourceKind = "aws-lambda"
+	AwsRdsClusterKind           ApiResourceKind = "aws-rds-cluster"
+	AwsRdsInstanceKind          ApiResourceKind = "aws-rds-instance"
+	AwsSecretsManagerKind       ApiResourceKind = "aws-secrets-manager"
+	AwsStaticWebsiteKind        ApiResourceKind = "aws-static-website"
+	AwsVpcKind                  ApiResourceKind = "aws-vpc"
+	EksClusterKind              ApiResourceKind = "eks-cluster"
+	ElasticContainerServiceKind ApiResourceKind = "elastic-container-service"
+	Route53ZoneKind             ApiResourceKind = "route53-zone"
+	S3BucketKind                ApiResourceKind = "s3-bucket"
+
+	AksClusterKind    ApiResourceKind = "aks-cluster"
+	AzureKeyVaultKind ApiResourceKind = "azure-key-vault"
+
+	ConfluentKafkaKind ApiResourceKind = "confluent-kafka"
+
+	GcpArtifactRegistryRepoKind ApiResourceKind = "gcp-artifact-registry-repo"
+	GcpCloudCdnKind             ApiResourceKind = "gcp-cloud-cdn"
+	GcpCloudFunctionKind        ApiResourceKind = "gcp-cloud-function"
+	GcpCloudRunKind             ApiResourceKind = "gcp-cloud-run"
+	GcpCloudSqlKind             ApiResourceKind = "gcp-cloud-sql"
+	GcpDnsZoneKind              ApiResourceKind = "gcp-dns-zone"
+	GcpSecretsManagerKind       ApiResourceKind = "gcp-secrets-manager"
+	GcpStaticWebsiteKind        ApiResourceKind = "gcp-static-website"
+	GcsBucketKind               ApiResourceKind = "gcs-bucket"
+	GkeClusterKind              ApiResourceKind = "gke-cluster"
+	GkeAddonBundleKind          ApiResourceKind = "gke-addon-bundle"
+
+	ArgocdKubernetesKind         ApiResourceKind = "argocd-kubernetes"
+	ElasticsearchKubernetesKind  ApiResourceKind = "elasticsearch-kubernetes"
+	GitlabKubernetesKind         ApiResourceKind = "gitlab-kubernetes"
+	GrafanaKubernetesKind        ApiResourceKind = "grafana-kubernetes"
+	HelmReleaseKind              ApiResourceKind = "helm-release"
+	JenkinsKubernetesKind        ApiResourceKind = "jenkins-kubernetes"
+	KafkaKubernetesKind          ApiResourceKind = "kafka-kubernetes"
+	KeycloakKubernetesKind       ApiResourceKind = "keycloak-kubernetes"
+	KubernetesHttpEndpointKind   ApiResourceKind = "kubernetes-http-endpoint"
+	LocustKubernetesKind         ApiResourceKind = "locust-kubernetes"
+	MicroserviceKubernetesKind   ApiResourceKind = "microservice-kubernetes"
+	MongodbKubernetesKind        ApiResourceKind = "mongodb-kubernetes"
+	Neo4JKubernetesKind          ApiResourceKind = "neo4j-kubernetes"
+	OpenfgaKubernetesKind        ApiResourceKind = "openfga-kubernetes"
+	PostgresKubernetesKind       ApiResourceKind = "postgres-kubernetes"
+	PrometheusKubernetesKind     ApiResourceKind = "prometheus-kubernetes"
+	RedisKubernetesKind          ApiResourceKind = "redis-kubernetes"
+	SignozKubernetesKind         ApiResourceKind = "signoz-kubernetes"
+	SolrKubernetesKind           ApiResourceKind = "solr-kubernetes"
+	StackJobRunnerKubernetesKind ApiResourceKind = "stack-job-runner-kubernetes"
+
+	SnowflakeDatabaseKind ApiResourceKind = "snowflake-database"
+)
+
 var ToMessageMap = merge(
 	credentialMap,
 	providerAtlasMap,
@@ -86,84 +154,85 @@ func merge(items ...map[ApiResourceKind]proto.Message) map[ApiResourceKind]proto
 }
 
 var credentialMap = map[ApiResourceKind]proto.Message{
-	"aws-credential":                &awscredentialv1.AwsCredential{},
-	"azure-credential":              &azurecredentialv1.AzureCredential{},
-	"confluent-credential":          &confluentcredentialv1.ConfluentCredential{},
-	"gcp-credential":                &gcpcredentialv1.GcpCredential{},
-	"kubernetes-cluster-credential": &kubernetesclustercredentialv1.KubernetesClusterCredential{},
-	"mongodb-atlas-credential":      &mongodbatlascredentialv1.MongodbAtlasCredential{},
-	"pulumi-backend-credential":     &pulumibackendcredentialv1.PulumiBackendCredential{},
-	"snowflake-credential":          &snowflakecredentialv1.SnowflakeCredential{},
+	AwsCredentialKind:               &awscredentialv1.AwsCredential{},
+	AzureCredentialKind:             &azurecredentialv1.AzureCredential{},
+	ConfluentCredentialKind:         &confluentcredentialv1.ConfluentCredential{},
+	GcpCredentialKind:               &gcpcredentialv1.GcpCredential{},
+	KubernetesClusterCredentialKind: &kubernetesclustercredentialv1.KubernetesClusterCredential{},
+	MongodbAtlasCredentialKind:      &mongodbatlascredentialv1.MongodbAtlasCredential{},
+	PulumiBackendCredentialKind:     &pulumibackendcredentialv1.PulumiBackendCredential{},
+	SnowflakeCredentialKind:         &snowflakecredentialv1.SnowflakeCredential{},
+	TerraformBackendCredentialKind:  &terraformbackendcredentialv1.TerraformBackendCredential{},
 }
 
 var providerAtlasMap = map[ApiResourceKind]proto.Message{
-	"mongodb-atlas": &mongodbatlasv1.MongodbAtlas{},
+	MongodbAtlasKind: &mongodbatlasv1.MongodbAtlas{},
 }
 
 var providerAwsMap = map[ApiResourceKind]proto.Message{
-	"aws-cloud-front":           &awscloudfrontv1.AwsCloudFront{},
-	"aws-dynamodb":              &awsdynamodbv1.AwsDynamodb{},
-	"aws-fargate":               &awsfargatev1.AwsFargate{},
-	"aws-lambda":                &awslambdav1.AwsLambda{},
-	"aws-rds-cluster":           &awsrdsclusterv1.AwsRdsCluster{},
-	"aws-rds-instance":          &awsrdsinstancev1.AwsRdsInstance{},
-	"aws-secrets-manager":       &awssecretsmanagerv1.AwsSecretsManager{},
-	"aws-static-website":        &awsstaticwebsitev1.AwsStaticWebsite{},
-	"aws-vpc":                   &awsvpcv1.AwsVpc{},
-	"eks-cluster":               &eksclusterv1.EksCluster{},
-	"elastic-container-service": &elasticcontainerservicev1.ElasticContainerService{},
-	"route53-zone":              &route53zonev1.Route53Zone{},
-	"s3-bucket":                 &s3bucketv1.S3Bucket{},
+	AwsCloudFrontKind:           &awscloudfrontv1.AwsCloudFront{},
+	AwsDynamodbKind:             &awsdynamodbv1.AwsDynamodb{},
+	AwsFargateKind:              &awscloudfrontv1.AwsCloudFront{},
+	AwsLambdaKind:               &awslambdav1.AwsLambda{},
+	AwsRdsClusterKind:           &awsrdsclusterv1.AwsRdsCluster{},
+	AwsRdsInstanceKind:          &awsrdsinstancev1.AwsRdsInstance{},
+	AwsSecretsManagerKind:       &awssecretsmanagerv1.AwsSecretsManager{},
+	AwsStaticWebsiteKind:        &awsstaticwebsitev1.AwsStaticWebsite{},
+	AwsVpcKind:                  &awsvpcv1.AwsVpc{},
+	EksClusterKind:              &eksclusterv1.EksCluster{},
+	ElasticContainerServiceKind: &elasticcontainerservicev1.ElasticContainerService{},
+	Route53ZoneKind:             &route53zonev1.Route53Zone{},
+	S3BucketKind:                &s3bucketv1.S3Bucket{},
 }
 
 var providerConfluentMap = map[ApiResourceKind]proto.Message{
-	"confluent-kafka": &confluentkafkav1.ConfluentKafka{},
+	ConfluentKafkaKind: &confluentkafkav1.ConfluentKafka{},
 }
 
 var providerSnowflakeMap = map[ApiResourceKind]proto.Message{
-	"snowflake-database": &snowflakedatabasev1.SnowflakeDatabase{},
+	SnowflakeDatabaseKind: &snowflakedatabasev1.SnowflakeDatabase{},
 }
 
 var providerAzureMap = map[ApiResourceKind]proto.Message{
-	"aks-cluster":     &aksclusterv1.AksCluster{},
-	"azure-key-vault": &azurekeyvaultv1.AzureKeyVault{},
+	AksClusterKind:    &aksclusterv1.AksCluster{},
+	AzureKeyVaultKind: &azurekeyvaultv1.AzureKeyVault{},
 }
 
 var providerGcpMap = map[ApiResourceKind]proto.Message{
-	"gcp-artifact-registry-repo": &gcpartifactregistryrepov1.GcpArtifactRegistryRepo{},
-	"gcp-cloud-cdn":              &gcpcloudcdnv1.GcpCloudCdn{},
-	"gcp-cloud-function":         &gcpcloudfunctionv1.GcpCloudFunction{},
-	"gcp-cloud-run":              &gcpcloudrunv1.GcpCloudRun{},
-	"gcp-cloud-sql":              &gcpcloudsqlv1.GcpCloudSql{},
-	"gcp-dns-zone":               &gcpdnszonev1.GcpDnsZone{},
-	"gcp-secrets-manager":        &gcpsecretsmanagerv1.GcpSecretsManager{},
-	"gcp-static-website":         &gcpstaticwebsitev1.GcpStaticWebsite{},
-	"gcs-bucket":                 &gcsbucketv1.GcsBucket{},
-	"gke-cluster":                &gkeclusterv1.GkeCluster{},
-	"gke-addon-bundle":           &gkeaddonbundlev1.GkeAddonBundle{},
+	GcpArtifactRegistryRepoKind: &gcpartifactregistryrepov1.GcpArtifactRegistryRepo{},
+	GcpCloudCdnKind:             &gcpcloudcdnv1.GcpCloudCdn{},
+	GcpCloudFunctionKind:        &gcpcloudfunctionv1.GcpCloudFunction{},
+	GcpCloudRunKind:             &gcpcloudrunv1.GcpCloudRun{},
+	GcpCloudSqlKind:             &gcpcloudsqlv1.GcpCloudSql{},
+	GcpDnsZoneKind:              &gcpdnszonev1.GcpDnsZone{},
+	GcpSecretsManagerKind:       &gcpsecretsmanagerv1.GcpSecretsManager{},
+	GcpStaticWebsiteKind:        &gcpstaticwebsitev1.GcpStaticWebsite{},
+	GcsBucketKind:               &gcsbucketv1.GcsBucket{},
+	GkeClusterKind:              &gkeclusterv1.GkeCluster{},
+	GkeAddonBundleKind:          &gkeaddonbundlev1.GkeAddonBundle{},
 }
 
 var providerKubernetesMap = map[ApiResourceKind]proto.Message{
-	"argocd-kubernetes":           &argocdkubernetesv1.ArgocdKubernetes{},
-	"elasticsearch-kubernetes":    &elasticsearchkubernetesv1.ElasticsearchKubernetes{},
-	"gitlab-kubernetes":           &gitlabkubernetesv1.GitlabKubernetes{},
-	"grafana-kubernetes":          &grafanakubernetesv1.GrafanaKubernetes{},
-	"helm-release":                &helmreleasev1.HelmRelease{},
-	"jenkins-kubernetes":          &jenkinskubernetesv1.JenkinsKubernetes{},
-	"kafka-kubernetes":            &kafkakubernetesv1.KafkaKubernetes{},
-	"keycloak-kubernetes":         &keycloakkubernetesv1.KeycloakKubernetes{},
-	"kubernetes-http-endpoint":    &kuberneteshttpendpointv1.KubernetesHttpEndpoint{},
-	"locust-kubernetes":           &locustkubernetesv1.LocustKubernetes{},
-	"microservice-kubernetes":     &microservicekubernetesv1.MicroserviceKubernetes{},
-	"mongodb-kubernetes":          &mongodbkubernetesv1.MongodbKubernetes{},
-	"neo4j-kubernetes":            &neo4jkubernetesv1.Neo4JKubernetes{},
-	"openfga-kubernetes":          &openfgakubernetesv1.OpenfgaKubernetes{},
-	"postgres-kubernetes":         &postgreskubernetesv1.PostgresKubernetes{},
-	"prometheus-kubernetes":       &prometheuskubernetesv1.PrometheusKubernetes{},
-	"redis-kubernetes":            &rediskubernetesv1.RedisKubernetes{},
-	"signoz-kubernetes":           &signozkubernetesv1.SignozKubernetes{},
-	"solr-kubernetes":             &solrkubernetesv1.SolrKubernetes{},
-	"stack-job-runner-kubernetes": &stackjobrunnerkubernetesv1.StackJobRunnerKubernetes{},
+	ArgocdKubernetesKind:         &argocdkubernetesv1.ArgocdKubernetes{},
+	ElasticsearchKubernetesKind:  &elasticsearchkubernetesv1.ElasticsearchKubernetes{},
+	GitlabKubernetesKind:         &gitlabkubernetesv1.GitlabKubernetes{},
+	GrafanaKubernetesKind:        &grafanakubernetesv1.GrafanaKubernetes{},
+	HelmReleaseKind:              &helmreleasev1.HelmRelease{},
+	JenkinsKubernetesKind:        &jenkinskubernetesv1.JenkinsKubernetes{},
+	KafkaKubernetesKind:          &kafkakubernetesv1.KafkaKubernetes{},
+	KeycloakKubernetesKind:       &keycloakkubernetesv1.KeycloakKubernetes{},
+	KubernetesHttpEndpointKind:   &kuberneteshttpendpointv1.KubernetesHttpEndpoint{},
+	LocustKubernetesKind:         &locustkubernetesv1.LocustKubernetes{},
+	MicroserviceKubernetesKind:   &microservicekubernetesv1.MicroserviceKubernetes{},
+	MongodbKubernetesKind:        &mongodbkubernetesv1.MongodbKubernetes{},
+	Neo4JKubernetesKind:          &neo4jkubernetesv1.Neo4JKubernetes{},
+	OpenfgaKubernetesKind:        &openfgakubernetesv1.OpenfgaKubernetes{},
+	PostgresKubernetesKind:       &postgreskubernetesv1.PostgresKubernetes{},
+	PrometheusKubernetesKind:     &prometheuskubernetesv1.PrometheusKubernetes{},
+	RedisKubernetesKind:          &rediskubernetesv1.RedisKubernetes{},
+	SignozKubernetesKind:         &signozkubernetesv1.SignozKubernetes{},
+	SolrKubernetesKind:           &solrkubernetesv1.SolrKubernetes{},
+	StackJobRunnerKubernetesKind: &stackjobrunnerkubernetesv1.StackJobRunnerKubernetes{},
 }
 
 // sanitizeString removes hyphens, spaces, and underscores, and converts the string to lowercase

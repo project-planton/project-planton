@@ -2,6 +2,7 @@ package module
 
 import (
 	gcpartifactregistryrepov1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpartifactregistryrepo/v1"
+	"github.com/project-planton/project-planton/internal/apiresourcekind"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/gcp/gcplabelkeys"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"strconv"
@@ -15,17 +16,26 @@ type Locals struct {
 func initializeLocals(ctx *pulumi.Context, stackInput *gcpartifactregistryrepov1.GcpArtifactRegistryRepoStackInput) *Locals {
 	locals := &Locals{}
 
-	//assign value for the locals variable to make it available across the project
 	locals.GcpArtifactRegistryRepo = stackInput.Target
+
+	target := stackInput.Target
 
 	locals.GcpLabels = map[string]string{
 		gcplabelkeys.Resource:     strconv.FormatBool(true),
-		gcplabelkeys.ResourceId:   locals.GcpArtifactRegistryRepo.Metadata.Id,
-		gcplabelkeys.ResourceKind: "gcp_artifact_registry",
+		gcplabelkeys.ResourceName: target.Metadata.Name,
+		gcplabelkeys.ResourceKind: string(apiresourcekind.GcpArtifactRegistryRepoKind),
 	}
 
-	if locals.GcpArtifactRegistryRepo.Metadata.Org != "" {
-		locals.GcpLabels[gcplabelkeys.Organization] = locals.GcpArtifactRegistryRepo.Metadata.Org
+	if target.Metadata.Id != "" {
+		locals.GcpLabels[gcplabelkeys.ResourceId] = target.Metadata.Id
+	}
+
+	if target.Metadata.Org != "" {
+		locals.GcpLabels[gcplabelkeys.Organization] = target.Metadata.Org
+	}
+
+	if target.Metadata.Env != "" {
+		locals.GcpLabels[gcplabelkeys.Environment] = target.Metadata.Env
 	}
 
 	return locals

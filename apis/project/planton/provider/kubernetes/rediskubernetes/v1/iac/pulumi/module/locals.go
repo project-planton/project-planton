@@ -4,6 +4,7 @@ import (
 	"fmt"
 	rediskubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/rediskubernetes/v1"
 	"github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/rediskubernetes/v1/iac/pulumi/module/outputs"
+	"github.com/project-planton/project-planton/internal/apiresourcekind"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/kuberneteslabelkeys"
 	"github.com/project-planton/project-planton/pkg/overridelabels"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
@@ -27,42 +28,42 @@ func initializeLocals(ctx *pulumi.Context, stackInput *rediskubernetesv1.RedisKu
 
 	locals.RedisKubernetes = stackInput.Target
 
-	redisKubernetes := stackInput.Target
+	target := stackInput.Target
 
 	locals.Labels = map[string]string{
 		kuberneteslabelkeys.Resource:     strconv.FormatBool(true),
-		kuberneteslabelkeys.ResourceName: redisKubernetes.Metadata.Name,
-		kuberneteslabelkeys.ResourceKind: "redis_kubernetes",
+		kuberneteslabelkeys.ResourceName: target.Metadata.Name,
+		kuberneteslabelkeys.ResourceKind: string(apiresourcekind.RedisKubernetesKind),
 	}
 
-	if redisKubernetes.Metadata.Id != "" {
-		locals.Labels[kuberneteslabelkeys.ResourceId] = redisKubernetes.Metadata.Id
+	if target.Metadata.Id != "" {
+		locals.Labels[kuberneteslabelkeys.ResourceId] = target.Metadata.Id
 	}
 
-	if redisKubernetes.Metadata.Org != "" {
-		locals.Labels[kuberneteslabelkeys.Organization] = redisKubernetes.Metadata.Org
+	if target.Metadata.Org != "" {
+		locals.Labels[kuberneteslabelkeys.Organization] = target.Metadata.Org
 	}
 
-	if redisKubernetes.Metadata.Env != "" {
-		locals.Labels[kuberneteslabelkeys.Environment] = redisKubernetes.Metadata.Env
+	if target.Metadata.Env != "" {
+		locals.Labels[kuberneteslabelkeys.Environment] = target.Metadata.Env
 	}
 
-	locals.Namespace = redisKubernetes.Metadata.Name
+	locals.Namespace = target.Metadata.Name
 
-	if redisKubernetes.Metadata.Labels != nil &&
-		redisKubernetes.Metadata.Labels[overridelabels.KubernetesNamespaceLabelKey] != "" {
-		locals.Namespace = redisKubernetes.Metadata.Labels[overridelabels.KubernetesNamespaceLabelKey]
+	if target.Metadata.Labels != nil &&
+		target.Metadata.Labels[overridelabels.KubernetesNamespaceLabelKey] != "" {
+		locals.Namespace = target.Metadata.Labels[overridelabels.KubernetesNamespaceLabelKey]
 	}
 
 	ctx.Export(outputs.Namespace, pulumi.String(locals.Namespace))
 
 	locals.RedisPodSelectorLabels = map[string]string{
 		"app.kubernetes.io/component": "master",
-		"app.kubernetes.io/instance":  redisKubernetes.Metadata.Name,
+		"app.kubernetes.io/instance":  target.Metadata.Name,
 		"app.kubernetes.io/name":      "redis",
 	}
 
-	locals.KubeServiceName = fmt.Sprintf("%s-master", redisKubernetes.Metadata.Name)
+	locals.KubeServiceName = fmt.Sprintf("%s-master", target.Metadata.Name)
 
 	//export kubernetes service name
 	ctx.Export(outputs.Service, pulumi.String(locals.KubeServiceName))
@@ -78,17 +79,17 @@ func initializeLocals(ctx *pulumi.Context, stackInput *rediskubernetesv1.RedisKu
 	//export kube-port-forward command
 	ctx.Export(outputs.PortForwardCommand, pulumi.String(locals.KubePortForwardCommand))
 
-	if redisKubernetes.Spec.Ingress == nil ||
-		!redisKubernetes.Spec.Ingress.IsEnabled ||
-		redisKubernetes.Spec.Ingress.DnsDomain == "" {
+	if target.Spec.Ingress == nil ||
+		!target.Spec.Ingress.IsEnabled ||
+		target.Spec.Ingress.DnsDomain == "" {
 		return locals
 	}
 
 	locals.IngressExternalHostname = fmt.Sprintf("%s.%s", locals.Namespace,
-		redisKubernetes.Spec.Ingress.DnsDomain)
+		target.Spec.Ingress.DnsDomain)
 
 	locals.IngressInternalHostname = fmt.Sprintf("%s-internal.%s", locals.Namespace,
-		redisKubernetes.Spec.Ingress.DnsDomain)
+		target.Spec.Ingress.DnsDomain)
 
 	//export ingress hostnames
 	ctx.Export(outputs.ExternalHostname, pulumi.String(locals.IngressExternalHostname))

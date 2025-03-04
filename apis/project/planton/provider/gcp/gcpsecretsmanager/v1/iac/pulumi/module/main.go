@@ -31,8 +31,11 @@ func Resources(ctx *pulumi.Context, stackInput *gcpsecretsmanagerv1.GcpSecretsMa
 			continue
 		}
 
-		//construct the id of the secret to make it unique with in the google cloud project
-		secretId := fmt.Sprintf("%s-%s", locals.GcpSecretsManager.Metadata.Id, secretName)
+		secretId := secretName
+
+		if locals.GcpSecretsManager.Metadata.Env != "" {
+			secretId = fmt.Sprintf("%s-%s", locals.GcpSecretsManager.Metadata.Env, secretName)
+		}
 
 		//create the secret resource
 		createdSecret, err := secretmanager.NewSecret(ctx, secretName, &secretmanager.SecretArgs{
