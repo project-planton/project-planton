@@ -13,31 +13,31 @@ import (
 )
 
 func Resources(ctx *pulumi.Context, stackInput *gcpdnszonev1.GcpDnsZoneStackInput) error {
+	locals := initializeLocals(ctx, stackInput)
+
 	//create gcp provider using credentials from the input
 	gcpProvider, err := pulumigoogleprovider.Get(ctx, stackInput.ProviderCredential)
 	if err != nil {
 		return errors.Wrap(err, "failed to setup gcp provider")
 	}
 
-	//create a descriptive variable for the api-resource in the input
-	gcpDnsZone := stackInput.Target
-
 	//replace dots with hyphens to create valid managed-zone name
-	managedZoneName := strings.ReplaceAll(gcpDnsZone.Metadata.Name, ".", "-")
+	managedZoneName := strings.ReplaceAll(locals.GcpDnsZone.Metadata.Name, ".", "-")
 
 	//create managed-zone
 	createdManagedZone, err := dns.NewManagedZone(ctx,
 		managedZoneName,
 		&dns.ManagedZoneArgs{
 			Name:        pulumi.String(managedZoneName),
-			Project:     pulumi.String(gcpDnsZone.Spec.ProjectId),
-			Description: pulumi.String(fmt.Sprintf("managed-zone for %s", gcpDnsZone.Metadata.Name)),
+			Project:     pulumi.String(locals.GcpDnsZone.Spec.ProjectId),
+			Description: pulumi.String(fmt.Sprintf("managed-zone for %s", locals.GcpDnsZone.Metadata.Name)),
 			//dns-name should have a dot at the end
-			DnsName:    pulumi.Sprintf("%s.", gcpDnsZone.Metadata.Name),
+			DnsName:    pulumi.Sprintf("%s.", locals.GcpDnsZone.Metadata.Name),
 			Visibility: pulumi.String("public"),
+			Labels:     pulumi.ToStringMap(locals.GcpLabels),
 		}, pulumi.Provider(gcpProvider))
 	if err != nil {
-		return errors.Wrapf(err, "failed to add zone for %s domain", gcpDnsZone.Metadata.Name)
+		return errors.Wrapf(err, "failed to add zone for %s domain", locals.GcpDnsZone.Metadata.Name)
 	}
 
 	//export important managed-zone attributes as outputs
@@ -47,10 +47,10 @@ func Resources(ctx *pulumi.Context, stackInput *gcpdnszonev1.GcpDnsZoneStackInpu
 
 	//create IAM binding for the gcp service-accounts to be granted permissions to manage the records in the zone.
 	//with this binding each gcp service-account will be granted permissions to create/delete/update dns-records.
-	if len(gcpDnsZone.Spec.IamServiceAccounts) > 0 {
+	if len(locals.GcpDnsZone.Spec.IamServiceAccounts) > 0 {
 		//each service account needs to be prefixed w/ 'serviceAccount:' for the input in the binding resource.
 		iamBindingMembers := make([]pulumi.StringInput, 0)
-		for _, serviceAccountEmail := range gcpDnsZone.Spec.IamServiceAccounts {
+		for _, serviceAccountEmail := range locals.GcpDnsZone.Spec.IamServiceAccounts {
 			iamBindingMembers = append(iamBindingMembers,
 				pulumi.Sprintf("serviceAccount:%s", serviceAccountEmail))
 		}
@@ -72,7 +72,7 @@ func Resources(ctx *pulumi.Context, stackInput *gcpdnszonev1.GcpDnsZoneStackInpu
 	}
 
 	//create dns-records in the created managed-zone
-	for index, dnsRecord := range gcpDnsZone.Spec.Records {
+	for index, dnsRecord := range locals.GcpDnsZone.Spec.Records {
 		_, err := dns.NewRecordSet(ctx,
 			fmt.Sprintf("dns-record-%d", index),
 			&dns.RecordSetArgs{

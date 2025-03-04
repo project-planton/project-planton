@@ -4,6 +4,7 @@ import (
 	"fmt"
 	microservicekubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/microservicekubernetes/v1"
 	"github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/microservicekubernetes/v1/iac/pulumi/module/outputs"
+	"github.com/project-planton/project-planton/internal/apiresourcekind"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/kuberneteslabelkeys"
 	"github.com/project-planton/project-planton/pkg/overridelabels"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
@@ -30,31 +31,31 @@ func initializeLocals(ctx *pulumi.Context, stackInput *microservicekubernetesv1.
 
 	locals.MicroserviceKubernetes = stackInput.Target
 
-	microserviceKubernetes := stackInput.Target
+	target := stackInput.Target
 
 	locals.Labels = map[string]string{
 		kuberneteslabelkeys.Resource:     strconv.FormatBool(true),
-		kuberneteslabelkeys.ResourceName: microserviceKubernetes.Metadata.Name,
-		kuberneteslabelkeys.ResourceKind: "microservice_kubernetes",
+		kuberneteslabelkeys.ResourceName: target.Metadata.Name,
+		kuberneteslabelkeys.ResourceKind: string(apiresourcekind.MicroserviceKubernetesKind),
 	}
 
-	if microserviceKubernetes.Metadata.Id != "" {
-		locals.Labels[kuberneteslabelkeys.ResourceId] = microserviceKubernetes.Metadata.Id
+	if target.Metadata.Id != "" {
+		locals.Labels[kuberneteslabelkeys.ResourceId] = target.Metadata.Id
 	}
 
-	if microserviceKubernetes.Metadata.Org != "" {
-		locals.Labels[kuberneteslabelkeys.Organization] = microserviceKubernetes.Metadata.Org
+	if target.Metadata.Org != "" {
+		locals.Labels[kuberneteslabelkeys.Organization] = target.Metadata.Org
 	}
 
-	if microserviceKubernetes.Metadata.Env != "" {
-		locals.Labels[kuberneteslabelkeys.Environment] = microserviceKubernetes.Metadata.Env
+	if target.Metadata.Env != "" {
+		locals.Labels[kuberneteslabelkeys.Environment] = target.Metadata.Env
 	}
 
-	locals.Namespace = microserviceKubernetes.Metadata.Name
+	locals.Namespace = target.Metadata.Name
 
-	if microserviceKubernetes.Metadata.Labels != nil &&
-		microserviceKubernetes.Metadata.Labels[overridelabels.KubernetesNamespaceLabelKey] != "" {
-		locals.Namespace = microserviceKubernetes.Metadata.Labels[overridelabels.KubernetesNamespaceLabelKey]
+	if target.Metadata.Labels != nil &&
+		target.Metadata.Labels[overridelabels.KubernetesNamespaceLabelKey] != "" {
+		locals.Namespace = target.Metadata.Labels[overridelabels.KubernetesNamespaceLabelKey]
 	}
 
 	ctx.Export(outputs.Namespace, pulumi.String(locals.Namespace))
@@ -63,7 +64,7 @@ func initializeLocals(ctx *pulumi.Context, stackInput *microservicekubernetesv1.
 		locals.ImagePullSecretData = map[string]string{".dockerconfigjson": stackInput.DockerConfigJson}
 	}
 
-	locals.KubeServiceName = microserviceKubernetes.Spec.Version
+	locals.KubeServiceName = target.Spec.Version
 
 	//export kubernetes service name
 	ctx.Export(outputs.Service, pulumi.String(locals.KubeServiceName))
@@ -79,17 +80,17 @@ func initializeLocals(ctx *pulumi.Context, stackInput *microservicekubernetesv1.
 	//export kube-port-forward command
 	ctx.Export(outputs.PortForwardCommand, pulumi.String(locals.KubePortForwardCommand))
 
-	if microserviceKubernetes.Spec.Ingress == nil ||
-		!microserviceKubernetes.Spec.Ingress.IsEnabled ||
-		microserviceKubernetes.Spec.Ingress.DnsDomain == "" {
+	if target.Spec.Ingress == nil ||
+		!target.Spec.Ingress.IsEnabled ||
+		target.Spec.Ingress.DnsDomain == "" {
 		return locals, nil
 	}
 
-	locals.IngressExternalHostname = fmt.Sprintf("%s.%s", microserviceKubernetes.Metadata.Id,
-		microserviceKubernetes.Spec.Ingress.DnsDomain)
+	locals.IngressExternalHostname = fmt.Sprintf("%s.%s", target.Metadata.Id,
+		target.Spec.Ingress.DnsDomain)
 
-	locals.IngressInternalHostname = fmt.Sprintf("%s-internal.%s", microserviceKubernetes.Metadata.Id,
-		microserviceKubernetes.Spec.Ingress.DnsDomain)
+	locals.IngressInternalHostname = fmt.Sprintf("%s-internal.%s", target.Metadata.Id,
+		target.Spec.Ingress.DnsDomain)
 
 	locals.IngressHostnames = []string{
 		locals.IngressExternalHostname,
@@ -105,9 +106,9 @@ func initializeLocals(ctx *pulumi.Context, stackInput *microservicekubernetesv1.
 	//if the kubernetes-cluster is created using Planton Cloud, then the cluster-issuer name will be
 	//same as the ingress-domain-name as long as the same ingress-domain-name is added to the list of
 	//ingress-domain-names for the GkeCluster/EksCluster/AksCluster spec.
-	locals.IngressCertClusterIssuerName = microserviceKubernetes.Spec.Ingress.DnsDomain
+	locals.IngressCertClusterIssuerName = target.Spec.Ingress.DnsDomain
 
-	locals.IngressCertSecretName = microserviceKubernetes.Metadata.Id
+	locals.IngressCertSecretName = target.Metadata.Id
 
 	return locals, nil
 }

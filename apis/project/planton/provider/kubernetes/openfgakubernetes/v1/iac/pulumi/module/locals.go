@@ -4,6 +4,7 @@ import (
 	"fmt"
 	openfgakubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/openfgakubernetes/v1"
 	"github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/openfgakubernetes/v1/iac/pulumi/module/outputs"
+	"github.com/project-planton/project-planton/internal/apiresourcekind"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/kuberneteslabelkeys"
 	"github.com/project-planton/project-planton/pkg/overridelabels"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
@@ -29,63 +30,63 @@ func initializeLocals(ctx *pulumi.Context, stackInput *openfgakubernetesv1.Openf
 
 	locals.OpenfgaKubernetes = stackInput.Target
 
-	openfgaKubernetes := stackInput.Target
+	target := stackInput.Target
 
 	locals.Labels = map[string]string{
 		kuberneteslabelkeys.Resource:     strconv.FormatBool(true),
-		kuberneteslabelkeys.ResourceName: openfgaKubernetes.Metadata.Name,
-		kuberneteslabelkeys.ResourceKind: "openfga_kubernetes",
+		kuberneteslabelkeys.ResourceName: target.Metadata.Name,
+		kuberneteslabelkeys.ResourceKind: string(apiresourcekind.OpenfgaKubernetesKind),
 	}
 
-	if openfgaKubernetes.Metadata.Id != "" {
-		locals.Labels[kuberneteslabelkeys.ResourceId] = openfgaKubernetes.Metadata.Id
+	if target.Metadata.Id != "" {
+		locals.Labels[kuberneteslabelkeys.ResourceId] = target.Metadata.Id
 	}
 
-	if openfgaKubernetes.Metadata.Org != "" {
-		locals.Labels[kuberneteslabelkeys.Organization] = openfgaKubernetes.Metadata.Org
+	if target.Metadata.Org != "" {
+		locals.Labels[kuberneteslabelkeys.Organization] = target.Metadata.Org
 	}
 
-	if openfgaKubernetes.Metadata.Env != "" {
-		locals.Labels[kuberneteslabelkeys.Environment] = openfgaKubernetes.Metadata.Env
+	if target.Metadata.Env != "" {
+		locals.Labels[kuberneteslabelkeys.Environment] = target.Metadata.Env
 	}
 
-	locals.Namespace = openfgaKubernetes.Metadata.Name
+	locals.Namespace = target.Metadata.Name
 
-	if openfgaKubernetes.Metadata.Labels != nil &&
-		openfgaKubernetes.Metadata.Labels[overridelabels.KubernetesNamespaceLabelKey] != "" {
-		locals.Namespace = openfgaKubernetes.Metadata.Labels[overridelabels.KubernetesNamespaceLabelKey]
+	if target.Metadata.Labels != nil &&
+		target.Metadata.Labels[overridelabels.KubernetesNamespaceLabelKey] != "" {
+		locals.Namespace = target.Metadata.Labels[overridelabels.KubernetesNamespaceLabelKey]
 	}
 
 	ctx.Export(outputs.Namespace, pulumi.String(locals.Namespace))
 
-	locals.KubeServiceName = openfgaKubernetes.Metadata.Name
+	locals.KubeServiceName = target.Metadata.Name
 
 	//export kubernetes service name
 	ctx.Export(outputs.Service, pulumi.String(locals.KubeServiceName))
 
 	locals.KubeServiceFqdn = fmt.Sprintf("%s.%s.svc.cluster.local",
-		openfgaKubernetes.Metadata.Name, locals.Namespace)
+		target.Metadata.Name, locals.Namespace)
 
 	//export kubernetes endpoint
 	ctx.Export(outputs.KubeEndpoint, pulumi.String(locals.KubeServiceFqdn))
 
 	locals.KubePortForwardCommand = fmt.Sprintf("kubectl port-forward -n %s service/%s 8080:8080",
-		locals.Namespace, openfgaKubernetes.Metadata.Name)
+		locals.Namespace, target.Metadata.Name)
 
 	//export kube-port-forward command
 	ctx.Export(outputs.PortForwardCommand, pulumi.String(locals.KubePortForwardCommand))
 
-	if openfgaKubernetes.Spec.Ingress == nil ||
-		!openfgaKubernetes.Spec.Ingress.IsEnabled ||
-		openfgaKubernetes.Spec.Ingress.DnsDomain == "" {
+	if target.Spec.Ingress == nil ||
+		!target.Spec.Ingress.IsEnabled ||
+		target.Spec.Ingress.DnsDomain == "" {
 		return locals
 	}
 
 	locals.IngressExternalHostname = fmt.Sprintf("%s.%s",
-		openfgaKubernetes.Metadata.Id, openfgaKubernetes.Spec.Ingress.DnsDomain)
+		target.Metadata.Id, target.Spec.Ingress.DnsDomain)
 
-	locals.IngressInternalHostname = fmt.Sprintf("%s-internal.%s", openfgaKubernetes.Metadata.Id,
-		openfgaKubernetes.Spec.Ingress.DnsDomain)
+	locals.IngressInternalHostname = fmt.Sprintf("%s-internal.%s", target.Metadata.Id,
+		target.Spec.Ingress.DnsDomain)
 
 	locals.IngressHostnames = []string{
 		locals.IngressExternalHostname,
@@ -101,9 +102,9 @@ func initializeLocals(ctx *pulumi.Context, stackInput *openfgakubernetesv1.Openf
 	//if the kubernetes-cluster is created using Planton Cloud, then the cluster-issuer name will be
 	//same as the ingress-domain-name as long as the same ingress-domain-name is added to the list of
 	//ingress-domain-names for the GkeCluster/EksCluster/AksCluster spec.
-	locals.IngressCertClusterIssuerName = openfgaKubernetes.Spec.Ingress.DnsDomain
+	locals.IngressCertClusterIssuerName = target.Spec.Ingress.DnsDomain
 
-	locals.IngressCertSecretName = openfgaKubernetes.Metadata.Id
+	locals.IngressCertSecretName = target.Metadata.Id
 
 	return locals
 }

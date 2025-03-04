@@ -4,6 +4,7 @@ import (
 	"fmt"
 	kuberneteshttpendpointv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/kuberneteshttpendpoint/v1"
 	"github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/kuberneteshttpendpoint/v1/iac/pulumi/module/outputs"
+	"github.com/project-planton/project-planton/internal/apiresourcekind"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/kuberneteslabelkeys"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"strconv"
@@ -27,7 +28,7 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kuberneteshttpendpointv1.
 		kuberneteslabelkeys.Organization: stackInput.Target.Metadata.Org,
 		kuberneteslabelkeys.Resource:     strconv.FormatBool(true),
 		kuberneteslabelkeys.ResourceId:   stackInput.Target.Metadata.Id,
-		kuberneteslabelkeys.ResourceKind: "kubernetes_http_endpoint",
+		kuberneteslabelkeys.ResourceKind: string(apiresourcekind.KubernetesHttpEndpointKind),
 	}
 
 	locals.EndpointDomainName = locals.KubernetesHttpEndpoint.Metadata.Name

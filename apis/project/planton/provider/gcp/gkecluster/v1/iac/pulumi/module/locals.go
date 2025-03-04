@@ -1,10 +1,10 @@
-// Package localz instead of locals to avoid naming collision w/ "locals" for the instance name created for the struct.
 package module
 
 import (
 	"fmt"
 	gcpcredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/gcpcredential/v1"
 	gkeclusterv1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gkecluster/v1"
+	"github.com/project-planton/project-planton/internal/apiresourcekind"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/gcp/gcplabelkeys"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/kuberneteslabelkeys"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
@@ -23,43 +23,51 @@ type Locals struct {
 }
 
 func initializeLocals(ctx *pulumi.Context, stackInput *gkeclusterv1.GkeClusterStackInput) *Locals {
-	gkeCluster := stackInput.Target
-
 	locals := &Locals{}
 
-	locals.GcpCredentialSpec = stackInput.ProviderCredential
 	locals.GkeCluster = stackInput.Target
+
+	target := stackInput.Target
 
 	locals.GcpLabels = map[string]string{
 		gcplabelkeys.Resource:     strconv.FormatBool(true),
-		gcplabelkeys.ResourceKind: "gke-cluster",
+		gcplabelkeys.ResourceName: target.Metadata.Name,
+		gcplabelkeys.ResourceKind: string(apiresourcekind.GkeClusterKind),
 	}
 
 	locals.KubernetesLabels = map[string]string{
 		kuberneteslabelkeys.Resource:     strconv.FormatBool(true),
-		kuberneteslabelkeys.ResourceKind: "gke-cluster",
+		kuberneteslabelkeys.ResourceName: target.Metadata.Name,
+		kuberneteslabelkeys.ResourceKind: string(apiresourcekind.GkeClusterKind),
 	}
 
 	if locals.GkeCluster.Metadata.Org != "" {
-		locals.GcpLabels[gcplabelkeys.Organization] = locals.GkeCluster.Metadata.Org
-		locals.KubernetesLabels[kuberneteslabelkeys.Organization] = locals.GkeCluster.Metadata.Org
+		locals.GcpLabels[gcplabelkeys.Organization] = target.Metadata.Org
+		locals.KubernetesLabels[kuberneteslabelkeys.Organization] = target.Metadata.Org
+	}
+
+	if locals.GkeCluster.Metadata.Env != "" {
+		locals.GcpLabels[gcplabelkeys.Environment] = target.Metadata.Env
+		locals.KubernetesLabels[kuberneteslabelkeys.Environment] = target.Metadata.Env
 	}
 
 	if locals.GkeCluster.Metadata.Id != "" {
-		locals.GcpLabels[gcplabelkeys.ResourceId] = locals.GkeCluster.Metadata.Id
-		locals.KubernetesLabels[kuberneteslabelkeys.ResourceId] = locals.GkeCluster.Metadata.Id
+		locals.GcpLabels[gcplabelkeys.ResourceId] = target.Metadata.Id
+		locals.KubernetesLabels[kuberneteslabelkeys.ResourceId] = target.Metadata.Id
 	}
 
-	locals.KubernetesPodSecondaryIpRangeName = fmt.Sprintf("gke-%s-pods", gkeCluster.Metadata.Name)
-	locals.KubernetesServiceSecondaryIpRangeName = fmt.Sprintf("gke-%s-services", gkeCluster.Metadata.Name)
-	locals.NetworkTag = fmt.Sprintf("gke-%s", gkeCluster.Metadata.Name)
+	locals.KubernetesPodSecondaryIpRangeName = fmt.Sprintf("gke-%s-pods", target.Metadata.Name)
+	locals.KubernetesServiceSecondaryIpRangeName = fmt.Sprintf("gke-%s-services", target.Metadata.Name)
+	locals.NetworkTag = fmt.Sprintf("gke-%s", target.Metadata.Name)
 
 	locals.ContainerClusterLoggingComponentList = []string{"SYSTEM_COMPONENTS"}
 
-	if gkeCluster.Spec.IsWorkloadLogsEnabled {
+	if target.Spec.IsWorkloadLogsEnabled {
 		locals.ContainerClusterLoggingComponentList = append(locals.ContainerClusterLoggingComponentList,
 			"WORKLOADS")
 	}
+
+	locals.GcpCredentialSpec = stackInput.ProviderCredential
 
 	return locals
 }

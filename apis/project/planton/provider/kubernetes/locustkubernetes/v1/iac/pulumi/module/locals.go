@@ -4,6 +4,7 @@ import (
 	"fmt"
 	locustkubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/locustkubernetes/v1"
 	"github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/locustkubernetes/v1/iac/pulumi/module/outputs"
+	"github.com/project-planton/project-planton/internal/apiresourcekind"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/kuberneteslabelkeys"
 	"github.com/project-planton/project-planton/pkg/overridelabels"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
@@ -26,39 +27,39 @@ type Locals struct {
 
 func initializeLocals(ctx *pulumi.Context, stackInput *locustkubernetesv1.LocustKubernetesStackInput) *Locals {
 	locals := &Locals{}
-	//assign value for the locals variable to make it available across the project
+
 	locals.LocustKubernetes = stackInput.Target
 
-	locustKubernetes := stackInput.Target
+	target := stackInput.Target
 
 	locals.Labels = map[string]string{
 		kuberneteslabelkeys.Resource:     strconv.FormatBool(true),
-		kuberneteslabelkeys.ResourceName: locustKubernetes.Metadata.Name,
-		kuberneteslabelkeys.ResourceKind: "locust_kubernetes",
+		kuberneteslabelkeys.ResourceName: target.Metadata.Name,
+		kuberneteslabelkeys.ResourceKind: string(apiresourcekind.LocustKubernetesKind),
 	}
 
-	if locustKubernetes.Metadata.Id != "" {
-		locals.Labels[kuberneteslabelkeys.ResourceId] = locustKubernetes.Metadata.Id
+	if target.Metadata.Id != "" {
+		locals.Labels[kuberneteslabelkeys.ResourceId] = target.Metadata.Id
 	}
 
-	if locustKubernetes.Metadata.Org != "" {
-		locals.Labels[kuberneteslabelkeys.Organization] = locustKubernetes.Metadata.Org
+	if target.Metadata.Org != "" {
+		locals.Labels[kuberneteslabelkeys.Organization] = target.Metadata.Org
 	}
 
-	if locustKubernetes.Metadata.Env != "" {
-		locals.Labels[kuberneteslabelkeys.Environment] = locustKubernetes.Metadata.Env
+	if target.Metadata.Env != "" {
+		locals.Labels[kuberneteslabelkeys.Environment] = target.Metadata.Env
 	}
 
-	locals.Namespace = locustKubernetes.Metadata.Name
+	locals.Namespace = target.Metadata.Name
 
-	if locustKubernetes.Metadata.Labels != nil &&
-		locustKubernetes.Metadata.Labels[overridelabels.KubernetesNamespaceLabelKey] != "" {
-		locals.Namespace = locustKubernetes.Metadata.Labels[overridelabels.KubernetesNamespaceLabelKey]
+	if target.Metadata.Labels != nil &&
+		target.Metadata.Labels[overridelabels.KubernetesNamespaceLabelKey] != "" {
+		locals.Namespace = target.Metadata.Labels[overridelabels.KubernetesNamespaceLabelKey]
 	}
 
 	ctx.Export(outputs.Namespace, pulumi.String(locals.Namespace))
 
-	locals.KubeServiceName = locustKubernetes.Metadata.Name
+	locals.KubeServiceName = target.Metadata.Name
 
 	//export kubernetes service name
 	ctx.Export(outputs.Service, pulumi.String(locals.KubeServiceName))
@@ -69,22 +70,22 @@ func initializeLocals(ctx *pulumi.Context, stackInput *locustkubernetesv1.Locust
 	ctx.Export(outputs.KubeEndpoint, pulumi.String(locals.KubeServiceFqdn))
 
 	locals.KubePortForwardCommand = fmt.Sprintf("kubectl port-forward -n %s service/%s 8080:8080",
-		locals.Namespace, locustKubernetes.Metadata.Name)
+		locals.Namespace, target.Metadata.Name)
 
 	//export kube-port-forward command
 	ctx.Export(outputs.PortForwardCommand, pulumi.String(locals.KubePortForwardCommand))
 
-	if locustKubernetes.Spec.Ingress == nil ||
-		!locustKubernetes.Spec.Ingress.IsEnabled ||
-		locustKubernetes.Spec.Ingress.DnsDomain == "" {
+	if target.Spec.Ingress == nil ||
+		!target.Spec.Ingress.IsEnabled ||
+		target.Spec.Ingress.DnsDomain == "" {
 		return locals
 	}
 
-	locals.IngressExternalHostname = fmt.Sprintf("%s.%s", locustKubernetes.Metadata.Id,
-		locustKubernetes.Spec.Ingress.DnsDomain)
+	locals.IngressExternalHostname = fmt.Sprintf("%s.%s", target.Metadata.Id,
+		target.Spec.Ingress.DnsDomain)
 
-	locals.IngressInternalHostname = fmt.Sprintf("%s-internal.%s", locustKubernetes.Metadata.Id,
-		locustKubernetes.Spec.Ingress.DnsDomain)
+	locals.IngressInternalHostname = fmt.Sprintf("%s-internal.%s", target.Metadata.Id,
+		target.Spec.Ingress.DnsDomain)
 
 	locals.IngressHostnames = []string{
 		locals.IngressExternalHostname,
@@ -100,9 +101,9 @@ func initializeLocals(ctx *pulumi.Context, stackInput *locustkubernetesv1.Locust
 	//if the kubernetes-cluster is created using Planton Cloud, then the cluster-issuer name will be
 	//same as the ingress-domain-name as long as the same ingress-domain-name is added to the list of
 	//ingress-domain-names for the GkeCluster/EksCluster/AksCluster spec.
-	locals.IngressCertClusterIssuerName = locustKubernetes.Spec.Ingress.DnsDomain
+	locals.IngressCertClusterIssuerName = target.Spec.Ingress.DnsDomain
 
-	locals.IngressCertSecretName = locustKubernetes.Metadata.Id
+	locals.IngressCertSecretName = target.Metadata.Id
 
 	return locals
 }
