@@ -42,7 +42,7 @@ func adminCredentials(ctx *pulumi.Context,
 		&kubernetescorev1.SecretArgs{
 			Metadata: &metav1.ObjectMetaArgs{
 				Name:      pulumi.String(locals.JenkinsKubernetes.Metadata.Name),
-				Namespace: pulumi.String(locals.JenkinsKubernetes.Metadata.Id),
+				Namespace: pulumi.String(locals.Namespace),
 			},
 			Data: pulumi.StringMap{
 				vars.JenkinsAdminPasswordSecretKey: base64Password,

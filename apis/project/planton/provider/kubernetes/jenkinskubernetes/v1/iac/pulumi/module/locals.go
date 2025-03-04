@@ -5,6 +5,7 @@ import (
 	jenkinskubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/jenkinskubernetes/v1"
 	"github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/jenkinskubernetes/v1/iac/pulumi/module/outputs"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/kuberneteslabelkeys"
+	"github.com/project-planton/project-planton/pkg/overridelabels"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"strconv"
 )
@@ -31,15 +32,31 @@ func initializeLocals(ctx *pulumi.Context, stackInput *jenkinskubernetesv1.Jenki
 	jenkinsKubernetes := stackInput.Target
 
 	locals.Labels = map[string]string{
-		kuberneteslabelkeys.Environment:  stackInput.Target.Metadata.Env,
-		kuberneteslabelkeys.Organization: stackInput.Target.Metadata.Org,
 		kuberneteslabelkeys.Resource:     strconv.FormatBool(true),
-		kuberneteslabelkeys.ResourceId:   stackInput.Target.Metadata.Id,
+		kuberneteslabelkeys.ResourceName: jenkinsKubernetes.Metadata.Name,
 		kuberneteslabelkeys.ResourceKind: "jenkins_kubernetes",
 	}
 
-	//decide on the namespace
-	locals.Namespace = jenkinsKubernetes.Metadata.Id
+	if jenkinsKubernetes.Metadata.Id != "" {
+		locals.Labels[kuberneteslabelkeys.ResourceId] = jenkinsKubernetes.Metadata.Id
+	}
+
+	if jenkinsKubernetes.Metadata.Org != "" {
+		locals.Labels[kuberneteslabelkeys.Organization] = jenkinsKubernetes.Metadata.Org
+	}
+
+	if jenkinsKubernetes.Metadata.Env != "" {
+		locals.Labels[kuberneteslabelkeys.Environment] = jenkinsKubernetes.Metadata.Env
+	}
+
+	locals.Namespace = jenkinsKubernetes.Metadata.Name
+
+	if jenkinsKubernetes.Metadata.Labels != nil &&
+		jenkinsKubernetes.Metadata.Labels[overridelabels.KubernetesNamespaceLabelKey] != "" {
+		locals.Namespace = jenkinsKubernetes.Metadata.Labels[overridelabels.KubernetesNamespaceLabelKey]
+	}
+
+	ctx.Export(outputs.Namespace, pulumi.String(locals.Namespace))
 
 	locals.KubeServiceName = jenkinsKubernetes.Metadata.Name
 

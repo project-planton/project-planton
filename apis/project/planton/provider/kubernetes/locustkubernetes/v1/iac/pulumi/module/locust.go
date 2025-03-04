@@ -62,16 +62,18 @@ func locust(ctx *pulumi.Context, locals *Locals,
 	mergestringmaps.MergeMapToPulumiMap(helmValues, locals.LocustKubernetes.Spec.HelmValues)
 
 	// Deploying a Locust Helm chart from the Helm repository.
-	_, err = helmv3.NewChart(ctx, locals.LocustKubernetes.Metadata.Id, helmv3.ChartArgs{
-		Chart:     pulumi.String("locust"),
-		Version:   pulumi.String("0.31.5"), // Use the Helm chart version you want to install
-		Namespace: pulumi.String(locals.Namespace),
-		Values:    helmValues,
-		//if you need to add the repository, you can specify `repo url`:
-		FetchArgs: helmv3.FetchArgs{
-			Repo: pulumi.String("https://charts.deliveryhero.io"), // The URL for the Helm chart repository
-		},
-	}, pulumi.Parent(createdNamespace))
+	_, err = helmv3.NewChart(ctx,
+		locals.LocustKubernetes.Metadata.Name,
+		helmv3.ChartArgs{
+			Chart:     pulumi.String("locust"),
+			Version:   pulumi.String("0.31.5"), // Use the Helm chart version you want to install
+			Namespace: pulumi.String(locals.Namespace),
+			Values:    helmValues,
+			//if you need to add the repository, you can specify `repo url`:
+			FetchArgs: helmv3.FetchArgs{
+				Repo: pulumi.String("https://charts.deliveryhero.io"), // The URL for the Helm chart repository
+			},
+		}, pulumi.Parent(createdNamespace))
 
 	if err != nil {
 		return errors.Wrap(err, "failed to create locust resource")

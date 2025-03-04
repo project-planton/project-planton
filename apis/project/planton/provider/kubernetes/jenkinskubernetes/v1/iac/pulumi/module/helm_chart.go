@@ -34,7 +34,7 @@ func helmChart(ctx *pulumi.Context,
 
 	//install jenkins helm-chart
 	_, err := helmv3.NewChart(ctx,
-		locals.JenkinsKubernetes.Metadata.Id,
+		locals.JenkinsKubernetes.Metadata.Name,
 		helmv3.ChartArgs{
 			Chart:     pulumi.String(vars.HelmChartName),
 			Version:   pulumi.String(vars.HelmChartVersion),

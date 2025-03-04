@@ -15,10 +15,10 @@ func deployment(ctx *pulumi.Context, locals *Locals,
 
 	// create service account
 	createdServiceAccount, err := kubernetescorev1.NewServiceAccount(ctx,
-		locals.MicroserviceKubernetes.Metadata.Id,
+		locals.MicroserviceKubernetes.Metadata.Name,
 		&kubernetescorev1.ServiceAccountArgs{
 			Metadata: metav1.ObjectMetaPtrInput(&metav1.ObjectMetaArgs{
-				Name:      pulumi.String(locals.MicroserviceKubernetes.Metadata.Id),
+				Name:      pulumi.String(locals.MicroserviceKubernetes.Metadata.Name),
 				Namespace: createdNamespace.Metadata.Name(),
 			}),
 		}, pulumi.Parent(createdNamespace))

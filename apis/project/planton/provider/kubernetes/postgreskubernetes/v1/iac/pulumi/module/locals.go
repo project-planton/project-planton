@@ -5,6 +5,7 @@ import (
 	postgreskubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/postgreskubernetes/v1"
 	"github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/postgreskubernetes/v1/iac/pulumi/module/outputs"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/kuberneteslabelkeys"
+	"github.com/project-planton/project-planton/pkg/overridelabels"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"strconv"
 )
@@ -24,20 +25,18 @@ type Locals struct {
 func initializeLocals(ctx *pulumi.Context, stackInput *postgreskubernetesv1.PostgresKubernetesStackInput) *Locals {
 	locals := &Locals{}
 
-	//if the id is empty, use name as id
-	if stackInput.Target.Metadata.Id == "" {
-		stackInput.Target.Metadata.Id = stackInput.Target.Metadata.Name
-	}
+	locals.PostgresKubernetes = stackInput.Target
 
 	postgresKubernetes := stackInput.Target
 
-	//assign value for the local variable to make it available across the module.
-	locals.PostgresKubernetes = postgresKubernetes
-
 	locals.Labels = map[string]string{
 		kuberneteslabelkeys.Resource:     strconv.FormatBool(true),
-		kuberneteslabelkeys.ResourceId:   postgresKubernetes.Metadata.Id,
+		kuberneteslabelkeys.ResourceName: postgresKubernetes.Metadata.Name,
 		kuberneteslabelkeys.ResourceKind: "postgres_kubernetes",
+	}
+
+	if postgresKubernetes.Metadata.Id != "" {
+		locals.Labels[kuberneteslabelkeys.ResourceId] = postgresKubernetes.Metadata.Id
 	}
 
 	if postgresKubernetes.Metadata.Org != "" {
@@ -46,27 +45,29 @@ func initializeLocals(ctx *pulumi.Context, stackInput *postgreskubernetesv1.Post
 
 	if postgresKubernetes.Metadata.Env != "" {
 		locals.Labels[kuberneteslabelkeys.Environment] = postgresKubernetes.Metadata.Env
-
 	}
 
-	//decide on the namespace
-	locals.Namespace = postgresKubernetes.Metadata.Id
+	locals.Namespace = postgresKubernetes.Metadata.Name
+
+	if postgresKubernetes.Metadata.Labels != nil &&
+		postgresKubernetes.Metadata.Labels[overridelabels.KubernetesNamespaceLabelKey] != "" {
+		locals.Namespace = postgresKubernetes.Metadata.Labels[overridelabels.KubernetesNamespaceLabelKey]
+	}
 
 	ctx.Export(outputs.Namespace, pulumi.String(locals.Namespace))
 
 	locals.PostgresPodSectorLabels = map[string]string{
-		"planton.cloud/resource-kind": "postgres_kubernetes",
-		"planton.cloud/resource-id":   postgresKubernetes.Metadata.Id,
+		kuberneteslabelkeys.ResourceName: postgresKubernetes.Metadata.Name,
 	}
 
 	ctx.Export(outputs.UsernameSecretName,
 		pulumi.Sprintf("postgres.db-%s.credentials.postgresql.acid.zalan.do",
-			postgresKubernetes.Metadata.Id))
+			postgresKubernetes.Metadata.Name))
 	ctx.Export(outputs.UsernameSecretKey, pulumi.String("username"))
 
 	ctx.Export(outputs.PasswordSecretName,
 		pulumi.Sprintf("postgres.db-%s.credentials.postgresql.acid.zalan.do",
-			postgresKubernetes.Metadata.Id))
+			postgresKubernetes.Metadata.Name))
 	ctx.Export(outputs.PasswordSecretKey, pulumi.String("password"))
 
 	locals.KubeServiceName = fmt.Sprintf("%s-master", postgresKubernetes.Metadata.Name)
@@ -91,10 +92,10 @@ func initializeLocals(ctx *pulumi.Context, stackInput *postgreskubernetesv1.Post
 		return locals
 	}
 
-	locals.IngressExternalHostname = fmt.Sprintf("%s.%s", postgresKubernetes.Metadata.Id,
+	locals.IngressExternalHostname = fmt.Sprintf("%s.%s", locals.Namespace,
 		postgresKubernetes.Spec.Ingress.DnsDomain)
 
-	locals.IngressInternalHostname = fmt.Sprintf("%s-internal.%s", postgresKubernetes.Metadata.Id,
+	locals.IngressInternalHostname = fmt.Sprintf("%s-internal.%s", locals.Namespace,
 		postgresKubernetes.Spec.Ingress.DnsDomain)
 
 	//export ingress hostnames

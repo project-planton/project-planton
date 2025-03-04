@@ -5,6 +5,7 @@ import (
 	locustkubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/locustkubernetes/v1"
 	"github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/locustkubernetes/v1/iac/pulumi/module/outputs"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/kuberneteslabelkeys"
+	"github.com/project-planton/project-planton/pkg/overridelabels"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"strconv"
 )
@@ -31,15 +32,30 @@ func initializeLocals(ctx *pulumi.Context, stackInput *locustkubernetesv1.Locust
 	locustKubernetes := stackInput.Target
 
 	locals.Labels = map[string]string{
-		kuberneteslabelkeys.Environment:  stackInput.Target.Metadata.Env,
-		kuberneteslabelkeys.Organization: stackInput.Target.Metadata.Org,
 		kuberneteslabelkeys.Resource:     strconv.FormatBool(true),
-		kuberneteslabelkeys.ResourceId:   stackInput.Target.Metadata.Id,
+		kuberneteslabelkeys.ResourceName: locustKubernetes.Metadata.Name,
 		kuberneteslabelkeys.ResourceKind: "locust_kubernetes",
 	}
 
-	//decide on the namespace
-	locals.Namespace = locustKubernetes.Metadata.Id
+	if locustKubernetes.Metadata.Id != "" {
+		locals.Labels[kuberneteslabelkeys.ResourceId] = locustKubernetes.Metadata.Id
+	}
+
+	if locustKubernetes.Metadata.Org != "" {
+		locals.Labels[kuberneteslabelkeys.Organization] = locustKubernetes.Metadata.Org
+	}
+
+	if locustKubernetes.Metadata.Env != "" {
+		locals.Labels[kuberneteslabelkeys.Environment] = locustKubernetes.Metadata.Env
+	}
+
+	locals.Namespace = locustKubernetes.Metadata.Name
+
+	if locustKubernetes.Metadata.Labels != nil &&
+		locustKubernetes.Metadata.Labels[overridelabels.KubernetesNamespaceLabelKey] != "" {
+		locals.Namespace = locustKubernetes.Metadata.Labels[overridelabels.KubernetesNamespaceLabelKey]
+	}
+
 	ctx.Export(outputs.Namespace, pulumi.String(locals.Namespace))
 
 	locals.KubeServiceName = locustKubernetes.Metadata.Name

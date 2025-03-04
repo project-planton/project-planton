@@ -35,15 +35,17 @@ func mongodb(ctx *pulumi.Context, locals *Locals,
 	mergestringmaps.MergeMapToPulumiMap(helmValues, locals.MongodbKubernetes.Spec.HelmValues)
 
 	// install helm-chart
-	_, err := helmv3.NewChart(ctx, locals.MongodbKubernetes.Metadata.Id, helmv3.ChartArgs{
-		Chart:     pulumi.String(vars.HelmChartName),
-		Version:   pulumi.String(vars.HelmChartVersion),
-		Namespace: pulumi.String(locals.Namespace),
-		Values:    helmValues,
-		FetchArgs: helmv3.FetchArgs{
-			Repo: pulumi.String(vars.HelmChartRepoUrl),
-		},
-	}, pulumi.Parent(createdNamespace))
+	_, err := helmv3.NewChart(ctx,
+		locals.MongodbKubernetes.Metadata.Name,
+		helmv3.ChartArgs{
+			Chart:     pulumi.String(vars.HelmChartName),
+			Version:   pulumi.String(vars.HelmChartVersion),
+			Namespace: pulumi.String(locals.Namespace),
+			Values:    helmValues,
+			FetchArgs: helmv3.FetchArgs{
+				Repo: pulumi.String(vars.HelmChartRepoUrl),
+			},
+		}, pulumi.Parent(createdNamespace))
 
 	if err != nil {
 		return errors.Wrap(err, "failed to create mongodb helm-chart")

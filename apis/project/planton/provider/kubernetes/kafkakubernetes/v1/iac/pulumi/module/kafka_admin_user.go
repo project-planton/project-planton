@@ -13,7 +13,7 @@ func kafkaAdminUser(ctx *pulumi.Context, locals *Locals, createdNamespace *kuber
 
 	labels := locals.Labels
 	//add the label required to create the admin secret for the target kafka-cluster
-	labels[vars.ClusterLabelKey] = locals.KafkaKubernetes.Metadata.Id
+	labels[vars.ClusterLabelKey] = locals.KafkaKubernetes.Metadata.Name
 
 	_, err := v1beta2.NewKafkaUser(ctx,
 		"admin-user",

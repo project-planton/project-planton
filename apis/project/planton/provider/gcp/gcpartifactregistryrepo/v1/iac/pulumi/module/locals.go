@@ -15,11 +15,6 @@ type Locals struct {
 func initializeLocals(ctx *pulumi.Context, stackInput *gcpartifactregistryrepov1.GcpArtifactRegistryRepoStackInput) *Locals {
 	locals := &Locals{}
 
-	//if the id is empty, use name as id
-	if stackInput.Target.Metadata.Id == "" {
-		stackInput.Target.Metadata.Id = stackInput.Target.Metadata.Name
-	}
-
 	//assign value for the locals variable to make it available across the project
 	locals.GcpArtifactRegistryRepo = stackInput.Target
 

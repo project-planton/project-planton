@@ -5,6 +5,7 @@ import (
 	microservicekubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/microservicekubernetes/v1"
 	"github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/microservicekubernetes/v1/iac/pulumi/module/outputs"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/kuberneteslabelkeys"
+	"github.com/project-planton/project-planton/pkg/overridelabels"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"strconv"
 )
@@ -27,20 +28,18 @@ type Locals struct {
 func initializeLocals(ctx *pulumi.Context, stackInput *microservicekubernetesv1.MicroserviceKubernetesStackInput) (*Locals, error) {
 	locals := &Locals{}
 
-	//if the id is empty, use name as id
-	if stackInput.Target.Metadata.Id == "" {
-		stackInput.Target.Metadata.Id = stackInput.Target.Metadata.Name
-	}
+	locals.MicroserviceKubernetes = stackInput.Target
 
 	microserviceKubernetes := stackInput.Target
 
-	//assign value for the locals variable to make it available across the project
-	locals.MicroserviceKubernetes = stackInput.Target
-
 	locals.Labels = map[string]string{
 		kuberneteslabelkeys.Resource:     strconv.FormatBool(true),
-		kuberneteslabelkeys.ResourceId:   stackInput.Target.Metadata.Id,
+		kuberneteslabelkeys.ResourceName: microserviceKubernetes.Metadata.Name,
 		kuberneteslabelkeys.ResourceKind: "microservice_kubernetes",
+	}
+
+	if microserviceKubernetes.Metadata.Id != "" {
+		locals.Labels[kuberneteslabelkeys.ResourceId] = microserviceKubernetes.Metadata.Id
 	}
 
 	if microserviceKubernetes.Metadata.Org != "" {
@@ -51,14 +50,18 @@ func initializeLocals(ctx *pulumi.Context, stackInput *microservicekubernetesv1.
 		locals.Labels[kuberneteslabelkeys.Environment] = microserviceKubernetes.Metadata.Env
 	}
 
+	locals.Namespace = microserviceKubernetes.Metadata.Name
+
+	if microserviceKubernetes.Metadata.Labels != nil &&
+		microserviceKubernetes.Metadata.Labels[overridelabels.KubernetesNamespaceLabelKey] != "" {
+		locals.Namespace = microserviceKubernetes.Metadata.Labels[overridelabels.KubernetesNamespaceLabelKey]
+	}
+
+	ctx.Export(outputs.Namespace, pulumi.String(locals.Namespace))
+
 	if stackInput.DockerConfigJson != "" {
 		locals.ImagePullSecretData = map[string]string{".dockerconfigjson": stackInput.DockerConfigJson}
 	}
-
-	//decide on the namespace
-	locals.Namespace = microserviceKubernetes.Metadata.Id
-
-	ctx.Export(outputs.Namespace, pulumi.String(locals.Namespace))
 
 	locals.KubeServiceName = microserviceKubernetes.Spec.Version
 

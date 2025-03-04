@@ -27,7 +27,7 @@ func helmChart(ctx *pulumi.Context,
 
 	//install openfga helm-chart
 	_, err := helmv3.NewChart(ctx,
-		locals.OpenfgaKubernetes.Metadata.Id,
+		locals.OpenfgaKubernetes.Metadata.Name,
 		helmv3.ChartArgs{
 			Chart:     pulumi.String(vars.HelmChartName),
 			Version:   pulumi.String(vars.HelmChartVersion),
