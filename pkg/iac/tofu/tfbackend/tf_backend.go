@@ -3,13 +3,13 @@ package tfbackend
 import (
 	"fmt"
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/apis/project/planton/credential/terraformbackendcredential/v1"
+	"github.com/project-planton/project-planton/apis/project/planton/shared/iac/terraform"
 	"os"
 	"path/filepath"
 )
 
 // WriteBackendFile creates a `backend.tf` file in projectDir using the backend type specified by tofuBackendType.
-func WriteBackendFile(projectDir string, tofuBackendType terraformbackendcredentialv1.TerraformBackendType) error {
+func WriteBackendFile(projectDir string, tofuBackendType terraform.TerraformBackendType) error {
 	backendName := tofuBackendType.String()
 
 	// Construct a minimal backend configuration.
@@ -27,17 +27,17 @@ func WriteBackendFile(projectDir string, tofuBackendType terraformbackendcredent
 	return nil
 }
 
-func BackendTypeFromString(backendTypeStr string) terraformbackendcredentialv1.TerraformBackendType {
+func BackendTypeFromString(backendTypeStr string) terraform.TerraformBackendType {
 	switch backendTypeStr {
 	case "local":
-		return terraformbackendcredentialv1.TerraformBackendType_local
+		return terraform.TerraformBackendType_local
 	case "s3":
-		return terraformbackendcredentialv1.TerraformBackendType_s3
+		return terraform.TerraformBackendType_s3
 	case "gcs":
-		return terraformbackendcredentialv1.TerraformBackendType_gcs
+		return terraform.TerraformBackendType_gcs
 	case "azurerm":
-		return terraformbackendcredentialv1.TerraformBackendType_azurerm
+		return terraform.TerraformBackendType_azurerm
 	default:
-		return terraformbackendcredentialv1.TerraformBackendType_terraform_backend_type_unspecified
+		return terraform.TerraformBackendType_terraform_backend_type_unspecified
 	}
 }

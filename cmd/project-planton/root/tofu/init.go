@@ -1,7 +1,7 @@
 package tofu
 
 import (
-	terraformbackendcredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/terraformbackendcredential/v1"
+	"github.com/project-planton/project-planton/apis/project/planton/shared/iac/terraform"
 	"github.com/project-planton/project-planton/internal/apiresourcekind"
 	"github.com/project-planton/project-planton/internal/cli/flag"
 	"github.com/project-planton/project-planton/internal/cli/workspace"
@@ -29,7 +29,7 @@ func init() {
 			"specified multiple\n                          times. The backend type must be in the "+
 			"configuration\n                          itself.")
 
-	Init.PersistentFlags().String(string(flag.BackendType), terraformbackendcredentialv1.TerraformBackendType_local.String(),
+	Init.PersistentFlags().String(string(flag.BackendType), terraform.TerraformBackendType_local.String(),
 		"Specifies the backend type that Terraform will use to store and manage the state.\n"+
 			"This must match one of the supported Terraform backends, such as 'local', 's3', 'gcs',\n"+
 			"'azurerm', 'remote', 'consul', 'http', 'etcdv3', 'manta', 'swift', 'artifactory', or\n"+

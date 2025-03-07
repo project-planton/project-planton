@@ -2,14 +2,14 @@ package credential
 
 import (
 	"github.com/bufbuild/protovalidate-go"
-	pulumibackendcredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/pulumibackendcredential/v1"
+	"github.com/project-planton/project-planton/apis/project/planton/shared/iac/pulumi"
 	"strings"
 	"testing"
 )
 
-func TestInitiate_PulumiBackendSpec_Without_HttpDetails(t *testing.T) {
-	pulumiBackendCredentialSpec := &pulumibackendcredentialv1.PulumiBackendCredentialSpec{
-		Type: pulumibackendcredentialv1.PulumiBackendType_http,
+func TestInitiate_PulumiBackend_Without_HttpDetails(t *testing.T) {
+	pulumiBackendCredentialSpec := &pulumi.PulumiBackend{
+		Type: pulumi.PulumiBackendType_http,
 	}
 	if err := protovalidate.Validate(pulumiBackendCredentialSpec); err != nil {
 		if !strings.Contains(err.Error(), "[http.mandatory]") {
@@ -20,9 +20,9 @@ func TestInitiate_PulumiBackendSpec_Without_HttpDetails(t *testing.T) {
 	}
 }
 
-func TestInitiate_PulumiBackendSpec_Without_AwsS3Details(t *testing.T) {
-	pulumiBackendCredentialSpec := &pulumibackendcredentialv1.PulumiBackendCredentialSpec{
-		Type: pulumibackendcredentialv1.PulumiBackendType_s3,
+func TestInitiate_PulumiBackend_Without_AwsS3Details(t *testing.T) {
+	pulumiBackendCredentialSpec := &pulumi.PulumiBackend{
+		Type: pulumi.PulumiBackendType_s3,
 	}
 	if err := protovalidate.Validate(pulumiBackendCredentialSpec); err != nil {
 		if !strings.Contains(err.Error(), "[s3.mandatory]") {
@@ -33,9 +33,9 @@ func TestInitiate_PulumiBackendSpec_Without_AwsS3Details(t *testing.T) {
 	}
 }
 
-func TestInitiate_PulumiBackendSpec_Without_GoogleCloudStorageDetails(t *testing.T) {
-	pulumiBackendCredentialSpec := &pulumibackendcredentialv1.PulumiBackendCredentialSpec{
-		Type: pulumibackendcredentialv1.PulumiBackendType_gcs,
+func TestInitiate_PulumiBackend_Without_GoogleCloudStorageDetails(t *testing.T) {
+	pulumiBackendCredentialSpec := &pulumi.PulumiBackend{
+		Type: pulumi.PulumiBackendType_gcs,
 	}
 	if err := protovalidate.Validate(pulumiBackendCredentialSpec); err != nil {
 		if !strings.Contains(err.Error(), "[gcs.mandatory]") {
@@ -46,9 +46,9 @@ func TestInitiate_PulumiBackendSpec_Without_GoogleCloudStorageDetails(t *testing
 	}
 }
 
-func TestInitiate_PulumiBackendSpec_Without_AzureBlobStorageDetails(t *testing.T) {
-	pulumiBackendCredentialSpec := &pulumibackendcredentialv1.PulumiBackendCredentialSpec{
-		Type: pulumibackendcredentialv1.PulumiBackendType_azurerm,
+func TestInitiate_PulumiBackend_Without_AzureBlobStorageDetails(t *testing.T) {
+	pulumiBackendCredentialSpec := &pulumi.PulumiBackend{
+		Type: pulumi.PulumiBackendType_azurerm,
 	}
 	if err := protovalidate.Validate(pulumiBackendCredentialSpec); err != nil {
 		if !strings.Contains(err.Error(), "[azurerm.mandatory]") {

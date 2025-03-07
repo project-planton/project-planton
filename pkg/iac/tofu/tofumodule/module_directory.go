@@ -92,7 +92,7 @@ func isTerraformModuleDirectory(moduleDir string) (bool, error) {
 
 func getTerraformModulePath(moduleRepoDir, kindName string) (string, error) {
 	kindProvider := provider.GetProvider(provider.KindName(kindName))
-	if kindProvider == iac.KindProvider_kind_provider_unspecified {
+	if kindProvider == shared.KindProvider_kind_provider_unspecified {
 		return "", errors.New("failed to get kind provider")
 	}
 

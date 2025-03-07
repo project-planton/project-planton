@@ -7,9 +7,7 @@ import (
 	gcpcredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/gcpcredential/v1"
 	kubernetesclustercredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/kubernetesclustercredential/v1"
 	mongodbatlascredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/mongodbatlascredential/v1"
-	pulumibackendcredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/pulumibackendcredential/v1"
 	snowflakecredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/snowflakecredential/v1"
-	terraformbackendcredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/terraformbackendcredential/v1"
 	mongodbatlasv1 "github.com/project-planton/project-planton/apis/project/planton/provider/atlas/mongodbatlas/v1"
 	awscloudfrontv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awscloudfront/v1"
 	awsdynamodbv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsdynamodb/v1"
@@ -160,9 +158,7 @@ var credentialMap = map[ApiResourceKind]proto.Message{
 	GcpCredentialKind:               &gcpcredentialv1.GcpCredential{},
 	KubernetesClusterCredentialKind: &kubernetesclustercredentialv1.KubernetesClusterCredential{},
 	MongodbAtlasCredentialKind:      &mongodbatlascredentialv1.MongodbAtlasCredential{},
-	PulumiBackendCredentialKind:     &pulumibackendcredentialv1.PulumiBackendCredential{},
 	SnowflakeCredentialKind:         &snowflakecredentialv1.SnowflakeCredential{},
-	TerraformBackendCredentialKind:  &terraformbackendcredentialv1.TerraformBackendCredential{},
 }
 
 var providerAtlasMap = map[ApiResourceKind]proto.Message{

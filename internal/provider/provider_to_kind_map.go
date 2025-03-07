@@ -4,12 +4,12 @@ import "github.com/project-planton/project-planton/apis/project/planton/shared"
 
 type KindName string
 
-var ToKindMap = map[iac.KindProvider][]KindName{
-	iac.KindProvider_kind_provider_atlas: {
+var ToKindMap = map[shared.KindProvider][]KindName{
+	shared.KindProvider_kind_provider_atlas: {
 		"MongodbAtlas",
 	},
 
-	iac.KindProvider_kind_provider_aws: {
+	shared.KindProvider_kind_provider_aws: {
 		"AwsCloudFront",
 		"AwsDynamodb",
 		"AwsFargate",
@@ -25,16 +25,16 @@ var ToKindMap = map[iac.KindProvider][]KindName{
 		"S3Bucket",
 	},
 
-	iac.KindProvider_kind_provider_azure: {
+	shared.KindProvider_kind_provider_azure: {
 		"AksCluster",
 		"AzureKeyVault",
 	},
 
-	iac.KindProvider_kind_provider_confluent: {
+	shared.KindProvider_kind_provider_confluent: {
 		"ConfluentKafka",
 	},
 
-	iac.KindProvider_kind_provider_gcp: {
+	shared.KindProvider_kind_provider_gcp: {
 		"GcpArtifactRegistryRepo",
 		"GcpCloudCdn",
 		"GcpCloudFunction",
@@ -47,7 +47,7 @@ var ToKindMap = map[iac.KindProvider][]KindName{
 		"GkeCluster",
 	},
 
-	iac.KindProvider_kind_provider_kubernetes: {
+	shared.KindProvider_kind_provider_kubernetes: {
 		"ArgocdKubernetes",
 		"ElasticsearchKubernetes",
 		"GitlabKubernetes",
@@ -70,7 +70,7 @@ var ToKindMap = map[iac.KindProvider][]KindName{
 		"StackJobRunnerKubernetes",
 	},
 
-	iac.KindProvider_kind_provider_snowflake: {
+	shared.KindProvider_kind_provider_snowflake: {
 		"SnowflakeDatabase",
 	},
 }

@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"fmt"
 	"github.com/pkg/errors"
-	terraformbackendcredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/terraformbackendcredential/v1"
 	"github.com/project-planton/project-planton/apis/project/planton/shared/iac/terraform"
 	"github.com/project-planton/project-planton/pkg/iac/tofu/tfbackend"
 	"github.com/project-planton/project-planton/pkg/iac/tofu/tfvars"
@@ -19,7 +18,7 @@ import (
 func TofuInit(
 	tofuModulePath string,
 	manifestObject proto.Message,
-	backendType terraformbackendcredentialv1.TerraformBackendType,
+	backendType terraform.TerraformBackendType,
 	backendConfigInput []string,
 	credentialEnvVars []string,
 	isJsonOutput bool,
