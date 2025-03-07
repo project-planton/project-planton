@@ -76,7 +76,7 @@ func IsPulumiModuleDirectory(moduleDir string) (bool, error) {
 
 func getPulumiModulePath(moduleRepoDir, kindName string) (string, error) {
 	kindProvider := provider.GetProvider(provider.KindName(kindName))
-	if kindProvider == shared.KindProvider_kind_provider_unspecified {
+	if kindProvider == iac.KindProvider_kind_provider_unspecified {
 		return "", errors.New("failed to get kind provider")
 	}
 
