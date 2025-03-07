@@ -2,22 +2,108 @@ syntax = "proto3";
 
 package project.planton.shared.iac.pulumi;
 
-import "project/planton/credential/pulumibackendcredential/v1/spec.proto";
+import "buf/validate/validate.proto";
 import "project/planton/shared/iac/iacgitrepo/iac_git_repo.proto";
-import "project/planton/shared/iac/pulumi/enums.proto";
 
 //pulumi stack info
 message PulumiStackInfo {
   //pulumi stack operations
   repeated PulumiStackOperation operations = 1;
   //pulumi backend
-  project.planton.credential.pulumibackendcredential.v1.PulumiBackendCredentialSpec backend = 2;
+  PulumiBackend backend = 2;
   //pulumi project
   PulumiProject project = 3;
   //pulumi stack name
   string stack_name = 4;
   //iac-module git-repo
   project.planton.shared.iac.iacgitrepo.IacGitRepo git_repo = 5;
+}
+
+//https://www.pulumi.com/docs/concepts/state
+// PulumiBackendType enum represents the various backends supported for storing Pulumi state.
+// Each backend type has its own use cases and advantages depending on the project requirements.
+// - local_file_system: Suitable for small projects or local development/testing environments.
+// - http: A centralized backend provided by Pulumi for managing state across distributed teams.
+// - aws_s3: AWS S3 can be used for scalable and reliable state storage, commonly used in AWS environments.
+// - google_cloud_storage: GCP's storage solution for state files, ideal for projects hosted on Google Cloud.
+// - azure_blob_storage: Azure Blob Storage for state storage, typically used for projects hosted on Microsoft Azure.
+enum PulumiBackendType {
+  type_unspecified = 0;
+  http = 1;
+  s3 = 2;
+  gcs = 3;
+  azurerm = 4;
+}
+
+//pulumi-backend-credential spec
+// These credentials are used for managing Pulumi state storage, which can be configured for different cloud providers or local environments.
+// For example, these credentials can be used to store state files in AWS S3, Google Cloud Storage, Azure Blob Storage, or locally on the file system.
+// Properly configuring these backends is essential for managing and maintaining infrastructure state efficiently.
+message PulumiBackend {
+  // The provider for the Pulumi backend credential.
+  // This field specifies the type of backend used to store Pulumi state (e.g., local file system, AWS S3, Google Cloud Storage).
+  // For more information, refer to: https://www.pulumi.com/docs/concepts/state
+  // Each backend type has different use cases; for example, local backends are suitable for development, while cloud backends are ideal for scalable, team-based environments.
+  // Properly selecting the backend type is crucial for ensuring that the infrastructure state is managed efficiently and securely, depending on the project requirements and team setup.
+  PulumiBackendType type = 1 [
+    (buf.validate.field).required = true
+  ];
+  option (buf.validate.message).cel = {
+    id: "http.required",
+    expression: "this.type == 1 && !has(this.http)"
+        "? 'http backend details is mandatory when provider is http'"
+        ": ''"
+  };
+  // http backend spec
+  PulumiHttpBackend http = 2;
+
+  option (buf.validate.message).cel = {
+    id: "s3.required",
+    expression: "this.type == 2 && !has(this.s3)"
+        "? 's3 backend details is mandatory when provider is s3'"
+        ": ''"
+  };
+  // s3 backend spec
+  PulumiS3Backend s3 = 3;
+
+  option (buf.validate.message).cel = {
+    id: "gcs.required",
+    expression: "this.type == 3 && !has(this.gcs)"
+        "? 'gcs backend details is mandatory when provider is gcs'"
+        ": ''"
+  };
+  // gcs backend spec
+  PulumiGcsBackend gcs = 4;
+
+  option (buf.validate.message).cel = {
+    id: "azurerm.required",
+    expression: "this.type == 4 && !has(this.azurerm)"
+        "? 'azurerm backend details is mandatory when provider is azurerm'"
+        ": ''"
+  };
+  // azure-rm backend spec
+  PulumiAzurermBackend azurerm = 5;
+}
+
+// pulumi operation type
+// the recommended best practice to prefix the entry with enum name has been intentionally ignored
+// to allow users to specify a user-friendly name in the input.
+enum PulumiOperationType {
+  pulumi_operation_type_unspecified = 0;
+  refresh = 1;
+  update = 2;
+  destroy = 3;
+}
+
+// https://www.pulumi.com/docs/concepts/projects/project-file/#attributes
+enum PulumiProjectRuntime {
+  pulumi_project_runtime_unspecified = 0;
+  nodejs = 1;
+  python = 2;
+  go = 3;
+  dotnet = 4;
+  java = 5;
+  yaml = 6;
 }
 
 // pulumi stack operation
@@ -35,4 +121,75 @@ message PulumiProject {
   string name = 1;
   //name of the pulumi project to be used for setting runtime attribute in Pulumi.yaml
   project.planton.shared.iac.pulumi.PulumiProjectRuntime runtime = 2;
+}
+
+//pulumi-backend-credential spec for http backend
+// hosted http backend provided by Pulumi Inc is https://pulumi.cloud
+// Clarify that the HTTP backend is a centralized solution that can be used for managing state across distributed teams, which may have specific security considerations.
+message PulumiHttpBackend {
+  //api base url
+  //this will be https://api.pulumi.com for Hosted Pulumi Cloud
+  string api_url = 1;
+
+  // The name of the Pulumi organization that owns the resources.
+  // This field is required and is used to identify the Pulumi organization under which the infrastructure is managed.
+  // It is crucial for managing access control, resource ownership, and collaboration within the Pulumi ecosystem.
+  // Properly setting the organization name helps ensure that resources are created and maintained under the correct organizational context.
+  string pulumi_organization = 2 [
+    (buf.validate.field).required = true
+  ];
+  //access token to be used for authorization
+  string access_token = 3 [
+    (buf.validate.field).required = true
+  ];
+}
+
+//pulumi-backend-credential spec for aws-s3 backend
+//https://www.pulumi.com/docs/concepts/state/#aws-s3
+// Consider adding a note about the IAM roles or policies required to access the S3 bucket securely.
+message PulumiS3Backend {
+  //name of s3-bucket
+  string s3_bucket = 1  [
+    (buf.validate.field).required = true
+  ];
+  //aws-access-key-id
+  string aws_access_key_id = 2 [
+    (buf.validate.field).required = true
+  ];
+  //aws-secret-access-key
+  string aws_secret_access_key = 3  [
+    (buf.validate.field).required = true
+  ];
+}
+
+//pulumi-backend-credential spec for google-cloud-storage backend
+//https://www.pulumi.com/docs/concepts/state/#google-cloud-storage
+// Mention the necessary roles or permissions needed for the GCP service account to interact with Google Cloud Storage.
+message PulumiGcsBackend {
+  //name of gcs-bucket
+  string gcs_bucket = 1  [
+    (buf.validate.field).required = true
+  ];
+  //base64 encoded gcp service-account-key json
+  string service_account_key_base64 = 2  [
+    (buf.validate.field).required = true
+  ];
+}
+
+//pulumi-backend-credential spec for azure-blob-storage backend
+// https://www.pulumi.com/docs/concepts/state/#azure-blob-storage
+// Provide a note on the importance of securing the storage account key and potential alternatives, like using Azure Key Vault.
+message PulumiAzurermBackend {
+  //name of azure blob storage container
+  string blob_storage_container = 1  [
+    (buf.validate.field).required = true
+  ];
+  //azure storage-account-name
+  string storage_account_name = 2  [
+    (buf.validate.field).required = true
+  ];
+  //azure storage-account-key
+  string storage_account_key = 3 [
+    (buf.validate.field).required = true
+  ];
 }
