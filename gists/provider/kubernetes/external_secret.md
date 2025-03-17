@@ -1,3 +1,10 @@
+## External Secret
+
+This piece of code was originally used to create external secret for each entry in the secrets map within microservice
+kubernetes app container spec. The logic has been updated to simply create secret resources to avoid
+opinionated implementations of secrets. Dumping the previous code here for a quick reference in the future. 
+
+```go
 package module
 
 import (
@@ -61,3 +68,4 @@ func externalSecret(ctx *pulumi.Context, locals *Locals,
 
 	return nil
 }
+```

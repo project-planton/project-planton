@@ -47,8 +47,8 @@ func Resources(ctx *pulumi.Context, stackInput *microservicekubernetesv1.Microse
 		return errors.Wrap(err, "failed to create microservice kubernetes service resource")
 	}
 
-	if err := externalSecret(ctx, locals, createdNamespace); err != nil {
-		return errors.Wrap(err, "failed to create external secret")
+	if err := secret(ctx, locals, createdNamespace); err != nil {
+		return errors.Wrap(err, "failed to create secret")
 	}
 
 	//create istio-ingress resources if ingress is enabled.
