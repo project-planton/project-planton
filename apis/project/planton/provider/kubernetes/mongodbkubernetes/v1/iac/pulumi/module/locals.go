@@ -17,11 +17,10 @@ type Locals struct {
 	KubePortForwardCommand   string
 	KubeServiceFqdn          string
 	KubeServiceName          string
-	KubernetesLabels         map[string]string
 	MongodbKubernetes        *mongodbkubernetesv1.MongodbKubernetes
 	Namespace                string
 	MongodbPodSelectorLabels map[string]string
-	Labels                   map[string]string
+	KubernetesLabels         map[string]string
 }
 
 func initializeLocals(ctx *pulumi.Context, stackInput *mongodbkubernetesv1.MongodbKubernetesStackInput) *Locals {
@@ -31,22 +30,22 @@ func initializeLocals(ctx *pulumi.Context, stackInput *mongodbkubernetesv1.Mongo
 
 	target := stackInput.Target
 
-	locals.Labels = map[string]string{
+	locals.KubernetesLabels = map[string]string{
 		kuberneteslabelkeys.Resource:     strconv.FormatBool(true),
 		kuberneteslabelkeys.ResourceName: target.Metadata.Name,
 		kuberneteslabelkeys.ResourceKind: string(apiresourcekind.MongodbKubernetesKind),
 	}
 
 	if target.Metadata.Id != "" {
-		locals.Labels[kuberneteslabelkeys.ResourceId] = target.Metadata.Id
+		locals.KubernetesLabels[kuberneteslabelkeys.ResourceId] = target.Metadata.Id
 	}
 
 	if target.Metadata.Org != "" {
-		locals.Labels[kuberneteslabelkeys.Organization] = target.Metadata.Org
+		locals.KubernetesLabels[kuberneteslabelkeys.Organization] = target.Metadata.Org
 	}
 
 	if target.Metadata.Env != "" {
-		locals.Labels[kuberneteslabelkeys.Environment] = target.Metadata.Env
+		locals.KubernetesLabels[kuberneteslabelkeys.Environment] = target.Metadata.Env
 	}
 
 	locals.Namespace = target.Metadata.Name
@@ -65,7 +64,7 @@ func initializeLocals(ctx *pulumi.Context, stackInput *mongodbkubernetesv1.Mongo
 
 	locals.MongodbPodSelectorLabels = map[string]string{
 		"app.kubernetes.io/component": "mongodb",
-		"app.kubernetes.io/instance":  target.Metadata.Id,
+		"app.kubernetes.io/instance":  locals.Namespace,
 		"app.kubernetes.io/name":      "mongodb",
 	}
 
@@ -89,10 +88,10 @@ func initializeLocals(ctx *pulumi.Context, stackInput *mongodbkubernetesv1.Mongo
 		return locals
 	}
 
-	locals.IngressExternalHostname = fmt.Sprintf("%s.%s", target.Metadata.Id,
+	locals.IngressExternalHostname = fmt.Sprintf("%s.%s", locals.Namespace,
 		target.Spec.Ingress.DnsDomain)
 
-	locals.IngressInternalHostname = fmt.Sprintf("%s-internal.%s", target.Metadata.Id,
+	locals.IngressInternalHostname = fmt.Sprintf("%s-internal.%s", locals.Namespace,
 		target.Spec.Ingress.DnsDomain)
 
 	//export ingress hostnames

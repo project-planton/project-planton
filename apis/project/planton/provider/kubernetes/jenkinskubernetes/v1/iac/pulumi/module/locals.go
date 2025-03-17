@@ -82,10 +82,10 @@ func initializeLocals(ctx *pulumi.Context, stackInput *jenkinskubernetesv1.Jenki
 		return locals
 	}
 
-	locals.IngressExternalHostname = fmt.Sprintf("%s.%s", target.Metadata.Id,
+	locals.IngressExternalHostname = fmt.Sprintf("%s.%s", locals.Namespace,
 		target.Spec.Ingress.DnsDomain)
 
-	locals.IngressInternalHostname = fmt.Sprintf("%s-internal.%s", target.Metadata.Id,
+	locals.IngressInternalHostname = fmt.Sprintf("%s-internal.%s", locals.Namespace,
 		target.Spec.Ingress.DnsDomain)
 
 	locals.IngressHostnames = []string{
@@ -104,7 +104,7 @@ func initializeLocals(ctx *pulumi.Context, stackInput *jenkinskubernetesv1.Jenki
 	//ingress-domain-names for the GkeCluster/EksCluster/AksCluster spec.
 	locals.IngressCertClusterIssuerName = target.Spec.Ingress.DnsDomain
 
-	locals.IngressCertSecretName = target.Metadata.Id
+	locals.IngressCertSecretName = locals.Namespace
 
 	return locals
 }

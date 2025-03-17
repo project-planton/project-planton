@@ -39,7 +39,7 @@ func Resources(ctx *pulumi.Context, stackInput *route53zonev1.Route53ZoneStackIn
 		managedZoneName,
 		&route53.HostedZoneArgs{
 			Name: pulumi.String(route53Zone.Metadata.Name),
-			//HostedZoneTags: convertLabelsToTags(input.Labels),
+			//HostedZoneTags: convertLabelsToTags(input.KubernetesLabels),
 		}, pulumi.Provider(awsNativeProvider))
 
 	if err != nil {

@@ -106,16 +106,16 @@ func initializeLocals(ctx *pulumi.Context, stackInput *elasticsearchkubernetesv1
 		return locals
 	}
 
-	locals.ElasticsearchIngressExternalHostname = fmt.Sprintf("%s.%s", target.Metadata.Id,
+	locals.ElasticsearchIngressExternalHostname = fmt.Sprintf("%s.%s", locals.Namespace,
 		target.Spec.Ingress.DnsDomain)
 
-	locals.ElasticsearchIngressInternalHostname = fmt.Sprintf("%s-internal.%s", target.Metadata.Id,
+	locals.ElasticsearchIngressInternalHostname = fmt.Sprintf("%s-internal.%s", locals.Namespace,
 		target.Spec.Ingress.DnsDomain)
 
-	locals.KibanaIngressExternalHostname = fmt.Sprintf("%s-kb.%s", target.Metadata.Id,
+	locals.KibanaIngressExternalHostname = fmt.Sprintf("%s-kb.%s", locals.Namespace,
 		target.Spec.Ingress.DnsDomain)
 
-	locals.KibanaIngressInternalHostname = fmt.Sprintf("%s-kb-internal.%s", target.Metadata.Id,
+	locals.KibanaIngressInternalHostname = fmt.Sprintf("%s-kb-internal.%s", locals.Namespace,
 		target.Spec.Ingress.DnsDomain)
 
 	locals.IngressHostnames = []string{
@@ -127,7 +127,7 @@ func initializeLocals(ctx *pulumi.Context, stackInput *elasticsearchkubernetesv1
 
 	locals.IngressCertClusterIssuerName = target.Spec.Ingress.DnsDomain
 
-	locals.IngressCertSecretName = target.Metadata.Id
+	locals.IngressCertSecretName = locals.Namespace
 
 	//export ingress hostnames
 	ctx.Export(outputs.ElasticsearchExternalHostname, pulumi.String(locals.ElasticsearchIngressExternalHostname))

@@ -47,6 +47,7 @@ func Resources(ctx *pulumi.Context, stackInput *microservicekubernetesv1.Microse
 		return errors.Wrap(err, "failed to create microservice kubernetes service resource")
 	}
 
+	//create kubernetes secret with app secrets
 	if err := secret(ctx, locals, createdNamespace); err != nil {
 		return errors.Wrap(err, "failed to create secret")
 	}
