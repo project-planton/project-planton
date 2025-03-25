@@ -1,6 +1,6 @@
 # Create using CLI
 
-Create a YAML file using the examples shown below. After the YAML is created, use the command below to apply the configuration.
+Create a yaml using the example shown below. After the yaml is created, use the below command to apply.
 
 ```shell
 planton apply -f <yaml-path>
@@ -9,8 +9,8 @@ planton apply -f <yaml-path>
 # Basic Example
 
 ```yaml
-apiVersion: gcp.project-planton.org/v1
-kind: MicroserviceKubernetes
+apiVersion: kubernetes.project-planton.org/v1
+kind: CronJobKubernetes
 metadata:
   name: todo-list-api
 spec:
@@ -24,6 +24,8 @@ spec:
         - appProtocol: http
           containerPort: 8080
           isIngressPort: true
+          name: rest-api
+          networkProtocol: TCP
           servicePort: 80
       resources:
         requests:
@@ -34,11 +36,11 @@ spec:
           memory: 2Gi
 ```
 
-# Example with Environment Variables
+# Example w/ Environment Variables
 
 ```yaml
-apiVersion: gcp.project-planton.org/v1
-kind: MicroserviceKubernetes
+apiVersion: kubernetes.project-planton.org/v1
+kind: CronJobKubernetes
 metadata:
   name: todo-list-api
 spec:
@@ -67,13 +69,12 @@ spec:
           memory: 2Gi
 ```
 
-# Example with Environment Secrets
+# Example w/ Environment Secrets  
 
-The example below assumes that the secrets are managed by Planton Cloud's [GCP Secrets Manager](https://buf.build/project-planton/apis/docs/main:cloud.planton.apis.code2cloud.v1.gcp.gcpsecretsmanager) deployment module.
-
+The below example assumes that the secrets are managed by Planton Cloud's [GCP Secrets Manager](https://buf.build/project-planton/apis/docs/main:cloud.planton.apis.code2cloud.v1.gcp.gcpsecretsmanager) deployment module.
 ```yaml
-apiVersion: gcp.project-planton.org/v1
-kind: MicroserviceKubernetes
+apiVersion: kubernetes.project-planton.org/v1
+kind: CronJobKubernetes
 metadata:
   name: todo-list-api
 spec:
@@ -82,8 +83,8 @@ spec:
     app:
       env:
         secrets:
-          # value before dot 'gcpsm-my-org-prod-gcp-secrets' is the ID of the gcp-secret-manager resource on Planton Cloud
-          # value after dot 'database-password' is one of the secrets in 'gcpsm-my-org-prod-gcp-secrets'
+          # value before dot 'gcpsm-my-org-prod-gcp-secrets' is the id of the gcp-secret-manager resource on planton-cloud
+          # value after dot 'database-password' is one of the secrets list in 'gcpsm-my-org-prod-gcp-secrets' is the id of the gcp-secret-manager resource on planton-cloud
           DATABASE_PASSWORD: ${gcpsm-my-org-prod-gcp-secrets.database-password}
         variables:
           DATABASE_NAME: todo

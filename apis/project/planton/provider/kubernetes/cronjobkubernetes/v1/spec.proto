@@ -1,0 +1,99 @@
+syntax = "proto3";
+
+package project.planton.provider.kubernetes.cronjobkubernetes.v1;
+
+import "buf/validate/validate.proto";
+import "project/planton/shared/kubernetes/kubernetes.proto";
+import "project/planton/shared/kubernetes/options.proto";
+import "project/planton/shared/options/options.proto";
+
+/**
+ * CronJobKubernetesSpec defines the configuration for deploying a cron-job on a Kubernetes cluster.
+ * This message includes specifications for the container image, resources, environment variables,
+ * and the cron-job schedule/policy fields. By setting these parameters, you manage how the
+ * cron-job is deployed, executed, and how concurrency and retries are handled.
+ */
+message CronJobKubernetesSpec {
+  /**
+   * The container image to be used for the application.
+   * The `pull_secret_name` is determined by looking up the
+   * `container_image_artifact_store_id` from the environment where the cron-job is deployed.
+   */
+  project.planton.shared.kubernetes.ContainerImage image = 1;
+
+  // The CPU and memory resources allocated to the cron-job container.
+  project.planton.shared.kubernetes.ContainerResources resources = 2 [
+    (project.planton.shared.kubernetes.default_container_resources) = {
+      limits {
+        cpu: "1000m"
+        memory: "1Gi"
+      },
+      requests {
+        cpu: "50m"
+        memory: "100Mi"
+      }
+    }
+  ];
+
+  // Environment variables and secrets for the cron-job container.
+  CronJobKubernetesContainerAppEnv env = 3;
+
+  // A cron schedule expression in standard Cron format, e.g. "0 0 * * *".
+  string schedule = 4 [
+    (buf.validate.field).required = true
+  ];
+
+  // Optional deadline in seconds for starting the job if it misses scheduled time.
+  uint64 starting_deadline_seconds = 5 [
+    (project.planton.shared.options.default) = "0",
+    (buf.validate.field).ignore = IGNORE_IF_DEFAULT_VALUE
+  ];
+
+  // Concurrency policy, how to treat concurrent job runs. Allowed: "Allow", "Forbid", "Replace".
+  string concurrency_policy = 6 [
+    (project.planton.shared.options.default) = "Forbid",
+    (buf.validate.field).string = {
+      in: ["Allow", "Forbid", "Replace"]
+    }
+  ];
+
+  // If true, no subsequent runs are scheduled.
+  bool suspend = 7 [
+    (project.planton.shared.options.default) = "false"
+  ];
+
+  // Number of successful finished jobs to retain.
+  uint32 successful_jobs_history_limit = 8 [
+    (project.planton.shared.options.default) = "3"
+  ];
+
+  // Number of failed finished jobs to retain.
+  uint32 failed_jobs_history_limit = 9 [
+    (project.planton.shared.options.default) = "1"
+  ];
+
+  // Number of retries before marking this job as failed.
+  uint32 backoff_limit = 10 [
+    (project.planton.shared.options.default) = "6"
+  ];
+
+  // Pod restart policy. Allowed: "Always", "OnFailure", "Never". Typically set to "Never".
+  string restart_policy = 11 [
+    (project.planton.shared.options.default) = "Never",
+    (buf.validate.field).string = {
+      in: ["Always", "OnFailure", "Never"]
+    }
+  ];
+}
+
+/**
+ * CronJobKubernetesContainerAppEnv defines the environment variables
+ * and secrets for the cron-job container.
+ */
+message CronJobKubernetesContainerAppEnv {
+  // A map of environment variable names to their values.
+  map<string, string> variables = 1;
+
+  // A map of secret names to their values.
+  map<string, string> secrets = 2;
+}
