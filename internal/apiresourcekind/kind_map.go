@@ -36,6 +36,7 @@ import (
 	gkeaddonbundlev1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gkeaddonbundle/v1"
 	gkeclusterv1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gkecluster/v1"
 	argocdkubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/argocdkubernetes/v1"
+	cronjobkubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/cronjobkubernetes/v1"
 	elasticsearchkubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/elasticsearchkubernetes/v1"
 	gitlabkubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/gitlabkubernetes/v1"
 	grafanakubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/grafanakubernetes/v1"
@@ -117,6 +118,7 @@ const (
 	KubernetesHttpEndpointKind   ApiResourceKind = "kubernetes-http-endpoint"
 	LocustKubernetesKind         ApiResourceKind = "locust-kubernetes"
 	MicroserviceKubernetesKind   ApiResourceKind = "microservice-kubernetes"
+	CronJobKubernetesKind        ApiResourceKind = "cron-job-kubernetes"
 	MongodbKubernetesKind        ApiResourceKind = "mongodb-kubernetes"
 	Neo4JKubernetesKind          ApiResourceKind = "neo4j-kubernetes"
 	OpenfgaKubernetesKind        ApiResourceKind = "openfga-kubernetes"
@@ -220,6 +222,7 @@ var providerKubernetesMap = map[ApiResourceKind]proto.Message{
 	KubernetesHttpEndpointKind:   &kuberneteshttpendpointv1.KubernetesHttpEndpoint{},
 	LocustKubernetesKind:         &locustkubernetesv1.LocustKubernetes{},
 	MicroserviceKubernetesKind:   &microservicekubernetesv1.MicroserviceKubernetes{},
+	CronJobKubernetesKind:        &cronjobkubernetesv1.CronJobKubernetes{},
 	MongodbKubernetesKind:        &mongodbkubernetesv1.MongodbKubernetes{},
 	Neo4JKubernetesKind:          &neo4jkubernetesv1.Neo4JKubernetes{},
 	OpenfgaKubernetesKind:        &openfgakubernetesv1.OpenfgaKubernetes{},

@@ -2,95 +2,119 @@
 
 ## Key Features
 
-- **Standardized API Resource Model**: Utilizes a unified structure for API resources, ensuring consistency across
-  different deployments and simplifying the development process.
+- **Standardized API Resource Model**  
+  Provides a unified way to define and deploy microservices on Kubernetes. By describing container images, resource
+  allocations, environment variables, ports, and optional sidecars in a simple API resource, you ensure consistency
+  across environments.
 
-- **Automated Kubernetes Resource Creation**: Automatically creates Kubernetes namespaces, deployments, services, and
-  ingress resources based on the provided specifications.
+- **Automated Kubernetes Resource Creation**  
+  Automatically creates Namespaces, Deployments, Services, and optional Ingress resources (via Gateway API and
+  Cert-Manager) based on the provided specifications. Eliminates the need for hand-maintained YAML files.
 
-- **Container Configuration**: Supports detailed container specifications, including image details, resource limits,
-  environment variables, secrets, and port configurations.
+- **Container Configuration**  
+  Supports detailed specifications for both primary and sidecar containers, including their images, ports, lifecycle
+  hooks, and resource limits/requests.
 
-- **Ingress Management**: Handles the setup of ingress resources using the Gateway API and Cert-Manager, enabling secure
-  external and internal access to microservices with automatic TLS certificate provisioning.
+- **Ingress Integration**  
+  When enabled, the module sets up Istio-based or Gateway API-based ingress, creating gateways, routes, and TLS
+  certificates if requested, allowing for secure external or internal traffic routing.
 
-- **Environment and Credential Integration**: Integrates with environment-specific configurations and credentials, such
-  as Kubernetes cluster credentials and Docker registry credentials, to facilitate secure deployments.
+- **Scalability & Availability**  
+  Optionally configure minimum replicas and horizontal pod autoscaling (HPA) thresholds. This ensures your microservice
+  can scale to meet demand while staying within resource budgets.
 
-- **Scalability and Availability**: Supports configurations for replicas and horizontal pod autoscaling to ensure the
-  microservice can scale based on demand.
+- **Secret Management**  
+  Securely handles environment secrets via Kubernetes Secrets. Integrates with external providers (e.g., GCP Secret
+  Manager) so sensitive information stays out of version control and container images.
 
-- **Secret Management**: Utilizes external secret management for securely injecting secrets into microservices,
-  integrating with secret stores like GCP Secret Manager.
-
-- **Output Exports**: Provides outputs such as namespace, service name, endpoints, and commands for port forwarding,
-  which can be used for further automation or integration.
+- **Output Exports**  
+  Exports useful values such as namespace, service name, internal service FQDN, and port-forward commands. These can be
+  leveraged for further automation or debugging.
 
 ## Usage
 
-Refer to [example](example.md) for usage instructions.
+See [example](example.md) for usage details and step-by-step examples. In general:
+
+1. Define a YAML resource describing your microservice using the **MicroserviceKubernetes** API.
+2. Run:
+   ```bash
+   planton pulumi up --stack-input <your-microservice-file.yaml>
+   ```
+
+to apply the resource on your cluster.
 
 ## Getting Started
 
-To deploy a microservice using this Pulumi module, define your microservice specifications in a YAML file following the
-standardized API resource model. Use the CLI command:
+1. **Craft Your Specification**  
+   Include container info, environment variables, secrets, ports, and (optionally) ingress preferences. If you need
+   sidecars, list them alongside your main container.
 
-```bash
-platon pulumi up --stack-input <api-resource.yaml>
-```
+2. **Apply via CLI**  
+   Execute `planton pulumi up --stack-input <microservice-spec.yaml>` (or your organization’s standard CLI command). The
+   Pulumi module automatically compiles your specification into Kubernetes resources.
 
-The module reads the specifications from the provided YAML file, sets up the Kubernetes provider using the specified
-cluster credentials, and proceeds to create and configure all necessary Kubernetes resources.
+3. **Validate & Observe**  
+   Check the logs of your microservice, confirm the Deployment and Service are created, and if ingress is enabled,
+   verify external access or domain routing.
 
 ## Module Structure
 
-- **Initialization**: Reads the API resource specifications and initializes local variables and labels used throughout
-  the deployment process.
+1. **Initialization**  
+   Reads your `MicroserviceKubernetesStackInput` (containing cluster creds, Docker config, resource definitions), sets
+   up local variables, and merges labels.
 
-- **Provider Setup**: Creates a Kubernetes provider instance using the provided cluster credentials for subsequent
-  resource creation.
+2. **Provider Setup**  
+   Establishes a Pulumi Kubernetes Provider for your target cluster.
 
-- **Namespace Creation**: Generates a unique namespace for the microservice deployment to encapsulate all related
-  resources.
+3. **Namespace Creation**  
+   Creates (or identifies) a namespace to house all your microservice resources.
 
-- **Image Pull Secrets**: Creates Kubernetes secrets for pulling images from private Docker registries, based on the
-  provided Docker credentials.
+4. **Image Pull Secret (Optional)**  
+   If Docker credentials (`docker_config_json`) are provided, creates a `kubernetes.io/dockerconfigjson` secret and
+   configures it in the Deployment’s Pod spec.
 
-- **Deployment Configuration**: Sets up the Kubernetes Deployment resource, including containers, environment variables,
-  secrets, ports, and resource requests and limits.
+5. **Deployment Configuration**  
+   Generates the Deployment with the main container and any sidecars specified. Injects environment variables, secrets,
+   lifecycle hooks, port configurations, and resource limits/requests.
 
-- **Service Configuration**: Creates a Kubernetes Service to expose the microservice within the cluster, configuring it
-  according to the specified ports and protocols.
+6. **Service Configuration**  
+   Creates a Kubernetes Service for internal cluster networking. Binds exposed ports, enabling other services to
+   discover and communicate with your microservice.
 
-- **Ingress Setup**: If ingress is enabled, sets up ingress resources using the Gateway API and Cert-Manager, handling
-  both external and internal access with HTTPS termination and automatic certificate provisioning.
+7. **Ingress Setup (Optional)**  
+   If requested, sets up Istio or Gateway-based routes, TLS certificates, or other ingress logic, providing external
+   access or advanced networking features.
 
-- **Secret Management**: Integrates with external secret stores to securely inject secrets into the microservice's
-  environment.
+8. **Secret Management**  
+   Creates a “main” Kubernetes Secret for storing your environment secrets. This allows sensitive credentials to remain
+   secure and out of source code.
 
-- **Output Exports**: Exports key information such as namespace, service name, endpoints, and commands, which can be
-  used for accessing the microservice or for further automation.
+9. **Output Exports**  
+   Publishes final references (e.g., namespace, service name, cluster endpoints), which can aid in post-deployment
+   automation.
 
 ## Benefits
 
-- **Simplified Deployment Process**: Reduces complexity by automating resource creation and configuration.
+- **Simplified Deployment**  
+  Focus on high-level configuration rather than writing raw Kubernetes manifests. Consistent patterns reduce the risk of
+  misconfiguration.
 
-- **Consistency and Standardization**: Ensures all deployments adhere to a standardized structure, making it easier to
-  manage multiple microservices across different environments.
+- **Security & Compliance**  
+  Minimizes exposure of secrets, enabling best practices for secret management, credential injection, and TLS
+  provisioning.
 
-- **Security and Compliance**: Incorporates best practices for handling secrets and credentials, ensuring sensitive
-  information is managed securely.
+- **Scalability**  
+  Easily set minimum replicas or enable horizontal pod autoscaling for traffic spikes and resilience.
 
-- **Scalable Architecture**: Supports scaling configurations based on resource utilization, ensuring high availability
-  and performance.
-
-- **Extensibility**: Can be extended or customized to accommodate additional requirements or integrate with other tools
-  and services.
+- **Extensibility**  
+  The module is built on Pulumi’s Kubernetes provider. You can augment or override resources if your team needs advanced
+  configurations (e.g., custom pod security policies).
 
 ## Contributing
 
-Contributions are welcome. Please submit issues or pull requests to the GitHub repository.
+Contributions are always welcome! Please open an issue or submit a pull request in the main repository if you want to
+add features, fix bugs, or improve documentation.
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE).
+This project is licensed under the [MIT License](LICENSE). Feel free to adapt it for your internal workflows.

@@ -23,8 +23,6 @@ kind: MicroserviceKubernetes
 metadata:
   name: todo-list-api
 spec:
-  environmentInfo:
-    envId: my-org-prod
   version: main
   container:
     app:
@@ -55,8 +53,6 @@ kind: MicroserviceKubernetes
 metadata:
   name: todo-list-api
 spec:
-  environmentInfo:
-    envId: my-org-prod
   version: main
   container:
     app:
@@ -92,8 +88,6 @@ kind: MicroserviceKubernetes
 metadata:
   name: todo-list-api
 spec:
-  environmentInfo:
-    envId: my-org-prod
   version: main
   container:
     app:

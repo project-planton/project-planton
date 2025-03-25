@@ -1,5 +1,45 @@
 # Overview
 
-The Pulumi module for the microservice Kubernetes deployment provides a streamlined and unified approach to managing Kubernetes resources through a standard API-based workflow. The module takes the `MicroserviceKubernetesStackInput` as input, which includes key configurations such as Kubernetes cluster credentials, Docker credentials, and the microservice specification. It uses these inputs to generate and manage Kubernetes resources like namespaces, deployments, services, and optionally ingress resources. The module interacts with Kubernetes using Pulumi’s Kubernetes provider, enabling efficient resource management and deployment. Furthermore, it ensures that outputs like internal and external endpoints, and commands for port forwarding, are captured in the `MicroserviceKubernetesStackOutputs`.
+The **MicroserviceKubernetes** API resource streamlines and standardizes how developers deploy microservices onto
+Kubernetes clusters. This Pulumi module interprets a `MicroserviceKubernetesStackInput`, which includes core details
+like Kubernetes credentials, Docker credentials, and the microservice configuration. From this input, the module
+automatically creates and manages:
 
-What sets this module apart is its ability to dynamically create cloud resources based on the standardized API resource specification provided by the developer. It automates the Kubernetes resource creation process, encapsulates best practices, and integrates seamlessly with Istio ingress for advanced networking configurations when enabled. The Pulumi module is a powerful tool for developers who need to deploy microservices on Kubernetes, offering a simplified workflow with a focus on modularity and reusability.
+- **Kubernetes Namespaces**
+- **Deployments**, including main containers and optional sidecars
+- **Services** for exposing your microservice internally
+- **Ingress** resources (optionally Istio-based) for external or mesh networking
+- **Secrets** for storing sensitive environment variables or credentials
+
+Developers simply provide a declarative resource specification – focusing on container images, resource requests,
+environment variables, and ingress preferences – while the module handles the underlying Kubernetes constructs.
+
+### Key Features
+
+1. **Deployment Automation**  
+   Eliminates the need to write manual Kubernetes definitions for namespaces, deployments, or services. The module
+   compiles your specification into a robust, ready-to-run setup.
+
+2. **Environment & Secrets**  
+   Use `env.variables` for straightforward key-value pairs and `env.secrets` for sensitive data. Secrets are stored in
+   Kubernetes as `"Opaque"` secrets and automatically injected into the container.
+
+3. **Resource Allocation**  
+   Specify CPU and memory requests/limits for containers (both main and sidecar). This ensures your microservice can run
+   efficiently without jeopardizing the cluster’s stability.
+
+4. **Sidecar Support**  
+   Integrate additional containers (logging, monitoring, proxies, etc.) alongside your main container for advanced use
+   cases like service meshes or data scrapers.
+
+5. **Optional Ingress**  
+   Leverage Istio or other ingress controllers. The module automatically creates gateway and routing resources to expose
+   your microservice securely if `ingress.is_enabled` is set to `true`.
+
+6. **Scalability**  
+   Combine `availability.minReplicas` and optional horizontal pod autoscaling to dynamically scale your microservices
+   based on CPU or memory utilization thresholds.
+
+Overall, **MicroserviceKubernetes** helps you focus on application code and business logic. By delegating the Kubernetes
+resource orchestration to this module, you gain a cleaner, more consistent deployment experience across development,
+staging, and production environments.

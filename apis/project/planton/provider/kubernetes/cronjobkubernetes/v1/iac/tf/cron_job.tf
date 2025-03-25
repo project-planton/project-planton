@@ -1,0 +1,140 @@
+##############################################
+# main.tf
+##############################################
+
+# 1) Create a ServiceAccount
+resource "kubernetes_service_account" "this" {
+  metadata {
+    name      = local.resource_id
+    namespace = kubernetes_namespace.this.metadata[0].name
+  }
+
+  depends_on = [kubernetes_namespace.this]
+}
+
+# 2) Create an optional image pull secret if Docker credentials are provided
+resource "kubernetes_secret" "image_pull_secret" {
+  metadata {
+    name      = "image-pull-secret"
+    namespace = kubernetes_namespace.this.metadata[0].name
+    labels    = local.final_labels
+  }
+  type = "kubernetes.io/dockerconfigjson"
+
+  string_data = var.docker_config_json != "" ? {
+    ".dockerconfigjson" = var.docker_config_json
+  } : {}
+
+  depends_on = [kubernetes_namespace.this]
+}
+
+# 3) Create the CronJob
+resource "kubernetes_cron_job" "this" {
+  metadata {
+    name      = var.metadata.name
+    namespace = kubernetes_namespace.this.metadata[0].name
+    labels    = local.final_labels
+  }
+
+  spec {
+    schedule = var.spec.schedule
+
+    # If not set, concurrencyPolicy defaults to "Forbid"
+    concurrency_policy = try(var.spec.concurrency_policy, "Forbid")
+
+    # If not set, default to false
+    suspend = try(var.spec.suspend, false)
+
+    # Defaults if not set
+    successful_jobs_history_limit = try(var.spec.successful_jobs_history_limit, 3)
+    failed_jobs_history_limit = try(var.spec.failed_jobs_history_limit, 1)
+    starting_deadline_seconds = (try(var.spec.starting_deadline_seconds, 0) != 0 ? var.spec.starting_deadline_seconds :
+      null)
+
+    job_template {
+      spec {
+        backoff_limit = try(var.spec.backoff_limit, 6)
+
+        template {
+          metadata {
+            labels = local.final_labels
+          }
+
+          spec {
+            # Typically "Never" is the recommended default for CronJobs
+            restart_policy = try(var.spec.restart_policy, "Never")
+            service_account_name = kubernetes_service_account.this.metadata[0].name
+
+            container {
+              name  = "cronjob-container"
+              image = "${var.spec.image.repo}:${var.spec.image.tag}"
+
+              env {
+                name = "HOSTNAME"
+                value_from {
+                  field_ref {
+                    field_path = "status.podIP"
+                  }
+                }
+              }
+
+              env {
+                name = "K8S_POD_ID"
+                value_from {
+                  field_ref {
+                    field_path  = "metadata.name"
+                    api_version = "v1"
+                  }
+                }
+              }
+
+              # Add env variables from var.spec.env.variables
+              dynamic "env" {
+                for_each = try(var.spec.env.variables, {})
+                content {
+                  name  = env.key
+                  value = env.value
+                }
+              }
+
+              # Add env variables from secrets (stored in the "main" secret)
+              dynamic "env" {
+                for_each = try(var.spec.env.secrets, {})
+                content {
+                  name = env.key
+                  value_from {
+                    secret_key_ref {
+                      name = "main"
+                      key  = env.key
+                    }
+                  }
+                }
+              }
+
+              # Resource requests/limits
+              resources {
+                limits = {
+                  cpu = try(var.spec.resources.limits.cpu, null)
+                  memory = try(var.spec.resources.limits.memory, null)
+                }
+                requests = {
+                  cpu = try(var.spec.resources.requests.cpu, null)
+                  memory = try(var.spec.resources.requests.memory, null)
+                }
+              }
+            }
+
+            # If the image pull secret is non-empty, attach it
+            image_pull_secrets {
+              name = kubernetes_secret.image_pull_secret.metadata[0].name
+            }
+          }
+        }
+      }
+    }
+  }
+
+  depends_on = [
+    kubernetes_namespace.this
+  ]
+}
