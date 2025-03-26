@@ -75,3 +75,62 @@ spec:
       cpu: 2000m
       memory: 2Gi
 ```
+
+# Advanced Example w/ grpc api call
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: CronJobKubernetes
+metadata:
+  name: grpc-invoker
+spec:
+  # The container image to use. In this case, a public image with grpcurl.
+  image:
+    repo: fullstorydev/grpcurl
+    tag: latest
+
+  # The schedule for the cron job. Runs at midnight (00:00) every day.
+  schedule: "0 0 * * *"
+
+  # How concurrency is handled. "Forbid" is the default if omitted.
+  concurrencyPolicy: "Forbid"
+
+  # Environment variables (optional). Adjust or remove as needed.
+  env:
+    variables:
+      FOO: "BAR"
+    secrets: {}
+
+  # The commands/arguments for grpcurl. Calls "my.package.Service/Method" on "my-grpc-service:50051".
+  command:
+    - "grpcurl"
+  args:
+    - "-plaintext"
+    - "my-grpc-service:50051"
+    - "my.package.Service/Method"
+
+  # Basic resource limits and requests. Adjust these to match your usage.
+  resources:
+    requests:
+      cpu: "50m"
+      memory: "100Mi"
+    limits:
+      cpu: "200m"
+      memory: "256Mi"
+
+  # Typically "Never" is recommended for CronJobs to avoid restarts. 
+  restartPolicy: "Never"
+
+  # Keep the last 3 successful runs and the last 1 failure in history.
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 1
+
+  # Number of retries if the job fails before considering it permanently failed.
+  backoffLimit: 6
+
+  # If you need to temporarily pause further runs, set this to true.
+  # suspend: false
+
+  # If you miss a schedule, how long (in seconds) to still try to start. 0 = no deadline enforced.
+  # startingDeadlineSeconds: 0
+```
