@@ -14,26 +14,16 @@ kind: CronJobKubernetes
 metadata:
   name: todo-list-api
 spec:
-  version: main
-  container:
-    app:
-      image:
-        repo: nginx
-        tag: latest
-      ports:
-        - appProtocol: http
-          containerPort: 8080
-          isIngressPort: true
-          name: rest-api
-          networkProtocol: TCP
-          servicePort: 80
-      resources:
-        requests:
-          cpu: 100m
-          memory: 100Mi
-        limits:
-          cpu: 2000m
-          memory: 2Gi
+  image:
+    repo: nginx
+    tag: latest
+  resources:
+    requests:
+      cpu: 100m
+      memory: 100Mi
+    limits:
+      cpu: 2000m
+      memory: 2Gi
 ```
 
 # Example w/ Environment Variables
@@ -44,29 +34,19 @@ kind: CronJobKubernetes
 metadata:
   name: todo-list-api
 spec:
-  version: main
-  container:
-    app:
-      env:
-        variables:
-          DATABASE_NAME: todo
-      image:
-        repo: nginx
-        tag: latest
-      ports:
-        - appProtocol: http
-          containerPort: 8080
-          isIngressPort: true
-          name: rest-api
-          networkProtocol: TCP
-          servicePort: 80
-      resources:
-        requests:
-          cpu: 100m
-          memory: 100Mi
-        limits:
-          cpu: 2000m
-          memory: 2Gi
+  env:
+    variables:
+      DATABASE_NAME: todo
+  image:
+    repo: nginx
+    tag: latest
+  resources:
+    requests:
+      cpu: 100m
+      memory: 100Mi
+    limits:
+      cpu: 2000m
+      memory: 2Gi
 ```
 
 # Example w/ Environment Secrets  
@@ -78,31 +58,20 @@ kind: CronJobKubernetes
 metadata:
   name: todo-list-api
 spec:
-  version: main
-  container:
-    app:
-      env:
-        secrets:
-          # value before dot 'gcpsm-my-org-prod-gcp-secrets' is the id of the gcp-secret-manager resource on planton-cloud
-          # value after dot 'database-password' is one of the secrets list in 'gcpsm-my-org-prod-gcp-secrets' is the id of the gcp-secret-manager resource on planton-cloud
-          DATABASE_PASSWORD: ${gcpsm-my-org-prod-gcp-secrets.database-password}
-        variables:
-          DATABASE_NAME: todo
-      image:
-        repo: nginx
-        tag: latest
-      ports:
-        - appProtocol: http
-          containerPort: 8080
-          isIngressPort: true
-          name: rest-api
-          networkProtocol: TCP
-          servicePort: 80
-      resources:
-        requests:
-          cpu: 100m
-          memory: 100Mi
-        limits:
-          cpu: 2000m
-          memory: 2Gi
+  env:
+    secrets:
+      # value before dot 'gcpsm-my-org-prod-gcp-secrets' is the id of the gcp-secret-manager resource on planton-cloud
+      # value after dot 'database-password' is one of the secrets list in 'gcpsm-my-org-prod-gcp-secrets' is the id of the gcp-secret-manager resource on planton-cloud
+      DATABASE_PASSWORD: ${gcpsm-my-org-prod-gcp-secrets.database-password}
+    variables:
+      DATABASE_NAME: todo
+  image:
+    repo: nginx
+  resources:
+    requests:
+      cpu: 100m
+      memory: 100Mi
+    limits:
+      cpu: 2000m
+      memory: 2Gi
 ```

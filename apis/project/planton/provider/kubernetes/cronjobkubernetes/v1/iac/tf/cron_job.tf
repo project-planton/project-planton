@@ -48,6 +48,8 @@ resource "kubernetes_cron_job" "this" {
     # Defaults if not set
     successful_jobs_history_limit = try(var.spec.successful_jobs_history_limit, 3)
     failed_jobs_history_limit = try(var.spec.failed_jobs_history_limit, 1)
+
+    # For starting_deadline_seconds, if not set or zero, we use null so that it doesn't appear
     starting_deadline_seconds = (try(var.spec.starting_deadline_seconds, 0) != 0 ? var.spec.starting_deadline_seconds :
       null)
 
@@ -66,9 +68,14 @@ resource "kubernetes_cron_job" "this" {
             service_account_name = kubernetes_service_account.this.metadata[0].name
 
             container {
-              name  = "cronjob-container"
+              name = "cronjob-container"
               image = "${var.spec.image.repo}:${var.spec.image.tag}"
 
+              # Use the custom command and args if provided, otherwise default to empty lists
+              command = try(var.spec.command, [])
+              args = try(var.spec.args, [])
+
+              # Env variables
               env {
                 name = "HOSTNAME"
                 value_from {
