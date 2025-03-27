@@ -65,10 +65,7 @@ message ContainerPort {
 // **CpuMemory** defines CPU and memory resource quantities for a container.
 // It is used to specify the limits and requests for CPU and memory resources.
 message CpuMemory {
-  // The amount of CPU allocated (e.g., "500m" for 0.5 CPU cores).
   string cpu = 1;
-
-  // The amount of memory allocated (e.g., "256Mi" for 256 mebibytes).
   string memory = 2;
 }
 

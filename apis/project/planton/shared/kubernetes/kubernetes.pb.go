@@ -306,9 +306,7 @@ type CpuMemory struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// The amount of CPU allocated (e.g., "500m" for 0.5 CPU cores).
-	Cpu string `protobuf:"bytes,1,opt,name=cpu,proto3" json:"cpu,omitempty"`
-	// The amount of memory allocated (e.g., "256Mi" for 256 mebibytes).
+	Cpu    string `protobuf:"bytes,1,opt,name=cpu,proto3" json:"cpu,omitempty"`
 	Memory string `protobuf:"bytes,2,opt,name=memory,proto3" json:"memory,omitempty"`
 }
 
