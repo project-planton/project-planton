@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package project.planton.provider.aws.ecsservice.v1;
+
+// EcsServiceStackOutputs describes values returned by Pulumi/Terraform for an ECS service.
+message EcsServiceStackOutputs {
+  // ecs_service_name is the final name of the ECS service.
+  string ecs_service_name = 1;
+
+  // ecs_cluster_name indicates which cluster the service is deployed in.
+  string ecs_cluster_name = 2;
+
+  // load_balancer_dns_name is the DNS name of the ALB/NLB if is_public is true.
+  string load_balancer_dns_name = 3;
+
+  // service_url is the final external endpoint if domain_name was configured.
+  string service_url = 4;
+
+  // service_discovery_name is the internal DNS name if service discovery was used.
+  string service_discovery_name = 5;
+}

@@ -1,15 +1,15 @@
 syntax = "proto3";
 
-package project.planton.provider.aws.awsfargate.v1;
+package project.planton.provider.aws.ecsservice.v1;
 
 import "project/planton/credential/awscredential/v1/spec.proto";
-import "project/planton/provider/aws/awsfargate/v1/api.proto";
+import "project/planton/provider/aws/ecsservice/v1/api.proto";
 import "project/planton/shared/iac/pulumi/pulumi.proto";
 import "project/planton/shared/iac.proto";
 import "project/planton/shared/iac/terraform/terraform.proto";
 
-//aws-fargate stack-input
-message AwsFargateStackInput {
+//ecs-service stack-input
+message EcsServiceStackInput {
   //iac-provisioner
   project.planton.shared.IacProvisioner provisioner = 1;
   //pulumi input required when the provisioner is pulumi
@@ -17,7 +17,7 @@ message AwsFargateStackInput {
   //terraform input required when the provisioner is terraform
   project.planton.shared.iac.terraform.TerraformStackInfo terraform = 3;
   //target api-resource
-  AwsFargate target = 4;
+  EcsService target = 4;
   //provider-credential
   project.planton.credential.awscredential.v1.AwsCredentialSpec provider_credential = 5;
 }
