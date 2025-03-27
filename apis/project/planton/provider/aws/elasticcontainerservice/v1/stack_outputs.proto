@@ -1,9 +1,0 @@
-syntax = "proto3";
-
-package project.planton.provider.aws.elasticcontainerservice.v1;
-
-//aws-ecs stack outputs
-message ElasticContainerServiceStackOutputs {
-  //id of the lambda function created on aws
-  string lambda_function_id = 1;
-}
