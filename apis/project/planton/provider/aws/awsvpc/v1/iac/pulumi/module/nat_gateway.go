@@ -3,12 +3,11 @@ package module
 import (
 	"fmt"
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsvpc/v1/iac/pulumi/module/localz"
 	"github.com/pulumi/pulumi-aws/sdk/v6/go/aws/ec2"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-func natGateway(ctx *pulumi.Context, locals *localz.Locals, createdVpc *ec2.Vpc,
+func natGateway(ctx *pulumi.Context, locals *Locals, createdVpc *ec2.Vpc,
 	subnetName string, createdPrivateSubnet *ec2.Subnet) (*ec2.NatGateway, error) {
 
 	//create elastic ip for nat gateway

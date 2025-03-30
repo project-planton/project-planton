@@ -1,4 +1,4 @@
-package localz
+package module
 
 import (
 	"fmt"
@@ -21,7 +21,7 @@ type Locals struct {
 	PublicAzSubnetMap  map[AvailabilityZone]map[SubnetName]SubnetCidr
 }
 
-func Initialize(ctx *pulumi.Context, stackInput *awsvpcv1.AwsVpcStackInput) *Locals {
+func initializeLocals(ctx *pulumi.Context, stackInput *awsvpcv1.AwsVpcStackInput) *Locals {
 	locals := &Locals{}
 
 	//assign value for the locals variable to make it available across the project
@@ -36,7 +36,7 @@ func Initialize(ctx *pulumi.Context, stackInput *awsvpcv1.AwsVpcStackInput) *Loc
 	}
 
 	locals.PrivateAzSubnetMap = GetPrivateAzSubnetMap(locals.AwsVpc)
-	locals.PublicAzSubnetMap = GetPublicAzSubnetMap(locals.AwsVpc)
+	locals.PublicAzSubnetMap = getPublicAzSubnetMap(locals.AwsVpc)
 
 	return locals
 }
@@ -63,7 +63,7 @@ func GetPrivateAzSubnetMap(awsVpc *awsvpcv1.AwsVpc) map[AvailabilityZone]map[Sub
 	return privateAzSubnetMap
 }
 
-func GetPublicAzSubnetMap(awsVpc *awsvpcv1.AwsVpc) map[AvailabilityZone]map[SubnetName]SubnetCidr {
+func getPublicAzSubnetMap(awsVpc *awsvpcv1.AwsVpc) map[AvailabilityZone]map[SubnetName]SubnetCidr {
 	publicAzSubnetMap := make(map[AvailabilityZone]map[SubnetName]SubnetCidr, 0)
 
 	for azIndex, az := range awsVpc.Spec.AvailabilityZones {
@@ -83,7 +83,7 @@ func GetPublicAzSubnetMap(awsVpc *awsvpcv1.AwsVpc) map[AvailabilityZone]map[Subn
 	return publicAzSubnetMap
 }
 
-func GetSortedAzKeys(azSubnetMap map[AvailabilityZone]map[SubnetName]SubnetCidr) []string {
+func getSortedAzKeys(azSubnetMap map[AvailabilityZone]map[SubnetName]SubnetCidr) []string {
 	keys := make([]string, 0, len(azSubnetMap))
 	for k := range azSubnetMap {
 		keys = append(keys, string(k))
@@ -94,7 +94,7 @@ func GetSortedAzKeys(azSubnetMap map[AvailabilityZone]map[SubnetName]SubnetCidr)
 	return keys
 }
 
-func GetSortedSubnetNameKeys(subnetMap map[SubnetName]SubnetCidr) []string {
+func getSortedSubnetNameKeys(subnetMap map[SubnetName]SubnetCidr) []string {
 	keys := make([]string, 0, len(subnetMap))
 	for k := range subnetMap {
 		keys = append(keys, string(k))

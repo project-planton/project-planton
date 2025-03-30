@@ -1,12 +1,12 @@
 syntax = "proto3";
 
-package project.planton.provider.aws.ecsservice.v1;
+package project.planton.provider.aws.ecscluster.v1;
 
 import "buf/validate/validate.proto";
 import "project/planton/shared/options/options.proto";
 
-// EcsServiceLaunchType enumerates the possible ways to run ECS tasks.
-enum EcsServiceLaunchType {
+// EcsClusterLaunchType enumerates the possible ways to run ECS tasks.
+enum EcsClusterLaunchType {
   // ECS_LAUNCH_TYPE_UNSPECIFIED means the field was not specified; the system treats it as FARGATE by default.
   ecs_launch_type_unspecified = 0;
   // FARGATE runs tasks using AWS Fargate (serverless).
@@ -15,13 +15,13 @@ enum EcsServiceLaunchType {
   ec2 = 2;
 }
 
-// EcsServiceSpec defines the configuration for deploying a containerized application on AWS ECS.
+// EcsClusterSpec defines the configuration for deploying a containerized application on AWS ECS.
 // This covers both Fargate (serverless) and EC2 (self-managed) launch types by exposing a 'launch_type' field.
-message EcsServiceSpec {
+message EcsClusterSpec {
   // launch_type specifies whether to run on FARGATE or EC2.
   // By default, if not provided, we treat it as FARGATE (serverless).
   // Valid values are ["FARGATE", "EC2"].
-  EcsServiceLaunchType launch_type = 1 [
+  EcsClusterLaunchType launch_type = 1 [
     (project.planton.shared.options.default) = "FARGATE"
   ];
 
@@ -74,19 +74,19 @@ message EcsServiceSpec {
 
   // network defines VPC, subnet, and security group configuration for this ECS service.
   // If empty, the platform may provide sensible defaults (e.g., a shared VPC).
-  EcsServiceNetwork network = 10;
+  EcsClusterNetwork network = 10;
 
   // ingress controls how the service is exposed externally (via ALB, domain, etc.)
   // or whether it remains private (is_public=false).
-  EcsServiceIngress ingress = 11;
+  EcsClusterIngress ingress = 11;
 
   // auto_scaling optionally configures horizontal scaling (min/max tasks).
   // If is_enabled=false, the service runs at the desired_count only.
-  EcsServiceAutoScaling auto_scaling = 12;
+  EcsClusterAutoScaling auto_scaling = 12;
 }
 
-// EcsServiceNetwork defines VPC, subnet, and security group settings for the ECS tasks.
-message EcsServiceNetwork {
+// EcsClusterNetwork defines VPC, subnet, and security group settings for the ECS tasks.
+message EcsClusterNetwork {
   // vpc_id is the ID of the VPC where tasks will run (e.g. "vpc-0123456789abcdef0").
   // If left empty, the platform may pick a default VPC.
   string vpc_id = 1;
@@ -103,8 +103,8 @@ message EcsServiceNetwork {
   bool assign_public_ip = 4;
 }
 
-// EcsServiceIngress defines how a service is exposed externally via AWS load balancers or domains.
-message EcsServiceIngress {
+// EcsClusterIngress defines how a service is exposed externally via AWS load balancers or domains.
+message EcsClusterIngress {
   // is_public indicates if the service is internet-facing. If false, the service might be internal-only.
   bool is_public = 1;
 
@@ -120,8 +120,8 @@ message EcsServiceIngress {
   string health_check_path = 4;
 }
 
-// EcsServiceAutoScaling configures optional horizontal scaling based on CPU usage, memory usage, or other metrics.
-message EcsServiceAutoScaling {
+// EcsClusterAutoScaling configures optional horizontal scaling based on CPU usage, memory usage, or other metrics.
+message EcsClusterAutoScaling {
   // is_enabled determines if auto-scaling is active.
   // When false, the service remains at "desired_count" tasks.
   bool is_enabled = 1;

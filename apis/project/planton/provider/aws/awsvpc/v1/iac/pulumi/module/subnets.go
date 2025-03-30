@@ -3,7 +3,6 @@ package module
 import (
 	"fmt"
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsvpc/v1/iac/pulumi/module/localz"
 	"github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsvpc/v1/iac/pulumi/module/outputs"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/datatypes/stringmaps"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/datatypes/stringmaps/convertstringmaps"
@@ -11,21 +10,21 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-func subnets(ctx *pulumi.Context, locals *localz.Locals, createdVpc *ec2.Vpc,
+func subnets(ctx *pulumi.Context, locals *Locals, createdVpc *ec2.Vpc,
 	createdPublicRouteTable *ec2.RouteTable) error {
 	// iterate through azs and create the configured number of public and private subnets per az
-	sortedPrivateAzKeys := localz.GetSortedAzKeys(locals.PrivateAzSubnetMap)
+	sortedPrivateAzKeys := getSortedAzKeys(locals.PrivateAzSubnetMap)
 	// create private subnets
 	for _, availabilityZone := range sortedPrivateAzKeys {
-		azSubnetMap := locals.PrivateAzSubnetMap[localz.AvailabilityZone(availabilityZone)]
-		sortedSubnetNames := localz.GetSortedSubnetNameKeys(azSubnetMap)
+		azSubnetMap := locals.PrivateAzSubnetMap[AvailabilityZone(availabilityZone)]
+		sortedSubnetNames := getSortedSubnetNameKeys(azSubnetMap)
 		for i, subnetName := range sortedSubnetNames {
 			// create private subnet in az
 			createdSubnet, err := ec2.NewSubnet(ctx,
 				subnetName,
 				&ec2.SubnetArgs{
 					VpcId:            createdVpc.ID(),
-					CidrBlock:        pulumi.String(azSubnetMap[localz.SubnetName(subnetName)]),
+					CidrBlock:        pulumi.String(azSubnetMap[SubnetName(subnetName)]),
 					AvailabilityZone: pulumi.String(availabilityZone),
 					Tags: convertstringmaps.ConvertGoStringMapToPulumiStringMap(
 						stringmaps.AddEntry(locals.AwsTags, "Name", subnetName)),
@@ -49,18 +48,18 @@ func subnets(ctx *pulumi.Context, locals *localz.Locals, createdVpc *ec2.Vpc,
 		}
 	}
 
-	sortedPublicAzKeys := localz.GetSortedAzKeys(locals.PublicAzSubnetMap)
+	sortedPublicAzKeys := getSortedAzKeys(locals.PublicAzSubnetMap)
 	// create public subnets
 	for _, availabilityZone := range sortedPublicAzKeys {
-		azSubnetMap := locals.PublicAzSubnetMap[localz.AvailabilityZone(availabilityZone)]
-		sortedSubnetNames := localz.GetSortedSubnetNameKeys(azSubnetMap)
+		azSubnetMap := locals.PublicAzSubnetMap[AvailabilityZone(availabilityZone)]
+		sortedSubnetNames := getSortedSubnetNameKeys(azSubnetMap)
 		for i, subnetName := range sortedSubnetNames {
 			// create public subnet in az
 			createdSubnet, err := ec2.NewSubnet(ctx,
 				subnetName,
 				&ec2.SubnetArgs{
 					VpcId:            createdVpc.ID(),
-					CidrBlock:        pulumi.String(azSubnetMap[localz.SubnetName(subnetName)]),
+					CidrBlock:        pulumi.String(azSubnetMap[SubnetName(subnetName)]),
 					AvailabilityZone: pulumi.String(availabilityZone),
 					//required for public subnets
 					MapPublicIpOnLaunch: pulumi.Bool(true),
