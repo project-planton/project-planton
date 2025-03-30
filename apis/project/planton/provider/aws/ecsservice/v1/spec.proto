@@ -17,13 +17,11 @@ enum EcsServiceLaunchType {
 
 // EcsServiceSpec defines the configuration for deploying a containerized application on AWS ECS.
 // This covers both Fargate (serverless) and EC2 (self-managed) launch types by exposing a 'launch_type' field.
-// Each field's documentation is meant to guide both developers and the co-pilot to produce a valid manifest.
 message EcsServiceSpec {
   // launch_type specifies whether to run on FARGATE or EC2.
   // By default, if not provided, we treat it as FARGATE (serverless).
   // Valid values are ["FARGATE", "EC2"].
   EcsServiceLaunchType launch_type = 1 [
-    // "default" means if this field is omitted, it is set to "FARGATE" automatically.
     (project.planton.shared.options.default) = "FARGATE"
   ];
 
@@ -42,8 +40,6 @@ message EcsServiceSpec {
   // Co-pilot will show "8080" as a recommended placeholder, but the user can override.
   int32 container_port = 4 [
     (buf.validate.field).required = true,
-    // "recommended_default" here means co-pilot will pre-fill "8080",
-    // but it won't be automatically set by the backend if omitted.
     (project.planton.shared.options.recommended_default) = "8080"
   ];
 
@@ -67,14 +63,14 @@ message EcsServiceSpec {
     (project.planton.shared.options.recommended_default) = "1"
   ];
 
-  // environment_variables is a list of key/value pairs for non-sensitive config,
-  // injected as container environment variables. Example: LOG_LEVEL=debug
-  repeated EcsServiceEnvVar environment_variables = 8;
+  // environment_variables is a map of key/value pairs for non-sensitive config,
+  // injected as container environment variables. Example: {"LOG_LEVEL": "debug"}.
+  map<string, string> environment_variables = 8;
 
-  // secret_variables is a list of key/value references to AWS Secrets Manager or SSM
-  // for sensitive data, e.g. DB_PASSWORD=arn:aws:ssm:us-east-1:...
+  // secret_variables is a map of key/value references to AWS Secrets Manager or SSM
+  // for sensitive data, e.g. {"DB_PASSWORD": "arn:aws:ssm:us-east-1:..."}.
   // The platform resolves these references into secure environment variables at runtime.
-  repeated EcsServiceEnvVar secret_variables = 9;
+  map<string, string> secret_variables = 9;
 
   // network defines VPC, subnet, and security group configuration for this ECS service.
   // If empty, the platform may provide sensible defaults (e.g., a shared VPC).
@@ -87,20 +83,6 @@ message EcsServiceSpec {
   // auto_scaling optionally configures horizontal scaling (min/max tasks).
   // If is_enabled=false, the service runs at the desired_count only.
   EcsServiceAutoScaling auto_scaling = 12;
-}
-
-// EcsServiceEnvVar represents an environment variable key/value pair.
-// For environment_variables, "value" is a plaintext string.
-// For secret_variables, "value" is a reference to a secret in AWS SSM or Secrets Manager.
-message EcsServiceEnvVar {
-  // key is the name of the environment variable (e.g., "LOG_LEVEL").
-  string key = 1 [
-    (buf.validate.field).required = true
-  ];
-  // value is either the literal environment value or the secret reference/ARN.
-  string value = 2 [
-    (buf.validate.field).required = true
-  ];
 }
 
 // EcsServiceNetwork defines VPC, subnet, and security group settings for the ECS tasks.
@@ -118,7 +100,6 @@ message EcsServiceNetwork {
   repeated string security_group_ids = 3;
 
   // assign_public_ip indicates whether to allocate a public IP for tasks (Fargate in a public subnet).
-  // Defaults to false if not specified, so no explicit default needed here.
   bool assign_public_ip = 4;
 }
 

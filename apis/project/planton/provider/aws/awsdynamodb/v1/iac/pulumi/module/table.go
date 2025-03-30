@@ -191,7 +191,7 @@ func table(ctx *pulumi.Context, locals *Locals, awsProvider *aws.Provider) (*dyn
 		ServerSideEncryption:      serverSideEncryption,
 		PointInTimeRecovery:       pointInTimeRecovery,
 		Ttl:                       ttl,
-		Tags:                      pulumi.ToStringMap(locals.Labels),
+		Tags:                      pulumi.ToStringMap(locals.AwsTags),
 		Attributes:                attributeArray,
 		GlobalSecondaryIndexes:    globalSecondaryIndexArray,
 		LocalSecondaryIndexes:     localSecondaryIndexArray,

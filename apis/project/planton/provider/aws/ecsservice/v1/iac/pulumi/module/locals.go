@@ -1,7 +1,7 @@
 package module
 
 import (
-	awsdynamodbv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsdynamodb/v1"
+	ecsservicev1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/ecsservice/v1"
 	"github.com/project-planton/project-planton/internal/apiresourcekind"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/aws/awstagkeys"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
@@ -9,22 +9,22 @@ import (
 )
 
 type Locals struct {
-	AwsDynamodb *awsdynamodbv1.AwsDynamodb
-	AwsTags     map[string]string
+	EcsService *ecsservicev1.EcsService
+	AwsTags    map[string]string
 }
 
-func initializeLocals(ctx *pulumi.Context, stackInput *awsdynamodbv1.AwsDynamodbStackInput) *Locals {
+func initializeLocals(ctx *pulumi.Context, stackInput *ecsservicev1.EcsServiceStackInput) *Locals {
 	locals := &Locals{}
 
 	//assign value for the locals variable to make it available across the project
-	locals.AwsDynamodb = stackInput.Target
+	locals.EcsService = stackInput.Target
 
 	locals.AwsTags = map[string]string{
 		awstagkeys.Resource:     strconv.FormatBool(true),
-		awstagkeys.Organization: locals.AwsDynamodb.Metadata.Org,
-		awstagkeys.Environment:  locals.AwsDynamodb.Metadata.Env,
+		awstagkeys.Organization: locals.EcsService.Metadata.Org,
+		awstagkeys.Environment:  locals.EcsService.Metadata.Env,
 		awstagkeys.ResourceKind: string(apiresourcekind.EcsServiceKind),
-		awstagkeys.ResourceId:   locals.AwsDynamodb.Metadata.Id,
+		awstagkeys.ResourceId:   locals.EcsService.Metadata.Id,
 	}
 
 	return locals

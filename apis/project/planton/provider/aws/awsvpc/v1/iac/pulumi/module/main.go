@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/pkg/errors"
 	awsvpcv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsvpc/v1"
-	"github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsvpc/v1/iac/pulumi/module/localz"
 	"github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsvpc/v1/iac/pulumi/module/outputs"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/datatypes/stringmaps"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/datatypes/stringmaps/convertstringmaps"
@@ -14,7 +13,7 @@ import (
 )
 
 func Resources(ctx *pulumi.Context, stackInput *awsvpcv1.AwsVpcStackInput) error {
-	locals := localz.Initialize(ctx, stackInput)
+	locals := initializeLocals(ctx, stackInput)
 
 	awsCredential := stackInput.ProviderCredential
 
