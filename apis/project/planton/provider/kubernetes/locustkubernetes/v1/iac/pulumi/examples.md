@@ -1,7 +1,7 @@
 # Example 1: Basic Locust Kubernetes Setup
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: LocustKubernetes
 metadata:
   name: locust-basic
@@ -40,7 +40,7 @@ spec:
 # Example 2: Locust Kubernetes with Custom Helm Values
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: LocustKubernetes
 metadata:
   name: locust-custom
@@ -91,7 +91,7 @@ spec:
 # Example 3: Locust Kubernetes with TLS and Ingress
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: LocustKubernetes
 metadata:
   name: locust-tls
@@ -139,7 +139,7 @@ spec:
 # Example 4: Locust Kubernetes with External Library and PIP Packages
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: LocustKubernetes
 metadata:
   name: locust-external-lib
@@ -187,7 +187,7 @@ spec:
 # Example 5: Locust Kubernetes Minimal Configuration
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: LocustKubernetes
 metadata:
   name: locust-minimal

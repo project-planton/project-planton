@@ -5,7 +5,7 @@
 This example demonstrates the most basic configuration for deploying a Solr instance within a Kubernetes cluster. It configures a single Solr pod with default resource allocations and storage size. The Zookeeper instance is also deployed to support Solr.
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: SolrKubernetes
 metadata:
   name: solr-instance-basic
@@ -41,7 +41,7 @@ spec:
 This example configures a Solr deployment with custom JVM memory settings and a larger persistent volume attached to each Solr pod. Additionally, the Zookeeper container is customized with specific resource limits and a larger storage size.
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: SolrKubernetes
 metadata:
   name: solr-instance-custom
@@ -81,7 +81,7 @@ spec:
 This example demonstrates how to deploy Solr with ingress enabled. This allows external access to the Solr instance through a Kubernetes ingress resource, useful for exposing Solr services to external clients.
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: SolrKubernetes
 metadata:
   name: solr-instance-ingress
@@ -122,7 +122,7 @@ spec:
 This configuration deploys a Solr cluster with custom garbage collection tuning but without ingress, relying instead on internal Kubernetes networking and port-forwarding for access.
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: SolrKubernetes
 metadata:
   name: solr-instance-no-ingress

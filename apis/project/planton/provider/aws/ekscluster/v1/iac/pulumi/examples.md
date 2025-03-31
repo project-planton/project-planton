@@ -34,7 +34,7 @@ planton apply -f <yaml-path>
 This basic example creates an AWS EKS Cluster with default settings.
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: aws.project-planton.org/v1
 kind: EksCluster
 metadata:
   name: my-basic-eks-cluster
@@ -49,7 +49,7 @@ spec:
 This example creates an EKS Cluster in an existing VPC.
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: aws.project-planton.org/v1
 kind: EksCluster
 metadata:
   name: my-eks-cluster-with-vpc
@@ -76,7 +76,7 @@ spec:
 This example uses environment variables to parameterize the EKS Cluster configuration.
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: aws.project-planton.org/v1
 kind: EksCluster
 metadata:
   name: my-env-eks-cluster
@@ -93,7 +93,7 @@ In this example, replace the placeholders like `${AWS_CREDENTIAL_ID}` with your 
 The below example assumes that the secrets are managed by Planton Cloud's [AWS Secrets Manager](https://buf.build/project-planton/apis/docs/main:cloud.planton.apis.code2cloud.v1.aws.awssecretsmanager) deployment module.
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: aws.project-planton.org/v1
 kind: EksCluster
 metadata:
   name: my-secret-eks-cluster

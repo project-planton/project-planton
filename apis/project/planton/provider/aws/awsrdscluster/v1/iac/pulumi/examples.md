@@ -5,7 +5,7 @@ Here are a few examples for the `AwsRdsCluster` API resource, showing different 
 ### Basic Example
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: aws.project-planton.org/v1
 kind: AwsRdsCluster
 metadata:
   name: my-basic-rds-cluster
@@ -35,7 +35,7 @@ spec:
 ### Example with Autoscaling
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: aws.project-planton.org/v1
 kind: AwsRdsCluster
 metadata:
   name: auto-scaling-rds-cluster
@@ -71,7 +71,7 @@ spec:
 ### Example with Public Access and KMS Encryption
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: aws.project-planton.org/v1
 kind: AwsRdsCluster
 metadata:
   name: public-rds-cluster
@@ -103,7 +103,7 @@ spec:
 ### Example with Performance Insights
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: aws.project-planton.org/v1
 kind: AwsRdsCluster
 metadata:
   name: performance-insights-rds

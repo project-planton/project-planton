@@ -5,7 +5,7 @@ Here are a few examples for the `PostgresKubernetes` API resource, following the
 # Basic Example
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: PostgresKubernetes
 metadata:
   name: postgres-db
@@ -31,7 +31,7 @@ spec:
 # Example with Environment Variables
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: PostgresKubernetes
 metadata:
   name: postgres-db
@@ -61,7 +61,7 @@ spec:
 # Example with Secrets for Sensitive Information
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: PostgresKubernetes
 metadata:
   name: secure-postgres-db
@@ -91,7 +91,7 @@ spec:
 # Example with Minimum Required Fields
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: PostgresKubernetes
 metadata:
   name: minimal-postgres-db

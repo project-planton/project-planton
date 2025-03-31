@@ -18,7 +18,7 @@ planton apply -f <yaml-path>
 This basic example demonstrates how to define a `MicroserviceKubernetes` resource that deploys a simple containerized application using the `nginx` image. 
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: azure.project-planton.org/v1
 kind: MicroserviceKubernetes
 metadata:
   name: todo-list-api
@@ -48,7 +48,7 @@ spec:
 This example extends the basic setup by introducing environment variables. The `DATABASE_NAME` environment variable is defined within the container configuration.
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: azure.project-planton.org/v1
 kind: MicroserviceKubernetes
 metadata:
   name: todo-list-api
@@ -83,7 +83,7 @@ spec:
 This example shows how to integrate Planton Cloud's GCP Secrets Manager for managing sensitive data like database credentials. The `DATABASE_PASSWORD` secret is retrieved from the GCP Secrets Manager, while the `DATABASE_NAME` is provided as an environment variable.
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: azure.project-planton.org/v1
 kind: MicroserviceKubernetes
 metadata:
   name: todo-list-api

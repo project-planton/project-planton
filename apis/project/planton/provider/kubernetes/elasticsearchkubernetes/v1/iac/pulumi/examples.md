@@ -2,7 +2,7 @@
 # Example 1: Basic Elasticsearch and Kibana Deployment
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: ElasticsearchKubernetes
 metadata:
   name: logging-cluster
@@ -31,7 +31,7 @@ spec:
 # Example 2: Elasticsearch with Ingress Enabled
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: ElasticsearchKubernetes
 metadata:
   name: search-service
@@ -63,7 +63,7 @@ spec:
 # Example 3: Elasticsearch Deployment with Environment Variables
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: ElasticsearchKubernetes
 metadata:
   name: logging-app
@@ -96,7 +96,7 @@ spec:
 # Example 4: Minimal Elasticsearch Deployment (Empty Spec)
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: ElasticsearchKubernetes
 metadata:
   name: minimal-elasticsearch

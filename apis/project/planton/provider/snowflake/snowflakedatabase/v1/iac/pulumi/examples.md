@@ -7,7 +7,7 @@
 This example demonstrates a basic setup of a Snowflake database with minimal configuration.
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: snowflake.project-planton.org/v1
 kind: SnowflakeDatabase
 metadata:
   name: analytics-db
@@ -37,7 +37,7 @@ spec:
 This example includes advanced configurations such as environment isolation and detailed security settings.
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: snowflake.project-planton.org/v1
 kind: SnowflakeDatabase
 metadata:
   name: finance-db
@@ -67,7 +67,7 @@ spec:
 This example integrates environment secrets managed by Planton Cloud's [Snowflake Secrets Manager](https://buf.build/project-planton/apis/docs/main:cloud.planton.apis.code2cloud.v1.snowflake.snowflakedatabase).
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: snowflake.project-planton.org/v1
 kind: SnowflakeDatabase
 metadata:
   name: secure-db
@@ -104,7 +104,7 @@ spec:
 If the `spec` field is empty, the module is not completely implemented. Below are example configurations, though they may not function as expected.
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: snowflake.project-planton.org/v1
 kind: SnowflakeDatabase
 metadata:
   name: incomplete-db
@@ -112,7 +112,7 @@ spec: {}
 ```
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: snowflake.project-planton.org/v1
 kind: SnowflakeDatabase
 metadata:
   name: another-incomplete-db

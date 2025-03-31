@@ -82,6 +82,7 @@ const (
 	AwsSecretsManagerKind ApiResourceKind = "aws-secrets-manager"
 	AwsStaticWebsiteKind  ApiResourceKind = "aws-static-website"
 	AwsVpcKind            ApiResourceKind = "aws-vpc"
+	EcsClusterKind        ApiResourceKind = "ecs-cluster"
 	EcsServiceKind        ApiResourceKind = "ecs-service"
 	EksClusterKind        ApiResourceKind = "eks-cluster"
 	Route53ZoneKind       ApiResourceKind = "route53-zone"

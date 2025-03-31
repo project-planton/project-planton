@@ -1,7 +1,7 @@
 # Example 1: Basic Kafka Kubernetes Setup
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: KafkaKubernetes
 metadata:
   name: kafka-cluster-basic
@@ -38,7 +38,7 @@ spec:
 # Example 2: Kafka Kubernetes with Schema Registry and Kafka UI
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: KafkaKubernetes
 metadata:
   name: kafka-cluster-with-schema-registry
@@ -90,7 +90,7 @@ spec:
 # Example 3: Kafka Kubernetes with Minimal Configuration
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: KafkaKubernetes
 metadata:
   name: kafka-minimal
@@ -123,7 +123,7 @@ spec:
 # Example 4: Kafka Kubernetes with Custom Topic Configuration
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: KafkaKubernetes
 metadata:
   name: kafka-custom-topics
@@ -169,7 +169,7 @@ spec:
 # Example 5: Kafka Kubernetes with Schema Registry but No Kafka UI
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: KafkaKubernetes
 metadata:
   name: kafka-with-schema-registry

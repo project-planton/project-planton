@@ -1,7 +1,7 @@
 # Example 1: Basic Jenkins Kubernetes Setup
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: JenkinsKubernetes
 metadata:
   name: jenkins-instance-basic
@@ -25,7 +25,7 @@ spec:
 # Example 2: Jenkins Kubernetes with Custom Helm Values
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: JenkinsKubernetes
 metadata:
   name: jenkins-instance-custom
@@ -58,7 +58,7 @@ spec:
 # Example 3: Jenkins Kubernetes with Ingress Disabled and Port Forwarding
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: JenkinsKubernetes
 metadata:
   name: jenkins-no-ingress
@@ -82,7 +82,7 @@ spec:
 # Example 4: Jenkins Kubernetes with Large Resource Allocation
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: JenkinsKubernetes
 metadata:
   name: jenkins-high-resources
@@ -114,7 +114,7 @@ spec:
 # Example 5: Jenkins Kubernetes with Minimal Configuration
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: JenkinsKubernetes
 metadata:
   name: jenkins-minimal

@@ -31,7 +31,7 @@ The Pulumi module utilizes Pulumi’s Go SDK for AWS, allowing dynamic resource 
 ## API-Resource Fields
 
 ### `apiVersion`
-Defines the version of the API. For this module, it is typically `code2cloud.planton.cloud/v1`.
+Defines the version of the API. For this module, it is typically `aws.project-planton.org/v1`.
 
 ### `kind`
 The kind of resource being deployed. In this case, it is always `AwsRdsCluster`.
