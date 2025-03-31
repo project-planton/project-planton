@@ -5,7 +5,7 @@
 This example demonstrates a simple Prometheus deployment in a Kubernetes cluster with one Prometheus pod and no persistence enabled. The resources are set to reasonable defaults for basic monitoring purposes.
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: PrometheusKubernetes
 metadata:
   name: prometheus-instance-basic
@@ -27,7 +27,7 @@ spec:
 In this example, Prometheus is deployed with persistence enabled to ensure that monitoring data is retained across pod restarts. The disk size is configured to 5Gi for storing the Prometheus data.
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: PrometheusKubernetes
 metadata:
   name: prometheus-instance-with-persistence
@@ -51,7 +51,7 @@ spec:
 This example deploys Prometheus with an ingress resource, allowing external access to Prometheus via a public URL. The ingress class and host are specified for routing traffic to the Prometheus service.
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: PrometheusKubernetes
 metadata:
   name: prometheus-instance-with-ingress
@@ -77,7 +77,7 @@ spec:
 This configuration specifies custom CPU and memory limits for the Prometheus container, ensuring the monitoring system uses fewer cluster resources. Persistence is disabled for simplicity.
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: PrometheusKubernetes
 metadata:
   name: prometheus-instance-custom-limits

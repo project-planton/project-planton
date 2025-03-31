@@ -110,7 +110,7 @@ The module operates by accepting an AWS EKS Cluster API resource definition as i
 ### Test the features locally
 * Sample Manifest
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: aws.project-planton.org/v1
 kind: EksCluster
 metadata:
   name: planton-test-eks-cluster

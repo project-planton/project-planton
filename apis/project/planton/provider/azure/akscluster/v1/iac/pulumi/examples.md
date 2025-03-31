@@ -9,7 +9,7 @@ planton apply -f <yaml-path>
 # Basic Example
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: azure.project-planton.org/v1
 kind: AksCluster
 metadata:
   name: my-aks-cluster
@@ -20,7 +20,7 @@ spec:
 # Example with Environment Info
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: azure.project-planton.org/v1
 kind: AksCluster
 metadata:
   name: my-aks-cluster
@@ -33,7 +33,7 @@ spec:
 # Example with Stack Job Settings
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: azure.project-planton.org/v1
 kind: AksCluster
 metadata:
   name: my-aks-cluster

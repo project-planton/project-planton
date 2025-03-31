@@ -3,7 +3,7 @@
 This example demonstrates a basic setup for a MongoDB Atlas cluster with minimal configuration. It provisions a replica set cluster with default values for node distribution and MongoDB version.
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: atlas.project-planton.org/v1
 kind: MongodbAtlas
 metadata:
   name: basic-mongo-cluster
@@ -27,7 +27,7 @@ spec:
 This example sets up a sharded MongoDB Atlas cluster with both electable and read-only nodes. Auto-scaling and cloud backup are enabled for the cluster.
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: atlas.project-planton.org/v1
 kind: MongodbAtlas
 metadata:
   name: sharded-mongo-cluster
@@ -51,7 +51,7 @@ spec:
 This example provisions a geo-sharded MongoDB Atlas cluster on Microsoft Azure, using a specific MongoDB version and enabling cloud backups. This setup is ideal for distributing data across different geographical regions for high availability.
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: atlas.project-planton.org/v1
 kind: MongodbAtlas
 metadata:
   name: geo-sharded-cluster
@@ -75,7 +75,7 @@ spec:
 This is an example of a minimal configuration for deploying a MongoDB Atlas replica set cluster. It skips the optional read-only nodes and disables cloud backups.
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: atlas.project-planton.org/v1
 kind: MongodbAtlas
 metadata:
   name: minimal-replicaset-cluster
@@ -99,7 +99,7 @@ spec:
 This example demonstrates a MongoDB Atlas sharded cluster configuration with auto-scaling disabled, providing a more controlled approach to storage management.
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: atlas.project-planton.org/v1
 kind: MongodbAtlas
 metadata:
   name: sharded-cluster-no-autoscaling

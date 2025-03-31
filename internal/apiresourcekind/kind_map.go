@@ -17,6 +17,7 @@ import (
 	awssecretsmanagerv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awssecretsmanager/v1"
 	awsstaticwebsitev1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsstaticwebsite/v1"
 	awsvpcv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsvpc/v1"
+	ecsclusterv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/ecscluster/v1"
 	ecsservicev1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/ecsservice/v1"
 	eksclusterv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/ekscluster/v1"
 	route53zonev1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/route53zone/v1"
@@ -82,6 +83,7 @@ const (
 	AwsSecretsManagerKind ApiResourceKind = "aws-secrets-manager"
 	AwsStaticWebsiteKind  ApiResourceKind = "aws-static-website"
 	AwsVpcKind            ApiResourceKind = "aws-vpc"
+	EcsClusterKind        ApiResourceKind = "ecs-cluster"
 	EcsServiceKind        ApiResourceKind = "ecs-service"
 	EksClusterKind        ApiResourceKind = "eks-cluster"
 	Route53ZoneKind       ApiResourceKind = "route53-zone"
@@ -173,6 +175,7 @@ var providerAwsMap = map[ApiResourceKind]proto.Message{
 	AwsSecretsManagerKind: &awssecretsmanagerv1.AwsSecretsManager{},
 	AwsStaticWebsiteKind:  &awsstaticwebsitev1.AwsStaticWebsite{},
 	AwsVpcKind:            &awsvpcv1.AwsVpc{},
+	EcsClusterKind:        &ecsclusterv1.EcsCluster{},
 	EcsServiceKind:        &ecsservicev1.EcsService{},
 	EksClusterKind:        &eksclusterv1.EksCluster{},
 	Route53ZoneKind:       &route53zonev1.Route53Zone{},

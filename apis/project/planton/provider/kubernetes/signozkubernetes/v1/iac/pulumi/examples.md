@@ -22,7 +22,7 @@ This example demonstrates a basic deployment of Signoz within a Kubernetes clust
 ### YAML Configuration
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: SignozKubernetes
 metadata:
   name: basic-signoz
@@ -50,7 +50,7 @@ This example illustrates how to deploy Signoz with additional stack job settings
 ### YAML Configuration
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: SignozKubernetes
 metadata:
   name: enhanced-signoz

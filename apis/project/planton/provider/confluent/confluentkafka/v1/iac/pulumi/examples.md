@@ -38,7 +38,7 @@ Refer to the [example section](#examples) for usage instructions.
 This example demonstrates a basic setup of a microservice with minimal configuration.
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: confluent.project-planton.org/v1
 kind: MicroserviceKubernetes
 metadata:
   name: todo-list-api
@@ -68,7 +68,7 @@ spec:
 This example includes environment variables to configure the application.
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: confluent.project-planton.org/v1
 kind: MicroserviceKubernetes
 metadata:
   name: todo-list-api
@@ -103,7 +103,7 @@ spec:
 This example integrates environment secrets managed by Planton Cloud's GCP Secrets Manager.
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: confluent.project-planton.org/v1
 kind: MicroserviceKubernetes
 metadata:
   name: todo-list-api
@@ -142,7 +142,7 @@ spec:
 If the `spec` field is empty, the module is not completely implemented. Below are example configurations, though they may not function as expected.
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: confluent.project-planton.org/v1
 kind: MicroserviceKubernetes
 metadata:
   name: incomplete-service
@@ -150,7 +150,7 @@ spec: {}
 ```
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: confluent.project-planton.org/v1
 kind: MicroserviceKubernetes
 metadata:
   name: another-incomplete-service

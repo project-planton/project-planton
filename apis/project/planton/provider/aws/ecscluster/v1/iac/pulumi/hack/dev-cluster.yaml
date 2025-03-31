@@ -1,0 +1,10 @@
+apiVersion: aws.project-planton.org/v1
+kind: EcsCluster
+metadata:
+  name: dev-cluster
+spec:
+  enableContainerInsights: true
+  capacityProviders:
+    - FARGATE
+    - FARGATE_SPOT
+  enableExecuteCommand: false

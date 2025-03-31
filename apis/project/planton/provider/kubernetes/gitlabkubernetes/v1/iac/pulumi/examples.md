@@ -1,7 +1,7 @@
 # Example 1: Basic GitLab Deployment
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: GitlabKubernetes
 metadata:
   name: gitlab-instance
@@ -22,7 +22,7 @@ spec:
 # Example 2: GitLab with Ingress and Custom Hostname
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: GitlabKubernetes
 metadata:
   name: gitlab-production
@@ -46,7 +46,7 @@ spec:
 # Example 3: GitLab Deployment with Custom Resources
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: GitlabKubernetes
 metadata:
   name: gitlab-custom
@@ -67,7 +67,7 @@ spec:
 # Example 4: GitLab with Environment Variables
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: GitlabKubernetes
 metadata:
   name: gitlab-env-vars
@@ -93,7 +93,7 @@ spec:
 # Example 5: Minimal GitLab Deployment (Empty Spec)
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: GitlabKubernetes
 metadata:
   name: minimal-gitlab

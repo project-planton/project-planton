@@ -9,7 +9,7 @@ planton apply -f <yaml-path>
 # Basic Example
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: aws.project-planton.org/v1
 kind: AwsSecretsManager
 metadata:
   name: my-aws-secrets
@@ -23,7 +23,7 @@ spec:
 # Example with Environment Info
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: aws.project-planton.org/v1
 kind: AwsSecretsManager
 metadata:
   name: my-aws-secrets
@@ -40,7 +40,7 @@ spec:
 # Example with Stack Job Settings
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: aws.project-planton.org/v1
 kind: AwsSecretsManager
 metadata:
   name: my-aws-secrets
@@ -56,7 +56,7 @@ spec:
 # Example with No Secrets Specified
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: aws.project-planton.org/v1
 kind: AwsSecretsManager
 metadata:
   name: my-aws-secrets
@@ -69,7 +69,7 @@ spec:
 The following example shows how to reference secrets created by `AwsSecretsManager` in a `MicroserviceKubernetes` deployment. This assumes that the secrets have been created and are managed by Planton Cloud's `AwsSecretsManager` deployment module.
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: aws.project-planton.org/v1
 kind: MicroserviceKubernetes
 metadata:
   name: todo-list-api

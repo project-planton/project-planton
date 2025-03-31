@@ -9,7 +9,7 @@ planton apply -f <yaml-path>
 # Basic Example
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: aws.project-planton.org/v1
 kind: AwsStaticWebsite
 metadata:
   name: my-static-website
@@ -20,7 +20,7 @@ spec:
 # Example with Environment Info
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: aws.project-planton.org/v1
 kind: AwsStaticWebsite
 metadata:
   name: my-static-website
@@ -33,7 +33,7 @@ spec:
 # Example with Stack Job Settings
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: aws.project-planton.org/v1
 kind: AwsStaticWebsite
 metadata:
   name: my-static-website
@@ -48,7 +48,7 @@ spec:
 *(Note: This example includes speculative fields since the `spec` is currently empty.)*
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: aws.project-planton.org/v1
 kind: AwsStaticWebsite
 metadata:
   name: my-static-website

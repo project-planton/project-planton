@@ -5,7 +5,7 @@ Here are a few example configurations for the `OpenfgaKubernetes` API resource b
 # Example with Ingress Enabled
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: OpenfgaKubernetes
 metadata:
   name: openfga-service
@@ -34,7 +34,7 @@ spec:
 # Example with Ingress Disabled and MySQL Datastore
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: OpenfgaKubernetes
 metadata:
   name: openfga-service
@@ -61,7 +61,7 @@ spec:
 # Example with Minimum Required Fields
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: OpenfgaKubernetes
 metadata:
   name: basic-openfga
@@ -86,7 +86,7 @@ spec:
 # Example with High Availability Configuration
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: kubernetes.project-planton.org/v1
 kind: OpenfgaKubernetes
 metadata:
   name: openfga-high-availability
