@@ -5,132 +5,105 @@ package project.planton.provider.aws.ecsservice.v1;
 import "buf/validate/validate.proto";
 import "project/planton/shared/options/options.proto";
 
-// EcsServiceLaunchType enumerates the possible ways to run ECS tasks.
-enum EcsServiceLaunchType {
-  // ECS_LAUNCH_TYPE_UNSPECIFIED means the field was not specified; the system treats it as FARGATE by default.
-  ecs_launch_type_unspecified = 0;
-  // FARGATE runs tasks using AWS Fargate (serverless).
-  fargate = 1;
-  // EC2 runs tasks on user-managed Amazon EC2 instances.
-  ec2 = 2;
-}
-
-// EcsServiceSpec defines the configuration for deploying a containerized application on AWS ECS.
-// This covers both Fargate (serverless) and EC2 (self-managed) launch types by exposing a 'launch_type' field.
+// EcsServiceSpec captures the minimal fields needed to deploy a Fargate-based ECS service
+// into an existing ECS cluster. It focuses on the 80-20 use case:
+// a single-container service with essential resource and networking configs.
 message EcsServiceSpec {
-  // launch_type specifies whether to run on FARGATE or EC2.
-  // By default, if not provided, we treat it as FARGATE (serverless).
-  // Valid values are ["FARGATE", "EC2"].
-  EcsServiceLaunchType launch_type = 1 [
-    (project.planton.shared.options.default) = "FARGATE"
-  ];
-
-  // cluster_name indicates the name or ARN of the ECS cluster to deploy into.
-  // If empty, the platform may choose a default cluster (e.g., derived from environment).
-  string cluster_name = 2;
-
-  // container_image is the Docker image for your service, e.g.,
-  // "123456789012.dkr.ecr.us-east-1.amazonaws.com/myapp:latest" or "nginx:latest".
-  // This is required, as ECS must know what container image to run.
-  string container_image = 3 [
+  // cluster_name is the name or ARN of the ECS cluster where this service will run.
+  // This must already exist (created by a separate EcsCluster resource or otherwise).
+  // Example: "my-mixed-cluster" or "arn:aws:ecs:us-east-1:123456789012:cluster/my-mixed-cluster"
+  string cluster_name = 1 [
     (buf.validate.field).required = true
   ];
 
-  // container_port is the port on which the application listens inside the container.
-  // Co-pilot will show "8080" as a recommended placeholder, but the user can override.
-  int32 container_port = 4 [
+  // service_name is a unique identifier for the ECS service within the cluster.
+  // Must be unique per ECS cluster; recommended length is 3–63 characters.
+  // Example: "my-ecs-service"
+  string service_name = 2 [
     (buf.validate.field).required = true,
-    (project.planton.shared.options.recommended_default) = "8080"
+    (buf.validate.field).cel = {
+      id: "service_name_length",
+      expression: "size(this) >= 3 && size(this) <= 63",
+      message: "service_name must be 3-63 characters"
+    }
   ];
 
-  // cpu is the number of CPU units for the ECS task.
-  // For Fargate, allowed values include 256, 512, 1024, etc.
-  // Co-pilot will suggest "256" as a starting value.
-  int32 cpu = 5 [
-    (project.planton.shared.options.recommended_default) = "256"
+  // image is the container image URI (e.g., an ECR or Docker Hub path).
+  // Example: "amazonlinux:2" or "123456789012.dkr.ecr.us-east-1.amazonaws.com/myapp:latest"
+  string image = 3 [
+    (buf.validate.field).required = true
   ];
 
-  // memory is the amount of memory (in MiB) for the ECS task.
-  // For Fargate, 512, 1024, and similar increments are valid combos.
-  // Co-pilot will suggest "512" by default, but the user can override.
-  int32 memory = 6 [
-    (project.planton.shared.options.recommended_default) = "512"
-  ];
+  // container_port is the port inside the container that should be exposed to receive traffic.
+  // This is optional if the service doesn't need inbound requests (e.g., a background worker).
+  // Example: 80 for HTTP
+  int32 container_port = 4;
 
-  // desired_count is the desired number of running tasks for this service.
-  // Co-pilot will propose "1" by default.
-  int32 desired_count = 7 [
+  // desired_count is the number of task replicas to run for this service.
+  // Defaults to 1 if not specified; higher values improve availability at increased cost.
+  int32 desired_count = 5 [
     (project.planton.shared.options.recommended_default) = "1"
   ];
 
-  // environment_variables is a map of key/value pairs for non-sensitive config,
-  // injected as container environment variables. Example: {"LOG_LEVEL": "debug"}.
-  map<string, string> environment_variables = 8;
+  // cpu is the amount of vCPU (in CPU units) to allocate for the entire task.
+  // Valid Fargate values include 256, 512, 1024, 2048, etc., subject to ECS constraints.
+  // Example: 512
+  int32 cpu = 6 [
+    (buf.validate.field).required = true
+  ];
 
-  // secret_variables is a map of key/value references to AWS Secrets Manager or SSM
-  // for sensitive data, e.g. {"DB_PASSWORD": "arn:aws:ssm:us-east-1:..."}.
-  // The platform resolves these references into secure environment variables at runtime.
-  map<string, string> secret_variables = 9;
+  // memory is the total MiB of RAM for the task.
+  // Valid values depend on CPU. For example, 512 CPU can pair with 1024–4096 MiB.
+  // Example: 1024
+  int32 memory = 7 [
+    (buf.validate.field).required = true
+  ];
 
-  // network defines VPC, subnet, and security group configuration for this ECS service.
-  // If empty, the platform may provide sensible defaults (e.g., a shared VPC).
-  EcsServiceNetwork network = 10;
+  // subnets is a list of VPC subnet IDs where the Fargate tasks will run.
+  // Typically private subnets for production, often at least two for high availability.
+  repeated string subnets = 8 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).repeated = {
+      unique: true
+    }
+  ];
 
-  // ingress controls how the service is exposed externally (via ALB, domain, etc.)
-  // or whether it remains private (is_public=false).
-  EcsServiceIngress ingress = 11;
+  // security_groups is a list of security group IDs to apply to each task's ENI.
+  // If not provided, ECS may use the default VPC security group, which is not ideal for production.
+  repeated string security_groups = 9 [
+    (buf.validate.field).repeated = {
+      unique: true
+    }
+  ];
 
-  // auto_scaling optionally configures horizontal scaling (min/max tasks).
-  // If is_enabled=false, the service runs at the desired_count only.
-  EcsServiceAutoScaling auto_scaling = 12;
-}
+  // assign_public_ip indicates whether to assign a public IP to the Fargate task ENI.
+  // Default is false for most production services behind a load balancer or NAT.
+  bool assign_public_ip = 10 [
+    (project.planton.shared.options.recommended_default) = "false"
+  ];
 
-// EcsServiceNetwork defines VPC, subnet, and security group settings for the ECS tasks.
-message EcsServiceNetwork {
-  // vpc_id is the ID of the VPC where tasks will run (e.g. "vpc-0123456789abcdef0").
-  // If left empty, the platform may pick a default VPC.
-  string vpc_id = 1;
+  // task_execution_role_arn is the IAM role used by ECS to pull private images and write logs.
+  // If omitted, a default "ecsTaskExecutionRole" may be assumed, but it must already exist.
+  // Example: "arn:aws:iam::123456789012:role/ecsTaskExecutionRole"
+  string task_execution_role_arn = 11;
 
-  // subnet_ids is a list of subnet IDs where tasks will run.
-  // Typically private subnets for production or public if you want direct internet traffic.
-  repeated string subnet_ids = 2;
+  // task_role_arn is the IAM role your container uses if it needs AWS permissions.
+  // Omit if your container does not call AWS APIs.
+  // Example: "arn:aws:iam::123456789012:role/myAppTaskRole"
+  string task_role_arn = 12;
 
-  // security_group_ids is a list of security groups attached to each task's ENI.
-  // If omitted, a default security group might be assigned.
-  repeated string security_group_ids = 3;
+  // environment defines optional environment variables for the container.
+  // If secrets are needed, consider referencing AWS Secrets Manager or SSM.
+  repeated EnvironmentVar environment = 13;
 
-  // assign_public_ip indicates whether to allocate a public IP for tasks (Fargate in a public subnet).
-  bool assign_public_ip = 4;
-}
+  // EnvironmentVar is an individual environment variable.
+  message EnvironmentVar {
+    // name is the environment variable key, e.g. "REDIS_URL".
+    string name = 1 [
+      (buf.validate.field).required = true
+    ];
 
-// EcsServiceIngress defines how a service is exposed externally via AWS load balancers or domains.
-message EcsServiceIngress {
-  // is_public indicates if the service is internet-facing. If false, the service might be internal-only.
-  bool is_public = 1;
-
-  // domain_name is an optional fully qualified domain, e.g. "api.example.com".
-  // If omitted, the platform may provide a default LB DNS or keep it internal.
-  string domain_name = 2;
-
-  // path is the optional path for path-based routing (e.g., "/api/*").
-  // If omitted, default is "/" routing for the entire domain.
-  string path = 3;
-
-  // health_check_path is where the ALB health check probes. If empty, defaults to "/".
-  string health_check_path = 4;
-}
-
-// EcsServiceAutoScaling configures optional horizontal scaling based on CPU usage, memory usage, or other metrics.
-message EcsServiceAutoScaling {
-  // is_enabled determines if auto-scaling is active.
-  // When false, the service remains at "desired_count" tasks.
-  bool is_enabled = 1;
-
-  // min_count is the minimum number of tasks to run under auto-scaling.
-  // If 0 is valid, you can run zero tasks, but that means no requests are served.
-  int32 min_count = 2;
-
-  // max_count is the maximum number of tasks.
-  // If you set it too high, you could scale out significantly based on usage.
-  int32 max_count = 3;
+    // value is the environment variable value, which can be plain text or a placeholder for a secret.
+    string value = 2;
+  }
 }

@@ -1,3 +1,0 @@
-package outputs
-
-const ()
