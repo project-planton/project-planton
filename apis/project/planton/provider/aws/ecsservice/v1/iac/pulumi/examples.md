@@ -1,111 +1,166 @@
 # Create using CLI
 
-Create a YAML file using the examples shown below. After the YAML file is created, use the following command to apply:
+Create a YAML file using one of the examples below. After the YAML is created, use the following command to apply with
+ProjectPlanton (under the hood, you can choose Pulumi or Terraform):
+
+```shell
+project-planton pulumi up --manifest <yaml-path> --stack <stack-name>
+
+# or, if you prefer Terraform:
+
+project-planton terraform apply --manifest <yaml-path> --stack <stack-name>
+```
+
+If your environment is set up for shorthand, you might also use:
 
 ```shell
 planton apply -f <yaml-path>
 ```
 
-# Basic Example
+---
 
-This basic example creates an AWS VPC with default settings.
+# Basic Web Service
 
-```yaml
-apiVersion: aws.project-planton.org/v1
-kind: AwsVpc
-metadata:
-  name: my-basic-vpc
-spec:
-  awsCredentialId: my-aws-credential-id
-  vpcCidr: 10.0.0.0/16
-  availabilityZones:
-    - us-west-2a
-    - us-west-2b
-  subnetsPerAvailabilityZone: 1
-  subnetSize: 256
-  isNatGatewayEnabled: false
-  isDnsHostnamesEnabled: true
-  isDnsSupportEnabled: true
-```
-
-# Example with Environment Variables
-
-This example uses environment variables to parameterize the VPC configuration.
+A simple ECS service running on AWS Fargate, listening on a container port.
 
 ```yaml
 apiVersion: aws.project-planton.org/v1
-kind: AwsVpc
+kind: EcsService
 metadata:
-  name: my-env-vpc
+  name: basic-ecs-service
+  version:
+    message: "First ECS service"
 spec:
-  awsCredentialId: ${AWS_CREDENTIAL_ID}
-  vpcCidr: ${VPC_CIDR}
-  availabilityZones:
-    - ${AVAILABILITY_ZONE_1}
-    - ${AVAILABILITY_ZONE_2}
-  subnetsPerAvailabilityZone: ${SUBNETS_PER_AZ}
-  subnetSize: ${SUBNET_SIZE}
-  isNatGatewayEnabled: ${ENABLE_NAT_GATEWAY}
-  isDnsHostnamesEnabled: ${ENABLE_DNS_HOSTNAMES}
-  isDnsSupportEnabled: ${ENABLE_DNS_SUPPORT}
+  cluster_name: my-ecs-cluster
+  service_name: basic-web-service
+  image: "amazonlinux:2"
+  container_port: 80
+  desired_count: 1
+  cpu: 256
+  memory: 512
+  subnets:
+    - subnet-0abc123
+    - subnet-1def456
+  security_groups:
+    - sg-09876abc
+  assign_public_ip: false
 ```
 
-In this example, replace the placeholders like `${AWS_CREDENTIAL_ID}` with your actual environment variable names or values.
+**Key Points**:
 
-# Example with Environment Secrets
-
-The below example assumes that the secrets are managed by Planton Cloud's [AWS Secrets Manager](https://buf.build/project-planton/apis/docs/main:cloud.planton.apis.code2cloud.v1.aws.awssecretsmanager) deployment module.
-
-```yaml
-apiVersion: aws.project-planton.org/v1
-kind: AwsVpc
-metadata:
-  name: my-secret-vpc
-spec:
-  awsCredentialId: my-aws-credential-id
-  vpcCidr: 10.1.0.0/16
-  availabilityZones:
-    - us-east-1a
-    - us-east-1b
-  subnetsPerAvailabilityZone: 2
-  subnetSize: 512
-  isNatGatewayEnabled: true
-  isDnsHostnamesEnabled: true
-  isDnsSupportEnabled: true
-  someSecretConfig: ${awssm-my-org-prod-aws-secrets.secret-key}
-```
-
-In this example:
-
-- **someSecretConfig** is a placeholder for any configuration value you want to retrieve from AWS Secrets Manager.
-- The value before the dot (`awssm-my-org-prod-aws-secrets`) is the ID of the AWS Secrets Manager resource on Planton Cloud.
-- The value after the dot (`secret-key`) is the name of the secret within that resource.
-
-# Example with All Available Fields
-
-This comprehensive example demonstrates the full capabilities of the `AwsVpc` resource.
-
-```yaml
-apiVersion: aws.project-planton.org/v1
-kind: AwsVpc
-metadata:
-  name: my-full-config-vpc
-spec:
-  awsCredentialId: my-aws-credential-id
-  vpcCidr: 10.2.0.0/16
-  availabilityZones:
-    - us-east-1a
-    - us-east-1b
-    - us-east-1c
-  subnetsPerAvailabilityZone: 3
-  subnetSize: 256
-  isNatGatewayEnabled: true
-  isDnsHostnamesEnabled: true
-  isDnsSupportEnabled: true
-```
+- **Fargate**: Specifies `cpu` and `memory` suitable for a small workload.
+- **Private Subnets**: Using subnets typically not exposed to the internet.
+- **Security**: Attaches a custom security group to the tasks.
 
 ---
 
-These examples illustrate various configurations of the `AwsVpc` API resource, demonstrating how to define VPCs with different features such as environment variables, environment secrets, and comprehensive settings.
+# Example with EC2 Launch Type
 
-Please ensure that you replace placeholder values like `my-aws-credential-id`, environment variable names, and secret references with your actual configuration details.
+If your ECS cluster is configured with an EC2 capacity provider, specify an ECS service that runs on EC2.
+
+```yaml
+apiVersion: aws.project-planton.org/v1
+kind: EcsService
+metadata:
+  name: ec2-ecs-service
+  version:
+    message: "Running on EC2"
+spec:
+  cluster_name: my-ec2-ecs-cluster
+  service_name: ec2-app-service
+  image: "123456789012.dkr.ecr.us-east-1.amazonaws.com/my-ec2-app:latest"
+  container_port: 8080
+  desired_count: 2
+  cpu: 512
+  memory: 1024
+  subnets:
+    - subnet-0abc123
+    - subnet-1def456
+  security_groups:
+    - sg-01234567
+  assign_public_ip: false
+  task_execution_role_arn: arn:aws:iam::123456789012:role/ecsTaskExecutionRole
+  task_role_arn: arn:aws:iam::123456789012:role/myAppTaskRole
+```
+
+**Key Points**:
+
+- **EC2 Launch**: The ECS cluster must already be set up with an EC2 capacity provider.
+- **IAM Roles**: Using custom roles for task execution and AWS API access within the container.
+
+---
+
+# Example with Environment Variables
+
+Inject environment variables into your container for configuration or secrets.
+
+```yaml
+apiVersion: aws.project-planton.org/v1
+kind: EcsService
+metadata:
+  name: service-with-env
+  version:
+    message: "Using environment variables"
+spec:
+  cluster_name: my-ecs-cluster
+  service_name: env-service
+  image: "123456789012.dkr.ecr.us-east-1.amazonaws.com/myapp:latest"
+  container_port: 3000
+  desired_count: 2
+  cpu: 512
+  memory: 1024
+  subnets:
+    - subnet-11111111
+    - subnet-22222222
+  security_groups:
+    - sg-33333333
+  environment:
+    - name: "LOG_LEVEL"
+      value: "DEBUG"
+    - name: "API_KEY"
+      value: "some-api-key"
+```
+
+**Key Points**:
+
+- **Environment Vars**: Pass sensitive data or config parameters directly to the container.
+- **Scaling**: Increase `desired_count` as needed for high availability.
+
+---
+
+# Minimal Example
+
+This minimal spec relies on default values for `desired_count` and `assign_public_ip`. Great for quick POCs or internal
+services.
+
+```yaml
+apiVersion: aws.project-planton.org/v1
+kind: EcsService
+metadata:
+  name: minimal-service
+  version:
+    message: "Minimal ECS service example"
+spec:
+  cluster_name: my-simple-cluster
+  service_name: minimal
+  image: "amazonlinux:latest"
+  cpu: 256
+  memory: 512
+  subnets:
+    - subnet-12345abc
+```
+
+**Key Points**:
+
+- **Defaults**: `desired_count` defaults to 1, `assign_public_ip` defaults to false.
+- **Private Deployments**: Without a security group or container port, you can run purely internal workloads.
+
+---
+
+**Next Steps**:
+
+- Customize CPU/memory allocations, environment variables, or IAM roles based on application requirements.
+- Refer to the [README.md](./README.md) for additional information on the ECS service resource fields and how to
+  configure them for production workloads.
+- Check out ProjectPlanton’s official documentation to explore advanced features like load balancer integration, auto
+  scaling policies, and multi-environment workflows.
