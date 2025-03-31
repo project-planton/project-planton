@@ -1,0 +1,18 @@
+apiVersion: aws.project-planton.org/v1
+kind: EcsService
+metadata:
+  name: nginx-service
+spec:
+  cluster_name: dev-cluster
+  service_name: nginx-service
+  image: nginx:latest
+  container_port: 80
+  desired_count: 1
+  cpu: 1
+  memory: 100
+  subnets: []
+  security_groups: []
+  assign_public_ip: true
+  environment:
+    - name: REDIS_URL
+      value: "redis://my-redis-cache:6379"
