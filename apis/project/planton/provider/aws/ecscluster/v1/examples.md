@@ -1,72 +1,139 @@
-# AWS ECS Cluster Example
+# Create using CLI
 
-Below is a sample ECS service manifest that runs a container on AWS Fargate. This configuration sets up a public-facing
-service with an Application Load Balancer.
+Create a yaml manifest using one of the examples below. After the YAML is created, use the command below to apply with
+ProjectPlanton:
+
+```shell
+project-planton pulumi up --manifest <yaml-path> --stack <stack-name>
+```
+
+Or, if using Terraform:
+
+```shell
+project-planton terraform apply --manifest <yaml-path> --stack <stack-name>
+```
+
+(You can also use a shorter form like `planton apply -f <yaml-path>` if your environment is configured accordingly.)
+
+---
+
+# Basic Example
 
 ```yaml
 apiVersion: aws.project-planton.org/v1
 kind: EcsCluster
 metadata:
-  name: my-ecs-cluster
+  name: my-basic-ecs-cluster
   version:
-    # recommended to track your service versions
-    message: "v1.0"
+    message: "Initial cluster"
 spec:
-  launch_type: FARGATE
-  cluster_name: my-ecs-cluster
-  container_image: "123456789012.dkr.ecr.us-east-1.amazonaws.com/my-webapp:latest"
-  container_port: 8080
-  cpu: 512
-  memory: 1024
-  desired_count: 2
-  environment_variables:
-    - key: LOG_LEVEL
-      value: debug
-  secret_variables:
-    - key: DB_PASSWORD
-      value: arn:aws:ssm:us-east-1:123456789012:parameter/my-secret-pass
-  network:
-    vpc_id: "vpc-0123456789abcdef0"
-    subnet_ids:
-      - "subnet-0123456789abcdef0"
-      - "subnet-abcdef0123456789"
-    security_group_ids:
-      - "sg-0123456789abcdef0"
-    assign_public_ip: true
-  ingress:
-    is_public: true
-    domain_name: "myapp.example.com"
-    path: "/"
-    health_check_path: "/health"
-  auto_scaling:
-    is_enabled: true
-    min_count: 2
-    max_count: 5
+  # Recommended to be true for production, enabling CloudWatch Container Insights
+  enable_container_insights: true
+
+  # Using default Fargate capacity
+  capacity_providers:
+    - "FARGATE"
+
+  # Defaulting to false; set to true if you want ECS Exec
+  enable_execute_command: false
 ```
 
-## Usage
+This example creates a simple AWS ECS cluster that runs on Fargate, with container insights enabled.
 
-1. **Validate the Manifest** (optional but recommended):
-   ```bash
-   project-planton validate --manifest ./ecscluster.yaml
-   ```
+---
 
-2. **Deploy via Pulumi**:
-   ```bash
-   project-planton pulumi up --manifest ./ecscluster.yaml --stack org/project/stack
-   ```
-   or **Deploy via Terraform**:
-   ```bash
-   project-planton terraform apply --manifest ./ecscluster.yaml --stack org/project/stack
-   ```
+# Example with Multiple Capacity Providers
 
-3. **Verify**:
-    - Check ECS in the AWS Console or use AWS CLI:
-      ```bash
-      aws ecs describe-services --cluster my-ecs-cluster --services my-ecs-cluster
-      ```
-    - If the service is internet-facing and your DNS is properly configured, you should be able to access the domain (
-      `myapp.example.com`) once AWS finishes provisioning the load balancer and DNS.
+```yaml
+apiVersion: aws.project-planton.org/v1
+kind: EcsCluster
+metadata:
+  name: my-mixed-cluster
+  version:
+    message: "Multi capacity providers cluster"
+spec:
+  # Enable CloudWatch insights to capture performance metrics
+  enable_container_insights: true
 
-This example demonstrates a typical public-facing ECS service on AWS Fargate. Adjust `cpu`, `memory`, subnets, security
-groups, and domain names to suit your application’s requirements.
+  # Include both FARGATE and FARGATE_SPOT for cost savings when spot capacity is available
+  capacity_providers:
+    - "FARGATE"
+    - "FARGATE_SPOT"
+
+  # Keep ECS Exec disabled if not needed
+  enable_execute_command: false
+```
+
+This example showcases how to combine FARGATE with FARGATE_SPOT, allowing you to reduce costs by taking advantage of
+Spot capacity where possible.
+
+---
+
+# Example with ECS Exec Enabled
+
+```yaml
+apiVersion: aws.project-planton.org/v1
+kind: EcsCluster
+metadata:
+  name: my-exec-enabled-cluster
+  version:
+    message: "Exec debugging example"
+spec:
+  # Container Insights are highly recommended for monitoring
+  enable_container_insights: true
+
+  # Single capacity provider for a basic Fargate cluster
+  capacity_providers:
+    - "FARGATE"
+
+  # Enable ECS Exec to allow debugging into running containers
+  enable_execute_command: true
+```
+
+When `enable_execute_command` is `true`, you can connect to running tasks for debugging or operational troubleshooting.
+
+---
+
+# Example with Minimal Configuration
+
+```yaml
+apiVersion: aws.project-planton.org/v1
+kind: EcsCluster
+metadata:
+  name: shorty
+  version:
+    message: "Minimal cluster example"
+spec:
+# Accept all defaults; Insights defaults to true
+# capacity_providers defaults to an empty list (no cluster capacity providers),
+# which is typically updated manually or managed externally if needed
+```
+
+If you need a bare-bones cluster definition, you can omit many fields. However, you should explicitly consider capacity
+providers and container insights for a more production-ready setup.
+
+---
+
+After creating a YAML manifest for your ECS cluster, apply the configuration using either Pulumi or Terraform with the
+ProjectPlanton CLI. The CLI will validate your manifest against the Protobuf schema, generate the required
+infrastructure code, and provision the cluster on AWS.
+
+For example:
+
+```shell
+project-planton pulumi up --manifest minimal-ecs.yaml --stack myorg/dev
+```
+
+Or:
+
+```shell
+project-planton terraform apply --manifest minimal-ecs.yaml --stack myorg/dev
+```
+
+Upon completion, you can check the newly created ECS cluster in the AWS Console or with the AWS CLI:
+
+```shell
+aws ecs list-clusters
+```
+
+This confirms that your ECS cluster has been created and is ready for workloads.

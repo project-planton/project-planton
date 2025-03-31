@@ -1,95 +1,95 @@
-# AWS ECS Cluster (EcsCluster)
+# Overview
 
-## Introduction
+The **EcsCluster** API resource provides a standardized, streamlined way to deploy and manage an Amazon ECS cluster on
+AWS. It encapsulates key configurations—such as Fargate support, capacity providers, and ECS Exec options—into a single,
+uniform resource that seamlessly integrates with the ProjectPlanton multi-cloud deployment framework.
 
-The **EcsCluster** component manages containerized workloads on AWS ECS using a single manifest. Whether you choose a
-serverless Fargate launch type or EC2-based tasks, this resource standardizes configuration with a consistent,
-Protobuf-based schema. You can validate and deploy your ECS workloads using the Project Planton CLI, which wraps Pulumi
-or Terraform to simplify the entire process.
+## Purpose
 
----
+Deploying ECS clusters on AWS can involve numerous configurations, from defining capacity providers to enabling
+container insights for production monitoring. The **EcsCluster** resource aims to:
 
-## Resource Definition
+- **Simplify Cluster Provisioning**: Provide an easy-to-use interface for creating ECS clusters tailored to Fargate or
+  EC2-based workloads.
+- **Enable Production-Ready Monitoring**: Optionally enable CloudWatch Container Insights to gain observability into
+  containerized workloads.
+- **Streamline Debugging**: Allow for ECS Exec configuration so teams can `exec` into running containers for
+  troubleshooting and operational tasks.
+- **Encourage Standards**: Enforce consistent naming and recommended defaults to maintain a uniform, predictable setup
+  across multiple deployments and environments.
+
+## Key Features
+
+### Container Insights
+
+- **CloudWatch Container Insights**: Easily enable container-level metrics, logs, and traces. Helps teams quickly
+  diagnose issues and optimize resource usage.
+
+### Capacity Providers
+
+- **Fargate and Fargate Spot**: Effortlessly configure a Fargate-only cluster or mix in Spot capacity. This allows cost
+  optimization while retaining a serverless container environment.
+- **EC2 Capacity Providers**: For workloads requiring direct EC2 control, the EcsCluster resource can also integrate
+  with existing auto-scaling groups, offering maximum flexibility.
+
+### ECS Exec Support
+
+- **Enable Execute Command**: Optionally allow shell access into running ECS tasks for live debugging. This feature is
+  extremely useful during development or in production for resolving critical issues.
+
+### Seamless Integration
+
+- **ProjectPlanton CLI**: Manifests validated and deployed using the same familiar CLI, ensuring a consistent developer
+  experience.
+- **Multi-Cloud Ready**: Combine AWS ECS with other providers or resources in the same workflow, using the uniform
+  ProjectPlanton resource model.
+
+## Benefits
+
+- **Consistent Deployments**: A single resource definition for ECS clusters reduces the likelihood of misconfiguration
+  or fragmentation across environments.
+- **Improved Observability**: Built-in support for enabling CloudWatch Container Insights ensures teams can monitor and
+  troubleshoot services without complex manual setup.
+- **Cost Optimization**: Leverage capacity providers and advanced scheduling options (e.g., Spot, Fargate) to balance
+  performance and budget constraints.
+- **Future-Proof**: As AWS evolves ECS capabilities, updates to the EcsCluster resource keep your deployments aligned
+  with best practices and new features.
+
+## Example Usage
+
+Below is a minimal YAML snippet demonstrating how to configure and deploy an ECS cluster using ProjectPlanton:
 
 ```yaml
 apiVersion: aws.project-planton.org/v1
 kind: EcsCluster
 metadata:
-  name: ...
+  name: my-ecs-cluster
+  version:
+    message: "Initial ECS cluster deployment"
 spec:
-  launch_type: ...
-  cluster_name: ...
-  container_image: ...
-  container_port: ...
-  cpu: ...
-  memory: ...
-  desired_count: ...
-  environment_variables: ...
-  secret_variables: ...
-  network:
-    vpc_id: ...
-    subnet_ids: ...
-    security_group_ids: ...
-    assign_public_ip: ...
-  ingress:
-    is_public: ...
-    domain_name: ...
-    path: ...
-    health_check_path: ...
-  auto_scaling:
-    is_enabled: ...
-    min_count: ...
-    max_count: ...
+  enable_container_insights: true
+  capacity_providers:
+    - "FARGATE"
+    - "FARGATE_SPOT"
+  enable_execute_command: true
 ```
 
-### Fields Overview
+You would then deploy this using the ProjectPlanton CLI (either Pulumi or Terraform under the hood):
 
-| Field                               | Description                                                                                     | Required | Default   |
-|-------------------------------------|-------------------------------------------------------------------------------------------------|----------|-----------|
-| **apiVersion**                      | Must be `aws.project-planton.org/v1`.                                                           | Yes      | -         |
-| **kind**                            | Must be `EcsCluster`.                                                                           | Yes      | -         |
-| **metadata.name**                   | Logical name for this resource.                                                                 | Yes      | -         |
-| **spec.launch_type**                | ECS launch type: `FARGATE` or `EC2`.                                                            | No       | `FARGATE` |
-| **spec.cluster_name**               | ECS cluster name or ARN. If empty, a default cluster may be inferred.                           | No       | -         |
-| **spec.container_image**            | Docker image to run, such as `nginx:latest` or an ECR image.                                    | Yes      | -         |
-| **spec.container_port**             | Port the container listens on (e.g., `8080`).                                                   | Yes      | -         |
-| **spec.cpu**                        | CPU units for each task.                                                                        | No       | `256`     |
-| **spec.memory**                     | Memory in MiB for each task.                                                                    | No       | `512`     |
-| **spec.desired_count**              | Number of tasks to run.                                                                         | No       | `1`       |
-| **spec.environment_variables**      | List of key-value pairs for non-sensitive environment variables.                                | No       | []        |
-| **spec.secret_variables**           | List of key-value pairs referencing AWS Secrets Manager or SSM.                                 | No       | []        |
-| **spec.network.vpc_id**             | VPC ID for tasks. If omitted, a default might be used.                                          | No       | -         |
-| **spec.network.subnet_ids**         | List of subnet IDs.                                                                             | No       | -         |
-| **spec.network.security_group_ids** | Security groups for tasks.                                                                      | No       | -         |
-| **spec.network.assign_public_ip**   | Whether to assign a public IP (for Fargate in a public subnet).                                 | No       | `false`   |
-| **spec.ingress.is_public**          | Controls if the service is exposed to the internet.                                             | No       | `false`   |
-| **spec.ingress.domain_name**        | Domain name if you want a custom FQDN (e.g. `api.example.com`).                                 | No       | -         |
-| **spec.ingress.path**               | Route path for the application if using path-based routing.                                     | No       | `/`       |
-| **spec.ingress.health_check_path**  | Path for ALB health checks.                                                                     | No       | `/`       |
-| **spec.auto_scaling.is_enabled**    | Enables or disables horizontal scaling. If `false`, the service stays at the **desired_count**. | No       | `false`   |
-| **spec.auto_scaling.min_count**     | Minimum number of tasks.                                                                        | No       | `1`       |
-| **spec.auto_scaling.max_count**     | Maximum number of tasks.                                                                        | No       | `1`       |
+```bash
+project-planton pulumi up --manifest ecscluster.yaml --stack org/project/stack
+```
+
+Or:
+
+```bash
+project-planton terraform apply --manifest ecscluster.yaml --stack org/project/stack
+```
+
+This deploys an ECS cluster with Container Insights enabled, Spot capacity, and support for ECS Exec in your chosen AWS
+region.
 
 ---
 
-## How It Works
-
-1. **Define the Manifest**  
-   Write a YAML manifest that follows the schema above.
-2. **Validate and Deploy**  
-   Use `project-planton validate --manifest <file>` to ensure correctness, then either:
-    - **Pulumi**: `project-planton pulumi up --manifest <file> --stack <stack_name>`
-    - **Terraform**: `project-planton terraform apply --manifest <file> --stack <stack_name>`
-3. **Inspect Outputs**  
-   On success, the CLI returns relevant ECS service information (e.g., cluster name, load balancer DNS).
-
----
-
-## Additional Notes
-
-- **Launch Types**: Fargate is the simplest route (no EC2 management); for advanced setups or specialized hardware, you
-  can opt for EC2.
-- **Secrets**: Securely pass credentials and other sensitive info via `secret_variables`.
-- **Auto-Scaling**: If `auto_scaling.is_enabled` is `true`, ensure `min_count` and `max_count` reflect realistic bounds.
-- **Networking**: For Fargate with a public IP, you’ll usually pick subnets that have internet access and a suitable
-  security group.
+Happy deploying! If you have any questions or issues, feel free to open an issue in our GitHub repository or reach out
+via the ProjectPlanton community channels.
