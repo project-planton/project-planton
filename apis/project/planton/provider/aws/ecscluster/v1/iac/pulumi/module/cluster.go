@@ -10,12 +10,7 @@ import (
 )
 
 func cluster(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) error {
-	spec := locals.EcsCluster.Spec
-
-	clusterName := spec.ClusterName
-	if clusterName == "" {
-		clusterName = locals.EcsCluster.Metadata.Name
-	}
+	clusterName := locals.EcsCluster.Metadata.Name
 
 	ecsCluster, err := ecs.NewCluster(ctx, locals.EcsCluster.Metadata.Name, &ecs.ClusterArgs{
 		Name: pulumi.String(clusterName),

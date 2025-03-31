@@ -7,7 +7,7 @@ import "project/planton/shared/options/options.proto";
 
 // AwsEcsClusterSpec defines the minimal configuration for creating
 // an AWS ECS cluster that supports Fargate workloads in production.
-message AwsEcsClusterSpec {
+message EcsClusterSpec {
   // enable_container_insights determines whether to enable CloudWatch
   // Container Insights for this cluster. This is highly recommended
   // for production monitoring, though it incurs CloudWatch costs.

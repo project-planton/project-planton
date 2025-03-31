@@ -1,5 +1,5 @@
 apiVersion: aws.project-planton.org/v1
-kind: AwsVpc
+kind: EcsCluster
 metadata:
   name: dev-cluster
 spec:
