@@ -81,6 +81,7 @@ const (
 	AwsRdsClusterKind     ApiResourceKind = "aws-rds-cluster"
 	AwsRdsInstanceKind    ApiResourceKind = "aws-rds-instance"
 	AwsSecretsManagerKind ApiResourceKind = "aws-secrets-manager"
+	AwsSecurityGroupKind  ApiResourceKind = "aws-security-group"
 	AwsStaticWebsiteKind  ApiResourceKind = "aws-static-website"
 	AwsVpcKind            ApiResourceKind = "aws-vpc"
 	EcsClusterKind        ApiResourceKind = "ecs-cluster"
