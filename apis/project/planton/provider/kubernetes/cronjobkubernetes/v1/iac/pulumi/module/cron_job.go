@@ -12,18 +12,11 @@ import (
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/datatypes/stringmaps/sortstringmap"
 )
 
-/*
-cronJob creates a Kubernetes CronJob resource.
-It configures the schedule, concurrency policies, job template, and container environment,
-using fields from the CronJobKubernetesSpec.
-*/
 func cronJob(ctx *pulumi.Context, locals *Locals, createdNamespace *corev1.Namespace) (*batchv1.CronJob, error) {
 	target := locals.CronJobKubernetes
 
-	// Build environment variables
 	envVarInputs := make([]corev1.EnvVarInput, 0)
 
-	// Add HOSTNAME env var (pod IP)
 	envVarInputs = append(envVarInputs, corev1.EnvVarInput(corev1.EnvVarArgs{
 		Name: pulumi.String("HOSTNAME"),
 		ValueFrom: &corev1.EnvVarSourceArgs{
@@ -33,7 +26,6 @@ func cronJob(ctx *pulumi.Context, locals *Locals, createdNamespace *corev1.Names
 		},
 	}))
 
-	// Add K8S_POD_ID env var (pod name)
 	envVarInputs = append(envVarInputs, corev1.EnvVarInput(corev1.EnvVarArgs{
 		Name: pulumi.String("K8S_POD_ID"),
 		ValueFrom: &corev1.EnvVarSourceArgs{
@@ -44,7 +36,6 @@ func cronJob(ctx *pulumi.Context, locals *Locals, createdNamespace *corev1.Names
 		},
 	}))
 
-	// Add user-defined environment variables
 	if target.Spec.Env != nil {
 		if target.Spec.Env.Variables != nil {
 			sortedVarKeys := sortstringmap.SortMap(target.Spec.Env.Variables)
@@ -56,7 +47,6 @@ func cronJob(ctx *pulumi.Context, locals *Locals, createdNamespace *corev1.Names
 			}
 		}
 
-		// Add user-defined secret environment variables
 		if target.Spec.Env.Secrets != nil {
 			sortedSecretKeys := sortstringmap.SortMap(target.Spec.Env.Secrets)
 			for _, secretKey := range sortedSecretKeys {
@@ -64,7 +54,6 @@ func cronJob(ctx *pulumi.Context, locals *Locals, createdNamespace *corev1.Names
 					Name: pulumi.String(secretKey),
 					ValueFrom: &corev1.EnvVarSourceArgs{
 						SecretKeyRef: &corev1.SecretKeySelectorArgs{
-							// We will use the "main" secret to store these secrets
 							Name: pulumi.String("main"),
 							Key:  pulumi.String(secretKey),
 						},
@@ -74,7 +63,6 @@ func cronJob(ctx *pulumi.Context, locals *Locals, createdNamespace *corev1.Names
 		}
 	}
 
-	// Create the main container
 	mainContainer := &corev1.ContainerArgs{
 		Name: pulumi.String("cronjob-container"),
 		Image: pulumi.String(fmt.Sprintf("%s:%s",
@@ -91,11 +79,15 @@ func cronJob(ctx *pulumi.Context, locals *Locals, createdNamespace *corev1.Names
 				"memory": target.Spec.Resources.Requests.Memory,
 			}),
 		},
-		// (Optional) If you need commands/args, set them here. Example:
-		// Command: pulumi.ToStringArray([]string{"/bin/sh","-c","echo Hello!"}),
 	}
 
-	// Build the PodSpec
+	if len(target.Spec.Command) > 0 {
+		mainContainer.Command = pulumi.ToStringArray(target.Spec.Command)
+	}
+	if len(target.Spec.Args) > 0 {
+		mainContainer.Args = pulumi.ToStringArray(target.Spec.Args)
+	}
+
 	podSpecArgs := &corev1.PodSpecArgs{
 		RestartPolicy: pulumi.String(target.Spec.RestartPolicy),
 		Containers: corev1.ContainerArray{
@@ -103,7 +95,6 @@ func cronJob(ctx *pulumi.Context, locals *Locals, createdNamespace *corev1.Names
 		},
 	}
 
-	// If we created an image pull secret, reference it
 	if locals.ImagePullSecretData != nil {
 		podSpecArgs.ImagePullSecrets = corev1.LocalObjectReferenceArray{
 			corev1.LocalObjectReferenceArgs{
@@ -112,7 +103,6 @@ func cronJob(ctx *pulumi.Context, locals *Locals, createdNamespace *corev1.Names
 		}
 	}
 
-	// Now build the CronJob spec
 	cronJobSpec := &batchv1.CronJobSpecArgs{
 		Schedule:                   pulumi.String(target.Spec.Schedule),
 		ConcurrencyPolicy:          pulumi.String(target.Spec.ConcurrencyPolicy),
@@ -129,12 +119,10 @@ func cronJob(ctx *pulumi.Context, locals *Locals, createdNamespace *corev1.Names
 		},
 	}
 
-	// If startingDeadlineSeconds is > 0, set it
 	if target.Spec.StartingDeadlineSeconds > 0 {
 		cronJobSpec.StartingDeadlineSeconds = pulumi.IntPtr(int(target.Spec.StartingDeadlineSeconds))
 	}
 
-	// Create the CronJob
 	createdCronJob, err := batchv1.NewCronJob(ctx,
 		target.Metadata.Name,
 		&batchv1.CronJobArgs{
