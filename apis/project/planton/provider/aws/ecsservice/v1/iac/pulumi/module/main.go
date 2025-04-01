@@ -13,12 +13,12 @@ import (
 func Resources(ctx *pulumi.Context, stackInput *ecsservicev1.EcsServiceStackInput) error {
 	locals := initializeLocals(ctx, stackInput)
 
-	// If the user didn't provide AWS credentials, create a default provider.
-	// Otherwise, inject custom credentials for the region, access key, etc.
 	awsCredential := stackInput.ProviderCredential
 	var provider *aws.Provider
 	var err error
 
+	// If the user didn't provide AWS credentials, create a default provider.
+	// Otherwise, inject custom credentials for the region, access key, etc.
 	if awsCredential == nil {
 		provider, err = aws.NewProvider(ctx,
 			"classic-provider",

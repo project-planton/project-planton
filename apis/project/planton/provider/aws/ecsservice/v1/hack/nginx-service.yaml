@@ -3,17 +3,24 @@ kind: EcsService
 metadata:
   name: nginx-service
 spec:
-  cluster_name: dev-cluster
-  service_name: nginx-service
-  image: nginx:latest
-  container_port: 80
-  desired_count: 1
-  cpu: 1
-  memory: 100
-  subnets:
-    - subnet-07a29bb92d6e096f5
-  security_groups: []
-  assign_public_ip: true
-  environment:
-    - name: REDIS_URL
-      value: "redis://my-redis-cache:6379"
+  clusterName: arn:aws:ecs:ap-south-2:503561448537:cluster/dev-cluster
+  container:
+    image:
+      repo: nginx
+      tag: latest
+    env:
+      variables:
+        REDIS_URL: "redis://my-redis-cache:6379"
+      secrets: {}
+    port: 80
+    replicas: 1
+    cpu: 256
+    memory: 512
+  network:
+    subnets:
+      - subnet-07a29bb92d6e096f5
+    securityGroups: []
+    assignPublicIp: true
+  iam:
+    taskExecutionRoleArn: ""
+    taskRoleArn: ""

@@ -3,34 +3,34 @@ package module
 import (
 	"encoding/json"
 	"fmt"
+
 	"github.com/pkg/errors"
-	ecsservicev1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/ecsservice/v1"
 	"github.com/pulumi/pulumi-aws/sdk/v6/go/aws"
 	"github.com/pulumi/pulumi-aws/sdk/v6/go/aws/ecs"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
+// service creates and wires up the ECS Task Definition and ECS Service resources.
 func service(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) error {
 	originalSpec := locals.EcsService.Spec
 
 	convertedSpec := LocalsEcsServiceSpec{
 		ClusterName:          originalSpec.ClusterName,
-		ServiceName:          originalSpec.ServiceName,
-		Image:                originalSpec.Image,
-		ContainerPort:        originalSpec.ContainerPort,
-		DesiredCount:         int(originalSpec.DesiredCount),
-		Cpu:                  originalSpec.Cpu,
-		Memory:               originalSpec.Memory,
-		Subnets:              originalSpec.Subnets,
-		SecurityGroups:       originalSpec.SecurityGroups,
-		AssignPublicIp:       originalSpec.AssignPublicIp,
-		TaskExecutionRoleArn: originalSpec.TaskExecutionRoleArn,
-		TaskRoleArn:          originalSpec.TaskRoleArn,
-		Environment:          convertEnvironment(originalSpec.Environment),
+		ServiceName:          locals.EcsService.Metadata.Name,
+		ImageRepo:            originalSpec.Container.Image.Repo,
+		ImageTag:             originalSpec.Container.Image.Tag,
+		Port:                 originalSpec.Container.Port,
+		Replicas:             int(originalSpec.Container.Replicas),
+		Cpu:                  originalSpec.Container.Cpu,
+		Memory:               originalSpec.Container.Memory,
+		Subnets:              originalSpec.Network.Subnets,
+		SecurityGroups:       originalSpec.Network.SecurityGroups,
+		AssignPublicIp:       originalSpec.Network.AssignPublicIp,
+		TaskExecutionRoleArn: originalSpec.Iam.TaskExecutionRoleArn,
+		TaskRoleArn:          originalSpec.Iam.TaskRoleArn,
+		EnvVariables:         originalSpec.Container.Env.Variables,
+		EnvSecrets:           originalSpec.Container.Env.Secrets,
 	}
-
-	serviceName := convertedSpec.ServiceName
-	clusterName := convertedSpec.ClusterName
 
 	containerDefs, err := buildContainerDefinitions(&convertedSpec)
 	if err != nil {
@@ -38,7 +38,7 @@ func service(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) error 
 	}
 
 	taskDef, err := ecs.NewTaskDefinition(ctx, locals.EcsService.Metadata.Name+"-taskdef", &ecs.TaskDefinitionArgs{
-		Family:                  pulumi.String(serviceName),
+		Family:                  pulumi.String(convertedSpec.ServiceName),
 		RequiresCompatibilities: pulumi.StringArray{pulumi.String("FARGATE")},
 		Cpu:                     pulumi.String(fmt.Sprintf("%d", convertedSpec.Cpu)),
 		Memory:                  pulumi.String(fmt.Sprintf("%d", convertedSpec.Memory)),
@@ -53,10 +53,10 @@ func service(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) error 
 	}
 
 	ecsService, err := ecs.NewService(ctx, locals.EcsService.Metadata.Name+"-service", &ecs.ServiceArgs{
-		Name:           pulumi.String(serviceName),
-		Cluster:        pulumi.String(clusterName),
+		Name:           pulumi.String(convertedSpec.ServiceName),
+		Cluster:        pulumi.String(convertedSpec.ClusterName),
 		LaunchType:     pulumi.String("FARGATE"),
-		DesiredCount:   pulumi.Int(convertedSpec.DesiredCount),
+		DesiredCount:   pulumi.Int(convertedSpec.Replicas),
 		TaskDefinition: taskDef.Arn,
 		NetworkConfiguration: &ecs.ServiceNetworkConfigurationArgs{
 			AssignPublicIp: pulumi.Bool(convertedSpec.AssignPublicIp),
@@ -70,7 +70,7 @@ func service(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) error 
 	}
 
 	ctx.Export(OpEcsServiceName, ecsService.Name)
-	ctx.Export(OpEcsClusterName, pulumi.String(clusterName))
+	ctx.Export(OpEcsClusterName, pulumi.String(convertedSpec.ClusterName))
 	ctx.Export(OpLoadBalancerDnsName, pulumi.String(""))
 	ctx.Export(OpServiceUrl, pulumi.String(""))
 	ctx.Export(OpServiceDiscoveryName, pulumi.String(""))
@@ -78,26 +78,36 @@ func service(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) error 
 	return nil
 }
 
+// buildContainerDefinitions builds a JSON array of container definitions
+// based on our local ECS service spec.
 func buildContainerDefinitions(spec *LocalsEcsServiceSpec) (string, error) {
 	var envVars []map[string]string
-	for _, env := range spec.Environment {
+
+	for k, v := range spec.EnvVariables {
 		envVars = append(envVars, map[string]string{
-			"name":  env.Name,
-			"value": env.Value,
+			"name":  k,
+			"value": v,
+		})
+	}
+
+	for k, v := range spec.EnvSecrets {
+		envVars = append(envVars, map[string]string{
+			"name":  k,
+			"value": v,
 		})
 	}
 
 	container := map[string]interface{}{
 		"name":        spec.ServiceName,
-		"image":       spec.Image,
+		"image":       fmt.Sprintf("%s:%s", spec.ImageRepo, spec.ImageTag),
 		"essential":   true,
 		"environment": envVars,
 	}
 
-	if spec.ContainerPort != 0 {
+	if spec.Port != 0 {
 		container["portMappings"] = []map[string]int32{
 			{
-				"containerPort": spec.ContainerPort,
+				"containerPort": spec.Port,
 			},
 		}
 	}
@@ -118,23 +128,16 @@ func toPulumiStrings(input []string) pulumi.StringArray {
 	}
 	return output
 }
-func convertEnvironment(envList []*ecsservicev1.EcsServiceSpec_EnvironmentVar) []EcsEnvironmentVar {
-	var converted []EcsEnvironmentVar
-	for _, e := range envList {
-		converted = append(converted, EcsEnvironmentVar{
-			Name:  e.Name,
-			Value: e.Value,
-		})
-	}
-	return converted
-}
 
+// LocalsEcsServiceSpec is an internal struct that adapts the new EcsServiceSpec
+// fields into something easier for building ECS resources.
 type LocalsEcsServiceSpec struct {
 	ClusterName          string
 	ServiceName          string
-	Image                string
-	ContainerPort        int32
-	DesiredCount         int
+	ImageRepo            string
+	ImageTag             string
+	Port                 int32
+	Replicas             int
 	Cpu                  int32
 	Memory               int32
 	Subnets              []string
@@ -142,10 +145,6 @@ type LocalsEcsServiceSpec struct {
 	AssignPublicIp       bool
 	TaskExecutionRoleArn string
 	TaskRoleArn          string
-	Environment          []EcsEnvironmentVar
-}
-
-type EcsEnvironmentVar struct {
-	Name  string
-	Value string
+	EnvVariables         map[string]string
+	EnvSecrets           map[string]string
 }
