@@ -3,7 +3,7 @@ kind: EcsService
 metadata:
   name: nginx-service
 spec:
-  clusterName: "arn:aws:ecs:us-west-2:503561448537:cluster/dev-cluster"
+  clusterName: arn:aws:ecs:ap-south-2:503561448537:cluster/dev-cluster
   container:
     image:
       repo: nginx
