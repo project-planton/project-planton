@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package project.planton.provider.aws.awssecuritygroup.v1;
+
+//aws-security-group stack outputs
+message AwsSecurityGroupStackOutputs {
+  //id of the vpc created on aws
+  string vpc_id = 1;
+  //id of the internet-gateway
+  string internet_gateway_id = 2;
+  //private subnets
+  repeated AwsSecurityGroupSubnetStackOutputs private_subnets = 3;
+  //public subnets
+  repeated AwsSecurityGroupSubnetStackOutputs public_subnets = 4;
+}
+
+//aws-security-group subnet outputs
+message AwsSecurityGroupSubnetStackOutputs {
+  //subnet name
+  string name = 1;
+  //subnet id
+  string id = 2;
+  //subnet cidr
+  string cidr = 3;
+  //nat-gateway
+  AwsSecurityGroupNatGatewayStackOutputs nat_gateway = 4;
+}
+
+//aws security group nat-gateway outputs
+message AwsSecurityGroupNatGatewayStackOutputs {
+  //id of the nat gateway
+  string id = 1;
+  //nat gateway private ip address
+  string private_ip = 2;
+  //nat gateway public ip address
+  string public_ip = 3;
+}
