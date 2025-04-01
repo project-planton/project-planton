@@ -72,7 +72,7 @@ func ruleToIngress(r *awssecuritygroupv1.SecurityGroupRule) ec2.SecurityGroupIng
 			Ipv6CidrBlocks: pulumi.ToStringArray(r.Ipv6Cidrs),
 			SecurityGroups: pulumi.ToStringArray(r.SourceSecurityGroupIds),
 			Self:           pulumi.Bool(r.SelfReference),
-			Description:    pulumi.String(r.RuleDescription),
+			Description:    pulumi.String(r.Description),
 		},
 	}
 }
@@ -88,7 +88,7 @@ func ruleToEgress(r *awssecuritygroupv1.SecurityGroupRule) ec2.SecurityGroupEgre
 			Ipv6CidrBlocks: pulumi.ToStringArray(r.Ipv6Cidrs),
 			SecurityGroups: pulumi.ToStringArray(r.DestinationSecurityGroupIds),
 			Self:           pulumi.Bool(r.SelfReference),
-			Description:    pulumi.String(r.RuleDescription),
+			Description:    pulumi.String(r.Description),
 		},
 	}
 }

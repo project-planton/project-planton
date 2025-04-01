@@ -80,7 +80,7 @@ message SecurityGroupRule {
 
   // rule_description is an optional explanation of this specific rule,
   // aiding in clarity and maintenance. Max 255 chars recommended.
-  string rule_description = 9 [
+  string description = 9 [
     (buf.validate.field).cel = {
       id: "rule_description_length_check",
       expression: "size(this) <= 255",

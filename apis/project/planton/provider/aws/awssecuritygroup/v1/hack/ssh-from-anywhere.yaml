@@ -3,13 +3,12 @@ kind: AwsSecurityGroup
 metadata:
   name: ssh-from-anywhere
 spec:
-  vpcId: "vpc-12345abcde"
-  name: "my-ssh-sg"
-  description: "Security group allowing inbound SSH."
-  ingressRules:
+  vpcId: vpc-0e6cca66639175a98
+  description: Security group allowing inbound SSH.
+  ingress:
     - protocol: "tcp"
       fromPort: 22
       toPort: 22
       ipv4Cidrs:
         - "0.0.0.0/0"
-      ruleDescription: "Allow SSH from anywhere."
+      description: Allow SSH from anywhere.

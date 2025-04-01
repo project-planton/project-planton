@@ -15,6 +15,7 @@ import (
 	awsrdsclusterv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsrdscluster/v1"
 	awsrdsinstancev1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsrdsinstance/v1"
 	awssecretsmanagerv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awssecretsmanager/v1"
+	awssecuritygroupv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awssecuritygroup/v1"
 	awsstaticwebsitev1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsstaticwebsite/v1"
 	awsvpcv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsvpc/v1"
 	ecsclusterv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/ecscluster/v1"
@@ -174,6 +175,7 @@ var providerAwsMap = map[ApiResourceKind]proto.Message{
 	AwsRdsClusterKind:     &awsrdsclusterv1.AwsRdsCluster{},
 	AwsRdsInstanceKind:    &awsrdsinstancev1.AwsRdsInstance{},
 	AwsSecretsManagerKind: &awssecretsmanagerv1.AwsSecretsManager{},
+	AwsSecurityGroupKind:  &awssecuritygroupv1.AwsSecurityGroup{},
 	AwsStaticWebsiteKind:  &awsstaticwebsitev1.AwsStaticWebsite{},
 	AwsVpcKind:            &awsvpcv1.AwsVpc{},
 	EcsClusterKind:        &ecsclusterv1.EcsCluster{},
