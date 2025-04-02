@@ -1,0 +1,20 @@
+apiVersion: aws.project-planton.org/v1
+kind: AwsSecurityGroup
+metadata:
+  name: http-https-from-anywhere
+spec:
+  vpcId: vpc-0e6cca66639175a98
+  description: Security group allowing inbound HTTP and HTTPS.
+  ingress:
+    - protocol: tcp
+      fromPort: 80
+      toPort: 80
+      ipv4Cidrs:
+        - "0.0.0.0/0"
+      description: Allow HTTP from anywhere.
+    - protocol: tcp
+      fromPort: 443
+      toPort: 443
+      ipv4Cidrs:
+        - "0.0.0.0/0"
+      description: Allow HTTPS from anywhere.

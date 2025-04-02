@@ -21,7 +21,6 @@ func initializeLocals(ctx *pulumi.Context, stackInput *awssecretsmanagerv1.AwsSe
 		awstagkeys.Resource:     strconv.FormatBool(true),
 		awstagkeys.Organization: locals.AwsSecretsManager.Metadata.Org,
 		awstagkeys.Environment:  locals.AwsSecretsManager.Metadata.Env,
-		awstagkeys.ResourceKind: string(apiresourcekind.GcpArtifactRegistryRepoKind),
 		awstagkeys.ResourceKind: string(apiresourcekind.AwsSecretsManagerKind),
 		awstagkeys.ResourceId:   locals.AwsSecretsManager.Metadata.Id,
 	}

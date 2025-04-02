@@ -14,22 +14,10 @@ message AwsSecurityGroupSpec {
     (buf.validate.field).required = true
   ];
 
-  // name is the name of the Security Group. If omitted, one may be auto-generated.
-  // Must be unique within the VPC.
-  // Recommendation: Use a meaningful name for easier identification in the AWS console.
-  string name = 2 [
-    // Typically AWS enforces max 255 chars for a Security Group name.
-    (buf.validate.field).cel = {
-      id: "name_length_check",
-      expression: "size(this) <= 255",
-      message: "Security Group name must not exceed 255 characters"
-    }
-  ];
-
   // description provides a short explanation of this Security Group’s purpose.
   // This field is required by AWS and cannot be modified once created without a replacement.
   // Example: "Allows inbound HTTP and SSH for web tier"
-  string description = 3 [
+  string description = 2 [
     (buf.validate.field).required = true,
     // AWS max 255 chars for description.
     (buf.validate.field).cel = {
@@ -41,11 +29,11 @@ message AwsSecurityGroupSpec {
 
   // ingress_rules define the inbound traffic rules for this Security Group.
   // If empty, inbound traffic is fully restricted (deny all).
-  repeated SecurityGroupRule ingress_rules = 4;
+  repeated SecurityGroupRule ingress = 3;
 
   // egress_rules define the outbound traffic rules for this Security Group.
   // If empty, AWS defaults to allow all outbound traffic unless configured otherwise.
-  repeated SecurityGroupRule egress_rules = 5;
+  repeated SecurityGroupRule egress = 4;
 }
 
 // SecurityGroupRule represents a single inbound or outbound rule in the Security Group.
@@ -92,7 +80,7 @@ message SecurityGroupRule {
 
   // rule_description is an optional explanation of this specific rule,
   // aiding in clarity and maintenance. Max 255 chars recommended.
-  string rule_description = 9 [
+  string description = 9 [
     (buf.validate.field).cel = {
       id: "rule_description_length_check",
       expression: "size(this) <= 255",
