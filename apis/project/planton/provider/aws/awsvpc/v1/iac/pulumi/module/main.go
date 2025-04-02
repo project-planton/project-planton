@@ -13,7 +13,10 @@ import (
 )
 
 func Resources(ctx *pulumi.Context, stackInput *awsvpcv1.AwsVpcStackInput) error {
-	locals := initializeLocals(ctx, stackInput)
+	locals, err := initializeLocals(ctx, stackInput)
+	if err != nil {
+		return errors.Wrap(err, "failed to initialize locals")
+	}
 
 	awsCredential := stackInput.ProviderCredential
 

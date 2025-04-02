@@ -2,12 +2,15 @@ package module
 
 import (
 	"fmt"
+	"github.com/pkg/errors"
+	"net"
+	"sort"
+	"strconv"
+
 	awsvpcv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsvpc/v1"
 	"github.com/project-planton/project-planton/internal/apiresourcekind"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/aws/awstagkeys"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"sort"
-	"strconv"
 )
 
 type SubnetName string
@@ -21,11 +24,19 @@ type Locals struct {
 	PublicAzSubnetMap  map[AvailabilityZone]map[SubnetName]SubnetCidr
 }
 
-func initializeLocals(ctx *pulumi.Context, stackInput *awsvpcv1.AwsVpcStackInput) *Locals {
+func initializeLocals(ctx *pulumi.Context, stackInput *awsvpcv1.AwsVpcStackInput) (*Locals, error) {
 	locals := &Locals{}
-
-	//assign value for the locals variable to make it available across the project
 	locals.AwsVpc = stackInput.Target
+
+	_, vpcCidrBlock, err := net.ParseCIDR(locals.AwsVpc.Spec.VpcCidr)
+	if err != nil {
+		return nil, errors.Wrapf(err, "invalid vpc cidr %s", locals.AwsVpc.Spec.VpcCidr)
+	}
+	vpcMaskSize, _ := vpcCidrBlock.Mask.Size()
+	if vpcMaskSize > int(locals.AwsVpc.Spec.SubnetSize) {
+		return nil, errors.Errorf("spec.subnetSize /%d cannot be bigger than the VPC /%d",
+			locals.AwsVpc.Spec.SubnetSize, vpcMaskSize)
+	}
 
 	locals.AwsTags = map[string]string{
 		awstagkeys.Resource:     strconv.FormatBool(true),
@@ -38,7 +49,7 @@ func initializeLocals(ctx *pulumi.Context, stackInput *awsvpcv1.AwsVpcStackInput
 	locals.PrivateAzSubnetMap = GetPrivateAzSubnetMap(locals.AwsVpc)
 	locals.PublicAzSubnetMap = getPublicAzSubnetMap(locals.AwsVpc)
 
-	return locals
+	return locals, nil
 }
 
 func GetPrivateAzSubnetMap(awsVpc *awsvpcv1.AwsVpc) map[AvailabilityZone]map[SubnetName]SubnetCidr {
@@ -46,17 +57,13 @@ func GetPrivateAzSubnetMap(awsVpc *awsvpcv1.AwsVpc) map[AvailabilityZone]map[Sub
 
 	for azIndex, az := range awsVpc.Spec.AvailabilityZones {
 		for subnetIndex := 0; subnetIndex < int(awsVpc.Spec.SubnetsPerAvailabilityZone); subnetIndex++ {
-			//build private subnet name
 			privateSubnetName := fmt.Sprintf("private-subnet-%s-%d", az, subnetIndex)
-			//calculate private subnet cidr
 			privateSubnetCidr := fmt.Sprintf("10.0.%d.0/%d", 100+azIndex*10+subnetIndex, awsVpc.Spec.SubnetSize)
 
-			// Initialize the map for this AvailabilityZone if it doesn't exist
 			if privateAzSubnetMap[AvailabilityZone(az)] == nil {
 				privateAzSubnetMap[AvailabilityZone(az)] = make(map[SubnetName]SubnetCidr)
 			}
 
-			//add private subnet to the locals map
 			privateAzSubnetMap[AvailabilityZone(az)][SubnetName(privateSubnetName)] = SubnetCidr(privateSubnetCidr)
 		}
 	}
@@ -68,15 +75,12 @@ func getPublicAzSubnetMap(awsVpc *awsvpcv1.AwsVpc) map[AvailabilityZone]map[Subn
 
 	for azIndex, az := range awsVpc.Spec.AvailabilityZones {
 		for subnetIndex := 0; subnetIndex < int(awsVpc.Spec.SubnetsPerAvailabilityZone); subnetIndex++ {
-			//build public subnet name
 			publicSubnetName := fmt.Sprintf("public-subnet-%s-%d", az, subnetIndex)
-			//calculate public subnet cidr
 			publicSubnetCidr := fmt.Sprintf("10.0.%d.0/%d", azIndex*10+subnetIndex, awsVpc.Spec.SubnetSize)
-			// Initialize the map for this AvailabilityZone if it doesn't exist
+
 			if publicAzSubnetMap[AvailabilityZone(az)] == nil {
 				publicAzSubnetMap[AvailabilityZone(az)] = make(map[SubnetName]SubnetCidr)
 			}
-			//add public subnet to the locals map
 			publicAzSubnetMap[AvailabilityZone(az)][SubnetName(publicSubnetName)] = SubnetCidr(publicSubnetCidr)
 		}
 	}
@@ -88,9 +92,7 @@ func getSortedAzKeys(azSubnetMap map[AvailabilityZone]map[SubnetName]SubnetCidr)
 	for k := range azSubnetMap {
 		keys = append(keys, string(k))
 	}
-
 	sort.Strings(keys)
-
 	return keys
 }
 
@@ -99,8 +101,6 @@ func getSortedSubnetNameKeys(subnetMap map[SubnetName]SubnetCidr) []string {
 	for k := range subnetMap {
 		keys = append(keys, string(k))
 	}
-
 	sort.Strings(keys)
-
 	return keys
 }
