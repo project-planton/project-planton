@@ -11,6 +11,7 @@ import (
 	mongodbatlasv1 "github.com/project-planton/project-planton/apis/project/planton/provider/atlas/mongodbatlas/v1"
 	awscloudfrontv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awscloudfront/v1"
 	awsdynamodbv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsdynamodb/v1"
+	awsecrrepov1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsecrrepo/v1"
 	awslambdav1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awslambda/v1"
 	awsrdsclusterv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsrdscluster/v1"
 	awsrdsinstancev1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsrdsinstance/v1"
@@ -78,6 +79,7 @@ const (
 
 	AwsCloudFrontKind     ApiResourceKind = "aws-cloud-front"
 	AwsDynamodbKind       ApiResourceKind = "aws-dynamodb"
+	AwsEcrRepoKind        ApiResourceKind = "aws-ecr-repo"
 	AwsLambdaKind         ApiResourceKind = "aws-lambda"
 	AwsRdsClusterKind     ApiResourceKind = "aws-rds-cluster"
 	AwsRdsInstanceKind    ApiResourceKind = "aws-rds-instance"
@@ -171,6 +173,7 @@ var providerAtlasMap = map[ApiResourceKind]proto.Message{
 var providerAwsMap = map[ApiResourceKind]proto.Message{
 	AwsCloudFrontKind:     &awscloudfrontv1.AwsCloudFront{},
 	AwsDynamodbKind:       &awsdynamodbv1.AwsDynamodb{},
+	AwsEcrRepoKind:        &awsecrrepov1.AwsEcrRepo{},
 	AwsLambdaKind:         &awslambdav1.AwsLambda{},
 	AwsRdsClusterKind:     &awsrdsclusterv1.AwsRdsCluster{},
 	AwsRdsInstanceKind:    &awsrdsinstancev1.AwsRdsInstance{},
