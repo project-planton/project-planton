@@ -1,0 +1,89 @@
+syntax = "proto3";
+
+package project.planton.provider.aws.awsecrrepo.v1;
+
+import "buf/validate/validate.proto";
+import "project/planton/shared/options/options.proto";
+
+// ImageTagMutability defines whether tags in the ECR repository can be overwritten
+// after being pushed. Most production scenarios recommend IMMUTABLE to prevent
+// accidental or malicious overwrites.
+enum ImageTagMutability {
+  // image_tag_mutability_unspecified is not a valid setting but serves as a placeholder.
+  image_tag_mutability_unspecified = 0;
+
+  // 'mutable' allows overwriting tags once pushed.
+  mutable = 1;
+
+  // 'immutable' prevents overwriting tags once pushed.
+  immutable = 2;
+}
+
+// EncryptionType determines how images are encrypted at rest in ECR.
+// By default, AWS uses AES-256 (service-managed keys). Choose KMS to use
+// a customer-managed key (CMK).
+enum EncryptionType {
+  // encryption_type_unspecified is not a valid setting but serves as a placeholder.
+  encryption_type_unspecified = 0;
+
+  // 'AES256' uses AWS-managed encryption (AES-256 SSE) for ECR.
+  AES256 = 1;
+
+  // 'KMS' uses an AWS KMS key for encryption.
+  KMS = 2;
+}
+
+// AwsEcrRepoSpec defines the configuration for creating an AWS ECR repository
+// to store and manage Docker images. Most fields are optional, with recommended
+// defaults aligned to best practices (immutable tags, scanning enabled, encryption).
+message AwsEcrRepoSpec {
+  // repositoryName is the name of the ECR repository. Must be unique within
+  // the AWS account and region. Commonly includes the microservice or project name.
+  // Example: "github.com/teamblue/my-microservice"
+  string repository_name = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 2,
+    (buf.validate.field).string.max_len = 256
+  ];
+
+  // imageTagMutability indicates whether image tags can be overwritten (mutable)
+  // or not (immutable). Recommended default is immutable for production safety.
+  ImageTagMutability image_tag_mutability = 2 [
+    (project.planton.shared.options.default) = "immutable"
+  ];
+
+  // scanOnPush enables or disables basic vulnerability scanning for images
+  // when they are pushed to this ECR repository. Recommended default is true.
+  bool scan_on_push = 3 [
+    (project.planton.shared.options.default) = "true"
+  ];
+
+  // encryptionType determines how ECR encrypts images at rest. Default is AES256,
+  // using AWS-managed encryption. Use KMS to specify your own KMS key for compliance.
+  EncryptionType encryption_type = 4 [
+    (project.planton.shared.options.default) = "AES256"
+  ];
+
+  // kmsKeyId is the ARN or ID of a KMS key used when encryption_type = KMS.
+  // If omitted, AWS uses the default service-managed key for ECR.
+  // Ignored if encryption_type = AES256.
+  string kms_key_id = 5;
+
+  // lifecyclePolicy is an optional JSON string that defines how old or untagged
+  // images are pruned. If not provided, no lifecycle rules are enforced by default.
+  // Example: a policy that retains only the last N images or deletes untagged
+  // images older than X days.
+  string lifecycle_policy = 6;
+
+  // repositoryPolicy is an optional JSON policy document granting cross-account
+  // or external access to this repository. If omitted, IAM roles within the same
+  // AWS account typically handle push/pull permissions.
+  string repository_policy = 7;
+
+  // forceDelete, if true, allows deleting the repository even when it contains
+  // images (all images get removed on delete). By default, it is false, preventing
+  // accidental data loss.
+  bool force_delete = 8 [
+    (project.planton.shared.options.default) = "false"
+  ];
+}
