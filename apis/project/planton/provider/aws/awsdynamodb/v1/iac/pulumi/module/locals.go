@@ -23,7 +23,7 @@ func initializeLocals(ctx *pulumi.Context, stackInput *awsdynamodbv1.AwsDynamodb
 		awstagkeys.Resource:     strconv.FormatBool(true),
 		awstagkeys.Organization: locals.AwsDynamodb.Metadata.Org,
 		awstagkeys.Environment:  locals.AwsDynamodb.Metadata.Env,
-		awstagkeys.ResourceKind: string(apiresourcekind.EcsServiceKind),
+		awstagkeys.ResourceKind: string(apiresourcekind.AwsEcsServiceKind),
 		awstagkeys.ResourceId:   locals.AwsDynamodb.Metadata.Id,
 	}
 

@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package project.planton.provider.aws.awsecscluster.v1;
+
+// AwsEcsClusterStackOutputs describes values returned by Pulumi/Terraform for an ECS service.
+message AwsEcsClusterStackOutputs {
+  // aws_ecs_cluster_name is the final name of the ECS service.
+  string aws_ecs_cluster_name = 1;
+
+  // load_balancer_dns_name is the DNS name of the ALB/NLB if is_public is true.
+  string load_balancer_dns_name = 2;
+
+  // service_url is the final external endpoint if domain_name was configured.
+  string service_url = 3;
+
+  // service_discovery_name is the internal DNS name if service discovery was used.
+  string service_discovery_name = 4;
+}
