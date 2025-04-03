@@ -9,6 +9,7 @@ import (
 	mongodbatlascredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/mongodbatlascredential/v1"
 	snowflakecredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/snowflakecredential/v1"
 	mongodbatlasv1 "github.com/project-planton/project-planton/apis/project/planton/provider/atlas/mongodbatlas/v1"
+	awscertmanagercertv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awscertmanagercert/v1"
 	awscloudfrontv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awscloudfront/v1"
 	awsdynamodbv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsdynamodb/v1"
 	awsecrrepov1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsecrrepo/v1"
@@ -78,22 +79,23 @@ const (
 
 	MongodbAtlasKind ApiResourceKind = "mongodb-atlas"
 
-	AwsCloudFrontKind     ApiResourceKind = "aws-cloud-front"
-	AwsDynamodbKind       ApiResourceKind = "aws-dynamodb"
-	AwsEcrRepoKind        ApiResourceKind = "aws-ecr-repo"
-	AwsEcsClusterKind     ApiResourceKind = "aws-ecs-cluster"
-	AwsEcsServiceKind     ApiResourceKind = "aws-ecs-service"
-	AwsIamRoleKind        ApiResourceKind = "aws-iam-role"
-	AwsLambdaKind         ApiResourceKind = "aws-lambda"
-	AwsRdsClusterKind     ApiResourceKind = "aws-rds-cluster"
-	AwsRdsInstanceKind    ApiResourceKind = "aws-rds-instance"
-	AwsSecretsManagerKind ApiResourceKind = "aws-secrets-manager"
-	AwsSecurityGroupKind  ApiResourceKind = "aws-security-group"
-	AwsStaticWebsiteKind  ApiResourceKind = "aws-static-website"
-	AwsVpcKind            ApiResourceKind = "aws-vpc"
-	EksClusterKind        ApiResourceKind = "eks-cluster"
-	Route53ZoneKind       ApiResourceKind = "route53-zone"
-	S3BucketKind          ApiResourceKind = "s3-bucket"
+	AwsCertManagerCertKind ApiResourceKind = "aws-cert-manager-cert"
+	AwsCloudFrontKind      ApiResourceKind = "aws-cloud-front"
+	AwsDynamodbKind        ApiResourceKind = "aws-dynamodb"
+	AwsEcrRepoKind         ApiResourceKind = "aws-ecr-repo"
+	AwsEcsClusterKind      ApiResourceKind = "aws-ecs-cluster"
+	AwsEcsServiceKind      ApiResourceKind = "aws-ecs-service"
+	AwsIamRoleKind         ApiResourceKind = "aws-iam-role"
+	AwsLambdaKind          ApiResourceKind = "aws-lambda"
+	AwsRdsClusterKind      ApiResourceKind = "aws-rds-cluster"
+	AwsRdsInstanceKind     ApiResourceKind = "aws-rds-instance"
+	AwsSecretsManagerKind  ApiResourceKind = "aws-secrets-manager"
+	AwsSecurityGroupKind   ApiResourceKind = "aws-security-group"
+	AwsStaticWebsiteKind   ApiResourceKind = "aws-static-website"
+	AwsVpcKind             ApiResourceKind = "aws-vpc"
+	EksClusterKind         ApiResourceKind = "eks-cluster"
+	Route53ZoneKind        ApiResourceKind = "route53-zone"
+	S3BucketKind           ApiResourceKind = "s3-bucket"
 
 	AksClusterKind    ApiResourceKind = "aks-cluster"
 	AzureKeyVaultKind ApiResourceKind = "azure-key-vault"
@@ -173,22 +175,23 @@ var providerAtlasMap = map[ApiResourceKind]proto.Message{
 }
 
 var providerAwsMap = map[ApiResourceKind]proto.Message{
-	AwsCloudFrontKind:     &awscloudfrontv1.AwsCloudFront{},
-	AwsDynamodbKind:       &awsdynamodbv1.AwsDynamodb{},
-	AwsEcrRepoKind:        &awsecrrepov1.AwsEcrRepo{},
-	AwsEcsClusterKind:     &awsecsclusterv1.AwsEcsCluster{},
-	AwsEcsServiceKind:     &awsecsservicev1.AwsEcsService{},
-	AwsIamRoleKind:        &awsiamrolev1.AwsIamRole{},
-	AwsLambdaKind:         &awslambdav1.AwsLambda{},
-	AwsRdsClusterKind:     &awsrdsclusterv1.AwsRdsCluster{},
-	AwsRdsInstanceKind:    &awsrdsinstancev1.AwsRdsInstance{},
-	AwsSecretsManagerKind: &awssecretsmanagerv1.AwsSecretsManager{},
-	AwsSecurityGroupKind:  &awssecuritygroupv1.AwsSecurityGroup{},
-	AwsStaticWebsiteKind:  &awsstaticwebsitev1.AwsStaticWebsite{},
-	AwsVpcKind:            &awsvpcv1.AwsVpc{},
-	EksClusterKind:        &eksclusterv1.EksCluster{},
-	Route53ZoneKind:       &route53zonev1.Route53Zone{},
-	S3BucketKind:          &s3bucketv1.S3Bucket{},
+	AwsCertManagerCertKind: &awscertmanagercertv1.AwsCertManagerCert{},
+	AwsCloudFrontKind:      &awscloudfrontv1.AwsCloudFront{},
+	AwsDynamodbKind:        &awsdynamodbv1.AwsDynamodb{},
+	AwsEcrRepoKind:         &awsecrrepov1.AwsEcrRepo{},
+	AwsEcsClusterKind:      &awsecsclusterv1.AwsEcsCluster{},
+	AwsEcsServiceKind:      &awsecsservicev1.AwsEcsService{},
+	AwsIamRoleKind:         &awsiamrolev1.AwsIamRole{},
+	AwsLambdaKind:          &awslambdav1.AwsLambda{},
+	AwsRdsClusterKind:      &awsrdsclusterv1.AwsRdsCluster{},
+	AwsRdsInstanceKind:     &awsrdsinstancev1.AwsRdsInstance{},
+	AwsSecretsManagerKind:  &awssecretsmanagerv1.AwsSecretsManager{},
+	AwsSecurityGroupKind:   &awssecuritygroupv1.AwsSecurityGroup{},
+	AwsStaticWebsiteKind:   &awsstaticwebsitev1.AwsStaticWebsite{},
+	AwsVpcKind:             &awsvpcv1.AwsVpc{},
+	EksClusterKind:         &eksclusterv1.EksCluster{},
+	Route53ZoneKind:        &route53zonev1.Route53Zone{},
+	S3BucketKind:           &s3bucketv1.S3Bucket{},
 }
 
 var providerConfluentMap = map[ApiResourceKind]proto.Message{

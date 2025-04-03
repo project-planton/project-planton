@@ -1,0 +1,32 @@
+package module
+
+import (
+	"strconv"
+
+	awscertv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awscertmanagercert/v1"
+	"github.com/project-planton/project-planton/internal/apiresourcekind"
+	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/aws/awstagkeys"
+	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+)
+
+// Locals holds resolved input values and tag metadata for the Pulumi stack.
+type Locals struct {
+	AwsCertManagerCert *awscertv1.AwsCertManagerCert
+	AwsTags            map[string]string
+}
+
+// initializeLocals prepares a Locals object by resolving stack input and metadata-derived tags.
+func initializeLocals(ctx *pulumi.Context, stackInput *awscertv1.AwsCertManagerCertStackInput) *Locals {
+	locals := &Locals{}
+	locals.AwsCertManagerCert = stackInput.Target
+
+	locals.AwsTags = map[string]string{
+		awstagkeys.Resource:     strconv.FormatBool(true),
+		awstagkeys.Organization: locals.AwsCertManagerCert.Metadata.Org,
+		awstagkeys.Environment:  locals.AwsCertManagerCert.Metadata.Env,
+		awstagkeys.ResourceKind: string(apiresourcekind.AwsCertManagerCertKind),
+		awstagkeys.ResourceId:   locals.AwsCertManagerCert.Metadata.Id,
+	}
+
+	return locals
+}
