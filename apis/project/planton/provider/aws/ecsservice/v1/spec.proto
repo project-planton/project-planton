@@ -9,10 +9,10 @@ import "project/planton/shared/options/options.proto";
 // into an existing ECS cluster. It focuses on the 80-20 use case:
 // a single-container service with essential resource and networking configs.
 message EcsServiceSpec {
-  // cluster_name is the name or ARN of the ECS cluster where this service will run.
+  // cluster_arn is the ARN of the ECS cluster where this service will run.
   // This must already exist (created by a separate EcsCluster resource or otherwise).
-  // Example: "my-mixed-cluster" or "arn:aws:ecs:us-east-1:123456789012:cluster/my-mixed-cluster"
-  string cluster_name = 1 [
+  // Example: "arn:aws:ecs:us-east-1:123456789012:cluster/my-mixed-cluster"
+  string cluster_arn = 1 [
     (buf.validate.field).required = true
   ];
 
@@ -27,9 +27,7 @@ message EcsServiceSpec {
   ];
 
   // IAM configuration for the ECS service.
-  EcsServiceIam iam = 4 [
-    (buf.validate.field).required = true
-  ];
+  EcsServiceIam iam = 4;
 }
 
 // EcsServiceSpec_Container is a wrapper for the container spec.

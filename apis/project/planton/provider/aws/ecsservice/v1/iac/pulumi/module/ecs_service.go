@@ -15,7 +15,7 @@ func service(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) error 
 	originalSpec := locals.EcsService.Spec
 
 	convertedSpec := LocalsEcsServiceSpec{
-		ClusterName:          originalSpec.ClusterName,
+		ClusterArn:           originalSpec.ClusterArn,
 		ServiceName:          locals.EcsService.Metadata.Name,
 		ImageRepo:            originalSpec.Container.Image.Repo,
 		ImageTag:             originalSpec.Container.Image.Tag,
@@ -54,7 +54,7 @@ func service(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) error 
 
 	ecsService, err := ecs.NewService(ctx, locals.EcsService.Metadata.Name+"-service", &ecs.ServiceArgs{
 		Name:           pulumi.String(convertedSpec.ServiceName),
-		Cluster:        pulumi.String(convertedSpec.ClusterName),
+		Cluster:        pulumi.String(convertedSpec.ClusterArn),
 		LaunchType:     pulumi.String("FARGATE"),
 		DesiredCount:   pulumi.Int(convertedSpec.Replicas),
 		TaskDefinition: taskDef.Arn,
@@ -70,7 +70,7 @@ func service(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) error 
 	}
 
 	ctx.Export(OpEcsServiceName, ecsService.Name)
-	ctx.Export(OpEcsClusterName, pulumi.String(convertedSpec.ClusterName))
+	ctx.Export(OpEcsClusterName, pulumi.String(convertedSpec.ClusterArn))
 	ctx.Export(OpLoadBalancerDnsName, pulumi.String(""))
 	ctx.Export(OpServiceUrl, pulumi.String(""))
 	ctx.Export(OpServiceDiscoveryName, pulumi.String(""))
@@ -132,7 +132,7 @@ func toPulumiStrings(input []string) pulumi.StringArray {
 // LocalsEcsServiceSpec is an internal struct that adapts the new EcsServiceSpec
 // fields into something easier for building ECS resources.
 type LocalsEcsServiceSpec struct {
-	ClusterName          string
+	ClusterArn           string
 	ServiceName          string
 	ImageRepo            string
 	ImageTag             string
