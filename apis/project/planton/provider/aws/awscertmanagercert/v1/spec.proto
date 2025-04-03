@@ -1,0 +1,77 @@
+syntax = "proto3";
+
+package project.planton.provider.aws.awscertmanagercert.v1;
+
+import "buf/validate/validate.proto";
+import "project/planton/shared/options/options.proto";
+
+// ValidationMethod is the enumeration for domain validation approaches.
+// DNS is generally preferred for automation and auto-renewal.
+enum ValidationMethod {
+  // VALIDATION_METHOD_UNSPECIFIED is treated the same as DNS in this resource.
+  VALIDATION_METHOD_UNSPECIFIED = 0;
+  // DNS validation will create CNAME records in Route53 automatically.
+  DNS = 1;
+}
+
+// AwsCertManagerCertSpec defines the fields needed to provision a public SSL certificate
+// via AWS Certificate Manager (ACM) using DNS validation. We explicitly split the primary
+// domain from any alternate domains for clarity.
+message AwsCertManagerCertSpec {
+
+  // primaryDomainName is a required field representing the main (apex or wildcard) domain name.
+  // Examples include "example.com" or "*.example.com" (wildcard).
+  // This domain will be set as the 'DomainName' in the AWS ACM certificate.
+  //
+  // The pattern enforces a domain-like structure, allowing an optional wildcard prefix.
+  // The string is mandatory, so users must always supply a primary domain.
+  string primary_domain_name = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string = {
+      pattern: "^\\*\\.[A-Za-z0-9\\-\\.]+|[A-Za-z0-9\\-\\.]+\\.[A-Za-z]{2,}$"
+    }
+  ];
+
+  // alternateDomainNames is an optional list of Subject Alternative Names (SANs) for the certificate.
+  // Each entry must follow the same pattern as primary_domain_name and cannot contain duplicates.
+  // Primary domain should not be added to this list.
+  repeated string alternate_domain_names = 2 [
+    // The pattern must match the same criteria used for primary_domain_name.
+    (buf.validate.field).string = {
+      pattern: "^\\*\\.[A-Za-z0-9\\-\\.]+|[A-Za-z0-9\\-\\.]+\\.[A-Za-z]{2,}$"
+    },
+    // Validate that no duplicates exist within alternate_domain_names.
+    (buf.validate.field).cel = {
+      id: "no-duplicate-alternate-domains",
+      expression: "size(this) == size(this.toSet())",
+      message: "Alternate domain names must be unique and cannot contain duplicates."
+    },
+    // Ensure none of the alternate domains match the primary domain.
+    (buf.validate.field).cel = {
+      id: "primary-domain-not-in-alternates",
+      expression: "!this.exists(x, x == parent.primary_domain_name)",
+      message: "Primary domain name cannot appear in alternateDomainNames."
+    }
+  ];
+
+  // region is the AWS region where the certificate will be created.
+  // For CloudFront or edge-optimized API Gateway, use "us-east-1" (N. Virginia).
+  // For regional services (e.g., ALB in us-west-2), match that region.
+  string region = 3 [
+    (buf.validate.field).required = true
+  ];
+
+  // route53_hosted_zone_id is the identifier of the Route53 hosted zone
+  // where DNS validation records will be created automatically.
+  // Must be a public hosted zone matching the domain names.
+  // Example: "Z123456ABCXYZ".
+  string route53_hosted_zone_id = 4 [
+    (buf.validate.field).required = true
+  ];
+
+  // validation_method indicates how ACM verifies domain ownership.
+  // By default, DNS is recommended.
+  ValidationMethod validation_method = 5 [
+    (project.planton.shared.options.default) = "DNS"
+  ];
+}
