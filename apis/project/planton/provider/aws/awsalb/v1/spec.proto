@@ -1,0 +1,77 @@
+syntax = "proto3";
+
+package project.planton.provider.aws.awsalb.v1;
+
+import "buf/validate/validate.proto";
+import "project/planton/shared/options/options.proto";
+
+// AwsAlbSpec captures the essential fields to create an Application Load Balancer on AWS.
+message AwsAlbSpec {
+  // subnets is a list of subnet IDs in which to create the ALB.
+  // Often private subnets for internal or public subnets for internet-facing.
+  repeated string subnets = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).repeated = {
+      unique: true
+    }
+  ];
+
+  // securityGroups is a list of security group IDs to attach to the ALB.
+  repeated string security_groups = 2 [
+    (buf.validate.field).repeated = {
+      unique: true
+    }
+  ];
+
+  // scheme indicates whether the ALB is internet-facing or internal.
+  // Valid values: "internet-facing" or "internal".
+  // If omitted, default to "internet-facing".
+  string scheme = 3 [
+    (project.planton.shared.options.recommended_default) = "internet-facing",
+    (buf.validate.field).string = {in: ["internet-facing", "internal"]}
+  ];
+
+  // ipAddressType can be "ipv4" or "dualstack".
+  // If omitted, default to "ipv4".
+  string ip_address_type = 4 [
+    (project.planton.shared.options.recommended_default) = "ipv4",
+    (buf.validate.field).string = {in: ["ipv4", "dualstack"]}
+  ];
+
+  // enable_deletion_protection indicates whether the ALB should have deletion protection enabled.
+  // This prevents accidental deletion.
+  bool enable_deletion_protection = 5 [
+    (project.planton.shared.options.recommended_default) = "false"
+  ];
+
+  // idle_timeout_seconds sets the idle timeout in seconds for connections to the ALB.
+  // If omitted, AWS default is 60 seconds.
+  int32 idle_timeout_seconds = 6 [
+    (project.planton.shared.options.recommended_default) = "60"
+  ];
+
+  // optional list of listeners. If empty, you'll have to define them separately
+  // or rely on a separate resource that references this ALB.
+  repeated AwsAlbListener listeners = 7;
+}
+
+// AwsAlbListener describes a single listener on the ALB.
+message AwsAlbListener {
+  // protocol can be "HTTP" or "HTTPS".
+  string protocol = 1 [
+    (buf.validate.field).string = {in: ["HTTP", "HTTPS"]}
+  ];
+
+  // port is the listener's port (80 for HTTP, 443 for HTTPS, etc.).
+  int32 port = 2 [
+    (buf.validate.field).required = true
+  ];
+
+  // certificate_arn is required if protocol == "HTTPS".
+  // e.g., "arn:aws:acm:us-east-1:123456789012:certificate/abcd1234..."
+  string certificate_arn = 3;
+
+  // ssl_policy is the TLS security policy if using HTTPS.
+  // e.g., "ELBSecurityPolicy-2016-08".
+  string ssl_policy = 4;
+}

@@ -9,6 +9,7 @@ import (
 	mongodbatlascredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/mongodbatlascredential/v1"
 	snowflakecredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/snowflakecredential/v1"
 	mongodbatlasv1 "github.com/project-planton/project-planton/apis/project/planton/provider/atlas/mongodbatlas/v1"
+	awsalbv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsalb/v1"
 	awscertmanagercertv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awscertmanagercert/v1"
 	awscloudfrontv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awscloudfront/v1"
 	awsdynamodbv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsdynamodb/v1"
@@ -79,6 +80,7 @@ const (
 
 	MongodbAtlasKind ApiResourceKind = "mongodb-atlas"
 
+	AwsAlbKind             ApiResourceKind = "aws-alb"
 	AwsCertManagerCertKind ApiResourceKind = "aws-cert-manager-cert"
 	AwsCloudFrontKind      ApiResourceKind = "aws-cloud-front"
 	AwsDynamodbKind        ApiResourceKind = "aws-dynamodb"
@@ -175,6 +177,7 @@ var providerAtlasMap = map[ApiResourceKind]proto.Message{
 }
 
 var providerAwsMap = map[ApiResourceKind]proto.Message{
+	AwsAlbKind:             &awsalbv1.AwsAlb{},
 	AwsCertManagerCertKind: &awscertmanagercertv1.AwsCertManagerCert{},
 	AwsCloudFrontKind:      &awscloudfrontv1.AwsCloudFront{},
 	AwsDynamodbKind:        &awsdynamodbv1.AwsDynamodb{},
