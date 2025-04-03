@@ -12,6 +12,9 @@ import (
 	awscloudfrontv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awscloudfront/v1"
 	awsdynamodbv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsdynamodb/v1"
 	awsecrrepov1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsecrrepo/v1"
+	awsecsclusterv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsecscluster/v1"
+	awsecsservicev1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsecsservice/v1"
+	awsiamrolev1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsiamrole/v1"
 	awslambdav1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awslambda/v1"
 	awsrdsclusterv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsrdscluster/v1"
 	awsrdsinstancev1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsrdsinstance/v1"
@@ -19,8 +22,6 @@ import (
 	awssecuritygroupv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awssecuritygroup/v1"
 	awsstaticwebsitev1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsstaticwebsite/v1"
 	awsvpcv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsvpc/v1"
-	ecsclusterv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/ecscluster/v1"
-	ecsservicev1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/ecsservice/v1"
 	eksclusterv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/ekscluster/v1"
 	route53zonev1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/route53zone/v1"
 	s3bucketv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/s3bucket/v1"
@@ -80,6 +81,9 @@ const (
 	AwsCloudFrontKind     ApiResourceKind = "aws-cloud-front"
 	AwsDynamodbKind       ApiResourceKind = "aws-dynamodb"
 	AwsEcrRepoKind        ApiResourceKind = "aws-ecr-repo"
+	AwsEcsClusterKind     ApiResourceKind = "aws-ecs-cluster"
+	AwsEcsServiceKind     ApiResourceKind = "aws-ecs-service"
+	AwsIamRoleKind        ApiResourceKind = "aws-iam-role"
 	AwsLambdaKind         ApiResourceKind = "aws-lambda"
 	AwsRdsClusterKind     ApiResourceKind = "aws-rds-cluster"
 	AwsRdsInstanceKind    ApiResourceKind = "aws-rds-instance"
@@ -87,8 +91,6 @@ const (
 	AwsSecurityGroupKind  ApiResourceKind = "aws-security-group"
 	AwsStaticWebsiteKind  ApiResourceKind = "aws-static-website"
 	AwsVpcKind            ApiResourceKind = "aws-vpc"
-	EcsClusterKind        ApiResourceKind = "ecs-cluster"
-	EcsServiceKind        ApiResourceKind = "ecs-service"
 	EksClusterKind        ApiResourceKind = "eks-cluster"
 	Route53ZoneKind       ApiResourceKind = "route53-zone"
 	S3BucketKind          ApiResourceKind = "s3-bucket"
@@ -174,6 +176,9 @@ var providerAwsMap = map[ApiResourceKind]proto.Message{
 	AwsCloudFrontKind:     &awscloudfrontv1.AwsCloudFront{},
 	AwsDynamodbKind:       &awsdynamodbv1.AwsDynamodb{},
 	AwsEcrRepoKind:        &awsecrrepov1.AwsEcrRepo{},
+	AwsEcsClusterKind:     &awsecsclusterv1.AwsEcsCluster{},
+	AwsEcsServiceKind:     &awsecsservicev1.AwsEcsService{},
+	AwsIamRoleKind:        &awsiamrolev1.AwsIamRole{},
 	AwsLambdaKind:         &awslambdav1.AwsLambda{},
 	AwsRdsClusterKind:     &awsrdsclusterv1.AwsRdsCluster{},
 	AwsRdsInstanceKind:    &awsrdsinstancev1.AwsRdsInstance{},
@@ -181,8 +186,6 @@ var providerAwsMap = map[ApiResourceKind]proto.Message{
 	AwsSecurityGroupKind:  &awssecuritygroupv1.AwsSecurityGroup{},
 	AwsStaticWebsiteKind:  &awsstaticwebsitev1.AwsStaticWebsite{},
 	AwsVpcKind:            &awsvpcv1.AwsVpc{},
-	EcsClusterKind:        &ecsclusterv1.EcsCluster{},
-	EcsServiceKind:        &ecsservicev1.EcsService{},
 	EksClusterKind:        &eksclusterv1.EksCluster{},
 	Route53ZoneKind:       &route53zonev1.Route53Zone{},
 	S3BucketKind:          &s3bucketv1.S3Bucket{},
