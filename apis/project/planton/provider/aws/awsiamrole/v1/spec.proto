@@ -4,6 +4,7 @@ package project.planton.provider.aws.awsiamrole.v1;
 
 import "buf/validate/validate.proto";
 import "project/planton/shared/options/options.proto";
+import "google/protobuf/struct.proto";
 
 // AwsIamRoleSpec defines the minimal fields needed to create an AWS IAM Role.
 // It includes the trust policy JSON, managed policies, inline policies, and more.
@@ -16,7 +17,7 @@ message AwsIamRoleSpec {
   ];
   // trust_policy_json is the JSON string describing the trust relationship for the role.
   // Example: a trust policy allowing ECS tasks to assume this role.
-  string trust_policy_json = 3 [
+  google.protobuf.Struct trust_policy = 3 [
     (buf.validate.field).required = true
   ];
   // managed_policy_arns is a list of ARNs for AWS-managed or customer-managed IAM policies
@@ -28,5 +29,5 @@ message AwsIamRoleSpec {
   ];
   // inline_policy_jsons is a map of inline policy names to a JSON policy doc.
   // Key is policy name. Value is the raw JSON for that policy.
-  map<string, string> inline_policy_jsons = 5;
+  map<string, google.protobuf.Struct> inline_policies = 5;
 }

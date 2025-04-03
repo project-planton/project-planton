@@ -8,16 +8,22 @@ import (
 	"github.com/pulumi/pulumi-aws/sdk/v6/go/aws"
 	"github.com/pulumi/pulumi-aws/sdk/v6/go/aws/iam"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+	structpb "google.golang.org/protobuf/types/known/structpb"
 )
 
 func iamRole(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) error {
 	roleName := locals.AwsIamRole.Metadata.Name
 	spec := locals.AwsIamRole.Spec
 
+	trustPolicyString, err := structToJSONString(spec.TrustPolicy)
+	if err != nil {
+		return errors.Wrap(err, "failed to marshal trust policy JSON")
+	}
+
 	// Create the core IAM role
 	iamRole, err := iam.NewRole(ctx, roleName, &iam.RoleArgs{
 		Name:             pulumi.String(roleName),
-		AssumeRolePolicy: pulumi.String(spec.TrustPolicyJson),
+		AssumeRolePolicy: pulumi.String(trustPolicyString),
 		Description:      pulumi.String(spec.Description),
 		Path:             pulumi.String(spec.Path),
 		Tags:             pulumi.ToStringMap(locals.AwsTags),
@@ -26,7 +32,7 @@ func iamRole(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) error 
 		return errors.Wrap(err, "failed to create IAM role")
 	}
 
-	// Attach any AWS-managed or customer-managed IAM policies by ARN
+	// Attach managed policy ARNs
 	for idx, policyArn := range spec.ManagedPolicyArns {
 		attachName := fmt.Sprintf("%s-attach-%d", roleName, idx)
 		_, err := iam.NewRolePolicyAttachment(ctx, attachName, &iam.RolePolicyAttachmentArgs{
@@ -38,12 +44,17 @@ func iamRole(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) error 
 		}
 	}
 
-	// Create inline policies if specified
-	for policyName, policyJson := range spec.InlinePolicyJsons {
+	// Inline policies
+	for policyName, inlineStruct := range spec.InlinePolicies {
+		inlinePolicyString, err := structToJSONString(inlineStruct)
+		if err != nil {
+			return errors.Wrapf(err, "failed to marshal inline policy for %s", policyName)
+		}
+
 		inlineName := fmt.Sprintf("%s-inline-%s", roleName, policyName)
-		_, err := iam.NewRolePolicy(ctx, inlineName, &iam.RolePolicyArgs{
+		_, err = iam.NewRolePolicy(ctx, inlineName, &iam.RolePolicyArgs{
 			Role:   iamRole.Name,
-			Policy: pulumi.String(policyJson),
+			Policy: pulumi.String(inlinePolicyString),
 		}, pulumi.Provider(provider))
 		if err != nil {
 			return errors.Wrapf(err, "failed to create inline policy %s", policyName)
@@ -57,12 +68,15 @@ func iamRole(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) error 
 	return nil
 }
 
-// parseJson is an optional helper if you want to do JSON validation before apply
-func parseJson(raw string) (map[string]interface{}, error) {
-	var obj map[string]interface{}
-	err := json.Unmarshal([]byte(raw), &obj)
-	if err != nil {
-		return nil, err
+// structToJSONString converts a google.protobuf.Struct to a raw JSON string.
+func structToJSONString(s *structpb.Struct) (string, error) {
+	if s == nil {
+		return "{}", nil
 	}
-	return obj, nil
+	m := s.AsMap()
+	bytes, err := json.Marshal(m)
+	if err != nil {
+		return "", err
+	}
+	return string(bytes), nil
 }
