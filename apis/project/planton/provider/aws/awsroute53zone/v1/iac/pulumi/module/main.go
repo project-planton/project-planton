@@ -3,6 +3,7 @@ package module
 import (
 	"fmt"
 	"github.com/pulumi/pulumi-aws-native/sdk/go/aws"
+	awsclassic "github.com/pulumi/pulumi-aws/sdk/v6/go/aws"
 	"strings"
 
 	"github.com/pkg/errors"
@@ -18,6 +19,7 @@ func Resources(ctx *pulumi.Context, stackInput *awsroute53zonev1.AwsRoute53ZoneS
 
 	awsCredential := stackInput.ProviderCredential
 	var provider *aws.Provider
+	var classicProvider *awsclassic.Provider
 	var err error
 
 	// If the user didn't provide AWS credentials, create a default provider.
@@ -29,6 +31,12 @@ func Resources(ctx *pulumi.Context, stackInput *awsroute53zonev1.AwsRoute53ZoneS
 		if err != nil {
 			return errors.Wrap(err, "failed to create default AWS provider")
 		}
+		classicProvider, err = awsclassic.NewProvider(ctx,
+			"classic-provider",
+			&awsclassic.ProviderArgs{})
+		if err != nil {
+			return errors.Wrap(err, "failed to create default AWS classic provider")
+		}
 	} else {
 		provider, err = aws.NewProvider(ctx,
 			"native-provider",
@@ -39,6 +47,16 @@ func Resources(ctx *pulumi.Context, stackInput *awsroute53zonev1.AwsRoute53ZoneS
 			})
 		if err != nil {
 			return errors.Wrap(err, "failed to create AWS provider with custom credentials")
+		}
+		classicProvider, err = awsclassic.NewProvider(ctx,
+			"classic-provider",
+			&awsclassic.ProviderArgs{
+				AccessKey: pulumi.String(awsCredential.AccessKeyId),
+				SecretKey: pulumi.String(awsCredential.SecretAccessKey),
+				Region:    pulumi.String(awsCredential.Region),
+			})
+		if err != nil {
+			return errors.Wrap(err, "failed to create default AWS classic provider")
 		}
 	}
 
@@ -77,7 +95,7 @@ func Resources(ctx *pulumi.Context, stackInput *awsroute53zonev1.AwsRoute53ZoneS
 				Ttl:     pulumi.IntPtr(int(TtlSeconds)),
 				Type:    pulumi.String(dnsRecord.RecordType.String()),
 				Records: pulumi.ToStringArray(dnsRecord.Values),
-			}, pulumi.Provider(provider))
+			}, pulumi.Provider(classicProvider))
 		if err != nil {
 			return errors.Wrapf(err, "failed to add %s rec", dnsRecord)
 		}
