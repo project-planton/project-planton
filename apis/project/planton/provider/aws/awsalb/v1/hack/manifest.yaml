@@ -1,0 +1,13 @@
+apiVersion: aws.project-planton.org/v1
+kind: AwsAlb
+metadata:
+  name: basic-alb
+spec:
+  subnets:
+    - subnet-12345abc
+    - subnet-67890def
+  securityGroups:
+    - sg-abcdef1234567890
+  listeners:
+    - protocol: "HTTP"
+      port: 80
