@@ -16,10 +16,7 @@ func certManagerCert(ctx *pulumi.Context, locals *Locals, provider *aws.Provider
 	spec := locals.AwsCertManagerCert.Spec
 	meta := locals.AwsCertManagerCert.Metadata
 
-	// Combine primary + alternate domains into a single list.
-	allDomains := append([]string{spec.PrimaryDomainName}, spec.AlternateDomainNames...)
-
-	// Create the ACM certificate resource.
+	// Create the ACM certificate resource
 	cert, err := acm.NewCertificate(ctx, meta.Name+"-cert", &acm.CertificateArgs{
 		DomainName:              pulumi.String(spec.PrimaryDomainName),
 		SubjectAlternativeNames: pulumi.ToStringArray(spec.AlternateDomainNames),
@@ -30,13 +27,11 @@ func certManagerCert(ctx *pulumi.Context, locals *Locals, provider *aws.Provider
 		return errors.Wrap(err, "failed to create ACM certificate")
 	}
 
-	// For each DomainValidationOption, create the corresponding DNS record
-	// and store its fqdn as a pulumi.StringInput. We do this in an ApplyT call
-	// so the dynamic values are resolved at deploy time.
-	recordFqdns := cert.DomainValidationOptions.ApplyT(func(domainValidationOptions []acm.CertificateDomainValidationOption) ([]pulumi.StringInput, error) {
-		var fqdnOutputs []pulumi.StringInput
-		for i, dvo := range domainValidationOptions {
-			record, err := route53.NewRecord(ctx, fmt.Sprintf("%s-cname-%d", meta.Name, i), &route53.RecordArgs{
+	// Create corresponding DNS records, returning a pulumi.StringArray of FQDNs
+	recordFqdns := cert.DomainValidationOptions.ApplyT(func(dvos []acm.CertificateDomainValidationOption) pulumi.StringArray {
+		var fqdnOutputs pulumi.StringArray
+		for i, dvo := range dvos {
+			record, createErr := route53.NewRecord(ctx, fmt.Sprintf("%s-cname-%d", meta.Name, i), &route53.RecordArgs{
 				Name: pulumi.String(*dvo.ResourceRecordName),
 				Records: pulumi.StringArray{
 					pulumi.String(*dvo.ResourceRecordValue),
@@ -45,16 +40,17 @@ func certManagerCert(ctx *pulumi.Context, locals *Locals, provider *aws.Provider
 				Type:   pulumi.String(*dvo.ResourceRecordType),
 				ZoneId: pulumi.String(spec.Route53HostedZoneId),
 			}, pulumi.Provider(provider))
-			if err != nil {
-				return nil, errors.Wrapf(err, "failed to create DNS record for domain %s", allDomains[i])
+			if createErr != nil {
+				// Using panic here ensures Pulumi halts if record creation fails
+				panic(createErr)
 			}
-			// Store the FQDN output rather than a raw string
+			// Append the Fqdn output (a pulumi.StringOutput) to our pulumi.StringArray
 			fqdnOutputs = append(fqdnOutputs, record.Fqdn)
 		}
-		return fqdnOutputs, nil
+		return fqdnOutputs
 	}).(pulumi.StringArrayOutput)
 
-	// Validate the certificate by passing the list of DNS record FQDNs as pulumi.StringArrayInput.
+	// Validate the certificate by passing the dynamic FQDNs
 	_, err = acm.NewCertificateValidation(ctx, meta.Name+"-validation", &acm.CertificateValidationArgs{
 		CertificateArn:        cert.Arn,
 		ValidationRecordFqdns: recordFqdns,
@@ -63,7 +59,7 @@ func certManagerCert(ctx *pulumi.Context, locals *Locals, provider *aws.Provider
 		return errors.Wrap(err, "failed to validate ACM certificate")
 	}
 
-	// Export the issued certificate ARN as a stack output.
+	// Export the certificate ARN
 	ctx.Export(OpCertArn, cert.Arn)
 	return nil
 }

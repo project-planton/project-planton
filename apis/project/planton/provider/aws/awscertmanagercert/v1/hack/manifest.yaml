@@ -1,0 +1,8 @@
+apiVersion: aws.project-planton.org/v1
+kind: AwsCertManagerCert
+metadata:
+  name: k8sk8s-com-cert
+spec:
+  primaryDomainName: k8sk8s.com
+  region: ap-south-2
+  route53HostedZoneId: Z016781810LRGRSQWTE6M
