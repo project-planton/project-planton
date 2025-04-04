@@ -35,24 +35,7 @@ message AwsCertManagerCertSpec {
   // alternateDomainNames is an optional list of Subject Alternative Names (SANs) for the certificate.
   // Each entry must follow the same pattern as primary_domain_name and cannot contain duplicates.
   // Primary domain should not be added to this list.
-  repeated string alternate_domain_names = 2 [
-    // The pattern must match the same criteria used for primary_domain_name.
-    (buf.validate.field).string = {
-      pattern: "^\\*\\.[A-Za-z0-9\\-\\.]+|[A-Za-z0-9\\-\\.]+\\.[A-Za-z]{2,}$"
-    },
-    // Validate that no duplicates exist within alternate_domain_names.
-    (buf.validate.field).cel = {
-      id: "no-duplicate-alternate-domains",
-      expression: "size(this) == size(this.toSet())",
-      message: "Alternate domain names must be unique and cannot contain duplicates."
-    },
-    // Ensure none of the alternate domains match the primary domain.
-    (buf.validate.field).cel = {
-      id: "primary-domain-not-in-alternates",
-      expression: "!this.exists(x, x == parent.primary_domain_name)",
-      message: "Primary domain name cannot appear in alternateDomainNames."
-    }
-  ];
+  repeated string alternate_domain_names = 2;
 
   // region is the AWS region where the certificate will be created.
   // For CloudFront or edge-optimized API Gateway, use "us-east-1" (N. Virginia).
