@@ -1,0 +1,8 @@
+apiVersion: gcp.project-planton.org/v1
+kind: GcpGcsBucket
+metadata:
+  name: project-planton-test-gcp-gcs-bucket
+spec:
+  gcpProjectId: planton-cloud-public-downloads
+  gcpRegion: asia-south1
+  isPublic: false
