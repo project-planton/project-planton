@@ -1,0 +1,98 @@
+syntax = "proto3";
+
+package project.planton.provider.azure.azureakscluster.v1;
+
+import "buf/validate/validate.proto";
+import "project/planton/shared/options/options.proto";
+
+// AzureAksClusterSpec defines the specification required to deploy an Azure Kubernetes Service (AKS) cluster.
+// This minimal spec covers essential production scenarios, including capacity, identity, networking, and autoscaling.
+message AzureAksClusterSpec {
+  // The Azure region where the AKS cluster will be created (e.g., eastus, westeurope).
+  // Must be a valid Azure region string.
+  string region = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
+
+  // The name of the existing Azure Resource Group where the AKS cluster will be provisioned.
+  string resource_group = 2 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 1
+  ];
+
+  // The Kubernetes version to deploy (e.g., "1.28"). If not set, defaults to the latest supported version by Azure.
+  string kubernetes_version = 3;
+
+  // The DNS prefix for the AKS API server endpoint. This must be unique within the Azure region.
+  string dns_prefix = 4 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.pattern = "^[a-zA-Z][a-zA-Z0-9-]{2,30}$"
+  ];
+
+  // Flag to enable a private cluster, where the API server is exposed via internal IP.
+  // Use true for production environments that require restricted access.
+  bool is_private_cluster = 5;
+
+  // The name of the subnet in which to place the cluster's node pools (used with Azure CNI networking).
+  // This subnet must exist within the virtual network provided to the cluster.
+  string subnet_id = 6 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 1
+  ];
+
+  // The VM SKU for the default node pool (e.g., "Standard_D4s_v3").
+  // Choose a SKU with at least 4 vCPUs and 4GiB memory for production workloads.
+  string node_vm_size = 7 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 1
+  ];
+
+  // The minimum number of nodes for the default node pool when autoscaling is enabled.
+  int32 min_node_count = 8 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).int32.gte = 1
+  ];
+
+  // The maximum number of nodes for the default node pool when autoscaling is enabled.
+  int32 max_node_count = 9 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).int32.gte = 1
+  ];
+
+  // SSH public key used to access the Linux VMs running the Kubernetes nodes.
+  // This must be a valid SSH RSA public key string (starting with "ssh-rsa").
+  string ssh_public_key = 10 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.pattern = "^ssh-(rsa|ed25519)\\s+[A-Za-z0-9+/=]+(\\s+.*)?$"
+  ];
+
+  // Whether to enable Azure AD integration for Kubernetes API authentication.
+  // When true, you must also set the admin group object IDs.
+  bool enable_azure_ad = 11;
+
+  // A list of Azure AD group object IDs that should have admin access to the cluster.
+  // Required if enable_azure_ad is true.
+  repeated string aad_admin_group_object_ids = 12;
+
+  // Flag to enable Azure Monitor (Log Analytics) integration for container logs and metrics.
+  // This is strongly recommended for production observability.
+  bool enable_monitoring = 13 [
+    (project.planton.shared.options.recommended_default) = "true"
+  ];
+
+  // Optional Azure Log Analytics workspace ID to send logs to.
+  // Required if enable_monitoring is true and you want to use an existing workspace.
+  string log_analytics_workspace_id = 14;
+
+  // Optional list of authorized public IP ranges to access the Kubernetes API server.
+  // If not set, all IPs are allowed (0.0.0.0/0). Use to restrict access for security.
+  repeated string authorized_ip_ranges = 15;
+
+  // Optional name of the Azure Container Registry (ACR) that this cluster should be able to pull images from.
+  // If set, the cluster identity will be granted pull permissions to this registry.
+  string acr_name = 16;
+
+  // Optional list of tags to apply to the AKS cluster resource for cost tracking and governance.
+  map<string, string> tags = 17;
+}

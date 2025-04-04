@@ -1,0 +1,66 @@
+syntax = "proto3";
+
+package project.planton.provider.aws.awsroute53zone.v1;
+
+import "buf/validate/validate.proto";
+import "project/planton/provider/aws/awsroute53zone/v1/spec.proto";
+import "project/planton/provider/aws/awsroute53zone/v1/stack_outputs.proto";
+import "project/planton/shared/status.proto";
+import "project/planton/shared/metadata.proto";
+
+//aws-route53-zone
+message AwsRoute53Zone {
+  //api-version
+  string api_version = 1 [
+    (buf.validate.field).string.const = 'aws.project-planton.org/v1'
+  ];
+
+  //resource-kind
+  string kind = 2;
+
+  // metadata for the resource
+  //id format "<id-prefix>-<env-id>-<normalized-resource-name>"
+  project.planton.shared.ApiResourceMetadata metadata = 3 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).cel = {
+      id: "metadata.name",
+      message: "Name should be any valid DNS Domain Name",
+      // https://regex101.com/library/SEg6KL
+      expression: "this.name.matches('^(?:[_a-z0-9](?:[_a-z0-9-]{0,61}[a-z0-9])?[.])+(?:[a-z](?:[a-z0-9-]{0,61}[a-z0-9])?)?$')"
+    },
+    (buf.validate.field).cel = {
+      id: "metadata.name",
+      message: "Name must be between 1 and 65 characters long",
+      expression: "size(this.name) > 0 && size(this.name) <= 65"
+    },
+    (buf.validate.field).cel = {
+      id: "metadata.version.message",
+      message: "Version message is mandatory and cannot be empty",
+      expression: "has(this.version.message)"
+    }
+  ];
+
+  //aws-route53-zone spec
+  AwsRoute53ZoneSpec spec = 4 [
+    (buf.validate.field).required = true
+  ];
+
+  //aws-route53-zone status
+  AwsRoute53ZoneStatus status = 5;
+}
+
+// Status for the AWS Route53 Zone
+message AwsRoute53ZoneStatus {
+  //lifecycle
+  project.planton.shared.ApiResourceLifecycle lifecycle = 99;
+
+  //audit-info
+  project.planton.shared.ApiResourceAudit audit = 98;
+
+  //stack-job id
+  string stack_job_id = 97;
+
+  //stack-outputs
+  //  stack outputs
+  AwsRoute53ZoneStackOutputs stack_outputs = 1;
+}

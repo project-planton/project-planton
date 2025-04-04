@@ -16,18 +16,18 @@ import (
 	awsecrrepov1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsecrrepo/v1"
 	awsecsclusterv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsecscluster/v1"
 	awsecsservicev1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsecsservice/v1"
+	awseksclusterv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsekscluster/v1"
 	awsiamrolev1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsiamrole/v1"
 	awslambdav1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awslambda/v1"
 	awsrdsclusterv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsrdscluster/v1"
 	awsrdsinstancev1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsrdsinstance/v1"
+	awsroute53zonev1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsroute53zone/v1"
+	awss3bucketv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awss3bucket/v1"
 	awssecretsmanagerv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awssecretsmanager/v1"
 	awssecuritygroupv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awssecuritygroup/v1"
 	awsstaticwebsitev1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsstaticwebsite/v1"
 	awsvpcv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsvpc/v1"
-	eksclusterv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/ekscluster/v1"
-	route53zonev1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/route53zone/v1"
-	s3bucketv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/s3bucket/v1"
-	aksclusterv1 "github.com/project-planton/project-planton/apis/project/planton/provider/azure/akscluster/v1"
+	azureaksclusterv1 "github.com/project-planton/project-planton/apis/project/planton/provider/azure/azureakscluster/v1"
 	azurekeyvaultv1 "github.com/project-planton/project-planton/apis/project/planton/provider/azure/azurekeyvault/v1"
 	confluentkafkav1 "github.com/project-planton/project-planton/apis/project/planton/provider/confluent/confluentkafka/v1"
 	gcpartifactregistryrepov1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpartifactregistryrepo/v1"
@@ -36,11 +36,11 @@ import (
 	gcpcloudrunv1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpcloudrun/v1"
 	gcpcloudsqlv1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpcloudsql/v1"
 	gcpdnszonev1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpdnszone/v1"
+	gcpgcsbucketv1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpgcsbucket/v1"
+	gcpgkeaddonbundlev1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpgkeaddonbundle/v1"
+	gcpgkeclusterv1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpgkecluster/v1"
 	gcpsecretsmanagerv1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpsecretsmanager/v1"
 	gcpstaticwebsitev1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpstaticwebsite/v1"
-	gcsbucketv1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcsbucket/v1"
-	gkeaddonbundlev1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gkeaddonbundle/v1"
-	gkeclusterv1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gkecluster/v1"
 	argocdkubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/argocdkubernetes/v1"
 	cronjobkubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/cronjobkubernetes/v1"
 	elasticsearchkubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/elasticsearchkubernetes/v1"
@@ -87,20 +87,20 @@ const (
 	AwsEcrRepoKind         ApiResourceKind = "aws-ecr-repo"
 	AwsEcsClusterKind      ApiResourceKind = "aws-ecs-cluster"
 	AwsEcsServiceKind      ApiResourceKind = "aws-ecs-service"
+	AwsEksClusterKind      ApiResourceKind = "aws-eks-cluster"
 	AwsIamRoleKind         ApiResourceKind = "aws-iam-role"
 	AwsLambdaKind          ApiResourceKind = "aws-lambda"
 	AwsRdsClusterKind      ApiResourceKind = "aws-rds-cluster"
 	AwsRdsInstanceKind     ApiResourceKind = "aws-rds-instance"
+	AwsRoute53ZoneKind     ApiResourceKind = "aws-route53-zone"
+	AwsS3BucketKind        ApiResourceKind = "aws-s3-bucket"
 	AwsSecretsManagerKind  ApiResourceKind = "aws-secrets-manager"
 	AwsSecurityGroupKind   ApiResourceKind = "aws-security-group"
 	AwsStaticWebsiteKind   ApiResourceKind = "aws-static-website"
 	AwsVpcKind             ApiResourceKind = "aws-vpc"
-	EksClusterKind         ApiResourceKind = "eks-cluster"
-	Route53ZoneKind        ApiResourceKind = "route53-zone"
-	S3BucketKind           ApiResourceKind = "s3-bucket"
 
-	AksClusterKind    ApiResourceKind = "aks-cluster"
-	AzureKeyVaultKind ApiResourceKind = "azure-key-vault"
+	AzureAksClusterKind ApiResourceKind = "azure-aks-cluster"
+	AzureKeyVaultKind   ApiResourceKind = "azure-key-vault"
 
 	ConfluentKafkaKind ApiResourceKind = "confluent-kafka"
 
@@ -110,11 +110,11 @@ const (
 	GcpCloudRunKind             ApiResourceKind = "gcp-cloud-run"
 	GcpCloudSqlKind             ApiResourceKind = "gcp-cloud-sql"
 	GcpDnsZoneKind              ApiResourceKind = "gcp-dns-zone"
+	GcpGcsBucketKind            ApiResourceKind = "gcp-gcs-bucket"
+	GcpGkeAddonBundleKind       ApiResourceKind = "gcp-gke-addon-bundle"
+	GcpGkeClusterKind           ApiResourceKind = "gcp-gke-cluster"
 	GcpSecretsManagerKind       ApiResourceKind = "gcp-secrets-manager"
 	GcpStaticWebsiteKind        ApiResourceKind = "gcp-static-website"
-	GcsBucketKind               ApiResourceKind = "gcs-bucket"
-	GkeClusterKind              ApiResourceKind = "gke-cluster"
-	GkeAddonBundleKind          ApiResourceKind = "gke-addon-bundle"
 
 	ArgocdKubernetesKind         ApiResourceKind = "argocd-kubernetes"
 	ElasticsearchKubernetesKind  ApiResourceKind = "elasticsearch-kubernetes"
@@ -184,17 +184,17 @@ var providerAwsMap = map[ApiResourceKind]proto.Message{
 	AwsEcrRepoKind:         &awsecrrepov1.AwsEcrRepo{},
 	AwsEcsClusterKind:      &awsecsclusterv1.AwsEcsCluster{},
 	AwsEcsServiceKind:      &awsecsservicev1.AwsEcsService{},
+	AwsEksClusterKind:      &awseksclusterv1.AwsEksCluster{},
 	AwsIamRoleKind:         &awsiamrolev1.AwsIamRole{},
 	AwsLambdaKind:          &awslambdav1.AwsLambda{},
 	AwsRdsClusterKind:      &awsrdsclusterv1.AwsRdsCluster{},
 	AwsRdsInstanceKind:     &awsrdsinstancev1.AwsRdsInstance{},
+	AwsRoute53ZoneKind:     &awsroute53zonev1.AwsRoute53Zone{},
+	AwsS3BucketKind:        &awss3bucketv1.AwsS3Bucket{},
 	AwsSecretsManagerKind:  &awssecretsmanagerv1.AwsSecretsManager{},
 	AwsSecurityGroupKind:   &awssecuritygroupv1.AwsSecurityGroup{},
 	AwsStaticWebsiteKind:   &awsstaticwebsitev1.AwsStaticWebsite{},
 	AwsVpcKind:             &awsvpcv1.AwsVpc{},
-	EksClusterKind:         &eksclusterv1.EksCluster{},
-	Route53ZoneKind:        &route53zonev1.Route53Zone{},
-	S3BucketKind:           &s3bucketv1.S3Bucket{},
 }
 
 var providerConfluentMap = map[ApiResourceKind]proto.Message{
@@ -206,8 +206,8 @@ var providerSnowflakeMap = map[ApiResourceKind]proto.Message{
 }
 
 var providerAzureMap = map[ApiResourceKind]proto.Message{
-	AksClusterKind:    &aksclusterv1.AksCluster{},
-	AzureKeyVaultKind: &azurekeyvaultv1.AzureKeyVault{},
+	AzureAksClusterKind: &azureaksclusterv1.AzureAksCluster{},
+	AzureKeyVaultKind:   &azurekeyvaultv1.AzureKeyVault{},
 }
 
 var providerGcpMap = map[ApiResourceKind]proto.Message{
@@ -217,11 +217,11 @@ var providerGcpMap = map[ApiResourceKind]proto.Message{
 	GcpCloudRunKind:             &gcpcloudrunv1.GcpCloudRun{},
 	GcpCloudSqlKind:             &gcpcloudsqlv1.GcpCloudSql{},
 	GcpDnsZoneKind:              &gcpdnszonev1.GcpDnsZone{},
+	GcpGcsBucketKind:            &gcpgcsbucketv1.GcpGcsBucket{},
+	GcpGkeAddonBundleKind:       &gcpgkeaddonbundlev1.GcpGkeAddonBundle{},
+	GcpGkeClusterKind:           &gcpgkeclusterv1.GcpGkeCluster{},
 	GcpSecretsManagerKind:       &gcpsecretsmanagerv1.GcpSecretsManager{},
 	GcpStaticWebsiteKind:        &gcpstaticwebsitev1.GcpStaticWebsite{},
-	GcsBucketKind:               &gcsbucketv1.GcsBucket{},
-	GkeClusterKind:              &gkeclusterv1.GkeCluster{},
-	GkeAddonBundleKind:          &gkeaddonbundlev1.GkeAddonBundle{},
 }
 
 var providerKubernetesMap = map[ApiResourceKind]proto.Message{
