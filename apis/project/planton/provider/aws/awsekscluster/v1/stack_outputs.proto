@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package project.planton.provider.aws.awsekscluster.v1;
+
+// aws-eks-cluster stack-outputs
+message AwsEksClusterStackOutputs {
+  // id of the vpc in which the aws-eks-cluster is created
+  string cluster_vpc_id = 1;
+
+  // aws-eks-cluster endpoint.
+  string cluster_endpoint = 2;
+
+  // aws-eks-cluster certificate-authority-data.
+  // this value is updated upon successful aws-eks-cluster creation stack-job.
+  string cluster_ca_data = 3;
+}

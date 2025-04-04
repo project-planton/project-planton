@@ -16,17 +16,17 @@ import (
 	awsecrrepov1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsecrrepo/v1"
 	awsecsclusterv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsecscluster/v1"
 	awsecsservicev1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsecsservice/v1"
+	awseksclusterv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsekscluster/v1"
 	awsiamrolev1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsiamrole/v1"
 	awslambdav1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awslambda/v1"
 	awsrdsclusterv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsrdscluster/v1"
 	awsrdsinstancev1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsrdsinstance/v1"
+	awsroute53zonev1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsroute53zone/v1"
+	awss3bucketv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awss3bucket/v1"
 	awssecretsmanagerv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awssecretsmanager/v1"
 	awssecuritygroupv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awssecuritygroup/v1"
 	awsstaticwebsitev1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsstaticwebsite/v1"
 	awsvpcv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsvpc/v1"
-	eksclusterv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/ekscluster/v1"
-	route53zonev1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/route53zone/v1"
-	s3bucketv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/s3bucket/v1"
 	aksclusterv1 "github.com/project-planton/project-planton/apis/project/planton/provider/azure/akscluster/v1"
 	azurekeyvaultv1 "github.com/project-planton/project-planton/apis/project/planton/provider/azure/azurekeyvault/v1"
 	confluentkafkav1 "github.com/project-planton/project-planton/apis/project/planton/provider/confluent/confluentkafka/v1"
@@ -87,17 +87,17 @@ const (
 	AwsEcrRepoKind         ApiResourceKind = "aws-ecr-repo"
 	AwsEcsClusterKind      ApiResourceKind = "aws-ecs-cluster"
 	AwsEcsServiceKind      ApiResourceKind = "aws-ecs-service"
+	AwsEksClusterKind      ApiResourceKind = "aws-eks-cluster"
 	AwsIamRoleKind         ApiResourceKind = "aws-iam-role"
 	AwsLambdaKind          ApiResourceKind = "aws-lambda"
 	AwsRdsClusterKind      ApiResourceKind = "aws-rds-cluster"
 	AwsRdsInstanceKind     ApiResourceKind = "aws-rds-instance"
+	AwsRoute53ZoneKind     ApiResourceKind = "aws-route53-zone"
+	AwsS3BucketKind        ApiResourceKind = "aws-s3-bucket"
 	AwsSecretsManagerKind  ApiResourceKind = "aws-secrets-manager"
 	AwsSecurityGroupKind   ApiResourceKind = "aws-security-group"
 	AwsStaticWebsiteKind   ApiResourceKind = "aws-static-website"
 	AwsVpcKind             ApiResourceKind = "aws-vpc"
-	EksClusterKind         ApiResourceKind = "eks-cluster"
-	Route53ZoneKind        ApiResourceKind = "route53-zone"
-	S3BucketKind           ApiResourceKind = "s3-bucket"
 
 	AksClusterKind    ApiResourceKind = "aks-cluster"
 	AzureKeyVaultKind ApiResourceKind = "azure-key-vault"
@@ -184,17 +184,17 @@ var providerAwsMap = map[ApiResourceKind]proto.Message{
 	AwsEcrRepoKind:         &awsecrrepov1.AwsEcrRepo{},
 	AwsEcsClusterKind:      &awsecsclusterv1.AwsEcsCluster{},
 	AwsEcsServiceKind:      &awsecsservicev1.AwsEcsService{},
+	AwsEksClusterKind:      &awseksclusterv1.AwsEksCluster{},
 	AwsIamRoleKind:         &awsiamrolev1.AwsIamRole{},
 	AwsLambdaKind:          &awslambdav1.AwsLambda{},
 	AwsRdsClusterKind:      &awsrdsclusterv1.AwsRdsCluster{},
 	AwsRdsInstanceKind:     &awsrdsinstancev1.AwsRdsInstance{},
+	AwsRoute53ZoneKind:     &awsroute53zonev1.AwsRoute53Zone{},
+	AwsS3BucketKind:        &awss3bucketv1.AwsS3Bucket{},
 	AwsSecretsManagerKind:  &awssecretsmanagerv1.AwsSecretsManager{},
 	AwsSecurityGroupKind:   &awssecuritygroupv1.AwsSecurityGroup{},
 	AwsStaticWebsiteKind:   &awsstaticwebsitev1.AwsStaticWebsite{},
 	AwsVpcKind:             &awsvpcv1.AwsVpc{},
-	EksClusterKind:         &eksclusterv1.EksCluster{},
-	Route53ZoneKind:        &route53zonev1.Route53Zone{},
-	S3BucketKind:           &s3bucketv1.S3Bucket{},
 }
 
 var providerConfluentMap = map[ApiResourceKind]proto.Message{
