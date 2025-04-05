@@ -29,8 +29,18 @@ func certManagerCert(ctx *pulumi.Context, locals *Locals, provider *aws.Provider
 
 	// Create corresponding DNS records, returning a pulumi.StringArray of FQDNs
 	recordFqdns := cert.DomainValidationOptions.ApplyT(func(dvos []acm.CertificateDomainValidationOption) pulumi.StringArray {
+		// Keep track of distinct DNS record names to avoid duplicates
+		distinct := make(map[string]bool)
 		var fqdnOutputs pulumi.StringArray
 		for i, dvo := range dvos {
+			if dvo.ResourceRecordName == nil || dvo.ResourceRecordValue == nil {
+				continue
+			}
+			if distinct[*dvo.ResourceRecordName] {
+				continue
+			}
+			distinct[*dvo.ResourceRecordName] = true
+
 			record, createErr := route53.NewRecord(ctx, fmt.Sprintf("%s-cname-%d", meta.Name, i), &route53.RecordArgs{
 				Name: pulumi.String(*dvo.ResourceRecordName),
 				Records: pulumi.StringArray{
@@ -41,10 +51,8 @@ func certManagerCert(ctx *pulumi.Context, locals *Locals, provider *aws.Provider
 				ZoneId: pulumi.String(spec.Route53HostedZoneId),
 			}, pulumi.Provider(provider))
 			if createErr != nil {
-				// Using panic here ensures Pulumi halts if record creation fails
 				panic(createErr)
 			}
-			// Append the Fqdn output (a pulumi.StringOutput) to our pulumi.StringArray
 			fqdnOutputs = append(fqdnOutputs, record.Fqdn)
 		}
 		return fqdnOutputs
