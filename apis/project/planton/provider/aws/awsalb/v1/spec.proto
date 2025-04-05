@@ -50,28 +50,35 @@ message AwsAlbSpec {
     (project.planton.shared.options.recommended_default) = "60"
   ];
 
-  // optional list of listeners. If empty, you'll have to define them separately
-  // or rely on a separate resource that references this ALB.
-  repeated AwsAlbListener listeners = 7;
+  // dns configuration allows the resource to manage Route 53 DNS if enabled.
+  AwsAlbDns dns = 7;
+
+  // ssl configuration allows a single toggle for SSL, plus a certificate ARN if enabled.
+  AwsAlbSsl ssl = 8;
 }
 
-// AwsAlbListener describes a single listener on the ALB.
-message AwsAlbListener {
-  // protocol can be "HTTP" or "HTTPS".
-  string protocol = 1 [
-    (buf.validate.field).string = {in: ["HTTP", "HTTPS"]}
+// AwsAlbDns defines the Route 53 DNS configuration for the ALB.
+message AwsAlbDns {
+  // enabled, when set to true, indicates that the ALB resource
+  // should create DNS records in Route 53.
+  bool enabled = 1 [
+    (project.planton.shared.options.recommended_default) = "false"
   ];
 
-  // port is the listener's port (80 for HTTP, 443 for HTTPS, etc.).
-  int32 port = 2 [
-    (buf.validate.field).required = true
+  // route53_zone_id is the Route 53 Hosted Zone ID where DNS records
+  // will be created.
+  string route53_zone_id = 2;
+
+  // hostnames is a list of domain names (e.g., ["app.example.com"])
+  // that will point to this ALB.
+  repeated string hostnames = 3;
+}
+
+// AwsAlbSsl defines a toggle for SSL, plus a certificate ARN required if enabled is true.
+message AwsAlbSsl {
+  bool enabled = 1 [
+    (project.planton.shared.options.recommended_default) = "false"
   ];
 
-  // certificate_arn is required if protocol == "HTTPS".
-  // e.g., "arn:aws:acm:us-east-1:123456789012:certificate/abcd1234..."
-  string certificate_arn = 3;
-
-  // ssl_policy is the TLS security policy if using HTTPS.
-  // e.g., "ELBSecurityPolicy-2016-08".
-  string ssl_policy = 4;
+  string certificate_arn = 2;
 }
