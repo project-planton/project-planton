@@ -17,6 +17,34 @@ type Locals struct {
 	AwsTags       map[string]string
 }
 
+// LocalsAwsEcsServiceSpec is an internal struct that adapts the new AwsEcsServiceSpec
+// fields into something easier for building ECS resources.
+type LocalsAwsEcsServiceSpec struct {
+	ClusterArn  string
+	ServiceName string
+
+	ImageRepo string
+	ImageTag  string
+	Port      int32
+	Replicas  int
+
+	Cpu    int32
+	Memory int32
+
+	Subnets        []string
+	SecurityGroups []string
+
+	TaskExecutionRoleArn string
+	TaskRoleArn          string
+
+	// ALB-related fields
+	AlbEnabled     bool
+	AlbArn         string
+	AlbRoutingType string
+	AlbPath        string
+	AlbHostname    string
+}
+
 // initializeLocals pulls values from the stack input (AwsEcsServiceStackInput)
 // and populates the Locals struct. We mimic Terraform "locals" by storing
 // precomputed values or referencing resource fields directly.
