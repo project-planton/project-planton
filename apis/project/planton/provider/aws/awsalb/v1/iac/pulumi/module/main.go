@@ -16,12 +16,12 @@ func Resources(ctx *pulumi.Context, stackInput *awsalbv1.AwsAlbStackInput) error
 	awsCredential := stackInput.ProviderCredential
 
 	if awsCredential == nil {
-		provider, err = aws.NewProvider(ctx, "classic-provider", &aws.ProviderArgs{})
+		provider, err = aws.NewProvider(ctx, "default-provider", &aws.ProviderArgs{})
 		if err != nil {
 			return errors.Wrap(err, "failed to create default AWS provider")
 		}
 	} else {
-		provider, err = aws.NewProvider(ctx, "classic-provider", &aws.ProviderArgs{
+		provider, err = aws.NewProvider(ctx, "custom-provider", &aws.ProviderArgs{
 			AccessKey: pulumi.String(awsCredential.AccessKeyId),
 			SecretKey: pulumi.String(awsCredential.SecretAccessKey),
 			Region:    pulumi.String(awsCredential.Region),
@@ -36,7 +36,8 @@ func Resources(ctx *pulumi.Context, stackInput *awsalbv1.AwsAlbStackInput) error
 		return errors.Wrap(err, "failed to create aws_alb resource")
 	}
 
-	if locals.AwsAlb.Spec.Dns.Enabled {
+	// If the user wants DNS, set up Route 53 records
+	if locals.AwsAlb.Spec.Dns.GetEnabled() {
 		if err := dns(ctx, locals, provider, albResource); err != nil {
 			return errors.Wrap(err, "failed to configure DNS")
 		}
