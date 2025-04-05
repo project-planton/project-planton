@@ -6,8 +6,8 @@ import "buf/validate/validate.proto";
 import "project/planton/shared/options/options.proto";
 
 // AwsEcsServiceSpec captures the minimal fields needed to deploy a Fargate-based ECS service
-// into an existing ECS cluster. It focuses on the 80-20 use case:
-// a single-container service with essential resource and networking configs.
+// into an existing ECS cluster. It focuses on an 80/20 approach with an ALB-based ingress
+// that can be path-based or hostname-based.
 message AwsEcsServiceSpec {
   // cluster_arn is the ARN of the ECS cluster where this service will run.
   // This must already exist (created by a separate EcsCluster resource or otherwise).
@@ -28,14 +28,19 @@ message AwsEcsServiceSpec {
 
   // IAM configuration for the ECS service.
   AwsEcsServiceIam iam = 4;
+
+  // alb defines how an ALB fronts traffic to this ECS service, supporting path- or hostname-based routing.
+  AwsEcsServiceAlb alb = 5;
 }
 
-// AwsEcsServiceSpec_Container is a wrapper for the container spec.
+// AwsEcsServiceContainer is a wrapper for the container spec.
 message AwsEcsServiceContainer {
   // container image
   AwsEcsServiceContainerImage image = 1;
+
   // container environment variables and secrets
   AwsEcsServiceContainerEnv env = 2;
+
   // container_port is the port inside the container that should be exposed to receive traffic.
   // This is optional if the service doesn't need inbound requests (e.g., a background worker).
   // Example: 80 for HTTP
@@ -62,8 +67,7 @@ message AwsEcsServiceContainer {
   ];
 }
 
-// **AwsEcsServiceContainerImage** represents the container image information.
-// It includes the repository, tag.
+// AwsEcsServiceContainerImage represents the container image information.
 message AwsEcsServiceContainerImage {
   // The repository of the image (e.g., "gcr.io/project/image").
   string repo = 1;
@@ -72,15 +76,15 @@ message AwsEcsServiceContainerImage {
   string tag = 2;
 }
 
-// AwsEcsServiceContainerEnv is a wrapper for the environment variables and secrets.
+// AwsEcsServiceContainerEnv is a wrapper for environment variables and secrets.
 message AwsEcsServiceContainerEnv {
-  //map of environment variables to be set in the container.
+  // map of environment variables to be set in the container.
   // The key is the name of the variable, and the value is the value to be set.
   map<string, string> variables = 1;
 
-  //map of environment secrets to be set in the container.
+  // map of environment secrets to be set in the container.
   // The key is the name of the variable, and the value is the value to be set.
-  //the value can be a plaintext value or a reference to a secret in AWS Secrets Manager or SSM Parameter Store.
+  // The value can be a plaintext value or a reference to a secret in AWS Secrets Manager or SSM Parameter Store.
   map<string, string> secrets = 2;
 }
 
@@ -102,15 +106,9 @@ message AwsEcsServiceNetwork {
       unique: true
     }
   ];
-
-  // assign_public_ip indicates whether to assign a public IP to the Fargate task ENI.
-  // Default is false for most production services behind a load balancer or NAT.
-  bool assign_public_ip = 3 [
-    (project.planton.shared.options.recommended_default) = "false"
-  ];
 }
 
-//AWS ECS Service IAM configuration
+// AWS ECS Service IAM configuration
 message AwsEcsServiceIam {
   // task_execution_role_arn is the IAM role used by ECS to pull private images and write logs.
   // If omitted, a default "ecsTaskExecutionRole" may be assumed, but it must already exist.
@@ -121,4 +119,32 @@ message AwsEcsServiceIam {
   // Omit if your container does not call AWS APIs.
   // Example: "arn:aws:iam::123456789012:role/myAppTaskRole"
   string task_role_arn = 2;
+}
+
+enum AwsEcsServiceAlbRoutingType {
+  aws_ecs_service_alb_routing_type_unspecified = 0;
+  //Path-based routing (e.g., "/my-service")
+  path = 1;
+  // Hostname-based routing (e.g., "api.example.com")
+  hostname = 2;
+}
+
+// AwsEcsServiceAlb indicates how an ALB fronts this ECS service, supporting path- or hostname-based routing.
+message AwsEcsServiceAlb {
+  // enabled controls whether an ALB is used. If false, no ALB is attached.
+  bool enabled = 1;
+
+  // arn is the ARN of the ALB. Required if enabled = true.
+  string arn = 2;
+
+  // routingType can be "PATH" or "HOSTNAME" if enabled.
+  // If "PATH", specify a path (e.g. "/my-service").
+  // If "HOSTNAME", specify a hostname (e.g. "api.example.com").
+  AwsEcsServiceAlbRoutingType routing_type = 3;
+
+  // path is used if routingType = "path".
+  string path = 4;
+
+  // hostname is used if routingType = "hostname".
+  string hostname = 5;
 }

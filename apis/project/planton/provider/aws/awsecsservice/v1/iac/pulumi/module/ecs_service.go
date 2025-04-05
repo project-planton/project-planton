@@ -6,7 +6,9 @@ import (
 
 	"github.com/pkg/errors"
 	"github.com/pulumi/pulumi-aws/sdk/v6/go/aws"
+	"github.com/pulumi/pulumi-aws/sdk/v6/go/aws/ec2"
 	"github.com/pulumi/pulumi-aws/sdk/v6/go/aws/ecs"
+	"github.com/pulumi/pulumi-aws/sdk/v6/go/aws/lb"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
@@ -25,9 +27,6 @@ func service(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) error 
 		Memory:         originalSpec.Container.Memory,
 		Subnets:        originalSpec.Network.Subnets,
 		SecurityGroups: originalSpec.Network.SecurityGroups,
-		AssignPublicIp: originalSpec.Network.AssignPublicIp,
-		EnvVariables:   originalSpec.Container.Env.Variables,
-		EnvSecrets:     originalSpec.Container.Env.Secrets,
 	}
 
 	if originalSpec.Iam != nil {
@@ -35,12 +34,20 @@ func service(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) error 
 		convertedSpec.TaskRoleArn = originalSpec.Iam.TaskRoleArn
 	}
 
+	if originalSpec.Alb != nil {
+		convertedSpec.AlbEnabled = originalSpec.Alb.Enabled
+		convertedSpec.AlbArn = originalSpec.Alb.Arn
+		convertedSpec.AlbRoutingType = originalSpec.Alb.RoutingType.String()
+		convertedSpec.AlbPath = originalSpec.Alb.Path
+		convertedSpec.AlbHostname = originalSpec.Alb.Hostname
+	}
+
 	containerDefs, err := buildContainerDefinitions(&convertedSpec)
 	if err != nil {
 		return errors.Wrap(err, "failed to build container definitions JSON")
 	}
 
-	taskDef, err := ecs.NewTaskDefinition(ctx, locals.AwsEcsService.Metadata.Name+"-taskdef", &ecs.TaskDefinitionArgs{
+	taskDef, err := ecs.NewTaskDefinition(ctx, convertedSpec.ServiceName+"-taskdef", &ecs.TaskDefinitionArgs{
 		Family:                  pulumi.String(convertedSpec.ServiceName),
 		RequiresCompatibilities: pulumi.StringArray{pulumi.String("FARGATE")},
 		Cpu:                     pulumi.String(fmt.Sprintf("%d", convertedSpec.Cpu)),
@@ -55,19 +62,56 @@ func service(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) error 
 		return errors.Wrap(err, "unable to create ECS task definition")
 	}
 
-	awsEcsService, err := ecs.NewService(ctx, locals.AwsEcsService.Metadata.Name+"-service", &ecs.ServiceArgs{
+	serviceArgs := &ecs.ServiceArgs{
 		Name:           pulumi.String(convertedSpec.ServiceName),
 		Cluster:        pulumi.String(convertedSpec.ClusterArn),
 		LaunchType:     pulumi.String("FARGATE"),
 		DesiredCount:   pulumi.Int(convertedSpec.Replicas),
 		TaskDefinition: taskDef.Arn,
 		NetworkConfiguration: &ecs.ServiceNetworkConfigurationArgs{
-			AssignPublicIp: pulumi.Bool(convertedSpec.AssignPublicIp),
 			Subnets:        toPulumiStrings(convertedSpec.Subnets),
 			SecurityGroups: toPulumiStrings(convertedSpec.SecurityGroups),
 		},
 		Tags: pulumi.ToStringMap(locals.AwsTags),
-	}, pulumi.Provider(provider))
+	}
+
+	if convertedSpec.AlbEnabled && convertedSpec.Port != 0 {
+		if len(convertedSpec.Subnets) == 0 {
+			return errors.New("at least one subnet is required for ALB usage")
+		}
+		firstSubnetID := convertedSpec.Subnets[0]
+
+		subnetLookup, err := ec2.LookupSubnet(ctx, &ec2.LookupSubnetArgs{
+			Id: &firstSubnetID,
+		}, nil)
+		if err != nil {
+			return errors.Wrap(err, "failed to lookup first subnet (needed for ALB target group)")
+		}
+
+		targetGroup, err := lb.NewTargetGroup(ctx, convertedSpec.ServiceName+"-tg", &lb.TargetGroupArgs{
+			Port:       pulumi.Int(int(convertedSpec.Port)),
+			Protocol:   pulumi.String("HTTP"),
+			TargetType: pulumi.String("ip"),
+			VpcId:      pulumi.String(subnetLookup.VpcId),
+			HealthCheck: &lb.TargetGroupHealthCheckArgs{
+				Path: pulumi.String("/"),
+			},
+			Tags: pulumi.ToStringMap(locals.AwsTags),
+		}, pulumi.Provider(provider))
+		if err != nil {
+			return errors.Wrap(err, "failed to create ALB target group")
+		}
+
+		serviceArgs.LoadBalancers = ecs.ServiceLoadBalancerArray{
+			&ecs.ServiceLoadBalancerArgs{
+				TargetGroupArn: targetGroup.Arn,
+				ContainerName:  pulumi.String(convertedSpec.ServiceName),
+				ContainerPort:  pulumi.Int(int(convertedSpec.Port)),
+			},
+		}
+	}
+
+	awsEcsService, err := ecs.NewService(ctx, convertedSpec.ServiceName+"-service", serviceArgs, pulumi.Provider(provider))
 	if err != nil {
 		return errors.Wrap(err, "unable to create ECS service")
 	}
@@ -81,24 +125,8 @@ func service(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) error 
 	return nil
 }
 
-// buildContainerDefinitions builds a JSON array of container definitions
-// based on our local ECS service spec.
 func buildContainerDefinitions(spec *LocalsAwsEcsServiceSpec) (string, error) {
 	var envVars []map[string]string
-
-	for k, v := range spec.EnvVariables {
-		envVars = append(envVars, map[string]string{
-			"name":  k,
-			"value": v,
-		})
-	}
-
-	for k, v := range spec.EnvSecrets {
-		envVars = append(envVars, map[string]string{
-			"name":  k,
-			"value": v,
-		})
-	}
 
 	container := map[string]interface{}{
 		"name":        spec.ServiceName,
@@ -123,31 +151,10 @@ func buildContainerDefinitions(spec *LocalsAwsEcsServiceSpec) (string, error) {
 	return string(encoded), nil
 }
 
-// toPulumiStrings is a helper that converts a native string slice to a pulumi.StringInput slice.
 func toPulumiStrings(input []string) pulumi.StringArray {
 	output := make(pulumi.StringArray, len(input))
 	for i, s := range input {
 		output[i] = pulumi.String(s)
 	}
 	return output
-}
-
-// LocalsAwsEcsServiceSpec is an internal struct that adapts the new AwsEcsServiceSpec
-// fields into something easier for building ECS resources.
-type LocalsAwsEcsServiceSpec struct {
-	ClusterArn           string
-	ServiceName          string
-	ImageRepo            string
-	ImageTag             string
-	Port                 int32
-	Replicas             int
-	Cpu                  int32
-	Memory               int32
-	Subnets              []string
-	SecurityGroups       []string
-	AssignPublicIp       bool
-	TaskExecutionRoleArn string
-	TaskRoleArn          string
-	EnvVariables         map[string]string
-	EnvSecrets           map[string]string
 }
