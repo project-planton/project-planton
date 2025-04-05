@@ -9,49 +9,20 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// Locals defines the local variables/fields used throughout our Pulumi module.
-// This struct includes the AWS ECS Service resource definition from the stack input
-// and a map of AWS tags we'll apply to resources.
+// Locals defines local variables used throughout our Pulumi module.
+// This includes the AWS ECS Service resource definition (AwsEcsService)
+// and a map of AWS tags to apply to resources.
 type Locals struct {
 	AwsEcsService *awsecsservicev1.AwsEcsService
 	AwsTags       map[string]string
 }
 
-// LocalsAwsEcsServiceSpec is an internal struct that adapts the new AwsEcsServiceSpec
-// fields into something easier for building ECS resources.
-type LocalsAwsEcsServiceSpec struct {
-	ClusterArn  string
-	ServiceName string
-
-	ImageRepo string
-	ImageTag  string
-	Port      int32
-	Replicas  int
-
-	Cpu    int32
-	Memory int32
-
-	Subnets        []string
-	SecurityGroups []string
-
-	TaskExecutionRoleArn string
-	TaskRoleArn          string
-
-	// ALB-related fields
-	AlbEnabled     bool
-	AlbArn         string
-	AlbRoutingType string
-	AlbPath        string
-	AlbHostname    string
-}
-
 // initializeLocals pulls values from the stack input (AwsEcsServiceStackInput)
-// and populates the Locals struct. We mimic Terraform "locals" by storing
-// precomputed values or referencing resource fields directly.
+// and populates the Locals struct. Similar to Terraform "locals" concept.
 func initializeLocals(ctx *pulumi.Context, stackInput *awsecsservicev1.AwsEcsServiceStackInput) *Locals {
-	locals := &Locals{}
-
-	locals.AwsEcsService = stackInput.Target
+	locals := &Locals{
+		AwsEcsService: stackInput.Target,
+	}
 
 	locals.AwsTags = map[string]string{
 		awstagkeys.Resource:     strconv.FormatBool(true),
