@@ -12,7 +12,7 @@ import (
 )
 
 // alb creates an AWS Application Load Balancer based on AwsAlbSpec fields and any optional listeners.
-func alb(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) error {
+func alb(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) (*lb.LoadBalancer, error) {
 	spec := locals.AwsAlb.Spec
 
 	var isInternal pulumi.BoolInput
@@ -22,7 +22,6 @@ func alb(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) error {
 		isInternal = pulumi.Bool(false)
 	}
 
-	// Create the ALB
 	albResource, err := lb.NewLoadBalancer(ctx, locals.AwsAlb.Metadata.Name, &lb.LoadBalancerArgs{
 		Name:                     pulumi.String(locals.AwsAlb.Metadata.Name),
 		LoadBalancerType:         pulumi.String("application"),
@@ -35,23 +34,21 @@ func alb(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) error {
 		Tags:                     pulumi.ToStringMap(locals.AwsTags),
 	}, pulumi.Provider(provider))
 	if err != nil {
-		return errors.Wrap(err, "unable to create AWS ALB")
+		return nil, errors.Wrap(err, "unable to create AWS ALB")
 	}
 
-	// Create ALB listeners (if any)
 	if len(spec.Listeners) > 0 {
 		if err := albListeners(ctx, albResource, spec.Listeners, provider, locals.AwsAlb.Metadata.Name); err != nil {
-			return errors.Wrap(err, "unable to create ALB listeners")
+			return nil, errors.Wrap(err, "unable to create ALB listeners")
 		}
 	}
 
-	// Export stack outputs
 	ctx.Export(OpAlbArn, albResource.Arn)
 	ctx.Export(OpAlbName, albResource.Name)
 	ctx.Export(OpAlbDnsName, albResource.DnsName)
 	ctx.Export(OpAlbHostedZoneId, albResource.ZoneId)
 
-	return nil
+	return albResource, nil
 }
 
 // albListeners creates one or more listeners for the given ALB using the repeated AwsAlbListener field.
@@ -74,7 +71,6 @@ func albListeners(
 			Protocol:        pulumi.String(spec.Protocol),
 			SslPolicy:       pulumi.String(spec.SslPolicy),
 			CertificateArn:  pulumi.String(spec.CertificateArn),
-			// Basic default action that returns a 200 OK response.
 			DefaultActions: lb.ListenerDefaultActionArray{
 				&lb.ListenerDefaultActionArgs{
 					Type: pulumi.String("fixed-response"),
