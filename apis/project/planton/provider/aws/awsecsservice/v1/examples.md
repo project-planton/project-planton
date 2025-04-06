@@ -1,6 +1,7 @@
 # Create using CLI
 
-Create a YAML manifest using one of the examples below. After the YAML is created, apply it with ProjectPlanton:
+Create a yaml manifest using one of the examples below. After the YAML is created, use the command below to apply with
+ProjectPlanton:
 
 ```shell
 project-planton pulumi up --manifest <yaml-path> --stack <stack-name>
@@ -12,207 +13,206 @@ Or, if using Terraform:
 project-planton terraform apply --manifest <yaml-path> --stack <stack-name>
 ```
 
-(You can also use the shorter form `planton apply -f <yaml-path>` if your environment is configured accordingly.)
+(You can also use a shorter form like `planton apply -f <yaml-path>` if your environment is configured accordingly.)
 
 ---
 
-# Basic Example
+# Basic Fargate Example
+
+This example deploys a simple ECS service onto an existing ECS cluster using AWS Fargate. It specifies the cluster ARN,
+subnets, a single container replica, CPU, and memory.
 
 ```yaml
 apiVersion: aws.project-planton.org/v1
 kind: AwsEcsService
 metadata:
-  name: my-basic-aws-ecs-service
-  version:
-    message: "Initial ECS service"
+  name: my-basic-ecs-service
 spec:
-  cluster_name: "my-basic-ecs-cluster"
-  service_name: "my-service"
-  image: "amazonlinux:2"
-  container_port: 80
-  cpu: 512
-  memory: 1024
-  subnets:
-    - "subnet-1234abcd"
-    - "subnet-5678efgh"
+  clusterArn: "arn:aws:ecs:us-east-1:123456789012:cluster/my-existing-cluster"
+  container:
+    image:
+      repo: "nginx"
+      tag: "latest"
+    port: 80
+    replicas: 1
+    cpu: 256
+    memory: 512
+  network:
+    subnets:
+      - "subnet-123abc"
+      - "subnet-456def"
+    securityGroups:
+      - "sg-123abc"
 ```
-
-This defines a simple ECS service that:
-• Uses an existing ECS cluster named `my-basic-ecs-cluster`.
-• Deploys the Amazon Linux 2 image, listening on port 80.
-• Runs on Fargate with 512 CPU units and 1024 MiB memory.
-• Spans two subnets for high availability.
 
 ---
 
-# Example with Environment Variables
+# Example with Environment Variables and Secrets
+
+This example demonstrates how to pass both plain environment variables and secrets to the container.
 
 ```yaml
 apiVersion: aws.project-planton.org/v1
 kind: AwsEcsService
 metadata:
-  name: my-service-with-env
-  version:
-    message: "ECS service with environment variables"
+  name: ecs-service-with-env
 spec:
-  cluster_name: "my-mixed-cluster"
-  service_name: "env-service"
-  image: "123456789012.dkr.ecr.us-east-1.amazonaws.com/myapp:latest"
-  container_port: 8080
-  cpu: 512
-  memory: 1024
-  subnets:
-    - "subnet-1a2b3c4d"
-    - "subnet-5e6f7g8h"
-  security_groups:
-    - "sg-0123456789abcdef0"
-  environment:
-    - name: "APP_ENV"
-      value: "production"
-    - name: "LOG_LEVEL"
-      value: "INFO"
+  clusterArn: "arn:aws:ecs:us-east-1:123456789012:cluster/my-env-cluster"
+  container:
+    image:
+      repo: "amazon/amazon-ecs-sample"
+      tag: "latest"
+    port: 8080
+    replicas: 2
+    cpu: 512
+    memory: 1024
+    env:
+      variables:
+        SPRING_PROFILES_ACTIVE: "prod"
+        CUSTOM_VAR: "myvalue"
+      secrets:
+        DB_PASSWORD: "arn:aws:ssm:us-east-1:123456789012:parameter/db_password"
+        API_KEY: "arn:aws:secretsmanager:us-east-1:123456789012:secret:my-api-key"
+  network:
+    subnets:
+      - "subnet-abc123"
+      - "subnet-def456"
+    securityGroups:
+      - "sg-abc123"
 ```
-
-Here, the ECS service is defined with custom environment variables, making it easy to configure runtime settings like
-environment or log level. It also references both subnets and a security group for proper network isolation.
 
 ---
 
-# Example with Multiple Task Replicas
+# Example with ALB Path-Based Routing
+
+In this example, an Application Load Balancer (ALB) is used to route traffic via a specific path (e.g., `/myapp`). Make
+sure your ALB and target ECS cluster are in the same VPC.
 
 ```yaml
 apiVersion: aws.project-planton.org/v1
 kind: AwsEcsService
 metadata:
-  name: high-availability-service
-  version:
-    message: "High availability example"
+  name: path-based-ecs-service
 spec:
-  cluster_name: "my-mixed-cluster"
-  service_name: "ha-service"
-  image: "nginx:stable"
-  container_port: 80
-  desired_count: 3
-  cpu: 512
-  memory: 1024
-  subnets:
-    - "subnet-aaaabbbb"
-    - "subnet-ccccdddd"
-  security_groups:
-    - "sg-11112222333344445"
+  clusterArn: "arn:aws:ecs:us-east-1:123456789012:cluster/my-load-balanced-cluster"
+  container:
+    image:
+      repo: "nginx"
+      tag: "stable"
+    port: 80
+    replicas: 2
+    cpu: 256
+    memory: 512
+  network:
+    subnets:
+      - "subnet-111111"
+      - "subnet-222222"
+    securityGroups:
+      - "sg-111111"
+      - "sg-222222"
+  alb:
+    enabled: true
+    arn: "arn:aws:elasticloadbalancing:us-east-1:123456789012:loadbalancer/app/my-application-lb/1234567890abcdef"
+    routingType: 1  # path-based
+    path: "/myapp"
 ```
-
-In this example, the service runs three task replicas for higher availability. Each task is placed in one of the
-specified subnets, and the security group is applied to manage inbound or outbound traffic as required.
 
 ---
 
-# Example with Public IP Assignment
+# Example with ALB Hostname-Based Routing
+
+Use this if you want to route traffic via a dedicated hostname (e.g., `api.example.com`). Ensure your DNS setup points
+to
+the ALB’s DNS name.
 
 ```yaml
 apiVersion: aws.project-planton.org/v1
 kind: AwsEcsService
 metadata:
-  name: public-aws-ecs-service
-  version:
-    message: "Service with public IP"
+  name: hostname-based-ecs-service
 spec:
-  cluster_name: "my-basic-ecs-cluster"
-  service_name: "public-service"
-  image: "amazonlinux:2"
-  container_port: 80
-  cpu: 256
-  memory: 512
-  subnets:
-    - "subnet-1111aaaa"
-  security_groups:
-    - "sg-2222bbbb"
-  assign_public_ip: true
+  clusterArn: "arn:aws:ecs:us-east-1:123456789012:cluster/my-hostname-cluster"
+  container:
+    image:
+      repo: "myorg/myservice"
+      tag: "v1.2.3"
+    port: 8080
+    replicas: 3
+    cpu: 512
+    memory: 1024
+  network:
+    subnets:
+      - "subnet-111aaa"
+      - "subnet-222bbb"
+    securityGroups:
+      - "sg-333ccc"
+  alb:
+    enabled: true
+    arn: "arn:aws:elasticloadbalancing:us-east-1:123456789012:loadbalancer/app/my-other-lb/abcdef1234567890"
+    routingType: 2  # hostname-based
+    hostname: "api.example.com"
 ```
-
-Setting `assign_public_ip` to `true` grants the Fargate tasks a public IP. This is useful for quick testing or for
-services that must be internet-facing without a load balancer. However, for production, it’s often safer to place tasks
-in private subnets behind a load balancer.
 
 ---
 
 # Example with Custom IAM Roles
 
-```yaml
-apiVersion: aws.project-planton.org/v1
-kind: AwsEcsService
-metadata:
-  name: custom-roles-service
-  version:
-    message: "Service with custom IAM roles"
-spec:
-  cluster_name: "my-exec-enabled-cluster"
-  service_name: "custom-role-service"
-  image: "123456789012.dkr.ecr.us-east-1.amazonaws.com/myapp:latest"
-  container_port: 8080
-  cpu: 1024
-  memory: 2048
-  subnets:
-    - "subnet-xyz12345"
-    - "subnet-abc67890"
-  security_groups:
-    - "sg-a1b2c3d4"
-  task_execution_role_arn: "arn:aws:iam::123456789012:role/ecsTaskExecutionRole"
-  task_role_arn: "arn:aws:iam::123456789012:role/myAppTaskRole"
-```
-
-Here, the ECS service is granted two distinct IAM roles:
-• `task_execution_role_arn` for pulling private images and writing logs.
-• `task_role_arn` for application-level AWS API calls within the container.
-
----
-
-# Minimal Example
+Here, we show how to specify a custom task execution role for pulling images and a task role for your container to
+access AWS services.
 
 ```yaml
 apiVersion: aws.project-planton.org/v1
 kind: AwsEcsService
 metadata:
-  name: minimal-aws-ecs-service
-  version:
-    message: "Minimal example"
+  name: ecs-service-with-iam
 spec:
-  cluster_name: "arn:aws:ecs:us-east-1:123456789012:cluster/simple-cluster"
-  service_name: "min-service"
-  image: "amazonlinux:2"
-  cpu: 256
-  memory: 512
-  subnets:
-    - "subnet-11112222"
+  clusterArn: "arn:aws:ecs:us-east-1:123456789012:cluster/my-iam-cluster"
+  container:
+    image:
+      repo: "amazon/amazon-ecs-sample"
+      tag: "latest"
+    port: 3000
+    replicas: 1
+    cpu: 512
+    memory: 1024
+  network:
+    subnets:
+      - "subnet-xyz123"
+    securityGroups:
+      - "sg-xyz123"
+  iam:
+    taskExecutionRoleArn: "arn:aws:iam::123456789012:role/my-custom-ecsTaskExecutionRole"
+    taskRoleArn: "arn:aws:iam::123456789012:role/my-app-task-role"
 ```
-
-A bare-bones deployment that sets only the required fields:
-• ECS cluster reference, service name, image, CPU, memory, and subnets.
 
 ---
 
-After choosing one of these examples, apply it with ProjectPlanton using Pulumi or Terraform:
+After creating a YAML manifest for your ECS service, apply the configuration using either Pulumi or Terraform with the
+ProjectPlanton CLI. The CLI will validate your manifest against the Protobuf schema, generate the required
+infrastructure code, and provision the service on AWS.
+
+For example:
 
 ```shell
-project-planton pulumi up --manifest aws-ecs-service.yaml --stack myorg/dev
+project-planton pulumi up --manifest ecs-service.yaml --stack myorg/dev
 ```
 
-or
+Or:
 
 ```shell
-project-planton terraform apply --manifest aws-ecs-service.yaml --stack myorg/dev
+project-planton terraform apply --manifest ecs-service.yaml --stack myorg/dev
 ```
 
-When the command completes successfully, your ECS service will be created. You can confirm by checking the AWS console
-or by using the AWS CLI:
+You can verify the newly created ECS service in the AWS Console or with the AWS CLI:
 
 ```shell
-aws ecs list-services --cluster <your-cluster-name-or-arn>
+aws ecs list-services --cluster my-hostname-cluster
 ```
 
-This confirms that your ECS service is up and running on the specified ECS cluster, ready to serve traffic or perform
-background processing.
+This confirms that your ECS service has been created, is running the desired number of tasks, and is optionally load
+balanced if ALB configuration was provided.
 
 ---
 
-Happy deploying with ProjectPlanton!
+P.S If you encounter any issues, please ensure that the specified roles, subnets, and security groups already exist in
+your AWS account and that your AWS credentials are configured properly in ProjectPlanton.
