@@ -20,7 +20,7 @@ func Resources(ctx *pulumi.Context, stackInput *awssecuritygroupv1.AwsSecurityGr
 	// If no credential is provided, use the default AWS provider
 	if awsCredential == nil {
 		provider, err = aws.NewProvider(ctx,
-			"default-provider",
+			"classic-provider",
 			&aws.ProviderArgs{})
 		if err != nil {
 			return errors.Wrap(err, "failed to create default AWS provider")
@@ -28,7 +28,7 @@ func Resources(ctx *pulumi.Context, stackInput *awssecuritygroupv1.AwsSecurityGr
 	} else {
 		// Create a custom provider with explicit credentials
 		provider, err = aws.NewProvider(ctx,
-			"custom-provider",
+			"classic-provider",
 			&aws.ProviderArgs{
 				AccessKey: pulumi.String(awsCredential.AccessKeyId),
 				SecretKey: pulumi.String(awsCredential.SecretAccessKey),
