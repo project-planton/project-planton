@@ -16,12 +16,12 @@ func Resources(ctx *pulumi.Context, stackInput *awsalbv1.AwsAlbStackInput) error
 	awsCredential := stackInput.ProviderCredential
 
 	if awsCredential == nil {
-		provider, err = aws.NewProvider(ctx, "default-provider", &aws.ProviderArgs{})
+		provider, err = aws.NewProvider(ctx, "classic-provider", &aws.ProviderArgs{})
 		if err != nil {
 			return errors.Wrap(err, "failed to create default AWS provider")
 		}
 	} else {
-		provider, err = aws.NewProvider(ctx, "custom-provider", &aws.ProviderArgs{
+		provider, err = aws.NewProvider(ctx, "classic-provider", &aws.ProviderArgs{
 			AccessKey: pulumi.String(awsCredential.AccessKeyId),
 			SecretKey: pulumi.String(awsCredential.SecretAccessKey),
 			Region:    pulumi.String(awsCredential.Region),
