@@ -19,17 +19,28 @@ func Resources(ctx *pulumi.Context, stackInput *awsvpcv1.AwsVpcStackInput) error
 	}
 
 	awsCredential := stackInput.ProviderCredential
+	var provider *aws.Provider
 
-	//create aws provider using the credentials from the input
-	awsProvider, err := aws.NewProvider(ctx,
-		"classic-provider",
-		&aws.ProviderArgs{
-			AccessKey: pulumi.String(awsCredential.AccessKeyId),
-			SecretKey: pulumi.String(awsCredential.SecretAccessKey),
-			Region:    pulumi.String(awsCredential.Region),
-		})
-	if err != nil {
-		return errors.Wrap(err, "failed to create aws provider")
+	// If the user didn't provide AWS credentials, create a default provider.
+	// Otherwise, inject custom credentials for the region, access key, etc.
+	if awsCredential == nil {
+		provider, err = aws.NewProvider(ctx,
+			"classic-provider",
+			&aws.ProviderArgs{})
+		if err != nil {
+			return errors.Wrap(err, "failed to create default AWS provider")
+		}
+	} else {
+		provider, err = aws.NewProvider(ctx,
+			"classic-provider",
+			&aws.ProviderArgs{
+				AccessKey: pulumi.String(awsCredential.AccessKeyId),
+				SecretKey: pulumi.String(awsCredential.SecretAccessKey),
+				Region:    pulumi.String(awsCredential.Region),
+			})
+		if err != nil {
+			return errors.Wrap(err, "failed to create AWS provider with custom credentials")
+		}
 	}
 
 	// create vpc
@@ -41,7 +52,7 @@ func Resources(ctx *pulumi.Context, stackInput *awsvpcv1.AwsVpcStackInput) error
 			EnableDnsHostnames: pulumi.Bool(locals.AwsVpc.Spec.IsDnsHostnamesEnabled),
 			Tags: convertstringmaps.ConvertGoStringMapToPulumiStringMap(
 				stringmaps.AddEntry(locals.AwsTags, "Name", locals.AwsVpc.Metadata.Name)),
-		}, pulumi.Provider(awsProvider))
+		}, pulumi.Provider(provider))
 	if err != nil {
 		return errors.Wrap(err, "failed to create vpc")
 	}

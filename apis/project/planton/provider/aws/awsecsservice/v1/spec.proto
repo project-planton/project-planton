@@ -147,4 +147,10 @@ message AwsEcsServiceAlb {
 
   // hostname is used if routingType = "hostname".
   string hostname = 5;
+
+  // listener_port is the port on the ALB to forward traffic to.
+  int32 listener_port = 6 [
+    (buf.validate.field).required = true,
+    (project.planton.shared.options.recommended_default) = "80"
+  ];
 }

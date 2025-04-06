@@ -3,8 +3,8 @@ package module
 import (
 	"encoding/json"
 	"fmt"
-
 	"github.com/pkg/errors"
+	awsecsservicev1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsecsservice/v1"
 	"github.com/pulumi/pulumi-aws/sdk/v6/go/aws"
 	"github.com/pulumi/pulumi-aws/sdk/v6/go/aws/ec2"
 	"github.com/pulumi/pulumi-aws/sdk/v6/go/aws/ecs"
@@ -38,8 +38,12 @@ func service(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) error 
 	}
 
 	if spec.Iam != nil {
-		taskDefinitionArgs.ExecutionRoleArn = pulumi.String(spec.Iam.GetTaskExecutionRoleArn())
-		taskDefinitionArgs.TaskRoleArn = pulumi.String(spec.Iam.GetTaskRoleArn())
+		if spec.Iam.TaskExecutionRoleArn != "" {
+			taskDefinitionArgs.ExecutionRoleArn = pulumi.String(spec.Iam.TaskExecutionRoleArn)
+		}
+		if spec.Iam.TaskRoleArn != "" {
+			taskDefinitionArgs.TaskRoleArn = pulumi.String(spec.Iam.TaskRoleArn)
+		}
 	}
 
 	taskDef, err := ecs.NewTaskDefinition(ctx,
@@ -50,7 +54,6 @@ func service(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) error 
 		return errors.Wrap(err, "unable to create ECS task definition")
 	}
 
-	// Build the service arguments
 	serviceArgs := &ecs.ServiceArgs{
 		Name:           pulumi.String(serviceName),
 		Cluster:        pulumi.String(spec.ClusterArn),
@@ -64,18 +67,22 @@ func service(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) error 
 		Tags: pulumi.ToStringMap(locals.AwsTags),
 	}
 
-	// If ALB is enabled and we have a non-zero container port, create a Target Group and attach
+	var loadBalancerDNS pulumi.StringInput = pulumi.String("")
+
 	if spec.Alb.GetEnabled() && spec.Container.Port != 0 {
 		if len(spec.Network.Subnets) == 0 {
 			return errors.New("at least one subnet is required for ALB usage")
 		}
-		firstSubnetID := spec.Network.Subnets[0]
+		if spec.Alb.Arn == "" {
+			return errors.New("alb.arn is required when alb.enabled = true")
+		}
 
+		firstSubnetID := spec.Network.Subnets[0]
 		subnetLookup, err := ec2.LookupSubnet(ctx, &ec2.LookupSubnetArgs{
 			Id: &firstSubnetID,
-		}, nil)
+		}, pulumi.Provider(provider))
 		if err != nil {
-			return errors.Wrap(err, "failed to lookup first subnet (needed for ALB target group)")
+			return errors.Wrap(err, "failed to lookup subnet for ALB target group")
 		}
 
 		targetGroup, err := lb.NewTargetGroup(ctx, serviceName+"-tg", &lb.TargetGroupArgs{
@@ -97,6 +104,76 @@ func service(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) error 
 				ContainerPort:  pulumi.Int(int(spec.Container.Port)),
 			},
 		}
+
+		foundAlb, err := lb.LookupLoadBalancer(ctx, &lb.LookupLoadBalancerArgs{
+			Arn: &spec.Alb.Arn,
+		}, pulumi.Provider(provider))
+		if err != nil {
+			return errors.Wrap(err, "failed to find ALB by ARN")
+		}
+		loadBalancerDNS = pulumi.String(foundAlb.DnsName)
+
+		// Convert user-supplied int32 -> int to match the lookup function's signature
+		listenerPort := int(spec.Alb.ListenerPort)
+
+		foundListener, err := lb.LookupListener(ctx, &lb.LookupListenerArgs{
+			LoadBalancerArn: &foundAlb.Arn,
+			Port:            &listenerPort,
+		}, pulumi.Provider(provider))
+		if err != nil {
+			return errors.Wrap(err, "failed to find ALB listener on the given port")
+		}
+
+		var conditions lb.ListenerRuleConditionArray
+
+		switch spec.Alb.RoutingType {
+		case awsecsservicev1.AwsEcsServiceAlbRoutingType_path:
+			if spec.Alb.Path == "" {
+				return errors.New("alb.path must be set if routingType is 'path'")
+			}
+			conditions = lb.ListenerRuleConditionArray{
+				&lb.ListenerRuleConditionArgs{
+					PathPattern: &lb.ListenerRuleConditionPathPatternArgs{
+						Values: pulumi.StringArray{
+							pulumi.String(spec.Alb.Path),
+						},
+					},
+				},
+			}
+		case awsecsservicev1.AwsEcsServiceAlbRoutingType_hostname:
+			if spec.Alb.Hostname == "" {
+				return errors.New("alb.hostname must be set if routingType is 'hostname'")
+			}
+			conditions = lb.ListenerRuleConditionArray{
+				&lb.ListenerRuleConditionArgs{
+					HostHeader: &lb.ListenerRuleConditionHostHeaderArgs{
+						Values: pulumi.StringArray{
+							pulumi.String(spec.Alb.Hostname),
+						},
+					},
+				},
+			}
+		default:
+			conditions = lb.ListenerRuleConditionArray{}
+		}
+
+		if len(conditions) > 0 {
+			_, err := lb.NewListenerRule(ctx, serviceName+"-rule", &lb.ListenerRuleArgs{
+				ListenerArn: pulumi.String(foundListener.Arn),
+				Actions: lb.ListenerRuleActionArray{
+					&lb.ListenerRuleActionArgs{
+						Type:           pulumi.String("forward"),
+						TargetGroupArn: targetGroup.Arn,
+					},
+				},
+				Conditions: conditions,
+				Priority:   pulumi.Int(100),
+				Tags:       pulumi.ToStringMap(locals.AwsTags),
+			}, pulumi.Provider(provider))
+			if err != nil {
+				return errors.Wrap(err, "failed to create listener rule for path/hostname-based routing")
+			}
+		}
 	}
 
 	awsEcsService, err := ecs.NewService(ctx, serviceName+"-service", serviceArgs, pulumi.Provider(provider))
@@ -104,11 +181,16 @@ func service(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) error 
 		return errors.Wrap(err, "unable to create ECS service")
 	}
 
-	// Export relevant outputs
 	ctx.Export(OpAwsEcsServiceName, awsEcsService.Name)
 	ctx.Export(OpEcsClusterName, pulumi.String(spec.ClusterArn))
-	ctx.Export(OpLoadBalancerDnsName, pulumi.String(""))
-	ctx.Export(OpServiceUrl, pulumi.String(""))
+	ctx.Export(OpLoadBalancerDnsName, loadBalancerDNS)
+
+	var serviceUrl pulumi.StringInput = pulumi.String("")
+	if spec.Alb.GetRoutingType() == awsecsservicev1.AwsEcsServiceAlbRoutingType_hostname &&
+		spec.Alb.GetEnabled() && spec.Alb.Hostname != "" {
+		serviceUrl = pulumi.String(fmt.Sprintf("http://%s", spec.Alb.Hostname))
+	}
+	ctx.Export(OpServiceUrl, serviceUrl)
 	ctx.Export(OpServiceDiscoveryName, pulumi.String(""))
 
 	return nil
@@ -141,7 +223,7 @@ func buildContainerDefinitions(serviceName, repo, tag string, port int32) (strin
 	return string(encoded), nil
 }
 
-// toPulumiStrings is a helper that converts a native string slice to a pulumi.StringInput slice.
+// toPulumiStrings is a helper that converts a native string slice to a pulumi.StringArray.
 func toPulumiStrings(input []string) pulumi.StringArray {
 	output := make(pulumi.StringArray, len(input))
 	for i, s := range input {
