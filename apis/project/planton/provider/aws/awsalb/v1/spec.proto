@@ -26,23 +26,11 @@ message AwsAlbSpec {
   // scheme indicates whether the ALB is internet-facing or internal.
   // Valid values: "internet-facing" or "internal".
   // If omitted, default to "internet-facing".
-  string scheme = 3 [
-    (project.planton.shared.options.recommended_default) = "internet-facing",
-    (buf.validate.field).string = {in: ["internet-facing", "internal"]}
-  ];
-
-  // ipAddressType can be "ipv4" or "dualstack".
-  // If omitted, default to "ipv4".
-  string ip_address_type = 4 [
-    (project.planton.shared.options.recommended_default) = "ipv4",
-    (buf.validate.field).string = {in: ["ipv4", "dualstack"]}
-  ];
+  bool internal = 3;
 
   // enable_deletion_protection indicates whether the ALB should have deletion protection enabled.
   // This prevents accidental deletion.
-  bool enable_deletion_protection = 5 [
-    (project.planton.shared.options.recommended_default) = "false"
-  ];
+  bool delete_protection_enabled = 5;
 
   // idle_timeout_seconds sets the idle timeout in seconds for connections to the ALB.
   // If omitted, AWS default is 60 seconds.
@@ -61,9 +49,7 @@ message AwsAlbSpec {
 message AwsAlbDns {
   // enabled, when set to true, indicates that the ALB resource
   // should create DNS records in Route 53.
-  bool enabled = 1 [
-    (project.planton.shared.options.recommended_default) = "false"
-  ];
+  bool enabled = 1;
 
   // route53_zone_id is the Route 53 Hosted Zone ID where DNS records
   // will be created.
@@ -71,14 +57,16 @@ message AwsAlbDns {
 
   // hostnames is a list of domain names (e.g., ["app.example.com"])
   // that will point to this ALB.
-  repeated string hostnames = 3;
+  repeated string hostnames = 3 [
+    (buf.validate.field).repeated = {
+      unique: true
+    }
+  ];
 }
 
 // AwsAlbSsl defines a toggle for SSL, plus a certificate ARN required if enabled is true.
 message AwsAlbSsl {
-  bool enabled = 1 [
-    (project.planton.shared.options.recommended_default) = "false"
-  ];
+  bool enabled = 1;
 
   string certificate_arn = 2;
 }
