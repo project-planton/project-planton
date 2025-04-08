@@ -121,14 +121,6 @@ message AwsEcsServiceIam {
   string task_role_arn = 2;
 }
 
-enum AwsEcsServiceAlbRoutingType {
-  aws_ecs_service_alb_routing_type_unspecified = 0;
-  //Path-based routing (e.g., "/my-service")
-  path = 1;
-  // Hostname-based routing (e.g., "api.example.com")
-  hostname = 2;
-}
-
 // AwsEcsServiceAlb indicates how an ALB fronts this ECS service, supporting path- or hostname-based routing.
 message AwsEcsServiceAlb {
   // enabled controls whether an ALB is used. If false, no ALB is attached.
@@ -140,7 +132,11 @@ message AwsEcsServiceAlb {
   // routingType can be "PATH" or "HOSTNAME" if enabled.
   // If "PATH", specify a path (e.g. "/my-service").
   // If "HOSTNAME", specify a hostname (e.g. "api.example.com").
-  AwsEcsServiceAlbRoutingType routing_type = 3;
+  string routing_type = 3 [
+    (buf.validate.field).string = {
+      in: ["path", "hostname"]
+    }
+  ];
 
   // path is used if routingType = "path".
   string path = 4;

@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/pkg/errors"
-	awsecsservicev1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsecsservice/v1"
 	"github.com/pulumi/pulumi-aws/sdk/v6/go/aws"
 	"github.com/pulumi/pulumi-aws/sdk/v6/go/aws/ec2"
 	"github.com/pulumi/pulumi-aws/sdk/v6/go/aws/ecs"
@@ -69,7 +68,7 @@ func service(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) error 
 
 	var loadBalancerDNS pulumi.StringInput = pulumi.String("")
 
-	if spec.Alb.GetEnabled() && spec.Container.Port != 0 {
+	if spec.Alb.Enabled && spec.Container.Port != 0 {
 		if len(spec.Network.Subnets) == 0 {
 			return errors.New("at least one subnet is required for ALB usage")
 		}
@@ -124,10 +123,9 @@ func service(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) error 
 			return errors.Wrap(err, "failed to find ALB listener on the given port")
 		}
 
-		var conditions lb.ListenerRuleConditionArray
+		conditions := lb.ListenerRuleConditionArray{}
 
-		switch spec.Alb.RoutingType {
-		case awsecsservicev1.AwsEcsServiceAlbRoutingType_path:
+		if spec.Alb.RoutingType == "path" {
 			if spec.Alb.Path == "" {
 				return errors.New("alb.path must be set if routingType is 'path'")
 			}
@@ -140,7 +138,9 @@ func service(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) error 
 					},
 				},
 			}
-		case awsecsservicev1.AwsEcsServiceAlbRoutingType_hostname:
+		}
+
+		if spec.Alb.RoutingType == "hostname" {
 			if spec.Alb.Hostname == "" {
 				return errors.New("alb.hostname must be set if routingType is 'hostname'")
 			}
@@ -153,8 +153,6 @@ func service(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) error 
 					},
 				},
 			}
-		default:
-			conditions = lb.ListenerRuleConditionArray{}
 		}
 
 		if len(conditions) > 0 {
@@ -186,8 +184,8 @@ func service(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) error 
 	ctx.Export(OpLoadBalancerDnsName, loadBalancerDNS)
 
 	var serviceUrl pulumi.StringInput = pulumi.String("")
-	if spec.Alb.GetRoutingType() == awsecsservicev1.AwsEcsServiceAlbRoutingType_hostname &&
-		spec.Alb.GetEnabled() && spec.Alb.Hostname != "" {
+	if spec.Alb.RoutingType == "HOSTNAME" &&
+		spec.Alb.Enabled && spec.Alb.Hostname != "" {
 		serviceUrl = pulumi.String(fmt.Sprintf("http://%s", spec.Alb.Hostname))
 	}
 	ctx.Export(OpServiceUrl, serviceUrl)
