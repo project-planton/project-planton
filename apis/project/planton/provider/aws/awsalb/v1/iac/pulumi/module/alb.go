@@ -15,25 +15,15 @@ import (
 //  1. HTTP (port 80) → auto-redirect to HTTPS
 //  2. HTTPS (port 443) with the supplied certificate ARN
 func alb(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) (*lb.LoadBalancer, error) {
-	spec := locals.AwsAlb.Spec
-
-	var isInternal pulumi.BoolInput
-	if spec.Scheme == "internal" {
-		isInternal = pulumi.Bool(true)
-	} else {
-		isInternal = pulumi.Bool(false)
-	}
-
-	// Create the ALB
-	albResource, err := lb.NewLoadBalancer(ctx, locals.AwsAlb.Metadata.Name, &lb.LoadBalancerArgs{
+	createdLoadBalancer, err := lb.NewLoadBalancer(ctx, locals.AwsAlb.Metadata.Name, &lb.LoadBalancerArgs{
 		Name:                     pulumi.String(locals.AwsAlb.Metadata.Name),
 		LoadBalancerType:         pulumi.String("application"),
-		SecurityGroups:           pulumi.ToStringArray(spec.SecurityGroups),
-		Subnets:                  pulumi.ToStringArray(spec.Subnets),
-		Internal:                 isInternal,
-		IpAddressType:            pulumi.String(spec.IpAddressType),
-		EnableDeletionProtection: pulumi.Bool(spec.EnableDeletionProtection),
-		IdleTimeout:              pulumi.Int(int(spec.IdleTimeoutSeconds)),
+		SecurityGroups:           pulumi.ToStringArray(locals.AwsAlb.Spec.SecurityGroups),
+		Subnets:                  pulumi.ToStringArray(locals.AwsAlb.Spec.Subnets),
+		Internal:                 pulumi.Bool(locals.AwsAlb.Spec.Internal),
+		IpAddressType:            pulumi.String("ipv4"),
+		EnableDeletionProtection: pulumi.Bool(locals.AwsAlb.Spec.DeleteProtectionEnabled),
+		IdleTimeout:              pulumi.Int(int(locals.AwsAlb.Spec.IdleTimeoutSeconds)),
 		Tags:                     pulumi.ToStringMap(locals.AwsTags),
 	}, pulumi.Provider(provider))
 	if err != nil {
@@ -41,22 +31,22 @@ func alb(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) (*lb.LoadB
 	}
 
 	// If SSL is enabled, create the typical HTTP->HTTPS + HTTPS listeners
-	if spec.Ssl.Enabled {
-		if spec.Ssl.CertificateArn == "" {
+	if locals.AwsAlb.Spec.Ssl.Enabled {
+		if locals.AwsAlb.Spec.Ssl.CertificateArn == "" {
 			return nil, fmt.Errorf("ssl.enabled is true, but ssl.certificate_arn is not provided")
 		}
-		if err := sslListeners(ctx, albResource, spec.Ssl, provider, locals.AwsAlb.Metadata.Name); err != nil {
+		if err := sslListeners(ctx, createdLoadBalancer, locals.AwsAlb.Spec.Ssl, provider, locals.AwsAlb.Metadata.Name); err != nil {
 			return nil, errors.Wrap(err, "unable to create SSL listeners")
 		}
 	}
 
 	// Export key ALB outputs
-	ctx.Export(OpAlbArn, albResource.Arn)
-	ctx.Export(OpAlbName, albResource.Name)
-	ctx.Export(OpAlbDnsName, albResource.DnsName)
-	ctx.Export(OpAlbHostedZoneId, albResource.ZoneId)
+	ctx.Export(OpAlbArn, createdLoadBalancer.Arn)
+	ctx.Export(OpAlbName, createdLoadBalancer.Name)
+	ctx.Export(OpAlbDnsName, createdLoadBalancer.DnsName)
+	ctx.Export(OpAlbHostedZoneId, createdLoadBalancer.ZoneId)
 
-	return albResource, nil
+	return createdLoadBalancer, nil
 }
 
 // sslListeners implements the simple "SSL enabled" approach.

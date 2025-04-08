@@ -12,14 +12,20 @@ import (
 func ecrRepo(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) error {
 	spec := locals.AwsEcrRepo.Spec
 
+	imageTagMutability := "MUTABLE"
+
+	if spec.ImageImmutable {
+		imageTagMutability = "IMMUTABLE"
+	}
+
 	repo, err := ecr.NewRepository(ctx, locals.AwsEcrRepo.Metadata.Name, &ecr.RepositoryArgs{
 		Name:               pulumi.String(spec.RepositoryName),
-		ImageTagMutability: pulumi.String(spec.ImageTagMutability.String()),
+		ImageTagMutability: pulumi.String(imageTagMutability),
 		ForceDelete:        pulumi.Bool(spec.ForceDelete),
 		Tags:               pulumi.ToStringMap(locals.AwsTags),
 		EncryptionConfigurations: ecr.RepositoryEncryptionConfigurationArray{
 			&ecr.RepositoryEncryptionConfigurationArgs{
-				EncryptionType: pulumi.String(spec.EncryptionType.String()),
+				EncryptionType: pulumi.String(spec.EncryptionType),
 				KmsKey:         pulumi.String(spec.KmsKeyId),
 			},
 		},

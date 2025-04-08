@@ -5,20 +5,10 @@ package project.planton.provider.aws.awscertmanagercert.v1;
 import "buf/validate/validate.proto";
 import "project/planton/shared/options/options.proto";
 
-// ValidationMethod is the enumeration for domain validation approaches.
-// DNS is generally preferred for automation and auto-renewal.
-enum ValidationMethod {
-  // VALIDATION_METHOD_UNSPECIFIED is treated the same as DNS in this resource.
-  VALIDATION_METHOD_UNSPECIFIED = 0;
-  // DNS validation will create CNAME records in Route53 automatically.
-  DNS = 1;
-}
-
 // AwsCertManagerCertSpec defines the fields needed to provision a public SSL certificate
 // via AWS Certificate Manager (ACM) using DNS validation. We explicitly split the primary
 // domain from any alternate domains for clarity.
 message AwsCertManagerCertSpec {
-
   // primaryDomainName is a required field representing the main (apex or wildcard) domain name.
   // Examples include "example.com" or "*.example.com" (wildcard).
   // This domain will be set as the 'DomainName' in the AWS ACM certificate.
@@ -54,7 +44,10 @@ message AwsCertManagerCertSpec {
 
   // validation_method indicates how ACM verifies domain ownership.
   // By default, DNS is recommended.
-  ValidationMethod validation_method = 5 [
-    (project.planton.shared.options.default) = "DNS"
+  string validation_method = 5 [
+    (project.planton.shared.options.default) = "DNS",
+    (buf.validate.field).string = {
+      in: ["DNS", "EMAIL"]
+    }
   ];
 }

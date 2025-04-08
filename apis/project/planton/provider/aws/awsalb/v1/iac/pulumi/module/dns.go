@@ -17,23 +17,21 @@ func dns(
 	provider *aws.Provider,
 	albResource *lb.LoadBalancer,
 ) error {
-	dnsCfg := locals.AwsAlb.Spec.Dns
-
-	if dnsCfg.Route53ZoneId == "" {
+	if locals.AwsAlb.Spec.Dns.Route53ZoneId == "" {
 		return errors.New("dns_config.enabled is true but route53_zone_id is not provided")
 	}
 
-	if len(dnsCfg.Hostnames) == 0 {
+	if len(locals.AwsAlb.Spec.Dns.Hostnames) == 0 {
 		return errors.New("dns_config.enabled is true but no hostnames provided")
 	}
 
-	for i, hostname := range dnsCfg.Hostnames {
+	for i, hostname := range locals.AwsAlb.Spec.Dns.Hostnames {
 		recordName := fmt.Sprintf("%s-dns-%d", locals.AwsAlb.Metadata.Name, i)
 
 		_, err := route53.NewRecord(ctx, recordName, &route53.RecordArgs{
 			Name:   pulumi.String(hostname),
 			Type:   pulumi.String("A"),
-			ZoneId: pulumi.String(dnsCfg.Route53ZoneId),
+			ZoneId: pulumi.String(locals.AwsAlb.Spec.Dns.Route53ZoneId),
 			Aliases: route53.RecordAliasArray{
 				route53.RecordAliasArgs{
 					Name:                 albResource.DnsName,
