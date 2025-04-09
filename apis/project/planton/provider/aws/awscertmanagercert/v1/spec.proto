@@ -27,24 +27,17 @@ message AwsCertManagerCertSpec {
   // Primary domain should not be added to this list.
   repeated string alternate_domain_names = 2;
 
-  // region is the AWS region where the certificate will be created.
-  // For CloudFront or edge-optimized API Gateway, use "us-east-1" (N. Virginia).
-  // For regional services (e.g., ALB in us-west-2), match that region.
-  string region = 3 [
-    (buf.validate.field).required = true
-  ];
-
   // route53_hosted_zone_id is the identifier of the Route53 hosted zone
   // where DNS validation records will be created automatically.
   // Must be a public hosted zone matching the domain names.
   // Example: "Z123456ABCXYZ".
-  string route53_hosted_zone_id = 4 [
+  string route53_hosted_zone_id = 3 [
     (buf.validate.field).required = true
   ];
 
   // validation_method indicates how ACM verifies domain ownership.
   // By default, DNS is recommended.
-  string validation_method = 5 [
+  string validation_method = 4 [
     (project.planton.shared.options.default) = "DNS",
     (buf.validate.field).string = {
       in: ["DNS", "EMAIL"]
