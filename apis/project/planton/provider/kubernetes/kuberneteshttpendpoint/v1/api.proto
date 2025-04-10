@@ -16,7 +16,9 @@ message KubernetesHttpEndpoint {
   ];
 
   //resource-kind
-  string kind = 2;
+  string kind = 2 [
+    (buf.validate.field).string.const = 'KubernetesHttpEndpoint'
+  ];
 
   //metadata
   project.planton.shared.ApiResourceMetadata metadata = 3[

@@ -16,10 +16,14 @@ message AwsRdsInstance {
   ];
 
   //resource-kind
-  string kind = 2;
+  string kind = 2 [
+    (buf.validate.field).string.const = 'AwsRdsInstance'
+  ];
 
   //metadata
-  project.planton.shared.ApiResourceMetadata metadata = 3;
+  project.planton.shared.ApiResourceMetadata metadata = 3 [
+    (buf.validate.field).required = true
+  ];
 
   //spec
   AwsRdsInstanceSpec spec = 4 [

@@ -16,7 +16,9 @@ message GcpGkeAddonBundle {
   ];
 
   //resource-kind
-  string kind = 2;
+  string kind = 2 [
+    (buf.validate.field).string.const = 'GcpGkeAddonBundle'
+  ];
 
   //metadata
   project.planton.shared.ApiResourceMetadata metadata = 3[

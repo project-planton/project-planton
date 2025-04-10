@@ -16,27 +16,13 @@ message GcpCloudRun {
   ];
 
   //resource-kind
-  string kind = 2;
+  string kind = 2 [
+    (buf.validate.field).string.const = 'GcpCloudRun'
+  ];
 
   //metadata
   project.planton.shared.ApiResourceMetadata metadata = 3 [
-    (buf.validate.field).required = true,
-    (buf.validate.field).cel = {
-      id: "metadata.name",
-      message: "Name must be a Valid Bucket Name on AWS/GCP/AZURE/Others",
-      //https://regex101.com/r/d1Viju/1
-      expression: "this.name.matches('^[a-z0-9](?:[a-z0-9_-]*[a-z0-9])?$')"
-    },
-    (buf.validate.field).cel = {
-      id: "metadata.name",
-      message: "Name must be between 3 and 63 characters long",
-      expression: "size(this.name) > 2 && size(this.name) <= 63"
-    },
-    (buf.validate.field).cel = {
-      id: "metadata.version.message",
-      message: "Version message is required and cannot be empty",
-      expression: "has(this.version.message)"
-    }
+    (buf.validate.field).required = true
   ];
 
   //spec

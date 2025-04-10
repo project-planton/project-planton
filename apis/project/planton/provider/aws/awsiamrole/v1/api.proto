@@ -17,11 +17,15 @@ message AwsIamRole {
   ];
 
   // resource-kind for this ECS service resource, typically "AwsIamRole".
-  string kind = 2;
+  string kind = 2 [
+    (buf.validate.field).string.const = 'AwsIamRole'
+  ];
 
   // metadata captures identifying information (name, org, version, etc.)
   // and must pass standard validations for resource naming.
-  project.planton.shared.ApiResourceMetadata metadata = 3;
+  project.planton.shared.ApiResourceMetadata metadata = 3 [
+    (buf.validate.field).required = true
+  ];
 
   // spec holds the core configuration data defining how the ECS service is deployed.
   AwsIamRoleSpec spec = 4 [

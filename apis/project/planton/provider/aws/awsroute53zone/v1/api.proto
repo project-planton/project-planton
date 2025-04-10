@@ -16,7 +16,9 @@ message AwsRoute53Zone {
   ];
 
   //resource-kind
-  string kind = 2;
+  string kind = 2 [
+    (buf.validate.field).string.const = 'AwsRoute53Zone'
+  ];
 
   // metadata for the resource
   //id format "<id-prefix>-<env-id>-<normalized-resource-name>"
