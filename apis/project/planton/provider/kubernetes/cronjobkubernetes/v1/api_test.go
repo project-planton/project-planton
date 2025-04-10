@@ -1,4 +1,4 @@
-package jenkinskubernetesv1
+package cronjobkubernetesv1
 
 import (
 	"testing"
@@ -10,23 +10,27 @@ import (
 	"github.com/project-planton/project-planton/apis/project/planton/shared/kubernetes"
 )
 
-func TestJenkinsKubernetes(t *testing.T) {
+func TestCronJobKubernetes(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "JenkinsKubernetes Suite")
+	RunSpecs(t, "CronJobKubernetes Suite")
 }
 
-var _ = Describe("JenkinsKubernetes Custom Validation Tests", func() {
-	var input *JenkinsKubernetes
+var _ = Describe("CronJobKubernetes Custom Validation Tests", func() {
+	var input *CronJobKubernetes
 
 	BeforeEach(func() {
-		input = &JenkinsKubernetes{
+		input = &CronJobKubernetes{
 			ApiVersion: "kubernetes.project-planton.org/v1",
-			Kind:       "JenkinsKubernetes",
+			Kind:       "CronJobKubernetes",
 			Metadata: &shared.ApiResourceMetadata{
-				Name: "test-jenkins",
+				Name: "my-cron-job",
 			},
-			Spec: &JenkinsKubernetesSpec{
-				ContainerResources: &kubernetes.ContainerResources{
+			Spec: &CronJobKubernetesSpec{
+				Image: &kubernetes.ContainerImage{
+					Repo: "busybox",
+					Tag:  "latest",
+				},
+				Resources: &kubernetes.ContainerResources{
 					Limits: &kubernetes.CpuMemory{
 						Cpu:    "1000m",
 						Memory: "1Gi",
@@ -36,15 +40,23 @@ var _ = Describe("JenkinsKubernetes Custom Validation Tests", func() {
 						Memory: "100Mi",
 					},
 				},
-				Ingress: &kubernetes.IngressSpec{
-					DnsDomain: "jenkins.example.com",
+				Env: &CronJobKubernetesContainerAppEnv{
+					Variables: map[string]string{
+						"ENV_VAR": "example",
+					},
+					Secrets: map[string]string{
+						"SECRET_NAME": "secret_value",
+					},
 				},
+				Schedule:          "0 0 * * *",
+				ConcurrencyPolicy: "Forbid",
+				RestartPolicy:     "Never",
 			},
 		}
 	})
 
 	Describe("When valid input is passed", func() {
-		Context("jenkins_kubernetes", func() {
+		Context("cron_job_kubernetes", func() {
 			It("should not return a validation error", func() {
 				err := protovalidate.Validate(input)
 				Expect(err).To(BeNil())

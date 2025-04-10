@@ -1,4 +1,4 @@
-package rediskubernetesv1
+package keycloakkubernetesv1
 
 import (
 	"testing"
@@ -10,26 +10,23 @@ import (
 	"github.com/project-planton/project-planton/apis/project/planton/shared/kubernetes"
 )
 
-func TestRedisKubernetes(t *testing.T) {
+func TestKeycloakKubernetes(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "RedisKubernetes Suite")
+	RunSpecs(t, "KeycloakKubernetes Suite")
 }
 
-var _ = Describe("RedisKubernetes Custom Validation Tests", func() {
-	var input *RedisKubernetes
+var _ = Describe("KeycloakKubernetes Custom Validation Tests", func() {
+	var input *KeycloakKubernetes
 
 	BeforeEach(func() {
-		input = &RedisKubernetes{
+		input = &KeycloakKubernetes{
 			ApiVersion: "kubernetes.project-planton.org/v1",
-			Kind:       "RedisKubernetes",
+			Kind:       "KeycloakKubernetes",
 			Metadata: &shared.ApiResourceMetadata{
-				Name: "test-redis",
+				Name: "test-keycloak",
 			},
-			Spec: &RedisKubernetesSpec{
-				Container: &RedisKubernetesContainer{
-					Replicas:             1,
-					IsPersistenceEnabled: true,
-					DiskSize:             "10Gi", // valid format
+			Spec: &KeycloakKubernetesSpec{
+				Container: &KeycloakKubernetesContainer{
 					Resources: &kubernetes.ContainerResources{
 						Limits: &kubernetes.CpuMemory{
 							Cpu:    "1000m",
@@ -42,14 +39,14 @@ var _ = Describe("RedisKubernetes Custom Validation Tests", func() {
 					},
 				},
 				Ingress: &kubernetes.IngressSpec{
-					DnsDomain: "redis.example.com",
+					DnsDomain: "keycloak.example.com",
 				},
 			},
 		}
 	})
 
 	Describe("When valid input is passed", func() {
-		Context("redis_kubernetes", func() {
+		Context("keycloak_kubernetes", func() {
 			It("should not return a validation error", func() {
 				err := protovalidate.Validate(input)
 				Expect(err).To(BeNil())

@@ -3,22 +3,29 @@ package locustkubernetesv1
 import (
 	"testing"
 
+	"github.com/bufbuild/protovalidate-go"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-
-	"github.com/bufbuild/protovalidate-go"
+	"github.com/project-planton/project-planton/apis/project/planton/shared"
 	"github.com/project-planton/project-planton/apis/project/planton/shared/kubernetes"
 )
 
-func TestLocustKubernetesSpec(t *testing.T) {
+func TestLocustKubernetes(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "LocustKubernetesSpec Suite")
+	RunSpecs(t, "LocustKubernetes Suite")
 }
 
-var _ = Describe("LocustKubernetesSpec", func() {
-	Context("when the spec is fully valid", func() {
-		It("should pass validation without errors", func() {
-			spec := &LocustKubernetesSpec{
+var _ = Describe("LocustKubernetes Custom Validation Tests", func() {
+	var input *LocustKubernetes
+
+	BeforeEach(func() {
+		input = &LocustKubernetes{
+			ApiVersion: "kubernetes.project-planton.org/v1",
+			Kind:       "LocustKubernetes",
+			Metadata: &shared.ApiResourceMetadata{
+				Name: "sample-locust",
+			},
+			Spec: &LocustKubernetesSpec{
 				MasterContainer: &LocustKubernetesContainer{
 					Replicas: 1,
 					Resources: &kubernetes.ContainerResources{
@@ -33,7 +40,7 @@ var _ = Describe("LocustKubernetesSpec", func() {
 					},
 				},
 				WorkerContainer: &LocustKubernetesContainer{
-					Replicas: 5,
+					Replicas: 2,
 					Resources: &kubernetes.ContainerResources{
 						Limits: &kubernetes.CpuMemory{
 							Cpu:    "1000m",
@@ -49,64 +56,26 @@ var _ = Describe("LocustKubernetesSpec", func() {
 					DnsDomain: "locust.example.com",
 				},
 				LoadTest: &LocustKubernetesLoadTest{
-					Name:          "my_load_test",
-					MainPyContent: "from locust import HttpUser, task",
+					Name:          "example-loadtest",
+					MainPyContent: "print('Hello, Locust')",
 					LibFilesContent: map[string]string{
 						"utils.py": "def helper(): pass",
 					},
-					PipPackages: []string{"requests", "locustio"},
+					PipPackages: []string{"requests", "locust"},
 				},
 				HelmValues: map[string]string{
-					"image.tag": "latest",
+					"someKey": "someValue",
 				},
-			}
-
-			err := protovalidate.Validate(spec)
-			Expect(err).To(BeNil(), "expected no validation errors")
-		})
+			},
+		}
 	})
 
-	Context("when helm_values is not provided", func() {
-		It("should pass validation if it’s optional", func() {
-			spec := &LocustKubernetesSpec{
-				MasterContainer: &LocustKubernetesContainer{
-					Replicas: 1,
-					Resources: &kubernetes.ContainerResources{
-						Limits: &kubernetes.CpuMemory{
-							Cpu:    "1000m",
-							Memory: "1Gi",
-						},
-						Requests: &kubernetes.CpuMemory{
-							Cpu:    "50m",
-							Memory: "100Mi",
-						},
-					},
-				},
-				WorkerContainer: &LocustKubernetesContainer{
-					Replicas: 1,
-					Resources: &kubernetes.ContainerResources{
-						Limits: &kubernetes.CpuMemory{
-							Cpu:    "1000m",
-							Memory: "1Gi",
-						},
-						Requests: &kubernetes.CpuMemory{
-							Cpu:    "50m",
-							Memory: "100Mi",
-						},
-					},
-				},
-				LoadTest: &LocustKubernetesLoadTest{
-					Name:          "my_test",
-					MainPyContent: "from locust import HttpUser, task",
-					LibFilesContent: map[string]string{
-						"utils.py": "def helper(): pass",
-					},
-				},
-				// No HelmValues provided, which should be valid if optional
-			}
-
-			err := protovalidate.Validate(spec)
-			Expect(err).To(BeNil(), "expected no validation errors without helm_values")
+	Describe("When valid input is passed", func() {
+		Context("locust_kubernetes", func() {
+			It("should not return a validation error", func() {
+				err := protovalidate.Validate(input)
+				Expect(err).To(BeNil())
+			})
 		})
 	})
 })

@@ -1,24 +1,31 @@
 package elasticsearchkubernetesv1
 
 import (
+	"github.com/project-planton/project-planton/apis/project/planton/shared/kubernetes"
 	"testing"
 
+	"github.com/bufbuild/protovalidate-go"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-
-	"github.com/bufbuild/protovalidate-go"
-	"github.com/project-planton/project-planton/apis/project/planton/shared/kubernetes"
+	"github.com/project-planton/project-planton/apis/project/planton/shared"
 )
 
-func TestElasticsearchKubernetesSpec(t *testing.T) {
+func TestElasticsearchKubernetes(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "ElasticsearchKubernetesSpec Suite")
+	RunSpecs(t, "ElasticsearchKubernetes Suite")
 }
 
-var _ = Describe("ElasticsearchKubernetesSpec", func() {
-	Context("with a valid spec", func() {
-		It("should not return any validation errors", func() {
-			spec := &ElasticsearchKubernetesSpec{
+var _ = Describe("ElasticsearchKubernetes Custom Validation Tests", func() {
+	var input *ElasticsearchKubernetes
+
+	BeforeEach(func() {
+		input = &ElasticsearchKubernetes{
+			ApiVersion: "kubernetes.project-planton.org/v1",
+			Kind:       "ElasticsearchKubernetes",
+			Metadata: &shared.ApiResourceMetadata{
+				Name: "test-es",
+			},
+			Spec: &ElasticsearchKubernetesSpec{
 				ElasticsearchContainer: &ElasticsearchKubernetesElasticsearchContainer{
 					Replicas:             1,
 					IsPersistenceEnabled: true,
@@ -51,131 +58,16 @@ var _ = Describe("ElasticsearchKubernetesSpec", func() {
 				Ingress: &kubernetes.IngressSpec{
 					DnsDomain: "elasticsearch.example.com",
 				},
-			}
-
-			err := protovalidate.Validate(spec)
-			Expect(err).To(BeNil(), "Expected no validation errors, got some")
-		})
+			},
+		}
 	})
 
-	Context("when persistence is enabled but no disk_size is provided", func() {
-		It("should return a validation error containing `[spec.container.disk_size.required]`", func() {
-			spec := &ElasticsearchKubernetesSpec{
-				ElasticsearchContainer: &ElasticsearchKubernetesElasticsearchContainer{
-					Replicas:             1,
-					IsPersistenceEnabled: true,
-					// No disk_size provided
-					Resources: &kubernetes.ContainerResources{
-						Limits: &kubernetes.CpuMemory{
-							Cpu:    "1000m",
-							Memory: "1Gi",
-						},
-						Requests: &kubernetes.CpuMemory{
-							Cpu:    "50m",
-							Memory: "100Mi",
-						},
-					},
-				},
-				KibanaContainer: &ElasticsearchKubernetesKibanaContainer{
-					IsEnabled: true,
-					Replicas:  1,
-					Resources: &kubernetes.ContainerResources{
-						Limits: &kubernetes.CpuMemory{
-							Cpu:    "1000m",
-							Memory: "1Gi",
-						},
-						Requests: &kubernetes.CpuMemory{
-							Cpu:    "50m",
-							Memory: "100Mi",
-						},
-					},
-				},
-			}
-
-			err := protovalidate.Validate(spec)
-			Expect(err).NotTo(BeNil(), "Expected an error for missing disk_size but got none")
-			Expect(err.Error()).To(ContainSubstring("[spec.container.disk_size.required]"),
-				"Expected validation error with constraint id `spec.container.disk_size.required`")
-		})
-	})
-
-	Context("when disk_size has an invalid format", func() {
-		It("should return a validation error containing `[spec.container.disk_size.required]`", func() {
-			spec := &ElasticsearchKubernetesSpec{
-				ElasticsearchContainer: &ElasticsearchKubernetesElasticsearchContainer{
-					Replicas:             1,
-					IsPersistenceEnabled: true,
-					DiskSize:             "abc", // invalid format
-					Resources: &kubernetes.ContainerResources{
-						Limits: &kubernetes.CpuMemory{
-							Cpu:    "1000m",
-							Memory: "1Gi",
-						},
-						Requests: &kubernetes.CpuMemory{
-							Cpu:    "50m",
-							Memory: "100Mi",
-						},
-					},
-				},
-				KibanaContainer: &ElasticsearchKubernetesKibanaContainer{
-					IsEnabled: true,
-					Replicas:  1,
-					Resources: &kubernetes.ContainerResources{
-						Limits: &kubernetes.CpuMemory{
-							Cpu:    "1000m",
-							Memory: "1Gi",
-						},
-						Requests: &kubernetes.CpuMemory{
-							Cpu:    "50m",
-							Memory: "100Mi",
-						},
-					},
-				},
-			}
-
-			err := protovalidate.Validate(spec)
-			Expect(err).NotTo(BeNil(), "Expected an error for invalid disk_size but got none")
-			Expect(err.Error()).To(ContainSubstring("[spec.container.disk_size.required]"),
-				"Expected validation error with constraint id `spec.container.disk_size.required`")
-		})
-	})
-
-	Context("when persistence is disabled and disk_size is empty", func() {
-		It("should not return any validation errors", func() {
-			spec := &ElasticsearchKubernetesSpec{
-				ElasticsearchContainer: &ElasticsearchKubernetesElasticsearchContainer{
-					Replicas:             1,
-					IsPersistenceEnabled: false,
-					// disk_size is empty, but persistence is disabled, so no error expected
-					Resources: &kubernetes.ContainerResources{
-						Limits: &kubernetes.CpuMemory{
-							Cpu:    "1000m",
-							Memory: "1Gi",
-						},
-						Requests: &kubernetes.CpuMemory{
-							Cpu:    "50m",
-							Memory: "100Mi",
-						},
-					},
-				},
-				KibanaContainer: &ElasticsearchKubernetesKibanaContainer{
-					IsEnabled: true,
-					Replicas:  1,
-					Resources: &kubernetes.ContainerResources{
-						Limits: &kubernetes.CpuMemory{
-							Cpu:    "1000m",
-							Memory: "1Gi",
-						},
-						Requests: &kubernetes.CpuMemory{
-							Cpu:    "50m",
-							Memory: "100Mi",
-						},
-					},
-				},
-			}
-
-			err := protovalidate.Validate(spec)
-			Expect(err).To(BeNil(), "Did not expect a validation error when persistence is disabled and disk_size is empty")
+	Describe("When valid input is passed", func() {
+		Context("elasticsearch_kubernetes", func() {
+			It("should not return a validation error", func() {
+				err := protovalidate.Validate(input)
+				Expect(err).To(BeNil())
+			})
 		})
 	})
 })

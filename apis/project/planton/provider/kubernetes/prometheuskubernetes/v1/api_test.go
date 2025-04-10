@@ -1,4 +1,4 @@
-package rediskubernetesv1
+package prometheuskubernetesv1
 
 import (
 	"testing"
@@ -10,26 +10,26 @@ import (
 	"github.com/project-planton/project-planton/apis/project/planton/shared/kubernetes"
 )
 
-func TestRedisKubernetes(t *testing.T) {
+func TestPrometheusKubernetes(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "RedisKubernetes Suite")
+	RunSpecs(t, "PrometheusKubernetes Suite")
 }
 
-var _ = Describe("RedisKubernetes Custom Validation Tests", func() {
-	var input *RedisKubernetes
+var _ = Describe("PrometheusKubernetes Custom Validation Tests", func() {
+	var input *PrometheusKubernetes
 
 	BeforeEach(func() {
-		input = &RedisKubernetes{
+		input = &PrometheusKubernetes{
 			ApiVersion: "kubernetes.project-planton.org/v1",
-			Kind:       "RedisKubernetes",
+			Kind:       "PrometheusKubernetes",
 			Metadata: &shared.ApiResourceMetadata{
-				Name: "test-redis",
+				Name: "test-prom",
 			},
-			Spec: &RedisKubernetesSpec{
-				Container: &RedisKubernetesContainer{
+			Spec: &PrometheusKubernetesSpec{
+				Container: &PrometheusKubernetesContainer{
 					Replicas:             1,
 					IsPersistenceEnabled: true,
-					DiskSize:             "10Gi", // valid format
+					DiskSize:             "10Gi",
 					Resources: &kubernetes.ContainerResources{
 						Limits: &kubernetes.CpuMemory{
 							Cpu:    "1000m",
@@ -42,14 +42,14 @@ var _ = Describe("RedisKubernetes Custom Validation Tests", func() {
 					},
 				},
 				Ingress: &kubernetes.IngressSpec{
-					DnsDomain: "redis.example.com",
+					DnsDomain: "prometheus.example.com",
 				},
 			},
 		}
 	})
 
 	Describe("When valid input is passed", func() {
-		Context("redis_kubernetes", func() {
+		Context("prometheus_kubernetes", func() {
 			It("should not return a validation error", func() {
 				err := protovalidate.Validate(input)
 				Expect(err).To(BeNil())

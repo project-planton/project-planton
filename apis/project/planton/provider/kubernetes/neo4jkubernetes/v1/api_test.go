@@ -1,4 +1,4 @@
-package rediskubernetesv1
+package neo4jkubernetesv1
 
 import (
 	"testing"
@@ -10,26 +10,23 @@ import (
 	"github.com/project-planton/project-planton/apis/project/planton/shared/kubernetes"
 )
 
-func TestRedisKubernetes(t *testing.T) {
+func TestNeo4JKubernetes(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "RedisKubernetes Suite")
+	RunSpecs(t, "Neo4JKubernetes Suite")
 }
 
-var _ = Describe("RedisKubernetes Custom Validation Tests", func() {
-	var input *RedisKubernetes
+var _ = Describe("Neo4JKubernetes Custom Validation Tests", func() {
+	var input *Neo4JKubernetes
 
 	BeforeEach(func() {
-		input = &RedisKubernetes{
+		input = &Neo4JKubernetes{
 			ApiVersion: "kubernetes.project-planton.org/v1",
-			Kind:       "RedisKubernetes",
+			Kind:       "Neo4jKubernetes",
 			Metadata: &shared.ApiResourceMetadata{
-				Name: "test-redis",
+				Name: "test-neo4j",
 			},
-			Spec: &RedisKubernetesSpec{
-				Container: &RedisKubernetesContainer{
-					Replicas:             1,
-					IsPersistenceEnabled: true,
-					DiskSize:             "10Gi", // valid format
+			Spec: &Neo4JKubernetesSpec{
+				Container: &Neo4JKubernetesContainer{
 					Resources: &kubernetes.ContainerResources{
 						Limits: &kubernetes.CpuMemory{
 							Cpu:    "1000m",
@@ -42,14 +39,14 @@ var _ = Describe("RedisKubernetes Custom Validation Tests", func() {
 					},
 				},
 				Ingress: &kubernetes.IngressSpec{
-					DnsDomain: "redis.example.com",
+					DnsDomain: "neo4j.example.com",
 				},
 			},
 		}
 	})
 
 	Describe("When valid input is passed", func() {
-		Context("redis_kubernetes", func() {
+		Context("neo4j_kubernetes", func() {
 			It("should not return a validation error", func() {
 				err := protovalidate.Validate(input)
 				Expect(err).To(BeNil())

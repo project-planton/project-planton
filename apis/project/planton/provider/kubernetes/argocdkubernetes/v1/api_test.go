@@ -1,4 +1,4 @@
-package helmreleasev1
+package argocdkubernetesv1
 
 import (
 	"testing"
@@ -9,34 +9,29 @@ import (
 	"github.com/project-planton/project-planton/apis/project/planton/shared"
 )
 
-func TestHelmRelease(t *testing.T) {
+func TestArgocdKubernetes(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "HelmRelease Suite")
+	RunSpecs(t, "ArgocdKubernetes Suite")
 }
 
-var _ = Describe("HelmRelease Custom Validation Tests", func() {
-	var input *HelmRelease
+var _ = Describe("ArgocdKubernetes Custom Validation Tests", func() {
+	var input *ArgocdKubernetes
 
 	BeforeEach(func() {
-		input = &HelmRelease{
+		input = &ArgocdKubernetes{
 			ApiVersion: "kubernetes.project-planton.org/v1",
-			Kind:       "HelmRelease",
+			Kind:       "ArgocdKubernetes",
 			Metadata: &shared.ApiResourceMetadata{
-				Name: "test-helmrelease",
+				Name: "test-argocd",
 			},
-			Spec: &HelmReleaseSpec{
-				Repo:    "https://charts.helm.sh/stable",
-				Name:    "nginx-ingress",
-				Version: "1.41.3",
-				Values: map[string]string{
-					"someKey": "someValue",
-				},
+			Spec: &ArgocdKubernetesSpec{
+				Container: &ArgocdKubernetesArgocdContainer{},
 			},
 		}
 	})
 
 	Describe("When valid input is passed", func() {
-		Context("helmrelease", func() {
+		Context("argocd_kubernetes", func() {
 			It("should not return a validation error", func() {
 				err := protovalidate.Validate(input)
 				Expect(err).To(BeNil())

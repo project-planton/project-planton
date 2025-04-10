@@ -1,4 +1,4 @@
-package helmreleasev1
+package grafanakubernetesv1
 
 import (
 	"testing"
@@ -9,34 +9,29 @@ import (
 	"github.com/project-planton/project-planton/apis/project/planton/shared"
 )
 
-func TestHelmRelease(t *testing.T) {
+func TestGrafanaKubernetes(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "HelmRelease Suite")
+	RunSpecs(t, "GrafanaKubernetes Suite")
 }
 
-var _ = Describe("HelmRelease Custom Validation Tests", func() {
-	var input *HelmRelease
+var _ = Describe("GrafanaKubernetes Custom Validation Tests", func() {
+	var input *GrafanaKubernetes
 
 	BeforeEach(func() {
-		input = &HelmRelease{
+		input = &GrafanaKubernetes{
 			ApiVersion: "kubernetes.project-planton.org/v1",
-			Kind:       "HelmRelease",
+			Kind:       "GrafanaKubernetes",
 			Metadata: &shared.ApiResourceMetadata{
-				Name: "test-helmrelease",
+				Name: "test-grafana",
 			},
-			Spec: &HelmReleaseSpec{
-				Repo:    "https://charts.helm.sh/stable",
-				Name:    "nginx-ingress",
-				Version: "1.41.3",
-				Values: map[string]string{
-					"someKey": "someValue",
-				},
+			Spec: &GrafanaKubernetesSpec{
+				Container: &GrafanaKubernetesSpecContainer{},
 			},
 		}
 	})
 
 	Describe("When valid input is passed", func() {
-		Context("helmrelease", func() {
+		Context("grafana_kubernetes", func() {
 			It("should not return a validation error", func() {
 				err := protovalidate.Validate(input)
 				Expect(err).To(BeNil())
