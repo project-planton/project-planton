@@ -8,32 +8,33 @@ import "project/planton/shared/options/options.proto";
 
 // AwsAlbSpec captures the essential fields to create an Application Load Balancer on AWS.
 message AwsAlbSpec {
-  // subnets is a list of subnet IDs in which to create the ALB.
-  // Often private subnets for internal or public subnets for internet-facing.
+  // list of subnet IDs in which to create the ALB. AWS requires at least two subnets
+  // for ALBs, which also ensures high availability across multiple Availability Zones.
+  // Typically use private subnets for internal ALBs or public subnets for internet-facing ALBs.
   repeated string subnets = 1 [
     (buf.validate.field).required = true,
     (buf.validate.field).repeated = {
       unique: true
-    }
+    },
+    (buf.validate.field).repeated.min_items = 2
   ];
 
-  // securityGroups is a list of security group IDs to attach to the ALB.
+  // list of security group IDs to attach to the ALB.
   repeated string security_groups = 2 [
     (buf.validate.field).repeated = {
       unique: true
     }
   ];
 
-  // scheme indicates whether the ALB is internet-facing or internal.
-  // Valid values: "internet-facing" or "internal".
-  // If omitted, default to "internet-facing".
+  // indicates whether the ALB is internal or internet-facing.
+  // If true, the ALB is internal; if false (or not set), it is internet-facing.
   bool internal = 3;
 
-  // enable_deletion_protection indicates whether the ALB should have deletion protection enabled.
+  // indicates whether the ALB should have deletion protection enabled.
   // This prevents accidental deletion.
   bool delete_protection_enabled = 5;
 
-  // idle_timeout_seconds sets the idle timeout in seconds for connections to the ALB.
+  // sets the idle timeout in seconds for connections to the ALB.
   // If omitted, AWS default is 60 seconds.
   int32 idle_timeout_seconds = 6 [
     (project.planton.shared.options.recommended_default) = "60"

@@ -39,10 +39,8 @@ message Route53DnsRecord {
   // The value should always end with a dot, following DNS standards to denote a fully qualified domain name.
   string name = 2 [
     (buf.validate.field).required = true,
-    (buf.validate.field).cel = {
-      id: "name",
-      message: "Name should be any valid DNS Domain Name",
-      expression: "this.matches('^(?:[*][.])?(?:[_a-z0-9](?:[_a-z0-9-]{0,61}[a-z0-9])?[.])+(?:[a-z](?:[a-z0-9-]{0,61}[a-z0-9])?)?$')"
+    (buf.validate.field).string = {
+      pattern: "^(?:\\*\\.[A-Za-z0-9\\-\\.]+|[A-Za-z0-9\\-\\.]+\\.[A-Za-z]{2,})$"
     }
   ];
 
