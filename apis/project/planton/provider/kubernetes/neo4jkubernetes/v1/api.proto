@@ -46,7 +46,7 @@ message Neo4jKubernetes {
     },
     (buf.validate.field).cel = {
       id: "metadata.version.message",
-      message: "Version message is mandatory and cannot be empty",
+      message: "Version message is required and cannot be empty",
       expression: "has(this.version.message)"
     }
   ];
@@ -72,5 +72,5 @@ message Neo4jKubernetesStatus {
   string stack_job_id = 97;
 
   //stack-outputs
-  Neo4jKubernetesStackOutputs stack_outputs = 1;
+  Neo4jKubernetesStackOutputs outputs = 1;
 }

@@ -8,8 +8,8 @@ import "project/planton/shared/iac/pulumi/pulumi.proto";
 import "project/planton/shared/iac.proto";
 import "project/planton/shared/iac/terraform/terraform.proto";
 
-//openfga-kubernetes stack-input
-message OpenfgaKubernetesStackInput {
+//open-fga-kubernetes stack-input
+message OpenFgaKubernetesStackInput {
   //iac-provisioner
   project.planton.shared.IacProvisioner provisioner = 1;
   //pulumi input required when the provisioner is pulumi
@@ -17,7 +17,7 @@ message OpenfgaKubernetesStackInput {
   //terraform input required when the provisioner is terraform
   project.planton.shared.iac.terraform.TerraformStackInfo terraform = 3;
   //target api-resource
-  OpenfgaKubernetes target = 4;
+  OpenFgaKubernetes target = 4;
   //provider-credential
   project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec provider_credential = 5;
 }

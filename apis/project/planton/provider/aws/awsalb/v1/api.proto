@@ -21,19 +21,7 @@ message AwsAlb {
 
   // metadata captures identifying information (name, org, version, etc.)
   // and must pass standard validations for resource naming.
-  project.planton.shared.ApiResourceMetadata metadata = 3 [
-    (buf.validate.field).required = true,
-    (buf.validate.field).cel = {
-      id: "metadata.name",
-      message: "Name must be between 3 and 63 characters long",
-      expression: "size(this.name) > 2 && size(this.name) <= 63"
-    },
-    (buf.validate.field).cel = {
-      id: "metadata.version.message",
-      message: "Version message is mandatory and cannot be empty",
-      expression: "has(this.version.message)"
-    }
-  ];
+  project.planton.shared.ApiResourceMetadata metadata = 3;
 
   // spec holds the core configuration data defining how the ECS service is deployed.
   AwsAlbSpec spec = 4 [
@@ -56,5 +44,5 @@ message AwsAlbStatus {
   string stack_job_id = 97;
 
   // stack_outputs captures the outputs returned by Pulumi/Terraform after provisioning.
-  AwsAlbStackOutputs stack_outputs = 1;
+  AwsAlbStackOutputs outputs = 1;
 }

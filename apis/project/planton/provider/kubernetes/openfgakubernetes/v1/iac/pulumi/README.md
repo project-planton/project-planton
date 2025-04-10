@@ -5,7 +5,7 @@
 ### API-Resource Highlights
 
 - **Standardized Structure**: Each API resource follows the Kubernetes API resource model, including `apiVersion`, `kind`, `metadata`, `spec`, and `status`, ensuring consistency and ease of integration.
-- **Comprehensive Configuration**: The `OpenfgaKubernetesSpec` allows detailed configuration of the OpenFGA deployment, including container resources, replica counts, ingress settings, and datastore configurations.
+- **Comprehensive Configuration**: The `OpenFgaKubernetesSpec` allows detailed configuration of the OpenFGA deployment, including container resources, replica counts, ingress settings, and datastore configurations.
 - **Flexible Datastore Options**: Supports both MySQL and PostgreSQL as datastore engines, with configurable connection URIs tailored to the selected engine.
 - **Ingress Management**: Integrated support for Istio ingress resources, enabling secure and manageable external access to the OpenFGA service.
 - **Status Outputs**: Captures and exports essential deployment outputs such as namespace details, service endpoints, port-forwarding commands, and hostname configurations for both internal and external access.
@@ -25,7 +25,7 @@ To install the OpenFGA Kubernetes Pulumi Module, follow the standard Pulumi modu
 
 ## Configuration
 
-The module requires an `OpenfgaKubernetesStackInput` specification to define the desired state of the OpenFGA deployment. This specification includes configurations for container resources, replicas, ingress settings, and datastore details. Additionally, Kubernetes cluster credentials must be provided to enable the module to interact with the target Kubernetes cluster.
+The module requires an `OpenFgaKubernetesStackInput` specification to define the desired state of the OpenFGA deployment. This specification includes configurations for container resources, replicas, ingress settings, and datastore details. Additionally, Kubernetes cluster credentials must be provided to enable the module to interact with the target Kubernetes cluster.
 
 ### Key Configuration Parameters
 

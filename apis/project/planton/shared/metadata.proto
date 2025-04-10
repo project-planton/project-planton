@@ -2,10 +2,17 @@ syntax = "proto3";
 
 package project.planton.shared;
 
+import "buf/validate/validate.proto";
+
 //metadata for all resource objects on planton-cloud
 message ApiResourceMetadata {
   // name of the resource
-  string name = 1;
+  string name = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3,
+    (buf.validate.field).string.max_len = 63
+  ];
+
   // id of the resource
   string id = 2;
   // id of the organization to which the api-resource belongs to

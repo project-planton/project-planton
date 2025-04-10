@@ -24,28 +24,28 @@ const (
 )
 
 // *
-// **OpenfgaKubernetesSpec** defines the configuration for deploying OpenFGA on a Kubernetes cluster.
+// **OpenFgaKubernetesSpec** defines the configuration for deploying OpenFGA on a Kubernetes cluster.
 // This message specifies the parameters needed to create and manage an OpenFGA deployment within a Kubernetes environment.
 // It includes container specifications, ingress settings, and data store configurations to control resource allocation,
 // external access, and backend storage options.
-type OpenfgaKubernetesSpec struct {
+type OpenFgaKubernetesSpec struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
 	// The container specifications for the OpenFGA deployment.
-	Container *OpenfgaKubernetesContainer `protobuf:"bytes,1,opt,name=container,proto3" json:"container,omitempty"`
+	Container *OpenFgaKubernetesContainer `protobuf:"bytes,1,opt,name=container,proto3" json:"container,omitempty"`
 	// *
 	// The ingress configuration for the OpenFGA deployment.
 	Ingress *kubernetes.IngressSpec `protobuf:"bytes,2,opt,name=ingress,proto3" json:"ingress,omitempty"`
 	// *
 	// The data store configuration for OpenFGA.
 	// This specifies the backend database engine and connection details.
-	Datastore *OpenfgaKubernetesDataStore `protobuf:"bytes,3,opt,name=datastore,proto3" json:"datastore,omitempty"`
+	Datastore *OpenFgaKubernetesDataStore `protobuf:"bytes,3,opt,name=datastore,proto3" json:"datastore,omitempty"`
 }
 
-func (x *OpenfgaKubernetesSpec) Reset() {
-	*x = OpenfgaKubernetesSpec{}
+func (x *OpenFgaKubernetesSpec) Reset() {
+	*x = OpenFgaKubernetesSpec{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_project_planton_provider_kubernetes_openfgakubernetes_v1_spec_proto_msgTypes[0]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -53,13 +53,13 @@ func (x *OpenfgaKubernetesSpec) Reset() {
 	}
 }
 
-func (x *OpenfgaKubernetesSpec) String() string {
+func (x *OpenFgaKubernetesSpec) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*OpenfgaKubernetesSpec) ProtoMessage() {}
+func (*OpenFgaKubernetesSpec) ProtoMessage() {}
 
-func (x *OpenfgaKubernetesSpec) ProtoReflect() protoreflect.Message {
+func (x *OpenFgaKubernetesSpec) ProtoReflect() protoreflect.Message {
 	mi := &file_project_planton_provider_kubernetes_openfgakubernetes_v1_spec_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -71,26 +71,26 @@ func (x *OpenfgaKubernetesSpec) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use OpenfgaKubernetesSpec.ProtoReflect.Descriptor instead.
-func (*OpenfgaKubernetesSpec) Descriptor() ([]byte, []int) {
+// Deprecated: Use OpenFgaKubernetesSpec.ProtoReflect.Descriptor instead.
+func (*OpenFgaKubernetesSpec) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_kubernetes_openfgakubernetes_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *OpenfgaKubernetesSpec) GetContainer() *OpenfgaKubernetesContainer {
+func (x *OpenFgaKubernetesSpec) GetContainer() *OpenFgaKubernetesContainer {
 	if x != nil {
 		return x.Container
 	}
 	return nil
 }
 
-func (x *OpenfgaKubernetesSpec) GetIngress() *kubernetes.IngressSpec {
+func (x *OpenFgaKubernetesSpec) GetIngress() *kubernetes.IngressSpec {
 	if x != nil {
 		return x.Ingress
 	}
 	return nil
 }
 
-func (x *OpenfgaKubernetesSpec) GetDatastore() *OpenfgaKubernetesDataStore {
+func (x *OpenFgaKubernetesSpec) GetDatastore() *OpenFgaKubernetesDataStore {
 	if x != nil {
 		return x.Datastore
 	}
@@ -98,11 +98,11 @@ func (x *OpenfgaKubernetesSpec) GetDatastore() *OpenfgaKubernetesDataStore {
 }
 
 // *
-// **OpenfgaKubernetesContainer** specifies the container configuration for the OpenFGA application.
+// **OpenFgaKubernetesContainer** specifies the container configuration for the OpenFGA application.
 // It includes resource allocations for CPU and memory to ensure the application runs efficiently,
 // and the number of replicas for scaling purposes.
 // Recommended defaults: CPU requests - 50m, Memory requests - 256Mi, CPU limits - 1, Memory limits - 1Gi.
-type OpenfgaKubernetesContainer struct {
+type OpenFgaKubernetesContainer struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -113,8 +113,8 @@ type OpenfgaKubernetesContainer struct {
 	Resources *kubernetes.ContainerResources `protobuf:"bytes,2,opt,name=resources,proto3" json:"resources,omitempty"`
 }
 
-func (x *OpenfgaKubernetesContainer) Reset() {
-	*x = OpenfgaKubernetesContainer{}
+func (x *OpenFgaKubernetesContainer) Reset() {
+	*x = OpenFgaKubernetesContainer{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_project_planton_provider_kubernetes_openfgakubernetes_v1_spec_proto_msgTypes[1]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -122,13 +122,13 @@ func (x *OpenfgaKubernetesContainer) Reset() {
 	}
 }
 
-func (x *OpenfgaKubernetesContainer) String() string {
+func (x *OpenFgaKubernetesContainer) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*OpenfgaKubernetesContainer) ProtoMessage() {}
+func (*OpenFgaKubernetesContainer) ProtoMessage() {}
 
-func (x *OpenfgaKubernetesContainer) ProtoReflect() protoreflect.Message {
+func (x *OpenFgaKubernetesContainer) ProtoReflect() protoreflect.Message {
 	mi := &file_project_planton_provider_kubernetes_openfgakubernetes_v1_spec_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -140,19 +140,19 @@ func (x *OpenfgaKubernetesContainer) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use OpenfgaKubernetesContainer.ProtoReflect.Descriptor instead.
-func (*OpenfgaKubernetesContainer) Descriptor() ([]byte, []int) {
+// Deprecated: Use OpenFgaKubernetesContainer.ProtoReflect.Descriptor instead.
+func (*OpenFgaKubernetesContainer) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_kubernetes_openfgakubernetes_v1_spec_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *OpenfgaKubernetesContainer) GetReplicas() int32 {
+func (x *OpenFgaKubernetesContainer) GetReplicas() int32 {
 	if x != nil {
 		return x.Replicas
 	}
 	return 0
 }
 
-func (x *OpenfgaKubernetesContainer) GetResources() *kubernetes.ContainerResources {
+func (x *OpenFgaKubernetesContainer) GetResources() *kubernetes.ContainerResources {
 	if x != nil {
 		return x.Resources
 	}
@@ -160,9 +160,9 @@ func (x *OpenfgaKubernetesContainer) GetResources() *kubernetes.ContainerResourc
 }
 
 // *
-// **OpenfgaKubernetesDataStore** represents the configuration for the OpenFGA data store in a Kubernetes deployment.
+// **OpenFgaKubernetesDataStore** represents the configuration for the OpenFGA data store in a Kubernetes deployment.
 // It specifies the type of database engine to use and the URI for connecting to the database.
-type OpenfgaKubernetesDataStore struct {
+type OpenFgaKubernetesDataStore struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -179,8 +179,8 @@ type OpenfgaKubernetesDataStore struct {
 	Uri string `protobuf:"bytes,2,opt,name=uri,proto3" json:"uri,omitempty"`
 }
 
-func (x *OpenfgaKubernetesDataStore) Reset() {
-	*x = OpenfgaKubernetesDataStore{}
+func (x *OpenFgaKubernetesDataStore) Reset() {
+	*x = OpenFgaKubernetesDataStore{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_project_planton_provider_kubernetes_openfgakubernetes_v1_spec_proto_msgTypes[2]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -188,13 +188,13 @@ func (x *OpenfgaKubernetesDataStore) Reset() {
 	}
 }
 
-func (x *OpenfgaKubernetesDataStore) String() string {
+func (x *OpenFgaKubernetesDataStore) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*OpenfgaKubernetesDataStore) ProtoMessage() {}
+func (*OpenFgaKubernetesDataStore) ProtoMessage() {}
 
-func (x *OpenfgaKubernetesDataStore) ProtoReflect() protoreflect.Message {
+func (x *OpenFgaKubernetesDataStore) ProtoReflect() protoreflect.Message {
 	mi := &file_project_planton_provider_kubernetes_openfgakubernetes_v1_spec_proto_msgTypes[2]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -206,19 +206,19 @@ func (x *OpenfgaKubernetesDataStore) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use OpenfgaKubernetesDataStore.ProtoReflect.Descriptor instead.
-func (*OpenfgaKubernetesDataStore) Descriptor() ([]byte, []int) {
+// Deprecated: Use OpenFgaKubernetesDataStore.ProtoReflect.Descriptor instead.
+func (*OpenFgaKubernetesDataStore) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_kubernetes_openfgakubernetes_v1_spec_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *OpenfgaKubernetesDataStore) GetEngine() string {
+func (x *OpenFgaKubernetesDataStore) GetEngine() string {
 	if x != nil {
 		return x.Engine
 	}
 	return ""
 }
 
-func (x *OpenfgaKubernetesDataStore) GetUri() string {
+func (x *OpenFgaKubernetesDataStore) GetUri() string {
 	if x != nil {
 		return x.Uri
 	}
@@ -228,7 +228,7 @@ func (x *OpenfgaKubernetesDataStore) GetUri() string {
 var file_project_planton_provider_kubernetes_openfgakubernetes_v1_spec_proto_extTypes = []protoimpl.ExtensionInfo{
 	{
 		ExtendedType:  (*descriptorpb.FieldOptions)(nil),
-		ExtensionType: (*OpenfgaKubernetesContainer)(nil),
+		ExtensionType: (*OpenFgaKubernetesContainer)(nil),
 		Field:         531001,
 		Name:          "project.planton.provider.kubernetes.openfgakubernetes.v1.default_container",
 		Tag:           "bytes,531001,opt,name=default_container",
@@ -238,7 +238,7 @@ var file_project_planton_provider_kubernetes_openfgakubernetes_v1_spec_proto_ext
 
 // Extension fields to descriptorpb.FieldOptions.
 var (
-	// optional project.planton.provider.kubernetes.openfgakubernetes.v1.OpenfgaKubernetesContainer default_container = 531001;
+	// optional project.planton.provider.kubernetes.openfgakubernetes.v1.OpenFgaKubernetesContainer default_container = 531001;
 	E_DefaultContainer = &file_project_planton_provider_kubernetes_openfgakubernetes_v1_spec_proto_extTypes[0]
 )
 
@@ -263,14 +263,14 @@ var file_project_planton_provider_kubernetes_openfgakubernetes_v1_spec_proto_raw
 	0x74, 0x6f, 0x1a, 0x2f, 0x70, 0x72, 0x6f, 0x6a, 0x65, 0x63, 0x74, 0x2f, 0x70, 0x6c, 0x61, 0x6e,
 	0x74, 0x6f, 0x6e, 0x2f, 0x73, 0x68, 0x61, 0x72, 0x65, 0x64, 0x2f, 0x6b, 0x75, 0x62, 0x65, 0x72,
 	0x6e, 0x65, 0x74, 0x65, 0x73, 0x2f, 0x6f, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x2e, 0x70, 0x72,
-	0x6f, 0x74, 0x6f, 0x22, 0xf9, 0x02, 0x0a, 0x15, 0x4f, 0x70, 0x65, 0x6e, 0x66, 0x67, 0x61, 0x4b,
+	0x6f, 0x74, 0x6f, 0x22, 0xf9, 0x02, 0x0a, 0x15, 0x4f, 0x70, 0x65, 0x6e, 0x46, 0x67, 0x61, 0x4b,
 	0x75, 0x62, 0x65, 0x72, 0x6e, 0x65, 0x74, 0x65, 0x73, 0x53, 0x70, 0x65, 0x63, 0x12, 0x99, 0x01,
 	0x0a, 0x09, 0x63, 0x6f, 0x6e, 0x74, 0x61, 0x69, 0x6e, 0x65, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28,
 	0x0b, 0x32, 0x54, 0x2e, 0x70, 0x72, 0x6f, 0x6a, 0x65, 0x63, 0x74, 0x2e, 0x70, 0x6c, 0x61, 0x6e,
 	0x74, 0x6f, 0x6e, 0x2e, 0x70, 0x72, 0x6f, 0x76, 0x69, 0x64, 0x65, 0x72, 0x2e, 0x6b, 0x75, 0x62,
 	0x65, 0x72, 0x6e, 0x65, 0x74, 0x65, 0x73, 0x2e, 0x6f, 0x70, 0x65, 0x6e, 0x66, 0x67, 0x61, 0x6b,
 	0x75, 0x62, 0x65, 0x72, 0x6e, 0x65, 0x74, 0x65, 0x73, 0x2e, 0x76, 0x31, 0x2e, 0x4f, 0x70, 0x65,
-	0x6e, 0x66, 0x67, 0x61, 0x4b, 0x75, 0x62, 0x65, 0x72, 0x6e, 0x65, 0x74, 0x65, 0x73, 0x43, 0x6f,
+	0x6e, 0x46, 0x67, 0x61, 0x4b, 0x75, 0x62, 0x65, 0x72, 0x6e, 0x65, 0x74, 0x65, 0x73, 0x43, 0x6f,
 	0x6e, 0x74, 0x61, 0x69, 0x6e, 0x65, 0x72, 0x42, 0x25, 0xca, 0xa3, 0x83, 0x02, 0x20, 0x08, 0x01,
 	0x12, 0x1c, 0x0a, 0x0c, 0x0a, 0x05, 0x31, 0x30, 0x30, 0x30, 0x6d, 0x12, 0x03, 0x31, 0x47, 0x69,
 	0x12, 0x0c, 0x0a, 0x03, 0x35, 0x30, 0x6d, 0x12, 0x05, 0x31, 0x30, 0x30, 0x4d, 0x69, 0x52, 0x09,
@@ -284,10 +284,10 @@ var file_project_planton_provider_kubernetes_openfgakubernetes_v1_spec_proto_raw
 	0x2e, 0x70, 0x6c, 0x61, 0x6e, 0x74, 0x6f, 0x6e, 0x2e, 0x70, 0x72, 0x6f, 0x76, 0x69, 0x64, 0x65,
 	0x72, 0x2e, 0x6b, 0x75, 0x62, 0x65, 0x72, 0x6e, 0x65, 0x74, 0x65, 0x73, 0x2e, 0x6f, 0x70, 0x65,
 	0x6e, 0x66, 0x67, 0x61, 0x6b, 0x75, 0x62, 0x65, 0x72, 0x6e, 0x65, 0x74, 0x65, 0x73, 0x2e, 0x76,
-	0x31, 0x2e, 0x4f, 0x70, 0x65, 0x6e, 0x66, 0x67, 0x61, 0x4b, 0x75, 0x62, 0x65, 0x72, 0x6e, 0x65,
+	0x31, 0x2e, 0x4f, 0x70, 0x65, 0x6e, 0x46, 0x67, 0x61, 0x4b, 0x75, 0x62, 0x65, 0x72, 0x6e, 0x65,
 	0x74, 0x65, 0x73, 0x44, 0x61, 0x74, 0x61, 0x53, 0x74, 0x6f, 0x72, 0x65, 0x42, 0x06, 0xba, 0x48,
 	0x03, 0xc8, 0x01, 0x01, 0x52, 0x09, 0x64, 0x61, 0x74, 0x61, 0x73, 0x74, 0x6f, 0x72, 0x65, 0x22,
-	0x8d, 0x01, 0x0a, 0x1a, 0x4f, 0x70, 0x65, 0x6e, 0x66, 0x67, 0x61, 0x4b, 0x75, 0x62, 0x65, 0x72,
+	0x8d, 0x01, 0x0a, 0x1a, 0x4f, 0x70, 0x65, 0x6e, 0x46, 0x67, 0x61, 0x4b, 0x75, 0x62, 0x65, 0x72,
 	0x6e, 0x65, 0x74, 0x65, 0x73, 0x43, 0x6f, 0x6e, 0x74, 0x61, 0x69, 0x6e, 0x65, 0x72, 0x12, 0x1a,
 	0x0a, 0x08, 0x72, 0x65, 0x70, 0x6c, 0x69, 0x63, 0x61, 0x73, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05,
 	0x52, 0x08, 0x72, 0x65, 0x70, 0x6c, 0x69, 0x63, 0x61, 0x73, 0x12, 0x53, 0x0a, 0x09, 0x72, 0x65,
@@ -296,7 +296,7 @@ var file_project_planton_provider_kubernetes_openfgakubernetes_v1_spec_proto_raw
 	0x73, 0x68, 0x61, 0x72, 0x65, 0x64, 0x2e, 0x6b, 0x75, 0x62, 0x65, 0x72, 0x6e, 0x65, 0x74, 0x65,
 	0x73, 0x2e, 0x43, 0x6f, 0x6e, 0x74, 0x61, 0x69, 0x6e, 0x65, 0x72, 0x52, 0x65, 0x73, 0x6f, 0x75,
 	0x72, 0x63, 0x65, 0x73, 0x52, 0x09, 0x72, 0x65, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x73, 0x22,
-	0xcd, 0x01, 0x0a, 0x1a, 0x4f, 0x70, 0x65, 0x6e, 0x66, 0x67, 0x61, 0x4b, 0x75, 0x62, 0x65, 0x72,
+	0xcd, 0x01, 0x0a, 0x1a, 0x4f, 0x70, 0x65, 0x6e, 0x46, 0x67, 0x61, 0x4b, 0x75, 0x62, 0x65, 0x72,
 	0x6e, 0x65, 0x74, 0x65, 0x73, 0x44, 0x61, 0x74, 0x61, 0x53, 0x74, 0x6f, 0x72, 0x65, 0x12, 0x94,
 	0x01, 0x0a, 0x06, 0x65, 0x6e, 0x67, 0x69, 0x6e, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x42,
 	0x7c, 0xba, 0x48, 0x79, 0xba, 0x01, 0x73, 0x0a, 0x15, 0x73, 0x70, 0x65, 0x63, 0x2e, 0x64, 0x61,
@@ -316,7 +316,7 @@ var file_project_planton_provider_kubernetes_openfgakubernetes_v1_spec_proto_raw
 	0x72, 0x6f, 0x6a, 0x65, 0x63, 0x74, 0x2e, 0x70, 0x6c, 0x61, 0x6e, 0x74, 0x6f, 0x6e, 0x2e, 0x70,
 	0x72, 0x6f, 0x76, 0x69, 0x64, 0x65, 0x72, 0x2e, 0x6b, 0x75, 0x62, 0x65, 0x72, 0x6e, 0x65, 0x74,
 	0x65, 0x73, 0x2e, 0x6f, 0x70, 0x65, 0x6e, 0x66, 0x67, 0x61, 0x6b, 0x75, 0x62, 0x65, 0x72, 0x6e,
-	0x65, 0x74, 0x65, 0x73, 0x2e, 0x76, 0x31, 0x2e, 0x4f, 0x70, 0x65, 0x6e, 0x66, 0x67, 0x61, 0x4b,
+	0x65, 0x74, 0x65, 0x73, 0x2e, 0x76, 0x31, 0x2e, 0x4f, 0x70, 0x65, 0x6e, 0x46, 0x67, 0x61, 0x4b,
 	0x75, 0x62, 0x65, 0x72, 0x6e, 0x65, 0x74, 0x65, 0x73, 0x43, 0x6f, 0x6e, 0x74, 0x61, 0x69, 0x6e,
 	0x65, 0x72, 0x52, 0x10, 0x64, 0x65, 0x66, 0x61, 0x75, 0x6c, 0x74, 0x43, 0x6f, 0x6e, 0x74, 0x61,
 	0x69, 0x6e, 0x65, 0x72, 0x42, 0xce, 0x03, 0x0a, 0x3c, 0x63, 0x6f, 0x6d, 0x2e, 0x70, 0x72, 0x6f,
@@ -365,20 +365,20 @@ func file_project_planton_provider_kubernetes_openfgakubernetes_v1_spec_proto_ra
 
 var file_project_planton_provider_kubernetes_openfgakubernetes_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_project_planton_provider_kubernetes_openfgakubernetes_v1_spec_proto_goTypes = []any{
-	(*OpenfgaKubernetesSpec)(nil),         // 0: project.planton.provider.kubernetes.openfgakubernetes.v1.OpenfgaKubernetesSpec
-	(*OpenfgaKubernetesContainer)(nil),    // 1: project.planton.provider.kubernetes.openfgakubernetes.v1.OpenfgaKubernetesContainer
-	(*OpenfgaKubernetesDataStore)(nil),    // 2: project.planton.provider.kubernetes.openfgakubernetes.v1.OpenfgaKubernetesDataStore
+	(*OpenFgaKubernetesSpec)(nil),         // 0: project.planton.provider.kubernetes.openfgakubernetes.v1.OpenFgaKubernetesSpec
+	(*OpenFgaKubernetesContainer)(nil),    // 1: project.planton.provider.kubernetes.openfgakubernetes.v1.OpenFgaKubernetesContainer
+	(*OpenFgaKubernetesDataStore)(nil),    // 2: project.planton.provider.kubernetes.openfgakubernetes.v1.OpenFgaKubernetesDataStore
 	(*kubernetes.IngressSpec)(nil),        // 3: project.planton.shared.kubernetes.IngressSpec
 	(*kubernetes.ContainerResources)(nil), // 4: project.planton.shared.kubernetes.ContainerResources
 	(*descriptorpb.FieldOptions)(nil),     // 5: google.protobuf.FieldOptions
 }
 var file_project_planton_provider_kubernetes_openfgakubernetes_v1_spec_proto_depIdxs = []int32{
-	1, // 0: project.planton.provider.kubernetes.openfgakubernetes.v1.OpenfgaKubernetesSpec.container:type_name -> project.planton.provider.kubernetes.openfgakubernetes.v1.OpenfgaKubernetesContainer
-	3, // 1: project.planton.provider.kubernetes.openfgakubernetes.v1.OpenfgaKubernetesSpec.ingress:type_name -> project.planton.shared.kubernetes.IngressSpec
-	2, // 2: project.planton.provider.kubernetes.openfgakubernetes.v1.OpenfgaKubernetesSpec.datastore:type_name -> project.planton.provider.kubernetes.openfgakubernetes.v1.OpenfgaKubernetesDataStore
-	4, // 3: project.planton.provider.kubernetes.openfgakubernetes.v1.OpenfgaKubernetesContainer.resources:type_name -> project.planton.shared.kubernetes.ContainerResources
+	1, // 0: project.planton.provider.kubernetes.openfgakubernetes.v1.OpenFgaKubernetesSpec.container:type_name -> project.planton.provider.kubernetes.openfgakubernetes.v1.OpenFgaKubernetesContainer
+	3, // 1: project.planton.provider.kubernetes.openfgakubernetes.v1.OpenFgaKubernetesSpec.ingress:type_name -> project.planton.shared.kubernetes.IngressSpec
+	2, // 2: project.planton.provider.kubernetes.openfgakubernetes.v1.OpenFgaKubernetesSpec.datastore:type_name -> project.planton.provider.kubernetes.openfgakubernetes.v1.OpenFgaKubernetesDataStore
+	4, // 3: project.planton.provider.kubernetes.openfgakubernetes.v1.OpenFgaKubernetesContainer.resources:type_name -> project.planton.shared.kubernetes.ContainerResources
 	5, // 4: project.planton.provider.kubernetes.openfgakubernetes.v1.default_container:extendee -> google.protobuf.FieldOptions
-	1, // 5: project.planton.provider.kubernetes.openfgakubernetes.v1.default_container:type_name -> project.planton.provider.kubernetes.openfgakubernetes.v1.OpenfgaKubernetesContainer
+	1, // 5: project.planton.provider.kubernetes.openfgakubernetes.v1.default_container:type_name -> project.planton.provider.kubernetes.openfgakubernetes.v1.OpenFgaKubernetesContainer
 	6, // [6:6] is the sub-list for method output_type
 	6, // [6:6] is the sub-list for method input_type
 	5, // [5:6] is the sub-list for extension type_name
@@ -393,7 +393,7 @@ func file_project_planton_provider_kubernetes_openfgakubernetes_v1_spec_proto_in
 	}
 	if !protoimpl.UnsafeEnabled {
 		file_project_planton_provider_kubernetes_openfgakubernetes_v1_spec_proto_msgTypes[0].Exporter = func(v any, i int) any {
-			switch v := v.(*OpenfgaKubernetesSpec); i {
+			switch v := v.(*OpenFgaKubernetesSpec); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -405,7 +405,7 @@ func file_project_planton_provider_kubernetes_openfgakubernetes_v1_spec_proto_in
 			}
 		}
 		file_project_planton_provider_kubernetes_openfgakubernetes_v1_spec_proto_msgTypes[1].Exporter = func(v any, i int) any {
-			switch v := v.(*OpenfgaKubernetesContainer); i {
+			switch v := v.(*OpenFgaKubernetesContainer); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -417,7 +417,7 @@ func file_project_planton_provider_kubernetes_openfgakubernetes_v1_spec_proto_in
 			}
 		}
 		file_project_planton_provider_kubernetes_openfgakubernetes_v1_spec_proto_msgTypes[2].Exporter = func(v any, i int) any {
-			switch v := v.(*OpenfgaKubernetesDataStore); i {
+			switch v := v.(*OpenFgaKubernetesDataStore); i {
 			case 0:
 				return &v.state
 			case 1:

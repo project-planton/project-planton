@@ -34,7 +34,7 @@ message MongodbAtlas {
     },
     (buf.validate.field).cel = {
       id: "metadata.version.message",
-      message: "Version message is mandatory and cannot be empty",
+      message: "Version message is required and cannot be empty",
       expression: "has(this.version.message)"
     }
   ];
@@ -60,5 +60,5 @@ message MongodbAtlasStatus {
   string stack_job_id = 97;
 
   //stack-outputs
-  MongodbAtlasStackOutputs stack_outputs = 1;
+  MongodbAtlasStackOutputs outputs = 1;
 }

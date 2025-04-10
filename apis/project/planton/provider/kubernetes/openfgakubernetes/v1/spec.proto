@@ -8,18 +8,18 @@ import "project/planton/shared/kubernetes/kubernetes.proto";
 import "project/planton/shared/kubernetes/options.proto";
 
 extend google.protobuf.FieldOptions {
-  OpenfgaKubernetesContainer default_container = 531001;
+  OpenFgaKubernetesContainer default_container = 531001;
 }
 
 /**
- * **OpenfgaKubernetesSpec** defines the configuration for deploying OpenFGA on a Kubernetes cluster.
+ * **OpenFgaKubernetesSpec** defines the configuration for deploying OpenFGA on a Kubernetes cluster.
  * This message specifies the parameters needed to create and manage an OpenFGA deployment within a Kubernetes environment.
  * It includes container specifications, ingress settings, and data store configurations to control resource allocation,
  * external access, and backend storage options.
  */
-message OpenfgaKubernetesSpec {
+message OpenFgaKubernetesSpec {
   // The container specifications for the OpenFGA deployment.
-  OpenfgaKubernetesContainer container = 1 [
+  OpenFgaKubernetesContainer container = 1 [
     (default_container) = {
       replicas: 1,
       resources:  {
@@ -44,18 +44,18 @@ message OpenfgaKubernetesSpec {
    * The data store configuration for OpenFGA.
    * This specifies the backend database engine and connection details.
    */
-  OpenfgaKubernetesDataStore datastore = 3 [
+  OpenFgaKubernetesDataStore datastore = 3 [
     (buf.validate.field).required = true
   ];
 }
 
 /**
- * **OpenfgaKubernetesContainer** specifies the container configuration for the OpenFGA application.
+ * **OpenFgaKubernetesContainer** specifies the container configuration for the OpenFGA application.
  * It includes resource allocations for CPU and memory to ensure the application runs efficiently,
  * and the number of replicas for scaling purposes.
  * Recommended defaults: CPU requests - 50m, Memory requests - 256Mi, CPU limits - 1, Memory limits - 1Gi.
  */
-message OpenfgaKubernetesContainer {
+message OpenFgaKubernetesContainer {
   // The number of OpenFGA replicas to deploy. This determines the level of concurrency and availability.
   int32 replicas = 1;
    //The CPU and memory resources allocated to the OpenFGA container.
@@ -63,10 +63,10 @@ message OpenfgaKubernetesContainer {
 }
 
 /**
- * **OpenfgaKubernetesDataStore** represents the configuration for the OpenFGA data store in a Kubernetes deployment.
+ * **OpenFgaKubernetesDataStore** represents the configuration for the OpenFGA data store in a Kubernetes deployment.
  * It specifies the type of database engine to use and the URI for connecting to the database.
  */
-message OpenfgaKubernetesDataStore {
+message OpenFgaKubernetesDataStore {
   /**
    * Specifies the type of data store engine to use.
    * Allowed values are "mysql" for MySQL database and "postgres" for PostgreSQL database.

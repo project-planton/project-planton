@@ -1,4 +1,4 @@
-Here are a few example configurations for the `OpenfgaKubernetes` API resource based on the similar format provided. Since the specification in your case has specific fields like `container`, `datastore`, and `ingress`, I have created examples that demonstrate different configurations for deploying an OpenFGA service on Kubernetes.
+Here are a few example configurations for the `OpenFgaKubernetes` API resource based on the similar format provided. Since the specification in your case has specific fields like `container`, `datastore`, and `ingress`, I have created examples that demonstrate different configurations for deploying an OpenFGA service on Kubernetes.
 
 ---
 
@@ -6,9 +6,9 @@ Here are a few example configurations for the `OpenfgaKubernetes` API resource b
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: OpenfgaKubernetes
+kind: OpenFgaKubernetes
 metadata:
-  name: openfga-service
+  name: open-fga-service
 spec:
   kubernetes_cluster_credential_id: my-k8s-cluster-credential
   container:
@@ -35,9 +35,9 @@ spec:
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: OpenfgaKubernetes
+kind: OpenFgaKubernetes
 metadata:
-  name: openfga-service
+  name: open-fga-service
 spec:
   kubernetes_cluster_credential_id: another-k8s-cluster-credential
   container:
@@ -62,7 +62,7 @@ spec:
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: OpenfgaKubernetes
+kind: OpenFgaKubernetes
 metadata:
   name: basic-openfga
 spec:
@@ -87,9 +87,9 @@ spec:
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: OpenfgaKubernetes
+kind: OpenFgaKubernetes
 metadata:
-  name: openfga-high-availability
+  name: open-fga-high-availability
 spec:
   kubernetes_cluster_credential_id: high-availability-k8s-credential
   container:
@@ -103,7 +103,7 @@ spec:
         memory: 4Gi
   ingress:
     isEnabled: true
-    host: openfga-ha.example.com
+    host: open-fga-ha.example.com
     path: /openfga
   datastore:
     engine: postgres

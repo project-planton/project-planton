@@ -3,6 +3,7 @@ syntax = "proto3";
 package project.planton.provider.aws.awsalb.v1;
 
 import "buf/validate/validate.proto";
+import "project/planton/shared/foreignkey/v1/foreign_key.proto";
 import "project/planton/shared/options/options.proto";
 
 // AwsAlbSpec captures the essential fields to create an Application Load Balancer on AWS.
@@ -68,5 +69,8 @@ message AwsAlbDns {
 message AwsAlbSsl {
   bool enabled = 1;
 
-  string certificate_arn = 2;
+  project.planton.shared.foreignkey.v1.StringValueOrRef certificate_arn = 2 [
+    (project.planton.shared.foreignkey.v1.default_kind) = aws_cert_manager_cert,
+    (project.planton.shared.foreignkey.v1.default_kind_field_path) = "status.stack_outputs.cert_arn"
+  ];
 }

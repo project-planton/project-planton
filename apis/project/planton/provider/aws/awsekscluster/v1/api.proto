@@ -46,7 +46,7 @@ message AwsEksCluster {
     },
     (buf.validate.field).cel = {
       id: "metadata.version.message",
-      message: "Version message is mandatory and cannot be empty",
+      message: "Version message is required and cannot be empty",
       expression: "has(this.version.message)"
     }
   ];
@@ -73,5 +73,5 @@ message AwsEksClusterStatus {
 
   //stack-outputs
   //  aws-eks-cluster stack-outputs
-  AwsEksClusterStackOutputs stack_outputs = 1;
+  AwsEksClusterStackOutputs outputs = 1;
 }

@@ -130,7 +130,7 @@ const (
 	CronJobKubernetesKind        ApiResourceKind = "cron-job-kubernetes"
 	MongodbKubernetesKind        ApiResourceKind = "mongodb-kubernetes"
 	Neo4JKubernetesKind          ApiResourceKind = "neo4j-kubernetes"
-	OpenfgaKubernetesKind        ApiResourceKind = "openfga-kubernetes"
+	OpenFgaKubernetesKind        ApiResourceKind = "openfga-kubernetes"
 	PostgresKubernetesKind       ApiResourceKind = "postgres-kubernetes"
 	PrometheusKubernetesKind     ApiResourceKind = "prometheus-kubernetes"
 	RedisKubernetesKind          ApiResourceKind = "redis-kubernetes"
@@ -239,7 +239,7 @@ var providerKubernetesMap = map[ApiResourceKind]proto.Message{
 	CronJobKubernetesKind:        &cronjobkubernetesv1.CronJobKubernetes{},
 	MongodbKubernetesKind:        &mongodbkubernetesv1.MongodbKubernetes{},
 	Neo4JKubernetesKind:          &neo4jkubernetesv1.Neo4JKubernetes{},
-	OpenfgaKubernetesKind:        &openfgakubernetesv1.OpenfgaKubernetes{},
+	OpenFgaKubernetesKind:        &openfgakubernetesv1.OpenFgaKubernetes{},
 	PostgresKubernetesKind:       &postgreskubernetesv1.PostgresKubernetes{},
 	PrometheusKubernetesKind:     &prometheuskubernetesv1.PrometheusKubernetes{},
 	RedisKubernetesKind:          &rediskubernetesv1.RedisKubernetes{},

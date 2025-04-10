@@ -34,7 +34,7 @@ message AwsS3Bucket {
     },
     (buf.validate.field).cel = {
       id: "metadata.version.message",
-      message: "Version message is mandatory and cannot be empty",
+      message: "Version message is required and cannot be empty",
       expression: "has(this.version.message)"
     }
   ];
@@ -60,5 +60,5 @@ message AwsS3BucketStatus {
   string stack_job_id = 97;
 
   //stack-outputs
-  AwsS3BucketStackOutputs stack_outputs = 1;
+  AwsS3BucketStackOutputs outputs = 1;
 }

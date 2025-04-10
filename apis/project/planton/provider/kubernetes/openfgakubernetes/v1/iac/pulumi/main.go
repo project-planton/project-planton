@@ -10,7 +10,7 @@ import (
 
 func main() {
 	pulumi.Run(func(ctx *pulumi.Context) error {
-		stackInput := &openfgakubernetesv1.OpenfgaKubernetesStackInput{}
+		stackInput := &openfgakubernetesv1.OpenFgaKubernetesStackInput{}
 
 		if err := stackinput.LoadStackInput(ctx, stackInput); err != nil {
 			return errors.Wrap(err, "failed to load stack-input")
