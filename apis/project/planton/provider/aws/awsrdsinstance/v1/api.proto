@@ -19,19 +19,7 @@ message AwsRdsInstance {
   string kind = 2;
 
   //metadata
-  project.planton.shared.ApiResourceMetadata metadata = 3 [
-    (buf.validate.field).required = true,
-    (buf.validate.field).cel = {
-      id: "metadata.name",
-      message: "Name must be between 3 and 63 characters long",
-      expression: "size(this.name) > 2 && size(this.name) <= 63"
-    },
-    (buf.validate.field).cel = {
-      id: "metadata.version.message",
-      message: "Version message is required and cannot be empty",
-      expression: "has(this.version.message)"
-    }
-  ];
+  project.planton.shared.ApiResourceMetadata metadata = 3;
 
   //spec
   AwsRdsInstanceSpec spec = 4 [

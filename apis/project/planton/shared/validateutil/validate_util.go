@@ -5,27 +5,19 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-const (
-	MetadataFieldPath                      = "metadata"
-	MetadataNameConstraintId               = "metadata.name"
-	RequiredConstraint                     = "required"
-	RequiredViolationMessage               = "value is required"
-	StringInConstraint                     = "string.in"
-	metadataVersionMessage                 = "metadata.version.message"
-	metadataVersionMessageViolationMessage = "Version message is required and cannot be empty"
-)
-
-var VersionMessageViolation = &ExpectedViolation{
-	FieldPath:    MetadataFieldPath,
-	ConstraintId: metadataVersionMessage,
-	Message:      metadataVersionMessageViolationMessage,
-}
-
 type ExpectedViolation struct {
 	FieldPath    string
 	ConstraintId string
 	Message      string
 }
+
+const (
+	RequiredConstraint        = "required"
+	RequiredViolationMessage  = "value is required"
+	StringInConstraint        = "string.in"
+	StringMinLengthConstraint = "string.min_len"
+	StringMaxLengthConstraint = "string.max_len"
+)
 
 // Match is a helper to compare an actual violation
 // against an expected one. This way, your test code is clean, and

@@ -22,11 +22,9 @@ var _ = Describe("AwsCertManagerCert", func() {
 	BeforeEach(func() {
 		input = &AwsCertManagerCert{
 			ApiVersion: "aws.project-planton.org/v1",
+			Kind:       "AwsCertManagerCert",
 			Metadata: &shared.ApiResourceMetadata{
 				Name: "a-test-name",
-				Version: &shared.ApiResourceMetadataVersion{
-					Message: "a version message",
-				},
 			},
 			Spec: &AwsCertManagerCertSpec{
 				PrimaryDomainName: "example.com",
@@ -44,92 +42,6 @@ var _ = Describe("AwsCertManagerCert", func() {
 		It("should not return a validation error", func() {
 			err := protovalidate.Validate(input)
 			Expect(err).To(BeNil())
-		})
-	})
-
-	Context("when name is not passed", func() {
-		It("should return a validation error for 'metadata.name'", func() {
-			input.Metadata.Name = ""
-
-			err := protovalidate.Validate(input)
-			Expect(err).NotTo(BeNil())
-			var validationErr *protovalidate.ValidationError
-			if errors.As(err, &validationErr) {
-				Expect(len(validationErr.Violations)).To(Equal(1))
-				expected := &validateutil.ExpectedViolation{
-					FieldPath:    validateutil.MetadataFieldPath,
-					ConstraintId: validateutil.MetadataNameConstraintId,
-					Message:      "Name must be between 3 and 63 characters long",
-				}
-				validateutil.Match(validationErr.Violations[0], expected)
-			}
-		})
-	})
-
-	Context("when version message is not passed", func() {
-		It("should return a validation error indicating 'version.message' is missing", func() {
-			input.Metadata.Version.Message = ""
-			err := protovalidate.Validate(input)
-			Expect(err).NotTo(BeNil())
-			var validationErr *protovalidate.ValidationError
-			if errors.As(err, &validationErr) {
-				Expect(len(validationErr.Violations)).To(Equal(1))
-				validateutil.Match(validationErr.Violations[0], validateutil.VersionMessageViolation)
-			}
-		})
-	})
-
-	Context("when metadata is not passed", func() {
-		It("should return a validation error for missing metadata", func() {
-			input.Metadata = nil
-			err := protovalidate.Validate(input)
-			Expect(err).NotTo(BeNil())
-			var validationErr *protovalidate.ValidationError
-			if errors.As(err, &validationErr) {
-				Expect(len(validationErr.Violations)).To(Equal(1))
-				expected := &validateutil.ExpectedViolation{
-					FieldPath:    validateutil.MetadataFieldPath,
-					ConstraintId: validateutil.RequiredConstraint,
-					Message:      validateutil.RequiredViolationMessage,
-				}
-				validateutil.Match(validationErr.Violations[0], expected)
-			}
-		})
-	})
-
-	Context("when name is empty", func() {
-		It("should return a validation error for 'metadata.name'", func() {
-			input.Metadata.Name = ""
-			err := protovalidate.Validate(input)
-			Expect(err).ToNot(BeNil())
-			var validationErr *protovalidate.ValidationError
-			if errors.As(err, &validationErr) {
-				Expect(len(validationErr.Violations)).To(Equal(1))
-				expected := &validateutil.ExpectedViolation{
-					FieldPath:    validateutil.MetadataFieldPath,
-					ConstraintId: validateutil.MetadataNameConstraintId,
-					Message:      "Name must be between 3 and 63 characters long",
-				}
-				validateutil.Match(validationErr.Violations[0], expected)
-			}
-		})
-	})
-
-	Context("when name length is greater than allowed)", func() {
-		It("should return a validation error", func() {
-			input.Metadata.Name = "a-really-really-long-name-that-is-greater-than-63-characters-long"
-			err := protovalidate.Validate(input)
-			Expect(err).ToNot(BeNil())
-			var validationErr *protovalidate.ValidationError
-			if errors.As(err, &validationErr) {
-				Expect(len(validationErr.Violations)).To(Equal(1))
-				expected := &validateutil.ExpectedViolation{
-					FieldPath:    validateutil.MetadataFieldPath,
-					ConstraintId: validateutil.MetadataNameConstraintId,
-					Message:      "Name must be between 3 and 63 characters long",
-				}
-				validateutil.Match(validationErr.Violations[0], expected)
-			}
 		})
 	})
 
