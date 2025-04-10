@@ -60,5 +60,5 @@ message AwsS3BucketStatus {
   string stack_job_id = 97;
 
   //stack-outputs
-  AwsS3BucketStackOutputs stack_outputs = 1;
+  AwsS3BucketStackOutputs outputs = 1;
 }

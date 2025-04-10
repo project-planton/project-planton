@@ -72,5 +72,5 @@ message GcpGkeClusterStatus {
   string stack_job_id = 97;
 
   //stack-outputs
-  GcpGkeClusterStackOutputs stack_outputs = 1;
+  GcpGkeClusterStackOutputs outputs = 1;
 }

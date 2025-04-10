@@ -60,5 +60,5 @@ message AwsStaticWebsiteStatus {
   string stack_job_id = 97;
 
   //stack-outputs
-  AwsStaticWebsiteStackOutputs stack_outputs = 1;
+  AwsStaticWebsiteStackOutputs outputs = 1;
 }

@@ -60,5 +60,5 @@ message KubernetesHttpEndpointStatus {
   string stack_job_id = 97;
 
   //stack-outputs
-  KubernetesHttpEndpointStackOutputs stack_outputs = 1;
+  KubernetesHttpEndpointStackOutputs outputs = 1;
 }

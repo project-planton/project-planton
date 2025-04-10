@@ -60,5 +60,5 @@ message GcpGcsBucketStatus {
   string stack_job_id = 97;
 
   //stack-outputs
-  GcpGcsBucketStackOutputs stack_outputs = 1;
+  GcpGcsBucketStackOutputs outputs = 1;
 }

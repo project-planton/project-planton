@@ -73,5 +73,5 @@ message AzureAksClusterStatus {
 
   //stack-outputs
   //  azure-aks-cluster stack-outputs
-  AzureAksClusterStackOutputs stack_outputs = 1;
+  AzureAksClusterStackOutputs outputs = 1;
 }

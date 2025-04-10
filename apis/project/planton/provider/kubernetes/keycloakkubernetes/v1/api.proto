@@ -72,5 +72,5 @@ message KeycloakKubernetesStatus {
   string stack_job_id = 97;
 
   //stack-outputs
-  KeycloakKubernetesStackOutputs stack_outputs = 1;
+  KeycloakKubernetesStackOutputs outputs = 1;
 }

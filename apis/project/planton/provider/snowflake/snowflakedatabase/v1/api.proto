@@ -60,5 +60,5 @@ message SnowflakeDatabaseStatus {
   string stack_job_id = 97;
 
   //stack-outputs
-  SnowflakeDatabaseStackOutputs stack_outputs = 1;
+  SnowflakeDatabaseStackOutputs outputs = 1;
 }

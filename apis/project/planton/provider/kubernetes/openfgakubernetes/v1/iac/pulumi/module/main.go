@@ -10,7 +10,7 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-func Resources(ctx *pulumi.Context, stackInput *openfgakubernetesv1.OpenfgaKubernetesStackInput) error {
+func Resources(ctx *pulumi.Context, stackInput *openfgakubernetesv1.OpenFgaKubernetesStackInput) error {
 	locals := initializeLocals(ctx, stackInput)
 	//create kubernetes-provider from the credential in the stack-input
 	kubernetesProvider, err := pulumikubernetesprovider.GetWithKubernetesClusterCredential(ctx,
@@ -41,7 +41,7 @@ func Resources(ctx *pulumi.Context, stackInput *openfgakubernetesv1.OpenfgaKuber
 	}
 
 	//create istio-ingress resources if ingress is enabled.
-	if locals.OpenfgaKubernetes.Spec.Ingress.IsEnabled {
+	if locals.OpenFgaKubernetes.Spec.Ingress.IsEnabled {
 		if err := ingress(ctx, locals, createdNamespace, kubernetesProvider, locals.Labels); err != nil {
 			return errors.Wrap(err, "failed to create ingress resources")
 		}

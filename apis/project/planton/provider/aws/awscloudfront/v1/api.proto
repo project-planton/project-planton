@@ -60,5 +60,5 @@ message AwsCloudFrontStatus {
   string stack_job_id = 97;
 
   //stack-outputs
-  AwsCloudFrontStackOutputs stack_outputs = 1;
+  AwsCloudFrontStackOutputs outputs = 1;
 }

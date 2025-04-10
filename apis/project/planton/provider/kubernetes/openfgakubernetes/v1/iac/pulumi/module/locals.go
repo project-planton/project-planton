@@ -12,7 +12,7 @@ import (
 )
 
 type Locals struct {
-	OpenfgaKubernetes            *openfgakubernetesv1.OpenfgaKubernetes
+	OpenFgaKubernetes            *openfgakubernetesv1.OpenFgaKubernetes
 	Namespace                    string
 	IngressCertClusterIssuerName string
 	IngressCertSecretName        string
@@ -25,17 +25,17 @@ type Locals struct {
 	Labels                       map[string]string
 }
 
-func initializeLocals(ctx *pulumi.Context, stackInput *openfgakubernetesv1.OpenfgaKubernetesStackInput) *Locals {
+func initializeLocals(ctx *pulumi.Context, stackInput *openfgakubernetesv1.OpenFgaKubernetesStackInput) *Locals {
 	locals := &Locals{}
 
-	locals.OpenfgaKubernetes = stackInput.Target
+	locals.OpenFgaKubernetes = stackInput.Target
 
 	target := stackInput.Target
 
 	locals.Labels = map[string]string{
 		kuberneteslabelkeys.Resource:     strconv.FormatBool(true),
 		kuberneteslabelkeys.ResourceName: target.Metadata.Name,
-		kuberneteslabelkeys.ResourceKind: string(apiresourcekind.OpenfgaKubernetesKind),
+		kuberneteslabelkeys.ResourceKind: string(apiresourcekind.OpenFgaKubernetesKind),
 	}
 
 	if target.Metadata.Id != "" {

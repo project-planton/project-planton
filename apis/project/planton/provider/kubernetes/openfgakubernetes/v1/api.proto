@@ -8,8 +8,8 @@ import "project/planton/provider/kubernetes/openfgakubernetes/v1/stack_outputs.p
 import "project/planton/shared/status.proto";
 import "project/planton/shared/metadata.proto";
 
-//openfga-kubernetes
-message OpenfgaKubernetes {
+//open-fga-kubernetes
+message OpenFgaKubernetes {
   //api-version
   string api_version = 1 [
     (buf.validate.field).string.const = 'kubernetes.project-planton.org/v1'
@@ -52,16 +52,16 @@ message OpenfgaKubernetes {
   ];
 
   //spec
-  OpenfgaKubernetesSpec spec = 4 [
+  OpenFgaKubernetesSpec spec = 4 [
     (buf.validate.field).required = true
   ];
 
   //status
-  OpenfgaKubernetesStatus status = 5;
+  OpenFgaKubernetesStatus status = 5;
 }
 
-//openfga-kubernetes status.
-message OpenfgaKubernetesStatus {
+//open-fga-kubernetes status.
+message OpenFgaKubernetesStatus {
   //lifecycle
   project.planton.shared.ApiResourceLifecycle lifecycle = 99;
 
@@ -72,5 +72,5 @@ message OpenfgaKubernetesStatus {
   string stack_job_id = 97;
 
   //stack-outputs
-  OpenfgaKubernetesStackOutputs stack_outputs = 1;
+  OpenFgaKubernetesStackOutputs outputs = 1;
 }

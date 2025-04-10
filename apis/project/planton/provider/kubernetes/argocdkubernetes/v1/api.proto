@@ -72,5 +72,5 @@ message ArgocdKubernetesStatus {
 
   //stack-outputs
   // argocd-kubernetes stack-outputs
-  ArgocdKubernetesStackOutputs stack_outputs = 1;
+  ArgocdKubernetesStackOutputs outputs = 1;
 }

@@ -73,5 +73,5 @@ message AwsEksClusterStatus {
 
   //stack-outputs
   //  aws-eks-cluster stack-outputs
-  AwsEksClusterStackOutputs stack_outputs = 1;
+  AwsEksClusterStackOutputs outputs = 1;
 }

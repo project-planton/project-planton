@@ -54,5 +54,5 @@ message AwsRdsClusterStatus {
   string stack_job_id = 97;
 
   //stack-outputs
-  AwsRdsClusterStackOutputs stack_outputs = 1;
+  AwsRdsClusterStackOutputs outputs = 1;
 }

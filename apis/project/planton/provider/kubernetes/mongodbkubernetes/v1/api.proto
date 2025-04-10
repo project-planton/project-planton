@@ -72,5 +72,5 @@ message MongodbKubernetesStatus {
   string stack_job_id = 97;
 
   //stack-outputs
-  MongodbKubernetesStackOutputs stack_outputs = 1;
+  MongodbKubernetesStackOutputs outputs = 1;
 }

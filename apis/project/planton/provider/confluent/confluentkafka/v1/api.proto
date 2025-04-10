@@ -60,5 +60,5 @@ message ConfluentKafkaStatus {
   string stack_job_id = 97;
 
   //stack-outputs
-  ConfluentKafkaStackOutputs stack_outputs = 1;
+  ConfluentKafkaStackOutputs outputs = 1;
 }

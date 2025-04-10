@@ -73,5 +73,5 @@ message GcpSecretsManagerStatus {
   string stack_job_id = 97;
 
   //stack-outputs
-  GcpSecretsManagerStackOutputs stack_outputs = 1;
+  GcpSecretsManagerStackOutputs outputs = 1;
 }

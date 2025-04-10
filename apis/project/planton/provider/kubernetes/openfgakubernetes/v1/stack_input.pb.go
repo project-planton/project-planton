@@ -24,8 +24,8 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// openfga-kubernetes stack-input
-type OpenfgaKubernetesStackInput struct {
+// open-fga-kubernetes stack-input
+type OpenFgaKubernetesStackInput struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -37,13 +37,13 @@ type OpenfgaKubernetesStackInput struct {
 	// terraform input required when the provisioner is terraform
 	Terraform *terraform.TerraformStackInfo `protobuf:"bytes,3,opt,name=terraform,proto3" json:"terraform,omitempty"`
 	// target api-resource
-	Target *OpenfgaKubernetes `protobuf:"bytes,4,opt,name=target,proto3" json:"target,omitempty"`
+	Target *OpenFgaKubernetes `protobuf:"bytes,4,opt,name=target,proto3" json:"target,omitempty"`
 	// provider-credential
 	ProviderCredential *v1.KubernetesClusterCredentialSpec `protobuf:"bytes,5,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
 }
 
-func (x *OpenfgaKubernetesStackInput) Reset() {
-	*x = OpenfgaKubernetesStackInput{}
+func (x *OpenFgaKubernetesStackInput) Reset() {
+	*x = OpenFgaKubernetesStackInput{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_project_planton_provider_kubernetes_openfgakubernetes_v1_stack_input_proto_msgTypes[0]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -51,13 +51,13 @@ func (x *OpenfgaKubernetesStackInput) Reset() {
 	}
 }
 
-func (x *OpenfgaKubernetesStackInput) String() string {
+func (x *OpenFgaKubernetesStackInput) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*OpenfgaKubernetesStackInput) ProtoMessage() {}
+func (*OpenFgaKubernetesStackInput) ProtoMessage() {}
 
-func (x *OpenfgaKubernetesStackInput) ProtoReflect() protoreflect.Message {
+func (x *OpenFgaKubernetesStackInput) ProtoReflect() protoreflect.Message {
 	mi := &file_project_planton_provider_kubernetes_openfgakubernetes_v1_stack_input_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -69,40 +69,40 @@ func (x *OpenfgaKubernetesStackInput) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use OpenfgaKubernetesStackInput.ProtoReflect.Descriptor instead.
-func (*OpenfgaKubernetesStackInput) Descriptor() ([]byte, []int) {
+// Deprecated: Use OpenFgaKubernetesStackInput.ProtoReflect.Descriptor instead.
+func (*OpenFgaKubernetesStackInput) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_kubernetes_openfgakubernetes_v1_stack_input_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *OpenfgaKubernetesStackInput) GetProvisioner() shared.IacProvisioner {
+func (x *OpenFgaKubernetesStackInput) GetProvisioner() shared.IacProvisioner {
 	if x != nil {
 		return x.Provisioner
 	}
 	return shared.IacProvisioner(0)
 }
 
-func (x *OpenfgaKubernetesStackInput) GetPulumi() *pulumi.PulumiStackInfo {
+func (x *OpenFgaKubernetesStackInput) GetPulumi() *pulumi.PulumiStackInfo {
 	if x != nil {
 		return x.Pulumi
 	}
 	return nil
 }
 
-func (x *OpenfgaKubernetesStackInput) GetTerraform() *terraform.TerraformStackInfo {
+func (x *OpenFgaKubernetesStackInput) GetTerraform() *terraform.TerraformStackInfo {
 	if x != nil {
 		return x.Terraform
 	}
 	return nil
 }
 
-func (x *OpenfgaKubernetesStackInput) GetTarget() *OpenfgaKubernetes {
+func (x *OpenFgaKubernetesStackInput) GetTarget() *OpenFgaKubernetes {
 	if x != nil {
 		return x.Target
 	}
 	return nil
 }
 
-func (x *OpenfgaKubernetesStackInput) GetProviderCredential() *v1.KubernetesClusterCredentialSpec {
+func (x *OpenFgaKubernetesStackInput) GetProviderCredential() *v1.KubernetesClusterCredentialSpec {
 	if x != nil {
 		return x.ProviderCredential
 	}
@@ -138,7 +138,7 @@ var file_project_planton_provider_kubernetes_openfgakubernetes_v1_stack_input_pr
 	0x74, 0x6f, 0x6e, 0x2f, 0x73, 0x68, 0x61, 0x72, 0x65, 0x64, 0x2f, 0x69, 0x61, 0x63, 0x2f, 0x74,
 	0x65, 0x72, 0x72, 0x61, 0x66, 0x6f, 0x72, 0x6d, 0x2f, 0x74, 0x65, 0x72, 0x72, 0x61, 0x66, 0x6f,
 	0x72, 0x6d, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0xfe, 0x03, 0x0a, 0x1b, 0x4f, 0x70, 0x65,
-	0x6e, 0x66, 0x67, 0x61, 0x4b, 0x75, 0x62, 0x65, 0x72, 0x6e, 0x65, 0x74, 0x65, 0x73, 0x53, 0x74,
+	0x6e, 0x46, 0x67, 0x61, 0x4b, 0x75, 0x62, 0x65, 0x72, 0x6e, 0x65, 0x74, 0x65, 0x73, 0x53, 0x74,
 	0x61, 0x63, 0x6b, 0x49, 0x6e, 0x70, 0x75, 0x74, 0x12, 0x48, 0x0a, 0x0b, 0x70, 0x72, 0x6f, 0x76,
 	0x69, 0x73, 0x69, 0x6f, 0x6e, 0x65, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x26, 0x2e,
 	0x70, 0x72, 0x6f, 0x6a, 0x65, 0x63, 0x74, 0x2e, 0x70, 0x6c, 0x61, 0x6e, 0x74, 0x6f, 0x6e, 0x2e,
@@ -159,7 +159,7 @@ var file_project_planton_provider_kubernetes_openfgakubernetes_v1_stack_input_pr
 	0x2e, 0x70, 0x6c, 0x61, 0x6e, 0x74, 0x6f, 0x6e, 0x2e, 0x70, 0x72, 0x6f, 0x76, 0x69, 0x64, 0x65,
 	0x72, 0x2e, 0x6b, 0x75, 0x62, 0x65, 0x72, 0x6e, 0x65, 0x74, 0x65, 0x73, 0x2e, 0x6f, 0x70, 0x65,
 	0x6e, 0x66, 0x67, 0x61, 0x6b, 0x75, 0x62, 0x65, 0x72, 0x6e, 0x65, 0x74, 0x65, 0x73, 0x2e, 0x76,
-	0x31, 0x2e, 0x4f, 0x70, 0x65, 0x6e, 0x66, 0x67, 0x61, 0x4b, 0x75, 0x62, 0x65, 0x72, 0x6e, 0x65,
+	0x31, 0x2e, 0x4f, 0x70, 0x65, 0x6e, 0x46, 0x67, 0x61, 0x4b, 0x75, 0x62, 0x65, 0x72, 0x6e, 0x65,
 	0x74, 0x65, 0x73, 0x52, 0x06, 0x74, 0x61, 0x72, 0x67, 0x65, 0x74, 0x12, 0x8b, 0x01, 0x0a, 0x13,
 	0x70, 0x72, 0x6f, 0x76, 0x69, 0x64, 0x65, 0x72, 0x5f, 0x63, 0x72, 0x65, 0x64, 0x65, 0x6e, 0x74,
 	0x69, 0x61, 0x6c, 0x18, 0x05, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x5a, 0x2e, 0x70, 0x72, 0x6f, 0x6a,
@@ -216,19 +216,19 @@ func file_project_planton_provider_kubernetes_openfgakubernetes_v1_stack_input_p
 
 var file_project_planton_provider_kubernetes_openfgakubernetes_v1_stack_input_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_kubernetes_openfgakubernetes_v1_stack_input_proto_goTypes = []any{
-	(*OpenfgaKubernetesStackInput)(nil),        // 0: project.planton.provider.kubernetes.openfgakubernetes.v1.OpenfgaKubernetesStackInput
+	(*OpenFgaKubernetesStackInput)(nil),        // 0: project.planton.provider.kubernetes.openfgakubernetes.v1.OpenFgaKubernetesStackInput
 	(shared.IacProvisioner)(0),                 // 1: project.planton.shared.IacProvisioner
 	(*pulumi.PulumiStackInfo)(nil),             // 2: project.planton.shared.iac.pulumi.PulumiStackInfo
 	(*terraform.TerraformStackInfo)(nil),       // 3: project.planton.shared.iac.terraform.TerraformStackInfo
-	(*OpenfgaKubernetes)(nil),                  // 4: project.planton.provider.kubernetes.openfgakubernetes.v1.OpenfgaKubernetes
+	(*OpenFgaKubernetes)(nil),                  // 4: project.planton.provider.kubernetes.openfgakubernetes.v1.OpenFgaKubernetes
 	(*v1.KubernetesClusterCredentialSpec)(nil), // 5: project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec
 }
 var file_project_planton_provider_kubernetes_openfgakubernetes_v1_stack_input_proto_depIdxs = []int32{
-	1, // 0: project.planton.provider.kubernetes.openfgakubernetes.v1.OpenfgaKubernetesStackInput.provisioner:type_name -> project.planton.shared.IacProvisioner
-	2, // 1: project.planton.provider.kubernetes.openfgakubernetes.v1.OpenfgaKubernetesStackInput.pulumi:type_name -> project.planton.shared.iac.pulumi.PulumiStackInfo
-	3, // 2: project.planton.provider.kubernetes.openfgakubernetes.v1.OpenfgaKubernetesStackInput.terraform:type_name -> project.planton.shared.iac.terraform.TerraformStackInfo
-	4, // 3: project.planton.provider.kubernetes.openfgakubernetes.v1.OpenfgaKubernetesStackInput.target:type_name -> project.planton.provider.kubernetes.openfgakubernetes.v1.OpenfgaKubernetes
-	5, // 4: project.planton.provider.kubernetes.openfgakubernetes.v1.OpenfgaKubernetesStackInput.provider_credential:type_name -> project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec
+	1, // 0: project.planton.provider.kubernetes.openfgakubernetes.v1.OpenFgaKubernetesStackInput.provisioner:type_name -> project.planton.shared.IacProvisioner
+	2, // 1: project.planton.provider.kubernetes.openfgakubernetes.v1.OpenFgaKubernetesStackInput.pulumi:type_name -> project.planton.shared.iac.pulumi.PulumiStackInfo
+	3, // 2: project.planton.provider.kubernetes.openfgakubernetes.v1.OpenFgaKubernetesStackInput.terraform:type_name -> project.planton.shared.iac.terraform.TerraformStackInfo
+	4, // 3: project.planton.provider.kubernetes.openfgakubernetes.v1.OpenFgaKubernetesStackInput.target:type_name -> project.planton.provider.kubernetes.openfgakubernetes.v1.OpenFgaKubernetes
+	5, // 4: project.planton.provider.kubernetes.openfgakubernetes.v1.OpenFgaKubernetesStackInput.provider_credential:type_name -> project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec
 	5, // [5:5] is the sub-list for method output_type
 	5, // [5:5] is the sub-list for method input_type
 	5, // [5:5] is the sub-list for extension type_name
@@ -244,7 +244,7 @@ func file_project_planton_provider_kubernetes_openfgakubernetes_v1_stack_input_p
 	file_project_planton_provider_kubernetes_openfgakubernetes_v1_api_proto_init()
 	if !protoimpl.UnsafeEnabled {
 		file_project_planton_provider_kubernetes_openfgakubernetes_v1_stack_input_proto_msgTypes[0].Exporter = func(v any, i int) any {
-			switch v := v.(*OpenfgaKubernetesStackInput); i {
+			switch v := v.(*OpenFgaKubernetesStackInput); i {
 			case 0:
 				return &v.state
 			case 1:

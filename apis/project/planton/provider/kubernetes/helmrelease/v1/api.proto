@@ -73,5 +73,5 @@ message HelmReleaseStatus {
 
   //stack-outputs
   // helm-release stack-outputs
-  HelmReleaseStackOutputs stack_outputs = 1;
+  HelmReleaseStackOutputs outputs = 1;
 }

@@ -72,5 +72,5 @@ message GitlabKubernetesStatus {
   string stack_job_id = 97;
 
   //stack-outputs
-  GitlabKubernetesStackOutputs stack_outputs = 1;
+  GitlabKubernetesStackOutputs outputs = 1;
 }

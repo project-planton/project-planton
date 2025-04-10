@@ -62,5 +62,5 @@ message AwsRoute53ZoneStatus {
 
   //stack-outputs
   //  stack outputs
-  AwsRoute53ZoneStackOutputs stack_outputs = 1;
+  AwsRoute53ZoneStackOutputs outputs = 1;
 }

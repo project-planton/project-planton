@@ -72,5 +72,5 @@ message Neo4jKubernetesStatus {
   string stack_job_id = 97;
 
   //stack-outputs
-  Neo4jKubernetesStackOutputs stack_outputs = 1;
+  Neo4jKubernetesStackOutputs outputs = 1;
 }

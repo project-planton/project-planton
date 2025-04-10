@@ -60,5 +60,5 @@ message AwsVpcStatus {
   string stack_job_id = 97;
 
   //stack-outputs
-  AwsVpcStackOutputs stack_outputs = 1;
+  AwsVpcStackOutputs outputs = 1;
 }

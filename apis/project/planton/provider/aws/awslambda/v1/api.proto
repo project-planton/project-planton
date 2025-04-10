@@ -60,5 +60,5 @@ message AwsLambdaStatus {
   string stack_job_id = 97;
 
   //stack-outputs
-  AwsLambdaStackOutputs stack_outputs = 1;
+  AwsLambdaStackOutputs outputs = 1;
 }

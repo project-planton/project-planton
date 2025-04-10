@@ -72,5 +72,5 @@ message StackJobRunnerKubernetesStatus {
   string stack_job_id = 97;
 
   //stack-outputs
-  StackJobRunnerKubernetesStackOutputs stack_outputs = 1;
+  StackJobRunnerKubernetesStackOutputs outputs = 1;
 }

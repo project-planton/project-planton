@@ -72,5 +72,5 @@ message CronJobKubernetesStatus {
   string stack_job_id = 97;
 
   //stack-outputs
-  CronJobKubernetesStackOutputs stack_outputs = 1;
+  CronJobKubernetesStackOutputs outputs = 1;
 }

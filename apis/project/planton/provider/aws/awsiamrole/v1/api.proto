@@ -56,5 +56,5 @@ message AwsIamRoleStatus {
   string stack_job_id = 97;
 
   // stack_outputs captures the outputs returned by Pulumi/Terraform after provisioning.
-  AwsIamRoleStackOutputs stack_outputs = 1;
+  AwsIamRoleStackOutputs outputs = 1;
 }

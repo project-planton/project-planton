@@ -72,5 +72,5 @@ message AzureKeyVaultStatus {
   string stack_job_id = 97;
 
   //stack-outputs
-  AzureKeyVaultStackOutputs stack_outputs = 1;
+  AzureKeyVaultStackOutputs outputs = 1;
 }

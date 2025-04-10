@@ -72,5 +72,5 @@ message PrometheusKubernetesStatus {
   string stack_job_id = 97;
 
   //stack-outputs
-  PrometheusKubernetesStackOutputs stack_outputs = 1;
+  PrometheusKubernetesStackOutputs outputs = 1;
 }

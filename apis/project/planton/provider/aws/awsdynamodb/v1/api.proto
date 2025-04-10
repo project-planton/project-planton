@@ -54,5 +54,5 @@ message AwsDynamodbStatus {
   string stack_job_id = 97;
 
   //stack-outputs
-  AwsDynamodbStackOutputs stack_outputs = 1;
+  AwsDynamodbStackOutputs outputs = 1;
 }

@@ -72,5 +72,5 @@ message LocustKubernetesStatus {
   string stack_job_id = 97;
 
   //stack-outputs
-  LocustKubernetesStackOutputs stack_outputs = 1;
+  LocustKubernetesStackOutputs outputs = 1;
 }

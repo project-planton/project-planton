@@ -32,7 +32,7 @@ func alb(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) (*lb.LoadB
 
 	// If SSL is enabled, create the typical HTTP->HTTPS + HTTPS listeners
 	if locals.AwsAlb.Spec.Ssl.Enabled {
-		if locals.AwsAlb.Spec.Ssl.CertificateArn == "" {
+		if locals.AwsAlb.Spec.Ssl.CertificateArn == nil || locals.AwsAlb.Spec.Ssl.CertificateArn.Value == "" {
 			return nil, fmt.Errorf("ssl.enabled is true, but ssl.certificate_arn is not provided")
 		}
 		if err := sslListeners(ctx, createdLoadBalancer, locals.AwsAlb.Spec.Ssl, provider, locals.AwsAlb.Metadata.Name); err != nil {
@@ -87,7 +87,7 @@ func sslListeners(
 		LoadBalancerArn: pulumi.StringOutput(albResource.Arn),
 		Port:            pulumi.Int(443),
 		Protocol:        pulumi.String("HTTPS"),
-		CertificateArn:  pulumi.String(sslSpec.CertificateArn),
+		CertificateArn:  pulumi.String(sslSpec.CertificateArn.Value),
 		SslPolicy:       pulumi.String("ELBSecurityPolicy-2016-08"), // Hard-coded 80/20
 		DefaultActions: lb.ListenerDefaultActionArray{
 			&lb.ListenerDefaultActionArgs{

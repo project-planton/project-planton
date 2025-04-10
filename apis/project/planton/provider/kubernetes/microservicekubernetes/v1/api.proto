@@ -72,5 +72,5 @@ message MicroserviceKubernetesStatus {
   string stack_job_id = 97;
 
   //stack-outputs
-  MicroserviceKubernetesStackOutputs stack_outputs = 1;
+  MicroserviceKubernetesStackOutputs outputs = 1;
 }

@@ -13,21 +13,21 @@ func helmChart(ctx *pulumi.Context,
 
 	// https://github.com/openfga/helm-charts/blob/main/charts/openfga/values.yaml
 	var helmValues = pulumi.Map{
-		"fullnameOverride": pulumi.String(locals.OpenfgaKubernetes.Metadata.Name),
-		"replicaCount":     pulumi.Int(locals.OpenfgaKubernetes.Spec.Container.Replicas),
+		"fullnameOverride": pulumi.String(locals.OpenFgaKubernetes.Metadata.Name),
+		"replicaCount":     pulumi.Int(locals.OpenFgaKubernetes.Spec.Container.Replicas),
 		"datastore": pulumi.Map{
-			"engine": pulumi.String(locals.OpenfgaKubernetes.Spec.Datastore.Engine),
-			"uri":    pulumi.String(locals.OpenfgaKubernetes.Spec.Datastore.Uri),
+			"engine": pulumi.String(locals.OpenFgaKubernetes.Spec.Datastore.Engine),
+			"uri":    pulumi.String(locals.OpenFgaKubernetes.Spec.Datastore.Uri),
 		},
-		"resources": containerresources.ConvertToPulumiMap(locals.OpenfgaKubernetes.Spec.Container.Resources),
+		"resources": containerresources.ConvertToPulumiMap(locals.OpenFgaKubernetes.Spec.Container.Resources),
 	}
 
 	//merge extra helm values provided in the spec with base values
-	//mergemaps.MergeMapToPulumiMap(helmValues, locals.OpenfgaKubernetes.Spec.HelmValues)
+	//mergemaps.MergeMapToPulumiMap(helmValues, locals.OpenFgaKubernetes.Spec.HelmValues)
 
 	//install openfga helm-chart
 	_, err := helmv3.NewChart(ctx,
-		locals.OpenfgaKubernetes.Metadata.Name,
+		locals.OpenFgaKubernetes.Metadata.Name,
 		helmv3.ChartArgs{
 			Chart:     pulumi.String(vars.HelmChartName),
 			Version:   pulumi.String(vars.HelmChartVersion),

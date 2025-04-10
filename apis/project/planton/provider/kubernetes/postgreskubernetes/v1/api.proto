@@ -72,5 +72,5 @@ message PostgresKubernetesStatus {
   string stack_job_id = 97;
 
   //stack-outputs
-  PostgresKubernetesStackOutputs stack_outputs = 1;
+  PostgresKubernetesStackOutputs outputs = 1;
 }

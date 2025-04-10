@@ -60,5 +60,5 @@ message AwsEcrRepoStatus {
   string stack_job_id = 97;
 
   //stack-outputs
-  AwsEcrRepoStackOutputs stack_outputs = 1;
+  AwsEcrRepoStackOutputs outputs = 1;
 }

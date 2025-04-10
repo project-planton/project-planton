@@ -72,5 +72,5 @@ message JenkinsKubernetesStatus {
   string stack_job_id = 97;
 
   //stack-outputs
-  JenkinsKubernetesStackOutputs stack_outputs = 1;
+  JenkinsKubernetesStackOutputs outputs = 1;
 }

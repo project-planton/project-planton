@@ -60,5 +60,5 @@ message GcpCloudCdnStatus {
   string stack_job_id = 97;
 
   //stack-outputs
-  GcpCloudCdnStackOutputs stack_outputs = 1;
+  GcpCloudCdnStackOutputs outputs = 1;
 }

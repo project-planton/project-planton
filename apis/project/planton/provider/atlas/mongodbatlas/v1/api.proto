@@ -60,5 +60,5 @@ message MongodbAtlasStatus {
   string stack_job_id = 97;
 
   //stack-outputs
-  MongodbAtlasStackOutputs stack_outputs = 1;
+  MongodbAtlasStackOutputs outputs = 1;
 }

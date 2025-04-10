@@ -56,5 +56,5 @@ message AwsEcsClusterStatus {
   string stack_job_id = 97;
 
   // stack_outputs captures the outputs returned by Pulumi/Terraform after provisioning.
-  AwsEcsClusterStackOutputs stack_outputs = 1;
+  AwsEcsClusterStackOutputs outputs = 1;
 }

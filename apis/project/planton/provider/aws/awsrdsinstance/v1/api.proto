@@ -54,5 +54,5 @@ message AwsRdsStatus {
   string stack_job_id = 97;
 
   //stack-outputs
-  AwsRdsInstanceStackOutputs stack_outputs = 1;
+  AwsRdsInstanceStackOutputs outputs = 1;
 }

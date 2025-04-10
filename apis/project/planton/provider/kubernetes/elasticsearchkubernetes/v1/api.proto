@@ -72,5 +72,5 @@ message ElasticsearchKubernetesStatus {
   string stack_job_id = 97;
 
   //stack-outputs
-  ElasticsearchKubernetesStackOutputs stack_outputs = 1;
+  ElasticsearchKubernetesStackOutputs outputs = 1;
 }

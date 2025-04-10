@@ -72,5 +72,5 @@ message SignozKubernetesStatus {
   string stack_job_id = 97;
 
   //stack-outputs
-  SignozKubernetesStackOutputs stack_outputs = 1;
+  SignozKubernetesStackOutputs outputs = 1;
 }

@@ -20,37 +20,37 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// openfga-kubernetes kubernetes status
-type OpenfgaKubernetesStackOutputs struct {
+// open-fga-kubernetes kubernetes status
+type OpenFgaKubernetesStackOutputs struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// kubernetes namespace in which openfga-kubernetes is created.
+	// kubernetes namespace in which open-fga-kubernetes is created.
 	Namespace string `protobuf:"bytes,1,opt,name=namespace,proto3" json:"namespace,omitempty"`
-	// kubernetes service name for openfga-kubernetes.
-	// ex: main-openfga-kubernetes
-	// in the above example, "main" is the name of the openfga-kubernetes
+	// kubernetes service name for open-fga-kubernetes.
+	// ex: main-open-fga-kubernetes
+	// in the above example, "main" is the name of the open-fga-kubernetes
 	Service string `protobuf:"bytes,2,opt,name=service,proto3" json:"service,omitempty"`
-	// command to setup port-forwarding to open openfga-kubernetes from developers laptop.
-	// this might come handy when openfga-kubernetes ingress is disabled for security reasons.
+	// command to setup port-forwarding to open open-fga-kubernetes from developers laptop.
+	// this might come handy when open-fga-kubernetes ingress is disabled for security reasons.
 	// this is rendered by combining openfga_kubernetes_kubernetes_service and kubernetes_namespace
 	// ex: kubectl port-forward svc/openfga_kubernetes_kubernetes_service -n kubernetes_namespace 6379:6379
-	// running the command from this attribute makes it possible to access openfga-kubernetes using http://localhost:8080/openfga
+	// running the command from this attribute makes it possible to access open-fga-kubernetes using http://localhost:8080/openfga
 	PortForwardCommand string `protobuf:"bytes,3,opt,name=port_forward_command,json=portForwardCommand,proto3" json:"port_forward_command,omitempty"`
-	// kubernetes endpoint to connect to openfga-kubernetes from the web browser.
-	// ex: main-openfga-kubernetes.namespace.svc.cluster.local:6379
+	// kubernetes endpoint to connect to open-fga-kubernetes from the web browser.
+	// ex: main-open-fga-kubernetes.namespace.svc.cluster.local:6379
 	KubeEndpoint string `protobuf:"bytes,4,opt,name=kube_endpoint,json=kubeEndpoint,proto3" json:"kube_endpoint,omitempty"`
-	// public endpoint to open openfga-kubernetes from clients outside kubernetes.
+	// public endpoint to open open-fga-kubernetes from clients outside kubernetes.
 	// ex: https://rdc-planton-pcs-dev-main.data.dev.planton.live
 	ExternalHostname string `protobuf:"bytes,5,opt,name=external_hostname,json=externalHostname,proto3" json:"external_hostname,omitempty"`
-	// private endpoint to open openfga-kubernetes from clients inside kubernetes.
+	// private endpoint to open open-fga-kubernetes from clients inside kubernetes.
 	// ex: https://rdc-planton-pcs-dev-main.data-internal.dev.planton.live
 	InternalHostname string `protobuf:"bytes,6,opt,name=internal_hostname,json=internalHostname,proto3" json:"internal_hostname,omitempty"`
 }
 
-func (x *OpenfgaKubernetesStackOutputs) Reset() {
-	*x = OpenfgaKubernetesStackOutputs{}
+func (x *OpenFgaKubernetesStackOutputs) Reset() {
+	*x = OpenFgaKubernetesStackOutputs{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_project_planton_provider_kubernetes_openfgakubernetes_v1_stack_outputs_proto_msgTypes[0]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -58,13 +58,13 @@ func (x *OpenfgaKubernetesStackOutputs) Reset() {
 	}
 }
 
-func (x *OpenfgaKubernetesStackOutputs) String() string {
+func (x *OpenFgaKubernetesStackOutputs) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*OpenfgaKubernetesStackOutputs) ProtoMessage() {}
+func (*OpenFgaKubernetesStackOutputs) ProtoMessage() {}
 
-func (x *OpenfgaKubernetesStackOutputs) ProtoReflect() protoreflect.Message {
+func (x *OpenFgaKubernetesStackOutputs) ProtoReflect() protoreflect.Message {
 	mi := &file_project_planton_provider_kubernetes_openfgakubernetes_v1_stack_outputs_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -76,47 +76,47 @@ func (x *OpenfgaKubernetesStackOutputs) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use OpenfgaKubernetesStackOutputs.ProtoReflect.Descriptor instead.
-func (*OpenfgaKubernetesStackOutputs) Descriptor() ([]byte, []int) {
+// Deprecated: Use OpenFgaKubernetesStackOutputs.ProtoReflect.Descriptor instead.
+func (*OpenFgaKubernetesStackOutputs) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_kubernetes_openfgakubernetes_v1_stack_outputs_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *OpenfgaKubernetesStackOutputs) GetNamespace() string {
+func (x *OpenFgaKubernetesStackOutputs) GetNamespace() string {
 	if x != nil {
 		return x.Namespace
 	}
 	return ""
 }
 
-func (x *OpenfgaKubernetesStackOutputs) GetService() string {
+func (x *OpenFgaKubernetesStackOutputs) GetService() string {
 	if x != nil {
 		return x.Service
 	}
 	return ""
 }
 
-func (x *OpenfgaKubernetesStackOutputs) GetPortForwardCommand() string {
+func (x *OpenFgaKubernetesStackOutputs) GetPortForwardCommand() string {
 	if x != nil {
 		return x.PortForwardCommand
 	}
 	return ""
 }
 
-func (x *OpenfgaKubernetesStackOutputs) GetKubeEndpoint() string {
+func (x *OpenFgaKubernetesStackOutputs) GetKubeEndpoint() string {
 	if x != nil {
 		return x.KubeEndpoint
 	}
 	return ""
 }
 
-func (x *OpenfgaKubernetesStackOutputs) GetExternalHostname() string {
+func (x *OpenFgaKubernetesStackOutputs) GetExternalHostname() string {
 	if x != nil {
 		return x.ExternalHostname
 	}
 	return ""
 }
 
-func (x *OpenfgaKubernetesStackOutputs) GetInternalHostname() string {
+func (x *OpenFgaKubernetesStackOutputs) GetInternalHostname() string {
 	if x != nil {
 		return x.InternalHostname
 	}
@@ -135,7 +135,7 @@ var file_project_planton_provider_kubernetes_openfgakubernetes_v1_stack_outputs_
 	0x70, 0x72, 0x6f, 0x76, 0x69, 0x64, 0x65, 0x72, 0x2e, 0x6b, 0x75, 0x62, 0x65, 0x72, 0x6e, 0x65,
 	0x74, 0x65, 0x73, 0x2e, 0x6f, 0x70, 0x65, 0x6e, 0x66, 0x67, 0x61, 0x6b, 0x75, 0x62, 0x65, 0x72,
 	0x6e, 0x65, 0x74, 0x65, 0x73, 0x2e, 0x76, 0x31, 0x22, 0x88, 0x02, 0x0a, 0x1d, 0x4f, 0x70, 0x65,
-	0x6e, 0x66, 0x67, 0x61, 0x4b, 0x75, 0x62, 0x65, 0x72, 0x6e, 0x65, 0x74, 0x65, 0x73, 0x53, 0x74,
+	0x6e, 0x46, 0x67, 0x61, 0x4b, 0x75, 0x62, 0x65, 0x72, 0x6e, 0x65, 0x74, 0x65, 0x73, 0x53, 0x74,
 	0x61, 0x63, 0x6b, 0x4f, 0x75, 0x74, 0x70, 0x75, 0x74, 0x73, 0x12, 0x1c, 0x0a, 0x09, 0x6e, 0x61,
 	0x6d, 0x65, 0x73, 0x70, 0x61, 0x63, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x6e,
 	0x61, 0x6d, 0x65, 0x73, 0x70, 0x61, 0x63, 0x65, 0x12, 0x18, 0x0a, 0x07, 0x73, 0x65, 0x72, 0x76,
@@ -198,7 +198,7 @@ func file_project_planton_provider_kubernetes_openfgakubernetes_v1_stack_outputs
 
 var file_project_planton_provider_kubernetes_openfgakubernetes_v1_stack_outputs_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_kubernetes_openfgakubernetes_v1_stack_outputs_proto_goTypes = []any{
-	(*OpenfgaKubernetesStackOutputs)(nil), // 0: project.planton.provider.kubernetes.openfgakubernetes.v1.OpenfgaKubernetesStackOutputs
+	(*OpenFgaKubernetesStackOutputs)(nil), // 0: project.planton.provider.kubernetes.openfgakubernetes.v1.OpenFgaKubernetesStackOutputs
 }
 var file_project_planton_provider_kubernetes_openfgakubernetes_v1_stack_outputs_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type
@@ -215,7 +215,7 @@ func file_project_planton_provider_kubernetes_openfgakubernetes_v1_stack_outputs
 	}
 	if !protoimpl.UnsafeEnabled {
 		file_project_planton_provider_kubernetes_openfgakubernetes_v1_stack_outputs_proto_msgTypes[0].Exporter = func(v any, i int) any {
-			switch v := v.(*OpenfgaKubernetesStackOutputs); i {
+			switch v := v.(*OpenFgaKubernetesStackOutputs); i {
 			case 0:
 				return &v.state
 			case 1:

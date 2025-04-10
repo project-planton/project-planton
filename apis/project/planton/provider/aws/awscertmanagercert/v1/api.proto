@@ -56,5 +56,5 @@ message AwsCertManagerCertStatus {
   string stack_job_id = 97;
 
   // stack_outputs captures the outputs returned by Pulumi/Terraform after provisioning.
-  AwsCertManagerCertStackOutputs stack_outputs = 1;
+  AwsCertManagerCertStackOutputs outputs = 1;
 }
