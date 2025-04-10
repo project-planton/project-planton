@@ -6,8 +6,20 @@ import (
 )
 
 const (
-	StringInConstraint = "string.in"
+	MetadataFieldPath                      = "metadata"
+	MetadataNameConstraintId               = "metadata.name"
+	RequiredConstraint                     = "required"
+	RequiredViolationMessage               = "value is required"
+	StringInConstraint                     = "string.in"
+	metadataVersionMessage                 = "metadata.version.message"
+	metadataVersionMessageViolationMessage = "Version message is required and cannot be empty"
 )
+
+var VersionMessageViolation = &ExpectedViolation{
+	FieldPath:    MetadataFieldPath,
+	ConstraintId: metadataVersionMessage,
+	Message:      metadataVersionMessageViolationMessage,
+}
 
 type ExpectedViolation struct {
 	FieldPath    string

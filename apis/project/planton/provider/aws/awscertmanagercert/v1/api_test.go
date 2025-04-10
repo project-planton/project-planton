@@ -16,157 +16,140 @@ func TestAwsCertManagerCert(t *testing.T) {
 }
 
 var _ = Describe("AwsCertManagerCert", func() {
-	Context("with an empty input", func() {
+
+	var input *AwsCertManagerCert
+
+	BeforeEach(func() {
+		input = &AwsCertManagerCert{
+			ApiVersion: "aws.project-planton.org/v1",
+			Metadata: &shared.ApiResourceMetadata{
+				Name: "a-test-name",
+				Version: &shared.ApiResourceMetadataVersion{
+					Message: "a version message",
+				},
+			},
+			Spec: &AwsCertManagerCertSpec{
+				PrimaryDomainName: "example.com",
+				AlternateDomainNames: []string{
+					"www.example.com",
+					"test.example.com",
+				},
+				Route53HostedZoneId: "a-route53-hosted-zone-id",
+				ValidationMethod:    "DNS",
+			},
+		}
+	})
+
+	Context("when valid input is passed", func() {
 		It("should not return a validation error", func() {
-			input := &AwsCertManagerCert{}
 			err := protovalidate.Validate(input)
 			Expect(err).To(BeNil())
+		})
+	})
+
+	Context("when name is not passed", func() {
+		It("should return a validation error for 'metadata.name'", func() {
+			input.Metadata.Name = ""
+
+			err := protovalidate.Validate(input)
+			Expect(err).NotTo(BeNil())
+			var validationErr *protovalidate.ValidationError
+			if errors.As(err, &validationErr) {
+				Expect(len(validationErr.Violations)).To(Equal(1))
+				expected := &validateutil.ExpectedViolation{
+					FieldPath:    validateutil.MetadataFieldPath,
+					ConstraintId: validateutil.MetadataNameConstraintId,
+					Message:      "Name must be between 3 and 63 characters long",
+				}
+				validateutil.Match(validationErr.Violations[0], expected)
+			}
 		})
 	})
 
 	Context("when version message is not passed", func() {
 		It("should return a validation error indicating 'version.message' is missing", func() {
-			input := &AwsCertManagerCert{
-				ApiVersion: "aws.project-planton.org/v1",
-				Metadata:   &shared.ApiResourceMetadata{},
-			}
+			input.Metadata.Version.Message = ""
 			err := protovalidate.Validate(input)
 			Expect(err).NotTo(BeNil())
-			Expect(err.Error()).To(ContainSubstring("[metadata.version.message"))
-			Expect(err.Error()).To(ContainSubstring("Version message is required and cannot be empty"))
+			var validationErr *protovalidate.ValidationError
+			if errors.As(err, &validationErr) {
+				Expect(len(validationErr.Violations)).To(Equal(1))
+				validateutil.Match(validationErr.Violations[0], validateutil.VersionMessageViolation)
+			}
 		})
 	})
 
 	Context("when metadata is not passed", func() {
 		It("should return a validation error for missing metadata", func() {
-			input := &AwsCertManagerCert{
-				ApiVersion: "aws.project-planton.org/v1",
-			}
+			input.Metadata = nil
 			err := protovalidate.Validate(input)
 			Expect(err).NotTo(BeNil())
-			Expect(err.Error()).To(ContainSubstring("[metadata]"))
-			Expect(err.Error()).To(ContainSubstring("value is required"))
-		})
-	})
-
-	Context("when version message is passed", func() {
-		It("should not return a validation error", func() {
-			input := &AwsCertManagerCert{
-				ApiVersion: "aws.project-planton.org/v1",
-				Metadata: &shared.ApiResourceMetadata{
-					Version: &shared.ApiResourceMetadataVersion{
-						Message: "test aws-cert-manager-cert",
-					},
-				},
+			var validationErr *protovalidate.ValidationError
+			if errors.As(err, &validationErr) {
+				Expect(len(validationErr.Violations)).To(Equal(1))
+				expected := &validateutil.ExpectedViolation{
+					FieldPath:    validateutil.MetadataFieldPath,
+					ConstraintId: validateutil.RequiredConstraint,
+					Message:      validateutil.RequiredViolationMessage,
+				}
+				validateutil.Match(validationErr.Violations[0], expected)
 			}
-			err := protovalidate.Validate(input)
-			Expect(err).To(BeNil())
 		})
 	})
 
 	Context("when name is empty", func() {
 		It("should return a validation error for 'metadata.name'", func() {
-			input := &AwsCertManagerCert{
-				ApiVersion: "aws.project-planton.org/v1",
-				Metadata: &shared.ApiResourceMetadata{
-					Version: &shared.ApiResourceMetadataVersion{
-						Message: "test aws-cert-manager-cert",
-					},
-				},
-			}
+			input.Metadata.Name = ""
 			err := protovalidate.Validate(input)
-			Expect(err).NotTo(BeNil())
-			Expect(err.Error()).To(ContainSubstring("[metadata.name]"))
-			Expect(err.Error()).To(ContainSubstring("Name must be between 3 and 63 characters long"))
+			Expect(err).ToNot(BeNil())
+			var validationErr *protovalidate.ValidationError
+			if errors.As(err, &validationErr) {
+				Expect(len(validationErr.Violations)).To(Equal(1))
+				expected := &validateutil.ExpectedViolation{
+					FieldPath:    validateutil.MetadataFieldPath,
+					ConstraintId: validateutil.MetadataNameConstraintId,
+					Message:      "Name must be between 3 and 63 characters long",
+				}
+				validateutil.Match(validationErr.Violations[0], expected)
+			}
 		})
 	})
 
-	Context("when name length is greater than 63", func() {
-		It("should return a validation error for 'metadata.name'", func() {
-			input := &AwsCertManagerCert{
-				ApiVersion: "aws.project-planton.org/v1",
-				Metadata: &shared.ApiResourceMetadata{
-					Name: "this is test name to check length validation. adding additional text to make it greater than 63",
-					Version: &shared.ApiResourceMetadataVersion{
-						Message: "test aws-cert-manager-cert",
-					},
-				},
-			}
+	Context("when name length is greater than allowed)", func() {
+		It("should return a validation error", func() {
+			input.Metadata.Name = "a-really-really-long-name-that-is-greater-than-63-characters-long"
 			err := protovalidate.Validate(input)
-			Expect(err).NotTo(BeNil())
-			Expect(err.Error()).To(ContainSubstring("[metadata.name]"))
-			Expect(err.Error()).To(ContainSubstring("Name must be between 3 and 63 characters long"))
-		})
-	})
-
-	Context("when name length is valid (less than or equal to 63)", func() {
-		It("should not return a validation error", func() {
-			input := &AwsCertManagerCert{
-				ApiVersion: "aws.project-planton.org/v1",
-				Metadata: &shared.ApiResourceMetadata{
-					Name: "test",
-					Version: &shared.ApiResourceMetadataVersion{
-						Message: "test aws-cert-manager-cert",
-					},
-				},
+			Expect(err).ToNot(BeNil())
+			var validationErr *protovalidate.ValidationError
+			if errors.As(err, &validationErr) {
+				Expect(len(validationErr.Violations)).To(Equal(1))
+				expected := &validateutil.ExpectedViolation{
+					FieldPath:    validateutil.MetadataFieldPath,
+					ConstraintId: validateutil.MetadataNameConstraintId,
+					Message:      "Name must be between 3 and 63 characters long",
+				}
+				validateutil.Match(validationErr.Violations[0], expected)
 			}
-			err := protovalidate.Validate(input)
-			Expect(err).To(BeNil())
 		})
 	})
 
 	Context("when validation method is invalid", func() {
 		It("should return a validation error for 'spec.validation_method'", func() {
-			input := &AwsCertManagerCert{
-				ApiVersion: "aws.project-planton.org/v1",
-				Metadata: &shared.ApiResourceMetadata{
-					Name: "testName",
-					Version: &shared.ApiResourceMetadataVersion{
-						Message: "test aws-cert-manager-cert",
-					},
-				},
-				Spec: &AwsCertManagerCertSpec{
-					PrimaryDomainName:   "example.com",
-					Route53HostedZoneId: "Z123456ABCXYZ",
-					ValidationMethod:    "FAKE",
-				},
-			}
+			input.Spec.ValidationMethod = "FAKE"
+
 			err := protovalidate.Validate(input)
-			Expect(err).NotTo(BeNil())
+			Expect(err).ToNot(BeNil())
 			var validationErr *protovalidate.ValidationError
-			if err != nil {
-				if errors.As(err, &validationErr) {
-					for _, violation := range validationErr.Violations {
-						expected := &validateutil.ExpectedViolation{
-							FieldPath:    "spec.validation_method",
-							ConstraintId: validateutil.StringInConstraint,
-							Message:      "value must be in list [\"DNS\", \"EMAIL\"]",
-						}
-						validateutil.Match(violation, expected)
+			if errors.As(err, &validationErr) {
+				for _, violation := range validationErr.Violations {
+					expected := &validateutil.ExpectedViolation{
+						FieldPath:    "spec.validation_method",
+						ConstraintId: validateutil.StringInConstraint,
+						Message:      "value must be in list [\"DNS\", \"EMAIL\"]",
 					}
+					validateutil.Match(violation, expected)
 				}
 			}
-		})
-	})
-
-	Context("when validation method is set to DNS", func() {
-		It("should not return a validation error", func() {
-			input := &AwsCertManagerCert{
-				ApiVersion: "aws.project-planton.org/v1",
-				Metadata: &shared.ApiResourceMetadata{
-					Name: "example.com",
-					Version: &shared.ApiResourceMetadataVersion{
-						Message: "aws-cert-manager-cert test",
-					},
-				},
-				Spec: &AwsCertManagerCertSpec{
-					PrimaryDomainName:   "example.com",
-					Route53HostedZoneId: "Z123456ABCXYZ",
-					ValidationMethod:    "DNS",
-				},
-			}
-			err := protovalidate.Validate(input)
-			Expect(err).To(BeNil())
 		})
 	})
 })
