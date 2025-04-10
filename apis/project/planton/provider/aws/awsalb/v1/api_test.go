@@ -25,7 +25,10 @@ var _ = Describe("AwsAlbSpec Custom Validation Tests", func() {
 						Name: "test-alb-resource",
 					},
 					Spec: &AwsAlbSpec{
-						Subnets: []string{"subnet-abc123"},
+						Subnets: []string{
+							"subnet-abc1",
+							"subnet-abc2",
+						},
 					},
 				}
 

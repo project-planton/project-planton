@@ -96,7 +96,7 @@ release-github:
 #         apis/internal/generated/docs/docs.json
 
 .PHONY: release
-release: protos build-cli release-github release-buf
+release: protos build-cli test release-github release-buf
 
 .PHONY: run-docs
 run-docs:
