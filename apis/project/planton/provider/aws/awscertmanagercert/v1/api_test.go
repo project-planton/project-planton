@@ -4,7 +4,9 @@ import (
 	"github.com/bufbuild/protovalidate-go"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
+	"github.com/pkg/errors"
 	"github.com/project-planton/project-planton/apis/project/planton/shared"
+	"github.com/project-planton/project-planton/apis/project/planton/shared/validateutil"
 	"testing"
 )
 
@@ -31,7 +33,7 @@ var _ = Describe("AwsCertManagerCert", func() {
 			err := protovalidate.Validate(input)
 			Expect(err).NotTo(BeNil())
 			Expect(err.Error()).To(ContainSubstring("[metadata.version.message"))
-			Expect(err.Error()).To(ContainSubstring("Version message is mandatory and cannot be empty"))
+			Expect(err.Error()).To(ContainSubstring("Version message is required and cannot be empty"))
 		})
 	})
 
@@ -131,7 +133,19 @@ var _ = Describe("AwsCertManagerCert", func() {
 			}
 			err := protovalidate.Validate(input)
 			Expect(err).NotTo(BeNil())
-			Expect(err.Error()).To(ContainSubstring("[spec.validation_method]"))
+			var validationErr *protovalidate.ValidationError
+			if err != nil {
+				if errors.As(err, &validationErr) {
+					for _, violation := range validationErr.Violations {
+						expected := &validateutil.ExpectedViolation{
+							FieldPath:    "spec.validation_method",
+							ConstraintId: validateutil.StringInConstraint,
+							Message:      "value must be in list [\"DNS\", \"EMAIL\"]",
+						}
+						validateutil.Match(violation, expected)
+					}
+				}
+			}
 		})
 	})
 
