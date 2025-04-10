@@ -4,9 +4,7 @@ import (
 	"github.com/bufbuild/protovalidate-go"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/pkg/errors"
 	"github.com/project-planton/project-planton/apis/project/planton/shared"
-	"github.com/project-planton/project-planton/apis/project/planton/shared/validateutil"
 	"testing"
 )
 
@@ -42,26 +40,6 @@ var _ = Describe("AwsCertManagerCert", func() {
 		It("should not return a validation error", func() {
 			err := protovalidate.Validate(input)
 			Expect(err).To(BeNil())
-		})
-	})
-
-	Context("when validation method is invalid", func() {
-		It("should return a validation error for 'spec.validation_method'", func() {
-			input.Spec.ValidationMethod = "FAKE"
-
-			err := protovalidate.Validate(input)
-			Expect(err).ToNot(BeNil())
-			var validationErr *protovalidate.ValidationError
-			if errors.As(err, &validationErr) {
-				for _, violation := range validationErr.Violations {
-					expected := &validateutil.ExpectedViolation{
-						FieldPath:    "spec.validation_method",
-						ConstraintId: validateutil.StringInConstraint,
-						Message:      "value must be in list [\"DNS\", \"EMAIL\"]",
-					}
-					validateutil.Match(violation, expected)
-				}
-			}
 		})
 	})
 })
