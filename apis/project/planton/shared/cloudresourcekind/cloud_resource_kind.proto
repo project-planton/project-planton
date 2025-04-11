@@ -2,62 +2,73 @@ syntax = "proto3";
 
 package project.planton.shared.cloudresourcekind;
 
-//cloud-resource-kind
 enum CloudResourceKind {
+  // 0: Default/unspecified
   unspecified = 0;
-  test_cloud_api_resource = 1;
-  mongodb_atlas = 2;
-  aws_alb = 3;
-  aws_cert_manager_cert = 4;
-  aws_cloudfront = 5;
-  aws_dynamodb = 6;
-  aws_ecr_repo = 7;
-  aws_ecs_cluster = 8;
-  aws_ecs_service = 9;
-  aws_eks_cluster = 10;
-  aws_iam_role = 11;
-  aws_lambda = 12;
-  aws_rds_cluster = 13;
-  aws_rds_instance = 14;
-  aws_route53_zone = 15;
-  aws_s3_bucket = 16;
-  aws_secrets_manager = 17;
-  aws_security_group = 18;
-  aws_static_website = 19;
-  aws_vpc = 20;
-  azure_aks_cluster = 21;
-  azure_key_vault = 22;
-  confluent_kafka = 23;
-  gcp_artifact_registry_repo = 24;
-  gcp_cloud_cdn = 25;
-  gcp_cloud_function = 26;
-  gcp_cloud_run = 27;
-  gcp_cloud_sql = 28;
-  gcp_dns_zone = 29;
-  gcp_gcs_bucket = 30;
-  gcp_gke_addon_bundle = 31;
-  gcp_gke_cluster = 32;
-  gcp_secrets_manager = 33;
-  gcp_static_website = 34;
-  argocd_kubernetes = 35;
-  cronjob_kubernetes = 36;
-  elasticsearch_kubernetes = 37;
-  gitlab_kubernetes = 38;
-  grafana_kubernetes = 39;
-  helm_release = 40;
-  jenkins_kubernetes = 41;
-  kafka_kubernetes = 42;
-  keycloak_kubernetes = 43;
-  kubernetes_http_endpoint = 44;
-  locust_kubernetes = 45;
-  microservice_kubernetes = 46;
-  mongodb_kubernetes = 47;
-  neo4j_kubernetes = 48;
-  openfga_kubernetes = 49;
-  postgres_kubernetes = 50;
-  prometheus_kubernetes = 51;
-  redis_kubernetes = 52;
-  signoz_kubernetes = 53;
-  solr_kubernetes = 54;
-  stack_job_runner_kubernetes = 55;
+
+  // 1–99: Test/dev/custom
+  first_test_cloud_api_resource = 1;
+  second_test_cloud_api_resource = 2;
+  third_test_cloud_api_resource = 3;
+
+  // 100–199: AWS resources
+  mongodb_atlas = 100;
+  aws_alb = 101;
+  aws_cert_manager_cert = 102;
+  aws_cloudfront = 103;
+  aws_dynamodb = 104;
+  aws_ecr_repo = 105;
+  aws_ecs_cluster = 106;
+  aws_ecs_service = 107;
+  aws_eks_cluster = 108;
+  aws_iam_role = 109;
+  aws_lambda = 110;
+  aws_rds_cluster = 111;
+  aws_rds_instance = 112;
+  aws_route53_zone = 113;
+  aws_s3_bucket = 114;
+  aws_secrets_manager = 115;
+  aws_security_group = 116;
+  aws_static_website = 117;
+  aws_vpc = 118;
+
+  // 200–299: Azure resources
+  azure_aks_cluster = 200;
+  azure_key_vault = 201;
+
+  // 300–399: GCP resources
+  gcp_artifact_registry_repo = 300;
+  gcp_cloud_cdn = 301;
+  gcp_cloud_function = 302;
+  gcp_cloud_run = 303;
+  gcp_cloud_sql = 304;
+  gcp_dns_zone = 305;
+  gcp_gcs_bucket = 306;
+  gcp_gke_addon_bundle = 307;
+  gcp_gke_cluster = 308;
+  gcp_secrets_manager = 309;
+  gcp_static_website = 310;
+
+  // 400–499: Kubernetes resources
+  argocd_kubernetes = 400;
+  cronjob_kubernetes = 401;
+  elasticsearch_kubernetes = 402;
+  gitlab_kubernetes = 403;
+  grafana_kubernetes = 404;
+  helm_release = 405;
+  jenkins_kubernetes = 406;
+  kafka_kubernetes = 407;
+  keycloak_kubernetes = 408;
+  kubernetes_http_endpoint = 409;
+  locust_kubernetes = 410;
+  microservice_kubernetes = 411;
+  mongodb_kubernetes = 412;
+  neo4j_kubernetes = 413;
+  openfga_kubernetes = 414;
+  postgres_kubernetes = 415;
+  prometheus_kubernetes = 416;
+  redis_kubernetes = 417;
+  signoz_kubernetes = 418;
+  solr_kubernetes = 419;
+  stack_job_runner_kubernetes = 420;
 }
