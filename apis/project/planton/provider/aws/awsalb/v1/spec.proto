@@ -70,8 +70,12 @@ message AwsAlbDns {
 message AwsAlbSsl {
   bool enabled = 1;
 
-  project.planton.shared.foreignkey.v1.StringValueOrRef certificate_arn = 2 [
-    (project.planton.shared.foreignkey.v1.default_kind) = aws_cert_manager_cert,
-    (project.planton.shared.foreignkey.v1.default_kind_field_path) = "status.stack_outputs.cert_arn"
-  ];
+  option (buf.validate.message) = {
+    cel: {
+      id: "cert_arn_required_if_ssl_enabled",
+      message: "certificate_arn must be set if ssl.enabled is true",
+      expression: "!this.enabled || (has(this.certificate_arn.value) || has(this.certificate_arn.value_from))"
+    }
+  };
+  project.planton.shared.foreignkey.v1.StringValueOrRef certificate_arn = 2;
 }
