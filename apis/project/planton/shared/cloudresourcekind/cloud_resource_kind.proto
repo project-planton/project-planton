@@ -6,69 +6,71 @@ enum CloudResourceKind {
   // 0: Default/unspecified
   unspecified = 0;
 
-  // 1–99: Test/dev/custom
+  // 1–49: Test/dev/custom
   first_test_cloud_api_resource = 1;
   second_test_cloud_api_resource = 2;
   third_test_cloud_api_resource = 3;
 
-  // 100–199: AWS resources
-  mongodb_atlas = 100;
-  aws_alb = 101;
-  aws_cert_manager_cert = 102;
-  aws_cloudfront = 103;
-  aws_dynamodb = 104;
-  aws_ecr_repo = 105;
-  aws_ecs_cluster = 106;
-  aws_ecs_service = 107;
-  aws_eks_cluster = 108;
-  aws_iam_role = 109;
-  aws_lambda = 110;
-  aws_rds_cluster = 111;
-  aws_rds_instance = 112;
-  aws_route53_zone = 113;
-  aws_s3_bucket = 114;
-  aws_secrets_manager = 115;
-  aws_security_group = 116;
-  aws_static_website = 117;
-  aws_vpc = 118;
+  // 50–199: saas platform resources
+  mongodb_atlas = 50;
 
-  // 200–299: Azure resources
-  azure_aks_cluster = 200;
-  azure_key_vault = 201;
+  // 200–399: AWS resources
+  aws_alb = 200;
+  aws_cert_manager_cert = 201;
+  aws_cloudfront = 202;
+  aws_dynamodb = 203;
+  aws_ecr_repo = 204;
+  aws_ecs_cluster = 205;
+  aws_ecs_service = 206;
+  aws_eks_cluster = 207;
+  aws_iam_role = 208;
+  aws_lambda = 209;
+  aws_rds_cluster = 210;
+  aws_rds_instance = 211;
+  aws_route53_zone = 212;
+  aws_s3_bucket = 213;
+  aws_secrets_manager = 214;
+  aws_security_group = 215;
+  aws_static_website = 216;
+  aws_vpc = 217;
 
-  // 300–399: GCP resources
-  gcp_artifact_registry_repo = 300;
-  gcp_cloud_cdn = 301;
-  gcp_cloud_function = 302;
-  gcp_cloud_run = 303;
-  gcp_cloud_sql = 304;
-  gcp_dns_zone = 305;
-  gcp_gcs_bucket = 306;
-  gcp_gke_addon_bundle = 307;
-  gcp_gke_cluster = 308;
-  gcp_secrets_manager = 309;
-  gcp_static_website = 310;
+  // 400–599: Azure resources
+  azure_aks_cluster = 400;
+  azure_key_vault = 401;
 
-  // 400–499: Kubernetes resources
-  argocd_kubernetes = 400;
-  cronjob_kubernetes = 401;
-  elasticsearch_kubernetes = 402;
-  gitlab_kubernetes = 403;
-  grafana_kubernetes = 404;
-  helm_release = 405;
-  jenkins_kubernetes = 406;
-  kafka_kubernetes = 407;
-  keycloak_kubernetes = 408;
-  kubernetes_http_endpoint = 409;
-  locust_kubernetes = 410;
-  microservice_kubernetes = 411;
-  mongodb_kubernetes = 412;
-  neo4j_kubernetes = 413;
-  openfga_kubernetes = 414;
-  postgres_kubernetes = 415;
-  prometheus_kubernetes = 416;
-  redis_kubernetes = 417;
-  signoz_kubernetes = 418;
-  solr_kubernetes = 419;
-  stack_job_runner_kubernetes = 420;
+  // 600–799: GCP resources
+  gcp_artifact_registry_repo = 600;
+  gcp_cloud_cdn = 601;
+  gcp_cloud_function = 602;
+  gcp_cloud_run = 603;
+  gcp_cloud_sql = 604;
+  gcp_dns_zone = 605;
+  gcp_gcs_bucket = 606;
+  gcp_gke_addon_bundle = 607;
+  gcp_gke_cluster = 608;
+  gcp_secrets_manager = 609;
+  gcp_static_website = 610;
+
+  // 800–999: Kubernetes resources
+  argocd_kubernetes = 800;
+  cronjob_kubernetes = 801;
+  elasticsearch_kubernetes = 802;
+  gitlab_kubernetes = 803;
+  grafana_kubernetes = 804;
+  helm_release = 805;
+  jenkins_kubernetes = 806;
+  kafka_kubernetes = 807;
+  keycloak_kubernetes = 808;
+  kubernetes_http_endpoint = 809;
+  locust_kubernetes = 810;
+  microservice_kubernetes = 811;
+  mongodb_kubernetes = 812;
+  neo4j_kubernetes = 813;
+  openfga_kubernetes = 814;
+  postgres_kubernetes = 815;
+  prometheus_kubernetes = 816;
+  redis_kubernetes = 817;
+  signoz_kubernetes = 818;
+  solr_kubernetes = 819;
+  stack_job_runner_kubernetes = 820;
 }
