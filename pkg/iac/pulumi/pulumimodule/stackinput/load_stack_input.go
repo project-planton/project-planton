@@ -60,7 +60,7 @@ func LoadStackInput(ctx *pulumi.Context, stackInput proto.Message) error {
 	}
 
 	v, err := protovalidate.New(
-		protovalidate.WithDisableLazy(true),
+		protovalidate.WithDisableLazy(),
 		protovalidate.WithMessages((*targetSpec).Interface()),
 	)
 	if err != nil {

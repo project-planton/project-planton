@@ -24,7 +24,7 @@ const (
 // all the pointer-taking logic is in one place.
 func Match(actual *validate.Violation, expected *ExpectedViolation) {
 	// Convert the expected FieldPath to a pointer for a BeEquivalentTo check
-	Expect(actual.FieldPath).To(BeEquivalentTo(&expected.FieldPath))
+	Expect(actual.Field).To(BeEquivalentTo(&expected.FieldPath))
 
 	// Same pattern for constraint ID
 	var wantConstraintId = expected.ConstraintId
