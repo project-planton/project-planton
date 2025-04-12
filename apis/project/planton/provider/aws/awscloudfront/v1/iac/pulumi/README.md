@@ -6,7 +6,7 @@
 
 This Pulumi module is designed to provision AWS CloudFront resources using a standardized API structure that mirrors Kubernetes resource modeling. By utilizing fields like `apiVersion`, `kind`, `metadata`, `spec`, and `status`, it ensures consistency and simplicity in managing infrastructure as code across multiple cloud providers.
 
-The module accepts an API resource as input and sets up an AWS provider based on the provided specifications. It leverages Pulumi to manage resources, capturing outputs and storing them in `status.stackOutputs`. This approach streamlines the deployment process, allowing developers to define complex infrastructure through straightforward YAML configurations.
+The module accepts an API resource as input and sets up an AWS provider based on the provided specifications. It leverages Pulumi to manage resources, capturing outputs and storing them in `status.outputs`. This approach streamlines the deployment process, allowing developers to define complex infrastructure through straightforward YAML configurations.
 
 ## Key Features
 

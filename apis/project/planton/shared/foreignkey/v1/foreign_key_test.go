@@ -39,7 +39,7 @@ var _ = Describe("ForeignKey Oneof Tests", func() {
 							Kind:      cloudresourcekind.CloudResourceKind_first_test_cloud_api_resource,
 							Env:       "dev",
 							Name:      "my-cert",
-							FieldPath: "status.stack_outputs.cert_arn",
+							FieldPath: "status.outputs.cert_arn",
 						},
 					},
 				}

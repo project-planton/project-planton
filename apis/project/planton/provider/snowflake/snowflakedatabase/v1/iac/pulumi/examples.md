@@ -131,7 +131,7 @@ The module expects a `SnowflakeDatabaseStackInput` which includes:
 
 ### Exported Outputs
 
-Upon successful execution, the module exports the following outputs to `status.stackOutputs`:
+Upon successful execution, the module exports the following outputs to `status.outputs`:
 
 - **Database ID**: The unique identifier assigned to the created Snowflake database, which can be used for management and monitoring purposes.
 - **Bootstrap Endpoint**: The endpoint used by Snowflake clients to connect to the database (e.g., `https://pkc-00000.us-central1.gcp.snowflake.cloud:443`), facilitating client interactions.

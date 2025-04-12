@@ -22,7 +22,7 @@ The AWS VPC Pulumi Module provides a standardized and efficient way to define an
 
 - **Credential Management**: Securely handles AWS credentials via the `awsCredentialId` field, ensuring authenticated and authorized resource deployments.
 
-- **Status Reporting**: Captures and stores outputs such as VPC IDs, Internet Gateway IDs, and subnet details in `status.stackOutputs` for easy reference and further automation.
+- **Status Reporting**: Captures and stores outputs such as VPC IDs, Internet Gateway IDs, and subnet details in `status.outputs` for easy reference and further automation.
 
 ## Architecture
 
@@ -42,7 +42,7 @@ The module operates by accepting an AWS VPC API resource definition as input. It
 
 - **DNS Configuration**: Configures DNS settings within the VPC, such as enabling DNS hostnames and DNS support.
 
-- **Status Outputs**: Outputs from the Pulumi deployment, such as VPC IDs, subnet IDs, and gateway IDs, are captured and stored in `status.stackOutputs` for easy access and integration with other systems.
+- **Status Outputs**: Outputs from the Pulumi deployment, such as VPC IDs, subnet IDs, and gateway IDs, are captured and stored in `status.outputs` for easy access and integration with other systems.
 
 ## Usage
 

@@ -12,7 +12,7 @@
   - **Networking Configuration**: Manages the setup of network protocols and port mappings, facilitating proper communication between services and external clients.
   - **Environment Variable Injection**: Integrates environment variables and secrets into the deployed containers, enabling dynamic configuration and secure handling of sensitive information.
 
-- **Exported Stack Outputs**: Captures essential outputs including deployment statuses, service endpoints, and resource identifiers in `status.stackOutputs`. These outputs facilitate integration with other infrastructure components, enabling effective monitoring, management, and automation workflows.
+- **Exported Stack Outputs**: Captures essential outputs including deployment statuses, service endpoints, and resource identifiers in `status.outputs`. These outputs facilitate integration with other infrastructure components, enabling effective monitoring, management, and automation workflows.
 
 - **Scalability and Flexibility**: Designed to accommodate a wide range of microservice architectures, the module supports varying levels of complexity and can be easily extended to meet evolving infrastructure demands, ensuring long-term adaptability.
 
@@ -169,7 +169,7 @@ The module expects a `MicroserviceKubernetesStackInput` which includes:
 
 ### Exported Outputs
 
-Upon successful execution, the module exports the following outputs to `status.stackOutputs`:
+Upon successful execution, the module exports the following outputs to `status.outputs`:
 
 - **Deployment Status**: Information regarding the deployment status of the microservice, enabling users to monitor the progress and health of their applications.
 - **Service Endpoints**: The endpoints exposed by the microservice, facilitating access and integration with other services or external clients.

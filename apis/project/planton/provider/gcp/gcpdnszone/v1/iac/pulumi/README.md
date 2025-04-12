@@ -32,7 +32,7 @@ The **GCP DNS Zone Pulumi Module** is a robust solution designed to manage Googl
 
 - **DNS Record Management**: Iterates through the defined DNS records in the API resource, creating each record within the Managed Zone with the appropriate type, name, values, and TTL. This ensures that all DNS configurations are accurately reflected in the GCP environment.
 
-- **Exported Stack Outputs**: Provides essential outputs such as the Managed Zone name, nameservers, and project ID, which are captured in `status.stackOutputs`. These outputs facilitate integration with other infrastructure components and enable effective status tracking within deployment workflows.
+- **Exported Stack Outputs**: Provides essential outputs such as the Managed Zone name, nameservers, and project ID, which are captured in `status.outputs`. These outputs facilitate integration with other infrastructure components and enable effective status tracking within deployment workflows.
 
 - **Error Handling**: Implements comprehensive error handling to ensure that any issues during the creation or configuration of resources are properly reported, aiding in troubleshooting and maintaining infrastructure integrity.
 
@@ -61,7 +61,7 @@ The module expects a `GcpDnsZoneStackInput` which includes:
 
 ### Exported Outputs
 
-Upon successful execution, the module exports the following outputs to `status.stackOutputs`:
+Upon successful execution, the module exports the following outputs to `status.outputs`:
 
 - **Managed Zone Name**: The name of the created Managed Zone.
 - **Nameservers**: The list of nameservers assigned to the Managed Zone.

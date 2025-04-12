@@ -4,7 +4,7 @@
 
 The **Confluent Cloud Kafka Pulumi Module** is designed to simplify the deployment and management of Confluent Cloud Kafka clusters across multiple cloud providers. By leveraging Google Cloud Platform (GCP), AWS, and Azure, this module integrates seamlessly with Planton Cloud's unified API framework, which models every API resource using a Kubernetes-like structure with `apiVersion`, `kind`, `metadata`, `spec`, and `status` fields. The `ConfluentKafka` resource defines the necessary specifications for provisioning Kafka clusters in Confluent Cloud, enabling developers to manage their messaging infrastructure as code effortlessly.
 
-By utilizing this Pulumi module, developers can automate the creation of Kafka clusters with specified configurations such as cloud provider selection, availability zones, and environment isolation. The module interacts with Confluent credentials and other necessary specifications provided in the resource definition, ensuring a streamlined and consistent deployment process. Additionally, the outputs from the deployment, including cluster IDs and endpoints, are captured in the resource's `status.stackOutputs`, allowing users to monitor and manage their Kafka infrastructure directly through the `ConfluentKafka` resource.
+By utilizing this Pulumi module, developers can automate the creation of Kafka clusters with specified configurations such as cloud provider selection, availability zones, and environment isolation. The module interacts with Confluent credentials and other necessary specifications provided in the resource definition, ensuring a streamlined and consistent deployment process. Additionally, the outputs from the deployment, including cluster IDs and endpoints, are captured in the resource's `status.outputs`, allowing users to monitor and manage their Kafka infrastructure directly through the `ConfluentKafka` resource.
 
 ## Important Note
 
@@ -32,7 +32,7 @@ By utilizing this Pulumi module, developers can automate the creation of Kafka c
 
 - **Environment Isolation**: Manages isolated environments within Confluent Cloud, ensuring resources are organized and segregated according to organizational needs, which aids in maintaining clear boundaries and reducing resource conflicts.
 
-- **Exported Stack Outputs**: Captures essential outputs such as the cluster ID, bootstrap endpoint, Confluent Resource Name (CRN), and REST endpoint in `status.stackOutputs`. These outputs facilitate integration with other infrastructure components, enabling effective monitoring, management, and automation workflows.
+- **Exported Stack Outputs**: Captures essential outputs such as the cluster ID, bootstrap endpoint, Confluent Resource Name (CRN), and REST endpoint in `status.outputs`. These outputs facilitate integration with other infrastructure components, enabling effective monitoring, management, and automation workflows.
 
 - **Scalability and Flexibility**: Designed to accommodate a wide range of Kafka cluster configurations, the module supports varying levels of complexity and can be easily extended to meet evolving infrastructure demands, ensuring long-term adaptability.
 
@@ -63,7 +63,7 @@ The module expects a `ConfluentKafkaStackInput` which includes:
 
 ### Exported Outputs
 
-Upon successful execution, the module exports the following outputs to `status.stackOutputs`:
+Upon successful execution, the module exports the following outputs to `status.outputs`:
 
 - **Cluster ID**: The unique identifier assigned to the created Kafka cluster, which can be used for management and monitoring purposes.
 - **Bootstrap Endpoint**: The endpoint used by Kafka clients to connect to the Kafka cluster (e.g., `SASL_SSL://pkc-00000.us-central1.gcp.confluent.cloud:9092`), facilitating client interactions.

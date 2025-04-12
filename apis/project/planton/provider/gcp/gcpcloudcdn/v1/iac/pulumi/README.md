@@ -20,7 +20,7 @@
   
 - **Environment Isolation**: Manages isolated environments within GCP, ensuring resources are organized and segregated according to organizational needs, which aids in maintaining clear boundaries and reducing resource conflicts.
   
-- **Exported Stack Outputs**: Captures essential outputs such as resource identifiers and endpoint URLs in `status.stackOutputs`. These outputs facilitate integration with other infrastructure components, enabling effective monitoring, management, and automation workflows.
+- **Exported Stack Outputs**: Captures essential outputs such as resource identifiers and endpoint URLs in `status.outputs`. These outputs facilitate integration with other infrastructure components, enabling effective monitoring, management, and automation workflows.
   
 - **Scalability and Flexibility**: Designed to accommodate a wide range of Cloud CDN configurations, the module supports varying levels of complexity and can be easily extended to meet evolving infrastructure demands, ensuring long-term adaptability.
   
@@ -51,7 +51,7 @@ The module expects a `GcpCloudCdnStackInput` which includes:
 
 ### Exported Outputs
 
-Upon successful execution, the module exports the following outputs to `status.stackOutputs`:
+Upon successful execution, the module exports the following outputs to `status.outputs`:
 
 - **Resource ID**: The unique identifier assigned to the created Cloud CDN resource, which can be used for management and monitoring purposes.
 - **Endpoint URL**: The endpoint URL of the Cloud CDN service, facilitating client interactions and content delivery.

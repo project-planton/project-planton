@@ -2,7 +2,7 @@
 
 ## Overview
 
-The `AwsRdsCluster` Pulumi module allows developers to deploy and manage Amazon RDS clusters with a Kubernetes-like API resource modeling system. This module enables the creation of highly available, scalable, and secure RDS clusters, supporting engines like Aurora, Aurora PostgreSQL, and Aurora MySQL. It abstracts away much of the complexity involved in infrastructure management and empowers developers to define infrastructure in a simple YAML format. The Pulumi module captures cloud resource details in `status.stackOutputs` for monitoring and management, making it easier to track the state of the deployed infrastructure.
+The `AwsRdsCluster` Pulumi module allows developers to deploy and manage Amazon RDS clusters with a Kubernetes-like API resource modeling system. This module enables the creation of highly available, scalable, and secure RDS clusters, supporting engines like Aurora, Aurora PostgreSQL, and Aurora MySQL. It abstracts away much of the complexity involved in infrastructure management and empowers developers to define infrastructure in a simple YAML format. The Pulumi module captures cloud resource details in `status.outputs` for monitoring and management, making it easier to track the state of the deployed infrastructure.
 
 ## Key Features
 
@@ -20,13 +20,13 @@ The `AwsRdsCluster` Pulumi module allows developers to deploy and manage Amazon 
 
 - **Easy Integration with AWS IAM:** You can specify whether to enable IAM database authentication, allowing AWS IAM roles to manage database credentials.
 
-- **Stack Outputs for Easy Monitoring:** The module captures critical information such as the RDS cluster identifier, master endpoint, and reader endpoint in the `status.stackOutputs`, simplifying the management and connection to the RDS cluster.
+- **Stack Outputs for Easy Monitoring:** The module captures critical information such as the RDS cluster identifier, master endpoint, and reader endpoint in the `status.outputs`, simplifying the management and connection to the RDS cluster.
 
 - **Simplified API Resource Structure:** The module follows a Kubernetes-like structure for API resources, making it intuitive for developers familiar with Kubernetes. Each resource includes fields for `apiVersion`, `kind`, `metadata`, `spec`, and `status`, mirroring the structure of Kubernetes objects.
 
 ## Pulumi Integration
 
-The Pulumi module utilizes Pulumi’s Go SDK for AWS, allowing dynamic resource creation based on the API resource’s specification. The Pulumi outputs from the module are captured in the `status.stackOutputs`, allowing you to monitor and manage your infrastructure directly from your Pulumi stack. The module integrates seamlessly with AWS through an AWS provider, ensuring that the appropriate credentials and permissions are applied during the resource creation process.
+The Pulumi module utilizes Pulumi’s Go SDK for AWS, allowing dynamic resource creation based on the API resource’s specification. The Pulumi outputs from the module are captured in the `status.outputs`, allowing you to monitor and manage your infrastructure directly from your Pulumi stack. The module integrates seamlessly with AWS through an AWS provider, ensuring that the appropriate credentials and permissions are applied during the resource creation process.
 
 ## API-Resource Fields
 
@@ -54,7 +54,7 @@ The `spec` section defines the desired state of the RDS cluster. It includes fie
 - `performanceInsights`: Enables AWS Performance Insights for performance monitoring.
 
 ### `status`
-This section reflects the current status of the RDS cluster. It includes details like the RDS cluster identifier, master and reader endpoints, and other outputs from Pulumi. These outputs are captured in the `status.stackOutputs`, providing real-time visibility into the state of the infrastructure.
+This section reflects the current status of the RDS cluster. It includes details like the RDS cluster identifier, master and reader endpoints, and other outputs from Pulumi. These outputs are captured in the `status.outputs`, providing real-time visibility into the state of the infrastructure.
 
 ## Usage
 

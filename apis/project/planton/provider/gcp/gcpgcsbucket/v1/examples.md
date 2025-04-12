@@ -8,7 +8,7 @@
 
 The **Microservice Kubernetes Pulumi Module** is designed to simplify the deployment and management of microservices on Kubernetes within a multi-cloud infrastructure. Leveraging Planton Cloud's unified API framework, this module models each API resource using a Kubernetes-like structure with `apiVersion`, `kind`, `metadata`, `spec`, and `status` fields. The `MicroserviceKubernetes` resource encapsulates the necessary specifications for provisioning Kubernetes-based microservices, enabling developers to manage their application infrastructure as code with ease and consistency.
 
-By utilizing this Pulumi module, developers can automate the creation and configuration of Kubernetes deployments based on defined specifications such as container images, environment variables, resource allocations, and network protocols. The module seamlessly integrates with Kubernetes clusters and other cloud provider services specified in the resource definition, ensuring secure and authenticated interactions. Additionally, the outputs generated from the deployment, including service endpoints and resource identifiers, are captured in the resource's `status.stackOutputs`. This facilitates effective monitoring and management of microservices directly through the `MicroserviceKubernetes` resource, enhancing operational efficiency and infrastructure visibility.
+By utilizing this Pulumi module, developers can automate the creation and configuration of Kubernetes deployments based on defined specifications such as container images, environment variables, resource allocations, and network protocols. The module seamlessly integrates with Kubernetes clusters and other cloud provider services specified in the resource definition, ensuring secure and authenticated interactions. Additionally, the outputs generated from the deployment, including service endpoints and resource identifiers, are captured in the resource's `status.outputs`. This facilitates effective monitoring and management of microservices directly through the `MicroserviceKubernetes` resource, enhancing operational efficiency and infrastructure visibility.
 
 ## Key Features
 
@@ -36,7 +36,7 @@ By utilizing this Pulumi module, developers can automate the creation and config
 
 - **Environment Isolation**: Manages isolated environments within Kubernetes, ensuring resources are organized and segregated according to organizational needs, which aids in maintaining clear boundaries and reducing resource conflicts.
 
-- **Exported Stack Outputs**: Captures essential outputs such as service endpoints and resource identifiers in `status.stackOutputs`. These outputs facilitate integration with other infrastructure components, enabling effective monitoring, management, and automation workflows.
+- **Exported Stack Outputs**: Captures essential outputs such as service endpoints and resource identifiers in `status.outputs`. These outputs facilitate integration with other infrastructure components, enabling effective monitoring, management, and automation workflows.
 
 - **Scalability and Flexibility**: Designed to accommodate a wide range of microservice configurations, the module supports varying levels of complexity and can be easily extended to meet evolving infrastructure demands, ensuring long-term adaptability.
 
@@ -342,7 +342,7 @@ The module expects a `MicroserviceKubernetesStackInput` which includes:
 
 ### Exported Outputs
 
-Upon successful execution, the module exports the following outputs to `status.stackOutputs`:
+Upon successful execution, the module exports the following outputs to `status.outputs`:
 
 - **Service URL**: The URL of the deployed microservice, facilitating client interactions and service accessibility.
 - **Resource ID**: The unique identifier assigned to the created Kubernetes resources, which can be used for management and monitoring purposes.

@@ -16,7 +16,7 @@
 
 - **Namespace Isolation**: The module provisions a Kubernetes namespace for Grafana, ensuring the deployment is isolated from other applications running in the cluster. It also reuses existing namespaces if specified.
 
-- **Output Management**: The module captures and stores essential deployment details in `status.stackOutputs`, such as:
+- **Output Management**: The module captures and stores essential deployment details in `status.outputs`, such as:
   - The namespace where Grafana is deployed.
   - The service name that exposes Grafana within the Kubernetes cluster.
   - Commands for setting up port-forwarding when ingress is disabled.
@@ -60,7 +60,7 @@ The module leverages Pulumi’s infrastructure-as-code capabilities to manage th
 
 ## Status and Monitoring
 
-All deployment outputs, including service names, ingress endpoints, and port-forwarding commands, are captured and stored in the `status.stackOutputs` field. This information allows administrators and developers to monitor the deployment and access essential details for managing and interacting with the Grafana instance.
+All deployment outputs, including service names, ingress endpoints, and port-forwarding commands, are captured and stored in the `status.outputs` field. This information allows administrators and developers to monitor the deployment and access essential details for managing and interacting with the Grafana instance.
 
 ## Conclusion
 

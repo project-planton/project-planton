@@ -20,7 +20,7 @@ The AWS AWS S3 Bucket Pulumi Module provides a standardized and efficient way to
 
 - **Credential Management**: Securely handles AWS credentials via the `awsCredentialId` field, ensuring authenticated and authorized resource deployments without exposing sensitive information.
 
-- **Status Reporting**: Captures and stores outputs such as the bucket ID in `status.stackOutputs`. This facilitates easy reference and integration with other systems or automation tools.
+- **Status Reporting**: Captures and stores outputs such as the bucket ID in `status.outputs`. This facilitates easy reference and integration with other systems or automation tools.
 
 ## Architecture
 
@@ -36,7 +36,7 @@ The module operates by accepting an AWS AWS S3 Bucket API resource definition as
 
 - **Public Access Configuration**: Controls the bucket's public accessibility by setting the appropriate policies and permissions based on the `isPublic` field.
 
-- **Status Outputs**: Outputs from the Pulumi deployment, such as the bucket ID, are captured and stored in `status.stackOutputs`. This information is crucial for accessing the bucket and integrating with other systems.
+- **Status Outputs**: Outputs from the Pulumi deployment, such as the bucket ID, are captured and stored in `status.outputs`. This information is crucial for accessing the bucket and integrating with other systems.
 
 ## Usage
 

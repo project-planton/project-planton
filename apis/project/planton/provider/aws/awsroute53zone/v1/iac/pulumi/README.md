@@ -29,7 +29,7 @@ By abstracting away the complexity of AWS Route53, the module enables the automa
 The module allows developers to declaratively configure DNS records using simple YAML definitions. Record types, names, values, and TTL can all be specified in the configuration, and the Pulumi engine handles the creation and maintenance of these records.
 
 ### Status and Outputs
-The module provides detailed status outputs, including hosted zone names, IDs, and nameservers. These outputs are captured in the `status.stackOutputs`, allowing you to easily reference them in other resources or applications. This ensures that the created infrastructure can be seamlessly integrated with other components within your environment.
+The module provides detailed status outputs, including hosted zone names, IDs, and nameservers. These outputs are captured in the `status.outputs`, allowing you to easily reference them in other resources or applications. This ensures that the created infrastructure can be seamlessly integrated with other components within your environment.
 
 ## Benefits
 

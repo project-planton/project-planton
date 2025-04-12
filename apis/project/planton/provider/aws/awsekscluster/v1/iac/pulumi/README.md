@@ -20,7 +20,7 @@ The AWS AWS EKS Cluster Pulumi Module provides a standardized and efficient way 
 
 - **Credential Management**: Securely handles AWS credentials via the `awsCredentialId` field, ensuring authenticated and authorized resource deployments without exposing sensitive information.
 
-- **Status Reporting**: Captures and stores outputs such as the cluster endpoint, certificate authority data, and VPC ID in `status.stackOutputs`. This facilitates easy reference and integration with other systems, such as Kubernetes clients or additional automation tools.
+- **Status Reporting**: Captures and stores outputs such as the cluster endpoint, certificate authority data, and VPC ID in `status.outputs`. This facilitates easy reference and integration with other systems, such as Kubernetes clients or additional automation tools.
 
 - **Scalability and High Availability**: Enables the creation of highly available clusters by deploying worker nodes across multiple availability zones.
 
@@ -44,7 +44,7 @@ The module operates by accepting an AWS AWS EKS Cluster API resource definition 
 
   - **Fargate Profiles**: Serverless compute for containers, allowing you to run pods without managing servers.
 
-- **Status Outputs**: Outputs from the Pulumi deployment, such as the cluster endpoint, certificate authority data, and VPC ID, are captured and stored in `status.stackOutputs`. This information is crucial for connecting to the cluster and deploying applications.
+- **Status Outputs**: Outputs from the Pulumi deployment, such as the cluster endpoint, certificate authority data, and VPC ID, are captured and stored in `status.outputs`. This information is crucial for connecting to the cluster and deploying applications.
 
 
 ## Inputs

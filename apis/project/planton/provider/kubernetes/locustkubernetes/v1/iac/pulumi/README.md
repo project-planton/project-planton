@@ -22,7 +22,7 @@
   - Internal and external endpoints for accessing the Locust UI and APIs.
   - TLS-enabled access if applicable.
 
-  These outputs are captured in `status.stackOutputs`, making them easily retrievable for further integration or automation.
+  These outputs are captured in `status.outputs`, making them easily retrievable for further integration or automation.
 
 ## Usage
 

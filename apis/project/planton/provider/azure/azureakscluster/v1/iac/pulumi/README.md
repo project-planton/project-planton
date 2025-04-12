@@ -47,7 +47,7 @@ The core functionality of this module revolves around setting up the Azure provi
    *(Not yet implemented)* The module will provision the AKS cluster and any associated resources based on the specifications provided in the `api-resource.yaml` file.
 
 3. **Output Handling**:  
-   *(Not yet implemented)* Captures the outputs from the Pulumi stack execution and stores them in `status.stackOutputs` for later reference.
+   *(Not yet implemented)* Captures the outputs from the Pulumi stack execution and stores them in `status.outputs` for later reference.
 
 ## Limitations
 

@@ -12,7 +12,7 @@
 
 - **Cloud Provider-Specific Settings**: The module allows specifying cloud provider-specific configurations, such as instance size and type, provider name, and disk auto-scaling options, ensuring that deployments are optimized for the chosen cloud environment.
 
-- **Pulumi Integration**: Leverages Pulumi to manage cloud infrastructure as code. The Pulumi outputs, such as resource IDs, endpoints, and other metadata, are captured in the `status.stackOutputs`, making it easier to track and use in subsequent processes.
+- **Pulumi Integration**: Leverages Pulumi to manage cloud infrastructure as code. The Pulumi outputs, such as resource IDs, endpoints, and other metadata, are captured in the `status.outputs`, making it easier to track and use in subsequent processes.
 
 ## Module Inputs
 

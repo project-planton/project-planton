@@ -20,7 +20,7 @@
   - The internal and external hostnames for accessing Jenkins.
   - Jenkins admin credentials (username and secret key).
   
-  These outputs are stored in the `status.stackOutputs`, ensuring that the necessary connection details are always available for future use.
+  These outputs are stored in the `status.outputs`, ensuring that the necessary connection details are always available for future use.
 
 ## Usage
 

@@ -11,7 +11,7 @@ This Pulumi module automates the creation and management of secrets in AWS Secre
 - **Pulumi Integration**: Leverages Pulumi's infrastructure-as-code capabilities to automate the provisioning and management of AWS Secrets Manager resources.
 - **Credential Management**: Securely handles AWS credentials for authenticating with AWS services.
 - **Simplified Secret Creation**: Allows developers to specify a list of secrets to be created in AWS Secrets Manager using a single YAML file.
-- **Output Handling**: Captures and exports the ARNs of the created secrets, making them available in `status.stackOutputs` for downstream consumption.
+- **Output Handling**: Captures and exports the ARNs of the created secrets, making them available in `status.outputs` for downstream consumption.
 - **Standardized Documentation**: Comprehensive documentation available via buf.build for easy reference.
 
 ## Usage
@@ -50,7 +50,7 @@ The core functionality of this module revolves around creating secrets in AWS Se
    - Sets appropriate tags for resource identification and management.
 
 3. **Output Handling**:  
-   Exports the ARN of each created secret, capturing them in `status.stackOutputs` for easy reference by other resources or applications.
+   Exports the ARN of each created secret, capturing them in `status.outputs` for easy reference by other resources or applications.
 
 ## Limitations
 

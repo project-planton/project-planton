@@ -2,7 +2,7 @@
 
 ## Introduction
 
-The AWS RDS Instance Pulumi module is designed to automate the provisioning, management, and configuration of Amazon RDS instances using a Kubernetes-like API resource model. This module is part of our Unified APIs, which provide a standardized approach to managing cloud resources across multiple cloud providers. The module takes an `AwsRdsInstance` API resource as input, allowing users to specify various parameters such as database engine, version, storage options, security settings, and networking configurations. Once the YAML configuration is provided, the module provisions an RDS instance in AWS, with the outputs captured in `status.stackOutputs` for easy access and integration.
+The AWS RDS Instance Pulumi module is designed to automate the provisioning, management, and configuration of Amazon RDS instances using a Kubernetes-like API resource model. This module is part of our Unified APIs, which provide a standardized approach to managing cloud resources across multiple cloud providers. The module takes an `AwsRdsInstance` API resource as input, allowing users to specify various parameters such as database engine, version, storage options, security settings, and networking configurations. Once the YAML configuration is provided, the module provisions an RDS instance in AWS, with the outputs captured in `status.outputs` for easy access and integration.
 
 ## Key Features
 

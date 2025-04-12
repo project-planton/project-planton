@@ -29,7 +29,7 @@ configurations, and resource customization, providing a comprehensive solution f
 - **Pulumi Integration**: Written in Golang, the module leverages Pulumi for infrastructure as code, enabling seamless
   integration into existing workflows.
 
-- **Outputs Captured in Status**: Pulumi outputs are captured in `status.stackOutputs`, making it easier to retrieve
+- **Outputs Captured in Status**: Pulumi outputs are captured in `status.outputs`, making it easier to retrieve
   deployment information such as service endpoints, credentials, and commands.
 
 - **Resource Labeling and Annotation**: Supports adding custom labels and annotations to Kubernetes resources for better

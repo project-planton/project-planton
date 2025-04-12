@@ -13,7 +13,7 @@ This Pulumi module is designed to automate the deployment of static websites on 
 - **Pulumi Integration**: Utilizes Pulumi's infrastructure-as-code capabilities to automate the provisioning and management of AWS resources required for hosting static websites.
 - **Credential Management**: Securely handles AWS credentials for authenticating with AWS services.
 - **Simplified Deployment**: Allows developers to deploy static websites using a single YAML configuration file.
-- **Output Handling**: Captures and exports essential output parameters, such as the S3 bucket ID, in `status.stackOutputs`.
+- **Output Handling**: Captures and exports essential output parameters, such as the S3 bucket ID, in `status.outputs`.
 - **Standardized Documentation**: Comprehensive documentation available via buf.build for easy reference.
 
 ## Usage
@@ -47,7 +47,7 @@ The core functionality of this module revolves around setting up the AWS provide
    *(Not yet implemented)* The module will provision AWS resources such as S3 buckets for storing static content and CloudFront distributions for content delivery based on the specifications provided in the `api-resource.yaml` file.
 
 3. **Output Handling**:  
-   *(Not yet implemented)* Captures and exports essential outputs, like the S3 bucket ID, storing them in `status.stackOutputs` for easy reference by other resources or applications.
+   *(Not yet implemented)* Captures and exports essential outputs, like the S3 bucket ID, storing them in `status.outputs` for easy reference by other resources or applications.
 
 ## Limitations
 

@@ -18,7 +18,7 @@
   - Internal and external hostnames for accessing Keycloak.
   - A command for setting up port forwarding when ingress is disabled.
   
-  These outputs are stored in `status.stackOutputs`, ensuring that developers have easy access to essential connection details post-deployment.
+  These outputs are stored in `status.outputs`, ensuring that developers have easy access to essential connection details post-deployment.
 
 ## Usage
 

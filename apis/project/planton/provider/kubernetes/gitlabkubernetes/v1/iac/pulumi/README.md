@@ -59,7 +59,7 @@ The module is built on top of Pulumi’s Go SDK, providing deep integration with
 
 ## Status and Monitoring
 
-The outputs from the Pulumi deployment are captured in the `status.stackOutputs` field. These outputs include details about the Kubernetes service, ingress endpoints, and port-forwarding commands. This information provides an easy way for administrators and developers to monitor the status of the GitLab deployment and access critical information for managing the instance.
+The outputs from the Pulumi deployment are captured in the `status.outputs` field. These outputs include details about the Kubernetes service, ingress endpoints, and port-forwarding commands. This information provides an easy way for administrators and developers to monitor the status of the GitLab deployment and access critical information for managing the instance.
 
 ## Conclusion
 

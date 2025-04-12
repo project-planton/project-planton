@@ -96,7 +96,7 @@ Creation and last-updated timestamps, plus user info (if available).
 • **status.stackJobId**  
 The ID of the Pulumi/Terraform job that performed the provisioning.
 
-• **status.stackOutputs**  
+• **status.outputs**  
 Although mostly used for more complex networking resources, any relevant SG outputs may appear here (e.g., the final SG
 ID). Future enhancements may provide deeper insights (like referencing child or peer resources).
 

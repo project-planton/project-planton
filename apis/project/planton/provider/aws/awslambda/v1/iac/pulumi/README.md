@@ -26,7 +26,7 @@ The AWS Lambda Pulumi Module provides a standardized and efficient way to define
 
 - **Credential Management**: Securely handles AWS credentials via the `awsCredentialId` field, ensuring authenticated and authorized resource deployments.
 
-- **Status Reporting**: Captures and stores outputs such as Lambda function IDs and ARNs in `status.stackOutputs` for easy reference and further automation.
+- **Status Reporting**: Captures and stores outputs such as Lambda function IDs and ARNs in `status.outputs` for easy reference and further automation.
 
 ## Architecture
 
@@ -40,7 +40,7 @@ The module operates by accepting an AWS Lambda API resource definition as input.
 
 - **Resource Creation**: Provisions the Lambda function and associated resources as defined in the `spec`, including IAM roles, environment variables, VPC configurations, and event source permissions.
 
-- **Status Outputs**: Outputs from the Pulumi deployment, such as Lambda function IDs and ARNs, are captured and stored in `status.stackOutputs` for easy access and integration with other systems.
+- **Status Outputs**: Outputs from the Pulumi deployment, such as Lambda function IDs and ARNs, are captured and stored in `status.outputs` for easy access and integration with other systems.
 
 ## Usage
 

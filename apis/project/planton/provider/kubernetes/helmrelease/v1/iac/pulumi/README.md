@@ -50,7 +50,7 @@ This module is fully integrated with Pulumi’s Go SDK, enabling Helm release ma
 
 ## Status and Monitoring
 
-All deployment outputs are captured in the `status.stackOutputs` field, providing easy access to the namespace and other key information about the Helm release. This information is crucial for managing and monitoring the state of the Helm release in the Kubernetes cluster.
+All deployment outputs are captured in the `status.outputs` field, providing easy access to the namespace and other key information about the Helm release. This information is crucial for managing and monitoring the state of the Helm release in the Kubernetes cluster.
 
 ## Conclusion
 

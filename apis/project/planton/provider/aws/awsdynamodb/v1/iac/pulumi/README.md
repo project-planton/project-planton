@@ -18,7 +18,7 @@ The AWS DynamoDB Pulumi Module provides a standardized and efficient way to defi
 
 - **Autoscaling Support**: Facilitates the configuration of read and write capacity autoscaling for DynamoDB tables and indexes, allowing for responsive scaling based on workload demands.
 
-- **Status Reporting**: Captures and stores outputs such as table names, ARNs, and policy ARNs in `status.stackOutputs` for easy reference and further automation.
+- **Status Reporting**: Captures and stores outputs such as table names, ARNs, and policy ARNs in `status.outputs` for easy reference and further automation.
 
 ## Architecture
 
@@ -32,7 +32,7 @@ The module operates by accepting an AWS DynamoDB API resource definition as inpu
 
 - **Resource Creation**: Provisions the DynamoDB table and associated resources as defined in the `spec`, including attributes, indexes, encryption settings, and autoscaling policies.
 
-- **Status Outputs**: Outputs from the Pulumi deployment, such as table names, ARNs, and policy ARNs, are captured and stored in `status.stackOutputs` for easy access and integration with other systems.
+- **Status Outputs**: Outputs from the Pulumi deployment, such as table names, ARNs, and policy ARNs, are captured and stored in `status.outputs` for easy access and integration with other systems.
 
 ## Usage
 
