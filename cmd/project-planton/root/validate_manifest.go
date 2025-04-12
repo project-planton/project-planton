@@ -2,6 +2,7 @@ package root
 
 import (
 	"fmt"
+	"github.com/project-planton/project-planton/internal/cli/cliprint"
 	"github.com/project-planton/project-planton/internal/manifest"
 	"github.com/spf13/cobra"
 )
@@ -25,5 +26,5 @@ func validateHandler(cmd *cobra.Command, args []string) {
 		fmt.Printf("%v\n", err)
 		return
 	}
-	println("manifest is valid")
+	cliprint.PrintSuccessMessage("manifest is valid")
 }
