@@ -198,9 +198,25 @@ func (x *AwsAlbDns) GetHostnames() []string {
 
 // AwsAlbSsl defines a toggle for SSL, plus a certificate ARN required if enabled is true.
 type AwsAlbSsl struct {
-	state          protoimpl.MessageState `protogen:"open.v1"`
-	Enabled        bool                   `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`
-	CertificateArn *v1.StringValueOrRef   `protobuf:"bytes,2,opt,name=certificate_arn,json=certificateArn,proto3" json:"certificate_arn,omitempty"`
+	state   protoimpl.MessageState `protogen:"open.v1"`
+	Enabled bool                   `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`
+	// Validation Removed: "certificate_arn must be set if ssl.enabled is true"
+	//
+	// Previously, we enforced a message-level CEL expression on AwsAlbSsl:
+	//
+	//	"!this.enabled || (has(this.certificate_arn.value) || has(this.certificate_arn.value_from))"
+	//
+	// to require a certificate ARN whenever SSL is enabled.
+	//
+	// However, this validation references an external type (`StringValueOrRef`) from
+	// "project.planton.shared.foreignkey.v1", which causes issues in certain Java environments
+	// (see https://github.com/bufbuild/protovalidate-java/issues/118) where cross-package
+	// type resolution fails without extensive descriptor loading.
+	//
+	// Because of that open issue, we have removed the validation rule here. If this is
+	// eventually resolved upstream or we change our approach to descriptor loading, we may
+	// restore the rule at a later time.
+	CertificateArn *v1.StringValueOrRef `protobuf:"bytes,2,opt,name=certificate_arn,json=certificateArn,proto3" json:"certificate_arn,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -267,11 +283,10 @@ const file_project_planton_provider_aws_awsalb_v1_spec_proto_rawDesc = "" +
 	"\tAwsAlbDns\x12\x18\n" +
 	"\aenabled\x18\x01 \x01(\bR\aenabled\x12&\n" +
 	"\x0froute53_zone_id\x18\x02 \x01(\tR\rroute53ZoneId\x12&\n" +
-	"\thostnames\x18\x03 \x03(\tB\b\xbaH\x05\x92\x01\x02\x18\x01R\thostnames\"\xc2\x02\n" +
+	"\thostnames\x18\x03 \x03(\tB\b\xbaH\x05\x92\x01\x02\x18\x01R\thostnames\"\x86\x01\n" +
 	"\tAwsAlbSsl\x12\x18\n" +
 	"\aenabled\x18\x01 \x01(\bR\aenabled\x12_\n" +
-	"\x0fcertificate_arn\x18\x02 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefR\x0ecertificateArn:\xb9\x01\xbaH\xb5\x01\x1a\xb2\x01\n" +
-	" cert_arn_required_if_ssl_enabled\x122certificate_arn must be set if ssl.enabled is true\x1aZ!this.enabled || (has(this.certificate_arn.value) || has(this.certificate_arn.value_from))B\xd7\x02\n" +
+	"\x0fcertificate_arn\x18\x02 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefR\x0ecertificateArnB\xd7\x02\n" +
 	"*com.project.planton.provider.aws.awsalb.v1B\tSpecProtoP\x01Z_github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsalb/v1;awsalbv1\xa2\x02\x05PPPAA\xaa\x02&Project.Planton.Provider.Aws.Awsalb.V1\xca\x02&Project\\Planton\\Provider\\Aws\\Awsalb\\V1\xe2\x022Project\\Planton\\Provider\\Aws\\Awsalb\\V1\\GPBMetadata\xea\x02+Project::Planton::Provider::Aws::Awsalb::V1b\x06proto3"
 
 var (
