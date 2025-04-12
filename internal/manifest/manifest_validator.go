@@ -18,7 +18,7 @@ func Validate(manifestPath string) error {
 	}
 
 	v, err := protovalidate.New(
-		protovalidate.WithDisableLazy(true),
+		protovalidate.WithDisableLazy(),
 		protovalidate.WithMessages(spec),
 	)
 	if err != nil {
