@@ -83,6 +83,7 @@ func (x *RedisKubernetesSpec) GetIngress() *kubernetes.IngressSpec {
 	return nil
 }
 
+// RedisKubernetesContainer defines the container specifications for the Redis deployment.
 type RedisKubernetesContainer struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// The number of Redis pods to deploy.

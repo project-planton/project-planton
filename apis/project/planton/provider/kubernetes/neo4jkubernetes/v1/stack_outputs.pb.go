@@ -21,32 +21,22 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// neo4j-kubernetes stack outputs.
+// Neo4jKubernetes Stack Outputs
 type Neo4JKubernetesStackOutputs struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// kubernetes namespace in which neo4j-kubernetes is created.
+	// The Kubernetes namespace where the Neo4j instance is deployed.
 	Namespace string `protobuf:"bytes,1,opt,name=namespace,proto3" json:"namespace,omitempty"`
-	// kubernetes service name for neo4j-kubernetes.
-	// ex: main-neo4j-kubernetes
-	// in the above example, "main" is the name of the neo4j-kubernetes
+	// The in-cluster Service name for connecting via Bolt/HTTP.
+	// Example: "my-graph-db.default.svc.cluster.local"
 	Service string `protobuf:"bytes,2,opt,name=service,proto3" json:"service,omitempty"`
-	// command to setup port-forwarding to open neo4j-kubernetes from developers laptop.
-	// this might come handy when neo4j-kubernetes ingress is disabled for security reasons.
-	// this is rendered by combining neo4j_kubernetes_kubernetes_service and kubernetes_namespace
-	// ex: kubectl port-forward svc/neo4j_kubernetes_kubernetes_service -n kubernetes_namespace 6379:6379
-	// running the command from this attribute makes it possible to access neo4j-kubernetes using http://localhost:8080/neo4j
-	PortForwardCommand string `protobuf:"bytes,3,opt,name=port_forward_command,json=portForwardCommand,proto3" json:"port_forward_command,omitempty"`
-	// kubernetes endpoint to connect to neo4j-kubernetes from the web browser.
-	// ex: main-neo4j-kubernetes.namespace.svc.cluster.local:6379
-	KubeEndpoint string `protobuf:"bytes,4,opt,name=kube_endpoint,json=kubeEndpoint,proto3" json:"kube_endpoint,omitempty"`
-	// public endpoint to open neo4j-kubernetes from clients outside kubernetes.
-	// ex: https://kck8s-planton-pcs-dev-main.data.dev.planton.live
-	ExternalHostname string `protobuf:"bytes,5,opt,name=external_hostname,json=externalHostname,proto3" json:"external_hostname,omitempty"`
-	// internal endpoint to open neo4j-kubernetes from clients inside kubernetes.
-	// ex: https://kck8s-planton-pcs-dev-main.data-internal.dev.planton.live
-	InternalHostname string `protobuf:"bytes,6,opt,name=internal_hostname,json=internalHostname,proto3" json:"internal_hostname,omitempty"`
-	unknownFields    protoimpl.UnknownFields
-	sizeCache        protoimpl.SizeCache
+	// Bolt URI (internal). For example: "bolt://my-graph-db:7687".
+	// If connecting externally, you might port-forward or set up an Ingress outside this spec.
+	BoltUriKubeEndpoint string `protobuf:"bytes,3,opt,name=bolt_uri_kube_endpoint,json=boltUriKubeEndpoint,proto3" json:"bolt_uri_kube_endpoint,omitempty"`
+	// HTTP URL for the Neo4j browser if enabled. Ex: "http://my-graph-db:7474".
+	// Also typically internal unless you manually expose it.
+	HttpUriKubeEndpoint string `protobuf:"bytes,4,opt,name=http_uri_kube_endpoint,json=httpUriKubeEndpoint,proto3" json:"http_uri_kube_endpoint,omitempty"`
+	unknownFields       protoimpl.UnknownFields
+	sizeCache           protoimpl.SizeCache
 }
 
 func (x *Neo4JKubernetesStackOutputs) Reset() {
@@ -93,30 +83,16 @@ func (x *Neo4JKubernetesStackOutputs) GetService() string {
 	return ""
 }
 
-func (x *Neo4JKubernetesStackOutputs) GetPortForwardCommand() string {
+func (x *Neo4JKubernetesStackOutputs) GetBoltUriKubeEndpoint() string {
 	if x != nil {
-		return x.PortForwardCommand
+		return x.BoltUriKubeEndpoint
 	}
 	return ""
 }
 
-func (x *Neo4JKubernetesStackOutputs) GetKubeEndpoint() string {
+func (x *Neo4JKubernetesStackOutputs) GetHttpUriKubeEndpoint() string {
 	if x != nil {
-		return x.KubeEndpoint
-	}
-	return ""
-}
-
-func (x *Neo4JKubernetesStackOutputs) GetExternalHostname() string {
-	if x != nil {
-		return x.ExternalHostname
-	}
-	return ""
-}
-
-func (x *Neo4JKubernetesStackOutputs) GetInternalHostname() string {
-	if x != nil {
-		return x.InternalHostname
+		return x.HttpUriKubeEndpoint
 	}
 	return ""
 }
@@ -125,14 +101,12 @@ var File_project_planton_provider_kubernetes_neo4jkubernetes_v1_stack_outputs_pr
 
 const file_project_planton_provider_kubernetes_neo4jkubernetes_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Jproject/planton/provider/kubernetes/neo4jkubernetes/v1/stack_outputs.proto\x126project.planton.provider.kubernetes.neo4jkubernetes.v1\"\x86\x02\n" +
+	"Jproject/planton/provider/kubernetes/neo4jkubernetes/v1/stack_outputs.proto\x126project.planton.provider.kubernetes.neo4jkubernetes.v1\"\xbf\x01\n" +
 	"\x1bNeo4jKubernetesStackOutputs\x12\x1c\n" +
 	"\tnamespace\x18\x01 \x01(\tR\tnamespace\x12\x18\n" +
-	"\aservice\x18\x02 \x01(\tR\aservice\x120\n" +
-	"\x14port_forward_command\x18\x03 \x01(\tR\x12portForwardCommand\x12#\n" +
-	"\rkube_endpoint\x18\x04 \x01(\tR\fkubeEndpoint\x12+\n" +
-	"\x11external_hostname\x18\x05 \x01(\tR\x10externalHostname\x12+\n" +
-	"\x11internal_hostname\x18\x06 \x01(\tR\x10internalHostnameB\xc8\x03\n" +
+	"\aservice\x18\x02 \x01(\tR\aservice\x123\n" +
+	"\x16bolt_uri_kube_endpoint\x18\x03 \x01(\tR\x13boltUriKubeEndpoint\x123\n" +
+	"\x16http_uri_kube_endpoint\x18\x04 \x01(\tR\x13httpUriKubeEndpointB\xc8\x03\n" +
 	":com.project.planton.provider.kubernetes.neo4jkubernetes.v1B\x11StackOutputsProtoP\x01Zxgithub.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/neo4jkubernetes/v1;neo4jkubernetesv1\xa2\x02\x05PPPKN\xaa\x026Project.Planton.Provider.Kubernetes.Neo4jkubernetes.V1\xca\x026Project\\Planton\\Provider\\Kubernetes\\Neo4jkubernetes\\V1\xe2\x02BProject\\Planton\\Provider\\Kubernetes\\Neo4jkubernetes\\V1\\GPBMetadata\xea\x02;Project::Planton::Provider::Kubernetes::Neo4jkubernetes::V1b\x06proto3"
 
 var (
