@@ -28,6 +28,9 @@ func helmChart(
 			Version:   pulumi.String(vars.Neo4jHelmChartVersion),
 			Namespace: createdNamespace.Metadata.Name().Elem(),
 			Values: pulumi.Map{
+				"neo4j": pulumi.Map{
+					"name": pulumi.String(locals.Neo4jKubernetes.Metadata.Name),
+				},
 				// Make sure to override the chart’s name to keep it consistent.
 				"fullnameOverride": pulumi.String(locals.Neo4jKubernetes.Metadata.Name),
 
@@ -61,6 +64,11 @@ func helmChart(
 
 				// Use provided labels for the pods (similar to the Redis reference).
 				"podLabels": convertstringmaps.ConvertGoStringMapToPulumiMap(locals.Labels),
+				"volumes": pulumi.Map{
+					"data": pulumi.Map{
+						"mode": pulumi.String("defaultStorageClass"),
+					},
+				},
 			},
 			FetchArgs: helmv3.FetchArgs{
 				Repo: pulumi.String(vars.Neo4jHelmChartRepoUrl),

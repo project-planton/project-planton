@@ -20,7 +20,7 @@ var vars = struct {
 }{
 	Neo4jHelmChartName:      "neo4j",
 	Neo4jHelmChartRepoUrl:   "https://helm.neo4j.com/neo4j",
-	Neo4jHelmChartVersion:   "4.4.12",
+	Neo4jHelmChartVersion:   "2025.03.0",
 	Neo4jPasswordSecretKey:  "password",
 	Neo4jPasswordSecretName: "neo4j-admin-password",
 }
