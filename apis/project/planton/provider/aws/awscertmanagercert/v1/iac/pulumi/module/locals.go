@@ -1,10 +1,10 @@
 package module
 
 import (
+	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
 	"strconv"
 
 	awscertv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awscertmanagercert/v1"
-	"github.com/project-planton/project-planton/internal/apiresourcekind"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/aws/awstagkeys"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
@@ -24,7 +24,7 @@ func initializeLocals(ctx *pulumi.Context, stackInput *awscertv1.AwsCertManagerC
 		awstagkeys.Resource:     strconv.FormatBool(true),
 		awstagkeys.Organization: locals.AwsCertManagerCert.Metadata.Org,
 		awstagkeys.Environment:  locals.AwsCertManagerCert.Metadata.Env,
-		awstagkeys.ResourceKind: string(apiresourcekind.AwsCertManagerCertKind),
+		awstagkeys.ResourceKind: cloudresourcekind.CloudResourceKind_AwsCertManagerCert.String(),
 		awstagkeys.ResourceId:   locals.AwsCertManagerCert.Metadata.Id,
 	}
 

@@ -1,10 +1,10 @@
 package module
 
 import (
+	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
 	"strconv"
 
 	awsalbv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsalb/v1"
-	"github.com/project-planton/project-planton/internal/apiresourcekind"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/aws/awstagkeys"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
@@ -27,7 +27,7 @@ func initializeLocals(ctx *pulumi.Context, stackInput *awsalbv1.AwsAlbStackInput
 		awstagkeys.Resource:     strconv.FormatBool(true),
 		awstagkeys.Organization: locals.AwsAlb.Metadata.Org,
 		awstagkeys.Environment:  locals.AwsAlb.Metadata.Env,
-		awstagkeys.ResourceKind: string(apiresourcekind.AwsAlbKind),
+		awstagkeys.ResourceKind: cloudresourcekind.CloudResourceKind_AwsAlb.String(),
 		awstagkeys.ResourceId:   locals.AwsAlb.Metadata.Id,
 	}
 

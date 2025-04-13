@@ -1,8 +1,8 @@
 package tofu
 
 import (
-	"github.com/project-planton/project-planton/internal/apiresourcekind"
 	"github.com/project-planton/project-planton/internal/cli/flag"
+	"github.com/project-planton/project-planton/internal/crkreflect"
 	"github.com/project-planton/project-planton/pkg/iac/tofu/variablestf"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -43,8 +43,17 @@ func generateVariablesHandler(cmd *cobra.Command, args []string) {
 	outputFile, err := cmd.Flags().GetString(string(flag.OutputFile))
 	flag.HandleFlagErr(err, flag.OutputFile)
 
-	manifestObject := apiresourcekind.ToMessageMap[apiresourcekind.FindMatchingComponent(
-		apiresourcekind.ConvertKindName(kindName))]
+	cloudResourceKind, err := crkreflect.KindFromString(kindName)
+	if err != nil {
+		log.Fatalf("failed to get cloudResourceKind from %s: %v", kindName, err)
+	}
+
+	manifestObject := crkreflect.ToMessageMap[cloudResourceKind]
+
+	if manifestObject == nil {
+		log.Fatalf("proto message not found for %s cloudResourceKind", cloudResourceKind.String())
+	}
+	
 	variablesTfContent, err := variablestf.ProtoToVariablesTF(manifestObject)
 	if err != nil {
 		log.Fatal("failed to generate Terraform variables: ", err)

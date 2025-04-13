@@ -2,14 +2,14 @@ package module
 
 import (
 	gcpgcsbucketv1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpgcsbucket/v1"
-	"github.com/project-planton/project-planton/internal/apiresourcekind"
+	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/gcp/gcplabelkeys"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"strconv"
 )
 
 type Locals struct {
-	GcpLabels map[string]string
+	GcpLabels    map[string]string
 	GcpGcsBucket *gcpgcsbucketv1.GcpGcsBucket
 }
 
@@ -23,7 +23,7 @@ func initializeLocals(ctx *pulumi.Context, stackInput *gcpgcsbucketv1.GcpGcsBuck
 	locals.GcpLabels = map[string]string{
 		gcplabelkeys.Resource:     strconv.FormatBool(true),
 		gcplabelkeys.ResourceName: target.Metadata.Name,
-		gcplabelkeys.ResourceKind: string(apiresourcekind.GcpGcsBucketKind),
+		gcplabelkeys.ResourceKind: cloudresourcekind.CloudResourceKind_GcpGcsBucket.String(),
 	}
 
 	if target.Metadata.Id != "" {

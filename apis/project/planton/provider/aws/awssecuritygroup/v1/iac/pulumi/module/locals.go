@@ -1,10 +1,10 @@
 package module
 
 import (
+	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
 	"strconv"
 
 	awssecuritygroupv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awssecuritygroup/v1"
-	"github.com/project-planton/project-planton/internal/apiresourcekind"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/aws/awstagkeys"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
@@ -27,7 +27,7 @@ func initializeLocals(ctx *pulumi.Context, stackInput *awssecuritygroupv1.AwsSec
 		awstagkeys.Resource:     strconv.FormatBool(true),
 		awstagkeys.Organization: locals.AwsSecurityGroup.Metadata.Org,
 		awstagkeys.Environment:  locals.AwsSecurityGroup.Metadata.Env,
-		awstagkeys.ResourceKind: string(apiresourcekind.AwsSecurityGroupKind),
+		awstagkeys.ResourceKind: cloudresourcekind.CloudResourceKind_AwsSecurityGroup.String(),
 		awstagkeys.ResourceId:   locals.AwsSecurityGroup.Metadata.Id,
 	}
 

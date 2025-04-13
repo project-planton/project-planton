@@ -4,7 +4,7 @@ import (
 	"fmt"
 	locustkubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/locustkubernetes/v1"
 	"github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/locustkubernetes/v1/iac/pulumi/module/outputs"
-	"github.com/project-planton/project-planton/internal/apiresourcekind"
+	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/kuberneteslabelkeys"
 	"github.com/project-planton/project-planton/pkg/overridelabels"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
@@ -35,7 +35,7 @@ func initializeLocals(ctx *pulumi.Context, stackInput *locustkubernetesv1.Locust
 	locals.Labels = map[string]string{
 		kuberneteslabelkeys.Resource:     strconv.FormatBool(true),
 		kuberneteslabelkeys.ResourceName: target.Metadata.Name,
-		kuberneteslabelkeys.ResourceKind: string(apiresourcekind.LocustKubernetesKind),
+		kuberneteslabelkeys.ResourceKind: cloudresourcekind.CloudResourceKind_LocustKubernetes.String(),
 	}
 
 	if target.Metadata.Id != "" {

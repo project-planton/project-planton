@@ -2,9 +2,9 @@ package tofu
 
 import (
 	"github.com/project-planton/project-planton/apis/project/planton/shared/iac/terraform"
-	"github.com/project-planton/project-planton/internal/apiresourcekind"
 	"github.com/project-planton/project-planton/internal/cli/flag"
 	"github.com/project-planton/project-planton/internal/cli/workspace"
+	"github.com/project-planton/project-planton/internal/crkreflect"
 	"github.com/project-planton/project-planton/internal/manifest"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput/stackinputcredentials"
@@ -84,7 +84,7 @@ func initHandler(cmd *cobra.Command, args []string) {
 		log.Fatalf("failed to override values in target manifest file")
 	}
 
-	kindName, err := apiresourcekind.ExtractKindFromProto(manifestObject)
+	kindName, err := crkreflect.ExtractKindFromProto(manifestObject)
 	if err != nil {
 		log.Fatalf("failed to extract kind name from manifest proto %v", err)
 	}

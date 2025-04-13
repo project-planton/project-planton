@@ -3,12 +3,12 @@ package module
 import (
 	"fmt"
 	"github.com/pkg/errors"
+	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
 	"net"
 	"sort"
 	"strconv"
 
 	awsvpcv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsvpc/v1"
-	"github.com/project-planton/project-planton/internal/apiresourcekind"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/aws/awstagkeys"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
@@ -42,7 +42,7 @@ func initializeLocals(ctx *pulumi.Context, stackInput *awsvpcv1.AwsVpcStackInput
 		awstagkeys.Resource:     strconv.FormatBool(true),
 		awstagkeys.Organization: locals.AwsVpc.Metadata.Org,
 		awstagkeys.Environment:  locals.AwsVpc.Metadata.Env,
-		awstagkeys.ResourceKind: string(apiresourcekind.AwsVpcKind),
+		awstagkeys.ResourceKind: cloudresourcekind.CloudResourceKind_AwsVpc.String(),
 		awstagkeys.ResourceId:   locals.AwsVpc.Metadata.Id,
 	}
 

@@ -1,10 +1,10 @@
 package module
 
 import (
+	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
 	"strconv"
 
 	cronjobkubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/cronjobkubernetes/v1"
-	"github.com/project-planton/project-planton/internal/apiresourcekind"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/kuberneteslabelkeys"
 	"github.com/project-planton/project-planton/pkg/overridelabels"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
@@ -27,7 +27,7 @@ func initializeLocals(ctx *pulumi.Context, stackInput *cronjobkubernetesv1.CronJ
 	locals.Labels = map[string]string{
 		kuberneteslabelkeys.Resource:     strconv.FormatBool(true),
 		kuberneteslabelkeys.ResourceName: target.Metadata.Name,
-		kuberneteslabelkeys.ResourceKind: string(apiresourcekind.CronJobKubernetesKind),
+		kuberneteslabelkeys.ResourceKind: cloudresourcekind.CloudResourceKind_CronJobKubernetes.String(),
 	}
 
 	// add resource id if present

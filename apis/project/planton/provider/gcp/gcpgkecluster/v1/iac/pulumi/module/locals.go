@@ -4,7 +4,7 @@ import (
 	"fmt"
 	gcpcredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/gcpcredential/v1"
 	gcpgkeclusterv1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpgkecluster/v1"
-	"github.com/project-planton/project-planton/internal/apiresourcekind"
+	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/gcp/gcplabelkeys"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/kuberneteslabelkeys"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
@@ -13,7 +13,7 @@ import (
 
 type Locals struct {
 	GcpCredentialSpec                     *gcpcredentialv1.GcpCredentialSpec
-	GcpGkeCluster                            *gcpgkeclusterv1.GcpGkeCluster
+	GcpGkeCluster                         *gcpgkeclusterv1.GcpGkeCluster
 	KubernetesPodSecondaryIpRangeName     string
 	KubernetesServiceSecondaryIpRangeName string
 	KubernetesLabels                      map[string]string
@@ -32,13 +32,13 @@ func initializeLocals(ctx *pulumi.Context, stackInput *gcpgkeclusterv1.GcpGkeClu
 	locals.GcpLabels = map[string]string{
 		gcplabelkeys.Resource:     strconv.FormatBool(true),
 		gcplabelkeys.ResourceName: target.Metadata.Name,
-		gcplabelkeys.ResourceKind: string(apiresourcekind.GcpGkeClusterKind),
+		gcplabelkeys.ResourceKind: cloudresourcekind.CloudResourceKind_GcpGkeCluster.String(),
 	}
 
 	locals.KubernetesLabels = map[string]string{
 		kuberneteslabelkeys.Resource:     strconv.FormatBool(true),
 		kuberneteslabelkeys.ResourceName: target.Metadata.Name,
-		kuberneteslabelkeys.ResourceKind: string(apiresourcekind.GcpGkeClusterKind),
+		kuberneteslabelkeys.ResourceKind: cloudresourcekind.CloudResourceKind_GcpGkeCluster.String(),
 	}
 
 	if locals.GcpGkeCluster.Metadata.Org != "" {
