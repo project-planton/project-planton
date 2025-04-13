@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/pkg/errors"
 	"github.com/project-planton/project-planton/apis/project/planton/shared/iac/pulumi"
-	"github.com/project-planton/project-planton/internal/apiresourcekind"
+	"github.com/project-planton/project-planton/internal/crkreflect"
 	"github.com/project-planton/project-planton/internal/manifest"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput"
@@ -26,7 +26,7 @@ func Run(moduleDir, stackFqdn, targetManifestPath string, pulumiOperation pulumi
 		return errors.Wrapf(err, "failed to override values in target manifest file")
 	}
 
-	kindName, err := apiresourcekind.ExtractKindFromProto(manifestObject)
+	kindName, err := crkreflect.ExtractKindFromProto(manifestObject)
 	if err != nil {
 		return errors.Wrapf(err, "failed to extract kind name from manifest proto")
 	}

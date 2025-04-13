@@ -2,8 +2,8 @@ package manifest
 
 import (
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/internal/apiresourcekind"
 	"github.com/project-planton/project-planton/internal/cli/workspace"
+	"github.com/project-planton/project-planton/internal/crkreflect"
 	"github.com/project-planton/project-planton/pkg/ulidgen"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
@@ -38,15 +38,20 @@ func LoadManifest(manifestPath string) (proto.Message, error) {
 		return nil, errors.Wrap(err, "failed to load yaml to json")
 	}
 
-	kindName, err := apiresourcekind.ExtractKindFromTargetManifest(manifestPath)
+	kindName, err := crkreflect.ExtractKindFromTargetManifest(manifestPath)
 	if err != nil {
-		return nil, errors.Wrapf(err, "failed to extract kind from %s stack input yaml", manifestPath)
+		return nil, errors.Wrapf(err, "failed to extract cloudResourceKind from %s stack input yaml", manifestPath)
 	}
 
-	manifest := apiresourcekind.ToMessageMap[apiresourcekind.FindMatchingComponent(apiresourcekind.ConvertKindName(kindName))]
+	cloudResourceKind, err := crkreflect.KindFromString(kindName)
+	if err != nil {
+		return nil, errors.Wrapf(err, "failed to get cloudResourceKind from %s", kindName)
+	}
+
+	manifest := crkreflect.ToMessageMap[cloudResourceKind]
 
 	if manifest == nil {
-		return nil, errors.Errorf("deployment-component does not contain %s", apiresourcekind.ConvertKindName(kindName))
+		return nil, errors.Errorf("proto message not found for %s cloudResourceKind", cloudResourceKind.String())
 	}
 
 	if err := protojson.Unmarshal(jsonBytes, manifest); err != nil {

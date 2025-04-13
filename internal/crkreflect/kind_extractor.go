@@ -1,4 +1,4 @@
-package apiresourcekind
+package crkreflect
 
 import (
 	"github.com/pkg/errors"
@@ -6,8 +6,6 @@ import (
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"gopkg.in/yaml.v3"
 	"os"
-	"regexp"
-	"strings"
 )
 
 const (
@@ -46,18 +44,6 @@ func ExtractKindFromTargetManifest(targetManifest string) (string, error) {
 	}
 
 	return kindStr, nil
-}
-
-func ConvertKindName(kindName string) string {
-	// This uses a Regex to find places where there is an uppercase letter
-	// that is followed by a lowercase letter and separates the words using a hyphen
-	re := regexp.MustCompile("([a-z])([A-Z])")
-	// Replace the matches found by the regex with a hyphen and the matched uppercase letter in lowercase
-	formattedName := re.ReplaceAllStringFunc(kindName, func(match string) string {
-		return match[:1] + "-" + strings.ToLower(match[1:])
-	})
-	// Convert the final string to lowercase and return it
-	return strings.ToLower(formattedName)
 }
 
 func ExtractKindFromProto(manifestObject proto.Message) (string, error) {

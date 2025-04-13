@@ -2,7 +2,7 @@ package module
 
 import (
 	awsdynamodbv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsdynamodb/v1"
-	"github.com/project-planton/project-planton/internal/apiresourcekind"
+	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/aws/awstagkeys"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"strconv"
@@ -23,7 +23,7 @@ func initializeLocals(ctx *pulumi.Context, stackInput *awsdynamodbv1.AwsDynamodb
 		awstagkeys.Resource:     strconv.FormatBool(true),
 		awstagkeys.Organization: locals.AwsDynamodb.Metadata.Org,
 		awstagkeys.Environment:  locals.AwsDynamodb.Metadata.Env,
-		awstagkeys.ResourceKind: string(apiresourcekind.AwsEcsServiceKind),
+		awstagkeys.ResourceKind: cloudresourcekind.CloudResourceKind_AwsEcsService.String(),
 		awstagkeys.ResourceId:   locals.AwsDynamodb.Metadata.Id,
 	}
 

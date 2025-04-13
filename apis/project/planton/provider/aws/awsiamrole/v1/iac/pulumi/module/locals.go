@@ -1,10 +1,10 @@
 package module
 
 import (
+	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
 	"strconv"
 
 	iamrolev1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsiamrole/v1"
-	"github.com/project-planton/project-planton/internal/apiresourcekind"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/aws/awstagkeys"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
@@ -22,7 +22,7 @@ func initializeLocals(ctx *pulumi.Context, stackInput *iamrolev1.AwsIamRoleStack
 		awstagkeys.Resource:     strconv.FormatBool(true),
 		awstagkeys.Organization: locals.AwsIamRole.Metadata.Org,
 		awstagkeys.Environment:  locals.AwsIamRole.Metadata.Env,
-		awstagkeys.ResourceKind: string(apiresourcekind.AwsIamRoleKind),
+		awstagkeys.ResourceKind: cloudresourcekind.CloudResourceKind_AwsIamRole.String(),
 		awstagkeys.ResourceId:   locals.AwsIamRole.Metadata.Id,
 	}
 

@@ -36,7 +36,7 @@ var _ = Describe("ForeignKey Oneof Tests", func() {
 				input := &StringValueOrRef{
 					LiteralOrRef: &StringValueOrRef_ValueFrom{
 						ValueFrom: &ValueFromRef{
-							Kind:      cloudresourcekind.CloudResourceKind_first_test_cloud_api_resource,
+							Kind:      cloudresourcekind.CloudResourceKind_FirstTestCloudApiResource,
 							Env:       "dev",
 							Name:      "my-cert",
 							FieldPath: "status.outputs.cert_arn",
@@ -58,7 +58,7 @@ var _ = Describe("ForeignKey Oneof Tests", func() {
 				}
 				input.LiteralOrRef = &StringValueOrRef_ValueFrom{
 					ValueFrom: &ValueFromRef{
-						Kind: cloudresourcekind.CloudResourceKind_first_test_cloud_api_resource,
+						Kind: cloudresourcekind.CloudResourceKind_FirstTestCloudApiResource,
 						Env:  "dev",
 						Name: "overwrites-literal",
 					},
@@ -91,7 +91,7 @@ var _ = Describe("ForeignKey Oneof Tests", func() {
 				input := &Int32ValueOrRef{
 					LiteralOrRef: &Int32ValueOrRef_ValueFrom{
 						ValueFrom: &ValueFromRef{
-							Kind: cloudresourcekind.CloudResourceKind_first_test_cloud_api_resource,
+							Kind: cloudresourcekind.CloudResourceKind_FirstTestCloudApiResource,
 							Env:  "dev",
 							Name: "ref-int32",
 						},
@@ -113,7 +113,7 @@ var _ = Describe("ForeignKey Oneof Tests", func() {
 				// Overwrite with ValueFromRef
 				input.LiteralOrRef = &Int32ValueOrRef_ValueFrom{
 					ValueFrom: &ValueFromRef{
-						Kind: cloudresourcekind.CloudResourceKind_first_test_cloud_api_resource,
+						Kind: cloudresourcekind.CloudResourceKind_FirstTestCloudApiResource,
 						Env:  "dev",
 						Name: "ref-overwrites-int",
 					},

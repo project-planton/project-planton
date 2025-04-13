@@ -2,7 +2,7 @@ package module
 
 import (
 	gcpdnszonev1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpdnszone/v1"
-	"github.com/project-planton/project-planton/internal/apiresourcekind"
+	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/gcp/gcplabelkeys"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"strconv"
@@ -23,7 +23,7 @@ func initializeLocals(ctx *pulumi.Context, stackInput *gcpdnszonev1.GcpDnsZoneSt
 	locals.GcpLabels = map[string]string{
 		gcplabelkeys.Resource:     strconv.FormatBool(true),
 		gcplabelkeys.ResourceName: target.Metadata.Name,
-		gcplabelkeys.ResourceKind: string(apiresourcekind.GcpDnsZoneKind),
+		gcplabelkeys.ResourceKind: cloudresourcekind.CloudResourceKind_GcpDnsZone.String(),
 	}
 
 	if target.Metadata.Id != "" {

@@ -1,10 +1,10 @@
 package module
 
 import (
+	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
 	"strconv"
 
 	awsecrrepov1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsecrrepo/v1"
-	"github.com/project-planton/project-planton/internal/apiresourcekind"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/aws/awstagkeys"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
@@ -27,7 +27,7 @@ func initializeLocals(ctx *pulumi.Context, stackInput *awsecrrepov1.AwsEcrRepoSt
 		awstagkeys.Resource:     strconv.FormatBool(true),
 		awstagkeys.Organization: locals.AwsEcrRepo.Metadata.Org,
 		awstagkeys.Environment:  locals.AwsEcrRepo.Metadata.Env,
-		awstagkeys.ResourceKind: string(apiresourcekind.AwsEcrRepoKind),
+		awstagkeys.ResourceKind: cloudresourcekind.CloudResourceKind_AwsEcrRepo.String(),
 		awstagkeys.ResourceId:   locals.AwsEcrRepo.Metadata.Id,
 	}
 
