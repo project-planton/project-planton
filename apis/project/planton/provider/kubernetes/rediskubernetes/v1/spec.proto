@@ -42,6 +42,7 @@ message RedisKubernetesSpec {
   project.planton.shared.kubernetes.IngressSpec ingress = 2;
 }
 
+// RedisKubernetesContainer defines the container specifications for the Redis deployment.
 message RedisKubernetesContainer {
   // The number of Redis pods to deploy.
   int32 replicas = 1;
