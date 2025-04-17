@@ -39,23 +39,10 @@ func Resources(ctx *pulumi.Context, stackInput *neo4jkubernetesv1.Neo4JKubernete
 	if err != nil {
 		return errors.Wrapf(err, "failed to create %s namespace", locals.Namespace)
 	}
-
-	// Generate a random admin password (if desired) and store it in a Kubernetes secret.
-	if err := adminPassword(ctx, locals, createdNamespace); err != nil {
-		return errors.Wrap(err, "failed to create admin password secret")
-	}
-
+	
 	// Install the Neo4j Helm chart in the newly created namespace, applying user-specified config.
 	if err := helmChart(ctx, locals, createdNamespace); err != nil {
 		return errors.Wrap(err, "failed to deploy neo4j helm chart")
-	}
-
-	// If ingress is enabled in the spec, create load balancer services to expose Neo4j externally or internally.
-	if locals.Neo4jKubernetes.Spec.Ingress.IsEnabled &&
-		locals.Neo4jKubernetes.Spec.Ingress.DnsDomain != "" {
-		if err := loadBalancerIngress(ctx, locals, createdNamespace); err != nil {
-			return errors.Wrap(err, "failed to create load-balancer ingress resources")
-		}
 	}
 
 	return nil
