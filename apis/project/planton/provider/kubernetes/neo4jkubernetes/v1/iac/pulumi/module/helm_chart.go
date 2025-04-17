@@ -1,26 +1,39 @@
 package module
 
 import (
+	"fmt"
+
 	"github.com/pkg/errors"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/datatypes/stringmaps/convertstringmaps"
-	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/containerresources"
-
 	kubernetescorev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
 	helmv3 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/helm/v3"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// helmChart installs the official or community Neo4j Helm chart
-// using the values derived from the user's inputs.
+// helmChart installs the Neo4j Helm chart with values derived from the spec.
 func helmChart(
 	ctx *pulumi.Context,
 	locals *Locals,
 	createdNamespace *kubernetescorev1.Namespace,
 ) error {
-	// The container fields from the user's spec for convenience:
 	container := locals.Neo4jKubernetes.Spec.Container
 
-	// Install the Helm chart from a specified repo/URL.
+	// honour ingress settings
+	ingressEnabled := locals.Neo4jKubernetes.Spec.Ingress != nil &&
+		locals.Neo4jKubernetes.Spec.Ingress.IsEnabled &&
+		locals.Neo4jKubernetes.Spec.Ingress.DnsDomain != ""
+
+	// optional external LB
+	externalSvc := pulumi.Map{
+		"enabled": pulumi.Bool(ingressEnabled),
+	}
+	if ingressEnabled {
+		externalSvc["type"] = pulumi.String("LoadBalancer")
+		externalSvc["annotations"] = pulumi.StringMap{
+			"external-dns.alpha.kubernetes.io/hostname": pulumi.String(locals.IngressExternalHostname),
+		}
+	}
+
 	_, err := helmv3.NewChart(ctx,
 		locals.Neo4jKubernetes.Metadata.Name,
 		helmv3.ChartArgs{
@@ -30,45 +43,34 @@ func helmChart(
 			Values: pulumi.Map{
 				"neo4j": pulumi.Map{
 					"name": pulumi.String(locals.Neo4jKubernetes.Metadata.Name),
-				},
-				// Make sure to override the chart’s name to keep it consistent.
-				"fullnameOverride": pulumi.String(locals.Neo4jKubernetes.Metadata.Name),
 
-				// Some Helm charts handle resources and container config in slightly different ways.
-				// We'll map container resources, disk size, etc.
-				"image": pulumi.Map{
-					// The official chart often expects "tag" for selecting the version of Neo4j.
-					// We might allow this in the future if your proto includes an image version field.
-					"tag": pulumi.String("5.5.0"),
-				},
-				"resources": containerresources.ConvertToPulumiMap(container.Resources),
-				"persistence": pulumi.Map{
-					"enabled": pulumi.Bool(container.IsPersistenceEnabled),
-					"size":    pulumi.String(container.DiskSize),
-				},
+					// let the chart create its own secret + password
+					// (no passwordFromSecret / passwordKey provided)
 
-				// We’re referencing the password secret from admin_password.go
-				"auth": pulumi.Map{
-					"existingSecret":            pulumi.String(vars.Neo4jPasswordSecretName),
-					"existingSecretPasswordKey": pulumi.String(vars.Neo4jPasswordSecretKey),
-				},
-
-				// Optional memory config from the proto for heap and page cache.
-				// If not provided, the chart will apply default.
-				"conf": pulumi.Map{
-					"neo4j": pulumi.Map{
-						"dbms.memory.heap.maxSize":   pulumi.String(locals.Neo4jKubernetes.Spec.MemoryConfig.HeapMax),
-						"dbms.memory.pagecache.size": pulumi.String(locals.Neo4jKubernetes.Spec.MemoryConfig.PageCache),
+					"resources": pulumi.Map{
+						"cpu":    pulumi.String(container.Resources.Limits.Cpu),
+						"memory": pulumi.String(container.Resources.Limits.Memory),
 					},
+					"acceptLicenseAgreement": pulumi.String("yes"),
 				},
 
-				// Use provided labels for the pods (similar to the Redis reference).
-				"podLabels": convertstringmaps.ConvertGoStringMapToPulumiMap(locals.Labels),
+				"externalService": externalSvc,
+
+				// persistence
 				"volumes": pulumi.Map{
 					"data": pulumi.Map{
 						"mode": pulumi.String("defaultStorageClass"),
+						"size": pulumi.String(container.DiskSize),
 					},
 				},
+
+				// neo4j.conf overrides
+				"config": pulumi.Map{
+					"server.memory.heap.initial_size": pulumi.String(locals.Neo4jKubernetes.Spec.MemoryConfig.HeapMax),
+					"server.memory.pagecache.size":    pulumi.String(locals.Neo4jKubernetes.Spec.MemoryConfig.PageCache),
+				},
+
+				"podLabels": convertstringmaps.ConvertGoStringMapToPulumiMap(locals.Labels),
 			},
 			FetchArgs: helmv3.FetchArgs{
 				Repo: pulumi.String(vars.Neo4jHelmChartRepoUrl),
@@ -77,7 +79,18 @@ func helmChart(
 		pulumi.Parent(createdNamespace),
 	)
 	if err != nil {
-		return errors.Wrap(err, "failed to create neo4j helm chart")
+		return errors.Wrap(err, "failed to deploy neo4j helm chart")
 	}
+
+	// ---------------------------------------------------------------------
+	// Export outputs
+	// ---------------------------------------------------------------------
+	ctx.Export(OpUsername, pulumi.String("neo4j"))
+
+	// the chart creates: <release>-auth  with key "neo4j-password"
+	secretName := fmt.Sprintf("%s-auth", locals.Neo4jKubernetes.Metadata.Name)
+	ctx.Export(OpPasswordSecretName, pulumi.String(secretName))
+	ctx.Export(OpPasswordSecretKey, pulumi.String("neo4j-password"))
+
 	return nil
 }
