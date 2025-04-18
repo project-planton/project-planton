@@ -2,6 +2,7 @@ package module
 
 import (
 	"fmt"
+	"github.com/pkg/errors"
 	microservicekubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/microservicekubernetes/v1"
 	"github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/microservicekubernetes/v1/iac/pulumi/module/outputs"
 	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
@@ -109,6 +110,10 @@ func initializeLocals(ctx *pulumi.Context, stackInput *microservicekubernetesv1.
 	locals.IngressCertClusterIssuerName = target.Spec.Ingress.DnsDomain
 
 	locals.IngressCertSecretName = locals.Namespace
+
+	if locals.MicroserviceKubernetes.Spec.Container.App.Image == nil {
+		return nil, errors.New("spec.container.app.image is required")
+	}
 
 	return locals, nil
 }
