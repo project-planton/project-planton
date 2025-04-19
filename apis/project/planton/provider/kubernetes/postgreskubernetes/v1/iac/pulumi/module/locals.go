@@ -3,7 +3,6 @@ package module
 import (
 	"fmt"
 	postgreskubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/postgreskubernetes/v1"
-	"github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/postgreskubernetes/v1/iac/pulumi/module/outputs"
 	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/kuberneteslabelkeys"
 	"github.com/project-planton/project-planton/pkg/overridelabels"
@@ -55,37 +54,37 @@ func initializeLocals(ctx *pulumi.Context, stackInput *postgreskubernetesv1.Post
 		locals.Namespace = target.Metadata.Labels[overridelabels.KubernetesNamespaceLabelKey]
 	}
 
-	ctx.Export(outputs.Namespace, pulumi.String(locals.Namespace))
+	ctx.Export(OpNamespace, pulumi.String(locals.Namespace))
 
 	locals.PostgresPodSectorLabels = map[string]string{
-		kuberneteslabelkeys.ResourceName: target.Metadata.Name,
+		"team": vars.TeamId,
 	}
 
-	ctx.Export(outputs.UsernameSecretName,
+	ctx.Export(OpUsernameSecretName,
 		pulumi.Sprintf("postgres.db-%s.credentials.postgresql.acid.zalan.do",
 			target.Metadata.Name))
-	ctx.Export(outputs.UsernameSecretKey, pulumi.String("username"))
+	ctx.Export(OpUsernameSecretKey, pulumi.String("username"))
 
-	ctx.Export(outputs.PasswordSecretName,
+	ctx.Export(OpPasswordSecretName,
 		pulumi.Sprintf("postgres.db-%s.credentials.postgresql.acid.zalan.do",
 			target.Metadata.Name))
-	ctx.Export(outputs.PasswordSecretKey, pulumi.String("password"))
+	ctx.Export(OpPasswordSecretKey, pulumi.String("password"))
 
 	locals.KubeServiceName = fmt.Sprintf("%s-master", target.Metadata.Name)
 
 	//export kubernetes service name
-	ctx.Export(outputs.Service, pulumi.String(locals.KubeServiceName))
+	ctx.Export(OpService, pulumi.String(locals.KubeServiceName))
 
 	locals.KubeServiceFqdn = fmt.Sprintf("%s.%s.svc.cluster.local", locals.KubeServiceName, locals.Namespace)
 
 	//export kubernetes endpoint
-	ctx.Export(outputs.KubeEndpoint, pulumi.String(locals.KubeServiceFqdn))
+	ctx.Export(OpKubeEndpoint, pulumi.String(locals.KubeServiceFqdn))
 
 	locals.KubePortForwardCommand = fmt.Sprintf("kubectl port-forward -n %s service/%s 8080:8080",
 		locals.Namespace, locals.KubeServiceName)
 
 	//export kube-port-forward command
-	ctx.Export(outputs.PortForwardCommand, pulumi.String(locals.KubePortForwardCommand))
+	ctx.Export(OpPortForwardCommand, pulumi.String(locals.KubePortForwardCommand))
 
 	if target.Spec.Ingress == nil ||
 		!target.Spec.Ingress.IsEnabled ||
@@ -100,8 +99,8 @@ func initializeLocals(ctx *pulumi.Context, stackInput *postgreskubernetesv1.Post
 		target.Spec.Ingress.DnsDomain)
 
 	//export ingress hostnames
-	ctx.Export(outputs.ExternalHostname, pulumi.String(locals.IngressExternalHostname))
-	ctx.Export(outputs.InternalHostname, pulumi.String(locals.IngressInternalHostname))
+	ctx.Export(OpExternalHostname, pulumi.String(locals.IngressExternalHostname))
+	ctx.Export(OpInternalHostname, pulumi.String(locals.IngressInternalHostname))
 
 	return locals
 }

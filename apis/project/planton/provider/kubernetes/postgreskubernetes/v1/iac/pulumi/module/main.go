@@ -114,37 +114,5 @@ func Resources(ctx *pulumi.Context, stackInput *postgreskubernetesv1.PostgresKub
 		return errors.Wrapf(err, "failed to create external load balancer service")
 	}
 
-	//create kubernetes-service of type load-balancer(internal)
-	//this load-balancer can be used by postgres clients outside the kubernetes cluster
-	//but are running in the same vpc network ex: a google cloud function/aws fargate service deployed in the same vpc.
-	_, err = kubernetescorev1.NewService(ctx,
-		"ingress-internal-lb",
-		&kubernetescorev1.ServiceArgs{
-			Metadata: &kubernetesmetav1.ObjectMetaArgs{
-				Name:      pulumi.String("ingress-internal-lb"),
-				Namespace: createdNamespace.Metadata.Name(),
-				Labels:    createdNamespace.Metadata.Labels(),
-				Annotations: pulumi.StringMap{
-					"cloud.google.com/load-balancer-type":       pulumi.String("Internal"),
-					"external-dns.alpha.kubernetes.io/hostname": pulumi.String(locals.IngressInternalHostname),
-				},
-			},
-			Spec: &kubernetescorev1.ServiceSpecArgs{
-				Type: pulumi.String("LoadBalancer"),
-				Ports: kubernetescorev1.ServicePortArray{
-					&kubernetescorev1.ServicePortArgs{
-						Name:       pulumi.String("postgres"),
-						Protocol:   pulumi.String("TCP"),
-						Port:       pulumi.Int(5432),
-						TargetPort: pulumi.Int(5432),
-					},
-				},
-				Selector: pulumi.ToStringMap(locals.PostgresPodSectorLabels),
-			},
-		}, pulumi.Parent(createdNamespace))
-	if err != nil {
-		return errors.Wrapf(err, "failed to create external load balancer service")
-	}
-
 	return nil
 }
