@@ -40,7 +40,7 @@ func Resources(ctx *pulumi.Context, stackInput *awsecsservicev1.AwsEcsServiceSta
 	}
 
 	// Call the service(...) function to create the AWS ECS Service resource.
-	if err := service(ctx, locals, provider); err != nil {
+	if err := ecsService(ctx, locals, provider); err != nil {
 		return errors.Wrap(err, "failed to create aws ecs service resource")
 	}
 

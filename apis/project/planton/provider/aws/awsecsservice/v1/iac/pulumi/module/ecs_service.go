@@ -3,16 +3,20 @@ package module
 import (
 	"encoding/json"
 	"fmt"
+	"sort"
+
 	"github.com/pkg/errors"
 	"github.com/pulumi/pulumi-aws/sdk/v6/go/aws"
 	"github.com/pulumi/pulumi-aws/sdk/v6/go/aws/ec2"
 	"github.com/pulumi/pulumi-aws/sdk/v6/go/aws/ecs"
 	"github.com/pulumi/pulumi-aws/sdk/v6/go/aws/lb"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+
+	awsecsservicev1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsecsservice/v1"
 )
 
 // service creates and wires up the ECS Task Definition and AWS ECS Service resources.
-func service(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) error {
+func ecsService(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) error {
 	spec := locals.AwsEcsService.Spec
 	serviceName := locals.AwsEcsService.Metadata.Name
 
@@ -21,6 +25,7 @@ func service(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) error 
 		spec.Container.Image.Repo,
 		spec.Container.Image.Tag,
 		spec.Container.Port,
+		spec.Container.Env, // new param
 	)
 	if err != nil {
 		return errors.Wrap(err, "failed to build container definitions JSON")
@@ -195,14 +200,66 @@ func service(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) error 
 }
 
 // buildContainerDefinitions constructs a JSON array of container definitions.
-func buildContainerDefinitions(serviceName, repo, tag string, port int32) (string, error) {
-	var envVars []map[string]string // left empty for brevity
+// It now honours env.variables, env.secrets, and env.files (S3 env-file objects).
+func buildContainerDefinitions(
+	serviceName, repo, tag string,
+	port int32,
+	env *awsecsservicev1.AwsEcsServiceContainerEnv,
+) (string, error) {
 
+	// -------- environment (key-value) ----------
+	envVars := []map[string]string{}
+	if env != nil {
+		// deterministic order for easier diffs
+		keys := []string{}
+		for k := range env.Variables {
+			keys = append(keys, k)
+		}
+		for k := range env.Secrets {
+			keys = append(keys, k)
+		}
+		sort.Strings(keys)
+
+		for _, k := range keys {
+			val := ""
+			if v, ok := env.Variables[k]; ok {
+				val = v
+			}
+			if v, ok := env.Secrets[k]; ok {
+				val = v
+			}
+			envVars = append(envVars, map[string]string{
+				"name":  k,
+				"value": val,
+			})
+		}
+	}
+
+	// -------- environmentFiles (S3) ------------
+	envFiles := []map[string]string{}
+	if env != nil {
+		for _, f := range env.Files {
+			if f.S3Uri != "" {
+				envFiles = append(envFiles, map[string]string{
+					"type":  "s3",
+					"value": f.S3Uri,
+				})
+			}
+		}
+	}
+
+	// -------- container base -------------------
 	container := map[string]interface{}{
-		"name":        serviceName,
-		"image":       fmt.Sprintf("%s:%s", repo, tag),
-		"essential":   true,
-		"environment": envVars,
+		"name":      serviceName,
+		"image":     fmt.Sprintf("%s:%s", repo, tag),
+		"essential": true,
+	}
+
+	if len(envVars) > 0 {
+		container["environment"] = envVars
+	}
+	if len(envFiles) > 0 {
+		container["environmentFiles"] = envFiles
 	}
 
 	if port != 0 {
