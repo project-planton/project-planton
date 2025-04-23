@@ -7,6 +7,7 @@ import (
 
 	"github.com/pkg/errors"
 	"github.com/pulumi/pulumi-aws/sdk/v6/go/aws"
+	"github.com/pulumi/pulumi-aws/sdk/v6/go/aws/cloudwatch"
 	"github.com/pulumi/pulumi-aws/sdk/v6/go/aws/ec2"
 	"github.com/pulumi/pulumi-aws/sdk/v6/go/aws/ecs"
 	"github.com/pulumi/pulumi-aws/sdk/v6/go/aws/lb"
@@ -20,12 +21,45 @@ func ecsService(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) err
 	spec := locals.AwsEcsService.Spec
 	serviceName := locals.AwsEcsService.Metadata.Name
 
+	// ---------------------------------------------------------------------
+	// CloudWatch log-group setup (enabled by default)
+	// ---------------------------------------------------------------------
+	loggingEnabled := true
+	if spec.Container.Logging != nil {
+		loggingEnabled = spec.Container.Logging.Enabled
+	}
+
+	logGroupName := fmt.Sprintf("/ecs/%s", serviceName)
+	var logGroup *cloudwatch.LogGroup
+	if loggingEnabled {
+		var err error
+		logGroup, err = cloudwatch.NewLogGroup(ctx,
+			serviceName+"-loggroup",
+			&cloudwatch.LogGroupArgs{
+				Name:            pulumi.String(logGroupName),
+				RetentionInDays: pulumi.Int(30),
+				Tags:            pulumi.ToStringMap(locals.AwsTags),
+			},
+			pulumi.Provider(provider))
+		if err != nil {
+			return errors.Wrap(err, "failed to create CloudWatch log group")
+		}
+	}
+
+	awsRegion, err := aws.GetRegion(ctx, nil, pulumi.Provider(provider))
+	if err != nil {
+		return errors.Wrap(err, "unable to detect AWS region")
+	}
+
 	containerDefs, err := buildContainerDefinitions(
 		serviceName,
 		spec.Container.Image.Repo,
 		spec.Container.Image.Tag,
 		spec.Container.Port,
 		spec.Container.Env,
+		loggingEnabled,
+		logGroupName,
+		awsRegion.Name,
 	)
 	if err != nil {
 		return errors.Wrap(err, "failed to build container definitions JSON")
@@ -117,7 +151,6 @@ func ecsService(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) err
 		}
 		loadBalancerDNS = pulumi.String(foundAlb.DnsName)
 
-		// Convert user-supplied int32 -> int to match the lookup function's signature
 		listenerPort := int(spec.Alb.ListenerPort)
 
 		foundListener, err := lb.LookupListener(ctx, &lb.LookupListenerArgs{
@@ -196,21 +229,27 @@ func ecsService(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) err
 	ctx.Export(OpServiceUrl, serviceUrl)
 	ctx.Export(OpServiceDiscoveryName, pulumi.String(""))
 
+	if loggingEnabled && logGroup != nil {
+		ctx.Export(OpCloudwatchLogGroupName, logGroup.Name)
+		ctx.Export(OpCloudwatchLogGroupArn, logGroup.Arn)
+	}
+
 	return nil
 }
 
 // buildContainerDefinitions constructs a JSON array of container definitions.
-// It honours env.variables, env.secrets, and env.s3_files.
+// It honours env.variables, env.secrets, env.s3_files and optional log configuration.
 func buildContainerDefinitions(
 	serviceName, repo, tag string,
 	port int32,
 	env *awsecsservicev1.AwsEcsServiceContainerEnv,
+	loggingEnabled bool,
+	logGroupName, region string,
 ) (string, error) {
 
 	// -------- environment (key-value) ----------
 	envVars := []map[string]string{}
 	if env != nil {
-		// deterministic order for easier diffs
 		keys := []string{}
 		for k := range env.Variables {
 			keys = append(keys, k)
@@ -270,10 +309,21 @@ func buildContainerDefinitions(
 		}
 	}
 
+	if loggingEnabled {
+		container["logConfiguration"] = map[string]interface{}{
+			"logDriver": "awslogs",
+			"options": map[string]string{
+				"awslogs-group":         logGroupName,
+				"awslogs-region":        region,
+				"awslogs-stream-prefix": serviceName,
+			},
+		}
+	}
+
 	containerDefinitions := []interface{}{container}
 	encoded, err := json.Marshal(containerDefinitions)
 	if err != nil {
-		return "", err
+		return "", errors.Wrap(err, "failed to encode container definitions")
 	}
 	return string(encoded), nil
 }

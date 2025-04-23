@@ -34,8 +34,12 @@ type AwsEcsServiceStackOutputs struct {
 	ServiceUrl string `protobuf:"bytes,4,opt,name=service_url,json=serviceUrl,proto3" json:"service_url,omitempty"`
 	// service_discovery_name is the internal DNS name if service discovery was used.
 	ServiceDiscoveryName string `protobuf:"bytes,5,opt,name=service_discovery_name,json=serviceDiscoveryName,proto3" json:"service_discovery_name,omitempty"`
-	unknownFields        protoimpl.UnknownFields
-	sizeCache            protoimpl.SizeCache
+	// cloudwatch_log_group_name is the name of the CloudWatch log group for the service.
+	CloudwatchLogGroupName string `protobuf:"bytes,6,opt,name=cloudwatch_log_group_name,json=cloudwatchLogGroupName,proto3" json:"cloudwatch_log_group_name,omitempty"`
+	// cloudwatch_log_group_arn is the ARN of the CloudWatch log group for the service.
+	CloudwatchLogGroupArn string `protobuf:"bytes,7,opt,name=cloudwatch_log_group_arn,json=cloudwatchLogGroupArn,proto3" json:"cloudwatch_log_group_arn,omitempty"`
+	unknownFields         protoimpl.UnknownFields
+	sizeCache             protoimpl.SizeCache
 }
 
 func (x *AwsEcsServiceStackOutputs) Reset() {
@@ -103,18 +107,34 @@ func (x *AwsEcsServiceStackOutputs) GetServiceDiscoveryName() string {
 	return ""
 }
 
+func (x *AwsEcsServiceStackOutputs) GetCloudwatchLogGroupName() string {
+	if x != nil {
+		return x.CloudwatchLogGroupName
+	}
+	return ""
+}
+
+func (x *AwsEcsServiceStackOutputs) GetCloudwatchLogGroupArn() string {
+	if x != nil {
+		return x.CloudwatchLogGroupArn
+	}
+	return ""
+}
+
 var File_project_planton_provider_aws_awsecsservice_v1_stack_outputs_proto protoreflect.FileDescriptor
 
 const file_project_planton_provider_aws_awsecsservice_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Aproject/planton/provider/aws/awsecsservice/v1/stack_outputs.proto\x12-project.planton.provider.aws.awsecsservice.v1\"\x82\x02\n" +
+	"Aproject/planton/provider/aws/awsecsservice/v1/stack_outputs.proto\x12-project.planton.provider.aws.awsecsservice.v1\"\xf6\x02\n" +
 	"\x19AwsEcsServiceStackOutputs\x12/\n" +
 	"\x14aws_ecs_service_name\x18\x01 \x01(\tR\x11awsEcsServiceName\x12(\n" +
 	"\x10ecs_cluster_name\x18\x02 \x01(\tR\x0eecsClusterName\x123\n" +
 	"\x16load_balancer_dns_name\x18\x03 \x01(\tR\x13loadBalancerDnsName\x12\x1f\n" +
 	"\vservice_url\x18\x04 \x01(\tR\n" +
 	"serviceUrl\x124\n" +
-	"\x16service_discovery_name\x18\x05 \x01(\tR\x14serviceDiscoveryNameB\x90\x03\n" +
+	"\x16service_discovery_name\x18\x05 \x01(\tR\x14serviceDiscoveryName\x129\n" +
+	"\x19cloudwatch_log_group_name\x18\x06 \x01(\tR\x16cloudwatchLogGroupName\x127\n" +
+	"\x18cloudwatch_log_group_arn\x18\a \x01(\tR\x15cloudwatchLogGroupArnB\x90\x03\n" +
 	"1com.project.planton.provider.aws.awsecsservice.v1B\x11StackOutputsProtoP\x01Zmgithub.com/project-planton/project-planton/apis/project/planton/provider/aws/awsecsservice/v1;awsecsservicev1\xa2\x02\x05PPPAA\xaa\x02-Project.Planton.Provider.Aws.Awsecsservice.V1\xca\x02-Project\\Planton\\Provider\\Aws\\Awsecsservice\\V1\xe2\x029Project\\Planton\\Provider\\Aws\\Awsecsservice\\V1\\GPBMetadata\xea\x022Project::Planton::Provider::Aws::Awsecsservice::V1b\x06proto3"
 
 var (

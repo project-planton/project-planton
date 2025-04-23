@@ -65,6 +65,19 @@ message AwsEcsServiceContainer {
   int32 memory = 6 [
     (buf.validate.field).required = true
   ];
+
+  // logging controls whether CloudWatch log configuration is injected automatically.
+  AwsEcsServiceContainerLogging logging = 7;
+}
+
+// AwsEcsServiceContainerLogging controls CloudWatch logging for the container.
+message AwsEcsServiceContainerLogging {
+  // If true (default), the module auto-creates a CloudWatch Log Group
+  // named "/ecs/<serviceName>" with 30-day retention and configures
+  // the awslogs driver.
+  bool enabled = 1 [
+    (project.planton.shared.options.recommended_default) = "true"
+  ];
 }
 
 // AwsEcsServiceContainerImage represents the container image information.

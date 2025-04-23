@@ -130,7 +130,9 @@ type AwsEcsServiceContainer struct {
 	// memory is the total MiB of RAM for the task.
 	// Valid values depend on CPU. For example, 512 CPU can pair with 1024–4096 MiB.
 	// Example: 1024
-	Memory        int32 `protobuf:"varint,6,opt,name=memory,proto3" json:"memory,omitempty"`
+	Memory int32 `protobuf:"varint,6,opt,name=memory,proto3" json:"memory,omitempty"`
+	// logging controls whether CloudWatch log configuration is injected automatically.
+	Logging       *AwsEcsServiceContainerLogging `protobuf:"bytes,7,opt,name=logging,proto3" json:"logging,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -207,6 +209,61 @@ func (x *AwsEcsServiceContainer) GetMemory() int32 {
 	return 0
 }
 
+func (x *AwsEcsServiceContainer) GetLogging() *AwsEcsServiceContainerLogging {
+	if x != nil {
+		return x.Logging
+	}
+	return nil
+}
+
+// AwsEcsServiceContainerLogging controls CloudWatch logging for the container.
+type AwsEcsServiceContainerLogging struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// If true (default), the module auto-creates a CloudWatch Log Group
+	// named "/ecs/<serviceName>" with 30-day retention and configures
+	// the awslogs driver.
+	Enabled       bool `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AwsEcsServiceContainerLogging) Reset() {
+	*x = AwsEcsServiceContainerLogging{}
+	mi := &file_project_planton_provider_aws_awsecsservice_v1_spec_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AwsEcsServiceContainerLogging) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AwsEcsServiceContainerLogging) ProtoMessage() {}
+
+func (x *AwsEcsServiceContainerLogging) ProtoReflect() protoreflect.Message {
+	mi := &file_project_planton_provider_aws_awsecsservice_v1_spec_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AwsEcsServiceContainerLogging.ProtoReflect.Descriptor instead.
+func (*AwsEcsServiceContainerLogging) Descriptor() ([]byte, []int) {
+	return file_project_planton_provider_aws_awsecsservice_v1_spec_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *AwsEcsServiceContainerLogging) GetEnabled() bool {
+	if x != nil {
+		return x.Enabled
+	}
+	return false
+}
+
 // AwsEcsServiceContainerImage represents the container image information.
 type AwsEcsServiceContainerImage struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -220,7 +277,7 @@ type AwsEcsServiceContainerImage struct {
 
 func (x *AwsEcsServiceContainerImage) Reset() {
 	*x = AwsEcsServiceContainerImage{}
-	mi := &file_project_planton_provider_aws_awsecsservice_v1_spec_proto_msgTypes[2]
+	mi := &file_project_planton_provider_aws_awsecsservice_v1_spec_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -232,7 +289,7 @@ func (x *AwsEcsServiceContainerImage) String() string {
 func (*AwsEcsServiceContainerImage) ProtoMessage() {}
 
 func (x *AwsEcsServiceContainerImage) ProtoReflect() protoreflect.Message {
-	mi := &file_project_planton_provider_aws_awsecsservice_v1_spec_proto_msgTypes[2]
+	mi := &file_project_planton_provider_aws_awsecsservice_v1_spec_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -245,7 +302,7 @@ func (x *AwsEcsServiceContainerImage) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AwsEcsServiceContainerImage.ProtoReflect.Descriptor instead.
 func (*AwsEcsServiceContainerImage) Descriptor() ([]byte, []int) {
-	return file_project_planton_provider_aws_awsecsservice_v1_spec_proto_rawDescGZIP(), []int{2}
+	return file_project_planton_provider_aws_awsecsservice_v1_spec_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *AwsEcsServiceContainerImage) GetRepo() string {
@@ -281,7 +338,7 @@ type AwsEcsServiceContainerEnv struct {
 
 func (x *AwsEcsServiceContainerEnv) Reset() {
 	*x = AwsEcsServiceContainerEnv{}
-	mi := &file_project_planton_provider_aws_awsecsservice_v1_spec_proto_msgTypes[3]
+	mi := &file_project_planton_provider_aws_awsecsservice_v1_spec_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -293,7 +350,7 @@ func (x *AwsEcsServiceContainerEnv) String() string {
 func (*AwsEcsServiceContainerEnv) ProtoMessage() {}
 
 func (x *AwsEcsServiceContainerEnv) ProtoReflect() protoreflect.Message {
-	mi := &file_project_planton_provider_aws_awsecsservice_v1_spec_proto_msgTypes[3]
+	mi := &file_project_planton_provider_aws_awsecsservice_v1_spec_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -306,7 +363,7 @@ func (x *AwsEcsServiceContainerEnv) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AwsEcsServiceContainerEnv.ProtoReflect.Descriptor instead.
 func (*AwsEcsServiceContainerEnv) Descriptor() ([]byte, []int) {
-	return file_project_planton_provider_aws_awsecsservice_v1_spec_proto_rawDescGZIP(), []int{3}
+	return file_project_planton_provider_aws_awsecsservice_v1_spec_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *AwsEcsServiceContainerEnv) GetVariables() map[string]string {
@@ -345,7 +402,7 @@ type AwsEcsServiceNetwork struct {
 
 func (x *AwsEcsServiceNetwork) Reset() {
 	*x = AwsEcsServiceNetwork{}
-	mi := &file_project_planton_provider_aws_awsecsservice_v1_spec_proto_msgTypes[4]
+	mi := &file_project_planton_provider_aws_awsecsservice_v1_spec_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -357,7 +414,7 @@ func (x *AwsEcsServiceNetwork) String() string {
 func (*AwsEcsServiceNetwork) ProtoMessage() {}
 
 func (x *AwsEcsServiceNetwork) ProtoReflect() protoreflect.Message {
-	mi := &file_project_planton_provider_aws_awsecsservice_v1_spec_proto_msgTypes[4]
+	mi := &file_project_planton_provider_aws_awsecsservice_v1_spec_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -370,7 +427,7 @@ func (x *AwsEcsServiceNetwork) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AwsEcsServiceNetwork.ProtoReflect.Descriptor instead.
 func (*AwsEcsServiceNetwork) Descriptor() ([]byte, []int) {
-	return file_project_planton_provider_aws_awsecsservice_v1_spec_proto_rawDescGZIP(), []int{4}
+	return file_project_planton_provider_aws_awsecsservice_v1_spec_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *AwsEcsServiceNetwork) GetSubnets() []string {
@@ -404,7 +461,7 @@ type AwsEcsServiceIam struct {
 
 func (x *AwsEcsServiceIam) Reset() {
 	*x = AwsEcsServiceIam{}
-	mi := &file_project_planton_provider_aws_awsecsservice_v1_spec_proto_msgTypes[5]
+	mi := &file_project_planton_provider_aws_awsecsservice_v1_spec_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -416,7 +473,7 @@ func (x *AwsEcsServiceIam) String() string {
 func (*AwsEcsServiceIam) ProtoMessage() {}
 
 func (x *AwsEcsServiceIam) ProtoReflect() protoreflect.Message {
-	mi := &file_project_planton_provider_aws_awsecsservice_v1_spec_proto_msgTypes[5]
+	mi := &file_project_planton_provider_aws_awsecsservice_v1_spec_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -429,7 +486,7 @@ func (x *AwsEcsServiceIam) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AwsEcsServiceIam.ProtoReflect.Descriptor instead.
 func (*AwsEcsServiceIam) Descriptor() ([]byte, []int) {
-	return file_project_planton_provider_aws_awsecsservice_v1_spec_proto_rawDescGZIP(), []int{5}
+	return file_project_planton_provider_aws_awsecsservice_v1_spec_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *AwsEcsServiceIam) GetTaskExecutionRoleArn() string {
@@ -469,7 +526,7 @@ type AwsEcsServiceAlb struct {
 
 func (x *AwsEcsServiceAlb) Reset() {
 	*x = AwsEcsServiceAlb{}
-	mi := &file_project_planton_provider_aws_awsecsservice_v1_spec_proto_msgTypes[6]
+	mi := &file_project_planton_provider_aws_awsecsservice_v1_spec_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -481,7 +538,7 @@ func (x *AwsEcsServiceAlb) String() string {
 func (*AwsEcsServiceAlb) ProtoMessage() {}
 
 func (x *AwsEcsServiceAlb) ProtoReflect() protoreflect.Message {
-	mi := &file_project_planton_provider_aws_awsecsservice_v1_spec_proto_msgTypes[6]
+	mi := &file_project_planton_provider_aws_awsecsservice_v1_spec_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -494,7 +551,7 @@ func (x *AwsEcsServiceAlb) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AwsEcsServiceAlb.ProtoReflect.Descriptor instead.
 func (*AwsEcsServiceAlb) Descriptor() ([]byte, []int) {
-	return file_project_planton_provider_aws_awsecsservice_v1_spec_proto_rawDescGZIP(), []int{6}
+	return file_project_planton_provider_aws_awsecsservice_v1_spec_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *AwsEcsServiceAlb) GetEnabled() bool {
@@ -550,14 +607,17 @@ const file_project_planton_provider_aws_awsecsservice_v1_spec_proto_rawDesc = ""
 	"\tcontainer\x18\x02 \x01(\v2E.project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\x12e\n" +
 	"\anetwork\x18\x03 \x01(\v2C.project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceNetworkB\x06\xbaH\x03\xc8\x01\x01R\anetwork\x12Q\n" +
 	"\x03iam\x18\x04 \x01(\v2?.project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceIamR\x03iam\x12Q\n" +
-	"\x03alb\x18\x05 \x01(\v2?.project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceAlbR\x03alb\"\xc7\x02\n" +
+	"\x03alb\x18\x05 \x01(\v2?.project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceAlbR\x03alb\"\xaf\x03\n" +
 	"\x16AwsEcsServiceContainer\x12`\n" +
 	"\x05image\x18\x01 \x01(\v2J.project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerImageR\x05image\x12Z\n" +
 	"\x03env\x18\x02 \x01(\v2H.project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerEnvR\x03env\x12\x12\n" +
 	"\x04port\x18\x03 \x01(\x05R\x04port\x12!\n" +
 	"\breplicas\x18\x04 \x01(\x05B\x05\x92\xa6\x1d\x011R\breplicas\x12\x18\n" +
 	"\x03cpu\x18\x05 \x01(\x05B\x06\xbaH\x03\xc8\x01\x01R\x03cpu\x12\x1e\n" +
-	"\x06memory\x18\x06 \x01(\x05B\x06\xbaH\x03\xc8\x01\x01R\x06memory\"C\n" +
+	"\x06memory\x18\x06 \x01(\x05B\x06\xbaH\x03\xc8\x01\x01R\x06memory\x12f\n" +
+	"\alogging\x18\a \x01(\v2L.project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerLoggingR\alogging\"C\n" +
+	"\x1dAwsEcsServiceContainerLogging\x12\"\n" +
+	"\aenabled\x18\x01 \x01(\bB\b\x92\xa6\x1d\x04trueR\aenabled\"C\n" +
 	"\x1bAwsEcsServiceContainerImage\x12\x12\n" +
 	"\x04repo\x18\x01 \x01(\tR\x04repo\x12\x10\n" +
 	"\x03tag\x18\x02 \x01(\tR\x03tag\"\xa2\x03\n" +
@@ -598,32 +658,34 @@ func file_project_planton_provider_aws_awsecsservice_v1_spec_proto_rawDescGZIP()
 	return file_project_planton_provider_aws_awsecsservice_v1_spec_proto_rawDescData
 }
 
-var file_project_planton_provider_aws_awsecsservice_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
+var file_project_planton_provider_aws_awsecsservice_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
 var file_project_planton_provider_aws_awsecsservice_v1_spec_proto_goTypes = []any{
-	(*AwsEcsServiceSpec)(nil),           // 0: project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceSpec
-	(*AwsEcsServiceContainer)(nil),      // 1: project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainer
-	(*AwsEcsServiceContainerImage)(nil), // 2: project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerImage
-	(*AwsEcsServiceContainerEnv)(nil),   // 3: project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerEnv
-	(*AwsEcsServiceNetwork)(nil),        // 4: project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceNetwork
-	(*AwsEcsServiceIam)(nil),            // 5: project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceIam
-	(*AwsEcsServiceAlb)(nil),            // 6: project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceAlb
-	nil,                                 // 7: project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerEnv.VariablesEntry
-	nil,                                 // 8: project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerEnv.SecretsEntry
+	(*AwsEcsServiceSpec)(nil),             // 0: project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceSpec
+	(*AwsEcsServiceContainer)(nil),        // 1: project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainer
+	(*AwsEcsServiceContainerLogging)(nil), // 2: project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerLogging
+	(*AwsEcsServiceContainerImage)(nil),   // 3: project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerImage
+	(*AwsEcsServiceContainerEnv)(nil),     // 4: project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerEnv
+	(*AwsEcsServiceNetwork)(nil),          // 5: project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceNetwork
+	(*AwsEcsServiceIam)(nil),              // 6: project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceIam
+	(*AwsEcsServiceAlb)(nil),              // 7: project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceAlb
+	nil,                                   // 8: project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerEnv.VariablesEntry
+	nil,                                   // 9: project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerEnv.SecretsEntry
 }
 var file_project_planton_provider_aws_awsecsservice_v1_spec_proto_depIdxs = []int32{
 	1, // 0: project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceSpec.container:type_name -> project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainer
-	4, // 1: project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceSpec.network:type_name -> project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceNetwork
-	5, // 2: project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceSpec.iam:type_name -> project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceIam
-	6, // 3: project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceSpec.alb:type_name -> project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceAlb
-	2, // 4: project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainer.image:type_name -> project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerImage
-	3, // 5: project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainer.env:type_name -> project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerEnv
-	7, // 6: project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerEnv.variables:type_name -> project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerEnv.VariablesEntry
-	8, // 7: project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerEnv.secrets:type_name -> project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerEnv.SecretsEntry
-	8, // [8:8] is the sub-list for method output_type
-	8, // [8:8] is the sub-list for method input_type
-	8, // [8:8] is the sub-list for extension type_name
-	8, // [8:8] is the sub-list for extension extendee
-	0, // [0:8] is the sub-list for field type_name
+	5, // 1: project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceSpec.network:type_name -> project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceNetwork
+	6, // 2: project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceSpec.iam:type_name -> project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceIam
+	7, // 3: project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceSpec.alb:type_name -> project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceAlb
+	3, // 4: project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainer.image:type_name -> project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerImage
+	4, // 5: project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainer.env:type_name -> project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerEnv
+	2, // 6: project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainer.logging:type_name -> project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerLogging
+	8, // 7: project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerEnv.variables:type_name -> project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerEnv.VariablesEntry
+	9, // 8: project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerEnv.secrets:type_name -> project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerEnv.SecretsEntry
+	9, // [9:9] is the sub-list for method output_type
+	9, // [9:9] is the sub-list for method input_type
+	9, // [9:9] is the sub-list for extension type_name
+	9, // [9:9] is the sub-list for extension extendee
+	0, // [0:9] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_provider_aws_awsecsservice_v1_spec_proto_init() }
@@ -637,7 +699,7 @@ func file_project_planton_provider_aws_awsecsservice_v1_spec_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_project_planton_provider_aws_awsecsservice_v1_spec_proto_rawDesc), len(file_project_planton_provider_aws_awsecsservice_v1_spec_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   9,
+			NumMessages:   10,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
