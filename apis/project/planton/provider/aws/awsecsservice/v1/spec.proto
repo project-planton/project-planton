@@ -76,15 +76,6 @@ message AwsEcsServiceContainerImage {
   string tag = 2;
 }
 
-// AwsEcsServiceEnvFile represents an S3-backed environment file.
-message AwsEcsServiceEnvFile {
-  // s3Uri is the URI of the object that stores environment variables,
-  // e.g. "s3://my-bucket/prod/envfile.env"
-  string s3_uri = 1 [
-    (buf.validate.field).required = true
-  ];
-}
-
 // AwsEcsServiceContainerEnv is a wrapper for environment variables, secrets, and files.
 message AwsEcsServiceContainerEnv {
   // map of environment variables to be set in the container.
@@ -96,9 +87,13 @@ message AwsEcsServiceContainerEnv {
   // The value can be a plaintext value or a reference to a secret in AWS Secrets Manager or SSM Parameter Store.
   map<string, string> secrets = 2;
 
-  // files is a list of S3 objects whose contents are loaded as environment variables
+  // s3_files is a list of S3 URIs whose contents are loaded as environment variables
   // via the ECS "environmentFiles" feature.
-  repeated AwsEcsServiceEnvFile files = 3;
+  repeated string s3_files = 3 [
+    (buf.validate.field).repeated = {
+      unique: true
+    }
+  ];
 }
 
 // AwsEcsServiceNetwork defines the networking configuration for the ECS service.

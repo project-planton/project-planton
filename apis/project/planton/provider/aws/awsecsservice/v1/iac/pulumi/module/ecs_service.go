@@ -25,7 +25,7 @@ func ecsService(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) err
 		spec.Container.Image.Repo,
 		spec.Container.Image.Tag,
 		spec.Container.Port,
-		spec.Container.Env, // new param
+		spec.Container.Env,
 	)
 	if err != nil {
 		return errors.Wrap(err, "failed to build container definitions JSON")
@@ -200,7 +200,7 @@ func ecsService(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) err
 }
 
 // buildContainerDefinitions constructs a JSON array of container definitions.
-// It now honours env.variables, env.secrets, and env.files (S3 env-file objects).
+// It honours env.variables, env.secrets, and env.s3_files.
 func buildContainerDefinitions(
 	serviceName, repo, tag string,
 	port int32,
@@ -238,11 +238,11 @@ func buildContainerDefinitions(
 	// -------- environmentFiles (S3) ------------
 	envFiles := []map[string]string{}
 	if env != nil {
-		for _, f := range env.Files {
-			if f.S3Uri != "" {
+		for _, uri := range env.S3Files {
+			if uri != "" {
 				envFiles = append(envFiles, map[string]string{
 					"type":  "s3",
-					"value": f.S3Uri,
+					"value": uri,
 				})
 			}
 		}
