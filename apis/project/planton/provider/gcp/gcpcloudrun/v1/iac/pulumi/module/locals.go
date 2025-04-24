@@ -4,6 +4,7 @@ import (
 	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/gcp/gcplabelkeys"
 	"strconv"
+	"strings"
 
 	gcpcredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/gcpcredential/v1"
 	gcpcloudrunv1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpcloudrun/v1"
@@ -29,7 +30,7 @@ func initializeLocals(stackInput *gcpcloudrunv1.GcpCloudRunStackInput) *Locals {
 	locals.GcpLabels = map[string]string{
 		gcplabelkeys.Resource:     strconv.FormatBool(true),
 		gcplabelkeys.ResourceName: target.Metadata.Name,
-		gcplabelkeys.ResourceKind: cloudresourcekind.CloudResourceKind_GcpCloudRun.String(),
+		gcplabelkeys.ResourceKind: strings.ToLower(cloudresourcekind.CloudResourceKind_GcpCloudRun.String()),
 	}
 
 	if target.Metadata.Id != "" {
