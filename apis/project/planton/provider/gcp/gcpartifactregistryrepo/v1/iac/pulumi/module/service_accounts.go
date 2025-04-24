@@ -3,8 +3,8 @@ package module
 import (
 	"github.com/pkg/errors"
 	"github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpartifactregistryrepo/v1/iac/pulumi/module/outputs"
-	pulumigcp "github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp"
-	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/serviceaccount"
+	pulumigcp "github.com/pulumi/pulumi-gcp/sdk/v8/go/gcp"
+	"github.com/pulumi/pulumi-gcp/sdk/v8/go/gcp/serviceaccount"
 	"github.com/pulumi/pulumi-random/sdk/v4/go/random"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
