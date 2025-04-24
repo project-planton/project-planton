@@ -68,6 +68,7 @@ const (
 	CloudResourceKind_GcpGkeCluster           CloudResourceKind = 608
 	CloudResourceKind_GcpSecretsManager       CloudResourceKind = 609
 	CloudResourceKind_GcpStaticWebsite        CloudResourceKind = 610
+	CloudResourceKind_GcpProject              CloudResourceKind = 611
 	// 800–999: Kubernetes resources
 	CloudResourceKind_ArgocdKubernetes         CloudResourceKind = 800
 	CloudResourceKind_CronJobKubernetes        CloudResourceKind = 801
@@ -133,6 +134,7 @@ var (
 		608: "GcpGkeCluster",
 		609: "GcpSecretsManager",
 		610: "GcpStaticWebsite",
+		611: "GcpProject",
 		800: "ArgocdKubernetes",
 		801: "CronJobKubernetes",
 		802: "ElasticsearchKubernetes",
@@ -194,6 +196,7 @@ var (
 		"GcpGkeCluster":              608,
 		"GcpSecretsManager":          609,
 		"GcpStaticWebsite":           610,
+		"GcpProject":                 611,
 		"ArgocdKubernetes":           800,
 		"CronJobKubernetes":          801,
 		"ElasticsearchKubernetes":    802,
@@ -249,7 +252,7 @@ var File_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto prot
 
 const file_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto_rawDesc = "" +
 	"\n" +
-	"Bproject/planton/shared/cloudresourcekind/cloud_resource_kind.proto\x12(project.planton.shared.cloudresourcekind*\xb1\n" +
+	"Bproject/planton/shared/cloudresourcekind/cloud_resource_kind.proto\x12(project.planton.shared.cloudresourcekind*\xc2\n" +
 	"\n" +
 	"\x11CloudResourceKind\x12\x0f\n" +
 	"\vunspecified\x10\x00\x12\x1d\n" +
@@ -292,7 +295,9 @@ const file_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto_ra
 	"\x11GcpGkeAddonBundle\x10\xdf\x04\x12\x12\n" +
 	"\rGcpGkeCluster\x10\xe0\x04\x12\x16\n" +
 	"\x11GcpSecretsManager\x10\xe1\x04\x12\x15\n" +
-	"\x10GcpStaticWebsite\x10\xe2\x04\x12\x15\n" +
+	"\x10GcpStaticWebsite\x10\xe2\x04\x12\x0f\n" +
+	"\n" +
+	"GcpProject\x10\xe3\x04\x12\x15\n" +
 	"\x10ArgocdKubernetes\x10\xa0\x06\x12\x16\n" +
 	"\x11CronJobKubernetes\x10\xa1\x06\x12\x1c\n" +
 	"\x17ElasticsearchKubernetes\x10\xa2\x06\x12\x15\n" +
