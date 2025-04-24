@@ -33,33 +33,25 @@ const (
 // constraints, etc.—should be handled by dedicated resources.
 type GcpProjectSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// Globally-unique, immutable project ID (6–30 chars).
-	// Pattern:
-	//   - starts with a lowercase letter
-	//   - contains lowercase letters, digits, or hyphens
-	//   - ends with a letter or digit
-	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
-	// Human-friendly display name (4–30 chars, can include spaces).
-	Name string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 	// Organization ID (numeric string) under which the project is created.
 	// Mutually exclusive with folder_id—exactly one parent must be provided.
-	OrgId string `protobuf:"bytes,3,opt,name=org_id,json=orgId,proto3" json:"org_id,omitempty"`
+	OrgId string `protobuf:"bytes,1,opt,name=org_id,json=orgId,proto3" json:"org_id,omitempty"`
 	// Folder ID (numeric string) under which the project is created.
 	// Mutually exclusive with org_id.
-	FolderId string `protobuf:"bytes,4,opt,name=folder_id,json=folderId,proto3" json:"folder_id,omitempty"`
+	FolderId string `protobuf:"bytes,2,opt,name=folder_id,json=folderId,proto3" json:"folder_id,omitempty"`
 	// Billing account ID in the form "0123AB-4567CD-89EFGH".
 	// Strongly recommended for any project that will use billable services.
-	BillingAccountId string `protobuf:"bytes,5,opt,name=billing_account_id,json=billingAccountId,proto3" json:"billing_account_id,omitempty"`
+	BillingAccountId string `protobuf:"bytes,3,opt,name=billing_account_id,json=billingAccountId,proto3" json:"billing_account_id,omitempty"`
 	// Key/value metadata labels for cost allocation and governance.
 	// GCP label keys must be <= 63 chars, lowercase letters, digits, or underscores.
-	Labels map[string]string `protobuf:"bytes,6,rep,name=labels,proto3" json:"labels,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	Labels map[string]string `protobuf:"bytes,4,rep,name=labels,proto3" json:"labels,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	// If true, the auto-created "default" VPC network is deleted immediately
 	// after project creation. Disabling the default network is a common
 	// security hardening step.
-	DisableDefaultNetwork bool `protobuf:"varint,7,opt,name=disable_default_network,json=disableDefaultNetwork,proto3" json:"disable_default_network,omitempty"`
+	DisableDefaultNetwork bool `protobuf:"varint,5,opt,name=disable_default_network,json=disableDefaultNetwork,proto3" json:"disable_default_network,omitempty"`
 	// List of Cloud APIs to enable (e.g. "compute.googleapis.com").
 	// Each entry must end with ".googleapis.com".
-	EnabledApis []string `protobuf:"bytes,8,rep,name=enabled_apis,json=enabledApis,proto3" json:"enabled_apis,omitempty"`
+	EnabledApis []string `protobuf:"bytes,6,rep,name=enabled_apis,json=enabledApis,proto3" json:"enabled_apis,omitempty"`
 	// Optional IAM member (user / group / serviceAccount) to be granted
 	// the Owner role at project creation.
 	// Examples:
@@ -67,7 +59,7 @@ type GcpProjectSpec struct {
 	//	"group:devops-admins@example.com"
 	//	"user:alice@example.com"
 	//	"serviceAccount:ci-automation@example.iam.gserviceaccount.com"
-	OwnerMember   string `protobuf:"bytes,9,opt,name=owner_member,json=ownerMember,proto3" json:"owner_member,omitempty"`
+	OwnerMember   string `protobuf:"bytes,7,opt,name=owner_member,json=ownerMember,proto3" json:"owner_member,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -100,20 +92,6 @@ func (x *GcpProjectSpec) ProtoReflect() protoreflect.Message {
 // Deprecated: Use GcpProjectSpec.ProtoReflect.Descriptor instead.
 func (*GcpProjectSpec) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_gcp_gcpproject_v1_spec_proto_rawDescGZIP(), []int{0}
-}
-
-func (x *GcpProjectSpec) GetProjectId() string {
-	if x != nil {
-		return x.ProjectId
-	}
-	return ""
-}
-
-func (x *GcpProjectSpec) GetName() string {
-	if x != nil {
-		return x.Name
-	}
-	return ""
 }
 
 func (x *GcpProjectSpec) GetOrgId() string {
@@ -169,18 +147,15 @@ var File_project_planton_provider_gcp_gcpproject_v1_spec_proto protoreflect.File
 
 const file_project_planton_provider_gcp_gcpproject_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"5project/planton/provider/gcp/gcpproject/v1/spec.proto\x12*project.planton.provider.gcp.gcpproject.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\"\x87\x06\n" +
-	"\x0eGcpProjectSpec\x12G\n" +
-	"\n" +
-	"project_id\x18\x01 \x01(\tB(\xbaH%\xc8\x01\x01r 2\x1e^[a-z][a-z0-9-]{4,28}[a-z0-9]$R\tprojectId\x12 \n" +
-	"\x04name\x18\x02 \x01(\tB\f\xbaH\t\xc8\x01\x01r\x04\x10\x04\x18\x1eR\x04name\x12\x15\n" +
-	"\x06org_id\x18\x03 \x01(\tR\x05orgId\x12\x1b\n" +
-	"\tfolder_id\x18\x04 \x01(\tR\bfolderId\x12Z\n" +
-	"\x12billing_account_id\x18\x05 \x01(\tB,\xbaH)r'2%^[A-Z0-9]{6}-[A-Z0-9]{6}-[A-Z0-9]{6}$R\x10billingAccountId\x12^\n" +
-	"\x06labels\x18\x06 \x03(\v2F.project.planton.provider.gcp.gcpproject.v1.GcpProjectSpec.LabelsEntryR\x06labels\x12@\n" +
-	"\x17disable_default_network\x18\a \x01(\bB\b\x8a\xa6\x1d\x04trueR\x15disableDefaultNetwork\x12K\n" +
-	"\fenabled_apis\x18\b \x03(\tB(\xbaH%\x92\x01\"\" r\x1e2\x1c^[a-z0-9]+\\.googleapis\\.com$R\venabledApis\x12*\n" +
-	"\fowner_member\x18\t \x01(\tB\a\xbaH\x04r\x02`\x01R\vownerMember\x1a9\n" +
+	"5project/planton/provider/gcp/gcpproject/v1/spec.proto\x12*project.planton.provider.gcp.gcpproject.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\"\x9c\x05\n" +
+	"\x0eGcpProjectSpec\x12\x15\n" +
+	"\x06org_id\x18\x01 \x01(\tR\x05orgId\x12\x1b\n" +
+	"\tfolder_id\x18\x02 \x01(\tR\bfolderId\x12Z\n" +
+	"\x12billing_account_id\x18\x03 \x01(\tB,\xbaH)r'2%^[A-Z0-9]{6}-[A-Z0-9]{6}-[A-Z0-9]{6}$R\x10billingAccountId\x12^\n" +
+	"\x06labels\x18\x04 \x03(\v2F.project.planton.provider.gcp.gcpproject.v1.GcpProjectSpec.LabelsEntryR\x06labels\x12@\n" +
+	"\x17disable_default_network\x18\x05 \x01(\bB\b\x8a\xa6\x1d\x04trueR\x15disableDefaultNetwork\x12K\n" +
+	"\fenabled_apis\x18\x06 \x03(\tB(\xbaH%\x92\x01\"\" r\x1e2\x1c^[a-z0-9]+\\.googleapis\\.com$R\venabledApis\x12*\n" +
+	"\fowner_member\x18\a \x01(\tB\a\xbaH\x04r\x02`\x01R\vownerMember\x1a9\n" +
 	"\vLabelsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:\xa3\x01\xbaH\x9f\x01\x1a\x9c\x01\n" +

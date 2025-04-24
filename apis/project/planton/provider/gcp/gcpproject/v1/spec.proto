@@ -14,38 +14,17 @@ import "project/planton/shared/options/options.proto";
 // Advanced concerns—shared-VPC attachment, complex IAM matrices, org-policy
 // constraints, etc.—should be handled by dedicated resources.
 message GcpProjectSpec {
-  // Globally-unique, immutable project ID (6–30 chars).
-  // Pattern:
-  //   • starts with a lowercase letter
-  //   • contains lowercase letters, digits, or hyphens
-  //   • ends with a letter or digit
-  string project_id = 1 [
-    (buf.validate.field).required = true,
-    (buf.validate.field).string = {
-      pattern: "^[a-z][a-z0-9-]{4,28}[a-z0-9]$"
-    }
-  ];
-
-  // Human-friendly display name (4–30 chars, can include spaces).
-  string name = 2 [
-    (buf.validate.field).required = true,
-    (buf.validate.field).string = {
-      min_len: 4,
-      max_len: 30
-    }
-  ];
-
   // Organization ID (numeric string) under which the project is created.
   // Mutually exclusive with folder_id—exactly one parent must be provided.
-  string org_id = 3;
+  string org_id = 1;
 
   // Folder ID (numeric string) under which the project is created.
   // Mutually exclusive with org_id.
-  string folder_id = 4;
+  string folder_id = 2;
 
   // Billing account ID in the form "0123AB-4567CD-89EFGH".
   // Strongly recommended for any project that will use billable services.
-  string billing_account_id = 5 [
+  string billing_account_id = 3 [
     (buf.validate.field).string = {
       pattern: "^[A-Z0-9]{6}-[A-Z0-9]{6}-[A-Z0-9]{6}$"
     }
@@ -53,18 +32,18 @@ message GcpProjectSpec {
 
   // Key/value metadata labels for cost allocation and governance.
   // GCP label keys must be <= 63 chars, lowercase letters, digits, or underscores.
-  map<string, string> labels = 6;
+  map<string, string> labels = 4;
 
   // If true, the auto-created "default" VPC network is deleted immediately
   // after project creation. Disabling the default network is a common
   // security hardening step.
-  bool disable_default_network = 7 [
+  bool disable_default_network = 5 [
     (project.planton.shared.options.default) = "true"
   ];
 
   // List of Cloud APIs to enable (e.g. "compute.googleapis.com").
   // Each entry must end with ".googleapis.com".
-  repeated string enabled_apis = 8 [
+  repeated string enabled_apis = 6 [
     (buf.validate.field).repeated = {
       items: {
         string: {pattern: "^[a-z0-9]+\\.googleapis\\.com$"}
@@ -78,7 +57,7 @@ message GcpProjectSpec {
   //   "group:devops-admins@example.com"
   //   "user:alice@example.com"
   //   "serviceAccount:ci-automation@example.iam.gserviceaccount.com"
-  string owner_member = 9 [
+  string owner_member = 7 [
     (buf.validate.field).string.email = true
   ];
 
