@@ -2,6 +2,14 @@ syntax = "proto3";
 
 package project.planton.provider.gcp.gcpcloudrun.v1;
 
-//gcp-cloud-run stack outputs
+// GcpCloudRunStackOutputs captures values returned after provisioning.
 message GcpCloudRunStackOutputs {
+  // Public or internal URL of the Cloud Run service.
+  string url = 1;
+
+  // Name of the Cloud Run service.
+  string service_name = 2;
+
+  // Name of the deployed revision.
+  string revision = 3;
 }

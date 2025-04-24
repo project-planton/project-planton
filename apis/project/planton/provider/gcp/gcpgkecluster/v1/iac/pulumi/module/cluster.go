@@ -5,10 +5,10 @@ import (
 	"github.com/pkg/errors"
 	"github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpgkecluster/v1/iac/pulumi/module/outputs"
 	"github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpgkecluster/v1/iac/pulumi/module/vars"
-	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp"
-	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/compute"
-	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/container"
-	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/projects"
+	"github.com/pulumi/pulumi-gcp/sdk/v8/go/gcp"
+	"github.com/pulumi/pulumi-gcp/sdk/v8/go/gcp/compute"
+	"github.com/pulumi/pulumi-gcp/sdk/v8/go/gcp/container"
+	"github.com/pulumi/pulumi-gcp/sdk/v8/go/gcp/projects"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 

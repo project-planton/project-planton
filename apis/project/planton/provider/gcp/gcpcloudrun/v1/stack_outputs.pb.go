@@ -21,9 +21,15 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// gcp-cloud-run stack outputs
+// GcpCloudRunStackOutputs captures values returned after provisioning.
 type GcpCloudRunStackOutputs struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Public or internal URL of the Cloud Run service.
+	Url string `protobuf:"bytes,1,opt,name=url,proto3" json:"url,omitempty"`
+	// Name of the Cloud Run service.
+	ServiceName string `protobuf:"bytes,2,opt,name=service_name,json=serviceName,proto3" json:"service_name,omitempty"`
+	// Name of the deployed revision.
+	Revision      string `protobuf:"bytes,3,opt,name=revision,proto3" json:"revision,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -58,12 +64,36 @@ func (*GcpCloudRunStackOutputs) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_gcp_gcpcloudrun_v1_stack_outputs_proto_rawDescGZIP(), []int{0}
 }
 
+func (x *GcpCloudRunStackOutputs) GetUrl() string {
+	if x != nil {
+		return x.Url
+	}
+	return ""
+}
+
+func (x *GcpCloudRunStackOutputs) GetServiceName() string {
+	if x != nil {
+		return x.ServiceName
+	}
+	return ""
+}
+
+func (x *GcpCloudRunStackOutputs) GetRevision() string {
+	if x != nil {
+		return x.Revision
+	}
+	return ""
+}
+
 var File_project_planton_provider_gcp_gcpcloudrun_v1_stack_outputs_proto protoreflect.FileDescriptor
 
 const file_project_planton_provider_gcp_gcpcloudrun_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"?project/planton/provider/gcp/gcpcloudrun/v1/stack_outputs.proto\x12+project.planton.provider.gcp.gcpcloudrun.v1\"\x19\n" +
-	"\x17GcpCloudRunStackOutputsB\x82\x03\n" +
+	"?project/planton/provider/gcp/gcpcloudrun/v1/stack_outputs.proto\x12+project.planton.provider.gcp.gcpcloudrun.v1\"j\n" +
+	"\x17GcpCloudRunStackOutputs\x12\x10\n" +
+	"\x03url\x18\x01 \x01(\tR\x03url\x12!\n" +
+	"\fservice_name\x18\x02 \x01(\tR\vserviceName\x12\x1a\n" +
+	"\brevision\x18\x03 \x01(\tR\brevisionB\x82\x03\n" +
 	"/com.project.planton.provider.gcp.gcpcloudrun.v1B\x11StackOutputsProtoP\x01Zigithub.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpcloudrun/v1;gcpcloudrunv1\xa2\x02\x05PPPGG\xaa\x02+Project.Planton.Provider.Gcp.Gcpcloudrun.V1\xca\x02+Project\\Planton\\Provider\\Gcp\\Gcpcloudrun\\V1\xe2\x027Project\\Planton\\Provider\\Gcp\\Gcpcloudrun\\V1\\GPBMetadata\xea\x020Project::Planton::Provider::Gcp::Gcpcloudrun::V1b\x06proto3"
 
 var (

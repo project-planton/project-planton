@@ -1,0 +1,37 @@
+apiVersion: gcp.project-planton.org/v1
+kind: GcpCloudRun
+metadata:
+  name: nginx
+spec:
+  # ——— core GCP context ———
+  projectId: planton-cloud-testing
+  region: us-central1            # pick the closest GCP region
+
+  # ——— container runtime ———
+  container:
+    image:
+      repo: nginx
+      tag: latest
+    port: 80
+    cpu: 1                       # Cloud Run allows 1 / 2 / 4 only; 1 ≈ 256 CPU units
+    memory: 512                  # MiB, same as ECS
+    replicas:
+      min: 0                     # keep warm instances (0 → scale-to-zero allowed)
+      max: 1                     # match ECS “replicas: 1”
+    env:
+      variables:
+        DB_HOST: abce            # plain env
+        #secrets:
+        #DB_PASSWORD: projects/<gcp-project-id>/secrets/dev-database:latest
+        # ↑ maps $secrets-group entry to Secret Manager reference
+
+  # ——— traffic / scaling ———
+  maxConcurrency: 80             # default; adjust if needed
+  allowUnauthenticated: true     # mimics public ALB listener
+
+  # ——— optional custom domain ———
+  dns:
+    enabled: false
+    hostnames:
+      - nginx-cloud-run.testing.project-planton.org
+    managedZone: project-planton-org-zone
