@@ -14,39 +14,55 @@ func helmChart(ctx *pulumi.Context, locals *Locals,
 		"fullnameOverride": pulumi.String(locals.TemporalKubernetes.Metadata.Name),
 	}
 
-	// ------------------------------------------------------------------ database
-	if locals.TemporalKubernetes.Spec.Database.ExternalDatabase != nil {
-		externalDatabase := locals.TemporalKubernetes.Spec.Database.ExternalDatabase
+	// ---------------------------------------------------------------- database
+	db := locals.TemporalKubernetes.Spec.Database
 
-		// turn off bundled datastores
+	if db.ExternalDatabase != nil {
+		ext := db.ExternalDatabase
+
+		// disable embedded datastores
 		values["cassandra"] = pulumi.Map{"enabled": pulumi.Bool(false)}
 		values["mysql"] = pulumi.Map{"enabled": pulumi.Bool(false)}
 		values["postgresql"] = pulumi.Map{"enabled": pulumi.Bool(false)}
 
-		// pick sub-driver string
+		// choose sub-driver
 		subDriver := "postgres12"
-		if locals.TemporalKubernetes.Spec.Database.Backend == temporalkubernetesv1.TemporalKubernetesDatabaseBackend_mysql {
+		if db.Backend == temporalkubernetesv1.TemporalKubernetesDatabaseBackend_mysql {
 			subDriver = "mysql8"
 		}
 
-		// fall-back names if the manifest omits them
-		if locals.TemporalKubernetes.Spec.Database.DatabaseName == "" {
-			locals.TemporalKubernetes.Spec.Database.DatabaseName = "temporal"
+		// default DB names if not provided
+		defaultDB := db.DatabaseName
+		visibilityDB := db.VisibilityName
+		if defaultDB == "" {
+			defaultDB = "temporal"
 		}
-		if locals.TemporalKubernetes.Spec.Database.VisibilityName == "" {
-			locals.TemporalKubernetes.Spec.Database.VisibilityName = "temporal_visibility"
+		if visibilityDB == "" {
+			visibilityDB = "temporal_visibility"
 		}
 
-		// build the SQL blocks exactly like upstream values files
+		// username field
+		user := ext.Username
+		if user == "" {
+			user = ext.Username
+		}
+
+		// common TLS section (SSL on, host-verification off)
+		tls := pulumi.Map{
+			"enabled":                pulumi.Bool(true),
+			"enableHostVerification": pulumi.Bool(false),
+		}
+
 		defaultSql := pulumi.Map{
 			"driver": pulumi.String("sql"),
 			"sql": pulumi.Map{
 				"driver":         pulumi.String(subDriver),
-				"host":           pulumi.String(externalDatabase.Host),
-				"port":           pulumi.Int(externalDatabase.Port),
-				"database":       pulumi.String(locals.TemporalKubernetes.Spec.Database.DatabaseName),
-				"user":           pulumi.String(externalDatabase.Username),
+				"host":           pulumi.String(ext.Host),
+				"port":           pulumi.Int(ext.Port),
+				"database":       pulumi.String(defaultDB),
+				"user":           pulumi.String(user),
 				"existingSecret": pulumi.String(vars.DatabasePasswordSecretName),
+				"tls":            tls,
 			},
 		}
 
@@ -54,11 +70,12 @@ func helmChart(ctx *pulumi.Context, locals *Locals,
 			"driver": pulumi.String("sql"),
 			"sql": pulumi.Map{
 				"driver":         pulumi.String(subDriver),
-				"host":           pulumi.String(externalDatabase.Host),
-				"port":           pulumi.Int(externalDatabase.Port),
-				"database":       pulumi.String(locals.TemporalKubernetes.Spec.Database.VisibilityName),
-				"user":           pulumi.String(externalDatabase.Username),
+				"host":           pulumi.String(ext.Host),
+				"port":           pulumi.Int(ext.Port),
+				"database":       pulumi.String(visibilityDB),
+				"user":           pulumi.String(user),
 				"existingSecret": pulumi.String(vars.DatabasePasswordSecretName),
+				"tls":            tls,
 			},
 		}
 
@@ -72,8 +89,8 @@ func helmChart(ctx *pulumi.Context, locals *Locals,
 			},
 		}
 	} else {
-		// embedded datastore paths (unchanged)
-		switch locals.TemporalKubernetes.Spec.Database.Backend {
+		// embedded datastore paths
+		switch db.Backend {
 		case temporalkubernetesv1.TemporalKubernetesDatabaseBackend_cassandra:
 			values["cassandra"] = pulumi.Map{
 				"enabled":      pulumi.Bool(true),
@@ -98,13 +115,13 @@ func helmChart(ctx *pulumi.Context, locals *Locals,
 		}
 	}
 
-	// ---------------------------------------------------------- schema jobs
+	// ------------------------------------------------------ schema jobs
 	values["schema"] = pulumi.Map{
 		"createDatabase": pulumi.Map{
-			"enabled": pulumi.Bool(!locals.TemporalKubernetes.Spec.Database.DisableAutoSchemaSetup),
+			"enabled": pulumi.Bool(!db.DisableAutoSchemaSetup), // true by default
 		},
-		"setup":  pulumi.Map{"enabled": pulumi.Bool(false)},
-		"update": pulumi.Map{"enabled": pulumi.Bool(false)},
+		"setup":  pulumi.Map{"enabled": pulumi.Bool(true)},
+		"update": pulumi.Map{"enabled": pulumi.Bool(true)},
 	}
 
 	// -------------------------------------------------------------- web-UI
@@ -112,7 +129,7 @@ func helmChart(ctx *pulumi.Context, locals *Locals,
 		values["web"] = pulumi.Map{"enabled": pulumi.Bool(false)}
 	}
 
-	// ---------------------------------------------------------- monitoring
+	// ---------------------------------------------------- monitoring stack
 	monitoring := locals.TemporalKubernetes.Spec.EnableMonitoringStack
 	if locals.TemporalKubernetes.Spec.ExternalElasticsearch != nil &&
 		locals.TemporalKubernetes.Spec.ExternalElasticsearch.Host != "" {
