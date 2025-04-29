@@ -15,8 +15,6 @@ var vars = struct {
 	IstioIngressNamespace                      string
 	GatewayIngressClassName                    string
 	GatewayExternalLoadBalancerServiceHostname string
-	// Certificate details
-	IngressCertClusterIssuerName string
 	// Temporal defaults and common Helm keys
 	DefaultCassandraReplicas     int
 	HelmKeyPrometheusEnabled     string
@@ -37,8 +35,6 @@ var vars = struct {
 	IstioIngressNamespace:                      "istio-ingress",
 	GatewayIngressClassName:                    "istio",
 	GatewayExternalLoadBalancerServiceHostname: "istio-ingress.example.com",
-
-	IngressCertClusterIssuerName: "letsencrypt-prod",
 
 	DefaultCassandraReplicas: 1,
 

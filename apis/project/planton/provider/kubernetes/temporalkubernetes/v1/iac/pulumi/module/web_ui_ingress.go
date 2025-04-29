@@ -17,7 +17,7 @@ import (
 func webUiIngress(ctx *pulumi.Context, locals *Locals,
 	kubernetesProvider *kubernetes.Provider,
 	createdNamespace *kubernetescorev1.Namespace) error {
-	
+
 	if locals.TemporalKubernetes.Spec.Ingress == nil ||
 		!locals.TemporalKubernetes.Spec.Ingress.IsEnabled ||
 		locals.TemporalKubernetes.Spec.Ingress.DnsDomain == "" ||
@@ -44,7 +44,7 @@ func webUiIngress(ctx *pulumi.Context, locals *Locals,
 				SecretName: pulumi.String(certSecret),
 				IssuerRef: certmanagerv1.CertificateSpecIssuerRefArgs{
 					Kind: pulumi.String("ClusterIssuer"),
-					Name: pulumi.String(vars.IngressCertClusterIssuerName),
+					Name: pulumi.String(locals.TemporalKubernetes.Spec.Ingress.DnsDomain),
 				},
 			},
 		}, pulumi.Provider(kubernetesProvider))

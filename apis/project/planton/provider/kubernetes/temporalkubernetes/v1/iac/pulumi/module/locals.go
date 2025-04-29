@@ -62,7 +62,7 @@ func initializeLocals(ctx *pulumi.Context,
 
 	// ---------------------------- service names ------------------------------
 	locals.FrontendServiceName = fmt.Sprintf("%s-frontend", target.Metadata.Name)
-	locals.UIServiceName = fmt.Sprintf("%s-ui", target.Metadata.Name)
+	locals.UIServiceName = fmt.Sprintf("%s-web", target.Metadata.Name)
 
 	ctx.Export(OpFrontendService, pulumi.String(locals.FrontendServiceName))
 	ctx.Export(OpUIService, pulumi.String(locals.UIServiceName))
