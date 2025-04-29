@@ -1,0 +1,96 @@
+syntax = "proto3";
+
+package project.planton.provider.kubernetes.temporalkubernetes.v1;
+
+import "buf/validate/validate.proto";
+import "project/planton/shared/kubernetes/kubernetes.proto";
+import "project/planton/shared/options/options.proto";
+
+// temporal kubernetes database backend enumerates the supported databases.
+enum TemporalKubernetesDatabaseBackend {
+  // unspecified should not be used
+  temporal_kubernetes_database_backend_unspecified = 0;
+
+  // uses cassandra
+  cassandra = 1;
+
+  // uses postgresql
+  postgresql = 2;
+
+  // uses mysql
+  mysql = 3;
+}
+
+// temporal kubernetes spec defines minimal fields for deploying temporal on kubernetes.
+message TemporalKubernetesSpec {
+  // database configuration
+  TemporalKubernetesDatabaseConfig database = 1 [
+    (buf.validate.field).required = true
+  ];
+
+  // disables temporal web ui
+  bool disable_web_ui = 2;
+
+  //The ingress configuration for the temporal deployment.
+  //if enabled, the frontend will be exposed using a load-balancer
+  // and also if web ui is enabled it will be exposed using the kubernetes ingress controller.
+  project.planton.shared.kubernetes.IngressSpec ingress = 3;
+
+  // external elasticsearch configuration to be used by temporal for configuring observability.
+  TemporalKubernetesExternalElasticsearch external_elasticsearch = 4;
+}
+
+// groups database configuration settings.
+message TemporalKubernetesDatabaseConfig {
+  // selected database backend
+  TemporalKubernetesDatabaseBackend backend = 1 [
+    (buf.validate.field).required = true
+  ];
+
+  // external database configuration, if this is not set, in-cluster cassandra would be created
+  TemporalKubernetesExternalDatabase external_database = 2;
+
+  // primary database or keyspace name
+  string database_name = 6 [
+    (project.planton.shared.options.default) = "temporal"
+  ];
+
+  // visibility database or keyspace name
+  string visibility_name = 7 [
+    (project.planton.shared.options.default) = "temporal_visibility"
+  ];
+
+  // disables automatic schema creation
+  bool disable_auto_schema_setup = 8;
+}
+
+// describes an external database that temporal can use
+message TemporalKubernetesExternalDatabase {
+  // hostname for external database
+  string host = 1;
+
+  // port for external database
+  int32 port = 2;
+
+  // username for database
+  string user = 3;
+
+  // password for database
+  string password = 4;
+}
+
+// describes an external elasticsearch cluster that temporal can use
+// for advanced visibility instead of deploying an in-cluster es chart.
+message TemporalKubernetesExternalElasticsearch {
+  // the host address of the existing elasticsearch cluster
+  string host = 1;
+
+  // the port for the existing elasticsearch cluster
+  int32 port = 2;
+
+  // optional username, if the external cluster requires auth
+  string user = 3;
+
+  // optional password, if the external cluster requires auth
+  string password = 4;
+}

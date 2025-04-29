@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/pkg/errors"
 	microservicekubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/microservicekubernetes/v1"
-	"github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/microservicekubernetes/v1/iac/pulumi/module/outputs"
 	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/kuberneteslabelkeys"
 	"github.com/project-planton/project-planton/pkg/overridelabels"
@@ -59,7 +58,7 @@ func initializeLocals(ctx *pulumi.Context, stackInput *microservicekubernetesv1.
 		locals.Namespace = target.Metadata.Labels[overridelabels.KubernetesNamespaceLabelKey]
 	}
 
-	ctx.Export(outputs.Namespace, pulumi.String(locals.Namespace))
+	ctx.Export(OpNamespace, pulumi.String(locals.Namespace))
 
 	if stackInput.DockerConfigJson != "" {
 		locals.ImagePullSecretData = map[string]string{".dockerconfigjson": stackInput.DockerConfigJson}
@@ -68,18 +67,18 @@ func initializeLocals(ctx *pulumi.Context, stackInput *microservicekubernetesv1.
 	locals.KubeServiceName = target.Spec.Version
 
 	//export kubernetes service name
-	ctx.Export(outputs.Service, pulumi.String(locals.KubeServiceName))
+	ctx.Export(OpService, pulumi.String(locals.KubeServiceName))
 
 	locals.KubeServiceFqdn = fmt.Sprintf("%s.%s.svc.cluster.local", locals.KubeServiceName, locals.Namespace)
 
 	//export kubernetes endpoint
-	ctx.Export(outputs.KubeEndpoint, pulumi.String(locals.KubeServiceFqdn))
+	ctx.Export(OpKubeEndpoint, pulumi.String(locals.KubeServiceFqdn))
 
 	locals.KubePortForwardCommand = fmt.Sprintf("kubectl port-forward -n %s service/%s 8080:8080",
 		locals.Namespace, locals.KubeServiceName)
 
 	//export kube-port-forward command
-	ctx.Export(outputs.PortForwardCommand, pulumi.String(locals.KubePortForwardCommand))
+	ctx.Export(OpPortForwardCommand, pulumi.String(locals.KubePortForwardCommand))
 
 	if target.Spec.Ingress == nil ||
 		!target.Spec.Ingress.IsEnabled ||
@@ -99,8 +98,8 @@ func initializeLocals(ctx *pulumi.Context, stackInput *microservicekubernetesv1.
 	}
 
 	//export ingress hostnames
-	ctx.Export(outputs.ExternalHostname, pulumi.String(locals.IngressExternalHostname))
-	ctx.Export(outputs.InternalHostname, pulumi.String(locals.IngressInternalHostname))
+	ctx.Export(OpExternalHostname, pulumi.String(locals.IngressExternalHostname))
+	ctx.Export(OpInternalHostname, pulumi.String(locals.IngressInternalHostname))
 
 	//note: a ClusterIssuer resource should have already exist on the kubernetes-cluster.
 	//this is typically taken care of by the kubernetes cluster administrator.

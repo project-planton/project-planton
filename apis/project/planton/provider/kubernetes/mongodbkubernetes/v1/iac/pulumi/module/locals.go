@@ -3,7 +3,6 @@ package module
 import (
 	"fmt"
 	mongodbkubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/mongodbkubernetes/v1"
-	"github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/mongodbkubernetes/v1/iac/pulumi/module/outputs"
 	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/kuberneteslabelkeys"
 	"github.com/project-planton/project-planton/pkg/overridelabels"
@@ -55,10 +54,10 @@ func initializeLocals(ctx *pulumi.Context, stackInput *mongodbkubernetesv1.Mongo
 		locals.Namespace = target.Metadata.Labels[overridelabels.KubernetesNamespaceLabelKey]
 	}
 
-	ctx.Export(outputs.Namespace, pulumi.String(locals.Namespace))
-	ctx.Export(outputs.Username, pulumi.String(vars.RootUsername))
-	ctx.Export(outputs.PasswordSecretName, pulumi.String(target.Metadata.Name))
-	ctx.Export(outputs.PasswordSecretKey, pulumi.String(vars.MongodbRootPasswordKey))
+	ctx.Export(OpNamespace, pulumi.String(locals.Namespace))
+	ctx.Export(OpUsername, pulumi.String(vars.RootUsername))
+	ctx.Export(OpPasswordSecretName, pulumi.String(target.Metadata.Name))
+	ctx.Export(OpPasswordSecretKey, pulumi.String(vars.MongodbRootPasswordKey))
 
 	locals.KubeServiceName = target.Metadata.Name
 
@@ -69,18 +68,18 @@ func initializeLocals(ctx *pulumi.Context, stackInput *mongodbkubernetesv1.Mongo
 	}
 
 	//export kubernetes service name
-	ctx.Export(outputs.Service, pulumi.String(locals.KubeServiceName))
+	ctx.Export(OpService, pulumi.String(locals.KubeServiceName))
 
 	locals.KubeServiceFqdn = fmt.Sprintf("%s.%s.svc.cluster.local", locals.KubeServiceName, locals.Namespace)
 
 	//export kubernetes endpoint
-	ctx.Export(outputs.KubeEndpoint, pulumi.String(locals.KubeServiceFqdn))
+	ctx.Export(OpKubeEndpoint, pulumi.String(locals.KubeServiceFqdn))
 
 	locals.KubePortForwardCommand = fmt.Sprintf("kubectl port-forward -n %s service/%s 8080:8080",
 		locals.Namespace, target.Metadata.Name)
 
 	//export kube-port-forward command
-	ctx.Export(outputs.PortForwardCommand, pulumi.String(locals.KubePortForwardCommand))
+	ctx.Export(OpPortForwardCommand, pulumi.String(locals.KubePortForwardCommand))
 
 	if target.Spec.Ingress == nil ||
 		!target.Spec.Ingress.IsEnabled ||
@@ -95,8 +94,8 @@ func initializeLocals(ctx *pulumi.Context, stackInput *mongodbkubernetesv1.Mongo
 		target.Spec.Ingress.DnsDomain)
 
 	//export ingress hostnames
-	ctx.Export(outputs.ExternalHostname, pulumi.String(locals.IngressExternalHostname))
-	ctx.Export(outputs.InternalHostname, pulumi.String(locals.IngressInternalHostname))
+	ctx.Export(OpExternalHostname, pulumi.String(locals.IngressExternalHostname))
+	ctx.Export(OpInternalHostname, pulumi.String(locals.IngressInternalHostname))
 
 	return locals
 }

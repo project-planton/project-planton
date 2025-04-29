@@ -4,7 +4,6 @@ import (
 	"fmt"
 	kubernetesclustercredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/kubernetesclustercredential/v1"
 	kafkakubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/kafkakubernetes/v1"
-	"github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/kafkakubernetes/v1/iac/pulumi/module/outputs"
 	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/kuberneteslabelkeys"
 	"github.com/project-planton/project-planton/pkg/overridelabels"
@@ -76,10 +75,10 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kafkakubernetesv1.KafkaKu
 		locals.Namespace = target.Metadata.Labels[overridelabels.KubernetesNamespaceLabelKey]
 	}
 
-	ctx.Export(outputs.Namespace, pulumi.String(locals.Namespace))
-	ctx.Export(outputs.Username, pulumi.String(vars.AdminUsername))
-	ctx.Export(outputs.PasswordSecretName, pulumi.String(vars.SaslPasswordSecretName))
-	ctx.Export(outputs.PasswordSecretKey, pulumi.String(vars.SaslPasswordKeyInSecret))
+	ctx.Export(OpNamespace, pulumi.String(locals.Namespace))
+	ctx.Export(OpUsername, pulumi.String(vars.AdminUsername))
+	ctx.Export(OpPasswordSecretName, pulumi.String(vars.SaslPasswordSecretName))
+	ctx.Export(OpPasswordSecretKey, pulumi.String(vars.SaslPasswordKeyInSecret))
 
 	locals.BootstrapKubeServiceName = fmt.Sprintf("%s-kafka-bootstrap", locals.Namespace)
 
@@ -95,8 +94,8 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kafkakubernetesv1.KafkaKu
 
 		locals.IngressInternalSchemaRegistryHostname = fmt.Sprintf("%s-schema-registry-internal.%s", locals.Namespace, target.Spec.Ingress.DnsDomain)
 
-		ctx.Export(outputs.SchemaRegistryExternalUrl, pulumi.Sprintf("https://%s", locals.IngressExternalSchemaRegistryHostname))
-		ctx.Export(outputs.SchemaRegistryInternalUrl, pulumi.Sprintf("https://%s", locals.IngressInternalSchemaRegistryHostname))
+		ctx.Export(OpSchemaRegistryExternalUrl, pulumi.Sprintf("https://%s", locals.IngressExternalSchemaRegistryHostname))
+		ctx.Export(OpSchemaRegistryInternalUrl, pulumi.Sprintf("https://%s", locals.IngressInternalSchemaRegistryHostname))
 
 		locals.IngressSchemaRegistryHostnames = []string{
 			locals.IngressExternalSchemaRegistryHostname,
@@ -112,7 +111,7 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kafkakubernetesv1.KafkaKu
 
 		locals.IngressExternalKowlHostname = fmt.Sprintf("%s-kowl.%s", locals.Namespace, target.Spec.Ingress.DnsDomain)
 
-		ctx.Export(outputs.KafkaUiExternalUrl, pulumi.Sprintf("https://%s", locals.IngressExternalKowlHostname))
+		ctx.Export(OpKafkaUiExternalUrl, pulumi.Sprintf("https://%s", locals.IngressExternalKowlHostname))
 
 		locals.KowlKubeServiceFqdn = fmt.Sprintf("%s.%s.svc.cluster.local", vars.KowlKubeServiceName, locals.Namespace)
 	}
@@ -127,8 +126,8 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kafkakubernetesv1.KafkaKu
 
 	locals.IngressInternalBootstrapHostname = fmt.Sprintf("%s-bootstrap-internal.%s", locals.Namespace, target.Spec.Ingress.DnsDomain)
 
-	ctx.Export(outputs.BootstrapServerExternalHostname, pulumi.String(locals.IngressExternalBootstrapHostname))
-	ctx.Export(outputs.BootstrapServerInternalHostname, pulumi.String(locals.IngressInternalBootstrapHostname))
+	ctx.Export(OpBootstrapServerExternalHostname, pulumi.String(locals.IngressExternalBootstrapHostname))
+	ctx.Export(OpBootstrapServerInternalHostname, pulumi.String(locals.IngressInternalBootstrapHostname))
 
 	// Creating internal broker hostnames
 	ingressInternalBrokerHostnames := make([]string, int(target.Spec.BrokerContainer.Replicas))
@@ -154,8 +153,8 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kafkakubernetesv1.KafkaKu
 	locals.IngressHostnames = ingressHostnames
 
 	//export ingress hostnames
-	//ctx.Export(outputs.IngressExternalHostname, pulumi.String(locals.IngressExternalHostname))
-	//ctx.Export(outputs.IngressInternalHostname, pulumi.String(locals.IngressInternalHostname))
+	//ctx.Export(IngressExternalHostname, pulumi.String(locals.IngressExternalHostname))
+	//ctx.Export(IngressInternalHostname, pulumi.String(locals.IngressInternalHostname))
 
 	//note: a ClusterIssuer resource should have already exist on the kubernetes-cluster.
 	//this is typically taken care of by the kubernetes cluster administrator.

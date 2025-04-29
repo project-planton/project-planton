@@ -3,7 +3,6 @@ package module
 import (
 	"encoding/base64"
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/rediskubernetes/v1/iac/pulumi/module/outputs"
 	kubernetescorev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
 	metav1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/meta/v1"
 	"github.com/pulumi/pulumi-random/sdk/v4/go/random"
@@ -49,9 +48,9 @@ func adminPassword(ctx *pulumi.Context, locals *Locals, createdNamespace *kubern
 		return errors.Wrap(err, "failed to admin secret")
 	}
 
-	ctx.Export(outputs.Username, pulumi.String("default"))
-	ctx.Export(outputs.PasswordSecretName, createdSecret.Metadata.Name())
-	ctx.Export(outputs.PasswordSecretKey, pulumi.String(vars.RedisPasswordSecretKey))
+	ctx.Export(OpUsername, pulumi.String("default"))
+	ctx.Export(OpPasswordSecretName, createdSecret.Metadata.Name())
+	ctx.Export(OpPasswordSecretKey, pulumi.String(vars.RedisPasswordSecretKey))
 
 	return nil
 }

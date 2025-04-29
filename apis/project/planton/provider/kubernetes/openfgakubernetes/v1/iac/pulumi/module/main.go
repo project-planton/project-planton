@@ -3,7 +3,6 @@ package module
 import (
 	"github.com/pkg/errors"
 	openfgakubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/openfgakubernetes/v1"
-	"github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/openfgakubernetes/v1/iac/pulumi/module/outputs"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/pulumikubernetesprovider"
 	kubernetescorev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
 	metav1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/meta/v1"
@@ -33,7 +32,7 @@ func Resources(ctx *pulumi.Context, stackInput *openfgakubernetesv1.OpenFgaKuber
 	}
 
 	//export name of the namespace
-	ctx.Export(outputs.Namespace, createdNamespace.Metadata.Name())
+	ctx.Export(OpNamespace, createdNamespace.Metadata.Name())
 
 	//install the openfga helm-chart
 	if err := helmChart(ctx, locals, createdNamespace); err != nil {

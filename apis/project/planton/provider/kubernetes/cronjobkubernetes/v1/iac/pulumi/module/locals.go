@@ -53,7 +53,7 @@ func initializeLocals(ctx *pulumi.Context, stackInput *cronjobkubernetesv1.CronJ
 	}
 
 	// export namespace as an output
-	ctx.Export("namespace", pulumi.String(locals.Namespace))
+	ctx.Export(OpNamespace, pulumi.String(locals.Namespace))
 
 	// handle docker config json if specified
 	if stackInput.DockerConfigJson != "" {
