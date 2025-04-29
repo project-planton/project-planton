@@ -11,6 +11,11 @@ import (
 func service(ctx *pulumi.Context, locals *Locals,
 	createdNamespace *kubernetescorev1.Namespace, createdDeployment *appsv1.Deployment) error {
 
+	//if the service ports are empty, we don't need to create a service
+	if len(locals.MicroserviceKubernetes.Spec.Container.App.Ports) == 0 {
+		return nil
+	}
+
 	portsArray := make(kubernetescorev1.ServicePortArray, 0)
 	for _, p := range locals.MicroserviceKubernetes.Spec.Container.App.Ports {
 		portsArray = append(portsArray, &kubernetescorev1.ServicePortArgs{
