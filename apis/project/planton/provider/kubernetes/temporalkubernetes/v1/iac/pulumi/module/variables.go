@@ -17,6 +17,12 @@ var vars = struct {
 	GatewayExternalLoadBalancerServiceHostname string
 	// Certificate details
 	IngressCertClusterIssuerName string
+	// Temporal defaults and common Helm keys
+	DefaultCassandraReplicas     int
+	HelmKeyPrometheusEnabled     string
+	HelmKeyGrafanaEnabled        string
+	HelmKeyElasticsearchEnabled  string
+	HelmKeyCassandraReplicaCount string
 }{
 	HelmChartName:    "temporal",
 	HelmChartRepoUrl: "https://go.temporal.io/helm-charts",
@@ -33,4 +39,11 @@ var vars = struct {
 	GatewayExternalLoadBalancerServiceHostname: "istio-ingress.example.com",
 
 	IngressCertClusterIssuerName: "letsencrypt-prod",
+
+	DefaultCassandraReplicas: 1,
+
+	HelmKeyPrometheusEnabled:     "prometheus.enabled",
+	HelmKeyGrafanaEnabled:        "grafana.enabled",
+	HelmKeyElasticsearchEnabled:  "elasticsearch.enabled",
+	HelmKeyCassandraReplicaCount: "cassandra.replicaCount",
 }

@@ -6,4 +6,4 @@ spec:
   database:
     backend: cassandra
   ingress:
-    enabled: false
+    isEnabled: false

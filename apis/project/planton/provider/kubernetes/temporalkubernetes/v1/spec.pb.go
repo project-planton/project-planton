@@ -88,12 +88,21 @@ type TemporalKubernetesSpec struct {
 	Database *TemporalKubernetesDatabaseConfig `protobuf:"bytes,1,opt,name=database,proto3" json:"database,omitempty"`
 	// disables temporal web ui
 	DisableWebUi bool `protobuf:"varint,2,opt,name=disable_web_ui,json=disableWebUi,proto3" json:"disable_web_ui,omitempty"`
+	// enables embedded elasticsearch for temporal
+	// this is ignored if external elasticsearch is set
+	EnableEmbeddedElasticsearch bool `protobuf:"varint,3,opt,name=enableEmbeddedElasticsearch,proto3" json:"enableEmbeddedElasticsearch,omitempty"`
+	// enables monitoring stack for temporal
+	// enabling this will deploy prometheus and grafana
+	EnableMonitoringStack bool `protobuf:"varint,4,opt,name=enableMonitoringStack,proto3" json:"enableMonitoringStack,omitempty"`
+	// number of cassandra nodes to be deployed
+	// this is only honored when the backend is cassandra, and no external database is provided.
+	CassandraReplicas int32 `protobuf:"varint,5,opt,name=cassandraReplicas,proto3" json:"cassandraReplicas,omitempty"`
 	// The ingress configuration for the temporal deployment.
 	// if enabled, the frontend will be exposed using a load-balancer
 	// and also if web ui is enabled it will be exposed using the kubernetes ingress controller.
-	Ingress *kubernetes.IngressSpec `protobuf:"bytes,3,opt,name=ingress,proto3" json:"ingress,omitempty"`
+	Ingress *kubernetes.IngressSpec `protobuf:"bytes,6,opt,name=ingress,proto3" json:"ingress,omitempty"`
 	// external elasticsearch configuration to be used by temporal for configuring observability.
-	ExternalElasticsearch *TemporalKubernetesExternalElasticsearch `protobuf:"bytes,4,opt,name=external_elasticsearch,json=externalElasticsearch,proto3" json:"external_elasticsearch,omitempty"`
+	ExternalElasticsearch *TemporalKubernetesExternalElasticsearch `protobuf:"bytes,7,opt,name=external_elasticsearch,json=externalElasticsearch,proto3" json:"external_elasticsearch,omitempty"`
 	unknownFields         protoimpl.UnknownFields
 	sizeCache             protoimpl.SizeCache
 }
@@ -140,6 +149,27 @@ func (x *TemporalKubernetesSpec) GetDisableWebUi() bool {
 		return x.DisableWebUi
 	}
 	return false
+}
+
+func (x *TemporalKubernetesSpec) GetEnableEmbeddedElasticsearch() bool {
+	if x != nil {
+		return x.EnableEmbeddedElasticsearch
+	}
+	return false
+}
+
+func (x *TemporalKubernetesSpec) GetEnableMonitoringStack() bool {
+	if x != nil {
+		return x.EnableMonitoringStack
+	}
+	return false
+}
+
+func (x *TemporalKubernetesSpec) GetCassandraReplicas() int32 {
+	if x != nil {
+		return x.CassandraReplicas
+	}
+	return 0
 }
 
 func (x *TemporalKubernetesSpec) GetIngress() *kubernetes.IngressSpec {
@@ -389,12 +419,15 @@ var File_project_planton_provider_kubernetes_temporalkubernetes_v1_spec_proto pr
 
 const file_project_planton_provider_kubernetes_temporalkubernetes_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Dproject/planton/provider/kubernetes/temporalkubernetes/v1/spec.proto\x129project.planton.provider.kubernetes.temporalkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a,project/planton/shared/options/options.proto\"\xa5\x03\n" +
+	"Dproject/planton/provider/kubernetes/temporalkubernetes/v1/spec.proto\x129project.planton.provider.kubernetes.temporalkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a,project/planton/shared/options/options.proto\"\xd2\x04\n" +
 	"\x16TemporalKubernetesSpec\x12\x7f\n" +
 	"\bdatabase\x18\x01 \x01(\v2[.project.planton.provider.kubernetes.temporalkubernetes.v1.TemporalKubernetesDatabaseConfigB\x06\xbaH\x03\xc8\x01\x01R\bdatabase\x12$\n" +
-	"\x0edisable_web_ui\x18\x02 \x01(\bR\fdisableWebUi\x12H\n" +
-	"\aingress\x18\x03 \x01(\v2..project.planton.shared.kubernetes.IngressSpecR\aingress\x12\x99\x01\n" +
-	"\x16external_elasticsearch\x18\x04 \x01(\v2b.project.planton.provider.kubernetes.temporalkubernetes.v1.TemporalKubernetesExternalElasticsearchR\x15externalElasticsearch\"\xdf\x03\n" +
+	"\x0edisable_web_ui\x18\x02 \x01(\bR\fdisableWebUi\x12@\n" +
+	"\x1benableEmbeddedElasticsearch\x18\x03 \x01(\bR\x1benableEmbeddedElasticsearch\x124\n" +
+	"\x15enableMonitoringStack\x18\x04 \x01(\bR\x15enableMonitoringStack\x123\n" +
+	"\x11cassandraReplicas\x18\x05 \x01(\x05B\x05\x8a\xa6\x1d\x011R\x11cassandraReplicas\x12H\n" +
+	"\aingress\x18\x06 \x01(\v2..project.planton.shared.kubernetes.IngressSpecR\aingress\x12\x99\x01\n" +
+	"\x16external_elasticsearch\x18\a \x01(\v2b.project.planton.provider.kubernetes.temporalkubernetes.v1.TemporalKubernetesExternalElasticsearchR\x15externalElasticsearch\"\xdf\x03\n" +
 	" TemporalKubernetesDatabaseConfig\x12~\n" +
 	"\abackend\x18\x01 \x01(\x0e2\\.project.planton.provider.kubernetes.temporalkubernetes.v1.TemporalKubernetesDatabaseBackendB\x06\xbaH\x03\xc8\x01\x01R\abackend\x12\x8a\x01\n" +
 	"\x11external_database\x18\x02 \x01(\v2].project.planton.provider.kubernetes.temporalkubernetes.v1.TemporalKubernetesExternalDatabaseR\x10externalDatabase\x121\n" +

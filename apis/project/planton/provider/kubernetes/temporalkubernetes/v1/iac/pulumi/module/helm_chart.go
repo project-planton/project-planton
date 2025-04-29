@@ -8,29 +8,28 @@ import (
 )
 
 // helmChart installs Temporal via the official Helm chart and wires-in
-// only the minimal values derived from the API spec.  Everything else is
+// only the minimal values derived from the API spec. Everything else is
 // left to the chart defaults so Terraform-minded users can inspect / copy
-// with familiar “values.yaml” semantics.
+// the “values.yaml” semantics.
 func helmChart(ctx *pulumi.Context, locals *Locals,
 	createdNamespace pulumi.Resource) error {
 
-	// -------- core values common to every install --------------------------
 	values := pulumi.Map{
 		"fullnameOverride": pulumi.String(locals.TemporalKubernetes.Metadata.Name),
 	}
 
-	// --------------------------- persistence -------------------------------
+	// ---------------------------------------------------------------------
+	// persistence
+	// ---------------------------------------------------------------------
 	db := locals.TemporalKubernetes.Spec.Database
 	if db.ExternalDatabase != nil {
 		ext := db.ExternalDatabase
 
-		// Disable internal sub-charts so we don’t deploy an extra datastore.
+		// disable bundled datastores
 		values["cassandra"] = pulumi.Map{"enabled": pulumi.Bool(false)}
 		values["mysql"] = pulumi.Map{"enabled": pulumi.Bool(false)}
 		values["postgresql"] = pulumi.Map{"enabled": pulumi.Bool(false)}
 
-		// Temporal expects two “persistence” blocks: default & visibility.
-		// Both are identical except the DB name.
 		sqlBlock := pulumi.Map{
 			"driver":   pulumi.String(sqlDriver(db.Backend)),
 			"host":     pulumi.String(ext.Host),
@@ -39,7 +38,7 @@ func helmChart(ctx *pulumi.Context, locals *Locals,
 			"user":     pulumi.String(ext.User),
 			"password": pulumi.String(ext.Password),
 		}
-		sqlVisBlock := pulumi.Map{
+		sqlVis := pulumi.Map{
 			"driver":   pulumi.String(sqlDriver(db.Backend)),
 			"host":     pulumi.String(ext.Host),
 			"port":     pulumi.Int(ext.Port),
@@ -52,22 +51,46 @@ func helmChart(ctx *pulumi.Context, locals *Locals,
 			"config": pulumi.Map{
 				"persistence": pulumi.Map{
 					"default":    sqlBlock,
-					"visibility": sqlVisBlock,
+					"visibility": sqlVis,
 					"driver":     pulumi.String("sql"),
 				},
 			},
 		}
 	} else {
-		// No external DB – enable the bundled one for the selected backend.
 		switch db.Backend {
 		case temporalkubernetesv1.TemporalKubernetesDatabaseBackend_cassandra:
-			values["cassandra"] = pulumi.Map{"enabled": pulumi.Bool(true)}
+			replicas := int(locals.TemporalKubernetes.Spec.CassandraReplicas)
+			if replicas == 0 {
+				replicas = vars.DefaultCassandraReplicas
+			}
+
+			if replicas == 1 {
+				// dev=true → single-pod StatefulSet
+				values["cassandra"] = pulumi.Map{
+					"enabled": pulumi.Bool(true),
+					"configuration": pulumi.Map{
+						"dev": pulumi.Bool(true),
+					},
+				}
+			} else {
+				// production-style multi-node cluster
+				values["cassandra"] = pulumi.Map{
+					"enabled": pulumi.Bool(true),
+					"configuration": pulumi.Map{
+						"dev":          pulumi.Bool(false),
+						"cluster_size": pulumi.Int(replicas),
+					},
+				}
+			}
+
 			values["mysql"] = pulumi.Map{"enabled": pulumi.Bool(false)}
 			values["postgresql"] = pulumi.Map{"enabled": pulumi.Bool(false)}
+
 		case temporalkubernetesv1.TemporalKubernetesDatabaseBackend_mysql:
 			values["cassandra"] = pulumi.Map{"enabled": pulumi.Bool(false)}
 			values["mysql"] = pulumi.Map{"enabled": pulumi.Bool(true)}
 			values["postgresql"] = pulumi.Map{"enabled": pulumi.Bool(false)}
+
 		case temporalkubernetesv1.TemporalKubernetesDatabaseBackend_postgresql:
 			values["cassandra"] = pulumi.Map{"enabled": pulumi.Bool(false)}
 			values["mysql"] = pulumi.Map{"enabled": pulumi.Bool(false)}
@@ -75,22 +98,44 @@ func helmChart(ctx *pulumi.Context, locals *Locals,
 		}
 	}
 
-	// --------------------------- schema setup ------------------------------
+	// ---------------------------------------------------------------------
+	// schema setup (keep setup/update jobs so CQL files are mounted)
+	// ---------------------------------------------------------------------
 	values["schema"] = pulumi.Map{
 		"createDatabase": pulumi.Map{
 			"enabled": pulumi.Bool(!db.DisableAutoSchemaSetup),
 		},
+		"setup":  pulumi.Map{"enabled": pulumi.Bool(true)},
+		"update": pulumi.Map{"enabled": pulumi.Bool(true)},
 	}
 
-	// ---------------------------- web UI -----------------------------------
+	// ---------------------------------------------------------------------
+	// web-ui
+	// ---------------------------------------------------------------------
 	if locals.TemporalKubernetes.Spec.DisableWebUi {
 		values["web"] = pulumi.Map{"enabled": pulumi.Bool(false)}
 	}
 
-	// ----------------------- external Elasticsearch ------------------------
+	// ---------------------------------------------------------------------
+	// monitoring stack (Prometheus + Grafana)
+	// ---------------------------------------------------------------------
+	monitoringEnabled := locals.TemporalKubernetes.Spec.EnableMonitoringStack
+	if locals.TemporalKubernetes.Spec.ExternalElasticsearch != nil &&
+		locals.TemporalKubernetes.Spec.ExternalElasticsearch.Host != "" {
+		// force on when external ES is provided
+		monitoringEnabled = true
+	}
+	values["prometheus"] = pulumi.Map{"enabled": pulumi.Bool(monitoringEnabled)}
+	values["grafana"] = pulumi.Map{"enabled": pulumi.Bool(monitoringEnabled)}
+	values["kubePrometheusStack"] = pulumi.Map{"enabled": pulumi.Bool(monitoringEnabled)}
+
+	// ---------------------------------------------------------------------
+	// elasticsearch – embedded vs external
+	// ---------------------------------------------------------------------
 	es := locals.TemporalKubernetes.Spec.ExternalElasticsearch
-	if es != nil && es.Host != "" {
-		// Use existing ES; switch off embedded one and wire host / port.
+	embedES := locals.TemporalKubernetes.Spec.EnableEmbeddedElasticsearch
+	switch {
+	case es != nil && es.Host != "":
 		values["elasticsearch"] = pulumi.Map{
 			"enabled":  pulumi.Bool(false),
 			"host":     pulumi.String(es.Host),
@@ -99,9 +144,13 @@ func helmChart(ctx *pulumi.Context, locals *Locals,
 			"username": pulumi.String(es.User),
 			"password": pulumi.String(es.Password),
 		}
+	case !embedES:
+		values["elasticsearch"] = pulumi.Map{"enabled": pulumi.Bool(false)}
 	}
 
-	// -------------------------- install chart ------------------------------
+	// ---------------------------------------------------------------------
+	// install chart
+	// ---------------------------------------------------------------------
 	_, err := helmv3.NewChart(ctx,
 		locals.TemporalKubernetes.Metadata.Name,
 		helmv3.ChartArgs{
@@ -120,7 +169,7 @@ func helmChart(ctx *pulumi.Context, locals *Locals,
 	return nil
 }
 
-// sqlDriver maps proto enum → temporal Helm sql driver string.
+// sqlDriver maps proto enum → Temporal Helm sql driver string.
 func sqlDriver(backend temporalkubernetesv1.TemporalKubernetesDatabaseBackend) string {
 	switch backend {
 	case temporalkubernetesv1.TemporalKubernetesDatabaseBackend_mysql:
