@@ -276,7 +276,7 @@ type TemporalKubernetesExternalDatabase struct {
 	// port for external database
 	Port int32 `protobuf:"varint,2,opt,name=port,proto3" json:"port,omitempty"`
 	// username for database
-	User string `protobuf:"bytes,3,opt,name=user,proto3" json:"user,omitempty"`
+	Username string `protobuf:"bytes,3,opt,name=username,proto3" json:"username,omitempty"`
 	// password for database
 	Password      string `protobuf:"bytes,4,opt,name=password,proto3" json:"password,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -327,9 +327,9 @@ func (x *TemporalKubernetesExternalDatabase) GetPort() int32 {
 	return 0
 }
 
-func (x *TemporalKubernetesExternalDatabase) GetUser() string {
+func (x *TemporalKubernetesExternalDatabase) GetUsername() string {
 	if x != nil {
-		return x.User
+		return x.Username
 	}
 	return ""
 }
@@ -433,11 +433,11 @@ const file_project_planton_provider_kubernetes_temporalkubernetes_v1_spec_proto_
 	"\x11external_database\x18\x02 \x01(\v2].project.planton.provider.kubernetes.temporalkubernetes.v1.TemporalKubernetesExternalDatabaseR\x10externalDatabase\x121\n" +
 	"\rdatabase_name\x18\x06 \x01(\tB\f\x8a\xa6\x1d\btemporalR\fdatabaseName\x12@\n" +
 	"\x0fvisibility_name\x18\a \x01(\tB\x17\x8a\xa6\x1d\x13temporal_visibilityR\x0evisibilityName\x129\n" +
-	"\x19disable_auto_schema_setup\x18\b \x01(\bR\x16disableAutoSchemaSetup\"|\n" +
+	"\x19disable_auto_schema_setup\x18\b \x01(\bR\x16disableAutoSchemaSetup\"\x84\x01\n" +
 	"\"TemporalKubernetesExternalDatabase\x12\x12\n" +
 	"\x04host\x18\x01 \x01(\tR\x04host\x12\x12\n" +
-	"\x04port\x18\x02 \x01(\x05R\x04port\x12\x12\n" +
-	"\x04user\x18\x03 \x01(\tR\x04user\x12\x1a\n" +
+	"\x04port\x18\x02 \x01(\x05R\x04port\x12\x1a\n" +
+	"\busername\x18\x03 \x01(\tR\busername\x12\x1a\n" +
 	"\bpassword\x18\x04 \x01(\tR\bpassword\"\x81\x01\n" +
 	"'TemporalKubernetesExternalElasticsearch\x12\x12\n" +
 	"\x04host\x18\x01 \x01(\tR\x04host\x12\x12\n" +

@@ -81,7 +81,7 @@ message TemporalKubernetesExternalDatabase {
   int32 port = 2;
 
   // username for database
-  string user = 3;
+  string username = 3;
 
   // password for database
   string password = 4;
