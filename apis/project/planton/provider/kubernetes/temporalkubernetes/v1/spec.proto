@@ -27,17 +27,25 @@ message TemporalKubernetesSpec {
   TemporalKubernetesDatabaseConfig database = 1 [
     (buf.validate.field).required = true
   ];
-
   // disables temporal web ui
   bool disable_web_ui = 2;
-
+  // enables embedded elasticsearch for temporal
+  // this is ignored if external elasticsearch is set
+  bool enableEmbeddedElasticsearch = 3;
+  // enables monitoring stack for temporal
+  // enabling this will deploy prometheus and grafana
+  bool enableMonitoringStack = 4;
+  //number of cassandra nodes to be deployed
+  //this is only honored when the backend is cassandra, and no external database is provided.
+  int32 cassandraReplicas = 5 [
+    (project.planton.shared.options.default) = "1"
+  ];
   //The ingress configuration for the temporal deployment.
   //if enabled, the frontend will be exposed using a load-balancer
   // and also if web ui is enabled it will be exposed using the kubernetes ingress controller.
-  project.planton.shared.kubernetes.IngressSpec ingress = 3;
-
+  project.planton.shared.kubernetes.IngressSpec ingress = 6;
   // external elasticsearch configuration to be used by temporal for configuring observability.
-  TemporalKubernetesExternalElasticsearch external_elasticsearch = 4;
+  TemporalKubernetesExternalElasticsearch external_elasticsearch = 7;
 }
 
 // groups database configuration settings.
@@ -73,7 +81,7 @@ message TemporalKubernetesExternalDatabase {
   int32 port = 2;
 
   // username for database
-  string user = 3;
+  string username = 3;
 
   // password for database
   string password = 4;

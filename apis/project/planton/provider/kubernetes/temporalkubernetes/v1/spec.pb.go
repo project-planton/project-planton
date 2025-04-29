@@ -88,12 +88,21 @@ type TemporalKubernetesSpec struct {
 	Database *TemporalKubernetesDatabaseConfig `protobuf:"bytes,1,opt,name=database,proto3" json:"database,omitempty"`
 	// disables temporal web ui
 	DisableWebUi bool `protobuf:"varint,2,opt,name=disable_web_ui,json=disableWebUi,proto3" json:"disable_web_ui,omitempty"`
+	// enables embedded elasticsearch for temporal
+	// this is ignored if external elasticsearch is set
+	EnableEmbeddedElasticsearch bool `protobuf:"varint,3,opt,name=enableEmbeddedElasticsearch,proto3" json:"enableEmbeddedElasticsearch,omitempty"`
+	// enables monitoring stack for temporal
+	// enabling this will deploy prometheus and grafana
+	EnableMonitoringStack bool `protobuf:"varint,4,opt,name=enableMonitoringStack,proto3" json:"enableMonitoringStack,omitempty"`
+	// number of cassandra nodes to be deployed
+	// this is only honored when the backend is cassandra, and no external database is provided.
+	CassandraReplicas int32 `protobuf:"varint,5,opt,name=cassandraReplicas,proto3" json:"cassandraReplicas,omitempty"`
 	// The ingress configuration for the temporal deployment.
 	// if enabled, the frontend will be exposed using a load-balancer
 	// and also if web ui is enabled it will be exposed using the kubernetes ingress controller.
-	Ingress *kubernetes.IngressSpec `protobuf:"bytes,3,opt,name=ingress,proto3" json:"ingress,omitempty"`
+	Ingress *kubernetes.IngressSpec `protobuf:"bytes,6,opt,name=ingress,proto3" json:"ingress,omitempty"`
 	// external elasticsearch configuration to be used by temporal for configuring observability.
-	ExternalElasticsearch *TemporalKubernetesExternalElasticsearch `protobuf:"bytes,4,opt,name=external_elasticsearch,json=externalElasticsearch,proto3" json:"external_elasticsearch,omitempty"`
+	ExternalElasticsearch *TemporalKubernetesExternalElasticsearch `protobuf:"bytes,7,opt,name=external_elasticsearch,json=externalElasticsearch,proto3" json:"external_elasticsearch,omitempty"`
 	unknownFields         protoimpl.UnknownFields
 	sizeCache             protoimpl.SizeCache
 }
@@ -140,6 +149,27 @@ func (x *TemporalKubernetesSpec) GetDisableWebUi() bool {
 		return x.DisableWebUi
 	}
 	return false
+}
+
+func (x *TemporalKubernetesSpec) GetEnableEmbeddedElasticsearch() bool {
+	if x != nil {
+		return x.EnableEmbeddedElasticsearch
+	}
+	return false
+}
+
+func (x *TemporalKubernetesSpec) GetEnableMonitoringStack() bool {
+	if x != nil {
+		return x.EnableMonitoringStack
+	}
+	return false
+}
+
+func (x *TemporalKubernetesSpec) GetCassandraReplicas() int32 {
+	if x != nil {
+		return x.CassandraReplicas
+	}
+	return 0
 }
 
 func (x *TemporalKubernetesSpec) GetIngress() *kubernetes.IngressSpec {
@@ -246,7 +276,7 @@ type TemporalKubernetesExternalDatabase struct {
 	// port for external database
 	Port int32 `protobuf:"varint,2,opt,name=port,proto3" json:"port,omitempty"`
 	// username for database
-	User string `protobuf:"bytes,3,opt,name=user,proto3" json:"user,omitempty"`
+	Username string `protobuf:"bytes,3,opt,name=username,proto3" json:"username,omitempty"`
 	// password for database
 	Password      string `protobuf:"bytes,4,opt,name=password,proto3" json:"password,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -297,9 +327,9 @@ func (x *TemporalKubernetesExternalDatabase) GetPort() int32 {
 	return 0
 }
 
-func (x *TemporalKubernetesExternalDatabase) GetUser() string {
+func (x *TemporalKubernetesExternalDatabase) GetUsername() string {
 	if x != nil {
-		return x.User
+		return x.Username
 	}
 	return ""
 }
@@ -389,22 +419,25 @@ var File_project_planton_provider_kubernetes_temporalkubernetes_v1_spec_proto pr
 
 const file_project_planton_provider_kubernetes_temporalkubernetes_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Dproject/planton/provider/kubernetes/temporalkubernetes/v1/spec.proto\x129project.planton.provider.kubernetes.temporalkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a,project/planton/shared/options/options.proto\"\xa5\x03\n" +
+	"Dproject/planton/provider/kubernetes/temporalkubernetes/v1/spec.proto\x129project.planton.provider.kubernetes.temporalkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a,project/planton/shared/options/options.proto\"\xd2\x04\n" +
 	"\x16TemporalKubernetesSpec\x12\x7f\n" +
 	"\bdatabase\x18\x01 \x01(\v2[.project.planton.provider.kubernetes.temporalkubernetes.v1.TemporalKubernetesDatabaseConfigB\x06\xbaH\x03\xc8\x01\x01R\bdatabase\x12$\n" +
-	"\x0edisable_web_ui\x18\x02 \x01(\bR\fdisableWebUi\x12H\n" +
-	"\aingress\x18\x03 \x01(\v2..project.planton.shared.kubernetes.IngressSpecR\aingress\x12\x99\x01\n" +
-	"\x16external_elasticsearch\x18\x04 \x01(\v2b.project.planton.provider.kubernetes.temporalkubernetes.v1.TemporalKubernetesExternalElasticsearchR\x15externalElasticsearch\"\xdf\x03\n" +
+	"\x0edisable_web_ui\x18\x02 \x01(\bR\fdisableWebUi\x12@\n" +
+	"\x1benableEmbeddedElasticsearch\x18\x03 \x01(\bR\x1benableEmbeddedElasticsearch\x124\n" +
+	"\x15enableMonitoringStack\x18\x04 \x01(\bR\x15enableMonitoringStack\x123\n" +
+	"\x11cassandraReplicas\x18\x05 \x01(\x05B\x05\x8a\xa6\x1d\x011R\x11cassandraReplicas\x12H\n" +
+	"\aingress\x18\x06 \x01(\v2..project.planton.shared.kubernetes.IngressSpecR\aingress\x12\x99\x01\n" +
+	"\x16external_elasticsearch\x18\a \x01(\v2b.project.planton.provider.kubernetes.temporalkubernetes.v1.TemporalKubernetesExternalElasticsearchR\x15externalElasticsearch\"\xdf\x03\n" +
 	" TemporalKubernetesDatabaseConfig\x12~\n" +
 	"\abackend\x18\x01 \x01(\x0e2\\.project.planton.provider.kubernetes.temporalkubernetes.v1.TemporalKubernetesDatabaseBackendB\x06\xbaH\x03\xc8\x01\x01R\abackend\x12\x8a\x01\n" +
 	"\x11external_database\x18\x02 \x01(\v2].project.planton.provider.kubernetes.temporalkubernetes.v1.TemporalKubernetesExternalDatabaseR\x10externalDatabase\x121\n" +
 	"\rdatabase_name\x18\x06 \x01(\tB\f\x8a\xa6\x1d\btemporalR\fdatabaseName\x12@\n" +
 	"\x0fvisibility_name\x18\a \x01(\tB\x17\x8a\xa6\x1d\x13temporal_visibilityR\x0evisibilityName\x129\n" +
-	"\x19disable_auto_schema_setup\x18\b \x01(\bR\x16disableAutoSchemaSetup\"|\n" +
+	"\x19disable_auto_schema_setup\x18\b \x01(\bR\x16disableAutoSchemaSetup\"\x84\x01\n" +
 	"\"TemporalKubernetesExternalDatabase\x12\x12\n" +
 	"\x04host\x18\x01 \x01(\tR\x04host\x12\x12\n" +
-	"\x04port\x18\x02 \x01(\x05R\x04port\x12\x12\n" +
-	"\x04user\x18\x03 \x01(\tR\x04user\x12\x1a\n" +
+	"\x04port\x18\x02 \x01(\x05R\x04port\x12\x1a\n" +
+	"\busername\x18\x03 \x01(\tR\busername\x12\x1a\n" +
 	"\bpassword\x18\x04 \x01(\tR\bpassword\"\x81\x01\n" +
 	"'TemporalKubernetesExternalElasticsearch\x12\x12\n" +
 	"\x04host\x18\x01 \x01(\tR\x04host\x12\x12\n" +

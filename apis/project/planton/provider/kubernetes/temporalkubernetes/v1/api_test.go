@@ -42,7 +42,7 @@ var _ = Describe("TemporalKubernetes Custom Validation Tests", func() {
 					ExternalDatabase: &TemporalKubernetesExternalDatabase{
 						Host:     "cassandra.example.com",
 						Port:     9042,
-						User:     "temporal_user",
+						Username: "temporal_user",
 						Password: "secret",
 					},
 					DatabaseName:           "temporal",
@@ -70,7 +70,7 @@ var _ = Describe("TemporalKubernetes Custom Validation Tests", func() {
 					ExternalDatabase: &TemporalKubernetesExternalDatabase{
 						Host:     "postgres.example.com",
 						Port:     5432,
-						User:     "pg_user",
+						Username: "pg_user",
 						Password: "pg_password",
 					},
 					DatabaseName:           "temporal_pg",
@@ -92,7 +92,7 @@ var _ = Describe("TemporalKubernetes Custom Validation Tests", func() {
 					ExternalDatabase: &TemporalKubernetesExternalDatabase{
 						Host:     "mysql.example.com",
 						Port:     3306,
-						User:     "mysql_user",
+						Username: "mysql_user",
 						Password: "mysql_password",
 					},
 					DatabaseName:   "temporal_mysql",

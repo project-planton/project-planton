@@ -55,6 +55,7 @@ import (
 	signozkubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/signozkubernetes/v1"
 	solrkubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/solrkubernetes/v1"
 	stackjobrunnerkubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/stackjobrunnerkubernetes/v1"
+	temporalkubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/temporalkubernetes/v1"
 	snowflakedatabasev1 "github.com/project-planton/project-planton/apis/project/planton/provider/snowflake/snowflakedatabase/v1"
 	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
 	"google.golang.org/protobuf/proto"
@@ -151,6 +152,7 @@ var providerKubernetesMap = map[cloudresourcekind.CloudResourceKind]proto.Messag
 	cloudresourcekind.CloudResourceKind_PostgresKubernetes:       &postgreskubernetesv1.PostgresKubernetes{},
 	cloudresourcekind.CloudResourceKind_PrometheusKubernetes:     &prometheuskubernetesv1.PrometheusKubernetes{},
 	cloudresourcekind.CloudResourceKind_RedisKubernetes:          &rediskubernetesv1.RedisKubernetes{},
+	cloudresourcekind.CloudResourceKind_TemporalKubernetes:       &temporalkubernetesv1.TemporalKubernetes{},
 	cloudresourcekind.CloudResourceKind_SignozKubernetes:         &signozkubernetesv1.SignozKubernetes{},
 	cloudresourcekind.CloudResourceKind_SolrKubernetes:           &solrkubernetesv1.SolrKubernetes{},
 	cloudresourcekind.CloudResourceKind_StackJobRunnerKubernetes: &stackjobrunnerkubernetesv1.StackJobRunnerKubernetes{},
