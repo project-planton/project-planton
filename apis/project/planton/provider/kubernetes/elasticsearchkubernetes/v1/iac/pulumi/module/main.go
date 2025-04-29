@@ -3,7 +3,6 @@ package module
 import (
 	"github.com/pkg/errors"
 	elasticsearchkubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/elasticsearchkubernetes/v1"
-	"github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/elasticsearchkubernetes/v1/iac/pulumi/module/outputs"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/pulumikubernetesprovider"
 	kubernetescorev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
 	metav1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/meta/v1"
@@ -32,7 +31,7 @@ func Resources(ctx *pulumi.Context, stackInput *elasticsearchkubernetesv1.Elasti
 	}
 
 	//export name of the namespace
-	ctx.Export(outputs.Namespace, createdNamespace.Metadata.Name())
+	ctx.Export(OpNamespace, createdNamespace.Metadata.Name())
 
 	if err := elasticsearch(ctx, locals, createdNamespace); err != nil {
 		return errors.Wrap(err, "failed to create elastic search resources")

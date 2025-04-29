@@ -36,36 +36,5 @@ func loadBalancerIngress(ctx *pulumi.Context, locals *Locals, createdNamespace *
 	if err != nil {
 		return errors.Wrapf(err, "failed to create external load balancer service")
 	}
-
-	_, err = kubernetescorev1.NewService(ctx,
-		"ingress-internal-lb",
-		&kubernetescorev1.ServiceArgs{
-			Metadata: &kubernetesmetav1.ObjectMetaArgs{
-				Name:      pulumi.String("ingress-internal-lb"),
-				Namespace: createdNamespace.Metadata.Name(),
-				Labels:    createdNamespace.Metadata.Labels(),
-				Annotations: pulumi.StringMap{
-					"cloud.google.com/load-balancer-type":       pulumi.String("Internal"),
-					"external-dns.alpha.kubernetes.io/hostname": pulumi.String(locals.IngressInternalHostname),
-				},
-			},
-			Spec: &kubernetescorev1.ServiceSpecArgs{
-				Type: pulumi.String("LoadBalancer"), // Service type is LoadBalancer
-				Ports: kubernetescorev1.ServicePortArray{
-					&kubernetescorev1.ServicePortArgs{
-						Name:     pulumi.String("tcp-redis"),
-						Port:     pulumi.Int(vars.RedisPort),
-						Protocol: pulumi.String("TCP"),
-						// This assumes your Redis pod has a port named 'redis'
-						TargetPort: pulumi.String("redis"),
-					},
-				},
-				Selector: pulumi.ToStringMap(locals.RedisPodSelectorLabels),
-			},
-		}, pulumi.Parent(createdNamespace))
-	if err != nil {
-		return errors.Wrapf(err, "failed to create external load balancer service")
-	}
-
 	return nil
 }

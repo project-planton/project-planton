@@ -76,4 +76,5 @@ enum CloudResourceKind {
   SignozKubernetes = 818;
   SolrKubernetes = 819;
   StackJobRunnerKubernetes = 820;
+  TemporalKubernetes = 821;
 }

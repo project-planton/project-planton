@@ -3,7 +3,6 @@ package module
 import (
 	"fmt"
 	kuberneteshttpendpointv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/kuberneteshttpendpoint/v1"
-	"github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/kuberneteshttpendpoint/v1/iac/pulumi/module/outputs"
 	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/kuberneteslabelkeys"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
@@ -35,7 +34,7 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kuberneteshttpendpointv1.
 
 	locals.IngressCertSecretName = fmt.Sprintf("cert-%s", locals.KubernetesHttpEndpoint.Metadata.Name)
 
-	ctx.Export(outputs.Namespace, pulumi.String(vars.IstioIngressNamespace))
+	ctx.Export(OpNamespace, pulumi.String(vars.IstioIngressNamespace))
 
 	return locals
 }
