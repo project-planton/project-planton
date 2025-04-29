@@ -34,7 +34,7 @@ var vars = struct {
 
 	IstioIngressNamespace:                      "istio-ingress",
 	GatewayIngressClassName:                    "istio",
-	GatewayExternalLoadBalancerServiceHostname: "istio-ingress.example.com",
+	GatewayExternalLoadBalancerServiceHostname: "ingress-external.istio-ingress.svc.cluster.local",
 
 	DefaultCassandraReplicas: 1,
 
