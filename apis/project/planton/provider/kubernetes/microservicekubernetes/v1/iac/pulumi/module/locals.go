@@ -114,5 +114,11 @@ func initializeLocals(ctx *pulumi.Context, stackInput *microservicekubernetesv1.
 		return nil, errors.New("spec.container.app.image is required")
 	}
 
+	if locals.MicroserviceKubernetes.Spec.Availability == nil {
+		locals.MicroserviceKubernetes.Spec.Availability = &microservicekubernetesv1.MicroserviceKubernetesAvailability{
+			MinReplicas: 1,
+		}
+	}
+
 	return locals, nil
 }
