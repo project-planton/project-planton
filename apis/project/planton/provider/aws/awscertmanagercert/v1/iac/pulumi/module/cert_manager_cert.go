@@ -48,7 +48,7 @@ func certManagerCert(ctx *pulumi.Context, locals *Locals, provider *aws.Provider
 				},
 				Ttl:    pulumi.Int(300),
 				Type:   pulumi.String(*dvo.ResourceRecordType),
-				ZoneId: pulumi.String(spec.Route53HostedZoneId),
+				ZoneId: pulumi.String(spec.Route53HostedZoneId.GetValue()),
 			}, pulumi.Provider(provider))
 			if createErr != nil {
 				panic(createErr)

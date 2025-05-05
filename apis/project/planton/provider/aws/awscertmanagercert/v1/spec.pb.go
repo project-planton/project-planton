@@ -8,6 +8,7 @@ package awscertmanagercertv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
+	v1 "github.com/project-planton/project-planton/apis/project/planton/shared/foreignkey/v1"
 	_ "github.com/project-planton/project-planton/apis/project/planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -43,7 +44,7 @@ type AwsCertManagerCertSpec struct {
 	// where DNS validation records will be created automatically.
 	// Must be a public hosted zone matching the domain names.
 	// Example: "Z123456ABCXYZ".
-	Route53HostedZoneId string `protobuf:"bytes,3,opt,name=route53_hosted_zone_id,json=route53HostedZoneId,proto3" json:"route53_hosted_zone_id,omitempty"`
+	Route53HostedZoneId *v1.StringValueOrRef `protobuf:"bytes,3,opt,name=route53_hosted_zone_id,json=route53HostedZoneId,proto3" json:"route53_hosted_zone_id,omitempty"`
 	// validation_method indicates how ACM verifies domain ownership.
 	// By default, DNS is recommended.
 	ValidationMethod string `protobuf:"bytes,4,opt,name=validation_method,json=validationMethod,proto3" json:"validation_method,omitempty"`
@@ -95,11 +96,11 @@ func (x *AwsCertManagerCertSpec) GetAlternateDomainNames() []string {
 	return nil
 }
 
-func (x *AwsCertManagerCertSpec) GetRoute53HostedZoneId() string {
+func (x *AwsCertManagerCertSpec) GetRoute53HostedZoneId() *v1.StringValueOrRef {
 	if x != nil {
 		return x.Route53HostedZoneId
 	}
-	return ""
+	return nil
 }
 
 func (x *AwsCertManagerCertSpec) GetValidationMethod() string {
@@ -113,11 +114,11 @@ var File_project_planton_provider_aws_awscertmanagercert_v1_spec_proto protorefl
 
 const file_project_planton_provider_aws_awscertmanagercert_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"=project/planton/provider/aws/awscertmanagercert/v1/spec.proto\x122project.planton.provider.aws.awscertmanagercert.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\"\x90\x03\n" +
+	"=project/planton/provider/aws/awscertmanagercert/v1/spec.proto\x122project.planton.provider.aws.awscertmanagercert.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\"\xc8\x03\n" +
 	"\x16AwsCertManagerCertSpec\x12s\n" +
 	"\x13primary_domain_name\x18\x01 \x01(\tBC\xbaH@\xc8\x01\x01r;29^(?:\\*\\.[A-Za-z0-9\\-\\.]+|[A-Za-z0-9\\-\\.]+\\.[A-Za-z]{2,})$R\x11primaryDomainName\x12}\n" +
-	"\x16alternate_domain_names\x18\x02 \x03(\tBG\xbaHD\x92\x01A\x18\x01\"=r;29^(?:\\*\\.[A-Za-z0-9\\-\\.]+|[A-Za-z0-9\\-\\.]+\\.[A-Za-z]{2,})$R\x14alternateDomainNames\x12;\n" +
-	"\x16route53_hosted_zone_id\x18\x03 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x13route53HostedZoneId\x12E\n" +
+	"\x16alternate_domain_names\x18\x02 \x03(\tBG\xbaHD\x92\x01A\x18\x01\"=r;29^(?:\\*\\.[A-Za-z0-9\\-\\.]+|[A-Za-z0-9\\-\\.]+\\.[A-Za-z]{2,})$R\x14alternateDomainNames\x12s\n" +
+	"\x16route53_hosted_zone_id\x18\x03 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB\x06\xbaH\x03\xc8\x01\x01R\x13route53HostedZoneId\x12E\n" +
 	"\x11validation_method\x18\x04 \x01(\tB\x18\xbaH\x0er\fR\x03DNSR\x05EMAIL\x8a\xa6\x1d\x03DNSR\x10validationMethodB\xab\x03\n" +
 	"6com.project.planton.provider.aws.awscertmanagercert.v1B\tSpecProtoP\x01Zwgithub.com/project-planton/project-planton/apis/project/planton/provider/aws/awscertmanagercert/v1;awscertmanagercertv1\xa2\x02\x05PPPAA\xaa\x022Project.Planton.Provider.Aws.Awscertmanagercert.V1\xca\x022Project\\Planton\\Provider\\Aws\\Awscertmanagercert\\V1\xe2\x02>Project\\Planton\\Provider\\Aws\\Awscertmanagercert\\V1\\GPBMetadata\xea\x027Project::Planton::Provider::Aws::Awscertmanagercert::V1b\x06proto3"
 
@@ -136,13 +137,15 @@ func file_project_planton_provider_aws_awscertmanagercert_v1_spec_proto_rawDescG
 var file_project_planton_provider_aws_awscertmanagercert_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_aws_awscertmanagercert_v1_spec_proto_goTypes = []any{
 	(*AwsCertManagerCertSpec)(nil), // 0: project.planton.provider.aws.awscertmanagercert.v1.AwsCertManagerCertSpec
+	(*v1.StringValueOrRef)(nil),    // 1: project.planton.shared.foreignkey.v1.StringValueOrRef
 }
 var file_project_planton_provider_aws_awscertmanagercert_v1_spec_proto_depIdxs = []int32{
-	0, // [0:0] is the sub-list for method output_type
-	0, // [0:0] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	1, // 0: project.planton.provider.aws.awscertmanagercert.v1.AwsCertManagerCertSpec.route53_hosted_zone_id:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
+	1, // [1:1] is the sub-list for method output_type
+	1, // [1:1] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_provider_aws_awscertmanagercert_v1_spec_proto_init() }

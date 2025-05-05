@@ -1,6 +1,7 @@
 package awsalbv1
 
 import (
+	foreignkeyv1 "github.com/project-planton/project-planton/apis/project/planton/shared/foreignkey/v1"
 	"testing"
 
 	"github.com/bufbuild/protovalidate-go"
@@ -27,9 +28,13 @@ var _ = Describe("AwsAlbSpec Custom Validation Tests", func() {
 						Name: "test-alb-resource",
 					},
 					Spec: &AwsAlbSpec{
-						Subnets: []string{
-							"subnet-abc1",
-							"subnet-abc2",
+						Subnets: []*foreignkeyv1.StringValueOrRef{
+							{
+								LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "subnet-12345678"},
+							},
+							{
+								LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "subnet-12345679"},
+							},
 						},
 					},
 				}

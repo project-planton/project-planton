@@ -2,6 +2,7 @@ package module
 
 import (
 	"fmt"
+	"github.com/project-planton/project-planton/internal/valuefrom"
 
 	"github.com/pkg/errors"
 	"github.com/pulumi/pulumi-aws/sdk/v6/go/aws"
@@ -18,8 +19,8 @@ func alb(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) (*lb.LoadB
 	createdLoadBalancer, err := lb.NewLoadBalancer(ctx, locals.AwsAlb.Metadata.Name, &lb.LoadBalancerArgs{
 		Name:                     pulumi.String(locals.AwsAlb.Metadata.Name),
 		LoadBalancerType:         pulumi.String("application"),
-		SecurityGroups:           pulumi.ToStringArray(locals.AwsAlb.Spec.SecurityGroups),
-		Subnets:                  pulumi.ToStringArray(locals.AwsAlb.Spec.Subnets),
+		SecurityGroups:           pulumi.ToStringArray(valuefrom.ToStringArray(locals.AwsAlb.Spec.SecurityGroups)),
+		Subnets:                  pulumi.ToStringArray(valuefrom.ToStringArray(locals.AwsAlb.Spec.Subnets)),
 		Internal:                 pulumi.Bool(locals.AwsAlb.Spec.Internal),
 		IpAddressType:            pulumi.String("ipv4"),
 		EnableDeletionProtection: pulumi.Bool(locals.AwsAlb.Spec.DeleteProtectionEnabled),
@@ -84,7 +85,7 @@ func sslListeners(
 	// 2) HTTPS :443 => use the user’s certificate ARN
 	httpsListenerName := fmt.Sprintf("%s-https", baseName)
 	_, err = lb.NewListener(ctx, httpsListenerName, &lb.ListenerArgs{
-		LoadBalancerArn: pulumi.StringOutput(albResource.Arn),
+		LoadBalancerArn: albResource.Arn,
 		Port:            pulumi.Int(443),
 		Protocol:        pulumi.String("HTTPS"),
 		CertificateArn:  pulumi.String(sslSpec.CertificateArn.GetValue()),

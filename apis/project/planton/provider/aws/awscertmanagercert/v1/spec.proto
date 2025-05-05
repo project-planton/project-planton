@@ -3,6 +3,7 @@ syntax = "proto3";
 package project.planton.provider.aws.awscertmanagercert.v1;
 
 import "buf/validate/validate.proto";
+import "project/planton/shared/foreignkey/v1/foreign_key.proto";
 import "project/planton/shared/options/options.proto";
 
 // AwsCertManagerCertSpec defines the fields needed to provision a public SSL certificate
@@ -38,7 +39,7 @@ message AwsCertManagerCertSpec {
   // where DNS validation records will be created automatically.
   // Must be a public hosted zone matching the domain names.
   // Example: "Z123456ABCXYZ".
-  string route53_hosted_zone_id = 3 [
+  project.planton.shared.foreignkey.v1.StringValueOrRef route53_hosted_zone_id = 3 [
     (buf.validate.field).required = true
   ];
 

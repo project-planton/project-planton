@@ -17,7 +17,7 @@ func dns(
 	provider *aws.Provider,
 	albResource *lb.LoadBalancer,
 ) error {
-	if locals.AwsAlb.Spec.Dns.Route53ZoneId == "" {
+	if locals.AwsAlb.Spec.Dns.Route53ZoneId.GetValue() == "" {
 		return errors.New("dns_config.enabled is true but route53_zone_id is not provided")
 	}
 
@@ -31,7 +31,7 @@ func dns(
 		_, err := route53.NewRecord(ctx, recordName, &route53.RecordArgs{
 			Name:   pulumi.String(hostname),
 			Type:   pulumi.String("A"),
-			ZoneId: pulumi.String(locals.AwsAlb.Spec.Dns.Route53ZoneId),
+			ZoneId: pulumi.String(locals.AwsAlb.Spec.Dns.Route53ZoneId.GetValue()),
 			Aliases: route53.RecordAliasArray{
 				route53.RecordAliasArgs{
 					Name:                 albResource.DnsName,

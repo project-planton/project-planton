@@ -11,20 +11,13 @@ message AwsAlbSpec {
   // list of subnet IDs in which to create the ALB. AWS requires at least two subnets
   // for ALBs, which also ensures high availability across multiple Availability Zones.
   // Typically use private subnets for internal ALBs or public subnets for internet-facing ALBs.
-  repeated string subnets = 1 [
+  repeated project.planton.shared.foreignkey.v1.StringValueOrRef subnets = 1 [
     (buf.validate.field).required = true,
-    (buf.validate.field).repeated = {
-      unique: true
-    },
     (buf.validate.field).repeated.min_items = 2
   ];
 
   // list of security group IDs to attach to the ALB.
-  repeated string security_groups = 2 [
-    (buf.validate.field).repeated = {
-      unique: true
-    }
-  ];
+  repeated project.planton.shared.foreignkey.v1.StringValueOrRef security_groups = 2;
 
   // indicates whether the ALB is internal or internet-facing.
   // If true, the ALB is internal; if false (or not set), it is internet-facing.
@@ -55,7 +48,7 @@ message AwsAlbDns {
 
   // route53_zone_id is the Route 53 Hosted Zone ID where DNS records
   // will be created.
-  string route53_zone_id = 2;
+  project.planton.shared.foreignkey.v1.StringValueOrRef route53_zone_id = 2;
 
   // hostnames is a list of domain names (e.g., ["app.example.com"])
   // that will point to this ALB.

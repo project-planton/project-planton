@@ -5,6 +5,7 @@ import (
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	"github.com/project-planton/project-planton/apis/project/planton/shared"
+	foreignkeyv1 "github.com/project-planton/project-planton/apis/project/planton/shared/foreignkey/v1"
 	"testing"
 )
 
@@ -30,8 +31,10 @@ var _ = Describe("AwsCertManagerCert", func() {
 					"www.example.com",
 					"test.example.com",
 				},
-				Route53HostedZoneId: "a-route53-hosted-zone-id",
-				ValidationMethod:    "DNS",
+				ValidationMethod: "DNS",
+				Route53HostedZoneId: &foreignkeyv1.StringValueOrRef{
+					LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-zone-id"},
+				},
 			},
 		}
 	})

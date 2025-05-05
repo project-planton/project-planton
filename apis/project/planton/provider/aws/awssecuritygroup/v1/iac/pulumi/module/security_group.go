@@ -20,7 +20,7 @@ func securityGroup(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) 
 	egressRules := buildEgress(spec.Egress)
 
 	sg, err := ec2.NewSecurityGroup(ctx, locals.AwsSecurityGroup.Metadata.Name, &ec2.SecurityGroupArgs{
-		VpcId:       pulumi.String(spec.VpcId),
+		VpcId:       pulumi.String(spec.VpcId.GetValue()),
 		Name:        pulumi.String(locals.AwsSecurityGroup.Metadata.Name),
 		Description: pulumi.String(spec.Description),
 		Ingress:     ingressRules,
@@ -32,7 +32,7 @@ func securityGroup(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) 
 	}
 
 	// Export stack outputs for broader ProjectPlanton usage:
-	ctx.Export(OpSecurityGroupVpcId, pulumi.String(spec.VpcId))
+	ctx.Export(OpSecurityGroupVpcId, pulumi.String(spec.VpcId.GetValue()))
 	ctx.Export(OpSecurityGroupInternetGatewayId, pulumi.String(""))
 	ctx.Export(OpSecurityGroupPrivateSubnets, pulumi.ToStringArray([]string{}))
 	ctx.Export(OpSecurityGroupPublicSubnets, pulumi.ToStringArray([]string{}))

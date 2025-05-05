@@ -3,6 +3,7 @@ syntax = "proto3";
 package project.planton.provider.aws.awssecuritygroup.v1;
 
 import "buf/validate/validate.proto";
+import "project/planton/shared/foreignkey/v1/foreign_key.proto";
 import "project/planton/shared/options/options.proto";
 
 // AwsSecurityGroupSpec defines the primary configuration for creating an AWS EC2 Security Group in a specified VPC.
@@ -10,7 +11,7 @@ message AwsSecurityGroupSpec {
   // vpc_id is the ID of the VPC where this Security Group will be created.
   // Example: "vpc-12345abcde"
   // This field is required because every Security Group must belong to one VPC.
-  string vpc_id = 1 [
+  project.planton.shared.foreignkey.v1.StringValueOrRef vpc_id = 1 [
     (buf.validate.field).required = true
   ];
 
