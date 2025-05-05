@@ -30,9 +30,9 @@ type AwsAlbSpec struct {
 	// list of subnet IDs in which to create the ALB. AWS requires at least two subnets
 	// for ALBs, which also ensures high availability across multiple Availability Zones.
 	// Typically use private subnets for internal ALBs or public subnets for internet-facing ALBs.
-	Subnets []string `protobuf:"bytes,1,rep,name=subnets,proto3" json:"subnets,omitempty"`
+	Subnets []*v1.StringValueOrRef `protobuf:"bytes,1,rep,name=subnets,proto3" json:"subnets,omitempty"`
 	// list of security group IDs to attach to the ALB.
-	SecurityGroups []string `protobuf:"bytes,2,rep,name=security_groups,json=securityGroups,proto3" json:"security_groups,omitempty"`
+	SecurityGroups []*v1.StringValueOrRef `protobuf:"bytes,2,rep,name=security_groups,json=securityGroups,proto3" json:"security_groups,omitempty"`
 	// indicates whether the ALB is internal or internet-facing.
 	// If true, the ALB is internal; if false (or not set), it is internet-facing.
 	Internal bool `protobuf:"varint,3,opt,name=internal,proto3" json:"internal,omitempty"`
@@ -80,14 +80,14 @@ func (*AwsAlbSpec) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_aws_awsalb_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *AwsAlbSpec) GetSubnets() []string {
+func (x *AwsAlbSpec) GetSubnets() []*v1.StringValueOrRef {
 	if x != nil {
 		return x.Subnets
 	}
 	return nil
 }
 
-func (x *AwsAlbSpec) GetSecurityGroups() []string {
+func (x *AwsAlbSpec) GetSecurityGroups() []*v1.StringValueOrRef {
 	if x != nil {
 		return x.SecurityGroups
 	}
@@ -137,7 +137,7 @@ type AwsAlbDns struct {
 	Enabled bool `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`
 	// route53_zone_id is the Route 53 Hosted Zone ID where DNS records
 	// will be created.
-	Route53ZoneId string `protobuf:"bytes,2,opt,name=route53_zone_id,json=route53ZoneId,proto3" json:"route53_zone_id,omitempty"`
+	Route53ZoneId *v1.StringValueOrRef `protobuf:"bytes,2,opt,name=route53_zone_id,json=route53ZoneId,proto3" json:"route53_zone_id,omitempty"`
 	// hostnames is a list of domain names (e.g., ["app.example.com"])
 	// that will point to this ALB.
 	Hostnames     []string `protobuf:"bytes,3,rep,name=hostnames,proto3" json:"hostnames,omitempty"`
@@ -182,11 +182,11 @@ func (x *AwsAlbDns) GetEnabled() bool {
 	return false
 }
 
-func (x *AwsAlbDns) GetRoute53ZoneId() string {
+func (x *AwsAlbDns) GetRoute53ZoneId() *v1.StringValueOrRef {
 	if x != nil {
 		return x.Route53ZoneId
 	}
-	return ""
+	return nil
 }
 
 func (x *AwsAlbDns) GetHostnames() []string {
@@ -269,20 +269,19 @@ var File_project_planton_provider_aws_awsalb_v1_spec_proto protoreflect.FileDesc
 
 const file_project_planton_provider_aws_awsalb_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"1project/planton/provider/aws/awsalb/v1/spec.proto\x12&project.planton.provider.aws.awsalb.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\"\x84\x03\n" +
+	"1project/planton/provider/aws/awsalb/v1/spec.proto\x12&project.planton.provider.aws.awsalb.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\"\xe8\x03\n" +
 	"\n" +
-	"AwsAlbSpec\x12'\n" +
-	"\asubnets\x18\x01 \x03(\tB\r\xbaH\n" +
-	"\xc8\x01\x01\x92\x01\x04\b\x02\x18\x01R\asubnets\x121\n" +
-	"\x0fsecurity_groups\x18\x02 \x03(\tB\b\xbaH\x05\x92\x01\x02\x18\x01R\x0esecurityGroups\x12\x1a\n" +
+	"AwsAlbSpec\x12]\n" +
+	"\asubnets\x18\x01 \x03(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB\v\xbaH\b\xc8\x01\x01\x92\x01\x02\b\x02R\asubnets\x12_\n" +
+	"\x0fsecurity_groups\x18\x02 \x03(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefR\x0esecurityGroups\x12\x1a\n" +
 	"\binternal\x18\x03 \x01(\bR\binternal\x12:\n" +
 	"\x19delete_protection_enabled\x18\x05 \x01(\bR\x17deleteProtectionEnabled\x128\n" +
 	"\x14idle_timeout_seconds\x18\x06 \x01(\x05B\x06\x92\xa6\x1d\x0260R\x12idleTimeoutSeconds\x12C\n" +
 	"\x03dns\x18\a \x01(\v21.project.planton.provider.aws.awsalb.v1.AwsAlbDnsR\x03dns\x12C\n" +
-	"\x03ssl\x18\b \x01(\v21.project.planton.provider.aws.awsalb.v1.AwsAlbSslR\x03ssl\"u\n" +
+	"\x03ssl\x18\b \x01(\v21.project.planton.provider.aws.awsalb.v1.AwsAlbSslR\x03ssl\"\xad\x01\n" +
 	"\tAwsAlbDns\x12\x18\n" +
-	"\aenabled\x18\x01 \x01(\bR\aenabled\x12&\n" +
-	"\x0froute53_zone_id\x18\x02 \x01(\tR\rroute53ZoneId\x12&\n" +
+	"\aenabled\x18\x01 \x01(\bR\aenabled\x12^\n" +
+	"\x0froute53_zone_id\x18\x02 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefR\rroute53ZoneId\x12&\n" +
 	"\thostnames\x18\x03 \x03(\tB\b\xbaH\x05\x92\x01\x02\x18\x01R\thostnames\"\x86\x01\n" +
 	"\tAwsAlbSsl\x12\x18\n" +
 	"\aenabled\x18\x01 \x01(\bR\aenabled\x12_\n" +
@@ -309,14 +308,17 @@ var file_project_planton_provider_aws_awsalb_v1_spec_proto_goTypes = []any{
 	(*v1.StringValueOrRef)(nil), // 3: project.planton.shared.foreignkey.v1.StringValueOrRef
 }
 var file_project_planton_provider_aws_awsalb_v1_spec_proto_depIdxs = []int32{
-	1, // 0: project.planton.provider.aws.awsalb.v1.AwsAlbSpec.dns:type_name -> project.planton.provider.aws.awsalb.v1.AwsAlbDns
-	2, // 1: project.planton.provider.aws.awsalb.v1.AwsAlbSpec.ssl:type_name -> project.planton.provider.aws.awsalb.v1.AwsAlbSsl
-	3, // 2: project.planton.provider.aws.awsalb.v1.AwsAlbSsl.certificate_arn:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
-	3, // [3:3] is the sub-list for method output_type
-	3, // [3:3] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	3, // 0: project.planton.provider.aws.awsalb.v1.AwsAlbSpec.subnets:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
+	3, // 1: project.planton.provider.aws.awsalb.v1.AwsAlbSpec.security_groups:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
+	1, // 2: project.planton.provider.aws.awsalb.v1.AwsAlbSpec.dns:type_name -> project.planton.provider.aws.awsalb.v1.AwsAlbDns
+	2, // 3: project.planton.provider.aws.awsalb.v1.AwsAlbSpec.ssl:type_name -> project.planton.provider.aws.awsalb.v1.AwsAlbSsl
+	3, // 4: project.planton.provider.aws.awsalb.v1.AwsAlbDns.route53_zone_id:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
+	3, // 5: project.planton.provider.aws.awsalb.v1.AwsAlbSsl.certificate_arn:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
+	6, // [6:6] is the sub-list for method output_type
+	6, // [6:6] is the sub-list for method input_type
+	6, // [6:6] is the sub-list for extension type_name
+	6, // [6:6] is the sub-list for extension extendee
+	0, // [0:6] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_provider_aws_awsalb_v1_spec_proto_init() }

@@ -8,6 +8,7 @@ package awssecuritygroupv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
+	v1 "github.com/project-planton/project-planton/apis/project/planton/shared/foreignkey/v1"
 	_ "github.com/project-planton/project-planton/apis/project/planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -29,7 +30,7 @@ type AwsSecurityGroupSpec struct {
 	// vpc_id is the ID of the VPC where this Security Group will be created.
 	// Example: "vpc-12345abcde"
 	// This field is required because every Security Group must belong to one VPC.
-	VpcId string `protobuf:"bytes,1,opt,name=vpc_id,json=vpcId,proto3" json:"vpc_id,omitempty"`
+	VpcId *v1.StringValueOrRef `protobuf:"bytes,1,opt,name=vpc_id,json=vpcId,proto3" json:"vpc_id,omitempty"`
 	// description provides a short explanation of this Security Group’s purpose.
 	// This field is required by AWS and cannot be modified once created without a replacement.
 	// Example: "Allows inbound HTTP and SSH for web tier"
@@ -74,11 +75,11 @@ func (*AwsSecurityGroupSpec) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_aws_awssecuritygroup_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *AwsSecurityGroupSpec) GetVpcId() string {
+func (x *AwsSecurityGroupSpec) GetVpcId() *v1.StringValueOrRef {
 	if x != nil {
 		return x.VpcId
 	}
-	return ""
+	return nil
 }
 
 func (x *AwsSecurityGroupSpec) GetDescription() string {
@@ -239,9 +240,9 @@ var File_project_planton_provider_aws_awssecuritygroup_v1_spec_proto protoreflec
 
 const file_project_planton_provider_aws_awssecuritygroup_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	";project/planton/provider/aws/awssecuritygroup/v1/spec.proto\x120project.planton.provider.aws.awssecuritygroup.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\"\xf8\x02\n" +
-	"\x14AwsSecurityGroupSpec\x12\x1d\n" +
-	"\x06vpc_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x05vpcId\x12\x84\x01\n" +
+	";project/planton/provider/aws/awssecuritygroup/v1/spec.proto\x120project.planton.provider.aws.awssecuritygroup.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\"\xb0\x03\n" +
+	"\x14AwsSecurityGroupSpec\x12U\n" +
+	"\x06vpc_id\x18\x01 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB\x06\xbaH\x03\xc8\x01\x01R\x05vpcId\x12\x84\x01\n" +
 	"\vdescription\x18\x02 \x01(\tBb\xbaH_\xba\x01Y\n" +
 	"\x18description_length_check\x12*Description must not exceed 255 characters\x1a\x11size(this) <= 255\xc8\x01\x01R\vdescription\x12]\n" +
 	"\aingress\x18\x03 \x03(\v2C.project.planton.provider.aws.awssecuritygroup.v1.SecurityGroupRuleR\aingress\x12[\n" +
@@ -277,15 +278,17 @@ var file_project_planton_provider_aws_awssecuritygroup_v1_spec_proto_msgTypes = 
 var file_project_planton_provider_aws_awssecuritygroup_v1_spec_proto_goTypes = []any{
 	(*AwsSecurityGroupSpec)(nil), // 0: project.planton.provider.aws.awssecuritygroup.v1.AwsSecurityGroupSpec
 	(*SecurityGroupRule)(nil),    // 1: project.planton.provider.aws.awssecuritygroup.v1.SecurityGroupRule
+	(*v1.StringValueOrRef)(nil),  // 2: project.planton.shared.foreignkey.v1.StringValueOrRef
 }
 var file_project_planton_provider_aws_awssecuritygroup_v1_spec_proto_depIdxs = []int32{
-	1, // 0: project.planton.provider.aws.awssecuritygroup.v1.AwsSecurityGroupSpec.ingress:type_name -> project.planton.provider.aws.awssecuritygroup.v1.SecurityGroupRule
-	1, // 1: project.planton.provider.aws.awssecuritygroup.v1.AwsSecurityGroupSpec.egress:type_name -> project.planton.provider.aws.awssecuritygroup.v1.SecurityGroupRule
-	2, // [2:2] is the sub-list for method output_type
-	2, // [2:2] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	2, // 0: project.planton.provider.aws.awssecuritygroup.v1.AwsSecurityGroupSpec.vpc_id:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
+	1, // 1: project.planton.provider.aws.awssecuritygroup.v1.AwsSecurityGroupSpec.ingress:type_name -> project.planton.provider.aws.awssecuritygroup.v1.SecurityGroupRule
+	1, // 2: project.planton.provider.aws.awssecuritygroup.v1.AwsSecurityGroupSpec.egress:type_name -> project.planton.provider.aws.awssecuritygroup.v1.SecurityGroupRule
+	3, // [3:3] is the sub-list for method output_type
+	3, // [3:3] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_provider_aws_awssecuritygroup_v1_spec_proto_init() }
