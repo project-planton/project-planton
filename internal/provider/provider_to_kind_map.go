@@ -74,6 +74,7 @@ var ToKindMap = map[shared.KindProvider][]KindName{
 		"SignozKubernetes",
 		"SolrKubernetes",
 		"StackJobRunnerKubernetes",
+		"TemporalKubernetes",
 	},
 
 	shared.KindProvider_kind_provider_snowflake: {
