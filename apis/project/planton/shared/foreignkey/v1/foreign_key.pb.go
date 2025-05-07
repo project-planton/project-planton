@@ -294,10 +294,10 @@ var File_project_planton_shared_foreignkey_v1_foreign_key_proto protoreflect.Fil
 
 const file_project_planton_shared_foreignkey_v1_foreign_key_proto_rawDesc = "" +
 	"\n" +
-	"6project/planton/shared/foreignkey/v1/foreign_key.proto\x12$project.planton.shared.foreignkey.v1\x1aBproject/planton/shared/cloudresourcekind/cloud_resource_kind.proto\x1a google/protobuf/descriptor.proto\x1a\x1bbuf/validate/validate.proto\"\xb4\x01\n" +
+	"6project/planton/shared/foreignkey/v1/foreign_key.proto\x12$project.planton.shared.foreignkey.v1\x1aBproject/planton/shared/cloudresourcekind/cloud_resource_kind.proto\x1a google/protobuf/descriptor.proto\x1a\x1bbuf/validate/validate.proto\"\xac\x01\n" +
 	"\fValueFromRef\x12O\n" +
-	"\x04kind\x18\x01 \x01(\x0e2;.project.planton.shared.cloudresourcekind.CloudResourceKindR\x04kind\x12\x18\n" +
-	"\x03env\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x03env\x12\x1a\n" +
+	"\x04kind\x18\x01 \x01(\x0e2;.project.planton.shared.cloudresourcekind.CloudResourceKindR\x04kind\x12\x10\n" +
+	"\x03env\x18\x02 \x01(\tR\x03env\x12\x1a\n" +
 	"\x04name\x18\x03 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\x12\x1d\n" +
 	"\n" +
 	"field_path\x18\x04 \x01(\tR\tfieldPath\"\x91\x01\n" +

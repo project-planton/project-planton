@@ -15,9 +15,7 @@ extend google.protobuf.FieldOptions {
 // ValueFromRef describes a reference to another resource field (kind, env, name, field_path).
 message ValueFromRef {
   project.planton.shared.cloudresourcekind.CloudResourceKind kind = 1;
-  string env = 2 [
-    (buf.validate.field).required = true
-  ];
+  string env = 2;
   string name = 3 [
     (buf.validate.field).required = true
   ];
