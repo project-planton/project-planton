@@ -43,9 +43,9 @@ func subnets(
 				return errors.Wrapf(err, "error creating public subnet %s", subnetName)
 			}
 
-			ctx.Export(fmt.Sprintf("%s.%d", OpPublicSubnetsName, i), pulumi.String(subnetName))
-			ctx.Export(fmt.Sprintf("%s.%d", OpPublicSubnetsId, i), createdSubnet.ID())
-			ctx.Export(fmt.Sprintf("%s.%d", OpPublicSubnetsCidr, i), createdSubnet.CidrBlock)
+			ctx.Export(fmt.Sprintf("%s.%d.%s", OpPublicSubnets, i, OpSubnetName), pulumi.String(subnetName))
+			ctx.Export(fmt.Sprintf("%s.%d.%s", OpPublicSubnets, i, OpSubnetId), createdSubnet.ID())
+			ctx.Export(fmt.Sprintf("%s.%d.%s", OpPublicSubnets, i, OpSubnetCidr), createdSubnet.CidrBlock)
 
 			// Associate this public subnet with the public route table
 			_, err = ec2.NewRouteTableAssociation(ctx,
@@ -110,9 +110,9 @@ func subnets(
 				return errors.Wrapf(err, "error creating private subnet %s", subnetName)
 			}
 
-			ctx.Export(fmt.Sprintf("%s.%d", OpPrivateSubnetsName, i), pulumi.String(subnetName))
-			ctx.Export(fmt.Sprintf("%s.%d", OpPrivateSubnetsId, i), createdSubnet.ID())
-			ctx.Export(fmt.Sprintf("%s.%d", OpPrivateSubnetsCidr, i), createdSubnet.CidrBlock)
+			ctx.Export(fmt.Sprintf("%s.%d.%s", OpPrivateSubnets, i, OpSubnetName), pulumi.String(subnetName))
+			ctx.Export(fmt.Sprintf("%s.%d.%s", OpPrivateSubnets, i, OpSubnetId), createdSubnet.ID())
+			ctx.Export(fmt.Sprintf("%s.%d.%s", OpPrivateSubnets, i, OpSubnetCidr), createdSubnet.CidrBlock)
 
 			// If NAT is enabled, create a route table that routes to that NAT
 			// NOTE: We only do this if a NAT gateway exists in this AZ.
