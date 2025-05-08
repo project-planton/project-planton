@@ -33,9 +33,6 @@ func securityGroup(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) 
 
 	// Export stack outputs for broader ProjectPlanton usage:
 	ctx.Export(OpSecurityGroupVpcId, pulumi.String(spec.VpcId.GetValue()))
-	ctx.Export(OpSecurityGroupInternetGatewayId, pulumi.String(""))
-	ctx.Export(OpSecurityGroupPrivateSubnets, pulumi.ToStringArray([]string{}))
-	ctx.Export(OpSecurityGroupPublicSubnets, pulumi.ToStringArray([]string{}))
 
 	// If you want to expose the Security Group ID, do so here:
 	ctx.Export(OpSecurityGroupId, sg.ID())
