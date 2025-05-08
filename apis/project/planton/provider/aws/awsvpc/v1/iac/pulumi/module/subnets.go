@@ -20,22 +20,24 @@ func subnets(
 	// We'll store a NAT Gateway for each AZ here, so private subnets can reference it.
 	natGatewayPerAz := make(map[string]*ec2.NatGateway)
 
-	// 1) Create all PUBLIC subnets first.
+	// -------------------------------------------------------------------------
+	// 1) PUBLIC subnets – iterate AZs, then subnet names
+	// -------------------------------------------------------------------------
+	publicIndex := 0 // global counter to keep output keys unique across AZs
+
 	sortedPublicAzKeys := getSortedAzKeys(locals.PublicAzSubnetMap)
 	for _, availabilityZone := range sortedPublicAzKeys {
 		azSubnetMap := locals.PublicAzSubnetMap[AvailabilityZone(availabilityZone)]
 		sortedSubnetNames := getSortedSubnetNameKeys(azSubnetMap)
 
 		for i, subnetName := range sortedSubnetNames {
-			// Create the public subnet in this AZ
 			createdSubnet, err := ec2.NewSubnet(ctx,
 				subnetName,
 				&ec2.SubnetArgs{
-					VpcId:            createdVpc.ID(),
-					CidrBlock:        pulumi.String(azSubnetMap[SubnetName(subnetName)]),
-					AvailabilityZone: pulumi.String(availabilityZone),
-					// required for a typical public subnet
-					MapPublicIpOnLaunch: pulumi.Bool(true),
+					VpcId:               createdVpc.ID(),
+					CidrBlock:           pulumi.String(azSubnetMap[SubnetName(subnetName)]),
+					AvailabilityZone:    pulumi.String(availabilityZone),
+					MapPublicIpOnLaunch: pulumi.Bool(true), // required for a typical public subnet
 					Tags: convertstringmaps.ConvertGoStringMapToPulumiStringMap(
 						stringmaps.AddEntry(locals.AwsTags, "Name", subnetName)),
 				}, pulumi.Parent(createdVpc))
@@ -43,9 +45,11 @@ func subnets(
 				return errors.Wrapf(err, "error creating public subnet %s", subnetName)
 			}
 
-			ctx.Export(fmt.Sprintf("%s.%d.%s", OpPublicSubnets, i, OpSubnetName), pulumi.String(subnetName))
-			ctx.Export(fmt.Sprintf("%s.%d.%s", OpPublicSubnets, i, OpSubnetId), createdSubnet.ID())
-			ctx.Export(fmt.Sprintf("%s.%d.%s", OpPublicSubnets, i, OpSubnetCidr), createdSubnet.CidrBlock)
+			// Export outputs with a unique, ever-increasing index
+			ctx.Export(fmt.Sprintf("%s.%d.%s", OpPublicSubnets, publicIndex, OpSubnetName), pulumi.String(subnetName))
+			ctx.Export(fmt.Sprintf("%s.%d.%s", OpPublicSubnets, publicIndex, OpSubnetId), createdSubnet.ID())
+			ctx.Export(fmt.Sprintf("%s.%d.%s", OpPublicSubnets, publicIndex, OpSubnetCidr), createdSubnet.CidrBlock)
+			publicIndex++
 
 			// Associate this public subnet with the public route table
 			_, err = ec2.NewRouteTableAssociation(ctx,
@@ -88,14 +92,17 @@ func subnets(
 		}
 	}
 
-	// 2) Create all PRIVATE subnets next.
+	// -------------------------------------------------------------------------
+	// 2) PRIVATE subnets – iterate AZs, then subnet names
+	// -------------------------------------------------------------------------
+	privateIndex := 0 // global counter to keep output keys unique across AZs
+
 	sortedPrivateAzKeys := getSortedAzKeys(locals.PrivateAzSubnetMap)
 	for _, availabilityZone := range sortedPrivateAzKeys {
 		azSubnetMap := locals.PrivateAzSubnetMap[AvailabilityZone(availabilityZone)]
 		sortedSubnetNames := getSortedSubnetNameKeys(azSubnetMap)
 
-		for i, subnetName := range sortedSubnetNames {
-			// Create the private subnet in this AZ
+		for _, subnetName := range sortedSubnetNames {
 			createdSubnet, err := ec2.NewSubnet(ctx,
 				subnetName,
 				&ec2.SubnetArgs{
@@ -110,12 +117,13 @@ func subnets(
 				return errors.Wrapf(err, "error creating private subnet %s", subnetName)
 			}
 
-			ctx.Export(fmt.Sprintf("%s.%d.%s", OpPrivateSubnets, i, OpSubnetName), pulumi.String(subnetName))
-			ctx.Export(fmt.Sprintf("%s.%d.%s", OpPrivateSubnets, i, OpSubnetId), createdSubnet.ID())
-			ctx.Export(fmt.Sprintf("%s.%d.%s", OpPrivateSubnets, i, OpSubnetCidr), createdSubnet.CidrBlock)
+			// Export outputs with a unique, ever-increasing index
+			ctx.Export(fmt.Sprintf("%s.%d.%s", OpPrivateSubnets, privateIndex, OpSubnetName), pulumi.String(subnetName))
+			ctx.Export(fmt.Sprintf("%s.%d.%s", OpPrivateSubnets, privateIndex, OpSubnetId), createdSubnet.ID())
+			ctx.Export(fmt.Sprintf("%s.%d.%s", OpPrivateSubnets, privateIndex, OpSubnetCidr), createdSubnet.CidrBlock)
+			privateIndex++
 
-			// If NAT is enabled, create a route table that routes to that NAT
-			// NOTE: We only do this if a NAT gateway exists in this AZ.
+			// If NAT is enabled, create a private route table that routes to the AZ’s NAT
 			if locals.AwsVpc.Spec.IsNatGatewayEnabled {
 				natGw, hasNat := natGatewayPerAz[availabilityZone]
 				if hasNat {
