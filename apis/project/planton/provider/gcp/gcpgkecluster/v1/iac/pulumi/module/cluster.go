@@ -3,7 +3,6 @@ package module
 import (
 	"fmt"
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpgkecluster/v1/iac/pulumi/module/outputs"
 	"github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpgkecluster/v1/iac/pulumi/module/vars"
 	"github.com/pulumi/pulumi-gcp/sdk/v8/go/gcp"
 	"github.com/pulumi/pulumi-gcp/sdk/v8/go/gcp/compute"
@@ -69,7 +68,7 @@ func cluster(ctx *pulumi.Context, locals *Locals, gcpProvider *gcp.Provider) (*c
 	}
 
 	//export network self-link
-	ctx.Export(outputs.NetworkSelfLink, createdNetwork.SelfLink)
+	ctx.Export(OpNetworkSelfLink, createdNetwork.SelfLink)
 
 	//create subnetwork
 	createdSubNetwork, err := compute.NewSubnetwork(ctx, "sub-network", &compute.SubnetworkArgs{
@@ -96,7 +95,7 @@ func cluster(ctx *pulumi.Context, locals *Locals, gcpProvider *gcp.Provider) (*c
 	}
 
 	//export subnetwork self-link
-	ctx.Export(outputs.SubNetworkSelfLink, createdSubNetwork.SelfLink)
+	ctx.Export(OpSubNetworkSelfLink, createdSubNetwork.SelfLink)
 
 	//create firewall
 	createdFirewall, err := compute.NewFirewall(ctx, "firewall", &compute.FirewallArgs{
@@ -124,7 +123,7 @@ func cluster(ctx *pulumi.Context, locals *Locals, gcpProvider *gcp.Provider) (*c
 	}
 
 	//export firewall self-link
-	ctx.Export(outputs.GkeWebhooksFirewallSelfLink, createdFirewall.SelfLink)
+	ctx.Export(OpGkeWebhooksFirewallSelfLink, createdFirewall.SelfLink)
 
 	//create router
 	createdRouter, err := compute.NewRouter(ctx,
@@ -140,7 +139,7 @@ func cluster(ctx *pulumi.Context, locals *Locals, gcpProvider *gcp.Provider) (*c
 	}
 
 	//export router self-link
-	ctx.Export(outputs.RouterSelfLink, createdRouter.SelfLink)
+	ctx.Export(OpRouterSelfLink, createdRouter.SelfLink)
 
 	//create ip-address for router nat
 	createdRouterNatIp, err := compute.NewAddress(ctx,
@@ -157,7 +156,7 @@ func cluster(ctx *pulumi.Context, locals *Locals, gcpProvider *gcp.Provider) (*c
 	}
 
 	//export router nat ip
-	ctx.Export(outputs.ExternalNatIp, createdRouterNatIp.Address)
+	ctx.Export(OpExternalNatIp, createdRouterNatIp.Address)
 
 	//create router nat
 	createdRouterNat, err := compute.NewRouterNat(ctx,
@@ -176,7 +175,7 @@ func cluster(ctx *pulumi.Context, locals *Locals, gcpProvider *gcp.Provider) (*c
 	}
 
 	//export router nat name
-	ctx.Export(outputs.RouterNatName, createdRouterNat.Name)
+	ctx.Export(OpRouterNatName, createdRouterNat.Name)
 
 	clusterAutoscalingArgs := &container.ClusterClusterAutoscalingArgs{
 		Enabled: pulumi.Bool(false),
@@ -278,8 +277,8 @@ func cluster(ctx *pulumi.Context, locals *Locals, gcpProvider *gcp.Provider) (*c
 	}
 
 	//export cluster attributes
-	ctx.Export(outputs.ClusterEndpoint, createdCluster.Endpoint)
-	ctx.Export(outputs.ClusterCaData, createdCluster.MasterAuth.ClusterCaCertificate())
+	ctx.Export(OpClusterEndpoint, createdCluster.Endpoint)
+	ctx.Export(OpClusterCaData, createdCluster.MasterAuth.ClusterCaCertificate())
 
 	return createdCluster, nil
 }

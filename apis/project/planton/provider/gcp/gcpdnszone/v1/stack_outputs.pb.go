@@ -24,14 +24,14 @@ const (
 // gcp-dns-zone stack-outputs
 type GcpDnsZoneStackOutputs struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
+	// hosted-zone id
+	ZoneId string `protobuf:"bytes,1,opt,name=zone_id,json=zoneId,proto3" json:"zone_id,omitempty"`
+	// hosted-zone name
+	ZoneName string `protobuf:"bytes,2,opt,name=zone_name,json=zoneName,proto3" json:"zone_name,omitempty"`
 	// The list of nameservers for the Managed Zone created for the DNS Domain.
-	Nameservers []string `protobuf:"bytes,1,rep,name=nameservers,proto3" json:"nameservers,omitempty"`
-	// gcp project id of the dns zone
-	GcpProjectId string `protobuf:"bytes,2,opt,name=gcp_project_id,json=gcpProjectId,proto3" json:"gcp_project_id,omitempty"`
-	// managed zone name
-	ManagedZoneName string `protobuf:"bytes,3,opt,name=managed_zone_name,json=managedZoneName,proto3" json:"managed_zone_name,omitempty"`
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
+	Nameservers   []string `protobuf:"bytes,3,rep,name=nameservers,proto3" json:"nameservers,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *GcpDnsZoneStackOutputs) Reset() {
@@ -64,6 +64,20 @@ func (*GcpDnsZoneStackOutputs) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_gcp_gcpdnszone_v1_stack_outputs_proto_rawDescGZIP(), []int{0}
 }
 
+func (x *GcpDnsZoneStackOutputs) GetZoneId() string {
+	if x != nil {
+		return x.ZoneId
+	}
+	return ""
+}
+
+func (x *GcpDnsZoneStackOutputs) GetZoneName() string {
+	if x != nil {
+		return x.ZoneName
+	}
+	return ""
+}
+
 func (x *GcpDnsZoneStackOutputs) GetNameservers() []string {
 	if x != nil {
 		return x.Nameservers
@@ -71,29 +85,15 @@ func (x *GcpDnsZoneStackOutputs) GetNameservers() []string {
 	return nil
 }
 
-func (x *GcpDnsZoneStackOutputs) GetGcpProjectId() string {
-	if x != nil {
-		return x.GcpProjectId
-	}
-	return ""
-}
-
-func (x *GcpDnsZoneStackOutputs) GetManagedZoneName() string {
-	if x != nil {
-		return x.ManagedZoneName
-	}
-	return ""
-}
-
 var File_project_planton_provider_gcp_gcpdnszone_v1_stack_outputs_proto protoreflect.FileDescriptor
 
 const file_project_planton_provider_gcp_gcpdnszone_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	">project/planton/provider/gcp/gcpdnszone/v1/stack_outputs.proto\x12*project.planton.provider.gcp.gcpdnszone.v1\"\x8c\x01\n" +
-	"\x16GcpDnsZoneStackOutputs\x12 \n" +
-	"\vnameservers\x18\x01 \x03(\tR\vnameservers\x12$\n" +
-	"\x0egcp_project_id\x18\x02 \x01(\tR\fgcpProjectId\x12*\n" +
-	"\x11managed_zone_name\x18\x03 \x01(\tR\x0fmanagedZoneNameB\xfb\x02\n" +
+	">project/planton/provider/gcp/gcpdnszone/v1/stack_outputs.proto\x12*project.planton.provider.gcp.gcpdnszone.v1\"p\n" +
+	"\x16GcpDnsZoneStackOutputs\x12\x17\n" +
+	"\azone_id\x18\x01 \x01(\tR\x06zoneId\x12\x1b\n" +
+	"\tzone_name\x18\x02 \x01(\tR\bzoneName\x12 \n" +
+	"\vnameservers\x18\x03 \x03(\tR\vnameserversB\xfb\x02\n" +
 	".com.project.planton.provider.gcp.gcpdnszone.v1B\x11StackOutputsProtoP\x01Zggithub.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpdnszone/v1;gcpdnszonev1\xa2\x02\x05PPPGG\xaa\x02*Project.Planton.Provider.Gcp.Gcpdnszone.V1\xca\x02*Project\\Planton\\Provider\\Gcp\\Gcpdnszone\\V1\xe2\x026Project\\Planton\\Provider\\Gcp\\Gcpdnszone\\V1\\GPBMetadata\xea\x02/Project::Planton::Provider::Gcp::Gcpdnszone::V1b\x06proto3"
 
 var (

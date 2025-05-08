@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/pkg/errors"
 	awsvpcv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsvpc/v1"
-	"github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsvpc/v1/iac/pulumi/module/outputs"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/datatypes/stringmaps"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/datatypes/stringmaps/convertstringmaps"
 	"github.com/pulumi/pulumi-aws/sdk/v6/go/aws"
@@ -58,7 +57,7 @@ func Resources(ctx *pulumi.Context, stackInput *awsvpcv1.AwsVpcStackInput) error
 	}
 
 	//add vpc id to outputs
-	ctx.Export(outputs.VpcId, createdVpc.ID())
+	ctx.Export(OpVpcId, createdVpc.ID())
 
 	// internet gateway for public subnets
 	createdInternetGateway, err := ec2.NewInternetGateway(ctx,
@@ -73,7 +72,7 @@ func Resources(ctx *pulumi.Context, stackInput *awsvpcv1.AwsVpcStackInput) error
 	}
 
 	//add internet-gateway id to outputs
-	ctx.Export(outputs.InternetGatewayId, createdInternetGateway.ID())
+	ctx.Export(OpInternetGatewayId, createdInternetGateway.ID())
 
 	// public route table for internet access
 	createdPublicRouteTable, err := ec2.NewRouteTable(ctx,

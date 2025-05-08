@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/pkg/errors"
 	gcpgcsbucketv1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpgcsbucket/v1"
-	"github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpgcsbucket/v1/iac/pulumi/module/outputs"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/gcp/pulumigoogleprovider"
 	"github.com/pulumi/pulumi-gcp/sdk/v8/go/gcp/storage"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
@@ -32,7 +31,7 @@ func Resources(ctx *pulumi.Context, stackInput *gcpgcsbucketv1.GcpGcsBucketStack
 		return errors.Wrap(err, "failed to create bucket resource")
 	}
 
-	ctx.Export(outputs.BucketId, createdBucket.ID())
+	ctx.Export(OpBucketId, createdBucket.ID())
 
 	if !locals.GcpGcsBucket.Spec.IsPublic {
 		return nil

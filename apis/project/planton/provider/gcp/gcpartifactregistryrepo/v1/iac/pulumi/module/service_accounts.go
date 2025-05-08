@@ -2,7 +2,6 @@ package module
 
 import (
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpartifactregistryrepo/v1/iac/pulumi/module/outputs"
 	pulumigcp "github.com/pulumi/pulumi-gcp/sdk/v8/go/gcp"
 	"github.com/pulumi/pulumi-gcp/sdk/v8/go/gcp/serviceaccount"
 	"github.com/pulumi/pulumi-random/sdk/v4/go/random"
@@ -58,8 +57,8 @@ func serviceAccounts(ctx *pulumi.Context, locals *Locals, gcpProvider *pulumigcp
 	}
 
 	//export outputs for email and private key as outputs for the "reader" service account
-	ctx.Export(outputs.ReaderServiceAccountEmail, createdReaderServiceAccount.Email)
-	ctx.Export(outputs.ReaderServiceAccountKeyBase64, createdReaderServiceAccountKey.PrivateKey)
+	ctx.Export(OpReaderServiceAccountEmail, createdReaderServiceAccount.Email)
+	ctx.Export(OpReaderServiceAccountKeyBase64, createdReaderServiceAccountKey.PrivateKey)
 
 	//create a name for the google service account to be used for "write"
 	//operations on the artifact-registry repositories.
@@ -94,8 +93,8 @@ func serviceAccounts(ctx *pulumi.Context, locals *Locals, gcpProvider *pulumigcp
 	}
 
 	//export outputs for email and private key as outputs for the "writer" service account
-	ctx.Export(outputs.WriterServiceAccountEmail, createdWriterServiceAccount.Email)
-	ctx.Export(outputs.WriterServiceAccountKeyBase64, createdWriterServiceAccountKey.PrivateKey)
+	ctx.Export(OpWriterServiceAccountEmail, createdWriterServiceAccount.Email)
+	ctx.Export(OpWriterServiceAccountKeyBase64, createdWriterServiceAccountKey.PrivateKey)
 
 	return createdReaderServiceAccount, createdWriterServiceAccount, nil
 }

@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/pkg/errors"
 	gcpsecretsmanagerv1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpsecretsmanager/v1"
-	"github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpsecretsmanager/v1/iac/pulumi/module/outputs"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/gcp/pulumigoogleprovider"
 	"github.com/pulumi/pulumi-gcp/sdk/v8/go/gcp/secretmanager"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
@@ -65,6 +64,6 @@ func Resources(ctx *pulumi.Context, stackInput *gcpsecretsmanagerv1.GcpSecretsMa
 		secretIdMap[secretName] = secretId
 	}
 	//export the id of the secret
-	ctx.Export(outputs.SecretIdMap, pulumi.ToStringMap(secretIdMap))
+	ctx.Export(OpSecretIdMap, pulumi.ToStringMap(secretIdMap))
 	return nil
 }

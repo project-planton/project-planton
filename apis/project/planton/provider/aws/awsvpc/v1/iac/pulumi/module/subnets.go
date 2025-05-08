@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsvpc/v1/iac/pulumi/module/outputs"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/datatypes/stringmaps"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/datatypes/stringmaps/convertstringmaps"
 	"github.com/pulumi/pulumi-aws/sdk/v6/go/aws/ec2"
@@ -44,9 +43,9 @@ func subnets(
 				return errors.Wrapf(err, "error creating public subnet %s", subnetName)
 			}
 
-			ctx.Export(fmt.Sprintf("%s.%d", outputs.PublicSubnetsName, i), pulumi.String(subnetName))
-			ctx.Export(fmt.Sprintf("%s.%d", outputs.PublicSubnetsId, i), createdSubnet.ID())
-			ctx.Export(fmt.Sprintf("%s.%d", outputs.PublicSubnetsCidr, i), createdSubnet.CidrBlock)
+			ctx.Export(fmt.Sprintf("%s.%d", OpPublicSubnetsName, i), pulumi.String(subnetName))
+			ctx.Export(fmt.Sprintf("%s.%d", OpPublicSubnetsId, i), createdSubnet.ID())
+			ctx.Export(fmt.Sprintf("%s.%d", OpPublicSubnetsCidr, i), createdSubnet.CidrBlock)
 
 			// Associate this public subnet with the public route table
 			_, err = ec2.NewRouteTableAssociation(ctx,
@@ -111,9 +110,9 @@ func subnets(
 				return errors.Wrapf(err, "error creating private subnet %s", subnetName)
 			}
 
-			ctx.Export(fmt.Sprintf("%s.%d", outputs.PrivateSubnetsName, i), pulumi.String(subnetName))
-			ctx.Export(fmt.Sprintf("%s.%d", outputs.PrivateSubnetsId, i), createdSubnet.ID())
-			ctx.Export(fmt.Sprintf("%s.%d", outputs.PrivateSubnetsCidr, i), createdSubnet.CidrBlock)
+			ctx.Export(fmt.Sprintf("%s.%d", OpPrivateSubnetsName, i), pulumi.String(subnetName))
+			ctx.Export(fmt.Sprintf("%s.%d", OpPrivateSubnetsId, i), createdSubnet.ID())
+			ctx.Export(fmt.Sprintf("%s.%d", OpPrivateSubnetsCidr, i), createdSubnet.CidrBlock)
 
 			// If NAT is enabled, create a route table that routes to that NAT
 			// NOTE: We only do this if a NAT gateway exists in this AZ.

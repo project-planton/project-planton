@@ -3,7 +3,6 @@ package module
 import (
 	"github.com/pkg/errors"
 	awsrdsinstancev1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsrdsinstance/v1"
-	"github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsrdsinstance/v1/iac/pulumi/module/outputs"
 	"github.com/pulumi/pulumi-aws/sdk/v6/go/aws"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
@@ -37,13 +36,13 @@ func Resources(ctx *pulumi.Context, stackInput *awsrdsinstancev1.AwsRdsInstanceS
 	}
 
 	// Export Outputs
-	ctx.Export(outputs.RdsInstanceEndpoint, createRdsInstance.Endpoint)
-	ctx.Export(outputs.RdsInstanceId, createRdsInstance.ResourceId)
-	ctx.Export(outputs.RdsInstanceArn, createRdsInstance.Arn)
-	ctx.Export(outputs.RdsInstanceAddress, createRdsInstance.Address)
-	ctx.Export(outputs.RdsSecurityGroup, createdSecurityGroup.Name)
-	ctx.Export(outputs.RdsParameterGroup, createRdsInstance.ParameterGroupName)
-	ctx.Export(outputs.RdsSubnetGroup, createRdsInstance.DbSubnetGroupName)
-	ctx.Export(outputs.RdsOptionsGroup, createRdsInstance.OptionGroupName)
+	ctx.Export(OpRdsInstanceEndpoint, createRdsInstance.Endpoint)
+	ctx.Export(OpRdsInstanceId, createRdsInstance.ResourceId)
+	ctx.Export(OpRdsInstanceArn, createRdsInstance.Arn)
+	ctx.Export(OpRdsInstanceAddress, createRdsInstance.Address)
+	ctx.Export(OpRdsSecurityGroup, createdSecurityGroup.Name)
+	ctx.Export(OpRdsParameterGroup, createRdsInstance.ParameterGroupName)
+	ctx.Export(OpRdsSubnetGroup, createRdsInstance.DbSubnetGroupName)
+	ctx.Export(OpRdsOptionsGroup, createRdsInstance.OptionGroupName)
 	return nil
 }

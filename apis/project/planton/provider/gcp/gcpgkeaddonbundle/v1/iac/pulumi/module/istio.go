@@ -2,7 +2,6 @@ package module
 
 import (
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpgkeaddonbundle/v1/iac/pulumi/module/outputs"
 	"github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpgkeaddonbundle/v1/iac/pulumi/module/vars"
 	istiov1alpha3 "github.com/project-planton/project-planton/pkg/kubernetestypes/istio/kubernetes/networking/v1alpha3"
 	"github.com/pulumi/pulumi-gcp/sdk/v8/go/gcp"
@@ -257,7 +256,7 @@ func istio(ctx *pulumi.Context, locals *Locals,
 	}
 
 	//export ingress-internal ip
-	ctx.Export(outputs.IngressInternalIp, createdIngressInternalLoadBalancerIp.Address)
+	ctx.Export(OpIngressInternalIp, createdIngressInternalLoadBalancerIp.Address)
 
 	//create load-balancer service for internal load-balancer
 	_, err = corev1.NewService(ctx,
@@ -295,7 +294,7 @@ func istio(ctx *pulumi.Context, locals *Locals,
 	}
 
 	//export ingress-external ip
-	ctx.Export(outputs.IngressExternalIp, createdIngressExternalLoadBalancerIp.Address)
+	ctx.Export(OpIngressExternalIp, createdIngressExternalLoadBalancerIp.Address)
 
 	//create load-balancer service for external load-balancer
 	_, err = corev1.NewService(ctx,

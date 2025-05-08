@@ -3,7 +3,6 @@ package module
 import (
 	"fmt"
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpgkeaddonbundle/v1/iac/pulumi/module/outputs"
 	"github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpgkeaddonbundle/v1/iac/pulumi/module/vars"
 	"github.com/pulumi/pulumi-gcp/sdk/v8/go/gcp"
 	"github.com/pulumi/pulumi-gcp/sdk/v8/go/gcp/serviceaccount"
@@ -31,7 +30,7 @@ func externalDns(ctx *pulumi.Context, locals *Locals,
 	}
 
 	//export cert-manager gsa email
-	ctx.Export(outputs.ExternalDnsGsaEmail, createdGoogleServiceAccount.Email)
+	ctx.Export(OpExternalDnsGsaEmail, createdGoogleServiceAccount.Email)
 
 	//create workload-identity binding
 	_, err = serviceaccount.NewIAMBinding(ctx,

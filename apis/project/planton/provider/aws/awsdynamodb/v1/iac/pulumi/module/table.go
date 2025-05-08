@@ -2,7 +2,6 @@ package module
 
 import (
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsdynamodb/v1/iac/pulumi/module/outputs"
 	"github.com/pulumi/pulumi-aws/sdk/v6/go/aws"
 	"github.com/pulumi/pulumi-aws/sdk/v6/go/aws/dynamodb"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
@@ -202,9 +201,9 @@ func table(ctx *pulumi.Context, locals *Locals, awsProvider *aws.Provider) (*dyn
 		return nil, errors.Wrap(err, "failed to create dynamo table resources")
 	}
 
-	ctx.Export(outputs.TableName, createdDynamodbTable.Name)
-	ctx.Export(outputs.TableArn, createdDynamodbTable.Arn)
-	ctx.Export(outputs.TableStreamArn, createdDynamodbTable.StreamArn)
+	ctx.Export(OpTableName, createdDynamodbTable.Name)
+	ctx.Export(OpTableArn, createdDynamodbTable.Arn)
+	ctx.Export(OpTableStreamArn, createdDynamodbTable.StreamArn)
 
 	return createdDynamodbTable, nil
 }

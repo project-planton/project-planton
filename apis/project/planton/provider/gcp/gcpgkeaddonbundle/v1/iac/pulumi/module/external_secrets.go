@@ -3,7 +3,6 @@ package module
 import (
 	"fmt"
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpgkeaddonbundle/v1/iac/pulumi/module/outputs"
 	"github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpgkeaddonbundle/v1/iac/pulumi/module/vars"
 	externalsecretsv1 "github.com/project-planton/project-planton/pkg/kubernetestypes/externalsecrets/kubernetes/external_secrets/v1beta1"
 	"github.com/pulumi/pulumi-gcp/sdk/v8/go/gcp"
@@ -55,7 +54,7 @@ func externalSecrets(ctx *pulumi.Context, locals *Locals, gcpProvider *gcp.Provi
 	}
 
 	//export external-secrets gsa email
-	ctx.Export(outputs.ExternalSecretsGsaEmail, createdGoogleServiceAccount.Email)
+	ctx.Export(OpExternalSecretsGsaEmail, createdGoogleServiceAccount.Email)
 
 	//add iam binding for secrets accessor role
 	_, err = projects.NewIAMBinding(ctx,

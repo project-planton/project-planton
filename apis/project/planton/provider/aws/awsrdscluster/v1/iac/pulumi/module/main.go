@@ -3,7 +3,6 @@ package module
 import (
 	"github.com/pkg/errors"
 	awsrdsclusterv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsrdscluster/v1"
-	"github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsrdscluster/v1/iac/pulumi/module/outputs"
 	"github.com/pulumi/pulumi-aws/sdk/v6/go/aws"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
@@ -35,9 +34,9 @@ func Resources(ctx *pulumi.Context, stackInput *awsrdsclusterv1.AwsRdsClusterSta
 		return errors.Wrap(err, "failed to create rds cluster")
 	}
 
-	ctx.Export(outputs.ClusterIdentifier, createdRdsCluster.ClusterIdentifier)
-	ctx.Export(outputs.MasterEndpoint, createdRdsCluster.Endpoint)
-	ctx.Export(outputs.ReaderEndpoint, createdRdsCluster.ReaderEndpoint)
+	ctx.Export(OpClusterIdentifier, createdRdsCluster.ClusterIdentifier)
+	ctx.Export(OpMasterEndpoint, createdRdsCluster.Endpoint)
+	ctx.Export(OpReaderEndpoint, createdRdsCluster.ReaderEndpoint)
 
 	// Create RDS Cluster Instance
 	_, err = rdsClusterInstance(ctx, locals, awsProvider, createdRdsCluster)

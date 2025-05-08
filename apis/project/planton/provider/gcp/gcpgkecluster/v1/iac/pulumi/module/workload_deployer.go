@@ -3,7 +3,6 @@ package module
 import (
 	"fmt"
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpgkecluster/v1/iac/pulumi/module/outputs"
 	"github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpgkecluster/v1/iac/pulumi/module/vars"
 	"github.com/pulumi/pulumi-gcp/sdk/v8/go/gcp/container"
 	"github.com/pulumi/pulumi-gcp/sdk/v8/go/gcp/projects"
@@ -41,7 +40,7 @@ func workloadDeployer(ctx *pulumi.Context, createdCluster *container.Cluster) er
 	}
 
 	//export email of the created workload deployer service account
-	ctx.Export(outputs.WorkloadDeployerGsaEmail, createdWorkloadDeployerServiceAccount.Email)
+	ctx.Export(OpWorkloadDeployerGsaEmail, createdWorkloadDeployerServiceAccount.Email)
 
 	//create key for workload deployer service account.
 	createdWorkloadDeployerServiceAccountKey, err := serviceaccount.NewKey(ctx,
@@ -54,7 +53,7 @@ func workloadDeployer(ctx *pulumi.Context, createdCluster *container.Cluster) er
 	}
 
 	//export workload deployer google service account key
-	ctx.Export(outputs.WorkloadDeployerGsaKeyBase64, createdWorkloadDeployerServiceAccountKey.PrivateKey)
+	ctx.Export(OpWorkloadDeployerGsaKeyBase64, createdWorkloadDeployerServiceAccountKey.PrivateKey)
 
 	// create iam-binding for workload-deployer to manage the container cluster itself
 	_, err = projects.NewIAMBinding(ctx,

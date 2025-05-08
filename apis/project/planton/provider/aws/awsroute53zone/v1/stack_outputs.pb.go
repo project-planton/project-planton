@@ -24,12 +24,14 @@ const (
 // Status for the AWS Route53 Zone
 type AwsRoute53ZoneStackOutputs struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
+	// hosted-zone id
+	ZoneId string `protobuf:"bytes,1,opt,name=zone_id,json=zoneId,proto3" json:"zone_id,omitempty"`
+	// hosted-zone name
+	ZoneName string `protobuf:"bytes,2,opt,name=zone_name,json=zoneName,proto3" json:"zone_name,omitempty"`
 	// The list of nameservers for the Managed Zone created for the DNS Domain.
-	HostedNameservers []string `protobuf:"bytes,1,rep,name=hosted_nameservers,json=hostedNameservers,proto3" json:"hosted_nameservers,omitempty"`
-	// hosted zone name
-	HostedZoneName string `protobuf:"bytes,2,opt,name=hosted_zone_name,json=hostedZoneName,proto3" json:"hosted_zone_name,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
+	Nameservers   []string `protobuf:"bytes,3,rep,name=nameservers,proto3" json:"nameservers,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *AwsRoute53ZoneStackOutputs) Reset() {
@@ -62,28 +64,36 @@ func (*AwsRoute53ZoneStackOutputs) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_aws_awsroute53zone_v1_stack_outputs_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *AwsRoute53ZoneStackOutputs) GetHostedNameservers() []string {
+func (x *AwsRoute53ZoneStackOutputs) GetZoneId() string {
 	if x != nil {
-		return x.HostedNameservers
-	}
-	return nil
-}
-
-func (x *AwsRoute53ZoneStackOutputs) GetHostedZoneName() string {
-	if x != nil {
-		return x.HostedZoneName
+		return x.ZoneId
 	}
 	return ""
+}
+
+func (x *AwsRoute53ZoneStackOutputs) GetZoneName() string {
+	if x != nil {
+		return x.ZoneName
+	}
+	return ""
+}
+
+func (x *AwsRoute53ZoneStackOutputs) GetNameservers() []string {
+	if x != nil {
+		return x.Nameservers
+	}
+	return nil
 }
 
 var File_project_planton_provider_aws_awsroute53zone_v1_stack_outputs_proto protoreflect.FileDescriptor
 
 const file_project_planton_provider_aws_awsroute53zone_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Bproject/planton/provider/aws/awsroute53zone/v1/stack_outputs.proto\x12.project.planton.provider.aws.awsroute53zone.v1\"u\n" +
-	"\x1aAwsRoute53ZoneStackOutputs\x12-\n" +
-	"\x12hosted_nameservers\x18\x01 \x03(\tR\x11hostedNameservers\x12(\n" +
-	"\x10hosted_zone_name\x18\x02 \x01(\tR\x0ehostedZoneNameB\x97\x03\n" +
+	"Bproject/planton/provider/aws/awsroute53zone/v1/stack_outputs.proto\x12.project.planton.provider.aws.awsroute53zone.v1\"t\n" +
+	"\x1aAwsRoute53ZoneStackOutputs\x12\x17\n" +
+	"\azone_id\x18\x01 \x01(\tR\x06zoneId\x12\x1b\n" +
+	"\tzone_name\x18\x02 \x01(\tR\bzoneName\x12 \n" +
+	"\vnameservers\x18\x03 \x03(\tR\vnameserversB\x97\x03\n" +
 	"2com.project.planton.provider.aws.awsroute53zone.v1B\x11StackOutputsProtoP\x01Zogithub.com/project-planton/project-planton/apis/project/planton/provider/aws/awsroute53zone/v1;awsroute53zonev1\xa2\x02\x05PPPAA\xaa\x02.Project.Planton.Provider.Aws.Awsroute53zone.V1\xca\x02.Project\\Planton\\Provider\\Aws\\Awsroute53zone\\V1\xe2\x02:Project\\Planton\\Provider\\Aws\\Awsroute53zone\\V1\\GPBMetadata\xea\x023Project::Planton::Provider::Aws::Awsroute53zone::V1b\x06proto3"
 
 var (

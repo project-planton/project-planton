@@ -3,7 +3,6 @@ package module
 import (
 	"github.com/pkg/errors"
 	awslambdav1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awslambda/v1"
-	"github.com/project-planton/project-planton/apis/project/planton/provider/aws/awslambda/v1/iac/pulumi/module/outputs"
 	"github.com/pulumi/pulumi-aws/sdk/v6/go/aws"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
@@ -46,9 +45,9 @@ func Resources(ctx *pulumi.Context, stackInput *awslambdav1.AwsLambdaStackInput)
 		return errors.Wrap(err, "failed to create invoke function permissions")
 	}
 
-	ctx.Export(outputs.LambdaFunctionArn, createdLambdaFunction.Arn)
-	ctx.Export(outputs.LambdaFunctionName, createdLambdaFunction.Name)
-	ctx.Export(outputs.IamRoleName, createdIamRole.Name)
+	ctx.Export(OpLambdaFunctionArn, createdLambdaFunction.Arn)
+	ctx.Export(OpLambdaFunctionName, createdLambdaFunction.Name)
+	ctx.Export(OpIamRoleName, createdIamRole.Name)
 
 	return nil
 }

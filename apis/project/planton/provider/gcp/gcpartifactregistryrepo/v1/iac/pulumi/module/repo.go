@@ -2,7 +2,6 @@ package module
 
 import (
 	"fmt"
-	"github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpartifactregistryrepo/v1/iac/pulumi/module/outputs"
 	pulumigcp "github.com/pulumi/pulumi-gcp/sdk/v8/go/gcp"
 	"github.com/pulumi/pulumi-gcp/sdk/v8/go/gcp/serviceaccount"
 
@@ -94,13 +93,13 @@ func repo(ctx *pulumi.Context, locals *Locals, gcpProvider *pulumigcp.Provider,
 	}
 
 	//export important attributes of the repository as outputs
-	ctx.Export(outputs.RepoName, createdRepo.RepositoryId)
+	ctx.Export(OpRepoName, createdRepo.RepositoryId)
 	//export docker-repo hostname
-	ctx.Export(outputs.RepoHostname, pulumi.Sprintf(
+	ctx.Export(OpRepoHostname, pulumi.Sprintf(
 		"%s-docker.pkg.dev", createdRepo.Location))
 	//export complete repo url based on the attributes of the created docker-repo
 	// ex: artifactregistry://us-central1-docker.pkg.dev/my-gcp-project-id/my-company-docker-repo
-	ctx.Export(outputs.RepoUrl, pulumi.Sprintf(
+	ctx.Export(OpRepoUrl, pulumi.Sprintf(
 		"%s-docker.pkg.dev/%s/%s",
 		createdRepo.Location, createdRepo.Project, createdRepo.Name))
 
