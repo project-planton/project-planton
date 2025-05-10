@@ -6,7 +6,9 @@ import (
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
 	"os"
+	"regexp"
 	"sigs.k8s.io/yaml"
+	"strings"
 )
 
 // Load reads the contents of the input file and load it into an object
@@ -29,7 +31,7 @@ func Load(inputFile string, obj proto.Message) error {
 		return errors.Wrap(err, "failed to load yaml to json")
 	}
 	if err := protojson.Unmarshal(jsonBytes, obj); err != nil {
-		return errors.Wrap(err, "failed to load json into proto message")
+		return errors.New(TrimProtoPrefix(err.Error()))
 	}
 	return nil
 }
@@ -40,7 +42,18 @@ func LoadYamlBytes(yamlBytes []byte, obj proto.Message) error {
 		return errors.Wrap(err, "failed to load yaml to json")
 	}
 	if err := protojson.Unmarshal(jsonBytes, obj); err != nil {
-		return errors.Wrap(err, "failed to load json into proto message")
+		return errors.New(TrimProtoPrefix(err.Error()))
 	}
 	return nil
+}
+
+// TrimProtoPrefix removes the "proto: (line x:y): " prefix if present.
+func TrimProtoPrefix(msg string) string {
+	const marker = "proto:"
+	if !strings.HasPrefix(msg, marker) {
+		return msg // already clean
+	}
+	// proto: (line 12:34): <-- tolerate extra spaces
+	re := regexp.MustCompile(`^proto:\s*\(line \d+:\d+\):\s*`)
+	return re.ReplaceAllString(msg, "")
 }
