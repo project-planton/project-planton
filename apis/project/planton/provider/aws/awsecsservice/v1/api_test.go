@@ -2,6 +2,7 @@ package awsecsservicev1
 
 import (
 	"github.com/project-planton/project-planton/apis/project/planton/shared"
+	foreignkeyv1 "github.com/project-planton/project-planton/apis/project/planton/shared/foreignkey/v1"
 	"testing"
 
 	"github.com/bufbuild/protovalidate-go"
@@ -28,7 +29,10 @@ var _ = Describe("AwsEcsService Custom Validation Tests", func() {
 						Name: "test-service",
 					},
 					Spec: &AwsEcsServiceSpec{
-						ClusterArn: "arn:aws:ecs:us-east-1:123456789012:cluster/my-cluster",
+						ClusterArn: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+								Value: "arn:aws:ecs:us-east-1:123456789012:cluster/my-cluster"},
+						},
 						Container: &AwsEcsServiceContainer{
 							Image: &AwsEcsServiceContainerImage{
 								Repo: "example-repo",
@@ -38,11 +42,18 @@ var _ = Describe("AwsEcsService Custom Validation Tests", func() {
 							Memory: 1024,
 						},
 						Network: &AwsEcsServiceNetwork{
-							Subnets: []string{"subnet-abc123"},
+							Subnets: []*foreignkeyv1.StringValueOrRef{
+								{
+									LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "subnet-abc123"},
+								},
+							},
 						},
 						Alb: &AwsEcsServiceAlb{
-							Enabled:      true,
-							Arn:          "arn:aws:elasticloadbalancing:us-east-1:123456789012:loadbalancer/app/myAlb",
+							Enabled: true,
+							Arn: &foreignkeyv1.StringValueOrRef{
+								LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+									Value: "arn:aws:elasticloadbalancing:us-east-1:123456789012:loadbalancer/app/myAlb"},
+							},
 							RoutingType:  "path",
 							ListenerPort: 80,
 						},
@@ -68,7 +79,10 @@ var _ = Describe("AwsEcsService Custom Validation Tests", func() {
 					Name: "test-service",
 				},
 				Spec: &AwsEcsServiceSpec{
-					ClusterArn: "arn:aws:ecs:us-east-1:123456789012:cluster/test-cluster",
+					ClusterArn: &foreignkeyv1.StringValueOrRef{
+						LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+							Value: "arn:aws:ecs:us-east-1:123456789012:cluster/test-cluster"},
+					},
 					Container: &AwsEcsServiceContainer{
 						Image: &AwsEcsServiceContainerImage{
 							Repo: "example-repo",
@@ -78,7 +92,11 @@ var _ = Describe("AwsEcsService Custom Validation Tests", func() {
 						Memory: 512,
 					},
 					Network: &AwsEcsServiceNetwork{
-						Subnets: []string{"subnet-abc123"},
+						Subnets: []*foreignkeyv1.StringValueOrRef{
+							{
+								LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "subnet-abc123"},
+							},
+						},
 					},
 				},
 			}
@@ -102,7 +120,10 @@ var _ = Describe("AwsEcsService Custom Validation Tests", func() {
 					Name: "test-service",
 				},
 				Spec: &AwsEcsServiceSpec{
-					ClusterArn: "arn:aws:ecs:us-east-1:123456789012:cluster/test-cluster",
+					ClusterArn: &foreignkeyv1.StringValueOrRef{
+						LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+							Value: "arn:aws:ecs:us-east-1:123456789012:cluster/test-cluster"},
+					},
 					Container: &AwsEcsServiceContainer{
 						Image: &AwsEcsServiceContainerImage{
 							Repo: "example-repo",
@@ -112,7 +133,11 @@ var _ = Describe("AwsEcsService Custom Validation Tests", func() {
 						Memory: 512,
 					},
 					Network: &AwsEcsServiceNetwork{
-						Subnets: []string{"subnet-abc123"},
+						Subnets: []*foreignkeyv1.StringValueOrRef{
+							{
+								LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "subnet-abc123"},
+							},
+						},
 					},
 				},
 			}
@@ -136,7 +161,10 @@ var _ = Describe("AwsEcsService Custom Validation Tests", func() {
 					Name: "test-service",
 				},
 				Spec: &AwsEcsServiceSpec{
-					ClusterArn: "arn:aws:ecs:us-east-1:123456789012:cluster/test-cluster",
+					ClusterArn: &foreignkeyv1.StringValueOrRef{
+						LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+							Value: "arn:aws:ecs:us-east-1:123456789012:cluster/test-cluster"},
+					},
 					Container: &AwsEcsServiceContainer{
 						Image: &AwsEcsServiceContainerImage{
 							Repo: "example-repo",
@@ -146,11 +174,18 @@ var _ = Describe("AwsEcsService Custom Validation Tests", func() {
 						Memory: 512,
 					},
 					Network: &AwsEcsServiceNetwork{
-						Subnets: []string{"subnet-abc123"},
+						Subnets: []*foreignkeyv1.StringValueOrRef{
+							{
+								LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "subnet-abc123"},
+							},
+						},
 					},
 					Alb: &AwsEcsServiceAlb{
-						Enabled:      true,
-						Arn:          "arn:aws:elasticloadbalancing:us-east-1:123456789012:loadbalancer/app/myAlb",
+						Enabled: true,
+						Arn: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
+								Value: "arn:aws:elasticloadbalancing:us-east-1:123456789012:loadbalancer/app/myAlb"},
+						},
 						RoutingType:  "path",
 						ListenerPort: 80,
 					},
