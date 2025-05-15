@@ -3,6 +3,8 @@ package module
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/project-planton/project-planton/internal/valuefrom"
+	"k8s.io/utils/pointer"
 	"sort"
 
 	"github.com/pkg/errors"
@@ -76,11 +78,11 @@ func ecsService(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) err
 	}
 
 	if spec.Iam != nil {
-		if spec.Iam.TaskExecutionRoleArn != "" {
-			taskDefinitionArgs.ExecutionRoleArn = pulumi.String(spec.Iam.TaskExecutionRoleArn)
+		if spec.Iam.TaskExecutionRoleArn.GetValue() != "" {
+			taskDefinitionArgs.ExecutionRoleArn = pulumi.String(spec.Iam.TaskExecutionRoleArn.GetValue())
 		}
-		if spec.Iam.TaskRoleArn != "" {
-			taskDefinitionArgs.TaskRoleArn = pulumi.String(spec.Iam.TaskRoleArn)
+		if spec.Iam.TaskRoleArn.GetValue() != "" {
+			taskDefinitionArgs.TaskRoleArn = pulumi.String(spec.Iam.TaskRoleArn.GetValue())
 		}
 	}
 
@@ -94,13 +96,13 @@ func ecsService(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) err
 
 	serviceArgs := &ecs.ServiceArgs{
 		Name:           pulumi.String(serviceName),
-		Cluster:        pulumi.String(spec.ClusterArn),
+		Cluster:        pulumi.String(spec.ClusterArn.GetValue()),
 		LaunchType:     pulumi.String("FARGATE"),
 		DesiredCount:   pulumi.Int(int(spec.Container.Replicas)),
 		TaskDefinition: taskDef.Arn,
 		NetworkConfiguration: &ecs.ServiceNetworkConfigurationArgs{
-			Subnets:        toPulumiStrings(spec.Network.Subnets),
-			SecurityGroups: toPulumiStrings(spec.Network.SecurityGroups),
+			Subnets:        pulumi.ToStringArray(valuefrom.ToStringArray(spec.Network.Subnets)),
+			SecurityGroups: pulumi.ToStringArray(valuefrom.ToStringArray(spec.Network.SecurityGroups)),
 		},
 		Tags: pulumi.ToStringMap(locals.AwsTags),
 	}
@@ -111,11 +113,11 @@ func ecsService(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) err
 		if len(spec.Network.Subnets) == 0 {
 			return errors.New("at least one subnet is required for ALB usage")
 		}
-		if spec.Alb.Arn == "" {
+		if spec.Alb.Arn.GetValue() == "" {
 			return errors.New("alb.arn is required when alb.enabled = true")
 		}
 
-		firstSubnetID := spec.Network.Subnets[0]
+		firstSubnetID := spec.Network.Subnets[0].GetValue()
 		subnetLookup, err := ec2.LookupSubnet(ctx, &ec2.LookupSubnetArgs{
 			Id: &firstSubnetID,
 		}, pulumi.Provider(provider))
@@ -144,7 +146,7 @@ func ecsService(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) err
 		}
 
 		foundAlb, err := lb.LookupLoadBalancer(ctx, &lb.LookupLoadBalancerArgs{
-			Arn: &spec.Alb.Arn,
+			Arn: pointer.String(spec.Alb.Arn.GetValue()),
 		}, pulumi.Provider(provider))
 		if err != nil {
 			return errors.Wrap(err, "failed to find ALB by ARN")
@@ -218,7 +220,7 @@ func ecsService(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) err
 	}
 
 	ctx.Export(OpAwsEcsServiceName, awsEcsService.Name)
-	ctx.Export(OpEcsClusterName, pulumi.String(spec.ClusterArn))
+	ctx.Export(OpEcsClusterName, pulumi.String(spec.ClusterArn.GetValue()))
 	ctx.Export(OpLoadBalancerDnsName, loadBalancerDNS)
 
 	var serviceUrl pulumi.StringInput = pulumi.String("")
@@ -326,13 +328,4 @@ func buildContainerDefinitions(
 		return "", errors.Wrap(err, "failed to encode container definitions")
 	}
 	return string(encoded), nil
-}
-
-// toPulumiStrings is a helper that converts a native string slice to a pulumi.StringArray.
-func toPulumiStrings(input []string) pulumi.StringArray {
-	output := make(pulumi.StringArray, len(input))
-	for i, s := range input {
-		output[i] = pulumi.String(s)
-	}
-	return output
 }

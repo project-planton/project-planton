@@ -13,11 +13,15 @@ message AwsAlbSpec {
   // Typically use private subnets for internal ALBs or public subnets for internet-facing ALBs.
   repeated project.planton.shared.foreignkey.v1.StringValueOrRef subnets = 1 [
     (buf.validate.field).required = true,
-    (buf.validate.field).repeated.min_items = 2
+    (buf.validate.field).repeated.min_items = 2,
+    (project.planton.shared.foreignkey.v1.default_kind) = AwsVpc
   ];
 
   // list of security group IDs to attach to the ALB.
-  repeated project.planton.shared.foreignkey.v1.StringValueOrRef security_groups = 2;
+  repeated project.planton.shared.foreignkey.v1.StringValueOrRef security_groups = 2 [
+    (project.planton.shared.foreignkey.v1.default_kind) = AwsSecurityGroup,
+    (project.planton.shared.foreignkey.v1.default_kind_field_path) = "status.outputs.security_group_id"
+  ];
 
   // indicates whether the ALB is internal or internet-facing.
   // If true, the ALB is internal; if false (or not set), it is internet-facing.
@@ -48,7 +52,10 @@ message AwsAlbDns {
 
   // route53_zone_id is the Route 53 Hosted Zone ID where DNS records
   // will be created.
-  project.planton.shared.foreignkey.v1.StringValueOrRef route53_zone_id = 2;
+  project.planton.shared.foreignkey.v1.StringValueOrRef route53_zone_id = 2 [
+    (project.planton.shared.foreignkey.v1.default_kind) = AwsRoute53Zone,
+    (project.planton.shared.foreignkey.v1.default_kind_field_path) = "status.outputs.zone_id"
+  ];
 
   // hostnames is a list of domain names (e.g., ["app.example.com"])
   // that will point to this ALB.
@@ -77,5 +84,8 @@ message AwsAlbSsl {
   // Because of that open issue, we have removed the validation rule here. If this is
   // eventually resolved upstream or we change our approach to descriptor loading, we may
   // restore the rule at a later time.
-  project.planton.shared.foreignkey.v1.StringValueOrRef certificate_arn = 2;
+  project.planton.shared.foreignkey.v1.StringValueOrRef certificate_arn = 2 [
+    (project.planton.shared.foreignkey.v1.default_kind) = AwsCertManagerCert,
+    (project.planton.shared.foreignkey.v1.default_kind_field_path) = "status.outputs.cert_arn"
+  ];
 }

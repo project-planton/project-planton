@@ -4,6 +4,7 @@ package project.planton.provider.aws.awsecsservice.v1;
 
 import "buf/validate/validate.proto";
 import "project/planton/shared/options/options.proto";
+import "project/planton/shared/foreignkey/v1/foreign_key.proto";
 
 // AwsEcsServiceSpec captures the minimal fields needed to deploy a Fargate-based ECS service
 // into an existing ECS cluster. It focuses on an 80/20 approach with an ALB-based ingress
@@ -12,8 +13,10 @@ message AwsEcsServiceSpec {
   // cluster_arn is the ARN of the ECS cluster where this service will run.
   // This must already exist (created by a separate EcsCluster resource or otherwise).
   // Example: "arn:aws:ecs:us-east-1:123456789012:cluster/my-mixed-cluster"
-  string cluster_arn = 1 [
-    (buf.validate.field).required = true
+  project.planton.shared.foreignkey.v1.StringValueOrRef cluster_arn = 1 [
+    (buf.validate.field).required = true,
+    (project.planton.shared.foreignkey.v1.default_kind) = AwsEcsCluster,
+    (project.planton.shared.foreignkey.v1.default_kind_field_path) = "status.outputs.cluster_arn"
   ];
 
   // AWS ECS Service container configuration.
@@ -113,19 +116,16 @@ message AwsEcsServiceContainerEnv {
 message AwsEcsServiceNetwork {
   // subnets is a list of VPC subnet IDs where the Fargate tasks will run.
   // Typically private subnets for production, often at least two for high availability.
-  repeated string subnets = 1 [
+  repeated project.planton.shared.foreignkey.v1.StringValueOrRef subnets = 1 [
     (buf.validate.field).required = true,
-    (buf.validate.field).repeated = {
-      unique: true
-    }
+    (project.planton.shared.foreignkey.v1.default_kind) = AwsVpc
   ];
 
   // security_groups is a list of security group IDs to apply to each task's ENI.
   // If not provided, ECS may use the default VPC security group, which is not ideal for production.
-  repeated string security_groups = 2 [
-    (buf.validate.field).repeated = {
-      unique: true
-    }
+  repeated project.planton.shared.foreignkey.v1.StringValueOrRef security_groups = 2 [
+    (project.planton.shared.foreignkey.v1.default_kind) = AwsSecurityGroup,
+    (project.planton.shared.foreignkey.v1.default_kind_field_path) = "status.outputs.security_group_id"
   ];
 }
 
@@ -134,12 +134,18 @@ message AwsEcsServiceIam {
   // task_execution_role_arn is the IAM role used by ECS to pull private images and write logs.
   // If omitted, a default "ecsTaskExecutionRole" may be assumed, but it must already exist.
   // Example: "arn:aws:iam::123456789012:role/ecsTaskExecutionRole"
-  string task_execution_role_arn = 1;
+  project.planton.shared.foreignkey.v1.StringValueOrRef task_execution_role_arn = 1 [
+    (project.planton.shared.foreignkey.v1.default_kind) = AwsIamRole,
+    (project.planton.shared.foreignkey.v1.default_kind_field_path) = "status.outputs.role_arn"
+  ];
 
   // task_role_arn is the IAM role your container uses if it needs AWS permissions.
   // Omit if your container does not call AWS APIs.
   // Example: "arn:aws:iam::123456789012:role/myAppTaskRole"
-  string task_role_arn = 2;
+  project.planton.shared.foreignkey.v1.StringValueOrRef task_role_arn = 2 [
+    (project.planton.shared.foreignkey.v1.default_kind) = AwsIamRole,
+    (project.planton.shared.foreignkey.v1.default_kind_field_path) = "status.outputs.role_arn"
+  ];
 }
 
 // AwsEcsServiceAlb indicates how an ALB fronts this ECS service, supporting path- or hostname-based routing.
@@ -148,7 +154,10 @@ message AwsEcsServiceAlb {
   bool enabled = 1;
 
   // arn is the ARN of the ALB. Required if enabled = true.
-  string arn = 2;
+  project.planton.shared.foreignkey.v1.StringValueOrRef arn = 2 [
+    (project.planton.shared.foreignkey.v1.default_kind) = AwsAlb,
+    (project.planton.shared.foreignkey.v1.default_kind_field_path) = "status.outputs.load_balancer_arn"
+  ];
 
   // routingType can be "path" or "hostname" if enabled.
   // If "path", specify a path (e.g. "/my-service").
