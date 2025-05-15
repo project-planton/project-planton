@@ -240,9 +240,9 @@ var File_project_planton_provider_aws_awssecuritygroup_v1_spec_proto protoreflec
 
 const file_project_planton_provider_aws_awssecuritygroup_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	";project/planton/provider/aws/awssecuritygroup/v1/spec.proto\x120project.planton.provider.aws.awssecuritygroup.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\"\xb0\x03\n" +
-	"\x14AwsSecurityGroupSpec\x12U\n" +
-	"\x06vpc_id\x18\x01 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB\x06\xbaH\x03\xc8\x01\x01R\x05vpcId\x12\x84\x01\n" +
+	";project/planton/provider/aws/awssecuritygroup/v1/spec.proto\x120project.planton.provider.aws.awssecuritygroup.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\"\xce\x03\n" +
+	"\x14AwsSecurityGroupSpec\x12s\n" +
+	"\x06vpc_id\x18\x01 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB$\xbaH\x03\xc8\x01\x01\x88\xd4a\xd9\x01\x92\xd4a\x15status.outputs.vpc_idR\x05vpcId\x12\x84\x01\n" +
 	"\vdescription\x18\x02 \x01(\tBb\xbaH_\xba\x01Y\n" +
 	"\x18description_length_check\x12*Description must not exceed 255 characters\x1a\x11size(this) <= 255\xc8\x01\x01R\vdescription\x12]\n" +
 	"\aingress\x18\x03 \x03(\v2C.project.planton.provider.aws.awssecuritygroup.v1.SecurityGroupRuleR\aingress\x12[\n" +

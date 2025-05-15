@@ -8,6 +8,7 @@ package awsecsservicev1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
+	v1 "github.com/project-planton/project-planton/apis/project/planton/shared/foreignkey/v1"
 	_ "github.com/project-planton/project-planton/apis/project/planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -31,7 +32,7 @@ type AwsEcsServiceSpec struct {
 	// cluster_arn is the ARN of the ECS cluster where this service will run.
 	// This must already exist (created by a separate EcsCluster resource or otherwise).
 	// Example: "arn:aws:ecs:us-east-1:123456789012:cluster/my-mixed-cluster"
-	ClusterArn string `protobuf:"bytes,1,opt,name=cluster_arn,json=clusterArn,proto3" json:"cluster_arn,omitempty"`
+	ClusterArn *v1.StringValueOrRef `protobuf:"bytes,1,opt,name=cluster_arn,json=clusterArn,proto3" json:"cluster_arn,omitempty"`
 	// AWS ECS Service container configuration.
 	Container *AwsEcsServiceContainer `protobuf:"bytes,2,opt,name=container,proto3" json:"container,omitempty"`
 	// ECS service network configuration.
@@ -74,11 +75,11 @@ func (*AwsEcsServiceSpec) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_aws_awsecsservice_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *AwsEcsServiceSpec) GetClusterArn() string {
+func (x *AwsEcsServiceSpec) GetClusterArn() *v1.StringValueOrRef {
 	if x != nil {
 		return x.ClusterArn
 	}
-	return ""
+	return nil
 }
 
 func (x *AwsEcsServiceSpec) GetContainer() *AwsEcsServiceContainer {
@@ -392,10 +393,10 @@ type AwsEcsServiceNetwork struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// subnets is a list of VPC subnet IDs where the Fargate tasks will run.
 	// Typically private subnets for production, often at least two for high availability.
-	Subnets []string `protobuf:"bytes,1,rep,name=subnets,proto3" json:"subnets,omitempty"`
+	Subnets []*v1.StringValueOrRef `protobuf:"bytes,1,rep,name=subnets,proto3" json:"subnets,omitempty"`
 	// security_groups is a list of security group IDs to apply to each task's ENI.
 	// If not provided, ECS may use the default VPC security group, which is not ideal for production.
-	SecurityGroups []string `protobuf:"bytes,2,rep,name=security_groups,json=securityGroups,proto3" json:"security_groups,omitempty"`
+	SecurityGroups []*v1.StringValueOrRef `protobuf:"bytes,2,rep,name=security_groups,json=securityGroups,proto3" json:"security_groups,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -430,14 +431,14 @@ func (*AwsEcsServiceNetwork) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_aws_awsecsservice_v1_spec_proto_rawDescGZIP(), []int{5}
 }
 
-func (x *AwsEcsServiceNetwork) GetSubnets() []string {
+func (x *AwsEcsServiceNetwork) GetSubnets() []*v1.StringValueOrRef {
 	if x != nil {
 		return x.Subnets
 	}
 	return nil
 }
 
-func (x *AwsEcsServiceNetwork) GetSecurityGroups() []string {
+func (x *AwsEcsServiceNetwork) GetSecurityGroups() []*v1.StringValueOrRef {
 	if x != nil {
 		return x.SecurityGroups
 	}
@@ -450,11 +451,11 @@ type AwsEcsServiceIam struct {
 	// task_execution_role_arn is the IAM role used by ECS to pull private images and write logs.
 	// If omitted, a default "ecsTaskExecutionRole" may be assumed, but it must already exist.
 	// Example: "arn:aws:iam::123456789012:role/ecsTaskExecutionRole"
-	TaskExecutionRoleArn string `protobuf:"bytes,1,opt,name=task_execution_role_arn,json=taskExecutionRoleArn,proto3" json:"task_execution_role_arn,omitempty"`
+	TaskExecutionRoleArn *v1.StringValueOrRef `protobuf:"bytes,1,opt,name=task_execution_role_arn,json=taskExecutionRoleArn,proto3" json:"task_execution_role_arn,omitempty"`
 	// task_role_arn is the IAM role your container uses if it needs AWS permissions.
 	// Omit if your container does not call AWS APIs.
 	// Example: "arn:aws:iam::123456789012:role/myAppTaskRole"
-	TaskRoleArn   string `protobuf:"bytes,2,opt,name=task_role_arn,json=taskRoleArn,proto3" json:"task_role_arn,omitempty"`
+	TaskRoleArn   *v1.StringValueOrRef `protobuf:"bytes,2,opt,name=task_role_arn,json=taskRoleArn,proto3" json:"task_role_arn,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -489,18 +490,18 @@ func (*AwsEcsServiceIam) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_aws_awsecsservice_v1_spec_proto_rawDescGZIP(), []int{6}
 }
 
-func (x *AwsEcsServiceIam) GetTaskExecutionRoleArn() string {
+func (x *AwsEcsServiceIam) GetTaskExecutionRoleArn() *v1.StringValueOrRef {
 	if x != nil {
 		return x.TaskExecutionRoleArn
 	}
-	return ""
+	return nil
 }
 
-func (x *AwsEcsServiceIam) GetTaskRoleArn() string {
+func (x *AwsEcsServiceIam) GetTaskRoleArn() *v1.StringValueOrRef {
 	if x != nil {
 		return x.TaskRoleArn
 	}
-	return ""
+	return nil
 }
 
 // AwsEcsServiceAlb indicates how an ALB fronts this ECS service, supporting path- or hostname-based routing.
@@ -509,7 +510,7 @@ type AwsEcsServiceAlb struct {
 	// enabled controls whether an ALB is used. If false, no ALB is attached.
 	Enabled bool `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`
 	// arn is the ARN of the ALB. Required if enabled = true.
-	Arn string `protobuf:"bytes,2,opt,name=arn,proto3" json:"arn,omitempty"`
+	Arn *v1.StringValueOrRef `protobuf:"bytes,2,opt,name=arn,proto3" json:"arn,omitempty"`
 	// routingType can be "path" or "hostname" if enabled.
 	// If "path", specify a path (e.g. "/my-service").
 	// If "hostname", specify a hostname (e.g. "api.example.com").
@@ -561,11 +562,11 @@ func (x *AwsEcsServiceAlb) GetEnabled() bool {
 	return false
 }
 
-func (x *AwsEcsServiceAlb) GetArn() string {
+func (x *AwsEcsServiceAlb) GetArn() *v1.StringValueOrRef {
 	if x != nil {
 		return x.Arn
 	}
-	return ""
+	return nil
 }
 
 func (x *AwsEcsServiceAlb) GetRoutingType() string {
@@ -600,9 +601,9 @@ var File_project_planton_provider_aws_awsecsservice_v1_spec_proto protoreflect.F
 
 const file_project_planton_provider_aws_awsecsservice_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"8project/planton/provider/aws/awsecsservice/v1/spec.proto\x12-project.planton.provider.aws.awsecsservice.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\"\xb6\x03\n" +
-	"\x11AwsEcsServiceSpec\x12'\n" +
-	"\vcluster_arn\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\n" +
+	"8project/planton/provider/aws/awsecsservice/v1/spec.proto\x12-project.planton.provider.aws.awsecsservice.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\"\x92\x04\n" +
+	"\x11AwsEcsServiceSpec\x12\x82\x01\n" +
+	"\vcluster_arn\x18\x01 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB)\xbaH\x03\xc8\x01\x01\x88\xd4a\xcd\x01\x92\xd4a\x1astatus.outputs.cluster_arnR\n" +
 	"clusterArn\x12k\n" +
 	"\tcontainer\x18\x02 \x01(\v2E.project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\x12e\n" +
 	"\anetwork\x18\x03 \x01(\v2C.project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceNetworkB\x06\xbaH\x03\xc8\x01\x01R\anetwork\x12Q\n" +
@@ -630,16 +631,16 @@ const file_project_planton_provider_aws_awsecsservice_v1_spec_proto_rawDesc = ""
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\x1a:\n" +
 	"\fSecretsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"p\n" +
-	"\x14AwsEcsServiceNetwork\x12%\n" +
-	"\asubnets\x18\x01 \x03(\tB\v\xbaH\b\xc8\x01\x01\x92\x01\x02\x18\x01R\asubnets\x121\n" +
-	"\x0fsecurity_groups\x18\x02 \x03(\tB\b\xbaH\x05\x92\x01\x02\x18\x01R\x0esecurityGroups\"m\n" +
-	"\x10AwsEcsServiceIam\x125\n" +
-	"\x17task_execution_role_arn\x18\x01 \x01(\tR\x14taskExecutionRoleArn\x12\"\n" +
-	"\rtask_role_arn\x18\x02 \x01(\tR\vtaskRoleArn\"\xdb\x01\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\x82\x02\n" +
+	"\x14AwsEcsServiceNetwork\x12]\n" +
+	"\asubnets\x18\x01 \x03(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB\v\xbaH\x03\xc8\x01\x01\x88\xd4a\xd9\x01R\asubnets\x12\x8a\x01\n" +
+	"\x0fsecurity_groups\x18\x02 \x03(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB)\x88\xd4a\xd7\x01\x92\xd4a status.outputs.security_group_idR\x0esecurityGroups\"\xa2\x02\n" +
+	"\x10AwsEcsServiceIam\x12\x8f\x01\n" +
+	"\x17task_execution_role_arn\x18\x01 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB \x88\xd4a\xd0\x01\x92\xd4a\x17status.outputs.role_arnR\x14taskExecutionRoleArn\x12|\n" +
+	"\rtask_role_arn\x18\x02 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB \x88\xd4a\xd0\x01\x92\xd4a\x17status.outputs.role_arnR\vtaskRoleArn\"\xbe\x02\n" +
 	"\x10AwsEcsServiceAlb\x12\x18\n" +
-	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x10\n" +
-	"\x03arn\x18\x02 \x01(\tR\x03arn\x128\n" +
+	"\aenabled\x18\x01 \x01(\bR\aenabled\x12s\n" +
+	"\x03arn\x18\x02 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB)\x88\xd4a\xc8\x01\x92\xd4a status.outputs.load_balancer_arnR\x03arn\x128\n" +
 	"\frouting_type\x18\x03 \x01(\tB\x15\xbaH\x12r\x10R\x04pathR\bhostnameR\vroutingType\x12\x12\n" +
 	"\x04path\x18\x04 \x01(\tR\x04path\x12\x1a\n" +
 	"\bhostname\x18\x05 \x01(\tR\bhostname\x121\n" +
@@ -670,22 +671,29 @@ var file_project_planton_provider_aws_awsecsservice_v1_spec_proto_goTypes = []an
 	(*AwsEcsServiceAlb)(nil),              // 7: project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceAlb
 	nil,                                   // 8: project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerEnv.VariablesEntry
 	nil,                                   // 9: project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerEnv.SecretsEntry
+	(*v1.StringValueOrRef)(nil),           // 10: project.planton.shared.foreignkey.v1.StringValueOrRef
 }
 var file_project_planton_provider_aws_awsecsservice_v1_spec_proto_depIdxs = []int32{
-	1, // 0: project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceSpec.container:type_name -> project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainer
-	5, // 1: project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceSpec.network:type_name -> project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceNetwork
-	6, // 2: project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceSpec.iam:type_name -> project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceIam
-	7, // 3: project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceSpec.alb:type_name -> project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceAlb
-	3, // 4: project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainer.image:type_name -> project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerImage
-	4, // 5: project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainer.env:type_name -> project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerEnv
-	2, // 6: project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainer.logging:type_name -> project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerLogging
-	8, // 7: project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerEnv.variables:type_name -> project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerEnv.VariablesEntry
-	9, // 8: project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerEnv.secrets:type_name -> project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerEnv.SecretsEntry
-	9, // [9:9] is the sub-list for method output_type
-	9, // [9:9] is the sub-list for method input_type
-	9, // [9:9] is the sub-list for extension type_name
-	9, // [9:9] is the sub-list for extension extendee
-	0, // [0:9] is the sub-list for field type_name
+	10, // 0: project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceSpec.cluster_arn:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
+	1,  // 1: project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceSpec.container:type_name -> project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainer
+	5,  // 2: project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceSpec.network:type_name -> project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceNetwork
+	6,  // 3: project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceSpec.iam:type_name -> project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceIam
+	7,  // 4: project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceSpec.alb:type_name -> project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceAlb
+	3,  // 5: project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainer.image:type_name -> project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerImage
+	4,  // 6: project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainer.env:type_name -> project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerEnv
+	2,  // 7: project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainer.logging:type_name -> project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerLogging
+	8,  // 8: project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerEnv.variables:type_name -> project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerEnv.VariablesEntry
+	9,  // 9: project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerEnv.secrets:type_name -> project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerEnv.SecretsEntry
+	10, // 10: project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceNetwork.subnets:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
+	10, // 11: project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceNetwork.security_groups:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
+	10, // 12: project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceIam.task_execution_role_arn:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
+	10, // 13: project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceIam.task_role_arn:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
+	10, // 14: project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceAlb.arn:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
+	15, // [15:15] is the sub-list for method output_type
+	15, // [15:15] is the sub-list for method input_type
+	15, // [15:15] is the sub-list for extension type_name
+	15, // [15:15] is the sub-list for extension extendee
+	0,  // [0:15] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_provider_aws_awsecsservice_v1_spec_proto_init() }

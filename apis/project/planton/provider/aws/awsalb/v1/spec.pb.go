@@ -269,23 +269,23 @@ var File_project_planton_provider_aws_awsalb_v1_spec_proto protoreflect.FileDesc
 
 const file_project_planton_provider_aws_awsalb_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"1project/planton/provider/aws/awsalb/v1/spec.proto\x12&project.planton.provider.aws.awsalb.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\"\xe8\x03\n" +
+	"1project/planton/provider/aws/awsalb/v1/spec.proto\x12&project.planton.provider.aws.awsalb.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\"\x99\x04\n" +
 	"\n" +
-	"AwsAlbSpec\x12]\n" +
-	"\asubnets\x18\x01 \x03(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB\v\xbaH\b\xc8\x01\x01\x92\x01\x02\b\x02R\asubnets\x12_\n" +
-	"\x0fsecurity_groups\x18\x02 \x03(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefR\x0esecurityGroups\x12\x1a\n" +
+	"AwsAlbSpec\x12b\n" +
+	"\asubnets\x18\x01 \x03(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB\x10\xbaH\b\xc8\x01\x01\x92\x01\x02\b\x02\x88\xd4a\xd9\x01R\asubnets\x12\x8a\x01\n" +
+	"\x0fsecurity_groups\x18\x02 \x03(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB)\x88\xd4a\xd7\x01\x92\xd4a status.outputs.security_group_idR\x0esecurityGroups\x12\x1a\n" +
 	"\binternal\x18\x03 \x01(\bR\binternal\x12:\n" +
 	"\x19delete_protection_enabled\x18\x05 \x01(\bR\x17deleteProtectionEnabled\x128\n" +
 	"\x14idle_timeout_seconds\x18\x06 \x01(\x05B\x06\x92\xa6\x1d\x0260R\x12idleTimeoutSeconds\x12C\n" +
 	"\x03dns\x18\a \x01(\v21.project.planton.provider.aws.awsalb.v1.AwsAlbDnsR\x03dns\x12C\n" +
-	"\x03ssl\x18\b \x01(\v21.project.planton.provider.aws.awsalb.v1.AwsAlbSslR\x03ssl\"\xad\x01\n" +
+	"\x03ssl\x18\b \x01(\v21.project.planton.provider.aws.awsalb.v1.AwsAlbSslR\x03ssl\"\xce\x01\n" +
 	"\tAwsAlbDns\x12\x18\n" +
-	"\aenabled\x18\x01 \x01(\bR\aenabled\x12^\n" +
-	"\x0froute53_zone_id\x18\x02 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefR\rroute53ZoneId\x12&\n" +
-	"\thostnames\x18\x03 \x03(\tB\b\xbaH\x05\x92\x01\x02\x18\x01R\thostnames\"\x86\x01\n" +
+	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x7f\n" +
+	"\x0froute53_zone_id\x18\x02 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB\x1f\x88\xd4a\xd4\x01\x92\xd4a\x16status.outputs.zone_idR\rroute53ZoneId\x12&\n" +
+	"\thostnames\x18\x03 \x03(\tB\b\xbaH\x05\x92\x01\x02\x18\x01R\thostnames\"\xa9\x01\n" +
 	"\tAwsAlbSsl\x12\x18\n" +
-	"\aenabled\x18\x01 \x01(\bR\aenabled\x12_\n" +
-	"\x0fcertificate_arn\x18\x02 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefR\x0ecertificateArnB\xd7\x02\n" +
+	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x81\x01\n" +
+	"\x0fcertificate_arn\x18\x02 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB \x88\xd4a\xc9\x01\x92\xd4a\x17status.outputs.cert_arnR\x0ecertificateArnB\xd7\x02\n" +
 	"*com.project.planton.provider.aws.awsalb.v1B\tSpecProtoP\x01Z_github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsalb/v1;awsalbv1\xa2\x02\x05PPPAA\xaa\x02&Project.Planton.Provider.Aws.Awsalb.V1\xca\x02&Project\\Planton\\Provider\\Aws\\Awsalb\\V1\xe2\x022Project\\Planton\\Provider\\Aws\\Awsalb\\V1\\GPBMetadata\xea\x02+Project::Planton::Provider::Aws::Awsalb::V1b\x06proto3"
 
 var (

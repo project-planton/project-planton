@@ -12,7 +12,9 @@ message AwsSecurityGroupSpec {
   // Example: "vpc-12345abcde"
   // This field is required because every Security Group must belong to one VPC.
   project.planton.shared.foreignkey.v1.StringValueOrRef vpc_id = 1 [
-    (buf.validate.field).required = true
+    (buf.validate.field).required = true,
+    (project.planton.shared.foreignkey.v1.default_kind) = AwsVpc,
+    (project.planton.shared.foreignkey.v1.default_kind_field_path) = "status.outputs.vpc_id"
   ];
 
   // description provides a short explanation of this Security Group’s purpose.

@@ -114,11 +114,11 @@ var File_project_planton_provider_aws_awscertmanagercert_v1_spec_proto protorefl
 
 const file_project_planton_provider_aws_awscertmanagercert_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"=project/planton/provider/aws/awscertmanagercert/v1/spec.proto\x122project.planton.provider.aws.awscertmanagercert.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\"\xc8\x03\n" +
+	"=project/planton/provider/aws/awscertmanagercert/v1/spec.proto\x122project.planton.provider.aws.awscertmanagercert.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\"\xe8\x03\n" +
 	"\x16AwsCertManagerCertSpec\x12s\n" +
 	"\x13primary_domain_name\x18\x01 \x01(\tBC\xbaH@\xc8\x01\x01r;29^(?:\\*\\.[A-Za-z0-9\\-\\.]+|[A-Za-z0-9\\-\\.]+\\.[A-Za-z]{2,})$R\x11primaryDomainName\x12}\n" +
-	"\x16alternate_domain_names\x18\x02 \x03(\tBG\xbaHD\x92\x01A\x18\x01\"=r;29^(?:\\*\\.[A-Za-z0-9\\-\\.]+|[A-Za-z0-9\\-\\.]+\\.[A-Za-z]{2,})$R\x14alternateDomainNames\x12s\n" +
-	"\x16route53_hosted_zone_id\x18\x03 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB\x06\xbaH\x03\xc8\x01\x01R\x13route53HostedZoneId\x12E\n" +
+	"\x16alternate_domain_names\x18\x02 \x03(\tBG\xbaHD\x92\x01A\x18\x01\"=r;29^(?:\\*\\.[A-Za-z0-9\\-\\.]+|[A-Za-z0-9\\-\\.]+\\.[A-Za-z]{2,})$R\x14alternateDomainNames\x12\x92\x01\n" +
+	"\x16route53_hosted_zone_id\x18\x03 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB%\xbaH\x03\xc8\x01\x01\x88\xd4a\xd4\x01\x92\xd4a\x16status.outputs.zone_idR\x13route53HostedZoneId\x12E\n" +
 	"\x11validation_method\x18\x04 \x01(\tB\x18\xbaH\x0er\fR\x03DNSR\x05EMAIL\x8a\xa6\x1d\x03DNSR\x10validationMethodB\xab\x03\n" +
 	"6com.project.planton.provider.aws.awscertmanagercert.v1B\tSpecProtoP\x01Zwgithub.com/project-planton/project-planton/apis/project/planton/provider/aws/awscertmanagercert/v1;awscertmanagercertv1\xa2\x02\x05PPPAA\xaa\x022Project.Planton.Provider.Aws.Awscertmanagercert.V1\xca\x022Project\\Planton\\Provider\\Aws\\Awscertmanagercert\\V1\xe2\x02>Project\\Planton\\Provider\\Aws\\Awscertmanagercert\\V1\\GPBMetadata\xea\x027Project::Planton::Provider::Aws::Awscertmanagercert::V1b\x06proto3"
 
