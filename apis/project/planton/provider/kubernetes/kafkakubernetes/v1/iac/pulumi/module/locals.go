@@ -117,7 +117,7 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kafkakubernetesv1.KafkaKu
 	}
 
 	if target.Spec.Ingress == nil ||
-		!target.Spec.Ingress.IsEnabled ||
+		!target.Spec.Ingress.Enabled ||
 		target.Spec.Ingress.DnsDomain == "" {
 		return locals
 	}

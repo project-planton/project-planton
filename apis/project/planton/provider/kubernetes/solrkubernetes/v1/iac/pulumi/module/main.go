@@ -39,7 +39,7 @@ func Resources(ctx *pulumi.Context, stackInput *solrkubernetesv1.SolrKubernetesS
 	}
 
 	//create istio-ingress resources if ingress is enabled.
-	if locals.SolrKubernetes.Spec.Ingress.IsEnabled {
+	if locals.SolrKubernetes.Spec.Ingress.Enabled {
 		if err := ingress(ctx, locals, kubernetesProvider, createdNamespace); err != nil {
 			return errors.Wrap(err, "failed to create istio ingress resources")
 		}

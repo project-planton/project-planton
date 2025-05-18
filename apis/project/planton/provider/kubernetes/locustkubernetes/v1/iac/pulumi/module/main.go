@@ -39,7 +39,7 @@ func Resources(ctx *pulumi.Context, stackInput *locustkubernetesv1.LocustKuberne
 	}
 
 	//create istio-ingress resources if ingress is enabled.
-	if locals.LocustKubernetes.Spec.Ingress.IsEnabled {
+	if locals.LocustKubernetes.Spec.Ingress.Enabled {
 		if err := ingress(ctx, locals, createdNamespace, kubernetesProvider); err != nil {
 			return errors.Wrap(err, "failed to create istio ingress resources")
 		}

@@ -79,7 +79,7 @@ func initializeLocals(ctx *pulumi.Context, stackInput *rediskubernetesv1.RedisKu
 	ctx.Export(OpPortForwardCommand, pulumi.String(locals.KubePortForwardCommand))
 
 	if target.Spec.Ingress == nil ||
-		!target.Spec.Ingress.IsEnabled ||
+		!target.Spec.Ingress.Enabled ||
 		target.Spec.Ingress.DnsDomain == "" {
 		return locals
 	}

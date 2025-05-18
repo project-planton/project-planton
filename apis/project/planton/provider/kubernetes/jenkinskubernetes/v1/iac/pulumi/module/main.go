@@ -47,7 +47,7 @@ func Resources(ctx *pulumi.Context, stackInput *jenkinskubernetesv1.JenkinsKuber
 	}
 
 	//create istio-ingress resources if ingress is enabled.
-	if locals.JenkinsKubernetes.Spec.Ingress.IsEnabled {
+	if locals.JenkinsKubernetes.Spec.Ingress.Enabled {
 		if err := ingress(ctx, locals, createdNamespace, kubernetesProvider); err != nil {
 			return errors.Wrap(err, "failed to create ingress resources")
 		}

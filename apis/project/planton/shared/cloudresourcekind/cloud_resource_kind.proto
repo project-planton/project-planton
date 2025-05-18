@@ -77,4 +77,5 @@ enum CloudResourceKind {
   SolrKubernetes = 819;
   StackJobRunnerKubernetes = 820;
   TemporalKubernetes = 821;
+  NatsKubernetes = 822;
 }

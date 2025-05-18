@@ -19,7 +19,7 @@ func webUiIngress(ctx *pulumi.Context, locals *Locals,
 	createdNamespace *kubernetescorev1.Namespace) error {
 
 	if locals.TemporalKubernetes.Spec.Ingress == nil ||
-		!locals.TemporalKubernetes.Spec.Ingress.IsEnabled ||
+		!locals.TemporalKubernetes.Spec.Ingress.Enabled ||
 		locals.TemporalKubernetes.Spec.Ingress.DnsDomain == "" ||
 		locals.TemporalKubernetes.Spec.DisableWebUi {
 		// No UI ingress required.

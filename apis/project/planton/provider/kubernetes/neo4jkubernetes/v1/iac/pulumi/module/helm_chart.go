@@ -20,7 +20,7 @@ func helmChart(
 
 	// honour ingress settings
 	ingressEnabled := locals.Neo4jKubernetes.Spec.Ingress != nil &&
-		locals.Neo4jKubernetes.Spec.Ingress.IsEnabled &&
+		locals.Neo4jKubernetes.Spec.Ingress.Enabled &&
 		locals.Neo4jKubernetes.Spec.Ingress.DnsDomain != ""
 
 	// optional external LB

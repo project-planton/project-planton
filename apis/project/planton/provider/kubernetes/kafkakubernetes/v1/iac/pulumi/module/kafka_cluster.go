@@ -24,7 +24,7 @@ func kafkaCluster(ctx *pulumi.Context, locals *Locals,
 			},
 		})
 
-	if locals.KafkaKubernetes.Spec.Ingress.IsEnabled {
+	if locals.KafkaKubernetes.Spec.Ingress.Enabled {
 		listenersArray = append(listenersArray, getIngressListeners(locals)...)
 		//crate new certificate
 		_, err := certmanagerv1.NewCertificate(ctx,

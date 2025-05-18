@@ -412,7 +412,7 @@ func (x *ContainerImage) GetPullSecretName() string {
 type IngressSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// A flag to enable or disable ingress.
-	IsEnabled bool `protobuf:"varint,1,opt,name=is_enabled,json=isEnabled,proto3" json:"is_enabled,omitempty"`
+	Enabled bool `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`
 	// The dns domain.
 	DnsDomain     string `protobuf:"bytes,2,opt,name=dns_domain,json=dnsDomain,proto3" json:"dns_domain,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -449,9 +449,9 @@ func (*IngressSpec) Descriptor() ([]byte, []int) {
 	return file_project_planton_shared_kubernetes_kubernetes_proto_rawDescGZIP(), []int{6}
 }
 
-func (x *IngressSpec) GetIsEnabled() bool {
+func (x *IngressSpec) GetEnabled() bool {
 	if x != nil {
-		return x.IsEnabled
+		return x.Enabled
 	}
 	return false
 }
@@ -546,10 +546,9 @@ const file_project_planton_shared_kubernetes_kubernetes_proto_rawDesc = "" +
 	"\x0eContainerImage\x12\x12\n" +
 	"\x04repo\x18\x01 \x01(\tR\x04repo\x12\x10\n" +
 	"\x03tag\x18\x02 \x01(\tR\x03tag\x12(\n" +
-	"\x10pull_secret_name\x18\x03 \x01(\tR\x0epullSecretName\"\xd9\x01\n" +
-	"\vIngressSpec\x12\x1d\n" +
-	"\n" +
-	"is_enabled\x18\x01 \x01(\bR\tisEnabled\x12\x1d\n" +
+	"\x10pull_secret_name\x18\x03 \x01(\tR\x0epullSecretName\"\xd4\x01\n" +
+	"\vIngressSpec\x12\x18\n" +
+	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x1d\n" +
 	"\n" +
 	"dns_domain\x18\x02 \x01(\tR\tdnsDomain:\x8b\x01\xbaH\x87\x01\x1a\x84\x01\n" +
 	"#ingress.enabled.dns_domain.required\x1a]this.is_enabled && size(this.dns_domain) == 0? 'DNS Domain is required to enable ingress': ''\";\n" +
