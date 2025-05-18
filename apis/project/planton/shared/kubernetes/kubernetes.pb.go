@@ -546,12 +546,12 @@ const file_project_planton_shared_kubernetes_kubernetes_proto_rawDesc = "" +
 	"\x0eContainerImage\x12\x12\n" +
 	"\x04repo\x18\x01 \x01(\tR\x04repo\x12\x10\n" +
 	"\x03tag\x18\x02 \x01(\tR\x03tag\x12(\n" +
-	"\x10pull_secret_name\x18\x03 \x01(\tR\x0epullSecretName\"\xd4\x01\n" +
+	"\x10pull_secret_name\x18\x03 \x01(\tR\x0epullSecretName\"\xd1\x01\n" +
 	"\vIngressSpec\x12\x18\n" +
 	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x1d\n" +
 	"\n" +
-	"dns_domain\x18\x02 \x01(\tR\tdnsDomain:\x8b\x01\xbaH\x87\x01\x1a\x84\x01\n" +
-	"#ingress.enabled.dns_domain.required\x1a]this.is_enabled && size(this.dns_domain) == 0? 'DNS Domain is required to enable ingress': ''\";\n" +
+	"dns_domain\x18\x02 \x01(\tR\tdnsDomain:\x88\x01\xbaH\x84\x01\x1a\x81\x01\n" +
+	"#ingress.enabled.dns_domain.required\x1aZthis.enabled && size(this.dns_domain) == 0? 'DNS Domain is required to enable ingress': ''\";\n" +
 	"\x13KubernetesSecretKey\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x10\n" +
 	"\x03key\x18\x02 \x01(\tR\x03keyB\xb3\x02\n" +

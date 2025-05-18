@@ -87,7 +87,7 @@ message ContainerImage {
 message IngressSpec {
   option (buf.validate.message).cel = {
     id: "ingress.enabled.dns_domain.required",
-    expression: "this.is_enabled && size(this.dns_domain) == 0"
+    expression: "this.enabled && size(this.dns_domain) == 0"
         "? 'DNS Domain is required to enable ingress'"
         ": ''"
   };

@@ -6,7 +6,6 @@ import (
 	"github.com/bufbuild/protovalidate-go"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-
 	"github.com/project-planton/project-planton/apis/project/planton/shared"
 )
 
@@ -23,14 +22,22 @@ var _ = Describe("NatsKubernetes Custom Validation Tests", func() {
 			ApiVersion: "kubernetes.project-planton.org/v1",
 			Kind:       "NatsKubernetes",
 			Metadata: &shared.ApiResourceMetadata{
-				Name: "test-solr",
+				Name: "nats-demo",
 			},
-			Spec: &NatsKubernetesSpec{},
+			Spec: &NatsKubernetesSpec{
+				ServerContainer: &NatsKubernetesServerContainer{
+					Replicas: 3,      // satisfies gt:0
+					DiskSize: "10Gi", // required by proto but standard, so fine to include
+				},
+				DisableJetStream: false,
+				TlsEnabled:       false,
+				DisableNatsBox:   false,
+			},
 		}
 	})
 
 	Describe("When valid input is passed", func() {
-		Context("nats_kubernetes", func() {
+		Context("with replicas greater than zero", func() {
 			It("should not return a validation error", func() {
 				err := protovalidate.Validate(input)
 				Expect(err).To(BeNil())
