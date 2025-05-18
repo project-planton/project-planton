@@ -47,6 +47,7 @@ import (
 	locustkubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/locustkubernetes/v1"
 	microservicekubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/microservicekubernetes/v1"
 	mongodbkubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/mongodbkubernetes/v1"
+	natskubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/natskubernetes/v1"
 	neo4jkubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/neo4jkubernetes/v1"
 	openfgakubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/openfgakubernetes/v1"
 	postgreskubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/postgreskubernetes/v1"
@@ -147,13 +148,14 @@ var providerKubernetesMap = map[cloudresourcekind.CloudResourceKind]proto.Messag
 	cloudresourcekind.CloudResourceKind_LocustKubernetes:         &locustkubernetesv1.LocustKubernetes{},
 	cloudresourcekind.CloudResourceKind_MicroserviceKubernetes:   &microservicekubernetesv1.MicroserviceKubernetes{},
 	cloudresourcekind.CloudResourceKind_MongodbKubernetes:        &mongodbkubernetesv1.MongodbKubernetes{},
+	cloudresourcekind.CloudResourceKind_NatsKubernetes:           &natskubernetesv1.NatsKubernetes{},
 	cloudresourcekind.CloudResourceKind_Neo4jKubernetes:          &neo4jkubernetesv1.Neo4JKubernetes{},
 	cloudresourcekind.CloudResourceKind_OpenFgaKubernetes:        &openfgakubernetesv1.OpenFgaKubernetes{},
 	cloudresourcekind.CloudResourceKind_PostgresKubernetes:       &postgreskubernetesv1.PostgresKubernetes{},
 	cloudresourcekind.CloudResourceKind_PrometheusKubernetes:     &prometheuskubernetesv1.PrometheusKubernetes{},
 	cloudresourcekind.CloudResourceKind_RedisKubernetes:          &rediskubernetesv1.RedisKubernetes{},
-	cloudresourcekind.CloudResourceKind_TemporalKubernetes:       &temporalkubernetesv1.TemporalKubernetes{},
 	cloudresourcekind.CloudResourceKind_SignozKubernetes:         &signozkubernetesv1.SignozKubernetes{},
 	cloudresourcekind.CloudResourceKind_SolrKubernetes:           &solrkubernetesv1.SolrKubernetes{},
 	cloudresourcekind.CloudResourceKind_StackJobRunnerKubernetes: &stackjobrunnerkubernetesv1.StackJobRunnerKubernetes{},
+	cloudresourcekind.CloudResourceKind_TemporalKubernetes:       &temporalkubernetesv1.TemporalKubernetes{},
 }

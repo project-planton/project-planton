@@ -127,8 +127,8 @@ github.com/huandu/xstrings v1.0.0 h1:pO2K/gKgKaat5LdpAhxhluX2GPQMaI3W5FUz/I/UnWk
 github.com/huandu/xstrings v1.0.0/go.mod h1:4qWG/gcEcfX4z/mBDHJ++3ReCw9ibxbsNJbcucJdbSo=
 github.com/iancoleman/strcase v0.3.0 h1:nTXanmYxhfFAMjZL34Ov6gkzEsSJZ5DbhxWjvSASxEI=
 github.com/iancoleman/strcase v0.3.0/go.mod h1:iwCmte+B7n89clKwxIoIXy/HfoL7AsD47ZCWhYzw7ho=
-github.com/imdario/mergo v0.3.4 h1:mKkfHkZWD8dC7WxKx3N9WCF0Y+dLau45704YQmY6H94=
-github.com/imdario/mergo v0.3.4/go.mod h1:2EnlNZ0deacrJVfApfmtdGgDfMuh/nq6Ok1EcJh5FfA=
+github.com/imdario/mergo v0.3.13 h1:lFzP57bqS/wsqKssCGmtLAb8A0wKjLGrve2q3PPVcBk=
+github.com/imdario/mergo v0.3.13/go.mod h1:4lJ1jqUDcsbIECGy0RUJAXNIhg+6ocWgb1ALK2O4oXg=
 github.com/inconshreveable/mousetrap v1.1.0 h1:wN+x4NVGpMsO7ErUn/mUI3vEoE6Jt13X2s0bqwp9tc8=
 github.com/inconshreveable/mousetrap v1.1.0/go.mod h1:vpF70FUmC8bwa3OWnCshd2FqLfsEA9PFc4w1p2J65bw=
 github.com/jbenet/go-context v0.0.0-20150711004518-d14ea06fba99 h1:BQSFePA1RWJOlocH6Fxy8MmwDt+yVQYULKfN0RoTN8A=
@@ -224,6 +224,8 @@ github.com/pulumi/pulumi-kubernetes/sdk/v4 v4.18.4 h1:HfKyJcM6v9tKSko+oVedD6M6s1
 github.com/pulumi/pulumi-kubernetes/sdk/v4 v4.18.4/go.mod h1:ATS+UN8pguMxypQAK+SaPewesU+UN5dpf93PNqVuHzs=
 github.com/pulumi/pulumi-random/sdk/v4 v4.16.7 h1:39rhOe/PTUGMYia8pR5T2wbxxMt2pwrlonf0ncYKSzE=
 github.com/pulumi/pulumi-random/sdk/v4 v4.16.7/go.mod h1:cxxDhJzUPt/YElfvlWa15Q4NGF6XXS8kUs4OQsCxSBk=
+github.com/pulumi/pulumi-tls/sdk/v4 v4.11.1 h1:tXemWrzeVTqG8zq6hBdv1TdPFXjgZ+dob63a/6GlF1o=
+github.com/pulumi/pulumi-tls/sdk/v4 v4.11.1/go.mod h1:hODo3iEmmXDFOXqPK+V+vwI0a3Ww7BLjs5Tgamp86Ng=
 github.com/pulumi/pulumi/sdk/v3 v3.160.0 h1:OxeATnIEqWyu3KpTeLUmyJdZaSEE6yX7ECvfGhByb9w=
 github.com/pulumi/pulumi/sdk/v3 v3.160.0/go.mod h1:YEbbl0N7eVsgfsL7h5215dDf8GBSe4AnRon7Ya/KIVc=
 github.com/rivo/uniseg v0.1.0/go.mod h1:J6wj4VEh+S6ZtnVlnTBMWIodfgj8LQOQFoIToxlJtxc=
@@ -371,6 +373,7 @@ gopkg.in/yaml.v2 v2.2.8/go.mod h1:hI93XBmqTisBFMUTm0b8Fm+jr3Dg1NNxqwp+5A1VGuI=
 gopkg.in/yaml.v2 v2.4.0 h1:D8xgwECY7CYvx+Y2n4sBz93Jn9JRvxdiyyo8CTfuKaY=
 gopkg.in/yaml.v2 v2.4.0/go.mod h1:RDklbk79AGWmwhnvt/jBztapEOGDOx6ZbXqjP6csGnQ=
 gopkg.in/yaml.v3 v3.0.0-20200313102051-9f266ea9e77c/go.mod h1:K4uyk7z7BCEPqu6E+C64Yfv1cQ7kz7rIZviUmN+EgEM=
+gopkg.in/yaml.v3 v3.0.0/go.mod h1:K4uyk7z7BCEPqu6E+C64Yfv1cQ7kz7rIZviUmN+EgEM=
 gopkg.in/yaml.v3 v3.0.1 h1:fxVm/GzAzEWqLHuvctI91KS9hhNmmWOoWu0XTYJS7CA=
 gopkg.in/yaml.v3 v3.0.1/go.mod h1:K4uyk7z7BCEPqu6E+C64Yfv1cQ7kz7rIZviUmN+EgEM=
 k8s.io/api v0.31.3 h1:umzm5o8lFbdN/hIXbrK9oRpOproJO62CV1zqxXrLgk8=

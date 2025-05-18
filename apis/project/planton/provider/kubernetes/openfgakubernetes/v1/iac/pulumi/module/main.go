@@ -40,7 +40,7 @@ func Resources(ctx *pulumi.Context, stackInput *openfgakubernetesv1.OpenFgaKuber
 	}
 
 	//create istio-ingress resources if ingress is enabled.
-	if locals.OpenFgaKubernetes.Spec.Ingress.IsEnabled {
+	if locals.OpenFgaKubernetes.Spec.Ingress.Enabled {
 		if err := ingress(ctx, locals, createdNamespace, kubernetesProvider, locals.Labels); err != nil {
 			return errors.Wrap(err, "failed to create ingress resources")
 		}

@@ -42,7 +42,7 @@ func Resources(ctx *pulumi.Context, stackInput *rediskubernetesv1.RedisKubernete
 
 	//if ingress is enabled, create load-balancer ingress resources
 	if locals.RedisKubernetes.Spec.Ingress != nil &&
-		locals.RedisKubernetes.Spec.Ingress.IsEnabled &&
+		locals.RedisKubernetes.Spec.Ingress.Enabled &&
 		locals.RedisKubernetes.Spec.Ingress.DnsDomain != "" {
 		if err := loadBalancerIngress(ctx, locals, createdNamespace); err != nil {
 			return errors.Wrap(err, "failed to create load-balancer ingress resources")

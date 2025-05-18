@@ -100,7 +100,7 @@ func initializeLocals(ctx *pulumi.Context, stackInput *elasticsearchkubernetesv1
 	ctx.Export(OpKibanaPortForwardCommand, pulumi.String(locals.KibanaKubePortForwardCommand))
 
 	if target.Spec.Ingress == nil ||
-		!target.Spec.Ingress.IsEnabled ||
+		!target.Spec.Ingress.Enabled ||
 		target.Spec.Ingress.DnsDomain == "" {
 		return locals
 	}

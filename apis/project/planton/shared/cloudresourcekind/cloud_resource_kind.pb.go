@@ -92,6 +92,7 @@ const (
 	CloudResourceKind_SolrKubernetes           CloudResourceKind = 819
 	CloudResourceKind_StackJobRunnerKubernetes CloudResourceKind = 820
 	CloudResourceKind_TemporalKubernetes       CloudResourceKind = 821
+	CloudResourceKind_NatsKubernetes           CloudResourceKind = 822
 )
 
 // Enum value maps for CloudResourceKind.
@@ -158,6 +159,7 @@ var (
 		819: "SolrKubernetes",
 		820: "StackJobRunnerKubernetes",
 		821: "TemporalKubernetes",
+		822: "NatsKubernetes",
 	}
 	CloudResourceKind_value = map[string]int32{
 		"unspecified":                0,
@@ -221,6 +223,7 @@ var (
 		"SolrKubernetes":             819,
 		"StackJobRunnerKubernetes":   820,
 		"TemporalKubernetes":         821,
+		"NatsKubernetes":             822,
 	}
 )
 
@@ -255,7 +258,7 @@ var File_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto prot
 
 const file_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto_rawDesc = "" +
 	"\n" +
-	"Bproject/planton/shared/cloudresourcekind/cloud_resource_kind.proto\x12(project.planton.shared.cloudresourcekind*\xdb\n" +
+	"Bproject/planton/shared/cloudresourcekind/cloud_resource_kind.proto\x12(project.planton.shared.cloudresourcekind*\xf0\n" +
 	"\n" +
 	"\x11CloudResourceKind\x12\x0f\n" +
 	"\vunspecified\x10\x00\x12\x1d\n" +
@@ -322,7 +325,8 @@ const file_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto_ra
 	"\x10SignozKubernetes\x10\xb2\x06\x12\x13\n" +
 	"\x0eSolrKubernetes\x10\xb3\x06\x12\x1d\n" +
 	"\x18StackJobRunnerKubernetes\x10\xb4\x06\x12\x17\n" +
-	"\x12TemporalKubernetes\x10\xb5\x06B\xe4\x02\n" +
+	"\x12TemporalKubernetes\x10\xb5\x06\x12\x13\n" +
+	"\x0eNatsKubernetes\x10\xb6\x06B\xe4\x02\n" +
 	",com.project.planton.shared.cloudresourcekindB\x16CloudResourceKindProtoP\x01ZXgithub.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind\xa2\x02\x04PPSC\xaa\x02(Project.Planton.Shared.Cloudresourcekind\xca\x02(Project\\Planton\\Shared\\Cloudresourcekind\xe2\x024Project\\Planton\\Shared\\Cloudresourcekind\\GPBMetadata\xea\x02+Project::Planton::Shared::Cloudresourcekindb\x06proto3"
 
 var (

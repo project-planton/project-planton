@@ -103,7 +103,7 @@ func initializeLocals(
 
 	// If ingress is enabled, set up external and internal hostnames.
 	if target.Spec.Ingress != nil &&
-		target.Spec.Ingress.IsEnabled &&
+		target.Spec.Ingress.Enabled &&
 		target.Spec.Ingress.DnsDomain != "" {
 		locals.IngressExternalHostname = fmt.Sprintf("%s.%s", locals.Namespace, target.Spec.Ingress.DnsDomain)
 		locals.IngressInternalHostname = fmt.Sprintf("%s-internal.%s", locals.Namespace, target.Spec.Ingress.DnsDomain)

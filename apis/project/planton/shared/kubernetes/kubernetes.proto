@@ -93,7 +93,7 @@ message IngressSpec {
   };
 
   // A flag to enable or disable ingress.
-  bool is_enabled = 1;
+  bool enabled = 1;
 
   // The dns domain.
   string dns_domain = 2;

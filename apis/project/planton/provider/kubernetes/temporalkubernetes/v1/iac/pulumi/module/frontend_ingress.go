@@ -13,8 +13,8 @@ import (
 func frontendIngress(ctx *pulumi.Context, locals *Locals,
 	createdNamespace *kubernetescorev1.Namespace) error {
 
-	ing := locals.TemporalKubernetes.Spec.Ingress
-	if ing == nil || !ing.IsEnabled || ing.DnsDomain == "" {
+	ingress := locals.TemporalKubernetes.Spec.Ingress
+	if ingress == nil || !ingress.Enabled || ingress.DnsDomain == "" {
 		// ingress disabled – nothing to provision
 		return nil
 	}

@@ -89,7 +89,7 @@ func initializeLocals(ctx *pulumi.Context,
 
 	// ------------------------------- ingress ---------------------------------
 	if target.Spec.Ingress != nil &&
-		target.Spec.Ingress.IsEnabled &&
+		target.Spec.Ingress.Enabled &&
 		target.Spec.Ingress.DnsDomain != "" {
 
 		locals.IngressFrontendHostname = fmt.Sprintf("%s-frontend.%s",
