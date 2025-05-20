@@ -310,7 +310,7 @@ const file_project_planton_provider_kubernetes_natskubernetes_v1_spec_proto_rawD
 	"\n" +
 	"@project/planton/provider/kubernetes/natskubernetes/v1/spec.proto\x125project.planton.provider.kubernetes.natskubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\x1a,project/planton/shared/options/options.proto\"\xe6\x03\n" +
 	"\x12NatsKubernetesSpec\x12\xad\x01\n" +
-	"\x10server_container\x18\x01 \x01(\v2T.project.planton.provider.kubernetes.natskubernetes.v1.NatsKubernetesServerContainerB,ʬ\x80\x02'\b\x03\x12\x1d\n" +
+	"\x10server_container\x18\x01 \x01(\v2T.project.planton.provider.kubernetes.natskubernetes.v1.NatsKubernetesServerContainerB,ʬ\x80\x02'\b\x01\x12\x1d\n" +
 	"\f\n" +
 	"\x051000m\x12\x032Gi\x12\r\n" +
 	"\x04100m\x12\x05256Mi\x1a\x0410GiR\x0fserverContainer\x12,\n" +
