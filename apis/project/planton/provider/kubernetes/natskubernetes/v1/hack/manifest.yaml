@@ -7,6 +7,19 @@ spec:
   serverContainer:
     replicas: 1
     diskSize: "1Gi"
+    resources:
+      limits:
+        cpu: "1000m"
+        memory: "1Gi"
+      requests:
+        cpu: "100m"
+        memory: "100Mi"
   disableJetStream: false
   tlsEnabled: false
   disableNatsBox: false
+  ingress:
+    enabled: true
+    dnsDomain: planton.live
+  auth:
+    enabled: true
+    scheme: basic_auth

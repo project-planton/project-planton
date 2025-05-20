@@ -18,7 +18,7 @@ message NatsKubernetesSpec {
   // server container settings (replicas, resources, disk).
   NatsKubernetesServerContainer server_container = 1 [
     (default_server_container) = {
-      replicas: 3,
+      replicas: 1,
       resources: {
         limits {
           cpu: "1000m"

@@ -20,7 +20,7 @@ func authSecret(ctx *pulumi.Context, locals *Locals,
 	createdNamespace *kubernetescorev1.Namespace) error {
 
 	// If auth is disabled, nothing to create.
-	if !locals.NatsKubernetes.Spec.Auth.Enabled {
+	if locals.NatsKubernetes.Spec.Auth == nil || !locals.NatsKubernetes.Spec.Auth.Enabled {
 		return nil
 	}
 

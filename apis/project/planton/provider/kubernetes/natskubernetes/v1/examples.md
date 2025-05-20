@@ -53,7 +53,7 @@ spec:
     diskSize: "20Gi"
   auth:
     enabled: true
-    scheme: bearerToken
+    scheme: bearer_token
   tlsEnabled: true
   disableJetStream: false
 ```
@@ -82,7 +82,7 @@ spec:
     host: nats.example.com
   auth:
     enabled: true
-    scheme: basicAuth
+    scheme: basic_auth
   tlsEnabled: true
   disableJetStream: false
 ```
@@ -154,7 +154,7 @@ spec:
     host: nats-ha.example.com
   auth:
     enabled: true
-    scheme: bearerToken
+    scheme: bearer_token
 ```
 
 **Use Case:**

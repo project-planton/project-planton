@@ -42,9 +42,9 @@ func Resources(ctx *pulumi.Context,
 		return errors.Wrap(err, "failed to deploy NATS Helm chart")
 	}
 
-	// ----------------------------- service --------------------------------
-	if err := service(ctx, locals, kubernetesProvider, createdNamespace); err != nil {
-		return errors.Wrap(err, "failed to create external service")
+	// ----------------------------- ingress --------------------------------
+	if err := ingress(ctx, locals, kubernetesProvider, createdNamespace); err != nil {
+		return errors.Wrap(err, "failed to create external ingress")
 	}
 
 	return nil
