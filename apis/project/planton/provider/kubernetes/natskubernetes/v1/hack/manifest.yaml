@@ -1,0 +1,12 @@
+---
+apiVersion: kubernetes.project-planton.org/v1
+kind: NatsKubernetes
+metadata:
+  name: nats-basic
+spec:
+  serverContainer:
+    replicas: 1
+    diskSize: "1Gi"
+  disableJetStream: false
+  tlsEnabled: false
+  disableNatsBox: false

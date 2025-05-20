@@ -1,48 +1,63 @@
-# Overview
+# NATS on Kubernetes
 
-The **Nats Kubernetes API resource** provides a structured way to deploy and manage Solr clusters in Kubernetes environments. It includes configurations for Solr, Zookeeper, and ingress management, allowing for a comprehensive setup of a Solr cluster that is optimized for scalability and performance.
+The **NatsKubernetes** component in ProjectPlanton provides a streamlined and reliable way to deploy and manage NATS
+clusters on Kubernetes environments. By simplifying NATS deployment complexities, it integrates seamlessly into
+ProjectPlanton’s multi-cloud deployment ecosystem, offering consistent operations across AWS, GCP, Azure, and other
+Kubernetes-supported platforms.
 
-## Purpose of the Nats Kubernetes API Resource
+## Purpose and Functionality
 
-Deploying Solr in Kubernetes often involves various components, such as managing Solr configurations, Zookeeper instances, resource allocations, and persistence settings. This API resource simplifies that process by offering a well-defined structure for Solr deployment in Kubernetes, ensuring high availability, efficient resource management, and easy scaling.
+* **Robust NATS Cluster Deployment**: Deploy scalable and highly available NATS clusters effortlessly using standardized
+  Kubernetes manifests.
+* **Built-in JetStream Support**: Optionally enable JetStream for reliable streaming and message persistence, with easy
+  configuration for resource allocation and storage.
+* **Flexible Authentication Schemes**: Secure your NATS clusters using configurable authentication mechanisms, including
+  Bearer Token and Basic Authentication.
+* **Integrated TLS Encryption**: Enable TLS encryption with minimal configuration to ensure secure communication across
+  your messaging infrastructure.
+* **External Access via Ingress**: Seamlessly expose NATS clusters externally through Kubernetes ingress controllers or
+  load balancers, allowing secure, managed external client connectivity.
 
-## Key Features
+## Key Benefits
 
-### Solr Container Configuration
+* **Simplified Management**: Consolidates NATS cluster operations into easy-to-use YAML manifests, validated by
+  ProjectPlanton’s Protobuf schemas.
+* **Scalable by Default**: Provides sensible default configurations optimized for production use, with easy adjustments
+  for specific requirements.
+* **Unified Multi-Cloud Experience**: Utilizes ProjectPlanton’s standardized APIs and CLI workflows, ensuring repeatable
+  and consistent deployments across various cloud environments.
+* **Enhanced Security**: Built-in options for authentication and TLS encryption make securing your message
+  infrastructure straightforward and reliable.
 
-- **Replicas**: Configure the number of Solr pod replicas, with a recommended default of 1 for initial deployments.
-- **Container Image**: Define the Solr container image, such as `solr:8.7.0`, for deployment.
-- **Resource Allocation**: Solr container resources can be customized. The recommended default values are:
-    - **CPU Requests**: `50m`
-    - **Memory Requests**: `256Mi`
-    - **CPU Limits**: `1`
-    - **Memory Limits**: `1Gi`
-- **Disk Size**: Allocate disk storage for persistent data. The default is `1Gi`, ensuring persistent data backup in case of restarts.
+Below is a minimal YAML example demonstrating a basic deployment of a NATS cluster with JetStream enabled, secure
+authentication, and external ingress access (note the use of **camel-case** keys):
 
-### Solr Configuration
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: NatsKubernetes
+metadata:
+  name: exampleNats
+spec:
+  serverContainer:
+    replicas: 3
+    resources:
+      requests:
+        cpu: "100m"
+        memory: "256Mi"
+      limits:
+        cpu: "1000m"
+        memory: "2Gi"
+    diskSize: "10Gi"
+  disableJetStream: false
+  auth:
+    enabled: true
+    scheme: bearerToken
+  tlsEnabled: true
+  ingress:
+    enabled: true
+    host: nats.example.com
+  disableNatsBox: false
+```
 
-- **JVM Memory Settings**: Set JVM memory configurations for Solr. The default is `"-Xms1g -Xmx3g"`.
-- **Custom Solr Options**: Provide additional Solr options, such as `-Dsolr.autoSoftCommit.maxTime=10000`, to tune Solr performance.
-- **Garbage Collection Tuning**: Customize the garbage collection settings for Solr, such as `-XX:SurvivorRatio=4 -XX:TargetSurvivorRatio=90`.
-
-### Zookeeper Container Configuration
-
-- **Replicas**: Configure the number of Zookeeper pod replicas, with a recommended default of 1.
-- **Resource Allocation**: Customize Zookeeper's container resources. The recommended default values are:
-    - **CPU Requests**: `50m`
-    - **Memory Requests**: `256Mi`
-    - **CPU Limits**: `1`
-    - **Memory Limits**: `1Gi`
-- **Disk Size**: Allocate disk storage for Zookeeper with a default value of `1Gi`.
-
-### Ingress Configuration
-
-- **Ingress Spec**: Use Kubernetes ingress configurations to expose the Solr service securely, enabling external access as needed.
-
-## Benefits
-
-- **Simplified Deployment**: This API resource abstracts the complexities of deploying and managing Solr in Kubernetes, offering a straightforward approach.
-- **Scalable and Resilient**: Built-in configuration options for replicas, resource management, and persistence ensure a highly available and scalable Solr cluster.
-- **Data Persistence**: Persistent storage options guarantee that Solr data is securely backed up, reducing the risk of data loss during restarts or failures.
-- **Customizable**: Fine-tune resource allocations, JVM settings, and garbage collection configurations to match your performance requirements.
-- **Integrated Zookeeper**: Manage Zookeeper instances alongside Solr with similar configuration options for ease of use.
+Leverage the **NatsKubernetes** component to rapidly deploy robust, secure, and highly available NATS clusters within
+your ProjectPlanton multi-cloud strategy, enabling efficient and secure message-driven architectures.

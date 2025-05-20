@@ -1,160 +1,163 @@
-# NatsKubernetes API-Resource Examples
+# NATS on Kubernetes Examples
 
-## Example 1: Basic Solr Deployment with Default Settings
+Below are practical examples demonstrating how to use the `NatsKubernetes` component within your ProjectPlanton
+deployments. These examples illustrate common configurations and scenarios to help you quickly integrate a robust NATS
+messaging system into your Kubernetes environments.
 
-This example demonstrates the most basic configuration for deploying a Solr instance within a Kubernetes cluster. It configures a single Solr pod with default resource allocations and storage size. The Zookeeper instance is also deployed to support Solr.
+---
+
+## Example 1: Basic NATS Cluster with Default Settings
+
+Deploy a simple NATS cluster with default replicas, resources, and JetStream enabled.
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
 kind: NatsKubernetes
 metadata:
-  name: solr-instance-basic
+  name: nats-basic
 spec:
-  kubernetesClusterCredentialId: cluster-credential-12345
-  solrContainer:
-    replicas: 1
-    image:
-      repo: solr
-      tag: 8.7.0
-    resources:
-      requests:
-        cpu: 50m
-        memory: 256Mi
-      limits:
-        cpu: 1
-        memory: 1Gi
-    diskSize: "1Gi"
-  zookeeperContainer:
-    replicas: 1
-    resources:
-      requests:
-        cpu: 50m
-        memory: 256Mi
-      limits:
-        cpu: 1
-        memory: 1Gi
-    diskSize: "1Gi"
+  serverContainer:
+    replicas: 3
+    diskSize: "10Gi"
+  disableJetStream: false
+  tlsEnabled: false
+  disableNatsBox: false
 ```
 
-## Example 2: Solr Deployment with Custom JVM and Persistent Storage
+**Use Case:**
 
-This example configures a Solr deployment with custom JVM memory settings and a larger persistent volume attached to each Solr pod. Additionally, the Zookeeper container is customized with specific resource limits and a larger storage size.
+* Ideal for quick deployments, testing, or simple messaging scenarios within Kubernetes clusters, leveraging default
+  optimized settings.
+
+---
+
+## Example 2: NATS Cluster with Authentication Enabled (Bearer Token)
+
+Set up a secure NATS cluster using bearer token authentication to protect client connections.
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
 kind: NatsKubernetes
 metadata:
-  name: solr-instance-custom
+  name: nats-secure
 spec:
-  kubernetesClusterCredentialId: cluster-credential-67890
-  solrContainer:
-    replicas: 3
-    image:
-      repo: solr
-      tag: 8.7.0
+  serverContainer:
+    replicas: 5
     resources:
-      requests:
-        cpu: 100m
-        memory: 512Mi
       limits:
-        cpu: 2
-        memory: 2Gi
-    diskSize: "5Gi"
-    config:
-      javaMem: "-Xms2g -Xmx4g"
-      opts: "-Dsolr.autoSoftCommit.maxTime=5000"
-      garbageCollectionTuning: "-XX:SurvivorRatio=6 -XX:MaxTenuringThreshold=10"
-  zookeeperContainer:
-    replicas: 3
-    resources:
+        cpu: "2000m"
+        memory: "4Gi"
       requests:
-        cpu: 100m
-        memory: 512Mi
-      limits:
-        cpu: 2
-        memory: 2Gi
-    diskSize: "5Gi"
+        cpu: "500m"
+        memory: "1Gi"
+    diskSize: "20Gi"
+  auth:
+    enabled: true
+    scheme: bearerToken
+  tlsEnabled: true
+  disableJetStream: false
 ```
 
-## Example 3: Solr Deployment with Ingress Enabled
+**Use Case:**
 
-This example demonstrates how to deploy Solr with ingress enabled. This allows external access to the Solr instance through a Kubernetes ingress resource, useful for exposing Solr services to external clients.
+* Recommended for production deployments where security, reliability, and scalable message handling are critical.
+
+---
+
+## Example 3: NATS Cluster Exposed via Ingress for External Clients
+
+Deploy a NATS cluster configured with ingress to allow external clients to securely access messaging services.
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
 kind: NatsKubernetes
 metadata:
-  name: solr-instance-ingress
+  name: nats-external
 spec:
-  kubernetesClusterCredentialId: cluster-credential-24680
-  solrContainer:
-    replicas: 2
-    image:
-      repo: solr
-      tag: 8.7.0
-    resources:
-      requests:
-        cpu: 50m
-        memory: 256Mi
-      limits:
-        cpu: 1
-        memory: 1Gi
-    diskSize: "2Gi"
-  zookeeperContainer:
-    replicas: 2
-    resources:
-      requests:
-        cpu: 50m
-        memory: 256Mi
-      limits:
-        cpu: 1
-        memory: 1Gi
-    diskSize: "2Gi"
+  serverContainer:
+    replicas: 3
+    diskSize: "10Gi"
   ingress:
-    isEnabled: true
-    ingressClass: "nginx"
-    host: "solr.example.com"
-    tlsEnabled: true
+    enabled: true
+    host: nats.example.com
+  auth:
+    enabled: true
+    scheme: basicAuth
+  tlsEnabled: true
+  disableJetStream: false
 ```
 
-## Example 4: Solr Deployment with Custom Garbage Collection and No Ingress
+**Use Case:**
 
-This configuration deploys a Solr cluster with custom garbage collection tuning but without ingress, relying instead on internal Kubernetes networking and port-forwarding for access.
+* Suitable for scenarios where external systems or clients require secure connectivity to internal messaging
+  infrastructure via HTTPS.
+
+---
+
+## Example 4: Lightweight NATS Cluster Without JetStream
+
+Set up a lightweight NATS messaging cluster without JetStream persistence, optimized for minimal resource usage.
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
 kind: NatsKubernetes
 metadata:
-  name: solr-instance-no-ingress
+  name: nats-minimal
 spec:
-  kubernetesClusterCredentialId: cluster-credential-112233
-  solrContainer:
-    replicas: 1
-    image:
-      repo: solr
-      tag: 8.7.0
-    resources:
-      requests:
-        cpu: 50m
-        memory: 256Mi
-      limits:
-        cpu: 1
-        memory: 1Gi
-    diskSize: "1Gi"
-    config:
-      garbageCollectionTuning: "-XX:SurvivorRatio=4 -XX:TargetSurvivorRatio=85 -XX:MaxTenuringThreshold=6"
-  zookeeperContainer:
+  serverContainer:
     replicas: 1
     resources:
-      requests:
-        cpu: 50m
-        memory: 256Mi
       limits:
-        cpu: 1
-        memory: 1Gi
+        cpu: "500m"
+        memory: "512Mi"
+      requests:
+        cpu: "100m"
+        memory: "128Mi"
     diskSize: "1Gi"
+  disableJetStream: true
+  tlsEnabled: false
+  disableNatsBox: true
 ```
 
-## Usage
+**Use Case:**
 
-Refer to the example section for usage instructions.
+* Best suited for lightweight deployments, non-persistent messaging needs, or development environments with limited
+  resources.
+
+---
+
+## Example 5: High Availability NATS Cluster with Advanced Metrics
+
+Deploy a highly available NATS cluster that includes advanced observability with Prometheus metrics collection enabled.
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: NatsKubernetes
+metadata:
+  name: nats-ha-metrics
+spec:
+  serverContainer:
+    replicas: 7
+    resources:
+      limits:
+        cpu: "4000m"
+        memory: "8Gi"
+      requests:
+        cpu: "1000m"
+        memory: "2Gi"
+    diskSize: "50Gi"
+  disableJetStream: false
+  tlsEnabled: true
+  disableNatsBox: false
+  ingress:
+    enabled: true
+    host: nats-ha.example.com
+  auth:
+    enabled: true
+    scheme: bearerToken
+```
+
+**Use Case:**
+
+* Recommended for production-critical workloads requiring high availability, robust persistence, secure authentication,
+  and detailed observability through Prometheus monitoring.

@@ -1,69 +1,115 @@
-# Nats Kubernetes Pulumi Module
+# Pulumi Module for deploying NATS on Kubernetes
+
+The NATS Kubernetes Pulumi module automates the deployment and management of a NATS cluster within Kubernetes. This
+module simplifies deploying scalable, secure, and high-availability NATS clusters using a standardized YAML-based
+configuration. Leveraging Pulumi for infrastructure-as-code, it ensures seamless integration, repeatable deployments,
+and minimal operational overhead.
 
 ## Key Features
 
 ### 1. **Kubernetes Provider Integration**
-   The module automatically creates a Kubernetes provider using the Kubernetes cluster credentials specified in the stack input. This ensures secure and authenticated communication with the target Kubernetes cluster.
 
-### 2. **Namespace Creation**
-   A new namespace is automatically created within the Kubernetes cluster, isolating the Solr instance and its associated components. This ensures that the resources deployed for Solr are logically separated from other workloads running in the cluster.
+The module automatically configures a Kubernetes provider using cluster credentials defined in the stack input, ensuring
+secure communication and authentication.
 
-### 3. **Solr Cluster Deployment**
-   The module deploys a Solr cluster based on the configuration provided in the API resource spec. Key settings, such as the number of replicas, container image, and resource limits (CPU and memory), can be customized. These configurations ensure that the Solr cluster is both scalable and tuned for performance.
+### 2. **Namespace Management**
 
-### 4. **Zookeeper Integration**
-   The Zookeeper instance required by the Solr cluster is automatically provisioned. Zookeeper pods are configured with appropriate resource limits and persistent volumes, ensuring the reliable operation of the Solr cluster.
+Automatically creates and manages a dedicated namespace for the NATS cluster, isolating the resources from other
+Kubernetes workloads for enhanced security and resource organization.
 
-### 5. **Persistent Storage Configuration**
-   Each Solr and Zookeeper pod is provisioned with persistent storage volumes. This ensures that data is retained across pod restarts and is available for high-availability configurations.
+### 3. **NATS Cluster Deployment**
 
-### 6. **Ingress Management**
-   If ingress is enabled in the API resource spec, the module provisions ingress resources, including Istio-based ingress for routing external traffic to the Solr service. This makes it easier to expose Solr services to clients both inside and outside the Kubernetes cluster.
+Deploys the official NATS Helm chart (version 1.3.6), allowing easy customization of replicas, resource allocation (CPU
+and memory), and JetStream persistence configurations.
 
-### 7. **Resource Customization**
-   The module allows fine-grained control over the deployment by enabling developers to specify resource configurations, such as CPU and memory limits for Solr and Zookeeper pods. This ensures optimal resource usage and performance tuning for both services.
+### 4. **JetStream Support**
 
-### 8. **Pulumi Stack Outputs**
-   Upon successful deployment, the module generates several useful outputs, including:
-   - **Namespace**: The Kubernetes namespace in which Solr is deployed.
-   - **Service Name**: The service name for the Solr dashboard, which allows easy access to the Solr management UI.
-   - **Port Forward Command**: A command to set up port forwarding for local access to Solr if ingress is disabled.
-   - **Internal and External Endpoints**: URLs for accessing Solr within and outside the Kubernetes cluster.
+Offers optional JetStream configuration, enabling persistent messaging streams with configurable storage sizes for
+robust data retention and recovery.
 
-These outputs provide essential information for developers to monitor, manage, and interact with their deployed Solr clusters.
+### 5. **Authentication Management**
+
+Supports Bearer Token and Basic Authentication schemes, automatically provisioning Kubernetes secrets with randomly
+generated credentials to secure access to the NATS server.
+
+### 6. **TLS Security**
+
+Automatically generates and provisions self-signed TLS certificates stored in Kubernetes secrets for secure, encrypted
+communication within the NATS cluster.
+
+### 7. **Ingress and External Access**
+
+Supports external access via Kubernetes LoadBalancer or configurable ingress, providing flexibility for exposing NATS
+services externally using DNS-based routing.
+
+### 8. **Detailed Pulumi Stack Outputs**
+
+Generates comprehensive deployment outputs including namespace details, internal and external URLs, TLS and
+authentication secret information, JetStream domain, and metrics endpoints.
 
 ## Usage
 
-Refer to the example section for usage instructions.
+### Prerequisites
+
+* **Pulumi**: Ensure Pulumi is installed and configured for your Kubernetes environment.
+* **Kubernetes Cluster**: Access to a Kubernetes cluster with valid credentials configured.
+* **Planton CLI**: The Planton CLI must be installed for executing
+  `planton pulumi up --stack-input <api-resource.yaml>`.
+
+### Example Deployment
+
+Refer to `examples.md` for practical examples of various NATS deployments using different authentication methods,
+JetStream configurations, resource specifications, and ingress options.
+
+### Deploying with Pulumi
+
+```bash
+planton pulumi up --stack-input <your-config.yaml>
+```
+
+## Outputs
+
+After successful deployment, the module provides several outputs:
+
+* **Namespace**: Kubernetes namespace used for deployment.
+* **Client URLs**: Internal and external URLs for accessing the NATS service.
+* **Auth and TLS Secret Details**: Secret names and keys for authentication and TLS.
+* **JetStream Domain**: Configured domain for JetStream, if enabled.
+* **Metrics Endpoint**: URL for accessing NATS metrics.
+
+These outputs facilitate easy integration and management of the deployed NATS cluster.
 
 ## Benefits
 
-1. **Standardized API Resource Structure**: The module leverages a standardized YAML specification to configure and deploy Solr clusters, making it easy for developers to replicate configurations across different environments.
-2. **Seamless Kubernetes Integration**: Designed to work natively with Kubernetes, this module automates the creation and management of critical Kubernetes resources such as namespaces, deployments, and services.
-3. **Infrastructure-as-Code**: By utilizing Pulumi, this module brings the benefits of infrastructure-as-code, such as version control, repeatable deployments, and rollback capabilities, to Solr deployments.
-4. **Customizable Resource Definitions**: The module supports the customization of key Solr configurations, such as the number of pods, memory settings, and persistent storage allocations, allowing for flexibility based on specific use cases.
-5. **Scalability and High Availability**: With support for replica configurations and resource tuning, this module ensures that Solr clusters can scale to meet performance demands while maintaining high availability and data durability.
+* **Infrastructure-as-Code**: Version-controlled, repeatable, and automated deployments using Pulumi.
+* **Security and Isolation**: Automated namespace and credential management ensure robust security.
+* **Flexibility and Scalability**: Easily configurable for varying resource needs and secure communication.
+* **Operational Efficiency**: Reduced manual effort in setting up and maintaining NATS clusters.
 
-## Prerequisites
+## Development
 
-- **Pulumi Setup**: Ensure that Pulumi is installed and configured for the cloud provider being used.
-- **Kubernetes Cluster**: A Kubernetes cluster must be available, with the appropriate credentials provided in the stack input.
-- **Planton CLI**: The Planton CLI should be set up to run the `planton pulumi up --stack-input <api-resource.yaml>` command.
+Use the provided Makefile to manage the module lifecycle:
 
-## Pulumi Outputs
+```bash
+make deps   # Install dependencies
+make vet    # Run Go vet for linting
+make fmt    # Format Go code
+make build  # Run dependencies, linting, and formatting
+```
 
-Once the module is deployed, several outputs are generated to provide critical information for managing the Solr cluster:
+### Debugging
 
-1. **Namespace**: The Kubernetes namespace where Solr and Zookeeper resources are deployed.
-2. **Service Name**: The name of the service for accessing the Solr dashboard.
-3. **Port Forward Command**: A command to enable local port forwarding to access Solr when ingress is disabled.
-4. **Kube Endpoint**: The internal endpoint for accessing Solr from within the Kubernetes cluster.
-5. **External Hostname**: The public endpoint for accessing Solr from outside the cluster.
-6. **Internal Hostname**: The internal hostname for accessing Solr within the cluster.
+For debugging purposes, use the provided debug script:
 
-These outputs ensure easy access and management of the Solr cluster post-deployment.
+```bash
+./debug.sh
+```
+
+This will build and launch the module with debugging enabled at port 2345.
 
 ## Conclusion
 
-The Nats Kubernetes Pulumi module provides a powerful and flexible solution for automating the deployment of Solr clusters on Kubernetes. With features like customizable resource configurations, seamless Kubernetes integration, and robust infrastructure management via Pulumi, this module greatly simplifies the operational overhead of managing Solr in cloud-native environments. By following a standardized YAML-based API resource approach, it empowers developers to deploy complex infrastructure with minimal effort, making Solr deployment more accessible and scalable.
-
+The NATS Kubernetes Pulumi module significantly simplifies the deployment and operational management of secure, scalable
+NATS clusters. By utilizing standardized configurations and automated resource management, it enables developers and
+DevOps teams to focus on higher-value tasks, ensuring efficient, repeatable, and secure NATS cluster management in
+Kubernetes environments.
