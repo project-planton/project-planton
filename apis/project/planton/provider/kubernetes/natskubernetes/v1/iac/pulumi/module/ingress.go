@@ -1,3 +1,4 @@
+// ingress.go
 package module
 
 import (
@@ -8,25 +9,27 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// service creates an external LoadBalancer Service when spec.ingress.enabled is true.
-// This is required because NATS clients use the NATS (TCP) protocol on port 4222,
-// which cannot be terminated by standard HTTP ingress. A LoadBalancer keeps the
-// architecture simple and mirrors the pattern from Terraform.
-func service(ctx *pulumi.Context, locals *Locals,
+// ingress creates an external LoadBalancer Service when spec.ingress.enabled is true.
+// A previous version used label selector {app: nats,…} but the Helm chart labels
+// pods as app.kubernetes.io/name=nats and app.kubernetes.io/component=nats.  The
+// mismatch meant the Service had **zero endpoints**, so the LB IP could not reach
+// any pod.  We now align the selector with the chart.
+func ingress(ctx *pulumi.Context, locals *Locals,
 	kubernetesProvider pulumi.ProviderResource,
 	createdNamespace *kubernetescorev1.Namespace) error {
 
 	if locals.NatsKubernetes.Spec.Ingress == nil ||
 		!locals.NatsKubernetes.Spec.Ingress.Enabled {
-		// No external exposure requested.
-		return nil
+		return nil // no external exposure requested
 	}
 
 	svcName := "nats-external-lb"
 
 	selector := map[string]string{
-		"app.kubernetes.io/instance": locals.NatsKubernetes.Metadata.Name,
-		"app":                        "nats",
+		// Matches labels applied by the official nats Helm chart v1.x
+		"app.kubernetes.io/name":      "nats",
+		"app.kubernetes.io/component": "nats",
+		"app.kubernetes.io/instance":  locals.NatsKubernetes.Metadata.Name,
 	}
 
 	annotations := pulumi.StringMap{}
@@ -58,14 +61,14 @@ func service(ctx *pulumi.Context, locals *Locals,
 			},
 		}, pulumi.Provider(kubernetesProvider), pulumi.Parent(createdNamespace))
 	if err != nil {
-		return errors.Wrap(err, "failed to create external LoadBalancer service")
+		return errors.Wrap(err, "failed to create external LoadBalancer ingress")
 	}
 
 	// Export external client URL if not already set via DNS hostname.
 	if locals.ClientURLExternal == "" {
 		endpoint := createdLoadBalancerService.Status.ApplyT(func(st kubernetescorev1.ServiceStatus) string {
 			if st.LoadBalancer == nil || len(st.LoadBalancer.Ingress) == 0 {
-				return "" // unknown until LB allocates an IP/hostname
+				return "" // pending
 			}
 			ingress := st.LoadBalancer.Ingress[0]
 			host := ingress.Hostname
