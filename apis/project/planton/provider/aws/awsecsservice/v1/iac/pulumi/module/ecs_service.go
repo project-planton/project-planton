@@ -18,6 +18,9 @@ import (
 	awsecsservicev1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsecsservice/v1"
 )
 
+// fallback when user doesn't supply alb.priority
+const defaultAlbPriority = 100
+
 // service creates and wires up the ECS Task Definition and AWS ECS Service resources.
 func ecsService(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) error {
 	spec := locals.AwsEcsService.Spec
@@ -196,6 +199,12 @@ func ecsService(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) err
 		}
 
 		if len(conditions) > 0 {
+			// ---------------- choose priority -------------------
+			priority := defaultAlbPriority
+			if spec.Alb.ListenerPriority != 0 {
+				priority = int(spec.Alb.ListenerPriority)
+			}
+
 			_, err := lb.NewListenerRule(ctx, serviceName+"-rule", &lb.ListenerRuleArgs{
 				ListenerArn: pulumi.String(foundListener.Arn),
 				Actions: lb.ListenerRuleActionArray{
@@ -205,7 +214,7 @@ func ecsService(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) err
 					},
 				},
 				Conditions: conditions,
-				Priority:   pulumi.Int(100),
+				Priority:   pulumi.Int(priority),
 				Tags:       pulumi.ToStringMap(locals.AwsTags),
 			}, pulumi.Provider(provider))
 			if err != nil {
