@@ -54,8 +54,9 @@ var _ = Describe("AwsEcsService Custom Validation Tests", func() {
 								LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
 									Value: "arn:aws:elasticloadbalancing:us-east-1:123456789012:loadbalancer/app/myAlb"},
 							},
-							RoutingType:  "path",
-							ListenerPort: 80,
+							RoutingType:      "path",
+							ListenerPort:     80,
+							ListenerPriority: 100,
 						},
 					},
 				}
@@ -186,8 +187,9 @@ var _ = Describe("AwsEcsService Custom Validation Tests", func() {
 							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{
 								Value: "arn:aws:elasticloadbalancing:us-east-1:123456789012:loadbalancer/app/myAlb"},
 						},
-						RoutingType:  "path",
-						ListenerPort: 80,
+						RoutingType:      "path",
+						ListenerPort:     80,
+						ListenerPriority: 100,
 					},
 				},
 			}
