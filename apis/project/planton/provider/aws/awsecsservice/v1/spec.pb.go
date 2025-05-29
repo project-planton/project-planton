@@ -647,15 +647,15 @@ const file_project_planton_provider_aws_awsecsservice_v1_spec_proto_rawDesc = ""
 	"\x0fsecurity_groups\x18\x02 \x03(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB)\x88\xd4a\xd7\x01\x92\xd4a status.outputs.security_group_idR\x0esecurityGroups\"\xa2\x02\n" +
 	"\x10AwsEcsServiceIam\x12\x8f\x01\n" +
 	"\x17task_execution_role_arn\x18\x01 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB \x88\xd4a\xd0\x01\x92\xd4a\x17status.outputs.role_arnR\x14taskExecutionRoleArn\x12|\n" +
-	"\rtask_role_arn\x18\x02 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB \x88\xd4a\xd0\x01\x92\xd4a\x17status.outputs.role_arnR\vtaskRoleArn\"\xfa\x02\n" +
+	"\rtask_role_arn\x18\x02 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB \x88\xd4a\xd0\x01\x92\xd4a\x17status.outputs.role_arnR\vtaskRoleArn\"\xf4\x02\n" +
 	"\x10AwsEcsServiceAlb\x12\x18\n" +
 	"\aenabled\x18\x01 \x01(\bR\aenabled\x12s\n" +
 	"\x03arn\x18\x02 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB)\x88\xd4a\xc8\x01\x92\xd4a status.outputs.load_balancer_arnR\x03arn\x128\n" +
 	"\frouting_type\x18\x03 \x01(\tB\x15\xbaH\x12r\x10R\x04pathR\bhostnameR\vroutingType\x12\x12\n" +
 	"\x04path\x18\x04 \x01(\tR\x04path\x12\x1a\n" +
 	"\bhostname\x18\x05 \x01(\tR\bhostname\x121\n" +
-	"\rlistener_port\x18\x06 \x01(\x05B\f\xbaH\x03\xc8\x01\x01\x92\xa6\x1d\x0280R\flistenerPort\x12:\n" +
-	"\x11listener_priority\x18\a \x01(\x05B\r\xbaH\x03\xc8\x01\x01\x92\xa6\x1d\x03100R\x10listenerPriorityB\x88\x03\n" +
+	"\rlistener_port\x18\x06 \x01(\x05B\f\xbaH\x03\xc8\x01\x01\x92\xa6\x1d\x0280R\flistenerPort\x124\n" +
+	"\x11listener_priority\x18\a \x01(\x05B\a\x8a\xa6\x1d\x03100R\x10listenerPriorityB\x88\x03\n" +
 	"1com.project.planton.provider.aws.awsecsservice.v1B\tSpecProtoP\x01Zmgithub.com/project-planton/project-planton/apis/project/planton/provider/aws/awsecsservice/v1;awsecsservicev1\xa2\x02\x05PPPAA\xaa\x02-Project.Planton.Provider.Aws.Awsecsservice.V1\xca\x02-Project\\Planton\\Provider\\Aws\\Awsecsservice\\V1\xe2\x029Project\\Planton\\Provider\\Aws\\Awsecsservice\\V1\\GPBMetadata\xea\x022Project::Planton::Provider::Aws::Awsecsservice::V1b\x06proto3"
 
 var (
