@@ -179,4 +179,11 @@ message AwsEcsServiceAlb {
     (buf.validate.field).required = true,
     (project.planton.shared.options.recommended_default) = "80"
   ];
+
+  // listener_priority is the priority of the ALB listener rule.
+  // Lower numbers have higher priority. This value should be unique across all rules for this ALB.
+  int32 listener_priority = 7 [
+    (buf.validate.field).required = true,
+    (project.planton.shared.options.recommended_default) = "100"
+  ];
 }
