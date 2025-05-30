@@ -232,20 +232,78 @@ func (x *NatsKubernetesServerContainer) GetDiskSize() string {
 	return ""
 }
 
+// configuration for an unauthenticated ("no-auth") user.
+type NatsKubernetesNoAuthUser struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// enables the unauthenticated user when true.
+	Enabled bool `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`
+	// subjects on which the unauthenticated user may publish.
+	// at least one subject must be specified when enabled is true.
+	PublishSubjects []string `protobuf:"bytes,2,rep,name=publish_subjects,json=publishSubjects,proto3" json:"publish_subjects,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *NatsKubernetesNoAuthUser) Reset() {
+	*x = NatsKubernetesNoAuthUser{}
+	mi := &file_project_planton_provider_kubernetes_natskubernetes_v1_spec_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *NatsKubernetesNoAuthUser) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*NatsKubernetesNoAuthUser) ProtoMessage() {}
+
+func (x *NatsKubernetesNoAuthUser) ProtoReflect() protoreflect.Message {
+	mi := &file_project_planton_provider_kubernetes_natskubernetes_v1_spec_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use NatsKubernetesNoAuthUser.ProtoReflect.Descriptor instead.
+func (*NatsKubernetesNoAuthUser) Descriptor() ([]byte, []int) {
+	return file_project_planton_provider_kubernetes_natskubernetes_v1_spec_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *NatsKubernetesNoAuthUser) GetEnabled() bool {
+	if x != nil {
+		return x.Enabled
+	}
+	return false
+}
+
+func (x *NatsKubernetesNoAuthUser) GetPublishSubjects() []string {
+	if x != nil {
+		return x.PublishSubjects
+	}
+	return nil
+}
+
 // NatsKubernetesAuth holds the authentication configuration for the nats cluster.
 type NatsKubernetesAuth struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// toggle to enable authentication for the nats cluster.
 	Enabled bool `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`
 	// authentication scheme for the nats cluster.
-	Scheme        NatsKubernetesAuthScheme `protobuf:"varint,2,opt,name=scheme,proto3,enum=project.planton.provider.kubernetes.natskubernetes.v1.NatsKubernetesAuthScheme" json:"scheme,omitempty"`
+	Scheme NatsKubernetesAuthScheme `protobuf:"varint,2,opt,name=scheme,proto3,enum=project.planton.provider.kubernetes.natskubernetes.v1.NatsKubernetesAuthScheme" json:"scheme,omitempty"`
+	// optional no-auth user configuration.
+	NoAuthUser    *NatsKubernetesNoAuthUser `protobuf:"bytes,3,opt,name=no_auth_user,json=noAuthUser,proto3" json:"no_auth_user,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *NatsKubernetesAuth) Reset() {
 	*x = NatsKubernetesAuth{}
-	mi := &file_project_planton_provider_kubernetes_natskubernetes_v1_spec_proto_msgTypes[2]
+	mi := &file_project_planton_provider_kubernetes_natskubernetes_v1_spec_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -257,7 +315,7 @@ func (x *NatsKubernetesAuth) String() string {
 func (*NatsKubernetesAuth) ProtoMessage() {}
 
 func (x *NatsKubernetesAuth) ProtoReflect() protoreflect.Message {
-	mi := &file_project_planton_provider_kubernetes_natskubernetes_v1_spec_proto_msgTypes[2]
+	mi := &file_project_planton_provider_kubernetes_natskubernetes_v1_spec_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -270,7 +328,7 @@ func (x *NatsKubernetesAuth) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use NatsKubernetesAuth.ProtoReflect.Descriptor instead.
 func (*NatsKubernetesAuth) Descriptor() ([]byte, []int) {
-	return file_project_planton_provider_kubernetes_natskubernetes_v1_spec_proto_rawDescGZIP(), []int{2}
+	return file_project_planton_provider_kubernetes_natskubernetes_v1_spec_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *NatsKubernetesAuth) GetEnabled() bool {
@@ -285,6 +343,13 @@ func (x *NatsKubernetesAuth) GetScheme() NatsKubernetesAuthScheme {
 		return x.Scheme
 	}
 	return NatsKubernetesAuthScheme_nats_kubernetes_auth_scheme_unspecified
+}
+
+func (x *NatsKubernetesAuth) GetNoAuthUser() *NatsKubernetesNoAuthUser {
+	if x != nil {
+		return x.NoAuthUser
+	}
+	return nil
 }
 
 var file_project_planton_provider_kubernetes_natskubernetes_v1_spec_proto_extTypes = []protoimpl.ExtensionInfo{
@@ -323,10 +388,15 @@ const file_project_planton_provider_kubernetes_natskubernetes_v1_spec_proto_rawD
 	"\x1dNatsKubernetesServerContainer\x12#\n" +
 	"\breplicas\x18\x01 \x01(\x05B\a\xbaH\x04\x1a\x02 \x00R\breplicas\x12S\n" +
 	"\tresources\x18\x02 \x01(\v25.project.planton.shared.kubernetes.ContainerResourcesR\tresources\x12*\n" +
-	"\tdisk_size\x18\x03 \x01(\tB\r\xbaH\x03\xc8\x01\x01\x92\xa6\x1d\x031GiR\bdiskSize\"\x97\x01\n" +
+	"\tdisk_size\x18\x03 \x01(\tB\r\xbaH\x03\xc8\x01\x01\x92\xa6\x1d\x031GiR\bdiskSize\"_\n" +
+	"\x18NatsKubernetesNoAuthUser\x12\x18\n" +
+	"\aenabled\x18\x01 \x01(\bR\aenabled\x12)\n" +
+	"\x10publish_subjects\x18\x02 \x03(\tR\x0fpublishSubjects\"\x8a\x02\n" +
 	"\x12NatsKubernetesAuth\x12\x18\n" +
 	"\aenabled\x18\x01 \x01(\bR\aenabled\x12g\n" +
-	"\x06scheme\x18\x02 \x01(\x0e2O.project.planton.provider.kubernetes.natskubernetes.v1.NatsKubernetesAuthSchemeR\x06scheme*i\n" +
+	"\x06scheme\x18\x02 \x01(\x0e2O.project.planton.provider.kubernetes.natskubernetes.v1.NatsKubernetesAuthSchemeR\x06scheme\x12q\n" +
+	"\fno_auth_user\x18\x03 \x01(\v2O.project.planton.provider.kubernetes.natskubernetes.v1.NatsKubernetesNoAuthUserR\n" +
+	"noAuthUser*i\n" +
 	"\x18NatsKubernetesAuthScheme\x12+\n" +
 	"'nats_kubernetes_auth_scheme_unspecified\x10\x00\x12\x10\n" +
 	"\fbearer_token\x10\x01\x12\x0e\n" +
@@ -348,29 +418,31 @@ func file_project_planton_provider_kubernetes_natskubernetes_v1_spec_proto_rawDe
 }
 
 var file_project_planton_provider_kubernetes_natskubernetes_v1_spec_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_project_planton_provider_kubernetes_natskubernetes_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_project_planton_provider_kubernetes_natskubernetes_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_project_planton_provider_kubernetes_natskubernetes_v1_spec_proto_goTypes = []any{
 	(NatsKubernetesAuthScheme)(0),         // 0: project.planton.provider.kubernetes.natskubernetes.v1.NatsKubernetesAuthScheme
 	(*NatsKubernetesSpec)(nil),            // 1: project.planton.provider.kubernetes.natskubernetes.v1.NatsKubernetesSpec
 	(*NatsKubernetesServerContainer)(nil), // 2: project.planton.provider.kubernetes.natskubernetes.v1.NatsKubernetesServerContainer
-	(*NatsKubernetesAuth)(nil),            // 3: project.planton.provider.kubernetes.natskubernetes.v1.NatsKubernetesAuth
-	(*kubernetes.IngressSpec)(nil),        // 4: project.planton.shared.kubernetes.IngressSpec
-	(*kubernetes.ContainerResources)(nil), // 5: project.planton.shared.kubernetes.ContainerResources
-	(*descriptorpb.FieldOptions)(nil),     // 6: google.protobuf.FieldOptions
+	(*NatsKubernetesNoAuthUser)(nil),      // 3: project.planton.provider.kubernetes.natskubernetes.v1.NatsKubernetesNoAuthUser
+	(*NatsKubernetesAuth)(nil),            // 4: project.planton.provider.kubernetes.natskubernetes.v1.NatsKubernetesAuth
+	(*kubernetes.IngressSpec)(nil),        // 5: project.planton.shared.kubernetes.IngressSpec
+	(*kubernetes.ContainerResources)(nil), // 6: project.planton.shared.kubernetes.ContainerResources
+	(*descriptorpb.FieldOptions)(nil),     // 7: google.protobuf.FieldOptions
 }
 var file_project_planton_provider_kubernetes_natskubernetes_v1_spec_proto_depIdxs = []int32{
 	2, // 0: project.planton.provider.kubernetes.natskubernetes.v1.NatsKubernetesSpec.server_container:type_name -> project.planton.provider.kubernetes.natskubernetes.v1.NatsKubernetesServerContainer
-	3, // 1: project.planton.provider.kubernetes.natskubernetes.v1.NatsKubernetesSpec.auth:type_name -> project.planton.provider.kubernetes.natskubernetes.v1.NatsKubernetesAuth
-	4, // 2: project.planton.provider.kubernetes.natskubernetes.v1.NatsKubernetesSpec.ingress:type_name -> project.planton.shared.kubernetes.IngressSpec
-	5, // 3: project.planton.provider.kubernetes.natskubernetes.v1.NatsKubernetesServerContainer.resources:type_name -> project.planton.shared.kubernetes.ContainerResources
+	4, // 1: project.planton.provider.kubernetes.natskubernetes.v1.NatsKubernetesSpec.auth:type_name -> project.planton.provider.kubernetes.natskubernetes.v1.NatsKubernetesAuth
+	5, // 2: project.planton.provider.kubernetes.natskubernetes.v1.NatsKubernetesSpec.ingress:type_name -> project.planton.shared.kubernetes.IngressSpec
+	6, // 3: project.planton.provider.kubernetes.natskubernetes.v1.NatsKubernetesServerContainer.resources:type_name -> project.planton.shared.kubernetes.ContainerResources
 	0, // 4: project.planton.provider.kubernetes.natskubernetes.v1.NatsKubernetesAuth.scheme:type_name -> project.planton.provider.kubernetes.natskubernetes.v1.NatsKubernetesAuthScheme
-	6, // 5: project.planton.provider.kubernetes.natskubernetes.v1.default_server_container:extendee -> google.protobuf.FieldOptions
-	2, // 6: project.planton.provider.kubernetes.natskubernetes.v1.default_server_container:type_name -> project.planton.provider.kubernetes.natskubernetes.v1.NatsKubernetesServerContainer
-	7, // [7:7] is the sub-list for method output_type
-	7, // [7:7] is the sub-list for method input_type
-	6, // [6:7] is the sub-list for extension type_name
-	5, // [5:6] is the sub-list for extension extendee
-	0, // [0:5] is the sub-list for field type_name
+	3, // 5: project.planton.provider.kubernetes.natskubernetes.v1.NatsKubernetesAuth.no_auth_user:type_name -> project.planton.provider.kubernetes.natskubernetes.v1.NatsKubernetesNoAuthUser
+	7, // 6: project.planton.provider.kubernetes.natskubernetes.v1.default_server_container:extendee -> google.protobuf.FieldOptions
+	2, // 7: project.planton.provider.kubernetes.natskubernetes.v1.default_server_container:type_name -> project.planton.provider.kubernetes.natskubernetes.v1.NatsKubernetesServerContainer
+	8, // [8:8] is the sub-list for method output_type
+	8, // [8:8] is the sub-list for method input_type
+	7, // [7:8] is the sub-list for extension type_name
+	6, // [6:7] is the sub-list for extension extendee
+	0, // [0:6] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_provider_kubernetes_natskubernetes_v1_spec_proto_init() }
@@ -384,7 +456,7 @@ func file_project_planton_provider_kubernetes_natskubernetes_v1_spec_proto_init(
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_project_planton_provider_kubernetes_natskubernetes_v1_spec_proto_rawDesc), len(file_project_planton_provider_kubernetes_natskubernetes_v1_spec_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   3,
+			NumMessages:   4,
 			NumExtensions: 1,
 			NumServices:   0,
 		},
