@@ -20,85 +20,6 @@ func helmChart(ctx *pulumi.Context, locals *Locals, parent pulumi.Resource) erro
 		return errors.New("serverContainer.resources.{requests,limits} must be set")
 	}
 
-	if auth := locals.NatsKubernetes.Spec.Auth; auth != nil && auth.Enabled {
-		switch auth.Scheme {
-
-		// ---------------- bearer token ----------------
-		case natskubernetesv1.NatsKubernetesAuthScheme_bearer_token:
-			var token *random.RandomPassword
-			token, err := random.NewRandomPassword(ctx, "auth-token",
-				&random.RandomPasswordArgs{Length: pulumi.Int(32), Special: pulumi.Bool(false)},
-				pulumi.Parent(parent))
-			if err != nil {
-				return errors.Wrap(err, "generate auth token")
-			}
-
-			_, err = kubernetescorev1.NewSecret(ctx, "auth-token-secret",
-				&kubernetescorev1.SecretArgs{
-					Metadata: &kubernetesmeta.ObjectMetaArgs{
-						Name:      pulumi.String(vars.AdminAuthSecretName),
-						Namespace: pulumi.String(locals.Namespace),
-						Labels:    pulumi.ToStringMap(locals.Labels),
-					},
-					StringData: pulumi.StringMap{vars.AdminAuthSecretKey: token.Result},
-					Type:       pulumi.String("Opaque"),
-				}, pulumi.Parent(parent))
-			if err != nil {
-				return errors.Wrap(err, "create bearer-token secret")
-			}
-
-		// ---------------- basic auth ------------------
-		case natskubernetesv1.NatsKubernetesAuthScheme_basic_auth:
-			var adminPass *random.RandomPassword
-			adminPass, err := random.NewRandomPassword(ctx, "auth-password",
-				&random.RandomPasswordArgs{Length: pulumi.Int(32), Special: pulumi.Bool(false)},
-				pulumi.Parent(parent))
-			if err != nil {
-				return errors.Wrap(err, "generate admin password")
-			}
-
-			_, err = kubernetescorev1.NewSecret(ctx, "auth-basic-secret",
-				&kubernetescorev1.SecretArgs{
-					Metadata: &kubernetesmeta.ObjectMetaArgs{
-						Name:      pulumi.String(vars.AdminAuthSecretName),
-						Namespace: pulumi.String(locals.Namespace),
-						Labels:    pulumi.ToStringMap(locals.Labels),
-					},
-					StringData: pulumi.StringMap{
-						vars.NatsUserSecretKeyUsername: pulumi.String(vars.AdminUsername),
-						vars.NatsUserSecretKeyPassword: adminPass.Result,
-					},
-					Type: pulumi.String("Opaque"),
-				}, pulumi.Parent(parent))
-			if err != nil {
-				return errors.Wrap(err, "create admin secret")
-			}
-
-			// optional no-auth user
-			if na := auth.NoAuthUser; na != nil && na.Enabled {
-				_, err = kubernetescorev1.NewSecret(ctx, vars.NoAuthUserSecretName,
-					&kubernetescorev1.SecretArgs{
-						Metadata: &kubernetesmeta.ObjectMetaArgs{
-							Name:      pulumi.String(vars.NoAuthUserSecretName),
-							Namespace: pulumi.String(locals.Namespace),
-							Labels:    pulumi.ToStringMap(locals.Labels),
-						},
-						StringData: pulumi.StringMap{
-							vars.NatsUserSecretKeyUsername: pulumi.String(vars.NoAuthUsername),
-							vars.NatsUserSecretKeyPassword: pulumi.String(vars.NoAuthPassword),
-						},
-						Type: pulumi.String("Opaque"),
-					}, pulumi.Parent(parent))
-				if err != nil {
-					return errors.Wrap(err, "create no-auth secret")
-				}
-			}
-
-			// surface password-key so ops can fetch it quickly
-			ctx.Export(OpAuthSecretKey, pulumi.String(vars.NatsUserSecretKeyPassword))
-		}
-	}
-
 	//----------------------------------------------------------------------
 	// Helm values
 	//----------------------------------------------------------------------
@@ -152,6 +73,28 @@ func helmChart(ctx *pulumi.Context, locals *Locals, parent pulumi.Resource) erro
 
 		// bearer-token
 		case natskubernetesv1.NatsKubernetesAuthScheme_bearer_token:
+			var token *random.RandomPassword
+			token, err := random.NewRandomPassword(ctx, "auth-token",
+				&random.RandomPasswordArgs{Length: pulumi.Int(32), Special: pulumi.Bool(false)},
+				pulumi.Parent(parent))
+			if err != nil {
+				return errors.Wrap(err, "generate auth token")
+			}
+
+			_, err = kubernetescorev1.NewSecret(ctx, "auth-token-secret",
+				&kubernetescorev1.SecretArgs{
+					Metadata: &kubernetesmeta.ObjectMetaArgs{
+						Name:      pulumi.String(vars.AdminAuthSecretName),
+						Namespace: pulumi.String(locals.Namespace),
+						Labels:    pulumi.ToStringMap(locals.Labels),
+					},
+					StringData: pulumi.StringMap{vars.AdminAuthSecretKey: token.Result},
+					Type:       pulumi.String("Opaque"),
+				}, pulumi.Parent(parent))
+			if err != nil {
+				return errors.Wrap(err, "create bearer-token secret")
+			}
+
 			values["auth"] = pulumi.Map{
 				"enabled": pulumi.Bool(true),
 				"token": pulumi.Map{
@@ -169,6 +112,54 @@ func helmChart(ctx *pulumi.Context, locals *Locals, parent pulumi.Resource) erro
 		// basic-auth
 		// ---------------- basic auth ------------------
 		case natskubernetesv1.NatsKubernetesAuthScheme_basic_auth:
+			var adminPass *random.RandomPassword
+			adminPass, err := random.NewRandomPassword(ctx, "auth-password",
+				&random.RandomPasswordArgs{Length: pulumi.Int(32), Special: pulumi.Bool(false)},
+				pulumi.Parent(parent))
+			if err != nil {
+				return errors.Wrap(err, "generate admin password")
+			}
+
+			_, err = kubernetescorev1.NewSecret(ctx, "auth-basic-secret",
+				&kubernetescorev1.SecretArgs{
+					Metadata: &kubernetesmeta.ObjectMetaArgs{
+						Name:      pulumi.String(vars.AdminAuthSecretName),
+						Namespace: pulumi.String(locals.Namespace),
+						Labels:    pulumi.ToStringMap(locals.Labels),
+					},
+					StringData: pulumi.StringMap{
+						vars.NatsUserSecretKeyUsername: pulumi.String(vars.AdminUsername),
+						vars.NatsUserSecretKeyPassword: adminPass.Result,
+					},
+					Type: pulumi.String("Opaque"),
+				}, pulumi.Parent(parent))
+			if err != nil {
+				return errors.Wrap(err, "create admin secret")
+			}
+
+			// optional no-auth user
+			if na := auth.NoAuthUser; na != nil && na.Enabled {
+				_, err = kubernetescorev1.NewSecret(ctx, vars.NoAuthUserSecretName,
+					&kubernetescorev1.SecretArgs{
+						Metadata: &kubernetesmeta.ObjectMetaArgs{
+							Name:      pulumi.String(vars.NoAuthUserSecretName),
+							Namespace: pulumi.String(locals.Namespace),
+							Labels:    pulumi.ToStringMap(locals.Labels),
+						},
+						StringData: pulumi.StringMap{
+							vars.NatsUserSecretKeyUsername: pulumi.String(vars.NoAuthUsername),
+							vars.NatsUserSecretKeyPassword: pulumi.String(vars.NoAuthPassword),
+						},
+						Type: pulumi.String("Opaque"),
+					}, pulumi.Parent(parent))
+				if err != nil {
+					return errors.Wrap(err, "create no-auth secret")
+				}
+			}
+
+			// surface password-key so ops can fetch it quickly
+			ctx.Export(OpAuthSecretKey, pulumi.String(vars.NatsUserSecretKeyPassword))
+
 			// 1. enable basic-auth but leave the chart’s users list empty
 			values["auth"] = pulumi.Map{
 				"enabled": pulumi.Bool(true),
@@ -204,7 +195,10 @@ func helmChart(ctx *pulumi.Context, locals *Locals, parent pulumi.Resource) erro
 			users := pulumi.Array{
 				pulumi.Map{
 					"username": pulumi.String(vars.AdminUsername),
-					"password": pulumi.Sprintf("$%s", vars.AdminUserPasswordEnvVarName),
+					// WARNING: Helm renders "$VAR" in quotes, so NATS never substitutes it.
+					// As a workaround use literal password
+					//"password": pulumi.Sprintf("$%s", vars.AdminUserPasswordEnvVarName),
+					"password": adminPass.Result,
 				},
 			}
 
