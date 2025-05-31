@@ -21,9 +21,11 @@ var vars = struct {
 
 	TlsCertKey string // key holding cert+key bundle in TLS Secret
 
+	AdminUsername string
 	// Username assigned to unauthenticated ("no-auth") clients.
-	NoAuthUsername string
-	NoAuthPassword string
+	NoAuthUsername              string
+	NoAuthPassword              string
+	AdminUserPasswordEnvVarName string
 }{
 	HelmChartName:    "nats",
 	HelmChartRepoUrl: "https://nats-io.github.io/k8s/helm/charts",
@@ -46,7 +48,11 @@ var vars = struct {
 	// the "tls.crt" key to stay within a single KubernetesSecretKey field.
 	TlsCertKey: "tls.crt",
 
+	AdminUsername: "nats",
+
 	// Fixed username for unauthenticated / anonymous clients.
 	NoAuthUsername: "noauth",
 	NoAuthPassword: "nopassword", // not used, but kept for consistency
+
+	AdminUserPasswordEnvVarName: "NATS_ADMIN_PASSWORD", // env var name for admin password
 }

@@ -30,10 +30,6 @@ func Resources(ctx *pulumi.Context,
 	}
 
 	// ----------------------------- secrets --------------------------------
-	err = authSecret(ctx, locals, createdNamespace)
-	if err != nil {
-		return errors.Wrap(err, "failed to create auth secret")
-	}
 	if err := tlsSecret(ctx, locals, createdNamespace); err != nil {
 		return errors.Wrap(err, "failed to create TLS secret")
 	}
