@@ -18,8 +18,6 @@ type Locals struct {
 	NatsKubernetes    *natskubernetesv1.NatsKubernetes
 	ClientURLInternal string
 	ClientURLExternal string
-	AuthSecretName    string
-	AuthSecretKey     string
 	TlsSecretName     string
 	TlsSecretKey      string
 }
@@ -78,10 +76,8 @@ func initializeLocals(ctx *pulumi.Context,
 
 	// -------------------- auth / token secret outputs ------------------------
 	// Secret names are deterministic so callers / automation can pre-bake RBAC.
-	locals.AuthSecretName = fmt.Sprintf("auth-%s", locals.Namespace)
-	locals.AuthSecretKey = vars.AuthSecretKey
-	ctx.Export(OpAuthSecretName, pulumi.String(locals.AuthSecretName))
-	ctx.Export(OpAuthSecretKey, pulumi.String(locals.AuthSecretKey))
+	ctx.Export(OpAuthSecretName, pulumi.String(vars.AdminAuthSecretName))
+	ctx.Export(OpAuthSecretKey, pulumi.String(vars.AdminAuthSecretKey))
 
 	// ----------------------- TLS certificate secret --------------------------
 	if target.Spec.TlsEnabled {

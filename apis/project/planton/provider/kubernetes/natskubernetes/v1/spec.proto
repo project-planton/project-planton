@@ -70,10 +70,21 @@ enum NatsKubernetesAuthScheme {
   basic_auth = 2;
 }
 
+// configuration for an unauthenticated ("no-auth") user.
+message NatsKubernetesNoAuthUser {
+  // enables the unauthenticated user when true.
+  bool enabled = 1;
+  // subjects on which the unauthenticated user may publish.
+  // at least one subject must be specified when enabled is true.
+  repeated string publish_subjects = 2;
+}
+
 // NatsKubernetesAuth holds the authentication configuration for the nats cluster.
 message NatsKubernetesAuth {
   // toggle to enable authentication for the nats cluster.
   bool enabled = 1;
   // authentication scheme for the nats cluster.
   NatsKubernetesAuthScheme scheme = 2;
+  // optional no-auth user configuration.
+  NatsKubernetesNoAuthUser no_auth_user = 3;
 }
