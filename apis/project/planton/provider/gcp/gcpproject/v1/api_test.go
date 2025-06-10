@@ -25,7 +25,8 @@ var _ = Describe("GcpProject Custom Validation Tests", func() {
 				Name: "a-test-name",
 			},
 			Spec: &GcpProjectSpec{
-				OrgId:            "123456789012",
+				ParentType:       GcpProjectParentType_organization,
+				ParentId:         "123456789012",
 				BillingAccountId: "0123AB-4567CD-89EFGH",
 				Labels: map[string]string{
 					"env": "dev",
@@ -100,29 +101,6 @@ var _ = Describe("GcpProject Custom Validation Tests", func() {
 
 			It("should reject an invalid email", func() {
 				input.Spec.OwnerMember = "user:bob@example.com"
-				err := protovalidate.Validate(input)
-				Expect(err).NotTo(BeNil())
-			})
-		})
-
-		Context("orgId vs folderId exclusivity", func() {
-			It("should be valid when only folderId is set", func() {
-				input.Spec.OrgId = ""
-				input.Spec.FolderId = "987654321098"
-				err := protovalidate.Validate(input)
-				Expect(err).To(BeNil())
-			})
-
-			It("should reject when both orgId and folderId are set", func() {
-				input.Spec.OrgId = "123456789012"
-				input.Spec.FolderId = "987654321098"
-				err := protovalidate.Validate(input)
-				Expect(err).NotTo(BeNil())
-			})
-
-			It("should reject when neither orgId nor folderId is set", func() {
-				input.Spec.OrgId = ""
-				input.Spec.FolderId = ""
 				err := protovalidate.Validate(input)
 				Expect(err).NotTo(BeNil())
 			})

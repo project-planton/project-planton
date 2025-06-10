@@ -23,6 +23,56 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// GcpProjectParentType defines the type of parent resource under which
+type GcpProjectParentType int32
+
+const (
+	GcpProjectParentType_gcp_project_parent_type_unspecified GcpProjectParentType = 0
+	GcpProjectParentType_organization                        GcpProjectParentType = 1
+	GcpProjectParentType_folder                              GcpProjectParentType = 2
+)
+
+// Enum value maps for GcpProjectParentType.
+var (
+	GcpProjectParentType_name = map[int32]string{
+		0: "gcp_project_parent_type_unspecified",
+		1: "organization",
+		2: "folder",
+	}
+	GcpProjectParentType_value = map[string]int32{
+		"gcp_project_parent_type_unspecified": 0,
+		"organization":                        1,
+		"folder":                              2,
+	}
+)
+
+func (x GcpProjectParentType) Enum() *GcpProjectParentType {
+	p := new(GcpProjectParentType)
+	*p = x
+	return p
+}
+
+func (x GcpProjectParentType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (GcpProjectParentType) Descriptor() protoreflect.EnumDescriptor {
+	return file_project_planton_provider_gcp_gcpproject_v1_spec_proto_enumTypes[0].Descriptor()
+}
+
+func (GcpProjectParentType) Type() protoreflect.EnumType {
+	return &file_project_planton_provider_gcp_gcpproject_v1_spec_proto_enumTypes[0]
+}
+
+func (x GcpProjectParentType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use GcpProjectParentType.Descriptor instead.
+func (GcpProjectParentType) EnumDescriptor() ([]byte, []int) {
+	return file_project_planton_provider_gcp_gcpproject_v1_spec_proto_rawDescGZIP(), []int{0}
+}
+
 // GcpProjectSpec captures the minimal configuration required to create
 // a Google Cloud project, attach it to your resource hierarchy, link a
 // billing account, apply standard labels, (optionally) remove the default
@@ -33,12 +83,10 @@ const (
 // constraints, etc.—should be handled by dedicated resources.
 type GcpProjectSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// Organization ID (numeric string) under which the project is created.
-	// Mutually exclusive with folder_id—exactly one parent must be provided.
-	OrgId string `protobuf:"bytes,1,opt,name=org_id,json=orgId,proto3" json:"org_id,omitempty"`
-	// Folder ID (numeric string) under which the project is created.
-	// Mutually exclusive with org_id.
-	FolderId string `protobuf:"bytes,2,opt,name=folder_id,json=folderId,proto3" json:"folder_id,omitempty"`
+	// The type of parent resource under which the project is created.
+	ParentType GcpProjectParentType `protobuf:"varint,1,opt,name=parent_type,json=parentType,proto3,enum=project.planton.provider.gcp.gcpproject.v1.GcpProjectParentType" json:"parent_type,omitempty"`
+	// Organization ID/Folder ID (numeric string) under which the project is created.
+	ParentId string `protobuf:"bytes,2,opt,name=parent_id,json=parentId,proto3" json:"parent_id,omitempty"`
 	// Billing account ID in the form "0123AB-4567CD-89EFGH".
 	// Strongly recommended for any project that will use billable services.
 	BillingAccountId string `protobuf:"bytes,3,opt,name=billing_account_id,json=billingAccountId,proto3" json:"billing_account_id,omitempty"`
@@ -94,16 +142,16 @@ func (*GcpProjectSpec) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_gcp_gcpproject_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *GcpProjectSpec) GetOrgId() string {
+func (x *GcpProjectSpec) GetParentType() GcpProjectParentType {
 	if x != nil {
-		return x.OrgId
+		return x.ParentType
 	}
-	return ""
+	return GcpProjectParentType_gcp_project_parent_type_unspecified
 }
 
-func (x *GcpProjectSpec) GetFolderId() string {
+func (x *GcpProjectSpec) GetParentId() string {
 	if x != nil {
-		return x.FolderId
+		return x.ParentId
 	}
 	return ""
 }
@@ -147,10 +195,11 @@ var File_project_planton_provider_gcp_gcpproject_v1_spec_proto protoreflect.File
 
 const file_project_planton_provider_gcp_gcpproject_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"5project/planton/provider/gcp/gcpproject/v1/spec.proto\x12*project.planton.provider.gcp.gcpproject.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\"\x9c\x05\n" +
-	"\x0eGcpProjectSpec\x12\x15\n" +
-	"\x06org_id\x18\x01 \x01(\tR\x05orgId\x12\x1b\n" +
-	"\tfolder_id\x18\x02 \x01(\tR\bfolderId\x12Z\n" +
+	"5project/planton/provider/gcp/gcpproject/v1/spec.proto\x12*project.planton.provider.gcp.gcpproject.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\"\xc2\x04\n" +
+	"\x0eGcpProjectSpec\x12a\n" +
+	"\vparent_type\x18\x01 \x01(\x0e2@.project.planton.provider.gcp.gcpproject.v1.GcpProjectParentTypeR\n" +
+	"parentType\x12\x1b\n" +
+	"\tparent_id\x18\x02 \x01(\tR\bparentId\x12Z\n" +
 	"\x12billing_account_id\x18\x03 \x01(\tB,\xbaH)r'2%^[A-Z0-9]{6}-[A-Z0-9]{6}-[A-Z0-9]{6}$R\x10billingAccountId\x12^\n" +
 	"\x06labels\x18\x04 \x03(\v2F.project.planton.provider.gcp.gcpproject.v1.GcpProjectSpec.LabelsEntryR\x06labels\x12@\n" +
 	"\x17disable_default_network\x18\x05 \x01(\bB\b\x8a\xa6\x1d\x04trueR\x15disableDefaultNetwork\x12K\n" +
@@ -158,8 +207,12 @@ const file_project_planton_provider_gcp_gcpproject_v1_spec_proto_rawDesc = "" +
 	"\fowner_member\x18\a \x01(\tB\a\xbaH\x04r\x02`\x01R\vownerMember\x1a9\n" +
 	"\vLabelsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:\xa3\x01\xbaH\x9f\x01\x1a\x9c\x01\n" +
-	"\x1cgcp-project.parent.exclusive\x1a|((size(this.org_id) > 0) == (size(this.folder_id) > 0))? 'Exactly one of org_id or folder_id must be set, but not both.': ''B\xf3\x02\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01*]\n" +
+	"\x14GcpProjectParentType\x12'\n" +
+	"#gcp_project_parent_type_unspecified\x10\x00\x12\x10\n" +
+	"\forganization\x10\x01\x12\n" +
+	"\n" +
+	"\x06folder\x10\x02B\xf3\x02\n" +
 	".com.project.planton.provider.gcp.gcpproject.v1B\tSpecProtoP\x01Zggithub.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpproject/v1;gcpprojectv1\xa2\x02\x05PPPGG\xaa\x02*Project.Planton.Provider.Gcp.Gcpproject.V1\xca\x02*Project\\Planton\\Provider\\Gcp\\Gcpproject\\V1\xe2\x026Project\\Planton\\Provider\\Gcp\\Gcpproject\\V1\\GPBMetadata\xea\x02/Project::Planton::Provider::Gcp::Gcpproject::V1b\x06proto3"
 
 var (
@@ -174,18 +227,21 @@ func file_project_planton_provider_gcp_gcpproject_v1_spec_proto_rawDescGZIP() []
 	return file_project_planton_provider_gcp_gcpproject_v1_spec_proto_rawDescData
 }
 
+var file_project_planton_provider_gcp_gcpproject_v1_spec_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_project_planton_provider_gcp_gcpproject_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_gcp_gcpproject_v1_spec_proto_goTypes = []any{
-	(*GcpProjectSpec)(nil), // 0: project.planton.provider.gcp.gcpproject.v1.GcpProjectSpec
-	nil,                    // 1: project.planton.provider.gcp.gcpproject.v1.GcpProjectSpec.LabelsEntry
+	(GcpProjectParentType)(0), // 0: project.planton.provider.gcp.gcpproject.v1.GcpProjectParentType
+	(*GcpProjectSpec)(nil),    // 1: project.planton.provider.gcp.gcpproject.v1.GcpProjectSpec
+	nil,                       // 2: project.planton.provider.gcp.gcpproject.v1.GcpProjectSpec.LabelsEntry
 }
 var file_project_planton_provider_gcp_gcpproject_v1_spec_proto_depIdxs = []int32{
-	1, // 0: project.planton.provider.gcp.gcpproject.v1.GcpProjectSpec.labels:type_name -> project.planton.provider.gcp.gcpproject.v1.GcpProjectSpec.LabelsEntry
-	1, // [1:1] is the sub-list for method output_type
-	1, // [1:1] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	0, // 0: project.planton.provider.gcp.gcpproject.v1.GcpProjectSpec.parent_type:type_name -> project.planton.provider.gcp.gcpproject.v1.GcpProjectParentType
+	2, // 1: project.planton.provider.gcp.gcpproject.v1.GcpProjectSpec.labels:type_name -> project.planton.provider.gcp.gcpproject.v1.GcpProjectSpec.LabelsEntry
+	2, // [2:2] is the sub-list for method output_type
+	2, // [2:2] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_provider_gcp_gcpproject_v1_spec_proto_init() }
@@ -198,13 +254,14 @@ func file_project_planton_provider_gcp_gcpproject_v1_spec_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_project_planton_provider_gcp_gcpproject_v1_spec_proto_rawDesc), len(file_project_planton_provider_gcp_gcpproject_v1_spec_proto_rawDesc)),
-			NumEnums:      0,
+			NumEnums:      1,
 			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
 		GoTypes:           file_project_planton_provider_gcp_gcpproject_v1_spec_proto_goTypes,
 		DependencyIndexes: file_project_planton_provider_gcp_gcpproject_v1_spec_proto_depIdxs,
+		EnumInfos:         file_project_planton_provider_gcp_gcpproject_v1_spec_proto_enumTypes,
 		MessageInfos:      file_project_planton_provider_gcp_gcpproject_v1_spec_proto_msgTypes,
 	}.Build()
 	File_project_planton_provider_gcp_gcpproject_v1_spec_proto = out.File
