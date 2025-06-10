@@ -3,6 +3,7 @@ package module
 import (
 	"fmt"
 	"github.com/pkg/errors"
+	gcpprojectv1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpproject/v1"
 	"github.com/pulumi/pulumi-gcp/sdk/v8/go/gcp/organizations"
 	"github.com/pulumi/pulumi-random/sdk/v4/go/random"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
@@ -43,22 +44,27 @@ func project(ctx *pulumi.Context, locals *Locals) (*organizations.Project, error
 		return finalId, nil
 	}).(pulumi.StringOutput)
 
+	projectArgs := &organizations.ProjectArgs{
+		Name:              pulumi.String(locals.GcpProject.Metadata.Name),
+		ProjectId:         projectId,
+		BillingAccount:    pulumi.String(locals.GcpProject.Spec.BillingAccountId),
+		Labels:            pulumi.ToStringMap(locals.GcpLabels),
+		AutoCreateNetwork: pulumi.Bool(!locals.GcpProject.Spec.DisableDefaultNetwork),
+	}
+
+	if locals.GcpProject.Spec.ParentType == gcpprojectv1.GcpProjectParentType_organization {
+		projectArgs.OrgId = pulumi.String(locals.GcpProject.Spec.ParentId)
+	}
+	if locals.GcpProject.Spec.ParentType == gcpprojectv1.GcpProjectParentType_folder {
+		projectArgs.FolderId = pulumi.String(locals.GcpProject.Spec.ParentId)
+	}
+
 	// Create the GCP project using the generated projectId
-	createdProject, err := organizations.NewProject(ctx,
-		locals.GcpProject.Metadata.Name,
-		&organizations.ProjectArgs{
-			Name:              pulumi.String(locals.GcpProject.Metadata.Name),
-			ProjectId:         projectId,
-			BillingAccount:    pulumi.String(locals.GcpProject.Spec.BillingAccountId),
-			Labels:            pulumi.ToStringMap(locals.GcpLabels),
-			FolderId:          pulumi.String(locals.GcpProject.Spec.FolderId),
-			OrgId:             pulumi.String(locals.GcpProject.Spec.OrgId),
-			AutoCreateNetwork: pulumi.Bool(!locals.GcpProject.Spec.DisableDefaultNetwork),
-		},
-	)
+	createdProject, err := organizations.NewProject(ctx, locals.GcpProject.Metadata.Name, projectArgs)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to create GCP project")
 	}
+
 	return createdProject, nil
 }
 

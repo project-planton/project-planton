@@ -5,6 +5,13 @@ package project.planton.provider.gcp.gcpproject.v1;
 import "buf/validate/validate.proto";
 import "project/planton/shared/options/options.proto";
 
+// GcpProjectParentType defines the type of parent resource under which
+enum GcpProjectParentType {
+  gcp_project_parent_type_unspecified = 0;
+  organization = 1;
+  folder = 2;
+}
+
 // GcpProjectSpec captures the minimal configuration required to create
 // a Google Cloud project, attach it to your resource hierarchy, link a
 // billing account, apply standard labels, (optionally) remove the default
@@ -14,13 +21,11 @@ import "project/planton/shared/options/options.proto";
 // Advanced concerns—shared-VPC attachment, complex IAM matrices, org-policy
 // constraints, etc.—should be handled by dedicated resources.
 message GcpProjectSpec {
-  // Organization ID (numeric string) under which the project is created.
-  // Mutually exclusive with folder_id—exactly one parent must be provided.
-  string org_id = 1;
+  // The type of parent resource under which the project is created.
+  GcpProjectParentType parent_type = 1;
 
-  // Folder ID (numeric string) under which the project is created.
-  // Mutually exclusive with org_id.
-  string folder_id = 2;
+  // Organization ID/Folder ID (numeric string) under which the project is created.
+  string parent_id = 2;
 
   // Billing account ID in the form "0123AB-4567CD-89EFGH".
   // Strongly recommended for any project that will use billable services.
@@ -60,13 +65,4 @@ message GcpProjectSpec {
   string owner_member = 7 [
     (buf.validate.field).string.email = true
   ];
-
-  // CEL validation: exactly ONE of org_id or folder_id must be set.
-  option (buf.validate.message).cel = {
-    id: "gcp-project.parent.exclusive",
-    expression:
-        "((size(this.org_id) > 0) == (size(this.folder_id) > 0))"
-            "? 'Exactly one of org_id or folder_id must be set, but not both.'"
-            ": ''"
-  };
 }
