@@ -54,6 +54,8 @@ enum CloudResourceKind {
   GcpStaticWebsite = 610;
   GcpProject = 611;
   GcpVpc = 612;
+  GcpSubnetwork = 613;
+  GcpRouterNat = 614;
 
   // 800–999: Kubernetes resources
   ArgocdKubernetes = 800;

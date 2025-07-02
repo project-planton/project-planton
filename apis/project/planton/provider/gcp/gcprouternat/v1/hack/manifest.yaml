@@ -1,0 +1,6 @@
+apiVersion: gcp.project-planton.org/v1
+kind: GcpRouterNat
+metadata:
+  name: test-router-nat
+spec:
+# coming soon

@@ -70,6 +70,8 @@ const (
 	CloudResourceKind_GcpStaticWebsite        CloudResourceKind = 610
 	CloudResourceKind_GcpProject              CloudResourceKind = 611
 	CloudResourceKind_GcpVpc                  CloudResourceKind = 612
+	CloudResourceKind_GcpSubnetwork           CloudResourceKind = 613
+	CloudResourceKind_GcpRouterNat            CloudResourceKind = 614
 	// 800–999: Kubernetes resources
 	CloudResourceKind_ArgocdKubernetes         CloudResourceKind = 800
 	CloudResourceKind_CronJobKubernetes        CloudResourceKind = 801
@@ -139,6 +141,8 @@ var (
 		610: "GcpStaticWebsite",
 		611: "GcpProject",
 		612: "GcpVpc",
+		613: "GcpSubnetwork",
+		614: "GcpRouterNat",
 		800: "ArgocdKubernetes",
 		801: "CronJobKubernetes",
 		802: "ElasticsearchKubernetes",
@@ -204,6 +208,8 @@ var (
 		"GcpStaticWebsite":           610,
 		"GcpProject":                 611,
 		"GcpVpc":                     612,
+		"GcpSubnetwork":              613,
+		"GcpRouterNat":               614,
 		"ArgocdKubernetes":           800,
 		"CronJobKubernetes":          801,
 		"ElasticsearchKubernetes":    802,
@@ -261,8 +267,7 @@ var File_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto prot
 
 const file_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto_rawDesc = "" +
 	"\n" +
-	"Bproject/planton/shared/cloudresourcekind/cloud_resource_kind.proto\x12(project.planton.shared.cloudresourcekind*\xfd\n" +
-	"\n" +
+	"Bproject/planton/shared/cloudresourcekind/cloud_resource_kind.proto\x12(project.planton.shared.cloudresourcekind*\xa4\v\n" +
 	"\x11CloudResourceKind\x12\x0f\n" +
 	"\vunspecified\x10\x00\x12\x1d\n" +
 	"\x19FirstTestCloudApiResource\x10\x01\x12\x1e\n" +
@@ -307,7 +312,9 @@ const file_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto_ra
 	"\x10GcpStaticWebsite\x10\xe2\x04\x12\x0f\n" +
 	"\n" +
 	"GcpProject\x10\xe3\x04\x12\v\n" +
-	"\x06GcpVpc\x10\xe4\x04\x12\x15\n" +
+	"\x06GcpVpc\x10\xe4\x04\x12\x12\n" +
+	"\rGcpSubnetwork\x10\xe5\x04\x12\x11\n" +
+	"\fGcpRouterNat\x10\xe6\x04\x12\x15\n" +
 	"\x10ArgocdKubernetes\x10\xa0\x06\x12\x16\n" +
 	"\x11CronJobKubernetes\x10\xa1\x06\x12\x1c\n" +
 	"\x17ElasticsearchKubernetes\x10\xa2\x06\x12\x15\n" +
