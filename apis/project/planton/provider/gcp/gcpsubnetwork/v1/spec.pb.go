@@ -8,7 +8,7 @@ package gcpsubnetworkv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	_ "github.com/project-planton/project-planton/apis/project/planton/shared/foreignkey/v1"
+	v1 "github.com/project-planton/project-planton/apis/project/planton/shared/foreignkey/v1"
 	_ "github.com/project-planton/project-planton/apis/project/planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -27,22 +27,24 @@ const (
 // GcpSubnetworkSpec defines the user-provided settings for a GCP Subnetwork (custom mode).
 type GcpSubnetworkSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
+	// The GCP project ID in which to create this subnetwork.
+	ProjectId *v1.StringValueOrRef `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	// Reference to the parent VPC network (must be an existing GcpVpc).
 	// This should point to the VPC's selfLink for the network:contentReference[oaicite:8]{index=8}.
-	VpcSelfLink string `protobuf:"bytes,1,opt,name=vpc_self_link,json=vpcSelfLink,proto3" json:"vpc_self_link,omitempty"`
+	VpcSelfLink *v1.StringValueOrRef `protobuf:"bytes,2,opt,name=vpc_self_link,json=vpcSelfLink,proto3" json:"vpc_self_link,omitempty"`
 	// Region in which to create this subnet (e.g. "us-west1").
 	// Must be a valid GCP region code (ends with a digit) and cannot be changed after creation.
-	Region string `protobuf:"bytes,2,opt,name=region,proto3" json:"region,omitempty"`
+	Region string `protobuf:"bytes,3,opt,name=region,proto3" json:"region,omitempty"`
 	// Primary IPv4 CIDR range for the subnet. Example: "10.0.0.0/16".
 	// Must be unique and non-overlapping within the VPC. Only IPv4 ranges are supported:contentReference[oaicite:9]{index=9}.
-	IpCidrRange string `protobuf:"bytes,3,opt,name=ip_cidr_range,json=ipCidrRange,proto3" json:"ip_cidr_range,omitempty"`
+	IpCidrRange string `protobuf:"bytes,4,opt,name=ip_cidr_range,json=ipCidrRange,proto3" json:"ip_cidr_range,omitempty"`
 	// Secondary IP ranges for alias IPs (e.g., for GKE Pod or Service IPs). Optional.
 	// Each secondary range has a name (1-63 chars, lowercase alphanumeric or '-') and an IPv4 CIDR.
 	// Up to 170 secondary ranges can be defined per subnet:contentReference[oaicite:10]{index=10} (typical usage is one or two).
-	SecondaryIpRanges []*GcpSubnetworkSecondaryRange `protobuf:"bytes,4,rep,name=secondary_ip_ranges,json=secondaryIpRanges,proto3" json:"secondary_ip_ranges,omitempty"`
+	SecondaryIpRanges []*GcpSubnetworkSecondaryRange `protobuf:"bytes,5,rep,name=secondary_ip_ranges,json=secondaryIpRanges,proto3" json:"secondary_ip_ranges,omitempty"`
 	// Whether to enable Private Google Access on this subnet.
 	// If true, VMs without external IPs in this subnet can access Google APIs internally:contentReference[oaicite:11]{index=11}.
-	PrivateIpGoogleAccess bool `protobuf:"varint,5,opt,name=private_ip_google_access,json=privateIpGoogleAccess,proto3" json:"private_ip_google_access,omitempty"`
+	PrivateIpGoogleAccess bool `protobuf:"varint,6,opt,name=private_ip_google_access,json=privateIpGoogleAccess,proto3" json:"private_ip_google_access,omitempty"`
 	unknownFields         protoimpl.UnknownFields
 	sizeCache             protoimpl.SizeCache
 }
@@ -77,11 +79,18 @@ func (*GcpSubnetworkSpec) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_gcp_gcpsubnetwork_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *GcpSubnetworkSpec) GetVpcSelfLink() string {
+func (x *GcpSubnetworkSpec) GetProjectId() *v1.StringValueOrRef {
+	if x != nil {
+		return x.ProjectId
+	}
+	return nil
+}
+
+func (x *GcpSubnetworkSpec) GetVpcSelfLink() *v1.StringValueOrRef {
 	if x != nil {
 		return x.VpcSelfLink
 	}
-	return ""
+	return nil
 }
 
 func (x *GcpSubnetworkSpec) GetRegion() string {
@@ -172,13 +181,15 @@ var File_project_planton_provider_gcp_gcpsubnetwork_v1_spec_proto protoreflect.F
 
 const file_project_planton_provider_gcp_gcpsubnetwork_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"8project/planton/provider/gcp/gcpsubnetwork/v1/spec.proto\x12-project.planton.provider.gcp.gcpsubnetwork.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\"\xb0\x03\n" +
-	"\x11GcpSubnetworkSpec\x12S\n" +
-	"\rvpc_self_link\x18\x01 \x01(\tB/\xbaH\x03\xc8\x01\x01\x88\xd4a\xe4\x04\x92\xd4a status.outputs.network_self_linkR\vvpcSelfLink\x12>\n" +
-	"\x06region\x18\x02 \x01(\tB&\xbaH#\xc8\x01\x01r\x1e2\x1c^[a-z]([-a-z0-9]*[a-z0-9])?$R\x06region\x12F\n" +
-	"\rip_cidr_range\x18\x03 \x01(\tB\"\xbaH\x1f\xc8\x01\x01r\x1a2\x18^\\d+\\.\\d+\\.\\d+\\.\\d+/\\d+$R\vipCidrRange\x12z\n" +
-	"\x13secondary_ip_ranges\x18\x04 \x03(\v2J.project.planton.provider.gcp.gcpsubnetwork.v1.GcpSubnetworkSecondaryRangeR\x11secondaryIpRanges\x12B\n" +
-	"\x18private_ip_google_access\x18\x05 \x01(\bB\t\x8a\xa6\x1d\x05falseR\x15privateIpGoogleAccess\"\xb0\x01\n" +
+	"8project/planton/provider/gcp/gcpsubnetwork/v1/spec.proto\x12-project.planton.provider.gcp.gcpsubnetwork.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\"\xdf\x04\n" +
+	"\x11GcpSubnetworkSpec\x12\x7f\n" +
+	"\n" +
+	"project_id\x18\x01 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB(\xbaH\x03\xc8\x01\x01\x88\xd4a\xe3\x04\x92\xd4a\x19status.outputs.project_idR\tprojectId\x12\x8b\x01\n" +
+	"\rvpc_self_link\x18\x02 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB/\xbaH\x03\xc8\x01\x01\x88\xd4a\xe4\x04\x92\xd4a status.outputs.network_self_linkR\vvpcSelfLink\x12>\n" +
+	"\x06region\x18\x03 \x01(\tB&\xbaH#\xc8\x01\x01r\x1e2\x1c^[a-z]([-a-z0-9]*[a-z0-9])?$R\x06region\x12F\n" +
+	"\rip_cidr_range\x18\x04 \x01(\tB\"\xbaH\x1f\xc8\x01\x01r\x1a2\x18^\\d+\\.\\d+\\.\\d+\\.\\d+/\\d+$R\vipCidrRange\x12z\n" +
+	"\x13secondary_ip_ranges\x18\x05 \x03(\v2J.project.planton.provider.gcp.gcpsubnetwork.v1.GcpSubnetworkSecondaryRangeR\x11secondaryIpRanges\x127\n" +
+	"\x18private_ip_google_access\x18\x06 \x01(\bR\x15privateIpGoogleAccess\"\xb0\x01\n" +
 	"\x1bGcpSubnetworkSecondaryRange\x12I\n" +
 	"\n" +
 	"range_name\x18\x01 \x01(\tB*\xbaH'\xc8\x01\x01r\"\x10\x01\x18?2\x1c^[a-z]([-a-z0-9]*[a-z0-9])?$R\trangeName\x12F\n" +
@@ -201,14 +212,17 @@ var file_project_planton_provider_gcp_gcpsubnetwork_v1_spec_proto_msgTypes = mak
 var file_project_planton_provider_gcp_gcpsubnetwork_v1_spec_proto_goTypes = []any{
 	(*GcpSubnetworkSpec)(nil),           // 0: project.planton.provider.gcp.gcpsubnetwork.v1.GcpSubnetworkSpec
 	(*GcpSubnetworkSecondaryRange)(nil), // 1: project.planton.provider.gcp.gcpsubnetwork.v1.GcpSubnetworkSecondaryRange
+	(*v1.StringValueOrRef)(nil),         // 2: project.planton.shared.foreignkey.v1.StringValueOrRef
 }
 var file_project_planton_provider_gcp_gcpsubnetwork_v1_spec_proto_depIdxs = []int32{
-	1, // 0: project.planton.provider.gcp.gcpsubnetwork.v1.GcpSubnetworkSpec.secondary_ip_ranges:type_name -> project.planton.provider.gcp.gcpsubnetwork.v1.GcpSubnetworkSecondaryRange
-	1, // [1:1] is the sub-list for method output_type
-	1, // [1:1] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	2, // 0: project.planton.provider.gcp.gcpsubnetwork.v1.GcpSubnetworkSpec.project_id:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
+	2, // 1: project.planton.provider.gcp.gcpsubnetwork.v1.GcpSubnetworkSpec.vpc_self_link:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
+	1, // 2: project.planton.provider.gcp.gcpsubnetwork.v1.GcpSubnetworkSpec.secondary_ip_ranges:type_name -> project.planton.provider.gcp.gcpsubnetwork.v1.GcpSubnetworkSecondaryRange
+	3, // [3:3] is the sub-list for method output_type
+	3, // [3:3] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_provider_gcp_gcpsubnetwork_v1_spec_proto_init() }

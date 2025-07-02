@@ -10,40 +10,43 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// Locals keeps frequently‑used values (metadata, labels, credentials) handy for the module.
+// Locals aggregates frequently used input data so the rest of the module
+// can reference short paths like locals.GcpSubnetwork.Metadata.Name rather
+// than drilling into the original stackInput every time.
 type Locals struct {
 	GcpCredentialSpec *gcpcredentialv1.GcpCredentialSpec
-	GcpSubnetwork            *gcpsubnetworkv1.GcpSubnetwork
+	GcpSubnetwork     *gcpsubnetworkv1.GcpSubnetwork
 	GcpLabels         map[string]string
 }
 
-// initializeLocals populates the Locals struct from the stack input.
-// It mirrors the pattern used in the gcp_gke_cluster module and applies the same Planton label strategy.
-func initializeLocals(_ *pulumi.Context, stackInput *gcpsubnetworkv1.GcpSubnetworkStackInput) *Locals {
+// initializeLocals populates the Locals struct and derives a canonical set
+// of GCP labels from the API‑resource metadata.  No additional logic is
+// performed; we simply expose the values so other files stay terse and
+// Terraform‑like.
+func initializeLocals(_ *pulumi.Context, input *gcpsubnetworkv1.GcpSubnetworkStackInput) *Locals {
 	locals := &Locals{}
+	locals.GcpSubnetwork = input.Target
 
-	locals.GcpSubnetwork = stackInput.Target
-
-	// Standard Planton‑wide labels for GCP resources
+	// Base labels – always present.
 	locals.GcpLabels = map[string]string{
 		gcplabelkeys.Resource:     strconv.FormatBool(true),
-		gcplabelkeys.ResourceName: locals.GcpSubnetwork.Metadata.Name,
+		gcplabelkeys.ResourceName: input.Target.Metadata.Name,
 		gcplabelkeys.ResourceKind: cloudresourcekind.CloudResourceKind_GcpSubnetwork.String(),
 	}
 
-	if locals.GcpSubnetwork.Metadata.Org != "" {
-		locals.GcpLabels[gcplabelkeys.Organization] = locals.GcpSubnetwork.Metadata.Org
+	// Optional labels copied straight from metadata if the fields are set.
+	if input.Target.Metadata.Org != "" {
+		locals.GcpLabels[gcplabelkeys.Organization] = input.Target.Metadata.Org
 	}
 
-	if locals.GcpSubnetwork.Metadata.Env != "" {
-		locals.GcpLabels[gcplabelkeys.Environment] = locals.GcpSubnetwork.Metadata.Env
+	if input.Target.Metadata.Env != "" {
+		locals.GcpLabels[gcplabelkeys.Environment] = input.Target.Metadata.Env
 	}
 
-	if locals.GcpSubnetwork.Metadata.Id != "" {
-		locals.GcpLabels[gcplabelkeys.ResourceId] = locals.GcpSubnetwork.Metadata.Id
+	if input.Target.Metadata.Id != "" {
+		locals.GcpLabels[gcplabelkeys.ResourceId] = input.Target.Metadata.Id
 	}
 
-	locals.GcpCredentialSpec = stackInput.ProviderCredential
-
+	locals.GcpCredentialSpec = input.ProviderCredential
 	return locals
 }

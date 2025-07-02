@@ -1,5 +1,8 @@
 package module
 
 const (
-	OpNetworkSelfLink = "network_self_link"
+	OpSubnetworkSelfLink = "subnetwork_self_link"
+	OpRegion             = "region"
+	OpIpCidrRange        = "ip_cidr_range"
+	OpSecondaryRanges    = "secondary_ranges"
 )

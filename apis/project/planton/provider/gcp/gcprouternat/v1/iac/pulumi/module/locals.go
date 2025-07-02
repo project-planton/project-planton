@@ -10,40 +10,39 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// Locals keeps frequently used values (metadata, labels, credentials) handy for the module.
+// Locals collects frequently used input values and derived labels.
 type Locals struct {
 	GcpCredentialSpec *gcpcredentialv1.GcpCredentialSpec
 	GcpRouterNat      *gcprouternatv1.GcpRouterNat
 	GcpLabels         map[string]string
 }
 
-// initializeLocals populates the Locals struct from the stack input.
-// It mirrors the pattern used in the gcp_router_nat module and applies the same Planton label strategy.
+// initializeLocals converts the stack‑input into a struct that is easy to reference
+// (mirrors the Terraform “locals” pattern).
 func initializeLocals(_ *pulumi.Context, stackInput *gcprouternatv1.GcpRouterNatStackInput) *Locals {
-	locals := &Locals{}
+	target := stackInput.Target
 
-	locals.GcpRouterNat = stackInput.Target
-
-	// Standard Planton-wide labels for GCP resources
-	locals.GcpLabels = map[string]string{
+	labels := map[string]string{
 		gcplabelkeys.Resource:     strconv.FormatBool(true),
-		gcplabelkeys.ResourceName: locals.GcpRouterNat.Metadata.Name,
+		gcplabelkeys.ResourceName: target.Metadata.Name,
 		gcplabelkeys.ResourceKind: cloudresourcekind.CloudResourceKind_GcpRouterNat.String(),
 	}
 
-	if locals.GcpRouterNat.Metadata.Org != "" {
-		locals.GcpLabels[gcplabelkeys.Organization] = locals.GcpRouterNat.Metadata.Org
+	if target.Metadata.Org != "" {
+		labels[gcplabelkeys.Organization] = target.Metadata.Org
 	}
 
-	if locals.GcpRouterNat.Metadata.Env != "" {
-		locals.GcpLabels[gcplabelkeys.Environment] = locals.GcpRouterNat.Metadata.Env
+	if target.Metadata.Env != "" {
+		labels[gcplabelkeys.Environment] = target.Metadata.Env
 	}
 
-	if locals.GcpRouterNat.Metadata.Id != "" {
-		locals.GcpLabels[gcplabelkeys.ResourceId] = locals.GcpRouterNat.Metadata.Id
+	if target.Metadata.Id != "" {
+		labels[gcplabelkeys.ResourceId] = target.Metadata.Id
 	}
 
-	locals.GcpCredentialSpec = stackInput.ProviderCredential
-
-	return locals
+	return &Locals{
+		GcpCredentialSpec: stackInput.ProviderCredential,
+		GcpRouterNat:      target,
+		GcpLabels:         labels,
+	}
 }
