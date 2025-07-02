@@ -53,6 +53,7 @@ enum CloudResourceKind {
   GcpSecretsManager = 609;
   GcpStaticWebsite = 610;
   GcpProject = 611;
+  GcpVpc = 612;
 
   // 800–999: Kubernetes resources
   ArgocdKubernetes = 800;
