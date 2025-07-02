@@ -1,0 +1,86 @@
+syntax = "proto3";
+
+package project.planton.provider.gcp.gcpgkenodepool.v1;
+
+import "buf/validate/validate.proto";
+import "project/planton/shared/options/options.proto";
+import "project/planton/shared/foreignkey/v1/foreign_key.proto";
+
+// GcpGkeNodePoolSpec defines the configurable settings for a GKE cluster Node Pool.
+message GcpGkeNodePoolSpec {
+  // Reference to the parent GKE cluster (by name).
+  // Must refer to an existing GcpGkeCluster resource in the same environment.
+  project.planton.shared.foreignkey.v1.StringValueOrRef cluster_name = 1 [
+    (buf.validate.field).required = true,
+    (project.planton.shared.foreignkey.v1.default_kind) = GcpGkeClusterCore,
+    (project.planton.shared.foreignkey.v1.default_kind_field_path) = "metadata.name"
+  ];
+
+  // Machine type for node VMs (e.g., "e2-medium", "n1-standard-4").
+  // If unspecified, defaults to "e2-medium" (2 vCPU, 4 GB RAM).
+  string machine_type = 2 [
+    (project.planton.shared.options.default) = "e2-medium"
+  ];
+
+  // Size of boot disk (GB) for each node. Min 10 GB. Defaults to 100 GB if unset.
+  // Default 100 implied if not provided (handled in provisioning code or via options.default if supported).
+  uint32 disk_size_gb = 3;
+
+  // Type of boot disk: "pd-standard", "pd-ssd", or "pd-balanced".
+  // Defaults to "pd-standard" for unspecified.
+  string disk_type = 4 [
+    (project.planton.shared.options.default) = "pd-standard",
+    (buf.validate.field).string = {
+      in: ["pd-standard", "pd-ssd", "pd-balanced"]
+    }
+  ];
+
+  // Node image type (OS image). Default is "COS_CONTAINERD" (Container-Optimized OS with containerd).
+  string image_type = 5 [
+    (project.planton.shared.options.default) = "COS_CONTAINERD"
+    // (No validation on allowed values here; GKE accepts specific strings like "COS", "COS_CONTAINERD", "UBUNTU", etc.)
+  ];
+
+  // Service account email for nodes. If not provided, the GKE default node service account is used.
+  string service_account = 6;
+
+  // Auto-upgrade and Auto-repair settings for node management.
+  GcpGkeClusterNodePoolNodeManagement management = 7 [
+    (buf.validate.field).required = false
+  ];
+
+  // Whether to use Spot (preemptible) VMs for this node pool.
+  bool spot = 8;
+
+  // Kubernetes labels to apply to all nodes in this pool.
+  map<string, string> node_labels = 9;
+
+  // Oneof: either a fixed node count or autoscaling config must be provided.
+  oneof node_pool_size {
+    // Fixed number of nodes (no autoscaling).
+    uint32 node_count = 100;
+
+    // Autoscaling config for this node pool.
+    GcpGkeNodePoolAutoscaling autoscaling = 101;
+  }
+}
+
+// Nested message for autoscaler settings.
+message GcpGkeNodePoolAutoscaling {
+  // Minimum nodes (per zone) when autoscaling. 0 allows scale-to-zero.
+  uint32 min_nodes = 1;
+  // Maximum nodes (per zone) when autoscaling.
+  uint32 max_nodes = 2;
+  // (Optional) Location policy for scaling ("BALANCED" or "ANY").
+  string location_policy = 3 [
+    (project.planton.shared.options.default) = "BALANCED"
+  ];
+}
+
+// Node management settings for auto-upgrade/repair.
+message GcpGkeClusterNodePoolNodeManagement {
+  // Whether to enable automatic upgrades for nodes in this pool.
+  bool disable_auto_upgrade = 1;
+  // Whether to enable automatic repair of unhealthy nodes in this pool.
+  bool disable_auto_repair = 2;
+}
