@@ -1,0 +1,6 @@
+apiVersion: gcp.project-planton.org/v1
+kind: GcpGkeClusterCore
+metadata:
+  name: test-gke-cluster-core
+spec:
+# coming soon

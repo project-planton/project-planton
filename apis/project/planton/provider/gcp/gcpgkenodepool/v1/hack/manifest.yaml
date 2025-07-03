@@ -1,0 +1,6 @@
+apiVersion: gcp.project-planton.org/v1
+kind: GcpGkeNodePool
+metadata:
+  name: test-gke-node-pool
+spec:
+# coming soon

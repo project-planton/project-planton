@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package project.planton.provider.gcp.gcpgkeclustercore.v1;
+
+import "project/planton/credential/gcpcredential/v1/spec.proto";
+import "project/planton/credential/kubernetesclustercredential/v1/spec.proto";
+import "project/planton/provider/gcp/gcpgkeclustercore/v1/api.proto";
+import "project/planton/shared/iac/pulumi/pulumi.proto";
+import "project/planton/shared/iac/terraform/terraform.proto";
+import "project/planton/shared/iac.proto";
+
+//input for gcp-gke-cluster-core stack
+message GcpGkeClusterCoreStackInput {
+  //iac-provisioner
+  project.planton.shared.IacProvisioner provisioner = 1;
+  //pulumi input required when the provisioner is pulumi
+  project.planton.shared.iac.pulumi.PulumiStackInfo pulumi = 2;
+  //terraform input required when the provisioner is terraform
+  project.planton.shared.iac.terraform.TerraformStackInfo terraform = 3;
+  //target api-resource
+  GcpGkeClusterCore target = 4;
+  //gcp-credential
+  project.planton.credential.gcpcredential.v1.GcpCredentialSpec provider_credential = 5;
+}

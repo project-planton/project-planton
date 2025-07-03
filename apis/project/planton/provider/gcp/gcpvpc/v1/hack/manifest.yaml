@@ -1,0 +1,6 @@
+apiVersion: gcp.project-planton.org/v1
+kind: GcpVpc
+metadata:
+  name: test-vpc
+spec:
+# coming soon
