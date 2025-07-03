@@ -58,6 +58,8 @@ enum CloudResourceKind {
   GcpRouterNat = 614;
   GcpGkeClusterCore = 615;
   GcpGkeNodePool = 616;
+  GcpServiceAccount = 617;
+  GcpGkeWorkloadIdentityBinding = 618;
 
   // 800–999: Kubernetes resources
   ArgocdKubernetes = 800;
