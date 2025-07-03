@@ -85,4 +85,12 @@ enum CloudResourceKind {
   StackJobRunnerKubernetes = 820;
   TemporalKubernetes = 821;
   NatsKubernetes = 822;
+  CertManagerKubernetes = 823;
+  ElasticOperatorKubernetes = 824;
+  ExternalDnsKubernetes = 825;
+  IngressNginxKubernetes = 826;
+  IstioKubernetes = 827;
+  KafkaOperatorKubernetes = 828;
+  PostgresOperatorKubernetes = 829;
+  SolrOperatorKubernetes = 830;
 }

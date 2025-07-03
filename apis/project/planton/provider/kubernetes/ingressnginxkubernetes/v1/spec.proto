@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package project.planton.provider.kubernetes.ingressnginxkubernetes.v1;
+
+// IngressNginxKubernetesSpec defines the specification for the Ingress Nginx Kubernetes resource.
+message IngressNginxKubernetesSpec {
+  // Chart version (e.g. "4.10.1").
+  string chart_version = 1;
+  // flag to indicate if the ingress controller is internal or external
+  bool internal = 2;
+}
