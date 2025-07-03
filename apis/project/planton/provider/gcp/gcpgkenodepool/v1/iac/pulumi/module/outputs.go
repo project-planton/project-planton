@@ -1,9 +1,9 @@
 package module
 
-// Output keys exported by this Pulumi program so that the ProjectPlanton
-// engine can map them back into GcpRouterNatStackOutputs.
 const (
-	OpName           = "name"
-	OpRouterSelfLink = "router_self_link"
-	OpNatIpAddresses = "nat_ip_addresses"
+	OpNodePoolName      = "node_pool_name"
+	OpInstanceGroupUrls = "instance_group_urls"
+	OpMinNodes          = "min_nodes"
+	OpMaxNodes          = "max_nodes"
+	OpCurrentNodeCount  = "current_node_count"
 )

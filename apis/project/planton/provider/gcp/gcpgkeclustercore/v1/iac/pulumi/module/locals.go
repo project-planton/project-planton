@@ -1,48 +1,34 @@
 package module
 
 import (
-	"strconv"
-
-	gcpcredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/gcpcredential/v1"
-	gcprouternatv1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcprouternat/v1"
-	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
-	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/gcp/gcplabelkeys"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+	gcpgkeclustercorev1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpgkeclustercore/v1"
 )
 
-// Locals collects frequently used input values and derived labels.
+// Locals groups commonly accessed input data.
 type Locals struct {
-	GcpCredentialSpec *gcpcredentialv1.GcpCredentialSpec
-	GcpRouterNat      *gcprouternatv1.GcpRouterNat
-	GcpLabels         map[string]string
+	GcpGkeClusterCore *gcpgkeclustercorev1.GcpGkeClusterCore
+	ReleaseChannelStr string
 }
 
-// initializeLocals converts the stack‑input into a struct that is easy to reference
-// (mirrors the Terraform “locals” pattern).
-func initializeLocals(_ *pulumi.Context, stackInput *gcprouternatv1.GcpRouterNatStackInput) *Locals {
-	target := stackInput.Target
-
-	labels := map[string]string{
-		gcplabelkeys.Resource:     strconv.FormatBool(true),
-		gcplabelkeys.ResourceName: target.Metadata.Name,
-		gcplabelkeys.ResourceKind: cloudresourcekind.CloudResourceKind_GcpRouterNat.String(),
+// initializeLocals converts the raw stack input into a Locals struct.
+func initializeLocals(stackInput *gcpgkeclustercorev1.GcpGkeClusterCoreStackInput) *Locals {
+	l := &Locals{
+		GcpGkeClusterCore: stackInput.Target,
 	}
 
-	if target.Metadata.Org != "" {
-		labels[gcplabelkeys.Organization] = target.Metadata.Org
+	// Map the proto enum to the literal string Google expects.
+	switch l.GcpGkeClusterCore.Spec.ReleaseChannel {
+	case gcpgkeclustercorev1.GkeReleaseChannel_RAPID:
+		l.ReleaseChannelStr = "RAPID"
+	case gcpgkeclustercorev1.GkeReleaseChannel_REGULAR:
+		l.ReleaseChannelStr = "REGULAR"
+	case gcpgkeclustercorev1.GkeReleaseChannel_STABLE:
+		l.ReleaseChannelStr = "STABLE"
+	case gcpgkeclustercorev1.GkeReleaseChannel_NONE:
+		l.ReleaseChannelStr = "UNSPECIFIED"
+	default:
+		l.ReleaseChannelStr = "REGULAR" // sensible default
 	}
 
-	if target.Metadata.Env != "" {
-		labels[gcplabelkeys.Environment] = target.Metadata.Env
-	}
-
-	if target.Metadata.Id != "" {
-		labels[gcplabelkeys.ResourceId] = target.Metadata.Id
-	}
-
-	return &Locals{
-		GcpCredentialSpec: stackInput.ProviderCredential,
-		GcpRouterNat:      target,
-		GcpLabels:         labels,
-	}
+	return l
 }

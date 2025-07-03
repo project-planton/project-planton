@@ -1,48 +1,81 @@
 package module
 
 import (
+	"fmt"
 	"strconv"
 
 	gcpcredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/gcpcredential/v1"
-	gcprouternatv1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcprouternat/v1"
+	kubernetesclustercredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/kubernetesclustercredential/v1"
+	gcpgkenodepoolv1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpgkenodepool/v1"
 	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/gcp/gcplabelkeys"
+	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/kuberneteslabelkeys"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// Locals collects frequently used input values and derived labels.
+// Locals aggregates frequently‑used values so that downstream functions
+// can reference them without additional look‑ups or helpers.
+// Keeping this struct simple (no getters) helps mimic Terraform's "locals".
 type Locals struct {
-	GcpCredentialSpec *gcpcredentialv1.GcpCredentialSpec
-	GcpRouterNat      *gcprouternatv1.GcpRouterNat
-	GcpLabels         map[string]string
+	// Raw inputs
+	GcpCredentialSpec               *gcpcredentialv1.GcpCredentialSpec
+	KubernetesClusterCredentialSpec *kubernetesclustercredentialv1.KubernetesClusterCredentialSpec
+	GcpGkeNodePool                  *gcpgkenodepoolv1.GcpGkeNodePool
+
+	// Derived convenience values
+	GcpLabels        map[string]string
+	KubernetesLabels map[string]string
+	NetworkTag       string
+	ClusterName      string
 }
 
-// initializeLocals converts the stack‑input into a struct that is easy to reference
-// (mirrors the Terraform “locals” pattern).
-func initializeLocals(_ *pulumi.Context, stackInput *gcprouternatv1.GcpRouterNatStackInput) *Locals {
-	target := stackInput.Target
+// initializeLocals builds the Locals struct from the generated stack‑input message.
+// It follows exactly the pattern used by the existing GKE‑cluster module.
+func initializeLocals(ctx *pulumi.Context, stackInput *gcpgkenodepoolv1.GcpGkeNodePoolStackInput) *Locals {
+	locals := &Locals{}
 
-	labels := map[string]string{
+	locals.GcpGkeNodePool = stackInput.Target
+	locals.GcpCredentialSpec = stackInput.GcpCredential
+	locals.KubernetesClusterCredentialSpec = stackInput.KubernetesClusterCredential
+
+	// Attempt to resolve the parent cluster name from the foreign‑key field.
+	// We check both the literal value and any reference string; fallback to empty.
+	if stackInput.Target.Spec.ClusterName != nil {
+		locals.ClusterName = stackInput.Target.Spec.ClusterName.GetValue()
+	}
+
+	// Base label maps
+	locals.GcpLabels = map[string]string{
 		gcplabelkeys.Resource:     strconv.FormatBool(true),
-		gcplabelkeys.ResourceName: target.Metadata.Name,
-		gcplabelkeys.ResourceKind: cloudresourcekind.CloudResourceKind_GcpRouterNat.String(),
+		gcplabelkeys.ResourceName: locals.GcpGkeNodePool.Metadata.Name,
+		gcplabelkeys.ResourceKind: cloudresourcekind.CloudResourceKind_GcpGkeNodePool.String(),
+	}
+	locals.KubernetesLabels = map[string]string{
+		kuberneteslabelkeys.Resource:     strconv.FormatBool(true),
+		kuberneteslabelkeys.ResourceName: locals.GcpGkeNodePool.Metadata.Name,
+		kuberneteslabelkeys.ResourceKind: cloudresourcekind.CloudResourceKind_GcpGkeNodePool.String(),
 	}
 
-	if target.Metadata.Org != "" {
-		labels[gcplabelkeys.Organization] = target.Metadata.Org
+	// Optional metadata fields
+	if locals.GcpGkeNodePool.Metadata.Org != "" {
+		locals.GcpLabels[gcplabelkeys.Organization] = locals.GcpGkeNodePool.Metadata.Org
+		locals.KubernetesLabels[kuberneteslabelkeys.Organization] = locals.GcpGkeNodePool.Metadata.Org
+	}
+	if locals.GcpGkeNodePool.Metadata.Env != "" {
+		locals.GcpLabels[gcplabelkeys.Environment] = locals.GcpGkeNodePool.Metadata.Env
+		locals.KubernetesLabels[kuberneteslabelkeys.Environment] = locals.GcpGkeNodePool.Metadata.Env
+	}
+	if locals.GcpGkeNodePool.Metadata.Id != "" {
+		locals.GcpLabels[gcplabelkeys.ResourceId] = locals.GcpGkeNodePool.Metadata.Id
+		locals.KubernetesLabels[kuberneteslabelkeys.ResourceId] = locals.GcpGkeNodePool.Metadata.Id
 	}
 
-	if target.Metadata.Env != "" {
-		labels[gcplabelkeys.Environment] = target.Metadata.Env
+	// Network tag follows the same "gke-<clusterName>" convention as the cluster module.
+	if locals.ClusterName != "" {
+		locals.NetworkTag = fmt.Sprintf("gke-%s", locals.ClusterName)
+	} else {
+		locals.NetworkTag = fmt.Sprintf("gke-%s", locals.GcpGkeNodePool.Metadata.Name)
 	}
 
-	if target.Metadata.Id != "" {
-		labels[gcplabelkeys.ResourceId] = target.Metadata.Id
-	}
-
-	return &Locals{
-		GcpCredentialSpec: stackInput.ProviderCredential,
-		GcpRouterNat:      target,
-		GcpLabels:         labels,
-	}
+	return locals
 }

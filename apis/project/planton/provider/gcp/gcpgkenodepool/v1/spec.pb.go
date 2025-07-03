@@ -29,26 +29,29 @@ type GcpGkeNodePoolSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Reference to the parent GKE cluster (by name).
 	// Must refer to an existing GcpGkeCluster resource in the same environment.
-	ClusterName *v1.StringValueOrRef `protobuf:"bytes,1,opt,name=cluster_name,json=clusterName,proto3" json:"cluster_name,omitempty"`
+	ClusterProjectId *v1.StringValueOrRef `protobuf:"bytes,1,opt,name=cluster_project_id,json=clusterProjectId,proto3" json:"cluster_project_id,omitempty"`
+	// Reference to the parent GKE cluster (by name).
+	// Must refer to an existing GcpGkeCluster resource in the same environment.
+	ClusterName *v1.StringValueOrRef `protobuf:"bytes,2,opt,name=cluster_name,json=clusterName,proto3" json:"cluster_name,omitempty"`
 	// Machine type for node VMs (e.g., "e2-medium", "n1-standard-4").
 	// If unspecified, defaults to "e2-medium" (2 vCPU, 4 GB RAM).
-	MachineType string `protobuf:"bytes,2,opt,name=machine_type,json=machineType,proto3" json:"machine_type,omitempty"`
+	MachineType string `protobuf:"bytes,3,opt,name=machine_type,json=machineType,proto3" json:"machine_type,omitempty"`
 	// Size of boot disk (GB) for each node. Min 10 GB. Defaults to 100 GB if unset.
 	// Default 100 implied if not provided (handled in provisioning code or via options.default if supported).
-	DiskSizeGb uint32 `protobuf:"varint,3,opt,name=disk_size_gb,json=diskSizeGb,proto3" json:"disk_size_gb,omitempty"`
+	DiskSizeGb uint32 `protobuf:"varint,4,opt,name=disk_size_gb,json=diskSizeGb,proto3" json:"disk_size_gb,omitempty"`
 	// Type of boot disk: "pd-standard", "pd-ssd", or "pd-balanced".
 	// Defaults to "pd-standard" for unspecified.
-	DiskType string `protobuf:"bytes,4,opt,name=disk_type,json=diskType,proto3" json:"disk_type,omitempty"`
+	DiskType string `protobuf:"bytes,5,opt,name=disk_type,json=diskType,proto3" json:"disk_type,omitempty"`
 	// Node image type (OS image). Default is "COS_CONTAINERD" (Container-Optimized OS with containerd).
-	ImageType string `protobuf:"bytes,5,opt,name=image_type,json=imageType,proto3" json:"image_type,omitempty"`
+	ImageType string `protobuf:"bytes,6,opt,name=image_type,json=imageType,proto3" json:"image_type,omitempty"`
 	// Service account email for nodes. If not provided, the GKE default node service account is used.
-	ServiceAccount string `protobuf:"bytes,6,opt,name=service_account,json=serviceAccount,proto3" json:"service_account,omitempty"`
+	ServiceAccount string `protobuf:"bytes,7,opt,name=service_account,json=serviceAccount,proto3" json:"service_account,omitempty"`
 	// Auto-upgrade and Auto-repair settings for node management.
-	Management *GcpGkeClusterNodePoolNodeManagement `protobuf:"bytes,7,opt,name=management,proto3" json:"management,omitempty"`
+	Management *GcpGkeClusterNodePoolNodeManagement `protobuf:"bytes,8,opt,name=management,proto3" json:"management,omitempty"`
 	// Whether to use Spot (preemptible) VMs for this node pool.
-	Spot bool `protobuf:"varint,8,opt,name=spot,proto3" json:"spot,omitempty"`
+	Spot bool `protobuf:"varint,9,opt,name=spot,proto3" json:"spot,omitempty"`
 	// Kubernetes labels to apply to all nodes in this pool.
-	NodeLabels map[string]string `protobuf:"bytes,9,rep,name=node_labels,json=nodeLabels,proto3" json:"node_labels,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	NodeLabels map[string]string `protobuf:"bytes,10,rep,name=node_labels,json=nodeLabels,proto3" json:"node_labels,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	// Oneof: either a fixed node count or autoscaling config must be provided.
 	//
 	// Types that are valid to be assigned to NodePoolSize:
@@ -88,6 +91,13 @@ func (x *GcpGkeNodePoolSpec) ProtoReflect() protoreflect.Message {
 // Deprecated: Use GcpGkeNodePoolSpec.ProtoReflect.Descriptor instead.
 func (*GcpGkeNodePoolSpec) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_gcp_gcpgkenodepool_v1_spec_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *GcpGkeNodePoolSpec) GetClusterProjectId() *v1.StringValueOrRef {
+	if x != nil {
+		return x.ClusterProjectId
+	}
+	return nil
 }
 
 func (x *GcpGkeNodePoolSpec) GetClusterName() *v1.StringValueOrRef {
@@ -319,21 +329,23 @@ var File_project_planton_provider_gcp_gcpgkenodepool_v1_spec_proto protoreflect.
 
 const file_project_planton_provider_gcp_gcpgkenodepool_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"9project/planton/provider/gcp/gcpgkenodepool/v1/spec.proto\x12.project.planton.provider.gcp.gcpgkenodepool.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\"\xf9\x06\n" +
-	"\x12GcpGkeNodePoolSpec\x12w\n" +
-	"\fcluster_name\x18\x01 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB\x1c\xbaH\x03\xc8\x01\x01\x88\xd4a\xe7\x04\x92\xd4a\rmetadata.nameR\vclusterName\x120\n" +
-	"\fmachine_type\x18\x02 \x01(\tB\r\x8a\xa6\x1d\te2-mediumR\vmachineType\x12 \n" +
-	"\fdisk_size_gb\x18\x03 \x01(\rR\n" +
+	"9project/planton/provider/gcp/gcpgkenodepool/v1/spec.proto\x12.project.planton.provider.gcp.gcpgkenodepool.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\"\x80\b\n" +
+	"\x12GcpGkeNodePoolSpec\x12\x84\x01\n" +
+	"\x12cluster_project_id\x18\x01 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB\x1e\xbaH\x03\xc8\x01\x01\x88\xd4a\xe7\x04\x92\xd4a\x0fspec.project_idR\x10clusterProjectId\x12w\n" +
+	"\fcluster_name\x18\x02 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB\x1c\xbaH\x03\xc8\x01\x01\x88\xd4a\xe7\x04\x92\xd4a\rmetadata.nameR\vclusterName\x120\n" +
+	"\fmachine_type\x18\x03 \x01(\tB\r\x8a\xa6\x1d\te2-mediumR\vmachineType\x12 \n" +
+	"\fdisk_size_gb\x18\x04 \x01(\rR\n" +
 	"diskSizeGb\x12S\n" +
-	"\tdisk_type\x18\x04 \x01(\tB6\xbaH$r\"R\vpd-standardR\x06pd-ssdR\vpd-balanced\x8a\xa6\x1d\vpd-standardR\bdiskType\x121\n" +
+	"\tdisk_type\x18\x05 \x01(\tB6\xbaH$r\"R\vpd-standardR\x06pd-ssdR\vpd-balanced\x8a\xa6\x1d\vpd-standardR\bdiskType\x121\n" +
 	"\n" +
-	"image_type\x18\x05 \x01(\tB\x12\x8a\xa6\x1d\x0eCOS_CONTAINERDR\timageType\x12'\n" +
-	"\x0fservice_account\x18\x06 \x01(\tR\x0eserviceAccount\x12{\n" +
+	"image_type\x18\x06 \x01(\tB\x12\x8a\xa6\x1d\x0eCOS_CONTAINERDR\timageType\x12'\n" +
+	"\x0fservice_account\x18\a \x01(\tR\x0eserviceAccount\x12{\n" +
 	"\n" +
-	"management\x18\a \x01(\v2S.project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeClusterNodePoolNodeManagementB\x06\xbaH\x03\xc8\x01\x00R\n" +
+	"management\x18\b \x01(\v2S.project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeClusterNodePoolNodeManagementB\x06\xbaH\x03\xc8\x01\x00R\n" +
 	"management\x12\x12\n" +
-	"\x04spot\x18\b \x01(\bR\x04spot\x12s\n" +
-	"\vnode_labels\x18\t \x03(\v2R.project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePoolSpec.NodeLabelsEntryR\n" +
+	"\x04spot\x18\t \x01(\bR\x04spot\x12s\n" +
+	"\vnode_labels\x18\n" +
+	" \x03(\v2R.project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePoolSpec.NodeLabelsEntryR\n" +
 	"nodeLabels\x12\x1f\n" +
 	"\n" +
 	"node_count\x18d \x01(\rH\x00R\tnodeCount\x12m\n" +
@@ -372,15 +384,16 @@ var file_project_planton_provider_gcp_gcpgkenodepool_v1_spec_proto_goTypes = []a
 	(*v1.StringValueOrRef)(nil), // 4: project.planton.shared.foreignkey.v1.StringValueOrRef
 }
 var file_project_planton_provider_gcp_gcpgkenodepool_v1_spec_proto_depIdxs = []int32{
-	4, // 0: project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePoolSpec.cluster_name:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
-	2, // 1: project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePoolSpec.management:type_name -> project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeClusterNodePoolNodeManagement
-	3, // 2: project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePoolSpec.node_labels:type_name -> project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePoolSpec.NodeLabelsEntry
-	1, // 3: project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePoolSpec.autoscaling:type_name -> project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePoolAutoscaling
-	4, // [4:4] is the sub-list for method output_type
-	4, // [4:4] is the sub-list for method input_type
-	4, // [4:4] is the sub-list for extension type_name
-	4, // [4:4] is the sub-list for extension extendee
-	0, // [0:4] is the sub-list for field type_name
+	4, // 0: project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePoolSpec.cluster_project_id:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
+	4, // 1: project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePoolSpec.cluster_name:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
+	2, // 2: project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePoolSpec.management:type_name -> project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeClusterNodePoolNodeManagement
+	3, // 3: project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePoolSpec.node_labels:type_name -> project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePoolSpec.NodeLabelsEntry
+	1, // 4: project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePoolSpec.autoscaling:type_name -> project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePoolAutoscaling
+	5, // [5:5] is the sub-list for method output_type
+	5, // [5:5] is the sub-list for method input_type
+	5, // [5:5] is the sub-list for extension type_name
+	5, // [5:5] is the sub-list for extension extendee
+	0, // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_provider_gcp_gcpgkenodepool_v1_spec_proto_init() }
