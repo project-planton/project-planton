@@ -5,17 +5,19 @@ package project.planton.provider.kubernetes.addons.externaldnskubernetes.v1;
 import "buf/validate/validate.proto";
 import "project/planton/shared/foreignkey/v1/foreign_key.proto";
 import "project/planton/shared/options/options.proto";
+import "project/planton/shared/kubernetes/target_cluster.proto";
 
 // ExternalDnsKubernetesSpec defines configuration for ExternalDNS on any cluster.
 message ExternalDnsKubernetesSpec {
+  // The Kubernetes cluster to install this addon on.
+  project.planton.shared.kubernetes.KubernetesAddonTargetCluster target_cluster = 1;
   // Image tag such as "v0.13.6".
-  string image_tag = 1;
-
+  string image_tag = 2;
   //provider-specific glue. Only one may be set.
   oneof provider_config {
-    ExternalDnsGkeConfig gke = 100;
-    ExternalDnsEksConfig eks = 101;
-    ExternalDnsAksConfig aks = 102;
+    ExternalDnsGkeConfig gke = 200;
+    ExternalDnsEksConfig eks = 201;
+    ExternalDnsAksConfig aks = 202;
   }
 }
 

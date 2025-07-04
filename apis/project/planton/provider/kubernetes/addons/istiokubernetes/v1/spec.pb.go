@@ -28,10 +28,10 @@ const (
 // It includes container specifications and ingress settings to control resource allocation and external access.
 type IstioKubernetesSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
+	// The Kubernetes cluster to install this addon on.
+	TargetCluster *kubernetes.KubernetesAddonTargetCluster `protobuf:"bytes,1,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
 	// The container specifications for the GitLab deployment.
-	Container *IstioKubernetesSpecContainer `protobuf:"bytes,1,opt,name=container,proto3" json:"container,omitempty"`
-	// The ingress configuration for the GitLab deployment.
-	Ingress       *kubernetes.IngressSpec `protobuf:"bytes,3,opt,name=ingress,proto3" json:"ingress,omitempty"`
+	Container     *IstioKubernetesSpecContainer `protobuf:"bytes,2,opt,name=container,proto3" json:"container,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -66,16 +66,16 @@ func (*IstioKubernetesSpec) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_kubernetes_addons_istiokubernetes_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *IstioKubernetesSpec) GetContainer() *IstioKubernetesSpecContainer {
+func (x *IstioKubernetesSpec) GetTargetCluster() *kubernetes.KubernetesAddonTargetCluster {
 	if x != nil {
-		return x.Container
+		return x.TargetCluster
 	}
 	return nil
 }
 
-func (x *IstioKubernetesSpec) GetIngress() *kubernetes.IngressSpec {
+func (x *IstioKubernetesSpec) GetContainer() *IstioKubernetesSpecContainer {
 	if x != nil {
-		return x.Ingress
+		return x.Container
 	}
 	return nil
 }
@@ -131,10 +131,10 @@ var File_project_planton_provider_kubernetes_addons_istiokubernetes_v1_spec_prot
 
 const file_project_planton_provider_kubernetes_addons_istiokubernetes_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Hproject/planton/provider/kubernetes/addons/istiokubernetes/v1/spec.proto\x12=project.planton.provider.kubernetes.addons.istiokubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\"\xe3\x01\n" +
-	"\x13IstioKubernetesSpec\x12\x81\x01\n" +
-	"\tcontainer\x18\x01 \x01(\v2[.project.planton.provider.kubernetes.addons.istiokubernetes.v1.IstioKubernetesSpecContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\x12H\n" +
-	"\aingress\x18\x03 \x01(\v2..project.planton.shared.kubernetes.IngressSpecR\aingress\"\x96\x01\n" +
+	"Hproject/planton/provider/kubernetes/addons/istiokubernetes/v1/spec.proto\x12=project.planton.provider.kubernetes.addons.istiokubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\x1a6project/planton/shared/kubernetes/target_cluster.proto\"\x81\x02\n" +
+	"\x13IstioKubernetesSpec\x12f\n" +
+	"\x0etarget_cluster\x18\x01 \x01(\v2?.project.planton.shared.kubernetes.KubernetesAddonTargetClusterR\rtargetCluster\x12\x81\x01\n" +
+	"\tcontainer\x18\x02 \x01(\v2[.project.planton.provider.kubernetes.addons.istiokubernetes.v1.IstioKubernetesSpecContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\"\x96\x01\n" +
 	"\x1cIstioKubernetesSpecContainer\x12v\n" +
 	"\tresources\x18\x01 \x01(\v25.project.planton.shared.kubernetes.ContainerResourcesB!\xba\xfb\xa4\x02\x1c\n" +
 	"\f\n" +
@@ -156,14 +156,14 @@ func file_project_planton_provider_kubernetes_addons_istiokubernetes_v1_spec_pro
 
 var file_project_planton_provider_kubernetes_addons_istiokubernetes_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_kubernetes_addons_istiokubernetes_v1_spec_proto_goTypes = []any{
-	(*IstioKubernetesSpec)(nil),           // 0: project.planton.provider.kubernetes.addons.istiokubernetes.v1.IstioKubernetesSpec
-	(*IstioKubernetesSpecContainer)(nil),  // 1: project.planton.provider.kubernetes.addons.istiokubernetes.v1.IstioKubernetesSpecContainer
-	(*kubernetes.IngressSpec)(nil),        // 2: project.planton.shared.kubernetes.IngressSpec
-	(*kubernetes.ContainerResources)(nil), // 3: project.planton.shared.kubernetes.ContainerResources
+	(*IstioKubernetesSpec)(nil),                     // 0: project.planton.provider.kubernetes.addons.istiokubernetes.v1.IstioKubernetesSpec
+	(*IstioKubernetesSpecContainer)(nil),            // 1: project.planton.provider.kubernetes.addons.istiokubernetes.v1.IstioKubernetesSpecContainer
+	(*kubernetes.KubernetesAddonTargetCluster)(nil), // 2: project.planton.shared.kubernetes.KubernetesAddonTargetCluster
+	(*kubernetes.ContainerResources)(nil),           // 3: project.planton.shared.kubernetes.ContainerResources
 }
 var file_project_planton_provider_kubernetes_addons_istiokubernetes_v1_spec_proto_depIdxs = []int32{
-	1, // 0: project.planton.provider.kubernetes.addons.istiokubernetes.v1.IstioKubernetesSpec.container:type_name -> project.planton.provider.kubernetes.addons.istiokubernetes.v1.IstioKubernetesSpecContainer
-	2, // 1: project.planton.provider.kubernetes.addons.istiokubernetes.v1.IstioKubernetesSpec.ingress:type_name -> project.planton.shared.kubernetes.IngressSpec
+	2, // 0: project.planton.provider.kubernetes.addons.istiokubernetes.v1.IstioKubernetesSpec.target_cluster:type_name -> project.planton.shared.kubernetes.KubernetesAddonTargetCluster
+	1, // 1: project.planton.provider.kubernetes.addons.istiokubernetes.v1.IstioKubernetesSpec.container:type_name -> project.planton.provider.kubernetes.addons.istiokubernetes.v1.IstioKubernetesSpecContainer
 	3, // 2: project.planton.provider.kubernetes.addons.istiokubernetes.v1.IstioKubernetesSpecContainer.resources:type_name -> project.planton.shared.kubernetes.ContainerResources
 	3, // [3:3] is the sub-list for method output_type
 	3, // [3:3] is the sub-list for method input_type

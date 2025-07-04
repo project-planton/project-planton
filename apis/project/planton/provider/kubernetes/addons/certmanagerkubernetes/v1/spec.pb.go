@@ -28,7 +28,7 @@ const (
 // CertManagerKubernetesSpec defines configuration for cert-manager on any cluster.
 type CertManagerKubernetesSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The Kubernetes cluster to install cert-manager on.
+	// The Kubernetes cluster to install this addon on.
 	TargetCluster *kubernetes.KubernetesAddonTargetCluster `protobuf:"bytes,1,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
 	// Upstream release channel or version tag (e.g. "v1.16").
 	ReleaseChannel string `protobuf:"bytes,2,opt,name=release_channel,json=releaseChannel,proto3" json:"release_channel,omitempty"`

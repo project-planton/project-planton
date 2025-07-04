@@ -28,10 +28,10 @@ const (
 // It includes container specifications and ingress settings to control resource allocation and external access.
 type ElasticOperatorKubernetesSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
+	// The Kubernetes cluster to install this addon on.
+	TargetCluster *kubernetes.KubernetesAddonTargetCluster `protobuf:"bytes,1,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
 	// The container specifications for the GitLab deployment.
-	Container *ElasticOperatorKubernetesSpecContainer `protobuf:"bytes,1,opt,name=container,proto3" json:"container,omitempty"`
-	// The ingress configuration for the GitLab deployment.
-	Ingress       *kubernetes.IngressSpec `protobuf:"bytes,3,opt,name=ingress,proto3" json:"ingress,omitempty"`
+	Container     *ElasticOperatorKubernetesSpecContainer `protobuf:"bytes,2,opt,name=container,proto3" json:"container,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -66,16 +66,16 @@ func (*ElasticOperatorKubernetesSpec) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_kubernetes_addons_elasticoperatorkubernetes_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *ElasticOperatorKubernetesSpec) GetContainer() *ElasticOperatorKubernetesSpecContainer {
+func (x *ElasticOperatorKubernetesSpec) GetTargetCluster() *kubernetes.KubernetesAddonTargetCluster {
 	if x != nil {
-		return x.Container
+		return x.TargetCluster
 	}
 	return nil
 }
 
-func (x *ElasticOperatorKubernetesSpec) GetIngress() *kubernetes.IngressSpec {
+func (x *ElasticOperatorKubernetesSpec) GetContainer() *ElasticOperatorKubernetesSpecContainer {
 	if x != nil {
-		return x.Ingress
+		return x.Container
 	}
 	return nil
 }
@@ -131,10 +131,10 @@ var File_project_planton_provider_kubernetes_addons_elasticoperatorkubernetes_v1
 
 const file_project_planton_provider_kubernetes_addons_elasticoperatorkubernetes_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Rproject/planton/provider/kubernetes/addons/elasticoperatorkubernetes/v1/spec.proto\x12Gproject.planton.provider.kubernetes.addons.elasticoperatorkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\"\x81\x02\n" +
-	"\x1dElasticOperatorKubernetesSpec\x12\x95\x01\n" +
-	"\tcontainer\x18\x01 \x01(\v2o.project.planton.provider.kubernetes.addons.elasticoperatorkubernetes.v1.ElasticOperatorKubernetesSpecContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\x12H\n" +
-	"\aingress\x18\x03 \x01(\v2..project.planton.shared.kubernetes.IngressSpecR\aingress\"\xa0\x01\n" +
+	"Rproject/planton/provider/kubernetes/addons/elasticoperatorkubernetes/v1/spec.proto\x12Gproject.planton.provider.kubernetes.addons.elasticoperatorkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\x1a6project/planton/shared/kubernetes/target_cluster.proto\"\x9f\x02\n" +
+	"\x1dElasticOperatorKubernetesSpec\x12f\n" +
+	"\x0etarget_cluster\x18\x01 \x01(\v2?.project.planton.shared.kubernetes.KubernetesAddonTargetClusterR\rtargetCluster\x12\x95\x01\n" +
+	"\tcontainer\x18\x02 \x01(\v2o.project.planton.provider.kubernetes.addons.elasticoperatorkubernetes.v1.ElasticOperatorKubernetesSpecContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\"\xa0\x01\n" +
 	"&ElasticOperatorKubernetesSpecContainer\x12v\n" +
 	"\tresources\x18\x01 \x01(\v25.project.planton.shared.kubernetes.ContainerResourcesB!\xba\xfb\xa4\x02\x1c\n" +
 	"\f\n" +
@@ -156,14 +156,14 @@ func file_project_planton_provider_kubernetes_addons_elasticoperatorkubernetes_v
 
 var file_project_planton_provider_kubernetes_addons_elasticoperatorkubernetes_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_kubernetes_addons_elasticoperatorkubernetes_v1_spec_proto_goTypes = []any{
-	(*ElasticOperatorKubernetesSpec)(nil),          // 0: project.planton.provider.kubernetes.addons.elasticoperatorkubernetes.v1.ElasticOperatorKubernetesSpec
-	(*ElasticOperatorKubernetesSpecContainer)(nil), // 1: project.planton.provider.kubernetes.addons.elasticoperatorkubernetes.v1.ElasticOperatorKubernetesSpecContainer
-	(*kubernetes.IngressSpec)(nil),                 // 2: project.planton.shared.kubernetes.IngressSpec
-	(*kubernetes.ContainerResources)(nil),          // 3: project.planton.shared.kubernetes.ContainerResources
+	(*ElasticOperatorKubernetesSpec)(nil),           // 0: project.planton.provider.kubernetes.addons.elasticoperatorkubernetes.v1.ElasticOperatorKubernetesSpec
+	(*ElasticOperatorKubernetesSpecContainer)(nil),  // 1: project.planton.provider.kubernetes.addons.elasticoperatorkubernetes.v1.ElasticOperatorKubernetesSpecContainer
+	(*kubernetes.KubernetesAddonTargetCluster)(nil), // 2: project.planton.shared.kubernetes.KubernetesAddonTargetCluster
+	(*kubernetes.ContainerResources)(nil),           // 3: project.planton.shared.kubernetes.ContainerResources
 }
 var file_project_planton_provider_kubernetes_addons_elasticoperatorkubernetes_v1_spec_proto_depIdxs = []int32{
-	1, // 0: project.planton.provider.kubernetes.addons.elasticoperatorkubernetes.v1.ElasticOperatorKubernetesSpec.container:type_name -> project.planton.provider.kubernetes.addons.elasticoperatorkubernetes.v1.ElasticOperatorKubernetesSpecContainer
-	2, // 1: project.planton.provider.kubernetes.addons.elasticoperatorkubernetes.v1.ElasticOperatorKubernetesSpec.ingress:type_name -> project.planton.shared.kubernetes.IngressSpec
+	2, // 0: project.planton.provider.kubernetes.addons.elasticoperatorkubernetes.v1.ElasticOperatorKubernetesSpec.target_cluster:type_name -> project.planton.shared.kubernetes.KubernetesAddonTargetCluster
+	1, // 1: project.planton.provider.kubernetes.addons.elasticoperatorkubernetes.v1.ElasticOperatorKubernetesSpec.container:type_name -> project.planton.provider.kubernetes.addons.elasticoperatorkubernetes.v1.ElasticOperatorKubernetesSpecContainer
 	3, // 2: project.planton.provider.kubernetes.addons.elasticoperatorkubernetes.v1.ElasticOperatorKubernetesSpecContainer.resources:type_name -> project.planton.shared.kubernetes.ContainerResources
 	3, // [3:3] is the sub-list for method output_type
 	3, // [3:3] is the sub-list for method input_type

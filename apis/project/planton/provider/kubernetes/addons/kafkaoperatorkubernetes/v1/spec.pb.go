@@ -28,10 +28,10 @@ const (
 // It includes container specifications and ingress settings to control resource allocation and external access.
 type KafkaOperatorKubernetesSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
+	// The Kubernetes cluster to install this addon on.
+	TargetCluster *kubernetes.KubernetesAddonTargetCluster `protobuf:"bytes,1,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
 	// The container specifications for the GitLab deployment.
-	Container *KafkaOperatorKubernetesSpecContainer `protobuf:"bytes,1,opt,name=container,proto3" json:"container,omitempty"`
-	// The ingress configuration for the GitLab deployment.
-	Ingress       *kubernetes.IngressSpec `protobuf:"bytes,3,opt,name=ingress,proto3" json:"ingress,omitempty"`
+	Container     *KafkaOperatorKubernetesSpecContainer `protobuf:"bytes,2,opt,name=container,proto3" json:"container,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -66,16 +66,16 @@ func (*KafkaOperatorKubernetesSpec) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_kubernetes_addons_kafkaoperatorkubernetes_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *KafkaOperatorKubernetesSpec) GetContainer() *KafkaOperatorKubernetesSpecContainer {
+func (x *KafkaOperatorKubernetesSpec) GetTargetCluster() *kubernetes.KubernetesAddonTargetCluster {
 	if x != nil {
-		return x.Container
+		return x.TargetCluster
 	}
 	return nil
 }
 
-func (x *KafkaOperatorKubernetesSpec) GetIngress() *kubernetes.IngressSpec {
+func (x *KafkaOperatorKubernetesSpec) GetContainer() *KafkaOperatorKubernetesSpecContainer {
 	if x != nil {
-		return x.Ingress
+		return x.Container
 	}
 	return nil
 }
@@ -131,10 +131,10 @@ var File_project_planton_provider_kubernetes_addons_kafkaoperatorkubernetes_v1_s
 
 const file_project_planton_provider_kubernetes_addons_kafkaoperatorkubernetes_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Pproject/planton/provider/kubernetes/addons/kafkaoperatorkubernetes/v1/spec.proto\x12Eproject.planton.provider.kubernetes.addons.kafkaoperatorkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\"\xfb\x01\n" +
-	"\x1bKafkaOperatorKubernetesSpec\x12\x91\x01\n" +
-	"\tcontainer\x18\x01 \x01(\v2k.project.planton.provider.kubernetes.addons.kafkaoperatorkubernetes.v1.KafkaOperatorKubernetesSpecContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\x12H\n" +
-	"\aingress\x18\x03 \x01(\v2..project.planton.shared.kubernetes.IngressSpecR\aingress\"\x9e\x01\n" +
+	"Pproject/planton/provider/kubernetes/addons/kafkaoperatorkubernetes/v1/spec.proto\x12Eproject.planton.provider.kubernetes.addons.kafkaoperatorkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\x1a6project/planton/shared/kubernetes/target_cluster.proto\"\x99\x02\n" +
+	"\x1bKafkaOperatorKubernetesSpec\x12f\n" +
+	"\x0etarget_cluster\x18\x01 \x01(\v2?.project.planton.shared.kubernetes.KubernetesAddonTargetClusterR\rtargetCluster\x12\x91\x01\n" +
+	"\tcontainer\x18\x02 \x01(\v2k.project.planton.provider.kubernetes.addons.kafkaoperatorkubernetes.v1.KafkaOperatorKubernetesSpecContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\"\x9e\x01\n" +
 	"$KafkaOperatorKubernetesSpecContainer\x12v\n" +
 	"\tresources\x18\x01 \x01(\v25.project.planton.shared.kubernetes.ContainerResourcesB!\xba\xfb\xa4\x02\x1c\n" +
 	"\f\n" +
@@ -156,14 +156,14 @@ func file_project_planton_provider_kubernetes_addons_kafkaoperatorkubernetes_v1_
 
 var file_project_planton_provider_kubernetes_addons_kafkaoperatorkubernetes_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_kubernetes_addons_kafkaoperatorkubernetes_v1_spec_proto_goTypes = []any{
-	(*KafkaOperatorKubernetesSpec)(nil),          // 0: project.planton.provider.kubernetes.addons.kafkaoperatorkubernetes.v1.KafkaOperatorKubernetesSpec
-	(*KafkaOperatorKubernetesSpecContainer)(nil), // 1: project.planton.provider.kubernetes.addons.kafkaoperatorkubernetes.v1.KafkaOperatorKubernetesSpecContainer
-	(*kubernetes.IngressSpec)(nil),               // 2: project.planton.shared.kubernetes.IngressSpec
-	(*kubernetes.ContainerResources)(nil),        // 3: project.planton.shared.kubernetes.ContainerResources
+	(*KafkaOperatorKubernetesSpec)(nil),             // 0: project.planton.provider.kubernetes.addons.kafkaoperatorkubernetes.v1.KafkaOperatorKubernetesSpec
+	(*KafkaOperatorKubernetesSpecContainer)(nil),    // 1: project.planton.provider.kubernetes.addons.kafkaoperatorkubernetes.v1.KafkaOperatorKubernetesSpecContainer
+	(*kubernetes.KubernetesAddonTargetCluster)(nil), // 2: project.planton.shared.kubernetes.KubernetesAddonTargetCluster
+	(*kubernetes.ContainerResources)(nil),           // 3: project.planton.shared.kubernetes.ContainerResources
 }
 var file_project_planton_provider_kubernetes_addons_kafkaoperatorkubernetes_v1_spec_proto_depIdxs = []int32{
-	1, // 0: project.planton.provider.kubernetes.addons.kafkaoperatorkubernetes.v1.KafkaOperatorKubernetesSpec.container:type_name -> project.planton.provider.kubernetes.addons.kafkaoperatorkubernetes.v1.KafkaOperatorKubernetesSpecContainer
-	2, // 1: project.planton.provider.kubernetes.addons.kafkaoperatorkubernetes.v1.KafkaOperatorKubernetesSpec.ingress:type_name -> project.planton.shared.kubernetes.IngressSpec
+	2, // 0: project.planton.provider.kubernetes.addons.kafkaoperatorkubernetes.v1.KafkaOperatorKubernetesSpec.target_cluster:type_name -> project.planton.shared.kubernetes.KubernetesAddonTargetCluster
+	1, // 1: project.planton.provider.kubernetes.addons.kafkaoperatorkubernetes.v1.KafkaOperatorKubernetesSpec.container:type_name -> project.planton.provider.kubernetes.addons.kafkaoperatorkubernetes.v1.KafkaOperatorKubernetesSpecContainer
 	3, // 2: project.planton.provider.kubernetes.addons.kafkaoperatorkubernetes.v1.KafkaOperatorKubernetesSpecContainer.resources:type_name -> project.planton.shared.kubernetes.ContainerResources
 	3, // [3:3] is the sub-list for method output_type
 	3, // [3:3] is the sub-list for method input_type

@@ -5,18 +5,18 @@ package project.planton.provider.kubernetes.addons.solroperatorkubernetes.v1;
 import "buf/validate/validate.proto";
 import "project/planton/shared/kubernetes/kubernetes.proto";
 import "project/planton/shared/kubernetes/options.proto";
+import "project/planton/shared/kubernetes/target_cluster.proto";
 
 // **SolrOperatorKubernetesSpec** defines the configuration for deploying GitLab on a Kubernetes cluster.
 // This message specifies the parameters needed to create and manage a GitLab deployment within a Kubernetes environment.
 // It includes container specifications and ingress settings to control resource allocation and external access.
 message SolrOperatorKubernetesSpec {
+  // The Kubernetes cluster to install this addon on.
+  project.planton.shared.kubernetes.KubernetesAddonTargetCluster target_cluster = 1;
   // The container specifications for the GitLab deployment.
-  SolrOperatorKubernetesSpecContainer container = 1 [
+  SolrOperatorKubernetesSpecContainer container = 2 [
     (buf.validate.field).required = true
   ];
-
-  // The ingress configuration for the GitLab deployment.
-  project.planton.shared.kubernetes.IngressSpec ingress = 3;
 }
 
 // **SolrOperatorKubernetesSpecContainer** specifies the container configuration for the GitLab application.

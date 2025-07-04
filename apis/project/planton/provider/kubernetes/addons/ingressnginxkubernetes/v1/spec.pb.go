@@ -7,6 +7,7 @@
 package ingressnginxkubernetesv1
 
 import (
+	kubernetes "github.com/project-planton/project-planton/apis/project/planton/shared/kubernetes"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -24,10 +25,12 @@ const (
 // IngressNginxKubernetesSpec defines the specification for the Ingress Nginx Kubernetes resource.
 type IngressNginxKubernetesSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
+	// The Kubernetes cluster to install this addon on.
+	TargetCluster *kubernetes.KubernetesAddonTargetCluster `protobuf:"bytes,1,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
 	// Chart version (e.g. "4.10.1").
-	ChartVersion string `protobuf:"bytes,1,opt,name=chart_version,json=chartVersion,proto3" json:"chart_version,omitempty"`
+	ChartVersion string `protobuf:"bytes,2,opt,name=chart_version,json=chartVersion,proto3" json:"chart_version,omitempty"`
 	// flag to indicate if the ingress controller is internal or external
-	Internal      bool `protobuf:"varint,2,opt,name=internal,proto3" json:"internal,omitempty"`
+	Internal      bool `protobuf:"varint,3,opt,name=internal,proto3" json:"internal,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -62,6 +65,13 @@ func (*IngressNginxKubernetesSpec) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_kubernetes_addons_ingressnginxkubernetes_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
+func (x *IngressNginxKubernetesSpec) GetTargetCluster() *kubernetes.KubernetesAddonTargetCluster {
+	if x != nil {
+		return x.TargetCluster
+	}
+	return nil
+}
+
 func (x *IngressNginxKubernetesSpec) GetChartVersion() string {
 	if x != nil {
 		return x.ChartVersion
@@ -80,10 +90,11 @@ var File_project_planton_provider_kubernetes_addons_ingressnginxkubernetes_v1_sp
 
 const file_project_planton_provider_kubernetes_addons_ingressnginxkubernetes_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Oproject/planton/provider/kubernetes/addons/ingressnginxkubernetes/v1/spec.proto\x12Dproject.planton.provider.kubernetes.addons.ingressnginxkubernetes.v1\"]\n" +
-	"\x1aIngressNginxKubernetesSpec\x12#\n" +
-	"\rchart_version\x18\x01 \x01(\tR\fchartVersion\x12\x1a\n" +
-	"\binternal\x18\x02 \x01(\bR\binternalB\x9e\x04\n" +
+	"Oproject/planton/provider/kubernetes/addons/ingressnginxkubernetes/v1/spec.proto\x12Dproject.planton.provider.kubernetes.addons.ingressnginxkubernetes.v1\x1a6project/planton/shared/kubernetes/target_cluster.proto\"\xc5\x01\n" +
+	"\x1aIngressNginxKubernetesSpec\x12f\n" +
+	"\x0etarget_cluster\x18\x01 \x01(\v2?.project.planton.shared.kubernetes.KubernetesAddonTargetClusterR\rtargetCluster\x12#\n" +
+	"\rchart_version\x18\x02 \x01(\tR\fchartVersion\x12\x1a\n" +
+	"\binternal\x18\x03 \x01(\bR\binternalB\x9e\x04\n" +
 	"Hcom.project.planton.provider.kubernetes.addons.ingressnginxkubernetes.v1B\tSpecProtoP\x01Z\x8d\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/addons/ingressnginxkubernetes/v1;ingressnginxkubernetesv1\xa2\x02\x06PPPKAI\xaa\x02DProject.Planton.Provider.Kubernetes.Addons.Ingressnginxkubernetes.V1\xca\x02DProject\\Planton\\Provider\\Kubernetes\\Addons\\Ingressnginxkubernetes\\V1\xe2\x02PProject\\Planton\\Provider\\Kubernetes\\Addons\\Ingressnginxkubernetes\\V1\\GPBMetadata\xea\x02JProject::Planton::Provider::Kubernetes::Addons::Ingressnginxkubernetes::V1b\x06proto3"
 
 var (
@@ -100,14 +111,16 @@ func file_project_planton_provider_kubernetes_addons_ingressnginxkubernetes_v1_s
 
 var file_project_planton_provider_kubernetes_addons_ingressnginxkubernetes_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_kubernetes_addons_ingressnginxkubernetes_v1_spec_proto_goTypes = []any{
-	(*IngressNginxKubernetesSpec)(nil), // 0: project.planton.provider.kubernetes.addons.ingressnginxkubernetes.v1.IngressNginxKubernetesSpec
+	(*IngressNginxKubernetesSpec)(nil),              // 0: project.planton.provider.kubernetes.addons.ingressnginxkubernetes.v1.IngressNginxKubernetesSpec
+	(*kubernetes.KubernetesAddonTargetCluster)(nil), // 1: project.planton.shared.kubernetes.KubernetesAddonTargetCluster
 }
 var file_project_planton_provider_kubernetes_addons_ingressnginxkubernetes_v1_spec_proto_depIdxs = []int32{
-	0, // [0:0] is the sub-list for method output_type
-	0, // [0:0] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	1, // 0: project.planton.provider.kubernetes.addons.ingressnginxkubernetes.v1.IngressNginxKubernetesSpec.target_cluster:type_name -> project.planton.shared.kubernetes.KubernetesAddonTargetCluster
+	1, // [1:1] is the sub-list for method output_type
+	1, // [1:1] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
 func init() {

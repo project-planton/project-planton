@@ -9,7 +9,7 @@ import "project/planton/shared/kubernetes/target_cluster.proto";
 
 // CertManagerKubernetesSpec defines configuration for cert-manager on any cluster.
 message CertManagerKubernetesSpec {
-  // The Kubernetes cluster to install cert-manager on.
+  // The Kubernetes cluster to install this addon on.
   project.planton.shared.kubernetes.KubernetesAddonTargetCluster target_cluster = 1;
   // Upstream release channel or version tag (e.g. "v1.16").
   string release_channel = 2 [
