@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package project.planton.provider.kubernetes.workloads.signozkubernetes.v1;
+
+// signoz-kubernetes stack-outputs
+message SignozKubernetesStackOutputs {
+  //kubernetes namespace in which signoz-kubernetes is created.
+  string namespace = 1;
+
+  //kubernetes service name for signoz-kubernetes.
+  //ex: main-signoz-kubernetes
+  //in the above example, "main" is the name of the signoz-kubernetes
+  string service = 2;
+
+  //command to setup port-forwarding to open signoz-kubernetes from developers laptop.
+  //this might come handy when signoz-kubernetes ingress is disabled for security reasons.
+  //this is rendered by combining signoz_kubernetes_kubernetes_service and kubernetes_namespace
+  //ex: kubectl port-forward svc/signoz_kubernetes_kubernetes_service -n kubernetes_namespace 6379:6379
+  //running the command from this attribute makes it possible to access signoz-kubernetes using http://localhost:8080/signoz
+  string port_forward_command = 3;
+
+  //kubernetes endpoint to connect to signoz-kubernetes from the web browser.
+  //ex: main-signoz-kubernetes.namespace.svc.cluster.local:6379
+  string kube_endpoint = 4;
+
+  //public endpoint to open signoz-kubernetes from clients outside kubernetes.
+  //ex: https://sigk8s-planton-pcs-dev-main.data.dev.planton.live
+  string external_hostname = 5;
+
+  //internal endpoint to open signoz-kubernetes from clients inside kubernetes.
+  //ex: https://sigk8s-planton-pcs-dev-main.data-internal.dev.planton.live
+  string internal_hostname = 6;
+}

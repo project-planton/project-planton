@@ -53,51 +53,62 @@ const (
 	CloudResourceKind_AwsSecurityGroup   CloudResourceKind = 215
 	CloudResourceKind_AwsStaticWebsite   CloudResourceKind = 216
 	CloudResourceKind_AwsVpc             CloudResourceKind = 217
+	CloudResourceKind_AwsEksClusterCore  CloudResourceKind = 218
 	// 400–599: Azure resources
 	CloudResourceKind_AzureAksCluster CloudResourceKind = 400
 	CloudResourceKind_AzureKeyVault   CloudResourceKind = 401
 	// 600–799: GCP resources
-	CloudResourceKind_GcpArtifactRegistryRepo CloudResourceKind = 600
-	CloudResourceKind_GcpCloudCdn             CloudResourceKind = 601
-	CloudResourceKind_GcpCloudFunction        CloudResourceKind = 602
-	CloudResourceKind_GcpCloudRun             CloudResourceKind = 603
-	CloudResourceKind_GcpCloudSql             CloudResourceKind = 604
-	CloudResourceKind_GcpDnsZone              CloudResourceKind = 605
-	CloudResourceKind_GcpGcsBucket            CloudResourceKind = 606
-	CloudResourceKind_GcpGkeAddonBundle       CloudResourceKind = 607
-	CloudResourceKind_GcpGkeCluster           CloudResourceKind = 608
-	CloudResourceKind_GcpSecretsManager       CloudResourceKind = 609
-	CloudResourceKind_GcpStaticWebsite        CloudResourceKind = 610
-	CloudResourceKind_GcpProject              CloudResourceKind = 611
-	CloudResourceKind_GcpVpc                  CloudResourceKind = 612
-	CloudResourceKind_GcpSubnetwork           CloudResourceKind = 613
-	CloudResourceKind_GcpRouterNat            CloudResourceKind = 614
-	CloudResourceKind_GcpGkeClusterCore       CloudResourceKind = 615
-	CloudResourceKind_GcpGkeNodePool          CloudResourceKind = 616
+	CloudResourceKind_GcpArtifactRegistryRepo       CloudResourceKind = 600
+	CloudResourceKind_GcpCloudCdn                   CloudResourceKind = 601
+	CloudResourceKind_GcpCloudFunction              CloudResourceKind = 602
+	CloudResourceKind_GcpCloudRun                   CloudResourceKind = 603
+	CloudResourceKind_GcpCloudSql                   CloudResourceKind = 604
+	CloudResourceKind_GcpDnsZone                    CloudResourceKind = 605
+	CloudResourceKind_GcpGcsBucket                  CloudResourceKind = 606
+	CloudResourceKind_GcpGkeAddonBundle             CloudResourceKind = 607
+	CloudResourceKind_GcpGkeCluster                 CloudResourceKind = 608
+	CloudResourceKind_GcpSecretsManager             CloudResourceKind = 609
+	CloudResourceKind_GcpStaticWebsite              CloudResourceKind = 610
+	CloudResourceKind_GcpProject                    CloudResourceKind = 611
+	CloudResourceKind_GcpVpc                        CloudResourceKind = 612
+	CloudResourceKind_GcpSubnetwork                 CloudResourceKind = 613
+	CloudResourceKind_GcpRouterNat                  CloudResourceKind = 614
+	CloudResourceKind_GcpGkeClusterCore             CloudResourceKind = 615
+	CloudResourceKind_GcpGkeNodePool                CloudResourceKind = 616
+	CloudResourceKind_GcpServiceAccount             CloudResourceKind = 617
+	CloudResourceKind_GcpGkeWorkloadIdentityBinding CloudResourceKind = 618
 	// 800–999: Kubernetes resources
-	CloudResourceKind_ArgocdKubernetes         CloudResourceKind = 800
-	CloudResourceKind_CronJobKubernetes        CloudResourceKind = 801
-	CloudResourceKind_ElasticsearchKubernetes  CloudResourceKind = 802
-	CloudResourceKind_GitlabKubernetes         CloudResourceKind = 803
-	CloudResourceKind_GrafanaKubernetes        CloudResourceKind = 804
-	CloudResourceKind_HelmRelease              CloudResourceKind = 805
-	CloudResourceKind_JenkinsKubernetes        CloudResourceKind = 806
-	CloudResourceKind_KafkaKubernetes          CloudResourceKind = 807
-	CloudResourceKind_KeycloakKubernetes       CloudResourceKind = 808
-	CloudResourceKind_KubernetesHttpEndpoint   CloudResourceKind = 809
-	CloudResourceKind_LocustKubernetes         CloudResourceKind = 810
-	CloudResourceKind_MicroserviceKubernetes   CloudResourceKind = 811
-	CloudResourceKind_MongodbKubernetes        CloudResourceKind = 812
-	CloudResourceKind_Neo4jKubernetes          CloudResourceKind = 813
-	CloudResourceKind_OpenFgaKubernetes        CloudResourceKind = 814
-	CloudResourceKind_PostgresKubernetes       CloudResourceKind = 815
-	CloudResourceKind_PrometheusKubernetes     CloudResourceKind = 816
-	CloudResourceKind_RedisKubernetes          CloudResourceKind = 817
-	CloudResourceKind_SignozKubernetes         CloudResourceKind = 818
-	CloudResourceKind_SolrKubernetes           CloudResourceKind = 819
-	CloudResourceKind_StackJobRunnerKubernetes CloudResourceKind = 820
-	CloudResourceKind_TemporalKubernetes       CloudResourceKind = 821
-	CloudResourceKind_NatsKubernetes           CloudResourceKind = 822
+	CloudResourceKind_ArgocdKubernetes           CloudResourceKind = 800
+	CloudResourceKind_CronJobKubernetes          CloudResourceKind = 801
+	CloudResourceKind_ElasticsearchKubernetes    CloudResourceKind = 802
+	CloudResourceKind_GitlabKubernetes           CloudResourceKind = 803
+	CloudResourceKind_GrafanaKubernetes          CloudResourceKind = 804
+	CloudResourceKind_HelmRelease                CloudResourceKind = 805
+	CloudResourceKind_JenkinsKubernetes          CloudResourceKind = 806
+	CloudResourceKind_KafkaKubernetes            CloudResourceKind = 807
+	CloudResourceKind_KeycloakKubernetes         CloudResourceKind = 808
+	CloudResourceKind_KubernetesHttpEndpoint     CloudResourceKind = 809
+	CloudResourceKind_LocustKubernetes           CloudResourceKind = 810
+	CloudResourceKind_MicroserviceKubernetes     CloudResourceKind = 811
+	CloudResourceKind_MongodbKubernetes          CloudResourceKind = 812
+	CloudResourceKind_Neo4jKubernetes            CloudResourceKind = 813
+	CloudResourceKind_OpenFgaKubernetes          CloudResourceKind = 814
+	CloudResourceKind_PostgresKubernetes         CloudResourceKind = 815
+	CloudResourceKind_PrometheusKubernetes       CloudResourceKind = 816
+	CloudResourceKind_RedisKubernetes            CloudResourceKind = 817
+	CloudResourceKind_SignozKubernetes           CloudResourceKind = 818
+	CloudResourceKind_SolrKubernetes             CloudResourceKind = 819
+	CloudResourceKind_StackJobRunnerKubernetes   CloudResourceKind = 820
+	CloudResourceKind_TemporalKubernetes         CloudResourceKind = 821
+	CloudResourceKind_NatsKubernetes             CloudResourceKind = 822
+	CloudResourceKind_CertManagerKubernetes      CloudResourceKind = 823
+	CloudResourceKind_ElasticOperatorKubernetes  CloudResourceKind = 824
+	CloudResourceKind_ExternalDnsKubernetes      CloudResourceKind = 825
+	CloudResourceKind_IngressNginxKubernetes     CloudResourceKind = 826
+	CloudResourceKind_IstioKubernetes            CloudResourceKind = 827
+	CloudResourceKind_KafkaOperatorKubernetes    CloudResourceKind = 828
+	CloudResourceKind_PostgresOperatorKubernetes CloudResourceKind = 829
+	CloudResourceKind_SolrOperatorKubernetes     CloudResourceKind = 830
 )
 
 // Enum value maps for CloudResourceKind.
@@ -128,6 +139,7 @@ var (
 		215: "AwsSecurityGroup",
 		216: "AwsStaticWebsite",
 		217: "AwsVpc",
+		218: "AwsEksClusterCore",
 		400: "AzureAksCluster",
 		401: "AzureKeyVault",
 		600: "GcpArtifactRegistryRepo",
@@ -147,6 +159,8 @@ var (
 		614: "GcpRouterNat",
 		615: "GcpGkeClusterCore",
 		616: "GcpGkeNodePool",
+		617: "GcpServiceAccount",
+		618: "GcpGkeWorkloadIdentityBinding",
 		800: "ArgocdKubernetes",
 		801: "CronJobKubernetes",
 		802: "ElasticsearchKubernetes",
@@ -170,75 +184,94 @@ var (
 		820: "StackJobRunnerKubernetes",
 		821: "TemporalKubernetes",
 		822: "NatsKubernetes",
+		823: "CertManagerKubernetes",
+		824: "ElasticOperatorKubernetes",
+		825: "ExternalDnsKubernetes",
+		826: "IngressNginxKubernetes",
+		827: "IstioKubernetes",
+		828: "KafkaOperatorKubernetes",
+		829: "PostgresOperatorKubernetes",
+		830: "SolrOperatorKubernetes",
 	}
 	CloudResourceKind_value = map[string]int32{
-		"unspecified":                0,
-		"FirstTestCloudApiResource":  1,
-		"SecondTestCloudApiResource": 2,
-		"ThirdTestCloudApiResource":  3,
-		"ConfluentKafka":             50,
-		"MongodbAtlas":               51,
-		"SnowflakeDatabase":          52,
-		"AwsAlb":                     200,
-		"AwsCertManagerCert":         201,
-		"AwsCloudFront":              202,
-		"AwsDynamodb":                203,
-		"AwsEcrRepo":                 204,
-		"AwsEcsCluster":              205,
-		"AwsEcsService":              206,
-		"AwsEksCluster":              207,
-		"AwsIamRole":                 208,
-		"AwsLambda":                  209,
-		"AwsRdsCluster":              210,
-		"AwsRdsInstance":             211,
-		"AwsRoute53Zone":             212,
-		"AwsS3Bucket":                213,
-		"AwsSecretsManager":          214,
-		"AwsSecurityGroup":           215,
-		"AwsStaticWebsite":           216,
-		"AwsVpc":                     217,
-		"AzureAksCluster":            400,
-		"AzureKeyVault":              401,
-		"GcpArtifactRegistryRepo":    600,
-		"GcpCloudCdn":                601,
-		"GcpCloudFunction":           602,
-		"GcpCloudRun":                603,
-		"GcpCloudSql":                604,
-		"GcpDnsZone":                 605,
-		"GcpGcsBucket":               606,
-		"GcpGkeAddonBundle":          607,
-		"GcpGkeCluster":              608,
-		"GcpSecretsManager":          609,
-		"GcpStaticWebsite":           610,
-		"GcpProject":                 611,
-		"GcpVpc":                     612,
-		"GcpSubnetwork":              613,
-		"GcpRouterNat":               614,
-		"GcpGkeClusterCore":          615,
-		"GcpGkeNodePool":             616,
-		"ArgocdKubernetes":           800,
-		"CronJobKubernetes":          801,
-		"ElasticsearchKubernetes":    802,
-		"GitlabKubernetes":           803,
-		"GrafanaKubernetes":          804,
-		"HelmRelease":                805,
-		"JenkinsKubernetes":          806,
-		"KafkaKubernetes":            807,
-		"KeycloakKubernetes":         808,
-		"KubernetesHttpEndpoint":     809,
-		"LocustKubernetes":           810,
-		"MicroserviceKubernetes":     811,
-		"MongodbKubernetes":          812,
-		"Neo4jKubernetes":            813,
-		"OpenFgaKubernetes":          814,
-		"PostgresKubernetes":         815,
-		"PrometheusKubernetes":       816,
-		"RedisKubernetes":            817,
-		"SignozKubernetes":           818,
-		"SolrKubernetes":             819,
-		"StackJobRunnerKubernetes":   820,
-		"TemporalKubernetes":         821,
-		"NatsKubernetes":             822,
+		"unspecified":                   0,
+		"FirstTestCloudApiResource":     1,
+		"SecondTestCloudApiResource":    2,
+		"ThirdTestCloudApiResource":     3,
+		"ConfluentKafka":                50,
+		"MongodbAtlas":                  51,
+		"SnowflakeDatabase":             52,
+		"AwsAlb":                        200,
+		"AwsCertManagerCert":            201,
+		"AwsCloudFront":                 202,
+		"AwsDynamodb":                   203,
+		"AwsEcrRepo":                    204,
+		"AwsEcsCluster":                 205,
+		"AwsEcsService":                 206,
+		"AwsEksCluster":                 207,
+		"AwsIamRole":                    208,
+		"AwsLambda":                     209,
+		"AwsRdsCluster":                 210,
+		"AwsRdsInstance":                211,
+		"AwsRoute53Zone":                212,
+		"AwsS3Bucket":                   213,
+		"AwsSecretsManager":             214,
+		"AwsSecurityGroup":              215,
+		"AwsStaticWebsite":              216,
+		"AwsVpc":                        217,
+		"AwsEksClusterCore":             218,
+		"AzureAksCluster":               400,
+		"AzureKeyVault":                 401,
+		"GcpArtifactRegistryRepo":       600,
+		"GcpCloudCdn":                   601,
+		"GcpCloudFunction":              602,
+		"GcpCloudRun":                   603,
+		"GcpCloudSql":                   604,
+		"GcpDnsZone":                    605,
+		"GcpGcsBucket":                  606,
+		"GcpGkeAddonBundle":             607,
+		"GcpGkeCluster":                 608,
+		"GcpSecretsManager":             609,
+		"GcpStaticWebsite":              610,
+		"GcpProject":                    611,
+		"GcpVpc":                        612,
+		"GcpSubnetwork":                 613,
+		"GcpRouterNat":                  614,
+		"GcpGkeClusterCore":             615,
+		"GcpGkeNodePool":                616,
+		"GcpServiceAccount":             617,
+		"GcpGkeWorkloadIdentityBinding": 618,
+		"ArgocdKubernetes":              800,
+		"CronJobKubernetes":             801,
+		"ElasticsearchKubernetes":       802,
+		"GitlabKubernetes":              803,
+		"GrafanaKubernetes":             804,
+		"HelmRelease":                   805,
+		"JenkinsKubernetes":             806,
+		"KafkaKubernetes":               807,
+		"KeycloakKubernetes":            808,
+		"KubernetesHttpEndpoint":        809,
+		"LocustKubernetes":              810,
+		"MicroserviceKubernetes":        811,
+		"MongodbKubernetes":             812,
+		"Neo4jKubernetes":               813,
+		"OpenFgaKubernetes":             814,
+		"PostgresKubernetes":            815,
+		"PrometheusKubernetes":          816,
+		"RedisKubernetes":               817,
+		"SignozKubernetes":              818,
+		"SolrKubernetes":                819,
+		"StackJobRunnerKubernetes":      820,
+		"TemporalKubernetes":            821,
+		"NatsKubernetes":                822,
+		"CertManagerKubernetes":         823,
+		"ElasticOperatorKubernetes":     824,
+		"ExternalDnsKubernetes":         825,
+		"IngressNginxKubernetes":        826,
+		"IstioKubernetes":               827,
+		"KafkaOperatorKubernetes":       828,
+		"PostgresOperatorKubernetes":    829,
+		"SolrOperatorKubernetes":        830,
 	}
 )
 
@@ -273,7 +306,7 @@ var File_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto prot
 
 const file_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto_rawDesc = "" +
 	"\n" +
-	"Bproject/planton/shared/cloudresourcekind/cloud_resource_kind.proto\x12(project.planton.shared.cloudresourcekind*\xd1\v\n" +
+	"Bproject/planton/shared/cloudresourcekind/cloud_resource_kind.proto\x12(project.planton.shared.cloudresourcekind*\x8c\x0e\n" +
 	"\x11CloudResourceKind\x12\x0f\n" +
 	"\vunspecified\x10\x00\x12\x1d\n" +
 	"\x19FirstTestCloudApiResource\x10\x01\x12\x1e\n" +
@@ -301,7 +334,8 @@ const file_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto_ra
 	"\x11AwsSecretsManager\x10\xd6\x01\x12\x15\n" +
 	"\x10AwsSecurityGroup\x10\xd7\x01\x12\x15\n" +
 	"\x10AwsStaticWebsite\x10\xd8\x01\x12\v\n" +
-	"\x06AwsVpc\x10\xd9\x01\x12\x14\n" +
+	"\x06AwsVpc\x10\xd9\x01\x12\x16\n" +
+	"\x11AwsEksClusterCore\x10\xda\x01\x12\x14\n" +
 	"\x0fAzureAksCluster\x10\x90\x03\x12\x12\n" +
 	"\rAzureKeyVault\x10\x91\x03\x12\x1c\n" +
 	"\x17GcpArtifactRegistryRepo\x10\xd8\x04\x12\x10\n" +
@@ -322,7 +356,9 @@ const file_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto_ra
 	"\rGcpSubnetwork\x10\xe5\x04\x12\x11\n" +
 	"\fGcpRouterNat\x10\xe6\x04\x12\x16\n" +
 	"\x11GcpGkeClusterCore\x10\xe7\x04\x12\x13\n" +
-	"\x0eGcpGkeNodePool\x10\xe8\x04\x12\x15\n" +
+	"\x0eGcpGkeNodePool\x10\xe8\x04\x12\x16\n" +
+	"\x11GcpServiceAccount\x10\xe9\x04\x12\"\n" +
+	"\x1dGcpGkeWorkloadIdentityBinding\x10\xea\x04\x12\x15\n" +
 	"\x10ArgocdKubernetes\x10\xa0\x06\x12\x16\n" +
 	"\x11CronJobKubernetes\x10\xa1\x06\x12\x1c\n" +
 	"\x17ElasticsearchKubernetes\x10\xa2\x06\x12\x15\n" +
@@ -345,7 +381,15 @@ const file_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto_ra
 	"\x0eSolrKubernetes\x10\xb3\x06\x12\x1d\n" +
 	"\x18StackJobRunnerKubernetes\x10\xb4\x06\x12\x17\n" +
 	"\x12TemporalKubernetes\x10\xb5\x06\x12\x13\n" +
-	"\x0eNatsKubernetes\x10\xb6\x06B\xe4\x02\n" +
+	"\x0eNatsKubernetes\x10\xb6\x06\x12\x1a\n" +
+	"\x15CertManagerKubernetes\x10\xb7\x06\x12\x1e\n" +
+	"\x19ElasticOperatorKubernetes\x10\xb8\x06\x12\x1a\n" +
+	"\x15ExternalDnsKubernetes\x10\xb9\x06\x12\x1b\n" +
+	"\x16IngressNginxKubernetes\x10\xba\x06\x12\x14\n" +
+	"\x0fIstioKubernetes\x10\xbb\x06\x12\x1c\n" +
+	"\x17KafkaOperatorKubernetes\x10\xbc\x06\x12\x1f\n" +
+	"\x1aPostgresOperatorKubernetes\x10\xbd\x06\x12\x1b\n" +
+	"\x16SolrOperatorKubernetes\x10\xbe\x06B\xe4\x02\n" +
 	",com.project.planton.shared.cloudresourcekindB\x16CloudResourceKindProtoP\x01ZXgithub.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind\xa2\x02\x04PPSC\xaa\x02(Project.Planton.Shared.Cloudresourcekind\xca\x02(Project\\Planton\\Shared\\Cloudresourcekind\xe2\x024Project\\Planton\\Shared\\Cloudresourcekind\\GPBMetadata\xea\x02+Project::Planton::Shared::Cloudresourcekindb\x06proto3"
 
 var (

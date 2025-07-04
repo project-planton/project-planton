@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package project.planton.provider.kubernetes.workloads.gitlabkubernetes.v1;
+
+import "buf/validate/validate.proto";
+import "project/planton/shared/kubernetes/kubernetes.proto";
+import "project/planton/shared/kubernetes/options.proto";
+
+// **GitlabKubernetesSpec** defines the configuration for deploying GitLab on a Kubernetes cluster.
+// This message specifies the parameters needed to create and manage a GitLab deployment within a Kubernetes environment.
+// It includes container specifications and ingress settings to control resource allocation and external access.
+message GitlabKubernetesSpec {
+  // The container specifications for the GitLab deployment.
+  GitlabKubernetesSpecContainer container = 1 [
+    (buf.validate.field).required = true
+  ];
+
+  // The ingress configuration for the GitLab deployment.
+  project.planton.shared.kubernetes.IngressSpec ingress = 3;
+}
+
+// **GitlabKubernetesSpecContainer** specifies the container configuration for the GitLab application.
+// It includes resource allocations for CPU and memory to ensure the application runs efficiently.
+message GitlabKubernetesSpecContainer {
+  // The CPU and memory resources allocated to the GitLab container.
+  project.planton.shared.kubernetes.ContainerResources resources = 1 [
+    (project.planton.shared.kubernetes.default_container_resources) = {
+      limits {
+        cpu: "1000m"
+        memory: "1Gi"
+      },
+      requests {
+        cpu: "50m"
+        memory: "100Mi"
+      }
+    }
+  ];
+}

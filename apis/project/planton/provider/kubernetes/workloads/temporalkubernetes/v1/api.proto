@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package project.planton.provider.kubernetes.workloads.temporalkubernetes.v1;
+
+import "buf/validate/validate.proto";
+import "project/planton/provider/kubernetes/workloads/temporalkubernetes/v1/spec.proto";
+import "project/planton/provider/kubernetes/workloads/temporalkubernetes/v1/stack_outputs.proto";
+import "project/planton/shared/status.proto";
+import "project/planton/shared/metadata.proto";
+
+//temporal-kubernetes
+message TemporalKubernetes {
+  //api-version
+  string api_version = 1 [
+    (buf.validate.field).string.const = 'kubernetes.project-planton.org/v1'
+  ];
+
+  //resource-kind
+  string kind = 2 [
+    (buf.validate.field).string.const = 'TemporalKubernetes'
+  ];
+
+  //metadata
+  project.planton.shared.ApiResourceMetadata metadata = 3 [
+    (buf.validate.field).required = true
+  ];
+
+  //spec
+  TemporalKubernetesSpec spec = 4 [
+    (buf.validate.field).required = true
+  ];
+
+  //status
+  TemporalKubernetesStatus status = 5;
+}
+
+//temporal-kubernetes status.
+message TemporalKubernetesStatus {
+  //lifecycle
+  project.planton.shared.ApiResourceLifecycle lifecycle = 99;
+
+  //audit-info
+  project.planton.shared.ApiResourceAudit audit = 98;
+
+  //stack-job id
+  string stack_job_id = 97;
+
+  //stack-outputs
+  TemporalKubernetesStackOutputs outputs = 1;
+}

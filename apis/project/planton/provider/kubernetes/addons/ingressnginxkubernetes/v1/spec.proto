@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package project.planton.provider.kubernetes.addons.ingressnginxkubernetes.v1;
+
+import "project/planton/shared/kubernetes/target_cluster.proto";
+
+// IngressNginxKubernetesSpec defines the specification for the Ingress Nginx Kubernetes resource.
+message IngressNginxKubernetesSpec {
+  // The Kubernetes cluster to install this addon on.
+  project.planton.shared.kubernetes.KubernetesAddonTargetCluster target_cluster = 1;
+  // Chart version (e.g. "4.10.1").
+  string chart_version = 2;
+  // flag to indicate if the ingress controller is internal or external
+  bool internal = 3;
+}
