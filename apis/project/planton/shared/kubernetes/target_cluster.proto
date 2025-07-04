@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package project.planton.shared.kubernetes;
+
+import "buf/validate/validate.proto";
+import "project/planton/shared/cloudresourcekind/cloud_resource_kind.proto";
+
+// **KubernetesAddonTargetCluster** defines the target cluster for a Kubernetes addon.
+message KubernetesAddonTargetCluster {
+  oneof credential_source {
+    // The ID of the Kubernetes cluster credential.
+    string kubernetes_cluster_credential_id = 1;
+    // The selector for the Kubernetes cluster in the same environment as the addon.
+    KubernetesClusterCloudResourceSelector kubernetes_cluster_selector = 2;
+  }
+}
+
+// **KubernetesClusterCloudResourceSelector** defines a selector for a Kubernetes cluster in the same environment as the addon.
+message KubernetesClusterCloudResourceSelector {
+  //can be either gcp-gke-cluster-core
+  project.planton.shared.cloudresourcekind.CloudResourceKind cluster_kind = 1 [
+    (buf.validate.field).enum = {
+      in: [
+        615, //GcpGkeClusterCore
+        218  //AwsEksClusterCore
+      ]}
+  ];
+  //name of the kubernetes cluster in the same environment as the addon
+  string cluster_name = 2;
+}

@@ -53,6 +53,7 @@ const (
 	CloudResourceKind_AwsSecurityGroup   CloudResourceKind = 215
 	CloudResourceKind_AwsStaticWebsite   CloudResourceKind = 216
 	CloudResourceKind_AwsVpc             CloudResourceKind = 217
+	CloudResourceKind_AwsEksClusterCore  CloudResourceKind = 218
 	// 400–599: Azure resources
 	CloudResourceKind_AzureAksCluster CloudResourceKind = 400
 	CloudResourceKind_AzureKeyVault   CloudResourceKind = 401
@@ -138,6 +139,7 @@ var (
 		215: "AwsSecurityGroup",
 		216: "AwsStaticWebsite",
 		217: "AwsVpc",
+		218: "AwsEksClusterCore",
 		400: "AzureAksCluster",
 		401: "AzureKeyVault",
 		600: "GcpArtifactRegistryRepo",
@@ -217,6 +219,7 @@ var (
 		"AwsSecurityGroup":              215,
 		"AwsStaticWebsite":              216,
 		"AwsVpc":                        217,
+		"AwsEksClusterCore":             218,
 		"AzureAksCluster":               400,
 		"AzureKeyVault":                 401,
 		"GcpArtifactRegistryRepo":       600,
@@ -303,7 +306,7 @@ var File_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto prot
 
 const file_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto_rawDesc = "" +
 	"\n" +
-	"Bproject/planton/shared/cloudresourcekind/cloud_resource_kind.proto\x12(project.planton.shared.cloudresourcekind*\xf4\r\n" +
+	"Bproject/planton/shared/cloudresourcekind/cloud_resource_kind.proto\x12(project.planton.shared.cloudresourcekind*\x8c\x0e\n" +
 	"\x11CloudResourceKind\x12\x0f\n" +
 	"\vunspecified\x10\x00\x12\x1d\n" +
 	"\x19FirstTestCloudApiResource\x10\x01\x12\x1e\n" +
@@ -331,7 +334,8 @@ const file_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto_ra
 	"\x11AwsSecretsManager\x10\xd6\x01\x12\x15\n" +
 	"\x10AwsSecurityGroup\x10\xd7\x01\x12\x15\n" +
 	"\x10AwsStaticWebsite\x10\xd8\x01\x12\v\n" +
-	"\x06AwsVpc\x10\xd9\x01\x12\x14\n" +
+	"\x06AwsVpc\x10\xd9\x01\x12\x16\n" +
+	"\x11AwsEksClusterCore\x10\xda\x01\x12\x14\n" +
 	"\x0fAzureAksCluster\x10\x90\x03\x12\x12\n" +
 	"\rAzureKeyVault\x10\x91\x03\x12\x1c\n" +
 	"\x17GcpArtifactRegistryRepo\x10\xd8\x04\x12\x10\n" +

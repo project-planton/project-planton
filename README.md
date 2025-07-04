@@ -52,9 +52,9 @@ flowchart TD
 
    Example manifest
    for
-   deploying [Redis On Kubernetes](https://github.com/project-planton/project-planton/tree/main/apis/project/planton/provider/kubernetes/rediskubernetes/v1)
+   deploying [Redis On Kubernetes](https://github.com/project-planton/project-planton/tree/main/apis/project/planton/provider/kubernetes/workloads/rediskubernetes/v1)
    as per
-   the [redis-kubernetes](https://buf.build/project-planton/apis/file/main:project/planton/provider/kubernetes/rediskubernetes/v1/spec.proto)
+   the [redis-kubernetes](https://buf.build/project-planton/apis/file/main:project/planton/provider/kubernetes/workloads/rediskubernetes/v1/spec.proto)
    deployment component
 
    You can create similar manifests
