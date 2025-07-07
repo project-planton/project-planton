@@ -1,7 +1,7 @@
 package tfvars
 
 import (
-	rediskubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workloads/rediskubernetes/v1"
+	rediskubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/rediskubernetes/v1"
 	"github.com/project-planton/project-planton/apis/project/planton/shared"
 	"github.com/project-planton/project-planton/apis/project/planton/shared/kubernetes"
 	"testing"
