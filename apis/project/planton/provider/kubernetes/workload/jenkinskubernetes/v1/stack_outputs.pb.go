@@ -144,7 +144,7 @@ var File_project_planton_provider_kubernetes_workload_jenkinskubernetes_v1_stack
 
 const file_project_planton_provider_kubernetes_workload_jenkinskubernetes_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Uproject/planton/provider/kubernetes/workload/jenkinskubernetes/v1/stack_outputs.proto\x12Bproject.planton.provider.kubernetes.workloads.jenkinskubernetes.v1\x1a2project/planton/shared/kubernetes/kubernetes.proto\"\x85\x03\n" +
+	"Uproject/planton/provider/kubernetes/workload/jenkinskubernetes/v1/stack_outputs.proto\x12Aproject.planton.provider.kubernetes.workload.jenkinskubernetes.v1\x1a2project/planton/shared/kubernetes/kubernetes.proto\"\x85\x03\n" +
 	"\x1dJenkinsKubernetesStackOutputs\x12\x1c\n" +
 	"\tnamespace\x18\x01 \x01(\tR\tnamespace\x12\x18\n" +
 	"\aservice\x18\x02 \x01(\tR\aservice\x120\n" +
@@ -153,8 +153,8 @@ const file_project_planton_provider_kubernetes_workload_jenkinskubernetes_v1_sta
 	"\x11external_hostname\x18\x05 \x01(\tR\x10externalHostname\x12+\n" +
 	"\x11internal_hostname\x18\x06 \x01(\tR\x10internalHostname\x12\x1a\n" +
 	"\busername\x18\a \x01(\tR\busername\x12_\n" +
-	"\x0fpassword_secret\x18\b \x01(\v26.project.planton.shared.kubernetes.KubernetesSecretKeyR\x0epasswordSecretB\x94\x04\n" +
-	"Fcom.project.planton.provider.kubernetes.workloads.jenkinskubernetes.v1B\x11StackOutputsProtoP\x01Z\x85\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/jenkinskubernetes/v1;jenkinskubernetesv1\xa2\x02\x06PPPKWJ\xaa\x02BProject.Planton.Provider.Kubernetes.Workloads.Jenkinskubernetes.V1\xca\x02BProject\\Planton\\Provider\\Kubernetes\\Workloads\\Jenkinskubernetes\\V1\xe2\x02NProject\\Planton\\Provider\\Kubernetes\\Workloads\\Jenkinskubernetes\\V1\\GPBMetadata\xea\x02HProject::Planton::Provider::Kubernetes::Workloads::Jenkinskubernetes::V1b\x06proto3"
+	"\x0fpassword_secret\x18\b \x01(\v26.project.planton.shared.kubernetes.KubernetesSecretKeyR\x0epasswordSecretB\x8f\x04\n" +
+	"Ecom.project.planton.provider.kubernetes.workload.jenkinskubernetes.v1B\x11StackOutputsProtoP\x01Z\x85\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/jenkinskubernetes/v1;jenkinskubernetesv1\xa2\x02\x06PPPKWJ\xaa\x02AProject.Planton.Provider.Kubernetes.Workload.Jenkinskubernetes.V1\xca\x02AProject\\Planton\\Provider\\Kubernetes\\Workload\\Jenkinskubernetes\\V1\xe2\x02MProject\\Planton\\Provider\\Kubernetes\\Workload\\Jenkinskubernetes\\V1\\GPBMetadata\xea\x02GProject::Planton::Provider::Kubernetes::Workload::Jenkinskubernetes::V1b\x06proto3"
 
 var (
 	file_project_planton_provider_kubernetes_workload_jenkinskubernetes_v1_stack_outputs_proto_rawDescOnce sync.Once
@@ -170,11 +170,11 @@ func file_project_planton_provider_kubernetes_workload_jenkinskubernetes_v1_stac
 
 var file_project_planton_provider_kubernetes_workload_jenkinskubernetes_v1_stack_outputs_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_kubernetes_workload_jenkinskubernetes_v1_stack_outputs_proto_goTypes = []any{
-	(*JenkinsKubernetesStackOutputs)(nil),  // 0: project.planton.provider.kubernetes.workloads.jenkinskubernetes.v1.JenkinsKubernetesStackOutputs
+	(*JenkinsKubernetesStackOutputs)(nil),  // 0: project.planton.provider.kubernetes.workload.jenkinskubernetes.v1.JenkinsKubernetesStackOutputs
 	(*kubernetes.KubernetesSecretKey)(nil), // 1: project.planton.shared.kubernetes.KubernetesSecretKey
 }
 var file_project_planton_provider_kubernetes_workload_jenkinskubernetes_v1_stack_outputs_proto_depIdxs = []int32{
-	1, // 0: project.planton.provider.kubernetes.workloads.jenkinskubernetes.v1.JenkinsKubernetesStackOutputs.password_secret:type_name -> project.planton.shared.kubernetes.KubernetesSecretKey
+	1, // 0: project.planton.provider.kubernetes.workload.jenkinskubernetes.v1.JenkinsKubernetesStackOutputs.password_secret:type_name -> project.planton.shared.kubernetes.KubernetesSecretKey
 	1, // [1:1] is the sub-list for method output_type
 	1, // [1:1] is the sub-list for method input_type
 	1, // [1:1] is the sub-list for extension type_name

@@ -240,7 +240,7 @@ var file_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_v1
 		ExtendedType:  (*descriptorpb.FieldOptions)(nil),
 		ExtensionType: (*ElasticsearchKubernetesElasticsearchContainer)(nil),
 		Field:         509001,
-		Name:          "project.planton.provider.kubernetes.workloads.elasticsearchkubernetes.v1.default_elasticsearch_container",
+		Name:          "project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.default_elasticsearch_container",
 		Tag:           "bytes,509001,opt,name=default_elasticsearch_container",
 		Filename:      "project/planton/provider/kubernetes/workload/elasticsearchkubernetes/v1/spec.proto",
 	},
@@ -248,7 +248,7 @@ var file_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_v1
 		ExtendedType:  (*descriptorpb.FieldOptions)(nil),
 		ExtensionType: (*ElasticsearchKubernetesKibanaContainer)(nil),
 		Field:         509002,
-		Name:          "project.planton.provider.kubernetes.workloads.elasticsearchkubernetes.v1.default_kibana_container",
+		Name:          "project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.default_kibana_container",
 		Tag:           "bytes,509002,opt,name=default_kibana_container",
 		Filename:      "project/planton/provider/kubernetes/workload/elasticsearchkubernetes/v1/spec.proto",
 	},
@@ -256,9 +256,9 @@ var file_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_v1
 
 // Extension fields to descriptorpb.FieldOptions.
 var (
-	// optional project.planton.provider.kubernetes.workloads.elasticsearchkubernetes.v1.ElasticsearchKubernetesElasticsearchContainer default_elasticsearch_container = 509001;
+	// optional project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesElasticsearchContainer default_elasticsearch_container = 509001;
 	E_DefaultElasticsearchContainer = &file_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_v1_spec_proto_extTypes[0]
-	// optional project.planton.provider.kubernetes.workloads.elasticsearchkubernetes.v1.ElasticsearchKubernetesKibanaContainer default_kibana_container = 509002;
+	// optional project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesKibanaContainer default_kibana_container = 509002;
 	E_DefaultKibanaContainer = &file_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_v1_spec_proto_extTypes[1]
 )
 
@@ -266,13 +266,13 @@ var File_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_v1
 
 const file_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Rproject/planton/provider/kubernetes/workload/elasticsearchkubernetes/v1/spec.proto\x12Hproject.planton.provider.kubernetes.workloads.elasticsearchkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\x1a,project/planton/shared/options/options.proto\"\x8f\x04\n" +
-	"\x1bElasticsearchKubernetesSpec\x12\xde\x01\n" +
-	"\x17elasticsearch_container\x18\x01 \x01(\v2w.project.planton.provider.kubernetes.workloads.elasticsearchkubernetes.v1.ElasticsearchKubernetesElasticsearchContainerB,\xca\xc4\xf8\x01'\b\x01\x12\x1c\n" +
+	"Rproject/planton/provider/kubernetes/workload/elasticsearchkubernetes/v1/spec.proto\x12Gproject.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\x1a,project/planton/shared/options/options.proto\"\x8d\x04\n" +
+	"\x1bElasticsearchKubernetesSpec\x12\xdd\x01\n" +
+	"\x17elasticsearch_container\x18\x01 \x01(\v2v.project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesElasticsearchContainerB,\xca\xc4\xf8\x01'\b\x01\x12\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
-	"\x0350m\x12\x05100Mi\x18\x01\"\x031GiR\x16elasticsearchContainer\x12\xc4\x01\n" +
-	"\x10kibana_container\x18\x02 \x01(\v2p.project.planton.provider.kubernetes.workloads.elasticsearchkubernetes.v1.ElasticsearchKubernetesKibanaContainerB'\xd2\xc4\xf8\x01\"\b\x01\x10\x01\x1a\x1c\n" +
+	"\x0350m\x12\x05100Mi\x18\x01\"\x031GiR\x16elasticsearchContainer\x12\xc3\x01\n" +
+	"\x10kibana_container\x18\x02 \x01(\v2o.project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesKibanaContainerB'\xd2\xc4\xf8\x01\"\b\x01\x10\x01\x1a\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
 	"\x0350m\x12\x05100MiR\x0fkibanaContainer\x12H\n" +
@@ -287,10 +287,10 @@ const file_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_
 	"\n" +
 	"is_enabled\x18\x01 \x01(\bR\tisEnabled\x12\x1a\n" +
 	"\breplicas\x18\x02 \x01(\x05R\breplicas\x12S\n" +
-	"\tresources\x18\x03 \x01(\v25.project.planton.shared.kubernetes.ContainerResourcesR\tresources:\xe0\x01\n" +
-	"\x1fdefault_elasticsearch_container\x12\x1d.google.protobuf.FieldOptions\x18Ɉ\x1f \x01(\v2w.project.planton.provider.kubernetes.workloads.elasticsearchkubernetes.v1.ElasticsearchKubernetesElasticsearchContainerR\x1ddefaultElasticsearchContainer:\xcb\x01\n" +
-	"\x18default_kibana_container\x12\x1d.google.protobuf.FieldOptions\x18ʈ\x1f \x01(\v2p.project.planton.provider.kubernetes.workloads.elasticsearchkubernetes.v1.ElasticsearchKubernetesKibanaContainerR\x16defaultKibanaContainerB\xb6\x04\n" +
-	"Lcom.project.planton.provider.kubernetes.workloads.elasticsearchkubernetes.v1B\tSpecProtoP\x01Z\x91\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/elasticsearchkubernetes/v1;elasticsearchkubernetesv1\xa2\x02\x06PPPKWE\xaa\x02HProject.Planton.Provider.Kubernetes.Workloads.Elasticsearchkubernetes.V1\xca\x02HProject\\Planton\\Provider\\Kubernetes\\Workloads\\Elasticsearchkubernetes\\V1\xe2\x02TProject\\Planton\\Provider\\Kubernetes\\Workloads\\Elasticsearchkubernetes\\V1\\GPBMetadata\xea\x02NProject::Planton::Provider::Kubernetes::Workloads::Elasticsearchkubernetes::V1b\x06proto3"
+	"\tresources\x18\x03 \x01(\v25.project.planton.shared.kubernetes.ContainerResourcesR\tresources:\xdf\x01\n" +
+	"\x1fdefault_elasticsearch_container\x12\x1d.google.protobuf.FieldOptions\x18Ɉ\x1f \x01(\v2v.project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesElasticsearchContainerR\x1ddefaultElasticsearchContainer:\xca\x01\n" +
+	"\x18default_kibana_container\x12\x1d.google.protobuf.FieldOptions\x18ʈ\x1f \x01(\v2o.project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesKibanaContainerR\x16defaultKibanaContainerB\xb1\x04\n" +
+	"Kcom.project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1B\tSpecProtoP\x01Z\x91\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/elasticsearchkubernetes/v1;elasticsearchkubernetesv1\xa2\x02\x06PPPKWE\xaa\x02GProject.Planton.Provider.Kubernetes.Workload.Elasticsearchkubernetes.V1\xca\x02GProject\\Planton\\Provider\\Kubernetes\\Workload\\Elasticsearchkubernetes\\V1\xe2\x02SProject\\Planton\\Provider\\Kubernetes\\Workload\\Elasticsearchkubernetes\\V1\\GPBMetadata\xea\x02MProject::Planton::Provider::Kubernetes::Workload::Elasticsearchkubernetes::V1b\x06proto3"
 
 var (
 	file_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_v1_spec_proto_rawDescOnce sync.Once
@@ -306,23 +306,23 @@ func file_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_v
 
 var file_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_v1_spec_proto_goTypes = []any{
-	(*ElasticsearchKubernetesSpec)(nil),                   // 0: project.planton.provider.kubernetes.workloads.elasticsearchkubernetes.v1.ElasticsearchKubernetesSpec
-	(*ElasticsearchKubernetesElasticsearchContainer)(nil), // 1: project.planton.provider.kubernetes.workloads.elasticsearchkubernetes.v1.ElasticsearchKubernetesElasticsearchContainer
-	(*ElasticsearchKubernetesKibanaContainer)(nil),        // 2: project.planton.provider.kubernetes.workloads.elasticsearchkubernetes.v1.ElasticsearchKubernetesKibanaContainer
+	(*ElasticsearchKubernetesSpec)(nil),                   // 0: project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesSpec
+	(*ElasticsearchKubernetesElasticsearchContainer)(nil), // 1: project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesElasticsearchContainer
+	(*ElasticsearchKubernetesKibanaContainer)(nil),        // 2: project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesKibanaContainer
 	(*kubernetes.IngressSpec)(nil),                        // 3: project.planton.shared.kubernetes.IngressSpec
 	(*kubernetes.ContainerResources)(nil),                 // 4: project.planton.shared.kubernetes.ContainerResources
 	(*descriptorpb.FieldOptions)(nil),                     // 5: google.protobuf.FieldOptions
 }
 var file_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_v1_spec_proto_depIdxs = []int32{
-	1, // 0: project.planton.provider.kubernetes.workloads.elasticsearchkubernetes.v1.ElasticsearchKubernetesSpec.elasticsearch_container:type_name -> project.planton.provider.kubernetes.workloads.elasticsearchkubernetes.v1.ElasticsearchKubernetesElasticsearchContainer
-	2, // 1: project.planton.provider.kubernetes.workloads.elasticsearchkubernetes.v1.ElasticsearchKubernetesSpec.kibana_container:type_name -> project.planton.provider.kubernetes.workloads.elasticsearchkubernetes.v1.ElasticsearchKubernetesKibanaContainer
-	3, // 2: project.planton.provider.kubernetes.workloads.elasticsearchkubernetes.v1.ElasticsearchKubernetesSpec.ingress:type_name -> project.planton.shared.kubernetes.IngressSpec
-	4, // 3: project.planton.provider.kubernetes.workloads.elasticsearchkubernetes.v1.ElasticsearchKubernetesElasticsearchContainer.resources:type_name -> project.planton.shared.kubernetes.ContainerResources
-	4, // 4: project.planton.provider.kubernetes.workloads.elasticsearchkubernetes.v1.ElasticsearchKubernetesKibanaContainer.resources:type_name -> project.planton.shared.kubernetes.ContainerResources
-	5, // 5: project.planton.provider.kubernetes.workloads.elasticsearchkubernetes.v1.default_elasticsearch_container:extendee -> google.protobuf.FieldOptions
-	5, // 6: project.planton.provider.kubernetes.workloads.elasticsearchkubernetes.v1.default_kibana_container:extendee -> google.protobuf.FieldOptions
-	1, // 7: project.planton.provider.kubernetes.workloads.elasticsearchkubernetes.v1.default_elasticsearch_container:type_name -> project.planton.provider.kubernetes.workloads.elasticsearchkubernetes.v1.ElasticsearchKubernetesElasticsearchContainer
-	2, // 8: project.planton.provider.kubernetes.workloads.elasticsearchkubernetes.v1.default_kibana_container:type_name -> project.planton.provider.kubernetes.workloads.elasticsearchkubernetes.v1.ElasticsearchKubernetesKibanaContainer
+	1, // 0: project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesSpec.elasticsearch_container:type_name -> project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesElasticsearchContainer
+	2, // 1: project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesSpec.kibana_container:type_name -> project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesKibanaContainer
+	3, // 2: project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesSpec.ingress:type_name -> project.planton.shared.kubernetes.IngressSpec
+	4, // 3: project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesElasticsearchContainer.resources:type_name -> project.planton.shared.kubernetes.ContainerResources
+	4, // 4: project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesKibanaContainer.resources:type_name -> project.planton.shared.kubernetes.ContainerResources
+	5, // 5: project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.default_elasticsearch_container:extendee -> google.protobuf.FieldOptions
+	5, // 6: project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.default_kibana_container:extendee -> google.protobuf.FieldOptions
+	1, // 7: project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.default_elasticsearch_container:type_name -> project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesElasticsearchContainer
+	2, // 8: project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.default_kibana_container:type_name -> project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesKibanaContainer
 	9, // [9:9] is the sub-list for method output_type
 	9, // [9:9] is the sub-list for method input_type
 	7, // [7:9] is the sub-list for extension type_name

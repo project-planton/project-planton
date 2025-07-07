@@ -90,12 +90,12 @@ var File_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v1_spe
 
 const file_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Nproject/planton/provider/kubernetes/addon/ingressnginxkubernetes/v1/spec.proto\x12Dproject.planton.provider.kubernetes.addons.ingressnginxkubernetes.v1\x1a6project/planton/shared/kubernetes/target_cluster.proto\"\xc5\x01\n" +
+	"Nproject/planton/provider/kubernetes/addon/ingressnginxkubernetes/v1/spec.proto\x12Cproject.planton.provider.kubernetes.addon.ingressnginxkubernetes.v1\x1a6project/planton/shared/kubernetes/target_cluster.proto\"\xc5\x01\n" +
 	"\x1aIngressNginxKubernetesSpec\x12f\n" +
 	"\x0etarget_cluster\x18\x01 \x01(\v2?.project.planton.shared.kubernetes.KubernetesAddonTargetClusterR\rtargetCluster\x12#\n" +
 	"\rchart_version\x18\x02 \x01(\tR\fchartVersion\x12\x1a\n" +
-	"\binternal\x18\x03 \x01(\bR\binternalB\x9d\x04\n" +
-	"Hcom.project.planton.provider.kubernetes.addons.ingressnginxkubernetes.v1B\tSpecProtoP\x01Z\x8c\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/addon/ingressnginxkubernetes/v1;ingressnginxkubernetesv1\xa2\x02\x06PPPKAI\xaa\x02DProject.Planton.Provider.Kubernetes.Addons.Ingressnginxkubernetes.V1\xca\x02DProject\\Planton\\Provider\\Kubernetes\\Addons\\Ingressnginxkubernetes\\V1\xe2\x02PProject\\Planton\\Provider\\Kubernetes\\Addons\\Ingressnginxkubernetes\\V1\\GPBMetadata\xea\x02JProject::Planton::Provider::Kubernetes::Addons::Ingressnginxkubernetes::V1b\x06proto3"
+	"\binternal\x18\x03 \x01(\bR\binternalB\x98\x04\n" +
+	"Gcom.project.planton.provider.kubernetes.addon.ingressnginxkubernetes.v1B\tSpecProtoP\x01Z\x8c\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/addon/ingressnginxkubernetes/v1;ingressnginxkubernetesv1\xa2\x02\x06PPPKAI\xaa\x02CProject.Planton.Provider.Kubernetes.Addon.Ingressnginxkubernetes.V1\xca\x02CProject\\Planton\\Provider\\Kubernetes\\Addon\\Ingressnginxkubernetes\\V1\xe2\x02OProject\\Planton\\Provider\\Kubernetes\\Addon\\Ingressnginxkubernetes\\V1\\GPBMetadata\xea\x02IProject::Planton::Provider::Kubernetes::Addon::Ingressnginxkubernetes::V1b\x06proto3"
 
 var (
 	file_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v1_spec_proto_rawDescOnce sync.Once
@@ -111,11 +111,11 @@ func file_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v1_sp
 
 var file_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v1_spec_proto_goTypes = []any{
-	(*IngressNginxKubernetesSpec)(nil),              // 0: project.planton.provider.kubernetes.addons.ingressnginxkubernetes.v1.IngressNginxKubernetesSpec
+	(*IngressNginxKubernetesSpec)(nil),              // 0: project.planton.provider.kubernetes.addon.ingressnginxkubernetes.v1.IngressNginxKubernetesSpec
 	(*kubernetes.KubernetesAddonTargetCluster)(nil), // 1: project.planton.shared.kubernetes.KubernetesAddonTargetCluster
 }
 var file_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v1_spec_proto_depIdxs = []int32{
-	1, // 0: project.planton.provider.kubernetes.addons.ingressnginxkubernetes.v1.IngressNginxKubernetesSpec.target_cluster:type_name -> project.planton.shared.kubernetes.KubernetesAddonTargetCluster
+	1, // 0: project.planton.provider.kubernetes.addon.ingressnginxkubernetes.v1.IngressNginxKubernetesSpec.target_cluster:type_name -> project.planton.shared.kubernetes.KubernetesAddonTargetCluster
 	1, // [1:1] is the sub-list for method output_type
 	1, // [1:1] is the sub-list for method input_type
 	1, // [1:1] is the sub-list for extension type_name

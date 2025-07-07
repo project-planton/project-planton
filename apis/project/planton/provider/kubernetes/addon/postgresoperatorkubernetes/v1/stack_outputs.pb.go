@@ -115,14 +115,14 @@ var File_project_planton_provider_kubernetes_addon_postgresoperatorkubernetes_v1
 
 const file_project_planton_provider_kubernetes_addon_postgresoperatorkubernetes_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"[project/planton/provider/kubernetes/addon/postgresoperatorkubernetes/v1/stack_outputs.proto\x12Hproject.planton.provider.kubernetes.addons.postgresoperatorkubernetes.v1\"\xe2\x01\n" +
+	"[project/planton/provider/kubernetes/addon/postgresoperatorkubernetes/v1/stack_outputs.proto\x12Gproject.planton.provider.kubernetes.addon.postgresoperatorkubernetes.v1\"\xe2\x01\n" +
 	"&PostgresOperatorKubernetesStackOutputs\x12\x1c\n" +
 	"\tnamespace\x18\x01 \x01(\tR\tnamespace\x12\x18\n" +
 	"\aservice\x18\x02 \x01(\tR\aservice\x120\n" +
 	"\x14port_forward_command\x18\x03 \x01(\tR\x12portForwardCommand\x12#\n" +
 	"\rkube_endpoint\x18\x04 \x01(\tR\fkubeEndpoint\x12)\n" +
-	"\x10ingress_endpoint\x18\x05 \x01(\tR\x0fingressEndpointB\xc1\x04\n" +
-	"Lcom.project.planton.provider.kubernetes.addons.postgresoperatorkubernetes.v1B\x11StackOutputsProtoP\x01Z\x94\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/addon/postgresoperatorkubernetes/v1;postgresoperatorkubernetesv1\xa2\x02\x06PPPKAP\xaa\x02HProject.Planton.Provider.Kubernetes.Addons.Postgresoperatorkubernetes.V1\xca\x02HProject\\Planton\\Provider\\Kubernetes\\Addons\\Postgresoperatorkubernetes\\V1\xe2\x02TProject\\Planton\\Provider\\Kubernetes\\Addons\\Postgresoperatorkubernetes\\V1\\GPBMetadata\xea\x02NProject::Planton::Provider::Kubernetes::Addons::Postgresoperatorkubernetes::V1b\x06proto3"
+	"\x10ingress_endpoint\x18\x05 \x01(\tR\x0fingressEndpointB\xbc\x04\n" +
+	"Kcom.project.planton.provider.kubernetes.addon.postgresoperatorkubernetes.v1B\x11StackOutputsProtoP\x01Z\x94\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/addon/postgresoperatorkubernetes/v1;postgresoperatorkubernetesv1\xa2\x02\x06PPPKAP\xaa\x02GProject.Planton.Provider.Kubernetes.Addon.Postgresoperatorkubernetes.V1\xca\x02GProject\\Planton\\Provider\\Kubernetes\\Addon\\Postgresoperatorkubernetes\\V1\xe2\x02SProject\\Planton\\Provider\\Kubernetes\\Addon\\Postgresoperatorkubernetes\\V1\\GPBMetadata\xea\x02MProject::Planton::Provider::Kubernetes::Addon::Postgresoperatorkubernetes::V1b\x06proto3"
 
 var (
 	file_project_planton_provider_kubernetes_addon_postgresoperatorkubernetes_v1_stack_outputs_proto_rawDescOnce sync.Once
@@ -138,7 +138,7 @@ func file_project_planton_provider_kubernetes_addon_postgresoperatorkubernetes_v
 
 var file_project_planton_provider_kubernetes_addon_postgresoperatorkubernetes_v1_stack_outputs_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_kubernetes_addon_postgresoperatorkubernetes_v1_stack_outputs_proto_goTypes = []any{
-	(*PostgresOperatorKubernetesStackOutputs)(nil), // 0: project.planton.provider.kubernetes.addons.postgresoperatorkubernetes.v1.PostgresOperatorKubernetesStackOutputs
+	(*PostgresOperatorKubernetesStackOutputs)(nil), // 0: project.planton.provider.kubernetes.addon.postgresoperatorkubernetes.v1.PostgresOperatorKubernetesStackOutputs
 }
 var file_project_planton_provider_kubernetes_addon_postgresoperatorkubernetes_v1_stack_outputs_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type

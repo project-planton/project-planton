@@ -71,10 +71,10 @@ var File_project_planton_provider_kubernetes_workload_kuberneteshttpendpoint_v1_
 
 const file_project_planton_provider_kubernetes_workload_kuberneteshttpendpoint_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Zproject/planton/provider/kubernetes/workload/kuberneteshttpendpoint/v1/stack_outputs.proto\x12Gproject.planton.provider.kubernetes.workloads.kuberneteshttpendpoint.v1\"B\n" +
+	"Zproject/planton/provider/kubernetes/workload/kuberneteshttpendpoint/v1/stack_outputs.proto\x12Fproject.planton.provider.kubernetes.workload.kuberneteshttpendpoint.v1\"B\n" +
 	"\"KubernetesHttpEndpointStackOutputs\x12\x1c\n" +
-	"\tnamespace\x18\x01 \x01(\tR\tnamespaceB\xb7\x04\n" +
-	"Kcom.project.planton.provider.kubernetes.workloads.kuberneteshttpendpoint.v1B\x11StackOutputsProtoP\x01Z\x8f\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/kuberneteshttpendpoint/v1;kuberneteshttpendpointv1\xa2\x02\x06PPPKWK\xaa\x02GProject.Planton.Provider.Kubernetes.Workloads.Kuberneteshttpendpoint.V1\xca\x02GProject\\Planton\\Provider\\Kubernetes\\Workloads\\Kuberneteshttpendpoint\\V1\xe2\x02SProject\\Planton\\Provider\\Kubernetes\\Workloads\\Kuberneteshttpendpoint\\V1\\GPBMetadata\xea\x02MProject::Planton::Provider::Kubernetes::Workloads::Kuberneteshttpendpoint::V1b\x06proto3"
+	"\tnamespace\x18\x01 \x01(\tR\tnamespaceB\xb2\x04\n" +
+	"Jcom.project.planton.provider.kubernetes.workload.kuberneteshttpendpoint.v1B\x11StackOutputsProtoP\x01Z\x8f\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/kuberneteshttpendpoint/v1;kuberneteshttpendpointv1\xa2\x02\x06PPPKWK\xaa\x02FProject.Planton.Provider.Kubernetes.Workload.Kuberneteshttpendpoint.V1\xca\x02FProject\\Planton\\Provider\\Kubernetes\\Workload\\Kuberneteshttpendpoint\\V1\xe2\x02RProject\\Planton\\Provider\\Kubernetes\\Workload\\Kuberneteshttpendpoint\\V1\\GPBMetadata\xea\x02LProject::Planton::Provider::Kubernetes::Workload::Kuberneteshttpendpoint::V1b\x06proto3"
 
 var (
 	file_project_planton_provider_kubernetes_workload_kuberneteshttpendpoint_v1_stack_outputs_proto_rawDescOnce sync.Once
@@ -90,7 +90,7 @@ func file_project_planton_provider_kubernetes_workload_kuberneteshttpendpoint_v1
 
 var file_project_planton_provider_kubernetes_workload_kuberneteshttpendpoint_v1_stack_outputs_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_kubernetes_workload_kuberneteshttpendpoint_v1_stack_outputs_proto_goTypes = []any{
-	(*KubernetesHttpEndpointStackOutputs)(nil), // 0: project.planton.provider.kubernetes.workloads.kuberneteshttpendpoint.v1.KubernetesHttpEndpointStackOutputs
+	(*KubernetesHttpEndpointStackOutputs)(nil), // 0: project.planton.provider.kubernetes.workload.kuberneteshttpendpoint.v1.KubernetesHttpEndpointStackOutputs
 }
 var file_project_planton_provider_kubernetes_workload_kuberneteshttpendpoint_v1_stack_outputs_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type

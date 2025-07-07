@@ -98,13 +98,13 @@ var File_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v1_sta
 
 const file_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Wproject/planton/provider/kubernetes/addon/ingressnginxkubernetes/v1/stack_outputs.proto\x12Dproject.planton.provider.kubernetes.addons.ingressnginxkubernetes.v1\"\xab\x01\n" +
+	"Wproject/planton/provider/kubernetes/addon/ingressnginxkubernetes/v1/stack_outputs.proto\x12Cproject.planton.provider.kubernetes.addon.ingressnginxkubernetes.v1\"\xab\x01\n" +
 	"\"IngressNginxKubernetesStackOutputs\x12\x1c\n" +
 	"\tnamespace\x18\x01 \x01(\tR\tnamespace\x12!\n" +
 	"\frelease_name\x18\x02 \x01(\tR\vreleaseName\x12!\n" +
 	"\fservice_name\x18\x03 \x01(\tR\vserviceName\x12!\n" +
-	"\fservice_type\x18\x04 \x01(\tR\vserviceTypeB\xa5\x04\n" +
-	"Hcom.project.planton.provider.kubernetes.addons.ingressnginxkubernetes.v1B\x11StackOutputsProtoP\x01Z\x8c\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/addon/ingressnginxkubernetes/v1;ingressnginxkubernetesv1\xa2\x02\x06PPPKAI\xaa\x02DProject.Planton.Provider.Kubernetes.Addons.Ingressnginxkubernetes.V1\xca\x02DProject\\Planton\\Provider\\Kubernetes\\Addons\\Ingressnginxkubernetes\\V1\xe2\x02PProject\\Planton\\Provider\\Kubernetes\\Addons\\Ingressnginxkubernetes\\V1\\GPBMetadata\xea\x02JProject::Planton::Provider::Kubernetes::Addons::Ingressnginxkubernetes::V1b\x06proto3"
+	"\fservice_type\x18\x04 \x01(\tR\vserviceTypeB\xa0\x04\n" +
+	"Gcom.project.planton.provider.kubernetes.addon.ingressnginxkubernetes.v1B\x11StackOutputsProtoP\x01Z\x8c\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/addon/ingressnginxkubernetes/v1;ingressnginxkubernetesv1\xa2\x02\x06PPPKAI\xaa\x02CProject.Planton.Provider.Kubernetes.Addon.Ingressnginxkubernetes.V1\xca\x02CProject\\Planton\\Provider\\Kubernetes\\Addon\\Ingressnginxkubernetes\\V1\xe2\x02OProject\\Planton\\Provider\\Kubernetes\\Addon\\Ingressnginxkubernetes\\V1\\GPBMetadata\xea\x02IProject::Planton::Provider::Kubernetes::Addon::Ingressnginxkubernetes::V1b\x06proto3"
 
 var (
 	file_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v1_stack_outputs_proto_rawDescOnce sync.Once
@@ -120,7 +120,7 @@ func file_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v1_st
 
 var file_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v1_stack_outputs_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v1_stack_outputs_proto_goTypes = []any{
-	(*IngressNginxKubernetesStackOutputs)(nil), // 0: project.planton.provider.kubernetes.addons.ingressnginxkubernetes.v1.IngressNginxKubernetesStackOutputs
+	(*IngressNginxKubernetesStackOutputs)(nil), // 0: project.planton.provider.kubernetes.addon.ingressnginxkubernetes.v1.IngressNginxKubernetesStackOutputs
 }
 var file_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v1_stack_outputs_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type

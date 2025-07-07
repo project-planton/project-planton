@@ -318,7 +318,7 @@ var file_project_planton_provider_kubernetes_workload_solrkubernetes_v1_spec_pro
 		ExtendedType:  (*descriptorpb.FieldOptions)(nil),
 		ExtensionType: (*SolrKubernetesSolrContainer)(nil),
 		Field:         540001,
-		Name:          "project.planton.provider.kubernetes.workloads.solrkubernetes.v1.default_solr_container",
+		Name:          "project.planton.provider.kubernetes.workload.solrkubernetes.v1.default_solr_container",
 		Tag:           "bytes,540001,opt,name=default_solr_container",
 		Filename:      "project/planton/provider/kubernetes/workload/solrkubernetes/v1/spec.proto",
 	},
@@ -326,7 +326,7 @@ var file_project_planton_provider_kubernetes_workload_solrkubernetes_v1_spec_pro
 		ExtendedType:  (*descriptorpb.FieldOptions)(nil),
 		ExtensionType: (*SolrKubernetesSolrContainer)(nil),
 		Field:         540002,
-		Name:          "project.planton.provider.kubernetes.workloads.solrkubernetes.v1.default_zookeeper_container",
+		Name:          "project.planton.provider.kubernetes.workload.solrkubernetes.v1.default_zookeeper_container",
 		Tag:           "bytes,540002,opt,name=default_zookeeper_container",
 		Filename:      "project/planton/provider/kubernetes/workload/solrkubernetes/v1/spec.proto",
 	},
@@ -334,9 +334,9 @@ var file_project_planton_provider_kubernetes_workload_solrkubernetes_v1_spec_pro
 
 // Extension fields to descriptorpb.FieldOptions.
 var (
-	// optional project.planton.provider.kubernetes.workloads.solrkubernetes.v1.SolrKubernetesSolrContainer default_solr_container = 540001;
+	// optional project.planton.provider.kubernetes.workload.solrkubernetes.v1.SolrKubernetesSolrContainer default_solr_container = 540001;
 	E_DefaultSolrContainer = &file_project_planton_provider_kubernetes_workload_solrkubernetes_v1_spec_proto_extTypes[0]
-	// optional project.planton.provider.kubernetes.workloads.solrkubernetes.v1.SolrKubernetesSolrContainer default_zookeeper_container = 540002;
+	// optional project.planton.provider.kubernetes.workload.solrkubernetes.v1.SolrKubernetesSolrContainer default_zookeeper_container = 540002;
 	E_DefaultZookeeperContainer = &file_project_planton_provider_kubernetes_workload_solrkubernetes_v1_spec_proto_extTypes[1]
 )
 
@@ -344,15 +344,15 @@ var File_project_planton_provider_kubernetes_workload_solrkubernetes_v1_spec_pro
 
 const file_project_planton_provider_kubernetes_workload_solrkubernetes_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Iproject/planton/provider/kubernetes/workload/solrkubernetes/v1/spec.proto\x12?project.planton.provider.kubernetes.workloads.solrkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\x1a,project/planton/shared/options/options.proto\x1a google/protobuf/descriptor.proto\"\xd3\x04\n" +
-	"\x12SolrKubernetesSpec\x12\xbe\x01\n" +
-	"\x0esolr_container\x18\x01 \x01(\v2\\.project.planton.provider.kubernetes.workloads.solrkubernetes.v1.SolrKubernetesSolrContainerB9\x8aև\x024\b\x01\x12\x1c\n" +
+	"Iproject/planton/provider/kubernetes/workload/solrkubernetes/v1/spec.proto\x12>project.planton.provider.kubernetes.workload.solrkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\x1a,project/planton/shared/options/options.proto\x1a google/protobuf/descriptor.proto\"\xd0\x04\n" +
+	"\x12SolrKubernetesSpec\x12\xbd\x01\n" +
+	"\x0esolr_container\x18\x01 \x01(\v2[.project.planton.provider.kubernetes.workload.solrkubernetes.v1.SolrKubernetesSolrContainerB9\x8aև\x024\b\x01\x12\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
 	"\x0350m\x12\x05100Mi\x1a\x031Gi\"\r\n" +
-	"\x04solr\x12\x058.7.0R\rsolrContainer\x12q\n" +
-	"\x06config\x18\x02 \x01(\v2Y.project.planton.provider.kubernetes.workloads.solrkubernetes.v1.SolrKubernetesSolrConfigR\x06config\x12\xbe\x01\n" +
-	"\x13zookeeper_container\x18\x03 \x01(\v2a.project.planton.provider.kubernetes.workloads.solrkubernetes.v1.SolrKubernetesZookeeperContainerB*\x92և\x02%\b\x01\x12\x1c\n" +
+	"\x04solr\x12\x058.7.0R\rsolrContainer\x12p\n" +
+	"\x06config\x18\x02 \x01(\v2X.project.planton.provider.kubernetes.workload.solrkubernetes.v1.SolrKubernetesSolrConfigR\x06config\x12\xbd\x01\n" +
+	"\x13zookeeper_container\x18\x03 \x01(\v2`.project.planton.provider.kubernetes.workload.solrkubernetes.v1.SolrKubernetesZookeeperContainerB*\x92և\x02%\b\x01\x12\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
 	"\x0350m\x12\x05100Mi\x1a\x031GiR\x12zookeeperContainer\x12H\n" +
@@ -371,10 +371,10 @@ const file_project_planton_provider_kubernetes_workload_solrkubernetes_v1_spec_p
 	"\breplicas\x18\x01 \x01(\x05R\breplicas\x12S\n" +
 	"\tresources\x18\x02 \x01(\v25.project.planton.shared.kubernetes.ContainerResourcesR\tresources\x12\xbc\x01\n" +
 	"\tdisk_size\x18\x03 \x01(\tB\x9e\x01\xbaH\x9a\x01\xba\x01\x96\x01\n" +
-	"!spec.container.disk_size.required\x12\x1aDisk size value is invalid\x1aUthis.matches('^\\\\d+(\\\\.\\\\d+)?\\\\s?(Ki|Mi|Gi|Ti|Pi|Ei|K|M|G|T|P|E)$') && size(this) > 0R\bdiskSize:\xb3\x01\n" +
-	"\x16default_solr_container\x12\x1d.google.protobuf.FieldOptions\x18\xe1\xfa  \x01(\v2\\.project.planton.provider.kubernetes.workloads.solrkubernetes.v1.SolrKubernetesSolrContainerR\x14defaultSolrContainer:\xbd\x01\n" +
-	"\x1bdefault_zookeeper_container\x12\x1d.google.protobuf.FieldOptions\x18\xe2\xfa  \x01(\v2\\.project.planton.provider.kubernetes.workloads.solrkubernetes.v1.SolrKubernetesSolrContainerR\x19defaultZookeeperContainerB\xf6\x03\n" +
-	"Ccom.project.planton.provider.kubernetes.workloads.solrkubernetes.v1B\tSpecProtoP\x01Z\x7fgithub.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/solrkubernetes/v1;solrkubernetesv1\xa2\x02\x06PPPKWS\xaa\x02?Project.Planton.Provider.Kubernetes.Workloads.Solrkubernetes.V1\xca\x02?Project\\Planton\\Provider\\Kubernetes\\Workloads\\Solrkubernetes\\V1\xe2\x02KProject\\Planton\\Provider\\Kubernetes\\Workloads\\Solrkubernetes\\V1\\GPBMetadata\xea\x02EProject::Planton::Provider::Kubernetes::Workloads::Solrkubernetes::V1b\x06proto3"
+	"!spec.container.disk_size.required\x12\x1aDisk size value is invalid\x1aUthis.matches('^\\\\d+(\\\\.\\\\d+)?\\\\s?(Ki|Mi|Gi|Ti|Pi|Ei|K|M|G|T|P|E)$') && size(this) > 0R\bdiskSize:\xb2\x01\n" +
+	"\x16default_solr_container\x12\x1d.google.protobuf.FieldOptions\x18\xe1\xfa  \x01(\v2[.project.planton.provider.kubernetes.workload.solrkubernetes.v1.SolrKubernetesSolrContainerR\x14defaultSolrContainer:\xbc\x01\n" +
+	"\x1bdefault_zookeeper_container\x12\x1d.google.protobuf.FieldOptions\x18\xe2\xfa  \x01(\v2[.project.planton.provider.kubernetes.workload.solrkubernetes.v1.SolrKubernetesSolrContainerR\x19defaultZookeeperContainerB\xf1\x03\n" +
+	"Bcom.project.planton.provider.kubernetes.workload.solrkubernetes.v1B\tSpecProtoP\x01Z\x7fgithub.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/solrkubernetes/v1;solrkubernetesv1\xa2\x02\x06PPPKWS\xaa\x02>Project.Planton.Provider.Kubernetes.Workload.Solrkubernetes.V1\xca\x02>Project\\Planton\\Provider\\Kubernetes\\Workload\\Solrkubernetes\\V1\xe2\x02JProject\\Planton\\Provider\\Kubernetes\\Workload\\Solrkubernetes\\V1\\GPBMetadata\xea\x02DProject::Planton::Provider::Kubernetes::Workload::Solrkubernetes::V1b\x06proto3"
 
 var (
 	file_project_planton_provider_kubernetes_workload_solrkubernetes_v1_spec_proto_rawDescOnce sync.Once
@@ -390,27 +390,27 @@ func file_project_planton_provider_kubernetes_workload_solrkubernetes_v1_spec_pr
 
 var file_project_planton_provider_kubernetes_workload_solrkubernetes_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_project_planton_provider_kubernetes_workload_solrkubernetes_v1_spec_proto_goTypes = []any{
-	(*SolrKubernetesSpec)(nil),               // 0: project.planton.provider.kubernetes.workloads.solrkubernetes.v1.SolrKubernetesSpec
-	(*SolrKubernetesSolrContainer)(nil),      // 1: project.planton.provider.kubernetes.workloads.solrkubernetes.v1.SolrKubernetesSolrContainer
-	(*SolrKubernetesSolrConfig)(nil),         // 2: project.planton.provider.kubernetes.workloads.solrkubernetes.v1.SolrKubernetesSolrConfig
-	(*SolrKubernetesZookeeperContainer)(nil), // 3: project.planton.provider.kubernetes.workloads.solrkubernetes.v1.SolrKubernetesZookeeperContainer
+	(*SolrKubernetesSpec)(nil),               // 0: project.planton.provider.kubernetes.workload.solrkubernetes.v1.SolrKubernetesSpec
+	(*SolrKubernetesSolrContainer)(nil),      // 1: project.planton.provider.kubernetes.workload.solrkubernetes.v1.SolrKubernetesSolrContainer
+	(*SolrKubernetesSolrConfig)(nil),         // 2: project.planton.provider.kubernetes.workload.solrkubernetes.v1.SolrKubernetesSolrConfig
+	(*SolrKubernetesZookeeperContainer)(nil), // 3: project.planton.provider.kubernetes.workload.solrkubernetes.v1.SolrKubernetesZookeeperContainer
 	(*kubernetes.IngressSpec)(nil),           // 4: project.planton.shared.kubernetes.IngressSpec
 	(*kubernetes.ContainerResources)(nil),    // 5: project.planton.shared.kubernetes.ContainerResources
 	(*kubernetes.ContainerImage)(nil),        // 6: project.planton.shared.kubernetes.ContainerImage
 	(*descriptorpb.FieldOptions)(nil),        // 7: google.protobuf.FieldOptions
 }
 var file_project_planton_provider_kubernetes_workload_solrkubernetes_v1_spec_proto_depIdxs = []int32{
-	1,  // 0: project.planton.provider.kubernetes.workloads.solrkubernetes.v1.SolrKubernetesSpec.solr_container:type_name -> project.planton.provider.kubernetes.workloads.solrkubernetes.v1.SolrKubernetesSolrContainer
-	2,  // 1: project.planton.provider.kubernetes.workloads.solrkubernetes.v1.SolrKubernetesSpec.config:type_name -> project.planton.provider.kubernetes.workloads.solrkubernetes.v1.SolrKubernetesSolrConfig
-	3,  // 2: project.planton.provider.kubernetes.workloads.solrkubernetes.v1.SolrKubernetesSpec.zookeeper_container:type_name -> project.planton.provider.kubernetes.workloads.solrkubernetes.v1.SolrKubernetesZookeeperContainer
-	4,  // 3: project.planton.provider.kubernetes.workloads.solrkubernetes.v1.SolrKubernetesSpec.ingress:type_name -> project.planton.shared.kubernetes.IngressSpec
-	5,  // 4: project.planton.provider.kubernetes.workloads.solrkubernetes.v1.SolrKubernetesSolrContainer.resources:type_name -> project.planton.shared.kubernetes.ContainerResources
-	6,  // 5: project.planton.provider.kubernetes.workloads.solrkubernetes.v1.SolrKubernetesSolrContainer.image:type_name -> project.planton.shared.kubernetes.ContainerImage
-	5,  // 6: project.planton.provider.kubernetes.workloads.solrkubernetes.v1.SolrKubernetesZookeeperContainer.resources:type_name -> project.planton.shared.kubernetes.ContainerResources
-	7,  // 7: project.planton.provider.kubernetes.workloads.solrkubernetes.v1.default_solr_container:extendee -> google.protobuf.FieldOptions
-	7,  // 8: project.planton.provider.kubernetes.workloads.solrkubernetes.v1.default_zookeeper_container:extendee -> google.protobuf.FieldOptions
-	1,  // 9: project.planton.provider.kubernetes.workloads.solrkubernetes.v1.default_solr_container:type_name -> project.planton.provider.kubernetes.workloads.solrkubernetes.v1.SolrKubernetesSolrContainer
-	1,  // 10: project.planton.provider.kubernetes.workloads.solrkubernetes.v1.default_zookeeper_container:type_name -> project.planton.provider.kubernetes.workloads.solrkubernetes.v1.SolrKubernetesSolrContainer
+	1,  // 0: project.planton.provider.kubernetes.workload.solrkubernetes.v1.SolrKubernetesSpec.solr_container:type_name -> project.planton.provider.kubernetes.workload.solrkubernetes.v1.SolrKubernetesSolrContainer
+	2,  // 1: project.planton.provider.kubernetes.workload.solrkubernetes.v1.SolrKubernetesSpec.config:type_name -> project.planton.provider.kubernetes.workload.solrkubernetes.v1.SolrKubernetesSolrConfig
+	3,  // 2: project.planton.provider.kubernetes.workload.solrkubernetes.v1.SolrKubernetesSpec.zookeeper_container:type_name -> project.planton.provider.kubernetes.workload.solrkubernetes.v1.SolrKubernetesZookeeperContainer
+	4,  // 3: project.planton.provider.kubernetes.workload.solrkubernetes.v1.SolrKubernetesSpec.ingress:type_name -> project.planton.shared.kubernetes.IngressSpec
+	5,  // 4: project.planton.provider.kubernetes.workload.solrkubernetes.v1.SolrKubernetesSolrContainer.resources:type_name -> project.planton.shared.kubernetes.ContainerResources
+	6,  // 5: project.planton.provider.kubernetes.workload.solrkubernetes.v1.SolrKubernetesSolrContainer.image:type_name -> project.planton.shared.kubernetes.ContainerImage
+	5,  // 6: project.planton.provider.kubernetes.workload.solrkubernetes.v1.SolrKubernetesZookeeperContainer.resources:type_name -> project.planton.shared.kubernetes.ContainerResources
+	7,  // 7: project.planton.provider.kubernetes.workload.solrkubernetes.v1.default_solr_container:extendee -> google.protobuf.FieldOptions
+	7,  // 8: project.planton.provider.kubernetes.workload.solrkubernetes.v1.default_zookeeper_container:extendee -> google.protobuf.FieldOptions
+	1,  // 9: project.planton.provider.kubernetes.workload.solrkubernetes.v1.default_solr_container:type_name -> project.planton.provider.kubernetes.workload.solrkubernetes.v1.SolrKubernetesSolrContainer
+	1,  // 10: project.planton.provider.kubernetes.workload.solrkubernetes.v1.default_zookeeper_container:type_name -> project.planton.provider.kubernetes.workload.solrkubernetes.v1.SolrKubernetesSolrContainer
 	11, // [11:11] is the sub-list for method output_type
 	11, // [11:11] is the sub-list for method input_type
 	9,  // [9:11] is the sub-list for extension type_name

@@ -132,16 +132,16 @@ var File_project_planton_provider_kubernetes_workload_argocdkubernetes_v1_spec_p
 
 const file_project_planton_provider_kubernetes_workload_argocdkubernetes_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Kproject/planton/provider/kubernetes/workload/argocdkubernetes/v1/spec.proto\x12Aproject.planton.provider.kubernetes.workloads.argocdkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\"\xeb\x01\n" +
-	"\x14ArgocdKubernetesSpec\x12\x88\x01\n" +
-	"\tcontainer\x18\x01 \x01(\v2b.project.planton.provider.kubernetes.workloads.argocdkubernetes.v1.ArgocdKubernetesArgocdContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\x12H\n" +
+	"Kproject/planton/provider/kubernetes/workload/argocdkubernetes/v1/spec.proto\x12@project.planton.provider.kubernetes.workload.argocdkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\"\xea\x01\n" +
+	"\x14ArgocdKubernetesSpec\x12\x87\x01\n" +
+	"\tcontainer\x18\x01 \x01(\v2a.project.planton.provider.kubernetes.workload.argocdkubernetes.v1.ArgocdKubernetesArgocdContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\x12H\n" +
 	"\aingress\x18\x03 \x01(\v2..project.planton.shared.kubernetes.IngressSpecR\aingress\"\x99\x01\n" +
 	"\x1fArgocdKubernetesArgocdContainer\x12v\n" +
 	"\tresources\x18\x01 \x01(\v25.project.planton.shared.kubernetes.ContainerResourcesB!\xba\xfb\xa4\x02\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
-	"\x0350m\x12\x05100MiR\tresourcesB\x85\x04\n" +
-	"Ecom.project.planton.provider.kubernetes.workloads.argocdkubernetes.v1B\tSpecProtoP\x01Z\x83\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/argocdkubernetes/v1;argocdkubernetesv1\xa2\x02\x06PPPKWA\xaa\x02AProject.Planton.Provider.Kubernetes.Workloads.Argocdkubernetes.V1\xca\x02AProject\\Planton\\Provider\\Kubernetes\\Workloads\\Argocdkubernetes\\V1\xe2\x02MProject\\Planton\\Provider\\Kubernetes\\Workloads\\Argocdkubernetes\\V1\\GPBMetadata\xea\x02GProject::Planton::Provider::Kubernetes::Workloads::Argocdkubernetes::V1b\x06proto3"
+	"\x0350m\x12\x05100MiR\tresourcesB\x80\x04\n" +
+	"Dcom.project.planton.provider.kubernetes.workload.argocdkubernetes.v1B\tSpecProtoP\x01Z\x83\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/argocdkubernetes/v1;argocdkubernetesv1\xa2\x02\x06PPPKWA\xaa\x02@Project.Planton.Provider.Kubernetes.Workload.Argocdkubernetes.V1\xca\x02@Project\\Planton\\Provider\\Kubernetes\\Workload\\Argocdkubernetes\\V1\xe2\x02LProject\\Planton\\Provider\\Kubernetes\\Workload\\Argocdkubernetes\\V1\\GPBMetadata\xea\x02FProject::Planton::Provider::Kubernetes::Workload::Argocdkubernetes::V1b\x06proto3"
 
 var (
 	file_project_planton_provider_kubernetes_workload_argocdkubernetes_v1_spec_proto_rawDescOnce sync.Once
@@ -157,15 +157,15 @@ func file_project_planton_provider_kubernetes_workload_argocdkubernetes_v1_spec_
 
 var file_project_planton_provider_kubernetes_workload_argocdkubernetes_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_kubernetes_workload_argocdkubernetes_v1_spec_proto_goTypes = []any{
-	(*ArgocdKubernetesSpec)(nil),            // 0: project.planton.provider.kubernetes.workloads.argocdkubernetes.v1.ArgocdKubernetesSpec
-	(*ArgocdKubernetesArgocdContainer)(nil), // 1: project.planton.provider.kubernetes.workloads.argocdkubernetes.v1.ArgocdKubernetesArgocdContainer
+	(*ArgocdKubernetesSpec)(nil),            // 0: project.planton.provider.kubernetes.workload.argocdkubernetes.v1.ArgocdKubernetesSpec
+	(*ArgocdKubernetesArgocdContainer)(nil), // 1: project.planton.provider.kubernetes.workload.argocdkubernetes.v1.ArgocdKubernetesArgocdContainer
 	(*kubernetes.IngressSpec)(nil),          // 2: project.planton.shared.kubernetes.IngressSpec
 	(*kubernetes.ContainerResources)(nil),   // 3: project.planton.shared.kubernetes.ContainerResources
 }
 var file_project_planton_provider_kubernetes_workload_argocdkubernetes_v1_spec_proto_depIdxs = []int32{
-	1, // 0: project.planton.provider.kubernetes.workloads.argocdkubernetes.v1.ArgocdKubernetesSpec.container:type_name -> project.planton.provider.kubernetes.workloads.argocdkubernetes.v1.ArgocdKubernetesArgocdContainer
-	2, // 1: project.planton.provider.kubernetes.workloads.argocdkubernetes.v1.ArgocdKubernetesSpec.ingress:type_name -> project.planton.shared.kubernetes.IngressSpec
-	3, // 2: project.planton.provider.kubernetes.workloads.argocdkubernetes.v1.ArgocdKubernetesArgocdContainer.resources:type_name -> project.planton.shared.kubernetes.ContainerResources
+	1, // 0: project.planton.provider.kubernetes.workload.argocdkubernetes.v1.ArgocdKubernetesSpec.container:type_name -> project.planton.provider.kubernetes.workload.argocdkubernetes.v1.ArgocdKubernetesArgocdContainer
+	2, // 1: project.planton.provider.kubernetes.workload.argocdkubernetes.v1.ArgocdKubernetesSpec.ingress:type_name -> project.planton.shared.kubernetes.IngressSpec
+	3, // 2: project.planton.provider.kubernetes.workload.argocdkubernetes.v1.ArgocdKubernetesArgocdContainer.resources:type_name -> project.planton.shared.kubernetes.ContainerResources
 	3, // [3:3] is the sub-list for method output_type
 	3, // [3:3] is the sub-list for method input_type
 	3, // [3:3] is the sub-list for extension type_name

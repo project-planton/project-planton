@@ -131,16 +131,16 @@ var File_project_planton_provider_kubernetes_workload_gitlabkubernetes_v1_spec_p
 
 const file_project_planton_provider_kubernetes_workload_gitlabkubernetes_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Kproject/planton/provider/kubernetes/workload/gitlabkubernetes/v1/spec.proto\x12Aproject.planton.provider.kubernetes.workloads.gitlabkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\"\xe9\x01\n" +
-	"\x14GitlabKubernetesSpec\x12\x86\x01\n" +
-	"\tcontainer\x18\x01 \x01(\v2`.project.planton.provider.kubernetes.workloads.gitlabkubernetes.v1.GitlabKubernetesSpecContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\x12H\n" +
+	"Kproject/planton/provider/kubernetes/workload/gitlabkubernetes/v1/spec.proto\x12@project.planton.provider.kubernetes.workload.gitlabkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\"\xe8\x01\n" +
+	"\x14GitlabKubernetesSpec\x12\x85\x01\n" +
+	"\tcontainer\x18\x01 \x01(\v2_.project.planton.provider.kubernetes.workload.gitlabkubernetes.v1.GitlabKubernetesSpecContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\x12H\n" +
 	"\aingress\x18\x03 \x01(\v2..project.planton.shared.kubernetes.IngressSpecR\aingress\"\x97\x01\n" +
 	"\x1dGitlabKubernetesSpecContainer\x12v\n" +
 	"\tresources\x18\x01 \x01(\v25.project.planton.shared.kubernetes.ContainerResourcesB!\xba\xfb\xa4\x02\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
-	"\x0350m\x12\x05100MiR\tresourcesB\x85\x04\n" +
-	"Ecom.project.planton.provider.kubernetes.workloads.gitlabkubernetes.v1B\tSpecProtoP\x01Z\x83\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/gitlabkubernetes/v1;gitlabkubernetesv1\xa2\x02\x06PPPKWG\xaa\x02AProject.Planton.Provider.Kubernetes.Workloads.Gitlabkubernetes.V1\xca\x02AProject\\Planton\\Provider\\Kubernetes\\Workloads\\Gitlabkubernetes\\V1\xe2\x02MProject\\Planton\\Provider\\Kubernetes\\Workloads\\Gitlabkubernetes\\V1\\GPBMetadata\xea\x02GProject::Planton::Provider::Kubernetes::Workloads::Gitlabkubernetes::V1b\x06proto3"
+	"\x0350m\x12\x05100MiR\tresourcesB\x80\x04\n" +
+	"Dcom.project.planton.provider.kubernetes.workload.gitlabkubernetes.v1B\tSpecProtoP\x01Z\x83\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/gitlabkubernetes/v1;gitlabkubernetesv1\xa2\x02\x06PPPKWG\xaa\x02@Project.Planton.Provider.Kubernetes.Workload.Gitlabkubernetes.V1\xca\x02@Project\\Planton\\Provider\\Kubernetes\\Workload\\Gitlabkubernetes\\V1\xe2\x02LProject\\Planton\\Provider\\Kubernetes\\Workload\\Gitlabkubernetes\\V1\\GPBMetadata\xea\x02FProject::Planton::Provider::Kubernetes::Workload::Gitlabkubernetes::V1b\x06proto3"
 
 var (
 	file_project_planton_provider_kubernetes_workload_gitlabkubernetes_v1_spec_proto_rawDescOnce sync.Once
@@ -156,15 +156,15 @@ func file_project_planton_provider_kubernetes_workload_gitlabkubernetes_v1_spec_
 
 var file_project_planton_provider_kubernetes_workload_gitlabkubernetes_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_kubernetes_workload_gitlabkubernetes_v1_spec_proto_goTypes = []any{
-	(*GitlabKubernetesSpec)(nil),          // 0: project.planton.provider.kubernetes.workloads.gitlabkubernetes.v1.GitlabKubernetesSpec
-	(*GitlabKubernetesSpecContainer)(nil), // 1: project.planton.provider.kubernetes.workloads.gitlabkubernetes.v1.GitlabKubernetesSpecContainer
+	(*GitlabKubernetesSpec)(nil),          // 0: project.planton.provider.kubernetes.workload.gitlabkubernetes.v1.GitlabKubernetesSpec
+	(*GitlabKubernetesSpecContainer)(nil), // 1: project.planton.provider.kubernetes.workload.gitlabkubernetes.v1.GitlabKubernetesSpecContainer
 	(*kubernetes.IngressSpec)(nil),        // 2: project.planton.shared.kubernetes.IngressSpec
 	(*kubernetes.ContainerResources)(nil), // 3: project.planton.shared.kubernetes.ContainerResources
 }
 var file_project_planton_provider_kubernetes_workload_gitlabkubernetes_v1_spec_proto_depIdxs = []int32{
-	1, // 0: project.planton.provider.kubernetes.workloads.gitlabkubernetes.v1.GitlabKubernetesSpec.container:type_name -> project.planton.provider.kubernetes.workloads.gitlabkubernetes.v1.GitlabKubernetesSpecContainer
-	2, // 1: project.planton.provider.kubernetes.workloads.gitlabkubernetes.v1.GitlabKubernetesSpec.ingress:type_name -> project.planton.shared.kubernetes.IngressSpec
-	3, // 2: project.planton.provider.kubernetes.workloads.gitlabkubernetes.v1.GitlabKubernetesSpecContainer.resources:type_name -> project.planton.shared.kubernetes.ContainerResources
+	1, // 0: project.planton.provider.kubernetes.workload.gitlabkubernetes.v1.GitlabKubernetesSpec.container:type_name -> project.planton.provider.kubernetes.workload.gitlabkubernetes.v1.GitlabKubernetesSpecContainer
+	2, // 1: project.planton.provider.kubernetes.workload.gitlabkubernetes.v1.GitlabKubernetesSpec.ingress:type_name -> project.planton.shared.kubernetes.IngressSpec
+	3, // 2: project.planton.provider.kubernetes.workload.gitlabkubernetes.v1.GitlabKubernetesSpecContainer.resources:type_name -> project.planton.shared.kubernetes.ContainerResources
 	3, // [3:3] is the sub-list for method output_type
 	3, // [3:3] is the sub-list for method input_type
 	3, // [3:3] is the sub-list for extension type_name

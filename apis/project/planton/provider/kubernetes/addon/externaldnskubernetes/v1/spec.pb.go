@@ -312,13 +312,13 @@ var File_project_planton_provider_kubernetes_addon_externaldnskubernetes_v1_spec
 
 const file_project_planton_provider_kubernetes_addon_externaldnskubernetes_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Mproject/planton/provider/kubernetes/addon/externaldnskubernetes/v1/spec.proto\x12Cproject.planton.provider.kubernetes.addons.externaldnskubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\x1a6project/planton/shared/kubernetes/target_cluster.proto\"\x83\x04\n" +
+	"Mproject/planton/provider/kubernetes/addon/externaldnskubernetes/v1/spec.proto\x12Bproject.planton.provider.kubernetes.addon.externaldnskubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\x1a6project/planton/shared/kubernetes/target_cluster.proto\"\x80\x04\n" +
 	"\x19ExternalDnsKubernetesSpec\x12f\n" +
 	"\x0etarget_cluster\x18\x01 \x01(\v2?.project.planton.shared.kubernetes.KubernetesAddonTargetClusterR\rtargetCluster\x12\x1b\n" +
-	"\timage_tag\x18\x02 \x01(\tR\bimageTag\x12n\n" +
-	"\x03gke\x18\xc8\x01 \x01(\v2Y.project.planton.provider.kubernetes.addons.externaldnskubernetes.v1.ExternalDnsGkeConfigH\x00R\x03gke\x12n\n" +
-	"\x03eks\x18\xc9\x01 \x01(\v2Y.project.planton.provider.kubernetes.addons.externaldnskubernetes.v1.ExternalDnsEksConfigH\x00R\x03eks\x12n\n" +
-	"\x03aks\x18\xca\x01 \x01(\v2Y.project.planton.provider.kubernetes.addons.externaldnskubernetes.v1.ExternalDnsAksConfigH\x00R\x03aksB\x11\n" +
+	"\timage_tag\x18\x02 \x01(\tR\bimageTag\x12m\n" +
+	"\x03gke\x18\xc8\x01 \x01(\v2X.project.planton.provider.kubernetes.addon.externaldnskubernetes.v1.ExternalDnsGkeConfigH\x00R\x03gke\x12m\n" +
+	"\x03eks\x18\xc9\x01 \x01(\v2X.project.planton.provider.kubernetes.addon.externaldnskubernetes.v1.ExternalDnsEksConfigH\x00R\x03eks\x12m\n" +
+	"\x03aks\x18\xca\x01 \x01(\v2X.project.planton.provider.kubernetes.addon.externaldnskubernetes.v1.ExternalDnsAksConfigH\x00R\x03aksB\x11\n" +
 	"\x0fprovider_config\"\x96\x02\n" +
 	"\x14ExternalDnsGkeConfig\x12\x7f\n" +
 	"\n" +
@@ -329,8 +329,8 @@ const file_project_planton_provider_kubernetes_addon_externaldnskubernetes_v1_sp
 	"\x16irsa_role_arn_override\x18\x02 \x01(\tR\x13irsaRoleArnOverride\"s\n" +
 	"\x14ExternalDnsAksConfig\x12\x1e\n" +
 	"\vdns_zone_id\x18\x01 \x01(\tR\tdnsZoneId\x12;\n" +
-	"\x1amanaged_identity_client_id\x18\x02 \x01(\tR\x17managedIdentityClientIdB\x96\x04\n" +
-	"Gcom.project.planton.provider.kubernetes.addons.externaldnskubernetes.v1B\tSpecProtoP\x01Z\x8a\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/addon/externaldnskubernetes/v1;externaldnskubernetesv1\xa2\x02\x06PPPKAE\xaa\x02CProject.Planton.Provider.Kubernetes.Addons.Externaldnskubernetes.V1\xca\x02CProject\\Planton\\Provider\\Kubernetes\\Addons\\Externaldnskubernetes\\V1\xe2\x02OProject\\Planton\\Provider\\Kubernetes\\Addons\\Externaldnskubernetes\\V1\\GPBMetadata\xea\x02IProject::Planton::Provider::Kubernetes::Addons::Externaldnskubernetes::V1b\x06proto3"
+	"\x1amanaged_identity_client_id\x18\x02 \x01(\tR\x17managedIdentityClientIdB\x91\x04\n" +
+	"Fcom.project.planton.provider.kubernetes.addon.externaldnskubernetes.v1B\tSpecProtoP\x01Z\x8a\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/addon/externaldnskubernetes/v1;externaldnskubernetesv1\xa2\x02\x06PPPKAE\xaa\x02BProject.Planton.Provider.Kubernetes.Addon.Externaldnskubernetes.V1\xca\x02BProject\\Planton\\Provider\\Kubernetes\\Addon\\Externaldnskubernetes\\V1\xe2\x02NProject\\Planton\\Provider\\Kubernetes\\Addon\\Externaldnskubernetes\\V1\\GPBMetadata\xea\x02HProject::Planton::Provider::Kubernetes::Addon::Externaldnskubernetes::V1b\x06proto3"
 
 var (
 	file_project_planton_provider_kubernetes_addon_externaldnskubernetes_v1_spec_proto_rawDescOnce sync.Once
@@ -346,21 +346,21 @@ func file_project_planton_provider_kubernetes_addon_externaldnskubernetes_v1_spe
 
 var file_project_planton_provider_kubernetes_addon_externaldnskubernetes_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_project_planton_provider_kubernetes_addon_externaldnskubernetes_v1_spec_proto_goTypes = []any{
-	(*ExternalDnsKubernetesSpec)(nil),               // 0: project.planton.provider.kubernetes.addons.externaldnskubernetes.v1.ExternalDnsKubernetesSpec
-	(*ExternalDnsGkeConfig)(nil),                    // 1: project.planton.provider.kubernetes.addons.externaldnskubernetes.v1.ExternalDnsGkeConfig
-	(*ExternalDnsEksConfig)(nil),                    // 2: project.planton.provider.kubernetes.addons.externaldnskubernetes.v1.ExternalDnsEksConfig
-	(*ExternalDnsAksConfig)(nil),                    // 3: project.planton.provider.kubernetes.addons.externaldnskubernetes.v1.ExternalDnsAksConfig
+	(*ExternalDnsKubernetesSpec)(nil),               // 0: project.planton.provider.kubernetes.addon.externaldnskubernetes.v1.ExternalDnsKubernetesSpec
+	(*ExternalDnsGkeConfig)(nil),                    // 1: project.planton.provider.kubernetes.addon.externaldnskubernetes.v1.ExternalDnsGkeConfig
+	(*ExternalDnsEksConfig)(nil),                    // 2: project.planton.provider.kubernetes.addon.externaldnskubernetes.v1.ExternalDnsEksConfig
+	(*ExternalDnsAksConfig)(nil),                    // 3: project.planton.provider.kubernetes.addon.externaldnskubernetes.v1.ExternalDnsAksConfig
 	(*kubernetes.KubernetesAddonTargetCluster)(nil), // 4: project.planton.shared.kubernetes.KubernetesAddonTargetCluster
 	(*v1.StringValueOrRef)(nil),                     // 5: project.planton.shared.foreignkey.v1.StringValueOrRef
 }
 var file_project_planton_provider_kubernetes_addon_externaldnskubernetes_v1_spec_proto_depIdxs = []int32{
-	4, // 0: project.planton.provider.kubernetes.addons.externaldnskubernetes.v1.ExternalDnsKubernetesSpec.target_cluster:type_name -> project.planton.shared.kubernetes.KubernetesAddonTargetCluster
-	1, // 1: project.planton.provider.kubernetes.addons.externaldnskubernetes.v1.ExternalDnsKubernetesSpec.gke:type_name -> project.planton.provider.kubernetes.addons.externaldnskubernetes.v1.ExternalDnsGkeConfig
-	2, // 2: project.planton.provider.kubernetes.addons.externaldnskubernetes.v1.ExternalDnsKubernetesSpec.eks:type_name -> project.planton.provider.kubernetes.addons.externaldnskubernetes.v1.ExternalDnsEksConfig
-	3, // 3: project.planton.provider.kubernetes.addons.externaldnskubernetes.v1.ExternalDnsKubernetesSpec.aks:type_name -> project.planton.provider.kubernetes.addons.externaldnskubernetes.v1.ExternalDnsAksConfig
-	5, // 4: project.planton.provider.kubernetes.addons.externaldnskubernetes.v1.ExternalDnsGkeConfig.project_id:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
-	5, // 5: project.planton.provider.kubernetes.addons.externaldnskubernetes.v1.ExternalDnsGkeConfig.dns_zone_id:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
-	5, // 6: project.planton.provider.kubernetes.addons.externaldnskubernetes.v1.ExternalDnsEksConfig.route53_zone_id:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
+	4, // 0: project.planton.provider.kubernetes.addon.externaldnskubernetes.v1.ExternalDnsKubernetesSpec.target_cluster:type_name -> project.planton.shared.kubernetes.KubernetesAddonTargetCluster
+	1, // 1: project.planton.provider.kubernetes.addon.externaldnskubernetes.v1.ExternalDnsKubernetesSpec.gke:type_name -> project.planton.provider.kubernetes.addon.externaldnskubernetes.v1.ExternalDnsGkeConfig
+	2, // 2: project.planton.provider.kubernetes.addon.externaldnskubernetes.v1.ExternalDnsKubernetesSpec.eks:type_name -> project.planton.provider.kubernetes.addon.externaldnskubernetes.v1.ExternalDnsEksConfig
+	3, // 3: project.planton.provider.kubernetes.addon.externaldnskubernetes.v1.ExternalDnsKubernetesSpec.aks:type_name -> project.planton.provider.kubernetes.addon.externaldnskubernetes.v1.ExternalDnsAksConfig
+	5, // 4: project.planton.provider.kubernetes.addon.externaldnskubernetes.v1.ExternalDnsGkeConfig.project_id:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
+	5, // 5: project.planton.provider.kubernetes.addon.externaldnskubernetes.v1.ExternalDnsGkeConfig.dns_zone_id:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
+	5, // 6: project.planton.provider.kubernetes.addon.externaldnskubernetes.v1.ExternalDnsEksConfig.route53_zone_id:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
 	7, // [7:7] is the sub-list for method output_type
 	7, // [7:7] is the sub-list for method input_type
 	7, // [7:7] is the sub-list for extension type_name

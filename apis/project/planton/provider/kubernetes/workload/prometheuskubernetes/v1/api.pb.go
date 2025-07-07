@@ -182,23 +182,23 @@ var File_project_planton_provider_kubernetes_workload_prometheuskubernetes_v1_ap
 
 const file_project_planton_provider_kubernetes_workload_prometheuskubernetes_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Nproject/planton/provider/kubernetes/workload/prometheuskubernetes/v1/api.proto\x12Eproject.planton.provider.kubernetes.workloads.prometheuskubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1aOproject/planton/provider/kubernetes/workload/prometheuskubernetes/v1/spec.proto\x1aXproject/planton/provider/kubernetes/workload/prometheuskubernetes/v1/stack_outputs.proto\x1a#project/planton/shared/status.proto\x1a%project/planton/shared/metadata.proto\"\xdb\x03\n" +
+	"Nproject/planton/provider/kubernetes/workload/prometheuskubernetes/v1/api.proto\x12Dproject.planton.provider.kubernetes.workload.prometheuskubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1aOproject/planton/provider/kubernetes/workload/prometheuskubernetes/v1/spec.proto\x1aXproject/planton/provider/kubernetes/workload/prometheuskubernetes/v1/stack_outputs.proto\x1a#project/planton/shared/status.proto\x1a%project/planton/shared/metadata.proto\"\xd9\x03\n" +
 	"\x14PrometheusKubernetes\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!kubernetes.project-planton.org/v1R\n" +
 	"apiVersion\x12/\n" +
 	"\x04kind\x18\x02 \x01(\tB\x1b\xbaH\x18r\x16\n" +
 	"\x14PrometheusKubernetesR\x04kind\x12O\n" +
-	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12{\n" +
-	"\x04spec\x18\x04 \x01(\v2_.project.planton.provider.kubernetes.workloads.prometheuskubernetes.v1.PrometheusKubernetesSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12y\n" +
-	"\x06status\x18\x05 \x01(\v2a.project.planton.provider.kubernetes.workloads.prometheuskubernetes.v1.PrometheusKubernetesStatusR\x06status\"\xce\x02\n" +
+	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12z\n" +
+	"\x04spec\x18\x04 \x01(\v2^.project.planton.provider.kubernetes.workload.prometheuskubernetes.v1.PrometheusKubernetesSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12x\n" +
+	"\x06status\x18\x05 \x01(\v2`.project.planton.provider.kubernetes.workload.prometheuskubernetes.v1.PrometheusKubernetesStatusR\x06status\"\xcd\x02\n" +
 	"\x1aPrometheusKubernetesStatus\x12J\n" +
 	"\tlifecycle\x18c \x01(\v2,.project.planton.shared.ApiResourceLifecycleR\tlifecycle\x12>\n" +
 	"\x05audit\x18b \x01(\v2(.project.planton.shared.ApiResourceAuditR\x05audit\x12 \n" +
 	"\fstack_job_id\x18a \x01(\tR\n" +
-	"stackJobId\x12\x81\x01\n" +
-	"\aoutputs\x18\x01 \x01(\v2g.project.planton.provider.kubernetes.workloads.prometheuskubernetes.v1.PrometheusKubernetesStackOutputsR\aoutputsB\xa0\x04\n" +
-	"Icom.project.planton.provider.kubernetes.workloads.prometheuskubernetes.v1B\bApiProtoP\x01Z\x8b\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/prometheuskubernetes/v1;prometheuskubernetesv1\xa2\x02\x06PPPKWP\xaa\x02EProject.Planton.Provider.Kubernetes.Workloads.Prometheuskubernetes.V1\xca\x02EProject\\Planton\\Provider\\Kubernetes\\Workloads\\Prometheuskubernetes\\V1\xe2\x02QProject\\Planton\\Provider\\Kubernetes\\Workloads\\Prometheuskubernetes\\V1\\GPBMetadata\xea\x02KProject::Planton::Provider::Kubernetes::Workloads::Prometheuskubernetes::V1b\x06proto3"
+	"stackJobId\x12\x80\x01\n" +
+	"\aoutputs\x18\x01 \x01(\v2f.project.planton.provider.kubernetes.workload.prometheuskubernetes.v1.PrometheusKubernetesStackOutputsR\aoutputsB\x9b\x04\n" +
+	"Hcom.project.planton.provider.kubernetes.workload.prometheuskubernetes.v1B\bApiProtoP\x01Z\x8b\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/prometheuskubernetes/v1;prometheuskubernetesv1\xa2\x02\x06PPPKWP\xaa\x02DProject.Planton.Provider.Kubernetes.Workload.Prometheuskubernetes.V1\xca\x02DProject\\Planton\\Provider\\Kubernetes\\Workload\\Prometheuskubernetes\\V1\xe2\x02PProject\\Planton\\Provider\\Kubernetes\\Workload\\Prometheuskubernetes\\V1\\GPBMetadata\xea\x02JProject::Planton::Provider::Kubernetes::Workload::Prometheuskubernetes::V1b\x06proto3"
 
 var (
 	file_project_planton_provider_kubernetes_workload_prometheuskubernetes_v1_api_proto_rawDescOnce sync.Once
@@ -214,21 +214,21 @@ func file_project_planton_provider_kubernetes_workload_prometheuskubernetes_v1_a
 
 var file_project_planton_provider_kubernetes_workload_prometheuskubernetes_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_kubernetes_workload_prometheuskubernetes_v1_api_proto_goTypes = []any{
-	(*PrometheusKubernetes)(nil),             // 0: project.planton.provider.kubernetes.workloads.prometheuskubernetes.v1.PrometheusKubernetes
-	(*PrometheusKubernetesStatus)(nil),       // 1: project.planton.provider.kubernetes.workloads.prometheuskubernetes.v1.PrometheusKubernetesStatus
+	(*PrometheusKubernetes)(nil),             // 0: project.planton.provider.kubernetes.workload.prometheuskubernetes.v1.PrometheusKubernetes
+	(*PrometheusKubernetesStatus)(nil),       // 1: project.planton.provider.kubernetes.workload.prometheuskubernetes.v1.PrometheusKubernetesStatus
 	(*shared.ApiResourceMetadata)(nil),       // 2: project.planton.shared.ApiResourceMetadata
-	(*PrometheusKubernetesSpec)(nil),         // 3: project.planton.provider.kubernetes.workloads.prometheuskubernetes.v1.PrometheusKubernetesSpec
+	(*PrometheusKubernetesSpec)(nil),         // 3: project.planton.provider.kubernetes.workload.prometheuskubernetes.v1.PrometheusKubernetesSpec
 	(*shared.ApiResourceLifecycle)(nil),      // 4: project.planton.shared.ApiResourceLifecycle
 	(*shared.ApiResourceAudit)(nil),          // 5: project.planton.shared.ApiResourceAudit
-	(*PrometheusKubernetesStackOutputs)(nil), // 6: project.planton.provider.kubernetes.workloads.prometheuskubernetes.v1.PrometheusKubernetesStackOutputs
+	(*PrometheusKubernetesStackOutputs)(nil), // 6: project.planton.provider.kubernetes.workload.prometheuskubernetes.v1.PrometheusKubernetesStackOutputs
 }
 var file_project_planton_provider_kubernetes_workload_prometheuskubernetes_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.kubernetes.workloads.prometheuskubernetes.v1.PrometheusKubernetes.metadata:type_name -> project.planton.shared.ApiResourceMetadata
-	3, // 1: project.planton.provider.kubernetes.workloads.prometheuskubernetes.v1.PrometheusKubernetes.spec:type_name -> project.planton.provider.kubernetes.workloads.prometheuskubernetes.v1.PrometheusKubernetesSpec
-	1, // 2: project.planton.provider.kubernetes.workloads.prometheuskubernetes.v1.PrometheusKubernetes.status:type_name -> project.planton.provider.kubernetes.workloads.prometheuskubernetes.v1.PrometheusKubernetesStatus
-	4, // 3: project.planton.provider.kubernetes.workloads.prometheuskubernetes.v1.PrometheusKubernetesStatus.lifecycle:type_name -> project.planton.shared.ApiResourceLifecycle
-	5, // 4: project.planton.provider.kubernetes.workloads.prometheuskubernetes.v1.PrometheusKubernetesStatus.audit:type_name -> project.planton.shared.ApiResourceAudit
-	6, // 5: project.planton.provider.kubernetes.workloads.prometheuskubernetes.v1.PrometheusKubernetesStatus.outputs:type_name -> project.planton.provider.kubernetes.workloads.prometheuskubernetes.v1.PrometheusKubernetesStackOutputs
+	2, // 0: project.planton.provider.kubernetes.workload.prometheuskubernetes.v1.PrometheusKubernetes.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	3, // 1: project.planton.provider.kubernetes.workload.prometheuskubernetes.v1.PrometheusKubernetes.spec:type_name -> project.planton.provider.kubernetes.workload.prometheuskubernetes.v1.PrometheusKubernetesSpec
+	1, // 2: project.planton.provider.kubernetes.workload.prometheuskubernetes.v1.PrometheusKubernetes.status:type_name -> project.planton.provider.kubernetes.workload.prometheuskubernetes.v1.PrometheusKubernetesStatus
+	4, // 3: project.planton.provider.kubernetes.workload.prometheuskubernetes.v1.PrometheusKubernetesStatus.lifecycle:type_name -> project.planton.shared.ApiResourceLifecycle
+	5, // 4: project.planton.provider.kubernetes.workload.prometheuskubernetes.v1.PrometheusKubernetesStatus.audit:type_name -> project.planton.shared.ApiResourceAudit
+	6, // 5: project.planton.provider.kubernetes.workload.prometheuskubernetes.v1.PrometheusKubernetesStatus.outputs:type_name -> project.planton.provider.kubernetes.workload.prometheuskubernetes.v1.PrometheusKubernetesStackOutputs
 	6, // [6:6] is the sub-list for method output_type
 	6, // [6:6] is the sub-list for method input_type
 	6, // [6:6] is the sub-list for extension type_name

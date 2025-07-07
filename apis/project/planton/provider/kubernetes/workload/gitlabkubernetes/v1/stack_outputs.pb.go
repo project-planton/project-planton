@@ -115,14 +115,14 @@ var File_project_planton_provider_kubernetes_workload_gitlabkubernetes_v1_stack_
 
 const file_project_planton_provider_kubernetes_workload_gitlabkubernetes_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Tproject/planton/provider/kubernetes/workload/gitlabkubernetes/v1/stack_outputs.proto\x12Aproject.planton.provider.kubernetes.workloads.gitlabkubernetes.v1\"\xd8\x01\n" +
+	"Tproject/planton/provider/kubernetes/workload/gitlabkubernetes/v1/stack_outputs.proto\x12@project.planton.provider.kubernetes.workload.gitlabkubernetes.v1\"\xd8\x01\n" +
 	"\x1cGitlabKubernetesStackOutputs\x12\x1c\n" +
 	"\tnamespace\x18\x01 \x01(\tR\tnamespace\x12\x18\n" +
 	"\aservice\x18\x02 \x01(\tR\aservice\x120\n" +
 	"\x14port_forward_command\x18\x03 \x01(\tR\x12portForwardCommand\x12#\n" +
 	"\rkube_endpoint\x18\x04 \x01(\tR\fkubeEndpoint\x12)\n" +
-	"\x10ingress_endpoint\x18\x05 \x01(\tR\x0fingressEndpointB\x8d\x04\n" +
-	"Ecom.project.planton.provider.kubernetes.workloads.gitlabkubernetes.v1B\x11StackOutputsProtoP\x01Z\x83\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/gitlabkubernetes/v1;gitlabkubernetesv1\xa2\x02\x06PPPKWG\xaa\x02AProject.Planton.Provider.Kubernetes.Workloads.Gitlabkubernetes.V1\xca\x02AProject\\Planton\\Provider\\Kubernetes\\Workloads\\Gitlabkubernetes\\V1\xe2\x02MProject\\Planton\\Provider\\Kubernetes\\Workloads\\Gitlabkubernetes\\V1\\GPBMetadata\xea\x02GProject::Planton::Provider::Kubernetes::Workloads::Gitlabkubernetes::V1b\x06proto3"
+	"\x10ingress_endpoint\x18\x05 \x01(\tR\x0fingressEndpointB\x88\x04\n" +
+	"Dcom.project.planton.provider.kubernetes.workload.gitlabkubernetes.v1B\x11StackOutputsProtoP\x01Z\x83\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/gitlabkubernetes/v1;gitlabkubernetesv1\xa2\x02\x06PPPKWG\xaa\x02@Project.Planton.Provider.Kubernetes.Workload.Gitlabkubernetes.V1\xca\x02@Project\\Planton\\Provider\\Kubernetes\\Workload\\Gitlabkubernetes\\V1\xe2\x02LProject\\Planton\\Provider\\Kubernetes\\Workload\\Gitlabkubernetes\\V1\\GPBMetadata\xea\x02FProject::Planton::Provider::Kubernetes::Workload::Gitlabkubernetes::V1b\x06proto3"
 
 var (
 	file_project_planton_provider_kubernetes_workload_gitlabkubernetes_v1_stack_outputs_proto_rawDescOnce sync.Once
@@ -138,7 +138,7 @@ func file_project_planton_provider_kubernetes_workload_gitlabkubernetes_v1_stack
 
 var file_project_planton_provider_kubernetes_workload_gitlabkubernetes_v1_stack_outputs_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_kubernetes_workload_gitlabkubernetes_v1_stack_outputs_proto_goTypes = []any{
-	(*GitlabKubernetesStackOutputs)(nil), // 0: project.planton.provider.kubernetes.workloads.gitlabkubernetes.v1.GitlabKubernetesStackOutputs
+	(*GitlabKubernetesStackOutputs)(nil), // 0: project.planton.provider.kubernetes.workload.gitlabkubernetes.v1.GitlabKubernetesStackOutputs
 }
 var file_project_planton_provider_kubernetes_workload_gitlabkubernetes_v1_stack_outputs_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type

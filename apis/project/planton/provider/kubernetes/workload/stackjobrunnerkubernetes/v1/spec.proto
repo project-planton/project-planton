@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package project.planton.provider.kubernetes.workloads.stackjobrunnerkubernetes.v1;
+package project.planton.provider.kubernetes.workload.stackjobrunnerkubernetes.v1;
 
 import "buf/validate/validate.proto";
 

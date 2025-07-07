@@ -333,15 +333,15 @@ var File_project_planton_provider_kubernetes_addon_certmanagerkubernetes_v1_spec
 
 const file_project_planton_provider_kubernetes_addon_certmanagerkubernetes_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Mproject/planton/provider/kubernetes/addon/certmanagerkubernetes/v1/spec.proto\x12Cproject.planton.provider.kubernetes.addons.certmanagerkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\x1a6project/planton/shared/kubernetes/target_cluster.proto\"\xde\x04\n" +
+	"Mproject/planton/provider/kubernetes/addon/certmanagerkubernetes/v1/spec.proto\x12Bproject.planton.provider.kubernetes.addon.certmanagerkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\x1a6project/planton/shared/kubernetes/target_cluster.proto\"\xdb\x04\n" +
 	"\x19CertManagerKubernetesSpec\x12f\n" +
 	"\x0etarget_cluster\x18\x01 \x01(\v2?.project.planton.shared.kubernetes.KubernetesAddonTargetClusterR\rtargetCluster\x123\n" +
 	"\x0frelease_channel\x18\x02 \x01(\tB\n" +
 	"\x8a\xa6\x1d\x06stableR\x0ereleaseChannel\x12D\n" +
-	"\x1fskip_install_self_signed_issuer\x18\x03 \x01(\bR\x1bskipInstallSelfSignedIssuer\x12m\n" +
-	"\x03gke\x18d \x01(\v2Y.project.planton.provider.kubernetes.addons.certmanagerkubernetes.v1.CertManagerGkeConfigH\x00R\x03gke\x12m\n" +
-	"\x03eks\x18e \x01(\v2Y.project.planton.provider.kubernetes.addons.certmanagerkubernetes.v1.CertManagerEksConfigH\x00R\x03eks\x12m\n" +
-	"\x03aks\x18f \x01(\v2Y.project.planton.provider.kubernetes.addons.certmanagerkubernetes.v1.CertManagerAksConfigH\x00R\x03aksB\x11\n" +
+	"\x1fskip_install_self_signed_issuer\x18\x03 \x01(\bR\x1bskipInstallSelfSignedIssuer\x12l\n" +
+	"\x03gke\x18d \x01(\v2X.project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1.CertManagerGkeConfigH\x00R\x03gke\x12l\n" +
+	"\x03eks\x18e \x01(\v2X.project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1.CertManagerEksConfigH\x00R\x03eks\x12l\n" +
+	"\x03aks\x18f \x01(\v2X.project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1.CertManagerAksConfigH\x00R\x03aksB\x11\n" +
 	"\x0fprovider_config\"\xd8\x02\n" +
 	"\x14CertManagerGkeConfig\x12\x7f\n" +
 	"\n" +
@@ -353,8 +353,8 @@ const file_project_planton_provider_kubernetes_addon_certmanagerkubernetes_v1_sp
 	"\x16irsa_role_arn_override\x18\x02 \x01(\tR\x13irsaRoleArnOverride\"s\n" +
 	"\x14CertManagerAksConfig\x12\x1e\n" +
 	"\vdns_zone_id\x18\x01 \x01(\tR\tdnsZoneId\x12;\n" +
-	"\x1amanaged_identity_client_id\x18\x02 \x01(\tR\x17managedIdentityClientIdB\x96\x04\n" +
-	"Gcom.project.planton.provider.kubernetes.addons.certmanagerkubernetes.v1B\tSpecProtoP\x01Z\x8a\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/addon/certmanagerkubernetes/v1;certmanagerkubernetesv1\xa2\x02\x06PPPKAC\xaa\x02CProject.Planton.Provider.Kubernetes.Addons.Certmanagerkubernetes.V1\xca\x02CProject\\Planton\\Provider\\Kubernetes\\Addons\\Certmanagerkubernetes\\V1\xe2\x02OProject\\Planton\\Provider\\Kubernetes\\Addons\\Certmanagerkubernetes\\V1\\GPBMetadata\xea\x02IProject::Planton::Provider::Kubernetes::Addons::Certmanagerkubernetes::V1b\x06proto3"
+	"\x1amanaged_identity_client_id\x18\x02 \x01(\tR\x17managedIdentityClientIdB\x91\x04\n" +
+	"Fcom.project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1B\tSpecProtoP\x01Z\x8a\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/addon/certmanagerkubernetes/v1;certmanagerkubernetesv1\xa2\x02\x06PPPKAC\xaa\x02BProject.Planton.Provider.Kubernetes.Addon.Certmanagerkubernetes.V1\xca\x02BProject\\Planton\\Provider\\Kubernetes\\Addon\\Certmanagerkubernetes\\V1\xe2\x02NProject\\Planton\\Provider\\Kubernetes\\Addon\\Certmanagerkubernetes\\V1\\GPBMetadata\xea\x02HProject::Planton::Provider::Kubernetes::Addon::Certmanagerkubernetes::V1b\x06proto3"
 
 var (
 	file_project_planton_provider_kubernetes_addon_certmanagerkubernetes_v1_spec_proto_rawDescOnce sync.Once
@@ -370,21 +370,21 @@ func file_project_planton_provider_kubernetes_addon_certmanagerkubernetes_v1_spe
 
 var file_project_planton_provider_kubernetes_addon_certmanagerkubernetes_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_project_planton_provider_kubernetes_addon_certmanagerkubernetes_v1_spec_proto_goTypes = []any{
-	(*CertManagerKubernetesSpec)(nil),               // 0: project.planton.provider.kubernetes.addons.certmanagerkubernetes.v1.CertManagerKubernetesSpec
-	(*CertManagerGkeConfig)(nil),                    // 1: project.planton.provider.kubernetes.addons.certmanagerkubernetes.v1.CertManagerGkeConfig
-	(*CertManagerEksConfig)(nil),                    // 2: project.planton.provider.kubernetes.addons.certmanagerkubernetes.v1.CertManagerEksConfig
-	(*CertManagerAksConfig)(nil),                    // 3: project.planton.provider.kubernetes.addons.certmanagerkubernetes.v1.CertManagerAksConfig
+	(*CertManagerKubernetesSpec)(nil),               // 0: project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1.CertManagerKubernetesSpec
+	(*CertManagerGkeConfig)(nil),                    // 1: project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1.CertManagerGkeConfig
+	(*CertManagerEksConfig)(nil),                    // 2: project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1.CertManagerEksConfig
+	(*CertManagerAksConfig)(nil),                    // 3: project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1.CertManagerAksConfig
 	(*kubernetes.KubernetesAddonTargetCluster)(nil), // 4: project.planton.shared.kubernetes.KubernetesAddonTargetCluster
 	(*v1.StringValueOrRef)(nil),                     // 5: project.planton.shared.foreignkey.v1.StringValueOrRef
 }
 var file_project_planton_provider_kubernetes_addon_certmanagerkubernetes_v1_spec_proto_depIdxs = []int32{
-	4, // 0: project.planton.provider.kubernetes.addons.certmanagerkubernetes.v1.CertManagerKubernetesSpec.target_cluster:type_name -> project.planton.shared.kubernetes.KubernetesAddonTargetCluster
-	1, // 1: project.planton.provider.kubernetes.addons.certmanagerkubernetes.v1.CertManagerKubernetesSpec.gke:type_name -> project.planton.provider.kubernetes.addons.certmanagerkubernetes.v1.CertManagerGkeConfig
-	2, // 2: project.planton.provider.kubernetes.addons.certmanagerkubernetes.v1.CertManagerKubernetesSpec.eks:type_name -> project.planton.provider.kubernetes.addons.certmanagerkubernetes.v1.CertManagerEksConfig
-	3, // 3: project.planton.provider.kubernetes.addons.certmanagerkubernetes.v1.CertManagerKubernetesSpec.aks:type_name -> project.planton.provider.kubernetes.addons.certmanagerkubernetes.v1.CertManagerAksConfig
-	5, // 4: project.planton.provider.kubernetes.addons.certmanagerkubernetes.v1.CertManagerGkeConfig.project_id:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
-	5, // 5: project.planton.provider.kubernetes.addons.certmanagerkubernetes.v1.CertManagerGkeConfig.dns_zone_id:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
-	5, // 6: project.planton.provider.kubernetes.addons.certmanagerkubernetes.v1.CertManagerEksConfig.route53_zone_id:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
+	4, // 0: project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1.CertManagerKubernetesSpec.target_cluster:type_name -> project.planton.shared.kubernetes.KubernetesAddonTargetCluster
+	1, // 1: project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1.CertManagerKubernetesSpec.gke:type_name -> project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1.CertManagerGkeConfig
+	2, // 2: project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1.CertManagerKubernetesSpec.eks:type_name -> project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1.CertManagerEksConfig
+	3, // 3: project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1.CertManagerKubernetesSpec.aks:type_name -> project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1.CertManagerAksConfig
+	5, // 4: project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1.CertManagerGkeConfig.project_id:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
+	5, // 5: project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1.CertManagerGkeConfig.dns_zone_id:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
+	5, // 6: project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1.CertManagerEksConfig.route53_zone_id:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
 	7, // [7:7] is the sub-list for method output_type
 	7, // [7:7] is the sub-list for method input_type
 	7, // [7:7] is the sub-list for extension type_name

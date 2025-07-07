@@ -125,15 +125,15 @@ var File_project_planton_provider_kubernetes_workload_grafanakubernetes_v1_stack
 
 const file_project_planton_provider_kubernetes_workload_grafanakubernetes_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Uproject/planton/provider/kubernetes/workload/grafanakubernetes/v1/stack_outputs.proto\x12Bproject.planton.provider.kubernetes.workloads.grafanakubernetes.v1\"\x88\x02\n" +
+	"Uproject/planton/provider/kubernetes/workload/grafanakubernetes/v1/stack_outputs.proto\x12Aproject.planton.provider.kubernetes.workload.grafanakubernetes.v1\"\x88\x02\n" +
 	"\x1dGrafanaKubernetesStackOutputs\x12\x1c\n" +
 	"\tnamespace\x18\x01 \x01(\tR\tnamespace\x12\x18\n" +
 	"\aservice\x18\x02 \x01(\tR\aservice\x120\n" +
 	"\x14port_forward_command\x18\x03 \x01(\tR\x12portForwardCommand\x12#\n" +
 	"\rkube_endpoint\x18\x04 \x01(\tR\fkubeEndpoint\x12+\n" +
 	"\x11external_hostname\x18\x05 \x01(\tR\x10externalHostname\x12+\n" +
-	"\x11internal_hostname\x18\x06 \x01(\tR\x10internalHostnameB\x94\x04\n" +
-	"Fcom.project.planton.provider.kubernetes.workloads.grafanakubernetes.v1B\x11StackOutputsProtoP\x01Z\x85\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/grafanakubernetes/v1;grafanakubernetesv1\xa2\x02\x06PPPKWG\xaa\x02BProject.Planton.Provider.Kubernetes.Workloads.Grafanakubernetes.V1\xca\x02BProject\\Planton\\Provider\\Kubernetes\\Workloads\\Grafanakubernetes\\V1\xe2\x02NProject\\Planton\\Provider\\Kubernetes\\Workloads\\Grafanakubernetes\\V1\\GPBMetadata\xea\x02HProject::Planton::Provider::Kubernetes::Workloads::Grafanakubernetes::V1b\x06proto3"
+	"\x11internal_hostname\x18\x06 \x01(\tR\x10internalHostnameB\x8f\x04\n" +
+	"Ecom.project.planton.provider.kubernetes.workload.grafanakubernetes.v1B\x11StackOutputsProtoP\x01Z\x85\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/grafanakubernetes/v1;grafanakubernetesv1\xa2\x02\x06PPPKWG\xaa\x02AProject.Planton.Provider.Kubernetes.Workload.Grafanakubernetes.V1\xca\x02AProject\\Planton\\Provider\\Kubernetes\\Workload\\Grafanakubernetes\\V1\xe2\x02MProject\\Planton\\Provider\\Kubernetes\\Workload\\Grafanakubernetes\\V1\\GPBMetadata\xea\x02GProject::Planton::Provider::Kubernetes::Workload::Grafanakubernetes::V1b\x06proto3"
 
 var (
 	file_project_planton_provider_kubernetes_workload_grafanakubernetes_v1_stack_outputs_proto_rawDescOnce sync.Once
@@ -149,7 +149,7 @@ func file_project_planton_provider_kubernetes_workload_grafanakubernetes_v1_stac
 
 var file_project_planton_provider_kubernetes_workload_grafanakubernetes_v1_stack_outputs_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_kubernetes_workload_grafanakubernetes_v1_stack_outputs_proto_goTypes = []any{
-	(*GrafanaKubernetesStackOutputs)(nil), // 0: project.planton.provider.kubernetes.workloads.grafanakubernetes.v1.GrafanaKubernetesStackOutputs
+	(*GrafanaKubernetesStackOutputs)(nil), // 0: project.planton.provider.kubernetes.workload.grafanakubernetes.v1.GrafanaKubernetesStackOutputs
 }
 var file_project_planton_provider_kubernetes_workload_grafanakubernetes_v1_stack_outputs_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type

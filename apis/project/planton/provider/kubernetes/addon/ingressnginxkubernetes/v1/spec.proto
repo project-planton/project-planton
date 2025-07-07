@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package project.planton.provider.kubernetes.addons.ingressnginxkubernetes.v1;
+package project.planton.provider.kubernetes.addon.ingressnginxkubernetes.v1;
 
 import "project/planton/shared/kubernetes/target_cluster.proto";
 

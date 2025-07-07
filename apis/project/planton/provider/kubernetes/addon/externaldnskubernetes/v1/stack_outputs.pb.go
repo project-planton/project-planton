@@ -89,12 +89,12 @@ var File_project_planton_provider_kubernetes_addon_externaldnskubernetes_v1_stac
 
 const file_project_planton_provider_kubernetes_addon_externaldnskubernetes_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Vproject/planton/provider/kubernetes/addon/externaldnskubernetes/v1/stack_outputs.proto\x12Cproject.planton.provider.kubernetes.addons.externaldnskubernetes.v1\"\x81\x01\n" +
+	"Vproject/planton/provider/kubernetes/addon/externaldnskubernetes/v1/stack_outputs.proto\x12Bproject.planton.provider.kubernetes.addon.externaldnskubernetes.v1\"\x81\x01\n" +
 	"!ExternalDnsKubernetesStackOutputs\x12\x1c\n" +
 	"\tnamespace\x18\x01 \x01(\tR\tnamespace\x12!\n" +
 	"\frelease_name\x18\x02 \x01(\tR\vreleaseName\x12\x1b\n" +
-	"\tsolver_sa\x18\x03 \x01(\tR\bsolverSaB\x9e\x04\n" +
-	"Gcom.project.planton.provider.kubernetes.addons.externaldnskubernetes.v1B\x11StackOutputsProtoP\x01Z\x8a\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/addon/externaldnskubernetes/v1;externaldnskubernetesv1\xa2\x02\x06PPPKAE\xaa\x02CProject.Planton.Provider.Kubernetes.Addons.Externaldnskubernetes.V1\xca\x02CProject\\Planton\\Provider\\Kubernetes\\Addons\\Externaldnskubernetes\\V1\xe2\x02OProject\\Planton\\Provider\\Kubernetes\\Addons\\Externaldnskubernetes\\V1\\GPBMetadata\xea\x02IProject::Planton::Provider::Kubernetes::Addons::Externaldnskubernetes::V1b\x06proto3"
+	"\tsolver_sa\x18\x03 \x01(\tR\bsolverSaB\x99\x04\n" +
+	"Fcom.project.planton.provider.kubernetes.addon.externaldnskubernetes.v1B\x11StackOutputsProtoP\x01Z\x8a\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/addon/externaldnskubernetes/v1;externaldnskubernetesv1\xa2\x02\x06PPPKAE\xaa\x02BProject.Planton.Provider.Kubernetes.Addon.Externaldnskubernetes.V1\xca\x02BProject\\Planton\\Provider\\Kubernetes\\Addon\\Externaldnskubernetes\\V1\xe2\x02NProject\\Planton\\Provider\\Kubernetes\\Addon\\Externaldnskubernetes\\V1\\GPBMetadata\xea\x02HProject::Planton::Provider::Kubernetes::Addon::Externaldnskubernetes::V1b\x06proto3"
 
 var (
 	file_project_planton_provider_kubernetes_addon_externaldnskubernetes_v1_stack_outputs_proto_rawDescOnce sync.Once
@@ -110,7 +110,7 @@ func file_project_planton_provider_kubernetes_addon_externaldnskubernetes_v1_sta
 
 var file_project_planton_provider_kubernetes_addon_externaldnskubernetes_v1_stack_outputs_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_kubernetes_addon_externaldnskubernetes_v1_stack_outputs_proto_goTypes = []any{
-	(*ExternalDnsKubernetesStackOutputs)(nil), // 0: project.planton.provider.kubernetes.addons.externaldnskubernetes.v1.ExternalDnsKubernetesStackOutputs
+	(*ExternalDnsKubernetesStackOutputs)(nil), // 0: project.planton.provider.kubernetes.addon.externaldnskubernetes.v1.ExternalDnsKubernetesStackOutputs
 }
 var file_project_planton_provider_kubernetes_addon_externaldnskubernetes_v1_stack_outputs_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type

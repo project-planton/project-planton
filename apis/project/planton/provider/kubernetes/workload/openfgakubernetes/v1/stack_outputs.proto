@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package project.planton.provider.kubernetes.workloads.openfgakubernetes.v1;
+package project.planton.provider.kubernetes.workload.openfgakubernetes.v1;
 
 //open-fga-kubernetes kubernetes status
 message OpenFgaKubernetesStackOutputs {

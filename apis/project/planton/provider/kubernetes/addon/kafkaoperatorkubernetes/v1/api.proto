@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package project.planton.provider.kubernetes.addons.kafkaoperatorkubernetes.v1;
+package project.planton.provider.kubernetes.addon.kafkaoperatorkubernetes.v1;
 
 import "buf/validate/validate.proto";
 import "project/planton/provider/kubernetes/addon/kafkaoperatorkubernetes/v1/spec.proto";

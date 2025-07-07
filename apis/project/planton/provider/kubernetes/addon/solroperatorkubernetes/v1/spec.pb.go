@@ -131,16 +131,16 @@ var File_project_planton_provider_kubernetes_addon_solroperatorkubernetes_v1_spe
 
 const file_project_planton_provider_kubernetes_addon_solroperatorkubernetes_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Nproject/planton/provider/kubernetes/addon/solroperatorkubernetes/v1/spec.proto\x12Dproject.planton.provider.kubernetes.addons.solroperatorkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\x1a6project/planton/shared/kubernetes/target_cluster.proto\"\x96\x02\n" +
+	"Nproject/planton/provider/kubernetes/addon/solroperatorkubernetes/v1/spec.proto\x12Cproject.planton.provider.kubernetes.addon.solroperatorkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\x1a6project/planton/shared/kubernetes/target_cluster.proto\"\x95\x02\n" +
 	"\x1aSolrOperatorKubernetesSpec\x12f\n" +
-	"\x0etarget_cluster\x18\x01 \x01(\v2?.project.planton.shared.kubernetes.KubernetesAddonTargetClusterR\rtargetCluster\x12\x8f\x01\n" +
-	"\tcontainer\x18\x02 \x01(\v2i.project.planton.provider.kubernetes.addons.solroperatorkubernetes.v1.SolrOperatorKubernetesSpecContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\"\x9d\x01\n" +
+	"\x0etarget_cluster\x18\x01 \x01(\v2?.project.planton.shared.kubernetes.KubernetesAddonTargetClusterR\rtargetCluster\x12\x8e\x01\n" +
+	"\tcontainer\x18\x02 \x01(\v2h.project.planton.provider.kubernetes.addon.solroperatorkubernetes.v1.SolrOperatorKubernetesSpecContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\"\x9d\x01\n" +
 	"#SolrOperatorKubernetesSpecContainer\x12v\n" +
 	"\tresources\x18\x01 \x01(\v25.project.planton.shared.kubernetes.ContainerResourcesB!\xba\xfb\xa4\x02\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
-	"\x0350m\x12\x05100MiR\tresourcesB\x9d\x04\n" +
-	"Hcom.project.planton.provider.kubernetes.addons.solroperatorkubernetes.v1B\tSpecProtoP\x01Z\x8c\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/addon/solroperatorkubernetes/v1;solroperatorkubernetesv1\xa2\x02\x06PPPKAS\xaa\x02DProject.Planton.Provider.Kubernetes.Addons.Solroperatorkubernetes.V1\xca\x02DProject\\Planton\\Provider\\Kubernetes\\Addons\\Solroperatorkubernetes\\V1\xe2\x02PProject\\Planton\\Provider\\Kubernetes\\Addons\\Solroperatorkubernetes\\V1\\GPBMetadata\xea\x02JProject::Planton::Provider::Kubernetes::Addons::Solroperatorkubernetes::V1b\x06proto3"
+	"\x0350m\x12\x05100MiR\tresourcesB\x98\x04\n" +
+	"Gcom.project.planton.provider.kubernetes.addon.solroperatorkubernetes.v1B\tSpecProtoP\x01Z\x8c\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/addon/solroperatorkubernetes/v1;solroperatorkubernetesv1\xa2\x02\x06PPPKAS\xaa\x02CProject.Planton.Provider.Kubernetes.Addon.Solroperatorkubernetes.V1\xca\x02CProject\\Planton\\Provider\\Kubernetes\\Addon\\Solroperatorkubernetes\\V1\xe2\x02OProject\\Planton\\Provider\\Kubernetes\\Addon\\Solroperatorkubernetes\\V1\\GPBMetadata\xea\x02IProject::Planton::Provider::Kubernetes::Addon::Solroperatorkubernetes::V1b\x06proto3"
 
 var (
 	file_project_planton_provider_kubernetes_addon_solroperatorkubernetes_v1_spec_proto_rawDescOnce sync.Once
@@ -156,15 +156,15 @@ func file_project_planton_provider_kubernetes_addon_solroperatorkubernetes_v1_sp
 
 var file_project_planton_provider_kubernetes_addon_solroperatorkubernetes_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_kubernetes_addon_solroperatorkubernetes_v1_spec_proto_goTypes = []any{
-	(*SolrOperatorKubernetesSpec)(nil),              // 0: project.planton.provider.kubernetes.addons.solroperatorkubernetes.v1.SolrOperatorKubernetesSpec
-	(*SolrOperatorKubernetesSpecContainer)(nil),     // 1: project.planton.provider.kubernetes.addons.solroperatorkubernetes.v1.SolrOperatorKubernetesSpecContainer
+	(*SolrOperatorKubernetesSpec)(nil),              // 0: project.planton.provider.kubernetes.addon.solroperatorkubernetes.v1.SolrOperatorKubernetesSpec
+	(*SolrOperatorKubernetesSpecContainer)(nil),     // 1: project.planton.provider.kubernetes.addon.solroperatorkubernetes.v1.SolrOperatorKubernetesSpecContainer
 	(*kubernetes.KubernetesAddonTargetCluster)(nil), // 2: project.planton.shared.kubernetes.KubernetesAddonTargetCluster
 	(*kubernetes.ContainerResources)(nil),           // 3: project.planton.shared.kubernetes.ContainerResources
 }
 var file_project_planton_provider_kubernetes_addon_solroperatorkubernetes_v1_spec_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.kubernetes.addons.solroperatorkubernetes.v1.SolrOperatorKubernetesSpec.target_cluster:type_name -> project.planton.shared.kubernetes.KubernetesAddonTargetCluster
-	1, // 1: project.planton.provider.kubernetes.addons.solroperatorkubernetes.v1.SolrOperatorKubernetesSpec.container:type_name -> project.planton.provider.kubernetes.addons.solroperatorkubernetes.v1.SolrOperatorKubernetesSpecContainer
-	3, // 2: project.planton.provider.kubernetes.addons.solroperatorkubernetes.v1.SolrOperatorKubernetesSpecContainer.resources:type_name -> project.planton.shared.kubernetes.ContainerResources
+	2, // 0: project.planton.provider.kubernetes.addon.solroperatorkubernetes.v1.SolrOperatorKubernetesSpec.target_cluster:type_name -> project.planton.shared.kubernetes.KubernetesAddonTargetCluster
+	1, // 1: project.planton.provider.kubernetes.addon.solroperatorkubernetes.v1.SolrOperatorKubernetesSpec.container:type_name -> project.planton.provider.kubernetes.addon.solroperatorkubernetes.v1.SolrOperatorKubernetesSpecContainer
+	3, // 2: project.planton.provider.kubernetes.addon.solroperatorkubernetes.v1.SolrOperatorKubernetesSpecContainer.resources:type_name -> project.planton.shared.kubernetes.ContainerResources
 	3, // [3:3] is the sub-list for method output_type
 	3, // [3:3] is the sub-list for method input_type
 	3, // [3:3] is the sub-list for extension type_name

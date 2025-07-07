@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package project.planton.provider.kubernetes.addons.postgresoperatorkubernetes.v1;
+package project.planton.provider.kubernetes.addon.postgresoperatorkubernetes.v1;
 
 //postgres-operator-kubernetes stack outputs
 message PostgresOperatorKubernetesStackOutputs {

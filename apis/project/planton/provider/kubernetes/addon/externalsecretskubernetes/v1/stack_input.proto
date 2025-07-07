@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package project.planton.provider.kubernetes.addons.externalsecretskubernetes.v1;
+package project.planton.provider.kubernetes.addon.externalsecretskubernetes.v1;
 
 import "project/planton/credential/kubernetesclustercredential/v1/spec.proto";
 import "project/planton/provider/kubernetes/addon/externalsecretskubernetes/v1/api.proto";

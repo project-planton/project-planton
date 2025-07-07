@@ -180,7 +180,7 @@ var file_project_planton_provider_kubernetes_workload_mongodbkubernetes_v1_spec_
 		ExtendedType:  (*descriptorpb.FieldOptions)(nil),
 		ExtensionType: (*MongodbKubernetesContainer)(nil),
 		Field:         530001,
-		Name:          "project.planton.provider.kubernetes.workloads.mongodbkubernetes.v1.default_container",
+		Name:          "project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.default_container",
 		Tag:           "bytes,530001,opt,name=default_container",
 		Filename:      "project/planton/provider/kubernetes/workload/mongodbkubernetes/v1/spec.proto",
 	},
@@ -188,7 +188,7 @@ var file_project_planton_provider_kubernetes_workload_mongodbkubernetes_v1_spec_
 
 // Extension fields to descriptorpb.FieldOptions.
 var (
-	// optional project.planton.provider.kubernetes.workloads.mongodbkubernetes.v1.MongodbKubernetesContainer default_container = 530001;
+	// optional project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetesContainer default_container = 530001;
 	E_DefaultContainer = &file_project_planton_provider_kubernetes_workload_mongodbkubernetes_v1_spec_proto_extTypes[0]
 )
 
@@ -196,14 +196,14 @@ var File_project_planton_provider_kubernetes_workload_mongodbkubernetes_v1_spec_
 
 const file_project_planton_provider_kubernetes_workload_mongodbkubernetes_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Lproject/planton/provider/kubernetes/workload/mongodbkubernetes/v1/spec.proto\x12Bproject.planton.provider.kubernetes.workloads.mongodbkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\x1a,project/planton/shared/options/options.proto\x1a google/protobuf/descriptor.proto\"\xda\x03\n" +
-	"\x15MongodbKubernetesSpec\x12\xaa\x01\n" +
-	"\tcontainer\x18\x01 \x01(\v2^.project.planton.provider.kubernetes.workloads.mongodbkubernetes.v1.MongodbKubernetesContainerB,\x8a\xe5\x82\x02'\b\x01\x12\x1c\n" +
+	"Lproject/planton/provider/kubernetes/workload/mongodbkubernetes/v1/spec.proto\x12Aproject.planton.provider.kubernetes.workload.mongodbkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\x1a,project/planton/shared/options/options.proto\x1a google/protobuf/descriptor.proto\"\xd8\x03\n" +
+	"\x15MongodbKubernetesSpec\x12\xa9\x01\n" +
+	"\tcontainer\x18\x01 \x01(\v2].project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetesContainerB,\x8a\xe5\x82\x02'\b\x01\x12\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
 	"\x0350m\x12\x05100Mi\x18\x01\"\x031GiR\tcontainer\x12H\n" +
-	"\aingress\x18\x02 \x01(\v2..project.planton.shared.kubernetes.IngressSpecR\aingress\x12\x8a\x01\n" +
-	"\vhelm_values\x18\x03 \x03(\v2i.project.planton.provider.kubernetes.workloads.mongodbkubernetes.v1.MongodbKubernetesSpec.HelmValuesEntryR\n" +
+	"\aingress\x18\x02 \x01(\v2..project.planton.shared.kubernetes.IngressSpecR\aingress\x12\x89\x01\n" +
+	"\vhelm_values\x18\x03 \x03(\v2h.project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetesSpec.HelmValuesEntryR\n" +
 	"helmValues\x1a=\n" +
 	"\x0fHelmValuesEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
@@ -213,9 +213,9 @@ const file_project_planton_provider_kubernetes_workload_mongodbkubernetes_v1_spe
 	"\tresources\x18\x02 \x01(\v25.project.planton.shared.kubernetes.ContainerResourcesR\tresources\x124\n" +
 	"\x16is_persistence_enabled\x18\x03 \x01(\bR\x14isPersistenceEnabled\x12\x1b\n" +
 	"\tdisk_size\x18\x04 \x01(\tR\bdiskSize:\xdd\x02\xbaH\xd9\x02\x1a\xd6\x02\n" +
-	"!spec.container.disk_size.required\x12IDisk size is required and must match the format if persistence is enabled\x1a\xe5\x01((!this.is_persistence_enabled && (size(this.disk_size) == 0 || this.disk_size == '')) || (this.is_persistence_enabled && size(this.disk_size) > 0 && this.disk_size.matches('^\\\\d+(\\\\.\\\\d+)?\\\\s?(Ki|Mi|Gi|Ti|Pi|Ei|K|M|G|T|P|E)$'))):\xac\x01\n" +
-	"\x11default_container\x12\x1d.google.protobuf.FieldOptions\x18Ѭ  \x01(\v2^.project.planton.provider.kubernetes.workloads.mongodbkubernetes.v1.MongodbKubernetesContainerR\x10defaultContainerB\x8c\x04\n" +
-	"Fcom.project.planton.provider.kubernetes.workloads.mongodbkubernetes.v1B\tSpecProtoP\x01Z\x85\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/mongodbkubernetes/v1;mongodbkubernetesv1\xa2\x02\x06PPPKWM\xaa\x02BProject.Planton.Provider.Kubernetes.Workloads.Mongodbkubernetes.V1\xca\x02BProject\\Planton\\Provider\\Kubernetes\\Workloads\\Mongodbkubernetes\\V1\xe2\x02NProject\\Planton\\Provider\\Kubernetes\\Workloads\\Mongodbkubernetes\\V1\\GPBMetadata\xea\x02HProject::Planton::Provider::Kubernetes::Workloads::Mongodbkubernetes::V1b\x06proto3"
+	"!spec.container.disk_size.required\x12IDisk size is required and must match the format if persistence is enabled\x1a\xe5\x01((!this.is_persistence_enabled && (size(this.disk_size) == 0 || this.disk_size == '')) || (this.is_persistence_enabled && size(this.disk_size) > 0 && this.disk_size.matches('^\\\\d+(\\\\.\\\\d+)?\\\\s?(Ki|Mi|Gi|Ti|Pi|Ei|K|M|G|T|P|E)$'))):\xab\x01\n" +
+	"\x11default_container\x12\x1d.google.protobuf.FieldOptions\x18Ѭ  \x01(\v2].project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetesContainerR\x10defaultContainerB\x87\x04\n" +
+	"Ecom.project.planton.provider.kubernetes.workload.mongodbkubernetes.v1B\tSpecProtoP\x01Z\x85\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/mongodbkubernetes/v1;mongodbkubernetesv1\xa2\x02\x06PPPKWM\xaa\x02AProject.Planton.Provider.Kubernetes.Workload.Mongodbkubernetes.V1\xca\x02AProject\\Planton\\Provider\\Kubernetes\\Workload\\Mongodbkubernetes\\V1\xe2\x02MProject\\Planton\\Provider\\Kubernetes\\Workload\\Mongodbkubernetes\\V1\\GPBMetadata\xea\x02GProject::Planton::Provider::Kubernetes::Workload::Mongodbkubernetes::V1b\x06proto3"
 
 var (
 	file_project_planton_provider_kubernetes_workload_mongodbkubernetes_v1_spec_proto_rawDescOnce sync.Once
@@ -231,20 +231,20 @@ func file_project_planton_provider_kubernetes_workload_mongodbkubernetes_v1_spec
 
 var file_project_planton_provider_kubernetes_workload_mongodbkubernetes_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_project_planton_provider_kubernetes_workload_mongodbkubernetes_v1_spec_proto_goTypes = []any{
-	(*MongodbKubernetesSpec)(nil),         // 0: project.planton.provider.kubernetes.workloads.mongodbkubernetes.v1.MongodbKubernetesSpec
-	(*MongodbKubernetesContainer)(nil),    // 1: project.planton.provider.kubernetes.workloads.mongodbkubernetes.v1.MongodbKubernetesContainer
-	nil,                                   // 2: project.planton.provider.kubernetes.workloads.mongodbkubernetes.v1.MongodbKubernetesSpec.HelmValuesEntry
+	(*MongodbKubernetesSpec)(nil),         // 0: project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetesSpec
+	(*MongodbKubernetesContainer)(nil),    // 1: project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetesContainer
+	nil,                                   // 2: project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetesSpec.HelmValuesEntry
 	(*kubernetes.IngressSpec)(nil),        // 3: project.planton.shared.kubernetes.IngressSpec
 	(*kubernetes.ContainerResources)(nil), // 4: project.planton.shared.kubernetes.ContainerResources
 	(*descriptorpb.FieldOptions)(nil),     // 5: google.protobuf.FieldOptions
 }
 var file_project_planton_provider_kubernetes_workload_mongodbkubernetes_v1_spec_proto_depIdxs = []int32{
-	1, // 0: project.planton.provider.kubernetes.workloads.mongodbkubernetes.v1.MongodbKubernetesSpec.container:type_name -> project.planton.provider.kubernetes.workloads.mongodbkubernetes.v1.MongodbKubernetesContainer
-	3, // 1: project.planton.provider.kubernetes.workloads.mongodbkubernetes.v1.MongodbKubernetesSpec.ingress:type_name -> project.planton.shared.kubernetes.IngressSpec
-	2, // 2: project.planton.provider.kubernetes.workloads.mongodbkubernetes.v1.MongodbKubernetesSpec.helm_values:type_name -> project.planton.provider.kubernetes.workloads.mongodbkubernetes.v1.MongodbKubernetesSpec.HelmValuesEntry
-	4, // 3: project.planton.provider.kubernetes.workloads.mongodbkubernetes.v1.MongodbKubernetesContainer.resources:type_name -> project.planton.shared.kubernetes.ContainerResources
-	5, // 4: project.planton.provider.kubernetes.workloads.mongodbkubernetes.v1.default_container:extendee -> google.protobuf.FieldOptions
-	1, // 5: project.planton.provider.kubernetes.workloads.mongodbkubernetes.v1.default_container:type_name -> project.planton.provider.kubernetes.workloads.mongodbkubernetes.v1.MongodbKubernetesContainer
+	1, // 0: project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetesSpec.container:type_name -> project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetesContainer
+	3, // 1: project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetesSpec.ingress:type_name -> project.planton.shared.kubernetes.IngressSpec
+	2, // 2: project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetesSpec.helm_values:type_name -> project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetesSpec.HelmValuesEntry
+	4, // 3: project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetesContainer.resources:type_name -> project.planton.shared.kubernetes.ContainerResources
+	5, // 4: project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.default_container:extendee -> google.protobuf.FieldOptions
+	1, // 5: project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.default_container:type_name -> project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetesContainer
 	6, // [6:6] is the sub-list for method output_type
 	6, // [6:6] is the sub-list for method input_type
 	5, // [5:6] is the sub-list for extension type_name

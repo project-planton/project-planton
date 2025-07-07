@@ -71,10 +71,10 @@ var File_project_planton_provider_kubernetes_workload_cronjobkubernetes_v1_stack
 
 const file_project_planton_provider_kubernetes_workload_cronjobkubernetes_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Uproject/planton/provider/kubernetes/workload/cronjobkubernetes/v1/stack_outputs.proto\x12Bproject.planton.provider.kubernetes.workloads.cronjobkubernetes.v1\"=\n" +
+	"Uproject/planton/provider/kubernetes/workload/cronjobkubernetes/v1/stack_outputs.proto\x12Aproject.planton.provider.kubernetes.workload.cronjobkubernetes.v1\"=\n" +
 	"\x1dCronJobKubernetesStackOutputs\x12\x1c\n" +
-	"\tnamespace\x18\x01 \x01(\tR\tnamespaceB\x94\x04\n" +
-	"Fcom.project.planton.provider.kubernetes.workloads.cronjobkubernetes.v1B\x11StackOutputsProtoP\x01Z\x85\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/cronjobkubernetes/v1;cronjobkubernetesv1\xa2\x02\x06PPPKWC\xaa\x02BProject.Planton.Provider.Kubernetes.Workloads.Cronjobkubernetes.V1\xca\x02BProject\\Planton\\Provider\\Kubernetes\\Workloads\\Cronjobkubernetes\\V1\xe2\x02NProject\\Planton\\Provider\\Kubernetes\\Workloads\\Cronjobkubernetes\\V1\\GPBMetadata\xea\x02HProject::Planton::Provider::Kubernetes::Workloads::Cronjobkubernetes::V1b\x06proto3"
+	"\tnamespace\x18\x01 \x01(\tR\tnamespaceB\x8f\x04\n" +
+	"Ecom.project.planton.provider.kubernetes.workload.cronjobkubernetes.v1B\x11StackOutputsProtoP\x01Z\x85\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/cronjobkubernetes/v1;cronjobkubernetesv1\xa2\x02\x06PPPKWC\xaa\x02AProject.Planton.Provider.Kubernetes.Workload.Cronjobkubernetes.V1\xca\x02AProject\\Planton\\Provider\\Kubernetes\\Workload\\Cronjobkubernetes\\V1\xe2\x02MProject\\Planton\\Provider\\Kubernetes\\Workload\\Cronjobkubernetes\\V1\\GPBMetadata\xea\x02GProject::Planton::Provider::Kubernetes::Workload::Cronjobkubernetes::V1b\x06proto3"
 
 var (
 	file_project_planton_provider_kubernetes_workload_cronjobkubernetes_v1_stack_outputs_proto_rawDescOnce sync.Once
@@ -90,7 +90,7 @@ func file_project_planton_provider_kubernetes_workload_cronjobkubernetes_v1_stac
 
 var file_project_planton_provider_kubernetes_workload_cronjobkubernetes_v1_stack_outputs_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_kubernetes_workload_cronjobkubernetes_v1_stack_outputs_proto_goTypes = []any{
-	(*CronJobKubernetesStackOutputs)(nil), // 0: project.planton.provider.kubernetes.workloads.cronjobkubernetes.v1.CronJobKubernetesStackOutputs
+	(*CronJobKubernetesStackOutputs)(nil), // 0: project.planton.provider.kubernetes.workload.cronjobkubernetes.v1.CronJobKubernetesStackOutputs
 }
 var file_project_planton_provider_kubernetes_workload_cronjobkubernetes_v1_stack_outputs_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type

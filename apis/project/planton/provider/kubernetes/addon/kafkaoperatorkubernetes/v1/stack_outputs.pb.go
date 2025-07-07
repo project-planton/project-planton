@@ -115,14 +115,14 @@ var File_project_planton_provider_kubernetes_addon_kafkaoperatorkubernetes_v1_st
 
 const file_project_planton_provider_kubernetes_addon_kafkaoperatorkubernetes_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Xproject/planton/provider/kubernetes/addon/kafkaoperatorkubernetes/v1/stack_outputs.proto\x12Eproject.planton.provider.kubernetes.addons.kafkaoperatorkubernetes.v1\"\xdf\x01\n" +
+	"Xproject/planton/provider/kubernetes/addon/kafkaoperatorkubernetes/v1/stack_outputs.proto\x12Dproject.planton.provider.kubernetes.addon.kafkaoperatorkubernetes.v1\"\xdf\x01\n" +
 	"#KafkaOperatorKubernetesStackOutputs\x12\x1c\n" +
 	"\tnamespace\x18\x01 \x01(\tR\tnamespace\x12\x18\n" +
 	"\aservice\x18\x02 \x01(\tR\aservice\x120\n" +
 	"\x14port_forward_command\x18\x03 \x01(\tR\x12portForwardCommand\x12#\n" +
 	"\rkube_endpoint\x18\x04 \x01(\tR\fkubeEndpoint\x12)\n" +
-	"\x10ingress_endpoint\x18\x05 \x01(\tR\x0fingressEndpointB\xac\x04\n" +
-	"Icom.project.planton.provider.kubernetes.addons.kafkaoperatorkubernetes.v1B\x11StackOutputsProtoP\x01Z\x8e\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/addon/kafkaoperatorkubernetes/v1;kafkaoperatorkubernetesv1\xa2\x02\x06PPPKAK\xaa\x02EProject.Planton.Provider.Kubernetes.Addons.Kafkaoperatorkubernetes.V1\xca\x02EProject\\Planton\\Provider\\Kubernetes\\Addons\\Kafkaoperatorkubernetes\\V1\xe2\x02QProject\\Planton\\Provider\\Kubernetes\\Addons\\Kafkaoperatorkubernetes\\V1\\GPBMetadata\xea\x02KProject::Planton::Provider::Kubernetes::Addons::Kafkaoperatorkubernetes::V1b\x06proto3"
+	"\x10ingress_endpoint\x18\x05 \x01(\tR\x0fingressEndpointB\xa7\x04\n" +
+	"Hcom.project.planton.provider.kubernetes.addon.kafkaoperatorkubernetes.v1B\x11StackOutputsProtoP\x01Z\x8e\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/addon/kafkaoperatorkubernetes/v1;kafkaoperatorkubernetesv1\xa2\x02\x06PPPKAK\xaa\x02DProject.Planton.Provider.Kubernetes.Addon.Kafkaoperatorkubernetes.V1\xca\x02DProject\\Planton\\Provider\\Kubernetes\\Addon\\Kafkaoperatorkubernetes\\V1\xe2\x02PProject\\Planton\\Provider\\Kubernetes\\Addon\\Kafkaoperatorkubernetes\\V1\\GPBMetadata\xea\x02JProject::Planton::Provider::Kubernetes::Addon::Kafkaoperatorkubernetes::V1b\x06proto3"
 
 var (
 	file_project_planton_provider_kubernetes_addon_kafkaoperatorkubernetes_v1_stack_outputs_proto_rawDescOnce sync.Once
@@ -138,7 +138,7 @@ func file_project_planton_provider_kubernetes_addon_kafkaoperatorkubernetes_v1_s
 
 var file_project_planton_provider_kubernetes_addon_kafkaoperatorkubernetes_v1_stack_outputs_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_kubernetes_addon_kafkaoperatorkubernetes_v1_stack_outputs_proto_goTypes = []any{
-	(*KafkaOperatorKubernetesStackOutputs)(nil), // 0: project.planton.provider.kubernetes.addons.kafkaoperatorkubernetes.v1.KafkaOperatorKubernetesStackOutputs
+	(*KafkaOperatorKubernetesStackOutputs)(nil), // 0: project.planton.provider.kubernetes.addon.kafkaoperatorkubernetes.v1.KafkaOperatorKubernetesStackOutputs
 }
 var file_project_planton_provider_kubernetes_addon_kafkaoperatorkubernetes_v1_stack_outputs_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type

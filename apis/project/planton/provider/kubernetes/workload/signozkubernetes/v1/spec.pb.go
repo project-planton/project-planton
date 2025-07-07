@@ -69,9 +69,9 @@ var File_project_planton_provider_kubernetes_workload_signozkubernetes_v1_spec_p
 
 const file_project_planton_provider_kubernetes_workload_signozkubernetes_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Kproject/planton/provider/kubernetes/workload/signozkubernetes/v1/spec.proto\x12Aproject.planton.provider.kubernetes.workloads.signozkubernetes.v1\x1a\x1bbuf/validate/validate.proto\"\x16\n" +
-	"\x14SignozKubernetesSpecB\x85\x04\n" +
-	"Ecom.project.planton.provider.kubernetes.workloads.signozkubernetes.v1B\tSpecProtoP\x01Z\x83\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/signozkubernetes/v1;signozkubernetesv1\xa2\x02\x06PPPKWS\xaa\x02AProject.Planton.Provider.Kubernetes.Workloads.Signozkubernetes.V1\xca\x02AProject\\Planton\\Provider\\Kubernetes\\Workloads\\Signozkubernetes\\V1\xe2\x02MProject\\Planton\\Provider\\Kubernetes\\Workloads\\Signozkubernetes\\V1\\GPBMetadata\xea\x02GProject::Planton::Provider::Kubernetes::Workloads::Signozkubernetes::V1b\x06proto3"
+	"Kproject/planton/provider/kubernetes/workload/signozkubernetes/v1/spec.proto\x12@project.planton.provider.kubernetes.workload.signozkubernetes.v1\x1a\x1bbuf/validate/validate.proto\"\x16\n" +
+	"\x14SignozKubernetesSpecB\x80\x04\n" +
+	"Dcom.project.planton.provider.kubernetes.workload.signozkubernetes.v1B\tSpecProtoP\x01Z\x83\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/signozkubernetes/v1;signozkubernetesv1\xa2\x02\x06PPPKWS\xaa\x02@Project.Planton.Provider.Kubernetes.Workload.Signozkubernetes.V1\xca\x02@Project\\Planton\\Provider\\Kubernetes\\Workload\\Signozkubernetes\\V1\xe2\x02LProject\\Planton\\Provider\\Kubernetes\\Workload\\Signozkubernetes\\V1\\GPBMetadata\xea\x02FProject::Planton::Provider::Kubernetes::Workload::Signozkubernetes::V1b\x06proto3"
 
 var (
 	file_project_planton_provider_kubernetes_workload_signozkubernetes_v1_spec_proto_rawDescOnce sync.Once
@@ -87,7 +87,7 @@ func file_project_planton_provider_kubernetes_workload_signozkubernetes_v1_spec_
 
 var file_project_planton_provider_kubernetes_workload_signozkubernetes_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_kubernetes_workload_signozkubernetes_v1_spec_proto_goTypes = []any{
-	(*SignozKubernetesSpec)(nil), // 0: project.planton.provider.kubernetes.workloads.signozkubernetes.v1.SignozKubernetesSpec
+	(*SignozKubernetesSpec)(nil), // 0: project.planton.provider.kubernetes.workload.signozkubernetes.v1.SignozKubernetesSpec
 }
 var file_project_planton_provider_kubernetes_workload_signozkubernetes_v1_spec_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type

@@ -101,13 +101,13 @@ var File_project_planton_provider_kubernetes_workload_neo4jkubernetes_v1_stack_o
 
 const file_project_planton_provider_kubernetes_workload_neo4jkubernetes_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Sproject/planton/provider/kubernetes/workload/neo4jkubernetes/v1/stack_outputs.proto\x12@project.planton.provider.kubernetes.workloads.neo4jkubernetes.v1\"\xbf\x01\n" +
+	"Sproject/planton/provider/kubernetes/workload/neo4jkubernetes/v1/stack_outputs.proto\x12?project.planton.provider.kubernetes.workload.neo4jkubernetes.v1\"\xbf\x01\n" +
 	"\x1bNeo4jKubernetesStackOutputs\x12\x1c\n" +
 	"\tnamespace\x18\x01 \x01(\tR\tnamespace\x12\x18\n" +
 	"\aservice\x18\x02 \x01(\tR\aservice\x123\n" +
 	"\x16bolt_uri_kube_endpoint\x18\x03 \x01(\tR\x13boltUriKubeEndpoint\x123\n" +
-	"\x16http_uri_kube_endpoint\x18\x04 \x01(\tR\x13httpUriKubeEndpointB\x86\x04\n" +
-	"Dcom.project.planton.provider.kubernetes.workloads.neo4jkubernetes.v1B\x11StackOutputsProtoP\x01Z\x81\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/neo4jkubernetes/v1;neo4jkubernetesv1\xa2\x02\x06PPPKWN\xaa\x02@Project.Planton.Provider.Kubernetes.Workloads.Neo4jkubernetes.V1\xca\x02@Project\\Planton\\Provider\\Kubernetes\\Workloads\\Neo4jkubernetes\\V1\xe2\x02LProject\\Planton\\Provider\\Kubernetes\\Workloads\\Neo4jkubernetes\\V1\\GPBMetadata\xea\x02FProject::Planton::Provider::Kubernetes::Workloads::Neo4jkubernetes::V1b\x06proto3"
+	"\x16http_uri_kube_endpoint\x18\x04 \x01(\tR\x13httpUriKubeEndpointB\x81\x04\n" +
+	"Ccom.project.planton.provider.kubernetes.workload.neo4jkubernetes.v1B\x11StackOutputsProtoP\x01Z\x81\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/neo4jkubernetes/v1;neo4jkubernetesv1\xa2\x02\x06PPPKWN\xaa\x02?Project.Planton.Provider.Kubernetes.Workload.Neo4jkubernetes.V1\xca\x02?Project\\Planton\\Provider\\Kubernetes\\Workload\\Neo4jkubernetes\\V1\xe2\x02KProject\\Planton\\Provider\\Kubernetes\\Workload\\Neo4jkubernetes\\V1\\GPBMetadata\xea\x02EProject::Planton::Provider::Kubernetes::Workload::Neo4jkubernetes::V1b\x06proto3"
 
 var (
 	file_project_planton_provider_kubernetes_workload_neo4jkubernetes_v1_stack_outputs_proto_rawDescOnce sync.Once
@@ -123,7 +123,7 @@ func file_project_planton_provider_kubernetes_workload_neo4jkubernetes_v1_stack_
 
 var file_project_planton_provider_kubernetes_workload_neo4jkubernetes_v1_stack_outputs_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_kubernetes_workload_neo4jkubernetes_v1_stack_outputs_proto_goTypes = []any{
-	(*Neo4JKubernetesStackOutputs)(nil), // 0: project.planton.provider.kubernetes.workloads.neo4jkubernetes.v1.Neo4jKubernetesStackOutputs
+	(*Neo4JKubernetesStackOutputs)(nil), // 0: project.planton.provider.kubernetes.workload.neo4jkubernetes.v1.Neo4jKubernetesStackOutputs
 }
 var file_project_planton_provider_kubernetes_workload_neo4jkubernetes_v1_stack_outputs_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type

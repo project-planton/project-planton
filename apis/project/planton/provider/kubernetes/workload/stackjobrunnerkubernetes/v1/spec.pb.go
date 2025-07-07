@@ -68,9 +68,9 @@ var File_project_planton_provider_kubernetes_workload_stackjobrunnerkubernetes_v
 
 const file_project_planton_provider_kubernetes_workload_stackjobrunnerkubernetes_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Sproject/planton/provider/kubernetes/workload/stackjobrunnerkubernetes/v1/spec.proto\x12Iproject.planton.provider.kubernetes.workloads.stackjobrunnerkubernetes.v1\x1a\x1bbuf/validate/validate.proto\"\x1e\n" +
-	"\x1cStackJobRunnerKubernetesSpecB\xbd\x04\n" +
-	"Mcom.project.planton.provider.kubernetes.workloads.stackjobrunnerkubernetes.v1B\tSpecProtoP\x01Z\x93\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/stackjobrunnerkubernetes/v1;stackjobrunnerkubernetesv1\xa2\x02\x06PPPKWS\xaa\x02IProject.Planton.Provider.Kubernetes.Workloads.Stackjobrunnerkubernetes.V1\xca\x02IProject\\Planton\\Provider\\Kubernetes\\Workloads\\Stackjobrunnerkubernetes\\V1\xe2\x02UProject\\Planton\\Provider\\Kubernetes\\Workloads\\Stackjobrunnerkubernetes\\V1\\GPBMetadata\xea\x02OProject::Planton::Provider::Kubernetes::Workloads::Stackjobrunnerkubernetes::V1b\x06proto3"
+	"Sproject/planton/provider/kubernetes/workload/stackjobrunnerkubernetes/v1/spec.proto\x12Hproject.planton.provider.kubernetes.workload.stackjobrunnerkubernetes.v1\x1a\x1bbuf/validate/validate.proto\"\x1e\n" +
+	"\x1cStackJobRunnerKubernetesSpecB\xb8\x04\n" +
+	"Lcom.project.planton.provider.kubernetes.workload.stackjobrunnerkubernetes.v1B\tSpecProtoP\x01Z\x93\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/stackjobrunnerkubernetes/v1;stackjobrunnerkubernetesv1\xa2\x02\x06PPPKWS\xaa\x02HProject.Planton.Provider.Kubernetes.Workload.Stackjobrunnerkubernetes.V1\xca\x02HProject\\Planton\\Provider\\Kubernetes\\Workload\\Stackjobrunnerkubernetes\\V1\xe2\x02TProject\\Planton\\Provider\\Kubernetes\\Workload\\Stackjobrunnerkubernetes\\V1\\GPBMetadata\xea\x02NProject::Planton::Provider::Kubernetes::Workload::Stackjobrunnerkubernetes::V1b\x06proto3"
 
 var (
 	file_project_planton_provider_kubernetes_workload_stackjobrunnerkubernetes_v1_spec_proto_rawDescOnce sync.Once
@@ -86,7 +86,7 @@ func file_project_planton_provider_kubernetes_workload_stackjobrunnerkubernetes_
 
 var file_project_planton_provider_kubernetes_workload_stackjobrunnerkubernetes_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_kubernetes_workload_stackjobrunnerkubernetes_v1_spec_proto_goTypes = []any{
-	(*StackJobRunnerKubernetesSpec)(nil), // 0: project.planton.provider.kubernetes.workloads.stackjobrunnerkubernetes.v1.StackJobRunnerKubernetesSpec
+	(*StackJobRunnerKubernetesSpec)(nil), // 0: project.planton.provider.kubernetes.workload.stackjobrunnerkubernetes.v1.StackJobRunnerKubernetesSpec
 }
 var file_project_planton_provider_kubernetes_workload_stackjobrunnerkubernetes_v1_spec_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type

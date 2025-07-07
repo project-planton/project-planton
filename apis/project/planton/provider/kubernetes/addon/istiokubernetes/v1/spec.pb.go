@@ -131,16 +131,16 @@ var File_project_planton_provider_kubernetes_addon_istiokubernetes_v1_spec_proto
 
 const file_project_planton_provider_kubernetes_addon_istiokubernetes_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Gproject/planton/provider/kubernetes/addon/istiokubernetes/v1/spec.proto\x12=project.planton.provider.kubernetes.addons.istiokubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\x1a6project/planton/shared/kubernetes/target_cluster.proto\"\x81\x02\n" +
+	"Gproject/planton/provider/kubernetes/addon/istiokubernetes/v1/spec.proto\x12<project.planton.provider.kubernetes.addon.istiokubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\x1a6project/planton/shared/kubernetes/target_cluster.proto\"\x80\x02\n" +
 	"\x13IstioKubernetesSpec\x12f\n" +
-	"\x0etarget_cluster\x18\x01 \x01(\v2?.project.planton.shared.kubernetes.KubernetesAddonTargetClusterR\rtargetCluster\x12\x81\x01\n" +
-	"\tcontainer\x18\x02 \x01(\v2[.project.planton.provider.kubernetes.addons.istiokubernetes.v1.IstioKubernetesSpecContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\"\x96\x01\n" +
+	"\x0etarget_cluster\x18\x01 \x01(\v2?.project.planton.shared.kubernetes.KubernetesAddonTargetClusterR\rtargetCluster\x12\x80\x01\n" +
+	"\tcontainer\x18\x02 \x01(\v2Z.project.planton.provider.kubernetes.addon.istiokubernetes.v1.IstioKubernetesSpecContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\"\x96\x01\n" +
 	"\x1cIstioKubernetesSpecContainer\x12v\n" +
 	"\tresources\x18\x01 \x01(\v25.project.planton.shared.kubernetes.ContainerResourcesB!\xba\xfb\xa4\x02\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
-	"\x0350m\x12\x05100MiR\tresourcesB\xeb\x03\n" +
-	"Acom.project.planton.provider.kubernetes.addons.istiokubernetes.v1B\tSpecProtoP\x01Z~github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/addon/istiokubernetes/v1;istiokubernetesv1\xa2\x02\x06PPPKAI\xaa\x02=Project.Planton.Provider.Kubernetes.Addons.Istiokubernetes.V1\xca\x02=Project\\Planton\\Provider\\Kubernetes\\Addons\\Istiokubernetes\\V1\xe2\x02IProject\\Planton\\Provider\\Kubernetes\\Addons\\Istiokubernetes\\V1\\GPBMetadata\xea\x02CProject::Planton::Provider::Kubernetes::Addons::Istiokubernetes::V1b\x06proto3"
+	"\x0350m\x12\x05100MiR\tresourcesB\xe6\x03\n" +
+	"@com.project.planton.provider.kubernetes.addon.istiokubernetes.v1B\tSpecProtoP\x01Z~github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/addon/istiokubernetes/v1;istiokubernetesv1\xa2\x02\x06PPPKAI\xaa\x02<Project.Planton.Provider.Kubernetes.Addon.Istiokubernetes.V1\xca\x02<Project\\Planton\\Provider\\Kubernetes\\Addon\\Istiokubernetes\\V1\xe2\x02HProject\\Planton\\Provider\\Kubernetes\\Addon\\Istiokubernetes\\V1\\GPBMetadata\xea\x02BProject::Planton::Provider::Kubernetes::Addon::Istiokubernetes::V1b\x06proto3"
 
 var (
 	file_project_planton_provider_kubernetes_addon_istiokubernetes_v1_spec_proto_rawDescOnce sync.Once
@@ -156,15 +156,15 @@ func file_project_planton_provider_kubernetes_addon_istiokubernetes_v1_spec_prot
 
 var file_project_planton_provider_kubernetes_addon_istiokubernetes_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_kubernetes_addon_istiokubernetes_v1_spec_proto_goTypes = []any{
-	(*IstioKubernetesSpec)(nil),                     // 0: project.planton.provider.kubernetes.addons.istiokubernetes.v1.IstioKubernetesSpec
-	(*IstioKubernetesSpecContainer)(nil),            // 1: project.planton.provider.kubernetes.addons.istiokubernetes.v1.IstioKubernetesSpecContainer
+	(*IstioKubernetesSpec)(nil),                     // 0: project.planton.provider.kubernetes.addon.istiokubernetes.v1.IstioKubernetesSpec
+	(*IstioKubernetesSpecContainer)(nil),            // 1: project.planton.provider.kubernetes.addon.istiokubernetes.v1.IstioKubernetesSpecContainer
 	(*kubernetes.KubernetesAddonTargetCluster)(nil), // 2: project.planton.shared.kubernetes.KubernetesAddonTargetCluster
 	(*kubernetes.ContainerResources)(nil),           // 3: project.planton.shared.kubernetes.ContainerResources
 }
 var file_project_planton_provider_kubernetes_addon_istiokubernetes_v1_spec_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.kubernetes.addons.istiokubernetes.v1.IstioKubernetesSpec.target_cluster:type_name -> project.planton.shared.kubernetes.KubernetesAddonTargetCluster
-	1, // 1: project.planton.provider.kubernetes.addons.istiokubernetes.v1.IstioKubernetesSpec.container:type_name -> project.planton.provider.kubernetes.addons.istiokubernetes.v1.IstioKubernetesSpecContainer
-	3, // 2: project.planton.provider.kubernetes.addons.istiokubernetes.v1.IstioKubernetesSpecContainer.resources:type_name -> project.planton.shared.kubernetes.ContainerResources
+	2, // 0: project.planton.provider.kubernetes.addon.istiokubernetes.v1.IstioKubernetesSpec.target_cluster:type_name -> project.planton.shared.kubernetes.KubernetesAddonTargetCluster
+	1, // 1: project.planton.provider.kubernetes.addon.istiokubernetes.v1.IstioKubernetesSpec.container:type_name -> project.planton.provider.kubernetes.addon.istiokubernetes.v1.IstioKubernetesSpecContainer
+	3, // 2: project.planton.provider.kubernetes.addon.istiokubernetes.v1.IstioKubernetesSpecContainer.resources:type_name -> project.planton.shared.kubernetes.ContainerResources
 	3, // [3:3] is the sub-list for method output_type
 	3, // [3:3] is the sub-list for method input_type
 	3, // [3:3] is the sub-list for extension type_name

@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package project.planton.provider.kubernetes.workloads.solrkubernetes.v1;
+package project.planton.provider.kubernetes.workload.solrkubernetes.v1;
 
 //solr-kubernetes stack outputs
 message SolrKubernetesStackOutputs {

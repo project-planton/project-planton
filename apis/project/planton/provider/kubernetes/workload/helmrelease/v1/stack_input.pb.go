@@ -111,14 +111,14 @@ var File_project_planton_provider_kubernetes_workload_helmrelease_v1_stack_input
 
 const file_project_planton_provider_kubernetes_workload_helmrelease_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Mproject/planton/provider/kubernetes/workload/helmrelease/v1/stack_input.proto\x12<project.planton.provider.kubernetes.workloads.helmrelease.v1\x1aDproject/planton/credential/kubernetesclustercredential/v1/spec.proto\x1aEproject/planton/provider/kubernetes/workload/helmrelease/v1/api.proto\x1a.project/planton/shared/iac/pulumi/pulumi.proto\x1a project/planton/shared/iac.proto\x1a4project/planton/shared/iac/terraform/terraform.proto\"\xf6\x03\n" +
+	"Mproject/planton/provider/kubernetes/workload/helmrelease/v1/stack_input.proto\x12;project.planton.provider.kubernetes.workload.helmrelease.v1\x1aDproject/planton/credential/kubernetesclustercredential/v1/spec.proto\x1aEproject/planton/provider/kubernetes/workload/helmrelease/v1/api.proto\x1a.project/planton/shared/iac/pulumi/pulumi.proto\x1a project/planton/shared/iac.proto\x1a4project/planton/shared/iac/terraform/terraform.proto\"\xf5\x03\n" +
 	"\x15HelmReleaseStackInput\x12H\n" +
 	"\vprovisioner\x18\x01 \x01(\x0e2&.project.planton.shared.IacProvisionerR\vprovisioner\x12J\n" +
 	"\x06pulumi\x18\x02 \x01(\v22.project.planton.shared.iac.pulumi.PulumiStackInfoR\x06pulumi\x12V\n" +
-	"\tterraform\x18\x03 \x01(\v28.project.planton.shared.iac.terraform.TerraformStackInfoR\tterraform\x12a\n" +
-	"\x06target\x18\x04 \x01(\v2I.project.planton.provider.kubernetes.workloads.helmrelease.v1.HelmReleaseR\x06target\x12\x8b\x01\n" +
-	"\x13provider_credential\x18\x05 \x01(\v2Z.project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpecR\x12providerCredentialB\xe7\x03\n" +
-	"@com.project.planton.provider.kubernetes.workloads.helmrelease.v1B\x0fStackInputProtoP\x01Zygithub.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/helmrelease/v1;helmreleasev1\xa2\x02\x06PPPKWH\xaa\x02<Project.Planton.Provider.Kubernetes.Workloads.Helmrelease.V1\xca\x02<Project\\Planton\\Provider\\Kubernetes\\Workloads\\Helmrelease\\V1\xe2\x02HProject\\Planton\\Provider\\Kubernetes\\Workloads\\Helmrelease\\V1\\GPBMetadata\xea\x02BProject::Planton::Provider::Kubernetes::Workloads::Helmrelease::V1b\x06proto3"
+	"\tterraform\x18\x03 \x01(\v28.project.planton.shared.iac.terraform.TerraformStackInfoR\tterraform\x12`\n" +
+	"\x06target\x18\x04 \x01(\v2H.project.planton.provider.kubernetes.workload.helmrelease.v1.HelmReleaseR\x06target\x12\x8b\x01\n" +
+	"\x13provider_credential\x18\x05 \x01(\v2Z.project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpecR\x12providerCredentialB\xe2\x03\n" +
+	"?com.project.planton.provider.kubernetes.workload.helmrelease.v1B\x0fStackInputProtoP\x01Zygithub.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/helmrelease/v1;helmreleasev1\xa2\x02\x06PPPKWH\xaa\x02;Project.Planton.Provider.Kubernetes.Workload.Helmrelease.V1\xca\x02;Project\\Planton\\Provider\\Kubernetes\\Workload\\Helmrelease\\V1\xe2\x02GProject\\Planton\\Provider\\Kubernetes\\Workload\\Helmrelease\\V1\\GPBMetadata\xea\x02AProject::Planton::Provider::Kubernetes::Workload::Helmrelease::V1b\x06proto3"
 
 var (
 	file_project_planton_provider_kubernetes_workload_helmrelease_v1_stack_input_proto_rawDescOnce sync.Once
@@ -134,19 +134,19 @@ func file_project_planton_provider_kubernetes_workload_helmrelease_v1_stack_inpu
 
 var file_project_planton_provider_kubernetes_workload_helmrelease_v1_stack_input_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_kubernetes_workload_helmrelease_v1_stack_input_proto_goTypes = []any{
-	(*HelmReleaseStackInput)(nil),              // 0: project.planton.provider.kubernetes.workloads.helmrelease.v1.HelmReleaseStackInput
+	(*HelmReleaseStackInput)(nil),              // 0: project.planton.provider.kubernetes.workload.helmrelease.v1.HelmReleaseStackInput
 	(shared.IacProvisioner)(0),                 // 1: project.planton.shared.IacProvisioner
 	(*pulumi.PulumiStackInfo)(nil),             // 2: project.planton.shared.iac.pulumi.PulumiStackInfo
 	(*terraform.TerraformStackInfo)(nil),       // 3: project.planton.shared.iac.terraform.TerraformStackInfo
-	(*HelmRelease)(nil),                        // 4: project.planton.provider.kubernetes.workloads.helmrelease.v1.HelmRelease
+	(*HelmRelease)(nil),                        // 4: project.planton.provider.kubernetes.workload.helmrelease.v1.HelmRelease
 	(*v1.KubernetesClusterCredentialSpec)(nil), // 5: project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec
 }
 var file_project_planton_provider_kubernetes_workload_helmrelease_v1_stack_input_proto_depIdxs = []int32{
-	1, // 0: project.planton.provider.kubernetes.workloads.helmrelease.v1.HelmReleaseStackInput.provisioner:type_name -> project.planton.shared.IacProvisioner
-	2, // 1: project.planton.provider.kubernetes.workloads.helmrelease.v1.HelmReleaseStackInput.pulumi:type_name -> project.planton.shared.iac.pulumi.PulumiStackInfo
-	3, // 2: project.planton.provider.kubernetes.workloads.helmrelease.v1.HelmReleaseStackInput.terraform:type_name -> project.planton.shared.iac.terraform.TerraformStackInfo
-	4, // 3: project.planton.provider.kubernetes.workloads.helmrelease.v1.HelmReleaseStackInput.target:type_name -> project.planton.provider.kubernetes.workloads.helmrelease.v1.HelmRelease
-	5, // 4: project.planton.provider.kubernetes.workloads.helmrelease.v1.HelmReleaseStackInput.provider_credential:type_name -> project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec
+	1, // 0: project.planton.provider.kubernetes.workload.helmrelease.v1.HelmReleaseStackInput.provisioner:type_name -> project.planton.shared.IacProvisioner
+	2, // 1: project.planton.provider.kubernetes.workload.helmrelease.v1.HelmReleaseStackInput.pulumi:type_name -> project.planton.shared.iac.pulumi.PulumiStackInfo
+	3, // 2: project.planton.provider.kubernetes.workload.helmrelease.v1.HelmReleaseStackInput.terraform:type_name -> project.planton.shared.iac.terraform.TerraformStackInfo
+	4, // 3: project.planton.provider.kubernetes.workload.helmrelease.v1.HelmReleaseStackInput.target:type_name -> project.planton.provider.kubernetes.workload.helmrelease.v1.HelmRelease
+	5, // 4: project.planton.provider.kubernetes.workload.helmrelease.v1.HelmReleaseStackInput.provider_credential:type_name -> project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec
 	5, // [5:5] is the sub-list for method output_type
 	5, // [5:5] is the sub-list for method input_type
 	5, // [5:5] is the sub-list for extension type_name

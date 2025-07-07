@@ -182,23 +182,23 @@ var File_project_planton_provider_kubernetes_workload_gitlabkubernetes_v1_api_pr
 
 const file_project_planton_provider_kubernetes_workload_gitlabkubernetes_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Jproject/planton/provider/kubernetes/workload/gitlabkubernetes/v1/api.proto\x12Aproject.planton.provider.kubernetes.workloads.gitlabkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1aKproject/planton/provider/kubernetes/workload/gitlabkubernetes/v1/spec.proto\x1aTproject/planton/provider/kubernetes/workload/gitlabkubernetes/v1/stack_outputs.proto\x1a#project/planton/shared/status.proto\x1a%project/planton/shared/metadata.proto\"\xc3\x03\n" +
+	"Jproject/planton/provider/kubernetes/workload/gitlabkubernetes/v1/api.proto\x12@project.planton.provider.kubernetes.workload.gitlabkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1aKproject/planton/provider/kubernetes/workload/gitlabkubernetes/v1/spec.proto\x1aTproject/planton/provider/kubernetes/workload/gitlabkubernetes/v1/stack_outputs.proto\x1a#project/planton/shared/status.proto\x1a%project/planton/shared/metadata.proto\"\xc1\x03\n" +
 	"\x10GitlabKubernetes\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!kubernetes.project-planton.org/v1R\n" +
 	"apiVersion\x12+\n" +
 	"\x04kind\x18\x02 \x01(\tB\x17\xbaH\x14r\x12\n" +
 	"\x10GitlabKubernetesR\x04kind\x12O\n" +
-	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12s\n" +
-	"\x04spec\x18\x04 \x01(\v2W.project.planton.provider.kubernetes.workloads.gitlabkubernetes.v1.GitlabKubernetesSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12q\n" +
-	"\x06status\x18\x05 \x01(\v2Y.project.planton.provider.kubernetes.workloads.gitlabkubernetes.v1.GitlabKubernetesStatusR\x06status\"\xc1\x02\n" +
+	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12r\n" +
+	"\x04spec\x18\x04 \x01(\v2V.project.planton.provider.kubernetes.workload.gitlabkubernetes.v1.GitlabKubernetesSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12p\n" +
+	"\x06status\x18\x05 \x01(\v2X.project.planton.provider.kubernetes.workload.gitlabkubernetes.v1.GitlabKubernetesStatusR\x06status\"\xc0\x02\n" +
 	"\x16GitlabKubernetesStatus\x12J\n" +
 	"\tlifecycle\x18c \x01(\v2,.project.planton.shared.ApiResourceLifecycleR\tlifecycle\x12>\n" +
 	"\x05audit\x18b \x01(\v2(.project.planton.shared.ApiResourceAuditR\x05audit\x12 \n" +
 	"\fstack_job_id\x18a \x01(\tR\n" +
-	"stackJobId\x12y\n" +
-	"\aoutputs\x18\x01 \x01(\v2_.project.planton.provider.kubernetes.workloads.gitlabkubernetes.v1.GitlabKubernetesStackOutputsR\aoutputsB\x84\x04\n" +
-	"Ecom.project.planton.provider.kubernetes.workloads.gitlabkubernetes.v1B\bApiProtoP\x01Z\x83\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/gitlabkubernetes/v1;gitlabkubernetesv1\xa2\x02\x06PPPKWG\xaa\x02AProject.Planton.Provider.Kubernetes.Workloads.Gitlabkubernetes.V1\xca\x02AProject\\Planton\\Provider\\Kubernetes\\Workloads\\Gitlabkubernetes\\V1\xe2\x02MProject\\Planton\\Provider\\Kubernetes\\Workloads\\Gitlabkubernetes\\V1\\GPBMetadata\xea\x02GProject::Planton::Provider::Kubernetes::Workloads::Gitlabkubernetes::V1b\x06proto3"
+	"stackJobId\x12x\n" +
+	"\aoutputs\x18\x01 \x01(\v2^.project.planton.provider.kubernetes.workload.gitlabkubernetes.v1.GitlabKubernetesStackOutputsR\aoutputsB\xff\x03\n" +
+	"Dcom.project.planton.provider.kubernetes.workload.gitlabkubernetes.v1B\bApiProtoP\x01Z\x83\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/gitlabkubernetes/v1;gitlabkubernetesv1\xa2\x02\x06PPPKWG\xaa\x02@Project.Planton.Provider.Kubernetes.Workload.Gitlabkubernetes.V1\xca\x02@Project\\Planton\\Provider\\Kubernetes\\Workload\\Gitlabkubernetes\\V1\xe2\x02LProject\\Planton\\Provider\\Kubernetes\\Workload\\Gitlabkubernetes\\V1\\GPBMetadata\xea\x02FProject::Planton::Provider::Kubernetes::Workload::Gitlabkubernetes::V1b\x06proto3"
 
 var (
 	file_project_planton_provider_kubernetes_workload_gitlabkubernetes_v1_api_proto_rawDescOnce sync.Once
@@ -214,21 +214,21 @@ func file_project_planton_provider_kubernetes_workload_gitlabkubernetes_v1_api_p
 
 var file_project_planton_provider_kubernetes_workload_gitlabkubernetes_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_kubernetes_workload_gitlabkubernetes_v1_api_proto_goTypes = []any{
-	(*GitlabKubernetes)(nil),             // 0: project.planton.provider.kubernetes.workloads.gitlabkubernetes.v1.GitlabKubernetes
-	(*GitlabKubernetesStatus)(nil),       // 1: project.planton.provider.kubernetes.workloads.gitlabkubernetes.v1.GitlabKubernetesStatus
+	(*GitlabKubernetes)(nil),             // 0: project.planton.provider.kubernetes.workload.gitlabkubernetes.v1.GitlabKubernetes
+	(*GitlabKubernetesStatus)(nil),       // 1: project.planton.provider.kubernetes.workload.gitlabkubernetes.v1.GitlabKubernetesStatus
 	(*shared.ApiResourceMetadata)(nil),   // 2: project.planton.shared.ApiResourceMetadata
-	(*GitlabKubernetesSpec)(nil),         // 3: project.planton.provider.kubernetes.workloads.gitlabkubernetes.v1.GitlabKubernetesSpec
+	(*GitlabKubernetesSpec)(nil),         // 3: project.planton.provider.kubernetes.workload.gitlabkubernetes.v1.GitlabKubernetesSpec
 	(*shared.ApiResourceLifecycle)(nil),  // 4: project.planton.shared.ApiResourceLifecycle
 	(*shared.ApiResourceAudit)(nil),      // 5: project.planton.shared.ApiResourceAudit
-	(*GitlabKubernetesStackOutputs)(nil), // 6: project.planton.provider.kubernetes.workloads.gitlabkubernetes.v1.GitlabKubernetesStackOutputs
+	(*GitlabKubernetesStackOutputs)(nil), // 6: project.planton.provider.kubernetes.workload.gitlabkubernetes.v1.GitlabKubernetesStackOutputs
 }
 var file_project_planton_provider_kubernetes_workload_gitlabkubernetes_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.kubernetes.workloads.gitlabkubernetes.v1.GitlabKubernetes.metadata:type_name -> project.planton.shared.ApiResourceMetadata
-	3, // 1: project.planton.provider.kubernetes.workloads.gitlabkubernetes.v1.GitlabKubernetes.spec:type_name -> project.planton.provider.kubernetes.workloads.gitlabkubernetes.v1.GitlabKubernetesSpec
-	1, // 2: project.planton.provider.kubernetes.workloads.gitlabkubernetes.v1.GitlabKubernetes.status:type_name -> project.planton.provider.kubernetes.workloads.gitlabkubernetes.v1.GitlabKubernetesStatus
-	4, // 3: project.planton.provider.kubernetes.workloads.gitlabkubernetes.v1.GitlabKubernetesStatus.lifecycle:type_name -> project.planton.shared.ApiResourceLifecycle
-	5, // 4: project.planton.provider.kubernetes.workloads.gitlabkubernetes.v1.GitlabKubernetesStatus.audit:type_name -> project.planton.shared.ApiResourceAudit
-	6, // 5: project.planton.provider.kubernetes.workloads.gitlabkubernetes.v1.GitlabKubernetesStatus.outputs:type_name -> project.planton.provider.kubernetes.workloads.gitlabkubernetes.v1.GitlabKubernetesStackOutputs
+	2, // 0: project.planton.provider.kubernetes.workload.gitlabkubernetes.v1.GitlabKubernetes.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	3, // 1: project.planton.provider.kubernetes.workload.gitlabkubernetes.v1.GitlabKubernetes.spec:type_name -> project.planton.provider.kubernetes.workload.gitlabkubernetes.v1.GitlabKubernetesSpec
+	1, // 2: project.planton.provider.kubernetes.workload.gitlabkubernetes.v1.GitlabKubernetes.status:type_name -> project.planton.provider.kubernetes.workload.gitlabkubernetes.v1.GitlabKubernetesStatus
+	4, // 3: project.planton.provider.kubernetes.workload.gitlabkubernetes.v1.GitlabKubernetesStatus.lifecycle:type_name -> project.planton.shared.ApiResourceLifecycle
+	5, // 4: project.planton.provider.kubernetes.workload.gitlabkubernetes.v1.GitlabKubernetesStatus.audit:type_name -> project.planton.shared.ApiResourceAudit
+	6, // 5: project.planton.provider.kubernetes.workload.gitlabkubernetes.v1.GitlabKubernetesStatus.outputs:type_name -> project.planton.provider.kubernetes.workload.gitlabkubernetes.v1.GitlabKubernetesStackOutputs
 	6, // [6:6] is the sub-list for method output_type
 	6, // [6:6] is the sub-list for method input_type
 	6, // [6:6] is the sub-list for extension type_name

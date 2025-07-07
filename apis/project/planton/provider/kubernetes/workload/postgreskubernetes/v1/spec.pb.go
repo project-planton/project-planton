@@ -157,7 +157,7 @@ var file_project_planton_provider_kubernetes_workload_postgreskubernetes_v1_spec
 		ExtendedType:  (*descriptorpb.FieldOptions)(nil),
 		ExtensionType: (*PostgresKubernetesContainer)(nil),
 		Field:         534001,
-		Name:          "project.planton.provider.kubernetes.workloads.postgreskubernetes.v1.default_container",
+		Name:          "project.planton.provider.kubernetes.workload.postgreskubernetes.v1.default_container",
 		Tag:           "bytes,534001,opt,name=default_container",
 		Filename:      "project/planton/provider/kubernetes/workload/postgreskubernetes/v1/spec.proto",
 	},
@@ -165,7 +165,7 @@ var file_project_planton_provider_kubernetes_workload_postgreskubernetes_v1_spec
 
 // Extension fields to descriptorpb.FieldOptions.
 var (
-	// optional project.planton.provider.kubernetes.workloads.postgreskubernetes.v1.PostgresKubernetesContainer default_container = 534001;
+	// optional project.planton.provider.kubernetes.workload.postgreskubernetes.v1.PostgresKubernetesContainer default_container = 534001;
 	E_DefaultContainer = &file_project_planton_provider_kubernetes_workload_postgreskubernetes_v1_spec_proto_extTypes[0]
 )
 
@@ -173,9 +173,9 @@ var File_project_planton_provider_kubernetes_workload_postgreskubernetes_v1_spec
 
 const file_project_planton_provider_kubernetes_workload_postgreskubernetes_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Mproject/planton/provider/kubernetes/workload/postgreskubernetes/v1/spec.proto\x12Cproject.planton.provider.kubernetes.workloads.postgreskubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\x1a,project/planton/shared/options/options.proto\x1a google/protobuf/descriptor.proto\"\x8f\x02\n" +
-	"\x16PostgresKubernetesSpec\x12\xaa\x01\n" +
-	"\tcontainer\x18\x01 \x01(\v2`.project.planton.provider.kubernetes.workloads.postgreskubernetes.v1.PostgresKubernetesContainerB*\x8a߄\x02%\b\x01\x12\x1c\n" +
+	"Mproject/planton/provider/kubernetes/workload/postgreskubernetes/v1/spec.proto\x12Bproject.planton.provider.kubernetes.workload.postgreskubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\x1a,project/planton/shared/options/options.proto\x1a google/protobuf/descriptor.proto\"\x8e\x02\n" +
+	"\x16PostgresKubernetesSpec\x12\xa9\x01\n" +
+	"\tcontainer\x18\x01 \x01(\v2_.project.planton.provider.kubernetes.workload.postgreskubernetes.v1.PostgresKubernetesContainerB*\x8a߄\x02%\b\x01\x12\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
 	"\x0350m\x12\x05100Mi\x1a\x031GiR\tcontainer\x12H\n" +
@@ -184,9 +184,9 @@ const file_project_planton_provider_kubernetes_workload_postgreskubernetes_v1_sp
 	"\breplicas\x18\x01 \x01(\x05R\breplicas\x12S\n" +
 	"\tresources\x18\x02 \x01(\v25.project.planton.shared.kubernetes.ContainerResourcesR\tresources\x12\xbc\x01\n" +
 	"\tdisk_size\x18\x03 \x01(\tB\x9e\x01\xbaH\x9a\x01\xba\x01\x96\x01\n" +
-	"!spec.container.disk_size.required\x12\x1aDisk size value is invalid\x1aUthis.matches('^\\\\d+(\\\\.\\\\d+)?\\\\s?(Ki|Mi|Gi|Ti|Pi|Ei|K|M|G|T|P|E)$') && size(this) > 0R\bdiskSize:\xae\x01\n" +
-	"\x11default_container\x12\x1d.google.protobuf.FieldOptions\x18\xf1\xcb  \x01(\v2`.project.planton.provider.kubernetes.workloads.postgreskubernetes.v1.PostgresKubernetesContainerR\x10defaultContainerB\x93\x04\n" +
-	"Gcom.project.planton.provider.kubernetes.workloads.postgreskubernetes.v1B\tSpecProtoP\x01Z\x87\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/postgreskubernetes/v1;postgreskubernetesv1\xa2\x02\x06PPPKWP\xaa\x02CProject.Planton.Provider.Kubernetes.Workloads.Postgreskubernetes.V1\xca\x02CProject\\Planton\\Provider\\Kubernetes\\Workloads\\Postgreskubernetes\\V1\xe2\x02OProject\\Planton\\Provider\\Kubernetes\\Workloads\\Postgreskubernetes\\V1\\GPBMetadata\xea\x02IProject::Planton::Provider::Kubernetes::Workloads::Postgreskubernetes::V1b\x06proto3"
+	"!spec.container.disk_size.required\x12\x1aDisk size value is invalid\x1aUthis.matches('^\\\\d+(\\\\.\\\\d+)?\\\\s?(Ki|Mi|Gi|Ti|Pi|Ei|K|M|G|T|P|E)$') && size(this) > 0R\bdiskSize:\xad\x01\n" +
+	"\x11default_container\x12\x1d.google.protobuf.FieldOptions\x18\xf1\xcb  \x01(\v2_.project.planton.provider.kubernetes.workload.postgreskubernetes.v1.PostgresKubernetesContainerR\x10defaultContainerB\x8e\x04\n" +
+	"Fcom.project.planton.provider.kubernetes.workload.postgreskubernetes.v1B\tSpecProtoP\x01Z\x87\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/postgreskubernetes/v1;postgreskubernetesv1\xa2\x02\x06PPPKWP\xaa\x02BProject.Planton.Provider.Kubernetes.Workload.Postgreskubernetes.V1\xca\x02BProject\\Planton\\Provider\\Kubernetes\\Workload\\Postgreskubernetes\\V1\xe2\x02NProject\\Planton\\Provider\\Kubernetes\\Workload\\Postgreskubernetes\\V1\\GPBMetadata\xea\x02HProject::Planton::Provider::Kubernetes::Workload::Postgreskubernetes::V1b\x06proto3"
 
 var (
 	file_project_planton_provider_kubernetes_workload_postgreskubernetes_v1_spec_proto_rawDescOnce sync.Once
@@ -202,18 +202,18 @@ func file_project_planton_provider_kubernetes_workload_postgreskubernetes_v1_spe
 
 var file_project_planton_provider_kubernetes_workload_postgreskubernetes_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_kubernetes_workload_postgreskubernetes_v1_spec_proto_goTypes = []any{
-	(*PostgresKubernetesSpec)(nil),        // 0: project.planton.provider.kubernetes.workloads.postgreskubernetes.v1.PostgresKubernetesSpec
-	(*PostgresKubernetesContainer)(nil),   // 1: project.planton.provider.kubernetes.workloads.postgreskubernetes.v1.PostgresKubernetesContainer
+	(*PostgresKubernetesSpec)(nil),        // 0: project.planton.provider.kubernetes.workload.postgreskubernetes.v1.PostgresKubernetesSpec
+	(*PostgresKubernetesContainer)(nil),   // 1: project.planton.provider.kubernetes.workload.postgreskubernetes.v1.PostgresKubernetesContainer
 	(*kubernetes.IngressSpec)(nil),        // 2: project.planton.shared.kubernetes.IngressSpec
 	(*kubernetes.ContainerResources)(nil), // 3: project.planton.shared.kubernetes.ContainerResources
 	(*descriptorpb.FieldOptions)(nil),     // 4: google.protobuf.FieldOptions
 }
 var file_project_planton_provider_kubernetes_workload_postgreskubernetes_v1_spec_proto_depIdxs = []int32{
-	1, // 0: project.planton.provider.kubernetes.workloads.postgreskubernetes.v1.PostgresKubernetesSpec.container:type_name -> project.planton.provider.kubernetes.workloads.postgreskubernetes.v1.PostgresKubernetesContainer
-	2, // 1: project.planton.provider.kubernetes.workloads.postgreskubernetes.v1.PostgresKubernetesSpec.ingress:type_name -> project.planton.shared.kubernetes.IngressSpec
-	3, // 2: project.planton.provider.kubernetes.workloads.postgreskubernetes.v1.PostgresKubernetesContainer.resources:type_name -> project.planton.shared.kubernetes.ContainerResources
-	4, // 3: project.planton.provider.kubernetes.workloads.postgreskubernetes.v1.default_container:extendee -> google.protobuf.FieldOptions
-	1, // 4: project.planton.provider.kubernetes.workloads.postgreskubernetes.v1.default_container:type_name -> project.planton.provider.kubernetes.workloads.postgreskubernetes.v1.PostgresKubernetesContainer
+	1, // 0: project.planton.provider.kubernetes.workload.postgreskubernetes.v1.PostgresKubernetesSpec.container:type_name -> project.planton.provider.kubernetes.workload.postgreskubernetes.v1.PostgresKubernetesContainer
+	2, // 1: project.planton.provider.kubernetes.workload.postgreskubernetes.v1.PostgresKubernetesSpec.ingress:type_name -> project.planton.shared.kubernetes.IngressSpec
+	3, // 2: project.planton.provider.kubernetes.workload.postgreskubernetes.v1.PostgresKubernetesContainer.resources:type_name -> project.planton.shared.kubernetes.ContainerResources
+	4, // 3: project.planton.provider.kubernetes.workload.postgreskubernetes.v1.default_container:extendee -> google.protobuf.FieldOptions
+	1, // 4: project.planton.provider.kubernetes.workload.postgreskubernetes.v1.default_container:type_name -> project.planton.provider.kubernetes.workload.postgreskubernetes.v1.PostgresKubernetesContainer
 	5, // [5:5] is the sub-list for method output_type
 	5, // [5:5] is the sub-list for method input_type
 	4, // [4:5] is the sub-list for extension type_name

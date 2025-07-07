@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package project.planton.provider.kubernetes.workloads.neo4jkubernetes.v1;
+package project.planton.provider.kubernetes.workload.neo4jkubernetes.v1;
 
 // Neo4jKubernetes Stack Outputs
 message Neo4jKubernetesStackOutputs {

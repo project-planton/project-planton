@@ -182,23 +182,23 @@ var File_project_planton_provider_kubernetes_workload_mongodbkubernetes_v1_api_p
 
 const file_project_planton_provider_kubernetes_workload_mongodbkubernetes_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Kproject/planton/provider/kubernetes/workload/mongodbkubernetes/v1/api.proto\x12Bproject.planton.provider.kubernetes.workloads.mongodbkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1aLproject/planton/provider/kubernetes/workload/mongodbkubernetes/v1/spec.proto\x1aUproject/planton/provider/kubernetes/workload/mongodbkubernetes/v1/stack_outputs.proto\x1a#project/planton/shared/status.proto\x1a%project/planton/shared/metadata.proto\"\xc9\x03\n" +
+	"Kproject/planton/provider/kubernetes/workload/mongodbkubernetes/v1/api.proto\x12Aproject.planton.provider.kubernetes.workload.mongodbkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1aLproject/planton/provider/kubernetes/workload/mongodbkubernetes/v1/spec.proto\x1aUproject/planton/provider/kubernetes/workload/mongodbkubernetes/v1/stack_outputs.proto\x1a#project/planton/shared/status.proto\x1a%project/planton/shared/metadata.proto\"\xc7\x03\n" +
 	"\x11MongodbKubernetes\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!kubernetes.project-planton.org/v1R\n" +
 	"apiVersion\x12,\n" +
 	"\x04kind\x18\x02 \x01(\tB\x18\xbaH\x15r\x13\n" +
 	"\x11MongodbKubernetesR\x04kind\x12O\n" +
-	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12u\n" +
-	"\x04spec\x18\x04 \x01(\v2Y.project.planton.provider.kubernetes.workloads.mongodbkubernetes.v1.MongodbKubernetesSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12s\n" +
-	"\x06status\x18\x05 \x01(\v2[.project.planton.provider.kubernetes.workloads.mongodbkubernetes.v1.MongodbKubernetesStatusR\x06status\"\xc4\x02\n" +
+	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12t\n" +
+	"\x04spec\x18\x04 \x01(\v2X.project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetesSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12r\n" +
+	"\x06status\x18\x05 \x01(\v2Z.project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetesStatusR\x06status\"\xc3\x02\n" +
 	"\x17MongodbKubernetesStatus\x12J\n" +
 	"\tlifecycle\x18c \x01(\v2,.project.planton.shared.ApiResourceLifecycleR\tlifecycle\x12>\n" +
 	"\x05audit\x18b \x01(\v2(.project.planton.shared.ApiResourceAuditR\x05audit\x12 \n" +
 	"\fstack_job_id\x18a \x01(\tR\n" +
-	"stackJobId\x12{\n" +
-	"\aoutputs\x18\x01 \x01(\v2a.project.planton.provider.kubernetes.workloads.mongodbkubernetes.v1.MongodbKubernetesStackOutputsR\aoutputsB\x8b\x04\n" +
-	"Fcom.project.planton.provider.kubernetes.workloads.mongodbkubernetes.v1B\bApiProtoP\x01Z\x85\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/mongodbkubernetes/v1;mongodbkubernetesv1\xa2\x02\x06PPPKWM\xaa\x02BProject.Planton.Provider.Kubernetes.Workloads.Mongodbkubernetes.V1\xca\x02BProject\\Planton\\Provider\\Kubernetes\\Workloads\\Mongodbkubernetes\\V1\xe2\x02NProject\\Planton\\Provider\\Kubernetes\\Workloads\\Mongodbkubernetes\\V1\\GPBMetadata\xea\x02HProject::Planton::Provider::Kubernetes::Workloads::Mongodbkubernetes::V1b\x06proto3"
+	"stackJobId\x12z\n" +
+	"\aoutputs\x18\x01 \x01(\v2`.project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetesStackOutputsR\aoutputsB\x86\x04\n" +
+	"Ecom.project.planton.provider.kubernetes.workload.mongodbkubernetes.v1B\bApiProtoP\x01Z\x85\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/mongodbkubernetes/v1;mongodbkubernetesv1\xa2\x02\x06PPPKWM\xaa\x02AProject.Planton.Provider.Kubernetes.Workload.Mongodbkubernetes.V1\xca\x02AProject\\Planton\\Provider\\Kubernetes\\Workload\\Mongodbkubernetes\\V1\xe2\x02MProject\\Planton\\Provider\\Kubernetes\\Workload\\Mongodbkubernetes\\V1\\GPBMetadata\xea\x02GProject::Planton::Provider::Kubernetes::Workload::Mongodbkubernetes::V1b\x06proto3"
 
 var (
 	file_project_planton_provider_kubernetes_workload_mongodbkubernetes_v1_api_proto_rawDescOnce sync.Once
@@ -214,21 +214,21 @@ func file_project_planton_provider_kubernetes_workload_mongodbkubernetes_v1_api_
 
 var file_project_planton_provider_kubernetes_workload_mongodbkubernetes_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_kubernetes_workload_mongodbkubernetes_v1_api_proto_goTypes = []any{
-	(*MongodbKubernetes)(nil),             // 0: project.planton.provider.kubernetes.workloads.mongodbkubernetes.v1.MongodbKubernetes
-	(*MongodbKubernetesStatus)(nil),       // 1: project.planton.provider.kubernetes.workloads.mongodbkubernetes.v1.MongodbKubernetesStatus
+	(*MongodbKubernetes)(nil),             // 0: project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetes
+	(*MongodbKubernetesStatus)(nil),       // 1: project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetesStatus
 	(*shared.ApiResourceMetadata)(nil),    // 2: project.planton.shared.ApiResourceMetadata
-	(*MongodbKubernetesSpec)(nil),         // 3: project.planton.provider.kubernetes.workloads.mongodbkubernetes.v1.MongodbKubernetesSpec
+	(*MongodbKubernetesSpec)(nil),         // 3: project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetesSpec
 	(*shared.ApiResourceLifecycle)(nil),   // 4: project.planton.shared.ApiResourceLifecycle
 	(*shared.ApiResourceAudit)(nil),       // 5: project.planton.shared.ApiResourceAudit
-	(*MongodbKubernetesStackOutputs)(nil), // 6: project.planton.provider.kubernetes.workloads.mongodbkubernetes.v1.MongodbKubernetesStackOutputs
+	(*MongodbKubernetesStackOutputs)(nil), // 6: project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetesStackOutputs
 }
 var file_project_planton_provider_kubernetes_workload_mongodbkubernetes_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.kubernetes.workloads.mongodbkubernetes.v1.MongodbKubernetes.metadata:type_name -> project.planton.shared.ApiResourceMetadata
-	3, // 1: project.planton.provider.kubernetes.workloads.mongodbkubernetes.v1.MongodbKubernetes.spec:type_name -> project.planton.provider.kubernetes.workloads.mongodbkubernetes.v1.MongodbKubernetesSpec
-	1, // 2: project.planton.provider.kubernetes.workloads.mongodbkubernetes.v1.MongodbKubernetes.status:type_name -> project.planton.provider.kubernetes.workloads.mongodbkubernetes.v1.MongodbKubernetesStatus
-	4, // 3: project.planton.provider.kubernetes.workloads.mongodbkubernetes.v1.MongodbKubernetesStatus.lifecycle:type_name -> project.planton.shared.ApiResourceLifecycle
-	5, // 4: project.planton.provider.kubernetes.workloads.mongodbkubernetes.v1.MongodbKubernetesStatus.audit:type_name -> project.planton.shared.ApiResourceAudit
-	6, // 5: project.planton.provider.kubernetes.workloads.mongodbkubernetes.v1.MongodbKubernetesStatus.outputs:type_name -> project.planton.provider.kubernetes.workloads.mongodbkubernetes.v1.MongodbKubernetesStackOutputs
+	2, // 0: project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetes.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	3, // 1: project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetes.spec:type_name -> project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetesSpec
+	1, // 2: project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetes.status:type_name -> project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetesStatus
+	4, // 3: project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetesStatus.lifecycle:type_name -> project.planton.shared.ApiResourceLifecycle
+	5, // 4: project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetesStatus.audit:type_name -> project.planton.shared.ApiResourceAudit
+	6, // 5: project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetesStatus.outputs:type_name -> project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetesStackOutputs
 	6, // [6:6] is the sub-list for method output_type
 	6, // [6:6] is the sub-list for method input_type
 	6, // [6:6] is the sub-list for extension type_name

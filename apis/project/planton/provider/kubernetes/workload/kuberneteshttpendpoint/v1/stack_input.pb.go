@@ -111,14 +111,14 @@ var File_project_planton_provider_kubernetes_workload_kuberneteshttpendpoint_v1_
 
 const file_project_planton_provider_kubernetes_workload_kuberneteshttpendpoint_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Xproject/planton/provider/kubernetes/workload/kuberneteshttpendpoint/v1/stack_input.proto\x12Gproject.planton.provider.kubernetes.workloads.kuberneteshttpendpoint.v1\x1aDproject/planton/credential/kubernetesclustercredential/v1/spec.proto\x1aPproject/planton/provider/kubernetes/workload/kuberneteshttpendpoint/v1/api.proto\x1a.project/planton/shared/iac/pulumi/pulumi.proto\x1a project/planton/shared/iac.proto\x1a4project/planton/shared/iac/terraform/terraform.proto\"\x97\x04\n" +
+	"Xproject/planton/provider/kubernetes/workload/kuberneteshttpendpoint/v1/stack_input.proto\x12Fproject.planton.provider.kubernetes.workload.kuberneteshttpendpoint.v1\x1aDproject/planton/credential/kubernetesclustercredential/v1/spec.proto\x1aPproject/planton/provider/kubernetes/workload/kuberneteshttpendpoint/v1/api.proto\x1a.project/planton/shared/iac/pulumi/pulumi.proto\x1a project/planton/shared/iac.proto\x1a4project/planton/shared/iac/terraform/terraform.proto\"\x96\x04\n" +
 	" KubernetesHttpEndpointStackInput\x12H\n" +
 	"\vprovisioner\x18\x01 \x01(\x0e2&.project.planton.shared.IacProvisionerR\vprovisioner\x12J\n" +
 	"\x06pulumi\x18\x02 \x01(\v22.project.planton.shared.iac.pulumi.PulumiStackInfoR\x06pulumi\x12V\n" +
-	"\tterraform\x18\x03 \x01(\v28.project.planton.shared.iac.terraform.TerraformStackInfoR\tterraform\x12w\n" +
-	"\x06target\x18\x04 \x01(\v2_.project.planton.provider.kubernetes.workloads.kuberneteshttpendpoint.v1.KubernetesHttpEndpointR\x06target\x12\x8b\x01\n" +
-	"\x13provider_credential\x18\x05 \x01(\v2Z.project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpecR\x12providerCredentialB\xb5\x04\n" +
-	"Kcom.project.planton.provider.kubernetes.workloads.kuberneteshttpendpoint.v1B\x0fStackInputProtoP\x01Z\x8f\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/kuberneteshttpendpoint/v1;kuberneteshttpendpointv1\xa2\x02\x06PPPKWK\xaa\x02GProject.Planton.Provider.Kubernetes.Workloads.Kuberneteshttpendpoint.V1\xca\x02GProject\\Planton\\Provider\\Kubernetes\\Workloads\\Kuberneteshttpendpoint\\V1\xe2\x02SProject\\Planton\\Provider\\Kubernetes\\Workloads\\Kuberneteshttpendpoint\\V1\\GPBMetadata\xea\x02MProject::Planton::Provider::Kubernetes::Workloads::Kuberneteshttpendpoint::V1b\x06proto3"
+	"\tterraform\x18\x03 \x01(\v28.project.planton.shared.iac.terraform.TerraformStackInfoR\tterraform\x12v\n" +
+	"\x06target\x18\x04 \x01(\v2^.project.planton.provider.kubernetes.workload.kuberneteshttpendpoint.v1.KubernetesHttpEndpointR\x06target\x12\x8b\x01\n" +
+	"\x13provider_credential\x18\x05 \x01(\v2Z.project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpecR\x12providerCredentialB\xb0\x04\n" +
+	"Jcom.project.planton.provider.kubernetes.workload.kuberneteshttpendpoint.v1B\x0fStackInputProtoP\x01Z\x8f\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/kuberneteshttpendpoint/v1;kuberneteshttpendpointv1\xa2\x02\x06PPPKWK\xaa\x02FProject.Planton.Provider.Kubernetes.Workload.Kuberneteshttpendpoint.V1\xca\x02FProject\\Planton\\Provider\\Kubernetes\\Workload\\Kuberneteshttpendpoint\\V1\xe2\x02RProject\\Planton\\Provider\\Kubernetes\\Workload\\Kuberneteshttpendpoint\\V1\\GPBMetadata\xea\x02LProject::Planton::Provider::Kubernetes::Workload::Kuberneteshttpendpoint::V1b\x06proto3"
 
 var (
 	file_project_planton_provider_kubernetes_workload_kuberneteshttpendpoint_v1_stack_input_proto_rawDescOnce sync.Once
@@ -134,19 +134,19 @@ func file_project_planton_provider_kubernetes_workload_kuberneteshttpendpoint_v1
 
 var file_project_planton_provider_kubernetes_workload_kuberneteshttpendpoint_v1_stack_input_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_kubernetes_workload_kuberneteshttpendpoint_v1_stack_input_proto_goTypes = []any{
-	(*KubernetesHttpEndpointStackInput)(nil),   // 0: project.planton.provider.kubernetes.workloads.kuberneteshttpendpoint.v1.KubernetesHttpEndpointStackInput
+	(*KubernetesHttpEndpointStackInput)(nil),   // 0: project.planton.provider.kubernetes.workload.kuberneteshttpendpoint.v1.KubernetesHttpEndpointStackInput
 	(shared.IacProvisioner)(0),                 // 1: project.planton.shared.IacProvisioner
 	(*pulumi.PulumiStackInfo)(nil),             // 2: project.planton.shared.iac.pulumi.PulumiStackInfo
 	(*terraform.TerraformStackInfo)(nil),       // 3: project.planton.shared.iac.terraform.TerraformStackInfo
-	(*KubernetesHttpEndpoint)(nil),             // 4: project.planton.provider.kubernetes.workloads.kuberneteshttpendpoint.v1.KubernetesHttpEndpoint
+	(*KubernetesHttpEndpoint)(nil),             // 4: project.planton.provider.kubernetes.workload.kuberneteshttpendpoint.v1.KubernetesHttpEndpoint
 	(*v1.KubernetesClusterCredentialSpec)(nil), // 5: project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec
 }
 var file_project_planton_provider_kubernetes_workload_kuberneteshttpendpoint_v1_stack_input_proto_depIdxs = []int32{
-	1, // 0: project.planton.provider.kubernetes.workloads.kuberneteshttpendpoint.v1.KubernetesHttpEndpointStackInput.provisioner:type_name -> project.planton.shared.IacProvisioner
-	2, // 1: project.planton.provider.kubernetes.workloads.kuberneteshttpendpoint.v1.KubernetesHttpEndpointStackInput.pulumi:type_name -> project.planton.shared.iac.pulumi.PulumiStackInfo
-	3, // 2: project.planton.provider.kubernetes.workloads.kuberneteshttpendpoint.v1.KubernetesHttpEndpointStackInput.terraform:type_name -> project.planton.shared.iac.terraform.TerraformStackInfo
-	4, // 3: project.planton.provider.kubernetes.workloads.kuberneteshttpendpoint.v1.KubernetesHttpEndpointStackInput.target:type_name -> project.planton.provider.kubernetes.workloads.kuberneteshttpendpoint.v1.KubernetesHttpEndpoint
-	5, // 4: project.planton.provider.kubernetes.workloads.kuberneteshttpendpoint.v1.KubernetesHttpEndpointStackInput.provider_credential:type_name -> project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec
+	1, // 0: project.planton.provider.kubernetes.workload.kuberneteshttpendpoint.v1.KubernetesHttpEndpointStackInput.provisioner:type_name -> project.planton.shared.IacProvisioner
+	2, // 1: project.planton.provider.kubernetes.workload.kuberneteshttpendpoint.v1.KubernetesHttpEndpointStackInput.pulumi:type_name -> project.planton.shared.iac.pulumi.PulumiStackInfo
+	3, // 2: project.planton.provider.kubernetes.workload.kuberneteshttpendpoint.v1.KubernetesHttpEndpointStackInput.terraform:type_name -> project.planton.shared.iac.terraform.TerraformStackInfo
+	4, // 3: project.planton.provider.kubernetes.workload.kuberneteshttpendpoint.v1.KubernetesHttpEndpointStackInput.target:type_name -> project.planton.provider.kubernetes.workload.kuberneteshttpendpoint.v1.KubernetesHttpEndpoint
+	5, // 4: project.planton.provider.kubernetes.workload.kuberneteshttpendpoint.v1.KubernetesHttpEndpointStackInput.provider_credential:type_name -> project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec
 	5, // [5:5] is the sub-list for method output_type
 	5, // [5:5] is the sub-list for method input_type
 	5, // [5:5] is the sub-list for extension type_name

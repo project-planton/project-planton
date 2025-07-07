@@ -137,7 +137,7 @@ var File_project_planton_provider_kubernetes_workload_kafkakubernetes_v1_stack_o
 
 const file_project_planton_provider_kubernetes_workload_kafkakubernetes_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Sproject/planton/provider/kubernetes/workload/kafkakubernetes/v1/stack_outputs.proto\x12@project.planton.provider.kubernetes.workloads.kafkakubernetes.v1\x1a2project/planton/shared/kubernetes/kubernetes.proto\"\x87\x04\n" +
+	"Sproject/planton/provider/kubernetes/workload/kafkakubernetes/v1/stack_outputs.proto\x12?project.planton.provider.kubernetes.workload.kafkakubernetes.v1\x1a2project/planton/shared/kubernetes/kubernetes.proto\"\x87\x04\n" +
 	"\x1bKafkaKubernetesStackOutputs\x12\x1c\n" +
 	"\tnamespace\x18\x01 \x01(\tR\tnamespace\x12\x1a\n" +
 	"\busername\x18\x02 \x01(\tR\busername\x12_\n" +
@@ -146,8 +146,8 @@ const file_project_planton_provider_kubernetes_workload_kafkakubernetes_v1_stack
 	"\"bootstrap_server_internal_hostname\x18\x05 \x01(\tR\x1fbootstrapServerInternalHostname\x12?\n" +
 	"\x1cschema_registry_external_url\x18\x06 \x01(\tR\x19schemaRegistryExternalUrl\x12?\n" +
 	"\x1cschema_registry_internal_url\x18\a \x01(\tR\x19schemaRegistryInternalUrl\x121\n" +
-	"\x15kafka_ui_external_url\x18\b \x01(\tR\x12kafkaUiExternalUrlB\x86\x04\n" +
-	"Dcom.project.planton.provider.kubernetes.workloads.kafkakubernetes.v1B\x11StackOutputsProtoP\x01Z\x81\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/kafkakubernetes/v1;kafkakubernetesv1\xa2\x02\x06PPPKWK\xaa\x02@Project.Planton.Provider.Kubernetes.Workloads.Kafkakubernetes.V1\xca\x02@Project\\Planton\\Provider\\Kubernetes\\Workloads\\Kafkakubernetes\\V1\xe2\x02LProject\\Planton\\Provider\\Kubernetes\\Workloads\\Kafkakubernetes\\V1\\GPBMetadata\xea\x02FProject::Planton::Provider::Kubernetes::Workloads::Kafkakubernetes::V1b\x06proto3"
+	"\x15kafka_ui_external_url\x18\b \x01(\tR\x12kafkaUiExternalUrlB\x81\x04\n" +
+	"Ccom.project.planton.provider.kubernetes.workload.kafkakubernetes.v1B\x11StackOutputsProtoP\x01Z\x81\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/kafkakubernetes/v1;kafkakubernetesv1\xa2\x02\x06PPPKWK\xaa\x02?Project.Planton.Provider.Kubernetes.Workload.Kafkakubernetes.V1\xca\x02?Project\\Planton\\Provider\\Kubernetes\\Workload\\Kafkakubernetes\\V1\xe2\x02KProject\\Planton\\Provider\\Kubernetes\\Workload\\Kafkakubernetes\\V1\\GPBMetadata\xea\x02EProject::Planton::Provider::Kubernetes::Workload::Kafkakubernetes::V1b\x06proto3"
 
 var (
 	file_project_planton_provider_kubernetes_workload_kafkakubernetes_v1_stack_outputs_proto_rawDescOnce sync.Once
@@ -163,11 +163,11 @@ func file_project_planton_provider_kubernetes_workload_kafkakubernetes_v1_stack_
 
 var file_project_planton_provider_kubernetes_workload_kafkakubernetes_v1_stack_outputs_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_kubernetes_workload_kafkakubernetes_v1_stack_outputs_proto_goTypes = []any{
-	(*KafkaKubernetesStackOutputs)(nil),    // 0: project.planton.provider.kubernetes.workloads.kafkakubernetes.v1.KafkaKubernetesStackOutputs
+	(*KafkaKubernetesStackOutputs)(nil),    // 0: project.planton.provider.kubernetes.workload.kafkakubernetes.v1.KafkaKubernetesStackOutputs
 	(*kubernetes.KubernetesSecretKey)(nil), // 1: project.planton.shared.kubernetes.KubernetesSecretKey
 }
 var file_project_planton_provider_kubernetes_workload_kafkakubernetes_v1_stack_outputs_proto_depIdxs = []int32{
-	1, // 0: project.planton.provider.kubernetes.workloads.kafkakubernetes.v1.KafkaKubernetesStackOutputs.password_secret:type_name -> project.planton.shared.kubernetes.KubernetesSecretKey
+	1, // 0: project.planton.provider.kubernetes.workload.kafkakubernetes.v1.KafkaKubernetesStackOutputs.password_secret:type_name -> project.planton.shared.kubernetes.KubernetesSecretKey
 	1, // [1:1] is the sub-list for method output_type
 	1, // [1:1] is the sub-list for method input_type
 	1, // [1:1] is the sub-list for extension type_name

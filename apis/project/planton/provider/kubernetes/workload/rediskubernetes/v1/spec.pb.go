@@ -164,7 +164,7 @@ var file_project_planton_provider_kubernetes_workload_rediskubernetes_v1_spec_pr
 		ExtendedType:  (*descriptorpb.FieldOptions)(nil),
 		ExtensionType: (*RedisKubernetesContainer)(nil),
 		Field:         537001,
-		Name:          "project.planton.provider.kubernetes.workloads.rediskubernetes.v1.default_container",
+		Name:          "project.planton.provider.kubernetes.workload.rediskubernetes.v1.default_container",
 		Tag:           "bytes,537001,opt,name=default_container",
 		Filename:      "project/planton/provider/kubernetes/workload/rediskubernetes/v1/spec.proto",
 	},
@@ -172,7 +172,7 @@ var file_project_planton_provider_kubernetes_workload_rediskubernetes_v1_spec_pr
 
 // Extension fields to descriptorpb.FieldOptions.
 var (
-	// optional project.planton.provider.kubernetes.workloads.rediskubernetes.v1.RedisKubernetesContainer default_container = 537001;
+	// optional project.planton.provider.kubernetes.workload.rediskubernetes.v1.RedisKubernetesContainer default_container = 537001;
 	E_DefaultContainer = &file_project_planton_provider_kubernetes_workload_rediskubernetes_v1_spec_proto_extTypes[0]
 )
 
@@ -180,9 +180,9 @@ var File_project_planton_provider_kubernetes_workload_rediskubernetes_v1_spec_pr
 
 const file_project_planton_provider_kubernetes_workload_rediskubernetes_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Jproject/planton/provider/kubernetes/workload/rediskubernetes/v1/spec.proto\x12@project.planton.provider.kubernetes.workloads.rediskubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\x1a,project/planton/shared/options/options.proto\x1a google/protobuf/descriptor.proto\"\x88\x02\n" +
-	"\x13RedisKubernetesSpec\x12\xa6\x01\n" +
-	"\tcontainer\x18\x01 \x01(\v2Z.project.planton.provider.kubernetes.workloads.rediskubernetes.v1.RedisKubernetesContainerB,ʚ\x86\x02'\b\x01\x12\x1c\n" +
+	"Jproject/planton/provider/kubernetes/workload/rediskubernetes/v1/spec.proto\x12?project.planton.provider.kubernetes.workload.rediskubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\x1a,project/planton/shared/options/options.proto\x1a google/protobuf/descriptor.proto\"\x87\x02\n" +
+	"\x13RedisKubernetesSpec\x12\xa5\x01\n" +
+	"\tcontainer\x18\x01 \x01(\v2Y.project.planton.provider.kubernetes.workload.rediskubernetes.v1.RedisKubernetesContainerB,ʚ\x86\x02'\b\x01\x12\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
 	"\x0350m\x12\x05100Mi\x18\x01\"\x031GiR\tcontainer\x12H\n" +
@@ -192,9 +192,9 @@ const file_project_planton_provider_kubernetes_workload_rediskubernetes_v1_spec_
 	"\tresources\x18\x02 \x01(\v25.project.planton.shared.kubernetes.ContainerResourcesR\tresources\x124\n" +
 	"\x16is_persistence_enabled\x18\x03 \x01(\bR\x14isPersistenceEnabled\x12\x1b\n" +
 	"\tdisk_size\x18\x04 \x01(\tR\bdiskSize:\xdd\x02\xbaH\xd9\x02\x1a\xd6\x02\n" +
-	"!spec.container.disk_size.required\x12IDisk size is required and must match the format if persistence is enabled\x1a\xe5\x01((!this.is_persistence_enabled && (size(this.disk_size) == 0 || this.disk_size == '')) || (this.is_persistence_enabled && size(this.disk_size) > 0 && this.disk_size.matches('^\\\\d+(\\\\.\\\\d+)?\\\\s?(Ki|Mi|Gi|Ti|Pi|Ei|K|M|G|T|P|E)$'))):\xa8\x01\n" +
-	"\x11default_container\x12\x1d.google.protobuf.FieldOptions\x18\xa9\xe3  \x01(\v2Z.project.planton.provider.kubernetes.workloads.rediskubernetes.v1.RedisKubernetesContainerR\x10defaultContainerB\xfe\x03\n" +
-	"Dcom.project.planton.provider.kubernetes.workloads.rediskubernetes.v1B\tSpecProtoP\x01Z\x81\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/rediskubernetes/v1;rediskubernetesv1\xa2\x02\x06PPPKWR\xaa\x02@Project.Planton.Provider.Kubernetes.Workloads.Rediskubernetes.V1\xca\x02@Project\\Planton\\Provider\\Kubernetes\\Workloads\\Rediskubernetes\\V1\xe2\x02LProject\\Planton\\Provider\\Kubernetes\\Workloads\\Rediskubernetes\\V1\\GPBMetadata\xea\x02FProject::Planton::Provider::Kubernetes::Workloads::Rediskubernetes::V1b\x06proto3"
+	"!spec.container.disk_size.required\x12IDisk size is required and must match the format if persistence is enabled\x1a\xe5\x01((!this.is_persistence_enabled && (size(this.disk_size) == 0 || this.disk_size == '')) || (this.is_persistence_enabled && size(this.disk_size) > 0 && this.disk_size.matches('^\\\\d+(\\\\.\\\\d+)?\\\\s?(Ki|Mi|Gi|Ti|Pi|Ei|K|M|G|T|P|E)$'))):\xa7\x01\n" +
+	"\x11default_container\x12\x1d.google.protobuf.FieldOptions\x18\xa9\xe3  \x01(\v2Y.project.planton.provider.kubernetes.workload.rediskubernetes.v1.RedisKubernetesContainerR\x10defaultContainerB\xf9\x03\n" +
+	"Ccom.project.planton.provider.kubernetes.workload.rediskubernetes.v1B\tSpecProtoP\x01Z\x81\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/rediskubernetes/v1;rediskubernetesv1\xa2\x02\x06PPPKWR\xaa\x02?Project.Planton.Provider.Kubernetes.Workload.Rediskubernetes.V1\xca\x02?Project\\Planton\\Provider\\Kubernetes\\Workload\\Rediskubernetes\\V1\xe2\x02KProject\\Planton\\Provider\\Kubernetes\\Workload\\Rediskubernetes\\V1\\GPBMetadata\xea\x02EProject::Planton::Provider::Kubernetes::Workload::Rediskubernetes::V1b\x06proto3"
 
 var (
 	file_project_planton_provider_kubernetes_workload_rediskubernetes_v1_spec_proto_rawDescOnce sync.Once
@@ -210,18 +210,18 @@ func file_project_planton_provider_kubernetes_workload_rediskubernetes_v1_spec_p
 
 var file_project_planton_provider_kubernetes_workload_rediskubernetes_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_kubernetes_workload_rediskubernetes_v1_spec_proto_goTypes = []any{
-	(*RedisKubernetesSpec)(nil),           // 0: project.planton.provider.kubernetes.workloads.rediskubernetes.v1.RedisKubernetesSpec
-	(*RedisKubernetesContainer)(nil),      // 1: project.planton.provider.kubernetes.workloads.rediskubernetes.v1.RedisKubernetesContainer
+	(*RedisKubernetesSpec)(nil),           // 0: project.planton.provider.kubernetes.workload.rediskubernetes.v1.RedisKubernetesSpec
+	(*RedisKubernetesContainer)(nil),      // 1: project.planton.provider.kubernetes.workload.rediskubernetes.v1.RedisKubernetesContainer
 	(*kubernetes.IngressSpec)(nil),        // 2: project.planton.shared.kubernetes.IngressSpec
 	(*kubernetes.ContainerResources)(nil), // 3: project.planton.shared.kubernetes.ContainerResources
 	(*descriptorpb.FieldOptions)(nil),     // 4: google.protobuf.FieldOptions
 }
 var file_project_planton_provider_kubernetes_workload_rediskubernetes_v1_spec_proto_depIdxs = []int32{
-	1, // 0: project.planton.provider.kubernetes.workloads.rediskubernetes.v1.RedisKubernetesSpec.container:type_name -> project.planton.provider.kubernetes.workloads.rediskubernetes.v1.RedisKubernetesContainer
-	2, // 1: project.planton.provider.kubernetes.workloads.rediskubernetes.v1.RedisKubernetesSpec.ingress:type_name -> project.planton.shared.kubernetes.IngressSpec
-	3, // 2: project.planton.provider.kubernetes.workloads.rediskubernetes.v1.RedisKubernetesContainer.resources:type_name -> project.planton.shared.kubernetes.ContainerResources
-	4, // 3: project.planton.provider.kubernetes.workloads.rediskubernetes.v1.default_container:extendee -> google.protobuf.FieldOptions
-	1, // 4: project.planton.provider.kubernetes.workloads.rediskubernetes.v1.default_container:type_name -> project.planton.provider.kubernetes.workloads.rediskubernetes.v1.RedisKubernetesContainer
+	1, // 0: project.planton.provider.kubernetes.workload.rediskubernetes.v1.RedisKubernetesSpec.container:type_name -> project.planton.provider.kubernetes.workload.rediskubernetes.v1.RedisKubernetesContainer
+	2, // 1: project.planton.provider.kubernetes.workload.rediskubernetes.v1.RedisKubernetesSpec.ingress:type_name -> project.planton.shared.kubernetes.IngressSpec
+	3, // 2: project.planton.provider.kubernetes.workload.rediskubernetes.v1.RedisKubernetesContainer.resources:type_name -> project.planton.shared.kubernetes.ContainerResources
+	4, // 3: project.planton.provider.kubernetes.workload.rediskubernetes.v1.default_container:extendee -> google.protobuf.FieldOptions
+	1, // 4: project.planton.provider.kubernetes.workload.rediskubernetes.v1.default_container:type_name -> project.planton.provider.kubernetes.workload.rediskubernetes.v1.RedisKubernetesContainer
 	5, // [5:5] is the sub-list for method output_type
 	5, // [5:5] is the sub-list for method input_type
 	4, // [4:5] is the sub-list for extension type_name

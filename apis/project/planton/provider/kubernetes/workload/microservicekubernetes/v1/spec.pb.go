@@ -529,28 +529,28 @@ var File_project_planton_provider_kubernetes_workload_microservicekubernetes_v1_
 
 const file_project_planton_provider_kubernetes_workload_microservicekubernetes_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Qproject/planton/provider/kubernetes/workload/microservicekubernetes/v1/spec.proto\x12Gproject.planton.provider.kubernetes.workloads.microservicekubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\"\xf5\x04\n" +
+	"Qproject/planton/provider/kubernetes/workload/microservicekubernetes/v1/spec.proto\x12Fproject.planton.provider.kubernetes.workload.microservicekubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\"\xf3\x04\n" +
 	"\x1aMicroserviceKubernetesSpec\x12\xe9\x01\n" +
 	"\aversion\x18\x01 \x01(\tB\xce\x01\xbaH\xca\x01\xba\x01l\n" +
 	"\x12spec.version.chars\x128Only lowercase letters, numbers, and hyphens are allowed\x1a\x1cthis.matches('^[a-z0-9-]+$')\xba\x01R\n" +
-	"\x1dspec.version.no-hyphen-ending\x12\x1aMust not end with a hyphen\x1a\x15this.matches('[^-]$')r\x04\x10\x01\x18\x1eR\aversion\x12\x8e\x01\n" +
-	"\tcontainer\x18\x03 \x01(\v2h.project.planton.provider.kubernetes.workloads.microservicekubernetes.v1.MicroserviceKubernetesContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\x12H\n" +
-	"\aingress\x18\x04 \x01(\v2..project.planton.shared.kubernetes.IngressSpecR\aingress\x12\x8f\x01\n" +
-	"\favailability\x18\x05 \x01(\v2k.project.planton.provider.kubernetes.workloads.microservicekubernetes.v1.MicroserviceKubernetesAvailabilityR\favailability\"\xf3\x01\n" +
-	"\x1fMicroserviceKubernetesContainer\x12\x85\x01\n" +
-	"\x03app\x18\x01 \x01(\v2k.project.planton.provider.kubernetes.workloads.microservicekubernetes.v1.MicroserviceKubernetesContainerAppB\x06\xbaH\x03\xc8\x01\x01R\x03app\x12H\n" +
-	"\bsidecars\x18\x02 \x03(\v2,.project.planton.shared.kubernetes.ContainerR\bsidecars\"\xf0\x03\n" +
+	"\x1dspec.version.no-hyphen-ending\x12\x1aMust not end with a hyphen\x1a\x15this.matches('[^-]$')r\x04\x10\x01\x18\x1eR\aversion\x12\x8d\x01\n" +
+	"\tcontainer\x18\x03 \x01(\v2g.project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\x12H\n" +
+	"\aingress\x18\x04 \x01(\v2..project.planton.shared.kubernetes.IngressSpecR\aingress\x12\x8e\x01\n" +
+	"\favailability\x18\x05 \x01(\v2j.project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesAvailabilityR\favailability\"\xf2\x01\n" +
+	"\x1fMicroserviceKubernetesContainer\x12\x84\x01\n" +
+	"\x03app\x18\x01 \x01(\v2j.project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainerAppB\x06\xbaH\x03\xc8\x01\x01R\x03app\x12H\n" +
+	"\bsidecars\x18\x02 \x03(\v2,.project.planton.shared.kubernetes.ContainerR\bsidecars\"\xed\x03\n" +
 	"\"MicroserviceKubernetesContainerApp\x12G\n" +
 	"\x05image\x18\x01 \x01(\v21.project.planton.shared.kubernetes.ContainerImageR\x05image\x12v\n" +
 	"\tresources\x18\x02 \x01(\v25.project.planton.shared.kubernetes.ContainerResourcesB!\xba\xfb\xa4\x02\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
-	"\x0350m\x12\x05100MiR\tresources\x12\x80\x01\n" +
-	"\x03env\x18\x03 \x01(\v2n.project.planton.provider.kubernetes.workloads.microservicekubernetes.v1.MicroserviceKubernetesContainerAppEnvR\x03env\x12\x85\x01\n" +
-	"\x05ports\x18\x04 \x03(\v2o.project.planton.provider.kubernetes.workloads.microservicekubernetes.v1.MicroserviceKubernetesContainerAppPortR\x05ports\"\xd7\x03\n" +
-	"%MicroserviceKubernetesContainerAppEnv\x12\x9b\x01\n" +
-	"\tvariables\x18\x01 \x03(\v2}.project.planton.provider.kubernetes.workloads.microservicekubernetes.v1.MicroserviceKubernetesContainerAppEnv.VariablesEntryR\tvariables\x12\x95\x01\n" +
-	"\asecrets\x18\x02 \x03(\v2{.project.planton.provider.kubernetes.workloads.microservicekubernetes.v1.MicroserviceKubernetesContainerAppEnv.SecretsEntryR\asecrets\x1a<\n" +
+	"\x0350m\x12\x05100MiR\tresources\x12\x7f\n" +
+	"\x03env\x18\x03 \x01(\v2m.project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainerAppEnvR\x03env\x12\x84\x01\n" +
+	"\x05ports\x18\x04 \x03(\v2n.project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainerAppPortR\x05ports\"\xd5\x03\n" +
+	"%MicroserviceKubernetesContainerAppEnv\x12\x9a\x01\n" +
+	"\tvariables\x18\x01 \x03(\v2|.project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainerAppEnv.VariablesEntryR\tvariables\x12\x94\x01\n" +
+	"\asecrets\x18\x02 \x03(\v2z.project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainerAppEnv.SecretsEntryR\asecrets\x1a<\n" +
 	"\x0eVariablesEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\x1a:\n" +
@@ -565,16 +565,16 @@ const file_project_planton_provider_kubernetes_workload_microservicekubernetes_v
 	")spec.container.app.ports.network_protocol\x12<The network protocol must be one of \"SCTP\", \"TCP\", or \"UDP\".\x1a\x1ethis in [\"SCTP\", \"TCP\", \"UDP\"]\xc8\x01\x01R\x0fnetworkProtocol\x12)\n" +
 	"\fapp_protocol\x18\x04 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\vappProtocol\x12)\n" +
 	"\fservice_port\x18\x05 \x01(\x05B\x06\xbaH\x03\xc8\x01\x01R\vservicePort\x12&\n" +
-	"\x0fis_ingress_port\x18\x06 \x01(\bR\risIngressPort\"\xf6\x01\n" +
+	"\x0fis_ingress_port\x18\x06 \x01(\bR\risIngressPort\"\xf5\x01\n" +
 	"\"MicroserviceKubernetesAvailability\x12!\n" +
-	"\fmin_replicas\x18\x01 \x01(\x05R\vminReplicas\x12\xac\x01\n" +
-	"\x1ahorizontal_pod_autoscaling\x18\x02 \x01(\v2n.project.planton.provider.kubernetes.workloads.microservicekubernetes.v1.MicroserviceKubernetesAvailabilityHpaR\x18horizontalPodAutoscaling\"\xc7\x01\n" +
+	"\fmin_replicas\x18\x01 \x01(\x05R\vminReplicas\x12\xab\x01\n" +
+	"\x1ahorizontal_pod_autoscaling\x18\x02 \x01(\v2m.project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesAvailabilityHpaR\x18horizontalPodAutoscaling\"\xc7\x01\n" +
 	"%MicroserviceKubernetesAvailabilityHpa\x12\x1d\n" +
 	"\n" +
 	"is_enabled\x18\x01 \x01(\bR\tisEnabled\x12C\n" +
 	"\x1etarget_cpu_utilization_percent\x18\x02 \x01(\x01R\x1btargetCpuUtilizationPercent\x12:\n" +
-	"\x19target_memory_utilization\x18\x03 \x01(\tR\x17targetMemoryUtilizationB\xaf\x04\n" +
-	"Kcom.project.planton.provider.kubernetes.workloads.microservicekubernetes.v1B\tSpecProtoP\x01Z\x8f\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/microservicekubernetes/v1;microservicekubernetesv1\xa2\x02\x06PPPKWM\xaa\x02GProject.Planton.Provider.Kubernetes.Workloads.Microservicekubernetes.V1\xca\x02GProject\\Planton\\Provider\\Kubernetes\\Workloads\\Microservicekubernetes\\V1\xe2\x02SProject\\Planton\\Provider\\Kubernetes\\Workloads\\Microservicekubernetes\\V1\\GPBMetadata\xea\x02MProject::Planton::Provider::Kubernetes::Workloads::Microservicekubernetes::V1b\x06proto3"
+	"\x19target_memory_utilization\x18\x03 \x01(\tR\x17targetMemoryUtilizationB\xaa\x04\n" +
+	"Jcom.project.planton.provider.kubernetes.workload.microservicekubernetes.v1B\tSpecProtoP\x01Z\x8f\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/microservicekubernetes/v1;microservicekubernetesv1\xa2\x02\x06PPPKWM\xaa\x02FProject.Planton.Provider.Kubernetes.Workload.Microservicekubernetes.V1\xca\x02FProject\\Planton\\Provider\\Kubernetes\\Workload\\Microservicekubernetes\\V1\xe2\x02RProject\\Planton\\Provider\\Kubernetes\\Workload\\Microservicekubernetes\\V1\\GPBMetadata\xea\x02LProject::Planton::Provider::Kubernetes::Workload::Microservicekubernetes::V1b\x06proto3"
 
 var (
 	file_project_planton_provider_kubernetes_workload_microservicekubernetes_v1_spec_proto_rawDescOnce sync.Once
@@ -590,33 +590,33 @@ func file_project_planton_provider_kubernetes_workload_microservicekubernetes_v1
 
 var file_project_planton_provider_kubernetes_workload_microservicekubernetes_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
 var file_project_planton_provider_kubernetes_workload_microservicekubernetes_v1_spec_proto_goTypes = []any{
-	(*MicroserviceKubernetesSpec)(nil),             // 0: project.planton.provider.kubernetes.workloads.microservicekubernetes.v1.MicroserviceKubernetesSpec
-	(*MicroserviceKubernetesContainer)(nil),        // 1: project.planton.provider.kubernetes.workloads.microservicekubernetes.v1.MicroserviceKubernetesContainer
-	(*MicroserviceKubernetesContainerApp)(nil),     // 2: project.planton.provider.kubernetes.workloads.microservicekubernetes.v1.MicroserviceKubernetesContainerApp
-	(*MicroserviceKubernetesContainerAppEnv)(nil),  // 3: project.planton.provider.kubernetes.workloads.microservicekubernetes.v1.MicroserviceKubernetesContainerAppEnv
-	(*MicroserviceKubernetesContainerAppPort)(nil), // 4: project.planton.provider.kubernetes.workloads.microservicekubernetes.v1.MicroserviceKubernetesContainerAppPort
-	(*MicroserviceKubernetesAvailability)(nil),     // 5: project.planton.provider.kubernetes.workloads.microservicekubernetes.v1.MicroserviceKubernetesAvailability
-	(*MicroserviceKubernetesAvailabilityHpa)(nil),  // 6: project.planton.provider.kubernetes.workloads.microservicekubernetes.v1.MicroserviceKubernetesAvailabilityHpa
-	nil,                                   // 7: project.planton.provider.kubernetes.workloads.microservicekubernetes.v1.MicroserviceKubernetesContainerAppEnv.VariablesEntry
-	nil,                                   // 8: project.planton.provider.kubernetes.workloads.microservicekubernetes.v1.MicroserviceKubernetesContainerAppEnv.SecretsEntry
+	(*MicroserviceKubernetesSpec)(nil),             // 0: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesSpec
+	(*MicroserviceKubernetesContainer)(nil),        // 1: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainer
+	(*MicroserviceKubernetesContainerApp)(nil),     // 2: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainerApp
+	(*MicroserviceKubernetesContainerAppEnv)(nil),  // 3: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainerAppEnv
+	(*MicroserviceKubernetesContainerAppPort)(nil), // 4: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainerAppPort
+	(*MicroserviceKubernetesAvailability)(nil),     // 5: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesAvailability
+	(*MicroserviceKubernetesAvailabilityHpa)(nil),  // 6: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesAvailabilityHpa
+	nil,                                   // 7: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainerAppEnv.VariablesEntry
+	nil,                                   // 8: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainerAppEnv.SecretsEntry
 	(*kubernetes.IngressSpec)(nil),        // 9: project.planton.shared.kubernetes.IngressSpec
 	(*kubernetes.Container)(nil),          // 10: project.planton.shared.kubernetes.Container
 	(*kubernetes.ContainerImage)(nil),     // 11: project.planton.shared.kubernetes.ContainerImage
 	(*kubernetes.ContainerResources)(nil), // 12: project.planton.shared.kubernetes.ContainerResources
 }
 var file_project_planton_provider_kubernetes_workload_microservicekubernetes_v1_spec_proto_depIdxs = []int32{
-	1,  // 0: project.planton.provider.kubernetes.workloads.microservicekubernetes.v1.MicroserviceKubernetesSpec.container:type_name -> project.planton.provider.kubernetes.workloads.microservicekubernetes.v1.MicroserviceKubernetesContainer
-	9,  // 1: project.planton.provider.kubernetes.workloads.microservicekubernetes.v1.MicroserviceKubernetesSpec.ingress:type_name -> project.planton.shared.kubernetes.IngressSpec
-	5,  // 2: project.planton.provider.kubernetes.workloads.microservicekubernetes.v1.MicroserviceKubernetesSpec.availability:type_name -> project.planton.provider.kubernetes.workloads.microservicekubernetes.v1.MicroserviceKubernetesAvailability
-	2,  // 3: project.planton.provider.kubernetes.workloads.microservicekubernetes.v1.MicroserviceKubernetesContainer.app:type_name -> project.planton.provider.kubernetes.workloads.microservicekubernetes.v1.MicroserviceKubernetesContainerApp
-	10, // 4: project.planton.provider.kubernetes.workloads.microservicekubernetes.v1.MicroserviceKubernetesContainer.sidecars:type_name -> project.planton.shared.kubernetes.Container
-	11, // 5: project.planton.provider.kubernetes.workloads.microservicekubernetes.v1.MicroserviceKubernetesContainerApp.image:type_name -> project.planton.shared.kubernetes.ContainerImage
-	12, // 6: project.planton.provider.kubernetes.workloads.microservicekubernetes.v1.MicroserviceKubernetesContainerApp.resources:type_name -> project.planton.shared.kubernetes.ContainerResources
-	3,  // 7: project.planton.provider.kubernetes.workloads.microservicekubernetes.v1.MicroserviceKubernetesContainerApp.env:type_name -> project.planton.provider.kubernetes.workloads.microservicekubernetes.v1.MicroserviceKubernetesContainerAppEnv
-	4,  // 8: project.planton.provider.kubernetes.workloads.microservicekubernetes.v1.MicroserviceKubernetesContainerApp.ports:type_name -> project.planton.provider.kubernetes.workloads.microservicekubernetes.v1.MicroserviceKubernetesContainerAppPort
-	7,  // 9: project.planton.provider.kubernetes.workloads.microservicekubernetes.v1.MicroserviceKubernetesContainerAppEnv.variables:type_name -> project.planton.provider.kubernetes.workloads.microservicekubernetes.v1.MicroserviceKubernetesContainerAppEnv.VariablesEntry
-	8,  // 10: project.planton.provider.kubernetes.workloads.microservicekubernetes.v1.MicroserviceKubernetesContainerAppEnv.secrets:type_name -> project.planton.provider.kubernetes.workloads.microservicekubernetes.v1.MicroserviceKubernetesContainerAppEnv.SecretsEntry
-	6,  // 11: project.planton.provider.kubernetes.workloads.microservicekubernetes.v1.MicroserviceKubernetesAvailability.horizontal_pod_autoscaling:type_name -> project.planton.provider.kubernetes.workloads.microservicekubernetes.v1.MicroserviceKubernetesAvailabilityHpa
+	1,  // 0: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesSpec.container:type_name -> project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainer
+	9,  // 1: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesSpec.ingress:type_name -> project.planton.shared.kubernetes.IngressSpec
+	5,  // 2: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesSpec.availability:type_name -> project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesAvailability
+	2,  // 3: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainer.app:type_name -> project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainerApp
+	10, // 4: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainer.sidecars:type_name -> project.planton.shared.kubernetes.Container
+	11, // 5: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainerApp.image:type_name -> project.planton.shared.kubernetes.ContainerImage
+	12, // 6: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainerApp.resources:type_name -> project.planton.shared.kubernetes.ContainerResources
+	3,  // 7: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainerApp.env:type_name -> project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainerAppEnv
+	4,  // 8: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainerApp.ports:type_name -> project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainerAppPort
+	7,  // 9: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainerAppEnv.variables:type_name -> project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainerAppEnv.VariablesEntry
+	8,  // 10: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainerAppEnv.secrets:type_name -> project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainerAppEnv.SecretsEntry
+	6,  // 11: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesAvailability.horizontal_pod_autoscaling:type_name -> project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesAvailabilityHpa
 	12, // [12:12] is the sub-list for method output_type
 	12, // [12:12] is the sub-list for method input_type
 	12, // [12:12] is the sub-list for extension type_name

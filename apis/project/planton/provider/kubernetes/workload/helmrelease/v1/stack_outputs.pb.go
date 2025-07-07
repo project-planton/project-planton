@@ -71,10 +71,10 @@ var File_project_planton_provider_kubernetes_workload_helmrelease_v1_stack_outpu
 
 const file_project_planton_provider_kubernetes_workload_helmrelease_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Oproject/planton/provider/kubernetes/workload/helmrelease/v1/stack_outputs.proto\x12<project.planton.provider.kubernetes.workloads.helmrelease.v1\"7\n" +
+	"Oproject/planton/provider/kubernetes/workload/helmrelease/v1/stack_outputs.proto\x12;project.planton.provider.kubernetes.workload.helmrelease.v1\"7\n" +
 	"\x17HelmReleaseStackOutputs\x12\x1c\n" +
-	"\tnamespace\x18\x01 \x01(\tR\tnamespaceB\xe9\x03\n" +
-	"@com.project.planton.provider.kubernetes.workloads.helmrelease.v1B\x11StackOutputsProtoP\x01Zygithub.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/helmrelease/v1;helmreleasev1\xa2\x02\x06PPPKWH\xaa\x02<Project.Planton.Provider.Kubernetes.Workloads.Helmrelease.V1\xca\x02<Project\\Planton\\Provider\\Kubernetes\\Workloads\\Helmrelease\\V1\xe2\x02HProject\\Planton\\Provider\\Kubernetes\\Workloads\\Helmrelease\\V1\\GPBMetadata\xea\x02BProject::Planton::Provider::Kubernetes::Workloads::Helmrelease::V1b\x06proto3"
+	"\tnamespace\x18\x01 \x01(\tR\tnamespaceB\xe4\x03\n" +
+	"?com.project.planton.provider.kubernetes.workload.helmrelease.v1B\x11StackOutputsProtoP\x01Zygithub.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/helmrelease/v1;helmreleasev1\xa2\x02\x06PPPKWH\xaa\x02;Project.Planton.Provider.Kubernetes.Workload.Helmrelease.V1\xca\x02;Project\\Planton\\Provider\\Kubernetes\\Workload\\Helmrelease\\V1\xe2\x02GProject\\Planton\\Provider\\Kubernetes\\Workload\\Helmrelease\\V1\\GPBMetadata\xea\x02AProject::Planton::Provider::Kubernetes::Workload::Helmrelease::V1b\x06proto3"
 
 var (
 	file_project_planton_provider_kubernetes_workload_helmrelease_v1_stack_outputs_proto_rawDescOnce sync.Once
@@ -90,7 +90,7 @@ func file_project_planton_provider_kubernetes_workload_helmrelease_v1_stack_outp
 
 var file_project_planton_provider_kubernetes_workload_helmrelease_v1_stack_outputs_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_kubernetes_workload_helmrelease_v1_stack_outputs_proto_goTypes = []any{
-	(*HelmReleaseStackOutputs)(nil), // 0: project.planton.provider.kubernetes.workloads.helmrelease.v1.HelmReleaseStackOutputs
+	(*HelmReleaseStackOutputs)(nil), // 0: project.planton.provider.kubernetes.workload.helmrelease.v1.HelmReleaseStackOutputs
 }
 var file_project_planton_provider_kubernetes_workload_helmrelease_v1_stack_outputs_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type

@@ -183,23 +183,23 @@ var File_project_planton_provider_kubernetes_workload_helmrelease_v1_api_proto p
 
 const file_project_planton_provider_kubernetes_workload_helmrelease_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Eproject/planton/provider/kubernetes/workload/helmrelease/v1/api.proto\x12<project.planton.provider.kubernetes.workloads.helmrelease.v1\x1a\x1bbuf/validate/validate.proto\x1aFproject/planton/provider/kubernetes/workload/helmrelease/v1/spec.proto\x1aOproject/planton/provider/kubernetes/workload/helmrelease/v1/stack_outputs.proto\x1a#project/planton/shared/status.proto\x1a%project/planton/shared/metadata.proto\"\xa5\x03\n" +
+	"Eproject/planton/provider/kubernetes/workload/helmrelease/v1/api.proto\x12;project.planton.provider.kubernetes.workload.helmrelease.v1\x1a\x1bbuf/validate/validate.proto\x1aFproject/planton/provider/kubernetes/workload/helmrelease/v1/spec.proto\x1aOproject/planton/provider/kubernetes/workload/helmrelease/v1/stack_outputs.proto\x1a#project/planton/shared/status.proto\x1a%project/planton/shared/metadata.proto\"\xa3\x03\n" +
 	"\vHelmRelease\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!kubernetes.project-planton.org/v1R\n" +
 	"apiVersion\x12&\n" +
 	"\x04kind\x18\x02 \x01(\tB\x12\xbaH\x0fr\r\n" +
 	"\vHelmReleaseR\x04kind\x12O\n" +
-	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12i\n" +
-	"\x04spec\x18\x04 \x01(\v2M.project.planton.provider.kubernetes.workloads.helmrelease.v1.HelmReleaseSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12g\n" +
-	"\x06status\x18\x05 \x01(\v2O.project.planton.provider.kubernetes.workloads.helmrelease.v1.HelmReleaseStatusR\x06status\"\xb2\x02\n" +
+	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12h\n" +
+	"\x04spec\x18\x04 \x01(\v2L.project.planton.provider.kubernetes.workload.helmrelease.v1.HelmReleaseSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12f\n" +
+	"\x06status\x18\x05 \x01(\v2N.project.planton.provider.kubernetes.workload.helmrelease.v1.HelmReleaseStatusR\x06status\"\xb1\x02\n" +
 	"\x11HelmReleaseStatus\x12J\n" +
 	"\tlifecycle\x18c \x01(\v2,.project.planton.shared.ApiResourceLifecycleR\tlifecycle\x12>\n" +
 	"\x05audit\x18b \x01(\v2(.project.planton.shared.ApiResourceAuditR\x05audit\x12 \n" +
 	"\fstack_job_id\x18a \x01(\tR\n" +
-	"stackJobId\x12o\n" +
-	"\aoutputs\x18\x01 \x01(\v2U.project.planton.provider.kubernetes.workloads.helmrelease.v1.HelmReleaseStackOutputsR\aoutputsB\xe0\x03\n" +
-	"@com.project.planton.provider.kubernetes.workloads.helmrelease.v1B\bApiProtoP\x01Zygithub.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/helmrelease/v1;helmreleasev1\xa2\x02\x06PPPKWH\xaa\x02<Project.Planton.Provider.Kubernetes.Workloads.Helmrelease.V1\xca\x02<Project\\Planton\\Provider\\Kubernetes\\Workloads\\Helmrelease\\V1\xe2\x02HProject\\Planton\\Provider\\Kubernetes\\Workloads\\Helmrelease\\V1\\GPBMetadata\xea\x02BProject::Planton::Provider::Kubernetes::Workloads::Helmrelease::V1b\x06proto3"
+	"stackJobId\x12n\n" +
+	"\aoutputs\x18\x01 \x01(\v2T.project.planton.provider.kubernetes.workload.helmrelease.v1.HelmReleaseStackOutputsR\aoutputsB\xdb\x03\n" +
+	"?com.project.planton.provider.kubernetes.workload.helmrelease.v1B\bApiProtoP\x01Zygithub.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/helmrelease/v1;helmreleasev1\xa2\x02\x06PPPKWH\xaa\x02;Project.Planton.Provider.Kubernetes.Workload.Helmrelease.V1\xca\x02;Project\\Planton\\Provider\\Kubernetes\\Workload\\Helmrelease\\V1\xe2\x02GProject\\Planton\\Provider\\Kubernetes\\Workload\\Helmrelease\\V1\\GPBMetadata\xea\x02AProject::Planton::Provider::Kubernetes::Workload::Helmrelease::V1b\x06proto3"
 
 var (
 	file_project_planton_provider_kubernetes_workload_helmrelease_v1_api_proto_rawDescOnce sync.Once
@@ -215,21 +215,21 @@ func file_project_planton_provider_kubernetes_workload_helmrelease_v1_api_proto_
 
 var file_project_planton_provider_kubernetes_workload_helmrelease_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_kubernetes_workload_helmrelease_v1_api_proto_goTypes = []any{
-	(*HelmRelease)(nil),                 // 0: project.planton.provider.kubernetes.workloads.helmrelease.v1.HelmRelease
-	(*HelmReleaseStatus)(nil),           // 1: project.planton.provider.kubernetes.workloads.helmrelease.v1.HelmReleaseStatus
+	(*HelmRelease)(nil),                 // 0: project.planton.provider.kubernetes.workload.helmrelease.v1.HelmRelease
+	(*HelmReleaseStatus)(nil),           // 1: project.planton.provider.kubernetes.workload.helmrelease.v1.HelmReleaseStatus
 	(*shared.ApiResourceMetadata)(nil),  // 2: project.planton.shared.ApiResourceMetadata
-	(*HelmReleaseSpec)(nil),             // 3: project.planton.provider.kubernetes.workloads.helmrelease.v1.HelmReleaseSpec
+	(*HelmReleaseSpec)(nil),             // 3: project.planton.provider.kubernetes.workload.helmrelease.v1.HelmReleaseSpec
 	(*shared.ApiResourceLifecycle)(nil), // 4: project.planton.shared.ApiResourceLifecycle
 	(*shared.ApiResourceAudit)(nil),     // 5: project.planton.shared.ApiResourceAudit
-	(*HelmReleaseStackOutputs)(nil),     // 6: project.planton.provider.kubernetes.workloads.helmrelease.v1.HelmReleaseStackOutputs
+	(*HelmReleaseStackOutputs)(nil),     // 6: project.planton.provider.kubernetes.workload.helmrelease.v1.HelmReleaseStackOutputs
 }
 var file_project_planton_provider_kubernetes_workload_helmrelease_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.kubernetes.workloads.helmrelease.v1.HelmRelease.metadata:type_name -> project.planton.shared.ApiResourceMetadata
-	3, // 1: project.planton.provider.kubernetes.workloads.helmrelease.v1.HelmRelease.spec:type_name -> project.planton.provider.kubernetes.workloads.helmrelease.v1.HelmReleaseSpec
-	1, // 2: project.planton.provider.kubernetes.workloads.helmrelease.v1.HelmRelease.status:type_name -> project.planton.provider.kubernetes.workloads.helmrelease.v1.HelmReleaseStatus
-	4, // 3: project.planton.provider.kubernetes.workloads.helmrelease.v1.HelmReleaseStatus.lifecycle:type_name -> project.planton.shared.ApiResourceLifecycle
-	5, // 4: project.planton.provider.kubernetes.workloads.helmrelease.v1.HelmReleaseStatus.audit:type_name -> project.planton.shared.ApiResourceAudit
-	6, // 5: project.planton.provider.kubernetes.workloads.helmrelease.v1.HelmReleaseStatus.outputs:type_name -> project.planton.provider.kubernetes.workloads.helmrelease.v1.HelmReleaseStackOutputs
+	2, // 0: project.planton.provider.kubernetes.workload.helmrelease.v1.HelmRelease.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	3, // 1: project.planton.provider.kubernetes.workload.helmrelease.v1.HelmRelease.spec:type_name -> project.planton.provider.kubernetes.workload.helmrelease.v1.HelmReleaseSpec
+	1, // 2: project.planton.provider.kubernetes.workload.helmrelease.v1.HelmRelease.status:type_name -> project.planton.provider.kubernetes.workload.helmrelease.v1.HelmReleaseStatus
+	4, // 3: project.planton.provider.kubernetes.workload.helmrelease.v1.HelmReleaseStatus.lifecycle:type_name -> project.planton.shared.ApiResourceLifecycle
+	5, // 4: project.planton.provider.kubernetes.workload.helmrelease.v1.HelmReleaseStatus.audit:type_name -> project.planton.shared.ApiResourceAudit
+	6, // 5: project.planton.provider.kubernetes.workload.helmrelease.v1.HelmReleaseStatus.outputs:type_name -> project.planton.provider.kubernetes.workload.helmrelease.v1.HelmReleaseStackOutputs
 	6, // [6:6] is the sub-list for method output_type
 	6, // [6:6] is the sub-list for method input_type
 	6, // [6:6] is the sub-list for extension type_name

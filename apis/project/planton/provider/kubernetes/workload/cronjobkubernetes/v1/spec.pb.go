@@ -276,14 +276,14 @@ var File_project_planton_provider_kubernetes_workload_cronjobkubernetes_v1_spec_
 
 const file_project_planton_provider_kubernetes_workload_cronjobkubernetes_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Lproject/planton/provider/kubernetes/workload/cronjobkubernetes/v1/spec.proto\x12Bproject.planton.provider.kubernetes.workloads.cronjobkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\x1a,project/planton/shared/options/options.proto\"\xf1\x06\n" +
+	"Lproject/planton/provider/kubernetes/workload/cronjobkubernetes/v1/spec.proto\x12Aproject.planton.provider.kubernetes.workload.cronjobkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\x1a,project/planton/shared/options/options.proto\"\xf0\x06\n" +
 	"\x15CronJobKubernetesSpec\x12G\n" +
 	"\x05image\x18\x01 \x01(\v21.project.planton.shared.kubernetes.ContainerImageR\x05image\x12v\n" +
 	"\tresources\x18\x02 \x01(\v25.project.planton.shared.kubernetes.ContainerResourcesB!\xba\xfb\xa4\x02\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
-	"\x0350m\x12\x05100MiR\tresources\x12v\n" +
-	"\x03env\x18\x03 \x01(\v2d.project.planton.provider.kubernetes.workloads.cronjobkubernetes.v1.CronJobKubernetesContainerAppEnvR\x03env\x12\"\n" +
+	"\x0350m\x12\x05100MiR\tresources\x12u\n" +
+	"\x03env\x18\x03 \x01(\v2c.project.planton.provider.kubernetes.workload.cronjobkubernetes.v1.CronJobKubernetesContainerAppEnvR\x03env\x12\"\n" +
 	"\bschedule\x18\x04 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bschedule\x12G\n" +
 	"\x19starting_deadline_seconds\x18\x05 \x01(\x04B\v\xbaH\x03\xd8\x01\x02\x8a\xa6\x1d\x010R\x17startingDeadlineSeconds\x12V\n" +
 	"\x12concurrency_policy\x18\x06 \x01(\tB'\xbaH\x1ar\x18R\x05AllowR\x06ForbidR\aReplace\x8a\xa6\x1d\x06ForbidR\x11concurrencyPolicy\x12#\n" +
@@ -294,17 +294,17 @@ const file_project_planton_provider_kubernetes_workload_cronjobkubernetes_v1_spe
 	" \x01(\rB\x05\x8a\xa6\x1d\x016R\fbackoffLimit\x12O\n" +
 	"\x0erestart_policy\x18\v \x01(\tB(\xbaH\x1cr\x1aR\x06AlwaysR\tOnFailureR\x05Never\x8a\xa6\x1d\x05NeverR\rrestartPolicy\x12\x18\n" +
 	"\acommand\x18\f \x03(\tR\acommand\x12\x12\n" +
-	"\x04args\x18\r \x03(\tR\x04args\"\xbe\x03\n" +
-	" CronJobKubernetesContainerAppEnv\x12\x91\x01\n" +
-	"\tvariables\x18\x01 \x03(\v2s.project.planton.provider.kubernetes.workloads.cronjobkubernetes.v1.CronJobKubernetesContainerAppEnv.VariablesEntryR\tvariables\x12\x8b\x01\n" +
-	"\asecrets\x18\x02 \x03(\v2q.project.planton.provider.kubernetes.workloads.cronjobkubernetes.v1.CronJobKubernetesContainerAppEnv.SecretsEntryR\asecrets\x1a<\n" +
+	"\x04args\x18\r \x03(\tR\x04args\"\xbc\x03\n" +
+	" CronJobKubernetesContainerAppEnv\x12\x90\x01\n" +
+	"\tvariables\x18\x01 \x03(\v2r.project.planton.provider.kubernetes.workload.cronjobkubernetes.v1.CronJobKubernetesContainerAppEnv.VariablesEntryR\tvariables\x12\x8a\x01\n" +
+	"\asecrets\x18\x02 \x03(\v2p.project.planton.provider.kubernetes.workload.cronjobkubernetes.v1.CronJobKubernetesContainerAppEnv.SecretsEntryR\asecrets\x1a<\n" +
 	"\x0eVariablesEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\x1a:\n" +
 	"\fSecretsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01B\x8c\x04\n" +
-	"Fcom.project.planton.provider.kubernetes.workloads.cronjobkubernetes.v1B\tSpecProtoP\x01Z\x85\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/cronjobkubernetes/v1;cronjobkubernetesv1\xa2\x02\x06PPPKWC\xaa\x02BProject.Planton.Provider.Kubernetes.Workloads.Cronjobkubernetes.V1\xca\x02BProject\\Planton\\Provider\\Kubernetes\\Workloads\\Cronjobkubernetes\\V1\xe2\x02NProject\\Planton\\Provider\\Kubernetes\\Workloads\\Cronjobkubernetes\\V1\\GPBMetadata\xea\x02HProject::Planton::Provider::Kubernetes::Workloads::Cronjobkubernetes::V1b\x06proto3"
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01B\x87\x04\n" +
+	"Ecom.project.planton.provider.kubernetes.workload.cronjobkubernetes.v1B\tSpecProtoP\x01Z\x85\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/cronjobkubernetes/v1;cronjobkubernetesv1\xa2\x02\x06PPPKWC\xaa\x02AProject.Planton.Provider.Kubernetes.Workload.Cronjobkubernetes.V1\xca\x02AProject\\Planton\\Provider\\Kubernetes\\Workload\\Cronjobkubernetes\\V1\xe2\x02MProject\\Planton\\Provider\\Kubernetes\\Workload\\Cronjobkubernetes\\V1\\GPBMetadata\xea\x02GProject::Planton::Provider::Kubernetes::Workload::Cronjobkubernetes::V1b\x06proto3"
 
 var (
 	file_project_planton_provider_kubernetes_workload_cronjobkubernetes_v1_spec_proto_rawDescOnce sync.Once
@@ -320,19 +320,19 @@ func file_project_planton_provider_kubernetes_workload_cronjobkubernetes_v1_spec
 
 var file_project_planton_provider_kubernetes_workload_cronjobkubernetes_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_project_planton_provider_kubernetes_workload_cronjobkubernetes_v1_spec_proto_goTypes = []any{
-	(*CronJobKubernetesSpec)(nil),            // 0: project.planton.provider.kubernetes.workloads.cronjobkubernetes.v1.CronJobKubernetesSpec
-	(*CronJobKubernetesContainerAppEnv)(nil), // 1: project.planton.provider.kubernetes.workloads.cronjobkubernetes.v1.CronJobKubernetesContainerAppEnv
-	nil,                                      // 2: project.planton.provider.kubernetes.workloads.cronjobkubernetes.v1.CronJobKubernetesContainerAppEnv.VariablesEntry
-	nil,                                      // 3: project.planton.provider.kubernetes.workloads.cronjobkubernetes.v1.CronJobKubernetesContainerAppEnv.SecretsEntry
+	(*CronJobKubernetesSpec)(nil),            // 0: project.planton.provider.kubernetes.workload.cronjobkubernetes.v1.CronJobKubernetesSpec
+	(*CronJobKubernetesContainerAppEnv)(nil), // 1: project.planton.provider.kubernetes.workload.cronjobkubernetes.v1.CronJobKubernetesContainerAppEnv
+	nil,                                      // 2: project.planton.provider.kubernetes.workload.cronjobkubernetes.v1.CronJobKubernetesContainerAppEnv.VariablesEntry
+	nil,                                      // 3: project.planton.provider.kubernetes.workload.cronjobkubernetes.v1.CronJobKubernetesContainerAppEnv.SecretsEntry
 	(*kubernetes.ContainerImage)(nil),        // 4: project.planton.shared.kubernetes.ContainerImage
 	(*kubernetes.ContainerResources)(nil),    // 5: project.planton.shared.kubernetes.ContainerResources
 }
 var file_project_planton_provider_kubernetes_workload_cronjobkubernetes_v1_spec_proto_depIdxs = []int32{
-	4, // 0: project.planton.provider.kubernetes.workloads.cronjobkubernetes.v1.CronJobKubernetesSpec.image:type_name -> project.planton.shared.kubernetes.ContainerImage
-	5, // 1: project.planton.provider.kubernetes.workloads.cronjobkubernetes.v1.CronJobKubernetesSpec.resources:type_name -> project.planton.shared.kubernetes.ContainerResources
-	1, // 2: project.planton.provider.kubernetes.workloads.cronjobkubernetes.v1.CronJobKubernetesSpec.env:type_name -> project.planton.provider.kubernetes.workloads.cronjobkubernetes.v1.CronJobKubernetesContainerAppEnv
-	2, // 3: project.planton.provider.kubernetes.workloads.cronjobkubernetes.v1.CronJobKubernetesContainerAppEnv.variables:type_name -> project.planton.provider.kubernetes.workloads.cronjobkubernetes.v1.CronJobKubernetesContainerAppEnv.VariablesEntry
-	3, // 4: project.planton.provider.kubernetes.workloads.cronjobkubernetes.v1.CronJobKubernetesContainerAppEnv.secrets:type_name -> project.planton.provider.kubernetes.workloads.cronjobkubernetes.v1.CronJobKubernetesContainerAppEnv.SecretsEntry
+	4, // 0: project.planton.provider.kubernetes.workload.cronjobkubernetes.v1.CronJobKubernetesSpec.image:type_name -> project.planton.shared.kubernetes.ContainerImage
+	5, // 1: project.planton.provider.kubernetes.workload.cronjobkubernetes.v1.CronJobKubernetesSpec.resources:type_name -> project.planton.shared.kubernetes.ContainerResources
+	1, // 2: project.planton.provider.kubernetes.workload.cronjobkubernetes.v1.CronJobKubernetesSpec.env:type_name -> project.planton.provider.kubernetes.workload.cronjobkubernetes.v1.CronJobKubernetesContainerAppEnv
+	2, // 3: project.planton.provider.kubernetes.workload.cronjobkubernetes.v1.CronJobKubernetesContainerAppEnv.variables:type_name -> project.planton.provider.kubernetes.workload.cronjobkubernetes.v1.CronJobKubernetesContainerAppEnv.VariablesEntry
+	3, // 4: project.planton.provider.kubernetes.workload.cronjobkubernetes.v1.CronJobKubernetesContainerAppEnv.secrets:type_name -> project.planton.provider.kubernetes.workload.cronjobkubernetes.v1.CronJobKubernetesContainerAppEnv.SecretsEntry
 	5, // [5:5] is the sub-list for method output_type
 	5, // [5:5] is the sub-list for method input_type
 	5, // [5:5] is the sub-list for extension type_name

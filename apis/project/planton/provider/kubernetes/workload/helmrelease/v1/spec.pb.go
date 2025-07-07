@@ -106,16 +106,16 @@ var File_project_planton_provider_kubernetes_workload_helmrelease_v1_spec_proto 
 
 const file_project_planton_provider_kubernetes_workload_helmrelease_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Fproject/planton/provider/kubernetes/workload/helmrelease/v1/spec.proto\x12<project.planton.provider.kubernetes.workloads.helmrelease.v1\x1a\x1bbuf/validate/validate.proto\"\x99\x02\n" +
+	"Fproject/planton/provider/kubernetes/workload/helmrelease/v1/spec.proto\x12;project.planton.provider.kubernetes.workload.helmrelease.v1\x1a\x1bbuf/validate/validate.proto\"\x98\x02\n" +
 	"\x0fHelmReleaseSpec\x12\x1a\n" +
 	"\x04repo\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04repo\x12\x1a\n" +
 	"\x04name\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\x12 \n" +
-	"\aversion\x18\x03 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\aversion\x12q\n" +
-	"\x06values\x18\x04 \x03(\v2Y.project.planton.provider.kubernetes.workloads.helmrelease.v1.HelmReleaseSpec.ValuesEntryR\x06values\x1a9\n" +
+	"\aversion\x18\x03 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\aversion\x12p\n" +
+	"\x06values\x18\x04 \x03(\v2X.project.planton.provider.kubernetes.workload.helmrelease.v1.HelmReleaseSpec.ValuesEntryR\x06values\x1a9\n" +
 	"\vValuesEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01B\xe1\x03\n" +
-	"@com.project.planton.provider.kubernetes.workloads.helmrelease.v1B\tSpecProtoP\x01Zygithub.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/helmrelease/v1;helmreleasev1\xa2\x02\x06PPPKWH\xaa\x02<Project.Planton.Provider.Kubernetes.Workloads.Helmrelease.V1\xca\x02<Project\\Planton\\Provider\\Kubernetes\\Workloads\\Helmrelease\\V1\xe2\x02HProject\\Planton\\Provider\\Kubernetes\\Workloads\\Helmrelease\\V1\\GPBMetadata\xea\x02BProject::Planton::Provider::Kubernetes::Workloads::Helmrelease::V1b\x06proto3"
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01B\xdc\x03\n" +
+	"?com.project.planton.provider.kubernetes.workload.helmrelease.v1B\tSpecProtoP\x01Zygithub.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/helmrelease/v1;helmreleasev1\xa2\x02\x06PPPKWH\xaa\x02;Project.Planton.Provider.Kubernetes.Workload.Helmrelease.V1\xca\x02;Project\\Planton\\Provider\\Kubernetes\\Workload\\Helmrelease\\V1\xe2\x02GProject\\Planton\\Provider\\Kubernetes\\Workload\\Helmrelease\\V1\\GPBMetadata\xea\x02AProject::Planton::Provider::Kubernetes::Workload::Helmrelease::V1b\x06proto3"
 
 var (
 	file_project_planton_provider_kubernetes_workload_helmrelease_v1_spec_proto_rawDescOnce sync.Once
@@ -131,11 +131,11 @@ func file_project_planton_provider_kubernetes_workload_helmrelease_v1_spec_proto
 
 var file_project_planton_provider_kubernetes_workload_helmrelease_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_kubernetes_workload_helmrelease_v1_spec_proto_goTypes = []any{
-	(*HelmReleaseSpec)(nil), // 0: project.planton.provider.kubernetes.workloads.helmrelease.v1.HelmReleaseSpec
-	nil,                     // 1: project.planton.provider.kubernetes.workloads.helmrelease.v1.HelmReleaseSpec.ValuesEntry
+	(*HelmReleaseSpec)(nil), // 0: project.planton.provider.kubernetes.workload.helmrelease.v1.HelmReleaseSpec
+	nil,                     // 1: project.planton.provider.kubernetes.workload.helmrelease.v1.HelmReleaseSpec.ValuesEntry
 }
 var file_project_planton_provider_kubernetes_workload_helmrelease_v1_spec_proto_depIdxs = []int32{
-	1, // 0: project.planton.provider.kubernetes.workloads.helmrelease.v1.HelmReleaseSpec.values:type_name -> project.planton.provider.kubernetes.workloads.helmrelease.v1.HelmReleaseSpec.ValuesEntry
+	1, // 0: project.planton.provider.kubernetes.workload.helmrelease.v1.HelmReleaseSpec.values:type_name -> project.planton.provider.kubernetes.workload.helmrelease.v1.HelmReleaseSpec.ValuesEntry
 	1, // [1:1] is the sub-list for method output_type
 	1, // [1:1] is the sub-list for method input_type
 	1, // [1:1] is the sub-list for extension type_name

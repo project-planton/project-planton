@@ -222,7 +222,7 @@ var file_project_planton_provider_kubernetes_workload_openfgakubernetes_v1_spec_
 		ExtendedType:  (*descriptorpb.FieldOptions)(nil),
 		ExtensionType: (*OpenFgaKubernetesContainer)(nil),
 		Field:         531001,
-		Name:          "project.planton.provider.kubernetes.workloads.openfgakubernetes.v1.default_container",
+		Name:          "project.planton.provider.kubernetes.workload.openfgakubernetes.v1.default_container",
 		Tag:           "bytes,531001,opt,name=default_container",
 		Filename:      "project/planton/provider/kubernetes/workload/openfgakubernetes/v1/spec.proto",
 	},
@@ -230,7 +230,7 @@ var file_project_planton_provider_kubernetes_workload_openfgakubernetes_v1_spec_
 
 // Extension fields to descriptorpb.FieldOptions.
 var (
-	// optional project.planton.provider.kubernetes.workloads.openfgakubernetes.v1.OpenFgaKubernetesContainer default_container = 531001;
+	// optional project.planton.provider.kubernetes.workload.openfgakubernetes.v1.OpenFgaKubernetesContainer default_container = 531001;
 	E_DefaultContainer = &file_project_planton_provider_kubernetes_workload_openfgakubernetes_v1_spec_proto_extTypes[0]
 )
 
@@ -238,23 +238,23 @@ var File_project_planton_provider_kubernetes_workload_openfgakubernetes_v1_spec_
 
 const file_project_planton_provider_kubernetes_workload_openfgakubernetes_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Lproject/planton/provider/kubernetes/workload/openfgakubernetes/v1/spec.proto\x12Bproject.planton.provider.kubernetes.workloads.openfgakubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\"\x8e\x03\n" +
-	"\x15OpenFgaKubernetesSpec\x12\xa3\x01\n" +
-	"\tcontainer\x18\x01 \x01(\v2^.project.planton.provider.kubernetes.workloads.openfgakubernetes.v1.OpenFgaKubernetesContainerB%ʣ\x83\x02 \b\x01\x12\x1c\n" +
+	"Lproject/planton/provider/kubernetes/workload/openfgakubernetes/v1/spec.proto\x12Aproject.planton.provider.kubernetes.workload.openfgakubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\"\x8c\x03\n" +
+	"\x15OpenFgaKubernetesSpec\x12\xa2\x01\n" +
+	"\tcontainer\x18\x01 \x01(\v2].project.planton.provider.kubernetes.workload.openfgakubernetes.v1.OpenFgaKubernetesContainerB%ʣ\x83\x02 \b\x01\x12\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
 	"\x0350m\x12\x05100MiR\tcontainer\x12H\n" +
-	"\aingress\x18\x02 \x01(\v2..project.planton.shared.kubernetes.IngressSpecR\aingress\x12\x84\x01\n" +
-	"\tdatastore\x18\x03 \x01(\v2^.project.planton.provider.kubernetes.workloads.openfgakubernetes.v1.OpenFgaKubernetesDataStoreB\x06\xbaH\x03\xc8\x01\x01R\tdatastore\"\x8d\x01\n" +
+	"\aingress\x18\x02 \x01(\v2..project.planton.shared.kubernetes.IngressSpecR\aingress\x12\x83\x01\n" +
+	"\tdatastore\x18\x03 \x01(\v2].project.planton.provider.kubernetes.workload.openfgakubernetes.v1.OpenFgaKubernetesDataStoreB\x06\xbaH\x03\xc8\x01\x01R\tdatastore\"\x8d\x01\n" +
 	"\x1aOpenFgaKubernetesContainer\x12\x1a\n" +
 	"\breplicas\x18\x01 \x01(\x05R\breplicas\x12S\n" +
 	"\tresources\x18\x02 \x01(\v25.project.planton.shared.kubernetes.ContainerResourcesR\tresources\"\xcd\x01\n" +
 	"\x1aOpenFgaKubernetesDataStore\x12\x94\x01\n" +
 	"\x06engine\x18\x01 \x01(\tB|\xbaHy\xba\x01s\n" +
 	"\x15spec.datastore.engine\x12;The datastore engine must be one of \"postgres\" and \"mysql\".\x1a\x1dthis in [\"postgres\", \"mysql\"]\xc8\x01\x01R\x06engine\x12\x18\n" +
-	"\x03uri\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x03uri:\xac\x01\n" +
-	"\x11default_container\x12\x1d.google.protobuf.FieldOptions\x18\xb9\xb4  \x01(\v2^.project.planton.provider.kubernetes.workloads.openfgakubernetes.v1.OpenFgaKubernetesContainerR\x10defaultContainerB\x8c\x04\n" +
-	"Fcom.project.planton.provider.kubernetes.workloads.openfgakubernetes.v1B\tSpecProtoP\x01Z\x85\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/openfgakubernetes/v1;openfgakubernetesv1\xa2\x02\x06PPPKWO\xaa\x02BProject.Planton.Provider.Kubernetes.Workloads.Openfgakubernetes.V1\xca\x02BProject\\Planton\\Provider\\Kubernetes\\Workloads\\Openfgakubernetes\\V1\xe2\x02NProject\\Planton\\Provider\\Kubernetes\\Workloads\\Openfgakubernetes\\V1\\GPBMetadata\xea\x02HProject::Planton::Provider::Kubernetes::Workloads::Openfgakubernetes::V1b\x06proto3"
+	"\x03uri\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x03uri:\xab\x01\n" +
+	"\x11default_container\x12\x1d.google.protobuf.FieldOptions\x18\xb9\xb4  \x01(\v2].project.planton.provider.kubernetes.workload.openfgakubernetes.v1.OpenFgaKubernetesContainerR\x10defaultContainerB\x87\x04\n" +
+	"Ecom.project.planton.provider.kubernetes.workload.openfgakubernetes.v1B\tSpecProtoP\x01Z\x85\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/openfgakubernetes/v1;openfgakubernetesv1\xa2\x02\x06PPPKWO\xaa\x02AProject.Planton.Provider.Kubernetes.Workload.Openfgakubernetes.V1\xca\x02AProject\\Planton\\Provider\\Kubernetes\\Workload\\Openfgakubernetes\\V1\xe2\x02MProject\\Planton\\Provider\\Kubernetes\\Workload\\Openfgakubernetes\\V1\\GPBMetadata\xea\x02GProject::Planton::Provider::Kubernetes::Workload::Openfgakubernetes::V1b\x06proto3"
 
 var (
 	file_project_planton_provider_kubernetes_workload_openfgakubernetes_v1_spec_proto_rawDescOnce sync.Once
@@ -270,20 +270,20 @@ func file_project_planton_provider_kubernetes_workload_openfgakubernetes_v1_spec
 
 var file_project_planton_provider_kubernetes_workload_openfgakubernetes_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_project_planton_provider_kubernetes_workload_openfgakubernetes_v1_spec_proto_goTypes = []any{
-	(*OpenFgaKubernetesSpec)(nil),         // 0: project.planton.provider.kubernetes.workloads.openfgakubernetes.v1.OpenFgaKubernetesSpec
-	(*OpenFgaKubernetesContainer)(nil),    // 1: project.planton.provider.kubernetes.workloads.openfgakubernetes.v1.OpenFgaKubernetesContainer
-	(*OpenFgaKubernetesDataStore)(nil),    // 2: project.planton.provider.kubernetes.workloads.openfgakubernetes.v1.OpenFgaKubernetesDataStore
+	(*OpenFgaKubernetesSpec)(nil),         // 0: project.planton.provider.kubernetes.workload.openfgakubernetes.v1.OpenFgaKubernetesSpec
+	(*OpenFgaKubernetesContainer)(nil),    // 1: project.planton.provider.kubernetes.workload.openfgakubernetes.v1.OpenFgaKubernetesContainer
+	(*OpenFgaKubernetesDataStore)(nil),    // 2: project.planton.provider.kubernetes.workload.openfgakubernetes.v1.OpenFgaKubernetesDataStore
 	(*kubernetes.IngressSpec)(nil),        // 3: project.planton.shared.kubernetes.IngressSpec
 	(*kubernetes.ContainerResources)(nil), // 4: project.planton.shared.kubernetes.ContainerResources
 	(*descriptorpb.FieldOptions)(nil),     // 5: google.protobuf.FieldOptions
 }
 var file_project_planton_provider_kubernetes_workload_openfgakubernetes_v1_spec_proto_depIdxs = []int32{
-	1, // 0: project.planton.provider.kubernetes.workloads.openfgakubernetes.v1.OpenFgaKubernetesSpec.container:type_name -> project.planton.provider.kubernetes.workloads.openfgakubernetes.v1.OpenFgaKubernetesContainer
-	3, // 1: project.planton.provider.kubernetes.workloads.openfgakubernetes.v1.OpenFgaKubernetesSpec.ingress:type_name -> project.planton.shared.kubernetes.IngressSpec
-	2, // 2: project.planton.provider.kubernetes.workloads.openfgakubernetes.v1.OpenFgaKubernetesSpec.datastore:type_name -> project.planton.provider.kubernetes.workloads.openfgakubernetes.v1.OpenFgaKubernetesDataStore
-	4, // 3: project.planton.provider.kubernetes.workloads.openfgakubernetes.v1.OpenFgaKubernetesContainer.resources:type_name -> project.planton.shared.kubernetes.ContainerResources
-	5, // 4: project.planton.provider.kubernetes.workloads.openfgakubernetes.v1.default_container:extendee -> google.protobuf.FieldOptions
-	1, // 5: project.planton.provider.kubernetes.workloads.openfgakubernetes.v1.default_container:type_name -> project.planton.provider.kubernetes.workloads.openfgakubernetes.v1.OpenFgaKubernetesContainer
+	1, // 0: project.planton.provider.kubernetes.workload.openfgakubernetes.v1.OpenFgaKubernetesSpec.container:type_name -> project.planton.provider.kubernetes.workload.openfgakubernetes.v1.OpenFgaKubernetesContainer
+	3, // 1: project.planton.provider.kubernetes.workload.openfgakubernetes.v1.OpenFgaKubernetesSpec.ingress:type_name -> project.planton.shared.kubernetes.IngressSpec
+	2, // 2: project.planton.provider.kubernetes.workload.openfgakubernetes.v1.OpenFgaKubernetesSpec.datastore:type_name -> project.planton.provider.kubernetes.workload.openfgakubernetes.v1.OpenFgaKubernetesDataStore
+	4, // 3: project.planton.provider.kubernetes.workload.openfgakubernetes.v1.OpenFgaKubernetesContainer.resources:type_name -> project.planton.shared.kubernetes.ContainerResources
+	5, // 4: project.planton.provider.kubernetes.workload.openfgakubernetes.v1.default_container:extendee -> google.protobuf.FieldOptions
+	1, // 5: project.planton.provider.kubernetes.workload.openfgakubernetes.v1.default_container:type_name -> project.planton.provider.kubernetes.workload.openfgakubernetes.v1.OpenFgaKubernetesContainer
 	6, // [6:6] is the sub-list for method output_type
 	6, // [6:6] is the sub-list for method input_type
 	5, // [5:6] is the sub-list for extension type_name

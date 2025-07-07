@@ -290,11 +290,11 @@ var File_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_v1
 
 const file_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"[project/planton/provider/kubernetes/workload/elasticsearchkubernetes/v1/stack_outputs.proto\x12Hproject.planton.provider.kubernetes.workloads.elasticsearchkubernetes.v1\x1a2project/planton/shared/kubernetes/kubernetes.proto\"\xf4\x02\n" +
+	"[project/planton/provider/kubernetes/workload/elasticsearchkubernetes/v1/stack_outputs.proto\x12Gproject.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1\x1a2project/planton/shared/kubernetes/kubernetes.proto\"\xf2\x02\n" +
 	"#ElasticsearchKubernetesStackOutputs\x12\x1c\n" +
-	"\tnamespace\x18\x01 \x01(\tR\tnamespace\x12\xa0\x01\n" +
-	"\relasticsearch\x18\x02 \x01(\v2z.project.planton.provider.kubernetes.workloads.elasticsearchkubernetes.v1.ElasticsearchKubernetesElasticsearchStackOutputsR\relasticsearch\x12\x8b\x01\n" +
-	"\x06kibana\x18\x03 \x01(\v2s.project.planton.provider.kubernetes.workloads.elasticsearchkubernetes.v1.ElasticsearchKubernetesKibanaStackOutputsR\x06kibana\"\xfa\x02\n" +
+	"\tnamespace\x18\x01 \x01(\tR\tnamespace\x12\x9f\x01\n" +
+	"\relasticsearch\x18\x02 \x01(\v2y.project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesElasticsearchStackOutputsR\relasticsearch\x12\x8a\x01\n" +
+	"\x06kibana\x18\x03 \x01(\v2r.project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesKibanaStackOutputsR\x06kibana\"\xfa\x02\n" +
 	"0ElasticsearchKubernetesElasticsearchStackOutputs\x12\x18\n" +
 	"\aservice\x18\x01 \x01(\tR\aservice\x120\n" +
 	"\x14port_forward_command\x18\x02 \x01(\tR\x12portForwardCommand\x12#\n" +
@@ -308,8 +308,8 @@ const file_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_
 	"\x14port_forward_command\x18\x02 \x01(\tR\x12portForwardCommand\x12#\n" +
 	"\rkube_endpoint\x18\x03 \x01(\tR\fkubeEndpoint\x12+\n" +
 	"\x11external_hostname\x18\x04 \x01(\tR\x10externalHostname\x12+\n" +
-	"\x11internal_hostname\x18\x05 \x01(\tR\x10internalHostnameB\xbe\x04\n" +
-	"Lcom.project.planton.provider.kubernetes.workloads.elasticsearchkubernetes.v1B\x11StackOutputsProtoP\x01Z\x91\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/elasticsearchkubernetes/v1;elasticsearchkubernetesv1\xa2\x02\x06PPPKWE\xaa\x02HProject.Planton.Provider.Kubernetes.Workloads.Elasticsearchkubernetes.V1\xca\x02HProject\\Planton\\Provider\\Kubernetes\\Workloads\\Elasticsearchkubernetes\\V1\xe2\x02TProject\\Planton\\Provider\\Kubernetes\\Workloads\\Elasticsearchkubernetes\\V1\\GPBMetadata\xea\x02NProject::Planton::Provider::Kubernetes::Workloads::Elasticsearchkubernetes::V1b\x06proto3"
+	"\x11internal_hostname\x18\x05 \x01(\tR\x10internalHostnameB\xb9\x04\n" +
+	"Kcom.project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1B\x11StackOutputsProtoP\x01Z\x91\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/elasticsearchkubernetes/v1;elasticsearchkubernetesv1\xa2\x02\x06PPPKWE\xaa\x02GProject.Planton.Provider.Kubernetes.Workload.Elasticsearchkubernetes.V1\xca\x02GProject\\Planton\\Provider\\Kubernetes\\Workload\\Elasticsearchkubernetes\\V1\xe2\x02SProject\\Planton\\Provider\\Kubernetes\\Workload\\Elasticsearchkubernetes\\V1\\GPBMetadata\xea\x02MProject::Planton::Provider::Kubernetes::Workload::Elasticsearchkubernetes::V1b\x06proto3"
 
 var (
 	file_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_v1_stack_outputs_proto_rawDescOnce sync.Once
@@ -325,15 +325,15 @@ func file_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_v
 
 var file_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_v1_stack_outputs_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_v1_stack_outputs_proto_goTypes = []any{
-	(*ElasticsearchKubernetesStackOutputs)(nil),              // 0: project.planton.provider.kubernetes.workloads.elasticsearchkubernetes.v1.ElasticsearchKubernetesStackOutputs
-	(*ElasticsearchKubernetesElasticsearchStackOutputs)(nil), // 1: project.planton.provider.kubernetes.workloads.elasticsearchkubernetes.v1.ElasticsearchKubernetesElasticsearchStackOutputs
-	(*ElasticsearchKubernetesKibanaStackOutputs)(nil),        // 2: project.planton.provider.kubernetes.workloads.elasticsearchkubernetes.v1.ElasticsearchKubernetesKibanaStackOutputs
+	(*ElasticsearchKubernetesStackOutputs)(nil),              // 0: project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesStackOutputs
+	(*ElasticsearchKubernetesElasticsearchStackOutputs)(nil), // 1: project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesElasticsearchStackOutputs
+	(*ElasticsearchKubernetesKibanaStackOutputs)(nil),        // 2: project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesKibanaStackOutputs
 	(*kubernetes.KubernetesSecretKey)(nil),                   // 3: project.planton.shared.kubernetes.KubernetesSecretKey
 }
 var file_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_v1_stack_outputs_proto_depIdxs = []int32{
-	1, // 0: project.planton.provider.kubernetes.workloads.elasticsearchkubernetes.v1.ElasticsearchKubernetesStackOutputs.elasticsearch:type_name -> project.planton.provider.kubernetes.workloads.elasticsearchkubernetes.v1.ElasticsearchKubernetesElasticsearchStackOutputs
-	2, // 1: project.planton.provider.kubernetes.workloads.elasticsearchkubernetes.v1.ElasticsearchKubernetesStackOutputs.kibana:type_name -> project.planton.provider.kubernetes.workloads.elasticsearchkubernetes.v1.ElasticsearchKubernetesKibanaStackOutputs
-	3, // 2: project.planton.provider.kubernetes.workloads.elasticsearchkubernetes.v1.ElasticsearchKubernetesElasticsearchStackOutputs.password_secret:type_name -> project.planton.shared.kubernetes.KubernetesSecretKey
+	1, // 0: project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesStackOutputs.elasticsearch:type_name -> project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesElasticsearchStackOutputs
+	2, // 1: project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesStackOutputs.kibana:type_name -> project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesKibanaStackOutputs
+	3, // 2: project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesElasticsearchStackOutputs.password_secret:type_name -> project.planton.shared.kubernetes.KubernetesSecretKey
 	3, // [3:3] is the sub-list for method output_type
 	3, // [3:3] is the sub-list for method input_type
 	3, // [3:3] is the sub-list for extension type_name

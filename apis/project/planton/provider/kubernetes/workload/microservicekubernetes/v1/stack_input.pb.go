@@ -120,15 +120,15 @@ var File_project_planton_provider_kubernetes_workload_microservicekubernetes_v1_
 
 const file_project_planton_provider_kubernetes_workload_microservicekubernetes_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Xproject/planton/provider/kubernetes/workload/microservicekubernetes/v1/stack_input.proto\x12Gproject.planton.provider.kubernetes.workloads.microservicekubernetes.v1\x1aDproject/planton/credential/kubernetesclustercredential/v1/spec.proto\x1aPproject/planton/provider/kubernetes/workload/microservicekubernetes/v1/api.proto\x1a.project/planton/shared/iac/pulumi/pulumi.proto\x1a project/planton/shared/iac.proto\x1a4project/planton/shared/iac/terraform/terraform.proto\"\xc5\x04\n" +
+	"Xproject/planton/provider/kubernetes/workload/microservicekubernetes/v1/stack_input.proto\x12Fproject.planton.provider.kubernetes.workload.microservicekubernetes.v1\x1aDproject/planton/credential/kubernetesclustercredential/v1/spec.proto\x1aPproject/planton/provider/kubernetes/workload/microservicekubernetes/v1/api.proto\x1a.project/planton/shared/iac/pulumi/pulumi.proto\x1a project/planton/shared/iac.proto\x1a4project/planton/shared/iac/terraform/terraform.proto\"\xc4\x04\n" +
 	" MicroserviceKubernetesStackInput\x12H\n" +
 	"\vprovisioner\x18\x01 \x01(\x0e2&.project.planton.shared.IacProvisionerR\vprovisioner\x12J\n" +
 	"\x06pulumi\x18\x02 \x01(\v22.project.planton.shared.iac.pulumi.PulumiStackInfoR\x06pulumi\x12V\n" +
-	"\tterraform\x18\x03 \x01(\v28.project.planton.shared.iac.terraform.TerraformStackInfoR\tterraform\x12w\n" +
-	"\x06target\x18\x04 \x01(\v2_.project.planton.provider.kubernetes.workloads.microservicekubernetes.v1.MicroserviceKubernetesR\x06target\x12\x8b\x01\n" +
+	"\tterraform\x18\x03 \x01(\v28.project.planton.shared.iac.terraform.TerraformStackInfoR\tterraform\x12v\n" +
+	"\x06target\x18\x04 \x01(\v2^.project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesR\x06target\x12\x8b\x01\n" +
 	"\x13provider_credential\x18\x05 \x01(\v2Z.project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpecR\x12providerCredential\x12,\n" +
-	"\x12docker_config_json\x18\x06 \x01(\tR\x10dockerConfigJsonB\xb5\x04\n" +
-	"Kcom.project.planton.provider.kubernetes.workloads.microservicekubernetes.v1B\x0fStackInputProtoP\x01Z\x8f\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/microservicekubernetes/v1;microservicekubernetesv1\xa2\x02\x06PPPKWM\xaa\x02GProject.Planton.Provider.Kubernetes.Workloads.Microservicekubernetes.V1\xca\x02GProject\\Planton\\Provider\\Kubernetes\\Workloads\\Microservicekubernetes\\V1\xe2\x02SProject\\Planton\\Provider\\Kubernetes\\Workloads\\Microservicekubernetes\\V1\\GPBMetadata\xea\x02MProject::Planton::Provider::Kubernetes::Workloads::Microservicekubernetes::V1b\x06proto3"
+	"\x12docker_config_json\x18\x06 \x01(\tR\x10dockerConfigJsonB\xb0\x04\n" +
+	"Jcom.project.planton.provider.kubernetes.workload.microservicekubernetes.v1B\x0fStackInputProtoP\x01Z\x8f\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/microservicekubernetes/v1;microservicekubernetesv1\xa2\x02\x06PPPKWM\xaa\x02FProject.Planton.Provider.Kubernetes.Workload.Microservicekubernetes.V1\xca\x02FProject\\Planton\\Provider\\Kubernetes\\Workload\\Microservicekubernetes\\V1\xe2\x02RProject\\Planton\\Provider\\Kubernetes\\Workload\\Microservicekubernetes\\V1\\GPBMetadata\xea\x02LProject::Planton::Provider::Kubernetes::Workload::Microservicekubernetes::V1b\x06proto3"
 
 var (
 	file_project_planton_provider_kubernetes_workload_microservicekubernetes_v1_stack_input_proto_rawDescOnce sync.Once
@@ -144,19 +144,19 @@ func file_project_planton_provider_kubernetes_workload_microservicekubernetes_v1
 
 var file_project_planton_provider_kubernetes_workload_microservicekubernetes_v1_stack_input_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_kubernetes_workload_microservicekubernetes_v1_stack_input_proto_goTypes = []any{
-	(*MicroserviceKubernetesStackInput)(nil),   // 0: project.planton.provider.kubernetes.workloads.microservicekubernetes.v1.MicroserviceKubernetesStackInput
+	(*MicroserviceKubernetesStackInput)(nil),   // 0: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesStackInput
 	(shared.IacProvisioner)(0),                 // 1: project.planton.shared.IacProvisioner
 	(*pulumi.PulumiStackInfo)(nil),             // 2: project.planton.shared.iac.pulumi.PulumiStackInfo
 	(*terraform.TerraformStackInfo)(nil),       // 3: project.planton.shared.iac.terraform.TerraformStackInfo
-	(*MicroserviceKubernetes)(nil),             // 4: project.planton.provider.kubernetes.workloads.microservicekubernetes.v1.MicroserviceKubernetes
+	(*MicroserviceKubernetes)(nil),             // 4: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetes
 	(*v1.KubernetesClusterCredentialSpec)(nil), // 5: project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec
 }
 var file_project_planton_provider_kubernetes_workload_microservicekubernetes_v1_stack_input_proto_depIdxs = []int32{
-	1, // 0: project.planton.provider.kubernetes.workloads.microservicekubernetes.v1.MicroserviceKubernetesStackInput.provisioner:type_name -> project.planton.shared.IacProvisioner
-	2, // 1: project.planton.provider.kubernetes.workloads.microservicekubernetes.v1.MicroserviceKubernetesStackInput.pulumi:type_name -> project.planton.shared.iac.pulumi.PulumiStackInfo
-	3, // 2: project.planton.provider.kubernetes.workloads.microservicekubernetes.v1.MicroserviceKubernetesStackInput.terraform:type_name -> project.planton.shared.iac.terraform.TerraformStackInfo
-	4, // 3: project.planton.provider.kubernetes.workloads.microservicekubernetes.v1.MicroserviceKubernetesStackInput.target:type_name -> project.planton.provider.kubernetes.workloads.microservicekubernetes.v1.MicroserviceKubernetes
-	5, // 4: project.planton.provider.kubernetes.workloads.microservicekubernetes.v1.MicroserviceKubernetesStackInput.provider_credential:type_name -> project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec
+	1, // 0: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesStackInput.provisioner:type_name -> project.planton.shared.IacProvisioner
+	2, // 1: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesStackInput.pulumi:type_name -> project.planton.shared.iac.pulumi.PulumiStackInfo
+	3, // 2: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesStackInput.terraform:type_name -> project.planton.shared.iac.terraform.TerraformStackInfo
+	4, // 3: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesStackInput.target:type_name -> project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetes
+	5, // 4: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesStackInput.provider_credential:type_name -> project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec
 	5, // [5:5] is the sub-list for method output_type
 	5, // [5:5] is the sub-list for method input_type
 	5, // [5:5] is the sub-list for extension type_name

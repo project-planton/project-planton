@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package project.planton.provider.kubernetes.workloads.gitlabkubernetes.v1;
+package project.planton.provider.kubernetes.workload.gitlabkubernetes.v1;
 
 //gitlab-kubernetes stack outputs
 message GitlabKubernetesStackOutputs {

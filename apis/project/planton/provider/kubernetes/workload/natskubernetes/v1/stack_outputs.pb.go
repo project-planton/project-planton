@@ -126,7 +126,7 @@ var File_project_planton_provider_kubernetes_workload_natskubernetes_v1_stack_ou
 
 const file_project_planton_provider_kubernetes_workload_natskubernetes_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Rproject/planton/provider/kubernetes/workload/natskubernetes/v1/stack_outputs.proto\x12?project.planton.provider.kubernetes.workloads.natskubernetes.v1\x1a2project/planton/shared/kubernetes/kubernetes.proto\"\xac\x03\n" +
+	"Rproject/planton/provider/kubernetes/workload/natskubernetes/v1/stack_outputs.proto\x12>project.planton.provider.kubernetes.workload.natskubernetes.v1\x1a2project/planton/shared/kubernetes/kubernetes.proto\"\xac\x03\n" +
 	"\x1aNatsKubernetesStackOutputs\x12\x1c\n" +
 	"\tnamespace\x18\x01 \x01(\tR\tnamespace\x12.\n" +
 	"\x13client_url_internal\x18\x02 \x01(\tR\x11clientUrlInternal\x12.\n" +
@@ -135,8 +135,8 @@ const file_project_planton_provider_kubernetes_workload_natskubernetes_v1_stack_
 	"\x11jet_stream_domain\x18\x05 \x01(\tR\x0fjetStreamDomain\x12)\n" +
 	"\x10metrics_endpoint\x18\x06 \x01(\tR\x0fmetricsEndpoint\x12U\n" +
 	"\n" +
-	"tls_secret\x18\a \x01(\v26.project.planton.shared.kubernetes.KubernetesSecretKeyR\ttlsSecretB\xfe\x03\n" +
-	"Ccom.project.planton.provider.kubernetes.workloads.natskubernetes.v1B\x11StackOutputsProtoP\x01Z\x7fgithub.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/natskubernetes/v1;natskubernetesv1\xa2\x02\x06PPPKWN\xaa\x02?Project.Planton.Provider.Kubernetes.Workloads.Natskubernetes.V1\xca\x02?Project\\Planton\\Provider\\Kubernetes\\Workloads\\Natskubernetes\\V1\xe2\x02KProject\\Planton\\Provider\\Kubernetes\\Workloads\\Natskubernetes\\V1\\GPBMetadata\xea\x02EProject::Planton::Provider::Kubernetes::Workloads::Natskubernetes::V1b\x06proto3"
+	"tls_secret\x18\a \x01(\v26.project.planton.shared.kubernetes.KubernetesSecretKeyR\ttlsSecretB\xf9\x03\n" +
+	"Bcom.project.planton.provider.kubernetes.workload.natskubernetes.v1B\x11StackOutputsProtoP\x01Z\x7fgithub.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/natskubernetes/v1;natskubernetesv1\xa2\x02\x06PPPKWN\xaa\x02>Project.Planton.Provider.Kubernetes.Workload.Natskubernetes.V1\xca\x02>Project\\Planton\\Provider\\Kubernetes\\Workload\\Natskubernetes\\V1\xe2\x02JProject\\Planton\\Provider\\Kubernetes\\Workload\\Natskubernetes\\V1\\GPBMetadata\xea\x02DProject::Planton::Provider::Kubernetes::Workload::Natskubernetes::V1b\x06proto3"
 
 var (
 	file_project_planton_provider_kubernetes_workload_natskubernetes_v1_stack_outputs_proto_rawDescOnce sync.Once
@@ -152,12 +152,12 @@ func file_project_planton_provider_kubernetes_workload_natskubernetes_v1_stack_o
 
 var file_project_planton_provider_kubernetes_workload_natskubernetes_v1_stack_outputs_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_kubernetes_workload_natskubernetes_v1_stack_outputs_proto_goTypes = []any{
-	(*NatsKubernetesStackOutputs)(nil),     // 0: project.planton.provider.kubernetes.workloads.natskubernetes.v1.NatsKubernetesStackOutputs
+	(*NatsKubernetesStackOutputs)(nil),     // 0: project.planton.provider.kubernetes.workload.natskubernetes.v1.NatsKubernetesStackOutputs
 	(*kubernetes.KubernetesSecretKey)(nil), // 1: project.planton.shared.kubernetes.KubernetesSecretKey
 }
 var file_project_planton_provider_kubernetes_workload_natskubernetes_v1_stack_outputs_proto_depIdxs = []int32{
-	1, // 0: project.planton.provider.kubernetes.workloads.natskubernetes.v1.NatsKubernetesStackOutputs.auth_token_secret:type_name -> project.planton.shared.kubernetes.KubernetesSecretKey
-	1, // 1: project.planton.provider.kubernetes.workloads.natskubernetes.v1.NatsKubernetesStackOutputs.tls_secret:type_name -> project.planton.shared.kubernetes.KubernetesSecretKey
+	1, // 0: project.planton.provider.kubernetes.workload.natskubernetes.v1.NatsKubernetesStackOutputs.auth_token_secret:type_name -> project.planton.shared.kubernetes.KubernetesSecretKey
+	1, // 1: project.planton.provider.kubernetes.workload.natskubernetes.v1.NatsKubernetesStackOutputs.tls_secret:type_name -> project.planton.shared.kubernetes.KubernetesSecretKey
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

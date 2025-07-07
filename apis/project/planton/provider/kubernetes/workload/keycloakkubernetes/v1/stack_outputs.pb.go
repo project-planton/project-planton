@@ -125,15 +125,15 @@ var File_project_planton_provider_kubernetes_workload_keycloakkubernetes_v1_stac
 
 const file_project_planton_provider_kubernetes_workload_keycloakkubernetes_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Vproject/planton/provider/kubernetes/workload/keycloakkubernetes/v1/stack_outputs.proto\x12Cproject.planton.provider.kubernetes.workloads.keycloakkubernetes.v1\"\x89\x02\n" +
+	"Vproject/planton/provider/kubernetes/workload/keycloakkubernetes/v1/stack_outputs.proto\x12Bproject.planton.provider.kubernetes.workload.keycloakkubernetes.v1\"\x89\x02\n" +
 	"\x1eKeycloakKubernetesStackOutputs\x12\x1c\n" +
 	"\tnamespace\x18\x01 \x01(\tR\tnamespace\x12\x18\n" +
 	"\aservice\x18\x02 \x01(\tR\aservice\x120\n" +
 	"\x14port_forward_command\x18\x03 \x01(\tR\x12portForwardCommand\x12#\n" +
 	"\rkube_endpoint\x18\x04 \x01(\tR\fkubeEndpoint\x12+\n" +
 	"\x11external_hostname\x18\x05 \x01(\tR\x10externalHostname\x12+\n" +
-	"\x11internal_hostname\x18\x06 \x01(\tR\x10internalHostnameB\x9b\x04\n" +
-	"Gcom.project.planton.provider.kubernetes.workloads.keycloakkubernetes.v1B\x11StackOutputsProtoP\x01Z\x87\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/keycloakkubernetes/v1;keycloakkubernetesv1\xa2\x02\x06PPPKWK\xaa\x02CProject.Planton.Provider.Kubernetes.Workloads.Keycloakkubernetes.V1\xca\x02CProject\\Planton\\Provider\\Kubernetes\\Workloads\\Keycloakkubernetes\\V1\xe2\x02OProject\\Planton\\Provider\\Kubernetes\\Workloads\\Keycloakkubernetes\\V1\\GPBMetadata\xea\x02IProject::Planton::Provider::Kubernetes::Workloads::Keycloakkubernetes::V1b\x06proto3"
+	"\x11internal_hostname\x18\x06 \x01(\tR\x10internalHostnameB\x96\x04\n" +
+	"Fcom.project.planton.provider.kubernetes.workload.keycloakkubernetes.v1B\x11StackOutputsProtoP\x01Z\x87\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/keycloakkubernetes/v1;keycloakkubernetesv1\xa2\x02\x06PPPKWK\xaa\x02BProject.Planton.Provider.Kubernetes.Workload.Keycloakkubernetes.V1\xca\x02BProject\\Planton\\Provider\\Kubernetes\\Workload\\Keycloakkubernetes\\V1\xe2\x02NProject\\Planton\\Provider\\Kubernetes\\Workload\\Keycloakkubernetes\\V1\\GPBMetadata\xea\x02HProject::Planton::Provider::Kubernetes::Workload::Keycloakkubernetes::V1b\x06proto3"
 
 var (
 	file_project_planton_provider_kubernetes_workload_keycloakkubernetes_v1_stack_outputs_proto_rawDescOnce sync.Once
@@ -149,7 +149,7 @@ func file_project_planton_provider_kubernetes_workload_keycloakkubernetes_v1_sta
 
 var file_project_planton_provider_kubernetes_workload_keycloakkubernetes_v1_stack_outputs_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_kubernetes_workload_keycloakkubernetes_v1_stack_outputs_proto_goTypes = []any{
-	(*KeycloakKubernetesStackOutputs)(nil), // 0: project.planton.provider.kubernetes.workloads.keycloakkubernetes.v1.KeycloakKubernetesStackOutputs
+	(*KeycloakKubernetesStackOutputs)(nil), // 0: project.planton.provider.kubernetes.workload.keycloakkubernetes.v1.KeycloakKubernetesStackOutputs
 }
 var file_project_planton_provider_kubernetes_workload_keycloakkubernetes_v1_stack_outputs_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type

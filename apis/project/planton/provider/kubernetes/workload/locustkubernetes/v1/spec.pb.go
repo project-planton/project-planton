@@ -262,7 +262,7 @@ var file_project_planton_provider_kubernetes_workload_locustkubernetes_v1_spec_p
 		ExtendedType:  (*descriptorpb.FieldOptions)(nil),
 		ExtensionType: (*LocustKubernetesContainer)(nil),
 		Field:         528001,
-		Name:          "project.planton.provider.kubernetes.workloads.locustkubernetes.v1.default_master_container",
+		Name:          "project.planton.provider.kubernetes.workload.locustkubernetes.v1.default_master_container",
 		Tag:           "bytes,528001,opt,name=default_master_container",
 		Filename:      "project/planton/provider/kubernetes/workload/locustkubernetes/v1/spec.proto",
 	},
@@ -270,7 +270,7 @@ var file_project_planton_provider_kubernetes_workload_locustkubernetes_v1_spec_p
 		ExtendedType:  (*descriptorpb.FieldOptions)(nil),
 		ExtensionType: (*LocustKubernetesContainer)(nil),
 		Field:         528002,
-		Name:          "project.planton.provider.kubernetes.workloads.locustkubernetes.v1.default_worker_container",
+		Name:          "project.planton.provider.kubernetes.workload.locustkubernetes.v1.default_worker_container",
 		Tag:           "bytes,528002,opt,name=default_worker_container",
 		Filename:      "project/planton/provider/kubernetes/workload/locustkubernetes/v1/spec.proto",
 	},
@@ -278,9 +278,9 @@ var file_project_planton_provider_kubernetes_workload_locustkubernetes_v1_spec_p
 
 // Extension fields to descriptorpb.FieldOptions.
 var (
-	// optional project.planton.provider.kubernetes.workloads.locustkubernetes.v1.LocustKubernetesContainer default_master_container = 528001;
+	// optional project.planton.provider.kubernetes.workload.locustkubernetes.v1.LocustKubernetesContainer default_master_container = 528001;
 	E_DefaultMasterContainer = &file_project_planton_provider_kubernetes_workload_locustkubernetes_v1_spec_proto_extTypes[0]
-	// optional project.planton.provider.kubernetes.workloads.locustkubernetes.v1.LocustKubernetesContainer default_worker_container = 528002;
+	// optional project.planton.provider.kubernetes.workload.locustkubernetes.v1.LocustKubernetesContainer default_worker_container = 528002;
 	E_DefaultWorkerContainer = &file_project_planton_provider_kubernetes_workload_locustkubernetes_v1_spec_proto_extTypes[1]
 )
 
@@ -288,37 +288,37 @@ var File_project_planton_provider_kubernetes_workload_locustkubernetes_v1_spec_p
 
 const file_project_planton_provider_kubernetes_workload_locustkubernetes_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Kproject/planton/provider/kubernetes/workload/locustkubernetes/v1/spec.proto\x12Aproject.planton.provider.kubernetes.workloads.locustkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\"\x8f\x06\n" +
-	"\x14LocustKubernetesSpec\x12\xae\x01\n" +
-	"\x10master_container\x18\x01 \x01(\v2\\.project.planton.provider.kubernetes.workloads.locustkubernetes.v1.LocustKubernetesContainerB%\x8a\xe8\x81\x02 \b\x01\x12\x1c\n" +
+	"Kproject/planton/provider/kubernetes/workload/locustkubernetes/v1/spec.proto\x12@project.planton.provider.kubernetes.workload.locustkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\"\x8a\x06\n" +
+	"\x14LocustKubernetesSpec\x12\xad\x01\n" +
+	"\x10master_container\x18\x01 \x01(\v2[.project.planton.provider.kubernetes.workload.locustkubernetes.v1.LocustKubernetesContainerB%\x8a\xe8\x81\x02 \b\x01\x12\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
-	"\x0350m\x12\x05100MiR\x0fmasterContainer\x12\xae\x01\n" +
-	"\x10worker_container\x18\x02 \x01(\v2\\.project.planton.provider.kubernetes.workloads.locustkubernetes.v1.LocustKubernetesContainerB%\x92\xe8\x81\x02 \b\x01\x12\x1c\n" +
+	"\x0350m\x12\x05100MiR\x0fmasterContainer\x12\xad\x01\n" +
+	"\x10worker_container\x18\x02 \x01(\v2[.project.planton.provider.kubernetes.workload.locustkubernetes.v1.LocustKubernetesContainerB%\x92\xe8\x81\x02 \b\x01\x12\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
 	"\x0350m\x12\x05100MiR\x0fworkerContainer\x12H\n" +
-	"\aingress\x18\x03 \x01(\v2..project.planton.shared.kubernetes.IngressSpecR\aingress\x12\x80\x01\n" +
-	"\tload_test\x18\x04 \x01(\v2[.project.planton.provider.kubernetes.workloads.locustkubernetes.v1.LocustKubernetesLoadTestB\x06\xbaH\x03\xc8\x01\x01R\bloadTest\x12\x88\x01\n" +
-	"\vhelm_values\x18\x05 \x03(\v2g.project.planton.provider.kubernetes.workloads.locustkubernetes.v1.LocustKubernetesSpec.HelmValuesEntryR\n" +
+	"\aingress\x18\x03 \x01(\v2..project.planton.shared.kubernetes.IngressSpecR\aingress\x12\x7f\n" +
+	"\tload_test\x18\x04 \x01(\v2Z.project.planton.provider.kubernetes.workload.locustkubernetes.v1.LocustKubernetesLoadTestB\x06\xbaH\x03\xc8\x01\x01R\bloadTest\x12\x87\x01\n" +
+	"\vhelm_values\x18\x05 \x03(\v2f.project.planton.provider.kubernetes.workload.locustkubernetes.v1.LocustKubernetesSpec.HelmValuesEntryR\n" +
 	"helmValues\x1a=\n" +
 	"\x0fHelmValuesEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\x8c\x01\n" +
 	"\x19LocustKubernetesContainer\x12\x1a\n" +
 	"\breplicas\x18\x01 \x01(\x05R\breplicas\x12S\n" +
-	"\tresources\x18\x02 \x01(\v25.project.planton.shared.kubernetes.ContainerResourcesR\tresources\"\xf4\x02\n" +
+	"\tresources\x18\x02 \x01(\v25.project.planton.shared.kubernetes.ContainerResourcesR\tresources\"\xf3\x02\n" +
 	"\x18LocustKubernetesLoadTest\x12\x1a\n" +
 	"\x04name\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\x12.\n" +
-	"\x0fmain_py_content\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\rmainPyContent\x12\xa4\x01\n" +
-	"\x11lib_files_content\x18\x03 \x03(\v2p.project.planton.provider.kubernetes.workloads.locustkubernetes.v1.LocustKubernetesLoadTest.LibFilesContentEntryB\x06\xbaH\x03\xc8\x01\x01R\x0flibFilesContent\x12!\n" +
+	"\x0fmain_py_content\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\rmainPyContent\x12\xa3\x01\n" +
+	"\x11lib_files_content\x18\x03 \x03(\v2o.project.planton.provider.kubernetes.workload.locustkubernetes.v1.LocustKubernetesLoadTest.LibFilesContentEntryB\x06\xbaH\x03\xc8\x01\x01R\x0flibFilesContent\x12!\n" +
 	"\fpip_packages\x18\x04 \x03(\tR\vpipPackages\x1aB\n" +
 	"\x14LibFilesContentEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:\xb7\x01\n" +
-	"\x18default_master_container\x12\x1d.google.protobuf.FieldOptions\x18\x81\x9d  \x01(\v2\\.project.planton.provider.kubernetes.workloads.locustkubernetes.v1.LocustKubernetesContainerR\x16defaultMasterContainer:\xb7\x01\n" +
-	"\x18default_worker_container\x12\x1d.google.protobuf.FieldOptions\x18\x82\x9d  \x01(\v2\\.project.planton.provider.kubernetes.workloads.locustkubernetes.v1.LocustKubernetesContainerR\x16defaultWorkerContainerB\x85\x04\n" +
-	"Ecom.project.planton.provider.kubernetes.workloads.locustkubernetes.v1B\tSpecProtoP\x01Z\x83\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/locustkubernetes/v1;locustkubernetesv1\xa2\x02\x06PPPKWL\xaa\x02AProject.Planton.Provider.Kubernetes.Workloads.Locustkubernetes.V1\xca\x02AProject\\Planton\\Provider\\Kubernetes\\Workloads\\Locustkubernetes\\V1\xe2\x02MProject\\Planton\\Provider\\Kubernetes\\Workloads\\Locustkubernetes\\V1\\GPBMetadata\xea\x02GProject::Planton::Provider::Kubernetes::Workloads::Locustkubernetes::V1b\x06proto3"
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:\xb6\x01\n" +
+	"\x18default_master_container\x12\x1d.google.protobuf.FieldOptions\x18\x81\x9d  \x01(\v2[.project.planton.provider.kubernetes.workload.locustkubernetes.v1.LocustKubernetesContainerR\x16defaultMasterContainer:\xb6\x01\n" +
+	"\x18default_worker_container\x12\x1d.google.protobuf.FieldOptions\x18\x82\x9d  \x01(\v2[.project.planton.provider.kubernetes.workload.locustkubernetes.v1.LocustKubernetesContainerR\x16defaultWorkerContainerB\x80\x04\n" +
+	"Dcom.project.planton.provider.kubernetes.workload.locustkubernetes.v1B\tSpecProtoP\x01Z\x83\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/locustkubernetes/v1;locustkubernetesv1\xa2\x02\x06PPPKWL\xaa\x02@Project.Planton.Provider.Kubernetes.Workload.Locustkubernetes.V1\xca\x02@Project\\Planton\\Provider\\Kubernetes\\Workload\\Locustkubernetes\\V1\xe2\x02LProject\\Planton\\Provider\\Kubernetes\\Workload\\Locustkubernetes\\V1\\GPBMetadata\xea\x02FProject::Planton::Provider::Kubernetes::Workload::Locustkubernetes::V1b\x06proto3"
 
 var (
 	file_project_planton_provider_kubernetes_workload_locustkubernetes_v1_spec_proto_rawDescOnce sync.Once
@@ -334,27 +334,27 @@ func file_project_planton_provider_kubernetes_workload_locustkubernetes_v1_spec_
 
 var file_project_planton_provider_kubernetes_workload_locustkubernetes_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_project_planton_provider_kubernetes_workload_locustkubernetes_v1_spec_proto_goTypes = []any{
-	(*LocustKubernetesSpec)(nil),          // 0: project.planton.provider.kubernetes.workloads.locustkubernetes.v1.LocustKubernetesSpec
-	(*LocustKubernetesContainer)(nil),     // 1: project.planton.provider.kubernetes.workloads.locustkubernetes.v1.LocustKubernetesContainer
-	(*LocustKubernetesLoadTest)(nil),      // 2: project.planton.provider.kubernetes.workloads.locustkubernetes.v1.LocustKubernetesLoadTest
-	nil,                                   // 3: project.planton.provider.kubernetes.workloads.locustkubernetes.v1.LocustKubernetesSpec.HelmValuesEntry
-	nil,                                   // 4: project.planton.provider.kubernetes.workloads.locustkubernetes.v1.LocustKubernetesLoadTest.LibFilesContentEntry
+	(*LocustKubernetesSpec)(nil),          // 0: project.planton.provider.kubernetes.workload.locustkubernetes.v1.LocustKubernetesSpec
+	(*LocustKubernetesContainer)(nil),     // 1: project.planton.provider.kubernetes.workload.locustkubernetes.v1.LocustKubernetesContainer
+	(*LocustKubernetesLoadTest)(nil),      // 2: project.planton.provider.kubernetes.workload.locustkubernetes.v1.LocustKubernetesLoadTest
+	nil,                                   // 3: project.planton.provider.kubernetes.workload.locustkubernetes.v1.LocustKubernetesSpec.HelmValuesEntry
+	nil,                                   // 4: project.planton.provider.kubernetes.workload.locustkubernetes.v1.LocustKubernetesLoadTest.LibFilesContentEntry
 	(*kubernetes.IngressSpec)(nil),        // 5: project.planton.shared.kubernetes.IngressSpec
 	(*kubernetes.ContainerResources)(nil), // 6: project.planton.shared.kubernetes.ContainerResources
 	(*descriptorpb.FieldOptions)(nil),     // 7: google.protobuf.FieldOptions
 }
 var file_project_planton_provider_kubernetes_workload_locustkubernetes_v1_spec_proto_depIdxs = []int32{
-	1,  // 0: project.planton.provider.kubernetes.workloads.locustkubernetes.v1.LocustKubernetesSpec.master_container:type_name -> project.planton.provider.kubernetes.workloads.locustkubernetes.v1.LocustKubernetesContainer
-	1,  // 1: project.planton.provider.kubernetes.workloads.locustkubernetes.v1.LocustKubernetesSpec.worker_container:type_name -> project.planton.provider.kubernetes.workloads.locustkubernetes.v1.LocustKubernetesContainer
-	5,  // 2: project.planton.provider.kubernetes.workloads.locustkubernetes.v1.LocustKubernetesSpec.ingress:type_name -> project.planton.shared.kubernetes.IngressSpec
-	2,  // 3: project.planton.provider.kubernetes.workloads.locustkubernetes.v1.LocustKubernetesSpec.load_test:type_name -> project.planton.provider.kubernetes.workloads.locustkubernetes.v1.LocustKubernetesLoadTest
-	3,  // 4: project.planton.provider.kubernetes.workloads.locustkubernetes.v1.LocustKubernetesSpec.helm_values:type_name -> project.planton.provider.kubernetes.workloads.locustkubernetes.v1.LocustKubernetesSpec.HelmValuesEntry
-	6,  // 5: project.planton.provider.kubernetes.workloads.locustkubernetes.v1.LocustKubernetesContainer.resources:type_name -> project.planton.shared.kubernetes.ContainerResources
-	4,  // 6: project.planton.provider.kubernetes.workloads.locustkubernetes.v1.LocustKubernetesLoadTest.lib_files_content:type_name -> project.planton.provider.kubernetes.workloads.locustkubernetes.v1.LocustKubernetesLoadTest.LibFilesContentEntry
-	7,  // 7: project.planton.provider.kubernetes.workloads.locustkubernetes.v1.default_master_container:extendee -> google.protobuf.FieldOptions
-	7,  // 8: project.planton.provider.kubernetes.workloads.locustkubernetes.v1.default_worker_container:extendee -> google.protobuf.FieldOptions
-	1,  // 9: project.planton.provider.kubernetes.workloads.locustkubernetes.v1.default_master_container:type_name -> project.planton.provider.kubernetes.workloads.locustkubernetes.v1.LocustKubernetesContainer
-	1,  // 10: project.planton.provider.kubernetes.workloads.locustkubernetes.v1.default_worker_container:type_name -> project.planton.provider.kubernetes.workloads.locustkubernetes.v1.LocustKubernetesContainer
+	1,  // 0: project.planton.provider.kubernetes.workload.locustkubernetes.v1.LocustKubernetesSpec.master_container:type_name -> project.planton.provider.kubernetes.workload.locustkubernetes.v1.LocustKubernetesContainer
+	1,  // 1: project.planton.provider.kubernetes.workload.locustkubernetes.v1.LocustKubernetesSpec.worker_container:type_name -> project.planton.provider.kubernetes.workload.locustkubernetes.v1.LocustKubernetesContainer
+	5,  // 2: project.planton.provider.kubernetes.workload.locustkubernetes.v1.LocustKubernetesSpec.ingress:type_name -> project.planton.shared.kubernetes.IngressSpec
+	2,  // 3: project.planton.provider.kubernetes.workload.locustkubernetes.v1.LocustKubernetesSpec.load_test:type_name -> project.planton.provider.kubernetes.workload.locustkubernetes.v1.LocustKubernetesLoadTest
+	3,  // 4: project.planton.provider.kubernetes.workload.locustkubernetes.v1.LocustKubernetesSpec.helm_values:type_name -> project.planton.provider.kubernetes.workload.locustkubernetes.v1.LocustKubernetesSpec.HelmValuesEntry
+	6,  // 5: project.planton.provider.kubernetes.workload.locustkubernetes.v1.LocustKubernetesContainer.resources:type_name -> project.planton.shared.kubernetes.ContainerResources
+	4,  // 6: project.planton.provider.kubernetes.workload.locustkubernetes.v1.LocustKubernetesLoadTest.lib_files_content:type_name -> project.planton.provider.kubernetes.workload.locustkubernetes.v1.LocustKubernetesLoadTest.LibFilesContentEntry
+	7,  // 7: project.planton.provider.kubernetes.workload.locustkubernetes.v1.default_master_container:extendee -> google.protobuf.FieldOptions
+	7,  // 8: project.planton.provider.kubernetes.workload.locustkubernetes.v1.default_worker_container:extendee -> google.protobuf.FieldOptions
+	1,  // 9: project.planton.provider.kubernetes.workload.locustkubernetes.v1.default_master_container:type_name -> project.planton.provider.kubernetes.workload.locustkubernetes.v1.LocustKubernetesContainer
+	1,  // 10: project.planton.provider.kubernetes.workload.locustkubernetes.v1.default_worker_container:type_name -> project.planton.provider.kubernetes.workload.locustkubernetes.v1.LocustKubernetesContainer
 	11, // [11:11] is the sub-list for method output_type
 	11, // [11:11] is the sub-list for method input_type
 	9,  // [9:11] is the sub-list for extension type_name

@@ -97,19 +97,19 @@ var File_project_planton_provider_kubernetes_workload_jenkinskubernetes_v1_spec_
 
 const file_project_planton_provider_kubernetes_workload_jenkinskubernetes_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Lproject/planton/provider/kubernetes/workload/jenkinskubernetes/v1/spec.proto\x12Bproject.planton.provider.kubernetes.workloads.jenkinskubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\"\xb9\x03\n" +
+	"Lproject/planton/provider/kubernetes/workload/jenkinskubernetes/v1/spec.proto\x12Aproject.planton.provider.kubernetes.workload.jenkinskubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\"\xb8\x03\n" +
 	"\x15JenkinsKubernetesSpec\x12\x89\x01\n" +
 	"\x13container_resources\x18\x01 \x01(\v25.project.planton.shared.kubernetes.ContainerResourcesB!\xba\xfb\xa4\x02\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
-	"\x0350m\x12\x05100MiR\x12containerResources\x12\x8a\x01\n" +
-	"\vhelm_values\x18\x03 \x03(\v2i.project.planton.provider.kubernetes.workloads.jenkinskubernetes.v1.JenkinsKubernetesSpec.HelmValuesEntryR\n" +
+	"\x0350m\x12\x05100MiR\x12containerResources\x12\x89\x01\n" +
+	"\vhelm_values\x18\x03 \x03(\v2h.project.planton.provider.kubernetes.workload.jenkinskubernetes.v1.JenkinsKubernetesSpec.HelmValuesEntryR\n" +
 	"helmValues\x12H\n" +
 	"\aingress\x18\x04 \x01(\v2..project.planton.shared.kubernetes.IngressSpecR\aingress\x1a=\n" +
 	"\x0fHelmValuesEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01B\x8c\x04\n" +
-	"Fcom.project.planton.provider.kubernetes.workloads.jenkinskubernetes.v1B\tSpecProtoP\x01Z\x85\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/jenkinskubernetes/v1;jenkinskubernetesv1\xa2\x02\x06PPPKWJ\xaa\x02BProject.Planton.Provider.Kubernetes.Workloads.Jenkinskubernetes.V1\xca\x02BProject\\Planton\\Provider\\Kubernetes\\Workloads\\Jenkinskubernetes\\V1\xe2\x02NProject\\Planton\\Provider\\Kubernetes\\Workloads\\Jenkinskubernetes\\V1\\GPBMetadata\xea\x02HProject::Planton::Provider::Kubernetes::Workloads::Jenkinskubernetes::V1b\x06proto3"
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01B\x87\x04\n" +
+	"Ecom.project.planton.provider.kubernetes.workload.jenkinskubernetes.v1B\tSpecProtoP\x01Z\x85\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/jenkinskubernetes/v1;jenkinskubernetesv1\xa2\x02\x06PPPKWJ\xaa\x02AProject.Planton.Provider.Kubernetes.Workload.Jenkinskubernetes.V1\xca\x02AProject\\Planton\\Provider\\Kubernetes\\Workload\\Jenkinskubernetes\\V1\xe2\x02MProject\\Planton\\Provider\\Kubernetes\\Workload\\Jenkinskubernetes\\V1\\GPBMetadata\xea\x02GProject::Planton::Provider::Kubernetes::Workload::Jenkinskubernetes::V1b\x06proto3"
 
 var (
 	file_project_planton_provider_kubernetes_workload_jenkinskubernetes_v1_spec_proto_rawDescOnce sync.Once
@@ -125,15 +125,15 @@ func file_project_planton_provider_kubernetes_workload_jenkinskubernetes_v1_spec
 
 var file_project_planton_provider_kubernetes_workload_jenkinskubernetes_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_kubernetes_workload_jenkinskubernetes_v1_spec_proto_goTypes = []any{
-	(*JenkinsKubernetesSpec)(nil),         // 0: project.planton.provider.kubernetes.workloads.jenkinskubernetes.v1.JenkinsKubernetesSpec
-	nil,                                   // 1: project.planton.provider.kubernetes.workloads.jenkinskubernetes.v1.JenkinsKubernetesSpec.HelmValuesEntry
+	(*JenkinsKubernetesSpec)(nil),         // 0: project.planton.provider.kubernetes.workload.jenkinskubernetes.v1.JenkinsKubernetesSpec
+	nil,                                   // 1: project.planton.provider.kubernetes.workload.jenkinskubernetes.v1.JenkinsKubernetesSpec.HelmValuesEntry
 	(*kubernetes.ContainerResources)(nil), // 2: project.planton.shared.kubernetes.ContainerResources
 	(*kubernetes.IngressSpec)(nil),        // 3: project.planton.shared.kubernetes.IngressSpec
 }
 var file_project_planton_provider_kubernetes_workload_jenkinskubernetes_v1_spec_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.kubernetes.workloads.jenkinskubernetes.v1.JenkinsKubernetesSpec.container_resources:type_name -> project.planton.shared.kubernetes.ContainerResources
-	1, // 1: project.planton.provider.kubernetes.workloads.jenkinskubernetes.v1.JenkinsKubernetesSpec.helm_values:type_name -> project.planton.provider.kubernetes.workloads.jenkinskubernetes.v1.JenkinsKubernetesSpec.HelmValuesEntry
-	3, // 2: project.planton.provider.kubernetes.workloads.jenkinskubernetes.v1.JenkinsKubernetesSpec.ingress:type_name -> project.planton.shared.kubernetes.IngressSpec
+	2, // 0: project.planton.provider.kubernetes.workload.jenkinskubernetes.v1.JenkinsKubernetesSpec.container_resources:type_name -> project.planton.shared.kubernetes.ContainerResources
+	1, // 1: project.planton.provider.kubernetes.workload.jenkinskubernetes.v1.JenkinsKubernetesSpec.helm_values:type_name -> project.planton.provider.kubernetes.workload.jenkinskubernetes.v1.JenkinsKubernetesSpec.HelmValuesEntry
+	3, // 2: project.planton.provider.kubernetes.workload.jenkinskubernetes.v1.JenkinsKubernetesSpec.ingress:type_name -> project.planton.shared.kubernetes.IngressSpec
 	3, // [3:3] is the sub-list for method output_type
 	3, // [3:3] is the sub-list for method input_type
 	3, // [3:3] is the sub-list for extension type_name

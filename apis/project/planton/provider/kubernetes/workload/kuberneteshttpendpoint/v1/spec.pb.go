@@ -240,20 +240,20 @@ var File_project_planton_provider_kubernetes_workload_kuberneteshttpendpoint_v1_
 
 const file_project_planton_provider_kubernetes_workload_kuberneteshttpendpoint_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Qproject/planton/provider/kubernetes/workload/kuberneteshttpendpoint/v1/spec.proto\x12Gproject.planton.provider.kubernetes.workloads.kuberneteshttpendpoint.v1\x1a\x1bbuf/validate/validate.proto\"\xc2\x02\n" +
+	"Qproject/planton/provider/kubernetes/workload/kuberneteshttpendpoint/v1/spec.proto\x12Fproject.planton.provider.kubernetes.workload.kuberneteshttpendpoint.v1\x1a\x1bbuf/validate/validate.proto\"\xc1\x02\n" +
 	"\x1aKubernetesHttpEndpointSpec\x12$\n" +
 	"\x0eis_tls_enabled\x18\x01 \x01(\bR\fisTlsEnabled\x127\n" +
 	"\x18cert_cluster_issuer_name\x18\x02 \x01(\tR\x15certClusterIssuerName\x123\n" +
-	"\x16is_grpc_web_compatible\x18\x03 \x01(\bR\x13isGrpcWebCompatible\x12\x8f\x01\n" +
-	"\rrouting_rules\x18\x04 \x03(\v2j.project.planton.provider.kubernetes.workloads.kuberneteshttpendpoint.v1.KubernetesHttpEndpointRoutingRuleR\froutingRules\"\xff\x01\n" +
+	"\x16is_grpc_web_compatible\x18\x03 \x01(\bR\x13isGrpcWebCompatible\x12\x8e\x01\n" +
+	"\rrouting_rules\x18\x04 \x03(\v2i.project.planton.provider.kubernetes.workload.kuberneteshttpendpoint.v1.KubernetesHttpEndpointRoutingRuleR\froutingRules\"\xfe\x01\n" +
 	"!KubernetesHttpEndpointRoutingRule\x12.\n" +
-	"\x0furl_path_prefix\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\rurlPathPrefix\x12\xa9\x01\n" +
-	"\x0fbackend_service\x18\x02 \x01(\v2x.project.planton.provider.kubernetes.workloads.kuberneteshttpendpoint.v1.KubernetesHttpEndpointRoutingRuleBackendServiceB\x06\xbaH\x03\xc8\x01\x01R\x0ebackendService\"w\n" +
+	"\x0furl_path_prefix\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\rurlPathPrefix\x12\xa8\x01\n" +
+	"\x0fbackend_service\x18\x02 \x01(\v2w.project.planton.provider.kubernetes.workload.kuberneteshttpendpoint.v1.KubernetesHttpEndpointRoutingRuleBackendServiceB\x06\xbaH\x03\xc8\x01\x01R\x0ebackendService\"w\n" +
 	"/KubernetesHttpEndpointRoutingRuleBackendService\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x1c\n" +
 	"\tnamespace\x18\x02 \x01(\tR\tnamespace\x12\x12\n" +
-	"\x04port\x18\x03 \x01(\x05R\x04portB\xaf\x04\n" +
-	"Kcom.project.planton.provider.kubernetes.workloads.kuberneteshttpendpoint.v1B\tSpecProtoP\x01Z\x8f\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/kuberneteshttpendpoint/v1;kuberneteshttpendpointv1\xa2\x02\x06PPPKWK\xaa\x02GProject.Planton.Provider.Kubernetes.Workloads.Kuberneteshttpendpoint.V1\xca\x02GProject\\Planton\\Provider\\Kubernetes\\Workloads\\Kuberneteshttpendpoint\\V1\xe2\x02SProject\\Planton\\Provider\\Kubernetes\\Workloads\\Kuberneteshttpendpoint\\V1\\GPBMetadata\xea\x02MProject::Planton::Provider::Kubernetes::Workloads::Kuberneteshttpendpoint::V1b\x06proto3"
+	"\x04port\x18\x03 \x01(\x05R\x04portB\xaa\x04\n" +
+	"Jcom.project.planton.provider.kubernetes.workload.kuberneteshttpendpoint.v1B\tSpecProtoP\x01Z\x8f\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/kuberneteshttpendpoint/v1;kuberneteshttpendpointv1\xa2\x02\x06PPPKWK\xaa\x02FProject.Planton.Provider.Kubernetes.Workload.Kuberneteshttpendpoint.V1\xca\x02FProject\\Planton\\Provider\\Kubernetes\\Workload\\Kuberneteshttpendpoint\\V1\xe2\x02RProject\\Planton\\Provider\\Kubernetes\\Workload\\Kuberneteshttpendpoint\\V1\\GPBMetadata\xea\x02LProject::Planton::Provider::Kubernetes::Workload::Kuberneteshttpendpoint::V1b\x06proto3"
 
 var (
 	file_project_planton_provider_kubernetes_workload_kuberneteshttpendpoint_v1_spec_proto_rawDescOnce sync.Once
@@ -269,13 +269,13 @@ func file_project_planton_provider_kubernetes_workload_kuberneteshttpendpoint_v1
 
 var file_project_planton_provider_kubernetes_workload_kuberneteshttpendpoint_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_project_planton_provider_kubernetes_workload_kuberneteshttpendpoint_v1_spec_proto_goTypes = []any{
-	(*KubernetesHttpEndpointSpec)(nil),                      // 0: project.planton.provider.kubernetes.workloads.kuberneteshttpendpoint.v1.KubernetesHttpEndpointSpec
-	(*KubernetesHttpEndpointRoutingRule)(nil),               // 1: project.planton.provider.kubernetes.workloads.kuberneteshttpendpoint.v1.KubernetesHttpEndpointRoutingRule
-	(*KubernetesHttpEndpointRoutingRuleBackendService)(nil), // 2: project.planton.provider.kubernetes.workloads.kuberneteshttpendpoint.v1.KubernetesHttpEndpointRoutingRuleBackendService
+	(*KubernetesHttpEndpointSpec)(nil),                      // 0: project.planton.provider.kubernetes.workload.kuberneteshttpendpoint.v1.KubernetesHttpEndpointSpec
+	(*KubernetesHttpEndpointRoutingRule)(nil),               // 1: project.planton.provider.kubernetes.workload.kuberneteshttpendpoint.v1.KubernetesHttpEndpointRoutingRule
+	(*KubernetesHttpEndpointRoutingRuleBackendService)(nil), // 2: project.planton.provider.kubernetes.workload.kuberneteshttpendpoint.v1.KubernetesHttpEndpointRoutingRuleBackendService
 }
 var file_project_planton_provider_kubernetes_workload_kuberneteshttpendpoint_v1_spec_proto_depIdxs = []int32{
-	1, // 0: project.planton.provider.kubernetes.workloads.kuberneteshttpendpoint.v1.KubernetesHttpEndpointSpec.routing_rules:type_name -> project.planton.provider.kubernetes.workloads.kuberneteshttpendpoint.v1.KubernetesHttpEndpointRoutingRule
-	2, // 1: project.planton.provider.kubernetes.workloads.kuberneteshttpendpoint.v1.KubernetesHttpEndpointRoutingRule.backend_service:type_name -> project.planton.provider.kubernetes.workloads.kuberneteshttpendpoint.v1.KubernetesHttpEndpointRoutingRuleBackendService
+	1, // 0: project.planton.provider.kubernetes.workload.kuberneteshttpendpoint.v1.KubernetesHttpEndpointSpec.routing_rules:type_name -> project.planton.provider.kubernetes.workload.kuberneteshttpendpoint.v1.KubernetesHttpEndpointRoutingRule
+	2, // 1: project.planton.provider.kubernetes.workload.kuberneteshttpendpoint.v1.KubernetesHttpEndpointRoutingRule.backend_service:type_name -> project.planton.provider.kubernetes.workload.kuberneteshttpendpoint.v1.KubernetesHttpEndpointRoutingRuleBackendService
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name
