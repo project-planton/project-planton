@@ -37,7 +37,7 @@ type GcpGkeClusterCoreStackInput struct {
 	Terraform *terraform.TerraformStackInfo `protobuf:"bytes,3,opt,name=terraform,proto3" json:"terraform,omitempty"`
 	// target api-resource
 	Target *GcpGkeClusterCore `protobuf:"bytes,4,opt,name=target,proto3" json:"target,omitempty"`
-	// gcp-credential
+	// provider-credential
 	ProviderCredential *v1.GcpCredentialSpec `protobuf:"bytes,5,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache

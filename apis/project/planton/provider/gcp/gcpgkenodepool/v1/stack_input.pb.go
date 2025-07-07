@@ -8,7 +8,7 @@ package gcpgkenodepoolv1
 
 import (
 	v1 "github.com/project-planton/project-planton/apis/project/planton/credential/gcpcredential/v1"
-	v11 "github.com/project-planton/project-planton/apis/project/planton/credential/kubernetesclustercredential/v1"
+	_ "github.com/project-planton/project-planton/apis/project/planton/credential/kubernetesclustercredential/v1"
 	shared "github.com/project-planton/project-planton/apis/project/planton/shared"
 	pulumi "github.com/project-planton/project-planton/apis/project/planton/shared/iac/pulumi"
 	terraform "github.com/project-planton/project-planton/apis/project/planton/shared/iac/terraform"
@@ -37,12 +37,10 @@ type GcpGkeNodePoolStackInput struct {
 	Terraform *terraform.TerraformStackInfo `protobuf:"bytes,3,opt,name=terraform,proto3" json:"terraform,omitempty"`
 	// target api-resource
 	Target *GcpGkeNodePool `protobuf:"bytes,4,opt,name=target,proto3" json:"target,omitempty"`
-	// gcp-credential
-	GcpCredential *v1.GcpCredentialSpec `protobuf:"bytes,5,opt,name=gcp_credential,json=gcpCredential,proto3" json:"gcp_credential,omitempty"`
-	// kubernetes-cluster-credential
-	KubernetesClusterCredential *v11.KubernetesClusterCredentialSpec `protobuf:"bytes,6,opt,name=kubernetes_cluster_credential,json=kubernetesClusterCredential,proto3" json:"kubernetes_cluster_credential,omitempty"`
-	unknownFields               protoimpl.UnknownFields
-	sizeCache                   protoimpl.SizeCache
+	// provider-credential
+	ProviderCredential *v1.GcpCredentialSpec `protobuf:"bytes,5,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
 }
 
 func (x *GcpGkeNodePoolStackInput) Reset() {
@@ -103,16 +101,9 @@ func (x *GcpGkeNodePoolStackInput) GetTarget() *GcpGkeNodePool {
 	return nil
 }
 
-func (x *GcpGkeNodePoolStackInput) GetGcpCredential() *v1.GcpCredentialSpec {
+func (x *GcpGkeNodePoolStackInput) GetProviderCredential() *v1.GcpCredentialSpec {
 	if x != nil {
-		return x.GcpCredential
-	}
-	return nil
-}
-
-func (x *GcpGkeNodePoolStackInput) GetKubernetesClusterCredential() *v11.KubernetesClusterCredentialSpec {
-	if x != nil {
-		return x.KubernetesClusterCredential
+		return x.ProviderCredential
 	}
 	return nil
 }
@@ -121,14 +112,13 @@ var File_project_planton_provider_gcp_gcpgkenodepool_v1_stack_input_proto protor
 
 const file_project_planton_provider_gcp_gcpgkenodepool_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"@project/planton/provider/gcp/gcpgkenodepool/v1/stack_input.proto\x12.project.planton.provider.gcp.gcpgkenodepool.v1\x1a6project/planton/credential/gcpcredential/v1/spec.proto\x1aDproject/planton/credential/kubernetesclustercredential/v1/spec.proto\x1a8project/planton/provider/gcp/gcpgkenodepool/v1/api.proto\x1a.project/planton/shared/iac/pulumi/pulumi.proto\x1a4project/planton/shared/iac/terraform/terraform.proto\x1a project/planton/shared/iac.proto\"\xe8\x04\n" +
+	"@project/planton/provider/gcp/gcpgkenodepool/v1/stack_input.proto\x12.project.planton.provider.gcp.gcpgkenodepool.v1\x1a6project/planton/credential/gcpcredential/v1/spec.proto\x1aDproject/planton/credential/kubernetesclustercredential/v1/spec.proto\x1a8project/planton/provider/gcp/gcpgkenodepool/v1/api.proto\x1a.project/planton/shared/iac/pulumi/pulumi.proto\x1a4project/planton/shared/iac/terraform/terraform.proto\x1a project/planton/shared/iac.proto\"\xd1\x03\n" +
 	"\x18GcpGkeNodePoolStackInput\x12H\n" +
 	"\vprovisioner\x18\x01 \x01(\x0e2&.project.planton.shared.IacProvisionerR\vprovisioner\x12J\n" +
 	"\x06pulumi\x18\x02 \x01(\v22.project.planton.shared.iac.pulumi.PulumiStackInfoR\x06pulumi\x12V\n" +
 	"\tterraform\x18\x03 \x01(\v28.project.planton.shared.iac.terraform.TerraformStackInfoR\tterraform\x12V\n" +
-	"\x06target\x18\x04 \x01(\v2>.project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePoolR\x06target\x12e\n" +
-	"\x0egcp_credential\x18\x05 \x01(\v2>.project.planton.credential.gcpcredential.v1.GcpCredentialSpecR\rgcpCredential\x12\x9e\x01\n" +
-	"\x1dkubernetes_cluster_credential\x18\x06 \x01(\v2Z.project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpecR\x1bkubernetesClusterCredentialB\x95\x03\n" +
+	"\x06target\x18\x04 \x01(\v2>.project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePoolR\x06target\x12o\n" +
+	"\x13provider_credential\x18\x05 \x01(\v2>.project.planton.credential.gcpcredential.v1.GcpCredentialSpecR\x12providerCredentialB\x95\x03\n" +
 	"2com.project.planton.provider.gcp.gcpgkenodepool.v1B\x0fStackInputProtoP\x01Zogithub.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpgkenodepool/v1;gcpgkenodepoolv1\xa2\x02\x05PPPGG\xaa\x02.Project.Planton.Provider.Gcp.Gcpgkenodepool.V1\xca\x02.Project\\Planton\\Provider\\Gcp\\Gcpgkenodepool\\V1\xe2\x02:Project\\Planton\\Provider\\Gcp\\Gcpgkenodepool\\V1\\GPBMetadata\xea\x023Project::Planton::Provider::Gcp::Gcpgkenodepool::V1b\x06proto3"
 
 var (
@@ -145,26 +135,24 @@ func file_project_planton_provider_gcp_gcpgkenodepool_v1_stack_input_proto_rawDe
 
 var file_project_planton_provider_gcp_gcpgkenodepool_v1_stack_input_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_gcp_gcpgkenodepool_v1_stack_input_proto_goTypes = []any{
-	(*GcpGkeNodePoolStackInput)(nil),            // 0: project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePoolStackInput
-	(shared.IacProvisioner)(0),                  // 1: project.planton.shared.IacProvisioner
-	(*pulumi.PulumiStackInfo)(nil),              // 2: project.planton.shared.iac.pulumi.PulumiStackInfo
-	(*terraform.TerraformStackInfo)(nil),        // 3: project.planton.shared.iac.terraform.TerraformStackInfo
-	(*GcpGkeNodePool)(nil),                      // 4: project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePool
-	(*v1.GcpCredentialSpec)(nil),                // 5: project.planton.credential.gcpcredential.v1.GcpCredentialSpec
-	(*v11.KubernetesClusterCredentialSpec)(nil), // 6: project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec
+	(*GcpGkeNodePoolStackInput)(nil),     // 0: project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePoolStackInput
+	(shared.IacProvisioner)(0),           // 1: project.planton.shared.IacProvisioner
+	(*pulumi.PulumiStackInfo)(nil),       // 2: project.planton.shared.iac.pulumi.PulumiStackInfo
+	(*terraform.TerraformStackInfo)(nil), // 3: project.planton.shared.iac.terraform.TerraformStackInfo
+	(*GcpGkeNodePool)(nil),               // 4: project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePool
+	(*v1.GcpCredentialSpec)(nil),         // 5: project.planton.credential.gcpcredential.v1.GcpCredentialSpec
 }
 var file_project_planton_provider_gcp_gcpgkenodepool_v1_stack_input_proto_depIdxs = []int32{
 	1, // 0: project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePoolStackInput.provisioner:type_name -> project.planton.shared.IacProvisioner
 	2, // 1: project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePoolStackInput.pulumi:type_name -> project.planton.shared.iac.pulumi.PulumiStackInfo
 	3, // 2: project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePoolStackInput.terraform:type_name -> project.planton.shared.iac.terraform.TerraformStackInfo
 	4, // 3: project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePoolStackInput.target:type_name -> project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePool
-	5, // 4: project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePoolStackInput.gcp_credential:type_name -> project.planton.credential.gcpcredential.v1.GcpCredentialSpec
-	6, // 5: project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePoolStackInput.kubernetes_cluster_credential:type_name -> project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec
-	6, // [6:6] is the sub-list for method output_type
-	6, // [6:6] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	5, // 4: project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePoolStackInput.provider_credential:type_name -> project.planton.credential.gcpcredential.v1.GcpCredentialSpec
+	5, // [5:5] is the sub-list for method output_type
+	5, // [5:5] is the sub-list for method input_type
+	5, // [5:5] is the sub-list for extension type_name
+	5, // [5:5] is the sub-list for extension extendee
+	0, // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_provider_gcp_gcpgkenodepool_v1_stack_input_proto_init() }

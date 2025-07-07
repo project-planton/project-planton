@@ -19,6 +19,6 @@ message GcpGkeClusterCoreStackInput {
   project.planton.shared.iac.terraform.TerraformStackInfo terraform = 3;
   //target api-resource
   GcpGkeClusterCore target = 4;
-  //gcp-credential
+  //provider-credential
   project.planton.credential.gcpcredential.v1.GcpCredentialSpec provider_credential = 5;
 }

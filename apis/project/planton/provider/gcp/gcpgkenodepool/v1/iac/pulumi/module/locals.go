@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"strconv"
 
-	gcpcredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/gcpcredential/v1"
-	kubernetesclustercredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/kubernetesclustercredential/v1"
 	gcpgkenodepoolv1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpgkenodepool/v1"
 	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/gcp/gcplabelkeys"
@@ -17,10 +15,7 @@ import (
 // can reference them without additional look‑ups or helpers.
 // Keeping this struct simple (no getters) helps mimic Terraform's "locals".
 type Locals struct {
-	// Raw inputs
-	GcpCredentialSpec               *gcpcredentialv1.GcpCredentialSpec
-	KubernetesClusterCredentialSpec *kubernetesclustercredentialv1.KubernetesClusterCredentialSpec
-	GcpGkeNodePool                  *gcpgkenodepoolv1.GcpGkeNodePool
+	GcpGkeNodePool *gcpgkenodepoolv1.GcpGkeNodePool
 
 	// Derived convenience values
 	GcpLabels        map[string]string
@@ -35,8 +30,6 @@ func initializeLocals(ctx *pulumi.Context, stackInput *gcpgkenodepoolv1.GcpGkeNo
 	locals := &Locals{}
 
 	locals.GcpGkeNodePool = stackInput.Target
-	locals.GcpCredentialSpec = stackInput.GcpCredential
-	locals.KubernetesClusterCredentialSpec = stackInput.KubernetesClusterCredential
 
 	// Attempt to resolve the parent cluster name from the foreign‑key field.
 	// We check both the literal value and any reference string; fallback to empty.
