@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package project.planton.provider.kubernetes.workloads.neo4jkubernetes.v1;
+
+import "buf/validate/validate.proto";
+import "project/planton/provider/kubernetes/workload/neo4jkubernetes/v1/spec.proto";
+import "project/planton/provider/kubernetes/workload/neo4jkubernetes/v1/stack_outputs.proto";
+import "project/planton/shared/status.proto";
+import "project/planton/shared/metadata.proto";
+
+//neo4j-kubernetes
+message Neo4jKubernetes {
+  //api-version
+  string api_version = 1 [
+    (buf.validate.field).string.const = 'kubernetes.project-planton.org/v1'
+  ];
+
+  //resource-kind
+  string kind = 2 [
+    (buf.validate.field).string.const = 'Neo4jKubernetes'
+  ];
+
+  //metadata
+  project.planton.shared.ApiResourceMetadata metadata = 3 [
+    (buf.validate.field).required = true
+  ];
+
+  //spec
+  Neo4jKubernetesSpec spec = 4 [
+    (buf.validate.field).required = true
+  ];
+
+  //status
+  Neo4jKubernetesStatus status = 5;
+}
+
+//neo4j-kubernetes status.
+message Neo4jKubernetesStatus {
+  //lifecycle
+  project.planton.shared.ApiResourceLifecycle lifecycle = 99;
+
+  //audit-info
+  project.planton.shared.ApiResourceAudit audit = 98;
+
+  //stack-job id
+  string stack_job_id = 97;
+
+  //stack-outputs
+  Neo4jKubernetesStackOutputs outputs = 1;
+}
