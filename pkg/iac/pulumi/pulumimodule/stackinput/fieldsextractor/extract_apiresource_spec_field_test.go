@@ -37,7 +37,7 @@ func TestExtractApiResourceSpecField_NilInput(t *testing.T) {
 
 // TestExtractApiResourceSpecField_InvalidTargetField tests the scenario where the target field is missing or invalid.
 func TestExtractApiResourceSpecField_InvalidTargetField(t *testing.T) {
-	// Create a mock input without a valid Target field
+	// Create a mock input without a valid PostgresOperatorKubernetes field
 	mockStackInput := &awslambdav1.AwsLambdaStackInput{Target: nil}
 
 	// Call the function under test
