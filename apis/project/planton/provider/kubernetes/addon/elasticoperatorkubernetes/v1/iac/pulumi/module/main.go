@@ -7,12 +7,20 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-func Resources(ctx *pulumi.Context, stackInput *elasticoperatorkubernetesv1.ElasticOperatorKubernetesStackInput) error {
-	//create kubernetes-provider from the credential in the stack-input
-	_, err := pulumikubernetesprovider.GetWithKubernetesClusterCredential(ctx,
-		stackInput.ProviderCredential, "kubernetes")
+// Resources is the Pulumi entry‑point.
+func Resources(ctx *pulumi.Context,
+	in *elasticoperatorkubernetesv1.ElasticOperatorKubernetesStackInput) error {
+
+	locals := initializeLocals(ctx, in)
+
+	k8sProvider, err := pulumikubernetesprovider.GetWithKubernetesClusterCredential(
+		ctx, in.ProviderCredential, "kubernetes")
 	if err != nil {
-		return errors.Wrap(err, "failed to setup gcp provider")
+		return errors.Wrap(err, "setup kubernetes provider")
+	}
+
+	if err = elasticOperator(ctx, locals, k8sProvider); err != nil {
+		return errors.Wrap(err, "deploy elastic operator")
 	}
 
 	return nil

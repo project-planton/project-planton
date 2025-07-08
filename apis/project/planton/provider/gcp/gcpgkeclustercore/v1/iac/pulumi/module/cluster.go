@@ -38,7 +38,7 @@ func cluster(ctx *pulumi.Context, locals *Locals, gcpProvider *gcp.Provider) (*c
 			}),
 	})
 
-	// ------ Cluster Resource --------------------------------------------------------------------
+	// ------ Cluster ElasticOperatorKubernetes --------------------------------------------------------------------
 	createdCluster, err := container.NewCluster(ctx,
 		"cluster",
 		&container.ClusterArgs{

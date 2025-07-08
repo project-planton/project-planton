@@ -3918,7 +3918,7 @@ type KafkaUserSpecAuthorizationAclsResource struct {
 	Name *string `pulumi:"name"`
 	// Describes the pattern used in the resource field. The supported types are `literal` and `prefix`. With `literal` pattern type, the resource field will be used as a definition of a full name. With `prefix` pattern type, the resource name will be used only as a prefix. Default value is `literal`.
 	PatternType *string `pulumi:"patternType"`
-	// Resource type. The available resource types are `topic`, `group`, `cluster`, and `transactionalId`.
+	// ElasticOperatorKubernetes type. The available resource types are `topic`, `group`, `cluster`, and `transactionalId`.
 	Type *string `pulumi:"type"`
 }
 
@@ -3939,7 +3939,7 @@ type KafkaUserSpecAuthorizationAclsResourceArgs struct {
 	Name pulumi.StringPtrInput `pulumi:"name"`
 	// Describes the pattern used in the resource field. The supported types are `literal` and `prefix`. With `literal` pattern type, the resource field will be used as a definition of a full name. With `prefix` pattern type, the resource name will be used only as a prefix. Default value is `literal`.
 	PatternType pulumi.StringPtrInput `pulumi:"patternType"`
-	// Resource type. The available resource types are `topic`, `group`, `cluster`, and `transactionalId`.
+	// ElasticOperatorKubernetes type. The available resource types are `topic`, `group`, `cluster`, and `transactionalId`.
 	Type pulumi.StringPtrInput `pulumi:"type"`
 }
 
@@ -4031,7 +4031,7 @@ func (o KafkaUserSpecAuthorizationAclsResourceOutput) PatternType() pulumi.Strin
 	return o.ApplyT(func(v KafkaUserSpecAuthorizationAclsResource) *string { return v.PatternType }).(pulumi.StringPtrOutput)
 }
 
-// Resource type. The available resource types are `topic`, `group`, `cluster`, and `transactionalId`.
+// ElasticOperatorKubernetes type. The available resource types are `topic`, `group`, `cluster`, and `transactionalId`.
 func (o KafkaUserSpecAuthorizationAclsResourceOutput) Type() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v KafkaUserSpecAuthorizationAclsResource) *string { return v.Type }).(pulumi.StringPtrOutput)
 }
@@ -4080,7 +4080,7 @@ func (o KafkaUserSpecAuthorizationAclsResourcePtrOutput) PatternType() pulumi.St
 	}).(pulumi.StringPtrOutput)
 }
 
-// Resource type. The available resource types are `topic`, `group`, `cluster`, and `transactionalId`.
+// ElasticOperatorKubernetes type. The available resource types are `topic`, `group`, `cluster`, and `transactionalId`.
 func (o KafkaUserSpecAuthorizationAclsResourcePtrOutput) Type() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *KafkaUserSpecAuthorizationAclsResource) *string {
 		if v == nil {
@@ -4096,7 +4096,7 @@ type KafkaUserSpecAuthorizationAclsResourcePatch struct {
 	Name *string `pulumi:"name"`
 	// Describes the pattern used in the resource field. The supported types are `literal` and `prefix`. With `literal` pattern type, the resource field will be used as a definition of a full name. With `prefix` pattern type, the resource name will be used only as a prefix. Default value is `literal`.
 	PatternType *string `pulumi:"patternType"`
-	// Resource type. The available resource types are `topic`, `group`, `cluster`, and `transactionalId`.
+	// ElasticOperatorKubernetes type. The available resource types are `topic`, `group`, `cluster`, and `transactionalId`.
 	Type *string `pulumi:"type"`
 }
 
@@ -4117,7 +4117,7 @@ type KafkaUserSpecAuthorizationAclsResourcePatchArgs struct {
 	Name pulumi.StringPtrInput `pulumi:"name"`
 	// Describes the pattern used in the resource field. The supported types are `literal` and `prefix`. With `literal` pattern type, the resource field will be used as a definition of a full name. With `prefix` pattern type, the resource name will be used only as a prefix. Default value is `literal`.
 	PatternType pulumi.StringPtrInput `pulumi:"patternType"`
-	// Resource type. The available resource types are `topic`, `group`, `cluster`, and `transactionalId`.
+	// ElasticOperatorKubernetes type. The available resource types are `topic`, `group`, `cluster`, and `transactionalId`.
 	Type pulumi.StringPtrInput `pulumi:"type"`
 }
 
@@ -4209,7 +4209,7 @@ func (o KafkaUserSpecAuthorizationAclsResourcePatchOutput) PatternType() pulumi.
 	return o.ApplyT(func(v KafkaUserSpecAuthorizationAclsResourcePatch) *string { return v.PatternType }).(pulumi.StringPtrOutput)
 }
 
-// Resource type. The available resource types are `topic`, `group`, `cluster`, and `transactionalId`.
+// ElasticOperatorKubernetes type. The available resource types are `topic`, `group`, `cluster`, and `transactionalId`.
 func (o KafkaUserSpecAuthorizationAclsResourcePatchOutput) Type() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v KafkaUserSpecAuthorizationAclsResourcePatch) *string { return v.Type }).(pulumi.StringPtrOutput)
 }
@@ -4258,7 +4258,7 @@ func (o KafkaUserSpecAuthorizationAclsResourcePatchPtrOutput) PatternType() pulu
 	}).(pulumi.StringPtrOutput)
 }
 
-// Resource type. The available resource types are `topic`, `group`, `cluster`, and `transactionalId`.
+// ElasticOperatorKubernetes type. The available resource types are `topic`, `group`, `cluster`, and `transactionalId`.
 func (o KafkaUserSpecAuthorizationAclsResourcePatchPtrOutput) Type() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *KafkaUserSpecAuthorizationAclsResourcePatch) *string {
 		if v == nil {

@@ -7,12 +7,25 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
+// Resources is the Pulumi entry‑point invoked by the Project‑Planton CLI.
 func Resources(ctx *pulumi.Context, stackInput *postgresoperatorkubernetesv1.PostgresOperatorKubernetesStackInput) error {
-	//create kubernetes-provider from the credential in the stack-input
-	_, err := pulumikubernetesprovider.GetWithKubernetesClusterCredential(ctx,
-		stackInput.ProviderCredential, "kubernetes")
+	// Translate incoming protobuf‑generated types into helper data we
+	//                need throughout the module (labels, metadata, etc.).
+	locals := initializeLocals(ctx, stackInput)
+
+	// Create a Kubernetes provider from the supplied cluster credential.
+	kubernetesProvider, err := pulumikubernetesprovider.GetWithKubernetesClusterCredential(
+		ctx,
+		stackInput.ProviderCredential,
+		"kubernetes",
+	)
 	if err != nil {
-		return errors.Wrap(err, "failed to setup gcp provider")
+		return errors.Wrap(err, "failed to set up kubernetes provider")
+	}
+
+	// Install / upgrade the Zalando Postgres‑Operator.
+	if err := postgresOperator(ctx, locals, kubernetesProvider); err != nil {
+		return errors.Wrap(err, "failed to install postgres-operator resources")
 	}
 
 	return nil
