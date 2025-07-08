@@ -2,14 +2,74 @@ syntax = "proto3";
 
 package project.planton.provider.kubernetes.addon.ingressnginxkubernetes.v1;
 
+import "buf/validate/validate.proto";
+import "project/planton/shared/foreignkey/v1/foreign_key.proto";
+import "project/planton/shared/options/options.proto";
 import "project/planton/shared/kubernetes/target_cluster.proto";
 
-// IngressNginxKubernetesSpec defines the specification for the Ingress Nginx Kubernetes resource.
+// IngressNginxKubernetesSpec defines configuration for ingress‑nginx on any cluster.
 message IngressNginxKubernetesSpec {
   // The Kubernetes cluster to install this addon on.
   project.planton.shared.kubernetes.KubernetesAddonTargetCluster target_cluster = 1;
-  // Chart version (e.g. "4.10.1").
+
+  // Upstream Helm chart version tag (e.g. "4.11.1").
   string chart_version = 2;
-  // flag to indicate if the ingress controller is internal or external
+
+  // Deploy the controller with an **internal** load balancer.
+  // The default (false) produces an external LB where the provider supports it.
   bool internal = 3;
+
+  // Provider‑specific glue (exactly one block may be set).
+  oneof provider_config {
+    IngressNginxGkeConfig gke = 100;
+    IngressNginxEksConfig eks = 101;
+    IngressNginxAksConfig aks = 102;
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Google Kubernetes Engine (GKE) – Cloud Load Balancer options
+// -----------------------------------------------------------------------------
+message IngressNginxGkeConfig {
+  // Name of an existing reserved static IP address (global or regional)
+  // to be assigned to the load balancer.
+  string static_ip_name = 1;
+
+  // Sub‑network self‑link to use when `internal = true`.
+  string subnetwork_self_link = 2;
+}
+
+// -----------------------------------------------------------------------------
+// Amazon EKS – Classic ELB/NLB options
+// -----------------------------------------------------------------------------
+message IngressNginxEksConfig {
+  // Security‑group IDs to attach to the load balancer (adds to the
+  // controller‑managed SG).
+  repeated project.planton.shared.foreignkey.v1.StringValueOrRef additional_security_group_ids = 1 [
+    (project.planton.shared.foreignkey.v1.default_kind) = AwsSecurityGroup,
+    (project.planton.shared.foreignkey.v1.default_kind_field_path) = "status.outputs.id"
+  ];
+
+  // Subnet IDs where the ELB/NLB should be placed.  Leave empty to let AWS
+  // pick all subnets of the selected scheme (public/private).
+  repeated project.planton.shared.foreignkey.v1.StringValueOrRef subnet_ids = 2 [
+    (project.planton.shared.foreignkey.v1.default_kind) = AwsVpc,
+    (project.planton.shared.foreignkey.v1.default_kind_field_path) = "status.outputs.public_subnet_ids"
+  ];
+
+  // Optional existing IAM role ARN for IRSA.  If empty the stack can
+  // auto‑create and wire up a role.
+  string irsa_role_arn_override = 3;
+}
+
+// -----------------------------------------------------------------------------
+// Microsoft AKS – Azure Load Balancer options
+// -----------------------------------------------------------------------------
+message IngressNginxAksConfig {
+  // Client ID of a user‑assigned managed identity that should be bound to the
+  // controller’s ServiceAccount (via Azure Workload Identity).
+  string managed_identity_client_id = 1;
+
+  // Name of a pre‑existing public IP resource to reuse for the load balancer.
+  string public_ip_name = 2;
 }

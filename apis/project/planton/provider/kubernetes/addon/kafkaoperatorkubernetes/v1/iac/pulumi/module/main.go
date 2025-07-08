@@ -7,7 +7,7 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// Resources is the entry‑point called by the Project Planton engine.
+// Resources is the entry‑point called by the Project Planton engine.
 func Resources(
 	ctx *pulumi.Context,
 	stackInput *kafkaoperatorkubernetesv1.KafkaOperatorKubernetesStackInput,
