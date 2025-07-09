@@ -41,8 +41,10 @@ type GcpGkeAddonBundleStackInput struct {
 	GcpCredential *v1.GcpCredentialSpec `protobuf:"bytes,5,opt,name=gcp_credential,json=gcpCredential,proto3" json:"gcp_credential,omitempty"`
 	// kubernetes-cluster-credential
 	KubernetesClusterCredential *v11.KubernetesClusterCredentialSpec `protobuf:"bytes,6,opt,name=kubernetes_cluster_credential,json=kubernetesClusterCredential,proto3" json:"kubernetes_cluster_credential,omitempty"`
-	unknownFields               protoimpl.UnknownFields
-	sizeCache                   protoimpl.SizeCache
+	// gcp-credential
+	ProviderCredential *v1.GcpCredentialSpec `protobuf:"bytes,7,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
 }
 
 func (x *GcpGkeAddonBundleStackInput) Reset() {
@@ -117,18 +119,26 @@ func (x *GcpGkeAddonBundleStackInput) GetKubernetesClusterCredential() *v11.Kube
 	return nil
 }
 
+func (x *GcpGkeAddonBundleStackInput) GetProviderCredential() *v1.GcpCredentialSpec {
+	if x != nil {
+		return x.ProviderCredential
+	}
+	return nil
+}
+
 var File_project_planton_provider_gcp_gcpgkeaddonbundle_v1_stack_input_proto protoreflect.FileDescriptor
 
 const file_project_planton_provider_gcp_gcpgkeaddonbundle_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Cproject/planton/provider/gcp/gcpgkeaddonbundle/v1/stack_input.proto\x121project.planton.provider.gcp.gcpgkeaddonbundle.v1\x1a6project/planton/credential/gcpcredential/v1/spec.proto\x1aDproject/planton/credential/kubernetesclustercredential/v1/spec.proto\x1a;project/planton/provider/gcp/gcpgkeaddonbundle/v1/api.proto\x1a.project/planton/shared/iac/pulumi/pulumi.proto\x1a4project/planton/shared/iac/terraform/terraform.proto\x1a project/planton/shared/iac.proto\"\xf1\x04\n" +
+	"Cproject/planton/provider/gcp/gcpgkeaddonbundle/v1/stack_input.proto\x121project.planton.provider.gcp.gcpgkeaddonbundle.v1\x1a6project/planton/credential/gcpcredential/v1/spec.proto\x1aDproject/planton/credential/kubernetesclustercredential/v1/spec.proto\x1a;project/planton/provider/gcp/gcpgkeaddonbundle/v1/api.proto\x1a.project/planton/shared/iac/pulumi/pulumi.proto\x1a4project/planton/shared/iac/terraform/terraform.proto\x1a project/planton/shared/iac.proto\"\xe2\x05\n" +
 	"\x1bGcpGkeAddonBundleStackInput\x12H\n" +
 	"\vprovisioner\x18\x01 \x01(\x0e2&.project.planton.shared.IacProvisionerR\vprovisioner\x12J\n" +
 	"\x06pulumi\x18\x02 \x01(\v22.project.planton.shared.iac.pulumi.PulumiStackInfoR\x06pulumi\x12V\n" +
 	"\tterraform\x18\x03 \x01(\v28.project.planton.shared.iac.terraform.TerraformStackInfoR\tterraform\x12\\\n" +
 	"\x06target\x18\x04 \x01(\v2D.project.planton.provider.gcp.gcpgkeaddonbundle.v1.GcpGkeAddonBundleR\x06target\x12e\n" +
 	"\x0egcp_credential\x18\x05 \x01(\v2>.project.planton.credential.gcpcredential.v1.GcpCredentialSpecR\rgcpCredential\x12\x9e\x01\n" +
-	"\x1dkubernetes_cluster_credential\x18\x06 \x01(\v2Z.project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpecR\x1bkubernetesClusterCredentialB\xaa\x03\n" +
+	"\x1dkubernetes_cluster_credential\x18\x06 \x01(\v2Z.project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpecR\x1bkubernetesClusterCredential\x12o\n" +
+	"\x13provider_credential\x18\a \x01(\v2>.project.planton.credential.gcpcredential.v1.GcpCredentialSpecR\x12providerCredentialB\xaa\x03\n" +
 	"5com.project.planton.provider.gcp.gcpgkeaddonbundle.v1B\x0fStackInputProtoP\x01Zugithub.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpgkeaddonbundle/v1;gcpgkeaddonbundlev1\xa2\x02\x05PPPGG\xaa\x021Project.Planton.Provider.Gcp.Gcpgkeaddonbundle.V1\xca\x021Project\\Planton\\Provider\\Gcp\\Gcpgkeaddonbundle\\V1\xe2\x02=Project\\Planton\\Provider\\Gcp\\Gcpgkeaddonbundle\\V1\\GPBMetadata\xea\x026Project::Planton::Provider::Gcp::Gcpgkeaddonbundle::V1b\x06proto3"
 
 var (
@@ -160,11 +170,12 @@ var file_project_planton_provider_gcp_gcpgkeaddonbundle_v1_stack_input_proto_dep
 	4, // 3: project.planton.provider.gcp.gcpgkeaddonbundle.v1.GcpGkeAddonBundleStackInput.target:type_name -> project.planton.provider.gcp.gcpgkeaddonbundle.v1.GcpGkeAddonBundle
 	5, // 4: project.planton.provider.gcp.gcpgkeaddonbundle.v1.GcpGkeAddonBundleStackInput.gcp_credential:type_name -> project.planton.credential.gcpcredential.v1.GcpCredentialSpec
 	6, // 5: project.planton.provider.gcp.gcpgkeaddonbundle.v1.GcpGkeAddonBundleStackInput.kubernetes_cluster_credential:type_name -> project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec
-	6, // [6:6] is the sub-list for method output_type
-	6, // [6:6] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	5, // 6: project.planton.provider.gcp.gcpgkeaddonbundle.v1.GcpGkeAddonBundleStackInput.provider_credential:type_name -> project.planton.credential.gcpcredential.v1.GcpCredentialSpec
+	7, // [7:7] is the sub-list for method output_type
+	7, // [7:7] is the sub-list for method input_type
+	7, // [7:7] is the sub-list for extension type_name
+	7, // [7:7] is the sub-list for extension extendee
+	0, // [0:7] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_provider_gcp_gcpgkeaddonbundle_v1_stack_input_proto_init() }

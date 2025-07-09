@@ -23,4 +23,6 @@ message GcpGkeAddonBundleStackInput {
   project.planton.credential.gcpcredential.v1.GcpCredentialSpec gcp_credential = 5;
   //kubernetes-cluster-credential
   project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec kubernetes_cluster_credential = 6;
+  //gcp-credential
+  project.planton.credential.gcpcredential.v1.GcpCredentialSpec provider_credential = 7;
 }

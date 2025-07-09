@@ -10,9 +10,9 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// Resources creates all Pulumi resources for the Cert‑Manager Kubernetes add‑on.
+// Resources create all Pulumi resources for the Cert‑Manager Kubernetes add‑on.
 func Resources(ctx *pulumi.Context, stackInput *certmanagerv1.CertManagerKubernetesStackInput) error {
-	// set up kubernetes provider from the supplied cluster credential
+	// set up a kubernetes provider from the supplied cluster credential
 	kubeProvider, err := pulumikubernetesprovider.GetWithKubernetesClusterCredential(
 		ctx, stackInput.ProviderCredential, "kubernetes")
 	if err != nil {
@@ -63,7 +63,7 @@ func Resources(ctx *pulumi.Context, stackInput *certmanagerv1.CertManagerKuberne
 		solverIdentity = pulumi.String(aks.ManagedIdentityClientId)
 	}
 
-	// create ServiceAccount with the chosen annotations
+	// create a ServiceAccount with the chosen annotations
 	_, err = corev1.NewServiceAccount(ctx, vars.KsaName,
 		&corev1.ServiceAccountArgs{
 			Metadata: &metav1.ObjectMetaArgs{
