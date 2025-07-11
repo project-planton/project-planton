@@ -1,0 +1,289 @@
+syntax = "proto3";
+
+package project.planton.provider.aws.awsdynamodb.v1;
+
+import "buf/validate/validate.proto";
+
+// AwsDynamodbSpec captures the desired state of an Amazon DynamoDB table.
+// The message attempts to cover the vast majority of real-world table
+// configurations while remaining concise and human-friendly.
+message AwsDynamodbSpec {
+  // Unique name of the table (per AWS account / region).
+  string table_name = 1 [
+    (buf.validate.field).string = {
+      min_len: 3,
+      max_len: 255
+    }
+  ];
+
+  // How read / write capacity is billed.
+  BillingMode billing_mode = 2 [
+    (buf.validate.field).enum = {
+      defined_only: true,
+      not_in: [0]               // Disallow BILLING_MODE_UNSPECIFIED
+    }
+  ];
+
+  // Provisioned throughput settings (used only when billing_mode == PROVISIONED).
+  ProvisionedThroughput provisioned_throughput = 3;
+
+  // Attribute definitions referenced by the key schema or indexes.
+  repeated AttributeDefinition attribute_definitions = 4 [
+    (buf.validate.field).repeated.min_items = 1
+  ];
+
+  // Partition key (HASH) and optional sort key (RANGE) for the table.
+  repeated KeySchemaElement key_schema = 5 [
+    (buf.validate.field).repeated = {
+      min_items: 1,
+      max_items: 2              // HASH (required) + optional RANGE
+    }
+  ];
+
+  // Global secondary indexes (GSI).
+  repeated GlobalSecondaryIndex global_secondary_indexes = 6;
+
+  // Local secondary indexes (LSI).
+  repeated LocalSecondaryIndex local_secondary_indexes = 7;
+
+  // DynamoDB Streams configuration.
+  StreamSpecification stream_specification = 8;
+
+  // Server-side encryption configuration.
+  ServerSideEncryptionSpecification server_side_encryption = 9;
+
+  // Time-to-live (TTL) configuration.
+  TimeToLiveSpecification ttl = 10;
+
+  // Point-in-time recovery (PITR) configuration.
+  PointInTimeRecoverySpecification point_in_time_recovery = 11;
+
+  // Resource tag set.
+  map<string, string> tags = 12 [
+    (buf.validate.field).map = {
+      keys:   { string: { min_len: 1 } },
+      values: { string: { min_len: 1 } }
+    }
+  ];
+
+  // Table storage class (standard or infrequent access).
+  TableClass table_class = 13 [
+    (buf.validate.field).enum = {
+      defined_only: true,
+      not_in: [0]               // Disallow TABLE_CLASS_UNSPECIFIED
+    }
+  ];
+
+  // Prevents accidental deletion when true.
+  bool deletion_protection_enabled = 14;
+
+  // Regional replicas for a global table.
+  repeated ReplicaSpecification replicas = 15;
+
+  // Optional automatic scaling configuration for provisioned capacity.
+  CapacityAutoScalingSettings capacity_auto_scaling = 16;
+}
+
+/* ========================  ENUMS  ======================== */
+
+// Billing options.
+enum BillingMode {
+  BILLING_MODE_UNSPECIFIED = 0;
+  PROVISIONED = 1;
+  PAY_PER_REQUEST = 2;
+}
+
+// Attribute data types.
+enum AttributeType {
+  ATTRIBUTE_TYPE_UNSPECIFIED = 0;
+  STRING = 1; // "S"
+  NUMBER = 2; // "N"
+  BINARY = 3; // "B"
+}
+
+// Key types for the primary and secondary indexes.
+enum KeyType {
+  KEY_TYPE_UNSPECIFIED = 0;
+  HASH = 1;  // Partition key
+  RANGE = 2; // Sort key
+}
+
+// Projection types for index definitions.
+enum ProjectionType {
+  PROJECTION_TYPE_UNSPECIFIED = 0;
+  ALL = 1;
+  KEYS_ONLY = 2;
+  INCLUDE = 3;
+}
+
+// Stream view types.
+enum StreamViewType {
+  STREAM_VIEW_TYPE_UNSPECIFIED = 0;
+  NEW_IMAGE = 1;
+  OLD_IMAGE = 2;
+  NEW_AND_OLD_IMAGES = 3;
+  KEYS_ONLY = 4;
+}
+
+// Table storage classes.
+enum TableClass {
+  TABLE_CLASS_UNSPECIFIED = 0;
+  STANDARD = 1;
+  STANDARD_INFREQUENT_ACCESS = 2;
+}
+
+/* ======================  MESSAGES  ======================= */
+
+// Definition of an attribute used in keys or indexes.
+message AttributeDefinition {
+  string attribute_name = 1 [
+    (buf.validate.field).string.min_len = 1
+  ];
+  AttributeType attribute_type = 2 [
+    (buf.validate.field).enum = {
+      defined_only: true,
+      not_in: [0]               // Disallow ATTRIBUTE_TYPE_UNSPECIFIED
+    }
+  ];
+}
+
+// Single element of a key schema.
+message KeySchemaElement {
+  string attribute_name = 1 [
+    (buf.validate.field).string.min_len = 1
+  ];
+  KeyType key_type = 2 [
+    (buf.validate.field).enum = {
+      defined_only: true,
+      not_in: [0]               // Disallow KEY_TYPE_UNSPECIFIED
+    }
+  ];
+}
+
+// Provisioned throughput (RCU / WCU).
+message ProvisionedThroughput {
+  int64 read_capacity_units = 1 [
+    (buf.validate.field).int64.gt = 0
+  ];
+  int64 write_capacity_units = 2 [
+    (buf.validate.field).int64.gt = 0
+  ];
+}
+
+// Projection configuration for indexes.
+message Projection {
+  ProjectionType projection_type = 1 [
+    (buf.validate.field).enum = {
+      defined_only: true,
+      not_in: [0]               // Disallow PROJECTION_TYPE_UNSPECIFIED
+    }
+  ];
+  // Populated only when projection_type == INCLUDE.
+  repeated string non_key_attributes = 2 [
+    (buf.validate.field).repeated.min_items = 1,
+    (buf.validate.field).string.min_len = 1
+  ];
+}
+
+// Global Secondary Index definition.
+message GlobalSecondaryIndex {
+  string index_name = 1 [
+    (buf.validate.field).string.min_len = 1
+  ];
+  repeated KeySchemaElement key_schema = 2 [
+    (buf.validate.field).repeated.min_items = 1
+  ];
+  Projection projection = 3 [
+    (buf.validate.field).required = true
+  ];
+  // Required when billing_mode == PROVISIONED.
+  ProvisionedThroughput provisioned_throughput = 4;
+}
+
+// Local Secondary Index definition.
+message LocalSecondaryIndex {
+  string index_name = 1 [
+    (buf.validate.field).string.min_len = 1
+  ];
+  repeated KeySchemaElement key_schema = 2 [
+    (buf.validate.field).repeated.min_items = 1
+  ];
+  Projection projection = 3 [
+    (buf.validate.field).required = true
+  ];
+}
+
+// DynamoDB Streams configuration.
+message StreamSpecification {
+  bool enabled = 1;
+  StreamViewType view_type = 2 [
+    (buf.validate.field).enum.defined_only = true
+  ];
+}
+
+// Server-side encryption settings.
+message ServerSideEncryptionSpecification {
+  bool enabled = 1;
+  // Optional KMS key ARN. If omitted, AWS owned CMK is used.
+  string kms_key_arn = 2 [
+    (buf.validate.field).string = {
+      pattern: "^arn:[a-z-]*:kms:[a-z0-9-]*:[0-9]{12}:key/[a-f0-9-]+$",
+      ignore_empty: true
+    }
+  ];
+}
+
+// TTL configuration.
+message TimeToLiveSpecification {
+  bool enabled = 1;
+  string attribute_name = 2 [
+    (buf.validate.field).string = {
+      min_len: 1,
+      ignore_empty: true
+    }
+  ];
+}
+
+// Point-in-time recovery configuration.
+message PointInTimeRecoverySpecification {
+  bool enabled = 1;
+}
+
+// Regional replica for a global table.
+message ReplicaSpecification {
+  string region_name = 1 [
+    (buf.validate.field).string.pattern = "^[a-z0-9-]+$"
+  ];
+  // Optional KMS key ARN for the replica.
+  string kms_key_arn = 2 [
+    (buf.validate.field).string = {
+      pattern: "^arn:[a-z-]*:kms:[a-z0-9-]*:[0-9]{12}:key/[a-f0-9-]+$",
+      ignore_empty: true
+    }
+  ];
+}
+
+// Auto-scaling settings for provisioned capacity.
+message CapacityAutoScalingSettings {
+  bool enabled = 1;
+
+  int64 min_read_capacity_units = 2 [
+    (buf.validate.field).int64.gte = 0
+  ];
+  int64 max_read_capacity_units = 3 [
+    (buf.validate.field).int64.gt = 0
+  ];
+  int64 target_read_utilization_percent = 4 [
+    (buf.validate.field).int64 = { gte: 10, lte: 95 }
+  ];
+
+  int64 min_write_capacity_units = 5 [
+    (buf.validate.field).int64.gte = 0
+  ];
+  int64 max_write_capacity_units = 6 [
+    (buf.validate.field).int64.gt = 0
+  ];
+  int64 target_write_utilization_percent = 7 [
+    (buf.validate.field).int64 = { gte: 10, lte: 95 }
+  ];
+}
