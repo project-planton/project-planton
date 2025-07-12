@@ -7,6 +7,7 @@
 package awsdynamodbv1
 
 import (
+	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -25,13 +26,10 @@ const (
 type ScalarAttributeType int32
 
 const (
-	ScalarAttributeType_ATTRIBUTE_TYPE_UNSPECIFIED ScalarAttributeType = 0
-	// String
-	ScalarAttributeType_S ScalarAttributeType = 1
-	// Number
-	ScalarAttributeType_N ScalarAttributeType = 2
-	// Binary
-	ScalarAttributeType_B ScalarAttributeType = 3
+	ScalarAttributeType_ATTRIBUTE_TYPE_UNSPECIFIED ScalarAttributeType = 0 // Unspecified
+	ScalarAttributeType_S                          ScalarAttributeType = 1 // String
+	ScalarAttributeType_N                          ScalarAttributeType = 2 // Number
+	ScalarAttributeType_B                          ScalarAttributeType = 3 // Binary
 )
 
 // Enum value maps for ScalarAttributeType.
@@ -81,11 +79,9 @@ func (ScalarAttributeType) EnumDescriptor() ([]byte, []int) {
 type BillingMode int32
 
 const (
-	BillingMode_BILLING_MODE_UNSPECIFIED BillingMode = 0
-	// Pay per request pricing model.
-	BillingMode_PAY_PER_REQUEST BillingMode = 1
-	// Provisioned throughput pricing model.
-	BillingMode_PROVISIONED BillingMode = 2
+	BillingMode_BILLING_MODE_UNSPECIFIED BillingMode = 0 // Unspecified
+	BillingMode_PAY_PER_REQUEST          BillingMode = 1 // Pay per request pricing model.
+	BillingMode_PROVISIONED              BillingMode = 2 // Provisioned throughput pricing model.
 )
 
 // Enum value maps for BillingMode.
@@ -132,15 +128,11 @@ func (BillingMode) EnumDescriptor() ([]byte, []int) {
 type StreamViewType int32
 
 const (
-	StreamViewType_STREAM_VIEW_TYPE_UNSPECIFIED StreamViewType = 0
-	// Only the key attributes of the modified item.
-	StreamViewType_KEYS_ONLY StreamViewType = 1
-	// New image of the entire item.
-	StreamViewType_NEW_IMAGE StreamViewType = 2
-	// Old image of the entire item.
-	StreamViewType_OLD_IMAGE StreamViewType = 3
-	// Both the new and the old images of the item.
-	StreamViewType_NEW_AND_OLD_IMAGES StreamViewType = 4
+	StreamViewType_STREAM_VIEW_TYPE_UNSPECIFIED StreamViewType = 0 // Unspecified
+	StreamViewType_KEYS_ONLY                    StreamViewType = 1 // Only the key attributes of the modified item.
+	StreamViewType_NEW_IMAGE                    StreamViewType = 2 // New image of the entire item.
+	StreamViewType_OLD_IMAGE                    StreamViewType = 3 // Old image of the entire item.
+	StreamViewType_NEW_AND_OLD_IMAGES           StreamViewType = 4 // Both the new and the old images of the item.
 )
 
 // Enum value maps for StreamViewType.
@@ -191,11 +183,9 @@ func (StreamViewType) EnumDescriptor() ([]byte, []int) {
 type SseType int32
 
 const (
-	SseType_SSE_TYPE_UNSPECIFIED SseType = 0
-	// AES-256 encryption using an AWS owned key.
-	SseType_AWS_MANAGED SseType = 1
-	// Encryption using a customer managed KMS key.
-	SseType_CUSTOMER_MANAGED SseType = 2
+	SseType_SSE_TYPE_UNSPECIFIED SseType = 0 // Unspecified
+	SseType_AWS_MANAGED          SseType = 1 // AES-256 encryption using an AWS owned key.
+	SseType_CUSTOMER_MANAGED     SseType = 2 // Encryption using a customer managed KMS key.
 )
 
 // Enum value maps for SseType.
@@ -243,11 +233,9 @@ func (SseType) EnumDescriptor() ([]byte, []int) {
 type TableClass int32
 
 const (
-	TableClass_TABLE_CLASS_UNSPECIFIED TableClass = 0
-	// Standard table class for general-purpose workloads.
-	TableClass_STANDARD TableClass = 1
-	// Cost-optimized infrequent access table class.
-	TableClass_STANDARD_INFREQUENT_ACCESS TableClass = 2
+	TableClass_TABLE_CLASS_UNSPECIFIED    TableClass = 0 // Unspecified
+	TableClass_STANDARD                   TableClass = 1 // Standard table class for general-purpose workloads.
+	TableClass_STANDARD_INFREQUENT_ACCESS TableClass = 2 // Cost-optimized infrequent access table class.
 )
 
 // Enum value maps for TableClass.
@@ -294,13 +282,10 @@ func (TableClass) EnumDescriptor() ([]byte, []int) {
 type Projection_ProjectionType int32
 
 const (
-	Projection_PROJECTION_TYPE_UNSPECIFIED Projection_ProjectionType = 0
-	// All table attributes are projected.
-	Projection_ALL Projection_ProjectionType = 1
-	// Only key attributes are projected.
-	Projection_KEYS_ONLY Projection_ProjectionType = 2
-	// Only key attributes and specified non-key attributes are projected.
-	Projection_INCLUDE Projection_ProjectionType = 3
+	Projection_PROJECTION_TYPE_UNSPECIFIED Projection_ProjectionType = 0 // Unspecified
+	Projection_ALL                         Projection_ProjectionType = 1 // All table attributes are projected.
+	Projection_KEYS_ONLY                   Projection_ProjectionType = 2 // Only key attributes are projected.
+	Projection_INCLUDE                     Projection_ProjectionType = 3 // Only key attributes and specified non-key attributes are projected.
 )
 
 // Enum value maps for Projection_ProjectionType.
@@ -1043,73 +1028,78 @@ var File_project_planton_provider_aws_awsdynamodb_v1_spec_proto protoreflect.Fil
 
 const file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"6project/planton/provider/aws/awsdynamodb/v1/spec.proto\x12+project.planton.provider.aws.awsdynamodb.v1\"\xe2\n" +
+	"6project/planton/provider/aws/awsdynamodb/v1/spec.proto\x12+project.planton.provider.aws.awsdynamodb.v1\x1a\x1bbuf/validate/validate.proto\"\xdb\v\n" +
+	"\x0fAwsDynamodbSpec\x12<\n" +
 	"\n" +
-	"\x0fAwsDynamodbSpec\x12\x1d\n" +
-	"\n" +
-	"table_name\x18\x01 \x01(\tR\ttableName\x12u\n" +
-	"\x15attribute_definitions\x18\x02 \x03(\v2@.project.planton.provider.aws.awsdynamodb.v1.AttributeDefinitionR\x14attributeDefinitions\x12\x19\n" +
-	"\bhash_key\x18\x03 \x01(\tR\ahashKey\x12\x1b\n" +
-	"\trange_key\x18\x04 \x01(\tR\brangeKey\x12[\n" +
-	"\fbilling_mode\x18\x05 \x01(\x0e28.project.planton.provider.aws.awsdynamodb.v1.BillingModeR\vbillingMode\x12#\n" +
-	"\rread_capacity\x18\x06 \x01(\x03R\freadCapacity\x12%\n" +
-	"\x0ewrite_capacity\x18\a \x01(\x03R\rwriteCapacity\x12{\n" +
+	"table_name\x18\x01 \x01(\tB\x1d\xbaH\x1ar\x18\x10\x03\x18\xff\x012\x11^[A-Za-z0-9_.-]+$R\ttableName\x12\x7f\n" +
+	"\x15attribute_definitions\x18\x02 \x03(\v2@.project.planton.provider.aws.awsdynamodb.v1.AttributeDefinitionB\b\xbaH\x05\x92\x01\x02\b\x01R\x14attributeDefinitions\x12\"\n" +
+	"\bhash_key\x18\x03 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\ahashKey\x12$\n" +
+	"\trange_key\x18\x04 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\brangeKey\x12g\n" +
+	"\fbilling_mode\x18\x05 \x01(\x0e28.project.planton.provider.aws.awsdynamodb.v1.BillingModeB\n" +
+	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\vbillingMode\x12,\n" +
+	"\rread_capacity\x18\x06 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\freadCapacity\x12.\n" +
+	"\x0ewrite_capacity\x18\a \x01(\x03B\a\xbaH\x04\"\x02 \x00R\rwriteCapacity\x12{\n" +
 	"\x18global_secondary_indexes\x18\b \x03(\v2A.project.planton.provider.aws.awsdynamodb.v1.GlobalSecondaryIndexR\x16globalSecondaryIndexes\x12x\n" +
 	"\x17local_secondary_indexes\x18\t \x03(\v2@.project.planton.provider.aws.awsdynamodb.v1.LocalSecondaryIndexR\x15localSecondaryIndexes\x12F\n" +
 	"\x03ttl\x18\n" +
 	" \x01(\v24.project.planton.provider.aws.awsdynamodb.v1.TtlSpecR\x03ttl\x12O\n" +
 	"\x06stream\x18\v \x01(\v27.project.planton.provider.aws.awsdynamodb.v1.StreamSpecR\x06stream\x12j\n" +
 	"\x16server_side_encryption\x18\f \x01(\v24.project.planton.provider.aws.awsdynamodb.v1.SseSpecR\x14serverSideEncryption\x123\n" +
-	"\x16point_in_time_recovery\x18\r \x01(\bR\x13pointInTimeRecovery\x12Z\n" +
-	"\x04tags\x18\x0e \x03(\v2F.project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.TagsEntryR\x04tags\x12X\n" +
-	"\vtable_class\x18\x0f \x01(\x0e27.project.planton.provider.aws.awsdynamodb.v1.TableClassR\n" +
+	"\x16point_in_time_recovery\x18\r \x01(\bR\x13pointInTimeRecovery\x12n\n" +
+	"\x04tags\x18\x0e \x03(\v2F.project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.TagsEntryB\x12\xbaH\x0f\x9a\x01\f\"\x04r\x02\x10\x01*\x04r\x02\x10\x01R\x04tags\x12d\n" +
+	"\vtable_class\x18\x0f \x01(\x0e27.project.planton.provider.aws.awsdynamodb.v1.TableClassB\n" +
+	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\n" +
 	"tableClass\x12/\n" +
 	"\x13deletion_protection\x18\x10 \x01(\bR\x12deletionProtection\x121\n" +
 	"\x14contributor_insights\x18\x11 \x01(\bR\x13contributorInsights\x12T\n" +
 	"\breplicas\x18\x12 \x03(\v28.project.planton.provider.aws.awsdynamodb.v1.ReplicaSpecR\breplicas\x1a7\n" +
 	"\tTagsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\x7f\n" +
-	"\x13AttributeDefinition\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\x12T\n" +
-	"\x04type\x18\x02 \x01(\x0e2@.project.planton.provider.aws.awsdynamodb.v1.ScalarAttributeTypeR\x04type\"\xee\x01\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xa7\x01\n" +
+	"\x13AttributeDefinition\x12.\n" +
+	"\x04name\x18\x01 \x01(\tB\x1a\xbaH\x17r\x15\x10\x012\x11^[A-Za-z0-9_.-]+$R\x04name\x12`\n" +
+	"\x04type\x18\x02 \x01(\x0e2@.project.planton.provider.aws.awsdynamodb.v1.ScalarAttributeTypeB\n" +
+	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\x04type\"\x9d\x02\n" +
 	"\n" +
-	"Projection\x12Z\n" +
-	"\x04type\x18\x01 \x01(\x0e2F.project.planton.provider.aws.awsdynamodb.v1.Projection.ProjectionTypeR\x04type\x12,\n" +
-	"\x12non_key_attributes\x18\x02 \x03(\tR\x10nonKeyAttributes\"V\n" +
+	"Projection\x12f\n" +
+	"\x04type\x18\x01 \x01(\x0e2F.project.planton.provider.aws.awsdynamodb.v1.Projection.ProjectionTypeB\n" +
+	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\x04type\x12O\n" +
+	"\x12non_key_attributes\x18\x02 \x03(\tB!\xbaH\x1e\x92\x01\x1b\x10\x14\"\x17r\x15\x10\x012\x11^[A-Za-z0-9_.-]+$R\x10nonKeyAttributes\"V\n" +
 	"\x0eProjectionType\x12\x1f\n" +
 	"\x1bPROJECTION_TYPE_UNSPECIFIED\x10\x00\x12\a\n" +
 	"\x03ALL\x10\x01\x12\r\n" +
 	"\tKEYS_ONLY\x10\x02\x12\v\n" +
-	"\aINCLUDE\x10\x03\"\x87\x02\n" +
-	"\x14GlobalSecondaryIndex\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\x12\x19\n" +
-	"\bhash_key\x18\x02 \x01(\tR\ahashKey\x12\x1b\n" +
-	"\trange_key\x18\x03 \x01(\tR\brangeKey\x12W\n" +
+	"\aINCLUDE\x10\x03\"\xd2\x02\n" +
+	"\x14GlobalSecondaryIndex\x121\n" +
+	"\x04name\x18\x01 \x01(\tB\x1d\xbaH\x1ar\x18\x10\x03\x18\xff\x012\x11^[A-Za-z0-9_.-]+$R\x04name\x12\"\n" +
+	"\bhash_key\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\ahashKey\x12$\n" +
+	"\trange_key\x18\x03 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\brangeKey\x12_\n" +
 	"\n" +
-	"projection\x18\x04 \x01(\v27.project.planton.provider.aws.awsdynamodb.v1.ProjectionR\n" +
-	"projection\x12#\n" +
-	"\rread_capacity\x18\x05 \x01(\x03R\freadCapacity\x12%\n" +
-	"\x0ewrite_capacity\x18\x06 \x01(\x03R\rwriteCapacity\"\x9f\x01\n" +
-	"\x13LocalSecondaryIndex\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\x12\x1b\n" +
-	"\trange_key\x18\x02 \x01(\tR\brangeKey\x12W\n" +
+	"projection\x18\x04 \x01(\v27.project.planton.provider.aws.awsdynamodb.v1.ProjectionB\x06\xbaH\x03\xc8\x01\x01R\n" +
+	"projection\x12,\n" +
+	"\rread_capacity\x18\x05 \x01(\x03B\a\xbaH\x04\"\x02(\x00R\freadCapacity\x12.\n" +
+	"\x0ewrite_capacity\x18\x06 \x01(\x03B\a\xbaH\x04\"\x02(\x00R\rwriteCapacity\"\xcf\x01\n" +
+	"\x13LocalSecondaryIndex\x121\n" +
+	"\x04name\x18\x01 \x01(\tB\x1d\xbaH\x1ar\x18\x10\x03\x18\xff\x012\x11^[A-Za-z0-9_.-]+$R\x04name\x12$\n" +
+	"\trange_key\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\brangeKey\x12_\n" +
 	"\n" +
-	"projection\x18\x03 \x01(\v27.project.planton.provider.aws.awsdynamodb.v1.ProjectionR\n" +
-	"projection\"J\n" +
+	"projection\x18\x03 \x01(\v27.project.planton.provider.aws.awsdynamodb.v1.ProjectionB\x06\xbaH\x03\xc8\x01\x01R\n" +
+	"projection\"S\n" +
 	"\aTtlSpec\x12\x18\n" +
-	"\aenabled\x18\x01 \x01(\bR\aenabled\x12%\n" +
-	"\x0eattribute_name\x18\x02 \x01(\tR\rattributeName\"\x80\x01\n" +
+	"\aenabled\x18\x01 \x01(\bR\aenabled\x12.\n" +
+	"\x0eattribute_name\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\rattributeName\"\x8c\x01\n" +
 	"\n" +
 	"StreamSpec\x12\x18\n" +
-	"\aenabled\x18\x01 \x01(\bR\aenabled\x12X\n" +
-	"\tview_type\x18\x02 \x01(\x0e2;.project.planton.provider.aws.awsdynamodb.v1.StreamViewTypeR\bviewType\"\x8d\x01\n" +
+	"\aenabled\x18\x01 \x01(\bR\aenabled\x12d\n" +
+	"\tview_type\x18\x02 \x01(\x0e2;.project.planton.provider.aws.awsdynamodb.v1.StreamViewTypeB\n" +
+	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\bviewType\"\xa2\x01\n" +
 	"\aSseSpec\x12\x18\n" +
-	"\aenabled\x18\x01 \x01(\bR\aenabled\x12H\n" +
-	"\x04type\x18\x02 \x01(\x0e24.project.planton.provider.aws.awsdynamodb.v1.SseTypeR\x04type\x12\x1e\n" +
-	"\vkms_key_arn\x18\x03 \x01(\tR\tkmsKeyArn\"c\n" +
-	"\vReplicaSpec\x12\x1f\n" +
-	"\vregion_name\x18\x01 \x01(\tR\n" +
+	"\aenabled\x18\x01 \x01(\bR\aenabled\x12T\n" +
+	"\x04type\x18\x02 \x01(\x0e24.project.planton.provider.aws.awsdynamodb.v1.SseTypeB\n" +
+	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\x04type\x12'\n" +
+	"\vkms_key_arn\x18\x03 \x01(\tB\a\xbaH\x04r\x02\x10\x14R\tkmsKeyArn\"\x88\x01\n" +
+	"\vReplicaSpec\x12D\n" +
+	"\vregion_name\x18\x01 \x01(\tB#\xbaH r\x1e\x10\x042\x1a^[a-z]{2}(-[a-z]+)*-[0-9]$R\n" +
 	"regionName\x123\n" +
 	"\x16point_in_time_recovery\x18\x02 \x01(\bR\x13pointInTimeRecovery*J\n" +
 	"\x13ScalarAttributeType\x12\x1e\n" +
