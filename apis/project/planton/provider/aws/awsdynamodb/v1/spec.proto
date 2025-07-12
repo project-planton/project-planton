@@ -9,8 +9,8 @@ message AwsDynamodbSpec {
   // Name of the DynamoDB table.
   string table_name = 1 [
     (buf.validate.field).string = {
-      min_len: 3,
-      max_len: 255,
+      min_len: 3
+      max_len: 255
       pattern: "^[a-zA-Z0-9_.-]+$"
     }
   ];
@@ -90,8 +90,8 @@ message AttributeDefinition {
   // Attribute name.
   string name = 1 [
     (buf.validate.field).string = {
-      min_len: 1,
-      max_len: 255,
+      min_len: 1
+      max_len: 255
       pattern: "^[a-zA-Z0-9_.-]+$"
     }
   ];
@@ -115,8 +115,8 @@ message KeySchemaElement {
   // Attribute name for the key element.
   string attribute_name = 1 [
     (buf.validate.field).string = {
-      min_len: 1,
-      max_len: 255,
+      min_len: 1
+      max_len: 255
       pattern: "^[a-zA-Z0-9_.-]+$"
     }
   ];
@@ -139,8 +139,8 @@ message LocalSecondaryIndex {
   // Index name.
   string index_name = 1 [
     (buf.validate.field).string = {
-      min_len: 3,
-      max_len: 255,
+      min_len: 3
+      max_len: 255
       pattern: "^[a-zA-Z0-9_.-]+$"
     }
   ];
@@ -159,8 +159,8 @@ message GlobalSecondaryIndex {
   // Index name.
   string index_name = 1 [
     (buf.validate.field).string = {
-      min_len: 3,
-      max_len: 255,
+      min_len: 3
+      max_len: 255
       pattern: "^[a-zA-Z0-9_.-]+$"
     }
   ];
@@ -200,7 +200,12 @@ message Projection {
   // Non-key attributes to include when projection_type is INCLUDE.
   repeated string non_key_attributes = 2 [
     (buf.validate.field).repeated = {
-      items: { string: { min_len: 1, max_len: 255 } }
+      items: {
+        string: {
+          min_len: 1
+          max_len: 255
+        }
+      }
     }
   ];
 }
@@ -210,8 +215,8 @@ message Tag {
   // Tag key.
   string key = 1 [
     (buf.validate.field).string = {
-      min_len: 1,
-      max_len: 128,
+      min_len: 1
+      max_len: 128
       pattern: "^[a-zA-Z0-9_.:/=+@-]+$"
     }
   ];
@@ -230,8 +235,8 @@ message TTLSpecification {
   // Name of the attribute that stores TTL epoch timestamp.
   string attribute_name = 2 [
     (buf.validate.field).string = {
-      min_len: 1,
-      max_len: 255,
+      min_len: 1
+      max_len: 255
       pattern: "^[a-zA-Z0-9_.-]+$"
     }
   ];
@@ -269,7 +274,10 @@ message SSESpecification {
 
   // ARN of the customer managed KMS key (required when sse_type is CUSTOMER_MANAGED).
   string kms_key_arn = 3 [
-    (buf.validate.field).string = { min_len: 20, max_len: 2048 }
+    (buf.validate.field).string = {
+      min_len: 20
+      max_len: 2048
+    }
   ];
 }
 
