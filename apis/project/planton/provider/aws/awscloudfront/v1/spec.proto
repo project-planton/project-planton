@@ -2,56 +2,78 @@ syntax = "proto3";
 
 package project.planton.provider.aws.awscloudfront.v1;
 
+import "buf/validate/validate.proto";
+
 // AwsCloudFrontSpec models the configurable properties of an Amazon CloudFront
 // distribution and covers the most common (~80%) production use-cases.
 message AwsCloudFrontSpec {
   // Alternative domain names (CNAMEs) such as example.com.
-  repeated string aliases = 1;
+  repeated string aliases = 1 [
+    (buf.validate.field).repeated = {
+      unique: true,
+      items: { string: { min_len: 1 } }
+    }
+  ];
 
   // Whether the distribution is enabled and will process requests.
-  bool enabled = 2;
+  bool enabled = 2 [ (buf.validate.field).bool = {} ];
 
   // Human-readable description for the distribution.
-  string comment = 3;
+  string comment = 3 [ (buf.validate.field).string.max_len = 1024 ];
 
   // Price class that controls the set of edge locations used (e.g. PriceClass_100).
-  string price_class = 4;
+  string price_class = 4 [
+    (buf.validate.field).string = { in: ["PriceClass_100", "PriceClass_200", "PriceClass_All"] }
+  ];
 
   // Object that CloudFront returns when a request matches the root URL ("/").
-  string default_root_object = 5;
+  string default_root_object = 5 [ (buf.validate.field).string.pattern = "^[^\\s]+$" ];
 
   // One or more origins (S3 buckets, custom HTTP endpoints, etc.)
-  repeated Origin origins = 6;
+  repeated Origin origins = 6 [
+    (buf.validate.field).repeated.min_items = 1
+  ];
 
   // Default cache behavior applied when no ordered behavior matches.
-  DefaultCacheBehavior default_cache_behavior = 7;
+  DefaultCacheBehavior default_cache_behavior = 7 [ (buf.validate.field).required = true ];
 
   // Additional, ordered cache behaviors matched by path pattern.
-  repeated CacheBehavior ordered_cache_behaviors = 8;
+  repeated CacheBehavior ordered_cache_behaviors = 8 [
+    (buf.validate.field).repeated.items.message = {}
+  ];
 
   // TLS/SSL certificate and HTTPS configuration.
-  ViewerCertificate viewer_certificate = 9;
+  ViewerCertificate viewer_certificate = 9 [ (buf.validate.field).message = {} ];
 
   // Access-log destination and formatting options.
-  LoggingConfig logging = 10;
+  LoggingConfig logging = 10 [ (buf.validate.field).message = {} ];
 
   // Geo and viewer restrictions applied to the distribution.
-  Restrictions restrictions = 11;
+  Restrictions restrictions = 11 [ (buf.validate.field).message = {} ];
 
   // AWS WAF web ACL to associate with the distribution (optional).
-  string web_acl_id = 12;
+  string web_acl_id = 12 [
+    (buf.validate.field).string.pattern = "^arn:[^:]+:wafv2:[^:]+:\\d{12}:.*$"
+  ];
 
   // Arbitrary key/value tags applied to the distribution.
-  map<string, string> tags = 13;
+  map<string, string> tags = 13 [
+    (buf.validate.field).map = {
+      keys:   { string: { min_len: 1 } },
+      values: { string: { min_len: 1 } }
+    }
+  ];
 
   // Enables IPv6 in addition to IPv4.
-  bool is_ipv6_enabled = 14;
+  bool is_ipv6_enabled = 14 [ (buf.validate.field).bool = {} ];
 
   // If true, provisioning waits until CloudFront reports the deployment completed.
-  bool wait_for_deployment = 15;
+  bool wait_for_deployment = 15 [ (buf.validate.field).bool = {} ];
 
   // Custom responses for specific HTTP error codes.
-  repeated CustomErrorResponse custom_error_responses = 16;
+  repeated CustomErrorResponse custom_error_responses = 16 [
+    (buf.validate.field).repeated.items.message = {}
+  ];
 }
 
 // ---------------------------- Supporting Types ----------------------------
@@ -59,158 +81,200 @@ message AwsCloudFrontSpec {
 // Origin represents a single origin resource (S3, ALB, EC2, on-prem, etc.).
 message Origin {
   // A unique ID that identifies the origin within the distribution.
-  string id = 1;
+  string id = 1 [ (buf.validate.field).string.min_len = 1 ];
 
   // DNS name of the origin, e.g. mybucket.s3.amazonaws.com.
-  string domain_name = 2;
+  string domain_name = 2 [ (buf.validate.field).string.pattern = "^[a-zA-Z0-9.-]+$" ];
 
   // Optional URL path that CloudFront prepends to origin requests.
-  optional string origin_path = 3;
+  optional string origin_path = 3 [ (buf.validate.field).string.pattern = "^/.*" ];
 
   // Custom headers that CloudFront adds to origin requests.
-  repeated OriginHeader custom_headers = 4;
+  repeated OriginHeader custom_headers = 4 [
+    (buf.validate.field).repeated.items.message = {}
+  ];
 
   // S3-specific configuration (set if the origin is an S3 bucket).
-  S3OriginConfig s3_origin_config = 5;
+  S3OriginConfig s3_origin_config = 5 [ (buf.validate.field).message = {} ];
 
   // HTTP/S origin configuration (set for custom, non-S3 origins).
-  CustomOriginConfig custom_origin_config = 6;
+  CustomOriginConfig custom_origin_config = 6 [ (buf.validate.field).message = {} ];
 
   // Origin Shield configuration to improve cache hit ratios (optional).
-  OriginShield origin_shield = 7;
+  OriginShield origin_shield = 7 [ (buf.validate.field).message = {} ];
 }
 
 // Name/value header to attach to origin requests.
 message OriginHeader {
-  string name = 1;  // Header name
-  string value = 2; // Header value
+  string name = 1 [ (buf.validate.field).string.min_len = 1 ];  // Header name
+  string value = 2 [ (buf.validate.field).string.min_len = 1 ]; // Header value
 }
 
 // Configuration specific to S3 origins.
 message S3OriginConfig {
   // Origin access identity used to restrict S3 bucket access.
-  optional string origin_access_identity = 1;
+  optional string origin_access_identity = 1 [
+    (buf.validate.field).string.pattern = "^origin-access-identity/cloudfront/[^\\s]+$"
+  ];
 }
 
 // Configuration for custom (non-S3) HTTP/S origins.
 message CustomOriginConfig {
   // Allowed origin protocol policy: http-only, https-only, or match-viewer.
-  string origin_protocol_policy = 1;
+  string origin_protocol_policy = 1 [
+    (buf.validate.field).string = { in: ["http-only", "https-only", "match-viewer"] }
+  ];
 
   // HTTP port on the origin that CloudFront uses.
-  uint32 http_port = 2;
+  uint32 http_port = 2 [ (buf.validate.field).uint32 = { gte: 1, lte: 65535 } ];
 
   // HTTPS port on the origin that CloudFront uses.
-  uint32 https_port = 3;
+  uint32 https_port = 3 [ (buf.validate.field).uint32 = { gte: 1, lte: 65535 } ];
 
   // Supported SSL/TLS versions, e.g. ["TLSv1.2", "TLSv1.3"].
-  repeated string origin_ssl_protocols = 4;
+  repeated string origin_ssl_protocols = 4 [
+    (buf.validate.field).repeated.items.string.min_len = 4
+  ];
 }
 
 // Enables Origin Shield and specifies its Region.
 message OriginShield {
-  bool enabled = 1;           // Whether Origin Shield is enabled.
-  string region = 2;          // AWS Region that hosts the shield POP.
+  bool enabled = 1 [ (buf.validate.field).bool = {} ];           // Whether Origin Shield is enabled.
+  string region = 2 [ (buf.validate.field).string.min_len = 1 ]; // AWS Region that hosts the shield POP.
 }
 
 // Default cache behavior applied to all requests that do not match an ordered behavior.
 message DefaultCacheBehavior {
-  string target_origin_id = 1;                        // Origin ID to forward requests to.
-  repeated string allowed_methods = 2;                // e.g. ["GET","HEAD","OPTIONS"].
-  repeated string cached_methods = 3;                 // Methods to cache (subset of allowed).
-  ViewerProtocolPolicy viewer_protocol_policy = 4;    // How CloudFront handles HTTP vs HTTPS.
-  ForwardedValues forwarded_values = 5;               // Query string, header, cookie forwarding.
-  bool compress = 6;                                  // Enable automatic gzip/brotli.
-  uint32 min_ttl = 7;                                 // Minimum seconds that objects stay in cache.
-  uint32 default_ttl = 8;                             // Default seconds if origin headers absent.
-  uint32 max_ttl = 9;                                 // Maximum seconds objects stay in cache.
-  bool smooth_streaming = 10;                         // Enable smooth streaming for media.
-  repeated LambdaFunctionAssociation lambda_function_associations = 11; // Edge Lambda triggers.
-  repeated string trusted_key_groups = 12;            // Signed URL/key groups trusted.
-  repeated string trusted_signers = 13;               // Legacy trusted signers.
+  string target_origin_id = 1 [ (buf.validate.field).string.min_len = 1 ];                        // Origin ID to forward requests to.
+  repeated string allowed_methods = 2 [
+    (buf.validate.field).repeated = { min_items: 1, items: { string: { min_len: 3 } } }
+  ];                // e.g. ["GET","HEAD","OPTIONS"].
+  repeated string cached_methods = 3 [
+    (buf.validate.field).repeated.items.string.min_len = 3
+  ];                 // Methods to cache (subset of allowed).
+  ViewerProtocolPolicy viewer_protocol_policy = 4 [ (buf.validate.field).enum = { defined_only: true, not_in: [0] } ];    // How CloudFront handles HTTP vs HTTPS.
+  ForwardedValues forwarded_values = 5 [ (buf.validate.field).required = true ];               // Query string, header, cookie forwarding.
+  bool compress = 6 [ (buf.validate.field).bool = {} ];                                  // Enable automatic gzip/brotli.
+  uint32 min_ttl = 7 [ (buf.validate.field).uint32 = {} ];                                 // Minimum seconds that objects stay in cache.
+  uint32 default_ttl = 8 [ (buf.validate.field).uint32 = {} ];                             // Default seconds if origin headers absent.
+  uint32 max_ttl = 9 [ (buf.validate.field).uint32 = {} ];                                 // Maximum seconds objects stay in cache.
+  bool smooth_streaming = 10 [ (buf.validate.field).bool = {} ];                         // Enable smooth streaming for media.
+  repeated LambdaFunctionAssociation lambda_function_associations = 11 [
+    (buf.validate.field).repeated.items.message = {}
+  ]; // Edge Lambda triggers.
+  repeated string trusted_key_groups = 12 [
+    (buf.validate.field).repeated = { unique: true, items: { string: { min_len: 1 } } }
+  ];            // Signed URL/key groups trusted.
+  repeated string trusted_signers = 13 [
+    (buf.validate.field).repeated.items.string.min_len = 1
+  ];               // Legacy trusted signers.
 }
 
 // Ordered cache behaviors matched by path pattern (e.g. "/images/*").
 message CacheBehavior {
-  string path_pattern = 1;                            // Glob pattern to match request path.
-  string target_origin_id = 2;                        // Origin ID for this behavior.
-  repeated string allowed_methods = 3;                // Allowed HTTP verbs.
-  repeated string cached_methods = 4;                 // Cached HTTP verbs.
-  ViewerProtocolPolicy viewer_protocol_policy = 5;    // HTTP/HTTPS policy.
-  ForwardedValues forwarded_values = 6;               // Forwarding configuration.
-  bool compress = 7;                                  // Enable compression.
-  uint32 min_ttl = 8;                                 // Min cache TTL.
-  uint32 default_ttl = 9;                             // Default cache TTL.
-  uint32 max_ttl = 10;                                // Max cache TTL.
-  repeated LambdaFunctionAssociation lambda_function_associations = 11; // Edge Lambda.
-  repeated string trusted_key_groups = 12;            // Signed URL/key groups trusted.
-  repeated string trusted_signers = 13;               // Legacy trusted signers.
+  string path_pattern = 1 [ (buf.validate.field).string.min_len = 1 ];                            // Glob pattern to match request path.
+  string target_origin_id = 2 [ (buf.validate.field).string.min_len = 1 ];                        // Origin ID for this behavior.
+  repeated string allowed_methods = 3 [
+    (buf.validate.field).repeated.items.string.min_len = 3
+  ];                // Allowed HTTP verbs.
+  repeated string cached_methods = 4 [
+    (buf.validate.field).repeated.items.string.min_len = 3
+  ];                 // Cached HTTP verbs.
+  ViewerProtocolPolicy viewer_protocol_policy = 5 [ (buf.validate.field).enum = { defined_only: true, not_in: [0] } ];    // HTTP/HTTPS policy.
+  ForwardedValues forwarded_values = 6 [ (buf.validate.field).required = true ];               // Forwarding configuration.
+  bool compress = 7 [ (buf.validate.field).bool = {} ];                                  // Enable compression.
+  uint32 min_ttl = 8 [ (buf.validate.field).uint32 = {} ];                                 // Min cache TTL.
+  uint32 default_ttl = 9 [ (buf.validate.field).uint32 = {} ];                             // Default cache TTL.
+  uint32 max_ttl = 10 [ (buf.validate.field).uint32 = {} ];                                // Max cache TTL.
+  repeated LambdaFunctionAssociation lambda_function_associations = 11 [
+    (buf.validate.field).repeated.items.message = {}
+  ]; // Edge Lambda.
+  repeated string trusted_key_groups = 12 [
+    (buf.validate.field).repeated.items.string.min_len = 1
+  ];            // Signed URL/key groups trusted.
+  repeated string trusted_signers = 13 [
+    (buf.validate.field).repeated.items.string.min_len = 1
+  ];               // Legacy trusted signers.
 }
 
 // Determines how CloudFront handles headers, cookies and query strings.
 message ForwardedValues {
-  bool query_string = 1;                          // Forward the query string?
-  repeated string query_string_cache_keys = 2;    // Specific query keys to include in cache key.
-  repeated string headers = 3;                    // Headers to forward and include in cache key.
-  Cookies cookies = 4;                            // Cookie forwarding behavior.
+  bool query_string = 1 [ (buf.validate.field).bool = {} ];                          // Forward the query string?
+  repeated string query_string_cache_keys = 2 [
+    (buf.validate.field).repeated.items.string.min_len = 1
+  ];    // Specific query keys to include in cache key.
+  repeated string headers = 3 [
+    (buf.validate.field).repeated.items.string.min_len = 1
+  ];                    // Headers to forward and include in cache key.
+  Cookies cookies = 4 [ (buf.validate.field).message = {} ];                            // Cookie forwarding behavior.
 }
 
 // Cookie forwarding options.
 message Cookies {
   // true = forward all cookies, false = forward none.
-  bool forward_all = 1;
+  bool forward_all = 1 [ (buf.validate.field).bool = {} ];
   // Whitelisted cookie names if forward_all = false.
-  repeated string whitelisted_names = 2;
+  repeated string whitelisted_names = 2 [
+    (buf.validate.field).repeated.items.string.min_len = 1
+  ];
 }
 
 // Associates Lambda@Edge functions with viewer/origin events.
 message LambdaFunctionAssociation {
-  string event_type = 1;  // viewer-request, viewer-response, origin-request, origin-response.
-  string lambda_arn = 2;  // Version-specific Lambda function ARN.
-  bool include_body = 3;  // Whether the request body is passed to the function.
+  string event_type = 1 [
+    (buf.validate.field).string = { in: ["viewer-request", "viewer-response", "origin-request", "origin-response"] }
+  ];  // viewer-request, viewer-response, origin-request, origin-response.
+  string lambda_arn = 2 [
+    (buf.validate.field).string.pattern = "^arn:aws:lambda:[^:]+:\\d{12}:function:[A-Za-z0-9-_]+(:[A-Za-z0-9-_]+)?$"
+  ];  // Version-specific Lambda function ARN.
+  bool include_body = 3 [ (buf.validate.field).bool = {} ];  // Whether the request body is passed to the function.
 }
 
 // TLS/SSL certificate configuration for HTTPS.
 message ViewerCertificate {
   // Use the default CloudFront certificate for the distribution’s domain.
-  bool cloudfront_default_certificate = 1;
+  bool cloudfront_default_certificate = 1 [ (buf.validate.field).bool = {} ];
   // ACM certificate ARN in us-east-1 for custom alt names.
-  string acm_certificate_arn = 2;
+  string acm_certificate_arn = 2 [
+    (buf.validate.field).string.pattern = "^arn:aws:acm:[^:]+:\\d{12}:certificate/[a-f0-9-]+$"
+  ];
   // IAM certificate ID (legacy option).
-  string iam_certificate_id = 3;
+  string iam_certificate_id = 3 [ (buf.validate.field).string.min_len = 1 ];
   // vip, sni-only, or static-ip.
-  string ssl_support_method = 4;
+  string ssl_support_method = 4 [ (buf.validate.field).string = { in: ["vip", "sni-only", "static-ip"] } ];
   // TLS minimum protocol version, e.g. TLSv1.2_2021.
-  string minimum_protocol_version = 5;
+  string minimum_protocol_version = 5 [ (buf.validate.field).string.pattern = "^TLSv[0-9]\\.[0-9](_[0-9]{4})?$" ];
 }
 
 // Captures distribution access logs.
 message LoggingConfig {
-  bool enabled = 1;     // Enable log delivery.
-  string bucket = 2;    // S3 bucket (DNS name) to store logs.
-  string prefix = 3;    // Optional object prefix for logs.
-  bool include_cookies = 4; // Whether to include cookie field in logs.
+  bool enabled = 1 [ (buf.validate.field).bool = {} ];     // Enable log delivery.
+  string bucket = 2 [ (buf.validate.field).string.pattern = "^[a-z0-9.-]+$" ];    // S3 bucket (DNS name) to store logs.
+  string prefix = 3 [ (buf.validate.field).string.max_len = 1024 ];    // Optional object prefix for logs.
+  bool include_cookies = 4 [ (buf.validate.field).bool = {} ]; // Whether to include cookie field in logs.
 }
 
 // Defines geo or other viewer restrictions.
 message Restrictions {
-  GeoRestriction geo_restriction = 1; // Location-based allow/deny list.
+  GeoRestriction geo_restriction = 1 [ (buf.validate.field).message = {} ]; // Location-based allow/deny list.
 }
 
 // Geo restriction configuration.
 message GeoRestriction {
   // Type: blacklist, whitelist, or none.
-  string restriction_type = 1;
+  string restriction_type = 1 [ (buf.validate.field).string = { in: ["blacklist", "whitelist", "none"] } ];
   // ISO 3166-1 alpha-2 country codes affected by the restriction.
-  repeated string locations = 2;
+  repeated string locations = 2 [
+    (buf.validate.field).repeated = { unique: true, items: { string: { pattern: "^[A-Z]{2}$" } } }
+  ];
 }
 
 // Custom error responses returned by CloudFront.
 message CustomErrorResponse {
-  uint32 error_code = 1;           // HTTP status received from origin.
-  uint32 response_code = 2;        // HTTP status returned to viewer.
-  string response_page_path = 3;   // Path to custom error page.
-  uint32 error_caching_min_ttl = 4;// TTL for caching the error.
+  uint32 error_code = 1 [ (buf.validate.field).uint32 = { gte: 400, lte: 599 } ];           // HTTP status received from origin.
+  uint32 response_code = 2 [ (buf.validate.field).uint32 = { gte: 400, lte: 599 } ];        // HTTP status returned to viewer.
+  string response_page_path = 3 [ (buf.validate.field).string.min_len = 1 ];   // Path to custom error page.
+  uint32 error_caching_min_ttl = 4 [ (buf.validate.field).uint32 = {} ];// TTL for caching the error.
 }
 
 // ---------------------------- Enumerations ----------------------------
