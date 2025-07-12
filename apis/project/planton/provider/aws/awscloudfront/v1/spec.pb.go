@@ -7,6 +7,7 @@
 package awscloudfrontv1
 
 import (
+	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -1372,125 +1373,130 @@ var File_project_planton_provider_aws_awscloudfront_v1_spec_proto protoreflect.F
 
 const file_project_planton_provider_aws_awscloudfront_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"8project/planton/provider/aws/awscloudfront/v1/spec.proto\x12-project.planton.provider.aws.awscloudfront.v1\"\xa7\t\n" +
-	"\x11AwsCloudFrontSpec\x12\x18\n" +
-	"\aaliases\x18\x01 \x03(\tR\aaliases\x12\x18\n" +
-	"\aenabled\x18\x02 \x01(\bR\aenabled\x12\x18\n" +
-	"\acomment\x18\x03 \x01(\tR\acomment\x12\x1f\n" +
-	"\vprice_class\x18\x04 \x01(\tR\n" +
-	"priceClass\x12.\n" +
-	"\x13default_root_object\x18\x05 \x01(\tR\x11defaultRootObject\x12O\n" +
-	"\aorigins\x18\x06 \x03(\v25.project.planton.provider.aws.awscloudfront.v1.OriginR\aorigins\x12y\n" +
-	"\x16default_cache_behavior\x18\a \x01(\v2C.project.planton.provider.aws.awscloudfront.v1.DefaultCacheBehaviorR\x14defaultCacheBehavior\x12t\n" +
-	"\x17ordered_cache_behaviors\x18\b \x03(\v2<.project.planton.provider.aws.awscloudfront.v1.CacheBehaviorR\x15orderedCacheBehaviors\x12o\n" +
-	"\x12viewer_certificate\x18\t \x01(\v2@.project.planton.provider.aws.awscloudfront.v1.ViewerCertificateR\x11viewerCertificate\x12V\n" +
+	"8project/planton/provider/aws/awscloudfront/v1/spec.proto\x12-project.planton.provider.aws.awscloudfront.v1\x1a\x1bbuf/validate/validate.proto\"\x93\v\n" +
+	"\x11AwsCloudFrontSpec\x12(\n" +
+	"\aaliases\x18\x01 \x03(\tB\x0e\xbaH\v\x92\x01\b\x18\x01\"\x04r\x02\x10\x01R\aaliases\x12\x1f\n" +
+	"\aenabled\x18\x02 \x01(\bB\x05\xbaH\x02j\x00R\aenabled\x12\"\n" +
+	"\acomment\x18\x03 \x01(\tB\b\xbaH\x05r\x03\x18\x80\bR\acomment\x12V\n" +
+	"\vprice_class\x18\x04 \x01(\tB5\xbaH2r0R\x0ePriceClass_100R\x0ePriceClass_200R\x0ePriceClass_AllR\n" +
+	"priceClass\x12?\n" +
+	"\x13default_root_object\x18\x05 \x01(\tB\x0f\xbaH\fr\n" +
+	"2\b^[^\\s]+$R\x11defaultRootObject\x12Y\n" +
+	"\aorigins\x18\x06 \x03(\v25.project.planton.provider.aws.awscloudfront.v1.OriginB\b\xbaH\x05\x92\x01\x02\b\x01R\aorigins\x12\x81\x01\n" +
+	"\x16default_cache_behavior\x18\a \x01(\v2C.project.planton.provider.aws.awscloudfront.v1.DefaultCacheBehaviorB\x06\xbaH\x03\xc8\x01\x01R\x14defaultCacheBehavior\x12~\n" +
+	"\x17ordered_cache_behaviors\x18\b \x03(\v2<.project.planton.provider.aws.awscloudfront.v1.CacheBehaviorB\b\xbaH\x05\x92\x01\x02\"\x00R\x15orderedCacheBehaviors\x12t\n" +
+	"\x12viewer_certificate\x18\t \x01(\v2@.project.planton.provider.aws.awscloudfront.v1.ViewerCertificateB\x03\xbaH\x00R\x11viewerCertificate\x12[\n" +
 	"\alogging\x18\n" +
-	" \x01(\v2<.project.planton.provider.aws.awscloudfront.v1.LoggingConfigR\alogging\x12_\n" +
-	"\frestrictions\x18\v \x01(\v2;.project.planton.provider.aws.awscloudfront.v1.RestrictionsR\frestrictions\x12\x1c\n" +
+	" \x01(\v2<.project.planton.provider.aws.awscloudfront.v1.LoggingConfigB\x03\xbaH\x00R\alogging\x12d\n" +
+	"\frestrictions\x18\v \x01(\v2;.project.planton.provider.aws.awscloudfront.v1.RestrictionsB\x03\xbaH\x00R\frestrictions\x12F\n" +
 	"\n" +
-	"web_acl_id\x18\f \x01(\tR\bwebAclId\x12^\n" +
-	"\x04tags\x18\r \x03(\v2J.project.planton.provider.aws.awscloudfront.v1.AwsCloudFrontSpec.TagsEntryR\x04tags\x12&\n" +
-	"\x0fis_ipv6_enabled\x18\x0e \x01(\bR\risIpv6Enabled\x12.\n" +
-	"\x13wait_for_deployment\x18\x0f \x01(\bR\x11waitForDeployment\x12x\n" +
-	"\x16custom_error_responses\x18\x10 \x03(\v2B.project.planton.provider.aws.awscloudfront.v1.CustomErrorResponseR\x14customErrorResponses\x1a7\n" +
+	"web_acl_id\x18\f \x01(\tB(\xbaH%r#2!^arn:[^:]+:wafv2:[^:]+:\\d{12}:.*$R\bwebAclId\x12r\n" +
+	"\x04tags\x18\r \x03(\v2J.project.planton.provider.aws.awscloudfront.v1.AwsCloudFrontSpec.TagsEntryB\x12\xbaH\x0f\x9a\x01\f\"\x04r\x02\x10\x01*\x04r\x02\x10\x01R\x04tags\x12-\n" +
+	"\x0fis_ipv6_enabled\x18\x0e \x01(\bB\x05\xbaH\x02j\x00R\risIpv6Enabled\x125\n" +
+	"\x13wait_for_deployment\x18\x0f \x01(\bB\x05\xbaH\x02j\x00R\x11waitForDeployment\x12\x82\x01\n" +
+	"\x16custom_error_responses\x18\x10 \x03(\v2B.project.planton.provider.aws.awscloudfront.v1.CustomErrorResponseB\b\xbaH\x05\x92\x01\x02\"\x00R\x14customErrorResponses\x1a7\n" +
 	"\tTagsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\x93\x04\n" +
-	"\x06Origin\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12\x1f\n" +
-	"\vdomain_name\x18\x02 \x01(\tR\n" +
-	"domainName\x12$\n" +
-	"\vorigin_path\x18\x03 \x01(\tH\x00R\n" +
-	"originPath\x88\x01\x01\x12b\n" +
-	"\x0ecustom_headers\x18\x04 \x03(\v2;.project.planton.provider.aws.awscloudfront.v1.OriginHeaderR\rcustomHeaders\x12g\n" +
-	"\x10s3_origin_config\x18\x05 \x01(\v2=.project.planton.provider.aws.awscloudfront.v1.S3OriginConfigR\x0es3OriginConfig\x12s\n" +
-	"\x14custom_origin_config\x18\x06 \x01(\v2A.project.planton.provider.aws.awscloudfront.v1.CustomOriginConfigR\x12customOriginConfig\x12`\n" +
-	"\rorigin_shield\x18\a \x01(\v2;.project.planton.provider.aws.awscloudfront.v1.OriginShieldR\foriginShieldB\x0e\n" +
-	"\f_origin_path\"8\n" +
-	"\fOriginHeader\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value\"f\n" +
-	"\x0eS3OriginConfig\x129\n" +
-	"\x16origin_access_identity\x18\x01 \x01(\tH\x00R\x14originAccessIdentity\x88\x01\x01B\x19\n" +
-	"\x17_origin_access_identity\"\xb8\x01\n" +
-	"\x12CustomOriginConfig\x124\n" +
-	"\x16origin_protocol_policy\x18\x01 \x01(\tR\x14originProtocolPolicy\x12\x1b\n" +
-	"\thttp_port\x18\x02 \x01(\rR\bhttpPort\x12\x1d\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xdb\x04\n" +
+	"\x06Origin\x12\x17\n" +
+	"\x02id\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x02id\x128\n" +
+	"\vdomain_name\x18\x02 \x01(\tB\x17\xbaH\x14r\x122\x10^[a-zA-Z0-9.-]+$R\n" +
+	"domainName\x121\n" +
+	"\vorigin_path\x18\x03 \x01(\tB\v\xbaH\br\x062\x04^/.*H\x00R\n" +
+	"originPath\x88\x01\x01\x12l\n" +
+	"\x0ecustom_headers\x18\x04 \x03(\v2;.project.planton.provider.aws.awscloudfront.v1.OriginHeaderB\b\xbaH\x05\x92\x01\x02\"\x00R\rcustomHeaders\x12l\n" +
+	"\x10s3_origin_config\x18\x05 \x01(\v2=.project.planton.provider.aws.awscloudfront.v1.S3OriginConfigB\x03\xbaH\x00R\x0es3OriginConfig\x12x\n" +
+	"\x14custom_origin_config\x18\x06 \x01(\v2A.project.planton.provider.aws.awscloudfront.v1.CustomOriginConfigB\x03\xbaH\x00R\x12customOriginConfig\x12e\n" +
+	"\rorigin_shield\x18\a \x01(\v2;.project.planton.provider.aws.awscloudfront.v1.OriginShieldB\x03\xbaH\x00R\foriginShieldB\x0e\n" +
+	"\f_origin_path\"J\n" +
+	"\fOriginHeader\x12\x1b\n" +
+	"\x04name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name\x12\x1d\n" +
+	"\x05value\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x05value\"\x99\x01\n" +
+	"\x0eS3OriginConfig\x12l\n" +
+	"\x16origin_access_identity\x18\x01 \x01(\tB1\xbaH.r,2*^origin-access-identity/cloudfront/[^\\s]+$H\x00R\x14originAccessIdentity\x88\x01\x01B\x19\n" +
+	"\x17_origin_access_identity\"\x8c\x02\n" +
+	"\x12CustomOriginConfig\x12`\n" +
+	"\x16origin_protocol_policy\x18\x01 \x01(\tB*\xbaH'r%R\thttp-onlyR\n" +
+	"https-onlyR\fmatch-viewerR\x14originProtocolPolicy\x12(\n" +
+	"\thttp_port\x18\x02 \x01(\rB\v\xbaH\b*\x06\x18\xff\xff\x03(\x01R\bhttpPort\x12*\n" +
 	"\n" +
-	"https_port\x18\x03 \x01(\rR\thttpsPort\x120\n" +
-	"\x14origin_ssl_protocols\x18\x04 \x03(\tR\x12originSslProtocols\"@\n" +
-	"\fOriginShield\x12\x18\n" +
-	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x16\n" +
-	"\x06region\x18\x02 \x01(\tR\x06region\"\xf4\x05\n" +
-	"\x14DefaultCacheBehavior\x12(\n" +
-	"\x10target_origin_id\x18\x01 \x01(\tR\x0etargetOriginId\x12'\n" +
-	"\x0fallowed_methods\x18\x02 \x03(\tR\x0eallowedMethods\x12%\n" +
-	"\x0ecached_methods\x18\x03 \x03(\tR\rcachedMethods\x12y\n" +
-	"\x16viewer_protocol_policy\x18\x04 \x01(\x0e2C.project.planton.provider.aws.awscloudfront.v1.ViewerProtocolPolicyR\x14viewerProtocolPolicy\x12i\n" +
-	"\x10forwarded_values\x18\x05 \x01(\v2>.project.planton.provider.aws.awscloudfront.v1.ForwardedValuesR\x0fforwardedValues\x12\x1a\n" +
-	"\bcompress\x18\x06 \x01(\bR\bcompress\x12\x17\n" +
-	"\amin_ttl\x18\a \x01(\rR\x06minTtl\x12\x1f\n" +
-	"\vdefault_ttl\x18\b \x01(\rR\n" +
-	"defaultTtl\x12\x17\n" +
-	"\amax_ttl\x18\t \x01(\rR\x06maxTtl\x12)\n" +
+	"https_port\x18\x03 \x01(\rB\v\xbaH\b*\x06\x18\xff\xff\x03(\x01R\thttpsPort\x12>\n" +
+	"\x14origin_ssl_protocols\x18\x04 \x03(\tB\f\xbaH\t\x92\x01\x06\"\x04r\x02\x10\x04R\x12originSslProtocols\"P\n" +
+	"\fOriginShield\x12\x1f\n" +
+	"\aenabled\x18\x01 \x01(\bB\x05\xbaH\x02j\x00R\aenabled\x12\x1f\n" +
+	"\x06region\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06region\"\xfb\x06\n" +
+	"\x14DefaultCacheBehavior\x121\n" +
+	"\x10target_origin_id\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x0etargetOriginId\x127\n" +
+	"\x0fallowed_methods\x18\x02 \x03(\tB\x0e\xbaH\v\x92\x01\b\b\x01\"\x04r\x02\x10\x03R\x0eallowedMethods\x123\n" +
+	"\x0ecached_methods\x18\x03 \x03(\tB\f\xbaH\t\x92\x01\x06\"\x04r\x02\x10\x03R\rcachedMethods\x12\x85\x01\n" +
+	"\x16viewer_protocol_policy\x18\x04 \x01(\x0e2C.project.planton.provider.aws.awscloudfront.v1.ViewerProtocolPolicyB\n" +
+	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\x14viewerProtocolPolicy\x12q\n" +
+	"\x10forwarded_values\x18\x05 \x01(\v2>.project.planton.provider.aws.awscloudfront.v1.ForwardedValuesB\x06\xbaH\x03\xc8\x01\x01R\x0fforwardedValues\x12!\n" +
+	"\bcompress\x18\x06 \x01(\bB\x05\xbaH\x02j\x00R\bcompress\x12\x1e\n" +
+	"\amin_ttl\x18\a \x01(\rB\x05\xbaH\x02*\x00R\x06minTtl\x12&\n" +
+	"\vdefault_ttl\x18\b \x01(\rB\x05\xbaH\x02*\x00R\n" +
+	"defaultTtl\x12\x1e\n" +
+	"\amax_ttl\x18\t \x01(\rB\x05\xbaH\x02*\x00R\x06maxTtl\x120\n" +
 	"\x10smooth_streaming\x18\n" +
-	" \x01(\bR\x0fsmoothStreaming\x12\x8a\x01\n" +
-	"\x1clambda_function_associations\x18\v \x03(\v2H.project.planton.provider.aws.awscloudfront.v1.LambdaFunctionAssociationR\x1alambdaFunctionAssociations\x12,\n" +
-	"\x12trusted_key_groups\x18\f \x03(\tR\x10trustedKeyGroups\x12'\n" +
-	"\x0ftrusted_signers\x18\r \x03(\tR\x0etrustedSigners\"\xe5\x05\n" +
-	"\rCacheBehavior\x12!\n" +
-	"\fpath_pattern\x18\x01 \x01(\tR\vpathPattern\x12(\n" +
-	"\x10target_origin_id\x18\x02 \x01(\tR\x0etargetOriginId\x12'\n" +
-	"\x0fallowed_methods\x18\x03 \x03(\tR\x0eallowedMethods\x12%\n" +
-	"\x0ecached_methods\x18\x04 \x03(\tR\rcachedMethods\x12y\n" +
-	"\x16viewer_protocol_policy\x18\x05 \x01(\x0e2C.project.planton.provider.aws.awscloudfront.v1.ViewerProtocolPolicyR\x14viewerProtocolPolicy\x12i\n" +
-	"\x10forwarded_values\x18\x06 \x01(\v2>.project.planton.provider.aws.awscloudfront.v1.ForwardedValuesR\x0fforwardedValues\x12\x1a\n" +
-	"\bcompress\x18\a \x01(\bR\bcompress\x12\x17\n" +
-	"\amin_ttl\x18\b \x01(\rR\x06minTtl\x12\x1f\n" +
-	"\vdefault_ttl\x18\t \x01(\rR\n" +
-	"defaultTtl\x12\x17\n" +
+	" \x01(\bB\x05\xbaH\x02j\x00R\x0fsmoothStreaming\x12\x94\x01\n" +
+	"\x1clambda_function_associations\x18\v \x03(\v2H.project.planton.provider.aws.awscloudfront.v1.LambdaFunctionAssociationB\b\xbaH\x05\x92\x01\x02\"\x00R\x1alambdaFunctionAssociations\x12<\n" +
+	"\x12trusted_key_groups\x18\f \x03(\tB\x0e\xbaH\v\x92\x01\b\x18\x01\"\x04r\x02\x10\x01R\x10trustedKeyGroups\x125\n" +
+	"\x0ftrusted_signers\x18\r \x03(\tB\f\xbaH\t\x92\x01\x06\"\x04r\x02\x10\x01R\x0etrustedSigners\"\xea\x06\n" +
+	"\rCacheBehavior\x12*\n" +
+	"\fpath_pattern\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\vpathPattern\x121\n" +
+	"\x10target_origin_id\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x0etargetOriginId\x125\n" +
+	"\x0fallowed_methods\x18\x03 \x03(\tB\f\xbaH\t\x92\x01\x06\"\x04r\x02\x10\x03R\x0eallowedMethods\x123\n" +
+	"\x0ecached_methods\x18\x04 \x03(\tB\f\xbaH\t\x92\x01\x06\"\x04r\x02\x10\x03R\rcachedMethods\x12\x85\x01\n" +
+	"\x16viewer_protocol_policy\x18\x05 \x01(\x0e2C.project.planton.provider.aws.awscloudfront.v1.ViewerProtocolPolicyB\n" +
+	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\x14viewerProtocolPolicy\x12q\n" +
+	"\x10forwarded_values\x18\x06 \x01(\v2>.project.planton.provider.aws.awscloudfront.v1.ForwardedValuesB\x06\xbaH\x03\xc8\x01\x01R\x0fforwardedValues\x12!\n" +
+	"\bcompress\x18\a \x01(\bB\x05\xbaH\x02j\x00R\bcompress\x12\x1e\n" +
+	"\amin_ttl\x18\b \x01(\rB\x05\xbaH\x02*\x00R\x06minTtl\x12&\n" +
+	"\vdefault_ttl\x18\t \x01(\rB\x05\xbaH\x02*\x00R\n" +
+	"defaultTtl\x12\x1e\n" +
 	"\amax_ttl\x18\n" +
-	" \x01(\rR\x06maxTtl\x12\x8a\x01\n" +
-	"\x1clambda_function_associations\x18\v \x03(\v2H.project.planton.provider.aws.awscloudfront.v1.LambdaFunctionAssociationR\x1alambdaFunctionAssociations\x12,\n" +
-	"\x12trusted_key_groups\x18\f \x03(\tR\x10trustedKeyGroups\x12'\n" +
-	"\x0ftrusted_signers\x18\r \x03(\tR\x0etrustedSigners\"\xd7\x01\n" +
-	"\x0fForwardedValues\x12!\n" +
-	"\fquery_string\x18\x01 \x01(\bR\vqueryString\x125\n" +
-	"\x17query_string_cache_keys\x18\x02 \x03(\tR\x14queryStringCacheKeys\x12\x18\n" +
-	"\aheaders\x18\x03 \x03(\tR\aheaders\x12P\n" +
-	"\acookies\x18\x04 \x01(\v26.project.planton.provider.aws.awscloudfront.v1.CookiesR\acookies\"W\n" +
-	"\aCookies\x12\x1f\n" +
-	"\vforward_all\x18\x01 \x01(\bR\n" +
-	"forwardAll\x12+\n" +
-	"\x11whitelisted_names\x18\x02 \x03(\tR\x10whitelistedNames\"|\n" +
-	"\x19LambdaFunctionAssociation\x12\x1d\n" +
+	" \x01(\rB\x05\xbaH\x02*\x00R\x06maxTtl\x12\x94\x01\n" +
+	"\x1clambda_function_associations\x18\v \x03(\v2H.project.planton.provider.aws.awscloudfront.v1.LambdaFunctionAssociationB\b\xbaH\x05\x92\x01\x02\"\x00R\x1alambdaFunctionAssociations\x12:\n" +
+	"\x12trusted_key_groups\x18\f \x03(\tB\f\xbaH\t\x92\x01\x06\"\x04r\x02\x10\x01R\x10trustedKeyGroups\x125\n" +
+	"\x0ftrusted_signers\x18\r \x03(\tB\f\xbaH\t\x92\x01\x06\"\x04r\x02\x10\x01R\x0etrustedSigners\"\xff\x01\n" +
+	"\x0fForwardedValues\x12(\n" +
+	"\fquery_string\x18\x01 \x01(\bB\x05\xbaH\x02j\x00R\vqueryString\x12C\n" +
+	"\x17query_string_cache_keys\x18\x02 \x03(\tB\f\xbaH\t\x92\x01\x06\"\x04r\x02\x10\x01R\x14queryStringCacheKeys\x12&\n" +
+	"\aheaders\x18\x03 \x03(\tB\f\xbaH\t\x92\x01\x06\"\x04r\x02\x10\x01R\aheaders\x12U\n" +
+	"\acookies\x18\x04 \x01(\v26.project.planton.provider.aws.awscloudfront.v1.CookiesB\x03\xbaH\x00R\acookies\"l\n" +
+	"\aCookies\x12&\n" +
+	"\vforward_all\x18\x01 \x01(\bB\x05\xbaH\x02j\x00R\n" +
+	"forwardAll\x129\n" +
+	"\x11whitelisted_names\x18\x02 \x03(\tB\f\xbaH\t\x92\x01\x06\"\x04r\x02\x10\x01R\x10whitelistedNames\"\x9c\x02\n" +
+	"\x19LambdaFunctionAssociation\x12f\n" +
 	"\n" +
-	"event_type\x18\x01 \x01(\tR\teventType\x12\x1d\n" +
+	"event_type\x18\x01 \x01(\tBG\xbaHDrBR\x0eviewer-requestR\x0fviewer-responseR\x0eorigin-requestR\x0forigin-responseR\teventType\x12m\n" +
 	"\n" +
-	"lambda_arn\x18\x02 \x01(\tR\tlambdaArn\x12!\n" +
-	"\finclude_body\x18\x03 \x01(\bR\vincludeBody\"\x9f\x02\n" +
-	"\x11ViewerCertificate\x12D\n" +
-	"\x1ecloudfront_default_certificate\x18\x01 \x01(\bR\x1ccloudfrontDefaultCertificate\x12.\n" +
-	"\x13acm_certificate_arn\x18\x02 \x01(\tR\x11acmCertificateArn\x12,\n" +
-	"\x12iam_certificate_id\x18\x03 \x01(\tR\x10iamCertificateId\x12,\n" +
-	"\x12ssl_support_method\x18\x04 \x01(\tR\x10sslSupportMethod\x128\n" +
-	"\x18minimum_protocol_version\x18\x05 \x01(\tR\x16minimumProtocolVersion\"\x82\x01\n" +
-	"\rLoggingConfig\x12\x18\n" +
-	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x16\n" +
-	"\x06bucket\x18\x02 \x01(\tR\x06bucket\x12\x16\n" +
-	"\x06prefix\x18\x03 \x01(\tR\x06prefix\x12'\n" +
-	"\x0finclude_cookies\x18\x04 \x01(\bR\x0eincludeCookies\"v\n" +
-	"\fRestrictions\x12f\n" +
-	"\x0fgeo_restriction\x18\x01 \x01(\v2=.project.planton.provider.aws.awscloudfront.v1.GeoRestrictionR\x0egeoRestriction\"Y\n" +
-	"\x0eGeoRestriction\x12)\n" +
-	"\x10restriction_type\x18\x01 \x01(\tR\x0frestrictionType\x12\x1c\n" +
-	"\tlocations\x18\x02 \x03(\tR\tlocations\"\xba\x01\n" +
-	"\x13CustomErrorResponse\x12\x1d\n" +
+	"lambda_arn\x18\x02 \x01(\tBN\xbaHKrI2G^arn:aws:lambda:[^:]+:\\d{12}:function:[A-Za-z0-9-_]+(:[A-Za-z0-9-_]+)?$R\tlambdaArn\x12(\n" +
+	"\finclude_body\x18\x03 \x01(\bB\x05\xbaH\x02j\x00R\vincludeBody\"\xb1\x03\n" +
+	"\x11ViewerCertificate\x12K\n" +
+	"\x1ecloudfront_default_certificate\x18\x01 \x01(\bB\x05\xbaH\x02j\x00R\x1ccloudfrontDefaultCertificate\x12h\n" +
+	"\x13acm_certificate_arn\x18\x02 \x01(\tB8\xbaH5r321^arn:aws:acm:[^:]+:\\d{12}:certificate/[a-f0-9-]+$R\x11acmCertificateArn\x125\n" +
+	"\x12iam_certificate_id\x18\x03 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x10iamCertificateId\x12M\n" +
+	"\x12ssl_support_method\x18\x04 \x01(\tB\x1f\xbaH\x1cr\x1aR\x03vipR\bsni-onlyR\tstatic-ipR\x10sslSupportMethod\x12_\n" +
+	"\x18minimum_protocol_version\x18\x05 \x01(\tB%\xbaH\"r 2\x1e^TLSv[0-9]\\.[0-9](_[0-9]{4})?$R\x16minimumProtocolVersion\"\xb0\x01\n" +
+	"\rLoggingConfig\x12\x1f\n" +
+	"\aenabled\x18\x01 \x01(\bB\x05\xbaH\x02j\x00R\aenabled\x12,\n" +
+	"\x06bucket\x18\x02 \x01(\tB\x14\xbaH\x11r\x0f2\r^[a-z0-9.-]+$R\x06bucket\x12 \n" +
+	"\x06prefix\x18\x03 \x01(\tB\b\xbaH\x05r\x03\x18\x80\bR\x06prefix\x12.\n" +
+	"\x0finclude_cookies\x18\x04 \x01(\bB\x05\xbaH\x02j\x00R\x0eincludeCookies\"{\n" +
+	"\fRestrictions\x12k\n" +
+	"\x0fgeo_restriction\x18\x01 \x01(\v2=.project.planton.provider.aws.awscloudfront.v1.GeoRestrictionB\x03\xbaH\x00R\x0egeoRestriction\"\x96\x01\n" +
+	"\x0eGeoRestriction\x12L\n" +
+	"\x10restriction_type\x18\x01 \x01(\tB!\xbaH\x1er\x1cR\tblacklistR\twhitelistR\x04noneR\x0frestrictionType\x126\n" +
+	"\tlocations\x18\x02 \x03(\tB\x18\xbaH\x15\x92\x01\x12\x18\x01\"\x0er\f2\n" +
+	"^[A-Z]{2}$R\tlocations\"\xe4\x01\n" +
+	"\x13CustomErrorResponse\x12*\n" +
 	"\n" +
-	"error_code\x18\x01 \x01(\rR\terrorCode\x12#\n" +
-	"\rresponse_code\x18\x02 \x01(\rR\fresponseCode\x12,\n" +
-	"\x12response_page_path\x18\x03 \x01(\tR\x10responsePagePath\x121\n" +
-	"\x15error_caching_min_ttl\x18\x04 \x01(\rR\x12errorCachingMinTtl*t\n" +
+	"error_code\x18\x01 \x01(\rB\v\xbaH\b*\x06\x18\xd7\x04(\x90\x03R\terrorCode\x120\n" +
+	"\rresponse_code\x18\x02 \x01(\rB\v\xbaH\b*\x06\x18\xd7\x04(\x90\x03R\fresponseCode\x125\n" +
+	"\x12response_page_path\x18\x03 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x10responsePagePath\x128\n" +
+	"\x15error_caching_min_ttl\x18\x04 \x01(\rB\x05\xbaH\x02*\x00R\x12errorCachingMinTtl*t\n" +
 	"\x14ViewerProtocolPolicy\x12&\n" +
 	"\"VIEWER_PROTOCOL_POLICY_UNSPECIFIED\x10\x00\x12\r\n" +
 	"\tALLOW_ALL\x10\x01\x12\x15\n" +
