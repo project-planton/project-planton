@@ -2,41 +2,64 @@ syntax = "proto3";
 
 package project.planton.provider.aws.awscloudfront.v1;
 
+import "buf/validate/validate.proto";
+
 // Represents most commonly used configuration properties for an
 // Amazon CloudFront distribution.
 message AwsCloudFrontSpec {
   // Whether the distribution is enabled and can accept end-user traffic.
-  bool enabled = 1;
+  bool enabled = 1 [
+    (buf.validate.field).required = true
+  ];
 
   // Optional human-readable comment describing the distribution.
-  string comment = 2;
+  string comment = 2 [
+    (buf.validate.field).string = { max_len: 256, ignore_empty: true }
+  ];
 
   // Alternate domain names (CNAMEs) that map to the distribution.
-  repeated string aliases = 3;
+  repeated string aliases = 3 [
+    (buf.validate.field) = {
+      repeated: { unique: true },
+      string:   { hostname: true }
+    }
+  ];
 
   // Pricing tier that determines which edge locations are used.
-  PriceClass price_class = 4;
+  PriceClass price_class = 4 [
+    (buf.validate.field).enum = { defined_only: true, not_in: [0] }
+  ];
 
   // Object served when a request is made to the root URL (e.g. “index.html”).
-  string default_root_object = 5;
+  string default_root_object = 5 [
+    (buf.validate.field).string = { min_len: 1, max_len: 1024, ignore_empty: true }
+  ];
 
   // Enable delivery over IPv6 in addition to IPv4.
   bool is_ipv6_enabled = 6;
 
   // ID of an AWS WAF web ACL to associate with the distribution.
-  string web_acl_id = 7;
+  string web_acl_id = 7 [
+    (buf.validate.field).string = { min_len: 1, max_len: 128, ignore_empty: true }
+  ];
 
   // Origin servers from which CloudFront will fetch the content.
-  repeated Origin origins = 10;
+  repeated Origin origins = 10 [
+    (buf.validate.field).repeated = { min_items: 1 }
+  ];
 
   // Global default cache behavior applied when no path-specific rule matches.
-  DefaultCacheBehavior default_cache_behavior = 20;
+  DefaultCacheBehavior default_cache_behavior = 20 [
+    (buf.validate.field).required = true
+  ];
 
   // Path-based cache behaviors for fine-grained request handling.
   repeated CacheBehavior cache_behaviors = 21;
 
   // SSL/TLS certificate and protocol settings for viewer connections.
-  ViewerCertificate viewer_certificate = 30;
+  ViewerCertificate viewer_certificate = 30 [
+    (buf.validate.field).required = true
+  ];
 
   // Access-log delivery configuration.
   LoggingConfig logging = 40;
@@ -48,10 +71,20 @@ message AwsCloudFrontSpec {
   repeated CustomErrorResponse custom_error_responses = 60;
 
   // Highest HTTP protocol version supported for viewer connections.
-  HttpVersion http_version = 70;
+  HttpVersion http_version = 70 [
+    (buf.validate.field).enum = { defined_only: true, not_in: [0] }
+  ];
 
   // Key/value metadata tags applied to the distribution.
-  map<string, string> tags = 90;
+  map<string, string> tags = 90 [
+    (buf.validate.field) = {
+      map: {
+        max_pairs: 50,
+        keys:   { string: { min_len: 1 } },
+        values: { string: { max_len: 256 } }
+      }
+    }
+  ];
 }
 
 // ---------- Origin configuration ----------
@@ -59,13 +92,19 @@ message AwsCloudFrontSpec {
 // Describes an origin that CloudFront can forward requests to.
 message Origin {
   // Unique identifier referenced by cache behaviors.
-  string id = 1;
+  string id = 1 [
+    (buf.validate.field).string = { min_len: 1, max_len: 128 }
+  ];
 
   // DNS name of the origin server (e.g. “mybucket.s3.amazonaws.com”).
-  string domain_name = 2;
+  string domain_name = 2 [
+    (buf.validate.field).string.hostname = true
+  ];
 
   // Optional Origin Shield region that CloudFront should use.
-  string origin_shield_region = 3;
+  string origin_shield_region = 3 [
+    (buf.validate.field).string = { pattern: "^[a-z]{2}-[a-z]+-[0-9]$", ignore_empty: true }
+  ];
 
   // Custom headers that CloudFront adds to every origin request.
   repeated Header custom_headers = 4;
@@ -76,13 +115,17 @@ message Origin {
     S3OriginConfig s3_origin_config = 10;
     // Settings for any non-S3 HTTP/S origin.
     CustomOriginConfig custom_origin_config = 11;
-  }
+  } [(buf.validate.oneof).required = true];
 }
 
 // HTTP header key/value pair.
 message Header {
-  string name = 1;
-  string value = 2;
+  string name = 1 [
+    (buf.validate.field).string = { min_len: 1, max_len: 256 }
+  ];
+  string value = 2 [
+    (buf.validate.field).string = { max_len: 4096 }
+  ];
 }
 
 // Settings specific to an Amazon S3 origin.
@@ -94,36 +137,72 @@ message S3OriginConfig {
 // Settings for a custom (non-S3) HTTP/S origin such as an ALB or custom server.
 message CustomOriginConfig {
   // Port to use when connecting to the origin over HTTP.
-  int32 http_port = 1;
+  int32 http_port = 1 [
+    (buf.validate.field).int32 = { gte: 1, lte: 65535 }
+  ];
 
   // Port to use when connecting to the origin over HTTPS.
-  int32 https_port = 2;
+  int32 https_port = 2 [
+    (buf.validate.field).int32 = { gte: 1, lte: 65535 }
+  ];
 
   // Protocol policy that CloudFront uses to communicate with the origin.
-  OriginProtocolPolicy origin_protocol_policy = 3;
+  OriginProtocolPolicy origin_protocol_policy = 3 [
+    (buf.validate.field).enum = { defined_only: true, not_in: [0] }
+  ];
 
   // Seconds CloudFront waits for a response from the origin.
-  int32 origin_read_timeout = 4;
+  int32 origin_read_timeout = 4 [
+    (buf.validate.field).int32 = { gte: 1, lte: 60 }
+  ];
 
   // Keep-alive timeout in seconds for persistent connections.
-  int32 origin_keepalive_timeout = 5;
+  int32 origin_keepalive_timeout = 5 [
+    (buf.validate.field).int32 = { gte: 1, lte: 60 }
+  ];
 }
 
 // ---------- Cache behavior configuration ----------
 
 // Default cache behavior that applies to all requests.
 message DefaultCacheBehavior {
-  string target_origin_id = 1;
-  ViewerProtocolPolicy viewer_protocol_policy = 2;
-  repeated HttpMethod allowed_methods = 3;
-  repeated HttpMethod cached_methods = 4;
+  string target_origin_id = 1 [
+    (buf.validate.field).string.min_len = 1
+  ];
+  ViewerProtocolPolicy viewer_protocol_policy = 2 [
+    (buf.validate.field).enum = { defined_only: true, not_in: [0] }
+  ];
+  repeated HttpMethod allowed_methods = 3 [
+    (buf.validate.field) = {
+      repeated: { min_items: 1, unique: true },
+      enum:     { defined_only: true, not_in: [0] }
+    }
+  ];
+  repeated HttpMethod cached_methods = 4 [
+    (buf.validate.field) = {
+      repeated: { min_items: 1, unique: true },
+      enum:     { defined_only: true, not_in: [0] }
+    }
+  ];
   bool compress = 5;
-  int64 min_ttl = 6;
-  int64 default_ttl = 7;
-  int64 max_ttl = 8;
-  string cache_policy_id = 9;
-  string origin_request_policy_id = 10;
-  string response_headers_policy_id = 11;
+  int64 min_ttl = 6 [
+    (buf.validate.field).int64.gte = 0
+  ];
+  int64 default_ttl = 7 [
+    (buf.validate.field).int64.gte = 0
+  ];
+  int64 max_ttl = 8 [
+    (buf.validate.field).int64.gte = 0
+  ];
+  string cache_policy_id = 9 [
+    (buf.validate.field).string = { min_len: 1, ignore_empty: true }
+  ];
+  string origin_request_policy_id = 10 [
+    (buf.validate.field).string = { min_len: 1, ignore_empty: true }
+  ];
+  string response_headers_policy_id = 11 [
+    (buf.validate.field).string = { min_len: 1, ignore_empty: true }
+  ];
   repeated LambdaFunctionAssociation lambda_function_associations = 12;
   repeated FunctionAssociation function_associations = 13;
 }
@@ -131,19 +210,47 @@ message DefaultCacheBehavior {
 // Additional cache behavior applied to requests matching the path_pattern.
 message CacheBehavior {
   // URL path pattern (glob) this behavior applies to, e.g. “*.jpg”.
-  string path_pattern = 1;
+  string path_pattern = 1 [
+    (buf.validate.field).string.min_len = 1
+  ];
 
-  string target_origin_id = 2;
-  ViewerProtocolPolicy viewer_protocol_policy = 3;
-  repeated HttpMethod allowed_methods = 4;
-  repeated HttpMethod cached_methods = 5;
+  string target_origin_id = 2 [
+    (buf.validate.field).string.min_len = 1
+  ];
+  ViewerProtocolPolicy viewer_protocol_policy = 3 [
+    (buf.validate.field).enum = { defined_only: true, not_in: [0] }
+  ];
+  repeated HttpMethod allowed_methods = 4 [
+    (buf.validate.field) = {
+      repeated: { min_items: 1, unique: true },
+      enum:     { defined_only: true, not_in: [0] }
+    }
+  ];
+  repeated HttpMethod cached_methods = 5 [
+    (buf.validate.field) = {
+      repeated: { min_items: 1, unique: true },
+      enum:     { defined_only: true, not_in: [0] }
+    }
+  ];
   bool compress = 6;
-  int64 min_ttl = 7;
-  int64 default_ttl = 8;
-  int64 max_ttl = 9;
-  string cache_policy_id = 10;
-  string origin_request_policy_id = 11;
-  string response_headers_policy_id = 12;
+  int64 min_ttl = 7 [
+    (buf.validate.field).int64.gte = 0
+  ];
+  int64 default_ttl = 8 [
+    (buf.validate.field).int64.gte = 0
+  ];
+  int64 max_ttl = 9 [
+    (buf.validate.field).int64.gte = 0
+  ];
+  string cache_policy_id = 10 [
+    (buf.validate.field).string = { min_len: 1, ignore_empty: true }
+  ];
+  string origin_request_policy_id = 11 [
+    (buf.validate.field).string = { min_len: 1, ignore_empty: true }
+  ];
+  string response_headers_policy_id = 12 [
+    (buf.validate.field).string = { min_len: 1, ignore_empty: true }
+  ];
   repeated LambdaFunctionAssociation lambda_function_associations = 13;
   repeated FunctionAssociation function_associations = 14;
 }
@@ -151,10 +258,14 @@ message CacheBehavior {
 // Association between a Lambda@Edge function and an invocation event.
 message LambdaFunctionAssociation {
   // The CloudFront invocation event (viewer-request, origin-response, etc.).
-  string event_type = 1;
+  string event_type = 1 [
+    (buf.validate.field).string.min_len = 1
+  ];
 
   // ARN of the Lambda function version or alias.
-  string lambda_arn = 2;
+  string lambda_arn = 2 [
+    (buf.validate.field).string = { min_len: 20, has_prefix: "arn:" }
+  ];
 
   // Include the request body when the event type is viewer-request.
   bool include_body = 3;
@@ -162,8 +273,12 @@ message LambdaFunctionAssociation {
 
 // Association between a CloudFront Function and an invocation event.
 message FunctionAssociation {
-  string event_type = 1;
-  string function_arn = 2;
+  string event_type = 1 [
+    (buf.validate.field).string.min_len = 1
+  ];
+  string function_arn = 2 [
+    (buf.validate.field).string = { min_len: 20, has_prefix: "arn:" }
+  ];
 }
 
 // ---------- Viewer certificate ----------
@@ -175,17 +290,25 @@ message ViewerCertificate {
     bool cloudfront_default_certificate = 1;
 
     // ARN of an ACM certificate (must be in us-east-1).
-    string acm_certificate_arn = 2;
+    string acm_certificate_arn = 2 [
+      (buf.validate.field).string = { min_len: 20, has_prefix: "arn:", ignore_empty: true }
+    ];
 
     // ID of a legacy IAM server certificate.
-    string iam_certificate_id = 3;
-  }
+    string iam_certificate_id = 3 [
+      (buf.validate.field).string = { min_len: 1, ignore_empty: true }
+    ];
+  } [(buf.validate.oneof).required = true];
 
   // How CloudFront serves HTTPS (SNI, VIP, etc.).
-  SslSupportMethod ssl_support_method = 4;
+  SslSupportMethod ssl_support_method = 4 [
+    (buf.validate.field).enum = { defined_only: true, not_in: [0] }
+  ];
 
   // Minimum TLS protocol version allowed for viewers.
-  MinimumProtocolVersion minimum_protocol_version = 5;
+  MinimumProtocolVersion minimum_protocol_version = 5 [
+    (buf.validate.field).enum = { defined_only: true, not_in: [0] }
+  ];
 }
 
 // ---------- Logging ----------
@@ -196,10 +319,14 @@ message LoggingConfig {
   bool enabled = 1;
 
   // S3 bucket (DNS name) where logs are stored.
-  string bucket = 2;
+  string bucket = 2 [
+    (buf.validate.field).string = { pattern: "^[a-z0-9.-]+$", ignore_empty: true }
+  ];
 
   // Object key prefix for log files.
-  string prefix = 3;
+  string prefix = 3 [
+    (buf.validate.field).string = { max_len: 1024, ignore_empty: true }
+  ];
 
   // Include cookie header values in logs.
   bool include_cookies = 4;
@@ -214,8 +341,15 @@ message Restrictions {
 
 // Restricts content delivery by geographic location.
 message GeoRestriction {
-  GeoRestrictionType restriction_type = 1;
-  repeated string locations = 2; // ISO-3166-1 alpha-2 country codes
+  GeoRestrictionType restriction_type = 1 [
+    (buf.validate.field).enum = { defined_only: true, not_in: [0] }
+  ];
+  repeated string locations = 2 [
+    (buf.validate.field) = {
+      repeated: { unique: true },
+      string:   { pattern: "^[A-Z]{2}$" }
+    }
+  ]; // ISO-3166-1 alpha-2 country codes
 }
 
 // ---------- Custom error responses ----------
@@ -223,16 +357,24 @@ message GeoRestriction {
 // Overrides for specific HTTP error codes.
 message CustomErrorResponse {
   // HTTP status code to match (e.g. 404).
-  int32 error_code = 1;
+  int32 error_code = 1 [
+    (buf.validate.field).int32 = { gte: 400, lte: 599 }
+  ];
 
   // Status code returned to the viewer (e.g. 200).
-  int32 response_code = 2;
+  int32 response_code = 2 [
+    (buf.validate.field).int32 = { gte: 200, lte: 599, ignore_empty: true }
+  ];
 
   // Path to a custom error page in the distribution’s origin.
-  string response_page_path = 3;
+  string response_page_path = 3 [
+    (buf.validate.field).string = { min_len: 1, max_len: 1024, ignore_empty: true }
+  ];
 
   // Duration in seconds that the error response is cached.
-  int64 error_caching_min_ttl = 4;
+  int64 error_caching_min_ttl = 4 [
+    (buf.validate.field).int64.gte = 0
+  ];
 }
 
 // ---------- Enumerations ----------
