@@ -3,6 +3,7 @@ syntax = "proto3";
 package project.planton.provider.aws.awscloudfront.v1;
 
 import "google/protobuf/duration.proto";
+import "buf/validate/validate.proto";
 
 // Specification for an Amazon CloudFront distribution.
 message AwsCloudFrontSpec {
@@ -10,25 +11,39 @@ message AwsCloudFrontSpec {
   bool enabled = 1;
 
   // Alternative domain names (CNAMEs) that you want to associate with this distribution.
-  repeated string aliases = 2;
+  repeated string aliases = 2 [
+    (buf.validate.field).repeated = {
+      items: { string: { min_len: 1 } }
+    }
+  ];
 
   // Optional free-form comment for the distribution.
-  string comment = 3;
+  string comment = 3 [
+    (buf.validate.field).string = { max_len: 2048 }
+  ];
 
   // Object that CloudFront returns when a request is made to the root URL (e.g. "index.html").
-  string default_root_object = 4;
+  string default_root_object = 4 [
+    (buf.validate.field).string = { min_len: 1 }
+  ];
 
   // Pricing class that determines the edge locations CloudFront will use (PriceClass_100, PriceClass_200, PriceClass_All).
-  string price_class = 5;
+  string price_class = 5 [
+    (buf.validate.field).string = { in: ["PriceClass_100", "PriceClass_200", "PriceClass_All"] }
+  ];
 
   // Whether to enable IPv6 support for the distribution.
   bool is_ipv6_enabled = 6;
 
   // The origin configurations that CloudFront pulls content from.
-  repeated Origin origins = 7;
+  repeated Origin origins = 7 [
+    (buf.validate.field).repeated = { min_items: 1 }
+  ];
 
   // How CloudFront handles requests when the requested object isn't in the cache.
-  DefaultCacheBehavior default_cache_behavior = 8;
+  DefaultCacheBehavior default_cache_behavior = 8 [
+    (buf.validate.field).required = true
+  ];
 
   // Ordered list of additional cache behaviors for specific path patterns.
   repeated CacheBehavior ordered_cache_behaviors = 9;
@@ -43,23 +58,36 @@ message AwsCloudFrontSpec {
   Restrictions restrictions = 12;
 
   // ARN of an AWS WAF WebACL associated with this distribution.
-  string web_acl_id = 13;
+  string web_acl_id = 13 [
+    (buf.validate.field).string = { pattern: "^arn:aws:[a-z-]+:[^:]+:[0-9]{12}:.*$" }
+  ];
 
   // Key-value pairs to tag the CloudFront distribution.
-  map<string, string> tags = 14;
+  map<string, string> tags = 14 [
+    (buf.validate.field).map = {
+      keys:   { string: { min_len: 1 } },
+      values: { string: { min_len: 1 } }
+    }
+  ];
 
   // ========== Nested messages ==========
 
   // Defines an origin server (e.g., S3 bucket, load balancer, or custom HTTP server).
   message Origin {
     // Unique identifier that must be referenced by cache behaviors.
-    string id = 1;
+    string id = 1 [
+      (buf.validate.field).string = { min_len: 1 }
+    ];
 
     // DNS domain name of the origin (e.g., "mybucket.s3.amazonaws.com").
-    string domain_name = 2;
+    string domain_name = 2 [
+      (buf.validate.field).string = { hostname: true }
+    ];
 
     // Optional URL path that CloudFront appends to requests (must begin with a “/”).
-    string origin_path = 3;
+    string origin_path = 3 [
+      (buf.validate.field).string = { pattern: "^/.*$" }
+    ];
 
     // Custom HTTP headers that CloudFront includes in origin requests.
     repeated CustomHeader custom_headers = 4;
@@ -73,59 +101,97 @@ message AwsCloudFrontSpec {
 
   // Name/value pair for a custom header.
   message CustomHeader {
-    string name = 1;
-    string value = 2;
+    string name = 1 [
+      (buf.validate.field).string = { min_len: 1 }
+    ];
+    string value = 2 [
+      (buf.validate.field).string = { min_len: 1 }
+    ];
   }
 
   // Configuration for an Amazon S3 origin.
   message S3OriginConfig {
     // CloudFront origin access identity (OAI) used to access the bucket.
-    string origin_access_identity = 1;
+    string origin_access_identity = 1 [
+      (buf.validate.field).string = { pattern: "^origin-access-identity/cloudfront/[A-Za-z0-9]+$" }
+    ];
   }
 
   // Configuration for a custom HTTP/S origin.
   message CustomOriginConfig {
     // How CloudFront connects to the origin (http-only, https-only, match-viewer).
-    string origin_protocol_policy = 1;
+    string origin_protocol_policy = 1 [
+      (buf.validate.field).string = { in: ["http-only", "https-only", "match-viewer"] }
+    ];
 
     // HTTP port that CloudFront uses when connecting with HTTP.
-    int32 http_port = 2;
+    int32 http_port = 2 [
+      (buf.validate.field).int32 = { gte: 1, lte: 65535 }
+    ];
 
     // HTTPS port that CloudFront uses when connecting with HTTPS.
-    int32 https_port = 3;
+    int32 https_port = 3 [
+      (buf.validate.field).int32 = { gte: 1, lte: 65535 }
+    ];
 
     // TLS protocols that CloudFront can use when establishing HTTPS connections (e.g., "TLSv1.2").
-    repeated string origin_ssl_protocols = 4;
+    repeated string origin_ssl_protocols = 4 [
+      (buf.validate.field).repeated = {
+        min_items: 1,
+        items: { string: { in: ["SSLv3", "TLSv1", "TLSv1.1", "TLSv1.2", "TLSv1.3"] } }
+      }
+    ];
   }
 
   // Describes how CloudFront handles viewer requests for objects in the specified path pattern.
   message CacheBehavior {
     // Path pattern (e.g., "/images/*"). Use "*" to apply to all objects.
-    string path_pattern = 1;
+    string path_pattern = 1 [
+      (buf.validate.field).string = { min_len: 1 }
+    ];
 
     // ID of the origin to forward requests to.
-    string target_origin_id = 2;
+    string target_origin_id = 2 [
+      (buf.validate.field).string = { min_len: 1 }
+    ];
 
     // HTTP methods that CloudFront allows for viewer requests.
-    repeated string allowed_methods = 3;
+    repeated string allowed_methods = 3 [
+      (buf.validate.field).repeated = {
+        min_items: 1,
+        items: { string: { in: ["GET", "HEAD", "OPTIONS", "PUT", "POST", "PATCH", "DELETE"] } }
+      }
+    ];
 
     // Subset of allowed methods that CloudFront caches responses for.
-    repeated string cached_methods = 4;
+    repeated string cached_methods = 4 [
+      (buf.validate.field).repeated = {
+        items: { string: { in: ["GET", "HEAD", "OPTIONS"] } }
+      }
+    ];
 
     // Policy that determines whether viewers can use HTTP or HTTPS (allow-all, redirect-to-https, https-only).
-    string viewer_protocol_policy = 5;
+    string viewer_protocol_policy = 5 [
+      (buf.validate.field).string = { in: ["allow-all", "redirect-to-https", "https-only"] }
+    ];
 
     // Whether CloudFront compresses certain files automatically.
     bool compress = 6;
 
     // Minimum amount of time that an object stays in the cache.
-    google.protobuf.Duration min_ttl = 7;
+    google.protobuf.Duration min_ttl = 7 [
+      (buf.validate.field).duration = { gte: { seconds: 0 } }
+    ];
 
     // Default amount of time that an object stays in the cache.
-    google.protobuf.Duration default_ttl = 8;
+    google.protobuf.Duration default_ttl = 8 [
+      (buf.validate.field).duration = { gte: { seconds: 0 } }
+    ];
 
     // Maximum amount of time that an object stays in the cache.
-    google.protobuf.Duration max_ttl = 9;
+    google.protobuf.Duration max_ttl = 9 [
+      (buf.validate.field).duration = { gte: { seconds: 0 } }
+    ];
 
     // Decide whether CloudFront forwards cookies, query strings, and headers to the origin.
     ForwardedValues forwarded_values = 10;
@@ -134,21 +200,40 @@ message AwsCloudFrontSpec {
   // Default cache behavior. Same fields as CacheBehavior except path_pattern.
   message DefaultCacheBehavior {
     // ID of the origin to forward requests to.
-    string target_origin_id = 1;
+    string target_origin_id = 1 [
+      (buf.validate.field).string = { min_len: 1 }
+    ];
 
-    repeated string allowed_methods = 2;
+    repeated string allowed_methods = 2 [
+      (buf.validate.field).repeated = {
+        min_items: 1,
+        items: { string: { in: ["GET", "HEAD", "OPTIONS", "PUT", "POST", "PATCH", "DELETE"] } }
+      }
+    ];
 
-    repeated string cached_methods = 3;
+    repeated string cached_methods = 3 [
+      (buf.validate.field).repeated = {
+        items: { string: { in: ["GET", "HEAD", "OPTIONS"] } }
+      }
+    ];
 
-    string viewer_protocol_policy = 4;
+    string viewer_protocol_policy = 4 [
+      (buf.validate.field).string = { in: ["allow-all", "redirect-to-https", "https-only"] }
+    ];
 
     bool compress = 5;
 
-    google.protobuf.Duration min_ttl = 6;
+    google.protobuf.Duration min_ttl = 6 [
+      (buf.validate.field).duration = { gte: { seconds: 0 } }
+    ];
 
-    google.protobuf.Duration default_ttl = 7;
+    google.protobuf.Duration default_ttl = 7 [
+      (buf.validate.field).duration = { gte: { seconds: 0 } }
+    ];
 
-    google.protobuf.Duration max_ttl = 8;
+    google.protobuf.Duration max_ttl = 8 [
+      (buf.validate.field).duration = { gte: { seconds: 0 } }
+    ];
 
     ForwardedValues forwarded_values = 9;
   }
@@ -159,7 +244,11 @@ message AwsCloudFrontSpec {
     bool query_string = 1;
 
     // List of header names to forward.
-    repeated string headers = 2;
+    repeated string headers = 2 [
+      (buf.validate.field).repeated = {
+        items: { string: { min_len: 1 } }
+      }
+    ];
 
     // Cookie forwarding settings.
     Cookies cookies = 3;
@@ -168,19 +257,29 @@ message AwsCloudFrontSpec {
   // Settings that specify how CloudFront handles cookies.
   message Cookies {
     // "none", "whitelist", or "all".
-    string forward = 1;
+    string forward = 1 [
+      (buf.validate.field).string = { in: ["none", "whitelist", "all"] }
+    ];
 
     // Cookie names to include when forward == "whitelist".
-    repeated string whitelisted_names = 2;
+    repeated string whitelisted_names = 2 [
+      (buf.validate.field).repeated = {
+        items: { string: { min_len: 1 } }
+      }
+    ];
   }
 
   // Access-log configuration.
   message LoggingConfig {
     // S3 bucket to which CloudFront delivers access logs (e.g., "logs.example.com.s3.amazonaws.com").
-    string bucket = 1;
+    string bucket = 1 [
+      (buf.validate.field).string = { hostname: true }
+    ];
 
     // Optional prefix for log object keys.
-    string prefix = 2;
+    string prefix = 2 [
+      (buf.validate.field).string = { max_len: 1024 }
+    ];
 
     // Whether to include cookies in the logs.
     bool include_cookies = 3;
@@ -189,16 +288,22 @@ message AwsCloudFrontSpec {
   // SSL/TLS certificate to use when viewers use HTTPS to request your objects.
   message ViewerCertificate {
     // ACM certificate ARN to associate with the distribution.
-    string acm_certificate_arn = 1;
+    string acm_certificate_arn = 1 [
+      (buf.validate.field).string = { pattern: "^arn:aws:acm:[a-z0-9-]+:[0-9]{12}:certificate/[0-9a-f-]+$" }
+    ];
 
     // Use the default *.cloudfront.net certificate instead of a custom one.
     bool cloudfront_default_certificate = 2;
 
     // Method that the viewer uses to connect (sni-only, vip, static-ip).
-    string ssl_support_method = 3;
+    string ssl_support_method = 3 [
+      (buf.validate.field).string = { in: ["sni-only", "vip", "static-ip"] }
+    ];
 
     // Minimum SSL/TLS protocol version that CloudFront supports.
-    string minimum_protocol_version = 4;
+    string minimum_protocol_version = 4 [
+      (buf.validate.field).string = { in: ["SSLv3", "TLSv1", "TLSv1.1_2016", "TLSv1.2_2018", "TLSv1.2_2019", "TLSv1.2_2021"] }
+    ];
   }
 
   // Geographic or IP restrictions.
@@ -209,9 +314,15 @@ message AwsCloudFrontSpec {
   // List of countries from which CloudFront either allows or blocks content.
   message GeoRestriction {
     // "none", "whitelist", or "blacklist".
-    string restriction_type = 1;
+    string restriction_type = 1 [
+      (buf.validate.field).string = { in: ["none", "whitelist", "blacklist"] }
+    ];
 
     // Two-letter country codes that are either allowed or blocked based on restriction_type.
-    repeated string locations = 2;
+    repeated string locations = 2 [
+      (buf.validate.field).repeated = {
+        items: { string: { pattern: "^[A-Z]{2}$" } }
+      }
+    ];
   }
 }
