@@ -105,7 +105,10 @@ message AwsDynamodbSpec {
 
     // ARN of a customer managed KMS key (required if sse_type = KMS).
     string kms_key_arn = 3 [
-      (buf.validate.field).string = {ignore_empty: true, pattern: "^arn:[A-Za-z0-9-_:/.]+$"}
+      (buf.validate.field).string = {
+        max_len: 255,
+        pattern: "^$|^arn:[A-Za-z0-9-_:/.]+$"
+      }
     ];
   }
 
@@ -152,8 +155,10 @@ message AwsDynamodbSpec {
 
     // List of non-key attributes to project (used when projection_type = INCLUDE).
     repeated string non_key_attributes = 8 [
-      (buf.validate.field).repeated = {max_items: 20},
-      (buf.validate.field).string = {min_len: 1, max_len: 255}
+      (buf.validate.field).repeated = {
+        max_items: 20,
+        items: {string: {min_len: 1, max_len: 255}}
+      }
     ];
   }
 
@@ -176,8 +181,10 @@ message AwsDynamodbSpec {
 
     // List of non-key attributes to project (used when projection_type = INCLUDE).
     repeated string non_key_attributes = 4 [
-      (buf.validate.field).repeated = {max_items: 20},
-      (buf.validate.field).string = {min_len: 1, max_len: 255}
+      (buf.validate.field).repeated = {
+        max_items: 20,
+        items: {string: {min_len: 1, max_len: 255}}
+      }
     ];
   }
 
@@ -188,7 +195,10 @@ message AwsDynamodbSpec {
 
     // Name of the attribute that stores the expiry timestamp (in seconds since epoch).
     string attribute_name = 2 [
-      (buf.validate.field).string = {ignore_empty: true, min_len: 1, max_len: 255}
+      (buf.validate.field).string = {
+        max_len: 255,
+        pattern: "^$|^[A-Za-z0-9_.-]+$"
+      }
     ];
   }
 
@@ -279,9 +289,9 @@ message AwsDynamodbSpec {
 
   // Additional AWS regions for global table replication.
   repeated string replica_regions = 17 [
-    (buf.validate.field).repeated = {max_items: 16},
-    (buf.validate.field).string = {
-      pattern: "^[a-z]{2}-[a-z]+-[1-9]$"
+    (buf.validate.field).repeated = {
+      max_items: 16,
+      items: {string: {pattern: "^[a-z]{2}-[a-z]+-[1-9]$"}}
     }
   ];
 
