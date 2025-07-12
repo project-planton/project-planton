@@ -158,17 +158,18 @@ message AwsDynamodbSpec {
   message StreamSpecification {
     // Enable or disable streams.
     bool enabled = 1;
+
     // The view type of the stream.
     StreamViewType view_type = 2;
-  }
 
-  // Stream view types.
-  enum StreamViewType {
-    STREAM_VIEW_TYPE_UNSPECIFIED = 0;
-    NEW_IMAGE = 1;
-    OLD_IMAGE = 2;
-    NEW_AND_OLD_IMAGES = 3;
-    KEYS_ONLY = 4;
+    // Stream view types.
+    enum StreamViewType {
+      STREAM_VIEW_TYPE_UNSPECIFIED = 0;
+      NEW_IMAGE = 1;
+      OLD_IMAGE = 2;
+      NEW_AND_OLD_IMAGES = 3;
+      KEYS_ONLY = 4;
+    }
   }
 
   // Time-to-live (TTL) configuration.
