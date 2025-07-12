@@ -2,28 +2,54 @@ syntax = "proto3";
 
 package project.planton.provider.aws.awsdynamodb.v1;
 
+import "buf/validate/validate.proto";
+
 // Specification for an Amazon DynamoDB table.
 message AwsDynamodbSpec {
   // Name of the DynamoDB table. Must be unique within the AWS account and region.
-  string table_name = 1;
+  string table_name = 1 [
+    (buf.validate.field).string = {
+      min_len: 3,
+      max_len: 255,
+      pattern: "^[A-Za-z0-9_.-]+$"
+    }
+  ];
 
   // Definitions of all attributes used as primary keys or indexes.
-  repeated AttributeDefinition attribute_definitions = 2;
+  repeated AttributeDefinition attribute_definitions = 2 [
+    (buf.validate.field).repeated.min_items = 1
+  ];
 
   // Partition key (hash key) for the primary key schema.
-  string hash_key = 3;
+  string hash_key = 3 [
+    (buf.validate.field).string.min_len = 1
+  ];
 
   // Sort key (range key) for the primary key schema, optional.
-  string range_key = 4;
+  string range_key = 4 [
+    (buf.validate.field).string = {
+      min_len: 1,
+      ignore_empty: true
+    }
+  ];
 
   // Billing mode that controls how you are charged for read/write throughput.
-  BillingMode billing_mode = 5;
+  BillingMode billing_mode = 5 [
+    (buf.validate.field).enum = {
+      defined_only: true,
+      not_in: [0]
+    }
+  ];
 
   // Provisioned read capacity units (RCU); required when billing_mode is PROVISIONED.
-  int64 read_capacity = 6;
+  int64 read_capacity = 6 [
+    (buf.validate.field).int64 = { gt: 0 }
+  ];
 
   // Provisioned write capacity units (WCU); required when billing_mode is PROVISIONED.
-  int64 write_capacity = 7;
+  int64 write_capacity = 7 [
+    (buf.validate.field).int64 = { gt: 0 }
+  ];
 
   // Configuration for global secondary indexes.
   repeated GlobalSecondaryIndex global_secondary_indexes = 8;
@@ -44,10 +70,17 @@ message AwsDynamodbSpec {
   bool point_in_time_recovery = 13;
 
   // Arbitrary key/value metadata to attach to the table.
-  map<string, string> tags = 14;
+  map<string, string> tags = 14 [
+    (buf.validate.field).map = {
+      keys: { string: { min_len: 1 } },
+      values: { string: { min_len: 1 } }
+    }
+  ];
 
   // Storage class of the table which affects cost and performance.
-  TableClass table_class = 15;
+  TableClass table_class = 15 [
+    (buf.validate.field).enum = { defined_only: true, not_in: [0] }
+  ];
 
   // Prevents accidental deletion when set to true.
   bool deletion_protection = 16;
@@ -64,10 +97,17 @@ message AwsDynamodbSpec {
 // Attribute definition describing a single attribute and its data type.
 message AttributeDefinition {
   // Name of the attribute.
-  string name = 1;
+  string name = 1 [
+    (buf.validate.field).string = {
+      min_len: 1,
+      pattern: "^[A-Za-z0-9_.-]+$"
+    }
+  ];
 
   // Scalar data type of the attribute.
-  ScalarAttributeType type = 2;
+  ScalarAttributeType type = 2 [
+    (buf.validate.field).enum = { defined_only: true, not_in: [0] }
+  ];
 }
 
 // Allowed scalar attribute types in DynamoDB.
@@ -93,9 +133,17 @@ enum BillingMode {
 // Projection configuration for secondary indexes.
 message Projection {
   // Determines which attributes are copied into the index.
-  ProjectionType type = 1;
+  ProjectionType type = 1 [
+    (buf.validate.field).enum = { defined_only: true, not_in: [0] }
+  ];
   // List of non-key attribute names to include when type is INCLUDE.
-  repeated string non_key_attributes = 2;
+  repeated string non_key_attributes = 2 [
+    (buf.validate.field).repeated = { max_items: 20 },
+    (buf.validate.field).string = {
+      min_len: 1,
+      pattern: "^[A-Za-z0-9_.-]+$"
+    }
+  ];
 
   enum ProjectionType {
     PROJECTION_TYPE_UNSPECIFIED = 0;
@@ -111,27 +159,47 @@ message Projection {
 // Configuration for a global secondary index (GSI).
 message GlobalSecondaryIndex {
   // Name of the GSI.
-  string name = 1;
+  string name = 1 [
+    (buf.validate.field).string = {
+      min_len: 3,
+      max_len: 255,
+      pattern: "^[A-Za-z0-9_.-]+$"
+    }
+  ];
   // Partition key for the index.
-  string hash_key = 2;
+  string hash_key = 2 [
+    (buf.validate.field).string.min_len = 1
+  ];
   // Optional sort key for the index.
-  string range_key = 3;
+  string range_key = 3 [
+    (buf.validate.field).string = { min_len: 1, ignore_empty: true }
+  ];
   // Index projection definition.
-  Projection projection = 4;
+  Projection projection = 4 [
+    (buf.validate.field).required = true
+  ];
   // Provisioned read capacity units for the index when billing_mode is PROVISIONED.
-  int64 read_capacity = 5;
+  int64 read_capacity = 5 [ (buf.validate.field).int64 = { gte: 0 } ];
   // Provisioned write capacity units for the index when billing_mode is PROVISIONED.
-  int64 write_capacity = 6;
+  int64 write_capacity = 6 [ (buf.validate.field).int64 = { gte: 0 } ];
 }
 
 // Configuration for a local secondary index (LSI).
 message LocalSecondaryIndex {
   // Name of the LSI.
-  string name = 1;
+  string name = 1 [
+    (buf.validate.field).string = {
+      min_len: 3,
+      max_len: 255,
+      pattern: "^[A-Za-z0-9_.-]+$"
+    }
+  ];
   // Sort key for the index (partition key is same as table hash_key).
-  string range_key = 2;
+  string range_key = 2 [
+    (buf.validate.field).string.min_len = 1
+  ];
   // Index projection definition.
-  Projection projection = 3;
+  Projection projection = 3 [ (buf.validate.field).required = true ];
 }
 
 // Time-to-live specification.
@@ -139,7 +207,9 @@ message TtlSpec {
   // Enables TTL when true.
   bool enabled = 1;
   // Name of the attribute that stores the expiration timestamp (in epoch seconds).
-  string attribute_name = 2;
+  string attribute_name = 2 [
+    (buf.validate.field).string = { min_len: 1, ignore_empty: true }
+  ];
 }
 
 // Streams specification.
@@ -147,7 +217,9 @@ message StreamSpec {
   // Enables DynamoDB Streams when true.
   bool enabled = 1;
   // Determines the information written to the stream.
-  StreamViewType view_type = 2;
+  StreamViewType view_type = 2 [
+    (buf.validate.field).enum = { defined_only: true, not_in: [0] }
+  ];
 }
 
 enum StreamViewType {
@@ -167,9 +239,13 @@ message SseSpec {
   // Enables SSE when true.
   bool enabled = 1;
   // Type of encryption key to use.
-  SseType type = 2;
+  SseType type = 2 [
+    (buf.validate.field).enum = { defined_only: true, not_in: [0] }
+  ];
   // ARN of the customer managed KMS key; required when type is CUSTOMER_MANAGED.
-  string kms_key_arn = 3;
+  string kms_key_arn = 3 [
+    (buf.validate.field).string = { min_len: 20, ignore_empty: true }
+  ];
 }
 
 enum SseType {
@@ -192,7 +268,12 @@ enum TableClass {
 // Replica configuration for global tables.
 message ReplicaSpec {
   // AWS region of the replica.
-  string region_name = 1;
+  string region_name = 1 [
+    (buf.validate.field).string = {
+      pattern: "^[a-z]{2}(-[a-z]+)*-\d$",
+      min_len: 4
+    }
+  ];
   // Enables point-in-time recovery on the replica.
   bool point_in_time_recovery = 2;
 }
