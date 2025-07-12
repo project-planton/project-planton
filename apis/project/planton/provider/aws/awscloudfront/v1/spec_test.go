@@ -20,7 +20,7 @@ func TestAwsCloudFrontSpecValidation(t *testing.T) {
 
 var _ = Describe("AwsCloudFrontSpec validation", func() {
     var (
-        validator *protovalidate.Validator
+        validator protovalidate.Validator
         err       error
     )
 
@@ -85,14 +85,14 @@ func makeValidSpec() *AwsCloudFrontSpec {
             },
         },
         DefaultCacheBehavior: &AwsCloudFrontSpec_DefaultCacheBehavior{
-            TargetOriginId:        "origin1",
-            AllowedMethods:        []string{"GET", "HEAD"},
-            CachedMethods:         []string{"GET", "HEAD"},
-            ViewerProtocolPolicy:  "allow-all",
-            Compress:             true,
-            MinTtl:               durationpb.New(0),
-            DefaultTtl:           durationpb.New(0),
-            MaxTtl:               durationpb.New(0),
+            TargetOriginId:       "origin1",
+            AllowedMethods:       []string{"GET", "HEAD"},
+            CachedMethods:        []string{"GET", "HEAD"},
+            ViewerProtocolPolicy: "allow-all",
+            Compress:            true,
+            MinTtl:              durationpb.New(0),
+            DefaultTtl:          durationpb.New(0),
+            MaxTtl:              durationpb.New(0),
             ForwardedValues: &AwsCloudFrontSpec_ForwardedValues{
                 QueryString: true,
                 Headers:     []string{"Authorization"},
@@ -118,10 +118,10 @@ func makeValidSpec() *AwsCloudFrontSpec {
             IncludeCookies: false,
         },
         ViewerCertificate: &AwsCloudFrontSpec_ViewerCertificate{
-            AcmCertificateArn:         "arn:aws:acm:us-east-1:123456789012:certificate/abcdef12-3456-7890-abcd-ef1234567890",
+            AcmCertificateArn:          "arn:aws:acm:us-east-1:123456789012:certificate/abcdef12-3456-7890-abcd-ef1234567890",
             CloudfrontDefaultCertificate: false,
-            SslSupportMethod:            "sni-only",
-            MinimumProtocolVersion:      "TLSv1.2_2018",
+            SslSupportMethod:             "sni-only",
+            MinimumProtocolVersion:       "TLSv1.2_2018",
         },
         Restrictions: &AwsCloudFrontSpec_Restrictions{
             GeoRestriction: &AwsCloudFrontSpec_GeoRestriction{

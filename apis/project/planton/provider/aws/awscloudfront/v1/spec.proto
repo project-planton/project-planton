@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package project.planton.provider.aws.awscloudfront.v1;
 
+option go_package = "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awscloudfront/v1;awscloudfrontv1";
+
 import "google/protobuf/duration.proto";
 import "buf/validate/validate.proto";
 
