@@ -87,15 +87,6 @@ enum ProjectionType {
   INCLUDE = 3;      // Specified non-key attributes.
 }
 
-// Stream view type.
-enum StreamViewType {
-  STREAM_VIEW_TYPE_UNSPECIFIED = 0;
-  NEW_IMAGE = 1;              // Item after modification.
-  OLD_IMAGE = 2;              // Item before modification.
-  NEW_AND_OLD_IMAGES = 3;     // Both before & after images.
-  KEYS_ONLY = 4;              // Only the item keys.
-}
-
 // Table storage class.
 enum TableClass {
   TABLE_CLASS_UNSPECIFIED = 0;
@@ -148,6 +139,15 @@ message LocalSecondaryIndex {
 message StreamSpecification {
   bool enabled = 1;                 // Enables or disables streams.
   StreamViewType view_type = 2;     // Type of data written to the stream.
+
+  // Stream view type.
+  enum StreamViewType {
+    STREAM_VIEW_TYPE_UNSPECIFIED = 0;
+    NEW_IMAGE = 1;              // Item after modification.
+    OLD_IMAGE = 2;              // Item before modification.
+    NEW_AND_OLD_IMAGES = 3;     // Both before & after images.
+    KEYS_ONLY = 4;              // Only the item keys.
+  }
 }
 
 // Time-to-live specification.
