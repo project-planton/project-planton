@@ -1,0 +1,123 @@
+package awsdynamodbv1_test
+
+import (
+    "testing"
+
+    "github.com/bufbuild/protovalidate-go"
+    . "github.com/onsi/ginkgo/v2"
+    . "github.com/onsi/gomega"
+
+    awsdynamodbv1 "project/planton/provider/aws/awsdynamodb/v1"
+)
+
+// -----------------------------------------------------------------------------
+//  Ginkgo boilerplate
+// -----------------------------------------------------------------------------
+func TestAwsDynamodbSpecValidation(t *testing.T) {
+    RegisterFailHandler(Fail)
+    RunSpecs(t, "AwsDynamodbSpec Validation Suite")
+}
+
+// -----------------------------------------------------------------------------
+//  Helper that creates a spec that satisfies all validation constraints. Each
+//  individual test is free to mutate fields to introduce validation failures.
+// -----------------------------------------------------------------------------
+func newValidSpec() *awsdynamodbv1.AwsDynamodbSpec {
+    return &awsdynamodbv1.AwsDynamodbSpec{
+        TableName:         "my_table",
+        BillingMode:       awsdynamodbv1.BillingMode_PROVISIONED,
+        ReadCapacityUnits: 1,
+        WriteCapacityUnits: 1,
+        AttributeDefinitions: []*awsdynamodbv1.AttributeDefinition{
+            {
+                AttributeName: "pk",
+                AttributeType: awsdynamodbv1.AttributeType_STRING,
+            },
+        },
+        KeySchema: []*awsdynamodbv1.KeySchemaElement{
+            {
+                AttributeName: "pk",
+                KeyType:       awsdynamodbv1.KeyType_HASH,
+            },
+        },
+        Region: "us-east-1",
+    }
+}
+
+var _ = Describe("AwsDynamodbSpec", func() {
+    var (
+        validator *protovalidate.Validator
+    )
+
+    BeforeSuite(func() {
+        var err error
+        validator, err = protovalidate.New()
+        Expect(err).NotTo(HaveOccurred())
+    })
+
+    // -------------------------------------------------------------------------
+    //  Positive case
+    // -------------------------------------------------------------------------
+    Context("when the spec is valid", func() {
+        It("passes validation", func() {
+            spec := newValidSpec()
+            Expect(validator.Validate(spec)).To(Succeed())
+        })
+    })
+
+    // -------------------------------------------------------------------------
+    //  Negative cases – table name rules
+    // -------------------------------------------------------------------------
+    Context("table_name rules", func() {
+        It("fails when too short", func() {
+            spec := newValidSpec()
+            spec.TableName = "ab" // min_len = 3
+            Expect(validator.Validate(spec)).ToNot(Succeed())
+        })
+
+        It("fails when invalid characters present", func() {
+            spec := newValidSpec()
+            spec.TableName = "invalid name" // space not allowed
+            Expect(validator.Validate(spec)).ToNot(Succeed())
+        })
+    })
+
+    // -------------------------------------------------------------------------
+    //  Negative cases – enum fields must be defined and non-zero
+    // -------------------------------------------------------------------------
+    Context("enum rules", func() {
+        It("fails when billing_mode is unspecified (0)", func() {
+            spec := newValidSpec()
+            spec.BillingMode = awsdynamodbv1.BillingMode_BILLING_MODE_UNSPECIFIED
+            Expect(validator.Validate(spec)).ToNot(Succeed())
+        })
+
+        It("fails when table_class is unspecified (0)", func() {
+            spec := newValidSpec()
+            spec.TableClass = awsdynamodbv1.TableClass_TABLE_CLASS_UNSPECIFIED
+            Expect(validator.Validate(spec)).ToNot(Succeed())
+        })
+    })
+
+    // -------------------------------------------------------------------------
+    //  Negative cases – repeated field length requirements
+    // -------------------------------------------------------------------------
+    Context("attribute_definitions rules", func() {
+        It("fails when attribute_definitions is empty", func() {
+            spec := newValidSpec()
+            spec.AttributeDefinitions = nil // min_items = 1
+            Expect(validator.Validate(spec)).ToNot(Succeed())
+        })
+    })
+
+    // -------------------------------------------------------------------------
+    //  Negative cases – pattern rules
+    // -------------------------------------------------------------------------
+    Context("region pattern", func() {
+        It("fails when region does not match pattern", func() {
+            spec := newValidSpec()
+            spec.Region = "us-east-1a" // violates ^[a-z]{2}(-gov)?-[a-z]+-\d$
+            Expect(validator.Validate(spec)).ToNot(Succeed())
+        })
+    })
+})
