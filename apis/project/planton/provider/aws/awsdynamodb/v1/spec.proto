@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package project.planton.provider.aws.awsdynamodb.v1;
 
+import "buf/validate/validate.proto";
+
 // Represents the desired configuration of an Amazon DynamoDB table.
 message AwsDynamodbSpec {
   // ---------------- Nested helper types ----------------
@@ -9,16 +11,28 @@ message AwsDynamodbSpec {
   // Describes an attribute and its scalar type.
   message AttributeDefinition {
     // Attribute name (case sensitive, up to 255 chars).
-    string name = 1;
+    string name = 1 [
+      (buf.validate.field).string = {
+        min_len: 1,
+        max_len: 255,
+        pattern: "^[A-Za-z0-9_.-]+$"
+      }
+    ];
 
     // Attribute data type: "S" | "N" | "B".
-    string type = 2;
+    string type = 2 [
+      (buf.validate.field).string = {
+        in: ["S", "N", "B"]
+      }
+    ];
   }
 
   // Describes a key element in the primary or index key schema.
   message KeySchemaElement {
     // Name of the attribute to use as a key element.
-    string attribute_name = 1;
+    string attribute_name = 1 [
+      (buf.validate.field).string = {min_len: 1, max_len: 255}
+    ];
 
     // Defines whether this element is the partition (HASH) or sort (RANGE) key.
     enum KeyType {
@@ -26,7 +40,9 @@ message AwsDynamodbSpec {
       HASH = 1;
       RANGE = 2;
     }
-    KeyType key_type = 2;
+    KeyType key_type = 2 [
+      (buf.validate.field).enum = {not_in: [0]}
+    ];
   }
 
   // Controls how you pay for read/write throughput.
@@ -39,13 +55,19 @@ message AwsDynamodbSpec {
   // Auto-scaling settings for a capacity dimension.
   message AutoScalingSettings {
     // Minimum provisioned capacity.
-    int64 min_capacity = 1;
+    int64 min_capacity = 1 [
+      (buf.validate.field).int64 = {gte: 1}
+    ];
 
     // Maximum provisioned capacity.
-    int64 max_capacity = 2;
+    int64 max_capacity = 2 [
+      (buf.validate.field).int64 = {gte: 1}
+    ];
 
     // Target utilization percentage (e.g. 70).
-    int32 target_utilization_percent = 3;
+    int32 target_utilization_percent = 3 [
+      (buf.validate.field).int32 = {gte: 10, lte: 100}
+    ];
   }
 
   // Stream configuration for the table.
@@ -61,7 +83,9 @@ message AwsDynamodbSpec {
       NEW_AND_OLD_IMAGES = 3;
       KEYS_ONLY = 4;
     }
-    StreamViewType view_type = 2;
+    StreamViewType view_type = 2 [
+      (buf.validate.field).enum = {not_in: [0]}
+    ];
   }
 
   // Server-side encryption configuration.
@@ -75,10 +99,14 @@ message AwsDynamodbSpec {
       AES256 = 1; // AWS-owned key.
       KMS = 2;    // Customer managed KMS key.
     }
-    SSEType sse_type = 2;
+    SSEType sse_type = 2 [
+      (buf.validate.field).enum = {not_in: [0]}
+    ];
 
     // ARN of a customer managed KMS key (required if sse_type = KMS).
-    string kms_key_arn = 3;
+    string kms_key_arn = 3 [
+      (buf.validate.field).string = {ignore_empty: true, pattern: "^arn:[A-Za-z0-9-_:/.]+$"}
+    ];
   }
 
   // Projection configuration for secondary indexes.
@@ -92,16 +120,24 @@ message AwsDynamodbSpec {
   // Definition of a global secondary index (GSI).
   message GlobalSecondaryIndex {
     // Index name.
-    string index_name = 1;
+    string index_name = 1 [
+      (buf.validate.field).string = {min_len: 3, max_len: 255}
+    ];
 
     // Key schema for the index (must include HASH key, optional RANGE key).
-    repeated KeySchemaElement key_schema = 2;
+    repeated KeySchemaElement key_schema = 2 [
+      (buf.validate.field).repeated = {min_items: 1, max_items: 2}
+    ];
 
     // Provisioned read capacity for the index.
-    int64 read_capacity_units = 3;
+    int64 read_capacity_units = 3 [
+      (buf.validate.field).int64 = {gte: 1}
+    ];
 
     // Provisioned write capacity for the index.
-    int64 write_capacity_units = 4;
+    int64 write_capacity_units = 4 [
+      (buf.validate.field).int64 = {gte: 1}
+    ];
 
     // Auto-scaling settings for read capacity.
     AutoScalingSettings read_capacity_autoscaling = 5;
@@ -110,25 +146,39 @@ message AwsDynamodbSpec {
     AutoScalingSettings write_capacity_autoscaling = 6;
 
     // Type of attributes projected into the index.
-    ProjectionType projection_type = 7;
+    ProjectionType projection_type = 7 [
+      (buf.validate.field).enum = {not_in: [0]}
+    ];
 
     // List of non-key attributes to project (used when projection_type = INCLUDE).
-    repeated string non_key_attributes = 8;
+    repeated string non_key_attributes = 8 [
+      (buf.validate.field).repeated = {max_items: 20},
+      (buf.validate.field).string = {min_len: 1, max_len: 255}
+    ];
   }
 
   // Definition of a local secondary index (LSI).
   message LocalSecondaryIndex {
     // Index name.
-    string index_name = 1;
+    string index_name = 1 [
+      (buf.validate.field).string = {min_len: 3, max_len: 255}
+    ];
 
     // Key schema for the index (must reuse the table HASH key and define a RANGE key).
-    repeated KeySchemaElement key_schema = 2;
+    repeated KeySchemaElement key_schema = 2 [
+      (buf.validate.field).repeated = {min_items: 2, max_items: 2}
+    ];
 
     // Type of attributes projected into the index.
-    ProjectionType projection_type = 3;
+    ProjectionType projection_type = 3 [
+      (buf.validate.field).enum = {not_in: [0]}
+    ];
 
     // List of non-key attributes to project (used when projection_type = INCLUDE).
-    repeated string non_key_attributes = 4;
+    repeated string non_key_attributes = 4 [
+      (buf.validate.field).repeated = {max_items: 20},
+      (buf.validate.field).string = {min_len: 1, max_len: 255}
+    ];
   }
 
   // Time-to-live (TTL) configuration.
@@ -137,7 +187,9 @@ message AwsDynamodbSpec {
     bool enabled = 1;
 
     // Name of the attribute that stores the expiry timestamp (in seconds since epoch).
-    string attribute_name = 2;
+    string attribute_name = 2 [
+      (buf.validate.field).string = {ignore_empty: true, min_len: 1, max_len: 255}
+    ];
   }
 
   // Table storage class.
@@ -150,22 +202,38 @@ message AwsDynamodbSpec {
   // --------------- Top-level table fields ---------------
 
   // Unique table name (per AWS account & region).
-  string table_name = 1;
+  string table_name = 1 [
+    (buf.validate.field).string = {
+      min_len: 3,
+      max_len: 255,
+      pattern: "^[A-Za-z0-9_.-]+$"
+    }
+  ];
 
   // Attributes referenced in primary key and indexes.
-  repeated AttributeDefinition attribute_definitions = 2;
+  repeated AttributeDefinition attribute_definitions = 2 [
+    (buf.validate.field).repeated = {min_items: 1}
+  ];
 
   // Primary key schema (first element must be HASH key).
-  repeated KeySchemaElement key_schema = 3;
+  repeated KeySchemaElement key_schema = 3 [
+    (buf.validate.field).repeated = {min_items: 1, max_items: 2}
+  ];
 
   // Billing mode for the table.
-  BillingMode billing_mode = 4;
+  BillingMode billing_mode = 4 [
+    (buf.validate.field).enum = {not_in: [0]}
+  ];
 
   // Provisioned read capacity units (ignored if billing_mode = PAY_PER_REQUEST).
-  int64 read_capacity_units = 5;
+  int64 read_capacity_units = 5 [
+    (buf.validate.field).int64 = {gte: 1}
+  ];
 
   // Provisioned write capacity units (ignored if billing_mode = PAY_PER_REQUEST).
-  int64 write_capacity_units = 6;
+  int64 write_capacity_units = 6 [
+    (buf.validate.field).int64 = {gte: 1}
+  ];
 
   // Auto-scaling settings for table read capacity.
   AutoScalingSettings read_capacity_autoscaling = 7;
@@ -186,19 +254,36 @@ message AwsDynamodbSpec {
   bool point_in_time_recovery_enabled = 12;
 
   // List of global secondary indexes to create.
-  repeated GlobalSecondaryIndex global_secondary_indexes = 13;
+  repeated GlobalSecondaryIndex global_secondary_indexes = 13 [
+    (buf.validate.field).repeated = {max_items: 20}
+  ];
 
   // List of local secondary indexes to create.
-  repeated LocalSecondaryIndex local_secondary_indexes = 14;
+  repeated LocalSecondaryIndex local_secondary_indexes = 14 [
+    (buf.validate.field).repeated = {max_items: 5}
+  ];
 
   // Key–value tags attached to the table.
-  map<string, string> tags = 15;
+  map<string, string> tags = 15 [
+    (buf.validate.field).map = {
+      max_pairs: 50,
+      keys: {string: {min_len: 1, max_len: 128}},
+      values: {string: {min_len: 0, max_len: 256}}
+    }
+  ];
 
   // Storage class of the table.
-  TableClass table_class = 16;
+  TableClass table_class = 16 [
+    (buf.validate.field).enum = {not_in: [0]}
+  ];
 
   // Additional AWS regions for global table replication.
-  repeated string replica_regions = 17;
+  repeated string replica_regions = 17 [
+    (buf.validate.field).repeated = {max_items: 16},
+    (buf.validate.field).string = {
+      pattern: "^[a-z]{2}-[a-z]+-[1-9]$"
+    }
+  ];
 
   // Prevents accidental deletion when managed by higher-level tooling.
   bool deletion_protection_enabled = 18;
