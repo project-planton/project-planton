@@ -7,8 +7,6 @@
 package awsdynamodbv1
 
 import (
-	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	_ "github.com/project-planton/project-planton/apis/project/planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -23,50 +21,361 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// AwsDynamodbSpec defines the specification required to deploy an AWS DynamoDB resource, encapsulating all
-// configurations for the DynamoDB table and related settings.
+// Billing options for the table.
+type AwsDynamodbSpec_BillingMode int32
+
+const (
+	AwsDynamodbSpec_BILLING_MODE_UNSPECIFIED AwsDynamodbSpec_BillingMode = 0
+	AwsDynamodbSpec_PROVISIONED              AwsDynamodbSpec_BillingMode = 1
+	AwsDynamodbSpec_PAY_PER_REQUEST          AwsDynamodbSpec_BillingMode = 2
+)
+
+// Enum value maps for AwsDynamodbSpec_BillingMode.
+var (
+	AwsDynamodbSpec_BillingMode_name = map[int32]string{
+		0: "BILLING_MODE_UNSPECIFIED",
+		1: "PROVISIONED",
+		2: "PAY_PER_REQUEST",
+	}
+	AwsDynamodbSpec_BillingMode_value = map[string]int32{
+		"BILLING_MODE_UNSPECIFIED": 0,
+		"PROVISIONED":              1,
+		"PAY_PER_REQUEST":          2,
+	}
+)
+
+func (x AwsDynamodbSpec_BillingMode) Enum() *AwsDynamodbSpec_BillingMode {
+	p := new(AwsDynamodbSpec_BillingMode)
+	*p = x
+	return p
+}
+
+func (x AwsDynamodbSpec_BillingMode) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (AwsDynamodbSpec_BillingMode) Descriptor() protoreflect.EnumDescriptor {
+	return file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_enumTypes[0].Descriptor()
+}
+
+func (AwsDynamodbSpec_BillingMode) Type() protoreflect.EnumType {
+	return &file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_enumTypes[0]
+}
+
+func (x AwsDynamodbSpec_BillingMode) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use AwsDynamodbSpec_BillingMode.Descriptor instead.
+func (AwsDynamodbSpec_BillingMode) EnumDescriptor() ([]byte, []int) {
+	return file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_rawDescGZIP(), []int{0, 0}
+}
+
+// DynamoDB scalar attribute types.
+type AwsDynamodbSpec_AttributeType int32
+
+const (
+	AwsDynamodbSpec_ATTRIBUTE_TYPE_UNSPECIFIED AwsDynamodbSpec_AttributeType = 0
+	AwsDynamodbSpec_STRING                     AwsDynamodbSpec_AttributeType = 1 // UTF-8 string
+	AwsDynamodbSpec_NUMBER                     AwsDynamodbSpec_AttributeType = 2 // Numeric value
+	AwsDynamodbSpec_BINARY                     AwsDynamodbSpec_AttributeType = 3 // Binary data
+)
+
+// Enum value maps for AwsDynamodbSpec_AttributeType.
+var (
+	AwsDynamodbSpec_AttributeType_name = map[int32]string{
+		0: "ATTRIBUTE_TYPE_UNSPECIFIED",
+		1: "STRING",
+		2: "NUMBER",
+		3: "BINARY",
+	}
+	AwsDynamodbSpec_AttributeType_value = map[string]int32{
+		"ATTRIBUTE_TYPE_UNSPECIFIED": 0,
+		"STRING":                     1,
+		"NUMBER":                     2,
+		"BINARY":                     3,
+	}
+)
+
+func (x AwsDynamodbSpec_AttributeType) Enum() *AwsDynamodbSpec_AttributeType {
+	p := new(AwsDynamodbSpec_AttributeType)
+	*p = x
+	return p
+}
+
+func (x AwsDynamodbSpec_AttributeType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (AwsDynamodbSpec_AttributeType) Descriptor() protoreflect.EnumDescriptor {
+	return file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_enumTypes[1].Descriptor()
+}
+
+func (AwsDynamodbSpec_AttributeType) Type() protoreflect.EnumType {
+	return &file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_enumTypes[1]
+}
+
+func (x AwsDynamodbSpec_AttributeType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use AwsDynamodbSpec_AttributeType.Descriptor instead.
+func (AwsDynamodbSpec_AttributeType) EnumDescriptor() ([]byte, []int) {
+	return file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_rawDescGZIP(), []int{0, 1}
+}
+
+// Identifies whether a key is HASH (partition) or RANGE (sort).
+type AwsDynamodbSpec_KeyType int32
+
+const (
+	AwsDynamodbSpec_KEY_TYPE_UNSPECIFIED AwsDynamodbSpec_KeyType = 0
+	AwsDynamodbSpec_HASH                 AwsDynamodbSpec_KeyType = 1
+	AwsDynamodbSpec_RANGE                AwsDynamodbSpec_KeyType = 2
+)
+
+// Enum value maps for AwsDynamodbSpec_KeyType.
+var (
+	AwsDynamodbSpec_KeyType_name = map[int32]string{
+		0: "KEY_TYPE_UNSPECIFIED",
+		1: "HASH",
+		2: "RANGE",
+	}
+	AwsDynamodbSpec_KeyType_value = map[string]int32{
+		"KEY_TYPE_UNSPECIFIED": 0,
+		"HASH":                 1,
+		"RANGE":                2,
+	}
+)
+
+func (x AwsDynamodbSpec_KeyType) Enum() *AwsDynamodbSpec_KeyType {
+	p := new(AwsDynamodbSpec_KeyType)
+	*p = x
+	return p
+}
+
+func (x AwsDynamodbSpec_KeyType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (AwsDynamodbSpec_KeyType) Descriptor() protoreflect.EnumDescriptor {
+	return file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_enumTypes[2].Descriptor()
+}
+
+func (AwsDynamodbSpec_KeyType) Type() protoreflect.EnumType {
+	return &file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_enumTypes[2]
+}
+
+func (x AwsDynamodbSpec_KeyType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use AwsDynamodbSpec_KeyType.Descriptor instead.
+func (AwsDynamodbSpec_KeyType) EnumDescriptor() ([]byte, []int) {
+	return file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_rawDescGZIP(), []int{0, 2}
+}
+
+// Projection options for secondary indexes.
+type AwsDynamodbSpec_ProjectionType int32
+
+const (
+	AwsDynamodbSpec_PROJECTION_TYPE_UNSPECIFIED AwsDynamodbSpec_ProjectionType = 0
+	AwsDynamodbSpec_ALL                         AwsDynamodbSpec_ProjectionType = 1
+	AwsDynamodbSpec_KEYS_ONLY                   AwsDynamodbSpec_ProjectionType = 2
+	AwsDynamodbSpec_INCLUDE                     AwsDynamodbSpec_ProjectionType = 3
+)
+
+// Enum value maps for AwsDynamodbSpec_ProjectionType.
+var (
+	AwsDynamodbSpec_ProjectionType_name = map[int32]string{
+		0: "PROJECTION_TYPE_UNSPECIFIED",
+		1: "ALL",
+		2: "KEYS_ONLY",
+		3: "INCLUDE",
+	}
+	AwsDynamodbSpec_ProjectionType_value = map[string]int32{
+		"PROJECTION_TYPE_UNSPECIFIED": 0,
+		"ALL":                         1,
+		"KEYS_ONLY":                   2,
+		"INCLUDE":                     3,
+	}
+)
+
+func (x AwsDynamodbSpec_ProjectionType) Enum() *AwsDynamodbSpec_ProjectionType {
+	p := new(AwsDynamodbSpec_ProjectionType)
+	*p = x
+	return p
+}
+
+func (x AwsDynamodbSpec_ProjectionType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (AwsDynamodbSpec_ProjectionType) Descriptor() protoreflect.EnumDescriptor {
+	return file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_enumTypes[3].Descriptor()
+}
+
+func (AwsDynamodbSpec_ProjectionType) Type() protoreflect.EnumType {
+	return &file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_enumTypes[3]
+}
+
+func (x AwsDynamodbSpec_ProjectionType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use AwsDynamodbSpec_ProjectionType.Descriptor instead.
+func (AwsDynamodbSpec_ProjectionType) EnumDescriptor() ([]byte, []int) {
+	return file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_rawDescGZIP(), []int{0, 3}
+}
+
+// Table storage classes.
+type AwsDynamodbSpec_TableClass int32
+
+const (
+	AwsDynamodbSpec_TABLE_CLASS_UNSPECIFIED    AwsDynamodbSpec_TableClass = 0
+	AwsDynamodbSpec_STANDARD                   AwsDynamodbSpec_TableClass = 1
+	AwsDynamodbSpec_STANDARD_INFREQUENT_ACCESS AwsDynamodbSpec_TableClass = 2
+)
+
+// Enum value maps for AwsDynamodbSpec_TableClass.
+var (
+	AwsDynamodbSpec_TableClass_name = map[int32]string{
+		0: "TABLE_CLASS_UNSPECIFIED",
+		1: "STANDARD",
+		2: "STANDARD_INFREQUENT_ACCESS",
+	}
+	AwsDynamodbSpec_TableClass_value = map[string]int32{
+		"TABLE_CLASS_UNSPECIFIED":    0,
+		"STANDARD":                   1,
+		"STANDARD_INFREQUENT_ACCESS": 2,
+	}
+)
+
+func (x AwsDynamodbSpec_TableClass) Enum() *AwsDynamodbSpec_TableClass {
+	p := new(AwsDynamodbSpec_TableClass)
+	*p = x
+	return p
+}
+
+func (x AwsDynamodbSpec_TableClass) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (AwsDynamodbSpec_TableClass) Descriptor() protoreflect.EnumDescriptor {
+	return file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_enumTypes[4].Descriptor()
+}
+
+func (AwsDynamodbSpec_TableClass) Type() protoreflect.EnumType {
+	return &file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_enumTypes[4]
+}
+
+func (x AwsDynamodbSpec_TableClass) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use AwsDynamodbSpec_TableClass.Descriptor instead.
+func (AwsDynamodbSpec_TableClass) EnumDescriptor() ([]byte, []int) {
+	return file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_rawDescGZIP(), []int{0, 4}
+}
+
+// Stream view types.
+type AwsDynamodbSpec_StreamSpecification_StreamViewType int32
+
+const (
+	AwsDynamodbSpec_StreamSpecification_STREAM_VIEW_TYPE_UNSPECIFIED AwsDynamodbSpec_StreamSpecification_StreamViewType = 0
+	AwsDynamodbSpec_StreamSpecification_NEW_IMAGE                    AwsDynamodbSpec_StreamSpecification_StreamViewType = 1
+	AwsDynamodbSpec_StreamSpecification_OLD_IMAGE                    AwsDynamodbSpec_StreamSpecification_StreamViewType = 2
+	AwsDynamodbSpec_StreamSpecification_NEW_AND_OLD_IMAGES           AwsDynamodbSpec_StreamSpecification_StreamViewType = 3
+	AwsDynamodbSpec_StreamSpecification_KEYS_ONLY                    AwsDynamodbSpec_StreamSpecification_StreamViewType = 4
+)
+
+// Enum value maps for AwsDynamodbSpec_StreamSpecification_StreamViewType.
+var (
+	AwsDynamodbSpec_StreamSpecification_StreamViewType_name = map[int32]string{
+		0: "STREAM_VIEW_TYPE_UNSPECIFIED",
+		1: "NEW_IMAGE",
+		2: "OLD_IMAGE",
+		3: "NEW_AND_OLD_IMAGES",
+		4: "KEYS_ONLY",
+	}
+	AwsDynamodbSpec_StreamSpecification_StreamViewType_value = map[string]int32{
+		"STREAM_VIEW_TYPE_UNSPECIFIED": 0,
+		"NEW_IMAGE":                    1,
+		"OLD_IMAGE":                    2,
+		"NEW_AND_OLD_IMAGES":           3,
+		"KEYS_ONLY":                    4,
+	}
+)
+
+func (x AwsDynamodbSpec_StreamSpecification_StreamViewType) Enum() *AwsDynamodbSpec_StreamSpecification_StreamViewType {
+	p := new(AwsDynamodbSpec_StreamSpecification_StreamViewType)
+	*p = x
+	return p
+}
+
+func (x AwsDynamodbSpec_StreamSpecification_StreamViewType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (AwsDynamodbSpec_StreamSpecification_StreamViewType) Descriptor() protoreflect.EnumDescriptor {
+	return file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_enumTypes[5].Descriptor()
+}
+
+func (AwsDynamodbSpec_StreamSpecification_StreamViewType) Type() protoreflect.EnumType {
+	return &file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_enumTypes[5]
+}
+
+func (x AwsDynamodbSpec_StreamSpecification_StreamViewType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use AwsDynamodbSpec_StreamSpecification_StreamViewType.Descriptor instead.
+func (AwsDynamodbSpec_StreamSpecification_StreamViewType) EnumDescriptor() ([]byte, []int) {
+	return file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_rawDescGZIP(), []int{0, 7, 0}
+}
+
+// AwsDynamodbSpec models the configuration of an Amazon DynamoDB table.
 type AwsDynamodbSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// Table name. If provided, the bucket will be created with this name instead of generating the name from the context
+	// Human-readable name of the DynamoDB table; must be unique per AWS account.
 	TableName string `protobuf:"bytes,1,opt,name=table_name,json=tableName,proto3" json:"table_name,omitempty"`
-	// Controls how you are charged for read and write throughput and how you manage
-	// capacity. The valid values are `PROVISIONED` and `PAY_PER_REQUEST`. Defaults
-	// to `PROVISIONED`.
-	BillingMode string `protobuf:"bytes,2,opt,name=billing_mode,json=billingMode,proto3" json:"billing_mode,omitempty"`
-	// Attribute to use as the hash (partition) key. Must also be defined as an `attribute`.
-	HashKey *AwsDynamodbTableAttribute `protobuf:"bytes,3,opt,name=hash_key,json=hashKey,proto3" json:"hash_key,omitempty"`
-	// Attribute to use as the range (sort) key. Must also be defined as an `attribute`, see below.
-	RangeKey *AwsDynamodbTableAttribute `protobuf:"bytes,4,opt,name=range_key,json=rangeKey,proto3" json:"range_key,omitempty"`
-	// Whether Streams are enabled.
-	EnableStreams bool `protobuf:"varint,5,opt,name=enable_streams,json=enableStreams,proto3" json:"enable_streams,omitempty"`
-	// When an item in the table is modified, StreamViewType determines what information
-	// is written to the table's stream. Valid values are
-	// `KEYS_ONLY`, `NEW_IMAGE`, `OLD_IMAGE`, `NEW_AND_OLD_IMAGES`.
-	StreamViewType string `protobuf:"bytes,6,opt,name=stream_view_type,json=streamViewType,proto3" json:"stream_view_type,omitempty"`
-	// Encryption at rest options. AWS DynamoDB tables are automatically
-	// encrypted at rest with an AWS-owned Customer Master Key if this argument
-	// isn't specified.
-	ServerSideEncryption *AwsDynamodbTableServerSideEncryption `protobuf:"bytes,7,opt,name=server_side_encryption,json=serverSideEncryption,proto3" json:"server_side_encryption,omitempty"`
-	// Enable point-in-time recovery options.
-	PointInTimeRecovery *AwsDynamodbTablePointInTimeRecovery `protobuf:"bytes,8,opt,name=point_in_time_recovery,json=pointInTimeRecovery,proto3" json:"point_in_time_recovery,omitempty"`
-	// Configuration block for TTL.
-	Ttl *AwsDynamodbTableTtl `protobuf:"bytes,9,opt,name=ttl,proto3" json:"ttl,omitempty"`
-	// Dynamodb auto scale config
-	AutoScale *AwsDynamodbAutoScaleCapacity `protobuf:"bytes,10,opt,name=auto_scale,json=autoScale,proto3" json:"auto_scale,omitempty"`
-	// Set of nested attribute definitions. Only required for `hashKey` and `rangeKey` attributes.
-	Attributes []*AwsDynamodbTableAttribute `protobuf:"bytes,11,rep,name=attributes,proto3" json:"attributes,omitempty"`
-	// Describe a GSI for the table; subject to the normal limits on the number of GSIs, projected attributes, etc.
-	GlobalSecondaryIndexes []*AwsDynamodbTableGlobalSecondaryIndex `protobuf:"bytes,12,rep,name=global_secondary_indexes,json=globalSecondaryIndexes,proto3" json:"global_secondary_indexes,omitempty"`
-	// Describe an LSI on the table; these can only be allocated _at creation_
-	// so you cannot change this definition after you have created the resource.
-	LocalSecondaryIndexes []*AwsDynamodbTableLocalSecondaryIndex `protobuf:"bytes,13,rep,name=local_secondary_indexes,json=localSecondaryIndexes,proto3" json:"local_secondary_indexes,omitempty"`
-	// Configuration block(s) with [DynamoDB Global Tables V2 (version 2019.11.21)]
-	// (https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/globaltables.V2.html) replication configurations.
-	ReplicaRegionNames []string `protobuf:"bytes,14,rep,name=replica_region_names,json=replicaRegionNames,proto3" json:"replica_region_names,omitempty"`
-	// Import Amazon S3 data into a new table. See below.
-	ImportTable   *AwsDynamodbTableImport `protobuf:"bytes,15,opt,name=import_table,json=importTable,proto3" json:"import_table,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	// Billing model for read/write capacity: PROVISIONED or PAY_PER_REQUEST (On-Demand).
+	BillingMode AwsDynamodbSpec_BillingMode `protobuf:"varint,2,opt,name=billing_mode,json=billingMode,proto3,enum=project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec_BillingMode" json:"billing_mode,omitempty"`
+	// Provisioned read capacity units (RCU) when billing_mode is PROVISIONED.
+	ReadCapacity int64 `protobuf:"varint,3,opt,name=read_capacity,json=readCapacity,proto3" json:"read_capacity,omitempty"`
+	// Provisioned write capacity units (WCU) when billing_mode is PROVISIONED.
+	WriteCapacity int64 `protobuf:"varint,4,opt,name=write_capacity,json=writeCapacity,proto3" json:"write_capacity,omitempty"`
+	// List of attributes that describe the key schema and indexes.
+	AttributeDefinitions []*AwsDynamodbSpec_AttributeDefinition `protobuf:"bytes,5,rep,name=attribute_definitions,json=attributeDefinitions,proto3" json:"attribute_definitions,omitempty"`
+	// Definition of the table's partition (HASH) and optional sort (RANGE) key.
+	KeySchema []*AwsDynamodbSpec_KeySchemaElement `protobuf:"bytes,6,rep,name=key_schema,json=keySchema,proto3" json:"key_schema,omitempty"`
+	// Global secondary indexes to be created with the table.
+	GlobalSecondaryIndexes []*AwsDynamodbSpec_GlobalSecondaryIndex `protobuf:"bytes,7,rep,name=global_secondary_indexes,json=globalSecondaryIndexes,proto3" json:"global_secondary_indexes,omitempty"`
+	// Local secondary indexes to be created with the table (same partition key).
+	LocalSecondaryIndexes []*AwsDynamodbSpec_LocalSecondaryIndex `protobuf:"bytes,8,rep,name=local_secondary_indexes,json=localSecondaryIndexes,proto3" json:"local_secondary_indexes,omitempty"`
+	// Configure DynamoDB Streams; omit for disabled.
+	StreamSpecification *AwsDynamodbSpec_StreamSpecification `protobuf:"bytes,9,opt,name=stream_specification,json=streamSpecification,proto3" json:"stream_specification,omitempty"`
+	// Enable point-in-time recovery (continuous backups).
+	PointInTimeRecoveryEnabled bool `protobuf:"varint,10,opt,name=point_in_time_recovery_enabled,json=pointInTimeRecoveryEnabled,proto3" json:"point_in_time_recovery_enabled,omitempty"`
+	// Configure TTL on a specific attribute; omit to disable.
+	TtlSpecification *AwsDynamodbSpec_TimeToLiveSpecification `protobuf:"bytes,11,opt,name=ttl_specification,json=ttlSpecification,proto3" json:"ttl_specification,omitempty"`
+	// Enable server-side encryption at rest (true = AWS owned key unless kms_key_arn set).
+	SseEnabled bool `protobuf:"varint,12,opt,name=sse_enabled,json=sseEnabled,proto3" json:"sse_enabled,omitempty"`
+	// Customer-managed KMS key ARN for server-side encryption; required when using CMK.
+	KmsKeyArn string `protobuf:"bytes,13,opt,name=kms_key_arn,json=kmsKeyArn,proto3" json:"kms_key_arn,omitempty"`
+	// Whether the table data is replicated across multiple AWS regions.
+	MultiRegionReplicationEnabled bool `protobuf:"varint,14,opt,name=multi_region_replication_enabled,json=multiRegionReplicationEnabled,proto3" json:"multi_region_replication_enabled,omitempty"`
+	// Tags to apply to the table for cost allocation, automation, and access control.
+	Tags map[string]string `protobuf:"bytes,15,rep,name=tags,proto3" json:"tags,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	// Table class: STANDARD or STANDARD_INFREQUENT_ACCESS to optimize storage cost.
+	TableClass AwsDynamodbSpec_TableClass `protobuf:"varint,16,opt,name=table_class,json=tableClass,proto3,enum=project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec_TableClass" json:"table_class,omitempty"`
+	// Contributor Insights enablement flag for real-time access pattern analytics.
+	ContributorInsightsEnabled bool `protobuf:"varint,17,opt,name=contributor_insights_enabled,json=contributorInsightsEnabled,proto3" json:"contributor_insights_enabled,omitempty"`
+	// Enable deletion protection to avoid accidental table removal.
+	DeletionProtectionEnabled bool `protobuf:"varint,18,opt,name=deletion_protection_enabled,json=deletionProtectionEnabled,proto3" json:"deletion_protection_enabled,omitempty"`
+	// List of AWS regions (e.g., "us-east-1") to replicate to if multi_region_replication_enabled.
+	ReplicationRegions []string `protobuf:"bytes,19,rep,name=replication_regions,json=replicationRegions,proto3" json:"replication_regions,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
 }
 
 func (x *AwsDynamodbSpec) Reset() {
@@ -106,196 +415,157 @@ func (x *AwsDynamodbSpec) GetTableName() string {
 	return ""
 }
 
-func (x *AwsDynamodbSpec) GetBillingMode() string {
+func (x *AwsDynamodbSpec) GetBillingMode() AwsDynamodbSpec_BillingMode {
 	if x != nil {
 		return x.BillingMode
 	}
-	return ""
+	return AwsDynamodbSpec_BILLING_MODE_UNSPECIFIED
 }
 
-func (x *AwsDynamodbSpec) GetHashKey() *AwsDynamodbTableAttribute {
+func (x *AwsDynamodbSpec) GetReadCapacity() int64 {
 	if x != nil {
-		return x.HashKey
+		return x.ReadCapacity
+	}
+	return 0
+}
+
+func (x *AwsDynamodbSpec) GetWriteCapacity() int64 {
+	if x != nil {
+		return x.WriteCapacity
+	}
+	return 0
+}
+
+func (x *AwsDynamodbSpec) GetAttributeDefinitions() []*AwsDynamodbSpec_AttributeDefinition {
+	if x != nil {
+		return x.AttributeDefinitions
 	}
 	return nil
 }
 
-func (x *AwsDynamodbSpec) GetRangeKey() *AwsDynamodbTableAttribute {
+func (x *AwsDynamodbSpec) GetKeySchema() []*AwsDynamodbSpec_KeySchemaElement {
 	if x != nil {
-		return x.RangeKey
+		return x.KeySchema
 	}
 	return nil
 }
 
-func (x *AwsDynamodbSpec) GetEnableStreams() bool {
-	if x != nil {
-		return x.EnableStreams
-	}
-	return false
-}
-
-func (x *AwsDynamodbSpec) GetStreamViewType() string {
-	if x != nil {
-		return x.StreamViewType
-	}
-	return ""
-}
-
-func (x *AwsDynamodbSpec) GetServerSideEncryption() *AwsDynamodbTableServerSideEncryption {
-	if x != nil {
-		return x.ServerSideEncryption
-	}
-	return nil
-}
-
-func (x *AwsDynamodbSpec) GetPointInTimeRecovery() *AwsDynamodbTablePointInTimeRecovery {
-	if x != nil {
-		return x.PointInTimeRecovery
-	}
-	return nil
-}
-
-func (x *AwsDynamodbSpec) GetTtl() *AwsDynamodbTableTtl {
-	if x != nil {
-		return x.Ttl
-	}
-	return nil
-}
-
-func (x *AwsDynamodbSpec) GetAutoScale() *AwsDynamodbAutoScaleCapacity {
-	if x != nil {
-		return x.AutoScale
-	}
-	return nil
-}
-
-func (x *AwsDynamodbSpec) GetAttributes() []*AwsDynamodbTableAttribute {
-	if x != nil {
-		return x.Attributes
-	}
-	return nil
-}
-
-func (x *AwsDynamodbSpec) GetGlobalSecondaryIndexes() []*AwsDynamodbTableGlobalSecondaryIndex {
+func (x *AwsDynamodbSpec) GetGlobalSecondaryIndexes() []*AwsDynamodbSpec_GlobalSecondaryIndex {
 	if x != nil {
 		return x.GlobalSecondaryIndexes
 	}
 	return nil
 }
 
-func (x *AwsDynamodbSpec) GetLocalSecondaryIndexes() []*AwsDynamodbTableLocalSecondaryIndex {
+func (x *AwsDynamodbSpec) GetLocalSecondaryIndexes() []*AwsDynamodbSpec_LocalSecondaryIndex {
 	if x != nil {
 		return x.LocalSecondaryIndexes
 	}
 	return nil
 }
 
-func (x *AwsDynamodbSpec) GetReplicaRegionNames() []string {
+func (x *AwsDynamodbSpec) GetStreamSpecification() *AwsDynamodbSpec_StreamSpecification {
 	if x != nil {
-		return x.ReplicaRegionNames
+		return x.StreamSpecification
 	}
 	return nil
 }
 
-func (x *AwsDynamodbSpec) GetImportTable() *AwsDynamodbTableImport {
+func (x *AwsDynamodbSpec) GetPointInTimeRecoveryEnabled() bool {
 	if x != nil {
-		return x.ImportTable
-	}
-	return nil
-}
-
-// AwsDynamodbTableServerSideEncryption configures the server-side encryption settings for the DynamoDB table,
-// allowing the specification of whether encryption is enabled and the KMS key ARN to use for encryption.
-type AwsDynamodbTableServerSideEncryption struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// Whether or not to enable encryption at rest using an AWS managed KMS customer master key (CMK).
-	// If `enabled` is `false` then server-side encryption is set to
-	// AWS-_owned_ key (shown as `DEFAULT` in the AWS console).
-	// Potentially confusingly, if `enabled` is `true` and no `kmsKeyArn` is specified then
-	// server-side encryption is set to the _default_ KMS-_managed_ key (shown as `KMS` in the AWS console).
-	// The [AWS KMS documentation](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html)
-	// explains the difference between AWS-_owned_ and KMS-_managed_ keys.
-	IsEnabled bool `protobuf:"varint,1,opt,name=is_enabled,json=isEnabled,proto3" json:"is_enabled,omitempty"`
-	// ARN of the CMK that should be used for the AWS KMS encryption.
-	// This argument should only be used if the key is different from the default KMS-managed DynamoDB key,
-	// `alias/aws/dynamodb`.
-	// **Note:** This attribute will _not_ be populated with the ARN of _default_ keys.
-	KmsKeyArn     string `protobuf:"bytes,2,opt,name=kms_key_arn,json=kmsKeyArn,proto3" json:"kms_key_arn,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *AwsDynamodbTableServerSideEncryption) Reset() {
-	*x = AwsDynamodbTableServerSideEncryption{}
-	mi := &file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *AwsDynamodbTableServerSideEncryption) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*AwsDynamodbTableServerSideEncryption) ProtoMessage() {}
-
-func (x *AwsDynamodbTableServerSideEncryption) ProtoReflect() protoreflect.Message {
-	mi := &file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use AwsDynamodbTableServerSideEncryption.ProtoReflect.Descriptor instead.
-func (*AwsDynamodbTableServerSideEncryption) Descriptor() ([]byte, []int) {
-	return file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *AwsDynamodbTableServerSideEncryption) GetIsEnabled() bool {
-	if x != nil {
-		return x.IsEnabled
+		return x.PointInTimeRecoveryEnabled
 	}
 	return false
 }
 
-func (x *AwsDynamodbTableServerSideEncryption) GetKmsKeyArn() string {
+func (x *AwsDynamodbSpec) GetTtlSpecification() *AwsDynamodbSpec_TimeToLiveSpecification {
+	if x != nil {
+		return x.TtlSpecification
+	}
+	return nil
+}
+
+func (x *AwsDynamodbSpec) GetSseEnabled() bool {
+	if x != nil {
+		return x.SseEnabled
+	}
+	return false
+}
+
+func (x *AwsDynamodbSpec) GetKmsKeyArn() string {
 	if x != nil {
 		return x.KmsKeyArn
 	}
 	return ""
 }
 
-// AwsDynamodbTableTtl specifies the Time to Live (TTL) settings for the DynamoDB table, allowing you to define an
-// attribute that DynamoDB will use to automatically delete expired items.
-type AwsDynamodbTableTtl struct {
+func (x *AwsDynamodbSpec) GetMultiRegionReplicationEnabled() bool {
+	if x != nil {
+		return x.MultiRegionReplicationEnabled
+	}
+	return false
+}
+
+func (x *AwsDynamodbSpec) GetTags() map[string]string {
+	if x != nil {
+		return x.Tags
+	}
+	return nil
+}
+
+func (x *AwsDynamodbSpec) GetTableClass() AwsDynamodbSpec_TableClass {
+	if x != nil {
+		return x.TableClass
+	}
+	return AwsDynamodbSpec_TABLE_CLASS_UNSPECIFIED
+}
+
+func (x *AwsDynamodbSpec) GetContributorInsightsEnabled() bool {
+	if x != nil {
+		return x.ContributorInsightsEnabled
+	}
+	return false
+}
+
+func (x *AwsDynamodbSpec) GetDeletionProtectionEnabled() bool {
+	if x != nil {
+		return x.DeletionProtectionEnabled
+	}
+	return false
+}
+
+func (x *AwsDynamodbSpec) GetReplicationRegions() []string {
+	if x != nil {
+		return x.ReplicationRegions
+	}
+	return nil
+}
+
+// Attribute definition maps a name to its scalar type.
+type AwsDynamodbSpec_AttributeDefinition struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// Whether TTL is enabled. Default value is `false`.
-	IsEnabled bool `protobuf:"varint,1,opt,name=is_enabled,json=isEnabled,proto3" json:"is_enabled,omitempty"`
-	// Name of the table attribute to store the TTL timestamp in.
-	// Required if `enabled` is `true`, must not be set otherwise.
-	AttributeName string `protobuf:"bytes,2,opt,name=attribute_name,json=attributeName,proto3" json:"attribute_name,omitempty"`
+	// Name of the attribute.
+	AttributeName string `protobuf:"bytes,1,opt,name=attribute_name,json=attributeName,proto3" json:"attribute_name,omitempty"`
+	// Data type of the attribute (S | N | B).
+	AttributeType AwsDynamodbSpec_AttributeType `protobuf:"varint,2,opt,name=attribute_type,json=attributeType,proto3,enum=project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec_AttributeType" json:"attribute_type,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *AwsDynamodbTableTtl) Reset() {
-	*x = AwsDynamodbTableTtl{}
+func (x *AwsDynamodbSpec_AttributeDefinition) Reset() {
+	*x = AwsDynamodbSpec_AttributeDefinition{}
 	mi := &file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *AwsDynamodbTableTtl) String() string {
+func (x *AwsDynamodbSpec_AttributeDefinition) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*AwsDynamodbTableTtl) ProtoMessage() {}
+func (*AwsDynamodbSpec_AttributeDefinition) ProtoMessage() {}
 
-func (x *AwsDynamodbTableTtl) ProtoReflect() protoreflect.Message {
+func (x *AwsDynamodbSpec_AttributeDefinition) ProtoReflect() protoreflect.Message {
 	mi := &file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -307,51 +577,50 @@ func (x *AwsDynamodbTableTtl) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use AwsDynamodbTableTtl.ProtoReflect.Descriptor instead.
-func (*AwsDynamodbTableTtl) Descriptor() ([]byte, []int) {
-	return file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_rawDescGZIP(), []int{2}
+// Deprecated: Use AwsDynamodbSpec_AttributeDefinition.ProtoReflect.Descriptor instead.
+func (*AwsDynamodbSpec_AttributeDefinition) Descriptor() ([]byte, []int) {
+	return file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_rawDescGZIP(), []int{0, 1}
 }
 
-func (x *AwsDynamodbTableTtl) GetIsEnabled() bool {
-	if x != nil {
-		return x.IsEnabled
-	}
-	return false
-}
-
-func (x *AwsDynamodbTableTtl) GetAttributeName() string {
+func (x *AwsDynamodbSpec_AttributeDefinition) GetAttributeName() string {
 	if x != nil {
 		return x.AttributeName
 	}
 	return ""
 }
 
-// AwsDynamodbTableAttribute defines an attribute for the DynamoDB table, specifying the attribute's name and data
-// type, which is used in key schemas and indexes.
-type AwsDynamodbTableAttribute struct {
+func (x *AwsDynamodbSpec_AttributeDefinition) GetAttributeType() AwsDynamodbSpec_AttributeType {
+	if x != nil {
+		return x.AttributeType
+	}
+	return AwsDynamodbSpec_ATTRIBUTE_TYPE_UNSPECIFIED
+}
+
+// Describes a key element (partition or sort key).
+type AwsDynamodbSpec_KeySchemaElement struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// Name of the attribute
-	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	// Attribute type. Valid values are `S` (string), `N` (number), `B` (binary).
-	Type          string `protobuf:"bytes,2,opt,name=type,proto3" json:"type,omitempty"`
+	// Attribute name to use as key.
+	AttributeName string `protobuf:"bytes,1,opt,name=attribute_name,json=attributeName,proto3" json:"attribute_name,omitempty"`
+	// Specifies whether the attribute is HASH or RANGE key.
+	KeyType       AwsDynamodbSpec_KeyType `protobuf:"varint,2,opt,name=key_type,json=keyType,proto3,enum=project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec_KeyType" json:"key_type,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *AwsDynamodbTableAttribute) Reset() {
-	*x = AwsDynamodbTableAttribute{}
+func (x *AwsDynamodbSpec_KeySchemaElement) Reset() {
+	*x = AwsDynamodbSpec_KeySchemaElement{}
 	mi := &file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *AwsDynamodbTableAttribute) String() string {
+func (x *AwsDynamodbSpec_KeySchemaElement) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*AwsDynamodbTableAttribute) ProtoMessage() {}
+func (*AwsDynamodbSpec_KeySchemaElement) ProtoMessage() {}
 
-func (x *AwsDynamodbTableAttribute) ProtoReflect() protoreflect.Message {
+func (x *AwsDynamodbSpec_KeySchemaElement) ProtoReflect() protoreflect.Message {
 	mi := &file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -363,66 +632,50 @@ func (x *AwsDynamodbTableAttribute) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use AwsDynamodbTableAttribute.ProtoReflect.Descriptor instead.
-func (*AwsDynamodbTableAttribute) Descriptor() ([]byte, []int) {
-	return file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_rawDescGZIP(), []int{3}
+// Deprecated: Use AwsDynamodbSpec_KeySchemaElement.ProtoReflect.Descriptor instead.
+func (*AwsDynamodbSpec_KeySchemaElement) Descriptor() ([]byte, []int) {
+	return file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_rawDescGZIP(), []int{0, 2}
 }
 
-func (x *AwsDynamodbTableAttribute) GetName() string {
+func (x *AwsDynamodbSpec_KeySchemaElement) GetAttributeName() string {
 	if x != nil {
-		return x.Name
+		return x.AttributeName
 	}
 	return ""
 }
 
-func (x *AwsDynamodbTableAttribute) GetType() string {
+func (x *AwsDynamodbSpec_KeySchemaElement) GetKeyType() AwsDynamodbSpec_KeyType {
 	if x != nil {
-		return x.Type
+		return x.KeyType
 	}
-	return ""
+	return AwsDynamodbSpec_KEY_TYPE_UNSPECIFIED
 }
 
-// AwsDynamodbTableGlobalSecondaryIndex defines a global secondary index (GSI) for the DynamoDB table, allowing
-// queries on alternative key attributes and providing additional read/write capacity configurations.
-type AwsDynamodbTableGlobalSecondaryIndex struct {
+// Projection parameters for a secondary index.
+type AwsDynamodbSpec_Projection struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// Name of the index.
-	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	// One of `ALL`, `INCLUDE` or `KEYS_ONLY` where
-	// `ALL` projects every attribute into the index,
-	// `KEYS_ONLY` projects  into the index only the table and index hashKey and sortKey attributes ,
-	// `INCLUDE` projects into the index all of the attributes that are defined in `nonKeyAttributes`
-	// in addition to the attributes that that`KEYS_ONLY` project.
-	ProjectionType string `protobuf:"bytes,2,opt,name=projection_type,json=projectionType,proto3" json:"projection_type,omitempty"`
-	// Only required with `INCLUDE` as a projection type; a list of attributes to project into the index.
-	// These do not need to be defined as attributes on the table.
-	NonKeyAttributes []string `protobuf:"bytes,3,rep,name=non_key_attributes,json=nonKeyAttributes,proto3" json:"non_key_attributes,omitempty"`
-	// Name of the hash key in the index; must be defined as an attribute in the resource.
-	HashKey string `protobuf:"bytes,4,opt,name=hash_key,json=hashKey,proto3" json:"hash_key,omitempty"`
-	// Name of the range key; must be defined
-	RangeKey string `protobuf:"bytes,5,opt,name=range_key,json=rangeKey,proto3" json:"range_key,omitempty"`
-	// Number of read units for this index. Must be set if billingMode is set to PROVISIONED.
-	ReadCapacity int32 `protobuf:"varint,6,opt,name=read_capacity,json=readCapacity,proto3" json:"read_capacity,omitempty"`
-	// Number of write units for this index. Must be set if billingMode is set to PROVISIONED.
-	WriteCapacity int32 `protobuf:"varint,7,opt,name=write_capacity,json=writeCapacity,proto3" json:"write_capacity,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	// How attributes are projected into the index.
+	ProjectionType AwsDynamodbSpec_ProjectionType `protobuf:"varint,1,opt,name=projection_type,json=projectionType,proto3,enum=project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec_ProjectionType" json:"projection_type,omitempty"`
+	// List of non-key attributes to include when projection_type = INCLUDE.
+	NonKeyAttributes []string `protobuf:"bytes,2,rep,name=non_key_attributes,json=nonKeyAttributes,proto3" json:"non_key_attributes,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
 }
 
-func (x *AwsDynamodbTableGlobalSecondaryIndex) Reset() {
-	*x = AwsDynamodbTableGlobalSecondaryIndex{}
+func (x *AwsDynamodbSpec_Projection) Reset() {
+	*x = AwsDynamodbSpec_Projection{}
 	mi := &file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *AwsDynamodbTableGlobalSecondaryIndex) String() string {
+func (x *AwsDynamodbSpec_Projection) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*AwsDynamodbTableGlobalSecondaryIndex) ProtoMessage() {}
+func (*AwsDynamodbSpec_Projection) ProtoMessage() {}
 
-func (x *AwsDynamodbTableGlobalSecondaryIndex) ProtoReflect() protoreflect.Message {
+func (x *AwsDynamodbSpec_Projection) ProtoReflect() protoreflect.Message {
 	mi := &file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -434,95 +687,50 @@ func (x *AwsDynamodbTableGlobalSecondaryIndex) ProtoReflect() protoreflect.Messa
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use AwsDynamodbTableGlobalSecondaryIndex.ProtoReflect.Descriptor instead.
-func (*AwsDynamodbTableGlobalSecondaryIndex) Descriptor() ([]byte, []int) {
-	return file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_rawDescGZIP(), []int{4}
+// Deprecated: Use AwsDynamodbSpec_Projection.ProtoReflect.Descriptor instead.
+func (*AwsDynamodbSpec_Projection) Descriptor() ([]byte, []int) {
+	return file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_rawDescGZIP(), []int{0, 3}
 }
 
-func (x *AwsDynamodbTableGlobalSecondaryIndex) GetName() string {
-	if x != nil {
-		return x.Name
-	}
-	return ""
-}
-
-func (x *AwsDynamodbTableGlobalSecondaryIndex) GetProjectionType() string {
+func (x *AwsDynamodbSpec_Projection) GetProjectionType() AwsDynamodbSpec_ProjectionType {
 	if x != nil {
 		return x.ProjectionType
 	}
-	return ""
+	return AwsDynamodbSpec_PROJECTION_TYPE_UNSPECIFIED
 }
 
-func (x *AwsDynamodbTableGlobalSecondaryIndex) GetNonKeyAttributes() []string {
+func (x *AwsDynamodbSpec_Projection) GetNonKeyAttributes() []string {
 	if x != nil {
 		return x.NonKeyAttributes
 	}
 	return nil
 }
 
-func (x *AwsDynamodbTableGlobalSecondaryIndex) GetHashKey() string {
-	if x != nil {
-		return x.HashKey
-	}
-	return ""
-}
-
-func (x *AwsDynamodbTableGlobalSecondaryIndex) GetRangeKey() string {
-	if x != nil {
-		return x.RangeKey
-	}
-	return ""
-}
-
-func (x *AwsDynamodbTableGlobalSecondaryIndex) GetReadCapacity() int32 {
-	if x != nil {
-		return x.ReadCapacity
-	}
-	return 0
-}
-
-func (x *AwsDynamodbTableGlobalSecondaryIndex) GetWriteCapacity() int32 {
-	if x != nil {
-		return x.WriteCapacity
-	}
-	return 0
-}
-
-// AwsDynamodbTableLocalSecondaryIndex defines a local secondary index (LSI) for the DynamoDB table,
-// allowing alternative sort keys for queries on the primary hash key, which must be defined at table creation.
-type AwsDynamodbTableLocalSecondaryIndex struct {
+// Provisioned throughput override for a global secondary index.
+type AwsDynamodbSpec_ProvisionedThroughputOverride struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// Name of the index.
-	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	// One of `ALL`, `INCLUDE` or `KEYS_ONLY` where
-	// `ALL` projects every attribute into the index,
-	// `KEYS_ONLY` projects  into the index only the table and index hashKey and sortKey attributes ,
-	// `INCLUDE` projects into the index all of the attributes that are defined in `nonKeyAttributes` in addition to
-	// the attributes that that`KEYS_ONLY` project.
-	ProjectionType string `protobuf:"bytes,2,opt,name=projection_type,json=projectionType,proto3" json:"projection_type,omitempty"`
-	// Only required with `INCLUDE` as a projection type; a list of attributes to project into the index.
-	// These do not need to be defined as attributes on the table.
-	NonKeyAttributes []string `protobuf:"bytes,3,rep,name=non_key_attributes,json=nonKeyAttributes,proto3" json:"non_key_attributes,omitempty"`
-	// Name of the range key; must be defined
-	RangeKey      string `protobuf:"bytes,4,opt,name=range_key,json=rangeKey,proto3" json:"range_key,omitempty"`
+	// Read capacity units for the index.
+	ReadCapacity int64 `protobuf:"varint,1,opt,name=read_capacity,json=readCapacity,proto3" json:"read_capacity,omitempty"`
+	// Write capacity units for the index.
+	WriteCapacity int64 `protobuf:"varint,2,opt,name=write_capacity,json=writeCapacity,proto3" json:"write_capacity,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *AwsDynamodbTableLocalSecondaryIndex) Reset() {
-	*x = AwsDynamodbTableLocalSecondaryIndex{}
+func (x *AwsDynamodbSpec_ProvisionedThroughputOverride) Reset() {
+	*x = AwsDynamodbSpec_ProvisionedThroughputOverride{}
 	mi := &file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *AwsDynamodbTableLocalSecondaryIndex) String() string {
+func (x *AwsDynamodbSpec_ProvisionedThroughputOverride) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*AwsDynamodbTableLocalSecondaryIndex) ProtoMessage() {}
+func (*AwsDynamodbSpec_ProvisionedThroughputOverride) ProtoMessage() {}
 
-func (x *AwsDynamodbTableLocalSecondaryIndex) ProtoReflect() protoreflect.Message {
+func (x *AwsDynamodbSpec_ProvisionedThroughputOverride) ProtoReflect() protoreflect.Message {
 	mi := &file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -534,426 +742,55 @@ func (x *AwsDynamodbTableLocalSecondaryIndex) ProtoReflect() protoreflect.Messag
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use AwsDynamodbTableLocalSecondaryIndex.ProtoReflect.Descriptor instead.
-func (*AwsDynamodbTableLocalSecondaryIndex) Descriptor() ([]byte, []int) {
-	return file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_rawDescGZIP(), []int{5}
+// Deprecated: Use AwsDynamodbSpec_ProvisionedThroughputOverride.ProtoReflect.Descriptor instead.
+func (*AwsDynamodbSpec_ProvisionedThroughputOverride) Descriptor() ([]byte, []int) {
+	return file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_rawDescGZIP(), []int{0, 4}
 }
 
-func (x *AwsDynamodbTableLocalSecondaryIndex) GetName() string {
-	if x != nil {
-		return x.Name
-	}
-	return ""
-}
-
-func (x *AwsDynamodbTableLocalSecondaryIndex) GetProjectionType() string {
-	if x != nil {
-		return x.ProjectionType
-	}
-	return ""
-}
-
-func (x *AwsDynamodbTableLocalSecondaryIndex) GetNonKeyAttributes() []string {
-	if x != nil {
-		return x.NonKeyAttributes
-	}
-	return nil
-}
-
-func (x *AwsDynamodbTableLocalSecondaryIndex) GetRangeKey() string {
-	if x != nil {
-		return x.RangeKey
-	}
-	return ""
-}
-
-// AwsDynamodbTablePointInTimeRecovery configures point-in-time recovery settings for the DynamoDB table, allowing
-// restoration of the table to any point in time within the last 35 days.
-type AwsDynamodbTablePointInTimeRecovery struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// Whether to enable point-in-time recovery. It can take 10 minutes to enable for
-	// new tables. If the `pointInTimeRecovery` block is not provided,
-	// this defaults to `false`.
-	IsEnabled     bool `protobuf:"varint,1,opt,name=is_enabled,json=isEnabled,proto3" json:"is_enabled,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *AwsDynamodbTablePointInTimeRecovery) Reset() {
-	*x = AwsDynamodbTablePointInTimeRecovery{}
-	mi := &file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_msgTypes[6]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *AwsDynamodbTablePointInTimeRecovery) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*AwsDynamodbTablePointInTimeRecovery) ProtoMessage() {}
-
-func (x *AwsDynamodbTablePointInTimeRecovery) ProtoReflect() protoreflect.Message {
-	mi := &file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_msgTypes[6]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use AwsDynamodbTablePointInTimeRecovery.ProtoReflect.Descriptor instead.
-func (*AwsDynamodbTablePointInTimeRecovery) Descriptor() ([]byte, []int) {
-	return file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_rawDescGZIP(), []int{6}
-}
-
-func (x *AwsDynamodbTablePointInTimeRecovery) GetIsEnabled() bool {
-	if x != nil {
-		return x.IsEnabled
-	}
-	return false
-}
-
-// AwsDynamodbTableImport defines settings to import data from Amazon S3 into a new DynamoDB table, including
-// compression type, data format, and source S3 bucket information.
-type AwsDynamodbTableImport struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// Type of compression to be used on the input coming from the imported table.
-	// Valid values are `GZIP`, `ZSTD` and `NONE`.
-	InputCompressionType string `protobuf:"bytes,1,opt,name=input_compression_type,json=inputCompressionType,proto3" json:"input_compression_type,omitempty"`
-	// The format of the source data.
-	// Valid values are `CSV`, `DYNAMODB_JSON`, and `ION`.
-	InputFormat string `protobuf:"bytes,2,opt,name=input_format,json=inputFormat,proto3" json:"input_format,omitempty"`
-	// Describe the format options for the data that was imported into the target table.
-	// There is one value, `csv`.
-	InputFormatOptions *AwsDynamodbTableImportInputFormatOptions `protobuf:"bytes,3,opt,name=input_format_options,json=inputFormatOptions,proto3" json:"input_format_options,omitempty"`
-	// Values for the S3 bucket the source file is imported from.
-	S3BucketSource *AwsDynamodbTableImportS3BucketSource `protobuf:"bytes,4,opt,name=s3_bucket_source,json=s3BucketSource,proto3" json:"s3_bucket_source,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
-}
-
-func (x *AwsDynamodbTableImport) Reset() {
-	*x = AwsDynamodbTableImport{}
-	mi := &file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_msgTypes[7]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *AwsDynamodbTableImport) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*AwsDynamodbTableImport) ProtoMessage() {}
-
-func (x *AwsDynamodbTableImport) ProtoReflect() protoreflect.Message {
-	mi := &file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_msgTypes[7]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use AwsDynamodbTableImport.ProtoReflect.Descriptor instead.
-func (*AwsDynamodbTableImport) Descriptor() ([]byte, []int) {
-	return file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_rawDescGZIP(), []int{7}
-}
-
-func (x *AwsDynamodbTableImport) GetInputCompressionType() string {
-	if x != nil {
-		return x.InputCompressionType
-	}
-	return ""
-}
-
-func (x *AwsDynamodbTableImport) GetInputFormat() string {
-	if x != nil {
-		return x.InputFormat
-	}
-	return ""
-}
-
-func (x *AwsDynamodbTableImport) GetInputFormatOptions() *AwsDynamodbTableImportInputFormatOptions {
-	if x != nil {
-		return x.InputFormatOptions
-	}
-	return nil
-}
-
-func (x *AwsDynamodbTableImport) GetS3BucketSource() *AwsDynamodbTableImportS3BucketSource {
-	if x != nil {
-		return x.S3BucketSource
-	}
-	return nil
-}
-
-// AwsDynamodbTableImportInputFormatOptions specifies additional format options for the data being imported, such as
-// CSV format settings.
-type AwsDynamodbTableImportInputFormatOptions struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// This block contains the processing options for the CSV file being imported:
-	Csv           *AwsDynamodbTableImportInputFormatOptionsCsv `protobuf:"bytes,1,opt,name=csv,proto3" json:"csv,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *AwsDynamodbTableImportInputFormatOptions) Reset() {
-	*x = AwsDynamodbTableImportInputFormatOptions{}
-	mi := &file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_msgTypes[8]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *AwsDynamodbTableImportInputFormatOptions) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*AwsDynamodbTableImportInputFormatOptions) ProtoMessage() {}
-
-func (x *AwsDynamodbTableImportInputFormatOptions) ProtoReflect() protoreflect.Message {
-	mi := &file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_msgTypes[8]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use AwsDynamodbTableImportInputFormatOptions.ProtoReflect.Descriptor instead.
-func (*AwsDynamodbTableImportInputFormatOptions) Descriptor() ([]byte, []int) {
-	return file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_rawDescGZIP(), []int{8}
-}
-
-func (x *AwsDynamodbTableImportInputFormatOptions) GetCsv() *AwsDynamodbTableImportInputFormatOptionsCsv {
-	if x != nil {
-		return x.Csv
-	}
-	return nil
-}
-
-// AwsDynamodbTableImportInputFormatOptionsCsv defines the CSV format options for the data being imported,
-// including delimiter and headers.
-type AwsDynamodbTableImportInputFormatOptionsCsv struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The delimiter used for separating items in the CSV file being imported.
-	Delimiter string `protobuf:"bytes,1,opt,name=delimiter,proto3" json:"delimiter,omitempty"`
-	// List of the headers used to specify a common header for all source CSV files being imported.
-	Headers       []string `protobuf:"bytes,2,rep,name=headers,proto3" json:"headers,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *AwsDynamodbTableImportInputFormatOptionsCsv) Reset() {
-	*x = AwsDynamodbTableImportInputFormatOptionsCsv{}
-	mi := &file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_msgTypes[9]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *AwsDynamodbTableImportInputFormatOptionsCsv) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*AwsDynamodbTableImportInputFormatOptionsCsv) ProtoMessage() {}
-
-func (x *AwsDynamodbTableImportInputFormatOptionsCsv) ProtoReflect() protoreflect.Message {
-	mi := &file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_msgTypes[9]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use AwsDynamodbTableImportInputFormatOptionsCsv.ProtoReflect.Descriptor instead.
-func (*AwsDynamodbTableImportInputFormatOptionsCsv) Descriptor() ([]byte, []int) {
-	return file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_rawDescGZIP(), []int{9}
-}
-
-func (x *AwsDynamodbTableImportInputFormatOptionsCsv) GetDelimiter() string {
-	if x != nil {
-		return x.Delimiter
-	}
-	return ""
-}
-
-func (x *AwsDynamodbTableImportInputFormatOptionsCsv) GetHeaders() []string {
-	if x != nil {
-		return x.Headers
-	}
-	return nil
-}
-
-// AwsDynamodbTableImportS3BucketSource specifies the S3 bucket source from which data is imported into the
-// DynamoDB table, including bucket name, owner account, and key prefix.
-type AwsDynamodbTableImportS3BucketSource struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The S3 bucket that is being imported from.
-	Bucket string `protobuf:"bytes,1,opt,name=bucket,proto3" json:"bucket,omitempty"`
-	// The account number of the S3 bucket that is being imported from.
-	BucketOwner string `protobuf:"bytes,2,opt,name=bucket_owner,json=bucketOwner,proto3" json:"bucket_owner,omitempty"`
-	// The key prefix shared by all S3 Objects that are being imported.
-	KeyPrefix     string `protobuf:"bytes,3,opt,name=key_prefix,json=keyPrefix,proto3" json:"key_prefix,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *AwsDynamodbTableImportS3BucketSource) Reset() {
-	*x = AwsDynamodbTableImportS3BucketSource{}
-	mi := &file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_msgTypes[10]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *AwsDynamodbTableImportS3BucketSource) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*AwsDynamodbTableImportS3BucketSource) ProtoMessage() {}
-
-func (x *AwsDynamodbTableImportS3BucketSource) ProtoReflect() protoreflect.Message {
-	mi := &file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_msgTypes[10]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use AwsDynamodbTableImportS3BucketSource.ProtoReflect.Descriptor instead.
-func (*AwsDynamodbTableImportS3BucketSource) Descriptor() ([]byte, []int) {
-	return file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_rawDescGZIP(), []int{10}
-}
-
-func (x *AwsDynamodbTableImportS3BucketSource) GetBucket() string {
-	if x != nil {
-		return x.Bucket
-	}
-	return ""
-}
-
-func (x *AwsDynamodbTableImportS3BucketSource) GetBucketOwner() string {
-	if x != nil {
-		return x.BucketOwner
-	}
-	return ""
-}
-
-func (x *AwsDynamodbTableImportS3BucketSource) GetKeyPrefix() string {
-	if x != nil {
-		return x.KeyPrefix
-	}
-	return ""
-}
-
-// AwsDynamodbAutoScaleCapacity configures the auto-scaling settings for the DynamoDB table's read and write
-// capacity units, including minimum and maximum capacity and target utilization.
-type AwsDynamodbAutoScaleCapacity struct {
-	state     protoimpl.MessageState `protogen:"open.v1"`
-	IsEnabled bool                   `protobuf:"varint,1,opt,name=is_enabled,json=isEnabled,proto3" json:"is_enabled,omitempty"`
-	// auto scale capacity for read
-	ReadCapacity *AutoScaleCapacity `protobuf:"bytes,2,opt,name=read_capacity,json=readCapacity,proto3" json:"read_capacity,omitempty"`
-	// auto scale capacity for write
-	WriteCapacity *AutoScaleCapacity `protobuf:"bytes,3,opt,name=write_capacity,json=writeCapacity,proto3" json:"write_capacity,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *AwsDynamodbAutoScaleCapacity) Reset() {
-	*x = AwsDynamodbAutoScaleCapacity{}
-	mi := &file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_msgTypes[11]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *AwsDynamodbAutoScaleCapacity) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*AwsDynamodbAutoScaleCapacity) ProtoMessage() {}
-
-func (x *AwsDynamodbAutoScaleCapacity) ProtoReflect() protoreflect.Message {
-	mi := &file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_msgTypes[11]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use AwsDynamodbAutoScaleCapacity.ProtoReflect.Descriptor instead.
-func (*AwsDynamodbAutoScaleCapacity) Descriptor() ([]byte, []int) {
-	return file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_rawDescGZIP(), []int{11}
-}
-
-func (x *AwsDynamodbAutoScaleCapacity) GetIsEnabled() bool {
-	if x != nil {
-		return x.IsEnabled
-	}
-	return false
-}
-
-func (x *AwsDynamodbAutoScaleCapacity) GetReadCapacity() *AutoScaleCapacity {
+func (x *AwsDynamodbSpec_ProvisionedThroughputOverride) GetReadCapacity() int64 {
 	if x != nil {
 		return x.ReadCapacity
 	}
-	return nil
+	return 0
 }
 
-func (x *AwsDynamodbAutoScaleCapacity) GetWriteCapacity() *AutoScaleCapacity {
+func (x *AwsDynamodbSpec_ProvisionedThroughputOverride) GetWriteCapacity() int64 {
 	if x != nil {
 		return x.WriteCapacity
 	}
-	return nil
+	return 0
 }
 
-// AutoScaleCapacity defines the auto-scaling capacity settings, specifying minimum and maximum capacity units and
-// the target utilization percentage for scaling.
-type AutoScaleCapacity struct {
+// Global secondary index definition.
+type AwsDynamodbSpec_GlobalSecondaryIndex struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// Min capacity of the scalable target.
-	MinCapacity int32 `protobuf:"varint,1,opt,name=min_capacity,json=minCapacity,proto3" json:"min_capacity,omitempty"`
-	// Max capacity of the scalable target.
-	MaxCapacity int32 `protobuf:"varint,2,opt,name=max_capacity,json=maxCapacity,proto3" json:"max_capacity,omitempty"`
-	// target capacity utilization percentage
-	TargetUtilization float64 `protobuf:"fixed64,3,opt,name=target_utilization,json=targetUtilization,proto3" json:"target_utilization,omitempty"`
-	unknownFields     protoimpl.UnknownFields
-	sizeCache         protoimpl.SizeCache
+	// Index name.
+	IndexName string `protobuf:"bytes,1,opt,name=index_name,json=indexName,proto3" json:"index_name,omitempty"`
+	// Key schema specific to this index.
+	KeySchema []*AwsDynamodbSpec_KeySchemaElement `protobuf:"bytes,2,rep,name=key_schema,json=keySchema,proto3" json:"key_schema,omitempty"`
+	// Projection parameters.
+	Projection *AwsDynamodbSpec_Projection `protobuf:"bytes,3,opt,name=projection,proto3" json:"projection,omitempty"`
+	// Billing and capacity for the index (ignored if PAY_PER_REQUEST).
+	ProvisionedThroughput *AwsDynamodbSpec_ProvisionedThroughputOverride `protobuf:"bytes,4,opt,name=provisioned_throughput,json=provisionedThroughput,proto3" json:"provisioned_throughput,omitempty"`
+	unknownFields         protoimpl.UnknownFields
+	sizeCache             protoimpl.SizeCache
 }
 
-func (x *AutoScaleCapacity) Reset() {
-	*x = AutoScaleCapacity{}
-	mi := &file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_msgTypes[12]
+func (x *AwsDynamodbSpec_GlobalSecondaryIndex) Reset() {
+	*x = AwsDynamodbSpec_GlobalSecondaryIndex{}
+	mi := &file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *AutoScaleCapacity) String() string {
+func (x *AwsDynamodbSpec_GlobalSecondaryIndex) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*AutoScaleCapacity) ProtoMessage() {}
+func (*AwsDynamodbSpec_GlobalSecondaryIndex) ProtoMessage() {}
 
-func (x *AutoScaleCapacity) ProtoReflect() protoreflect.Message {
-	mi := &file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_msgTypes[12]
+func (x *AwsDynamodbSpec_GlobalSecondaryIndex) ProtoReflect() protoreflect.Message {
+	mi := &file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -964,109 +801,314 @@ func (x *AutoScaleCapacity) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use AutoScaleCapacity.ProtoReflect.Descriptor instead.
-func (*AutoScaleCapacity) Descriptor() ([]byte, []int) {
-	return file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_rawDescGZIP(), []int{12}
+// Deprecated: Use AwsDynamodbSpec_GlobalSecondaryIndex.ProtoReflect.Descriptor instead.
+func (*AwsDynamodbSpec_GlobalSecondaryIndex) Descriptor() ([]byte, []int) {
+	return file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_rawDescGZIP(), []int{0, 5}
 }
 
-func (x *AutoScaleCapacity) GetMinCapacity() int32 {
+func (x *AwsDynamodbSpec_GlobalSecondaryIndex) GetIndexName() string {
 	if x != nil {
-		return x.MinCapacity
+		return x.IndexName
 	}
-	return 0
+	return ""
 }
 
-func (x *AutoScaleCapacity) GetMaxCapacity() int32 {
+func (x *AwsDynamodbSpec_GlobalSecondaryIndex) GetKeySchema() []*AwsDynamodbSpec_KeySchemaElement {
 	if x != nil {
-		return x.MaxCapacity
+		return x.KeySchema
 	}
-	return 0
+	return nil
 }
 
-func (x *AutoScaleCapacity) GetTargetUtilization() float64 {
+func (x *AwsDynamodbSpec_GlobalSecondaryIndex) GetProjection() *AwsDynamodbSpec_Projection {
 	if x != nil {
-		return x.TargetUtilization
+		return x.Projection
 	}
-	return 0
+	return nil
+}
+
+func (x *AwsDynamodbSpec_GlobalSecondaryIndex) GetProvisionedThroughput() *AwsDynamodbSpec_ProvisionedThroughputOverride {
+	if x != nil {
+		return x.ProvisionedThroughput
+	}
+	return nil
+}
+
+// Local secondary index definition (shares HASH key with the table).
+type AwsDynamodbSpec_LocalSecondaryIndex struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Index name.
+	IndexName string `protobuf:"bytes,1,opt,name=index_name,json=indexName,proto3" json:"index_name,omitempty"`
+	// Key schema for the LSI (must share HASH key with table).
+	KeySchema []*AwsDynamodbSpec_KeySchemaElement `protobuf:"bytes,2,rep,name=key_schema,json=keySchema,proto3" json:"key_schema,omitempty"`
+	// Projection parameters.
+	Projection    *AwsDynamodbSpec_Projection `protobuf:"bytes,3,opt,name=projection,proto3" json:"projection,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AwsDynamodbSpec_LocalSecondaryIndex) Reset() {
+	*x = AwsDynamodbSpec_LocalSecondaryIndex{}
+	mi := &file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AwsDynamodbSpec_LocalSecondaryIndex) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AwsDynamodbSpec_LocalSecondaryIndex) ProtoMessage() {}
+
+func (x *AwsDynamodbSpec_LocalSecondaryIndex) ProtoReflect() protoreflect.Message {
+	mi := &file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AwsDynamodbSpec_LocalSecondaryIndex.ProtoReflect.Descriptor instead.
+func (*AwsDynamodbSpec_LocalSecondaryIndex) Descriptor() ([]byte, []int) {
+	return file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_rawDescGZIP(), []int{0, 6}
+}
+
+func (x *AwsDynamodbSpec_LocalSecondaryIndex) GetIndexName() string {
+	if x != nil {
+		return x.IndexName
+	}
+	return ""
+}
+
+func (x *AwsDynamodbSpec_LocalSecondaryIndex) GetKeySchema() []*AwsDynamodbSpec_KeySchemaElement {
+	if x != nil {
+		return x.KeySchema
+	}
+	return nil
+}
+
+func (x *AwsDynamodbSpec_LocalSecondaryIndex) GetProjection() *AwsDynamodbSpec_Projection {
+	if x != nil {
+		return x.Projection
+	}
+	return nil
+}
+
+// DynamoDB stream configuration.
+type AwsDynamodbSpec_StreamSpecification struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Enable or disable streams.
+	Enabled bool `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`
+	// The view type of the stream.
+	ViewType      AwsDynamodbSpec_StreamSpecification_StreamViewType `protobuf:"varint,2,opt,name=view_type,json=viewType,proto3,enum=project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec_StreamSpecification_StreamViewType" json:"view_type,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AwsDynamodbSpec_StreamSpecification) Reset() {
+	*x = AwsDynamodbSpec_StreamSpecification{}
+	mi := &file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AwsDynamodbSpec_StreamSpecification) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AwsDynamodbSpec_StreamSpecification) ProtoMessage() {}
+
+func (x *AwsDynamodbSpec_StreamSpecification) ProtoReflect() protoreflect.Message {
+	mi := &file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AwsDynamodbSpec_StreamSpecification.ProtoReflect.Descriptor instead.
+func (*AwsDynamodbSpec_StreamSpecification) Descriptor() ([]byte, []int) {
+	return file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_rawDescGZIP(), []int{0, 7}
+}
+
+func (x *AwsDynamodbSpec_StreamSpecification) GetEnabled() bool {
+	if x != nil {
+		return x.Enabled
+	}
+	return false
+}
+
+func (x *AwsDynamodbSpec_StreamSpecification) GetViewType() AwsDynamodbSpec_StreamSpecification_StreamViewType {
+	if x != nil {
+		return x.ViewType
+	}
+	return AwsDynamodbSpec_StreamSpecification_STREAM_VIEW_TYPE_UNSPECIFIED
+}
+
+// Time-to-live (TTL) configuration.
+type AwsDynamodbSpec_TimeToLiveSpecification struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Enable or disable TTL.
+	Enabled bool `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`
+	// Attribute name that stores the expiration timestamp (in Unix epoch seconds).
+	AttributeName string `protobuf:"bytes,2,opt,name=attribute_name,json=attributeName,proto3" json:"attribute_name,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AwsDynamodbSpec_TimeToLiveSpecification) Reset() {
+	*x = AwsDynamodbSpec_TimeToLiveSpecification{}
+	mi := &file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AwsDynamodbSpec_TimeToLiveSpecification) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AwsDynamodbSpec_TimeToLiveSpecification) ProtoMessage() {}
+
+func (x *AwsDynamodbSpec_TimeToLiveSpecification) ProtoReflect() protoreflect.Message {
+	mi := &file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AwsDynamodbSpec_TimeToLiveSpecification.ProtoReflect.Descriptor instead.
+func (*AwsDynamodbSpec_TimeToLiveSpecification) Descriptor() ([]byte, []int) {
+	return file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_rawDescGZIP(), []int{0, 8}
+}
+
+func (x *AwsDynamodbSpec_TimeToLiveSpecification) GetEnabled() bool {
+	if x != nil {
+		return x.Enabled
+	}
+	return false
+}
+
+func (x *AwsDynamodbSpec_TimeToLiveSpecification) GetAttributeName() string {
+	if x != nil {
+		return x.AttributeName
+	}
+	return ""
 }
 
 var File_project_planton_provider_aws_awsdynamodb_v1_spec_proto protoreflect.FileDescriptor
 
 const file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"6project/planton/provider/aws/awsdynamodb/v1/spec.proto\x12+project.planton.provider.aws.awsdynamodb.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\"\xdd\v\n" +
-	"\x0fAwsDynamodbSpec\x12%\n" +
+	"6project/planton/provider/aws/awsdynamodb/v1/spec.proto\x12+project.planton.provider.aws.awsdynamodb.v1\"\xba\x1d\n" +
+	"\x0fAwsDynamodbSpec\x12\x1d\n" +
 	"\n" +
-	"table_name\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\ttableName\x12X\n" +
-	"\fbilling_mode\x18\x02 \x01(\tB5\xbaH#\xd8\x01\x02r\x1eR\vPROVISIONEDR\x0fPAY_PER_REQUEST\x8a\xa6\x1d\vPROVISIONEDR\vbillingMode\x12i\n" +
-	"\bhash_key\x18\x03 \x01(\v2F.project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbTableAttributeB\x06\xbaH\x03\xc8\x01\x01R\ahashKey\x12c\n" +
-	"\trange_key\x18\x04 \x01(\v2F.project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbTableAttributeR\brangeKey\x12%\n" +
-	"\x0eenable_streams\x18\x05 \x01(\bR\renableStreams\x12g\n" +
-	"\x10stream_view_type\x18\x06 \x01(\tB=\xbaH:\xd8\x01\x02r5R\tNEW_IMAGER\tOLD_IMAGER\x12NEW_AND_OLD_IMAGESR\tKEYS_ONLYR\x0estreamViewType\x12\x87\x01\n" +
-	"\x16server_side_encryption\x18\a \x01(\v2Q.project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbTableServerSideEncryptionR\x14serverSideEncryption\x12\x85\x01\n" +
-	"\x16point_in_time_recovery\x18\b \x01(\v2P.project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbTablePointInTimeRecoveryR\x13pointInTimeRecovery\x12R\n" +
-	"\x03ttl\x18\t \x01(\v2@.project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbTableTtlR\x03ttl\x12h\n" +
+	"table_name\x18\x01 \x01(\tR\ttableName\x12k\n" +
+	"\fbilling_mode\x18\x02 \x01(\x0e2H.project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.BillingModeR\vbillingMode\x12#\n" +
+	"\rread_capacity\x18\x03 \x01(\x03R\freadCapacity\x12%\n" +
+	"\x0ewrite_capacity\x18\x04 \x01(\x03R\rwriteCapacity\x12\x85\x01\n" +
+	"\x15attribute_definitions\x18\x05 \x03(\v2P.project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.AttributeDefinitionR\x14attributeDefinitions\x12l\n" +
 	"\n" +
-	"auto_scale\x18\n" +
-	" \x01(\v2I.project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbAutoScaleCapacityR\tautoScale\x12f\n" +
+	"key_schema\x18\x06 \x03(\v2M.project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.KeySchemaElementR\tkeySchema\x12\x8b\x01\n" +
+	"\x18global_secondary_indexes\x18\a \x03(\v2Q.project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.GlobalSecondaryIndexR\x16globalSecondaryIndexes\x12\x88\x01\n" +
+	"\x17local_secondary_indexes\x18\b \x03(\v2P.project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.LocalSecondaryIndexR\x15localSecondaryIndexes\x12\x83\x01\n" +
+	"\x14stream_specification\x18\t \x01(\v2P.project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.StreamSpecificationR\x13streamSpecification\x12B\n" +
+	"\x1epoint_in_time_recovery_enabled\x18\n" +
+	" \x01(\bR\x1apointInTimeRecoveryEnabled\x12\x81\x01\n" +
+	"\x11ttl_specification\x18\v \x01(\v2T.project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.TimeToLiveSpecificationR\x10ttlSpecification\x12\x1f\n" +
+	"\vsse_enabled\x18\f \x01(\bR\n" +
+	"sseEnabled\x12\x1e\n" +
+	"\vkms_key_arn\x18\r \x01(\tR\tkmsKeyArn\x12G\n" +
+	" multi_region_replication_enabled\x18\x0e \x01(\bR\x1dmultiRegionReplicationEnabled\x12Z\n" +
+	"\x04tags\x18\x0f \x03(\v2F.project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.TagsEntryR\x04tags\x12h\n" +
+	"\vtable_class\x18\x10 \x01(\x0e2G.project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.TableClassR\n" +
+	"tableClass\x12@\n" +
+	"\x1ccontributor_insights_enabled\x18\x11 \x01(\bR\x1acontributorInsightsEnabled\x12>\n" +
+	"\x1bdeletion_protection_enabled\x18\x12 \x01(\bR\x19deletionProtectionEnabled\x12/\n" +
+	"\x13replication_regions\x18\x13 \x03(\tR\x12replicationRegions\x1a7\n" +
+	"\tTagsEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\x1a\xaf\x01\n" +
+	"\x13AttributeDefinition\x12%\n" +
+	"\x0eattribute_name\x18\x01 \x01(\tR\rattributeName\x12q\n" +
+	"\x0eattribute_type\x18\x02 \x01(\x0e2J.project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.AttributeTypeR\rattributeType\x1a\x9a\x01\n" +
+	"\x10KeySchemaElement\x12%\n" +
+	"\x0eattribute_name\x18\x01 \x01(\tR\rattributeName\x12_\n" +
+	"\bkey_type\x18\x02 \x01(\x0e2D.project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.KeyTypeR\akeyType\x1a\xb0\x01\n" +
 	"\n" +
-	"attributes\x18\v \x03(\v2F.project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbTableAttributeR\n" +
-	"attributes\x12\x8b\x01\n" +
-	"\x18global_secondary_indexes\x18\f \x03(\v2Q.project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbTableGlobalSecondaryIndexR\x16globalSecondaryIndexes\x12\x88\x01\n" +
-	"\x17local_secondary_indexes\x18\r \x03(\v2P.project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbTableLocalSecondaryIndexR\x15localSecondaryIndexes\x120\n" +
-	"\x14replica_region_names\x18\x0e \x03(\tR\x12replicaRegionNames\x12f\n" +
-	"\fimport_table\x18\x0f \x01(\v2C.project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbTableImportR\vimportTable\"e\n" +
-	"$AwsDynamodbTableServerSideEncryption\x12\x1d\n" +
+	"Projection\x12t\n" +
+	"\x0fprojection_type\x18\x01 \x01(\x0e2K.project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.ProjectionTypeR\x0eprojectionType\x12,\n" +
+	"\x12non_key_attributes\x18\x02 \x03(\tR\x10nonKeyAttributes\x1ak\n" +
+	"\x1dProvisionedThroughputOverride\x12#\n" +
+	"\rread_capacity\x18\x01 \x01(\x03R\freadCapacity\x12%\n" +
+	"\x0ewrite_capacity\x18\x02 \x01(\x03R\rwriteCapacity\x1a\xa0\x03\n" +
+	"\x14GlobalSecondaryIndex\x12\x1d\n" +
 	"\n" +
-	"is_enabled\x18\x01 \x01(\bR\tisEnabled\x12\x1e\n" +
-	"\vkms_key_arn\x18\x02 \x01(\tR\tkmsKeyArn\"[\n" +
-	"\x13AwsDynamodbTableTtl\x12\x1d\n" +
+	"index_name\x18\x01 \x01(\tR\tindexName\x12l\n" +
 	"\n" +
-	"is_enabled\x18\x01 \x01(\bR\tisEnabled\x12%\n" +
-	"\x0eattribute_name\x18\x02 \x01(\tR\rattributeName\"^\n" +
-	"\x19AwsDynamodbTableAttribute\x12\x1a\n" +
-	"\x04name\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\x12%\n" +
-	"\x04type\x18\x02 \x01(\tB\x11\xbaH\x0e\xc8\x01\x01r\tR\x01SR\x01NR\x01BR\x04type\"\xb5\x02\n" +
-	"$AwsDynamodbTableGlobalSecondaryIndex\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\x12G\n" +
-	"\x0fprojection_type\x18\x02 \x01(\tB\x1e\xbaH\x1br\x19R\x03ALLR\tKEYS_ONLYR\aINCLUDER\x0eprojectionType\x12,\n" +
-	"\x12non_key_attributes\x18\x03 \x03(\tR\x10nonKeyAttributes\x12\x19\n" +
-	"\bhash_key\x18\x04 \x01(\tR\ahashKey\x12\x1b\n" +
-	"\trange_key\x18\x05 \x01(\tR\brangeKey\x12#\n" +
-	"\rread_capacity\x18\x06 \x01(\x05R\freadCapacity\x12%\n" +
-	"\x0ewrite_capacity\x18\a \x01(\x05R\rwriteCapacity\"\xcd\x01\n" +
-	"#AwsDynamodbTableLocalSecondaryIndex\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\x12G\n" +
-	"\x0fprojection_type\x18\x02 \x01(\tB\x1e\xbaH\x1br\x19R\x03ALLR\tKEYS_ONLYR\aINCLUDER\x0eprojectionType\x12,\n" +
-	"\x12non_key_attributes\x18\x03 \x03(\tR\x10nonKeyAttributes\x12\x1b\n" +
-	"\trange_key\x18\x04 \x01(\tR\brangeKey\"D\n" +
-	"#AwsDynamodbTablePointInTimeRecovery\x12\x1d\n" +
+	"key_schema\x18\x02 \x03(\v2M.project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.KeySchemaElementR\tkeySchema\x12g\n" +
 	"\n" +
-	"is_enabled\x18\x01 \x01(\bR\tisEnabled\"\xb1\x03\n" +
-	"\x16AwsDynamodbTableImport\x12M\n" +
-	"\x16input_compression_type\x18\x01 \x01(\tB\x17\xbaH\x14r\x12R\x04GZIPR\x04ZSTDR\x04NONER\x14inputCompressionType\x12A\n" +
-	"\finput_format\x18\x02 \x01(\tB\x1e\xbaH\x1br\x19R\x03CSVR\rDYNAMODB_JSONR\x03IONR\vinputFormat\x12\x87\x01\n" +
-	"\x14input_format_options\x18\x03 \x01(\v2U.project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbTableImportInputFormatOptionsR\x12inputFormatOptions\x12{\n" +
-	"\x10s3_bucket_source\x18\x04 \x01(\v2Q.project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbTableImportS3BucketSourceR\x0es3BucketSource\"\x96\x01\n" +
-	"(AwsDynamodbTableImportInputFormatOptions\x12j\n" +
-	"\x03csv\x18\x01 \x01(\v2X.project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbTableImportInputFormatOptionsCsvR\x03csv\"e\n" +
-	"+AwsDynamodbTableImportInputFormatOptionsCsv\x12\x1c\n" +
-	"\tdelimiter\x18\x01 \x01(\tR\tdelimiter\x12\x18\n" +
-	"\aheaders\x18\x02 \x03(\tR\aheaders\"\x80\x01\n" +
-	"$AwsDynamodbTableImportS3BucketSource\x12\x16\n" +
-	"\x06bucket\x18\x01 \x01(\tR\x06bucket\x12!\n" +
-	"\fbucket_owner\x18\x02 \x01(\tR\vbucketOwner\x12\x1d\n" +
+	"projection\x18\x03 \x01(\v2G.project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.ProjectionR\n" +
+	"projection\x12\x91\x01\n" +
+	"\x16provisioned_throughput\x18\x04 \x01(\v2Z.project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.ProvisionedThroughputOverrideR\x15provisionedThroughput\x1a\x8b\x02\n" +
+	"\x13LocalSecondaryIndex\x12\x1d\n" +
 	"\n" +
-	"key_prefix\x18\x03 \x01(\tR\tkeyPrefix\"\x89\x02\n" +
-	"\x1cAwsDynamodbAutoScaleCapacity\x12\x1d\n" +
+	"index_name\x18\x01 \x01(\tR\tindexName\x12l\n" +
 	"\n" +
-	"is_enabled\x18\x01 \x01(\bR\tisEnabled\x12c\n" +
-	"\rread_capacity\x18\x02 \x01(\v2>.project.planton.provider.aws.awsdynamodb.v1.AutoScaleCapacityR\freadCapacity\x12e\n" +
-	"\x0ewrite_capacity\x18\x03 \x01(\v2>.project.planton.provider.aws.awsdynamodb.v1.AutoScaleCapacityR\rwriteCapacity\"\x88\x01\n" +
-	"\x11AutoScaleCapacity\x12!\n" +
-	"\fmin_capacity\x18\x01 \x01(\x05R\vminCapacity\x12!\n" +
-	"\fmax_capacity\x18\x02 \x01(\x05R\vmaxCapacity\x12-\n" +
-	"\x12target_utilization\x18\x03 \x01(\x01R\x11targetUtilizationB\xfa\x02\n" +
+	"key_schema\x18\x02 \x03(\v2M.project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.KeySchemaElementR\tkeySchema\x12g\n" +
+	"\n" +
+	"projection\x18\x03 \x01(\v2G.project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.ProjectionR\n" +
+	"projection\x1a\xa6\x02\n" +
+	"\x13StreamSpecification\x12\x18\n" +
+	"\aenabled\x18\x01 \x01(\bR\aenabled\x12|\n" +
+	"\tview_type\x18\x02 \x01(\x0e2_.project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.StreamSpecification.StreamViewTypeR\bviewType\"w\n" +
+	"\x0eStreamViewType\x12 \n" +
+	"\x1cSTREAM_VIEW_TYPE_UNSPECIFIED\x10\x00\x12\r\n" +
+	"\tNEW_IMAGE\x10\x01\x12\r\n" +
+	"\tOLD_IMAGE\x10\x02\x12\x16\n" +
+	"\x12NEW_AND_OLD_IMAGES\x10\x03\x12\r\n" +
+	"\tKEYS_ONLY\x10\x04\x1aZ\n" +
+	"\x17TimeToLiveSpecification\x12\x18\n" +
+	"\aenabled\x18\x01 \x01(\bR\aenabled\x12%\n" +
+	"\x0eattribute_name\x18\x02 \x01(\tR\rattributeName\"Q\n" +
+	"\vBillingMode\x12\x1c\n" +
+	"\x18BILLING_MODE_UNSPECIFIED\x10\x00\x12\x0f\n" +
+	"\vPROVISIONED\x10\x01\x12\x13\n" +
+	"\x0fPAY_PER_REQUEST\x10\x02\"S\n" +
+	"\rAttributeType\x12\x1e\n" +
+	"\x1aATTRIBUTE_TYPE_UNSPECIFIED\x10\x00\x12\n" +
+	"\n" +
+	"\x06STRING\x10\x01\x12\n" +
+	"\n" +
+	"\x06NUMBER\x10\x02\x12\n" +
+	"\n" +
+	"\x06BINARY\x10\x03\"8\n" +
+	"\aKeyType\x12\x18\n" +
+	"\x14KEY_TYPE_UNSPECIFIED\x10\x00\x12\b\n" +
+	"\x04HASH\x10\x01\x12\t\n" +
+	"\x05RANGE\x10\x02\"V\n" +
+	"\x0eProjectionType\x12\x1f\n" +
+	"\x1bPROJECTION_TYPE_UNSPECIFIED\x10\x00\x12\a\n" +
+	"\x03ALL\x10\x01\x12\r\n" +
+	"\tKEYS_ONLY\x10\x02\x12\v\n" +
+	"\aINCLUDE\x10\x03\"W\n" +
+	"\n" +
+	"TableClass\x12\x1b\n" +
+	"\x17TABLE_CLASS_UNSPECIFIED\x10\x00\x12\f\n" +
+	"\bSTANDARD\x10\x01\x12\x1e\n" +
+	"\x1aSTANDARD_INFREQUENT_ACCESS\x10\x02B\xfa\x02\n" +
 	"/com.project.planton.provider.aws.awsdynamodb.v1B\tSpecProtoP\x01Zigithub.com/project-planton/project-planton/apis/project/planton/provider/aws/awsdynamodb/v1;awsdynamodbv1\xa2\x02\x05PPPAA\xaa\x02+Project.Planton.Provider.Aws.Awsdynamodb.V1\xca\x02+Project\\Planton\\Provider\\Aws\\Awsdynamodb\\V1\xe2\x027Project\\Planton\\Provider\\Aws\\Awsdynamodb\\V1\\GPBMetadata\xea\x020Project::Planton::Provider::Aws::Awsdynamodb::V1b\x06proto3"
 
 var (
@@ -1081,43 +1123,50 @@ func file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_rawDescGZIP() [
 	return file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_rawDescData
 }
 
-var file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
+var file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_enumTypes = make([]protoimpl.EnumInfo, 6)
+var file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
 var file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_goTypes = []any{
-	(*AwsDynamodbSpec)(nil),                             // 0: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec
-	(*AwsDynamodbTableServerSideEncryption)(nil),        // 1: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbTableServerSideEncryption
-	(*AwsDynamodbTableTtl)(nil),                         // 2: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbTableTtl
-	(*AwsDynamodbTableAttribute)(nil),                   // 3: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbTableAttribute
-	(*AwsDynamodbTableGlobalSecondaryIndex)(nil),        // 4: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbTableGlobalSecondaryIndex
-	(*AwsDynamodbTableLocalSecondaryIndex)(nil),         // 5: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbTableLocalSecondaryIndex
-	(*AwsDynamodbTablePointInTimeRecovery)(nil),         // 6: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbTablePointInTimeRecovery
-	(*AwsDynamodbTableImport)(nil),                      // 7: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbTableImport
-	(*AwsDynamodbTableImportInputFormatOptions)(nil),    // 8: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbTableImportInputFormatOptions
-	(*AwsDynamodbTableImportInputFormatOptionsCsv)(nil), // 9: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbTableImportInputFormatOptionsCsv
-	(*AwsDynamodbTableImportS3BucketSource)(nil),        // 10: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbTableImportS3BucketSource
-	(*AwsDynamodbAutoScaleCapacity)(nil),                // 11: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbAutoScaleCapacity
-	(*AutoScaleCapacity)(nil),                           // 12: project.planton.provider.aws.awsdynamodb.v1.AutoScaleCapacity
+	(AwsDynamodbSpec_BillingMode)(0),                        // 0: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.BillingMode
+	(AwsDynamodbSpec_AttributeType)(0),                      // 1: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.AttributeType
+	(AwsDynamodbSpec_KeyType)(0),                            // 2: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.KeyType
+	(AwsDynamodbSpec_ProjectionType)(0),                     // 3: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.ProjectionType
+	(AwsDynamodbSpec_TableClass)(0),                         // 4: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.TableClass
+	(AwsDynamodbSpec_StreamSpecification_StreamViewType)(0), // 5: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.StreamSpecification.StreamViewType
+	(*AwsDynamodbSpec)(nil),                                 // 6: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec
+	nil,                                                     // 7: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.TagsEntry
+	(*AwsDynamodbSpec_AttributeDefinition)(nil),             // 8: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.AttributeDefinition
+	(*AwsDynamodbSpec_KeySchemaElement)(nil),                // 9: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.KeySchemaElement
+	(*AwsDynamodbSpec_Projection)(nil),                      // 10: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.Projection
+	(*AwsDynamodbSpec_ProvisionedThroughputOverride)(nil),   // 11: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.ProvisionedThroughputOverride
+	(*AwsDynamodbSpec_GlobalSecondaryIndex)(nil),            // 12: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.GlobalSecondaryIndex
+	(*AwsDynamodbSpec_LocalSecondaryIndex)(nil),             // 13: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.LocalSecondaryIndex
+	(*AwsDynamodbSpec_StreamSpecification)(nil),             // 14: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.StreamSpecification
+	(*AwsDynamodbSpec_TimeToLiveSpecification)(nil),         // 15: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.TimeToLiveSpecification
 }
 var file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_depIdxs = []int32{
-	3,  // 0: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.hash_key:type_name -> project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbTableAttribute
-	3,  // 1: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.range_key:type_name -> project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbTableAttribute
-	1,  // 2: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.server_side_encryption:type_name -> project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbTableServerSideEncryption
-	6,  // 3: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.point_in_time_recovery:type_name -> project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbTablePointInTimeRecovery
-	2,  // 4: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.ttl:type_name -> project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbTableTtl
-	11, // 5: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.auto_scale:type_name -> project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbAutoScaleCapacity
-	3,  // 6: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.attributes:type_name -> project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbTableAttribute
-	4,  // 7: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.global_secondary_indexes:type_name -> project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbTableGlobalSecondaryIndex
-	5,  // 8: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.local_secondary_indexes:type_name -> project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbTableLocalSecondaryIndex
-	7,  // 9: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.import_table:type_name -> project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbTableImport
-	8,  // 10: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbTableImport.input_format_options:type_name -> project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbTableImportInputFormatOptions
-	10, // 11: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbTableImport.s3_bucket_source:type_name -> project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbTableImportS3BucketSource
-	9,  // 12: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbTableImportInputFormatOptions.csv:type_name -> project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbTableImportInputFormatOptionsCsv
-	12, // 13: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbAutoScaleCapacity.read_capacity:type_name -> project.planton.provider.aws.awsdynamodb.v1.AutoScaleCapacity
-	12, // 14: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbAutoScaleCapacity.write_capacity:type_name -> project.planton.provider.aws.awsdynamodb.v1.AutoScaleCapacity
-	15, // [15:15] is the sub-list for method output_type
-	15, // [15:15] is the sub-list for method input_type
-	15, // [15:15] is the sub-list for extension type_name
-	15, // [15:15] is the sub-list for extension extendee
-	0,  // [0:15] is the sub-list for field type_name
+	0,  // 0: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.billing_mode:type_name -> project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.BillingMode
+	8,  // 1: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.attribute_definitions:type_name -> project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.AttributeDefinition
+	9,  // 2: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.key_schema:type_name -> project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.KeySchemaElement
+	12, // 3: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.global_secondary_indexes:type_name -> project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.GlobalSecondaryIndex
+	13, // 4: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.local_secondary_indexes:type_name -> project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.LocalSecondaryIndex
+	14, // 5: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.stream_specification:type_name -> project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.StreamSpecification
+	15, // 6: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.ttl_specification:type_name -> project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.TimeToLiveSpecification
+	7,  // 7: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.tags:type_name -> project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.TagsEntry
+	4,  // 8: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.table_class:type_name -> project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.TableClass
+	1,  // 9: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.AttributeDefinition.attribute_type:type_name -> project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.AttributeType
+	2,  // 10: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.KeySchemaElement.key_type:type_name -> project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.KeyType
+	3,  // 11: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.Projection.projection_type:type_name -> project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.ProjectionType
+	9,  // 12: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.GlobalSecondaryIndex.key_schema:type_name -> project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.KeySchemaElement
+	10, // 13: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.GlobalSecondaryIndex.projection:type_name -> project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.Projection
+	11, // 14: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.GlobalSecondaryIndex.provisioned_throughput:type_name -> project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.ProvisionedThroughputOverride
+	9,  // 15: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.LocalSecondaryIndex.key_schema:type_name -> project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.KeySchemaElement
+	10, // 16: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.LocalSecondaryIndex.projection:type_name -> project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.Projection
+	5,  // 17: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.StreamSpecification.view_type:type_name -> project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec.StreamSpecification.StreamViewType
+	18, // [18:18] is the sub-list for method output_type
+	18, // [18:18] is the sub-list for method input_type
+	18, // [18:18] is the sub-list for extension type_name
+	18, // [18:18] is the sub-list for extension extendee
+	0,  // [0:18] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_init() }
@@ -1130,13 +1179,14 @@ func file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_rawDesc), len(file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_rawDesc)),
-			NumEnums:      0,
-			NumMessages:   13,
+			NumEnums:      6,
+			NumMessages:   10,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
 		GoTypes:           file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_goTypes,
 		DependencyIndexes: file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_depIdxs,
+		EnumInfos:         file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_enumTypes,
 		MessageInfos:      file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_msgTypes,
 	}.Build()
 	File_project_planton_provider_aws_awsdynamodb_v1_spec_proto = out.File
