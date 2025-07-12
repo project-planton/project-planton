@@ -270,7 +270,7 @@ message ReplicaSpec {
   // AWS region of the replica.
   string region_name = 1 [
     (buf.validate.field).string = {
-      pattern: "^[a-z]{2}(-[a-z]+)*-\d$",
+      pattern: "^[a-z]{2}(-[a-z]+)*-[0-9]$",
       min_len: 4
     }
   ];
