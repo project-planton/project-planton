@@ -98,7 +98,7 @@ message Origin {
 
   // DNS name of the origin server (e.g. “mybucket.s3.amazonaws.com”).
   string domain_name = 2 [
-    (buf.validate.field).string.hostname = true
+    (buf.validate.field).string = { hostname: true }
   ];
 
   // Optional Origin Shield region that CloudFront should use.
@@ -115,7 +115,9 @@ message Origin {
     S3OriginConfig s3_origin_config = 10;
     // Settings for any non-S3 HTTP/S origin.
     CustomOriginConfig custom_origin_config = 11;
-  } [(buf.validate.oneof).required = true];
+
+    option (buf.validate.oneof) = { required: true };
+  }
 }
 
 // HTTP header key/value pair.
@@ -167,7 +169,7 @@ message CustomOriginConfig {
 // Default cache behavior that applies to all requests.
 message DefaultCacheBehavior {
   string target_origin_id = 1 [
-    (buf.validate.field).string.min_len = 1
+    (buf.validate.field).string = { min_len: 1 }
   ];
   ViewerProtocolPolicy viewer_protocol_policy = 2 [
     (buf.validate.field).enum = { defined_only: true, not_in: 0 }
@@ -211,11 +213,11 @@ message DefaultCacheBehavior {
 message CacheBehavior {
   // URL path pattern (glob) this behavior applies to, e.g. “*.jpg”.
   string path_pattern = 1 [
-    (buf.validate.field).string.min_len = 1
+    (buf.validate.field).string = { min_len: 1 }
   ];
 
   string target_origin_id = 2 [
-    (buf.validate.field).string.min_len = 1
+    (buf.validate.field).string = { min_len: 1 }
   ];
   ViewerProtocolPolicy viewer_protocol_policy = 3 [
     (buf.validate.field).enum = { defined_only: true, not_in: 0 }
@@ -259,7 +261,7 @@ message CacheBehavior {
 message LambdaFunctionAssociation {
   // The CloudFront invocation event (viewer-request, origin-response, etc.).
   string event_type = 1 [
-    (buf.validate.field).string.min_len = 1
+    (buf.validate.field).string = { min_len: 1 }
   ];
 
   // ARN of the Lambda function version or alias.
@@ -274,7 +276,7 @@ message LambdaFunctionAssociation {
 // Association between a CloudFront Function and an invocation event.
 message FunctionAssociation {
   string event_type = 1 [
-    (buf.validate.field).string.min_len = 1
+    (buf.validate.field).string = { min_len: 1 }
   ];
   string function_arn = 2 [
     (buf.validate.field).string = { min_len: 20, has_prefix: "arn:" }
@@ -298,7 +300,9 @@ message ViewerCertificate {
     string iam_certificate_id = 3 [
       (buf.validate.field).string = { min_len: 1, ignore_empty: true }
     ];
-  } [(buf.validate.oneof).required = true];
+
+    option (buf.validate.oneof) = { required: true };
+  }
 
   // How CloudFront serves HTTPS (SNI, VIP, etc.).
   SslSupportMethod ssl_support_method = 4 [
