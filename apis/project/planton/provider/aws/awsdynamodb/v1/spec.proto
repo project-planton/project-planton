@@ -286,7 +286,7 @@ message ReplicaSpecification {
   // AWS region for the replica.
   string region = 1 [
     (buf.validate.field).string = {
-      pattern: "^[a-z]{2}-[a-z]+-\d$"
+      pattern: "^[a-z]{2}-[a-z]+-\\d$"
     }
   ];
 
