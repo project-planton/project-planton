@@ -2,34 +2,60 @@ syntax = "proto3";
 
 package project.planton.provider.aws.awsdynamodb.v1;
 
+import "buf/validate/validate.proto";
+
 // AwsDynamodbSpec defines the desired state of an Amazon DynamoDB table.
 message AwsDynamodbSpec {
   // Name of the DynamoDB table.
-  string table_name = 1;
+  string table_name = 1 [
+    (buf.validate.field).string = {
+      min_len: 3,
+      max_len: 255,
+      pattern: "^[a-zA-Z0-9_.-]+$"
+    }
+  ];
 
   // Billing mode for the table: PROVISIONED or PAY_PER_REQUEST.
-  BillingMode billing_mode = 2;
+  BillingMode billing_mode = 2 [
+    (buf.validate.field).enum = { not_in: [0] }
+  ];
 
   // Provisioned read capacity units (ignored when billing_mode is PAY_PER_REQUEST).
-  int64 read_capacity_units = 3;
+  int64 read_capacity_units = 3 [
+    (buf.validate.field).int64 = { gte: 1 }
+  ];
 
   // Provisioned write capacity units (ignored when billing_mode is PAY_PER_REQUEST).
-  int64 write_capacity_units = 4;
+  int64 write_capacity_units = 4 [
+    (buf.validate.field).int64 = { gte: 1 }
+  ];
 
   // Attribute definitions for the table's key schema and indexes.
-  repeated AttributeDefinition attribute_definitions = 5;
+  repeated AttributeDefinition attribute_definitions = 5 [
+    (buf.validate.field).repeated = { min_items: 1 }
+  ];
 
   // Primary key schema elements (partition and optional sort keys).
-  repeated KeySchemaElement key_schema = 6;
+  repeated KeySchemaElement key_schema = 6 [
+    (buf.validate.field).repeated = { min_items: 1 }
+  ];
 
   // Local secondary indexes attached to the table.
-  repeated LocalSecondaryIndex local_secondary_indexes = 7;
+  repeated LocalSecondaryIndex local_secondary_indexes = 7 [
+    (buf.validate.field).repeated = { max_items: 5 }
+  ];
 
   // Global secondary indexes attached to the table.
-  repeated GlobalSecondaryIndex global_secondary_indexes = 8;
+  repeated GlobalSecondaryIndex global_secondary_indexes = 8 [
+    (buf.validate.field).repeated = { max_items: 20 }
+  ];
 
   // List of tags to apply to the table.
-  repeated Tag tags = 9;
+  repeated Tag tags = 9 [
+    (buf.validate.field).repeated = {
+      max_items: 50
+    }
+  ];
 
   // Enables Time to Live (TTL) on the specified attribute.
   optional TTLSpecification ttl = 10;
@@ -41,13 +67,15 @@ message AwsDynamodbSpec {
   optional SSESpecification sse_specification = 12;
 
   // Enables point-in-time recovery (continuous backups).
-  bool point_in_time_recovery = 13;
+  bool point_in_time_recovery = 13 [ (buf.validate.field).ignore_empty = true ];
 
   // Enables table deletion protection.
-  bool deletion_protection = 14;
+  bool deletion_protection = 14 [ (buf.validate.field).ignore_empty = true ];
 
   // Configuration for Global Table replication across regions.
-  repeated ReplicaSpecification replicas = 15;
+  repeated ReplicaSpecification replicas = 15 [
+    (buf.validate.field).repeated = { max_items: 20 }
+  ];
 }
 
 // Billing modes supported by DynamoDB.
@@ -60,10 +88,18 @@ enum BillingMode {
 // Defines an attribute used in the table or indexes.
 message AttributeDefinition {
   // Attribute name.
-  string name = 1;
+  string name = 1 [
+    (buf.validate.field).string = {
+      min_len: 1,
+      max_len: 255,
+      pattern: "^[a-zA-Z0-9_.-]+$"
+    }
+  ];
 
   // Attribute data type: S (string), N (number), B (binary).
-  AttributeType type = 2;
+  AttributeType type = 2 [
+    (buf.validate.field).enum = { not_in: [0] }
+  ];
 }
 
 // Scalar attribute data types.
@@ -77,10 +113,18 @@ enum AttributeType {
 // Identifies a key element in a key schema.
 message KeySchemaElement {
   // Attribute name for the key element.
-  string attribute_name = 1;
+  string attribute_name = 1 [
+    (buf.validate.field).string = {
+      min_len: 1,
+      max_len: 255,
+      pattern: "^[a-zA-Z0-9_.-]+$"
+    }
+  ];
 
   // Role of the key element: HASH (partition key) or RANGE (sort key).
-  KeyType key_type = 2;
+  KeyType key_type = 2 [
+    (buf.validate.field).enum = { not_in: [0] }
+  ];
 }
 
 // Key element roles.
@@ -93,31 +137,51 @@ enum KeyType {
 // Local secondary index definition.
 message LocalSecondaryIndex {
   // Index name.
-  string index_name = 1;
+  string index_name = 1 [
+    (buf.validate.field).string = {
+      min_len: 3,
+      max_len: 255,
+      pattern: "^[a-zA-Z0-9_.-]+$"
+    }
+  ];
 
   // Key schema for the index (must reuse table partition key).
-  repeated KeySchemaElement key_schema = 2;
+  repeated KeySchemaElement key_schema = 2 [
+    (buf.validate.field).repeated = { min_items: 2 }
+  ];
 
   // Projection configuration.
-  Projection projection = 3;
+  Projection projection = 3 [ (buf.validate.field).required = true ];
 }
 
 // Global secondary index definition.
 message GlobalSecondaryIndex {
   // Index name.
-  string index_name = 1;
+  string index_name = 1 [
+    (buf.validate.field).string = {
+      min_len: 3,
+      max_len: 255,
+      pattern: "^[a-zA-Z0-9_.-]+$"
+    }
+  ];
 
   // Key schema for the index (partition key and optional sort key).
-  repeated KeySchemaElement key_schema = 2;
+  repeated KeySchemaElement key_schema = 2 [
+    (buf.validate.field).repeated = { min_items: 1 }
+  ];
 
   // Projection configuration.
-  Projection projection = 3;
+  Projection projection = 3 [ (buf.validate.field).required = true ];
 
   // Provisioned read capacity units (ignored when billing_mode is PAY_PER_REQUEST).
-  int64 read_capacity_units = 4;
+  int64 read_capacity_units = 4 [
+    (buf.validate.field).int64 = { gte: 1 }
+  ];
 
   // Provisioned write capacity units (ignored when billing_mode is PAY_PER_REQUEST).
-  int64 write_capacity_units = 5;
+  int64 write_capacity_units = 5 [
+    (buf.validate.field).int64 = { gte: 1 }
+  ];
 }
 
 // Projection settings for an index.
@@ -129,37 +193,59 @@ message Projection {
     KEYS_ONLY = 2;
     INCLUDE = 3;
   }
-  ProjectionType projection_type = 1;
+  ProjectionType projection_type = 1 [
+    (buf.validate.field).enum = { not_in: [0] }
+  ];
 
   // Non-key attributes to include when projection_type is INCLUDE.
-  repeated string non_key_attributes = 2;
+  repeated string non_key_attributes = 2 [
+    (buf.validate.field).repeated = {
+      items: { string: { min_len: 1, max_len: 255 } }
+    }
+  ];
 }
 
 // Key/value tag pair.
 message Tag {
   // Tag key.
-  string key = 1;
+  string key = 1 [
+    (buf.validate.field).string = {
+      min_len: 1,
+      max_len: 128,
+      pattern: "^[a-zA-Z0-9_.:/=+@-]+$"
+    }
+  ];
 
   // Tag value.
-  string value = 2;
+  string value = 2 [
+    (buf.validate.field).string = { max_len: 256 }
+  ];
 }
 
 // Time-to-live specification.
 message TTLSpecification {
   // Enables TTL when true.
-  bool enabled = 1;
+  bool enabled = 1 [ (buf.validate.field).ignore_empty = true ];
 
   // Name of the attribute that stores TTL epoch timestamp.
-  string attribute_name = 2;
+  string attribute_name = 2 [
+    (buf.validate.field).string = {
+      min_len: 1,
+      max_len: 255,
+      pattern: "^[a-zA-Z0-9_.-]+$"
+    }
+  ];
 }
 
 // Stream settings for the table.
 message StreamSpecification {
   // When true, streams are enabled.
-  bool enabled = 1;
+  bool enabled = 1 [ (buf.validate.field).ignore_empty = true ];
 
   // Specifies what information is written to the stream.
-  StreamViewType view_type = 2;
+  StreamViewType view_type = 2 [
+    (buf.validate.field).enum = { not_in: [0] }
+  ];
 }
 
 // Types of data that can be written to a stream.
@@ -174,13 +260,17 @@ enum StreamViewType {
 // Server-side encryption settings.
 message SSESpecification {
   // When true, server-side encryption is enabled.
-  bool enabled = 1;
+  bool enabled = 1 [ (buf.validate.field).ignore_empty = true ];
 
   // Type of key used for encryption: AWS_OWNED, AWS_MANAGED, or CUSTOMER_MANAGED.
-  SSEType sse_type = 2;
+  SSEType sse_type = 2 [
+    (buf.validate.field).enum = { not_in: [0] }
+  ];
 
   // ARN of the customer managed KMS key (required when sse_type is CUSTOMER_MANAGED).
-  string kms_key_arn = 3;
+  string kms_key_arn = 3 [
+    (buf.validate.field).string = { min_len: 20, max_len: 2048 }
+  ];
 }
 
 // Encryption key types.
@@ -194,7 +284,11 @@ enum SSEType {
 // Configuration for a regional replica in a Global Table.
 message ReplicaSpecification {
   // AWS region for the replica.
-  string region = 1;
+  string region = 1 [
+    (buf.validate.field).string = {
+      pattern: "^[a-z]{2}-[a-z]+-\d$"
+    }
+  ];
 
   // Overrides for table-level settings in the replica.
   optional ReplicaOverride override = 2;
@@ -203,7 +297,7 @@ message ReplicaSpecification {
 // Per-replica overrides.
 message ReplicaOverride {
   // Enables point-in-time recovery on the replica.
-  bool point_in_time_recovery = 1;
+  bool point_in_time_recovery = 1 [ (buf.validate.field).ignore_empty = true ];
 
   // Overrides encryption settings for the replica.
   optional SSESpecification sse_specification = 2;
