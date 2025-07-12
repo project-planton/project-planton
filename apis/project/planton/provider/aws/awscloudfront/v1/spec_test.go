@@ -1,6 +1,7 @@
 package awscloudfrontv1
 
 import (
+    "context"
     "testing"
     "time"
 
@@ -17,7 +18,7 @@ func TestAwsCloudFrontSpecValidation(t *testing.T) {
 
 var _ = ginkgo.Describe("AwsCloudFrontSpec", func() {
     var (
-        validator *pv.Validator
+        validator pv.Validator
         err       error
     )
 
@@ -42,14 +43,14 @@ var _ = ginkgo.Describe("AwsCloudFrontSpec", func() {
                 },
             },
             DefaultCacheBehavior: &AwsCloudFrontSpec_DefaultCacheBehavior{
-                TargetOriginId:      "origin1",
-                AllowedMethods:      []string{"GET"},
-                CachedMethods:       []string{"GET"},
+                TargetOriginId:       "origin1",
+                AllowedMethods:       []string{"GET"},
+                CachedMethods:        []string{"GET"},
                 ViewerProtocolPolicy: "allow-all",
-                Compress:           true,
-                MinTtl:             durationpb.New(0),
-                DefaultTtl:         durationpb.New(10 * time.Second),
-                MaxTtl:             durationpb.New(60 * time.Second),
+                Compress:            true,
+                MinTtl:              durationpb.New(0),
+                DefaultTtl:          durationpb.New(10 * time.Second),
+                MaxTtl:              durationpb.New(60 * time.Second),
             },
             WebAclId: "arn:aws:wafv2:us-east-1:123456789012:regional/webacl/mywebacl/abcd1234",
             Tags: map[string]string{
@@ -60,14 +61,14 @@ var _ = ginkgo.Describe("AwsCloudFrontSpec", func() {
 
     ginkgo.It("accepts a valid spec", func() {
         spec := buildValidSpec()
-        Expect(validator.Validate(spec)).To(Succeed())
+        Expect(validator.Validate(context.Background(), spec)).To(Succeed())
     })
 
     ginkgo.DescribeTable("rejects invalid specs",
         func(mutator func(*AwsCloudFrontSpec)) {
             spec := buildValidSpec()
             mutator(spec)
-            Expect(validator.Validate(spec)).ToNot(Succeed())
+            Expect(validator.Validate(context.Background(), spec)).ToNot(Succeed())
         },
         ginkgo.Entry("invalid price_class", func(s *AwsCloudFrontSpec) {
             s.PriceClass = "PriceClass_999"

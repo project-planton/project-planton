@@ -72,7 +72,7 @@ message AwsCloudFrontSpec {
     }
   ];
 
-  // ========== Nested messages ==========
+  // ========== Nested messages ===========
 
   // Defines an origin server (e.g., S3 bucket, load balancer, or custom HTTP server).
   message Origin {
