@@ -2,7 +2,309 @@ syntax = "proto3";
 
 package project.planton.provider.aws.awscloudfront.v1;
 
-// AwsCloudFrontSpec defines the specification required to deploy an AWS Cloud Front resource, encapsulating all
-// configurations for the Aws Cloud Front settings.
+// Represents most commonly used configuration properties for an
+// Amazon CloudFront distribution.
 message AwsCloudFrontSpec {
+  // Whether the distribution is enabled and can accept end-user traffic.
+  bool enabled = 1;
+
+  // Optional human-readable comment describing the distribution.
+  string comment = 2;
+
+  // Alternate domain names (CNAMEs) that map to the distribution.
+  repeated string aliases = 3;
+
+  // Pricing tier that determines which edge locations are used.
+  PriceClass price_class = 4;
+
+  // Object served when a request is made to the root URL (e.g. “index.html”).
+  string default_root_object = 5;
+
+  // Enable delivery over IPv6 in addition to IPv4.
+  bool is_ipv6_enabled = 6;
+
+  // ID of an AWS WAF web ACL to associate with the distribution.
+  string web_acl_id = 7;
+
+  // Origin servers from which CloudFront will fetch the content.
+  repeated Origin origins = 10;
+
+  // Global default cache behavior applied when no path-specific rule matches.
+  DefaultCacheBehavior default_cache_behavior = 20;
+
+  // Path-based cache behaviors for fine-grained request handling.
+  repeated CacheBehavior cache_behaviors = 21;
+
+  // SSL/TLS certificate and protocol settings for viewer connections.
+  ViewerCertificate viewer_certificate = 30;
+
+  // Access-log delivery configuration.
+  LoggingConfig logging = 40;
+
+  // Geographic or other delivery restrictions.
+  Restrictions restrictions = 50;
+
+  // Custom responses returned for specific HTTP error codes.
+  repeated CustomErrorResponse custom_error_responses = 60;
+
+  // Highest HTTP protocol version supported for viewer connections.
+  HttpVersion http_version = 70;
+
+  // Key/value metadata tags applied to the distribution.
+  map<string, string> tags = 90;
+}
+
+// ---------- Origin configuration ----------
+
+// Describes an origin that CloudFront can forward requests to.
+message Origin {
+  // Unique identifier referenced by cache behaviors.
+  string id = 1;
+
+  // DNS name of the origin server (e.g. “mybucket.s3.amazonaws.com”).
+  string domain_name = 2;
+
+  // Optional Origin Shield region that CloudFront should use.
+  string origin_shield_region = 3;
+
+  // Custom headers that CloudFront adds to every origin request.
+  repeated Header custom_headers = 4;
+
+  // Origin type specific settings.
+  oneof origin_type {
+    // Settings for an S3 origin.
+    S3OriginConfig s3_origin_config = 10;
+    // Settings for any non-S3 HTTP/S origin.
+    CustomOriginConfig custom_origin_config = 11;
+  }
+}
+
+// HTTP header key/value pair.
+message Header {
+  string name = 1;
+  string value = 2;
+}
+
+// Settings specific to an Amazon S3 origin.
+message S3OriginConfig {
+  // If true, CloudFront uses an Origin Access Identity to restrict bucket access.
+  bool origin_access_identity = 1;
+}
+
+// Settings for a custom (non-S3) HTTP/S origin such as an ALB or custom server.
+message CustomOriginConfig {
+  // Port to use when connecting to the origin over HTTP.
+  int32 http_port = 1;
+
+  // Port to use when connecting to the origin over HTTPS.
+  int32 https_port = 2;
+
+  // Protocol policy that CloudFront uses to communicate with the origin.
+  OriginProtocolPolicy origin_protocol_policy = 3;
+
+  // Seconds CloudFront waits for a response from the origin.
+  int32 origin_read_timeout = 4;
+
+  // Keep-alive timeout in seconds for persistent connections.
+  int32 origin_keepalive_timeout = 5;
+}
+
+// ---------- Cache behavior configuration ----------
+
+// Default cache behavior that applies to all requests.
+message DefaultCacheBehavior {
+  string target_origin_id = 1;
+  ViewerProtocolPolicy viewer_protocol_policy = 2;
+  repeated HttpMethod allowed_methods = 3;
+  repeated HttpMethod cached_methods = 4;
+  bool compress = 5;
+  int64 min_ttl = 6;
+  int64 default_ttl = 7;
+  int64 max_ttl = 8;
+  string cache_policy_id = 9;
+  string origin_request_policy_id = 10;
+  string response_headers_policy_id = 11;
+  repeated LambdaFunctionAssociation lambda_function_associations = 12;
+  repeated FunctionAssociation function_associations = 13;
+}
+
+// Additional cache behavior applied to requests matching the path_pattern.
+message CacheBehavior {
+  // URL path pattern (glob) this behavior applies to, e.g. “*.jpg”.
+  string path_pattern = 1;
+
+  string target_origin_id = 2;
+  ViewerProtocolPolicy viewer_protocol_policy = 3;
+  repeated HttpMethod allowed_methods = 4;
+  repeated HttpMethod cached_methods = 5;
+  bool compress = 6;
+  int64 min_ttl = 7;
+  int64 default_ttl = 8;
+  int64 max_ttl = 9;
+  string cache_policy_id = 10;
+  string origin_request_policy_id = 11;
+  string response_headers_policy_id = 12;
+  repeated LambdaFunctionAssociation lambda_function_associations = 13;
+  repeated FunctionAssociation function_associations = 14;
+}
+
+// Association between a Lambda@Edge function and an invocation event.
+message LambdaFunctionAssociation {
+  // The CloudFront invocation event (viewer-request, origin-response, etc.).
+  string event_type = 1;
+
+  // ARN of the Lambda function version or alias.
+  string lambda_arn = 2;
+
+  // Include the request body when the event type is viewer-request.
+  bool include_body = 3;
+}
+
+// Association between a CloudFront Function and an invocation event.
+message FunctionAssociation {
+  string event_type = 1;
+  string function_arn = 2;
+}
+
+// ---------- Viewer certificate ----------
+
+// SSL/TLS certificate configuration for viewer HTTPS connections.
+message ViewerCertificate {
+  oneof certificate {
+    // Use the default CloudFront certificate (*.cloudfront.net).
+    bool cloudfront_default_certificate = 1;
+
+    // ARN of an ACM certificate (must be in us-east-1).
+    string acm_certificate_arn = 2;
+
+    // ID of a legacy IAM server certificate.
+    string iam_certificate_id = 3;
+  }
+
+  // How CloudFront serves HTTPS (SNI, VIP, etc.).
+  SslSupportMethod ssl_support_method = 4;
+
+  // Minimum TLS protocol version allowed for viewers.
+  MinimumProtocolVersion minimum_protocol_version = 5;
+}
+
+// ---------- Logging ----------
+
+// Configuration for delivering CloudFront access logs to S3.
+message LoggingConfig {
+  // Whether logging is enabled.
+  bool enabled = 1;
+
+  // S3 bucket (DNS name) where logs are stored.
+  string bucket = 2;
+
+  // Object key prefix for log files.
+  string prefix = 3;
+
+  // Include cookie header values in logs.
+  bool include_cookies = 4;
+}
+
+// ---------- Restrictions ----------
+
+// Holds geo and other restriction configurations.
+message Restrictions {
+  GeoRestriction geo_restriction = 1;
+}
+
+// Restricts content delivery by geographic location.
+message GeoRestriction {
+  GeoRestrictionType restriction_type = 1;
+  repeated string locations = 2; // ISO-3166-1 alpha-2 country codes
+}
+
+// ---------- Custom error responses ----------
+
+// Overrides for specific HTTP error codes.
+message CustomErrorResponse {
+  // HTTP status code to match (e.g. 404).
+  int32 error_code = 1;
+
+  // Status code returned to the viewer (e.g. 200).
+  int32 response_code = 2;
+
+  // Path to a custom error page in the distribution’s origin.
+  string response_page_path = 3;
+
+  // Duration in seconds that the error response is cached.
+  int64 error_caching_min_ttl = 4;
+}
+
+// ---------- Enumerations ----------
+
+// CloudFront edge-location pricing tiers.
+enum PriceClass {
+  PRICE_CLASS_UNSPECIFIED = 0;
+  PRICE_CLASS_ALL = 1;
+  PRICE_CLASS_200 = 2;
+  PRICE_CLASS_100 = 3;
+}
+
+// Protocol policy CloudFront enforces for viewer connections.
+enum ViewerProtocolPolicy {
+  VIEWER_PROTOCOL_POLICY_UNSPECIFIED = 0;
+  ALLOW_ALL = 1;
+  REDIRECT_TO_HTTPS = 2;
+  HTTPS_ONLY = 3;
+}
+
+// HTTP methods that CloudFront can forward and/or cache.
+enum HttpMethod {
+  HTTP_METHOD_UNSPECIFIED = 0;
+  GET = 1;
+  HEAD = 2;
+  OPTIONS = 3;
+  PUT = 4;
+  POST = 5;
+  PATCH = 6;
+  DELETE = 7;
+}
+
+// Policy that controls which protocol CloudFront uses to reach the origin.
+enum OriginProtocolPolicy {
+  ORIGIN_PROTOCOL_POLICY_UNSPECIFIED = 0;
+  HTTP_ONLY = 1;
+  HTTPS_ONLY = 2;
+  MATCH_VIEWER = 3;
+}
+
+// Type of geographic restriction to apply.
+enum GeoRestrictionType {
+  GEO_RESTRICTION_TYPE_UNSPECIFIED = 0;
+  NONE = 1;
+  WHITELIST = 2;
+  BLACKLIST = 3;
+}
+
+// Method CloudFront uses to serve HTTPS.
+enum SslSupportMethod {
+  SSL_SUPPORT_METHOD_UNSPECIFIED = 0;
+  SNI_ONLY = 1;
+  VIP = 2;
+  STATIC_IP_DEPRECATED = 3;
+}
+
+// Minimum TLS version that CloudFront allows.
+enum MinimumProtocolVersion {
+  MIN_PROTO_UNSPECIFIED = 0;
+  SSLV3 = 1;
+  TLSV1 = 2;
+  TLSV1_2016 = 3;
+  TLSV1_1_2016 = 4;
+  TLSV1_2_2018 = 5;
+  TLSV1_2_2019 = 6;
+}
+
+// HTTP protocol versions supported for viewer connections.
+enum HttpVersion {
+  HTTP_VERSION_UNSPECIFIED = 0;
+  HTTP1_1 = 1;
+  HTTP2 = 2;
+  HTTP2_AND_3 = 3;
+  HTTP3 = 4;
 }
