@@ -162,7 +162,7 @@ message GlobalSecondaryIndex {
     (buf.validate.field) = {repeated: {min_items: 1}}
   ];    // Index key schema.
   Projection projection = 3 [
-    (buf.validate.field) = {required: true}
+    (buf.validate.field) = {message: {required: true}}
   ];                   // Attributes projected into the index.
   BillingMode billing_mode = 4 [
     (buf.validate.field) = {enum: {defined_only: true, not_in: [0]}}
@@ -184,7 +184,7 @@ message LocalSecondaryIndex {
     (buf.validate.field) = {repeated: {min_items: 1}}
   ];    // Index key schema (same HASH, different RANGE).
   Projection projection = 3 [
-    (buf.validate.field) = {required: true}
+    (buf.validate.field) = {message: {required: true}}
   ];                   // Attributes projected into the index.
 }
 
