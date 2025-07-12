@@ -96,16 +96,16 @@ message Projection {
   ProjectionType type = 1;
   // List of non-key attribute names to include when type is INCLUDE.
   repeated string non_key_attributes = 2;
-}
 
-enum ProjectionType {
-  PROJECTION_TYPE_UNSPECIFIED = 0;
-  // All table attributes are projected.
-  ALL = 1;
-  // Only key attributes are projected.
-  KEYS_ONLY = 2;
-  // Only key attributes and specified non-key attributes are projected.
-  INCLUDE = 3;
+  enum ProjectionType {
+    PROJECTION_TYPE_UNSPECIFIED = 0;
+    // All table attributes are projected.
+    ALL = 1;
+    // Only key attributes are projected.
+    KEYS_ONLY = 2;
+    // Only key attributes and specified non-key attributes are projected.
+    INCLUDE = 3;
+  }
 }
 
 // Configuration for a global secondary index (GSI).
