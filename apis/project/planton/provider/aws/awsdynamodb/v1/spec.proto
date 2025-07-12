@@ -150,7 +150,7 @@ enum AttributeType {
 enum ProjectionType {
   PROJECTION_TYPE_UNSPECIFIED = 0;
   ALL = 1;
-  KEYS_ONLY = 2;
+  PROJECTION_KEYS_ONLY = 2; // Renamed to avoid collision with StreamViewType.KEYS_ONLY.
   INCLUDE = 3;
 }
 
