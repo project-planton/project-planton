@@ -8,36 +8,32 @@ import "buf/validate/validate.proto";
 message AwsDynamodbSpec {
   // Human-readable table name (must be unique within an AWS account & region).
   string table_name = 1 [
-    (buf.validate.field).string = {
-      min_len: 3,
-      max_len: 255,
-      pattern: "^[A-Za-z0-9_.-]+$"
-    }
+    (buf.validate.field) = {string: {min_len: 3, max_len: 255, pattern: "^[A-Za-z0-9_.-]+$"}}
   ];
 
   // Billing model that determines how you pay for read/write throughput.
   BillingMode billing_mode = 2 [
-    (buf.validate.field).enum = {defined_only: true, not_in: [0]}
+    (buf.validate.field) = {enum: {defined_only: true, not_in: [0]}}
   ];
 
   // Provisioned read capacity units; used only when billing_mode = PROVISIONED.
   int64 read_capacity_units = 3 [
-    (buf.validate.field).int64 = {gte: 1}
+    (buf.validate.field) = {int64: {gte: 1}}
   ];
 
   // Provisioned write capacity units; used only when billing_mode = PROVISIONED.
   int64 write_capacity_units = 4 [
-    (buf.validate.field).int64 = {gte: 1}
+    (buf.validate.field) = {int64: {gte: 1}}
   ];
 
   // Attribute definitions for the table and all indexes.
   repeated AttributeDefinition attribute_definitions = 5 [
-    (buf.validate.field).repeated = {min_items: 1}
+    (buf.validate.field) = {repeated: {min_items: 1}}
   ];
 
   // Key schema for the table (HASH and optional RANGE key).
   repeated KeySchemaElement key_schema = 6 [
-    (buf.validate.field).repeated = {min_items: 1}
+    (buf.validate.field) = {repeated: {min_items: 1}}
   ];
 
   // Optional global secondary indexes to create on the table.
@@ -60,7 +56,7 @@ message AwsDynamodbSpec {
 
   // Storage class of the table (standard or infrequent-access).
   TableClass table_class = 13 [
-    (buf.validate.field).enum = {defined_only: true, not_in: [0]}
+    (buf.validate.field) = {enum: {defined_only: true, not_in: [0]}}
   ];
 
   // Prevents accidental deletion of the table when enabled.
@@ -71,7 +67,7 @@ message AwsDynamodbSpec {
 
   // AWS region where the table will be created.
   string region = 16 [
-    (buf.validate.field).string = {pattern: "^[a-z]{2}(-gov)?-[a-z]+-\\d$"}
+    (buf.validate.field) = {string: {pattern: "^[a-z]{2}(-gov)?-[a-z]+-\\d$"}}
   ];
 }
 
@@ -124,33 +120,35 @@ enum TableClass {
 message AttributeDefinition {
   // Attribute name (case-sensitive).
   string attribute_name = 1 [
-    (buf.validate.field).string = {min_len: 1, max_len: 255}
+    (buf.validate.field) = {string: {min_len: 1, max_len: 255}}
   ];
   // Data type of the attribute.
   AttributeType attribute_type = 2 [
-    (buf.validate.field).enum = {defined_only: true, not_in: [0]}
+    (buf.validate.field) = {enum: {defined_only: true, not_in: [0]}}
   ];
 }
 
 // Describes a single key element (HASH or RANGE).
 message KeySchemaElement {
   string attribute_name = 1 [
-    (buf.validate.field).string = {min_len: 1, max_len: 255}
+    (buf.validate.field) = {string: {min_len: 1, max_len: 255}}
   ];  // Name of the attribute.
   KeyType key_type = 2 [
-    (buf.validate.field).enum = {defined_only: true, not_in: [0]}
+    (buf.validate.field) = {enum: {defined_only: true, not_in: [0]}}
   ];  // Whether HASH or RANGE key.
 }
 
 // Projection definition for secondary indexes.
 message Projection {
   ProjectionType projection_type = 1 [
-    (buf.validate.field).enum = {defined_only: true, not_in: [0]}
+    (buf.validate.field) = {enum: {defined_only: true, not_in: [0]}}
   ];          // The projection type.
   repeated string non_key_attributes = 2 [
-    (buf.validate.field).repeated = {
-      unique: true,
-      items: {string: {min_len: 1, max_len: 255}}
+    (buf.validate.field) = {
+      repeated: {
+        unique: true,
+        items: {string: {min_len: 1, max_len: 255}}
+      }
     }
   ];      // Attributes to include when projection_type = INCLUDE.
 }
@@ -158,35 +156,35 @@ message Projection {
 // Definition of a global secondary index.
 message GlobalSecondaryIndex {
   string index_name = 1 [
-    (buf.validate.field).string = {min_len: 3, max_len: 255}
+    (buf.validate.field) = {string: {min_len: 3, max_len: 255}}
   ];                       // Index name.
   repeated KeySchemaElement key_schema = 2 [
-    (buf.validate.field).repeated = {min_items: 1}
+    (buf.validate.field) = {repeated: {min_items: 1}}
   ];    // Index key schema.
   Projection projection = 3 [
-    (buf.validate.field).required = true
+    (buf.validate.field) = {required: true}
   ];                   // Attributes projected into the index.
   BillingMode billing_mode = 4 [
-    (buf.validate.field).enum = {defined_only: true, not_in: [0]}
+    (buf.validate.field) = {enum: {defined_only: true, not_in: [0]}}
   ];                // Billing mode for the index.
   int64 read_capacity_units = 5 [
-    (buf.validate.field).int64 = {gte: 1}
+    (buf.validate.field) = {int64: {gte: 1}}
   ];               // Provisioned RCU (if applicable).
   int64 write_capacity_units = 6 [
-    (buf.validate.field).int64 = {gte: 1}
+    (buf.validate.field) = {int64: {gte: 1}}
   ];              // Provisioned WCU (if applicable).
 }
 
 // Definition of a local secondary index.
 message LocalSecondaryIndex {
   string index_name = 1 [
-    (buf.validate.field).string = {min_len: 3, max_len: 255}
+    (buf.validate.field) = {string: {min_len: 3, max_len: 255}}
   ];                       // Index name.
   repeated KeySchemaElement key_schema = 2 [
-    (buf.validate.field).repeated = {min_items: 1}
+    (buf.validate.field) = {repeated: {min_items: 1}}
   ];    // Index key schema (same HASH, different RANGE).
   Projection projection = 3 [
-    (buf.validate.field).required = true
+    (buf.validate.field) = {required: true}
   ];                   // Attributes projected into the index.
 }
 
@@ -194,7 +192,7 @@ message LocalSecondaryIndex {
 message StreamSpecification {
   bool enabled = 1;                 // Enables or disables streams.
   StreamViewType view_type = 2 [
-    (buf.validate.field).enum = {defined_only: true}
+    (buf.validate.field) = {enum: {defined_only: true}}
   ];     // Type of data written to the stream.
 
   // Stream view type.
@@ -211,7 +209,7 @@ message StreamSpecification {
 message TimeToLiveSpecification {
   bool enabled = 1;                 // Enables or disables TTL.
   string attribute_name = 2 [
-    (buf.validate.field).string = {min_len: 1, max_len: 255}
+    (buf.validate.field) = {string: {min_len: 1, max_len: 255}}
   ];        // Attribute that stores the expiration timestamp.
 }
 
@@ -219,18 +217,16 @@ message TimeToLiveSpecification {
 message SSESpecification {
   bool enabled = 1;                 // Enables or disables SSE.
   string kms_master_key_arn = 2 [
-    (buf.validate.field).string = {
-      pattern: "^arn:[^:]+:kms:[^:]+:[0-9]{12}:key/[a-fA-F0-9-]+$"
-    }
+    (buf.validate.field) = {string: {pattern: "^arn:[^:]+:kms:[^:]+:[0-9]{12}:key/[a-fA-F0-9-]+$"}}
   ];    // Optional customer managed KMS key ARN.
 }
 
 // Key-value tag pair.
 message Tag {
   string key = 1 [
-    (buf.validate.field).string = {min_len: 1, max_len: 128}
+    (buf.validate.field) = {string: {min_len: 1, max_len: 128}}
   ];                   // Tag key (case-sensitive).
   string value = 2 [
-    (buf.validate.field).string = {max_len: 256}
+    (buf.validate.field) = {string: {max_len: 256}}
   ];                 // Tag value (case-sensitive).
 }
