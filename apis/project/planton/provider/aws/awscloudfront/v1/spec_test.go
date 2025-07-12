@@ -3,25 +3,20 @@ package awscloudfrontv1
 import (
     "testing"
 
-    "github.com/bufbuild/protovalidate-go"
     . "github.com/onsi/ginkgo/v2"
     . "github.com/onsi/gomega"
-    "google.golang.org/protobuf/proto"
+
+    "github.com/bufbuild/protovalidate-go"
     "google.golang.org/protobuf/types/known/durationpb"
 )
 
-// -----------------------------------------------------------------------------
-//  Ginkgo test runner
-// -----------------------------------------------------------------------------
-func TestAwsCloudFrontSpecValidation(t *testing.T) {
+func TestAwsCloudFrontSpec(t *testing.T) {
     RegisterFailHandler(Fail)
     RunSpecs(t, "AwsCloudFrontSpec Validation Suite")
 }
 
-var _ = Describe("AwsCloudFrontSpec buf.validate rules", func() {
-    var (
-        validator protovalidate.Validator
-    )
+var _ = Describe("AwsCloudFrontSpec validation", func() {
+    var validator *protovalidate.Validator
 
     BeforeEach(func() {
         var err error
@@ -29,110 +24,82 @@ var _ = Describe("AwsCloudFrontSpec buf.validate rules", func() {
         Expect(err).NotTo(HaveOccurred())
     })
 
-    // ---------------------------------------------------------------------
-    //  Positive case – the spec should pass validation
-    // ---------------------------------------------------------------------
-    It("accepts a fully valid specification", func() {
-        spec := validSpec()
+    newValidSpec := func() *AwsCloudFrontSpec {
+        return &AwsCloudFrontSpec{
+            Enabled:           true,
+            Aliases:           []string{"example.com"},
+            Comment:           "My distribution",
+            DefaultRootObject: "index.html",
+            PriceClass:        "PriceClass_100",
+            IsIpv6Enabled:     true,
+            Origins: []*AwsCloudFrontSpec_Origin{
+                {
+                    Id:         "origin1",
+                    DomainName: "example.com",
+                    OriginPath: "/content",
+                    S3OriginConfig: &AwsCloudFrontSpec_S3OriginConfig{
+                        OriginAccessIdentity: "origin-access-identity/cloudfront/ABCDEFG1234567",
+                    },
+                },
+            },
+            DefaultCacheBehavior: &AwsCloudFrontSpec_DefaultCacheBehavior{
+                TargetOriginId:       "origin1",
+                AllowedMethods:       []string{"GET", "HEAD"},
+                CachedMethods:        []string{"GET", "HEAD"},
+                ViewerProtocolPolicy: "allow-all",
+                Compress:            true,
+                MinTtl:              &durationpb.Duration{Seconds: 0},
+                DefaultTtl:          &durationpb.Duration{Seconds: 60},
+                MaxTtl:              &durationpb.Duration{Seconds: 3600},
+            },
+            OrderedCacheBehaviors: []*AwsCloudFrontSpec_CacheBehavior{},
+            Logging: &AwsCloudFrontSpec_LoggingConfig{
+                Bucket:         "logs.example.com.s3.amazonaws.com",
+                Prefix:         "prefix/",
+                IncludeCookies: true,
+            },
+            ViewerCertificate: &AwsCloudFrontSpec_ViewerCertificate{
+                AcmCertificateArn:            "arn:aws:acm:us-east-1:123456789012:certificate/abcdef12-3456-7890-abcd-ef1234567890",
+                CloudfrontDefaultCertificate: false,
+                SslSupportMethod:             "sni-only",
+                MinimumProtocolVersion:       "TLSv1.2_2018",
+            },
+            Restrictions: &AwsCloudFrontSpec_Restrictions{
+                GeoRestriction: &AwsCloudFrontSpec_GeoRestriction{
+                    RestrictionType: "none",
+                    Locations:       []string{},
+                },
+            },
+            WebAclId: "arn:aws:wafv2:us-east-1:123456789012:regional/webacl/Example/12345678-1234-1234-1234-123456789012",
+            Tags:     map[string]string{"env": "prod"},
+        }
+    }
+
+    It("accepts a fully valid spec", func() {
+        spec := newValidSpec()
         Expect(validator.Validate(spec)).To(Succeed())
     })
 
-    // ---------------------------------------------------------------------
-    //  Negative cases – each should fail validation for the indicated reason
-    // ---------------------------------------------------------------------
-    It("rejects an empty alias entry", func() {
-        spec := proto.Clone(validSpec()).(*AwsCloudFrontSpec)
-        spec.Aliases = []string{""}
-        Expect(validator.Validate(spec)).To(HaveOccurred())
-    })
-
-    It("rejects an invalid price class", func() {
-        spec := proto.Clone(validSpec()).(*AwsCloudFrontSpec)
-        spec.PriceClass = "PriceClass_999"
-        Expect(validator.Validate(spec)).To(HaveOccurred())
-    })
-
-    It("requires at least one origin", func() {
-        spec := proto.Clone(validSpec()).(*AwsCloudFrontSpec)
-        spec.Origins = nil
-        Expect(validator.Validate(spec)).To(HaveOccurred())
-    })
-
-    It("requires default_cache_behavior to be present", func() {
-        spec := proto.Clone(validSpec()).(*AwsCloudFrontSpec)
-        spec.DefaultCacheBehavior = nil
-        Expect(validator.Validate(spec)).To(HaveOccurred())
-    })
-
-    It("rejects an origin with a non-hostname domain name", func() {
-        spec := proto.Clone(validSpec()).(*AwsCloudFrontSpec)
-        spec.Origins[0].DomainName = "not a host name"
-        Expect(validator.Validate(spec)).To(HaveOccurred())
-    })
+    DescribeTable("rejects invalid specifications",
+        func(mutate func(spec *AwsCloudFrontSpec)) {
+            spec := newValidSpec()
+            mutate(spec)
+            Expect(validator.Validate(spec)).NotTo(Succeed())
+        },
+        Entry("invalid price class", func(spec *AwsCloudFrontSpec) {
+            spec.PriceClass = "PriceClass_Invalid"
+        }),
+        Entry("missing origins", func(spec *AwsCloudFrontSpec) {
+            spec.Origins = nil
+        }),
+        Entry("empty default root object", func(spec *AwsCloudFrontSpec) {
+            spec.DefaultRootObject = ""
+        }),
+        Entry("alias empty string", func(spec *AwsCloudFrontSpec) {
+            spec.Aliases = []string{""}
+        }),
+        Entry("invalid web_acl_id pattern", func(spec *AwsCloudFrontSpec) {
+            spec.WebAclId = "invalid-arn"
+        }),
+    )
 })
-
-// -----------------------------------------------------------------------------
-//  Helper – construct a valid AwsCloudFrontSpec instance
-// -----------------------------------------------------------------------------
-func validSpec() *AwsCloudFrontSpec {
-    return &AwsCloudFrontSpec{
-        Enabled:           true,
-        Aliases:           []string{"example.com"},
-        Comment:           "My CloudFront distribution",
-        DefaultRootObject: "index.html",
-        PriceClass:        "PriceClass_All",
-        IsIpv6Enabled:     true,
-        Origins: []*AwsCloudFrontSpec_Origin{
-            {
-                Id:         "myS3Origin",
-                DomainName:  "mybucket.s3.amazonaws.com",
-                OriginPath:  "/content",
-                CustomHeaders: []*AwsCloudFrontSpec_CustomHeader{
-                    {Name: "X-Test", Value: "true"},
-                },
-                S3OriginConfig: &AwsCloudFrontSpec_S3OriginConfig{
-                    OriginAccessIdentity: "origin-access-identity/cloudfront/ABCDEFG1234567",
-                },
-            },
-        },
-        DefaultCacheBehavior: &AwsCloudFrontSpec_DefaultCacheBehavior{
-            TargetOriginId:       "myS3Origin",
-            AllowedMethods:       []string{"GET", "HEAD"},
-            CachedMethods:        []string{"GET", "HEAD"},
-            ViewerProtocolPolicy: "redirect-to-https",
-            Compress:             true,
-            MinTtl:               durationpb.New(0),
-            DefaultTtl:           durationpb.New(0),
-            MaxTtl:               durationpb.New(0),
-            ForwardedValues: &AwsCloudFrontSpec_ForwardedValues{
-                QueryString: true,
-                Headers:     []string{"Authorization"},
-                Cookies: &AwsCloudFrontSpec_Cookies{
-                    Forward: "all",
-                },
-            },
-        },
-        OrderedCacheBehaviors: nil,
-        Logging: &AwsCloudFrontSpec_LoggingConfig{
-            Bucket:         "logs.example.com",
-            Prefix:         "cdn/",
-            IncludeCookies: true,
-        },
-        ViewerCertificate: &AwsCloudFrontSpec_ViewerCertificate{
-            AcmCertificateArn:            "arn:aws:acm:us-east-1:123456789012:certificate/123e4567-e89b-12d3-a456-426655440000",
-            CloudfrontDefaultCertificate: false,
-            SslSupportMethod:             "sni-only",
-            MinimumProtocolVersion:       "TLSv1.2_2021",
-        },
-        Restrictions: &AwsCloudFrontSpec_Restrictions{
-            GeoRestriction: &AwsCloudFrontSpec_GeoRestriction{
-                RestrictionType: "none",
-                Locations:       nil,
-            },
-        },
-        WebAclId: "arn:aws:wafv2:us-east-1:123456789012:regional/webacl/myWebAcl/12345678-1234-1234-1234-123456789012",
-        Tags: map[string]string{
-            "env": "prod",
-        },
-    }
-}
