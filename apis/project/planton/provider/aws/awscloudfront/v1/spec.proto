@@ -39,17 +39,17 @@ message AwsCloudFrontSpec {
 
   // Additional, ordered cache behaviors matched by path pattern.
   repeated CacheBehavior ordered_cache_behaviors = 8 [
-    (buf.validate.field).repeated.items.message = {}
+    (buf.validate.field).repeated = { items: {} }
   ];
 
   // TLS/SSL certificate and HTTPS configuration.
-  ViewerCertificate viewer_certificate = 9 [ (buf.validate.field).message = {} ];
+  ViewerCertificate viewer_certificate = 9 [ (buf.validate.field) = {} ];
 
   // Access-log destination and formatting options.
-  LoggingConfig logging = 10 [ (buf.validate.field).message = {} ];
+  LoggingConfig logging = 10 [ (buf.validate.field) = {} ];
 
   // Geo and viewer restrictions applied to the distribution.
-  Restrictions restrictions = 11 [ (buf.validate.field).message = {} ];
+  Restrictions restrictions = 11 [ (buf.validate.field) = {} ];
 
   // AWS WAF web ACL to associate with the distribution (optional).
   string web_acl_id = 12 [
@@ -72,7 +72,7 @@ message AwsCloudFrontSpec {
 
   // Custom responses for specific HTTP error codes.
   repeated CustomErrorResponse custom_error_responses = 16 [
-    (buf.validate.field).repeated.items.message = {}
+    (buf.validate.field).repeated = { items: {} }
   ];
 }
 
@@ -91,17 +91,17 @@ message Origin {
 
   // Custom headers that CloudFront adds to origin requests.
   repeated OriginHeader custom_headers = 4 [
-    (buf.validate.field).repeated.items.message = {}
+    (buf.validate.field).repeated = { items: {} }
   ];
 
   // S3-specific configuration (set if the origin is an S3 bucket).
-  S3OriginConfig s3_origin_config = 5 [ (buf.validate.field).message = {} ];
+  S3OriginConfig s3_origin_config = 5 [ (buf.validate.field) = {} ];
 
   // HTTP/S origin configuration (set for custom, non-S3 origins).
-  CustomOriginConfig custom_origin_config = 6 [ (buf.validate.field).message = {} ];
+  CustomOriginConfig custom_origin_config = 6 [ (buf.validate.field) = {} ];
 
   // Origin Shield configuration to improve cache hit ratios (optional).
-  OriginShield origin_shield = 7 [ (buf.validate.field).message = {} ];
+  OriginShield origin_shield = 7 [ (buf.validate.field) = {} ];
 }
 
 // Name/value header to attach to origin requests.
@@ -160,7 +160,7 @@ message DefaultCacheBehavior {
   uint32 max_ttl = 9 [ (buf.validate.field).uint32 = {} ];                                 // Maximum seconds objects stay in cache.
   bool smooth_streaming = 10 [ (buf.validate.field).bool = {} ];                         // Enable smooth streaming for media.
   repeated LambdaFunctionAssociation lambda_function_associations = 11 [
-    (buf.validate.field).repeated.items.message = {}
+    (buf.validate.field).repeated = { items: {} }
   ]; // Edge Lambda triggers.
   repeated string trusted_key_groups = 12 [
     (buf.validate.field).repeated = { unique: true, items: { string: { min_len: 1 } } }
@@ -187,7 +187,7 @@ message CacheBehavior {
   uint32 default_ttl = 9 [ (buf.validate.field).uint32 = {} ];                             // Default cache TTL.
   uint32 max_ttl = 10 [ (buf.validate.field).uint32 = {} ];                                // Max cache TTL.
   repeated LambdaFunctionAssociation lambda_function_associations = 11 [
-    (buf.validate.field).repeated.items.message = {}
+    (buf.validate.field).repeated = { items: {} }
   ]; // Edge Lambda.
   repeated string trusted_key_groups = 12 [
     (buf.validate.field).repeated.items.string.min_len = 1
@@ -206,7 +206,7 @@ message ForwardedValues {
   repeated string headers = 3 [
     (buf.validate.field).repeated.items.string.min_len = 1
   ];                    // Headers to forward and include in cache key.
-  Cookies cookies = 4 [ (buf.validate.field).message = {} ];                            // Cookie forwarding behavior.
+  Cookies cookies = 4 [ (buf.validate.field) = {} ];                            // Cookie forwarding behavior.
 }
 
 // Cookie forwarding options.
@@ -256,7 +256,7 @@ message LoggingConfig {
 
 // Defines geo or other viewer restrictions.
 message Restrictions {
-  GeoRestriction geo_restriction = 1 [ (buf.validate.field).message = {} ]; // Location-based allow/deny list.
+  GeoRestriction geo_restriction = 1 [ (buf.validate.field) = {} ]; // Location-based allow/deny list.
 }
 
 // Geo restriction configuration.
