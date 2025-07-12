@@ -269,7 +269,7 @@ enum HttpMethod {
 enum OriginProtocolPolicy {
   ORIGIN_PROTOCOL_POLICY_UNSPECIFIED = 0;
   HTTP_ONLY = 1;
-  HTTPS_ONLY = 2;
+  ORIGIN_HTTPS_ONLY = 2; // Renamed to avoid collision with ViewerProtocolPolicy.HTTPS_ONLY
   MATCH_VIEWER = 3;
 }
 
