@@ -27,7 +27,7 @@ message AwsCloudFrontSpec {
 
   // Pricing tier that determines which edge locations are used.
   PriceClass price_class = 4 [
-    (buf.validate.field).enum = { defined_only: true, not_in: [0] }
+    (buf.validate.field).enum = { defined_only: true, not_in: 0 }
   ];
 
   // Object served when a request is made to the root URL (e.g. “index.html”).
@@ -72,7 +72,7 @@ message AwsCloudFrontSpec {
 
   // Highest HTTP protocol version supported for viewer connections.
   HttpVersion http_version = 70 [
-    (buf.validate.field).enum = { defined_only: true, not_in: [0] }
+    (buf.validate.field).enum = { defined_only: true, not_in: 0 }
   ];
 
   // Key/value metadata tags applied to the distribution.
@@ -148,7 +148,7 @@ message CustomOriginConfig {
 
   // Protocol policy that CloudFront uses to communicate with the origin.
   OriginProtocolPolicy origin_protocol_policy = 3 [
-    (buf.validate.field).enum = { defined_only: true, not_in: [0] }
+    (buf.validate.field).enum = { defined_only: true, not_in: 0 }
   ];
 
   // Seconds CloudFront waits for a response from the origin.
@@ -170,18 +170,18 @@ message DefaultCacheBehavior {
     (buf.validate.field).string.min_len = 1
   ];
   ViewerProtocolPolicy viewer_protocol_policy = 2 [
-    (buf.validate.field).enum = { defined_only: true, not_in: [0] }
+    (buf.validate.field).enum = { defined_only: true, not_in: 0 }
   ];
   repeated HttpMethod allowed_methods = 3 [
     (buf.validate.field) = {
       repeated: { min_items: 1, unique: true },
-      enum:     { defined_only: true, not_in: [0] }
+      enum:     { defined_only: true, not_in: 0 }
     }
   ];
   repeated HttpMethod cached_methods = 4 [
     (buf.validate.field) = {
       repeated: { min_items: 1, unique: true },
-      enum:     { defined_only: true, not_in: [0] }
+      enum:     { defined_only: true, not_in: 0 }
     }
   ];
   bool compress = 5;
@@ -218,18 +218,18 @@ message CacheBehavior {
     (buf.validate.field).string.min_len = 1
   ];
   ViewerProtocolPolicy viewer_protocol_policy = 3 [
-    (buf.validate.field).enum = { defined_only: true, not_in: [0] }
+    (buf.validate.field).enum = { defined_only: true, not_in: 0 }
   ];
   repeated HttpMethod allowed_methods = 4 [
     (buf.validate.field) = {
       repeated: { min_items: 1, unique: true },
-      enum:     { defined_only: true, not_in: [0] }
+      enum:     { defined_only: true, not_in: 0 }
     }
   ];
   repeated HttpMethod cached_methods = 5 [
     (buf.validate.field) = {
       repeated: { min_items: 1, unique: true },
-      enum:     { defined_only: true, not_in: [0] }
+      enum:     { defined_only: true, not_in: 0 }
     }
   ];
   bool compress = 6;
@@ -302,12 +302,12 @@ message ViewerCertificate {
 
   // How CloudFront serves HTTPS (SNI, VIP, etc.).
   SslSupportMethod ssl_support_method = 4 [
-    (buf.validate.field).enum = { defined_only: true, not_in: [0] }
+    (buf.validate.field).enum = { defined_only: true, not_in: 0 }
   ];
 
   // Minimum TLS protocol version allowed for viewers.
   MinimumProtocolVersion minimum_protocol_version = 5 [
-    (buf.validate.field).enum = { defined_only: true, not_in: [0] }
+    (buf.validate.field).enum = { defined_only: true, not_in: 0 }
   ];
 }
 
@@ -342,7 +342,7 @@ message Restrictions {
 // Restricts content delivery by geographic location.
 message GeoRestriction {
   GeoRestrictionType restriction_type = 1 [
-    (buf.validate.field).enum = { defined_only: true, not_in: [0] }
+    (buf.validate.field).enum = { defined_only: true, not_in: 0 }
   ];
   repeated string locations = 2 [
     (buf.validate.field) = {
