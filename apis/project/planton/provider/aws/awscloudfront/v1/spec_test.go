@@ -20,7 +20,7 @@ func TestAwsCloudFrontSpecValidation(t *testing.T) {
 
 var _ = Describe("AwsCloudFrontSpec buf.validate rules", func() {
     var (
-        validator *protovalidate.Validator
+        validator protovalidate.Validator
     )
 
     BeforeEach(func() {
@@ -76,12 +76,12 @@ var _ = Describe("AwsCloudFrontSpec buf.validate rules", func() {
 // -----------------------------------------------------------------------------
 func validSpec() *AwsCloudFrontSpec {
     return &AwsCloudFrontSpec{
-        Enabled:          true,
-        Aliases:          []string{"example.com"},
-        Comment:          "My CloudFront distribution",
+        Enabled:           true,
+        Aliases:           []string{"example.com"},
+        Comment:           "My CloudFront distribution",
         DefaultRootObject: "index.html",
-        PriceClass:       "PriceClass_All",
-        IsIpv6Enabled:    true,
+        PriceClass:        "PriceClass_All",
+        IsIpv6Enabled:     true,
         Origins: []*AwsCloudFrontSpec_Origin{
             {
                 Id:         "myS3Origin",
@@ -119,10 +119,10 @@ func validSpec() *AwsCloudFrontSpec {
             IncludeCookies: true,
         },
         ViewerCertificate: &AwsCloudFrontSpec_ViewerCertificate{
-            AcmCertificateArn:          "arn:aws:acm:us-east-1:123456789012:certificate/123e4567-e89b-12d3-a456-426655440000",
+            AcmCertificateArn:            "arn:aws:acm:us-east-1:123456789012:certificate/123e4567-e89b-12d3-a456-426655440000",
             CloudfrontDefaultCertificate: false,
-            SslSupportMethod:           "sni-only",
-            MinimumProtocolVersion:     "TLSv1.2_2021",
+            SslSupportMethod:             "sni-only",
+            MinimumProtocolVersion:       "TLSv1.2_2021",
         },
         Restrictions: &AwsCloudFrontSpec_Restrictions{
             GeoRestriction: &AwsCloudFrontSpec_GeoRestriction{
