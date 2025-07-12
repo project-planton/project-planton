@@ -2,7 +2,216 @@ syntax = "proto3";
 
 package project.planton.provider.aws.awscloudfront.v1;
 
-// AwsCloudFrontSpec defines the specification required to deploy an AWS Cloud Front resource, encapsulating all
-// configurations for the Aws Cloud Front settings.
+import "google/protobuf/duration.proto";
+
+// Specification for an Amazon CloudFront distribution.
 message AwsCloudFrontSpec {
+  // Enables or disables the CloudFront distribution.
+  bool enabled = 1;
+
+  // Alternative domain names (CNAMEs) that you want to associate with this distribution.
+  repeated string aliases = 2;
+
+  // Optional free-form comment for the distribution.
+  string comment = 3;
+
+  // Object that CloudFront returns when a request is made to the root URL (e.g. "index.html").
+  string default_root_object = 4;
+
+  // Pricing class that determines the edge locations CloudFront will use (PriceClass_100, PriceClass_200, PriceClass_All).
+  string price_class = 5;
+
+  // Whether to enable IPv6 support for the distribution.
+  bool is_ipv6_enabled = 6;
+
+  // The origin configurations that CloudFront pulls content from.
+  repeated Origin origins = 7;
+
+  // How CloudFront handles requests when the requested object isn't in the cache.
+  DefaultCacheBehavior default_cache_behavior = 8;
+
+  // Ordered list of additional cache behaviors for specific path patterns.
+  repeated CacheBehavior ordered_cache_behaviors = 9;
+
+  // Configuration for real-time access logs delivered to an S3 bucket.
+  LoggingConfig logging = 10;
+
+  // SSL/TLS certificate settings and HTTPS enforcement.
+  ViewerCertificate viewer_certificate = 11;
+
+  // Geographic or IP-based restrictions applied to viewer requests.
+  Restrictions restrictions = 12;
+
+  // ARN of an AWS WAF WebACL associated with this distribution.
+  string web_acl_id = 13;
+
+  // Key-value pairs to tag the CloudFront distribution.
+  map<string, string> tags = 14;
+
+  // ========== Nested messages ==========
+
+  // Defines an origin server (e.g., S3 bucket, load balancer, or custom HTTP server).
+  message Origin {
+    // Unique identifier that must be referenced by cache behaviors.
+    string id = 1;
+
+    // DNS domain name of the origin (e.g., "mybucket.s3.amazonaws.com").
+    string domain_name = 2;
+
+    // Optional URL path that CloudFront appends to requests (must begin with a “/”).
+    string origin_path = 3;
+
+    // Custom HTTP headers that CloudFront includes in origin requests.
+    repeated CustomHeader custom_headers = 4;
+
+    // Settings specific to an Amazon S3 origin.
+    S3OriginConfig s3_origin_config = 5;
+
+    // Settings specific to a custom HTTP/S origin.
+    CustomOriginConfig custom_origin_config = 6;
+  }
+
+  // Name/value pair for a custom header.
+  message CustomHeader {
+    string name = 1;
+    string value = 2;
+  }
+
+  // Configuration for an Amazon S3 origin.
+  message S3OriginConfig {
+    // CloudFront origin access identity (OAI) used to access the bucket.
+    string origin_access_identity = 1;
+  }
+
+  // Configuration for a custom HTTP/S origin.
+  message CustomOriginConfig {
+    // How CloudFront connects to the origin (http-only, https-only, match-viewer).
+    string origin_protocol_policy = 1;
+
+    // HTTP port that CloudFront uses when connecting with HTTP.
+    int32 http_port = 2;
+
+    // HTTPS port that CloudFront uses when connecting with HTTPS.
+    int32 https_port = 3;
+
+    // TLS protocols that CloudFront can use when establishing HTTPS connections (e.g., "TLSv1.2").
+    repeated string origin_ssl_protocols = 4;
+  }
+
+  // Describes how CloudFront handles viewer requests for objects in the specified path pattern.
+  message CacheBehavior {
+    // Path pattern (e.g., "/images/*"). Use "*" to apply to all objects.
+    string path_pattern = 1;
+
+    // ID of the origin to forward requests to.
+    string target_origin_id = 2;
+
+    // HTTP methods that CloudFront allows for viewer requests.
+    repeated string allowed_methods = 3;
+
+    // Subset of allowed methods that CloudFront caches responses for.
+    repeated string cached_methods = 4;
+
+    // Policy that determines whether viewers can use HTTP or HTTPS (allow-all, redirect-to-https, https-only).
+    string viewer_protocol_policy = 5;
+
+    // Whether CloudFront compresses certain files automatically.
+    bool compress = 6;
+
+    // Minimum amount of time that an object stays in the cache.
+    google.protobuf.Duration min_ttl = 7;
+
+    // Default amount of time that an object stays in the cache.
+    google.protobuf.Duration default_ttl = 8;
+
+    // Maximum amount of time that an object stays in the cache.
+    google.protobuf.Duration max_ttl = 9;
+
+    // Decide whether CloudFront forwards cookies, query strings, and headers to the origin.
+    ForwardedValues forwarded_values = 10;
+  }
+
+  // Default cache behavior. Same fields as CacheBehavior except path_pattern.
+  message DefaultCacheBehavior {
+    // ID of the origin to forward requests to.
+    string target_origin_id = 1;
+
+    repeated string allowed_methods = 2;
+
+    repeated string cached_methods = 3;
+
+    string viewer_protocol_policy = 4;
+
+    bool compress = 5;
+
+    google.protobuf.Duration min_ttl = 6;
+
+    google.protobuf.Duration default_ttl = 7;
+
+    google.protobuf.Duration max_ttl = 8;
+
+    ForwardedValues forwarded_values = 9;
+  }
+
+  // Determines what values CloudFront includes in requests that it forwards to the origin.
+  message ForwardedValues {
+    // Whether to forward query strings to the origin.
+    bool query_string = 1;
+
+    // List of header names to forward.
+    repeated string headers = 2;
+
+    // Cookie forwarding settings.
+    Cookies cookies = 3;
+  }
+
+  // Settings that specify how CloudFront handles cookies.
+  message Cookies {
+    // "none", "whitelist", or "all".
+    string forward = 1;
+
+    // Cookie names to include when forward == "whitelist".
+    repeated string whitelisted_names = 2;
+  }
+
+  // Access-log configuration.
+  message LoggingConfig {
+    // S3 bucket to which CloudFront delivers access logs (e.g., "logs.example.com.s3.amazonaws.com").
+    string bucket = 1;
+
+    // Optional prefix for log object keys.
+    string prefix = 2;
+
+    // Whether to include cookies in the logs.
+    bool include_cookies = 3;
+  }
+
+  // SSL/TLS certificate to use when viewers use HTTPS to request your objects.
+  message ViewerCertificate {
+    // ACM certificate ARN to associate with the distribution.
+    string acm_certificate_arn = 1;
+
+    // Use the default *.cloudfront.net certificate instead of a custom one.
+    bool cloudfront_default_certificate = 2;
+
+    // Method that the viewer uses to connect (sni-only, vip, static-ip).
+    string ssl_support_method = 3;
+
+    // Minimum SSL/TLS protocol version that CloudFront supports.
+    string minimum_protocol_version = 4;
+  }
+
+  // Geographic or IP restrictions.
+  message Restrictions {
+    GeoRestriction geo_restriction = 1;
+  }
+
+  // List of countries from which CloudFront either allows or blocks content.
+  message GeoRestriction {
+    // "none", "whitelist", or "blacklist".
+    string restriction_type = 1;
+
+    // Two-letter country codes that are either allowed or blocked based on restriction_type.
+    repeated string locations = 2;
+  }
 }
