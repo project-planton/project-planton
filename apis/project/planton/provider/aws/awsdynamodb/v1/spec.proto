@@ -27,10 +27,7 @@ message AwsDynamodbSpec {
 
   // Sort key (range key) for the primary key schema, optional.
   string range_key = 4 [
-    (buf.validate.field).string = {
-      min_len: 1,
-      ignore_empty: true
-    }
+    (buf.validate.field).string.min_len = 1
   ];
 
   // Billing mode that controls how you are charged for read/write throughput.
@@ -112,22 +109,17 @@ message AttributeDefinition {
 
 // Allowed scalar attribute types in DynamoDB.
 enum ScalarAttributeType {
-  ATTRIBUTE_TYPE_UNSPECIFIED = 0;
-  // String
-  S = 1;
-  // Number
-  N = 2;
-  // Binary
-  B = 3;
+  ATTRIBUTE_TYPE_UNSPECIFIED = 0; // Unspecified
+  S = 1; // String
+  N = 2; // Number
+  B = 3; // Binary
 }
 
 // Billing modes supported by DynamoDB.
 enum BillingMode {
-  BILLING_MODE_UNSPECIFIED = 0;
-  // Pay per request pricing model.
-  PAY_PER_REQUEST = 1;
-  // Provisioned throughput pricing model.
-  PROVISIONED = 2;
+  BILLING_MODE_UNSPECIFIED = 0; // Unspecified
+  PAY_PER_REQUEST = 1;          // Pay per request pricing model.
+  PROVISIONED = 2;             // Provisioned throughput pricing model.
 }
 
 // Projection configuration for secondary indexes.
@@ -138,21 +130,22 @@ message Projection {
   ];
   // List of non-key attribute names to include when type is INCLUDE.
   repeated string non_key_attributes = 2 [
-    (buf.validate.field).repeated = { max_items: 20 },
-    (buf.validate.field).string = {
-      min_len: 1,
-      pattern: "^[A-Za-z0-9_.-]+$"
+    (buf.validate.field).repeated = {
+      max_items: 20,
+      items: {
+        string: {
+          min_len: 1,
+          pattern: "^[A-Za-z0-9_.-]+$"
+        }
+      }
     }
   ];
 
   enum ProjectionType {
-    PROJECTION_TYPE_UNSPECIFIED = 0;
-    // All table attributes are projected.
-    ALL = 1;
-    // Only key attributes are projected.
-    KEYS_ONLY = 2;
-    // Only key attributes and specified non-key attributes are projected.
-    INCLUDE = 3;
+    PROJECTION_TYPE_UNSPECIFIED = 0; // Unspecified
+    ALL = 1;                         // All table attributes are projected.
+    KEYS_ONLY = 2;                   // Only key attributes are projected.
+    INCLUDE = 3;                     // Only key attributes and specified non-key attributes are projected.
   }
 }
 
@@ -172,7 +165,7 @@ message GlobalSecondaryIndex {
   ];
   // Optional sort key for the index.
   string range_key = 3 [
-    (buf.validate.field).string = { min_len: 1, ignore_empty: true }
+    (buf.validate.field).string.min_len = 1
   ];
   // Index projection definition.
   Projection projection = 4 [
@@ -208,7 +201,7 @@ message TtlSpec {
   bool enabled = 1;
   // Name of the attribute that stores the expiration timestamp (in epoch seconds).
   string attribute_name = 2 [
-    (buf.validate.field).string = { min_len: 1, ignore_empty: true }
+    (buf.validate.field).string.min_len = 1
   ];
 }
 
@@ -223,15 +216,11 @@ message StreamSpec {
 }
 
 enum StreamViewType {
-  STREAM_VIEW_TYPE_UNSPECIFIED = 0;
-  // Only the key attributes of the modified item.
-  KEYS_ONLY = 1;
-  // New image of the entire item.
-  NEW_IMAGE = 2;
-  // Old image of the entire item.
-  OLD_IMAGE = 3;
-  // Both the new and the old images of the item.
-  NEW_AND_OLD_IMAGES = 4;
+  STREAM_VIEW_TYPE_UNSPECIFIED = 0; // Unspecified
+  KEYS_ONLY = 1;                   // Only the key attributes of the modified item.
+  NEW_IMAGE = 2;                   // New image of the entire item.
+  OLD_IMAGE = 3;                   // Old image of the entire item.
+  NEW_AND_OLD_IMAGES = 4;          // Both the new and the old images of the item.
 }
 
 // Server-side encryption specification.
@@ -244,25 +233,21 @@ message SseSpec {
   ];
   // ARN of the customer managed KMS key; required when type is CUSTOMER_MANAGED.
   string kms_key_arn = 3 [
-    (buf.validate.field).string = { min_len: 20, ignore_empty: true }
+    (buf.validate.field).string.min_len = 20
   ];
 }
 
 enum SseType {
-  SSE_TYPE_UNSPECIFIED = 0;
-  // AES-256 encryption using an AWS owned key.
-  AWS_MANAGED = 1;
-  // Encryption using a customer managed KMS key.
-  CUSTOMER_MANAGED = 2;
+  SSE_TYPE_UNSPECIFIED = 0; // Unspecified
+  AWS_MANAGED = 1;          // AES-256 encryption using an AWS owned key.
+  CUSTOMER_MANAGED = 2;     // Encryption using a customer managed KMS key.
 }
 
 // Table storage class.
 enum TableClass {
-  TABLE_CLASS_UNSPECIFIED = 0;
-  // Standard table class for general-purpose workloads.
-  STANDARD = 1;
-  // Cost-optimized infrequent access table class.
-  STANDARD_INFREQUENT_ACCESS = 2;
+  TABLE_CLASS_UNSPECIFIED = 0;       // Unspecified
+  STANDARD = 1;                      // Standard table class for general-purpose workloads.
+  STANDARD_INFREQUENT_ACCESS = 2;    // Cost-optimized infrequent access table class.
 }
 
 // Replica configuration for global tables.
