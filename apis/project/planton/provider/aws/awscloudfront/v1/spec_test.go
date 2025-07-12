@@ -15,7 +15,7 @@ func TestAwsCloudFrontSpecValidation(t *testing.T) {
 }
 
 var _ = Describe("AwsCloudFrontSpec", func() {
-    var validator *protovalidate.Validator
+    var validator protovalidate.Validator
 
     BeforeSuite(func() {
         var err error
@@ -46,14 +46,14 @@ var _ = Describe("AwsCloudFrontSpec", func() {
                 },
             },
             DefaultCacheBehavior: &AwsCloudFrontSpec_DefaultCacheBehavior{
-                TargetOriginId:        "origin1",
-                AllowedMethods:        []string{"GET", "HEAD"},
-                CachedMethods:         []string{"GET", "HEAD"},
-                ViewerProtocolPolicy:  "allow-all",
-                Compress:             true,
-                MinTtl:               durationpb.New(0),
-                DefaultTtl:           durationpb.New(0),
-                MaxTtl:               durationpb.New(0),
+                TargetOriginId:       "origin1",
+                AllowedMethods:       []string{"GET", "HEAD"},
+                CachedMethods:        []string{"GET", "HEAD"},
+                ViewerProtocolPolicy: "allow-all",
+                Compress:            true,
+                MinTtl:              durationpb.New(0),
+                DefaultTtl:          durationpb.New(0),
+                MaxTtl:              durationpb.New(0),
                 ForwardedValues: &AwsCloudFrontSpec_ForwardedValues{
                     QueryString: true,
                     Headers:     []string{"Authorization"},
@@ -69,7 +69,7 @@ var _ = Describe("AwsCloudFrontSpec", func() {
                 IncludeCookies: true,
             },
             ViewerCertificate: &AwsCloudFrontSpec_ViewerCertificate{
-                AcmCertificateArn:          "arn:aws:acm:us-east-1:123456789012:certificate/abcdef12-abcd-abcd-abcd-abcdef123456",
+                AcmCertificateArn:           "arn:aws:acm:us-east-1:123456789012:certificate/abcdef12-abcd-abcd-abcd-abcdef123456",
                 CloudfrontDefaultCertificate: false,
                 SslSupportMethod:             "sni-only",
                 MinimumProtocolVersion:       "TLSv1.2_2021",
