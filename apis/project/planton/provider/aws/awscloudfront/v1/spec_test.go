@@ -16,7 +16,7 @@ func TestAwsCloudFrontSpecValidation(t *testing.T) {
 }
 
 var _ = Describe("AwsCloudFrontSpec validation", func() {
-    var validator *protovalidate.Validator
+    var validator protovalidate.Validator
 
     BeforeEach(func() {
         var err error
@@ -27,20 +27,21 @@ var _ = Describe("AwsCloudFrontSpec validation", func() {
     Context("with a valid spec", func() {
         It("passes validation", func() {
             spec := &AwsCloudFrontSpec{
-                Enabled:            true,
-                Aliases:            []string{"example.com"},
-                Comment:            "my distribution",
-                DefaultRootObject:  "index.html",
-                PriceClass:         "PriceClass_100",
-                IsIpv6Enabled:      true,
+                Enabled:           true,
+                Aliases:           []string{"example.com"},
+                Comment:           "my distribution",
+                DefaultRootObject: "index.html",
+                PriceClass:        "PriceClass_100",
+                IsIpv6Enabled:     true,
                 Origins: []*AwsCloudFrontSpec_Origin{
                     {
                         Id:         "origin1",
                         DomainName: "mybucket.s3.amazonaws.com",
                         OriginPath: "/assets",
-                        CustomHeaders: []*AwsCloudFrontSpec_CustomHeader{
-                            {Name: "X-Test", Value: "value"},
-                        },
+                        CustomHeaders: []*AwsCloudFrontSpec_CustomHeader{{
+                            Name:  "X-Test",
+                            Value: "value",
+                        }},
                         S3OriginConfig: &AwsCloudFrontSpec_S3OriginConfig{
                             OriginAccessIdentity: "origin-access-identity/cloudfront/ABCDEFG1234567",
                         },
@@ -53,14 +54,14 @@ var _ = Describe("AwsCloudFrontSpec validation", func() {
                     },
                 },
                 DefaultCacheBehavior: &AwsCloudFrontSpec_DefaultCacheBehavior{
-                    TargetOriginId:        "origin1",
-                    AllowedMethods:        []string{"GET", "HEAD"},
-                    CachedMethods:         []string{"GET", "HEAD"},
-                    ViewerProtocolPolicy:  "redirect-to-https",
-                    Compress:             true,
-                    MinTtl:               durationpb.New(0 * time.Second),
-                    DefaultTtl:           durationpb.New(60 * time.Second),
-                    MaxTtl:               durationpb.New(300 * time.Second),
+                    TargetOriginId:       "origin1",
+                    AllowedMethods:       []string{"GET", "HEAD"},
+                    CachedMethods:        []string{"GET", "HEAD"},
+                    ViewerProtocolPolicy: "redirect-to-https",
+                    Compress:            true,
+                    MinTtl:              durationpb.New(0 * time.Second),
+                    DefaultTtl:          durationpb.New(60 * time.Second),
+                    MaxTtl:              durationpb.New(300 * time.Second),
                     ForwardedValues: &AwsCloudFrontSpec_ForwardedValues{
                         QueryString: true,
                         Headers:     []string{"Authorization"},
@@ -75,10 +76,10 @@ var _ = Describe("AwsCloudFrontSpec validation", func() {
                     IncludeCookies: true,
                 },
                 ViewerCertificate: &AwsCloudFrontSpec_ViewerCertificate{
-                    AcmCertificateArn:          "arn:aws:acm:us-east-1:123456789012:certificate/123e4567-e89b-12d3-a456-426614174000",
+                    AcmCertificateArn:           "arn:aws:acm:us-east-1:123456789012:certificate/123e4567-e89b-12d3-a456-426614174000",
                     CloudfrontDefaultCertificate: false,
-                    SslSupportMethod:           "sni-only",
-                    MinimumProtocolVersion:     "TLSv1.2_2018",
+                    SslSupportMethod:            "sni-only",
+                    MinimumProtocolVersion:      "TLSv1.2_2018",
                 },
                 Restrictions: &AwsCloudFrontSpec_Restrictions{
                     GeoRestriction: &AwsCloudFrontSpec_GeoRestriction{
@@ -138,12 +139,10 @@ func minimalValidSpec() *AwsCloudFrontSpec {
         Aliases:           []string{"example.com"},
         DefaultRootObject: "index.html",
         PriceClass:        "PriceClass_100",
-        Origins: []*AwsCloudFrontSpec_Origin{
-            {
-                Id:         "origin1",
-                DomainName: "mybucket.s3.amazonaws.com",
-            },
-        },
+        Origins: []*AwsCloudFrontSpec_Origin{{
+            Id:         "origin1",
+            DomainName: "mybucket.s3.amazonaws.com",
+        }},
         DefaultCacheBehavior: &AwsCloudFrontSpec_DefaultCacheBehavior{
             TargetOriginId:       "origin1",
             AllowedMethods:       []string{"GET"},
