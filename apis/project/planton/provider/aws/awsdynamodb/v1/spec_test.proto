@@ -1,0 +1,122 @@
+package awsdynamodb_test
+
+import (
+    "fmt"
+    "testing"
+
+    protovalidate "github.com/bufbuild/protovalidate-go"
+    . "github.com/onsi/ginkgo/v2"
+    . "github.com/onsi/gomega"
+
+    awsdynamodbv1 "project/planton/provider/aws/awsdynamodb/v1"
+    "google.golang.org/protobuf/proto"
+)
+
+func TestAwsDynamodbSpec(t *testing.T) {
+    RegisterFailHandler(Fail)
+    RunSpecs(t, "AwsDynamodbSpec Validation Suite")
+}
+
+var _ = Describe("AwsDynamodbSpec validation", func() {
+    var validator *protovalidate.Validator
+
+    BeforeSuite(func() {
+        var err error
+        validator, err = protovalidate.New()
+        Expect(err).NotTo(HaveOccurred())
+    })
+
+    validSpec := func() *awsdynamodbv1.AwsDynamodbSpec {
+        return &awsdynamodbv1.AwsDynamodbSpec{
+            TableName:          "my_table",
+            BillingMode:        awsdynamodbv1.BillingMode_PROVISIONED,
+            ReadCapacityUnits:  5,
+            WriteCapacityUnits: 5,
+            AttributeDefinitions: []*awsdynamodbv1.AttributeDefinition{
+                {
+                    Name: "id",
+                    Type: awsdynamodbv1.AttributeType_S,
+                },
+            },
+            KeySchema: []*awsdynamodbv1.KeySchemaElement{
+                {
+                    AttributeName: "id",
+                    KeyType:       awsdynamodbv1.KeyType_HASH,
+                },
+            },
+        }
+    }
+
+    It("accepts a fully valid spec", func() {
+        spec := validSpec()
+        Expect(validator.Validate(spec)).To(Succeed())
+    })
+
+    DescribeTable("rejects invalid specs", func(modify func(*awsdynamodbv1.AwsDynamodbSpec)) {
+        // Clone the valid spec so each test starts from the same baseline.
+        spec := proto.Clone(validSpec()).(*awsdynamodbv1.AwsDynamodbSpec)
+        modify(spec)
+        Expect(validator.Validate(spec)).NotTo(Succeed())
+    },
+        Entry("table_name shorter than 3 characters", func(s *awsdynamodbv1.AwsDynamodbSpec) {
+            s.TableName = "ab"
+        }),
+        Entry("table_name contains invalid characters", func(s *awsdynamodbv1.AwsDynamodbSpec) {
+            s.TableName = "invalid name"
+        }),
+        Entry("billing_mode is unspecified", func(s *awsdynamodbv1.AwsDynamodbSpec) {
+            s.BillingMode = awsdynamodbv1.BillingMode_BILLING_MODE_UNSPECIFIED
+        }),
+        Entry("read_capacity_units less than 1", func(s *awsdynamodbv1.AwsDynamodbSpec) {
+            s.ReadCapacityUnits = 0
+        }),
+        Entry("write_capacity_units less than 1", func(s *awsdynamodbv1.AwsDynamodbSpec) {
+            s.WriteCapacityUnits = 0
+        }),
+        Entry("no attribute_definitions provided", func(s *awsdynamodbv1.AwsDynamodbSpec) {
+            s.AttributeDefinitions = nil
+        }),
+        Entry("no key_schema provided", func(s *awsdynamodbv1.AwsDynamodbSpec) {
+            s.KeySchema = nil
+        }),
+        Entry("too many local_secondary_indexes ( > 5 )", func(s *awsdynamodbv1.AwsDynamodbSpec) {
+            s.LocalSecondaryIndexes = make([]*awsdynamodbv1.LocalSecondaryIndex, 6)
+            for i := range s.LocalSecondaryIndexes {
+                s.LocalSecondaryIndexes[i] = &awsdynamodbv1.LocalSecondaryIndex{
+                    IndexName: fmt.Sprintf("lsi_%d", i),
+                    KeySchema: []*awsdynamodbv1.KeySchemaElement{
+                        {AttributeName: "id", KeyType: awsdynamodbv1.KeyType_HASH},
+                        {AttributeName: fmt.Sprintf("sk_%d", i), KeyType: awsdynamodbv1.KeyType_RANGE},
+                    },
+                    Projection: &awsdynamodbv1.Projection{ProjectionType: awsdynamodbv1.Projection_ALL},
+                }
+            }
+        }),
+        Entry("too many global_secondary_indexes ( > 20 )", func(s *awsdynamodbv1.AwsDynamodbSpec) {
+            s.GlobalSecondaryIndexes = make([]*awsdynamodbv1.GlobalSecondaryIndex, 21)
+            for i := range s.GlobalSecondaryIndexes {
+                s.GlobalSecondaryIndexes[i] = &awsdynamodbv1.GlobalSecondaryIndex{
+                    IndexName: fmt.Sprintf("gsi_%d", i),
+                    KeySchema: []*awsdynamodbv1.KeySchemaElement{
+                        {AttributeName: "id", KeyType: awsdynamodbv1.KeyType_HASH},
+                    },
+                    Projection:          &awsdynamodbv1.Projection{ProjectionType: awsdynamodbv1.Projection_ALL},
+                    ReadCapacityUnits:   5,
+                    WriteCapacityUnits:  5,
+                }
+            }
+        }),
+        Entry("too many tags ( > 50 )", func(s *awsdynamodbv1.AwsDynamodbSpec) {
+            s.Tags = make([]*awsdynamodbv1.Tag, 51)
+            for i := range s.Tags {
+                s.Tags[i] = &awsdynamodbv1.Tag{Key: fmt.Sprintf("k%d", i), Value: "v"}
+            }
+        }),
+        Entry("too many replicas ( > 20 )", func(s *awsdynamodbv1.AwsDynamodbSpec) {
+            s.Replicas = make([]*awsdynamodbv1.ReplicaSpecification, 21)
+            for i := range s.Replicas {
+                s.Replicas[i] = &awsdynamodbv1.ReplicaSpecification{Region: fmt.Sprintf("us-west-%d", (i%3)+1)}
+            }
+        }),
+    )
+})
