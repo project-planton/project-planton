@@ -67,10 +67,10 @@ message AwsDynamodbSpec {
   optional SSESpecification sse_specification = 12;
 
   // Enables point-in-time recovery (continuous backups).
-  bool point_in_time_recovery = 13 [ (buf.validate.field).ignore_empty = true ];
+  bool point_in_time_recovery = 13;
 
   // Enables table deletion protection.
-  bool deletion_protection = 14 [ (buf.validate.field).ignore_empty = true ];
+  bool deletion_protection = 14;
 
   // Configuration for Global Table replication across regions.
   repeated ReplicaSpecification replicas = 15 [
@@ -225,7 +225,7 @@ message Tag {
 // Time-to-live specification.
 message TTLSpecification {
   // Enables TTL when true.
-  bool enabled = 1 [ (buf.validate.field).ignore_empty = true ];
+  bool enabled = 1;
 
   // Name of the attribute that stores TTL epoch timestamp.
   string attribute_name = 2 [
@@ -240,7 +240,7 @@ message TTLSpecification {
 // Stream settings for the table.
 message StreamSpecification {
   // When true, streams are enabled.
-  bool enabled = 1 [ (buf.validate.field).ignore_empty = true ];
+  bool enabled = 1;
 
   // Specifies what information is written to the stream.
   StreamViewType view_type = 2 [
@@ -260,7 +260,7 @@ enum StreamViewType {
 // Server-side encryption settings.
 message SSESpecification {
   // When true, server-side encryption is enabled.
-  bool enabled = 1 [ (buf.validate.field).ignore_empty = true ];
+  bool enabled = 1;
 
   // Type of key used for encryption: AWS_OWNED, AWS_MANAGED, or CUSTOMER_MANAGED.
   SSEType sse_type = 2 [
@@ -297,7 +297,7 @@ message ReplicaSpecification {
 // Per-replica overrides.
 message ReplicaOverride {
   // Enables point-in-time recovery on the replica.
-  bool point_in_time_recovery = 1 [ (buf.validate.field).ignore_empty = true ];
+  bool point_in_time_recovery = 1;
 
   // Overrides encryption settings for the replica.
   optional SSESpecification sse_specification = 2;
