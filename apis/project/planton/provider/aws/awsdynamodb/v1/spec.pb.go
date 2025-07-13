@@ -1155,7 +1155,7 @@ var File_project_planton_provider_aws_awsdynamodb_v1_spec_proto protoreflect.Fil
 
 const file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"6project/planton/provider/aws/awsdynamodb/v1/spec.proto\x12+project.planton.provider.aws.awsdynamodb.v1\x1a\x1bbuf/validate/validate.proto\"\xfe\x0f\n" +
+	"6project/planton/provider/aws/awsdynamodb/v1/spec.proto\x12+project.planton.provider.aws.awsdynamodb.v1\x1a\x1bbuf/validate/validate.proto\"\xce\x0f\n" +
 	"\x0fAwsDynamodbSpec\x12?\n" +
 	"\n" +
 	"table_name\x18\x01 \x01(\tB \xbaH\x1d\xc8\x01\x01r\x18\x10\x03\x18\xff\x012\x11^[A-Za-z0-9_.-]+$R\ttableName\x12j\n" +
@@ -1181,8 +1181,8 @@ const file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_rawDesc = "" +
 	"\breplicas\x18\x10 \x03(\v24.project.planton.provider.aws.awsdynamodb.v1.ReplicaR\breplicas\x1a7\n" +
 	"\tTagsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:\xa1\x03\xbaH\x9d\x03\x1a\x9a\x03\n" +
-	"\x1bbilling_mode_capacity_check\x12\x87\x01When billing_mode == PROVISIONED, read/write capacity units must both be > 0; when billing_mode == PAY_PER_REQUEST they must both be 0.\x1a\xf0\x01(this.billing_mode == BillingMode.PROVISIONED) ? (this.read_capacity_units > 0 && this.write_capacity_units > 0) : (this.billing_mode == BillingMode.PAY_PER_REQUEST ? (this.read_capacity_units == 0 && this.write_capacity_units == 0) : true)\"\xd0\x01\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:\xf1\x02\xbaH\xed\x02\x1a\xea\x02\n" +
+	"\x1bbilling_mode_capacity_check\x12\x87\x01When billing_mode == PROVISIONED, read/write capacity units must both be > 0; when billing_mode == PAY_PER_REQUEST they must both be 0.\x1a\xc0\x01(this.billing_mode == 1) ? (this.read_capacity_units > 0 && this.write_capacity_units > 0) : (this.billing_mode == 2 ? (this.read_capacity_units == 0 && this.write_capacity_units == 0) : true)\"\xd0\x01\n" +
 	"\x13AttributeDefinition\x12G\n" +
 	"\x0eattribute_name\x18\x01 \x01(\tB \xbaH\x1d\xc8\x01\x01r\x18\x10\x01\x18\xff\x012\x11^[A-Za-z0-9_.-]+$R\rattributeName\x12p\n" +
 	"\x0eattribute_type\x18\x02 \x01(\x0e2:.project.planton.provider.aws.awsdynamodb.v1.AttributeTypeB\r\xbaH\n" +
@@ -1210,7 +1210,7 @@ const file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_rawDesc = "" +
 	"\xc8\x01\x01\x92\x01\x04\b\x01\x10\x02R\tkeySchema\x12_\n" +
 	"\n" +
 	"projection\x18\x03 \x01(\v27.project.planton.provider.aws.awsdynamodb.v1.ProjectionB\x06\xbaH\x03\xc8\x01\x01R\n" +
-	"projection\"\x9c\a\n" +
+	"projection\"\xec\x06\n" +
 	"\x14GlobalSecondaryIndex\x12?\n" +
 	"\n" +
 	"index_name\x18\x01 \x01(\tB \xbaH\x1d\xc8\x01\x01r\x18\x10\x03\x18\xff\x012\x11^[A-Za-z0-9_.-]+$R\tindexName\x12k\n" +
@@ -1223,8 +1223,8 @@ const file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_rawDesc = "" +
 	"\fbilling_mode\x18\x04 \x01(\x0e28.project.planton.provider.aws.awsdynamodb.v1.BillingModeB\r\xbaH\n" +
 	"\xc8\x01\x01\x82\x01\x04\x10\x01 \x00R\vbillingMode\x127\n" +
 	"\x13read_capacity_units\x18\x05 \x01(\x03B\a\xbaH\x04\"\x02(\x00R\x11readCapacityUnits\x129\n" +
-	"\x14write_capacity_units\x18\x06 \x01(\x03B\a\xbaH\x04\"\x02(\x00R\x12writeCapacityUnits:\x94\x03\xbaH\x90\x03\x1a\x8d\x03\n" +
-	"\x1agsi_billing_capacity_check\x12|For a GSI: when billing_mode == PROVISIONED, read/write capacity must both be > 0; when PAY_PER_REQUEST they must both be 0.\x1a\xf0\x01(this.billing_mode == BillingMode.PROVISIONED) ? (this.read_capacity_units > 0 && this.write_capacity_units > 0) : (this.billing_mode == BillingMode.PAY_PER_REQUEST ? (this.read_capacity_units == 0 && this.write_capacity_units == 0) : true)\"\xd8\x04\n" +
+	"\x14write_capacity_units\x18\x06 \x01(\x03B\a\xbaH\x04\"\x02(\x00R\x12writeCapacityUnits:\xe4\x02\xbaH\xe0\x02\x1a\xdd\x02\n" +
+	"\x1agsi_billing_capacity_check\x12|For a GSI: when billing_mode == PROVISIONED, read/write capacity must both be > 0; when PAY_PER_REQUEST they must both be 0.\x1a\xc0\x01(this.billing_mode == 1) ? (this.read_capacity_units > 0 && this.write_capacity_units > 0) : (this.billing_mode == 2 ? (this.read_capacity_units == 0 && this.write_capacity_units == 0) : true)\"\xd8\x04\n" +
 	"\x13StreamSpecification\x12\x18\n" +
 	"\aenabled\x18\x01 \x01(\bR\aenabled\x12v\n" +
 	"\tview_type\x18\x02 \x01(\x0e2O.project.planton.provider.aws.awsdynamodb.v1.StreamSpecification.StreamViewTypeB\b\xbaH\x05\x82\x01\x02\x10\x01R\bviewType\"w\n" +
@@ -1241,14 +1241,14 @@ const file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_rawDesc = "" +
 	"TimeToLive\x12\x18\n" +
 	"\aenabled\x18\x01 \x01(\bR\aenabled\x12%\n" +
 	"\x0eattribute_name\x18\x02 \x01(\tR\rattributeName:\xc1\x01\xbaH\xbd\x01\x1a\xba\x01\n" +
-	"\x13ttl_attribute_check\x12Pattribute_name must be set when TTL is enabled, and must be empty when disabled.\x1aQthis.enabled ? (size(this.attribute_name) > 0) : (size(this.attribute_name) == 0)\"\xc1\x05\n" +
+	"\x13ttl_attribute_check\x12Pattribute_name must be set when TTL is enabled, and must be empty when disabled.\x1aQthis.enabled ? (size(this.attribute_name) > 0) : (size(this.attribute_name) == 0)\"\xf6\x04\n" +
 	"\x10SSESpecification\x12\x18\n" +
 	"\aenabled\x18\x01 \x01(\bR\aenabled\x12Y\n" +
 	"\bsse_type\x18\x02 \x01(\x0e24.project.planton.provider.aws.awsdynamodb.v1.SSETypeB\b\xbaH\x05\x82\x01\x02\x10\x01R\asseType\x12\x1e\n" +
-	"\vkms_key_arn\x18\x03 \x01(\tR\tkmsKeyArn:\x97\x04\xbaH\x93\x04\x1a\x9d\x01\n" +
-	"\x16sse_enabled_type_check\x12Asse_type must be specified (non-UNSPECIFIED) when SSE is enabled.\x1a@!this.enabled || (this.sse_type != SSEType.SSE_TYPE_UNSPECIFIED)\x1a\xaa\x01\n" +
-	"\x1esse_customer_managed_key_check\x12?kms_key_arn must be provided when sse_type == CUSTOMER_MANAGED.\x1aGthis.sse_type != SSEType.CUSTOMER_MANAGED || size(this.kms_key_arn) > 0\x1a\xc3\x01\n" +
-	"\x19sse_disabled_fields_check\x12FWhen SSE disabled, sse_type must be UNSPECIFIED and kms_key_arn empty.\x1a^this.enabled || (this.sse_type == SSEType.SSE_TYPE_UNSPECIFIED && size(this.kms_key_arn) == 0)\"M\n" +
+	"\vkms_key_arn\x18\x03 \x01(\tR\tkmsKeyArn:\xcc\x03\xbaH\xc8\x03\x1a\x82\x01\n" +
+	"\x16sse_enabled_type_check\x12Asse_type must be specified (non-UNSPECIFIED) when SSE is enabled.\x1a%!this.enabled || (this.sse_type != 0)\x1a\x95\x01\n" +
+	"\x1esse_customer_managed_key_check\x12?kms_key_arn must be provided when sse_type == CUSTOMER_MANAGED.\x1a2(this.sse_type != 2) || size(this.kms_key_arn) > 0\x1a\xa8\x01\n" +
+	"\x19sse_disabled_fields_check\x12FWhen SSE disabled, sse_type must be UNSPECIFIED and kms_key_arn empty.\x1aCthis.enabled || (this.sse_type == 0 && size(this.kms_key_arn) == 0)\"M\n" +
 	"\aReplica\x12B\n" +
 	"\vregion_name\x18\x01 \x01(\tB!\xbaH\x1e\xc8\x01\x01r\x192\x17^[a-z]{2}-[a-z]+-[0-9]$R\n" +
 	"regionName*Q\n" +
