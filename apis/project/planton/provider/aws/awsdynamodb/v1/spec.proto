@@ -155,7 +155,7 @@ enum StreamViewType {
   NEW_IMAGE = 1;
   OLD_IMAGE = 2;
   NEW_AND_OLD_IMAGES = 3;
-  KEYS_ONLY = 4;
+  KEYS_ONLY_STREAM = 4;
 }
 
 // Time-to-live (TTL) settings.
