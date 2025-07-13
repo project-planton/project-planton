@@ -1,0 +1,159 @@
+syntax = "proto3";
+
+package project.planton.provider.aws.awsdynamodb.v1;
+
+// Specification of an Amazon DynamoDB table.
+message AwsDynamodbSpec {
+  // Name of the DynamoDB table (unique per AWS account & region).
+  string table_name = 1;
+
+  // Definitions of all attributes used by the table and its indexes.
+  repeated AttributeDefinition attribute_definitions = 2;
+
+  // Primary key schema: partition key and optional sort key.
+  KeySchema key_schema = 3;
+
+  // How you pay for read/write throughput.
+  BillingMode billing_mode = 4;
+
+  // Provisioned capacity settings (required when billing_mode = PROVISIONED).
+  ProvisionedThroughput provisioned_throughput = 5;
+
+  // Global secondary indexes (GSIs) for alternate query patterns.
+  repeated GlobalSecondaryIndex global_secondary_indexes = 6;
+
+  // Local secondary indexes (LSIs) that share the table’s partition key.
+  repeated LocalSecondaryIndex local_secondary_indexes = 7;
+
+  // DynamoDB Streams configuration for change data capture.
+  StreamSpecification stream_specification = 8;
+
+  // Time-to-Live (TTL) settings for automatic item expiration.
+  TimeToLiveSpecification ttl_specification = 9;
+
+  // Server-side encryption (SSE) settings.
+  ServerSideEncryptionSpecification sse_specification = 10;
+
+  // Enables point-in-time recovery (continuous backup) when true.
+  bool point_in_time_recovery_enabled = 11;
+
+  // Key-value tags to help organize and identify the table.
+  map<string, string> tags = 12;
+
+  // Storage class determining cost/performance tier.
+  TableClass table_class = 13;
+
+  // When true, protects the table from accidental deletion.
+  bool deletion_protection_enabled = 14;
+
+  // Auto-scaling policies for read/write capacity.
+  repeated CapacityAutoScalingSetting capacity_auto_scaling = 15;
+
+  // ------------------------ Nested Types ------------------------
+
+  // Attribute name and scalar data type.
+  message AttributeDefinition {
+    string attribute_name = 1;                // Attribute name.
+    ScalarAttributeType attribute_type = 2;   // Attribute data type.
+  }
+
+  // Primary key structure.
+  message KeySchema {
+    string partition_key = 1;                 // HASH (partition) key.
+    string sort_key = 2;                      // Optional RANGE (sort) key.
+  }
+
+  // Provisioned throughput values.
+  message ProvisionedThroughput {
+    int64 read_capacity_units = 1;            // Read capacity units (RCU).
+    int64 write_capacity_units = 2;           // Write capacity units (WCU).
+  }
+
+  // Global secondary index definition.
+  message GlobalSecondaryIndex {
+    string index_name = 1;                               // Index name.
+    KeySchema key_schema = 2;                            // Index key schema.
+    Projection projection = 3;                           // Attributes projected into index.
+    ProvisionedThroughput provisioned_throughput = 4;    // Capacity for PROVISIONED billing.
+  }
+
+  // Local secondary index definition.
+  message LocalSecondaryIndex {
+    string index_name = 1;            // Index name.
+    KeySchema key_schema = 2;         // Index key schema.
+    Projection projection = 3;        // Attributes projected into index.
+  }
+
+  // Projection options for an index.
+  message Projection {
+    ProjectionType projection_type = 1;  // ALL, KEYS_ONLY, or INCLUDE.
+    repeated string non_key_attributes = 2; // Attributes to project when type = INCLUDE.
+  }
+
+  // DynamoDB Streams configuration.
+  message StreamSpecification {
+    bool enabled = 1;                       // Enable/disable streams.
+    StreamViewType view_type = 2;           // Data captured in the stream.
+  }
+
+  // Time-to-Live configuration.
+  message TimeToLiveSpecification {
+    bool enabled = 1;           // Enable/disable TTL.
+    string attribute_name = 2;  // Attribute holding the expiration epoch time.
+  }
+
+  // Server-side encryption configuration.
+  message ServerSideEncryptionSpecification {
+    bool enabled = 1;           // Enable/disable SSE.
+    string kms_key_arn = 2;     // Optional AWS KMS key ARN.
+  }
+
+  // Auto-scaling settings for a capacity dimension.
+  message CapacityAutoScalingSetting {
+    string dimension = 1;               // e.g., "dynamodb:table:ReadCapacityUnits".
+    int64 min_capacity = 2;             // Minimum capacity units.
+    int64 max_capacity = 3;             // Maximum capacity units.
+    int32 target_utilization_percent = 4; // Target utilization percentage.
+  }
+
+  // ------------------------ Enumerations ------------------------
+
+  // Supported scalar attribute types.
+  enum ScalarAttributeType {
+    ATTRIBUTE_TYPE_UNSPECIFIED = 0;
+    S = 1; // String
+    N = 2; // Number
+    B = 3; // Binary
+  }
+
+  // Table billing modes.
+  enum BillingMode {
+    BILLING_MODE_UNSPECIFIED = 0;
+    PROVISIONED = 1;
+    PAY_PER_REQUEST = 2;
+  }
+
+  // Stream view types.
+  enum StreamViewType {
+    STREAM_VIEW_TYPE_UNSPECIFIED = 0;
+    NEW_IMAGE = 1;
+    OLD_IMAGE = 2;
+    NEW_AND_OLD_IMAGES = 3;
+    KEYS_ONLY = 4;
+  }
+
+  // Index projection types.
+  enum ProjectionType {
+    PROJECTION_TYPE_UNSPECIFIED = 0;
+    ALL = 1;
+    KEYS_ONLY = 2;
+    INCLUDE = 3;
+  }
+
+  // DynamoDB table classes.
+  enum TableClass {
+    TABLE_CLASS_UNSPECIFIED = 0;
+    STANDARD = 1;
+    STANDARD_INFREQUENT_ACCESS = 2;
+  }
+}
