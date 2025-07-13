@@ -22,7 +22,7 @@ message AwsDynamodbSpec {
 
   // Optional sort (range) key attribute name.
   string range_key = 3 [
-    (buf.validate.field).string = {ignore_empty: true, min_len: 1, max_len: 255}
+    (buf.validate.field).string = {min_len: 1, max_len: 255}
   ];
 
   // All attribute definitions referenced by the table and its indexes.
@@ -64,7 +64,7 @@ message AwsDynamodbSpec {
 
   // Attribute containing the TTL epoch timestamp (required if ttl_enabled).
   string ttl_attribute_name = 13 [
-    (buf.validate.field).string = {ignore_empty: true, min_len: 1, max_len: 255}
+    (buf.validate.field).string = {min_len: 1, max_len: 255}
   ];
 
   // Enable point-in-time recovery (continuous backups).
@@ -196,7 +196,7 @@ message GlobalSecondaryIndex {
 
   // Optional sort (range) key attribute for the GSI.
   string range_key = 3 [
-    (buf.validate.field).string = {ignore_empty: true, min_len: 1, max_len: 255}
+    (buf.validate.field).string = {min_len: 1, max_len: 255}
   ];
 
   // Attributes projected into the index.
@@ -249,6 +249,6 @@ message SSESpecification {
 
   // Optional customer managed KMS key ARN (defaults to AWS owned key if empty).
   string kms_key_arn = 2 [
-    (buf.validate.field).string = {ignore_empty: true, min_len: 20}
+    (buf.validate.field).string = {min_len: 20}
   ];
 }
