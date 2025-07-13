@@ -112,13 +112,14 @@ message Projection {
 
   // List of non-key attributes to include when projection_type = INCLUDE.
   repeated string non_key_attributes = 2;
-}
 
-enum ProjectionType {
-  PROJECTION_TYPE_UNSPECIFIED = 0;
-  ALL = 1;
-  KEYS_ONLY = 2;
-  INCLUDE = 3;
+  // Projection types specific to the Projection message.
+  enum ProjectionType {
+    PROJECTION_TYPE_UNSPECIFIED = 0;
+    ALL = 1;
+    KEYS_ONLY = 2;
+    INCLUDE = 3;
+  }
 }
 
 // Configuration for a local secondary index.
