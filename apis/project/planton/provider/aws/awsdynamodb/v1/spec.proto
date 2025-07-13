@@ -76,7 +76,7 @@ message AwsDynamodbSpec {
 
   // Regions in which to replicate the table for Global Tables (V2).
   repeated string replica_regions = 15 [
-    (buf.validate.field).repeated.items.string.pattern = "^[a-z]{2}-[a-z]+-\d$"
+    (buf.validate.field).repeated.items.string.pattern = "^[a-z]{2}-[a-z]+-\\d$"
   ];
 
   // -------------------------------------------------------------------------
@@ -85,33 +85,33 @@ message AwsDynamodbSpec {
   (buf.validate.message).cel = [
     {
       id:               "billing_mode_provisioned_capacities",
-      message:          "When billing_mode is PROVISIONED, read_capacity_units and write_capacity_units must both be > 0", 
-      expression:       "billing_mode != PROVISIONED || (read_capacity_units > 0 && write_capacity_units > 0)"
+      message:          "When billing_mode is PROVISIONED, read_capacity_units and write_capacity_units must both be > 0",
+      expression:       "this.billing_mode != 1 || (this.read_capacity_units > 0 && this.write_capacity_units > 0)"
     },
     {
       id:               "billing_mode_pay_per_request_capacities",
-      message:          "When billing_mode is PAY_PER_REQUEST, read_capacity_units and write_capacity_units must both be 0", 
-      expression:       "billing_mode != PAY_PER_REQUEST || (read_capacity_units == 0 && write_capacity_units == 0)"
+      message:          "When billing_mode is PAY_PER_REQUEST, read_capacity_units and write_capacity_units must both be 0",
+      expression:       "this.billing_mode != 2 || (this.read_capacity_units == 0 && this.write_capacity_units == 0)"
     },
     {
       id:               "hash_key_defined",
       message:          "hash_key must exist in attribute_definitions",
-      expression:       "attribute_definitions.exists(ad, ad.attribute_name == key_schema.hash_key)"
+      expression:       "this.attribute_definitions.exists(ad, ad.attribute_name == this.key_schema.hash_key)"
     },
     {
       id:               "range_key_defined",
       message:          "When range_key is provided it must exist in attribute_definitions",
-      expression:       "key_schema.range_key == '' || attribute_definitions.exists(ad, ad.attribute_name == key_schema.range_key)"
+      expression:       "this.key_schema.range_key == '' || this.attribute_definitions.exists(ad, ad.attribute_name == this.key_schema.range_key)"
     },
     {
       id:         "gsi_capacity_when_provisioned",
       message:    "For each GSI, read/write capacity must be >0 when table billing_mode is PROVISIONED",
-      expression: "billing_mode != PROVISIONED || global_secondary_indexes.all(i, i.read_capacity_units > 0 && i.write_capacity_units > 0)"
+      expression: "this.billing_mode != 1 || this.global_secondary_indexes.all(i, i.read_capacity_units > 0 && i.write_capacity_units > 0)"
     },
     {
       id:         "gsi_capacity_when_on_demand",
       message:    "For each GSI, read/write capacity must be 0 when table billing_mode is PAY_PER_REQUEST",
-      expression: "billing_mode != PAY_PER_REQUEST || global_secondary_indexes.all(i, i.read_capacity_units == 0 && i.write_capacity_units == 0)"
+      expression: "this.billing_mode != 2 || this.global_secondary_indexes.all(i, i.read_capacity_units == 0 && i.write_capacity_units == 0)"
     }
   ];
 }
@@ -220,12 +220,12 @@ message Projection {
     {
       id:        "include_requires_attributes",
       message:   "non_key_attributes must be provided when projection_type is INCLUDE",
-      expression:"projection_type != INCLUDE || non_key_attributes.size() > 0"
+      expression:"this.projection_type != 3 || this.non_key_attributes.size() > 0"
     },
     {
       id:        "non_include_must_not_have_attributes",
       message:   "non_key_attributes must be empty unless projection_type is INCLUDE",
-      expression:"projection_type == INCLUDE || non_key_attributes.size() == 0"
+      expression:"this.projection_type == 3 || this.non_key_attributes.size() == 0"
     }
   ];
 }
@@ -244,12 +244,12 @@ message StreamSpecification {
     {
       id:       "stream_view_type_required_when_enabled",
       message:  "view_type must be specified when streams are enabled",
-      expression:"enabled == false || view_type != STREAM_VIEW_TYPE_UNSPECIFIED"
+      expression:"this.enabled == false || this.view_type != 0"
     },
     {
       id:       "stream_view_type_empty_when_disabled",
       message:  "view_type must be UNSPECIFIED when streams are disabled",
-      expression:"enabled == true || view_type == STREAM_VIEW_TYPE_UNSPECIFIED"
+      expression:"this.enabled == true || this.view_type == 0"
     }
   ];
 }
@@ -268,12 +268,12 @@ message TimeToLiveSpecification {
     {
       id:       "ttl_attribute_required_when_enabled",
       message:  "attribute_name must be set when TTL is enabled",
-      expression:"enabled == false || attribute_name != ''"
+      expression:"this.enabled == false || this.attribute_name != ''"
     },
     {
       id:       "ttl_attribute_empty_when_disabled",
       message:  "attribute_name must be empty when TTL is disabled",
-      expression:"enabled == true || attribute_name == ''"
+      expression:"this.enabled == true || this.attribute_name == ''"
     }
   ];
 }
@@ -303,17 +303,17 @@ message EncryptionSpecification {
     {
       id:       "encryption_type_when_enabled",
       message:  "encryption_type must be specified when encryption is enabled",
-      expression:"enabled == false || encryption_type != ENCRYPTION_TYPE_UNSPECIFIED"
+      expression:"this.enabled == false || this.encryption_type != 0"
     },
     {
       id:       "kms_key_required",
       message:  "kms_key_arn must be supplied when encryption_type is CUSTOMER_MANAGED_KMS",
-      expression:"encryption_type != CUSTOMER_MANAGED_KMS || kms_key_arn != ''"
+      expression:"this.encryption_type != 3 || this.kms_key_arn != ''"
     },
     {
       id:       "kms_key_empty_when_not_customer",
       message:  "kms_key_arn must be empty unless encryption_type is CUSTOMER_MANAGED_KMS",
-      expression:"encryption_type == CUSTOMER_MANAGED_KMS || kms_key_arn == ''"
+      expression:"this.encryption_type == 3 || this.kms_key_arn == ''"
     }
   ];
 }
