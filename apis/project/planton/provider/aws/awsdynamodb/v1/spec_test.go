@@ -1,4 +1,4 @@
-package v1
+package awsdynamodbv1
 
 import (
     "context"
@@ -8,8 +8,6 @@ import (
 
     . "github.com/onsi/ginkgo/v2"
     . "github.com/onsi/gomega"
-
-    awsdynamodb "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsdynamodb/v1"
 )
 
 func TestAwsDynamodbSpecValidation(t *testing.T) {
@@ -29,22 +27,22 @@ var _ = Describe("AwsDynamodbSpec validation", func() {
     })
 
     // helper to create a valid spec
-    newValidSpec := func() *awsdynamodb.AwsDynamodbSpec {
-        return &awsdynamodb.AwsDynamodbSpec{
+    newValidSpec := func() *AwsDynamodbSpec {
+        return &AwsDynamodbSpec{
             TableName: "myTable",
             HashKey:   "id",
             RangeKey:  "sort",
-            Attributes: []*awsdynamodb.AttributeDefinition{
-                {Name: "id", Type: awsdynamodb.AttributeType_STRING},
-                {Name: "sort", Type: awsdynamodb.AttributeType_STRING},
+            Attributes: []*AttributeDefinition{
+                {Name: "id", Type: AttributeType_STRING},
+                {Name: "sort", Type: AttributeType_STRING},
             },
-            BillingMode:   awsdynamodb.BillingMode_PROVISIONED,
+            BillingMode:   BillingMode_PROVISIONED,
             ReadCapacity:  5,
             WriteCapacity: 5,
             StreamEnabled: false,
             TtlEnabled:    false,
             TtlAttributeName: "expires_at",
-            TableClass:       awsdynamodb.TableClass_STANDARD,
+            TableClass:       TableClass_STANDARD,
         }
     }
 
@@ -67,7 +65,7 @@ var _ = Describe("AwsDynamodbSpec validation", func() {
 
     It("rejects an unspecified billing mode", func() {
         spec := newValidSpec()
-        spec.BillingMode = awsdynamodb.BillingMode_BILLING_MODE_UNSPECIFIED // not_in = [0]
+        spec.BillingMode = BillingMode_BILLING_MODE_UNSPECIFIED // not_in = [0]
         Expect(validator.Validate(context.Background(), spec)).To(HaveOccurred())
     })
 
