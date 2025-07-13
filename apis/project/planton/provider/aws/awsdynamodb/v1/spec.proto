@@ -2,28 +2,48 @@ syntax = "proto3";
 
 package project.planton.provider.aws.awsdynamodb.v1;
 
+import "buf/validate/validate.proto";
+
 // AwsDynamodbSpec: Desired configuration of an Amazon DynamoDB table.
 message AwsDynamodbSpec {
   // Unique table name within an AWS account and region.
-  string table_name = 1;
+  string table_name = 1 [
+    (buf.validate.field).string = {
+      min_len: 3,
+      max_len: 255,
+      pattern: "^[A-Za-z0-9_.-]+$"
+    }
+  ];
 
   // Partition (hash) key attribute name.
-  string hash_key = 2;
+  string hash_key = 2 [
+    (buf.validate.field).string = {min_len: 1, max_len: 255}
+  ];
 
   // Optional sort (range) key attribute name.
-  string range_key = 3;
+  string range_key = 3 [
+    (buf.validate.field).string = {ignore_empty: true, min_len: 1, max_len: 255}
+  ];
 
   // All attribute definitions referenced by the table and its indexes.
-  repeated AttributeDefinition attributes = 4;
+  repeated AttributeDefinition attributes = 4 [
+    (buf.validate.field).repeated = {min_items: 1}
+  ];
 
   // Billing strategy for capacity (PROVISIONED or PAY_PER_REQUEST).
-  BillingMode billing_mode = 5;
+  BillingMode billing_mode = 5 [
+    (buf.validate.field).enum = {defined_only: true, not_in: [0]}
+  ];
 
   // Base read capacity units when billing_mode = PROVISIONED.
-  int64 read_capacity = 6;
+  int64 read_capacity = 6 [
+    (buf.validate.field).int64 = {gte: 1}
+  ];
 
   // Base write capacity units when billing_mode = PROVISIONED.
-  int64 write_capacity = 7;
+  int64 write_capacity = 7 [
+    (buf.validate.field).int64 = {gte: 1}
+  ];
 
   // Global secondary indexes (GSIs) to create on the table.
   repeated GlobalSecondaryIndex global_secondary_indexes = 8;
@@ -35,13 +55,17 @@ message AwsDynamodbSpec {
   bool stream_enabled = 10;
 
   // Stream view type when streams are enabled.
-  StreamViewType stream_view_type = 11;
+  StreamViewType stream_view_type = 11 [
+    (buf.validate.field).enum = {defined_only: true}
+  ];
 
   // Enable Time-To-Live (TTL) item expiration.
   bool ttl_enabled = 12;
 
   // Attribute containing the TTL epoch timestamp (required if ttl_enabled).
-  string ttl_attribute_name = 13;
+  string ttl_attribute_name = 13 [
+    (buf.validate.field).string = {ignore_empty: true, min_len: 1, max_len: 255}
+  ];
 
   // Enable point-in-time recovery (continuous backups).
   bool point_in_time_recovery = 14;
@@ -53,10 +77,18 @@ message AwsDynamodbSpec {
   bool deletion_protection_enabled = 16;
 
   // Storage class for the table (STANDARD or STANDARD_INFREQUENT_ACCESS).
-  TableClass table_class = 17;
+  TableClass table_class = 17 [
+    (buf.validate.field).enum = {defined_only: true, not_in: [0]}
+  ];
 
   // Key-value tags to apply to the table.
-  map<string, string> tags = 18;
+  map<string, string> tags = 18 [
+    (buf.validate.field).map = {
+      min_pairs: 0,
+      keys: {string: {min_len: 1}},
+      values: {string: {min_len: 1}}
+    }
+  ];
 
   // Auto-scaling config for table read capacity (PROVISIONED only).
   AutoScalingSpec table_read_auto_scaling = 19;
@@ -68,10 +100,14 @@ message AwsDynamodbSpec {
 // Defines a single attribute used by the table or an index.
 message AttributeDefinition {
   // Attribute name.
-  string name = 1;
+  string name = 1 [
+    (buf.validate.field).string = {min_len: 1, max_len: 255}
+  ];
 
   // Data type of the attribute.
-  AttributeType type = 2;
+  AttributeType type = 2 [
+    (buf.validate.field).enum = {defined_only: true, not_in: [0]}
+  ];
 }
 
 // Allowed DynamoDB attribute data types.
@@ -108,10 +144,16 @@ enum StreamViewType {
 // Index projection options.
 message Projection {
   // How much data to project into the index.
-  ProjectionType projection_type = 1;
+  ProjectionType projection_type = 1 [
+    (buf.validate.field).enum = {defined_only: true, not_in: [0]}
+  ];
 
   // List of non-key attributes to include when projection_type = INCLUDE.
-  repeated string non_key_attributes = 2;
+  repeated string non_key_attributes = 2 [
+    (buf.validate.field).repeated = {
+      items: {string: {min_len: 1, max_len: 255}}
+    }
+  ];
 
   // Projection types specific to the Projection message.
   enum ProjectionType {
@@ -125,34 +167,52 @@ message Projection {
 // Configuration for a local secondary index.
 message LocalSecondaryIndex {
   // Name of the index.
-  string name = 1;
+  string name = 1 [
+    (buf.validate.field).string = {min_len: 3, max_len: 255}
+  ];
 
   // Sort key attribute specific to the LSI (partition key is same as table hash_key).
-  string range_key = 2;
+  string range_key = 2 [
+    (buf.validate.field).string = {min_len: 1, max_len: 255}
+  ];
 
   // Attributes projected into the index.
-  Projection projection = 3;
+  Projection projection = 3 [
+    (buf.validate.field).required = true
+  ];
 }
 
 // Configuration for a global secondary index.
 message GlobalSecondaryIndex {
   // Name of the index.
-  string name = 1;
+  string name = 1 [
+    (buf.validate.field).string = {min_len: 3, max_len: 255}
+  ];
 
   // Partition (hash) key attribute for the GSI.
-  string hash_key = 2;
+  string hash_key = 2 [
+    (buf.validate.field).string = {min_len: 1, max_len: 255}
+  ];
 
   // Optional sort (range) key attribute for the GSI.
-  string range_key = 3;
+  string range_key = 3 [
+    (buf.validate.field).string = {ignore_empty: true, min_len: 1, max_len: 255}
+  ];
 
   // Attributes projected into the index.
-  Projection projection = 4;
+  Projection projection = 4 [
+    (buf.validate.field).required = true
+  ];
 
   // Read capacity units (PROVISIONED billing mode only).
-  int64 read_capacity = 5;
+  int64 read_capacity = 5 [
+    (buf.validate.field).int64 = {gte: 1}
+  ];
 
   // Write capacity units (PROVISIONED billing mode only).
-  int64 write_capacity = 6;
+  int64 write_capacity = 6 [
+    (buf.validate.field).int64 = {gte: 1}
+  ];
 
   // Auto-scaling config for GSI read capacity.
   AutoScalingSpec read_auto_scaling = 7;
@@ -167,13 +227,19 @@ message AutoScalingSpec {
   bool enabled = 1;
 
   // Minimum capacity units permitted by auto-scaling.
-  int64 min_capacity = 2;
+  int64 min_capacity = 2 [
+    (buf.validate.field).int64 = {gte: 1}
+  ];
 
   // Maximum capacity units permitted by auto-scaling.
-  int64 max_capacity = 3;
+  int64 max_capacity = 3 [
+    (buf.validate.field).int64 = {gte: 1}
+  ];
 
   // Target utilization percentage (e.g., 70 for 70%).
-  double target_utilization_percent = 4;
+  double target_utilization_percent = 4 [
+    (buf.validate.field).double = {gte: 1, lte: 100}
+  ];
 }
 
 // Server-side encryption settings.
@@ -182,5 +248,7 @@ message SSESpecification {
   bool enabled = 1;
 
   // Optional customer managed KMS key ARN (defaults to AWS owned key if empty).
-  string kms_key_arn = 2;
+  string kms_key_arn = 2 [
+    (buf.validate.field).string = {ignore_empty: true, min_len: 20}
+  ];
 }
