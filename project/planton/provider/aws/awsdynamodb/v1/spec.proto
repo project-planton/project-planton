@@ -1,0 +1,217 @@
+syntax = "proto3";
+
+package project.planton.provider.aws.awsdynamodb.v1;
+
+// AwsDynamodbSpec defines configuration for an Amazon DynamoDB table.
+message AwsDynamodbSpec {
+  // Unique name for the DynamoDB table.
+  string table_name = 1;
+
+  // Billing mode for the table: PROVISIONED or PAY_PER_REQUEST.
+  BillingMode billing_mode = 2;
+
+  // Read capacity units when billing_mode is PROVISIONED.
+  int64 read_capacity = 3;
+
+  // Write capacity units when billing_mode is PROVISIONED.
+  int64 write_capacity = 4;
+
+  // Definitions for all attributes used in key schemas and indexes.
+  repeated AttributeDefinition attribute_definitions = 5;
+
+  // Primary key schema for the table.
+  repeated KeySchemaElement key_schema = 6;
+
+  // Definitions for global secondary indexes.
+  repeated GlobalSecondaryIndex global_secondary_indexes = 7;
+
+  // Definitions for local secondary indexes.
+  repeated LocalSecondaryIndex local_secondary_indexes = 8;
+
+  // Stream configuration for the table.
+  StreamSpecification stream_specification = 9;
+
+  // Server-side encryption configuration.
+  SseSpecification sse_specification = 10;
+
+  // Name of the attribute used for Time-to-Live (TTL) expiration.
+  string ttl_attribute_name = 11;
+
+  // Enable point-in-time recovery (PITR) to allow restoring the table to any point in the last 35 days.
+  bool point_in_time_recovery_enabled = 12;
+
+  // Tags to attach to the table.
+  repeated Tag tags = 13;
+
+  // Table class that defines storage cost options.
+  TableClass table_class = 14;
+
+  // Prevent the table from accidental deletion.
+  bool deletion_protection_enabled = 15;
+
+  // Enable contributor insights to analyze traffic patterns.
+  bool contributor_insights_enabled = 16;
+
+  // Auto scaling configuration for read capacity.
+  AutoScalingSettings read_auto_scaling = 17;
+
+  // Auto scaling configuration for write capacity.
+  AutoScalingSettings write_auto_scaling = 18;
+}
+
+// -------------------------------------------------------------------------------------------------------------------
+// Supporting types
+// -------------------------------------------------------------------------------------------------------------------
+
+enum BillingMode {
+  BILLING_MODE_UNSPECIFIED = 0;
+  PROVISIONED = 1;
+  PAY_PER_REQUEST = 2;
+}
+
+enum AttributeType {
+  ATTRIBUTE_TYPE_UNSPECIFIED = 0;
+  S = 1; // String
+  N = 2; // Number
+  B = 3; // Binary
+}
+
+// Defines an attribute used in the table or indexes.
+message AttributeDefinition {
+  // Name of the attribute.
+  string name = 1;
+
+  // Data type of the attribute.
+  AttributeType type = 2;
+}
+
+enum KeyType {
+  KEY_TYPE_UNSPECIFIED = 0;
+  HASH = 1;  // Partition key
+  RANGE = 2; // Sort key
+}
+
+// Describes a key schema element (partition or sort key).
+message KeySchemaElement {
+  // Name of the attribute that forms the key element.
+  string attribute_name = 1;
+
+  // Role of the key element: HASH or RANGE.
+  KeyType key_type = 2;
+}
+
+enum ProjectionType {
+  PROJECTION_TYPE_UNSPECIFIED = 0;
+  ALL = 1;
+  KEYS_ONLY = 2;
+  INCLUDE = 3;
+}
+
+// Projection specifies which attributes are copied into an index.
+message Projection {
+  // Type of projection.
+  ProjectionType projection_type = 1;
+
+  // List of non-key attributes to include when projection_type is INCLUDE.
+  repeated string non_key_attributes = 2;
+}
+
+// Definition of a global secondary index.
+message GlobalSecondaryIndex {
+  // Index name.
+  string name = 1;
+
+  // Key schema for the index.
+  repeated KeySchemaElement key_schema = 2;
+
+  // Index projection details.
+  Projection projection = 3;
+
+  // Provisioned throughput for the index when billing_mode is PROVISIONED.
+  int64 read_capacity = 4;
+  int64 write_capacity = 5;
+
+  // Auto scaling settings for the index read capacity.
+  AutoScalingSettings read_auto_scaling = 6;
+
+  // Auto scaling settings for the index write capacity.
+  AutoScalingSettings write_auto_scaling = 7;
+}
+
+// Definition of a local secondary index.
+message LocalSecondaryIndex {
+  // Index name.
+  string name = 1;
+
+  // Key schema for the index (must reuse the table HASH key and include a RANGE key).
+  repeated KeySchemaElement key_schema = 2;
+
+  // Index projection details.
+  Projection projection = 3;
+}
+
+enum StreamViewType {
+  STREAM_VIEW_TYPE_UNSPECIFIED = 0;
+  KEYS_ONLY = 1;
+  NEW_IMAGE = 2;
+  OLD_IMAGE = 3;
+  NEW_AND_OLD_IMAGES = 4;
+}
+
+// Configuration for DynamoDB Streams.
+message StreamSpecification {
+  // Whether DynamoDB Streams are enabled for the table.
+  bool enabled = 1;
+
+  // Type of data to be written to the stream.
+  StreamViewType view_type = 2;
+}
+
+enum SseType {
+  SSE_TYPE_UNSPECIFIED = 0;
+  AWS_MANAGED = 1;      // aws/kms key owned by AWS (alias/aws/dynamodb)
+  CUSTOMER_MANAGED = 2; // customer-provided KMS key
+  AWS_OWNED = 3;        // encryption with AWS-owned CMK
+}
+
+// Server-side encryption configuration.
+message SseSpecification {
+  // Whether server-side encryption is enabled.
+  bool enabled = 1;
+
+  // Type of customer master key used for encryption.
+  SseType sse_type = 2;
+
+  // ARN of the customer-managed KMS key when sse_type is CUSTOMER_MANAGED.
+  string kms_key_arn = 3;
+}
+
+// Standard AWS tag.
+message Tag {
+  // Tag key.
+  string key = 1;
+
+  // Tag value.
+  string value = 2;
+}
+
+enum TableClass {
+  TABLE_CLASS_UNSPECIFIED = 0;
+  STANDARD = 1;
+  STANDARD_INFREQUENT_ACCESS = 2;
+}
+
+// Auto scaling settings for capacity.
+message AutoScalingSettings {
+  // Enable auto scaling.
+  bool enabled = 1;
+
+  // Minimum provisioned capacity units.
+  int64 min_capacity = 2;
+
+  // Maximum provisioned capacity units.
+  int64 max_capacity = 3;
+
+  // Target utilization percentage between 10 and 90.
+  int32 target_utilization_percent = 4;
+}
