@@ -1,12 +1,16 @@
 package awsdynamodbv1
 
 import (
+    "context"
     "testing"
 
+    protovalidate "github.com/bufbuild/protovalidate-go"
     . "github.com/onsi/ginkgo/v2"
     . "github.com/onsi/gomega"
+)
 
-    "github.com/bufbuild/protovalidate-go"
+var (
+    validator protovalidate.Validator
 )
 
 func TestAwsDynamodbSpecValidation(t *testing.T) {
@@ -14,108 +18,59 @@ func TestAwsDynamodbSpecValidation(t *testing.T) {
     RunSpecs(t, "AwsDynamodbSpec Validation Suite")
 }
 
-var _ = Describe("AwsDynamodbSpec", func() {
-    var validator protovalidate.Validator
+var _ = BeforeSuite(func() {
+    v, err := protovalidate.New()
+    Expect(err).NotTo(HaveOccurred())
+    validator = *v
+})
 
-    BeforeEach(func() {
-        var err error
-        validator, err = protovalidate.New()
-        Expect(err).NotTo(HaveOccurred())
+func validSpec() *AwsDynamodbSpec {
+    return &AwsDynamodbSpec{
+        TableName: "valid_table",
+        AttributeDefinitions: []*AttributeDefinition{
+            {
+                Name: "id",
+                Type: AttributeType_STRING,
+            },
+        },
+        KeySchema: &KeySchema{
+            PartitionKey: &KeyElement{
+                AttributeName: "id",
+                KeyType:       KeyType_HASH,
+            },
+        },
+        BillingMode: BillingMode_PAY_PER_REQUEST,
+        TableClass:  TableClass_STANDARD,
+    }
+}
+
+var _ = Describe("AwsDynamodbSpec validation", func() {
+    It("accepts a fully valid spec", func() {
+        spec := validSpec()
+        Expect(validator.Validate(context.Background(), spec)).To(Succeed())
     })
 
-    Context("valid messages", func() {
-        It("accepts a fully valid spec", func() {
-            spec := &AwsDynamodbSpec{
-                TableName: "my_table",
-                AttributeDefinitions: []*AttributeDefinition{
-                    {
-                        Name: "pk",
-                        Type: AttributeType_STRING,
-                    },
-                },
-                KeySchema: &KeySchema{
-                    PartitionKey: &KeyElement{
-                        AttributeName: "pk",
-                        KeyType:       KeyType_HASH,
-                    },
-                },
-                BillingMode: BillingMode_PAY_PER_REQUEST,
-                Tags: map[string]string{
-                    "env": "prod",
-                },
-                TableClass: TableClass_STANDARD,
-            }
-
-            Expect(validator.Validate(spec)).To(Succeed())
-        })
+    It("rejects a table name that is too short", func() {
+        spec := validSpec()
+        spec.TableName = "ab" // min_len is 3
+        Expect(validator.Validate(context.Background(), spec)).ToNot(Succeed())
     })
 
-    Context("invalid messages", func() {
-        It("rejects a table name that is too short", func() {
-            spec := &AwsDynamodbSpec{
-                TableName: "ab", // min_len = 3
-                AttributeDefinitions: []*AttributeDefinition{{
-                    Name: "pk",
-                    Type: AttributeType_STRING,
-                }},
-                KeySchema: &KeySchema{
-                    PartitionKey: &KeyElement{
-                        AttributeName: "pk",
-                        KeyType:       KeyType_HASH,
-                    },
-                },
-                BillingMode: BillingMode_PAY_PER_REQUEST,
-            }
+    It("rejects missing key schema", func() {
+        spec := validSpec()
+        spec.KeySchema = nil // required=true
+        Expect(validator.Validate(context.Background(), spec)).ToNot(Succeed())
+    })
 
-            Expect(validator.Validate(spec)).ToNot(Succeed())
-        })
+    It("rejects empty attribute definitions", func() {
+        spec := validSpec()
+        spec.AttributeDefinitions = []*AttributeDefinition{} // min_items=1
+        Expect(validator.Validate(context.Background(), spec)).ToNot(Succeed())
+    })
 
-        It("rejects when no attribute definitions are provided", func() {
-            spec := &AwsDynamodbSpec{
-                TableName:            "valid_name",
-                AttributeDefinitions: []*AttributeDefinition{}, // violates min_items = 1
-                KeySchema: &KeySchema{
-                    PartitionKey: &KeyElement{
-                        AttributeName: "pk",
-                        KeyType:       KeyType_HASH,
-                    },
-                },
-                BillingMode: BillingMode_PAY_PER_REQUEST,
-            }
-
-            Expect(validator.Validate(spec)).ToNot(Succeed())
-        })
-
-        It("rejects when key schema is missing (required=true)", func() {
-            spec := &AwsDynamodbSpec{
-                TableName: "valid_name",
-                AttributeDefinitions: []*AttributeDefinition{{
-                    Name: "pk",
-                    Type: AttributeType_STRING,
-                }},
-                BillingMode: BillingMode_PAY_PER_REQUEST,
-            }
-
-            Expect(validator.Validate(spec)).ToNot(Succeed())
-        })
-
-        It("rejects an unspecified billing mode (enum not_in=[0])", func() {
-            spec := &AwsDynamodbSpec{
-                TableName: "valid_name",
-                AttributeDefinitions: []*AttributeDefinition{{
-                    Name: "pk",
-                    Type: AttributeType_STRING,
-                }},
-                KeySchema: &KeySchema{
-                    PartitionKey: &KeyElement{
-                        AttributeName: "pk",
-                        KeyType:       KeyType_HASH,
-                    },
-                },
-                BillingMode: BillingMode_BILLING_MODE_UNSPECIFIED, // 0 is forbidden
-            }
-
-            Expect(validator.Validate(spec)).ToNot(Succeed())
-        })
+    It("rejects unspecified billing mode (enum zero value)", func() {
+        spec := validSpec()
+        spec.BillingMode = BillingMode_BILLING_MODE_UNSPECIFIED // not_in: [0]
+        Expect(validator.Validate(context.Background(), spec)).ToNot(Succeed())
     })
 })
