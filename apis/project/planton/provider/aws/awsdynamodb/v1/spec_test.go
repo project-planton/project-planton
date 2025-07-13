@@ -18,9 +18,9 @@ var _ = Describe("AwsDynamodbSpec validation", func() {
     var validator protovalidate.Validator
 
     BeforeEach(func() {
-        v, err := protovalidate.New()
+        var err error
+        validator, err = protovalidate.New()
         Expect(err).NotTo(HaveOccurred())
-        validator = *v
     })
 
     Context("valid spec", func() {
