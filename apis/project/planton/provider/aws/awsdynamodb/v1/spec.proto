@@ -1,0 +1,193 @@
+syntax = "proto3";
+
+package project.planton.provider.aws.awsdynamodb.v1;
+
+// AwsDynamodbSpec describes an Amazon DynamoDB table.
+message AwsDynamodbSpec {
+  // Unique name of the DynamoDB table.
+  string table_name = 1;
+
+  // Billing strategy for read/write capacity.
+  BillingMode billing_mode = 2;
+
+  // Provisioned read capacity units (used when billing_mode = PROVISIONED).
+  int64 read_capacity_units = 3;
+
+  // Provisioned write capacity units (used when billing_mode = PROVISIONED).
+  int64 write_capacity_units = 4;
+
+  // Definitions of all attributes referenced by keys or indexes.
+  repeated AttributeDefinition attribute_definitions = 5;
+
+  // Primary key schema for the table.
+  KeySchema key_schema = 6;
+
+  // Optional global secondary indexes.
+  repeated GlobalSecondaryIndex global_secondary_indexes = 7;
+
+  // Optional local secondary indexes.
+  repeated LocalSecondaryIndex local_secondary_indexes = 8;
+
+  // DynamoDB Streams configuration.
+  StreamSpecification stream_specification = 9;
+
+  // Time-to-live (TTL) settings.
+  TimeToLiveSpecification ttl_specification = 10;
+
+  // Point-in-time recovery (continuous backup) settings.
+  PointInTimeRecovery point_in_time_recovery = 11;
+
+  // Server-side encryption configuration.
+  EncryptionSpecification encryption = 12;
+
+  // Table class (STANDARD or STANDARD_INFREQUENT_ACCESS).
+  TableClass table_class = 13;
+
+  // Key-value tags applied to this table.
+  map<string, string> tags = 14;
+
+  // Regions in which to replicate the table for Global Tables (V2).
+  repeated string replica_regions = 15;
+}
+
+// ---------------------------------------------------------------------------
+// Supporting messages & enums
+// ---------------------------------------------------------------------------
+
+// Definition of a single attribute.
+message AttributeDefinition {
+  // Attribute name as referenced in keys or indexes.
+  string attribute_name = 1;
+
+  // Scalar attribute data type.
+  ScalarAttributeType attribute_type = 2;
+}
+
+enum ScalarAttributeType {
+  ATTRIBUTE_TYPE_UNSPECIFIED = 0;
+  // String
+  S = 1;
+  // Number
+  N = 2;
+  // Binary
+  B = 3;
+}
+
+// Primary key schema consisting of partition (hash) key and optional sort key.
+message KeySchema {
+  // Partition key attribute name (required).
+  string hash_key = 1;
+
+  // Sort key attribute name (optional).
+  string range_key = 2;
+}
+
+// Configuration for a global secondary index (GSI).
+message GlobalSecondaryIndex {
+  // Name of the GSI.
+  string index_name = 1;
+
+  // Partition key attribute name for the index.
+  string hash_key = 2;
+
+  // Sort key attribute name for the index (optional).
+  string range_key = 3;
+
+  // Attributes projected into the index.
+  Projection projection = 4;
+
+  // Provisioned read capacity units (used when billing_mode = PROVISIONED).
+  int64 read_capacity_units = 5;
+
+  // Provisioned write capacity units (used when billing_mode = PROVISIONED).
+  int64 write_capacity_units = 6;
+}
+
+// Configuration for a local secondary index (LSI).
+message LocalSecondaryIndex {
+  // Name of the LSI.
+  string index_name = 1;
+
+  // Sort key attribute name; partition key is the same as the table.
+  string range_key = 2;
+
+  // Attributes projected into the index.
+  Projection projection = 3;
+}
+
+// Projection determines which attributes are copied into an index.
+message Projection {
+  ProjectionType projection_type = 1;
+  // Attributes to include when projection_type = INCLUDE.
+  repeated string non_key_attributes = 2;
+}
+
+enum ProjectionType {
+  PROJECTION_TYPE_UNSPECIFIED = 0;
+  ALL = 1;
+  KEYS_ONLY = 2;
+  INCLUDE = 3;
+}
+
+// Stream specification for DynamoDB Streams.
+message StreamSpecification {
+  // Whether streams are enabled.
+  bool enabled = 1;
+
+  // View type for the stream.
+  StreamViewType view_type = 2;
+}
+
+enum StreamViewType {
+  STREAM_VIEW_TYPE_UNSPECIFIED = 0;
+  NEW_IMAGE = 1;
+  OLD_IMAGE = 2;
+  NEW_AND_OLD_IMAGES = 3;
+  KEYS_ONLY = 4;
+}
+
+// TTL specification.
+message TimeToLiveSpecification {
+  // Whether TTL is enabled.
+  bool enabled = 1;
+
+  // Name of the attribute storing the TTL timestamp.
+  string attribute_name = 2;
+}
+
+// Point-in-time recovery settings.
+message PointInTimeRecovery {
+  // Whether point-in-time recovery is enabled.
+  bool enabled = 1;
+}
+
+// Server-side encryption settings.
+message EncryptionSpecification {
+  // Whether SSE is enabled.
+  bool enabled = 1;
+
+  // Encryption type.
+  EncryptionType encryption_type = 2;
+
+  // Customer-managed KMS key ARN (required when encryption_type = CUSTOMER_MANAGED_KMS).
+  string kms_key_arn = 3;
+}
+
+enum EncryptionType {
+  ENCRYPTION_TYPE_UNSPECIFIED = 0;
+  AWS_OWNED = 1;
+  AWS_MANAGED_KMS = 2;
+  CUSTOMER_MANAGED_KMS = 3;
+}
+
+enum BillingMode {
+  BILLING_MODE_UNSPECIFIED = 0;
+  PROVISIONED = 1;
+  PAY_PER_REQUEST = 2;
+}
+
+enum TableClass {
+  TABLE_CLASS_UNSPECIFIED = 0;
+  STANDARD = 1;
+  STANDARD_INFREQUENT_ACCESS = 2;
+}
