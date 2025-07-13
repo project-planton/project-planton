@@ -290,23 +290,23 @@ message SSESpecification {
   // ARN of the customer-managed KMS key (required when sse_type = CUSTOMER_MANAGED).
   string kms_key_arn = 3;
 
-  option (buf.validate.message).cel = [
-    {
-      id: "sse_enabled_type_check",
-      message: "sse_type must be specified (non-UNSPECIFIED) when SSE is enabled.",
-      expression: "!this.enabled || (this.sse_type != SSEType.SSE_TYPE_UNSPECIFIED)"
-    },
-    {
-      id: "sse_customer_managed_key_check",
-      message: "kms_key_arn must be provided when sse_type == CUSTOMER_MANAGED.",
-      expression: "this.sse_type != SSEType.CUSTOMER_MANAGED || size(this.kms_key_arn) > 0"
-    },
-    {
-      id: "sse_disabled_fields_check",
-      message: "When SSE disabled, sse_type must be UNSPECIFIED and kms_key_arn empty.",
-      expression: "this.enabled || (this.sse_type == SSEType.SSE_TYPE_UNSPECIFIED && size(this.kms_key_arn) == 0)"
-    }
-  ];
+  option (buf.validate.message).cel = {
+    id: "sse_enabled_type_check",
+    message: "sse_type must be specified (non-UNSPECIFIED) when SSE is enabled.",
+    expression: "!this.enabled || (this.sse_type != SSEType.SSE_TYPE_UNSPECIFIED)"
+  };
+
+  option (buf.validate.message).cel = {
+    id: "sse_customer_managed_key_check",
+    message: "kms_key_arn must be provided when sse_type == CUSTOMER_MANAGED.",
+    expression: "this.sse_type != SSEType.CUSTOMER_MANAGED || size(this.kms_key_arn) > 0"
+  };
+
+  option (buf.validate.message).cel = {
+    id: "sse_disabled_fields_check",
+    message: "When SSE disabled, sse_type must be UNSPECIFIED and kms_key_arn empty.",
+    expression: "this.enabled || (this.sse_type == SSEType.SSE_TYPE_UNSPECIFIED && size(this.kms_key_arn) == 0)"
+  };
 }
 
 // Server-side encryption types.
