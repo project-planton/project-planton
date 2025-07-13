@@ -7,8 +7,6 @@ import (
     "testing"
 
     "github.com/bufbuild/protovalidate-go"
-
-    pb "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsdynamodb/v1"
 )
 
 // -----------------------------------------------------------------------------
@@ -33,22 +31,22 @@ var _ = Describe("AwsDynamodbSpec validation", func() {
     //  Helpers
     // -------------------------------------------------------------------------
 
-    minimalValidSpec := func() *pb.AwsDynamodbSpec {
-        return &pb.AwsDynamodbSpec{
+    minimalValidSpec := func() *AwsDynamodbSpec {
+        return &AwsDynamodbSpec{
             TableName: "users",
-            AttributeDefinitions: []*pb.AttributeDefinition{
+            AttributeDefinitions: []*AttributeDefinition{
                 {
                     AttributeName: "pk",
-                    AttributeType: pb.AttributeType_STRING,
+                    AttributeType: AttributeType_STRING,
                 },
             },
-            KeySchema: []*pb.KeySchemaElement{
+            KeySchema: []*KeySchemaElement{
                 {
                     AttributeName: "pk",
-                    KeyType:       pb.KeyType_HASH,
+                    KeyType:       KeyType_HASH,
                 },
             },
-            BillingMode: pb.BillingMode_PAY_PER_REQUEST,
+            BillingMode: BillingMode_PAY_PER_REQUEST,
         }
     }
 
@@ -74,8 +72,8 @@ var _ = Describe("AwsDynamodbSpec validation", func() {
 
         It("accepts a valid PROVISIONED spec with throughput", func() {
             spec := minimalValidSpec()
-            spec.BillingMode = pb.BillingMode_PROVISIONED
-            spec.ProvisionedThroughput = &pb.ProvisionedThroughput{
+            spec.BillingMode = BillingMode_PROVISIONED
+            spec.ProvisionedThroughput = &ProvisionedThroughput{
                 ReadCapacityUnits:  5,
                 WriteCapacityUnits: 10,
             }
@@ -108,17 +106,17 @@ var _ = Describe("AwsDynamodbSpec validation", func() {
 
         It("fails when key_schema has more than two elements", func() {
             spec := minimalValidSpec()
-            spec.KeySchema = []*pb.KeySchemaElement{
-                {AttributeName: "pk", KeyType: pb.KeyType_HASH},
-                {AttributeName: "sk1", KeyType: pb.KeyType_RANGE},
-                {AttributeName: "sk2", KeyType: pb.KeyType_RANGE},
+            spec.KeySchema = []*KeySchemaElement{
+                {AttributeName: "pk", KeyType: KeyType_HASH},
+                {AttributeName: "sk1", KeyType: KeyType_RANGE},
+                {AttributeName: "sk2", KeyType: KeyType_RANGE},
             }
             Expect(validator.Validate(spec)).To(HaveOccurred())
         })
 
         It("fails when billing_mode is unspecified", func() {
             spec := minimalValidSpec()
-            spec.BillingMode = pb.BillingMode_BILLING_MODE_UNSPECIFIED
+            spec.BillingMode = BillingMode_BILLING_MODE_UNSPECIFIED
             Expect(validator.Validate(spec)).To(HaveOccurred())
         })
     })
@@ -130,14 +128,14 @@ var _ = Describe("AwsDynamodbSpec validation", func() {
     Context("cross-field validation failures", func() {
         It("fails when billing_mode=PROVISIONED but throughput is missing", func() {
             spec := minimalValidSpec()
-            spec.BillingMode = pb.BillingMode_PROVISIONED
+            spec.BillingMode = BillingMode_PROVISIONED
             Expect(validator.Validate(spec)).To(HaveOccurred())
         })
 
         It("fails when billing_mode=PROVISIONED but capacity units are zero", func() {
             spec := minimalValidSpec()
-            spec.BillingMode = pb.BillingMode_PROVISIONED
-            spec.ProvisionedThroughput = &pb.ProvisionedThroughput{
+            spec.BillingMode = BillingMode_PROVISIONED
+            spec.ProvisionedThroughput = &ProvisionedThroughput{
                 ReadCapacityUnits:  0,
                 WriteCapacityUnits: 0,
             }
@@ -146,7 +144,7 @@ var _ = Describe("AwsDynamodbSpec validation", func() {
 
         It("fails when billing_mode=PAY_PER_REQUEST and throughput has positive units", func() {
             spec := minimalValidSpec()
-            spec.ProvisionedThroughput = &pb.ProvisionedThroughput{
+            spec.ProvisionedThroughput = &ProvisionedThroughput{
                 ReadCapacityUnits:  1,
                 WriteCapacityUnits: 1,
             }
