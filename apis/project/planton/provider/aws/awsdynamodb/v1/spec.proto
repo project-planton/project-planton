@@ -1,4 +1,4 @@
-syntax = "proto3";
+        syntax = "proto3";
 
 package project.planton.provider.aws.awsdynamodb.v1;
 
@@ -11,7 +11,7 @@ message AwsDynamodbSpec {
     (buf.validate.field).string = {
       min_len: 3,
       max_len: 255,
-      regex: "^[a-zA-Z0-9_.-]+$"
+      pattern: "^[a-zA-Z0-9_.-]+$"
     }
   ];
 
@@ -78,7 +78,7 @@ message AttributeDefinition {
     (buf.validate.field).string = {
       min_len: 1,
       max_len: 255,
-      regex: "^[a-zA-Z0-9_.-]+$"
+      pattern: "^[a-zA-Z0-9_.-]+$"
     }
   ];
 
@@ -95,7 +95,7 @@ message KeyElement {
     (buf.validate.field).string = {
       min_len: 1,
       max_len: 255,
-      regex: "^[a-zA-Z0-9_.-]+$"
+      pattern: "^[a-zA-Z0-9_.-]+$"
     }
   ];
 
@@ -161,7 +161,7 @@ message Projection {
   repeated string non_key_attributes = 2 [
     (buf.validate.field).repeated = {
       max_items: 20,
-      items: {string: {min_len: 1, max_len: 255, regex: "^[a-zA-Z0-9_.-]+$"}}
+      items: {string: {min_len: 1, max_len: 255, pattern: "^[a-zA-Z0-9_.-]+$"}}
     }
   ];
 }
@@ -173,7 +173,7 @@ message GlobalSecondaryIndex {
     (buf.validate.field).string = {
       min_len: 3,
       max_len: 255,
-      regex: "^[a-zA-Z0-9_.-]+$"
+      pattern: "^[a-zA-Z0-9_.-]+$"
     }
   ];
 
@@ -198,7 +198,7 @@ message LocalSecondaryIndex {
     (buf.validate.field).string = {
       min_len: 3,
       max_len: 255,
-      regex: "^[a-zA-Z0-9_.-]+$"
+      pattern: "^[a-zA-Z0-9_.-]+$"
     }
   ];
 
@@ -234,7 +234,7 @@ message TTLSpecification {
     (buf.validate.field).string = {
       min_len: 1,
       max_len: 255,
-      regex: "^[a-zA-Z0-9_.-]+$"
+      pattern: "^[a-zA-Z0-9_.-]+$"
     }
   ];
 }
