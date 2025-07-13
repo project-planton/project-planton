@@ -22,12 +22,12 @@ message AwsDynamodbSpec {
 
   // Read capacity units (only for PROVISIONED billing mode).
   int64 read_capacity = 3 [
-    (buf.validate.field).int64 = {gte: 1, ignore_empty: true}
+    (buf.validate.field).int64 = {gte: 1}
   ];
 
   // Write capacity units (only for PROVISIONED billing mode).
   int64 write_capacity = 4 [
-    (buf.validate.field).int64 = {gte: 1, ignore_empty: true}
+    (buf.validate.field).int64 = {gte: 1}
   ];
 
   // Attribute definitions used by the table and its indexes.
@@ -121,8 +121,10 @@ message Projection {
 
   // Attributes to include when projection_type = INCLUDE.
   repeated string non_key_attributes = 2 [
-    (buf.validate.field).repeated = {max_items: 20},
-    (buf.validate.field).string = {min_len: 1, max_len: 255}
+    (buf.validate.field).repeated = {
+      max_items: 20,
+      items: {string: {min_len: 1, max_len: 255}}
+    }
   ];
 }
 
@@ -149,12 +151,12 @@ message GlobalSecondaryIndex {
 
   // Read capacity units (PROVISIONED mode only).
   int64 read_capacity = 4 [
-    (buf.validate.field).int64 = {gte: 1, ignore_empty: true}
+    (buf.validate.field).int64 = {gte: 1}
   ];
 
   // Write capacity units (PROVISIONED mode only).
   int64 write_capacity = 5 [
-    (buf.validate.field).int64 = {gte: 1, ignore_empty: true}
+    (buf.validate.field).int64 = {gte: 1}
   ];
 
   // Auto-scaling settings for read capacity (optional).
@@ -194,8 +196,7 @@ message StreamSpecification {
   // Data captured: NEW_IMAGE, OLD_IMAGE, NEW_AND_OLD_IMAGES, KEYS_ONLY.
   string stream_view_type = 2 [
     (buf.validate.field).string = {
-      in: ["NEW_IMAGE", "OLD_IMAGE", "NEW_AND_OLD_IMAGES", "KEYS_ONLY"],
-      ignore_empty: true
+      in: ["NEW_IMAGE", "OLD_IMAGE", "NEW_AND_OLD_IMAGES", "KEYS_ONLY"]
     }
   ];
 }
@@ -207,12 +208,12 @@ message SSESpecification {
 
   // Encryption type: "AES256" or "KMS".
   string sse_type = 2 [
-    (buf.validate.field).string = {in: ["AES256", "KMS"], ignore_empty: true}
+    (buf.validate.field).string = {in: ["AES256", "KMS"]}
   ];
 
   // ARN of the customer-managed KMS key (required when sse_type = KMS).
   string kms_master_key_id = 3 [
-    (buf.validate.field).string = {min_len: 20, max_len: 2048, ignore_empty: true}
+    (buf.validate.field).string = {min_len: 20, max_len: 2048}
   ];
 }
 
@@ -223,7 +224,7 @@ message TTLSpecification {
 
   // Attribute containing a UNIX epoch time (in seconds).
   string attribute_name = 2 [
-    (buf.validate.field).string = {min_len: 1, max_len: 255, ignore_empty: true}
+    (buf.validate.field).string = {min_len: 1, max_len: 255}
   ];
 }
 
@@ -234,17 +235,17 @@ message AutoScalingSettings {
 
   // Minimum provisioned capacity units.
   int64 min_capacity = 2 [
-    (buf.validate.field).int64 = {gte: 1, ignore_empty: true}
+    (buf.validate.field).int64 = {gte: 1}
   ];
 
   // Maximum provisioned capacity units.
   int64 max_capacity = 3 [
-    (buf.validate.field).int64 = {gte: 1, ignore_empty: true}
+    (buf.validate.field).int64 = {gte: 1}
   ];
 
-  // Target utilization percentage (e.g., 70). 
+  // Target utilization percentage (e.g., 70).
   int32 target_utilization_percent = 4 [
-    (buf.validate.field).int32 = {gte: 20, lte: 100, ignore_empty: true}
+    (buf.validate.field).int32 = {gte: 20, lte: 100}
   ];
 }
 
