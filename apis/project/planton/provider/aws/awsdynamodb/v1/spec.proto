@@ -1,26 +1,44 @@
 syntax = "proto3";
 
+import "buf/validate/validate.proto";
+
 package project.planton.provider.aws.awsdynamodb.v1;
 
 // AwsDynamodbSpec describes the desired configuration of an Amazon DynamoDB table.
 message AwsDynamodbSpec {
   // Unique name for the DynamoDB table.
-  string table_name = 1;
+  string table_name = 1 [
+    (buf.validate.field).string = {
+      min_len: 3,
+      max_len: 255,
+      pattern: "^[a-zA-Z0-9_.-]+$"
+    }
+  ];
 
   // Billing mode: "PROVISIONED" or "PAY_PER_REQUEST".
-  string billing_mode = 2;
+  string billing_mode = 2 [
+    (buf.validate.field).string = {in: ["PROVISIONED", "PAY_PER_REQUEST"]}
+  ];
 
   // Read capacity units (only for PROVISIONED billing mode).
-  int64 read_capacity = 3;
+  int64 read_capacity = 3 [
+    (buf.validate.field).int64 = {gte: 1, ignore_empty: true}
+  ];
 
   // Write capacity units (only for PROVISIONED billing mode).
-  int64 write_capacity = 4;
+  int64 write_capacity = 4 [
+    (buf.validate.field).int64 = {gte: 1, ignore_empty: true}
+  ];
 
   // Attribute definitions used by the table and its indexes.
-  repeated AttributeDefinition attribute_definitions = 5;
+  repeated AttributeDefinition attribute_definitions = 5 [
+    (buf.validate.field).repeated = {min_items: 1}
+  ];
 
   // Primary key schema for the table.
-  repeated KeySchemaElement key_schema = 6;
+  repeated KeySchemaElement key_schema = 6 [
+    (buf.validate.field).repeated = {min_items: 1}
+  ];
 
   // Global secondary indexes to create with the table.
   repeated GlobalSecondaryIndex global_secondary_indexes = 7;
@@ -41,10 +59,17 @@ message AwsDynamodbSpec {
   bool point_in_time_recovery_enabled = 12;
 
   // Key/value tags to assign to the table.
-  map<string, string> tags = 13;
+  map<string, string> tags = 13 [
+    (buf.validate.field).map = {
+      keys:   {string: {min_len: 1, max_len: 128}},
+      values: {string: {max_len: 256}}
+    }
+  ];
 
   // Table class: STANDARD or STANDARD_INFREQUENT_ACCESS.
-  TableClass table_class = 14;
+  TableClass table_class = 14 [
+    (buf.validate.field).enum = {defined_only: true, not_in: [0]}
+  ];
 
   // Enables Contributor Insights for the table.
   bool contributor_insights_enabled = 15;
@@ -64,46 +89,73 @@ message AwsDynamodbSpec {
 // AttributeDefinition defines a table or index attribute.
 message AttributeDefinition {
   // Name of the attribute.
-  string attribute_name = 1;
+  string attribute_name = 1 [
+    (buf.validate.field).string = {min_len: 1, max_len: 255}
+  ];
 
   // Data type: "S" (string), "N" (number), "B" (binary).
-  string attribute_type = 2;
+  string attribute_type = 2 [
+    (buf.validate.field).string = {in: ["S", "N", "B"]}
+  ];
 }
 
 // KeySchemaElement represents a partition or sort key.
 message KeySchemaElement {
   // Name of the key attribute.
-  string attribute_name = 1;
+  string attribute_name = 1 [
+    (buf.validate.field).string = {min_len: 1, max_len: 255}
+  ];
 
   // Key type: "HASH" (partition) or "RANGE" (sort).
-  string key_type = 2;
+  string key_type = 2 [
+    (buf.validate.field).string = {in: ["HASH", "RANGE"]}
+  ];
 }
 
 // Projection controls which attributes are copied to an index.
 message Projection {
   // Projection type: "ALL", "KEYS_ONLY", or "INCLUDE".
-  string projection_type = 1;
+  string projection_type = 1 [
+    (buf.validate.field).string = {in: ["ALL", "KEYS_ONLY", "INCLUDE"]}
+  ];
 
   // Attributes to include when projection_type = INCLUDE.
-  repeated string non_key_attributes = 2;
+  repeated string non_key_attributes = 2 [
+    (buf.validate.field).repeated = {max_items: 20},
+    (buf.validate.field).string = {min_len: 1, max_len: 255}
+  ];
 }
 
 // GlobalSecondaryIndex defines a GSI.
 message GlobalSecondaryIndex {
   // Name of the index.
-  string index_name = 1;
+  string index_name = 1 [
+    (buf.validate.field).string = {
+      min_len: 3,
+      max_len: 255,
+      pattern: "^[a-zA-Z0-9_.-]+$"
+    }
+  ];
 
   // Key schema for the index.
-  repeated KeySchemaElement key_schema = 2;
+  repeated KeySchemaElement key_schema = 2 [
+    (buf.validate.field).repeated = {min_items: 1}
+  ];
 
   // Projection settings for the index.
-  Projection projection = 3;
+  Projection projection = 3 [
+    (buf.validate.field).required = true
+  ];
 
   // Read capacity units (PROVISIONED mode only).
-  int64 read_capacity = 4;
+  int64 read_capacity = 4 [
+    (buf.validate.field).int64 = {gte: 1, ignore_empty: true}
+  ];
 
   // Write capacity units (PROVISIONED mode only).
-  int64 write_capacity = 5;
+  int64 write_capacity = 5 [
+    (buf.validate.field).int64 = {gte: 1, ignore_empty: true}
+  ];
 
   // Auto-scaling settings for read capacity (optional).
   AutoScalingSettings read_auto_scaling = 6;
@@ -115,13 +167,23 @@ message GlobalSecondaryIndex {
 // LocalSecondaryIndex defines an LSI.
 message LocalSecondaryIndex {
   // Name of the index.
-  string index_name = 1;
+  string index_name = 1 [
+    (buf.validate.field).string = {
+      min_len: 3,
+      max_len: 255,
+      pattern: "^[a-zA-Z0-9_.-]+$"
+    }
+  ];
 
   // Key schema for the index (HASH key must match table HASH key).
-  repeated KeySchemaElement key_schema = 2;
+  repeated KeySchemaElement key_schema = 2 [
+    (buf.validate.field).repeated = {min_items: 1}
+  ];
 
   // Projection settings for the index.
-  Projection projection = 3;
+  Projection projection = 3 [
+    (buf.validate.field).required = true
+  ];
 }
 
 // StreamSpecification controls DynamoDB Streams.
@@ -130,7 +192,12 @@ message StreamSpecification {
   bool stream_enabled = 1;
 
   // Data captured: NEW_IMAGE, OLD_IMAGE, NEW_AND_OLD_IMAGES, KEYS_ONLY.
-  string stream_view_type = 2;
+  string stream_view_type = 2 [
+    (buf.validate.field).string = {
+      in: ["NEW_IMAGE", "OLD_IMAGE", "NEW_AND_OLD_IMAGES", "KEYS_ONLY"],
+      ignore_empty: true
+    }
+  ];
 }
 
 // SSESpecification configures server-side encryption.
@@ -139,10 +206,14 @@ message SSESpecification {
   bool enabled = 1;
 
   // Encryption type: "AES256" or "KMS".
-  string sse_type = 2;
+  string sse_type = 2 [
+    (buf.validate.field).string = {in: ["AES256", "KMS"], ignore_empty: true}
+  ];
 
   // ARN of the customer-managed KMS key (required when sse_type = KMS).
-  string kms_master_key_id = 3;
+  string kms_master_key_id = 3 [
+    (buf.validate.field).string = {min_len: 20, max_len: 2048, ignore_empty: true}
+  ];
 }
 
 // TTLSpecification configures item expiration.
@@ -151,7 +222,9 @@ message TTLSpecification {
   bool enabled = 1;
 
   // Attribute containing a UNIX epoch time (in seconds).
-  string attribute_name = 2;
+  string attribute_name = 2 [
+    (buf.validate.field).string = {min_len: 1, max_len: 255, ignore_empty: true}
+  ];
 }
 
 // AutoScalingSettings defines capacity auto-scaling policies.
@@ -160,13 +233,19 @@ message AutoScalingSettings {
   bool enabled = 1;
 
   // Minimum provisioned capacity units.
-  int64 min_capacity = 2;
+  int64 min_capacity = 2 [
+    (buf.validate.field).int64 = {gte: 1, ignore_empty: true}
+  ];
 
   // Maximum provisioned capacity units.
-  int64 max_capacity = 3;
+  int64 max_capacity = 3 [
+    (buf.validate.field).int64 = {gte: 1, ignore_empty: true}
+  ];
 
   // Target utilization percentage (e.g., 70). 
-  int32 target_utilization_percent = 4;
+  int32 target_utilization_percent = 4 [
+    (buf.validate.field).int32 = {gte: 20, lte: 100, ignore_empty: true}
+  ];
 }
 
 // Table classes available in DynamoDB.
