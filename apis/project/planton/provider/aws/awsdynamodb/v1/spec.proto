@@ -1,0 +1,205 @@
+syntax = "proto3";
+
+package project.planton.provider.aws.awsdynamodb.v1;
+
+// Specification of an Amazon DynamoDB table.
+message AwsDynamodbSpec {
+  // Name of the DynamoDB table.
+  string table_name = 1;
+
+  // List of attribute definitions that describe the key schema and indexes.
+  repeated AttributeDefinition attribute_definitions = 2;
+
+  // The primary key schema for the table.
+  KeySchema key_schema = 3;
+
+  // Billing mode for the table.
+  BillingMode billing_mode = 4;
+
+  // Provisioned capacity settings (required when billing_mode is PROVISIONED).
+  ProvisionedThroughput provisioned_throughput = 5;
+
+  // Configuration for global secondary indexes.
+  repeated GlobalSecondaryIndex global_secondary_indexes = 6;
+
+  // Configuration for local secondary indexes.
+  repeated LocalSecondaryIndex local_secondary_indexes = 7;
+
+  // DynamoDB Streams settings.
+  StreamSpecification stream_specification = 8;
+
+  // Time-to-live settings for automatic item expiration.
+  TTLSpecification ttl_specification = 9;
+
+  // Server-side encryption settings.
+  SSESpecification sse_specification = 10;
+
+  // Enables point-in-time recovery (PITR) for continuous backups.
+  bool point_in_time_recovery_enabled = 11;
+
+  // Key-value tags to assign to the table.
+  map<string, string> tags = 12;
+
+  // Storage class for the table.
+  TableClass table_class = 13;
+
+  // Prevents the table from being accidentally deleted.
+  bool deletion_protection_enabled = 14;
+
+  // Enables contributor insights for traffic analysis.
+  bool contributor_insights_enabled = 15;
+}
+
+// Definition of a single attribute.
+message AttributeDefinition {
+  // Name of the attribute.
+  string name = 1;
+
+  // Data type of the attribute.
+  AttributeType type = 2;
+}
+
+// Primary key element.
+message KeyElement {
+  // Attribute acting as a key.
+  string attribute_name = 1;
+
+  // HASH (partition) or RANGE (sort).
+  KeyType key_type = 2;
+}
+
+// Primary key schema consisting of a partition key and optional sort key.
+message KeySchema {
+  // Partition key (required).
+  KeyElement partition_key = 1;
+
+  // Sort key (optional).
+  KeyElement sort_key = 2;
+}
+
+// Read & write capacity settings.
+message ProvisionedThroughput {
+  // Maximum strongly-consistent read capacity units.
+  int64 read_capacity_units = 1;
+
+  // Maximum write capacity units.
+  int64 write_capacity_units = 2;
+
+  // Auto-scaling policy for capacity units.
+  AutoScaling autoscaling = 3;
+}
+
+// Auto-scaling configuration for provisioned capacity.
+message AutoScaling {
+  // Minimum capacity units DynamoDB can scale down to.
+  int64 min_capacity = 1;
+
+  // Maximum capacity units DynamoDB can scale up to.
+  int64 max_capacity = 2;
+
+  // Desired utilization percentage that triggers scaling.
+  int32 target_utilization_percent = 3;
+}
+
+// Projection configuration for secondary indexes.
+message Projection {
+  // Projection type (KEYS_ONLY, INCLUDE, ALL).
+  ProjectionType type = 1;
+
+  // Non-key attributes to project when type == INCLUDE.
+  repeated string non_key_attributes = 2;
+}
+
+// Global secondary index definition.
+message GlobalSecondaryIndex {
+  // Index name.
+  string name = 1;
+
+  // Key schema for the index.
+  KeySchema key_schema = 2;
+
+  // Index projection settings.
+  Projection projection = 3;
+
+  // Provisioned throughput for the index.
+  ProvisionedThroughput provisioned_throughput = 4;
+}
+
+// Local secondary index definition.
+message LocalSecondaryIndex {
+  // Index name.
+  string name = 1;
+
+  // Key schema with the same partition key as the table.
+  KeySchema key_schema = 2;
+
+  // Index projection settings.
+  Projection projection = 3;
+}
+
+// DynamoDB Streams configuration.
+message StreamSpecification {
+  // When true, enables the stream.
+  bool enabled = 1;
+
+  // Type of data to write to the stream.
+  StreamViewType view_type = 2;
+}
+
+// Time-to-live configuration.
+message TTLSpecification {
+  // Enables TTL feature.
+  bool enabled = 1;
+
+  // Attribute that stores the TTL epoch timestamp.
+  string attribute_name = 2;
+}
+
+// Server-side encryption configuration.
+message SSESpecification {
+  // Enables SSE.
+  bool enabled = 1;
+
+  // Custom KMS key ARN (leave empty to use AWS-owned key).
+  string kms_key_arn = 2;
+}
+
+enum AttributeType {
+  ATTRIBUTE_TYPE_UNSPECIFIED = 0;
+  STRING = 1;
+  NUMBER = 2;
+  BINARY = 3;
+}
+
+enum KeyType {
+  KEY_TYPE_UNSPECIFIED = 0;
+  HASH = 1;   // Partition key
+  RANGE = 2;  // Sort key
+}
+
+enum BillingMode {
+  BILLING_MODE_UNSPECIFIED = 0;
+  PROVISIONED = 1;
+  PAY_PER_REQUEST = 2;
+}
+
+enum ProjectionType {
+  PROJECTION_TYPE_UNSPECIFIED = 0;
+  KEYS_ONLY = 1;
+  INCLUDE = 2;
+  ALL = 3;
+}
+
+enum StreamViewType {
+  STREAM_VIEW_TYPE_UNSPECIFIED = 0;
+  NEW_IMAGE = 1;
+  OLD_IMAGE = 2;
+  NEW_AND_OLD_IMAGES = 3;
+  KEYS_ONLY = 4;
+}
+
+enum TableClass {
+  TABLE_CLASS_UNSPECIFIED = 0;
+  STANDARD = 1;
+  STANDARD_INFREQUENT_ACCESS = 2;
+}
