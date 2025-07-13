@@ -1,4 +1,4 @@
-        syntax = "proto3";
+syntax = "proto3";
 
 package project.planton.provider.aws.awsdynamodb.v1;
 

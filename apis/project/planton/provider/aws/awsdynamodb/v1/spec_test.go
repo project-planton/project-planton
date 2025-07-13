@@ -18,9 +18,9 @@ var _ = Describe("AwsDynamodbSpec", func() {
     var validator protovalidate.Validator
 
     BeforeEach(func() {
-        v, err := protovalidate.New()
+        var err error
+        validator, err = protovalidate.New()
         Expect(err).NotTo(HaveOccurred())
-        validator = *v // assign to the value-typed variable as required
     })
 
     Context("valid messages", func() {
@@ -46,7 +46,7 @@ var _ = Describe("AwsDynamodbSpec", func() {
                 TableClass: TableClass_STANDARD,
             }
 
-            Expect((&validator).Validate(spec)).To(Succeed())
+            Expect(validator.Validate(spec)).To(Succeed())
         })
     })
 
@@ -67,7 +67,7 @@ var _ = Describe("AwsDynamodbSpec", func() {
                 BillingMode: BillingMode_PAY_PER_REQUEST,
             }
 
-            Expect((&validator).Validate(spec)).ToNot(Succeed())
+            Expect(validator.Validate(spec)).ToNot(Succeed())
         })
 
         It("rejects when no attribute definitions are provided", func() {
@@ -83,7 +83,7 @@ var _ = Describe("AwsDynamodbSpec", func() {
                 BillingMode: BillingMode_PAY_PER_REQUEST,
             }
 
-            Expect((&validator).Validate(spec)).ToNot(Succeed())
+            Expect(validator.Validate(spec)).ToNot(Succeed())
         })
 
         It("rejects when key schema is missing (required=true)", func() {
@@ -96,7 +96,7 @@ var _ = Describe("AwsDynamodbSpec", func() {
                 BillingMode: BillingMode_PAY_PER_REQUEST,
             }
 
-            Expect((&validator).Validate(spec)).ToNot(Succeed())
+            Expect(validator.Validate(spec)).ToNot(Succeed())
         })
 
         It("rejects an unspecified billing mode (enum not_in=[0])", func() {
@@ -115,7 +115,7 @@ var _ = Describe("AwsDynamodbSpec", func() {
                 BillingMode: BillingMode_BILLING_MODE_UNSPECIFIED, // 0 is forbidden
             }
 
-            Expect((&validator).Validate(spec)).ToNot(Succeed())
+            Expect(validator.Validate(spec)).ToNot(Succeed())
         })
     })
 })
