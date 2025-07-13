@@ -99,19 +99,19 @@ enum KeyType {
 
 // How attributes are projected into an index.
 message Projection {
+  // Projection strategies.
+  enum ProjectionType {
+    PROJECTION_TYPE_UNSPECIFIED = 0;
+    KEYS_ONLY = 1;
+    INCLUDE = 2;
+    ALL = 3;
+  }
+
   // Projection strategy.
   ProjectionType projection_type = 1;
 
   // List of non-key attributes to include (used when projection_type = INCLUDE).
   repeated string non_key_attributes = 2;
-}
-
-// Projection strategies.
-enum ProjectionType {
-  PROJECTION_TYPE_UNSPECIFIED = 0;
-  KEYS_ONLY = 1;
-  INCLUDE = 2;
-  ALL = 3;
 }
 
 // Local secondary index definition.
@@ -149,20 +149,20 @@ message GlobalSecondaryIndex {
 
 // DynamoDB Streams configuration.
 message StreamSpecification {
+  // Types of data images a stream can capture.
+  enum StreamViewType {
+    STREAM_VIEW_TYPE_UNSPECIFIED = 0;
+    NEW_IMAGE = 1;
+    OLD_IMAGE = 2;
+    NEW_AND_OLD_IMAGES = 3;
+    KEYS_ONLY = 4;
+  }
+
   // Enables DynamoDB Streams when true.
   bool enabled = 1;
 
   // Type of data to capture in the stream.
   StreamViewType view_type = 2;
-}
-
-// Types of data images a stream can capture.
-enum StreamViewType {
-  STREAM_VIEW_TYPE_UNSPECIFIED = 0;
-  NEW_IMAGE = 1;
-  OLD_IMAGE = 2;
-  NEW_AND_OLD_IMAGES = 3;
-  KEYS_ONLY = 4;
 }
 
 // Point-in-time recovery configuration.
