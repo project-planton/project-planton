@@ -1,7 +1,6 @@
 package awsdynamodbv1
 
 import (
-    "context"
     "testing"
 
     protovalidate "github.com/bufbuild/protovalidate-go"
@@ -19,9 +18,9 @@ func TestAwsDynamodbSpecValidation(t *testing.T) {
 }
 
 var _ = BeforeSuite(func() {
-    v, err := protovalidate.New()
+    var err error
+    validator, err = protovalidate.New()
     Expect(err).NotTo(HaveOccurred())
-    validator = *v
 })
 
 func validSpec() *AwsDynamodbSpec {
@@ -47,30 +46,30 @@ func validSpec() *AwsDynamodbSpec {
 var _ = Describe("AwsDynamodbSpec validation", func() {
     It("accepts a fully valid spec", func() {
         spec := validSpec()
-        Expect(validator.Validate(context.Background(), spec)).To(Succeed())
+        Expect(validator.Validate(spec)).To(Succeed())
     })
 
     It("rejects a table name that is too short", func() {
         spec := validSpec()
         spec.TableName = "ab" // min_len is 3
-        Expect(validator.Validate(context.Background(), spec)).ToNot(Succeed())
+        Expect(validator.Validate(spec)).ToNot(Succeed())
     })
 
     It("rejects missing key schema", func() {
         spec := validSpec()
         spec.KeySchema = nil // required=true
-        Expect(validator.Validate(context.Background(), spec)).ToNot(Succeed())
+        Expect(validator.Validate(spec)).ToNot(Succeed())
     })
 
     It("rejects empty attribute definitions", func() {
         spec := validSpec()
         spec.AttributeDefinitions = []*AttributeDefinition{} // min_items=1
-        Expect(validator.Validate(context.Background(), spec)).ToNot(Succeed())
+        Expect(validator.Validate(spec)).ToNot(Succeed())
     })
 
     It("rejects unspecified billing mode (enum zero value)", func() {
         spec := validSpec()
         spec.BillingMode = BillingMode_BILLING_MODE_UNSPECIFIED // not_in: [0]
-        Expect(validator.Validate(context.Background(), spec)).ToNot(Succeed())
+        Expect(validator.Validate(spec)).ToNot(Succeed())
     })
 })
