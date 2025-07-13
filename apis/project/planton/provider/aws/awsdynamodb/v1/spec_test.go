@@ -1,15 +1,12 @@
 package awsdynamodbv1
 
 import (
+    "strings"
     "testing"
 
-    protovalidate "github.com/bufbuild/protovalidate-go"
+    "github.com/bufbuild/protovalidate-go"
     . "github.com/onsi/ginkgo/v2"
     . "github.com/onsi/gomega"
-)
-
-var (
-    validator protovalidate.Validator
 )
 
 func TestAwsDynamodbSpecValidation(t *testing.T) {
@@ -17,59 +14,102 @@ func TestAwsDynamodbSpecValidation(t *testing.T) {
     RunSpecs(t, "AwsDynamodbSpec Validation Suite")
 }
 
-var _ = BeforeSuite(func() {
-    var err error
-    validator, err = protovalidate.New()
-    Expect(err).NotTo(HaveOccurred())
-})
-
-func validSpec() *AwsDynamodbSpec {
-    return &AwsDynamodbSpec{
-        TableName: "valid_table",
-        AttributeDefinitions: []*AttributeDefinition{
-            {
-                Name: "id",
-                Type: AttributeType_STRING,
-            },
-        },
-        KeySchema: &KeySchema{
-            PartitionKey: &KeyElement{
-                AttributeName: "id",
-                KeyType:       KeyType_HASH,
-            },
-        },
-        BillingMode: BillingMode_PAY_PER_REQUEST,
-        TableClass:  TableClass_STANDARD,
-    }
-}
-
 var _ = Describe("AwsDynamodbSpec validation", func() {
+    var (
+        spec       *AwsDynamodbSpec
+        validator  protovalidate.Validator
+    )
+
+    BeforeEach(func() {
+        // Instantiate the validator as required
+        vPtr, err := protovalidate.New()
+        Expect(err).NotTo(HaveOccurred())
+        validator = *vPtr
+
+        // Build a minimal valid spec
+        spec = &AwsDynamodbSpec{
+            TableName: "valid_table",
+            AttributeDefinitions: []*AttributeDefinition{
+                {
+                    Name: "id",
+                    Type: AttributeType_STRING,
+                },
+            },
+            KeySchema: &KeySchema{
+                PartitionKey: &KeyElement{
+                    AttributeName: "id",
+                    KeyType:       KeyType_HASH,
+                },
+            },
+            BillingMode: BillingMode_PAY_PER_REQUEST,
+            Tags: map[string]string{
+                "env": "test",
+            },
+            TableClass: TableClass_STANDARD,
+        }
+    })
+
     It("accepts a fully valid spec", func() {
-        spec := validSpec()
         Expect(validator.Validate(spec)).To(Succeed())
     })
 
-    It("rejects a table name that is too short", func() {
-        spec := validSpec()
-        spec.TableName = "ab" // min_len is 3
-        Expect(validator.Validate(spec)).ToNot(Succeed())
+    Context("table_name", func() {
+        It("fails when too short", func() {
+            spec.TableName = "ab"
+            Expect(validator.Validate(spec)).To(HaveOccurred())
+        })
+
+        It("fails when invalid characters used", func() {
+            spec.TableName = "invalid name!"
+            Expect(validator.Validate(spec)).To(HaveOccurred())
+        })
     })
 
-    It("rejects missing key schema", func() {
-        spec := validSpec()
-        spec.KeySchema = nil // required=true
-        Expect(validator.Validate(spec)).ToNot(Succeed())
+    Context("attribute_definitions", func() {
+        It("fails when list is empty", func() {
+            spec.AttributeDefinitions = []*AttributeDefinition{}
+            Expect(validator.Validate(spec)).To(HaveOccurred())
+        })
+
+        It("fails when attribute name is empty", func() {
+            spec.AttributeDefinitions[0].Name = ""
+            Expect(validator.Validate(spec)).To(HaveOccurred())
+        })
+
+        It("fails when attribute type is unspecified", func() {
+            spec.AttributeDefinitions[0].Type = AttributeType_ATTRIBUTE_TYPE_UNSPECIFIED
+            Expect(validator.Validate(spec)).To(HaveOccurred())
+        })
     })
 
-    It("rejects empty attribute definitions", func() {
-        spec := validSpec()
-        spec.AttributeDefinitions = []*AttributeDefinition{} // min_items=1
-        Expect(validator.Validate(spec)).ToNot(Succeed())
+    Context("key_schema", func() {
+        It("fails when key_schema is missing", func() {
+            spec.KeySchema = nil
+            Expect(validator.Validate(spec)).To(HaveOccurred())
+        })
     })
 
-    It("rejects unspecified billing mode (enum zero value)", func() {
-        spec := validSpec()
-        spec.BillingMode = BillingMode_BILLING_MODE_UNSPECIFIED // not_in: [0]
-        Expect(validator.Validate(spec)).ToNot(Succeed())
+    Context("enums that must not be zero", func() {
+        It("fails when billing_mode is unspecified", func() {
+            spec.BillingMode = BillingMode_BILLING_MODE_UNSPECIFIED
+            Expect(validator.Validate(spec)).To(HaveOccurred())
+        })
+
+        It("fails when table_class is unspecified", func() {
+            spec.TableClass = TableClass_TABLE_CLASS_UNSPECIFIED
+            Expect(validator.Validate(spec)).To(HaveOccurred())
+        })
+    })
+
+    Context("tags", func() {
+        It("fails when the key is empty", func() {
+            spec.Tags = map[string]string{"": "value"}
+            Expect(validator.Validate(spec)).To(HaveOccurred())
+        })
+
+        It("fails when the value is too long", func() {
+            spec.Tags = map[string]string{"k": strings.Repeat("a", 257)}
+            Expect(validator.Validate(spec)).To(HaveOccurred())
+        })
     })
 })
