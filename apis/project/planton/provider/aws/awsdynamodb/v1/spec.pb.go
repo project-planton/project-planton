@@ -1072,7 +1072,7 @@ var File_project_planton_provider_aws_awsdynamodb_v1_spec_proto protoreflect.Fil
 
 const file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"6project/planton/provider/aws/awsdynamodb/v1/spec.proto\x12+project.planton.provider.aws.awsdynamodb.v1\x1a\x1bbuf/validate/validate.proto\"\x8d\x14\n" +
+	"6project/planton/provider/aws/awsdynamodb/v1/spec.proto\x12+project.planton.provider.aws.awsdynamodb.v1\x1a\x1bbuf/validate/validate.proto\"\xb6\x14\n" +
 	"\x0fAwsDynamodbSpec\x12?\n" +
 	"\n" +
 	"table_name\x18\x01 \x01(\tB \xbaH\x1d\xc8\x01\x01r\x18\x10\x03\x18\xff\x012\x11^[A-Za-z0-9_.-]+$R\ttableName\x12\x81\x01\n" +
@@ -1097,10 +1097,10 @@ const file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_rawDesc = "" +
 	"\x16point_in_time_recovery\x18\x0e \x01(\v2M.project.planton.provider.aws.awsdynamodb.v1.PointInTimeRecoverySpecificationR\x13pointInTimeRecovery\x1a7\n" +
 	"\tTagsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:\xa3\a\xbaH\x9f\a\x1a\xe4\x01\n" +
-	"*aws_dynamodb_spec_provisioned_thr_required\x12Bprovisioned_throughput must be set when billing_mode = PROVISIONED\x1arbilling_mode != project.planton.provider.aws.awsdynamodb.v1.BillingMode.PROVISIONED || has(provisioned_throughput)\x1a\xd3\x02\n" +
-	",aws_dynamodb_spec_provisioned_units_positive\x12fread_capacity_units and write_capacity_units must be greater than zero when billing_mode = PROVISIONED\x1a\xba\x01billing_mode != project.planton.provider.aws.awsdynamodb.v1.BillingMode.PROVISIONED || (provisioned_throughput.read_capacity_units > 0 && provisioned_throughput.write_capacity_units > 0)\x1a\xdf\x02\n" +
-	"&aws_dynamodb_spec_ppr_throughput_unset\x12Pprovisioned_throughput must be unset or zero when billing_mode = PAY_PER_REQUEST\x1a\xe2\x01billing_mode != project.planton.provider.aws.awsdynamodb.v1.BillingMode.PAY_PER_REQUEST || (!has(provisioned_throughput) || (provisioned_throughput.read_capacity_units == 0 && provisioned_throughput.write_capacity_units == 0))\"\xcd\x01\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:\xcc\a\xbaH\xc8\a\x1a\xaf\x02\n" +
+	"*aws_dynamodb_spec_provisioned_thr_required\x12Bprovisioned_throughput must be set when billing_mode = PROVISIONED\x1a\xbc\x01billing_mode != project.planton.provider.aws.awsdynamodb.v1.BillingMode.PROVISIONED || (provisioned_throughput.read_capacity_units != 0 || provisioned_throughput.write_capacity_units != 0)\x1a\xd3\x02\n" +
+	",aws_dynamodb_spec_provisioned_units_positive\x12fread_capacity_units and write_capacity_units must be greater than zero when billing_mode = PROVISIONED\x1a\xba\x01billing_mode != project.planton.provider.aws.awsdynamodb.v1.BillingMode.PROVISIONED || (provisioned_throughput.read_capacity_units > 0 && provisioned_throughput.write_capacity_units > 0)\x1a\xbd\x02\n" +
+	"&aws_dynamodb_spec_ppr_throughput_unset\x12Pprovisioned_throughput must be unset or zero when billing_mode = PAY_PER_REQUEST\x1a\xc0\x01billing_mode != project.planton.provider.aws.awsdynamodb.v1.BillingMode.PAY_PER_REQUEST || (provisioned_throughput.read_capacity_units == 0 && provisioned_throughput.write_capacity_units == 0)\"\xcd\x01\n" +
 	"\x13AttributeDefinition\x12G\n" +
 	"\x0eattribute_name\x18\x01 \x01(\tB \xbaH\x1d\xc8\x01\x01r\x18\x10\x01\x18\xff\x012\x11^[A-Za-z0-9_.-]+$R\rattributeName\x12m\n" +
 	"\x0eattribute_type\x18\x02 \x01(\x0e2:.project.planton.provider.aws.awsdynamodb.v1.AttributeTypeB\n" +
@@ -1111,7 +1111,7 @@ const file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_rawDesc = "" +
 	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\akeyType\"\x8b\x01\n" +
 	"\x15ProvisionedThroughput\x127\n" +
 	"\x13read_capacity_units\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02(\x00R\x11readCapacityUnits\x129\n" +
-	"\x14write_capacity_units\x18\x02 \x01(\x03B\a\xbaH\x04\"\x02(\x00R\x12writeCapacityUnits\"\xa7\b\n" +
+	"\x14write_capacity_units\x18\x02 \x01(\x03B\a\xbaH\x04\"\x02(\x00R\x12writeCapacityUnits\"\xf2\b\n" +
 	"\x14GlobalSecondaryIndex\x12?\n" +
 	"\n" +
 	"index_name\x18\x01 \x01(\tB \xbaH\x1d\xc8\x01\x01r\x18\x10\x03\x18\xff\x012\x11^[A-Za-z0-9_.-]+$R\tindexName\x12h\n" +
@@ -1122,8 +1122,8 @@ const file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_rawDesc = "" +
 	"projection\x18\x03 \x01(\v27.project.planton.provider.aws.awsdynamodb.v1.ProjectionB\x06\xbaH\x03\xc8\x01\x01R\n" +
 	"projection\x12e\n" +
 	"\fbilling_mode\x18\x04 \x01(\x0e28.project.planton.provider.aws.awsdynamodb.v1.BillingModeB\b\xbaH\x05\x82\x01\x02\x10\x01R\vbillingMode\x12y\n" +
-	"\x16provisioned_throughput\x18\x05 \x01(\v2B.project.planton.provider.aws.awsdynamodb.v1.ProvisionedThroughputR\x15provisionedThroughput:\xa0\x04\xbaH\x9c\x04\x1a\xe4\x01\n" +
-	"\x1cgsi_provisioned_thr_required\x12Pprovisioned_throughput must be set for the index when billing_mode = PROVISIONED\x1arbilling_mode != project.planton.provider.aws.awsdynamodb.v1.BillingMode.PROVISIONED || has(provisioned_throughput)\x1a\xb2\x02\n" +
+	"\x16provisioned_throughput\x18\x05 \x01(\v2B.project.planton.provider.aws.awsdynamodb.v1.ProvisionedThroughputR\x15provisionedThroughput:\xeb\x04\xbaH\xe7\x04\x1a\xaf\x02\n" +
+	"\x1cgsi_provisioned_thr_required\x12Pprovisioned_throughput must be set for the index when billing_mode = PROVISIONED\x1a\xbc\x01billing_mode != project.planton.provider.aws.awsdynamodb.v1.BillingMode.PROVISIONED || (provisioned_throughput.read_capacity_units != 0 || provisioned_throughput.write_capacity_units != 0)\x1a\xb2\x02\n" +
 	"\x1egsi_provisioned_units_positive\x12Sread/write capacity units must be > 0 for the index when billing_mode = PROVISIONED\x1a\xba\x01billing_mode != project.planton.provider.aws.awsdynamodb.v1.BillingMode.PROVISIONED || (provisioned_throughput.read_capacity_units > 0 && provisioned_throughput.write_capacity_units > 0)\"\xa1\x02\n" +
 	"\x13LocalSecondaryIndex\x12?\n" +
 	"\n" +
