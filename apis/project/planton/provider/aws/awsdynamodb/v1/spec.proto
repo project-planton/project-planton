@@ -96,19 +96,19 @@ message AwsDynamodbSpec {
   // ---------- CEL Cross-field Rules ----------
   option (buf.validate.message).cel = {
     id: "aws_dynamodb_spec_provisioned_thr_required"
-    expression: "billing_mode != project.planton.provider.aws.awsdynamodb.v1.BillingMode.PROVISIONED || (provisioned_throughput.read_capacity_units != 0 || provisioned_throughput.write_capacity_units != 0)"
+    expression: "this.billing_mode != project.planton.provider.aws.awsdynamodb.v1.BillingMode.PROVISIONED || (this.provisioned_throughput.read_capacity_units != 0 || this.provisioned_throughput.write_capacity_units != 0)"
     message: "provisioned_throughput must be set when billing_mode = PROVISIONED"
   };
 
   option (buf.validate.message).cel = {
     id: "aws_dynamodb_spec_provisioned_units_positive"
-    expression: "billing_mode != project.planton.provider.aws.awsdynamodb.v1.BillingMode.PROVISIONED || (provisioned_throughput.read_capacity_units > 0 && provisioned_throughput.write_capacity_units > 0)"
+    expression: "this.billing_mode != project.planton.provider.aws.awsdynamodb.v1.BillingMode.PROVISIONED || (this.provisioned_throughput.read_capacity_units > 0 && this.provisioned_throughput.write_capacity_units > 0)"
     message: "read_capacity_units and write_capacity_units must be greater than zero when billing_mode = PROVISIONED"
   };
 
   option (buf.validate.message).cel = {
     id: "aws_dynamodb_spec_ppr_throughput_unset"
-    expression: "billing_mode != project.planton.provider.aws.awsdynamodb.v1.BillingMode.PAY_PER_REQUEST || (provisioned_throughput.read_capacity_units == 0 && provisioned_throughput.write_capacity_units == 0)"
+    expression: "this.billing_mode != project.planton.provider.aws.awsdynamodb.v1.BillingMode.PAY_PER_REQUEST || (this.provisioned_throughput.read_capacity_units == 0 && this.provisioned_throughput.write_capacity_units == 0)"
     message: "provisioned_throughput must be unset or zero when billing_mode = PAY_PER_REQUEST"
   };
 }
@@ -225,13 +225,13 @@ message GlobalSecondaryIndex {
 
   option (buf.validate.message).cel = {
     id: "gsi_provisioned_thr_required"
-    expression: "billing_mode != project.planton.provider.aws.awsdynamodb.v1.BillingMode.PROVISIONED || (provisioned_throughput.read_capacity_units != 0 || provisioned_throughput.write_capacity_units != 0)"
+    expression: "this.billing_mode != project.planton.provider.aws.awsdynamodb.v1.BillingMode.PROVISIONED || (this.provisioned_throughput.read_capacity_units != 0 || this.provisioned_throughput.write_capacity_units != 0)"
     message: "provisioned_throughput must be set for the index when billing_mode = PROVISIONED"
   };
 
   option (buf.validate.message).cel = {
     id: "gsi_provisioned_units_positive"
-    expression: "billing_mode != project.planton.provider.aws.awsdynamodb.v1.BillingMode.PROVISIONED || (provisioned_throughput.read_capacity_units > 0 && provisioned_throughput.write_capacity_units > 0)"
+    expression: "this.billing_mode != project.planton.provider.aws.awsdynamodb.v1.BillingMode.PROVISIONED || (this.provisioned_throughput.read_capacity_units > 0 && this.provisioned_throughput.write_capacity_units > 0)"
     message: "read/write capacity units must be > 0 for the index when billing_mode = PROVISIONED"
   };
 }
@@ -274,7 +274,7 @@ message Projection {
 
   option (buf.validate.message).cel = {
     id: "projection_include_attributes_rule"
-    expression: "projection_type == project.planton.provider.aws.awsdynamodb.v1.ProjectionType.INCLUDE ? size(non_key_attributes) > 0 : size(non_key_attributes) == 0"
+    expression: "this.projection_type == project.planton.provider.aws.awsdynamodb.v1.ProjectionType.INCLUDE ? size(this.non_key_attributes) > 0 : size(this.non_key_attributes) == 0"
     message: "non_key_attributes must be set when projection_type = INCLUDE and empty otherwise"
   };
 }
@@ -298,7 +298,7 @@ message StreamSpecification {
 
   option (buf.validate.message).cel = {
     id: "stream_view_type_required_when_enabled"
-    expression: "!enabled || view_type != project.planton.provider.aws.awsdynamodb.v1.StreamViewType.STREAM_VIEW_TYPE_UNSPECIFIED"
+    expression: "!this.enabled || this.view_type != project.planton.provider.aws.awsdynamodb.v1.StreamViewType.STREAM_VIEW_TYPE_UNSPECIFIED"
     message: "view_type must be specified when Streams is enabled"
   };
 }
@@ -321,7 +321,7 @@ message TTLSpecification {
 
   option (buf.validate.message).cel = {
     id: "ttl_attribute_name_rule"
-    expression: "enabled ? attribute_name != '' : attribute_name == ''"
+    expression: "this.enabled ? this.attribute_name != '' : this.attribute_name == ''"
     message: "attribute_name must be set when TTL is enabled and empty when disabled"
   };
 }
@@ -340,7 +340,7 @@ message ServerSideEncryptionSpecification {
 
   option (buf.validate.message).cel = {
     id: "sse_kms_key_arn_rule"
-    expression: "enabled || kms_key_arn == ''"
+    expression: "this.enabled || this.kms_key_arn == ''"
     message: "kms_key_arn must be empty when SSE is disabled"
   };
 }
