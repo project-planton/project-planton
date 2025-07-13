@@ -85,7 +85,8 @@ message AwsDynamodbSpec {
   option (buf.validate.message).cel = {
     id: "billing_mode_capacity_check",
     message: "When billing_mode == PROVISIONED, read/write capacity units must both be > 0; when billing_mode == PAY_PER_REQUEST they must both be 0.",
-    expression: "(this.billing_mode == BillingMode.PROVISIONED) ? (this.read_capacity_units > 0 && this.write_capacity_units > 0) : (this.billing_mode == BillingMode.PAY_PER_REQUEST ? (this.read_capacity_units == 0 && this.write_capacity_units == 0) : true)"
+    // 1 = PROVISIONED, 2 = PAY_PER_REQUEST
+    expression: "(this.billing_mode == 1) ? (this.read_capacity_units > 0 && this.write_capacity_units > 0) : (this.billing_mode == 2 ? (this.read_capacity_units == 0 && this.write_capacity_units == 0) : true)"
   };
 }
 
@@ -226,7 +227,7 @@ message GlobalSecondaryIndex {
   option (buf.validate.message).cel = {
     id: "gsi_billing_capacity_check",
     message: "For a GSI: when billing_mode == PROVISIONED, read/write capacity must both be > 0; when PAY_PER_REQUEST they must both be 0.",
-    expression: "(this.billing_mode == BillingMode.PROVISIONED) ? (this.read_capacity_units > 0 && this.write_capacity_units > 0) : (this.billing_mode == BillingMode.PAY_PER_REQUEST ? (this.read_capacity_units == 0 && this.write_capacity_units == 0) : true)"
+    expression: "(this.billing_mode == 1) ? (this.read_capacity_units > 0 && this.write_capacity_units > 0) : (this.billing_mode == 2 ? (this.read_capacity_units == 0 && this.write_capacity_units == 0) : true)"
   };
 }
 
@@ -293,19 +294,19 @@ message SSESpecification {
   option (buf.validate.message).cel = {
     id: "sse_enabled_type_check",
     message: "sse_type must be specified (non-UNSPECIFIED) when SSE is enabled.",
-    expression: "!this.enabled || (this.sse_type != SSEType.SSE_TYPE_UNSPECIFIED)"
+    expression: "!this.enabled || (this.sse_type != 0)"
   };
 
   option (buf.validate.message).cel = {
     id: "sse_customer_managed_key_check",
     message: "kms_key_arn must be provided when sse_type == CUSTOMER_MANAGED.",
-    expression: "this.sse_type != SSEType.CUSTOMER_MANAGED || size(this.kms_key_arn) > 0"
+    expression: "(this.sse_type != 2) || size(this.kms_key_arn) > 0"
   };
 
   option (buf.validate.message).cel = {
     id: "sse_disabled_fields_check",
     message: "When SSE disabled, sse_type must be UNSPECIFIED and kms_key_arn empty.",
-    expression: "this.enabled || (this.sse_type == SSEType.SSE_TYPE_UNSPECIFIED && size(this.kms_key_arn) == 0)"
+    expression: "this.enabled || (this.sse_type == 0 && size(this.kms_key_arn) == 0)"
   };
 }
 
