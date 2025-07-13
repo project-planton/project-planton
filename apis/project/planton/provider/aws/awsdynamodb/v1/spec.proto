@@ -2,19 +2,33 @@ syntax = "proto3";
 
 package project.planton.provider.aws.awsdynamodb.v1;
 
+import "buf/validate/validate.proto";
+
 // Specification of an Amazon DynamoDB table.
 message AwsDynamodbSpec {
   // Name of the DynamoDB table.
-  string table_name = 1;
+  string table_name = 1 [
+    (buf.validate.field).string = {
+      min_len: 3,
+      max_len: 255,
+      regex: "^[a-zA-Z0-9_.-]+$"
+    }
+  ];
 
   // List of attribute definitions that describe the key schema and indexes.
-  repeated AttributeDefinition attribute_definitions = 2;
+  repeated AttributeDefinition attribute_definitions = 2 [
+    (buf.validate.field).repeated = {min_items: 1}
+  ];
 
   // The primary key schema for the table.
-  KeySchema key_schema = 3;
+  KeySchema key_schema = 3 [
+    (buf.validate.field).required = true
+  ];
 
   // Billing mode for the table.
-  BillingMode billing_mode = 4;
+  BillingMode billing_mode = 4 [
+    (buf.validate.field).enum = {defined_only: true, not_in: [0]}
+  ];
 
   // Provisioned capacity settings (required when billing_mode is PROVISIONED).
   ProvisionedThroughput provisioned_throughput = 5;
@@ -38,10 +52,17 @@ message AwsDynamodbSpec {
   bool point_in_time_recovery_enabled = 11;
 
   // Key-value tags to assign to the table.
-  map<string, string> tags = 12;
+  map<string, string> tags = 12 [
+    (buf.validate.field).map = {
+      keys: {string: {min_len: 1, max_len: 128}},
+      values: {string: {max_len: 256}}
+    }
+  ];
 
   // Storage class for the table.
-  TableClass table_class = 13;
+  TableClass table_class = 13 [
+    (buf.validate.field).enum = {defined_only: true, not_in: [0]}
+  ];
 
   // Prevents the table from being accidentally deleted.
   bool deletion_protection_enabled = 14;
@@ -53,25 +74,43 @@ message AwsDynamodbSpec {
 // Definition of a single attribute.
 message AttributeDefinition {
   // Name of the attribute.
-  string name = 1;
+  string name = 1 [
+    (buf.validate.field).string = {
+      min_len: 1,
+      max_len: 255,
+      regex: "^[a-zA-Z0-9_.-]+$"
+    }
+  ];
 
   // Data type of the attribute.
-  AttributeType type = 2;
+  AttributeType type = 2 [
+    (buf.validate.field).enum = {defined_only: true, not_in: [0]}
+  ];
 }
 
 // Primary key element.
 message KeyElement {
   // Attribute acting as a key.
-  string attribute_name = 1;
+  string attribute_name = 1 [
+    (buf.validate.field).string = {
+      min_len: 1,
+      max_len: 255,
+      regex: "^[a-zA-Z0-9_.-]+$"
+    }
+  ];
 
   // HASH (partition) or RANGE (sort).
-  KeyType key_type = 2;
+  KeyType key_type = 2 [
+    (buf.validate.field).enum = {defined_only: true, not_in: [0]}
+  ];
 }
 
 // Primary key schema consisting of a partition key and optional sort key.
 message KeySchema {
   // Partition key (required).
-  KeyElement partition_key = 1;
+  KeyElement partition_key = 1 [
+    (buf.validate.field).required = true
+  ];
 
   // Sort key (optional).
   KeyElement sort_key = 2;
@@ -80,10 +119,14 @@ message KeySchema {
 // Read & write capacity settings.
 message ProvisionedThroughput {
   // Maximum strongly-consistent read capacity units.
-  int64 read_capacity_units = 1;
+  int64 read_capacity_units = 1 [
+    (buf.validate.field).int64.gt = 0
+  ];
 
   // Maximum write capacity units.
-  int64 write_capacity_units = 2;
+  int64 write_capacity_units = 2 [
+    (buf.validate.field).int64.gt = 0
+  ];
 
   // Auto-scaling policy for capacity units.
   AutoScaling autoscaling = 3;
@@ -92,34 +135,57 @@ message ProvisionedThroughput {
 // Auto-scaling configuration for provisioned capacity.
 message AutoScaling {
   // Minimum capacity units DynamoDB can scale down to.
-  int64 min_capacity = 1;
+  int64 min_capacity = 1 [
+    (buf.validate.field).int64.gt = 0
+  ];
 
   // Maximum capacity units DynamoDB can scale up to.
-  int64 max_capacity = 2;
+  int64 max_capacity = 2 [
+    (buf.validate.field).int64.gt = 0
+  ];
 
   // Desired utilization percentage that triggers scaling.
-  int32 target_utilization_percent = 3;
+  int32 target_utilization_percent = 3 [
+    (buf.validate.field).int32 = {gte: 1, lte: 100}
+  ];
 }
 
 // Projection configuration for secondary indexes.
 message Projection {
   // Projection type (KEYS_ONLY, INCLUDE, ALL).
-  ProjectionType type = 1;
+  ProjectionType type = 1 [
+    (buf.validate.field).enum = {defined_only: true, not_in: [0]}
+  ];
 
   // Non-key attributes to project when type == INCLUDE.
-  repeated string non_key_attributes = 2;
+  repeated string non_key_attributes = 2 [
+    (buf.validate.field).repeated = {
+      max_items: 20,
+      items: {string: {min_len: 1, max_len: 255, regex: "^[a-zA-Z0-9_.-]+$"}}
+    }
+  ];
 }
 
 // Global secondary index definition.
 message GlobalSecondaryIndex {
   // Index name.
-  string name = 1;
+  string name = 1 [
+    (buf.validate.field).string = {
+      min_len: 3,
+      max_len: 255,
+      regex: "^[a-zA-Z0-9_.-]+$"
+    }
+  ];
 
   // Key schema for the index.
-  KeySchema key_schema = 2;
+  KeySchema key_schema = 2 [
+    (buf.validate.field).required = true
+  ];
 
   // Index projection settings.
-  Projection projection = 3;
+  Projection projection = 3 [
+    (buf.validate.field).required = true
+  ];
 
   // Provisioned throughput for the index.
   ProvisionedThroughput provisioned_throughput = 4;
@@ -128,13 +194,23 @@ message GlobalSecondaryIndex {
 // Local secondary index definition.
 message LocalSecondaryIndex {
   // Index name.
-  string name = 1;
+  string name = 1 [
+    (buf.validate.field).string = {
+      min_len: 3,
+      max_len: 255,
+      regex: "^[a-zA-Z0-9_.-]+$"
+    }
+  ];
 
   // Key schema with the same partition key as the table.
-  KeySchema key_schema = 2;
+  KeySchema key_schema = 2 [
+    (buf.validate.field).required = true
+  ];
 
   // Index projection settings.
-  Projection projection = 3;
+  Projection projection = 3 [
+    (buf.validate.field).required = true
+  ];
 }
 
 // DynamoDB Streams configuration.
@@ -143,7 +219,9 @@ message StreamSpecification {
   bool enabled = 1;
 
   // Type of data to write to the stream.
-  StreamViewType view_type = 2;
+  StreamViewType view_type = 2 [
+    (buf.validate.field).enum = {defined_only: true}
+  ];
 }
 
 // Time-to-live configuration.
@@ -152,7 +230,13 @@ message TTLSpecification {
   bool enabled = 1;
 
   // Attribute that stores the TTL epoch timestamp.
-  string attribute_name = 2;
+  string attribute_name = 2 [
+    (buf.validate.field).string = {
+      min_len: 1,
+      max_len: 255,
+      regex: "^[a-zA-Z0-9_.-]+$"
+    }
+  ];
 }
 
 // Server-side encryption configuration.
@@ -161,7 +245,12 @@ message SSESpecification {
   bool enabled = 1;
 
   // Custom KMS key ARN (leave empty to use AWS-owned key).
-  string kms_key_arn = 2;
+  string kms_key_arn = 2 [
+    (buf.validate.field).string = {
+      max_len: 2048,
+      prefix: "arn:"
+    }
+  ];
 }
 
 enum AttributeType {
