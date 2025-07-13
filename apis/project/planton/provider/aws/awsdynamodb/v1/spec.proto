@@ -1,0 +1,213 @@
+syntax = "proto3";
+
+package project.planton.provider.aws.awsdynamodb.v1;
+
+// AwsDynamodbSpec defines configurable properties for an Amazon DynamoDB table.
+message AwsDynamodbSpec {
+  // Human-readable name of the table.
+  string table_name = 1;
+
+  // Overall billing mode for read/write operations.
+  BillingMode billing_mode = 2;
+
+  // Provisioned read capacity units per second (used when billing_mode = PROVISIONED).
+  int64 read_capacity_units = 3;
+
+  // Provisioned write capacity units per second (used when billing_mode = PROVISIONED).
+  int64 write_capacity_units = 4;
+
+  // List of attribute definitions that appear in the key schema or indexes.
+  repeated AttributeDefinition attribute_definitions = 5;
+
+  // Schema that defines the primary key of the table.
+  repeated KeySchemaElement key_schema = 6;
+
+  // Definitions of local secondary indexes (LSIs) that share the table's partition key.
+  repeated LocalSecondaryIndex local_secondary_indexes = 7;
+
+  // Definitions of global secondary indexes (GSIs) that have their own provisioned capacity.
+  repeated GlobalSecondaryIndex global_secondary_indexes = 8;
+
+  // DynamoDB Streams configuration.
+  StreamSpecification stream_specification = 9;
+
+  // Point-in-time recovery configuration.
+  PointInTimeRecovery point_in_time_recovery = 10;
+
+  // Time-to-live (TTL) settings for item expiration.
+  TimeToLive ttl = 11;
+
+  // Server-side encryption configuration.
+  SSESpecification sse_specification = 12;
+
+  // Arbitrary key / value tags to apply to the table.
+  map<string, string> tags = 13;
+
+  // When true, prevents the table from being deleted via API calls.
+  bool deletion_protection_enabled = 14;
+
+  // Storage class of the table (e.g., STANDARD or STANDARD_INFREQUENT_ACCESS).
+  TableClass table_class = 15;
+
+  // List of replica regions for a global table configuration.
+  repeated Replica replicas = 16;
+}
+
+// -----------------------------------------------------------------------------
+// Supporting Types
+// -----------------------------------------------------------------------------
+
+// Allowed billing modes for a table or index.
+enum BillingMode {
+  BILLING_MODE_UNSPECIFIED = 0;
+  PROVISIONED = 1;
+  PAY_PER_REQUEST = 2;
+}
+
+// Definition of an attribute and its data type.
+message AttributeDefinition {
+  // Name of the attribute.
+  string attribute_name = 1;
+
+  // Data type of the attribute (S = String, N = Number, B = Binary).
+  AttributeType attribute_type = 2;
+}
+
+// Attribute data types accepted by DynamoDB.
+enum AttributeType {
+  ATTRIBUTE_TYPE_UNSPECIFIED = 0;
+  S = 1;
+  N = 2;
+  B = 3;
+}
+
+// Element of a key schema: attribute name and its role (HASH or RANGE).
+message KeySchemaElement {
+  // Name of the key attribute.
+  string attribute_name = 1;
+
+  // Role of this attribute in the key schema.
+  KeyType key_type = 2;
+}
+
+// Key attribute roles.
+enum KeyType {
+  KEY_TYPE_UNSPECIFIED = 0;
+  HASH = 1;   // Partition key.
+  RANGE = 2;  // Sort key.
+}
+
+// How attributes are projected into an index.
+message Projection {
+  // Projection strategy.
+  ProjectionType projection_type = 1;
+
+  // List of non-key attributes to include (used when projection_type = INCLUDE).
+  repeated string non_key_attributes = 2;
+}
+
+// Projection strategies.
+enum ProjectionType {
+  PROJECTION_TYPE_UNSPECIFIED = 0;
+  KEYS_ONLY = 1;
+  INCLUDE = 2;
+  ALL = 3;
+}
+
+// Local secondary index definition.
+message LocalSecondaryIndex {
+  // Name of the LSI.
+  string index_name = 1;
+
+  // Key schema for the index (must reuse the table's partition key).
+  repeated KeySchemaElement key_schema = 2;
+
+  // Projection configuration for the index.
+  Projection projection = 3;
+}
+
+// Global secondary index definition.
+message GlobalSecondaryIndex {
+  // Name of the GSI.
+  string index_name = 1;
+
+  // Key schema for the index (own partition and optional sort key).
+  repeated KeySchemaElement key_schema = 2;
+
+  // Projection configuration for the index.
+  Projection projection = 3;
+
+  // Billing mode specific to this GSI.
+  BillingMode billing_mode = 4;
+
+  // Provisioned read capacity units (used when billing_mode = PROVISIONED).
+  int64 read_capacity_units = 5;
+
+  // Provisioned write capacity units (used when billing_mode = PROVISIONED).
+  int64 write_capacity_units = 6;
+}
+
+// DynamoDB Streams configuration.
+message StreamSpecification {
+  // Enables DynamoDB Streams when true.
+  bool enabled = 1;
+
+  // Type of data to capture in the stream.
+  StreamViewType view_type = 2;
+}
+
+// Types of data images a stream can capture.
+enum StreamViewType {
+  STREAM_VIEW_TYPE_UNSPECIFIED = 0;
+  NEW_IMAGE = 1;
+  OLD_IMAGE = 2;
+  NEW_AND_OLD_IMAGES = 3;
+  KEYS_ONLY = 4;
+}
+
+// Point-in-time recovery configuration.
+message PointInTimeRecovery {
+  // Enables point-in-time recovery when true.
+  bool enabled = 1;
+}
+
+// Time-to-live (TTL) configuration.
+message TimeToLive {
+  // Enables TTL when true.
+  bool enabled = 1;
+
+  // Attribute that stores the expiration timestamp.
+  string attribute_name = 2;
+}
+
+// Server-side encryption configuration.
+message SSESpecification {
+  // Enables SSE when true.
+  bool enabled = 1;
+
+  // Type of server-side encryption to apply.
+  SSEType sse_type = 2;
+
+  // ARN of the customer-managed KMS key (required when sse_type = CUSTOMER_MANAGED).
+  string kms_key_arn = 3;
+}
+
+// Server-side encryption types.
+enum SSEType {
+  SSE_TYPE_UNSPECIFIED = 0;
+  AWS_MANAGED = 1;      // AWS owned key.
+  CUSTOMER_MANAGED = 2; // Customer managed KMS key.
+}
+
+// Available table storage classes.
+enum TableClass {
+  TABLE_CLASS_UNSPECIFIED = 0;
+  STANDARD = 1;
+  STANDARD_INFREQUENT_ACCESS = 2;
+}
+
+// Replica region for global tables.
+message Replica {
+  // AWS region code where the replica should be created.
+  string region_name = 1;
+}
