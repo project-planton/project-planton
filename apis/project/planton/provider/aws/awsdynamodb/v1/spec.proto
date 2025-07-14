@@ -4,7 +4,9 @@ package project.planton.provider.aws.awsdynamodb.v1;
 
 import "buf/validate/validate.proto";
 
-option go_package = "project/planton/provider/aws/awsdynamodb/v1;awsdynamodbpb";
+// IMPORTANT: use the full Go import path so the generated Go code can be
+// imported from any package inside the module.
+option go_package = "github.com/project-planton/project-planton/project/planton/provider/aws/awsdynamodb/v1;awsdynamodbpb";
 
 // AwsDynamodbSpec represents an Amazon DynamoDB table and its key
 // configuration, capacity model, encryption, indexing and other
