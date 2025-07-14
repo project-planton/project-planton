@@ -2,22 +2,42 @@ syntax = "proto3";
 
 package project.planton.provider.aws.awsdynamodb.v1;
 
+import "buf/validate/validate.proto";
+
 // Desired state of an AWS DynamoDB table.
 message AwsDynamodbSpec {
+  option (buf.validate.message).cel = {
+    id: "billing_mode_capacity_consistency",
+    expression: "(this.billing_mode == 1) ? (this.provisioned_throughput != null && this.provisioned_throughput.read_capacity_units > 0 && this.provisioned_throughput.write_capacity_units > 0 && this.global_secondary_indexes.all(g, g.provisioned_throughput != null && g.provisioned_throughput.read_capacity_units > 0 && g.provisioned_throughput.write_capacity_units > 0)) : (this.billing_mode == 2) ? ((this.provisioned_throughput == null || (this.provisioned_throughput.read_capacity_units == 0 && this.provisioned_throughput.write_capacity_units == 0)) && this.global_secondary_indexes.all(g, g.provisioned_throughput == null || (g.provisioned_throughput.read_capacity_units == 0 && g.provisioned_throughput.write_capacity_units == 0))) : true",
+    message: "capacity fields must align with billing_mode"
+  };
+
   // The name of the DynamoDB table (unique per region/account).
-  string table_name = 1;
+  string table_name = 1 [
+    (buf.validate.field).string = {
+      min_len: 3,
+      max_len: 255,
+      pattern: "^[A-Za-z0-9_.-]+$"
+    }
+  ];
 
   // How you pay for read/write capacity: PROVISIONED or PAY_PER_REQUEST.
-  BillingMode billing_mode = 2;
+  BillingMode billing_mode = 2 [
+    (buf.validate.field).enum.not_in: [0]
+  ];
 
   // Read/write capacity settings (required when billing_mode == PROVISIONED).
   ProvisionedThroughput provisioned_throughput = 3;
 
   // All attributes referenced by keys or indexes.
-  repeated AttributeDefinition attribute_definitions = 4;
+  repeated AttributeDefinition attribute_definitions = 4 [
+    (buf.validate.field).repeated.min_items = 1
+  ];
 
   // Primary key schema of the table.
-  repeated KeySchemaElement key_schema = 5;
+  repeated KeySchemaElement key_schema = 5 [
+    (buf.validate.field).repeated.min_items = 1
+  ];
 
   // Global secondary indexes to create.
   repeated GlobalSecondaryIndex global_secondary_indexes = 6;
@@ -41,13 +61,31 @@ message AwsDynamodbSpec {
   bool deletion_protection_enabled = 12;
 
   // Regions in which to replicate the table as part of a global table.
-  repeated string replica_regions = 13;
+  repeated string replica_regions = 13 [
+    (buf.validate.field).repeated.max_items = 20,
+    (buf.validate.field).repeated.items.string = {
+      min_len: 1,
+      max_len: 20,
+      pattern: "^[a-z0-9-]+$"
+    }
+  ];
 
   // Resource tags.
-  map<string, string> tags = 14;
+  map<string, string> tags = 14 [
+    (buf.validate.field).map = {
+      keys: {
+        string: {min_len: 1, max_len: 128}
+      },
+      values: {
+        string: {max_len: 256}
+      }
+    }
+  ];
 
   // Storage class of the table (STANDARD or STANDARD_INFREQUENT_ACCESS).
-  TableClass table_class = 15;
+  TableClass table_class = 15 [
+    (buf.validate.field).enum.not_in: [0]
+  ];
 }
 
 // ---------------- Helper Messages ----------------
@@ -55,31 +93,51 @@ message AwsDynamodbSpec {
 // Attribute metadata.
 message AttributeDefinition {
   // Attribute name.
-  string name = 1;
+  string name = 1 [
+    (buf.validate.field).string = {min_len: 1, max_len: 255, pattern: "^[A-Za-z0-9_.-]+$"}
+  ];
   // Attribute data type.
-  AttributeType type = 2;
+  AttributeType type = 2 [
+    (buf.validate.field).enum.not_in: [0]
+  ];
 }
 
 // A key element within a primary or secondary index.
 message KeySchemaElement {
   // Referenced attribute name.
-  string attribute_name = 1;
+  string attribute_name = 1 [
+    (buf.validate.field).string = {min_len: 1, max_len: 255, pattern: "^[A-Za-z0-9_.-]+$"}
+  ];
   // HASH (partition) or RANGE (sort) key role.
-  KeyType key_type = 2;
+  KeyType key_type = 2 [
+    (buf.validate.field).enum.not_in: [0]
+  ];
 }
 
 // Read/write throughput settings for provisioned capacity.
 message ProvisionedThroughput {
   // Max strongly-consistent reads per second.
-  int64 read_capacity_units = 1;
+  int64 read_capacity_units = 1 [
+    (buf.validate.field).int64.gte = 0
+  ];
   // Max writes per second.
-  int64 write_capacity_units = 2;
+  int64 write_capacity_units = 2 [
+    (buf.validate.field).int64.gte = 0
+  ];
 }
 
 // Attributes that appear in a secondary index.
 message Projection {
+  option (buf.validate.message).cel = {
+    id: "projection_include_requires_attrs",
+    expression: "(this.projection_type == 3) ? this.non_key_attributes.size() > 0 : this.non_key_attributes.size() == 0",
+    message: "non_key_attributes must be set only when projection_type == INCLUDE"
+  };
+
   // For INCLUDE projection: additional non-key attributes to project.
-  repeated string non_key_attributes = 1;
+  repeated string non_key_attributes = 1 [
+    (buf.validate.field).repeated.items.string = {min_len: 1, max_len: 255, pattern: "^[A-Za-z0-9_.-]+$"}
+  ];
   // Projection type.
   enum ProjectionType {
     PROJECTION_TYPE_UNSPECIFIED = 0;
@@ -87,17 +145,23 @@ message Projection {
     KEYS_ONLY = 2;
     INCLUDE = 3;
   }
-  ProjectionType projection_type = 2;
+  ProjectionType projection_type = 2 [
+    (buf.validate.field).enum.not_in: [0]
+  ];
 }
 
 // Global secondary index definition.
 message GlobalSecondaryIndex {
   // Index name.
-  string name = 1;
+  string name = 1 [
+    (buf.validate.field).string = {min_len: 3, max_len: 255, pattern: "^[A-Za-z0-9_.-]+$"}
+  ];
   // Key schema for the index.
-  repeated KeySchemaElement key_schema = 2;
+  repeated KeySchemaElement key_schema = 2 [
+    (buf.validate.field).repeated.min_items = 1
+  ];
   // Projection configuration.
-  Projection projection = 3;
+  Projection projection = 3 [(buf.validate.field).required = true];
   // Provisioned capacity for the index (ignored if PAY_PER_REQUEST).
   ProvisionedThroughput provisioned_throughput = 4;
 }
@@ -105,15 +169,25 @@ message GlobalSecondaryIndex {
 // Local secondary index definition.
 message LocalSecondaryIndex {
   // Index name.
-  string name = 1;
+  string name = 1 [
+    (buf.validate.field).string = {min_len: 3, max_len: 255, pattern: "^[A-Za-z0-9_.-]+$"}
+  ];
   // Key schema (same HASH key as table, different RANGE key).
-  repeated KeySchemaElement key_schema = 2;
+  repeated KeySchemaElement key_schema = 2 [
+    (buf.validate.field).repeated.min_items = 1
+  ];
   // Projection configuration.
-  Projection projection = 3;
+  Projection projection = 3 [(buf.validate.field).required = true];
 }
 
 // DynamoDB Streams configuration block.
 message StreamSpecification {
+  option (buf.validate.message).cel = {
+    id: "stream_view_type_required_when_enabled",
+    expression: "(!this.enabled) || (this.view_type != 0)",
+    message: "view_type must be specified when streams are enabled"
+  };
+
   // Enables streaming of item mutations.
   bool enabled = 1;
   // Type of data written to the stream.
@@ -132,13 +206,23 @@ message SSESpecification {
   // Enable SSE at rest.
   bool enabled = 1;
   // ARN of a customer-managed KMS key (blank for AWS-owned key).
-  string kms_key_arn = 2;
+  string kms_key_arn = 2 [
+    (buf.validate.field).string = {min_len: 0, max_len: 2048, pattern: "^arn:aws:kms:[A-Za-z0-9\-:]+:key\/[A-Fa-f0-9\-]+$", ignore_empty: true}
+  ];
 }
 
 // Time-to-live settings.
 message TTLSpecification {
+  option (buf.validate.message).cel = {
+    id: "ttl_attribute_required_when_enabled",
+    expression: "(!this.enabled) || (size(this.attribute_name) > 0)",
+    message: "attribute_name must be set when TTL is enabled"
+  };
+
   // Attribute that stores item expiry time (epoch seconds).
-  string attribute_name = 1;
+  string attribute_name = 1 [
+    (buf.validate.field).string = {min_len: 1, max_len: 255, pattern: "^[A-Za-z0-9_.-]+$", ignore_empty: true}
+  ];
   // Whether TTL is active.
   bool enabled = 2;
 }
