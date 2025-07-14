@@ -91,14 +91,14 @@ message KeySchemaElement {
 // Determines which attributes are copied into an index.
 enum ProjectionType {
   PROJECTION_TYPE_UNSPECIFIED = 0;
-  ALL = 1;        // All attributes.
-  KEYS_ONLY = 2;  // Only key attributes.
-  INCLUDE = 3;    // Specific non-key attributes.
+  ALL = 1;                        // All attributes.
+  PROJECTION_KEYS_ONLY = 2;       // Only key attributes.
+  INCLUDE = 3;                    // Specific non-key attributes.
 }
 
 // Projection settings for a secondary index.
 message Projection {
-  ProjectionType projection_type = 1;   // Projection strategy.
+  ProjectionType projection_type = 1;     // Projection strategy.
   repeated string non_key_attributes = 2; // Non-key attributes to include when projection_type == INCLUDE.
 }
 
