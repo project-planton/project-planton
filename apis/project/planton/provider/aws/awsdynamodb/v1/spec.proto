@@ -34,11 +34,10 @@ message AwsDynamodbSpec {
 
   // Optional name of the primary sort (range) key; leave empty if the table is simple-key.
   string sort_key = 4 [
+    // When the field is empty no other constraints are applied.
     (buf.validate.field).string = {
-      ignore_empty: true,            // ← allow empty value to skip other checks
-      min_len: 1,
       max_len: 255,
-      pattern: "^[A-Za-z0-9_.-]+$"
+      pattern: "^[A-Za-z0-9_.-]*$"
     }
   ];
 
@@ -225,12 +224,11 @@ message GlobalSecondaryIndex {
     (buf.validate.field).required = true
   ];
 
+  // Optional sort key; may be empty.
   string sort_key = 3 [
     (buf.validate.field).string = {
-      ignore_empty: true,
-      min_len: 1,
       max_len: 255,
-      pattern: "^[A-Za-z0-9_.-]+$"
+      pattern: "^[A-Za-z0-9_.-]*$"
     }
   ];
 
