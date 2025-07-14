@@ -57,8 +57,13 @@ const (
 	CloudResourceKind_AwsIamUser         CloudResourceKind = 219
 	CloudResourceKind_AwsKmsKey          CloudResourceKind = 220
 	// 400–599: Azure resources
-	CloudResourceKind_AzureAksCluster CloudResourceKind = 400
-	CloudResourceKind_AzureKeyVault   CloudResourceKind = 401
+	CloudResourceKind_AzureAksCluster        CloudResourceKind = 400
+	CloudResourceKind_AzureAksNodePool       CloudResourceKind = 401
+	CloudResourceKind_AzureContainerRegistry CloudResourceKind = 402
+	CloudResourceKind_AzureDnsZone           CloudResourceKind = 403
+	CloudResourceKind_AzureKeyVault          CloudResourceKind = 404
+	CloudResourceKind_AzureVpc               CloudResourceKind = 405
+	CloudResourceKind_AzureNatGateway        CloudResourceKind = 406
 	// 600–799: GCP resources
 	CloudResourceKind_GcpArtifactRegistryRepo       CloudResourceKind = 600
 	CloudResourceKind_GcpCloudCdn                   CloudResourceKind = 601
@@ -145,7 +150,12 @@ var (
 		219: "AwsIamUser",
 		220: "AwsKmsKey",
 		400: "AzureAksCluster",
-		401: "AzureKeyVault",
+		401: "AzureAksNodePool",
+		402: "AzureContainerRegistry",
+		403: "AzureDnsZone",
+		404: "AzureKeyVault",
+		405: "AzureVpc",
+		406: "AzureNatGateway",
 		600: "GcpArtifactRegistryRepo",
 		601: "GcpCloudCdn",
 		602: "GcpCloudFunction",
@@ -227,7 +237,12 @@ var (
 		"AwsIamUser":                    219,
 		"AwsKmsKey":                     220,
 		"AzureAksCluster":               400,
-		"AzureKeyVault":                 401,
+		"AzureAksNodePool":              401,
+		"AzureContainerRegistry":        402,
+		"AzureDnsZone":                  403,
+		"AzureKeyVault":                 404,
+		"AzureVpc":                      405,
+		"AzureNatGateway":               406,
 		"GcpArtifactRegistryRepo":       600,
 		"GcpCloudCdn":                   601,
 		"GcpCloudFunction":              602,
@@ -312,7 +327,7 @@ var File_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto prot
 
 const file_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto_rawDesc = "" +
 	"\n" +
-	"Bproject/planton/shared/cloudresourcekind/cloud_resource_kind.proto\x12(project.planton.shared.cloudresourcekind*\xab\x0e\n" +
+	"Bproject/planton/shared/cloudresourcekind/cloud_resource_kind.proto\x12(project.planton.shared.cloudresourcekind*\x97\x0f\n" +
 	"\x11CloudResourceKind\x12\x0f\n" +
 	"\vunspecified\x10\x00\x12\x1d\n" +
 	"\x19FirstTestCloudApiResource\x10\x01\x12\x1e\n" +
@@ -345,8 +360,13 @@ const file_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto_ra
 	"\n" +
 	"AwsIamUser\x10\xdb\x01\x12\x0e\n" +
 	"\tAwsKmsKey\x10\xdc\x01\x12\x14\n" +
-	"\x0fAzureAksCluster\x10\x90\x03\x12\x12\n" +
-	"\rAzureKeyVault\x10\x91\x03\x12\x1c\n" +
+	"\x0fAzureAksCluster\x10\x90\x03\x12\x15\n" +
+	"\x10AzureAksNodePool\x10\x91\x03\x12\x1b\n" +
+	"\x16AzureContainerRegistry\x10\x92\x03\x12\x11\n" +
+	"\fAzureDnsZone\x10\x93\x03\x12\x12\n" +
+	"\rAzureKeyVault\x10\x94\x03\x12\r\n" +
+	"\bAzureVpc\x10\x95\x03\x12\x14\n" +
+	"\x0fAzureNatGateway\x10\x96\x03\x12\x1c\n" +
 	"\x17GcpArtifactRegistryRepo\x10\xd8\x04\x12\x10\n" +
 	"\vGcpCloudCdn\x10\xd9\x04\x12\x15\n" +
 	"\x10GcpCloudFunction\x10\xda\x04\x12\x10\n" +

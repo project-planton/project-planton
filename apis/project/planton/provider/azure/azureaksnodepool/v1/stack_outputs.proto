@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+package project.planton.provider.azure.azureaksnodepool.v1;
+
+// azure-aks-node-pool stack-outputs
+message AzureAksNodePoolStackOutputs {
+}

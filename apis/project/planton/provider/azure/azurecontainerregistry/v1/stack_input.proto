@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package project.planton.provider.azure.azurecontainerregistry.v1;
+
+import "project/planton/credential/azurecredential/v1/spec.proto";
+import "project/planton/provider/azure/azurecontainerregistry/v1/api.proto";
+import "project/planton/shared/iac/pulumi/pulumi.proto";
+import "project/planton/shared/iac.proto";
+import "project/planton/shared/iac/terraform/terraform.proto";
+
+//azure-container-registry stack-input
+message AzureContainerRegistryStackInput {
+  //iac-provisioner
+  project.planton.shared.IacProvisioner provisioner = 1;
+  //pulumi input required when the provisioner is pulumi
+  project.planton.shared.iac.pulumi.PulumiStackInfo pulumi = 2;
+  //terraform input required when the provisioner is terraform
+  project.planton.shared.iac.terraform.TerraformStackInfo terraform = 3;
+  //target api-resource
+  AzureContainerRegistry target = 4;
+  //provider-credential
+  project.planton.credential.azurecredential.v1.AzureCredentialSpec provider_credential = 5;
+}

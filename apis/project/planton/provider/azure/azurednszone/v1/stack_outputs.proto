@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+package project.planton.provider.azure.azurednszone.v1;
+
+// azure-dns-zone stack-outputs
+message AzureDnsZoneStackOutputs {
+}

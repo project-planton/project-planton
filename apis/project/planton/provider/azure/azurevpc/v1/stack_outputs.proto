@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+package project.planton.provider.azure.azurevpc.v1;
+
+// azure-vpc stack-outputs
+message AzureVpcStackOutputs {
+}

@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+package project.planton.provider.azure.azurecontainerregistry.v1;
+
+// azure-container-registry stack-outputs
+message AzureContainerRegistryStackOutputs {
+}

@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+package project.planton.provider.azure.azurenatgateway.v1;
+
+// azure-nat-gateway stack-outputs
+message AzureNatGatewayStackOutputs {
+}
