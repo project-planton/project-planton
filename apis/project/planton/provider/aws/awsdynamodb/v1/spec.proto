@@ -185,7 +185,7 @@ enum StreamViewType {
   NEW_IMAGE = 0;
   OLD_IMAGE = 1;
   NEW_AND_OLD_IMAGES = 2;
-  KEYS_ONLY = 3;
+  STREAM_KEYS_ONLY = 3; // Renamed to avoid duplication across enums.
 }
 
 // Server-side encryption settings.
