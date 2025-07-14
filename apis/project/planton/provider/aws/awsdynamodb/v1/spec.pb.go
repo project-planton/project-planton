@@ -7,6 +7,7 @@
 package awsdynamodbv1
 
 import (
+	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -508,8 +509,8 @@ func (x *AwsDynamodbSpec) GetDeletionProtectionEnabled() bool {
 // Defines a single attribute in the table or index.
 type AttributeDefinition struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	AttributeName string                 `protobuf:"bytes,1,opt,name=attribute_name,json=attributeName,proto3" json:"attribute_name,omitempty"`                                                                 // Attribute name (1–255 chars).
-	AttributeType AttributeType          `protobuf:"varint,2,opt,name=attribute_type,json=attributeType,proto3,enum=project.planton.provider.aws.awsdynamodb.v1.AttributeType" json:"attribute_type,omitempty"` // Data type stored for the attribute.
+	AttributeName string                 `protobuf:"bytes,1,opt,name=attribute_name,json=attributeName,proto3" json:"attribute_name,omitempty"`
+	AttributeType AttributeType          `protobuf:"varint,2,opt,name=attribute_type,json=attributeType,proto3,enum=project.planton.provider.aws.awsdynamodb.v1.AttributeType" json:"attribute_type,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -561,8 +562,8 @@ func (x *AttributeDefinition) GetAttributeType() AttributeType {
 // One element of a key schema.
 type KeySchemaElement struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	AttributeName string                 `protobuf:"bytes,1,opt,name=attribute_name,json=attributeName,proto3" json:"attribute_name,omitempty"`                                         // Name of the attribute.
-	KeyType       KeyType                `protobuf:"varint,2,opt,name=key_type,json=keyType,proto3,enum=project.planton.provider.aws.awsdynamodb.v1.KeyType" json:"key_type,omitempty"` // HASH or RANGE.
+	AttributeName string                 `protobuf:"bytes,1,opt,name=attribute_name,json=attributeName,proto3" json:"attribute_name,omitempty"`
+	KeyType       KeyType                `protobuf:"varint,2,opt,name=key_type,json=keyType,proto3,enum=project.planton.provider.aws.awsdynamodb.v1.KeyType" json:"key_type,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -614,8 +615,8 @@ func (x *KeySchemaElement) GetKeyType() KeyType {
 // Projection settings for a secondary index.
 type Projection struct {
 	state            protoimpl.MessageState `protogen:"open.v1"`
-	ProjectionType   ProjectionType         `protobuf:"varint,1,opt,name=projection_type,json=projectionType,proto3,enum=project.planton.provider.aws.awsdynamodb.v1.ProjectionType" json:"projection_type,omitempty"` // Projection strategy.
-	NonKeyAttributes []string               `protobuf:"bytes,2,rep,name=non_key_attributes,json=nonKeyAttributes,proto3" json:"non_key_attributes,omitempty"`                                                          // Non-key attributes to include when projection_type == INCLUDE.
+	ProjectionType   ProjectionType         `protobuf:"varint,1,opt,name=projection_type,json=projectionType,proto3,enum=project.planton.provider.aws.awsdynamodb.v1.ProjectionType" json:"projection_type,omitempty"`
+	NonKeyAttributes []string               `protobuf:"bytes,2,rep,name=non_key_attributes,json=nonKeyAttributes,proto3" json:"non_key_attributes,omitempty"`
 	unknownFields    protoimpl.UnknownFields
 	sizeCache        protoimpl.SizeCache
 }
@@ -667,8 +668,8 @@ func (x *Projection) GetNonKeyAttributes() []string {
 // Provisioned throughput settings applied to GSI replicas.
 type ProvisionedThroughputOverride struct {
 	state              protoimpl.MessageState `protogen:"open.v1"`
-	ReadCapacityUnits  int64                  `protobuf:"varint,1,opt,name=read_capacity_units,json=readCapacityUnits,proto3" json:"read_capacity_units,omitempty"`    // RCUs for the replica.
-	WriteCapacityUnits int64                  `protobuf:"varint,2,opt,name=write_capacity_units,json=writeCapacityUnits,proto3" json:"write_capacity_units,omitempty"` // WCUs for the replica.
+	ReadCapacityUnits  int64                  `protobuf:"varint,1,opt,name=read_capacity_units,json=readCapacityUnits,proto3" json:"read_capacity_units,omitempty"`
+	WriteCapacityUnits int64                  `protobuf:"varint,2,opt,name=write_capacity_units,json=writeCapacityUnits,proto3" json:"write_capacity_units,omitempty"`
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
 }
@@ -720,11 +721,11 @@ func (x *ProvisionedThroughputOverride) GetWriteCapacityUnits() int64 {
 // Global secondary index definition.
 type GlobalSecondaryIndex struct {
 	state              protoimpl.MessageState `protogen:"open.v1"`
-	IndexName          string                 `protobuf:"bytes,1,opt,name=index_name,json=indexName,proto3" json:"index_name,omitempty"`                               // Index name.
-	KeySchema          []*KeySchemaElement    `protobuf:"bytes,2,rep,name=key_schema,json=keySchema,proto3" json:"key_schema,omitempty"`                               // Partition/sort keys.
-	Projection         *Projection            `protobuf:"bytes,3,opt,name=projection,proto3" json:"projection,omitempty"`                                              // Attributes projected into the index.
-	ReadCapacityUnits  int64                  `protobuf:"varint,4,opt,name=read_capacity_units,json=readCapacityUnits,proto3" json:"read_capacity_units,omitempty"`    // RCUs (PROVISIONED only).
-	WriteCapacityUnits int64                  `protobuf:"varint,5,opt,name=write_capacity_units,json=writeCapacityUnits,proto3" json:"write_capacity_units,omitempty"` // WCUs (PROVISIONED only).
+	IndexName          string                 `protobuf:"bytes,1,opt,name=index_name,json=indexName,proto3" json:"index_name,omitempty"`
+	KeySchema          []*KeySchemaElement    `protobuf:"bytes,2,rep,name=key_schema,json=keySchema,proto3" json:"key_schema,omitempty"`
+	Projection         *Projection            `protobuf:"bytes,3,opt,name=projection,proto3" json:"projection,omitempty"`
+	ReadCapacityUnits  int64                  `protobuf:"varint,4,opt,name=read_capacity_units,json=readCapacityUnits,proto3" json:"read_capacity_units,omitempty"`
+	WriteCapacityUnits int64                  `protobuf:"varint,5,opt,name=write_capacity_units,json=writeCapacityUnits,proto3" json:"write_capacity_units,omitempty"`
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
 }
@@ -797,9 +798,9 @@ func (x *GlobalSecondaryIndex) GetWriteCapacityUnits() int64 {
 // Local secondary index definition.
 type LocalSecondaryIndex struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	IndexName     string                 `protobuf:"bytes,1,opt,name=index_name,json=indexName,proto3" json:"index_name,omitempty"` // Index name.
-	KeySchema     []*KeySchemaElement    `protobuf:"bytes,2,rep,name=key_schema,json=keySchema,proto3" json:"key_schema,omitempty"` // Must share HASH key with table.
-	Projection    *Projection            `protobuf:"bytes,3,opt,name=projection,proto3" json:"projection,omitempty"`                // Attributes projected into the index.
+	IndexName     string                 `protobuf:"bytes,1,opt,name=index_name,json=indexName,proto3" json:"index_name,omitempty"`
+	KeySchema     []*KeySchemaElement    `protobuf:"bytes,2,rep,name=key_schema,json=keySchema,proto3" json:"key_schema,omitempty"`
+	Projection    *Projection            `protobuf:"bytes,3,opt,name=projection,proto3" json:"projection,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -858,8 +859,8 @@ func (x *LocalSecondaryIndex) GetProjection() *Projection {
 // DynamoDB Streams configuration.
 type StreamSpecification struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Enabled       bool                   `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`                                                                                   // When true, stream is enabled.
-	ViewType      StreamViewType         `protobuf:"varint,2,opt,name=view_type,json=viewType,proto3,enum=project.planton.provider.aws.awsdynamodb.v1.StreamViewType" json:"view_type,omitempty"` // Data captured in the stream.
+	Enabled       bool                   `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`
+	ViewType      StreamViewType         `protobuf:"varint,2,opt,name=view_type,json=viewType,proto3,enum=project.planton.provider.aws.awsdynamodb.v1.StreamViewType" json:"view_type,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -911,8 +912,8 @@ func (x *StreamSpecification) GetViewType() StreamViewType {
 // TTL settings for the table.
 type TimeToLive struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Enabled       bool                   `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`                                 // When true, TTL is active.
-	AttributeName string                 `protobuf:"bytes,2,opt,name=attribute_name,json=attributeName,proto3" json:"attribute_name,omitempty"` // Attribute that stores the Unix epoch expiry time.
+	Enabled       bool                   `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`
+	AttributeName string                 `protobuf:"bytes,2,opt,name=attribute_name,json=attributeName,proto3" json:"attribute_name,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -964,8 +965,8 @@ func (x *TimeToLive) GetAttributeName() string {
 // Server-side encryption (SSE) configuration.
 type SSESpecification struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
-	Enabled        bool                   `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`                                        // Enables SSE using AES-256 or AWS KMS.
-	KmsMasterKeyId string                 `protobuf:"bytes,2,opt,name=kms_master_key_id,json=kmsMasterKeyId,proto3" json:"kms_master_key_id,omitempty"` // ARN or alias of the KMS key (optional).
+	Enabled        bool                   `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`
+	KmsMasterKeyId string                 `protobuf:"bytes,2,opt,name=kms_master_key_id,json=kmsMasterKeyId,proto3" json:"kms_master_key_id,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -1017,8 +1018,8 @@ func (x *SSESpecification) GetKmsMasterKeyId() string {
 // Key-value pair used for tagging AWS resources.
 type Tag struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Key           string                 `protobuf:"bytes,1,opt,name=key,proto3" json:"key,omitempty"`     // Tag key (case-sensitive).
-	Value         string                 `protobuf:"bytes,2,opt,name=value,proto3" json:"value,omitempty"` // Tag value.
+	Key           string                 `protobuf:"bytes,1,opt,name=key,proto3" json:"key,omitempty"`
+	Value         string                 `protobuf:"bytes,2,opt,name=value,proto3" json:"value,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1071,71 +1072,78 @@ var File_project_planton_provider_aws_awsdynamodb_v1_spec_proto protoreflect.Fil
 
 const file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"6project/planton/provider/aws/awsdynamodb/v1/spec.proto\x12+project.planton.provider.aws.awsdynamodb.v1\"\xfc\t\n" +
-	"\x0fAwsDynamodbSpec\x12\x1d\n" +
+	"6project/planton/provider/aws/awsdynamodb/v1/spec.proto\x12+project.planton.provider.aws.awsdynamodb.v1\x1a\x1bbuf/validate/validate.proto\"\xd1\x10\n" +
+	"\x0fAwsDynamodbSpec\x12<\n" +
 	"\n" +
-	"table_name\x18\x01 \x01(\tR\ttableName\x12[\n" +
-	"\fbilling_mode\x18\x02 \x01(\x0e28.project.planton.provider.aws.awsdynamodb.v1.BillingModeR\vbillingMode\x12.\n" +
-	"\x13read_capacity_units\x18\x03 \x01(\x03R\x11readCapacityUnits\x120\n" +
-	"\x14write_capacity_units\x18\x04 \x01(\x03R\x12writeCapacityUnits\x12u\n" +
-	"\x15attribute_definitions\x18\x05 \x03(\v2@.project.planton.provider.aws.awsdynamodb.v1.AttributeDefinitionR\x14attributeDefinitions\x12\\\n" +
+	"table_name\x18\x01 \x01(\tB\x1d\xbaH\x1ar\x18\x10\x03\x18\xff\x012\x11^[A-Za-z0-9_.-]+$R\ttableName\x12g\n" +
+	"\fbilling_mode\x18\x02 \x01(\x0e28.project.planton.provider.aws.awsdynamodb.v1.BillingModeB\n" +
+	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\vbillingMode\x127\n" +
+	"\x13read_capacity_units\x18\x03 \x01(\x03B\a\xbaH\x04\"\x02(\x00R\x11readCapacityUnits\x129\n" +
+	"\x14write_capacity_units\x18\x04 \x01(\x03B\a\xbaH\x04\"\x02(\x00R\x12writeCapacityUnits\x12\x81\x01\n" +
+	"\x15attribute_definitions\x18\x05 \x03(\v2@.project.planton.provider.aws.awsdynamodb.v1.AttributeDefinitionB\n" +
+	"\xbaH\a\x92\x01\x04\b\x01\x18\x01R\x14attributeDefinitions\x12j\n" +
 	"\n" +
-	"key_schema\x18\x06 \x03(\v2=.project.planton.provider.aws.awsdynamodb.v1.KeySchemaElementR\tkeySchema\x12{\n" +
-	"\x18global_secondary_indexes\x18\a \x03(\v2A.project.planton.provider.aws.awsdynamodb.v1.GlobalSecondaryIndexR\x16globalSecondaryIndexes\x12x\n" +
-	"\x17local_secondary_indexes\x18\b \x03(\v2@.project.planton.provider.aws.awsdynamodb.v1.LocalSecondaryIndexR\x15localSecondaryIndexes\x12s\n" +
+	"key_schema\x18\x06 \x03(\v2=.project.planton.provider.aws.awsdynamodb.v1.KeySchemaElementB\f\xbaH\t\x92\x01\x06\b\x01\x10\x02\x18\x01R\tkeySchema\x12\x85\x01\n" +
+	"\x18global_secondary_indexes\x18\a \x03(\v2A.project.planton.provider.aws.awsdynamodb.v1.GlobalSecondaryIndexB\b\xbaH\x05\x92\x01\x02\x18\x01R\x16globalSecondaryIndexes\x12\x82\x01\n" +
+	"\x17local_secondary_indexes\x18\b \x03(\v2@.project.planton.provider.aws.awsdynamodb.v1.LocalSecondaryIndexB\b\xbaH\x05\x92\x01\x02\x18\x01R\x15localSecondaryIndexes\x12s\n" +
 	"\x14stream_specification\x18\t \x01(\v2@.project.planton.provider.aws.awsdynamodb.v1.StreamSpecificationR\x13streamSpecification\x12I\n" +
 	"\x03ttl\x18\n" +
 	" \x01(\v27.project.planton.provider.aws.awsdynamodb.v1.TimeToLiveR\x03ttl\x12j\n" +
 	"\x11sse_specification\x18\v \x01(\v2=.project.planton.provider.aws.awsdynamodb.v1.SSESpecificationR\x10sseSpecification\x123\n" +
-	"\x16point_in_time_recovery\x18\f \x01(\bR\x13pointInTimeRecovery\x12X\n" +
-	"\vtable_class\x18\r \x01(\x0e27.project.planton.provider.aws.awsdynamodb.v1.TableClassR\n" +
+	"\x16point_in_time_recovery\x18\f \x01(\bR\x13pointInTimeRecovery\x12d\n" +
+	"\vtable_class\x18\r \x01(\x0e27.project.planton.provider.aws.awsdynamodb.v1.TableClassB\n" +
+	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\n" +
 	"tableClass\x12D\n" +
 	"\x04tags\x18\x0e \x03(\v20.project.planton.provider.aws.awsdynamodb.v1.TagR\x04tags\x12>\n" +
-	"\x1bdeletion_protection_enabled\x18\x0f \x01(\bR\x19deletionProtectionEnabled\"\x9f\x01\n" +
-	"\x13AttributeDefinition\x12%\n" +
-	"\x0eattribute_name\x18\x01 \x01(\tR\rattributeName\x12a\n" +
-	"\x0eattribute_type\x18\x02 \x01(\x0e2:.project.planton.provider.aws.awsdynamodb.v1.AttributeTypeR\rattributeType\"\x8a\x01\n" +
-	"\x10KeySchemaElement\x12%\n" +
-	"\x0eattribute_name\x18\x01 \x01(\tR\rattributeName\x12O\n" +
-	"\bkey_type\x18\x02 \x01(\x0e24.project.planton.provider.aws.awsdynamodb.v1.KeyTypeR\akeyType\"\xa0\x01\n" +
+	"\x1bdeletion_protection_enabled\x18\x0f \x01(\bR\x19deletionProtectionEnabled:\xd8\x05\xbaH\xd4\x05\x1a\xa6\x01\x12AWhen billing_mode is PROVISIONED, read/write capacity must be > 0\x1aa(this.billing_mode == 1) ? (this.read_capacity_units > 0 && this.write_capacity_units > 0) : true\x1a\xb3\x01\x12LWhen billing_mode is PAY_PER_REQUEST, read/write capacity must be 0 or unset\x1ac(this.billing_mode == 2) ? (this.read_capacity_units == 0 && this.write_capacity_units == 0) : true\x1a\xb5\x01\x122GSI capacity units must be > 0 in PROVISIONED mode\x1a\x7f(this.billing_mode == 1) ? this.global_secondary_indexes.all(i, i.read_capacity_units > 0 && i.write_capacity_units > 0) : true\x1a\xba\x01\x124GSI capacity units must be 0 in PAY_PER_REQUEST mode\x1a\x81\x01(this.billing_mode == 2) ? this.global_secondary_indexes.all(i, i.read_capacity_units == 0 && i.write_capacity_units == 0) : true\"\xca\x01\n" +
+	"\x13AttributeDefinition\x12D\n" +
+	"\x0eattribute_name\x18\x01 \x01(\tB\x1d\xbaH\x1ar\x18\x10\x01\x18\xff\x012\x11^[A-Za-z0-9_.-]+$R\rattributeName\x12m\n" +
+	"\x0eattribute_type\x18\x02 \x01(\x0e2:.project.planton.provider.aws.awsdynamodb.v1.AttributeTypeB\n" +
+	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\rattributeType\"\xb5\x01\n" +
+	"\x10KeySchemaElement\x12D\n" +
+	"\x0eattribute_name\x18\x01 \x01(\tB\x1d\xbaH\x1ar\x18\x10\x01\x18\xff\x012\x11^[A-Za-z0-9_.-]+$R\rattributeName\x12[\n" +
+	"\bkey_type\x18\x02 \x01(\x0e24.project.planton.provider.aws.awsdynamodb.v1.KeyTypeB\n" +
+	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\akeyType\"\x92\x03\n" +
 	"\n" +
-	"Projection\x12d\n" +
-	"\x0fprojection_type\x18\x01 \x01(\x0e2;.project.planton.provider.aws.awsdynamodb.v1.ProjectionTypeR\x0eprojectionType\x12,\n" +
-	"\x12non_key_attributes\x18\x02 \x03(\tR\x10nonKeyAttributes\"\x81\x01\n" +
-	"\x1dProvisionedThroughputOverride\x12.\n" +
-	"\x13read_capacity_units\x18\x01 \x01(\x03R\x11readCapacityUnits\x120\n" +
-	"\x14write_capacity_units\x18\x02 \x01(\x03R\x12writeCapacityUnits\"\xce\x02\n" +
-	"\x14GlobalSecondaryIndex\x12\x1d\n" +
+	"Projection\x12p\n" +
+	"\x0fprojection_type\x18\x01 \x01(\x0e2;.project.planton.provider.aws.awsdynamodb.v1.ProjectionTypeB\n" +
+	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\x0eprojectionType\x12R\n" +
+	"\x12non_key_attributes\x18\x02 \x03(\tB$\xbaH!\x92\x01\x1e\x18\x01\"\x1ar\x18\x10\x01\x18\xff\x012\x11^[A-Za-z0-9_.-]+$R\x10nonKeyAttributes:\xbd\x01\xbaH\xb9\x01\x1a\xb6\x01\x12Hnon_key_attributes must be provided only when projection_type == INCLUDE\x1aj(this.projection_type == 3) ? (this.non_key_attributes.size() > 0) : (this.non_key_attributes.size() == 0)\"\x93\x01\n" +
+	"\x1dProvisionedThroughputOverride\x127\n" +
+	"\x13read_capacity_units\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02(\x00R\x11readCapacityUnits\x129\n" +
+	"\x14write_capacity_units\x18\x02 \x01(\x03B\a\xbaH\x04\"\x02(\x00R\x12writeCapacityUnits\"\x8d\x03\n" +
+	"\x14GlobalSecondaryIndex\x12<\n" +
 	"\n" +
-	"index_name\x18\x01 \x01(\tR\tindexName\x12\\\n" +
+	"index_name\x18\x01 \x01(\tB\x1d\xbaH\x1ar\x18\x10\x03\x18\xff\x012\x11^[A-Za-z0-9_.-]+$R\tindexName\x12j\n" +
 	"\n" +
-	"key_schema\x18\x02 \x03(\v2=.project.planton.provider.aws.awsdynamodb.v1.KeySchemaElementR\tkeySchema\x12W\n" +
-	"\n" +
-	"projection\x18\x03 \x01(\v27.project.planton.provider.aws.awsdynamodb.v1.ProjectionR\n" +
-	"projection\x12.\n" +
-	"\x13read_capacity_units\x18\x04 \x01(\x03R\x11readCapacityUnits\x120\n" +
-	"\x14write_capacity_units\x18\x05 \x01(\x03R\x12writeCapacityUnits\"\xeb\x01\n" +
-	"\x13LocalSecondaryIndex\x12\x1d\n" +
-	"\n" +
-	"index_name\x18\x01 \x01(\tR\tindexName\x12\\\n" +
-	"\n" +
-	"key_schema\x18\x02 \x03(\v2=.project.planton.provider.aws.awsdynamodb.v1.KeySchemaElementR\tkeySchema\x12W\n" +
+	"key_schema\x18\x02 \x03(\v2=.project.planton.provider.aws.awsdynamodb.v1.KeySchemaElementB\f\xbaH\t\x92\x01\x06\b\x01\x10\x02\x18\x01R\tkeySchema\x12W\n" +
 	"\n" +
 	"projection\x18\x03 \x01(\v27.project.planton.provider.aws.awsdynamodb.v1.ProjectionR\n" +
-	"projection\"\x89\x01\n" +
+	"projection\x127\n" +
+	"\x13read_capacity_units\x18\x04 \x01(\x03B\a\xbaH\x04\"\x02(\x00R\x11readCapacityUnits\x129\n" +
+	"\x14write_capacity_units\x18\x05 \x01(\x03B\a\xbaH\x04\"\x02(\x00R\x12writeCapacityUnits\"\x98\x02\n" +
+	"\x13LocalSecondaryIndex\x12<\n" +
+	"\n" +
+	"index_name\x18\x01 \x01(\tB\x1d\xbaH\x1ar\x18\x10\x03\x18\xff\x012\x11^[A-Za-z0-9_.-]+$R\tindexName\x12j\n" +
+	"\n" +
+	"key_schema\x18\x02 \x03(\v2=.project.planton.provider.aws.awsdynamodb.v1.KeySchemaElementB\f\xbaH\t\x92\x01\x06\b\x02\x10\x02\x18\x01R\tkeySchema\x12W\n" +
+	"\n" +
+	"projection\x18\x03 \x01(\v27.project.planton.provider.aws.awsdynamodb.v1.ProjectionR\n" +
+	"projection\"\xf3\x01\n" +
 	"\x13StreamSpecification\x12\x18\n" +
-	"\aenabled\x18\x01 \x01(\bR\aenabled\x12X\n" +
-	"\tview_type\x18\x02 \x01(\x0e2;.project.planton.provider.aws.awsdynamodb.v1.StreamViewTypeR\bviewType\"M\n" +
+	"\aenabled\x18\x01 \x01(\bR\aenabled\x12b\n" +
+	"\tview_type\x18\x02 \x01(\x0e2;.project.planton.provider.aws.awsdynamodb.v1.StreamViewTypeB\b\xbaH\x05\x82\x01\x02\x10\x01R\bviewType:^\xbaH[\x1aY\x12,view_type must be set when stream is enabled\x1a)this.enabled ? this.view_type != 0 : true\"\xd9\x01\n" +
 	"\n" +
 	"TimeToLive\x12\x18\n" +
-	"\aenabled\x18\x01 \x01(\bR\aenabled\x12%\n" +
-	"\x0eattribute_name\x18\x02 \x01(\tR\rattributeName\"W\n" +
+	"\aenabled\x18\x01 \x01(\bR\aenabled\x12D\n" +
+	"\x0eattribute_name\x18\x02 \x01(\tB\x1d\xbaH\x1ar\x18\x10\x01\x18\xff\x012\x11^[A-Za-z0-9_.-]+$R\rattributeName:k\xbaHh\x1af\x12.attribute_name must be set when TTL is enabled\x1a4this.enabled ? this.attribute_name.size() > 0 : true\"a\n" +
 	"\x10SSESpecification\x12\x18\n" +
-	"\aenabled\x18\x01 \x01(\bR\aenabled\x12)\n" +
-	"\x11kms_master_key_id\x18\x02 \x01(\tR\x0ekmsMasterKeyId\"-\n" +
-	"\x03Tag\x12\x10\n" +
-	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value*Q\n" +
+	"\aenabled\x18\x01 \x01(\bR\aenabled\x123\n" +
+	"\x11kms_master_key_id\x18\x02 \x01(\tB\b\xbaH\x05r\x03\x18\x80\x10R\x0ekmsMasterKeyId\"C\n" +
+	"\x03Tag\x12\x1c\n" +
+	"\x03key\x18\x01 \x01(\tB\n" +
+	"\xbaH\ar\x05\x10\x01\x18\x80\x01R\x03key\x12\x1e\n" +
+	"\x05value\x18\x02 \x01(\tB\b\xbaH\x05r\x03\x18\x80\x02R\x05value*Q\n" +
 	"\vBillingMode\x12\x1c\n" +
 	"\x18BILLING_MODE_UNSPECIFIED\x10\x00\x12\x0f\n" +
 	"\vPROVISIONED\x10\x01\x12\x13\n" +
