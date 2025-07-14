@@ -1,0 +1,166 @@
+syntax = "proto3";
+
+package project.planton.provider.aws.awsdynamodb.v1;
+
+// Represents an Amazon DynamoDB table within AWS.
+message AwsDynamodbSpec {
+  // Name of the DynamoDB table; must be unique per account & region.
+  string table_name = 1;
+
+  // Capacity billing mode.
+  BillingMode billing_mode = 2;
+
+  // Provisioned capacity settings (ignored when billing_mode is PAY_PER_REQUEST).
+  ProvisionedThroughput provisioned_throughput = 3;
+
+  // Definitions of all attributes referenced by keys or indexes.
+  repeated AttributeDefinition attribute_definitions = 4;
+
+  // Primary key schema (hash and optional range key).
+  repeated KeySchemaElement key_schema = 5;
+
+  // Global secondary index configurations.
+  repeated GlobalSecondaryIndex global_secondary_indexes = 6;
+
+  // Local secondary index configurations.
+  repeated LocalSecondaryIndex local_secondary_indexes = 7;
+
+  // DynamoDB Streams configuration.
+  StreamSpecification stream_specification = 8;
+
+  // Time-to-live configuration for automatic item expiration.
+  TTLSpecification ttl_specification = 9;
+
+  // Point-in-time recovery (continuous backup) settings.
+  PointInTimeRecovery point_in_time_recovery = 10;
+
+  // Server-side encryption settings.
+  SSESpecification sse_specification = 11;
+
+  // Storage class for the table.
+  TableClass table_class = 12;
+
+  // Prevents accidental deletion when true.
+  bool deletion_protection_enabled = 13;
+
+  // Key-value tags applied to the table.
+  repeated Tag tags = 14;
+}
+
+// ---------------------------------------------------------------------------
+// Supporting types
+// ---------------------------------------------------------------------------
+
+// Billing modes supported by DynamoDB.
+enum BillingMode {
+  BILLING_MODE_UNSPECIFIED = 0;
+  PROVISIONED = 1;
+  PAY_PER_REQUEST = 2;
+}
+
+// Read / write capacity settings for PROVISIONED mode.
+message ProvisionedThroughput {
+  int64 read_capacity_units = 1;  // Maximum strongly-consistent reads per second.
+  int64 write_capacity_units = 2; // Maximum writes per second.
+}
+
+// DynamoDB attribute data types.
+enum AttributeType {
+  ATTRIBUTE_TYPE_UNSPECIFIED = 0;
+  STRING = 1; // S
+  NUMBER = 2; // N
+  BINARY = 3; // B
+}
+
+// Definition of an attribute used in keys or indexes.
+message AttributeDefinition {
+  string attribute_name = 1;
+  AttributeType attribute_type = 2;
+}
+
+// Key element for a table or index.
+enum KeyType {
+  KEY_TYPE_UNSPECIFIED = 0;
+  HASH = 1;  // Partition key
+  RANGE = 2; // Sort key
+}
+
+message KeySchemaElement {
+  string attribute_name = 1;
+  KeyType key_type = 2;
+}
+
+// Projection behaviour for secondary indexes.
+enum ProjectionType {
+  PROJECTION_TYPE_UNSPECIFIED = 0;
+  ALL = 1;
+  KEYS_ONLY = 2;
+  INCLUDE = 3;
+}
+
+message Projection {
+  ProjectionType projection_type = 1;
+  // Attributes included in the index when projection_type = INCLUDE.
+  repeated string non_key_attributes = 2;
+}
+
+// Global secondary index definition.
+message GlobalSecondaryIndex {
+  string index_name = 1;
+  repeated KeySchemaElement key_schema = 2;
+  Projection projection = 3;
+  // Separate capacity for the index (only for PROVISIONED mode).
+  ProvisionedThroughput provisioned_throughput = 4;
+}
+
+// Local secondary index definition.
+message LocalSecondaryIndex {
+  string index_name = 1;
+  repeated KeySchemaElement key_schema = 2;
+  Projection projection = 3;
+}
+
+// Stream view types.
+enum StreamViewType {
+  STREAM_VIEW_TYPE_UNSPECIFIED = 0;
+  NEW_IMAGE = 1;
+  OLD_IMAGE = 2;
+  NEW_AND_OLD_IMAGES = 3;
+  KEYS_ONLY = 4;
+}
+
+// DynamoDB Streams configuration.
+message StreamSpecification {
+  bool stream_enabled = 1;
+  StreamViewType stream_view_type = 2;
+}
+
+// Time-to-live settings.
+message TTLSpecification {
+  bool enabled = 1;
+  string attribute_name = 2; // Attribute storing the TTL timestamp (in UNIX epoch seconds).
+}
+
+// Continuous backup / point-in-time recovery.
+message PointInTimeRecovery {
+  bool enabled = 1;
+}
+
+// Server-side encryption settings.
+message SSESpecification {
+  bool enabled = 1;       // When false, DynamoDB uses AWS‐owned keys.
+  string kms_key_arn = 2; // Optional KMS CMK ARN when enabled is true.
+}
+
+// Table storage classes.
+enum TableClass {
+  TABLE_CLASS_UNSPECIFIED = 0;
+  STANDARD = 1;
+  STANDARD_INFREQUENT_ACCESS = 2;
+}
+
+// Tag structure.
+message Tag {
+  string key = 1;
+  string value = 2;
+}
