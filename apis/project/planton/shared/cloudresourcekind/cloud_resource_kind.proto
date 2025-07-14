@@ -103,15 +103,15 @@ enum CloudResourceKind {
   SolrOperatorKubernetes = 830;
 
   // 1200–1499: DigitalOcean resources
-  DigitalOceanDroplet = 1200;
-  DigitalOceanVpc = 1201;
-  DigitalOceanFirewall = 1202;
+  DigitalOceanBucket = 1200;
+  DigitalOceanContainerRegistry = 1201;
+  DigitalOceanDatabaseCluster = 1202;
   DigitalOceanDnsZone = 1203;
-  DigitalOceanLoadBalancer = 1204;
-  DigitalOceanSpacesBucket = 1205;
-  DigitalOceanVolume = 1206;
-  DigitalOceanDatabaseCluster = 1207;
-  DigitalOceanContainerRegistry = 1208;
-  DigitalOceanKubernetesCluster = 1209;
-  DigitalOceanKubernetesClusterNodePool = 1210;
+  DigitalOceanDroplet = 1204;
+  DigitalOceanFirewall = 1205;
+  DigitalOceanKubernetesCluster = 1206;
+  DigitalOceanKubernetesNodePool = 1207;
+  DigitalOceanLoadBalancer = 1208;
+  DigitalOceanVolume = 1209;
+  DigitalOceanVpc = 1210;
 }

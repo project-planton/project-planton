@@ -1,0 +1,93 @@
+syntax = "proto3";
+
+package project.planton.provider.digitalocean.digitaloceanvpc.v1;
+
+import "buf/validate/validate.proto";
+import "project/planton/shared/foreignkey/v1/foreign_key.proto";
+import "project/planton/shared/options/options.proto";
+import "project/planton/provider/digitalocean/region.proto";
+
+// Supported Droplet size slugs (plans).
+enum DigitalOceanVPCSize {
+  digital_ocean_vpc_size_unspecified = 0;
+  s_2vcpu_4gb = 1;  // basic: 2 vCPUs, 4 GB RAM
+  s_4vcpu_8gb = 2;  // basic: 4 vCPUs, 8 GB RAM
+  g_2vcpu_8gb = 3;  // general purpose: 2 vCPUs (dedicated), 8 GB RAM
+  g_4vcpu_16gb = 4;  // general purpose: 4 vCPUs (dedicated), 16 GB RAM
+}
+
+// Timezone options for Droplet’s system clock.
+enum DigitalOceanVPCTimezone {
+  utc = 0;  // coordinated universal time
+  local = 1;  // local timezone
+}
+
+// DigitalOceanVPCSpec defines the user configuration for a DigitalOcean Droplet (VM).
+message DigitalOceanVPCSpec {
+  // Enforce each SSH key fingerprint is literal or a reference.
+  option (buf.validate.message).cel = {
+    id: "ssh_key_format",
+    message: "each ssh_key_fingerprint must be a 16-byte hex fingerprint or a reference",
+    expression: "ssh_key_fingerprints.all(x, x.value.matches('^[0-9a-f]{2}(:[0-9a-f]{2}){15}$') || x.value_from.name != \"\")"
+  };
+
+  // droplet hostname (DNS-compatible, <=63 chars)
+  string name = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.pattern = "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$",
+    (buf.validate.field).string.max_len = 63
+  ];
+
+  // region slug (datacenter location for the droplet)
+  DigitalOceanRegion region = 2 [
+    (buf.validate.field).required = true
+  ];
+
+  // droplet size slug (plan identifier)
+  DigitalOceanVPCSize size = 3 [
+    (buf.validate.field).required = true
+  ];
+
+  // image slug for the droplet base image (e.g. "ubuntu-22-04-x64")
+  string image = 4 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.pattern = "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"
+  ];
+
+  // target vpc network uuid for the droplet
+  project.planton.shared.foreignkey.v1.StringValueOrRef vpc = 6 [
+    (buf.validate.field).required = true,
+    (project.planton.shared.foreignkey.v1.default_kind) = DigitalOceanVpc,
+    (project.planton.shared.foreignkey.v1.default_kind_field_path) = "status.outputs.vpc_id"
+  ];
+
+  // enable IPv6 networking (disabled by default)
+  bool enable_ipv6 = 7;
+
+  // enable automated backups (disabled by default)
+  bool enable_backups = 8;
+
+  // disable digitalocean monitoring agent (monitoring on by default)
+  bool disable_monitoring = 9;
+
+  // block storage volumes to attach (must reside in same region)
+  repeated project.planton.shared.foreignkey.v1.StringValueOrRef volume_ids = 10 [
+    (project.planton.shared.foreignkey.v1.default_kind) = DigitalOceanVolume,
+    (project.planton.shared.foreignkey.v1.default_kind_field_path) = "status.outputs.volume_id"
+  ];
+
+  // tags to apply to the droplet (must be unique)
+  repeated string tags = 11 [
+    (buf.validate.field).repeated.unique = true
+  ];
+
+  // cloud-init user data script (<=32 KiB)
+  string user_data = 12 [
+    (buf.validate.field).string.max_bytes = 32768
+  ];
+
+  // timezone setting for the droplet’s clock (default: UTC)
+  DigitalOceanVPCTimezone timezone = 13 [
+    (project.planton.shared.options.default) = "UTC"
+  ];
+}
