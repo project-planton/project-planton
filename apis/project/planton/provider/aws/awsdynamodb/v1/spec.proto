@@ -1,0 +1,145 @@
+syntax = "proto3";
+
+package project.planton.provider.aws.awsdynamodb.v1;
+
+option go_package = "project/planton/provider/aws/awsdynamodb/v1;awsdynamodbpb";
+
+// AwsDynamodbSpec represents an Amazon DynamoDB table and its key
+// configuration, capacity model, encryption, indexing and other
+// commonly-used features.
+message AwsDynamodbSpec {
+  // Name of the DynamoDB table.
+  string table_name = 1;
+
+  // Definitions for every attribute referenced by the table or any index.
+  repeated AttributeDefinition attribute_definitions = 2;
+
+  // Primary key schema (partition key and optional sort key).
+  repeated KeySchemaElement key_schema = 3;
+
+  // How the table is billed (PROVISIONED or PAY_PER_REQUEST).
+  BillingMode billing_mode = 4;
+
+  // Provisioned capacity settings (required if billing_mode == PROVISIONED).
+  ProvisionedThroughput provisioned_throughput = 5;
+
+  // Definitions for global secondary indexes (GSIs).
+  repeated GlobalSecondaryIndex global_secondary_indexes = 6;
+
+  // Definitions for local secondary indexes (LSIs).
+  repeated LocalSecondaryIndex local_secondary_indexes = 7;
+
+  // DynamoDB Streams configuration.
+  StreamSpecification stream_specification = 8;
+
+  // Time-to-live (TTL) configuration for automatic item expiration.
+  TimeToLiveSpecification ttl_specification = 9;
+
+  // Server-side encryption settings.
+  SSESpecification sse_specification = 10;
+
+  // Enables point-in-time recovery (continuous backups).
+  bool point_in_time_recovery_enabled = 11;
+
+  // Key/value tags applied to the table.
+  map<string, string> tags = 12;
+}
+
+// Allowed scalar attribute types.
+enum AttributeType {
+  ATTRIBUTE_TYPE_UNSPECIFIED = 0; // Not specified.
+  STRING = 1;  // "S"
+  NUMBER = 2;  // "N"
+  BINARY = 3;  // "B"
+}
+
+// Describes one attribute and its data type.
+message AttributeDefinition {
+  string attribute_name = 1;     // Name of the attribute.
+  AttributeType attribute_type = 2; // Data type.
+}
+
+// Identifies an attributes role in a key schema.
+message KeySchemaElement {
+  string attribute_name = 1; // Name of the attribute.
+  KeyType key_type = 2;      // HASH (partition) or RANGE (sort).
+}
+
+enum KeyType {
+  KEY_TYPE_UNSPECIFIED = 0;
+  HASH = 1;  // Partition key.
+  RANGE = 2; // Sort key.
+}
+
+// Provisioned capacity units.
+message ProvisionedThroughput {
+  int64 read_capacity_units = 1;  // Read capacity units (RCU).
+  int64 write_capacity_units = 2; // Write capacity units (WCU).
+}
+
+enum BillingMode {
+  BILLING_MODE_UNSPECIFIED = 0;
+  PROVISIONED = 1;     // Fixed RCU/WCU.
+  PAY_PER_REQUEST = 2; // On-demand.
+}
+
+// Projection determines which attributes are copied into an index.
+message Projection {
+  ProjectionType projection_type = 1;   // What to project.
+  repeated string non_key_attributes = 2; // When INCLUDE, list of attrs.
+}
+
+enum ProjectionType {
+  PROJECTION_TYPE_UNSPECIFIED = 0;
+  ALL = 1;
+  KEYS_ONLY = 2;
+  INCLUDE = 3;
+}
+
+// Global secondary index definition.
+message GlobalSecondaryIndex {
+  string index_name = 1;                   // Name of the GSI.
+  repeated KeySchemaElement key_schema = 2; // Key schema for the GSI.
+  Projection projection = 3;              // Projection settings.
+  ProvisionedThroughput provisioned_throughput = 4; // Capacity (GSI level).
+}
+
+// Local secondary index definition.
+message LocalSecondaryIndex {
+  string index_name = 1;                   // Name of the LSI.
+  repeated KeySchemaElement key_schema = 2; // Must share HASH key with table.
+  Projection projection = 3;              // Projection settings.
+}
+
+// Stream settings for a table.
+message StreamSpecification {
+  bool stream_enabled = 1;         // Enable streams.
+  StreamViewType stream_view_type = 2; // Type of data captured.
+}
+
+enum StreamViewType {
+  STREAM_VIEW_TYPE_UNSPECIFIED = 0;
+  NEW_IMAGE = 1;
+  OLD_IMAGE = 2;
+  NEW_AND_OLD_IMAGES = 3;
+  KEYS_ONLY = 4;
+}
+
+// TTL (Time-to-Live) settings.
+message TimeToLiveSpecification {
+  bool ttl_enabled = 1;      // Enable TTL.
+  string attribute_name = 2; // Attribute storing expiration epoch time.
+}
+
+// Server-side encryption details.
+message SSESpecification {
+  bool enabled = 1;              // Enable SSE.
+  SSEType sse_type = 2;          // Encryption type.
+  string kms_master_key_id = 3;  // KMS key ARN when sse_type == KMS.
+}
+
+enum SSEType {
+  SSE_TYPE_UNSPECIFIED = 0;
+  AES256 = 1;
+  KMS = 2;
+}
