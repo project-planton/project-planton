@@ -8,7 +8,7 @@ import (
     . "github.com/onsi/ginkgo/v2"
     . "github.com/onsi/gomega"
 
-    awsdbpb "github.com/project-planton/project-planton/project/planton/provider/aws/awsdynamodb/v1"
+    awsdbpb "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsdynamodb/v1"
 )
 
 var validator protovalidate.Validator
