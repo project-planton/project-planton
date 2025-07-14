@@ -128,7 +128,7 @@ message Projection {
 enum ProjectionType {
   PROJECTION_TYPE_UNSPECIFIED = 0;
   ALL = 1;         // All attributes.
-  KEYS_ONLY = 2;   // Only key attributes.
+  KEYS_ONLY_PROJECTION = 2;   // Only key attributes (renamed to avoid duplicate symbol).
   INCLUDE = 3;     // Specific non-key attributes.
 }
 
