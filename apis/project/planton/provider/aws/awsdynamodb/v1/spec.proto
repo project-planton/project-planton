@@ -1,0 +1,174 @@
+syntax = "proto3";
+
+package project.planton.provider.aws.awsdynamodb.v1;
+
+// AwsDynamodbSpec defines desired state of an Amazon DynamoDB table.
+message AwsDynamodbSpec {
+  // Name of the DynamoDB table.
+  string table_name = 1;
+
+  // Key schema for the table (partition key and optional sort key).
+  repeated KeySchemaElement key_schema = 2;
+
+  // Attribute definitions referenced by key schema and indexes.
+  repeated AttributeDefinition attribute_definitions = 3;
+
+  // Billing mode of the table: PROVISIONED (provisioned capacity) or PAY_PER_REQUEST (on-demand).
+  BillingMode billing_mode = 4;
+
+  // Provisioned throughput settings, required when billing_mode == PROVISIONED.
+  ProvisionedThroughput provisioned_throughput = 5;
+
+  // Global secondary indexes to create with the table.
+  repeated GlobalSecondaryIndex global_secondary_indexes = 6;
+
+  // Local secondary indexes to create with the table.
+  repeated LocalSecondaryIndex local_secondary_indexes = 7;
+
+  // Stream specification for capturing item-level changes.
+  StreamSpecification stream_specification = 8;
+
+  // Name of the attribute that enables Time to Live (TTL) for automatic item expiration.
+  string ttl_attribute_name = 9;
+
+  // Enable server-side encryption at rest.
+  bool server_side_encryption_enabled = 10;
+
+  // Customer managed AWS KMS key ID to use for encryption (optional).
+  string kms_key_id = 11;
+
+  // Enable point-in-time recovery (PITR) to restore table to any second within last 35 days.
+  bool point_in_time_recovery_enabled = 12;
+
+  // Table class to optimize cost.
+  TableClass table_class = 13;
+
+  // Key-value pairs of tags to assign to the table.
+  map<string, string> tags = 14;
+
+  // Prevent accidental deletion of the table when enabled.
+  bool deletion_protection_enabled = 15;
+
+  // Enable Contributor Insights to analyze traffic patterns.
+  bool contributor_insights_enabled = 16;
+}
+
+// Defines an attribute used in key schema or indexes.
+message AttributeDefinition {
+  // Attribute name.
+  string name = 1;
+  // Attribute data type: S (string), N (number), B (binary).
+  AttributeType type = 2;
+}
+
+// Allowed attribute data types.
+enum AttributeType {
+  ATTRIBUTE_TYPE_UNSPECIFIED = 0;
+  S = 1;
+  N = 2;
+  B = 3;
+}
+
+// Describes a key element (partition or sort key).
+message KeySchemaElement {
+  // Attribute name of the key element.
+  string attribute_name = 1;
+  // Key type: HASH (partition key) or RANGE (sort key).
+  KeyType key_type = 2;
+}
+
+// Key types for key schema elements.
+enum KeyType {
+  KEY_TYPE_UNSPECIFIED = 0;
+  HASH = 1;
+  RANGE = 2;
+}
+
+// Provisioned throughput settings.
+message ProvisionedThroughput {
+  // Read capacity units.
+  int64 read_capacity_units = 1;
+  // Write capacity units.
+  int64 write_capacity_units = 2;
+  // Optional auto scaling strategy for this throughput.
+  AutoScalingSettings autoscaling = 3;
+}
+
+// Auto scaling configuration for capacity units.
+message AutoScalingSettings {
+  // Minimum capacity units allowed.
+  int64 min_capacity = 1;
+  // Maximum capacity units allowed.
+  int64 max_capacity = 2;
+  // Target utilization percentage (e.g., 70 means scale to keep usage at 70%).
+  int32 target_utilization_percent = 3;
+}
+
+// Definition of a global secondary index (GSI).
+message GlobalSecondaryIndex {
+  // Index name.
+  string name = 1;
+  // Key schema for the index.
+  repeated KeySchemaElement key_schema = 2;
+  // Projection behavior for the index.
+  Projection projection = 3;
+  // Provisioned throughput for the index (ignored when billing_mode is PAY_PER_REQUEST).
+  ProvisionedThroughput provisioned_throughput = 4;
+}
+
+// Definition of a local secondary index (LSI).
+message LocalSecondaryIndex {
+  // Index name.
+  string name = 1;
+  // Key schema for the index (partition key must match the table's).
+  repeated KeySchemaElement key_schema = 2;
+  // Projection behavior for the index.
+  Projection projection = 3;
+}
+
+// Projection controls which attributes are copied into an index.
+message Projection {
+  // Projection type: ALL, KEYS_ONLY, or INCLUDE.
+  ProjectionType projection_type = 1;
+  // List of non-key attributes to project when projection_type == INCLUDE.
+  repeated string non_key_attributes = 2;
+}
+
+// Allowed projection types.
+enum ProjectionType {
+  PROJECTION_TYPE_UNSPECIFIED = 0;
+  ALL = 1;
+  KEYS_ONLY = 2;
+  INCLUDE = 3;
+}
+
+// Stream specification for DynamoDB Streams.
+message StreamSpecification {
+  // Set to true to enable streams.
+  bool enabled = 1;
+  // Determines the information written to the stream.
+  StreamViewType view_type = 2;
+}
+
+// Possible view types for a stream.
+enum StreamViewType {
+  STREAM_VIEW_TYPE_UNSPECIFIED = 0;
+  KEYS_ONLY = 1;
+  NEW_IMAGE = 2;
+  OLD_IMAGE = 3;
+  NEW_AND_OLD_IMAGES = 4;
+}
+
+// Billing modes for the table.
+enum BillingMode {
+  BILLING_MODE_UNSPECIFIED = 0;
+  PROVISIONED = 1;
+  PAY_PER_REQUEST = 2;
+}
+
+// Table classes.
+enum TableClass {
+  TABLE_CLASS_UNSPECIFIED = 0;
+  STANDARD = 1;
+  STANDARD_INFREQUENT_ACCESS = 2;
+}
