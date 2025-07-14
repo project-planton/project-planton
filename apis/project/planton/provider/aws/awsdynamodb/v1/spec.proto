@@ -54,7 +54,7 @@ message AwsDynamodbSpec {
   // Key-value tags to apply to the table.
   map<string, string> tags = 13 [
     (buf.validate.field).map = {
-      keys:   {string: {max_len: 128, pattern: "^[A-Za-z0-9_.:/=+\-@ ]+$"}},
+      keys:   {string: {max_len: 128, pattern: "^[A-Za-z0-9_.:/=+@ -]+$"}},
       values: {string: {max_len: 256}}
     }
   ];
@@ -65,18 +65,19 @@ message AwsDynamodbSpec {
   // Autoscaling policies for read/write capacity.
   AutoScalingSpecification autoscaling_specification = 15;
 
-  option (buf.validate.message).cel = [
-    {
-      id:        "capacity_provisioned",
-      message:   "When billing_mode is PROVISIONED, capacity and all index capacities must be set and > 0",
-      expression: "this.billing_mode == 1 ? (has(this.capacity) && this.capacity.read_capacity_units > 0 && this.capacity.write_capacity_units > 0 && this.global_secondary_indexes.all(i, has(i.capacity) && i.capacity.read_capacity_units > 0 && i.capacity.write_capacity_units > 0)) : true"
-    },
-    {
-      id:        "capacity_pay_per_request",
-      message:   "When billing_mode is PAY_PER_REQUEST, capacity and index capacities must be unset or 0",
-      expression: "this.billing_mode == 2 ? ((!has(this.capacity) || (this.capacity.read_capacity_units == 0 && this.capacity.write_capacity_units == 0)) && this.global_secondary_indexes.all(i, !has(i.capacity) || (i.capacity.read_capacity_units == 0 && i.capacity.write_capacity_units == 0))) : true"
-    }
-  ];
+  // --- Message-level CEL rules ------------------------------------------------
+
+  option (buf.validate.message).cel = {
+    id:        "capacity_provisioned",
+    message:   "When billing_mode is PROVISIONED, capacity and all index capacities must be set and > 0",
+    expression: "this.billing_mode == 1 ? (has(this.capacity) && this.capacity.read_capacity_units > 0 && this.capacity.write_capacity_units > 0 && this.global_secondary_indexes.all(i, has(i.capacity) && i.capacity.read_capacity_units > 0 && i.capacity.write_capacity_units > 0)) : true"
+  };
+
+  option (buf.validate.message).cel = {
+    id:        "capacity_pay_per_request",
+    message:   "When billing_mode is PAY_PER_REQUEST, capacity and index capacities must be unset or 0",
+    expression: "this.billing_mode == 2 ? ((!has(this.capacity) || (this.capacity.read_capacity_units == 0 && this.capacity.write_capacity_units == 0)) && this.global_secondary_indexes.all(i, !has(i.capacity) || (i.capacity.read_capacity_units == 0 && i.capacity.write_capacity_units == 0))) : true"
+  };
 }
 
 // Describes an attribute used as a key or in an index.
@@ -265,18 +266,17 @@ message SSESpecification {
     }
   ];
 
-  option (buf.validate.message).cel = [
-    {
-      id:        "sse_type_required",
-      message:   "type must be specified when SSE is enabled",
-      expression: "this.enabled ? this.type != 0 : true"
-    },
-    {
-      id:        "kms_key_arn_required",
-      message:   "kms_key_arn must be provided when SSE type is KMS",
-      expression: "this.type == 2 ? has(this.kms_key_arn) && size(this.kms_key_arn) > 0 : !has(this.kms_key_arn) || size(this.kms_key_arn) == 0"
-    }
-  ];
+  option (buf.validate.message).cel = {
+    id:        "sse_type_required",
+    message:   "type must be specified when SSE is enabled",
+    expression: "this.enabled ? this.type != 0 : true"
+  };
+
+  option (buf.validate.message).cel = {
+    id:        "kms_key_arn_required",
+    message:   "kms_key_arn must be provided when SSE type is KMS",
+    expression: "this.type == 2 ? has(this.kms_key_arn) && size(this.kms_key_arn) > 0 : !has(this.kms_key_arn) || size(this.kms_key_arn) == 0"
+  };
 }
 
 enum SSEType {
