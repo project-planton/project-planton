@@ -1,0 +1,222 @@
+syntax = "proto3";
+
+package project.planton.provider.aws.awsdynamodb.v1;
+
+import "google/protobuf/duration.proto";
+
+// Specification of a DynamoDB table.
+message AwsDynamodbSpec {
+  // Name of the DynamoDB table; unique per AWS account/region.
+  string table_name = 1;
+
+  // Attribute definitions referenced by the table and its indexes.
+  repeated AttributeDefinition attribute_definitions = 2;
+
+  // Partition (and optional sort) key schema for the table.
+  KeySchema key_schema = 3;
+
+  // Determines whether the table uses provisioned or on-demand billing.
+  BillingMode billing_mode = 4;
+
+  // Provisioned throughput settings (required when billing_mode = PROVISIONED).
+  Capacity capacity = 5;
+
+  // Global secondary index (GSI) definitions.
+  repeated GlobalSecondaryIndex global_secondary_indexes = 6;
+
+  // Local secondary index (LSI) definitions.
+  repeated LocalSecondaryIndex local_secondary_indexes = 7;
+
+  // DynamoDB Streams configuration.
+  StreamSpecification stream_specification = 8;
+
+  // Time-to-live (TTL) settings for automatic item expiration.
+  TTLSpecification ttl_specification = 9;
+
+  // Server-side encryption (SSE) configuration.
+  SSESpecification sse_specification = 10;
+
+  // Point-in-time recovery (PITR) configuration.
+  PointInTimeRecoverySpecification pitr_specification = 11;
+
+  // Storage class of the table.
+  TableClass table_class = 12;
+
+  // Key-value tags to apply to the table.
+  map<string, string> tags = 13;
+
+  // Protects the table from accidental deletion when true.
+  bool deletion_protection_enabled = 14;
+
+  // Autoscaling policies for read/write capacity.
+  AutoScalingSpecification autoscaling_specification = 15;
+}
+
+// Describes an attribute used as a key or in an index.
+message AttributeDefinition {
+  // Attribute (column) name.
+  string name = 1;
+
+  // Data type: S (string), N (number), or B (binary).
+  AttributeType type = 2;
+}
+
+enum AttributeType {
+  ATTRIBUTE_TYPE_UNSPECIFIED = 0;
+  STRING = 1; // "S"
+  NUMBER = 2; // "N"
+  BINARY = 3; // "B"
+}
+
+// Key schema specifying the partition key and optional sort key.
+message KeySchema {
+  // Name of the partition (hash) key attribute.
+  string partition_key = 1;
+
+  // Name of the sort (range) key attribute, if any.
+  string sort_key = 2;
+}
+
+enum BillingMode {
+  BILLING_MODE_UNSPECIFIED = 0;
+  PROVISIONED = 1;      // Provisioned capacity mode
+  PAY_PER_REQUEST = 2;  // On-demand capacity mode
+}
+
+// Provisioned throughput settings.
+message Capacity {
+  // Max strongly-consistent reads per second.
+  int64 read_capacity_units = 1;
+
+  // Max writes per second.
+  int64 write_capacity_units = 2;
+}
+
+enum ProjectionType {
+  PROJECTION_TYPE_UNSPECIFIED = 0;
+  ALL = 1;        // All table attributes
+  KEYS_ONLY = 2;  // Only key attributes
+  INCLUDE = 3;    // Specific non-key attributes
+}
+
+// Projection configuration for an index.
+message Projection {
+  // Projection type.
+  ProjectionType type = 1;
+
+  // Non-key attributes to project when type = INCLUDE.
+  repeated string non_key_attributes = 2;
+}
+
+// Definition of a global secondary index.
+message GlobalSecondaryIndex {
+  // Index name.
+  string name = 1;
+
+  // Key schema for the index.
+  KeySchema key_schema = 2;
+
+  // Projection settings.
+  Projection projection = 3;
+
+  // Provisioned throughput for the index (ignored for PAY_PER_REQUEST).
+  Capacity capacity = 4;
+}
+
+// Definition of a local secondary index.
+message LocalSecondaryIndex {
+  // Index name.
+  string name = 1;
+
+  // Key schema for the index (partition key must match table's).
+  KeySchema key_schema = 2;
+
+  // Projection settings.
+  Projection projection = 3;
+}
+
+// DynamoDB Streams configuration.
+message StreamSpecification {
+  // Enable or disable streaming of table changes.
+  bool enabled = 1;
+
+  // Information written to the stream.
+  StreamViewType view_type = 2;
+}
+
+enum StreamViewType {
+  STREAM_VIEW_TYPE_UNSPECIFIED = 0;
+  KEYS_ONLY = 1;
+  NEW_IMAGE = 2;
+  OLD_IMAGE = 3;
+  NEW_AND_OLD_IMAGES = 4;
+}
+
+// Time-to-live settings.
+message TTLSpecification {
+  // Enable or disable TTL.
+  bool enabled = 1;
+
+  // Attribute that stores the Unix epoch expiration time.
+  string attribute_name = 2;
+}
+
+// Server-side encryption settings.
+message SSESpecification {
+  // Enable or disable SSE.
+  bool enabled = 1;
+
+  // Type of encryption key.
+  SSEType type = 2;
+
+  // ARN of the KMS key to use when type = KMS.
+  string kms_key_arn = 3;
+}
+
+enum SSEType {
+  SSE_TYPE_UNSPECIFIED = 0;
+  AES256 = 1; // AWS owned CMK
+  KMS = 2;    // Customer managed CMK
+}
+
+// Point-in-time recovery settings.
+message PointInTimeRecoverySpecification {
+  // Enable or disable PITR.
+  bool enabled = 1;
+}
+
+enum TableClass {
+  TABLE_CLASS_UNSPECIFIED = 0;
+  STANDARD = 1;
+  STANDARD_INFREQUENT_ACCESS = 2;
+}
+
+// Autoscaling configuration for read/write capacity.
+message AutoScalingSpecification {
+  // Enable or disable autoscaling.
+  bool enabled = 1;
+
+  // Target utilization percentage for read capacity.
+  int32 target_read_utilization_percent = 2;
+
+  // Target utilization percentage for write capacity.
+  int32 target_write_utilization_percent = 3;
+
+  // Minimum provisioned read capacity units.
+  int32 min_read_capacity_units = 4;
+
+  // Maximum provisioned read capacity units.
+  int32 max_read_capacity_units = 5;
+
+  // Minimum provisioned write capacity units.
+  int32 min_write_capacity_units = 6;
+
+  // Maximum provisioned write capacity units.
+  int32 max_write_capacity_units = 7;
+
+  // Cool-down period between scale-in actions.
+  google.protobuf.Duration scale_in_cooldown = 8;
+
+  // Cool-down period between scale-out actions.
+  google.protobuf.Duration scale_out_cooldown = 9;
+}
