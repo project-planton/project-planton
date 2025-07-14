@@ -115,11 +115,11 @@ message KeySchema {
 
   // Name of the sort (range) key attribute, if any.
   string sort_key = 2 [
-    (buf.validate.field).string = {
-      ignore_empty: true,
-      min_len: 1,
-      max_len: 255,
-      pattern: "^[A-Za-z0-9_.-]{1,255}$"
+    // Optional; when provided, must match pattern and length constraints.
+    (buf.validate.field).cel = {
+      id: "sort_key_format",
+      message: "sort_key must match allowed pattern and be 1-255 characters when provided",
+      expression: "size(this) == 0 || (size(this) >= 1 && size(this) <= 255 && this.matches('^[A-Za-z0-9_.-]{1,255}$'))"
     }
   ];
 
@@ -235,11 +235,10 @@ message TTLSpecification {
 
   // Attribute that stores the Unix epoch expiration time.
   string attribute_name = 2 [
-    (buf.validate.field).string = {
-      ignore_empty: true,
-      min_len: 1,
-      max_len: 255,
-      pattern: "^[A-Za-z0-9_.-]{1,255}$"
+    (buf.validate.field).cel = {
+      id: "ttl_attribute_name_format",
+      message: "attribute_name must match allowed pattern and be 1-255 characters when provided",
+      expression: "size(this) == 0 || (size(this) >= 1 && size(this) <= 255 && this.matches('^[A-Za-z0-9_.-]{1,255}$'))"
     }
   ];
 
@@ -260,9 +259,10 @@ message SSESpecification {
 
   // ARN of the KMS key to use when type = KMS.
   string kms_key_arn = 3 [
-    (buf.validate.field).string = {
-      ignore_empty: true,
-      pattern: "^arn:aws:kms:[a-z0-9\\-]+:[0-9]{12}:key/[a-f0-9\\-]+$"
+    (buf.validate.field).cel = {
+      id: "kms_key_arn_format",
+      message: "kms_key_arn must be a valid KMS key ARN when provided",
+      expression: "size(this) == 0 || this.matches('^arn:aws:kms:[a-z0-9\\\-]+:[0-9]{12}:key/[a-f0-9\\\-]+$')"
     }
   ];
 
