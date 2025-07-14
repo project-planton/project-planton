@@ -3,29 +3,47 @@ syntax = "proto3";
 package project.planton.provider.aws.awsdynamodb.v1;
 
 import "google/protobuf/struct.proto";
+import "buf/validate/validate.proto";
 
 // AwsDynamodbSpec describes the desired state of an Amazon DynamoDB table.
 message AwsDynamodbSpec {
   // Human-readable table name (must be unique within an AWS account/region).
-  string table_name = 1;
+  string table_name = 1 [
+    (buf.validate.field).string = {
+      pattern  : "^[A-Za-z0-9_.-]{3,255}$",
+      min_len  : 3,
+      max_len  : 255
+    }
+  ];
 
   // All attributes referenced by the table key schema and indexes.
-  repeated Attribute attributes = 2;
+  repeated Attribute attributes = 2 [
+    (buf.validate.field).repeated = {min_items: 1, max_items: 255}
+  ];
 
   // Primary key definition (partition key and optional sort key).
-  KeySchema key_schema = 3;
+  KeySchema key_schema = 3 [
+    (buf.validate.field).required = true
+  ];
 
-  // Billing mode: "PROVISIONED" (manual/auto-scaled RCUs/WCUs) or "PAY_PER_REQUEST" (on-demand).
-  string billing_mode = 4;
+  // Billing mode: "PROVISIONED" (manual/auto-scaled RCUs/WCUs) or
+  // "PAY_PER_REQUEST" (on-demand).
+  string billing_mode = 4 [
+    (buf.validate.field).string = {in: ["PROVISIONED", "PAY_PER_REQUEST"]}
+  ];
 
   // Table-level throughput settings (required when billing_mode = PROVISIONED).
   ProvisionedThroughput provisioned_throughput = 5;
 
   // Global secondary indexes (up to 20 per table).
-  repeated GlobalSecondaryIndex global_secondary_indexes = 6;
+  repeated GlobalSecondaryIndex global_secondary_indexes = 6 [
+    (buf.validate.field).repeated = {max_items: 20}
+  ];
 
   // Local secondary indexes (up to 5 per table, share the same partition key).
-  repeated LocalSecondaryIndex local_secondary_indexes = 7;
+  repeated LocalSecondaryIndex local_secondary_indexes = 7 [
+    (buf.validate.field).repeated = {max_items: 5}
+  ];
 
   // Real-time stream of item changes.
   StreamSpecification stream_specification = 8;
@@ -40,10 +58,14 @@ message AwsDynamodbSpec {
   PointInTimeRecovery point_in_time_recovery = 11;
 
   // Table storage class: "STANDARD" or "STANDARD_INFREQUENT_ACCESS".
-  string table_class = 12;
+  string table_class = 12 [
+    (buf.validate.field).string = {in: ["STANDARD", "STANDARD_INFREQUENT_ACCESS"]}
+  ];
 
   // Resource tags for cost allocation and access control.
-  repeated Tag tags = 13;
+  repeated Tag tags = 13 [
+    (buf.validate.field).repeated = {max_items: 50}
+  ];
 
   // Read-capacity auto-scaling policy (only for PROVISIONED tables).
   AutoScalingSettings read_autoscaling = 14;
@@ -53,50 +75,131 @@ message AwsDynamodbSpec {
 
   // Free-form extensions for rarely used settings.
   google.protobuf.Struct extra = 16;
+
+  // -------------------------------------------------------------------------
+  // Conditional cross-field rules.
+  // -------------------------------------------------------------------------
+  option (buf.validate.message).cel = {
+    // Provisioned mode vs. on-demand.
+    id          : 1,
+    expression  : "this.billing_mode == 'PROVISIONED' ? (
+                     this.provisioned_throughput != null &&
+                     this.global_secondary_indexes.all(i, i.provisioned_throughput != null)
+                   ) : (
+                     this.provisioned_throughput == null &&
+                     this.global_secondary_indexes.all(i, i.provisioned_throughput == null) &&
+                     this.read_autoscaling == null &&
+                     this.write_autoscaling == null
+                   )",
+    message     : "When billing_mode is PROVISIONED, throughput must be supplied for the table and every GSI; otherwise throughput and autoscaling settings must be omitted."
+  };
 }
 
 // Name/type pair for an item attribute.
 message Attribute {
   // Attribute name.
-  string name = 1;
+  string name = 1 [
+    (buf.validate.field).string = {
+      pattern : "^[A-Za-z0-9_.-]{1,255}$",
+      min_len : 1,
+      max_len : 255
+    }
+  ];
   // Scalar type code: "S" (String), "N" (Number), "B" (Binary).
-  string type = 2;
+  string type = 2 [
+    (buf.validate.field).string = {in: ["S", "N", "B"]}
+  ];
 }
 
 // Defines the table's composite primary key.
 message KeySchema {
   // Partition (hash) key attribute name.
-  string hash_key = 1;
+  string hash_key = 1 [
+    (buf.validate.field).string = {
+      pattern : "^[A-Za-z0-9_.-]{1,255}$",
+      min_len : 1,
+      max_len : 255
+    }
+  ];
   // Optional sort (range) key attribute name.
-  string range_key = 2;
+  string range_key = 2 [
+    (buf.validate.field).string = {
+      pattern : "^[A-Za-z0-9_.-]{1,255}$",
+      max_len : 255
+    }
+  ];
+
+  // Range key cannot duplicate the hash key.
+  option (buf.validate.message).cel = {
+    id         : 1,
+    expression : "this.range_key == '' || this.range_key != this.hash_key",
+    message    : "range_key must differ from hash_key"
+  };
 }
 
 // Provisioned read/write capacity units.
 message ProvisionedThroughput {
   // Maximum strongly consistent reads per second.
-  int64 read_capacity_units = 1;
+  int64 read_capacity_units = 1 [
+    (buf.validate.field).int64 = {gt: 0}
+  ];
   // Maximum writes per second.
-  int64 write_capacity_units = 2;
+  int64 write_capacity_units = 2 [
+    (buf.validate.field).int64 = {gt: 0}
+  ];
 }
 
 // Attributes that appear in an index.
 message Projection {
   // Projection type: "ALL", "KEYS_ONLY", or "INCLUDE".
-  string type = 1;
+  string type = 1 [
+    (buf.validate.field).string = {in: ["ALL", "KEYS_ONLY", "INCLUDE"]}
+  ];
   // Whitelisted non-key attributes (only when type = "INCLUDE").
-  repeated string non_key_attributes = 2;
+  repeated string non_key_attributes = 2 [
+    (buf.validate.field).repeated = {max_items: 20},
+    (buf.validate.field).string   = {
+      pattern : "^[A-Za-z0-9_.-]{1,255}$",
+      max_len : 255
+    }
+  ];
+
+  option (buf.validate.message).cel = {
+    id         : 1,
+    expression : "this.type == 'INCLUDE' ? this.non_key_attributes.size() > 0 : this.non_key_attributes.size() == 0",
+    message    : "non_key_attributes must be set only when projection type is INCLUDE"
+  };
 }
 
 // Global secondary index definition.
 message GlobalSecondaryIndex {
   // Index name.
-  string name = 1;
+  string name = 1 [
+    (buf.validate.field).string = {
+      pattern : "^[A-Za-z0-9_.-]{3,255}$",
+      min_len : 3,
+      max_len : 255
+    }
+  ];
   // Partition key for the index.
-  string hash_key = 2;
+  string hash_key = 2 [
+    (buf.validate.field).string = {
+      pattern : "^[A-Za-z0-9_.-]{1,255}$",
+      min_len : 1,
+      max_len : 255
+    }
+  ];
   // Optional sort key for the index.
-  string range_key = 3;
+  string range_key = 3 [
+    (buf.validate.field).string = {
+      pattern : "^[A-Za-z0-9_.-]{1,255}$",
+      max_len : 255
+    }
+  ];
   // Attributes projected into the index.
-  Projection projection = 4;
+  Projection projection = 4 [
+    (buf.validate.field).required = true
+  ];
   // Dedicated throughput for the index (ignored in PAY_PER_REQUEST mode).
   ProvisionedThroughput provisioned_throughput = 5;
 }
@@ -104,11 +207,25 @@ message GlobalSecondaryIndex {
 // Local secondary index definition.
 message LocalSecondaryIndex {
   // Index name.
-  string name = 1;
+  string name = 1 [
+    (buf.validate.field).string = {
+      pattern : "^[A-Za-z0-9_.-]{3,255}$",
+      min_len : 3,
+      max_len : 255
+    }
+  ];
   // Sort key attribute (partition key is the same as the table).
-  string range_key = 2;
+  string range_key = 2 [
+    (buf.validate.field).string = {
+      pattern : "^[A-Za-z0-9_.-]{1,255}$",
+      min_len : 1,
+      max_len : 255
+    }
+  ];
   // Attributes projected into the index.
-  Projection projection = 3;
+  Projection projection = 3 [
+    (buf.validate.field).required = true
+  ];
 }
 
 // Stream settings for capturing table mutations.
@@ -116,7 +233,15 @@ message StreamSpecification {
   // Enable DynamoDB Streams.
   bool enabled = 1;
   // View type: "KEYS_ONLY", "NEW_IMAGE", "OLD_IMAGE", or "NEW_AND_OLD_IMAGES".
-  string view_type = 2;
+  string view_type = 2 [
+    (buf.validate.field).string = {in: ["", "KEYS_ONLY", "NEW_IMAGE", "OLD_IMAGE", "NEW_AND_OLD_IMAGES"]}
+  ];
+
+  option (buf.validate.message).cel = {
+    id         : 1,
+    expression : "this.enabled ? this.view_type != '' : this.view_type == ''",
+    message    : "view_type must be specified only when streams are enabled"
+  };
 }
 
 // Automatic deletion of expired items.
@@ -124,7 +249,18 @@ message TimeToLive {
   // Activate TTL.
   bool enabled = 1;
   // Attribute that stores UNIX epoch seconds.
-  string attribute_name = 2;
+  string attribute_name = 2 [
+    (buf.validate.field).string = {
+      pattern : "^[A-Za-z0-9_.-]{1,255}$",
+      max_len : 255
+    }
+  ];
+
+  option (buf.validate.message).cel = {
+    id         : 1,
+    expression : "this.enabled ? this.attribute_name != '' : this.attribute_name == ''",
+    message    : "attribute_name must be set only when TTL is enabled"
+  };
 }
 
 // At-rest encryption configuration.
@@ -132,7 +268,18 @@ message ServerSideEncryption {
   // Enable encryption.
   bool enabled = 1;
   // Optional customer-managed KMS key ARN.
-  string kms_key_arn = 2;
+  string kms_key_arn = 2 [
+    (buf.validate.field).string = {
+      pattern : "^arn:aws:kms:[A-Za-z0-9-]+:[0-9]{12}:key/[A-Za-z0-9-]{36}$",
+      max_len : 2048
+    }
+  ];
+
+  option (buf.validate.message).cel = {
+    id         : 1,
+    expression : "this.kms_key_arn == '' || this.enabled",
+    message    : "kms_key_arn may be supplied only when encryption is enabled"
+  };
 }
 
 // Continuous backups and PITR.
@@ -143,14 +290,26 @@ message PointInTimeRecovery {
 
 // Tag key/value pair.
 message Tag {
-  string key = 1;
-  string value = 2;
+  string key = 1 [
+    (buf.validate.field).string = {
+      pattern : "^[A-Za-z0-9_.:/+=@-]{1,128}$",
+      min_len : 1,
+      max_len : 128
+    }
+  ];
+  string value = 2 [
+    (buf.validate.field).string = {max_len: 256}
+  ];
 }
 
 // Auto-scaling target tracking policy.
 message AutoScalingSettings {
   // Desired utilization percentage (10-90).
-  int32 target_utilization_percent = 1;
+  int32 target_utilization_percent = 1 [
+    (buf.validate.field).int32 = {gte: 10, lte: 90}
+  ];
   // Maximum capacity units allowed.
-  int64 max_capacity_units = 2;
+  int64 max_capacity_units = 2 [
+    (buf.validate.field).int64 = {gt: 0}
+  ];
 }
