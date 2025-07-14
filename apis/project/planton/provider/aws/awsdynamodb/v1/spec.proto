@@ -2,23 +2,31 @@ syntax = "proto3";
 
 package project.planton.provider.aws.awsdynamodb.v1;
 
+import "buf/validate/validate.proto";
+
 option go_package = "project/planton/provider/aws/awsdynamodb/v1;awsdynamodbpb";
 
 // AwsDynamodbSpec represents an Amazon DynamoDB table and its key
 // configuration, capacity model, encryption, indexing and other
 // commonly-used features.
 message AwsDynamodbSpec {
+  option (buf.validate.message).cel = {
+    id: "billing_mode_capacity_consistency"
+    expression: "((this.billing_mode == 1) ? has(this.provisioned_throughput) : !has(this.provisioned_throughput)) && ((this.billing_mode == 1) ? this.global_secondary_indexes.all(g, has(g.provisioned_throughput)) : this.global_secondary_indexes.all(g, !has(g.provisioned_throughput)))"
+    message: "When billing_mode is PROVISIONED, provisioned_throughput must be configured for the table and every GSI; when PAY_PER_REQUEST it must be unset everywhere."
+  };
+
   // Name of the DynamoDB table.
-  string table_name = 1;
+  string table_name = 1 [(buf.validate.field).string = {min_len: 3, max_len: 255}];
 
   // Definitions for every attribute referenced by the table or any index.
-  repeated AttributeDefinition attribute_definitions = 2;
+  repeated AttributeDefinition attribute_definitions = 2 [(buf.validate.field).repeated = {min_items: 1}];
 
   // Primary key schema (partition key and optional sort key).
-  repeated KeySchemaElement key_schema = 3;
+  repeated KeySchemaElement key_schema = 3 [(buf.validate.field).repeated = {min_items: 1, max_items: 2}];
 
   // How the table is billed (PROVISIONED or PAY_PER_REQUEST).
-  BillingMode billing_mode = 4;
+  BillingMode billing_mode = 4 [(buf.validate.field).enum = {not_in: [0]}];
 
   // Provisioned capacity settings (required if billing_mode == PROVISIONED).
   ProvisionedThroughput provisioned_throughput = 5;
@@ -42,7 +50,10 @@ message AwsDynamodbSpec {
   bool point_in_time_recovery_enabled = 11;
 
   // Key/value tags applied to the table.
-  map<string, string> tags = 12;
+  map<string, string> tags = 12 [
+    (buf.validate.field).map.keys.string = {min_len: 1},
+    (buf.validate.field).map.values.string = {min_len: 1}
+  ];
 }
 
 // Allowed scalar attribute types.
@@ -55,14 +66,14 @@ enum AttributeType {
 
 // Describes one attribute and its data type.
 message AttributeDefinition {
-  string attribute_name = 1;     // Name of the attribute.
-  AttributeType attribute_type = 2; // Data type.
+  string attribute_name = 1 [(buf.validate.field).string = {min_len: 1, max_len: 255}];     // Name of the attribute.
+  AttributeType attribute_type = 2 [(buf.validate.field).enum = {not_in: [0]}]; // Data type.
 }
 
 // Identifies an attribute's role in a key schema.
 message KeySchemaElement {
-  string attribute_name = 1; // Name of the attribute.
-  KeyType key_type = 2;      // HASH (partition) or RANGE (sort).
+  string attribute_name = 1 [(buf.validate.field).string = {min_len: 1, max_len: 255}]; // Name of the attribute.
+  KeyType key_type = 2 [(buf.validate.field).enum = {not_in: [0]}];      // HASH (partition) or RANGE (sort).
 }
 
 enum KeyType {
@@ -73,8 +84,8 @@ enum KeyType {
 
 // Provisioned capacity units.
 message ProvisionedThroughput {
-  int64 read_capacity_units = 1;  // Read capacity units (RCU).
-  int64 write_capacity_units = 2; // Write capacity units (WCU).
+  int64 read_capacity_units = 1 [(buf.validate.field).int64 = {gt: 0}];  // Read capacity units (RCU).
+  int64 write_capacity_units = 2 [(buf.validate.field).int64 = {gt: 0}]; // Write capacity units (WCU).
 }
 
 enum BillingMode {
@@ -85,8 +96,14 @@ enum BillingMode {
 
 // Projection determines which attributes are copied into an index.
 message Projection {
-  ProjectionType projection_type = 1;   // What to project.
-  repeated string non_key_attributes = 2; // When INCLUDE, list of attrs.
+  option (buf.validate.message).cel = {
+    id: "projection_include_attrs"
+    expression: "(this.projection_type == 3) ? this.non_key_attributes.size() > 0 : this.non_key_attributes.size() == 0"
+    message: "non_key_attributes must be set when projection_type is INCLUDE and must be empty otherwise."
+  };
+
+  ProjectionType projection_type = 1 [(buf.validate.field).enum = {not_in: [0]}];   // What to project.
+  repeated string non_key_attributes = 2 [(buf.validate.field).repeated = {max_items: 20}, (buf.validate.field).string = {min_len: 1, max_len: 255}]; // When INCLUDE, list of attrs.
 }
 
 enum ProjectionType {
@@ -98,22 +115,28 @@ enum ProjectionType {
 
 // Global secondary index definition.
 message GlobalSecondaryIndex {
-  string index_name = 1;                   // Name of the GSI.
-  repeated KeySchemaElement key_schema = 2; // Key schema for the GSI.
-  Projection projection = 3;              // Projection settings.
+  string index_name = 1 [(buf.validate.field).string = {min_len: 3, max_len: 255}];                   // Name of the GSI.
+  repeated KeySchemaElement key_schema = 2 [(buf.validate.field).repeated = {min_items: 1, max_items: 2}]; // Key schema for the GSI.
+  Projection projection = 3 [(buf.validate.field).required = true];              // Projection settings.
   ProvisionedThroughput provisioned_throughput = 4; // Capacity (GSI level).
 }
 
 // Local secondary index definition.
 message LocalSecondaryIndex {
-  string index_name = 1;                   // Name of the LSI.
-  repeated KeySchemaElement key_schema = 2; // Must share HASH key with table.
-  Projection projection = 3;              // Projection settings.
+  string index_name = 1 [(buf.validate.field).string = {min_len: 3, max_len: 255}];                   // Name of the LSI.
+  repeated KeySchemaElement key_schema = 2 [(buf.validate.field).repeated = {min_items: 2, max_items: 2}]; // Must share HASH key with table.
+  Projection projection = 3 [(buf.validate.field).required = true];              // Projection settings.
 }
 
 // Stream settings for a table.
 message StreamSpecification {
-  bool stream_enabled = 1;         // Enable streams.
+  option (buf.validate.message).cel = {
+    id: "streams_require_view_type"
+    expression: "!this.stream_enabled || this.stream_view_type != 0"
+    message: "stream_view_type must be specified when streams are enabled."
+  };
+
+  bool stream_enabled = 1;
   StreamViewType stream_view_type = 2; // Type of data captured.
 }
 
@@ -127,15 +150,27 @@ enum StreamViewType {
 
 // TTL (Time-to-Live) settings.
 message TimeToLiveSpecification {
+  option (buf.validate.message).cel = {
+    id: "ttl_requires_attribute_name"
+    expression: "!this.ttl_enabled || size(this.attribute_name) > 0"
+    message: "attribute_name must be provided when TTL is enabled."
+  };
+
   bool ttl_enabled = 1;      // Enable TTL.
-  string attribute_name = 2; // Attribute storing expiration epoch time.
+  string attribute_name = 2 [(buf.validate.field).string = {min_len: 1, max_len: 255}]; // Attribute storing expiration epoch time.
 }
 
 // Server-side encryption details.
 message SSESpecification {
+  option (buf.validate.message).cel = {
+    id: "sse_configuration_rules"
+    expression: "(!this.enabled && this.sse_type == 0 && size(this.kms_master_key_id) == 0) || (this.enabled && this.sse_type != 0 && ((this.sse_type == 2) ? size(this.kms_master_key_id) > 0 : size(this.kms_master_key_id) == 0))"
+    message: "When SSE is enabled, sse_type must be set and kms_master_key_id is required only for KMS; when disabled they must be unset."
+  };
+
   bool enabled = 1;              // Enable SSE.
   SSEType sse_type = 2;          // Encryption type.
-  string kms_master_key_id = 3;  // KMS key ARN when sse_type == KMS.
+  string kms_master_key_id = 3 [(buf.validate.field).string = {min_len: 1, max_len: 2048}];  // KMS key ARN when sse_type == KMS.
 }
 
 enum SSEType {
