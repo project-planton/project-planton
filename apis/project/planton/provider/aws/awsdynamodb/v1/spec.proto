@@ -81,17 +81,9 @@ message AwsDynamodbSpec {
   // -------------------------------------------------------------------------
   option (buf.validate.message).cel = {
     // Provisioned mode vs. on-demand.
-    id          : 1,
-    expression  : "this.billing_mode == 'PROVISIONED' ? (
-                     this.provisioned_throughput != null &&
-                     this.global_secondary_indexes.all(i, i.provisioned_throughput != null)
-                   ) : (
-                     this.provisioned_throughput == null &&
-                     this.global_secondary_indexes.all(i, i.provisioned_throughput == null) &&
-                     this.read_autoscaling == null &&
-                     this.write_autoscaling == null
-                   )",
-    message     : "When billing_mode is PROVISIONED, throughput must be supplied for the table and every GSI; otherwise throughput and autoscaling settings must be omitted."
+    id         : 1,
+    expression : "this.billing_mode == 'PROVISIONED' ? (this.provisioned_throughput != null && this.global_secondary_indexes.all(i, i.provisioned_throughput != null)) : (this.provisioned_throughput == null && this.global_secondary_indexes.all(i, i.provisioned_throughput == null) && this.read_autoscaling == null && this.write_autoscaling == null)",
+    message    : "When billing_mode is PROVISIONED, throughput must be supplied for the table and every GSI; otherwise throughput and autoscaling settings must be omitted."
   };
 }
 
