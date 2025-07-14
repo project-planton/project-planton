@@ -3,251 +3,314 @@ syntax = "proto3";
 package project.planton.provider.aws.awsdynamodb.v1;
 
 import "buf/validate/validate.proto";
-import "project/planton/shared/options/options.proto";
 
-// AwsDynamodbSpec defines the specification required to deploy an AWS DynamoDB resource, encapsulating all
-// configurations for the DynamoDB table and related settings.
+// AwsDynamodbSpec defines the desired configuration of an Amazon DynamoDB table.
 message AwsDynamodbSpec {
-  //Table name. If provided, the bucket will be created with this name instead of generating the name from the context
+  // Unique name of the DynamoDB table (per AWS account & region).
   string table_name = 1 [
+    (buf.validate.field).string = {
+      min_len: 3,
+      max_len: 255,
+      pattern: "^[A-Za-z0-9_.-]{3,255}$"
+    },
     (buf.validate.field).required = true
   ];
 
-  // Controls how you are charged for read and write throughput and how you manage
-  // capacity. The valid values are `PROVISIONED` and `PAY_PER_REQUEST`. Defaults
-  // to `PROVISIONED`.
-  string billing_mode = 2 [
-    (project.planton.shared.options.default) = "PROVISIONED",
-    (buf.validate.field).ignore = IGNORE_IF_DEFAULT_VALUE,
-    (buf.validate.field).string = {
-      in: ["PROVISIONED", "PAY_PER_REQUEST"]
-    }
-  ];
-
-  // Attribute to use as the hash (partition) key. Must also be defined as an `attribute`.
-  AwsDynamodbTableAttribute hash_key = 3 [
+  // Set of attribute definitions referenced by keys and indexes.
+  repeated AttributeDefinition attributes = 2 [
+    (buf.validate.field).repeated = { min_items: 1, max_items: 20 },
     (buf.validate.field).required = true
   ];
 
-  // Attribute to use as the range (sort) key. Must also be defined as an `attribute`, see below.
-  AwsDynamodbTableAttribute range_key = 4;
-
-  // Whether Streams are enabled.
-  bool enable_streams = 5;
-
-  // When an item in the table is modified, StreamViewType determines what information
-  // is written to the table's stream. Valid values are
-  // `KEYS_ONLY`, `NEW_IMAGE`, `OLD_IMAGE`, `NEW_AND_OLD_IMAGES`.
-  string stream_view_type = 6 [
-    (buf.validate.field).ignore = IGNORE_IF_DEFAULT_VALUE,
+  // Name of the primary partition (hash) key.
+  string partition_key = 3 [
     (buf.validate.field).string = {
-      in: ["NEW_IMAGE", "OLD_IMAGE", "NEW_AND_OLD_IMAGES", "KEYS_ONLY"]
+      min_len: 1,
+      max_len: 255,
+      pattern: "^[A-Za-z0-9_.-]+$"
+    },
+    (buf.validate.field).required = true
+  ];
+
+  // Optional name of the primary sort (range) key; leave empty if the table is simple-key.
+  string sort_key = 4 [
+    // When the field is empty no other constraints are applied.
+    (buf.validate.field).string = {
+      max_len: 255,
+      pattern: "^[A-Za-z0-9_.-]*$"
     }
   ];
 
-  // Encryption at rest options. AWS DynamoDB tables are automatically
-  // encrypted at rest with an AWS-owned Customer Master Key if this argument
-  // isn't specified.
-  AwsDynamodbTableServerSideEncryption server_side_encryption = 7;
+  // Table-level billing mode.
+  BillingMode billing_mode = 5 [
+    (buf.validate.field).enum = { not_in: [0] },
+    (buf.validate.field).required = true
+  ];
 
-  // Enable point-in-time recovery options.
-  AwsDynamodbTablePointInTimeRecovery point_in_time_recovery = 8;
+  // Read capacity units when billing_mode == PROVISIONED.
+  int64 provisioned_read_capacity = 6;
 
-  // Configuration block for TTL.
-  AwsDynamodbTableTtl ttl = 9;
+  // Write capacity units when billing_mode == PROVISIONED.
+  int64 provisioned_write_capacity = 7;
 
-  // Dynamodb auto scale config
-  AwsDynamodbAutoScaleCapacity auto_scale = 10;
+  // Optional auto-scaling settings for provisioned throughput.
+  AutoscalingConfig autoscaling = 8;
 
-  // Set of nested attribute definitions. Only required for `hashKey` and `rangeKey` attributes.
-  repeated AwsDynamodbTableAttribute attributes = 11;
+  // Local secondary indexes (max 5) that share the same partition key.
+  repeated LocalSecondaryIndex local_secondary_indexes = 9 [
+    (buf.validate.field).repeated = { max_items: 5 }
+  ];
 
-  // Describe a GSI for the table; subject to the normal limits on the number of GSIs, projected attributes, etc.
-  repeated AwsDynamodbTableGlobalSecondaryIndex global_secondary_indexes = 12;
+  // Global secondary indexes providing additional access patterns.
+  repeated GlobalSecondaryIndex global_secondary_indexes = 10 [
+    (buf.validate.field).repeated = { max_items: 20 }
+  ];
 
-  // Describe an LSI on the table; these can only be allocated _at creation_
-  // so you cannot change this definition after you have created the resource.
-  repeated AwsDynamodbTableLocalSecondaryIndex local_secondary_indexes = 13;
+  // Enables DynamoDB Streams for the table.
+  bool stream_enabled = 11;
 
-  // Configuration block(s) with [DynamoDB Global Tables V2 (version 2019.11.21)]
-  // (https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/globaltables.V2.html) replication configurations.
-  repeated string replica_region_names = 14;
+  // Determines what information is written to the stream (required when stream_enabled).
+  StreamViewType stream_view_type = 12;
 
-  // Import Amazon S3 data into a new table. See below.
-  AwsDynamodbTableImport import_table = 15;
+  // Name of the attribute used for automatic item expiration (TTL); empty to disable TTL.
+  string ttl_attribute_name = 13 [
+    (buf.validate.field).string = {
+      max_len: 255,
+      pattern: "^[A-Za-z0-9_.-]*$"
+    }
+  ];
+
+  // Enables continuous backups for point-in-time recovery.
+  bool point_in_time_recovery_enabled = 14;
+
+  // Server-side encryption configuration.
+  ServerSideEncryption encryption = 15;
+
+  // Storage class of the table.
+  TableClass table_class = 16;
+
+  // Protects the table from accidental deletion.
+  bool deletion_protection_enabled = 17;
+
+  // Enables contributor insights for analyzing traffic patterns.
+  bool contributor_insights_enabled = 18;
+
+  // Metadata tags applied to the table.
+  repeated Tag tags = 19 [
+    (buf.validate.field).repeated = { max_items: 50 }
+  ];
+
+  // --- Message-level rules ---------------------------------------------------
+  option (buf.validate.message).cel = {
+    id: "billing_mode_capacity",
+    expression: "(this.billing_mode == 1) ? (this.provisioned_read_capacity > 0 && this.provisioned_write_capacity > 0) : (this.billing_mode == 2) ? (this.provisioned_read_capacity == 0 && this.provisioned_write_capacity == 0) : true",
+    message: "When billing_mode is PROVISIONED, read/write capacity must be > 0; when PAY_PER_REQUEST they must be 0 or unset."
+  };
+
+  option (buf.validate.message).cel = {
+    id: "stream_consistency",
+    expression: "this.stream_enabled ? this.stream_view_type != 0 : this.stream_view_type == 0",
+    message: "stream_view_type must be specified when stream_enabled is true, and unset when false."
+  };
+
+  option (buf.validate.message).cel = {
+    id: "lsi_requires_sort_key",
+    expression: "this.local_secondary_indexes.size() == 0 || this.sort_key != \"\"",
+    message: "A table must define a sort_key when local secondary indexes are specified."
+  };
 }
 
-// AwsDynamodbTableServerSideEncryption configures the server-side encryption settings for the DynamoDB table,
-// allowing the specification of whether encryption is enabled and the KMS key ARN to use for encryption.
-message AwsDynamodbTableServerSideEncryption {
-  // Whether or not to enable encryption at rest using an AWS managed KMS customer master key (CMK).
-  // If `enabled` is `false` then server-side encryption is set to
-  // AWS-_owned_ key (shown as `DEFAULT` in the AWS console).
-  // Potentially confusingly, if `enabled` is `true` and no `kmsKeyArn` is specified then
-  // server-side encryption is set to the _default_ KMS-_managed_ key (shown as `KMS` in the AWS console).
-  // The [AWS KMS documentation](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html)
-  // explains the difference between AWS-_owned_ and KMS-_managed_ keys.
-  bool is_enabled = 1;
-  // ARN of the CMK that should be used for the AWS KMS encryption.
-  // This argument should only be used if the key is different from the default KMS-managed DynamoDB key,
-  // `alias/aws/dynamodb`.
-  // **Note:** This attribute will _not_ be populated with the ARN of _default_ keys.
-  string kms_key_arn = 2;
-}
-
-// AwsDynamodbTableTtl specifies the Time to Live (TTL) settings for the DynamoDB table, allowing you to define an
-// attribute that DynamoDB will use to automatically delete expired items.
-message AwsDynamodbTableTtl {
-  // Whether TTL is enabled. Default value is `false`.
-  bool is_enabled = 1;
-  // Name of the table attribute to store the TTL timestamp in.
-  // Required if `enabled` is `true`, must not be set otherwise.
-  string attribute_name = 2;
-}
-
-// AwsDynamodbTableAttribute defines an attribute for the DynamoDB table, specifying the attribute's name and data
-// type, which is used in key schemas and indexes.
-message AwsDynamodbTableAttribute {
-  // Name of the attribute
+// Defines a DynamoDB attribute (column) and its scalar data type.
+message AttributeDefinition {
   string name = 1 [
+    (buf.validate.field).string = {
+      min_len: 1,
+      max_len: 255,
+      pattern: "^[A-Za-z0-9_.-]+$"
+    },
+    (buf.validate.field).required = true
+  ]; // Attribute (column) name.
+
+  AttributeType type = 2 [
+    (buf.validate.field).enum = { not_in: [0] },
+    (buf.validate.field).required = true
+  ]; // Scalar type: S (string), N (number), B (binary).
+}
+
+// Billing options available for a table or global secondary index.
+enum BillingMode {
+  BILLING_MODE_UNSPECIFIED = 0;
+  PROVISIONED = 1;      // Fixed RCUs/WCUs with optional auto-scaling.
+  PAY_PER_REQUEST = 2;  // On-demand capacity.
+}
+
+// Scalar attribute data types supported by DynamoDB.
+enum AttributeType {
+  ATTRIBUTE_TYPE_UNSPECIFIED = 0;
+  STRING = 1; // "S"
+  NUMBER = 2; // "N"
+  BINARY = 3; // "B"
+}
+
+// Server-side encryption settings.
+message ServerSideEncryption {
+  bool enabled = 1;
+
+  string kms_key_arn = 2 [
+    (buf.validate.field).string = {
+      max_len: 2048,
+      pattern: "^arn:[a-z0-9-]+:kms:[a-z0-9-]+:[0-9]{12}:key/[A-Za-z0-9-]+$"
+    }
+  ]; // Optional customer-managed KMS key ARN.
+}
+
+// Auto-scaling configuration for provisioned capacity.
+message AutoscalingConfig {
+  bool enabled = 1;
+
+  int64 min_read_capacity = 2 [ (buf.validate.field).int64 = { gte: 0 } ];
+  int64 max_read_capacity = 3 [ (buf.validate.field).int64 = { gte: 0 } ];
+  int64 min_write_capacity = 4 [ (buf.validate.field).int64 = { gte: 0 } ];
+  int64 max_write_capacity = 5 [ (buf.validate.field).int64 = { gte: 0 } ];
+  int32 target_utilization_percent = 6;
+
+  option (buf.validate.message).cel = {
+    id: "autoscaling_enabled_capacities",
+    expression: "!this.enabled || (this.min_read_capacity > 0 && this.max_read_capacity > 0 && this.min_write_capacity > 0 && this.max_write_capacity > 0 && this.min_read_capacity <= this.max_read_capacity && this.min_write_capacity <= this.max_write_capacity && this.target_utilization_percent >= 10 && this.target_utilization_percent <= 90)",
+    message: "When autoscaling is enabled all min/max capacities must be >0 and min<=max; utilization must be 10-90%."
+  };
+}
+
+// Specification for a local secondary index.
+message LocalSecondaryIndex {
+  string name = 1 [
+    (buf.validate.field).string = {
+      min_len: 3,
+      max_len: 255,
+      pattern: "^[A-Za-z0-9_.-]{3,255}$"
+    },
     (buf.validate.field).required = true
   ];
-  // Attribute type. Valid values are `S` (string), `N` (number), `B` (binary).
-  string type = 2 [
-    (buf.validate.field).required = true,
+
+  string sort_key = 2 [
     (buf.validate.field).string = {
-      in: ["S", "N", "B"]
+      min_len: 1,
+      max_len: 255,
+      pattern: "^[A-Za-z0-9_.-]+$"
+    },
+    (buf.validate.field).required = true
+  ];
+
+  Projection projection = 3 [ (buf.validate.field).required = true ]; // Attributes projected into the index.
+}
+
+// Specification for a global secondary index.
+message GlobalSecondaryIndex {
+  string name = 1 [
+    (buf.validate.field).string = {
+      min_len: 3,
+      max_len: 255,
+      pattern: "^[A-Za-z0-9_.-]{3,255}$"
+    },
+    (buf.validate.field).required = true
+  ];
+
+  string partition_key = 2 [
+    (buf.validate.field).string = {
+      min_len: 1,
+      max_len: 255,
+      pattern: "^[A-Za-z0-9_.-]+$"
+    },
+    (buf.validate.field).required = true
+  ];
+
+  // Optional sort key; may be empty.
+  string sort_key = 3 [
+    (buf.validate.field).string = {
+      max_len: 255,
+      pattern: "^[A-Za-z0-9_.-]*$"
     }
   ];
+
+  BillingMode billing_mode = 4;
+
+  int64 provisioned_read_capacity = 5;
+  int64 provisioned_write_capacity = 6;
+
+  AutoscalingConfig autoscaling = 7;
+  Projection projection = 8 [ (buf.validate.field).required = true ];
+
+  option (buf.validate.message).cel = {
+    id: "gsi_billing_capacity",
+    expression: "(this.billing_mode == 1) ? (this.provisioned_read_capacity > 0 && this.provisioned_write_capacity > 0) : (this.billing_mode == 2 || this.billing_mode == 0) ? (this.provisioned_read_capacity == 0 && this.provisioned_write_capacity == 0) : true",
+    message: "For a GSI: when billing_mode is PROVISIONED, capacities must be >0; when PAY_PER_REQUEST or UNSPECIFIED they must be 0 or unset."
+  };
 }
 
-// AwsDynamodbTableGlobalSecondaryIndex defines a global secondary index (GSI) for the DynamoDB table, allowing
-// queries on alternative key attributes and providing additional read/write capacity configurations.
-message AwsDynamodbTableGlobalSecondaryIndex {
-  // Name of the index.
-  string name = 1;
-  // One of `ALL`, `INCLUDE` or `KEYS_ONLY` where
-  // `ALL` projects every attribute into the index,
-  // `KEYS_ONLY` projects  into the index only the table and index hashKey and sortKey attributes ,
-  // `INCLUDE` projects into the index all of the attributes that are defined in `nonKeyAttributes`
-  // in addition to the attributes that that`KEYS_ONLY` project.
-  string projection_type = 2 [
-    (buf.validate.field).string = {
-      in: ["ALL", "KEYS_ONLY", "INCLUDE"]
+// Controls which attributes are copied from the source table into an index.
+message Projection {
+  ProjectionType type = 1 [ (buf.validate.field).enum = { not_in: [0] }, (buf.validate.field).required = true ];
+
+  repeated string non_key_attributes = 2 [
+    // Apply rules to the collection itself.
+    (buf.validate.field).repeated = {
+      max_items: 20,
+      items: {
+        string: {
+          min_len: 1,
+          max_len: 255,
+          pattern: "^[A-Za-z0-9_.-]+$"
+        }
+      }
     }
   ];
-  // Only required with `INCLUDE` as a projection type; a list of attributes to project into the index.
-  // These do not need to be defined as attributes on the table.
-  repeated string non_key_attributes = 3;
-  // Name of the hash key in the index; must be defined as an attribute in the resource.
-  string hash_key = 4;
-  // Name of the range key; must be defined
-  string range_key = 5;
-  // Number of read units for this index. Must be set if billingMode is set to PROVISIONED.
-  int32 read_capacity = 6;
-  // Number of write units for this index. Must be set if billingMode is set to PROVISIONED.
-  int32 write_capacity = 7;
+
+  option (buf.validate.message).cel = {
+    id: "projection_include_attributes",
+    expression: "this.type == 3 ? this.non_key_attributes.size() > 0 : this.non_key_attributes.size() == 0",
+    message: "non_key_attributes must be set only when projection type is INCLUDE."
+  };
 }
 
-// AwsDynamodbTableLocalSecondaryIndex defines a local secondary index (LSI) for the DynamoDB table,
-// allowing alternative sort keys for queries on the primary hash key, which must be defined at table creation.
-message AwsDynamodbTableLocalSecondaryIndex {
-  // Name of the index.
-  string name = 1;
-  // One of `ALL`, `INCLUDE` or `KEYS_ONLY` where
-  // `ALL` projects every attribute into the index,
-  // `KEYS_ONLY` projects  into the index only the table and index hashKey and sortKey attributes ,
-  // `INCLUDE` projects into the index all of the attributes that are defined in `nonKeyAttributes` in addition to
-  // the attributes that that`KEYS_ONLY` project.
-  string projection_type = 2 [
+// Projection strategies for an index.
+enum ProjectionType {
+  PROJECTION_TYPE_UNSPECIFIED = 0;
+  ALL = 1; // All attributes.
+  KEYS_ONLY_PROJECTION = 2; // Only key attributes (renamed to avoid duplicate symbol).
+  INCLUDE = 3; // Specific non-key attributes.
+}
+
+// View types for DynamoDB Streams.
+enum StreamViewType {
+  STREAM_VIEW_TYPE_UNSPECIFIED = 0;
+  NEW_IMAGE = 1; // Only the new item image.
+  OLD_IMAGE = 2; // Only the old item image.
+  NEW_AND_OLD_IMAGES = 3; // Both the new and the old images of the item.
+  KEYS_ONLY = 4; // Only the key attributes of the modified item.
+}
+
+// Storage classes for DynamoDB tables.
+enum TableClass {
+  TABLE_CLASS_UNSPECIFIED = 0;
+  STANDARD = 1; // Standard storage class.
+  STANDARD_INFREQUENT_ACCESS = 2; // Lower-cost infrequent access class.
+}
+
+// Simple key/value tag.
+message Tag {
+  string key = 1 [
     (buf.validate.field).string = {
-      in: ["ALL", "KEYS_ONLY", "INCLUDE"]
+      min_len: 1,
+      max_len: 128,
+      pattern: "^[A-Za-z0-9_.:/=+@-]+$"
+    },
+    (buf.validate.field).required = true
+  ];
+
+  string value = 2 [
+    (buf.validate.field).string = {
+      max_len: 256,
+      pattern: "^[A-Za-z0-9_.:/=+@-]*$"
     }
   ];
-  // Only required with `INCLUDE` as a projection type; a list of attributes to project into the index.
-  // These do not need to be defined as attributes on the table.
-  repeated string non_key_attributes = 3;
-  // Name of the range key; must be defined
-  string range_key = 4;
-}
-
-// AwsDynamodbTablePointInTimeRecovery configures point-in-time recovery settings for the DynamoDB table, allowing
-// restoration of the table to any point in time within the last 35 days.
-message AwsDynamodbTablePointInTimeRecovery {
-  // Whether to enable point-in-time recovery. It can take 10 minutes to enable for
-  // new tables. If the `pointInTimeRecovery` block is not provided,
-  // this defaults to `false`.
-  bool is_enabled = 1;
-}
-
-// AwsDynamodbTableImport defines settings to import data from Amazon S3 into a new DynamoDB table, including
-// compression type, data format, and source S3 bucket information.
-message AwsDynamodbTableImport {
-  // Type of compression to be used on the input coming from the imported table.
-  // Valid values are `GZIP`, `ZSTD` and `NONE`.
-  string input_compression_type = 1 [
-    (buf.validate.field).string = {
-      in: ["GZIP", "ZSTD", "NONE"]
-    }
-  ];
-  // The format of the source data.
-  // Valid values are `CSV`, `DYNAMODB_JSON`, and `ION`.
-  string input_format = 2 [
-    (buf.validate.field).string = {
-      in: ["CSV", "DYNAMODB_JSON", "ION"]
-    }
-  ];
-  // Describe the format options for the data that was imported into the target table.
-  // There is one value, `csv`.
-  AwsDynamodbTableImportInputFormatOptions input_format_options = 3;
-  // Values for the S3 bucket the source file is imported from.
-  AwsDynamodbTableImportS3BucketSource s3_bucket_source = 4;
-}
-
-// AwsDynamodbTableImportInputFormatOptions specifies additional format options for the data being imported, such as
-// CSV format settings.
-message AwsDynamodbTableImportInputFormatOptions {
-  // This block contains the processing options for the CSV file being imported:
-  AwsDynamodbTableImportInputFormatOptionsCsv csv = 1;
-}
-
-// AwsDynamodbTableImportInputFormatOptionsCsv defines the CSV format options for the data being imported,
-// including delimiter and headers.
-message AwsDynamodbTableImportInputFormatOptionsCsv {
-  // The delimiter used for separating items in the CSV file being imported.
-  string delimiter = 1;
-  // List of the headers used to specify a common header for all source CSV files being imported.
-  repeated string headers = 2;
-}
-
-// AwsDynamodbTableImportS3BucketSource specifies the S3 bucket source from which data is imported into the
-// DynamoDB table, including bucket name, owner account, and key prefix.
-message AwsDynamodbTableImportS3BucketSource {
-  // The S3 bucket that is being imported from.
-  string bucket = 1;
-  // The account number of the S3 bucket that is being imported from.
-  string bucket_owner = 2;
-  // The key prefix shared by all S3 Objects that are being imported.
-  string key_prefix = 3;
-}
-
-// AwsDynamodbAutoScaleCapacity configures the auto-scaling settings for the DynamoDB table's read and write
-// capacity units, including minimum and maximum capacity and target utilization.
-message AwsDynamodbAutoScaleCapacity {
-  bool is_enabled = 1;
-  // auto scale capacity for read
-  AutoScaleCapacity read_capacity = 2;
-  // auto scale capacity for write
-  AutoScaleCapacity write_capacity = 3;
-}
-
-// AutoScaleCapacity defines the auto-scaling capacity settings, specifying minimum and maximum capacity units and
-// the target utilization percentage for scaling.
-message AutoScaleCapacity {
-  // Min capacity of the scalable target.
-  int32 min_capacity = 1;
-  // Max capacity of the scalable target.
-  int32 max_capacity = 2;
-  // target capacity utilization percentage
-  double target_utilization = 3;
 }
