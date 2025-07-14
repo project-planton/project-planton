@@ -1,0 +1,165 @@
+syntax = "proto3";
+
+package project.planton.provider.aws.awsdynamodb.v1;
+
+// AwsDynamodbSpec represents the desired state of an Amazon DynamoDB table.
+message AwsDynamodbSpec {
+  // Unique name of the DynamoDB table (case-sensitive, 3–255 chars).
+  string table_name = 1;
+
+  // Billing mode that determines how you are charged.
+  BillingMode billing_mode = 2;
+
+  // Consistent read capacity units when billing_mode is PROVISIONED.
+  int64 read_capacity_units = 3;
+
+  // Write capacity units when billing_mode is PROVISIONED.
+  int64 write_capacity_units = 4;
+
+  // Schema definitions for all attributes referenced by keys and indexes.
+  repeated AttributeDefinition attribute_definitions = 5;
+
+  // Primary key definition (partition key and optional sort key).
+  repeated KeySchemaElement key_schema = 6;
+
+  // Global secondary indexes to create on the table.
+  repeated GlobalSecondaryIndex global_secondary_indexes = 7;
+
+  // Local secondary indexes to create on the table.
+  repeated LocalSecondaryIndex local_secondary_indexes = 8;
+
+  // Configuration for emitting data change records to DynamoDB Streams.
+  StreamSpecification stream_specification = 9;
+
+  // Time-to-live (TTL) settings for automatic item expiration.
+  TimeToLive ttl = 10;
+
+  // Server-side encryption configuration.
+  SSESpecification sse_specification = 11;
+
+  // Enables point-in-time recovery for continuous backups (up to 35 days).
+  bool point_in_time_recovery = 12;
+
+  // Storage class of the table (STANDARD or STANDARD_INFREQUENT_ACCESS).
+  TableClass table_class = 13;
+
+  // Metadata tags applied to the table for cost allocation and management.
+  repeated Tag tags = 14;
+
+  // When true, prevents accidental deletion of the table.
+  bool deletion_protection_enabled = 15;
+}
+
+// ---------------------------
+// Supporting Types & Enums
+// ---------------------------
+
+// How you are billed for read/write throughput.
+enum BillingMode {
+  BILLING_MODE_UNSPECIFIED = 0;
+  PROVISIONED = 1;         // Pre-allocated RCUs/WCUs (cheaper at scale).
+  PAY_PER_REQUEST = 2;     // On-demand capacity, pay per request.
+}
+
+// Attribute data type.
+enum AttributeType {
+  ATTRIBUTE_TYPE_UNSPECIFIED = 0;
+  STRING = 1;  // "S"
+  NUMBER = 2;  // "N"
+  BINARY = 3;  // "B"
+}
+
+// Defines a single attribute in the table or index.
+message AttributeDefinition {
+  string attribute_name = 1;         // Attribute name (1–255 chars).
+  AttributeType attribute_type = 2;  // Data type stored for the attribute.
+}
+
+// Indicates whether an attribute is used as the HASH or RANGE part of a key.
+enum KeyType {
+  KEY_TYPE_UNSPECIFIED = 0;
+  HASH = 1;   // Partition key.
+  RANGE = 2;  // Sort key.
+}
+
+// One element of a key schema.
+message KeySchemaElement {
+  string attribute_name = 1;  // Name of the attribute.
+  KeyType key_type = 2;       // HASH or RANGE.
+}
+
+// Determines which attributes are copied into an index.
+enum ProjectionType {
+  PROJECTION_TYPE_UNSPECIFIED = 0;
+  ALL = 1;        // All attributes.
+  KEYS_ONLY = 2;  // Only key attributes.
+  INCLUDE = 3;    // Specific non-key attributes.
+}
+
+// Projection settings for a secondary index.
+message Projection {
+  ProjectionType projection_type = 1;   // Projection strategy.
+  repeated string non_key_attributes = 2; // Non-key attributes to include when projection_type == INCLUDE.
+}
+
+// Provisioned throughput settings applied to GSI replicas.
+message ProvisionedThroughputOverride {
+  int64 read_capacity_units = 1;  // RCUs for the replica.
+  int64 write_capacity_units = 2; // WCUs for the replica.
+}
+
+// Global secondary index definition.
+message GlobalSecondaryIndex {
+  string index_name = 1;                       // Index name.
+  repeated KeySchemaElement key_schema = 2;    // Partition/sort keys.
+  Projection projection = 3;                   // Attributes projected into the index.
+  int64 read_capacity_units = 4;               // RCUs (PROVISIONED only).
+  int64 write_capacity_units = 5;              // WCUs (PROVISIONED only).
+}
+
+// Local secondary index definition.
+message LocalSecondaryIndex {
+  string index_name = 1;                       // Index name.
+  repeated KeySchemaElement key_schema = 2;    // Must share HASH key with table.
+  Projection projection = 3;                   // Attributes projected into the index.
+}
+
+// Kind of data written to the stream.
+enum StreamViewType {
+  STREAM_VIEW_TYPE_UNSPECIFIED = 0;
+  NEW_IMAGE = 1;           // Item after modification.
+  OLD_IMAGE = 2;           // Item before modification.
+  NEW_AND_OLD_IMAGES = 3;  // Both before and after images.
+  KEYS_ONLY = 4;           // Only key attributes.
+}
+
+// DynamoDB Streams configuration.
+message StreamSpecification {
+  bool enabled = 1;                // When true, stream is enabled.
+  StreamViewType view_type = 2;    // Data captured in the stream.
+}
+
+// TTL settings for the table.
+message TimeToLive {
+  bool enabled = 1;          // When true, TTL is active.
+  string attribute_name = 2; // Attribute that stores the Unix epoch expiry time.
+}
+
+// Server-side encryption (SSE) configuration.
+message SSESpecification {
+  bool enabled = 1;               // Enables SSE using AES-256 or AWS KMS.
+  string kms_master_key_id = 2;   // ARN or alias of the KMS key (optional).
+}
+
+// Storage class of the table.
+enum TableClass {
+  TABLE_CLASS_UNSPECIFIED = 0;
+  STANDARD = 1;                   // Default class.
+  STANDARD_INFREQUENT_ACCESS = 2; // Lower storage cost, higher access cost.
+}
+
+// Key-value pair used for tagging AWS resources.
+message Tag {
+  string key = 1;   // Tag key (case-sensitive).
+  string value = 2; // Tag value.
+}
