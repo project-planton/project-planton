@@ -1,0 +1,173 @@
+syntax = "proto3";
+
+package project.planton.provider.aws.awsdynamodb.v1;
+
+// Desired state of an AWS DynamoDB table.
+message AwsDynamodbSpec {
+  // The name of the DynamoDB table (unique per region/account).
+  string table_name = 1;
+
+  // How you pay for read/write capacity: PROVISIONED or PAY_PER_REQUEST.
+  BillingMode billing_mode = 2;
+
+  // Read/write capacity settings (required when billing_mode == PROVISIONED).
+  ProvisionedThroughput provisioned_throughput = 3;
+
+  // All attributes referenced by keys or indexes.
+  repeated AttributeDefinition attribute_definitions = 4;
+
+  // Primary key schema of the table.
+  repeated KeySchemaElement key_schema = 5;
+
+  // Global secondary indexes to create.
+  repeated GlobalSecondaryIndex global_secondary_indexes = 6;
+
+  // Local secondary indexes to create.
+  repeated LocalSecondaryIndex local_secondary_indexes = 7;
+
+  // DynamoDB Streams configuration.
+  StreamSpecification stream_specification = 8;
+
+  // Server-side encryption settings.
+  SSESpecification sse_specification = 9;
+
+  // Time-to-live configuration for automatic item expiry.
+  TTLSpecification ttl_specification = 10;
+
+  // Enables point-in-time recovery (continuous backups).
+  bool point_in_time_recovery_enabled = 11;
+
+  // Protects the table from accidental deletion.
+  bool deletion_protection_enabled = 12;
+
+  // Regions in which to replicate the table as part of a global table.
+  repeated string replica_regions = 13;
+
+  // Resource tags.
+  map<string, string> tags = 14;
+
+  // Storage class of the table (STANDARD or STANDARD_INFREQUENT_ACCESS).
+  TableClass table_class = 15;
+}
+
+// ---------------- Helper Messages ----------------
+
+// Attribute metadata.
+message AttributeDefinition {
+  // Attribute name.
+  string name = 1;
+  // Attribute data type.
+  AttributeType type = 2;
+}
+
+// A key element within a primary or secondary index.
+message KeySchemaElement {
+  // Referenced attribute name.
+  string attribute_name = 1;
+  // HASH (partition) or RANGE (sort) key role.
+  KeyType key_type = 2;
+}
+
+// Read/write throughput settings for provisioned capacity.
+message ProvisionedThroughput {
+  // Max strongly-consistent reads per second.
+  int64 read_capacity_units = 1;
+  // Max writes per second.
+  int64 write_capacity_units = 2;
+}
+
+// Attributes that appear in a secondary index.
+message Projection {
+  // For INCLUDE projection: additional non-key attributes to project.
+  repeated string non_key_attributes = 1;
+  // Projection type.
+  ProjectionType projection_type = 2;
+}
+
+// Global secondary index definition.
+message GlobalSecondaryIndex {
+  // Index name.
+  string name = 1;
+  // Key schema for the index.
+  repeated KeySchemaElement key_schema = 2;
+  // Projection configuration.
+  Projection projection = 3;
+  // Provisioned capacity for the index (ignored if PAY_PER_REQUEST).
+  ProvisionedThroughput provisioned_throughput = 4;
+}
+
+// Local secondary index definition.
+message LocalSecondaryIndex {
+  // Index name.
+  string name = 1;
+  // Key schema (same HASH key as table, different RANGE key).
+  repeated KeySchemaElement key_schema = 2;
+  // Projection configuration.
+  Projection projection = 3;
+}
+
+// DynamoDB Streams configuration block.
+message StreamSpecification {
+  // Enables streaming of item mutations.
+  bool enabled = 1;
+  // Type of data written to the stream.
+  StreamViewType view_type = 2;
+}
+
+// Server-side encryption options.
+message SSESpecification {
+  // Enable SSE at rest.
+  bool enabled = 1;
+  // ARN of a customer-managed KMS key (blank for AWS-owned key).
+  string kms_key_arn = 2;
+}
+
+// Time-to-live settings.
+message TTLSpecification {
+  // Attribute that stores item expiry time (epoch seconds).
+  string attribute_name = 1;
+  // Whether TTL is active.
+  bool enabled = 2;
+}
+
+// ---------------- Enumerations ----------------
+
+enum BillingMode {
+  BILLING_MODE_UNSPECIFIED = 0;
+  PROVISIONED = 1;
+  PAY_PER_REQUEST = 2;
+}
+
+enum AttributeType {
+  ATTRIBUTE_TYPE_UNSPECIFIED = 0;
+  STRING = 1;
+  NUMBER = 2;
+  BINARY = 3;
+}
+
+enum KeyType {
+  KEY_TYPE_UNSPECIFIED = 0;
+  HASH = 1;   // Partition key
+  RANGE = 2;  // Sort key
+}
+
+enum ProjectionType {
+  PROJECTION_TYPE_UNSPECIFIED = 0;
+  ALL = 1;
+  KEYS_ONLY = 2;
+  INCLUDE = 3;
+}
+
+enum StreamViewType {
+  STREAM_VIEW_TYPE_UNSPECIFIED = 0;
+  NEW_IMAGE = 1;
+  OLD_IMAGE = 2;
+  NEW_AND_OLD_IMAGES = 3;
+  KEYS_ONLY = 4;
+}
+
+enum TableClass {
+  TABLE_CLASS_UNSPECIFIED = 0;
+  STANDARD = 1;
+  STANDARD_INFREQUENT_ACCESS = 2;
+}
