@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package project.planton.provider.aws.awsdynamodb.v1;
+
+import "project/planton/shared/iac.proto";                                   // IacProvisioner enum
+import "project/planton/shared/iac/pulumi/pulumi.proto";                     // PulumiStackInfo
+import "project/planton/shared/iac/terraform/terraform.proto";               // TerraformStackInfo
+import "project/planton/provider/aws/awsdynamodb/v1/api.proto";  // AwsDynamodb
+import "project/planton/credential/awscredential/v1/spec.proto";  // AwsCredentialSpec
+
+// stack-input
+message AwsDynamodbStackInput {
+  //iac-provisioner
+  project.planton.shared.IacProvisioner provisioner = 1;
+
+  //pulumi input required when the provisioner is pulumi
+  project.planton.shared.iac.pulumi.PulumiStackInfo pulumi = 2;
+
+  //terraform input required when the provisioner is terraform
+  project.planton.shared.iac.terraform.TerraformStackInfo terraform = 3;
+
+  //target api-resource
+  AwsDynamodb target = 4 [
+    (buf.validate.field).required = true
+  ];
+
+  //provider-credential
+  project.planton.credential.awscredential.v1.AwsCredentialSpec provider_credential = 5 [
+    (buf.validate.field).required = true
+  ];
+}
