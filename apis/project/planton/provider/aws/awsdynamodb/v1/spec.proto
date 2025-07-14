@@ -59,7 +59,7 @@ message AttributeDefinition {
   AttributeType attribute_type = 2; // Data type.
 }
 
-// Identifies an attributes role in a key schema.
+// Identifies an attribute's role in a key schema.
 message KeySchemaElement {
   string attribute_name = 1; // Name of the attribute.
   KeyType key_type = 2;      // HASH (partition) or RANGE (sort).
@@ -122,7 +122,7 @@ enum StreamViewType {
   NEW_IMAGE = 1;
   OLD_IMAGE = 2;
   NEW_AND_OLD_IMAGES = 3;
-  KEYS_ONLY = 4;
+  STREAM_KEYS_ONLY = 4; // Renamed to avoid duplicate enum value name.
 }
 
 // TTL (Time-to-Live) settings.
