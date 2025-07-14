@@ -121,7 +121,7 @@ message LocalSecondaryIndex {
 //==== Streams ====
 enum StreamViewType {
   STREAM_VIEW_TYPE_UNSPECIFIED = 0;
-  KEYS_ONLY = 1;
+  KEYS_ONLY_STREAM = 1; // Renamed to avoid collision with ProjectionType.KEYS_ONLY.
   NEW_IMAGE = 2;
   OLD_IMAGE = 3;
   NEW_AND_OLD_IMAGES = 4;
