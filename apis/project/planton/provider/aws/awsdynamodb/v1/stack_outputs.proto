@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package project.planton.provider.aws.awsdynamodb.v1;
+
+option go_package = "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsdynamodb/v1;awsdynamodbpb";
+
+// AwsDynamodbStackOutputs lists the observable identifiers returned after
+// provisioning an Amazon DynamoDB table.
+message AwsDynamodbStackOutputs {
+  // Fully-qualified Amazon Resource Name of the table.
+  string table_arn = 1;
+
+  // Name of the DynamoDB table (may include runtime suffixes).
+  string table_name = 2;
+
+  // AWS-assigned unique identifier of the table.
+  string table_id = 3;
+
+  // Current (latest) stream information, present only when streams are enabled.
+  Stream stream = 4;
+
+  // ARN of the customer-managed KMS key when SSE uses a CMK.
+  string kms_key_arn = 5;
+
+  // Names of provisioned global secondary indexes (GSIs).
+  repeated string global_secondary_index_names = 6;
+
+  // Names of provisioned local secondary indexes (LSIs).
+  repeated string local_secondary_index_names = 7;
+}
+
+// Stream represents DynamoDB Streams identifiers.
+message Stream {
+  // Stream ARN for the table’s most recent stream.
+  string stream_arn = 1;
+
+  // Timestamp-based label that uniquely identifies the stream.
+  string stream_label = 2;
+}
