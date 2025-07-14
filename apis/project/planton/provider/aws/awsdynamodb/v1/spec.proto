@@ -145,9 +145,14 @@ message Projection {
   };
 
   ProjectionType projection_type = 1 [(buf.validate.field) = {enum: {defined_only: true, not_in: [0]}}];
+
   repeated string non_key_attributes = 2 [(buf.validate.field) = {
-    repeated: {unique: true},
-    string: {min_len: 1, max_len: 255, pattern: "^[A-Za-z0-9_.-]+$"}
+    repeated: {
+      unique: true,
+      items: {
+        string: {min_len: 1, max_len: 255, pattern: "^[A-Za-z0-9_.-]+$"}
+      }
+    }
   }];
 }
 
