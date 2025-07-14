@@ -24,9 +24,9 @@ func TestAwsDynamodbSpecValidation(t *testing.T) {
 var validator protovalidate.Validator
 
 var _ = ginkgo.BeforeSuite(func() {
-    vPtr, err := protovalidate.New()
+    var err error
+    validator, err = protovalidate.New()
     Expect(err).NotTo(HaveOccurred())
-    validator = *vPtr
 })
 
 // -----------------------------------------------------------------------------
