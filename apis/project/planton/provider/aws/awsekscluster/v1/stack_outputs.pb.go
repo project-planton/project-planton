@@ -21,16 +21,19 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// aws-eks-cluster stack-outputs
+// AwsEksClusterStackOutputs describes the values returned after provisioning an AWS EKS cluster.
 type AwsEksClusterStackOutputs struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// id of the vpc in which the aws-eks-cluster is created
-	ClusterVpcId string `protobuf:"bytes,1,opt,name=cluster_vpc_id,json=clusterVpcId,proto3" json:"cluster_vpc_id,omitempty"`
-	// aws-eks-cluster endpoint.
-	ClusterEndpoint string `protobuf:"bytes,2,opt,name=cluster_endpoint,json=clusterEndpoint,proto3" json:"cluster_endpoint,omitempty"`
-	// aws-eks-cluster certificate-authority-data.
-	// this value is updated upon successful aws-eks-cluster creation stack-job.
-	ClusterCaData string `protobuf:"bytes,3,opt,name=cluster_ca_data,json=clusterCaData,proto3" json:"cluster_ca_data,omitempty"`
+	// endpoint is the URL of the Kubernetes API server for the EKS cluster.
+	Endpoint string `protobuf:"bytes,1,opt,name=endpoint,proto3" json:"endpoint,omitempty"`
+	// cluster_ca_certificate is the Base64-encoded certificate authority for the cluster.
+	ClusterCaCertificate string `protobuf:"bytes,2,opt,name=cluster_ca_certificate,json=clusterCaCertificate,proto3" json:"cluster_ca_certificate,omitempty"`
+	// cluster_security_group_id is the ID of the security group created by EKS for the cluster control plane.
+	ClusterSecurityGroupId string `protobuf:"bytes,3,opt,name=cluster_security_group_id,json=clusterSecurityGroupId,proto3" json:"cluster_security_group_id,omitempty"`
+	// oidc_issuer_url is the URL of the OpenID Connect issuer for the cluster (used for IAM Roles for Service Accounts).
+	OidcIssuerUrl string `protobuf:"bytes,4,opt,name=oidc_issuer_url,json=oidcIssuerUrl,proto3" json:"oidc_issuer_url,omitempty"`
+	// cluster_arn is the Amazon Resource Name of the EKS cluster.
+	ClusterArn    string `protobuf:"bytes,5,opt,name=cluster_arn,json=clusterArn,proto3" json:"cluster_arn,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -65,23 +68,37 @@ func (*AwsEksClusterStackOutputs) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_aws_awsekscluster_v1_stack_outputs_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *AwsEksClusterStackOutputs) GetClusterVpcId() string {
+func (x *AwsEksClusterStackOutputs) GetEndpoint() string {
 	if x != nil {
-		return x.ClusterVpcId
+		return x.Endpoint
 	}
 	return ""
 }
 
-func (x *AwsEksClusterStackOutputs) GetClusterEndpoint() string {
+func (x *AwsEksClusterStackOutputs) GetClusterCaCertificate() string {
 	if x != nil {
-		return x.ClusterEndpoint
+		return x.ClusterCaCertificate
 	}
 	return ""
 }
 
-func (x *AwsEksClusterStackOutputs) GetClusterCaData() string {
+func (x *AwsEksClusterStackOutputs) GetClusterSecurityGroupId() string {
 	if x != nil {
-		return x.ClusterCaData
+		return x.ClusterSecurityGroupId
+	}
+	return ""
+}
+
+func (x *AwsEksClusterStackOutputs) GetOidcIssuerUrl() string {
+	if x != nil {
+		return x.OidcIssuerUrl
+	}
+	return ""
+}
+
+func (x *AwsEksClusterStackOutputs) GetClusterArn() string {
+	if x != nil {
+		return x.ClusterArn
 	}
 	return ""
 }
@@ -90,11 +107,14 @@ var File_project_planton_provider_aws_awsekscluster_v1_stack_outputs_proto proto
 
 const file_project_planton_provider_aws_awsekscluster_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Aproject/planton/provider/aws/awsekscluster/v1/stack_outputs.proto\x12-project.planton.provider.aws.awsekscluster.v1\"\x94\x01\n" +
-	"\x19AwsEksClusterStackOutputs\x12$\n" +
-	"\x0ecluster_vpc_id\x18\x01 \x01(\tR\fclusterVpcId\x12)\n" +
-	"\x10cluster_endpoint\x18\x02 \x01(\tR\x0fclusterEndpoint\x12&\n" +
-	"\x0fcluster_ca_data\x18\x03 \x01(\tR\rclusterCaDataB\x90\x03\n" +
+	"Aproject/planton/provider/aws/awsekscluster/v1/stack_outputs.proto\x12-project.planton.provider.aws.awsekscluster.v1\"\xf1\x01\n" +
+	"\x19AwsEksClusterStackOutputs\x12\x1a\n" +
+	"\bendpoint\x18\x01 \x01(\tR\bendpoint\x124\n" +
+	"\x16cluster_ca_certificate\x18\x02 \x01(\tR\x14clusterCaCertificate\x129\n" +
+	"\x19cluster_security_group_id\x18\x03 \x01(\tR\x16clusterSecurityGroupId\x12&\n" +
+	"\x0foidc_issuer_url\x18\x04 \x01(\tR\roidcIssuerUrl\x12\x1f\n" +
+	"\vcluster_arn\x18\x05 \x01(\tR\n" +
+	"clusterArnB\x90\x03\n" +
 	"1com.project.planton.provider.aws.awsekscluster.v1B\x11StackOutputsProtoP\x01Zmgithub.com/project-planton/project-planton/apis/project/planton/provider/aws/awsekscluster/v1;awseksclusterv1\xa2\x02\x05PPPAA\xaa\x02-Project.Planton.Provider.Aws.Awsekscluster.V1\xca\x02-Project\\Planton\\Provider\\Aws\\Awsekscluster\\V1\xe2\x029Project\\Planton\\Provider\\Aws\\Awsekscluster\\V1\\GPBMetadata\xea\x022Project::Planton::Provider::Aws::Awsekscluster::V1b\x06proto3"
 
 var (

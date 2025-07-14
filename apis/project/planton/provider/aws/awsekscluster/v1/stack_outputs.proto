@@ -2,15 +2,20 @@ syntax = "proto3";
 
 package project.planton.provider.aws.awsekscluster.v1;
 
-// aws-eks-cluster stack-outputs
+// AwsEksClusterStackOutputs describes the values returned after provisioning an AWS EKS cluster.
 message AwsEksClusterStackOutputs {
-  // id of the vpc in which the aws-eks-cluster is created
-  string cluster_vpc_id = 1;
+  // endpoint is the URL of the Kubernetes API server for the EKS cluster.
+  string endpoint = 1;
 
-  // aws-eks-cluster endpoint.
-  string cluster_endpoint = 2;
+  // cluster_ca_certificate is the Base64-encoded certificate authority for the cluster.
+  string cluster_ca_certificate = 2;
 
-  // aws-eks-cluster certificate-authority-data.
-  // this value is updated upon successful aws-eks-cluster creation stack-job.
-  string cluster_ca_data = 3;
+  // cluster_security_group_id is the ID of the security group created by EKS for the cluster control plane.
+  string cluster_security_group_id = 3;
+
+  // oidc_issuer_url is the URL of the OpenID Connect issuer for the cluster (used for IAM Roles for Service Accounts).
+  string oidc_issuer_url = 4;
+
+  // cluster_arn is the Amazon Resource Name of the EKS cluster.
+  string cluster_arn = 5;
 }

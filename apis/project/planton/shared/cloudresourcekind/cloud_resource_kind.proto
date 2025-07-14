@@ -35,7 +35,9 @@ enum CloudResourceKind {
   AwsSecurityGroup = 215;
   AwsStaticWebsite = 216;
   AwsVpc = 217;
-  AwsEksClusterCore = 218;
+  AwsEksNodeGroup = 218;
+  AwsIamUser = 219;
+  AwsKmsKey = 220;
 
   // 400–599: Azure resources
   AzureAksCluster = 400;
