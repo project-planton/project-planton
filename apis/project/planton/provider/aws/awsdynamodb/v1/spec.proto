@@ -2,16 +2,30 @@ syntax = "proto3";
 
 package project.planton.provider.aws.awsdynamodb.v1;
 
+import "buf/validate/validate.proto";
+
 // AwsDynamodbSpec defines desired state of an Amazon DynamoDB table.
 message AwsDynamodbSpec {
+  option (buf.validate.message).cel = {
+    id: "billing_mode_capacities",
+    message: "When billing_mode == PROVISIONED (1) provisioned_throughput and every GSI throughput must be > 0; when PAY_PER_REQUEST (2) they must be unset or zero, and billing_mode must not be UNSPECIFIED (0)",
+    expression: "this.billing_mode == 1 ? (has(this.provisioned_throughput) && this.provisioned_throughput.read_capacity_units > 0 && this.provisioned_throughput.write_capacity_units > 0 && all(this.global_secondary_indexes, g, has(g.provisioned_throughput) && g.provisioned_throughput.read_capacity_units > 0 && g.provisioned_throughput.write_capacity_units > 0)) : (this.billing_mode == 2 ? (!has(this.provisioned_throughput) || (this.provisioned_throughput.read_capacity_units == 0 && this.provisioned_throughput.write_capacity_units == 0)) && all(this.global_secondary_indexes, g, !has(g.provisioned_throughput) || (g.provisioned_throughput.read_capacity_units == 0 && g.provisioned_throughput.write_capacity_units == 0)) : false)"
+  };
+
   // Name of the DynamoDB table.
-  string table_name = 1;
+  string table_name = 1 [
+    (buf.validate.field).string = {min_len: 3, max_len: 255, pattern: "^[A-Za-z0-9_.-]+$"}
+  ];
 
   // Key schema for the table (partition key and optional sort key).
-  repeated KeySchemaElement key_schema = 2;
+  repeated KeySchemaElement key_schema = 2 [
+    (buf.validate.field).repeated = {min_items: 1}
+  ];
 
   // Attribute definitions referenced by key schema and indexes.
-  repeated AttributeDefinition attribute_definitions = 3;
+  repeated AttributeDefinition attribute_definitions = 3 [
+    (buf.validate.field).repeated = {min_items: 1}
+  ];
 
   // Billing mode of the table: PROVISIONED (provisioned capacity) or PAY_PER_REQUEST (on-demand).
   BillingMode billing_mode = 4;
@@ -29,13 +43,17 @@ message AwsDynamodbSpec {
   StreamSpecification stream_specification = 8;
 
   // Name of the attribute that enables Time to Live (TTL) for automatic item expiration.
-  string ttl_attribute_name = 9;
+  string ttl_attribute_name = 9 [
+    (buf.validate.field).string = {min_len: 1}
+  ];
 
   // Enable server-side encryption at rest.
   bool server_side_encryption_enabled = 10;
 
   // Customer managed AWS KMS key ID to use for encryption (optional).
-  string kms_key_id = 11;
+  string kms_key_id = 11 [
+    (buf.validate.field).string = {pattern: "^arn:aws:kms:[A-Za-z0-9:_/-]+$", ignore_empty: true}
+  ];
 
   // Enable point-in-time recovery (PITR) to restore table to any second within last 35 days.
   bool point_in_time_recovery_enabled = 12;
@@ -44,7 +62,9 @@ message AwsDynamodbSpec {
   TableClass table_class = 13;
 
   // Key-value pairs of tags to assign to the table.
-  map<string, string> tags = 14;
+  map<string, string> tags = 14 [
+    (buf.validate.field).map = {keys: {string: {min_len: 1}}, values: {string: {min_len: 1}}}
+  ];
 
   // Prevent accidental deletion of the table when enabled.
   bool deletion_protection_enabled = 15;
@@ -56,9 +76,13 @@ message AwsDynamodbSpec {
 // Defines an attribute used in key schema or indexes.
 message AttributeDefinition {
   // Attribute name.
-  string name = 1;
+  string name = 1 [
+    (buf.validate.field).string = {min_len: 1}
+  ];
   // Attribute data type: S (string), N (number), B (binary).
-  AttributeType type = 2;
+  AttributeType type = 2 [
+    (buf.validate.field).enum = {in: [1,2,3]}
+  ];
 }
 
 // Allowed attribute data types.
@@ -72,9 +96,13 @@ enum AttributeType {
 // Describes a key element (partition or sort key).
 message KeySchemaElement {
   // Attribute name of the key element.
-  string attribute_name = 1;
+  string attribute_name = 1 [
+    (buf.validate.field).string = {min_len: 1}
+  ];
   // Key type: HASH (partition key) or RANGE (sort key).
-  KeyType key_type = 2;
+  KeyType key_type = 2 [
+    (buf.validate.field).enum = {in: [1,2]}
+  ];
 }
 
 // Key types for key schema elements.
@@ -87,9 +115,13 @@ enum KeyType {
 // Provisioned throughput settings.
 message ProvisionedThroughput {
   // Read capacity units.
-  int64 read_capacity_units = 1;
+  int64 read_capacity_units = 1 [
+    (buf.validate.field).int64.gt = 0
+  ];
   // Write capacity units.
-  int64 write_capacity_units = 2;
+  int64 write_capacity_units = 2 [
+    (buf.validate.field).int64.gt = 0
+  ];
   // Optional auto scaling strategy for this throughput.
   AutoScalingSettings autoscaling = 3;
 }
@@ -97,21 +129,38 @@ message ProvisionedThroughput {
 // Auto scaling configuration for capacity units.
 message AutoScalingSettings {
   // Minimum capacity units allowed.
-  int64 min_capacity = 1;
+  int64 min_capacity = 1 [
+    (buf.validate.field).int64.gte = 1
+  ];
   // Maximum capacity units allowed.
-  int64 max_capacity = 2;
+  int64 max_capacity = 2 [
+    (buf.validate.field).int64.gt = 0
+  ];
   // Target utilization percentage (e.g., 70 means scale to keep usage at 70%).
-  int32 target_utilization_percent = 3;
+  int32 target_utilization_percent = 3 [
+    (buf.validate.field).int32 = {gte: 20, lte: 90}
+  ];
+  option (buf.validate.message).cel = {
+    id: "autoscaling_min_le_max",
+    message: "max_capacity must be >= min_capacity",
+    expression: "this.max_capacity >= this.min_capacity"
+  };
 }
 
 // Definition of a global secondary index (GSI).
 message GlobalSecondaryIndex {
   // Index name.
-  string name = 1;
+  string name = 1 [
+    (buf.validate.field).string = {min_len: 3, max_len: 255, pattern: "^[A-Za-z0-9_.-]+$"}
+  ];
   // Key schema for the index.
-  repeated KeySchemaElement key_schema = 2;
+  repeated KeySchemaElement key_schema = 2 [
+    (buf.validate.field).repeated = {min_items: 1}
+  ];
   // Projection behavior for the index.
-  Projection projection = 3;
+  Projection projection = 3 [
+    (buf.validate.field).required = true
+  ];
   // Provisioned throughput for the index (ignored when billing_mode is PAY_PER_REQUEST).
   ProvisionedThroughput provisioned_throughput = 4;
 }
@@ -119,17 +168,31 @@ message GlobalSecondaryIndex {
 // Definition of a local secondary index (LSI).
 message LocalSecondaryIndex {
   // Index name.
-  string name = 1;
+  string name = 1 [
+    (buf.validate.field).string = {min_len: 3, max_len: 255, pattern: "^[A-Za-z0-9_.-]+$"}
+  ];
   // Key schema for the index (partition key must match the table's).
-  repeated KeySchemaElement key_schema = 2;
+  repeated KeySchemaElement key_schema = 2 [
+    (buf.validate.field).repeated = {min_items: 1}
+  ];
   // Projection behavior for the index.
-  Projection projection = 3;
+  Projection projection = 3 [
+    (buf.validate.field).required = true
+  ];
 }
 
 // Projection controls which attributes are copied into an index.
 message Projection {
+  option (buf.validate.message).cel = {
+    id: "include_requires_attributes",
+    message: "non_key_attributes must be non-empty when projection_type == INCLUDE (3) and empty otherwise",
+    expression: "this.projection_type == 3 ? size(this.non_key_attributes) > 0 : size(this.non_key_attributes) == 0"
+  };
+
   // Projection type: ALL, KEYS_ONLY, or INCLUDE.
-  ProjectionType projection_type = 1;
+  ProjectionType projection_type = 1 [
+    (buf.validate.field).enum = {in: [1,2,3]}
+  ];
   // List of non-key attributes to project when projection_type == INCLUDE.
   repeated string non_key_attributes = 2;
 }
@@ -144,6 +207,12 @@ enum ProjectionType {
 
 // Stream specification for DynamoDB Streams.
 message StreamSpecification {
+  option (buf.validate.message).cel = {
+    id: "stream_view_type_requirement",
+    message: "view_type must be set when streams are enabled and unset when disabled",
+    expression: "this.enabled ? this.view_type != 0 : this.view_type == 0"
+  };
+
   // Set to true to enable streams.
   bool enabled = 1;
   // Determines the information written to the stream.
