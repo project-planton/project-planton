@@ -8,6 +8,8 @@ package awseksclusterv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
+	v1 "github.com/project-planton/project-planton/apis/project/planton/shared/foreignkey/v1"
+	_ "github.com/project-planton/project-planton/apis/project/planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -22,40 +24,32 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// AwsEksClusterSpec defines the specification required to deploy an Amazon Elastic Kubernetes Service (EKS) cluster.
-// This message encapsulates all configurations necessary for setting up an EKS cluster, including the AWS region
-// where the cluster will be deployed,
-// the VPC (Virtual Private Cloud) settings, and the management mode for worker nodes.
-// Amazon EKS is a managed Kubernetes service that simplifies running Kubernetes on AWS without needing to install,
-// operate, and maintain your own Kubernetes control plane or nodes.
-// By providing this specification, users can automate the EKS cluster creation process with specified configurations,
-// ensuring a consistent and repeatable setup for their AWS environment.
-// This is particularly useful for organizations looking to deploy containerized applications in a scalable and
-// highly available manner.
+// AwsEksClusterSpec defines the specification for an AWS EKS (Elastic Kubernetes Service) cluster control plane.
+// It captures the minimal fields needed to create a Kubernetes control plane (80/20 use-case configuration).
 type AwsEksClusterSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The AWS region in which to create the EKS cluster.
-	// This must be a valid AWS region where EKS is available.
-	// Note: The EKS cluster will be recreated if this value is updated.
-	// For a list of AWS regions, see: https://aws.amazon.com/about-aws/global-infrastructure/regions_az/
-	Region string `protobuf:"bytes,1,opt,name=region,proto3" json:"region,omitempty"`
-	// Security Groups for the EKS cluster
-	SecurityGroups []string `protobuf:"bytes,2,rep,name=security_groups,json=securityGroups,proto3" json:"security_groups,omitempty"`
-	// Subnets for the EKS cluster
-	Subnets []string `protobuf:"bytes,3,rep,name=subnets,proto3" json:"subnets,omitempty"`
-	// role arn for the EKS cluster
-	RoleArn string `protobuf:"bytes,4,opt,name=role_arn,json=roleArn,proto3" json:"role_arn,omitempty"`
-	// Worker Node Role ARN
-	NodeRoleArn string `protobuf:"bytes,5,opt,name=node_role_arn,json=nodeRoleArn,proto3" json:"node_role_arn,omitempty"`
-	// Instance type for the EKS worker nodes
-	InstanceType string `protobuf:"bytes,6,opt,name=instance_type,json=instanceType,proto3" json:"instance_type,omitempty"`
-	// Desired size of the EKS worker node group
-	DesiredSize int32 `protobuf:"varint,7,opt,name=desired_size,json=desiredSize,proto3" json:"desired_size,omitempty"`
-	// Maximum size of the EKS worker node group
-	MaxSize int32 `protobuf:"varint,8,opt,name=max_size,json=maxSize,proto3" json:"max_size,omitempty"`
-	// Minimum size of the EKS worker node group
-	MinSize       int32             `protobuf:"varint,9,opt,name=min_size,json=minSize,proto3" json:"min_size,omitempty"`
-	Tags          map[string]string `protobuf:"bytes,10,rep,name=tags,proto3" json:"tags,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	// subnet_ids is the list of subnet IDs (in the cluster's VPC) where the EKS control plane will attach network interfaces.
+	// Provide at least two subnets in distinct Availability Zones for high availability.
+	SubnetIds []*v1.StringValueOrRef `protobuf:"bytes,1,rep,name=subnet_ids,json=subnetIds,proto3" json:"subnet_ids,omitempty"`
+	// cluster_role_arn is the ARN of an IAM role for the EKS cluster to use when interacting with AWS services.
+	// This role must have the AmazonEKSClusterPolicy attached.
+	// Example: "arn:aws:iam::123456789012:role/EksClusterServiceRole"
+	ClusterRoleArn *v1.StringValueOrRef `protobuf:"bytes,2,opt,name=cluster_role_arn,json=clusterRoleArn,proto3" json:"cluster_role_arn,omitempty"`
+	// version is the Kubernetes version of the cluster control plane to deploy (e.g., "1.25").
+	// Must match the pattern ^1\.(2[4-9]|3[0-9])$ (for example, "1.24", "1.25", etc.). If not set, the latest supported version is used.
+	Version string `protobuf:"bytes,3,opt,name=version,proto3" json:"version,omitempty"`
+	// disable_public_endpoint determines if the cluster's API endpoint should be private-only.
+	// If false (default), the cluster API endpoint is publicly accessible; if true, the endpoint is accessible only within the VPC.
+	DisablePublicEndpoint bool `protobuf:"varint,4,opt,name=disable_public_endpoint,json=disablePublicEndpoint,proto3" json:"disable_public_endpoint,omitempty"`
+	// public_access_cidrs restricts which IPv4 CIDR blocks can access the cluster's public API endpoint.
+	// If this list is empty, AWS defaults to 0.0.0.0/0 (all IPv4 addresses). Each entry must be a valid IPv4 CIDR (e.g., "203.0.113.0/24").
+	PublicAccessCidrs []string `protobuf:"bytes,5,rep,name=public_access_cidrs,json=publicAccessCidrs,proto3" json:"public_access_cidrs,omitempty"`
+	// enable_control_plane_logs, if true, enables all control plane log types for the cluster (API, audit, authenticator, controller manager, scheduler) to CloudWatch.
+	// Default is false, meaning control plane logging is disabled unless explicitly enabled.
+	EnableControlPlaneLogs bool `protobuf:"varint,6,opt,name=enable_control_plane_logs,json=enableControlPlaneLogs,proto3" json:"enable_control_plane_logs,omitempty"`
+	// kms_key_arn is an optional KMS Key ARN to use for envelope encryption of Kubernetes secrets.
+	// If provided, this customer-managed KMS key will encrypt secrets; if not set, the cluster uses the default AWS-managed EKS key.
+	KmsKeyArn     *v1.StringValueOrRef `protobuf:"bytes,7,opt,name=kms_key_arn,json=kmsKeyArn,proto3" json:"kms_key_arn,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -90,72 +84,51 @@ func (*AwsEksClusterSpec) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_aws_awsekscluster_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *AwsEksClusterSpec) GetRegion() string {
+func (x *AwsEksClusterSpec) GetSubnetIds() []*v1.StringValueOrRef {
 	if x != nil {
-		return x.Region
-	}
-	return ""
-}
-
-func (x *AwsEksClusterSpec) GetSecurityGroups() []string {
-	if x != nil {
-		return x.SecurityGroups
+		return x.SubnetIds
 	}
 	return nil
 }
 
-func (x *AwsEksClusterSpec) GetSubnets() []string {
+func (x *AwsEksClusterSpec) GetClusterRoleArn() *v1.StringValueOrRef {
 	if x != nil {
-		return x.Subnets
+		return x.ClusterRoleArn
 	}
 	return nil
 }
 
-func (x *AwsEksClusterSpec) GetRoleArn() string {
+func (x *AwsEksClusterSpec) GetVersion() string {
 	if x != nil {
-		return x.RoleArn
+		return x.Version
 	}
 	return ""
 }
 
-func (x *AwsEksClusterSpec) GetNodeRoleArn() string {
+func (x *AwsEksClusterSpec) GetDisablePublicEndpoint() bool {
 	if x != nil {
-		return x.NodeRoleArn
+		return x.DisablePublicEndpoint
 	}
-	return ""
+	return false
 }
 
-func (x *AwsEksClusterSpec) GetInstanceType() string {
+func (x *AwsEksClusterSpec) GetPublicAccessCidrs() []string {
 	if x != nil {
-		return x.InstanceType
+		return x.PublicAccessCidrs
 	}
-	return ""
+	return nil
 }
 
-func (x *AwsEksClusterSpec) GetDesiredSize() int32 {
+func (x *AwsEksClusterSpec) GetEnableControlPlaneLogs() bool {
 	if x != nil {
-		return x.DesiredSize
+		return x.EnableControlPlaneLogs
 	}
-	return 0
+	return false
 }
 
-func (x *AwsEksClusterSpec) GetMaxSize() int32 {
+func (x *AwsEksClusterSpec) GetKmsKeyArn() *v1.StringValueOrRef {
 	if x != nil {
-		return x.MaxSize
-	}
-	return 0
-}
-
-func (x *AwsEksClusterSpec) GetMinSize() int32 {
-	if x != nil {
-		return x.MinSize
-	}
-	return 0
-}
-
-func (x *AwsEksClusterSpec) GetTags() map[string]string {
-	if x != nil {
-		return x.Tags
+		return x.KmsKeyArn
 	}
 	return nil
 }
@@ -164,22 +137,16 @@ var File_project_planton_provider_aws_awsekscluster_v1_spec_proto protoreflect.F
 
 const file_project_planton_provider_aws_awsekscluster_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"8project/planton/provider/aws/awsekscluster/v1/spec.proto\x12-project.planton.provider.aws.awsekscluster.v1\x1a\x1bbuf/validate/validate.proto\x1a8project/planton/provider/aws/awsekscluster/v1/enum.proto\"\xd4\x03\n" +
-	"\x11AwsEksClusterSpec\x12\x1e\n" +
-	"\x06region\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x06region\x12'\n" +
-	"\x0fsecurity_groups\x18\x02 \x03(\tR\x0esecurityGroups\x12\x18\n" +
-	"\asubnets\x18\x03 \x03(\tR\asubnets\x12\x19\n" +
-	"\brole_arn\x18\x04 \x01(\tR\aroleArn\x12\"\n" +
-	"\rnode_role_arn\x18\x05 \x01(\tR\vnodeRoleArn\x12+\n" +
-	"\rinstance_type\x18\x06 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\finstanceType\x12!\n" +
-	"\fdesired_size\x18\a \x01(\x05R\vdesiredSize\x12\x19\n" +
-	"\bmax_size\x18\b \x01(\x05R\amaxSize\x12\x19\n" +
-	"\bmin_size\x18\t \x01(\x05R\aminSize\x12^\n" +
-	"\x04tags\x18\n" +
-	" \x03(\v2J.project.planton.provider.aws.awsekscluster.v1.AwsEksClusterSpec.TagsEntryR\x04tags\x1a7\n" +
-	"\tTagsEntry\x12\x10\n" +
-	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01B\x88\x03\n" +
+	"8project/planton/provider/aws/awsekscluster/v1/spec.proto\x12-project.planton.provider.aws.awsekscluster.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\"\xf6\x05\n" +
+	"\x11AwsEksClusterSpec\x12\x90\x01\n" +
+	"\n" +
+	"subnet_ids\x18\x01 \x03(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB9\xbaH\b\xc8\x01\x01\x92\x01\x02\b\x02\x88\xd4a\xd9\x01\x92\xd4a%status.outputs.private_subnets.[*].idR\tsubnetIds\x12\x88\x01\n" +
+	"\x10cluster_role_arn\x18\x02 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB&\xbaH\x03\xc8\x01\x01\x88\xd4a\xd0\x01\x92\xd4a\x17status.outputs.role_arnR\x0eclusterRoleArn\x125\n" +
+	"\aversion\x18\x03 \x01(\tB\x1b\xbaH\x18r\x162\x14^1\\.(2[4-9]|3[0-9])$R\aversion\x126\n" +
+	"\x17disable_public_endpoint\x18\x04 \x01(\bR\x15disablePublicEndpoint\x12\x9f\x01\n" +
+	"\x13public_access_cidrs\x18\x05 \x03(\tBo\xbaHl\x92\x01i\"gre2c^(?:25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)(?:\\.(?:25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)){3}/(?:[0-9]|[12]\\d|3[0-2])$R\x11publicAccessCidrs\x129\n" +
+	"\x19enable_control_plane_logs\x18\x06 \x01(\bR\x16enableControlPlaneLogs\x12w\n" +
+	"\vkms_key_arn\x18\a \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB\x1f\x88\xd4a\xdc\x01\x92\xd4a\x16status.outputs.key_arnR\tkmsKeyArnB\x88\x03\n" +
 	"1com.project.planton.provider.aws.awsekscluster.v1B\tSpecProtoP\x01Zmgithub.com/project-planton/project-planton/apis/project/planton/provider/aws/awsekscluster/v1;awseksclusterv1\xa2\x02\x05PPPAA\xaa\x02-Project.Planton.Provider.Aws.Awsekscluster.V1\xca\x02-Project\\Planton\\Provider\\Aws\\Awsekscluster\\V1\xe2\x029Project\\Planton\\Provider\\Aws\\Awsekscluster\\V1\\GPBMetadata\xea\x022Project::Planton::Provider::Aws::Awsekscluster::V1b\x06proto3"
 
 var (
@@ -194,18 +161,20 @@ func file_project_planton_provider_aws_awsekscluster_v1_spec_proto_rawDescGZIP()
 	return file_project_planton_provider_aws_awsekscluster_v1_spec_proto_rawDescData
 }
 
-var file_project_planton_provider_aws_awsekscluster_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_project_planton_provider_aws_awsekscluster_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_aws_awsekscluster_v1_spec_proto_goTypes = []any{
-	(*AwsEksClusterSpec)(nil), // 0: project.planton.provider.aws.awsekscluster.v1.AwsEksClusterSpec
-	nil,                       // 1: project.planton.provider.aws.awsekscluster.v1.AwsEksClusterSpec.TagsEntry
+	(*AwsEksClusterSpec)(nil),   // 0: project.planton.provider.aws.awsekscluster.v1.AwsEksClusterSpec
+	(*v1.StringValueOrRef)(nil), // 1: project.planton.shared.foreignkey.v1.StringValueOrRef
 }
 var file_project_planton_provider_aws_awsekscluster_v1_spec_proto_depIdxs = []int32{
-	1, // 0: project.planton.provider.aws.awsekscluster.v1.AwsEksClusterSpec.tags:type_name -> project.planton.provider.aws.awsekscluster.v1.AwsEksClusterSpec.TagsEntry
-	1, // [1:1] is the sub-list for method output_type
-	1, // [1:1] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	1, // 0: project.planton.provider.aws.awsekscluster.v1.AwsEksClusterSpec.subnet_ids:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
+	1, // 1: project.planton.provider.aws.awsekscluster.v1.AwsEksClusterSpec.cluster_role_arn:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
+	1, // 2: project.planton.provider.aws.awsekscluster.v1.AwsEksClusterSpec.kms_key_arn:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
+	3, // [3:3] is the sub-list for method output_type
+	3, // [3:3] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_provider_aws_awsekscluster_v1_spec_proto_init() }
@@ -213,14 +182,13 @@ func file_project_planton_provider_aws_awsekscluster_v1_spec_proto_init() {
 	if File_project_planton_provider_aws_awsekscluster_v1_spec_proto != nil {
 		return
 	}
-	file_project_planton_provider_aws_awsekscluster_v1_enum_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_project_planton_provider_aws_awsekscluster_v1_spec_proto_rawDesc), len(file_project_planton_provider_aws_awsekscluster_v1_spec_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   2,
+			NumMessages:   1,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
