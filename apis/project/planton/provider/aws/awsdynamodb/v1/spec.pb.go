@@ -7,6 +7,7 @@
 package awsdynamodbv1
 
 import (
+	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	structpb "google.golang.org/protobuf/types/known/structpb"
@@ -31,7 +32,8 @@ type AwsDynamodbSpec struct {
 	Attributes []*Attribute `protobuf:"bytes,2,rep,name=attributes,proto3" json:"attributes,omitempty"`
 	// Primary key definition (partition key and optional sort key).
 	KeySchema *KeySchema `protobuf:"bytes,3,opt,name=key_schema,json=keySchema,proto3" json:"key_schema,omitempty"`
-	// Billing mode: "PROVISIONED" (manual/auto-scaled RCUs/WCUs) or "PAY_PER_REQUEST" (on-demand).
+	// Billing mode: "PROVISIONED" (manual/auto-scaled RCUs/WCUs) or
+	// "PAY_PER_REQUEST" (on-demand).
 	BillingMode string `protobuf:"bytes,4,opt,name=billing_mode,json=billingMode,proto3" json:"billing_mode,omitempty"`
 	// Table-level throughput settings (required when billing_mode = PROVISIONED).
 	ProvisionedThroughput *ProvisionedThroughput `protobuf:"bytes,5,opt,name=provisioned_throughput,json=provisionedThroughput,proto3" json:"provisioned_throughput,omitempty"`
@@ -892,75 +894,82 @@ var File_project_planton_provider_aws_awsdynamodb_v1_spec_proto protoreflect.Fil
 
 const file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"6project/planton/provider/aws/awsdynamodb/v1/spec.proto\x12+project.planton.provider.aws.awsdynamodb.v1\x1a\x1cgoogle/protobuf/struct.proto\"\x96\v\n" +
-	"\x0fAwsDynamodbSpec\x12\x1d\n" +
+	"6project/planton/provider/aws/awsdynamodb/v1/spec.proto\x12+project.planton.provider.aws.awsdynamodb.v1\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1bbuf/validate/validate.proto\"\xd7\x10\n" +
+	"\x0fAwsDynamodbSpec\x12B\n" +
 	"\n" +
-	"table_name\x18\x01 \x01(\tR\ttableName\x12V\n" +
+	"table_name\x18\x01 \x01(\tB#\xbaH r\x1e\x10\x03\x18\xff\x012\x17^[A-Za-z0-9_.-]{3,255}$R\ttableName\x12c\n" +
 	"\n" +
-	"attributes\x18\x02 \x03(\v26.project.planton.provider.aws.awsdynamodb.v1.AttributeR\n" +
-	"attributes\x12U\n" +
+	"attributes\x18\x02 \x03(\v26.project.planton.provider.aws.awsdynamodb.v1.AttributeB\v\xbaH\b\x92\x01\x05\b\x01\x10\xff\x01R\n" +
+	"attributes\x12]\n" +
 	"\n" +
-	"key_schema\x18\x03 \x01(\v26.project.planton.provider.aws.awsdynamodb.v1.KeySchemaR\tkeySchema\x12!\n" +
-	"\fbilling_mode\x18\x04 \x01(\tR\vbillingMode\x12y\n" +
-	"\x16provisioned_throughput\x18\x05 \x01(\v2B.project.planton.provider.aws.awsdynamodb.v1.ProvisionedThroughputR\x15provisionedThroughput\x12{\n" +
-	"\x18global_secondary_indexes\x18\x06 \x03(\v2A.project.planton.provider.aws.awsdynamodb.v1.GlobalSecondaryIndexR\x16globalSecondaryIndexes\x12x\n" +
-	"\x17local_secondary_indexes\x18\a \x03(\v2@.project.planton.provider.aws.awsdynamodb.v1.LocalSecondaryIndexR\x15localSecondaryIndexes\x12s\n" +
+	"key_schema\x18\x03 \x01(\v26.project.planton.provider.aws.awsdynamodb.v1.KeySchemaB\x06\xbaH\x03\xc8\x01\x01R\tkeySchema\x12F\n" +
+	"\fbilling_mode\x18\x04 \x01(\tB#\xbaH r\x1eR\vPROVISIONEDR\x0fPAY_PER_REQUESTR\vbillingMode\x12y\n" +
+	"\x16provisioned_throughput\x18\x05 \x01(\v2B.project.planton.provider.aws.awsdynamodb.v1.ProvisionedThroughputR\x15provisionedThroughput\x12\x85\x01\n" +
+	"\x18global_secondary_indexes\x18\x06 \x03(\v2A.project.planton.provider.aws.awsdynamodb.v1.GlobalSecondaryIndexB\b\xbaH\x05\x92\x01\x02\x10\x14R\x16globalSecondaryIndexes\x12\x82\x01\n" +
+	"\x17local_secondary_indexes\x18\a \x03(\v2@.project.planton.provider.aws.awsdynamodb.v1.LocalSecondaryIndexB\b\xbaH\x05\x92\x01\x02\x10\x05R\x15localSecondaryIndexes\x12s\n" +
 	"\x14stream_specification\x18\b \x01(\v2@.project.planton.provider.aws.awsdynamodb.v1.StreamSpecificationR\x13streamSpecification\x12I\n" +
 	"\x03ttl\x18\t \x01(\v27.project.planton.provider.aws.awsdynamodb.v1.TimeToLiveR\x03ttl\x12w\n" +
 	"\x16server_side_encryption\x18\n" +
 	" \x01(\v2A.project.planton.provider.aws.awsdynamodb.v1.ServerSideEncryptionR\x14serverSideEncryption\x12u\n" +
-	"\x16point_in_time_recovery\x18\v \x01(\v2@.project.planton.provider.aws.awsdynamodb.v1.PointInTimeRecoveryR\x13pointInTimeRecovery\x12\x1f\n" +
-	"\vtable_class\x18\f \x01(\tR\n" +
-	"tableClass\x12D\n" +
-	"\x04tags\x18\r \x03(\v20.project.planton.provider.aws.awsdynamodb.v1.TagR\x04tags\x12k\n" +
+	"\x16point_in_time_recovery\x18\v \x01(\v2@.project.planton.provider.aws.awsdynamodb.v1.PointInTimeRecoveryR\x13pointInTimeRecovery\x12L\n" +
+	"\vtable_class\x18\f \x01(\tB+\xbaH(r&R\bSTANDARDR\x1aSTANDARD_INFREQUENT_ACCESSR\n" +
+	"tableClass\x12N\n" +
+	"\x04tags\x18\r \x03(\v20.project.planton.provider.aws.awsdynamodb.v1.TagB\b\xbaH\x05\x92\x01\x02\x102R\x04tags\x12k\n" +
 	"\x10read_autoscaling\x18\x0e \x01(\v2@.project.planton.provider.aws.awsdynamodb.v1.AutoScalingSettingsR\x0freadAutoscaling\x12m\n" +
 	"\x11write_autoscaling\x18\x0f \x01(\v2@.project.planton.provider.aws.awsdynamodb.v1.AutoScalingSettingsR\x10writeAutoscaling\x12-\n" +
-	"\x05extra\x18\x10 \x01(\v2\x17.google.protobuf.StructR\x05extra\"3\n" +
-	"\tAttribute\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\x12\x12\n" +
-	"\x04type\x18\x02 \x01(\tR\x04type\"C\n" +
-	"\tKeySchema\x12\x19\n" +
-	"\bhash_key\x18\x01 \x01(\tR\ahashKey\x12\x1b\n" +
-	"\trange_key\x18\x02 \x01(\tR\brangeKey\"y\n" +
-	"\x15ProvisionedThroughput\x12.\n" +
-	"\x13read_capacity_units\x18\x01 \x01(\x03R\x11readCapacityUnits\x120\n" +
-	"\x14write_capacity_units\x18\x02 \x01(\x03R\x12writeCapacityUnits\"N\n" +
+	"\x05extra\x18\x10 \x01(\v2\x17.google.protobuf.StructR\x05extra:\x92\x04\xbaH\x8e\x04\x1a\x8b\x04\n" +
+	"!billing.mode.throughput.coherence\x12\x99\x01When billing_mode is PROVISIONED, throughput must be supplied for the table and every GSI; otherwise throughput and autoscaling settings must be omitted.\x1a\xc9\x02this.billing_mode == 'PROVISIONED' ? (this.provisioned_throughput != null && this.global_secondary_indexes.all(i, i.provisioned_throughput != null)) : (this.provisioned_throughput == null && this.global_secondary_indexes.all(i, i.provisioned_throughput == null) && this.read_autoscaling == null && this.write_autoscaling == null)\"h\n" +
+	"\tAttribute\x127\n" +
+	"\x04name\x18\x01 \x01(\tB#\xbaH r\x1e\x10\x01\x18\xff\x012\x17^[A-Za-z0-9_.-]{1,255}$R\x04name\x12\"\n" +
+	"\x04type\x18\x02 \x01(\tB\x0e\xbaH\vr\tR\x01SR\x01NR\x01BR\x04type\"\x89\x02\n" +
+	"\tKeySchema\x12>\n" +
+	"\bhash_key\x18\x01 \x01(\tB#\xbaH r\x1e\x10\x01\x18\xff\x012\x17^[A-Za-z0-9_.-]{1,255}$R\ahashKey\x12>\n" +
+	"\trange_key\x18\x02 \x01(\tB!\xbaH\x1er\x1c\x18\xff\x012\x17^[A-Za-z0-9_.-]{1,255}$R\brangeKey:|\xbaHy\x1aw\n" +
+	"\x17range.differs.from.hash\x12#range_key must differ from hash_key\x1a7this.range_key == '' || this.range_key != this.hash_key\"\x8b\x01\n" +
+	"\x15ProvisionedThroughput\x127\n" +
+	"\x13read_capacity_units\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\x11readCapacityUnits\x129\n" +
+	"\x14write_capacity_units\x18\x02 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\x12writeCapacityUnits\"\xe9\x02\n" +
 	"\n" +
-	"Projection\x12\x12\n" +
-	"\x04type\x18\x01 \x01(\tR\x04type\x12,\n" +
-	"\x12non_key_attributes\x18\x02 \x03(\tR\x10nonKeyAttributes\"\xb6\x02\n" +
-	"\x14GlobalSecondaryIndex\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\x12\x19\n" +
-	"\bhash_key\x18\x02 \x01(\tR\ahashKey\x12\x1b\n" +
-	"\trange_key\x18\x03 \x01(\tR\brangeKey\x12W\n" +
+	"Projection\x122\n" +
+	"\x04type\x18\x01 \x01(\tB\x1e\xbaH\x1br\x19R\x03ALLR\tKEYS_ONLYR\aINCLUDER\x04type\x12V\n" +
+	"\x12non_key_attributes\x18\x02 \x03(\tB(\xbaH%\x92\x01\"\x10\x14\"\x1er\x1c\x18\xff\x012\x17^[A-Za-z0-9_.-]{1,255}$R\x10nonKeyAttributes:\xce\x01\xbaH\xca\x01\x1a\xc7\x01\n" +
+	"\x1dprojection.include.attributes\x12Cnon_key_attributes must be set only when projection type is INCLUDE\x1aathis.type == 'INCLUDE' ? this.non_key_attributes.size() > 0 : this.non_key_attributes.size() == 0\"\xab\x03\n" +
+	"\x14GlobalSecondaryIndex\x127\n" +
+	"\x04name\x18\x01 \x01(\tB#\xbaH r\x1e\x10\x03\x18\xff\x012\x17^[A-Za-z0-9_.-]{3,255}$R\x04name\x12>\n" +
+	"\bhash_key\x18\x02 \x01(\tB#\xbaH r\x1e\x10\x01\x18\xff\x012\x17^[A-Za-z0-9_.-]{1,255}$R\ahashKey\x12>\n" +
+	"\trange_key\x18\x03 \x01(\tB!\xbaH\x1er\x1c\x18\xff\x012\x17^[A-Za-z0-9_.-]{1,255}$R\brangeKey\x12_\n" +
 	"\n" +
-	"projection\x18\x04 \x01(\v27.project.planton.provider.aws.awsdynamodb.v1.ProjectionR\n" +
+	"projection\x18\x04 \x01(\v27.project.planton.provider.aws.awsdynamodb.v1.ProjectionB\x06\xbaH\x03\xc8\x01\x01R\n" +
 	"projection\x12y\n" +
-	"\x16provisioned_throughput\x18\x05 \x01(\v2B.project.planton.provider.aws.awsdynamodb.v1.ProvisionedThroughputR\x15provisionedThroughput\"\x9f\x01\n" +
-	"\x13LocalSecondaryIndex\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\x12\x1b\n" +
-	"\trange_key\x18\x02 \x01(\tR\brangeKey\x12W\n" +
+	"\x16provisioned_throughput\x18\x05 \x01(\v2B.project.planton.provider.aws.awsdynamodb.v1.ProvisionedThroughputR\x15provisionedThroughput\"\xf1\x01\n" +
+	"\x13LocalSecondaryIndex\x127\n" +
+	"\x04name\x18\x01 \x01(\tB#\xbaH r\x1e\x10\x03\x18\xff\x012\x17^[A-Za-z0-9_.-]{3,255}$R\x04name\x12@\n" +
+	"\trange_key\x18\x02 \x01(\tB#\xbaH r\x1e\x10\x01\x18\xff\x012\x17^[A-Za-z0-9_.-]{1,255}$R\brangeKey\x12_\n" +
 	"\n" +
-	"projection\x18\x03 \x01(\v27.project.planton.provider.aws.awsdynamodb.v1.ProjectionR\n" +
-	"projection\"L\n" +
+	"projection\x18\x03 \x01(\v27.project.planton.provider.aws.awsdynamodb.v1.ProjectionB\x06\xbaH\x03\xc8\x01\x01R\n" +
+	"projection\"\xa5\x02\n" +
 	"\x13StreamSpecification\x12\x18\n" +
-	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x1b\n" +
-	"\tview_type\x18\x02 \x01(\tR\bviewType\"M\n" +
+	"\aenabled\x18\x01 \x01(\bR\aenabled\x12Y\n" +
+	"\tview_type\x18\x02 \x01(\tB<\xbaH9r7R\x00R\tKEYS_ONLYR\tNEW_IMAGER\tOLD_IMAGER\x12NEW_AND_OLD_IMAGESR\bviewType:\x98\x01\xbaH\x94\x01\x1a\x91\x01\n" +
+	"\x18streams.enabled.viewtype\x129view_type must be specified only when streams are enabled\x1a:this.enabled ? this.view_type != '' : this.view_type == ''\"\x90\x02\n" +
 	"\n" +
 	"TimeToLive\x12\x18\n" +
-	"\aenabled\x18\x01 \x01(\bR\aenabled\x12%\n" +
-	"\x0eattribute_name\x18\x02 \x01(\tR\rattributeName\"P\n" +
+	"\aenabled\x18\x01 \x01(\bR\aenabled\x12H\n" +
+	"\x0eattribute_name\x18\x02 \x01(\tB!\xbaH\x1er\x1c\x18\xff\x012\x17^[A-Za-z0-9_.-]{1,255}$R\rattributeName:\x9d\x01\xbaH\x99\x01\x1a\x96\x01\n" +
+	"\x19ttl.enabled.attributename\x123attribute_name must be set only when TTL is enabled\x1aDthis.enabled ? this.attribute_name != '' : this.attribute_name == ''\"\x9e\x02\n" +
 	"\x14ServerSideEncryption\x12\x18\n" +
-	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x1e\n" +
-	"\vkms_key_arn\x18\x02 \x01(\tR\tkmsKeyArn\"/\n" +
+	"\aenabled\x18\x01 \x01(\bR\aenabled\x12d\n" +
+	"\vkms_key_arn\x18\x02 \x01(\tBD\xbaHAr?\x18\x80\x102:^arn:aws:kms:[A-Za-z0-9-]+:[0-9]{12}:key/[A-Za-z0-9-]{36}$R\tkmsKeyArn:\x85\x01\xbaH\x81\x01\x1a\x7f\n" +
+	"\x18sse.kms.requires.enabled\x12;kms_key_arn may be supplied only when encryption is enabled\x1a&this.kms_key_arn == '' || this.enabled\"/\n" +
 	"\x13PointInTimeRecovery\x12\x18\n" +
-	"\aenabled\x18\x01 \x01(\bR\aenabled\"-\n" +
-	"\x03Tag\x12\x10\n" +
-	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value\"\x81\x01\n" +
-	"\x13AutoScalingSettings\x12<\n" +
-	"\x1atarget_utilization_percent\x18\x01 \x01(\x05R\x18targetUtilizationPercent\x12,\n" +
-	"\x12max_capacity_units\x18\x02 \x01(\x03R\x10maxCapacityUnitsB\xfa\x02\n" +
+	"\aenabled\x18\x01 \x01(\bR\aenabled\"a\n" +
+	"\x03Tag\x12:\n" +
+	"\x03key\x18\x01 \x01(\tB(\xbaH%r#\x10\x01\x18\x80\x012\x1c^[A-Za-z0-9_.:/+=@-]{1,128}$R\x03key\x12\x1e\n" +
+	"\x05value\x18\x02 \x01(\tB\b\xbaH\x05r\x03\x18\x80\x02R\x05value\"\x95\x01\n" +
+	"\x13AutoScalingSettings\x12G\n" +
+	"\x1atarget_utilization_percent\x18\x01 \x01(\x05B\t\xbaH\x06\x1a\x04\x18Z(\n" +
+	"R\x18targetUtilizationPercent\x125\n" +
+	"\x12max_capacity_units\x18\x02 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\x10maxCapacityUnitsB\xfa\x02\n" +
 	"/com.project.planton.provider.aws.awsdynamodb.v1B\tSpecProtoP\x01Zigithub.com/project-planton/project-planton/apis/project/planton/provider/aws/awsdynamodb/v1;awsdynamodbv1\xa2\x02\x05PPPAA\xaa\x02+Project.Planton.Provider.Aws.Awsdynamodb.V1\xca\x02+Project\\Planton\\Provider\\Aws\\Awsdynamodb\\V1\xe2\x027Project\\Planton\\Provider\\Aws\\Awsdynamodb\\V1\\GPBMetadata\xea\x020Project::Planton::Provider::Aws::Awsdynamodb::V1b\x06proto3"
 
 var (
