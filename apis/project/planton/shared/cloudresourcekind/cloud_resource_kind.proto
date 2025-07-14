@@ -101,4 +101,19 @@ enum CloudResourceKind {
   KafkaOperatorKubernetes = 828;
   PostgresOperatorKubernetes = 829;
   SolrOperatorKubernetes = 830;
+
+  // 1200–1499: DigitalOcean resources
+  DigitalOceanAppPlatformService = 1200;
+  DigitalOceanBucket = 1201;
+  DigitalOceanContainerRegistry = 1202;
+  DigitalOceanDatabaseCluster = 1203;
+  DigitalOceanDnsZone = 1204;
+  DigitalOceanDroplet = 1205;
+  DigitalOceanFirewall = 1206;
+  DigitalOceanFunction = 1207;
+  DigitalOceanKubernetesCluster = 1208;
+  DigitalOceanKubernetesNodePool = 1209;
+  DigitalOceanLoadBalancer = 1210;
+  DigitalOceanVolume = 1211;
+  DigitalOceanVpc = 1212;
 }

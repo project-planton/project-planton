@@ -1,0 +1,56 @@
+syntax = "proto3";
+
+package project.planton.provider.digitalocean;
+
+import "google/protobuf/descriptor.proto";
+
+// custom option to store the DigitalOcean slug
+extend google.protobuf.EnumValueOptions {
+  string region_code = 20001;
+}
+
+// digitalocean datacenter regions
+enum DigitalOceanRegion {
+  // 0: default / unspecified region
+  digital_ocean_region_unspecified = 0;
+
+  // new york 3
+  new_york = 1 [
+    (region_code) = "nyc3"
+  ];
+
+  // san francisco 3
+  san_francisco = 2 [
+    (region_code) = "sfo3"
+  ];
+
+  // frankfurt 1
+  frankfurt = 3 [
+    (region_code) = "fra1"
+  ];
+
+  // singapore 1
+  singapore = 4 [
+    (region_code) = "sgp1"
+  ];
+
+  // london 1
+  london = 5 [
+    (region_code) = "lon1"
+  ];
+
+  // toronto 1
+  toronto = 6 [
+    (region_code) = "tor1"
+  ];
+
+  // bangalore 1
+  bangalore = 7 [
+    (region_code) = "blr1"
+  ];
+
+  // amsterdam 3
+  amsterdam = 8 [
+    (region_code) = "ams3"
+  ];
+}
