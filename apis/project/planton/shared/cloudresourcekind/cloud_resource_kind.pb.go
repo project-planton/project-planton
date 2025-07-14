@@ -117,17 +117,19 @@ const (
 	CloudResourceKind_PostgresOperatorKubernetes CloudResourceKind = 829
 	CloudResourceKind_SolrOperatorKubernetes     CloudResourceKind = 830
 	// 1200–1499: DigitalOcean resources
-	CloudResourceKind_DigitalOceanBucket             CloudResourceKind = 1200
-	CloudResourceKind_DigitalOceanContainerRegistry  CloudResourceKind = 1201
-	CloudResourceKind_DigitalOceanDatabaseCluster    CloudResourceKind = 1202
-	CloudResourceKind_DigitalOceanDnsZone            CloudResourceKind = 1203
-	CloudResourceKind_DigitalOceanDroplet            CloudResourceKind = 1204
-	CloudResourceKind_DigitalOceanFirewall           CloudResourceKind = 1205
-	CloudResourceKind_DigitalOceanKubernetesCluster  CloudResourceKind = 1206
-	CloudResourceKind_DigitalOceanKubernetesNodePool CloudResourceKind = 1207
-	CloudResourceKind_DigitalOceanLoadBalancer       CloudResourceKind = 1208
-	CloudResourceKind_DigitalOceanVolume             CloudResourceKind = 1209
-	CloudResourceKind_DigitalOceanVpc                CloudResourceKind = 1210
+	CloudResourceKind_DigitalOceanAppPlatformService CloudResourceKind = 1200
+	CloudResourceKind_DigitalOceanBucket             CloudResourceKind = 1201
+	CloudResourceKind_DigitalOceanContainerRegistry  CloudResourceKind = 1202
+	CloudResourceKind_DigitalOceanDatabaseCluster    CloudResourceKind = 1203
+	CloudResourceKind_DigitalOceanDnsZone            CloudResourceKind = 1204
+	CloudResourceKind_DigitalOceanDroplet            CloudResourceKind = 1205
+	CloudResourceKind_DigitalOceanFirewall           CloudResourceKind = 1206
+	CloudResourceKind_DigitalOceanFunction           CloudResourceKind = 1207
+	CloudResourceKind_DigitalOceanKubernetesCluster  CloudResourceKind = 1208
+	CloudResourceKind_DigitalOceanKubernetesNodePool CloudResourceKind = 1209
+	CloudResourceKind_DigitalOceanLoadBalancer       CloudResourceKind = 1210
+	CloudResourceKind_DigitalOceanVolume             CloudResourceKind = 1211
+	CloudResourceKind_DigitalOceanVpc                CloudResourceKind = 1212
 )
 
 // Enum value maps for CloudResourceKind.
@@ -218,17 +220,19 @@ var (
 		828:  "KafkaOperatorKubernetes",
 		829:  "PostgresOperatorKubernetes",
 		830:  "SolrOperatorKubernetes",
-		1200: "DigitalOceanBucket",
-		1201: "DigitalOceanContainerRegistry",
-		1202: "DigitalOceanDatabaseCluster",
-		1203: "DigitalOceanDnsZone",
-		1204: "DigitalOceanDroplet",
-		1205: "DigitalOceanFirewall",
-		1206: "DigitalOceanKubernetesCluster",
-		1207: "DigitalOceanKubernetesNodePool",
-		1208: "DigitalOceanLoadBalancer",
-		1209: "DigitalOceanVolume",
-		1210: "DigitalOceanVpc",
+		1200: "DigitalOceanAppPlatformService",
+		1201: "DigitalOceanBucket",
+		1202: "DigitalOceanContainerRegistry",
+		1203: "DigitalOceanDatabaseCluster",
+		1204: "DigitalOceanDnsZone",
+		1205: "DigitalOceanDroplet",
+		1206: "DigitalOceanFirewall",
+		1207: "DigitalOceanFunction",
+		1208: "DigitalOceanKubernetesCluster",
+		1209: "DigitalOceanKubernetesNodePool",
+		1210: "DigitalOceanLoadBalancer",
+		1211: "DigitalOceanVolume",
+		1212: "DigitalOceanVpc",
 	}
 	CloudResourceKind_value = map[string]int32{
 		"unspecified":                    0,
@@ -316,17 +320,19 @@ var (
 		"KafkaOperatorKubernetes":        828,
 		"PostgresOperatorKubernetes":     829,
 		"SolrOperatorKubernetes":         830,
-		"DigitalOceanBucket":             1200,
-		"DigitalOceanContainerRegistry":  1201,
-		"DigitalOceanDatabaseCluster":    1202,
-		"DigitalOceanDnsZone":            1203,
-		"DigitalOceanDroplet":            1204,
-		"DigitalOceanFirewall":           1205,
-		"DigitalOceanKubernetesCluster":  1206,
-		"DigitalOceanKubernetesNodePool": 1207,
-		"DigitalOceanLoadBalancer":       1208,
-		"DigitalOceanVolume":             1209,
-		"DigitalOceanVpc":                1210,
+		"DigitalOceanAppPlatformService": 1200,
+		"DigitalOceanBucket":             1201,
+		"DigitalOceanContainerRegistry":  1202,
+		"DigitalOceanDatabaseCluster":    1203,
+		"DigitalOceanDnsZone":            1204,
+		"DigitalOceanDroplet":            1205,
+		"DigitalOceanFirewall":           1206,
+		"DigitalOceanFunction":           1207,
+		"DigitalOceanKubernetesCluster":  1208,
+		"DigitalOceanKubernetesNodePool": 1209,
+		"DigitalOceanLoadBalancer":       1210,
+		"DigitalOceanVolume":             1211,
+		"DigitalOceanVpc":                1212,
 	}
 )
 
@@ -361,7 +367,7 @@ var File_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto prot
 
 const file_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto_rawDesc = "" +
 	"\n" +
-	"Bproject/planton/shared/cloudresourcekind/cloud_resource_kind.proto\x12(project.planton.shared.cloudresourcekind*\xdc\x11\n" +
+	"Bproject/planton/shared/cloudresourcekind/cloud_resource_kind.proto\x12(project.planton.shared.cloudresourcekind*\x9c\x12\n" +
 	"\x11CloudResourceKind\x12\x0f\n" +
 	"\vunspecified\x10\x00\x12\x1d\n" +
 	"\x19FirstTestCloudApiResource\x10\x01\x12\x1e\n" +
@@ -452,18 +458,20 @@ const file_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto_ra
 	"\x0fIstioKubernetes\x10\xbb\x06\x12\x1c\n" +
 	"\x17KafkaOperatorKubernetes\x10\xbc\x06\x12\x1f\n" +
 	"\x1aPostgresOperatorKubernetes\x10\xbd\x06\x12\x1b\n" +
-	"\x16SolrOperatorKubernetes\x10\xbe\x06\x12\x17\n" +
-	"\x12DigitalOceanBucket\x10\xb0\t\x12\"\n" +
-	"\x1dDigitalOceanContainerRegistry\x10\xb1\t\x12 \n" +
-	"\x1bDigitalOceanDatabaseCluster\x10\xb2\t\x12\x18\n" +
-	"\x13DigitalOceanDnsZone\x10\xb3\t\x12\x18\n" +
-	"\x13DigitalOceanDroplet\x10\xb4\t\x12\x19\n" +
-	"\x14DigitalOceanFirewall\x10\xb5\t\x12\"\n" +
-	"\x1dDigitalOceanKubernetesCluster\x10\xb6\t\x12#\n" +
-	"\x1eDigitalOceanKubernetesNodePool\x10\xb7\t\x12\x1d\n" +
-	"\x18DigitalOceanLoadBalancer\x10\xb8\t\x12\x17\n" +
-	"\x12DigitalOceanVolume\x10\xb9\t\x12\x14\n" +
-	"\x0fDigitalOceanVpc\x10\xba\tB\xe4\x02\n" +
+	"\x16SolrOperatorKubernetes\x10\xbe\x06\x12#\n" +
+	"\x1eDigitalOceanAppPlatformService\x10\xb0\t\x12\x17\n" +
+	"\x12DigitalOceanBucket\x10\xb1\t\x12\"\n" +
+	"\x1dDigitalOceanContainerRegistry\x10\xb2\t\x12 \n" +
+	"\x1bDigitalOceanDatabaseCluster\x10\xb3\t\x12\x18\n" +
+	"\x13DigitalOceanDnsZone\x10\xb4\t\x12\x18\n" +
+	"\x13DigitalOceanDroplet\x10\xb5\t\x12\x19\n" +
+	"\x14DigitalOceanFirewall\x10\xb6\t\x12\x19\n" +
+	"\x14DigitalOceanFunction\x10\xb7\t\x12\"\n" +
+	"\x1dDigitalOceanKubernetesCluster\x10\xb8\t\x12#\n" +
+	"\x1eDigitalOceanKubernetesNodePool\x10\xb9\t\x12\x1d\n" +
+	"\x18DigitalOceanLoadBalancer\x10\xba\t\x12\x17\n" +
+	"\x12DigitalOceanVolume\x10\xbb\t\x12\x14\n" +
+	"\x0fDigitalOceanVpc\x10\xbc\tB\xe4\x02\n" +
 	",com.project.planton.shared.cloudresourcekindB\x16CloudResourceKindProtoP\x01ZXgithub.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind\xa2\x02\x04PPSC\xaa\x02(Project.Planton.Shared.Cloudresourcekind\xca\x02(Project\\Planton\\Shared\\Cloudresourcekind\xe2\x024Project\\Planton\\Shared\\Cloudresourcekind\\GPBMetadata\xea\x02+Project::Planton::Shared::Cloudresourcekindb\x06proto3"
 
 var (
