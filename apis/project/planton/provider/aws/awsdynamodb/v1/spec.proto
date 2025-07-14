@@ -1,0 +1,161 @@
+syntax = "proto3";
+
+package project.planton.provider.aws.awsdynamodb.v1;
+
+message AwsDynamodbSpec {
+  // Name of the DynamoDB table. Must be unique within the AWS account & region.
+  string table_name = 1;
+
+  // How you want to pay for database capacity.
+  BillingMode billing_mode = 2;
+
+  // Provisioned read/write capacity settings (used when billing_mode = PROVISIONED).
+  ProvisionedThroughput provisioned_throughput = 3;
+
+  // List of attribute definitions that describe the key and index attributes for the table.
+  repeated AttributeDefinition attribute_definitions = 4;
+
+  // Primary key schema for the table (partition key and optional sort key).
+  KeySchema key_schema = 5;
+
+  // Configuration for global secondary indexes (GSIs).
+  repeated GlobalSecondaryIndex global_secondary_indexes = 6;
+
+  // Configuration for local secondary indexes (LSIs).
+  repeated LocalSecondaryIndex local_secondary_indexes = 7;
+
+  // Enables DynamoDB Streams and specifies the information written to the stream.
+  StreamSpecification stream_specification = 8;
+
+  // Server-side encryption settings.
+  SSESpecification sse_specification = 9;
+
+  // Enables point-in-time recovery (PITR) for continuous backups.
+  bool point_in_time_recovery_enabled = 10;
+
+  // Time-to-live settings for automatic item expiration.
+  TTLSpecification ttl_specification = 11;
+
+  // Enables Contributor Insights to analyze traffic patterns.
+  bool contributor_insights_enabled = 12;
+
+  // Prevents accidental deletion of the table when set to true.
+  bool deletion_protection_enabled = 13;
+
+  // Storage class used for the table.
+  TableClass table_class = 14;
+
+  // Tags to attach to the table for cost allocation and organization.
+  map<string, string> tags = 15;
+}
+
+/************ Supporting Types ************/
+
+//==== Billing & Capacity ====
+enum BillingMode {
+  BILLING_MODE_UNSPECIFIED = 0;
+  // You specify the read/write capacity units.
+  PROVISIONED = 1;
+  // DynamoDB charges for the actual read/write requests (a.k.a. "on-demand").
+  PAY_PER_REQUEST = 2;
+}
+
+// Provisioned throughput settings (RCU/WCU).
+message ProvisionedThroughput {
+  // Maximum number of strongly consistent reads per second.
+  int64 read_capacity_units = 1;
+  // Maximum number of writes per second.
+  int64 write_capacity_units = 2;
+}
+
+//==== Attributes & Keys ====
+enum AttributeType {
+  ATTRIBUTE_TYPE_UNSPECIFIED = 0;
+  STRING = 1;  // "S"
+  NUMBER = 2;  // "N"
+  BINARY = 3;  // "B"
+}
+
+// Describes an attribute and its scalar type.
+message AttributeDefinition {
+  string attribute_name = 1;     // Name of the attribute.
+  AttributeType attribute_type = 2; // Scalar type of the attribute.
+}
+
+// Primary or secondary key schema.
+message KeySchema {
+  string partition_key = 1; // Required hash key.
+  string sort_key = 2;      // Optional range key.
+}
+
+//==== Indexes ====
+enum ProjectionType {
+  PROJECTION_TYPE_UNSPECIFIED = 0;
+  KEYS_ONLY = 1;
+  INCLUDE = 2;
+  ALL = 3;
+}
+
+// Attributes that are copied into an index.
+message Projection {
+  ProjectionType projection_type = 1;        // What attributes are projected.
+  repeated string non_key_attributes = 2;    // Additional attributes (when projection_type = INCLUDE).
+}
+
+// Global secondary index configuration.
+message GlobalSecondaryIndex {
+  string index_name = 1;
+  KeySchema key_schema = 2;
+  Projection projection = 3;
+  BillingMode billing_mode = 4;
+  ProvisionedThroughput provisioned_throughput = 5; // Only for PROVISIONED billing mode.
+}
+
+// Local secondary index configuration.
+message LocalSecondaryIndex {
+  string index_name = 1;
+  string sort_key = 2;         // Alternate sort key for the same partition key.
+  Projection projection = 3;
+}
+
+//==== Streams ====
+enum StreamViewType {
+  STREAM_VIEW_TYPE_UNSPECIFIED = 0;
+  KEYS_ONLY = 1;
+  NEW_IMAGE = 2;
+  OLD_IMAGE = 3;
+  NEW_AND_OLD_IMAGES = 4;
+}
+
+// Stream settings.
+message StreamSpecification {
+  bool enabled = 1;
+  StreamViewType view_type = 2;
+}
+
+//==== Encryption ====
+enum SSEType {
+  SSE_TYPE_UNSPECIFIED = 0;
+  AWS_MANAGED = 1; // AWS owned CMK.
+  KMS = 2;         // Customer managed KMS key.
+}
+
+// Server-side encryption settings.
+message SSESpecification {
+  bool enabled = 1;
+  SSEType sse_type = 2;
+  string kms_key_arn = 3; // Required when sse_type = KMS.
+}
+
+//==== TTL ====
+message TTLSpecification {
+  bool enabled = 1;            // Enables/disables TTL.
+  string attribute_name = 2;   // Attribute containing the expiration timestamp.
+}
+
+//==== Table class ====
+enum TableClass {
+  TABLE_CLASS_UNSPECIFIED = 0;
+  STANDARD = 1;
+  STANDARD_INFREQUENT_ACCESS = 2;
+}
