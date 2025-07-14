@@ -81,6 +81,12 @@ message Projection {
   // For INCLUDE projection: additional non-key attributes to project.
   repeated string non_key_attributes = 1;
   // Projection type.
+  enum ProjectionType {
+    PROJECTION_TYPE_UNSPECIFIED = 0;
+    ALL = 1;
+    KEYS_ONLY = 2;
+    INCLUDE = 3;
+  }
   ProjectionType projection_type = 2;
 }
 
@@ -111,6 +117,13 @@ message StreamSpecification {
   // Enables streaming of item mutations.
   bool enabled = 1;
   // Type of data written to the stream.
+  enum StreamViewType {
+    STREAM_VIEW_TYPE_UNSPECIFIED = 0;
+    NEW_IMAGE = 1;
+    OLD_IMAGE = 2;
+    NEW_AND_OLD_IMAGES = 3;
+    KEYS_ONLY = 4;
+  }
   StreamViewType view_type = 2;
 }
 
@@ -149,21 +162,6 @@ enum KeyType {
   KEY_TYPE_UNSPECIFIED = 0;
   HASH = 1;   // Partition key
   RANGE = 2;  // Sort key
-}
-
-enum ProjectionType {
-  PROJECTION_TYPE_UNSPECIFIED = 0;
-  ALL = 1;
-  KEYS_ONLY = 2;
-  INCLUDE = 3;
-}
-
-enum StreamViewType {
-  STREAM_VIEW_TYPE_UNSPECIFIED = 0;
-  NEW_IMAGE = 1;
-  OLD_IMAGE = 2;
-  NEW_AND_OLD_IMAGES = 3;
-  KEYS_ONLY = 4;
 }
 
 enum TableClass {
