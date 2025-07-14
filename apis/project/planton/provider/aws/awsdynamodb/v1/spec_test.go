@@ -7,8 +7,6 @@ import (
     "github.com/bufbuild/protovalidate-go"
     . "github.com/onsi/ginkgo/v2"
     . "github.com/onsi/gomega"
-
-    awsdbpb "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsdynamodb/v1"
 )
 
 var validator protovalidate.Validator
@@ -19,9 +17,9 @@ func TestAwsDynamodbSpecValidation(t *testing.T) {
 }
 
 var _ = BeforeSuite(func() {
-    var err error
-    validator, err = protovalidate.New()
+    v, err := protovalidate.New()
     Expect(err).NotTo(HaveOccurred())
+    validator = *v // store the concrete value; we can still call pointer-receiver methods
 })
 
 var _ = Describe("AwsDynamodbSpec validation", func() {
@@ -51,46 +49,46 @@ var _ = Describe("AwsDynamodbSpec validation", func() {
 
     It("rejects PAY_PER_REQUEST spec that sets provisioned throughput", func() {
         spec := validPayPerRequestSpec()
-        spec.ProvisionedThroughput = &awsdbpb.ProvisionedThroughput{ReadCapacityUnits: 5, WriteCapacityUnits: 5}
+        spec.ProvisionedThroughput = &ProvisionedThroughput{ReadCapacityUnits: 5, WriteCapacityUnits: 5}
         Expect(validator.Validate(ctx, spec)).To(Not(Succeed()))
     })
 })
 
 // Helper constructors -------------------------------------------------------
 
-func validProvisionedSpec() *awsdbpb.AwsDynamodbSpec {
-    return &awsdbpb.AwsDynamodbSpec{
+func validProvisionedSpec() *AwsDynamodbSpec {
+    return &AwsDynamodbSpec{
         TableName: "mytable",
-        AttributeDefinitions: []*awsdbpb.AttributeDefinition{
+        AttributeDefinitions: []*AttributeDefinition{
             {
                 AttributeName: "id",
-                AttributeType: awsdbpb.AttributeType_STRING,
+                AttributeType: AttributeType_STRING,
             },
         },
-        KeySchema: []*awsdbpb.KeySchemaElement{
+        KeySchema: []*KeySchemaElement{
             {
                 AttributeName: "id",
-                KeyType:        awsdbpb.KeyType_HASH,
+                KeyType:        KeyType_HASH,
             },
         },
-        BillingMode: awsdbpb.BillingMode_PROVISIONED,
-        ProvisionedThroughput: &awsdbpb.ProvisionedThroughput{
+        BillingMode: BillingMode_PROVISIONED,
+        ProvisionedThroughput: &ProvisionedThroughput{
             ReadCapacityUnits:  5,
             WriteCapacityUnits: 5,
         },
-        GlobalSecondaryIndexes: []*awsdbpb.GlobalSecondaryIndex{
+        GlobalSecondaryIndexes: []*GlobalSecondaryIndex{
             {
                 IndexName: "gsi1",
-                KeySchema: []*awsdbpb.KeySchemaElement{
+                KeySchema: []*KeySchemaElement{
                     {
                         AttributeName: "id",
-                        KeyType:        awsdbpb.KeyType_HASH,
+                        KeyType:        KeyType_HASH,
                     },
                 },
-                Projection: &awsdbpb.Projection{
-                    ProjectionType: awsdbpb.ProjectionType_ALL,
+                Projection: &Projection{
+                    ProjectionType: ProjectionType_ALL,
                 },
-                ProvisionedThroughput: &awsdbpb.ProvisionedThroughput{
+                ProvisionedThroughput: &ProvisionedThroughput{
                     ReadCapacityUnits:  5,
                     WriteCapacityUnits: 5,
                 },
@@ -99,9 +97,9 @@ func validProvisionedSpec() *awsdbpb.AwsDynamodbSpec {
     }
 }
 
-func validPayPerRequestSpec() *awsdbpb.AwsDynamodbSpec {
+func validPayPerRequestSpec() *AwsDynamodbSpec {
     spec := validProvisionedSpec()
-    spec.BillingMode = awsdbpb.BillingMode_PAY_PER_REQUEST
+    spec.BillingMode = BillingMode_PAY_PER_REQUEST
     spec.ProvisionedThroughput = nil
     for _, g := range spec.GlobalSecondaryIndexes {
         g.ProvisionedThroughput = nil
