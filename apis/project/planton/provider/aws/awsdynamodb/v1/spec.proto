@@ -80,8 +80,7 @@ message AwsDynamodbSpec {
   // Conditional cross-field rules.
   // -------------------------------------------------------------------------
   option (buf.validate.message).cel = {
-    // Provisioned mode vs. on-demand.
-    id         : 1,
+    id         : "billing.mode.throughput.coherence",
     expression : "this.billing_mode == 'PROVISIONED' ? (this.provisioned_throughput != null && this.global_secondary_indexes.all(i, i.provisioned_throughput != null)) : (this.provisioned_throughput == null && this.global_secondary_indexes.all(i, i.provisioned_throughput == null) && this.read_autoscaling == null && this.write_autoscaling == null)",
     message    : "When billing_mode is PROVISIONED, throughput must be supplied for the table and every GSI; otherwise throughput and autoscaling settings must be omitted."
   };
@@ -123,7 +122,7 @@ message KeySchema {
 
   // Range key cannot duplicate the hash key.
   option (buf.validate.message).cel = {
-    id         : 1,
+    id         : "range.differs.from.hash",
     expression : "this.range_key == '' || this.range_key != this.hash_key",
     message    : "range_key must differ from hash_key"
   };
@@ -149,15 +148,19 @@ message Projection {
   ];
   // Whitelisted non-key attributes (only when type = "INCLUDE").
   repeated string non_key_attributes = 2 [
-    (buf.validate.field).repeated = {max_items: 20},
-    (buf.validate.field).string   = {
-      pattern : "^[A-Za-z0-9_.-]{1,255}$",
-      max_len : 255
+    (buf.validate.field).repeated = {
+      max_items: 20,
+      items: {
+        string: {
+          pattern : "^[A-Za-z0-9_.-]{1,255}$",
+          max_len : 255
+        }
+      }
     }
   ];
 
   option (buf.validate.message).cel = {
-    id         : 1,
+    id         : "projection.include.attributes",
     expression : "this.type == 'INCLUDE' ? this.non_key_attributes.size() > 0 : this.non_key_attributes.size() == 0",
     message    : "non_key_attributes must be set only when projection type is INCLUDE"
   };
@@ -230,7 +233,7 @@ message StreamSpecification {
   ];
 
   option (buf.validate.message).cel = {
-    id         : 1,
+    id         : "streams.enabled.viewtype",
     expression : "this.enabled ? this.view_type != '' : this.view_type == ''",
     message    : "view_type must be specified only when streams are enabled"
   };
@@ -249,7 +252,7 @@ message TimeToLive {
   ];
 
   option (buf.validate.message).cel = {
-    id         : 1,
+    id         : "ttl.enabled.attributename",
     expression : "this.enabled ? this.attribute_name != '' : this.attribute_name == ''",
     message    : "attribute_name must be set only when TTL is enabled"
   };
@@ -268,7 +271,7 @@ message ServerSideEncryption {
   ];
 
   option (buf.validate.message).cel = {
-    id         : 1,
+    id         : "sse.kms.requires.enabled",
     expression : "this.kms_key_arn == '' || this.enabled",
     message    : "kms_key_arn may be supplied only when encryption is enabled"
   };
