@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+package project.planton.provider.azure.azurecontainerregistry.v1;
+
+import "buf/validate/validate.proto";
+import "project/planton/provider/azure/azurecontainerregistry/v1/spec.proto";
+import "project/planton/provider/azure/azurecontainerregistry/v1/stack_outputs.proto";
+import "project/planton/shared/status.proto";
+import "project/planton/shared/metadata.proto";
+
+// azure-container-registry
+message AzureContainerRegistry {
+  //api-version
+  string api_version = 1[
+    (buf.validate.field).string.const = 'azure.project-planton.org/v1'
+  ];
+
+  //resource-kind
+  string kind = 2 [
+    (buf.validate.field).string.const = 'AzureContainerRegistry'
+  ];
+
+  //metadata
+  project.planton.shared.ApiResourceMetadata metadata = 3 [
+    (buf.validate.field).required = true
+  ];
+
+  //spec
+  AzureContainerRegistrySpec spec = 4 [
+    (buf.validate.field).required = true
+  ];
+
+  //status
+  AzureContainerRegistryStatus status = 5;
+}
+
+// azure-container-registry status
+message AzureContainerRegistryStatus {
+  //lifecycle
+  project.planton.shared.ApiResourceLifecycle lifecycle = 99;
+
+  //audit-info
+  project.planton.shared.ApiResourceAudit audit = 98;
+
+  //stack-job id
+  string stack_job_id = 97;
+
+  //stack-outputs
+  //  azure-container-registry stack-outputs
+  AzureContainerRegistryStackOutputs outputs = 1;
+}

@@ -21,11 +21,19 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// azure-aks-cluster stack-outputs
+// AzureAksClusterStackOutputs captures key information after provisioning an AKS cluster.
 type AzureAksClusterStackOutputs struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The URL of the Kubernetes API server endpoint for the AKS cluster.
+	ApiServerEndpoint string `protobuf:"bytes,1,opt,name=api_server_endpoint,json=apiServerEndpoint,proto3" json:"api_server_endpoint,omitempty"`
+	// The Azure Resource ID of the AKS cluster.
+	ClusterResourceId string `protobuf:"bytes,2,opt,name=cluster_resource_id,json=clusterResourceId,proto3" json:"cluster_resource_id,omitempty"`
+	// Kubeconfig file contents for the cluster, base64-encoded.
+	ClusterKubeconfig string `protobuf:"bytes,3,opt,name=cluster_kubeconfig,json=clusterKubeconfig,proto3" json:"cluster_kubeconfig,omitempty"`
+	// The Azure AD principal ID of the cluster's managed identity.
+	ManagedIdentityPrincipalId string `protobuf:"bytes,4,opt,name=managed_identity_principal_id,json=managedIdentityPrincipalId,proto3" json:"managed_identity_principal_id,omitempty"`
+	unknownFields              protoimpl.UnknownFields
+	sizeCache                  protoimpl.SizeCache
 }
 
 func (x *AzureAksClusterStackOutputs) Reset() {
@@ -58,12 +66,44 @@ func (*AzureAksClusterStackOutputs) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_azure_azureakscluster_v1_stack_outputs_proto_rawDescGZIP(), []int{0}
 }
 
+func (x *AzureAksClusterStackOutputs) GetApiServerEndpoint() string {
+	if x != nil {
+		return x.ApiServerEndpoint
+	}
+	return ""
+}
+
+func (x *AzureAksClusterStackOutputs) GetClusterResourceId() string {
+	if x != nil {
+		return x.ClusterResourceId
+	}
+	return ""
+}
+
+func (x *AzureAksClusterStackOutputs) GetClusterKubeconfig() string {
+	if x != nil {
+		return x.ClusterKubeconfig
+	}
+	return ""
+}
+
+func (x *AzureAksClusterStackOutputs) GetManagedIdentityPrincipalId() string {
+	if x != nil {
+		return x.ManagedIdentityPrincipalId
+	}
+	return ""
+}
+
 var File_project_planton_provider_azure_azureakscluster_v1_stack_outputs_proto protoreflect.FileDescriptor
 
 const file_project_planton_provider_azure_azureakscluster_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Eproject/planton/provider/azure/azureakscluster/v1/stack_outputs.proto\x121project.planton.provider.azure.azureakscluster.v1\"\x1d\n" +
-	"\x1bAzureAksClusterStackOutputsB\xaa\x03\n" +
+	"Eproject/planton/provider/azure/azureakscluster/v1/stack_outputs.proto\x121project.planton.provider.azure.azureakscluster.v1\"\xef\x01\n" +
+	"\x1bAzureAksClusterStackOutputs\x12.\n" +
+	"\x13api_server_endpoint\x18\x01 \x01(\tR\x11apiServerEndpoint\x12.\n" +
+	"\x13cluster_resource_id\x18\x02 \x01(\tR\x11clusterResourceId\x12-\n" +
+	"\x12cluster_kubeconfig\x18\x03 \x01(\tR\x11clusterKubeconfig\x12A\n" +
+	"\x1dmanaged_identity_principal_id\x18\x04 \x01(\tR\x1amanagedIdentityPrincipalIdB\xaa\x03\n" +
 	"5com.project.planton.provider.azure.azureakscluster.v1B\x11StackOutputsProtoP\x01Zsgithub.com/project-planton/project-planton/apis/project/planton/provider/azure/azureakscluster/v1;azureaksclusterv1\xa2\x02\x05PPPAA\xaa\x021Project.Planton.Provider.Azure.Azureakscluster.V1\xca\x021Project\\Planton\\Provider\\Azure\\Azureakscluster\\V1\xe2\x02=Project\\Planton\\Provider\\Azure\\Azureakscluster\\V1\\GPBMetadata\xea\x026Project::Planton::Provider::Azure::Azureakscluster::V1b\x06proto3"
 
 var (

@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+package project.planton.provider.azure.azurevpc.v1;
+
+import "buf/validate/validate.proto";
+import "project/planton/provider/azure/azurevpc/v1/spec.proto";
+import "project/planton/provider/azure/azurevpc/v1/stack_outputs.proto";
+import "project/planton/shared/status.proto";
+import "project/planton/shared/metadata.proto";
+
+// azure-vpc
+message AzureVpc {
+  //api-version
+  string api_version = 1[
+    (buf.validate.field).string.const = 'azure.project-planton.org/v1'
+  ];
+
+  //resource-kind
+  string kind = 2 [
+    (buf.validate.field).string.const = 'AzureVpc'
+  ];
+
+  //metadata
+  project.planton.shared.ApiResourceMetadata metadata = 3 [
+    (buf.validate.field).required = true
+  ];
+
+  //spec
+  AzureVpcSpec spec = 4 [
+    (buf.validate.field).required = true
+  ];
+
+  //status
+  AzureVpcStatus status = 5;
+}
+
+// azure-vpc status
+message AzureVpcStatus {
+  //lifecycle
+  project.planton.shared.ApiResourceLifecycle lifecycle = 99;
+
+  //audit-info
+  project.planton.shared.ApiResourceAudit audit = 98;
+
+  //stack-job id
+  string stack_job_id = 97;
+
+  //stack-outputs
+  //  azure-vpc stack-outputs
+  AzureVpcStackOutputs outputs = 1;
+}

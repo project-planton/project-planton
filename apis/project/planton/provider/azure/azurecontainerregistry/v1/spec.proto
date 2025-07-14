@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package project.planton.provider.azure.azurecontainerregistry.v1;
+
+import "buf/validate/validate.proto";
+
+// enumeration for supported Azure Container Registry SKUs (pricing tiers).
+enum AzureContainerRegistrySku {
+  BASIC = 0;
+  STANDARD = 1;
+  PREMIUM = 2;
+}
+
+// **AzureContainerRegistrySpec** defines the configuration for deploying an Azure Container Registry.
+// It allows specifying the registry name, tier (SKU), and optional settings like admin user access and geo-replication.
+message AzureContainerRegistrySpec {
+  // The globally unique name of the container registry.
+  // Must be 5-50 characters of lowercase letters or numbers (per Azure naming rules).
+  string registry_name = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.pattern = "^[a-z0-9]{5,50}$"
+  ];
+
+  // The pricing tier of the registry (Basic, Standard, or Premium).
+  // This influences features such as storage limits and geo-replication support.
+  // Defaults to STANDARD if not specified.
+  AzureContainerRegistrySku sku = 2;
+
+  // Enables the admin user account for the registry.
+  // Default is false (admin user disabled). Enable only if needed for basic authentication scenarios.
+  bool admin_user_enabled = 3;
+
+  // A list of additional Azure regions to replicate the registry (geo-replication).
+  // Only applicable for Premium SKU. Leave empty for Basic/Standard SKUs.
+  repeated string geo_replication_regions = 4;
+}

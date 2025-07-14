@@ -41,7 +41,12 @@ enum CloudResourceKind {
 
   // 400–599: Azure resources
   AzureAksCluster = 400;
-  AzureKeyVault = 401;
+  AzureAksNodePool = 401;
+  AzureContainerRegistry = 402;
+  AzureDnsZone = 403;
+  AzureKeyVault = 404;
+  AzureVpc = 405;
+  AzureNatGateway = 406;
 
   // 600–799: GCP resources
   GcpArtifactRegistryRepo = 600;
