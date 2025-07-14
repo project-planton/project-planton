@@ -52,7 +52,8 @@ message AwsDynamodbSpec {
 
   // Customer managed AWS KMS key ID to use for encryption (optional).
   string kms_key_id = 11 [
-    (buf.validate.field).string = {pattern: "^arn:aws:kms:[A-Za-z0-9:_/-]+$", ignore_empty: true}
+    // Allow either an empty string (unspecified) or a valid KMS ARN.
+    (buf.validate.field).string = {pattern: "^(|arn:aws:kms:[A-Za-z0-9:_/-]+)$"}
   ];
 
   // Enable point-in-time recovery (PITR) to restore table to any second within last 35 days.
