@@ -1,0 +1,55 @@
+syntax = "proto3";
+
+package project.planton.provider.aws.aws_dynamodb.v1;
+
+// AwsDynamodbStackOutputs exposes the observable identifiers returned after
+// provisioning a DynamoDB table on AWS.
+message AwsDynamodbStackOutputs {
+  // Amazon Resource Name of the DynamoDB table.
+  string table_arn = 1;
+
+  // Logical name of the table (matches spec.table_name).
+  string table_name = 2;
+
+  // AWS-generated unique identifier of the table.
+  string table_id = 3;
+
+  // Stream information, present when streams are enabled.
+  StreamOutputs stream = 4;
+
+  // Identifiers for each created global secondary index.
+  repeated GlobalSecondaryIndexOutputs global_secondary_indexes = 5;
+
+  // Identifiers for each created local secondary index.
+  repeated LocalSecondaryIndexOutputs local_secondary_indexes = 6;
+
+  // Server-side encryption details.
+  SseOutputs sse = 7;
+}
+
+// Outputs specific to DynamoDB Streams.
+message StreamOutputs {
+  // ARN of the DynamoDB stream.
+  string stream_arn = 1;
+
+  // Stream label assigned by AWS (timestamp-like).
+  string stream_label = 2;
+}
+
+// Outputs for a global secondary index (GSI).
+message GlobalSecondaryIndexOutputs {
+  string index_name = 1;
+  string index_arn = 2;
+}
+
+// Outputs for a local secondary index (LSI).
+message LocalSecondaryIndexOutputs {
+  string index_name = 1;
+  string index_arn = 2;
+}
+
+// Outputs related to server-side encryption.
+message SseOutputs {
+  bool enabled = 1;
+  string kms_master_key_id = 2; // ARN or ID of the KMS key used.
+}
