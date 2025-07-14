@@ -210,8 +210,8 @@ message SSESpecification {
     (buf.validate.field).string = {
       min_len: 0,
       max_len: 2048,
-      pattern: "^arn:aws:kms:[A-Za-z0-9-:]+:key/[A-Fa-f0-9-]+$",
-      ignore_empty: true
+      // Allow either empty string or a valid KMS key ARN.
+      pattern: "^(|arn:aws:kms:[A-Za-z0-9-:]+:key/[A-Fa-f0-9-]+)$"
     }
   ];
 }
@@ -226,7 +226,7 @@ message TTLSpecification {
 
   // Attribute that stores item expiry time (epoch seconds).
   string attribute_name = 1 [
-    (buf.validate.field).string = { min_len: 1, max_len: 255, pattern: "^[A-Za-z0-9_.-]+$", ignore_empty: true }
+    (buf.validate.field).string = { min_len: 0, max_len: 255, pattern: "^(|[A-Za-z0-9_.-]+)$" }
   ];
   // Whether TTL is active.
   bool enabled = 2;
