@@ -1,0 +1,221 @@
+syntax = "proto3";
+
+package project.planton.provider.aws.awsdynamodb.v1;
+
+// AwsDynamodbSpec represents an Amazon DynamoDB table.
+message AwsDynamodbSpec {
+  // Name of the DynamoDB table.
+  string table_name = 1;
+
+  // Definitions of top-level attributes used in key schema & indexes.
+  repeated AttributeDefinition attribute_definitions = 2;
+
+  // Primary key schema elements (HASH and optional RANGE).
+  repeated KeySchemaElement key_schema = 3;
+
+  // Billing mode of the table (provisioned or on-demand).
+  BillingMode billing_mode = 4;
+
+  // Provisioned capacity units when billing_mode is PROVISIONED.
+  ProvisionedThroughput provisioned_throughput = 5;
+
+  // Auto-scaling policies for read or write capacity.
+  repeated AutoScalingSettings auto_scaling_settings = 6;
+
+  // Global secondary indexes.
+  repeated GlobalSecondaryIndex global_secondary_indexes = 7;
+
+  // Local secondary indexes.
+  repeated LocalSecondaryIndex local_secondary_indexes = 8;
+
+  // Time-to-live configuration.
+  TTLSpecification ttl_specification = 9;
+
+  // Stream settings for the table.
+  StreamSpecification stream_specification = 10;
+
+  // Server-side encryption configuration.
+  SSESpecification sse_specification = 11;
+
+  // Enables point-in-time recovery (PITR) for the table.
+  bool point_in_time_recovery_enabled = 12;
+
+  // Resource tags.
+  repeated Tag tags = 13;
+
+  // Table class to optimize cost for infrequently accessed data.
+  TableClass table_class = 14;
+
+  // Regions that participate in a global table.
+  repeated Replica replica = 15;
+
+  // Prevents accidental deletion of the table.
+  bool deletion_protection_enabled = 16;
+}
+
+// ------------- Nested Types ----------------
+
+// Definition of a top-level attribute.
+message AttributeDefinition {
+  // Attribute (column) name.
+  string name = 1;
+
+  // Scalar attribute type: S | N | B.
+  ScalarAttributeType type = 2;
+}
+
+enum ScalarAttributeType {
+  STRING = 0; // 'S'
+  NUMBER = 1; // 'N'
+  BINARY = 2; // 'B'
+}
+
+// Element of a key schema.
+message KeySchemaElement {
+  // Attribute name participating in the key.
+  string attribute_name = 1;
+
+  // Designates HASH (partition) or RANGE (sort) key.
+  KeyType key_type = 2;
+}
+
+enum KeyType {
+  HASH = 0;
+  RANGE = 1;
+}
+
+enum BillingMode {
+  PROVISIONED = 0;        // Manual capacity settings.
+  PAY_PER_REQUEST = 1;    // On-demand capacity.
+}
+
+// Provisioned throughput settings.
+message ProvisionedThroughput {
+  // Maximum strongly consistent reads per second.
+  int64 read_capacity_units = 1;
+
+  // Maximum writes per second.
+  int64 write_capacity_units = 2;
+}
+
+// Auto-scaling configuration for capacity.
+message AutoScalingSettings {
+  // READ or WRITE capacity that the policy controls.
+  CapacityType capacity_type = 1;
+
+  // Minimum provisioned capacity units.
+  int64 min_capacity = 2;
+
+  // Maximum provisioned capacity units.
+  int64 max_capacity = 3;
+
+  // Target utilization percentage for scaling.
+  int32 target_utilization_percent = 4;
+}
+
+enum CapacityType {
+  READ = 0;
+  WRITE = 1;
+}
+
+// Projection configuration for an index.
+message Projection {
+  // Projection type: KEYS_ONLY, INCLUDE, or ALL.
+  ProjectionType projection_type = 1;
+
+  // Non-key attributes to project when projection_type = INCLUDE.
+  repeated string non_key_attributes = 2;
+}
+
+enum ProjectionType {
+  KEYS_ONLY = 0;
+  INCLUDE = 1;
+  ALL = 2;
+}
+
+// Global secondary index definition.
+message GlobalSecondaryIndex {
+  // Index name.
+  string index_name = 1;
+
+  // Key schema for the index.
+  repeated KeySchemaElement key_schema = 2;
+
+  // Attributes projected into the index.
+  Projection projection = 3;
+
+  // Provisioned capacity for the index (ignored when table is on-demand).
+  ProvisionedThroughput provisioned_throughput = 4;
+
+  // Auto-scaling settings for the index.
+  repeated AutoScalingSettings auto_scaling_settings = 5;
+}
+
+// Local secondary index definition.
+message LocalSecondaryIndex {
+  // Index name.
+  string index_name = 1;
+
+  // Key schema (must share HASH key with the table).
+  repeated KeySchemaElement key_schema = 2;
+
+  // Attributes projected into the index.
+  Projection projection = 3;
+}
+
+// Time-to-live settings.
+message TTLSpecification {
+  // Enables or disables TTL.
+  bool enabled = 1;
+
+  // Name of the attribute that stores the expiration timestamp.
+  string attribute_name = 2;
+}
+
+// DynamoDB Streams settings.
+message StreamSpecification {
+  // Enables or disables DynamoDB Streams.
+  bool enabled = 1;
+
+  // Type of data written to the stream.
+  StreamViewType view_type = 2;
+}
+
+enum StreamViewType {
+  NEW_IMAGE = 0;
+  OLD_IMAGE = 1;
+  NEW_AND_OLD_IMAGES = 2;
+  KEYS_ONLY = 3;
+}
+
+// Server-side encryption settings.
+message SSESpecification {
+  // Enables server-side encryption.
+  bool enabled = 1;
+
+  // AWS KMS key ARN for encryption (optional).
+  string kms_key_arn = 2;
+}
+
+enum TableClass {
+  STANDARD = 0;
+  STANDARD_INFREQUENT_ACCESS = 1;
+}
+
+// Replica description for a global table.
+message Replica {
+  // AWS region name of the replica.
+  string region_name = 1;
+
+  // Optional KMS key ARN for replica encryption.
+  string kms_key_arn = 2;
+}
+
+// Key-value tag pair.
+message Tag {
+  // Tag key.
+  string key = 1;
+
+  // Tag value.
+  string value = 2;
+}
