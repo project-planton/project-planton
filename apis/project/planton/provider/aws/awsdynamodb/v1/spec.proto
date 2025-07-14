@@ -2,21 +2,38 @@ syntax = "proto3";
 
 package project.planton.provider.aws.awsdynamodb.v1;
 
+import "buf/validate/validate.proto";
+
+/************************************************************
+ * AwsDynamodbSpec
+ ***********************************************************/
 message AwsDynamodbSpec {
   // Name of the DynamoDB table. Must be unique within the AWS account & region.
-  string table_name = 1;
+  string table_name = 1 [
+    (buf.validate.field).string = {
+      min_len: 3,
+      max_len: 255,
+      pattern: "^[a-zA-Z0-9_.-]+$"
+    }
+  ];
 
   // How you want to pay for database capacity.
-  BillingMode billing_mode = 2;
+  BillingMode billing_mode = 2 [
+    (buf.validate.field).enum = { not_in: [0] }
+  ];
 
   // Provisioned read/write capacity settings (used when billing_mode = PROVISIONED).
   ProvisionedThroughput provisioned_throughput = 3;
 
   // List of attribute definitions that describe the key and index attributes for the table.
-  repeated AttributeDefinition attribute_definitions = 4;
+  repeated AttributeDefinition attribute_definitions = 4 [
+    (buf.validate.field).repeated = { min_items: 1 }
+  ];
 
   // Primary key schema for the table (partition key and optional sort key).
-  KeySchema key_schema = 5;
+  KeySchema key_schema = 5 [
+    (buf.validate.field).required = true
+  ];
 
   // Configuration for global secondary indexes (GSIs).
   repeated GlobalSecondaryIndex global_secondary_indexes = 6;
@@ -43,10 +60,24 @@ message AwsDynamodbSpec {
   bool deletion_protection_enabled = 13;
 
   // Storage class used for the table.
-  TableClass table_class = 14;
+  TableClass table_class = 14 [
+    (buf.validate.field).enum = { not_in: [0] }
+  ];
 
   // Tags to attach to the table for cost allocation and organization.
-  map<string, string> tags = 15;
+  map<string, string> tags = 15 [
+    (buf.validate.field).map = {
+      keys:   { string: { min_len: 1, max_len: 128 } },
+      values: { string: {          max_len: 256 } }
+    }
+  ];
+
+  //---------------- CEL rules ----------------
+  option (buf.validate.message).cel = {
+    id: "billing_mode_capacity_rule",
+    message: "When billing_mode == PROVISIONED, provisioned_throughput must be set with positive RCU/WCU; when PAY_PER_REQUEST it must be unset or set to 0",
+    expression: "this.billing_mode == 1 ? (has(this.provisioned_throughput) && this.provisioned_throughput.read_capacity_units > 0 && this.provisioned_throughput.write_capacity_units > 0) : (this.billing_mode == 2 ? (!has(this.provisioned_throughput) || (this.provisioned_throughput.read_capacity_units == 0 && this.provisioned_throughput.write_capacity_units == 0)) : true)"
+  };
 }
 
 /************ Supporting Types ************/
@@ -63,9 +94,13 @@ enum BillingMode {
 // Provisioned throughput settings (RCU/WCU).
 message ProvisionedThroughput {
   // Maximum number of strongly consistent reads per second.
-  int64 read_capacity_units = 1;
+  int64 read_capacity_units = 1 [
+    (buf.validate.field).int64 = { gte: 0 }
+  ];
   // Maximum number of writes per second.
-  int64 write_capacity_units = 2;
+  int64 write_capacity_units = 2 [
+    (buf.validate.field).int64 = { gte: 0 }
+  ];
 }
 
 //==== Attributes & Keys ====
@@ -78,14 +113,22 @@ enum AttributeType {
 
 // Describes an attribute and its scalar type.
 message AttributeDefinition {
-  string attribute_name = 1;     // Name of the attribute.
-  AttributeType attribute_type = 2; // Scalar type of the attribute.
+  string attribute_name = 1 [
+    (buf.validate.field).string = { min_len: 1, max_len: 255, pattern: "^[a-zA-Z0-9_.-]+$" }
+  ];
+  AttributeType attribute_type = 2 [
+    (buf.validate.field).enum = { not_in: [0] }
+  ];
 }
 
 // Primary or secondary key schema.
 message KeySchema {
-  string partition_key = 1; // Required hash key.
-  string sort_key = 2;      // Optional range key.
+  string partition_key = 1 [
+    (buf.validate.field).string = { min_len: 1, max_len: 255, pattern: "^[a-zA-Z0-9_.-]+$" }
+  ];
+  string sort_key = 2 [
+    (buf.validate.field).string = { min_len: 0, max_len: 255, pattern: "^[a-zA-Z0-9_.-]*$" }
+  ];
 }
 
 //==== Indexes ====
@@ -98,24 +141,54 @@ enum ProjectionType {
 
 // Attributes that are copied into an index.
 message Projection {
-  ProjectionType projection_type = 1;        // What attributes are projected.
-  repeated string non_key_attributes = 2;    // Additional attributes (when projection_type = INCLUDE).
+  ProjectionType projection_type = 1 [
+    (buf.validate.field).enum = { not_in: [0] }
+  ];
+  repeated string non_key_attributes = 2 [
+    (buf.validate.field).repeated.items.string = { min_len: 1, max_len: 255, pattern: "^[a-zA-Z0-9_.-]+$" }
+  ];
+
+  option (buf.validate.message).cel = {
+    id: "projection_include_rule",
+    message: "When projection_type == INCLUDE, non_key_attributes must be non-empty; otherwise it must be empty",
+    expression: "this.projection_type == 2 ? size(this.non_key_attributes) > 0 : size(this.non_key_attributes) == 0"
+  };
 }
 
 // Global secondary index configuration.
 message GlobalSecondaryIndex {
-  string index_name = 1;
-  KeySchema key_schema = 2;
-  Projection projection = 3;
-  BillingMode billing_mode = 4;
-  ProvisionedThroughput provisioned_throughput = 5; // Only for PROVISIONED billing mode.
+  string index_name = 1 [
+    (buf.validate.field).string = { min_len: 3, max_len: 255, pattern: "^[a-zA-Z0-9_.-]+$" }
+  ];
+  KeySchema key_schema = 2 [
+    (buf.validate.field).required = true
+  ];
+  Projection projection = 3 [
+    (buf.validate.field).required = true
+  ];
+  BillingMode billing_mode = 4 [
+    (buf.validate.field).enum = { not_in: [0] }
+  ];
+  ProvisionedThroughput provisioned_throughput = 5;
+
+  option (buf.validate.message).cel = {
+    id: "gsi_capacity_rule",
+    message: "For a GSI, when billing_mode == PROVISIONED, provisioned_throughput must be set with positive RCU/WCU; when PAY_PER_REQUEST it must be unset or zero",
+    expression: "this.billing_mode == 1 ? (has(this.provisioned_throughput) && this.provisioned_throughput.read_capacity_units > 0 && this.provisioned_throughput.write_capacity_units > 0) : (this.billing_mode == 2 ? (!has(this.provisioned_throughput) || (this.provisioned_throughput.read_capacity_units == 0 && this.provisioned_throughput.write_capacity_units == 0)) : true)"
+  };
 }
 
 // Local secondary index configuration.
 message LocalSecondaryIndex {
-  string index_name = 1;
-  string sort_key = 2;         // Alternate sort key for the same partition key.
-  Projection projection = 3;
+  string index_name = 1 [
+    (buf.validate.field).string = { min_len: 3, max_len: 255, pattern: "^[a-zA-Z0-9_.-]+$" }
+  ];
+  string sort_key = 2 [
+    (buf.validate.field).string = { min_len: 1, max_len: 255, pattern: "^[a-zA-Z0-9_.-]+$" }
+  ];
+  Projection projection = 3 [
+    (buf.validate.field).required = true
+  ];
 }
 
 //==== Streams ====
@@ -131,6 +204,12 @@ enum StreamViewType {
 message StreamSpecification {
   bool enabled = 1;
   StreamViewType view_type = 2;
+
+  option (buf.validate.message).cel = {
+    id: "stream_enabled_rule",
+    message: "When streams are enabled view_type must be set; when disabled it must be UNSPECIFIED",
+    expression: "this.enabled ? this.view_type != 0 : this.view_type == 0"
+  };
 }
 
 //==== Encryption ====
@@ -144,13 +223,29 @@ enum SSEType {
 message SSESpecification {
   bool enabled = 1;
   SSEType sse_type = 2;
-  string kms_key_arn = 3; // Required when sse_type = KMS.
+  string kms_key_arn = 3 [
+    (buf.validate.field).string = { pattern: "^arn:[A-Za-z0-9:/-]+$" }
+  ];
+
+  option (buf.validate.message).cel = {
+    id: "sse_enabled_rule",
+    message: "When SSE is enabled sse_type must be set and, if type == KMS, kms_key_arn must be provided; when disabled type must be UNSPECIFIED",
+    expression: "this.enabled ? (this.sse_type != 0 && (this.sse_type == 2 ? size(this.kms_key_arn) > 0 : true)) : this.sse_type == 0"
+  };
 }
 
 //==== TTL ====
 message TTLSpecification {
   bool enabled = 1;            // Enables/disables TTL.
-  string attribute_name = 2;   // Attribute containing the expiration timestamp.
+  string attribute_name = 2 [
+    (buf.validate.field).string = { min_len: 1, max_len: 255, pattern: "^[a-zA-Z0-9_.-]+$" }
+  ];
+
+  option (buf.validate.message).cel = {
+    id: "ttl_enabled_rule",
+    message: "attribute_name must be set when TTL is enabled; it must be empty when TTL is disabled",
+    expression: "this.enabled ? size(this.attribute_name) > 0 : size(this.attribute_name) == 0"
+  };
 }
 
 //==== Table class ====
