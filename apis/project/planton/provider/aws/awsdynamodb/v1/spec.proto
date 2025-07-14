@@ -252,11 +252,16 @@ message Projection {
   ProjectionType type = 1 [ (buf.validate.field).enum = { not_in: [0] }, (buf.validate.field).required = true ];
 
   repeated string non_key_attributes = 2 [
-    (buf.validate.field).repeated = { max_items: 20 },
-    (buf.validate.field).string = {
-      min_len: 1,
-      max_len: 255,
-      pattern: "^[A-Za-z0-9_.-]+$"
+    // Apply rules to the collection itself.
+    (buf.validate.field).repeated = {
+      max_items: 20,
+      items: {
+        string: {
+          min_len: 1,
+          max_len: 255,
+          pattern: "^[A-Za-z0-9_.-]+$"
+        }
+      }
     }
   ];
 
