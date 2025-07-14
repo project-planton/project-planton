@@ -127,7 +127,7 @@ message KeySchema {
     (buf.validate.field).string = { min_len: 1, max_len: 255, pattern: "^[a-zA-Z0-9_.-]+$" }
   ];
   string sort_key = 2 [
-    (buf.validate.field).string = { min_len: 0, max_len: 255, pattern: "^[a-zA-Z0-9_.-]*$" }
+    (buf.validate.field).string = { max_len: 255, pattern: "^[a-zA-Z0-9_.-]*$" }
   ];
 }
 
