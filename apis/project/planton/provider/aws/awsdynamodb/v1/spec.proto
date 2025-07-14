@@ -262,7 +262,7 @@ message SSESpecification {
     (buf.validate.field).cel = {
       id: "kms_key_arn_format",
       message: "kms_key_arn must be a valid KMS key ARN when provided",
-      expression: "size(this) == 0 || this.matches('^arn:aws:kms:[a-z0-9\\\-]+:[0-9]{12}:key/[a-f0-9\\\-]+$')"
+      expression: "size(this) == 0 || this.matches('^arn:aws:kms:[a-z0-9-]+:[0-9]{12}:key/[a-f0-9-]+$')"
     }
   ];
 
