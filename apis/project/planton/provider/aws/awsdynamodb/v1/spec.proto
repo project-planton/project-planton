@@ -3,20 +3,29 @@ syntax = "proto3";
 package project.planton.provider.aws.awsdynamodb.v1;
 
 import "google/protobuf/duration.proto";
+import "buf/validate/validate.proto";
 
 // Specification of a DynamoDB table.
 message AwsDynamodbSpec {
   // Name of the DynamoDB table; unique per AWS account/region.
-  string table_name = 1;
+  string table_name = 1 [
+    (buf.validate.field).string = {
+      min_len: 3,
+      max_len: 255,
+      pattern: "^[A-Za-z0-9_.-]{3,255}$"
+    }
+  ];
 
   // Attribute definitions referenced by the table and its indexes.
-  repeated AttributeDefinition attribute_definitions = 2;
+  repeated AttributeDefinition attribute_definitions = 2 [
+    (buf.validate.field).repeated.min_items = 1
+  ];
 
   // Partition (and optional sort) key schema for the table.
-  KeySchema key_schema = 3;
+  KeySchema key_schema = 3 [(buf.validate.field).required = true];
 
   // Determines whether the table uses provisioned or on-demand billing.
-  BillingMode billing_mode = 4;
+  BillingMode billing_mode = 4 [(buf.validate.field).enum.defined_only = true];
 
   // Provisioned throughput settings (required when billing_mode = PROVISIONED).
   Capacity capacity = 5;
@@ -40,84 +49,138 @@ message AwsDynamodbSpec {
   PointInTimeRecoverySpecification pitr_specification = 11;
 
   // Storage class of the table.
-  TableClass table_class = 12;
+  TableClass table_class = 12 [(buf.validate.field).enum.defined_only = true];
 
   // Key-value tags to apply to the table.
-  map<string, string> tags = 13;
+  map<string, string> tags = 13 [
+    (buf.validate.field).map = {
+      keys:   {string: {max_len: 128, pattern: "^[A-Za-z0-9_.:/=+\-@ ]+$"}},
+      values: {string: {max_len: 256}}
+    }
+  ];
 
   // Protects the table from accidental deletion when true.
   bool deletion_protection_enabled = 14;
 
   // Autoscaling policies for read/write capacity.
   AutoScalingSpecification autoscaling_specification = 15;
+
+  option (buf.validate.message).cel = [
+    {
+      id:        "capacity_provisioned",
+      message:   "When billing_mode is PROVISIONED, capacity and all index capacities must be set and > 0",
+      expression: "this.billing_mode == 1 ? (has(this.capacity) && this.capacity.read_capacity_units > 0 && this.capacity.write_capacity_units > 0 && this.global_secondary_indexes.all(i, has(i.capacity) && i.capacity.read_capacity_units > 0 && i.capacity.write_capacity_units > 0)) : true"
+    },
+    {
+      id:        "capacity_pay_per_request",
+      message:   "When billing_mode is PAY_PER_REQUEST, capacity and index capacities must be unset or 0",
+      expression: "this.billing_mode == 2 ? ((!has(this.capacity) || (this.capacity.read_capacity_units == 0 && this.capacity.write_capacity_units == 0)) && this.global_secondary_indexes.all(i, !has(i.capacity) || (i.capacity.read_capacity_units == 0 && i.capacity.write_capacity_units == 0))) : true"
+    }
+  ];
 }
 
 // Describes an attribute used as a key or in an index.
 message AttributeDefinition {
   // Attribute (column) name.
-  string name = 1;
+  string name = 1 [
+    (buf.validate.field).string = {
+      min_len: 1,
+      max_len: 255,
+      pattern: "^[A-Za-z0-9_.-]{1,255}$"
+    }
+  ];
 
   // Data type: S (string), N (number), or B (binary).
-  AttributeType type = 2;
+  AttributeType type = 2 [(buf.validate.field).enum.defined_only = true];
 }
 
 enum AttributeType {
   ATTRIBUTE_TYPE_UNSPECIFIED = 0;
-  STRING = 1; // "S"
-  NUMBER = 2; // "N"
-  BINARY = 3; // "B"
+  STRING   = 1; // "S"
+  NUMBER   = 2; // "N"
+  BINARY   = 3; // "B"
 }
 
 // Key schema specifying the partition key and optional sort key.
 message KeySchema {
   // Name of the partition (hash) key attribute.
-  string partition_key = 1;
+  string partition_key = 1 [
+    (buf.validate.field).string = {
+      min_len: 1,
+      max_len: 255,
+      pattern: "^[A-Za-z0-9_.-]{1,255}$"
+    }
+  ];
 
   // Name of the sort (range) key attribute, if any.
-  string sort_key = 2;
+  string sort_key = 2 [
+    (buf.validate.field).string = {
+      ignore_empty: true,
+      min_len: 1,
+      max_len: 255,
+      pattern: "^[A-Za-z0-9_.-]{1,255}$"
+    }
+  ];
+
+  option (buf.validate.message).cel = {
+    id:        "sort_ne_partition",
+    message:   "sort_key must be different from partition_key",
+    expression: "has(this.sort_key) ? this.sort_key != this.partition_key : true"
+  };
 }
 
 enum BillingMode {
   BILLING_MODE_UNSPECIFIED = 0;
-  PROVISIONED = 1;      // Provisioned capacity mode
-  PAY_PER_REQUEST = 2;  // On-demand capacity mode
+  PROVISIONED       = 1; // Provisioned capacity mode
+  PAY_PER_REQUEST   = 2; // On-demand capacity mode
 }
 
 // Provisioned throughput settings.
 message Capacity {
   // Max strongly-consistent reads per second.
-  int64 read_capacity_units = 1;
-
+  int64 read_capacity_units  = 1 [(buf.validate.field).int64.gte = 0];
   // Max writes per second.
-  int64 write_capacity_units = 2;
+  int64 write_capacity_units = 2 [(buf.validate.field).int64.gte = 0];
 }
 
 enum ProjectionType {
   PROJECTION_TYPE_UNSPECIFIED = 0;
-  ALL = 1;        // All table attributes
-  KEYS_ONLY = 2;  // Only key attributes
-  INCLUDE = 3;    // Specific non-key attributes
+  ALL        = 1; // All table attributes
+  KEYS_ONLY  = 2; // Only key attributes
+  INCLUDE    = 3; // Specific non-key attributes
 }
 
 // Projection configuration for an index.
 message Projection {
   // Projection type.
-  ProjectionType type = 1;
+  ProjectionType type = 1 [(buf.validate.field).enum.defined_only = true];
 
   // Non-key attributes to project when type = INCLUDE.
   repeated string non_key_attributes = 2;
+
+  option (buf.validate.message).cel = {
+    id:        "include_requires_attrs",
+    message:   "non_key_attributes must be provided when projection type is INCLUDE, otherwise must be empty",
+    expression: "this.type == 3 ? this.non_key_attributes.size() > 0 : this.non_key_attributes.size() == 0"
+  };
 }
 
 // Definition of a global secondary index.
 message GlobalSecondaryIndex {
   // Index name.
-  string name = 1;
+  string name = 1 [
+    (buf.validate.field).string = {
+      min_len: 3,
+      max_len: 255,
+      pattern: "^[A-Za-z0-9_.-]{3,255}$"
+    }
+  ];
 
   // Key schema for the index.
-  KeySchema key_schema = 2;
+  KeySchema key_schema = 2 [(buf.validate.field).required = true];
 
   // Projection settings.
-  Projection projection = 3;
+  Projection projection = 3 [(buf.validate.field).required = true];
 
   // Provisioned throughput for the index (ignored for PAY_PER_REQUEST).
   Capacity capacity = 4;
@@ -126,13 +189,19 @@ message GlobalSecondaryIndex {
 // Definition of a local secondary index.
 message LocalSecondaryIndex {
   // Index name.
-  string name = 1;
+  string name = 1 [
+    (buf.validate.field).string = {
+      min_len: 3,
+      max_len: 255,
+      pattern: "^[A-Za-z0-9_.-]{3,255}$"
+    }
+  ];
 
   // Key schema for the index (partition key must match table's).
-  KeySchema key_schema = 2;
+  KeySchema key_schema = 2 [(buf.validate.field).required = true];
 
   // Projection settings.
-  Projection projection = 3;
+  Projection projection = 3 [(buf.validate.field).required = true];
 }
 
 // DynamoDB Streams configuration.
@@ -142,14 +211,20 @@ message StreamSpecification {
 
   // Information written to the stream.
   StreamViewType view_type = 2;
+
+  option (buf.validate.message).cel = {
+    id:        "stream_view_type_require",
+    message:   "When stream is enabled view_type must be specified, otherwise must be UNSPECIFIED",
+    expression: "this.enabled ? this.view_type != 0 : this.view_type == 0"
+  };
 }
 
 enum StreamViewType {
   STREAM_VIEW_TYPE_UNSPECIFIED = 0;
-  STREAM_KEYS_ONLY = 1;
-  NEW_IMAGE = 2;
-  OLD_IMAGE = 3;
-  NEW_AND_OLD_IMAGES = 4;
+  STREAM_KEYS_ONLY      = 1;
+  NEW_IMAGE             = 2;
+  OLD_IMAGE             = 3;
+  NEW_AND_OLD_IMAGES    = 4;
 }
 
 // Time-to-live settings.
@@ -158,7 +233,20 @@ message TTLSpecification {
   bool enabled = 1;
 
   // Attribute that stores the Unix epoch expiration time.
-  string attribute_name = 2;
+  string attribute_name = 2 [
+    (buf.validate.field).string = {
+      ignore_empty: true,
+      min_len: 1,
+      max_len: 255,
+      pattern: "^[A-Za-z0-9_.-]{1,255}$"
+    }
+  ];
+
+  option (buf.validate.message).cel = {
+    id:        "ttl_attribute_required",
+    message:   "attribute_name must be set when TTL is enabled",
+    expression: "this.enabled ? has(this.attribute_name) && size(this.attribute_name) > 0 : !has(this.attribute_name) || size(this.attribute_name) == 0"
+  };
 }
 
 // Server-side encryption settings.
@@ -170,13 +258,31 @@ message SSESpecification {
   SSEType type = 2;
 
   // ARN of the KMS key to use when type = KMS.
-  string kms_key_arn = 3;
+  string kms_key_arn = 3 [
+    (buf.validate.field).string = {
+      ignore_empty: true,
+      pattern: "^arn:aws:kms:[a-z0-9\\-]+:[0-9]{12}:key/[a-f0-9\\-]+$"
+    }
+  ];
+
+  option (buf.validate.message).cel = [
+    {
+      id:        "sse_type_required",
+      message:   "type must be specified when SSE is enabled",
+      expression: "this.enabled ? this.type != 0 : true"
+    },
+    {
+      id:        "kms_key_arn_required",
+      message:   "kms_key_arn must be provided when SSE type is KMS",
+      expression: "this.type == 2 ? has(this.kms_key_arn) && size(this.kms_key_arn) > 0 : !has(this.kms_key_arn) || size(this.kms_key_arn) == 0"
+    }
+  ];
 }
 
 enum SSEType {
   SSE_TYPE_UNSPECIFIED = 0;
   AES256 = 1; // AWS owned CMK
-  KMS = 2;    // Customer managed CMK
+  KMS    = 2; // Customer managed CMK
 }
 
 // Point-in-time recovery settings.
@@ -187,7 +293,7 @@ message PointInTimeRecoverySpecification {
 
 enum TableClass {
   TABLE_CLASS_UNSPECIFIED = 0;
-  STANDARD = 1;
+  STANDARD                = 1;
   STANDARD_INFREQUENT_ACCESS = 2;
 }
 
@@ -197,26 +303,40 @@ message AutoScalingSpecification {
   bool enabled = 1;
 
   // Target utilization percentage for read capacity.
-  int32 target_read_utilization_percent = 2;
+  int32 target_read_utilization_percent = 2 [
+    (buf.validate.field).int32 = {gte: 10, lte: 90}
+  ];
 
   // Target utilization percentage for write capacity.
-  int32 target_write_utilization_percent = 3;
+  int32 target_write_utilization_percent = 3 [
+    (buf.validate.field).int32 = {gte: 10, lte: 90}
+  ];
 
   // Minimum provisioned read capacity units.
-  int32 min_read_capacity_units = 4;
+  int32 min_read_capacity_units = 4 [(buf.validate.field).int32.gte = 0];
 
   // Maximum provisioned read capacity units.
-  int32 max_read_capacity_units = 5;
+  int32 max_read_capacity_units = 5 [(buf.validate.field).int32.gte = 0];
 
   // Minimum provisioned write capacity units.
-  int32 min_write_capacity_units = 6;
+  int32 min_write_capacity_units = 6 [(buf.validate.field).int32.gte = 0];
 
   // Maximum provisioned write capacity units.
-  int32 max_write_capacity_units = 7;
+  int32 max_write_capacity_units = 7 [(buf.validate.field).int32.gte = 0];
 
   // Cool-down period between scale-in actions.
-  google.protobuf.Duration scale_in_cooldown = 8;
+  google.protobuf.Duration scale_in_cooldown = 8 [
+    (buf.validate.field).duration = {gte: {seconds: 0}}
+  ];
 
   // Cool-down period between scale-out actions.
-  google.protobuf.Duration scale_out_cooldown = 9;
+  google.protobuf.Duration scale_out_cooldown = 9 [
+    (buf.validate.field).duration = {gte: {seconds: 0}}
+  ];
+
+  option (buf.validate.message).cel = {
+    id:        "enabled_requires_bounds",
+    message:   "When autoscaling is enabled, max units must be >= min units",
+    expression: "this.enabled ? (this.max_read_capacity_units >= this.min_read_capacity_units && this.max_write_capacity_units >= this.min_write_capacity_units) : true"
+  };
 }
