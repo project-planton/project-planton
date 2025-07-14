@@ -7,6 +7,7 @@
 package awsdynamodbv1
 
 import (
+	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -547,7 +548,7 @@ func (x *AttributeDefinition) GetType() AttributeType {
 // Server-side encryption settings.
 type ServerSideEncryption struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Enabled       bool                   `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`                       // When true, data is encrypted at rest.
+	Enabled       bool                   `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`
 	KmsKeyArn     string                 `protobuf:"bytes,2,opt,name=kms_key_arn,json=kmsKeyArn,proto3" json:"kms_key_arn,omitempty"` // Optional customer-managed KMS key ARN.
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -600,12 +601,12 @@ func (x *ServerSideEncryption) GetKmsKeyArn() string {
 // Auto-scaling configuration for provisioned capacity.
 type AutoscalingConfig struct {
 	state                    protoimpl.MessageState `protogen:"open.v1"`
-	Enabled                  bool                   `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`                                                                     // Enables auto-scaling for the table/index.
-	MinReadCapacity          int64                  `protobuf:"varint,2,opt,name=min_read_capacity,json=minReadCapacity,proto3" json:"min_read_capacity,omitempty"`                            // Minimum read capacity units.
-	MaxReadCapacity          int64                  `protobuf:"varint,3,opt,name=max_read_capacity,json=maxReadCapacity,proto3" json:"max_read_capacity,omitempty"`                            // Maximum read capacity units.
-	MinWriteCapacity         int64                  `protobuf:"varint,4,opt,name=min_write_capacity,json=minWriteCapacity,proto3" json:"min_write_capacity,omitempty"`                         // Minimum write capacity units.
-	MaxWriteCapacity         int64                  `protobuf:"varint,5,opt,name=max_write_capacity,json=maxWriteCapacity,proto3" json:"max_write_capacity,omitempty"`                         // Maximum write capacity units.
-	TargetUtilizationPercent int32                  `protobuf:"varint,6,opt,name=target_utilization_percent,json=targetUtilizationPercent,proto3" json:"target_utilization_percent,omitempty"` // Desired utilization percentage (10-90).
+	Enabled                  bool                   `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`
+	MinReadCapacity          int64                  `protobuf:"varint,2,opt,name=min_read_capacity,json=minReadCapacity,proto3" json:"min_read_capacity,omitempty"`
+	MaxReadCapacity          int64                  `protobuf:"varint,3,opt,name=max_read_capacity,json=maxReadCapacity,proto3" json:"max_read_capacity,omitempty"`
+	MinWriteCapacity         int64                  `protobuf:"varint,4,opt,name=min_write_capacity,json=minWriteCapacity,proto3" json:"min_write_capacity,omitempty"`
+	MaxWriteCapacity         int64                  `protobuf:"varint,5,opt,name=max_write_capacity,json=maxWriteCapacity,proto3" json:"max_write_capacity,omitempty"`
+	TargetUtilizationPercent int32                  `protobuf:"varint,6,opt,name=target_utilization_percent,json=targetUtilizationPercent,proto3" json:"target_utilization_percent,omitempty"`
 	unknownFields            protoimpl.UnknownFields
 	sizeCache                protoimpl.SizeCache
 }
@@ -685,9 +686,9 @@ func (x *AutoscalingConfig) GetTargetUtilizationPercent() int32 {
 // Specification for a local secondary index.
 type LocalSecondaryIndex struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`                      // Index name.
-	SortKey       string                 `protobuf:"bytes,2,opt,name=sort_key,json=sortKey,proto3" json:"sort_key,omitempty"` // Alternate sort key attribute.
-	Projection    *Projection            `protobuf:"bytes,3,opt,name=projection,proto3" json:"projection,omitempty"`          // Attributes projected into the index.
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	SortKey       string                 `protobuf:"bytes,2,opt,name=sort_key,json=sortKey,proto3" json:"sort_key,omitempty"`
+	Projection    *Projection            `protobuf:"bytes,3,opt,name=projection,proto3" json:"projection,omitempty"` // Attributes projected into the index.
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -746,14 +747,14 @@ func (x *LocalSecondaryIndex) GetProjection() *Projection {
 // Specification for a global secondary index.
 type GlobalSecondaryIndex struct {
 	state                    protoimpl.MessageState `protogen:"open.v1"`
-	Name                     string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`                                                                                                // Index name.
-	PartitionKey             string                 `protobuf:"bytes,2,opt,name=partition_key,json=partitionKey,proto3" json:"partition_key,omitempty"`                                                            // Partition (hash) key attribute.
-	SortKey                  string                 `protobuf:"bytes,3,opt,name=sort_key,json=sortKey,proto3" json:"sort_key,omitempty"`                                                                           // Optional sort (range) key attribute.
-	BillingMode              BillingMode            `protobuf:"varint,4,opt,name=billing_mode,json=billingMode,proto3,enum=project.planton.provider.aws.awsdynamodb.v1.BillingMode" json:"billing_mode,omitempty"` // Billing mode for the index (inherits table if UNSPECIFIED).
-	ProvisionedReadCapacity  int64                  `protobuf:"varint,5,opt,name=provisioned_read_capacity,json=provisionedReadCapacity,proto3" json:"provisioned_read_capacity,omitempty"`                        // RCUs when billing_mode == PROVISIONED.
-	ProvisionedWriteCapacity int64                  `protobuf:"varint,6,opt,name=provisioned_write_capacity,json=provisionedWriteCapacity,proto3" json:"provisioned_write_capacity,omitempty"`                     // WCUs when billing_mode == PROVISIONED.
-	Autoscaling              *AutoscalingConfig     `protobuf:"bytes,7,opt,name=autoscaling,proto3" json:"autoscaling,omitempty"`                                                                                  // Auto-scaling config for the index.
-	Projection               *Projection            `protobuf:"bytes,8,opt,name=projection,proto3" json:"projection,omitempty"`                                                                                    // Attributes projected into the index.
+	Name                     string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	PartitionKey             string                 `protobuf:"bytes,2,opt,name=partition_key,json=partitionKey,proto3" json:"partition_key,omitempty"`
+	SortKey                  string                 `protobuf:"bytes,3,opt,name=sort_key,json=sortKey,proto3" json:"sort_key,omitempty"`
+	BillingMode              BillingMode            `protobuf:"varint,4,opt,name=billing_mode,json=billingMode,proto3,enum=project.planton.provider.aws.awsdynamodb.v1.BillingMode" json:"billing_mode,omitempty"`
+	ProvisionedReadCapacity  int64                  `protobuf:"varint,5,opt,name=provisioned_read_capacity,json=provisionedReadCapacity,proto3" json:"provisioned_read_capacity,omitempty"`
+	ProvisionedWriteCapacity int64                  `protobuf:"varint,6,opt,name=provisioned_write_capacity,json=provisionedWriteCapacity,proto3" json:"provisioned_write_capacity,omitempty"`
+	Autoscaling              *AutoscalingConfig     `protobuf:"bytes,7,opt,name=autoscaling,proto3" json:"autoscaling,omitempty"`
+	Projection               *Projection            `protobuf:"bytes,8,opt,name=projection,proto3" json:"projection,omitempty"`
 	unknownFields            protoimpl.UnknownFields
 	sizeCache                protoimpl.SizeCache
 }
@@ -847,8 +848,8 @@ func (x *GlobalSecondaryIndex) GetProjection() *Projection {
 // Controls which attributes are copied from the source table into an index.
 type Projection struct {
 	state            protoimpl.MessageState `protogen:"open.v1"`
-	Type             ProjectionType         `protobuf:"varint,1,opt,name=type,proto3,enum=project.planton.provider.aws.awsdynamodb.v1.ProjectionType" json:"type,omitempty"` // Projection strategy.
-	NonKeyAttributes []string               `protobuf:"bytes,2,rep,name=non_key_attributes,json=nonKeyAttributes,proto3" json:"non_key_attributes,omitempty"`                // Extra attributes (type == INCLUDE).
+	Type             ProjectionType         `protobuf:"varint,1,opt,name=type,proto3,enum=project.planton.provider.aws.awsdynamodb.v1.ProjectionType" json:"type,omitempty"`
+	NonKeyAttributes []string               `protobuf:"bytes,2,rep,name=non_key_attributes,json=nonKeyAttributes,proto3" json:"non_key_attributes,omitempty"`
 	unknownFields    protoimpl.UnknownFields
 	sizeCache        protoimpl.SizeCache
 }
@@ -900,8 +901,8 @@ func (x *Projection) GetNonKeyAttributes() []string {
 // Simple key/value tag.
 type Tag struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Key           string                 `protobuf:"bytes,1,opt,name=key,proto3" json:"key,omitempty"`     // Tag key.
-	Value         string                 `protobuf:"bytes,2,opt,name=value,proto3" json:"value,omitempty"` // Tag value.
+	Key           string                 `protobuf:"bytes,1,opt,name=key,proto3" json:"key,omitempty"`
+	Value         string                 `protobuf:"bytes,2,opt,name=value,proto3" json:"value,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -954,25 +955,26 @@ var File_project_planton_provider_aws_awsdynamodb_v1_spec_proto protoreflect.Fil
 
 const file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"6project/planton/provider/aws/awsdynamodb/v1/spec.proto\x12+project.planton.provider.aws.awsdynamodb.v1\"\x87\v\n" +
-	"\x0fAwsDynamodbSpec\x12\x1d\n" +
+	"6project/planton/provider/aws/awsdynamodb/v1/spec.proto\x12+project.planton.provider.aws.awsdynamodb.v1\x1a\x1bbuf/validate/validate.proto\"\x9b\x12\n" +
+	"\x0fAwsDynamodbSpec\x12E\n" +
 	"\n" +
-	"table_name\x18\x01 \x01(\tR\ttableName\x12`\n" +
+	"table_name\x18\x01 \x01(\tB&\xbaH#\xc8\x01\x01r\x1e\x10\x03\x18\xff\x012\x17^[A-Za-z0-9_.-]{3,255}$R\ttableName\x12o\n" +
 	"\n" +
-	"attributes\x18\x02 \x03(\v2@.project.planton.provider.aws.awsdynamodb.v1.AttributeDefinitionR\n" +
-	"attributes\x12#\n" +
-	"\rpartition_key\x18\x03 \x01(\tR\fpartitionKey\x12\x19\n" +
-	"\bsort_key\x18\x04 \x01(\tR\asortKey\x12[\n" +
-	"\fbilling_mode\x18\x05 \x01(\x0e28.project.planton.provider.aws.awsdynamodb.v1.BillingModeR\vbillingMode\x12:\n" +
+	"attributes\x18\x02 \x03(\v2@.project.planton.provider.aws.awsdynamodb.v1.AttributeDefinitionB\r\xbaH\n" +
+	"\xc8\x01\x01\x92\x01\x04\b\x01\x10\x14R\n" +
+	"attributes\x12E\n" +
+	"\rpartition_key\x18\x03 \x01(\tB \xbaH\x1d\xc8\x01\x01r\x18\x10\x01\x18\xff\x012\x11^[A-Za-z0-9_.-]+$R\fpartitionKey\x128\n" +
+	"\bsort_key\x18\x04 \x01(\tB\x1d\xbaH\x1ar\x18\x10\x01\x18\xff\x012\x11^[A-Za-z0-9_.-]+$R\asortKey\x12h\n" +
+	"\fbilling_mode\x18\x05 \x01(\x0e28.project.planton.provider.aws.awsdynamodb.v1.BillingModeB\v\xbaH\b\xc8\x01\x01\x82\x01\x02 \x00R\vbillingMode\x12:\n" +
 	"\x19provisioned_read_capacity\x18\x06 \x01(\x03R\x17provisionedReadCapacity\x12<\n" +
 	"\x1aprovisioned_write_capacity\x18\a \x01(\x03R\x18provisionedWriteCapacity\x12`\n" +
-	"\vautoscaling\x18\b \x01(\v2>.project.planton.provider.aws.awsdynamodb.v1.AutoscalingConfigR\vautoscaling\x12x\n" +
-	"\x17local_secondary_indexes\x18\t \x03(\v2@.project.planton.provider.aws.awsdynamodb.v1.LocalSecondaryIndexR\x15localSecondaryIndexes\x12{\n" +
+	"\vautoscaling\x18\b \x01(\v2>.project.planton.provider.aws.awsdynamodb.v1.AutoscalingConfigR\vautoscaling\x12\x82\x01\n" +
+	"\x17local_secondary_indexes\x18\t \x03(\v2@.project.planton.provider.aws.awsdynamodb.v1.LocalSecondaryIndexB\b\xbaH\x05\x92\x01\x02\x10\x05R\x15localSecondaryIndexes\x12\x85\x01\n" +
 	"\x18global_secondary_indexes\x18\n" +
-	" \x03(\v2A.project.planton.provider.aws.awsdynamodb.v1.GlobalSecondaryIndexR\x16globalSecondaryIndexes\x12%\n" +
+	" \x03(\v2A.project.planton.provider.aws.awsdynamodb.v1.GlobalSecondaryIndexB\b\xbaH\x05\x92\x01\x02\x10\x14R\x16globalSecondaryIndexes\x12%\n" +
 	"\x0estream_enabled\x18\v \x01(\bR\rstreamEnabled\x12e\n" +
-	"\x10stream_view_type\x18\f \x01(\x0e2;.project.planton.provider.aws.awsdynamodb.v1.StreamViewTypeR\x0estreamViewType\x12,\n" +
-	"\x12ttl_attribute_name\x18\r \x01(\tR\x10ttlAttributeName\x12B\n" +
+	"\x10stream_view_type\x18\f \x01(\x0e2;.project.planton.provider.aws.awsdynamodb.v1.StreamViewTypeR\x0estreamViewType\x12I\n" +
+	"\x12ttl_attribute_name\x18\r \x01(\tB\x1b\xbaH\x18r\x16\x18\xff\x012\x11^[A-Za-z0-9_.-]*$R\x10ttlAttributeName\x12B\n" +
 	"\x1epoint_in_time_recovery_enabled\x18\x0e \x01(\bR\x1apointInTimeRecoveryEnabled\x12a\n" +
 	"\n" +
 	"encryption\x18\x0f \x01(\v2A.project.planton.provider.aws.awsdynamodb.v1.ServerSideEncryptionR\n" +
@@ -980,45 +982,51 @@ const file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_rawDesc = "" +
 	"\vtable_class\x18\x10 \x01(\x0e27.project.planton.provider.aws.awsdynamodb.v1.TableClassR\n" +
 	"tableClass\x12>\n" +
 	"\x1bdeletion_protection_enabled\x18\x11 \x01(\bR\x19deletionProtectionEnabled\x12@\n" +
-	"\x1ccontributor_insights_enabled\x18\x12 \x01(\bR\x1acontributorInsightsEnabled\x12D\n" +
-	"\x04tags\x18\x13 \x03(\v20.project.planton.provider.aws.awsdynamodb.v1.TagR\x04tags\"y\n" +
-	"\x13AttributeDefinition\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\x12N\n" +
-	"\x04type\x18\x02 \x01(\x0e2:.project.planton.provider.aws.awsdynamodb.v1.AttributeTypeR\x04type\"P\n" +
+	"\x1ccontributor_insights_enabled\x18\x12 \x01(\bR\x1acontributorInsightsEnabled\x12N\n" +
+	"\x04tags\x18\x13 \x03(\v20.project.planton.provider.aws.awsdynamodb.v1.TagB\b\xbaH\x05\x92\x01\x02\x102R\x04tags:\xcf\x05\xbaH\xcb\x05\x1a\xe4\x02\n" +
+	"\x15billing_mode_capacity\x12pWhen billing_mode is PROVISIONED, read/write capacity must be > 0; when PAY_PER_REQUEST they must be 0 or unset.\x1a\xd8\x01(this.billing_mode == 1) ? (this.provisioned_read_capacity > 0 && this.provisioned_write_capacity > 0) : (this.billing_mode == 2) ? (this.provisioned_read_capacity == 0 && this.provisioned_write_capacity == 0) : true\x1a\xba\x01\n" +
+	"\x12stream_consistency\x12Ustream_view_type must be specified when stream_enabled is true, and unset when false.\x1aMthis.stream_enabled ? this.stream_view_type != 0 : this.stream_view_type == 0\x1a\xa4\x01\n" +
+	"\x15lsi_requires_sort_key\x12JA table must define a sort_key when local secondary indexes are specified.\x1a?this.local_secondary_indexes.size() == 0 || this.sort_key != \"\"\"\xa8\x01\n" +
+	"\x13AttributeDefinition\x124\n" +
+	"\x04name\x18\x01 \x01(\tB \xbaH\x1d\xc8\x01\x01r\x18\x10\x01\x18\xff\x012\x11^[A-Za-z0-9_.-]+$R\x04name\x12[\n" +
+	"\x04type\x18\x02 \x01(\x0e2:.project.planton.provider.aws.awsdynamodb.v1.AttributeTypeB\v\xbaH\b\xc8\x01\x01\x82\x01\x02 \x00R\x04type\"\x97\x01\n" +
 	"\x14ServerSideEncryption\x12\x18\n" +
-	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x1e\n" +
-	"\vkms_key_arn\x18\x02 \x01(\tR\tkmsKeyArn\"\x9f\x02\n" +
+	"\aenabled\x18\x01 \x01(\bR\aenabled\x12e\n" +
+	"\vkms_key_arn\x18\x02 \x01(\tBE\xbaHBr@\x18\x80\x102;^arn:[a-z0-9-]+:kms:[a-z0-9-]+:[0-9]{12}:key/[A-Za-z0-9-]+$R\tkmsKeyArn\"\x9e\x06\n" +
 	"\x11AutoscalingConfig\x12\x18\n" +
-	"\aenabled\x18\x01 \x01(\bR\aenabled\x12*\n" +
-	"\x11min_read_capacity\x18\x02 \x01(\x03R\x0fminReadCapacity\x12*\n" +
-	"\x11max_read_capacity\x18\x03 \x01(\x03R\x0fmaxReadCapacity\x12,\n" +
-	"\x12min_write_capacity\x18\x04 \x01(\x03R\x10minWriteCapacity\x12,\n" +
-	"\x12max_write_capacity\x18\x05 \x01(\x03R\x10maxWriteCapacity\x12<\n" +
-	"\x1atarget_utilization_percent\x18\x06 \x01(\x05R\x18targetUtilizationPercent\"\x9d\x01\n" +
-	"\x13LocalSecondaryIndex\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\x12\x19\n" +
-	"\bsort_key\x18\x02 \x01(\tR\asortKey\x12W\n" +
+	"\aenabled\x18\x01 \x01(\bR\aenabled\x123\n" +
+	"\x11min_read_capacity\x18\x02 \x01(\x03B\a\xbaH\x04\"\x02(\x00R\x0fminReadCapacity\x123\n" +
+	"\x11max_read_capacity\x18\x03 \x01(\x03B\a\xbaH\x04\"\x02(\x00R\x0fmaxReadCapacity\x125\n" +
+	"\x12min_write_capacity\x18\x04 \x01(\x03B\a\xbaH\x04\"\x02(\x00R\x10minWriteCapacity\x125\n" +
+	"\x12max_write_capacity\x18\x05 \x01(\x03B\a\xbaH\x04\"\x02(\x00R\x10maxWriteCapacity\x12<\n" +
+	"\x1atarget_utilization_percent\x18\x06 \x01(\x05R\x18targetUtilizationPercent:\xd8\x03\xbaH\xd4\x03\x1a\xd1\x03\n" +
+	"\x1eautoscaling_enabled_capacities\x12gWhen autoscaling is enabled all min/max capacities must be >0 and min<=max; utilization must be 10-90%.\x1a\xc5\x02!this.enabled || (this.min_read_capacity > 0 && this.max_read_capacity > 0 && this.min_write_capacity > 0 && this.max_write_capacity > 0 && this.min_read_capacity <= this.max_read_capacity && this.min_write_capacity <= this.max_write_capacity && this.target_utilization_percent >= 10 && this.target_utilization_percent <= 90)\"\xef\x01\n" +
+	"\x13LocalSecondaryIndex\x12:\n" +
+	"\x04name\x18\x01 \x01(\tB&\xbaH#\xc8\x01\x01r\x1e\x10\x03\x18\xff\x012\x17^[A-Za-z0-9_.-]{3,255}$R\x04name\x12;\n" +
+	"\bsort_key\x18\x02 \x01(\tB \xbaH\x1d\xc8\x01\x01r\x18\x10\x01\x18\xff\x012\x11^[A-Za-z0-9_.-]+$R\asortKey\x12_\n" +
 	"\n" +
-	"projection\x18\x03 \x01(\v27.project.planton.provider.aws.awsdynamodb.v1.ProjectionR\n" +
-	"projection\"\xfc\x03\n" +
-	"\x14GlobalSecondaryIndex\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\x12#\n" +
-	"\rpartition_key\x18\x02 \x01(\tR\fpartitionKey\x12\x19\n" +
-	"\bsort_key\x18\x03 \x01(\tR\asortKey\x12[\n" +
+	"projection\x18\x03 \x01(\v27.project.planton.provider.aws.awsdynamodb.v1.ProjectionB\x06\xbaH\x03\xc8\x01\x01R\n" +
+	"projection\"\x85\b\n" +
+	"\x14GlobalSecondaryIndex\x12:\n" +
+	"\x04name\x18\x01 \x01(\tB&\xbaH#\xc8\x01\x01r\x1e\x10\x03\x18\xff\x012\x17^[A-Za-z0-9_.-]{3,255}$R\x04name\x12E\n" +
+	"\rpartition_key\x18\x02 \x01(\tB \xbaH\x1d\xc8\x01\x01r\x18\x10\x01\x18\xff\x012\x11^[A-Za-z0-9_.-]+$R\fpartitionKey\x128\n" +
+	"\bsort_key\x18\x03 \x01(\tB\x1d\xbaH\x1ar\x18\x10\x01\x18\xff\x012\x11^[A-Za-z0-9_.-]+$R\asortKey\x12[\n" +
 	"\fbilling_mode\x18\x04 \x01(\x0e28.project.planton.provider.aws.awsdynamodb.v1.BillingModeR\vbillingMode\x12:\n" +
 	"\x19provisioned_read_capacity\x18\x05 \x01(\x03R\x17provisionedReadCapacity\x12<\n" +
 	"\x1aprovisioned_write_capacity\x18\x06 \x01(\x03R\x18provisionedWriteCapacity\x12`\n" +
-	"\vautoscaling\x18\a \x01(\v2>.project.planton.provider.aws.awsdynamodb.v1.AutoscalingConfigR\vautoscaling\x12W\n" +
+	"\vautoscaling\x18\a \x01(\v2>.project.planton.provider.aws.awsdynamodb.v1.AutoscalingConfigR\vautoscaling\x12_\n" +
 	"\n" +
-	"projection\x18\b \x01(\v27.project.planton.provider.aws.awsdynamodb.v1.ProjectionR\n" +
-	"projection\"\x8b\x01\n" +
+	"projection\x18\b \x01(\v27.project.planton.provider.aws.awsdynamodb.v1.ProjectionB\x06\xbaH\x03\xc8\x01\x01R\n" +
+	"projection:\x95\x03\xbaH\x91\x03\x1a\x8e\x03\n" +
+	"\x14gsi_billing_capacity\x12\x80\x01For a GSI: when billing_mode is PROVISIONED, capacities must be >0; when PAY_PER_REQUEST or UNSPECIFIED they must be 0 or unset.\x1a\xf2\x01(this.billing_mode == 1) ? (this.provisioned_read_capacity > 0 && this.provisioned_write_capacity > 0) : (this.billing_mode == 2 || this.billing_mode == 0) ? (this.provisioned_read_capacity == 0 && this.provisioned_write_capacity == 0) : true\"\x88\x03\n" +
 	"\n" +
-	"Projection\x12O\n" +
-	"\x04type\x18\x01 \x01(\x0e2;.project.planton.provider.aws.awsdynamodb.v1.ProjectionTypeR\x04type\x12,\n" +
-	"\x12non_key_attributes\x18\x02 \x03(\tR\x10nonKeyAttributes\"-\n" +
-	"\x03Tag\x12\x10\n" +
-	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value*Q\n" +
+	"Projection\x12\\\n" +
+	"\x04type\x18\x01 \x01(\x0e2;.project.planton.provider.aws.awsdynamodb.v1.ProjectionTypeB\v\xbaH\b\xc8\x01\x01\x82\x01\x02 \x00R\x04type\x12R\n" +
+	"\x12non_key_attributes\x18\x02 \x03(\tB$\xbaH!\x92\x01\x1e\x10\x14\"\x1ar\x18\x10\x01\x18\xff\x012\x11^[A-Za-z0-9_.-]+$R\x10nonKeyAttributes:\xc7\x01\xbaH\xc3\x01\x1a\xc0\x01\n" +
+	"\x1dprojection_include_attributes\x12Dnon_key_attributes must be set only when projection type is INCLUDE.\x1aYthis.type == 3 ? this.non_key_attributes.size() > 0 : this.non_key_attributes.size() == 0\"v\n" +
+	"\x03Tag\x127\n" +
+	"\x03key\x18\x01 \x01(\tB%\xbaH\"\xc8\x01\x01r\x1d\x10\x01\x18\x80\x012\x16^[A-Za-z0-9_.:/=+@-]+$R\x03key\x126\n" +
+	"\x05value\x18\x02 \x01(\tB \xbaH\x1dr\x1b\x18\x80\x022\x16^[A-Za-z0-9_.:/=+@-]*$R\x05value*Q\n" +
 	"\vBillingMode\x12\x1c\n" +
 	"\x18BILLING_MODE_UNSPECIFIED\x10\x00\x12\x0f\n" +
 	"\vPROVISIONED\x10\x01\x12\x13\n" +
