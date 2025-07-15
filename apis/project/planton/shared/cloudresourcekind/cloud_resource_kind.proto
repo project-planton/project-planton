@@ -101,6 +101,7 @@ enum CloudResourceKind {
   KafkaOperatorKubernetes = 828;
   PostgresOperatorKubernetes = 829;
   SolrOperatorKubernetes = 830;
+  ExternalSecretsKubernetes = 831;
 
   // 1200–1499: DigitalOcean resources
   DigitalOceanAppPlatformService = 1200;

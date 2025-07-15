@@ -116,6 +116,7 @@ const (
 	CloudResourceKind_KafkaOperatorKubernetes    CloudResourceKind = 828
 	CloudResourceKind_PostgresOperatorKubernetes CloudResourceKind = 829
 	CloudResourceKind_SolrOperatorKubernetes     CloudResourceKind = 830
+	CloudResourceKind_ExternalSecretsKubernetes  CloudResourceKind = 831
 	// 1200–1499: DigitalOcean resources
 	CloudResourceKind_DigitalOceanAppPlatformService CloudResourceKind = 1200
 	CloudResourceKind_DigitalOceanBucket             CloudResourceKind = 1201
@@ -220,6 +221,7 @@ var (
 		828:  "KafkaOperatorKubernetes",
 		829:  "PostgresOperatorKubernetes",
 		830:  "SolrOperatorKubernetes",
+		831:  "ExternalSecretsKubernetes",
 		1200: "DigitalOceanAppPlatformService",
 		1201: "DigitalOceanBucket",
 		1202: "DigitalOceanContainerRegistry",
@@ -320,6 +322,7 @@ var (
 		"KafkaOperatorKubernetes":        828,
 		"PostgresOperatorKubernetes":     829,
 		"SolrOperatorKubernetes":         830,
+		"ExternalSecretsKubernetes":      831,
 		"DigitalOceanAppPlatformService": 1200,
 		"DigitalOceanBucket":             1201,
 		"DigitalOceanContainerRegistry":  1202,
@@ -367,7 +370,7 @@ var File_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto prot
 
 const file_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto_rawDesc = "" +
 	"\n" +
-	"Bproject/planton/shared/cloudresourcekind/cloud_resource_kind.proto\x12(project.planton.shared.cloudresourcekind*\x9c\x12\n" +
+	"Bproject/planton/shared/cloudresourcekind/cloud_resource_kind.proto\x12(project.planton.shared.cloudresourcekind*\xbc\x12\n" +
 	"\x11CloudResourceKind\x12\x0f\n" +
 	"\vunspecified\x10\x00\x12\x1d\n" +
 	"\x19FirstTestCloudApiResource\x10\x01\x12\x1e\n" +
@@ -458,7 +461,8 @@ const file_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto_ra
 	"\x0fIstioKubernetes\x10\xbb\x06\x12\x1c\n" +
 	"\x17KafkaOperatorKubernetes\x10\xbc\x06\x12\x1f\n" +
 	"\x1aPostgresOperatorKubernetes\x10\xbd\x06\x12\x1b\n" +
-	"\x16SolrOperatorKubernetes\x10\xbe\x06\x12#\n" +
+	"\x16SolrOperatorKubernetes\x10\xbe\x06\x12\x1e\n" +
+	"\x19ExternalSecretsKubernetes\x10\xbf\x06\x12#\n" +
 	"\x1eDigitalOceanAppPlatformService\x10\xb0\t\x12\x17\n" +
 	"\x12DigitalOceanBucket\x10\xb1\t\x12\"\n" +
 	"\x1dDigitalOceanContainerRegistry\x10\xb2\t\x12 \n" +
