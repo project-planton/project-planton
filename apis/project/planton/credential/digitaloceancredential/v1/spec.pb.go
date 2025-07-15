@@ -8,6 +8,7 @@ package digitaloceancredentialv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
+	digitalocean "github.com/project-planton/project-planton/apis/project/planton/provider/digitalocean"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -23,12 +24,51 @@ const (
 )
 
 // DigitalOceanCredentialSpec defines the specification for a DigitalOcean credential.
+// This message encapsulates the necessary authentication details for interacting with DigitalOcean's API and services,
+// including the general API token and optional credentials for Spaces (S3-compatible object storage).
+// As of 2025, DigitalOcean primarily relies on personal access tokens for API authentication, with no native support
+// for granular IAM-style roles, OIDC federation, or short-lived credentials like those in AWS, Azure, or GCP.
+// OAuth 2 endpoints exist but are intended for user-facing third-party apps, not headless IaC automation.
+// For Infrastructure-as-Code (IaC) tools like Terraform and Pulumi, the personal access token is the standard method,
+// treated as a required field in provider configurations.
 type DigitalOceanCredentialSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// The API token for DigitalOcean.
-	ApiToken      string `protobuf:"bytes,1,opt,name=api_token,json=apiToken,proto3" json:"api_token,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	// This is a personal-access API token used to authenticate requests to the DigitalOcean control plane API.
+	// Purpose: It grants access to manage resources like Droplets, Kubernetes clusters (DOKS), VPCs, and more.
+	// Importance: As the primary authentication mechanism, it must be stored securely (e.g., as sensitive variables in
+	// Terraform Cloud, encrypted in Pulumi configs, or in CI/CD secret stores). Tokens inherit the permissions of the
+	// creating user, so create them under a dedicated "automation" account with least-privilege roles. Rotate regularly
+	// to mitigate risks, as they are long-lived secrets.
+	// Functional Relevance: Required for all non-Spaces resources in Terraform/Pulumi providers. Supply via provider
+	// blocks (e.g., token = "...") or env vars like DIGITALOCEAN_TOKEN. Without it, IaC deployments for core resources will fail.
+	ApiToken string `protobuf:"bytes,1,opt,name=api_token,json=apiToken,proto3" json:"api_token,omitempty"`
+	// The default region for the DigitalOcean resources.
+	// This specifies the default geographic region (e.g., NYC1, SFO3) where resources should be provisioned unless overridden.
+	// Purpose: Ensures consistent resource placement, affecting latency, compliance, and availability.
+	// Importance: Required to avoid region-related errors in deployments; select based on user proximity or regulatory needs.
+	// Functional Relevance: Used in provider configurations to set defaults for resources like Droplets or Spaces buckets.
+	DefaultRegion digitalocean.DigitalOceanRegion `protobuf:"varint,2,opt,name=default_region,json=defaultRegion,proto3,enum=project.planton.provider.digitalocean.DigitalOceanRegion" json:"default_region,omitempty"`
+	// spaces_access_id is the access ID for accessing DigitalOcean Spaces.
+	// This is the access key ID (analogous to AWS Access Key ID) for authenticating to DigitalOcean Spaces, an S3-compatible object storage service.
+	// Purpose: Acts as a unique identifier ("username") for Spaces API requests, enabling operations like bucket creation, object uploads, and permission management.
+	// Importance: Critical for securing access to stored data; must be paired with the secret key. As long-lived secrets, store securely, rotate periodically,
+	// and scope to minimal permissions. In 2025, DigitalOcean introduced Per-Bucket Access Keys for more granular control, but this field represents the general
+	// Spaces access key pair. Use dedicated keys per environment or pipeline to enhance security and auditability.
+	// Functional Relevance: Required (along with spaces_secret_key) for managing Spaces resources in Terraform/Pulumi, in addition to the main API token.
+	// Supply via provider fields (e.g., spaces_access_id = "...") or env vars like SPACES_ACCESS_KEY_ID. Enables S3-compatible interactions for storing/retrieving unstructured data.
+	SpacesAccessId string `protobuf:"bytes,3,opt,name=spaces_access_id,json=spacesAccessId,proto3" json:"spaces_access_id,omitempty"`
+	// spaces_secret_key is the secret key for accessing DigitalOcean Spaces.
+	// This is the secret access key (analogous to AWS Secret Access Key) used to sign and authenticate Spaces API requests.
+	// Purpose: Serves as the "password" to prove ownership of the access ID, ensuring secure, programmatic access to Spaces.
+	// Importance: Highly sensitive; exposure could lead to data breaches. Follow best practices: encrypt in storage, avoid hardcoding, and rotate on schedules.
+	// Complements the access ID for isolated authentication to object storage, separate from the general API token. With 2025's Per-Bucket Access Keys,
+	// consider using more fine-grained alternatives for production, but this remains essential for broad Spaces management.
+	// Functional Relevance: Paired with spaces_access_id for signing HTTP requests to Spaces endpoints. Vital for IaC workflows involving buckets/objects;
+	// use env vars like SPACES_SECRET_ACCESS_KEY in automation. Supports interoperability with S3 tools/SDKs.
+	SpacesSecretKey string `protobuf:"bytes,4,opt,name=spaces_secret_key,json=spacesSecretKey,proto3" json:"spaces_secret_key,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *DigitalOceanCredentialSpec) Reset() {
@@ -68,13 +108,37 @@ func (x *DigitalOceanCredentialSpec) GetApiToken() string {
 	return ""
 }
 
+func (x *DigitalOceanCredentialSpec) GetDefaultRegion() digitalocean.DigitalOceanRegion {
+	if x != nil {
+		return x.DefaultRegion
+	}
+	return digitalocean.DigitalOceanRegion(0)
+}
+
+func (x *DigitalOceanCredentialSpec) GetSpacesAccessId() string {
+	if x != nil {
+		return x.SpacesAccessId
+	}
+	return ""
+}
+
+func (x *DigitalOceanCredentialSpec) GetSpacesSecretKey() string {
+	if x != nil {
+		return x.SpacesSecretKey
+	}
+	return ""
+}
+
 var File_project_planton_credential_digitaloceancredential_v1_spec_proto protoreflect.FileDescriptor
 
 const file_project_planton_credential_digitaloceancredential_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"?project/planton/credential/digitaloceancredential/v1/spec.proto\x124project.planton.credential.digitaloceancredential.v1\x1a\x1bbuf/validate/validate.proto\"A\n" +
+	"?project/planton/credential/digitaloceancredential/v1/spec.proto\x124project.planton.credential.digitaloceancredential.v1\x1a\x1bbuf/validate/validate.proto\x1a2project/planton/provider/digitalocean/region.proto\"\x81\x02\n" +
 	"\x1aDigitalOceanCredentialSpec\x12#\n" +
-	"\tapi_token\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bapiTokenB\xb9\x03\n" +
+	"\tapi_token\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bapiToken\x12h\n" +
+	"\x0edefault_region\x18\x02 \x01(\x0e29.project.planton.provider.digitalocean.DigitalOceanRegionB\x06\xbaH\x03\xc8\x01\x01R\rdefaultRegion\x12(\n" +
+	"\x10spaces_access_id\x18\x03 \x01(\tR\x0espacesAccessId\x12*\n" +
+	"\x11spaces_secret_key\x18\x04 \x01(\tR\x0fspacesSecretKeyB\xb9\x03\n" +
 	"8com.project.planton.credential.digitaloceancredential.v1B\tSpecProtoP\x01Z}github.com/project-planton/project-planton/apis/project/planton/credential/digitaloceancredential/v1;digitaloceancredentialv1\xa2\x02\x04PPCD\xaa\x024Project.Planton.Credential.Digitaloceancredential.V1\xca\x024Project\\Planton\\Credential\\Digitaloceancredential\\V1\xe2\x02@Project\\Planton\\Credential\\Digitaloceancredential\\V1\\GPBMetadata\xea\x028Project::Planton::Credential::Digitaloceancredential::V1b\x06proto3"
 
 var (
@@ -91,14 +155,16 @@ func file_project_planton_credential_digitaloceancredential_v1_spec_proto_rawDes
 
 var file_project_planton_credential_digitaloceancredential_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_credential_digitaloceancredential_v1_spec_proto_goTypes = []any{
-	(*DigitalOceanCredentialSpec)(nil), // 0: project.planton.credential.digitaloceancredential.v1.DigitalOceanCredentialSpec
+	(*DigitalOceanCredentialSpec)(nil),   // 0: project.planton.credential.digitaloceancredential.v1.DigitalOceanCredentialSpec
+	(digitalocean.DigitalOceanRegion)(0), // 1: project.planton.provider.digitalocean.DigitalOceanRegion
 }
 var file_project_planton_credential_digitaloceancredential_v1_spec_proto_depIdxs = []int32{
-	0, // [0:0] is the sub-list for method output_type
-	0, // [0:0] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	1, // 0: project.planton.credential.digitaloceancredential.v1.DigitalOceanCredentialSpec.default_region:type_name -> project.planton.provider.digitalocean.DigitalOceanRegion
+	1, // [1:1] is the sub-list for method output_type
+	1, // [1:1] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_credential_digitaloceancredential_v1_spec_proto_init() }

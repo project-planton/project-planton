@@ -104,34 +104,45 @@ var file_project_planton_provider_digitalocean_region_proto_extTypes = []protoim
 		ExtendedType:  (*descriptorpb.EnumValueOptions)(nil),
 		ExtensionType: (*string)(nil),
 		Field:         20001,
+		Name:          "project.planton.provider.digitalocean.display_label",
+		Tag:           "bytes,20001,opt,name=display_label",
+		Filename:      "project/planton/provider/digitalocean/region.proto",
+	},
+	{
+		ExtendedType:  (*descriptorpb.EnumValueOptions)(nil),
+		ExtensionType: (*string)(nil),
+		Field:         20002,
 		Name:          "project.planton.provider.digitalocean.region_code",
-		Tag:           "bytes,20001,opt,name=region_code",
+		Tag:           "bytes,20002,opt,name=region_code",
 		Filename:      "project/planton/provider/digitalocean/region.proto",
 	},
 }
 
 // Extension fields to descriptorpb.EnumValueOptions.
 var (
-	// optional string region_code = 20001;
-	E_RegionCode = &file_project_planton_provider_digitalocean_region_proto_extTypes[0]
+	// optional string display_label = 20001;
+	E_DisplayLabel = &file_project_planton_provider_digitalocean_region_proto_extTypes[0]
+	// optional string region_code = 20002;
+	E_RegionCode = &file_project_planton_provider_digitalocean_region_proto_extTypes[1]
 )
 
 var File_project_planton_provider_digitalocean_region_proto protoreflect.FileDescriptor
 
 const file_project_planton_provider_digitalocean_region_proto_rawDesc = "" +
 	"\n" +
-	"2project/planton/provider/digitalocean/region.proto\x12%project.planton.provider.digitalocean\x1a google/protobuf/descriptor.proto*\x80\x02\n" +
+	"2project/planton/provider/digitalocean/region.proto\x12%project.planton.provider.digitalocean\x1a google/protobuf/descriptor.proto*\xe6\x02\n" +
 	"\x12DigitalOceanRegion\x12$\n" +
-	" digital_ocean_region_unspecified\x10\x00\x12\x16\n" +
-	"\bnew_york\x10\x01\x1a\b\x8a\xe2\t\x04nyc3\x12\x1b\n" +
-	"\rsan_francisco\x10\x02\x1a\b\x8a\xe2\t\x04sfo3\x12\x17\n" +
-	"\tfrankfurt\x10\x03\x1a\b\x8a\xe2\t\x04fra1\x12\x17\n" +
-	"\tsingapore\x10\x04\x1a\b\x8a\xe2\t\x04sgp1\x12\x14\n" +
-	"\x06london\x10\x05\x1a\b\x8a\xe2\t\x04lon1\x12\x15\n" +
-	"\atoronto\x10\x06\x1a\b\x8a\xe2\t\x04tor1\x12\x17\n" +
-	"\tbangalore\x10\a\x1a\b\x8a\xe2\t\x04blr1\x12\x17\n" +
-	"\tamsterdam\x10\b\x1a\b\x8a\xe2\t\x04ams3:D\n" +
-	"\vregion_code\x12!.google.protobuf.EnumValueOptions\x18\xa1\x9c\x01 \x01(\tR\n" +
+	" digital_ocean_region_unspecified\x10\x00\x12\"\n" +
+	"\bnew_york\x10\x01\x1a\x14\x8a\xe2\t\bNew York\x92\xe2\t\x04nyc3\x12,\n" +
+	"\rsan_francisco\x10\x02\x1a\x19\x8a\xe2\t\rSan Francisco\x92\xe2\t\x04sfo3\x12$\n" +
+	"\tfrankfurt\x10\x03\x1a\x15\x8a\xe2\t\tFrankfurt\x92\xe2\t\x04fra1\x12$\n" +
+	"\tsingapore\x10\x04\x1a\x15\x8a\xe2\t\tSingapore\x92\xe2\t\x04sgp1\x12\x1e\n" +
+	"\x06london\x10\x05\x1a\x12\x8a\xe2\t\x06London\x92\xe2\t\x04lon1\x12 \n" +
+	"\atoronto\x10\x06\x1a\x13\x8a\xe2\t\aToronto\x92\xe2\t\x04tor1\x12$\n" +
+	"\tbangalore\x10\a\x1a\x15\x8a\xe2\t\tBangalore\x92\xe2\t\x04blr1\x12$\n" +
+	"\tamsterdam\x10\b\x1a\x15\x8a\xe2\t\tAmsterdam\x92\xe2\t\x04ams3:H\n" +
+	"\rdisplay_label\x12!.google.protobuf.EnumValueOptions\x18\xa1\x9c\x01 \x01(\tR\fdisplayLabel:D\n" +
+	"\vregion_code\x12!.google.protobuf.EnumValueOptions\x18\xa2\x9c\x01 \x01(\tR\n" +
 	"regionCodeB\xc7\x02\n" +
 	")com.project.planton.provider.digitaloceanB\vRegionProtoP\x01ZUgithub.com/project-planton/project-planton/apis/project/planton/provider/digitalocean\xa2\x02\x04PPPD\xaa\x02%Project.Planton.Provider.Digitalocean\xca\x02%Project\\Planton\\Provider\\Digitalocean\xe2\x021Project\\Planton\\Provider\\Digitalocean\\GPBMetadata\xea\x02(Project::Planton::Provider::Digitaloceanb\x06proto3"
 
@@ -153,11 +164,12 @@ var file_project_planton_provider_digitalocean_region_proto_goTypes = []any{
 	(*descriptorpb.EnumValueOptions)(nil), // 1: google.protobuf.EnumValueOptions
 }
 var file_project_planton_provider_digitalocean_region_proto_depIdxs = []int32{
-	1, // 0: project.planton.provider.digitalocean.region_code:extendee -> google.protobuf.EnumValueOptions
-	1, // [1:1] is the sub-list for method output_type
-	1, // [1:1] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	0, // [0:1] is the sub-list for extension extendee
+	1, // 0: project.planton.provider.digitalocean.display_label:extendee -> google.protobuf.EnumValueOptions
+	1, // 1: project.planton.provider.digitalocean.region_code:extendee -> google.protobuf.EnumValueOptions
+	2, // [2:2] is the sub-list for method output_type
+	2, // [2:2] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	0, // [0:2] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name
 }
 
@@ -173,7 +185,7 @@ func file_project_planton_provider_digitalocean_region_proto_init() {
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_project_planton_provider_digitalocean_region_proto_rawDesc), len(file_project_planton_provider_digitalocean_region_proto_rawDesc)),
 			NumEnums:      1,
 			NumMessages:   0,
-			NumExtensions: 1,
+			NumExtensions: 2,
 			NumServices:   0,
 		},
 		GoTypes:           file_project_planton_provider_digitalocean_region_proto_goTypes,

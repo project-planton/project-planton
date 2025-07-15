@@ -6,7 +6,8 @@ import "google/protobuf/descriptor.proto";
 
 // custom option to store the DigitalOcean slug
 extend google.protobuf.EnumValueOptions {
-  string region_code = 20001;
+  string display_label = 20001;
+  string region_code = 20002;
 }
 
 // digitalocean datacenter regions
@@ -16,41 +17,49 @@ enum DigitalOceanRegion {
 
   // new york 3
   new_york = 1 [
+    (display_label) = "New York",
     (region_code) = "nyc3"
   ];
 
   // san francisco 3
   san_francisco = 2 [
+    (display_label) = "San Francisco",
     (region_code) = "sfo3"
   ];
 
   // frankfurt 1
   frankfurt = 3 [
+    (display_label) = "Frankfurt",
     (region_code) = "fra1"
   ];
 
   // singapore 1
   singapore = 4 [
+    (display_label) = "Singapore",
     (region_code) = "sgp1"
   ];
 
   // london 1
   london = 5 [
+    (display_label) = "London",
     (region_code) = "lon1"
   ];
 
   // toronto 1
   toronto = 6 [
+    (display_label) = "Toronto",
     (region_code) = "tor1"
   ];
 
   // bangalore 1
   bangalore = 7 [
+    (display_label) = "Bangalore",
     (region_code) = "blr1"
   ];
 
   // amsterdam 3
   amsterdam = 8 [
+    (display_label) = "Amsterdam",
     (region_code) = "ams3"
   ];
 }
