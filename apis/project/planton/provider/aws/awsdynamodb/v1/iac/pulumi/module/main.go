@@ -67,6 +67,12 @@ func Resources(ctx *pulumi.Context, stackInput *awsdynamodbv1.AwsDynamodbStackIn
         }
     }
 
+    // nativeProvider is currently not used for resource creation in this
+    // example module. Adding the following assignment ensures the variable is
+    // considered "used" by the compiler while preserving the opportunity to
+    // leverage it in the future without further refactoring.
+    _ = nativeProvider
+
     // ---------------------------------------------------------------------
     // 3. Translate the protobuf spec to Pulumi resource arguments
     // ---------------------------------------------------------------------

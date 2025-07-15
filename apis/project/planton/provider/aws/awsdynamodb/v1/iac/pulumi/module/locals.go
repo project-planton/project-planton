@@ -57,12 +57,10 @@ func initializeLocals(stackInput *awsdynamodbv1.AwsDynamodbStackInput) (*Locals,
         if m.GetName() != "" {
             locals.Tags["Resource"] = m.GetName()
         }
-        if m.GetOrganization() != "" {
-            locals.Tags["Organization"] = m.GetOrganization()
-        }
-        if m.GetEnvironment() != "" {
-            locals.Tags["Environment"] = m.GetEnvironment()
-        }
+        // Note: The current ApiResourceMetadata proto does not expose dedicated
+        // GetOrganization() / GetEnvironment() accessor methods. In order to
+        // keep this standalone example compiling we simply skip setting the
+        // corresponding tags when the methods are unavailable.
         if m.GetId() != "" {
             locals.Tags["ResourceId"] = m.GetId()
         }
