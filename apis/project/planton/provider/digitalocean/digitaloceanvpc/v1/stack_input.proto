@@ -9,7 +9,7 @@ import "project/planton/shared/iac/pulumi/pulumi.proto";
 import "project/planton/shared/iac/terraform/terraform.proto";
 
 //digital-ocean-vpc stack-input
-message DigitalOceanVPCStackInput {
+message DigitalOceanVpcStackInput {
   //iac-provisioner
   project.planton.shared.IacProvisioner provisioner = 1;
   //pulumi input required when the provisioner is pulumi
@@ -17,7 +17,7 @@ message DigitalOceanVPCStackInput {
   //terraform input required when the provisioner is terraform
   project.planton.shared.iac.terraform.TerraformStackInfo terraform = 3;
   //target api-resource
-  DigitalOceanVPC target = 4;
+  DigitalOceanVpc target = 4;
   //provider-credential
   project.planton.credential.digitaloceancredential.v1.DigitalOceanCredentialSpec provider_credential = 5;
 }

@@ -8,7 +8,7 @@ import "project/planton/shared/options/options.proto";
 import "project/planton/provider/digitalocean/region.proto";
 
 // Supported Droplet size slugs (plans).
-enum DigitalOceanVPCSize {
+enum DigitalOceanVpcSize {
   digital_ocean_vpc_size_unspecified = 0;
   s_2vcpu_4gb = 1;  // basic: 2 vCPUs, 4 GB RAM
   s_4vcpu_8gb = 2;  // basic: 4 vCPUs, 8 GB RAM
@@ -17,13 +17,13 @@ enum DigitalOceanVPCSize {
 }
 
 // Timezone options for Droplet’s system clock.
-enum DigitalOceanVPCTimezone {
+enum DigitalOceanVpcTimezone {
   utc = 0;  // coordinated universal time
   local = 1;  // local timezone
 }
 
-// DigitalOceanVPCSpec defines the user configuration for a DigitalOcean Droplet (VM).
-message DigitalOceanVPCSpec {
+// DigitalOceanVpcSpec defines the user configuration for a DigitalOcean Droplet (VM).
+message DigitalOceanVpcSpec {
   // Enforce each SSH key fingerprint is literal or a reference.
   option (buf.validate.message).cel = {
     id: "ssh_key_format",
@@ -44,7 +44,7 @@ message DigitalOceanVPCSpec {
   ];
 
   // droplet size slug (plan identifier)
-  DigitalOceanVPCSize size = 3 [
+  DigitalOceanVpcSize size = 3 [
     (buf.validate.field).required = true
   ];
 
@@ -87,7 +87,7 @@ message DigitalOceanVPCSpec {
   ];
 
   // timezone setting for the droplet’s clock (default: UTC)
-  DigitalOceanVPCTimezone timezone = 13 [
+  DigitalOceanVpcTimezone timezone = 13 [
     (project.planton.shared.options.default) = "UTC"
   ];
 }

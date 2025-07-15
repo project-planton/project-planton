@@ -21,8 +21,8 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// DigitalOceanVPCStackOutputs captures the resulting Droplet info after provisioning.
-type DigitalOceanVPCStackOutputs struct {
+// DigitalOceanVpcStackOutputs captures the resulting Droplet info after provisioning.
+type DigitalOceanVpcStackOutputs struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// droplet unique identifier (DigitalOcean ID)
 	DropletId string `protobuf:"bytes,1,opt,name=droplet_id,json=dropletId,proto3" json:"droplet_id,omitempty"`
@@ -38,20 +38,20 @@ type DigitalOceanVPCStackOutputs struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *DigitalOceanVPCStackOutputs) Reset() {
-	*x = DigitalOceanVPCStackOutputs{}
+func (x *DigitalOceanVpcStackOutputs) Reset() {
+	*x = DigitalOceanVpcStackOutputs{}
 	mi := &file_project_planton_provider_digitalocean_digitaloceanvpc_v1_stack_outputs_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *DigitalOceanVPCStackOutputs) String() string {
+func (x *DigitalOceanVpcStackOutputs) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*DigitalOceanVPCStackOutputs) ProtoMessage() {}
+func (*DigitalOceanVpcStackOutputs) ProtoMessage() {}
 
-func (x *DigitalOceanVPCStackOutputs) ProtoReflect() protoreflect.Message {
+func (x *DigitalOceanVpcStackOutputs) ProtoReflect() protoreflect.Message {
 	mi := &file_project_planton_provider_digitalocean_digitaloceanvpc_v1_stack_outputs_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -63,40 +63,40 @@ func (x *DigitalOceanVPCStackOutputs) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use DigitalOceanVPCStackOutputs.ProtoReflect.Descriptor instead.
-func (*DigitalOceanVPCStackOutputs) Descriptor() ([]byte, []int) {
+// Deprecated: Use DigitalOceanVpcStackOutputs.ProtoReflect.Descriptor instead.
+func (*DigitalOceanVpcStackOutputs) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_digitalocean_digitaloceanvpc_v1_stack_outputs_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *DigitalOceanVPCStackOutputs) GetDropletId() string {
+func (x *DigitalOceanVpcStackOutputs) GetDropletId() string {
 	if x != nil {
 		return x.DropletId
 	}
 	return ""
 }
 
-func (x *DigitalOceanVPCStackOutputs) GetIpv4Address() string {
+func (x *DigitalOceanVpcStackOutputs) GetIpv4Address() string {
 	if x != nil {
 		return x.Ipv4Address
 	}
 	return ""
 }
 
-func (x *DigitalOceanVPCStackOutputs) GetIpv6Address() string {
+func (x *DigitalOceanVpcStackOutputs) GetIpv6Address() string {
 	if x != nil {
 		return x.Ipv6Address
 	}
 	return ""
 }
 
-func (x *DigitalOceanVPCStackOutputs) GetImageId() int64 {
+func (x *DigitalOceanVpcStackOutputs) GetImageId() int64 {
 	if x != nil {
 		return x.ImageId
 	}
 	return 0
 }
 
-func (x *DigitalOceanVPCStackOutputs) GetVpcUuid() string {
+func (x *DigitalOceanVpcStackOutputs) GetVpcUuid() string {
 	if x != nil {
 		return x.VpcUuid
 	}
@@ -108,7 +108,7 @@ var File_project_planton_provider_digitalocean_digitaloceanvpc_v1_stack_outputs_
 const file_project_planton_provider_digitalocean_digitaloceanvpc_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
 	"Lproject/planton/provider/digitalocean/digitaloceanvpc/v1/stack_outputs.proto\x128project.planton.provider.digitalocean.digitaloceanvpc.v1\"\xb8\x01\n" +
-	"\x1bDigitalOceanVPCStackOutputs\x12\x1d\n" +
+	"\x1bDigitalOceanVpcStackOutputs\x12\x1d\n" +
 	"\n" +
 	"droplet_id\x18\x01 \x01(\tR\tdropletId\x12!\n" +
 	"\fipv4_address\x18\x02 \x01(\tR\vipv4Address\x12!\n" +
@@ -131,7 +131,7 @@ func file_project_planton_provider_digitalocean_digitaloceanvpc_v1_stack_outputs
 
 var file_project_planton_provider_digitalocean_digitaloceanvpc_v1_stack_outputs_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_digitalocean_digitaloceanvpc_v1_stack_outputs_proto_goTypes = []any{
-	(*DigitalOceanVPCStackOutputs)(nil), // 0: project.planton.provider.digitalocean.digitaloceanvpc.v1.DigitalOceanVPCStackOutputs
+	(*DigitalOceanVpcStackOutputs)(nil), // 0: project.planton.provider.digitalocean.digitaloceanvpc.v1.DigitalOceanVpcStackOutputs
 }
 var file_project_planton_provider_digitalocean_digitaloceanvpc_v1_stack_outputs_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type

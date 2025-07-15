@@ -9,7 +9,7 @@ import "project/planton/shared/status.proto";
 import "project/planton/shared/metadata.proto";
 
 // digital-ocean-vpc
-message DigitalOceanVPC {
+message DigitalOceanVpc {
   //api-version
   string api_version = 1[
     (buf.validate.field).string.const = 'digital-ocean.project-planton.org/v1'
@@ -17,7 +17,7 @@ message DigitalOceanVPC {
 
   //resource-kind
   string kind = 2 [
-    (buf.validate.field).string.const = 'DigitalOceanVPC'
+    (buf.validate.field).string.const = 'DigitalOceanVpc'
   ];
 
   //metadata
@@ -26,16 +26,16 @@ message DigitalOceanVPC {
   ];
 
   //spec
-  DigitalOceanVPCSpec spec = 4 [
+  DigitalOceanVpcSpec spec = 4 [
     (buf.validate.field).required = true
   ];
 
   //status
-  DigitalOceanVPCStatus status = 5;
+  DigitalOceanVpcStatus status = 5;
 }
 
 // digital-ocean-vpc status
-message DigitalOceanVPCStatus {
+message DigitalOceanVpcStatus {
   //lifecycle
   project.planton.shared.ApiResourceLifecycle lifecycle = 99;
 
@@ -47,5 +47,5 @@ message DigitalOceanVPCStatus {
 
   //stack-outputs
   //  digital-ocean-vpc stack-outputs
-  DigitalOceanVPCStackOutputs outputs = 1;
+  DigitalOceanVpcStackOutputs outputs = 1;
 }

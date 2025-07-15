@@ -2,8 +2,8 @@ syntax = "proto3";
 
 package project.planton.provider.digitalocean.digitaloceanvpc.v1;
 
-// DigitalOceanVPCStackOutputs captures the resulting Droplet info after provisioning.
-message DigitalOceanVPCStackOutputs {
+// DigitalOceanVpcStackOutputs captures the resulting Droplet info after provisioning.
+message DigitalOceanVpcStackOutputs {
   // droplet unique identifier (DigitalOcean ID)
   string droplet_id = 1;
 

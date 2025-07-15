@@ -5,6 +5,6 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-func Resources(ctx *pulumi.Context, stackInput *digitaloceanvpcv1.DigitalOceanVPCStackInput) error {
+func Resources(ctx *pulumi.Context, stackInput *digitaloceanvpcv1.DigitalOceanVpcStackInput) error {
 	return nil
 }
