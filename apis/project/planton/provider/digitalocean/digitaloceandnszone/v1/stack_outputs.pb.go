@@ -21,8 +21,8 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// DigitalOceanDNSZoneStackOutputs captures the resulting Droplet info after provisioning.
-type DigitalOceanDNSZoneStackOutputs struct {
+// DigitalOceanDnsZoneStackOutputs captures the resulting Droplet info after provisioning.
+type DigitalOceanDnsZoneStackOutputs struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// droplet unique identifier (DigitalOcean ID)
 	DropletId string `protobuf:"bytes,1,opt,name=droplet_id,json=dropletId,proto3" json:"droplet_id,omitempty"`
@@ -38,20 +38,20 @@ type DigitalOceanDNSZoneStackOutputs struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *DigitalOceanDNSZoneStackOutputs) Reset() {
-	*x = DigitalOceanDNSZoneStackOutputs{}
+func (x *DigitalOceanDnsZoneStackOutputs) Reset() {
+	*x = DigitalOceanDnsZoneStackOutputs{}
 	mi := &file_project_planton_provider_digitalocean_digitaloceandnszone_v1_stack_outputs_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *DigitalOceanDNSZoneStackOutputs) String() string {
+func (x *DigitalOceanDnsZoneStackOutputs) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*DigitalOceanDNSZoneStackOutputs) ProtoMessage() {}
+func (*DigitalOceanDnsZoneStackOutputs) ProtoMessage() {}
 
-func (x *DigitalOceanDNSZoneStackOutputs) ProtoReflect() protoreflect.Message {
+func (x *DigitalOceanDnsZoneStackOutputs) ProtoReflect() protoreflect.Message {
 	mi := &file_project_planton_provider_digitalocean_digitaloceandnszone_v1_stack_outputs_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -63,40 +63,40 @@ func (x *DigitalOceanDNSZoneStackOutputs) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use DigitalOceanDNSZoneStackOutputs.ProtoReflect.Descriptor instead.
-func (*DigitalOceanDNSZoneStackOutputs) Descriptor() ([]byte, []int) {
+// Deprecated: Use DigitalOceanDnsZoneStackOutputs.ProtoReflect.Descriptor instead.
+func (*DigitalOceanDnsZoneStackOutputs) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_digitalocean_digitaloceandnszone_v1_stack_outputs_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *DigitalOceanDNSZoneStackOutputs) GetDropletId() string {
+func (x *DigitalOceanDnsZoneStackOutputs) GetDropletId() string {
 	if x != nil {
 		return x.DropletId
 	}
 	return ""
 }
 
-func (x *DigitalOceanDNSZoneStackOutputs) GetIpv4Address() string {
+func (x *DigitalOceanDnsZoneStackOutputs) GetIpv4Address() string {
 	if x != nil {
 		return x.Ipv4Address
 	}
 	return ""
 }
 
-func (x *DigitalOceanDNSZoneStackOutputs) GetIpv6Address() string {
+func (x *DigitalOceanDnsZoneStackOutputs) GetIpv6Address() string {
 	if x != nil {
 		return x.Ipv6Address
 	}
 	return ""
 }
 
-func (x *DigitalOceanDNSZoneStackOutputs) GetImageId() int64 {
+func (x *DigitalOceanDnsZoneStackOutputs) GetImageId() int64 {
 	if x != nil {
 		return x.ImageId
 	}
 	return 0
 }
 
-func (x *DigitalOceanDNSZoneStackOutputs) GetVpcUuid() string {
+func (x *DigitalOceanDnsZoneStackOutputs) GetVpcUuid() string {
 	if x != nil {
 		return x.VpcUuid
 	}
@@ -108,7 +108,7 @@ var File_project_planton_provider_digitalocean_digitaloceandnszone_v1_stack_outp
 const file_project_planton_provider_digitalocean_digitaloceandnszone_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
 	"Pproject/planton/provider/digitalocean/digitaloceandnszone/v1/stack_outputs.proto\x12<project.planton.provider.digitalocean.digitaloceandnszone.v1\"\xbc\x01\n" +
-	"\x1fDigitalOceanDNSZoneStackOutputs\x12\x1d\n" +
+	"\x1fDigitalOceanDnsZoneStackOutputs\x12\x1d\n" +
 	"\n" +
 	"droplet_id\x18\x01 \x01(\tR\tdropletId\x12!\n" +
 	"\fipv4_address\x18\x02 \x01(\tR\vipv4Address\x12!\n" +
@@ -131,7 +131,7 @@ func file_project_planton_provider_digitalocean_digitaloceandnszone_v1_stack_out
 
 var file_project_planton_provider_digitalocean_digitaloceandnszone_v1_stack_outputs_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_digitalocean_digitaloceandnszone_v1_stack_outputs_proto_goTypes = []any{
-	(*DigitalOceanDNSZoneStackOutputs)(nil), // 0: project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDNSZoneStackOutputs
+	(*DigitalOceanDnsZoneStackOutputs)(nil), // 0: project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDnsZoneStackOutputs
 }
 var file_project_planton_provider_digitalocean_digitaloceandnszone_v1_stack_outputs_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type

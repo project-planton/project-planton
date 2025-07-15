@@ -9,7 +9,7 @@ import "project/planton/shared/status.proto";
 import "project/planton/shared/metadata.proto";
 
 // digital-ocean-dns-zone
-message DigitalOceanDNSZone {
+message DigitalOceanDnsZone {
   //api-version
   string api_version = 1[
     (buf.validate.field).string.const = 'digital-ocean.project-planton.org/v1'
@@ -17,7 +17,7 @@ message DigitalOceanDNSZone {
 
   //resource-kind
   string kind = 2 [
-    (buf.validate.field).string.const = 'DigitalOceanDNSZone'
+    (buf.validate.field).string.const = 'DigitalOceanDnsZone'
   ];
 
   //metadata
@@ -26,16 +26,16 @@ message DigitalOceanDNSZone {
   ];
 
   //spec
-  DigitalOceanDNSZoneSpec spec = 4 [
+  DigitalOceanDnsZoneSpec spec = 4 [
     (buf.validate.field).required = true
   ];
 
   //status
-  DigitalOceanDNSZoneStatus status = 5;
+  DigitalOceanDnsZoneStatus status = 5;
 }
 
 // digital-ocean-dns-zone status
-message DigitalOceanDNSZoneStatus {
+message DigitalOceanDnsZoneStatus {
   //lifecycle
   project.planton.shared.ApiResourceLifecycle lifecycle = 99;
 
@@ -47,5 +47,5 @@ message DigitalOceanDNSZoneStatus {
 
   //stack-outputs
   //  digital-ocean-dns-zone stack-outputs
-  DigitalOceanDNSZoneStackOutputs outputs = 1;
+  DigitalOceanDnsZoneStackOutputs outputs = 1;
 }

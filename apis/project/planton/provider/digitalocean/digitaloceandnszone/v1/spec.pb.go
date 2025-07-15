@@ -26,26 +26,26 @@ const (
 )
 
 // Supported Droplet size slugs (plans).
-type DigitalOceanDNSZoneSize int32
+type DigitalOceanDnsZoneSize int32
 
 const (
-	DigitalOceanDNSZoneSize_digital_ocean_dns_zone_size_unspecified DigitalOceanDNSZoneSize = 0
-	DigitalOceanDNSZoneSize_s_2vcpu_4gb                             DigitalOceanDNSZoneSize = 1 // basic: 2 vCPUs, 4 GB RAM
-	DigitalOceanDNSZoneSize_s_4vcpu_8gb                             DigitalOceanDNSZoneSize = 2 // basic: 4 vCPUs, 8 GB RAM
-	DigitalOceanDNSZoneSize_g_2vcpu_8gb                             DigitalOceanDNSZoneSize = 3 // general purpose: 2 vCPUs (dedicated), 8 GB RAM
-	DigitalOceanDNSZoneSize_g_4vcpu_16gb                            DigitalOceanDNSZoneSize = 4 // general purpose: 4 vCPUs (dedicated), 16 GB RAM
+	DigitalOceanDnsZoneSize_digital_ocean_dns_zone_size_unspecified DigitalOceanDnsZoneSize = 0
+	DigitalOceanDnsZoneSize_s_2vcpu_4gb                             DigitalOceanDnsZoneSize = 1 // basic: 2 vCPUs, 4 GB RAM
+	DigitalOceanDnsZoneSize_s_4vcpu_8gb                             DigitalOceanDnsZoneSize = 2 // basic: 4 vCPUs, 8 GB RAM
+	DigitalOceanDnsZoneSize_g_2vcpu_8gb                             DigitalOceanDnsZoneSize = 3 // general purpose: 2 vCPUs (dedicated), 8 GB RAM
+	DigitalOceanDnsZoneSize_g_4vcpu_16gb                            DigitalOceanDnsZoneSize = 4 // general purpose: 4 vCPUs (dedicated), 16 GB RAM
 )
 
-// Enum value maps for DigitalOceanDNSZoneSize.
+// Enum value maps for DigitalOceanDnsZoneSize.
 var (
-	DigitalOceanDNSZoneSize_name = map[int32]string{
+	DigitalOceanDnsZoneSize_name = map[int32]string{
 		0: "digital_ocean_dns_zone_size_unspecified",
 		1: "s_2vcpu_4gb",
 		2: "s_4vcpu_8gb",
 		3: "g_2vcpu_8gb",
 		4: "g_4vcpu_16gb",
 	}
-	DigitalOceanDNSZoneSize_value = map[string]int32{
+	DigitalOceanDnsZoneSize_value = map[string]int32{
 		"digital_ocean_dns_zone_size_unspecified": 0,
 		"s_2vcpu_4gb":  1,
 		"s_4vcpu_8gb":  2,
@@ -54,89 +54,89 @@ var (
 	}
 )
 
-func (x DigitalOceanDNSZoneSize) Enum() *DigitalOceanDNSZoneSize {
-	p := new(DigitalOceanDNSZoneSize)
+func (x DigitalOceanDnsZoneSize) Enum() *DigitalOceanDnsZoneSize {
+	p := new(DigitalOceanDnsZoneSize)
 	*p = x
 	return p
 }
 
-func (x DigitalOceanDNSZoneSize) String() string {
+func (x DigitalOceanDnsZoneSize) String() string {
 	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
 }
 
-func (DigitalOceanDNSZoneSize) Descriptor() protoreflect.EnumDescriptor {
+func (DigitalOceanDnsZoneSize) Descriptor() protoreflect.EnumDescriptor {
 	return file_project_planton_provider_digitalocean_digitaloceandnszone_v1_spec_proto_enumTypes[0].Descriptor()
 }
 
-func (DigitalOceanDNSZoneSize) Type() protoreflect.EnumType {
+func (DigitalOceanDnsZoneSize) Type() protoreflect.EnumType {
 	return &file_project_planton_provider_digitalocean_digitaloceandnszone_v1_spec_proto_enumTypes[0]
 }
 
-func (x DigitalOceanDNSZoneSize) Number() protoreflect.EnumNumber {
+func (x DigitalOceanDnsZoneSize) Number() protoreflect.EnumNumber {
 	return protoreflect.EnumNumber(x)
 }
 
-// Deprecated: Use DigitalOceanDNSZoneSize.Descriptor instead.
-func (DigitalOceanDNSZoneSize) EnumDescriptor() ([]byte, []int) {
+// Deprecated: Use DigitalOceanDnsZoneSize.Descriptor instead.
+func (DigitalOceanDnsZoneSize) EnumDescriptor() ([]byte, []int) {
 	return file_project_planton_provider_digitalocean_digitaloceandnszone_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
 // Timezone options for Droplet’s system clock.
-type DigitalOceanDNSZoneTimezone int32
+type DigitalOceanDnsZoneTimezone int32
 
 const (
-	DigitalOceanDNSZoneTimezone_utc   DigitalOceanDNSZoneTimezone = 0 // coordinated universal time
-	DigitalOceanDNSZoneTimezone_local DigitalOceanDNSZoneTimezone = 1 // local timezone
+	DigitalOceanDnsZoneTimezone_utc   DigitalOceanDnsZoneTimezone = 0 // coordinated universal time
+	DigitalOceanDnsZoneTimezone_local DigitalOceanDnsZoneTimezone = 1 // local timezone
 )
 
-// Enum value maps for DigitalOceanDNSZoneTimezone.
+// Enum value maps for DigitalOceanDnsZoneTimezone.
 var (
-	DigitalOceanDNSZoneTimezone_name = map[int32]string{
+	DigitalOceanDnsZoneTimezone_name = map[int32]string{
 		0: "utc",
 		1: "local",
 	}
-	DigitalOceanDNSZoneTimezone_value = map[string]int32{
+	DigitalOceanDnsZoneTimezone_value = map[string]int32{
 		"utc":   0,
 		"local": 1,
 	}
 )
 
-func (x DigitalOceanDNSZoneTimezone) Enum() *DigitalOceanDNSZoneTimezone {
-	p := new(DigitalOceanDNSZoneTimezone)
+func (x DigitalOceanDnsZoneTimezone) Enum() *DigitalOceanDnsZoneTimezone {
+	p := new(DigitalOceanDnsZoneTimezone)
 	*p = x
 	return p
 }
 
-func (x DigitalOceanDNSZoneTimezone) String() string {
+func (x DigitalOceanDnsZoneTimezone) String() string {
 	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
 }
 
-func (DigitalOceanDNSZoneTimezone) Descriptor() protoreflect.EnumDescriptor {
+func (DigitalOceanDnsZoneTimezone) Descriptor() protoreflect.EnumDescriptor {
 	return file_project_planton_provider_digitalocean_digitaloceandnszone_v1_spec_proto_enumTypes[1].Descriptor()
 }
 
-func (DigitalOceanDNSZoneTimezone) Type() protoreflect.EnumType {
+func (DigitalOceanDnsZoneTimezone) Type() protoreflect.EnumType {
 	return &file_project_planton_provider_digitalocean_digitaloceandnszone_v1_spec_proto_enumTypes[1]
 }
 
-func (x DigitalOceanDNSZoneTimezone) Number() protoreflect.EnumNumber {
+func (x DigitalOceanDnsZoneTimezone) Number() protoreflect.EnumNumber {
 	return protoreflect.EnumNumber(x)
 }
 
-// Deprecated: Use DigitalOceanDNSZoneTimezone.Descriptor instead.
-func (DigitalOceanDNSZoneTimezone) EnumDescriptor() ([]byte, []int) {
+// Deprecated: Use DigitalOceanDnsZoneTimezone.Descriptor instead.
+func (DigitalOceanDnsZoneTimezone) EnumDescriptor() ([]byte, []int) {
 	return file_project_planton_provider_digitalocean_digitaloceandnszone_v1_spec_proto_rawDescGZIP(), []int{1}
 }
 
-// DigitalOceanDNSZoneSpec defines the user configuration for a DigitalOcean Droplet (VM).
-type DigitalOceanDNSZoneSpec struct {
+// DigitalOceanDnsZoneSpec defines the user configuration for a DigitalOcean Droplet (VM).
+type DigitalOceanDnsZoneSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// droplet hostname (DNS-compatible, <=63 chars)
 	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// region slug (datacenter location for the droplet)
 	Region digitalocean.DigitalOceanRegion `protobuf:"varint,2,opt,name=region,proto3,enum=project.planton.provider.digitalocean.DigitalOceanRegion" json:"region,omitempty"`
 	// droplet size slug (plan identifier)
-	Size DigitalOceanDNSZoneSize `protobuf:"varint,3,opt,name=size,proto3,enum=project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDNSZoneSize" json:"size,omitempty"`
+	Size DigitalOceanDnsZoneSize `protobuf:"varint,3,opt,name=size,proto3,enum=project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDnsZoneSize" json:"size,omitempty"`
 	// image slug for the droplet base image (e.g. "ubuntu-22-04-x64")
 	Image string `protobuf:"bytes,4,opt,name=image,proto3" json:"image,omitempty"`
 	// target vpc network uuid for the droplet
@@ -154,25 +154,25 @@ type DigitalOceanDNSZoneSpec struct {
 	// cloud-init user data script (<=32 KiB)
 	UserData string `protobuf:"bytes,12,opt,name=user_data,json=userData,proto3" json:"user_data,omitempty"`
 	// timezone setting for the droplet’s clock (default: UTC)
-	Timezone      DigitalOceanDNSZoneTimezone `protobuf:"varint,13,opt,name=timezone,proto3,enum=project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDNSZoneTimezone" json:"timezone,omitempty"`
+	Timezone      DigitalOceanDnsZoneTimezone `protobuf:"varint,13,opt,name=timezone,proto3,enum=project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDnsZoneTimezone" json:"timezone,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *DigitalOceanDNSZoneSpec) Reset() {
-	*x = DigitalOceanDNSZoneSpec{}
+func (x *DigitalOceanDnsZoneSpec) Reset() {
+	*x = DigitalOceanDnsZoneSpec{}
 	mi := &file_project_planton_provider_digitalocean_digitaloceandnszone_v1_spec_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *DigitalOceanDNSZoneSpec) String() string {
+func (x *DigitalOceanDnsZoneSpec) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*DigitalOceanDNSZoneSpec) ProtoMessage() {}
+func (*DigitalOceanDnsZoneSpec) ProtoMessage() {}
 
-func (x *DigitalOceanDNSZoneSpec) ProtoReflect() protoreflect.Message {
+func (x *DigitalOceanDnsZoneSpec) ProtoReflect() protoreflect.Message {
 	mi := &file_project_planton_provider_digitalocean_digitaloceandnszone_v1_spec_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -184,93 +184,93 @@ func (x *DigitalOceanDNSZoneSpec) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use DigitalOceanDNSZoneSpec.ProtoReflect.Descriptor instead.
-func (*DigitalOceanDNSZoneSpec) Descriptor() ([]byte, []int) {
+// Deprecated: Use DigitalOceanDnsZoneSpec.ProtoReflect.Descriptor instead.
+func (*DigitalOceanDnsZoneSpec) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_digitalocean_digitaloceandnszone_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *DigitalOceanDNSZoneSpec) GetName() string {
+func (x *DigitalOceanDnsZoneSpec) GetName() string {
 	if x != nil {
 		return x.Name
 	}
 	return ""
 }
 
-func (x *DigitalOceanDNSZoneSpec) GetRegion() digitalocean.DigitalOceanRegion {
+func (x *DigitalOceanDnsZoneSpec) GetRegion() digitalocean.DigitalOceanRegion {
 	if x != nil {
 		return x.Region
 	}
 	return digitalocean.DigitalOceanRegion(0)
 }
 
-func (x *DigitalOceanDNSZoneSpec) GetSize() DigitalOceanDNSZoneSize {
+func (x *DigitalOceanDnsZoneSpec) GetSize() DigitalOceanDnsZoneSize {
 	if x != nil {
 		return x.Size
 	}
-	return DigitalOceanDNSZoneSize_digital_ocean_dns_zone_size_unspecified
+	return DigitalOceanDnsZoneSize_digital_ocean_dns_zone_size_unspecified
 }
 
-func (x *DigitalOceanDNSZoneSpec) GetImage() string {
+func (x *DigitalOceanDnsZoneSpec) GetImage() string {
 	if x != nil {
 		return x.Image
 	}
 	return ""
 }
 
-func (x *DigitalOceanDNSZoneSpec) GetVpc() *v1.StringValueOrRef {
+func (x *DigitalOceanDnsZoneSpec) GetVpc() *v1.StringValueOrRef {
 	if x != nil {
 		return x.Vpc
 	}
 	return nil
 }
 
-func (x *DigitalOceanDNSZoneSpec) GetEnableIpv6() bool {
+func (x *DigitalOceanDnsZoneSpec) GetEnableIpv6() bool {
 	if x != nil {
 		return x.EnableIpv6
 	}
 	return false
 }
 
-func (x *DigitalOceanDNSZoneSpec) GetEnableBackups() bool {
+func (x *DigitalOceanDnsZoneSpec) GetEnableBackups() bool {
 	if x != nil {
 		return x.EnableBackups
 	}
 	return false
 }
 
-func (x *DigitalOceanDNSZoneSpec) GetDisableMonitoring() bool {
+func (x *DigitalOceanDnsZoneSpec) GetDisableMonitoring() bool {
 	if x != nil {
 		return x.DisableMonitoring
 	}
 	return false
 }
 
-func (x *DigitalOceanDNSZoneSpec) GetVolumeIds() []*v1.StringValueOrRef {
+func (x *DigitalOceanDnsZoneSpec) GetVolumeIds() []*v1.StringValueOrRef {
 	if x != nil {
 		return x.VolumeIds
 	}
 	return nil
 }
 
-func (x *DigitalOceanDNSZoneSpec) GetTags() []string {
+func (x *DigitalOceanDnsZoneSpec) GetTags() []string {
 	if x != nil {
 		return x.Tags
 	}
 	return nil
 }
 
-func (x *DigitalOceanDNSZoneSpec) GetUserData() string {
+func (x *DigitalOceanDnsZoneSpec) GetUserData() string {
 	if x != nil {
 		return x.UserData
 	}
 	return ""
 }
 
-func (x *DigitalOceanDNSZoneSpec) GetTimezone() DigitalOceanDNSZoneTimezone {
+func (x *DigitalOceanDnsZoneSpec) GetTimezone() DigitalOceanDnsZoneTimezone {
 	if x != nil {
 		return x.Timezone
 	}
-	return DigitalOceanDNSZoneTimezone_utc
+	return DigitalOceanDnsZoneTimezone_utc
 }
 
 var File_project_planton_provider_digitalocean_digitaloceandnszone_v1_spec_proto protoreflect.FileDescriptor
@@ -278,10 +278,10 @@ var File_project_planton_provider_digitalocean_digitaloceandnszone_v1_spec_proto
 const file_project_planton_provider_digitalocean_digitaloceandnszone_v1_spec_proto_rawDesc = "" +
 	"\n" +
 	"Gproject/planton/provider/digitalocean/digitaloceandnszone/v1/spec.proto\x12<project.planton.provider.digitalocean.digitaloceandnszone.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\x1a2project/planton/provider/digitalocean/region.proto\"\xe1\b\n" +
-	"\x17DigitalOceanDNSZoneSpec\x12?\n" +
+	"\x17DigitalOceanDnsZoneSpec\x12?\n" +
 	"\x04name\x18\x01 \x01(\tB+\xbaH(\xc8\x01\x01r#\x18?2\x1f^[a-z0-9]([-a-z0-9]*[a-z0-9])?$R\x04name\x12Y\n" +
 	"\x06region\x18\x02 \x01(\x0e29.project.planton.provider.digitalocean.DigitalOceanRegionB\x06\xbaH\x03\xc8\x01\x01R\x06region\x12q\n" +
-	"\x04size\x18\x03 \x01(\x0e2U.project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDNSZoneSizeB\x06\xbaH\x03\xc8\x01\x01R\x04size\x12?\n" +
+	"\x04size\x18\x03 \x01(\x0e2U.project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDnsZoneSizeB\x06\xbaH\x03\xc8\x01\x01R\x04size\x12?\n" +
 	"\x05image\x18\x04 \x01(\tB)\xbaH&\xc8\x01\x01r!2\x1f^[a-z0-9]([-a-z0-9]*[a-z0-9])?$R\x05image\x12n\n" +
 	"\x03vpc\x18\x06 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB$\xbaH\x03\xc8\x01\x01\x88\xd4a\xbc\t\x92\xd4a\x15status.outputs.vpc_idR\x03vpc\x12\x1f\n" +
 	"\venable_ipv6\x18\a \x01(\bR\n" +
@@ -293,15 +293,15 @@ const file_project_planton_provider_digitalocean_digitaloceandnszone_v1_spec_pro
 	" \x03(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB!\x88\xd4a\xbb\t\x92\xd4a\x18status.outputs.volume_idR\tvolumeIds\x12\x1c\n" +
 	"\x04tags\x18\v \x03(\tB\b\xbaH\x05\x92\x01\x02\x18\x01R\x04tags\x12&\n" +
 	"\tuser_data\x18\f \x01(\tB\t\xbaH\x06r\x04(\x80\x80\x02R\buserData\x12~\n" +
-	"\btimezone\x18\r \x01(\x0e2Y.project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDNSZoneTimezoneB\a\x8a\xa6\x1d\x03UTCR\btimezone:\xce\x01\xbaH\xca\x01\x1a\xc7\x01\n" +
+	"\btimezone\x18\r \x01(\x0e2Y.project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDnsZoneTimezoneB\a\x8a\xa6\x1d\x03UTCR\btimezone:\xce\x01\xbaH\xca\x01\x1a\xc7\x01\n" +
 	"\x0essh_key_format\x12Ieach ssh_key_fingerprint must be a 16-byte hex fingerprint or a reference\x1ajssh_key_fingerprints.all(x, x.value.matches('^[0-9a-f]{2}(:[0-9a-f]{2}){15}$') || x.value_from.name != \"\")*\x8b\x01\n" +
-	"\x17DigitalOceanDNSZoneSize\x12+\n" +
+	"\x17DigitalOceanDnsZoneSize\x12+\n" +
 	"'digital_ocean_dns_zone_size_unspecified\x10\x00\x12\x0f\n" +
 	"\vs_2vcpu_4gb\x10\x01\x12\x0f\n" +
 	"\vs_4vcpu_8gb\x10\x02\x12\x0f\n" +
 	"\vg_2vcpu_8gb\x10\x03\x12\x10\n" +
 	"\fg_4vcpu_16gb\x10\x04*1\n" +
-	"\x1bDigitalOceanDNSZoneTimezone\x12\a\n" +
+	"\x1bDigitalOceanDnsZoneTimezone\x12\a\n" +
 	"\x03utc\x10\x00\x12\t\n" +
 	"\x05local\x10\x01B\xe9\x03\n" +
 	"@com.project.planton.provider.digitalocean.digitaloceandnszone.v1B\tSpecProtoP\x01Z\x82\x01github.com/project-planton/project-planton/apis/project/planton/provider/digitalocean/digitaloceandnszone/v1;digitaloceandnszonev1\xa2\x02\x05PPPDD\xaa\x02<Project.Planton.Provider.Digitalocean.Digitaloceandnszone.V1\xca\x02<Project\\Planton\\Provider\\Digitalocean\\Digitaloceandnszone\\V1\xe2\x02HProject\\Planton\\Provider\\Digitalocean\\Digitaloceandnszone\\V1\\GPBMetadata\xea\x02AProject::Planton::Provider::Digitalocean::Digitaloceandnszone::V1b\x06proto3"
@@ -321,18 +321,18 @@ func file_project_planton_provider_digitalocean_digitaloceandnszone_v1_spec_prot
 var file_project_planton_provider_digitalocean_digitaloceandnszone_v1_spec_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
 var file_project_planton_provider_digitalocean_digitaloceandnszone_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_digitalocean_digitaloceandnszone_v1_spec_proto_goTypes = []any{
-	(DigitalOceanDNSZoneSize)(0),         // 0: project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDNSZoneSize
-	(DigitalOceanDNSZoneTimezone)(0),     // 1: project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDNSZoneTimezone
-	(*DigitalOceanDNSZoneSpec)(nil),      // 2: project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDNSZoneSpec
+	(DigitalOceanDnsZoneSize)(0),         // 0: project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDnsZoneSize
+	(DigitalOceanDnsZoneTimezone)(0),     // 1: project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDnsZoneTimezone
+	(*DigitalOceanDnsZoneSpec)(nil),      // 2: project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDnsZoneSpec
 	(digitalocean.DigitalOceanRegion)(0), // 3: project.planton.provider.digitalocean.DigitalOceanRegion
 	(*v1.StringValueOrRef)(nil),          // 4: project.planton.shared.foreignkey.v1.StringValueOrRef
 }
 var file_project_planton_provider_digitalocean_digitaloceandnszone_v1_spec_proto_depIdxs = []int32{
-	3, // 0: project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDNSZoneSpec.region:type_name -> project.planton.provider.digitalocean.DigitalOceanRegion
-	0, // 1: project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDNSZoneSpec.size:type_name -> project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDNSZoneSize
-	4, // 2: project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDNSZoneSpec.vpc:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
-	4, // 3: project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDNSZoneSpec.volume_ids:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
-	1, // 4: project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDNSZoneSpec.timezone:type_name -> project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDNSZoneTimezone
+	3, // 0: project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDnsZoneSpec.region:type_name -> project.planton.provider.digitalocean.DigitalOceanRegion
+	0, // 1: project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDnsZoneSpec.size:type_name -> project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDnsZoneSize
+	4, // 2: project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDnsZoneSpec.vpc:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
+	4, // 3: project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDnsZoneSpec.volume_ids:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
+	1, // 4: project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDnsZoneSpec.timezone:type_name -> project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDnsZoneTimezone
 	5, // [5:5] is the sub-list for method output_type
 	5, // [5:5] is the sub-list for method input_type
 	5, // [5:5] is the sub-list for extension type_name

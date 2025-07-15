@@ -26,7 +26,7 @@ const (
 )
 
 // digital-ocean-dns-zone stack-input
-type DigitalOceanDNSZoneStackInput struct {
+type DigitalOceanDnsZoneStackInput struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// iac-provisioner
 	Provisioner shared.IacProvisioner `protobuf:"varint,1,opt,name=provisioner,proto3,enum=project.planton.shared.IacProvisioner" json:"provisioner,omitempty"`
@@ -35,27 +35,27 @@ type DigitalOceanDNSZoneStackInput struct {
 	// terraform input required when the provisioner is terraform
 	Terraform *terraform.TerraformStackInfo `protobuf:"bytes,3,opt,name=terraform,proto3" json:"terraform,omitempty"`
 	// target api-resource
-	Target *DigitalOceanDNSZone `protobuf:"bytes,4,opt,name=target,proto3" json:"target,omitempty"`
+	Target *DigitalOceanDnsZone `protobuf:"bytes,4,opt,name=target,proto3" json:"target,omitempty"`
 	// provider-credential
 	ProviderCredential *v1.DigitalOceanCredentialSpec `protobuf:"bytes,5,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
 }
 
-func (x *DigitalOceanDNSZoneStackInput) Reset() {
-	*x = DigitalOceanDNSZoneStackInput{}
+func (x *DigitalOceanDnsZoneStackInput) Reset() {
+	*x = DigitalOceanDnsZoneStackInput{}
 	mi := &file_project_planton_provider_digitalocean_digitaloceandnszone_v1_stack_input_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *DigitalOceanDNSZoneStackInput) String() string {
+func (x *DigitalOceanDnsZoneStackInput) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*DigitalOceanDNSZoneStackInput) ProtoMessage() {}
+func (*DigitalOceanDnsZoneStackInput) ProtoMessage() {}
 
-func (x *DigitalOceanDNSZoneStackInput) ProtoReflect() protoreflect.Message {
+func (x *DigitalOceanDnsZoneStackInput) ProtoReflect() protoreflect.Message {
 	mi := &file_project_planton_provider_digitalocean_digitaloceandnszone_v1_stack_input_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -67,40 +67,40 @@ func (x *DigitalOceanDNSZoneStackInput) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use DigitalOceanDNSZoneStackInput.ProtoReflect.Descriptor instead.
-func (*DigitalOceanDNSZoneStackInput) Descriptor() ([]byte, []int) {
+// Deprecated: Use DigitalOceanDnsZoneStackInput.ProtoReflect.Descriptor instead.
+func (*DigitalOceanDnsZoneStackInput) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_digitalocean_digitaloceandnszone_v1_stack_input_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *DigitalOceanDNSZoneStackInput) GetProvisioner() shared.IacProvisioner {
+func (x *DigitalOceanDnsZoneStackInput) GetProvisioner() shared.IacProvisioner {
 	if x != nil {
 		return x.Provisioner
 	}
 	return shared.IacProvisioner(0)
 }
 
-func (x *DigitalOceanDNSZoneStackInput) GetPulumi() *pulumi.PulumiStackInfo {
+func (x *DigitalOceanDnsZoneStackInput) GetPulumi() *pulumi.PulumiStackInfo {
 	if x != nil {
 		return x.Pulumi
 	}
 	return nil
 }
 
-func (x *DigitalOceanDNSZoneStackInput) GetTerraform() *terraform.TerraformStackInfo {
+func (x *DigitalOceanDnsZoneStackInput) GetTerraform() *terraform.TerraformStackInfo {
 	if x != nil {
 		return x.Terraform
 	}
 	return nil
 }
 
-func (x *DigitalOceanDNSZoneStackInput) GetTarget() *DigitalOceanDNSZone {
+func (x *DigitalOceanDnsZoneStackInput) GetTarget() *DigitalOceanDnsZone {
 	if x != nil {
 		return x.Target
 	}
 	return nil
 }
 
-func (x *DigitalOceanDNSZoneStackInput) GetProviderCredential() *v1.DigitalOceanCredentialSpec {
+func (x *DigitalOceanDnsZoneStackInput) GetProviderCredential() *v1.DigitalOceanCredentialSpec {
 	if x != nil {
 		return x.ProviderCredential
 	}
@@ -112,11 +112,11 @@ var File_project_planton_provider_digitalocean_digitaloceandnszone_v1_stack_inpu
 const file_project_planton_provider_digitalocean_digitaloceandnszone_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
 	"Nproject/planton/provider/digitalocean/digitaloceandnszone/v1/stack_input.proto\x12<project.planton.provider.digitalocean.digitaloceandnszone.v1\x1a?project/planton/credential/digitaloceancredential/v1/spec.proto\x1aFproject/planton/provider/digitalocean/digitaloceandnszone/v1/api.proto\x1a project/planton/shared/iac.proto\x1a.project/planton/shared/iac/pulumi/pulumi.proto\x1a4project/planton/shared/iac/terraform/terraform.proto\"\xfc\x03\n" +
-	"\x1dDigitalOceanDNSZoneStackInput\x12H\n" +
+	"\x1dDigitalOceanDnsZoneStackInput\x12H\n" +
 	"\vprovisioner\x18\x01 \x01(\x0e2&.project.planton.shared.IacProvisionerR\vprovisioner\x12J\n" +
 	"\x06pulumi\x18\x02 \x01(\v22.project.planton.shared.iac.pulumi.PulumiStackInfoR\x06pulumi\x12V\n" +
 	"\tterraform\x18\x03 \x01(\v28.project.planton.shared.iac.terraform.TerraformStackInfoR\tterraform\x12i\n" +
-	"\x06target\x18\x04 \x01(\v2Q.project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDNSZoneR\x06target\x12\x81\x01\n" +
+	"\x06target\x18\x04 \x01(\v2Q.project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDnsZoneR\x06target\x12\x81\x01\n" +
 	"\x13provider_credential\x18\x05 \x01(\v2P.project.planton.credential.digitaloceancredential.v1.DigitalOceanCredentialSpecR\x12providerCredentialB\xef\x03\n" +
 	"@com.project.planton.provider.digitalocean.digitaloceandnszone.v1B\x0fStackInputProtoP\x01Z\x82\x01github.com/project-planton/project-planton/apis/project/planton/provider/digitalocean/digitaloceandnszone/v1;digitaloceandnszonev1\xa2\x02\x05PPPDD\xaa\x02<Project.Planton.Provider.Digitalocean.Digitaloceandnszone.V1\xca\x02<Project\\Planton\\Provider\\Digitalocean\\Digitaloceandnszone\\V1\xe2\x02HProject\\Planton\\Provider\\Digitalocean\\Digitaloceandnszone\\V1\\GPBMetadata\xea\x02AProject::Planton::Provider::Digitalocean::Digitaloceandnszone::V1b\x06proto3"
 
@@ -134,19 +134,19 @@ func file_project_planton_provider_digitalocean_digitaloceandnszone_v1_stack_inp
 
 var file_project_planton_provider_digitalocean_digitaloceandnszone_v1_stack_input_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_digitalocean_digitaloceandnszone_v1_stack_input_proto_goTypes = []any{
-	(*DigitalOceanDNSZoneStackInput)(nil), // 0: project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDNSZoneStackInput
+	(*DigitalOceanDnsZoneStackInput)(nil), // 0: project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDnsZoneStackInput
 	(shared.IacProvisioner)(0),            // 1: project.planton.shared.IacProvisioner
 	(*pulumi.PulumiStackInfo)(nil),        // 2: project.planton.shared.iac.pulumi.PulumiStackInfo
 	(*terraform.TerraformStackInfo)(nil),  // 3: project.planton.shared.iac.terraform.TerraformStackInfo
-	(*DigitalOceanDNSZone)(nil),           // 4: project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDNSZone
+	(*DigitalOceanDnsZone)(nil),           // 4: project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDnsZone
 	(*v1.DigitalOceanCredentialSpec)(nil), // 5: project.planton.credential.digitaloceancredential.v1.DigitalOceanCredentialSpec
 }
 var file_project_planton_provider_digitalocean_digitaloceandnszone_v1_stack_input_proto_depIdxs = []int32{
-	1, // 0: project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDNSZoneStackInput.provisioner:type_name -> project.planton.shared.IacProvisioner
-	2, // 1: project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDNSZoneStackInput.pulumi:type_name -> project.planton.shared.iac.pulumi.PulumiStackInfo
-	3, // 2: project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDNSZoneStackInput.terraform:type_name -> project.planton.shared.iac.terraform.TerraformStackInfo
-	4, // 3: project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDNSZoneStackInput.target:type_name -> project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDNSZone
-	5, // 4: project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDNSZoneStackInput.provider_credential:type_name -> project.planton.credential.digitaloceancredential.v1.DigitalOceanCredentialSpec
+	1, // 0: project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDnsZoneStackInput.provisioner:type_name -> project.planton.shared.IacProvisioner
+	2, // 1: project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDnsZoneStackInput.pulumi:type_name -> project.planton.shared.iac.pulumi.PulumiStackInfo
+	3, // 2: project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDnsZoneStackInput.terraform:type_name -> project.planton.shared.iac.terraform.TerraformStackInfo
+	4, // 3: project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDnsZoneStackInput.target:type_name -> project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDnsZone
+	5, // 4: project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDnsZoneStackInput.provider_credential:type_name -> project.planton.credential.digitaloceancredential.v1.DigitalOceanCredentialSpec
 	5, // [5:5] is the sub-list for method output_type
 	5, // [5:5] is the sub-list for method input_type
 	5, // [5:5] is the sub-list for extension type_name

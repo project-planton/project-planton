@@ -24,7 +24,7 @@ const (
 )
 
 // digital-ocean-dns-zone
-type DigitalOceanDNSZone struct {
+type DigitalOceanDnsZone struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// api-version
 	ApiVersion string `protobuf:"bytes,1,opt,name=api_version,json=apiVersion,proto3" json:"api_version,omitempty"`
@@ -33,27 +33,27 @@ type DigitalOceanDNSZone struct {
 	// metadata
 	Metadata *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// spec
-	Spec *DigitalOceanDNSZoneSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
+	Spec *DigitalOceanDnsZoneSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status
-	Status        *DigitalOceanDNSZoneStatus `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
+	Status        *DigitalOceanDnsZoneStatus `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *DigitalOceanDNSZone) Reset() {
-	*x = DigitalOceanDNSZone{}
+func (x *DigitalOceanDnsZone) Reset() {
+	*x = DigitalOceanDnsZone{}
 	mi := &file_project_planton_provider_digitalocean_digitaloceandnszone_v1_api_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *DigitalOceanDNSZone) String() string {
+func (x *DigitalOceanDnsZone) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*DigitalOceanDNSZone) ProtoMessage() {}
+func (*DigitalOceanDnsZone) ProtoMessage() {}
 
-func (x *DigitalOceanDNSZone) ProtoReflect() protoreflect.Message {
+func (x *DigitalOceanDnsZone) ProtoReflect() protoreflect.Message {
 	mi := &file_project_planton_provider_digitalocean_digitaloceandnszone_v1_api_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -65,40 +65,40 @@ func (x *DigitalOceanDNSZone) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use DigitalOceanDNSZone.ProtoReflect.Descriptor instead.
-func (*DigitalOceanDNSZone) Descriptor() ([]byte, []int) {
+// Deprecated: Use DigitalOceanDnsZone.ProtoReflect.Descriptor instead.
+func (*DigitalOceanDnsZone) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_digitalocean_digitaloceandnszone_v1_api_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *DigitalOceanDNSZone) GetApiVersion() string {
+func (x *DigitalOceanDnsZone) GetApiVersion() string {
 	if x != nil {
 		return x.ApiVersion
 	}
 	return ""
 }
 
-func (x *DigitalOceanDNSZone) GetKind() string {
+func (x *DigitalOceanDnsZone) GetKind() string {
 	if x != nil {
 		return x.Kind
 	}
 	return ""
 }
 
-func (x *DigitalOceanDNSZone) GetMetadata() *shared.ApiResourceMetadata {
+func (x *DigitalOceanDnsZone) GetMetadata() *shared.ApiResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
 	return nil
 }
 
-func (x *DigitalOceanDNSZone) GetSpec() *DigitalOceanDNSZoneSpec {
+func (x *DigitalOceanDnsZone) GetSpec() *DigitalOceanDnsZoneSpec {
 	if x != nil {
 		return x.Spec
 	}
 	return nil
 }
 
-func (x *DigitalOceanDNSZone) GetStatus() *DigitalOceanDNSZoneStatus {
+func (x *DigitalOceanDnsZone) GetStatus() *DigitalOceanDnsZoneStatus {
 	if x != nil {
 		return x.Status
 	}
@@ -106,7 +106,7 @@ func (x *DigitalOceanDNSZone) GetStatus() *DigitalOceanDNSZoneStatus {
 }
 
 // digital-ocean-dns-zone status
-type DigitalOceanDNSZoneStatus struct {
+type DigitalOceanDnsZoneStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// lifecycle
 	Lifecycle *shared.ApiResourceLifecycle `protobuf:"bytes,99,opt,name=lifecycle,proto3" json:"lifecycle,omitempty"`
@@ -117,25 +117,25 @@ type DigitalOceanDNSZoneStatus struct {
 	// stack-outputs
 	//
 	//	digital-ocean-dns-zone stack-outputs
-	Outputs       *DigitalOceanDNSZoneStackOutputs `protobuf:"bytes,1,opt,name=outputs,proto3" json:"outputs,omitempty"`
+	Outputs       *DigitalOceanDnsZoneStackOutputs `protobuf:"bytes,1,opt,name=outputs,proto3" json:"outputs,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *DigitalOceanDNSZoneStatus) Reset() {
-	*x = DigitalOceanDNSZoneStatus{}
+func (x *DigitalOceanDnsZoneStatus) Reset() {
+	*x = DigitalOceanDnsZoneStatus{}
 	mi := &file_project_planton_provider_digitalocean_digitaloceandnszone_v1_api_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *DigitalOceanDNSZoneStatus) String() string {
+func (x *DigitalOceanDnsZoneStatus) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*DigitalOceanDNSZoneStatus) ProtoMessage() {}
+func (*DigitalOceanDnsZoneStatus) ProtoMessage() {}
 
-func (x *DigitalOceanDNSZoneStatus) ProtoReflect() protoreflect.Message {
+func (x *DigitalOceanDnsZoneStatus) ProtoReflect() protoreflect.Message {
 	mi := &file_project_planton_provider_digitalocean_digitaloceandnszone_v1_api_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -147,33 +147,33 @@ func (x *DigitalOceanDNSZoneStatus) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use DigitalOceanDNSZoneStatus.ProtoReflect.Descriptor instead.
-func (*DigitalOceanDNSZoneStatus) Descriptor() ([]byte, []int) {
+// Deprecated: Use DigitalOceanDnsZoneStatus.ProtoReflect.Descriptor instead.
+func (*DigitalOceanDnsZoneStatus) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_digitalocean_digitaloceandnszone_v1_api_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *DigitalOceanDNSZoneStatus) GetLifecycle() *shared.ApiResourceLifecycle {
+func (x *DigitalOceanDnsZoneStatus) GetLifecycle() *shared.ApiResourceLifecycle {
 	if x != nil {
 		return x.Lifecycle
 	}
 	return nil
 }
 
-func (x *DigitalOceanDNSZoneStatus) GetAudit() *shared.ApiResourceAudit {
+func (x *DigitalOceanDnsZoneStatus) GetAudit() *shared.ApiResourceAudit {
 	if x != nil {
 		return x.Audit
 	}
 	return nil
 }
 
-func (x *DigitalOceanDNSZoneStatus) GetStackJobId() string {
+func (x *DigitalOceanDnsZoneStatus) GetStackJobId() string {
 	if x != nil {
 		return x.StackJobId
 	}
 	return ""
 }
 
-func (x *DigitalOceanDNSZoneStatus) GetOutputs() *DigitalOceanDNSZoneStackOutputs {
+func (x *DigitalOceanDnsZoneStatus) GetOutputs() *DigitalOceanDnsZoneStackOutputs {
 	if x != nil {
 		return x.Outputs
 	}
@@ -185,21 +185,21 @@ var File_project_planton_provider_digitalocean_digitaloceandnszone_v1_api_proto 
 const file_project_planton_provider_digitalocean_digitaloceandnszone_v1_api_proto_rawDesc = "" +
 	"\n" +
 	"Fproject/planton/provider/digitalocean/digitaloceandnszone/v1/api.proto\x12<project.planton.provider.digitalocean.digitaloceandnszone.v1\x1a\x1bbuf/validate/validate.proto\x1aGproject/planton/provider/digitalocean/digitaloceandnszone/v1/spec.proto\x1aPproject/planton/provider/digitalocean/digitaloceandnszone/v1/stack_outputs.proto\x1a#project/planton/shared/status.proto\x1a%project/planton/shared/metadata.proto\"\xc8\x03\n" +
-	"\x13DigitalOceanDNSZone\x12L\n" +
+	"\x13DigitalOceanDnsZone\x12L\n" +
 	"\vapi_version\x18\x01 \x01(\tB+\xbaH(r&\n" +
 	"$digital-ocean.project-planton.org/v1R\n" +
 	"apiVersion\x12.\n" +
 	"\x04kind\x18\x02 \x01(\tB\x1a\xbaH\x17r\x15\n" +
-	"\x13DigitalOceanDNSZoneR\x04kind\x12O\n" +
+	"\x13DigitalOceanDnsZoneR\x04kind\x12O\n" +
 	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12q\n" +
-	"\x04spec\x18\x04 \x01(\v2U.project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDNSZoneSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12o\n" +
-	"\x06status\x18\x05 \x01(\v2W.project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDNSZoneStatusR\x06status\"\xc2\x02\n" +
-	"\x19DigitalOceanDNSZoneStatus\x12J\n" +
+	"\x04spec\x18\x04 \x01(\v2U.project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDnsZoneSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12o\n" +
+	"\x06status\x18\x05 \x01(\v2W.project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDnsZoneStatusR\x06status\"\xc2\x02\n" +
+	"\x19DigitalOceanDnsZoneStatus\x12J\n" +
 	"\tlifecycle\x18c \x01(\v2,.project.planton.shared.ApiResourceLifecycleR\tlifecycle\x12>\n" +
 	"\x05audit\x18b \x01(\v2(.project.planton.shared.ApiResourceAuditR\x05audit\x12 \n" +
 	"\fstack_job_id\x18a \x01(\tR\n" +
 	"stackJobId\x12w\n" +
-	"\aoutputs\x18\x01 \x01(\v2].project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDNSZoneStackOutputsR\aoutputsB\xe8\x03\n" +
+	"\aoutputs\x18\x01 \x01(\v2].project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDnsZoneStackOutputsR\aoutputsB\xe8\x03\n" +
 	"@com.project.planton.provider.digitalocean.digitaloceandnszone.v1B\bApiProtoP\x01Z\x82\x01github.com/project-planton/project-planton/apis/project/planton/provider/digitalocean/digitaloceandnszone/v1;digitaloceandnszonev1\xa2\x02\x05PPPDD\xaa\x02<Project.Planton.Provider.Digitalocean.Digitaloceandnszone.V1\xca\x02<Project\\Planton\\Provider\\Digitalocean\\Digitaloceandnszone\\V1\xe2\x02HProject\\Planton\\Provider\\Digitalocean\\Digitaloceandnszone\\V1\\GPBMetadata\xea\x02AProject::Planton::Provider::Digitalocean::Digitaloceandnszone::V1b\x06proto3"
 
 var (
@@ -216,21 +216,21 @@ func file_project_planton_provider_digitalocean_digitaloceandnszone_v1_api_proto
 
 var file_project_planton_provider_digitalocean_digitaloceandnszone_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_digitalocean_digitaloceandnszone_v1_api_proto_goTypes = []any{
-	(*DigitalOceanDNSZone)(nil),             // 0: project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDNSZone
-	(*DigitalOceanDNSZoneStatus)(nil),       // 1: project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDNSZoneStatus
+	(*DigitalOceanDnsZone)(nil),             // 0: project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDnsZone
+	(*DigitalOceanDnsZoneStatus)(nil),       // 1: project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDnsZoneStatus
 	(*shared.ApiResourceMetadata)(nil),      // 2: project.planton.shared.ApiResourceMetadata
-	(*DigitalOceanDNSZoneSpec)(nil),         // 3: project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDNSZoneSpec
+	(*DigitalOceanDnsZoneSpec)(nil),         // 3: project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDnsZoneSpec
 	(*shared.ApiResourceLifecycle)(nil),     // 4: project.planton.shared.ApiResourceLifecycle
 	(*shared.ApiResourceAudit)(nil),         // 5: project.planton.shared.ApiResourceAudit
-	(*DigitalOceanDNSZoneStackOutputs)(nil), // 6: project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDNSZoneStackOutputs
+	(*DigitalOceanDnsZoneStackOutputs)(nil), // 6: project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDnsZoneStackOutputs
 }
 var file_project_planton_provider_digitalocean_digitaloceandnszone_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDNSZone.metadata:type_name -> project.planton.shared.ApiResourceMetadata
-	3, // 1: project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDNSZone.spec:type_name -> project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDNSZoneSpec
-	1, // 2: project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDNSZone.status:type_name -> project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDNSZoneStatus
-	4, // 3: project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDNSZoneStatus.lifecycle:type_name -> project.planton.shared.ApiResourceLifecycle
-	5, // 4: project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDNSZoneStatus.audit:type_name -> project.planton.shared.ApiResourceAudit
-	6, // 5: project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDNSZoneStatus.outputs:type_name -> project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDNSZoneStackOutputs
+	2, // 0: project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDnsZone.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	3, // 1: project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDnsZone.spec:type_name -> project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDnsZoneSpec
+	1, // 2: project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDnsZone.status:type_name -> project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDnsZoneStatus
+	4, // 3: project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDnsZoneStatus.lifecycle:type_name -> project.planton.shared.ApiResourceLifecycle
+	5, // 4: project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDnsZoneStatus.audit:type_name -> project.planton.shared.ApiResourceAudit
+	6, // 5: project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDnsZoneStatus.outputs:type_name -> project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDnsZoneStackOutputs
 	6, // [6:6] is the sub-list for method output_type
 	6, // [6:6] is the sub-list for method input_type
 	6, // [6:6] is the sub-list for extension type_name
