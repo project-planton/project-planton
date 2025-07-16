@@ -24,6 +24,7 @@ const (
 // DigitalOceanFirewallStackOutputs captures the resulting Droplet info after provisioning.
 type DigitalOceanFirewallStackOutputs struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
+	FirewallId    string                 `protobuf:"bytes,1,opt,name=firewall_id,json=firewallId,proto3" json:"firewall_id,omitempty"` // The unique ID of the firewall (UUID string from DigitalOcean).
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -58,12 +59,21 @@ func (*DigitalOceanFirewallStackOutputs) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_digitalocean_digitaloceanfirewall_v1_stack_outputs_proto_rawDescGZIP(), []int{0}
 }
 
+func (x *DigitalOceanFirewallStackOutputs) GetFirewallId() string {
+	if x != nil {
+		return x.FirewallId
+	}
+	return ""
+}
+
 var File_project_planton_provider_digitalocean_digitaloceanfirewall_v1_stack_outputs_proto protoreflect.FileDescriptor
 
 const file_project_planton_provider_digitalocean_digitaloceanfirewall_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Qproject/planton/provider/digitalocean/digitaloceanfirewall/v1/stack_outputs.proto\x12=project.planton.provider.digitalocean.digitaloceanfirewall.v1\"\"\n" +
-	" DigitalOceanFirewallStackOutputsB\xf8\x03\n" +
+	"Qproject/planton/provider/digitalocean/digitaloceanfirewall/v1/stack_outputs.proto\x12=project.planton.provider.digitalocean.digitaloceanfirewall.v1\"C\n" +
+	" DigitalOceanFirewallStackOutputs\x12\x1f\n" +
+	"\vfirewall_id\x18\x01 \x01(\tR\n" +
+	"firewallIdB\xf8\x03\n" +
 	"Acom.project.planton.provider.digitalocean.digitaloceanfirewall.v1B\x11StackOutputsProtoP\x01Z\x84\x01github.com/project-planton/project-planton/apis/project/planton/provider/digitalocean/digitaloceanfirewall/v1;digitaloceanfirewallv1\xa2\x02\x05PPPDD\xaa\x02=Project.Planton.Provider.Digitalocean.Digitaloceanfirewall.V1\xca\x02=Project\\Planton\\Provider\\Digitalocean\\Digitaloceanfirewall\\V1\xe2\x02IProject\\Planton\\Provider\\Digitalocean\\Digitaloceanfirewall\\V1\\GPBMetadata\xea\x02BProject::Planton::Provider::Digitalocean::Digitaloceanfirewall::V1b\x06proto3"
 
 var (

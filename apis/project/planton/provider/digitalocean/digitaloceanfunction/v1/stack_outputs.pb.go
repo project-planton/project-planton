@@ -21,9 +21,13 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// DigitalOceanFunctionStackOutputs captures the resulting Droplet info after provisioning.
+// DigitalOceanFunctionStackOutputs captures the outputs after deploying a DigitalOcean function.
 type DigitalOceanFunctionStackOutputs struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// function_id is the unique identifier of the deployed function.
+	FunctionId string `protobuf:"bytes,1,opt,name=function_id,json=functionId,proto3" json:"function_id,omitempty"`
+	// https_endpoint is the public HTTPS URL endpoint for invoking the function.
+	HttpsEndpoint string `protobuf:"bytes,2,opt,name=https_endpoint,json=httpsEndpoint,proto3" json:"https_endpoint,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -58,12 +62,29 @@ func (*DigitalOceanFunctionStackOutputs) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_digitalocean_digitaloceanfunction_v1_stack_outputs_proto_rawDescGZIP(), []int{0}
 }
 
+func (x *DigitalOceanFunctionStackOutputs) GetFunctionId() string {
+	if x != nil {
+		return x.FunctionId
+	}
+	return ""
+}
+
+func (x *DigitalOceanFunctionStackOutputs) GetHttpsEndpoint() string {
+	if x != nil {
+		return x.HttpsEndpoint
+	}
+	return ""
+}
+
 var File_project_planton_provider_digitalocean_digitaloceanfunction_v1_stack_outputs_proto protoreflect.FileDescriptor
 
 const file_project_planton_provider_digitalocean_digitaloceanfunction_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Qproject/planton/provider/digitalocean/digitaloceanfunction/v1/stack_outputs.proto\x12=project.planton.provider.digitalocean.digitaloceanfunction.v1\"\"\n" +
-	" DigitalOceanFunctionStackOutputsB\xf8\x03\n" +
+	"Qproject/planton/provider/digitalocean/digitaloceanfunction/v1/stack_outputs.proto\x12=project.planton.provider.digitalocean.digitaloceanfunction.v1\"j\n" +
+	" DigitalOceanFunctionStackOutputs\x12\x1f\n" +
+	"\vfunction_id\x18\x01 \x01(\tR\n" +
+	"functionId\x12%\n" +
+	"\x0ehttps_endpoint\x18\x02 \x01(\tR\rhttpsEndpointB\xf8\x03\n" +
 	"Acom.project.planton.provider.digitalocean.digitaloceanfunction.v1B\x11StackOutputsProtoP\x01Z\x84\x01github.com/project-planton/project-planton/apis/project/planton/provider/digitalocean/digitaloceanfunction/v1;digitaloceanfunctionv1\xa2\x02\x05PPPDD\xaa\x02=Project.Planton.Provider.Digitalocean.Digitaloceanfunction.V1\xca\x02=Project\\Planton\\Provider\\Digitalocean\\Digitaloceanfunction\\V1\xe2\x02IProject\\Planton\\Provider\\Digitalocean\\Digitaloceanfunction\\V1\\GPBMetadata\xea\x02BProject::Planton::Provider::Digitalocean::Digitaloceanfunction::V1b\x06proto3"
 
 var (
