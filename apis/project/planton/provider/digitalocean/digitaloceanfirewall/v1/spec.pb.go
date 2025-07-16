@@ -28,7 +28,8 @@ const (
 // DigitalOceanFirewallSpec defines the user configuration for a DigitalOcean Droplet (VM).
 type DigitalOceanFirewallSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	Name  string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"` // Name of the firewall for identification (must be unique per account/project).
+	// Name of the firewall for identification (must be unique per account/project).
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// Inbound rules: traffic allowed *to* Droplets on specific ports from specified sources.
 	InboundRules []*DigitalOceanFirewallInboundRule `protobuf:"bytes,2,rep,name=inbound_rules,json=inboundRules,proto3" json:"inbound_rules,omitempty"`
 	// Outbound rules: traffic allowed *from* Droplets on specific ports to specified destinations.
@@ -110,15 +111,21 @@ func (x *DigitalOceanFirewallSpec) GetTags() []string {
 
 // Definition of an inbound (ingress) firewall rule.
 type DigitalOceanFirewallInboundRule struct {
-	state     protoimpl.MessageState `protogen:"open.v1"`
-	Protocol  string                 `protobuf:"bytes,1,opt,name=protocol,proto3" json:"protocol,omitempty"`                    // "tcp", "udp", or "icmp". Required.
-	PortRange string                 `protobuf:"bytes,2,opt,name=port_range,json=portRange,proto3" json:"port_range,omitempty"` // Ports to allow (e.g., "80", "8000-9000", or "1-65535"; empty or "1-65535" means all ports for tcp/udp).
-	// Allowed traffic sources (at least one of these fields should be non-empty):
-	SourceAddresses        []string `protobuf:"bytes,3,rep,name=source_addresses,json=sourceAddresses,proto3" json:"source_addresses,omitempty"`                          // IPv4 or IPv6 addresses or CIDR ranges (e.g., "192.0.2.0/24", "0.0.0.0/0").
-	SourceDropletIds       []int64  `protobuf:"varint,4,rep,packed,name=source_droplet_ids,json=sourceDropletIds,proto3" json:"source_droplet_ids,omitempty"`             // IDs of Droplets from which traffic is allowed.
-	SourceTags             []string `protobuf:"bytes,5,rep,name=source_tags,json=sourceTags,proto3" json:"source_tags,omitempty"`                                         // Names of Droplet tags; any Droplet with these tags is allowed.
-	SourceKubernetesIds    []string `protobuf:"bytes,6,rep,name=source_kubernetes_ids,json=sourceKubernetesIds,proto3" json:"source_kubernetes_ids,omitempty"`            // IDs of Kubernetes clusters from which traffic is allowed.
-	SourceLoadBalancerUids []string `protobuf:"bytes,7,rep,name=source_load_balancer_uids,json=sourceLoadBalancerUids,proto3" json:"source_load_balancer_uids,omitempty"` // IDs of Load Balancers from which traffic is allowed.
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// "tcp", "udp", or "icmp". Required.
+	Protocol string `protobuf:"bytes,1,opt,name=protocol,proto3" json:"protocol,omitempty"`
+	// Ports to allow (e.g., "80", "8000-9000", or "1-65535"; empty or "1-65535" means all ports for tcp/udp).
+	PortRange string `protobuf:"bytes,2,opt,name=port_range,json=portRange,proto3" json:"port_range,omitempty"`
+	// IPv4 or IPv6 addresses or CIDR ranges (e.g., "192.0.2.0/24", "0.0.0.0/0").
+	SourceAddresses []string `protobuf:"bytes,3,rep,name=source_addresses,json=sourceAddresses,proto3" json:"source_addresses,omitempty"`
+	// IDs of Droplets from which traffic is allowed.
+	SourceDropletIds []int64 `protobuf:"varint,4,rep,packed,name=source_droplet_ids,json=sourceDropletIds,proto3" json:"source_droplet_ids,omitempty"`
+	// Names of Droplet tags; any Droplet with these tags is allowed.
+	SourceTags []string `protobuf:"bytes,5,rep,name=source_tags,json=sourceTags,proto3" json:"source_tags,omitempty"`
+	// IDs of Kubernetes clusters from which traffic is allowed.
+	SourceKubernetesIds []string `protobuf:"bytes,6,rep,name=source_kubernetes_ids,json=sourceKubernetesIds,proto3" json:"source_kubernetes_ids,omitempty"`
+	// IDs of Load Balancers from which traffic is allowed.
+	SourceLoadBalancerUids []string `protobuf:"bytes,7,rep,name=source_load_balancer_uids,json=sourceLoadBalancerUids,proto3" json:"source_load_balancer_uids,omitempty"`
 	unknownFields          protoimpl.UnknownFields
 	sizeCache              protoimpl.SizeCache
 }
@@ -204,15 +211,21 @@ func (x *DigitalOceanFirewallInboundRule) GetSourceLoadBalancerUids() []string {
 
 // Definition of an outbound (egress) firewall rule.
 type DigitalOceanFirewallOutboundRule struct {
-	state     protoimpl.MessageState `protogen:"open.v1"`
-	Protocol  string                 `protobuf:"bytes,1,opt,name=protocol,proto3" json:"protocol,omitempty"`                    // "tcp", "udp", or "icmp". Required.
-	PortRange string                 `protobuf:"bytes,2,opt,name=port_range,json=portRange,proto3" json:"port_range,omitempty"` // Ports to allow (format as in inbound rules; required for tcp/udp).
-	// Allowed traffic destinations (at least one must be set):
-	DestinationAddresses        []string `protobuf:"bytes,3,rep,name=destination_addresses,json=destinationAddresses,proto3" json:"destination_addresses,omitempty"`                          // IPv4/IPv6 addresses or CIDRs to which traffic is allowed.
-	DestinationDropletIds       []int64  `protobuf:"varint,4,rep,packed,name=destination_droplet_ids,json=destinationDropletIds,proto3" json:"destination_droplet_ids,omitempty"`             // IDs of Droplets to which traffic is allowed.
-	DestinationTags             []string `protobuf:"bytes,5,rep,name=destination_tags,json=destinationTags,proto3" json:"destination_tags,omitempty"`                                         // Names of Droplet tags whose members are allowed destinations.
-	DestinationKubernetesIds    []string `protobuf:"bytes,6,rep,name=destination_kubernetes_ids,json=destinationKubernetesIds,proto3" json:"destination_kubernetes_ids,omitempty"`            // IDs of Kubernetes clusters to which traffic is allowed.
-	DestinationLoadBalancerUids []string `protobuf:"bytes,7,rep,name=destination_load_balancer_uids,json=destinationLoadBalancerUids,proto3" json:"destination_load_balancer_uids,omitempty"` // IDs of Load Balancers which are allowed as destinations.
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// "tcp", "udp", or "icmp". Required.
+	Protocol string `protobuf:"bytes,1,opt,name=protocol,proto3" json:"protocol,omitempty"`
+	// Ports to allow (format as in inbound rules; required for tcp/udp).
+	PortRange string `protobuf:"bytes,2,opt,name=port_range,json=portRange,proto3" json:"port_range,omitempty"`
+	// IPv4/IPv6 addresses or CIDRs to which traffic is allowed.
+	DestinationAddresses []string `protobuf:"bytes,3,rep,name=destination_addresses,json=destinationAddresses,proto3" json:"destination_addresses,omitempty"`
+	// IDs of Droplets to which traffic is allowed.
+	DestinationDropletIds []int64 `protobuf:"varint,4,rep,packed,name=destination_droplet_ids,json=destinationDropletIds,proto3" json:"destination_droplet_ids,omitempty"`
+	// Names of Droplet tags whose members are allowed destinations.
+	DestinationTags []string `protobuf:"bytes,5,rep,name=destination_tags,json=destinationTags,proto3" json:"destination_tags,omitempty"`
+	// IDs of Kubernetes clusters to which traffic is allowed.
+	DestinationKubernetesIds []string `protobuf:"bytes,6,rep,name=destination_kubernetes_ids,json=destinationKubernetesIds,proto3" json:"destination_kubernetes_ids,omitempty"`
+	// IDs of Load Balancers which are allowed as destinations.
+	DestinationLoadBalancerUids []string `protobuf:"bytes,7,rep,name=destination_load_balancer_uids,json=destinationLoadBalancerUids,proto3" json:"destination_load_balancer_uids,omitempty"`
 	unknownFields               protoimpl.UnknownFields
 	sizeCache                   protoimpl.SizeCache
 }
