@@ -16,7 +16,7 @@ func Resources(
 	locals := initializeLocals(ctx, stackInput)
 
 	// 2. Instantiate provider from credential.
-	doProvider, err := pulumidigitaloceanprovider.Get(
+	digitalOceanProvider, err := pulumidigitaloceanprovider.Get(
 		ctx,
 		stackInput.ProviderCredential,
 	)
@@ -25,7 +25,7 @@ func Resources(
 	}
 
 	// 3. Provision firewall.
-	if _, err := firewall(ctx, locals, doProvider); err != nil {
+	if _, err := firewall(ctx, locals, digitalOceanProvider); err != nil {
 		return errors.Wrap(err, "failed to create firewall")
 	}
 

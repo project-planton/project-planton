@@ -12,7 +12,7 @@ import (
 func appPlatformService(
 	ctx *pulumi.Context,
 	locals *Locals,
-	doProvider *digitalocean.Provider,
+	digitalOceanProvider *digitalocean.Provider,
 ) (*digitalocean.App, error) {
 
 	serviceArgs := &digitalocean.AppSpecServiceArgs{
@@ -71,7 +71,7 @@ func appPlatformService(
 		&digitalocean.AppArgs{
 			Spec: appSpecArgs,
 		},
-		pulumi.Provider(doProvider),
+		pulumi.Provider(digitalOceanProvider),
 	)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to create digitalocean app")

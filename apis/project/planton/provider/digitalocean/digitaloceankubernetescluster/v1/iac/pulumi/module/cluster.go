@@ -10,7 +10,7 @@ import (
 func cluster(
 	ctx *pulumi.Context,
 	locals *Locals,
-	doProvider *digitalocean.Provider,
+	digitalOceanProvider *digitalocean.Provider,
 ) (*digitalocean.KubernetesCluster, error) {
 
 	// 1. Collect tags from the spec.
@@ -36,7 +36,7 @@ func cluster(
 		ctx,
 		"cluster",
 		clusterArgs,
-		pulumi.Provider(doProvider),
+		pulumi.Provider(digitalOceanProvider),
 	)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to create digitalocean kubernetes cluster")

@@ -11,7 +11,7 @@ import (
 func bucket(
 	ctx *pulumi.Context,
 	locals *Locals,
-	doProvider *digitalocean.Provider,
+	digitalOceanProvider *digitalocean.Provider,
 ) (*digitalocean.SpacesBucket, error) {
 
 	// 1. Map proto enum → ACL string.
@@ -41,7 +41,7 @@ func bucket(
 		ctx,
 		"bucket",
 		bucketArgs,
-		pulumi.Provider(doProvider),
+		pulumi.Provider(digitalOceanProvider),
 	)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to create digitalocean spaces bucket")

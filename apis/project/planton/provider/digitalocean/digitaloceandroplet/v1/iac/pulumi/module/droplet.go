@@ -10,7 +10,7 @@ import (
 func droplet(
 	ctx *pulumi.Context,
 	locals *Locals,
-	doProvider *digitalocean.Provider,
+	digitalOceanProvider *digitalocean.Provider,
 ) (*digitalocean.Droplet, error) {
 
 	// 1. Build Droplet arguments directly from the proto spec.
@@ -25,7 +25,7 @@ func droplet(
 			!locals.DigitalOceanDroplet.Spec.DisableMonitoring),
 	}
 
-	// Optional: user‑provided cloud‑init script (<=32 KiB).
+	// Optional: user‑provided cloud‑init script (<=32 KiB).
 	if locals.DigitalOceanDroplet.Spec.UserData != "" {
 		dropletArgs.UserData = pulumi.String(
 			locals.DigitalOceanDroplet.Spec.UserData)
@@ -65,7 +65,7 @@ func droplet(
 		ctx,
 		"droplet",
 		dropletArgs,
-		pulumi.Provider(doProvider),
+		pulumi.Provider(digitalOceanProvider),
 	)
 	if err != nil {
 		return nil, errors.Wrap(

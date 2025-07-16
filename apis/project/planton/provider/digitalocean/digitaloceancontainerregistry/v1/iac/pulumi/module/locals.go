@@ -14,7 +14,7 @@ import (
 type Locals struct {
 	DigitalOceanCredentialSpec    *digitaloceancredentialv1.DigitalOceanCredentialSpec
 	DigitalOceanContainerRegistry *digitaloceancontainerregistryv1.DigitalOceanContainerRegistry
-	DoLabels                      map[string]string
+	DigitalOceanLabels            map[string]string
 }
 
 // initializeLocals copies stack‑input fields into the Locals struct and builds
@@ -25,22 +25,22 @@ func initializeLocals(_ *pulumi.Context, stackInput *digitaloceancontainerregist
 	locals.DigitalOceanContainerRegistry = stackInput.Target
 
 	// Standard Planton labels for DigitalOcean resources.
-	locals.DoLabels = map[string]string{
+	locals.DigitalOceanLabels = map[string]string{
 		digitaloceanlabelkeys.Resource:     strconv.FormatBool(true),
 		digitaloceanlabelkeys.ResourceName: locals.DigitalOceanContainerRegistry.Metadata.Name,
 		digitaloceanlabelkeys.ResourceKind: cloudresourcekind.CloudResourceKind_DigitalOceanContainerRegistry.String(),
 	}
 
 	if locals.DigitalOceanContainerRegistry.Metadata.Org != "" {
-		locals.DoLabels[digitaloceanlabelkeys.Organization] = locals.DigitalOceanContainerRegistry.Metadata.Org
+		locals.DigitalOceanLabels[digitaloceanlabelkeys.Organization] = locals.DigitalOceanContainerRegistry.Metadata.Org
 	}
 
 	if locals.DigitalOceanContainerRegistry.Metadata.Env != "" {
-		locals.DoLabels[digitaloceanlabelkeys.Environment] = locals.DigitalOceanContainerRegistry.Metadata.Env
+		locals.DigitalOceanLabels[digitaloceanlabelkeys.Environment] = locals.DigitalOceanContainerRegistry.Metadata.Env
 	}
 
 	if locals.DigitalOceanContainerRegistry.Metadata.Id != "" {
-		locals.DoLabels[digitaloceanlabelkeys.ResourceId] = locals.DigitalOceanContainerRegistry.Metadata.Id
+		locals.DigitalOceanLabels[digitaloceanlabelkeys.ResourceId] = locals.DigitalOceanContainerRegistry.Metadata.Id
 	}
 
 	locals.DigitalOceanCredentialSpec = stackInput.ProviderCredential

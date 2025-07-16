@@ -12,7 +12,7 @@ import (
 func loadBalancer(
 	ctx *pulumi.Context,
 	locals *Locals,
-	doProvider *digitalocean.Provider,
+	digitalOceanProvider *digitalocean.Provider,
 ) (*digitalocean.LoadBalancer, error) {
 
 	spec := locals.DigitalOceanLoadBalancer.Spec
@@ -79,7 +79,7 @@ func loadBalancer(
 		ctx,
 		"load_balancer",
 		args,
-		pulumi.Provider(doProvider),
+		pulumi.Provider(digitalOceanProvider),
 	)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to create digitalocean load balancer")

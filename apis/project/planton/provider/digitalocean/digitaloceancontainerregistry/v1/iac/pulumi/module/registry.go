@@ -12,7 +12,7 @@ import (
 func registry(
 	ctx *pulumi.Context,
 	locals *Locals,
-	doProvider *digitalocean.Provider,
+	digitalOceanProvider *digitalocean.Provider,
 ) (*digitalocean.ContainerRegistry, error) {
 
 	// 1. Translate the subscription tier enum to the expected slug.
@@ -40,7 +40,7 @@ func registry(
 		ctx,
 		"registry",
 		registryArgs,
-		pulumi.Provider(doProvider),
+		pulumi.Provider(digitalOceanProvider),
 	)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to create digitalocean container registry")

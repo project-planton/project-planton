@@ -14,7 +14,7 @@ import (
 type Locals struct {
 	DigitalOceanCredentialSpec *digitaloceancredentialv1.DigitalOceanCredentialSpec
 	DigitalOceanFirewall       *digitaloceanfirewallv1.DigitalOceanFirewall
-	DoLabels                   map[string]string
+	DigitalOceanLabels         map[string]string
 }
 
 // initializeLocals builds the label set and copies references we need elsewhere.
@@ -23,22 +23,22 @@ func initializeLocals(_ *pulumi.Context, stackInput *digitaloceanfirewallv1.Digi
 
 	locals.DigitalOceanFirewall = stackInput.Target
 
-	locals.DoLabels = map[string]string{
+	locals.DigitalOceanLabels = map[string]string{
 		digitaloceanlabelkeys.Resource:     strconv.FormatBool(true),
 		digitaloceanlabelkeys.ResourceName: locals.DigitalOceanFirewall.Metadata.Name,
 		digitaloceanlabelkeys.ResourceKind: cloudresourcekind.CloudResourceKind_DigitalOceanFirewall.String(),
 	}
 
 	if locals.DigitalOceanFirewall.Metadata.Org != "" {
-		locals.DoLabels[digitaloceanlabelkeys.Organization] = locals.DigitalOceanFirewall.Metadata.Org
+		locals.DigitalOceanLabels[digitaloceanlabelkeys.Organization] = locals.DigitalOceanFirewall.Metadata.Org
 	}
 
 	if locals.DigitalOceanFirewall.Metadata.Env != "" {
-		locals.DoLabels[digitaloceanlabelkeys.Environment] = locals.DigitalOceanFirewall.Metadata.Env
+		locals.DigitalOceanLabels[digitaloceanlabelkeys.Environment] = locals.DigitalOceanFirewall.Metadata.Env
 	}
 
 	if locals.DigitalOceanFirewall.Metadata.Id != "" {
-		locals.DoLabels[digitaloceanlabelkeys.ResourceId] = locals.DigitalOceanFirewall.Metadata.Id
+		locals.DigitalOceanLabels[digitaloceanlabelkeys.ResourceId] = locals.DigitalOceanFirewall.Metadata.Id
 	}
 
 	locals.DigitalOceanCredentialSpec = stackInput.ProviderCredential

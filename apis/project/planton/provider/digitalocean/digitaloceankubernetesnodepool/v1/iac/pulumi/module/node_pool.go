@@ -10,12 +10,12 @@ import (
 func nodePool(
 	ctx *pulumi.Context,
 	locals *Locals,
-	doProvider *digitalocean.Provider,
+	digitalOceanProvider *digitalocean.Provider,
 ) (*digitalocean.KubernetesNodePool, error) {
 
 	// 1. Build argument structs directly from proto fields.
 	labels := pulumi.StringMap{}
-	for k, v := range locals.DoLabels {
+	for k, v := range locals.DigitalOceanLabels {
 		labels[k] = pulumi.String(v)
 	}
 
@@ -44,7 +44,7 @@ func nodePool(
 		ctx,
 		"node_pool",
 		nodePoolArgs,
-		pulumi.Provider(doProvider),
+		pulumi.Provider(digitalOceanProvider),
 	)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to create digitalocean kubernetes node pool")

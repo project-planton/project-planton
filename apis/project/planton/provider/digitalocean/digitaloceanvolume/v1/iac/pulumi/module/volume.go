@@ -10,7 +10,7 @@ import (
 func volume(
 	ctx *pulumi.Context,
 	locals *Locals,
-	doProvider *digitalocean.Provider,
+	digitalOceanProvider *digitalocean.Provider,
 ) (*digitalocean.Volume, error) {
 
 	// 1. Build the resource arguments straight from the proto fields.
@@ -46,7 +46,7 @@ func volume(
 		ctx,
 		"volume",
 		volumeArgs,
-		pulumi.Provider(doProvider),
+		pulumi.Provider(digitalOceanProvider),
 	)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to create digitalocean volume")

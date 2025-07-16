@@ -13,7 +13,7 @@ import (
 func dnsZone(
 	ctx *pulumi.Context,
 	locals *Locals,
-	doProvider *digitalocean.Provider,
+	digitalOceanProvider *digitalocean.Provider,
 ) (*digitalocean.Domain, error) {
 	// 1. Create the DNS zone (Domain).
 	domainArgs := &digitalocean.DomainArgs{
@@ -24,7 +24,7 @@ func dnsZone(
 		ctx,
 		"dns_zone",
 		domainArgs,
-		pulumi.Provider(doProvider),
+		pulumi.Provider(digitalOceanProvider),
 	)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to create digitalocean domain")
@@ -51,7 +51,7 @@ func dnsZone(
 					Value:  pulumi.String(val.GetValue()),
 					Ttl:    pulumi.Int(ttl),
 				},
-				pulumi.Provider(doProvider),
+				pulumi.Provider(digitalOceanProvider),
 			)
 			if err != nil {
 				return nil, errors.Wrapf(err, "failed to create dns record %s", resourceName)

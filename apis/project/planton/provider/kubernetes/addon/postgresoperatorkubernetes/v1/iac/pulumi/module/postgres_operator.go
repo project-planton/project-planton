@@ -60,7 +60,7 @@ func postgresOperator(ctx *pulumi.Context, locals *Locals, kubernetesProvider *p
 		return errors.Wrap(err, "failed to create helm release")
 	}
 
-	// 3. Export stack‑output(s)
+	// 3. Export stack‑output(s)
 	ctx.Export(OpNamespace, createdNamespace.Metadata.Name())
 
 	return nil

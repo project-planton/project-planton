@@ -10,7 +10,7 @@ import (
 func vpc(
 	ctx *pulumi.Context,
 	locals *Locals,
-	doProvider *digitalocean.Provider,
+	digitalOceanProvider *digitalocean.Provider,
 ) (*digitalocean.Vpc, error) {
 
 	// 1. Build the resource arguments straight from the proto fields.
@@ -26,7 +26,7 @@ func vpc(
 		ctx,
 		"vpc",
 		vpcArgs,
-		pulumi.Provider(doProvider),
+		pulumi.Provider(digitalOceanProvider),
 	)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to create digitalocean vpc")

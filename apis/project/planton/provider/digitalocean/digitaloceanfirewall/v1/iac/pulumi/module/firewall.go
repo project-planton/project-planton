@@ -10,7 +10,7 @@ import (
 func firewall(
 	ctx *pulumi.Context,
 	locals *Locals,
-	doProvider *digitalocean.Provider,
+	digitalOceanProvider *digitalocean.Provider,
 ) (*digitalocean.Firewall, error) {
 
 	// 1. Translate inbound rules.
@@ -55,7 +55,7 @@ func firewall(
 		ctx,
 		"firewall",
 		firewallArgs,
-		pulumi.Provider(doProvider),
+		pulumi.Provider(digitalOceanProvider),
 	)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to create digitalocean firewall")

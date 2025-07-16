@@ -16,7 +16,7 @@ func Resources(
 	locals := initializeLocals(ctx, stackInput)
 
 	// 2. Create a DigitalOcean provider from the supplied credential.
-	doProvider, err := pulumidigitaloceanprovider.Get(
+	digitalOceanProvider, err := pulumidigitaloceanprovider.Get(
 		ctx,
 		stackInput.ProviderCredential,
 	)
@@ -25,7 +25,7 @@ func Resources(
 	}
 
 	// 3. Create the cluster.
-	if _, err := cluster(ctx, locals, doProvider); err != nil {
+	if _, err := cluster(ctx, locals, digitalOceanProvider); err != nil {
 		return errors.Wrap(err, "failed to create kubernetes cluster")
 	}
 

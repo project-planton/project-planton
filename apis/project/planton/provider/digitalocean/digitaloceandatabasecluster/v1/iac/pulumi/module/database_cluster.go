@@ -12,7 +12,7 @@ import (
 func cluster(
 	ctx *pulumi.Context,
 	locals *Locals,
-	doProvider *digitalocean.Provider,
+	digitalOceanProvider *digitalocean.Provider,
 ) (*digitalocean.DatabaseCluster, error) {
 
 	// 1. Translate proto enum to engine slug.
@@ -32,8 +32,8 @@ func cluster(
 
 	// 2. Convert label map → slice of "key:value" tags.
 	var tagInputs pulumi.StringArray
-	if len(locals.DoLabels) > 0 {
-		for k, v := range locals.DoLabels {
+	if len(locals.DigitalOceanLabels) > 0 {
+		for k, v := range locals.DigitalOceanLabels {
 			tagInputs = append(tagInputs, pulumi.String(k+":"+v))
 		}
 	}
@@ -70,7 +70,7 @@ func cluster(
 		ctx,
 		"cluster",
 		clusterArgs,
-		pulumi.Provider(doProvider),
+		pulumi.Provider(digitalOceanProvider),
 	)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to create digitalocean database cluster")

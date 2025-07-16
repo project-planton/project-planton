@@ -16,7 +16,7 @@ func Resources(
 	locals := initializeLocals(ctx, stackInput)
 
 	// 2. DigitalOcean provider from supplied credential.
-	doProvider, err := pulumidigitaloceanprovider.Get(
+	digitalOceanProvider, err := pulumidigitaloceanprovider.Get(
 		ctx,
 		stackInput.ProviderCredential,
 	)
@@ -25,7 +25,7 @@ func Resources(
 	}
 
 	// 3. Create the Droplet.
-	if _, err := droplet(ctx, locals, doProvider); err != nil {
+	if _, err := droplet(ctx, locals, digitalOceanProvider); err != nil {
 		return errors.Wrap(err, "failed to create droplet")
 	}
 
