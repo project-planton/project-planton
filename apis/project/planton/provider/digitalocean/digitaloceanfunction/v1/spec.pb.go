@@ -9,7 +9,6 @@ package digitaloceanfunctionv1
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	digitalocean "github.com/project-planton/project-planton/apis/project/planton/provider/digitalocean"
-	v1 "github.com/project-planton/project-planton/apis/project/planton/shared/foreignkey/v1"
 	_ "github.com/project-planton/project-planton/apis/project/planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -25,136 +24,82 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// Supported Droplet size slugs (plans).
-type DigitalOceanFunctionSize int32
+// DigitalOceanFunctionRuntime enumerates the supported runtime environments for functions.
+type DigitalOceanFunctionRuntime int32
 
 const (
-	DigitalOceanFunctionSize_digital_ocean_function_size_unspecified DigitalOceanFunctionSize = 0
-	DigitalOceanFunctionSize_s_2vcpu_4gb                             DigitalOceanFunctionSize = 1 // basic: 2 vCPUs, 4 GB RAM
-	DigitalOceanFunctionSize_s_4vcpu_8gb                             DigitalOceanFunctionSize = 2 // basic: 4 vCPUs, 8 GB RAM
-	DigitalOceanFunctionSize_g_2vcpu_8gb                             DigitalOceanFunctionSize = 3 // general purpose: 2 vCPUs (dedicated), 8 GB RAM
-	DigitalOceanFunctionSize_g_4vcpu_16gb                            DigitalOceanFunctionSize = 4 // general purpose: 4 vCPUs (dedicated), 16 GB RAM
+	DigitalOceanFunctionRuntime_digital_ocean_function_runtime_unspecified DigitalOceanFunctionRuntime = 0
+	DigitalOceanFunctionRuntime_nodejs                                     DigitalOceanFunctionRuntime = 1
+	DigitalOceanFunctionRuntime_python                                     DigitalOceanFunctionRuntime = 2
+	DigitalOceanFunctionRuntime_go                                         DigitalOceanFunctionRuntime = 3
+	DigitalOceanFunctionRuntime_rust                                       DigitalOceanFunctionRuntime = 4
+	DigitalOceanFunctionRuntime_deno                                       DigitalOceanFunctionRuntime = 5
 )
 
-// Enum value maps for DigitalOceanFunctionSize.
+// Enum value maps for DigitalOceanFunctionRuntime.
 var (
-	DigitalOceanFunctionSize_name = map[int32]string{
-		0: "digital_ocean_function_size_unspecified",
-		1: "s_2vcpu_4gb",
-		2: "s_4vcpu_8gb",
-		3: "g_2vcpu_8gb",
-		4: "g_4vcpu_16gb",
+	DigitalOceanFunctionRuntime_name = map[int32]string{
+		0: "digital_ocean_function_runtime_unspecified",
+		1: "nodejs",
+		2: "python",
+		3: "go",
+		4: "rust",
+		5: "deno",
 	}
-	DigitalOceanFunctionSize_value = map[string]int32{
-		"digital_ocean_function_size_unspecified": 0,
-		"s_2vcpu_4gb":  1,
-		"s_4vcpu_8gb":  2,
-		"g_2vcpu_8gb":  3,
-		"g_4vcpu_16gb": 4,
+	DigitalOceanFunctionRuntime_value = map[string]int32{
+		"digital_ocean_function_runtime_unspecified": 0,
+		"nodejs": 1,
+		"python": 2,
+		"go":     3,
+		"rust":   4,
+		"deno":   5,
 	}
 )
 
-func (x DigitalOceanFunctionSize) Enum() *DigitalOceanFunctionSize {
-	p := new(DigitalOceanFunctionSize)
+func (x DigitalOceanFunctionRuntime) Enum() *DigitalOceanFunctionRuntime {
+	p := new(DigitalOceanFunctionRuntime)
 	*p = x
 	return p
 }
 
-func (x DigitalOceanFunctionSize) String() string {
+func (x DigitalOceanFunctionRuntime) String() string {
 	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
 }
 
-func (DigitalOceanFunctionSize) Descriptor() protoreflect.EnumDescriptor {
+func (DigitalOceanFunctionRuntime) Descriptor() protoreflect.EnumDescriptor {
 	return file_project_planton_provider_digitalocean_digitaloceanfunction_v1_spec_proto_enumTypes[0].Descriptor()
 }
 
-func (DigitalOceanFunctionSize) Type() protoreflect.EnumType {
+func (DigitalOceanFunctionRuntime) Type() protoreflect.EnumType {
 	return &file_project_planton_provider_digitalocean_digitaloceanfunction_v1_spec_proto_enumTypes[0]
 }
 
-func (x DigitalOceanFunctionSize) Number() protoreflect.EnumNumber {
+func (x DigitalOceanFunctionRuntime) Number() protoreflect.EnumNumber {
 	return protoreflect.EnumNumber(x)
 }
 
-// Deprecated: Use DigitalOceanFunctionSize.Descriptor instead.
-func (DigitalOceanFunctionSize) EnumDescriptor() ([]byte, []int) {
+// Deprecated: Use DigitalOceanFunctionRuntime.Descriptor instead.
+func (DigitalOceanFunctionRuntime) EnumDescriptor() ([]byte, []int) {
 	return file_project_planton_provider_digitalocean_digitaloceanfunction_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
-// Timezone options for Droplet’s system clock.
-type DigitalOceanFunctionTimezone int32
-
-const (
-	DigitalOceanFunctionTimezone_utc   DigitalOceanFunctionTimezone = 0 // coordinated universal time
-	DigitalOceanFunctionTimezone_local DigitalOceanFunctionTimezone = 1 // local timezone
-)
-
-// Enum value maps for DigitalOceanFunctionTimezone.
-var (
-	DigitalOceanFunctionTimezone_name = map[int32]string{
-		0: "utc",
-		1: "local",
-	}
-	DigitalOceanFunctionTimezone_value = map[string]int32{
-		"utc":   0,
-		"local": 1,
-	}
-)
-
-func (x DigitalOceanFunctionTimezone) Enum() *DigitalOceanFunctionTimezone {
-	p := new(DigitalOceanFunctionTimezone)
-	*p = x
-	return p
-}
-
-func (x DigitalOceanFunctionTimezone) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (DigitalOceanFunctionTimezone) Descriptor() protoreflect.EnumDescriptor {
-	return file_project_planton_provider_digitalocean_digitaloceanfunction_v1_spec_proto_enumTypes[1].Descriptor()
-}
-
-func (DigitalOceanFunctionTimezone) Type() protoreflect.EnumType {
-	return &file_project_planton_provider_digitalocean_digitaloceanfunction_v1_spec_proto_enumTypes[1]
-}
-
-func (x DigitalOceanFunctionTimezone) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use DigitalOceanFunctionTimezone.Descriptor instead.
-func (DigitalOceanFunctionTimezone) EnumDescriptor() ([]byte, []int) {
-	return file_project_planton_provider_digitalocean_digitaloceanfunction_v1_spec_proto_rawDescGZIP(), []int{1}
-}
-
-// DigitalOceanFunctionSpec defines the user configuration for a DigitalOcean Droplet (VM).
+// DigitalOceanFunctionSpec defines the configuration for deploying a serverless function on DigitalOcean.
 type DigitalOceanFunctionSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// droplet hostname (DNS-compatible, <=63 chars)
-	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	// region slug (datacenter location for the droplet)
+	// name is the name of the function. Must be unique within the project.
+	FunctionName string `protobuf:"bytes,1,opt,name=function_name,json=functionName,proto3" json:"function_name,omitempty"`
+	// region specifies the DigitalOcean region to deploy the function.
 	Region digitalocean.DigitalOceanRegion `protobuf:"varint,2,opt,name=region,proto3,enum=project.planton.provider.digitalocean.DigitalOceanRegion" json:"region,omitempty"`
-	// droplet size slug (plan identifier)
-	Size DigitalOceanFunctionSize `protobuf:"varint,3,opt,name=size,proto3,enum=project.planton.provider.digitalocean.digitaloceanfunction.v1.DigitalOceanFunctionSize" json:"size,omitempty"`
-	// image slug for the droplet base image (e.g. "ubuntu-22-04-x64")
-	Image string `protobuf:"bytes,4,opt,name=image,proto3" json:"image,omitempty"`
-	// target vpc network uuid for the droplet
-	Vpc *v1.StringValueOrRef `protobuf:"bytes,6,opt,name=vpc,proto3" json:"vpc,omitempty"`
-	// enable IPv6 networking (disabled by default)
-	EnableIpv6 bool `protobuf:"varint,7,opt,name=enable_ipv6,json=enableIpv6,proto3" json:"enable_ipv6,omitempty"`
-	// enable automated backups (disabled by default)
-	EnableBackups bool `protobuf:"varint,8,opt,name=enable_backups,json=enableBackups,proto3" json:"enable_backups,omitempty"`
-	// disable digitalocean monitoring agent (monitoring on by default)
-	DisableMonitoring bool `protobuf:"varint,9,opt,name=disable_monitoring,json=disableMonitoring,proto3" json:"disable_monitoring,omitempty"`
-	// block storage volumes to attach (must reside in same region)
-	VolumeIds []*v1.StringValueOrRef `protobuf:"bytes,10,rep,name=volume_ids,json=volumeIds,proto3" json:"volume_ids,omitempty"`
-	// tags to apply to the droplet (must be unique)
-	Tags []string `protobuf:"bytes,11,rep,name=tags,proto3" json:"tags,omitempty"`
-	// cloud-init user data script (<=32 KiB)
-	UserData string `protobuf:"bytes,12,opt,name=user_data,json=userData,proto3" json:"user_data,omitempty"`
-	// timezone setting for the droplet’s clock (default: UTC)
-	Timezone      DigitalOceanFunctionTimezone `protobuf:"varint,13,opt,name=timezone,proto3,enum=project.planton.provider.digitalocean.digitaloceanfunction.v1.DigitalOceanFunctionTimezone" json:"timezone,omitempty"`
+	// runtime specifies the runtime environment for the function (e.g., Node.js, Python, Go, Rust, Deno).
+	Runtime DigitalOceanFunctionRuntime `protobuf:"varint,3,opt,name=runtime,proto3,enum=project.planton.provider.digitalocean.digitaloceanfunction.v1.DigitalOceanFunctionRuntime" json:"runtime,omitempty"`
+	// entrypoint is an optional function or script entrypoint name within the code.
+	Entrypoint string `protobuf:"bytes,4,opt,name=entrypoint,proto3" json:"entrypoint,omitempty"`
+	// memory_mb is the memory allocated to the function (in megabytes). Defaults to 256 if not specified.
+	MemoryMb uint32 `protobuf:"varint,5,opt,name=memory_mb,json=memoryMb,proto3" json:"memory_mb,omitempty"`
+	// timeout_seconds is the maximum execution time for the function. Defaults to 60 seconds if not specified.
+	TimeoutSeconds uint32 `protobuf:"varint,6,opt,name=timeout_seconds,json=timeoutSeconds,proto3" json:"timeout_seconds,omitempty"`
+	// environment is a set of environment variables for the function (key-value pairs).
+	Env           map[string]string `protobuf:"bytes,7,rep,name=env,proto3" json:"env,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -189,9 +134,9 @@ func (*DigitalOceanFunctionSpec) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_digitalocean_digitaloceanfunction_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *DigitalOceanFunctionSpec) GetName() string {
+func (x *DigitalOceanFunctionSpec) GetFunctionName() string {
 	if x != nil {
-		return x.Name
+		return x.FunctionName
 	}
 	return ""
 }
@@ -203,107 +148,68 @@ func (x *DigitalOceanFunctionSpec) GetRegion() digitalocean.DigitalOceanRegion {
 	return digitalocean.DigitalOceanRegion(0)
 }
 
-func (x *DigitalOceanFunctionSpec) GetSize() DigitalOceanFunctionSize {
+func (x *DigitalOceanFunctionSpec) GetRuntime() DigitalOceanFunctionRuntime {
 	if x != nil {
-		return x.Size
+		return x.Runtime
 	}
-	return DigitalOceanFunctionSize_digital_ocean_function_size_unspecified
+	return DigitalOceanFunctionRuntime_digital_ocean_function_runtime_unspecified
 }
 
-func (x *DigitalOceanFunctionSpec) GetImage() string {
+func (x *DigitalOceanFunctionSpec) GetEntrypoint() string {
 	if x != nil {
-		return x.Image
+		return x.Entrypoint
 	}
 	return ""
 }
 
-func (x *DigitalOceanFunctionSpec) GetVpc() *v1.StringValueOrRef {
+func (x *DigitalOceanFunctionSpec) GetMemoryMb() uint32 {
 	if x != nil {
-		return x.Vpc
+		return x.MemoryMb
+	}
+	return 0
+}
+
+func (x *DigitalOceanFunctionSpec) GetTimeoutSeconds() uint32 {
+	if x != nil {
+		return x.TimeoutSeconds
+	}
+	return 0
+}
+
+func (x *DigitalOceanFunctionSpec) GetEnv() map[string]string {
+	if x != nil {
+		return x.Env
 	}
 	return nil
-}
-
-func (x *DigitalOceanFunctionSpec) GetEnableIpv6() bool {
-	if x != nil {
-		return x.EnableIpv6
-	}
-	return false
-}
-
-func (x *DigitalOceanFunctionSpec) GetEnableBackups() bool {
-	if x != nil {
-		return x.EnableBackups
-	}
-	return false
-}
-
-func (x *DigitalOceanFunctionSpec) GetDisableMonitoring() bool {
-	if x != nil {
-		return x.DisableMonitoring
-	}
-	return false
-}
-
-func (x *DigitalOceanFunctionSpec) GetVolumeIds() []*v1.StringValueOrRef {
-	if x != nil {
-		return x.VolumeIds
-	}
-	return nil
-}
-
-func (x *DigitalOceanFunctionSpec) GetTags() []string {
-	if x != nil {
-		return x.Tags
-	}
-	return nil
-}
-
-func (x *DigitalOceanFunctionSpec) GetUserData() string {
-	if x != nil {
-		return x.UserData
-	}
-	return ""
-}
-
-func (x *DigitalOceanFunctionSpec) GetTimezone() DigitalOceanFunctionTimezone {
-	if x != nil {
-		return x.Timezone
-	}
-	return DigitalOceanFunctionTimezone_utc
 }
 
 var File_project_planton_provider_digitalocean_digitaloceanfunction_v1_spec_proto protoreflect.FileDescriptor
 
 const file_project_planton_provider_digitalocean_digitaloceanfunction_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Hproject/planton/provider/digitalocean/digitaloceanfunction/v1/spec.proto\x12=project.planton.provider.digitalocean.digitaloceanfunction.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\x1a2project/planton/provider/digitalocean/region.proto\"\xe7\b\n" +
-	"\x18DigitalOceanFunctionSpec\x12?\n" +
-	"\x04name\x18\x01 \x01(\tB+\xbaH(\xc8\x01\x01r#\x18?2\x1f^[a-z0-9]([-a-z0-9]*[a-z0-9])?$R\x04name\x12Y\n" +
-	"\x06region\x18\x02 \x01(\x0e29.project.planton.provider.digitalocean.DigitalOceanRegionB\x06\xbaH\x03\xc8\x01\x01R\x06region\x12s\n" +
-	"\x04size\x18\x03 \x01(\x0e2W.project.planton.provider.digitalocean.digitaloceanfunction.v1.DigitalOceanFunctionSizeB\x06\xbaH\x03\xc8\x01\x01R\x04size\x12?\n" +
-	"\x05image\x18\x04 \x01(\tB)\xbaH&\xc8\x01\x01r!2\x1f^[a-z0-9]([-a-z0-9]*[a-z0-9])?$R\x05image\x12n\n" +
-	"\x03vpc\x18\x06 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB$\xbaH\x03\xc8\x01\x01\x88\xd4a\xbc\t\x92\xd4a\x15status.outputs.vpc_idR\x03vpc\x12\x1f\n" +
-	"\venable_ipv6\x18\a \x01(\bR\n" +
-	"enableIpv6\x12%\n" +
-	"\x0eenable_backups\x18\b \x01(\bR\renableBackups\x12-\n" +
-	"\x12disable_monitoring\x18\t \x01(\bR\x11disableMonitoring\x12x\n" +
+	"Hproject/planton/provider/digitalocean/digitaloceanfunction/v1/spec.proto\x12=project.planton.provider.digitalocean.digitaloceanfunction.v1\x1a\x1bbuf/validate/validate.proto\x1a2project/planton/provider/digitalocean/region.proto\x1a,project/planton/shared/options/options.proto\"\xc3\x04\n" +
+	"\x18DigitalOceanFunctionSpec\x12+\n" +
+	"\rfunction_name\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\ffunctionName\x12Y\n" +
+	"\x06region\x18\x02 \x01(\x0e29.project.planton.provider.digitalocean.DigitalOceanRegionB\x06\xbaH\x03\xc8\x01\x01R\x06region\x12|\n" +
+	"\aruntime\x18\x03 \x01(\x0e2Z.project.planton.provider.digitalocean.digitaloceanfunction.v1.DigitalOceanFunctionRuntimeB\x06\xbaH\x03\xc8\x01\x01R\aruntime\x12\x1e\n" +
 	"\n" +
-	"volume_ids\x18\n" +
-	" \x03(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB!\x88\xd4a\xbb\t\x92\xd4a\x18status.outputs.volume_idR\tvolumeIds\x12\x1c\n" +
-	"\x04tags\x18\v \x03(\tB\b\xbaH\x05\x92\x01\x02\x18\x01R\x04tags\x12&\n" +
-	"\tuser_data\x18\f \x01(\tB\t\xbaH\x06r\x04(\x80\x80\x02R\buserData\x12\x80\x01\n" +
-	"\btimezone\x18\r \x01(\x0e2[.project.planton.provider.digitalocean.digitaloceanfunction.v1.DigitalOceanFunctionTimezoneB\a\x8a\xa6\x1d\x03UTCR\btimezone:\xce\x01\xbaH\xca\x01\x1a\xc7\x01\n" +
-	"\x0essh_key_format\x12Ieach ssh_key_fingerprint must be a 16-byte hex fingerprint or a reference\x1ajssh_key_fingerprints.all(x, x.value.matches('^[0-9a-f]{2}(:[0-9a-f]{2}){15}$') || x.value_from.name != \"\")*\x8c\x01\n" +
-	"\x18DigitalOceanFunctionSize\x12+\n" +
-	"'digital_ocean_function_size_unspecified\x10\x00\x12\x0f\n" +
-	"\vs_2vcpu_4gb\x10\x01\x12\x0f\n" +
-	"\vs_4vcpu_8gb\x10\x02\x12\x0f\n" +
-	"\vg_2vcpu_8gb\x10\x03\x12\x10\n" +
-	"\fg_4vcpu_16gb\x10\x04*2\n" +
-	"\x1cDigitalOceanFunctionTimezone\x12\a\n" +
-	"\x03utc\x10\x00\x12\t\n" +
-	"\x05local\x10\x01B\xf0\x03\n" +
+	"entrypoint\x18\x04 \x01(\tR\n" +
+	"entrypoint\x12$\n" +
+	"\tmemory_mb\x18\x05 \x01(\rB\a\x92\xa6\x1d\x03256R\bmemoryMb\x12/\n" +
+	"\x0ftimeout_seconds\x18\x06 \x01(\rB\x06\x92\xa6\x1d\x0260R\x0etimeoutSeconds\x12r\n" +
+	"\x03env\x18\a \x03(\v2`.project.planton.provider.digitalocean.digitaloceanfunction.v1.DigitalOceanFunctionSpec.EnvEntryR\x03env\x1a6\n" +
+	"\bEnvEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01*\x81\x01\n" +
+	"\x1bDigitalOceanFunctionRuntime\x12.\n" +
+	"*digital_ocean_function_runtime_unspecified\x10\x00\x12\n" +
+	"\n" +
+	"\x06nodejs\x10\x01\x12\n" +
+	"\n" +
+	"\x06python\x10\x02\x12\x06\n" +
+	"\x02go\x10\x03\x12\b\n" +
+	"\x04rust\x10\x04\x12\b\n" +
+	"\x04deno\x10\x05B\xf0\x03\n" +
 	"Acom.project.planton.provider.digitalocean.digitaloceanfunction.v1B\tSpecProtoP\x01Z\x84\x01github.com/project-planton/project-planton/apis/project/planton/provider/digitalocean/digitaloceanfunction/v1;digitaloceanfunctionv1\xa2\x02\x05PPPDD\xaa\x02=Project.Planton.Provider.Digitalocean.Digitaloceanfunction.V1\xca\x02=Project\\Planton\\Provider\\Digitalocean\\Digitaloceanfunction\\V1\xe2\x02IProject\\Planton\\Provider\\Digitalocean\\Digitaloceanfunction\\V1\\GPBMetadata\xea\x02BProject::Planton::Provider::Digitalocean::Digitaloceanfunction::V1b\x06proto3"
 
 var (
@@ -318,26 +224,23 @@ func file_project_planton_provider_digitalocean_digitaloceanfunction_v1_spec_pro
 	return file_project_planton_provider_digitalocean_digitaloceanfunction_v1_spec_proto_rawDescData
 }
 
-var file_project_planton_provider_digitalocean_digitaloceanfunction_v1_spec_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
-var file_project_planton_provider_digitalocean_digitaloceanfunction_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+var file_project_planton_provider_digitalocean_digitaloceanfunction_v1_spec_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_project_planton_provider_digitalocean_digitaloceanfunction_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_digitalocean_digitaloceanfunction_v1_spec_proto_goTypes = []any{
-	(DigitalOceanFunctionSize)(0),        // 0: project.planton.provider.digitalocean.digitaloceanfunction.v1.DigitalOceanFunctionSize
-	(DigitalOceanFunctionTimezone)(0),    // 1: project.planton.provider.digitalocean.digitaloceanfunction.v1.DigitalOceanFunctionTimezone
-	(*DigitalOceanFunctionSpec)(nil),     // 2: project.planton.provider.digitalocean.digitaloceanfunction.v1.DigitalOceanFunctionSpec
+	(DigitalOceanFunctionRuntime)(0),     // 0: project.planton.provider.digitalocean.digitaloceanfunction.v1.DigitalOceanFunctionRuntime
+	(*DigitalOceanFunctionSpec)(nil),     // 1: project.planton.provider.digitalocean.digitaloceanfunction.v1.DigitalOceanFunctionSpec
+	nil,                                  // 2: project.planton.provider.digitalocean.digitaloceanfunction.v1.DigitalOceanFunctionSpec.EnvEntry
 	(digitalocean.DigitalOceanRegion)(0), // 3: project.planton.provider.digitalocean.DigitalOceanRegion
-	(*v1.StringValueOrRef)(nil),          // 4: project.planton.shared.foreignkey.v1.StringValueOrRef
 }
 var file_project_planton_provider_digitalocean_digitaloceanfunction_v1_spec_proto_depIdxs = []int32{
 	3, // 0: project.planton.provider.digitalocean.digitaloceanfunction.v1.DigitalOceanFunctionSpec.region:type_name -> project.planton.provider.digitalocean.DigitalOceanRegion
-	0, // 1: project.planton.provider.digitalocean.digitaloceanfunction.v1.DigitalOceanFunctionSpec.size:type_name -> project.planton.provider.digitalocean.digitaloceanfunction.v1.DigitalOceanFunctionSize
-	4, // 2: project.planton.provider.digitalocean.digitaloceanfunction.v1.DigitalOceanFunctionSpec.vpc:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
-	4, // 3: project.planton.provider.digitalocean.digitaloceanfunction.v1.DigitalOceanFunctionSpec.volume_ids:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
-	1, // 4: project.planton.provider.digitalocean.digitaloceanfunction.v1.DigitalOceanFunctionSpec.timezone:type_name -> project.planton.provider.digitalocean.digitaloceanfunction.v1.DigitalOceanFunctionTimezone
-	5, // [5:5] is the sub-list for method output_type
-	5, // [5:5] is the sub-list for method input_type
-	5, // [5:5] is the sub-list for extension type_name
-	5, // [5:5] is the sub-list for extension extendee
-	0, // [0:5] is the sub-list for field type_name
+	0, // 1: project.planton.provider.digitalocean.digitaloceanfunction.v1.DigitalOceanFunctionSpec.runtime:type_name -> project.planton.provider.digitalocean.digitaloceanfunction.v1.DigitalOceanFunctionRuntime
+	2, // 2: project.planton.provider.digitalocean.digitaloceanfunction.v1.DigitalOceanFunctionSpec.env:type_name -> project.planton.provider.digitalocean.digitaloceanfunction.v1.DigitalOceanFunctionSpec.EnvEntry
+	3, // [3:3] is the sub-list for method output_type
+	3, // [3:3] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_provider_digitalocean_digitaloceanfunction_v1_spec_proto_init() }
@@ -350,8 +253,8 @@ func file_project_planton_provider_digitalocean_digitaloceanfunction_v1_spec_pro
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_project_planton_provider_digitalocean_digitaloceanfunction_v1_spec_proto_rawDesc), len(file_project_planton_provider_digitalocean_digitaloceanfunction_v1_spec_proto_rawDesc)),
-			NumEnums:      2,
-			NumMessages:   1,
+			NumEnums:      1,
+			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

@@ -21,19 +21,13 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// DigitalOceanKubernetesNodePoolStackOutputs captures the resulting Droplet info after provisioning.
+// DigitalOceanKubernetesNodePoolStackOutputs captures the outputs after provisioning a DigitalOcean Kubernetes Node Pool.
 type DigitalOceanKubernetesNodePoolStackOutputs struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// droplet unique identifier (DigitalOcean ID)
-	DropletId string `protobuf:"bytes,1,opt,name=droplet_id,json=dropletId,proto3" json:"droplet_id,omitempty"`
-	// primary IPv4 address (public if available, otherwise private)
-	Ipv4Address string `protobuf:"bytes,2,opt,name=ipv4_address,json=ipv4Address,proto3" json:"ipv4_address,omitempty"`
-	// IPv6 address (if IPv6 was enabled)
-	Ipv6Address string `protobuf:"bytes,3,opt,name=ipv6_address,json=ipv6Address,proto3" json:"ipv6_address,omitempty"`
-	// image ID of the droplet’s base image
-	ImageId int64 `protobuf:"varint,6,opt,name=image_id,json=imageId,proto3" json:"image_id,omitempty"`
-	// VPC network UUID in which the droplet resides
-	VpcUuid       string `protobuf:"bytes,7,opt,name=vpc_uuid,json=vpcUuid,proto3" json:"vpc_uuid,omitempty"`
+	// The unique identifier (UUID) of the created node pool.
+	NodePoolId string `protobuf:"bytes,1,opt,name=node_pool_id,json=nodePoolId,proto3" json:"node_pool_id,omitempty"`
+	// The IDs of the individual Droplet nodes in the pool.
+	NodeIds       []string `protobuf:"bytes,2,rep,name=node_ids,json=nodeIds,proto3" json:"node_ids,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -68,53 +62,29 @@ func (*DigitalOceanKubernetesNodePoolStackOutputs) Descriptor() ([]byte, []int) 
 	return file_project_planton_provider_digitalocean_digitaloceankubernetesnodepool_v1_stack_outputs_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *DigitalOceanKubernetesNodePoolStackOutputs) GetDropletId() string {
+func (x *DigitalOceanKubernetesNodePoolStackOutputs) GetNodePoolId() string {
 	if x != nil {
-		return x.DropletId
+		return x.NodePoolId
 	}
 	return ""
 }
 
-func (x *DigitalOceanKubernetesNodePoolStackOutputs) GetIpv4Address() string {
+func (x *DigitalOceanKubernetesNodePoolStackOutputs) GetNodeIds() []string {
 	if x != nil {
-		return x.Ipv4Address
+		return x.NodeIds
 	}
-	return ""
-}
-
-func (x *DigitalOceanKubernetesNodePoolStackOutputs) GetIpv6Address() string {
-	if x != nil {
-		return x.Ipv6Address
-	}
-	return ""
-}
-
-func (x *DigitalOceanKubernetesNodePoolStackOutputs) GetImageId() int64 {
-	if x != nil {
-		return x.ImageId
-	}
-	return 0
-}
-
-func (x *DigitalOceanKubernetesNodePoolStackOutputs) GetVpcUuid() string {
-	if x != nil {
-		return x.VpcUuid
-	}
-	return ""
+	return nil
 }
 
 var File_project_planton_provider_digitalocean_digitaloceankubernetesnodepool_v1_stack_outputs_proto protoreflect.FileDescriptor
 
 const file_project_planton_provider_digitalocean_digitaloceankubernetesnodepool_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"[project/planton/provider/digitalocean/digitaloceankubernetesnodepool/v1/stack_outputs.proto\x12Gproject.planton.provider.digitalocean.digitaloceankubernetesnodepool.v1\"\xc7\x01\n" +
-	"*DigitalOceanKubernetesNodePoolStackOutputs\x12\x1d\n" +
-	"\n" +
-	"droplet_id\x18\x01 \x01(\tR\tdropletId\x12!\n" +
-	"\fipv4_address\x18\x02 \x01(\tR\vipv4Address\x12!\n" +
-	"\fipv6_address\x18\x03 \x01(\tR\vipv6Address\x12\x19\n" +
-	"\bimage_id\x18\x06 \x01(\x03R\aimageId\x12\x19\n" +
-	"\bvpc_uuid\x18\a \x01(\tR\avpcUuidB\xbe\x04\n" +
+	"[project/planton/provider/digitalocean/digitaloceankubernetesnodepool/v1/stack_outputs.proto\x12Gproject.planton.provider.digitalocean.digitaloceankubernetesnodepool.v1\"i\n" +
+	"*DigitalOceanKubernetesNodePoolStackOutputs\x12 \n" +
+	"\fnode_pool_id\x18\x01 \x01(\tR\n" +
+	"nodePoolId\x12\x19\n" +
+	"\bnode_ids\x18\x02 \x03(\tR\anodeIdsB\xbe\x04\n" +
 	"Kcom.project.planton.provider.digitalocean.digitaloceankubernetesnodepool.v1B\x11StackOutputsProtoP\x01Z\x98\x01github.com/project-planton/project-planton/apis/project/planton/provider/digitalocean/digitaloceankubernetesnodepool/v1;digitaloceankubernetesnodepoolv1\xa2\x02\x05PPPDD\xaa\x02GProject.Planton.Provider.Digitalocean.Digitaloceankubernetesnodepool.V1\xca\x02GProject\\Planton\\Provider\\Digitalocean\\Digitaloceankubernetesnodepool\\V1\xe2\x02SProject\\Planton\\Provider\\Digitalocean\\Digitaloceankubernetesnodepool\\V1\\GPBMetadata\xea\x02LProject::Planton::Provider::Digitalocean::Digitaloceankubernetesnodepool::V1b\x06proto3"
 
 var (

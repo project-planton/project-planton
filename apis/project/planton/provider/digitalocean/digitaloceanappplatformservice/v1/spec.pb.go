@@ -25,136 +25,175 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// Supported Droplet size slugs (plans).
-type DigitalOceanAppPlatformServiceSize int32
+// DigitalOceanAppPlatformServiceType enumerates the types of services supported on DigitalOcean App Platform.
+type DigitalOceanAppPlatformServiceType int32
 
 const (
-	DigitalOceanAppPlatformServiceSize_digital_ocean_app_platform_service_size_unspecified DigitalOceanAppPlatformServiceSize = 0
-	DigitalOceanAppPlatformServiceSize_s_2vcpu_4gb                                         DigitalOceanAppPlatformServiceSize = 1 // basic: 2 vCPUs, 4 GB RAM
-	DigitalOceanAppPlatformServiceSize_s_4vcpu_8gb                                         DigitalOceanAppPlatformServiceSize = 2 // basic: 4 vCPUs, 8 GB RAM
-	DigitalOceanAppPlatformServiceSize_g_2vcpu_8gb                                         DigitalOceanAppPlatformServiceSize = 3 // general purpose: 2 vCPUs (dedicated), 8 GB RAM
-	DigitalOceanAppPlatformServiceSize_g_4vcpu_16gb                                        DigitalOceanAppPlatformServiceSize = 4 // general purpose: 4 vCPUs (dedicated), 16 GB RAM
+	DigitalOceanAppPlatformServiceType_digital_ocean_app_platform_service_type_unspecified DigitalOceanAppPlatformServiceType = 0
+	DigitalOceanAppPlatformServiceType_web_service                                         DigitalOceanAppPlatformServiceType = 1 // a web service accessible via http (receives external web traffic).
+	DigitalOceanAppPlatformServiceType_worker                                              DigitalOceanAppPlatformServiceType = 2 // a worker service (background processing, not exposed via http).
+	DigitalOceanAppPlatformServiceType_job                                                 DigitalOceanAppPlatformServiceType = 3 // a one-off job or periodic task.
 )
 
-// Enum value maps for DigitalOceanAppPlatformServiceSize.
+// Enum value maps for DigitalOceanAppPlatformServiceType.
 var (
-	DigitalOceanAppPlatformServiceSize_name = map[int32]string{
-		0: "digital_ocean_app_platform_service_size_unspecified",
-		1: "s_2vcpu_4gb",
-		2: "s_4vcpu_8gb",
-		3: "g_2vcpu_8gb",
-		4: "g_4vcpu_16gb",
+	DigitalOceanAppPlatformServiceType_name = map[int32]string{
+		0: "digital_ocean_app_platform_service_type_unspecified",
+		1: "web_service",
+		2: "worker",
+		3: "job",
 	}
-	DigitalOceanAppPlatformServiceSize_value = map[string]int32{
-		"digital_ocean_app_platform_service_size_unspecified": 0,
-		"s_2vcpu_4gb":  1,
-		"s_4vcpu_8gb":  2,
-		"g_2vcpu_8gb":  3,
-		"g_4vcpu_16gb": 4,
+	DigitalOceanAppPlatformServiceType_value = map[string]int32{
+		"digital_ocean_app_platform_service_type_unspecified": 0,
+		"web_service": 1,
+		"worker":      2,
+		"job":         3,
 	}
 )
 
-func (x DigitalOceanAppPlatformServiceSize) Enum() *DigitalOceanAppPlatformServiceSize {
-	p := new(DigitalOceanAppPlatformServiceSize)
+func (x DigitalOceanAppPlatformServiceType) Enum() *DigitalOceanAppPlatformServiceType {
+	p := new(DigitalOceanAppPlatformServiceType)
 	*p = x
 	return p
 }
 
-func (x DigitalOceanAppPlatformServiceSize) String() string {
+func (x DigitalOceanAppPlatformServiceType) String() string {
 	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
 }
 
-func (DigitalOceanAppPlatformServiceSize) Descriptor() protoreflect.EnumDescriptor {
+func (DigitalOceanAppPlatformServiceType) Descriptor() protoreflect.EnumDescriptor {
 	return file_project_planton_provider_digitalocean_digitaloceanappplatformservice_v1_spec_proto_enumTypes[0].Descriptor()
 }
 
-func (DigitalOceanAppPlatformServiceSize) Type() protoreflect.EnumType {
+func (DigitalOceanAppPlatformServiceType) Type() protoreflect.EnumType {
 	return &file_project_planton_provider_digitalocean_digitaloceanappplatformservice_v1_spec_proto_enumTypes[0]
 }
 
-func (x DigitalOceanAppPlatformServiceSize) Number() protoreflect.EnumNumber {
+func (x DigitalOceanAppPlatformServiceType) Number() protoreflect.EnumNumber {
 	return protoreflect.EnumNumber(x)
 }
 
-// Deprecated: Use DigitalOceanAppPlatformServiceSize.Descriptor instead.
-func (DigitalOceanAppPlatformServiceSize) EnumDescriptor() ([]byte, []int) {
+// Deprecated: Use DigitalOceanAppPlatformServiceType.Descriptor instead.
+func (DigitalOceanAppPlatformServiceType) EnumDescriptor() ([]byte, []int) {
 	return file_project_planton_provider_digitalocean_digitaloceanappplatformservice_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
-// Timezone options for Droplet’s system clock.
-type DigitalOceanAppPlatformServiceTimezone int32
+// DigitalOceanAppPlatformInstanceSize enumerates the available instance size plans for App Platform services.
+// These define resource tiers for the service instances (CPU, RAM, etc.).
+type DigitalOceanAppPlatformInstanceSize int32
 
 const (
-	DigitalOceanAppPlatformServiceTimezone_utc   DigitalOceanAppPlatformServiceTimezone = 0 // coordinated universal time
-	DigitalOceanAppPlatformServiceTimezone_local DigitalOceanAppPlatformServiceTimezone = 1 // local timezone
+	DigitalOceanAppPlatformInstanceSize_digital_ocean_app_platform_instance_size_unspecified DigitalOceanAppPlatformInstanceSize = 0
+	DigitalOceanAppPlatformInstanceSize_basic_xxs                                            DigitalOceanAppPlatformInstanceSize = 1
+	DigitalOceanAppPlatformInstanceSize_basic_xs                                             DigitalOceanAppPlatformInstanceSize = 2
+	DigitalOceanAppPlatformInstanceSize_basic_s                                              DigitalOceanAppPlatformInstanceSize = 3
+	DigitalOceanAppPlatformInstanceSize_basic_m                                              DigitalOceanAppPlatformInstanceSize = 4
+	DigitalOceanAppPlatformInstanceSize_basic_l                                              DigitalOceanAppPlatformInstanceSize = 5
+	DigitalOceanAppPlatformInstanceSize_professional_xs                                      DigitalOceanAppPlatformInstanceSize = 6
+	DigitalOceanAppPlatformInstanceSize_professional_s                                       DigitalOceanAppPlatformInstanceSize = 7
+	DigitalOceanAppPlatformInstanceSize_professional_m                                       DigitalOceanAppPlatformInstanceSize = 8
+	DigitalOceanAppPlatformInstanceSize_professional_l                                       DigitalOceanAppPlatformInstanceSize = 9
+	DigitalOceanAppPlatformInstanceSize_professional_xl                                      DigitalOceanAppPlatformInstanceSize = 10
 )
 
-// Enum value maps for DigitalOceanAppPlatformServiceTimezone.
+// Enum value maps for DigitalOceanAppPlatformInstanceSize.
 var (
-	DigitalOceanAppPlatformServiceTimezone_name = map[int32]string{
-		0: "utc",
-		1: "local",
+	DigitalOceanAppPlatformInstanceSize_name = map[int32]string{
+		0:  "digital_ocean_app_platform_instance_size_unspecified",
+		1:  "basic_xxs",
+		2:  "basic_xs",
+		3:  "basic_s",
+		4:  "basic_m",
+		5:  "basic_l",
+		6:  "professional_xs",
+		7:  "professional_s",
+		8:  "professional_m",
+		9:  "professional_l",
+		10: "professional_xl",
 	}
-	DigitalOceanAppPlatformServiceTimezone_value = map[string]int32{
-		"utc":   0,
-		"local": 1,
+	DigitalOceanAppPlatformInstanceSize_value = map[string]int32{
+		"digital_ocean_app_platform_instance_size_unspecified": 0,
+		"basic_xxs":       1,
+		"basic_xs":        2,
+		"basic_s":         3,
+		"basic_m":         4,
+		"basic_l":         5,
+		"professional_xs": 6,
+		"professional_s":  7,
+		"professional_m":  8,
+		"professional_l":  9,
+		"professional_xl": 10,
 	}
 )
 
-func (x DigitalOceanAppPlatformServiceTimezone) Enum() *DigitalOceanAppPlatformServiceTimezone {
-	p := new(DigitalOceanAppPlatformServiceTimezone)
+func (x DigitalOceanAppPlatformInstanceSize) Enum() *DigitalOceanAppPlatformInstanceSize {
+	p := new(DigitalOceanAppPlatformInstanceSize)
 	*p = x
 	return p
 }
 
-func (x DigitalOceanAppPlatformServiceTimezone) String() string {
+func (x DigitalOceanAppPlatformInstanceSize) String() string {
 	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
 }
 
-func (DigitalOceanAppPlatformServiceTimezone) Descriptor() protoreflect.EnumDescriptor {
+func (DigitalOceanAppPlatformInstanceSize) Descriptor() protoreflect.EnumDescriptor {
 	return file_project_planton_provider_digitalocean_digitaloceanappplatformservice_v1_spec_proto_enumTypes[1].Descriptor()
 }
 
-func (DigitalOceanAppPlatformServiceTimezone) Type() protoreflect.EnumType {
+func (DigitalOceanAppPlatformInstanceSize) Type() protoreflect.EnumType {
 	return &file_project_planton_provider_digitalocean_digitaloceanappplatformservice_v1_spec_proto_enumTypes[1]
 }
 
-func (x DigitalOceanAppPlatformServiceTimezone) Number() protoreflect.EnumNumber {
+func (x DigitalOceanAppPlatformInstanceSize) Number() protoreflect.EnumNumber {
 	return protoreflect.EnumNumber(x)
 }
 
-// Deprecated: Use DigitalOceanAppPlatformServiceTimezone.Descriptor instead.
-func (DigitalOceanAppPlatformServiceTimezone) EnumDescriptor() ([]byte, []int) {
+// Deprecated: Use DigitalOceanAppPlatformInstanceSize.Descriptor instead.
+func (DigitalOceanAppPlatformInstanceSize) EnumDescriptor() ([]byte, []int) {
 	return file_project_planton_provider_digitalocean_digitaloceanappplatformservice_v1_spec_proto_rawDescGZIP(), []int{1}
 }
 
-// DigitalOceanAppPlatformServiceSpec defines the user configuration for a DigitalOcean Droplet (VM).
+// DigitalOceanAppPlatformServiceSpec defines the specification required to deploy a containerized service or application on DigitalOcean App Platform.
+// It focuses on essential fields (following the 80/20 principle) such as the service's source (either a git repository or a container image from DigitalOcean Container Registry), resource sizing, scaling, and optional custom domain configuration.
 type DigitalOceanAppPlatformServiceSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// droplet hostname (DNS-compatible, <=63 chars)
-	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	// region slug (datacenter location for the droplet)
+	// name of the app (must be unique within the user's DigitalOcean account).
+	// Constraints: should be DNS-friendly (e.g., lowercase alphanumeric and hyphens), maximum 63 characters.
+	ServiceName string `protobuf:"bytes,1,opt,name=service_name,json=serviceName,proto3" json:"service_name,omitempty"`
+	// region in which to deploy the app (DigitalOcean data center region slug).
 	Region digitalocean.DigitalOceanRegion `protobuf:"varint,2,opt,name=region,proto3,enum=project.planton.provider.digitalocean.DigitalOceanRegion" json:"region,omitempty"`
-	// droplet size slug (plan identifier)
-	Size DigitalOceanAppPlatformServiceSize `protobuf:"varint,3,opt,name=size,proto3,enum=project.planton.provider.digitalocean.digitaloceanappplatformservice.v1.DigitalOceanAppPlatformServiceSize" json:"size,omitempty"`
-	// image slug for the droplet base image (e.g. "ubuntu-22-04-x64")
-	Image string `protobuf:"bytes,4,opt,name=image,proto3" json:"image,omitempty"`
-	// target vpc network uuid for the droplet
-	Vpc *v1.StringValueOrRef `protobuf:"bytes,6,opt,name=vpc,proto3" json:"vpc,omitempty"`
-	// enable IPv6 networking (disabled by default)
-	EnableIpv6 bool `protobuf:"varint,7,opt,name=enable_ipv6,json=enableIpv6,proto3" json:"enable_ipv6,omitempty"`
-	// enable automated backups (disabled by default)
-	EnableBackups bool `protobuf:"varint,8,opt,name=enable_backups,json=enableBackups,proto3" json:"enable_backups,omitempty"`
-	// disable digitalocean monitoring agent (monitoring on by default)
-	DisableMonitoring bool `protobuf:"varint,9,opt,name=disable_monitoring,json=disableMonitoring,proto3" json:"disable_monitoring,omitempty"`
-	// block storage volumes to attach (must reside in same region)
-	VolumeIds []*v1.StringValueOrRef `protobuf:"bytes,10,rep,name=volume_ids,json=volumeIds,proto3" json:"volume_ids,omitempty"`
-	// tags to apply to the droplet (must be unique)
-	Tags []string `protobuf:"bytes,11,rep,name=tags,proto3" json:"tags,omitempty"`
-	// cloud-init user data script (<=32 KiB)
-	UserData string `protobuf:"bytes,12,opt,name=user_data,json=userData,proto3" json:"user_data,omitempty"`
-	// timezone setting for the droplet’s clock (default: UTC)
-	Timezone      DigitalOceanAppPlatformServiceTimezone `protobuf:"varint,13,opt,name=timezone,proto3,enum=project.planton.provider.digitalocean.digitaloceanappplatformservice.v1.DigitalOceanAppPlatformServiceTimezone" json:"timezone,omitempty"`
+	// type of service being deployed (e.g., a web service that receives HTTP traffic, a background worker, or a one-off job).
+	ServiceType DigitalOceanAppPlatformServiceType `protobuf:"varint,3,opt,name=service_type,json=serviceType,proto3,enum=project.planton.provider.digitalocean.digitaloceanappplatformservice.v1.DigitalOceanAppPlatformServiceType" json:"service_type,omitempty"`
+	// source configuration for the app. Choose exactly one: either build from a git repository or deploy an existing container image from a registry.
+	//
+	// Types that are valid to be assigned to Source:
+	//
+	//	*DigitalOceanAppPlatformServiceSpec_GitSource
+	//	*DigitalOceanAppPlatformServiceSpec_ImageSource
+	Source isDigitalOceanAppPlatformServiceSpec_Source `protobuf_oneof:"source"`
+	// instance_size_slug specifies the instance size (plan) for this service.
+	// Determines the CPU/memory allocated per instance. Common options include "basic-xxs", "basic-xs", "basic-s", "basic-m", and professional tiers.
+	// Default (if not specified by user): "basic-xxs".
+	InstanceSizeSlug DigitalOceanAppPlatformInstanceSize `protobuf:"varint,6,opt,name=instance_size_slug,json=instanceSizeSlug,proto3,enum=project.planton.provider.digitalocean.digitaloceanappplatformservice.v1.DigitalOceanAppPlatformInstanceSize" json:"instance_size_slug,omitempty"`
+	// instance_count is the number of instances (containers) to run for this service.
+	// Default: 1.
+	InstanceCount uint32 `protobuf:"varint,7,opt,name=instance_count,json=instanceCount,proto3" json:"instance_count,omitempty"`
+	// enable_autoscale controls whether to use auto-scaling for this service.
+	// If true, the service will automatically scale between the specified min and max instance counts based on load.
+	// Default: false (manual scaling).
+	EnableAutoscale bool `protobuf:"varint,8,opt,name=enable_autoscale,json=enableAutoscale,proto3" json:"enable_autoscale,omitempty"`
+	// min_instance_count specifies the minimum number of instances to run when auto-scaling is enabled.
+	// Required if enable_autoscale = true.
+	MinInstanceCount uint32 `protobuf:"varint,9,opt,name=min_instance_count,json=minInstanceCount,proto3" json:"min_instance_count,omitempty"`
+	// max_instance_count specifies the maximum number of instances to run when auto-scaling is enabled.
+	// Required if enable_autoscale = true.
+	MaxInstanceCount uint32 `protobuf:"varint,10,opt,name=max_instance_count,json=maxInstanceCount,proto3" json:"max_instance_count,omitempty"`
+	// env is a map of environment variables to set in the app's runtime environment.
+	// Keys are variable names and values are their corresponding values.
+	Env map[string]string `protobuf:"bytes,11,rep,name=env,proto3" json:"env,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	// custom_domain is an optional custom domain to use for the app, in addition to the default ondigitalocean.app hostname.
+	// Provide a reference to a DigitalOceanDnsZone resource (typically its domain name). The system will create the necessary DNS records.
+	CustomDomain  *v1.StringValueOrRef `protobuf:"bytes,12,opt,name=custom_domain,json=customDomain,proto3" json:"custom_domain,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -189,9 +228,9 @@ func (*DigitalOceanAppPlatformServiceSpec) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_digitalocean_digitaloceanappplatformservice_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *DigitalOceanAppPlatformServiceSpec) GetName() string {
+func (x *DigitalOceanAppPlatformServiceSpec) GetServiceName() string {
 	if x != nil {
-		return x.Name
+		return x.ServiceName
 	}
 	return ""
 }
@@ -203,107 +242,305 @@ func (x *DigitalOceanAppPlatformServiceSpec) GetRegion() digitalocean.DigitalOce
 	return digitalocean.DigitalOceanRegion(0)
 }
 
-func (x *DigitalOceanAppPlatformServiceSpec) GetSize() DigitalOceanAppPlatformServiceSize {
+func (x *DigitalOceanAppPlatformServiceSpec) GetServiceType() DigitalOceanAppPlatformServiceType {
 	if x != nil {
-		return x.Size
+		return x.ServiceType
 	}
-	return DigitalOceanAppPlatformServiceSize_digital_ocean_app_platform_service_size_unspecified
+	return DigitalOceanAppPlatformServiceType_digital_ocean_app_platform_service_type_unspecified
 }
 
-func (x *DigitalOceanAppPlatformServiceSpec) GetImage() string {
+func (x *DigitalOceanAppPlatformServiceSpec) GetSource() isDigitalOceanAppPlatformServiceSpec_Source {
 	if x != nil {
-		return x.Image
+		return x.Source
+	}
+	return nil
+}
+
+func (x *DigitalOceanAppPlatformServiceSpec) GetGitSource() *DigitalOceanAppPlatformGitSource {
+	if x != nil {
+		if x, ok := x.Source.(*DigitalOceanAppPlatformServiceSpec_GitSource); ok {
+			return x.GitSource
+		}
+	}
+	return nil
+}
+
+func (x *DigitalOceanAppPlatformServiceSpec) GetImageSource() *DigitalOceanAppPlatformRegistrySource {
+	if x != nil {
+		if x, ok := x.Source.(*DigitalOceanAppPlatformServiceSpec_ImageSource); ok {
+			return x.ImageSource
+		}
+	}
+	return nil
+}
+
+func (x *DigitalOceanAppPlatformServiceSpec) GetInstanceSizeSlug() DigitalOceanAppPlatformInstanceSize {
+	if x != nil {
+		return x.InstanceSizeSlug
+	}
+	return DigitalOceanAppPlatformInstanceSize_digital_ocean_app_platform_instance_size_unspecified
+}
+
+func (x *DigitalOceanAppPlatformServiceSpec) GetInstanceCount() uint32 {
+	if x != nil {
+		return x.InstanceCount
+	}
+	return 0
+}
+
+func (x *DigitalOceanAppPlatformServiceSpec) GetEnableAutoscale() bool {
+	if x != nil {
+		return x.EnableAutoscale
+	}
+	return false
+}
+
+func (x *DigitalOceanAppPlatformServiceSpec) GetMinInstanceCount() uint32 {
+	if x != nil {
+		return x.MinInstanceCount
+	}
+	return 0
+}
+
+func (x *DigitalOceanAppPlatformServiceSpec) GetMaxInstanceCount() uint32 {
+	if x != nil {
+		return x.MaxInstanceCount
+	}
+	return 0
+}
+
+func (x *DigitalOceanAppPlatformServiceSpec) GetEnv() map[string]string {
+	if x != nil {
+		return x.Env
+	}
+	return nil
+}
+
+func (x *DigitalOceanAppPlatformServiceSpec) GetCustomDomain() *v1.StringValueOrRef {
+	if x != nil {
+		return x.CustomDomain
+	}
+	return nil
+}
+
+type isDigitalOceanAppPlatformServiceSpec_Source interface {
+	isDigitalOceanAppPlatformServiceSpec_Source()
+}
+
+type DigitalOceanAppPlatformServiceSpec_GitSource struct {
+	// git repository source configuration (for App Platform to build and deploy from source code).
+	GitSource *DigitalOceanAppPlatformGitSource `protobuf:"bytes,4,opt,name=git_source,json=gitSource,proto3,oneof"`
+}
+
+type DigitalOceanAppPlatformServiceSpec_ImageSource struct {
+	// container image source configuration (deploy a pre-built image, typically from DigitalOcean Container Registry).
+	ImageSource *DigitalOceanAppPlatformRegistrySource `protobuf:"bytes,5,opt,name=image_source,json=imageSource,proto3,oneof"`
+}
+
+func (*DigitalOceanAppPlatformServiceSpec_GitSource) isDigitalOceanAppPlatformServiceSpec_Source() {}
+
+func (*DigitalOceanAppPlatformServiceSpec_ImageSource) isDigitalOceanAppPlatformServiceSpec_Source() {
+}
+
+// DigitalOceanAppPlatformGitSource describes a git repository source for building and deploying the app.
+type DigitalOceanAppPlatformGitSource struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// repo_url is the URL of the git repository (HTTPS or git) containing the source code.
+	RepoUrl string `protobuf:"bytes,1,opt,name=repo_url,json=repoUrl,proto3" json:"repo_url,omitempty"`
+	// branch specifies the git branch to deploy from.
+	Branch string `protobuf:"bytes,2,opt,name=branch,proto3" json:"branch,omitempty"`
+	// build_command optionally overrides the default build command for the app.
+	// Example: "npm run build". If not provided, DigitalOcean will auto-detect build steps or use defaults.
+	BuildCommand string `protobuf:"bytes,3,opt,name=build_command,json=buildCommand,proto3" json:"build_command,omitempty"`
+	// run_command optionally overrides the start command for the app.
+	// Example: "npm start". If not provided, defaults are inferred from the build or Dockerfile.
+	RunCommand    string `protobuf:"bytes,4,opt,name=run_command,json=runCommand,proto3" json:"run_command,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DigitalOceanAppPlatformGitSource) Reset() {
+	*x = DigitalOceanAppPlatformGitSource{}
+	mi := &file_project_planton_provider_digitalocean_digitaloceanappplatformservice_v1_spec_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DigitalOceanAppPlatformGitSource) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DigitalOceanAppPlatformGitSource) ProtoMessage() {}
+
+func (x *DigitalOceanAppPlatformGitSource) ProtoReflect() protoreflect.Message {
+	mi := &file_project_planton_provider_digitalocean_digitaloceanappplatformservice_v1_spec_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DigitalOceanAppPlatformGitSource.ProtoReflect.Descriptor instead.
+func (*DigitalOceanAppPlatformGitSource) Descriptor() ([]byte, []int) {
+	return file_project_planton_provider_digitalocean_digitaloceanappplatformservice_v1_spec_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *DigitalOceanAppPlatformGitSource) GetRepoUrl() string {
+	if x != nil {
+		return x.RepoUrl
 	}
 	return ""
 }
 
-func (x *DigitalOceanAppPlatformServiceSpec) GetVpc() *v1.StringValueOrRef {
+func (x *DigitalOceanAppPlatformGitSource) GetBranch() string {
 	if x != nil {
-		return x.Vpc
-	}
-	return nil
-}
-
-func (x *DigitalOceanAppPlatformServiceSpec) GetEnableIpv6() bool {
-	if x != nil {
-		return x.EnableIpv6
-	}
-	return false
-}
-
-func (x *DigitalOceanAppPlatformServiceSpec) GetEnableBackups() bool {
-	if x != nil {
-		return x.EnableBackups
-	}
-	return false
-}
-
-func (x *DigitalOceanAppPlatformServiceSpec) GetDisableMonitoring() bool {
-	if x != nil {
-		return x.DisableMonitoring
-	}
-	return false
-}
-
-func (x *DigitalOceanAppPlatformServiceSpec) GetVolumeIds() []*v1.StringValueOrRef {
-	if x != nil {
-		return x.VolumeIds
-	}
-	return nil
-}
-
-func (x *DigitalOceanAppPlatformServiceSpec) GetTags() []string {
-	if x != nil {
-		return x.Tags
-	}
-	return nil
-}
-
-func (x *DigitalOceanAppPlatformServiceSpec) GetUserData() string {
-	if x != nil {
-		return x.UserData
+		return x.Branch
 	}
 	return ""
 }
 
-func (x *DigitalOceanAppPlatformServiceSpec) GetTimezone() DigitalOceanAppPlatformServiceTimezone {
+func (x *DigitalOceanAppPlatformGitSource) GetBuildCommand() string {
 	if x != nil {
-		return x.Timezone
+		return x.BuildCommand
 	}
-	return DigitalOceanAppPlatformServiceTimezone_utc
+	return ""
+}
+
+func (x *DigitalOceanAppPlatformGitSource) GetRunCommand() string {
+	if x != nil {
+		return x.RunCommand
+	}
+	return ""
+}
+
+// DigitalOceanAppPlatformRegistrySource describes a container image source from DigitalOcean Container Registry (DOCR).
+type DigitalOceanAppPlatformRegistrySource struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// registry is a reference to a DigitalOceanContainerRegistry resource that hosts the image.
+	// This typically provides the registry URL and ensures credentials are available for pulling the image.
+	Registry *v1.StringValueOrRef `protobuf:"bytes,1,opt,name=registry,proto3" json:"registry,omitempty"`
+	// repository is the name of the repository in the registry containing the image.
+	// For example, "myapp/backend".
+	Repository string `protobuf:"bytes,2,opt,name=repository,proto3" json:"repository,omitempty"`
+	// tag is the image tag to deploy.
+	// For example, "latest" or a specific version like "v1.0.0".
+	Tag           string `protobuf:"bytes,3,opt,name=tag,proto3" json:"tag,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DigitalOceanAppPlatformRegistrySource) Reset() {
+	*x = DigitalOceanAppPlatformRegistrySource{}
+	mi := &file_project_planton_provider_digitalocean_digitaloceanappplatformservice_v1_spec_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DigitalOceanAppPlatformRegistrySource) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DigitalOceanAppPlatformRegistrySource) ProtoMessage() {}
+
+func (x *DigitalOceanAppPlatformRegistrySource) ProtoReflect() protoreflect.Message {
+	mi := &file_project_planton_provider_digitalocean_digitaloceanappplatformservice_v1_spec_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DigitalOceanAppPlatformRegistrySource.ProtoReflect.Descriptor instead.
+func (*DigitalOceanAppPlatformRegistrySource) Descriptor() ([]byte, []int) {
+	return file_project_planton_provider_digitalocean_digitaloceanappplatformservice_v1_spec_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *DigitalOceanAppPlatformRegistrySource) GetRegistry() *v1.StringValueOrRef {
+	if x != nil {
+		return x.Registry
+	}
+	return nil
+}
+
+func (x *DigitalOceanAppPlatformRegistrySource) GetRepository() string {
+	if x != nil {
+		return x.Repository
+	}
+	return ""
+}
+
+func (x *DigitalOceanAppPlatformRegistrySource) GetTag() string {
+	if x != nil {
+		return x.Tag
+	}
+	return ""
 }
 
 var File_project_planton_provider_digitalocean_digitaloceanappplatformservice_v1_spec_proto protoreflect.FileDescriptor
 
 const file_project_planton_provider_digitalocean_digitaloceanappplatformservice_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Rproject/planton/provider/digitalocean/digitaloceanappplatformservice/v1/spec.proto\x12Gproject.planton.provider.digitalocean.digitaloceanappplatformservice.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\x1a2project/planton/provider/digitalocean/region.proto\"\x9a\t\n" +
-	"\"DigitalOceanAppPlatformServiceSpec\x12?\n" +
-	"\x04name\x18\x01 \x01(\tB+\xbaH(\xc8\x01\x01r#\x18?2\x1f^[a-z0-9]([-a-z0-9]*[a-z0-9])?$R\x04name\x12Y\n" +
-	"\x06region\x18\x02 \x01(\x0e29.project.planton.provider.digitalocean.DigitalOceanRegionB\x06\xbaH\x03\xc8\x01\x01R\x06region\x12\x87\x01\n" +
-	"\x04size\x18\x03 \x01(\x0e2k.project.planton.provider.digitalocean.digitaloceanappplatformservice.v1.DigitalOceanAppPlatformServiceSizeB\x06\xbaH\x03\xc8\x01\x01R\x04size\x12?\n" +
-	"\x05image\x18\x04 \x01(\tB)\xbaH&\xc8\x01\x01r!2\x1f^[a-z0-9]([-a-z0-9]*[a-z0-9])?$R\x05image\x12n\n" +
-	"\x03vpc\x18\x06 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB$\xbaH\x03\xc8\x01\x01\x88\xd4a\xbc\t\x92\xd4a\x15status.outputs.vpc_idR\x03vpc\x12\x1f\n" +
-	"\venable_ipv6\x18\a \x01(\bR\n" +
-	"enableIpv6\x12%\n" +
-	"\x0eenable_backups\x18\b \x01(\bR\renableBackups\x12-\n" +
-	"\x12disable_monitoring\x18\t \x01(\bR\x11disableMonitoring\x12x\n" +
+	"Rproject/planton/provider/digitalocean/digitaloceanappplatformservice/v1/spec.proto\x12Gproject.planton.provider.digitalocean.digitaloceanappplatformservice.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\x1a2project/planton/provider/digitalocean/region.proto\"\xab\r\n" +
+	"\"DigitalOceanAppPlatformServiceSpec\x12N\n" +
+	"\fservice_name\x18\x01 \x01(\tB+\xbaH(\xc8\x01\x01r#\x18?2\x1f^[a-z0-9]([-a-z0-9]*[a-z0-9])?$R\vserviceName\x12Y\n" +
+	"\x06region\x18\x02 \x01(\x0e29.project.planton.provider.digitalocean.DigitalOceanRegionB\x06\xbaH\x03\xc8\x01\x01R\x06region\x12\x96\x01\n" +
+	"\fservice_type\x18\x03 \x01(\x0e2k.project.planton.provider.digitalocean.digitaloceanappplatformservice.v1.DigitalOceanAppPlatformServiceTypeB\x06\xbaH\x03\xc8\x01\x01R\vserviceType\x12\x8a\x01\n" +
 	"\n" +
-	"volume_ids\x18\n" +
-	" \x03(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB!\x88\xd4a\xbb\t\x92\xd4a\x18status.outputs.volume_idR\tvolumeIds\x12\x1c\n" +
-	"\x04tags\x18\v \x03(\tB\b\xbaH\x05\x92\x01\x02\x18\x01R\x04tags\x12&\n" +
-	"\tuser_data\x18\f \x01(\tB\t\xbaH\x06r\x04(\x80\x80\x02R\buserData\x12\x94\x01\n" +
-	"\btimezone\x18\r \x01(\x0e2o.project.planton.provider.digitalocean.digitaloceanappplatformservice.v1.DigitalOceanAppPlatformServiceTimezoneB\a\x8a\xa6\x1d\x03UTCR\btimezone:\xce\x01\xbaH\xca\x01\x1a\xc7\x01\n" +
-	"\x0essh_key_format\x12Ieach ssh_key_fingerprint must be a 16-byte hex fingerprint or a reference\x1ajssh_key_fingerprints.all(x, x.value.matches('^[0-9a-f]{2}(:[0-9a-f]{2}){15}$') || x.value_from.name != \"\")*\xa2\x01\n" +
-	"\"DigitalOceanAppPlatformServiceSize\x127\n" +
-	"3digital_ocean_app_platform_service_size_unspecified\x10\x00\x12\x0f\n" +
-	"\vs_2vcpu_4gb\x10\x01\x12\x0f\n" +
-	"\vs_4vcpu_8gb\x10\x02\x12\x0f\n" +
-	"\vg_2vcpu_8gb\x10\x03\x12\x10\n" +
-	"\fg_4vcpu_16gb\x10\x04*<\n" +
-	"&DigitalOceanAppPlatformServiceTimezone\x12\a\n" +
-	"\x03utc\x10\x00\x12\t\n" +
-	"\x05local\x10\x01B\xb6\x04\n" +
+	"git_source\x18\x04 \x01(\v2i.project.planton.provider.digitalocean.digitaloceanappplatformservice.v1.DigitalOceanAppPlatformGitSourceH\x00R\tgitSource\x12\x93\x01\n" +
+	"\fimage_source\x18\x05 \x01(\v2n.project.planton.provider.digitalocean.digitaloceanappplatformservice.v1.DigitalOceanAppPlatformRegistrySourceH\x00R\vimageSource\x12\xaf\x01\n" +
+	"\x12instance_size_slug\x18\x06 \x01(\x0e2l.project.planton.provider.digitalocean.digitaloceanappplatformservice.v1.DigitalOceanAppPlatformInstanceSizeB\x13\xbaH\x03\xc8\x01\x01\x92\xa6\x1d\tbasic-xxsR\x10instanceSizeSlug\x12,\n" +
+	"\x0einstance_count\x18\a \x01(\rB\x05\x92\xa6\x1d\x011R\rinstanceCount\x12)\n" +
+	"\x10enable_autoscale\x18\b \x01(\bR\x0fenableAutoscale\x12,\n" +
+	"\x12min_instance_count\x18\t \x01(\rR\x10minInstanceCount\x12,\n" +
+	"\x12max_instance_count\x18\n" +
+	" \x01(\rR\x10maxInstanceCount\x12\x86\x01\n" +
+	"\x03env\x18\v \x03(\v2t.project.planton.provider.digitalocean.digitaloceanappplatformservice.v1.DigitalOceanAppPlatformServiceSpec.EnvEntryR\x03env\x12v\n" +
+	"\rcustom_domain\x18\f \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB\x19\x88\xd4a\xb4\t\x92\xd4a\x10spec.domain_nameR\fcustomDomain\x1a6\n" +
+	"\bEnvEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:\xf3\x02\xbaH\xef\x02\x1as\n" +
+	"\x0fsource_required\x124Either git_source or image_source must be specified.\x1a*git_source != null || image_source != null\x1a\xf7\x01\n" +
+	"\x11autoscale_min_max\x12emin_instance_count and max_instance_count must be set (and max >= min) when enable_autoscale is true.\x1a{!(enable_autoscale) || ((min_instance_count > 0) && (max_instance_count > 0) && (max_instance_count >= min_instance_count))B\b\n" +
+	"\x06source\"\xab\x01\n" +
+	" DigitalOceanAppPlatformGitSource\x12!\n" +
+	"\brepo_url\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\arepoUrl\x12\x1e\n" +
+	"\x06branch\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x06branch\x12#\n" +
+	"\rbuild_command\x18\x03 \x01(\tR\fbuildCommand\x12\x1f\n" +
+	"\vrun_command\x18\x04 \x01(\tR\n" +
+	"runCommand\"\xe9\x01\n" +
+	"%DigitalOceanAppPlatformRegistrySource\x12~\n" +
+	"\bregistry\x18\x01 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB*\xbaH\x03\xc8\x01\x01\x88\xd4a\xb2\t\x92\xd4a\x1bstatus.outputs.registry_urlR\bregistry\x12&\n" +
+	"\n" +
+	"repository\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\n" +
+	"repository\x12\x18\n" +
+	"\x03tag\x18\x03 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x03tag*\x83\x01\n" +
+	"\"DigitalOceanAppPlatformServiceType\x127\n" +
+	"3digital_ocean_app_platform_service_type_unspecified\x10\x00\x12\x0f\n" +
+	"\vweb_service\x10\x01\x12\n" +
+	"\n" +
+	"\x06worker\x10\x02\x12\a\n" +
+	"\x03job\x10\x03*\x89\x02\n" +
+	"#DigitalOceanAppPlatformInstanceSize\x128\n" +
+	"4digital_ocean_app_platform_instance_size_unspecified\x10\x00\x12\r\n" +
+	"\tbasic_xxs\x10\x01\x12\f\n" +
+	"\bbasic_xs\x10\x02\x12\v\n" +
+	"\abasic_s\x10\x03\x12\v\n" +
+	"\abasic_m\x10\x04\x12\v\n" +
+	"\abasic_l\x10\x05\x12\x13\n" +
+	"\x0fprofessional_xs\x10\x06\x12\x12\n" +
+	"\x0eprofessional_s\x10\a\x12\x12\n" +
+	"\x0eprofessional_m\x10\b\x12\x12\n" +
+	"\x0eprofessional_l\x10\t\x12\x13\n" +
+	"\x0fprofessional_xl\x10\n" +
+	"B\xb6\x04\n" +
 	"Kcom.project.planton.provider.digitalocean.digitaloceanappplatformservice.v1B\tSpecProtoP\x01Z\x98\x01github.com/project-planton/project-planton/apis/project/planton/provider/digitalocean/digitaloceanappplatformservice/v1;digitaloceanappplatformservicev1\xa2\x02\x05PPPDD\xaa\x02GProject.Planton.Provider.Digitalocean.Digitaloceanappplatformservice.V1\xca\x02GProject\\Planton\\Provider\\Digitalocean\\Digitaloceanappplatformservice\\V1\xe2\x02SProject\\Planton\\Provider\\Digitalocean\\Digitaloceanappplatformservice\\V1\\GPBMetadata\xea\x02LProject::Planton::Provider::Digitalocean::Digitaloceanappplatformservice::V1b\x06proto3"
 
 var (
@@ -319,25 +556,31 @@ func file_project_planton_provider_digitalocean_digitaloceanappplatformservice_v
 }
 
 var file_project_planton_provider_digitalocean_digitaloceanappplatformservice_v1_spec_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
-var file_project_planton_provider_digitalocean_digitaloceanappplatformservice_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+var file_project_planton_provider_digitalocean_digitaloceanappplatformservice_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_project_planton_provider_digitalocean_digitaloceanappplatformservice_v1_spec_proto_goTypes = []any{
-	(DigitalOceanAppPlatformServiceSize)(0),     // 0: project.planton.provider.digitalocean.digitaloceanappplatformservice.v1.DigitalOceanAppPlatformServiceSize
-	(DigitalOceanAppPlatformServiceTimezone)(0), // 1: project.planton.provider.digitalocean.digitaloceanappplatformservice.v1.DigitalOceanAppPlatformServiceTimezone
-	(*DigitalOceanAppPlatformServiceSpec)(nil),  // 2: project.planton.provider.digitalocean.digitaloceanappplatformservice.v1.DigitalOceanAppPlatformServiceSpec
-	(digitalocean.DigitalOceanRegion)(0),        // 3: project.planton.provider.digitalocean.DigitalOceanRegion
-	(*v1.StringValueOrRef)(nil),                 // 4: project.planton.shared.foreignkey.v1.StringValueOrRef
+	(DigitalOceanAppPlatformServiceType)(0),       // 0: project.planton.provider.digitalocean.digitaloceanappplatformservice.v1.DigitalOceanAppPlatformServiceType
+	(DigitalOceanAppPlatformInstanceSize)(0),      // 1: project.planton.provider.digitalocean.digitaloceanappplatformservice.v1.DigitalOceanAppPlatformInstanceSize
+	(*DigitalOceanAppPlatformServiceSpec)(nil),    // 2: project.planton.provider.digitalocean.digitaloceanappplatformservice.v1.DigitalOceanAppPlatformServiceSpec
+	(*DigitalOceanAppPlatformGitSource)(nil),      // 3: project.planton.provider.digitalocean.digitaloceanappplatformservice.v1.DigitalOceanAppPlatformGitSource
+	(*DigitalOceanAppPlatformRegistrySource)(nil), // 4: project.planton.provider.digitalocean.digitaloceanappplatformservice.v1.DigitalOceanAppPlatformRegistrySource
+	nil,                                  // 5: project.planton.provider.digitalocean.digitaloceanappplatformservice.v1.DigitalOceanAppPlatformServiceSpec.EnvEntry
+	(digitalocean.DigitalOceanRegion)(0), // 6: project.planton.provider.digitalocean.DigitalOceanRegion
+	(*v1.StringValueOrRef)(nil),          // 7: project.planton.shared.foreignkey.v1.StringValueOrRef
 }
 var file_project_planton_provider_digitalocean_digitaloceanappplatformservice_v1_spec_proto_depIdxs = []int32{
-	3, // 0: project.planton.provider.digitalocean.digitaloceanappplatformservice.v1.DigitalOceanAppPlatformServiceSpec.region:type_name -> project.planton.provider.digitalocean.DigitalOceanRegion
-	0, // 1: project.planton.provider.digitalocean.digitaloceanappplatformservice.v1.DigitalOceanAppPlatformServiceSpec.size:type_name -> project.planton.provider.digitalocean.digitaloceanappplatformservice.v1.DigitalOceanAppPlatformServiceSize
-	4, // 2: project.planton.provider.digitalocean.digitaloceanappplatformservice.v1.DigitalOceanAppPlatformServiceSpec.vpc:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
-	4, // 3: project.planton.provider.digitalocean.digitaloceanappplatformservice.v1.DigitalOceanAppPlatformServiceSpec.volume_ids:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
-	1, // 4: project.planton.provider.digitalocean.digitaloceanappplatformservice.v1.DigitalOceanAppPlatformServiceSpec.timezone:type_name -> project.planton.provider.digitalocean.digitaloceanappplatformservice.v1.DigitalOceanAppPlatformServiceTimezone
-	5, // [5:5] is the sub-list for method output_type
-	5, // [5:5] is the sub-list for method input_type
-	5, // [5:5] is the sub-list for extension type_name
-	5, // [5:5] is the sub-list for extension extendee
-	0, // [0:5] is the sub-list for field type_name
+	6, // 0: project.planton.provider.digitalocean.digitaloceanappplatformservice.v1.DigitalOceanAppPlatformServiceSpec.region:type_name -> project.planton.provider.digitalocean.DigitalOceanRegion
+	0, // 1: project.planton.provider.digitalocean.digitaloceanappplatformservice.v1.DigitalOceanAppPlatformServiceSpec.service_type:type_name -> project.planton.provider.digitalocean.digitaloceanappplatformservice.v1.DigitalOceanAppPlatformServiceType
+	3, // 2: project.planton.provider.digitalocean.digitaloceanappplatformservice.v1.DigitalOceanAppPlatformServiceSpec.git_source:type_name -> project.planton.provider.digitalocean.digitaloceanappplatformservice.v1.DigitalOceanAppPlatformGitSource
+	4, // 3: project.planton.provider.digitalocean.digitaloceanappplatformservice.v1.DigitalOceanAppPlatformServiceSpec.image_source:type_name -> project.planton.provider.digitalocean.digitaloceanappplatformservice.v1.DigitalOceanAppPlatformRegistrySource
+	1, // 4: project.planton.provider.digitalocean.digitaloceanappplatformservice.v1.DigitalOceanAppPlatformServiceSpec.instance_size_slug:type_name -> project.planton.provider.digitalocean.digitaloceanappplatformservice.v1.DigitalOceanAppPlatformInstanceSize
+	5, // 5: project.planton.provider.digitalocean.digitaloceanappplatformservice.v1.DigitalOceanAppPlatformServiceSpec.env:type_name -> project.planton.provider.digitalocean.digitaloceanappplatformservice.v1.DigitalOceanAppPlatformServiceSpec.EnvEntry
+	7, // 6: project.planton.provider.digitalocean.digitaloceanappplatformservice.v1.DigitalOceanAppPlatformServiceSpec.custom_domain:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
+	7, // 7: project.planton.provider.digitalocean.digitaloceanappplatformservice.v1.DigitalOceanAppPlatformRegistrySource.registry:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
+	8, // [8:8] is the sub-list for method output_type
+	8, // [8:8] is the sub-list for method input_type
+	8, // [8:8] is the sub-list for extension type_name
+	8, // [8:8] is the sub-list for extension extendee
+	0, // [0:8] is the sub-list for field type_name
 }
 
 func init() {
@@ -347,13 +590,17 @@ func file_project_planton_provider_digitalocean_digitaloceanappplatformservice_v
 	if File_project_planton_provider_digitalocean_digitaloceanappplatformservice_v1_spec_proto != nil {
 		return
 	}
+	file_project_planton_provider_digitalocean_digitaloceanappplatformservice_v1_spec_proto_msgTypes[0].OneofWrappers = []any{
+		(*DigitalOceanAppPlatformServiceSpec_GitSource)(nil),
+		(*DigitalOceanAppPlatformServiceSpec_ImageSource)(nil),
+	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_project_planton_provider_digitalocean_digitaloceanappplatformservice_v1_spec_proto_rawDesc), len(file_project_planton_provider_digitalocean_digitaloceanappplatformservice_v1_spec_proto_rawDesc)),
 			NumEnums:      2,
-			NumMessages:   1,
+			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

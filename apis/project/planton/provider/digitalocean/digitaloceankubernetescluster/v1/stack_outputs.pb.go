@@ -21,21 +21,17 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// DigitalOceanKubernetesClusterStackOutputs captures the resulting Droplet info after provisioning.
+// DigitalOceanKubernetesClusterStackOutputs captures the outputs after provisioning a DigitalOcean Kubernetes cluster.
 type DigitalOceanKubernetesClusterStackOutputs struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// droplet unique identifier (DigitalOcean ID)
-	DropletId string `protobuf:"bytes,1,opt,name=droplet_id,json=dropletId,proto3" json:"droplet_id,omitempty"`
-	// primary IPv4 address (public if available, otherwise private)
-	Ipv4Address string `protobuf:"bytes,2,opt,name=ipv4_address,json=ipv4Address,proto3" json:"ipv4_address,omitempty"`
-	// IPv6 address (if IPv6 was enabled)
-	Ipv6Address string `protobuf:"bytes,3,opt,name=ipv6_address,json=ipv6Address,proto3" json:"ipv6_address,omitempty"`
-	// image ID of the droplet’s base image
-	ImageId int64 `protobuf:"varint,6,opt,name=image_id,json=imageId,proto3" json:"image_id,omitempty"`
-	// VPC network UUID in which the droplet resides
-	VpcUuid       string `protobuf:"bytes,7,opt,name=vpc_uuid,json=vpcUuid,proto3" json:"vpc_uuid,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	// The unique identifier (UUID) of the created Kubernetes cluster.
+	ClusterId string `protobuf:"bytes,1,opt,name=cluster_id,json=clusterId,proto3" json:"cluster_id,omitempty"`
+	// A base64-encoded Kubernetes config (kubeconfig) for accessing the cluster.
+	Kubeconfig string `protobuf:"bytes,2,opt,name=kubeconfig,proto3" json:"kubeconfig,omitempty"`
+	// The endpoint URL of the Kubernetes API server for the cluster.
+	ApiServerEndpoint string `protobuf:"bytes,3,opt,name=api_server_endpoint,json=apiServerEndpoint,proto3" json:"api_server_endpoint,omitempty"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
 }
 
 func (x *DigitalOceanKubernetesClusterStackOutputs) Reset() {
@@ -68,37 +64,23 @@ func (*DigitalOceanKubernetesClusterStackOutputs) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_digitalocean_digitaloceankubernetescluster_v1_stack_outputs_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *DigitalOceanKubernetesClusterStackOutputs) GetDropletId() string {
+func (x *DigitalOceanKubernetesClusterStackOutputs) GetClusterId() string {
 	if x != nil {
-		return x.DropletId
+		return x.ClusterId
 	}
 	return ""
 }
 
-func (x *DigitalOceanKubernetesClusterStackOutputs) GetIpv4Address() string {
+func (x *DigitalOceanKubernetesClusterStackOutputs) GetKubeconfig() string {
 	if x != nil {
-		return x.Ipv4Address
+		return x.Kubeconfig
 	}
 	return ""
 }
 
-func (x *DigitalOceanKubernetesClusterStackOutputs) GetIpv6Address() string {
+func (x *DigitalOceanKubernetesClusterStackOutputs) GetApiServerEndpoint() string {
 	if x != nil {
-		return x.Ipv6Address
-	}
-	return ""
-}
-
-func (x *DigitalOceanKubernetesClusterStackOutputs) GetImageId() int64 {
-	if x != nil {
-		return x.ImageId
-	}
-	return 0
-}
-
-func (x *DigitalOceanKubernetesClusterStackOutputs) GetVpcUuid() string {
-	if x != nil {
-		return x.VpcUuid
+		return x.ApiServerEndpoint
 	}
 	return ""
 }
@@ -107,14 +89,14 @@ var File_project_planton_provider_digitalocean_digitaloceankubernetescluster_v1_
 
 const file_project_planton_provider_digitalocean_digitaloceankubernetescluster_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Zproject/planton/provider/digitalocean/digitaloceankubernetescluster/v1/stack_outputs.proto\x12Fproject.planton.provider.digitalocean.digitaloceankubernetescluster.v1\"\xc6\x01\n" +
+	"Zproject/planton/provider/digitalocean/digitaloceankubernetescluster/v1/stack_outputs.proto\x12Fproject.planton.provider.digitalocean.digitaloceankubernetescluster.v1\"\x9a\x01\n" +
 	")DigitalOceanKubernetesClusterStackOutputs\x12\x1d\n" +
 	"\n" +
-	"droplet_id\x18\x01 \x01(\tR\tdropletId\x12!\n" +
-	"\fipv4_address\x18\x02 \x01(\tR\vipv4Address\x12!\n" +
-	"\fipv6_address\x18\x03 \x01(\tR\vipv6Address\x12\x19\n" +
-	"\bimage_id\x18\x06 \x01(\x03R\aimageId\x12\x19\n" +
-	"\bvpc_uuid\x18\a \x01(\tR\avpcUuidB\xb7\x04\n" +
+	"cluster_id\x18\x01 \x01(\tR\tclusterId\x12\x1e\n" +
+	"\n" +
+	"kubeconfig\x18\x02 \x01(\tR\n" +
+	"kubeconfig\x12.\n" +
+	"\x13api_server_endpoint\x18\x03 \x01(\tR\x11apiServerEndpointB\xb7\x04\n" +
 	"Jcom.project.planton.provider.digitalocean.digitaloceankubernetescluster.v1B\x11StackOutputsProtoP\x01Z\x96\x01github.com/project-planton/project-planton/apis/project/planton/provider/digitalocean/digitaloceankubernetescluster/v1;digitaloceankubernetesclusterv1\xa2\x02\x05PPPDD\xaa\x02FProject.Planton.Provider.Digitalocean.Digitaloceankubernetescluster.V1\xca\x02FProject\\Planton\\Provider\\Digitalocean\\Digitaloceankubernetescluster\\V1\xe2\x02RProject\\Planton\\Provider\\Digitalocean\\Digitaloceankubernetescluster\\V1\\GPBMetadata\xea\x02KProject::Planton::Provider::Digitalocean::Digitaloceankubernetescluster::V1b\x06proto3"
 
 var (

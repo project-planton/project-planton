@@ -2,20 +2,14 @@ syntax = "proto3";
 
 package project.planton.provider.digitalocean.digitaloceankubernetescluster.v1;
 
-// DigitalOceanKubernetesClusterStackOutputs captures the resulting Droplet info after provisioning.
+// DigitalOceanKubernetesClusterStackOutputs captures the outputs after provisioning a DigitalOcean Kubernetes cluster.
 message DigitalOceanKubernetesClusterStackOutputs {
-  // droplet unique identifier (DigitalOcean ID)
-  string droplet_id = 1;
+  // The unique identifier (UUID) of the created Kubernetes cluster.
+  string cluster_id = 1;
 
-  // primary IPv4 address (public if available, otherwise private)
-  string ipv4_address = 2;
+  // A base64-encoded Kubernetes config (kubeconfig) for accessing the cluster.
+  string kubeconfig = 2;
 
-  // IPv6 address (if IPv6 was enabled)
-  string ipv6_address = 3;
-
-  // image ID of the droplet’s base image
-  int64 image_id = 6;
-
-  // VPC network UUID in which the droplet resides
-  string vpc_uuid = 7;
+  // The endpoint URL of the Kubernetes API server for the cluster.
+  string api_server_endpoint = 3;
 }

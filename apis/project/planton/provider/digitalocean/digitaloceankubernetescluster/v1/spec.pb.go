@@ -9,6 +9,7 @@ package digitaloceankubernetesclusterv1
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	digitalocean "github.com/project-planton/project-planton/apis/project/planton/provider/digitalocean"
+	_ "github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
 	v1 "github.com/project-planton/project-planton/apis/project/planton/shared/foreignkey/v1"
 	_ "github.com/project-planton/project-planton/apis/project/planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -25,136 +26,36 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// Supported Droplet size slugs (plans).
-type DigitalOceanKubernetesClusterSize int32
-
-const (
-	DigitalOceanKubernetesClusterSize_digital_ocean_kubernetes_cluster_size_unspecified DigitalOceanKubernetesClusterSize = 0
-	DigitalOceanKubernetesClusterSize_s_2vcpu_4gb                                       DigitalOceanKubernetesClusterSize = 1 // basic: 2 vCPUs, 4 GB RAM
-	DigitalOceanKubernetesClusterSize_s_4vcpu_8gb                                       DigitalOceanKubernetesClusterSize = 2 // basic: 4 vCPUs, 8 GB RAM
-	DigitalOceanKubernetesClusterSize_g_2vcpu_8gb                                       DigitalOceanKubernetesClusterSize = 3 // general purpose: 2 vCPUs (dedicated), 8 GB RAM
-	DigitalOceanKubernetesClusterSize_g_4vcpu_16gb                                      DigitalOceanKubernetesClusterSize = 4 // general purpose: 4 vCPUs (dedicated), 16 GB RAM
-)
-
-// Enum value maps for DigitalOceanKubernetesClusterSize.
-var (
-	DigitalOceanKubernetesClusterSize_name = map[int32]string{
-		0: "digital_ocean_kubernetes_cluster_size_unspecified",
-		1: "s_2vcpu_4gb",
-		2: "s_4vcpu_8gb",
-		3: "g_2vcpu_8gb",
-		4: "g_4vcpu_16gb",
-	}
-	DigitalOceanKubernetesClusterSize_value = map[string]int32{
-		"digital_ocean_kubernetes_cluster_size_unspecified": 0,
-		"s_2vcpu_4gb":  1,
-		"s_4vcpu_8gb":  2,
-		"g_2vcpu_8gb":  3,
-		"g_4vcpu_16gb": 4,
-	}
-)
-
-func (x DigitalOceanKubernetesClusterSize) Enum() *DigitalOceanKubernetesClusterSize {
-	p := new(DigitalOceanKubernetesClusterSize)
-	*p = x
-	return p
-}
-
-func (x DigitalOceanKubernetesClusterSize) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (DigitalOceanKubernetesClusterSize) Descriptor() protoreflect.EnumDescriptor {
-	return file_project_planton_provider_digitalocean_digitaloceankubernetescluster_v1_spec_proto_enumTypes[0].Descriptor()
-}
-
-func (DigitalOceanKubernetesClusterSize) Type() protoreflect.EnumType {
-	return &file_project_planton_provider_digitalocean_digitaloceankubernetescluster_v1_spec_proto_enumTypes[0]
-}
-
-func (x DigitalOceanKubernetesClusterSize) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use DigitalOceanKubernetesClusterSize.Descriptor instead.
-func (DigitalOceanKubernetesClusterSize) EnumDescriptor() ([]byte, []int) {
-	return file_project_planton_provider_digitalocean_digitaloceankubernetescluster_v1_spec_proto_rawDescGZIP(), []int{0}
-}
-
-// Timezone options for Droplet’s system clock.
-type DigitalOceanKubernetesClusterTimezone int32
-
-const (
-	DigitalOceanKubernetesClusterTimezone_utc   DigitalOceanKubernetesClusterTimezone = 0 // coordinated universal time
-	DigitalOceanKubernetesClusterTimezone_local DigitalOceanKubernetesClusterTimezone = 1 // local timezone
-)
-
-// Enum value maps for DigitalOceanKubernetesClusterTimezone.
-var (
-	DigitalOceanKubernetesClusterTimezone_name = map[int32]string{
-		0: "utc",
-		1: "local",
-	}
-	DigitalOceanKubernetesClusterTimezone_value = map[string]int32{
-		"utc":   0,
-		"local": 1,
-	}
-)
-
-func (x DigitalOceanKubernetesClusterTimezone) Enum() *DigitalOceanKubernetesClusterTimezone {
-	p := new(DigitalOceanKubernetesClusterTimezone)
-	*p = x
-	return p
-}
-
-func (x DigitalOceanKubernetesClusterTimezone) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (DigitalOceanKubernetesClusterTimezone) Descriptor() protoreflect.EnumDescriptor {
-	return file_project_planton_provider_digitalocean_digitaloceankubernetescluster_v1_spec_proto_enumTypes[1].Descriptor()
-}
-
-func (DigitalOceanKubernetesClusterTimezone) Type() protoreflect.EnumType {
-	return &file_project_planton_provider_digitalocean_digitaloceankubernetescluster_v1_spec_proto_enumTypes[1]
-}
-
-func (x DigitalOceanKubernetesClusterTimezone) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use DigitalOceanKubernetesClusterTimezone.Descriptor instead.
-func (DigitalOceanKubernetesClusterTimezone) EnumDescriptor() ([]byte, []int) {
-	return file_project_planton_provider_digitalocean_digitaloceankubernetescluster_v1_spec_proto_rawDescGZIP(), []int{1}
-}
-
-// DigitalOceanKubernetesClusterSpec defines the user configuration for a DigitalOcean Droplet (VM).
+// DigitalOceanKubernetesClusterSpec defines the specification for creating a managed Kubernetes cluster on DigitalOcean.
+// It focuses on essential parameters for a production-grade cluster, following the 80/20 principle to expose only the most commonly used settings.
 type DigitalOceanKubernetesClusterSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// droplet hostname (DNS-compatible, <=63 chars)
-	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	// region slug (datacenter location for the droplet)
+	// The name of the Kubernetes cluster. This will be the cluster's identifier in DigitalOcean.
+	// Constraints: Must be unique per account. (A maximum length or character set may be enforced by DigitalOcean, e.g., alphanumeric and hyphens.)
+	ClusterName string `protobuf:"bytes,1,opt,name=cluster_name,json=clusterName,proto3" json:"cluster_name,omitempty"`
+	// The DigitalOcean region where the cluster will be created.
+	// Determines where the cluster's control plane and nodes are provisioned.
 	Region digitalocean.DigitalOceanRegion `protobuf:"varint,2,opt,name=region,proto3,enum=project.planton.provider.digitalocean.DigitalOceanRegion" json:"region,omitempty"`
-	// droplet size slug (plan identifier)
-	Size DigitalOceanKubernetesClusterSize `protobuf:"varint,3,opt,name=size,proto3,enum=project.planton.provider.digitalocean.digitaloceankubernetescluster.v1.DigitalOceanKubernetesClusterSize" json:"size,omitempty"`
-	// image slug for the droplet base image (e.g. "ubuntu-22-04-x64")
-	Image string `protobuf:"bytes,4,opt,name=image,proto3" json:"image,omitempty"`
-	// target vpc network uuid for the droplet
-	Vpc *v1.StringValueOrRef `protobuf:"bytes,6,opt,name=vpc,proto3" json:"vpc,omitempty"`
-	// enable IPv6 networking (disabled by default)
-	EnableIpv6 bool `protobuf:"varint,7,opt,name=enable_ipv6,json=enableIpv6,proto3" json:"enable_ipv6,omitempty"`
-	// enable automated backups (disabled by default)
-	EnableBackups bool `protobuf:"varint,8,opt,name=enable_backups,json=enableBackups,proto3" json:"enable_backups,omitempty"`
-	// disable digitalocean monitoring agent (monitoring on by default)
-	DisableMonitoring bool `protobuf:"varint,9,opt,name=disable_monitoring,json=disableMonitoring,proto3" json:"disable_monitoring,omitempty"`
-	// block storage volumes to attach (must reside in same region)
-	VolumeIds []*v1.StringValueOrRef `protobuf:"bytes,10,rep,name=volume_ids,json=volumeIds,proto3" json:"volume_ids,omitempty"`
-	// tags to apply to the droplet (must be unique)
-	Tags []string `protobuf:"bytes,11,rep,name=tags,proto3" json:"tags,omitempty"`
-	// cloud-init user data script (<=32 KiB)
-	UserData string `protobuf:"bytes,12,opt,name=user_data,json=userData,proto3" json:"user_data,omitempty"`
-	// timezone setting for the droplet’s clock (default: UTC)
-	Timezone      DigitalOceanKubernetesClusterTimezone `protobuf:"varint,13,opt,name=timezone,proto3,enum=project.planton.provider.digitalocean.digitaloceankubernetescluster.v1.DigitalOceanKubernetesClusterTimezone" json:"timezone,omitempty"`
+	// The Kubernetes version to use for the cluster (semantic versioning).
+	// Must be a supported version on DigitalOcean (e.g., 1.22+).
+	// Example: "1.26.3"
+	KubernetesVersion string `protobuf:"bytes,3,opt,name=kubernetes_version,json=kubernetesVersion,proto3" json:"kubernetes_version,omitempty"`
+	// Reference to the DigitalOcean VPC where the cluster's control plane will reside.
+	// This must be an existing VPC in the same region. Only the VPC's name is needed; the system will resolve it to the VPC ID.
+	Vpc *v1.StringValueOrRef `protobuf:"bytes,4,opt,name=vpc,proto3" json:"vpc,omitempty"`
+	// Whether to enable a highly available control plane for the cluster.
+	// If true, the cluster is created with a High Availability control plane (multiple masters for increased uptime, additional cost).
+	// Default: false.
+	HighlyAvailable bool `protobuf:"varint,5,opt,name=highly_available,json=highlyAvailable,proto3" json:"highly_available,omitempty"`
+	// Whether to enable automatic patch upgrades for the cluster.
+	// If true, the cluster will automatically upgrade to new patch releases of Kubernetes when available.
+	AutoUpgrade bool `protobuf:"varint,6,opt,name=auto_upgrade,json=autoUpgrade,proto3" json:"auto_upgrade,omitempty"`
+	// Whether to disable surge upgrades for the cluster.
+	// If false(default), cluster upgrades will temporarily provision extra nodes to minimize downtime during updates.
+	DisableSurgeUpgrade bool `protobuf:"varint,7,opt,name=disable_surge_upgrade,json=disableSurgeUpgrade,proto3" json:"disable_surge_upgrade,omitempty"`
+	// A list of tags to apply to the cluster.
+	// Tags help organize and identify the cluster within DigitalOcean.
+	Tags          []string `protobuf:"bytes,8,rep,name=tags,proto3" json:"tags,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -189,9 +90,9 @@ func (*DigitalOceanKubernetesClusterSpec) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_digitalocean_digitaloceankubernetescluster_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *DigitalOceanKubernetesClusterSpec) GetName() string {
+func (x *DigitalOceanKubernetesClusterSpec) GetClusterName() string {
 	if x != nil {
-		return x.Name
+		return x.ClusterName
 	}
 	return ""
 }
@@ -203,16 +104,9 @@ func (x *DigitalOceanKubernetesClusterSpec) GetRegion() digitalocean.DigitalOcea
 	return digitalocean.DigitalOceanRegion(0)
 }
 
-func (x *DigitalOceanKubernetesClusterSpec) GetSize() DigitalOceanKubernetesClusterSize {
+func (x *DigitalOceanKubernetesClusterSpec) GetKubernetesVersion() string {
 	if x != nil {
-		return x.Size
-	}
-	return DigitalOceanKubernetesClusterSize_digital_ocean_kubernetes_cluster_size_unspecified
-}
-
-func (x *DigitalOceanKubernetesClusterSpec) GetImage() string {
-	if x != nil {
-		return x.Image
+		return x.KubernetesVersion
 	}
 	return ""
 }
@@ -224,32 +118,25 @@ func (x *DigitalOceanKubernetesClusterSpec) GetVpc() *v1.StringValueOrRef {
 	return nil
 }
 
-func (x *DigitalOceanKubernetesClusterSpec) GetEnableIpv6() bool {
+func (x *DigitalOceanKubernetesClusterSpec) GetHighlyAvailable() bool {
 	if x != nil {
-		return x.EnableIpv6
+		return x.HighlyAvailable
 	}
 	return false
 }
 
-func (x *DigitalOceanKubernetesClusterSpec) GetEnableBackups() bool {
+func (x *DigitalOceanKubernetesClusterSpec) GetAutoUpgrade() bool {
 	if x != nil {
-		return x.EnableBackups
+		return x.AutoUpgrade
 	}
 	return false
 }
 
-func (x *DigitalOceanKubernetesClusterSpec) GetDisableMonitoring() bool {
+func (x *DigitalOceanKubernetesClusterSpec) GetDisableSurgeUpgrade() bool {
 	if x != nil {
-		return x.DisableMonitoring
+		return x.DisableSurgeUpgrade
 	}
 	return false
-}
-
-func (x *DigitalOceanKubernetesClusterSpec) GetVolumeIds() []*v1.StringValueOrRef {
-	if x != nil {
-		return x.VolumeIds
-	}
-	return nil
 }
 
 func (x *DigitalOceanKubernetesClusterSpec) GetTags() []string {
@@ -259,51 +146,20 @@ func (x *DigitalOceanKubernetesClusterSpec) GetTags() []string {
 	return nil
 }
 
-func (x *DigitalOceanKubernetesClusterSpec) GetUserData() string {
-	if x != nil {
-		return x.UserData
-	}
-	return ""
-}
-
-func (x *DigitalOceanKubernetesClusterSpec) GetTimezone() DigitalOceanKubernetesClusterTimezone {
-	if x != nil {
-		return x.Timezone
-	}
-	return DigitalOceanKubernetesClusterTimezone_utc
-}
-
 var File_project_planton_provider_digitalocean_digitaloceankubernetescluster_v1_spec_proto protoreflect.FileDescriptor
 
 const file_project_planton_provider_digitalocean_digitaloceankubernetescluster_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Qproject/planton/provider/digitalocean/digitaloceankubernetescluster/v1/spec.proto\x12Fproject.planton.provider.digitalocean.digitaloceankubernetescluster.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\x1a2project/planton/provider/digitalocean/region.proto\"\x95\t\n" +
-	"!DigitalOceanKubernetesClusterSpec\x12?\n" +
-	"\x04name\x18\x01 \x01(\tB+\xbaH(\xc8\x01\x01r#\x18?2\x1f^[a-z0-9]([-a-z0-9]*[a-z0-9])?$R\x04name\x12Y\n" +
-	"\x06region\x18\x02 \x01(\x0e29.project.planton.provider.digitalocean.DigitalOceanRegionB\x06\xbaH\x03\xc8\x01\x01R\x06region\x12\x85\x01\n" +
-	"\x04size\x18\x03 \x01(\x0e2i.project.planton.provider.digitalocean.digitaloceankubernetescluster.v1.DigitalOceanKubernetesClusterSizeB\x06\xbaH\x03\xc8\x01\x01R\x04size\x12?\n" +
-	"\x05image\x18\x04 \x01(\tB)\xbaH&\xc8\x01\x01r!2\x1f^[a-z0-9]([-a-z0-9]*[a-z0-9])?$R\x05image\x12n\n" +
-	"\x03vpc\x18\x06 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB$\xbaH\x03\xc8\x01\x01\x88\xd4a\xbc\t\x92\xd4a\x15status.outputs.vpc_idR\x03vpc\x12\x1f\n" +
-	"\venable_ipv6\x18\a \x01(\bR\n" +
-	"enableIpv6\x12%\n" +
-	"\x0eenable_backups\x18\b \x01(\bR\renableBackups\x12-\n" +
-	"\x12disable_monitoring\x18\t \x01(\bR\x11disableMonitoring\x12x\n" +
-	"\n" +
-	"volume_ids\x18\n" +
-	" \x03(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB!\x88\xd4a\xbb\t\x92\xd4a\x18status.outputs.volume_idR\tvolumeIds\x12\x1c\n" +
-	"\x04tags\x18\v \x03(\tB\b\xbaH\x05\x92\x01\x02\x18\x01R\x04tags\x12&\n" +
-	"\tuser_data\x18\f \x01(\tB\t\xbaH\x06r\x04(\x80\x80\x02R\buserData\x12\x92\x01\n" +
-	"\btimezone\x18\r \x01(\x0e2m.project.planton.provider.digitalocean.digitaloceankubernetescluster.v1.DigitalOceanKubernetesClusterTimezoneB\a\x8a\xa6\x1d\x03UTCR\btimezone:\xce\x01\xbaH\xca\x01\x1a\xc7\x01\n" +
-	"\x0essh_key_format\x12Ieach ssh_key_fingerprint must be a 16-byte hex fingerprint or a reference\x1ajssh_key_fingerprints.all(x, x.value.matches('^[0-9a-f]{2}(:[0-9a-f]{2}){15}$') || x.value_from.name != \"\")*\x9f\x01\n" +
-	"!DigitalOceanKubernetesClusterSize\x125\n" +
-	"1digital_ocean_kubernetes_cluster_size_unspecified\x10\x00\x12\x0f\n" +
-	"\vs_2vcpu_4gb\x10\x01\x12\x0f\n" +
-	"\vs_4vcpu_8gb\x10\x02\x12\x0f\n" +
-	"\vg_2vcpu_8gb\x10\x03\x12\x10\n" +
-	"\fg_4vcpu_16gb\x10\x04*;\n" +
-	"%DigitalOceanKubernetesClusterTimezone\x12\a\n" +
-	"\x03utc\x10\x00\x12\t\n" +
-	"\x05local\x10\x01B\xaf\x04\n" +
+	"Qproject/planton/provider/digitalocean/digitaloceankubernetescluster/v1/spec.proto\x12Fproject.planton.provider.digitalocean.digitaloceankubernetescluster.v1\x1a\x1bbuf/validate/validate.proto\x1a2project/planton/provider/digitalocean/region.proto\x1aBproject/planton/shared/cloudresourcekind/cloud_resource_kind.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\"\x85\x04\n" +
+	"!DigitalOceanKubernetesClusterSpec\x12)\n" +
+	"\fcluster_name\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\vclusterName\x12Y\n" +
+	"\x06region\x18\x02 \x01(\x0e29.project.planton.provider.digitalocean.DigitalOceanRegionB\x06\xbaH\x03\xc8\x01\x01R\x06region\x12Q\n" +
+	"\x12kubernetes_version\x18\x03 \x01(\tB\"\xbaH\x1f\xc8\x01\x01r\x1a2\x18^1\\.[2-9][0-9]?\\.[0-9]+$R\x11kubernetesVersion\x12f\n" +
+	"\x03vpc\x18\x04 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB\x1c\xbaH\x03\xc8\x01\x01\x88\xd4a\xbc\t\x92\xd4a\rmetadata.nameR\x03vpc\x124\n" +
+	"\x10highly_available\x18\x05 \x01(\bB\t\x92\xa6\x1d\x05falseR\x0fhighlyAvailable\x12!\n" +
+	"\fauto_upgrade\x18\x06 \x01(\bR\vautoUpgrade\x122\n" +
+	"\x15disable_surge_upgrade\x18\a \x01(\bR\x13disableSurgeUpgrade\x12\x12\n" +
+	"\x04tags\x18\b \x03(\tR\x04tagsB\xaf\x04\n" +
 	"Jcom.project.planton.provider.digitalocean.digitaloceankubernetescluster.v1B\tSpecProtoP\x01Z\x96\x01github.com/project-planton/project-planton/apis/project/planton/provider/digitalocean/digitaloceankubernetescluster/v1;digitaloceankubernetesclusterv1\xa2\x02\x05PPPDD\xaa\x02FProject.Planton.Provider.Digitalocean.Digitaloceankubernetescluster.V1\xca\x02FProject\\Planton\\Provider\\Digitalocean\\Digitaloceankubernetescluster\\V1\xe2\x02RProject\\Planton\\Provider\\Digitalocean\\Digitaloceankubernetescluster\\V1\\GPBMetadata\xea\x02KProject::Planton::Provider::Digitalocean::Digitaloceankubernetescluster::V1b\x06proto3"
 
 var (
@@ -318,26 +174,20 @@ func file_project_planton_provider_digitalocean_digitaloceankubernetescluster_v1
 	return file_project_planton_provider_digitalocean_digitaloceankubernetescluster_v1_spec_proto_rawDescData
 }
 
-var file_project_planton_provider_digitalocean_digitaloceankubernetescluster_v1_spec_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
 var file_project_planton_provider_digitalocean_digitaloceankubernetescluster_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_digitalocean_digitaloceankubernetescluster_v1_spec_proto_goTypes = []any{
-	(DigitalOceanKubernetesClusterSize)(0),     // 0: project.planton.provider.digitalocean.digitaloceankubernetescluster.v1.DigitalOceanKubernetesClusterSize
-	(DigitalOceanKubernetesClusterTimezone)(0), // 1: project.planton.provider.digitalocean.digitaloceankubernetescluster.v1.DigitalOceanKubernetesClusterTimezone
-	(*DigitalOceanKubernetesClusterSpec)(nil),  // 2: project.planton.provider.digitalocean.digitaloceankubernetescluster.v1.DigitalOceanKubernetesClusterSpec
-	(digitalocean.DigitalOceanRegion)(0),       // 3: project.planton.provider.digitalocean.DigitalOceanRegion
-	(*v1.StringValueOrRef)(nil),                // 4: project.planton.shared.foreignkey.v1.StringValueOrRef
+	(*DigitalOceanKubernetesClusterSpec)(nil), // 0: project.planton.provider.digitalocean.digitaloceankubernetescluster.v1.DigitalOceanKubernetesClusterSpec
+	(digitalocean.DigitalOceanRegion)(0),      // 1: project.planton.provider.digitalocean.DigitalOceanRegion
+	(*v1.StringValueOrRef)(nil),               // 2: project.planton.shared.foreignkey.v1.StringValueOrRef
 }
 var file_project_planton_provider_digitalocean_digitaloceankubernetescluster_v1_spec_proto_depIdxs = []int32{
-	3, // 0: project.planton.provider.digitalocean.digitaloceankubernetescluster.v1.DigitalOceanKubernetesClusterSpec.region:type_name -> project.planton.provider.digitalocean.DigitalOceanRegion
-	0, // 1: project.planton.provider.digitalocean.digitaloceankubernetescluster.v1.DigitalOceanKubernetesClusterSpec.size:type_name -> project.planton.provider.digitalocean.digitaloceankubernetescluster.v1.DigitalOceanKubernetesClusterSize
-	4, // 2: project.planton.provider.digitalocean.digitaloceankubernetescluster.v1.DigitalOceanKubernetesClusterSpec.vpc:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
-	4, // 3: project.planton.provider.digitalocean.digitaloceankubernetescluster.v1.DigitalOceanKubernetesClusterSpec.volume_ids:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
-	1, // 4: project.planton.provider.digitalocean.digitaloceankubernetescluster.v1.DigitalOceanKubernetesClusterSpec.timezone:type_name -> project.planton.provider.digitalocean.digitaloceankubernetescluster.v1.DigitalOceanKubernetesClusterTimezone
-	5, // [5:5] is the sub-list for method output_type
-	5, // [5:5] is the sub-list for method input_type
-	5, // [5:5] is the sub-list for extension type_name
-	5, // [5:5] is the sub-list for extension extendee
-	0, // [0:5] is the sub-list for field type_name
+	1, // 0: project.planton.provider.digitalocean.digitaloceankubernetescluster.v1.DigitalOceanKubernetesClusterSpec.region:type_name -> project.planton.provider.digitalocean.DigitalOceanRegion
+	2, // 1: project.planton.provider.digitalocean.digitaloceankubernetescluster.v1.DigitalOceanKubernetesClusterSpec.vpc:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
+	2, // [2:2] is the sub-list for method output_type
+	2, // [2:2] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() {
@@ -352,14 +202,13 @@ func file_project_planton_provider_digitalocean_digitaloceankubernetescluster_v1
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_project_planton_provider_digitalocean_digitaloceankubernetescluster_v1_spec_proto_rawDesc), len(file_project_planton_provider_digitalocean_digitaloceankubernetescluster_v1_spec_proto_rawDesc)),
-			NumEnums:      2,
+			NumEnums:      0,
 			NumMessages:   1,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
 		GoTypes:           file_project_planton_provider_digitalocean_digitaloceankubernetescluster_v1_spec_proto_goTypes,
 		DependencyIndexes: file_project_planton_provider_digitalocean_digitaloceankubernetescluster_v1_spec_proto_depIdxs,
-		EnumInfos:         file_project_planton_provider_digitalocean_digitaloceankubernetescluster_v1_spec_proto_enumTypes,
 		MessageInfos:      file_project_planton_provider_digitalocean_digitaloceankubernetescluster_v1_spec_proto_msgTypes,
 	}.Build()
 	File_project_planton_provider_digitalocean_digitaloceankubernetescluster_v1_spec_proto = out.File

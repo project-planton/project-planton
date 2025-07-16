@@ -3,91 +3,51 @@ syntax = "proto3";
 package project.planton.provider.digitalocean.digitaloceankubernetesnodepool.v1;
 
 import "buf/validate/validate.proto";
+import "project/planton/shared/cloudresourcekind/cloud_resource_kind.proto";
 import "project/planton/shared/foreignkey/v1/foreign_key.proto";
 import "project/planton/shared/options/options.proto";
-import "project/planton/provider/digitalocean/region.proto";
 
-// Supported Droplet size slugs (plans).
-enum DigitalOceanKubernetesNodePoolSize {
-  digital_ocean_kubernetes_node_pool_size_unspecified = 0;
-  s_2vcpu_4gb = 1;  // basic: 2 vCPUs, 4 GB RAM
-  s_4vcpu_8gb = 2;  // basic: 4 vCPUs, 8 GB RAM
-  g_2vcpu_8gb = 3;  // general purpose: 2 vCPUs (dedicated), 8 GB RAM
-  g_4vcpu_16gb = 4;  // general purpose: 4 vCPUs (dedicated), 16 GB RAM
-}
-
-// Timezone options for Droplet’s system clock.
-enum DigitalOceanKubernetesNodePoolTimezone {
-  utc = 0;  // coordinated universal time
-  local = 1;  // local timezone
-}
-
-// DigitalOceanKubernetesNodePoolSpec defines the user configuration for a DigitalOcean Droplet (VM).
+// DigitalOceanKubernetesNodePoolSpec defines the specification for creating a node pool in an existing DigitalOcean Kubernetes cluster (DOKS).
+// It focuses on essential parameters, following the 80/20 principle to expose only the most commonly used settings.
 message DigitalOceanKubernetesNodePoolSpec {
-  // Enforce each SSH key fingerprint is literal or a reference.
-  option (buf.validate.message).cel = {
-    id: "ssh_key_format",
-    message: "each ssh_key_fingerprint must be a 16-byte hex fingerprint or a reference",
-    expression: "ssh_key_fingerprints.all(x, x.value.matches('^[0-9a-f]{2}(:[0-9a-f]{2}){15}$') || x.value_from.name != \"\")"
-  };
-
-  // droplet hostname (DNS-compatible, <=63 chars)
-  string name = 1 [
-    (buf.validate.field).required = true,
-    (buf.validate.field).string.pattern = "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$",
-    (buf.validate.field).string.max_len = 63
-  ];
-
-  // region slug (datacenter location for the droplet)
-  DigitalOceanRegion region = 2 [
+  // A name for the node pool. Must be unique within the Kubernetes cluster.
+  string node_pool_name = 1 [
     (buf.validate.field).required = true
   ];
 
-  // droplet size slug (plan identifier)
-  DigitalOceanKubernetesNodePoolSize size = 3 [
+  // Reference to the DigitalOcean Kubernetes Cluster in which to create this node pool.
+  // Accepts the cluster's name or a reference to the DigitalOceanKubernetesCluster resource.
+  project.planton.shared.foreignkey.v1.StringValueOrRef cluster = 2 [
+    (buf.validate.field).required = true,
+    (project.planton.shared.foreignkey.v1.default_kind) = DigitalOceanKubernetesCluster,
+    (project.planton.shared.foreignkey.v1.default_kind_field_path) = "metadata.name"
+  ];
+
+  // The slug identifier for the Droplet size to use for each node (e.g., "s-4vcpu-8gb").
+  // This defines the CPU and memory of the nodes in the pool.
+  string size_slug = 3 [
     (buf.validate.field).required = true
   ];
 
-  // image slug for the droplet base image (e.g. "ubuntu-22-04-x64")
-  string image = 4 [
+  // The number of nodes to provision in the pool.
+  // Must be at least 1. If auto_scale is enabled, this acts as the initial desired node count.
+  uint32 node_count = 4 [
     (buf.validate.field).required = true,
-    (buf.validate.field).string.pattern = "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"
+    (buf.validate.field).uint32.gt = 0
   ];
 
-  // target vpc network uuid for the droplet
-  project.planton.shared.foreignkey.v1.StringValueOrRef vpc = 6 [
-    (buf.validate.field).required = true,
-    (project.planton.shared.foreignkey.v1.default_kind) = DigitalOceanVpc,
-    (project.planton.shared.foreignkey.v1.default_kind_field_path) = "status.outputs.vpc_id"
-  ];
+  // Enable auto-scaling for this node pool.
+  // If true, the platform will manage node count between min_nodes and max_nodes.
+  bool auto_scale = 5;
 
-  // enable IPv6 networking (disabled by default)
-  bool enable_ipv6 = 7;
+  // Minimum number of nodes when auto-scaling is enabled.
+  // Required if auto_scale is true.
+  uint32 min_nodes = 6;
 
-  // enable automated backups (disabled by default)
-  bool enable_backups = 8;
+  // Maximum number of nodes when auto-scaling is enabled.
+  // Required if auto_scale is true.
+  uint32 max_nodes = 7;
 
-  // disable digitalocean monitoring agent (monitoring on by default)
-  bool disable_monitoring = 9;
-
-  // block storage volumes to attach (must reside in same region)
-  repeated project.planton.shared.foreignkey.v1.StringValueOrRef volume_ids = 10 [
-    (project.planton.shared.foreignkey.v1.default_kind) = DigitalOceanVolume,
-    (project.planton.shared.foreignkey.v1.default_kind_field_path) = "status.outputs.volume_id"
-  ];
-
-  // tags to apply to the droplet (must be unique)
-  repeated string tags = 11 [
-    (buf.validate.field).repeated.unique = true
-  ];
-
-  // cloud-init user data script (<=32 KiB)
-  string user_data = 12 [
-    (buf.validate.field).string.max_bytes = 32768
-  ];
-
-  // timezone setting for the droplet’s clock (default: UTC)
-  DigitalOceanKubernetesNodePoolTimezone timezone = 13 [
-    (project.planton.shared.options.default) = "UTC"
-  ];
+  // A list of tags to apply to the node pool (for organizational purposes in DigitalOcean).
+  repeated string tags = 8;
 }

@@ -4,90 +4,52 @@ package project.planton.provider.digitalocean.digitaloceandnszone.v1;
 
 import "buf/validate/validate.proto";
 import "project/planton/shared/foreignkey/v1/foreign_key.proto";
+import "project/planton/shared/networking/enums/dnsrecordtype/dns_record_type.proto";
 import "project/planton/shared/options/options.proto";
-import "project/planton/provider/digitalocean/region.proto";
 
-// Supported Droplet size slugs (plans).
-enum DigitalOceanDnsZoneSize {
-  digital_ocean_dns_zone_size_unspecified = 0;
-  s_2vcpu_4gb = 1;  // basic: 2 vCPUs, 4 GB RAM
-  s_4vcpu_8gb = 2;  // basic: 4 vCPUs, 8 GB RAM
-  g_2vcpu_8gb = 3;  // general purpose: 2 vCPUs (dedicated), 8 GB RAM
-  g_4vcpu_16gb = 4;  // general purpose: 4 vCPUs (dedicated), 16 GB RAM
-}
-
-// Timezone options for Droplet’s system clock.
-enum DigitalOceanDnsZoneTimezone {
-  utc = 0;  // coordinated universal time
-  local = 1;  // local timezone
-}
-
-// DigitalOceanDnsZoneSpec defines the user configuration for a DigitalOcean Droplet (VM).
+// DigitalOceanDnsZoneSpec defines the specification required to create a DNS zone (domain) on DigitalOcean.
+// This allows you to manage DNS records for a given domain via DigitalOcean's DNS service, focusing on the essential parameters (80/20 principle).
 message DigitalOceanDnsZoneSpec {
-  // Enforce each SSH key fingerprint is literal or a reference.
-  option (buf.validate.message).cel = {
-    id: "ssh_key_format",
-    message: "each ssh_key_fingerprint must be a 16-byte hex fingerprint or a reference",
-    expression: "ssh_key_fingerprints.all(x, x.value.matches('^[0-9a-f]{2}(:[0-9a-f]{2}){15}$') || x.value_from.name != \"\")"
-  };
+  // The domain name for the DNS zone.
+  // Must be a valid fully-qualified domain name (e.g., "example.com").
+  string domain_name = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.pattern = "^(?:[A-Za-z0-9-]+\\.)+[A-Za-z]{2,}$"
+  ];
 
-  // droplet hostname (DNS-compatible, <=63 chars)
+  // A list of DNS records to create within the zone (optional).
+  // Each record includes its type, name, value(s), and TTL.
+  repeated DigitalOceanDnsZoneRecord records = 2;
+}
+
+// DnsRecord represents a DNS record entry to be created in the zone.
+message DigitalOceanDnsZoneRecord {
+  // The host/name for the DNS record, relative to the zone.
+  // For root records, use "@" to denote the zone itself.
   string name = 1 [
-    (buf.validate.field).required = true,
-    (buf.validate.field).string.pattern = "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$",
-    (buf.validate.field).string.max_len = 63
-  ];
-
-  // region slug (datacenter location for the droplet)
-  DigitalOceanRegion region = 2 [
     (buf.validate.field).required = true
   ];
 
-  // droplet size slug (plan identifier)
-  DigitalOceanDnsZoneSize size = 3 [
+  // The value or values for the DNS record.
+  // - For A/AAAA: one or more IP address(es).
+  // - For CNAME: the target domain name.
+  // - For TXT: the text data (if multiple strings, they will be concatenated by DNS).
+  // - For MX: typically one or more entries like "<priority> <mail-server-domain>".
+  // Each value can be a literal or a reference to another resource’s output.
+  repeated project.planton.shared.foreignkey.v1.StringValueOrRef values = 2 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).repeated.min_items = 1
+  ];
+
+  // The time-to-live for this DNS record, in seconds.
+  // Determines how long resolvers cache the record. Defaults to 3600 seconds (1 hour) if not set.
+  uint32 ttl_seconds = 3 [
+    (project.planton.shared.options.recommended_default) = "3600"
+  ];
+
+  // The type of the DNS record.
+  // This field is required and must be one of the supported record types.
+  project.planton.shared.networking.enums.dnsrecordtype.DnsRecordType type = 4 [
     (buf.validate.field).required = true
-  ];
-
-  // image slug for the droplet base image (e.g. "ubuntu-22-04-x64")
-  string image = 4 [
-    (buf.validate.field).required = true,
-    (buf.validate.field).string.pattern = "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"
-  ];
-
-  // target vpc network uuid for the droplet
-  project.planton.shared.foreignkey.v1.StringValueOrRef vpc = 6 [
-    (buf.validate.field).required = true,
-    (project.planton.shared.foreignkey.v1.default_kind) = DigitalOceanVpc,
-    (project.planton.shared.foreignkey.v1.default_kind_field_path) = "status.outputs.vpc_id"
-  ];
-
-  // enable IPv6 networking (disabled by default)
-  bool enable_ipv6 = 7;
-
-  // enable automated backups (disabled by default)
-  bool enable_backups = 8;
-
-  // disable digitalocean monitoring agent (monitoring on by default)
-  bool disable_monitoring = 9;
-
-  // block storage volumes to attach (must reside in same region)
-  repeated project.planton.shared.foreignkey.v1.StringValueOrRef volume_ids = 10 [
-    (project.planton.shared.foreignkey.v1.default_kind) = DigitalOceanVolume,
-    (project.planton.shared.foreignkey.v1.default_kind_field_path) = "status.outputs.volume_id"
-  ];
-
-  // tags to apply to the droplet (must be unique)
-  repeated string tags = 11 [
-    (buf.validate.field).repeated.unique = true
-  ];
-
-  // cloud-init user data script (<=32 KiB)
-  string user_data = 12 [
-    (buf.validate.field).string.max_bytes = 32768
-  ];
-
-  // timezone setting for the droplet’s clock (default: UTC)
-  DigitalOceanDnsZoneTimezone timezone = 13 [
-    (project.planton.shared.options.default) = "UTC"
   ];
 }

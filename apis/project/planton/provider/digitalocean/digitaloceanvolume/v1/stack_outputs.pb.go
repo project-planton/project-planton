@@ -24,16 +24,8 @@ const (
 // DigitalOceanVolumeStackOutputs captures the resulting Droplet info after provisioning.
 type DigitalOceanVolumeStackOutputs struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// droplet unique identifier (DigitalOcean ID)
-	DropletId string `protobuf:"bytes,1,opt,name=droplet_id,json=dropletId,proto3" json:"droplet_id,omitempty"`
-	// primary IPv4 address (public if available, otherwise private)
-	Ipv4Address string `protobuf:"bytes,2,opt,name=ipv4_address,json=ipv4Address,proto3" json:"ipv4_address,omitempty"`
-	// IPv6 address (if IPv6 was enabled)
-	Ipv6Address string `protobuf:"bytes,3,opt,name=ipv6_address,json=ipv6Address,proto3" json:"ipv6_address,omitempty"`
-	// image ID of the droplet’s base image
-	ImageId int64 `protobuf:"varint,6,opt,name=image_id,json=imageId,proto3" json:"image_id,omitempty"`
-	// VPC network UUID in which the droplet resides
-	VpcUuid       string `protobuf:"bytes,7,opt,name=vpc_uuid,json=vpcUuid,proto3" json:"vpc_uuid,omitempty"`
+	// The unique identifier (UUID) of the created DigitalOcean volume.
+	VolumeId      string `protobuf:"bytes,1,opt,name=volume_id,json=volumeId,proto3" json:"volume_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -68,37 +60,9 @@ func (*DigitalOceanVolumeStackOutputs) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_digitalocean_digitaloceanvolume_v1_stack_outputs_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *DigitalOceanVolumeStackOutputs) GetDropletId() string {
+func (x *DigitalOceanVolumeStackOutputs) GetVolumeId() string {
 	if x != nil {
-		return x.DropletId
-	}
-	return ""
-}
-
-func (x *DigitalOceanVolumeStackOutputs) GetIpv4Address() string {
-	if x != nil {
-		return x.Ipv4Address
-	}
-	return ""
-}
-
-func (x *DigitalOceanVolumeStackOutputs) GetIpv6Address() string {
-	if x != nil {
-		return x.Ipv6Address
-	}
-	return ""
-}
-
-func (x *DigitalOceanVolumeStackOutputs) GetImageId() int64 {
-	if x != nil {
-		return x.ImageId
-	}
-	return 0
-}
-
-func (x *DigitalOceanVolumeStackOutputs) GetVpcUuid() string {
-	if x != nil {
-		return x.VpcUuid
+		return x.VolumeId
 	}
 	return ""
 }
@@ -107,14 +71,9 @@ var File_project_planton_provider_digitalocean_digitaloceanvolume_v1_stack_outpu
 
 const file_project_planton_provider_digitalocean_digitaloceanvolume_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Oproject/planton/provider/digitalocean/digitaloceanvolume/v1/stack_outputs.proto\x12;project.planton.provider.digitalocean.digitaloceanvolume.v1\"\xbb\x01\n" +
-	"\x1eDigitalOceanVolumeStackOutputs\x12\x1d\n" +
-	"\n" +
-	"droplet_id\x18\x01 \x01(\tR\tdropletId\x12!\n" +
-	"\fipv4_address\x18\x02 \x01(\tR\vipv4Address\x12!\n" +
-	"\fipv6_address\x18\x03 \x01(\tR\vipv6Address\x12\x19\n" +
-	"\bimage_id\x18\x06 \x01(\x03R\aimageId\x12\x19\n" +
-	"\bvpc_uuid\x18\a \x01(\tR\avpcUuidB\xea\x03\n" +
+	"Oproject/planton/provider/digitalocean/digitaloceanvolume/v1/stack_outputs.proto\x12;project.planton.provider.digitalocean.digitaloceanvolume.v1\"=\n" +
+	"\x1eDigitalOceanVolumeStackOutputs\x12\x1b\n" +
+	"\tvolume_id\x18\x01 \x01(\tR\bvolumeIdB\xea\x03\n" +
 	"?com.project.planton.provider.digitalocean.digitaloceanvolume.v1B\x11StackOutputsProtoP\x01Z\x80\x01github.com/project-planton/project-planton/apis/project/planton/provider/digitalocean/digitaloceanvolume/v1;digitaloceanvolumev1\xa2\x02\x05PPPDD\xaa\x02;Project.Planton.Provider.Digitalocean.Digitaloceanvolume.V1\xca\x02;Project\\Planton\\Provider\\Digitalocean\\Digitaloceanvolume\\V1\xe2\x02GProject\\Planton\\Provider\\Digitalocean\\Digitaloceanvolume\\V1\\GPBMetadata\xea\x02@Project::Planton::Provider::Digitalocean::Digitaloceanvolume::V1b\x06proto3"
 
 var (

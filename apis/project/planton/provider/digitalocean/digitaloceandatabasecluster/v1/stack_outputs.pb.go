@@ -21,21 +21,23 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// DigitalOceanDatabaseClusterStackOutputs captures the resulting Droplet info after provisioning.
+// DigitalOceanDatabaseClusterStackOutputs captures the key outputs after provisioning a DigitalOcean database cluster.
 type DigitalOceanDatabaseClusterStackOutputs struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// droplet unique identifier (DigitalOcean ID)
-	DropletId string `protobuf:"bytes,1,opt,name=droplet_id,json=dropletId,proto3" json:"droplet_id,omitempty"`
-	// primary IPv4 address (public if available, otherwise private)
-	Ipv4Address string `protobuf:"bytes,2,opt,name=ipv4_address,json=ipv4Address,proto3" json:"ipv4_address,omitempty"`
-	// IPv6 address (if IPv6 was enabled)
-	Ipv6Address string `protobuf:"bytes,3,opt,name=ipv6_address,json=ipv6Address,proto3" json:"ipv6_address,omitempty"`
-	// image ID of the droplet’s base image
-	ImageId int64 `protobuf:"varint,6,opt,name=image_id,json=imageId,proto3" json:"image_id,omitempty"`
-	// VPC network UUID in which the droplet resides
-	VpcUuid       string `protobuf:"bytes,7,opt,name=vpc_uuid,json=vpcUuid,proto3" json:"vpc_uuid,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	// The unique identifier (UUID) of the created database cluster.
+	ClusterId string `protobuf:"bytes,1,opt,name=cluster_id,json=clusterId,proto3" json:"cluster_id,omitempty"`
+	// The full connection URI for the database cluster (including credentials and database name).
+	ConnectionUri string `protobuf:"bytes,2,opt,name=connection_uri,json=connectionUri,proto3" json:"connection_uri,omitempty"`
+	// The hostname or IP address at which the database cluster is accessible.
+	Host string `protobuf:"bytes,3,opt,name=host,proto3" json:"host,omitempty"`
+	// The network port that the database cluster is listening on.
+	Port uint32 `protobuf:"varint,4,opt,name=port,proto3" json:"port,omitempty"`
+	// The username for the cluster’s default database user.
+	DatabaseUser string `protobuf:"bytes,5,opt,name=database_user,json=databaseUser,proto3" json:"database_user,omitempty"`
+	// The password for the cluster’s default database user.
+	DatabasePassword string `protobuf:"bytes,6,opt,name=database_password,json=databasePassword,proto3" json:"database_password,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
 }
 
 func (x *DigitalOceanDatabaseClusterStackOutputs) Reset() {
@@ -68,37 +70,44 @@ func (*DigitalOceanDatabaseClusterStackOutputs) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_digitalocean_digitaloceandatabasecluster_v1_stack_outputs_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *DigitalOceanDatabaseClusterStackOutputs) GetDropletId() string {
+func (x *DigitalOceanDatabaseClusterStackOutputs) GetClusterId() string {
 	if x != nil {
-		return x.DropletId
+		return x.ClusterId
 	}
 	return ""
 }
 
-func (x *DigitalOceanDatabaseClusterStackOutputs) GetIpv4Address() string {
+func (x *DigitalOceanDatabaseClusterStackOutputs) GetConnectionUri() string {
 	if x != nil {
-		return x.Ipv4Address
+		return x.ConnectionUri
 	}
 	return ""
 }
 
-func (x *DigitalOceanDatabaseClusterStackOutputs) GetIpv6Address() string {
+func (x *DigitalOceanDatabaseClusterStackOutputs) GetHost() string {
 	if x != nil {
-		return x.Ipv6Address
+		return x.Host
 	}
 	return ""
 }
 
-func (x *DigitalOceanDatabaseClusterStackOutputs) GetImageId() int64 {
+func (x *DigitalOceanDatabaseClusterStackOutputs) GetPort() uint32 {
 	if x != nil {
-		return x.ImageId
+		return x.Port
 	}
 	return 0
 }
 
-func (x *DigitalOceanDatabaseClusterStackOutputs) GetVpcUuid() string {
+func (x *DigitalOceanDatabaseClusterStackOutputs) GetDatabaseUser() string {
 	if x != nil {
-		return x.VpcUuid
+		return x.DatabaseUser
+	}
+	return ""
+}
+
+func (x *DigitalOceanDatabaseClusterStackOutputs) GetDatabasePassword() string {
+	if x != nil {
+		return x.DatabasePassword
 	}
 	return ""
 }
@@ -107,14 +116,15 @@ var File_project_planton_provider_digitalocean_digitaloceandatabasecluster_v1_st
 
 const file_project_planton_provider_digitalocean_digitaloceandatabasecluster_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Xproject/planton/provider/digitalocean/digitaloceandatabasecluster/v1/stack_outputs.proto\x12Dproject.planton.provider.digitalocean.digitaloceandatabasecluster.v1\"\xc4\x01\n" +
+	"Xproject/planton/provider/digitalocean/digitaloceandatabasecluster/v1/stack_outputs.proto\x12Dproject.planton.provider.digitalocean.digitaloceandatabasecluster.v1\"\xe9\x01\n" +
 	"'DigitalOceanDatabaseClusterStackOutputs\x12\x1d\n" +
 	"\n" +
-	"droplet_id\x18\x01 \x01(\tR\tdropletId\x12!\n" +
-	"\fipv4_address\x18\x02 \x01(\tR\vipv4Address\x12!\n" +
-	"\fipv6_address\x18\x03 \x01(\tR\vipv6Address\x12\x19\n" +
-	"\bimage_id\x18\x06 \x01(\x03R\aimageId\x12\x19\n" +
-	"\bvpc_uuid\x18\a \x01(\tR\avpcUuidB\xa9\x04\n" +
+	"cluster_id\x18\x01 \x01(\tR\tclusterId\x12%\n" +
+	"\x0econnection_uri\x18\x02 \x01(\tR\rconnectionUri\x12\x12\n" +
+	"\x04host\x18\x03 \x01(\tR\x04host\x12\x12\n" +
+	"\x04port\x18\x04 \x01(\rR\x04port\x12#\n" +
+	"\rdatabase_user\x18\x05 \x01(\tR\fdatabaseUser\x12+\n" +
+	"\x11database_password\x18\x06 \x01(\tR\x10databasePasswordB\xa9\x04\n" +
 	"Hcom.project.planton.provider.digitalocean.digitaloceandatabasecluster.v1B\x11StackOutputsProtoP\x01Z\x92\x01github.com/project-planton/project-planton/apis/project/planton/provider/digitalocean/digitaloceandatabasecluster/v1;digitaloceandatabaseclusterv1\xa2\x02\x05PPPDD\xaa\x02DProject.Planton.Provider.Digitalocean.Digitaloceandatabasecluster.V1\xca\x02DProject\\Planton\\Provider\\Digitalocean\\Digitaloceandatabasecluster\\V1\xe2\x02PProject\\Planton\\Provider\\Digitalocean\\Digitaloceandatabasecluster\\V1\\GPBMetadata\xea\x02IProject::Planton::Provider::Digitalocean::Digitaloceandatabasecluster::V1b\x06proto3"
 
 var (
