@@ -1,5 +1,7 @@
 package module
 
 const (
-	OpOutputKey = "value"
+	// OpVpcId is the exported stack output name that contains the
+	// UUID of the created DigitalOcean VPC.
+	OpVpcId = "vpc_id"
 )
