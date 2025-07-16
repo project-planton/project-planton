@@ -1,0 +1,49 @@
+package module
+
+import (
+	"strconv"
+
+	digitaloceancredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/digitaloceancredential/v1"
+	digitaloceanloadbalancerv1 "github.com/project-planton/project-planton/apis/project/planton/provider/digitalocean/digitaloceanloadbalancer/v1"
+	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
+	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/digitalocean/digitaloceanlabelkeys"
+	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+)
+
+// Locals bundles handy references for the rest of the module.
+type Locals struct {
+	DigitalOceanCredentialSpec *digitaloceancredentialv1.DigitalOceanCredentialSpec
+	DigitalOceanLoadBalancer   *digitaloceanloadbalancerv1.DigitalOceanLoadBalancer
+	DoLabels                   map[string]string
+}
+
+// initializeLocals copies stack‑input fields into the Locals struct and builds
+// a reusable label map—mirrors the VPC module pattern.
+func initializeLocals(_ *pulumi.Context, stackInput *digitaloceanloadbalancerv1.DigitalOceanLoadBalancerStackInput) *Locals {
+	locals := &Locals{}
+
+	locals.DigitalOceanLoadBalancer = stackInput.Target
+
+	// Standard Planton labels for DigitalOcean resources.
+	locals.DoLabels = map[string]string{
+		digitaloceanlabelkeys.Resource:     strconv.FormatBool(true),
+		digitaloceanlabelkeys.ResourceName: locals.DigitalOceanLoadBalancer.Spec.LoadBalancerName,
+		digitaloceanlabelkeys.ResourceKind: cloudresourcekind.CloudResourceKind_DigitalOceanLoadBalancer.String(),
+	}
+
+	if locals.DigitalOceanLoadBalancer.Metadata.Org != "" {
+		locals.DoLabels[digitaloceanlabelkeys.Organization] = locals.DigitalOceanLoadBalancer.Metadata.Org
+	}
+
+	if locals.DigitalOceanLoadBalancer.Metadata.Env != "" {
+		locals.DoLabels[digitaloceanlabelkeys.Environment] = locals.DigitalOceanLoadBalancer.Metadata.Env
+	}
+
+	if locals.DigitalOceanLoadBalancer.Metadata.Id != "" {
+		locals.DoLabels[digitaloceanlabelkeys.ResourceId] = locals.DigitalOceanLoadBalancer.Metadata.Id
+	}
+
+	locals.DigitalOceanCredentialSpec = stackInput.ProviderCredential
+
+	return locals
+}
