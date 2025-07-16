@@ -21,9 +21,13 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// DigitalOceanKubernetesNodePoolStackOutputs captures the resulting Droplet info after provisioning.
+// DigitalOceanKubernetesNodePoolStackOutputs captures the outputs after provisioning a DigitalOcean Kubernetes Node Pool.
 type DigitalOceanKubernetesNodePoolStackOutputs struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The unique identifier (UUID) of the created node pool.
+	NodePoolId string `protobuf:"bytes,1,opt,name=node_pool_id,json=nodePoolId,proto3" json:"node_pool_id,omitempty"`
+	// The IDs of the individual Droplet nodes in the pool.
+	NodeIds       []string `protobuf:"bytes,2,rep,name=node_ids,json=nodeIds,proto3" json:"node_ids,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -58,12 +62,29 @@ func (*DigitalOceanKubernetesNodePoolStackOutputs) Descriptor() ([]byte, []int) 
 	return file_project_planton_provider_digitalocean_digitaloceankubernetesnodepool_v1_stack_outputs_proto_rawDescGZIP(), []int{0}
 }
 
+func (x *DigitalOceanKubernetesNodePoolStackOutputs) GetNodePoolId() string {
+	if x != nil {
+		return x.NodePoolId
+	}
+	return ""
+}
+
+func (x *DigitalOceanKubernetesNodePoolStackOutputs) GetNodeIds() []string {
+	if x != nil {
+		return x.NodeIds
+	}
+	return nil
+}
+
 var File_project_planton_provider_digitalocean_digitaloceankubernetesnodepool_v1_stack_outputs_proto protoreflect.FileDescriptor
 
 const file_project_planton_provider_digitalocean_digitaloceankubernetesnodepool_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"[project/planton/provider/digitalocean/digitaloceankubernetesnodepool/v1/stack_outputs.proto\x12Gproject.planton.provider.digitalocean.digitaloceankubernetesnodepool.v1\",\n" +
-	"*DigitalOceanKubernetesNodePoolStackOutputsB\xbe\x04\n" +
+	"[project/planton/provider/digitalocean/digitaloceankubernetesnodepool/v1/stack_outputs.proto\x12Gproject.planton.provider.digitalocean.digitaloceankubernetesnodepool.v1\"i\n" +
+	"*DigitalOceanKubernetesNodePoolStackOutputs\x12 \n" +
+	"\fnode_pool_id\x18\x01 \x01(\tR\n" +
+	"nodePoolId\x12\x19\n" +
+	"\bnode_ids\x18\x02 \x03(\tR\anodeIdsB\xbe\x04\n" +
 	"Kcom.project.planton.provider.digitalocean.digitaloceankubernetesnodepool.v1B\x11StackOutputsProtoP\x01Z\x98\x01github.com/project-planton/project-planton/apis/project/planton/provider/digitalocean/digitaloceankubernetesnodepool/v1;digitaloceankubernetesnodepoolv1\xa2\x02\x05PPPDD\xaa\x02GProject.Planton.Provider.Digitalocean.Digitaloceankubernetesnodepool.V1\xca\x02GProject\\Planton\\Provider\\Digitalocean\\Digitaloceankubernetesnodepool\\V1\xe2\x02SProject\\Planton\\Provider\\Digitalocean\\Digitaloceankubernetesnodepool\\V1\\GPBMetadata\xea\x02LProject::Planton::Provider::Digitalocean::Digitaloceankubernetesnodepool::V1b\x06proto3"
 
 var (

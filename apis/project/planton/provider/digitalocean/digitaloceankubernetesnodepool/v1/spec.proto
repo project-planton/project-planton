@@ -3,10 +3,51 @@ syntax = "proto3";
 package project.planton.provider.digitalocean.digitaloceankubernetesnodepool.v1;
 
 import "buf/validate/validate.proto";
+import "project/planton/shared/cloudresourcekind/cloud_resource_kind.proto";
 import "project/planton/shared/foreignkey/v1/foreign_key.proto";
 import "project/planton/shared/options/options.proto";
-import "project/planton/provider/digitalocean/region.proto";
 
-// DigitalOceanKubernetesNodePoolSpec defines the user configuration for a DigitalOcean Droplet (VM).
+// DigitalOceanKubernetesNodePoolSpec defines the specification for creating a node pool in an existing DigitalOcean Kubernetes cluster (DOKS).
+// It focuses on essential parameters, following the 80/20 principle to expose only the most commonly used settings.
 message DigitalOceanKubernetesNodePoolSpec {
+  // A name for the node pool. Must be unique within the Kubernetes cluster.
+  string node_pool_name = 1 [
+    (buf.validate.field).required = true
+  ];
+
+  // Reference to the DigitalOcean Kubernetes Cluster in which to create this node pool.
+  // Accepts the cluster's name or a reference to the DigitalOceanKubernetesCluster resource.
+  project.planton.shared.foreignkey.v1.StringValueOrRef cluster = 2 [
+    (buf.validate.field).required = true,
+    (project.planton.shared.foreignkey.v1.default_kind) = DigitalOceanKubernetesCluster,
+    (project.planton.shared.foreignkey.v1.default_kind_field_path) = "metadata.name"
+  ];
+
+  // The slug identifier for the Droplet size to use for each node (e.g., "s-4vcpu-8gb").
+  // This defines the CPU and memory of the nodes in the pool.
+  string size_slug = 3 [
+    (buf.validate.field).required = true
+  ];
+
+  // The number of nodes to provision in the pool.
+  // Must be at least 1. If auto_scale is enabled, this acts as the initial desired node count.
+  uint32 node_count = 4 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).uint32.gt = 0
+  ];
+
+  // Enable auto-scaling for this node pool.
+  // If true, the platform will manage node count between min_nodes and max_nodes.
+  bool auto_scale = 5;
+
+  // Minimum number of nodes when auto-scaling is enabled.
+  // Required if auto_scale is true.
+  uint32 min_nodes = 6;
+
+  // Maximum number of nodes when auto-scaling is enabled.
+  // Required if auto_scale is true.
+  uint32 max_nodes = 7;
+
+  // A list of tags to apply to the node pool (for organizational purposes in DigitalOcean).
+  repeated string tags = 8;
 }

@@ -21,9 +21,16 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// DigitalOceanAppPlatformServiceStackOutputs captures the resulting Droplet info after provisioning.
+// DigitalOceanAppPlatformServiceStackOutputs captures the key outputs after provisioning a service on DigitalOcean App Platform.
 type DigitalOceanAppPlatformServiceStackOutputs struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// app_id is the unique identifier of the app (DigitalOcean App Platform application ID).
+	AppId string `protobuf:"bytes,1,opt,name=app_id,json=appId,proto3" json:"app_id,omitempty"`
+	// default_hostname is the default hostname assigned to the app (usually ending in "ondigitalocean.app").
+	DefaultHostname string `protobuf:"bytes,2,opt,name=default_hostname,json=defaultHostname,proto3" json:"default_hostname,omitempty"`
+	// live_url is the publicly accessible URL (including protocol) of the deployed service.
+	// This may be the same as the default hostname with "https://" prefix, or a custom domain if one was configured.
+	LiveUrl       string `protobuf:"bytes,3,opt,name=live_url,json=liveUrl,proto3" json:"live_url,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -58,12 +65,36 @@ func (*DigitalOceanAppPlatformServiceStackOutputs) Descriptor() ([]byte, []int) 
 	return file_project_planton_provider_digitalocean_digitaloceanappplatformservice_v1_stack_outputs_proto_rawDescGZIP(), []int{0}
 }
 
+func (x *DigitalOceanAppPlatformServiceStackOutputs) GetAppId() string {
+	if x != nil {
+		return x.AppId
+	}
+	return ""
+}
+
+func (x *DigitalOceanAppPlatformServiceStackOutputs) GetDefaultHostname() string {
+	if x != nil {
+		return x.DefaultHostname
+	}
+	return ""
+}
+
+func (x *DigitalOceanAppPlatformServiceStackOutputs) GetLiveUrl() string {
+	if x != nil {
+		return x.LiveUrl
+	}
+	return ""
+}
+
 var File_project_planton_provider_digitalocean_digitaloceanappplatformservice_v1_stack_outputs_proto protoreflect.FileDescriptor
 
 const file_project_planton_provider_digitalocean_digitaloceanappplatformservice_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"[project/planton/provider/digitalocean/digitaloceanappplatformservice/v1/stack_outputs.proto\x12Gproject.planton.provider.digitalocean.digitaloceanappplatformservice.v1\",\n" +
-	"*DigitalOceanAppPlatformServiceStackOutputsB\xbe\x04\n" +
+	"[project/planton/provider/digitalocean/digitaloceanappplatformservice/v1/stack_outputs.proto\x12Gproject.planton.provider.digitalocean.digitaloceanappplatformservice.v1\"\x89\x01\n" +
+	"*DigitalOceanAppPlatformServiceStackOutputs\x12\x15\n" +
+	"\x06app_id\x18\x01 \x01(\tR\x05appId\x12)\n" +
+	"\x10default_hostname\x18\x02 \x01(\tR\x0fdefaultHostname\x12\x19\n" +
+	"\blive_url\x18\x03 \x01(\tR\aliveUrlB\xbe\x04\n" +
 	"Kcom.project.planton.provider.digitalocean.digitaloceanappplatformservice.v1B\x11StackOutputsProtoP\x01Z\x98\x01github.com/project-planton/project-planton/apis/project/planton/provider/digitalocean/digitaloceanappplatformservice/v1;digitaloceanappplatformservicev1\xa2\x02\x05PPPDD\xaa\x02GProject.Planton.Provider.Digitalocean.Digitaloceanappplatformservice.V1\xca\x02GProject\\Planton\\Provider\\Digitalocean\\Digitaloceanappplatformservice\\V1\xe2\x02SProject\\Planton\\Provider\\Digitalocean\\Digitaloceanappplatformservice\\V1\\GPBMetadata\xea\x02LProject::Planton::Provider::Digitalocean::Digitaloceanappplatformservice::V1b\x06proto3"
 
 var (
