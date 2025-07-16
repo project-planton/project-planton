@@ -1,5 +1,6 @@
 package module
 
 const (
-	OpOutputKey = "value"
+	// OpFirewallId is the stack output containing the DigitalOcean Firewall UUID.
+	OpFirewallId = "firewall_id"
 )

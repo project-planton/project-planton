@@ -1,10 +1,33 @@
 package module
 
 import (
+	"github.com/pkg/errors"
 	digitaloceanfirewallv1 "github.com/project-planton/project-planton/apis/project/planton/provider/digitalocean/digitaloceanfirewall/v1"
+	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/digitalocean/pulumidigitaloceanprovider"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-func Resources(ctx *pulumi.Context, stackInput *digitaloceanfirewallv1.DigitalOceanFirewallStackInput) error {
+// Resources is the module entrypoint.
+func Resources(
+	ctx *pulumi.Context,
+	stackInput *digitaloceanfirewallv1.DigitalOceanFirewallStackInput,
+) error {
+	// 1. Setup locals.
+	locals := initializeLocals(ctx, stackInput)
+
+	// 2. Instantiate provider from credential.
+	doProvider, err := pulumidigitaloceanprovider.Get(
+		ctx,
+		stackInput.ProviderCredential,
+	)
+	if err != nil {
+		return errors.Wrap(err, "failed to setup digitalocean provider")
+	}
+
+	// 3. Provision firewall.
+	if _, err := firewall(ctx, locals, doProvider); err != nil {
+		return errors.Wrap(err, "failed to create firewall")
+	}
+
 	return nil
 }
