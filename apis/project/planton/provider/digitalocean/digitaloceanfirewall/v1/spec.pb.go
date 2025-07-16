@@ -8,8 +8,8 @@ package digitaloceanfirewallv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	digitalocean "github.com/project-planton/project-planton/apis/project/planton/provider/digitalocean"
-	v1 "github.com/project-planton/project-planton/apis/project/planton/shared/foreignkey/v1"
+	_ "github.com/project-planton/project-planton/apis/project/planton/provider/digitalocean"
+	_ "github.com/project-planton/project-planton/apis/project/planton/shared/foreignkey/v1"
 	_ "github.com/project-planton/project-planton/apis/project/planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -25,136 +25,9 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// Supported Droplet size slugs (plans).
-type DigitalOceanFirewallSize int32
-
-const (
-	DigitalOceanFirewallSize_digital_ocean_firewall_size_unspecified DigitalOceanFirewallSize = 0
-	DigitalOceanFirewallSize_s_2vcpu_4gb                             DigitalOceanFirewallSize = 1 // basic: 2 vCPUs, 4 GB RAM
-	DigitalOceanFirewallSize_s_4vcpu_8gb                             DigitalOceanFirewallSize = 2 // basic: 4 vCPUs, 8 GB RAM
-	DigitalOceanFirewallSize_g_2vcpu_8gb                             DigitalOceanFirewallSize = 3 // general purpose: 2 vCPUs (dedicated), 8 GB RAM
-	DigitalOceanFirewallSize_g_4vcpu_16gb                            DigitalOceanFirewallSize = 4 // general purpose: 4 vCPUs (dedicated), 16 GB RAM
-)
-
-// Enum value maps for DigitalOceanFirewallSize.
-var (
-	DigitalOceanFirewallSize_name = map[int32]string{
-		0: "digital_ocean_firewall_size_unspecified",
-		1: "s_2vcpu_4gb",
-		2: "s_4vcpu_8gb",
-		3: "g_2vcpu_8gb",
-		4: "g_4vcpu_16gb",
-	}
-	DigitalOceanFirewallSize_value = map[string]int32{
-		"digital_ocean_firewall_size_unspecified": 0,
-		"s_2vcpu_4gb":  1,
-		"s_4vcpu_8gb":  2,
-		"g_2vcpu_8gb":  3,
-		"g_4vcpu_16gb": 4,
-	}
-)
-
-func (x DigitalOceanFirewallSize) Enum() *DigitalOceanFirewallSize {
-	p := new(DigitalOceanFirewallSize)
-	*p = x
-	return p
-}
-
-func (x DigitalOceanFirewallSize) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (DigitalOceanFirewallSize) Descriptor() protoreflect.EnumDescriptor {
-	return file_project_planton_provider_digitalocean_digitaloceanfirewall_v1_spec_proto_enumTypes[0].Descriptor()
-}
-
-func (DigitalOceanFirewallSize) Type() protoreflect.EnumType {
-	return &file_project_planton_provider_digitalocean_digitaloceanfirewall_v1_spec_proto_enumTypes[0]
-}
-
-func (x DigitalOceanFirewallSize) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use DigitalOceanFirewallSize.Descriptor instead.
-func (DigitalOceanFirewallSize) EnumDescriptor() ([]byte, []int) {
-	return file_project_planton_provider_digitalocean_digitaloceanfirewall_v1_spec_proto_rawDescGZIP(), []int{0}
-}
-
-// Timezone options for Droplet’s system clock.
-type DigitalOceanFirewallTimezone int32
-
-const (
-	DigitalOceanFirewallTimezone_utc   DigitalOceanFirewallTimezone = 0 // coordinated universal time
-	DigitalOceanFirewallTimezone_local DigitalOceanFirewallTimezone = 1 // local timezone
-)
-
-// Enum value maps for DigitalOceanFirewallTimezone.
-var (
-	DigitalOceanFirewallTimezone_name = map[int32]string{
-		0: "utc",
-		1: "local",
-	}
-	DigitalOceanFirewallTimezone_value = map[string]int32{
-		"utc":   0,
-		"local": 1,
-	}
-)
-
-func (x DigitalOceanFirewallTimezone) Enum() *DigitalOceanFirewallTimezone {
-	p := new(DigitalOceanFirewallTimezone)
-	*p = x
-	return p
-}
-
-func (x DigitalOceanFirewallTimezone) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (DigitalOceanFirewallTimezone) Descriptor() protoreflect.EnumDescriptor {
-	return file_project_planton_provider_digitalocean_digitaloceanfirewall_v1_spec_proto_enumTypes[1].Descriptor()
-}
-
-func (DigitalOceanFirewallTimezone) Type() protoreflect.EnumType {
-	return &file_project_planton_provider_digitalocean_digitaloceanfirewall_v1_spec_proto_enumTypes[1]
-}
-
-func (x DigitalOceanFirewallTimezone) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use DigitalOceanFirewallTimezone.Descriptor instead.
-func (DigitalOceanFirewallTimezone) EnumDescriptor() ([]byte, []int) {
-	return file_project_planton_provider_digitalocean_digitaloceanfirewall_v1_spec_proto_rawDescGZIP(), []int{1}
-}
-
 // DigitalOceanFirewallSpec defines the user configuration for a DigitalOcean Droplet (VM).
 type DigitalOceanFirewallSpec struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// droplet hostname (DNS-compatible, <=63 chars)
-	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	// region slug (datacenter location for the droplet)
-	Region digitalocean.DigitalOceanRegion `protobuf:"varint,2,opt,name=region,proto3,enum=project.planton.provider.digitalocean.DigitalOceanRegion" json:"region,omitempty"`
-	// droplet size slug (plan identifier)
-	Size DigitalOceanFirewallSize `protobuf:"varint,3,opt,name=size,proto3,enum=project.planton.provider.digitalocean.digitaloceanfirewall.v1.DigitalOceanFirewallSize" json:"size,omitempty"`
-	// image slug for the droplet base image (e.g. "ubuntu-22-04-x64")
-	Image string `protobuf:"bytes,4,opt,name=image,proto3" json:"image,omitempty"`
-	// target vpc network uuid for the droplet
-	Vpc *v1.StringValueOrRef `protobuf:"bytes,6,opt,name=vpc,proto3" json:"vpc,omitempty"`
-	// enable IPv6 networking (disabled by default)
-	EnableIpv6 bool `protobuf:"varint,7,opt,name=enable_ipv6,json=enableIpv6,proto3" json:"enable_ipv6,omitempty"`
-	// enable automated backups (disabled by default)
-	EnableBackups bool `protobuf:"varint,8,opt,name=enable_backups,json=enableBackups,proto3" json:"enable_backups,omitempty"`
-	// disable digitalocean monitoring agent (monitoring on by default)
-	DisableMonitoring bool `protobuf:"varint,9,opt,name=disable_monitoring,json=disableMonitoring,proto3" json:"disable_monitoring,omitempty"`
-	// block storage volumes to attach (must reside in same region)
-	VolumeIds []*v1.StringValueOrRef `protobuf:"bytes,10,rep,name=volume_ids,json=volumeIds,proto3" json:"volume_ids,omitempty"`
-	// tags to apply to the droplet (must be unique)
-	Tags []string `protobuf:"bytes,11,rep,name=tags,proto3" json:"tags,omitempty"`
-	// cloud-init user data script (<=32 KiB)
-	UserData string `protobuf:"bytes,12,opt,name=user_data,json=userData,proto3" json:"user_data,omitempty"`
-	// timezone setting for the droplet’s clock (default: UTC)
-	Timezone      DigitalOceanFirewallTimezone `protobuf:"varint,13,opt,name=timezone,proto3,enum=project.planton.provider.digitalocean.digitaloceanfirewall.v1.DigitalOceanFirewallTimezone" json:"timezone,omitempty"`
+	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -189,121 +62,12 @@ func (*DigitalOceanFirewallSpec) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_digitalocean_digitaloceanfirewall_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *DigitalOceanFirewallSpec) GetName() string {
-	if x != nil {
-		return x.Name
-	}
-	return ""
-}
-
-func (x *DigitalOceanFirewallSpec) GetRegion() digitalocean.DigitalOceanRegion {
-	if x != nil {
-		return x.Region
-	}
-	return digitalocean.DigitalOceanRegion(0)
-}
-
-func (x *DigitalOceanFirewallSpec) GetSize() DigitalOceanFirewallSize {
-	if x != nil {
-		return x.Size
-	}
-	return DigitalOceanFirewallSize_digital_ocean_firewall_size_unspecified
-}
-
-func (x *DigitalOceanFirewallSpec) GetImage() string {
-	if x != nil {
-		return x.Image
-	}
-	return ""
-}
-
-func (x *DigitalOceanFirewallSpec) GetVpc() *v1.StringValueOrRef {
-	if x != nil {
-		return x.Vpc
-	}
-	return nil
-}
-
-func (x *DigitalOceanFirewallSpec) GetEnableIpv6() bool {
-	if x != nil {
-		return x.EnableIpv6
-	}
-	return false
-}
-
-func (x *DigitalOceanFirewallSpec) GetEnableBackups() bool {
-	if x != nil {
-		return x.EnableBackups
-	}
-	return false
-}
-
-func (x *DigitalOceanFirewallSpec) GetDisableMonitoring() bool {
-	if x != nil {
-		return x.DisableMonitoring
-	}
-	return false
-}
-
-func (x *DigitalOceanFirewallSpec) GetVolumeIds() []*v1.StringValueOrRef {
-	if x != nil {
-		return x.VolumeIds
-	}
-	return nil
-}
-
-func (x *DigitalOceanFirewallSpec) GetTags() []string {
-	if x != nil {
-		return x.Tags
-	}
-	return nil
-}
-
-func (x *DigitalOceanFirewallSpec) GetUserData() string {
-	if x != nil {
-		return x.UserData
-	}
-	return ""
-}
-
-func (x *DigitalOceanFirewallSpec) GetTimezone() DigitalOceanFirewallTimezone {
-	if x != nil {
-		return x.Timezone
-	}
-	return DigitalOceanFirewallTimezone_utc
-}
-
 var File_project_planton_provider_digitalocean_digitaloceanfirewall_v1_spec_proto protoreflect.FileDescriptor
 
 const file_project_planton_provider_digitalocean_digitaloceanfirewall_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Hproject/planton/provider/digitalocean/digitaloceanfirewall/v1/spec.proto\x12=project.planton.provider.digitalocean.digitaloceanfirewall.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\x1a2project/planton/provider/digitalocean/region.proto\"\xe7\b\n" +
-	"\x18DigitalOceanFirewallSpec\x12?\n" +
-	"\x04name\x18\x01 \x01(\tB+\xbaH(\xc8\x01\x01r#\x18?2\x1f^[a-z0-9]([-a-z0-9]*[a-z0-9])?$R\x04name\x12Y\n" +
-	"\x06region\x18\x02 \x01(\x0e29.project.planton.provider.digitalocean.DigitalOceanRegionB\x06\xbaH\x03\xc8\x01\x01R\x06region\x12s\n" +
-	"\x04size\x18\x03 \x01(\x0e2W.project.planton.provider.digitalocean.digitaloceanfirewall.v1.DigitalOceanFirewallSizeB\x06\xbaH\x03\xc8\x01\x01R\x04size\x12?\n" +
-	"\x05image\x18\x04 \x01(\tB)\xbaH&\xc8\x01\x01r!2\x1f^[a-z0-9]([-a-z0-9]*[a-z0-9])?$R\x05image\x12n\n" +
-	"\x03vpc\x18\x06 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB$\xbaH\x03\xc8\x01\x01\x88\xd4a\xbc\t\x92\xd4a\x15status.outputs.vpc_idR\x03vpc\x12\x1f\n" +
-	"\venable_ipv6\x18\a \x01(\bR\n" +
-	"enableIpv6\x12%\n" +
-	"\x0eenable_backups\x18\b \x01(\bR\renableBackups\x12-\n" +
-	"\x12disable_monitoring\x18\t \x01(\bR\x11disableMonitoring\x12x\n" +
-	"\n" +
-	"volume_ids\x18\n" +
-	" \x03(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB!\x88\xd4a\xbb\t\x92\xd4a\x18status.outputs.volume_idR\tvolumeIds\x12\x1c\n" +
-	"\x04tags\x18\v \x03(\tB\b\xbaH\x05\x92\x01\x02\x18\x01R\x04tags\x12&\n" +
-	"\tuser_data\x18\f \x01(\tB\t\xbaH\x06r\x04(\x80\x80\x02R\buserData\x12\x80\x01\n" +
-	"\btimezone\x18\r \x01(\x0e2[.project.planton.provider.digitalocean.digitaloceanfirewall.v1.DigitalOceanFirewallTimezoneB\a\x8a\xa6\x1d\x03UTCR\btimezone:\xce\x01\xbaH\xca\x01\x1a\xc7\x01\n" +
-	"\x0essh_key_format\x12Ieach ssh_key_fingerprint must be a 16-byte hex fingerprint or a reference\x1ajssh_key_fingerprints.all(x, x.value.matches('^[0-9a-f]{2}(:[0-9a-f]{2}){15}$') || x.value_from.name != \"\")*\x8c\x01\n" +
-	"\x18DigitalOceanFirewallSize\x12+\n" +
-	"'digital_ocean_firewall_size_unspecified\x10\x00\x12\x0f\n" +
-	"\vs_2vcpu_4gb\x10\x01\x12\x0f\n" +
-	"\vs_4vcpu_8gb\x10\x02\x12\x0f\n" +
-	"\vg_2vcpu_8gb\x10\x03\x12\x10\n" +
-	"\fg_4vcpu_16gb\x10\x04*2\n" +
-	"\x1cDigitalOceanFirewallTimezone\x12\a\n" +
-	"\x03utc\x10\x00\x12\t\n" +
-	"\x05local\x10\x01B\xf0\x03\n" +
+	"Hproject/planton/provider/digitalocean/digitaloceanfirewall/v1/spec.proto\x12=project.planton.provider.digitalocean.digitaloceanfirewall.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\x1a2project/planton/provider/digitalocean/region.proto\"\x1a\n" +
+	"\x18DigitalOceanFirewallSpecB\xf0\x03\n" +
 	"Acom.project.planton.provider.digitalocean.digitaloceanfirewall.v1B\tSpecProtoP\x01Z\x84\x01github.com/project-planton/project-planton/apis/project/planton/provider/digitalocean/digitaloceanfirewall/v1;digitaloceanfirewallv1\xa2\x02\x05PPPDD\xaa\x02=Project.Planton.Provider.Digitalocean.Digitaloceanfirewall.V1\xca\x02=Project\\Planton\\Provider\\Digitalocean\\Digitaloceanfirewall\\V1\xe2\x02IProject\\Planton\\Provider\\Digitalocean\\Digitaloceanfirewall\\V1\\GPBMetadata\xea\x02BProject::Planton::Provider::Digitalocean::Digitaloceanfirewall::V1b\x06proto3"
 
 var (
@@ -318,26 +82,16 @@ func file_project_planton_provider_digitalocean_digitaloceanfirewall_v1_spec_pro
 	return file_project_planton_provider_digitalocean_digitaloceanfirewall_v1_spec_proto_rawDescData
 }
 
-var file_project_planton_provider_digitalocean_digitaloceanfirewall_v1_spec_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
 var file_project_planton_provider_digitalocean_digitaloceanfirewall_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_digitalocean_digitaloceanfirewall_v1_spec_proto_goTypes = []any{
-	(DigitalOceanFirewallSize)(0),        // 0: project.planton.provider.digitalocean.digitaloceanfirewall.v1.DigitalOceanFirewallSize
-	(DigitalOceanFirewallTimezone)(0),    // 1: project.planton.provider.digitalocean.digitaloceanfirewall.v1.DigitalOceanFirewallTimezone
-	(*DigitalOceanFirewallSpec)(nil),     // 2: project.planton.provider.digitalocean.digitaloceanfirewall.v1.DigitalOceanFirewallSpec
-	(digitalocean.DigitalOceanRegion)(0), // 3: project.planton.provider.digitalocean.DigitalOceanRegion
-	(*v1.StringValueOrRef)(nil),          // 4: project.planton.shared.foreignkey.v1.StringValueOrRef
+	(*DigitalOceanFirewallSpec)(nil), // 0: project.planton.provider.digitalocean.digitaloceanfirewall.v1.DigitalOceanFirewallSpec
 }
 var file_project_planton_provider_digitalocean_digitaloceanfirewall_v1_spec_proto_depIdxs = []int32{
-	3, // 0: project.planton.provider.digitalocean.digitaloceanfirewall.v1.DigitalOceanFirewallSpec.region:type_name -> project.planton.provider.digitalocean.DigitalOceanRegion
-	0, // 1: project.planton.provider.digitalocean.digitaloceanfirewall.v1.DigitalOceanFirewallSpec.size:type_name -> project.planton.provider.digitalocean.digitaloceanfirewall.v1.DigitalOceanFirewallSize
-	4, // 2: project.planton.provider.digitalocean.digitaloceanfirewall.v1.DigitalOceanFirewallSpec.vpc:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
-	4, // 3: project.planton.provider.digitalocean.digitaloceanfirewall.v1.DigitalOceanFirewallSpec.volume_ids:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
-	1, // 4: project.planton.provider.digitalocean.digitaloceanfirewall.v1.DigitalOceanFirewallSpec.timezone:type_name -> project.planton.provider.digitalocean.digitaloceanfirewall.v1.DigitalOceanFirewallTimezone
-	5, // [5:5] is the sub-list for method output_type
-	5, // [5:5] is the sub-list for method input_type
-	5, // [5:5] is the sub-list for extension type_name
-	5, // [5:5] is the sub-list for extension extendee
-	0, // [0:5] is the sub-list for field type_name
+	0, // [0:0] is the sub-list for method output_type
+	0, // [0:0] is the sub-list for method input_type
+	0, // [0:0] is the sub-list for extension type_name
+	0, // [0:0] is the sub-list for extension extendee
+	0, // [0:0] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_provider_digitalocean_digitaloceanfirewall_v1_spec_proto_init() }
@@ -350,14 +104,13 @@ func file_project_planton_provider_digitalocean_digitaloceanfirewall_v1_spec_pro
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_project_planton_provider_digitalocean_digitaloceanfirewall_v1_spec_proto_rawDesc), len(file_project_planton_provider_digitalocean_digitaloceanfirewall_v1_spec_proto_rawDesc)),
-			NumEnums:      2,
+			NumEnums:      0,
 			NumMessages:   1,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
 		GoTypes:           file_project_planton_provider_digitalocean_digitaloceanfirewall_v1_spec_proto_goTypes,
 		DependencyIndexes: file_project_planton_provider_digitalocean_digitaloceanfirewall_v1_spec_proto_depIdxs,
-		EnumInfos:         file_project_planton_provider_digitalocean_digitaloceanfirewall_v1_spec_proto_enumTypes,
 		MessageInfos:      file_project_planton_provider_digitalocean_digitaloceanfirewall_v1_spec_proto_msgTypes,
 	}.Build()
 	File_project_planton_provider_digitalocean_digitaloceanfirewall_v1_spec_proto = out.File

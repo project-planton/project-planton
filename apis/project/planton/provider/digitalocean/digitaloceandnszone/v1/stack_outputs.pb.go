@@ -21,19 +21,16 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// DigitalOceanDnsZoneStackOutputs captures the resulting Droplet info after provisioning.
+// DigitalOceanDnsZoneStackOutputs captures the output information after provisioning a DNS zone on DigitalOcean.
 type DigitalOceanDnsZoneStackOutputs struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// droplet unique identifier (DigitalOcean ID)
-	DropletId string `protobuf:"bytes,1,opt,name=droplet_id,json=dropletId,proto3" json:"droplet_id,omitempty"`
-	// primary IPv4 address (public if available, otherwise private)
-	Ipv4Address string `protobuf:"bytes,2,opt,name=ipv4_address,json=ipv4Address,proto3" json:"ipv4_address,omitempty"`
-	// IPv6 address (if IPv6 was enabled)
-	Ipv6Address string `protobuf:"bytes,3,opt,name=ipv6_address,json=ipv6Address,proto3" json:"ipv6_address,omitempty"`
-	// image ID of the droplet’s base image
-	ImageId int64 `protobuf:"varint,6,opt,name=image_id,json=imageId,proto3" json:"image_id,omitempty"`
-	// VPC network UUID in which the droplet resides
-	VpcUuid       string `protobuf:"bytes,7,opt,name=vpc_uuid,json=vpcUuid,proto3" json:"vpc_uuid,omitempty"`
+	// name of the DNS zone (domain) created on DigitalOcean.
+	ZoneName string `protobuf:"bytes,1,opt,name=zone_name,json=zoneName,proto3" json:"zone_name,omitempty"`
+	// The unique identifier of the created DNS zone (typically the domain name or ID assigned by DigitalOcean).
+	ZoneId string `protobuf:"bytes,2,opt,name=zone_id,json=zoneId,proto3" json:"zone_id,omitempty"`
+	// The list of nameserver addresses for the DNS zone.
+	// These are the nameservers that need to be set at the domain registrar for this zone.
+	NameServers   []string `protobuf:"bytes,3,rep,name=name_servers,json=nameServers,proto3" json:"name_servers,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -68,53 +65,36 @@ func (*DigitalOceanDnsZoneStackOutputs) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_digitalocean_digitaloceandnszone_v1_stack_outputs_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *DigitalOceanDnsZoneStackOutputs) GetDropletId() string {
+func (x *DigitalOceanDnsZoneStackOutputs) GetZoneName() string {
 	if x != nil {
-		return x.DropletId
+		return x.ZoneName
 	}
 	return ""
 }
 
-func (x *DigitalOceanDnsZoneStackOutputs) GetIpv4Address() string {
+func (x *DigitalOceanDnsZoneStackOutputs) GetZoneId() string {
 	if x != nil {
-		return x.Ipv4Address
+		return x.ZoneId
 	}
 	return ""
 }
 
-func (x *DigitalOceanDnsZoneStackOutputs) GetIpv6Address() string {
+func (x *DigitalOceanDnsZoneStackOutputs) GetNameServers() []string {
 	if x != nil {
-		return x.Ipv6Address
+		return x.NameServers
 	}
-	return ""
-}
-
-func (x *DigitalOceanDnsZoneStackOutputs) GetImageId() int64 {
-	if x != nil {
-		return x.ImageId
-	}
-	return 0
-}
-
-func (x *DigitalOceanDnsZoneStackOutputs) GetVpcUuid() string {
-	if x != nil {
-		return x.VpcUuid
-	}
-	return ""
+	return nil
 }
 
 var File_project_planton_provider_digitalocean_digitaloceandnszone_v1_stack_outputs_proto protoreflect.FileDescriptor
 
 const file_project_planton_provider_digitalocean_digitaloceandnszone_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Pproject/planton/provider/digitalocean/digitaloceandnszone/v1/stack_outputs.proto\x12<project.planton.provider.digitalocean.digitaloceandnszone.v1\"\xbc\x01\n" +
-	"\x1fDigitalOceanDnsZoneStackOutputs\x12\x1d\n" +
-	"\n" +
-	"droplet_id\x18\x01 \x01(\tR\tdropletId\x12!\n" +
-	"\fipv4_address\x18\x02 \x01(\tR\vipv4Address\x12!\n" +
-	"\fipv6_address\x18\x03 \x01(\tR\vipv6Address\x12\x19\n" +
-	"\bimage_id\x18\x06 \x01(\x03R\aimageId\x12\x19\n" +
-	"\bvpc_uuid\x18\a \x01(\tR\avpcUuidB\xf1\x03\n" +
+	"Pproject/planton/provider/digitalocean/digitaloceandnszone/v1/stack_outputs.proto\x12<project.planton.provider.digitalocean.digitaloceandnszone.v1\"z\n" +
+	"\x1fDigitalOceanDnsZoneStackOutputs\x12\x1b\n" +
+	"\tzone_name\x18\x01 \x01(\tR\bzoneName\x12\x17\n" +
+	"\azone_id\x18\x02 \x01(\tR\x06zoneId\x12!\n" +
+	"\fname_servers\x18\x03 \x03(\tR\vnameServersB\xf1\x03\n" +
 	"@com.project.planton.provider.digitalocean.digitaloceandnszone.v1B\x11StackOutputsProtoP\x01Z\x82\x01github.com/project-planton/project-planton/apis/project/planton/provider/digitalocean/digitaloceandnszone/v1;digitaloceandnszonev1\xa2\x02\x05PPPDD\xaa\x02<Project.Planton.Provider.Digitalocean.Digitaloceandnszone.V1\xca\x02<Project\\Planton\\Provider\\Digitalocean\\Digitaloceandnszone\\V1\xe2\x02HProject\\Planton\\Provider\\Digitalocean\\Digitaloceandnszone\\V1\\GPBMetadata\xea\x02AProject::Planton::Provider::Digitalocean::Digitaloceandnszone::V1b\x06proto3"
 
 var (

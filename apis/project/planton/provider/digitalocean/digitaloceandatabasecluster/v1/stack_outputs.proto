@@ -2,20 +2,23 @@ syntax = "proto3";
 
 package project.planton.provider.digitalocean.digitaloceandatabasecluster.v1;
 
-// DigitalOceanDatabaseClusterStackOutputs captures the resulting Droplet info after provisioning.
+// DigitalOceanDatabaseClusterStackOutputs captures the key outputs after provisioning a DigitalOcean database cluster.
 message DigitalOceanDatabaseClusterStackOutputs {
-  // droplet unique identifier (DigitalOcean ID)
-  string droplet_id = 1;
+  // The unique identifier (UUID) of the created database cluster.
+  string cluster_id = 1;
 
-  // primary IPv4 address (public if available, otherwise private)
-  string ipv4_address = 2;
+  // The full connection URI for the database cluster (including credentials and database name).
+  string connection_uri = 2;
 
-  // IPv6 address (if IPv6 was enabled)
-  string ipv6_address = 3;
+  // The hostname or IP address at which the database cluster is accessible.
+  string host = 3;
 
-  // image ID of the droplet’s base image
-  int64 image_id = 6;
+  // The network port that the database cluster is listening on.
+  uint32 port = 4;
 
-  // VPC network UUID in which the droplet resides
-  string vpc_uuid = 7;
+  // The username for the cluster’s default database user.
+  string database_user = 5;
+
+  // The password for the cluster’s default database user.
+  string database_password = 6;
 }

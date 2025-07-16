@@ -21,19 +21,15 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// DigitalOceanLoadBalancerStackOutputs captures the resulting Droplet info after provisioning.
+// DigitalOceanLoadBalancerStackOutputs captures the outputs after provisioning a DigitalOcean Load Balancer.
 type DigitalOceanLoadBalancerStackOutputs struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// droplet unique identifier (DigitalOcean ID)
-	DropletId string `protobuf:"bytes,1,opt,name=droplet_id,json=dropletId,proto3" json:"droplet_id,omitempty"`
-	// primary IPv4 address (public if available, otherwise private)
-	Ipv4Address string `protobuf:"bytes,2,opt,name=ipv4_address,json=ipv4Address,proto3" json:"ipv4_address,omitempty"`
-	// IPv6 address (if IPv6 was enabled)
-	Ipv6Address string `protobuf:"bytes,3,opt,name=ipv6_address,json=ipv6Address,proto3" json:"ipv6_address,omitempty"`
-	// image ID of the droplet’s base image
-	ImageId int64 `protobuf:"varint,6,opt,name=image_id,json=imageId,proto3" json:"image_id,omitempty"`
-	// VPC network UUID in which the droplet resides
-	VpcUuid       string `protobuf:"bytes,7,opt,name=vpc_uuid,json=vpcUuid,proto3" json:"vpc_uuid,omitempty"`
+	// The unique identifier (UUID) of the created DigitalOcean Load Balancer.
+	LoadBalancerId string `protobuf:"bytes,1,opt,name=load_balancer_id,json=loadBalancerId,proto3" json:"load_balancer_id,omitempty"`
+	// The public IP address assigned to the Load Balancer.
+	Ip string `protobuf:"bytes,2,opt,name=ip,proto3" json:"ip,omitempty"`
+	// The DNS name for the Load Balancer (if applicable).
+	DnsName       string `protobuf:"bytes,3,opt,name=dns_name,json=dnsName,proto3" json:"dns_name,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -68,37 +64,23 @@ func (*DigitalOceanLoadBalancerStackOutputs) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_digitalocean_digitaloceanloadbalancer_v1_stack_outputs_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *DigitalOceanLoadBalancerStackOutputs) GetDropletId() string {
+func (x *DigitalOceanLoadBalancerStackOutputs) GetLoadBalancerId() string {
 	if x != nil {
-		return x.DropletId
+		return x.LoadBalancerId
 	}
 	return ""
 }
 
-func (x *DigitalOceanLoadBalancerStackOutputs) GetIpv4Address() string {
+func (x *DigitalOceanLoadBalancerStackOutputs) GetIp() string {
 	if x != nil {
-		return x.Ipv4Address
+		return x.Ip
 	}
 	return ""
 }
 
-func (x *DigitalOceanLoadBalancerStackOutputs) GetIpv6Address() string {
+func (x *DigitalOceanLoadBalancerStackOutputs) GetDnsName() string {
 	if x != nil {
-		return x.Ipv6Address
-	}
-	return ""
-}
-
-func (x *DigitalOceanLoadBalancerStackOutputs) GetImageId() int64 {
-	if x != nil {
-		return x.ImageId
-	}
-	return 0
-}
-
-func (x *DigitalOceanLoadBalancerStackOutputs) GetVpcUuid() string {
-	if x != nil {
-		return x.VpcUuid
+		return x.DnsName
 	}
 	return ""
 }
@@ -107,14 +89,11 @@ var File_project_planton_provider_digitalocean_digitaloceanloadbalancer_v1_stack
 
 const file_project_planton_provider_digitalocean_digitaloceanloadbalancer_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Uproject/planton/provider/digitalocean/digitaloceanloadbalancer/v1/stack_outputs.proto\x12Aproject.planton.provider.digitalocean.digitaloceanloadbalancer.v1\"\xc1\x01\n" +
-	"$DigitalOceanLoadBalancerStackOutputs\x12\x1d\n" +
-	"\n" +
-	"droplet_id\x18\x01 \x01(\tR\tdropletId\x12!\n" +
-	"\fipv4_address\x18\x02 \x01(\tR\vipv4Address\x12!\n" +
-	"\fipv6_address\x18\x03 \x01(\tR\vipv6Address\x12\x19\n" +
-	"\bimage_id\x18\x06 \x01(\x03R\aimageId\x12\x19\n" +
-	"\bvpc_uuid\x18\a \x01(\tR\avpcUuidB\x94\x04\n" +
+	"Uproject/planton/provider/digitalocean/digitaloceanloadbalancer/v1/stack_outputs.proto\x12Aproject.planton.provider.digitalocean.digitaloceanloadbalancer.v1\"{\n" +
+	"$DigitalOceanLoadBalancerStackOutputs\x12(\n" +
+	"\x10load_balancer_id\x18\x01 \x01(\tR\x0eloadBalancerId\x12\x0e\n" +
+	"\x02ip\x18\x02 \x01(\tR\x02ip\x12\x19\n" +
+	"\bdns_name\x18\x03 \x01(\tR\adnsNameB\x94\x04\n" +
 	"Ecom.project.planton.provider.digitalocean.digitaloceanloadbalancer.v1B\x11StackOutputsProtoP\x01Z\x8c\x01github.com/project-planton/project-planton/apis/project/planton/provider/digitalocean/digitaloceanloadbalancer/v1;digitaloceanloadbalancerv1\xa2\x02\x05PPPDD\xaa\x02AProject.Planton.Provider.Digitalocean.Digitaloceanloadbalancer.V1\xca\x02AProject\\Planton\\Provider\\Digitalocean\\Digitaloceanloadbalancer\\V1\xe2\x02MProject\\Planton\\Provider\\Digitalocean\\Digitaloceanloadbalancer\\V1\\GPBMetadata\xea\x02FProject::Planton::Provider::Digitalocean::Digitaloceanloadbalancer::V1b\x06proto3"
 
 var (

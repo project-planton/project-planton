@@ -2,20 +2,15 @@ syntax = "proto3";
 
 package project.planton.provider.digitalocean.digitaloceandnszone.v1;
 
-// DigitalOceanDnsZoneStackOutputs captures the resulting Droplet info after provisioning.
+// DigitalOceanDnsZoneStackOutputs captures the output information after provisioning a DNS zone on DigitalOcean.
 message DigitalOceanDnsZoneStackOutputs {
-  // droplet unique identifier (DigitalOcean ID)
-  string droplet_id = 1;
+  // name of the DNS zone (domain) created on DigitalOcean.
+  string zone_name = 1;
 
-  // primary IPv4 address (public if available, otherwise private)
-  string ipv4_address = 2;
+  // The unique identifier of the created DNS zone (typically the domain name or ID assigned by DigitalOcean).
+  string zone_id = 2;
 
-  // IPv6 address (if IPv6 was enabled)
-  string ipv6_address = 3;
-
-  // image ID of the droplet’s base image
-  int64 image_id = 6;
-
-  // VPC network UUID in which the droplet resides
-  string vpc_uuid = 7;
+  // The list of nameserver addresses for the DNS zone.
+  // These are the nameservers that need to be set at the domain registrar for this zone.
+  repeated string name_servers = 3;
 }
