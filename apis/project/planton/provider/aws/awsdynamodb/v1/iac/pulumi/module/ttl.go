@@ -1,45 +1,53 @@
-package awsdynamodb
+package module
 
 import (
-    awsdynamodbpb "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsdynamodb/v1"
+    "fmt"
+
+    "github.com/pkg/errors"
+    "github.com/pulumi/pulumi-aws/sdk/v5/go/aws"
     "github.com/pulumi/pulumi-aws/sdk/v5/go/aws/dynamodb"
     "github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+
+    awsdynamodbpb "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsdynamodb/v1"
 )
 
-// buildTtl converts the protobuf-based Time-to-Live (TTL) specification into
-// the shape expected by the Pulumi AWS provider. The helper intentionally
-// returns nil when the caller did not request a TTL configuration so the
-// resulting TableArgs omit the ttl block entirely – this prevents needless
-// provider-level diffs. When the message is present, the function faithfully
-// reflects the user intent:
-//   • enabled  – attribute name must be forwarded together with Enabled=true
-//   • disabled – an explicit Enabled=false is sent to ensure a previously
-//                configured TTL is removed.
-//
-// Example usage inside a higher-level builder:
-//
-//   tableArgs := &dynamodb.TableArgs{
-//       // … other arguments …
-//       Ttl: buildTtl(spec.TtlSpecification),
-//   }
-func buildTtl(ttlSpec *awsdynamodbpb.TimeToLiveSpecification) *dynamodb.TableTtlArgs {
-    if ttlSpec == nil {
-        // Caller did not specify TTL settings – omit the block.
-        return nil
-    }
-
-    // When TTL is enabled we must provide both the flag and the attribute name.
-    if ttlSpec.TtlEnabled {
-        return &dynamodb.TableTtlArgs{
-            Enabled:       pulumi.Bool(true),
-            AttributeName: pulumi.StringPtr(ttlSpec.AttributeName),
+// timeToLive configures the TTL (Time-To-Live) settings for a DynamoDB table.
+// If TTL is not requested in the incoming specification, the function is a
+// no-op and returns (nil, nil).
+func timeToLive(
+    ctx *pulumi.Context,
+    locals *Locals,
+    awsProvider *aws.Provider,
+    tableName pulumi.StringInput,
+) (*dynamodb.TableItemTtl, error) {
+    // Safely pull the TTL specification from the locals structure.
+    var ttlSpec *awsdynamodbpb.TimeToLiveSpecification
+    if res := locals.Resource; res != nil {
+        if spec := res.GetSpec(); spec != nil {
+            ttlSpec = spec.GetTtlSpecification()
         }
     }
 
-    // TTL specification is present but disabled. Returning an explicit block
-    // with Enabled=false instructs the provider to disable TTL if it was
-    // previously enabled.
-    return &dynamodb.TableTtlArgs{
-        Enabled: pulumi.Bool(false),
+    // Nothing to do when the spec is nil or explicitly disabled.
+    if ttlSpec == nil || !ttlSpec.GetTtlEnabled() {
+        return nil, nil
     }
+
+    attrName := ttlSpec.GetAttributeName()
+    if attrName == "" {
+        return nil, errors.New("ttl_specification.attribute_name must be provided when ttl_enabled is true")
+    }
+
+    resourceName := fmt.Sprintf("%s-ttl", locals.Resource.GetSpec().GetTableName())
+
+    ttlResource, err := dynamodb.NewTableItemTtl(ctx, resourceName, &dynamodb.TableItemTtlArgs{
+        TableName:     tableName,
+        Enabled:       pulumi.Bool(true),
+        AttributeName: pulumi.String(attrName),
+    }, pulumi.Provider(awsProvider))
+    if err != nil {
+        return nil, errors.Wrap(err, "creating DynamoDB TTL configuration")
+    }
+
+    return ttlResource, nil
 }
