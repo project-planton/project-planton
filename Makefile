@@ -21,6 +21,11 @@ build_darwin: vet
 protos:
 	pushd apis;make build;popd
 
+.PHONY: generate-cloud-resource-kind-map
+generate-cloud-resource-kind-map:
+	rm -f internal/crkreflect/kind_map_gen.go
+	go run ./internal/crkreflect/codegen
+
 .PHONY: generate-kubernetes-types
 generate-kubernetes-types:
 	pushd pkg/kubernetestypes;make build;popd
