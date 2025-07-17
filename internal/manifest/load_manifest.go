@@ -43,10 +43,7 @@ func LoadManifest(manifestPath string) (proto.Message, error) {
 		return nil, errors.Wrapf(err, "failed to extract cloudResourceKind from %s stack input yaml", manifestPath)
 	}
 
-	cloudResourceKind, err := crkreflect.KindFromString(kindName)
-	if err != nil {
-		return nil, errors.Wrapf(err, "failed to get cloudResourceKind from %s", kindName)
-	}
+	cloudResourceKind := crkreflect.KindFromString(kindName)
 
 	manifest := crkreflect.ToMessageMap[cloudResourceKind]
 

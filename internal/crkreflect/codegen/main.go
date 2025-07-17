@@ -7,6 +7,7 @@ package main
 import (
 	"bytes"
 	"fmt"
+	"github.com/project-planton/project-planton/internal/crkreflect"
 	"go/format"
 	"os"
 	"path/filepath"
@@ -16,7 +17,6 @@ import (
 
 	"github.com/pkg/errors"
 	cloudresourcekind "github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
-	"google.golang.org/protobuf/proto"
 )
 
 // -----------------------------------------------------------------------------
@@ -70,32 +70,21 @@ func main() {
 }
 
 func run() error {
-	enumDesc := cloudresourcekind.CloudResourceKind(0).Descriptor()
-
 	provEntries := map[string][]entry{} // provider raw name ("digital_ocean") → []entry
 	k8sAddon, k8sWorkload := []entry{}, []entry{}
 
 	imports := []importInfo{}
 	aliasByPath := map[string]string{}
 
-	for i := 0; i < enumDesc.Values().Len(); i++ {
-		val := enumDesc.Values().Get(i)
-		kindName := string(val.Name()) // e.g. AwsAlb
-
-		// skip sentinel / test values
-		if kindName == "unspecified" || strings.HasSuffix(kindName, "TestCloudApiResource") {
+	for _, cloudResourceKind := range crkreflect.KindsList() {
+		provider := crkreflect.GetProvider(cloudResourceKind)
+		if provider == cloudresourcekind.ProjectPlantonCloudResourceProvider_test {
+			// skip test values
 			continue
 		}
 
-		// provider option
-		if !proto.HasExtension(val.Options(), cloudresourcekind.E_Provider) {
-			continue
-		}
-		provider := proto.GetExtension(val.Options(), cloudresourcekind.E_Provider).(cloudresourcekind.ProjectPlantonCloudResourceProvider)
-		if provider == cloudresourcekind.ProjectPlantonCloudResourceProvider_test ||
-			provider == cloudresourcekind.ProjectPlantonCloudResourceProvider_project_planton_cloud_resource_provider_unspecified {
-			continue
-		}
+		kindName := cloudResourceKind.String() // e.g. AwsAlb
+
 		provRaw := provider.String()                     // "digital_ocean"
 		provSlug := strings.ReplaceAll(provRaw, "_", "") // "digitalocean"
 
@@ -105,19 +94,13 @@ func run() error {
 		// kubernetes special‑case
 		var importPath string
 		if provRaw == cloudresourcekind.ProjectPlantonCloudResourceProvider_kubernetes.String() {
-			// kubernetes_resource_type option
-			kubernetesResourceTypeOptionValue := cloudresourcekind.ProjectPlantonKubernetesResourceType_project_planton_kubernetes_resource_type_unspecified
-			if e := proto.GetExtension(val.Options(), cloudresourcekind.E_KubernetesResourceType); e != nil {
-				kubernetesResourceTypeOptionValue = e.(cloudresourcekind.ProjectPlantonKubernetesResourceType)
-			}
-
-			kubernetesResourceType := kubernetesResourceTypeOptionValue.String()
+			kubernetesResourceType := crkreflect.GetKubernetesResourceType(cloudResourceKind)
 
 			importPath = fmt.Sprintf(
 				"github.com/project-planton/project-planton/apis/project/planton/provider/%s/%s/%s/v1",
 				provSlug, kubernetesResourceType, lowerKind)
 
-			putUniqueEntry(kubernetesResourceTypeOptionValue == cloudresourcekind.ProjectPlantonKubernetesResourceType_addon,
+			putUniqueEntry(kubernetesResourceType == cloudresourcekind.ProjectPlantonKubernetesResourceType_addon,
 				&k8sAddon, &k8sWorkload,
 				entry{
 					KindConst:   kindName,

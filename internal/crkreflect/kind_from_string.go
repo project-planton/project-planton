@@ -7,11 +7,11 @@ import (
 
 var AliasMap = map[cloudresourcekind.CloudResourceKind][]string{}
 
-func KindFromString(cloudResourceKindString string) (cloudresourcekind.CloudResourceKind, error) {
+func KindFromString(cloudResourceKindString string) cloudresourcekind.CloudResourceKind {
 	for kind, aliases := range AliasMap {
 		for _, alias := range aliases {
 			if alias == cloudResourceKindString {
-				return kind, nil
+				return kind
 			}
 		}
 	}
@@ -21,9 +21,9 @@ func KindFromString(cloudResourceKindString string) (cloudresourcekind.CloudReso
 
 	for _, k := range KindsList() {
 		if strings.EqualFold(k.String(), cloudResourceKindString) {
-			return k, nil
+			return k
 		}
 	}
 
-	return cloudresourcekind.CloudResourceKind_unspecified, nil
+	return cloudresourcekind.CloudResourceKind_unspecified
 }

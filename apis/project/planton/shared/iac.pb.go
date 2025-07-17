@@ -70,70 +70,6 @@ func (IacProvisioner) EnumDescriptor() ([]byte, []int) {
 	return file_project_planton_shared_iac_proto_rawDescGZIP(), []int{0}
 }
 
-type KindProvider int32
-
-const (
-	KindProvider_kind_provider_unspecified KindProvider = 0
-	KindProvider_kind_provider_aws         KindProvider = 1
-	KindProvider_kind_provider_gcp         KindProvider = 2
-	KindProvider_kind_provider_azure       KindProvider = 3
-	KindProvider_kind_provider_kubernetes  KindProvider = 4
-	KindProvider_kind_provider_confluent   KindProvider = 5
-	KindProvider_kind_provider_snowflake   KindProvider = 6
-	KindProvider_kind_provider_atlas       KindProvider = 7
-)
-
-// Enum value maps for KindProvider.
-var (
-	KindProvider_name = map[int32]string{
-		0: "kind_provider_unspecified",
-		1: "kind_provider_aws",
-		2: "kind_provider_gcp",
-		3: "kind_provider_azure",
-		4: "kind_provider_kubernetes",
-		5: "kind_provider_confluent",
-		6: "kind_provider_snowflake",
-		7: "kind_provider_atlas",
-	}
-	KindProvider_value = map[string]int32{
-		"kind_provider_unspecified": 0,
-		"kind_provider_aws":         1,
-		"kind_provider_gcp":         2,
-		"kind_provider_azure":       3,
-		"kind_provider_kubernetes":  4,
-		"kind_provider_confluent":   5,
-		"kind_provider_snowflake":   6,
-		"kind_provider_atlas":       7,
-	}
-)
-
-func (x KindProvider) Enum() *KindProvider {
-	p := new(KindProvider)
-	*p = x
-	return p
-}
-
-func (x KindProvider) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (KindProvider) Descriptor() protoreflect.EnumDescriptor {
-	return file_project_planton_shared_iac_proto_enumTypes[1].Descriptor()
-}
-
-func (KindProvider) Type() protoreflect.EnumType {
-	return &file_project_planton_shared_iac_proto_enumTypes[1]
-}
-
-func (x KindProvider) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use KindProvider.Descriptor instead.
-func (KindProvider) EnumDescriptor() ([]byte, []int) {
-	return file_project_planton_shared_iac_proto_rawDescGZIP(), []int{1}
-}
-
 var File_project_planton_shared_iac_proto protoreflect.FileDescriptor
 
 const file_project_planton_shared_iac_proto_rawDesc = "" +
@@ -143,16 +79,7 @@ const file_project_planton_shared_iac_proto_rawDesc = "" +
 	"\x1biac_provisioner_unspecified\x10\x00\x12\r\n" +
 	"\tterraform\x10\x01\x12\n" +
 	"\n" +
-	"\x06pulumi\x10\x02*\xe5\x01\n" +
-	"\fKindProvider\x12\x1d\n" +
-	"\x19kind_provider_unspecified\x10\x00\x12\x15\n" +
-	"\x11kind_provider_aws\x10\x01\x12\x15\n" +
-	"\x11kind_provider_gcp\x10\x02\x12\x17\n" +
-	"\x13kind_provider_azure\x10\x03\x12\x1c\n" +
-	"\x18kind_provider_kubernetes\x10\x04\x12\x1b\n" +
-	"\x17kind_provider_confluent\x10\x05\x12\x1b\n" +
-	"\x17kind_provider_snowflake\x10\x06\x12\x17\n" +
-	"\x13kind_provider_atlas\x10\aB\xe8\x01\n" +
+	"\x06pulumi\x10\x02B\xe8\x01\n" +
 	"\x1acom.project.planton.sharedB\bIacProtoP\x01ZFgithub.com/project-planton/project-planton/apis/project/planton/shared\xa2\x02\x03PPS\xaa\x02\x16Project.Planton.Shared\xca\x02\x16Project\\Planton\\Shared\xe2\x02\"Project\\Planton\\Shared\\GPBMetadata\xea\x02\x18Project::Planton::Sharedb\x06proto3"
 
 var (
@@ -167,10 +94,9 @@ func file_project_planton_shared_iac_proto_rawDescGZIP() []byte {
 	return file_project_planton_shared_iac_proto_rawDescData
 }
 
-var file_project_planton_shared_iac_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
+var file_project_planton_shared_iac_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_project_planton_shared_iac_proto_goTypes = []any{
 	(IacProvisioner)(0), // 0: project.planton.shared.IacProvisioner
-	(KindProvider)(0),   // 1: project.planton.shared.KindProvider
 }
 var file_project_planton_shared_iac_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type
@@ -190,7 +116,7 @@ func file_project_planton_shared_iac_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_project_planton_shared_iac_proto_rawDesc), len(file_project_planton_shared_iac_proto_rawDesc)),
-			NumEnums:      2,
+			NumEnums:      1,
 			NumMessages:   0,
 			NumExtensions: 0,
 			NumServices:   0,

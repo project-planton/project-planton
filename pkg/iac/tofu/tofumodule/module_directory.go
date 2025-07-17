@@ -2,10 +2,10 @@ package tofumodule
 
 import (
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/apis/project/planton/shared"
+	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
 	"github.com/project-planton/project-planton/internal/cli/version"
 	"github.com/project-planton/project-planton/internal/cli/workspace"
-	"github.com/project-planton/project-planton/internal/provider"
+	"github.com/project-planton/project-planton/internal/crkreflect"
 	"github.com/project-planton/project-planton/pkg/fileutil"
 	"github.com/project-planton/project-planton/pkg/iac/gitrepo"
 	"os"
@@ -91,15 +91,15 @@ func isTerraformModuleDirectory(moduleDir string) (bool, error) {
 }
 
 func getTerraformModulePath(moduleRepoDir, kindName string) (string, error) {
-	kindProvider := provider.GetProvider(provider.KindName(kindName))
-	if kindProvider == shared.KindProvider_kind_provider_unspecified {
+	kindProvider := crkreflect.GetProvider(crkreflect.KindFromString(kindName))
+	if kindProvider == cloudresourcekind.ProjectPlantonCloudResourceProvider_project_planton_cloud_resource_provider_unspecified {
 		return "", errors.New("failed to get kind provider")
 	}
 
 	terraformModulePath := filepath.Join(
 		moduleRepoDir,
 		"apis/project/planton/provider",
-		strings.TrimPrefix(strings.ToLower(kindProvider.String()), "kind_provider_"),
+		strings.ReplaceAll(kindProvider.String(), "_", ""),
 		strings.ToLower(kindName),
 		"v1/iac/tf",
 	)
