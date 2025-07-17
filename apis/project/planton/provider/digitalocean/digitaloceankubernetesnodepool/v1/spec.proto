@@ -25,7 +25,7 @@ message DigitalOceanKubernetesNodePoolSpec {
 
   // The slug identifier for the Droplet size to use for each node (e.g., "s-4vcpu-8gb").
   // This defines the CPU and memory of the nodes in the pool.
-  string size_slug = 3 [
+  string size = 3 [
     (buf.validate.field).required = true
   ];
 

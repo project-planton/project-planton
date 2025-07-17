@@ -30,25 +30,25 @@ const (
 type DigitalOceanLoadBalancerProtocol int32
 
 const (
-	DigitalOceanLoadBalancerProtocol_LOAD_BALANCER_PROTOCOL_UNSPECIFIED DigitalOceanLoadBalancerProtocol = 0
-	DigitalOceanLoadBalancerProtocol_HTTP                               DigitalOceanLoadBalancerProtocol = 1
-	DigitalOceanLoadBalancerProtocol_HTTPS                              DigitalOceanLoadBalancerProtocol = 2
-	DigitalOceanLoadBalancerProtocol_TCP                                DigitalOceanLoadBalancerProtocol = 3
+	DigitalOceanLoadBalancerProtocol_digitalocean_load_balancer_protocol_unspecified DigitalOceanLoadBalancerProtocol = 0 // Default value, should not be used.
+	DigitalOceanLoadBalancerProtocol_http                                            DigitalOceanLoadBalancerProtocol = 1
+	DigitalOceanLoadBalancerProtocol_https                                           DigitalOceanLoadBalancerProtocol = 2
+	DigitalOceanLoadBalancerProtocol_tcp                                             DigitalOceanLoadBalancerProtocol = 3
 )
 
 // Enum value maps for DigitalOceanLoadBalancerProtocol.
 var (
 	DigitalOceanLoadBalancerProtocol_name = map[int32]string{
-		0: "LOAD_BALANCER_PROTOCOL_UNSPECIFIED",
-		1: "HTTP",
-		2: "HTTPS",
-		3: "TCP",
+		0: "digitalocean_load_balancer_protocol_unspecified",
+		1: "http",
+		2: "https",
+		3: "tcp",
 	}
 	DigitalOceanLoadBalancerProtocol_value = map[string]int32{
-		"LOAD_BALANCER_PROTOCOL_UNSPECIFIED": 0,
-		"HTTP":                               1,
-		"HTTPS":                              2,
-		"TCP":                                3,
+		"digitalocean_load_balancer_protocol_unspecified": 0,
+		"http":  1,
+		"https": 2,
+		"tcp":   3,
 	}
 )
 
@@ -255,7 +255,7 @@ func (x *DigitalOceanLoadBalancerForwardingRule) GetEntryProtocol() DigitalOcean
 	if x != nil {
 		return x.EntryProtocol
 	}
-	return DigitalOceanLoadBalancerProtocol_LOAD_BALANCER_PROTOCOL_UNSPECIFIED
+	return DigitalOceanLoadBalancerProtocol_digitalocean_load_balancer_protocol_unspecified
 }
 
 func (x *DigitalOceanLoadBalancerForwardingRule) GetTargetPort() uint32 {
@@ -269,7 +269,7 @@ func (x *DigitalOceanLoadBalancerForwardingRule) GetTargetProtocol() DigitalOcea
 	if x != nil {
 		return x.TargetProtocol
 	}
-	return DigitalOceanLoadBalancerProtocol_LOAD_BALANCER_PROTOCOL_UNSPECIFIED
+	return DigitalOceanLoadBalancerProtocol_digitalocean_load_balancer_protocol_unspecified
 }
 
 // HealthCheck defines how the load balancer checks the health of attached Droplets.
@@ -329,7 +329,7 @@ func (x *DigitalOceanLoadBalancerHealthCheck) GetProtocol() DigitalOceanLoadBala
 	if x != nil {
 		return x.Protocol
 	}
-	return DigitalOceanLoadBalancerProtocol_LOAD_BALANCER_PROTOCOL_UNSPECIFIED
+	return DigitalOceanLoadBalancerProtocol_digitalocean_load_balancer_protocol_unspecified
 }
 
 func (x *DigitalOceanLoadBalancerHealthCheck) GetPath() string {
@@ -374,12 +374,12 @@ const file_project_planton_provider_digitalocean_digitaloceanloadbalancer_v1_spe
 	"\x04port\x18\x01 \x01(\rB\x0e\xbaH\v\xc8\x01\x01*\x06\x18\xff\xff\x03(\x01R\x04port\x12\x87\x01\n" +
 	"\bprotocol\x18\x02 \x01(\x0e2c.project.planton.provider.digitalocean.digitaloceanloadbalancer.v1.DigitalOceanLoadBalancerProtocolB\x06\xbaH\x03\xc8\x01\x01R\bprotocol\x12\x12\n" +
 	"\x04path\x18\x03 \x01(\tR\x04path\x124\n" +
-	"\x12check_interval_sec\x18\x04 \x01(\rB\x06\x92\xa6\x1d\x0210R\x10checkIntervalSec*h\n" +
-	" DigitalOceanLoadBalancerProtocol\x12&\n" +
-	"\"LOAD_BALANCER_PROTOCOL_UNSPECIFIED\x10\x00\x12\b\n" +
-	"\x04HTTP\x10\x01\x12\t\n" +
-	"\x05HTTPS\x10\x02\x12\a\n" +
-	"\x03TCP\x10\x03B\x8c\x04\n" +
+	"\x12check_interval_sec\x18\x04 \x01(\rB\x06\x92\xa6\x1d\x0210R\x10checkIntervalSec*u\n" +
+	" DigitalOceanLoadBalancerProtocol\x123\n" +
+	"/digitalocean_load_balancer_protocol_unspecified\x10\x00\x12\b\n" +
+	"\x04http\x10\x01\x12\t\n" +
+	"\x05https\x10\x02\x12\a\n" +
+	"\x03tcp\x10\x03B\x8c\x04\n" +
 	"Ecom.project.planton.provider.digitalocean.digitaloceanloadbalancer.v1B\tSpecProtoP\x01Z\x8c\x01github.com/project-planton/project-planton/apis/project/planton/provider/digitalocean/digitaloceanloadbalancer/v1;digitaloceanloadbalancerv1\xa2\x02\x05PPPDD\xaa\x02AProject.Planton.Provider.Digitalocean.Digitaloceanloadbalancer.V1\xca\x02AProject\\Planton\\Provider\\Digitalocean\\Digitaloceanloadbalancer\\V1\xe2\x02MProject\\Planton\\Provider\\Digitalocean\\Digitaloceanloadbalancer\\V1\\GPBMetadata\xea\x02FProject::Planton::Provider::Digitalocean::Digitaloceanloadbalancer::V1b\x06proto3"
 
 var (

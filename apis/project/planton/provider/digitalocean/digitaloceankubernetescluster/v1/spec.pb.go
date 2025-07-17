@@ -150,11 +150,11 @@ var File_project_planton_provider_digitalocean_digitaloceankubernetescluster_v1_
 
 const file_project_planton_provider_digitalocean_digitaloceankubernetescluster_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Qproject/planton/provider/digitalocean/digitaloceankubernetescluster/v1/spec.proto\x12Fproject.planton.provider.digitalocean.digitaloceankubernetescluster.v1\x1a\x1bbuf/validate/validate.proto\x1a2project/planton/provider/digitalocean/region.proto\x1aBproject/planton/shared/cloudresourcekind/cloud_resource_kind.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\"\x85\x04\n" +
+	"Qproject/planton/provider/digitalocean/digitaloceankubernetescluster/v1/spec.proto\x12Fproject.planton.provider.digitalocean.digitaloceankubernetescluster.v1\x1a\x1bbuf/validate/validate.proto\x1a2project/planton/provider/digitalocean/region.proto\x1aBproject/planton/shared/cloudresourcekind/cloud_resource_kind.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\"\xe9\x03\n" +
 	"!DigitalOceanKubernetesClusterSpec\x12)\n" +
 	"\fcluster_name\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\vclusterName\x12Y\n" +
-	"\x06region\x18\x02 \x01(\x0e29.project.planton.provider.digitalocean.DigitalOceanRegionB\x06\xbaH\x03\xc8\x01\x01R\x06region\x12Q\n" +
-	"\x12kubernetes_version\x18\x03 \x01(\tB\"\xbaH\x1f\xc8\x01\x01r\x1a2\x18^1\\.[2-9][0-9]?\\.[0-9]+$R\x11kubernetesVersion\x12f\n" +
+	"\x06region\x18\x02 \x01(\x0e29.project.planton.provider.digitalocean.DigitalOceanRegionB\x06\xbaH\x03\xc8\x01\x01R\x06region\x125\n" +
+	"\x12kubernetes_version\x18\x03 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x11kubernetesVersion\x12f\n" +
 	"\x03vpc\x18\x04 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB\x1c\xbaH\x03\xc8\x01\x01\x88\xd4a\xbc\t\x92\xd4a\rmetadata.nameR\x03vpc\x124\n" +
 	"\x10highly_available\x18\x05 \x01(\bB\t\x92\xa6\x1d\x05falseR\x0fhighlyAvailable\x12!\n" +
 	"\fauto_upgrade\x18\x06 \x01(\bR\vautoUpgrade\x122\n" +
