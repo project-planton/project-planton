@@ -37,9 +37,7 @@ func AwsProvider(ctx *pulumi.Context, cred *awscredentialpb.AwsCredentialSpec) (
         args.SecretKey = pulumi.StringPtr(v)
     }
     // NOTE: The credential proto currently has no field for a session token.
-    if v := strings.TrimSpace(cred.GetProfile()); v != "" {
-        args.Profile = pulumi.StringPtr(v)
-    }
+    // The credential proto also does not define a dedicated profile field.
 
     // Create the provider. A single, deterministic name ("aws") is used so
     // that Pulumi creates only one provider instance per stack, avoiding

@@ -36,9 +36,7 @@ func Resources(ctx *pulumi.Context, stackInput *awsdynamodbv1.AwsDynamodbStackIn
         if v := cred.GetRegion(); v != "" {
             providerArgs.Region = pulumi.StringPtr(v)
         }
-        if v := cred.GetProfile(); v != "" {
-            providerArgs.Profile = pulumi.StringPtr(v)
-        }
+        // The credential proto currently does not expose an AWS profile field.
     }
 
     awsProvider, err := aws.NewProvider(ctx, "aws", providerArgs)
