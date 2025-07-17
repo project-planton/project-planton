@@ -25,62 +25,6 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// Supported Droplet size slugs (plans).
-type DigitalOceanDropletSize int32
-
-const (
-	DigitalOceanDropletSize_digital_ocean_droplet_size_unspecified DigitalOceanDropletSize = 0
-	DigitalOceanDropletSize_s_2vcpu_4gb                            DigitalOceanDropletSize = 1 // basic: 2 vCPUs, 4 GB RAM
-	DigitalOceanDropletSize_s_4vcpu_8gb                            DigitalOceanDropletSize = 2 // basic: 4 vCPUs, 8 GB RAM
-	DigitalOceanDropletSize_g_2vcpu_8gb                            DigitalOceanDropletSize = 3 // general purpose: 2 vCPUs (dedicated), 8 GB RAM
-	DigitalOceanDropletSize_g_4vcpu_16gb                           DigitalOceanDropletSize = 4 // general purpose: 4 vCPUs (dedicated), 16 GB RAM
-)
-
-// Enum value maps for DigitalOceanDropletSize.
-var (
-	DigitalOceanDropletSize_name = map[int32]string{
-		0: "digital_ocean_droplet_size_unspecified",
-		1: "s_2vcpu_4gb",
-		2: "s_4vcpu_8gb",
-		3: "g_2vcpu_8gb",
-		4: "g_4vcpu_16gb",
-	}
-	DigitalOceanDropletSize_value = map[string]int32{
-		"digital_ocean_droplet_size_unspecified": 0,
-		"s_2vcpu_4gb":                            1,
-		"s_4vcpu_8gb":                            2,
-		"g_2vcpu_8gb":                            3,
-		"g_4vcpu_16gb":                           4,
-	}
-)
-
-func (x DigitalOceanDropletSize) Enum() *DigitalOceanDropletSize {
-	p := new(DigitalOceanDropletSize)
-	*p = x
-	return p
-}
-
-func (x DigitalOceanDropletSize) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (DigitalOceanDropletSize) Descriptor() protoreflect.EnumDescriptor {
-	return file_project_planton_provider_digitalocean_digitaloceandroplet_v1_spec_proto_enumTypes[0].Descriptor()
-}
-
-func (DigitalOceanDropletSize) Type() protoreflect.EnumType {
-	return &file_project_planton_provider_digitalocean_digitaloceandroplet_v1_spec_proto_enumTypes[0]
-}
-
-func (x DigitalOceanDropletSize) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use DigitalOceanDropletSize.Descriptor instead.
-func (DigitalOceanDropletSize) EnumDescriptor() ([]byte, []int) {
-	return file_project_planton_provider_digitalocean_digitaloceandroplet_v1_spec_proto_rawDescGZIP(), []int{0}
-}
-
 // Timezone options for Droplet’s system clock.
 type DigitalOceanDropletTimezone int32
 
@@ -112,11 +56,11 @@ func (x DigitalOceanDropletTimezone) String() string {
 }
 
 func (DigitalOceanDropletTimezone) Descriptor() protoreflect.EnumDescriptor {
-	return file_project_planton_provider_digitalocean_digitaloceandroplet_v1_spec_proto_enumTypes[1].Descriptor()
+	return file_project_planton_provider_digitalocean_digitaloceandroplet_v1_spec_proto_enumTypes[0].Descriptor()
 }
 
 func (DigitalOceanDropletTimezone) Type() protoreflect.EnumType {
-	return &file_project_planton_provider_digitalocean_digitaloceandroplet_v1_spec_proto_enumTypes[1]
+	return &file_project_planton_provider_digitalocean_digitaloceandroplet_v1_spec_proto_enumTypes[0]
 }
 
 func (x DigitalOceanDropletTimezone) Number() protoreflect.EnumNumber {
@@ -125,7 +69,7 @@ func (x DigitalOceanDropletTimezone) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use DigitalOceanDropletTimezone.Descriptor instead.
 func (DigitalOceanDropletTimezone) EnumDescriptor() ([]byte, []int) {
-	return file_project_planton_provider_digitalocean_digitaloceandroplet_v1_spec_proto_rawDescGZIP(), []int{1}
+	return file_project_planton_provider_digitalocean_digitaloceandroplet_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
 // DigitalOceanDropletSpec defines the user configuration for a DigitalOcean Droplet (VM).
@@ -135,8 +79,10 @@ type DigitalOceanDropletSpec struct {
 	DropletName string `protobuf:"bytes,1,opt,name=droplet_name,json=dropletName,proto3" json:"droplet_name,omitempty"`
 	// region slug (datacenter location for the droplet)
 	Region digitalocean.DigitalOceanRegion `protobuf:"varint,2,opt,name=region,proto3,enum=project.planton.provider.digitalocean.DigitalOceanRegion" json:"region,omitempty"`
-	// droplet size slug (plan identifier)
-	Size DigitalOceanDropletSize `protobuf:"varint,3,opt,name=size,proto3,enum=project.planton.provider.digitalocean.digitaloceandroplet.v1.DigitalOceanDropletSize" json:"size,omitempty"`
+	// Droplet size slug, e.g. "s-2vcpu-4gb" or "g-8vcpu-32gb".
+	// Valid values: must match the regexp "^[a-z0-9]+(-[a-z0-9]+)+$" and
+	// must be accepted by the DigitalOcean /v2/sizes API at creation time.
+	Size string `protobuf:"bytes,3,opt,name=size,proto3" json:"size,omitempty"`
 	// image slug for the droplet base image (e.g. "ubuntu-22-04-x64")
 	Image string `protobuf:"bytes,4,opt,name=image,proto3" json:"image,omitempty"`
 	// target vpc network uuid for the droplet
@@ -203,11 +149,11 @@ func (x *DigitalOceanDropletSpec) GetRegion() digitalocean.DigitalOceanRegion {
 	return digitalocean.DigitalOceanRegion(0)
 }
 
-func (x *DigitalOceanDropletSpec) GetSize() DigitalOceanDropletSize {
+func (x *DigitalOceanDropletSpec) GetSize() string {
 	if x != nil {
 		return x.Size
 	}
-	return DigitalOceanDropletSize_digital_ocean_droplet_size_unspecified
+	return ""
 }
 
 func (x *DigitalOceanDropletSpec) GetImage() string {
@@ -277,11 +223,11 @@ var File_project_planton_provider_digitalocean_digitaloceandroplet_v1_spec_proto
 
 const file_project_planton_provider_digitalocean_digitaloceandroplet_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Gproject/planton/provider/digitalocean/digitaloceandroplet/v1/spec.proto\x12<project.planton.provider.digitalocean.digitaloceandroplet.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\x1a2project/planton/provider/digitalocean/region.proto\"\x9f\a\n" +
+	"Gproject/planton/provider/digitalocean/digitaloceandroplet/v1/spec.proto\x12<project.planton.provider.digitalocean.digitaloceandroplet.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\x1a2project/planton/provider/digitalocean/region.proto\"\xe4\x06\n" +
 	"\x17DigitalOceanDropletSpec\x12N\n" +
 	"\fdroplet_name\x18\x01 \x01(\tB+\xbaH(\xc8\x01\x01r#\x18?2\x1f^[a-z0-9]([-a-z0-9]*[a-z0-9])?$R\vdropletName\x12Y\n" +
-	"\x06region\x18\x02 \x01(\x0e29.project.planton.provider.digitalocean.DigitalOceanRegionB\x06\xbaH\x03\xc8\x01\x01R\x06region\x12q\n" +
-	"\x04size\x18\x03 \x01(\x0e2U.project.planton.provider.digitalocean.digitaloceandroplet.v1.DigitalOceanDropletSizeB\x06\xbaH\x03\xc8\x01\x01R\x04size\x12?\n" +
+	"\x06region\x18\x02 \x01(\x0e29.project.planton.provider.digitalocean.DigitalOceanRegionB\x06\xbaH\x03\xc8\x01\x01R\x06region\x126\n" +
+	"\x04size\x18\x03 \x01(\tB\"\xbaH\x1f\xc8\x01\x01r\x1a2\x18^[a-z0-9]+(-[a-z0-9]+)+$R\x04size\x12?\n" +
 	"\x05image\x18\x04 \x01(\tB)\xbaH&\xc8\x01\x01r!2\x1f^[a-z0-9]([-a-z0-9]*[a-z0-9])?$R\x05image\x12n\n" +
 	"\x03vpc\x18\x06 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB$\xbaH\x03\xc8\x01\x01\x88\xd4a\xbc\t\x92\xd4a\x15status.outputs.vpc_idR\x03vpc\x12\x1f\n" +
 	"\venable_ipv6\x18\a \x01(\bR\n" +
@@ -293,13 +239,7 @@ const file_project_planton_provider_digitalocean_digitaloceandroplet_v1_spec_pro
 	" \x03(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB!\x88\xd4a\xbb\t\x92\xd4a\x18status.outputs.volume_idR\tvolumeIds\x12\x1c\n" +
 	"\x04tags\x18\v \x03(\tB\b\xbaH\x05\x92\x01\x02\x18\x01R\x04tags\x12&\n" +
 	"\tuser_data\x18\f \x01(\tB\t\xbaH\x06r\x04(\x80\x80\x02R\buserData\x12~\n" +
-	"\btimezone\x18\r \x01(\x0e2Y.project.planton.provider.digitalocean.digitaloceandroplet.v1.DigitalOceanDropletTimezoneB\a\x8a\xa6\x1d\x03UTCR\btimezone*\x8a\x01\n" +
-	"\x17DigitalOceanDropletSize\x12*\n" +
-	"&digital_ocean_droplet_size_unspecified\x10\x00\x12\x0f\n" +
-	"\vs_2vcpu_4gb\x10\x01\x12\x0f\n" +
-	"\vs_4vcpu_8gb\x10\x02\x12\x0f\n" +
-	"\vg_2vcpu_8gb\x10\x03\x12\x10\n" +
-	"\fg_4vcpu_16gb\x10\x04*1\n" +
+	"\btimezone\x18\r \x01(\x0e2Y.project.planton.provider.digitalocean.digitaloceandroplet.v1.DigitalOceanDropletTimezoneB\a\x8a\xa6\x1d\x03UTCR\btimezone*1\n" +
 	"\x1bDigitalOceanDropletTimezone\x12\a\n" +
 	"\x03utc\x10\x00\x12\t\n" +
 	"\x05local\x10\x01B\xe9\x03\n" +
@@ -317,26 +257,24 @@ func file_project_planton_provider_digitalocean_digitaloceandroplet_v1_spec_prot
 	return file_project_planton_provider_digitalocean_digitaloceandroplet_v1_spec_proto_rawDescData
 }
 
-var file_project_planton_provider_digitalocean_digitaloceandroplet_v1_spec_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
+var file_project_planton_provider_digitalocean_digitaloceandroplet_v1_spec_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_project_planton_provider_digitalocean_digitaloceandroplet_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_digitalocean_digitaloceandroplet_v1_spec_proto_goTypes = []any{
-	(DigitalOceanDropletSize)(0),         // 0: project.planton.provider.digitalocean.digitaloceandroplet.v1.DigitalOceanDropletSize
-	(DigitalOceanDropletTimezone)(0),     // 1: project.planton.provider.digitalocean.digitaloceandroplet.v1.DigitalOceanDropletTimezone
-	(*DigitalOceanDropletSpec)(nil),      // 2: project.planton.provider.digitalocean.digitaloceandroplet.v1.DigitalOceanDropletSpec
-	(digitalocean.DigitalOceanRegion)(0), // 3: project.planton.provider.digitalocean.DigitalOceanRegion
-	(*v1.StringValueOrRef)(nil),          // 4: project.planton.shared.foreignkey.v1.StringValueOrRef
+	(DigitalOceanDropletTimezone)(0),     // 0: project.planton.provider.digitalocean.digitaloceandroplet.v1.DigitalOceanDropletTimezone
+	(*DigitalOceanDropletSpec)(nil),      // 1: project.planton.provider.digitalocean.digitaloceandroplet.v1.DigitalOceanDropletSpec
+	(digitalocean.DigitalOceanRegion)(0), // 2: project.planton.provider.digitalocean.DigitalOceanRegion
+	(*v1.StringValueOrRef)(nil),          // 3: project.planton.shared.foreignkey.v1.StringValueOrRef
 }
 var file_project_planton_provider_digitalocean_digitaloceandroplet_v1_spec_proto_depIdxs = []int32{
-	3, // 0: project.planton.provider.digitalocean.digitaloceandroplet.v1.DigitalOceanDropletSpec.region:type_name -> project.planton.provider.digitalocean.DigitalOceanRegion
-	0, // 1: project.planton.provider.digitalocean.digitaloceandroplet.v1.DigitalOceanDropletSpec.size:type_name -> project.planton.provider.digitalocean.digitaloceandroplet.v1.DigitalOceanDropletSize
-	4, // 2: project.planton.provider.digitalocean.digitaloceandroplet.v1.DigitalOceanDropletSpec.vpc:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
-	4, // 3: project.planton.provider.digitalocean.digitaloceandroplet.v1.DigitalOceanDropletSpec.volume_ids:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
-	1, // 4: project.planton.provider.digitalocean.digitaloceandroplet.v1.DigitalOceanDropletSpec.timezone:type_name -> project.planton.provider.digitalocean.digitaloceandroplet.v1.DigitalOceanDropletTimezone
-	5, // [5:5] is the sub-list for method output_type
-	5, // [5:5] is the sub-list for method input_type
-	5, // [5:5] is the sub-list for extension type_name
-	5, // [5:5] is the sub-list for extension extendee
-	0, // [0:5] is the sub-list for field type_name
+	2, // 0: project.planton.provider.digitalocean.digitaloceandroplet.v1.DigitalOceanDropletSpec.region:type_name -> project.planton.provider.digitalocean.DigitalOceanRegion
+	3, // 1: project.planton.provider.digitalocean.digitaloceandroplet.v1.DigitalOceanDropletSpec.vpc:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
+	3, // 2: project.planton.provider.digitalocean.digitaloceandroplet.v1.DigitalOceanDropletSpec.volume_ids:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
+	0, // 3: project.planton.provider.digitalocean.digitaloceandroplet.v1.DigitalOceanDropletSpec.timezone:type_name -> project.planton.provider.digitalocean.digitaloceandroplet.v1.DigitalOceanDropletTimezone
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_provider_digitalocean_digitaloceandroplet_v1_spec_proto_init() }
@@ -349,7 +287,7 @@ func file_project_planton_provider_digitalocean_digitaloceandroplet_v1_spec_prot
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_project_planton_provider_digitalocean_digitaloceandroplet_v1_spec_proto_rawDesc), len(file_project_planton_provider_digitalocean_digitaloceandroplet_v1_spec_proto_rawDesc)),
-			NumEnums:      2,
+			NumEnums:      1,
 			NumMessages:   1,
 			NumExtensions: 0,
 			NumServices:   0,

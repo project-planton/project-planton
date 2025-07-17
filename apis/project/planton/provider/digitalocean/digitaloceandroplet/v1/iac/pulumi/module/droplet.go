@@ -17,7 +17,7 @@ func droplet(
 	dropletArgs := &digitalocean.DropletArgs{
 		Name:    pulumi.String(locals.DigitalOceanDroplet.Metadata.Name),
 		Region:  pulumi.String(locals.DigitalOceanDroplet.Spec.Region.String()),
-		Size:    pulumi.String(locals.DigitalOceanDroplet.Spec.Size.String()),
+		Size:    pulumi.String(locals.DigitalOceanDroplet.Spec.Size),
 		Image:   pulumi.String(locals.DigitalOceanDroplet.Spec.Image),
 		Ipv6:    pulumi.Bool(locals.DigitalOceanDroplet.Spec.EnableIpv6),
 		Backups: pulumi.Bool(locals.DigitalOceanDroplet.Spec.EnableBackups),
@@ -25,7 +25,7 @@ func droplet(
 			!locals.DigitalOceanDroplet.Spec.DisableMonitoring),
 	}
 
-	// Optional: user‑provided cloud‑init script (<=32 KiB).
+	// Optional: user‑provided cloud‑init script (≤32 KiB).
 	if locals.DigitalOceanDroplet.Spec.UserData != "" {
 		dropletArgs.UserData = pulumi.String(
 			locals.DigitalOceanDroplet.Spec.UserData)
