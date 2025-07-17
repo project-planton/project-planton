@@ -1,165 +1,152 @@
-# AWS DynamoDB Table Module (`aws_dynamodb`)
+# AWS – DynamoDB table Terraform module
 
-Terraform module that creates and manages an **Amazon DynamoDB table** with optional
-secondary indexes, streams, TTL, encryption, point-in-time recovery and tagging.
-The interface follows the `AwsDynamodbSpec` protocol buffer schema defined in
-`project.planton.provider.aws.awsdynamodb.v1` and the module reports the values
-listed in the `AwsDynamodbStackOutputs` schema.
+## Overview
+This module creates and manages an **Amazon DynamoDB** table with the full feature-set that is exposed in the AWS API today – encryption, streams, TTL, point-in-time recovery, GSIs/LSIs, tagging, different billing modes and much more.  
+The whole configuration surface is represented by **one single input variable – `spec` – whose schema is generated from the protobuf message `AwsDynamodbSpec`** (see `proto/` directory). This keeps the module interface predictable and future-proof: when AWS ships new capabilities we only need to update the protobuf and the internal translation layer – your Terraform code stays unchanged.
+
+## Supported features
+* Pay-per-request **or** provisioned capacity (including per-GSI overrides)
+* Global and local secondary indexes (GSIs / LSIs)
+* Streams – any of the four stream view types
+* Time-to-live (TTL) for automatic item expiration
+* Server-side encryption – `AES256` or customer-managed KMS keys
+* Point-in-time recovery (continuous backups)
+* Arbitrary key/value **tags**
 
 ---
 
-## Example Usage
-
+## Quick-start example
 ```hcl
 module "orders_table" {
-  source  = "github.com/project-planton/project-planton//modules/aws_dynamodb"
-  version = "x.y.z"
+  source = "github.com/project-planton/project-planton//modules/aws_dynamodb"
+  # or "git::https://github.com/project-planton/project-planton.git//modules/aws_dynamodb?ref=v0.1.0"
 
-  # ─────────────────────────────────────────────────────────────────────────────
-  # Required arguments
-  # ─────────────────────────────────────────────────────────────────────────────
-  table_name = "orders"
+  # The only required input
+  spec = {
+    table_name = "orders"
 
-  attribute_definitions = [
-    # Partition key
-    {
-      attribute_name = "order_id"
-      attribute_type = "STRING"  # S
-    },
+    attribute_definitions = [
+      { attribute_name = "pk", attribute_type = "STRING" },
+      { attribute_name = "sk", attribute_type = "STRING" }
+    ]
 
-    # Sort key (optional)
-    {
-      attribute_name = "customer_id"
-      attribute_type = "STRING"
-    },
+    key_schema = [
+      { attribute_name = "pk", key_type = "HASH" },
+      { attribute_name = "sk", key_type = "RANGE" }
+    ]
 
-    # Attribute referenced by the GSI below
-    {
-      attribute_name = "status"
-      attribute_type = "STRING"
+    billing_mode = "PAY_PER_REQUEST"  # On-demand pricing
+
+    point_in_time_recovery_enabled = true
+
+    tags = {
+      Environment = "production"
+      Service     = "orders"
     }
-  ]
-
-  key_schema = [
-    {
-      attribute_name = "order_id"
-      key_type       = "HASH"   # Partition key
-    },
-    {
-      attribute_name = "customer_id"
-      key_type       = "RANGE"  # Sort key
-    }
-  ]
-
-  billing_mode = "PROVISIONED"
-  provisioned_throughput = {
-    read_capacity_units  = 5
-    write_capacity_units = 5
   }
+}
+```
 
-  # ─────────────────────────────────────────────────────────────────────────────
-  # Optional arguments
-  # ─────────────────────────────────────────────────────────────────────────────
-  global_secondary_indexes = [{
-    index_name = "status-index"
-    key_schema = [{
-      attribute_name = "status"
-      key_type       = "HASH"
-    }]
-    projection = {
-      projection_type     = "ALL"
-      non_key_attributes  = []  # ignored for ALL|KEYS_ONLY
-    }
+### Provisioned capacity + GSI example
+```hcl
+module "shopping_cart" {
+  source = "github.com/project-planton/project-planton//modules/aws_dynamodb"
+
+  spec = {
+    table_name = "shopping_cart"
+
+    attribute_definitions = [
+      { attribute_name = "user_id", attribute_type = "STRING" },
+      { attribute_name = "cart_id", attribute_type = "STRING" },
+      { attribute_name = "status",  attribute_type = "STRING" }
+    ]
+
+    key_schema = [
+      { attribute_name = "user_id", key_type = "HASH" },
+      { attribute_name = "cart_id", key_type = "RANGE" }
+    ]
+
+    billing_mode = "PROVISIONED"
     provisioned_throughput = {
-      read_capacity_units  = 2
-      write_capacity_units = 2
+      read_capacity_units  = 5
+      write_capacity_units = 5
     }
-  }]
 
-  stream_specification = {
-    stream_enabled   = true
-    stream_view_type = "NEW_AND_OLD_IMAGES"
-  }
-
-  ttl_specification = {
-    ttl_enabled   = true
-    attribute_name = "expires_at"  # UNIX epoch time in seconds
-  }
-
-  sse_specification = {
-    enabled            = true
-    sse_type           = "KMS"
-    kms_master_key_id  = "arn:aws:kms:us-east-1:111122223333:key/abcd-1234-efgh-5678"
-  }
-
-  point_in_time_recovery_enabled = true
-
-  tags = {
-    environment = "prod"
-    team        = "platform"
+    global_secondary_indexes = [
+      {
+        index_name = "status-gsi"
+        key_schema = [
+          { attribute_name = "status",  key_type = "HASH" },
+          { attribute_name = "user_id", key_type = "RANGE" }
+        ]
+        projection = {
+          projection_type = "ALL"
+        }
+        # GSI-level capacity (overrides table-level numbers)
+        provisioned_throughput = {
+          read_capacity_units  = 10
+          write_capacity_units = 2
+        }
+      }
+    ]
   }
 }
 ```
 
 ---
 
-## Inputs
+## Input variables
+| Name | Type | Description | Default | Required |
+|------|------|-------------|---------|----------|
+| `spec` | `object` (<br>see [`AwsDynamodbSpec`](#spec-schema) below<br>) | Full specification of the table, indexes and all optional settings. Validation is performed by CEL rules that are compiled from the protobuf definition. | n/a | **yes** |
 
-| Name | Required | Type | Description |
-|------|----------|------|-------------|
-| `table_name` | **Yes** | `string` | Name of the DynamoDB table (3–255 chars). |
-| `attribute_definitions` | **Yes** | `list(object)` | Full list of attributes referenced by the table and any index (see `AttributeDefinition`). |
-| `key_schema` | **Yes** | `list(object)` | Table primary key definition (`KeySchemaElement`). Must contain 1 (HASH) or 2 (HASH + RANGE) elements. |
-| `billing_mode` | **Yes** | `string` | `PROVISIONED` or `PAY_PER_REQUEST`. When `PROVISIONED`, `provisioned_throughput` is mandatory. |
-| `provisioned_throughput` | Conditional | `object` | RCU/WCU settings for the table when `billing_mode = PROVISIONED`. |
-| `global_secondary_indexes` | No | `list(object)` | List of Global Secondary Index definitions (`GlobalSecondaryIndex`). |
-| `local_secondary_indexes` | No | `list(object)` | List of Local Secondary Index definitions (`LocalSecondaryIndex`). |
-| `stream_specification` | No | `object` | Enable DynamoDB Streams and configure the captured image type. |
-| `ttl_specification` | No | `object` | TTL settings for automatic item expiry. |
-| `sse_specification` | No | `object` | Server-side encryption configuration; required for customer-managed CMKs (`sse_type = KMS`). |
-| `point_in_time_recovery_enabled` | No | `bool` | Enable point-in-time recovery (PITR) continuous backups. Defaults to `false`. |
-| `tags` | No | `map(string)` | Key/value tags applied to the table and related resources. |
+There are **no other inputs** – region, credentials, etc. are supplied through the standard Terraform AWS provider configuration.
 
-> **Note** – Each complex input object exactly mimics the field names and value
-> constraints specified in the protobuf messages so that clients can generate
-> Terraform JSON configurations automatically.
+### <a id="spec-schema"></a>`spec` schema (simplified)
+The table below is a human-friendly rendering of the proto message. Refer to the `.proto` file for the authoritative definition and validation rules.
+
+| Field | Type | Default | Notes |
+|-------|------|---------|-------|
+| `table_name` | `string` | – | 3–255 chars. Will be post-fixed with a random suffix when `create_before_destroy` is performed. |
+| `attribute_definitions` | list(object) | – | All attributes referenced by the main key schema **and** by every index. |
+| `key_schema` | list(object) | – | 1–2 elements: **partition (HASH)** key and optional **sort (RANGE)** key. |
+| `billing_mode` | `string` | – | `PROVISIONED` or `PAY_PER_REQUEST`. |
+| `provisioned_throughput` | object | – | Required when `billing_mode = PROVISIONED`. RCUs / WCUs must be `> 0`. |
+| `global_secondary_indexes` | list(object) | `[]` | Each GSI may have its own `provisioned_throughput`. |
+| `local_secondary_indexes` | list(object) | `[]` | LSI shares the same HASH key with the base table. |
+| `stream_specification` | object | – | Enable **DynamoDB Streams** and choose one `stream_view_type`. |
+| `ttl_specification` | object | – | Enable TTL and provide the attribute holding the expiry epoch time. |
+| `sse_specification` | object | – | Enable server-side encryption (`AES256` or `KMS`). `kms_master_key_id` is required only for `KMS`. |
+| `point_in_time_recovery_enabled` | `bool` | `false` | Enables 35-day point-in-time recovery. |
+| `tags` | map(string) | `{}` | Arbitrary key/values applied to the table and propagated to supporting resources (stream, KMS key, etc.). |
+
+> Validation logic such as *“`provisioned_throughput` must be set when `billing_mode` is PROVISIONED”* is enforced automatically by [buf-build/validate](https://github.com/bufbuild/validate) CEL constraints included in the proto file. Your plan will fail fast if any rule is violated.
 
 ---
 
 ## Outputs
-
 | Name | Description |
 |------|-------------|
 | `table_arn` | Fully-qualified ARN of the table. |
-| `table_name` | Name of the table (with any runtime suffixes added by the provider). |
-| `table_id` | Unique identifier assigned by AWS. |
-| `stream` | Object with `stream_arn` and `stream_label`; only exported when streams are enabled. |
-| `kms_key_arn` | ARN of the customer-managed CMK used for encryption (when applicable). |
-| `global_secondary_index_names` | List of provisioned GSI names. |
-| `local_secondary_index_names` | List of provisioned LSI names. |
+| `table_name` | Final name of the table (it might include a random suffix in replacement scenarios). |
+| `table_id` | AWS-assigned unique identifier of the table. |
+| `stream` | Object containing `stream_arn` and `stream_label`. Present only when streams are enabled. |
+| `kms_key_arn` | ARN of the customer-managed KMS key when encryption type is `KMS`. Empty when `AES256` or encryption is disabled. |
+| `global_secondary_index_names` | List of names of all created GSIs. |
+| `local_secondary_index_names` | List of names of all created LSIs. |
 
 ---
 
 ## Requirements
-
-| Name | Version |
-|------|---------|
-| Terraform | ≥ 1.2 |
-| AWS Provider | ≥ 5.0 |
-
-The module is developed and tested with Terraform 1.5 and AWS provider 5.x but
-should work with any newer compatible versions.
+* Terraform **1.3+** (for full `optional`/`nullable` object support)
+* AWS provider **5.x**
 
 ---
 
 ## Contributing
-
-Issues and pull requests are welcome! Please run `terraform fmt` and `terraform
-validate` before submitting changes. All new features must maintain backward
-compatibility and include documentation updates.
+Bug reports and pull requests are welcome on GitHub at <https://github.com/project-planton/project-planton>.  
+When adding new DynamoDB functionality update **both** the proto definition and the implementation so validation and documentation stay in sync.
 
 ---
 
-## License
-
-Apache 2.0 © Project Planton.
+© Project Planton – released under the Apache 2.0 license.

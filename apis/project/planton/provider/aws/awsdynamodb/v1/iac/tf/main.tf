@@ -1,244 +1,357 @@
-// -----------------------------------------------------------------------------
-//  Project-Planton – AWS DynamoDB table module
-//  This file translates the AwsDynamodbSpec proto into native Terraform HCL.
-//  All proto fields are represented through a single variable  "aws_dynamodb".
-// -----------------------------------------------------------------------------
+###############################################################################
+#  DynamoDB table – primary resource, indexes, capacity, encryption & tagging  #
+###############################################################################
 
 terraform {
   required_version = ">= 1.3"
+
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = ">= 5.0"
+      version = "~> 5.0"
     }
   }
 }
 
+########################
+# Provider configuration
+########################
 provider "aws" {
-  # The caller/stack is expected to configure region/profile/assume-role, etc.
+  region = var.aws_region
 }
 
-# -----------------------------------------------------------------------------
-#  Input – full in-memory representation of the AwsDynamodbSpec proto message.
-# -----------------------------------------------------------------------------
-variable "aws_dynamodb" {
-  description = "Rendered AwsDynamodbSpec proto (converted to tf vars)."
+########################
+# Input variables
+########################
+
+variable "aws_region" {
+  description = "AWS region where the DynamoDB table will be provisioned"
+  type        = string
+}
+
+# A single object that mirrors the AwsDynamodbSpec protobuf message.  Optional
+# attributes use Terraform's `optional()` type so callers can omit them safely.
+variable "dynamodb" {
+  description = "Amazon DynamoDB table specification (loosely based on AwsDynamodbSpec)."
+
   type = object({
-    table_name                     = string
-    attribute_definitions          = list(object({ attribute_name = string, attribute_type = string }))
-    key_schema                     = list(object({ attribute_name = string, key_type = string }))
-    billing_mode                   = string                                 # "PROVISIONED" | "PAY_PER_REQUEST"
-    provisioned_throughput         = optional(object({ read_capacity_units = number, write_capacity_units = number }))
-    global_secondary_indexes = optional(list(object({
-      index_name              = string
-      key_schema              = list(object({ attribute_name = string, key_type = string }))
-      projection              = object({ projection_type = string, non_key_attributes = optional(list(string)) })
-      provisioned_throughput  = optional(object({ read_capacity_units = number, write_capacity_units = number }))
-    })))
-    local_secondary_indexes = optional(list(object({
-      index_name = string
-      key_schema = list(object({ attribute_name = string, key_type = string }))
-      projection = object({ projection_type = string, non_key_attributes = optional(list(string)) })
-    })))
-    stream_specification = optional(object({ stream_enabled = bool, stream_view_type = string }))
-    ttl_specification    = optional(object({ ttl_enabled = bool, attribute_name = string }))
-    sse_specification = optional(object({
-      enabled           = bool
-      sse_type          = string   # "AES256" | "KMS"
-      kms_master_key_id = optional(string)
+    table_name            = string
+
+    attribute_definitions = list(object({
+      name = string               # Attribute name
+      type = string               # One of: STRING | NUMBER | BINARY
     }))
-    point_in_time_recovery_enabled = optional(bool)
-    tags                           = optional(map(string))
+
+    key_schema = list(object({
+      attribute_name = string     # Must reference one of the attribute_definitions
+      key_type       = string     # HASH | RANGE
+    }))
+
+    billing_mode           = string                       # PROVISIONED | PAY_PER_REQUEST
+    provisioned_throughput = optional(object({            # Required when PROVISIONED
+      read  = number
+      write = number
+    }))
+
+    global_secondary_indexes = optional(list(object({
+      name                    = string
+      key_schema              = list(object({
+        attribute_name = string
+        key_type       = string
+      }))
+      projection_type     = string                        # ALL | KEYS_ONLY | INCLUDE
+      non_key_attributes  = optional(list(string))        # Required when INCLUDE
+      provisioned_throughput = optional(object({          # Required when billing_mode == PROVISIONED
+        read  = number
+        write = number
+      }))
+    })), [])
+
+    local_secondary_indexes = optional(list(object({
+      name               = string
+      key_schema         = list(object({
+        attribute_name = string
+        key_type       = string
+      })) # Must contain exactly 2 elements (HASH + RANGE)
+      projection_type    = string                       # ALL | KEYS_ONLY | INCLUDE
+      non_key_attributes = optional(list(string))       # Required when INCLUDE
+    })), [])
+
+    stream_specification = optional(object({
+      enabled   = bool
+      view_type = optional(string)                      # NEW_IMAGE | OLD_IMAGE | NEW_AND_OLD_IMAGES | STREAM_KEYS_ONLY
+    }))
+
+    ttl_specification = optional(object({
+      enabled        = bool
+      attribute_name = optional(string)
+    }))
+
+    sse_specification = optional(object({
+      enabled            = bool
+      type               = optional(string)              # AES256 | KMS
+      kms_master_key_id  = optional(string)
+    }))
+
+    point_in_time_recovery_enabled = optional(bool, false)
+    tags                           = optional(map(string), {})
   })
+
+  ############################################################
+  # Semantic validations reflecting the CEL rules in the proto
+  ############################################################
+  validation {
+    condition = (
+      # Billing-mode / throughput consistency
+      (
+        var.dynamodb.billing_mode == "PROVISIONED" ? var.dynamodb.provisioned_throughput != null : var.dynamodb.provisioned_throughput == null
+      ) &&
+      alltrue([
+        for g in var.dynamodb.global_secondary_indexes : (
+          var.dynamodb.billing_mode == "PROVISIONED" ? try(g.provisioned_throughput != null, false) : try(g.provisioned_throughput == null, true)
+        )
+      ])
+    )
+
+    error_message = "When billing_mode is PROVISIONED, provisioned_throughput must be configured for the table and every GSI; when PAY_PER_REQUEST it must be unset everywhere."
+  }
+
+  # Projection rule (INCLUDE requires non_key_attributes)
+  validation {
+    condition = alltrue([
+      for idx in concat(var.dynamodb.global_secondary_indexes, var.dynamodb.local_secondary_indexes) : (
+        idx.projection_type == "INCLUDE" ? length(try(idx.non_key_attributes, [])) > 0 : length(try(idx.non_key_attributes, [])) == 0
+      )
+    ])
+
+    error_message = "non_key_attributes must be set when projection_type is INCLUDE and must be empty otherwise."
+  }
+
+  # Stream specification rule
+  validation {
+    condition     = var.dynamodb.stream_specification == null || (var.dynamodb.stream_specification.enabled == false || var.dynamodb.stream_specification.view_type != null)
+    error_message = "stream_view_type must be specified when streams are enabled."
+  }
+
+  # TTL specification rule
+  validation {
+    condition     = var.dynamodb.ttl_specification == null || (var.dynamodb.ttl_specification.enabled == false || (var.dynamodb.ttl_specification.attribute_name != null && var.dynamodb.ttl_specification.attribute_name != ""))
+    error_message = "attribute_name must be provided when TTL is enabled."
+  }
+
+  # SSE rules
+  validation {
+    condition = (
+      var.dynamodb.sse_specification == null || (
+        (!var.dynamodb.sse_specification.enabled && var.dynamodb.sse_specification.type == null && var.dynamodb.sse_specification.kms_master_key_id == null) ||
+        (var.dynamodb.sse_specification.enabled && var.dynamodb.sse_specification.type != null && (
+          var.dynamodb.sse_specification.type == "KMS" ? var.dynamodb.sse_specification.kms_master_key_id != "" : var.dynamodb.sse_specification.kms_master_key_id == null
+        ))
+      )
+    )
+    error_message = "When SSE is enabled, sse_type must be set and kms_master_key_id is required only for KMS; when disabled they must be unset."
+  }
 }
 
-# -----------------------------------------------------------------------------
-#  Locals – helper calculations.
-# -----------------------------------------------------------------------------
+########################
+# Local helpers
+########################
+
 locals {
-  primary_hash_key  = one([for k in var.aws_dynamodb.key_schema : k.attribute_name if upper(k.key_type) == "HASH"])
-  primary_range_key = try(one([for k in var.aws_dynamodb.key_schema : k.attribute_name if upper(k.key_type) == "RANGE"]), null)
+  # Convert proto enum strings to AWS shorthand (S / N / B)
+  attribute_definitions = [
+    for a in var.dynamodb.attribute_definitions : {
+      name = a.name
+      type = a.type == "STRING" ? "S" : a.type == "NUMBER" ? "N" : "B"
+    }
+  ]
 
-  # When SSE is enabled with KMS but no CMK id was passed, we create one.
-  sse_kms_required = (
-    var.aws_dynamodb.sse_specification != null &&
-    var.aws_dynamodb.sse_specification.enabled &&
-    upper(var.aws_dynamodb.sse_specification.sse_type) == "KMS" &&
-    try(var.aws_dynamodb.sse_specification.kms_master_key_id, "") == ""
-  )
+  # Extract table HASH and (optional) RANGE keys from key_schema
+  hash_key  = [for k in var.dynamodb.key_schema : k.key_type == "HASH" ? k.attribute_name : null][0]
+  range_key = try([for k in var.dynamodb.key_schema : k.key_type == "RANGE" ? k.attribute_name : null][0], null)
 
-  kms_key_arn = local.sse_kms_required ? aws_kms_key.this[0].arn : try(var.aws_dynamodb.sse_specification.kms_master_key_id, null)
+  ########################
+  # Secondary index helpers
+  ########################
+  gsi_configs = [
+    for g in var.dynamodb.global_secondary_indexes : {
+      name               = g.name
+      hash_key           = [for k in g.key_schema : k.key_type == "HASH" ? k.attribute_name : null][0]
+      range_key          = try([for k in g.key_schema : k.key_type == "RANGE" ? k.attribute_name : null][0], null)
+      projection_type    = g.projection_type
+      non_key_attributes = g.projection_type == "INCLUDE" ? g.non_key_attributes : null
+      read_capacity      = var.dynamodb.billing_mode == "PROVISIONED" ? g.provisioned_throughput.read  : null
+      write_capacity     = var.dynamodb.billing_mode == "PROVISIONED" ? g.provisioned_throughput.write : null
+    }
+  ]
+
+  lsi_configs = [
+    for l in var.dynamodb.local_secondary_indexes : {
+      name               = l.name
+      range_key          = [for k in l.key_schema : k.key_type == "RANGE" ? k.attribute_name : null][0]
+      projection_type    = l.projection_type
+      non_key_attributes = l.projection_type == "INCLUDE" ? l.non_key_attributes : null
+    }
+  ]
+
+  ######################
+  # SSE / KMS processing
+  ######################
+  use_kms = var.dynamodb.sse_specification != null && var.dynamodb.sse_specification.enabled && var.dynamodb.sse_specification.type == "KMS"
+
+  kms_key_arn = local.use_kms ? (
+    var.dynamodb.sse_specification.kms_master_key_id != null && var.dynamodb.sse_specification.kms_master_key_id != "" ?
+    var.dynamodb.sse_specification.kms_master_key_id :
+    try(aws_kms_key.this[0].arn, null)
+  ) : null
+
+  stream_enabled = var.dynamodb.stream_specification != null && var.dynamodb.stream_specification.enabled
 }
 
-# -----------------------------------------------------------------------------
-#  Optional KMS CMK creation (only if required).
-# -----------------------------------------------------------------------------
+########################
+# Conditional KMS key
+########################
 resource "aws_kms_key" "this" {
-  count               = local.sse_kms_required ? 1 : 0
-  description         = "CMK for DynamoDB table ${var.aws_dynamodb.table_name} (managed by Project-Planton)"
-  enable_key_rotation = true
-  deletion_window_in_days = 30
-  tags = merge(
-    {
-      "Name" = "dynamodb/${var.aws_dynamodb.table_name}/cmk"
-    },
-    try(var.aws_dynamodb.tags, {})
-  )
+  count = local.use_kms && (var.dynamodb.sse_specification.kms_master_key_id == null || var.dynamodb.sse_specification.kms_master_key_id == "") ? 1 : 0
+
+  description             = "Customer-managed CMK for DynamoDB table ${var.dynamodb.table_name}"
+  deletion_window_in_days = 7
+  enable_key_rotation     = true
+  policy                  = null # Rely on default key policy
+  tags                    = var.dynamodb.tags
 }
 
-# -----------------------------------------------------------------------------
-#  DynamoDB table definition.
-# -----------------------------------------------------------------------------
+########################################
+# DynamoDB table and all nested settings
+########################################
 resource "aws_dynamodb_table" "this" {
-  name         = var.aws_dynamodb.table_name
-  billing_mode = upper(var.aws_dynamodb.billing_mode)
+  name           = var.dynamodb.table_name
+  billing_mode   = var.dynamodb.billing_mode
+  hash_key       = local.hash_key
+  range_key      = local.range_key
+  attribute      = local.attribute_definitions
+  tags           = var.dynamodb.tags
 
-  # ---------------------------------------------------------------------------
-  #  Key schema & attribute definitions
-  # ---------------------------------------------------------------------------
-  hash_key  = local.primary_hash_key
-  # range_key is optional. Terraform does not allow omitting attributes
-  # dynamically, so we only set it when present.
-  dynamic "range_key" {
-    for_each = local.primary_range_key == null ? [] : [local.primary_range_key]
+  # Provisioned capacity (only when PROVISIONED)
+  dynamic "provisioned_throughput" {
+    for_each = var.dynamodb.billing_mode == "PROVISIONED" ? [var.dynamodb.provisioned_throughput] : []
     content {
-      range_key = range_key.value
+      read_capacity  = provisioned_throughput.value.read
+      write_capacity = provisioned_throughput.value.write
     }
   }
 
-  dynamic "attribute" {
-    for_each = var.aws_dynamodb.attribute_definitions
-    content {
-      name = attribute.value.attribute_name
-      type = upper(attribute.value.attribute_type)
-    }
-  }
-
-  # ---------------------------------------------------------------------------
-  #  Capacity – only valid for PROVISIONED mode
-  # ---------------------------------------------------------------------------
-  read_capacity  = upper(var.aws_dynamodb.billing_mode) == "PROVISIONED" ? var.aws_dynamodb.provisioned_throughput.read_capacity_units  : null
-  write_capacity = upper(var.aws_dynamodb.billing_mode) == "PROVISIONED" ? var.aws_dynamodb.provisioned_throughput.write_capacity_units : null
-
-  # ---------------------------------------------------------------------------
-  #  Streams (optional)
-  # ---------------------------------------------------------------------------
-  stream_enabled   = try(var.aws_dynamodb.stream_specification.stream_enabled, false)
-  stream_view_type = try(var.aws_dynamodb.stream_specification.stream_view_type, null)
-
-  # ---------------------------------------------------------------------------
-  #  Time-to-Live (optional)
-  # ---------------------------------------------------------------------------
-  dynamic "ttl" {
-    for_each = var.aws_dynamodb.ttl_specification == null ? [] : [var.aws_dynamodb.ttl_specification]
-    content {
-      attribute_name = ttl.value.attribute_name
-      enabled        = ttl.value.ttl_enabled
-    }
-  }
-
-  # ---------------------------------------------------------------------------
-  #  Server-side encryption (optional)
-  # ---------------------------------------------------------------------------
-  dynamic "server_side_encryption" {
-    for_each = var.aws_dynamodb.sse_specification == null ? [] : [var.aws_dynamodb.sse_specification]
-    content {
-      enabled     = server_side_encryption.value.enabled
-      kms_key_arn = server_side_encryption.value.enabled && upper(server_side_encryption.value.sse_type) == "KMS" ? local.kms_key_arn : null
-    }
-  }
-
-  # ---------------------------------------------------------------------------
-  #  Point-in-time recovery (optional)
-  # ---------------------------------------------------------------------------
-  dynamic "point_in_time_recovery" {
-    for_each = try(var.aws_dynamodb.point_in_time_recovery_enabled, false) ? [1] : []
-    content {
-      enabled = true
-    }
-  }
-
-  # ---------------------------------------------------------------------------
-  #  Global Secondary Indexes (optional)
-  # ---------------------------------------------------------------------------
+  #############################
+  # Global secondary indexes
+  #############################
   dynamic "global_secondary_index" {
-    for_each = try(var.aws_dynamodb.global_secondary_indexes, [])
+    for_each = local.gsi_configs
+    iterator = gsi
     content {
-      name            = global_secondary_index.value.index_name
-      hash_key        = one([for k in global_secondary_index.value.key_schema : k.attribute_name if upper(k.key_type) == "HASH"])
-      range_key       = try(one([for k in global_secondary_index.value.key_schema : k.attribute_name if upper(k.key_type) == "RANGE"]), null)
-      projection_type = upper(global_secondary_index.value.projection.projection_type)
-      non_key_attributes = try(global_secondary_index.value.projection.non_key_attributes, null)
+      name               = gsi.value.name
+      hash_key           = gsi.value.hash_key
+      range_key          = gsi.value.range_key
+      projection_type    = gsi.value.projection_type
+      non_key_attributes = gsi.value.projection_type == "INCLUDE" ? gsi.value.non_key_attributes : null
 
-      read_capacity  = upper(var.aws_dynamodb.billing_mode) == "PROVISIONED" ? try(global_secondary_index.value.provisioned_throughput.read_capacity_units, null)  : null
-      write_capacity = upper(var.aws_dynamodb.billing_mode) == "PROVISIONED" ? try(global_secondary_index.value.provisioned_throughput.write_capacity_units, null) : null
+      # Capacity only when PROVISIONED
+      read_capacity  = var.dynamodb.billing_mode == "PROVISIONED" ? gsi.value.read_capacity  : null
+      write_capacity = var.dynamodb.billing_mode == "PROVISIONED" ? gsi.value.write_capacity : null
     }
   }
 
-  # ---------------------------------------------------------------------------
-  #  Local Secondary Indexes (optional)
-  # ---------------------------------------------------------------------------
+  #############################
+  # Local secondary indexes
+  #############################
   dynamic "local_secondary_index" {
-    for_each = try(var.aws_dynamodb.local_secondary_indexes, [])
+    for_each = local.lsi_configs
+    iterator = lsi
     content {
-      name            = local_secondary_index.value.index_name
-      # HASH key must be the same as table, so we only pull RANGE:
-      range_key       = one([for k in local_secondary_index.value.key_schema : k.attribute_name if upper(k.key_type) == "RANGE"])
-      projection_type = upper(local_secondary_index.value.projection.projection_type)
-      non_key_attributes = try(local_secondary_index.value.projection.non_key_attributes, null)
+      name               = lsi.value.name
+      range_key          = lsi.value.range_key
+      projection_type    = lsi.value.projection_type
+      non_key_attributes = lsi.value.projection_type == "INCLUDE" ? lsi.value.non_key_attributes : null
     }
   }
 
-  # ---------------------------------------------------------------------------
-  #  Tags
-  # ---------------------------------------------------------------------------
-  tags = merge(
-    {
-      "Name" = "dynamodb/${var.aws_dynamodb.table_name}"
-    },
-    try(var.aws_dynamodb.tags, {})
-  )
+  #############################
+  # Streams
+  #############################
+  dynamic "stream_specification" {
+    for_each = local.stream_enabled ? [var.dynamodb.stream_specification] : []
+    content {
+      stream_enabled   = true
+      stream_view_type = stream_specification.value.view_type
+    }
+  }
+
+  #############################
+  # TTL configuration
+  #############################
+  dynamic "ttl" {
+    for_each = var.dynamodb.ttl_specification != null ? [var.dynamodb.ttl_specification] : []
+    content {
+      enabled        = ttl.value.enabled
+      attribute_name = ttl.value.attribute_name
+    }
+  }
+
+  #############################
+  # Server-side encryption
+  #############################
+  dynamic "server_side_encryption" {
+    for_each = var.dynamodb.sse_specification != null && var.dynamodb.sse_specification.enabled ? [1] : []
+    content {
+      enabled     = true
+      kms_key_arn = local.kms_key_arn
+    }
+  }
+
+  #############################
+  # Point-in-time recovery
+  #############################
+  point_in_time_recovery {
+    enabled = var.dynamodb.point_in_time_recovery_enabled
+  }
 }
 
-# -----------------------------------------------------------------------------
-#  Outputs – map 1-to-1 with AwsDynamodbStackOutputs proto message.
-# -----------------------------------------------------------------------------
+########################
+# Stack-style outputs
+########################
 output "table_arn" {
-  description = "Fully-qualified ARN of the DynamoDB table."
+  description = "Fully-qualified Amazon Resource Name of the DynamoDB table."
   value       = aws_dynamodb_table.this.arn
 }
 
 output "table_name" {
-  description = "Name of the DynamoDB table (possibly with suffixes)."
+  description = "Name of the DynamoDB table (might include suffixes added by Terraform)."
   value       = aws_dynamodb_table.this.name
 }
 
 output "table_id" {
-  description = "AWS-assigned logical ID of the table."
+  description = "AWS-assigned unique identifier of the table."
   value       = aws_dynamodb_table.this.id
 }
 
 output "stream" {
-  description = "Current (latest) stream identifiers, null when streams disabled."
-  value = (
-    aws_dynamodb_table.this.stream_enabled ? {
-      stream_arn   = aws_dynamodb_table.this.stream_arn
-      stream_label = aws_dynamodb_table.this.stream_label
-    } : null
-  )
+  description = "Most-recent DynamoDB stream details – null when streams are disabled."
+  value = local.stream_enabled ? {
+    stream_arn   = aws_dynamodb_table.this.stream_arn
+    stream_label = aws_dynamodb_table.this.stream_label
+  } : null
 }
 
 output "kms_key_arn" {
-  description = "ARN of the CMK used for server-side encryption, when applicable."
+  description = "ARN of the customer-managed CMK when SSE uses KMS; null otherwise."
   value       = local.kms_key_arn
 }
 
 output "global_secondary_index_names" {
-  description = "Names of the provisioned GSIs."
-  value       = try([for g in aws_dynamodb_table.this.global_secondary_index : g.name], [])
+  description = "Names of all provisioned global secondary indexes."
+  value       = [for idx in aws_dynamodb_table.this.global_secondary_index : idx.name]
 }
 
 output "local_secondary_index_names" {
-  description = "Names of the provisioned LSIs."
-  value       = try([for l in aws_dynamodb_table.this.local_secondary_index : l.name], [])
+  description = "Names of all provisioned local secondary indexes."
+  value       = [for idx in aws_dynamodb_table.this.local_secondary_index : idx.name]
 }

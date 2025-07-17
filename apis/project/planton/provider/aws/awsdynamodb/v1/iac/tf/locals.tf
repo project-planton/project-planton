@@ -1,152 +1,98 @@
-################################################################################
-# Local helpers for the DynamoDB table module
-# -------------------------------------------
-#  * Enum-to-string look-ups so proto enum integers can be mapped to the values
-#    expected by the Terraform AWS provider.
-#  * Derivation of attribute/key/index structures in the shape required by the
-#    aws_dynamodb_table resource’s argument schema.
-#  * Unified tags map built by merging optional module-level default_tags with
-#    the table-specific tags defined in the spec.
-################################################################################
+############################
+# Local helpers & mappings #
+############################
 
 locals {
-  ############################
-  # Generic enum translations
-  ############################
-  billing_mode_map = {
-    1 = "PROVISIONED"
-    2 = "PAY_PER_REQUEST"
+  ###############################################################
+  # Enum → provider value maps (keep in sync with proto enums)  #
+  ###############################################################
+  attribute_type_map = {
+    STRING = "S"
+    NUMBER = "N"
+    BINARY = "B"
   }
 
-  attribute_type_map = {
-    1 = "S" # STRING
-    2 = "N" # NUMBER
-    3 = "B" # BINARY
+  key_type_map = {
+    HASH  = "HASH"
+    RANGE = "RANGE"
   }
 
   projection_type_map = {
-    1 = "ALL"
-    2 = "KEYS_ONLY"
-    3 = "INCLUDE"
+    ALL       = "ALL"
+    KEYS_ONLY = "KEYS_ONLY"
+    INCLUDE   = "INCLUDE"
   }
 
-  stream_view_type_map = {
-    1 = "NEW_IMAGE"
-    2 = "OLD_IMAGE"
-    3 = "NEW_AND_OLD_IMAGES"
-    4 = "KEYS_ONLY"
-  }
+  ####################################
+  # Top-level table configuration    #
+  ####################################
 
-  sse_type_map = {
-    1 = "AES256"
-    2 = "KMS"
-  }
+  # Primary (partition/sort) keys --------------------------------
+  partition_key = [for ks in var.key_schema : ks.attribute_name if ks.key_type == "HASH"] [0]
+  sort_key      = try([for ks in var.key_schema : ks.attribute_name if ks.key_type == "RANGE"] [0], null)
 
-  #######################
-  # Consolidated tag set
-  #######################
-  #   – User tags (var.tags) win over default_tags when keys collide.
-  #   – Either map may be absent in variables.tf, so use try() for safety.
-  tags = merge(try(var.default_tags, {}), try(var.tags, {}))
-
-  #################################
-  # Table-level key configuration
-  #################################
-  hash_key = one([for ks in var.key_schema : ks.attribute_name if ks.key_type == 1])
-
-  range_key = try(
-    one([for ks in var.key_schema : ks.attribute_name if ks.key_type == 2]),
-    null,
-  )
-
-  #######################################
-  # Flatten & deduplicate attribute list
-  #######################################
-  #   DynamoDB requires every attribute referenced by the table or indexes to
-  #   appear exactly once in the attribute_definition block.
+  # Attribute definitions ----------------------------------------
   attribute_definitions = [
-    for name, type in {
-      for a in var.attribute_definitions :
-      a.attribute_name => local.attribute_type_map[a.attribute_type]
-    } : {
-      name = name
-      type = type
+    for a in var.attribute_definitions : {
+      name = a.attribute_name
+      type = local.attribute_type_map[a.attribute_type]
     }
   ]
 
-  ###############################
-  # Provisioned throughput (RCU/WCU)
-  ###############################
-  provisioned_throughput = (
-    var.billing_mode == 1 ? {
-      read_capacity  = var.provisioned_throughput.read_capacity_units
-      write_capacity = var.provisioned_throughput.write_capacity_units
-    } : null
-  )
+  # Billing / capacity -------------------------------------------
+  billing_mode = var.billing_mode == "PROVISIONED" ? "PROVISIONED" : "PAY_PER_REQUEST"
 
-  ########################################
-  # Global secondary index (GSI) helpers
-  ########################################
+  provisioned_throughput = var.billing_mode == "PROVISIONED" ? {
+    read_capacity  = var.provisioned_throughput.read_capacity_units
+    write_capacity = var.provisioned_throughput.write_capacity_units
+  } : null
+
+  ####################################
+  # Index helpers (GSI / LSI)        #
+  ####################################
+
   global_secondary_indexes = [
-    for gsi in try(var.global_secondary_indexes, []) : {
-      name        = gsi.index_name
-      hash_key    = one([for ks in gsi.key_schema : ks.attribute_name if ks.key_type == 1])
-      range_key   = try(one([for ks in gsi.key_schema : ks.attribute_name if ks.key_type == 2]), null)
-      projection_type    = local.projection_type_map[gsi.projection.projection_type]
-      non_key_attributes = (
-        gsi.projection.projection_type == 3 ? gsi.projection.non_key_attributes : null
-      )
-      read_capacity  = (var.billing_mode == 1 ? gsi.provisioned_throughput.read_capacity_units  : null)
-      write_capacity = (var.billing_mode == 1 ? gsi.provisioned_throughput.write_capacity_units : null)
+    for g in var.global_secondary_indexes : {
+      name            = g.index_name
+      hash_key        = [for ks in g.key_schema : ks.attribute_name if ks.key_type == "HASH"] [0]
+      range_key       = try([for ks in g.key_schema : ks.attribute_name if ks.key_type == "RANGE"] [0], null)
+      projection_type = local.projection_type_map[g.projection.projection_type]
+      non_key_attrs   = g.projection.projection_type == "INCLUDE" ? g.projection.non_key_attributes : null
+      read_capacity   = var.billing_mode == "PROVISIONED" ? try(g.provisioned_throughput.read_capacity_units, null) : null
+      write_capacity  = var.billing_mode == "PROVISIONED" ? try(g.provisioned_throughput.write_capacity_units, null) : null
     }
   ]
 
-  ########################################
-  # Local secondary index (LSI) helpers
-  ########################################
   local_secondary_indexes = [
-    for lsi in try(var.local_secondary_indexes, []) : {
-      name      = lsi.index_name
-      range_key = one([for ks in lsi.key_schema : ks.attribute_name if ks.key_type == 2])
-
-      projection_type    = local.projection_type_map[lsi.projection.projection_type]
-      non_key_attributes = (
-        lsi.projection.projection_type == 3 ? lsi.projection.non_key_attributes : null
-      )
+    for l in var.local_secondary_indexes : {
+      name            = l.index_name
+      range_key       = [for ks in l.key_schema : ks.attribute_name if ks.key_type == "RANGE"] [0]
+      projection_type = local.projection_type_map[l.projection.projection_type]
+      non_key_attrs   = l.projection.projection_type == "INCLUDE" ? l.projection.non_key_attributes : null
     }
   ]
 
-  ########################################
-  # Stream / TTL / SSE derived settings
-  ########################################
+  ####################################
+  # Streams, TTL, SSE, PITR helpers  #
+  ####################################
+
+  # Streams -------------------------------------------------------
   stream_enabled   = try(var.stream_specification.stream_enabled, false)
-  stream_view_type = (
-    local.stream_enabled ?
-    local.stream_view_type_map[var.stream_specification.stream_view_type] :
-    null
-  )
+  stream_view_type = local.stream_enabled ? var.stream_specification.stream_view_type : null
 
-  ttl_specification = (
-    try(var.ttl_specification.ttl_enabled, false) ? {
-      enabled        = true
-      attribute_name = var.ttl_specification.attribute_name
-    } : null
-  )
+  # TTL -----------------------------------------------------------
+  ttl_enabled        = try(var.ttl_specification.ttl_enabled, false)
+  ttl_attribute_name = local.ttl_enabled ? var.ttl_specification.attribute_name : null
 
-  sse_specification = (
-    try(var.sse_specification.enabled, false) ? {
-      enabled          = true
-      sse_type         = local.sse_type_map[var.sse_specification.sse_type]
-      kms_master_key_id = (
-        var.sse_specification.sse_type == 2 ?
-        var.sse_specification.kms_master_key_id :
-        null
-      )
-    } : null
-  )
+  # Server-side encryption ---------------------------------------
+  sse_enabled       = try(var.sse_specification.enabled, false)
+  sse_type          = local.sse_enabled ? var.sse_specification.sse_type : null
+  kms_master_key_id = (local.sse_enabled && local.sse_type == "KMS") ? var.sse_specification.kms_master_key_id : null
 
-  ########################################
-  # Convenience look-ups for resource args
-  ########################################
-  billing_mode = local.billing_mode_map[var.billing_mode]
+  ####################################
+  # Tag helpers                   #
+  ####################################
+  tags = merge({
+    "ManagedBy" = "terraform"
+  }, var.tags)
 }
