@@ -27,8 +27,7 @@ message DigitalOceanKubernetesClusterSpec {
   // Must be a supported version on DigitalOcean (e.g., 1.22+).
   // Example: "1.26.3"
   string kubernetes_version = 3 [
-    (buf.validate.field).required = true,
-    (buf.validate.field).string.pattern = "^1\\.[2-9][0-9]?\\.[0-9]+$"
+    (buf.validate.field).required = true
   ];
 
   // Reference to the DigitalOcean VPC where the cluster's control plane will reside.

@@ -27,7 +27,7 @@ func nodePool(
 	nodePoolArgs := &digitalocean.KubernetesNodePoolArgs{
 		ClusterId: pulumi.String(locals.DigitalOceanKubernetesNodePool.Spec.Cluster.GetValue()),
 		Name:      pulumi.String(locals.DigitalOceanKubernetesNodePool.Spec.NodePoolName),
-		Size:      pulumi.String(locals.DigitalOceanKubernetesNodePool.Spec.SizeSlug),
+		Size:      pulumi.String(locals.DigitalOceanKubernetesNodePool.Spec.Size),
 		Labels:    labels,
 		Tags:      tags,
 		NodeCount: pulumi.IntPtr(int(locals.DigitalOceanKubernetesNodePool.Spec.NodeCount)),

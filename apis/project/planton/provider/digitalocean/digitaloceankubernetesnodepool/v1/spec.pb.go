@@ -36,7 +36,7 @@ type DigitalOceanKubernetesNodePoolSpec struct {
 	Cluster *v1.StringValueOrRef `protobuf:"bytes,2,opt,name=cluster,proto3" json:"cluster,omitempty"`
 	// The slug identifier for the Droplet size to use for each node (e.g., "s-4vcpu-8gb").
 	// This defines the CPU and memory of the nodes in the pool.
-	SizeSlug string `protobuf:"bytes,3,opt,name=size_slug,json=sizeSlug,proto3" json:"size_slug,omitempty"`
+	Size string `protobuf:"bytes,3,opt,name=size,proto3" json:"size,omitempty"`
 	// The number of nodes to provision in the pool.
 	// Must be at least 1. If auto_scale is enabled, this acts as the initial desired node count.
 	NodeCount uint32 `protobuf:"varint,4,opt,name=node_count,json=nodeCount,proto3" json:"node_count,omitempty"`
@@ -99,9 +99,9 @@ func (x *DigitalOceanKubernetesNodePoolSpec) GetCluster() *v1.StringValueOrRef {
 	return nil
 }
 
-func (x *DigitalOceanKubernetesNodePoolSpec) GetSizeSlug() string {
+func (x *DigitalOceanKubernetesNodePoolSpec) GetSize() string {
 	if x != nil {
-		return x.SizeSlug
+		return x.Size
 	}
 	return ""
 }
@@ -145,11 +145,11 @@ var File_project_planton_provider_digitalocean_digitaloceankubernetesnodepool_v1
 
 const file_project_planton_provider_digitalocean_digitaloceankubernetesnodepool_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Rproject/planton/provider/digitalocean/digitaloceankubernetesnodepool/v1/spec.proto\x12Gproject.planton.provider.digitalocean.digitaloceankubernetesnodepool.v1\x1a\x1bbuf/validate/validate.proto\x1aBproject/planton/shared/cloudresourcekind/cloud_resource_kind.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\"\xff\x02\n" +
+	"Rproject/planton/provider/digitalocean/digitaloceankubernetesnodepool/v1/spec.proto\x12Gproject.planton.provider.digitalocean.digitaloceankubernetesnodepool.v1\x1a\x1bbuf/validate/validate.proto\x1aBproject/planton/shared/cloudresourcekind/cloud_resource_kind.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\"\xf6\x02\n" +
 	"\"DigitalOceanKubernetesNodePoolSpec\x12,\n" +
 	"\x0enode_pool_name\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\fnodePoolName\x12n\n" +
-	"\acluster\x18\x02 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB\x1c\xbaH\x03\xc8\x01\x01\x88\xd4a\xb8\t\x92\xd4a\rmetadata.nameR\acluster\x12#\n" +
-	"\tsize_slug\x18\x03 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bsizeSlug\x12)\n" +
+	"\acluster\x18\x02 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB\x1c\xbaH\x03\xc8\x01\x01\x88\xd4a\xb8\t\x92\xd4a\rmetadata.nameR\acluster\x12\x1a\n" +
+	"\x04size\x18\x03 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04size\x12)\n" +
 	"\n" +
 	"node_count\x18\x04 \x01(\rB\n" +
 	"\xbaH\a\xc8\x01\x01*\x02 \x00R\tnodeCount\x12\x1d\n" +

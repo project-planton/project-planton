@@ -29,6 +29,14 @@ func cluster(
 		SurgeUpgrade: pulumi.BoolPtr(!locals.DigitalOceanKubernetesCluster.Spec.DisableSurgeUpgrade),
 		VpcUuid:      pulumi.String(locals.DigitalOceanKubernetesCluster.Spec.Vpc.GetValue()),
 		Tags:         tags,
+		NodePool: &digitalocean.KubernetesClusterNodePoolArgs{
+			AutoScale: pulumi.BoolPtr(false),
+			MaxNodes:  pulumi.IntPtr(2),
+			MinNodes:  pulumi.IntPtr(1),
+			Name:      pulumi.String("default"),
+			NodeCount: pulumi.IntPtr(1),
+			Size:      pulumi.String("s-2vcpu-4gb"),
+		},
 	}
 
 	// 5. Create the cluster.

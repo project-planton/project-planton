@@ -2,8 +2,6 @@ module github.com/project-planton/project-planton
 
 go 1.23.4
 
-toolchain go1.23.5
-
 require (
 	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.36.6-20250307204501-0409229c3780.1
 	github.com/Azure/go-autorest/autorest/to v0.4.0

@@ -68,10 +68,10 @@ message DigitalOceanLoadBalancerSpec {
 
 // LoadBalancerProtocol enumerates the supported protocols for load balancer forwarding and health checks.
 enum DigitalOceanLoadBalancerProtocol {
-  LOAD_BALANCER_PROTOCOL_UNSPECIFIED = 0;
-  HTTP = 1;
-  HTTPS = 2;
-  TCP = 3;
+  digitalocean_load_balancer_protocol_unspecified = 0; // Default value, should not be used.
+  http = 1;
+  https = 2;
+  tcp = 3;
 }
 
 // ForwardingRule represents a single rule for routing traffic from the load balancer to the backend.
