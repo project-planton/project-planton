@@ -1,128 +1,143 @@
 package awsdynamodb
 
 import (
-    awsdynamodbpb "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsdynamodb/v1"
-    "github.com/pulumi/pulumi-aws/sdk/v6/go/aws/dynamodb"
+    "fmt"
+
+    "github.com/pulumi/pulumi-aws/sdk/v5/go/aws/dynamodb"
     "github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+
+    awsdynamodbpb "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsdynamodb/v1"
 )
 
-// ConvertGlobalSecondaryIndexes turns the protobuf representation of a list of
-// global secondary indexes into the Pulumi input slice expected by
-// aws.dynamodb.Table.
-func ConvertGlobalSecondaryIndexes(gs []*awsdynamodbpb.GlobalSecondaryIndex) dynamodb.TableGlobalSecondaryIndexArray {
-    if len(gs) == 0 {
-        return nil
+// BuildGlobalSecondaryIndexArgs converts a list of protobuf-defined GlobalSecondaryIndex
+// messages into the shape expected by Pulumi's aws.dynamodb.Table resource. The resulting
+// slice can be assigned directly to dynamodb.TableArgs.GlobalSecondaryIndexes.
+func BuildGlobalSecondaryIndexArgs(
+    gsis []*awsdynamodbpb.GlobalSecondaryIndex,
+    billingMode awsdynamodbpb.BillingMode,
+) ([]dynamodb.TableGlobalSecondaryIndexArgs, error) {
+    if len(gsis) == 0 {
+        return nil, nil
     }
 
-    var result dynamodb.TableGlobalSecondaryIndexArray
-    for _, g := range gs {
-        if g == nil {
-            continue
+    out := make([]dynamodb.TableGlobalSecondaryIndexArgs, 0, len(gsis))
+    for _, gsi := range gsis {
+        if gsi == nil {
+            continue // Nothing to do.
         }
 
-        // Extract HASH and RANGE keys from the key schema.
-        var hashKey, rangeKey string
-        for _, ks := range g.KeySchema {
-            switch ks.KeyType {
-            case awsdynamodbpb.KeyType_HASH:
-                hashKey = ks.AttributeName
-            case awsdynamodbpb.KeyType_RANGE:
-                rangeKey = ks.AttributeName
-            }
+        // Extract HASH / RANGE keys.
+        hashKey, rangeKey, err := extractKeys(gsi.KeySchema)
+        if err != nil {
+            return nil, fmt.Errorf("gsi %q: %w", gsi.IndexName, err)
         }
 
-        gsi := &dynamodb.TableGlobalSecondaryIndexArgs{
-            Name:           pulumi.String(g.IndexName),
-            ProjectionType: pulumi.StringPtr(projectionTypeToString(g.Projection.ProjectionType)),
-        }
+        projType, nonKeyAttrs := convertProjection(gsi.Projection)
 
-        if hashKey != "" {
-            gsi.HashKey = pulumi.StringPtr(hashKey)
-        }
-        if rangeKey != "" {
-            gsi.RangeKey = pulumi.StringPtr(rangeKey)
-        }
-        if len(g.Projection.NonKeyAttributes) > 0 {
-            gsi.NonKeyAttributes = toPulumiStringArray(g.Projection.NonKeyAttributes)
-        }
-        if pt := g.ProvisionedThroughput; pt != nil {
-            if pt.ReadCapacityUnits > 0 {
-                gsi.ReadCapacity = pulumi.IntPtr(int(pt.ReadCapacityUnits))
-            }
-            if pt.WriteCapacityUnits > 0 {
-                gsi.WriteCapacity = pulumi.IntPtr(int(pt.WriteCapacityUnits))
-            }
-        }
-
-        result = append(result, gsi)
-    }
-
-    return result
-}
-
-// ConvertLocalSecondaryIndexes turns the protobuf representation of a list of
-// local secondary indexes into the Pulumi input slice expected by
-// aws.dynamodb.Table.
-func ConvertLocalSecondaryIndexes(ls []*awsdynamodbpb.LocalSecondaryIndex) dynamodb.TableLocalSecondaryIndexArray {
-    if len(ls) == 0 {
-        return nil
-    }
-
-    var result dynamodb.TableLocalSecondaryIndexArray
-    for _, l := range ls {
-        if l == nil {
-            continue
-        }
-
-        // Extract RANGE key (the HASH key is inherited from the table and is not
-        // provided to the provider).
-        var rangeKey string
-        for _, ks := range l.KeySchema {
-            if ks.KeyType == awsdynamodbpb.KeyType_RANGE {
-                rangeKey = ks.AttributeName
-                break
-            }
-        }
-
-        lsi := &dynamodb.TableLocalSecondaryIndexArgs{
-            Name:           pulumi.String(l.IndexName),
-            ProjectionType: pulumi.StringPtr(projectionTypeToString(l.Projection.ProjectionType)),
+        args := dynamodb.TableGlobalSecondaryIndexArgs{
+            Name:            pulumi.StringPtr(gsi.IndexName),
+            HashKey:         pulumi.StringPtr(hashKey),
+            NonKeyAttributes: nonKeyAttrs,
+            ProjectionType:  pulumi.StringPtr(projType),
         }
 
         if rangeKey != "" {
-            lsi.RangeKey = pulumi.StringPtr(rangeKey)
-        }
-        if len(l.Projection.NonKeyAttributes) > 0 {
-            lsi.NonKeyAttributes = toPulumiStringArray(l.Projection.NonKeyAttributes)
+            args.RangeKey = pulumi.StringPtr(rangeKey)
         }
 
-        result = append(result, lsi)
+        // Include capacity only when the table operates in PROVISIONED billing mode.
+        if billingMode == awsdynamodbpb.BillingMode_PROVISIONED {
+            args.ReadCapacity = pulumi.IntPtr(int(gsi.GetProvisionedThroughput().GetReadCapacityUnits()))
+            args.WriteCapacity = pulumi.IntPtr(int(gsi.GetProvisionedThroughput().GetWriteCapacityUnits()))
+        }
+
+        out = append(out, args)
     }
 
-    return result
+    return out, nil
 }
 
-// projectionTypeToString converts the protobuf ProjectionType enum into the
-// literal strings required by the AWS API.
-func projectionTypeToString(pt awsdynamodbpb.ProjectionType) string {
-    switch pt {
+// BuildLocalSecondaryIndexArgs converts protobuf-defined LocalSecondaryIndex messages into
+// Pulumi aws.dynamodb.TableLocalSecondaryIndexArgs instances. The resulting slice can be
+// assigned to dynamodb.TableArgs.LocalSecondaryIndexes.
+func BuildLocalSecondaryIndexArgs(
+    lsis []*awsdynamodbpb.LocalSecondaryIndex,
+) ([]dynamodb.TableLocalSecondaryIndexArgs, error) {
+    if len(lsis) == 0 {
+        return nil, nil
+    }
+
+    out := make([]dynamodb.TableLocalSecondaryIndexArgs, 0, len(lsis))
+    for _, lsi := range lsis {
+        if lsi == nil {
+            continue
+        }
+
+        _, rangeKey, err := extractKeys(lsi.KeySchema)
+        if err != nil {
+            return nil, fmt.Errorf("lsi %q: %w", lsi.IndexName, err)
+        }
+        if rangeKey == "" {
+            return nil, fmt.Errorf("lsi %q: RANGE key not found", lsi.IndexName)
+        }
+
+        projType, nonKeyAttrs := convertProjection(lsi.Projection)
+
+        args := dynamodb.TableLocalSecondaryIndexArgs{
+            Name:            pulumi.StringPtr(lsi.IndexName),
+            RangeKey:        pulumi.StringPtr(rangeKey),
+            NonKeyAttributes: nonKeyAttrs,
+            ProjectionType:  pulumi.StringPtr(projType),
+        }
+
+        out = append(out, args)
+    }
+
+    return out, nil
+}
+
+// extractKeys scans a protobuf key schema and returns the HASH and RANGE attribute names.
+// HASH is required. RANGE may be empty when the schema only specifies a partition key.
+func extractKeys(schema []*awsdynamodbpb.KeySchemaElement) (hashKey, rangeKey string, err error) {
+    for _, elem := range schema {
+        if elem == nil {
+            continue
+        }
+        switch elem.KeyType {
+        case awsdynamodbpb.KeyType_HASH:
+            hashKey = elem.AttributeName
+        case awsdynamodbpb.KeyType_RANGE:
+            rangeKey = elem.AttributeName
+        }
+    }
+    if hashKey == "" {
+        err = fmt.Errorf("HASH key not defined in key schema")
+    }
+    return
+}
+
+// convertProjection converts a protobuf Projection message into the ProjectionType and
+// NonKeyAttributes required by Pulumi.
+func convertProjection(proj *awsdynamodbpb.Projection) (projType string, nonKeyAttrs pulumi.StringArray) {
+    if proj == nil {
+        // Default to projecting all attributes when the message is missing (should not happen).
+        return "ALL", pulumi.StringArray{}
+    }
+
+    switch proj.ProjectionType {
     case awsdynamodbpb.ProjectionType_ALL:
-        return "ALL"
+        projType = "ALL"
     case awsdynamodbpb.ProjectionType_KEYS_ONLY:
-        return "KEYS_ONLY"
+        projType = "KEYS_ONLY"
     case awsdynamodbpb.ProjectionType_INCLUDE:
-        return "INCLUDE"
+        projType = "INCLUDE"
     default:
-        return ""
+        projType = "ALL" // Fallback for unexpected enum values.
     }
-}
 
-// toPulumiStringArray converts a slice of string primitives into Pulumi
-// StringArray, which implements pulumi.StringArrayInput.
-func toPulumiStringArray(values []string) pulumi.StringArray {
-    var arr pulumi.StringArray
-    for _, v := range values {
-        arr = append(arr, pulumi.String(v))
+    for _, a := range proj.NonKeyAttributes {
+        nonKeyAttrs = append(nonKeyAttrs, pulumi.String(a))
     }
-    return arr
+
+    return
 }
