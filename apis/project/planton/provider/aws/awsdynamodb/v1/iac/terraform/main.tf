@@ -1,42 +1,34 @@
-# -----------------------------------------------------------------------------
-# DynamoDB table driven by the AwsDynamodbSpec proto definition                 
-# -----------------------------------------------------------------------------
-
 terraform {
-  required_version = ">= 1.3"
-
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 5.0"
+      version = ">= 5.0"
     }
   }
 }
 
-# -----------------------------------------------------------------------------
-# Provider & variables                                                           
-# -----------------------------------------------------------------------------
-
-provider "aws" {
-  region = var.aws_region
-}
-
-variable "aws_region" {
-  description = "AWS region where the table will be created"
-  type        = string
-}
+############################
+# Input specification
+############################
 
 variable "spec" {
-  description = "AwsDynamodbSpec message converted to a Terraform map/object"
+  description = "Serialized AwsDynamodbSpec object decoded into a Terraform map/object."
   type        = any
 }
 
-# -----------------------------------------------------------------------------
-# Local helpers – maps that translate numeric enums from the proto into the      
-# strings expected by the AWS provider.                                          
-# -----------------------------------------------------------------------------
+############################
+# Local helpers & look-ups
+############################
 
 locals {
+  spec = var.spec
+
+  # Enum → string look-ups
+  billing_mode_map = {
+    1 = "PROVISIONED"
+    2 = "PAY_PER_REQUEST"
+  }
+
   attribute_type_map = {
     1 = "S" # STRING
     2 = "N" # NUMBER
@@ -49,11 +41,6 @@ locals {
     3 = "INCLUDE"
   }
 
-  billing_mode_map = {
-    1 = "PROVISIONED"
-    2 = "PAY_PER_REQUEST"
-  }
-
   stream_view_type_map = {
     1 = "NEW_IMAGE"
     2 = "OLD_IMAGE"
@@ -61,178 +48,131 @@ locals {
     4 = "KEYS_ONLY"
   }
 
-  # ---------------------------------------------------------------------------
-  # Primary key                                                               
-  # ---------------------------------------------------------------------------
-
-  hash_key  = one([for ks in var.spec.key_schema : ks.attribute_name if ks.key_type == 1])
-  range_key = try(one([for ks in var.spec.key_schema : ks.attribute_name if ks.key_type == 2]), null)
-
-  # ---------------------------------------------------------------------------
-  # Global & local secondary indexes                                           
-  # ---------------------------------------------------------------------------
-
-  global_secondary_indexes = [
-    for g in try(var.spec.global_secondary_indexes, []) : {
-      name               = g.index_name
-      hash_key           = one([for ks in g.key_schema : ks.attribute_name if ks.key_type == 1])
-      range_key          = try(one([for ks in g.key_schema : ks.attribute_name if ks.key_type == 2]), null)
-      projection_type    = local.projection_type_map[g.projection.projection_type]
-      non_key_attributes = g.projection.projection_type == 3 ? g.projection.non_key_attributes : null
-      read_capacity      = var.spec.billing_mode == 1 ? g.provisioned_throughput.read_capacity_units : null
-      write_capacity     = var.spec.billing_mode == 1 ? g.provisioned_throughput.write_capacity_units : null
-    }
-  ]
-
-  local_secondary_indexes = [
-    for l in try(var.spec.local_secondary_indexes, []) : {
-      name               = l.index_name
-      range_key          = one([for ks in l.key_schema : ks.attribute_name if ks.key_type == 2])
-      projection_type    = local.projection_type_map[l.projection.projection_type]
-      non_key_attributes = l.projection.projection_type == 3 ? l.projection.non_key_attributes : null
-    }
-  ]
+  gsi_list = try(local.spec.global_secondary_indexes, [])
+  lsi_list = try(local.spec.local_secondary_indexes, [])
 }
 
-# -----------------------------------------------------------------------------
-# DynamoDB table                                                                
-# -----------------------------------------------------------------------------
+############################
+# DynamoDB table resource
+############################
 
 resource "aws_dynamodb_table" "this" {
-  name         = var.spec.table_name
-  billing_mode = local.billing_mode_map[var.spec.billing_mode]
+  name         = local.spec.table_name
+  billing_mode = lookup(local.billing_mode_map, local.spec.billing_mode, null)
 
-  hash_key  = local.hash_key
-  range_key = local.range_key
+  # Primary keys -------------------------------------------------
+  hash_key  = local.spec.key_schema[0].attribute_name
+  range_key = length(local.spec.key_schema) > 1 ? local.spec.key_schema[1].attribute_name : null
 
-  ############################################################
-  # Attribute definitions                                    #
-  ############################################################
+  # Attribute definitions ---------------------------------------
   dynamic "attribute" {
-    for_each = var.spec.attribute_definitions
+    for_each = local.spec.attribute_definitions
     content {
       name = attribute.value.attribute_name
-      type = local.attribute_type_map[attribute.value.attribute_type]
+      type = lookup(local.attribute_type_map, attribute.value.attribute_type, "S")
     }
   }
 
-  ############################################################
-  # Global secondary indexes                                 #
-  ############################################################
+  # Provisioned capacity (table-level) ---------------------------
+  read_capacity  = local.spec.billing_mode == 1 ? local.spec.provisioned_throughput.read_capacity_units  : null
+  write_capacity = local.spec.billing_mode == 1 ? local.spec.provisioned_throughput.write_capacity_units : null
+
+  # Global secondary indexes ------------------------------------
   dynamic "global_secondary_index" {
-    for_each = local.global_secondary_indexes
-    iterator = gsi
+    for_each = local.gsi_list
     content {
-      name            = gsi.value.name
-      hash_key        = gsi.value.hash_key
-      range_key       = gsi.value.range_key
-      projection_type = gsi.value.projection_type
+      name               = global_secondary_index.value.index_name
+      hash_key           = global_secondary_index.value.key_schema[0].attribute_name
+      range_key          = length(global_secondary_index.value.key_schema) > 1 ? global_secondary_index.value.key_schema[1].attribute_name : null
+      projection_type    = lookup(local.projection_type_map, global_secondary_index.value.projection.projection_type, "ALL")
+      non_key_attributes = global_secondary_index.value.projection.projection_type == 3 ? global_secondary_index.value.projection.non_key_attributes : null
 
-      # Only set when projection_type == INCLUDE
-      non_key_attributes = gsi.value.non_key_attributes
-
-      # Only relevant for PROVISIONED mode
-      read_capacity  = gsi.value.read_capacity
-      write_capacity = gsi.value.write_capacity
+      # Per-index capacity only when table is PROVISIONED
+      read_capacity  = local.spec.billing_mode == 1 ? global_secondary_index.value.provisioned_throughput.read_capacity_units  : null
+      write_capacity = local.spec.billing_mode == 1 ? global_secondary_index.value.provisioned_throughput.write_capacity_units : null
     }
   }
 
-  ############################################################
-  # Local secondary indexes                                  #
-  ############################################################
+  # Local secondary indexes -------------------------------------
   dynamic "local_secondary_index" {
-    for_each = local.local_secondary_indexes
-    iterator = lsi
+    for_each = local.lsi_list
     content {
-      name            = lsi.value.name
-      range_key       = lsi.value.range_key
-      projection_type = lsi.value.projection_type
-      non_key_attributes = lsi.value.non_key_attributes
+      name               = local_secondary_index.value.index_name
+      range_key          = local_secondary_index.value.key_schema[1].attribute_name
+      projection_type    = lookup(local.projection_type_map, local_secondary_index.value.projection.projection_type, "ALL")
+      non_key_attributes = local_secondary_index.value.projection.projection_type == 3 ? local_secondary_index.value.projection.non_key_attributes : null
     }
   }
 
-  ############################################################
-  # Capacity (only when PROVISIONED)                         #
-  ############################################################
-  read_capacity  = local.billing_mode_map[var.spec.billing_mode] == "PROVISIONED" ? var.spec.provisioned_throughput.read_capacity_units : null
-  write_capacity = local.billing_mode_map[var.spec.billing_mode] == "PROVISIONED" ? var.spec.provisioned_throughput.write_capacity_units : null
+  # Streams ------------------------------------------------------
+  stream_enabled   = try(local.spec.stream_specification.stream_enabled, false)
+  stream_view_type = try(lookup(local.stream_view_type_map, local.spec.stream_specification.stream_view_type, null), null)
 
-  ############################################################
-  # Streams                                                  #
-  ############################################################
-  stream_enabled   = var.spec.stream_specification.stream_enabled
-  stream_view_type = var.spec.stream_specification.stream_enabled ? local.stream_view_type_map[var.spec.stream_specification.stream_view_type] : null
-
-  ############################################################
-  # TTL                                                      #
-  ############################################################
+  # Time-to-live -------------------------------------------------
   dynamic "ttl" {
-    for_each = try(var.spec.ttl_specification, null) == null ? [] : [var.spec.ttl_specification]
+    for_each = (try(local.spec.ttl_specification.ttl_enabled, false) || try(length(local.spec.ttl_specification.attribute_name), 0) > 0) ? [local.spec.ttl_specification] : []
     content {
       attribute_name = ttl.value.attribute_name
       enabled        = ttl.value.ttl_enabled
     }
   }
 
-  ############################################################
-  # Point-in-time recovery                                   #
-  ############################################################
+  # Point-in-time recovery --------------------------------------
   point_in_time_recovery {
-    enabled = var.spec.point_in_time_recovery_enabled
+    enabled = local.spec.point_in_time_recovery_enabled
   }
 
-  ############################################################
-  # Server-side encryption                                   #
-  ############################################################
-  server_side_encryption {
-    enabled     = var.spec.sse_specification.enabled
-    kms_key_arn = var.spec.sse_specification.sse_type == 2 ? var.spec.sse_specification.kms_master_key_id : null
+  # Server-side encryption --------------------------------------
+  dynamic "server_side_encryption" {
+    for_each = local.spec.sse_specification.enabled ? [local.spec.sse_specification] : []
+    content {
+      enabled     = true
+      kms_key_arn = local.spec.sse_specification.sse_type == 2 ? local.spec.sse_specification.kms_master_key_id : null
+    }
   }
 
-  ############################################################
-  # Tags                                                     #
-  ############################################################
-  tags = var.spec.tags
+  # Tags ---------------------------------------------------------
+  tags = try(local.spec.tags, {})
 }
 
-# -----------------------------------------------------------------------------
-# Outputs – match AwsDynamodbStackOutputs                                       
-# -----------------------------------------------------------------------------
+############################
+# Stack outputs
+############################
 
 output "table_arn" {
-  description = "Fully-qualified ARN of the DynamoDB table"
+  description = "Fully-qualified Amazon Resource Name of the table."
   value       = aws_dynamodb_table.this.arn
 }
 
 output "table_name" {
-  description = "Name of the DynamoDB table"
+  description = "Name of the DynamoDB table (may include runtime suffixes)."
   value       = aws_dynamodb_table.this.name
 }
 
 output "table_id" {
-  description = "Unique identifier of the table"
+  description = "AWS-assigned unique identifier of the table."
   value       = aws_dynamodb_table.this.id
 }
 
 output "stream" {
-  description = "Stream identifiers (null when streams are disabled)"
-  value = aws_dynamodb_table.this.stream_arn != "" ? {
-    stream_arn   = aws_dynamodb_table.this.stream_arn
+  description = "Current (latest) stream information, present only when streams are enabled."
+  value = aws_dynamodb_table.this.stream_enabled ? {
+    stream_arn  = aws_dynamodb_table.this.stream_arn
     stream_label = aws_dynamodb_table.this.stream_label
   } : null
 }
 
 output "kms_key_arn" {
-  description = "ARN of the customer-managed KMS key when SSE uses KMS"
-  value       = try(aws_dynamodb_table.this.kms_key_arn, null)
+  description = "ARN of the customer-managed KMS key when SSE uses a CMK."
+  value       = (local.spec.sse_specification.enabled && local.spec.sse_specification.sse_type == 2) ? local.spec.sse_specification.kms_master_key_id : null
 }
 
 output "global_secondary_index_names" {
-  description = "Names of provisioned GSIs"
-  value       = [for g in aws_dynamodb_table.this.global_secondary_index : g.name]
+  description = "Names of provisioned global secondary indexes (GSIs)."
+  value       = try([for g in aws_dynamodb_table.this.global_secondary_index : g.name], [])
 }
 
 output "local_secondary_index_names" {
-  description = "Names of provisioned LSIs"
-  value       = [for l in aws_dynamodb_table.this.local_secondary_index : l.name]
+  description = "Names of provisioned local secondary indexes (LSIs)."
+  value       = try([for l in aws_dynamodb_table.this.local_secondary_index : l.name], [])
 }

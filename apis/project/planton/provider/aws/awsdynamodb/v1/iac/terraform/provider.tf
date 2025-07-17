@@ -9,14 +9,12 @@ terraform {
   }
 }
 
-# AWS provider configuration. Authentication is expected to be supplied
-# through the standard AWS mechanisms (environment variables, shared
-# credentials file, SSO, or IAM roles). The region can be passed via the
-# `aws_region` variable or inherited from the environment.
+# AWS region in which all resources will be created.
+variable "aws_region" {
+  description = "AWS region to deploy resources into"
+  type        = string
+}
+
 provider "aws" {
-  region = coalesce(
-    try(var.aws_region, null),
-    try(env("AWS_REGION"), null),
-    try(env("AWS_DEFAULT_REGION"), null)
-  )
+  region = var.aws_region
 }
