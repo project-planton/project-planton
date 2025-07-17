@@ -19,6 +19,7 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/pseudomuto/protoc-gen-doc v1.5.1
 	github.com/pulumi/pulumi-aws-native/sdk v1.14.0
+	github.com/pulumi/pulumi-aws/sdk/v5 v5.43.0
 	github.com/pulumi/pulumi-aws/sdk/v6 v6.64.0
 	github.com/pulumi/pulumi-azure/sdk/v5 v5.89.0
 	github.com/pulumi/pulumi-gcp/sdk/v8 v8.27.0

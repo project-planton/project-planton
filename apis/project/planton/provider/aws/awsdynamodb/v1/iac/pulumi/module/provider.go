@@ -36,9 +36,7 @@ func AwsProvider(ctx *pulumi.Context, cred *awscredentialpb.AwsCredentialSpec) (
     if v := strings.TrimSpace(cred.GetSecretAccessKey()); v != "" {
         args.SecretKey = pulumi.StringPtr(v)
     }
-    if v := strings.TrimSpace(cred.GetSessionToken()); v != "" {
-        args.Token = pulumi.StringPtr(v)
-    }
+    // NOTE: The credential proto currently has no field for a session token.
     if v := strings.TrimSpace(cred.GetProfile()); v != "" {
         args.Profile = pulumi.StringPtr(v)
     }

@@ -3,7 +3,6 @@ package module
 import (
     "github.com/pkg/errors"
     awsdynamodbv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsdynamodb/v1"
-    "github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
 // Locals groups together values that are used in several different places
@@ -21,9 +20,9 @@ type Locals struct {
     // their own suffixes or prefixes prior to provisioning.
     TableName string
 
-    // Tags is a Pulumi-native representation of the key/value tags that
-    // should be attached to every AWS resource (where supported).
-    Tags pulumi.StringMap
+    // Tags is a plain map representation of the key/value tags that should be
+    // attached to every AWS resource (where supported).
+    Tags map[string]string
 }
 
 // initializeLocals converts the protobuf-based stack input into a strongly
@@ -31,7 +30,7 @@ type Locals struct {
 // provisioning.  Every piece of generic, re-usable information that more
 // than one sub-resource needs should live here so we avoid duplicating the
 // conversion logic in multiple places.
-func initializeLocals(ctx *pulumi.Context, stackInput *awsdynamodbv1.AwsDynamodbStackInput) (*Locals, error) {
+func initializeLocals(_ interface{}, stackInput *awsdynamodbv1.AwsDynamodbStackInput) (*Locals, error) {
     if stackInput == nil {
         return nil, errors.New("stackInput must not be nil")
     }
@@ -46,20 +45,17 @@ func initializeLocals(ctx *pulumi.Context, stackInput *awsdynamodbv1.AwsDynamodb
         return nil, errors.New("target.spec must be provided")
     }
 
-    // The base table name is taken exactly as supplied by the user.  If a
-    // future requirement appears that needs us to tack on random
-    // identifiers, this is a good place to do it.
+    // The base table name is taken exactly as supplied by the user.
     tableName := spec.GetTableName()
     if tableName == "" {
         return nil, errors.New("spec.table_name must not be empty")
     }
 
-    // Convert the user provided map[string]string into Pulumi's preferred
-    // pulumi.StringMap so the value can be passed straight into the AWS SDK
-    // resource constructors.
-    tags := pulumi.StringMap{}
+    // Convert the user provided map[string]string into a Go map so the value
+    // can be passed straight into the AWS SDK resource constructors.
+    tags := map[string]string{}
     for k, v := range spec.GetTags() {
-        tags[k] = pulumi.String(v)
+        tags[k] = v
     }
 
     // Inject a handful of standard tags that help operators understand where
@@ -67,10 +63,10 @@ func initializeLocals(ctx *pulumi.Context, stackInput *awsdynamodbv1.AwsDynamodb
     // already define a tag with the same key so that the user's preference
     // always wins.
     if _, ok := tags["managed-by"]; !ok {
-        tags["managed-by"] = pulumi.String("pulumi")
+        tags["managed-by"] = "pulumi"
     }
     if _, ok := tags["provisioner"]; !ok {
-        tags["provisioner"] = pulumi.String("project-planton")
+        tags["provisioner"] = "project-planton"
     }
 
     return &Locals{

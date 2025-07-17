@@ -26,20 +26,12 @@ func Resources(ctx *pulumi.Context, stackInput *awsdynamodbv1.AwsDynamodbStackIn
     // ---------------------------------------------------------------------
     providerArgs := &aws.ProviderArgs{}
 
-    // NOTE: The full AwsCredentialSpec definition is not pulled into this file
-    // to avoid leaking unnecessary details. We only populate values that are
-    // guaranteed to exist in every installation. Missing/empty values are just
-    // ignored so that the underlying provider performs the standard fallback
-    // lookup.
     if cred := stackInput.GetProviderCredential(); cred != nil {
         if v := cred.GetAccessKeyId(); v != "" {
             providerArgs.AccessKey = pulumi.StringPtr(v)
         }
         if v := cred.GetSecretAccessKey(); v != "" {
             providerArgs.SecretKey = pulumi.StringPtr(v)
-        }
-        if v := cred.GetSessionToken(); v != "" {
-            providerArgs.Token = pulumi.StringPtr(v)
         }
         if v := cred.GetRegion(); v != "" {
             providerArgs.Region = pulumi.StringPtr(v)
@@ -74,21 +66,21 @@ func Resources(ctx *pulumi.Context, stackInput *awsdynamodbv1.AwsDynamodbStackIn
     // ---------------------------------------------------------------------
     // 4. Export all observable output values as defined in outputs.go.
     // ---------------------------------------------------------------------
-    ctx.Export(TableArn, table.Arn)
-    ctx.Export(TableName, table.Name)
-    ctx.Export(TableId, table.ID().ToStringOutput())
+    ctx.Export(TableArnKey, table.Arn)
+    ctx.Export(TableNameKey, table.Name)
+    ctx.Export(TableIDKey, table.ID().ToStringOutput())
 
     // Stream information – will resolve to empty ("null") values when streams
     // are not enabled for the table which is fully acceptable for callers.
-    ctx.Export(StreamArn, table.StreamArn)
-    ctx.Export(StreamLabel, table.StreamLabel)
+    ctx.Export(StreamArnKey, table.StreamArn)
+    ctx.Export(StreamLabelKey, table.StreamLabel)
 
     // The remaining outputs are optional and can be nil/empty depending on the
     // module configuration. We intentionally export well-typed empty values so
     // that the shape of the final outputs object is always deterministic.
-    ctx.Export(KmsKeyArn, pulumi.String(""))
-    ctx.Export(GlobalSecondaryIndexNames, pulumi.StringArray{})
-    ctx.Export(LocalSecondaryIndexNames, pulumi.StringArray{})
+    ctx.Export(KmsKeyArnKey, pulumi.String(""))
+    ctx.Export(GlobalSecondaryIndexNamesKey, pulumi.StringArray{})
+    ctx.Export(LocalSecondaryIndexNamesKey, pulumi.StringArray{})
 
     return nil
 }

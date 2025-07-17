@@ -67,9 +67,9 @@ func createTable(
     // Billing mode / Provisioned throughput
     // ---------------------------------------------------------------------
     var (
-        billingMode               *string
-        provisionedReadCapacity   *int
-        provisionedWriteCapacity  *int
+        billingMode              *string
+        provisionedReadCapacity  *int
+        provisionedWriteCapacity *int
     )
     switch spec.BillingMode {
     case awsdynamodbpb.BillingMode_PROVISIONED:
@@ -198,10 +198,10 @@ func createTable(
     }
 
     // ---------------------------------------------------------------------
-    // Aggregate tags (locals.Labels first, then spec.Tags to allow overrides).
+    // Aggregate tags (locals.Tags first, then spec.Tags to allow overrides).
     // ---------------------------------------------------------------------
     tagMap := map[string]string{}
-    for k, v := range locals.Labels {
+    for k, v := range locals.Tags {
         tagMap[k] = v
     }
     for k, v := range spec.Tags {
