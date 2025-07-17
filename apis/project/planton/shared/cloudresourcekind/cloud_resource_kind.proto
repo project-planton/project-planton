@@ -2,119 +2,128 @@ syntax = "proto3";
 
 package project.planton.shared.cloudresourcekind;
 
+import "google/protobuf/descriptor.proto";
+import "project/planton/shared/cloudresourcekind/cloud_resource_provider.proto";
+
+//enum value options for api-resource-kind
+extend google.protobuf.EnumValueOptions {
+  ProjectPlantonCloudResourceProvider provider = 10100;
+  ProjectPlantonKubernetesResourceType kubernetes_resource_type = 10101;
+}
+
 enum CloudResourceKind {
   // 0: Default/unspecified
-  unspecified = 0;
+  unspecified = 0 [(provider) = test];
 
   // 1–49: Test/dev/custom
-  FirstTestCloudApiResource = 1;
-  SecondTestCloudApiResource = 2;
-  ThirdTestCloudApiResource = 3;
+  FirstTestCloudApiResource = 1 [(provider) = test];
+  SecondTestCloudApiResource = 2 [(provider) = test];
+  ThirdTestCloudApiResource = 3 [(provider) = test];
 
   // 50–199: saas platform resources
-  ConfluentKafka = 50;
-  MongodbAtlas = 51;
-  SnowflakeDatabase = 52;
+  ConfluentKafka = 50 [(provider) = confluent];
+  MongodbAtlas = 51 [(provider) = atlas];
+  SnowflakeDatabase = 52 [(provider) = snowflake];
 
   // 200–399: AWS resources
-  AwsAlb = 200;
-  AwsCertManagerCert = 201;
-  AwsCloudFront = 202;
-  AwsDynamodb = 203;
-  AwsEcrRepo = 204;
-  AwsEcsCluster = 205;
-  AwsEcsService = 206;
-  AwsEksCluster = 207;
-  AwsIamRole = 208;
-  AwsLambda = 209;
-  AwsRdsCluster = 210;
-  AwsRdsInstance = 211;
-  AwsRoute53Zone = 212;
-  AwsS3Bucket = 213;
-  AwsSecretsManager = 214;
-  AwsSecurityGroup = 215;
-  AwsStaticWebsite = 216;
-  AwsVpc = 217;
-  AwsEksNodeGroup = 218;
-  AwsIamUser = 219;
-  AwsKmsKey = 220;
+  AwsAlb = 200 [(provider) = aws];
+  AwsCertManagerCert = 201 [(provider) = aws];
+  AwsCloudFront = 202 [(provider) = aws];
+  AwsDynamodb = 203 [(provider) = aws];
+  AwsEcrRepo = 204 [(provider) = aws];
+  AwsEcsCluster = 205 [(provider) = aws];
+  AwsEcsService = 206 [(provider) = aws];
+  AwsEksCluster = 207 [(provider) = aws];
+  AwsIamRole = 208 [(provider) = aws];
+  AwsLambda = 209 [(provider) = aws];
+  AwsRdsCluster = 210 [(provider) = aws];
+  AwsRdsInstance = 211 [(provider) = aws];
+  AwsRoute53Zone = 212 [(provider) = aws];
+  AwsS3Bucket = 213 [(provider) = aws];
+  AwsSecretsManager = 214 [(provider) = aws];
+  AwsSecurityGroup = 215 [(provider) = aws];
+  AwsStaticWebsite = 216 [(provider) = aws];
+  AwsVpc = 217 [(provider) = aws];
+  AwsEksNodeGroup = 218 [(provider) = aws];
+  AwsIamUser = 219 [(provider) = aws];
+  AwsKmsKey = 220 [(provider) = aws];
 
   // 400–599: Azure resources
-  AzureAksCluster = 400;
-  AzureAksNodePool = 401;
-  AzureContainerRegistry = 402;
-  AzureDnsZone = 403;
-  AzureKeyVault = 404;
-  AzureVpc = 405;
-  AzureNatGateway = 406;
+  AzureAksCluster = 400 [(provider) = azure];
+  AzureAksNodePool = 401 [(provider) = azure];
+  AzureContainerRegistry = 402 [(provider) = azure];
+  AzureDnsZone = 403 [(provider) = azure];
+  AzureKeyVault = 404 [(provider) = azure];
+  AzureVpc = 405 [(provider) = azure];
+  AzureNatGateway = 406 [(provider) = azure];
 
   // 600–799: GCP resources
-  GcpArtifactRegistryRepo = 600;
-  GcpCloudCdn = 601;
-  GcpCloudFunction = 602;
-  GcpCloudRun = 603;
-  GcpCloudSql = 604;
-  GcpDnsZone = 605;
-  GcpGcsBucket = 606;
-  GcpGkeAddonBundle = 607;
-  GcpGkeCluster = 608;
-  GcpSecretsManager = 609;
-  GcpStaticWebsite = 610;
-  GcpProject = 611;
-  GcpVpc = 612;
-  GcpSubnetwork = 613;
-  GcpRouterNat = 614;
-  GcpGkeClusterCore = 615;
-  GcpGkeNodePool = 616;
-  GcpServiceAccount = 617;
-  GcpGkeWorkloadIdentityBinding = 618;
+  GcpArtifactRegistryRepo = 600 [(provider) = gcp];
+  GcpCloudCdn = 601 [(provider) = gcp];
+  GcpCloudFunction = 602 [(provider) = gcp];
+  GcpCloudRun = 603 [(provider) = gcp];
+  GcpCloudSql = 604 [(provider) = gcp];
+  GcpDnsZone = 605 [(provider) = gcp];
+  GcpGcsBucket = 606 [(provider) = gcp];
+  GcpGkeAddonBundle = 607 [(provider) = gcp];
+  GcpGkeCluster = 608 [(provider) = gcp];
+  GcpSecretsManager = 609 [(provider) = gcp];
+  GcpStaticWebsite = 610 [(provider) = gcp];
+  GcpProject = 611 [(provider) = gcp];
+  GcpVpc = 612 [(provider) = gcp];
+  GcpSubnetwork = 613 [(provider) = gcp];
+  GcpRouterNat = 614 [(provider) = gcp];
+  GcpGkeClusterCore = 615 [(provider) = gcp];
+  GcpGkeNodePool = 616 [(provider) = gcp];
+  GcpServiceAccount = 617 [(provider) = gcp];
+  GcpGkeWorkloadIdentityBinding = 618 [(provider) = gcp];
 
   // 800–999: Kubernetes resources
-  ArgocdKubernetes = 800;
-  CronJobKubernetes = 801;
-  ElasticsearchKubernetes = 802;
-  GitlabKubernetes = 803;
-  GrafanaKubernetes = 804;
-  HelmRelease = 805;
-  JenkinsKubernetes = 806;
-  KafkaKubernetes = 807;
-  KeycloakKubernetes = 808;
-  KubernetesHttpEndpoint = 809;
-  LocustKubernetes = 810;
-  MicroserviceKubernetes = 811;
-  MongodbKubernetes = 812;
-  Neo4jKubernetes = 813;
-  OpenFgaKubernetes = 814;
-  PostgresKubernetes = 815;
-  PrometheusKubernetes = 816;
-  RedisKubernetes = 817;
-  SignozKubernetes = 818;
-  SolrKubernetes = 819;
-  StackJobRunnerKubernetes = 820;
-  TemporalKubernetes = 821;
-  NatsKubernetes = 822;
-  CertManagerKubernetes = 823;
-  ElasticOperatorKubernetes = 824;
-  ExternalDnsKubernetes = 825;
-  IngressNginxKubernetes = 826;
-  IstioKubernetes = 827;
-  KafkaOperatorKubernetes = 828;
-  PostgresOperatorKubernetes = 829;
-  SolrOperatorKubernetes = 830;
-  ExternalSecretsKubernetes = 831;
+  ArgocdKubernetes            = 800 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
+  CronJobKubernetes           = 801 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
+  ElasticsearchKubernetes     = 802 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
+  GitlabKubernetes            = 803 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
+  GrafanaKubernetes           = 804 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
+  HelmRelease                 = 805 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
+  JenkinsKubernetes           = 806 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
+  KafkaKubernetes             = 807 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
+  KeycloakKubernetes          = 808 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
+  KubernetesHttpEndpoint      = 809 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
+  LocustKubernetes            = 810 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
+  MicroserviceKubernetes      = 811 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
+  MongodbKubernetes           = 812 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
+  Neo4jKubernetes             = 813 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
+  OpenFgaKubernetes           = 814 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
+  PostgresKubernetes          = 815 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
+  PrometheusKubernetes        = 816 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
+  RedisKubernetes             = 817 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
+  SignozKubernetes            = 818 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
+  SolrKubernetes              = 819 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
+  StackJobRunnerKubernetes    = 820 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
+  TemporalKubernetes          = 821 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
+  NatsKubernetes              = 822 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
+  CertManagerKubernetes       = 823 [(provider) = kubernetes, (kubernetes_resource_type) = addon];
+  ElasticOperatorKubernetes   = 824 [(provider) = kubernetes, (kubernetes_resource_type) = addon];
+  ExternalDnsKubernetes       = 825 [(provider) = kubernetes, (kubernetes_resource_type) = addon];
+  IngressNginxKubernetes      = 826 [(provider) = kubernetes, (kubernetes_resource_type) = addon];
+  IstioKubernetes             = 827 [(provider) = kubernetes, (kubernetes_resource_type) = addon];
+  KafkaOperatorKubernetes     = 828 [(provider) = kubernetes, (kubernetes_resource_type) = addon];
+  PostgresOperatorKubernetes  = 829 [(provider) = kubernetes, (kubernetes_resource_type) = addon];
+  SolrOperatorKubernetes      = 830 [(provider) = kubernetes, (kubernetes_resource_type) = addon];
+  ExternalSecretsKubernetes   = 831 [(provider) = kubernetes, (kubernetes_resource_type) = addon];
 
   // 1200–1499: DigitalOcean resources
-  DigitalOceanAppPlatformService = 1200;
-  DigitalOceanBucket = 1201;
-  DigitalOceanContainerRegistry = 1202;
-  DigitalOceanDatabaseCluster = 1203;
-  DigitalOceanDnsZone = 1204;
-  DigitalOceanDroplet = 1205;
-  DigitalOceanFirewall = 1206;
-  DigitalOceanFunction = 1207;
-  DigitalOceanKubernetesCluster = 1208;
-  DigitalOceanKubernetesNodePool = 1209;
-  DigitalOceanLoadBalancer = 1210;
-  DigitalOceanVolume = 1211;
-  DigitalOceanVpc = 1212;
+  DigitalOceanAppPlatformService = 1200 [(provider) = digital_ocean];
+  DigitalOceanBucket = 1201 [(provider) = digital_ocean];
+  DigitalOceanContainerRegistry = 1202 [(provider) = digital_ocean];
+  DigitalOceanDatabaseCluster = 1203 [(provider) = digital_ocean];
+  DigitalOceanDnsZone = 1204 [(provider) = digital_ocean];
+  DigitalOceanDroplet = 1205 [(provider) = digital_ocean];
+  DigitalOceanFirewall = 1206 [(provider) = digital_ocean];
+  DigitalOceanFunction = 1207 [(provider) = digital_ocean];
+  DigitalOceanKubernetesCluster = 1208 [(provider) = digital_ocean];
+  DigitalOceanKubernetesNodePool = 1209 [(provider) = digital_ocean];
+  DigitalOceanLoadBalancer = 1210 [(provider) = digital_ocean];
+  DigitalOceanVolume = 1211 [(provider) = digital_ocean];
+  DigitalOceanVpc = 1212 [(provider) = digital_ocean];
 }

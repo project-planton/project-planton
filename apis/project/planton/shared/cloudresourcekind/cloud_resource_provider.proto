@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package project.planton.shared.cloudresourcekind;
+
+enum ProjectPlantonCloudResourceProvider {
+  project_planton_cloud_resource_provider_unspecified = 0;
+  test = 1;
+  atlas = 2;
+  aws = 3;
+  azure = 4;
+  confluent = 5;
+  digital_ocean = 6;
+  gcp = 7;
+  kubernetes = 8;
+  snowflake = 9;
+}
+
+enum ProjectPlantonKubernetesResourceType {
+  project_planton_kubernetes_resource_type_unspecified = 0;
+  addon = 1;
+  workload = 2;
+}

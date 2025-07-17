@@ -9,6 +9,7 @@ package cloudresourcekind
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	descriptorpb "google.golang.org/protobuf/types/descriptorpb"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
@@ -366,116 +367,145 @@ func (CloudResourceKind) EnumDescriptor() ([]byte, []int) {
 	return file_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto_rawDescGZIP(), []int{0}
 }
 
+var file_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto_extTypes = []protoimpl.ExtensionInfo{
+	{
+		ExtendedType:  (*descriptorpb.EnumValueOptions)(nil),
+		ExtensionType: (*ProjectPlantonCloudResourceProvider)(nil),
+		Field:         10100,
+		Name:          "project.planton.shared.cloudresourcekind.provider",
+		Tag:           "varint,10100,opt,name=provider,enum=project.planton.shared.cloudresourcekind.ProjectPlantonCloudResourceProvider",
+		Filename:      "project/planton/shared/cloudresourcekind/cloud_resource_kind.proto",
+	},
+	{
+		ExtendedType:  (*descriptorpb.EnumValueOptions)(nil),
+		ExtensionType: (*ProjectPlantonKubernetesResourceType)(nil),
+		Field:         10101,
+		Name:          "project.planton.shared.cloudresourcekind.kubernetes_resource_type",
+		Tag:           "varint,10101,opt,name=kubernetes_resource_type,enum=project.planton.shared.cloudresourcekind.ProjectPlantonKubernetesResourceType",
+		Filename:      "project/planton/shared/cloudresourcekind/cloud_resource_kind.proto",
+	},
+}
+
+// Extension fields to descriptorpb.EnumValueOptions.
+var (
+	// optional project.planton.shared.cloudresourcekind.ProjectPlantonCloudResourceProvider provider = 10100;
+	E_Provider = &file_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto_extTypes[0]
+	// optional project.planton.shared.cloudresourcekind.ProjectPlantonKubernetesResourceType kubernetes_resource_type = 10101;
+	E_KubernetesResourceType = &file_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto_extTypes[1]
+)
+
 var File_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto protoreflect.FileDescriptor
 
 const file_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto_rawDesc = "" +
 	"\n" +
-	"Bproject/planton/shared/cloudresourcekind/cloud_resource_kind.proto\x12(project.planton.shared.cloudresourcekind*\xbc\x12\n" +
-	"\x11CloudResourceKind\x12\x0f\n" +
-	"\vunspecified\x10\x00\x12\x1d\n" +
-	"\x19FirstTestCloudApiResource\x10\x01\x12\x1e\n" +
-	"\x1aSecondTestCloudApiResource\x10\x02\x12\x1d\n" +
-	"\x19ThirdTestCloudApiResource\x10\x03\x12\x12\n" +
-	"\x0eConfluentKafka\x102\x12\x10\n" +
-	"\fMongodbAtlas\x103\x12\x15\n" +
-	"\x11SnowflakeDatabase\x104\x12\v\n" +
-	"\x06AwsAlb\x10\xc8\x01\x12\x17\n" +
-	"\x12AwsCertManagerCert\x10\xc9\x01\x12\x12\n" +
-	"\rAwsCloudFront\x10\xca\x01\x12\x10\n" +
-	"\vAwsDynamodb\x10\xcb\x01\x12\x0f\n" +
+	"Bproject/planton/shared/cloudresourcekind/cloud_resource_kind.proto\x12(project.planton.shared.cloudresourcekind\x1a google/protobuf/descriptor.proto\x1aFproject/planton/shared/cloudresourcekind/cloud_resource_provider.proto*\x8e\x18\n" +
+	"\x11CloudResourceKind\x12\x15\n" +
+	"\vunspecified\x10\x00\x1a\x04\xa0\xf7\x04\x01\x12#\n" +
+	"\x19FirstTestCloudApiResource\x10\x01\x1a\x04\xa0\xf7\x04\x01\x12$\n" +
+	"\x1aSecondTestCloudApiResource\x10\x02\x1a\x04\xa0\xf7\x04\x01\x12#\n" +
+	"\x19ThirdTestCloudApiResource\x10\x03\x1a\x04\xa0\xf7\x04\x01\x12\x18\n" +
+	"\x0eConfluentKafka\x102\x1a\x04\xa0\xf7\x04\x05\x12\x16\n" +
+	"\fMongodbAtlas\x103\x1a\x04\xa0\xf7\x04\x02\x12\x1b\n" +
+	"\x11SnowflakeDatabase\x104\x1a\x04\xa0\xf7\x04\t\x12\x11\n" +
+	"\x06AwsAlb\x10\xc8\x01\x1a\x04\xa0\xf7\x04\x03\x12\x1d\n" +
+	"\x12AwsCertManagerCert\x10\xc9\x01\x1a\x04\xa0\xf7\x04\x03\x12\x18\n" +
+	"\rAwsCloudFront\x10\xca\x01\x1a\x04\xa0\xf7\x04\x03\x12\x16\n" +
+	"\vAwsDynamodb\x10\xcb\x01\x1a\x04\xa0\xf7\x04\x03\x12\x15\n" +
 	"\n" +
-	"AwsEcrRepo\x10\xcc\x01\x12\x12\n" +
-	"\rAwsEcsCluster\x10\xcd\x01\x12\x12\n" +
-	"\rAwsEcsService\x10\xce\x01\x12\x12\n" +
-	"\rAwsEksCluster\x10\xcf\x01\x12\x0f\n" +
+	"AwsEcrRepo\x10\xcc\x01\x1a\x04\xa0\xf7\x04\x03\x12\x18\n" +
+	"\rAwsEcsCluster\x10\xcd\x01\x1a\x04\xa0\xf7\x04\x03\x12\x18\n" +
+	"\rAwsEcsService\x10\xce\x01\x1a\x04\xa0\xf7\x04\x03\x12\x18\n" +
+	"\rAwsEksCluster\x10\xcf\x01\x1a\x04\xa0\xf7\x04\x03\x12\x15\n" +
 	"\n" +
-	"AwsIamRole\x10\xd0\x01\x12\x0e\n" +
-	"\tAwsLambda\x10\xd1\x01\x12\x12\n" +
-	"\rAwsRdsCluster\x10\xd2\x01\x12\x13\n" +
-	"\x0eAwsRdsInstance\x10\xd3\x01\x12\x13\n" +
-	"\x0eAwsRoute53Zone\x10\xd4\x01\x12\x10\n" +
-	"\vAwsS3Bucket\x10\xd5\x01\x12\x16\n" +
-	"\x11AwsSecretsManager\x10\xd6\x01\x12\x15\n" +
-	"\x10AwsSecurityGroup\x10\xd7\x01\x12\x15\n" +
-	"\x10AwsStaticWebsite\x10\xd8\x01\x12\v\n" +
-	"\x06AwsVpc\x10\xd9\x01\x12\x14\n" +
-	"\x0fAwsEksNodeGroup\x10\xda\x01\x12\x0f\n" +
+	"AwsIamRole\x10\xd0\x01\x1a\x04\xa0\xf7\x04\x03\x12\x14\n" +
+	"\tAwsLambda\x10\xd1\x01\x1a\x04\xa0\xf7\x04\x03\x12\x18\n" +
+	"\rAwsRdsCluster\x10\xd2\x01\x1a\x04\xa0\xf7\x04\x03\x12\x19\n" +
+	"\x0eAwsRdsInstance\x10\xd3\x01\x1a\x04\xa0\xf7\x04\x03\x12\x19\n" +
+	"\x0eAwsRoute53Zone\x10\xd4\x01\x1a\x04\xa0\xf7\x04\x03\x12\x16\n" +
+	"\vAwsS3Bucket\x10\xd5\x01\x1a\x04\xa0\xf7\x04\x03\x12\x1c\n" +
+	"\x11AwsSecretsManager\x10\xd6\x01\x1a\x04\xa0\xf7\x04\x03\x12\x1b\n" +
+	"\x10AwsSecurityGroup\x10\xd7\x01\x1a\x04\xa0\xf7\x04\x03\x12\x1b\n" +
+	"\x10AwsStaticWebsite\x10\xd8\x01\x1a\x04\xa0\xf7\x04\x03\x12\x11\n" +
+	"\x06AwsVpc\x10\xd9\x01\x1a\x04\xa0\xf7\x04\x03\x12\x1a\n" +
+	"\x0fAwsEksNodeGroup\x10\xda\x01\x1a\x04\xa0\xf7\x04\x03\x12\x15\n" +
 	"\n" +
-	"AwsIamUser\x10\xdb\x01\x12\x0e\n" +
-	"\tAwsKmsKey\x10\xdc\x01\x12\x14\n" +
-	"\x0fAzureAksCluster\x10\x90\x03\x12\x15\n" +
-	"\x10AzureAksNodePool\x10\x91\x03\x12\x1b\n" +
-	"\x16AzureContainerRegistry\x10\x92\x03\x12\x11\n" +
-	"\fAzureDnsZone\x10\x93\x03\x12\x12\n" +
-	"\rAzureKeyVault\x10\x94\x03\x12\r\n" +
-	"\bAzureVpc\x10\x95\x03\x12\x14\n" +
-	"\x0fAzureNatGateway\x10\x96\x03\x12\x1c\n" +
-	"\x17GcpArtifactRegistryRepo\x10\xd8\x04\x12\x10\n" +
-	"\vGcpCloudCdn\x10\xd9\x04\x12\x15\n" +
-	"\x10GcpCloudFunction\x10\xda\x04\x12\x10\n" +
-	"\vGcpCloudRun\x10\xdb\x04\x12\x10\n" +
-	"\vGcpCloudSql\x10\xdc\x04\x12\x0f\n" +
+	"AwsIamUser\x10\xdb\x01\x1a\x04\xa0\xf7\x04\x03\x12\x14\n" +
+	"\tAwsKmsKey\x10\xdc\x01\x1a\x04\xa0\xf7\x04\x03\x12\x1a\n" +
+	"\x0fAzureAksCluster\x10\x90\x03\x1a\x04\xa0\xf7\x04\x04\x12\x1b\n" +
+	"\x10AzureAksNodePool\x10\x91\x03\x1a\x04\xa0\xf7\x04\x04\x12!\n" +
+	"\x16AzureContainerRegistry\x10\x92\x03\x1a\x04\xa0\xf7\x04\x04\x12\x17\n" +
+	"\fAzureDnsZone\x10\x93\x03\x1a\x04\xa0\xf7\x04\x04\x12\x18\n" +
+	"\rAzureKeyVault\x10\x94\x03\x1a\x04\xa0\xf7\x04\x04\x12\x13\n" +
+	"\bAzureVpc\x10\x95\x03\x1a\x04\xa0\xf7\x04\x04\x12\x1a\n" +
+	"\x0fAzureNatGateway\x10\x96\x03\x1a\x04\xa0\xf7\x04\x04\x12\"\n" +
+	"\x17GcpArtifactRegistryRepo\x10\xd8\x04\x1a\x04\xa0\xf7\x04\a\x12\x16\n" +
+	"\vGcpCloudCdn\x10\xd9\x04\x1a\x04\xa0\xf7\x04\a\x12\x1b\n" +
+	"\x10GcpCloudFunction\x10\xda\x04\x1a\x04\xa0\xf7\x04\a\x12\x16\n" +
+	"\vGcpCloudRun\x10\xdb\x04\x1a\x04\xa0\xf7\x04\a\x12\x16\n" +
+	"\vGcpCloudSql\x10\xdc\x04\x1a\x04\xa0\xf7\x04\a\x12\x15\n" +
 	"\n" +
-	"GcpDnsZone\x10\xdd\x04\x12\x11\n" +
-	"\fGcpGcsBucket\x10\xde\x04\x12\x16\n" +
-	"\x11GcpGkeAddonBundle\x10\xdf\x04\x12\x12\n" +
-	"\rGcpGkeCluster\x10\xe0\x04\x12\x16\n" +
-	"\x11GcpSecretsManager\x10\xe1\x04\x12\x15\n" +
-	"\x10GcpStaticWebsite\x10\xe2\x04\x12\x0f\n" +
+	"GcpDnsZone\x10\xdd\x04\x1a\x04\xa0\xf7\x04\a\x12\x17\n" +
+	"\fGcpGcsBucket\x10\xde\x04\x1a\x04\xa0\xf7\x04\a\x12\x1c\n" +
+	"\x11GcpGkeAddonBundle\x10\xdf\x04\x1a\x04\xa0\xf7\x04\a\x12\x18\n" +
+	"\rGcpGkeCluster\x10\xe0\x04\x1a\x04\xa0\xf7\x04\a\x12\x1c\n" +
+	"\x11GcpSecretsManager\x10\xe1\x04\x1a\x04\xa0\xf7\x04\a\x12\x1b\n" +
+	"\x10GcpStaticWebsite\x10\xe2\x04\x1a\x04\xa0\xf7\x04\a\x12\x15\n" +
 	"\n" +
-	"GcpProject\x10\xe3\x04\x12\v\n" +
-	"\x06GcpVpc\x10\xe4\x04\x12\x12\n" +
-	"\rGcpSubnetwork\x10\xe5\x04\x12\x11\n" +
-	"\fGcpRouterNat\x10\xe6\x04\x12\x16\n" +
-	"\x11GcpGkeClusterCore\x10\xe7\x04\x12\x13\n" +
-	"\x0eGcpGkeNodePool\x10\xe8\x04\x12\x16\n" +
-	"\x11GcpServiceAccount\x10\xe9\x04\x12\"\n" +
-	"\x1dGcpGkeWorkloadIdentityBinding\x10\xea\x04\x12\x15\n" +
-	"\x10ArgocdKubernetes\x10\xa0\x06\x12\x16\n" +
-	"\x11CronJobKubernetes\x10\xa1\x06\x12\x1c\n" +
-	"\x17ElasticsearchKubernetes\x10\xa2\x06\x12\x15\n" +
-	"\x10GitlabKubernetes\x10\xa3\x06\x12\x16\n" +
-	"\x11GrafanaKubernetes\x10\xa4\x06\x12\x10\n" +
-	"\vHelmRelease\x10\xa5\x06\x12\x16\n" +
-	"\x11JenkinsKubernetes\x10\xa6\x06\x12\x14\n" +
-	"\x0fKafkaKubernetes\x10\xa7\x06\x12\x17\n" +
-	"\x12KeycloakKubernetes\x10\xa8\x06\x12\x1b\n" +
-	"\x16KubernetesHttpEndpoint\x10\xa9\x06\x12\x15\n" +
-	"\x10LocustKubernetes\x10\xaa\x06\x12\x1b\n" +
-	"\x16MicroserviceKubernetes\x10\xab\x06\x12\x16\n" +
-	"\x11MongodbKubernetes\x10\xac\x06\x12\x14\n" +
-	"\x0fNeo4jKubernetes\x10\xad\x06\x12\x16\n" +
-	"\x11OpenFgaKubernetes\x10\xae\x06\x12\x17\n" +
-	"\x12PostgresKubernetes\x10\xaf\x06\x12\x19\n" +
-	"\x14PrometheusKubernetes\x10\xb0\x06\x12\x14\n" +
-	"\x0fRedisKubernetes\x10\xb1\x06\x12\x15\n" +
-	"\x10SignozKubernetes\x10\xb2\x06\x12\x13\n" +
-	"\x0eSolrKubernetes\x10\xb3\x06\x12\x1d\n" +
-	"\x18StackJobRunnerKubernetes\x10\xb4\x06\x12\x17\n" +
-	"\x12TemporalKubernetes\x10\xb5\x06\x12\x13\n" +
-	"\x0eNatsKubernetes\x10\xb6\x06\x12\x1a\n" +
-	"\x15CertManagerKubernetes\x10\xb7\x06\x12\x1e\n" +
-	"\x19ElasticOperatorKubernetes\x10\xb8\x06\x12\x1a\n" +
-	"\x15ExternalDnsKubernetes\x10\xb9\x06\x12\x1b\n" +
-	"\x16IngressNginxKubernetes\x10\xba\x06\x12\x14\n" +
-	"\x0fIstioKubernetes\x10\xbb\x06\x12\x1c\n" +
-	"\x17KafkaOperatorKubernetes\x10\xbc\x06\x12\x1f\n" +
-	"\x1aPostgresOperatorKubernetes\x10\xbd\x06\x12\x1b\n" +
-	"\x16SolrOperatorKubernetes\x10\xbe\x06\x12\x1e\n" +
-	"\x19ExternalSecretsKubernetes\x10\xbf\x06\x12#\n" +
-	"\x1eDigitalOceanAppPlatformService\x10\xb0\t\x12\x17\n" +
-	"\x12DigitalOceanBucket\x10\xb1\t\x12\"\n" +
-	"\x1dDigitalOceanContainerRegistry\x10\xb2\t\x12 \n" +
-	"\x1bDigitalOceanDatabaseCluster\x10\xb3\t\x12\x18\n" +
-	"\x13DigitalOceanDnsZone\x10\xb4\t\x12\x18\n" +
-	"\x13DigitalOceanDroplet\x10\xb5\t\x12\x19\n" +
-	"\x14DigitalOceanFirewall\x10\xb6\t\x12\x19\n" +
-	"\x14DigitalOceanFunction\x10\xb7\t\x12\"\n" +
-	"\x1dDigitalOceanKubernetesCluster\x10\xb8\t\x12#\n" +
-	"\x1eDigitalOceanKubernetesNodePool\x10\xb9\t\x12\x1d\n" +
-	"\x18DigitalOceanLoadBalancer\x10\xba\t\x12\x17\n" +
-	"\x12DigitalOceanVolume\x10\xbb\t\x12\x14\n" +
-	"\x0fDigitalOceanVpc\x10\xbc\tB\xe4\x02\n" +
+	"GcpProject\x10\xe3\x04\x1a\x04\xa0\xf7\x04\a\x12\x11\n" +
+	"\x06GcpVpc\x10\xe4\x04\x1a\x04\xa0\xf7\x04\a\x12\x18\n" +
+	"\rGcpSubnetwork\x10\xe5\x04\x1a\x04\xa0\xf7\x04\a\x12\x17\n" +
+	"\fGcpRouterNat\x10\xe6\x04\x1a\x04\xa0\xf7\x04\a\x12\x1c\n" +
+	"\x11GcpGkeClusterCore\x10\xe7\x04\x1a\x04\xa0\xf7\x04\a\x12\x19\n" +
+	"\x0eGcpGkeNodePool\x10\xe8\x04\x1a\x04\xa0\xf7\x04\a\x12\x1c\n" +
+	"\x11GcpServiceAccount\x10\xe9\x04\x1a\x04\xa0\xf7\x04\a\x12(\n" +
+	"\x1dGcpGkeWorkloadIdentityBinding\x10\xea\x04\x1a\x04\xa0\xf7\x04\a\x12\x1f\n" +
+	"\x10ArgocdKubernetes\x10\xa0\x06\x1a\b\xa0\xf7\x04\b\xa8\xf7\x04\x02\x12 \n" +
+	"\x11CronJobKubernetes\x10\xa1\x06\x1a\b\xa0\xf7\x04\b\xa8\xf7\x04\x02\x12&\n" +
+	"\x17ElasticsearchKubernetes\x10\xa2\x06\x1a\b\xa0\xf7\x04\b\xa8\xf7\x04\x02\x12\x1f\n" +
+	"\x10GitlabKubernetes\x10\xa3\x06\x1a\b\xa0\xf7\x04\b\xa8\xf7\x04\x02\x12 \n" +
+	"\x11GrafanaKubernetes\x10\xa4\x06\x1a\b\xa0\xf7\x04\b\xa8\xf7\x04\x02\x12\x1a\n" +
+	"\vHelmRelease\x10\xa5\x06\x1a\b\xa0\xf7\x04\b\xa8\xf7\x04\x02\x12 \n" +
+	"\x11JenkinsKubernetes\x10\xa6\x06\x1a\b\xa0\xf7\x04\b\xa8\xf7\x04\x02\x12\x1e\n" +
+	"\x0fKafkaKubernetes\x10\xa7\x06\x1a\b\xa0\xf7\x04\b\xa8\xf7\x04\x02\x12!\n" +
+	"\x12KeycloakKubernetes\x10\xa8\x06\x1a\b\xa0\xf7\x04\b\xa8\xf7\x04\x02\x12%\n" +
+	"\x16KubernetesHttpEndpoint\x10\xa9\x06\x1a\b\xa0\xf7\x04\b\xa8\xf7\x04\x02\x12\x1f\n" +
+	"\x10LocustKubernetes\x10\xaa\x06\x1a\b\xa0\xf7\x04\b\xa8\xf7\x04\x02\x12%\n" +
+	"\x16MicroserviceKubernetes\x10\xab\x06\x1a\b\xa0\xf7\x04\b\xa8\xf7\x04\x02\x12 \n" +
+	"\x11MongodbKubernetes\x10\xac\x06\x1a\b\xa0\xf7\x04\b\xa8\xf7\x04\x02\x12\x1e\n" +
+	"\x0fNeo4jKubernetes\x10\xad\x06\x1a\b\xa0\xf7\x04\b\xa8\xf7\x04\x02\x12 \n" +
+	"\x11OpenFgaKubernetes\x10\xae\x06\x1a\b\xa0\xf7\x04\b\xa8\xf7\x04\x02\x12!\n" +
+	"\x12PostgresKubernetes\x10\xaf\x06\x1a\b\xa0\xf7\x04\b\xa8\xf7\x04\x02\x12#\n" +
+	"\x14PrometheusKubernetes\x10\xb0\x06\x1a\b\xa0\xf7\x04\b\xa8\xf7\x04\x02\x12\x1e\n" +
+	"\x0fRedisKubernetes\x10\xb1\x06\x1a\b\xa0\xf7\x04\b\xa8\xf7\x04\x02\x12\x1f\n" +
+	"\x10SignozKubernetes\x10\xb2\x06\x1a\b\xa0\xf7\x04\b\xa8\xf7\x04\x02\x12\x1d\n" +
+	"\x0eSolrKubernetes\x10\xb3\x06\x1a\b\xa0\xf7\x04\b\xa8\xf7\x04\x02\x12'\n" +
+	"\x18StackJobRunnerKubernetes\x10\xb4\x06\x1a\b\xa0\xf7\x04\b\xa8\xf7\x04\x02\x12!\n" +
+	"\x12TemporalKubernetes\x10\xb5\x06\x1a\b\xa0\xf7\x04\b\xa8\xf7\x04\x02\x12\x1d\n" +
+	"\x0eNatsKubernetes\x10\xb6\x06\x1a\b\xa0\xf7\x04\b\xa8\xf7\x04\x02\x12$\n" +
+	"\x15CertManagerKubernetes\x10\xb7\x06\x1a\b\xa0\xf7\x04\b\xa8\xf7\x04\x01\x12(\n" +
+	"\x19ElasticOperatorKubernetes\x10\xb8\x06\x1a\b\xa0\xf7\x04\b\xa8\xf7\x04\x01\x12$\n" +
+	"\x15ExternalDnsKubernetes\x10\xb9\x06\x1a\b\xa0\xf7\x04\b\xa8\xf7\x04\x01\x12%\n" +
+	"\x16IngressNginxKubernetes\x10\xba\x06\x1a\b\xa0\xf7\x04\b\xa8\xf7\x04\x01\x12\x1e\n" +
+	"\x0fIstioKubernetes\x10\xbb\x06\x1a\b\xa0\xf7\x04\b\xa8\xf7\x04\x01\x12&\n" +
+	"\x17KafkaOperatorKubernetes\x10\xbc\x06\x1a\b\xa0\xf7\x04\b\xa8\xf7\x04\x01\x12)\n" +
+	"\x1aPostgresOperatorKubernetes\x10\xbd\x06\x1a\b\xa0\xf7\x04\b\xa8\xf7\x04\x01\x12%\n" +
+	"\x16SolrOperatorKubernetes\x10\xbe\x06\x1a\b\xa0\xf7\x04\b\xa8\xf7\x04\x01\x12(\n" +
+	"\x19ExternalSecretsKubernetes\x10\xbf\x06\x1a\b\xa0\xf7\x04\b\xa8\xf7\x04\x01\x12)\n" +
+	"\x1eDigitalOceanAppPlatformService\x10\xb0\t\x1a\x04\xa0\xf7\x04\x06\x12\x1d\n" +
+	"\x12DigitalOceanBucket\x10\xb1\t\x1a\x04\xa0\xf7\x04\x06\x12(\n" +
+	"\x1dDigitalOceanContainerRegistry\x10\xb2\t\x1a\x04\xa0\xf7\x04\x06\x12&\n" +
+	"\x1bDigitalOceanDatabaseCluster\x10\xb3\t\x1a\x04\xa0\xf7\x04\x06\x12\x1e\n" +
+	"\x13DigitalOceanDnsZone\x10\xb4\t\x1a\x04\xa0\xf7\x04\x06\x12\x1e\n" +
+	"\x13DigitalOceanDroplet\x10\xb5\t\x1a\x04\xa0\xf7\x04\x06\x12\x1f\n" +
+	"\x14DigitalOceanFirewall\x10\xb6\t\x1a\x04\xa0\xf7\x04\x06\x12\x1f\n" +
+	"\x14DigitalOceanFunction\x10\xb7\t\x1a\x04\xa0\xf7\x04\x06\x12(\n" +
+	"\x1dDigitalOceanKubernetesCluster\x10\xb8\t\x1a\x04\xa0\xf7\x04\x06\x12)\n" +
+	"\x1eDigitalOceanKubernetesNodePool\x10\xb9\t\x1a\x04\xa0\xf7\x04\x06\x12#\n" +
+	"\x18DigitalOceanLoadBalancer\x10\xba\t\x1a\x04\xa0\xf7\x04\x06\x12\x1d\n" +
+	"\x12DigitalOceanVolume\x10\xbb\t\x1a\x04\xa0\xf7\x04\x06\x12\x1a\n" +
+	"\x0fDigitalOceanVpc\x10\xbc\t\x1a\x04\xa0\xf7\x04\x06:\x8d\x01\n" +
+	"\bprovider\x12!.google.protobuf.EnumValueOptions\x18\xf4N \x01(\x0e2M.project.planton.shared.cloudresourcekind.ProjectPlantonCloudResourceProviderR\bprovider:\xac\x01\n" +
+	"\x18kubernetes_resource_type\x12!.google.protobuf.EnumValueOptions\x18\xf5N \x01(\x0e2N.project.planton.shared.cloudresourcekind.ProjectPlantonKubernetesResourceTypeR\x16kubernetesResourceTypeB\xe4\x02\n" +
 	",com.project.planton.shared.cloudresourcekindB\x16CloudResourceKindProtoP\x01ZXgithub.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind\xa2\x02\x04PPSC\xaa\x02(Project.Planton.Shared.Cloudresourcekind\xca\x02(Project\\Planton\\Shared\\Cloudresourcekind\xe2\x024Project\\Planton\\Shared\\Cloudresourcekind\\GPBMetadata\xea\x02+Project::Planton::Shared::Cloudresourcekindb\x06proto3"
 
 var (
@@ -492,13 +522,20 @@ func file_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto_raw
 
 var file_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto_goTypes = []any{
-	(CloudResourceKind)(0), // 0: project.planton.shared.cloudresourcekind.CloudResourceKind
+	(CloudResourceKind)(0),                    // 0: project.planton.shared.cloudresourcekind.CloudResourceKind
+	(*descriptorpb.EnumValueOptions)(nil),     // 1: google.protobuf.EnumValueOptions
+	(ProjectPlantonCloudResourceProvider)(0),  // 2: project.planton.shared.cloudresourcekind.ProjectPlantonCloudResourceProvider
+	(ProjectPlantonKubernetesResourceType)(0), // 3: project.planton.shared.cloudresourcekind.ProjectPlantonKubernetesResourceType
 }
 var file_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto_depIdxs = []int32{
-	0, // [0:0] is the sub-list for method output_type
-	0, // [0:0] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
+	1, // 0: project.planton.shared.cloudresourcekind.provider:extendee -> google.protobuf.EnumValueOptions
+	1, // 1: project.planton.shared.cloudresourcekind.kubernetes_resource_type:extendee -> google.protobuf.EnumValueOptions
+	2, // 2: project.planton.shared.cloudresourcekind.provider:type_name -> project.planton.shared.cloudresourcekind.ProjectPlantonCloudResourceProvider
+	3, // 3: project.planton.shared.cloudresourcekind.kubernetes_resource_type:type_name -> project.planton.shared.cloudresourcekind.ProjectPlantonKubernetesResourceType
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	2, // [2:4] is the sub-list for extension type_name
+	0, // [0:2] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name
 }
 
@@ -507,6 +544,7 @@ func file_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto_ini
 	if File_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto != nil {
 		return
 	}
+	file_project_planton_shared_cloudresourcekind_cloud_resource_provider_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
@@ -514,12 +552,13 @@ func file_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto_ini
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto_rawDesc), len(file_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto_rawDesc)),
 			NumEnums:      1,
 			NumMessages:   0,
-			NumExtensions: 0,
+			NumExtensions: 2,
 			NumServices:   0,
 		},
 		GoTypes:           file_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto_goTypes,
 		DependencyIndexes: file_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto_depIdxs,
 		EnumInfos:         file_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto_enumTypes,
+		ExtensionInfos:    file_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto_extTypes,
 	}.Build()
 	File_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto = out.File
 	file_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto_goTypes = nil
