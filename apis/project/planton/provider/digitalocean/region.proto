@@ -7,7 +7,6 @@ import "google/protobuf/descriptor.proto";
 // custom option to store the DigitalOcean slug
 extend google.protobuf.EnumValueOptions {
   string display_label = 20001;
-  string region_code = 20002;
 }
 
 // digitalocean datacenter regions
@@ -16,50 +15,42 @@ enum DigitalOceanRegion {
   digital_ocean_region_unspecified = 0;
 
   // new york 3
-  new_york = 1 [
-    (display_label) = "New York",
-    (region_code) = "nyc3"
+  nyc3 = 1 [
+    (display_label) = "New York"
   ];
 
   // san francisco 3
-  san_francisco = 2 [
-    (display_label) = "San Francisco",
-    (region_code) = "sfo3"
+  sfo3 = 2 [
+    (display_label) = "San Francisco"
   ];
 
   // frankfurt 1
-  frankfurt = 3 [
-    (display_label) = "Frankfurt",
-    (region_code) = "fra1"
+  fra1 = 3 [
+    (display_label) = "Frankfurt"
   ];
 
   // singapore 1
-  singapore = 4 [
-    (display_label) = "Singapore",
-    (region_code) = "sgp1"
+  sgp1 = 4 [
+    (display_label) = "Singapore"
   ];
 
   // london 1
-  london = 5 [
-    (display_label) = "London",
-    (region_code) = "lon1"
+  lon1 = 5 [
+    (display_label) = "London"
   ];
 
   // toronto 1
-  toronto = 6 [
-    (display_label) = "Toronto",
-    (region_code) = "tor1"
+  tor1 = 6 [
+    (display_label) = "Toronto"
   ];
 
   // bangalore 1
-  bangalore = 7 [
-    (display_label) = "Bangalore",
-    (region_code) = "blr1"
+  blr1 = 7 [
+    (display_label) = "Bangalore"
   ];
 
   // amsterdam 3
-  amsterdam = 8 [
-    (display_label) = "Amsterdam",
-    (region_code) = "ams3"
+  ams3 = 8 [
+    (display_label) = "Amsterdam"
   ];
 }
