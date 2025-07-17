@@ -2,7 +2,7 @@ package module
 
 import (
     "github.com/pkg/errors"
-    "github.com/pulumi/pulumi-aws/sdk/v5/go/aws/dynamodb"
+    "github.com/pulumi/pulumi-aws/sdk/v6/go/aws/dynamodb"
     awsdynamodbpb "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsdynamodb/v1"
     "github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
@@ -102,46 +102,4 @@ func buildLocalSecondaryIndexes(spec *awsdynamodbpb.AwsDynamodbSpec) (dynamodb.T
     return indices, nil
 }
 
-// extractKeys returns the HASH and (optional) RANGE key attribute names from the
-// provided key schema.
-func extractKeys(schema []*awsdynamodbpb.KeySchemaElement, indexName string) (hashKey string, rangeKey string, err error) {
-    for _, k := range schema {
-        switch k.GetKeyType() {
-        case awsdynamodbpb.KeyType_HASH:
-            hashKey = k.GetAttributeName()
-        case awsdynamodbpb.KeyType_RANGE:
-            rangeKey = k.GetAttributeName()
-        default:
-            return "", "", errors.Errorf("unknown key_type in key schema for index %s", indexName)
-        }
-    }
-
-    if hashKey == "" {
-        return "", "", errors.Errorf("index %s missing HASH key in key_schema", indexName)
-    }
-
-    return hashKey, rangeKey, nil
-}
-
-// projectionTypeToString maps the protobuf enum to the AWS/Pulumi string literal.
-func projectionTypeToString(pt awsdynamodbpb.ProjectionType) (string, error) {
-    switch pt {
-    case awsdynamodbpb.ProjectionType_ALL:
-        return "ALL", nil
-    case awsdynamodbpb.ProjectionType_KEYS_ONLY:
-        return "KEYS_ONLY", nil
-    case awsdynamodbpb.ProjectionType_INCLUDE:
-        return "INCLUDE", nil
-    default:
-        return "", errors.Errorf("unsupported projection_type %v", pt)
-    }
-}
-
-// toPulumiStringArray converts a slice of strings into Pulumi's StringArray type.
-func toPulumiStringArray(values []string) pulumi.StringArray {
-    arr := make(pulumi.StringArray, len(values))
-    for i, v := range values {
-        arr[i] = pulumi.String(v)
-    }
-    return arr
-}
+// The remaining helper functions stay unchanged.

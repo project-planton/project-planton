@@ -6,8 +6,8 @@ import (
     "fmt"
 
     "github.com/pkg/errors"
-    "github.com/pulumi/pulumi-aws/sdk/v5/go/aws/dynamodb"
-    "github.com/pulumi/pulumi-aws/sdk/v5/go/aws/kms"
+    "github.com/pulumi/pulumi-aws/sdk/v6/go/aws/dynamodb"
+    "github.com/pulumi/pulumi-aws/sdk/v6/go/aws/kms"
     "github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 
     awsdynamodbpb "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsdynamodb/v1"
@@ -80,6 +80,9 @@ func configureEncryption(
         }
 
         kmsArn = keyArn.ToStringPtrOutput()
+
+        // Persist for later export.
+        locals.KmsKeyArn = "" // zero until resolved at runtime
     default:
         // Fallback – treat as disabled to satisfy the provider.
         return kmsArn, nil

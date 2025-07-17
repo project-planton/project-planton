@@ -4,8 +4,8 @@ import (
     "fmt"
 
     "github.com/pkg/errors"
-    "github.com/pulumi/pulumi-aws/sdk/v5/go/aws"
-    "github.com/pulumi/pulumi-aws/sdk/v5/go/aws/dynamodb"
+    "github.com/pulumi/pulumi-aws/sdk/v6/go/aws"
+    "github.com/pulumi/pulumi-aws/sdk/v6/go/aws/dynamodb"
     "github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 
     awsdynamodbpb "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsdynamodb/v1"
@@ -22,8 +22,8 @@ func timeToLive(
 ) (*dynamodb.TableItemTtl, error) {
     // Safely pull the TTL specification from the locals structure.
     var ttlSpec *awsdynamodbpb.TimeToLiveSpecification
-    if res := locals.Resource; res != nil {
-        if spec := res.GetSpec(); spec != nil {
+    if locals != nil && locals.Target != nil {
+        if spec := locals.Target.GetSpec(); spec != nil {
             ttlSpec = spec.GetTtlSpecification()
         }
     }
@@ -38,7 +38,7 @@ func timeToLive(
         return nil, errors.New("ttl_specification.attribute_name must be provided when ttl_enabled is true")
     }
 
-    resourceName := fmt.Sprintf("%s-ttl", locals.Resource.GetSpec().GetTableName())
+    resourceName := fmt.Sprintf("%s-ttl", locals.Target.GetSpec().GetTableName())
 
     ttlResource, err := dynamodb.NewTableItemTtl(ctx, resourceName, &dynamodb.TableItemTtlArgs{
         TableName:     tableName,
