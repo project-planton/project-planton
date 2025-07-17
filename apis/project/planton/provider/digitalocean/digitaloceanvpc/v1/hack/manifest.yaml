@@ -1,5 +1,5 @@
 apiVersion: digital-ocean.project-planton.org/v1
-kind: DigitalOceanVPC
+kind: DigitalOceanVpc
 metadata:
   name: first-vpc
 spec:
