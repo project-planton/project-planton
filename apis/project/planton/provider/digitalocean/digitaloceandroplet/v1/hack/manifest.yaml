@@ -1,0 +1,5 @@
+apiVersion: digital-ocean.project-planton.org/v1
+kind: DigitalOceanVolume
+metadata:
+  name: first-volume
+spec:
