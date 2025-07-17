@@ -1,13 +1,18 @@
 terraform {
-  # Lock Terraform CLI to the 1.x series for predictable behavior.
-  required_version = ">= 1.4.0, < 2.0.0"
+  # Terraform CLI tested against this module. Update with major releases only.
+  required_version = ">= 1.3.0, < 2.0.0"
 
   required_providers {
-    # Use the official AWS provider and stay within the 5.x series to avoid
-    # breaking changes from future major versions.
+    # AWS provider – used for all AWS resources, including DynamoDB.
     aws = {
       source  = "hashicorp/aws"
-      version = ">= 5.0.0, < 6.0.0"
+      version = "~> 5.0" # Tested with 5.x; accept any compatible patch/minor update.
+    }
+
+    # Random provider – commonly used for unique suffixes (e.g., table names).
+    random = {
+      source  = "hashicorp/random"
+      version = "~> 3.5" # Tested with 3.5.x series.
     }
   }
 }

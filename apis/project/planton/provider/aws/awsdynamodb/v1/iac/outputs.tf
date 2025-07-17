@@ -1,65 +1,48 @@
 ############################################
-# DynamoDB table – exported stack outputs
+# DynamoDB – public outputs
 ############################################
 
-/*
-   NOTE:  The surrounding module is expected to provision a single
-   "aws_dynamodb_table" resource named "this".  The outputs defined
-   here surface the identifiers declared in the AwsDynamodbStackOutputs
-   protobuf message so that they can be consumed by upstream modules or
-   external systems.
-*/
-
-###################################################
-# Core table identifiers
-###################################################
-
+# Fully-qualified Amazon Resource Name of the table
 output "table_arn" {
   description = "Fully-qualified Amazon Resource Name (ARN) of the DynamoDB table."
   value       = aws_dynamodb_table.this.arn
 }
 
+# Name of the table (may include runtime suffixes)
 output "table_name" {
   description = "Name of the DynamoDB table (may include runtime suffixes)."
   value       = aws_dynamodb_table.this.name
 }
 
+# AWS-assigned unique identifier of the table
 output "table_id" {
   description = "AWS-assigned unique identifier of the table."
   value       = aws_dynamodb_table.this.id
 }
 
-###################################################
-# Stream information (only present when enabled)
-###################################################
-
+# Current (latest) stream information – only relevant when streams are enabled
 output "stream" {
-  description = "Current (latest) DynamoDB Stream identifiers – only set when streams are enabled."
+  description = "Current (latest) stream information, present only when streams are enabled."
   value = aws_dynamodb_table.this.stream_enabled ? {
     stream_arn   = aws_dynamodb_table.this.stream_arn
     stream_label = aws_dynamodb_table.this.stream_label
   } : null
 }
 
-###################################################
-# Server-side encryption (KMS)
-###################################################
-
+# ARN of the customer-managed KMS key (only when SSE uses a CMK)
 output "kms_key_arn" {
-  description = "ARN of the customer-managed KMS key when server-side encryption uses a CMK; null otherwise."
-  value       = try(aws_dynamodb_table.this.server_side_encryption[0].kms_key_arn, null)
+  description = "ARN of the customer-managed KMS key when SSE uses a CMK."
+  value       = aws_dynamodb_table.this.kms_key_arn
 }
 
-###################################################
-# Secondary index names
-###################################################
-
+# Names of the provisioned global secondary indexes (GSIs)
 output "global_secondary_index_names" {
-  description = "Names of provisioned Global Secondary Indexes (GSIs)."
-  value       = [for g in try(aws_dynamodb_table.this.global_secondary_index, []) : g.name]
+  description = "Names of provisioned global secondary indexes (GSIs)."
+  value       = [for gsi in aws_dynamodb_table.this.global_secondary_index : gsi.name]
 }
 
+# Names of the provisioned local secondary indexes (LSIs)
 output "local_secondary_index_names" {
-  description = "Names of provisioned Local Secondary Indexes (LSIs)."
-  value       = [for l in try(aws_dynamodb_table.this.local_secondary_index, []) : l.name]
+  description = "Names of provisioned local secondary indexes (LSIs)."
+  value       = [for lsi in try(aws_dynamodb_table.this.local_secondary_index, []) : lsi.name]
 }
