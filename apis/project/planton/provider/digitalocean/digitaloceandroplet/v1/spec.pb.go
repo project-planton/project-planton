@@ -132,7 +132,7 @@ func (DigitalOceanDropletTimezone) EnumDescriptor() ([]byte, []int) {
 type DigitalOceanDropletSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// droplet hostname (DNS-compatible, <=63 chars)
-	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	DropletName string `protobuf:"bytes,1,opt,name=droplet_name,json=dropletName,proto3" json:"droplet_name,omitempty"`
 	// region slug (datacenter location for the droplet)
 	Region digitalocean.DigitalOceanRegion `protobuf:"varint,2,opt,name=region,proto3,enum=project.planton.provider.digitalocean.DigitalOceanRegion" json:"region,omitempty"`
 	// droplet size slug (plan identifier)
@@ -189,9 +189,9 @@ func (*DigitalOceanDropletSpec) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_digitalocean_digitaloceandroplet_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *DigitalOceanDropletSpec) GetName() string {
+func (x *DigitalOceanDropletSpec) GetDropletName() string {
 	if x != nil {
-		return x.Name
+		return x.DropletName
 	}
 	return ""
 }
@@ -277,9 +277,9 @@ var File_project_planton_provider_digitalocean_digitaloceandroplet_v1_spec_proto
 
 const file_project_planton_provider_digitalocean_digitaloceandroplet_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Gproject/planton/provider/digitalocean/digitaloceandroplet/v1/spec.proto\x12<project.planton.provider.digitalocean.digitaloceandroplet.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\x1a2project/planton/provider/digitalocean/region.proto\"\xe1\b\n" +
-	"\x17DigitalOceanDropletSpec\x12?\n" +
-	"\x04name\x18\x01 \x01(\tB+\xbaH(\xc8\x01\x01r#\x18?2\x1f^[a-z0-9]([-a-z0-9]*[a-z0-9])?$R\x04name\x12Y\n" +
+	"Gproject/planton/provider/digitalocean/digitaloceandroplet/v1/spec.proto\x12<project.planton.provider.digitalocean.digitaloceandroplet.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\x1a2project/planton/provider/digitalocean/region.proto\"\x9f\a\n" +
+	"\x17DigitalOceanDropletSpec\x12N\n" +
+	"\fdroplet_name\x18\x01 \x01(\tB+\xbaH(\xc8\x01\x01r#\x18?2\x1f^[a-z0-9]([-a-z0-9]*[a-z0-9])?$R\vdropletName\x12Y\n" +
 	"\x06region\x18\x02 \x01(\x0e29.project.planton.provider.digitalocean.DigitalOceanRegionB\x06\xbaH\x03\xc8\x01\x01R\x06region\x12q\n" +
 	"\x04size\x18\x03 \x01(\x0e2U.project.planton.provider.digitalocean.digitaloceandroplet.v1.DigitalOceanDropletSizeB\x06\xbaH\x03\xc8\x01\x01R\x04size\x12?\n" +
 	"\x05image\x18\x04 \x01(\tB)\xbaH&\xc8\x01\x01r!2\x1f^[a-z0-9]([-a-z0-9]*[a-z0-9])?$R\x05image\x12n\n" +
@@ -293,8 +293,7 @@ const file_project_planton_provider_digitalocean_digitaloceandroplet_v1_spec_pro
 	" \x03(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB!\x88\xd4a\xbb\t\x92\xd4a\x18status.outputs.volume_idR\tvolumeIds\x12\x1c\n" +
 	"\x04tags\x18\v \x03(\tB\b\xbaH\x05\x92\x01\x02\x18\x01R\x04tags\x12&\n" +
 	"\tuser_data\x18\f \x01(\tB\t\xbaH\x06r\x04(\x80\x80\x02R\buserData\x12~\n" +
-	"\btimezone\x18\r \x01(\x0e2Y.project.planton.provider.digitalocean.digitaloceandroplet.v1.DigitalOceanDropletTimezoneB\a\x8a\xa6\x1d\x03UTCR\btimezone:\xce\x01\xbaH\xca\x01\x1a\xc7\x01\n" +
-	"\x0essh_key_format\x12Ieach ssh_key_fingerprint must be a 16-byte hex fingerprint or a reference\x1ajssh_key_fingerprints.all(x, x.value.matches('^[0-9a-f]{2}(:[0-9a-f]{2}){15}$') || x.value_from.name != \"\")*\x8a\x01\n" +
+	"\btimezone\x18\r \x01(\x0e2Y.project.planton.provider.digitalocean.digitaloceandroplet.v1.DigitalOceanDropletTimezoneB\a\x8a\xa6\x1d\x03UTCR\btimezone*\x8a\x01\n" +
 	"\x17DigitalOceanDropletSize\x12*\n" +
 	"&digital_ocean_droplet_size_unspecified\x10\x00\x12\x0f\n" +
 	"\vs_2vcpu_4gb\x10\x01\x12\x0f\n" +

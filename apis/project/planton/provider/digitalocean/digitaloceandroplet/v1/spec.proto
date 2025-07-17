@@ -24,15 +24,8 @@ enum DigitalOceanDropletTimezone {
 
 // DigitalOceanDropletSpec defines the user configuration for a DigitalOcean Droplet (VM).
 message DigitalOceanDropletSpec {
-  // Enforce each SSH key fingerprint is literal or a reference.
-  option (buf.validate.message).cel = {
-    id: "ssh_key_format",
-    message: "each ssh_key_fingerprint must be a 16-byte hex fingerprint or a reference",
-    expression: "ssh_key_fingerprints.all(x, x.value.matches('^[0-9a-f]{2}(:[0-9a-f]{2}){15}$') || x.value_from.name != \"\")"
-  };
-
   // droplet hostname (DNS-compatible, <=63 chars)
-  string name = 1 [
+  string droplet_name = 1 [
     (buf.validate.field).required = true,
     (buf.validate.field).string.pattern = "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$",
     (buf.validate.field).string.max_len = 63
