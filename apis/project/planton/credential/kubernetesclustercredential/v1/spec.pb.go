@@ -31,6 +31,7 @@ const (
 	KubernetesProvider_gcp_gke                         KubernetesProvider = 1 // Google Kubernetes Engine (GKE) - A managed Kubernetes service by Google Cloud that provides automated cluster management and scaling.
 	KubernetesProvider_aws_eks                         KubernetesProvider = 2 // Amazon Elastic Kubernetes Service (EKS) - A managed Kubernetes service by AWS that simplifies the deployment and management of Kubernetes clusters.
 	KubernetesProvider_azure_aks                       KubernetesProvider = 3 // Azure Kubernetes Service (AKS) - A managed Kubernetes service by Microsoft Azure that provides Kubernetes cluster orchestration and management.
+	KubernetesProvider_digital_ocean_doks              KubernetesProvider = 4 // DigitalOcean Kubernetes Service (DOKS) - A managed Kubernetes service by DigitalOcean that simplifies the deployment and management of Kubernetes clusters.
 )
 
 // Enum value maps for KubernetesProvider.
@@ -40,12 +41,14 @@ var (
 		1: "gcp_gke",
 		2: "aws_eks",
 		3: "azure_aks",
+		4: "digital_ocean_doks",
 	}
 	KubernetesProvider_value = map[string]int32{
 		"kubernetes_provider_unspecified": 0,
 		"gcp_gke":                         1,
 		"aws_eks":                         2,
 		"azure_aks":                       3,
+		"digital_ocean_doks":              4,
 	}
 )
 
@@ -92,9 +95,10 @@ type KubernetesClusterCredentialSpec struct {
 	AwsEks *KubernetesClusterCredentialAwsEks `protobuf:"bytes,3,opt,name=aws_eks,json=awsEks,proto3" json:"aws_eks,omitempty"`
 	// Credential specification for Azure AKS provider.
 	// This field contains detailed information for connecting to a Azure Kubernetes Service(AKS) cluster.
-	AzureAks      *KubernetesClusterCredentialAzureAks `protobuf:"bytes,4,opt,name=azure_aks,json=azureAks,proto3" json:"azure_aks,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	AzureAks         *KubernetesClusterCredentialAzureAks         `protobuf:"bytes,4,opt,name=azure_aks,json=azureAks,proto3" json:"azure_aks,omitempty"`
+	DigitalOceanDoks *KubernetesClusterCredentialDigitalOceanDoks `protobuf:"bytes,5,opt,name=digital_ocean_doks,json=digitalOceanDoks,proto3" json:"digital_ocean_doks,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
 }
 
 func (x *KubernetesClusterCredentialSpec) Reset() {
@@ -151,6 +155,13 @@ func (x *KubernetesClusterCredentialSpec) GetAwsEks() *KubernetesClusterCredenti
 func (x *KubernetesClusterCredentialSpec) GetAzureAks() *KubernetesClusterCredentialAzureAks {
 	if x != nil {
 		return x.AzureAks
+	}
+	return nil
+}
+
+func (x *KubernetesClusterCredentialSpec) GetDigitalOceanDoks() *KubernetesClusterCredentialDigitalOceanDoks {
+	if x != nil {
+		return x.DigitalOceanDoks
 	}
 	return nil
 }
@@ -299,27 +310,77 @@ func (*KubernetesClusterCredentialAzureAks) Descriptor() ([]byte, []int) {
 	return file_project_planton_credential_kubernetesclustercredential_v1_spec_proto_rawDescGZIP(), []int{3}
 }
 
+// KubernetesClusterCredentialDigitalOceanDoks message represents the specification required to connect to a DigitalOcean Kubernetes Service (DOKS) cluster.
+type KubernetesClusterCredentialDigitalOceanDoks struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	KubeConfig    string                 `protobuf:"bytes,1,opt,name=kube_config,json=kubeConfig,proto3" json:"kube_config,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *KubernetesClusterCredentialDigitalOceanDoks) Reset() {
+	*x = KubernetesClusterCredentialDigitalOceanDoks{}
+	mi := &file_project_planton_credential_kubernetesclustercredential_v1_spec_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *KubernetesClusterCredentialDigitalOceanDoks) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*KubernetesClusterCredentialDigitalOceanDoks) ProtoMessage() {}
+
+func (x *KubernetesClusterCredentialDigitalOceanDoks) ProtoReflect() protoreflect.Message {
+	mi := &file_project_planton_credential_kubernetesclustercredential_v1_spec_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use KubernetesClusterCredentialDigitalOceanDoks.ProtoReflect.Descriptor instead.
+func (*KubernetesClusterCredentialDigitalOceanDoks) Descriptor() ([]byte, []int) {
+	return file_project_planton_credential_kubernetesclustercredential_v1_spec_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *KubernetesClusterCredentialDigitalOceanDoks) GetKubeConfig() string {
+	if x != nil {
+		return x.KubeConfig
+	}
+	return ""
+}
+
 var File_project_planton_credential_kubernetesclustercredential_v1_spec_proto protoreflect.FileDescriptor
 
 const file_project_planton_credential_kubernetesclustercredential_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Dproject/planton/credential/kubernetesclustercredential/v1/spec.proto\x129project.planton.credential.kubernetesclustercredential.v1\x1a\x1bbuf/validate/validate.proto\"\xff\x03\n" +
+	"Dproject/planton/credential/kubernetesclustercredential/v1/spec.proto\x129project.planton.credential.kubernetesclustercredential.v1\x1a\x1bbuf/validate/validate.proto\"\x96\x05\n" +
 	"\x1fKubernetesClusterCredentialSpec\x12q\n" +
 	"\bprovider\x18\x01 \x01(\x0e2M.project.planton.credential.kubernetesclustercredential.v1.KubernetesProviderB\x06\xbaH\x03\xc8\x01\x01R\bprovider\x12u\n" +
 	"\agcp_gke\x18\x02 \x01(\v2\\.project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialGcpGkeR\x06gcpGke\x12u\n" +
 	"\aaws_eks\x18\x03 \x01(\v2\\.project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialAwsEksR\x06awsEks\x12{\n" +
-	"\tazure_aks\x18\x04 \x01(\v2^.project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialAzureAksR\bazureAks\"\xcb\x01\n" +
+	"\tazure_aks\x18\x04 \x01(\v2^.project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialAzureAksR\bazureAks\x12\x94\x01\n" +
+	"\x12digital_ocean_doks\x18\x05 \x01(\v2f.project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialDigitalOceanDoksR\x10digitalOceanDoks\"\xcb\x01\n" +
 	"!KubernetesClusterCredentialGcpGke\x121\n" +
 	"\x10cluster_endpoint\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x0fclusterEndpoint\x12.\n" +
 	"\x0fcluster_ca_data\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\rclusterCaData\x12C\n" +
 	"\x1aservice_account_key_base64\x18\x03 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x17serviceAccountKeyBase64\"#\n" +
 	"!KubernetesClusterCredentialAwsEks\"%\n" +
-	"#KubernetesClusterCredentialAzureAks*b\n" +
+	"#KubernetesClusterCredentialAzureAks\"V\n" +
+	"+KubernetesClusterCredentialDigitalOceanDoks\x12'\n" +
+	"\vkube_config\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\n" +
+	"kubeConfig*z\n" +
 	"\x12KubernetesProvider\x12#\n" +
 	"\x1fkubernetes_provider_unspecified\x10\x00\x12\v\n" +
 	"\agcp_gke\x10\x01\x12\v\n" +
 	"\aaws_eks\x10\x02\x12\r\n" +
-	"\tazure_aks\x10\x03B\xdd\x03\n" +
+	"\tazure_aks\x10\x03\x12\x16\n" +
+	"\x12digital_ocean_doks\x10\x04B\xdd\x03\n" +
 	"=com.project.planton.credential.kubernetesclustercredential.v1B\tSpecProtoP\x01Z\x87\x01github.com/project-planton/project-planton/apis/project/planton/credential/kubernetesclustercredential/v1;kubernetesclustercredentialv1\xa2\x02\x04PPCK\xaa\x029Project.Planton.Credential.Kubernetesclustercredential.V1\xca\x029Project\\Planton\\Credential\\Kubernetesclustercredential\\V1\xe2\x02EProject\\Planton\\Credential\\Kubernetesclustercredential\\V1\\GPBMetadata\xea\x02=Project::Planton::Credential::Kubernetesclustercredential::V1b\x06proto3"
 
 var (
@@ -335,24 +396,26 @@ func file_project_planton_credential_kubernetesclustercredential_v1_spec_proto_r
 }
 
 var file_project_planton_credential_kubernetesclustercredential_v1_spec_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_project_planton_credential_kubernetesclustercredential_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_project_planton_credential_kubernetesclustercredential_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_project_planton_credential_kubernetesclustercredential_v1_spec_proto_goTypes = []any{
-	(KubernetesProvider)(0),                     // 0: project.planton.credential.kubernetesclustercredential.v1.KubernetesProvider
-	(*KubernetesClusterCredentialSpec)(nil),     // 1: project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec
-	(*KubernetesClusterCredentialGcpGke)(nil),   // 2: project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialGcpGke
-	(*KubernetesClusterCredentialAwsEks)(nil),   // 3: project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialAwsEks
-	(*KubernetesClusterCredentialAzureAks)(nil), // 4: project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialAzureAks
+	(KubernetesProvider)(0),                             // 0: project.planton.credential.kubernetesclustercredential.v1.KubernetesProvider
+	(*KubernetesClusterCredentialSpec)(nil),             // 1: project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec
+	(*KubernetesClusterCredentialGcpGke)(nil),           // 2: project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialGcpGke
+	(*KubernetesClusterCredentialAwsEks)(nil),           // 3: project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialAwsEks
+	(*KubernetesClusterCredentialAzureAks)(nil),         // 4: project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialAzureAks
+	(*KubernetesClusterCredentialDigitalOceanDoks)(nil), // 5: project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialDigitalOceanDoks
 }
 var file_project_planton_credential_kubernetesclustercredential_v1_spec_proto_depIdxs = []int32{
 	0, // 0: project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec.provider:type_name -> project.planton.credential.kubernetesclustercredential.v1.KubernetesProvider
 	2, // 1: project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec.gcp_gke:type_name -> project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialGcpGke
 	3, // 2: project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec.aws_eks:type_name -> project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialAwsEks
 	4, // 3: project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec.azure_aks:type_name -> project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialAzureAks
-	4, // [4:4] is the sub-list for method output_type
-	4, // [4:4] is the sub-list for method input_type
-	4, // [4:4] is the sub-list for extension type_name
-	4, // [4:4] is the sub-list for extension extendee
-	0, // [0:4] is the sub-list for field type_name
+	5, // 4: project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec.digital_ocean_doks:type_name -> project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialDigitalOceanDoks
+	5, // [5:5] is the sub-list for method output_type
+	5, // [5:5] is the sub-list for method input_type
+	5, // [5:5] is the sub-list for extension type_name
+	5, // [5:5] is the sub-list for extension extendee
+	0, // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_credential_kubernetesclustercredential_v1_spec_proto_init() }
@@ -366,7 +429,7 @@ func file_project_planton_credential_kubernetesclustercredential_v1_spec_proto_i
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_project_planton_credential_kubernetesclustercredential_v1_spec_proto_rawDesc), len(file_project_planton_credential_kubernetesclustercredential_v1_spec_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   4,
+			NumMessages:   5,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
