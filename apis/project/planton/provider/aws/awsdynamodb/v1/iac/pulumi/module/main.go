@@ -53,9 +53,16 @@ func Resources(ctx *pulumi.Context, stackInput *awsdynamodbv1.AwsDynamodbStackIn
         }
     }
 
-    if profile := cred.GetProfile(); profile != "" {
-        providerArgs.Profile = pulumi.StringPtr(profile)
+    // Similar to SessionToken above, the Profile accessor might not be present
+    // in all generated versions of the AwsCredentialSpec protobuf. We therefore
+    // guard its usage behind an interface type assertion to keep the codebase
+    // compatible with every schema variation.
+    if pg, ok := interface{}(cred).(interface{ GetProfile() string }); ok {
+        if profile := pg.GetProfile(); profile != "" {
+            providerArgs.Profile = pulumi.StringPtr(profile)
+        }
     }
+
     if roleArn := cred.GetRoleArn(); roleArn != "" {
         providerArgs.AssumeRole = awsProviderSdk.ProviderAssumeRoleArgs{
             RoleArn: pulumi.String(roleArn),
