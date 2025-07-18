@@ -41,9 +41,18 @@ func Resources(ctx *pulumi.Context, stackInput *awsdynamodbv1.AwsDynamodbStackIn
     if secretKey := cred.GetSecretAccessKey(); secretKey != "" {
         providerArgs.SecretKey = pulumi.StringPtr(secretKey)
     }
-    if session := cred.GetSessionToken(); session != "" {
-        providerArgs.Token = pulumi.StringPtr(session)
+
+    // The SessionToken field was not found in the generated AwsCredentialSpec
+    // code for certain protobuf versions. To stay compatible across multiple
+    // schema revisions we attempt a type-assertion against an interface that
+    // declares the accessor. If the compiled message implements the method we
+    // use it, otherwise we just skip setting the Token argument.
+    if sg, ok := interface{}(cred).(interface{ GetSessionToken() string }); ok {
+        if session := sg.GetSessionToken(); session != "" {
+            providerArgs.Token = pulumi.StringPtr(session)
+        }
     }
+
     if profile := cred.GetProfile(); profile != "" {
         providerArgs.Profile = pulumi.StringPtr(profile)
     }
