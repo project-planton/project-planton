@@ -16,9 +16,11 @@ message AwsCloudFrontSpec {
 
   // Alternative domain names (CNAMEs) for the distribution.
   repeated string aliases = 3 [
-    (buf.validate.field).repeated = {max_items: 100},
     // escape `.` in the regex
-    (buf.validate.field).string = {pattern: "^([a-zA-Z0-9][-a-zA-Z0-9]*\\.)+[a-zA-Z]{2,}$"}
+    (buf.validate.field).repeated = {
+      max_items: 100,
+      items: {string: {pattern: "^([a-zA-Z0-9][-a-zA-Z0-9]*\\.)+[a-zA-Z]{2,}$"}}
+    }
   ];
 
   // Optional user-supplied description.
@@ -282,8 +284,10 @@ message AwsCloudFrontSpec {
       (buf.validate.field).enum = {not_in: [0]}
     ]; // None | Whitelist | Blacklist
     repeated string locations = 2 [
-      (buf.validate.field).repeated = {max_items: 200},
-      (buf.validate.field).string = {pattern: "^[A-Z]{2}$"}
+      (buf.validate.field).repeated = {
+        max_items: 200,
+        items: {string: {pattern: "^[A-Z]{2}$"}}
+      }
     ];        // ISO-3166-1 alpha-2 country codes
 
     option (buf.validate.message).cel = {
