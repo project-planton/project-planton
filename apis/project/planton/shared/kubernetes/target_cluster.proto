@@ -21,8 +21,10 @@ message KubernetesClusterCloudResourceSelector {
   project.planton.shared.cloudresourcekind.CloudResourceKind cluster_kind = 1 [
     (buf.validate.field).enum = {
       in: [
+        400, //AzureAksCluster
         615, //GcpGkeClusterCore
-        218  //AwsEksClusterCore
+        218, //AwsEksClusterCore
+        1208  //DigitalOceanKubernetesCluster
       ]}
   ];
   //name of the kubernetes cluster in the same environment as the addon

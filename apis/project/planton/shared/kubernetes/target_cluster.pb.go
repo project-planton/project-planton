@@ -173,9 +173,9 @@ const file_project_planton_shared_kubernetes_target_cluster_proto_rawDesc = "" +
 	"\x1cKubernetesAddonTargetCluster\x12I\n" +
 	" kubernetes_cluster_credential_id\x18\x01 \x01(\tH\x00R\x1dkubernetesClusterCredentialId\x12\x8b\x01\n" +
 	"\x1bkubernetes_cluster_selector\x18\x02 \x01(\v2I.project.planton.shared.kubernetes.KubernetesClusterCloudResourceSelectorH\x00R\x19kubernetesClusterSelectorB\x13\n" +
-	"\x11credential_source\"\xb9\x01\n" +
-	"&KubernetesClusterCloudResourceSelector\x12l\n" +
-	"\fcluster_kind\x18\x01 \x01(\x0e2;.project.planton.shared.cloudresourcekind.CloudResourceKindB\f\xbaH\t\x82\x01\x06\x18\xe7\x04\x18\xda\x01R\vclusterKind\x12!\n" +
+	"\x11credential_source\"\xbf\x01\n" +
+	"&KubernetesClusterCloudResourceSelector\x12r\n" +
+	"\fcluster_kind\x18\x01 \x01(\x0e2;.project.planton.shared.cloudresourcekind.CloudResourceKindB\x12\xbaH\x0f\x82\x01\f\x18\x90\x03\x18\xe7\x04\x18\xda\x01\x18\xb8\tR\vclusterKind\x12!\n" +
 	"\fcluster_name\x18\x02 \x01(\tR\vclusterNameB\xb6\x02\n" +
 	"%com.project.planton.shared.kubernetesB\x12TargetClusterProtoP\x01ZQgithub.com/project-planton/project-planton/apis/project/planton/shared/kubernetes\xa2\x02\x04PPSK\xaa\x02!Project.Planton.Shared.Kubernetes\xca\x02!Project\\Planton\\Shared\\Kubernetes\xe2\x02-Project\\Planton\\Shared\\Kubernetes\\GPBMetadata\xea\x02$Project::Planton::Shared::Kubernetesb\x06proto3"
 
