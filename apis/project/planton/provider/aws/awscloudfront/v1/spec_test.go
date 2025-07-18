@@ -24,22 +24,22 @@ var _ = Describe("AwsCloudFrontSpec validation", func() {
 
     It("accepts a valid specification", func() {
         spec := &AwsCloudFrontSpec{
-            Name:    "my-distribution",
-            Enabled: true,
-            PriceClass: AwsCloudFrontSpec_PriceClass_PRICE_CLASS_ALL,
+            Name:       "my-distribution",
+            Enabled:    true,
+            PriceClass: AwsCloudFrontSpec_PRICE_CLASS_ALL,
             Origins: []*AwsCloudFrontSpec_Origin{
                 {
                     Id:         "origin1",
-                    DomainName:  "example.com",
+                    DomainName: "example.com",
                     S3OriginConfig: &AwsCloudFrontSpec_S3OriginConfig{
                         OriginAccessControlEnabled: false,
-                        OriginAccessIdentity:      "origin-access-identity/cloudfront/ABCDEFG",
+                        OriginAccessIdentity:       "origin-access-identity/cloudfront/ABCDEFG",
                     },
                 },
             },
             DefaultCacheBehavior: &AwsCloudFrontSpec_DefaultCacheBehavior{
                 TargetOriginId:       "origin1",
-                ViewerProtocolPolicy: AwsCloudFrontSpec_ViewerProtocolPolicy_ALLOW_ALL,
+                ViewerProtocolPolicy: AwsCloudFrontSpec_VIEWER_PROTOCOL_POLICY_ALLOW_ALL,
                 AllowedMethods:       []string{"GET"},
             },
         }
@@ -49,22 +49,22 @@ var _ = Describe("AwsCloudFrontSpec validation", func() {
 
     It("rejects an invalid specification (empty name)", func() {
         spec := &AwsCloudFrontSpec{
-            Name:    "", // invalid: name is required and must have min_len 1
-            Enabled: true,
-            PriceClass: AwsCloudFrontSpec_PriceClass_PRICE_CLASS_ALL,
+            Name:       "", // invalid: name is required and must have min_len 1
+            Enabled:    true,
+            PriceClass: AwsCloudFrontSpec_PRICE_CLASS_ALL,
             Origins: []*AwsCloudFrontSpec_Origin{
                 {
                     Id:         "origin1",
-                    DomainName:  "example.com",
+                    DomainName: "example.com",
                     S3OriginConfig: &AwsCloudFrontSpec_S3OriginConfig{
                         OriginAccessControlEnabled: false,
-                        OriginAccessIdentity:      "origin-access-identity/cloudfront/ABCDEFG",
+                        OriginAccessIdentity:       "origin-access-identity/cloudfront/ABCDEFG",
                     },
                 },
             },
             DefaultCacheBehavior: &AwsCloudFrontSpec_DefaultCacheBehavior{
                 TargetOriginId:       "origin1",
-                ViewerProtocolPolicy: AwsCloudFrontSpec_ViewerProtocolPolicy_ALLOW_ALL,
+                ViewerProtocolPolicy: AwsCloudFrontSpec_VIEWER_PROTOCOL_POLICY_ALLOW_ALL,
                 AllowedMethods:       []string{"GET"},
             },
         }
