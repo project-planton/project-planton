@@ -21,25 +21,26 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// aws_dynamodb stack outputs
+// AwsDynamodbStackOutputs lists the observable identifiers returned after
+// provisioning an Amazon DynamoDB table.
 type AwsDynamodbStackOutputs struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// DynamoDB table name
-	TableName string `protobuf:"bytes,1,opt,name=table_name,json=tableName,proto3" json:"table_name,omitempty"`
-	// DynamoDB table ARN
-	TableArn string `protobuf:"bytes,2,opt,name=table_arn,json=tableArn,proto3" json:"table_arn,omitempty"`
-	// DynamoDB table stream ARN
-	TableStreamArn string `protobuf:"bytes,3,opt,name=table_stream_arn,json=tableStreamArn,proto3" json:"table_stream_arn,omitempty"`
-	// Autoscaling read policy ARN
-	AutoscalingReadPolicyArn string `protobuf:"bytes,4,opt,name=autoscaling_read_policy_arn,json=autoscalingReadPolicyArn,proto3" json:"autoscaling_read_policy_arn,omitempty"`
-	// Autoscaling write policy ARN
-	AutoscalingWritePolicyArn string `protobuf:"bytes,5,opt,name=autoscaling_write_policy_arn,json=autoscalingWritePolicyArn,proto3" json:"autoscaling_write_policy_arn,omitempty"`
-	// Autoscaling index read policy ARN list
-	AutoscalingIndexReadPolicyArnList string `protobuf:"bytes,6,opt,name=autoscaling_index_read_policy_arn_list,json=autoscalingIndexReadPolicyArnList,proto3" json:"autoscaling_index_read_policy_arn_list,omitempty"`
-	// Autoscaling index write policy ARN list
-	AutoscalingIndexWritePolicyArnList string `protobuf:"bytes,7,opt,name=autoscaling_index_write_policy_arn_list,json=autoscalingIndexWritePolicyArnList,proto3" json:"autoscaling_index_write_policy_arn_list,omitempty"`
-	unknownFields                      protoimpl.UnknownFields
-	sizeCache                          protoimpl.SizeCache
+	// Fully-qualified Amazon Resource Name of the table.
+	TableArn string `protobuf:"bytes,1,opt,name=table_arn,json=tableArn,proto3" json:"table_arn,omitempty"`
+	// Name of the DynamoDB table (may include runtime suffixes).
+	TableName string `protobuf:"bytes,2,opt,name=table_name,json=tableName,proto3" json:"table_name,omitempty"`
+	// AWS-assigned unique identifier of the table.
+	TableId string `protobuf:"bytes,3,opt,name=table_id,json=tableId,proto3" json:"table_id,omitempty"`
+	// Current (latest) stream information, present only when streams are enabled.
+	Stream *Stream `protobuf:"bytes,4,opt,name=stream,proto3" json:"stream,omitempty"`
+	// ARN of the customer-managed KMS key when SSE uses a CMK.
+	KmsKeyArn string `protobuf:"bytes,5,opt,name=kms_key_arn,json=kmsKeyArn,proto3" json:"kms_key_arn,omitempty"`
+	// Names of provisioned global secondary indexes (GSIs).
+	GlobalSecondaryIndexNames []string `protobuf:"bytes,6,rep,name=global_secondary_index_names,json=globalSecondaryIndexNames,proto3" json:"global_secondary_index_names,omitempty"`
+	// Names of provisioned local secondary indexes (LSIs).
+	LocalSecondaryIndexNames []string `protobuf:"bytes,7,rep,name=local_secondary_index_names,json=localSecondaryIndexNames,proto3" json:"local_secondary_index_names,omitempty"`
+	unknownFields            protoimpl.UnknownFields
+	sizeCache                protoimpl.SizeCache
 }
 
 func (x *AwsDynamodbStackOutputs) Reset() {
@@ -72,13 +73,6 @@ func (*AwsDynamodbStackOutputs) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_aws_awsdynamodb_v1_stack_outputs_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *AwsDynamodbStackOutputs) GetTableName() string {
-	if x != nil {
-		return x.TableName
-	}
-	return ""
-}
-
 func (x *AwsDynamodbStackOutputs) GetTableArn() string {
 	if x != nil {
 		return x.TableArn
@@ -86,37 +80,99 @@ func (x *AwsDynamodbStackOutputs) GetTableArn() string {
 	return ""
 }
 
-func (x *AwsDynamodbStackOutputs) GetTableStreamArn() string {
+func (x *AwsDynamodbStackOutputs) GetTableName() string {
 	if x != nil {
-		return x.TableStreamArn
+		return x.TableName
 	}
 	return ""
 }
 
-func (x *AwsDynamodbStackOutputs) GetAutoscalingReadPolicyArn() string {
+func (x *AwsDynamodbStackOutputs) GetTableId() string {
 	if x != nil {
-		return x.AutoscalingReadPolicyArn
+		return x.TableId
 	}
 	return ""
 }
 
-func (x *AwsDynamodbStackOutputs) GetAutoscalingWritePolicyArn() string {
+func (x *AwsDynamodbStackOutputs) GetStream() *Stream {
 	if x != nil {
-		return x.AutoscalingWritePolicyArn
+		return x.Stream
+	}
+	return nil
+}
+
+func (x *AwsDynamodbStackOutputs) GetKmsKeyArn() string {
+	if x != nil {
+		return x.KmsKeyArn
 	}
 	return ""
 }
 
-func (x *AwsDynamodbStackOutputs) GetAutoscalingIndexReadPolicyArnList() string {
+func (x *AwsDynamodbStackOutputs) GetGlobalSecondaryIndexNames() []string {
 	if x != nil {
-		return x.AutoscalingIndexReadPolicyArnList
+		return x.GlobalSecondaryIndexNames
+	}
+	return nil
+}
+
+func (x *AwsDynamodbStackOutputs) GetLocalSecondaryIndexNames() []string {
+	if x != nil {
+		return x.LocalSecondaryIndexNames
+	}
+	return nil
+}
+
+// Stream represents DynamoDB Streams identifiers.
+type Stream struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Stream ARN for the table’s most recent stream.
+	StreamArn string `protobuf:"bytes,1,opt,name=stream_arn,json=streamArn,proto3" json:"stream_arn,omitempty"`
+	// Timestamp-based label that uniquely identifies the stream.
+	StreamLabel   string `protobuf:"bytes,2,opt,name=stream_label,json=streamLabel,proto3" json:"stream_label,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Stream) Reset() {
+	*x = Stream{}
+	mi := &file_project_planton_provider_aws_awsdynamodb_v1_stack_outputs_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Stream) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Stream) ProtoMessage() {}
+
+func (x *Stream) ProtoReflect() protoreflect.Message {
+	mi := &file_project_planton_provider_aws_awsdynamodb_v1_stack_outputs_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Stream.ProtoReflect.Descriptor instead.
+func (*Stream) Descriptor() ([]byte, []int) {
+	return file_project_planton_provider_aws_awsdynamodb_v1_stack_outputs_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *Stream) GetStreamArn() string {
+	if x != nil {
+		return x.StreamArn
 	}
 	return ""
 }
 
-func (x *AwsDynamodbStackOutputs) GetAutoscalingIndexWritePolicyArnList() string {
+func (x *Stream) GetStreamLabel() string {
 	if x != nil {
-		return x.AutoscalingIndexWritePolicyArnList
+		return x.StreamLabel
 	}
 	return ""
 }
@@ -125,16 +181,20 @@ var File_project_planton_provider_aws_awsdynamodb_v1_stack_outputs_proto protore
 
 const file_project_planton_provider_aws_awsdynamodb_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"?project/planton/provider/aws/awsdynamodb/v1/stack_outputs.proto\x12+project.planton.provider.aws.awsdynamodb.v1\"\xa7\x03\n" +
-	"\x17AwsDynamodbStackOutputs\x12\x1d\n" +
+	"?project/planton/provider/aws/awsdynamodb/v1/stack_outputs.proto\x12+project.planton.provider.aws.awsdynamodb.v1\"\xdd\x02\n" +
+	"\x17AwsDynamodbStackOutputs\x12\x1b\n" +
+	"\ttable_arn\x18\x01 \x01(\tR\btableArn\x12\x1d\n" +
 	"\n" +
-	"table_name\x18\x01 \x01(\tR\ttableName\x12\x1b\n" +
-	"\ttable_arn\x18\x02 \x01(\tR\btableArn\x12(\n" +
-	"\x10table_stream_arn\x18\x03 \x01(\tR\x0etableStreamArn\x12=\n" +
-	"\x1bautoscaling_read_policy_arn\x18\x04 \x01(\tR\x18autoscalingReadPolicyArn\x12?\n" +
-	"\x1cautoscaling_write_policy_arn\x18\x05 \x01(\tR\x19autoscalingWritePolicyArn\x12Q\n" +
-	"&autoscaling_index_read_policy_arn_list\x18\x06 \x01(\tR!autoscalingIndexReadPolicyArnList\x12S\n" +
-	"'autoscaling_index_write_policy_arn_list\x18\a \x01(\tR\"autoscalingIndexWritePolicyArnListB\x82\x03\n" +
+	"table_name\x18\x02 \x01(\tR\ttableName\x12\x19\n" +
+	"\btable_id\x18\x03 \x01(\tR\atableId\x12K\n" +
+	"\x06stream\x18\x04 \x01(\v23.project.planton.provider.aws.awsdynamodb.v1.StreamR\x06stream\x12\x1e\n" +
+	"\vkms_key_arn\x18\x05 \x01(\tR\tkmsKeyArn\x12?\n" +
+	"\x1cglobal_secondary_index_names\x18\x06 \x03(\tR\x19globalSecondaryIndexNames\x12=\n" +
+	"\x1blocal_secondary_index_names\x18\a \x03(\tR\x18localSecondaryIndexNames\"J\n" +
+	"\x06Stream\x12\x1d\n" +
+	"\n" +
+	"stream_arn\x18\x01 \x01(\tR\tstreamArn\x12!\n" +
+	"\fstream_label\x18\x02 \x01(\tR\vstreamLabelB\x82\x03\n" +
 	"/com.project.planton.provider.aws.awsdynamodb.v1B\x11StackOutputsProtoP\x01Zigithub.com/project-planton/project-planton/apis/project/planton/provider/aws/awsdynamodb/v1;awsdynamodbv1\xa2\x02\x05PPPAA\xaa\x02+Project.Planton.Provider.Aws.Awsdynamodb.V1\xca\x02+Project\\Planton\\Provider\\Aws\\Awsdynamodb\\V1\xe2\x027Project\\Planton\\Provider\\Aws\\Awsdynamodb\\V1\\GPBMetadata\xea\x020Project::Planton::Provider::Aws::Awsdynamodb::V1b\x06proto3"
 
 var (
@@ -149,16 +209,18 @@ func file_project_planton_provider_aws_awsdynamodb_v1_stack_outputs_proto_rawDes
 	return file_project_planton_provider_aws_awsdynamodb_v1_stack_outputs_proto_rawDescData
 }
 
-var file_project_planton_provider_aws_awsdynamodb_v1_stack_outputs_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+var file_project_planton_provider_aws_awsdynamodb_v1_stack_outputs_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_aws_awsdynamodb_v1_stack_outputs_proto_goTypes = []any{
 	(*AwsDynamodbStackOutputs)(nil), // 0: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbStackOutputs
+	(*Stream)(nil),                  // 1: project.planton.provider.aws.awsdynamodb.v1.Stream
 }
 var file_project_planton_provider_aws_awsdynamodb_v1_stack_outputs_proto_depIdxs = []int32{
-	0, // [0:0] is the sub-list for method output_type
-	0, // [0:0] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	1, // 0: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbStackOutputs.stream:type_name -> project.planton.provider.aws.awsdynamodb.v1.Stream
+	1, // [1:1] is the sub-list for method output_type
+	1, // [1:1] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_provider_aws_awsdynamodb_v1_stack_outputs_proto_init() }
@@ -172,7 +234,7 @@ func file_project_planton_provider_aws_awsdynamodb_v1_stack_outputs_proto_init()
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_project_planton_provider_aws_awsdynamodb_v1_stack_outputs_proto_rawDesc), len(file_project_planton_provider_aws_awsdynamodb_v1_stack_outputs_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   1,
+			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

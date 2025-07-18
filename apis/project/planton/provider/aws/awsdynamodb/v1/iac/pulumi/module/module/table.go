@@ -51,7 +51,7 @@ func table(
     // Billing ‑ provisioned vs. on-demand ----------------------------------
     // ---------------------------------------------------------------------
     var (
-        billingMode               string
+        billingMode                 string
         readCapacity, writeCapacity pulumi.IntPtrInput
     )
     switch spec.GetBillingMode() {
@@ -79,9 +79,11 @@ func table(
             gsi.RangeKey = pulumi.String(rk)
         }
         if g.GetProjection().GetProjectionType() == awsdynamodbpb.ProjectionType_INCLUDE {
+            var attrs pulumi.StringArray
             for _, attr := range g.GetProjection().GetNonKeyAttributes() {
-                gsi.NonKeyAttributes = append(gsi.NonKeyAttributes, pulumi.String(attr))
+                attrs = append(attrs, pulumi.String(attr))
             }
+            gsi.NonKeyAttributes = attrs
         }
         // Capacity only when the table is provisioned.
         if spec.GetBillingMode() == awsdynamodbpb.BillingMode_PROVISIONED {
@@ -104,9 +106,11 @@ func table(
             ProjectionType: pulumi.String(projectionTypeToString(l.GetProjection().GetProjectionType())),
         }
         if l.GetProjection().GetProjectionType() == awsdynamodbpb.ProjectionType_INCLUDE {
+            var attrs pulumi.StringArray
             for _, attr := range l.GetProjection().GetNonKeyAttributes() {
-                lsi.NonKeyAttributes = append(lsi.NonKeyAttributes, pulumi.String(attr))
+                attrs = append(attrs, pulumi.String(attr))
             }
+            lsi.NonKeyAttributes = attrs
         }
         lsis = append(lsis, lsi)
     }

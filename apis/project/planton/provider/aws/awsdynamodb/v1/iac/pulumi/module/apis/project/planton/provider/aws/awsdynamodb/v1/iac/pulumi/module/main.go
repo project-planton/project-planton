@@ -8,7 +8,6 @@ import (
     awsdynamodbv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsdynamodb/v1"
 
     awsProviderSdk "github.com/pulumi/pulumi-aws/sdk/v5/go/aws"
-    "github.com/pulumi/pulumi-aws/sdk/v5/go/aws/dynamodb"
     "github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 

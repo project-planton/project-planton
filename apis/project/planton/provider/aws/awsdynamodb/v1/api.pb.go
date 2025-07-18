@@ -23,7 +23,7 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// aws-dynamodb
+// aws-dynamodb: Represents an Amazon DynamoDB table within Amazon Web Services, a fully managed NoSQL database service offering fast and predictable performance with seamless scalability.
 type AwsDynamodb struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// api-version

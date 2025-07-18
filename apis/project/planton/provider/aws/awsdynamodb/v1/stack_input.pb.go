@@ -25,7 +25,7 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// aws-dynamodb stack-input
+// stack-input
 type AwsDynamodbStackInput struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// iac-provisioner
@@ -111,7 +111,7 @@ var File_project_planton_provider_aws_awsdynamodb_v1_stack_input_proto protorefl
 
 const file_project_planton_provider_aws_awsdynamodb_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"=project/planton/provider/aws/awsdynamodb/v1/stack_input.proto\x12+project.planton.provider.aws.awsdynamodb.v1\x1a6project/planton/credential/awscredential/v1/spec.proto\x1a5project/planton/provider/aws/awsdynamodb/v1/api.proto\x1a.project/planton/shared/iac/pulumi/pulumi.proto\x1a project/planton/shared/iac.proto\x1a4project/planton/shared/iac/terraform/terraform.proto\"\xc8\x03\n" +
+	"=project/planton/provider/aws/awsdynamodb/v1/stack_input.proto\x12+project.planton.provider.aws.awsdynamodb.v1\x1a project/planton/shared/iac.proto\x1a.project/planton/shared/iac/pulumi/pulumi.proto\x1a4project/planton/shared/iac/terraform/terraform.proto\x1a5project/planton/provider/aws/awsdynamodb/v1/api.proto\x1a6project/planton/credential/awscredential/v1/spec.proto\"\xc8\x03\n" +
 	"\x15AwsDynamodbStackInput\x12H\n" +
 	"\vprovisioner\x18\x01 \x01(\x0e2&.project.planton.shared.IacProvisionerR\vprovisioner\x12J\n" +
 	"\x06pulumi\x18\x02 \x01(\v22.project.planton.shared.iac.pulumi.PulumiStackInfoR\x06pulumi\x12V\n" +

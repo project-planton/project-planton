@@ -1,235 +1,356 @@
-variable "metadata" {
-  description = "Metadata for the resource, including name and labels"
-  type = object({
-    name = string,
-    id = optional(string),
-    org = optional(string),
-    env = optional(string),
-    labels = optional(map(string)),
-    tags = optional(list(string)),
-    version = optional(object({ id = string, message = string }))
-  })
+# --------------------------------------------------------------------------------
+# Variables matching project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec
+# --------------------------------------------------------------------------------
+
+###############################################################################
+# Table basics
+###############################################################################
+
+variable "table_name" {
+  type        = string
+  description = "Name of the DynamoDB table."
+
+  validation {
+    condition     = length(var.table_name) >= 3 && length(var.table_name) <= 255
+    error_message = "table_name must contain 3–255 characters."
+  }
 }
 
+###############################################################################
+# Attribute / key-schema definitions
+###############################################################################
 
-variable "spec" {
-  description = "spec"
+variable "attribute_definitions" {
+  description = "Definitions for every attribute referenced by the table or any index."
+  type = list(object({
+    attribute_name = string
+    attribute_type = string   # Allowed: STRING|NUMBER|BINARY or S|N|B
+  }))
+
+  validation {
+    condition     = length(var.attribute_definitions) >= 1
+    error_message = "At least one attribute definition is required."
+  }
+
+  validation {
+    condition = alltrue([
+      for a in var.attribute_definitions :
+      length(a.attribute_name) >= 1 && length(a.attribute_name) <= 255 &&
+      contains(["STRING", "NUMBER", "BINARY", "S", "N", "B"], upper(a.attribute_type))
+    ])
+    error_message = "Each attribute definition must use an attribute_name 1-255 chars long and attribute_type of STRING, NUMBER, BINARY (or the short forms S, N, B)."
+  }
+}
+
+variable "key_schema" {
+  description = "Primary key schema — partition key and optional sort key."
+  type = list(object({
+    attribute_name = string
+    key_type       = string   # Allowed: HASH | RANGE
+  }))
+
+  validation {
+    condition     = length(var.key_schema) >= 1 && length(var.key_schema) <= 2
+    error_message = "key_schema must contain 1 or 2 elements (partition key and optional sort key)."
+  }
+
+  validation {
+    condition = alltrue([
+      for ks in var.key_schema :
+      length(ks.attribute_name) >= 1 && length(ks.attribute_name) <= 255 &&
+      contains(["HASH", "RANGE"], upper(ks.key_type))
+    ])
+    error_message = "Each key_schema element must have attribute_name 1-255 chars long and key_type of HASH or RANGE."
+  }
+}
+
+###############################################################################
+# Capacity / billing
+###############################################################################
+
+variable "billing_mode" {
+  type        = string
+  description = "How the table is billed. Allowed: PROVISIONED or PAY_PER_REQUEST."
+  default     = "PAY_PER_REQUEST"
+
+  validation {
+    condition     = contains(["PROVISIONED", "PAY_PER_REQUEST"], upper(var.billing_mode))
+    error_message = "billing_mode must be PROVISIONED or PAY_PER_REQUEST."
+  }
+
+  # Cross-field rule: provisioned_throughput must be present when PROVISIONED and
+  # must be absent everywhere when PAY_PER_REQUEST.
+  validation {
+    condition = upper(var.billing_mode) == "PROVISIONED" ? (
+      var.provisioned_throughput != null &&
+      var.provisioned_throughput.read_capacity_units  > 0 &&
+      var.provisioned_throughput.write_capacity_units > 0 &&
+      alltrue([
+        for g in var.global_secondary_indexes :
+        g.provisioned_throughput != null &&
+        g.provisioned_throughput.read_capacity_units  > 0 &&
+        g.provisioned_throughput.write_capacity_units > 0
+      ])
+    ) : (
+      var.provisioned_throughput == null &&
+      alltrue([
+        for g in var.global_secondary_indexes : g.provisioned_throughput == null
+      ])
+    )
+    error_message = "When billing_mode is PROVISIONED, provisioned_throughput must be configured for the table and every GSI; when PAY_PER_REQUEST it must be unset everywhere."
+  }
+}
+
+variable "provisioned_throughput" {
+  description = "Provisioned capacity settings (required when billing_mode == PROVISIONED)."
   type = object({
-
-    # Table name. If provided, the bucket will be created with this name instead of generating the name from the context
-    table_name = string
-
-    # Controls how you are charged for read and write throughput and how you manage
-    # capacity. The valid values are `PROVISIONED` and `PAY_PER_REQUEST`. Defaults
-    # to `PROVISIONED`.
-    billing_mode = string
-
-    # Attribute to use as the hash (partition) key. Must also be defined as an `attribute`.
-    hash_key = object({
-
-      # Name of the attribute
-      name = string
-
-      # Attribute type. Valid values are `S` (string), `N` (number), `B` (binary).
-      type = string
-    })
-
-    # Attribute to use as the range (sort) key. Must also be defined as an `attribute`, see below.
-    range_key = optional(object({
-
-      # Name of the attribute
-      name = string
-
-      # Attribute type. Valid values are `S` (string), `N` (number), `B` (binary).
-      type = string
-    }))
-
-    # Whether Streams are enabled.
-    enable_streams = optional(bool)
-
-    # When an item in the table is modified, StreamViewType determines what information
-    # is written to the table's stream. Valid values are
-    # `KEYS_ONLY`, `NEW_IMAGE`, `OLD_IMAGE`, `NEW_AND_OLD_IMAGES`.
-    stream_view_type = optional(string)
-
-    # Encryption at rest options. AWS DynamoDB tables are automatically
-    # encrypted at rest with an AWS-owned Customer Master Key if this argument
-    # isn't specified.
-    server_side_encryption = optional(object({
-
-      # Whether or not to enable encryption at rest using an AWS managed KMS customer master key (CMK).
-      # If `enabled` is `false` then server-side encryption is set to
-      # AWS-_owned_ key (shown as `DEFAULT` in the AWS console).
-      # Potentially confusingly, if `enabled` is `true` and no `kmsKeyArn` is specified then
-      # server-side encryption is set to the _default_ KMS-_managed_ key (shown as `KMS` in the AWS console).
-      # The [AWS KMS documentation](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html)
-      # explains the difference between AWS-_owned_ and KMS-_managed_ keys.
-      is_enabled = bool
-
-      # ARN of the CMK that should be used for the AWS KMS encryption.
-      # This argument should only be used if the key is different from the default KMS-managed DynamoDB key,
-      # `alias/aws/dynamodb`.
-      # **Note:** This attribute will _not_ be populated with the ARN of _default_ keys.
-      kms_key_arn = string
-    }))
-
-    # Enable point-in-time recovery options.
-    point_in_time_recovery = optional(object({
-
-      # Whether to enable point-in-time recovery. It can take 10 minutes to enable for
-      # new tables. If the `pointInTimeRecovery` block is not provided,
-      # this defaults to `false`.
-      is_enabled = bool
-    }))
-
-    # Configuration block for TTL.
-    ttl = optional(object({
-
-      # Whether TTL is enabled. Default value is `false`.
-      is_enabled = bool
-
-      # Name of the table attribute to store the TTL timestamp in.
-      # Required if `enabled` is `true`, must not be set otherwise.
-      attribute_name = string
-    }))
-
-    # Dynamodb auto scale config
-    auto_scale = optional(object({
-
-      # Description for is_enabled
-      is_enabled = bool
-
-      # auto scale capacity for read
-      read_capacity = object({
-
-        # Min capacity of the scalable target.
-        min_capacity = number
-
-        # Max capacity of the scalable target.
-        max_capacity = number
-
-        # target capacity utilization percentage
-        target_utilization = number
-      })
-
-      # auto scale capacity for write
-      write_capacity = object({
-
-        # Min capacity of the scalable target.
-        min_capacity = number
-
-        # Max capacity of the scalable target.
-        max_capacity = number
-
-        # target capacity utilization percentage
-        target_utilization = number
-      })
-    }))
-
-    # Set of nested attribute definitions. Only required for `hashKey` and `rangeKey` attributes.
-    attributes = optional(list(object({
-
-      # Name of the attribute
-      name = string
-
-      # Attribute type. Valid values are `S` (string), `N` (number), `B` (binary).
-      type = string
-    })))
-
-    # Describe a GSI for the table; subject to the normal limits on the number of GSIs, projected attributes, etc.
-    global_secondary_indexes = optional(list(object({
-
-      # Name of the index.
-      name = string
-
-      # One of `ALL`, `INCLUDE` or `KEYS_ONLY` where
-      # `ALL` projects every attribute into the index,
-      # `KEYS_ONLY` projects  into the index only the table and index hashKey and sortKey attributes ,
-      # `INCLUDE` projects into the index all of the attributes that are defined in `nonKeyAttributes`
-      # in addition to the attributes that that`KEYS_ONLY` project.
-      projection_type = string
-
-      # Only required with `INCLUDE` as a projection type; a list of attributes to project into the index.
-      # These do not need to be defined as attributes on the table.
-      non_key_attributes = list(string)
-
-      # Name of the hash key in the index; must be defined as an attribute in the resource.
-      hash_key = string
-
-      # Name of the range key; must be defined
-      range_key = optional(string)
-
-      # Number of read units for this index. Must be set if billingMode is set to PROVISIONED.
-      read_capacity = number
-
-      # Number of write units for this index. Must be set if billingMode is set to PROVISIONED.
-      write_capacity = number
-    })))
-
-    # Describe an LSI on the table; these can only be allocated _at creation_
-    # so you cannot change this definition after you have created the resource.
-    local_secondary_indexes = optional(list(object({
-
-      # Name of the index.
-      name = string
-
-      # One of `ALL`, `INCLUDE` or `KEYS_ONLY` where
-      # `ALL` projects every attribute into the index,
-      # `KEYS_ONLY` projects  into the index only the table and index hashKey and sortKey attributes ,
-      # `INCLUDE` projects into the index all of the attributes that are defined in `nonKeyAttributes` in addition to
-      # the attributes that that`KEYS_ONLY` project.
-      projection_type = string
-
-      # Only required with `INCLUDE` as a projection type; a list of attributes to project into the index.
-      # These do not need to be defined as attributes on the table.
-      non_key_attributes = list(string)
-
-      # Name of the range key; must be defined
-      range_key = optional(string)
-    })))
-
-    # Configuration block(s) with [DynamoDB Global Tables V2 (version 2019.11.21)]
-    # (https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/globaltables.V2.html) replication configurations.
-    replica_region_names = optional(list(string))
-
-    # Import Amazon S3 data into a new table. See below.
-    import_table = optional(object({
-
-      # Type of compression to be used on the input coming from the imported table.
-      # Valid values are `GZIP`, `ZSTD` and `NONE`.
-      input_compression_type = string
-
-      # The format of the source data.
-      # Valid values are `CSV`, `DYNAMODB_JSON`, and `ION`.
-      input_format = string
-
-      # Describe the format options for the data that was imported into the target table.
-      # There is one value, `csv`.
-      input_format_options = object({
-
-        # This block contains the processing options for the CSV file being imported:
-        csv = object({
-
-          # The delimiter used for separating items in the CSV file being imported.
-          delimiter = string
-
-          # List of the headers used to specify a common header for all source CSV files being imported.
-          headers = list(string)
-        })
-      })
-
-      # Values for the S3 bucket the source file is imported from.
-      s3_bucket_source = object({
-
-        # The S3 bucket that is being imported from.
-        bucket = string
-
-        # The account number of the S3 bucket that is being imported from.
-        bucket_owner = string
-
-        # The key prefix shared by all S3 Objects that are being imported.
-        key_prefix = string
-      })
-    }))
+    read_capacity_units  = number
+    write_capacity_units = number
   })
+  default = null
+
+  validation {
+    condition = var.provisioned_throughput == null || (
+      var.provisioned_throughput.read_capacity_units  > 0 &&
+      var.provisioned_throughput.write_capacity_units > 0
+    )
+    error_message = "read_capacity_units and write_capacity_units must both be > 0."
+  }
+}
+
+###############################################################################
+# Global secondary indexes (GSIs)
+###############################################################################
+
+variable "global_secondary_indexes" {
+  description = "Definitions for global secondary indexes (GSIs)."
+  type = list(object({
+    index_name = string
+    key_schema = list(object({
+      attribute_name = string
+      key_type       = string   # HASH | RANGE
+    }))
+    projection = object({
+      projection_type    = string              # ALL | KEYS_ONLY | INCLUDE
+      non_key_attributes = optional(list(string))
+    })
+    provisioned_throughput = optional(object({
+      read_capacity_units  = number
+      write_capacity_units = number
+    }))
+  }))
+  default = []
+
+  validation {
+    condition = alltrue([
+      for g in var.global_secondary_indexes :
+      # index_name length
+      length(g.index_name) >= 3 && length(g.index_name) <= 255 &&
+
+      # key_schema size & contents
+      length(g.key_schema) >= 1 && length(g.key_schema) <= 2 &&
+      alltrue([
+        for ks in g.key_schema :
+        length(ks.attribute_name) >= 1 && length(ks.attribute_name) <= 255 &&
+        contains(["HASH", "RANGE"], upper(ks.key_type))
+      ]) &&
+
+      # projection rules
+      contains(["ALL", "KEYS_ONLY", "INCLUDE"], upper(g.projection.projection_type)) &&
+      (
+        upper(g.projection.projection_type) == "INCLUDE" ? (
+          length(coalesce(g.projection.non_key_attributes, [])) > 0
+        ) : (
+          length(coalesce(g.projection.non_key_attributes, [])) == 0
+        )
+      ) &&
+      length(coalesce(g.projection.non_key_attributes, [])) <= 20 &&
+      alltrue([
+        for n in coalesce(g.projection.non_key_attributes, []) :
+        length(n) >= 1 && length(n) <= 255
+      ]) &&
+
+      # per-GSI throughput rules (validated again together with billing_mode)
+      (g.provisioned_throughput == null || (
+        g.provisioned_throughput.read_capacity_units  > 0 &&
+        g.provisioned_throughput.write_capacity_units > 0
+      ))
+    ])
+    error_message = "Each global_secondary_indexes block is invalid — check names, key_schema, projection and throughput rules."
+  }
+}
+
+###############################################################################
+# Local secondary indexes (LSIs)
+###############################################################################
+
+variable "local_secondary_indexes" {
+  description = "Definitions for local secondary indexes (LSIs)."
+  type = list(object({
+    index_name = string
+    key_schema = list(object({
+      attribute_name = string
+      key_type       = string
+    }))
+    projection = object({
+      projection_type    = string
+      non_key_attributes = optional(list(string))
+    })
+  }))
+  default = []
+
+  validation {
+    condition = alltrue([
+      for l in var.local_secondary_indexes :
+      length(l.index_name) >= 3 && length(l.index_name) <= 255 &&
+      # key_schema must be exactly 2 elements (HASH shared with table, plus RANGE)
+      length(l.key_schema) == 2 &&
+      alltrue([
+        for ks in l.key_schema :
+        length(ks.attribute_name) >= 1 && length(ks.attribute_name) <= 255 &&
+        contains(["HASH", "RANGE"], upper(ks.key_type))
+      ]) &&
+      # projection rules identical to GSI
+      contains(["ALL", "KEYS_ONLY", "INCLUDE"], upper(l.projection.projection_type)) &&
+      (
+        upper(l.projection.projection_type) == "INCLUDE" ? (
+          length(coalesce(l.projection.non_key_attributes, [])) > 0
+        ) : (
+          length(coalesce(l.projection.non_key_attributes, [])) == 0
+        )
+      ) &&
+      length(coalesce(l.projection.non_key_attributes, [])) <= 20 &&
+      alltrue([
+        for n in coalesce(l.projection.non_key_attributes, []) :
+        length(n) >= 1 && length(n) <= 255
+      ])
+    ])
+    error_message = "Each local_secondary_indexes block is invalid — check names, key_schema and projection rules."
+  }
+}
+
+###############################################################################
+# Streams
+###############################################################################
+
+variable "stream_specification" {
+  description = "DynamoDB Streams configuration."
+  type = object({
+    stream_enabled   = bool
+    stream_view_type = string   # NEW_IMAGE | OLD_IMAGE | NEW_AND_OLD_IMAGES | KEYS_ONLY
+  })
+  default = null
+
+  validation {
+    condition = var.stream_specification == null ? true : (
+      !var.stream_specification.stream_enabled || length(var.stream_specification.stream_view_type) > 0
+    )
+    error_message = "stream_view_type must be specified when streams are enabled."
+  }
+
+  validation {
+    condition = var.stream_specification == null ? true : (
+      var.stream_specification.stream_view_type == "" ||
+      contains(["NEW_IMAGE", "OLD_IMAGE", "NEW_AND_OLD_IMAGES", "KEYS_ONLY"], upper(var.stream_specification.stream_view_type))
+    )
+    error_message = "stream_view_type must be NEW_IMAGE, OLD_IMAGE, NEW_AND_OLD_IMAGES or KEYS_ONLY."
+  }
+}
+
+###############################################################################
+# Time-to-live (TTL)
+###############################################################################
+
+variable "ttl_specification" {
+  description = "Time-to-live (TTL) configuration."
+  type = object({
+    ttl_enabled    = bool
+    attribute_name = string
+  })
+  default = null
+
+  validation {
+    condition = var.ttl_specification == null ? true : (
+      !var.ttl_specification.ttl_enabled || length(var.ttl_specification.attribute_name) > 0
+    )
+    error_message = "attribute_name must be provided when TTL is enabled."
+  }
+
+  validation {
+    condition = var.ttl_specification == null ? true : (
+      var.ttl_specification.attribute_name == "" || (
+        length(var.ttl_specification.attribute_name) >= 1 &&
+        length(var.ttl_specification.attribute_name) <= 255
+      )
+    )
+    error_message = "attribute_name must be between 1 and 255 characters."
+  }
+}
+
+###############################################################################
+# Server-side encryption (SSE)
+###############################################################################
+
+variable "sse_specification" {
+  description = "Server-side encryption configuration."
+  type = object({
+    enabled            = bool
+    sse_type           = string   # AES256 | KMS
+    kms_master_key_id  = string
+  })
+  default = null
+
+  validation {
+    condition = var.sse_specification == null ? true : (
+      (
+        # Disabled: all other fields empty
+        !var.sse_specification.enabled &&
+        var.sse_specification.sse_type == "" &&
+        var.sse_specification.kms_master_key_id == ""
+      ) || (
+        # Enabled
+        var.sse_specification.enabled &&
+        contains(["AES256", "KMS"], upper(var.sse_specification.sse_type)) &&
+        (
+          upper(var.sse_specification.sse_type) == "KMS" ?
+          length(var.sse_specification.kms_master_key_id) > 0 :
+          var.sse_specification.kms_master_key_id == ""
+        )
+      )
+    )
+    error_message = "When SSE is enabled, sse_type must be AES256 or KMS and kms_master_key_id is required only for KMS; when disabled they must be unset."
+  }
+
+  validation {
+    condition = var.sse_specification == null ? true : (
+      var.sse_specification.kms_master_key_id == "" || (
+        length(var.sse_specification.kms_master_key_id) >= 1 &&
+        length(var.sse_specification.kms_master_key_id) <= 2048
+      )
+    )
+    error_message = "kms_master_key_id must be 1-2048 characters when provided."
+  }
+}
+
+###############################################################################
+# Miscellaneous
+###############################################################################
+
+variable "point_in_time_recovery_enabled" {
+  type        = bool
+  description = "Enable point-in-time recovery (continuous backups)."
+  default     = false
+}
+
+variable "tags" {
+  type        = map(string)
+  description = "Key/value tags applied to the table."
+  default     = {}
+
+  validation {
+    condition = alltrue([
+      for k, v in var.tags : length(k) > 0 && length(v) > 0
+    ])
+    error_message = "Tag keys and values must be non-empty strings."
+  }
 }
