@@ -17,7 +17,8 @@ message AwsCloudFrontSpec {
   // Alternative domain names (CNAMEs) for the distribution.
   repeated string aliases = 3 [
     (buf.validate.field).repeated.max_items = 100,
-    (buf.validate.field).string.pattern = "^([a-zA-Z0-9][-a-zA-Z0-9]*\.)+[a-zA-Z]{2,}$"
+    // escape `.` in the regex
+    (buf.validate.field).string.pattern = "^([a-zA-Z0-9][-a-zA-Z0-9]*\\.)+[a-zA-Z]{2,}$"
   ];
 
   // Optional user-supplied description.
@@ -111,7 +112,8 @@ message AwsCloudFrontSpec {
         pattern: "^[A-Za-z0-9._-]+$"}
     ];                    // Unique identifier within the distribution
     string domain_name = 2 [
-      (buf.validate.field).string.pattern = "^([a-zA-Z0-9][-a-zA-Z0-9]*\.)+[a-zA-Z]{2,}$"
+      // escape `.` in the regex
+      (buf.validate.field).string.pattern = "^([a-zA-Z0-9][-a-zA-Z0-9]*\\.)+[a-zA-Z]{2,}$"
     ];           // DNS name of the origin
     string origin_path = 3 [
       (buf.validate.field).string.pattern = "^(/.*)?$"
