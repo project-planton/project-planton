@@ -8,6 +8,7 @@ import (
     awsdynamodbv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsdynamodb/v1"
 
     awsProviderSdk "github.com/pulumi/pulumi-aws/sdk/v5/go/aws"
+    "github.com/pulumi/pulumi-aws/sdk/v5/go/aws/dynamodb"
     "github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
@@ -68,7 +69,7 @@ func Resources(ctx *pulumi.Context, stackInput *awsdynamodbv1.AwsDynamodbStackIn
     // ---------------------------------------------------------------------
     // 3. Create the DynamoDB table (primary resource) and its sub-components.
     // ---------------------------------------------------------------------
-    table, err := dynamodbTable(ctx, locals, awsProvider)
+    table, err := table(ctx, locals, awsProvider)
     if err != nil {
         return errors.Wrap(err, "provisioning DynamoDB table")
     }
@@ -79,15 +80,15 @@ func Resources(ctx *pulumi.Context, stackInput *awsdynamodbv1.AwsDynamodbStackIn
     // Required scalar outputs.
     ctx.Export(TableArn, table.Arn)
     ctx.Export(TableName, table.Name)
-    ctx.Export(TableId, table.ID())
+    ctx.Export(TableID, table.ID())
 
     // Stream information – values will be empty if streams are not enabled.
-    ctx.Export(StreamArn, table.LatestStreamArn)
-    ctx.Export(StreamLabel, table.StreamLabel)
+    ctx.Export(StreamStreamArn, table.StreamArn)
+    ctx.Export(StreamStreamLabel, table.StreamLabel)
 
     // Optional KMS key ARN – falls back to an empty string when not applicable.
-    if locals.KmsKeyArn != nil {
-        ctx.Export(KmsKeyArn, locals.KmsKeyArn)
+    if table.KmsKeyArn != nil {
+        ctx.Export(KmsKeyArn, table.KmsKeyArn)
     } else {
         ctx.Export(KmsKeyArn, pulumi.String(""))
     }

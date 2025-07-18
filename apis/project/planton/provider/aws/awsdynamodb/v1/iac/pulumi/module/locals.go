@@ -1,6 +1,8 @@
 package module
 
 import (
+    "strings"
+
     "github.com/pkg/errors"
     "github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 
@@ -25,6 +27,13 @@ type Locals struct {
     // to pulumi.String inputs, so no further transformation is required when
     // assigning them to the Tag property of a resource.
     Tags pulumi.StringMap
+}
+
+// Names combines user-provided parts into a single resource name. The current
+// implementation just joins the parts with a hyphen; it can be enhanced later
+// to add uniqueness constraints if required.
+func (l *Locals) Names(parts ...string) string {
+    return strings.Join(parts, "-")
 }
 
 // initializeLocals derives helper values that are used across multiple

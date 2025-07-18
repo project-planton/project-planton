@@ -5,6 +5,7 @@ import (
 
     "github.com/pkg/errors"
     "github.com/pulumi/pulumi-aws/sdk/v5/go/aws/dynamodb"
+    "github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 
     pb "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsdynamodb/v1"
 )
@@ -16,25 +17,12 @@ import (
 func intPtr(v int) *int { return &v }
 
 // -----------------------------------------------------------------------------
-// Enum conversions
+// Enum conversions (helper variants local to this file)
 // -----------------------------------------------------------------------------
 
-// toBillingMode converts the proto BillingMode enum into the string expected by
-// the Pulumi AWS provider ("PROVISIONED" | "PAY_PER_REQUEST").
-func toBillingMode(mode pb.BillingMode) (string, error) {
-    switch mode {
-    case pb.BillingMode_PROVISIONED:
-        return "PROVISIONED", nil
-    case pb.BillingMode_PAY_PER_REQUEST:
-        return "PAY_PER_REQUEST", nil
-    default:
-        return "", errors.Errorf("unsupported billing mode: %v", mode)
-    }
-}
-
-// attributeTypeToString converts AttributeType to the short form ("S" | "N" |
+// attrTypeToString converts AttributeType to the short form ("S" | "N" |
 // "B") required by aws.dynamodb.TableAttribute.
-func attributeTypeToString(t pb.AttributeType) (string, error) {
+func attrTypeToString(t pb.AttributeType) (string, error) {
     switch t {
     case pb.AttributeType_STRING:
         return "S", nil
@@ -47,9 +35,9 @@ func attributeTypeToString(t pb.AttributeType) (string, error) {
     }
 }
 
-// projectionTypeToString converts ProjectionType to the string used by the
-// Pulumi provider.
-func projectionTypeToString(t pb.ProjectionType) (string, error) {
+// projTypeToString converts ProjectionType to the string used by the Pulumi
+// provider.
+func projTypeToString(t pb.ProjectionType) (string, error) {
     switch t {
     case pb.ProjectionType_ALL:
         return "ALL", nil
@@ -62,8 +50,8 @@ func projectionTypeToString(t pb.ProjectionType) (string, error) {
     }
 }
 
-// streamViewTypeToString converts StreamViewType to the string used by Pulumi.
-func streamViewTypeToString(t pb.StreamViewType) (string, error) {
+// streamViewTypeToStringConv converts StreamViewType to the string used by Pulumi.
+func streamViewTypeToStringConv(t pb.StreamViewType) (string, error) {
     switch t {
     case pb.StreamViewType_NEW_IMAGE:
         return "NEW_IMAGE", nil
@@ -72,8 +60,6 @@ func streamViewTypeToString(t pb.StreamViewType) (string, error) {
     case pb.StreamViewType_NEW_AND_OLD_IMAGES:
         return "NEW_AND_OLD_IMAGES", nil
     case pb.StreamViewType_STREAM_KEYS_ONLY:
-        // The proto value was renamed to avoid a duplicate identifier; in the
-        // AWS API the actual string value is "KEYS_ONLY".
         return "KEYS_ONLY", nil
     default:
         return "", errors.Errorf("unsupported stream view type: %v", t)
@@ -89,7 +75,7 @@ func streamViewTypeToString(t pb.StreamViewType) (string, error) {
 func toTableAttributes(in []*pb.AttributeDefinition) ([]dynamodb.TableAttribute, error) {
     attrs := make([]dynamodb.TableAttribute, len(in))
     for i, a := range in {
-        typ, err := attributeTypeToString(a.GetAttributeType())
+        typ, err := attrTypeToString(a.GetAttributeType())
         if err != nil {
             return nil, errors.Wrapf(err, "attribute[%d] (%s)", i, a.GetAttributeName())
         }
@@ -150,7 +136,7 @@ func toGlobalSecondaryIndexes(in []*pb.GlobalSecondaryIndex) ([]dynamodb.TableGl
             return nil, errors.Wrapf(err, "gsi[%d] (%s) invalid key schema", i, g.IndexName)
         }
 
-        projType, err := projectionTypeToString(g.GetProjection().GetProjectionType())
+        projType, err := projTypeToString(g.GetProjection().GetProjectionType())
         if err != nil {
             return nil, errors.Wrapf(err, "gsi[%d] (%s) projection type", i, g.IndexName)
         }
@@ -187,7 +173,7 @@ func toLocalSecondaryIndexes(in []*pb.LocalSecondaryIndex) ([]dynamodb.TableLoca
             return nil, errors.Errorf("lsi[%d] (%s) must define a RANGE key", i, l.IndexName)
         }
 
-        projType, err := projectionTypeToString(l.GetProjection().GetProjectionType())
+        projType, err := projTypeToString(l.GetProjection().GetProjectionType())
         if err != nil {
             return nil, errors.Wrapf(err, "lsi[%d] (%s) projection type", i, l.IndexName)
         }
@@ -211,7 +197,7 @@ func toTTL(ttl *pb.TimeToLiveSpecification) *dynamodb.TableTtlArgs {
         return nil
     }
     return &dynamodb.TableTtlArgs{
-        Enabled:      pulumi.Bool(ttl.GetTtlEnabled()),
+        Enabled:       pulumi.Bool(ttl.GetTtlEnabled()),
         AttributeName: pulumi.String(ttl.GetAttributeName()),
     }
 }
