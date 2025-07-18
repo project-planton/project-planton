@@ -1,32 +1,48 @@
 syntax = "proto3";
 
+import "buf/validate/validate.proto";
+
 package project.planton.provider.aws.awscloudfront.v1;
 
 // Specification for an Amazon CloudFront distribution.
 message AwsCloudFrontSpec {
   // Friendly name for the distribution.
-  string name = 1;
+  string name = 1 [
+    (buf.validate.field).string = {min_len: 1, max_len: 255}
+  ];
 
   // Enables or disables the distribution.
   bool enabled = 2;
 
   // Alternative domain names (CNAMEs) for the distribution.
-  repeated string aliases = 3;
+  repeated string aliases = 3 [
+    (buf.validate.field).repeated.max_items = 100,
+    (buf.validate.field).string.pattern = "^([a-zA-Z0-9][-a-zA-Z0-9]*\.)+[a-zA-Z]{2,}$"
+  ];
 
   // Optional user-supplied description.
-  string comment = 4;
+  string comment = 4 [
+    (buf.validate.field).string.max_len = 128
+  ];
 
   // Billing tier that controls which edge locations are used.
-  PriceClass price_class = 5;
+  PriceClass price_class = 5 [
+    (buf.validate.field).enum.not_in = [0]
+  ];
 
   // One or more origin servers from which CloudFront pulls content.
-  repeated Origin origins = 6;
+  repeated Origin origins = 6 [
+    (buf.validate.field).repeated.min_items = 1,
+    (buf.validate.field).repeated.max_items = 25
+  ];
 
   // Behavior applied when no other cache behavior matches.
   DefaultCacheBehavior default_cache_behavior = 7;
 
   // Ordered list of path-based cache behaviors.
-  repeated CacheBehavior ordered_cache_behaviors = 8;
+  repeated CacheBehavior ordered_cache_behaviors = 8 [
+    (buf.validate.field).repeated.max_items = 50
+  ];
 
   // SSL/TLS certificate settings for HTTPS viewers.
   ViewerCertificate viewer_certificate = 9;
@@ -38,7 +54,9 @@ message AwsCloudFrontSpec {
   Restrictions restrictions = 11;
 
   // Arbitrary resource tags.
-  map<string, string> tags = 12;
+  map<string, string> tags = 12 [
+    (buf.validate.field).map.max_pairs = 50
+  ];
 
   // --------------------------------------------------------------------------
   // Enumerations
@@ -88,78 +106,169 @@ message AwsCloudFrontSpec {
 
   // Origin server definition.
   message Origin {
-    string id = 1;                    // Unique identifier within the distribution
-    string domain_name = 2;           // DNS name of the origin
-    string origin_path = 3;           // Optional URI path prefix
-    map<string, string> custom_headers = 4; // Headers to forward to the origin
+    string id = 1 [
+      (buf.validate.field).string = {min_len: 1, max_len: 64,
+        pattern: "^[A-Za-z0-9._-]+$"}
+    ];                    // Unique identifier within the distribution
+    string domain_name = 2 [
+      (buf.validate.field).string.pattern = "^([a-zA-Z0-9][-a-zA-Z0-9]*\.)+[a-zA-Z]{2,}$"
+    ];           // DNS name of the origin
+    string origin_path = 3 [
+      (buf.validate.field).string.pattern = "^(/.*)?$"
+    ];           // Optional URI path prefix
+    map<string, string> custom_headers = 4 [
+      (buf.validate.field).map.max_pairs = 50
+    ]; // Headers to forward to the origin
     S3OriginConfig s3_origin_config = 5;    // S3-specific settings
     CustomOriginConfig custom_origin_config = 6; // Non-S3 settings
+
+    option (buf.validate.message).cel = {
+      id: "one_origin_type",
+      message: "exactly one of s3_origin_config or custom_origin_config must be set",
+      expression: "(this.s3_origin_config != null) != (this.custom_origin_config != null)"
+    };
   }
 
   // Settings for an S3 origin.
   message S3OriginConfig {
-    bool origin_access_control_enabled = 1; // Use OAC (true) or OAI (false)
-    string origin_access_identity = 2;      // OAI identifier if used
+    bool origin_access_control_enabled = 1;
+    string origin_access_identity = 2 [
+      (buf.validate.field).string.pattern = "^origin-access-identity/cloudfront/[A-Za-z0-9]+$"
+    ];      // OAI identifier if used
+
+    option (buf.validate.message).cel = {
+      id: "oac_oai_exclusive",
+      message: "When origin_access_control_enabled is true, origin_access_identity must be empty; when false, it must be non-empty",
+      expression: "this.origin_access_control_enabled ? this.origin_access_identity.size() == 0 : this.origin_access_identity.size() > 0"
+    };
   }
 
   // Settings for a custom (non-S3) origin.
   message CustomOriginConfig {
-    string protocol_policy = 1;    // http-only | https-only | match-viewer
-    int32 http_port = 2;           // Default 80
-    int32 https_port = 3;          // Default 443
-    string origin_ssl_protocols = 4; // Supported TLS versions
-    int32 origin_read_timeout = 5; // Seconds to wait for origin response
-    int32 origin_keepalive_timeout = 6; // Seconds to keep idle connection
+    string protocol_policy = 1 [
+      (buf.validate.field).string.in = ["http-only", "https-only", "match-viewer"]
+    ];    // http-only | https-only | match-viewer
+    int32 http_port = 2 [
+      (buf.validate.field).int32 = {gte: 1, lte: 65535}
+    ];           // Default 80
+    int32 https_port = 3 [
+      (buf.validate.field).int32 = {gte: 1, lte: 65535}
+    ];          // Default 443
+    string origin_ssl_protocols = 4 [
+      (buf.validate.field).string.max_len = 128
+    ]; // Supported TLS versions
+    int32 origin_read_timeout = 5 [
+      (buf.validate.field).int32 = {gte: 1, lte: 60}
+    ]; // Seconds to wait for origin response
+    int32 origin_keepalive_timeout = 6 [
+      (buf.validate.field).int32 = {gte: 1, lte: 60}
+    ]; // Seconds to keep idle connection
   }
 
   // Path-based cache behavior.
   message CacheBehavior {
-    string path_pattern = 1;            // Pattern (e.g. images/*)
-    string target_origin_id = 2;        // Referenced origin ID
-    ViewerProtocolPolicy viewer_protocol_policy = 3;
-    repeated string allowed_methods = 4; // Forwarded HTTP verbs
+    string path_pattern = 1 [
+      (buf.validate.field).string.min_len = 1
+    ];            // Pattern (e.g. images/*)
+    string target_origin_id = 2 [
+      (buf.validate.field).string.min_len = 1
+    ];        // Referenced origin ID
+    ViewerProtocolPolicy viewer_protocol_policy = 3 [
+      (buf.validate.field).enum.not_in = [0]
+    ];
+    repeated string allowed_methods = 4 [
+      (buf.validate.field).repeated.min_items = 1
+    ]; // Forwarded HTTP verbs
     bool compress = 5;                  // Enable automatic compression
-    string cache_policy_id = 6;         // Cache policy identifier
-    string origin_request_policy_id = 7; // Origin request policy ID
-    string response_headers_policy_id = 8; // Response headers policy ID
-    repeated FunctionAssociation function_associations = 9; // Edge functions
+    string cache_policy_id = 6 [
+      (buf.validate.field).string.max_len = 128
+    ];         // Cache policy identifier
+    string origin_request_policy_id = 7 [
+      (buf.validate.field).string.max_len = 128
+    ]; // Origin request policy ID
+    string response_headers_policy_id = 8 [
+      (buf.validate.field).string.max_len = 128
+    ]; // Response headers policy ID
+    repeated FunctionAssociation function_associations = 9 [
+      (buf.validate.field).repeated.max_items = 10
+    ]; // Edge functions
     bool smooth_streaming = 10;         // Enable Smooth Streaming
   }
 
   // Default cache behavior (no path pattern).
   message DefaultCacheBehavior {
-    string target_origin_id = 1;
-    ViewerProtocolPolicy viewer_protocol_policy = 2;
-    repeated string allowed_methods = 3;
+    string target_origin_id = 1 [
+      (buf.validate.field).string.min_len = 1
+    ];
+    ViewerProtocolPolicy viewer_protocol_policy = 2 [
+      (buf.validate.field).enum.not_in = [0]
+    ];
+    repeated string allowed_methods = 3 [
+      (buf.validate.field).repeated.min_items = 1
+    ];
     bool compress = 4;
-    string cache_policy_id = 5;
-    string origin_request_policy_id = 6;
-    string response_headers_policy_id = 7;
-    repeated FunctionAssociation function_associations = 8;
+    string cache_policy_id = 5 [
+      (buf.validate.field).string.max_len = 128
+    ];
+    string origin_request_policy_id = 6 [
+      (buf.validate.field).string.max_len = 128
+    ];
+    string response_headers_policy_id = 7 [
+      (buf.validate.field).string.max_len = 128
+    ];
+    repeated FunctionAssociation function_associations = 8 [
+      (buf.validate.field).repeated.max_items = 10
+    ];
     bool smooth_streaming = 9;
   }
 
   // Maps a function to a CloudFront event.
   message FunctionAssociation {
-    string function_arn = 1; // ARN of CloudFront Function or Lambda@Edge version
-    EventType event_type = 2; // Triggering event
+    string function_arn = 1 [
+      (buf.validate.field).string = {min_len: 1, pattern: "^arn:[A-Za-z0-9:_-]+$"}
+    ]; // ARN of CloudFront Function or Lambda@Edge version
+    EventType event_type = 2 [
+      (buf.validate.field).enum.not_in = [0]
+    ]; // Triggering event
   }
 
   // HTTPS certificate configuration.
   message ViewerCertificate {
     bool cloudfront_default_certificate = 1; // Use *.cloudfront.net cert
-    string acm_certificate_arn = 2;          // ACM cert ARN (us-east-1)
-    string iam_certificate_id = 3;           // IAM cert ID
-    MinimumProtocolVersion minimum_protocol_version = 4; // TLS floor
+    string acm_certificate_arn = 2 [
+      (buf.validate.field).string.pattern = "^arn:.*acm.*:[A-Za-z0-9:_-]+$"
+    ];          // ACM cert ARN (us-east-1)
+    string iam_certificate_id = 3 [
+      (buf.validate.field).string.max_len = 128
+    ];           // IAM cert ID
+    MinimumProtocolVersion minimum_protocol_version = 4 [
+      (buf.validate.field).enum.not_in = [0]
+    ]; // TLS floor
     bool sni_only = 5;                       // Use SNI (true) or dedicated IP (false)
+
+    option (buf.validate.message).cel = {
+      id: "viewer_cert_logic",
+      message: "If cloudfront_default_certificate is true, ACM and IAM cert IDs must be empty; otherwise exactly one of them must be provided",
+      expression: "this.cloudfront_default_certificate ? (this.acm_certificate_arn.size() == 0 && this.iam_certificate_id.size() == 0) : ((this.acm_certificate_arn.size() > 0) != (this.iam_certificate_id.size() > 0))"
+    };
   }
 
   // Standard access-log configuration.
   message LoggingConfig {
     bool enabled = 1;      // Enable/disable logging
-    string bucket = 2;     // Target S3 bucket (DNS format)
-    string prefix = 3;     // Object key prefix
+    string bucket = 2 [
+      (buf.validate.field).string.pattern = "^[a-z0-9.-]+$"
+    ];     // Target S3 bucket (DNS format)
+    string prefix = 3 [
+      (buf.validate.field).string.max_len = 1024
+    ];     // Object key prefix
     bool include_cookies = 4; // Log cookies
+
+    option (buf.validate.message).cel = {
+      id: "logging_bucket_required",
+      message: "When logging is enabled, bucket must be set; when disabled, bucket must be empty",
+      expression: "this.enabled ? this.bucket.size() > 0 : this.bucket.size() == 0"
+    };
   }
 
   // Distribution-level restrictions wrapper.
@@ -169,7 +278,18 @@ message AwsCloudFrontSpec {
 
   // Geographic restriction definition.
   message GeoRestriction {
-    RestrictionType restriction_type = 1; // None | Whitelist | Blacklist
-    repeated string locations = 2;        // ISO-3166-1 alpha-2 country codes
+    RestrictionType restriction_type = 1 [
+      (buf.validate.field).enum.not_in = [0]
+    ]; // None | Whitelist | Blacklist
+    repeated string locations = 2 [
+      (buf.validate.field).repeated.max_items = 200,
+      (buf.validate.field).string.pattern = "^[A-Z]{2}$"
+    ];        // ISO-3166-1 alpha-2 country codes
+
+    option (buf.validate.message).cel = {
+      id: "geo_locations_rules",
+      message: "Locations must be empty when restriction_type is NONE, otherwise at least one location is required",
+      expression: "this.restriction_type == 1 ? this.locations.size() == 0 : this.locations.size() > 0"
+    };
   }
 }
