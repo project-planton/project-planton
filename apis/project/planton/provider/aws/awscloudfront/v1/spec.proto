@@ -1,0 +1,175 @@
+syntax = "proto3";
+
+package project.planton.provider.aws.awscloudfront.v1;
+
+// Specification for an Amazon CloudFront distribution.
+message AwsCloudFrontSpec {
+  // Friendly name for the distribution.
+  string name = 1;
+
+  // Enables or disables the distribution.
+  bool enabled = 2;
+
+  // Alternative domain names (CNAMEs) for the distribution.
+  repeated string aliases = 3;
+
+  // Optional user-supplied description.
+  string comment = 4;
+
+  // Billing tier that controls which edge locations are used.
+  PriceClass price_class = 5;
+
+  // One or more origin servers from which CloudFront pulls content.
+  repeated Origin origins = 6;
+
+  // Behavior applied when no other cache behavior matches.
+  DefaultCacheBehavior default_cache_behavior = 7;
+
+  // Ordered list of path-based cache behaviors.
+  repeated CacheBehavior ordered_cache_behaviors = 8;
+
+  // SSL/TLS certificate settings for HTTPS viewers.
+  ViewerCertificate viewer_certificate = 9;
+
+  // Access-log delivery to Amazon S3.
+  LoggingConfig logging = 10;
+
+  // Geo restrictions and related rules.
+  Restrictions restrictions = 11;
+
+  // Arbitrary resource tags.
+  map<string, string> tags = 12;
+
+  // --------------------------------------------------------------------------
+  // Enumerations
+  // --------------------------------------------------------------------------
+
+  enum PriceClass {
+    PRICE_CLASS_UNSPECIFIED = 0;
+    PRICE_CLASS_ALL = 1;   // All edge locations
+    PRICE_CLASS_200 = 2;   // Most locations (excludes highest-cost)
+    PRICE_CLASS_100 = 3;   // US, Canada & Europe only
+  }
+
+  enum ViewerProtocolPolicy {
+    VIEWER_PROTOCOL_POLICY_UNSPECIFIED = 0;
+    ALLOW_ALL = 1;          // Accept HTTP or HTTPS
+    HTTPS_ONLY = 2;         // Require HTTPS
+    REDIRECT_TO_HTTPS = 3;  // Redirect HTTP to HTTPS
+  }
+
+  enum EventType {
+    EVENT_TYPE_UNSPECIFIED = 0;
+    VIEWER_REQUEST = 1;
+    VIEWER_RESPONSE = 2;
+    ORIGIN_REQUEST = 3;
+    ORIGIN_RESPONSE = 4;
+  }
+
+  enum MinimumProtocolVersion {
+    MIN_PROTOCOL_VERSION_UNSPECIFIED = 0;
+    SSLV3 = 1;
+    TLSV1 = 2;
+    TLSV1_2016 = 3;
+    TLSV1_1_2016 = 4;
+    TLSV1_2_2018 = 5;
+  }
+
+  enum RestrictionType {
+    RESTRICTION_TYPE_UNSPECIFIED = 0;
+    NONE = 1;       // No geographic restrictions
+    WHITELIST = 2;  // Allow only specified locations
+    BLACKLIST = 3;  // Block specified locations
+  }
+
+  // --------------------------------------------------------------------------
+  // Nested messages
+  // --------------------------------------------------------------------------
+
+  // Origin server definition.
+  message Origin {
+    string id = 1;                    // Unique identifier within the distribution
+    string domain_name = 2;           // DNS name of the origin
+    string origin_path = 3;           // Optional URI path prefix
+    map<string, string> custom_headers = 4; // Headers to forward to the origin
+    S3OriginConfig s3_origin_config = 5;    // S3-specific settings
+    CustomOriginConfig custom_origin_config = 6; // Non-S3 settings
+  }
+
+  // Settings for an S3 origin.
+  message S3OriginConfig {
+    bool origin_access_control_enabled = 1; // Use OAC (true) or OAI (false)
+    string origin_access_identity = 2;      // OAI identifier if used
+  }
+
+  // Settings for a custom (non-S3) origin.
+  message CustomOriginConfig {
+    string protocol_policy = 1;    // http-only | https-only | match-viewer
+    int32 http_port = 2;           // Default 80
+    int32 https_port = 3;          // Default 443
+    string origin_ssl_protocols = 4; // Supported TLS versions
+    int32 origin_read_timeout = 5; // Seconds to wait for origin response
+    int32 origin_keepalive_timeout = 6; // Seconds to keep idle connection
+  }
+
+  // Path-based cache behavior.
+  message CacheBehavior {
+    string path_pattern = 1;            // Pattern (e.g. images/*)
+    string target_origin_id = 2;        // Referenced origin ID
+    ViewerProtocolPolicy viewer_protocol_policy = 3;
+    repeated string allowed_methods = 4; // Forwarded HTTP verbs
+    bool compress = 5;                  // Enable automatic compression
+    string cache_policy_id = 6;         // Cache policy identifier
+    string origin_request_policy_id = 7; // Origin request policy ID
+    string response_headers_policy_id = 8; // Response headers policy ID
+    repeated FunctionAssociation function_associations = 9; // Edge functions
+    bool smooth_streaming = 10;         // Enable Smooth Streaming
+  }
+
+  // Default cache behavior (no path pattern).
+  message DefaultCacheBehavior {
+    string target_origin_id = 1;
+    ViewerProtocolPolicy viewer_protocol_policy = 2;
+    repeated string allowed_methods = 3;
+    bool compress = 4;
+    string cache_policy_id = 5;
+    string origin_request_policy_id = 6;
+    string response_headers_policy_id = 7;
+    repeated FunctionAssociation function_associations = 8;
+    bool smooth_streaming = 9;
+  }
+
+  // Maps a function to a CloudFront event.
+  message FunctionAssociation {
+    string function_arn = 1; // ARN of CloudFront Function or Lambda@Edge version
+    EventType event_type = 2; // Triggering event
+  }
+
+  // HTTPS certificate configuration.
+  message ViewerCertificate {
+    bool cloudfront_default_certificate = 1; // Use *.cloudfront.net cert
+    string acm_certificate_arn = 2;          // ACM cert ARN (us-east-1)
+    string iam_certificate_id = 3;           // IAM cert ID
+    MinimumProtocolVersion minimum_protocol_version = 4; // TLS floor
+    bool sni_only = 5;                       // Use SNI (true) or dedicated IP (false)
+  }
+
+  // Standard access-log configuration.
+  message LoggingConfig {
+    bool enabled = 1;      // Enable/disable logging
+    string bucket = 2;     // Target S3 bucket (DNS format)
+    string prefix = 3;     // Object key prefix
+    bool include_cookies = 4; // Log cookies
+  }
+
+  // Distribution-level restrictions wrapper.
+  message Restrictions {
+    GeoRestriction geo_restriction = 1; // Country-based rules
+  }
+
+  // Geographic restriction definition.
+  message GeoRestriction {
+    RestrictionType restriction_type = 1; // None | Whitelist | Blacklist
+    repeated string locations = 2;        // ISO-3166-1 alpha-2 country codes
+  }
+}
