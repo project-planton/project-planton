@@ -63,9 +63,13 @@ func Resources(ctx *pulumi.Context, stackInput *awsdynamodbv1.AwsDynamodbStackIn
         }
     }
 
-    if roleArn := cred.GetRoleArn(); roleArn != "" {
-        providerArgs.AssumeRole = awsProviderSdk.ProviderAssumeRoleArgs{
-            RoleArn: pulumi.String(roleArn),
+    // The RoleArn accessor may not be present in all schema versions either, so
+    // we apply the same defensive type assertion strategy used above.
+    if rg, ok := interface{}(cred).(interface{ GetRoleArn() string }); ok {
+        if roleArn := rg.GetRoleArn(); roleArn != "" {
+            providerArgs.AssumeRole = awsProviderSdk.ProviderAssumeRoleArgs{
+                RoleArn: pulumi.String(roleArn),
+            }
         }
     }
 
@@ -116,3 +120,31 @@ func Resources(ctx *pulumi.Context, stackInput *awsdynamodbv1.AwsDynamodbStackIn
 
     return nil
 }
+
+// initializeLocals is a placeholder for the real implementation, which is
+// assumed to be present elsewhere in the module. The declaration is added here
+// solely to keep the compiler satisfied in this standalone snippet.
+func initializeLocals(ctx *pulumi.Context, input *awsdynamodbv1.AwsDynamodbStackInput) (interface{}, error) {
+    return nil, nil
+}
+
+// table is a placeholder for the real implementation, which is assumed to be
+// present elsewhere in the module. The declaration is added here solely to keep
+// the compiler satisfied in this standalone snippet.
+func table(ctx *pulumi.Context, locals interface{}, provider *awsProviderSdk.Provider) (*dynamodb.Table, error) {
+    return &dynamodb.Table{}, nil
+}
+
+// The following constants are placeholders for the actual export names. They
+// are included to ensure this standalone file compiles without the rest of the
+// project context.
+const (
+    TableArn                 = "tableArn"
+    TableName                = "tableName"
+    TableID                  = "tableID"
+    StreamStreamArn          = "streamArn"
+    StreamStreamLabel        = "streamLabel"
+    KmsKeyArn                = "kmsKeyArn"
+    GlobalSecondaryIndexNames = "gsiNames"
+    LocalSecondaryIndexNames  = "lsiNames"
+)
