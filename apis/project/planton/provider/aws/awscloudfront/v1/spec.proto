@@ -4,6 +4,8 @@ import "buf/validate/validate.proto";
 
 package project.planton.provider.aws.awscloudfront.v1;
 
+option go_package = "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awscloudfront/v1;awscloudfrontv1";
+
 // Specification for an Amazon CloudFront distribution.
 message AwsCloudFrontSpec {
   // Friendly name for the distribution.
