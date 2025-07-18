@@ -998,11 +998,11 @@ const file_project_planton_provider_aws_awsdynamodb_v1_spec_proto_rawDesc = "" +
 	"\x0fAwsDynamodbSpec\x12%\n" +
 	"\n" +
 	"table_name\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\ttableName\x12X\n" +
-	"\fbilling_mode\x18\x02 \x01(\tB5\xbaH#\xd8\x01\x02r\x1eR\vPROVISIONEDR\x0fPAY_PER_REQUEST\x8a\xa6\x1d\vPROVISIONEDR\vbillingMode\x12i\n" +
+	"\fbilling_mode\x18\x02 \x01(\tB5\xbaH#\xd8\x01\x01r\x1eR\vPROVISIONEDR\x0fPAY_PER_REQUEST\x8a\xa6\x1d\vPROVISIONEDR\vbillingMode\x12i\n" +
 	"\bhash_key\x18\x03 \x01(\v2F.project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbTableAttributeB\x06\xbaH\x03\xc8\x01\x01R\ahashKey\x12c\n" +
 	"\trange_key\x18\x04 \x01(\v2F.project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbTableAttributeR\brangeKey\x12%\n" +
 	"\x0eenable_streams\x18\x05 \x01(\bR\renableStreams\x12g\n" +
-	"\x10stream_view_type\x18\x06 \x01(\tB=\xbaH:\xd8\x01\x02r5R\tNEW_IMAGER\tOLD_IMAGER\x12NEW_AND_OLD_IMAGESR\tKEYS_ONLYR\x0estreamViewType\x12\x87\x01\n" +
+	"\x10stream_view_type\x18\x06 \x01(\tB=\xbaH:\xd8\x01\x01r5R\tNEW_IMAGER\tOLD_IMAGER\x12NEW_AND_OLD_IMAGESR\tKEYS_ONLYR\x0estreamViewType\x12\x87\x01\n" +
 	"\x16server_side_encryption\x18\a \x01(\v2Q.project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbTableServerSideEncryptionR\x14serverSideEncryption\x12\x85\x01\n" +
 	"\x16point_in_time_recovery\x18\b \x01(\v2P.project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbTablePointInTimeRecoveryR\x13pointInTimeRecovery\x12R\n" +
 	"\x03ttl\x18\t \x01(\v2@.project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbTableTtlR\x03ttl\x12h\n" +

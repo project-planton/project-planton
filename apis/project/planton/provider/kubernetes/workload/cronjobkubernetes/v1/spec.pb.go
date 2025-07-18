@@ -285,7 +285,7 @@ const file_project_planton_provider_kubernetes_workload_cronjobkubernetes_v1_spe
 	"\x0350m\x12\x05100MiR\tresources\x12u\n" +
 	"\x03env\x18\x03 \x01(\v2c.project.planton.provider.kubernetes.workload.cronjobkubernetes.v1.CronJobKubernetesContainerAppEnvR\x03env\x12\"\n" +
 	"\bschedule\x18\x04 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bschedule\x12G\n" +
-	"\x19starting_deadline_seconds\x18\x05 \x01(\x04B\v\xbaH\x03\xd8\x01\x02\x8a\xa6\x1d\x010R\x17startingDeadlineSeconds\x12V\n" +
+	"\x19starting_deadline_seconds\x18\x05 \x01(\x04B\v\xbaH\x03\xd8\x01\x01\x8a\xa6\x1d\x010R\x17startingDeadlineSeconds\x12V\n" +
 	"\x12concurrency_policy\x18\x06 \x01(\tB'\xbaH\x1ar\x18R\x05AllowR\x06ForbidR\aReplace\x8a\xa6\x1d\x06ForbidR\x11concurrencyPolicy\x12#\n" +
 	"\asuspend\x18\a \x01(\bB\t\x8a\xa6\x1d\x05falseR\asuspend\x12H\n" +
 	"\x1dsuccessful_jobs_history_limit\x18\b \x01(\rB\x05\x8a\xa6\x1d\x013R\x1asuccessfulJobsHistoryLimit\x12@\n" +

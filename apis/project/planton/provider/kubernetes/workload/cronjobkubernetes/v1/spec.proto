@@ -60,7 +60,7 @@ message CronJobKubernetesSpec {
    */
   uint64 starting_deadline_seconds = 5 [
     (project.planton.shared.options.default) = "0",
-    (buf.validate.field).ignore = IGNORE_IF_DEFAULT_VALUE
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE
   ];
 
   /**

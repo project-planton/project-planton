@@ -28,7 +28,7 @@ message AwsEcrRepoSpec {
   // a customer-managed key (CMK).
   string encryption_type = 3 [
     (project.planton.shared.options.default) = "AES256",
-    (buf.validate.field).ignore = IGNORE_IF_DEFAULT_VALUE,
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
     (buf.validate.field).string = {in: ["AES256", "KMS"]}
   ];
 

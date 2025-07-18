@@ -1050,7 +1050,7 @@ const file_project_planton_provider_aws_awsrdsinstance_v1_spec_proto_rawDesc = "
 	"\x11option_group_name\x18\x1a \x01(\tR\x0foptionGroupName\x12i\n" +
 	"\aoptions\x18\x1b \x03(\v2O.project.planton.provider.aws.awsrdsinstance.v1.AwsRdsInstanceOptionGroupOptionR\aoptions\x12\x1c\n" +
 	"\tisMultiAz\x18\x1c \x01(\bR\tisMultiAz\x12I\n" +
-	"\fstorage_type\x18\x1d \x01(\tB&\xbaH#\xd8\x01\x02r\x1eR\x03gp2R\x03gp3R\x03io1R\x03io2R\bstandardR\vstorageType\x12\x12\n" +
+	"\fstorage_type\x18\x1d \x01(\tB&\xbaH#\xd8\x01\x01r\x1eR\x03gp2R\x03gp3R\x03io1R\x03io2R\bstandardR\vstorageType\x12\x12\n" +
 	"\x04iops\x18\x1e \x01(\x05R\x04iops\x12-\n" +
 	"\x12storage_throughput\x18\x1f \x01(\x05R\x11storageThroughput\x124\n" +
 	"\x16is_publicly_accessible\x18  \x01(\bR\x14isPubliclyAccessible\x12/\n" +
@@ -1074,7 +1074,7 @@ const file_project_planton_provider_aws_awsrdsinstance_v1_spec_proto_rawDesc = "
 	"monitoring\x12\x8a\x01\n" +
 	"\x18restore_to_point_in_time\x181 \x01(\v2R.project.planton.provider.aws.awsrdsinstance.v1.AwsRdsInstanceRestoreToPointInTimeR\x14restoreToPointInTime\x12\x15\n" +
 	"\x06vpc_id\x182 \x01(\tR\x05vpcId\x12o\n" +
-	"\rlicense_model\x183 \x01(\tBJ\xbaHG\xd8\x01\x02rBR\x10license-includedR\x16bring-your-own-licenseR\x16general-public-licenseR\flicenseModel\"t\n" +
+	"\rlicense_model\x183 \x01(\tBJ\xbaHG\xd8\x01\x01rBR\x10license-includedR\x16bring-your-own-licenseR\x16general-public-licenseR\flicenseModel\"t\n" +
 	"%AwsRdsInstanceParameterGroupParameter\x12!\n" +
 	"\fapply_method\x18\x01 \x01(\tR\vapplyMethod\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x14\n" +

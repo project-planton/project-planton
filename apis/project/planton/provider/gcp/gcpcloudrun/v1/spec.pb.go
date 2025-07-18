@@ -478,7 +478,7 @@ const file_project_planton_provider_gcp_gcpcloudrun_v1_spec_proto_rawDesc = "" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xef\x02\n" +
 	"\x0eGcpCloudRunDns\x12\x18\n" +
 	"\aenabled\x18\x01 \x01(\bR\aenabled\x12p\n" +
-	"\thostnames\x18\x02 \x03(\tBR\xbaHO\xd8\x01\x02\x92\x01I\x18\x01\"ErC2A^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$R\thostnames\x12!\n" +
+	"\thostnames\x18\x02 \x03(\tBR\xbaHO\xd8\x01\x01\x92\x01I\x18\x01\"ErC2A^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$R\thostnames\x12!\n" +
 	"\fmanaged_zone\x18\x03 \x01(\tR\vmanagedZone:\xad\x01\xbaH\xa9\x01\x1a\xa6\x01\n" +
 	"\x1bdns.enabled-requires-fields\x12?hostnames and managed_zone must be set when dns.enabled is true\x1aF!this.enabled || (size(this.hostnames) > 0 && this.managed_zone != '')B\xfa\x02\n" +
 	"/com.project.planton.provider.gcp.gcpcloudrun.v1B\tSpecProtoP\x01Zigithub.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpcloudrun/v1;gcpcloudrunv1\xa2\x02\x05PPPGG\xaa\x02+Project.Planton.Provider.Gcp.Gcpcloudrun.V1\xca\x02+Project\\Planton\\Provider\\Gcp\\Gcpcloudrun\\V1\xe2\x027Project\\Planton\\Provider\\Gcp\\Gcpcloudrun\\V1\\GPBMetadata\xea\x020Project::Planton::Provider::Gcp::Gcpcloudrun::V1b\x06proto3"

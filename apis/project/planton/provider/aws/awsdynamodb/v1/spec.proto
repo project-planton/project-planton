@@ -18,7 +18,7 @@ message AwsDynamodbSpec {
   // to `PROVISIONED`.
   string billing_mode = 2 [
     (project.planton.shared.options.default) = "PROVISIONED",
-    (buf.validate.field).ignore = IGNORE_IF_DEFAULT_VALUE,
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
     (buf.validate.field).string = {
       in: ["PROVISIONED", "PAY_PER_REQUEST"]
     }
@@ -39,7 +39,7 @@ message AwsDynamodbSpec {
   // is written to the table's stream. Valid values are
   // `KEYS_ONLY`, `NEW_IMAGE`, `OLD_IMAGE`, `NEW_AND_OLD_IMAGES`.
   string stream_view_type = 6 [
-    (buf.validate.field).ignore = IGNORE_IF_DEFAULT_VALUE,
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
     (buf.validate.field).string = {
       in: ["NEW_IMAGE", "OLD_IMAGE", "NEW_AND_OLD_IMAGES", "KEYS_ONLY"]
     }

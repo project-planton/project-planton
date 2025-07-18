@@ -95,8 +95,8 @@ const file_project_planton_provider_confluent_confluentkafka_v1_spec_proto_rawDe
 	"\n" +
 	"?project/planton/provider/confluent/confluentkafka/v1/spec.proto\x124project.planton.provider.confluent.confluentkafka.v1\x1a\x1bbuf/validate/validate.proto\"\xb9\x01\n" +
 	"\x12ConfluentKafkaSpec\x12/\n" +
-	"\x05cloud\x18\x01 \x01(\tB\x19\xbaH\x16\xd8\x01\x02r\x11R\x03AWSR\x05AZURER\x03GCPR\x05cloud\x12P\n" +
-	"\favailability\x18\x02 \x01(\tB,\xbaH)\xd8\x01\x02r$R\vSINGLE_ZONER\n" +
+	"\x05cloud\x18\x01 \x01(\tB\x19\xbaH\x16\xd8\x01\x01r\x11R\x03AWSR\x05AZURER\x03GCPR\x05cloud\x12P\n" +
+	"\favailability\x18\x02 \x01(\tB,\xbaH)\xd8\x01\x01r$R\vSINGLE_ZONER\n" +
 	"MULTI_ZONER\x03LOWR\x04HIGHR\favailability\x12 \n" +
 	"\venvironment\x18\x03 \x01(\tR\venvironmentB\xb3\x03\n" +
 	"8com.project.planton.provider.confluent.confluentkafka.v1B\tSpecProtoP\x01Zugithub.com/project-planton/project-planton/apis/project/planton/provider/confluent/confluentkafka/v1;confluentkafkav1\xa2\x02\x05PPPCC\xaa\x024Project.Planton.Provider.Confluent.Confluentkafka.V1\xca\x024Project\\Planton\\Provider\\Confluent\\Confluentkafka\\V1\xe2\x02@Project\\Planton\\Provider\\Confluent\\Confluentkafka\\V1\\GPBMetadata\xea\x029Project::Planton::Provider::Confluent::Confluentkafka::V1b\x06proto3"

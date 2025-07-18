@@ -9,7 +9,7 @@ message ConfluentKafkaSpec {
   //cloud provider
   //https://www.pulumi.com/registry/packages/confluentcloud/api-docs/kafkacluster/#cloud_yaml
   string cloud = 1 [
-    (buf.validate.field).ignore = IGNORE_IF_DEFAULT_VALUE,
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
     (buf.validate.field).string = {
       in: ["AWS", "AZURE", "GCP"]
     }
@@ -18,7 +18,7 @@ message ConfluentKafkaSpec {
   //availability
   //https://www.pulumi.com/registry/packages/confluentcloud/api-docs/kafkacluster/#availability_yaml
   string availability = 2 [
-    (buf.validate.field).ignore = IGNORE_IF_DEFAULT_VALUE,
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
     (buf.validate.field).string = {
       in: ["SINGLE_ZONE", "MULTI_ZONE", "LOW", "HIGH"]
     }

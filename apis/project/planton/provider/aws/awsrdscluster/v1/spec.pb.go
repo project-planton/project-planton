@@ -797,7 +797,7 @@ const file_project_planton_provider_aws_awsrdscluster_v1_spec_proto_rawDesc = ""
 	"\x11AwsRdsClusterSpec\x12R\n" +
 	"\x06engine\x18\x01 \x01(\tB:\xbaH7\xc8\x01\x01r2R\faurora-mysqlR\x11aurora-postgresqlR\x05mysqlR\bpostgresR\x06engine\x12-\n" +
 	"\x0eengine_version\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\rengineVersion\x12u\n" +
-	"\vengine_mode\x18\x03 \x01(\tBT\xbaHB\xd8\x01\x02r=R\x06globalR\vmultimasterR\rparallelqueryR\vprovisionedR\n" +
+	"\vengine_mode\x18\x03 \x01(\tBT\xbaHB\xd8\x01\x01r=R\x06globalR\vmultimasterR\rparallelqueryR\vprovisionedR\n" +
 	"serverless\x8a\xa6\x1d\vprovisionedR\n" +
 	"engineMode\x12-\n" +
 	"\x0ecluster_family\x18\x04 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\rclusterFamily\x12+\n" +
@@ -830,7 +830,7 @@ const file_project_planton_provider_aws_awsrdscluster_v1_spec_proto_rawDesc = ""
 	"\x1fenabled_cloudwatch_logs_exports\x18\x1b \x03(\tR\x1cenabledCloudwatchLogsExports\x12G\n" +
 	" enhanced_monitoring_role_enabled\x18\x1c \x01(\bR\x1denhancedMonitoringRoleEnabled\x12D\n" +
 	"\x1eenhanced_monitoring_attributes\x18\x1d \x03(\tR\x1cenhancedMonitoringAttributes\x12N\n" +
-	"\x17rds_monitoring_interval\x18\x1e \x01(\x05B\x16\xbaH\x13\xd8\x01\x02\x1a\x0e0\x000\x010\x050\n" +
+	"\x17rds_monitoring_interval\x18\x1e \x01(\x05B\x16\xbaH\x13\xd8\x01\x01\x1a\x0e0\x000\x010\x050\n" +
 	"0\x0f0\x1e0<R\x15rdsMonitoringInterval\x12.\n" +
 	"\x13skip_final_snapshot\x18\x1f \x01(\bR\x11skipFinalSnapshot\x12/\n" +
 	"\x13deletion_protection\x18  \x01(\bR\x12deletionProtection\x12/\n" +
@@ -861,8 +861,8 @@ const file_project_planton_provider_aws_awsrdscluster_v1_spec_proto_rawDesc = ""
 	"auto_pause\x18\x01 \x01(\bR\tautoPause\x12!\n" +
 	"\fmax_capacity\x18\x02 \x01(\x05R\vmaxCapacity\x12!\n" +
 	"\fmin_capacity\x18\x03 \x01(\x05R\vminCapacity\x12H\n" +
-	"\x18seconds_until_auto_pause\x18\x04 \x01(\x05B\x0f\xbaH\f\xd8\x01\x02\x1a\a\x18\x80\xa3\x05(\xac\x02R\x15secondsUntilAutoPause\x12a\n" +
-	"\x0etimeout_action\x18\x05 \x01(\tB:\xbaH7\xd8\x01\x02r2R\x18ForceApplyCapacityChangeR\x16RollbackCapacityChangeR\rtimeoutAction\"t\n" +
+	"\x18seconds_until_auto_pause\x18\x04 \x01(\x05B\x0f\xbaH\f\xd8\x01\x01\x1a\a\x18\x80\xa3\x05(\xac\x02R\x15secondsUntilAutoPause\x12a\n" +
+	"\x0etimeout_action\x18\x05 \x01(\tB:\xbaH7\xd8\x01\x01r2R\x18ForceApplyCapacityChangeR\x16RollbackCapacityChangeR\rtimeoutAction\"t\n" +
 	",AwsRdsClusterServerless2ScalingConfiguration\x12!\n" +
 	"\fmax_capacity\x18\x01 \x01(\x01R\vmaxCapacity\x12!\n" +
 	"\fmin_capacity\x18\x02 \x01(\x01R\vminCapacity\"s\n" +

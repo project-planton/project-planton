@@ -126,7 +126,7 @@ const file_project_planton_provider_aws_awsecrrepo_v1_spec_proto_rawDesc = "" +
 	"\x0frepository_name\x18\x01 \x01(\tB\r\xbaH\n" +
 	"\xc8\x01\x01r\x05\x10\x02\x18\x80\x02R\x0erepositoryName\x12'\n" +
 	"\x0fimage_immutable\x18\x02 \x01(\bR\x0eimageImmutable\x12H\n" +
-	"\x0fencryption_type\x18\x03 \x01(\tB\x1f\xbaH\x12\xd8\x01\x02r\rR\x06AES256R\x03KMS\x8a\xa6\x1d\x06AES256R\x0eencryptionType\x12\x1c\n" +
+	"\x0fencryption_type\x18\x03 \x01(\tB\x1f\xbaH\x12\xd8\x01\x01r\rR\x06AES256R\x03KMS\x8a\xa6\x1d\x06AES256R\x0eencryptionType\x12\x1c\n" +
 	"\n" +
 	"kms_key_id\x18\x04 \x01(\tR\bkmsKeyId\x12!\n" +
 	"\fforce_delete\x18\x05 \x01(\bR\vforceDeleteB\xf3\x02\n" +

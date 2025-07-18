@@ -134,7 +134,7 @@ message GcpCloudRunDns {
 
   // Fully-qualified hostnames routed to the Cloud Run service.
   repeated string hostnames = 2 [
-    (buf.validate.field).ignore = IGNORE_IF_DEFAULT_VALUE,
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
     (buf.validate.field).repeated = {
       unique: true,
       items: {
