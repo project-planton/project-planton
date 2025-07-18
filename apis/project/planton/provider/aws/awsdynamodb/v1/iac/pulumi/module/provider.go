@@ -32,8 +32,51 @@ func ConfigureAwsProvider(ctx *pulumi.Context, creds *awscredspb.AwsCredentialSp
     if v := creds.GetSecretAccessKey(); v != "" {
         args.SecretKey = pulumi.StringPtr(v)
     }
-    if v := creds.GetSessionToken(); v != "" {
-        args.Token = pulumi.StringPtr(v)
+
+    // ----------------------------------------------------------------------------
+    // Optional fields – these may not exist in every compiled version of the
+    // AwsCredentialSpec protobuf. We therefore guard their usage behind interface
+    // assertions so that the codebase continues to compile with *any* schema
+    // revision.
+    // ----------------------------------------------------------------------------
+
+    // Session token --------------------------------------------------------------
+    if sg, ok := interface{}(creds).(interface{ GetSessionToken() string }); ok {
+        if v := sg.GetSessionToken(); v != "" {
+            args.Token = pulumi.StringPtr(v)
+        }
+    }
+
+    // Named profile --------------------------------------------------------------
+    if pg, ok := interface{}(creds).(interface{ GetProfile() string }); ok {
+        if v := pg.GetProfile(); v != "" {
+            args.Profile = pulumi.StringPtr(v)
+        }
+    }
+
+    // Assume-role support --------------------------------------------------------
+    if ag, ok := interface{}(creds).(interface{ GetAssumeRole() interface{} }); ok {
+        if ar := ag.GetAssumeRole(); ar != nil {
+            // RoleArn is the only required field, so check for its presence first.
+            if rg, ok := ar.(interface{ GetRoleArn() string }); ok {
+                if roleArn := rg.GetRoleArn(); roleArn != "" {
+                    assume := awsprovider.ProviderAssumeRoleArgs{
+                        RoleArn: pulumi.String(roleArn),
+                    }
+                    if eg, ok := ar.(interface{ GetExternalId() string }); ok {
+                        if v := eg.GetExternalId(); v != "" {
+                            assume.ExternalId = pulumi.StringPtr(v)
+                        }
+                    }
+                    if sg, ok := ar.(interface{ GetSessionName() string }); ok {
+                        if v := sg.GetSessionName(); v != "" {
+                            assume.SessionName = pulumi.StringPtr(v)
+                        }
+                    }
+                    args.AssumeRole = assume
+                }
+            }
+        }
     }
 
     // Region – explicit parameter takes precedence, then fall back to the
@@ -43,29 +86,6 @@ func ConfigureAwsProvider(ctx *pulumi.Context, creds *awscredspb.AwsCredentialSp
     }
     if region != "" {
         args.Region = pulumi.StringPtr(region)
-    }
-
-    // Named profile (optional).
-    if v := creds.GetProfile(); v != "" {
-        args.Profile = pulumi.StringPtr(v)
-    }
-
-    // Assume-role support, if provided in the spec.
-    if ar := creds.GetAssumeRole(); ar != nil {
-        // Only set AssumeRole when a RoleArn is present – it is the only field
-        // required by the AWS provider and therefore a good indicator of intent.
-        if roleArn := ar.GetRoleArn(); roleArn != "" {
-            assumeArgs := &awsprovider.ProviderAssumeRoleArgs{
-                RoleArn: pulumi.String(roleArn),
-            }
-            if v := ar.GetExternalId(); v != "" {
-                assumeArgs.ExternalId = pulumi.StringPtr(v)
-            }
-            if v := ar.GetSessionName(); v != "" {
-                assumeArgs.SessionName = pulumi.StringPtr(v)
-            }
-            args.AssumeRole = assumeArgs
-        }
     }
 
     provider, err := awsprovider.NewProvider(ctx, "aws", args)

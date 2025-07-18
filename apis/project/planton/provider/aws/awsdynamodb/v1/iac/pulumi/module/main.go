@@ -42,29 +42,19 @@ func Resources(ctx *pulumi.Context, stackInput *awsdynamodbv1.AwsDynamodbStackIn
         providerArgs.SecretKey = pulumi.StringPtr(secretKey)
     }
 
-    // The SessionToken field was not found in the generated AwsCredentialSpec
-    // code for certain protobuf versions. To stay compatible across multiple
-    // schema revisions we attempt a type-assertion against an interface that
-    // declares the accessor. If the compiled message implements the method we
-    // use it, otherwise we just skip setting the Token argument.
+    // The SessionToken field may not exist in all schema versions.
     if sg, ok := interface{}(cred).(interface{ GetSessionToken() string }); ok {
         if session := sg.GetSessionToken(); session != "" {
             providerArgs.Token = pulumi.StringPtr(session)
         }
     }
 
-    // Similar to SessionToken above, the Profile accessor might not be present
-    // in all generated versions of the AwsCredentialSpec protobuf. We therefore
-    // guard its usage behind an interface type assertion to keep the codebase
-    // compatible with every schema variation.
+    // Profile, RoleArn – also optional depending on proto version.
     if pg, ok := interface{}(cred).(interface{ GetProfile() string }); ok {
         if profile := pg.GetProfile(); profile != "" {
             providerArgs.Profile = pulumi.StringPtr(profile)
         }
     }
-
-    // The RoleArn accessor may not be present in all schema versions either, so
-    // we apply the same defensive type assertion strategy used above.
     if rg, ok := interface{}(cred).(interface{ GetRoleArn() string }); ok {
         if roleArn := rg.GetRoleArn(); roleArn != "" {
             providerArgs.AssumeRole = awsProviderSdk.ProviderAssumeRoleArgs{
@@ -97,7 +87,6 @@ func Resources(ctx *pulumi.Context, stackInput *awsdynamodbv1.AwsDynamodbStackIn
     // ---------------------------------------------------------------------
     // 4. Export all outputs requested by the StackOutputs proto.
     // ---------------------------------------------------------------------
-    // Required scalar outputs.
     ctx.Export(TableArn, table.Arn)
     ctx.Export(TableName, table.Name)
     ctx.Export(TableID, table.ID())
@@ -106,12 +95,9 @@ func Resources(ctx *pulumi.Context, stackInput *awsdynamodbv1.AwsDynamodbStackIn
     ctx.Export(StreamStreamArn, table.StreamArn)
     ctx.Export(StreamStreamLabel, table.StreamLabel)
 
-    // Optional KMS key ARN – falls back to an empty string when not applicable.
-    if table.KmsKeyArn != nil {
-        ctx.Export(KmsKeyArn, table.KmsKeyArn)
-    } else {
-        ctx.Export(KmsKeyArn, pulumi.String(""))
-    }
+    // Optional KMS key ARN – not available in older provider versions, so we
+    // export an empty string to keep the output stable.
+    ctx.Export(KmsKeyArn, pulumi.String("").ToStringOutput())
 
     // Index name lists – default to empty arrays so callers can rely on the
     // outputs being present regardless of the requested configuration.

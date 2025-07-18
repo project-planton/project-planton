@@ -25,17 +25,15 @@ func buildOutputs(table *dynamodb.Table) map[string]pulumi.Output {
         TableArn:  table.Arn,
         TableName: table.Name,
         TableID:   table.ID(),
-    }
 
-    // Optional / nullable attributes ------------------------------------------------
-    if table.StreamArn != nil {
-        outputs[StreamStreamArn] = table.StreamArn
-    }
-    if table.StreamLabel != nil {
-        outputs[StreamStreamLabel] = table.StreamLabel
-    }
-    if table.KmsKeyArn != nil {
-        outputs[KmsKeyArn] = table.KmsKeyArn
+        // Stream attributes are always present as Outputs; callers can check
+        // for emptiness if they care whether streams are enabled.
+        StreamStreamArn:   table.StreamArn,
+        StreamStreamLabel: table.StreamLabel,
+
+        // KMS key ARN is not available in every provider version – export an
+        // empty string so the key is always present.
+        KmsKeyArn: pulumi.String("").ToStringOutput(),
     }
 
     // Global Secondary Index names ---------------------------------------------------

@@ -33,11 +33,11 @@ func table(
     // ---------------------------------------------------------------------
     // Attribute definitions ------------------------------------------------
     // ---------------------------------------------------------------------
-    var attrDefs dynamodb.TableAttributeDefinitionArray
+    var attrDefs dynamodb.TableAttributeArray
     for _, a := range spec.GetAttributeDefinitions() {
-        attrDefs = append(attrDefs, dynamodb.TableAttributeDefinitionArgs{
-            AttributeName: pulumi.String(a.GetAttributeName()),
-            AttributeType: pulumi.String(attributeTypeToString(a.GetAttributeType())),
+        attrDefs = append(attrDefs, dynamodb.TableAttributeArgs{
+            Name: pulumi.String(a.GetAttributeName()),
+            Type: pulumi.String(attributeTypeToString(a.GetAttributeType())),
         })
     }
 
@@ -51,16 +51,14 @@ func table(
     // Billing ‑ provisioned vs. on-demand ----------------------------------
     // ---------------------------------------------------------------------
     var (
-        billingMode               *string
+        billingMode               string
         readCapacity, writeCapacity pulumi.IntPtrInput
     )
     switch spec.GetBillingMode() {
     case awsdynamodbpb.BillingMode_PAY_PER_REQUEST:
-        mode := "PAY_PER_REQUEST"
-        billingMode = &mode
+        billingMode = "PAY_PER_REQUEST"
     default: // PROVISIONED is already validated in the spec.
-        mode := "PROVISIONED"
-        billingMode = &mode
+        billingMode = "PROVISIONED"
         if pt := spec.GetProvisionedThroughput(); pt != nil {
             readCapacity = pulumi.Int(int(pt.GetReadCapacityUnits()))
             writeCapacity = pulumi.Int(int(pt.GetWriteCapacityUnits()))
@@ -175,18 +173,18 @@ func table(
     // Assemble the final TableArgs ----------------------------------------
     // ---------------------------------------------------------------------
     args := &dynamodb.TableArgs{
-        Name:                  pulumi.String(spec.GetTableName()),
-        Attributes:            attrDefs,
-        HashKey:               pulumi.String(hashKey),
-        BillingMode:           pulumi.StringPtr(billingMode),
-        StreamEnabled:         streamEnabled,
-        StreamViewType:        streamViewType,
-        Tags:                  tags,
+        Name:                   pulumi.String(spec.GetTableName()),
+        Attributes:             attrDefs,
+        HashKey:                pulumi.String(hashKey),
+        BillingMode:            pulumi.StringPtr(billingMode),
+        StreamEnabled:          streamEnabled,
+        StreamViewType:         streamViewType,
+        Tags:                   tags,
         GlobalSecondaryIndexes: gsis,
         LocalSecondaryIndexes:  lsis,
-        Ttl:                   ttl,
-        ServerSideEncryption:  sse,
-        PointInTimeRecovery:   pitr,
+        Ttl:                    ttl,
+        ServerSideEncryption:   sse,
+        PointInTimeRecovery:    pitr,
     }
     if hasRange {
         args.RangeKey = pulumi.String(rangeKey)
