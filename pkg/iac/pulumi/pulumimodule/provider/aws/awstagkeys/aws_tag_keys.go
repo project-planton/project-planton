@@ -5,6 +5,7 @@ import (
 )
 
 var (
+	Name         = "Name"
 	Resource     = labelkeys.WithDomainPrefix("resource")
 	Organization = labelkeys.WithDomainPrefix("organization")
 	Environment  = labelkeys.WithDomainPrefix("environment")
