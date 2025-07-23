@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+package project.planton.provider.digitalocean.digitaloceancertificate.v1;
+
+import "buf/validate/validate.proto";
+import "project/planton/provider/digitalocean/digitaloceancertificate/v1/spec.proto";
+import "project/planton/provider/digitalocean/digitaloceancertificate/v1/stack_outputs.proto";
+import "project/planton/shared/status.proto";
+import "project/planton/shared/metadata.proto";
+
+// digital-ocean-certificate
+message DigitalOceanCertificate {
+  //api-version
+  string api_version = 1[
+    (buf.validate.field).string.const = 'digital-ocean.project-planton.org/v1'
+  ];
+
+  //resource-kind
+  string kind = 2 [
+    (buf.validate.field).string.const = 'DigitalOceanCertificate'
+  ];
+
+  //metadata
+  project.planton.shared.ApiResourceMetadata metadata = 3 [
+    (buf.validate.field).required = true
+  ];
+
+  //spec
+  DigitalOceanCertificateSpec spec = 4 [
+    (buf.validate.field).required = true
+  ];
+
+  //status
+  DigitalOceanCertificateStatus status = 5;
+}
+
+// digital-ocean-certificate status
+message DigitalOceanCertificateStatus {
+  //lifecycle
+  project.planton.shared.ApiResourceLifecycle lifecycle = 99;
+
+  //audit-info
+  project.planton.shared.ApiResourceAudit audit = 98;
+
+  //stack-job id
+  string stack_job_id = 97;
+
+  //stack-outputs
+  //  digital-ocean-certificate stack-outputs
+  DigitalOceanCertificateStackOutputs outputs = 1;
+}

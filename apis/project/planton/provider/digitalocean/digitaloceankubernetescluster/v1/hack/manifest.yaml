@@ -13,3 +13,9 @@ spec:
   disableSurgeUpgrade: false         # Keep surge nodes for zero‑downtime upgrades
   tags:
     - project-planton
+  defaultNodePool:
+    size: s-2vcpu-4gb
+    nodeCount: 3
+    autoScale: true
+    minNodes: 1
+    maxNodes: 5

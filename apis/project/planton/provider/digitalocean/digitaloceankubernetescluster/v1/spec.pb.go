@@ -55,9 +55,11 @@ type DigitalOceanKubernetesClusterSpec struct {
 	DisableSurgeUpgrade bool `protobuf:"varint,7,opt,name=disable_surge_upgrade,json=disableSurgeUpgrade,proto3" json:"disable_surge_upgrade,omitempty"`
 	// A list of tags to apply to the cluster.
 	// Tags help organize and identify the cluster within DigitalOcean.
-	Tags          []string `protobuf:"bytes,8,rep,name=tags,proto3" json:"tags,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	Tags []string `protobuf:"bytes,8,rep,name=tags,proto3" json:"tags,omitempty"`
+	// Reference to the default node pool for the cluster.
+	DefaultNodePool *DigitalOceanKubernetesClusterDefaultNodePool `protobuf:"bytes,9,opt,name=default_node_pool,json=defaultNodePool,proto3" json:"default_node_pool,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *DigitalOceanKubernetesClusterSpec) Reset() {
@@ -146,11 +148,105 @@ func (x *DigitalOceanKubernetesClusterSpec) GetTags() []string {
 	return nil
 }
 
+func (x *DigitalOceanKubernetesClusterSpec) GetDefaultNodePool() *DigitalOceanKubernetesClusterDefaultNodePool {
+	if x != nil {
+		return x.DefaultNodePool
+	}
+	return nil
+}
+
+// DigitalOcean Kubernetes Cluster Default Node Pool
+type DigitalOceanKubernetesClusterDefaultNodePool struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The slug identifier for the Droplet size to use for each node (e.g., "s-4vcpu-8gb").
+	// This defines the CPU and memory of the nodes in the pool.
+	Size string `protobuf:"bytes,1,opt,name=size,proto3" json:"size,omitempty"`
+	// The number of nodes to provision in the pool.
+	// Must be at least 1. If auto_scale is enabled, this acts as the initial desired node count.
+	NodeCount uint32 `protobuf:"varint,2,opt,name=node_count,json=nodeCount,proto3" json:"node_count,omitempty"`
+	// Enable auto-scaling for this node pool.
+	// If true, the platform will manage node count between min_nodes and max_nodes.
+	AutoScale bool `protobuf:"varint,3,opt,name=auto_scale,json=autoScale,proto3" json:"auto_scale,omitempty"`
+	// Minimum number of nodes when auto-scaling is enabled.
+	// Required if auto_scale is true.
+	MinNodes uint32 `protobuf:"varint,4,opt,name=min_nodes,json=minNodes,proto3" json:"min_nodes,omitempty"`
+	// Maximum number of nodes when auto-scaling is enabled.
+	// Required if auto_scale is true.
+	MaxNodes      uint32 `protobuf:"varint,5,opt,name=max_nodes,json=maxNodes,proto3" json:"max_nodes,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DigitalOceanKubernetesClusterDefaultNodePool) Reset() {
+	*x = DigitalOceanKubernetesClusterDefaultNodePool{}
+	mi := &file_project_planton_provider_digitalocean_digitaloceankubernetescluster_v1_spec_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DigitalOceanKubernetesClusterDefaultNodePool) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DigitalOceanKubernetesClusterDefaultNodePool) ProtoMessage() {}
+
+func (x *DigitalOceanKubernetesClusterDefaultNodePool) ProtoReflect() protoreflect.Message {
+	mi := &file_project_planton_provider_digitalocean_digitaloceankubernetescluster_v1_spec_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DigitalOceanKubernetesClusterDefaultNodePool.ProtoReflect.Descriptor instead.
+func (*DigitalOceanKubernetesClusterDefaultNodePool) Descriptor() ([]byte, []int) {
+	return file_project_planton_provider_digitalocean_digitaloceankubernetescluster_v1_spec_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *DigitalOceanKubernetesClusterDefaultNodePool) GetSize() string {
+	if x != nil {
+		return x.Size
+	}
+	return ""
+}
+
+func (x *DigitalOceanKubernetesClusterDefaultNodePool) GetNodeCount() uint32 {
+	if x != nil {
+		return x.NodeCount
+	}
+	return 0
+}
+
+func (x *DigitalOceanKubernetesClusterDefaultNodePool) GetAutoScale() bool {
+	if x != nil {
+		return x.AutoScale
+	}
+	return false
+}
+
+func (x *DigitalOceanKubernetesClusterDefaultNodePool) GetMinNodes() uint32 {
+	if x != nil {
+		return x.MinNodes
+	}
+	return 0
+}
+
+func (x *DigitalOceanKubernetesClusterDefaultNodePool) GetMaxNodes() uint32 {
+	if x != nil {
+		return x.MaxNodes
+	}
+	return 0
+}
+
 var File_project_planton_provider_digitalocean_digitaloceankubernetescluster_v1_spec_proto protoreflect.FileDescriptor
 
 const file_project_planton_provider_digitalocean_digitaloceankubernetescluster_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Qproject/planton/provider/digitalocean/digitaloceankubernetescluster/v1/spec.proto\x12Fproject.planton.provider.digitalocean.digitaloceankubernetescluster.v1\x1a\x1bbuf/validate/validate.proto\x1a2project/planton/provider/digitalocean/region.proto\x1aBproject/planton/shared/cloudresourcekind/cloud_resource_kind.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\"\xe9\x03\n" +
+	"Qproject/planton/provider/digitalocean/digitaloceankubernetescluster/v1/spec.proto\x12Fproject.planton.provider.digitalocean.digitaloceankubernetescluster.v1\x1a\x1bbuf/validate/validate.proto\x1a2project/planton/provider/digitalocean/region.proto\x1aBproject/planton/shared/cloudresourcekind/cloud_resource_kind.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\"\x94\x05\n" +
 	"!DigitalOceanKubernetesClusterSpec\x12)\n" +
 	"\fcluster_name\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\vclusterName\x12Y\n" +
 	"\x06region\x18\x02 \x01(\x0e29.project.planton.provider.digitalocean.DigitalOceanRegionB\x06\xbaH\x03\xc8\x01\x01R\x06region\x125\n" +
@@ -159,7 +255,17 @@ const file_project_planton_provider_digitalocean_digitaloceankubernetescluster_v
 	"\x10highly_available\x18\x05 \x01(\bB\t\x92\xa6\x1d\x05falseR\x0fhighlyAvailable\x12!\n" +
 	"\fauto_upgrade\x18\x06 \x01(\bR\vautoUpgrade\x122\n" +
 	"\x15disable_surge_upgrade\x18\a \x01(\bR\x13disableSurgeUpgrade\x12\x12\n" +
-	"\x04tags\x18\b \x03(\tR\x04tagsB\xaf\x04\n" +
+	"\x04tags\x18\b \x03(\tR\x04tags\x12\xa8\x01\n" +
+	"\x11default_node_pool\x18\t \x01(\v2t.project.planton.provider.digitalocean.digitaloceankubernetescluster.v1.DigitalOceanKubernetesClusterDefaultNodePoolB\x06\xbaH\x03\xc8\x01\x01R\x0fdefaultNodePool\"\xce\x01\n" +
+	",DigitalOceanKubernetesClusterDefaultNodePool\x12\x1a\n" +
+	"\x04size\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04size\x12)\n" +
+	"\n" +
+	"node_count\x18\x02 \x01(\rB\n" +
+	"\xbaH\a\xc8\x01\x01*\x02 \x00R\tnodeCount\x12\x1d\n" +
+	"\n" +
+	"auto_scale\x18\x03 \x01(\bR\tautoScale\x12\x1b\n" +
+	"\tmin_nodes\x18\x04 \x01(\rR\bminNodes\x12\x1b\n" +
+	"\tmax_nodes\x18\x05 \x01(\rR\bmaxNodesB\xaf\x04\n" +
 	"Jcom.project.planton.provider.digitalocean.digitaloceankubernetescluster.v1B\tSpecProtoP\x01Z\x96\x01github.com/project-planton/project-planton/apis/project/planton/provider/digitalocean/digitaloceankubernetescluster/v1;digitaloceankubernetesclusterv1\xa2\x02\x05PPPDD\xaa\x02FProject.Planton.Provider.Digitalocean.Digitaloceankubernetescluster.V1\xca\x02FProject\\Planton\\Provider\\Digitalocean\\Digitaloceankubernetescluster\\V1\xe2\x02RProject\\Planton\\Provider\\Digitalocean\\Digitaloceankubernetescluster\\V1\\GPBMetadata\xea\x02KProject::Planton::Provider::Digitalocean::Digitaloceankubernetescluster::V1b\x06proto3"
 
 var (
@@ -174,20 +280,22 @@ func file_project_planton_provider_digitalocean_digitaloceankubernetescluster_v1
 	return file_project_planton_provider_digitalocean_digitaloceankubernetescluster_v1_spec_proto_rawDescData
 }
 
-var file_project_planton_provider_digitalocean_digitaloceankubernetescluster_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+var file_project_planton_provider_digitalocean_digitaloceankubernetescluster_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_digitalocean_digitaloceankubernetescluster_v1_spec_proto_goTypes = []any{
-	(*DigitalOceanKubernetesClusterSpec)(nil), // 0: project.planton.provider.digitalocean.digitaloceankubernetescluster.v1.DigitalOceanKubernetesClusterSpec
-	(digitalocean.DigitalOceanRegion)(0),      // 1: project.planton.provider.digitalocean.DigitalOceanRegion
-	(*v1.StringValueOrRef)(nil),               // 2: project.planton.shared.foreignkey.v1.StringValueOrRef
+	(*DigitalOceanKubernetesClusterSpec)(nil),            // 0: project.planton.provider.digitalocean.digitaloceankubernetescluster.v1.DigitalOceanKubernetesClusterSpec
+	(*DigitalOceanKubernetesClusterDefaultNodePool)(nil), // 1: project.planton.provider.digitalocean.digitaloceankubernetescluster.v1.DigitalOceanKubernetesClusterDefaultNodePool
+	(digitalocean.DigitalOceanRegion)(0),                 // 2: project.planton.provider.digitalocean.DigitalOceanRegion
+	(*v1.StringValueOrRef)(nil),                          // 3: project.planton.shared.foreignkey.v1.StringValueOrRef
 }
 var file_project_planton_provider_digitalocean_digitaloceankubernetescluster_v1_spec_proto_depIdxs = []int32{
-	1, // 0: project.planton.provider.digitalocean.digitaloceankubernetescluster.v1.DigitalOceanKubernetesClusterSpec.region:type_name -> project.planton.provider.digitalocean.DigitalOceanRegion
-	2, // 1: project.planton.provider.digitalocean.digitaloceankubernetescluster.v1.DigitalOceanKubernetesClusterSpec.vpc:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
-	2, // [2:2] is the sub-list for method output_type
-	2, // [2:2] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	2, // 0: project.planton.provider.digitalocean.digitaloceankubernetescluster.v1.DigitalOceanKubernetesClusterSpec.region:type_name -> project.planton.provider.digitalocean.DigitalOceanRegion
+	3, // 1: project.planton.provider.digitalocean.digitaloceankubernetescluster.v1.DigitalOceanKubernetesClusterSpec.vpc:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
+	1, // 2: project.planton.provider.digitalocean.digitaloceankubernetescluster.v1.DigitalOceanKubernetesClusterSpec.default_node_pool:type_name -> project.planton.provider.digitalocean.digitaloceankubernetescluster.v1.DigitalOceanKubernetesClusterDefaultNodePool
+	3, // [3:3] is the sub-list for method output_type
+	3, // [3:3] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() {
@@ -203,7 +311,7 @@ func file_project_planton_provider_digitalocean_digitaloceankubernetescluster_v1
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_project_planton_provider_digitalocean_digitaloceankubernetescluster_v1_spec_proto_rawDesc), len(file_project_planton_provider_digitalocean_digitaloceankubernetescluster_v1_spec_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   1,
+			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

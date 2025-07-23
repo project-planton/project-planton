@@ -30,12 +30,12 @@ func cluster(
 		VpcUuid:      pulumi.String(locals.DigitalOceanKubernetesCluster.Spec.Vpc.GetValue()),
 		Tags:         tags,
 		NodePool: &digitalocean.KubernetesClusterNodePoolArgs{
-			AutoScale: pulumi.BoolPtr(false),
-			MaxNodes:  pulumi.IntPtr(2),
-			MinNodes:  pulumi.IntPtr(1),
+			AutoScale: pulumi.BoolPtr(locals.DigitalOceanKubernetesCluster.Spec.DefaultNodePool.AutoScale),
+			MaxNodes:  pulumi.IntPtr(int(locals.DigitalOceanKubernetesCluster.Spec.DefaultNodePool.MaxNodes)),
+			MinNodes:  pulumi.IntPtr(int(locals.DigitalOceanKubernetesCluster.Spec.DefaultNodePool.MinNodes)),
 			Name:      pulumi.String("default"),
-			NodeCount: pulumi.IntPtr(1),
-			Size:      pulumi.String("s-2vcpu-4gb"),
+			NodeCount: pulumi.IntPtr(int(locals.DigitalOceanKubernetesCluster.Spec.DefaultNodePool.NodeCount)),
+			Size:      pulumi.String(locals.DigitalOceanKubernetesCluster.Spec.DefaultNodePool.Size),
 		},
 	}
 

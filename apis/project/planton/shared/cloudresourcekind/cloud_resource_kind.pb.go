@@ -132,6 +132,7 @@ const (
 	CloudResourceKind_DigitalOceanLoadBalancer       CloudResourceKind = 1210
 	CloudResourceKind_DigitalOceanVolume             CloudResourceKind = 1211
 	CloudResourceKind_DigitalOceanVpc                CloudResourceKind = 1212
+	CloudResourceKind_DigitalOceanCertificate        CloudResourceKind = 1213
 )
 
 // Enum value maps for CloudResourceKind.
@@ -236,6 +237,7 @@ var (
 		1210: "DigitalOceanLoadBalancer",
 		1211: "DigitalOceanVolume",
 		1212: "DigitalOceanVpc",
+		1213: "DigitalOceanCertificate",
 	}
 	CloudResourceKind_value = map[string]int32{
 		"unspecified":                    0,
@@ -337,6 +339,7 @@ var (
 		"DigitalOceanLoadBalancer":       1210,
 		"DigitalOceanVolume":             1211,
 		"DigitalOceanVpc":                1212,
+		"DigitalOceanCertificate":        1213,
 	}
 )
 
@@ -398,7 +401,7 @@ var File_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto prot
 
 const file_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto_rawDesc = "" +
 	"\n" +
-	"Bproject/planton/shared/cloudresourcekind/cloud_resource_kind.proto\x12(project.planton.shared.cloudresourcekind\x1a google/protobuf/descriptor.proto\x1aFproject/planton/shared/cloudresourcekind/cloud_resource_provider.proto*\x8e\x18\n" +
+	"Bproject/planton/shared/cloudresourcekind/cloud_resource_kind.proto\x12(project.planton.shared.cloudresourcekind\x1a google/protobuf/descriptor.proto\x1aFproject/planton/shared/cloudresourcekind/cloud_resource_provider.proto*\xb2\x18\n" +
 	"\x11CloudResourceKind\x12\x15\n" +
 	"\vunspecified\x10\x00\x1a\x04\xa0\xf7\x04\x01\x12#\n" +
 	"\x19FirstTestCloudApiResource\x10\x01\x1a\x04\xa0\xf7\x04\x01\x12$\n" +
@@ -503,7 +506,8 @@ const file_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto_ra
 	"\x1eDigitalOceanKubernetesNodePool\x10\xb9\t\x1a\x04\xa0\xf7\x04\x06\x12#\n" +
 	"\x18DigitalOceanLoadBalancer\x10\xba\t\x1a\x04\xa0\xf7\x04\x06\x12\x1d\n" +
 	"\x12DigitalOceanVolume\x10\xbb\t\x1a\x04\xa0\xf7\x04\x06\x12\x1a\n" +
-	"\x0fDigitalOceanVpc\x10\xbc\t\x1a\x04\xa0\xf7\x04\x06:\x8d\x01\n" +
+	"\x0fDigitalOceanVpc\x10\xbc\t\x1a\x04\xa0\xf7\x04\x06\x12\"\n" +
+	"\x17DigitalOceanCertificate\x10\xbd\t\x1a\x04\xa0\xf7\x04\x06:\x8d\x01\n" +
 	"\bprovider\x12!.google.protobuf.EnumValueOptions\x18\xf4N \x01(\x0e2M.project.planton.shared.cloudresourcekind.ProjectPlantonCloudResourceProviderR\bprovider:\xac\x01\n" +
 	"\x18kubernetes_resource_type\x12!.google.protobuf.EnumValueOptions\x18\xf5N \x01(\x0e2N.project.planton.shared.cloudresourcekind.ProjectPlantonKubernetesResourceTypeR\x16kubernetesResourceTypeB\xe4\x02\n" +
 	",com.project.planton.shared.cloudresourcekindB\x16CloudResourceKindProtoP\x01ZXgithub.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind\xa2\x02\x04PPSC\xaa\x02(Project.Planton.Shared.Cloudresourcekind\xca\x02(Project\\Planton\\Shared\\Cloudresourcekind\xe2\x024Project\\Planton\\Shared\\Cloudresourcekind\\GPBMetadata\xea\x02+Project::Planton::Shared::Cloudresourcekindb\x06proto3"

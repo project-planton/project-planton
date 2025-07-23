@@ -56,4 +56,37 @@ message DigitalOceanKubernetesClusterSpec {
   // A list of tags to apply to the cluster.
   // Tags help organize and identify the cluster within DigitalOcean.
   repeated string tags = 8;
+
+  // Reference to the default node pool for the cluster.
+  DigitalOceanKubernetesClusterDefaultNodePool default_node_pool = 9 [
+    (buf.validate.field).required = true
+  ];
+}
+
+// DigitalOcean Kubernetes Cluster Default Node Pool
+message DigitalOceanKubernetesClusterDefaultNodePool {
+  // The slug identifier for the Droplet size to use for each node (e.g., "s-4vcpu-8gb").
+  // This defines the CPU and memory of the nodes in the pool.
+  string size = 1 [
+    (buf.validate.field).required = true
+  ];
+
+  // The number of nodes to provision in the pool.
+  // Must be at least 1. If auto_scale is enabled, this acts as the initial desired node count.
+  uint32 node_count = 2 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).uint32.gt = 0
+  ];
+
+  // Enable auto-scaling for this node pool.
+  // If true, the platform will manage node count between min_nodes and max_nodes.
+  bool auto_scale = 3;
+
+  // Minimum number of nodes when auto-scaling is enabled.
+  // Required if auto_scale is true.
+  uint32 min_nodes = 4;
+
+  // Maximum number of nodes when auto-scaling is enabled.
+  // Required if auto_scale is true.
+  uint32 max_nodes = 5;
 }
