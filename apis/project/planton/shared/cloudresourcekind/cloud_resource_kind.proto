@@ -79,38 +79,38 @@ enum CloudResourceKind {
   GcpGkeWorkloadIdentityBinding = 618 [(provider) = gcp];
 
   // 800–999: Kubernetes resources
-  ArgocdKubernetes            = 800 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
-  CronJobKubernetes           = 801 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
-  ElasticsearchKubernetes     = 802 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
-  GitlabKubernetes            = 803 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
-  GrafanaKubernetes           = 804 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
-  HelmRelease                 = 805 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
-  JenkinsKubernetes           = 806 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
-  KafkaKubernetes             = 807 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
-  KeycloakKubernetes          = 808 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
-  KubernetesHttpEndpoint      = 809 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
-  LocustKubernetes            = 810 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
-  MicroserviceKubernetes      = 811 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
-  MongodbKubernetes           = 812 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
-  Neo4jKubernetes             = 813 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
-  OpenFgaKubernetes           = 814 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
-  PostgresKubernetes          = 815 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
-  PrometheusKubernetes        = 816 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
-  RedisKubernetes             = 817 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
-  SignozKubernetes            = 818 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
-  SolrKubernetes              = 819 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
-  StackJobRunnerKubernetes    = 820 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
-  TemporalKubernetes          = 821 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
-  NatsKubernetes              = 822 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
-  CertManagerKubernetes       = 823 [(provider) = kubernetes, (kubernetes_resource_type) = addon];
-  ElasticOperatorKubernetes   = 824 [(provider) = kubernetes, (kubernetes_resource_type) = addon];
-  ExternalDnsKubernetes       = 825 [(provider) = kubernetes, (kubernetes_resource_type) = addon];
-  IngressNginxKubernetes      = 826 [(provider) = kubernetes, (kubernetes_resource_type) = addon];
-  IstioKubernetes             = 827 [(provider) = kubernetes, (kubernetes_resource_type) = addon];
-  KafkaOperatorKubernetes     = 828 [(provider) = kubernetes, (kubernetes_resource_type) = addon];
-  PostgresOperatorKubernetes  = 829 [(provider) = kubernetes, (kubernetes_resource_type) = addon];
-  SolrOperatorKubernetes      = 830 [(provider) = kubernetes, (kubernetes_resource_type) = addon];
-  ExternalSecretsKubernetes   = 831 [(provider) = kubernetes, (kubernetes_resource_type) = addon];
+  ArgocdKubernetes = 800 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
+  CronJobKubernetes = 801 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
+  ElasticsearchKubernetes = 802 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
+  GitlabKubernetes = 803 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
+  GrafanaKubernetes = 804 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
+  HelmRelease = 805 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
+  JenkinsKubernetes = 806 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
+  KafkaKubernetes = 807 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
+  KeycloakKubernetes = 808 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
+  KubernetesHttpEndpoint = 809 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
+  LocustKubernetes = 810 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
+  MicroserviceKubernetes = 811 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
+  MongodbKubernetes = 812 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
+  Neo4jKubernetes = 813 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
+  OpenFgaKubernetes = 814 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
+  PostgresKubernetes = 815 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
+  PrometheusKubernetes = 816 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
+  RedisKubernetes = 817 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
+  SignozKubernetes = 818 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
+  SolrKubernetes = 819 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
+  StackJobRunnerKubernetes = 820 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
+  TemporalKubernetes = 821 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
+  NatsKubernetes = 822 [(provider) = kubernetes, (kubernetes_resource_type) = workload];
+  CertManagerKubernetes = 823 [(provider) = kubernetes, (kubernetes_resource_type) = addon];
+  ElasticOperatorKubernetes = 824 [(provider) = kubernetes, (kubernetes_resource_type) = addon];
+  ExternalDnsKubernetes = 825 [(provider) = kubernetes, (kubernetes_resource_type) = addon];
+  IngressNginxKubernetes = 826 [(provider) = kubernetes, (kubernetes_resource_type) = addon];
+  IstioKubernetes = 827 [(provider) = kubernetes, (kubernetes_resource_type) = addon];
+  KafkaOperatorKubernetes = 828 [(provider) = kubernetes, (kubernetes_resource_type) = addon];
+  PostgresOperatorKubernetes = 829 [(provider) = kubernetes, (kubernetes_resource_type) = addon];
+  SolrOperatorKubernetes = 830 [(provider) = kubernetes, (kubernetes_resource_type) = addon];
+  ExternalSecretsKubernetes = 831 [(provider) = kubernetes, (kubernetes_resource_type) = addon];
 
   // 1200–1499: DigitalOcean resources
   DigitalOceanAppPlatformService = 1200 [(provider) = digital_ocean];
@@ -126,4 +126,5 @@ enum CloudResourceKind {
   DigitalOceanLoadBalancer = 1210 [(provider) = digital_ocean];
   DigitalOceanVolume = 1211 [(provider) = digital_ocean];
   DigitalOceanVpc = 1212 [(provider) = digital_ocean];
+  DigitalOceanCertificate = 1213 [(provider) = digital_ocean];
 }
