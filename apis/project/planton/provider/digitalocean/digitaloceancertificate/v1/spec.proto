@@ -42,7 +42,7 @@ message DigitalOceanCertificateSpec {
 // DigitalOceanCertificateType represents the certificate source.
 enum DigitalOceanCertificateType {
   // A free, auto‑managed Let's Encrypt certificate.
-  lets_encrypt = 0;
+  letsEncrypt = 0;
   // A user‑provided custom certificate.
   custom = 1;
 }

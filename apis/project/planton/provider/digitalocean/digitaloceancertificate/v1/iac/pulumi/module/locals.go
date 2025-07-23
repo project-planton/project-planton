@@ -10,14 +10,14 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// Locals bundles handy references for the rest of the module.
+// Locals aggregates handy references for the rest of the module.
 type Locals struct {
 	DigitalOceanCredentialSpec *digitaloceancredentialv1.DigitalOceanCredentialSpec
-	DigitalOceanCertificate         *digitaloceancertificatev1.DigitalOceanCertificate
+	DigitalOceanCertificate    *digitaloceancertificatev1.DigitalOceanCertificate
 	DigitalOceanLabels         map[string]string
 }
 
-// initializeLocals copies stack‑input fields into Locals and builds a label map.
+// initializeLocals copies stack‑input fields into Locals and builds a reusable label map.
 func initializeLocals(_ *pulumi.Context, stackInput *digitaloceancertificatev1.DigitalOceanCertificateStackInput) *Locals {
 	var locals Locals
 
@@ -33,13 +33,16 @@ func initializeLocals(_ *pulumi.Context, stackInput *digitaloceancertificatev1.D
 	if locals.DigitalOceanCertificate.Metadata.Org != "" {
 		locals.DigitalOceanLabels[digitaloceanlabelkeys.Organization] = locals.DigitalOceanCertificate.Metadata.Org
 	}
+
 	if locals.DigitalOceanCertificate.Metadata.Env != "" {
 		locals.DigitalOceanLabels[digitaloceanlabelkeys.Environment] = locals.DigitalOceanCertificate.Metadata.Env
 	}
+
 	if locals.DigitalOceanCertificate.Metadata.Id != "" {
 		locals.DigitalOceanLabels[digitaloceanlabelkeys.ResourceId] = locals.DigitalOceanCertificate.Metadata.Id
 	}
 
 	locals.DigitalOceanCredentialSpec = stackInput.ProviderCredential
+
 	return &locals
 }

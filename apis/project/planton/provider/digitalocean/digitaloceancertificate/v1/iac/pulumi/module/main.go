@@ -7,7 +7,7 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// Resources is the module entry point—mirrors the pattern used in the VPC module.
+// Resources is the module entry point.
 func Resources(
 	ctx *pulumi.Context,
 	stackInput *digitaloceancertificatev1.DigitalOceanCertificateStackInput,
@@ -16,14 +16,17 @@ func Resources(
 	locals := initializeLocals(ctx, stackInput)
 
 	// 2. Create a DigitalOcean provider from the supplied credential.
-	digitalOceanProvider, err := pulumidigitaloceanprovider.Get(ctx, stackInput.ProviderCredential)
+	digitalOceanProvider, err := pulumidigitaloceanprovider.Get(
+		ctx,
+		stackInput.ProviderCredential,
+	)
 	if err != nil {
 		return errors.Wrap(err, "failed to setup digitalocean provider")
 	}
 
-	// 3. Create the bucket.
-	if _, err := bucket(ctx, locals, digitalOceanProvider); err != nil {
-		return errors.Wrap(err, "failed to create bucket")
+	// 3. Create the certificate.
+	if _, err := certificate(ctx, locals, digitalOceanProvider); err != nil {
+		return errors.Wrap(err, "failed to create certificate")
 	}
 
 	return nil

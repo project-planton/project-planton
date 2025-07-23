@@ -28,7 +28,7 @@ type DigitalOceanCertificateType int32
 
 const (
 	// A free, auto‑managed Let's Encrypt certificate.
-	DigitalOceanCertificateType_lets_encrypt DigitalOceanCertificateType = 0
+	DigitalOceanCertificateType_letsEncrypt DigitalOceanCertificateType = 0
 	// A user‑provided custom certificate.
 	DigitalOceanCertificateType_custom DigitalOceanCertificateType = 1
 )
@@ -36,12 +36,12 @@ const (
 // Enum value maps for DigitalOceanCertificateType.
 var (
 	DigitalOceanCertificateType_name = map[int32]string{
-		0: "lets_encrypt",
+		0: "letsEncrypt",
 		1: "custom",
 	}
 	DigitalOceanCertificateType_value = map[string]int32{
-		"lets_encrypt": 0,
-		"custom":       1,
+		"letsEncrypt": 0,
+		"custom":      1,
 	}
 )
 
@@ -135,7 +135,7 @@ func (x *DigitalOceanCertificateSpec) GetType() DigitalOceanCertificateType {
 	if x != nil {
 		return x.Type
 	}
-	return DigitalOceanCertificateType_lets_encrypt
+	return DigitalOceanCertificateType_letsEncrypt
 }
 
 func (x *DigitalOceanCertificateSpec) GetCertificateSource() isDigitalOceanCertificateSpec_CertificateSource {
@@ -335,9 +335,9 @@ const file_project_planton_provider_digitalocean_digitaloceancertificate_v1_spec
 	"\vprivate_key\x18\x02 \x01(\tB\n" +
 	"\xbaH\a\xc8\x01\x01r\x02\x10\x01R\n" +
 	"privateKey\x12+\n" +
-	"\x11certificate_chain\x18\x03 \x01(\tR\x10certificateChain*;\n" +
-	"\x1bDigitalOceanCertificateType\x12\x10\n" +
-	"\flets_encrypt\x10\x00\x12\n" +
+	"\x11certificate_chain\x18\x03 \x01(\tR\x10certificateChain*:\n" +
+	"\x1bDigitalOceanCertificateType\x12\x0f\n" +
+	"\vletsEncrypt\x10\x00\x12\n" +
 	"\n" +
 	"\x06custom\x10\x01B\x85\x04\n" +
 	"Dcom.project.planton.provider.digitalocean.digitaloceancertificate.v1B\tSpecProtoP\x01Z\x8a\x01github.com/project-planton/project-planton/apis/project/planton/provider/digitalocean/digitaloceancertificate/v1;digitaloceancertificatev1\xa2\x02\x05PPPDD\xaa\x02@Project.Planton.Provider.Digitalocean.Digitaloceancertificate.V1\xca\x02@Project\\Planton\\Provider\\Digitalocean\\Digitaloceancertificate\\V1\xe2\x02LProject\\Planton\\Provider\\Digitalocean\\Digitaloceancertificate\\V1\\GPBMetadata\xea\x02EProject::Planton::Provider::Digitalocean::Digitaloceancertificate::V1b\x06proto3"
