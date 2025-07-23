@@ -6,6 +6,7 @@ import (
 	"github.com/project-planton/project-planton/internal/valuefrom"
 	"k8s.io/utils/pointer"
 	"sort"
+	"strings"
 
 	"github.com/pkg/errors"
 	"github.com/pulumi/pulumi-aws/sdk/v6/go/aws"
@@ -112,7 +113,8 @@ func ecsService(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) err
 
 	var loadBalancerDNS pulumi.StringInput = pulumi.String("")
 
-	if spec.Alb.Enabled && spec.Container.Port != 0 {
+	// Guard against nil dereference when alb block is omitted
+	if spec.Alb != nil && spec.Alb.Enabled && spec.Container.Port != 0 {
 		if len(spec.Network.Subnets) == 0 {
 			return errors.New("at least one subnet is required for ALB usage")
 		}
@@ -128,12 +130,18 @@ func ecsService(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) err
 			return errors.Wrap(err, "failed to lookup subnet for ALB target group")
 		}
 
+		// ---------------- health‑check handling --------------------
+		var protocol string = "HTTP"
+		if spec.Alb.HealthCheck != nil && spec.Alb.HealthCheck.Protocol != "" {
+			protocol = strings.ToUpper(spec.Alb.HealthCheck.Protocol)
+		}
+
 		targetGroup, err := lb.NewTargetGroup(ctx, serviceName+"-tg", &lb.TargetGroupArgs{
 			Port:        pulumi.Int(int(spec.Container.Port)),
-			Protocol:    pulumi.String("HTTP"),
+			Protocol:    pulumi.String(protocol),
 			TargetType:  pulumi.String("ip"),
 			VpcId:       pulumi.String(subnetLookup.VpcId),
-			HealthCheck: &lb.TargetGroupHealthCheckArgs{Path: pulumi.String("/")},
+			HealthCheck: healthCheckArgs(spec.Alb.HealthCheck, protocol),
 			Tags:        pulumi.ToStringMap(locals.AwsTags),
 		}, pulumi.Provider(provider))
 		if err != nil {
@@ -233,7 +241,8 @@ func ecsService(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) err
 	ctx.Export(OpLoadBalancerDnsName, loadBalancerDNS)
 
 	var serviceUrl pulumi.StringInput = pulumi.String("")
-	if spec.Alb.RoutingType == "HOSTNAME" &&
+	if spec.Alb != nil &&
+		strings.ToLower(spec.Alb.RoutingType) == "hostname" &&
 		spec.Alb.Enabled && spec.Alb.Hostname != "" {
 		serviceUrl = pulumi.String(fmt.Sprintf("http://%s", spec.Alb.Hostname))
 	}
@@ -337,4 +346,47 @@ func buildContainerDefinitions(
 		return "", errors.Wrap(err, "failed to encode container definitions")
 	}
 	return string(encoded), nil
+}
+
+// healthCheckArgs converts the optional AwsEcsServiceHealthCheck block into
+// Pulumi lb.TargetGroupHealthCheckArgs, applying sensible defaults when the
+// block is absent.
+func healthCheckArgs(
+	hc *awsecsservicev1.AwsEcsServiceHealthCheck,
+	protocol string,
+) *lb.TargetGroupHealthCheckArgs {
+
+	// ---------------- default behaviour ------------------
+	if hc == nil {
+		return &lb.TargetGroupHealthCheckArgs{
+			Path: pulumi.String("/"),
+		}
+	}
+
+	args := &lb.TargetGroupHealthCheckArgs{}
+
+	// Path is only valid for HTTP/HTTPS
+	if (protocol == "HTTP" || protocol == "HTTPS") && hc.Path != "" {
+		args.Path = pulumi.String(hc.Path)
+	} else if protocol == "HTTP" || protocol == "HTTPS" {
+		args.Path = pulumi.String("/")
+	}
+
+	if hc.Port != "" {
+		args.Port = pulumi.String(hc.Port)
+	}
+	if hc.Interval != 0 {
+		args.Interval = pulumi.Int(int(hc.Interval))
+	}
+	if hc.Timeout != 0 {
+		args.Timeout = pulumi.Int(int(hc.Timeout))
+	}
+	if hc.HealthyThreshold != 0 {
+		args.HealthyThreshold = pulumi.Int(int(hc.HealthyThreshold))
+	}
+	if hc.UnhealthyThreshold != 0 {
+		args.UnhealthyThreshold = pulumi.Int(int(hc.UnhealthyThreshold))
+	}
+
+	return args
 }

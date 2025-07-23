@@ -185,4 +185,35 @@ message AwsEcsServiceAlb {
   int32 listener_priority = 7 [
     (project.planton.shared.options.default) = "100"
   ];
+
+  // health_check overrides the default target-group health check.
+  AwsEcsServiceHealthCheck health_check = 8;
+}
+
+// AwsEcsServiceHealthCheck defines ALB target-group health check settings.
+message AwsEcsServiceHealthCheck {
+  // protocol can be HTTP, HTTPS, or TCP.
+  string protocol = 1 [
+    (buf.validate.field).string = {
+      in: ["HTTP", "HTTPS", "TCP"]
+    }
+  ];
+
+  // path to ping (HTTP/HTTPS only), defaults to "/".
+  string path = 2;
+
+  // port may be "traffic-port" or an explicit port number as string.
+  string port = 3;
+
+  // interval between checks in seconds. AWS default is 30.
+  int32 interval = 4;
+
+  // timeout per check in seconds. AWS default is 5.
+  int32 timeout = 5;
+
+  // number of successes before a target is considered healthy. AWS default is 5.
+  int32 healthy_threshold = 6;
+
+  // number of failures before a target is considered unhealthy. AWS default is 2.
+  int32 unhealthy_threshold = 7;
 }
