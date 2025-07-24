@@ -10,35 +10,30 @@ import "project/planton/shared/foreignkey/v1/foreign_key.proto";
 // into an existing ECS cluster. It focuses on an 80/20 approach with an ALB-based ingress
 // that can be path-based or hostname-based.
 message AwsEcsServiceSpec {
-  //name of the service on ECS.
-  string ecs_service_name = 1 [
-    (buf.validate.field).required = true
-  ];
-
   // cluster_arn is the ARN of the ECS cluster where this service will run.
   // This must already exist (created by a separate EcsCluster resource or otherwise).
   // Example: "arn:aws:ecs:us-east-1:123456789012:cluster/my-mixed-cluster"
-  project.planton.shared.foreignkey.v1.StringValueOrRef cluster_arn = 2 [
+  project.planton.shared.foreignkey.v1.StringValueOrRef cluster_arn = 1 [
     (buf.validate.field).required = true,
     (project.planton.shared.foreignkey.v1.default_kind) = AwsEcsCluster,
     (project.planton.shared.foreignkey.v1.default_kind_field_path) = "status.outputs.cluster_arn"
   ];
 
   // AWS ECS Service container configuration.
-  AwsEcsServiceContainer container = 3 [
+  AwsEcsServiceContainer container = 2 [
     (buf.validate.field).required = true
   ];
 
   // ECS service network configuration.
-  AwsEcsServiceNetwork network = 4 [
+  AwsEcsServiceNetwork network = 3 [
     (buf.validate.field).required = true
   ];
 
   // IAM configuration for the ECS service.
-  AwsEcsServiceIam iam = 5;
+  AwsEcsServiceIam iam = 4;
 
   // alb defines how an ALB fronts traffic to this ECS service, supporting path- or hostname-based routing.
-  AwsEcsServiceAlb alb = 6;
+  AwsEcsServiceAlb alb = 5;
 }
 
 // AwsEcsServiceContainer is a wrapper for the container spec.

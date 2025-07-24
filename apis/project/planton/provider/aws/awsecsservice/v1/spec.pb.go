@@ -29,20 +29,18 @@ const (
 // that can be path-based or hostname-based.
 type AwsEcsServiceSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// name of the service on ECS.
-	EcsServiceName string `protobuf:"bytes,1,opt,name=ecs_service_name,json=ecsServiceName,proto3" json:"ecs_service_name,omitempty"`
 	// cluster_arn is the ARN of the ECS cluster where this service will run.
 	// This must already exist (created by a separate EcsCluster resource or otherwise).
 	// Example: "arn:aws:ecs:us-east-1:123456789012:cluster/my-mixed-cluster"
-	ClusterArn *v1.StringValueOrRef `protobuf:"bytes,2,opt,name=cluster_arn,json=clusterArn,proto3" json:"cluster_arn,omitempty"`
+	ClusterArn *v1.StringValueOrRef `protobuf:"bytes,1,opt,name=cluster_arn,json=clusterArn,proto3" json:"cluster_arn,omitempty"`
 	// AWS ECS Service container configuration.
-	Container *AwsEcsServiceContainer `protobuf:"bytes,3,opt,name=container,proto3" json:"container,omitempty"`
+	Container *AwsEcsServiceContainer `protobuf:"bytes,2,opt,name=container,proto3" json:"container,omitempty"`
 	// ECS service network configuration.
-	Network *AwsEcsServiceNetwork `protobuf:"bytes,4,opt,name=network,proto3" json:"network,omitempty"`
+	Network *AwsEcsServiceNetwork `protobuf:"bytes,3,opt,name=network,proto3" json:"network,omitempty"`
 	// IAM configuration for the ECS service.
-	Iam *AwsEcsServiceIam `protobuf:"bytes,5,opt,name=iam,proto3" json:"iam,omitempty"`
+	Iam *AwsEcsServiceIam `protobuf:"bytes,4,opt,name=iam,proto3" json:"iam,omitempty"`
 	// alb defines how an ALB fronts traffic to this ECS service, supporting path- or hostname-based routing.
-	Alb           *AwsEcsServiceAlb `protobuf:"bytes,6,opt,name=alb,proto3" json:"alb,omitempty"`
+	Alb           *AwsEcsServiceAlb `protobuf:"bytes,5,opt,name=alb,proto3" json:"alb,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -75,13 +73,6 @@ func (x *AwsEcsServiceSpec) ProtoReflect() protoreflect.Message {
 // Deprecated: Use AwsEcsServiceSpec.ProtoReflect.Descriptor instead.
 func (*AwsEcsServiceSpec) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_aws_awsecsservice_v1_spec_proto_rawDescGZIP(), []int{0}
-}
-
-func (x *AwsEcsServiceSpec) GetEcsServiceName() string {
-	if x != nil {
-		return x.EcsServiceName
-	}
-	return ""
 }
 
 func (x *AwsEcsServiceSpec) GetClusterArn() *v1.StringValueOrRef {
@@ -729,15 +720,14 @@ var File_project_planton_provider_aws_awsecsservice_v1_spec_proto protoreflect.F
 
 const file_project_planton_provider_aws_awsecsservice_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"8project/planton/provider/aws/awsecsservice/v1/spec.proto\x12-project.planton.provider.aws.awsecsservice.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\"\xc4\x04\n" +
-	"\x11AwsEcsServiceSpec\x120\n" +
-	"\x10ecs_service_name\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x0eecsServiceName\x12\x82\x01\n" +
-	"\vcluster_arn\x18\x02 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB)\xbaH\x03\xc8\x01\x01\x88\xd4a\xcd\x01\x92\xd4a\x1astatus.outputs.cluster_arnR\n" +
+	"8project/planton/provider/aws/awsecsservice/v1/spec.proto\x12-project.planton.provider.aws.awsecsservice.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\"\x92\x04\n" +
+	"\x11AwsEcsServiceSpec\x12\x82\x01\n" +
+	"\vcluster_arn\x18\x01 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB)\xbaH\x03\xc8\x01\x01\x88\xd4a\xcd\x01\x92\xd4a\x1astatus.outputs.cluster_arnR\n" +
 	"clusterArn\x12k\n" +
-	"\tcontainer\x18\x03 \x01(\v2E.project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\x12e\n" +
-	"\anetwork\x18\x04 \x01(\v2C.project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceNetworkB\x06\xbaH\x03\xc8\x01\x01R\anetwork\x12Q\n" +
-	"\x03iam\x18\x05 \x01(\v2?.project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceIamR\x03iam\x12Q\n" +
-	"\x03alb\x18\x06 \x01(\v2?.project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceAlbR\x03alb\"\xaf\x03\n" +
+	"\tcontainer\x18\x02 \x01(\v2E.project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\x12e\n" +
+	"\anetwork\x18\x03 \x01(\v2C.project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceNetworkB\x06\xbaH\x03\xc8\x01\x01R\anetwork\x12Q\n" +
+	"\x03iam\x18\x04 \x01(\v2?.project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceIamR\x03iam\x12Q\n" +
+	"\x03alb\x18\x05 \x01(\v2?.project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceAlbR\x03alb\"\xaf\x03\n" +
 	"\x16AwsEcsServiceContainer\x12`\n" +
 	"\x05image\x18\x01 \x01(\v2J.project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerImageR\x05image\x12Z\n" +
 	"\x03env\x18\x02 \x01(\v2H.project.planton.provider.aws.awsecsservice.v1.AwsEcsServiceContainerEnvR\x03env\x12\x12\n" +
