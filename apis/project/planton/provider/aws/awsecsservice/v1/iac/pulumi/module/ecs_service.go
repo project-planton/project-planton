@@ -25,7 +25,7 @@ const defaultAlbPriority = 100
 // service creates and wires up the ECS Task Definition and AWS ECS Service resources.
 func ecsService(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) error {
 	spec := locals.AwsEcsService.Spec
-	serviceName := locals.AwsEcsService.Metadata.Name
+	serviceName := fmt.Sprintf("%s-%s", locals.AwsEcsService.Metadata.Env, locals.AwsEcsService.Metadata.Name)
 
 	// ---------------------------------------------------------------------
 	// CloudWatch log-group setup (enabled by default)
