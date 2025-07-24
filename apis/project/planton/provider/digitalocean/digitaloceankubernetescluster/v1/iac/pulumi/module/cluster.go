@@ -45,6 +45,7 @@ func cluster(
 		"cluster",
 		clusterArgs,
 		pulumi.Provider(digitalOceanProvider),
+		pulumi.IgnoreChanges([]string{"version"}),
 	)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to create digitalocean kubernetes cluster")
