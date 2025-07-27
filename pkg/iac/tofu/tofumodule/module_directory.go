@@ -91,15 +91,23 @@ func isTerraformModuleDirectory(moduleDir string) (bool, error) {
 }
 
 func getTerraformModulePath(moduleRepoDir, kindName string) (string, error) {
-	kindProvider := crkreflect.GetProvider(crkreflect.KindFromString(kindName))
+	kind := crkreflect.KindFromString(kindName)
+	kindProvider := crkreflect.GetProvider(kind)
 	if kindProvider == cloudresourcekind.ProjectPlantonCloudResourceProvider_project_planton_cloud_resource_provider_unspecified {
 		return "", errors.New("failed to get kind provider")
 	}
 
-	terraformModulePath := filepath.Join(
+	kindDirPath := filepath.Join(
 		moduleRepoDir,
 		"apis/project/planton/provider",
-		strings.ReplaceAll(kindProvider.String(), "_", ""),
+		strings.ReplaceAll(kindProvider.String(), "_", ""))
+
+	if kindProvider == cloudresourcekind.ProjectPlantonCloudResourceProvider_kubernetes {
+		kindDirPath = filepath.Join(kindDirPath, crkreflect.GetKubernetesResourceType(kind).String())
+	}
+
+	terraformModulePath := filepath.Join(
+		kindDirPath,
 		strings.ToLower(kindName),
 		"v1/iac/tf",
 	)
