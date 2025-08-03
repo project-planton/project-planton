@@ -2,10 +2,12 @@ syntax = "proto3";
 
 package project.planton.provider.civo.civovolume.v1;
 
-// CivoVolumeStackOutputs captures the relevant outputs after provisioning a Civo certificate.
+// CivoVolumeStackOutputs captures the resulting volume information after provisioning.
 message CivoVolumeStackOutputs {
-  // certificate_id is the unique identifier of the certificate in Civo (UUID).
-  string certificate_id = 1;
-  // expiry_rfc3339 is the expiration timestamp of the certificate in RFC 3339 format.
-  string expiry_rfc3339 = 2;
+  // The unique identifier (ID) of the created Civo volume.
+  string volume_id = 1;
+  // The ID of the Civo instance the volume is attached to (if any).
+  string attached_instance_id = 2;
+  // The device path of the volume on the attached instance (if any).
+  string device_path = 3;
 }

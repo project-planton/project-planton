@@ -21,15 +21,20 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// CivoIpAddressStackOutputs captures the relevant outputs after provisioning a Civo certificate.
+// CivoIpAddressStackOutputs captures the output details after provisioning a Civo reserved IP.
 type CivoIpAddressStackOutputs struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// certificate_id is the unique identifier of the certificate in Civo (UUID).
-	CertificateId string `protobuf:"bytes,1,opt,name=certificate_id,json=certificateId,proto3" json:"certificate_id,omitempty"`
-	// expiry_rfc3339 is the expiration timestamp of the certificate in RFC 3339 format.
-	ExpiryRfc3339 string `protobuf:"bytes,2,opt,name=expiry_rfc3339,json=expiryRfc3339,proto3" json:"expiry_rfc3339,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	// The unique identifier of the reserved IP in Civo (UUID).
+	ReservedIpId string `protobuf:"bytes,1,opt,name=reserved_ip_id,json=reservedIpId,proto3" json:"reserved_ip_id,omitempty"`
+	// The static IPv4 address allocated for this reserved IP.
+	IpAddress string `protobuf:"bytes,2,opt,name=ip_address,json=ipAddress,proto3" json:"ip_address,omitempty"`
+	// The ID of the Civo resource (instance or load balancer) currently attached to this IP, if any.
+	// Will be empty if the reserved IP is not attached to any resource.
+	AttachedResourceId string `protobuf:"bytes,3,opt,name=attached_resource_id,json=attachedResourceId,proto3" json:"attached_resource_id,omitempty"`
+	// The timestamp when the reserved IP was created, in RFC 3339 format.
+	CreatedAtRfc3339 string `protobuf:"bytes,4,opt,name=created_at_rfc3339,json=createdAtRfc3339,proto3" json:"created_at_rfc3339,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
 }
 
 func (x *CivoIpAddressStackOutputs) Reset() {
@@ -62,16 +67,30 @@ func (*CivoIpAddressStackOutputs) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_civo_civoipaddress_v1_stack_outputs_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *CivoIpAddressStackOutputs) GetCertificateId() string {
+func (x *CivoIpAddressStackOutputs) GetReservedIpId() string {
 	if x != nil {
-		return x.CertificateId
+		return x.ReservedIpId
 	}
 	return ""
 }
 
-func (x *CivoIpAddressStackOutputs) GetExpiryRfc3339() string {
+func (x *CivoIpAddressStackOutputs) GetIpAddress() string {
 	if x != nil {
-		return x.ExpiryRfc3339
+		return x.IpAddress
+	}
+	return ""
+}
+
+func (x *CivoIpAddressStackOutputs) GetAttachedResourceId() string {
+	if x != nil {
+		return x.AttachedResourceId
+	}
+	return ""
+}
+
+func (x *CivoIpAddressStackOutputs) GetCreatedAtRfc3339() string {
+	if x != nil {
+		return x.CreatedAtRfc3339
 	}
 	return ""
 }
@@ -80,10 +99,13 @@ var File_project_planton_provider_civo_civoipaddress_v1_stack_outputs_proto prot
 
 const file_project_planton_provider_civo_civoipaddress_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Bproject/planton/provider/civo/civoipaddress/v1/stack_outputs.proto\x12.project.planton.provider.civo.civoipaddress.v1\"i\n" +
-	"\x19CivoIpAddressStackOutputs\x12%\n" +
-	"\x0ecertificate_id\x18\x01 \x01(\tR\rcertificateId\x12%\n" +
-	"\x0eexpiry_rfc3339\x18\x02 \x01(\tR\rexpiryRfc3339B\x96\x03\n" +
+	"Bproject/planton/provider/civo/civoipaddress/v1/stack_outputs.proto\x12.project.planton.provider.civo.civoipaddress.v1\"\xc0\x01\n" +
+	"\x19CivoIpAddressStackOutputs\x12$\n" +
+	"\x0ereserved_ip_id\x18\x01 \x01(\tR\freservedIpId\x12\x1d\n" +
+	"\n" +
+	"ip_address\x18\x02 \x01(\tR\tipAddress\x120\n" +
+	"\x14attached_resource_id\x18\x03 \x01(\tR\x12attachedResourceId\x12,\n" +
+	"\x12created_at_rfc3339\x18\x04 \x01(\tR\x10createdAtRfc3339B\x96\x03\n" +
 	"2com.project.planton.provider.civo.civoipaddress.v1B\x11StackOutputsProtoP\x01Zngithub.com/project-planton/project-planton/apis/project/planton/provider/civo/civoipaddress/v1;civoipaddressv1\xa2\x02\x05PPPCC\xaa\x02.Project.Planton.Provider.Civo.Civoipaddress.V1\xca\x02.Project\\Planton\\Provider\\Civo\\Civoipaddress\\V1\xe2\x02:Project\\Planton\\Provider\\Civo\\Civoipaddress\\V1\\GPBMetadata\xea\x023Project::Planton::Provider::Civo::Civoipaddress::V1b\x06proto3"
 
 var (

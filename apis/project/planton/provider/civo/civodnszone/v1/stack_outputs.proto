@@ -2,10 +2,15 @@ syntax = "proto3";
 
 package project.planton.provider.civo.civodnszone.v1;
 
-// CivoDnsZoneStackOutputs captures the relevant outputs after provisioning a Civo certificate.
+// CivoDnsZoneStackOutputs captures the output information after provisioning a DNS zone on Civo.
 message CivoDnsZoneStackOutputs {
-  // certificate_id is the unique identifier of the certificate in Civo (UUID).
-  string certificate_id = 1;
-  // expiry_rfc3339 is the expiration timestamp of the certificate in RFC 3339 format.
-  string expiry_rfc3339 = 2;
+  // The domain name of the DNS zone managed on Civo.
+  string zone_name = 1;
+
+  // The unique identifier of the DNS zone on Civo (UUID).
+  string zone_id = 2;
+
+  // The list of nameserver addresses for the DNS zone.
+  // These are the nameservers that should be set at the domain's registrar (e.g., ns0.civo.com, ns1.civo.com).
+  repeated string name_servers = 3;
 }

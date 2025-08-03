@@ -21,13 +21,13 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// CivoKubernetesNodePoolStackOutputs captures the relevant outputs after provisioning a Civo certificate.
+// CivoKubernetesNodePoolStackOutputs captures the outputs after provisioning a Civo Kubernetes Node Pool.
 type CivoKubernetesNodePoolStackOutputs struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// certificate_id is the unique identifier of the certificate in Civo (UUID).
-	CertificateId string `protobuf:"bytes,1,opt,name=certificate_id,json=certificateId,proto3" json:"certificate_id,omitempty"`
-	// expiry_rfc3339 is the expiration timestamp of the certificate in RFC 3339 format.
-	ExpiryRfc3339 string `protobuf:"bytes,2,opt,name=expiry_rfc3339,json=expiryRfc3339,proto3" json:"expiry_rfc3339,omitempty"`
+	// The unique identifier of the created node pool.
+	NodePoolId string `protobuf:"bytes,1,opt,name=node_pool_id,json=nodePoolId,proto3" json:"node_pool_id,omitempty"`
+	// The IDs of the individual nodes in the pool.
+	NodeIds       []string `protobuf:"bytes,2,rep,name=node_ids,json=nodeIds,proto3" json:"node_ids,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -62,28 +62,29 @@ func (*CivoKubernetesNodePoolStackOutputs) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_civo_civokubernetesnodepool_v1_stack_outputs_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *CivoKubernetesNodePoolStackOutputs) GetCertificateId() string {
+func (x *CivoKubernetesNodePoolStackOutputs) GetNodePoolId() string {
 	if x != nil {
-		return x.CertificateId
+		return x.NodePoolId
 	}
 	return ""
 }
 
-func (x *CivoKubernetesNodePoolStackOutputs) GetExpiryRfc3339() string {
+func (x *CivoKubernetesNodePoolStackOutputs) GetNodeIds() []string {
 	if x != nil {
-		return x.ExpiryRfc3339
+		return x.NodeIds
 	}
-	return ""
+	return nil
 }
 
 var File_project_planton_provider_civo_civokubernetesnodepool_v1_stack_outputs_proto protoreflect.FileDescriptor
 
 const file_project_planton_provider_civo_civokubernetesnodepool_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Kproject/planton/provider/civo/civokubernetesnodepool/v1/stack_outputs.proto\x127project.planton.provider.civo.civokubernetesnodepool.v1\"r\n" +
-	"\"CivoKubernetesNodePoolStackOutputs\x12%\n" +
-	"\x0ecertificate_id\x18\x01 \x01(\tR\rcertificateId\x12%\n" +
-	"\x0eexpiry_rfc3339\x18\x02 \x01(\tR\rexpiryRfc3339B\xd6\x03\n" +
+	"Kproject/planton/provider/civo/civokubernetesnodepool/v1/stack_outputs.proto\x127project.planton.provider.civo.civokubernetesnodepool.v1\"a\n" +
+	"\"CivoKubernetesNodePoolStackOutputs\x12 \n" +
+	"\fnode_pool_id\x18\x01 \x01(\tR\n" +
+	"nodePoolId\x12\x19\n" +
+	"\bnode_ids\x18\x02 \x03(\tR\anodeIdsB\xd6\x03\n" +
 	";com.project.planton.provider.civo.civokubernetesnodepool.v1B\x11StackOutputsProtoP\x01Z\x80\x01github.com/project-planton/project-planton/apis/project/planton/provider/civo/civokubernetesnodepool/v1;civokubernetesnodepoolv1\xa2\x02\x05PPPCC\xaa\x027Project.Planton.Provider.Civo.Civokubernetesnodepool.V1\xca\x027Project\\Planton\\Provider\\Civo\\Civokubernetesnodepool\\V1\xe2\x02CProject\\Planton\\Provider\\Civo\\Civokubernetesnodepool\\V1\\GPBMetadata\xea\x02<Project::Planton::Provider::Civo::Civokubernetesnodepool::V1b\x06proto3"
 
 var (

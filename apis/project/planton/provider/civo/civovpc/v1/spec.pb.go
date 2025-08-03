@@ -23,73 +23,21 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// CivoVpcType represents the certificate source.
-type CivoVpcType int32
-
-const (
-	// A free, auto‑managed Let's Encrypt certificate.
-	CivoVpcType_letsEncrypt CivoVpcType = 0
-	// A user‑provided custom certificate.
-	CivoVpcType_custom CivoVpcType = 1
-)
-
-// Enum value maps for CivoVpcType.
-var (
-	CivoVpcType_name = map[int32]string{
-		0: "letsEncrypt",
-		1: "custom",
-	}
-	CivoVpcType_value = map[string]int32{
-		"letsEncrypt": 0,
-		"custom":      1,
-	}
-)
-
-func (x CivoVpcType) Enum() *CivoVpcType {
-	p := new(CivoVpcType)
-	*p = x
-	return p
-}
-
-func (x CivoVpcType) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (CivoVpcType) Descriptor() protoreflect.EnumDescriptor {
-	return file_project_planton_provider_civo_civovpc_v1_spec_proto_enumTypes[0].Descriptor()
-}
-
-func (CivoVpcType) Type() protoreflect.EnumType {
-	return &file_project_planton_provider_civo_civovpc_v1_spec_proto_enumTypes[0]
-}
-
-func (x CivoVpcType) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use CivoVpcType.Descriptor instead.
-func (CivoVpcType) EnumDescriptor() ([]byte, []int) {
-	return file_project_planton_provider_civo_civovpc_v1_spec_proto_rawDescGZIP(), []int{0}
-}
-
-// CivoVpcSpec defines the fields required to create an SSL certificate in Civo.
+// CivoVpcSpec defines the specification for an isolated private network on Civo.
 type CivoVpcSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// certificate_name is a unique, human‑readable identifier (≤ 64 chars).
-	CertificateName string `protobuf:"bytes,1,opt,name=certificate_name,json=certificateName,proto3" json:"certificate_name,omitempty"`
-	// type must align with the branch chosen in certificate_source.
-	Type CivoVpcType `protobuf:"varint,2,opt,name=type,proto3,enum=project.planton.provider.civo.civovpc.v1.CivoVpcType" json:"type,omitempty"`
-	// Mutually exclusive parameter sets.
-	//
-	// Types that are valid to be assigned to CertificateSource:
-	//
-	//	*CivoVpcSpec_LetsEncrypt
-	//	*CivoVpcSpec_Custom
-	CertificateSource isCivoVpcSpec_CertificateSource `protobuf_oneof:"certificate_source"`
-	// Optional free‑form description (≤ 128 chars).
-	Description string `protobuf:"bytes,5,opt,name=description,proto3" json:"description,omitempty"`
-	// Optional tags; must be unique and lowercase kebab.
-	Tags          []string `protobuf:"bytes,6,rep,name=tags,proto3" json:"tags,omitempty"`
+	// The ID of the Civo credential to use for this network.
+	CivoCredentialId string `protobuf:"bytes,1,opt,name=civo_credential_id,json=civoCredentialId,proto3" json:"civo_credential_id,omitempty"`
+	// The name of the network (DNS-friendly label).
+	NetworkName string `protobuf:"bytes,2,opt,name=network_name,json=networkName,proto3" json:"network_name,omitempty"`
+	// The Civo region where this network will be created (e.g., "lon1", "fra1").
+	Region string `protobuf:"bytes,3,opt,name=region,proto3" json:"region,omitempty"`
+	// The IPv4 CIDR range for the network (max /24). If omitted, an available range will be auto-allocated.
+	IpRangeCidr string `protobuf:"bytes,4,opt,name=ip_range_cidr,json=ipRangeCidr,proto3" json:"ip_range_cidr,omitempty"`
+	// Whether this network should be the default for the region (only one default network per region).
+	IsDefaultForRegion bool `protobuf:"varint,5,opt,name=is_default_for_region,json=isDefaultForRegion,proto3" json:"is_default_for_region,omitempty"`
+	// An optional description for the network (up to 100 characters).
+	Description   string `protobuf:"bytes,6,opt,name=description,proto3" json:"description,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -124,43 +72,39 @@ func (*CivoVpcSpec) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_civo_civovpc_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *CivoVpcSpec) GetCertificateName() string {
+func (x *CivoVpcSpec) GetCivoCredentialId() string {
 	if x != nil {
-		return x.CertificateName
+		return x.CivoCredentialId
 	}
 	return ""
 }
 
-func (x *CivoVpcSpec) GetType() CivoVpcType {
+func (x *CivoVpcSpec) GetNetworkName() string {
 	if x != nil {
-		return x.Type
+		return x.NetworkName
 	}
-	return CivoVpcType_letsEncrypt
+	return ""
 }
 
-func (x *CivoVpcSpec) GetCertificateSource() isCivoVpcSpec_CertificateSource {
+func (x *CivoVpcSpec) GetRegion() string {
 	if x != nil {
-		return x.CertificateSource
+		return x.Region
 	}
-	return nil
+	return ""
 }
 
-func (x *CivoVpcSpec) GetLetsEncrypt() *CivoVpcLetsEncryptParams {
+func (x *CivoVpcSpec) GetIpRangeCidr() string {
 	if x != nil {
-		if x, ok := x.CertificateSource.(*CivoVpcSpec_LetsEncrypt); ok {
-			return x.LetsEncrypt
-		}
+		return x.IpRangeCidr
 	}
-	return nil
+	return ""
 }
 
-func (x *CivoVpcSpec) GetCustom() *CivoVpcCustomParams {
+func (x *CivoVpcSpec) GetIsDefaultForRegion() bool {
 	if x != nil {
-		if x, ok := x.CertificateSource.(*CivoVpcSpec_Custom); ok {
-			return x.Custom
-		}
+		return x.IsDefaultForRegion
 	}
-	return nil
+	return false
 }
 
 func (x *CivoVpcSpec) GetDescription() string {
@@ -170,176 +114,18 @@ func (x *CivoVpcSpec) GetDescription() string {
 	return ""
 }
 
-func (x *CivoVpcSpec) GetTags() []string {
-	if x != nil {
-		return x.Tags
-	}
-	return nil
-}
-
-type isCivoVpcSpec_CertificateSource interface {
-	isCivoVpcSpec_CertificateSource()
-}
-
-type CivoVpcSpec_LetsEncrypt struct {
-	LetsEncrypt *CivoVpcLetsEncryptParams `protobuf:"bytes,3,opt,name=lets_encrypt,json=letsEncrypt,proto3,oneof"`
-}
-
-type CivoVpcSpec_Custom struct {
-	Custom *CivoVpcCustomParams `protobuf:"bytes,4,opt,name=custom,proto3,oneof"`
-}
-
-func (*CivoVpcSpec_LetsEncrypt) isCivoVpcSpec_CertificateSource() {}
-
-func (*CivoVpcSpec_Custom) isCivoVpcSpec_CertificateSource() {}
-
-// Parameters specific to a Let's Encrypt certificate request.
-type CivoVpcLetsEncryptParams struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// domains is the list of FQDNs (or wildcard domains) to include.
-	// At least one domain is required.
-	Domains []string `protobuf:"bytes,1,rep,name=domains,proto3" json:"domains,omitempty"`
-	// disable auto_renew controls automatic renewal of the Let's Encrypt certificate.
-	DisableAutoRenew bool `protobuf:"varint,2,opt,name=disable_auto_renew,json=disableAutoRenew,proto3" json:"disable_auto_renew,omitempty"`
-	unknownFields    protoimpl.UnknownFields
-	sizeCache        protoimpl.SizeCache
-}
-
-func (x *CivoVpcLetsEncryptParams) Reset() {
-	*x = CivoVpcLetsEncryptParams{}
-	mi := &file_project_planton_provider_civo_civovpc_v1_spec_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CivoVpcLetsEncryptParams) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CivoVpcLetsEncryptParams) ProtoMessage() {}
-
-func (x *CivoVpcLetsEncryptParams) ProtoReflect() protoreflect.Message {
-	mi := &file_project_planton_provider_civo_civovpc_v1_spec_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CivoVpcLetsEncryptParams.ProtoReflect.Descriptor instead.
-func (*CivoVpcLetsEncryptParams) Descriptor() ([]byte, []int) {
-	return file_project_planton_provider_civo_civovpc_v1_spec_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *CivoVpcLetsEncryptParams) GetDomains() []string {
-	if x != nil {
-		return x.Domains
-	}
-	return nil
-}
-
-func (x *CivoVpcLetsEncryptParams) GetDisableAutoRenew() bool {
-	if x != nil {
-		return x.DisableAutoRenew
-	}
-	return false
-}
-
-// Parameters specific to a custom (user‑supplied) certificate.
-type CivoVpcCustomParams struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// leaf_certificate is the PEM‑encoded public certificate.
-	LeafCertificate string `protobuf:"bytes,1,opt,name=leaf_certificate,json=leafCertificate,proto3" json:"leaf_certificate,omitempty"`
-	// private_key is the PEM‑encoded private key.
-	PrivateKey string `protobuf:"bytes,2,opt,name=private_key,json=privateKey,proto3" json:"private_key,omitempty"`
-	// certificate_chain is an optional PEM‑encoded intermediate chain.
-	CertificateChain string `protobuf:"bytes,3,opt,name=certificate_chain,json=certificateChain,proto3" json:"certificate_chain,omitempty"`
-	unknownFields    protoimpl.UnknownFields
-	sizeCache        protoimpl.SizeCache
-}
-
-func (x *CivoVpcCustomParams) Reset() {
-	*x = CivoVpcCustomParams{}
-	mi := &file_project_planton_provider_civo_civovpc_v1_spec_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CivoVpcCustomParams) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CivoVpcCustomParams) ProtoMessage() {}
-
-func (x *CivoVpcCustomParams) ProtoReflect() protoreflect.Message {
-	mi := &file_project_planton_provider_civo_civovpc_v1_spec_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CivoVpcCustomParams.ProtoReflect.Descriptor instead.
-func (*CivoVpcCustomParams) Descriptor() ([]byte, []int) {
-	return file_project_planton_provider_civo_civovpc_v1_spec_proto_rawDescGZIP(), []int{2}
-}
-
-func (x *CivoVpcCustomParams) GetLeafCertificate() string {
-	if x != nil {
-		return x.LeafCertificate
-	}
-	return ""
-}
-
-func (x *CivoVpcCustomParams) GetPrivateKey() string {
-	if x != nil {
-		return x.PrivateKey
-	}
-	return ""
-}
-
-func (x *CivoVpcCustomParams) GetCertificateChain() string {
-	if x != nil {
-		return x.CertificateChain
-	}
-	return ""
-}
-
 var File_project_planton_provider_civo_civovpc_v1_spec_proto protoreflect.FileDescriptor
 
 const file_project_planton_provider_civo_civovpc_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"3project/planton/provider/civo/civovpc/v1/spec.proto\x12(project.planton.provider.civo.civovpc.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\"\xc7\x03\n" +
-	"\vCivoVpcSpec\x127\n" +
-	"\x10certificate_name\x18\x01 \x01(\tB\f\xbaH\t\xc8\x01\x01r\x04\x10\x01\x18@R\x0fcertificateName\x12V\n" +
-	"\x04type\x18\x02 \x01(\x0e25.project.planton.provider.civo.civovpc.v1.CivoVpcTypeB\v\xbaH\b\xc8\x01\x01\x82\x01\x02\x10\x01R\x04type\x12g\n" +
-	"\flets_encrypt\x18\x03 \x01(\v2B.project.planton.provider.civo.civovpc.v1.CivoVpcLetsEncryptParamsH\x00R\vletsEncrypt\x12W\n" +
-	"\x06custom\x18\x04 \x01(\v2=.project.planton.provider.civo.civovpc.v1.CivoVpcCustomParamsH\x00R\x06custom\x12*\n" +
-	"\vdescription\x18\x05 \x01(\tB\b\xbaH\x05r\x03\x18\x80\x01R\vdescription\x12\x1c\n" +
-	"\x04tags\x18\x06 \x03(\tB\b\xbaH\x05\x92\x01\x02\x18\x01R\x04tagsB\x1b\n" +
-	"\x12certificate_source\x12\x05\xbaH\x02\b\x01\"\xae\x01\n" +
-	"\x18CivoVpcLetsEncryptParams\x12d\n" +
-	"\adomains\x18\x01 \x03(\tBJ\xbaHG\xc8\x01\x01\x92\x01A\x18\x01\"=r;29^(?:\\*\\.[A-Za-z0-9\\-\\.]+|[A-Za-z0-9\\-\\.]+\\.[A-Za-z]{2,})$R\adomains\x12,\n" +
-	"\x12disable_auto_renew\x18\x02 \x01(\bR\x10disableAutoRenew\"\xa6\x01\n" +
-	"\x13CivoVpcCustomParams\x125\n" +
-	"\x10leaf_certificate\x18\x01 \x01(\tB\n" +
-	"\xbaH\a\xc8\x01\x01r\x02\x10\x01R\x0fleafCertificate\x12+\n" +
-	"\vprivate_key\x18\x02 \x01(\tB\n" +
-	"\xbaH\a\xc8\x01\x01r\x02\x10\x01R\n" +
-	"privateKey\x12+\n" +
-	"\x11certificate_chain\x18\x03 \x01(\tR\x10certificateChain**\n" +
-	"\vCivoVpcType\x12\x0f\n" +
-	"\vletsEncrypt\x10\x00\x12\n" +
-	"\n" +
-	"\x06custom\x10\x01B\xe4\x02\n" +
+	"3project/planton/provider/civo/civovpc/v1/spec.proto\x12(project.planton.provider.civo.civovpc.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\"\x90\x02\n" +
+	"\vCivoVpcSpec\x124\n" +
+	"\x12civo_credential_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x10civoCredentialId\x12)\n" +
+	"\fnetwork_name\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\vnetworkName\x12\x1e\n" +
+	"\x06region\x18\x03 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x06region\x12\"\n" +
+	"\rip_range_cidr\x18\x04 \x01(\tR\vipRangeCidr\x121\n" +
+	"\x15is_default_for_region\x18\x05 \x01(\bR\x12isDefaultForRegion\x12)\n" +
+	"\vdescription\x18\x06 \x01(\tB\a\xbaH\x04r\x02\x18dR\vdescriptionB\xe4\x02\n" +
 	",com.project.planton.provider.civo.civovpc.v1B\tSpecProtoP\x01Zbgithub.com/project-planton/project-planton/apis/project/planton/provider/civo/civovpc/v1;civovpcv1\xa2\x02\x05PPPCC\xaa\x02(Project.Planton.Provider.Civo.Civovpc.V1\xca\x02(Project\\Planton\\Provider\\Civo\\Civovpc\\V1\xe2\x024Project\\Planton\\Provider\\Civo\\Civovpc\\V1\\GPBMetadata\xea\x02-Project::Planton::Provider::Civo::Civovpc::V1b\x06proto3"
 
 var (
@@ -354,23 +140,16 @@ func file_project_planton_provider_civo_civovpc_v1_spec_proto_rawDescGZIP() []by
 	return file_project_planton_provider_civo_civovpc_v1_spec_proto_rawDescData
 }
 
-var file_project_planton_provider_civo_civovpc_v1_spec_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_project_planton_provider_civo_civovpc_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_project_planton_provider_civo_civovpc_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_civo_civovpc_v1_spec_proto_goTypes = []any{
-	(CivoVpcType)(0),                 // 0: project.planton.provider.civo.civovpc.v1.CivoVpcType
-	(*CivoVpcSpec)(nil),              // 1: project.planton.provider.civo.civovpc.v1.CivoVpcSpec
-	(*CivoVpcLetsEncryptParams)(nil), // 2: project.planton.provider.civo.civovpc.v1.CivoVpcLetsEncryptParams
-	(*CivoVpcCustomParams)(nil),      // 3: project.planton.provider.civo.civovpc.v1.CivoVpcCustomParams
+	(*CivoVpcSpec)(nil), // 0: project.planton.provider.civo.civovpc.v1.CivoVpcSpec
 }
 var file_project_planton_provider_civo_civovpc_v1_spec_proto_depIdxs = []int32{
-	0, // 0: project.planton.provider.civo.civovpc.v1.CivoVpcSpec.type:type_name -> project.planton.provider.civo.civovpc.v1.CivoVpcType
-	2, // 1: project.planton.provider.civo.civovpc.v1.CivoVpcSpec.lets_encrypt:type_name -> project.planton.provider.civo.civovpc.v1.CivoVpcLetsEncryptParams
-	3, // 2: project.planton.provider.civo.civovpc.v1.CivoVpcSpec.custom:type_name -> project.planton.provider.civo.civovpc.v1.CivoVpcCustomParams
-	3, // [3:3] is the sub-list for method output_type
-	3, // [3:3] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	0, // [0:0] is the sub-list for method output_type
+	0, // [0:0] is the sub-list for method input_type
+	0, // [0:0] is the sub-list for extension type_name
+	0, // [0:0] is the sub-list for extension extendee
+	0, // [0:0] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_provider_civo_civovpc_v1_spec_proto_init() }
@@ -378,23 +157,18 @@ func file_project_planton_provider_civo_civovpc_v1_spec_proto_init() {
 	if File_project_planton_provider_civo_civovpc_v1_spec_proto != nil {
 		return
 	}
-	file_project_planton_provider_civo_civovpc_v1_spec_proto_msgTypes[0].OneofWrappers = []any{
-		(*CivoVpcSpec_LetsEncrypt)(nil),
-		(*CivoVpcSpec_Custom)(nil),
-	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_project_planton_provider_civo_civovpc_v1_spec_proto_rawDesc), len(file_project_planton_provider_civo_civovpc_v1_spec_proto_rawDesc)),
-			NumEnums:      1,
-			NumMessages:   3,
+			NumEnums:      0,
+			NumMessages:   1,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
 		GoTypes:           file_project_planton_provider_civo_civovpc_v1_spec_proto_goTypes,
 		DependencyIndexes: file_project_planton_provider_civo_civovpc_v1_spec_proto_depIdxs,
-		EnumInfos:         file_project_planton_provider_civo_civovpc_v1_spec_proto_enumTypes,
 		MessageInfos:      file_project_planton_provider_civo_civovpc_v1_spec_proto_msgTypes,
 	}.Build()
 	File_project_planton_provider_civo_civovpc_v1_spec_proto = out.File

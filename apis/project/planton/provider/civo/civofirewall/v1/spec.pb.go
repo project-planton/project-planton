@@ -8,6 +8,8 @@ package civofirewallv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
+	_ "github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
+	_ "github.com/project-planton/project-planton/apis/project/planton/shared/foreignkey/v1"
 	_ "github.com/project-planton/project-planton/apis/project/planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -23,8 +25,22 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// CivoFirewallSpec defines the user configuration for a Civo firewall.
 type CivoFirewallSpec struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Name of the firewall (must be unique per Civo account/project).
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	// The network (VPC) in which to create this firewall. Must refer to an existing CivoNetwork.
+	NetworkId string `protobuf:"bytes,2,opt,name=network_id,json=networkId,proto3" json:"network_id,omitempty"`
+	// Inbound (ingress) rules: traffic allowed **to** instances.
+	// Any traffic not matching an inbound rule is denied (stateful firewall).
+	InboundRules []*CivoFirewallInboundRule `protobuf:"bytes,3,rep,name=inbound_rules,json=inboundRules,proto3" json:"inbound_rules,omitempty"`
+	// Outbound (egress) rules: traffic allowed **from** instances.
+	// If no egress rules are specified, all outbound traffic is allowed by default.
+	OutboundRules []*CivoFirewallOutboundRule `protobuf:"bytes,4,rep,name=outbound_rules,json=outboundRules,proto3" json:"outbound_rules,omitempty"`
+	// Instance tag selectors: names of instance tags to auto-apply this firewall to.
+	// Any instance in the same network with any of these tags will use this firewall.
+	Tags          []string `protobuf:"bytes,5,rep,name=tags,proto3" json:"tags,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -59,12 +75,232 @@ func (*CivoFirewallSpec) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_civo_civofirewall_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
+func (x *CivoFirewallSpec) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *CivoFirewallSpec) GetNetworkId() string {
+	if x != nil {
+		return x.NetworkId
+	}
+	return ""
+}
+
+func (x *CivoFirewallSpec) GetInboundRules() []*CivoFirewallInboundRule {
+	if x != nil {
+		return x.InboundRules
+	}
+	return nil
+}
+
+func (x *CivoFirewallSpec) GetOutboundRules() []*CivoFirewallOutboundRule {
+	if x != nil {
+		return x.OutboundRules
+	}
+	return nil
+}
+
+func (x *CivoFirewallSpec) GetTags() []string {
+	if x != nil {
+		return x.Tags
+	}
+	return nil
+}
+
+// Definition of an inbound (ingress) firewall rule.
+type CivoFirewallInboundRule struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Protocol to allow ("tcp", "udp", or "icmp").
+	Protocol string `protobuf:"bytes,1,opt,name=protocol,proto3" json:"protocol,omitempty"`
+	// Port or port range to allow (e.g., "80", "443", "22", "8000-9000"; for "tcp"/"udp"
+	// leave empty or use "1-65535" to allow all ports).
+	PortRange string `protobuf:"bytes,2,opt,name=port_range,json=portRange,proto3" json:"port_range,omitempty"`
+	// CIDR blocks from which traffic is permitted (defaults to "0.0.0.0/0" if not specified).
+	Cidrs []string `protobuf:"bytes,3,rep,name=cidrs,proto3" json:"cidrs,omitempty"`
+	// Action for this rule: "allow" (default) or "deny". Default is "allow" if unspecified.
+	Action string `protobuf:"bytes,4,opt,name=action,proto3" json:"action,omitempty"`
+	// Optional label for the rule (for user reference).
+	Label         string `protobuf:"bytes,5,opt,name=label,proto3" json:"label,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CivoFirewallInboundRule) Reset() {
+	*x = CivoFirewallInboundRule{}
+	mi := &file_project_planton_provider_civo_civofirewall_v1_spec_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CivoFirewallInboundRule) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CivoFirewallInboundRule) ProtoMessage() {}
+
+func (x *CivoFirewallInboundRule) ProtoReflect() protoreflect.Message {
+	mi := &file_project_planton_provider_civo_civofirewall_v1_spec_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CivoFirewallInboundRule.ProtoReflect.Descriptor instead.
+func (*CivoFirewallInboundRule) Descriptor() ([]byte, []int) {
+	return file_project_planton_provider_civo_civofirewall_v1_spec_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *CivoFirewallInboundRule) GetProtocol() string {
+	if x != nil {
+		return x.Protocol
+	}
+	return ""
+}
+
+func (x *CivoFirewallInboundRule) GetPortRange() string {
+	if x != nil {
+		return x.PortRange
+	}
+	return ""
+}
+
+func (x *CivoFirewallInboundRule) GetCidrs() []string {
+	if x != nil {
+		return x.Cidrs
+	}
+	return nil
+}
+
+func (x *CivoFirewallInboundRule) GetAction() string {
+	if x != nil {
+		return x.Action
+	}
+	return ""
+}
+
+func (x *CivoFirewallInboundRule) GetLabel() string {
+	if x != nil {
+		return x.Label
+	}
+	return ""
+}
+
+// Definition of an outbound (egress) firewall rule.
+type CivoFirewallOutboundRule struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Protocol to allow or deny ("tcp", "udp", or "icmp").
+	Protocol string `protobuf:"bytes,1,opt,name=protocol,proto3" json:"protocol,omitempty"`
+	// Port or port range to allow/deny (format as in inbound rules).
+	PortRange string `protobuf:"bytes,2,opt,name=port_range,json=portRange,proto3" json:"port_range,omitempty"`
+	// CIDR blocks to which traffic is permitted (defaults to "0.0.0.0/0" if not specified).
+	Cidrs []string `protobuf:"bytes,3,rep,name=cidrs,proto3" json:"cidrs,omitempty"`
+	// Action for this rule: "allow" (default) or "deny". Default is "allow" if unspecified.
+	Action string `protobuf:"bytes,4,opt,name=action,proto3" json:"action,omitempty"`
+	// Optional label for the rule.
+	Label         string `protobuf:"bytes,5,opt,name=label,proto3" json:"label,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CivoFirewallOutboundRule) Reset() {
+	*x = CivoFirewallOutboundRule{}
+	mi := &file_project_planton_provider_civo_civofirewall_v1_spec_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CivoFirewallOutboundRule) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CivoFirewallOutboundRule) ProtoMessage() {}
+
+func (x *CivoFirewallOutboundRule) ProtoReflect() protoreflect.Message {
+	mi := &file_project_planton_provider_civo_civofirewall_v1_spec_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CivoFirewallOutboundRule.ProtoReflect.Descriptor instead.
+func (*CivoFirewallOutboundRule) Descriptor() ([]byte, []int) {
+	return file_project_planton_provider_civo_civofirewall_v1_spec_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *CivoFirewallOutboundRule) GetProtocol() string {
+	if x != nil {
+		return x.Protocol
+	}
+	return ""
+}
+
+func (x *CivoFirewallOutboundRule) GetPortRange() string {
+	if x != nil {
+		return x.PortRange
+	}
+	return ""
+}
+
+func (x *CivoFirewallOutboundRule) GetCidrs() []string {
+	if x != nil {
+		return x.Cidrs
+	}
+	return nil
+}
+
+func (x *CivoFirewallOutboundRule) GetAction() string {
+	if x != nil {
+		return x.Action
+	}
+	return ""
+}
+
+func (x *CivoFirewallOutboundRule) GetLabel() string {
+	if x != nil {
+		return x.Label
+	}
+	return ""
+}
+
 var File_project_planton_provider_civo_civofirewall_v1_spec_proto protoreflect.FileDescriptor
 
 const file_project_planton_provider_civo_civofirewall_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"8project/planton/provider/civo/civofirewall/v1/spec.proto\x12-project.planton.provider.civo.civofirewall.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\"\x12\n" +
-	"\x10CivoFirewallSpecB\x87\x03\n" +
+	"8project/planton/provider/civo/civofirewall/v1/spec.proto\x12-project.planton.provider.civo.civofirewall.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\x1aBproject/planton/shared/cloudresourcekind/cloud_resource_kind.proto\"\xe8\x02\n" +
+	"\x10CivoFirewallSpec\x12\x1a\n" +
+	"\x04name\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\x12G\n" +
+	"\n" +
+	"network_id\x18\x02 \x01(\tB(\xbaH\x03\xc8\x01\x01\x88\xd4a\xe7\v\x92\xd4a\x19status.outputs.network_idR\tnetworkId\x12k\n" +
+	"\rinbound_rules\x18\x03 \x03(\v2F.project.planton.provider.civo.civofirewall.v1.CivoFirewallInboundRuleR\finboundRules\x12n\n" +
+	"\x0eoutbound_rules\x18\x04 \x03(\v2G.project.planton.provider.civo.civofirewall.v1.CivoFirewallOutboundRuleR\routboundRules\x12\x12\n" +
+	"\x04tags\x18\x05 \x03(\tR\x04tags\"\xb1\x01\n" +
+	"\x17CivoFirewallInboundRule\x123\n" +
+	"\bprotocol\x18\x01 \x01(\tB\x17\xbaH\x14r\x122\x10^(tcp|udp|icmp)$R\bprotocol\x12\x1d\n" +
+	"\n" +
+	"port_range\x18\x02 \x01(\tR\tportRange\x12\x14\n" +
+	"\x05cidrs\x18\x03 \x03(\tR\x05cidrs\x12\x16\n" +
+	"\x06action\x18\x04 \x01(\tR\x06action\x12\x14\n" +
+	"\x05label\x18\x05 \x01(\tR\x05label\"\xb2\x01\n" +
+	"\x18CivoFirewallOutboundRule\x123\n" +
+	"\bprotocol\x18\x01 \x01(\tB\x17\xbaH\x14r\x122\x10^(tcp|udp|icmp)$R\bprotocol\x12\x1d\n" +
+	"\n" +
+	"port_range\x18\x02 \x01(\tR\tportRange\x12\x14\n" +
+	"\x05cidrs\x18\x03 \x03(\tR\x05cidrs\x12\x16\n" +
+	"\x06action\x18\x04 \x01(\tR\x06action\x12\x14\n" +
+	"\x05label\x18\x05 \x01(\tR\x05labelB\x87\x03\n" +
 	"1com.project.planton.provider.civo.civofirewall.v1B\tSpecProtoP\x01Zlgithub.com/project-planton/project-planton/apis/project/planton/provider/civo/civofirewall/v1;civofirewallv1\xa2\x02\x05PPPCC\xaa\x02-Project.Planton.Provider.Civo.Civofirewall.V1\xca\x02-Project\\Planton\\Provider\\Civo\\Civofirewall\\V1\xe2\x029Project\\Planton\\Provider\\Civo\\Civofirewall\\V1\\GPBMetadata\xea\x022Project::Planton::Provider::Civo::Civofirewall::V1b\x06proto3"
 
 var (
@@ -79,16 +315,20 @@ func file_project_planton_provider_civo_civofirewall_v1_spec_proto_rawDescGZIP()
 	return file_project_planton_provider_civo_civofirewall_v1_spec_proto_rawDescData
 }
 
-var file_project_planton_provider_civo_civofirewall_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+var file_project_planton_provider_civo_civofirewall_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_project_planton_provider_civo_civofirewall_v1_spec_proto_goTypes = []any{
-	(*CivoFirewallSpec)(nil), // 0: project.planton.provider.civo.civofirewall.v1.CivoFirewallSpec
+	(*CivoFirewallSpec)(nil),         // 0: project.planton.provider.civo.civofirewall.v1.CivoFirewallSpec
+	(*CivoFirewallInboundRule)(nil),  // 1: project.planton.provider.civo.civofirewall.v1.CivoFirewallInboundRule
+	(*CivoFirewallOutboundRule)(nil), // 2: project.planton.provider.civo.civofirewall.v1.CivoFirewallOutboundRule
 }
 var file_project_planton_provider_civo_civofirewall_v1_spec_proto_depIdxs = []int32{
-	0, // [0:0] is the sub-list for method output_type
-	0, // [0:0] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	1, // 0: project.planton.provider.civo.civofirewall.v1.CivoFirewallSpec.inbound_rules:type_name -> project.planton.provider.civo.civofirewall.v1.CivoFirewallInboundRule
+	2, // 1: project.planton.provider.civo.civofirewall.v1.CivoFirewallSpec.outbound_rules:type_name -> project.planton.provider.civo.civofirewall.v1.CivoFirewallOutboundRule
+	2, // [2:2] is the sub-list for method output_type
+	2, // [2:2] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_provider_civo_civofirewall_v1_spec_proto_init() }
@@ -102,7 +342,7 @@ func file_project_planton_provider_civo_civofirewall_v1_spec_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_project_planton_provider_civo_civofirewall_v1_spec_proto_rawDesc), len(file_project_planton_provider_civo_civofirewall_v1_spec_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   1,
+			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

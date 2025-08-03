@@ -16,7 +16,7 @@ message GrafanaKubernetesStackInput {
   project.planton.shared.iac.pulumi.PulumiStackInfo pulumi = 2;
   //terraform input required when the provisioner is terraform
   project.planton.shared.iac.terraform.TerraformStackInfo terraform = 3;
-  //target api-resource
+  //target cloud-resource
   GrafanaKubernetes target = 4;
   //provider-credential
   project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec provider_credential = 5;

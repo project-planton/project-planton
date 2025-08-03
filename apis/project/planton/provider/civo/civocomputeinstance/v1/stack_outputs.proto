@@ -2,10 +2,20 @@ syntax = "proto3";
 
 package project.planton.provider.civo.civocomputeinstance.v1;
 
-// CivoComputeInstanceStackOutputs captures the relevant outputs after provisioning a Civo certificate.
+// CivoComputeInstanceStackOutputs captures the resulting instance info after provisioning.
 message CivoComputeInstanceStackOutputs {
-  // certificate_id is the unique identifier of the certificate in Civo (UUID).
-  string certificate_id = 1;
-  // expiry_rfc3339 is the expiration timestamp of the certificate in RFC 3339 format.
-  string expiry_rfc3339 = 2;
+  // unique identifier of the instance (UUID)
+  string instance_id = 1;
+
+  // public IPv4 address assigned to the instance (if any)
+  string public_ipv4 = 2;
+
+  // private IPv4 address of the instance within its network
+  string private_ipv4 = 3;
+
+  // current status of the instance (e.g., "ACTIVE", "BUILDING")
+  string status = 4;
+
+  // timestamp when the instance was created (RFC 3339 format)
+  string created_at_rfc3339 = 5;
 }

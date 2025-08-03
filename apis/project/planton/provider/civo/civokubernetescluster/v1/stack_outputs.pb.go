@@ -21,15 +21,19 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// CivoKubernetesClusterStackOutputs captures the relevant outputs after provisioning a Civo certificate.
+// CivoKubernetesClusterStackOutputs captures the outputs after provisioning a Civo Kubernetes cluster.
 type CivoKubernetesClusterStackOutputs struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// certificate_id is the unique identifier of the certificate in Civo (UUID).
-	CertificateId string `protobuf:"bytes,1,opt,name=certificate_id,json=certificateId,proto3" json:"certificate_id,omitempty"`
-	// expiry_rfc3339 is the expiration timestamp of the certificate in RFC 3339 format.
-	ExpiryRfc3339 string `protobuf:"bytes,2,opt,name=expiry_rfc3339,json=expiryRfc3339,proto3" json:"expiry_rfc3339,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	// The unique identifier (ID) of the created Kubernetes cluster.
+	ClusterId string `protobuf:"bytes,1,opt,name=cluster_id,json=clusterId,proto3" json:"cluster_id,omitempty"`
+	// A base64-encoded Kubernetes config (kubeconfig) for accessing the cluster.
+	KubeconfigB64 string `protobuf:"bytes,2,opt,name=kubeconfig_b64,json=kubeconfigB64,proto3" json:"kubeconfig_b64,omitempty"`
+	// The endpoint URL of the Kubernetes API server for the cluster.
+	ApiServerEndpoint string `protobuf:"bytes,3,opt,name=api_server_endpoint,json=apiServerEndpoint,proto3" json:"api_server_endpoint,omitempty"`
+	// The timestamp when the cluster was created, in RFC 3339 format.
+	CreatedAtRfc3339 string `protobuf:"bytes,4,opt,name=created_at_rfc3339,json=createdAtRfc3339,proto3" json:"created_at_rfc3339,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
 }
 
 func (x *CivoKubernetesClusterStackOutputs) Reset() {
@@ -62,16 +66,30 @@ func (*CivoKubernetesClusterStackOutputs) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_civo_civokubernetescluster_v1_stack_outputs_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *CivoKubernetesClusterStackOutputs) GetCertificateId() string {
+func (x *CivoKubernetesClusterStackOutputs) GetClusterId() string {
 	if x != nil {
-		return x.CertificateId
+		return x.ClusterId
 	}
 	return ""
 }
 
-func (x *CivoKubernetesClusterStackOutputs) GetExpiryRfc3339() string {
+func (x *CivoKubernetesClusterStackOutputs) GetKubeconfigB64() string {
 	if x != nil {
-		return x.ExpiryRfc3339
+		return x.KubeconfigB64
+	}
+	return ""
+}
+
+func (x *CivoKubernetesClusterStackOutputs) GetApiServerEndpoint() string {
+	if x != nil {
+		return x.ApiServerEndpoint
+	}
+	return ""
+}
+
+func (x *CivoKubernetesClusterStackOutputs) GetCreatedAtRfc3339() string {
+	if x != nil {
+		return x.CreatedAtRfc3339
 	}
 	return ""
 }
@@ -80,10 +98,13 @@ var File_project_planton_provider_civo_civokubernetescluster_v1_stack_outputs_pr
 
 const file_project_planton_provider_civo_civokubernetescluster_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Jproject/planton/provider/civo/civokubernetescluster/v1/stack_outputs.proto\x126project.planton.provider.civo.civokubernetescluster.v1\"q\n" +
-	"!CivoKubernetesClusterStackOutputs\x12%\n" +
-	"\x0ecertificate_id\x18\x01 \x01(\tR\rcertificateId\x12%\n" +
-	"\x0eexpiry_rfc3339\x18\x02 \x01(\tR\rexpiryRfc3339B\xce\x03\n" +
+	"Jproject/planton/provider/civo/civokubernetescluster/v1/stack_outputs.proto\x126project.planton.provider.civo.civokubernetescluster.v1\"\xc7\x01\n" +
+	"!CivoKubernetesClusterStackOutputs\x12\x1d\n" +
+	"\n" +
+	"cluster_id\x18\x01 \x01(\tR\tclusterId\x12%\n" +
+	"\x0ekubeconfig_b64\x18\x02 \x01(\tR\rkubeconfigB64\x12.\n" +
+	"\x13api_server_endpoint\x18\x03 \x01(\tR\x11apiServerEndpoint\x12,\n" +
+	"\x12created_at_rfc3339\x18\x04 \x01(\tR\x10createdAtRfc3339B\xce\x03\n" +
 	":com.project.planton.provider.civo.civokubernetescluster.v1B\x11StackOutputsProtoP\x01Z~github.com/project-planton/project-planton/apis/project/planton/provider/civo/civokubernetescluster/v1;civokubernetesclusterv1\xa2\x02\x05PPPCC\xaa\x026Project.Planton.Provider.Civo.Civokubernetescluster.V1\xca\x026Project\\Planton\\Provider\\Civo\\Civokubernetescluster\\V1\xe2\x02BProject\\Planton\\Provider\\Civo\\Civokubernetescluster\\V1\\GPBMetadata\xea\x02;Project::Planton::Provider::Civo::Civokubernetescluster::V1b\x06proto3"
 
 var (

@@ -21,15 +21,21 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// CivoComputeInstanceStackOutputs captures the relevant outputs after provisioning a Civo certificate.
+// CivoComputeInstanceStackOutputs captures the resulting instance info after provisioning.
 type CivoComputeInstanceStackOutputs struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// certificate_id is the unique identifier of the certificate in Civo (UUID).
-	CertificateId string `protobuf:"bytes,1,opt,name=certificate_id,json=certificateId,proto3" json:"certificate_id,omitempty"`
-	// expiry_rfc3339 is the expiration timestamp of the certificate in RFC 3339 format.
-	ExpiryRfc3339 string `protobuf:"bytes,2,opt,name=expiry_rfc3339,json=expiryRfc3339,proto3" json:"expiry_rfc3339,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	// unique identifier of the instance (UUID)
+	InstanceId string `protobuf:"bytes,1,opt,name=instance_id,json=instanceId,proto3" json:"instance_id,omitempty"`
+	// public IPv4 address assigned to the instance (if any)
+	PublicIpv4 string `protobuf:"bytes,2,opt,name=public_ipv4,json=publicIpv4,proto3" json:"public_ipv4,omitempty"`
+	// private IPv4 address of the instance within its network
+	PrivateIpv4 string `protobuf:"bytes,3,opt,name=private_ipv4,json=privateIpv4,proto3" json:"private_ipv4,omitempty"`
+	// current status of the instance (e.g., "ACTIVE", "BUILDING")
+	Status string `protobuf:"bytes,4,opt,name=status,proto3" json:"status,omitempty"`
+	// timestamp when the instance was created (RFC 3339 format)
+	CreatedAtRfc3339 string `protobuf:"bytes,5,opt,name=created_at_rfc3339,json=createdAtRfc3339,proto3" json:"created_at_rfc3339,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
 }
 
 func (x *CivoComputeInstanceStackOutputs) Reset() {
@@ -62,16 +68,37 @@ func (*CivoComputeInstanceStackOutputs) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_civo_civocomputeinstance_v1_stack_outputs_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *CivoComputeInstanceStackOutputs) GetCertificateId() string {
+func (x *CivoComputeInstanceStackOutputs) GetInstanceId() string {
 	if x != nil {
-		return x.CertificateId
+		return x.InstanceId
 	}
 	return ""
 }
 
-func (x *CivoComputeInstanceStackOutputs) GetExpiryRfc3339() string {
+func (x *CivoComputeInstanceStackOutputs) GetPublicIpv4() string {
 	if x != nil {
-		return x.ExpiryRfc3339
+		return x.PublicIpv4
+	}
+	return ""
+}
+
+func (x *CivoComputeInstanceStackOutputs) GetPrivateIpv4() string {
+	if x != nil {
+		return x.PrivateIpv4
+	}
+	return ""
+}
+
+func (x *CivoComputeInstanceStackOutputs) GetStatus() string {
+	if x != nil {
+		return x.Status
+	}
+	return ""
+}
+
+func (x *CivoComputeInstanceStackOutputs) GetCreatedAtRfc3339() string {
+	if x != nil {
+		return x.CreatedAtRfc3339
 	}
 	return ""
 }
@@ -80,10 +107,15 @@ var File_project_planton_provider_civo_civocomputeinstance_v1_stack_outputs_prot
 
 const file_project_planton_provider_civo_civocomputeinstance_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Hproject/planton/provider/civo/civocomputeinstance/v1/stack_outputs.proto\x124project.planton.provider.civo.civocomputeinstance.v1\"o\n" +
-	"\x1fCivoComputeInstanceStackOutputs\x12%\n" +
-	"\x0ecertificate_id\x18\x01 \x01(\tR\rcertificateId\x12%\n" +
-	"\x0eexpiry_rfc3339\x18\x02 \x01(\tR\rexpiryRfc3339B\xc0\x03\n" +
+	"Hproject/planton/provider/civo/civocomputeinstance/v1/stack_outputs.proto\x124project.planton.provider.civo.civocomputeinstance.v1\"\xcc\x01\n" +
+	"\x1fCivoComputeInstanceStackOutputs\x12\x1f\n" +
+	"\vinstance_id\x18\x01 \x01(\tR\n" +
+	"instanceId\x12\x1f\n" +
+	"\vpublic_ipv4\x18\x02 \x01(\tR\n" +
+	"publicIpv4\x12!\n" +
+	"\fprivate_ipv4\x18\x03 \x01(\tR\vprivateIpv4\x12\x16\n" +
+	"\x06status\x18\x04 \x01(\tR\x06status\x12,\n" +
+	"\x12created_at_rfc3339\x18\x05 \x01(\tR\x10createdAtRfc3339B\xc0\x03\n" +
 	"8com.project.planton.provider.civo.civocomputeinstance.v1B\x11StackOutputsProtoP\x01Zzgithub.com/project-planton/project-planton/apis/project/planton/provider/civo/civocomputeinstance/v1;civocomputeinstancev1\xa2\x02\x05PPPCC\xaa\x024Project.Planton.Provider.Civo.Civocomputeinstance.V1\xca\x024Project\\Planton\\Provider\\Civo\\Civocomputeinstance\\V1\xe2\x02@Project\\Planton\\Provider\\Civo\\Civocomputeinstance\\V1\\GPBMetadata\xea\x029Project::Planton::Provider::Civo::Civocomputeinstance::V1b\x06proto3"
 
 var (

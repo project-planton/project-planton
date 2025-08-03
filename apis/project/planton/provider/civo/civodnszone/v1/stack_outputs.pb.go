@@ -21,13 +21,16 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// CivoDnsZoneStackOutputs captures the relevant outputs after provisioning a Civo certificate.
+// CivoDnsZoneStackOutputs captures the output information after provisioning a DNS zone on Civo.
 type CivoDnsZoneStackOutputs struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// certificate_id is the unique identifier of the certificate in Civo (UUID).
-	CertificateId string `protobuf:"bytes,1,opt,name=certificate_id,json=certificateId,proto3" json:"certificate_id,omitempty"`
-	// expiry_rfc3339 is the expiration timestamp of the certificate in RFC 3339 format.
-	ExpiryRfc3339 string `protobuf:"bytes,2,opt,name=expiry_rfc3339,json=expiryRfc3339,proto3" json:"expiry_rfc3339,omitempty"`
+	// The domain name of the DNS zone managed on Civo.
+	ZoneName string `protobuf:"bytes,1,opt,name=zone_name,json=zoneName,proto3" json:"zone_name,omitempty"`
+	// The unique identifier of the DNS zone on Civo (UUID).
+	ZoneId string `protobuf:"bytes,2,opt,name=zone_id,json=zoneId,proto3" json:"zone_id,omitempty"`
+	// The list of nameserver addresses for the DNS zone.
+	// These are the nameservers that should be set at the domain's registrar (e.g., ns0.civo.com, ns1.civo.com).
+	NameServers   []string `protobuf:"bytes,3,rep,name=name_servers,json=nameServers,proto3" json:"name_servers,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -62,28 +65,36 @@ func (*CivoDnsZoneStackOutputs) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_civo_civodnszone_v1_stack_outputs_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *CivoDnsZoneStackOutputs) GetCertificateId() string {
+func (x *CivoDnsZoneStackOutputs) GetZoneName() string {
 	if x != nil {
-		return x.CertificateId
+		return x.ZoneName
 	}
 	return ""
 }
 
-func (x *CivoDnsZoneStackOutputs) GetExpiryRfc3339() string {
+func (x *CivoDnsZoneStackOutputs) GetZoneId() string {
 	if x != nil {
-		return x.ExpiryRfc3339
+		return x.ZoneId
 	}
 	return ""
+}
+
+func (x *CivoDnsZoneStackOutputs) GetNameServers() []string {
+	if x != nil {
+		return x.NameServers
+	}
+	return nil
 }
 
 var File_project_planton_provider_civo_civodnszone_v1_stack_outputs_proto protoreflect.FileDescriptor
 
 const file_project_planton_provider_civo_civodnszone_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"@project/planton/provider/civo/civodnszone/v1/stack_outputs.proto\x12,project.planton.provider.civo.civodnszone.v1\"g\n" +
-	"\x17CivoDnsZoneStackOutputs\x12%\n" +
-	"\x0ecertificate_id\x18\x01 \x01(\tR\rcertificateId\x12%\n" +
-	"\x0eexpiry_rfc3339\x18\x02 \x01(\tR\rexpiryRfc3339B\x88\x03\n" +
+	"@project/planton/provider/civo/civodnszone/v1/stack_outputs.proto\x12,project.planton.provider.civo.civodnszone.v1\"r\n" +
+	"\x17CivoDnsZoneStackOutputs\x12\x1b\n" +
+	"\tzone_name\x18\x01 \x01(\tR\bzoneName\x12\x17\n" +
+	"\azone_id\x18\x02 \x01(\tR\x06zoneId\x12!\n" +
+	"\fname_servers\x18\x03 \x03(\tR\vnameServersB\x88\x03\n" +
 	"0com.project.planton.provider.civo.civodnszone.v1B\x11StackOutputsProtoP\x01Zjgithub.com/project-planton/project-planton/apis/project/planton/provider/civo/civodnszone/v1;civodnszonev1\xa2\x02\x05PPPCC\xaa\x02,Project.Planton.Provider.Civo.Civodnszone.V1\xca\x02,Project\\Planton\\Provider\\Civo\\Civodnszone\\V1\xe2\x028Project\\Planton\\Provider\\Civo\\Civodnszone\\V1\\GPBMetadata\xea\x021Project::Planton::Provider::Civo::Civodnszone::V1b\x06proto3"
 
 var (

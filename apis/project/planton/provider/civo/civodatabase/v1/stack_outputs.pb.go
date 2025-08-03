@@ -21,15 +21,23 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// CivoDatabaseStackOutputs captures the relevant outputs after provisioning a Civo certificate.
+// CivoDatabaseStackOutputs captures the key outputs after provisioning a Civo managed database instance.
 type CivoDatabaseStackOutputs struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// certificate_id is the unique identifier of the certificate in Civo (UUID).
-	CertificateId string `protobuf:"bytes,1,opt,name=certificate_id,json=certificateId,proto3" json:"certificate_id,omitempty"`
-	// expiry_rfc3339 is the expiration timestamp of the certificate in RFC 3339 format.
-	ExpiryRfc3339 string `protobuf:"bytes,2,opt,name=expiry_rfc3339,json=expiryRfc3339,proto3" json:"expiry_rfc3339,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	// The unique identifier of the created database instance (UUID).
+	DatabaseId string `protobuf:"bytes,1,opt,name=database_id,json=databaseId,proto3" json:"database_id,omitempty"`
+	// The host name or IP address of the primary database endpoint.
+	Host string `protobuf:"bytes,2,opt,name=host,proto3" json:"host,omitempty"`
+	// The network port on which the database is listening.
+	Port uint32 `protobuf:"varint,3,opt,name=port,proto3" json:"port,omitempty"`
+	// The username for the default database user.
+	Username string `protobuf:"bytes,4,opt,name=username,proto3" json:"username,omitempty"`
+	// A reference to a secret containing the default user's password.
+	PasswordSecretRef string `protobuf:"bytes,5,opt,name=password_secret_ref,json=passwordSecretRef,proto3" json:"password_secret_ref,omitempty"`
+	// The host addresses of replica nodes, if any (empty if no replicas were configured).
+	ReplicaEndpoints []string `protobuf:"bytes,6,rep,name=replica_endpoints,json=replicaEndpoints,proto3" json:"replica_endpoints,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
 }
 
 func (x *CivoDatabaseStackOutputs) Reset() {
@@ -62,28 +70,61 @@ func (*CivoDatabaseStackOutputs) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_civo_civodatabase_v1_stack_outputs_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *CivoDatabaseStackOutputs) GetCertificateId() string {
+func (x *CivoDatabaseStackOutputs) GetDatabaseId() string {
 	if x != nil {
-		return x.CertificateId
+		return x.DatabaseId
 	}
 	return ""
 }
 
-func (x *CivoDatabaseStackOutputs) GetExpiryRfc3339() string {
+func (x *CivoDatabaseStackOutputs) GetHost() string {
 	if x != nil {
-		return x.ExpiryRfc3339
+		return x.Host
 	}
 	return ""
+}
+
+func (x *CivoDatabaseStackOutputs) GetPort() uint32 {
+	if x != nil {
+		return x.Port
+	}
+	return 0
+}
+
+func (x *CivoDatabaseStackOutputs) GetUsername() string {
+	if x != nil {
+		return x.Username
+	}
+	return ""
+}
+
+func (x *CivoDatabaseStackOutputs) GetPasswordSecretRef() string {
+	if x != nil {
+		return x.PasswordSecretRef
+	}
+	return ""
+}
+
+func (x *CivoDatabaseStackOutputs) GetReplicaEndpoints() []string {
+	if x != nil {
+		return x.ReplicaEndpoints
+	}
+	return nil
 }
 
 var File_project_planton_provider_civo_civodatabase_v1_stack_outputs_proto protoreflect.FileDescriptor
 
 const file_project_planton_provider_civo_civodatabase_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Aproject/planton/provider/civo/civodatabase/v1/stack_outputs.proto\x12-project.planton.provider.civo.civodatabase.v1\"h\n" +
-	"\x18CivoDatabaseStackOutputs\x12%\n" +
-	"\x0ecertificate_id\x18\x01 \x01(\tR\rcertificateId\x12%\n" +
-	"\x0eexpiry_rfc3339\x18\x02 \x01(\tR\rexpiryRfc3339B\x8f\x03\n" +
+	"Aproject/planton/provider/civo/civodatabase/v1/stack_outputs.proto\x12-project.planton.provider.civo.civodatabase.v1\"\xdc\x01\n" +
+	"\x18CivoDatabaseStackOutputs\x12\x1f\n" +
+	"\vdatabase_id\x18\x01 \x01(\tR\n" +
+	"databaseId\x12\x12\n" +
+	"\x04host\x18\x02 \x01(\tR\x04host\x12\x12\n" +
+	"\x04port\x18\x03 \x01(\rR\x04port\x12\x1a\n" +
+	"\busername\x18\x04 \x01(\tR\busername\x12.\n" +
+	"\x13password_secret_ref\x18\x05 \x01(\tR\x11passwordSecretRef\x12+\n" +
+	"\x11replica_endpoints\x18\x06 \x03(\tR\x10replicaEndpointsB\x8f\x03\n" +
 	"1com.project.planton.provider.civo.civodatabase.v1B\x11StackOutputsProtoP\x01Zlgithub.com/project-planton/project-planton/apis/project/planton/provider/civo/civodatabase/v1;civodatabasev1\xa2\x02\x05PPPCC\xaa\x02-Project.Planton.Provider.Civo.Civodatabase.V1\xca\x02-Project\\Planton\\Provider\\Civo\\Civodatabase\\V1\xe2\x029Project\\Planton\\Provider\\Civo\\Civodatabase\\V1\\GPBMetadata\xea\x022Project::Planton::Provider::Civo::Civodatabase::V1b\x06proto3"
 
 var (

@@ -21,15 +21,19 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// CivoLoadBalancerStackOutputs captures the relevant outputs after provisioning a Civo certificate.
+// CivoLoadBalancerStackOutputs captures the outputs after provisioning a Civo Load Balancer.
 type CivoLoadBalancerStackOutputs struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// certificate_id is the unique identifier of the certificate in Civo (UUID).
-	CertificateId string `protobuf:"bytes,1,opt,name=certificate_id,json=certificateId,proto3" json:"certificate_id,omitempty"`
-	// expiry_rfc3339 is the expiration timestamp of the certificate in RFC 3339 format.
-	ExpiryRfc3339 string `protobuf:"bytes,2,opt,name=expiry_rfc3339,json=expiryRfc3339,proto3" json:"expiry_rfc3339,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	// The unique identifier of the created Civo Load Balancer.
+	LoadBalancerId string `protobuf:"bytes,1,opt,name=load_balancer_id,json=loadBalancerId,proto3" json:"load_balancer_id,omitempty"`
+	// The public IP address assigned to the Load Balancer.
+	IpAddress string `protobuf:"bytes,2,opt,name=ip_address,json=ipAddress,proto3" json:"ip_address,omitempty"`
+	// The DNS name for the Load Balancer (if applicable).
+	DnsName string `protobuf:"bytes,3,opt,name=dns_name,json=dnsName,proto3" json:"dns_name,omitempty"`
+	// The creation timestamp of the Load Balancer in RFC 3339 format.
+	CreatedAtRfc3339 string `protobuf:"bytes,4,opt,name=created_at_rfc3339,json=createdAtRfc3339,proto3" json:"created_at_rfc3339,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
 }
 
 func (x *CivoLoadBalancerStackOutputs) Reset() {
@@ -62,16 +66,30 @@ func (*CivoLoadBalancerStackOutputs) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_civo_civoloadbalancer_v1_stack_outputs_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *CivoLoadBalancerStackOutputs) GetCertificateId() string {
+func (x *CivoLoadBalancerStackOutputs) GetLoadBalancerId() string {
 	if x != nil {
-		return x.CertificateId
+		return x.LoadBalancerId
 	}
 	return ""
 }
 
-func (x *CivoLoadBalancerStackOutputs) GetExpiryRfc3339() string {
+func (x *CivoLoadBalancerStackOutputs) GetIpAddress() string {
 	if x != nil {
-		return x.ExpiryRfc3339
+		return x.IpAddress
+	}
+	return ""
+}
+
+func (x *CivoLoadBalancerStackOutputs) GetDnsName() string {
+	if x != nil {
+		return x.DnsName
+	}
+	return ""
+}
+
+func (x *CivoLoadBalancerStackOutputs) GetCreatedAtRfc3339() string {
+	if x != nil {
+		return x.CreatedAtRfc3339
 	}
 	return ""
 }
@@ -80,10 +98,13 @@ var File_project_planton_provider_civo_civoloadbalancer_v1_stack_outputs_proto p
 
 const file_project_planton_provider_civo_civoloadbalancer_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Eproject/planton/provider/civo/civoloadbalancer/v1/stack_outputs.proto\x121project.planton.provider.civo.civoloadbalancer.v1\"l\n" +
-	"\x1cCivoLoadBalancerStackOutputs\x12%\n" +
-	"\x0ecertificate_id\x18\x01 \x01(\tR\rcertificateId\x12%\n" +
-	"\x0eexpiry_rfc3339\x18\x02 \x01(\tR\rexpiryRfc3339B\xab\x03\n" +
+	"Eproject/planton/provider/civo/civoloadbalancer/v1/stack_outputs.proto\x121project.planton.provider.civo.civoloadbalancer.v1\"\xb0\x01\n" +
+	"\x1cCivoLoadBalancerStackOutputs\x12(\n" +
+	"\x10load_balancer_id\x18\x01 \x01(\tR\x0eloadBalancerId\x12\x1d\n" +
+	"\n" +
+	"ip_address\x18\x02 \x01(\tR\tipAddress\x12\x19\n" +
+	"\bdns_name\x18\x03 \x01(\tR\adnsName\x12,\n" +
+	"\x12created_at_rfc3339\x18\x04 \x01(\tR\x10createdAtRfc3339B\xab\x03\n" +
 	"5com.project.planton.provider.civo.civoloadbalancer.v1B\x11StackOutputsProtoP\x01Ztgithub.com/project-planton/project-planton/apis/project/planton/provider/civo/civoloadbalancer/v1;civoloadbalancerv1\xa2\x02\x05PPPCC\xaa\x021Project.Planton.Provider.Civo.Civoloadbalancer.V1\xca\x021Project\\Planton\\Provider\\Civo\\Civoloadbalancer\\V1\xe2\x02=Project\\Planton\\Provider\\Civo\\Civoloadbalancer\\V1\\GPBMetadata\xea\x026Project::Planton::Provider::Civo::Civoloadbalancer::V1b\x06proto3"
 
 var (

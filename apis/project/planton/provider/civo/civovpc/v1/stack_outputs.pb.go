@@ -21,15 +21,17 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// CivoVpcStackOutputs captures the relevant outputs after provisioning a Civo certificate.
+// CivoVpcStackOutputs captures the output values after creating a Civo network.
 type CivoVpcStackOutputs struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// certificate_id is the unique identifier of the certificate in Civo (UUID).
-	CertificateId string `protobuf:"bytes,1,opt,name=certificate_id,json=certificateId,proto3" json:"certificate_id,omitempty"`
-	// expiry_rfc3339 is the expiration timestamp of the certificate in RFC 3339 format.
-	ExpiryRfc3339 string `protobuf:"bytes,2,opt,name=expiry_rfc3339,json=expiryRfc3339,proto3" json:"expiry_rfc3339,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	// the unique ID of the network created on Civo
+	NetworkId string `protobuf:"bytes,1,opt,name=network_id,json=networkId,proto3" json:"network_id,omitempty"`
+	// the IPv4 CIDR block of the created network
+	CidrBlock string `protobuf:"bytes,2,opt,name=cidr_block,json=cidrBlock,proto3" json:"cidr_block,omitempty"`
+	// timestamp when the network was created (RFC 3339 format)
+	CreatedAtRfc3339 string `protobuf:"bytes,3,opt,name=created_at_rfc3339,json=createdAtRfc3339,proto3" json:"created_at_rfc3339,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
 }
 
 func (x *CivoVpcStackOutputs) Reset() {
@@ -62,16 +64,23 @@ func (*CivoVpcStackOutputs) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_civo_civovpc_v1_stack_outputs_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *CivoVpcStackOutputs) GetCertificateId() string {
+func (x *CivoVpcStackOutputs) GetNetworkId() string {
 	if x != nil {
-		return x.CertificateId
+		return x.NetworkId
 	}
 	return ""
 }
 
-func (x *CivoVpcStackOutputs) GetExpiryRfc3339() string {
+func (x *CivoVpcStackOutputs) GetCidrBlock() string {
 	if x != nil {
-		return x.ExpiryRfc3339
+		return x.CidrBlock
+	}
+	return ""
+}
+
+func (x *CivoVpcStackOutputs) GetCreatedAtRfc3339() string {
+	if x != nil {
+		return x.CreatedAtRfc3339
 	}
 	return ""
 }
@@ -80,10 +89,13 @@ var File_project_planton_provider_civo_civovpc_v1_stack_outputs_proto protorefle
 
 const file_project_planton_provider_civo_civovpc_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"<project/planton/provider/civo/civovpc/v1/stack_outputs.proto\x12(project.planton.provider.civo.civovpc.v1\"c\n" +
-	"\x13CivoVpcStackOutputs\x12%\n" +
-	"\x0ecertificate_id\x18\x01 \x01(\tR\rcertificateId\x12%\n" +
-	"\x0eexpiry_rfc3339\x18\x02 \x01(\tR\rexpiryRfc3339B\xec\x02\n" +
+	"<project/planton/provider/civo/civovpc/v1/stack_outputs.proto\x12(project.planton.provider.civo.civovpc.v1\"\x81\x01\n" +
+	"\x13CivoVpcStackOutputs\x12\x1d\n" +
+	"\n" +
+	"network_id\x18\x01 \x01(\tR\tnetworkId\x12\x1d\n" +
+	"\n" +
+	"cidr_block\x18\x02 \x01(\tR\tcidrBlock\x12,\n" +
+	"\x12created_at_rfc3339\x18\x03 \x01(\tR\x10createdAtRfc3339B\xec\x02\n" +
 	",com.project.planton.provider.civo.civovpc.v1B\x11StackOutputsProtoP\x01Zbgithub.com/project-planton/project-planton/apis/project/planton/provider/civo/civovpc/v1;civovpcv1\xa2\x02\x05PPPCC\xaa\x02(Project.Planton.Provider.Civo.Civovpc.V1\xca\x02(Project\\Planton\\Provider\\Civo\\Civovpc\\V1\xe2\x024Project\\Planton\\Provider\\Civo\\Civovpc\\V1\\GPBMetadata\xea\x02-Project::Planton::Provider::Civo::Civovpc::V1b\x06proto3"
 
 var (

@@ -8,6 +8,8 @@ package civodnszonev1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
+	v1 "github.com/project-planton/project-planton/apis/project/planton/shared/foreignkey/v1"
+	dnsrecordtype "github.com/project-planton/project-planton/apis/project/planton/shared/networking/enums/dnsrecordtype"
 	_ "github.com/project-planton/project-planton/apis/project/planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -23,8 +25,16 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// CivoDnsZoneSpec defines the specification required to create a DNS zone (domain) on Civo.
+// This allows you to manage DNS records for a given domain via Civo's DNS service, focusing on the essential parameters (80/20 principle).
 type CivoDnsZoneSpec struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The domain name for the DNS zone.
+	// Must be a valid fully-qualified domain name (e.g., "example.com").
+	DomainName string `protobuf:"bytes,1,opt,name=domain_name,json=domainName,proto3" json:"domain_name,omitempty"`
+	// A list of DNS records to create within the zone (optional).
+	// Each record includes its type, name, value(s), and TTL.
+	Records       []*CivoDnsZoneRecord `protobuf:"bytes,2,rep,name=records,proto3" json:"records,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -59,12 +69,116 @@ func (*CivoDnsZoneSpec) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_civo_civodnszone_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
+func (x *CivoDnsZoneSpec) GetDomainName() string {
+	if x != nil {
+		return x.DomainName
+	}
+	return ""
+}
+
+func (x *CivoDnsZoneSpec) GetRecords() []*CivoDnsZoneRecord {
+	if x != nil {
+		return x.Records
+	}
+	return nil
+}
+
+// CivoDnsZoneRecord represents a DNS record entry to be created in the zone.
+type CivoDnsZoneRecord struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The host/name for the DNS record, relative to the zone.
+	// For root (apex) records, use "@" to denote the zone itself.
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	// The value or values for the DNS record.
+	// - For A/AAAA: one or more IP addresses.
+	// - For CNAME: the target domain name.
+	// - For TXT: the text data (if multiple strings, they will be concatenated by DNS).
+	// - For MX: one or more entries like "<priority> <mail-server-domain>".
+	// Each value can be a literal or a reference to another resource’s output.
+	Values []*v1.StringValueOrRef `protobuf:"bytes,2,rep,name=values,proto3" json:"values,omitempty"`
+	// The time-to-live (TTL) for this DNS record, in seconds.
+	// Determines how long resolvers cache the record. Defaults to 3600 seconds (1 hour) if not set.
+	TtlSeconds uint32 `protobuf:"varint,3,opt,name=ttl_seconds,json=ttlSeconds,proto3" json:"ttl_seconds,omitempty"`
+	// The DNS record type.
+	// This field is required and must be one of the supported record types (A, AAAA, CNAME, MX, TXT, etc.).
+	Type          dnsrecordtype.DnsRecordType `protobuf:"varint,4,opt,name=type,proto3,enum=project.planton.shared.networking.enums.dnsrecordtype.DnsRecordType" json:"type,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CivoDnsZoneRecord) Reset() {
+	*x = CivoDnsZoneRecord{}
+	mi := &file_project_planton_provider_civo_civodnszone_v1_spec_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CivoDnsZoneRecord) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CivoDnsZoneRecord) ProtoMessage() {}
+
+func (x *CivoDnsZoneRecord) ProtoReflect() protoreflect.Message {
+	mi := &file_project_planton_provider_civo_civodnszone_v1_spec_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CivoDnsZoneRecord.ProtoReflect.Descriptor instead.
+func (*CivoDnsZoneRecord) Descriptor() ([]byte, []int) {
+	return file_project_planton_provider_civo_civodnszone_v1_spec_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *CivoDnsZoneRecord) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *CivoDnsZoneRecord) GetValues() []*v1.StringValueOrRef {
+	if x != nil {
+		return x.Values
+	}
+	return nil
+}
+
+func (x *CivoDnsZoneRecord) GetTtlSeconds() uint32 {
+	if x != nil {
+		return x.TtlSeconds
+	}
+	return 0
+}
+
+func (x *CivoDnsZoneRecord) GetType() dnsrecordtype.DnsRecordType {
+	if x != nil {
+		return x.Type
+	}
+	return dnsrecordtype.DnsRecordType(0)
+}
+
 var File_project_planton_provider_civo_civodnszone_v1_spec_proto protoreflect.FileDescriptor
 
 const file_project_planton_provider_civo_civodnszone_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"7project/planton/provider/civo/civodnszone/v1/spec.proto\x12,project.planton.provider.civo.civodnszone.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\"\x11\n" +
-	"\x0fCivoDnsZoneSpecB\x80\x03\n" +
+	"7project/planton/provider/civo/civodnszone/v1/spec.proto\x12,project.planton.provider.civo.civodnszone.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1aKproject/planton/shared/networking/enums/dnsrecordtype/dns_record_type.proto\x1a,project/planton/shared/options/options.proto\"\xbb\x01\n" +
+	"\x0fCivoDnsZoneSpec\x12M\n" +
+	"\vdomain_name\x18\x01 \x01(\tB,\xbaH)\xc8\x01\x01r$2\"^(?:[A-Za-z0-9-]+\\.)+[A-Za-z]{2,}$R\n" +
+	"domainName\x12Y\n" +
+	"\arecords\x18\x02 \x03(\v2?.project.planton.provider.civo.civodnszone.v1.CivoDnsZoneRecordR\arecords\"\x99\x02\n" +
+	"\x11CivoDnsZoneRecord\x12\x1a\n" +
+	"\x04name\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\x12[\n" +
+	"\x06values\x18\x02 \x03(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB\v\xbaH\b\xc8\x01\x01\x92\x01\x02\b\x01R\x06values\x12)\n" +
+	"\vttl_seconds\x18\x03 \x01(\rB\b\x92\xa6\x1d\x043600R\n" +
+	"ttlSeconds\x12`\n" +
+	"\x04type\x18\x04 \x01(\x0e2D.project.planton.shared.networking.enums.dnsrecordtype.DnsRecordTypeB\x06\xbaH\x03\xc8\x01\x01R\x04typeB\x80\x03\n" +
 	"0com.project.planton.provider.civo.civodnszone.v1B\tSpecProtoP\x01Zjgithub.com/project-planton/project-planton/apis/project/planton/provider/civo/civodnszone/v1;civodnszonev1\xa2\x02\x05PPPCC\xaa\x02,Project.Planton.Provider.Civo.Civodnszone.V1\xca\x02,Project\\Planton\\Provider\\Civo\\Civodnszone\\V1\xe2\x028Project\\Planton\\Provider\\Civo\\Civodnszone\\V1\\GPBMetadata\xea\x021Project::Planton::Provider::Civo::Civodnszone::V1b\x06proto3"
 
 var (
@@ -79,16 +193,22 @@ func file_project_planton_provider_civo_civodnszone_v1_spec_proto_rawDescGZIP() 
 	return file_project_planton_provider_civo_civodnszone_v1_spec_proto_rawDescData
 }
 
-var file_project_planton_provider_civo_civodnszone_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+var file_project_planton_provider_civo_civodnszone_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_civo_civodnszone_v1_spec_proto_goTypes = []any{
-	(*CivoDnsZoneSpec)(nil), // 0: project.planton.provider.civo.civodnszone.v1.CivoDnsZoneSpec
+	(*CivoDnsZoneSpec)(nil),          // 0: project.planton.provider.civo.civodnszone.v1.CivoDnsZoneSpec
+	(*CivoDnsZoneRecord)(nil),        // 1: project.planton.provider.civo.civodnszone.v1.CivoDnsZoneRecord
+	(*v1.StringValueOrRef)(nil),      // 2: project.planton.shared.foreignkey.v1.StringValueOrRef
+	(dnsrecordtype.DnsRecordType)(0), // 3: project.planton.shared.networking.enums.dnsrecordtype.DnsRecordType
 }
 var file_project_planton_provider_civo_civodnszone_v1_spec_proto_depIdxs = []int32{
-	0, // [0:0] is the sub-list for method output_type
-	0, // [0:0] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	1, // 0: project.planton.provider.civo.civodnszone.v1.CivoDnsZoneSpec.records:type_name -> project.planton.provider.civo.civodnszone.v1.CivoDnsZoneRecord
+	2, // 1: project.planton.provider.civo.civodnszone.v1.CivoDnsZoneRecord.values:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
+	3, // 2: project.planton.provider.civo.civodnszone.v1.CivoDnsZoneRecord.type:type_name -> project.planton.shared.networking.enums.dnsrecordtype.DnsRecordType
+	3, // [3:3] is the sub-list for method output_type
+	3, // [3:3] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_provider_civo_civodnszone_v1_spec_proto_init() }
@@ -102,7 +222,7 @@ func file_project_planton_provider_civo_civodnszone_v1_spec_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_project_planton_provider_civo_civodnszone_v1_spec_proto_rawDesc), len(file_project_planton_provider_civo_civodnszone_v1_spec_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   1,
+			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

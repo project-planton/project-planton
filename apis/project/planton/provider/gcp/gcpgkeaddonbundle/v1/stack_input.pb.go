@@ -35,7 +35,7 @@ type GcpGkeAddonBundleStackInput struct {
 	Pulumi *pulumi.PulumiStackInfo `protobuf:"bytes,2,opt,name=pulumi,proto3" json:"pulumi,omitempty"`
 	// terraform input required when the provisioner is terraform
 	Terraform *terraform.TerraformStackInfo `protobuf:"bytes,3,opt,name=terraform,proto3" json:"terraform,omitempty"`
-	// target api-resource
+	// target cloud-resource
 	Target *GcpGkeAddonBundle `protobuf:"bytes,4,opt,name=target,proto3" json:"target,omitempty"`
 	// gcp-credential
 	GcpCredential *v1.GcpCredentialSpec `protobuf:"bytes,5,opt,name=gcp_credential,json=gcpCredential,proto3" json:"gcp_credential,omitempty"`
