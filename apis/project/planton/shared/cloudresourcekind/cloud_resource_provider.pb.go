@@ -29,26 +29,28 @@ const (
 	ProjectPlantonCloudResourceProvider_atlas                                               ProjectPlantonCloudResourceProvider = 2
 	ProjectPlantonCloudResourceProvider_aws                                                 ProjectPlantonCloudResourceProvider = 3
 	ProjectPlantonCloudResourceProvider_azure                                               ProjectPlantonCloudResourceProvider = 4
-	ProjectPlantonCloudResourceProvider_confluent                                           ProjectPlantonCloudResourceProvider = 5
-	ProjectPlantonCloudResourceProvider_digital_ocean                                       ProjectPlantonCloudResourceProvider = 6
-	ProjectPlantonCloudResourceProvider_gcp                                                 ProjectPlantonCloudResourceProvider = 7
-	ProjectPlantonCloudResourceProvider_kubernetes                                          ProjectPlantonCloudResourceProvider = 8
-	ProjectPlantonCloudResourceProvider_snowflake                                           ProjectPlantonCloudResourceProvider = 9
+	ProjectPlantonCloudResourceProvider_civo                                                ProjectPlantonCloudResourceProvider = 5
+	ProjectPlantonCloudResourceProvider_confluent                                           ProjectPlantonCloudResourceProvider = 6
+	ProjectPlantonCloudResourceProvider_digital_ocean                                       ProjectPlantonCloudResourceProvider = 7
+	ProjectPlantonCloudResourceProvider_gcp                                                 ProjectPlantonCloudResourceProvider = 8
+	ProjectPlantonCloudResourceProvider_kubernetes                                          ProjectPlantonCloudResourceProvider = 9
+	ProjectPlantonCloudResourceProvider_snowflake                                           ProjectPlantonCloudResourceProvider = 10
 )
 
 // Enum value maps for ProjectPlantonCloudResourceProvider.
 var (
 	ProjectPlantonCloudResourceProvider_name = map[int32]string{
-		0: "project_planton_cloud_resource_provider_unspecified",
-		1: "test",
-		2: "atlas",
-		3: "aws",
-		4: "azure",
-		5: "confluent",
-		6: "digital_ocean",
-		7: "gcp",
-		8: "kubernetes",
-		9: "snowflake",
+		0:  "project_planton_cloud_resource_provider_unspecified",
+		1:  "test",
+		2:  "atlas",
+		3:  "aws",
+		4:  "azure",
+		5:  "civo",
+		6:  "confluent",
+		7:  "digital_ocean",
+		8:  "gcp",
+		9:  "kubernetes",
+		10: "snowflake",
 	}
 	ProjectPlantonCloudResourceProvider_value = map[string]int32{
 		"project_planton_cloud_resource_provider_unspecified": 0,
@@ -56,11 +58,12 @@ var (
 		"atlas":         2,
 		"aws":           3,
 		"azure":         4,
-		"confluent":     5,
-		"digital_ocean": 6,
-		"gcp":           7,
-		"kubernetes":    8,
-		"snowflake":     9,
+		"civo":          5,
+		"confluent":     6,
+		"digital_ocean": 7,
+		"gcp":           8,
+		"kubernetes":    9,
+		"snowflake":     10,
 	}
 )
 
@@ -144,19 +147,21 @@ var File_project_planton_shared_cloudresourcekind_cloud_resource_provider_proto 
 
 const file_project_planton_shared_cloudresourcekind_cloud_resource_provider_proto_rawDesc = "" +
 	"\n" +
-	"Fproject/planton/shared/cloudresourcekind/cloud_resource_provider.proto\x12(project.planton.shared.cloudresourcekind*\xd1\x01\n" +
+	"Fproject/planton/shared/cloudresourcekind/cloud_resource_provider.proto\x12(project.planton.shared.cloudresourcekind*\xdb\x01\n" +
 	"#ProjectPlantonCloudResourceProvider\x127\n" +
 	"3project_planton_cloud_resource_provider_unspecified\x10\x00\x12\b\n" +
 	"\x04test\x10\x01\x12\t\n" +
 	"\x05atlas\x10\x02\x12\a\n" +
 	"\x03aws\x10\x03\x12\t\n" +
-	"\x05azure\x10\x04\x12\r\n" +
-	"\tconfluent\x10\x05\x12\x11\n" +
-	"\rdigital_ocean\x10\x06\x12\a\n" +
-	"\x03gcp\x10\a\x12\x0e\n" +
+	"\x05azure\x10\x04\x12\b\n" +
+	"\x04civo\x10\x05\x12\r\n" +
+	"\tconfluent\x10\x06\x12\x11\n" +
+	"\rdigital_ocean\x10\a\x12\a\n" +
+	"\x03gcp\x10\b\x12\x0e\n" +
 	"\n" +
-	"kubernetes\x10\b\x12\r\n" +
-	"\tsnowflake\x10\t*y\n" +
+	"kubernetes\x10\t\x12\r\n" +
+	"\tsnowflake\x10\n" +
+	"*y\n" +
 	"$ProjectPlantonKubernetesResourceType\x128\n" +
 	"4project_planton_kubernetes_resource_type_unspecified\x10\x00\x12\t\n" +
 	"\x05addon\x10\x01\x12\f\n" +

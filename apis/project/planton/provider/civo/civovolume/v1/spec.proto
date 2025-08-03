@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package project.planton.provider.civo.civovolume.v1;
+
+import "buf/validate/validate.proto";
+import "project/planton/shared/options/options.proto";
+
+message CivoVolumeSpec {
+}

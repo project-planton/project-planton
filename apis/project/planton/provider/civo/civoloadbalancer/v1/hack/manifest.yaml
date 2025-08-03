@@ -1,0 +1,5 @@
+apiVersion: civo.project-planton.org/v1
+kind: CivoLoadBalancer
+metadata:
+  name: first-certificate
+spec:

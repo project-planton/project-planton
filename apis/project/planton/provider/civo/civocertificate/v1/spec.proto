@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package project.planton.provider.civo.civocertificate.v1;
+
+import "buf/validate/validate.proto";
+import "project/planton/shared/options/options.proto";
+
+message CivoCertificateSpec {
+}

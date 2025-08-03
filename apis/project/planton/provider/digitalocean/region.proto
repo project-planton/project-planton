@@ -2,12 +2,7 @@ syntax = "proto3";
 
 package project.planton.provider.digitalocean;
 
-import "google/protobuf/descriptor.proto";
-
-// custom option to store the DigitalOcean slug
-extend google.protobuf.EnumValueOptions {
-  string display_label = 20001;
-}
+import "project/planton/shared/options/options.proto";
 
 // digitalocean datacenter regions
 enum DigitalOceanRegion {
@@ -15,42 +10,26 @@ enum DigitalOceanRegion {
   digital_ocean_region_unspecified = 0;
 
   // new york 3
-  nyc3 = 1 [
-    (display_label) = "New York"
-  ];
+  nyc3 = 1 [(project.planton.shared.options.display_label) = "New York"];
 
   // san francisco 3
-  sfo3 = 2 [
-    (display_label) = "San Francisco"
-  ];
+  sfo3 = 2 [(project.planton.shared.options.display_label) = "San Francisco"];
 
   // frankfurt 1
-  fra1 = 3 [
-    (display_label) = "Frankfurt"
-  ];
+  fra1 = 3 [(project.planton.shared.options.display_label) = "Frankfurt"];
 
   // singapore 1
-  sgp1 = 4 [
-    (display_label) = "Singapore"
-  ];
+  sgp1 = 4 [(project.planton.shared.options.display_label) = "Singapore"];
 
   // london 1
-  lon1 = 5 [
-    (display_label) = "London"
-  ];
+  lon1 = 5 [(project.planton.shared.options.display_label) = "London"];
 
   // toronto 1
-  tor1 = 6 [
-    (display_label) = "Toronto"
-  ];
+  tor1 = 6 [(project.planton.shared.options.display_label) = "Toronto"];
 
   // bangalore 1
-  blr1 = 7 [
-    (display_label) = "Bangalore"
-  ];
+  blr1 = 7 [(project.planton.shared.options.display_label) = "Bangalore"];
 
   // amsterdam 3
-  ams3 = 8 [
-    (display_label) = "Amsterdam"
-  ];
+  ams3 = 8 [(project.planton.shared.options.display_label) = "Amsterdam"];
 }
