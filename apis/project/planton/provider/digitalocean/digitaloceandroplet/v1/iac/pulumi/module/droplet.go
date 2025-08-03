@@ -25,7 +25,7 @@ func droplet(
 			!locals.DigitalOceanDroplet.Spec.DisableMonitoring),
 	}
 
-	// Optional: user‑provided cloud‑init script (≤32 KiB).
+	// Optional: user‑provided cloud‑init script (≤32 .KiB).
 	if locals.DigitalOceanDroplet.Spec.UserData != "" {
 		dropletArgs.UserData = pulumi.String(
 			locals.DigitalOceanDroplet.Spec.UserData)

@@ -7,7 +7,7 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// Resources is the entry point – mirrors the pattern used in digital_ocean_vpc.
+// Resources is the entry point – mirrors the pattern used in digital_ocean_vpc.
 func Resources(
 	ctx *pulumi.Context,
 	stackInput *digitaloceanappplatformservicev1.DigitalOceanAppPlatformServiceStackInput,
