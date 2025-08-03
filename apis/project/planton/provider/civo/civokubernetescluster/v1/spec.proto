@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package project.planton.provider.civo.civokubernetescluster.v1;
+
+import "buf/validate/validate.proto";
+import "project/planton/shared/options/options.proto";
+
+message CivoKubernetesClusterSpec {
+
+}
+

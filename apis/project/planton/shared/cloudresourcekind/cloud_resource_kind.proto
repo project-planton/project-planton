@@ -127,4 +127,18 @@ enum CloudResourceKind {
   DigitalOceanVolume = 1211 [(provider) = digital_ocean];
   DigitalOceanVpc = 1212 [(provider) = digital_ocean];
   DigitalOceanCertificate = 1213 [(provider) = digital_ocean];
+
+  // 1500–1799: Civo resources
+  CivoBucket = 1500 [(provider) = civo];
+  CivoCertificate = 1501 [(provider) = civo];
+  CivoComputeInstance = 1502 [(provider) = civo];
+  CivoDatabase = 1503 [(provider) = civo];
+  CivoDnsZone = 1504 [(provider) = civo];
+  CivoFirewall = 1505 [(provider) = civo];
+  CivoIpAddress = 1506 [(provider) = civo];
+  CivoKubernetesCluster = 1507 [(provider) = civo];
+  CivoKubernetesNodePool = 1508 [(provider) = civo];
+  CivoLoadBalancer = 1509 [(provider) = civo];
+  CivoVolume = 1510 [(provider) = civo];
+  CivoVpc = 1511 [(provider) = civo];
 }

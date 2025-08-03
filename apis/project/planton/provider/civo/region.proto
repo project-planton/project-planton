@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package project.planton.provider.civo;
+
+import "project/planton/shared/options/options.proto";
+
+// Civo datacenter regions
+enum CivoRegion {
+  // 0: default / unspecified region
+  civo_region_unspecified = 0;
+
+  // london 1
+  lon1 = 1 [(project.planton.shared.options.display_label) = "London"];
+
+  // london 2
+  lon2 = 2 [(project.planton.shared.options.display_label) = "London"];
+
+  // frankfurt 1
+  fra1 = 3 [(project.planton.shared.options.display_label) = "Frankfurt"];
+
+  // new york 1
+  nyc1 = 4 [(project.planton.shared.options.display_label) = "New York"];
+
+  // phoenix 1
+  phx1 = 5 [(project.planton.shared.options.display_label) = "Phoenix"];
+
+  // mumbai 1
+  mum1 = 6 [(project.planton.shared.options.display_label) = "Mumbai"];
+}

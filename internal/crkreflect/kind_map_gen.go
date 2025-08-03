@@ -31,9 +31,22 @@ import (
 	azurekeyvaultv1 "github.com/project-planton/project-planton/apis/project/planton/provider/azure/azurekeyvault/v1"
 	azurenatgatewayv1 "github.com/project-planton/project-planton/apis/project/planton/provider/azure/azurenatgateway/v1"
 	azurevpcv1 "github.com/project-planton/project-planton/apis/project/planton/provider/azure/azurevpc/v1"
+	civobucketv1 "github.com/project-planton/project-planton/apis/project/planton/provider/civo/civobucket/v1"
+	civocertificatev1 "github.com/project-planton/project-planton/apis/project/planton/provider/civo/civocertificate/v1"
+	civocomputeinstancev1 "github.com/project-planton/project-planton/apis/project/planton/provider/civo/civocomputeinstance/v1"
+	civodatabasev1 "github.com/project-planton/project-planton/apis/project/planton/provider/civo/civodatabase/v1"
+	civodnszonev1 "github.com/project-planton/project-planton/apis/project/planton/provider/civo/civodnszone/v1"
+	civofirewallv1 "github.com/project-planton/project-planton/apis/project/planton/provider/civo/civofirewall/v1"
+	civoipaddressv1 "github.com/project-planton/project-planton/apis/project/planton/provider/civo/civoipaddress/v1"
+	civokubernetesclusterv1 "github.com/project-planton/project-planton/apis/project/planton/provider/civo/civokubernetescluster/v1"
+	civokubernetesnodepoolv1 "github.com/project-planton/project-planton/apis/project/planton/provider/civo/civokubernetesnodepool/v1"
+	civoloadbalancerv1 "github.com/project-planton/project-planton/apis/project/planton/provider/civo/civoloadbalancer/v1"
+	civovolumev1 "github.com/project-planton/project-planton/apis/project/planton/provider/civo/civovolume/v1"
+	civovpcv1 "github.com/project-planton/project-planton/apis/project/planton/provider/civo/civovpc/v1"
 	confluentkafkav1 "github.com/project-planton/project-planton/apis/project/planton/provider/confluent/confluentkafka/v1"
 	digitaloceanappplatformservicev1 "github.com/project-planton/project-planton/apis/project/planton/provider/digitalocean/digitaloceanappplatformservice/v1"
 	digitaloceanbucketv1 "github.com/project-planton/project-planton/apis/project/planton/provider/digitalocean/digitaloceanbucket/v1"
+	digitaloceancertificatev1 "github.com/project-planton/project-planton/apis/project/planton/provider/digitalocean/digitaloceancertificate/v1"
 	digitaloceancontainerregistryv1 "github.com/project-planton/project-planton/apis/project/planton/provider/digitalocean/digitaloceancontainerregistry/v1"
 	digitaloceandatabaseclusterv1 "github.com/project-planton/project-planton/apis/project/planton/provider/digitalocean/digitaloceandatabasecluster/v1"
 	digitaloceandnszonev1 "github.com/project-planton/project-planton/apis/project/planton/provider/digitalocean/digitaloceandnszone/v1"
@@ -149,6 +162,21 @@ var ProviderAzureMap = map[cloudresourcekind.CloudResourceKind]proto.Message{
 	cloudresourcekind.CloudResourceKind_AzureVpc:               &azurevpcv1.AzureVpc{},
 }
 
+var ProviderCivoMap = map[cloudresourcekind.CloudResourceKind]proto.Message{
+	cloudresourcekind.CloudResourceKind_CivoBucket:             &civobucketv1.CivoBucket{},
+	cloudresourcekind.CloudResourceKind_CivoCertificate:        &civocertificatev1.CivoCertificate{},
+	cloudresourcekind.CloudResourceKind_CivoComputeInstance:    &civocomputeinstancev1.CivoComputeInstance{},
+	cloudresourcekind.CloudResourceKind_CivoDatabase:           &civodatabasev1.CivoDatabase{},
+	cloudresourcekind.CloudResourceKind_CivoDnsZone:            &civodnszonev1.CivoDnsZone{},
+	cloudresourcekind.CloudResourceKind_CivoFirewall:           &civofirewallv1.CivoFirewall{},
+	cloudresourcekind.CloudResourceKind_CivoIpAddress:          &civoipaddressv1.CivoIpAddress{},
+	cloudresourcekind.CloudResourceKind_CivoKubernetesCluster:  &civokubernetesclusterv1.CivoKubernetesCluster{},
+	cloudresourcekind.CloudResourceKind_CivoKubernetesNodePool: &civokubernetesnodepoolv1.CivoKubernetesNodePool{},
+	cloudresourcekind.CloudResourceKind_CivoLoadBalancer:       &civoloadbalancerv1.CivoLoadBalancer{},
+	cloudresourcekind.CloudResourceKind_CivoVolume:             &civovolumev1.CivoVolume{},
+	cloudresourcekind.CloudResourceKind_CivoVpc:                &civovpcv1.CivoVpc{},
+}
+
 var ProviderConfluentMap = map[cloudresourcekind.CloudResourceKind]proto.Message{
 	cloudresourcekind.CloudResourceKind_ConfluentKafka: &confluentkafkav1.ConfluentKafka{},
 }
@@ -156,6 +184,7 @@ var ProviderConfluentMap = map[cloudresourcekind.CloudResourceKind]proto.Message
 var ProviderDigitalOceanMap = map[cloudresourcekind.CloudResourceKind]proto.Message{
 	cloudresourcekind.CloudResourceKind_DigitalOceanAppPlatformService: &digitaloceanappplatformservicev1.DigitalOceanAppPlatformService{},
 	cloudresourcekind.CloudResourceKind_DigitalOceanBucket:             &digitaloceanbucketv1.DigitalOceanBucket{},
+	cloudresourcekind.CloudResourceKind_DigitalOceanCertificate:        &digitaloceancertificatev1.DigitalOceanCertificate{},
 	cloudresourcekind.CloudResourceKind_DigitalOceanContainerRegistry:  &digitaloceancontainerregistryv1.DigitalOceanContainerRegistry{},
 	cloudresourcekind.CloudResourceKind_DigitalOceanDatabaseCluster:    &digitaloceandatabaseclusterv1.DigitalOceanDatabaseCluster{},
 	cloudresourcekind.CloudResourceKind_DigitalOceanDnsZone:            &digitaloceandnszonev1.DigitalOceanDnsZone{},
@@ -239,6 +268,7 @@ var ToMessageMap = merge(
 	ProviderAtlasMap,
 	ProviderAwsMap,
 	ProviderAzureMap,
+	ProviderCivoMap,
 	ProviderConfluentMap,
 	ProviderDigitalOceanMap,
 	ProviderGcpMap,

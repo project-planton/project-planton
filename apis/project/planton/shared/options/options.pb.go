@@ -99,6 +99,14 @@ var file_project_planton_shared_options_options_proto_extTypes = []protoimpl.Ext
 		Tag:           "bytes,60003,rep,name=recommended_default_map",
 		Filename:      "project/planton/shared/options/options.proto",
 	},
+	{
+		ExtendedType:  (*descriptorpb.EnumValueOptions)(nil),
+		ExtensionType: (*string)(nil),
+		Field:         60050,
+		Name:          "project.planton.shared.options.display_label",
+		Tag:           "bytes,60050,opt,name=display_label",
+		Filename:      "project/planton/shared/options/options.proto",
+	},
 }
 
 // Extension fields to descriptorpb.FieldOptions.
@@ -111,6 +119,12 @@ var (
 	E_RecommendedDefaultMap = &file_project_planton_shared_options_options_proto_extTypes[2]
 )
 
+// Extension fields to descriptorpb.EnumValueOptions.
+var (
+	// optional string display_label = 60050;
+	E_DisplayLabel = &file_project_planton_shared_options_options_proto_extTypes[3]
+)
+
 var File_project_planton_shared_options_options_proto protoreflect.FileDescriptor
 
 const file_project_planton_shared_options_options_proto_rawDesc = "" +
@@ -121,7 +135,8 @@ const file_project_planton_shared_options_options_proto_rawDesc = "" +
 	"\x05value\x18\x02 \x01(\tR\x05value:9\n" +
 	"\adefault\x12\x1d.google.protobuf.FieldOptions\x18\xe1\xd4\x03 \x01(\tR\adefault:P\n" +
 	"\x13recommended_default\x12\x1d.google.protobuf.FieldOptions\x18\xe2\xd4\x03 \x01(\tR\x12recommendedDefault:\x85\x01\n" +
-	"\x17recommended_default_map\x12\x1d.google.protobuf.FieldOptions\x18\xe3\xd4\x03 \x03(\v2,.project.planton.shared.options.KeyValuePairR\x15recommendedDefaultMapB\x9e\x02\n" +
+	"\x17recommended_default_map\x12\x1d.google.protobuf.FieldOptions\x18\xe3\xd4\x03 \x03(\v2,.project.planton.shared.options.KeyValuePairR\x15recommendedDefaultMap:H\n" +
+	"\rdisplay_label\x12!.google.protobuf.EnumValueOptions\x18\x92\xd5\x03 \x01(\tR\fdisplayLabelB\x9e\x02\n" +
 	"\"com.project.planton.shared.optionsB\fOptionsProtoP\x01ZNgithub.com/project-planton/project-planton/apis/project/planton/shared/options\xa2\x02\x04PPSO\xaa\x02\x1eProject.Planton.Shared.Options\xca\x02\x1eProject\\Planton\\Shared\\Options\xe2\x02*Project\\Planton\\Shared\\Options\\GPBMetadata\xea\x02!Project::Planton::Shared::Optionsb\x06proto3"
 
 var (
@@ -138,18 +153,20 @@ func file_project_planton_shared_options_options_proto_rawDescGZIP() []byte {
 
 var file_project_planton_shared_options_options_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_shared_options_options_proto_goTypes = []any{
-	(*KeyValuePair)(nil),              // 0: project.planton.shared.options.KeyValuePair
-	(*descriptorpb.FieldOptions)(nil), // 1: google.protobuf.FieldOptions
+	(*KeyValuePair)(nil),                  // 0: project.planton.shared.options.KeyValuePair
+	(*descriptorpb.FieldOptions)(nil),     // 1: google.protobuf.FieldOptions
+	(*descriptorpb.EnumValueOptions)(nil), // 2: google.protobuf.EnumValueOptions
 }
 var file_project_planton_shared_options_options_proto_depIdxs = []int32{
 	1, // 0: project.planton.shared.options.default:extendee -> google.protobuf.FieldOptions
 	1, // 1: project.planton.shared.options.recommended_default:extendee -> google.protobuf.FieldOptions
 	1, // 2: project.planton.shared.options.recommended_default_map:extendee -> google.protobuf.FieldOptions
-	0, // 3: project.planton.shared.options.recommended_default_map:type_name -> project.planton.shared.options.KeyValuePair
-	4, // [4:4] is the sub-list for method output_type
-	4, // [4:4] is the sub-list for method input_type
-	3, // [3:4] is the sub-list for extension type_name
-	0, // [0:3] is the sub-list for extension extendee
+	2, // 3: project.planton.shared.options.display_label:extendee -> google.protobuf.EnumValueOptions
+	0, // 4: project.planton.shared.options.recommended_default_map:type_name -> project.planton.shared.options.KeyValuePair
+	5, // [5:5] is the sub-list for method output_type
+	5, // [5:5] is the sub-list for method input_type
+	4, // [4:5] is the sub-list for extension type_name
+	0, // [0:4] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name
 }
 
@@ -165,7 +182,7 @@ func file_project_planton_shared_options_options_proto_init() {
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_project_planton_shared_options_options_proto_rawDesc), len(file_project_planton_shared_options_options_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   1,
-			NumExtensions: 3,
+			NumExtensions: 4,
 			NumServices:   0,
 		},
 		GoTypes:           file_project_planton_shared_options_options_proto_goTypes,
