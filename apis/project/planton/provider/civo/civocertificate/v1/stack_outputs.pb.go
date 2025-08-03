@@ -24,7 +24,7 @@ const (
 // CivoCertificateStackOutputs captures the relevant outputs after provisioning a Civo certificate.
 type CivoCertificateStackOutputs struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// certificate_id is the unique identifier of the certificate in Civo (UUID).
+	// certificate_id is the unique identifier of the certificate in Civo.
 	CertificateId string `protobuf:"bytes,1,opt,name=certificate_id,json=certificateId,proto3" json:"certificate_id,omitempty"`
 	// expiry_rfc3339 is the expiration timestamp of the certificate in RFC 3339 format.
 	ExpiryRfc3339 string `protobuf:"bytes,2,opt,name=expiry_rfc3339,json=expiryRfc3339,proto3" json:"expiry_rfc3339,omitempty"`

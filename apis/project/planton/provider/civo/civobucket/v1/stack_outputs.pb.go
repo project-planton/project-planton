@@ -21,15 +21,19 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// CivoBucketStackOutputs captures the relevant outputs after provisioning a Civo certificate.
+// CivoBucketStackOutputs captures the resulting bucket info after provisioning.
 type CivoBucketStackOutputs struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// certificate_id is the unique identifier of the certificate in Civo (UUID).
-	CertificateId string `protobuf:"bytes,1,opt,name=certificate_id,json=certificateId,proto3" json:"certificate_id,omitempty"`
-	// expiry_rfc3339 is the expiration timestamp of the certificate in RFC 3339 format.
-	ExpiryRfc3339 string `protobuf:"bytes,2,opt,name=expiry_rfc3339,json=expiryRfc3339,proto3" json:"expiry_rfc3339,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	// Unique identifier for the bucket (UUID format)
+	BucketId string `protobuf:"bytes,1,opt,name=bucket_id,json=bucketId,proto3" json:"bucket_id,omitempty"`
+	// Endpoint URL for the bucket (e.g., "https://objectstore.civo.com/<bucket-name>")
+	EndpointUrl string `protobuf:"bytes,2,opt,name=endpoint_url,json=endpointUrl,proto3" json:"endpoint_url,omitempty"`
+	// Reference to the secret storing the access key ID for the bucket
+	AccessKeySecretRef string `protobuf:"bytes,3,opt,name=access_key_secret_ref,json=accessKeySecretRef,proto3" json:"access_key_secret_ref,omitempty"`
+	// Reference to the secret storing the secret key for the bucket
+	SecretKeySecretRef string `protobuf:"bytes,4,opt,name=secret_key_secret_ref,json=secretKeySecretRef,proto3" json:"secret_key_secret_ref,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
 }
 
 func (x *CivoBucketStackOutputs) Reset() {
@@ -62,16 +66,30 @@ func (*CivoBucketStackOutputs) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_civo_civobucket_v1_stack_outputs_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *CivoBucketStackOutputs) GetCertificateId() string {
+func (x *CivoBucketStackOutputs) GetBucketId() string {
 	if x != nil {
-		return x.CertificateId
+		return x.BucketId
 	}
 	return ""
 }
 
-func (x *CivoBucketStackOutputs) GetExpiryRfc3339() string {
+func (x *CivoBucketStackOutputs) GetEndpointUrl() string {
 	if x != nil {
-		return x.ExpiryRfc3339
+		return x.EndpointUrl
+	}
+	return ""
+}
+
+func (x *CivoBucketStackOutputs) GetAccessKeySecretRef() string {
+	if x != nil {
+		return x.AccessKeySecretRef
+	}
+	return ""
+}
+
+func (x *CivoBucketStackOutputs) GetSecretKeySecretRef() string {
+	if x != nil {
+		return x.SecretKeySecretRef
 	}
 	return ""
 }
@@ -80,10 +98,12 @@ var File_project_planton_provider_civo_civobucket_v1_stack_outputs_proto protore
 
 const file_project_planton_provider_civo_civobucket_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"?project/planton/provider/civo/civobucket/v1/stack_outputs.proto\x12+project.planton.provider.civo.civobucket.v1\"f\n" +
-	"\x16CivoBucketStackOutputs\x12%\n" +
-	"\x0ecertificate_id\x18\x01 \x01(\tR\rcertificateId\x12%\n" +
-	"\x0eexpiry_rfc3339\x18\x02 \x01(\tR\rexpiryRfc3339B\x81\x03\n" +
+	"?project/planton/provider/civo/civobucket/v1/stack_outputs.proto\x12+project.planton.provider.civo.civobucket.v1\"\xbe\x01\n" +
+	"\x16CivoBucketStackOutputs\x12\x1b\n" +
+	"\tbucket_id\x18\x01 \x01(\tR\bbucketId\x12!\n" +
+	"\fendpoint_url\x18\x02 \x01(\tR\vendpointUrl\x121\n" +
+	"\x15access_key_secret_ref\x18\x03 \x01(\tR\x12accessKeySecretRef\x121\n" +
+	"\x15secret_key_secret_ref\x18\x04 \x01(\tR\x12secretKeySecretRefB\x81\x03\n" +
 	"/com.project.planton.provider.civo.civobucket.v1B\x11StackOutputsProtoP\x01Zhgithub.com/project-planton/project-planton/apis/project/planton/provider/civo/civobucket/v1;civobucketv1\xa2\x02\x05PPPCC\xaa\x02+Project.Planton.Provider.Civo.Civobucket.V1\xca\x02+Project\\Planton\\Provider\\Civo\\Civobucket\\V1\xe2\x027Project\\Planton\\Provider\\Civo\\Civobucket\\V1\\GPBMetadata\xea\x020Project::Planton::Provider::Civo::Civobucket::V1b\x06proto3"
 
 var (

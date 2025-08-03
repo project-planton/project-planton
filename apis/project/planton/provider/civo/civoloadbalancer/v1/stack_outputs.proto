@@ -2,10 +2,17 @@ syntax = "proto3";
 
 package project.planton.provider.civo.civoloadbalancer.v1;
 
-// CivoLoadBalancerStackOutputs captures the relevant outputs after provisioning a Civo certificate.
+// CivoLoadBalancerStackOutputs captures the outputs after provisioning a Civo Load Balancer.
 message CivoLoadBalancerStackOutputs {
-  // certificate_id is the unique identifier of the certificate in Civo (UUID).
-  string certificate_id = 1;
-  // expiry_rfc3339 is the expiration timestamp of the certificate in RFC 3339 format.
-  string expiry_rfc3339 = 2;
+  // The unique identifier of the created Civo Load Balancer.
+  string load_balancer_id = 1;
+
+  // The public IP address assigned to the Load Balancer.
+  string ip_address = 2;
+
+  // The DNS name for the Load Balancer (if applicable).
+  string dns_name = 3;
+
+  // The creation timestamp of the Load Balancer in RFC 3339 format.
+  string created_at_rfc3339 = 4;
 }

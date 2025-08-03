@@ -8,7 +8,8 @@ package civocomputeinstancev1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	_ "github.com/project-planton/project-planton/apis/project/planton/shared/options"
+	civo "github.com/project-planton/project-planton/apis/project/planton/provider/civo"
+	v1 "github.com/project-planton/project-planton/apis/project/planton/shared/foreignkey/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -23,8 +24,31 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// CivoComputeInstanceSpec defines the user configuration for a Civo compute instance.
 type CivoComputeInstanceSpec struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// instance hostname (letters, numbers, dashes, dots; <=63 chars, no trailing dash/dot)
+	InstanceName string `protobuf:"bytes,1,opt,name=instance_name,json=instanceName,proto3" json:"instance_name,omitempty"`
+	// region code for the instance location
+	Region civo.CivoRegion `protobuf:"varint,2,opt,name=region,proto3,enum=project.planton.provider.civo.CivoRegion" json:"region,omitempty"`
+	// instance size (flavor) slug, e.g. "g3.small"
+	Size string `protobuf:"bytes,3,opt,name=size,proto3" json:"size,omitempty"`
+	// base OS image slug for the instance (e.g. "ubuntu-focal")
+	Image string `protobuf:"bytes,4,opt,name=image,proto3" json:"image,omitempty"`
+	// target network for the instance (must exist in the same region)
+	Network *v1.StringValueOrRef `protobuf:"bytes,5,opt,name=network,proto3" json:"network,omitempty"`
+	// SSH public key(s) to enable passwordless login (optional; if empty, a password will be set)
+	SshKeyIds []string `protobuf:"bytes,6,rep,name=ssh_key_ids,json=sshKeyIds,proto3" json:"ssh_key_ids,omitempty"`
+	// firewall(s) to attach to the instance (must belong to the same network)
+	FirewallIds []*v1.StringValueOrRef `protobuf:"bytes,7,rep,name=firewall_ids,json=firewallIds,proto3" json:"firewall_ids,omitempty"`
+	// existing storage volumes to attach to this instance (must reside in same region)
+	VolumeIds []*v1.StringValueOrRef `protobuf:"bytes,8,rep,name=volume_ids,json=volumeIds,proto3" json:"volume_ids,omitempty"`
+	// reserved IP to assign to this instance (optional static public IP address)
+	ReservedIpId *v1.StringValueOrRef `protobuf:"bytes,9,opt,name=reserved_ip_id,json=reservedIpId,proto3" json:"reserved_ip_id,omitempty"`
+	// tags for the instance (for organization, optional)
+	Tags []string `protobuf:"bytes,10,rep,name=tags,proto3" json:"tags,omitempty"`
+	// cloud-init user data script to run on instance boot (<=32 KiB, optional)
+	UserData      string `protobuf:"bytes,11,opt,name=user_data,json=userData,proto3" json:"user_data,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -59,12 +83,102 @@ func (*CivoComputeInstanceSpec) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_civo_civocomputeinstance_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
+func (x *CivoComputeInstanceSpec) GetInstanceName() string {
+	if x != nil {
+		return x.InstanceName
+	}
+	return ""
+}
+
+func (x *CivoComputeInstanceSpec) GetRegion() civo.CivoRegion {
+	if x != nil {
+		return x.Region
+	}
+	return civo.CivoRegion(0)
+}
+
+func (x *CivoComputeInstanceSpec) GetSize() string {
+	if x != nil {
+		return x.Size
+	}
+	return ""
+}
+
+func (x *CivoComputeInstanceSpec) GetImage() string {
+	if x != nil {
+		return x.Image
+	}
+	return ""
+}
+
+func (x *CivoComputeInstanceSpec) GetNetwork() *v1.StringValueOrRef {
+	if x != nil {
+		return x.Network
+	}
+	return nil
+}
+
+func (x *CivoComputeInstanceSpec) GetSshKeyIds() []string {
+	if x != nil {
+		return x.SshKeyIds
+	}
+	return nil
+}
+
+func (x *CivoComputeInstanceSpec) GetFirewallIds() []*v1.StringValueOrRef {
+	if x != nil {
+		return x.FirewallIds
+	}
+	return nil
+}
+
+func (x *CivoComputeInstanceSpec) GetVolumeIds() []*v1.StringValueOrRef {
+	if x != nil {
+		return x.VolumeIds
+	}
+	return nil
+}
+
+func (x *CivoComputeInstanceSpec) GetReservedIpId() *v1.StringValueOrRef {
+	if x != nil {
+		return x.ReservedIpId
+	}
+	return nil
+}
+
+func (x *CivoComputeInstanceSpec) GetTags() []string {
+	if x != nil {
+		return x.Tags
+	}
+	return nil
+}
+
+func (x *CivoComputeInstanceSpec) GetUserData() string {
+	if x != nil {
+		return x.UserData
+	}
+	return ""
+}
+
 var File_project_planton_provider_civo_civocomputeinstance_v1_spec_proto protoreflect.FileDescriptor
 
 const file_project_planton_provider_civo_civocomputeinstance_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"?project/planton/provider/civo/civocomputeinstance/v1/spec.proto\x124project.planton.provider.civo.civocomputeinstance.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\"\x19\n" +
-	"\x17CivoComputeInstanceSpecB\xb8\x03\n" +
+	"?project/planton/provider/civo/civocomputeinstance/v1/spec.proto\x124project.planton.provider.civo.civocomputeinstance.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a*project/planton/provider/civo/region.proto\"\x9f\a\n" +
+	"\x17CivoComputeInstanceSpec\x12S\n" +
+	"\rinstance_name\x18\x01 \x01(\tB.\xbaH+\xc8\x01\x01r&\x18?2\"^[a-z0-9]([a-z0-9\\.\\-]*[a-z0-9])?$R\finstanceName\x12I\n" +
+	"\x06region\x18\x02 \x01(\x0e2).project.planton.provider.civo.CivoRegionB\x06\xbaH\x03\xc8\x01\x01R\x06region\x12@\n" +
+	"\x04size\x18\x03 \x01(\tB,\xbaH)\xc8\x01\x01r$2\"^[a-z0-9]([a-z0-9\\.\\-]*[a-z0-9])?$R\x04size\x12?\n" +
+	"\x05image\x18\x04 \x01(\tB)\xbaH&\xc8\x01\x01r!2\x1f^[a-z0-9]([-a-z0-9]*[a-z0-9])?$R\x05image\x12z\n" +
+	"\anetwork\x18\x05 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB(\xbaH\x03\xc8\x01\x01\x88\xd4a\xe7\v\x92\xd4a\x19status.outputs.network_idR\anetwork\x12\x1e\n" +
+	"\vssh_key_ids\x18\x06 \x03(\tR\tsshKeyIds\x12~\n" +
+	"\ffirewall_ids\x18\a \x03(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB#\x88\xd4a\xe1\v\x92\xd4a\x1astatus.outputs.firewall_idR\vfirewallIds\x12x\n" +
+	"\n" +
+	"volume_ids\x18\b \x03(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB!\x88\xd4a\xe6\v\x92\xd4a\x18status.outputs.volume_idR\tvolumeIds\x12\x84\x01\n" +
+	"\x0ereserved_ip_id\x18\t \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB&\x88\xd4a\xe2\v\x92\xd4a\x1dstatus.outputs.reserved_ip_idR\freservedIpId\x12\x1c\n" +
+	"\x04tags\x18\n" +
+	" \x03(\tB\b\xbaH\x05\x92\x01\x02\x18\x01R\x04tags\x12&\n" +
+	"\tuser_data\x18\v \x01(\tB\t\xbaH\x06r\x04(\x80\x80\x02R\buserDataB\xb8\x03\n" +
 	"8com.project.planton.provider.civo.civocomputeinstance.v1B\tSpecProtoP\x01Zzgithub.com/project-planton/project-planton/apis/project/planton/provider/civo/civocomputeinstance/v1;civocomputeinstancev1\xa2\x02\x05PPPCC\xaa\x024Project.Planton.Provider.Civo.Civocomputeinstance.V1\xca\x024Project\\Planton\\Provider\\Civo\\Civocomputeinstance\\V1\xe2\x02@Project\\Planton\\Provider\\Civo\\Civocomputeinstance\\V1\\GPBMetadata\xea\x029Project::Planton::Provider::Civo::Civocomputeinstance::V1b\x06proto3"
 
 var (
@@ -82,13 +196,20 @@ func file_project_planton_provider_civo_civocomputeinstance_v1_spec_proto_rawDes
 var file_project_planton_provider_civo_civocomputeinstance_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_civo_civocomputeinstance_v1_spec_proto_goTypes = []any{
 	(*CivoComputeInstanceSpec)(nil), // 0: project.planton.provider.civo.civocomputeinstance.v1.CivoComputeInstanceSpec
+	(civo.CivoRegion)(0),            // 1: project.planton.provider.civo.CivoRegion
+	(*v1.StringValueOrRef)(nil),     // 2: project.planton.shared.foreignkey.v1.StringValueOrRef
 }
 var file_project_planton_provider_civo_civocomputeinstance_v1_spec_proto_depIdxs = []int32{
-	0, // [0:0] is the sub-list for method output_type
-	0, // [0:0] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	1, // 0: project.planton.provider.civo.civocomputeinstance.v1.CivoComputeInstanceSpec.region:type_name -> project.planton.provider.civo.CivoRegion
+	2, // 1: project.planton.provider.civo.civocomputeinstance.v1.CivoComputeInstanceSpec.network:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
+	2, // 2: project.planton.provider.civo.civocomputeinstance.v1.CivoComputeInstanceSpec.firewall_ids:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
+	2, // 3: project.planton.provider.civo.civocomputeinstance.v1.CivoComputeInstanceSpec.volume_ids:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
+	2, // 4: project.planton.provider.civo.civocomputeinstance.v1.CivoComputeInstanceSpec.reserved_ip_id:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
+	5, // [5:5] is the sub-list for method output_type
+	5, // [5:5] is the sub-list for method input_type
+	5, // [5:5] is the sub-list for extension type_name
+	5, // [5:5] is the sub-list for extension extendee
+	0, // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_provider_civo_civocomputeinstance_v1_spec_proto_init() }

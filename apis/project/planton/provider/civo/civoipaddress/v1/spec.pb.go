@@ -8,6 +8,7 @@ package civoipaddressv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
+	civo "github.com/project-planton/project-planton/apis/project/planton/provider/civo"
 	_ "github.com/project-planton/project-planton/apis/project/planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -23,8 +24,16 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// CivoIpAddressSpec defines the specification for provisioning a static reserved IP in Civo Cloud.
+// A reserved IP is a persistent public IPv4 address that can be attached to an instance or load balancer in the same region.
+// This spec focuses on the essential fields, following the 80/20 principle: specifying the region and an optional descriptive label.
 type CivoIpAddressSpec struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// An optional human-readable name or description for the reserved IP.
+	// If not provided, Civo may default to using the IP address as the name.
+	Description string `protobuf:"bytes,1,opt,name=description,proto3" json:"description,omitempty"`
+	// Reserved IPs are region-specific; the IP can only be attached to resources in this region.
+	Region        civo.CivoRegion `protobuf:"varint,2,opt,name=region,proto3,enum=project.planton.provider.civo.CivoRegion" json:"region,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -59,12 +68,28 @@ func (*CivoIpAddressSpec) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_civo_civoipaddress_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
+func (x *CivoIpAddressSpec) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
+}
+
+func (x *CivoIpAddressSpec) GetRegion() civo.CivoRegion {
+	if x != nil {
+		return x.Region
+	}
+	return civo.CivoRegion(0)
+}
+
 var File_project_planton_provider_civo_civoipaddress_v1_spec_proto protoreflect.FileDescriptor
 
 const file_project_planton_provider_civo_civoipaddress_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"9project/planton/provider/civo/civoipaddress/v1/spec.proto\x12.project.planton.provider.civo.civoipaddress.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\"\x13\n" +
-	"\x11CivoIpAddressSpecB\x8e\x03\n" +
+	"9project/planton/provider/civo/civoipaddress/v1/spec.proto\x12.project.planton.provider.civo.civoipaddress.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\x1a*project/planton/provider/civo/region.proto\"\x89\x01\n" +
+	"\x11CivoIpAddressSpec\x12)\n" +
+	"\vdescription\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x18dR\vdescription\x12I\n" +
+	"\x06region\x18\x02 \x01(\x0e2).project.planton.provider.civo.CivoRegionB\x06\xbaH\x03\xc8\x01\x01R\x06regionB\x8e\x03\n" +
 	"2com.project.planton.provider.civo.civoipaddress.v1B\tSpecProtoP\x01Zngithub.com/project-planton/project-planton/apis/project/planton/provider/civo/civoipaddress/v1;civoipaddressv1\xa2\x02\x05PPPCC\xaa\x02.Project.Planton.Provider.Civo.Civoipaddress.V1\xca\x02.Project\\Planton\\Provider\\Civo\\Civoipaddress\\V1\xe2\x02:Project\\Planton\\Provider\\Civo\\Civoipaddress\\V1\\GPBMetadata\xea\x023Project::Planton::Provider::Civo::Civoipaddress::V1b\x06proto3"
 
 var (
@@ -82,13 +107,15 @@ func file_project_planton_provider_civo_civoipaddress_v1_spec_proto_rawDescGZIP(
 var file_project_planton_provider_civo_civoipaddress_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_civo_civoipaddress_v1_spec_proto_goTypes = []any{
 	(*CivoIpAddressSpec)(nil), // 0: project.planton.provider.civo.civoipaddress.v1.CivoIpAddressSpec
+	(civo.CivoRegion)(0),      // 1: project.planton.provider.civo.CivoRegion
 }
 var file_project_planton_provider_civo_civoipaddress_v1_spec_proto_depIdxs = []int32{
-	0, // [0:0] is the sub-list for method output_type
-	0, // [0:0] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	1, // 0: project.planton.provider.civo.civoipaddress.v1.CivoIpAddressSpec.region:type_name -> project.planton.provider.civo.CivoRegion
+	1, // [1:1] is the sub-list for method output_type
+	1, // [1:1] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_provider_civo_civoipaddress_v1_spec_proto_init() }

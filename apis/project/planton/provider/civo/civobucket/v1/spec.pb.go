@@ -8,6 +8,7 @@ package civobucketv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
+	civo "github.com/project-planton/project-planton/apis/project/planton/provider/civo"
 	_ "github.com/project-planton/project-planton/apis/project/planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -23,8 +24,17 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// CivoObjectStoreBucketSpec defines the user configuration for a Civo object storage bucket.
 type CivoBucketSpec struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// bucket name (DNS-compatible, 3–63 chars)
+	BucketName string `protobuf:"bytes,1,opt,name=bucket_name,json=bucketName,proto3" json:"bucket_name,omitempty"`
+	// region code for the bucket
+	Region civo.CivoRegion `protobuf:"varint,2,opt,name=region,proto3,enum=project.planton.provider.civo.CivoRegion" json:"region,omitempty"`
+	// enable versioning for the bucket (disabled by default)
+	VersioningEnabled bool `protobuf:"varint,3,opt,name=versioning_enabled,json=versioningEnabled,proto3" json:"versioning_enabled,omitempty"`
+	// tags to apply to the bucket (must be unique)
+	Tags          []string `protobuf:"bytes,4,rep,name=tags,proto3" json:"tags,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -59,12 +69,45 @@ func (*CivoBucketSpec) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_civo_civobucket_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
+func (x *CivoBucketSpec) GetBucketName() string {
+	if x != nil {
+		return x.BucketName
+	}
+	return ""
+}
+
+func (x *CivoBucketSpec) GetRegion() civo.CivoRegion {
+	if x != nil {
+		return x.Region
+	}
+	return civo.CivoRegion(0)
+}
+
+func (x *CivoBucketSpec) GetVersioningEnabled() bool {
+	if x != nil {
+		return x.VersioningEnabled
+	}
+	return false
+}
+
+func (x *CivoBucketSpec) GetTags() []string {
+	if x != nil {
+		return x.Tags
+	}
+	return nil
+}
+
 var File_project_planton_provider_civo_civobucket_v1_spec_proto protoreflect.FileDescriptor
 
 const file_project_planton_provider_civo_civobucket_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"6project/planton/provider/civo/civobucket/v1/spec.proto\x12+project.planton.provider.civo.civobucket.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\"\x10\n" +
-	"\x0eCivoBucketSpecB\xf9\x02\n" +
+	"6project/planton/provider/civo/civobucket/v1/spec.proto\x12+project.planton.provider.civo.civobucket.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\x1a*project/planton/provider/civo/region.proto\"\xf8\x01\n" +
+	"\x0eCivoBucketSpec\x12N\n" +
+	"\vbucket_name\x18\x01 \x01(\tB-\xbaH*\xc8\x01\x01r%\x10\x03\x18?2\x1f^[a-z0-9]([-a-z0-9]*[a-z0-9])?$R\n" +
+	"bucketName\x12I\n" +
+	"\x06region\x18\x02 \x01(\x0e2).project.planton.provider.civo.CivoRegionB\x06\xbaH\x03\xc8\x01\x01R\x06region\x12-\n" +
+	"\x12versioning_enabled\x18\x03 \x01(\bR\x11versioningEnabled\x12\x1c\n" +
+	"\x04tags\x18\x04 \x03(\tB\b\xbaH\x05\x92\x01\x02\x18\x01R\x04tagsB\xf9\x02\n" +
 	"/com.project.planton.provider.civo.civobucket.v1B\tSpecProtoP\x01Zhgithub.com/project-planton/project-planton/apis/project/planton/provider/civo/civobucket/v1;civobucketv1\xa2\x02\x05PPPCC\xaa\x02+Project.Planton.Provider.Civo.Civobucket.V1\xca\x02+Project\\Planton\\Provider\\Civo\\Civobucket\\V1\xe2\x027Project\\Planton\\Provider\\Civo\\Civobucket\\V1\\GPBMetadata\xea\x020Project::Planton::Provider::Civo::Civobucket::V1b\x06proto3"
 
 var (
@@ -82,13 +125,15 @@ func file_project_planton_provider_civo_civobucket_v1_spec_proto_rawDescGZIP() [
 var file_project_planton_provider_civo_civobucket_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_civo_civobucket_v1_spec_proto_goTypes = []any{
 	(*CivoBucketSpec)(nil), // 0: project.planton.provider.civo.civobucket.v1.CivoBucketSpec
+	(civo.CivoRegion)(0),   // 1: project.planton.provider.civo.CivoRegion
 }
 var file_project_planton_provider_civo_civobucket_v1_spec_proto_depIdxs = []int32{
-	0, // [0:0] is the sub-list for method output_type
-	0, // [0:0] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	1, // 0: project.planton.provider.civo.civobucket.v1.CivoBucketSpec.region:type_name -> project.planton.provider.civo.CivoRegion
+	1, // [1:1] is the sub-list for method output_type
+	1, // [1:1] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_provider_civo_civobucket_v1_spec_proto_init() }

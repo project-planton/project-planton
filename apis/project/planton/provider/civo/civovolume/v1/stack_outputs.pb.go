@@ -21,13 +21,15 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// CivoVolumeStackOutputs captures the relevant outputs after provisioning a Civo certificate.
+// CivoVolumeStackOutputs captures the resulting volume information after provisioning.
 type CivoVolumeStackOutputs struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// certificate_id is the unique identifier of the certificate in Civo (UUID).
-	CertificateId string `protobuf:"bytes,1,opt,name=certificate_id,json=certificateId,proto3" json:"certificate_id,omitempty"`
-	// expiry_rfc3339 is the expiration timestamp of the certificate in RFC 3339 format.
-	ExpiryRfc3339 string `protobuf:"bytes,2,opt,name=expiry_rfc3339,json=expiryRfc3339,proto3" json:"expiry_rfc3339,omitempty"`
+	// The unique identifier (ID) of the created Civo volume.
+	VolumeId string `protobuf:"bytes,1,opt,name=volume_id,json=volumeId,proto3" json:"volume_id,omitempty"`
+	// The ID of the Civo instance the volume is attached to (if any).
+	AttachedInstanceId string `protobuf:"bytes,2,opt,name=attached_instance_id,json=attachedInstanceId,proto3" json:"attached_instance_id,omitempty"`
+	// The device path of the volume on the attached instance (if any).
+	DevicePath    string `protobuf:"bytes,3,opt,name=device_path,json=devicePath,proto3" json:"device_path,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -62,16 +64,23 @@ func (*CivoVolumeStackOutputs) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_civo_civovolume_v1_stack_outputs_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *CivoVolumeStackOutputs) GetCertificateId() string {
+func (x *CivoVolumeStackOutputs) GetVolumeId() string {
 	if x != nil {
-		return x.CertificateId
+		return x.VolumeId
 	}
 	return ""
 }
 
-func (x *CivoVolumeStackOutputs) GetExpiryRfc3339() string {
+func (x *CivoVolumeStackOutputs) GetAttachedInstanceId() string {
 	if x != nil {
-		return x.ExpiryRfc3339
+		return x.AttachedInstanceId
+	}
+	return ""
+}
+
+func (x *CivoVolumeStackOutputs) GetDevicePath() string {
+	if x != nil {
+		return x.DevicePath
 	}
 	return ""
 }
@@ -80,10 +89,12 @@ var File_project_planton_provider_civo_civovolume_v1_stack_outputs_proto protore
 
 const file_project_planton_provider_civo_civovolume_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"?project/planton/provider/civo/civovolume/v1/stack_outputs.proto\x12+project.planton.provider.civo.civovolume.v1\"f\n" +
-	"\x16CivoVolumeStackOutputs\x12%\n" +
-	"\x0ecertificate_id\x18\x01 \x01(\tR\rcertificateId\x12%\n" +
-	"\x0eexpiry_rfc3339\x18\x02 \x01(\tR\rexpiryRfc3339B\x81\x03\n" +
+	"?project/planton/provider/civo/civovolume/v1/stack_outputs.proto\x12+project.planton.provider.civo.civovolume.v1\"\x88\x01\n" +
+	"\x16CivoVolumeStackOutputs\x12\x1b\n" +
+	"\tvolume_id\x18\x01 \x01(\tR\bvolumeId\x120\n" +
+	"\x14attached_instance_id\x18\x02 \x01(\tR\x12attachedInstanceId\x12\x1f\n" +
+	"\vdevice_path\x18\x03 \x01(\tR\n" +
+	"devicePathB\x81\x03\n" +
 	"/com.project.planton.provider.civo.civovolume.v1B\x11StackOutputsProtoP\x01Zhgithub.com/project-planton/project-planton/apis/project/planton/provider/civo/civovolume/v1;civovolumev1\xa2\x02\x05PPPCC\xaa\x02+Project.Planton.Provider.Civo.Civovolume.V1\xca\x02+Project\\Planton\\Provider\\Civo\\Civovolume\\V1\xe2\x027Project\\Planton\\Provider\\Civo\\Civovolume\\V1\\GPBMetadata\xea\x020Project::Planton::Provider::Civo::Civovolume::V1b\x06proto3"
 
 var (
