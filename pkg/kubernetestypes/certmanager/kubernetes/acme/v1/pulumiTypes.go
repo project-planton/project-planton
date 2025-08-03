@@ -7813,7 +7813,7 @@ func (o ChallengeSpecSolverDns01PatchPtrOutput) Webhook() ChallengeSpecSolverDns
 type ChallengeSpecSolverDns01Rfc2136 struct {
 	// The IP address or hostname of an authoritative DNS server supporting
 	// RFC2136 in the form host:port. If the host is an IPv6 address it must be
-	// enclosed in square brackets (e.g [2001:db8::1]) ; port is optional.
+	// enclosed in square brackets (e.g [2001:db8::1]) ; port is optional.
 	// This field is required.
 	Nameserver *string `pulumi:"nameserver"`
 	// The TSIG Algorithm configured in the DNS supporting RFC2136. Used only
@@ -7843,7 +7843,7 @@ type ChallengeSpecSolverDns01Rfc2136Input interface {
 type ChallengeSpecSolverDns01Rfc2136Args struct {
 	// The IP address or hostname of an authoritative DNS server supporting
 	// RFC2136 in the form host:port. If the host is an IPv6 address it must be
-	// enclosed in square brackets (e.g [2001:db8::1]) ; port is optional.
+	// enclosed in square brackets (e.g [2001:db8::1]) ; port is optional.
 	// This field is required.
 	Nameserver pulumi.StringPtrInput `pulumi:"nameserver"`
 	// The TSIG Algorithm configured in the DNS supporting RFC2136. Used only
@@ -7938,7 +7938,7 @@ func (o ChallengeSpecSolverDns01Rfc2136Output) ToChallengeSpecSolverDns01Rfc2136
 
 // The IP address or hostname of an authoritative DNS server supporting
 // RFC2136 in the form host:port. If the host is an IPv6 address it must be
-// enclosed in square brackets (e.g [2001:db8::1]) ; port is optional.
+// enclosed in square brackets (e.g [2001:db8::1]) ; port is optional.
 // This field is required.
 func (o ChallengeSpecSolverDns01Rfc2136Output) Nameserver() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ChallengeSpecSolverDns01Rfc2136) *string { return v.Nameserver }).(pulumi.StringPtrOutput)
@@ -7990,7 +7990,7 @@ func (o ChallengeSpecSolverDns01Rfc2136PtrOutput) Elem() ChallengeSpecSolverDns0
 
 // The IP address or hostname of an authoritative DNS server supporting
 // RFC2136 in the form host:port. If the host is an IPv6 address it must be
-// enclosed in square brackets (e.g [2001:db8::1]) ; port is optional.
+// enclosed in square brackets (e.g [2001:db8::1]) ; port is optional.
 // This field is required.
 func (o ChallengeSpecSolverDns01Rfc2136PtrOutput) Nameserver() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *ChallengeSpecSolverDns01Rfc2136) *string {
@@ -8039,7 +8039,7 @@ func (o ChallengeSpecSolverDns01Rfc2136PtrOutput) TsigSecretSecretRef() Challeng
 type ChallengeSpecSolverDns01Rfc2136Patch struct {
 	// The IP address or hostname of an authoritative DNS server supporting
 	// RFC2136 in the form host:port. If the host is an IPv6 address it must be
-	// enclosed in square brackets (e.g [2001:db8::1]) ; port is optional.
+	// enclosed in square brackets (e.g [2001:db8::1]) ; port is optional.
 	// This field is required.
 	Nameserver *string `pulumi:"nameserver"`
 	// The TSIG Algorithm configured in the DNS supporting RFC2136. Used only
@@ -8069,7 +8069,7 @@ type ChallengeSpecSolverDns01Rfc2136PatchInput interface {
 type ChallengeSpecSolverDns01Rfc2136PatchArgs struct {
 	// The IP address or hostname of an authoritative DNS server supporting
 	// RFC2136 in the form host:port. If the host is an IPv6 address it must be
-	// enclosed in square brackets (e.g [2001:db8::1]) ; port is optional.
+	// enclosed in square brackets (e.g [2001:db8::1]) ; port is optional.
 	// This field is required.
 	Nameserver pulumi.StringPtrInput `pulumi:"nameserver"`
 	// The TSIG Algorithm configured in the DNS supporting RFC2136. Used only
@@ -8164,7 +8164,7 @@ func (o ChallengeSpecSolverDns01Rfc2136PatchOutput) ToChallengeSpecSolverDns01Rf
 
 // The IP address or hostname of an authoritative DNS server supporting
 // RFC2136 in the form host:port. If the host is an IPv6 address it must be
-// enclosed in square brackets (e.g [2001:db8::1]) ; port is optional.
+// enclosed in square brackets (e.g [2001:db8::1]) ; port is optional.
 // This field is required.
 func (o ChallengeSpecSolverDns01Rfc2136PatchOutput) Nameserver() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ChallengeSpecSolverDns01Rfc2136Patch) *string { return v.Nameserver }).(pulumi.StringPtrOutput)
@@ -8216,7 +8216,7 @@ func (o ChallengeSpecSolverDns01Rfc2136PatchPtrOutput) Elem() ChallengeSpecSolve
 
 // The IP address or hostname of an authoritative DNS server supporting
 // RFC2136 in the form host:port. If the host is an IPv6 address it must be
-// enclosed in square brackets (e.g [2001:db8::1]) ; port is optional.
+// enclosed in square brackets (e.g [2001:db8::1]) ; port is optional.
 // This field is required.
 func (o ChallengeSpecSolverDns01Rfc2136PatchPtrOutput) Nameserver() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *ChallengeSpecSolverDns01Rfc2136Patch) *string {
