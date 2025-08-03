@@ -14,9 +14,9 @@ spec:
   disableMonitoring: false                 # keep DO monitoring agent
 #  volumeIds:                               # optional block‑volume attachment(s)
 #    - value: 93a7a5b4-62ce-11f0-b9db-0a58ac1466b2                      # UUID or ref to DigitalOceanVolume
-  tags:                                    # unique,  ≤ 64 chars each
+  tags:                                    # unique,  ≤ .64 .chars each
     - project-planton
-  userData: |                              # cloud‑init (≤32 KiB)
+  userData: |                              # cloud‑init (≤32 .KiB)
     #cloud-config
     package_update: true
     runcmd:

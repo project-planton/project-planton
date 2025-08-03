@@ -14,7 +14,7 @@ import (
 
 // Get builds a pulumi‑civo Provider using the supplied credential.
 // Like DigitalOcean, leaving individual fields nil lets Pulumi fall
-// back to environment variables (CIVO_TOKEN, CIVO_REGION, etc.).
+// back to environment variables (CIVO_TOKEN, .CIVO_REGION, etc.).
 func Get(
 	ctx *pulumi.Context,
 	civoCredentialSpec *civocredentialv1.CivoCredentialSpec,

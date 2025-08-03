@@ -5,7 +5,8 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// Resources is the module entry point.
+// Resources can not be implemented since the civo provider currently does not support creating load balancers.
+// https://registry.terraform.io/providers/civo/civo/latest/docs/data-sources/loadbalancer
 func Resources(
 	ctx *pulumi.Context,
 	stackInput *civoloadbalancerv1.CivoLoadBalancerStackInput,
