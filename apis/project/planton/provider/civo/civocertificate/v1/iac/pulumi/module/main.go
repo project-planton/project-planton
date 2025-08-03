@@ -6,6 +6,8 @@ import (
 )
 
 // Resources is the module entry point.
+// WARNING: looks like there is no terraform/pulumi support for Civo Certificate
+// https://registry.terraform.io/providers/civo/civo/latest/docs
 func Resources(
 	ctx *pulumi.Context,
 	stackInput *civocertificatev1.CivoCertificateStackInput,
