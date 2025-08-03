@@ -34,7 +34,7 @@ generate-kubernetes-types:
 build-cli: ${build_dir}/${name}
 
 .PHONY: build
-build: protos build-cli
+build: protos generate-cloud-resource-kind-map build-cli
 
 ${build_dir}/${name}: deps vet
 	GOOS=darwin GOARCH=amd64 ${build_cmd} -o ${build_dir}/${name}-darwin-amd64 .
