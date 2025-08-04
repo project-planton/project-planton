@@ -3,53 +3,27 @@ syntax = "proto3";
 package project.planton.provider.cloudflare.cloudflarekvnamespace.v1;
 
 import "buf/validate/validate.proto";
-import "project/planton/shared/foreignkey/v1/foreign_key.proto";
-import "project/planton/shared/networking/enums/dnsrecordtype/dns_record_type.proto";
-import "project/planton/shared/options/options.proto";
 
-// CloudflareKVNamespaceSpec defines the specification required to create a DNS zone (domain) on Cloudflare.
-// This allows you to manage DNS records for a given domain via Cloudflare's DNS service, focusing on the essential parameters (80/20 principle).
-message CloudflareKVNamespaceSpec {
-  // The domain name for the DNS zone.
-  // Must be a valid fully-qualified domain name (e.g., "example.com").
-  string domain_name = 1 [
+// CloudflareKvNamespaceSpec defines the essential configuration for creating a Workers KV namespace on Cloudflare.
+// This follows the 80/20 principle: only the most commonly used fields are exposed to keep the API simple.
+message CloudflareKvNamespaceSpec {
+  // A human-readable name for the KV namespace.
+  // This name must be unique within the Cloudflare account.
+  string namespace_name = 1 [
     (buf.validate.field).required = true,
-    (buf.validate.field).string.pattern = "^(?:[A-Za-z0-9-]+\\.)+[A-Za-z]{2,}$"
+    (buf.validate.field).string.max_len = 64
   ];
 
-  // A list of DNS records to create within the zone (optional).
-  // Each record includes its type, name, value(s), and TTL.
-  repeated CloudflareKVNamespaceRecord records = 2;
-}
-
-// CloudflareKVNamespaceRecord represents a DNS record entry to be created in the zone.
-message CloudflareKVNamespaceRecord {
-  // The host/name for the DNS record, relative to the zone.
-  // For root (apex) records, use "@" to denote the zone itself.
-  string name = 1 [
-    (buf.validate.field).required = true
+  // (Optional) Default time-to-live for key-value entries, in seconds.
+  // If set to 0 or left unset, keys will never expire by default (infinite TTL).
+  // If set to a positive value, it should be at least 60 seconds (minimum enforced by Cloudflare for expiring keys).
+  int32 ttl_seconds = 2 [
+    (buf.validate.field).int32.gte = 0
   ];
 
-  // The value or values for the DNS record.
-  // - For A/AAAA: one or more IP addresses.
-  // - For CNAME: the target domain name.
-  // - For TXT: the text data (if multiple strings, they will be concatenated by DNS).
-  // - For MX: one or more entries like "<priority> <mail-server-domain>".
-  // Each value can be a literal or a reference to another resource’s output.
-  repeated project.planton.shared.foreignkey.v1.StringValueOrRef values = 2 [
-    (buf.validate.field).required = true,
-    (buf.validate.field).repeated.min_items = 1
-  ];
-
-  // The time-to-live (TTL) for this DNS record, in seconds.
-  // Determines how long resolvers cache the record. Defaults to 3600 seconds (1 hour) if not set.
-  uint32 ttl_seconds = 3 [
-    (project.planton.shared.options.recommended_default) = "3600"
-  ];
-
-  // The DNS record type.
-  // This field is required and must be one of the supported record types (A, AAAA, CNAME, MX, TXT, etc.).
-  project.planton.shared.networking.enums.dnsrecordtype.DnsRecordType type = 4 [
-    (buf.validate.field).required = true
+  // (Optional) A short description of the namespace.
+  // Useful for documentation or identifying the purpose of this KV store.
+  string description = 3 [
+    (buf.validate.field).string.max_len = 256
   ];
 }

@@ -21,16 +21,17 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// CloudflareZeroTrustAccessApplicationStackOutputs captures the output information after provisioning a DNS zone on Cloudflare.
+// *
+// **CloudflareZeroTrustAccessApplicationStackOutputs** captures the outputs after provisioning a Cloudflare Zero Trust Access Application.
+// These outputs include identifiers and endpoints that result from the deployment.
 type CloudflareZeroTrustAccessApplicationStackOutputs struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The domain name of the DNS zone managed on Cloudflare.
-	ZoneName string `protobuf:"bytes,1,opt,name=zone_name,json=zoneName,proto3" json:"zone_name,omitempty"`
-	// The unique identifier of the DNS zone on Cloudflare (UUID).
-	ZoneId string `protobuf:"bytes,2,opt,name=zone_id,json=zoneId,proto3" json:"zone_id,omitempty"`
-	// The list of nameserver addresses for the DNS zone.
-	// These are the nameservers that should be set at the domain's registrar (e.g., ns0.cloudflare.com, ns1.cloudflare.com).
-	NameServers   []string `protobuf:"bytes,3,rep,name=name_servers,json=nameServers,proto3" json:"name_servers,omitempty"`
+	// The unique ID of the Cloudflare Access Application.
+	ApplicationId string `protobuf:"bytes,1,opt,name=application_id,json=applicationId,proto3" json:"application_id,omitempty"`
+	// The hostname being protected by this Access Application (echoes the input hostname).
+	PublicHostname string `protobuf:"bytes,2,opt,name=public_hostname,json=publicHostname,proto3" json:"public_hostname,omitempty"`
+	// The ID of the Cloudflare Access policy associated with this application.
+	PolicyId      string `protobuf:"bytes,3,opt,name=policy_id,json=policyId,proto3" json:"policy_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -65,36 +66,36 @@ func (*CloudflareZeroTrustAccessApplicationStackOutputs) Descriptor() ([]byte, [
 	return file_project_planton_provider_cloudflare_cloudflarezerotrustaccessapplication_v1_stack_outputs_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *CloudflareZeroTrustAccessApplicationStackOutputs) GetZoneName() string {
+func (x *CloudflareZeroTrustAccessApplicationStackOutputs) GetApplicationId() string {
 	if x != nil {
-		return x.ZoneName
+		return x.ApplicationId
 	}
 	return ""
 }
 
-func (x *CloudflareZeroTrustAccessApplicationStackOutputs) GetZoneId() string {
+func (x *CloudflareZeroTrustAccessApplicationStackOutputs) GetPublicHostname() string {
 	if x != nil {
-		return x.ZoneId
+		return x.PublicHostname
 	}
 	return ""
 }
 
-func (x *CloudflareZeroTrustAccessApplicationStackOutputs) GetNameServers() []string {
+func (x *CloudflareZeroTrustAccessApplicationStackOutputs) GetPolicyId() string {
 	if x != nil {
-		return x.NameServers
+		return x.PolicyId
 	}
-	return nil
+	return ""
 }
 
 var File_project_planton_provider_cloudflare_cloudflarezerotrustaccessapplication_v1_stack_outputs_proto protoreflect.FileDescriptor
 
 const file_project_planton_provider_cloudflare_cloudflarezerotrustaccessapplication_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"_project/planton/provider/cloudflare/cloudflarezerotrustaccessapplication/v1/stack_outputs.proto\x12Kproject.planton.provider.cloudflare.cloudflarezerotrustaccessapplication.v1\"\x8b\x01\n" +
-	"0CloudflareZeroTrustAccessApplicationStackOutputs\x12\x1b\n" +
-	"\tzone_name\x18\x01 \x01(\tR\bzoneName\x12\x17\n" +
-	"\azone_id\x18\x02 \x01(\tR\x06zoneId\x12!\n" +
-	"\fname_servers\x18\x03 \x03(\tR\vnameServersB\xdc\x04\n" +
+	"_project/planton/provider/cloudflare/cloudflarezerotrustaccessapplication/v1/stack_outputs.proto\x12Kproject.planton.provider.cloudflare.cloudflarezerotrustaccessapplication.v1\"\x9f\x01\n" +
+	"0CloudflareZeroTrustAccessApplicationStackOutputs\x12%\n" +
+	"\x0eapplication_id\x18\x01 \x01(\tR\rapplicationId\x12'\n" +
+	"\x0fpublic_hostname\x18\x02 \x01(\tR\x0epublicHostname\x12\x1b\n" +
+	"\tpolicy_id\x18\x03 \x01(\tR\bpolicyIdB\xdc\x04\n" +
 	"Ocom.project.planton.provider.cloudflare.cloudflarezerotrustaccessapplication.v1B\x11StackOutputsProtoP\x01Z\xa2\x01github.com/project-planton/project-planton/apis/project/planton/provider/cloudflare/cloudflarezerotrustaccessapplication/v1;cloudflarezerotrustaccessapplicationv1\xa2\x02\x05PPPCC\xaa\x02KProject.Planton.Provider.Cloudflare.Cloudflarezerotrustaccessapplication.V1\xca\x02KProject\\Planton\\Provider\\Cloudflare\\Cloudflarezerotrustaccessapplication\\V1\xe2\x02WProject\\Planton\\Provider\\Cloudflare\\Cloudflarezerotrustaccessapplication\\V1\\GPBMetadata\xea\x02PProject::Planton::Provider::Cloudflare::Cloudflarezerotrustaccessapplication::V1b\x06proto3"
 
 var (

@@ -21,18 +21,17 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// CloudflareD1DatabaseStackOutputs captures the output information after provisioning a DNS zone on Cloudflare.
+// CloudflareD1DatabaseStackOutputs captures the outputs after provisioning a Cloudflare D1 database.
 type CloudflareD1DatabaseStackOutputs struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The domain name of the DNS zone managed on Cloudflare.
-	ZoneName string `protobuf:"bytes,1,opt,name=zone_name,json=zoneName,proto3" json:"zone_name,omitempty"`
-	// The unique identifier of the DNS zone on Cloudflare (UUID).
-	ZoneId string `protobuf:"bytes,2,opt,name=zone_id,json=zoneId,proto3" json:"zone_id,omitempty"`
-	// The list of nameserver addresses for the DNS zone.
-	// These are the nameservers that should be set at the domain's registrar (e.g., ns0.cloudflare.com, ns1.cloudflare.com).
-	NameServers   []string `protobuf:"bytes,3,rep,name=name_servers,json=nameServers,proto3" json:"name_servers,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	// The unique identifier of the created D1 database.
+	DatabaseId string `protobuf:"bytes,1,opt,name=database_id,json=databaseId,proto3" json:"database_id,omitempty"`
+	// The name of the database (same as the input name).
+	DatabaseName string `protobuf:"bytes,2,opt,name=database_name,json=databaseName,proto3" json:"database_name,omitempty"`
+	// The connection string for connecting to the D1 database.
+	ConnectionString string `protobuf:"bytes,3,opt,name=connection_string,json=connectionString,proto3" json:"connection_string,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
 }
 
 func (x *CloudflareD1DatabaseStackOutputs) Reset() {
@@ -65,36 +64,37 @@ func (*CloudflareD1DatabaseStackOutputs) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_cloudflare_cloudflared1database_v1_stack_outputs_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *CloudflareD1DatabaseStackOutputs) GetZoneName() string {
+func (x *CloudflareD1DatabaseStackOutputs) GetDatabaseId() string {
 	if x != nil {
-		return x.ZoneName
+		return x.DatabaseId
 	}
 	return ""
 }
 
-func (x *CloudflareD1DatabaseStackOutputs) GetZoneId() string {
+func (x *CloudflareD1DatabaseStackOutputs) GetDatabaseName() string {
 	if x != nil {
-		return x.ZoneId
+		return x.DatabaseName
 	}
 	return ""
 }
 
-func (x *CloudflareD1DatabaseStackOutputs) GetNameServers() []string {
+func (x *CloudflareD1DatabaseStackOutputs) GetConnectionString() string {
 	if x != nil {
-		return x.NameServers
+		return x.ConnectionString
 	}
-	return nil
+	return ""
 }
 
 var File_project_planton_provider_cloudflare_cloudflared1database_v1_stack_outputs_proto protoreflect.FileDescriptor
 
 const file_project_planton_provider_cloudflare_cloudflared1database_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Oproject/planton/provider/cloudflare/cloudflared1database/v1/stack_outputs.proto\x12;project.planton.provider.cloudflare.cloudflared1database.v1\"{\n" +
-	" CloudflareD1DatabaseStackOutputs\x12\x1b\n" +
-	"\tzone_name\x18\x01 \x01(\tR\bzoneName\x12\x17\n" +
-	"\azone_id\x18\x02 \x01(\tR\x06zoneId\x12!\n" +
-	"\fname_servers\x18\x03 \x03(\tR\vnameServersB\xec\x03\n" +
+	"Oproject/planton/provider/cloudflare/cloudflared1database/v1/stack_outputs.proto\x12;project.planton.provider.cloudflare.cloudflared1database.v1\"\x95\x01\n" +
+	" CloudflareD1DatabaseStackOutputs\x12\x1f\n" +
+	"\vdatabase_id\x18\x01 \x01(\tR\n" +
+	"databaseId\x12#\n" +
+	"\rdatabase_name\x18\x02 \x01(\tR\fdatabaseName\x12+\n" +
+	"\x11connection_string\x18\x03 \x01(\tR\x10connectionStringB\xec\x03\n" +
 	"?com.project.planton.provider.cloudflare.cloudflared1database.v1B\x11StackOutputsProtoP\x01Z\x82\x01github.com/project-planton/project-planton/apis/project/planton/provider/cloudflare/cloudflared1database/v1;cloudflared1databasev1\xa2\x02\x05PPPCC\xaa\x02;Project.Planton.Provider.Cloudflare.Cloudflared1database.V1\xca\x02;Project\\Planton\\Provider\\Cloudflare\\Cloudflared1database\\V1\xe2\x02GProject\\Planton\\Provider\\Cloudflare\\Cloudflared1database\\V1\\GPBMetadata\xea\x02@Project::Planton::Provider::Cloudflare::Cloudflared1database::V1b\x06proto3"
 
 var (

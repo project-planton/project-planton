@@ -21,16 +21,13 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// CloudflareR2BucketStackOutputs captures the output information after provisioning a DNS zone on Cloudflare.
+// CloudflareR2BucketStackOutputs captures the outputs after provisioning the R2 bucket.
 type CloudflareR2BucketStackOutputs struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The domain name of the DNS zone managed on Cloudflare.
-	ZoneName string `protobuf:"bytes,1,opt,name=zone_name,json=zoneName,proto3" json:"zone_name,omitempty"`
-	// The unique identifier of the DNS zone on Cloudflare (UUID).
-	ZoneId string `protobuf:"bytes,2,opt,name=zone_id,json=zoneId,proto3" json:"zone_id,omitempty"`
-	// The list of nameserver addresses for the DNS zone.
-	// These are the nameservers that should be set at the domain's registrar (e.g., ns0.cloudflare.com, ns1.cloudflare.com).
-	NameServers   []string `protobuf:"bytes,3,rep,name=name_servers,json=nameServers,proto3" json:"name_servers,omitempty"`
+	// The name of the bucket (same as spec.bucket_name)
+	BucketName string `protobuf:"bytes,1,opt,name=bucket_name,json=bucketName,proto3" json:"bucket_name,omitempty"`
+	// The accessible bucket URL (e.g., R2 public endpoint or base S3 API URL)
+	BucketUrl     string `protobuf:"bytes,2,opt,name=bucket_url,json=bucketUrl,proto3" json:"bucket_url,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -65,36 +62,30 @@ func (*CloudflareR2BucketStackOutputs) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_cloudflare_cloudflarer2bucket_v1_stack_outputs_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *CloudflareR2BucketStackOutputs) GetZoneName() string {
+func (x *CloudflareR2BucketStackOutputs) GetBucketName() string {
 	if x != nil {
-		return x.ZoneName
+		return x.BucketName
 	}
 	return ""
 }
 
-func (x *CloudflareR2BucketStackOutputs) GetZoneId() string {
+func (x *CloudflareR2BucketStackOutputs) GetBucketUrl() string {
 	if x != nil {
-		return x.ZoneId
+		return x.BucketUrl
 	}
 	return ""
-}
-
-func (x *CloudflareR2BucketStackOutputs) GetNameServers() []string {
-	if x != nil {
-		return x.NameServers
-	}
-	return nil
 }
 
 var File_project_planton_provider_cloudflare_cloudflarer2bucket_v1_stack_outputs_proto protoreflect.FileDescriptor
 
 const file_project_planton_provider_cloudflare_cloudflarer2bucket_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Mproject/planton/provider/cloudflare/cloudflarer2bucket/v1/stack_outputs.proto\x129project.planton.provider.cloudflare.cloudflarer2bucket.v1\"y\n" +
-	"\x1eCloudflareR2BucketStackOutputs\x12\x1b\n" +
-	"\tzone_name\x18\x01 \x01(\tR\bzoneName\x12\x17\n" +
-	"\azone_id\x18\x02 \x01(\tR\x06zoneId\x12!\n" +
-	"\fname_servers\x18\x03 \x03(\tR\vnameServersB\xdd\x03\n" +
+	"Mproject/planton/provider/cloudflare/cloudflarer2bucket/v1/stack_outputs.proto\x129project.planton.provider.cloudflare.cloudflarer2bucket.v1\"`\n" +
+	"\x1eCloudflareR2BucketStackOutputs\x12\x1f\n" +
+	"\vbucket_name\x18\x01 \x01(\tR\n" +
+	"bucketName\x12\x1d\n" +
+	"\n" +
+	"bucket_url\x18\x02 \x01(\tR\tbucketUrlB\xdd\x03\n" +
 	"=com.project.planton.provider.cloudflare.cloudflarer2bucket.v1B\x11StackOutputsProtoP\x01Z~github.com/project-planton/project-planton/apis/project/planton/provider/cloudflare/cloudflarer2bucket/v1;cloudflarer2bucketv1\xa2\x02\x05PPPCC\xaa\x029Project.Planton.Provider.Cloudflare.Cloudflarer2bucket.V1\xca\x029Project\\Planton\\Provider\\Cloudflare\\Cloudflarer2bucket\\V1\xe2\x02EProject\\Planton\\Provider\\Cloudflare\\Cloudflarer2bucket\\V1\\GPBMetadata\xea\x02>Project::Planton::Provider::Cloudflare::Cloudflarer2bucket::V1b\x06proto3"
 
 var (

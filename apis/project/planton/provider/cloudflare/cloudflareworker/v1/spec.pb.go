@@ -8,9 +8,8 @@ package cloudflareworkerv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
+	_ "github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
 	v1 "github.com/project-planton/project-planton/apis/project/planton/shared/foreignkey/v1"
-	dnsrecordtype "github.com/project-planton/project-planton/apis/project/planton/shared/networking/enums/dnsrecordtype"
-	_ "github.com/project-planton/project-planton/apis/project/planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -25,16 +24,70 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// CloudflareWorkerSpec defines the specification required to create a DNS zone (domain) on Cloudflare.
-// This allows you to manage DNS records for a given domain via Cloudflare's DNS service, focusing on the essential parameters (80/20 principle).
+// Supported usage models for Cloudflare Workers.
+type CloudflareWorkerUsageModel int32
+
+const (
+	CloudflareWorkerUsageModel_BUNDLED CloudflareWorkerUsageModel = 0
+	CloudflareWorkerUsageModel_UNBOUND CloudflareWorkerUsageModel = 1
+)
+
+// Enum value maps for CloudflareWorkerUsageModel.
+var (
+	CloudflareWorkerUsageModel_name = map[int32]string{
+		0: "BUNDLED",
+		1: "UNBOUND",
+	}
+	CloudflareWorkerUsageModel_value = map[string]int32{
+		"BUNDLED": 0,
+		"UNBOUND": 1,
+	}
+)
+
+func (x CloudflareWorkerUsageModel) Enum() *CloudflareWorkerUsageModel {
+	p := new(CloudflareWorkerUsageModel)
+	*p = x
+	return p
+}
+
+func (x CloudflareWorkerUsageModel) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (CloudflareWorkerUsageModel) Descriptor() protoreflect.EnumDescriptor {
+	return file_project_planton_provider_cloudflare_cloudflareworker_v1_spec_proto_enumTypes[0].Descriptor()
+}
+
+func (CloudflareWorkerUsageModel) Type() protoreflect.EnumType {
+	return &file_project_planton_provider_cloudflare_cloudflareworker_v1_spec_proto_enumTypes[0]
+}
+
+func (x CloudflareWorkerUsageModel) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use CloudflareWorkerUsageModel.Descriptor instead.
+func (CloudflareWorkerUsageModel) EnumDescriptor() ([]byte, []int) {
+	return file_project_planton_provider_cloudflare_cloudflareworker_v1_spec_proto_rawDescGZIP(), []int{0}
+}
+
+// CloudflareWorkerSpec defines user-provided configuration for deploying a Cloudflare Worker.
 type CloudflareWorkerSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The domain name for the DNS zone.
-	// Must be a valid fully-qualified domain name (e.g., "example.com").
-	DomainName string `protobuf:"bytes,1,opt,name=domain_name,json=domainName,proto3" json:"domain_name,omitempty"`
-	// A list of DNS records to create within the zone (optional).
-	// Each record includes its type, name, value(s), and TTL.
-	Records       []*CloudflareWorkerRecord `protobuf:"bytes,2,rep,name=records,proto3" json:"records,omitempty"`
+	// A unique name for the Worker script (alphanumeric and hyphen characters only, no underscores).
+	ScriptName string `protobuf:"bytes,1,opt,name=script_name,json=scriptName,proto3" json:"script_name,omitempty"`
+	// Reference or literal path/URL to the Worker script code bundle.
+	ScriptSource *v1.StringValueOrRef `protobuf:"bytes,2,opt,name=script_source,json=scriptSource,proto3" json:"script_source,omitempty"`
+	// (Optional) One or more KV namespaces to bind to this Worker (referenced by CloudflareKVNamespace.namespace_id).
+	KvBindings []*v1.ValueFromRef `protobuf:"bytes,3,rep,name=kv_bindings,json=kvBindings,proto3" json:"kv_bindings,omitempty"`
+	// (Optional) URL pattern to attach this Worker to (must correspond to a domain under an existing CloudflareDnsZone).
+	RoutePattern string `protobuf:"bytes,4,opt,name=route_pattern,json=routePattern,proto3" json:"route_pattern,omitempty"`
+	// (Optional) Compatibility date for the Worker script (YYYY-MM-DD). If unset, defaults to today's date.
+	CompatibilityDate string `protobuf:"bytes,5,opt,name=compatibility_date,json=compatibilityDate,proto3" json:"compatibility_date,omitempty"`
+	// (Optional) Billing/usage model for the Worker. Defaults to BUNDLED if unspecified.
+	UsageModel CloudflareWorkerUsageModel `protobuf:"varint,6,opt,name=usage_model,json=usageModel,proto3,enum=project.planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerUsageModel" json:"usage_model,omitempty"`
+	// (Optional) Plaintext environment variables to provide to the Worker script.
+	EnvVars       map[string]string `protobuf:"bytes,7,rep,name=env_vars,json=envVars,proto3" json:"env_vars,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -69,116 +122,77 @@ func (*CloudflareWorkerSpec) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_cloudflare_cloudflareworker_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *CloudflareWorkerSpec) GetDomainName() string {
+func (x *CloudflareWorkerSpec) GetScriptName() string {
 	if x != nil {
-		return x.DomainName
+		return x.ScriptName
 	}
 	return ""
 }
 
-func (x *CloudflareWorkerSpec) GetRecords() []*CloudflareWorkerRecord {
+func (x *CloudflareWorkerSpec) GetScriptSource() *v1.StringValueOrRef {
 	if x != nil {
-		return x.Records
+		return x.ScriptSource
 	}
 	return nil
 }
 
-// CloudflareWorkerRecord represents a DNS record entry to be created in the zone.
-type CloudflareWorkerRecord struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The host/name for the DNS record, relative to the zone.
-	// For root (apex) records, use "@" to denote the zone itself.
-	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	// The value or values for the DNS record.
-	// - For A/AAAA: one or more IP addresses.
-	// - For CNAME: the target domain name.
-	// - For TXT: the text data (if multiple strings, they will be concatenated by DNS).
-	// - For MX: one or more entries like "<priority> <mail-server-domain>".
-	// Each value can be a literal or a reference to another resource’s output.
-	Values []*v1.StringValueOrRef `protobuf:"bytes,2,rep,name=values,proto3" json:"values,omitempty"`
-	// The time-to-live (TTL) for this DNS record, in seconds.
-	// Determines how long resolvers cache the record. Defaults to 3600 seconds (1 hour) if not set.
-	TtlSeconds uint32 `protobuf:"varint,3,opt,name=ttl_seconds,json=ttlSeconds,proto3" json:"ttl_seconds,omitempty"`
-	// The DNS record type.
-	// This field is required and must be one of the supported record types (A, AAAA, CNAME, MX, TXT, etc.).
-	Type          dnsrecordtype.DnsRecordType `protobuf:"varint,4,opt,name=type,proto3,enum=project.planton.shared.networking.enums.dnsrecordtype.DnsRecordType" json:"type,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *CloudflareWorkerRecord) Reset() {
-	*x = CloudflareWorkerRecord{}
-	mi := &file_project_planton_provider_cloudflare_cloudflareworker_v1_spec_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CloudflareWorkerRecord) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CloudflareWorkerRecord) ProtoMessage() {}
-
-func (x *CloudflareWorkerRecord) ProtoReflect() protoreflect.Message {
-	mi := &file_project_planton_provider_cloudflare_cloudflareworker_v1_spec_proto_msgTypes[1]
+func (x *CloudflareWorkerSpec) GetKvBindings() []*v1.ValueFromRef {
 	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
+		return x.KvBindings
 	}
-	return mi.MessageOf(x)
+	return nil
 }
 
-// Deprecated: Use CloudflareWorkerRecord.ProtoReflect.Descriptor instead.
-func (*CloudflareWorkerRecord) Descriptor() ([]byte, []int) {
-	return file_project_planton_provider_cloudflare_cloudflareworker_v1_spec_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *CloudflareWorkerRecord) GetName() string {
+func (x *CloudflareWorkerSpec) GetRoutePattern() string {
 	if x != nil {
-		return x.Name
+		return x.RoutePattern
 	}
 	return ""
 }
 
-func (x *CloudflareWorkerRecord) GetValues() []*v1.StringValueOrRef {
+func (x *CloudflareWorkerSpec) GetCompatibilityDate() string {
 	if x != nil {
-		return x.Values
+		return x.CompatibilityDate
+	}
+	return ""
+}
+
+func (x *CloudflareWorkerSpec) GetUsageModel() CloudflareWorkerUsageModel {
+	if x != nil {
+		return x.UsageModel
+	}
+	return CloudflareWorkerUsageModel_BUNDLED
+}
+
+func (x *CloudflareWorkerSpec) GetEnvVars() map[string]string {
+	if x != nil {
+		return x.EnvVars
 	}
 	return nil
-}
-
-func (x *CloudflareWorkerRecord) GetTtlSeconds() uint32 {
-	if x != nil {
-		return x.TtlSeconds
-	}
-	return 0
-}
-
-func (x *CloudflareWorkerRecord) GetType() dnsrecordtype.DnsRecordType {
-	if x != nil {
-		return x.Type
-	}
-	return dnsrecordtype.DnsRecordType(0)
 }
 
 var File_project_planton_provider_cloudflare_cloudflareworker_v1_spec_proto protoreflect.FileDescriptor
 
 const file_project_planton_provider_cloudflare_cloudflareworker_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Bproject/planton/provider/cloudflare/cloudflareworker/v1/spec.proto\x127project.planton.provider.cloudflare.cloudflareworker.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1aKproject/planton/shared/networking/enums/dnsrecordtype/dns_record_type.proto\x1a,project/planton/shared/options/options.proto\"\xd0\x01\n" +
-	"\x14CloudflareWorkerSpec\x12M\n" +
-	"\vdomain_name\x18\x01 \x01(\tB,\xbaH)\xc8\x01\x01r$2\"^(?:[A-Za-z0-9-]+\\.)+[A-Za-z]{2,}$R\n" +
-	"domainName\x12i\n" +
-	"\arecords\x18\x02 \x03(\v2O.project.planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerRecordR\arecords\"\x9e\x02\n" +
-	"\x16CloudflareWorkerRecord\x12\x1a\n" +
-	"\x04name\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\x12[\n" +
-	"\x06values\x18\x02 \x03(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB\v\xbaH\b\xc8\x01\x01\x92\x01\x02\b\x01R\x06values\x12)\n" +
-	"\vttl_seconds\x18\x03 \x01(\rB\b\x92\xa6\x1d\x043600R\n" +
-	"ttlSeconds\x12`\n" +
-	"\x04type\x18\x04 \x01(\x0e2D.project.planton.shared.networking.enums.dnsrecordtype.DnsRecordTypeB\x06\xbaH\x03\xc8\x01\x01R\x04typeB\xc7\x03\n" +
+	"Bproject/planton/provider/cloudflare/cloudflareworker/v1/spec.proto\x127project.planton.provider.cloudflare.cloudflareworker.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1aBproject/planton/shared/cloudresourcekind/cloud_resource_kind.proto\"\xd4\x05\n" +
+	"\x14CloudflareWorkerSpec\x12:\n" +
+	"\vscript_name\x18\x01 \x01(\tB\x19\xbaH\x16r\x14\x10\x012\x10^[0-9A-Za-z\\-]+$R\n" +
+	"scriptName\x12c\n" +
+	"\rscript_source\x18\x02 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB\x06\xbaH\x03\xc8\x01\x01R\fscriptSource\x12y\n" +
+	"\vkv_bindings\x18\x03 \x03(\v22.project.planton.shared.foreignkey.v1.ValueFromRefB$\x88\xd4a\x89\x0e\x92\xd4a\x1bstatus.outputs.namespace_idR\n" +
+	"kvBindings\x12#\n" +
+	"\rroute_pattern\x18\x04 \x01(\tR\froutePattern\x12R\n" +
+	"\x12compatibility_date\x18\x05 \x01(\tB#\xbaH r\x1e2\x1c^[0-9]{4}-[0-9]{2}-[0-9]{2}$R\x11compatibilityDate\x12t\n" +
+	"\vusage_model\x18\x06 \x01(\x0e2S.project.planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerUsageModelR\n" +
+	"usageModel\x12u\n" +
+	"\benv_vars\x18\a \x03(\v2Z.project.planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerSpec.EnvVarsEntryR\aenvVars\x1a:\n" +
+	"\fEnvVarsEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01*6\n" +
+	"\x1aCloudflareWorkerUsageModel\x12\v\n" +
+	"\aBUNDLED\x10\x00\x12\v\n" +
+	"\aUNBOUND\x10\x01B\xc7\x03\n" +
 	";com.project.planton.provider.cloudflare.cloudflareworker.v1B\tSpecProtoP\x01Zzgithub.com/project-planton/project-planton/apis/project/planton/provider/cloudflare/cloudflareworker/v1;cloudflareworkerv1\xa2\x02\x05PPPCC\xaa\x027Project.Planton.Provider.Cloudflare.Cloudflareworker.V1\xca\x027Project\\Planton\\Provider\\Cloudflare\\Cloudflareworker\\V1\xe2\x02CProject\\Planton\\Provider\\Cloudflare\\Cloudflareworker\\V1\\GPBMetadata\xea\x02<Project::Planton::Provider::Cloudflare::Cloudflareworker::V1b\x06proto3"
 
 var (
@@ -193,22 +207,25 @@ func file_project_planton_provider_cloudflare_cloudflareworker_v1_spec_proto_raw
 	return file_project_planton_provider_cloudflare_cloudflareworker_v1_spec_proto_rawDescData
 }
 
+var file_project_planton_provider_cloudflare_cloudflareworker_v1_spec_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_project_planton_provider_cloudflare_cloudflareworker_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_cloudflare_cloudflareworker_v1_spec_proto_goTypes = []any{
-	(*CloudflareWorkerSpec)(nil),     // 0: project.planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerSpec
-	(*CloudflareWorkerRecord)(nil),   // 1: project.planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerRecord
-	(*v1.StringValueOrRef)(nil),      // 2: project.planton.shared.foreignkey.v1.StringValueOrRef
-	(dnsrecordtype.DnsRecordType)(0), // 3: project.planton.shared.networking.enums.dnsrecordtype.DnsRecordType
+	(CloudflareWorkerUsageModel)(0), // 0: project.planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerUsageModel
+	(*CloudflareWorkerSpec)(nil),    // 1: project.planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerSpec
+	nil,                             // 2: project.planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerSpec.EnvVarsEntry
+	(*v1.StringValueOrRef)(nil),     // 3: project.planton.shared.foreignkey.v1.StringValueOrRef
+	(*v1.ValueFromRef)(nil),         // 4: project.planton.shared.foreignkey.v1.ValueFromRef
 }
 var file_project_planton_provider_cloudflare_cloudflareworker_v1_spec_proto_depIdxs = []int32{
-	1, // 0: project.planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerSpec.records:type_name -> project.planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerRecord
-	2, // 1: project.planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerRecord.values:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
-	3, // 2: project.planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerRecord.type:type_name -> project.planton.shared.networking.enums.dnsrecordtype.DnsRecordType
-	3, // [3:3] is the sub-list for method output_type
-	3, // [3:3] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	3, // 0: project.planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerSpec.script_source:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
+	4, // 1: project.planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerSpec.kv_bindings:type_name -> project.planton.shared.foreignkey.v1.ValueFromRef
+	0, // 2: project.planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerSpec.usage_model:type_name -> project.planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerUsageModel
+	2, // 3: project.planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerSpec.env_vars:type_name -> project.planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerSpec.EnvVarsEntry
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_provider_cloudflare_cloudflareworker_v1_spec_proto_init() }
@@ -221,13 +238,14 @@ func file_project_planton_provider_cloudflare_cloudflareworker_v1_spec_proto_ini
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_project_planton_provider_cloudflare_cloudflareworker_v1_spec_proto_rawDesc), len(file_project_planton_provider_cloudflare_cloudflareworker_v1_spec_proto_rawDesc)),
-			NumEnums:      0,
+			NumEnums:      1,
 			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
 		GoTypes:           file_project_planton_provider_cloudflare_cloudflareworker_v1_spec_proto_goTypes,
 		DependencyIndexes: file_project_planton_provider_cloudflare_cloudflareworker_v1_spec_proto_depIdxs,
+		EnumInfos:         file_project_planton_provider_cloudflare_cloudflareworker_v1_spec_proto_enumTypes,
 		MessageInfos:      file_project_planton_provider_cloudflare_cloudflareworker_v1_spec_proto_msgTypes,
 	}.Build()
 	File_project_planton_provider_cloudflare_cloudflareworker_v1_spec_proto = out.File

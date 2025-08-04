@@ -9,7 +9,6 @@ package cloudflareloadbalancerv1
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	v1 "github.com/project-planton/project-planton/apis/project/planton/shared/foreignkey/v1"
-	dnsrecordtype "github.com/project-planton/project-planton/apis/project/planton/shared/networking/enums/dnsrecordtype"
 	_ "github.com/project-planton/project-planton/apis/project/planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -25,18 +24,121 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// CloudflareLoadBalancerSpec defines the specification required to create a DNS zone (domain) on Cloudflare.
-// This allows you to manage DNS records for a given domain via Cloudflare's DNS service, focusing on the essential parameters (80/20 principle).
+// Supported session affinity options for Cloudflare load balancers.
+type CloudflareLoadBalancerSessionAffinity int32
+
+const (
+	CloudflareLoadBalancerSessionAffinity_SESSION_AFFINITY_NONE   CloudflareLoadBalancerSessionAffinity = 0
+	CloudflareLoadBalancerSessionAffinity_SESSION_AFFINITY_COOKIE CloudflareLoadBalancerSessionAffinity = 1
+)
+
+// Enum value maps for CloudflareLoadBalancerSessionAffinity.
+var (
+	CloudflareLoadBalancerSessionAffinity_name = map[int32]string{
+		0: "SESSION_AFFINITY_NONE",
+		1: "SESSION_AFFINITY_COOKIE",
+	}
+	CloudflareLoadBalancerSessionAffinity_value = map[string]int32{
+		"SESSION_AFFINITY_NONE":   0,
+		"SESSION_AFFINITY_COOKIE": 1,
+	}
+)
+
+func (x CloudflareLoadBalancerSessionAffinity) Enum() *CloudflareLoadBalancerSessionAffinity {
+	p := new(CloudflareLoadBalancerSessionAffinity)
+	*p = x
+	return p
+}
+
+func (x CloudflareLoadBalancerSessionAffinity) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (CloudflareLoadBalancerSessionAffinity) Descriptor() protoreflect.EnumDescriptor {
+	return file_project_planton_provider_cloudflare_cloudflareloadbalancer_v1_spec_proto_enumTypes[0].Descriptor()
+}
+
+func (CloudflareLoadBalancerSessionAffinity) Type() protoreflect.EnumType {
+	return &file_project_planton_provider_cloudflare_cloudflareloadbalancer_v1_spec_proto_enumTypes[0]
+}
+
+func (x CloudflareLoadBalancerSessionAffinity) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use CloudflareLoadBalancerSessionAffinity.Descriptor instead.
+func (CloudflareLoadBalancerSessionAffinity) EnumDescriptor() ([]byte, []int) {
+	return file_project_planton_provider_cloudflare_cloudflareloadbalancer_v1_spec_proto_rawDescGZIP(), []int{0}
+}
+
+// Supported traffic steering policies for Cloudflare load balancers.
+type CloudflareLoadBalancerSteeringPolicy int32
+
+const (
+	CloudflareLoadBalancerSteeringPolicy_STEERING_OFF    CloudflareLoadBalancerSteeringPolicy = 0
+	CloudflareLoadBalancerSteeringPolicy_STEERING_GEO    CloudflareLoadBalancerSteeringPolicy = 1
+	CloudflareLoadBalancerSteeringPolicy_STEERING_RANDOM CloudflareLoadBalancerSteeringPolicy = 2
+)
+
+// Enum value maps for CloudflareLoadBalancerSteeringPolicy.
+var (
+	CloudflareLoadBalancerSteeringPolicy_name = map[int32]string{
+		0: "STEERING_OFF",
+		1: "STEERING_GEO",
+		2: "STEERING_RANDOM",
+	}
+	CloudflareLoadBalancerSteeringPolicy_value = map[string]int32{
+		"STEERING_OFF":    0,
+		"STEERING_GEO":    1,
+		"STEERING_RANDOM": 2,
+	}
+)
+
+func (x CloudflareLoadBalancerSteeringPolicy) Enum() *CloudflareLoadBalancerSteeringPolicy {
+	p := new(CloudflareLoadBalancerSteeringPolicy)
+	*p = x
+	return p
+}
+
+func (x CloudflareLoadBalancerSteeringPolicy) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (CloudflareLoadBalancerSteeringPolicy) Descriptor() protoreflect.EnumDescriptor {
+	return file_project_planton_provider_cloudflare_cloudflareloadbalancer_v1_spec_proto_enumTypes[1].Descriptor()
+}
+
+func (CloudflareLoadBalancerSteeringPolicy) Type() protoreflect.EnumType {
+	return &file_project_planton_provider_cloudflare_cloudflareloadbalancer_v1_spec_proto_enumTypes[1]
+}
+
+func (x CloudflareLoadBalancerSteeringPolicy) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use CloudflareLoadBalancerSteeringPolicy.Descriptor instead.
+func (CloudflareLoadBalancerSteeringPolicy) EnumDescriptor() ([]byte, []int) {
+	return file_project_planton_provider_cloudflare_cloudflareloadbalancer_v1_spec_proto_rawDescGZIP(), []int{1}
+}
+
+// CloudflareLoadBalancerSpec captures the essential fields to create a Cloudflare Load Balancer.
 type CloudflareLoadBalancerSpec struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The domain name for the DNS zone.
-	// Must be a valid fully-qualified domain name (e.g., "example.com").
-	DomainName string `protobuf:"bytes,1,opt,name=domain_name,json=domainName,proto3" json:"domain_name,omitempty"`
-	// A list of DNS records to create within the zone (optional).
-	// Each record includes its type, name, value(s), and TTL.
-	Records       []*CloudflareLoadBalancerRecord `protobuf:"bytes,2,rep,name=records,proto3" json:"records,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state    protoimpl.MessageState `protogen:"open.v1"`
+	Hostname string                 `protobuf:"bytes,1,opt,name=hostname,proto3" json:"hostname,omitempty"`
+	// Foreign key reference to a Cloudflare DNS zone that contains the hostname.
+	ZoneId *v1.StringValueOrRef `protobuf:"bytes,2,opt,name=zone_id,json=zoneId,proto3" json:"zone_id,omitempty"`
+	// List of origin servers behind this load balancer. At least one origin is required.
+	Origins []*CloudflareLoadBalancerOrigin `protobuf:"bytes,3,rep,name=origins,proto3" json:"origins,omitempty"`
+	// Whether Cloudflare's proxy is enabled for this hostname (orange cloud). Defaults to true.
+	Proxied bool `protobuf:"varint,4,opt,name=proxied,proto3" json:"proxied,omitempty"`
+	// HTTP path to use for health monitoring of origins. Defaults to "/".
+	HealthProbePath string `protobuf:"bytes,5,opt,name=health_probe_path,json=healthProbePath,proto3" json:"health_probe_path,omitempty"`
+	// Session affinity setting (e.g., "cookie" to bind clients to an origin). Defaults to none.
+	SessionAffinity CloudflareLoadBalancerSessionAffinity `protobuf:"varint,6,opt,name=session_affinity,json=sessionAffinity,proto3,enum=project.planton.provider.cloudflare.cloudflareloadbalancer.v1.CloudflareLoadBalancerSessionAffinity" json:"session_affinity,omitempty"`
+	// Traffic steering policy. "off" for static/failover (default), "geo" for geo-routing, "random" for weighted distribution.
+	SteeringPolicy CloudflareLoadBalancerSteeringPolicy `protobuf:"varint,7,opt,name=steering_policy,json=steeringPolicy,proto3,enum=project.planton.provider.cloudflare.cloudflareloadbalancer.v1.CloudflareLoadBalancerSteeringPolicy" json:"steering_policy,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *CloudflareLoadBalancerSpec) Reset() {
@@ -69,57 +171,82 @@ func (*CloudflareLoadBalancerSpec) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_cloudflare_cloudflareloadbalancer_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *CloudflareLoadBalancerSpec) GetDomainName() string {
+func (x *CloudflareLoadBalancerSpec) GetHostname() string {
 	if x != nil {
-		return x.DomainName
+		return x.Hostname
 	}
 	return ""
 }
 
-func (x *CloudflareLoadBalancerSpec) GetRecords() []*CloudflareLoadBalancerRecord {
+func (x *CloudflareLoadBalancerSpec) GetZoneId() *v1.StringValueOrRef {
 	if x != nil {
-		return x.Records
+		return x.ZoneId
 	}
 	return nil
 }
 
-// CloudflareLoadBalancerRecord represents a DNS record entry to be created in the zone.
-type CloudflareLoadBalancerRecord struct {
+func (x *CloudflareLoadBalancerSpec) GetOrigins() []*CloudflareLoadBalancerOrigin {
+	if x != nil {
+		return x.Origins
+	}
+	return nil
+}
+
+func (x *CloudflareLoadBalancerSpec) GetProxied() bool {
+	if x != nil {
+		return x.Proxied
+	}
+	return false
+}
+
+func (x *CloudflareLoadBalancerSpec) GetHealthProbePath() string {
+	if x != nil {
+		return x.HealthProbePath
+	}
+	return ""
+}
+
+func (x *CloudflareLoadBalancerSpec) GetSessionAffinity() CloudflareLoadBalancerSessionAffinity {
+	if x != nil {
+		return x.SessionAffinity
+	}
+	return CloudflareLoadBalancerSessionAffinity_SESSION_AFFINITY_NONE
+}
+
+func (x *CloudflareLoadBalancerSpec) GetSteeringPolicy() CloudflareLoadBalancerSteeringPolicy {
+	if x != nil {
+		return x.SteeringPolicy
+	}
+	return CloudflareLoadBalancerSteeringPolicy_STEERING_OFF
+}
+
+// Definition of an origin server in the Cloudflare load balancer.
+type CloudflareLoadBalancerOrigin struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The host/name for the DNS record, relative to the zone.
-	// For root (apex) records, use "@" to denote the zone itself.
+	// A name to identify the origin.
 	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	// The value or values for the DNS record.
-	// - For A/AAAA: one or more IP addresses.
-	// - For CNAME: the target domain name.
-	// - For TXT: the text data (if multiple strings, they will be concatenated by DNS).
-	// - For MX: one or more entries like "<priority> <mail-server-domain>".
-	// Each value can be a literal or a reference to another resource’s output.
-	Values []*v1.StringValueOrRef `protobuf:"bytes,2,rep,name=values,proto3" json:"values,omitempty"`
-	// The time-to-live (TTL) for this DNS record, in seconds.
-	// Determines how long resolvers cache the record. Defaults to 3600 seconds (1 hour) if not set.
-	TtlSeconds uint32 `protobuf:"varint,3,opt,name=ttl_seconds,json=ttlSeconds,proto3" json:"ttl_seconds,omitempty"`
-	// The DNS record type.
-	// This field is required and must be one of the supported record types (A, AAAA, CNAME, MX, TXT, etc.).
-	Type          dnsrecordtype.DnsRecordType `protobuf:"varint,4,opt,name=type,proto3,enum=project.planton.shared.networking.enums.dnsrecordtype.DnsRecordType" json:"type,omitempty"`
+	// The origin address (IP or DNS hostname) reachable via HTTP(S).
+	Address string `protobuf:"bytes,2,opt,name=address,proto3" json:"address,omitempty"`
+	// Weight for this origin (relative traffic share). Defaults to 1.
+	Weight        int32 `protobuf:"varint,3,opt,name=weight,proto3" json:"weight,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *CloudflareLoadBalancerRecord) Reset() {
-	*x = CloudflareLoadBalancerRecord{}
+func (x *CloudflareLoadBalancerOrigin) Reset() {
+	*x = CloudflareLoadBalancerOrigin{}
 	mi := &file_project_planton_provider_cloudflare_cloudflareloadbalancer_v1_spec_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *CloudflareLoadBalancerRecord) String() string {
+func (x *CloudflareLoadBalancerOrigin) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*CloudflareLoadBalancerRecord) ProtoMessage() {}
+func (*CloudflareLoadBalancerOrigin) ProtoMessage() {}
 
-func (x *CloudflareLoadBalancerRecord) ProtoReflect() protoreflect.Message {
+func (x *CloudflareLoadBalancerOrigin) ProtoReflect() protoreflect.Message {
 	mi := &file_project_planton_provider_cloudflare_cloudflareloadbalancer_v1_spec_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -131,54 +258,56 @@ func (x *CloudflareLoadBalancerRecord) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use CloudflareLoadBalancerRecord.ProtoReflect.Descriptor instead.
-func (*CloudflareLoadBalancerRecord) Descriptor() ([]byte, []int) {
+// Deprecated: Use CloudflareLoadBalancerOrigin.ProtoReflect.Descriptor instead.
+func (*CloudflareLoadBalancerOrigin) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_cloudflare_cloudflareloadbalancer_v1_spec_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *CloudflareLoadBalancerRecord) GetName() string {
+func (x *CloudflareLoadBalancerOrigin) GetName() string {
 	if x != nil {
 		return x.Name
 	}
 	return ""
 }
 
-func (x *CloudflareLoadBalancerRecord) GetValues() []*v1.StringValueOrRef {
+func (x *CloudflareLoadBalancerOrigin) GetAddress() string {
 	if x != nil {
-		return x.Values
+		return x.Address
 	}
-	return nil
+	return ""
 }
 
-func (x *CloudflareLoadBalancerRecord) GetTtlSeconds() uint32 {
+func (x *CloudflareLoadBalancerOrigin) GetWeight() int32 {
 	if x != nil {
-		return x.TtlSeconds
+		return x.Weight
 	}
 	return 0
-}
-
-func (x *CloudflareLoadBalancerRecord) GetType() dnsrecordtype.DnsRecordType {
-	if x != nil {
-		return x.Type
-	}
-	return dnsrecordtype.DnsRecordType(0)
 }
 
 var File_project_planton_provider_cloudflare_cloudflareloadbalancer_v1_spec_proto protoreflect.FileDescriptor
 
 const file_project_planton_provider_cloudflare_cloudflareloadbalancer_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Hproject/planton/provider/cloudflare/cloudflareloadbalancer/v1/spec.proto\x12=project.planton.provider.cloudflare.cloudflareloadbalancer.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1aKproject/planton/shared/networking/enums/dnsrecordtype/dns_record_type.proto\x1a,project/planton/shared/options/options.proto\"\xe2\x01\n" +
-	"\x1aCloudflareLoadBalancerSpec\x12M\n" +
-	"\vdomain_name\x18\x01 \x01(\tB,\xbaH)\xc8\x01\x01r$2\"^(?:[A-Za-z0-9-]+\\.)+[A-Za-z]{2,}$R\n" +
-	"domainName\x12u\n" +
-	"\arecords\x18\x02 \x03(\v2[.project.planton.provider.cloudflare.cloudflareloadbalancer.v1.CloudflareLoadBalancerRecordR\arecords\"\xa4\x02\n" +
-	"\x1cCloudflareLoadBalancerRecord\x12\x1a\n" +
-	"\x04name\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\x12[\n" +
-	"\x06values\x18\x02 \x03(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB\v\xbaH\b\xc8\x01\x01\x92\x01\x02\b\x01R\x06values\x12)\n" +
-	"\vttl_seconds\x18\x03 \x01(\rB\b\x92\xa6\x1d\x043600R\n" +
-	"ttlSeconds\x12`\n" +
-	"\x04type\x18\x04 \x01(\x0e2D.project.planton.shared.networking.enums.dnsrecordtype.DnsRecordTypeB\x06\xbaH\x03\xc8\x01\x01R\x04typeB\xf2\x03\n" +
+	"Hproject/planton/provider/cloudflare/cloudflareloadbalancer/v1/spec.proto\x12=project.planton.provider.cloudflare.cloudflareloadbalancer.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\"\xb5\x05\n" +
+	"\x1aCloudflareLoadBalancerSpec\x12\"\n" +
+	"\bhostname\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bhostname\x12v\n" +
+	"\azone_id\x18\x02 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB%\xbaH\x03\xc8\x01\x01\x88\xd4a\x88\x0e\x92\xd4a\x16status.outputs.zone_idR\x06zoneId\x12\x82\x01\n" +
+	"\aorigins\x18\x03 \x03(\v2[.project.planton.provider.cloudflare.cloudflareloadbalancer.v1.CloudflareLoadBalancerOriginB\v\xbaH\b\xc8\x01\x01\x92\x01\x02\b\x01R\aorigins\x12\"\n" +
+	"\aproxied\x18\x04 \x01(\bB\b\x92\xa6\x1d\x04trueR\aproxied\x121\n" +
+	"\x11health_probe_path\x18\x05 \x01(\tB\x05\x92\xa6\x1d\x01/R\x0fhealthProbePath\x12\x8f\x01\n" +
+	"\x10session_affinity\x18\x06 \x01(\x0e2d.project.planton.provider.cloudflare.cloudflareloadbalancer.v1.CloudflareLoadBalancerSessionAffinityR\x0fsessionAffinity\x12\x8c\x01\n" +
+	"\x0fsteering_policy\x18\a \x01(\x0e2c.project.planton.provider.cloudflare.cloudflareloadbalancer.v1.CloudflareLoadBalancerSteeringPolicyR\x0esteeringPolicy\"{\n" +
+	"\x1cCloudflareLoadBalancerOrigin\x12\x1a\n" +
+	"\x04name\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\x12 \n" +
+	"\aaddress\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\aaddress\x12\x1d\n" +
+	"\x06weight\x18\x03 \x01(\x05B\x05\x92\xa6\x1d\x011R\x06weight*_\n" +
+	"%CloudflareLoadBalancerSessionAffinity\x12\x19\n" +
+	"\x15SESSION_AFFINITY_NONE\x10\x00\x12\x1b\n" +
+	"\x17SESSION_AFFINITY_COOKIE\x10\x01*_\n" +
+	"$CloudflareLoadBalancerSteeringPolicy\x12\x10\n" +
+	"\fSTEERING_OFF\x10\x00\x12\x10\n" +
+	"\fSTEERING_GEO\x10\x01\x12\x13\n" +
+	"\x0fSTEERING_RANDOM\x10\x02B\xf2\x03\n" +
 	"Acom.project.planton.provider.cloudflare.cloudflareloadbalancer.v1B\tSpecProtoP\x01Z\x86\x01github.com/project-planton/project-planton/apis/project/planton/provider/cloudflare/cloudflareloadbalancer/v1;cloudflareloadbalancerv1\xa2\x02\x05PPPCC\xaa\x02=Project.Planton.Provider.Cloudflare.Cloudflareloadbalancer.V1\xca\x02=Project\\Planton\\Provider\\Cloudflare\\Cloudflareloadbalancer\\V1\xe2\x02IProject\\Planton\\Provider\\Cloudflare\\Cloudflareloadbalancer\\V1\\GPBMetadata\xea\x02BProject::Planton::Provider::Cloudflare::Cloudflareloadbalancer::V1b\x06proto3"
 
 var (
@@ -193,22 +322,25 @@ func file_project_planton_provider_cloudflare_cloudflareloadbalancer_v1_spec_pro
 	return file_project_planton_provider_cloudflare_cloudflareloadbalancer_v1_spec_proto_rawDescData
 }
 
+var file_project_planton_provider_cloudflare_cloudflareloadbalancer_v1_spec_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
 var file_project_planton_provider_cloudflare_cloudflareloadbalancer_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_cloudflare_cloudflareloadbalancer_v1_spec_proto_goTypes = []any{
-	(*CloudflareLoadBalancerSpec)(nil),   // 0: project.planton.provider.cloudflare.cloudflareloadbalancer.v1.CloudflareLoadBalancerSpec
-	(*CloudflareLoadBalancerRecord)(nil), // 1: project.planton.provider.cloudflare.cloudflareloadbalancer.v1.CloudflareLoadBalancerRecord
-	(*v1.StringValueOrRef)(nil),          // 2: project.planton.shared.foreignkey.v1.StringValueOrRef
-	(dnsrecordtype.DnsRecordType)(0),     // 3: project.planton.shared.networking.enums.dnsrecordtype.DnsRecordType
+	(CloudflareLoadBalancerSessionAffinity)(0), // 0: project.planton.provider.cloudflare.cloudflareloadbalancer.v1.CloudflareLoadBalancerSessionAffinity
+	(CloudflareLoadBalancerSteeringPolicy)(0),  // 1: project.planton.provider.cloudflare.cloudflareloadbalancer.v1.CloudflareLoadBalancerSteeringPolicy
+	(*CloudflareLoadBalancerSpec)(nil),         // 2: project.planton.provider.cloudflare.cloudflareloadbalancer.v1.CloudflareLoadBalancerSpec
+	(*CloudflareLoadBalancerOrigin)(nil),       // 3: project.planton.provider.cloudflare.cloudflareloadbalancer.v1.CloudflareLoadBalancerOrigin
+	(*v1.StringValueOrRef)(nil),                // 4: project.planton.shared.foreignkey.v1.StringValueOrRef
 }
 var file_project_planton_provider_cloudflare_cloudflareloadbalancer_v1_spec_proto_depIdxs = []int32{
-	1, // 0: project.planton.provider.cloudflare.cloudflareloadbalancer.v1.CloudflareLoadBalancerSpec.records:type_name -> project.planton.provider.cloudflare.cloudflareloadbalancer.v1.CloudflareLoadBalancerRecord
-	2, // 1: project.planton.provider.cloudflare.cloudflareloadbalancer.v1.CloudflareLoadBalancerRecord.values:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
-	3, // 2: project.planton.provider.cloudflare.cloudflareloadbalancer.v1.CloudflareLoadBalancerRecord.type:type_name -> project.planton.shared.networking.enums.dnsrecordtype.DnsRecordType
-	3, // [3:3] is the sub-list for method output_type
-	3, // [3:3] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	4, // 0: project.planton.provider.cloudflare.cloudflareloadbalancer.v1.CloudflareLoadBalancerSpec.zone_id:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
+	3, // 1: project.planton.provider.cloudflare.cloudflareloadbalancer.v1.CloudflareLoadBalancerSpec.origins:type_name -> project.planton.provider.cloudflare.cloudflareloadbalancer.v1.CloudflareLoadBalancerOrigin
+	0, // 2: project.planton.provider.cloudflare.cloudflareloadbalancer.v1.CloudflareLoadBalancerSpec.session_affinity:type_name -> project.planton.provider.cloudflare.cloudflareloadbalancer.v1.CloudflareLoadBalancerSessionAffinity
+	1, // 3: project.planton.provider.cloudflare.cloudflareloadbalancer.v1.CloudflareLoadBalancerSpec.steering_policy:type_name -> project.planton.provider.cloudflare.cloudflareloadbalancer.v1.CloudflareLoadBalancerSteeringPolicy
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_provider_cloudflare_cloudflareloadbalancer_v1_spec_proto_init() }
@@ -221,13 +353,14 @@ func file_project_planton_provider_cloudflare_cloudflareloadbalancer_v1_spec_pro
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_project_planton_provider_cloudflare_cloudflareloadbalancer_v1_spec_proto_rawDesc), len(file_project_planton_provider_cloudflare_cloudflareloadbalancer_v1_spec_proto_rawDesc)),
-			NumEnums:      0,
+			NumEnums:      2,
 			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
 		GoTypes:           file_project_planton_provider_cloudflare_cloudflareloadbalancer_v1_spec_proto_goTypes,
 		DependencyIndexes: file_project_planton_provider_cloudflare_cloudflareloadbalancer_v1_spec_proto_depIdxs,
+		EnumInfos:         file_project_planton_provider_cloudflare_cloudflareloadbalancer_v1_spec_proto_enumTypes,
 		MessageInfos:      file_project_planton_provider_cloudflare_cloudflareloadbalancer_v1_spec_proto_msgTypes,
 	}.Build()
 	File_project_planton_provider_cloudflare_cloudflareloadbalancer_v1_spec_proto = out.File

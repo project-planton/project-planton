@@ -21,16 +21,14 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// CloudflareDnsZoneStackOutputs captures the output information after provisioning a DNS zone on Cloudflare.
+// **CloudflareDnsZoneStackOutputs** captures the outputs after provisioning a Cloudflare DNS Zone.
+// It includes the zone's unique identifier and the nameservers assigned to the zone.
 type CloudflareDnsZoneStackOutputs struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The domain name of the DNS zone managed on Cloudflare.
-	ZoneName string `protobuf:"bytes,1,opt,name=zone_name,json=zoneName,proto3" json:"zone_name,omitempty"`
-	// The unique identifier of the DNS zone on Cloudflare (UUID).
-	ZoneId string `protobuf:"bytes,2,opt,name=zone_id,json=zoneId,proto3" json:"zone_id,omitempty"`
-	// The list of nameserver addresses for the DNS zone.
-	// These are the nameservers that should be set at the domain's registrar (e.g., ns0.cloudflare.com, ns1.cloudflare.com).
-	NameServers   []string `protobuf:"bytes,3,rep,name=name_servers,json=nameServers,proto3" json:"name_servers,omitempty"`
+	// The Cloudflare Zone ID of the created DNS zone.
+	ZoneId string `protobuf:"bytes,1,opt,name=zone_id,json=zoneId,proto3" json:"zone_id,omitempty"`
+	// The list of nameserver addresses assigned to this DNS zone.
+	Nameservers   []string `protobuf:"bytes,2,rep,name=nameservers,proto3" json:"nameservers,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -65,13 +63,6 @@ func (*CloudflareDnsZoneStackOutputs) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_cloudflare_cloudflarednszone_v1_stack_outputs_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *CloudflareDnsZoneStackOutputs) GetZoneName() string {
-	if x != nil {
-		return x.ZoneName
-	}
-	return ""
-}
-
 func (x *CloudflareDnsZoneStackOutputs) GetZoneId() string {
 	if x != nil {
 		return x.ZoneId
@@ -79,9 +70,9 @@ func (x *CloudflareDnsZoneStackOutputs) GetZoneId() string {
 	return ""
 }
 
-func (x *CloudflareDnsZoneStackOutputs) GetNameServers() []string {
+func (x *CloudflareDnsZoneStackOutputs) GetNameservers() []string {
 	if x != nil {
-		return x.NameServers
+		return x.Nameservers
 	}
 	return nil
 }
@@ -90,11 +81,10 @@ var File_project_planton_provider_cloudflare_cloudflarednszone_v1_stack_outputs_
 
 const file_project_planton_provider_cloudflare_cloudflarednszone_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Lproject/planton/provider/cloudflare/cloudflarednszone/v1/stack_outputs.proto\x128project.planton.provider.cloudflare.cloudflarednszone.v1\"x\n" +
-	"\x1dCloudflareDnsZoneStackOutputs\x12\x1b\n" +
-	"\tzone_name\x18\x01 \x01(\tR\bzoneName\x12\x17\n" +
-	"\azone_id\x18\x02 \x01(\tR\x06zoneId\x12!\n" +
-	"\fname_servers\x18\x03 \x03(\tR\vnameServersB\xd6\x03\n" +
+	"Lproject/planton/provider/cloudflare/cloudflarednszone/v1/stack_outputs.proto\x128project.planton.provider.cloudflare.cloudflarednszone.v1\"Z\n" +
+	"\x1dCloudflareDnsZoneStackOutputs\x12\x17\n" +
+	"\azone_id\x18\x01 \x01(\tR\x06zoneId\x12 \n" +
+	"\vnameservers\x18\x02 \x03(\tR\vnameserversB\xd6\x03\n" +
 	"<com.project.planton.provider.cloudflare.cloudflarednszone.v1B\x11StackOutputsProtoP\x01Z|github.com/project-planton/project-planton/apis/project/planton/provider/cloudflare/cloudflarednszone/v1;cloudflarednszonev1\xa2\x02\x05PPPCC\xaa\x028Project.Planton.Provider.Cloudflare.Cloudflarednszone.V1\xca\x028Project\\Planton\\Provider\\Cloudflare\\Cloudflarednszone\\V1\xe2\x02DProject\\Planton\\Provider\\Cloudflare\\Cloudflarednszone\\V1\\GPBMetadata\xea\x02=Project::Planton::Provider::Cloudflare::Cloudflarednszone::V1b\x06proto3"
 
 var (

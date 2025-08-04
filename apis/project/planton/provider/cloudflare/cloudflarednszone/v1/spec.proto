@@ -1,55 +1,49 @@
 syntax = "proto3";
-
 package project.planton.provider.cloudflare.cloudflarednszone.v1;
 
 import "buf/validate/validate.proto";
-import "project/planton/shared/foreignkey/v1/foreign_key.proto";
-import "project/planton/shared/networking/enums/dnsrecordtype/dns_record_type.proto";
 import "project/planton/shared/options/options.proto";
 
-// CloudflareDnsZoneSpec defines the specification required to create a DNS zone (domain) on Cloudflare.
-// This allows you to manage DNS records for a given domain via Cloudflare's DNS service, focusing on the essential parameters (80/20 principle).
+// **CloudflareDnsZoneSpec** defines the configuration for creating a Cloudflare DNS Zone.
+// This message includes parameters needed to create and manage a DNS zone on Cloudflare,
+// such as the zone's domain name, account context, and plan level.
 message CloudflareDnsZoneSpec {
-  // The domain name for the DNS zone.
-  // Must be a valid fully-qualified domain name (e.g., "example.com").
-  string domain_name = 1 [
+  // The fully qualified domain name of the DNS zone (e.g., "example.com").
+  string zone_name = 1 [
     (buf.validate.field).required = true,
-    (buf.validate.field).string.pattern = "^(?:[A-Za-z0-9-]+\\.)+[A-Za-z]{2,}$"
+    (buf.validate.field).cel = {
+      id: "zone_name",
+      message: "zone_name must be a valid fully qualified domain name",
+      expression: "this.matches('^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?[.])+(?:[a-z](?:[a-z0-9-]{0,61}[a-z0-9])?)$')"
+    }
   ];
 
-  // A list of DNS records to create within the zone (optional).
-  // Each record includes its type, name, value(s), and TTL.
-  repeated CloudflareDnsZoneRecord records = 2;
-}
-
-// CloudflareDnsZoneRecord represents a DNS record entry to be created in the zone.
-message CloudflareDnsZoneRecord {
-  // The host/name for the DNS record, relative to the zone.
-  // For root (apex) records, use "@" to denote the zone itself.
-  string name = 1 [
+  // The Cloudflare account identifier under which to create the zone.
+  string account_id = 2 [
     (buf.validate.field).required = true
   ];
 
-  // The value or values for the DNS record.
-  // - For A/AAAA: one or more IP addresses.
-  // - For CNAME: the target domain name.
-  // - For TXT: the text data (if multiple strings, they will be concatenated by DNS).
-  // - For MX: one or more entries like "<priority> <mail-server-domain>".
-  // Each value can be a literal or a reference to another resource’s output.
-  repeated project.planton.shared.foreignkey.v1.StringValueOrRef values = 2 [
-    (buf.validate.field).required = true,
-    (buf.validate.field).repeated.min_items = 1
-  ];
+  // The subscription plan for the zone (e.g., free, pro, business, enterprise).
+  // Defaults to the Free plan if unspecified.
+  Plan plan = 3;
 
-  // The time-to-live (TTL) for this DNS record, in seconds.
-  // Determines how long resolvers cache the record. Defaults to 3600 seconds (1 hour) if not set.
-  uint32 ttl_seconds = 3 [
-    (project.planton.shared.options.recommended_default) = "3600"
-  ];
+  // Indicates if the zone is created in a paused state (DNS-only mode with no security or performance features).
+  // If true, the zone will not receive Cloudflare's proxy/CDN services. Defaults to false.
+  bool paused = 4;
 
-  // The DNS record type.
-  // This field is required and must be one of the supported record types (A, AAAA, CNAME, MX, TXT, etc.).
-  project.planton.shared.networking.enums.dnsrecordtype.DnsRecordType type = 4 [
-    (buf.validate.field).required = true
-  ];
+  // If true, new DNS records in this zone will default to being proxied (orange-cloud) through Cloudflare.
+  // Defaults to false.
+  bool default_proxied = 5;
+
+  // Available Cloudflare zone plan options.
+  enum Plan {
+    // Free plan (default).
+    FREE = 0;
+    // Pro plan.
+    PRO = 1;
+    // Business plan.
+    BUSINESS = 2;
+    // Enterprise plan.
+    ENTERPRISE = 3;
+  }
 }

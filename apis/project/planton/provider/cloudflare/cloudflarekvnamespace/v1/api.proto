@@ -26,7 +26,7 @@ message CloudflareKVNamespace {
   ];
 
   //spec
-  CloudflareKVNamespaceSpec spec = 4 [
+  CloudflareKvNamespaceSpec spec = 4 [
     (buf.validate.field).required = true
   ];
 
@@ -47,5 +47,5 @@ message CloudflareKVNamespaceStatus {
 
   //stack-outputs
   //  cloudflare-kv-namespace stack-outputs
-  CloudflareKVNamespaceStackOutputs outputs = 1;
+  CloudflareKvNamespaceStackOutputs outputs = 1;
 }
