@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package project.planton.provider.cloudflare.cloudflareworker.v1;
+
+import "project/planton/credential/cloudflarecredential/v1/spec.proto";
+import "project/planton/provider/cloudflare/cloudflareworker/v1/api.proto";
+import "project/planton/shared/iac.proto";
+import "project/planton/shared/iac/pulumi/pulumi.proto";
+import "project/planton/shared/iac/terraform/terraform.proto";
+
+//cloudflare-worker stack-input
+message CloudflareWorkerStackInput {
+  //iac-provisioner
+  project.planton.shared.IacProvisioner provisioner = 1;
+  //pulumi input required when the provisioner is pulumi
+  project.planton.shared.iac.pulumi.PulumiStackInfo pulumi = 2;
+  //terraform input required when the provisioner is terraform
+  project.planton.shared.iac.terraform.TerraformStackInfo terraform = 3;
+  //target cloud-resource
+  CloudflareWorker target = 4;
+  //provider-credential
+  project.planton.credential.cloudflarecredential.v1.CloudflareCredentialSpec provider_credential = 5;
+}

@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package project.planton.provider.cloudflare.cloudflared1database.v1;
+
+// CloudflareD1DatabaseStackOutputs captures the output information after provisioning a DNS zone on Cloudflare.
+message CloudflareD1DatabaseStackOutputs {
+  // The domain name of the DNS zone managed on Cloudflare.
+  string zone_name = 1;
+
+  // The unique identifier of the DNS zone on Cloudflare (UUID).
+  string zone_id = 2;
+
+  // The list of nameserver addresses for the DNS zone.
+  // These are the nameservers that should be set at the domain's registrar (e.g., ns0.cloudflare.com, ns1.cloudflare.com).
+  repeated string name_servers = 3;
+}

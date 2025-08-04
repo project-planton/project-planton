@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+package project.planton.provider.cloudflare.cloudflarednszone.v1;
+
+import "buf/validate/validate.proto";
+import "project/planton/provider/cloudflare/cloudflarednszone/v1/spec.proto";
+import "project/planton/provider/cloudflare/cloudflarednszone/v1/stack_outputs.proto";
+import "project/planton/shared/status.proto";
+import "project/planton/shared/metadata.proto";
+
+// cloudflare-dns-zone
+message CloudflareDnsZone {
+  //api-version
+  string api_version = 1[
+    (buf.validate.field).string.const = 'cloudflare.project-planton.org/v1'
+  ];
+
+  //resource-kind
+  string kind = 2 [
+    (buf.validate.field).string.const = 'CloudflareDnsZone'
+  ];
+
+  //metadata
+  project.planton.shared.ApiResourceMetadata metadata = 3 [
+    (buf.validate.field).required = true
+  ];
+
+  //spec
+  CloudflareDnsZoneSpec spec = 4 [
+    (buf.validate.field).required = true
+  ];
+
+  //status
+  CloudflareDnsZoneStatus status = 5;
+}
+
+// cloudflare-dns-zone status
+message CloudflareDnsZoneStatus {
+  //lifecycle
+  project.planton.shared.ApiResourceLifecycle lifecycle = 99;
+
+  //audit-info
+  project.planton.shared.ApiResourceAudit audit = 98;
+
+  //stack-job id
+  string stack_job_id = 97;
+
+  //stack-outputs
+  //  cloudflare-dns-zone stack-outputs
+  CloudflareDnsZoneStackOutputs outputs = 1;
+}

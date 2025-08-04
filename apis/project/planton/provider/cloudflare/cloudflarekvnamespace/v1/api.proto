@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+package project.planton.provider.cloudflare.cloudflarekvnamespace.v1;
+
+import "buf/validate/validate.proto";
+import "project/planton/provider/cloudflare/cloudflarekvnamespace/v1/spec.proto";
+import "project/planton/provider/cloudflare/cloudflarekvnamespace/v1/stack_outputs.proto";
+import "project/planton/shared/status.proto";
+import "project/planton/shared/metadata.proto";
+
+// cloudflare-kv-namespace
+message CloudflareKVNamespace {
+  //api-version
+  string api_version = 1[
+    (buf.validate.field).string.const = 'cloudflare.project-planton.org/v1'
+  ];
+
+  //resource-kind
+  string kind = 2 [
+    (buf.validate.field).string.const = 'CloudflareKVNamespace'
+  ];
+
+  //metadata
+  project.planton.shared.ApiResourceMetadata metadata = 3 [
+    (buf.validate.field).required = true
+  ];
+
+  //spec
+  CloudflareKVNamespaceSpec spec = 4 [
+    (buf.validate.field).required = true
+  ];
+
+  //status
+  CloudflareKVNamespaceStatus status = 5;
+}
+
+// cloudflare-kv-namespace status
+message CloudflareKVNamespaceStatus {
+  //lifecycle
+  project.planton.shared.ApiResourceLifecycle lifecycle = 99;
+
+  //audit-info
+  project.planton.shared.ApiResourceAudit audit = 98;
+
+  //stack-job id
+  string stack_job_id = 97;
+
+  //stack-outputs
+  //  cloudflare-kv-namespace stack-outputs
+  CloudflareKVNamespaceStackOutputs outputs = 1;
+}
