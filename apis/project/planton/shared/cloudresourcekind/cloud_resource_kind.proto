@@ -141,4 +141,13 @@ enum CloudResourceKind {
   CivoLoadBalancer = 1509 [(provider) = civo];
   CivoVolume = 1510 [(provider) = civo];
   CivoVpc = 1511 [(provider) = civo];
+
+  // 1800–2099: Cloudflare resources
+  CloudflareDnsZone = 1800 [(provider) = cloudflare];
+  CloudflareKVNamespace = 1801 [(provider) = cloudflare];
+  CloudflareR2Bucket = 1802 [(provider) = cloudflare];
+  CloudflareWorker = 1803 [(provider) = cloudflare];
+  CloudflareLoadBalancer = 1804 [(provider) = cloudflare];
+  CloudflareD1Database = 1805 [(provider) = cloudflare];
+  CloudflareZeroTrustAccessApplication = 1806 [(provider) = cloudflare];
 }

@@ -43,6 +43,13 @@ import (
 	civoloadbalancerv1 "github.com/project-planton/project-planton/apis/project/planton/provider/civo/civoloadbalancer/v1"
 	civovolumev1 "github.com/project-planton/project-planton/apis/project/planton/provider/civo/civovolume/v1"
 	civovpcv1 "github.com/project-planton/project-planton/apis/project/planton/provider/civo/civovpc/v1"
+	cloudflared1databasev1 "github.com/project-planton/project-planton/apis/project/planton/provider/cloudflare/cloudflared1database/v1"
+	cloudflarednszonev1 "github.com/project-planton/project-planton/apis/project/planton/provider/cloudflare/cloudflarednszone/v1"
+	cloudflarekvnamespacev1 "github.com/project-planton/project-planton/apis/project/planton/provider/cloudflare/cloudflarekvnamespace/v1"
+	cloudflareloadbalancerv1 "github.com/project-planton/project-planton/apis/project/planton/provider/cloudflare/cloudflareloadbalancer/v1"
+	cloudflarer2bucketv1 "github.com/project-planton/project-planton/apis/project/planton/provider/cloudflare/cloudflarer2bucket/v1"
+	cloudflareworkerv1 "github.com/project-planton/project-planton/apis/project/planton/provider/cloudflare/cloudflareworker/v1"
+	cloudflarezerotrustaccessapplicationv1 "github.com/project-planton/project-planton/apis/project/planton/provider/cloudflare/cloudflarezerotrustaccessapplication/v1"
 	confluentkafkav1 "github.com/project-planton/project-planton/apis/project/planton/provider/confluent/confluentkafka/v1"
 	digitaloceanappplatformservicev1 "github.com/project-planton/project-planton/apis/project/planton/provider/digitalocean/digitaloceanappplatformservice/v1"
 	digitaloceanbucketv1 "github.com/project-planton/project-planton/apis/project/planton/provider/digitalocean/digitaloceanbucket/v1"
@@ -177,6 +184,16 @@ var ProviderCivoMap = map[cloudresourcekind.CloudResourceKind]proto.Message{
 	cloudresourcekind.CloudResourceKind_CivoVpc:                &civovpcv1.CivoVpc{},
 }
 
+var ProviderCloudflareMap = map[cloudresourcekind.CloudResourceKind]proto.Message{
+	cloudresourcekind.CloudResourceKind_CloudflareD1Database:                 &cloudflared1databasev1.CloudflareD1Database{},
+	cloudresourcekind.CloudResourceKind_CloudflareDnsZone:                    &cloudflarednszonev1.CloudflareDnsZone{},
+	cloudresourcekind.CloudResourceKind_CloudflareKVNamespace:                &cloudflarekvnamespacev1.CloudflareKVNamespace{},
+	cloudresourcekind.CloudResourceKind_CloudflareLoadBalancer:               &cloudflareloadbalancerv1.CloudflareLoadBalancer{},
+	cloudresourcekind.CloudResourceKind_CloudflareR2Bucket:                   &cloudflarer2bucketv1.CloudflareR2Bucket{},
+	cloudresourcekind.CloudResourceKind_CloudflareWorker:                     &cloudflareworkerv1.CloudflareWorker{},
+	cloudresourcekind.CloudResourceKind_CloudflareZeroTrustAccessApplication: &cloudflarezerotrustaccessapplicationv1.CloudflareZeroTrustAccessApplication{},
+}
+
 var ProviderConfluentMap = map[cloudresourcekind.CloudResourceKind]proto.Message{
 	cloudresourcekind.CloudResourceKind_ConfluentKafka: &confluentkafkav1.ConfluentKafka{},
 }
@@ -269,6 +286,7 @@ var ToMessageMap = merge(
 	ProviderAwsMap,
 	ProviderAzureMap,
 	ProviderCivoMap,
+	ProviderCloudflareMap,
 	ProviderConfluentMap,
 	ProviderDigitalOceanMap,
 	ProviderGcpMap,

@@ -146,6 +146,14 @@ const (
 	CloudResourceKind_CivoLoadBalancer       CloudResourceKind = 1509
 	CloudResourceKind_CivoVolume             CloudResourceKind = 1510
 	CloudResourceKind_CivoVpc                CloudResourceKind = 1511
+	// 1800–2099: Cloudflare resources
+	CloudResourceKind_CloudflareDnsZone                    CloudResourceKind = 1800
+	CloudResourceKind_CloudflareKVNamespace                CloudResourceKind = 1801
+	CloudResourceKind_CloudflareR2Bucket                   CloudResourceKind = 1802
+	CloudResourceKind_CloudflareWorker                     CloudResourceKind = 1803
+	CloudResourceKind_CloudflareLoadBalancer               CloudResourceKind = 1804
+	CloudResourceKind_CloudflareD1Database                 CloudResourceKind = 1805
+	CloudResourceKind_CloudflareZeroTrustAccessApplication CloudResourceKind = 1806
 )
 
 // Enum value maps for CloudResourceKind.
@@ -263,120 +271,134 @@ var (
 		1509: "CivoLoadBalancer",
 		1510: "CivoVolume",
 		1511: "CivoVpc",
+		1800: "CloudflareDnsZone",
+		1801: "CloudflareKVNamespace",
+		1802: "CloudflareR2Bucket",
+		1803: "CloudflareWorker",
+		1804: "CloudflareLoadBalancer",
+		1805: "CloudflareD1Database",
+		1806: "CloudflareZeroTrustAccessApplication",
 	}
 	CloudResourceKind_value = map[string]int32{
-		"unspecified":                    0,
-		"FirstTestCloudApiResource":      1,
-		"SecondTestCloudApiResource":     2,
-		"ThirdTestCloudApiResource":      3,
-		"ConfluentKafka":                 50,
-		"MongodbAtlas":                   51,
-		"SnowflakeDatabase":              52,
-		"AwsAlb":                         200,
-		"AwsCertManagerCert":             201,
-		"AwsCloudFront":                  202,
-		"AwsDynamodb":                    203,
-		"AwsEcrRepo":                     204,
-		"AwsEcsCluster":                  205,
-		"AwsEcsService":                  206,
-		"AwsEksCluster":                  207,
-		"AwsIamRole":                     208,
-		"AwsLambda":                      209,
-		"AwsRdsCluster":                  210,
-		"AwsRdsInstance":                 211,
-		"AwsRoute53Zone":                 212,
-		"AwsS3Bucket":                    213,
-		"AwsSecretsManager":              214,
-		"AwsSecurityGroup":               215,
-		"AwsStaticWebsite":               216,
-		"AwsVpc":                         217,
-		"AwsEksNodeGroup":                218,
-		"AwsIamUser":                     219,
-		"AwsKmsKey":                      220,
-		"AzureAksCluster":                400,
-		"AzureAksNodePool":               401,
-		"AzureContainerRegistry":         402,
-		"AzureDnsZone":                   403,
-		"AzureKeyVault":                  404,
-		"AzureVpc":                       405,
-		"AzureNatGateway":                406,
-		"GcpArtifactRegistryRepo":        600,
-		"GcpCloudCdn":                    601,
-		"GcpCloudFunction":               602,
-		"GcpCloudRun":                    603,
-		"GcpCloudSql":                    604,
-		"GcpDnsZone":                     605,
-		"GcpGcsBucket":                   606,
-		"GcpGkeAddonBundle":              607,
-		"GcpGkeCluster":                  608,
-		"GcpSecretsManager":              609,
-		"GcpStaticWebsite":               610,
-		"GcpProject":                     611,
-		"GcpVpc":                         612,
-		"GcpSubnetwork":                  613,
-		"GcpRouterNat":                   614,
-		"GcpGkeClusterCore":              615,
-		"GcpGkeNodePool":                 616,
-		"GcpServiceAccount":              617,
-		"GcpGkeWorkloadIdentityBinding":  618,
-		"ArgocdKubernetes":               800,
-		"CronJobKubernetes":              801,
-		"ElasticsearchKubernetes":        802,
-		"GitlabKubernetes":               803,
-		"GrafanaKubernetes":              804,
-		"HelmRelease":                    805,
-		"JenkinsKubernetes":              806,
-		"KafkaKubernetes":                807,
-		"KeycloakKubernetes":             808,
-		"KubernetesHttpEndpoint":         809,
-		"LocustKubernetes":               810,
-		"MicroserviceKubernetes":         811,
-		"MongodbKubernetes":              812,
-		"Neo4jKubernetes":                813,
-		"OpenFgaKubernetes":              814,
-		"PostgresKubernetes":             815,
-		"PrometheusKubernetes":           816,
-		"RedisKubernetes":                817,
-		"SignozKubernetes":               818,
-		"SolrKubernetes":                 819,
-		"StackJobRunnerKubernetes":       820,
-		"TemporalKubernetes":             821,
-		"NatsKubernetes":                 822,
-		"CertManagerKubernetes":          823,
-		"ElasticOperatorKubernetes":      824,
-		"ExternalDnsKubernetes":          825,
-		"IngressNginxKubernetes":         826,
-		"IstioKubernetes":                827,
-		"KafkaOperatorKubernetes":        828,
-		"PostgresOperatorKubernetes":     829,
-		"SolrOperatorKubernetes":         830,
-		"ExternalSecretsKubernetes":      831,
-		"DigitalOceanAppPlatformService": 1200,
-		"DigitalOceanBucket":             1201,
-		"DigitalOceanContainerRegistry":  1202,
-		"DigitalOceanDatabaseCluster":    1203,
-		"DigitalOceanDnsZone":            1204,
-		"DigitalOceanDroplet":            1205,
-		"DigitalOceanFirewall":           1206,
-		"DigitalOceanFunction":           1207,
-		"DigitalOceanKubernetesCluster":  1208,
-		"DigitalOceanKubernetesNodePool": 1209,
-		"DigitalOceanLoadBalancer":       1210,
-		"DigitalOceanVolume":             1211,
-		"DigitalOceanVpc":                1212,
-		"DigitalOceanCertificate":        1213,
-		"CivoBucket":                     1500,
-		"CivoCertificate":                1501,
-		"CivoComputeInstance":            1502,
-		"CivoDatabase":                   1503,
-		"CivoDnsZone":                    1504,
-		"CivoFirewall":                   1505,
-		"CivoIpAddress":                  1506,
-		"CivoKubernetesCluster":          1507,
-		"CivoKubernetesNodePool":         1508,
-		"CivoLoadBalancer":               1509,
-		"CivoVolume":                     1510,
-		"CivoVpc":                        1511,
+		"unspecified":                          0,
+		"FirstTestCloudApiResource":            1,
+		"SecondTestCloudApiResource":           2,
+		"ThirdTestCloudApiResource":            3,
+		"ConfluentKafka":                       50,
+		"MongodbAtlas":                         51,
+		"SnowflakeDatabase":                    52,
+		"AwsAlb":                               200,
+		"AwsCertManagerCert":                   201,
+		"AwsCloudFront":                        202,
+		"AwsDynamodb":                          203,
+		"AwsEcrRepo":                           204,
+		"AwsEcsCluster":                        205,
+		"AwsEcsService":                        206,
+		"AwsEksCluster":                        207,
+		"AwsIamRole":                           208,
+		"AwsLambda":                            209,
+		"AwsRdsCluster":                        210,
+		"AwsRdsInstance":                       211,
+		"AwsRoute53Zone":                       212,
+		"AwsS3Bucket":                          213,
+		"AwsSecretsManager":                    214,
+		"AwsSecurityGroup":                     215,
+		"AwsStaticWebsite":                     216,
+		"AwsVpc":                               217,
+		"AwsEksNodeGroup":                      218,
+		"AwsIamUser":                           219,
+		"AwsKmsKey":                            220,
+		"AzureAksCluster":                      400,
+		"AzureAksNodePool":                     401,
+		"AzureContainerRegistry":               402,
+		"AzureDnsZone":                         403,
+		"AzureKeyVault":                        404,
+		"AzureVpc":                             405,
+		"AzureNatGateway":                      406,
+		"GcpArtifactRegistryRepo":              600,
+		"GcpCloudCdn":                          601,
+		"GcpCloudFunction":                     602,
+		"GcpCloudRun":                          603,
+		"GcpCloudSql":                          604,
+		"GcpDnsZone":                           605,
+		"GcpGcsBucket":                         606,
+		"GcpGkeAddonBundle":                    607,
+		"GcpGkeCluster":                        608,
+		"GcpSecretsManager":                    609,
+		"GcpStaticWebsite":                     610,
+		"GcpProject":                           611,
+		"GcpVpc":                               612,
+		"GcpSubnetwork":                        613,
+		"GcpRouterNat":                         614,
+		"GcpGkeClusterCore":                    615,
+		"GcpGkeNodePool":                       616,
+		"GcpServiceAccount":                    617,
+		"GcpGkeWorkloadIdentityBinding":        618,
+		"ArgocdKubernetes":                     800,
+		"CronJobKubernetes":                    801,
+		"ElasticsearchKubernetes":              802,
+		"GitlabKubernetes":                     803,
+		"GrafanaKubernetes":                    804,
+		"HelmRelease":                          805,
+		"JenkinsKubernetes":                    806,
+		"KafkaKubernetes":                      807,
+		"KeycloakKubernetes":                   808,
+		"KubernetesHttpEndpoint":               809,
+		"LocustKubernetes":                     810,
+		"MicroserviceKubernetes":               811,
+		"MongodbKubernetes":                    812,
+		"Neo4jKubernetes":                      813,
+		"OpenFgaKubernetes":                    814,
+		"PostgresKubernetes":                   815,
+		"PrometheusKubernetes":                 816,
+		"RedisKubernetes":                      817,
+		"SignozKubernetes":                     818,
+		"SolrKubernetes":                       819,
+		"StackJobRunnerKubernetes":             820,
+		"TemporalKubernetes":                   821,
+		"NatsKubernetes":                       822,
+		"CertManagerKubernetes":                823,
+		"ElasticOperatorKubernetes":            824,
+		"ExternalDnsKubernetes":                825,
+		"IngressNginxKubernetes":               826,
+		"IstioKubernetes":                      827,
+		"KafkaOperatorKubernetes":              828,
+		"PostgresOperatorKubernetes":           829,
+		"SolrOperatorKubernetes":               830,
+		"ExternalSecretsKubernetes":            831,
+		"DigitalOceanAppPlatformService":       1200,
+		"DigitalOceanBucket":                   1201,
+		"DigitalOceanContainerRegistry":        1202,
+		"DigitalOceanDatabaseCluster":          1203,
+		"DigitalOceanDnsZone":                  1204,
+		"DigitalOceanDroplet":                  1205,
+		"DigitalOceanFirewall":                 1206,
+		"DigitalOceanFunction":                 1207,
+		"DigitalOceanKubernetesCluster":        1208,
+		"DigitalOceanKubernetesNodePool":       1209,
+		"DigitalOceanLoadBalancer":             1210,
+		"DigitalOceanVolume":                   1211,
+		"DigitalOceanVpc":                      1212,
+		"DigitalOceanCertificate":              1213,
+		"CivoBucket":                           1500,
+		"CivoCertificate":                      1501,
+		"CivoComputeInstance":                  1502,
+		"CivoDatabase":                         1503,
+		"CivoDnsZone":                          1504,
+		"CivoFirewall":                         1505,
+		"CivoIpAddress":                        1506,
+		"CivoKubernetesCluster":                1507,
+		"CivoKubernetesNodePool":               1508,
+		"CivoLoadBalancer":                     1509,
+		"CivoVolume":                           1510,
+		"CivoVpc":                              1511,
+		"CloudflareDnsZone":                    1800,
+		"CloudflareKVNamespace":                1801,
+		"CloudflareR2Bucket":                   1802,
+		"CloudflareWorker":                     1803,
+		"CloudflareLoadBalancer":               1804,
+		"CloudflareD1Database":                 1805,
+		"CloudflareZeroTrustAccessApplication": 1806,
 	}
 )
 
@@ -438,16 +460,15 @@ var File_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto prot
 
 const file_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto_rawDesc = "" +
 	"\n" +
-	"Bproject/planton/shared/cloudresourcekind/cloud_resource_kind.proto\x12(project.planton.shared.cloudresourcekind\x1a google/protobuf/descriptor.proto\x1aFproject/planton/shared/cloudresourcekind/cloud_resource_provider.proto*\xf6\x1a\n" +
+	"Bproject/planton/shared/cloudresourcekind/cloud_resource_kind.proto\x12(project.planton.shared.cloudresourcekind\x1a google/protobuf/descriptor.proto\x1aFproject/planton/shared/cloudresourcekind/cloud_resource_provider.proto*\xe7\x1c\n" +
 	"\x11CloudResourceKind\x12\x15\n" +
 	"\vunspecified\x10\x00\x1a\x04\xa0\xf7\x04\x01\x12#\n" +
 	"\x19FirstTestCloudApiResource\x10\x01\x1a\x04\xa0\xf7\x04\x01\x12$\n" +
 	"\x1aSecondTestCloudApiResource\x10\x02\x1a\x04\xa0\xf7\x04\x01\x12#\n" +
 	"\x19ThirdTestCloudApiResource\x10\x03\x1a\x04\xa0\xf7\x04\x01\x12\x18\n" +
-	"\x0eConfluentKafka\x102\x1a\x04\xa0\xf7\x04\x06\x12\x16\n" +
+	"\x0eConfluentKafka\x102\x1a\x04\xa0\xf7\x04\a\x12\x16\n" +
 	"\fMongodbAtlas\x103\x1a\x04\xa0\xf7\x04\x02\x12\x1b\n" +
-	"\x11SnowflakeDatabase\x104\x1a\x04\xa0\xf7\x04\n" +
-	"\x12\x11\n" +
+	"\x11SnowflakeDatabase\x104\x1a\x04\xa0\xf7\x04\v\x12\x11\n" +
 	"\x06AwsAlb\x10\xc8\x01\x1a\x04\xa0\xf7\x04\x03\x12\x1d\n" +
 	"\x12AwsCertManagerCert\x10\xc9\x01\x1a\x04\xa0\xf7\x04\x03\x12\x18\n" +
 	"\rAwsCloudFront\x10\xca\x01\x1a\x04\xa0\xf7\x04\x03\x12\x16\n" +
@@ -479,73 +500,105 @@ const file_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto_ra
 	"\rAzureKeyVault\x10\x94\x03\x1a\x04\xa0\xf7\x04\x04\x12\x13\n" +
 	"\bAzureVpc\x10\x95\x03\x1a\x04\xa0\xf7\x04\x04\x12\x1a\n" +
 	"\x0fAzureNatGateway\x10\x96\x03\x1a\x04\xa0\xf7\x04\x04\x12\"\n" +
-	"\x17GcpArtifactRegistryRepo\x10\xd8\x04\x1a\x04\xa0\xf7\x04\b\x12\x16\n" +
-	"\vGcpCloudCdn\x10\xd9\x04\x1a\x04\xa0\xf7\x04\b\x12\x1b\n" +
-	"\x10GcpCloudFunction\x10\xda\x04\x1a\x04\xa0\xf7\x04\b\x12\x16\n" +
-	"\vGcpCloudRun\x10\xdb\x04\x1a\x04\xa0\xf7\x04\b\x12\x16\n" +
-	"\vGcpCloudSql\x10\xdc\x04\x1a\x04\xa0\xf7\x04\b\x12\x15\n" +
+	"\x17GcpArtifactRegistryRepo\x10\xd8\x04\x1a\x04\xa0\xf7\x04\t\x12\x16\n" +
+	"\vGcpCloudCdn\x10\xd9\x04\x1a\x04\xa0\xf7\x04\t\x12\x1b\n" +
+	"\x10GcpCloudFunction\x10\xda\x04\x1a\x04\xa0\xf7\x04\t\x12\x16\n" +
+	"\vGcpCloudRun\x10\xdb\x04\x1a\x04\xa0\xf7\x04\t\x12\x16\n" +
+	"\vGcpCloudSql\x10\xdc\x04\x1a\x04\xa0\xf7\x04\t\x12\x15\n" +
 	"\n" +
-	"GcpDnsZone\x10\xdd\x04\x1a\x04\xa0\xf7\x04\b\x12\x17\n" +
-	"\fGcpGcsBucket\x10\xde\x04\x1a\x04\xa0\xf7\x04\b\x12\x1c\n" +
-	"\x11GcpGkeAddonBundle\x10\xdf\x04\x1a\x04\xa0\xf7\x04\b\x12\x18\n" +
-	"\rGcpGkeCluster\x10\xe0\x04\x1a\x04\xa0\xf7\x04\b\x12\x1c\n" +
-	"\x11GcpSecretsManager\x10\xe1\x04\x1a\x04\xa0\xf7\x04\b\x12\x1b\n" +
-	"\x10GcpStaticWebsite\x10\xe2\x04\x1a\x04\xa0\xf7\x04\b\x12\x15\n" +
+	"GcpDnsZone\x10\xdd\x04\x1a\x04\xa0\xf7\x04\t\x12\x17\n" +
+	"\fGcpGcsBucket\x10\xde\x04\x1a\x04\xa0\xf7\x04\t\x12\x1c\n" +
+	"\x11GcpGkeAddonBundle\x10\xdf\x04\x1a\x04\xa0\xf7\x04\t\x12\x18\n" +
+	"\rGcpGkeCluster\x10\xe0\x04\x1a\x04\xa0\xf7\x04\t\x12\x1c\n" +
+	"\x11GcpSecretsManager\x10\xe1\x04\x1a\x04\xa0\xf7\x04\t\x12\x1b\n" +
+	"\x10GcpStaticWebsite\x10\xe2\x04\x1a\x04\xa0\xf7\x04\t\x12\x15\n" +
 	"\n" +
-	"GcpProject\x10\xe3\x04\x1a\x04\xa0\xf7\x04\b\x12\x11\n" +
-	"\x06GcpVpc\x10\xe4\x04\x1a\x04\xa0\xf7\x04\b\x12\x18\n" +
-	"\rGcpSubnetwork\x10\xe5\x04\x1a\x04\xa0\xf7\x04\b\x12\x17\n" +
-	"\fGcpRouterNat\x10\xe6\x04\x1a\x04\xa0\xf7\x04\b\x12\x1c\n" +
-	"\x11GcpGkeClusterCore\x10\xe7\x04\x1a\x04\xa0\xf7\x04\b\x12\x19\n" +
-	"\x0eGcpGkeNodePool\x10\xe8\x04\x1a\x04\xa0\xf7\x04\b\x12\x1c\n" +
-	"\x11GcpServiceAccount\x10\xe9\x04\x1a\x04\xa0\xf7\x04\b\x12(\n" +
-	"\x1dGcpGkeWorkloadIdentityBinding\x10\xea\x04\x1a\x04\xa0\xf7\x04\b\x12\x1f\n" +
-	"\x10ArgocdKubernetes\x10\xa0\x06\x1a\b\xa0\xf7\x04\t\xa8\xf7\x04\x02\x12 \n" +
-	"\x11CronJobKubernetes\x10\xa1\x06\x1a\b\xa0\xf7\x04\t\xa8\xf7\x04\x02\x12&\n" +
-	"\x17ElasticsearchKubernetes\x10\xa2\x06\x1a\b\xa0\xf7\x04\t\xa8\xf7\x04\x02\x12\x1f\n" +
-	"\x10GitlabKubernetes\x10\xa3\x06\x1a\b\xa0\xf7\x04\t\xa8\xf7\x04\x02\x12 \n" +
-	"\x11GrafanaKubernetes\x10\xa4\x06\x1a\b\xa0\xf7\x04\t\xa8\xf7\x04\x02\x12\x1a\n" +
-	"\vHelmRelease\x10\xa5\x06\x1a\b\xa0\xf7\x04\t\xa8\xf7\x04\x02\x12 \n" +
-	"\x11JenkinsKubernetes\x10\xa6\x06\x1a\b\xa0\xf7\x04\t\xa8\xf7\x04\x02\x12\x1e\n" +
-	"\x0fKafkaKubernetes\x10\xa7\x06\x1a\b\xa0\xf7\x04\t\xa8\xf7\x04\x02\x12!\n" +
-	"\x12KeycloakKubernetes\x10\xa8\x06\x1a\b\xa0\xf7\x04\t\xa8\xf7\x04\x02\x12%\n" +
-	"\x16KubernetesHttpEndpoint\x10\xa9\x06\x1a\b\xa0\xf7\x04\t\xa8\xf7\x04\x02\x12\x1f\n" +
-	"\x10LocustKubernetes\x10\xaa\x06\x1a\b\xa0\xf7\x04\t\xa8\xf7\x04\x02\x12%\n" +
-	"\x16MicroserviceKubernetes\x10\xab\x06\x1a\b\xa0\xf7\x04\t\xa8\xf7\x04\x02\x12 \n" +
-	"\x11MongodbKubernetes\x10\xac\x06\x1a\b\xa0\xf7\x04\t\xa8\xf7\x04\x02\x12\x1e\n" +
-	"\x0fNeo4jKubernetes\x10\xad\x06\x1a\b\xa0\xf7\x04\t\xa8\xf7\x04\x02\x12 \n" +
-	"\x11OpenFgaKubernetes\x10\xae\x06\x1a\b\xa0\xf7\x04\t\xa8\xf7\x04\x02\x12!\n" +
-	"\x12PostgresKubernetes\x10\xaf\x06\x1a\b\xa0\xf7\x04\t\xa8\xf7\x04\x02\x12#\n" +
-	"\x14PrometheusKubernetes\x10\xb0\x06\x1a\b\xa0\xf7\x04\t\xa8\xf7\x04\x02\x12\x1e\n" +
-	"\x0fRedisKubernetes\x10\xb1\x06\x1a\b\xa0\xf7\x04\t\xa8\xf7\x04\x02\x12\x1f\n" +
-	"\x10SignozKubernetes\x10\xb2\x06\x1a\b\xa0\xf7\x04\t\xa8\xf7\x04\x02\x12\x1d\n" +
-	"\x0eSolrKubernetes\x10\xb3\x06\x1a\b\xa0\xf7\x04\t\xa8\xf7\x04\x02\x12'\n" +
-	"\x18StackJobRunnerKubernetes\x10\xb4\x06\x1a\b\xa0\xf7\x04\t\xa8\xf7\x04\x02\x12!\n" +
-	"\x12TemporalKubernetes\x10\xb5\x06\x1a\b\xa0\xf7\x04\t\xa8\xf7\x04\x02\x12\x1d\n" +
-	"\x0eNatsKubernetes\x10\xb6\x06\x1a\b\xa0\xf7\x04\t\xa8\xf7\x04\x02\x12$\n" +
-	"\x15CertManagerKubernetes\x10\xb7\x06\x1a\b\xa0\xf7\x04\t\xa8\xf7\x04\x01\x12(\n" +
-	"\x19ElasticOperatorKubernetes\x10\xb8\x06\x1a\b\xa0\xf7\x04\t\xa8\xf7\x04\x01\x12$\n" +
-	"\x15ExternalDnsKubernetes\x10\xb9\x06\x1a\b\xa0\xf7\x04\t\xa8\xf7\x04\x01\x12%\n" +
-	"\x16IngressNginxKubernetes\x10\xba\x06\x1a\b\xa0\xf7\x04\t\xa8\xf7\x04\x01\x12\x1e\n" +
-	"\x0fIstioKubernetes\x10\xbb\x06\x1a\b\xa0\xf7\x04\t\xa8\xf7\x04\x01\x12&\n" +
-	"\x17KafkaOperatorKubernetes\x10\xbc\x06\x1a\b\xa0\xf7\x04\t\xa8\xf7\x04\x01\x12)\n" +
-	"\x1aPostgresOperatorKubernetes\x10\xbd\x06\x1a\b\xa0\xf7\x04\t\xa8\xf7\x04\x01\x12%\n" +
-	"\x16SolrOperatorKubernetes\x10\xbe\x06\x1a\b\xa0\xf7\x04\t\xa8\xf7\x04\x01\x12(\n" +
-	"\x19ExternalSecretsKubernetes\x10\xbf\x06\x1a\b\xa0\xf7\x04\t\xa8\xf7\x04\x01\x12)\n" +
-	"\x1eDigitalOceanAppPlatformService\x10\xb0\t\x1a\x04\xa0\xf7\x04\a\x12\x1d\n" +
-	"\x12DigitalOceanBucket\x10\xb1\t\x1a\x04\xa0\xf7\x04\a\x12(\n" +
-	"\x1dDigitalOceanContainerRegistry\x10\xb2\t\x1a\x04\xa0\xf7\x04\a\x12&\n" +
-	"\x1bDigitalOceanDatabaseCluster\x10\xb3\t\x1a\x04\xa0\xf7\x04\a\x12\x1e\n" +
-	"\x13DigitalOceanDnsZone\x10\xb4\t\x1a\x04\xa0\xf7\x04\a\x12\x1e\n" +
-	"\x13DigitalOceanDroplet\x10\xb5\t\x1a\x04\xa0\xf7\x04\a\x12\x1f\n" +
-	"\x14DigitalOceanFirewall\x10\xb6\t\x1a\x04\xa0\xf7\x04\a\x12\x1f\n" +
-	"\x14DigitalOceanFunction\x10\xb7\t\x1a\x04\xa0\xf7\x04\a\x12(\n" +
-	"\x1dDigitalOceanKubernetesCluster\x10\xb8\t\x1a\x04\xa0\xf7\x04\a\x12)\n" +
-	"\x1eDigitalOceanKubernetesNodePool\x10\xb9\t\x1a\x04\xa0\xf7\x04\a\x12#\n" +
-	"\x18DigitalOceanLoadBalancer\x10\xba\t\x1a\x04\xa0\xf7\x04\a\x12\x1d\n" +
-	"\x12DigitalOceanVolume\x10\xbb\t\x1a\x04\xa0\xf7\x04\a\x12\x1a\n" +
-	"\x0fDigitalOceanVpc\x10\xbc\t\x1a\x04\xa0\xf7\x04\a\x12\"\n" +
-	"\x17DigitalOceanCertificate\x10\xbd\t\x1a\x04\xa0\xf7\x04\a\x12\x15\n" +
+	"GcpProject\x10\xe3\x04\x1a\x04\xa0\xf7\x04\t\x12\x11\n" +
+	"\x06GcpVpc\x10\xe4\x04\x1a\x04\xa0\xf7\x04\t\x12\x18\n" +
+	"\rGcpSubnetwork\x10\xe5\x04\x1a\x04\xa0\xf7\x04\t\x12\x17\n" +
+	"\fGcpRouterNat\x10\xe6\x04\x1a\x04\xa0\xf7\x04\t\x12\x1c\n" +
+	"\x11GcpGkeClusterCore\x10\xe7\x04\x1a\x04\xa0\xf7\x04\t\x12\x19\n" +
+	"\x0eGcpGkeNodePool\x10\xe8\x04\x1a\x04\xa0\xf7\x04\t\x12\x1c\n" +
+	"\x11GcpServiceAccount\x10\xe9\x04\x1a\x04\xa0\xf7\x04\t\x12(\n" +
+	"\x1dGcpGkeWorkloadIdentityBinding\x10\xea\x04\x1a\x04\xa0\xf7\x04\t\x12\x1f\n" +
+	"\x10ArgocdKubernetes\x10\xa0\x06\x1a\b\xa0\xf7\x04\n" +
+	"\xa8\xf7\x04\x02\x12 \n" +
+	"\x11CronJobKubernetes\x10\xa1\x06\x1a\b\xa0\xf7\x04\n" +
+	"\xa8\xf7\x04\x02\x12&\n" +
+	"\x17ElasticsearchKubernetes\x10\xa2\x06\x1a\b\xa0\xf7\x04\n" +
+	"\xa8\xf7\x04\x02\x12\x1f\n" +
+	"\x10GitlabKubernetes\x10\xa3\x06\x1a\b\xa0\xf7\x04\n" +
+	"\xa8\xf7\x04\x02\x12 \n" +
+	"\x11GrafanaKubernetes\x10\xa4\x06\x1a\b\xa0\xf7\x04\n" +
+	"\xa8\xf7\x04\x02\x12\x1a\n" +
+	"\vHelmRelease\x10\xa5\x06\x1a\b\xa0\xf7\x04\n" +
+	"\xa8\xf7\x04\x02\x12 \n" +
+	"\x11JenkinsKubernetes\x10\xa6\x06\x1a\b\xa0\xf7\x04\n" +
+	"\xa8\xf7\x04\x02\x12\x1e\n" +
+	"\x0fKafkaKubernetes\x10\xa7\x06\x1a\b\xa0\xf7\x04\n" +
+	"\xa8\xf7\x04\x02\x12!\n" +
+	"\x12KeycloakKubernetes\x10\xa8\x06\x1a\b\xa0\xf7\x04\n" +
+	"\xa8\xf7\x04\x02\x12%\n" +
+	"\x16KubernetesHttpEndpoint\x10\xa9\x06\x1a\b\xa0\xf7\x04\n" +
+	"\xa8\xf7\x04\x02\x12\x1f\n" +
+	"\x10LocustKubernetes\x10\xaa\x06\x1a\b\xa0\xf7\x04\n" +
+	"\xa8\xf7\x04\x02\x12%\n" +
+	"\x16MicroserviceKubernetes\x10\xab\x06\x1a\b\xa0\xf7\x04\n" +
+	"\xa8\xf7\x04\x02\x12 \n" +
+	"\x11MongodbKubernetes\x10\xac\x06\x1a\b\xa0\xf7\x04\n" +
+	"\xa8\xf7\x04\x02\x12\x1e\n" +
+	"\x0fNeo4jKubernetes\x10\xad\x06\x1a\b\xa0\xf7\x04\n" +
+	"\xa8\xf7\x04\x02\x12 \n" +
+	"\x11OpenFgaKubernetes\x10\xae\x06\x1a\b\xa0\xf7\x04\n" +
+	"\xa8\xf7\x04\x02\x12!\n" +
+	"\x12PostgresKubernetes\x10\xaf\x06\x1a\b\xa0\xf7\x04\n" +
+	"\xa8\xf7\x04\x02\x12#\n" +
+	"\x14PrometheusKubernetes\x10\xb0\x06\x1a\b\xa0\xf7\x04\n" +
+	"\xa8\xf7\x04\x02\x12\x1e\n" +
+	"\x0fRedisKubernetes\x10\xb1\x06\x1a\b\xa0\xf7\x04\n" +
+	"\xa8\xf7\x04\x02\x12\x1f\n" +
+	"\x10SignozKubernetes\x10\xb2\x06\x1a\b\xa0\xf7\x04\n" +
+	"\xa8\xf7\x04\x02\x12\x1d\n" +
+	"\x0eSolrKubernetes\x10\xb3\x06\x1a\b\xa0\xf7\x04\n" +
+	"\xa8\xf7\x04\x02\x12'\n" +
+	"\x18StackJobRunnerKubernetes\x10\xb4\x06\x1a\b\xa0\xf7\x04\n" +
+	"\xa8\xf7\x04\x02\x12!\n" +
+	"\x12TemporalKubernetes\x10\xb5\x06\x1a\b\xa0\xf7\x04\n" +
+	"\xa8\xf7\x04\x02\x12\x1d\n" +
+	"\x0eNatsKubernetes\x10\xb6\x06\x1a\b\xa0\xf7\x04\n" +
+	"\xa8\xf7\x04\x02\x12$\n" +
+	"\x15CertManagerKubernetes\x10\xb7\x06\x1a\b\xa0\xf7\x04\n" +
+	"\xa8\xf7\x04\x01\x12(\n" +
+	"\x19ElasticOperatorKubernetes\x10\xb8\x06\x1a\b\xa0\xf7\x04\n" +
+	"\xa8\xf7\x04\x01\x12$\n" +
+	"\x15ExternalDnsKubernetes\x10\xb9\x06\x1a\b\xa0\xf7\x04\n" +
+	"\xa8\xf7\x04\x01\x12%\n" +
+	"\x16IngressNginxKubernetes\x10\xba\x06\x1a\b\xa0\xf7\x04\n" +
+	"\xa8\xf7\x04\x01\x12\x1e\n" +
+	"\x0fIstioKubernetes\x10\xbb\x06\x1a\b\xa0\xf7\x04\n" +
+	"\xa8\xf7\x04\x01\x12&\n" +
+	"\x17KafkaOperatorKubernetes\x10\xbc\x06\x1a\b\xa0\xf7\x04\n" +
+	"\xa8\xf7\x04\x01\x12)\n" +
+	"\x1aPostgresOperatorKubernetes\x10\xbd\x06\x1a\b\xa0\xf7\x04\n" +
+	"\xa8\xf7\x04\x01\x12%\n" +
+	"\x16SolrOperatorKubernetes\x10\xbe\x06\x1a\b\xa0\xf7\x04\n" +
+	"\xa8\xf7\x04\x01\x12(\n" +
+	"\x19ExternalSecretsKubernetes\x10\xbf\x06\x1a\b\xa0\xf7\x04\n" +
+	"\xa8\xf7\x04\x01\x12)\n" +
+	"\x1eDigitalOceanAppPlatformService\x10\xb0\t\x1a\x04\xa0\xf7\x04\b\x12\x1d\n" +
+	"\x12DigitalOceanBucket\x10\xb1\t\x1a\x04\xa0\xf7\x04\b\x12(\n" +
+	"\x1dDigitalOceanContainerRegistry\x10\xb2\t\x1a\x04\xa0\xf7\x04\b\x12&\n" +
+	"\x1bDigitalOceanDatabaseCluster\x10\xb3\t\x1a\x04\xa0\xf7\x04\b\x12\x1e\n" +
+	"\x13DigitalOceanDnsZone\x10\xb4\t\x1a\x04\xa0\xf7\x04\b\x12\x1e\n" +
+	"\x13DigitalOceanDroplet\x10\xb5\t\x1a\x04\xa0\xf7\x04\b\x12\x1f\n" +
+	"\x14DigitalOceanFirewall\x10\xb6\t\x1a\x04\xa0\xf7\x04\b\x12\x1f\n" +
+	"\x14DigitalOceanFunction\x10\xb7\t\x1a\x04\xa0\xf7\x04\b\x12(\n" +
+	"\x1dDigitalOceanKubernetesCluster\x10\xb8\t\x1a\x04\xa0\xf7\x04\b\x12)\n" +
+	"\x1eDigitalOceanKubernetesNodePool\x10\xb9\t\x1a\x04\xa0\xf7\x04\b\x12#\n" +
+	"\x18DigitalOceanLoadBalancer\x10\xba\t\x1a\x04\xa0\xf7\x04\b\x12\x1d\n" +
+	"\x12DigitalOceanVolume\x10\xbb\t\x1a\x04\xa0\xf7\x04\b\x12\x1a\n" +
+	"\x0fDigitalOceanVpc\x10\xbc\t\x1a\x04\xa0\xf7\x04\b\x12\"\n" +
+	"\x17DigitalOceanCertificate\x10\xbd\t\x1a\x04\xa0\xf7\x04\b\x12\x15\n" +
 	"\n" +
 	"CivoBucket\x10\xdc\v\x1a\x04\xa0\xf7\x04\x05\x12\x1a\n" +
 	"\x0fCivoCertificate\x10\xdd\v\x1a\x04\xa0\xf7\x04\x05\x12\x1e\n" +
@@ -559,7 +612,14 @@ const file_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto_ra
 	"\x10CivoLoadBalancer\x10\xe5\v\x1a\x04\xa0\xf7\x04\x05\x12\x15\n" +
 	"\n" +
 	"CivoVolume\x10\xe6\v\x1a\x04\xa0\xf7\x04\x05\x12\x12\n" +
-	"\aCivoVpc\x10\xe7\v\x1a\x04\xa0\xf7\x04\x05:\x8d\x01\n" +
+	"\aCivoVpc\x10\xe7\v\x1a\x04\xa0\xf7\x04\x05\x12\x1c\n" +
+	"\x11CloudflareDnsZone\x10\x88\x0e\x1a\x04\xa0\xf7\x04\x06\x12 \n" +
+	"\x15CloudflareKVNamespace\x10\x89\x0e\x1a\x04\xa0\xf7\x04\x06\x12\x1d\n" +
+	"\x12CloudflareR2Bucket\x10\x8a\x0e\x1a\x04\xa0\xf7\x04\x06\x12\x1b\n" +
+	"\x10CloudflareWorker\x10\x8b\x0e\x1a\x04\xa0\xf7\x04\x06\x12!\n" +
+	"\x16CloudflareLoadBalancer\x10\x8c\x0e\x1a\x04\xa0\xf7\x04\x06\x12\x1f\n" +
+	"\x14CloudflareD1Database\x10\x8d\x0e\x1a\x04\xa0\xf7\x04\x06\x12/\n" +
+	"$CloudflareZeroTrustAccessApplication\x10\x8e\x0e\x1a\x04\xa0\xf7\x04\x06:\x8d\x01\n" +
 	"\bprovider\x12!.google.protobuf.EnumValueOptions\x18\xf4N \x01(\x0e2M.project.planton.shared.cloudresourcekind.ProjectPlantonCloudResourceProviderR\bprovider:\xac\x01\n" +
 	"\x18kubernetes_resource_type\x12!.google.protobuf.EnumValueOptions\x18\xf5N \x01(\x0e2N.project.planton.shared.cloudresourcekind.ProjectPlantonKubernetesResourceTypeR\x16kubernetesResourceTypeB\xe4\x02\n" +
 	",com.project.planton.shared.cloudresourcekindB\x16CloudResourceKindProtoP\x01ZXgithub.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind\xa2\x02\x04PPSC\xaa\x02(Project.Planton.Shared.Cloudresourcekind\xca\x02(Project\\Planton\\Shared\\Cloudresourcekind\xe2\x024Project\\Planton\\Shared\\Cloudresourcekind\\GPBMetadata\xea\x02+Project::Planton::Shared::Cloudresourcekindb\x06proto3"

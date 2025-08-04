@@ -10,11 +10,12 @@ enum ProjectPlantonCloudResourceProvider {
   aws = 3;
   azure = 4;
   civo = 5;
-  confluent = 6;
-  digital_ocean = 7;
-  gcp = 8;
-  kubernetes = 9;
-  snowflake = 10;
+  cloudflare = 6;
+  confluent = 7;
+  digital_ocean = 8;
+  gcp = 9;
+  kubernetes = 10;
+  snowflake = 11;
 }
 
 enum ProjectPlantonKubernetesResourceType {
