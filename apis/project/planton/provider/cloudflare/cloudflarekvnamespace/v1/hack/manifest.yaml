@@ -1,5 +1,5 @@
 apiVersion: cloudflare.project-planton.org/v1
-kind: CloudflareKVNamespace
+kind: CloudflareKvNamespace
 metadata:
   name: first-certificate
 spec:

@@ -8,7 +8,7 @@ import (
 // Resources is the single public entry‑point that Project Planton’s CLI invokes.
 func Resources(
 	ctx *pulumi.Context,
-	stackInput *cloudflarekvnamespacev1.CloudflareKVNamespaceStackInput,
+	stackInput *cloudflarekvnamespacev1.CloudflareKvNamespaceStackInput,
 ) error {
 	return nil
 }

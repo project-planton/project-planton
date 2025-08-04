@@ -35,14 +35,28 @@ func pascalFromSnake(s string) string {
 	return strings.Join(parts, "")
 }
 
-// fixDigitCase: Neo4j → Neo4J (matches message names in generated code)
+// fixDigitCase: Neo4j → Neo4J; CloudflareKVNamespace → CloudflareKvNamespace
+// (matches message names in generated code)
 func fixDigitCase(s string) string {
 	r := []rune(s)
+
+	// 1. upper‑case the letter that follows any digit (existing rule)
 	for i := 0; i < len(r)-1; i++ {
 		if r[i] >= '0' && r[i] <= '9' && r[i+1] >= 'a' && r[i+1] <= 'z' {
 			r[i+1] -= 'a' - 'A'
 		}
 	}
+
+	// 2. inside runs of ≥2 consecutive upper‑case letters,
+	//    lower‑case every rune except the first so that "KVNamespace" → "KvNamespace".
+	for i := 1; i < len(r)-1; i++ {
+		if r[i-1] >= 'A' && r[i-1] <= 'Z' &&
+			r[i] >= 'A' && r[i] <= 'Z' &&
+			r[i+1] >= 'A' && r[i+1] <= 'Z' {
+			r[i] += 'a' - 'A'
+		}
+	}
+
 	return string(r)
 }
 

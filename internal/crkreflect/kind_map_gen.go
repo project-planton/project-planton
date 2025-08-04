@@ -187,7 +187,7 @@ var ProviderCivoMap = map[cloudresourcekind.CloudResourceKind]proto.Message{
 var ProviderCloudflareMap = map[cloudresourcekind.CloudResourceKind]proto.Message{
 	cloudresourcekind.CloudResourceKind_CloudflareD1Database:                 &cloudflared1databasev1.CloudflareD1Database{},
 	cloudresourcekind.CloudResourceKind_CloudflareDnsZone:                    &cloudflarednszonev1.CloudflareDnsZone{},
-	cloudresourcekind.CloudResourceKind_CloudflareKVNamespace:                &cloudflarekvnamespacev1.CloudflareKVNamespace{},
+	cloudresourcekind.CloudResourceKind_CloudflareKvNamespace:                &cloudflarekvnamespacev1.CloudflareKvNamespace{},
 	cloudresourcekind.CloudResourceKind_CloudflareLoadBalancer:               &cloudflareloadbalancerv1.CloudflareLoadBalancer{},
 	cloudresourcekind.CloudResourceKind_CloudflareR2Bucket:                   &cloudflarer2bucketv1.CloudflareR2Bucket{},
 	cloudresourcekind.CloudResourceKind_CloudflareWorker:                     &cloudflareworkerv1.CloudflareWorker{},

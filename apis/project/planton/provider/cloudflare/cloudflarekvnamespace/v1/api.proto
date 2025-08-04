@@ -9,7 +9,7 @@ import "project/planton/shared/status.proto";
 import "project/planton/shared/metadata.proto";
 
 // cloudflare-kv-namespace
-message CloudflareKVNamespace {
+message CloudflareKvNamespace {
   //api-version
   string api_version = 1[
     (buf.validate.field).string.const = 'cloudflare.project-planton.org/v1'
@@ -17,7 +17,7 @@ message CloudflareKVNamespace {
 
   //resource-kind
   string kind = 2 [
-    (buf.validate.field).string.const = 'CloudflareKVNamespace'
+    (buf.validate.field).string.const = 'CloudflareKvNamespace'
   ];
 
   //metadata
@@ -31,11 +31,11 @@ message CloudflareKVNamespace {
   ];
 
   //status
-  CloudflareKVNamespaceStatus status = 5;
+  CloudflareKvNamespaceStatus status = 5;
 }
 
 // cloudflare-kv-namespace status
-message CloudflareKVNamespaceStatus {
+message CloudflareKvNamespaceStatus {
   //lifecycle
   project.planton.shared.ApiResourceLifecycle lifecycle = 99;
 

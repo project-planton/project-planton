@@ -21,7 +21,7 @@ message CloudflareWorkerSpec {
 
   // (Optional) One or more KV namespaces to bind to this Worker (referenced by CloudflareKVNamespace.namespace_id).
   repeated project.planton.shared.foreignkey.v1.ValueFromRef kv_bindings = 3 [
-    (project.planton.shared.foreignkey.v1.default_kind) = CloudflareKVNamespace,
+    (project.planton.shared.foreignkey.v1.default_kind) = CloudflareKvNamespace,
     (project.planton.shared.foreignkey.v1.default_kind_field_path) = "status.outputs.namespace_id"
   ];
 

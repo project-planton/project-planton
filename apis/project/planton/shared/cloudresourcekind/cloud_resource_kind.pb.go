@@ -148,7 +148,7 @@ const (
 	CloudResourceKind_CivoVpc                CloudResourceKind = 1511
 	// 1800–2099: Cloudflare resources
 	CloudResourceKind_CloudflareDnsZone                    CloudResourceKind = 1800
-	CloudResourceKind_CloudflareKVNamespace                CloudResourceKind = 1801
+	CloudResourceKind_CloudflareKvNamespace                CloudResourceKind = 1801
 	CloudResourceKind_CloudflareR2Bucket                   CloudResourceKind = 1802
 	CloudResourceKind_CloudflareWorker                     CloudResourceKind = 1803
 	CloudResourceKind_CloudflareLoadBalancer               CloudResourceKind = 1804
@@ -272,7 +272,7 @@ var (
 		1510: "CivoVolume",
 		1511: "CivoVpc",
 		1800: "CloudflareDnsZone",
-		1801: "CloudflareKVNamespace",
+		1801: "CloudflareKvNamespace",
 		1802: "CloudflareR2Bucket",
 		1803: "CloudflareWorker",
 		1804: "CloudflareLoadBalancer",
@@ -393,7 +393,7 @@ var (
 		"CivoVolume":                           1510,
 		"CivoVpc":                              1511,
 		"CloudflareDnsZone":                    1800,
-		"CloudflareKVNamespace":                1801,
+		"CloudflareKvNamespace":                1801,
 		"CloudflareR2Bucket":                   1802,
 		"CloudflareWorker":                     1803,
 		"CloudflareLoadBalancer":               1804,
@@ -614,7 +614,7 @@ const file_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto_ra
 	"CivoVolume\x10\xe6\v\x1a\x04\xa0\xf7\x04\x05\x12\x12\n" +
 	"\aCivoVpc\x10\xe7\v\x1a\x04\xa0\xf7\x04\x05\x12\x1c\n" +
 	"\x11CloudflareDnsZone\x10\x88\x0e\x1a\x04\xa0\xf7\x04\x06\x12 \n" +
-	"\x15CloudflareKVNamespace\x10\x89\x0e\x1a\x04\xa0\xf7\x04\x06\x12\x1d\n" +
+	"\x15CloudflareKvNamespace\x10\x89\x0e\x1a\x04\xa0\xf7\x04\x06\x12\x1d\n" +
 	"\x12CloudflareR2Bucket\x10\x8a\x0e\x1a\x04\xa0\xf7\x04\x06\x12\x1b\n" +
 	"\x10CloudflareWorker\x10\x8b\x0e\x1a\x04\xa0\xf7\x04\x06\x12!\n" +
 	"\x16CloudflareLoadBalancer\x10\x8c\x0e\x1a\x04\xa0\xf7\x04\x06\x12\x1f\n" +

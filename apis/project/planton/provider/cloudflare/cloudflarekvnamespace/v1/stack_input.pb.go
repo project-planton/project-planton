@@ -26,7 +26,7 @@ const (
 )
 
 // cloudflare-kv-namespace stack-input
-type CloudflareKVNamespaceStackInput struct {
+type CloudflareKvNamespaceStackInput struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// iac-provisioner
 	Provisioner shared.IacProvisioner `protobuf:"varint,1,opt,name=provisioner,proto3,enum=project.planton.shared.IacProvisioner" json:"provisioner,omitempty"`
@@ -35,27 +35,27 @@ type CloudflareKVNamespaceStackInput struct {
 	// terraform input required when the provisioner is terraform
 	Terraform *terraform.TerraformStackInfo `protobuf:"bytes,3,opt,name=terraform,proto3" json:"terraform,omitempty"`
 	// target cloud-resource
-	Target *CloudflareKVNamespace `protobuf:"bytes,4,opt,name=target,proto3" json:"target,omitempty"`
+	Target *CloudflareKvNamespace `protobuf:"bytes,4,opt,name=target,proto3" json:"target,omitempty"`
 	// provider-credential
 	ProviderCredential *v1.CloudflareCredentialSpec `protobuf:"bytes,5,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
 }
 
-func (x *CloudflareKVNamespaceStackInput) Reset() {
-	*x = CloudflareKVNamespaceStackInput{}
+func (x *CloudflareKvNamespaceStackInput) Reset() {
+	*x = CloudflareKvNamespaceStackInput{}
 	mi := &file_project_planton_provider_cloudflare_cloudflarekvnamespace_v1_stack_input_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *CloudflareKVNamespaceStackInput) String() string {
+func (x *CloudflareKvNamespaceStackInput) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*CloudflareKVNamespaceStackInput) ProtoMessage() {}
+func (*CloudflareKvNamespaceStackInput) ProtoMessage() {}
 
-func (x *CloudflareKVNamespaceStackInput) ProtoReflect() protoreflect.Message {
+func (x *CloudflareKvNamespaceStackInput) ProtoReflect() protoreflect.Message {
 	mi := &file_project_planton_provider_cloudflare_cloudflarekvnamespace_v1_stack_input_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -67,40 +67,40 @@ func (x *CloudflareKVNamespaceStackInput) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use CloudflareKVNamespaceStackInput.ProtoReflect.Descriptor instead.
-func (*CloudflareKVNamespaceStackInput) Descriptor() ([]byte, []int) {
+// Deprecated: Use CloudflareKvNamespaceStackInput.ProtoReflect.Descriptor instead.
+func (*CloudflareKvNamespaceStackInput) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_cloudflare_cloudflarekvnamespace_v1_stack_input_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *CloudflareKVNamespaceStackInput) GetProvisioner() shared.IacProvisioner {
+func (x *CloudflareKvNamespaceStackInput) GetProvisioner() shared.IacProvisioner {
 	if x != nil {
 		return x.Provisioner
 	}
 	return shared.IacProvisioner(0)
 }
 
-func (x *CloudflareKVNamespaceStackInput) GetPulumi() *pulumi.PulumiStackInfo {
+func (x *CloudflareKvNamespaceStackInput) GetPulumi() *pulumi.PulumiStackInfo {
 	if x != nil {
 		return x.Pulumi
 	}
 	return nil
 }
 
-func (x *CloudflareKVNamespaceStackInput) GetTerraform() *terraform.TerraformStackInfo {
+func (x *CloudflareKvNamespaceStackInput) GetTerraform() *terraform.TerraformStackInfo {
 	if x != nil {
 		return x.Terraform
 	}
 	return nil
 }
 
-func (x *CloudflareKVNamespaceStackInput) GetTarget() *CloudflareKVNamespace {
+func (x *CloudflareKvNamespaceStackInput) GetTarget() *CloudflareKvNamespace {
 	if x != nil {
 		return x.Target
 	}
 	return nil
 }
 
-func (x *CloudflareKVNamespaceStackInput) GetProviderCredential() *v1.CloudflareCredentialSpec {
+func (x *CloudflareKvNamespaceStackInput) GetProviderCredential() *v1.CloudflareCredentialSpec {
 	if x != nil {
 		return x.ProviderCredential
 	}
@@ -112,11 +112,11 @@ var File_project_planton_provider_cloudflare_cloudflarekvnamespace_v1_stack_inpu
 const file_project_planton_provider_cloudflare_cloudflarekvnamespace_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
 	"Nproject/planton/provider/cloudflare/cloudflarekvnamespace/v1/stack_input.proto\x12<project.planton.provider.cloudflare.cloudflarekvnamespace.v1\x1a=project/planton/credential/cloudflarecredential/v1/spec.proto\x1aFproject/planton/provider/cloudflare/cloudflarekvnamespace/v1/api.proto\x1a project/planton/shared/iac.proto\x1a.project/planton/shared/iac/pulumi/pulumi.proto\x1a4project/planton/shared/iac/terraform/terraform.proto\"\xfb\x03\n" +
-	"\x1fCloudflareKVNamespaceStackInput\x12H\n" +
+	"\x1fCloudflareKvNamespaceStackInput\x12H\n" +
 	"\vprovisioner\x18\x01 \x01(\x0e2&.project.planton.shared.IacProvisionerR\vprovisioner\x12J\n" +
 	"\x06pulumi\x18\x02 \x01(\v22.project.planton.shared.iac.pulumi.PulumiStackInfoR\x06pulumi\x12V\n" +
 	"\tterraform\x18\x03 \x01(\v28.project.planton.shared.iac.terraform.TerraformStackInfoR\tterraform\x12k\n" +
-	"\x06target\x18\x04 \x01(\v2S.project.planton.provider.cloudflare.cloudflarekvnamespace.v1.CloudflareKVNamespaceR\x06target\x12}\n" +
+	"\x06target\x18\x04 \x01(\v2S.project.planton.provider.cloudflare.cloudflarekvnamespace.v1.CloudflareKvNamespaceR\x06target\x12}\n" +
 	"\x13provider_credential\x18\x05 \x01(\v2L.project.planton.credential.cloudflarecredential.v1.CloudflareCredentialSpecR\x12providerCredentialB\xf1\x03\n" +
 	"@com.project.planton.provider.cloudflare.cloudflarekvnamespace.v1B\x0fStackInputProtoP\x01Z\x84\x01github.com/project-planton/project-planton/apis/project/planton/provider/cloudflare/cloudflarekvnamespace/v1;cloudflarekvnamespacev1\xa2\x02\x05PPPCC\xaa\x02<Project.Planton.Provider.Cloudflare.Cloudflarekvnamespace.V1\xca\x02<Project\\Planton\\Provider\\Cloudflare\\Cloudflarekvnamespace\\V1\xe2\x02HProject\\Planton\\Provider\\Cloudflare\\Cloudflarekvnamespace\\V1\\GPBMetadata\xea\x02AProject::Planton::Provider::Cloudflare::Cloudflarekvnamespace::V1b\x06proto3"
 
@@ -134,19 +134,19 @@ func file_project_planton_provider_cloudflare_cloudflarekvnamespace_v1_stack_inp
 
 var file_project_planton_provider_cloudflare_cloudflarekvnamespace_v1_stack_input_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_cloudflare_cloudflarekvnamespace_v1_stack_input_proto_goTypes = []any{
-	(*CloudflareKVNamespaceStackInput)(nil), // 0: project.planton.provider.cloudflare.cloudflarekvnamespace.v1.CloudflareKVNamespaceStackInput
+	(*CloudflareKvNamespaceStackInput)(nil), // 0: project.planton.provider.cloudflare.cloudflarekvnamespace.v1.CloudflareKvNamespaceStackInput
 	(shared.IacProvisioner)(0),              // 1: project.planton.shared.IacProvisioner
 	(*pulumi.PulumiStackInfo)(nil),          // 2: project.planton.shared.iac.pulumi.PulumiStackInfo
 	(*terraform.TerraformStackInfo)(nil),    // 3: project.planton.shared.iac.terraform.TerraformStackInfo
-	(*CloudflareKVNamespace)(nil),           // 4: project.planton.provider.cloudflare.cloudflarekvnamespace.v1.CloudflareKVNamespace
+	(*CloudflareKvNamespace)(nil),           // 4: project.planton.provider.cloudflare.cloudflarekvnamespace.v1.CloudflareKvNamespace
 	(*v1.CloudflareCredentialSpec)(nil),     // 5: project.planton.credential.cloudflarecredential.v1.CloudflareCredentialSpec
 }
 var file_project_planton_provider_cloudflare_cloudflarekvnamespace_v1_stack_input_proto_depIdxs = []int32{
-	1, // 0: project.planton.provider.cloudflare.cloudflarekvnamespace.v1.CloudflareKVNamespaceStackInput.provisioner:type_name -> project.planton.shared.IacProvisioner
-	2, // 1: project.planton.provider.cloudflare.cloudflarekvnamespace.v1.CloudflareKVNamespaceStackInput.pulumi:type_name -> project.planton.shared.iac.pulumi.PulumiStackInfo
-	3, // 2: project.planton.provider.cloudflare.cloudflarekvnamespace.v1.CloudflareKVNamespaceStackInput.terraform:type_name -> project.planton.shared.iac.terraform.TerraformStackInfo
-	4, // 3: project.planton.provider.cloudflare.cloudflarekvnamespace.v1.CloudflareKVNamespaceStackInput.target:type_name -> project.planton.provider.cloudflare.cloudflarekvnamespace.v1.CloudflareKVNamespace
-	5, // 4: project.planton.provider.cloudflare.cloudflarekvnamespace.v1.CloudflareKVNamespaceStackInput.provider_credential:type_name -> project.planton.credential.cloudflarecredential.v1.CloudflareCredentialSpec
+	1, // 0: project.planton.provider.cloudflare.cloudflarekvnamespace.v1.CloudflareKvNamespaceStackInput.provisioner:type_name -> project.planton.shared.IacProvisioner
+	2, // 1: project.planton.provider.cloudflare.cloudflarekvnamespace.v1.CloudflareKvNamespaceStackInput.pulumi:type_name -> project.planton.shared.iac.pulumi.PulumiStackInfo
+	3, // 2: project.planton.provider.cloudflare.cloudflarekvnamespace.v1.CloudflareKvNamespaceStackInput.terraform:type_name -> project.planton.shared.iac.terraform.TerraformStackInfo
+	4, // 3: project.planton.provider.cloudflare.cloudflarekvnamespace.v1.CloudflareKvNamespaceStackInput.target:type_name -> project.planton.provider.cloudflare.cloudflarekvnamespace.v1.CloudflareKvNamespace
+	5, // 4: project.planton.provider.cloudflare.cloudflarekvnamespace.v1.CloudflareKvNamespaceStackInput.provider_credential:type_name -> project.planton.credential.cloudflarecredential.v1.CloudflareCredentialSpec
 	5, // [5:5] is the sub-list for method output_type
 	5, // [5:5] is the sub-list for method input_type
 	5, // [5:5] is the sub-list for extension type_name

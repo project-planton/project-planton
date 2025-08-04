@@ -24,7 +24,7 @@ const (
 )
 
 // cloudflare-kv-namespace
-type CloudflareKVNamespace struct {
+type CloudflareKvNamespace struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// api-version
 	ApiVersion string `protobuf:"bytes,1,opt,name=api_version,json=apiVersion,proto3" json:"api_version,omitempty"`
@@ -35,25 +35,25 @@ type CloudflareKVNamespace struct {
 	// spec
 	Spec *CloudflareKvNamespaceSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status
-	Status        *CloudflareKVNamespaceStatus `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
+	Status        *CloudflareKvNamespaceStatus `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *CloudflareKVNamespace) Reset() {
-	*x = CloudflareKVNamespace{}
+func (x *CloudflareKvNamespace) Reset() {
+	*x = CloudflareKvNamespace{}
 	mi := &file_project_planton_provider_cloudflare_cloudflarekvnamespace_v1_api_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *CloudflareKVNamespace) String() string {
+func (x *CloudflareKvNamespace) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*CloudflareKVNamespace) ProtoMessage() {}
+func (*CloudflareKvNamespace) ProtoMessage() {}
 
-func (x *CloudflareKVNamespace) ProtoReflect() protoreflect.Message {
+func (x *CloudflareKvNamespace) ProtoReflect() protoreflect.Message {
 	mi := &file_project_planton_provider_cloudflare_cloudflarekvnamespace_v1_api_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -65,40 +65,40 @@ func (x *CloudflareKVNamespace) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use CloudflareKVNamespace.ProtoReflect.Descriptor instead.
-func (*CloudflareKVNamespace) Descriptor() ([]byte, []int) {
+// Deprecated: Use CloudflareKvNamespace.ProtoReflect.Descriptor instead.
+func (*CloudflareKvNamespace) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_cloudflare_cloudflarekvnamespace_v1_api_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *CloudflareKVNamespace) GetApiVersion() string {
+func (x *CloudflareKvNamespace) GetApiVersion() string {
 	if x != nil {
 		return x.ApiVersion
 	}
 	return ""
 }
 
-func (x *CloudflareKVNamespace) GetKind() string {
+func (x *CloudflareKvNamespace) GetKind() string {
 	if x != nil {
 		return x.Kind
 	}
 	return ""
 }
 
-func (x *CloudflareKVNamespace) GetMetadata() *shared.ApiResourceMetadata {
+func (x *CloudflareKvNamespace) GetMetadata() *shared.ApiResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
 	return nil
 }
 
-func (x *CloudflareKVNamespace) GetSpec() *CloudflareKvNamespaceSpec {
+func (x *CloudflareKvNamespace) GetSpec() *CloudflareKvNamespaceSpec {
 	if x != nil {
 		return x.Spec
 	}
 	return nil
 }
 
-func (x *CloudflareKVNamespace) GetStatus() *CloudflareKVNamespaceStatus {
+func (x *CloudflareKvNamespace) GetStatus() *CloudflareKvNamespaceStatus {
 	if x != nil {
 		return x.Status
 	}
@@ -106,7 +106,7 @@ func (x *CloudflareKVNamespace) GetStatus() *CloudflareKVNamespaceStatus {
 }
 
 // cloudflare-kv-namespace status
-type CloudflareKVNamespaceStatus struct {
+type CloudflareKvNamespaceStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// lifecycle
 	Lifecycle *shared.ApiResourceLifecycle `protobuf:"bytes,99,opt,name=lifecycle,proto3" json:"lifecycle,omitempty"`
@@ -122,20 +122,20 @@ type CloudflareKVNamespaceStatus struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *CloudflareKVNamespaceStatus) Reset() {
-	*x = CloudflareKVNamespaceStatus{}
+func (x *CloudflareKvNamespaceStatus) Reset() {
+	*x = CloudflareKvNamespaceStatus{}
 	mi := &file_project_planton_provider_cloudflare_cloudflarekvnamespace_v1_api_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *CloudflareKVNamespaceStatus) String() string {
+func (x *CloudflareKvNamespaceStatus) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*CloudflareKVNamespaceStatus) ProtoMessage() {}
+func (*CloudflareKvNamespaceStatus) ProtoMessage() {}
 
-func (x *CloudflareKVNamespaceStatus) ProtoReflect() protoreflect.Message {
+func (x *CloudflareKvNamespaceStatus) ProtoReflect() protoreflect.Message {
 	mi := &file_project_planton_provider_cloudflare_cloudflarekvnamespace_v1_api_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -147,33 +147,33 @@ func (x *CloudflareKVNamespaceStatus) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use CloudflareKVNamespaceStatus.ProtoReflect.Descriptor instead.
-func (*CloudflareKVNamespaceStatus) Descriptor() ([]byte, []int) {
+// Deprecated: Use CloudflareKvNamespaceStatus.ProtoReflect.Descriptor instead.
+func (*CloudflareKvNamespaceStatus) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_cloudflare_cloudflarekvnamespace_v1_api_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *CloudflareKVNamespaceStatus) GetLifecycle() *shared.ApiResourceLifecycle {
+func (x *CloudflareKvNamespaceStatus) GetLifecycle() *shared.ApiResourceLifecycle {
 	if x != nil {
 		return x.Lifecycle
 	}
 	return nil
 }
 
-func (x *CloudflareKVNamespaceStatus) GetAudit() *shared.ApiResourceAudit {
+func (x *CloudflareKvNamespaceStatus) GetAudit() *shared.ApiResourceAudit {
 	if x != nil {
 		return x.Audit
 	}
 	return nil
 }
 
-func (x *CloudflareKVNamespaceStatus) GetStackJobId() string {
+func (x *CloudflareKvNamespaceStatus) GetStackJobId() string {
 	if x != nil {
 		return x.StackJobId
 	}
 	return ""
 }
 
-func (x *CloudflareKVNamespaceStatus) GetOutputs() *CloudflareKvNamespaceStackOutputs {
+func (x *CloudflareKvNamespaceStatus) GetOutputs() *CloudflareKvNamespaceStackOutputs {
 	if x != nil {
 		return x.Outputs
 	}
@@ -185,16 +185,16 @@ var File_project_planton_provider_cloudflare_cloudflarekvnamespace_v1_api_proto 
 const file_project_planton_provider_cloudflare_cloudflarekvnamespace_v1_api_proto_rawDesc = "" +
 	"\n" +
 	"Fproject/planton/provider/cloudflare/cloudflarekvnamespace/v1/api.proto\x12<project.planton.provider.cloudflare.cloudflarekvnamespace.v1\x1a\x1bbuf/validate/validate.proto\x1aGproject/planton/provider/cloudflare/cloudflarekvnamespace/v1/spec.proto\x1aPproject/planton/provider/cloudflare/cloudflarekvnamespace/v1/stack_outputs.proto\x1a#project/planton/shared/status.proto\x1a%project/planton/shared/metadata.proto\"\xcd\x03\n" +
-	"\x15CloudflareKVNamespace\x12I\n" +
+	"\x15CloudflareKvNamespace\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!cloudflare.project-planton.org/v1R\n" +
 	"apiVersion\x120\n" +
 	"\x04kind\x18\x02 \x01(\tB\x1c\xbaH\x19r\x17\n" +
-	"\x15CloudflareKVNamespaceR\x04kind\x12O\n" +
+	"\x15CloudflareKvNamespaceR\x04kind\x12O\n" +
 	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12s\n" +
 	"\x04spec\x18\x04 \x01(\v2W.project.planton.provider.cloudflare.cloudflarekvnamespace.v1.CloudflareKvNamespaceSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12q\n" +
-	"\x06status\x18\x05 \x01(\v2Y.project.planton.provider.cloudflare.cloudflarekvnamespace.v1.CloudflareKVNamespaceStatusR\x06status\"\xc6\x02\n" +
-	"\x1bCloudflareKVNamespaceStatus\x12J\n" +
+	"\x06status\x18\x05 \x01(\v2Y.project.planton.provider.cloudflare.cloudflarekvnamespace.v1.CloudflareKvNamespaceStatusR\x06status\"\xc6\x02\n" +
+	"\x1bCloudflareKvNamespaceStatus\x12J\n" +
 	"\tlifecycle\x18c \x01(\v2,.project.planton.shared.ApiResourceLifecycleR\tlifecycle\x12>\n" +
 	"\x05audit\x18b \x01(\v2(.project.planton.shared.ApiResourceAuditR\x05audit\x12 \n" +
 	"\fstack_job_id\x18a \x01(\tR\n" +
@@ -216,8 +216,8 @@ func file_project_planton_provider_cloudflare_cloudflarekvnamespace_v1_api_proto
 
 var file_project_planton_provider_cloudflare_cloudflarekvnamespace_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_cloudflare_cloudflarekvnamespace_v1_api_proto_goTypes = []any{
-	(*CloudflareKVNamespace)(nil),             // 0: project.planton.provider.cloudflare.cloudflarekvnamespace.v1.CloudflareKVNamespace
-	(*CloudflareKVNamespaceStatus)(nil),       // 1: project.planton.provider.cloudflare.cloudflarekvnamespace.v1.CloudflareKVNamespaceStatus
+	(*CloudflareKvNamespace)(nil),             // 0: project.planton.provider.cloudflare.cloudflarekvnamespace.v1.CloudflareKvNamespace
+	(*CloudflareKvNamespaceStatus)(nil),       // 1: project.planton.provider.cloudflare.cloudflarekvnamespace.v1.CloudflareKvNamespaceStatus
 	(*shared.ApiResourceMetadata)(nil),        // 2: project.planton.shared.ApiResourceMetadata
 	(*CloudflareKvNamespaceSpec)(nil),         // 3: project.planton.provider.cloudflare.cloudflarekvnamespace.v1.CloudflareKvNamespaceSpec
 	(*shared.ApiResourceLifecycle)(nil),       // 4: project.planton.shared.ApiResourceLifecycle
@@ -225,12 +225,12 @@ var file_project_planton_provider_cloudflare_cloudflarekvnamespace_v1_api_proto_
 	(*CloudflareKvNamespaceStackOutputs)(nil), // 6: project.planton.provider.cloudflare.cloudflarekvnamespace.v1.CloudflareKvNamespaceStackOutputs
 }
 var file_project_planton_provider_cloudflare_cloudflarekvnamespace_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.cloudflare.cloudflarekvnamespace.v1.CloudflareKVNamespace.metadata:type_name -> project.planton.shared.ApiResourceMetadata
-	3, // 1: project.planton.provider.cloudflare.cloudflarekvnamespace.v1.CloudflareKVNamespace.spec:type_name -> project.planton.provider.cloudflare.cloudflarekvnamespace.v1.CloudflareKvNamespaceSpec
-	1, // 2: project.planton.provider.cloudflare.cloudflarekvnamespace.v1.CloudflareKVNamespace.status:type_name -> project.planton.provider.cloudflare.cloudflarekvnamespace.v1.CloudflareKVNamespaceStatus
-	4, // 3: project.planton.provider.cloudflare.cloudflarekvnamespace.v1.CloudflareKVNamespaceStatus.lifecycle:type_name -> project.planton.shared.ApiResourceLifecycle
-	5, // 4: project.planton.provider.cloudflare.cloudflarekvnamespace.v1.CloudflareKVNamespaceStatus.audit:type_name -> project.planton.shared.ApiResourceAudit
-	6, // 5: project.planton.provider.cloudflare.cloudflarekvnamespace.v1.CloudflareKVNamespaceStatus.outputs:type_name -> project.planton.provider.cloudflare.cloudflarekvnamespace.v1.CloudflareKvNamespaceStackOutputs
+	2, // 0: project.planton.provider.cloudflare.cloudflarekvnamespace.v1.CloudflareKvNamespace.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	3, // 1: project.planton.provider.cloudflare.cloudflarekvnamespace.v1.CloudflareKvNamespace.spec:type_name -> project.planton.provider.cloudflare.cloudflarekvnamespace.v1.CloudflareKvNamespaceSpec
+	1, // 2: project.planton.provider.cloudflare.cloudflarekvnamespace.v1.CloudflareKvNamespace.status:type_name -> project.planton.provider.cloudflare.cloudflarekvnamespace.v1.CloudflareKvNamespaceStatus
+	4, // 3: project.planton.provider.cloudflare.cloudflarekvnamespace.v1.CloudflareKvNamespaceStatus.lifecycle:type_name -> project.planton.shared.ApiResourceLifecycle
+	5, // 4: project.planton.provider.cloudflare.cloudflarekvnamespace.v1.CloudflareKvNamespaceStatus.audit:type_name -> project.planton.shared.ApiResourceAudit
+	6, // 5: project.planton.provider.cloudflare.cloudflarekvnamespace.v1.CloudflareKvNamespaceStatus.outputs:type_name -> project.planton.provider.cloudflare.cloudflarekvnamespace.v1.CloudflareKvNamespaceStackOutputs
 	6, // [6:6] is the sub-list for method output_type
 	6, // [6:6] is the sub-list for method input_type
 	6, // [6:6] is the sub-list for extension type_name
