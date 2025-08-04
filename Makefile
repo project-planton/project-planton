@@ -23,8 +23,8 @@ protos:
 
 .PHONY: generate-cloud-resource-kind-map
 generate-cloud-resource-kind-map:
-	rm -f internal/crkreflect/kind_map_gen.go
-	go run ./internal/crkreflect/codegen
+	rm -f pkg/crkreflect/kind_map_gen.go
+	go run ./pkg/crkreflect/codegen
 
 .PHONY: generate-kubernetes-types
 generate-kubernetes-types:

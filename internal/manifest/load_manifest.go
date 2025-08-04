@@ -3,7 +3,7 @@ package manifest
 import (
 	"github.com/pkg/errors"
 	"github.com/project-planton/project-planton/internal/cli/workspace"
-	"github.com/project-planton/project-planton/internal/crkreflect"
+	"github.com/project-planton/project-planton/pkg/crkreflect"
 	"github.com/project-planton/project-planton/pkg/ulidgen"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
