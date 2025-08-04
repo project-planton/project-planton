@@ -21,16 +21,13 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// CloudflareWorkerStackOutputs captures the output information after provisioning a DNS zone on Cloudflare.
+// CloudflareWorkerStackOutputs captures the outputs after deploying a Cloudflare Worker.
 type CloudflareWorkerStackOutputs struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The domain name of the DNS zone managed on Cloudflare.
-	ZoneName string `protobuf:"bytes,1,opt,name=zone_name,json=zoneName,proto3" json:"zone_name,omitempty"`
-	// The unique identifier of the DNS zone on Cloudflare (UUID).
-	ZoneId string `protobuf:"bytes,2,opt,name=zone_id,json=zoneId,proto3" json:"zone_id,omitempty"`
-	// The list of nameserver addresses for the DNS zone.
-	// These are the nameservers that should be set at the domain's registrar (e.g., ns0.cloudflare.com, ns1.cloudflare.com).
-	NameServers   []string `protobuf:"bytes,3,rep,name=name_servers,json=nameServers,proto3" json:"name_servers,omitempty"`
+	// The Cloudflare-assigned identifier or name of the deployed Worker script.
+	ScriptId string `protobuf:"bytes,1,opt,name=script_id,json=scriptId,proto3" json:"script_id,omitempty"`
+	// The route URL(s) or patterns where this Worker is active (e.g., workers.dev subdomain or custom domain routes).
+	RouteUrls     []string `protobuf:"bytes,2,rep,name=route_urls,json=routeUrls,proto3" json:"route_urls,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -65,23 +62,16 @@ func (*CloudflareWorkerStackOutputs) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_cloudflare_cloudflareworker_v1_stack_outputs_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *CloudflareWorkerStackOutputs) GetZoneName() string {
+func (x *CloudflareWorkerStackOutputs) GetScriptId() string {
 	if x != nil {
-		return x.ZoneName
+		return x.ScriptId
 	}
 	return ""
 }
 
-func (x *CloudflareWorkerStackOutputs) GetZoneId() string {
+func (x *CloudflareWorkerStackOutputs) GetRouteUrls() []string {
 	if x != nil {
-		return x.ZoneId
-	}
-	return ""
-}
-
-func (x *CloudflareWorkerStackOutputs) GetNameServers() []string {
-	if x != nil {
-		return x.NameServers
+		return x.RouteUrls
 	}
 	return nil
 }
@@ -90,11 +80,11 @@ var File_project_planton_provider_cloudflare_cloudflareworker_v1_stack_outputs_p
 
 const file_project_planton_provider_cloudflare_cloudflareworker_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Kproject/planton/provider/cloudflare/cloudflareworker/v1/stack_outputs.proto\x127project.planton.provider.cloudflare.cloudflareworker.v1\"w\n" +
+	"Kproject/planton/provider/cloudflare/cloudflareworker/v1/stack_outputs.proto\x127project.planton.provider.cloudflare.cloudflareworker.v1\"Z\n" +
 	"\x1cCloudflareWorkerStackOutputs\x12\x1b\n" +
-	"\tzone_name\x18\x01 \x01(\tR\bzoneName\x12\x17\n" +
-	"\azone_id\x18\x02 \x01(\tR\x06zoneId\x12!\n" +
-	"\fname_servers\x18\x03 \x03(\tR\vnameServersB\xcf\x03\n" +
+	"\tscript_id\x18\x01 \x01(\tR\bscriptId\x12\x1d\n" +
+	"\n" +
+	"route_urls\x18\x02 \x03(\tR\trouteUrlsB\xcf\x03\n" +
 	";com.project.planton.provider.cloudflare.cloudflareworker.v1B\x11StackOutputsProtoP\x01Zzgithub.com/project-planton/project-planton/apis/project/planton/provider/cloudflare/cloudflareworker/v1;cloudflareworkerv1\xa2\x02\x05PPPCC\xaa\x027Project.Planton.Provider.Cloudflare.Cloudflareworker.V1\xca\x027Project\\Planton\\Provider\\Cloudflare\\Cloudflareworker\\V1\xe2\x02CProject\\Planton\\Provider\\Cloudflare\\Cloudflareworker\\V1\\GPBMetadata\xea\x02<Project::Planton::Provider::Cloudflare::Cloudflareworker::V1b\x06proto3"
 
 var (

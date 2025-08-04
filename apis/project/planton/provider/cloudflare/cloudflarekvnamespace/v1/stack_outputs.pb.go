@@ -21,34 +21,29 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// CloudflareKVNamespaceStackOutputs captures the output information after provisioning a DNS zone on Cloudflare.
-type CloudflareKVNamespaceStackOutputs struct {
+// CloudflareKvNamespaceStackOutputs captures the key outputs after provisioning a Cloudflare KV namespace.
+type CloudflareKvNamespaceStackOutputs struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The domain name of the DNS zone managed on Cloudflare.
-	ZoneName string `protobuf:"bytes,1,opt,name=zone_name,json=zoneName,proto3" json:"zone_name,omitempty"`
-	// The unique identifier of the DNS zone on Cloudflare (UUID).
-	ZoneId string `protobuf:"bytes,2,opt,name=zone_id,json=zoneId,proto3" json:"zone_id,omitempty"`
-	// The list of nameserver addresses for the DNS zone.
-	// These are the nameservers that should be set at the domain's registrar (e.g., ns0.cloudflare.com, ns1.cloudflare.com).
-	NameServers   []string `protobuf:"bytes,3,rep,name=name_servers,json=nameServers,proto3" json:"name_servers,omitempty"`
+	// The unique identifier (ID) of the created KV namespace.
+	NamespaceId   string `protobuf:"bytes,1,opt,name=namespace_id,json=namespaceId,proto3" json:"namespace_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *CloudflareKVNamespaceStackOutputs) Reset() {
-	*x = CloudflareKVNamespaceStackOutputs{}
+func (x *CloudflareKvNamespaceStackOutputs) Reset() {
+	*x = CloudflareKvNamespaceStackOutputs{}
 	mi := &file_project_planton_provider_cloudflare_cloudflarekvnamespace_v1_stack_outputs_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *CloudflareKVNamespaceStackOutputs) String() string {
+func (x *CloudflareKvNamespaceStackOutputs) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*CloudflareKVNamespaceStackOutputs) ProtoMessage() {}
+func (*CloudflareKvNamespaceStackOutputs) ProtoMessage() {}
 
-func (x *CloudflareKVNamespaceStackOutputs) ProtoReflect() protoreflect.Message {
+func (x *CloudflareKvNamespaceStackOutputs) ProtoReflect() protoreflect.Message {
 	mi := &file_project_planton_provider_cloudflare_cloudflarekvnamespace_v1_stack_outputs_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -60,41 +55,25 @@ func (x *CloudflareKVNamespaceStackOutputs) ProtoReflect() protoreflect.Message 
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use CloudflareKVNamespaceStackOutputs.ProtoReflect.Descriptor instead.
-func (*CloudflareKVNamespaceStackOutputs) Descriptor() ([]byte, []int) {
+// Deprecated: Use CloudflareKvNamespaceStackOutputs.ProtoReflect.Descriptor instead.
+func (*CloudflareKvNamespaceStackOutputs) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_cloudflare_cloudflarekvnamespace_v1_stack_outputs_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *CloudflareKVNamespaceStackOutputs) GetZoneName() string {
+func (x *CloudflareKvNamespaceStackOutputs) GetNamespaceId() string {
 	if x != nil {
-		return x.ZoneName
+		return x.NamespaceId
 	}
 	return ""
-}
-
-func (x *CloudflareKVNamespaceStackOutputs) GetZoneId() string {
-	if x != nil {
-		return x.ZoneId
-	}
-	return ""
-}
-
-func (x *CloudflareKVNamespaceStackOutputs) GetNameServers() []string {
-	if x != nil {
-		return x.NameServers
-	}
-	return nil
 }
 
 var File_project_planton_provider_cloudflare_cloudflarekvnamespace_v1_stack_outputs_proto protoreflect.FileDescriptor
 
 const file_project_planton_provider_cloudflare_cloudflarekvnamespace_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Pproject/planton/provider/cloudflare/cloudflarekvnamespace/v1/stack_outputs.proto\x12<project.planton.provider.cloudflare.cloudflarekvnamespace.v1\"|\n" +
-	"!CloudflareKVNamespaceStackOutputs\x12\x1b\n" +
-	"\tzone_name\x18\x01 \x01(\tR\bzoneName\x12\x17\n" +
-	"\azone_id\x18\x02 \x01(\tR\x06zoneId\x12!\n" +
-	"\fname_servers\x18\x03 \x03(\tR\vnameServersB\xf3\x03\n" +
+	"Pproject/planton/provider/cloudflare/cloudflarekvnamespace/v1/stack_outputs.proto\x12<project.planton.provider.cloudflare.cloudflarekvnamespace.v1\"F\n" +
+	"!CloudflareKvNamespaceStackOutputs\x12!\n" +
+	"\fnamespace_id\x18\x01 \x01(\tR\vnamespaceIdB\xf3\x03\n" +
 	"@com.project.planton.provider.cloudflare.cloudflarekvnamespace.v1B\x11StackOutputsProtoP\x01Z\x84\x01github.com/project-planton/project-planton/apis/project/planton/provider/cloudflare/cloudflarekvnamespace/v1;cloudflarekvnamespacev1\xa2\x02\x05PPPCC\xaa\x02<Project.Planton.Provider.Cloudflare.Cloudflarekvnamespace.V1\xca\x02<Project\\Planton\\Provider\\Cloudflare\\Cloudflarekvnamespace\\V1\xe2\x02HProject\\Planton\\Provider\\Cloudflare\\Cloudflarekvnamespace\\V1\\GPBMetadata\xea\x02AProject::Planton::Provider::Cloudflare::Cloudflarekvnamespace::V1b\x06proto3"
 
 var (
@@ -111,7 +90,7 @@ func file_project_planton_provider_cloudflare_cloudflarekvnamespace_v1_stack_out
 
 var file_project_planton_provider_cloudflare_cloudflarekvnamespace_v1_stack_outputs_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_cloudflare_cloudflarekvnamespace_v1_stack_outputs_proto_goTypes = []any{
-	(*CloudflareKVNamespaceStackOutputs)(nil), // 0: project.planton.provider.cloudflare.cloudflarekvnamespace.v1.CloudflareKVNamespaceStackOutputs
+	(*CloudflareKvNamespaceStackOutputs)(nil), // 0: project.planton.provider.cloudflare.cloudflarekvnamespace.v1.CloudflareKvNamespaceStackOutputs
 }
 var file_project_planton_provider_cloudflare_cloudflarekvnamespace_v1_stack_outputs_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type

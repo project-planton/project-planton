@@ -8,9 +8,7 @@ package cloudflarezerotrustaccessapplicationv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	v1 "github.com/project-planton/project-planton/apis/project/planton/shared/foreignkey/v1"
-	dnsrecordtype "github.com/project-planton/project-planton/apis/project/planton/shared/networking/enums/dnsrecordtype"
-	_ "github.com/project-planton/project-planton/apis/project/planton/shared/options"
+	_ "github.com/project-planton/project-planton/apis/project/planton/shared/foreignkey/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -25,18 +23,77 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// CloudflareZeroTrustAccessApplicationSpec defines the specification required to create a DNS zone (domain) on Cloudflare.
-// This allows you to manage DNS records for a given domain via Cloudflare's DNS service, focusing on the essential parameters (80/20 principle).
+// * Types of access policies for Cloudflare Zero Trust Access Applications.
+type CloudflareZeroTrustPolicyType int32
+
+const (
+	CloudflareZeroTrustPolicyType_ALLOW CloudflareZeroTrustPolicyType = 0
+	CloudflareZeroTrustPolicyType_BLOCK CloudflareZeroTrustPolicyType = 1
+)
+
+// Enum value maps for CloudflareZeroTrustPolicyType.
+var (
+	CloudflareZeroTrustPolicyType_name = map[int32]string{
+		0: "ALLOW",
+		1: "BLOCK",
+	}
+	CloudflareZeroTrustPolicyType_value = map[string]int32{
+		"ALLOW": 0,
+		"BLOCK": 1,
+	}
+)
+
+func (x CloudflareZeroTrustPolicyType) Enum() *CloudflareZeroTrustPolicyType {
+	p := new(CloudflareZeroTrustPolicyType)
+	*p = x
+	return p
+}
+
+func (x CloudflareZeroTrustPolicyType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (CloudflareZeroTrustPolicyType) Descriptor() protoreflect.EnumDescriptor {
+	return file_project_planton_provider_cloudflare_cloudflarezerotrustaccessapplication_v1_spec_proto_enumTypes[0].Descriptor()
+}
+
+func (CloudflareZeroTrustPolicyType) Type() protoreflect.EnumType {
+	return &file_project_planton_provider_cloudflare_cloudflarezerotrustaccessapplication_v1_spec_proto_enumTypes[0]
+}
+
+func (x CloudflareZeroTrustPolicyType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use CloudflareZeroTrustPolicyType.Descriptor instead.
+func (CloudflareZeroTrustPolicyType) EnumDescriptor() ([]byte, []int) {
+	return file_project_planton_provider_cloudflare_cloudflarezerotrustaccessapplication_v1_spec_proto_rawDescGZIP(), []int{0}
+}
+
+// *
+// **CloudflareZeroTrustAccessApplicationSpec** defines the configuration for a Cloudflare Zero Trust Access Application.
+// This resource configures a Zero Trust access policy for a specific hostname within a Cloudflare DNS zone.
+// It includes settings for who can access the application and how (e.g., allowed emails, MFA requirements).
 type CloudflareZeroTrustAccessApplicationSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The domain name for the DNS zone.
-	// Must be a valid fully-qualified domain name (e.g., "example.com").
-	DomainName string `protobuf:"bytes,1,opt,name=domain_name,json=domainName,proto3" json:"domain_name,omitempty"`
-	// A list of DNS records to create within the zone (optional).
-	// Each record includes its type, name, value(s), and TTL.
-	Records       []*CloudflareZeroTrustAccessApplicationRecord `protobuf:"bytes,2,rep,name=records,proto3" json:"records,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	// The display name of the Zero Trust Access Application.
+	ApplicationName string `protobuf:"bytes,1,opt,name=application_name,json=applicationName,proto3" json:"application_name,omitempty"`
+	// The Cloudflare DNS zone ID (from a CloudflareDnsZone resource) for the domain.
+	ZoneId string `protobuf:"bytes,2,opt,name=zone_id,json=zoneId,proto3" json:"zone_id,omitempty"`
+	// The fully qualified domain name to protect (e.g., "app.example.com").
+	Hostname string `protobuf:"bytes,3,opt,name=hostname,proto3" json:"hostname,omitempty"`
+	// The type of access policy for this application (ALLOW or BLOCK). Defaults to ALLOW if unspecified.
+	PolicyType CloudflareZeroTrustPolicyType `protobuf:"varint,4,opt,name=policy_type,json=policyType,proto3,enum=project.planton.provider.cloudflare.cloudflarezerotrustaccessapplication.v1.CloudflareZeroTrustPolicyType" json:"policy_type,omitempty"`
+	// A list of email addresses that are allowed access (applicable only when policy_type = ALLOW).
+	AllowedEmails []string `protobuf:"bytes,5,rep,name=allowed_emails,json=allowedEmails,proto3" json:"allowed_emails,omitempty"`
+	// The duration of each authenticated session, in minutes (default: 1440 minutes, i.e., 24 hours).
+	SessionDurationMinutes int32 `protobuf:"varint,6,opt,name=session_duration_minutes,json=sessionDurationMinutes,proto3" json:"session_duration_minutes,omitempty"`
+	// Whether multi-factor authentication (MFA) is required for access.
+	RequireMfa bool `protobuf:"varint,7,opt,name=require_mfa,json=requireMfa,proto3" json:"require_mfa,omitempty"`
+	// A list of allowed Google Workspace group email addresses (optional).
+	AllowedGoogleGroups []string `protobuf:"bytes,8,rep,name=allowed_google_groups,json=allowedGoogleGroups,proto3" json:"allowed_google_groups,omitempty"`
+	unknownFields       protoimpl.UnknownFields
+	sizeCache           protoimpl.SizeCache
 }
 
 func (x *CloudflareZeroTrustAccessApplicationSpec) Reset() {
@@ -69,116 +126,81 @@ func (*CloudflareZeroTrustAccessApplicationSpec) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_cloudflare_cloudflarezerotrustaccessapplication_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *CloudflareZeroTrustAccessApplicationSpec) GetDomainName() string {
+func (x *CloudflareZeroTrustAccessApplicationSpec) GetApplicationName() string {
 	if x != nil {
-		return x.DomainName
+		return x.ApplicationName
 	}
 	return ""
 }
 
-func (x *CloudflareZeroTrustAccessApplicationSpec) GetRecords() []*CloudflareZeroTrustAccessApplicationRecord {
+func (x *CloudflareZeroTrustAccessApplicationSpec) GetZoneId() string {
 	if x != nil {
-		return x.Records
-	}
-	return nil
-}
-
-// CloudflareZeroTrustAccessApplicationRecord represents a DNS record entry to be created in the zone.
-type CloudflareZeroTrustAccessApplicationRecord struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The host/name for the DNS record, relative to the zone.
-	// For root (apex) records, use "@" to denote the zone itself.
-	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	// The value or values for the DNS record.
-	// - For A/AAAA: one or more IP addresses.
-	// - For CNAME: the target domain name.
-	// - For TXT: the text data (if multiple strings, they will be concatenated by DNS).
-	// - For MX: one or more entries like "<priority> <mail-server-domain>".
-	// Each value can be a literal or a reference to another resource’s output.
-	Values []*v1.StringValueOrRef `protobuf:"bytes,2,rep,name=values,proto3" json:"values,omitempty"`
-	// The time-to-live (TTL) for this DNS record, in seconds.
-	// Determines how long resolvers cache the record. Defaults to 3600 seconds (1 hour) if not set.
-	TtlSeconds uint32 `protobuf:"varint,3,opt,name=ttl_seconds,json=ttlSeconds,proto3" json:"ttl_seconds,omitempty"`
-	// The DNS record type.
-	// This field is required and must be one of the supported record types (A, AAAA, CNAME, MX, TXT, etc.).
-	Type          dnsrecordtype.DnsRecordType `protobuf:"varint,4,opt,name=type,proto3,enum=project.planton.shared.networking.enums.dnsrecordtype.DnsRecordType" json:"type,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *CloudflareZeroTrustAccessApplicationRecord) Reset() {
-	*x = CloudflareZeroTrustAccessApplicationRecord{}
-	mi := &file_project_planton_provider_cloudflare_cloudflarezerotrustaccessapplication_v1_spec_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CloudflareZeroTrustAccessApplicationRecord) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CloudflareZeroTrustAccessApplicationRecord) ProtoMessage() {}
-
-func (x *CloudflareZeroTrustAccessApplicationRecord) ProtoReflect() protoreflect.Message {
-	mi := &file_project_planton_provider_cloudflare_cloudflarezerotrustaccessapplication_v1_spec_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CloudflareZeroTrustAccessApplicationRecord.ProtoReflect.Descriptor instead.
-func (*CloudflareZeroTrustAccessApplicationRecord) Descriptor() ([]byte, []int) {
-	return file_project_planton_provider_cloudflare_cloudflarezerotrustaccessapplication_v1_spec_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *CloudflareZeroTrustAccessApplicationRecord) GetName() string {
-	if x != nil {
-		return x.Name
+		return x.ZoneId
 	}
 	return ""
 }
 
-func (x *CloudflareZeroTrustAccessApplicationRecord) GetValues() []*v1.StringValueOrRef {
+func (x *CloudflareZeroTrustAccessApplicationSpec) GetHostname() string {
 	if x != nil {
-		return x.Values
+		return x.Hostname
+	}
+	return ""
+}
+
+func (x *CloudflareZeroTrustAccessApplicationSpec) GetPolicyType() CloudflareZeroTrustPolicyType {
+	if x != nil {
+		return x.PolicyType
+	}
+	return CloudflareZeroTrustPolicyType_ALLOW
+}
+
+func (x *CloudflareZeroTrustAccessApplicationSpec) GetAllowedEmails() []string {
+	if x != nil {
+		return x.AllowedEmails
 	}
 	return nil
 }
 
-func (x *CloudflareZeroTrustAccessApplicationRecord) GetTtlSeconds() uint32 {
+func (x *CloudflareZeroTrustAccessApplicationSpec) GetSessionDurationMinutes() int32 {
 	if x != nil {
-		return x.TtlSeconds
+		return x.SessionDurationMinutes
 	}
 	return 0
 }
 
-func (x *CloudflareZeroTrustAccessApplicationRecord) GetType() dnsrecordtype.DnsRecordType {
+func (x *CloudflareZeroTrustAccessApplicationSpec) GetRequireMfa() bool {
 	if x != nil {
-		return x.Type
+		return x.RequireMfa
 	}
-	return dnsrecordtype.DnsRecordType(0)
+	return false
+}
+
+func (x *CloudflareZeroTrustAccessApplicationSpec) GetAllowedGoogleGroups() []string {
+	if x != nil {
+		return x.AllowedGoogleGroups
+	}
+	return nil
 }
 
 var File_project_planton_provider_cloudflare_cloudflarezerotrustaccessapplication_v1_spec_proto protoreflect.FileDescriptor
 
 const file_project_planton_provider_cloudflare_cloudflarezerotrustaccessapplication_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Vproject/planton/provider/cloudflare/cloudflarezerotrustaccessapplication/v1/spec.proto\x12Kproject.planton.provider.cloudflare.cloudflarezerotrustaccessapplication.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1aKproject/planton/shared/networking/enums/dnsrecordtype/dns_record_type.proto\x1a,project/planton/shared/options/options.proto\"\x8d\x02\n" +
-	"(CloudflareZeroTrustAccessApplicationSpec\x12M\n" +
-	"\vdomain_name\x18\x01 \x01(\tB,\xbaH)\xc8\x01\x01r$2\"^(?:[A-Za-z0-9-]+\\.)+[A-Za-z]{2,}$R\n" +
-	"domainName\x12\x91\x01\n" +
-	"\arecords\x18\x02 \x03(\v2w.project.planton.provider.cloudflare.cloudflarezerotrustaccessapplication.v1.CloudflareZeroTrustAccessApplicationRecordR\arecords\"\xb2\x02\n" +
-	"*CloudflareZeroTrustAccessApplicationRecord\x12\x1a\n" +
-	"\x04name\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\x12[\n" +
-	"\x06values\x18\x02 \x03(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB\v\xbaH\b\xc8\x01\x01\x92\x01\x02\b\x01R\x06values\x12)\n" +
-	"\vttl_seconds\x18\x03 \x01(\rB\b\x92\xa6\x1d\x043600R\n" +
-	"ttlSeconds\x12`\n" +
-	"\x04type\x18\x04 \x01(\x0e2D.project.planton.shared.networking.enums.dnsrecordtype.DnsRecordTypeB\x06\xbaH\x03\xc8\x01\x01R\x04typeB\xd4\x04\n" +
+	"Vproject/planton/provider/cloudflare/cloudflarezerotrustaccessapplication/v1/spec.proto\x12Kproject.planton.provider.cloudflare.cloudflarezerotrustaccessapplication.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\"\x86\x04\n" +
+	"(CloudflareZeroTrustAccessApplicationSpec\x122\n" +
+	"\x10application_name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x0fapplicationName\x12>\n" +
+	"\azone_id\x18\x02 \x01(\tB%\xbaH\x03\xc8\x01\x01\x88\xd4a\x88\x0e\x92\xd4a\x16status.outputs.zone_idR\x06zoneId\x12\"\n" +
+	"\bhostname\x18\x03 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bhostname\x12\x8b\x01\n" +
+	"\vpolicy_type\x18\x04 \x01(\x0e2j.project.planton.provider.cloudflare.cloudflarezerotrustaccessapplication.v1.CloudflareZeroTrustPolicyTypeR\n" +
+	"policyType\x12%\n" +
+	"\x0eallowed_emails\x18\x05 \x03(\tR\rallowedEmails\x128\n" +
+	"\x18session_duration_minutes\x18\x06 \x01(\x05R\x16sessionDurationMinutes\x12\x1f\n" +
+	"\vrequire_mfa\x18\a \x01(\bR\n" +
+	"requireMfa\x122\n" +
+	"\x15allowed_google_groups\x18\b \x03(\tR\x13allowedGoogleGroups*5\n" +
+	"\x1dCloudflareZeroTrustPolicyType\x12\t\n" +
+	"\x05ALLOW\x10\x00\x12\t\n" +
+	"\x05BLOCK\x10\x01B\xd4\x04\n" +
 	"Ocom.project.planton.provider.cloudflare.cloudflarezerotrustaccessapplication.v1B\tSpecProtoP\x01Z\xa2\x01github.com/project-planton/project-planton/apis/project/planton/provider/cloudflare/cloudflarezerotrustaccessapplication/v1;cloudflarezerotrustaccessapplicationv1\xa2\x02\x05PPPCC\xaa\x02KProject.Planton.Provider.Cloudflare.Cloudflarezerotrustaccessapplication.V1\xca\x02KProject\\Planton\\Provider\\Cloudflare\\Cloudflarezerotrustaccessapplication\\V1\xe2\x02WProject\\Planton\\Provider\\Cloudflare\\Cloudflarezerotrustaccessapplication\\V1\\GPBMetadata\xea\x02PProject::Planton::Provider::Cloudflare::Cloudflarezerotrustaccessapplication::V1b\x06proto3"
 
 var (
@@ -193,22 +215,19 @@ func file_project_planton_provider_cloudflare_cloudflarezerotrustaccessapplicati
 	return file_project_planton_provider_cloudflare_cloudflarezerotrustaccessapplication_v1_spec_proto_rawDescData
 }
 
-var file_project_planton_provider_cloudflare_cloudflarezerotrustaccessapplication_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_project_planton_provider_cloudflare_cloudflarezerotrustaccessapplication_v1_spec_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_project_planton_provider_cloudflare_cloudflarezerotrustaccessapplication_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_cloudflare_cloudflarezerotrustaccessapplication_v1_spec_proto_goTypes = []any{
-	(*CloudflareZeroTrustAccessApplicationSpec)(nil),   // 0: project.planton.provider.cloudflare.cloudflarezerotrustaccessapplication.v1.CloudflareZeroTrustAccessApplicationSpec
-	(*CloudflareZeroTrustAccessApplicationRecord)(nil), // 1: project.planton.provider.cloudflare.cloudflarezerotrustaccessapplication.v1.CloudflareZeroTrustAccessApplicationRecord
-	(*v1.StringValueOrRef)(nil),                        // 2: project.planton.shared.foreignkey.v1.StringValueOrRef
-	(dnsrecordtype.DnsRecordType)(0),                   // 3: project.planton.shared.networking.enums.dnsrecordtype.DnsRecordType
+	(CloudflareZeroTrustPolicyType)(0),               // 0: project.planton.provider.cloudflare.cloudflarezerotrustaccessapplication.v1.CloudflareZeroTrustPolicyType
+	(*CloudflareZeroTrustAccessApplicationSpec)(nil), // 1: project.planton.provider.cloudflare.cloudflarezerotrustaccessapplication.v1.CloudflareZeroTrustAccessApplicationSpec
 }
 var file_project_planton_provider_cloudflare_cloudflarezerotrustaccessapplication_v1_spec_proto_depIdxs = []int32{
-	1, // 0: project.planton.provider.cloudflare.cloudflarezerotrustaccessapplication.v1.CloudflareZeroTrustAccessApplicationSpec.records:type_name -> project.planton.provider.cloudflare.cloudflarezerotrustaccessapplication.v1.CloudflareZeroTrustAccessApplicationRecord
-	2, // 1: project.planton.provider.cloudflare.cloudflarezerotrustaccessapplication.v1.CloudflareZeroTrustAccessApplicationRecord.values:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
-	3, // 2: project.planton.provider.cloudflare.cloudflarezerotrustaccessapplication.v1.CloudflareZeroTrustAccessApplicationRecord.type:type_name -> project.planton.shared.networking.enums.dnsrecordtype.DnsRecordType
-	3, // [3:3] is the sub-list for method output_type
-	3, // [3:3] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	0, // 0: project.planton.provider.cloudflare.cloudflarezerotrustaccessapplication.v1.CloudflareZeroTrustAccessApplicationSpec.policy_type:type_name -> project.planton.provider.cloudflare.cloudflarezerotrustaccessapplication.v1.CloudflareZeroTrustPolicyType
+	1, // [1:1] is the sub-list for method output_type
+	1, // [1:1] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
 func init() {
@@ -223,13 +242,14 @@ func file_project_planton_provider_cloudflare_cloudflarezerotrustaccessapplicati
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_project_planton_provider_cloudflare_cloudflarezerotrustaccessapplication_v1_spec_proto_rawDesc), len(file_project_planton_provider_cloudflare_cloudflarezerotrustaccessapplication_v1_spec_proto_rawDesc)),
-			NumEnums:      0,
-			NumMessages:   2,
+			NumEnums:      1,
+			NumMessages:   1,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
 		GoTypes:           file_project_planton_provider_cloudflare_cloudflarezerotrustaccessapplication_v1_spec_proto_goTypes,
 		DependencyIndexes: file_project_planton_provider_cloudflare_cloudflarezerotrustaccessapplication_v1_spec_proto_depIdxs,
+		EnumInfos:         file_project_planton_provider_cloudflare_cloudflarezerotrustaccessapplication_v1_spec_proto_enumTypes,
 		MessageInfos:      file_project_planton_provider_cloudflare_cloudflarezerotrustaccessapplication_v1_spec_proto_msgTypes,
 	}.Build()
 	File_project_planton_provider_cloudflare_cloudflarezerotrustaccessapplication_v1_spec_proto = out.File

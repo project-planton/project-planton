@@ -8,9 +8,6 @@ package cloudflared1databasev1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	v1 "github.com/project-planton/project-planton/apis/project/planton/shared/foreignkey/v1"
-	dnsrecordtype "github.com/project-planton/project-planton/apis/project/planton/shared/networking/enums/dnsrecordtype"
-	_ "github.com/project-planton/project-planton/apis/project/planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -25,16 +22,77 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// CloudflareD1DatabaseSpec defines the specification required to create a DNS zone (domain) on Cloudflare.
-// This allows you to manage DNS records for a given domain via Cloudflare's DNS service, focusing on the essential parameters (80/20 principle).
+// Enumeration of supported regions for Cloudflare D1 databases.
+type CloudflareD1Region int32
+
+const (
+	CloudflareD1Region_cloudflare_d1_region_unspecified CloudflareD1Region = 0
+	CloudflareD1Region_weur                             CloudflareD1Region = 1
+	CloudflareD1Region_enw                              CloudflareD1Region = 2
+	CloudflareD1Region_ape                              CloudflareD1Region = 3
+	CloudflareD1Region_usw                              CloudflareD1Region = 4
+)
+
+// Enum value maps for CloudflareD1Region.
+var (
+	CloudflareD1Region_name = map[int32]string{
+		0: "cloudflare_d1_region_unspecified",
+		1: "weur",
+		2: "enw",
+		3: "ape",
+		4: "usw",
+	}
+	CloudflareD1Region_value = map[string]int32{
+		"cloudflare_d1_region_unspecified": 0,
+		"weur":                             1,
+		"enw":                              2,
+		"ape":                              3,
+		"usw":                              4,
+	}
+)
+
+func (x CloudflareD1Region) Enum() *CloudflareD1Region {
+	p := new(CloudflareD1Region)
+	*p = x
+	return p
+}
+
+func (x CloudflareD1Region) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (CloudflareD1Region) Descriptor() protoreflect.EnumDescriptor {
+	return file_project_planton_provider_cloudflare_cloudflared1database_v1_spec_proto_enumTypes[0].Descriptor()
+}
+
+func (CloudflareD1Region) Type() protoreflect.EnumType {
+	return &file_project_planton_provider_cloudflare_cloudflared1database_v1_spec_proto_enumTypes[0]
+}
+
+func (x CloudflareD1Region) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use CloudflareD1Region.Descriptor instead.
+func (CloudflareD1Region) EnumDescriptor() ([]byte, []int) {
+	return file_project_planton_provider_cloudflare_cloudflared1database_v1_spec_proto_rawDescGZIP(), []int{0}
+}
+
+// CloudflareD1DatabaseSpec defines the essential configuration for creating a Cloudflare D1 database.
+// This follows the 80/20 principle: only the most commonly used fields are exposed to keep the API simple.
 type CloudflareD1DatabaseSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The domain name for the DNS zone.
-	// Must be a valid fully-qualified domain name (e.g., "example.com").
-	DomainName string `protobuf:"bytes,1,opt,name=domain_name,json=domainName,proto3" json:"domain_name,omitempty"`
-	// A list of DNS records to create within the zone (optional).
-	// Each record includes its type, name, value(s), and TTL.
-	Records       []*CloudflareD1DatabaseRecord `protobuf:"bytes,2,rep,name=records,proto3" json:"records,omitempty"`
+	// The unique name for the D1 database.
+	DatabaseName string `protobuf:"bytes,1,opt,name=database_name,json=databaseName,proto3" json:"database_name,omitempty"`
+	// The Cloudflare account ID in which to create the database.
+	AccountId string `protobuf:"bytes,2,opt,name=account_id,json=accountId,proto3" json:"account_id,omitempty"`
+	// The Cloudflare region where the D1 database will be hosted.
+	// Allowed values include: WEUR, ENW, APE, USW. Defaults to WEUR if not specified.
+	Region CloudflareD1Region `protobuf:"varint,3,opt,name=region,proto3,enum=project.planton.provider.cloudflare.cloudflared1database.v1.CloudflareD1Region" json:"region,omitempty"`
+	// (Optional) Specify a primary key column name if an initial table migration is needed.
+	PrimaryKey string `protobuf:"bytes,4,opt,name=primary_key,json=primaryKey,proto3" json:"primary_key,omitempty"`
+	// (Optional) Enable a D1 preview branch for this database (for use in preview deployments). Defaults to false.
+	PreviewBranch bool `protobuf:"varint,5,opt,name=preview_branch,json=previewBranch,proto3" json:"preview_branch,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -69,116 +127,61 @@ func (*CloudflareD1DatabaseSpec) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_cloudflare_cloudflared1database_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *CloudflareD1DatabaseSpec) GetDomainName() string {
+func (x *CloudflareD1DatabaseSpec) GetDatabaseName() string {
 	if x != nil {
-		return x.DomainName
+		return x.DatabaseName
 	}
 	return ""
 }
 
-func (x *CloudflareD1DatabaseSpec) GetRecords() []*CloudflareD1DatabaseRecord {
+func (x *CloudflareD1DatabaseSpec) GetAccountId() string {
 	if x != nil {
-		return x.Records
-	}
-	return nil
-}
-
-// CloudflareD1DatabaseRecord represents a DNS record entry to be created in the zone.
-type CloudflareD1DatabaseRecord struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The host/name for the DNS record, relative to the zone.
-	// For root (apex) records, use "@" to denote the zone itself.
-	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	// The value or values for the DNS record.
-	// - For A/AAAA: one or more IP addresses.
-	// - For CNAME: the target domain name.
-	// - For TXT: the text data (if multiple strings, they will be concatenated by DNS).
-	// - For MX: one or more entries like "<priority> <mail-server-domain>".
-	// Each value can be a literal or a reference to another resource’s output.
-	Values []*v1.StringValueOrRef `protobuf:"bytes,2,rep,name=values,proto3" json:"values,omitempty"`
-	// The time-to-live (TTL) for this DNS record, in seconds.
-	// Determines how long resolvers cache the record. Defaults to 3600 seconds (1 hour) if not set.
-	TtlSeconds uint32 `protobuf:"varint,3,opt,name=ttl_seconds,json=ttlSeconds,proto3" json:"ttl_seconds,omitempty"`
-	// The DNS record type.
-	// This field is required and must be one of the supported record types (A, AAAA, CNAME, MX, TXT, etc.).
-	Type          dnsrecordtype.DnsRecordType `protobuf:"varint,4,opt,name=type,proto3,enum=project.planton.shared.networking.enums.dnsrecordtype.DnsRecordType" json:"type,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *CloudflareD1DatabaseRecord) Reset() {
-	*x = CloudflareD1DatabaseRecord{}
-	mi := &file_project_planton_provider_cloudflare_cloudflared1database_v1_spec_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CloudflareD1DatabaseRecord) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CloudflareD1DatabaseRecord) ProtoMessage() {}
-
-func (x *CloudflareD1DatabaseRecord) ProtoReflect() protoreflect.Message {
-	mi := &file_project_planton_provider_cloudflare_cloudflared1database_v1_spec_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CloudflareD1DatabaseRecord.ProtoReflect.Descriptor instead.
-func (*CloudflareD1DatabaseRecord) Descriptor() ([]byte, []int) {
-	return file_project_planton_provider_cloudflare_cloudflared1database_v1_spec_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *CloudflareD1DatabaseRecord) GetName() string {
-	if x != nil {
-		return x.Name
+		return x.AccountId
 	}
 	return ""
 }
 
-func (x *CloudflareD1DatabaseRecord) GetValues() []*v1.StringValueOrRef {
+func (x *CloudflareD1DatabaseSpec) GetRegion() CloudflareD1Region {
 	if x != nil {
-		return x.Values
+		return x.Region
 	}
-	return nil
+	return CloudflareD1Region_cloudflare_d1_region_unspecified
 }
 
-func (x *CloudflareD1DatabaseRecord) GetTtlSeconds() uint32 {
+func (x *CloudflareD1DatabaseSpec) GetPrimaryKey() string {
 	if x != nil {
-		return x.TtlSeconds
+		return x.PrimaryKey
 	}
-	return 0
+	return ""
 }
 
-func (x *CloudflareD1DatabaseRecord) GetType() dnsrecordtype.DnsRecordType {
+func (x *CloudflareD1DatabaseSpec) GetPreviewBranch() bool {
 	if x != nil {
-		return x.Type
+		return x.PreviewBranch
 	}
-	return dnsrecordtype.DnsRecordType(0)
+	return false
 }
 
 var File_project_planton_provider_cloudflare_cloudflared1database_v1_spec_proto protoreflect.FileDescriptor
 
 const file_project_planton_provider_cloudflare_cloudflared1database_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Fproject/planton/provider/cloudflare/cloudflared1database/v1/spec.proto\x12;project.planton.provider.cloudflare.cloudflared1database.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1aKproject/planton/shared/networking/enums/dnsrecordtype/dns_record_type.proto\x1a,project/planton/shared/options/options.proto\"\xdc\x01\n" +
-	"\x18CloudflareD1DatabaseSpec\x12M\n" +
-	"\vdomain_name\x18\x01 \x01(\tB,\xbaH)\xc8\x01\x01r$2\"^(?:[A-Za-z0-9-]+\\.)+[A-Za-z]{2,}$R\n" +
-	"domainName\x12q\n" +
-	"\arecords\x18\x02 \x03(\v2W.project.planton.provider.cloudflare.cloudflared1database.v1.CloudflareD1DatabaseRecordR\arecords\"\xa2\x02\n" +
-	"\x1aCloudflareD1DatabaseRecord\x12\x1a\n" +
-	"\x04name\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\x12[\n" +
-	"\x06values\x18\x02 \x03(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB\v\xbaH\b\xc8\x01\x01\x92\x01\x02\b\x01R\x06values\x12)\n" +
-	"\vttl_seconds\x18\x03 \x01(\rB\b\x92\xa6\x1d\x043600R\n" +
-	"ttlSeconds\x12`\n" +
-	"\x04type\x18\x04 \x01(\x0e2D.project.planton.shared.networking.enums.dnsrecordtype.DnsRecordTypeB\x06\xbaH\x03\xc8\x01\x01R\x04typeB\xe4\x03\n" +
+	"Fproject/planton/provider/cloudflare/cloudflared1database/v1/spec.proto\x12;project.planton.provider.cloudflare.cloudflared1database.v1\x1a\x1bbuf/validate/validate.proto\"\xab\x02\n" +
+	"\x18CloudflareD1DatabaseSpec\x12/\n" +
+	"\rdatabase_name\x18\x01 \x01(\tB\n" +
+	"\xbaH\a\xc8\x01\x01r\x02\x18@R\fdatabaseName\x12%\n" +
+	"\n" +
+	"account_id\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\taccountId\x12o\n" +
+	"\x06region\x18\x03 \x01(\x0e2O.project.planton.provider.cloudflare.cloudflared1database.v1.CloudflareD1RegionB\x06\xbaH\x03\xc8\x01\x01R\x06region\x12\x1f\n" +
+	"\vprimary_key\x18\x04 \x01(\tR\n" +
+	"primaryKey\x12%\n" +
+	"\x0epreview_branch\x18\x05 \x01(\bR\rpreviewBranch*_\n" +
+	"\x12CloudflareD1Region\x12$\n" +
+	" cloudflare_d1_region_unspecified\x10\x00\x12\b\n" +
+	"\x04weur\x10\x01\x12\a\n" +
+	"\x03enw\x10\x02\x12\a\n" +
+	"\x03ape\x10\x03\x12\a\n" +
+	"\x03usw\x10\x04B\xe4\x03\n" +
 	"?com.project.planton.provider.cloudflare.cloudflared1database.v1B\tSpecProtoP\x01Z\x82\x01github.com/project-planton/project-planton/apis/project/planton/provider/cloudflare/cloudflared1database/v1;cloudflared1databasev1\xa2\x02\x05PPPCC\xaa\x02;Project.Planton.Provider.Cloudflare.Cloudflared1database.V1\xca\x02;Project\\Planton\\Provider\\Cloudflare\\Cloudflared1database\\V1\xe2\x02GProject\\Planton\\Provider\\Cloudflare\\Cloudflared1database\\V1\\GPBMetadata\xea\x02@Project::Planton::Provider::Cloudflare::Cloudflared1database::V1b\x06proto3"
 
 var (
@@ -193,22 +196,19 @@ func file_project_planton_provider_cloudflare_cloudflared1database_v1_spec_proto
 	return file_project_planton_provider_cloudflare_cloudflared1database_v1_spec_proto_rawDescData
 }
 
-var file_project_planton_provider_cloudflare_cloudflared1database_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_project_planton_provider_cloudflare_cloudflared1database_v1_spec_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_project_planton_provider_cloudflare_cloudflared1database_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_cloudflare_cloudflared1database_v1_spec_proto_goTypes = []any{
-	(*CloudflareD1DatabaseSpec)(nil),   // 0: project.planton.provider.cloudflare.cloudflared1database.v1.CloudflareD1DatabaseSpec
-	(*CloudflareD1DatabaseRecord)(nil), // 1: project.planton.provider.cloudflare.cloudflared1database.v1.CloudflareD1DatabaseRecord
-	(*v1.StringValueOrRef)(nil),        // 2: project.planton.shared.foreignkey.v1.StringValueOrRef
-	(dnsrecordtype.DnsRecordType)(0),   // 3: project.planton.shared.networking.enums.dnsrecordtype.DnsRecordType
+	(CloudflareD1Region)(0),          // 0: project.planton.provider.cloudflare.cloudflared1database.v1.CloudflareD1Region
+	(*CloudflareD1DatabaseSpec)(nil), // 1: project.planton.provider.cloudflare.cloudflared1database.v1.CloudflareD1DatabaseSpec
 }
 var file_project_planton_provider_cloudflare_cloudflared1database_v1_spec_proto_depIdxs = []int32{
-	1, // 0: project.planton.provider.cloudflare.cloudflared1database.v1.CloudflareD1DatabaseSpec.records:type_name -> project.planton.provider.cloudflare.cloudflared1database.v1.CloudflareD1DatabaseRecord
-	2, // 1: project.planton.provider.cloudflare.cloudflared1database.v1.CloudflareD1DatabaseRecord.values:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
-	3, // 2: project.planton.provider.cloudflare.cloudflared1database.v1.CloudflareD1DatabaseRecord.type:type_name -> project.planton.shared.networking.enums.dnsrecordtype.DnsRecordType
-	3, // [3:3] is the sub-list for method output_type
-	3, // [3:3] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	0, // 0: project.planton.provider.cloudflare.cloudflared1database.v1.CloudflareD1DatabaseSpec.region:type_name -> project.planton.provider.cloudflare.cloudflared1database.v1.CloudflareD1Region
+	1, // [1:1] is the sub-list for method output_type
+	1, // [1:1] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_provider_cloudflare_cloudflared1database_v1_spec_proto_init() }
@@ -221,13 +221,14 @@ func file_project_planton_provider_cloudflare_cloudflared1database_v1_spec_proto
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_project_planton_provider_cloudflare_cloudflared1database_v1_spec_proto_rawDesc), len(file_project_planton_provider_cloudflare_cloudflared1database_v1_spec_proto_rawDesc)),
-			NumEnums:      0,
-			NumMessages:   2,
+			NumEnums:      1,
+			NumMessages:   1,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
 		GoTypes:           file_project_planton_provider_cloudflare_cloudflared1database_v1_spec_proto_goTypes,
 		DependencyIndexes: file_project_planton_provider_cloudflare_cloudflared1database_v1_spec_proto_depIdxs,
+		EnumInfos:         file_project_planton_provider_cloudflare_cloudflared1database_v1_spec_proto_enumTypes,
 		MessageInfos:      file_project_planton_provider_cloudflare_cloudflared1database_v1_spec_proto_msgTypes,
 	}.Build()
 	File_project_planton_provider_cloudflare_cloudflared1database_v1_spec_proto = out.File
