@@ -7,6 +7,7 @@ import (
 	awscertmanagercertv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awscertmanagercert/v1"
 	awscloudfrontv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awscloudfront/v1"
 	awsdynamodbv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsdynamodb/v1"
+	awsec2instancev1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsec2instance/v1"
 	awsecrrepov1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsecrrepo/v1"
 	awsecsclusterv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsecscluster/v1"
 	awsecsservicev1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsecsservice/v1"
@@ -140,6 +141,7 @@ var ProviderAwsMap = map[cloudresourcekind.CloudResourceKind]proto.Message{
 	cloudresourcekind.CloudResourceKind_AwsCertManagerCert: &awscertmanagercertv1.AwsCertManagerCert{},
 	cloudresourcekind.CloudResourceKind_AwsCloudFront:      &awscloudfrontv1.AwsCloudFront{},
 	cloudresourcekind.CloudResourceKind_AwsDynamodb:        &awsdynamodbv1.AwsDynamodb{},
+	cloudresourcekind.CloudResourceKind_AwsEc2Instance:     &awsec2instancev1.AwsEc2Instance{},
 	cloudresourcekind.CloudResourceKind_AwsEcrRepo:         &awsecrrepov1.AwsEcrRepo{},
 	cloudresourcekind.CloudResourceKind_AwsEcsCluster:      &awsecsclusterv1.AwsEcsCluster{},
 	cloudresourcekind.CloudResourceKind_AwsEcsService:      &awsecsservicev1.AwsEcsService{},
