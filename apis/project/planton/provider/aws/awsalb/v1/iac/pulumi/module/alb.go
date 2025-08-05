@@ -32,7 +32,7 @@ func alb(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) (*lb.LoadB
 	}
 
 	// If SSL is enabled, create the typical HTTP->HTTPS + HTTPS listeners
-	if locals.AwsAlb.Spec.Ssl.Enabled {
+	if locals.AwsAlb.Spec.Ssl != nil && locals.AwsAlb.Spec.Ssl.Enabled {
 		if locals.AwsAlb.Spec.Ssl.CertificateArn == nil || locals.AwsAlb.Spec.Ssl.CertificateArn.GetValue() == "" {
 			return nil, fmt.Errorf("ssl.enabled is true, but ssl.certificate_arn is not provided")
 		}
