@@ -47,6 +47,7 @@ enum CloudResourceKind {
   AwsEksNodeGroup = 218 [(provider) = aws];
   AwsIamUser = 219 [(provider) = aws];
   AwsKmsKey = 220 [(provider) = aws];
+  AwsEc2Instance = 221 [(provider) = aws];
 
   // 400–599: Azure resources
   AzureAksCluster = 400 [(provider) = azure];
