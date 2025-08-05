@@ -1,7 +1,10 @@
 package module
 
-// These constants define the output keys we export from our Pulumi module.
+// Pulumi stack‑output keys expected by AwsEc2InstanceStackOutputs.
 const (
-	OpRoleArn  = "role_arn"
-	OpRoleName = "role_name"
+	OpInstanceId         = "instance_id"
+	OpPrivateIp          = "private_ip"
+	OpPrivateDnsName     = "private_dns_name"
+	OpAvailabilityZone   = "availability_zone"
+	OpInstanceProfileArn = "instance_profile_arn"
 )
