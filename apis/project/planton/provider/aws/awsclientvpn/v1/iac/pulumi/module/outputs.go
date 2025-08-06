@@ -1,7 +1,7 @@
 package module
 
-// These constants define the output keys we export from our Pulumi module.
 const (
-	OpRoleArn  = "role_arn"
-	OpRoleName = "role_name"
+	OpClientVpnEndpointId  = "client_vpn_endpoint_id"
+	OpSecurityGroupId      = "security_group_id"
+	OpSubnetAssociationIds = "subnet_association_ids"
 )
