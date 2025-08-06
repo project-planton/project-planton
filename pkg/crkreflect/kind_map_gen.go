@@ -5,6 +5,7 @@ import (
 	mongodbatlasv1 "github.com/project-planton/project-planton/apis/project/planton/provider/atlas/mongodbatlas/v1"
 	awsalbv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsalb/v1"
 	awscertmanagercertv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awscertmanagercert/v1"
+	awsclientvpnv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsclientvpn/v1"
 	awscloudfrontv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awscloudfront/v1"
 	awsdynamodbv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsdynamodb/v1"
 	awsec2instancev1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsec2instance/v1"
@@ -139,6 +140,7 @@ var ProviderAtlasMap = map[cloudresourcekind.CloudResourceKind]proto.Message{
 var ProviderAwsMap = map[cloudresourcekind.CloudResourceKind]proto.Message{
 	cloudresourcekind.CloudResourceKind_AwsAlb:             &awsalbv1.AwsAlb{},
 	cloudresourcekind.CloudResourceKind_AwsCertManagerCert: &awscertmanagercertv1.AwsCertManagerCert{},
+	cloudresourcekind.CloudResourceKind_AwsClientVpn:       &awsclientvpnv1.AwsClientVpn{},
 	cloudresourcekind.CloudResourceKind_AwsCloudFront:      &awscloudfrontv1.AwsCloudFront{},
 	cloudresourcekind.CloudResourceKind_AwsDynamodb:        &awsdynamodbv1.AwsDynamodb{},
 	cloudresourcekind.CloudResourceKind_AwsEc2Instance:     &awsec2instancev1.AwsEc2Instance{},
