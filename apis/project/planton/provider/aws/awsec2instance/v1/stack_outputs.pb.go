@@ -35,8 +35,12 @@ type AwsEc2InstanceStackOutputs struct {
 	AvailabilityZone string `protobuf:"bytes,4,opt,name=availability_zone,json=availabilityZone,proto3" json:"availability_zone,omitempty"`
 	// ARN of the IAM instance profile attached to the instance (if any).
 	InstanceProfileArn string `protobuf:"bytes,5,opt,name=instance_profile_arn,json=instanceProfileArn,proto3" json:"instance_profile_arn,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	// Base‑64‑encoded PEM‑formatted private key when the module generates an SSH key pair.
+	SshPrivateKey string `protobuf:"bytes,6,opt,name=ssh_private_key,json=sshPrivateKey,proto3" json:"ssh_private_key,omitempty"`
+	// OpenSSH‑formatted public key corresponding to the generated private key.
+	SshPublicKey  string `protobuf:"bytes,7,opt,name=ssh_public_key,json=sshPublicKey,proto3" json:"ssh_public_key,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *AwsEc2InstanceStackOutputs) Reset() {
@@ -104,11 +108,25 @@ func (x *AwsEc2InstanceStackOutputs) GetInstanceProfileArn() string {
 	return ""
 }
 
+func (x *AwsEc2InstanceStackOutputs) GetSshPrivateKey() string {
+	if x != nil {
+		return x.SshPrivateKey
+	}
+	return ""
+}
+
+func (x *AwsEc2InstanceStackOutputs) GetSshPublicKey() string {
+	if x != nil {
+		return x.SshPublicKey
+	}
+	return ""
+}
+
 var File_project_planton_provider_aws_awsec2instance_v1_stack_outputs_proto protoreflect.FileDescriptor
 
 const file_project_planton_provider_aws_awsec2instance_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Bproject/planton/provider/aws/awsec2instance/v1/stack_outputs.proto\x12.project.planton.provider.aws.awsec2instance.v1\"\xe5\x01\n" +
+	"Bproject/planton/provider/aws/awsec2instance/v1/stack_outputs.proto\x12.project.planton.provider.aws.awsec2instance.v1\"\xb3\x02\n" +
 	"\x1aAwsEc2InstanceStackOutputs\x12\x1f\n" +
 	"\vinstance_id\x18\x01 \x01(\tR\n" +
 	"instanceId\x12\x1d\n" +
@@ -116,7 +134,9 @@ const file_project_planton_provider_aws_awsec2instance_v1_stack_outputs_proto_ra
 	"private_ip\x18\x02 \x01(\tR\tprivateIp\x12(\n" +
 	"\x10private_dns_name\x18\x03 \x01(\tR\x0eprivateDnsName\x12+\n" +
 	"\x11availability_zone\x18\x04 \x01(\tR\x10availabilityZone\x120\n" +
-	"\x14instance_profile_arn\x18\x05 \x01(\tR\x12instanceProfileArnB\x97\x03\n" +
+	"\x14instance_profile_arn\x18\x05 \x01(\tR\x12instanceProfileArn\x12&\n" +
+	"\x0fssh_private_key\x18\x06 \x01(\tR\rsshPrivateKey\x12$\n" +
+	"\x0essh_public_key\x18\a \x01(\tR\fsshPublicKeyB\x97\x03\n" +
 	"2com.project.planton.provider.aws.awsec2instance.v1B\x11StackOutputsProtoP\x01Zogithub.com/project-planton/project-planton/apis/project/planton/provider/aws/awsec2instance/v1;awsec2instancev1\xa2\x02\x05PPPAA\xaa\x02.Project.Planton.Provider.Aws.Awsec2instance.V1\xca\x02.Project\\Planton\\Provider\\Aws\\Awsec2instance\\V1\xe2\x02:Project\\Planton\\Provider\\Aws\\Awsec2instance\\V1\\GPBMetadata\xea\x023Project::Planton::Provider::Aws::Awsec2instance::V1b\x06proto3"
 
 var (
