@@ -58,6 +58,7 @@ const (
 	CloudResourceKind_AwsIamUser         CloudResourceKind = 219
 	CloudResourceKind_AwsKmsKey          CloudResourceKind = 220
 	CloudResourceKind_AwsEc2Instance     CloudResourceKind = 221
+	CloudResourceKind_AwsClientVpn       CloudResourceKind = 222
 	// 400–599: Azure resources
 	CloudResourceKind_AzureAksCluster        CloudResourceKind = 400
 	CloudResourceKind_AzureAksNodePool       CloudResourceKind = 401
@@ -189,6 +190,7 @@ var (
 		219:  "AwsIamUser",
 		220:  "AwsKmsKey",
 		221:  "AwsEc2Instance",
+		222:  "AwsClientVpn",
 		400:  "AzureAksCluster",
 		401:  "AzureAksNodePool",
 		402:  "AzureContainerRegistry",
@@ -311,6 +313,7 @@ var (
 		"AwsIamUser":                           219,
 		"AwsKmsKey":                            220,
 		"AwsEc2Instance":                       221,
+		"AwsClientVpn":                         222,
 		"AzureAksCluster":                      400,
 		"AzureAksNodePool":                     401,
 		"AzureContainerRegistry":               402,
@@ -463,7 +466,7 @@ var File_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto prot
 
 const file_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto_rawDesc = "" +
 	"\n" +
-	"Bproject/planton/shared/cloudresourcekind/cloud_resource_kind.proto\x12(project.planton.shared.cloudresourcekind\x1a google/protobuf/descriptor.proto\x1aFproject/planton/shared/cloudresourcekind/cloud_resource_provider.proto*\x82\x1d\n" +
+	"Bproject/planton/shared/cloudresourcekind/cloud_resource_kind.proto\x12(project.planton.shared.cloudresourcekind\x1a google/protobuf/descriptor.proto\x1aFproject/planton/shared/cloudresourcekind/cloud_resource_provider.proto*\x9b\x1d\n" +
 	"\x11CloudResourceKind\x12\x15\n" +
 	"\vunspecified\x10\x00\x1a\x04\xa0\xf7\x04\x01\x12#\n" +
 	"\x19FirstTestCloudApiResource\x10\x01\x1a\x04\xa0\xf7\x04\x01\x12$\n" +
@@ -496,7 +499,8 @@ const file_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto_ra
 	"\n" +
 	"AwsIamUser\x10\xdb\x01\x1a\x04\xa0\xf7\x04\x03\x12\x14\n" +
 	"\tAwsKmsKey\x10\xdc\x01\x1a\x04\xa0\xf7\x04\x03\x12\x19\n" +
-	"\x0eAwsEc2Instance\x10\xdd\x01\x1a\x04\xa0\xf7\x04\x03\x12\x1a\n" +
+	"\x0eAwsEc2Instance\x10\xdd\x01\x1a\x04\xa0\xf7\x04\x03\x12\x17\n" +
+	"\fAwsClientVpn\x10\xde\x01\x1a\x04\xa0\xf7\x04\x03\x12\x1a\n" +
 	"\x0fAzureAksCluster\x10\x90\x03\x1a\x04\xa0\xf7\x04\x04\x12\x1b\n" +
 	"\x10AzureAksNodePool\x10\x91\x03\x1a\x04\xa0\xf7\x04\x04\x12!\n" +
 	"\x16AzureContainerRegistry\x10\x92\x03\x1a\x04\xa0\xf7\x04\x04\x12\x17\n" +
