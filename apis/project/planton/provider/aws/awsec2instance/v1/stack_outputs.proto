@@ -19,4 +19,10 @@ message AwsEc2InstanceStackOutputs {
 
   // ARN of the IAM instance profile attached to the instance (if any).
   string instance_profile_arn = 5;
+
+  // Base‑64‑encoded PEM‑formatted private key when the module generates an SSH key pair.
+  string ssh_private_key = 6;
+
+  // OpenSSH‑formatted public key corresponding to the generated private key.
+  string ssh_public_key  = 7;
 }

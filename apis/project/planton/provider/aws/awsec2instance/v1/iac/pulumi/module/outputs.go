@@ -7,4 +7,7 @@ const (
 	OpPrivateDnsName     = "private_dns_name"
 	OpAvailabilityZone   = "availability_zone"
 	OpInstanceProfileArn = "instance_profile_arn"
+
+	OpSshPrivateKey = "ssh_private_key"
+	OpSshPublicKey  = "ssh_public_key"
 )
