@@ -3,19 +3,20 @@ package module
 import (
 	"fmt"
 	"github.com/pkg/errors"
-	"github.com/pulumi/pulumi-aws/sdk/v6/go/aws"
-	"github.com/pulumi/pulumi-aws/sdk/v6/go/aws/rds"
+	"github.com/pulumi/pulumi-aws/sdk/v7/go/aws"
+	"github.com/pulumi/pulumi-aws/sdk/v7/go/aws/rds"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-func rdsClusterInstance(ctx *pulumi.Context, locals *Locals, awsProvider *aws.Provider, createdRdsCluster *rds.Cluster) ([]*rds.ClusterInstance, error) {
+func rdsClusterInstance(ctx *pulumi.Context, locals *Locals, awsProvider *aws.Provider,
+	createdRdsCluster *rds.Cluster) ([]*rds.ClusterInstance, error) {
 	clusterInstanceArgs := &rds.ClusterInstanceArgs{
 		ClusterIdentifier:          createdRdsCluster.ID(),
 		InstanceClass:              pulumi.String(locals.AwsRdsCluster.Spec.InstanceType),
 		DbSubnetGroupName:          createdRdsCluster.DbSubnetGroupName,
 		PubliclyAccessible:         pulumi.Bool(locals.AwsRdsCluster.Spec.IsPubliclyAccessible),
 		Tags:                       pulumi.ToStringMap(locals.Labels),
-		Engine:                     createdRdsCluster.Engine,
+		Engine:                     rds.EngineType(locals.AwsRdsCluster.Spec.Engine),
 		EngineVersion:              createdRdsCluster.EngineVersion,
 		AutoMinorVersionUpgrade:    pulumi.Bool(true),
 		ApplyImmediately:           pulumi.Bool(true),

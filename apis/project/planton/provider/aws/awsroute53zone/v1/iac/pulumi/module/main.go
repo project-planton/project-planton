@@ -3,13 +3,13 @@ package module
 import (
 	"fmt"
 	"github.com/pulumi/pulumi-aws-native/sdk/go/aws"
-	awsclassic "github.com/pulumi/pulumi-aws/sdk/v6/go/aws"
+	awsclassic "github.com/pulumi/pulumi-aws/sdk/v7/go/aws"
 	"strings"
 
 	"github.com/pkg/errors"
 	awsroute53zonev1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsroute53zone/v1"
 	"github.com/pulumi/pulumi-aws-native/sdk/go/aws/route53"
-	awsclassicroute53 "github.com/pulumi/pulumi-aws/sdk/v6/go/aws/route53"
+	awsclassicroute53 "github.com/pulumi/pulumi-aws/sdk/v7/go/aws/route53"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 

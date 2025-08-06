@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"github.com/pkg/errors"
 	awssecretsmanagerv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awssecretsmanager/v1"
-	"github.com/pulumi/pulumi-aws/sdk/v6/go/aws"
-	"github.com/pulumi/pulumi-aws/sdk/v6/go/aws/secretsmanager"
+	"github.com/pulumi/pulumi-aws/sdk/v7/go/aws"
+	"github.com/pulumi/pulumi-aws/sdk/v7/go/aws/secretsmanager"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
