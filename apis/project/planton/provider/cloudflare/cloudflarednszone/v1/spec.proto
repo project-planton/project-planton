@@ -25,7 +25,7 @@ message CloudflareDnsZoneSpec {
 
   // The subscription plan for the zone (e.g., free, pro, business, enterprise).
   // Defaults to the Free plan if unspecified.
-  Plan plan = 3;
+  CloudflareDnsZonePlan plan = 3;
 
   // Indicates if the zone is created in a paused state (DNS-only mode with no security or performance features).
   // If true, the zone will not receive Cloudflare's proxy/CDN services. Defaults to false.
@@ -34,16 +34,16 @@ message CloudflareDnsZoneSpec {
   // If true, new DNS records in this zone will default to being proxied (orange-cloud) through Cloudflare.
   // Defaults to false.
   bool default_proxied = 5;
+}
 
-  // Available Cloudflare zone plan options.
-  enum Plan {
-    // Free plan (default).
-    FREE = 0;
-    // Pro plan.
-    PRO = 1;
-    // Business plan.
-    BUSINESS = 2;
-    // Enterprise plan.
-    ENTERPRISE = 3;
-  }
+// Available Cloudflare zone plan options.
+enum CloudflareDnsZonePlan {
+  // Free plan (default).
+  FREE = 0;
+  // Pro plan.
+  PRO = 1;
+  // Business plan.
+  BUSINESS = 2;
+  // Enterprise plan.
+  ENTERPRISE = 3;
 }

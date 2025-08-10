@@ -24,28 +24,28 @@ const (
 )
 
 // Available Cloudflare zone plan options.
-type CloudflareDnsZoneSpec_Plan int32
+type CloudflareDnsZonePlan int32
 
 const (
 	// Free plan (default).
-	CloudflareDnsZoneSpec_FREE CloudflareDnsZoneSpec_Plan = 0
+	CloudflareDnsZonePlan_FREE CloudflareDnsZonePlan = 0
 	// Pro plan.
-	CloudflareDnsZoneSpec_PRO CloudflareDnsZoneSpec_Plan = 1
+	CloudflareDnsZonePlan_PRO CloudflareDnsZonePlan = 1
 	// Business plan.
-	CloudflareDnsZoneSpec_BUSINESS CloudflareDnsZoneSpec_Plan = 2
+	CloudflareDnsZonePlan_BUSINESS CloudflareDnsZonePlan = 2
 	// Enterprise plan.
-	CloudflareDnsZoneSpec_ENTERPRISE CloudflareDnsZoneSpec_Plan = 3
+	CloudflareDnsZonePlan_ENTERPRISE CloudflareDnsZonePlan = 3
 )
 
-// Enum value maps for CloudflareDnsZoneSpec_Plan.
+// Enum value maps for CloudflareDnsZonePlan.
 var (
-	CloudflareDnsZoneSpec_Plan_name = map[int32]string{
+	CloudflareDnsZonePlan_name = map[int32]string{
 		0: "FREE",
 		1: "PRO",
 		2: "BUSINESS",
 		3: "ENTERPRISE",
 	}
-	CloudflareDnsZoneSpec_Plan_value = map[string]int32{
+	CloudflareDnsZonePlan_value = map[string]int32{
 		"FREE":       0,
 		"PRO":        1,
 		"BUSINESS":   2,
@@ -53,31 +53,31 @@ var (
 	}
 )
 
-func (x CloudflareDnsZoneSpec_Plan) Enum() *CloudflareDnsZoneSpec_Plan {
-	p := new(CloudflareDnsZoneSpec_Plan)
+func (x CloudflareDnsZonePlan) Enum() *CloudflareDnsZonePlan {
+	p := new(CloudflareDnsZonePlan)
 	*p = x
 	return p
 }
 
-func (x CloudflareDnsZoneSpec_Plan) String() string {
+func (x CloudflareDnsZonePlan) String() string {
 	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
 }
 
-func (CloudflareDnsZoneSpec_Plan) Descriptor() protoreflect.EnumDescriptor {
+func (CloudflareDnsZonePlan) Descriptor() protoreflect.EnumDescriptor {
 	return file_project_planton_provider_cloudflare_cloudflarednszone_v1_spec_proto_enumTypes[0].Descriptor()
 }
 
-func (CloudflareDnsZoneSpec_Plan) Type() protoreflect.EnumType {
+func (CloudflareDnsZonePlan) Type() protoreflect.EnumType {
 	return &file_project_planton_provider_cloudflare_cloudflarednszone_v1_spec_proto_enumTypes[0]
 }
 
-func (x CloudflareDnsZoneSpec_Plan) Number() protoreflect.EnumNumber {
+func (x CloudflareDnsZonePlan) Number() protoreflect.EnumNumber {
 	return protoreflect.EnumNumber(x)
 }
 
-// Deprecated: Use CloudflareDnsZoneSpec_Plan.Descriptor instead.
-func (CloudflareDnsZoneSpec_Plan) EnumDescriptor() ([]byte, []int) {
-	return file_project_planton_provider_cloudflare_cloudflarednszone_v1_spec_proto_rawDescGZIP(), []int{0, 0}
+// Deprecated: Use CloudflareDnsZonePlan.Descriptor instead.
+func (CloudflareDnsZonePlan) EnumDescriptor() ([]byte, []int) {
+	return file_project_planton_provider_cloudflare_cloudflarednszone_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
 // **CloudflareDnsZoneSpec** defines the configuration for creating a Cloudflare DNS Zone.
@@ -91,7 +91,7 @@ type CloudflareDnsZoneSpec struct {
 	AccountId string `protobuf:"bytes,2,opt,name=account_id,json=accountId,proto3" json:"account_id,omitempty"`
 	// The subscription plan for the zone (e.g., free, pro, business, enterprise).
 	// Defaults to the Free plan if unspecified.
-	Plan CloudflareDnsZoneSpec_Plan `protobuf:"varint,3,opt,name=plan,proto3,enum=project.planton.provider.cloudflare.cloudflarednszone.v1.CloudflareDnsZoneSpec_Plan" json:"plan,omitempty"`
+	Plan CloudflareDnsZonePlan `protobuf:"varint,3,opt,name=plan,proto3,enum=project.planton.provider.cloudflare.cloudflarednszone.v1.CloudflareDnsZonePlan" json:"plan,omitempty"`
 	// Indicates if the zone is created in a paused state (DNS-only mode with no security or performance features).
 	// If true, the zone will not receive Cloudflare's proxy/CDN services. Defaults to false.
 	Paused bool `protobuf:"varint,4,opt,name=paused,proto3" json:"paused,omitempty"`
@@ -146,11 +146,11 @@ func (x *CloudflareDnsZoneSpec) GetAccountId() string {
 	return ""
 }
 
-func (x *CloudflareDnsZoneSpec) GetPlan() CloudflareDnsZoneSpec_Plan {
+func (x *CloudflareDnsZoneSpec) GetPlan() CloudflareDnsZonePlan {
 	if x != nil {
 		return x.Plan
 	}
-	return CloudflareDnsZoneSpec_FREE
+	return CloudflareDnsZonePlan_FREE
 }
 
 func (x *CloudflareDnsZoneSpec) GetPaused() bool {
@@ -171,16 +171,16 @@ var File_project_planton_provider_cloudflare_cloudflarednszone_v1_spec_proto pro
 
 const file_project_planton_provider_cloudflare_cloudflarednszone_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Cproject/planton/provider/cloudflare/cloudflarednszone/v1/spec.proto\x128project.planton.provider.cloudflare.cloudflarednszone.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\"\xf5\x03\n" +
+	"Cproject/planton/provider/cloudflare/cloudflarednszone/v1/spec.proto\x128project.planton.provider.cloudflare.cloudflarednszone.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\"\xb7\x03\n" +
 	"\x15CloudflareDnsZoneSpec\x12\xd0\x01\n" +
 	"\tzone_name\x18\x01 \x01(\tB\xb2\x01\xbaH\xae\x01\xba\x01\xa7\x01\n" +
 	"\tzone_name\x125zone_name must be a valid fully qualified domain name\x1acthis.matches('^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?[.])+(?:[a-z](?:[a-z0-9-]{0,61}[a-z0-9])?)$')\xc8\x01\x01R\bzoneName\x12%\n" +
 	"\n" +
-	"account_id\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\taccountId\x12h\n" +
-	"\x04plan\x18\x03 \x01(\x0e2T.project.planton.provider.cloudflare.cloudflarednszone.v1.CloudflareDnsZoneSpec.PlanR\x04plan\x12\x16\n" +
+	"account_id\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\taccountId\x12c\n" +
+	"\x04plan\x18\x03 \x01(\x0e2O.project.planton.provider.cloudflare.cloudflarednszone.v1.CloudflareDnsZonePlanR\x04plan\x12\x16\n" +
 	"\x06paused\x18\x04 \x01(\bR\x06paused\x12'\n" +
-	"\x0fdefault_proxied\x18\x05 \x01(\bR\x0edefaultProxied\"7\n" +
-	"\x04Plan\x12\b\n" +
+	"\x0fdefault_proxied\x18\x05 \x01(\bR\x0edefaultProxied*H\n" +
+	"\x15CloudflareDnsZonePlan\x12\b\n" +
 	"\x04FREE\x10\x00\x12\a\n" +
 	"\x03PRO\x10\x01\x12\f\n" +
 	"\bBUSINESS\x10\x02\x12\x0e\n" +
@@ -203,11 +203,11 @@ func file_project_planton_provider_cloudflare_cloudflarednszone_v1_spec_proto_ra
 var file_project_planton_provider_cloudflare_cloudflarednszone_v1_spec_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_project_planton_provider_cloudflare_cloudflarednszone_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_cloudflare_cloudflarednszone_v1_spec_proto_goTypes = []any{
-	(CloudflareDnsZoneSpec_Plan)(0), // 0: project.planton.provider.cloudflare.cloudflarednszone.v1.CloudflareDnsZoneSpec.Plan
-	(*CloudflareDnsZoneSpec)(nil),   // 1: project.planton.provider.cloudflare.cloudflarednszone.v1.CloudflareDnsZoneSpec
+	(CloudflareDnsZonePlan)(0),    // 0: project.planton.provider.cloudflare.cloudflarednszone.v1.CloudflareDnsZonePlan
+	(*CloudflareDnsZoneSpec)(nil), // 1: project.planton.provider.cloudflare.cloudflarednszone.v1.CloudflareDnsZoneSpec
 }
 var file_project_planton_provider_cloudflare_cloudflarednszone_v1_spec_proto_depIdxs = []int32{
-	0, // 0: project.planton.provider.cloudflare.cloudflarednszone.v1.CloudflareDnsZoneSpec.plan:type_name -> project.planton.provider.cloudflare.cloudflarednszone.v1.CloudflareDnsZoneSpec.Plan
+	0, // 0: project.planton.provider.cloudflare.cloudflarednszone.v1.CloudflareDnsZoneSpec.plan:type_name -> project.planton.provider.cloudflare.cloudflarednszone.v1.CloudflareDnsZonePlan
 	1, // [1:1] is the sub-list for method output_type
 	1, // [1:1] is the sub-list for method input_type
 	1, // [1:1] is the sub-list for extension type_name

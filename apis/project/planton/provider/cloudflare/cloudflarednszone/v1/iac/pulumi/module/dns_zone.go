@@ -8,8 +8,8 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// dns_zone provisions the Cloudflare zone and exports outputs.
-func dns_zone(
+// dnsZone provisions the Cloudflare zone and exports outputs.
+func dnsZone(
 	ctx *pulumi.Context,
 	locals *Locals,
 	cloudflareProvider *cloudflare.Provider,
