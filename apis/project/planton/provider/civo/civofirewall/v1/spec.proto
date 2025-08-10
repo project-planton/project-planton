@@ -15,7 +15,7 @@ message CivoFirewallSpec {
   ];
 
   // The network (VPC) in which to create this firewall. Must refer to an existing CivoNetwork.
-  string network_id = 2 [
+  project.planton.shared.foreignkey.v1.StringValueOrRef network_id = 2 [
     (buf.validate.field).required = true,
     (project.planton.shared.foreignkey.v1.default_kind) = CivoVpc,
     (project.planton.shared.foreignkey.v1.default_kind_field_path) = "status.outputs.network_id"

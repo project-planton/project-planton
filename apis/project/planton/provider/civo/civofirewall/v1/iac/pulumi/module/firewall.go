@@ -40,7 +40,7 @@ func firewall(
 	// 3. Build firewall args.
 	firewallArgs := &civo.FirewallArgs{
 		Name:         pulumi.String(locals.CivoFirewall.Spec.Name),
-		NetworkId:    pulumi.String(locals.CivoFirewall.Spec.NetworkId),
+		NetworkId:    pulumi.String(locals.CivoFirewall.Spec.NetworkId.GetValue()),
 		IngressRules: inboundRules,
 		EgressRules:  outboundRules,
 	}

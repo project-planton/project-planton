@@ -9,7 +9,7 @@ package civofirewallv1
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	_ "github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
-	_ "github.com/project-planton/project-planton/apis/project/planton/shared/foreignkey/v1"
+	v1 "github.com/project-planton/project-planton/apis/project/planton/shared/foreignkey/v1"
 	_ "github.com/project-planton/project-planton/apis/project/planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -31,7 +31,7 @@ type CivoFirewallSpec struct {
 	// Name of the firewall (must be unique per Civo account/project).
 	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// The network (VPC) in which to create this firewall. Must refer to an existing CivoNetwork.
-	NetworkId string `protobuf:"bytes,2,opt,name=network_id,json=networkId,proto3" json:"network_id,omitempty"`
+	NetworkId *v1.StringValueOrRef `protobuf:"bytes,2,opt,name=network_id,json=networkId,proto3" json:"network_id,omitempty"`
 	// Inbound (ingress) rules: traffic allowed **to** instances.
 	// Any traffic not matching an inbound rule is denied (stateful firewall).
 	InboundRules []*CivoFirewallInboundRule `protobuf:"bytes,3,rep,name=inbound_rules,json=inboundRules,proto3" json:"inbound_rules,omitempty"`
@@ -82,11 +82,11 @@ func (x *CivoFirewallSpec) GetName() string {
 	return ""
 }
 
-func (x *CivoFirewallSpec) GetNetworkId() string {
+func (x *CivoFirewallSpec) GetNetworkId() *v1.StringValueOrRef {
 	if x != nil {
 		return x.NetworkId
 	}
-	return ""
+	return nil
 }
 
 func (x *CivoFirewallSpec) GetInboundRules() []*CivoFirewallInboundRule {
@@ -279,11 +279,11 @@ var File_project_planton_provider_civo_civofirewall_v1_spec_proto protoreflect.F
 
 const file_project_planton_provider_civo_civofirewall_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"8project/planton/provider/civo/civofirewall/v1/spec.proto\x12-project.planton.provider.civo.civofirewall.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\x1aBproject/planton/shared/cloudresourcekind/cloud_resource_kind.proto\"\xe8\x02\n" +
+	"8project/planton/provider/civo/civofirewall/v1/spec.proto\x12-project.planton.provider.civo.civofirewall.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\x1aBproject/planton/shared/cloudresourcekind/cloud_resource_kind.proto\"\xa0\x03\n" +
 	"\x10CivoFirewallSpec\x12\x1a\n" +
-	"\x04name\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\x12G\n" +
+	"\x04name\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\x12\x7f\n" +
 	"\n" +
-	"network_id\x18\x02 \x01(\tB(\xbaH\x03\xc8\x01\x01\x88\xd4a\xe7\v\x92\xd4a\x19status.outputs.network_idR\tnetworkId\x12k\n" +
+	"network_id\x18\x02 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB(\xbaH\x03\xc8\x01\x01\x88\xd4a\xe7\v\x92\xd4a\x19status.outputs.network_idR\tnetworkId\x12k\n" +
 	"\rinbound_rules\x18\x03 \x03(\v2F.project.planton.provider.civo.civofirewall.v1.CivoFirewallInboundRuleR\finboundRules\x12n\n" +
 	"\x0eoutbound_rules\x18\x04 \x03(\v2G.project.planton.provider.civo.civofirewall.v1.CivoFirewallOutboundRuleR\routboundRules\x12\x12\n" +
 	"\x04tags\x18\x05 \x03(\tR\x04tags\"\xb1\x01\n" +
@@ -320,15 +320,17 @@ var file_project_planton_provider_civo_civofirewall_v1_spec_proto_goTypes = []an
 	(*CivoFirewallSpec)(nil),         // 0: project.planton.provider.civo.civofirewall.v1.CivoFirewallSpec
 	(*CivoFirewallInboundRule)(nil),  // 1: project.planton.provider.civo.civofirewall.v1.CivoFirewallInboundRule
 	(*CivoFirewallOutboundRule)(nil), // 2: project.planton.provider.civo.civofirewall.v1.CivoFirewallOutboundRule
+	(*v1.StringValueOrRef)(nil),      // 3: project.planton.shared.foreignkey.v1.StringValueOrRef
 }
 var file_project_planton_provider_civo_civofirewall_v1_spec_proto_depIdxs = []int32{
-	1, // 0: project.planton.provider.civo.civofirewall.v1.CivoFirewallSpec.inbound_rules:type_name -> project.planton.provider.civo.civofirewall.v1.CivoFirewallInboundRule
-	2, // 1: project.planton.provider.civo.civofirewall.v1.CivoFirewallSpec.outbound_rules:type_name -> project.planton.provider.civo.civofirewall.v1.CivoFirewallOutboundRule
-	2, // [2:2] is the sub-list for method output_type
-	2, // [2:2] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	3, // 0: project.planton.provider.civo.civofirewall.v1.CivoFirewallSpec.network_id:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
+	1, // 1: project.planton.provider.civo.civofirewall.v1.CivoFirewallSpec.inbound_rules:type_name -> project.planton.provider.civo.civofirewall.v1.CivoFirewallInboundRule
+	2, // 2: project.planton.provider.civo.civofirewall.v1.CivoFirewallSpec.outbound_rules:type_name -> project.planton.provider.civo.civofirewall.v1.CivoFirewallOutboundRule
+	3, // [3:3] is the sub-list for method output_type
+	3, // [3:3] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_provider_civo_civofirewall_v1_spec_proto_init() }
