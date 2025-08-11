@@ -78,6 +78,7 @@ func Resources(ctx *pulumi.Context, stackInput *awsclientvpnv1.AwsClientVpnStack
 	createdClientVpnEndpoint, err := ec2clientvpn.NewEndpoint(ctx,
 		locals.AwsClientVpn.Metadata.Name,
 		&ec2clientvpn.EndpointArgs{
+			VpcId:                 pulumi.String(locals.AwsClientVpn.Spec.VpcId.GetValue()),
 			Description:           pulumi.String(locals.AwsClientVpn.Spec.Description),
 			ServerCertificateArn:  pulumi.String(locals.AwsClientVpn.Spec.ServerCertificateArn.GetValue()),
 			ClientCidrBlock:       pulumi.String(locals.AwsClientVpn.Spec.ClientCidrBlock),
