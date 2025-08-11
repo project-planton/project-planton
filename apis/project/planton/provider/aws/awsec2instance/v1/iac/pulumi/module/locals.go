@@ -24,11 +24,12 @@ func initialiseLocals(ctx *pulumi.Context, stackInput *awsec2instancev1.AwsEc2In
 
 	// Base tags (always present)
 	locals.AwsTags = map[string]string{
-		awstagkeys.Resource:     strconv.FormatBool(true),
-		awstagkeys.Organization: locals.AwsEc2Instance.Metadata.Org,
 		awstagkeys.Environment:  locals.AwsEc2Instance.Metadata.Env,
-		awstagkeys.ResourceKind: cloudresourcekind.CloudResourceKind_AwsEc2Instance.String(),
+		awstagkeys.Name:         locals.AwsEc2Instance.Metadata.Name,
+		awstagkeys.Organization: locals.AwsEc2Instance.Metadata.Org,
+		awstagkeys.Resource:     strconv.FormatBool(true),
 		awstagkeys.ResourceId:   locals.AwsEc2Instance.Metadata.Id,
+		awstagkeys.ResourceKind: cloudresourcekind.CloudResourceKind_AwsEc2Instance.String(),
 	}
 
 	// Merge user‑supplied tags (override on collision)

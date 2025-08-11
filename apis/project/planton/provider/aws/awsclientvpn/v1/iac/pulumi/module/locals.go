@@ -18,11 +18,12 @@ func initializeLocals(ctx *pulumi.Context, stackInput *awsclientvpnv1.AwsClientV
 	locals := &Locals{
 		AwsClientVpn: stackInput.Target,
 		AwsTags: map[string]string{
-			awstagkeys.Resource:     "true",
-			awstagkeys.Organization: stackInput.Target.Metadata.Org,
 			awstagkeys.Environment:  stackInput.Target.Metadata.Env,
-			awstagkeys.ResourceKind: cloudresourcekind.CloudResourceKind_AwsClientVpn.String(),
+			awstagkeys.Name:         stackInput.Target.Metadata.Name,
+			awstagkeys.Organization: stackInput.Target.Metadata.Org,
+			awstagkeys.Resource:     "true",
 			awstagkeys.ResourceId:   stackInput.Target.Metadata.Id,
+			awstagkeys.ResourceKind: cloudresourcekind.CloudResourceKind_AwsClientVpn.String(),
 		},
 	}
 	return locals, nil
