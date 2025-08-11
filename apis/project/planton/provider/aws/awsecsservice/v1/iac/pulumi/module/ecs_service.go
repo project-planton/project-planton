@@ -3,10 +3,11 @@ package module
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/project-planton/project-planton/internal/valuefrom"
-	"k8s.io/utils/pointer"
 	"sort"
 	"strings"
+
+	"github.com/project-planton/project-planton/internal/valuefrom"
+	"k8s.io/utils/pointer"
 
 	"github.com/pkg/errors"
 	"github.com/pulumi/pulumi-aws/sdk/v7/go/aws"
@@ -40,7 +41,7 @@ func ecsService(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) err
 	if loggingEnabled {
 		var err error
 		logGroup, err = cloudwatch.NewLogGroup(ctx,
-			serviceName+"-loggroup",
+			"log-group",
 			&cloudwatch.LogGroupArgs{
 				Name:            pulumi.String(logGroupName),
 				RetentionInDays: pulumi.Int(30),
@@ -91,7 +92,7 @@ func ecsService(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) err
 	}
 
 	taskDef, err := ecs.NewTaskDefinition(ctx,
-		serviceName+"-taskdef",
+		"task-def",
 		taskDefinitionArgs,
 		pulumi.Provider(provider))
 	if err != nil {
@@ -136,14 +137,16 @@ func ecsService(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) err
 			protocol = strings.ToUpper(spec.Alb.HealthCheck.Protocol)
 		}
 
-		targetGroup, err := lb.NewTargetGroup(ctx, serviceName+"-tg", &lb.TargetGroupArgs{
-			Port:        pulumi.Int(int(spec.Container.Port)),
-			Protocol:    pulumi.String(protocol),
-			TargetType:  pulumi.String("ip"),
-			VpcId:       pulumi.String(subnetLookup.VpcId),
-			HealthCheck: healthCheckArgs(spec.Alb.HealthCheck, protocol),
-			Tags:        pulumi.ToStringMap(locals.AwsTags),
-		}, pulumi.Provider(provider))
+		targetGroup, err := lb.NewTargetGroup(ctx,
+			"tg",
+			&lb.TargetGroupArgs{
+				Port:        pulumi.Int(int(spec.Container.Port)),
+				Protocol:    pulumi.String(protocol),
+				TargetType:  pulumi.String("ip"),
+				VpcId:       pulumi.String(subnetLookup.VpcId),
+				HealthCheck: healthCheckArgs(spec.Alb.HealthCheck, protocol),
+				Tags:        pulumi.ToStringMap(locals.AwsTags),
+			}, pulumi.Provider(provider))
 		if err != nil {
 			return errors.Wrap(err, "failed to create ALB target group")
 		}
@@ -213,25 +216,28 @@ func ecsService(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) err
 				priority = int(spec.Alb.ListenerPriority)
 			}
 
-			_, err := lb.NewListenerRule(ctx, serviceName+"-rule", &lb.ListenerRuleArgs{
-				ListenerArn: pulumi.String(foundListener.Arn),
-				Actions: lb.ListenerRuleActionArray{
-					&lb.ListenerRuleActionArgs{
-						Type:           pulumi.String("forward"),
-						TargetGroupArn: targetGroup.Arn,
+			_, err := lb.NewListenerRule(ctx,
+				"listener-rule",
+				&lb.ListenerRuleArgs{
+					ListenerArn: pulumi.String(foundListener.Arn),
+					Actions: lb.ListenerRuleActionArray{
+						&lb.ListenerRuleActionArgs{
+							Type:           pulumi.String("forward"),
+							TargetGroupArn: targetGroup.Arn,
+						},
 					},
-				},
-				Conditions: conditions,
-				Priority:   pulumi.Int(priority),
-				Tags:       pulumi.ToStringMap(locals.AwsTags),
-			}, pulumi.Provider(provider))
+					Conditions: conditions,
+					Priority:   pulumi.Int(priority),
+					Tags:       pulumi.ToStringMap(locals.AwsTags),
+				}, pulumi.Provider(provider))
 			if err != nil {
 				return errors.Wrap(err, "failed to create listener rule for path/hostname-based routing")
 			}
 		}
 	}
 
-	awsEcsService, err := ecs.NewService(ctx, serviceName+"-service", serviceArgs, pulumi.Provider(provider))
+	awsEcsService, err := ecs.NewService(ctx,
+		"service", serviceArgs, pulumi.Provider(provider))
 	if err != nil {
 		return errors.Wrap(err, "unable to create ECS service")
 	}
