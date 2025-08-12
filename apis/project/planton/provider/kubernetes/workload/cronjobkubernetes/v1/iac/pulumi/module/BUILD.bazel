@@ -1,0 +1,28 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "module",
+    srcs = [
+        "cron_job.go",
+        "image_pull_secret.go",
+        "locals.go",
+        "main.go",
+        "outputs.go",
+        "secret.go",
+    ],
+    importpath = "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/cronjobkubernetes/v1/iac/pulumi/module",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//apis/project/planton/provider/kubernetes/workload/cronjobkubernetes/v1:cronjobkubernetes",
+        "//apis/project/planton/shared/cloudresourcekind",
+        "//pkg/iac/pulumi/pulumimodule/datatypes/stringmaps/sortstringmap",
+        "//pkg/iac/pulumi/pulumimodule/provider/kubernetes/kuberneteslabelkeys",
+        "//pkg/iac/pulumi/pulumimodule/provider/kubernetes/pulumikubernetesprovider",
+        "//pkg/overridelabels",
+        "@com_github_pkg_errors//:errors",
+        "@com_github_pulumi_pulumi_kubernetes_sdk_v4//go/kubernetes/batch/v1:batch",
+        "@com_github_pulumi_pulumi_kubernetes_sdk_v4//go/kubernetes/core/v1:core",
+        "@com_github_pulumi_pulumi_kubernetes_sdk_v4//go/kubernetes/meta/v1:meta",
+        "@com_github_pulumi_pulumi_sdk_v3//go/pulumi",
+    ],
+)

@@ -1,0 +1,20 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "telemetry",
+    srcs = [
+        "init.go",
+        "pulumiTypes.go",
+        "telemetry.go",
+        "telemetryList.go",
+        "telemetryPatch.go",
+    ],
+    importpath = "github.com/project-planton/project-planton/pkg/kubernetestypes/istio/kubernetes/telemetry/v1",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@com_github_blang_semver//:semver",
+        "@com_github_pulumi_pulumi_kubernetes_sdk_v4//go/kubernetes/meta/v1:meta",
+        "@com_github_pulumi_pulumi_kubernetes_sdk_v4//go/kubernetes/utilities",
+        "@com_github_pulumi_pulumi_sdk_v3//go/pulumi",
+    ],
+)

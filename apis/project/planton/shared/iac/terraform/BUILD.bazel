@@ -1,0 +1,14 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "terraform",
+    srcs = ["terraform.pb.go"],
+    importpath = "github.com/project-planton/project-planton/apis/project/planton/shared/iac/terraform",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//apis/project/planton/shared/iac/iacgitrepo",
+        "@build_buf_gen_go_bufbuild_protovalidate_protocolbuffers_go//buf/validate",
+        "@org_golang_google_protobuf//reflect/protoreflect",
+        "@org_golang_google_protobuf//runtime/protoimpl",
+    ],
+)

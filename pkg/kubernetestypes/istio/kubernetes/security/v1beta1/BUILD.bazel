@@ -1,0 +1,26 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "v1beta1",
+    srcs = [
+        "authorizationPolicy.go",
+        "authorizationPolicyList.go",
+        "authorizationPolicyPatch.go",
+        "init.go",
+        "peerAuthentication.go",
+        "peerAuthenticationList.go",
+        "peerAuthenticationPatch.go",
+        "pulumiTypes.go",
+        "requestAuthentication.go",
+        "requestAuthenticationList.go",
+        "requestAuthenticationPatch.go",
+    ],
+    importpath = "github.com/project-planton/project-planton/pkg/kubernetestypes/istio/kubernetes/security/v1beta1",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@com_github_blang_semver//:semver",
+        "@com_github_pulumi_pulumi_kubernetes_sdk_v4//go/kubernetes/meta/v1:meta",
+        "@com_github_pulumi_pulumi_kubernetes_sdk_v4//go/kubernetes/utilities",
+        "@com_github_pulumi_pulumi_sdk_v3//go/pulumi",
+    ],
+)

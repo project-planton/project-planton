@@ -1,0 +1,13 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "pulumicloudflareprovider",
+    srcs = ["provider.go"],
+    importpath = "github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/cloudflare/pulumicloudflareprovider",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//apis/project/planton/credential/cloudflarecredential/v1:cloudflarecredential",
+        "@com_github_pulumi_pulumi_cloudflare_sdk_v5//go/cloudflare",
+        "@com_github_pulumi_pulumi_sdk_v3//go/pulumi",
+    ],
+)

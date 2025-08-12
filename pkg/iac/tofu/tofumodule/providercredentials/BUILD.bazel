@@ -1,0 +1,30 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "providercredentials",
+    srcs = [
+        "aws_credential.go",
+        "azure_credential.go",
+        "confluent_credential.go",
+        "gcp_credential.go",
+        "kubernetes_credential.go",
+        "mongodb_atlas_credential.go",
+        "snowflake_credential.go",
+    ],
+    importpath = "github.com/project-planton/project-planton/pkg/iac/tofu/tofumodule/providercredentials",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//apis/project/planton/credential/awscredential/v1:awscredential",
+        "//apis/project/planton/credential/azurecredential/v1:azurecredential",
+        "//apis/project/planton/credential/confluentcredential/v1:confluentcredential",
+        "//apis/project/planton/credential/gcpcredential/v1:gcpcredential",
+        "//apis/project/planton/credential/kubernetesclustercredential/v1:kubernetesclustercredential",
+        "//apis/project/planton/credential/mongodbatlascredential/v1:mongodbatlascredential",
+        "//apis/project/planton/credential/snowflakecredential/v1:snowflakecredential",
+        "//pkg/iac/pulumi/pulumimodule/provider/gcp/pulumigkekubernetesprovider",
+        "//pkg/iac/stackinput",
+        "//pkg/iac/stackinput/stackinputcredentials",
+        "@com_github_google_uuid//:uuid",
+        "@com_github_pkg_errors//:errors",
+    ],
+)
