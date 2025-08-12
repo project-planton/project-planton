@@ -1,0 +1,32 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "tofumodule",
+    srcs = [
+        "credentials.go",
+        "module_directory.go",
+        "run_command.go",
+        "run_operation.go",
+        "tofu_init.go",
+    ],
+    importpath = "github.com/project-planton/project-planton/pkg/iac/tofu/tofumodule",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//apis/project/planton/shared/cloudresourcekind",
+        "//apis/project/planton/shared/iac/terraform",
+        "//internal/cli/version",
+        "//internal/cli/workspace",
+        "//internal/manifest",
+        "//pkg/crkreflect",
+        "//pkg/fileutil",
+        "//pkg/iac/gitrepo",
+        "//pkg/iac/stackinput",
+        "//pkg/iac/stackinput/stackinputcredentials",
+        "//pkg/iac/tofu/tfbackend",
+        "//pkg/iac/tofu/tfvars",
+        "//pkg/iac/tofu/tofumodule/providercredentials",
+        "@com_github_pkg_errors//:errors",
+        "@in_gopkg_yaml_v3//:yaml_v3",
+        "@org_golang_google_protobuf//proto",
+    ],
+)

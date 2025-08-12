@@ -1,0 +1,15 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "module",
+    srcs = [
+        "main.go",
+        "outputs.go",
+    ],
+    importpath = "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awskmskey/v1/iac/pulumi/module",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//apis/project/planton/provider/aws/awskmskey/v1:awskmskey",
+        "@com_github_pulumi_pulumi_sdk_v3//go/pulumi",
+    ],
+)
