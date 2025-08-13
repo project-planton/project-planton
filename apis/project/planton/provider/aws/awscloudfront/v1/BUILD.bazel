@@ -31,5 +31,3 @@ go_test(
         "@com_github_onsi_gomega//:gomega",
     ],
 )
-
-
