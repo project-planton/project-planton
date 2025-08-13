@@ -47,9 +47,8 @@ EXAMPLES.md CONTENT REQUIREMENTS
 - Minimal manifest example (YAML) for this `<Kind>`
 - CLI flows:
   - Validate: `project-planton validate --manifest <file>`
-  - Pulumi deploy: `project-planton pulumi up --manifest <file> --stack <org/project/stack>`
-  - Terraform deploy: `project-planton terraform apply --manifest <file> --stack <org/project/stack>`
-- Note that credentials are resolved via stack input and not included in spec
+  - Pulumi deploy: `project-planton pulumi update --manifest <file> --stack <org/project/stack> --module-dir <path>`
+  - Terraform deploy: `project-planton tofu apply --manifest <file> --auto-approve`
 
 IMPLEMENTATION STEPS
 1) Generate/refresh `BUILD.bazel` per above
@@ -58,7 +57,7 @@ IMPLEMENTATION STEPS
 
 BUILD & VERIFY (NON-INTERACTIVE)
 - Regenerate protos:
-  - `make -C /Users/suresh/scm/github.com/project-planton/project-planton/apis build | cat`
+  - `: ${REPO_ROOT:=$(pwd)} && make -C "$REPO_ROOT"/apis build | cat`
 - Optional `go build` for the package:
   - `go build ./apis/project/planton/provider/<provider>/<kindfolder>/v1 | cat`
 

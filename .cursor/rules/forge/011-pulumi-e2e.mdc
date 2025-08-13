@@ -19,14 +19,16 @@ PREREQUISITES
 PREP: INSTALL LOCAL CLI BUILD
 Install the local CLI so it picks up latest proto and behavior changes.
 ```bash
-make -C /Users/suresh/scm/github.com/project-planton/project-planton local | cat
+: ${REPO_ROOT:=$(pwd)}
+make -C "$REPO_ROOT" local | cat
 ```
 
 PREP: INITIALIZE PULUMI BACKEND AND STACK (NON-INTERACTIVE)
 Pulumi requires an initialized backend and an existing stack. Initialize a local backend and create/select the stack in the module directory.
 ```bash
+: ${REPO_ROOT:=$(pwd)}
 export PULUMI_CONFIG_PASSPHRASE="test"
-cd /Users/suresh/scm/github.com/project-planton/project-planton/apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/pulumi
+cd "$REPO_ROOT"/apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/pulumi
 pulumi login --local | cat
 pulumi stack select --create <org>/<project>/<stack> | cat
 ```

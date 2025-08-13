@@ -48,7 +48,7 @@ IMPLEMENTATION NOTES
 BUILD & VERIFY (NON-INTERACTIVE)
 After writing `spec.proto`:
 - Run Buf build for the repo roots:
-  - `make -C /Users/suresh/scm/github.com/project-planton/project-planton/apis build | cat`
+  - `: ${REPO_ROOT:=$(pwd)} && make -C "$REPO_ROOT"/apis build | cat`
 - If build errors occur, fix the `spec.proto` content or package path issues up to 3 attempts, then re-run the build each time.
 - On success, announce completion and point the user to the created/updated file path.
 

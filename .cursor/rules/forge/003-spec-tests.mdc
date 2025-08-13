@@ -94,7 +94,7 @@ BUILD & RUN (NON-INTERACTIVE)
   - `go test ./apis/project/planton/provider/<provider>/<kindfolder>/v1/... | cat`
 - If failures occur:
   1) If due to CEL expression semantics (e.g., nil-safety, enum comparisons), update CEL within `spec.proto` to a safe equivalent. Rebuild protos:
-     - `make -C /Users/suresh/scm/github.com/project-planton/project-planton/apis build | cat`
+     - `: ${REPO_ROOT:=$(pwd)} && make -C "$REPO_ROOT"/apis build | cat`
   2) If due to incorrect test assumptions, minimally adjust test inputs to satisfy expected rules.
   3) Re-run `go test` after each change. Up to 3 attempts before asking one precise question.
 
@@ -104,9 +104,10 @@ SUCCESS CRITERIA
 - CEL expressions are robust (no runtime panics) and enforce intended constraints.
 
 OUTPUT STYLE IN CHAT
-- Show created path and brief list of covered assertions.
-- Show exact commands run.
-- If fixes applied: state what changed (CEL or test input) and confirm green tests.
+- Show a concise tree of created paths with brief reasons.
+- Show the non-interactive command(s) to run.
+- If successful: confirm the file path to review.
+- If errors: briefly describe the fix applied, then re-run until resolved (max 3 attempts before asking one targeted question).
 
 NOTES
 - Prefer simple, robust CEL: guard against nils, compare enums by numeric values where needed.
