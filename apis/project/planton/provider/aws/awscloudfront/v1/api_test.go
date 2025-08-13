@@ -1,55 +1,37 @@
 package awscloudfrontv1
 
 import (
-	"testing"
+    "testing"
 
-	"github.com/bufbuild/protovalidate-go"
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
-	"github.com/project-planton/project-planton/apis/project/planton/shared"
+    "github.com/bufbuild/protovalidate-go"
+    . "github.com/onsi/ginkgo/v2"
+    . "github.com/onsi/gomega"
+
+    "github.com/project-planton/project-planton/apis/project/planton/shared"
 )
 
-func TestKubernetesClusterCredentialSpec(t *testing.T) {
-	RegisterFailHandler(Fail)
-	RunSpecs(t, "KubernetesClusterCredentialSpec Custom Validation Tests")
+func TestAwsCloudFront(t *testing.T) {
+    RegisterFailHandler(Fail)
+    RunSpecs(t, "AwsCloudFront Suite")
 }
 
-var _ = Describe("KubernetesClusterCredentialSpec Custom Validation Tests", func() {
-
-	var input *AwsCloudFront
-
-	BeforeEach(func() {
-		input = &AwsCloudFront{
-			ApiVersion: "aws.project-planton.org/v1",
-			Kind:       "AwsCloudFront",
-			Metadata: &shared.ApiResourceMetadata{
-				Name: "test-cloud-front",
-			},
-			Spec: &AwsCloudFrontSpec{},
-		}
-	})
-
-	Describe("When valid input is passed", func() {
-
-		Context("gcp_gke", func() {
-			It("should not return a validation error", func() {
-				err := protovalidate.Validate(input)
-				Expect(err).To(BeNil())
-			})
-		})
-
-		Context("aws_eks", func() {
-			It("should not return a validation error", func() {
-				err := protovalidate.Validate(input)
-				Expect(err).To(BeNil())
-			})
-		})
-
-		Context("azure_aks", func() {
-			It("should not return a validation error", func() {
-				err := protovalidate.Validate(input)
-				Expect(err).To(BeNil())
-			})
-		})
-	})
+var _ = Describe("AwsCloudFront Validation", func() {
+    It("accepts a minimal valid resource", func() {
+        input := &AwsCloudFront{
+            ApiVersion: "aws.project-planton.org/v1",
+            Kind:       "AwsCloudFront",
+            Metadata: &shared.ApiResourceMetadata{ Name: "cf-basic" },
+            Spec: &AwsCloudFrontSpec{
+                DefaultCacheBehavior: &DefaultCacheBehavior{
+                    OriginId:             "origin-1",
+                    ViewerProtocolPolicy: ViewerProtocolPolicy_REDIRECT_TO_HTTPS,
+                },
+                Origins: []*Origin{{ Id: "origin-1", DomainName: "example.s3.amazonaws.com" }},
+            },
+        }
+        err := protovalidate.Validate(input)
+        Expect(err).To(BeNil())
+    })
 })
+
+

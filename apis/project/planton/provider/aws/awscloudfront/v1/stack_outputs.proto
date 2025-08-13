@@ -2,8 +2,14 @@ syntax = "proto3";
 
 package project.planton.provider.aws.awscloudfront.v1;
 
-//aws-cloud-front stack output
+//aws-cloudfront stack outputs
 message AwsCloudFrontStackOutputs {
-  //id of the cloud-front distribution created on aws
-  string cloud_front_distribution_id = 1;
+  // distribution id
+  string distribution_id = 1;
+  // distribution domain name (e.g., d123.cloudfront.net)
+  string domain_name = 2;
+  // hosted zone id for alias records
+  string hosted_zone_id = 3;
 }
+
+

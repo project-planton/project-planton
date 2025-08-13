@@ -19,3 +19,5 @@ go_binary(
     embed = [":pulumi_lib"],
     visibility = ["//visibility:public"],
 )
+
+

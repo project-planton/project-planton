@@ -23,7 +23,7 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// aws-cloud-front
+// aws-cloudfront
 type AwsCloudFront struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// api-version
@@ -105,7 +105,7 @@ func (x *AwsCloudFront) GetStatus() *AwsCloudFrontStatus {
 	return nil
 }
 
-// aws-cloud-front status
+// aws-cloudfront status
 type AwsCloudFrontStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// lifecycle

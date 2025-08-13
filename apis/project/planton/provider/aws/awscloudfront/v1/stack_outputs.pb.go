@@ -21,13 +21,17 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// aws-cloud-front stack output
+// aws-cloudfront stack outputs
 type AwsCloudFrontStackOutputs struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// id of the cloud-front distribution created on aws
-	CloudFrontDistributionId string `protobuf:"bytes,1,opt,name=cloud_front_distribution_id,json=cloudFrontDistributionId,proto3" json:"cloud_front_distribution_id,omitempty"`
-	unknownFields            protoimpl.UnknownFields
-	sizeCache                protoimpl.SizeCache
+	// distribution id
+	DistributionId string `protobuf:"bytes,1,opt,name=distribution_id,json=distributionId,proto3" json:"distribution_id,omitempty"`
+	// distribution domain name (e.g., d123.cloudfront.net)
+	DomainName string `protobuf:"bytes,2,opt,name=domain_name,json=domainName,proto3" json:"domain_name,omitempty"`
+	// hosted zone id for alias records
+	HostedZoneId  string `protobuf:"bytes,3,opt,name=hosted_zone_id,json=hostedZoneId,proto3" json:"hosted_zone_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *AwsCloudFrontStackOutputs) Reset() {
@@ -60,9 +64,23 @@ func (*AwsCloudFrontStackOutputs) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_aws_awscloudfront_v1_stack_outputs_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *AwsCloudFrontStackOutputs) GetCloudFrontDistributionId() string {
+func (x *AwsCloudFrontStackOutputs) GetDistributionId() string {
 	if x != nil {
-		return x.CloudFrontDistributionId
+		return x.DistributionId
+	}
+	return ""
+}
+
+func (x *AwsCloudFrontStackOutputs) GetDomainName() string {
+	if x != nil {
+		return x.DomainName
+	}
+	return ""
+}
+
+func (x *AwsCloudFrontStackOutputs) GetHostedZoneId() string {
+	if x != nil {
+		return x.HostedZoneId
 	}
 	return ""
 }
@@ -71,9 +89,12 @@ var File_project_planton_provider_aws_awscloudfront_v1_stack_outputs_proto proto
 
 const file_project_planton_provider_aws_awscloudfront_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Aproject/planton/provider/aws/awscloudfront/v1/stack_outputs.proto\x12-project.planton.provider.aws.awscloudfront.v1\"Z\n" +
-	"\x19AwsCloudFrontStackOutputs\x12=\n" +
-	"\x1bcloud_front_distribution_id\x18\x01 \x01(\tR\x18cloudFrontDistributionIdB\x90\x03\n" +
+	"Aproject/planton/provider/aws/awscloudfront/v1/stack_outputs.proto\x12-project.planton.provider.aws.awscloudfront.v1\"\x8b\x01\n" +
+	"\x19AwsCloudFrontStackOutputs\x12'\n" +
+	"\x0fdistribution_id\x18\x01 \x01(\tR\x0edistributionId\x12\x1f\n" +
+	"\vdomain_name\x18\x02 \x01(\tR\n" +
+	"domainName\x12$\n" +
+	"\x0ehosted_zone_id\x18\x03 \x01(\tR\fhostedZoneIdB\x90\x03\n" +
 	"1com.project.planton.provider.aws.awscloudfront.v1B\x11StackOutputsProtoP\x01Zmgithub.com/project-planton/project-planton/apis/project/planton/provider/aws/awscloudfront/v1;awscloudfrontv1\xa2\x02\x05PPPAA\xaa\x02-Project.Planton.Provider.Aws.Awscloudfront.V1\xca\x02-Project\\Planton\\Provider\\Aws\\Awscloudfront\\V1\xe2\x029Project\\Planton\\Provider\\Aws\\Awscloudfront\\V1\\GPBMetadata\xea\x022Project::Planton::Provider::Aws::Awscloudfront::V1b\x06proto3"
 
 var (

@@ -8,11 +8,11 @@ import "project/planton/provider/aws/awscloudfront/v1/stack_outputs.proto";
 import "project/planton/shared/status.proto";
 import "project/planton/shared/metadata.proto";
 
-//aws-cloud-front
+//aws-cloudfront
 message AwsCloudFront {
   //api-version
-  string api_version = 1[
-    (buf.validate.field).string.const = 'aws.project-planton.org/v1'
+  string api_version = 1 [
+    (buf.validate.field).string.const = "aws.project-planton.org/v1"
   ];
 
   //resource-kind
@@ -34,7 +34,7 @@ message AwsCloudFront {
   AwsCloudFrontStatus status = 5;
 }
 
-//aws-cloud-front status
+//aws-cloudfront status
 message AwsCloudFrontStatus {
   //lifecycle
   project.planton.shared.ApiResourceLifecycle lifecycle = 99;
@@ -48,3 +48,5 @@ message AwsCloudFrontStatus {
   //stack-outputs
   AwsCloudFrontStackOutputs outputs = 1;
 }
+
+
