@@ -1,0 +1,113 @@
+---
+alwaysApply: false
+---
+RULE NUMBER
+003
+
+TITLE
+Forge: Add and run spec-level validation tests (protovalidate + Ginkgo/Gomega)
+
+ROLE
+You are the PlantonCloud Code Partner working inside the developer’s local workspace in Cursor. This rule creates and executes Go tests focused on validating `spec.proto` rules (including CEL expressions) for a Planton resource. The goal is to surface runtime validation issues that do not appear during proto build/codegen.
+
+SCOPE
+- Target resource directory: `apis/project/planton/provider/<provider>/<kindfolder>/v1/`.
+- Create `spec_test.go` for testing `<Kind>Spec` validations using `github.com/bufbuild/protovalidate-go` with Ginkgo v2 and Gomega.
+- Cover both field-level validations and CEL message-level rules.
+- Run tests non-interactively and auto-refine failing CEL expressions or test inputs up to 3 attempts.
+- Do NOT modify field names or numbers in the schema. Only adjust CEL expressions or test inputs if needed.
+
+PACKAGE & FILE STRUCTURE
+- File: `apis/project/planton/provider/<provider>/<kindfolder>/v1/spec_test.go`
+- Package: `package <kindfolder>v1` (same as generated go package for the resource)
+- Use Ginkgo suite pattern with `Test<Kind>Spec(t *testing.T)` and `Describe/Context/It` blocks.
+
+TEST CONTENT GUIDELINES
+- Import:
+  - `github.com/bufbuild/protovalidate-go`
+  - `. "github.com/onsi/ginkgo/v2"`
+  - `. "github.com/onsi/gomega"`
+  - Optionally `github.com/project-planton/project-planton/apis/project/planton/shared/validateutil` for violation assertions
+- Positive tests: construct minimal valid `<Kind>Spec` to satisfy all rules.
+- Negative tests: provoke violations for key rules, including:
+  - Required string min_len
+  - Repeated min_items / uniqueness
+  - Enum defined_only and non-zero enforcement
+  - CEL conditional rules (e.g., when `aliases` non-empty, `certificate_arn` must be set; ordering constraints; mutually exclusive fields)
+- Validate with `err := protovalidate.Validate(spec)` and assert `BeNil()` or `NotTo(BeNil())`.
+- For detailed assertions, decode violation list using `protovalidate.New().Validate()` and match with `validateutil.Match` where stable.
+
+EXAMPLE SKELETON (adapt to actual schema; do not paste verbatim)
+```go
+package awscloudfrontv1
+
+import (
+    "testing"
+
+    "github.com/bufbuild/protovalidate-go"
+    . "github.com/onsi/ginkgo/v2"
+    . "github.com/onsi/gomega"
+)
+
+func TestAwsCloudFrontSpec(t *testing.T) {
+    RegisterFailHandler(Fail)
+    RunSpecs(t, "AwsCloudFrontSpec Validation Suite")
+}
+
+var _ = Describe("AwsCloudFrontSpec validations", func() {
+    var spec *AwsCloudFrontSpec
+
+    BeforeEach(func() {
+        spec = &AwsCloudFrontSpec{
+            Aliases: []string{"cdn.example.com"},
+            CertificateArn: "arn:aws:acm:us-east-1:123456789012:certificate/abc",
+            PriceClass: AwsCloudFrontSpec_PRICE_CLASS_100,
+            Origins: []*AwsCloudFrontSpec_Origin{{ Id: "origin-1", DomainName: "bucket.s3.amazonaws.com" }},
+            DefaultCacheBehavior: &AwsCloudFrontSpec_DefaultCacheBehavior{
+                OriginId: "origin-1",
+                ViewerProtocolPolicy: AwsCloudFrontSpec_DefaultCacheBehavior_HTTPS_ONLY,
+            },
+        }
+    })
+
+    It("accepts a valid spec", func() {
+        err := protovalidate.Validate(spec)
+        Expect(err).To(BeNil())
+    })
+
+    It("fails when aliases are set but certificate_arn is empty (CEL)", func() {
+        spec.CertificateArn = ""
+        err := protovalidate.Validate(spec)
+        Expect(err).NotTo(BeNil())
+    })
+
+    It("fails when default behavior viewer_protocol_policy is unspecified (CEL)", func() {
+        spec.DefaultCacheBehavior.ViewerProtocolPolicy = AwsCloudFrontSpec_DefaultCacheBehavior_VIEWER_PROTOCOL_POLICY_UNSPECIFIED
+        err := protovalidate.Validate(spec)
+        Expect(err).NotTo(BeNil())
+    })
+})
+```
+
+BUILD & RUN (NON-INTERACTIVE)
+- Execute tests for the target directory:
+  - `go test ./apis/project/planton/provider/<provider>/<kindfolder>/v1/... | cat`
+- If failures occur:
+  1) If due to CEL expression semantics (e.g., nil-safety, enum comparisons), update CEL within `spec.proto` to a safe equivalent. Rebuild protos:
+     - `make -C /Users/suresh/scm/github.com/project-planton/project-planton/apis build | cat`
+  2) If due to incorrect test assumptions, minimally adjust test inputs to satisfy expected rules.
+  3) Re-run `go test` after each change. Up to 3 attempts before asking one precise question.
+
+SUCCESS CRITERIA
+- `spec_test.go` exists and compiles.
+- `go test` for the resource passes with both positive and negative cases.
+- CEL expressions are robust (no runtime panics) and enforce intended constraints.
+
+OUTPUT STYLE IN CHAT
+- Show created path and brief list of covered assertions.
+- Show exact commands run.
+- If fixes applied: state what changed (CEL or test input) and confirm green tests.
+
+NOTES
+- Prefer simple, robust CEL: guard against nils, compare enums by numeric values where needed.
+- Keep tests small and targeted; avoid over-constraining with brittle regexes or provider-specific formats in tests unless necessary.

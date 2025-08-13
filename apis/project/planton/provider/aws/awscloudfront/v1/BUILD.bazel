@@ -25,7 +25,10 @@ go_library(
 
 go_test(
     name = "awscloudfront_test",
-    srcs = ["api_test.go"],
+    srcs = [
+        "api_test.go",
+        "spec_test.go",
+    ],
     embed = [":awscloudfront"],
     deps = [
         "//apis/project/planton/shared",

@@ -1,0 +1,95 @@
+---
+alwaysApply: false
+---
+RULE NUMBER
+001
+
+TITLE
+Forge: Generate spec.proto for a new or existing cloud resource (no validations)
+
+ROLE
+You are the PlantonCloud Code Partner working inside the developer’s local workspace in Cursor. This rule focuses ONLY on creating the `spec.proto` for a Planton resource. Do NOT create other files (no api.proto, stack_input.proto, outputs, tests, IaC) in this rule.
+
+SCOPE
+- Given a natural-language request like “Add <provider> <resource>” (e.g., “Add AWS CloudFront”), detect the provider and resource kind.
+- Create or reuse the target folder under `apis/project/planton/provider/<provider>/<kindfolder>/v1/`.
+- Generate `spec.proto` containing a single message `<Kind>Spec` with fields inferred via the 80/20 approach, but WITHOUT any validation rules or buf/validate imports. Keep comments, enums, and messages minimal and practical. No CEL rules.
+- No other files should be created by this rule.
+
+FOLDER & NAMING CONVENTIONS
+- Kind (PascalCase): e.g., AwsCloudFront, GcpPubsubTopic, AzureKeyVault
+- Kind keyword (snake_case): aws_cloudfront, gcp_pubsub_topic, azure_key_vault
+- Folder name (lowercase, no underscores): awscloudfront, gcppubsubtopic, azurekeyvault
+- apiVersion for reference (not used in this file): "<provider>.project-planton.org/v1"
+- Do NOT include `go_package` options in new proto files.
+
+DETECT PROVIDER & KIND
+- Infer provider and kind from the user request.
+- If ambiguity > 30%, ask one clarifying question and wait.
+- If the provider/kind folder exists, reuse it; otherwise create it (and missing parents) before writing `spec.proto`.
+
+SPEC.PROTO CONTENT REQUIREMENTS
+- File path: `apis/project/planton/provider/<provider>/<kindfolder>/v1/spec.proto`
+- Syntax and package:
+  - `syntax = "proto3";`
+  - `package project.planton.provider.<provider>.<kindfolder>.v1;`
+- Imports: none (no validations in this step).
+- Define a single top-level message named `<Kind>Spec`.
+- Include only essential 80/20 fields and enums to capture common usage.
+- Provide brief comments for fields and enums. Keep it readable.
+- Avoid provider credentials in this file (those belong to stack_input later).
+- Avoid deep nesting unless absolutely required.
+
+IMPLEMENTATION NOTES
+- Use official provider docs and reputable references to pick 80/20 fields, but keep this draft simple; deeper validations come in later rules.
+- Prefer strings for IDs/ARNs and simple enums for finite choices.
+- Provide sensible comments that explain purpose and typical values.
+
+BUILD & VERIFY (NON-INTERACTIVE)
+After writing `spec.proto`:
+- Run Buf build for the repo roots:
+  - `make -C /Users/suresh/scm/github.com/project-planton/project-planton/apis build | cat`
+- If build errors occur, fix the `spec.proto` content or package path issues up to 3 attempts, then re-run the build each time.
+- On success, announce completion and point the user to the created/updated file path.
+
+SUCCESS CRITERIA
+- `spec.proto` exists at the correct path with proper `syntax` and `package`.
+- No validation imports/usages present.
+- `make -C apis build` succeeds without errors.
+- No other files are created by this rule.
+
+OUTPUT STYLE IN CHAT
+- Show a concise tree of the created or updated path.
+- Show the non-interactive command(s) to run.
+- If successful: confirm the file/folder path to inspect.
+- If errors: briefly describe the fix applied, then re-run until resolved (max 3 attempts before asking one targeted question).
+
+EXAMPLE SKELETON (do not copy verbatim; adapt provider/kind accordingly)
+```proto
+syntax = "proto3";
+
+package project.planton.provider.aws.awscloudfront.v1;
+
+// AwsCloudFrontSpec captures common fields used to configure a CloudFront distribution.
+message AwsCloudFrontSpec {
+  // Example: domain aliases like cdn.example.com
+  repeated string aliases = 1;
+
+  // Optional ACM certificate ARN for custom domains
+  string certificate_arn = 2;
+
+  // Price class selection (simplified)
+  enum PriceClass { PRICE_CLASS_UNSPECIFIED = 0; PRICE_CLASS_100 = 1; PRICE_CLASS_200 = 2; PRICE_CLASS_ALL = 3; }
+  PriceClass price_class = 3;
+
+  // Minimal origin reference
+  message Origin { string id = 1; string domain_name = 2; }
+  repeated Origin origins = 4;
+
+  // Default behavior origin id
+  string default_origin_id = 5;
+}
+```
+
+NOTES
+- Later rules will add validations, status/outputs, tests, and IaC. This rule purposefully keeps `spec.proto` minimal and unvalidated for quick iteration.

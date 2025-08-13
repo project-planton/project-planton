@@ -1,0 +1,43 @@
+---
+alwaysApply: false
+---
+RULE NUMBER
+008
+
+TITLE
+Forge: Generate top-level hack/manifest.yaml for the resource
+
+ROLE
+You are the PlantonCloud Code Partner working inside the developer’s local workspace in Cursor. This rule generates a minimal, valid example manifest for the resource to support quick testing with either Pulumi or Terraform. The manifest must be placed at the top-level IaC hack folder, not inside provider-specific subfolders.
+
+DISCOVERY (MANDATORY BEFORE EDITS)
+- Read the following to derive fields and kinds:
+  - `apis/project/planton/provider/<provider>/<kindfolder>/v1/api.proto`
+  - `apis/project/planton/provider/<provider>/<kindfolder>/v1/spec.proto`
+- Extract `<Kind>` name and key `<Kind>Spec` fields suitable for a minimal example.
+
+SCOPE
+- Target directory: `apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/hack/`
+- Create or update:
+  - `iac/hack/manifest.yaml` — minimal YAML manifest for `<Kind>` with safe default values
+
+CONTENT REQUIREMENTS (manifest.yaml)
+- Structure:
+```yaml
+apiVersion: <provider>.project-planton.org/v1
+kind: <Kind>
+metadata:
+  name: <kindfolder>-demo
+spec:
+  # fill essential fields with safe defaults derived from <Kind>Spec
+```
+- Do not include credentials; those are resolved via stack input by the CLI
+- Keep optional sections commented or with empty values if not essential
+
+SUCCESS CRITERIA
+- `iac/hack/manifest.yaml` exists with a minimal, valid spec for `<Kind>`
+- It is at `.../v1/iac/hack/manifest.yaml` (not under `tf/` or `pulumi/`)
+
+OUTPUT STYLE IN CHAT
+- Show created path and a short snippet of the manifest.
+- No secrets in the example.

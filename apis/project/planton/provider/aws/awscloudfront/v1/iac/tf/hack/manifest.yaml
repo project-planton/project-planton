@@ -1,0 +1,43 @@
+apiVersion: aws.project-planton.org/v1
+kind: AwsCloudFront
+metadata:
+  name: awscloudfront-demo
+spec:
+  # Optional: keep empty unless you have custom domains and a certificate
+  aliases: []
+  # Optional: PRICE_CLASS_100 | PRICE_CLASS_200 | PRICE_CLASS_ALL
+  priceClass: PRICE_CLASS_100
+
+  # Optional logging example (disabled by default)
+  logging:
+    enabled: false
+    bucketName: ""
+    prefix: ""
+
+  # Minimum one origin
+  origins:
+    - id: origin-1
+      # Example: my-bucket.s3.amazonaws.com or api.example.com
+      domain_name: example.s3.amazonaws.com
+
+  # Required default cache behavior
+  defaultCacheBehavior:
+    originId: origin-1
+    # ALLOW_ALL | HTTPS_ONLY | REDIRECT_TO_HTTPS
+    viewerProtocolPolicy: REDIRECT_TO_HTTPS
+    compress: true
+    # GET_HEAD | GET_HEAD_OPTIONS | ALL
+    allowedMethods: GET_HEAD
+    # Optional: cache policy id
+    cachePolicyId: ""
+
+  # Optional WAFv2 association
+  webAclArn: ""
+
+  # Optional DNS automation (disabled by default)
+  dns:
+    enabled: false
+    route53ZoneId: ""
+
+# Note: Do not include credentials here. The ProjectPlanton CLI resolves them via stack input.
+

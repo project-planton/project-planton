@@ -1,0 +1,50 @@
+---
+alwaysApply: false
+---
+RULE NUMBER
+012
+
+TITLE
+Forge: Terraform docs (README) using ProjectPlanton CLI (tofu)
+
+ROLE
+You are the PlantonCloud Code Partner working inside the developer’s local workspace in Cursor. This rule writes the Terraform module README to document how to run the module via the ProjectPlanton CLI (tofu). It does not generate the hack manifest; that is handled by rule 008.
+
+DISCOVERY (MANDATORY BEFORE EDITS)
+- Read:
+  - `apis/project/planton/provider/<provider>/<kindfolder>/v1/api.proto`
+  - `apis/project/planton/provider/<provider>/<kindfolder>/v1/spec.proto`
+  - `apis/project/planton/provider/<provider>/<kindfolder>/v1/stack_input.proto`
+  - `apis/project/planton/provider/<provider>/<kindfolder>/v1/stack_outputs.proto`
+  - If present, root-level `apis/project/planton/provider/<provider>/<kindfolder>/v1/examples.md` to mirror examples
+
+SCOPE
+- Targets under `apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/tf/`:
+  - Create/update `README.md` with CLI examples that use the default local backend
+  - Create/update `examples.md` by copying root `examples.md` if present, else regenerate minimal examples from `<Kind>Spec`
+
+README CONTENT (iac/tf/README.md)
+- Title: `Terraform Module to Deploy <Kind>`
+- Show CLI commands using ProjectPlanton tofu with default local backend:
+```shell
+project-planton tofu init --manifest hack/manifest.yaml
+project-planton tofu plan --manifest hack/manifest.yaml
+project-planton tofu apply --manifest hack/manifest.yaml --auto-approve
+project-planton tofu destroy --manifest hack/manifest.yaml --auto-approve
+```
+- Note that credentials are provided via stack input (CLI), not in the manifest `spec`.
+- Optional: link to `iac/hack/manifest.yaml` (created by rule 008).
+
+EXAMPLES CONTENT (iac/tf/examples.md)
+- If root `examples.md` exists: copy its content verbatim
+- Otherwise, generate a minimal example manifest for `<Kind>` (Basic example section) and optional additional examples if obvious from `<Kind>Spec`
+
+SUCCESS CRITERIA
+- `iac/tf/README.md` and `iac/tf/examples.md` exist and mirror usage/examples
+
+OUTPUT STYLE IN CHAT
+- Show created file paths and the CLI commands section
+- No secrets in examples
+
+NOTES
+- For remote/persistent state, teams can switch to an S3/Dynamo backend; not covered here

@@ -1,0 +1,71 @@
+---
+alwaysApply: false
+---
+RULE NUMBER
+012
+
+TITLE
+Forge: Terraform end-to-end via ProjectPlanton CLI (tofu)
+
+ROLE
+You are the PlantonCloud Code Partner working inside the developer’s local workspace in Cursor. This rule performs an end-to-end validation of a Terraform module using the ProjectPlanton CLI (`project-planton tofu ...`). It uses the module’s `iac/tf/hack/manifest.yaml` and runs init/plan/apply/destroy, capturing logs in the terminal.
+
+PREREQUISITES
+- Terraform module files exist under `iac/tf/` (rule 010)
+- Hack assets exist under `iac/tf/hack/` including `manifest.yaml` (rule 011)
+- Required cloud credentials are configured in the environment or accessible to the CLI
+
+PREP: INSTALL LOCAL CLI BUILD
+Run the local CLI build so the CLI picks up latest proto and behavior changes.
+```bash
+make local | cat
+```
+
+DISCOVERY (MANDATORY BEFORE RUN)
+- Verify these paths exist for the target resource:
+  - `apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/tf/`
+  - `apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/tf/hack/manifest.yaml`
+
+SCOPE
+- Execute non-interactive end-to-end run using ProjectPlanton CLI (tofu) with the default local backend (no backend flags):
+  - Init
+  - Plan
+  - Apply (auto-approve)
+  - Destroy (auto-approve)
+
+COMMANDS (NON-INTERACTIVE)
+Run these from repo root; they print logs directly.
+```bash
+project-planton tofu init \
+  --manifest apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/tf/hack/manifest.yaml | cat
+
+project-planton tofu plan \
+  --manifest apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/tf/hack/manifest.yaml | cat
+
+project-planton tofu apply \
+  --manifest apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/tf/hack/manifest.yaml \
+  --auto-approve | cat
+
+project-planton tofu destroy \
+  --manifest apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/tf/hack/manifest.yaml \
+  --auto-approve | cat
+```
+
+ERROR POLICY
+- If a step fails, adjust the `hack/manifest.yaml` minimal values and retry up to 3 times
+- Do not embed secrets in the manifest; rely on environment-based credentials
+
+SUCCESS CRITERIA
+- Local CLI installed via `make local` completes successfully
+- Init completes with local state stored under the module directory
+- Plan shows the expected resource changes
+- Apply completes without errors
+- Destroy completes without errors (clean teardown)
+
+OUTPUT STYLE IN CHAT
+- Print each command before running and stream its logs
+- Summarize which steps succeeded and note any adjustments made
+
+NOTES
+- The CLI wraps Terraform; logs mirror Terraform output
+- For persistent/shared state, switch to a remote backend in a separate run (not covered here)

@@ -1,0 +1,111 @@
+---
+alwaysApply: false
+---
+RULE NUMBER
+009
+
+TITLE
+Forge: Generate Pulumi entrypoint and project files (outside module/)
+
+ROLE
+You are the PlantonCloud Code Partner working inside the developer’s local workspace in Cursor. This rule scaffolds the Pulumi entrypoint and project files outside the `module/` folder. It wires `main.go` to load `<Kind>StackInput` and invoke `module.Resources`, and adds Bazel, `Pulumi.yaml`, and `Makefile` for the Pulumi program.
+
+SCOPE
+- Detect provider and kind from the request.
+- Target directory: `apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/pulumi/`
+- Create or update the following files:
+  - `iac/pulumi/main.go` (entrypoint)
+  - `iac/pulumi/BUILD.bazel` (binary target)
+  - `iac/pulumi/Pulumi.yaml` (Pulumi project config)
+  - `iac/pulumi/Makefile` (local build helper)
+
+FILE CONTENT REQUIREMENTS
+- iac/pulumi/main.go skeleton:
+```go
+package main
+
+import (
+    "github.com/pkg/errors"
+    <pkgalias> "github.com/project-planton/project-planton/apis/project/planton/provider/<provider>/<kindfolder>/v1"
+    "github.com/project-planton/project-planton/apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/pulumi/module"
+    "github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/stackinput"
+    "github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+)
+
+func main() {
+    pulumi.Run(func(ctx *pulumi.Context) error {
+        stackInput := &<pkgalias>.<Kind>StackInput{}
+        if err := stackinput.LoadStackInput(ctx, stackInput); err != nil {
+            return errors.Wrap(err, "failed to load stack-input")
+        }
+        return module.Resources(ctx, stackInput)
+    })
+}
+```
+
+- iac/pulumi/BUILD.bazel skeleton:
+```bzl
+load("@rules_go//go:def.bzl", "go_binary", "go_library")
+
+go_library(
+    name = "pulumi_lib",
+    srcs = ["main.go"],
+    importpath = "github.com/project-planton/project-planton/apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/pulumi",
+    visibility = ["//visibility:private"],
+    deps = [
+        "//apis/project/planton/provider/<provider>/<kindfolder>/v1:<kindfolder>",
+        "//apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/pulumi/module:module",
+        "//pkg/iac/pulumi/pulumimodule/stackinput",
+        "@com_github_pkg_errors//:errors",
+        "@com_github_pulumi_pulumi_sdk_v3//go/pulumi",
+    ],
+)
+
+go_binary(
+    name = "pulumi",
+    embed = [":pulumi_lib"],
+    visibility = ["//visibility:public"],
+)
+```
+
+- iac/pulumi/Pulumi.yaml skeleton:
+```yaml
+# name will be updated at runtime by the CLI to match stack FQDN
+name: <kindfolder>-pulumi-project
+runtime:
+  name: go
+# options:
+#   binary: ./debug.sh
+```
+
+- iac/pulumi/Makefile skeleton:
+```make
+.PHONY: build tidy lint
+
+build:
+	go build ./...
+
+tidy:
+	go mod tidy
+
+lint:
+	@echo "no lint configured"
+```
+
+BUILD & VERIFY (NON-INTERACTIVE)
+- Compile Pulumi program subtree:
+  - `go build ./apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/pulumi/... | cat`
+- On errors, fix imports/paths/types up to 3 attempts and re-run.
+
+SUCCESS CRITERIA
+- Entrypoint and project files created outside `module/`.
+- `go build` for the Pulumi subtree succeeds.
+
+OUTPUT STYLE IN CHAT
+- Show concise tree of created/updated files.
+- Show ready-to-run `go build` command.
+- If errors: state fixes applied, re-run until green (max 3 attempts before asking one targeted question).
+
+NOTES
+- The module package (rule 008) must exist before this rule is applied.
+- The CLI will update the Pulumi project name dynamically at runtime.

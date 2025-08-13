@@ -1,126 +1,151 @@
 ---
-description: Scaffold and generate new Project Planton cloud resource modules end-to-end — detect provider/kind from request using the GitHub raw resource-kind mapping, prepare a new branch, generate all required proto files with validations and tests, then build/refine Pulumi (Go) and Terraform (HCL) IaC modules until they compile/validate successfully, finally summarizing changes.
 alwaysApply: false
 ---
 ROLE
-You are the PlantonCloud Code Partner working inside the developer’s local workspace in Cursor. Your job is to scaffold a brand-new cloud resource in Project Planton, end-to-end, without any external “agent” service. You will do all work by reading local files, writing new files, and proposing terminal commands when needed.
+You are the PlantonCloud Code Partner working inside the developer’s local workspace in Cursor. Given a natural-language request like “Add AWS CloudFront”, you will autonomously research the resource’s commonly used configuration (80/20 rule) from official provider docs and reputable sources, then scaffold a brand-new cloud resource under `apis/project/planton/provider/...` including Protobuf APIs, validations, tests, and IaC modules (Pulumi Go and Terraform HCL). No developer-provided schema is required.
 
-AUTHORITATIVE GROUND TRUTH
-• The local repository contents in this workspace (Project Planton mono-repo).
-• Protobuf definitions under apis/project/planton... are the source of truth.
-• Buf validate rules follow buf.build protovalidate (standard + custom rules).
+SOURCE OF TRUTH
+- Local repo structure and conventions in `apis/`.
+- Protobuf generated with Buf and protovalidate.
+- Official provider documentation (primary) and well-known references (secondary). Capture URLs in the resource README.
 
-TOP-LEVEL GOAL
-Given a short request like “Create an AWS CloudFront module”, you will:
-1) Detect provider and resource kind (or ask a focused question).
-2) Prepare a new branch in the repo.
-3) Generate/iterate: spec.proto → buf.validate rules → Go test cases.
-4) Generate stack_outputs.proto and api.proto.
-5) Generate stack_input.proto (templated).
-6) Generate Pulumi module (Go) under module/, compile, refine until build succeeds.
-7) Generate Terraform module under tf/, run “terraform validate”, refine until it passes.
-8) Stop and summarize branch + PR links (if PR automation scripts exist). If PR creation is manual here, just summarize branch and changed paths.
+TRIGGER PHRASES
+- “Add <provider> <resource>” (e.g., “Add AWS CloudFront”, “Add GCP Pub/Sub Topic”, “Add Azure Key Vault”)
+- “Scaffold <provider> <resource> module”
+- “Create <provider> <resource> API and IaC”
 
-FOLDER LAYOUT EXPECTATION (adjust if repo differs)
-apis/project/planton/provider/<provider>/<KindFolder>/v1/
+FOLDER LAYOUT
+apis/project/planton/provider/<provider>/<kindfolder>/v1/
   - api.proto
   - spec.proto
   - stack_input.proto
   - stack_outputs.proto
+  - spec_test.go
+  - README.md (include sources used and field rationale)
   - iac/
-      pulumi/
-        module/
-          main.go
-          locals.go
-          outputs.go
-          (more *.go files as needed)
-        Makefile, Pulumi.yaml, README.md, overview.md (optional)
-      tf/
-        main.tf
-        variables.tf
-        outputs.tf
-        locals.tf
-        provider.tf
-        (plus autoscaling.tf, etc. as needed)
-        README.md
+    pulumi/
+      module/
+        main.go
+        locals.go
+        outputs.go
+      Pulumi.yaml
+      Makefile
+      README.md
+      overview.md
+    tf/
+      main.tf
+      variables.tf
+      outputs.tf
+      locals.tf
+      provider.tf
+      README.md
 
-CONVENTIONS
-• KindFolder: remove underscores and capitalize words: aws_dynamodb → AwsDynamodb → folder name “awsdynamodb”. Message names use PascalCase.
-• Use snake_case for kind keyword, e.g., aws_cloudfront.
-• No `option go_package` in protos created by you.
-• Use pkg/errors in Go: wrap errors with context via errors.Wrap.
-• For CEL rules, prefix fields with `this.` and compare enums by numeric values.
-• Export Pulumi outputs with ctx.Export using constants in outputs.go that match StackOutputs keys.
+NAMING CONVENTIONS
+- Kind (PascalCase): AwsCloudFront, GcpPubsubTopic, AzureKeyVault
+- Kind keyword (snake_case): aws_cloudfront, gcp_pubsub_topic, azure_key_vault
+- Folder name (lowercase, no underscores): awscloudfront, gcppubsubtopic, azurekeyvault
+- apiVersion: "<provider>.project-planton.org/v1"
+- No `go_package` options in newly created protos.
 
-STEP 1 — DETECT PROVIDER & KIND
-Data sources (in priority order):
-A) Read local enum from:
-   ~/scm/github.com/plantoncloud-inc/planton-cloud/apis/cloud/planton/apis/commons/apiresource/apiresourcekind/api_resource_kind.proto
-   (enum CloudResourceProvider)
-B) Read existing kinds per provider by listing folders under providers/<provider>/*/v1.
-C) Fallback: embedded mapping (if files not found):
-   providers: aws, gcp, azure, kubernetes, cloudflare, digitalocean.
-   common kinds: aws_cloudfront, aws_dynamodb, aws_s3_bucket, aws_ekscluster, ...
-Action:
-• Produce JSON:
-  { "provider": "...", "kind": "...", "description": "...", "confidence": 0-1, "reason": "...", "needsHuman": false }
-• If unclear (confidence < 0.7) → Ask the user one targeted question and wait.
+DETECT PROVIDER & KIND
+- Parse request to get provider/kind.
+- If kind exists in `apis/project/planton/shared/cloudresourcekind/cloud_resource_kind.proto`, reuse it; else add a new enum with correct provider mapping (and `kubernetes_resource_type` when provider is kubernetes).
+- If ambiguous (confidence < 0.7), ask one targeted question and wait.
 
-STEP 2 — PREPARE REPO
-• Create/checkout a new branch: forge/{kind}/{short-id}. Show the exact git commands.
-• Ensure target iac directories are empty for this resource. If not, ask before deleting.
+80/20 FIELD INFERENCE (AI-ONLY)
+- Research official docs first (AWS/GCP/Azure/k8s providers). Prefer:
+  - Service “Create”/“Resource” reference pages
+  - Minimal working examples and quickstarts
+- Derive fields covering ~80% of common use:
+  - Required identifiers (names, regions, parents/projects/subscriptions)
+  - Essential toggles and common options (e.g., CloudFront price class, default cache behavior)
+  - Simple nested structures that appear in most deployments (origins, rules, policies)
+  - Credentials are only in `stack_input.proto` (not in `spec.proto`)
+- Prefer usability:
+  - Defaults for optional fields
+  - Enums when official values are finite
+  - Keep depth shallow unless necessary
+- Record all source URLs and a short rationale in `README.md`.
 
-STEP 3 — GENERATE spec.proto
-• Create message <KindPascal>Spec in package project.planton.provider.<provider>.<KindFolder>.v1
-• Only proto3, no go_package.
-• 80/20 fields: include the most common, pragmatic options for real usage.
-• Clear one-line comments per field.
+VALIDATION RULES
+- Use `buf/validate/validate.proto` for field-level constraints:
+  - Strings: min_len, max_len, in, pattern
+  - Numbers: gt/gte/lt/lte
+  - Enums: restrict to allowed values
+- Use CEL for cross-field constraints:
+  - Examples: at least one of fields must be set; ordering like max >= default >= min
+  - Prefix with `this.` and compare enums by numeric values
+- Ensure compatibility with protovalidate-go.
 
-STEP 4 — ADD buf.validate RULES
-• Import buf/validate/validate.proto; add field-level rules and message-level CEL rules.
-• Avoid conflicts between CEL and field-level rules (prefer CEL where necessary).
-• Compile with buf; if errors, refine iteratively.
+PROTO FILES
+- spec.proto: `<Kind>Spec` containing AI-derived 80/20 fields with comments and validations.
+- stack_outputs.proto: `<Kind>StackOutputs` with observable identifiers (IDs/ARNs/URLs).
+- api.proto: `<Kind>` with `api_version`, `kind`, `metadata`, `spec`, `status` (status embeds `<Kind>StackOutputs`).
+- stack_input.proto: `<Kind>StackInput` with:
+  - `provisioner`, `pulumi`, `terraform`
+  - `target` (`<Kind>`)
+  - `provider_credential` message (import provider-specific credential proto, e.g., AWS/GCP/Azure)
 
-STEP 5 — GENERATE Go TESTS for validation
-• Create spec_test.go in package <KindFolder>v1 using Ginkgo/Gomega and protovalidate-go.
-• validator var type must be protovalidate.Validator (not *protovalidate.Validator).
-• Run go test; refine proto and tests until green or ask for help.
+TESTS
+- `spec_test.go` using Ginkgo/Gomega + protovalidate-go:
+  - Positive tests for minimal and typical specs
+  - Negative tests for important validation failures
 
-STEP 6 — GENERATE stack_outputs.proto
-• Message: <KindPascal>StackOutputs in the same package.
-• Include observable identifiers (ARNs, names, URLs, IDs); nested messages allowed.
-• Compile and refine until clean.
+PULUMI (GO)
+- `module/main.go`: `func Resources(ctx *pulumi.Context, in *<pkg>.<Kind>StackInput) error`
+- Create provider instance from `provider_credential`
+- Create core resource(s) matching spec 80/20 fields
+- Export outputs via `ctx.Export` using constants in `outputs.go`
+- Wrap errors with `github.com/pkg/errors`
 
-STEP 7 — GENERATE api.proto
-• From template pattern already used in repo:
-  - apiVersion constant: "<provider>.project-planton.org/v1"
-  - Message names and package path consistent with other resources.
+TERRAFORM (HCL)
+- `provider.tf` wired from variables modeled on spec/metadata
+- `variables.tf` mirrors the AI-derived spec (and `metadata`)
+- `main.tf` provisions core resource(s) aligning with spec 80/20 fields
+- `outputs.tf` exposes values consistent with `<Kind>StackOutputs`
 
-STEP 8 — GENERATE stack_input.proto
-• Use existing template conventions (consistent naming and types).
-• Ensure fields are sufficient to drive Pulumi/Terraform modules.
+RESEARCH AND TRACEABILITY
+- Create `README.md` in the resource folder with:
+  - Short resource intro
+  - List of chosen fields and defaults
+  - Mappings to provider args (Pulumi/Terraform)
+  - Links to official docs and examples used
 
-STEP 9 — GENERATE Pulumi MODULE (Go)
-• Files: locals.go, outputs.go, main.go, plus subresource files.
-• main.go must export Resources(ctx *pulumi.Context, in *<Alias>.<KindPascal>StackInput) error
-• Use outputs.go constants when calling ctx.Export.
-• Build and refine until “go build” succeeds.
+COMMANDS TO RUN (NON-INTERACTIVE)
+- Create branch:
+  - git checkout -b forge/<kind_keyword>/$(date +%y%m%d%H%M)
+- Generate protos:
+  - make -C /Users/suresh/scm/github.com/project-planton/project-planton/apis build | cat
+- Pulumi compile:
+  - go build ./apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/pulumi/... | cat
+- Terraform validate:
+  - terraform -chdir=/Users/suresh/scm/github.com/project-planton/project-planton/apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/tf init -backend=false | cat
+  - terraform -chdir=/Users/suresh/scm/github.com/project-planton/project-planton/apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/tf validate | cat
+- Tests:
+  - go test ./apis/project/planton/provider/<provider>/<kindfolder>/v1/... | cat
 
-STEP 10 — GENERATE Terraform MODULE
-• Files: main.tf, variables.tf, outputs.tf, locals.tf, provider.tf (+ autoscaling.tf, etc.)
-• Run “terraform validate” and refine until it passes.
+SUCCESS CRITERIA
+- Protos compile; lint passes per `apis/buf.yaml`.
+- `make -C apis build` passes.
+- `go build` Pulumi subtree succeeds.
+- `terraform validate` passes.
+- `go test` for the resource passes.
+- README includes source links and field rationale.
+- Outputs exported match `<Kind>StackOutputs`.
 
-WHEN TO ASK HUMAN
-• Provider/kind ambiguous, low confidence.
-• Conflicting validation semantics that cannot be resolved from docs.
-• Compiler/validate failures after 3–5 refinement attempts.
+ERROR POLICY
+- On failures, refine up to 3 attempts automatically (fields/validations/mappings).
+- If still failing, ask one precise question and wait.
 
-OUTPUT STYLE
-• When you create/modify files, show a concise tree of paths and a short reason for each.
-• For any command, show a ready-to-paste block.
-• Keep answers short; prefer iterative back-and-forth.
+KUBERNETES RESOURCES
+- Use `provider/kubernetes/<workload|addon>/<kindfolder>/v1` based on `kubernetes_resource_type`.
+- Same API/IaC conventions; provider is k8s (Pulumi k8s and Terraform k8s providers).
 
-APPENDIX — MAPPINGS & RULES
-• Snake→Pascal: aws_dynamodb → AwsDynamodb
-• KindFolder: strip underscores, keep case words joined: “AwsDynamodb” → “awsdynamodb”
-• Validate billing_mode vs capacity fields (PROVISIONED vs PAY_PER_REQUEST) consistently across table and GSIs/LSIs.
+OUTPUT STYLE IN CHAT
+- Show concise tree of created paths with brief reasons.
+- Show ready-to-paste commands.
+- Keep messages short.
+
+DEVELOPER INPUT POLICY
+- No schema from developers. Only the natural-language intent (e.g., “Add AWS CloudFront”).
+- You perform all research and choose the 80/20 fields and defaults autonomously.

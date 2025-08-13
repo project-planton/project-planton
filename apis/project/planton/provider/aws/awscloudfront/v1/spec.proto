@@ -3,106 +3,105 @@ syntax = "proto3";
 package project.planton.provider.aws.awscloudfront.v1;
 
 import "buf/validate/validate.proto";
-import "project/planton/shared/foreignkey/v1/foreign_key.proto";
-import "project/planton/shared/options/options.proto";
 
-// AwsCloudFrontSpec defines the specification required to deploy an AWS CloudFront distribution.
-// This captures the 80/20 configuration surface for common production setups.
+// AwsCloudFrontSpec captures common fields used to configure a CloudFront distribution.
+// Minimal, validation-free draft per Forge rule 001.
 message AwsCloudFrontSpec {
-  // aliases are the CNAMEs for the distribution (e.g. ["cdn.example.com"]).
-  repeated string aliases = 1 [(buf.validate.field).repeated = {unique: true}];
+  // Domain aliases (CNAMEs) such as "cdn.example.com".
+  repeated string aliases = 1 [(buf.validate.field).repeated.unique = true];
 
-  // certificate_arn is the ACM certificate ARN used when aliases are configured.
-  // If not set, the default CloudFront certificate will be used for the cloudfront.net domain.
+  // ACM certificate ARN for custom domains (when aliases are set).
   string certificate_arn = 2;
 
-  // price_class controls the edge locations used by CloudFront.
-  PriceClass price_class = 3 [(project.planton.shared.options.recommended_default) = "PRICE_CLASS_100"];
+  // Price class selection controlling edge location coverage.
+  enum PriceClass {
+    PRICE_CLASS_UNSPECIFIED = 0;
+    PRICE_CLASS_100 = 1; // North America & Europe
+    PRICE_CLASS_200 = 2; // 100 + select regions
+    PRICE_CLASS_ALL = 3; // All edge locations
+  }
+  PriceClass price_class = 3 [(buf.validate.field).enum.defined_only = true];
 
-  // logging enables access logs delivery to the given S3 bucket (by name).
+  // Access logging configuration.
+  message Logging {
+    bool enabled = 1;
+    // Target S3 bucket name (without s3:// prefix).
+    string bucket_name = 2;
+    // Key prefix for log objects.
+    string prefix = 3;
+  }
   Logging logging = 4;
 
-  // default_cache_behavior defines the default behavior for requests that don't match any ordered behavior.
-  DefaultCacheBehavior default_cache_behavior = 5 [(buf.validate.field).required = true];
+  // Minimal origin reference.
+  message Origin {
+    // Identifier to reference in behaviors.
+    string id = 1 [(buf.validate.field).string.min_len = 1];
+    // Origin domain name, e.g., my-bucket.s3.amazonaws.com or api.example.com
+    string domain_name = 2 [(buf.validate.field).string.min_len = 1];
+    // Optional OAC id when using private S3 origins.
+    string origin_access_control_id = 3;
+  }
+  // List of origins available to behaviors.
+  repeated Origin origins = 5 [(buf.validate.field).repeated.min_items = 1];
 
-  // origins lists the origins available to behaviors.
-  repeated Origin origins = 6 [(buf.validate.field).repeated.min_items = 1];
+  // Default cache behavior for unmatched requests.
+  message DefaultCacheBehavior {
+    // Origin id this behavior points to.
+    string origin_id = 1 [(buf.validate.field).string.min_len = 1];
 
-  // web_acl_arn optionally attaches an AWS WAFv2 web ACL to the distribution.
+    // HTTP/HTTPS policy.
+    enum ViewerProtocolPolicy {
+      VIEWER_PROTOCOL_POLICY_UNSPECIFIED = 0;
+      ALLOW_ALL = 1;
+      HTTPS_ONLY = 2;
+      REDIRECT_TO_HTTPS = 3;
+    }
+    ViewerProtocolPolicy viewer_protocol_policy = 2 [(buf.validate.field).enum.defined_only = true];
+
+    // Enable Gzip/Brotli compression at edge.
+    bool compress = 3;
+
+    // Optional cache policy id (managed or custom).
+    string cache_policy_id = 4;
+
+    // Allowed HTTP method sets.
+    enum AllowedMethods {
+      ALLOWED_METHODS_UNSPECIFIED = 0;
+      GET_HEAD = 1;
+      GET_HEAD_OPTIONS = 2;
+      ALL = 3; // GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE
+    }
+    AllowedMethods allowed_methods = 5 [(buf.validate.field).enum.defined_only = true];
+
+    option (buf.validate.message).cel = {
+      id: "viewer_protocol_policy_required",
+      message: "viewer_protocol_policy must be set",
+      expression: "this.viewer_protocol_policy != 0"
+    };
+  }
+  DefaultCacheBehavior default_cache_behavior = 6;
+
+  // Optional AWS WAFv2 web ACL ARN to attach to the distribution.
   string web_acl_arn = 7;
 
-  // dns allows automatic Route53 record management for aliases when enabled.
-  AwsCloudFrontDns dns = 8;
+  // Route53 automation for aliases.
+  message Dns {
+    bool enabled = 1;
+    // Hosted Zone id to manage records when enabled.
+    string route53_zone_id = 2;
+
+    option (buf.validate.message).cel = {
+      id: "dns_requires_zone_id_when_enabled",
+      message: "route53_zone_id must be set when dns.enabled is true",
+      expression: "!this.enabled || this.route53_zone_id != \"\""
+    };
+  }
+  Dns dns = 8;
+
+  option (buf.validate.message).cel = {
+    id: "aliases_require_cert",
+    message: "certificate_arn must be set when aliases are provided",
+    expression: "this.aliases.size() == 0 || this.certificate_arn != \"\""
+  };
 }
-
-// PriceClass enumerates CloudFront price classes.
-enum PriceClass {
-  PRICE_CLASS_UNSPECIFIED = 0;
-  PRICE_CLASS_100 = 1; // North America & Europe
-  PRICE_CLASS_200 = 2; // 100 + select regions
-  PRICE_CLASS_ALL = 3; // All edge locations
-}
-
-// Logging configuration for CloudFront access logs.
-message Logging {
-  bool enabled = 1;
-  // bucket_name is the target S3 bucket name (without s3:// prefix).
-  string bucket_name = 2;
-  // prefix for log object keys.
-  string prefix = 3;
-}
-
-// DefaultCacheBehavior defines the default behavior.
-message DefaultCacheBehavior {
-  // origin_id must reference the id of one of the entries in origins list.
-  string origin_id = 1 [(buf.validate.field).string.min_len = 1];
-
-  ViewerProtocolPolicy viewer_protocol_policy = 2 [(project.planton.shared.options.recommended_default) = "REDIRECT_TO_HTTPS"];
-
-  // compress enables Gzip/Brotli compression.
-  bool compress = 3;
-
-  // cache_policy_id optionally uses a managed or custom cache policy.
-  string cache_policy_id = 4;
-
-  // allowed_methods controls HTTP methods allowed. Keep minimal set for most apps.
-  AllowedMethods allowed_methods = 5;
-}
-
-// Origin represents an S3 bucket or custom origin.
-message Origin {
-  // id to reference within behaviors.
-  string id = 1 [(buf.validate.field).string.min_len = 1];
-  // domain_name of the origin, e.g. my-bucket.s3.amazonaws.com or api.example.com
-  string domain_name = 2 [(buf.validate.field).string.min_len = 1];
-  // origin_access_control_id for OAC when using S3 with private access.
-  string origin_access_control_id = 3;
-}
-
-// AllowedMethods enumerates common method sets.
-enum AllowedMethods {
-  ALLOWED_METHODS_UNSPECIFIED = 0;
-  GET_HEAD = 1;
-  GET_HEAD_OPTIONS = 2;
-  ALL = 3; // GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE
-}
-
-// ViewerProtocolPolicy defines HTTP/HTTPS policy.
-enum ViewerProtocolPolicy {
-  VIEWER_PROTOCOL_POLICY_UNSPECIFIED = 0;
-  ALLOW_ALL = 1;
-  HTTPS_ONLY = 2;
-  REDIRECT_TO_HTTPS = 3;
-}
-
-// Route53 automation for aliases.
-message AwsCloudFrontDns {
-  bool enabled = 1;
-  // route53_zone_id is the Hosted Zone to manage records in when enabled.
-  project.planton.shared.foreignkey.v1.StringValueOrRef route53_zone_id = 2 [
-    (project.planton.shared.foreignkey.v1.default_kind) = AwsRoute53Zone,
-    (project.planton.shared.foreignkey.v1.default_kind_field_path) = "status.outputs.zone_id"
-  ];
-}
-
 

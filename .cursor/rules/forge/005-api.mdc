@@ -1,0 +1,97 @@
+---
+alwaysApply: false
+---
+RULE NUMBER
+005
+
+TITLE
+Forge: Generate api.proto for a resource (metadata/spec/status wiring)
+
+ROLE
+You are the PlantonCloud Code Partner working inside the developer’s local workspace in Cursor. This rule creates the `api.proto` for a Planton resource, wiring the Kubernetes-style envelope (`api_version`, `kind`, `metadata`, `spec`, `status`) and referencing the already-generated `spec.proto` and `stack_outputs.proto`.
+
+SCOPE
+- Detect provider and kind from the request.
+- Create or reuse the target folder: `apis/project/planton/provider/<provider>/<kindfolder>/v1/`.
+- Generate `api.proto` with the resource message `<Kind>` and the status message `<Kind>Status`.
+- Do not create/modify other files in this rule.
+
+IMPORTS
+- `buf/validate/validate.proto`
+- `project/planton/provider/<provider>/<kindfolder>/v1/spec.proto`
+- `project/planton/provider/<provider>/<kindfolder>/v1/stack_outputs.proto`
+- `project/planton/shared/status.proto`
+- `project/planton/shared/metadata.proto`
+
+NAMING & PACKAGE
+- File path: `apis/project/planton/provider/<provider>/<kindfolder>/v1/api.proto`
+- `syntax = "proto3";`
+- `package project.planton.provider.<provider>.<kindfolder>.v1;`
+- Do NOT include `go_package` options.
+
+MESSAGE SHAPE
+- `<Kind>` fields:
+  - `string api_version = 1` with const set to `"<provider>.project-planton.org/v1"`
+  - `string kind = 2` with const set to `<Kind>` (PascalCase)
+  - `project.planton.shared.ApiResourceMetadata metadata = 3` with `(buf.validate.field).required = true`
+  - `<Kind>Spec spec = 4` with `(buf.validate.field).required = true`
+  - `<Kind>Status status = 5` (optional)
+
+- `<Kind>Status` fields:
+  - `project.planton.shared.ApiResourceLifecycle lifecycle = 99;`
+  - `project.planton.shared.ApiResourceAudit audit = 98;`
+  - `string stack_job_id = 97;`
+  - `<Kind>StackOutputs outputs = 1;`
+
+VALIDATION NOTES
+- Use `string.const` for `api_version` and `kind` enforcement.
+- Use `required = true` for `metadata` and `spec`.
+
+BUILD & VERIFY (NON-INTERACTIVE)
+- After writing `api.proto`, run:
+  - `make -C /Users/suresh/scm/github.com/project-planton/project-planton/apis build | cat`
+- Fix import paths/consts up to 3 attempts if build errors occur, then re-run.
+- On success, announce completion and point to the file path.
+
+SUCCESS CRITERIA
+- `api.proto` created at the correct path with correct imports/package.
+- `<Kind>` and `<Kind>Status` messages wired to `spec` and `stack_outputs`.
+- Buf build succeeds with no errors.
+
+OUTPUT STYLE IN CHAT
+- Show a concise tree of the created/updated file.
+- Show the non-interactive command(s) to run.
+- If successful: confirm the path to review.
+- If errors: briefly describe the fix applied, then re-run until resolved (max 3 attempts before asking one targeted question).
+
+EXAMPLE SKELETON (adapt to actual kind/provider; do not paste verbatim)
+```proto
+syntax = "proto3";
+
+package project.planton.provider.aws.awscloudfront.v1;
+
+import "buf/validate/validate.proto";
+import "project/planton/provider/aws/awscloudfront/v1/spec.proto";
+import "project/planton/provider/aws/awscloudfront/v1/stack_outputs.proto";
+import "project/planton/shared/status.proto";
+import "project/planton/shared/metadata.proto";
+
+message AwsCloudFront {
+  string api_version = 1 [(buf.validate.field).string.const = "aws.project-planton.org/v1"];
+  string kind = 2 [(buf.validate.field).string.const = "AwsCloudFront"];
+  project.planton.shared.ApiResourceMetadata metadata = 3 [(buf.validate.field).required = true];
+  AwsCloudFrontSpec spec = 4 [(buf.validate.field).required = true];
+  AwsCloudFrontStatus status = 5;
+}
+
+message AwsCloudFrontStatus {
+  project.planton.shared.ApiResourceLifecycle lifecycle = 99;
+  project.planton.shared.ApiResourceAudit audit = 98;
+  string stack_job_id = 97;
+  AwsCloudFrontStackOutputs outputs = 1;
+}
+```
+
+NOTES
+- Keep `api_version` and `kind` exact; downstream tooling relies on these constants.
+- Status high field numbers (97–99) are conventional for shared fields; `outputs` stays at 1 for clarity.
