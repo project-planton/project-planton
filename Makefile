@@ -7,6 +7,13 @@ build_dir=build
 LDFLAGS=-ldflags "-X ${pkg}/internal/cli/version.Version=${version}"
 BAZEL?=bazel
 
+# If BUILDBUDDY_API_KEY is set, enable the :bb config and inject only the header.
+ifneq ($(strip $(BUILDBUDDY_API_KEY)),)
+BAZEL_REMOTE_FLAGS=--config=bb --remote_header=x-buildbuddy-api-key=$$BUILDBUDDY_API_KEY
+else
+BAZEL_REMOTE_FLAGS=
+endif
+
 build_cmd=go build -v ${LDFLAGS}
 
 .PHONY: deps
@@ -28,15 +35,15 @@ bazel-mod-tidy:
 
 .PHONY: bazel-gazelle
 bazel-gazelle:
-	${BAZEL} run //:gazelle
+	${BAZEL} run ${BAZEL_REMOTE_FLAGS} //:gazelle
 
 .PHONY: bazel-build-cli
 bazel-build-cli:
-	${BAZEL} build //:project-planton
+	${BAZEL} build ${BAZEL_REMOTE_FLAGS} //:project-planton
 
 .PHONY: bazel-test
 bazel-test:
-	${BAZEL} test //... --test_output=errors
+	${BAZEL} test ${BAZEL_REMOTE_FLAGS} --test_output=errors //...
 
 .PHONY: generate-cloud-resource-kind-map
 generate-cloud-resource-kind-map:
