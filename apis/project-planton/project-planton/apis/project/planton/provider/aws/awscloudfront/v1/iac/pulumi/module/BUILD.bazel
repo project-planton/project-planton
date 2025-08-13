@@ -1,8 +1,0 @@
-load("@rules_go//go:def.bzl", "go_library")
-
-go_library(
-    name = "module",
-    srcs = ["outputs.go"],
-    importpath = "github.com/project-planton/project-planton/apis/project-planton/project-planton/apis/project/planton/provider/aws/awscloudfront/v1/iac/pulumi/module",
-    visibility = ["//visibility:public"],
-)
