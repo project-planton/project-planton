@@ -2,7 +2,7 @@
 alwaysApply: false
 ---
 RULE NUMBER
-008
+009
 
 TITLE
 Forge: Generate Pulumi module package (module/ only, multi-resource orchestration)

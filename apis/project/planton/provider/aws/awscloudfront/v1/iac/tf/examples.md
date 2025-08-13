@@ -22,14 +22,13 @@ spec:
 project-planton validate --manifest ./manifest.yaml
 ```
 
-- Pulumi deploy:
+- Tofu plan/apply:
 ```bash
-project-planton pulumi up --manifest ./manifest.yaml --stack org/project/stack
-```
-
-- Terraform deploy:
-```bash
-project-planton terraform apply --manifest ./manifest.yaml --stack org/project/stack
+project-planton tofu init --manifest ./manifest.yaml
+project-planton tofu plan --manifest ./manifest.yaml
+project-planton tofu apply --manifest ./manifest.yaml --auto-approve
 ```
 
 Note: Provider credentials are supplied via stack input, not in the spec.
+
+

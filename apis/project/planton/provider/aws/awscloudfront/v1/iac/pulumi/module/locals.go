@@ -5,19 +5,16 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// Locals groups frequently used references and derived values.
+// Locals provides convenient access to commonly used values from the stack input.
 type Locals struct {
-	Ctx           *pulumi.Context
-	Input         *awscloudfrontv1.AwsCloudFrontStackInput
-	AwsCloudFront *awscloudfrontv1.AwsCloudFront
-	Spec          *awscloudfrontv1.AwsCloudFrontSpec
+	Target *awscloudfrontv1.AwsCloudFront
+	Spec   *awscloudfrontv1.AwsCloudFrontSpec
 }
 
+// initializeLocals constructs the locals struct from the stack input.
 func initializeLocals(ctx *pulumi.Context, in *awscloudfrontv1.AwsCloudFrontStackInput) *Locals {
 	return &Locals{
-		Ctx:           ctx,
-		Input:         in,
-		AwsCloudFront: in.Target,
-		Spec:          in.Target.Spec,
+		Target: in.Target,
+		Spec:   in.Target.Spec,
 	}
 }

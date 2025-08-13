@@ -7,6 +7,7 @@ output "domain_name" {
 }
 
 output "hosted_zone_id" {
+  # CloudFront hosted zone ID is static
   value = "Z2FDTNDATAQYW2"
 }
 

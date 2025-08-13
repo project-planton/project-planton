@@ -21,14 +21,14 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// aws-cloudfront stack outputs
+// AwsCloudFrontStackOutputs captures observable identifiers from CloudFront.
 type AwsCloudFrontStackOutputs struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// distribution id
+	// Distribution ID (e.g., E123ABCXYZ...).
 	DistributionId string `protobuf:"bytes,1,opt,name=distribution_id,json=distributionId,proto3" json:"distribution_id,omitempty"`
-	// distribution domain name (e.g., d123.cloudfront.net)
+	// CloudFront distribution domain name (e.g., d123.cloudfront.net).
 	DomainName string `protobuf:"bytes,2,opt,name=domain_name,json=domainName,proto3" json:"domain_name,omitempty"`
-	// hosted zone id for alias records
+	// Route 53 hosted zone ID used for aliasing to CloudFront.
 	HostedZoneId  string `protobuf:"bytes,3,opt,name=hosted_zone_id,json=hostedZoneId,proto3" json:"hosted_zone_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache

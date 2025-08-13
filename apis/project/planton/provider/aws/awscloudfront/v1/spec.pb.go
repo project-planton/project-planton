@@ -22,14 +22,14 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// Price class selection controlling edge location coverage.
+// Price class for edge locations.
 type AwsCloudFrontSpec_PriceClass int32
 
 const (
 	AwsCloudFrontSpec_PRICE_CLASS_UNSPECIFIED AwsCloudFrontSpec_PriceClass = 0
-	AwsCloudFrontSpec_PRICE_CLASS_100         AwsCloudFrontSpec_PriceClass = 1 // North America & Europe
-	AwsCloudFrontSpec_PRICE_CLASS_200         AwsCloudFrontSpec_PriceClass = 2 // 100 + select regions
-	AwsCloudFrontSpec_PRICE_CLASS_ALL         AwsCloudFrontSpec_PriceClass = 3 // All edge locations
+	AwsCloudFrontSpec_PRICE_CLASS_100         AwsCloudFrontSpec_PriceClass = 1
+	AwsCloudFrontSpec_PRICE_CLASS_200         AwsCloudFrontSpec_PriceClass = 2
+	AwsCloudFrontSpec_PRICE_CLASS_ALL         AwsCloudFrontSpec_PriceClass = 3
 )
 
 // Enum value maps for AwsCloudFrontSpec_PriceClass.
@@ -75,130 +75,24 @@ func (AwsCloudFrontSpec_PriceClass) EnumDescriptor() ([]byte, []int) {
 	return file_project_planton_provider_aws_awscloudfront_v1_spec_proto_rawDescGZIP(), []int{0, 0}
 }
 
-// HTTP/HTTPS policy.
-type AwsCloudFrontSpec_DefaultCacheBehavior_ViewerProtocolPolicy int32
-
-const (
-	AwsCloudFrontSpec_DefaultCacheBehavior_VIEWER_PROTOCOL_POLICY_UNSPECIFIED AwsCloudFrontSpec_DefaultCacheBehavior_ViewerProtocolPolicy = 0
-	AwsCloudFrontSpec_DefaultCacheBehavior_ALLOW_ALL                          AwsCloudFrontSpec_DefaultCacheBehavior_ViewerProtocolPolicy = 1
-	AwsCloudFrontSpec_DefaultCacheBehavior_HTTPS_ONLY                         AwsCloudFrontSpec_DefaultCacheBehavior_ViewerProtocolPolicy = 2
-	AwsCloudFrontSpec_DefaultCacheBehavior_REDIRECT_TO_HTTPS                  AwsCloudFrontSpec_DefaultCacheBehavior_ViewerProtocolPolicy = 3
-)
-
-// Enum value maps for AwsCloudFrontSpec_DefaultCacheBehavior_ViewerProtocolPolicy.
-var (
-	AwsCloudFrontSpec_DefaultCacheBehavior_ViewerProtocolPolicy_name = map[int32]string{
-		0: "VIEWER_PROTOCOL_POLICY_UNSPECIFIED",
-		1: "ALLOW_ALL",
-		2: "HTTPS_ONLY",
-		3: "REDIRECT_TO_HTTPS",
-	}
-	AwsCloudFrontSpec_DefaultCacheBehavior_ViewerProtocolPolicy_value = map[string]int32{
-		"VIEWER_PROTOCOL_POLICY_UNSPECIFIED": 0,
-		"ALLOW_ALL":                          1,
-		"HTTPS_ONLY":                         2,
-		"REDIRECT_TO_HTTPS":                  3,
-	}
-)
-
-func (x AwsCloudFrontSpec_DefaultCacheBehavior_ViewerProtocolPolicy) Enum() *AwsCloudFrontSpec_DefaultCacheBehavior_ViewerProtocolPolicy {
-	p := new(AwsCloudFrontSpec_DefaultCacheBehavior_ViewerProtocolPolicy)
-	*p = x
-	return p
-}
-
-func (x AwsCloudFrontSpec_DefaultCacheBehavior_ViewerProtocolPolicy) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (AwsCloudFrontSpec_DefaultCacheBehavior_ViewerProtocolPolicy) Descriptor() protoreflect.EnumDescriptor {
-	return file_project_planton_provider_aws_awscloudfront_v1_spec_proto_enumTypes[1].Descriptor()
-}
-
-func (AwsCloudFrontSpec_DefaultCacheBehavior_ViewerProtocolPolicy) Type() protoreflect.EnumType {
-	return &file_project_planton_provider_aws_awscloudfront_v1_spec_proto_enumTypes[1]
-}
-
-func (x AwsCloudFrontSpec_DefaultCacheBehavior_ViewerProtocolPolicy) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use AwsCloudFrontSpec_DefaultCacheBehavior_ViewerProtocolPolicy.Descriptor instead.
-func (AwsCloudFrontSpec_DefaultCacheBehavior_ViewerProtocolPolicy) EnumDescriptor() ([]byte, []int) {
-	return file_project_planton_provider_aws_awscloudfront_v1_spec_proto_rawDescGZIP(), []int{0, 2, 0}
-}
-
-// Allowed HTTP method sets.
-type AwsCloudFrontSpec_DefaultCacheBehavior_AllowedMethods int32
-
-const (
-	AwsCloudFrontSpec_DefaultCacheBehavior_ALLOWED_METHODS_UNSPECIFIED AwsCloudFrontSpec_DefaultCacheBehavior_AllowedMethods = 0
-	AwsCloudFrontSpec_DefaultCacheBehavior_GET_HEAD                    AwsCloudFrontSpec_DefaultCacheBehavior_AllowedMethods = 1
-	AwsCloudFrontSpec_DefaultCacheBehavior_GET_HEAD_OPTIONS            AwsCloudFrontSpec_DefaultCacheBehavior_AllowedMethods = 2
-	AwsCloudFrontSpec_DefaultCacheBehavior_ALL                         AwsCloudFrontSpec_DefaultCacheBehavior_AllowedMethods = 3 // GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE
-)
-
-// Enum value maps for AwsCloudFrontSpec_DefaultCacheBehavior_AllowedMethods.
-var (
-	AwsCloudFrontSpec_DefaultCacheBehavior_AllowedMethods_name = map[int32]string{
-		0: "ALLOWED_METHODS_UNSPECIFIED",
-		1: "GET_HEAD",
-		2: "GET_HEAD_OPTIONS",
-		3: "ALL",
-	}
-	AwsCloudFrontSpec_DefaultCacheBehavior_AllowedMethods_value = map[string]int32{
-		"ALLOWED_METHODS_UNSPECIFIED": 0,
-		"GET_HEAD":                    1,
-		"GET_HEAD_OPTIONS":            2,
-		"ALL":                         3,
-	}
-)
-
-func (x AwsCloudFrontSpec_DefaultCacheBehavior_AllowedMethods) Enum() *AwsCloudFrontSpec_DefaultCacheBehavior_AllowedMethods {
-	p := new(AwsCloudFrontSpec_DefaultCacheBehavior_AllowedMethods)
-	*p = x
-	return p
-}
-
-func (x AwsCloudFrontSpec_DefaultCacheBehavior_AllowedMethods) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (AwsCloudFrontSpec_DefaultCacheBehavior_AllowedMethods) Descriptor() protoreflect.EnumDescriptor {
-	return file_project_planton_provider_aws_awscloudfront_v1_spec_proto_enumTypes[2].Descriptor()
-}
-
-func (AwsCloudFrontSpec_DefaultCacheBehavior_AllowedMethods) Type() protoreflect.EnumType {
-	return &file_project_planton_provider_aws_awscloudfront_v1_spec_proto_enumTypes[2]
-}
-
-func (x AwsCloudFrontSpec_DefaultCacheBehavior_AllowedMethods) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use AwsCloudFrontSpec_DefaultCacheBehavior_AllowedMethods.Descriptor instead.
-func (AwsCloudFrontSpec_DefaultCacheBehavior_AllowedMethods) EnumDescriptor() ([]byte, []int) {
-	return file_project_planton_provider_aws_awscloudfront_v1_spec_proto_rawDescGZIP(), []int{0, 2, 1}
-}
-
 // AwsCloudFrontSpec captures common fields used to configure a CloudFront distribution.
-// Minimal, validation-free draft per Forge rule 001.
 type AwsCloudFrontSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// Domain aliases (CNAMEs) such as "cdn.example.com".
-	Aliases []string `protobuf:"bytes,1,rep,name=aliases,proto3" json:"aliases,omitempty"`
-	// ACM certificate ARN for custom domains (when aliases are set).
-	CertificateArn string                       `protobuf:"bytes,2,opt,name=certificate_arn,json=certificateArn,proto3" json:"certificate_arn,omitempty"`
-	PriceClass     AwsCloudFrontSpec_PriceClass `protobuf:"varint,3,opt,name=price_class,json=priceClass,proto3,enum=project.planton.provider.aws.awscloudfront.v1.AwsCloudFrontSpec_PriceClass" json:"price_class,omitempty"`
-	Logging        *AwsCloudFrontSpec_Logging   `protobuf:"bytes,4,opt,name=logging,proto3" json:"logging,omitempty"`
-	// List of origins available to behaviors.
-	Origins              []*AwsCloudFrontSpec_Origin             `protobuf:"bytes,5,rep,name=origins,proto3" json:"origins,omitempty"`
-	DefaultCacheBehavior *AwsCloudFrontSpec_DefaultCacheBehavior `protobuf:"bytes,6,opt,name=default_cache_behavior,json=defaultCacheBehavior,proto3" json:"default_cache_behavior,omitempty"`
-	// Optional AWS WAFv2 web ACL ARN to attach to the distribution.
-	WebAclArn     string                 `protobuf:"bytes,7,opt,name=web_acl_arn,json=webAclArn,proto3" json:"web_acl_arn,omitempty"`
-	Dns           *AwsCloudFrontSpec_Dns `protobuf:"bytes,8,opt,name=dns,proto3" json:"dns,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	// Whether the distribution is enabled.
+	Enabled bool `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`
+	// Aliases (CNAMEs) for the distribution, e.g., "cdn.example.com".
+	Aliases []string `protobuf:"bytes,2,rep,name=aliases,proto3" json:"aliases,omitempty"`
+	// ACM certificate ARN for custom domains in the us-east-1 region.
+	CertificateArn string                       `protobuf:"bytes,3,opt,name=certificate_arn,json=certificateArn,proto3" json:"certificate_arn,omitempty"`
+	PriceClass     AwsCloudFrontSpec_PriceClass `protobuf:"varint,4,opt,name=price_class,json=priceClass,proto3,enum=project.planton.provider.aws.awscloudfront.v1.AwsCloudFrontSpec_PriceClass" json:"price_class,omitempty"`
+	// List of origins available to the distribution.
+	Origins []*AwsCloudFrontSpec_Origin `protobuf:"bytes,5,rep,name=origins,proto3" json:"origins,omitempty"`
+	// The id of the origin used by the default cache behavior.
+	DefaultOriginId string `protobuf:"bytes,6,opt,name=default_origin_id,json=defaultOriginId,proto3" json:"default_origin_id,omitempty"`
+	// Default root object, e.g., "index.html".
+	DefaultRootObject string `protobuf:"bytes,7,opt,name=default_root_object,json=defaultRootObject,proto3" json:"default_root_object,omitempty"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
 }
 
 func (x *AwsCloudFrontSpec) Reset() {
@@ -231,6 +125,13 @@ func (*AwsCloudFrontSpec) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_aws_awscloudfront_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
+func (x *AwsCloudFrontSpec) GetEnabled() bool {
+	if x != nil {
+		return x.Enabled
+	}
+	return false
+}
+
 func (x *AwsCloudFrontSpec) GetAliases() []string {
 	if x != nil {
 		return x.Aliases
@@ -252,13 +153,6 @@ func (x *AwsCloudFrontSpec) GetPriceClass() AwsCloudFrontSpec_PriceClass {
 	return AwsCloudFrontSpec_PRICE_CLASS_UNSPECIFIED
 }
 
-func (x *AwsCloudFrontSpec) GetLogging() *AwsCloudFrontSpec_Logging {
-	if x != nil {
-		return x.Logging
-	}
-	return nil
-}
-
 func (x *AwsCloudFrontSpec) GetOrigins() []*AwsCloudFrontSpec_Origin {
 	if x != nil {
 		return x.Origins
@@ -266,106 +160,36 @@ func (x *AwsCloudFrontSpec) GetOrigins() []*AwsCloudFrontSpec_Origin {
 	return nil
 }
 
-func (x *AwsCloudFrontSpec) GetDefaultCacheBehavior() *AwsCloudFrontSpec_DefaultCacheBehavior {
+func (x *AwsCloudFrontSpec) GetDefaultOriginId() string {
 	if x != nil {
-		return x.DefaultCacheBehavior
-	}
-	return nil
-}
-
-func (x *AwsCloudFrontSpec) GetWebAclArn() string {
-	if x != nil {
-		return x.WebAclArn
+		return x.DefaultOriginId
 	}
 	return ""
 }
 
-func (x *AwsCloudFrontSpec) GetDns() *AwsCloudFrontSpec_Dns {
+func (x *AwsCloudFrontSpec) GetDefaultRootObject() string {
 	if x != nil {
-		return x.Dns
+		return x.DefaultRootObject
 	}
-	return nil
+	return ""
 }
 
-// Access logging configuration.
-type AwsCloudFrontSpec_Logging struct {
-	state   protoimpl.MessageState `protogen:"open.v1"`
-	Enabled bool                   `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`
-	// Target S3 bucket name (without s3:// prefix).
-	BucketName string `protobuf:"bytes,2,opt,name=bucket_name,json=bucketName,proto3" json:"bucket_name,omitempty"`
-	// Key prefix for log objects.
-	Prefix        string `protobuf:"bytes,3,opt,name=prefix,proto3" json:"prefix,omitempty"`
+// Origin definition (minimal).
+type AwsCloudFrontSpec_Origin struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Unique identifier used to reference the origin in behaviors.
+	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	// DNS name of the origin, e.g., "my-bucket.s3.amazonaws.com".
+	DomainName string `protobuf:"bytes,2,opt,name=domain_name,json=domainName,proto3" json:"domain_name,omitempty"`
+	// Optional origin path that CloudFront appends to requests.
+	OriginPath    string `protobuf:"bytes,3,opt,name=origin_path,json=originPath,proto3" json:"origin_path,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *AwsCloudFrontSpec_Logging) Reset() {
-	*x = AwsCloudFrontSpec_Logging{}
-	mi := &file_project_planton_provider_aws_awscloudfront_v1_spec_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *AwsCloudFrontSpec_Logging) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*AwsCloudFrontSpec_Logging) ProtoMessage() {}
-
-func (x *AwsCloudFrontSpec_Logging) ProtoReflect() protoreflect.Message {
-	mi := &file_project_planton_provider_aws_awscloudfront_v1_spec_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use AwsCloudFrontSpec_Logging.ProtoReflect.Descriptor instead.
-func (*AwsCloudFrontSpec_Logging) Descriptor() ([]byte, []int) {
-	return file_project_planton_provider_aws_awscloudfront_v1_spec_proto_rawDescGZIP(), []int{0, 0}
-}
-
-func (x *AwsCloudFrontSpec_Logging) GetEnabled() bool {
-	if x != nil {
-		return x.Enabled
-	}
-	return false
-}
-
-func (x *AwsCloudFrontSpec_Logging) GetBucketName() string {
-	if x != nil {
-		return x.BucketName
-	}
-	return ""
-}
-
-func (x *AwsCloudFrontSpec_Logging) GetPrefix() string {
-	if x != nil {
-		return x.Prefix
-	}
-	return ""
-}
-
-// Minimal origin reference.
-type AwsCloudFrontSpec_Origin struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// Identifier to reference in behaviors.
-	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	// Origin domain name, e.g., my-bucket.s3.amazonaws.com or api.example.com
-	DomainName string `protobuf:"bytes,2,opt,name=domain_name,json=domainName,proto3" json:"domain_name,omitempty"`
-	// Optional OAC id when using private S3 origins.
-	OriginAccessControlId string `protobuf:"bytes,3,opt,name=origin_access_control_id,json=originAccessControlId,proto3" json:"origin_access_control_id,omitempty"`
-	unknownFields         protoimpl.UnknownFields
-	sizeCache             protoimpl.SizeCache
-}
-
 func (x *AwsCloudFrontSpec_Origin) Reset() {
 	*x = AwsCloudFrontSpec_Origin{}
-	mi := &file_project_planton_provider_aws_awscloudfront_v1_spec_proto_msgTypes[2]
+	mi := &file_project_planton_provider_aws_awscloudfront_v1_spec_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -377,7 +201,7 @@ func (x *AwsCloudFrontSpec_Origin) String() string {
 func (*AwsCloudFrontSpec_Origin) ProtoMessage() {}
 
 func (x *AwsCloudFrontSpec_Origin) ProtoReflect() protoreflect.Message {
-	mi := &file_project_planton_provider_aws_awscloudfront_v1_spec_proto_msgTypes[2]
+	mi := &file_project_planton_provider_aws_awscloudfront_v1_spec_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -390,7 +214,7 @@ func (x *AwsCloudFrontSpec_Origin) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AwsCloudFrontSpec_Origin.ProtoReflect.Descriptor instead.
 func (*AwsCloudFrontSpec_Origin) Descriptor() ([]byte, []int) {
-	return file_project_planton_provider_aws_awscloudfront_v1_spec_proto_rawDescGZIP(), []int{0, 1}
+	return file_project_planton_provider_aws_awscloudfront_v1_spec_proto_rawDescGZIP(), []int{0, 0}
 }
 
 func (x *AwsCloudFrontSpec_Origin) GetId() string {
@@ -407,143 +231,9 @@ func (x *AwsCloudFrontSpec_Origin) GetDomainName() string {
 	return ""
 }
 
-func (x *AwsCloudFrontSpec_Origin) GetOriginAccessControlId() string {
+func (x *AwsCloudFrontSpec_Origin) GetOriginPath() string {
 	if x != nil {
-		return x.OriginAccessControlId
-	}
-	return ""
-}
-
-// Default cache behavior for unmatched requests.
-type AwsCloudFrontSpec_DefaultCacheBehavior struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// Origin id this behavior points to.
-	OriginId             string                                                      `protobuf:"bytes,1,opt,name=origin_id,json=originId,proto3" json:"origin_id,omitempty"`
-	ViewerProtocolPolicy AwsCloudFrontSpec_DefaultCacheBehavior_ViewerProtocolPolicy `protobuf:"varint,2,opt,name=viewer_protocol_policy,json=viewerProtocolPolicy,proto3,enum=project.planton.provider.aws.awscloudfront.v1.AwsCloudFrontSpec_DefaultCacheBehavior_ViewerProtocolPolicy" json:"viewer_protocol_policy,omitempty"`
-	// Enable Gzip/Brotli compression at edge.
-	Compress bool `protobuf:"varint,3,opt,name=compress,proto3" json:"compress,omitempty"`
-	// Optional cache policy id (managed or custom).
-	CachePolicyId  string                                                `protobuf:"bytes,4,opt,name=cache_policy_id,json=cachePolicyId,proto3" json:"cache_policy_id,omitempty"`
-	AllowedMethods AwsCloudFrontSpec_DefaultCacheBehavior_AllowedMethods `protobuf:"varint,5,opt,name=allowed_methods,json=allowedMethods,proto3,enum=project.planton.provider.aws.awscloudfront.v1.AwsCloudFrontSpec_DefaultCacheBehavior_AllowedMethods" json:"allowed_methods,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
-}
-
-func (x *AwsCloudFrontSpec_DefaultCacheBehavior) Reset() {
-	*x = AwsCloudFrontSpec_DefaultCacheBehavior{}
-	mi := &file_project_planton_provider_aws_awscloudfront_v1_spec_proto_msgTypes[3]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *AwsCloudFrontSpec_DefaultCacheBehavior) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*AwsCloudFrontSpec_DefaultCacheBehavior) ProtoMessage() {}
-
-func (x *AwsCloudFrontSpec_DefaultCacheBehavior) ProtoReflect() protoreflect.Message {
-	mi := &file_project_planton_provider_aws_awscloudfront_v1_spec_proto_msgTypes[3]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use AwsCloudFrontSpec_DefaultCacheBehavior.ProtoReflect.Descriptor instead.
-func (*AwsCloudFrontSpec_DefaultCacheBehavior) Descriptor() ([]byte, []int) {
-	return file_project_planton_provider_aws_awscloudfront_v1_spec_proto_rawDescGZIP(), []int{0, 2}
-}
-
-func (x *AwsCloudFrontSpec_DefaultCacheBehavior) GetOriginId() string {
-	if x != nil {
-		return x.OriginId
-	}
-	return ""
-}
-
-func (x *AwsCloudFrontSpec_DefaultCacheBehavior) GetViewerProtocolPolicy() AwsCloudFrontSpec_DefaultCacheBehavior_ViewerProtocolPolicy {
-	if x != nil {
-		return x.ViewerProtocolPolicy
-	}
-	return AwsCloudFrontSpec_DefaultCacheBehavior_VIEWER_PROTOCOL_POLICY_UNSPECIFIED
-}
-
-func (x *AwsCloudFrontSpec_DefaultCacheBehavior) GetCompress() bool {
-	if x != nil {
-		return x.Compress
-	}
-	return false
-}
-
-func (x *AwsCloudFrontSpec_DefaultCacheBehavior) GetCachePolicyId() string {
-	if x != nil {
-		return x.CachePolicyId
-	}
-	return ""
-}
-
-func (x *AwsCloudFrontSpec_DefaultCacheBehavior) GetAllowedMethods() AwsCloudFrontSpec_DefaultCacheBehavior_AllowedMethods {
-	if x != nil {
-		return x.AllowedMethods
-	}
-	return AwsCloudFrontSpec_DefaultCacheBehavior_ALLOWED_METHODS_UNSPECIFIED
-}
-
-// Route53 automation for aliases.
-type AwsCloudFrontSpec_Dns struct {
-	state   protoimpl.MessageState `protogen:"open.v1"`
-	Enabled bool                   `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`
-	// Hosted Zone id to manage records when enabled.
-	Route53ZoneId string `protobuf:"bytes,2,opt,name=route53_zone_id,json=route53ZoneId,proto3" json:"route53_zone_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *AwsCloudFrontSpec_Dns) Reset() {
-	*x = AwsCloudFrontSpec_Dns{}
-	mi := &file_project_planton_provider_aws_awscloudfront_v1_spec_proto_msgTypes[4]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *AwsCloudFrontSpec_Dns) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*AwsCloudFrontSpec_Dns) ProtoMessage() {}
-
-func (x *AwsCloudFrontSpec_Dns) ProtoReflect() protoreflect.Message {
-	mi := &file_project_planton_provider_aws_awscloudfront_v1_spec_proto_msgTypes[4]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use AwsCloudFrontSpec_Dns.ProtoReflect.Descriptor instead.
-func (*AwsCloudFrontSpec_Dns) Descriptor() ([]byte, []int) {
-	return file_project_planton_provider_aws_awscloudfront_v1_spec_proto_rawDescGZIP(), []int{0, 3}
-}
-
-func (x *AwsCloudFrontSpec_Dns) GetEnabled() bool {
-	if x != nil {
-		return x.Enabled
-	}
-	return false
-}
-
-func (x *AwsCloudFrontSpec_Dns) GetRoute53ZoneId() string {
-	if x != nil {
-		return x.Route53ZoneId
+		return x.OriginPath
 	}
 	return ""
 }
@@ -552,56 +242,30 @@ var File_project_planton_provider_aws_awscloudfront_v1_spec_proto protoreflect.F
 
 const file_project_planton_provider_aws_awscloudfront_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"8project/planton/provider/aws/awscloudfront/v1/spec.proto\x12-project.planton.provider.aws.awscloudfront.v1\x1a\x1bbuf/validate/validate.proto\"\xf5\x10\n" +
-	"\x11AwsCloudFrontSpec\x12\"\n" +
-	"\aaliases\x18\x01 \x03(\tB\b\xbaH\x05\x92\x01\x02\x18\x01R\aaliases\x12'\n" +
-	"\x0fcertificate_arn\x18\x02 \x01(\tR\x0ecertificateArn\x12v\n" +
-	"\vprice_class\x18\x03 \x01(\x0e2K.project.planton.provider.aws.awscloudfront.v1.AwsCloudFrontSpec.PriceClassB\b\xbaH\x05\x82\x01\x02\x10\x01R\n" +
-	"priceClass\x12b\n" +
-	"\alogging\x18\x04 \x01(\v2H.project.planton.provider.aws.awscloudfront.v1.AwsCloudFrontSpec.LoggingR\alogging\x12k\n" +
-	"\aorigins\x18\x05 \x03(\v2G.project.planton.provider.aws.awscloudfront.v1.AwsCloudFrontSpec.OriginB\b\xbaH\x05\x92\x01\x02\b\x01R\aorigins\x12\x8b\x01\n" +
-	"\x16default_cache_behavior\x18\x06 \x01(\v2U.project.planton.provider.aws.awscloudfront.v1.AwsCloudFrontSpec.DefaultCacheBehaviorR\x14defaultCacheBehavior\x12\x1e\n" +
-	"\vweb_acl_arn\x18\a \x01(\tR\twebAclArn\x12V\n" +
-	"\x03dns\x18\b \x01(\v2D.project.planton.provider.aws.awscloudfront.v1.AwsCloudFrontSpec.DnsR\x03dns\x1a\\\n" +
-	"\aLogging\x12\x18\n" +
-	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x1f\n" +
-	"\vbucket_name\x18\x02 \x01(\tR\n" +
-	"bucketName\x12\x16\n" +
-	"\x06prefix\x18\x03 \x01(\tR\x06prefix\x1a\x84\x01\n" +
+	"8project/planton/provider/aws/awscloudfront/v1/spec.proto\x12-project.planton.provider.aws.awscloudfront.v1\x1a\x1bbuf/validate/validate.proto\"\xb1\a\n" +
+	"\x11AwsCloudFrontSpec\x12\x18\n" +
+	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\"\n" +
+	"\aaliases\x18\x02 \x03(\tB\b\xbaH\x05\x92\x01\x02\x18\x01R\aaliases\x12'\n" +
+	"\x0fcertificate_arn\x18\x03 \x01(\tR\x0ecertificateArn\x12v\n" +
+	"\vprice_class\x18\x04 \x01(\x0e2K.project.planton.provider.aws.awscloudfront.v1.AwsCloudFrontSpec.PriceClassB\b\xbaH\x05\x82\x01\x02\x10\x01R\n" +
+	"priceClass\x12k\n" +
+	"\aorigins\x18\x05 \x03(\v2G.project.planton.provider.aws.awscloudfront.v1.AwsCloudFrontSpec.OriginB\b\xbaH\x05\x92\x01\x02\b\x01R\aorigins\x123\n" +
+	"\x11default_origin_id\x18\x06 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x0fdefaultOriginId\x12.\n" +
+	"\x13default_root_object\x18\a \x01(\tR\x11defaultRootObject\x1al\n" +
 	"\x06Origin\x12\x17\n" +
 	"\x02id\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x02id\x12(\n" +
 	"\vdomain_name\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\n" +
-	"domainName\x127\n" +
-	"\x18origin_access_control_id\x18\x03 \x01(\tR\x15originAccessControlId\x1a\x8b\x06\n" +
-	"\x14DefaultCacheBehavior\x12$\n" +
-	"\torigin_id\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\boriginId\x12\xaa\x01\n" +
-	"\x16viewer_protocol_policy\x18\x02 \x01(\x0e2j.project.planton.provider.aws.awscloudfront.v1.AwsCloudFrontSpec.DefaultCacheBehavior.ViewerProtocolPolicyB\b\xbaH\x05\x82\x01\x02\x10\x01R\x14viewerProtocolPolicy\x12\x1a\n" +
-	"\bcompress\x18\x03 \x01(\bR\bcompress\x12&\n" +
-	"\x0fcache_policy_id\x18\x04 \x01(\tR\rcachePolicyId\x12\x97\x01\n" +
-	"\x0fallowed_methods\x18\x05 \x01(\x0e2d.project.planton.provider.aws.awscloudfront.v1.AwsCloudFrontSpec.DefaultCacheBehavior.AllowedMethodsB\b\xbaH\x05\x82\x01\x02\x10\x01R\x0eallowedMethods\"t\n" +
-	"\x14ViewerProtocolPolicy\x12&\n" +
-	"\"VIEWER_PROTOCOL_POLICY_UNSPECIFIED\x10\x00\x12\r\n" +
-	"\tALLOW_ALL\x10\x01\x12\x0e\n" +
-	"\n" +
-	"HTTPS_ONLY\x10\x02\x12\x15\n" +
-	"\x11REDIRECT_TO_HTTPS\x10\x03\"^\n" +
-	"\x0eAllowedMethods\x12\x1f\n" +
-	"\x1bALLOWED_METHODS_UNSPECIFIED\x10\x00\x12\f\n" +
-	"\bGET_HEAD\x10\x01\x12\x14\n" +
-	"\x10GET_HEAD_OPTIONS\x10\x02\x12\a\n" +
-	"\x03ALL\x10\x03:l\xbaHi\x1ag\n" +
-	"\x1fviewer_protocol_policy_required\x12\"viewer_protocol_policy must be set\x1a this.viewer_protocol_policy != 0\x1a\xd7\x01\n" +
-	"\x03Dns\x12\x18\n" +
-	"\aenabled\x18\x01 \x01(\bR\aenabled\x12&\n" +
-	"\x0froute53_zone_id\x18\x02 \x01(\tR\rroute53ZoneId:\x8d\x01\xbaH\x89\x01\x1a\x86\x01\n" +
-	"!dns_requires_zone_id_when_enabled\x124route53_zone_id must be set when dns.enabled is true\x1a+!this.enabled || this.route53_zone_id != \"\"\"h\n" +
+	"domainName\x12\x1f\n" +
+	"\vorigin_path\x18\x03 \x01(\tR\n" +
+	"originPath\"h\n" +
 	"\n" +
 	"PriceClass\x12\x1b\n" +
 	"\x17PRICE_CLASS_UNSPECIFIED\x10\x00\x12\x13\n" +
 	"\x0fPRICE_CLASS_100\x10\x01\x12\x13\n" +
 	"\x0fPRICE_CLASS_200\x10\x02\x12\x13\n" +
-	"\x0fPRICE_CLASS_ALL\x10\x03:\x8c\x01\xbaH\x88\x01\x1a\x85\x01\n" +
-	"\x14aliases_require_cert\x125certificate_arn must be set when aliases are provided\x1a6this.aliases.size() == 0 || this.certificate_arn != \"\"B\x88\x03\n" +
+	"\x0fPRICE_CLASS_ALL\x10\x03:\x92\x02\xbaH\x8e\x02\x1a\x85\x01\n" +
+	"\x14aliases_require_cert\x125certificate_arn must be set when aliases are provided\x1a6this.aliases.size() == 0 || this.certificate_arn != \"\"\x1a\x83\x01\n" +
+	"\x19default_origin_must_exist\x12.default_origin_id must match one of origins.id\x1a6this.origins.exists(o, o.id == this.default_origin_id)B\x88\x03\n" +
 	"1com.project.planton.provider.aws.awscloudfront.v1B\tSpecProtoP\x01Zmgithub.com/project-planton/project-planton/apis/project/planton/provider/aws/awscloudfront/v1;awscloudfrontv1\xa2\x02\x05PPPAA\xaa\x02-Project.Planton.Provider.Aws.Awscloudfront.V1\xca\x02-Project\\Planton\\Provider\\Aws\\Awscloudfront\\V1\xe2\x029Project\\Planton\\Provider\\Aws\\Awscloudfront\\V1\\GPBMetadata\xea\x022Project::Planton::Provider::Aws::Awscloudfront::V1b\x06proto3"
 
 var (
@@ -616,31 +280,21 @@ func file_project_planton_provider_aws_awscloudfront_v1_spec_proto_rawDescGZIP()
 	return file_project_planton_provider_aws_awscloudfront_v1_spec_proto_rawDescData
 }
 
-var file_project_planton_provider_aws_awscloudfront_v1_spec_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
-var file_project_planton_provider_aws_awscloudfront_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+var file_project_planton_provider_aws_awscloudfront_v1_spec_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_project_planton_provider_aws_awscloudfront_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_aws_awscloudfront_v1_spec_proto_goTypes = []any{
-	(AwsCloudFrontSpec_PriceClass)(0),                                // 0: project.planton.provider.aws.awscloudfront.v1.AwsCloudFrontSpec.PriceClass
-	(AwsCloudFrontSpec_DefaultCacheBehavior_ViewerProtocolPolicy)(0), // 1: project.planton.provider.aws.awscloudfront.v1.AwsCloudFrontSpec.DefaultCacheBehavior.ViewerProtocolPolicy
-	(AwsCloudFrontSpec_DefaultCacheBehavior_AllowedMethods)(0),       // 2: project.planton.provider.aws.awscloudfront.v1.AwsCloudFrontSpec.DefaultCacheBehavior.AllowedMethods
-	(*AwsCloudFrontSpec)(nil),                                        // 3: project.planton.provider.aws.awscloudfront.v1.AwsCloudFrontSpec
-	(*AwsCloudFrontSpec_Logging)(nil),                                // 4: project.planton.provider.aws.awscloudfront.v1.AwsCloudFrontSpec.Logging
-	(*AwsCloudFrontSpec_Origin)(nil),                                 // 5: project.planton.provider.aws.awscloudfront.v1.AwsCloudFrontSpec.Origin
-	(*AwsCloudFrontSpec_DefaultCacheBehavior)(nil),                   // 6: project.planton.provider.aws.awscloudfront.v1.AwsCloudFrontSpec.DefaultCacheBehavior
-	(*AwsCloudFrontSpec_Dns)(nil),                                    // 7: project.planton.provider.aws.awscloudfront.v1.AwsCloudFrontSpec.Dns
+	(AwsCloudFrontSpec_PriceClass)(0), // 0: project.planton.provider.aws.awscloudfront.v1.AwsCloudFrontSpec.PriceClass
+	(*AwsCloudFrontSpec)(nil),         // 1: project.planton.provider.aws.awscloudfront.v1.AwsCloudFrontSpec
+	(*AwsCloudFrontSpec_Origin)(nil),  // 2: project.planton.provider.aws.awscloudfront.v1.AwsCloudFrontSpec.Origin
 }
 var file_project_planton_provider_aws_awscloudfront_v1_spec_proto_depIdxs = []int32{
 	0, // 0: project.planton.provider.aws.awscloudfront.v1.AwsCloudFrontSpec.price_class:type_name -> project.planton.provider.aws.awscloudfront.v1.AwsCloudFrontSpec.PriceClass
-	4, // 1: project.planton.provider.aws.awscloudfront.v1.AwsCloudFrontSpec.logging:type_name -> project.planton.provider.aws.awscloudfront.v1.AwsCloudFrontSpec.Logging
-	5, // 2: project.planton.provider.aws.awscloudfront.v1.AwsCloudFrontSpec.origins:type_name -> project.planton.provider.aws.awscloudfront.v1.AwsCloudFrontSpec.Origin
-	6, // 3: project.planton.provider.aws.awscloudfront.v1.AwsCloudFrontSpec.default_cache_behavior:type_name -> project.planton.provider.aws.awscloudfront.v1.AwsCloudFrontSpec.DefaultCacheBehavior
-	7, // 4: project.planton.provider.aws.awscloudfront.v1.AwsCloudFrontSpec.dns:type_name -> project.planton.provider.aws.awscloudfront.v1.AwsCloudFrontSpec.Dns
-	1, // 5: project.planton.provider.aws.awscloudfront.v1.AwsCloudFrontSpec.DefaultCacheBehavior.viewer_protocol_policy:type_name -> project.planton.provider.aws.awscloudfront.v1.AwsCloudFrontSpec.DefaultCacheBehavior.ViewerProtocolPolicy
-	2, // 6: project.planton.provider.aws.awscloudfront.v1.AwsCloudFrontSpec.DefaultCacheBehavior.allowed_methods:type_name -> project.planton.provider.aws.awscloudfront.v1.AwsCloudFrontSpec.DefaultCacheBehavior.AllowedMethods
-	7, // [7:7] is the sub-list for method output_type
-	7, // [7:7] is the sub-list for method input_type
-	7, // [7:7] is the sub-list for extension type_name
-	7, // [7:7] is the sub-list for extension extendee
-	0, // [0:7] is the sub-list for field type_name
+	2, // 1: project.planton.provider.aws.awscloudfront.v1.AwsCloudFrontSpec.origins:type_name -> project.planton.provider.aws.awscloudfront.v1.AwsCloudFrontSpec.Origin
+	2, // [2:2] is the sub-list for method output_type
+	2, // [2:2] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_provider_aws_awscloudfront_v1_spec_proto_init() }
@@ -653,8 +307,8 @@ func file_project_planton_provider_aws_awscloudfront_v1_spec_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_project_planton_provider_aws_awscloudfront_v1_spec_proto_rawDesc), len(file_project_planton_provider_aws_awscloudfront_v1_spec_proto_rawDesc)),
-			NumEnums:      3,
-			NumMessages:   5,
+			NumEnums:      1,
+			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

@@ -2,7 +2,7 @@
 alwaysApply: false
 ---
 RULE NUMBER
-012
+013
 
 TITLE
 Forge: Generate Terraform module (tf/) from proto definitions

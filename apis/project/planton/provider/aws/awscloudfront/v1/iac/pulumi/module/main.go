@@ -7,47 +7,32 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// Resources is the primary entry point for the aws_cloudfront Pulumi module.
-func Resources(ctx *pulumi.Context, stackInput *awscloudfrontv1.AwsCloudFrontStackInput) error {
-	locals := initializeLocals(ctx, stackInput)
+func Resources(ctx *pulumi.Context, in *awscloudfrontv1.AwsCloudFrontStackInput) error {
+	locals := initializeLocals(ctx, in)
 
+	cred := in.ProviderCredential
 	var provider *aws.Provider
 	var err error
-	awsCredential := stackInput.ProviderCredential
-
-	if awsCredential == nil {
-		provider, err = aws.NewProvider(ctx, "classic-provider", &aws.ProviderArgs{})
-		if err != nil {
-			return errors.Wrap(err, "failed to create default AWS provider")
-		}
-	} else {
-		provider, err = aws.NewProvider(ctx, "classic-provider", &aws.ProviderArgs{
-			AccessKey: pulumi.String(awsCredential.AccessKeyId),
-			SecretKey: pulumi.String(awsCredential.SecretAccessKey),
-			Region:    pulumi.String(awsCredential.Region),
+	if cred != nil {
+		provider, err = aws.NewProvider(ctx, "aws-provider", &aws.ProviderArgs{
+			AccessKey: pulumi.String(cred.AccessKeyId),
+			SecretKey: pulumi.String(cred.SecretAccessKey),
+			Region:    pulumi.String(cred.Region),
 		})
 		if err != nil {
-			return errors.Wrap(err, "failed to create AWS provider with custom credentials")
+			return errors.Wrap(err, "create provider")
 		}
 	}
 
-	// Create CloudFront distribution
-	dist, err := distribution(ctx, locals, provider)
+	dist, err := createDistribution(ctx, locals, provider)
 	if err != nil {
-		return errors.Wrap(err, "cloudfront distribution")
+		return errors.Wrap(err, "create cloudfront distribution")
 	}
 
-	// Optional DNS alias records
-	if locals.Spec.GetDns().GetEnabled() {
-		if err := dns(ctx, locals, provider, dist); err != nil {
-			return errors.Wrap(err, "dns")
-		}
-	}
-
-	// Export outputs
-	ctx.Export(OpDistributionId, dist.Distribution.ID())
+	// Export outputs mapped to AwsCloudFrontStackOutputs
+	ctx.Export(OpDistributionId, dist.ID())
 	ctx.Export(OpDomainName, dist.DomainName)
-	ctx.Export(OpHostedZoneId, dist.HostedZoneId)
+	ctx.Export(OpHostedZoneId, pulumi.String("Z2FDTNDATAQYW2"))
 
 	return nil
 }

@@ -2,13 +2,13 @@
 alwaysApply: false
 ---
 RULE NUMBER
-014
+012
 
 TITLE
 Forge: Pulumi docs (README) using ProjectPlanton CLI (pulumi)
 
 ROLE
-You are the PlantonCloud Code Partner working inside the developer’s local workspace in Cursor. This rule writes the Pulumi module README and examples to document how to run the module via the ProjectPlanton CLI. It mirrors CLI usage patterns defined under `cmd/project-planton/root/pulumi` and docs.
+You are the PlantonCloud Code Partner working inside the developer’s local workspace in Cursor. This rule writes the Pulumi module README and examples to document how to run the module via the ProjectPlanton CLI. It also generates a `debug.sh` helper and documents how to enable it in `Pulumi.yaml` for local debugging.
 
 DISCOVERY (MANDATORY BEFORE EDITS)
 - Read:
@@ -20,12 +20,13 @@ DISCOVERY (MANDATORY BEFORE EDITS)
 
 SCOPE
 - Targets under `apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/pulumi/`:
-  - Create/update `README.md` with CLI examples
+  - Create/update `README.md` with CLI examples and a debugging section
   - Create/update `examples.md` by copying root `examples.md` if present, else regenerate minimal examples from `<Kind>Spec`
+  - Create/update `debug.sh` (executable) to run the Pulumi program under Delve
 
 README CONTENT (iac/pulumi/README.md)
 - Title: `Pulumi Module to Deploy <Kind>`
-- Show CLI commands using ProjectPlanton pulumi (based on flags from `cmd/project-planton/root/pulumi.go`):
+- Show CLI commands using ProjectPlanton pulumi:
 ```shell
 # Preview
 project-planton pulumi preview \
@@ -52,15 +53,26 @@ project-planton pulumi destroy \
   --stack <org>/<project>/<stack> \
   --module-dir .
 ```
-- Note that credentials are provided via stack input flags or files; not embedded in manifest `spec`.
-- Optional: mention `--set key=value` overrides.
+- Debugging section:
+  - Explain `debug.sh` and how to enable it by uncommenting the `runtime.options.binary: ./debug.sh` in `Pulumi.yaml`
+  - Link to docs/pages/docs/guide/debug-pulumi-modules.mdx as reference if needed
 
 EXAMPLES CONTENT (iac/pulumi/examples.md)
 - If root `examples.md` exists: copy its content verbatim
-- Otherwise, generate a minimal example manifest for `<Kind>` (Basic example section) and optional additional examples if obvious from `<Kind>Spec`
+- Otherwise, generate a minimal example manifest for `<Kind>` and optional additional examples if obvious from `<Kind>Spec`
+
+DEBUG.SH CONTENT (iac/pulumi/debug.sh)
+```bash
+#!/usr/bin/env bash
+set -euo pipefail
+
+go build -o goapp -gcflags "all=-N -l" .
+exec dlv --listen=:2345 --headless=true --api-version=2 exec ./goapp
+```
+- Ensure the file is executable and referenced in README
 
 SUCCESS CRITERIA
-- `iac/pulumi/README.md` and `iac/pulumi/examples.md` exist and mirror usage/examples
+- `iac/pulumi/README.md`, `iac/pulumi/examples.md`, and `iac/pulumi/debug.sh` exist and mirror usage/examples
 
 OUTPUT STYLE IN CHAT
 - Show created file paths and the CLI commands section

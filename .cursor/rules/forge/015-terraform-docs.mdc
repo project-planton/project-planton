@@ -2,7 +2,7 @@
 alwaysApply: false
 ---
 RULE NUMBER
-012
+015
 
 TITLE
 Forge: Terraform docs (README) using ProjectPlanton CLI (tofu)

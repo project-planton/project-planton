@@ -1,22 +1,20 @@
 resource "aws_cloudfront_distribution" "this" {
   enabled             = var.spec.enabled
-  aliases             = try(var.spec.aliases, null)
+  aliases             = var.spec.aliases
   price_class         = var.spec.price_class == "PRICE_CLASS_100" ? "PriceClass_100" : var.spec.price_class == "PRICE_CLASS_200" ? "PriceClass_200" : "PriceClass_All"
   default_root_object = try(var.spec.default_root_object, null)
 
-  dynamic "origin" {
-    for_each = { for o in var.spec.origins : o.id => o }
-    content {
-      domain_name = origin.value.domain_name
-      origin_id   = origin.value.id
-      origin_path = try(origin.value.origin_path, null)
+  origin {
+    for_each   = { for o in var.spec.origins : o.id => o }
+    domain_name = each.value.domain_name
+    origin_id   = each.value.id
+    origin_path = try(each.value.origin_path, null)
 
-      custom_origin_config {
-        origin_protocol_policy = "https-only"
-        http_port              = 80
-        https_port             = 443
-        origin_ssl_protocols   = ["TLSv1.2"]
-      }
+    custom_origin_config {
+      origin_protocol_policy = "https-only"
+      http_port              = 80
+      https_port             = 443
+      origin_ssl_protocols   = ["TLSv1.2"]
     }
   }
 

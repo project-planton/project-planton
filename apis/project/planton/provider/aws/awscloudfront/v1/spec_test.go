@@ -1,16 +1,24 @@
 package awscloudfrontv1
 
 import (
+	"testing"
+
 	"github.com/bufbuild/protovalidate-go"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 )
+
+func TestAwsCloudFrontSpec(t *testing.T) {
+	RegisterFailHandler(Fail)
+	RunSpecs(t, "AwsCloudFrontSpec Validation Suite")
+}
 
 var _ = Describe("AwsCloudFrontSpec validations", func() {
 	var spec *AwsCloudFrontSpec
 
 	BeforeEach(func() {
 		spec = &AwsCloudFrontSpec{
+			Enabled:        true,
 			Aliases:        []string{"cdn.example.com"},
 			CertificateArn: "arn:aws:acm:us-east-1:123456789012:certificate/abc",
 			PriceClass:     AwsCloudFrontSpec_PRICE_CLASS_100,
@@ -18,10 +26,8 @@ var _ = Describe("AwsCloudFrontSpec validations", func() {
 				Id:         "origin-1",
 				DomainName: "bucket.s3.amazonaws.com",
 			}},
-			DefaultCacheBehavior: &AwsCloudFrontSpec_DefaultCacheBehavior{
-				OriginId:             "origin-1",
-				ViewerProtocolPolicy: AwsCloudFrontSpec_DefaultCacheBehavior_HTTPS_ONLY,
-			},
+			DefaultOriginId:   "origin-1",
+			DefaultRootObject: "index.html",
 		}
 	})
 
@@ -36,20 +42,26 @@ var _ = Describe("AwsCloudFrontSpec validations", func() {
 		Expect(err).NotTo(BeNil())
 	})
 
-	It("fails when default behavior viewer_protocol_policy is unspecified (CEL)", func() {
-		spec.DefaultCacheBehavior.ViewerProtocolPolicy = AwsCloudFrontSpec_DefaultCacheBehavior_VIEWER_PROTOCOL_POLICY_UNSPECIFIED
+	It("fails when aliases contain duplicates (unique)", func() {
+		spec.Aliases = []string{"cdn.example.com", "cdn.example.com"}
 		err := protovalidate.Validate(spec)
 		Expect(err).NotTo(BeNil())
 	})
 
-	It("fails when origins is empty (min_items)", func() {
+	It("fails when origins are empty (min_items)", func() {
 		spec.Origins = nil
 		err := protovalidate.Validate(spec)
 		Expect(err).NotTo(BeNil())
 	})
 
-	It("fails when origin id is empty (min_len)", func() {
-		spec.Origins[0].Id = ""
+	It("fails when default_origin_id does not match any origin (CEL)", func() {
+		spec.DefaultOriginId = "missing"
+		err := protovalidate.Validate(spec)
+		Expect(err).NotTo(BeNil())
+	})
+
+	It("fails when default_origin_id is empty (min_len)", func() {
+		spec.DefaultOriginId = ""
 		err := protovalidate.Validate(spec)
 		Expect(err).NotTo(BeNil())
 	})

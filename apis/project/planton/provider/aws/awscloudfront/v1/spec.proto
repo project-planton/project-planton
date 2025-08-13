@@ -5,103 +5,58 @@ package project.planton.provider.aws.awscloudfront.v1;
 import "buf/validate/validate.proto";
 
 // AwsCloudFrontSpec captures common fields used to configure a CloudFront distribution.
-// Minimal, validation-free draft per Forge rule 001.
 message AwsCloudFrontSpec {
-  // Domain aliases (CNAMEs) such as "cdn.example.com".
-  repeated string aliases = 1 [(buf.validate.field).repeated.unique = true];
+  // Whether the distribution is enabled.
+  bool enabled = 1;
 
-  // ACM certificate ARN for custom domains (when aliases are set).
-  string certificate_arn = 2;
+  // Aliases (CNAMEs) for the distribution, e.g., "cdn.example.com".
+  repeated string aliases = 2 [(buf.validate.field).repeated.unique = true];
 
-  // Price class selection controlling edge location coverage.
+  // ACM certificate ARN for custom domains in the us-east-1 region.
+  string certificate_arn = 3;
+
+  // Price class for edge locations.
   enum PriceClass {
     PRICE_CLASS_UNSPECIFIED = 0;
-    PRICE_CLASS_100 = 1; // North America & Europe
-    PRICE_CLASS_200 = 2; // 100 + select regions
-    PRICE_CLASS_ALL = 3; // All edge locations
+    PRICE_CLASS_100 = 1;
+    PRICE_CLASS_200 = 2;
+    PRICE_CLASS_ALL = 3;
   }
-  PriceClass price_class = 3 [(buf.validate.field).enum.defined_only = true];
+  PriceClass price_class = 4 [(buf.validate.field).enum.defined_only = true];
 
-  // Access logging configuration.
-  message Logging {
-    bool enabled = 1;
-    // Target S3 bucket name (without s3:// prefix).
-    string bucket_name = 2;
-    // Key prefix for log objects.
-    string prefix = 3;
-  }
-  Logging logging = 4;
-
-  // Minimal origin reference.
+  // Origin definition (minimal).
   message Origin {
-    // Identifier to reference in behaviors.
+    // Unique identifier used to reference the origin in behaviors.
     string id = 1 [(buf.validate.field).string.min_len = 1];
-    // Origin domain name, e.g., my-bucket.s3.amazonaws.com or api.example.com
+
+    // DNS name of the origin, e.g., "my-bucket.s3.amazonaws.com".
     string domain_name = 2 [(buf.validate.field).string.min_len = 1];
-    // Optional OAC id when using private S3 origins.
-    string origin_access_control_id = 3;
+
+    // Optional origin path that CloudFront appends to requests.
+    string origin_path = 3;
   }
-  // List of origins available to behaviors.
+
+  // List of origins available to the distribution.
   repeated Origin origins = 5 [(buf.validate.field).repeated.min_items = 1];
 
-  // Default cache behavior for unmatched requests.
-  message DefaultCacheBehavior {
-    // Origin id this behavior points to.
-    string origin_id = 1 [(buf.validate.field).string.min_len = 1];
+  // The id of the origin used by the default cache behavior.
+  string default_origin_id = 6 [(buf.validate.field).string.min_len = 1];
 
-    // HTTP/HTTPS policy.
-    enum ViewerProtocolPolicy {
-      VIEWER_PROTOCOL_POLICY_UNSPECIFIED = 0;
-      ALLOW_ALL = 1;
-      HTTPS_ONLY = 2;
-      REDIRECT_TO_HTTPS = 3;
-    }
-    ViewerProtocolPolicy viewer_protocol_policy = 2 [(buf.validate.field).enum.defined_only = true];
+  // Default root object, e.g., "index.html".
+  string default_root_object = 7;
 
-    // Enable Gzip/Brotli compression at edge.
-    bool compress = 3;
-
-    // Optional cache policy id (managed or custom).
-    string cache_policy_id = 4;
-
-    // Allowed HTTP method sets.
-    enum AllowedMethods {
-      ALLOWED_METHODS_UNSPECIFIED = 0;
-      GET_HEAD = 1;
-      GET_HEAD_OPTIONS = 2;
-      ALL = 3; // GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE
-    }
-    AllowedMethods allowed_methods = 5 [(buf.validate.field).enum.defined_only = true];
-
-    option (buf.validate.message).cel = {
-      id: "viewer_protocol_policy_required",
-      message: "viewer_protocol_policy must be set",
-      expression: "this.viewer_protocol_policy != 0"
-    };
-  }
-  DefaultCacheBehavior default_cache_behavior = 6;
-
-  // Optional AWS WAFv2 web ACL ARN to attach to the distribution.
-  string web_acl_arn = 7;
-
-  // Route53 automation for aliases.
-  message Dns {
-    bool enabled = 1;
-    // Hosted Zone id to manage records when enabled.
-    string route53_zone_id = 2;
-
-    option (buf.validate.message).cel = {
-      id: "dns_requires_zone_id_when_enabled",
-      message: "route53_zone_id must be set when dns.enabled is true",
-      expression: "!this.enabled || this.route53_zone_id != \"\""
-    };
-  }
-  Dns dns = 8;
-
+  // Conditional validations
   option (buf.validate.message).cel = {
     id: "aliases_require_cert",
     message: "certificate_arn must be set when aliases are provided",
     expression: "this.aliases.size() == 0 || this.certificate_arn != \"\""
   };
+
+  option (buf.validate.message).cel = {
+    id: "default_origin_must_exist",
+    message: "default_origin_id must match one of origins.id",
+    expression: "this.origins.exists(o, o.id == this.default_origin_id)"
+  };
 }
+
 

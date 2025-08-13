@@ -1,50 +1,77 @@
 variable "metadata" {
-  description = "Metadata for the resource, including name and labels"
+  description = "metadata"
   type = object({
-    name    = string,
-    id      = optional(string),
-    org     = optional(string),
-    env     = optional(string),
-    labels  = optional(map(string)),
-    tags    = optional(list(string)),
-    version = optional(object({ id = string, message = string }))
+
+    # name of the resource
+    name = string
+
+    # id of the resource
+    id = string
+
+    # id of the organization to which the api-resource belongs to
+    org = string
+
+    # environment to which the resource belongs to
+    env = string
+
+    # labels for the resource
+    labels = object({
+
+      # Description for key
+      key = string
+
+      # Description for value
+      value = string
+    })
+
+    # annotations for the resource
+    annotations = object({
+
+      # Description for key
+      key = string
+
+      # Description for value
+      value = string
+    })
+
+    # tags for the resource
+    tags = list(string)
   })
 }
 
 variable "spec" {
-  description = "AwsCloudFrontSpec configuration"
+  description = "spec"
   type = object({
-    aliases         = optional(list(string))
-    certificate_arn = optional(string)
-    price_class     = optional(string) # PRICE_CLASS_100 | PRICE_CLASS_200 | PRICE_CLASS_ALL
 
-    logging = optional(object({
-      enabled     = bool
-      bucket_name = string
-      prefix      = optional(string)
-    }))
+    # Description for enabled
+    enabled = bool
 
+    # Description for aliases
+    aliases = list(string)
+
+    # Description for certificate_arn
+    certificate_arn = string
+
+    # Description for price_class
+    price_class = string
+
+    # Description for origins
     origins = list(object({
-      id                       = string
-      domain_name              = string
-      origin_access_control_id = optional(string)
+
+      # Description for id
+      id = string
+
+      # Description for domain_name
+      domain_name = string
+
+      # Description for origin_path
+      origin_path = string
     }))
 
-    default_cache_behavior = object({
-      origin_id               = string
-      viewer_protocol_policy  = string  # ALLOW_ALL | HTTPS_ONLY | REDIRECT_TO_HTTPS
-      compress                = bool
-      cache_policy_id         = optional(string)
-      allowed_methods         = string  # GET_HEAD | GET_HEAD_OPTIONS | ALL
-    })
+    # Description for default_origin_id
+    default_origin_id = string
 
-    web_acl_arn = optional(string)
-
-    dns = optional(object({
-      enabled        = bool
-      route53_zone_id = optional(string)
-    }))
+    # Description for default_root_object
+    default_root_object = string
   })
 }
-
-

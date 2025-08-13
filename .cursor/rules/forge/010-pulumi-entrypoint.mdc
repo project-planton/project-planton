@@ -2,7 +2,7 @@
 alwaysApply: false
 ---
 RULE NUMBER
-009
+010
 
 TITLE
 Forge: Generate Pulumi entrypoint and project files (outside module/)

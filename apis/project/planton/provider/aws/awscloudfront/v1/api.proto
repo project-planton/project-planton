@@ -8,44 +8,20 @@ import "project/planton/provider/aws/awscloudfront/v1/stack_outputs.proto";
 import "project/planton/shared/status.proto";
 import "project/planton/shared/metadata.proto";
 
-//aws-cloudfront
+// AwsCloudFront is the top-level API resource envelope.
 message AwsCloudFront {
-  //api-version
-  string api_version = 1 [
-    (buf.validate.field).string.const = "aws.project-planton.org/v1"
-  ];
-
-  //resource-kind
-  string kind = 2 [
-    (buf.validate.field).string.const = 'AwsCloudFront'
-  ];
-
-  //metadata
-  project.planton.shared.ApiResourceMetadata metadata = 3 [
-    (buf.validate.field).required = true
-  ];
-
-  //spec
-  AwsCloudFrontSpec spec = 4 [
-    (buf.validate.field).required = true
-  ];
-
-  //status
+  string api_version = 1 [(buf.validate.field).string.const = "aws.project-planton.org/v1"];
+  string kind = 2 [(buf.validate.field).string.const = "AwsCloudFront"];
+  project.planton.shared.ApiResourceMetadata metadata = 3 [(buf.validate.field).required = true];
+  AwsCloudFrontSpec spec = 4 [(buf.validate.field).required = true];
   AwsCloudFrontStatus status = 5;
 }
 
-//aws-cloudfront status
+// AwsCloudFrontStatus captures lifecycle, audit and stack outputs.
 message AwsCloudFrontStatus {
-  //lifecycle
   project.planton.shared.ApiResourceLifecycle lifecycle = 99;
-
-  //audit-info
   project.planton.shared.ApiResourceAudit audit = 98;
-
-  //stack-job id
   string stack_job_id = 97;
-
-  //stack-outputs
   AwsCloudFrontStackOutputs outputs = 1;
 }
 

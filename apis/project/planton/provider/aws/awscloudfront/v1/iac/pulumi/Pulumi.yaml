@@ -1,7 +1,5 @@
-name: awscloudfront-pulumi-project
+name: demo
 runtime:
   name: go
-# options:
-#   binary: ./debug.sh
 
 
