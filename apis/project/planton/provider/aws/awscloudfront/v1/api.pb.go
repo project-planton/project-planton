@@ -23,19 +23,14 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// aws-cloud-front
+// AwsCloudFront is the top-level API resource envelope.
 type AwsCloudFront struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// api-version
-	ApiVersion string `protobuf:"bytes,1,opt,name=api_version,json=apiVersion,proto3" json:"api_version,omitempty"`
-	// resource-kind
-	Kind string `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
-	// metadata
-	Metadata *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
-	// spec
-	Spec *AwsCloudFrontSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
-	// status
-	Status        *AwsCloudFrontStatus `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
+	state         protoimpl.MessageState      `protogen:"open.v1"`
+	ApiVersion    string                      `protobuf:"bytes,1,opt,name=api_version,json=apiVersion,proto3" json:"api_version,omitempty"`
+	Kind          string                      `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
+	Metadata      *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Spec          *AwsCloudFrontSpec          `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
+	Status        *AwsCloudFrontStatus        `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -105,17 +100,13 @@ func (x *AwsCloudFront) GetStatus() *AwsCloudFrontStatus {
 	return nil
 }
 
-// aws-cloud-front status
+// AwsCloudFrontStatus captures lifecycle, audit and stack outputs.
 type AwsCloudFrontStatus struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// lifecycle
-	Lifecycle *shared.ApiResourceLifecycle `protobuf:"bytes,99,opt,name=lifecycle,proto3" json:"lifecycle,omitempty"`
-	// audit-info
-	Audit *shared.ApiResourceAudit `protobuf:"bytes,98,opt,name=audit,proto3" json:"audit,omitempty"`
-	// stack-job id
-	StackJobId string `protobuf:"bytes,97,opt,name=stack_job_id,json=stackJobId,proto3" json:"stack_job_id,omitempty"`
-	// stack-outputs
-	Outputs       *AwsCloudFrontStackOutputs `protobuf:"bytes,1,opt,name=outputs,proto3" json:"outputs,omitempty"`
+	state         protoimpl.MessageState       `protogen:"open.v1"`
+	Lifecycle     *shared.ApiResourceLifecycle `protobuf:"bytes,99,opt,name=lifecycle,proto3" json:"lifecycle,omitempty"`
+	Audit         *shared.ApiResourceAudit     `protobuf:"bytes,98,opt,name=audit,proto3" json:"audit,omitempty"`
+	StackJobId    string                       `protobuf:"bytes,97,opt,name=stack_job_id,json=stackJobId,proto3" json:"stack_job_id,omitempty"`
+	Outputs       *AwsCloudFrontStackOutputs   `protobuf:"bytes,1,opt,name=outputs,proto3" json:"outputs,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }

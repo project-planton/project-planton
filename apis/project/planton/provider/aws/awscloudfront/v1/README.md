@@ -1,35 +1,29 @@
-# Overview
+# AwsCloudFront
 
-The **AWS CloudFront API Resource** provides a standardized interface for deploying and managing Amazon CloudFront distributions within our infrastructure. This resource simplifies the integration of content delivery networks (CDNs) to enhance the performance and availability of web applications and services.
+AWS CloudFront is a global content delivery network (CDN). This resource provisions a CloudFront distribution with a minimal 80/20 configuration: origins, default origin selection, optional custom domain aliases with ACM certificate, price class, and default root object.
 
-## Purpose
+## Spec fields
+- enabled: Whether the distribution is enabled.
+- aliases: Optional custom domain names (CNAMEs) like cdn.example.com.
+- certificate_arn: ACM certificate ARN in us-east-1 required when using aliases.
+- price_class: Edge location price class: PRICE_CLASS_100, PRICE_CLASS_200, or PRICE_CLASS_ALL.
+- origins: List of origins with id, domain_name, and optional origin_path.
+- default_origin_id: The origin id used by the default cache behavior.
+- default_root_object: Default object to serve when no object is specified (e.g., index.html).
 
-We created this API resource to streamline the deployment of AWS CloudFront services. By offering a consistent interface, it reduces the complexity involved in setting up and configuring CloudFront distributions, allowing users to:
+Validation highlights:
+- aliases unique; if aliases set, certificate_arn must be non-empty.
+- origins must contain at least one item; default_origin_id must match an origin id.
+- Enums are enforced to defined values only.
 
-- Deploy new CloudFront distributions effortlessly
-- Configure caching behaviors and policies
-- Set up origin servers and customize origin settings
-- Manage SSL/TLS certificates for secure content delivery
-- Monitor and analyze distribution performance
+## Stack outputs
+- distribution_id: CloudFront distribution ID.
+- domain_name: CloudFront distribution domain (e.g., d123.cloudfront.net).
+- hosted_zone_id: Route 53 hosted zone ID for aliasing to CloudFront.
 
-## Key Features
+## How it works
+This module can be provisioned with Pulumi or Terraform via the CLI. Stack inputs wire the chosen IaC backend, target manifest, and provider credentials.
 
-- **Consistent Interface**: Aligns with our existing APIs for deploying open-source software, microservices, and cloud infrastructure.
-- **Simplified Configuration**: Abstracts the underlying AWS configurations, enabling quicker deployments without deep AWS expertise.
-- **Scalability**: Facilitates automatic scaling to handle varying traffic loads efficiently.
-- **Security Integration**: Leverages AWS security features to protect content and ensure secure data transmission.
-
-## Use Cases
-
-- **Web Application Acceleration**: Improve load times by distributing static and dynamic content globally.
-- **Media Streaming**: Deliver high-quality video and audio streams with low latency.
-- **API Endpoint Optimization**: Enhance API responsiveness by caching responses at edge locations.
-
-## Future Enhancements
-
-As this resource is currently in a partial implementation phase, future updates will include:
-
-- Advanced logging and monitoring capabilities
-- Enhanced customization options for caching and routing behaviors
-- Integration with additional AWS services and features
-- Comprehensive documentation and usage examples
+## References
+- CloudFront distributions: https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/distribution-working-with.html
+- Price classes: https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/PriceClass.html

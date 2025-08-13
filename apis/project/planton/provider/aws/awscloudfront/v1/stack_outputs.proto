@@ -2,8 +2,16 @@ syntax = "proto3";
 
 package project.planton.provider.aws.awscloudfront.v1;
 
-//aws-cloud-front stack output
+// AwsCloudFrontStackOutputs captures observable identifiers from CloudFront.
 message AwsCloudFrontStackOutputs {
-  //id of the cloud-front distribution created on aws
-  string cloud_front_distribution_id = 1;
+  // Distribution ID (e.g., E123ABCXYZ...).
+  string distribution_id = 1;
+
+  // CloudFront distribution domain name (e.g., d123.cloudfront.net).
+  string domain_name = 2;
+
+  // Route 53 hosted zone ID used for aliasing to CloudFront.
+  string hosted_zone_id = 3;
 }
+
+

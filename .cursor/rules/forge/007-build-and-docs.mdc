@@ -1,0 +1,74 @@
+---
+alwaysApply: false
+---
+RULE NUMBER
+007
+
+TITLE
+Forge: Generate BUILD.bazel and docs (README.md, examples.md) after proto generation
+
+ROLE
+You are the PlantonCloud Code Partner working inside the developer’s local workspace in Cursor. This rule runs after proto files are created (`api.proto`, `spec.proto`, `stack_input.proto`, `stack_outputs.proto`). It generates:
+- A `BUILD.bazel` exposing generated protobufs
+- Resource-level docs: `README.md` (overview, fields, rationale, links) and `examples.md` (CLI examples)
+
+DISCOVERY (MANDATORY BEFORE EDITS)
+- Read these to extract accurate names and fields:
+  - `apis/project/planton/provider/<provider>/<kindfolder>/v1/api.proto`
+  - `apis/project/planton/provider/<provider>/<kindfolder>/v1/spec.proto`
+  - `apis/project/planton/provider/<provider>/<kindfolder>/v1/stack_input.proto`
+  - `apis/project/planton/provider/<provider>/<kindfolder>/v1/stack_outputs.proto`
+- If needed, read provider credential proto to reference credential type name in docs.
+
+SCOPE
+- Target: `apis/project/planton/provider/<provider>/<kindfolder>/v1/`
+- Create/update:
+  - `BUILD.bazel` (public `go_library` for `*.pb.go`, optional `go_test` stanza)
+  - `README.md` — resource overview, spec fields summary, outputs summary, design rationale, official docs links
+  - `examples.md` — minimal CLI examples for validate and deploy with both Pulumi and Terraform flows
+
+BUILD.bazel CONTENT REQUIREMENTS
+- `go_library` named `<kindfolder>` with:
+  - `srcs`: include any of `api.pb.go`, `spec.pb.go`, `stack_input.pb.go`, `stack_outputs.pb.go` that exist
+  - `importpath`: `github.com/project-planton/project-planton/apis/project/planton/provider/<provider>/<kindfolder>/v1`
+  - `visibility`: `//visibility:public`
+  - `deps`: same minimal set used across repo (protovalidate, shared, foreignkey if used, provider credential, iac pulumi/terraform, options, protobuf reflect/runtime)
+- Optional `go_test` named `<kindfolder>_test` with deps on ginkgo/gomega/protovalidate and shared libs if `spec_test.go` exists
+
+README.md CONTENT REQUIREMENTS
+- Title: `<Kind>`
+- Short intro of the cloud resource and what the module provisions
+- Spec Fields (80/20 summary): list key fields from `<Kind>Spec` with one-line descriptions and defaults
+- Stack Outputs: list fields from `<Kind>StackOutputs` with descriptions
+- How it works: brief on IaC backends (Pulumi, Terraform) in this repo
+- References: official provider docs and reputable references used for field choices
+
+EXAMPLES.md CONTENT REQUIREMENTS
+- Minimal manifest example (YAML) for this `<Kind>`
+- CLI flows:
+  - Validate: `project-planton validate --manifest <file>`
+  - Pulumi deploy: `project-planton pulumi update --manifest <file> --stack <org/project/stack> --module-dir <path>`
+  - Terraform deploy: `project-planton tofu apply --manifest <file> --auto-approve`
+
+IMPLEMENTATION STEPS
+1) Generate/refresh `BUILD.bazel` per above
+2) Render `README.md` using fields inferred from `spec.proto` and `stack_outputs.proto` with short, practical descriptions
+3) Render `examples.md` with a minimal manifest tailored to `<Kind>`
+
+BUILD & VERIFY (NON-INTERACTIVE)
+- Regenerate protos:
+  - `: ${REPO_ROOT:=$(pwd)} && make -C "$REPO_ROOT"/apis build | cat`
+- Optional `go build` for the package:
+  - `go build ./apis/project/planton/provider/<provider>/<kindfolder>/v1 | cat`
+
+SUCCESS CRITERIA
+- `BUILD.bazel`, `README.md`, and `examples.md` exist at the resource path
+- `BUILD.bazel` compiles (optional `go build` succeeds)
+- Docs list fields and outputs accurately and reference official docs
+
+OUTPUT STYLE IN CHAT
+- Show the created/updated paths and a brief outline of the docs sections
+- Show ready-to-run commands
+
+NOTES
+- Keep docs concise and practical (80/20). Record official URLs and brief rationale for field choices.

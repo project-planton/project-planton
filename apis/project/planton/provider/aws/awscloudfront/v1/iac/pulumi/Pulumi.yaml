@@ -1,6 +1,5 @@
-#name should be updated based on the choice of 'project' name in pulumi backend
-name: project-planton-aws-module-test
+name: demo
 runtime:
   name: go
-#  options:
-#    binary: ./debug.sh
+
+

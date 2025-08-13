@@ -2,7 +2,61 @@ syntax = "proto3";
 
 package project.planton.provider.aws.awscloudfront.v1;
 
-// AwsCloudFrontSpec defines the specification required to deploy an AWS Cloud Front resource, encapsulating all
-// configurations for the Aws Cloud Front settings.
+import "buf/validate/validate.proto";
+
+// AwsCloudFrontSpec captures common fields used to configure a CloudFront distribution.
 message AwsCloudFrontSpec {
+  // Whether the distribution is enabled.
+  bool enabled = 1;
+
+  // Aliases (CNAMEs) for the distribution, e.g., "cdn.example.com".
+  repeated string aliases = 2 [(buf.validate.field).repeated.unique = true];
+
+  // ACM certificate ARN for custom domains in the us-east-1 region.
+  string certificate_arn = 3;
+
+  // Price class for edge locations.
+  enum PriceClass {
+    PRICE_CLASS_UNSPECIFIED = 0;
+    PRICE_CLASS_100 = 1;
+    PRICE_CLASS_200 = 2;
+    PRICE_CLASS_ALL = 3;
+  }
+  PriceClass price_class = 4 [(buf.validate.field).enum.defined_only = true];
+
+  // Origin definition (minimal).
+  message Origin {
+    // Unique identifier used to reference the origin in behaviors.
+    string id = 1 [(buf.validate.field).string.min_len = 1];
+
+    // DNS name of the origin, e.g., "my-bucket.s3.amazonaws.com".
+    string domain_name = 2 [(buf.validate.field).string.min_len = 1];
+
+    // Optional origin path that CloudFront appends to requests.
+    string origin_path = 3;
+  }
+
+  // List of origins available to the distribution.
+  repeated Origin origins = 5 [(buf.validate.field).repeated.min_items = 1];
+
+  // The id of the origin used by the default cache behavior.
+  string default_origin_id = 6 [(buf.validate.field).string.min_len = 1];
+
+  // Default root object, e.g., "index.html".
+  string default_root_object = 7;
+
+  // Conditional validations
+  option (buf.validate.message).cel = {
+    id: "aliases_require_cert",
+    message: "certificate_arn must be set when aliases are provided",
+    expression: "this.aliases.size() == 0 || this.certificate_arn != \"\""
+  };
+
+  option (buf.validate.message).cel = {
+    id: "default_origin_must_exist",
+    message: "default_origin_id must match one of origins.id",
+    expression: "this.origins.exists(o, o.id == this.default_origin_id)"
+  };
 }
+
+

@@ -7,7 +7,7 @@ go_library(
     visibility = ["//visibility:private"],
     deps = [
         "//apis/project/planton/provider/aws/awscloudfront/v1:awscloudfront",
-        "//apis/project/planton/provider/aws/awscloudfront/v1/iac/pulumi/module",
+        "//apis/project/planton/provider/aws/awscloudfront/v1/iac/pulumi/module:module",
         "//pkg/iac/pulumi/pulumimodule/stackinput",
         "@com_github_pkg_errors//:errors",
         "@com_github_pulumi_pulumi_sdk_v3//go/pulumi",
@@ -19,3 +19,5 @@ go_binary(
     embed = [":pulumi_lib"],
     visibility = ["//visibility:public"],
 )
+
+

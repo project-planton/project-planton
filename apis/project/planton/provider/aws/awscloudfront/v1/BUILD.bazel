@@ -23,12 +23,13 @@ go_library(
 
 go_test(
     name = "awscloudfront_test",
-    srcs = ["api_test.go"],
+    srcs = ["spec_test.go"],
     embed = [":awscloudfront"],
     deps = [
-        "//apis/project/planton/shared",
         "@com_github_bufbuild_protovalidate_go//:protovalidate-go",
         "@com_github_onsi_ginkgo_v2//:ginkgo",
         "@com_github_onsi_gomega//:gomega",
     ],
 )
+
+

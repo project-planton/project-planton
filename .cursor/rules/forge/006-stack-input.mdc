@@ -1,0 +1,90 @@
+---
+alwaysApply: false
+---
+RULE NUMBER
+006
+
+TITLE
+Forge: Generate stack_input.proto for a resource (provisioner + IaC + target + credential)
+
+ROLE
+You are the PlantonCloud Code Partner working inside the developer’s local workspace in Cursor. This rule creates the `stack_input.proto` for a Planton resource, modeling how the CLI hands inputs to IaC modules. Do NOT modify other files in this step.
+
+SCOPE
+- Detect provider and kind from the request.
+- Create or reuse the target folder: `apis/project/planton/provider/<provider>/<kindfolder>/v1/`.
+- Generate `stack_input.proto` defining `<Kind>StackInput` with:
+  - `project.planton.shared.IacProvisioner provisioner = 1;`
+  - `project.planton.shared.iac.pulumi.PulumiStackInfo pulumi = 2;`
+  - `project.planton.shared.iac.terraform.TerraformStackInfo terraform = 3;`
+  - `<Kind> target = 4;` (from `api.proto`)
+  - `provider_credential = 5;` provider-specific credential spec message
+
+IMPORTS
+- `project/planton/shared/iac.proto`
+- `project/planton/shared/iac/pulumi/pulumi.proto`
+- `project/planton/shared/iac/terraform/terraform.proto`
+- `project/planton/provider/<provider>/<kindfolder>/v1/api.proto`
+- Provider credential spec import depending on provider:
+  - aws → `project/planton/credential/awscredential/v1/spec.proto` and type `project.planton.credential.awscredential.v1.AwsCredentialSpec`
+  - gcp → `project/planton/credential/gcpcredential/v1/spec.proto` and type `project.planton.credential.gcpcredential.v1.GcpCredentialSpec`
+  - azure → `project/planton/credential/azurecredential/v1/spec.proto` and type `project.planton.credential.azurecredential.v1.AzureCredentialSpec`
+  - kubernetes → `project/planton/credential/kubernetesclustercredential/v1/spec.proto` and type `project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec`
+  - cloudflare → `project/planton/credential/cloudflarecredential/v1/spec.proto` and type `project.planton.credential.cloudflarecredential.v1.CloudflareCredentialSpec`
+  - digitalocean → `project/planton/credential/digitaloceancredential/v1/spec.proto` and type `project.planton.credential.digitaloceancredential.v1.DigitalOceanCredentialSpec`
+  - confluent → `project/planton/credential/confluentcredential/v1/spec.proto` and type `project.planton.credential.confluentcredential.v1.ConfluentCredentialSpec`
+  - snowflake → `project/planton/credential/snowflakecredential/v1/spec.proto` and type `project.planton.credential.snowflakecredential.v1.SnowflakeCredentialSpec`
+  - civo → `project/planton/credential/civocredential/v1/spec.proto` and type `project.planton.credential.civocredential.v1.CivoCredentialSpec`
+  - mongodbatlas → `project/planton/credential/mongodbatlascredential/v1/spec.proto` and type `project.planton.credential.mongodbatlascredential.v1.MongoDbAtlasCredentialSpec`
+
+NAMING & PACKAGE
+- File path: `apis/project/planton/provider/<provider>/<kindfolder>/v1/stack_input.proto`
+- `syntax = "proto3";`
+- `package project.planton.provider.<provider>.<kindfolder>.v1;`
+- Do NOT include `go_package` options.
+
+MESSAGE SHAPE
+- Message name: `<Kind>StackInput`
+- Fields in exact order and numbering as above (1..5)
+- Keep this file free of validation imports; validations belong in `api.proto` and `spec.proto` rules
+
+BUILD & VERIFY (NON-INTERACTIVE)
+- After writing `stack_input.proto`, run:
+  - `make -C /Users/suresh/scm/github.com/project-planton/project-planton/apis build | cat`
+- Fix import paths or credential message types up to 3 attempts if build fails, then re-run.
+- On success, announce completion and point to the file path.
+
+SUCCESS CRITERIA
+- `stack_input.proto` created at the correct path with correct package and imports.
+- `<Kind>StackInput` includes provisioner, pulumi, terraform, target, and provider_credential.
+- Buf build succeeds with no errors.
+
+OUTPUT STYLE IN CHAT
+- Show a concise tree of the created/updated file.
+- Show the non-interactive command(s) to run.
+- If successful: confirm the path to review.
+- If errors: briefly describe the fix applied, then re-run until resolved (max 3 attempts before asking one targeted question).
+
+EXAMPLE SKELETON (adapt to actual provider/kind; do not paste verbatim)
+```proto
+syntax = "proto3";
+
+package project.planton.provider.aws.awscloudfront.v1;
+
+import "project/planton/credential/awscredential/v1/spec.proto";
+import "project/planton/provider/aws/awscloudfront/v1/api.proto";
+import "project/planton/shared/iac/pulumi/pulumi.proto";
+import "project/planton/shared/iac.proto";
+import "project/planton/shared/iac/terraform/terraform.proto";
+
+message AwsCloudFrontStackInput {
+  project.planton.shared.IacProvisioner provisioner = 1;
+  project.planton.shared.iac.pulumi.PulumiStackInfo pulumi = 2;
+  project.planton.shared.iac.terraform.TerraformStackInfo terraform = 3;
+  AwsCloudFront target = 4;
+  project.planton.credential.awscredential.v1.AwsCredentialSpec provider_credential = 5;
+}
+```
+
+NOTES
+- This message is the entrypoint used by the CLI to invoke IaC modules. Keep it stable across providers while swapping the credential type per provider.

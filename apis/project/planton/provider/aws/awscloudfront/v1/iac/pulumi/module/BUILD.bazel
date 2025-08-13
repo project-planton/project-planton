@@ -3,6 +3,8 @@ load("@rules_go//go:def.bzl", "go_library")
 go_library(
     name = "module",
     srcs = [
+        "distribution.go",
+        "locals.go",
         "main.go",
         "outputs.go",
     ],
@@ -12,6 +14,9 @@ go_library(
         "//apis/project/planton/provider/aws/awscloudfront/v1:awscloudfront",
         "@com_github_pkg_errors//:errors",
         "@com_github_pulumi_pulumi_aws_sdk_v7//go/aws",
+        "@com_github_pulumi_pulumi_aws_sdk_v7//go/aws/cloudfront",
         "@com_github_pulumi_pulumi_sdk_v3//go/pulumi",
     ],
 )
+
+

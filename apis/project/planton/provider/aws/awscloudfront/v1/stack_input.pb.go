@@ -25,7 +25,7 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// aws-cloud-front stack-input
+// aws-cloudfront stack-input
 type AwsCloudFrontStackInput struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// iac-provisioner

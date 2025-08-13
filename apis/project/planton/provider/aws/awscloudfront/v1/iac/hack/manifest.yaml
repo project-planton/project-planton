@@ -1,0 +1,14 @@
+apiVersion: aws.project-planton.org/v1
+kind: AwsCloudFront
+metadata:
+  name: awscloudfront-demo
+spec:
+  enabled: true
+  priceClass: PRICE_CLASS_100
+  origins:
+    - id: origin-1
+      domainName: bucket.s3.amazonaws.com
+  defaultOriginId: origin-1
+  defaultRootObject: index.html
+
+

@@ -1,51 +1,37 @@
-# Create using CLI
+# Examples
 
-Create a YAML file using one of the examples shown below. After the YAML is created, use the following command to apply:
-
-```shell
-planton apply -f <yaml-path>
-```
-
-# Basic Example
-
+## Minimal manifest (YAML)
 ```yaml
 apiVersion: aws.project-planton.org/v1
 kind: AwsCloudFront
 metadata:
-  name: my-cloudfront-distribution
+  name: my-cdn
 spec:
-  awsCredentialId: my-aws-credential
+  enabled: true
+  priceClass: PRICE_CLASS_100
+  origins:
+    - id: origin-1
+      domainName: bucket.s3.amazonaws.com
+  defaultOriginId: origin-1
+  defaultRootObject: index.html
 ```
 
-# Example with Custom AWS Credential
-
-```yaml
-apiVersion: aws.project-planton.org/v1
-kind: AwsCloudFront
-metadata:
-  name: custom-cloudfront-distribution
-spec:
-  awsCredentialId: custom-aws-credential
+## CLI flows
+- Validate:
+```bash
+project-planton validate --manifest ./manifest.yaml
 ```
 
-# Example with Additional Metadata
-
-```yaml
-apiVersion: aws.project-planton.org/v1
-kind: AwsCloudFront
-metadata:
-  name: another-cloudfront-instance
-  labels:
-    environment: production
-spec:
-  awsCredentialId: prod-aws-credential
+- Pulumi deploy:
+```bash
+project-planton pulumi up --manifest ./manifest.yaml --stack org/project/stack
 ```
 
-# Notes
+- Terraform deploy:
+```bash
+project-planton terraform apply --manifest ./manifest.yaml --stack org/project/stack
+```
 
-- **awsCredentialId**: This field is required and should reference the ID of the AWS credentials you have set up. Ensure that the credential ID matches one that is configured in your environment.
-- Since the `spec` section is minimal for this API resource and the module is not fully implemented, the examples provided are straightforward and focus primarily on the required `awsCredentialId` field.
+Note: Provider credentials are supplied via stack input, not in the spec.
 
-# Conclusion
 
-These examples demonstrate how to create an `AwsCloudFront` resource using minimal configuration. As the module gets further developed, more comprehensive examples will be provided to showcase additional features and capabilities
