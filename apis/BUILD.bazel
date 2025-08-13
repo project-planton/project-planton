@@ -1,0 +1,12 @@
+load("@rules_buf//buf:defs.bzl", "buf_lint_test")
+
+# Expose buf.yaml for Buf rules
+exports_files(["buf.yaml"])
+
+# Gazelle will populate proto_library targets under subpackages.
+
+# Top-level lint of the module
+buf_lint_test(
+    name = "buf_lint",
+    targets = [],
+)

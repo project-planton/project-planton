@@ -17,3 +17,27 @@ use_repo(go_deps, "build_buf_gen_go_bufbuild_protovalidate_protocolbuffers_go", 
 
 # NOTE: Run `bazel mod tidy` to expand the required use_repo(...) entries below.
 # Bazel will add the repositories provided by the extensions above.
+
+# ─── Protobuf + Buf ───────────────────────────────────────────────────────────
+# Core protobuf toolchain and proto rules
+bazel_dep(name = "protobuf", version = "31.1", repo_name = "com_google_protobuf")
+bazel_dep(name = "rules_proto", version = "7.1.0")
+
+# Buf Bazel rules (toolchains + Gazelle extension + deps)
+bazel_dep(name = "rules_buf", version = "0.5.1")
+bazel_dep(name = "rules_proto_grpc", version = "5.6.0")
+
+# Go proto/grpc generation and doc generation
+# (rules_proto_grpc will be added after we verify BCR/gitrepo wiring)
+
+# Configure Buf CLI toolchain version (hermetic)
+buf = use_extension("@rules_buf//buf:extensions.bzl", "buf")
+buf.toolchains(version = "v1.56.0")
+
+# Pin Buf BSR module dependencies (from apis/buf.lock)
+# protovalidate commit: 6c6e0d3c608e4549802254a2eee81bc8
+buf.dependency(
+    name = "buf_deps_apis",
+    module = "buf.build/bufbuild/protovalidate:6c6e0d3c608e4549802254a2eee81bc8",
+)
+use_repo(buf, "buf_deps_apis")

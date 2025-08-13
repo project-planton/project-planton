@@ -1,4 +1,6 @@
+load("@rules_buf//buf:defs.bzl", "buf_lint_test")
 load("@rules_go//go:def.bzl", "go_library")
+load("@rules_proto//proto:defs.bzl", "proto_library")
 
 go_library(
     name = "terraform",
@@ -11,4 +13,21 @@ go_library(
         "@org_golang_google_protobuf//reflect/protoreflect",
         "@org_golang_google_protobuf//runtime/protoimpl",
     ],
+)
+
+proto_library(
+    name = "project_planton_shared_iac_terraform_proto",
+    srcs = ["terraform.proto"],
+    strip_import_prefix = "/apis",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//apis/project/planton/shared/iac/iacgitrepo:project_planton_shared_iac_iacgitrepo_proto",
+        "@buf_deps_apis//buf/validate:validate_proto",
+    ],
+)
+
+buf_lint_test(
+    name = "project_planton_shared_iac_terraform_proto_lint",
+    config = "//apis:buf.yaml",
+    targets = [":project_planton_shared_iac_terraform_proto"],
 )

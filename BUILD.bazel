@@ -1,14 +1,30 @@
-load("@gazelle//:def.bzl", "gazelle")
+load("@gazelle//:def.bzl", "gazelle", "gazelle_binary")
+load("@rules_buf//buf:defs.bzl", "buf_lint_test")
 load("@rules_go//go:def.bzl", "go_binary", "go_library")
 
-# Keep Gazelle minimal. We will not generate proto rules here; buf handles stubs.
-# Disable Gazelle proto generation globally to avoid conflicts with buf outputs.
-# You can still enable per-package if needed later.
-# gazelle:proto disable
 # gazelle:prefix github.com/project-planton/project-planton
+
+# Nothing to export at repo root; apis/BUILD.bazel exports buf.yaml
+
+# Gazelle with Buf extension enabled
+gazelle_binary(
+    name = "gazelle-buf",
+    languages = [
+        "@gazelle//language/go",
+        "@gazelle//language/proto",
+        "@rules_buf//gazelle/buf:buf",
+    ],
+)
 
 gazelle(
     name = "gazelle",
+    gazelle = ":gazelle-buf",
+)
+
+# Run Buf lint at the module root based on apis/buf.yaml
+buf_lint_test(
+    name = "apis_buf_lint",
+    targets = [],
 )
 
 go_library(

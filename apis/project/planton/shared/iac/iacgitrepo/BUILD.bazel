@@ -1,4 +1,6 @@
+load("@rules_buf//buf:defs.bzl", "buf_lint_test")
 load("@rules_go//go:def.bzl", "go_library")
+load("@rules_proto//proto:defs.bzl", "proto_library")
 
 go_library(
     name = "iacgitrepo",
@@ -9,4 +11,17 @@ go_library(
         "@org_golang_google_protobuf//reflect/protoreflect",
         "@org_golang_google_protobuf//runtime/protoimpl",
     ],
+)
+
+proto_library(
+    name = "project_planton_shared_iac_iacgitrepo_proto",
+    srcs = ["iac_git_repo.proto"],
+    strip_import_prefix = "/apis",
+    visibility = ["//visibility:public"],
+)
+
+buf_lint_test(
+    name = "project_planton_shared_iac_iacgitrepo_proto_lint",
+    config = "//apis:buf.yaml",
+    targets = [":project_planton_shared_iac_iacgitrepo_proto"],
 )

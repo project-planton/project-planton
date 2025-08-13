@@ -1,4 +1,6 @@
+load("@rules_buf//buf:defs.bzl", "buf_lint_test")
 load("@rules_go//go:def.bzl", "go_library", "go_test")
+load("@rules_proto//proto:defs.bzl", "proto_library")
 
 go_library(
     name = "kafkakubernetes",
@@ -35,4 +37,32 @@ go_test(
         "@com_github_onsi_ginkgo_v2//:ginkgo",
         "@com_github_onsi_gomega//:gomega",
     ],
+)
+
+proto_library(
+    name = "project_planton_provider_kubernetes_workload_kafkakubernetes_v1_proto",
+    srcs = [
+        "api.proto",
+        "spec.proto",
+        "stack_input.proto",
+        "stack_outputs.proto",
+    ],
+    strip_import_prefix = "/apis",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//apis/project/planton/credential/kubernetesclustercredential/v1:project_planton_credential_kubernetesclustercredential_v1_proto",
+        "//apis/project/planton/shared:project_planton_shared_proto",
+        "//apis/project/planton/shared/iac/pulumi:project_planton_shared_iac_pulumi_proto",
+        "//apis/project/planton/shared/iac/terraform:project_planton_shared_iac_terraform_proto",
+        "//apis/project/planton/shared/kubernetes:project_planton_shared_kubernetes_proto",
+        "//apis/project/planton/shared/options:project_planton_shared_options_proto",
+        "@buf_deps_apis//buf/validate:validate_proto",
+        "@com_google_protobuf//:descriptor_proto",
+    ],
+)
+
+buf_lint_test(
+    name = "project_planton_provider_kubernetes_workload_kafkakubernetes_v1_proto_lint",
+    config = "//apis:buf.yaml",
+    targets = [":project_planton_provider_kubernetes_workload_kafkakubernetes_v1_proto"],
 )
