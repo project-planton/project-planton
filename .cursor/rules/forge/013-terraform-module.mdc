@@ -60,8 +60,8 @@ CONTENT GUIDELINES (NON-generated files)
 BUILD & VERIFY (NON-INTERACTIVE)
 - Initialize and validate the module:
 ```bash
-terraform -chdir=/Users/suresh/scm/github.com/project-planton/project-planton/apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/tf init -backend=false | cat
-terraform -chdir=/Users/suresh/scm/github.com/project-planton/project-planton/apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/tf validate | cat
+terraform -chdir=apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/tf init -backend=false | cat
+terraform -chdir=apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/tf validate | cat
 ```
 - On errors, refine non-generated files and re-run (up to 3 attempts).
 

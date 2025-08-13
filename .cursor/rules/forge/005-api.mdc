@@ -49,7 +49,7 @@ VALIDATION NOTES
 
 BUILD & VERIFY (NON-INTERACTIVE)
 - After writing `api.proto`, run:
-  - `make -C /Users/suresh/scm/github.com/project-planton/project-planton/apis build | cat`
+  - `make -C apis build | cat`
 - Fix import paths/consts up to 3 attempts if build errors occur, then re-run.
 - On success, announce completion and point to the file path.
 
