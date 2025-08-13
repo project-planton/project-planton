@@ -1,0 +1,30 @@
+load("@rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "metadatareflect",
+    srcs = [
+        "extract_metadata.go",
+        "inject_metadata.go",
+    ],
+    importpath = "github.com/project-planton/project-planton/pkg/reflection/metadatareflect",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//apis/project/planton/shared",
+        "@org_golang_google_protobuf//proto",
+        "@org_golang_google_protobuf//reflect/protoreflect",
+    ],
+)
+
+go_test(
+    name = "metadatareflect_test",
+    srcs = [
+        "extract_metadata_test.go",
+        "inject_metadata_test.go",
+    ],
+    embed = [":metadatareflect"],
+    deps = [
+        "//apis/project/planton/provider/aws/awss3bucket/v1:awss3bucket",
+        "//apis/project/planton/shared",
+        "@org_golang_google_protobuf//proto",
+    ],
+)

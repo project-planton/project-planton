@@ -5,6 +5,14 @@ name_local=project-planton
 pkg=github.com/project-planton/project-planton
 build_dir=build
 LDFLAGS=-ldflags "-X ${pkg}/internal/cli/version.Version=${version}"
+BAZEL?=bazel
+
+# If BUILDBUDDY_API_KEY is set, enable the :bb config and inject only the header.
+ifneq ($(strip $(BUILDBUDDY_API_KEY)),)
+BAZEL_REMOTE_FLAGS=--config=bb --remote_header=x-buildbuddy-api-key=$$BUILDBUDDY_API_KEY
+else
+BAZEL_REMOTE_FLAGS=
+endif
 
 build_cmd=go build -v ${LDFLAGS}
 
@@ -21,6 +29,22 @@ build_darwin: vet
 protos:
 	pushd apis;make build;popd
 
+.PHONY: bazel-mod-tidy
+bazel-mod-tidy:
+	${BAZEL} mod tidy
+
+.PHONY: bazel-gazelle
+bazel-gazelle:
+	${BAZEL} run ${BAZEL_REMOTE_FLAGS} //:gazelle
+
+.PHONY: bazel-build-cli
+bazel-build-cli:
+	${BAZEL} build ${BAZEL_REMOTE_FLAGS} //:project-planton
+
+.PHONY: bazel-test
+bazel-test:
+	${BAZEL} test ${BAZEL_REMOTE_FLAGS} --test_output=errors //...
+
 .PHONY: generate-cloud-resource-kind-map
 generate-cloud-resource-kind-map:
 	rm -f pkg/crkreflect/kind_map_gen.go
@@ -34,7 +58,7 @@ generate-kubernetes-types:
 build-cli: ${build_dir}/${name}
 
 .PHONY: build
-build: protos generate-cloud-resource-kind-map build-cli
+build: protos generate-cloud-resource-kind-map bazel-mod-tidy bazel-gazelle bazel-build-cli build-cli
 
 ${build_dir}/${name}: deps vet
 	GOOS=darwin GOARCH=amd64 ${build_cmd} -o ${build_dir}/${name}-darwin-amd64 .

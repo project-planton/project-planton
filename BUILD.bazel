@@ -1,0 +1,29 @@
+load("@gazelle//:def.bzl", "gazelle")
+load("@rules_go//go:def.bzl", "go_binary", "go_library")
+
+# Keep Gazelle minimal. We will not generate proto rules here; buf handles stubs.
+# Disable Gazelle proto generation globally to avoid conflicts with buf outputs.
+# You can still enable per-package if needed later.
+# gazelle:proto disable
+# gazelle:prefix github.com/project-planton/project-planton
+
+gazelle(
+    name = "gazelle",
+)
+
+go_library(
+    name = "project-planton_lib",
+    srcs = ["main.go"],
+    importpath = "github.com/project-planton/project-planton",
+    visibility = ["//visibility:private"],
+    deps = [
+        "//cmd/project-planton",
+        "//internal/cli/panic",
+    ],
+)
+
+go_binary(
+    name = "project-planton",
+    embed = [":project-planton_lib"],
+    visibility = ["//visibility:public"],
+)
