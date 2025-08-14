@@ -1,0 +1,8 @@
+{% if values.create_hosted_zone | bool %}
+---
+apiVersion: aws.project-planton.org/v1
+kind: AwsRoute53Zone
+metadata:
+  name: "{{ values.domain_name }}"
+spec: {}
+  {% endif %}

@@ -1,0 +1,24 @@
+---
+apiVersion: azure.project-planton.org/v1
+kind: AzureAksCluster
+metadata:
+  name: "{{ values.cluster_name }}"
+spec:
+  region: "{{ values.region }}"
+  vnetSubnetId:
+    valueFrom:
+      kind: AzureVpc
+      name: "{{ values.env }}-vnet"
+      fieldPath: status.outputs.nodes_subnet_id
+  kubernetesVersion: "{{ values.kubernetes_version }}"
+  privateClusterEnabled: {{ values.private_cluster_enabled }}
+  {% if not values.private_cluster_enabled | bool %}
+  authorizedIpRanges:
+  {%- for cidr in values.authorized_ip_ranges.split(',') %}
+  - "{{ cidr.strip() }}"
+  {%- endfor %}
+  {% endif %}
+  disableAzureAdRbac: {{ values.disable_azure_ad_rbac }}
+  {% if values.log_analytics_workspace_id != "" %}
+  logAnalyticsWorkspaceId: "{{ values.log_analytics_workspace_id }}"
+  {% endif %}

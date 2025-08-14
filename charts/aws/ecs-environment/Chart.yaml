@@ -1,0 +1,13 @@
+apiVersion: infra-hub.planton.cloud/v1
+kind: InfraChart
+metadata:
+  name: AWS ECS Environment
+spec:
+  selector:
+    kind: platform
+  description: Configurable AWS ECS environment with optional HTTPS termination on an ALB.
+  iconUrl: https://storage.googleapis.com/planton-cloud-static-assets/logos/api-resources/infrahub/cloudresource/provider/aws/awsecscluster/v1/assets/logo.svg
+  isReady: true
+  webLinks:
+    chartWebUrl: https://github.com/plantoncloud/infra-charts/tree/main/aws-ecs
+    readmeRawUrl: https://raw.githubusercontent.com/plantoncloud/infra-charts/refs/heads/main/ecs-environment/README.md

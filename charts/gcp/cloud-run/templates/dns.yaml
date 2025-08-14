@@ -1,0 +1,7 @@
+---
+apiVersion: gcp.project-planton.org/v1
+kind: GcpDnsZone
+metadata:
+  name: "{{ values.domain_name }}"
+spec:
+  projectId: "{{ values.gcp_project_id }}"

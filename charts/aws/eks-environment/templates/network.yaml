@@ -1,0 +1,38 @@
+---
+apiVersion: aws.project-planton.org/v1
+kind: AwsVpc
+metadata:
+  name: "{{ values.env }}-vpc"
+spec:
+  availabilityZones:
+    - "{{ values.availability_zone_1 }}"
+    - "{{ values.availability_zone_2 }}"
+  vpcCidr: "{{ values.vpc_cidr }}"
+  subnetSize: {{ values.subnet_size }}
+  subnetsPerAvailabilityZone: 2
+  isDnsHostnamesEnabled: true
+  isDnsSupportEnabled: true
+  isNatGatewayEnabled: true
+---
+apiVersion: aws.project-planton.org/v1
+kind: AwsSecurityGroup
+metadata:
+  name: "{{ values.env }}-eks-node-sg"
+spec:
+  description: allow intra‑node traffic and all egress
+  vpcId:
+    valueFrom:
+      kind: AwsVpc
+      name: "{{ values.env }}-vpc"
+      fieldPath: status.outputs.vpcId
+  ingress:
+    - description: allow all within group
+      protocol: TCP
+      fromPort: 0
+      toPort: 65535
+      selfReference: true
+  egress:
+    - description: allow all outbound
+      protocol: "-1"
+      ipv4Cidrs:
+        - 0.0.0.0/0

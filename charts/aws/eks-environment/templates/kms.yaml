@@ -1,0 +1,11 @@
+{% if values.enable_kms_encryption | bool %}
+---
+apiVersion: aws.project-planton.org/v1
+kind: AwsKmsKey
+metadata:
+  name: "{{ values.env }}-eks-secrets"
+spec:
+  description: CMK for Kubernetes secrets encryption
+  aliasName: "alias/{{ values.env }}-eks-secrets"
+  disableKeyRotation: false
+  {% endif %}

@@ -1,0 +1,13 @@
+apiVersion: infra-hub.planton.cloud/v1
+kind: InfraChart
+metadata:
+  name: GKE Environment
+spec:
+  selector:
+    kind: platform
+  description: Configurable GKE Environment with custom VPC, Cloud NAT, Cloud DNS and an autoscaled node‑pool and various addons.
+  iconUrl: https://storage.googleapis.com/planton-cloud-static-assets/logos/api-resources/infrahub/cloudresource/provider/gcp/gcpgkeclustercore/v1/assets/logo.svg
+  isReady: true
+  webLinks:
+    chartWebUrl: https://github.com/plantoncloud/infra-charts/tree/main/gcp-gke
+    readmeRawUrl: https://raw.githubusercontent.com/plantoncloud/infra-charts/refs/heads/main/gke-environment/README.md

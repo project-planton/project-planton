@@ -1,0 +1,20 @@
+params:
+- name: gcp_project_id
+  description: GCP Project ID (e.g., planton-cloud-testing)
+  value: planton-cloud-testing
+
+- name: gcp_region
+  description: GCP region (e.g., us-central1)
+  value: us-central1
+
+- name: domain_name
+  description: Custom domain name managed by Route 53 (e.g., example.com)
+  value: example.com
+
+- name: service_name
+  description: Name of the service
+  value: nginx
+
+- name: service_port
+  description: Port on which the service will run (e.g., 8080)
+  value: "8080"
