@@ -313,23 +313,29 @@ var File_project_planton_provider_aws_awsclientvpn_v1_spec_proto protoreflect.Fi
 
 const file_project_planton_provider_aws_awsclientvpn_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"7project/planton/provider/aws/awsclientvpn/v1/spec.proto\x12,project.planton.provider.aws.awsclientvpn.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\"\xbb\b\n" +
+	"7project/planton/provider/aws/awsclientvpn/v1/spec.proto\x12,project.planton.provider.aws.awsclientvpn.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\"\xff\x0f\n" +
 	"\x10AwsClientVpnSpec\x12 \n" +
 	"\vdescription\x18\x01 \x01(\tR\vdescription\x12s\n" +
 	"\x06vpc_id\x18\x02 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB$\xbaH\x03\xc8\x01\x01\x88\xd4a\xd9\x01\x92\xd4a\x15status.outputs.vpc_idR\x05vpcId\x12b\n" +
-	"\asubnets\x18\x03 \x03(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB\x10\xbaH\b\xc8\x01\x01\x92\x01\x02\b\x01\x88\xd4a\xd9\x01R\asubnets\x122\n" +
-	"\x11client_cidr_block\x18\x04 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x0fclientCidrBlock\x12}\n" +
-	"\x13authentication_type\x18\x05 \x01(\x0e2L.project.planton.provider.aws.awsclientvpn.v1.AwsClientVpnAuthenticationTypeR\x12authenticationType\x12\x8e\x01\n" +
-	"\x16server_certificate_arn\x18\x06 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB \x88\xd4a\xc9\x01\x92\xd4a\x17status.outputs.cert_arnR\x14serverCertificateArn\x128\n" +
-	"\x18cidr_authorization_rules\x18\a \x03(\tR\x16cidrAuthorizationRules\x120\n" +
+	"\asubnets\x18\x03 \x03(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB\x10\xbaH\b\xc8\x01\x01\x92\x01\x02\b\x01\x88\xd4a\xd9\x01R\asubnets\x12m\n" +
+	"\x11client_cidr_block\x18\x04 \x01(\tBA\xbaH>\xc8\x01\x01r927^([0-9]{1,3}\\.){3}[0-9]{1,3}/([0-9]|[1-2][0-9]|3[0-2])$R\x0fclientCidrBlock\x12\x87\x01\n" +
+	"\x13authentication_type\x18\x05 \x01(\x0e2L.project.planton.provider.aws.awsclientvpn.v1.AwsClientVpnAuthenticationTypeB\b\xbaH\x05\x82\x01\x02\x10\x01R\x12authenticationType\x12\x94\x01\n" +
+	"\x16server_certificate_arn\x18\x06 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB&\xbaH\x03\xc8\x01\x01\x88\xd4a\xc9\x01\x92\xd4a\x17status.outputs.cert_arnR\x14serverCertificateArn\x12B\n" +
+	"\x18cidr_authorization_rules\x18\a \x03(\tB\b\xbaH\x05\x92\x01\x02\x18\x01R\x16cidrAuthorizationRules\x120\n" +
 	"\x14disable_split_tunnel\x18\b \x01(\bR\x12disableSplitTunnel\x12\"\n" +
-	"\bvpn_port\x18\t \x01(\x05B\a\x8a\xa6\x1d\x03443R\avpnPort\x12\x83\x01\n" +
+	"\bvpn_port\x18\t \x01(\x05B\a\x8a\xa6\x1d\x03443R\avpnPort\x12\x8b\x01\n" +
 	"\x12transport_protocol\x18\n" +
-	" \x01(\x0e2K.project.planton.provider.aws.awsclientvpn.v1.AwsClientVpnTransportProtocolB\a\x92\xa6\x1d\x03tcpR\x11transportProtocol\x12$\n" +
+	" \x01(\x0e2K.project.planton.provider.aws.awsclientvpn.v1.AwsClientVpnTransportProtocolB\x0f\xbaH\x05\x82\x01\x02\x10\x01\x92\xa6\x1d\x03tcpR\x11transportProtocol\x12$\n" +
 	"\x0elog_group_name\x18\v \x01(\tR\flogGroupName\x12\x8a\x01\n" +
-	"\x0fsecurity_groups\x18\f \x03(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB)\x88\xd4a\xd7\x01\x92\xd4a status.outputs.security_group_idR\x0esecurityGroups\x12\x1f\n" +
-	"\vdns_servers\x18\r \x03(\tR\n" +
-	"dnsServers*M\n" +
+	"\x0fsecurity_groups\x18\f \x03(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB)\x88\xd4a\xd7\x01\x92\xd4a status.outputs.security_group_idR\x0esecurityGroups\x12+\n" +
+	"\vdns_servers\x18\r \x03(\tB\n" +
+	"\xbaH\a\x92\x01\x04\x10\x02\x18\x01R\n" +
+	"dnsServers:\xd7\x06\xbaH\xd3\x06\x1ay\n" +
+	"\x10vpn_port_allowed\x121vpn_port must be 443 (TCP) or 1194 (UDP) when set\x1a2this.vpn_port == 0 || this.vpn_port in [443, 1194]\x1a\x94\x02\n" +
+	"\x15protocol_port_pairing\x12Qwhen both are set, transport_protocol must match vpn_port (TCP↔443, UDP↔1194)\x1a\xa7\x01this.vpn_port == 0 || this.transport_protocol == 0 || (this.transport_protocol == 2 && this.vpn_port == 443) || (this.transport_protocol == 1 && this.vpn_port == 1194)\x1ai\n" +
+	"\x0eauth_supported\x128only certificate-based authentication is supported in v1\x1a\x1dthis.authentication_type == 0\x1a\xc4\x01\n" +
+	"\x16cidr_auth_rules_format\x12=each cidr_authorization_rules entry must be a valid IPv4 CIDR\x1akthis.cidr_authorization_rules.all(c, c.matches(\"^([0-9]{1,3}\\\\.){3}[0-9]{1,3}/([0-9]|[1-2][0-9]|3[0-2])$\"))\x1a\x8c\x01\n" +
+	"\x12dns_servers_format\x120dns_servers must be valid IPv4 addresses (max 2)\x1aDthis.dns_servers.all(s, s.matches(\"^([0-9]{1,3}\\\\.){3}[0-9]{1,3}$\"))*M\n" +
 	"\x1eAwsClientVpnAuthenticationType\x12\x0f\n" +
 	"\vcertificate\x10\x00\x12\r\n" +
 	"\tdirectory\x10\x02\x12\v\n" +

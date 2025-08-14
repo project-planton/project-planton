@@ -1,0 +1,108 @@
+productName: Planton Cloud
+productTagline: Provision, build, and ship across clouds with one consistent workflow
+openSourceProject: Project Planton
+whoWeAre: >
+  Planton Cloud is a managed developer platform built on the open source Project Planton.
+  It unifies provisioning (Infra Hub), CI/CD (Service Hub), a Kubernetes dashboard, and an AI Copilot.
+problemWeSolve: >
+  Multi-cloud provisioning and CI/CD are inconsistent across providers and tools. Teams duplicate
+  effort, learn many DSLs, and lack end-to-end visibility from config change to infra job and runtime state.
+
+projectPlanton:
+  description: >
+    Open source foundation that defines protobuf-based APIs, default Pulumi and Terraform modules,
+    and a CLI to validate manifests and orchestrate deployments.
+  apis:
+    contract: Kubernetes-like {apiVersion, kind, metadata, spec, status}
+    validation: Protobuf with field-level constraints
+  modules:
+    iac: [Pulumi, Terraform]
+    purpose: Implements each component's recipe
+  cli:
+    validates: true
+    generatesIacInputs: true
+    orchestrates: [Pulumi, Terraform]
+
+plantonCloud:
+  description: >
+    SaaS platform that layers org and environment context, visual infra graph, managed pipelines,
+    live Kubernetes ops, and AI Copilot on top of Project Planton.
+  primitives:
+    organization: Root container for members, teams, environments, and resources
+    environment: Dev, qa, staging, prod (customizable)
+    cloudResource: Individual Lego block such as VPC, ALB, S3, Route53 zone
+    infraProject: Opinionated chart that bundles dependencies (for example, ECS service plus VPC and security groups)
+    service: Git repository onboarded for CI/CD
+    pipeline: Build job (CI)
+    stackJob: Deploy job (CD/infra apply)
+    variables: Refer as $variables-group/<group>/<key>
+    secrets: Refer as $secrets-group/<group>/<key>
+    packageRepositories: Maven, NPM, container registries
+    providerCredentials: Cloud and registry credentials
+    connections: Cloud provider connections (credentials shared with the platform)
+    automationMinutes:
+      build: Minutes consumed by pipelines
+      deployment: Minutes consumed by stack jobs
+  navigation:
+    dashboard: Members, automation minutes, IaC resources, recent pipelines, cloud resources, latest stack jobs
+    infraHub: Canvas and list views; resources graph; infra projects (charts) and cloud resources
+    serviceHub: Repo import, pipeline selection (platform-managed or BYO Tekton), build methods (Buildpacks or Dockerfile), deploy settings
+    kubernetesDashboard: Explore, edit, exec, and stream logs for Kubernetes resources
+    connections: Create and view cloud connections
+    billing: Free, Plus, and Pro plans via Stripe
+    iam: Invite members, create teams, and set granular access
+    environmentPromotion: Optional policy for strict ordering and promotions
+  aiCopilot:
+    capabilities:
+      - Natural language provisioning (generate plan and apply on approval)
+      - Form autofill with chat-based corrections
+      - Manifest drafting for resources and charts
+  valueProps:
+    - One mental model for many clouds with consistent APIs
+    - Faster onboarding with ready-to-use charts
+    - End-to-end visibility: config commit -> job -> logs -> running state
+    - In-browser Kubernetes operations
+    - Bring-your-own pipelines or use platform-managed ones
+  pricing:
+    free:
+      environments: 1
+      minutes: 100
+    plus:
+      priceUsdPerSeatPerMonth: 19
+      environments: unlimited
+      minutes: 300
+      overageUsdPerMinute: 0.06
+    pro:
+      priceUsdPerMonth: 299
+      seats: unlimited
+      environments: unlimited
+      minutes: 1000
+      overageUsdPerMinute: 0.06
+
+messaging:
+  headline: One workflow to provision and ship across clouds
+  subhead: Project Planton APIs and modules under the hood, Planton Cloud experience on top
+  heroBullets:
+    - Infra charts and Lego blocks for fast provisioning
+    - Pipelines and stack jobs with logs and diffs
+    - Kubernetes dashboard with exec and live edits
+    - AI Copilot for forms and manifests
+  kubeconPitch: >
+    Planton Cloud unifies provisioning, CI/CD, and live Kubernetes ops on a protobuf API and IaC
+    modules foundation. Launch complex setups in minutes, keep environments consistent, and keep
+    the entire trail visible from commit to cluster.
+
+authoringGuidelines:
+  tone: Clear, technical, concise
+  style: Prefer action verbs and short paragraphs
+  do:
+    - Use the defined primitives and terms
+    - Keep API and IaC mentions accurate
+    - Write environment-aware examples (dev, staging, prod)
+  dont:
+    - Invent new product names or pricing
+    - Promise unsupported features
+    - Change the variables and secrets reference syntax
+
+version: v1
+generatedAt: 2025-08-14

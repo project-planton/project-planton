@@ -8,17 +8,17 @@ import "project/planton/provider/aws/awsclientvpn/v1/stack_outputs.proto";
 import "project/planton/shared/status.proto";
 import "project/planton/shared/metadata.proto";
 
-// AwsClientVpn represents a containerized application deployed on AWS ECS.
-// This resource manages ECS services that can run on either Fargate or EC2.
+// AwsClientVpn represents an AWS Client VPN endpoint resource.
+// It encapsulates the configuration for a managed OpenVPN endpoint attached to a VPC.
 message AwsClientVpn {
   // api-version must be set to "aws.project-planton.org/v1".
   string api_version = 1 [
     (buf.validate.field).string.const = "aws.project-planton.org/v1"
   ];
 
-  // resource-kind for this ECS service resource, typically "AwsClientVpn".
+  // resource-kind for this Client VPN resource, must be "AwsClientVpn".
   string kind = 2 [
-    (buf.validate.field).string.const = 'AwsClientVpn'
+    (buf.validate.field).string.const = "AwsClientVpn"
   ];
 
   // metadata captures identifying information (name, org, version, etc.)

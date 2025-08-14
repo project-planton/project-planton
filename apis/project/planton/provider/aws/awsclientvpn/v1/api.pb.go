@@ -23,13 +23,13 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// AwsClientVpn represents a containerized application deployed on AWS ECS.
-// This resource manages ECS services that can run on either Fargate or EC2.
+// AwsClientVpn represents an AWS Client VPN endpoint resource.
+// It encapsulates the configuration for a managed OpenVPN endpoint attached to a VPC.
 type AwsClientVpn struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// api-version must be set to "aws.project-planton.org/v1".
 	ApiVersion string `protobuf:"bytes,1,opt,name=api_version,json=apiVersion,proto3" json:"api_version,omitempty"`
-	// resource-kind for this ECS service resource, typically "AwsClientVpn".
+	// resource-kind for this Client VPN resource, must be "AwsClientVpn".
 	Kind string `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
 	// metadata captures identifying information (name, org, version, etc.)
 	// and must pass standard validations for resource naming.
