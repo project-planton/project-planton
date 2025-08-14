@@ -28,6 +28,7 @@ go_test(
     srcs = ["spec_test.go"],
     embed = [":awsclientvpn"],
     deps = [
+        "//apis/project/planton/shared/foreignkey/v1:foreignkey",
         "@com_github_bufbuild_protovalidate_go//:protovalidate-go",
         "@com_github_onsi_ginkgo_v2//:ginkgo",
         "@com_github_onsi_gomega//:gomega",
