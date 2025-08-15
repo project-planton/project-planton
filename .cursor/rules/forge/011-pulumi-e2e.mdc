@@ -30,7 +30,7 @@ Pulumi requires an initialized backend and an existing stack. Initialize a local
 export PULUMI_CONFIG_PASSPHRASE="test"
 cd "$REPO_ROOT"/apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/pulumi
 pulumi login --local | cat
-pulumi stack select --create <org>/<project>/<stack> | cat
+pulumi stack select --create organization/<project>/<stack> | cat
 ```
 
 DISCOVERY (MANDATORY BEFORE RUN)
@@ -51,26 +51,26 @@ Run these from repo root; they print logs directly.
 # Preview changes
 project-planton pulumi preview \
   --manifest apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/hack/manifest.yaml \
-  --stack <org>/<project>/<stack> \
+  --stack organization/<project>/<stack> \
   --module-dir apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/pulumi | cat
 
 # Apply changes
 project-planton pulumi update \
   --manifest apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/hack/manifest.yaml \
-  --stack <org>/<project>/<stack> \
+  --stack organization/<project>/<stack> \
   --module-dir apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/pulumi \
   --yes | cat
 
 # Refresh state
 project-planton pulumi refresh \
   --manifest apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/hack/manifest.yaml \
-  --stack <org>/<project>/<stack> \
+  --stack organization/<project>/<stack> \
   --module-dir apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/pulumi | cat
 
 # Destroy resources
 project-planton pulumi destroy \
   --manifest apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/hack/manifest.yaml \
-  --stack <org>/<project>/<stack> \
+  --stack organization/<project>/<stack> \
   --module-dir apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/pulumi | cat
 ```
 
@@ -93,3 +93,4 @@ OUTPUT STYLE IN CHAT
 NOTES
 - The CLI wraps Pulumi; logs mirror Pulumi output
 - The `--module-dir` points to the resource’s Pulumi module directory
+ - With the local backend (`pulumi login --local`), use the literal org `organization` in stack names: `organization/<project>/<stack>`

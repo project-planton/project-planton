@@ -8,8 +8,8 @@ import "project/planton/provider/aws/awsec2instance/v1/stack_outputs.proto";
 import "project/planton/shared/status.proto";
 import "project/planton/shared/metadata.proto";
 
-// AwsEc2Instance represents a containerized application deployed on AWS ECS.
-// This resource manages ECS services that can run on either Fargate or EC2.
+// AwsEc2Instance represents a single EC2 virtual machine instance on AWS.
+// This resource provisions one EC2 instance with networking, IAM, and access configuration.
 message AwsEc2Instance {
   // api-version must be set to "aws.project-planton.org/v1".
   string api_version = 1 [

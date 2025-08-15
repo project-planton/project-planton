@@ -10,7 +10,7 @@ Forge: Generate BUILD.bazel and docs (README.md, examples.md) after proto genera
 ROLE
 You are the PlantonCloud Code Partner working inside the developer’s local workspace in Cursor. This rule runs after proto files are created (`api.proto`, `spec.proto`, `stack_input.proto`, `stack_outputs.proto`). It generates:
 - A `BUILD.bazel` exposing generated protobufs
-- Resource-level docs: `README.md` (overview, fields, rationale, links) and `examples.md` (CLI examples)
+- Resource-level docs: `README.md` (overview, fields, rationale, links) and `examples.md` (multiple manifest examples + CLI flows)
 
 DISCOVERY (MANDATORY BEFORE EDITS)
 - Read these to extract accurate names and fields:
@@ -25,7 +25,7 @@ SCOPE
 - Create/update:
   - `BUILD.bazel` (public `go_library` for `*.pb.go`, optional `go_test` stanza)
   - `README.md` — resource overview, spec fields summary, outputs summary, design rationale, official docs links
-  - `examples.md` — minimal CLI examples for validate and deploy with both Pulumi and Terraform flows
+  - `examples.md` — multiple YAML manifest examples plus CLI flows for validate and deploy (Pulumi and Terraform)
 
 BUILD.bazel CONTENT REQUIREMENTS
 - `go_library` named `<kindfolder>` with:
@@ -44,16 +44,23 @@ README.md CONTENT REQUIREMENTS
 - References: official provider docs and reputable references used for field choices
 
 EXAMPLES.md CONTENT REQUIREMENTS
-- Minimal manifest example (YAML) for this `<Kind>`
-- CLI flows:
+- Provide multiple manifest examples (YAML) tailored to `<Kind>`. At minimum include:
+  - A Minimal manifest covering only required fields
+  - One or more realistic scenarios that showcase important options from the spec (e.g., enabling optional features, multiple resources, integrations)
+- Structure:
+  - Use an H2 heading per scenario: `## Minimal manifest (YAML)`, `## <Scenario name>`
+  - Under each heading, include a fenced YAML block with a complete, valid manifest
+  - Optionally add 1–2 lines of context for what the scenario demonstrates
+- CLI flows (shared section after the examples):
   - Validate: `project-planton validate --manifest <file>`
   - Pulumi deploy: `project-planton pulumi update --manifest <file> --stack <org/project/stack> --module-dir <path>`
   - Terraform deploy: `project-planton tofu apply --manifest <file> --auto-approve`
+- Note: Provider credentials are supplied via stack input, not in the spec
 
 IMPLEMENTATION STEPS
 1) Generate/refresh `BUILD.bazel` per above
 2) Render `README.md` using fields inferred from `spec.proto` and `stack_outputs.proto` with short, practical descriptions
-3) Render `examples.md` with a minimal manifest tailored to `<Kind>`
+3) Render `examples.md` with multiple example manifests per the above (minimum: Minimal + 1 additional realistic scenario)
 
 BUILD & VERIFY (NON-INTERACTIVE)
 - Regenerate protos:

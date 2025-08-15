@@ -267,17 +267,19 @@ var File_project_planton_provider_aws_awsec2instance_v1_spec_proto protoreflect.
 
 const file_project_planton_provider_aws_awsec2instance_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"9project/planton/provider/aws/awsec2instance/v1/spec.proto\x12.project.planton.provider.aws.awsec2instance.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\"\xbf\b\n" +
-	"\x12AwsEc2InstanceSpec\x12+\n" +
-	"\rinstance_name\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\finstanceName\x12\x1d\n" +
-	"\x06ami_id\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x05amiId\x12+\n" +
-	"\rinstance_type\x18\x03 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\finstanceType\x12\x85\x01\n" +
+	"9project/planton/provider/aws/awsec2instance/v1/spec.proto\x12.project.planton.provider.aws.awsec2instance.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\"\xbc\f\n" +
+	"\x12AwsEc2InstanceSpec\x12/\n" +
+	"\rinstance_name\x18\x01 \x01(\tB\n" +
+	"\xbaH\a\xc8\x01\x01r\x02\x10\x01R\finstanceName\x12(\n" +
+	"\x06ami_id\x18\x02 \x01(\tB\x11\xbaH\x0e\xc8\x01\x01r\t\x10\x012\x05^ami-R\x05amiId\x12/\n" +
+	"\rinstance_type\x18\x03 \x01(\tB\n" +
+	"\xbaH\a\xc8\x01\x01r\x02\x10\x01R\finstanceType\x12\x85\x01\n" +
 	"\tsubnet_id\x18\x04 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB0\xbaH\x03\xc8\x01\x01\x88\xd4a\xd9\x01\x92\xd4a!status.outputs.private_subnets.idR\bsubnetId\x12\x9a\x01\n" +
-	"\x12security_group_ids\x18\x05 \x03(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB4\xbaH\b\xc8\x01\x01\x92\x01\x02\b\x01\x88\xd4a\xd7\x01\x92\xd4a status.outputs.security_group_idR\x10securityGroupIds\x12\x84\x01\n" +
-	"\x11connection_method\x18\x06 \x01(\x0e2N.project.planton.provider.aws.awsec2instance.v1.AwsEc2InstanceConnectionMethodB\a\x8a\xa6\x1d\x03SSMR\x10connectionMethod\x12\x91\x01\n" +
+	"\x12security_group_ids\x18\x05 \x03(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB4\xbaH\b\xc8\x01\x01\x92\x01\x02\b\x01\x88\xd4a\xd7\x01\x92\xd4a status.outputs.security_group_idR\x10securityGroupIds\x12\x8c\x01\n" +
+	"\x11connection_method\x18\x06 \x01(\x0e2N.project.planton.provider.aws.awsec2instance.v1.AwsEc2InstanceConnectionMethodB\x0f\xbaH\x05\x82\x01\x02\x10\x01\x8a\xa6\x1d\x03SSMR\x10connectionMethod\x12\x91\x01\n" +
 	"\x18iam_instance_profile_arn\x18\a \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB \x88\xd4a\xd0\x01\x92\xd4a\x17status.outputs.role_arnR\x15iamInstanceProfileArn\x12\x19\n" +
-	"\bkey_name\x18\b \x01(\tR\akeyName\x125\n" +
-	"\x13root_volume_size_gb\x18\t \x01(\x05B\x06\x8a\xa6\x1d\x0230R\x10rootVolumeSizeGb\x12`\n" +
+	"\bkey_name\x18\b \x01(\tR\akeyName\x12<\n" +
+	"\x13root_volume_size_gb\x18\t \x01(\x05B\r\xbaH\x04\x1a\x02 \x00\x8a\xa6\x1d\x0230R\x10rootVolumeSizeGb\x12`\n" +
 	"\x04tags\x18\n" +
 	" \x03(\v2L.project.planton.provider.aws.awsec2instance.v1.AwsEc2InstanceSpec.TagsEntryR\x04tags\x12&\n" +
 	"\tuser_data\x18\v \x01(\tB\t\xbaH\x06r\x04(\x80\x80\x02R\buserData\x12#\n" +
@@ -285,7 +287,9 @@ const file_project_planton_provider_aws_awsec2instance_v1_spec_proto_rawDesc = "
 	"\x17disable_api_termination\x18\r \x01(\bR\x15disableApiTermination\x1a7\n" +
 	"\tTagsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01*L\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:\xd8\x03\xbaH\xd4\x03\x1a\x90\x02\n" +
+	"\x18ssm_requires_iam_profile\x12Biam_instance_profile_arn must be set when connection_method is SSM\x1a\xaf\x01this.connection_method == 0 ? ((has(this.iam_instance_profile_arn.value) && this.iam_instance_profile_arn.value != \"\") || has(this.iam_instance_profile_arn.value_from)) : true\x1a\xbe\x01\n" +
+	"\x15ssh_requires_key_name\x12Jkey_name must be set when connection_method is BASTION or INSTANCE_CONNECT\x1aY(this.connection_method == 1 || this.connection_method == 2) ? this.key_name != \"\" : true*L\n" +
 	"\x1eAwsEc2InstanceConnectionMethod\x12\a\n" +
 	"\x03SSM\x10\x00\x12\v\n" +
 	"\aBASTION\x10\x01\x12\x14\n" +
