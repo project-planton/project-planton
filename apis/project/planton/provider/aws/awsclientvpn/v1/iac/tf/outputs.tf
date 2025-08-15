@@ -13,4 +13,9 @@ output "subnet_association_ids" {
   description = "Map of subnet ID to association ID."
 }
 
+output "endpoint_dns_name" {
+  value       = aws_ec2_client_vpn_endpoint.this.dns_name
+  description = "The DNS name clients use to connect to the Client VPN endpoint."
+}
+
 
