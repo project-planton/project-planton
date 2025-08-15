@@ -12,6 +12,9 @@ message AwsVpcStackOutputs {
   repeated AwsVpcSubnetStackOutputs private_subnets = 3;
   //public subnets
   repeated AwsVpcSubnetStackOutputs public_subnets = 4;
+
+  // vpc_cidr is the CIDR block associated with the VPC.
+  string vpc_cidr = 5;
 }
 
 //aws-vpc subnet outputs

@@ -25,9 +25,11 @@ const (
 type AwsCertManagerCertStackOutputs struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// cert_arn is the Amazon Resource Name (ARN) of the created ACM certificate.
-	CertArn       string `protobuf:"bytes,1,opt,name=cert_arn,json=certArn,proto3" json:"cert_arn,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	CertArn string `protobuf:"bytes,1,opt,name=cert_arn,json=certArn,proto3" json:"cert_arn,omitempty"`
+	// certificate_domain_name is the primary domain name for which the certificate was issued.
+	CertificateDomainName string `protobuf:"bytes,2,opt,name=certificate_domain_name,json=certificateDomainName,proto3" json:"certificate_domain_name,omitempty"`
+	unknownFields         protoimpl.UnknownFields
+	sizeCache             protoimpl.SizeCache
 }
 
 func (x *AwsCertManagerCertStackOutputs) Reset() {
@@ -67,13 +69,21 @@ func (x *AwsCertManagerCertStackOutputs) GetCertArn() string {
 	return ""
 }
 
+func (x *AwsCertManagerCertStackOutputs) GetCertificateDomainName() string {
+	if x != nil {
+		return x.CertificateDomainName
+	}
+	return ""
+}
+
 var File_project_planton_provider_aws_awscertmanagercert_v1_stack_outputs_proto protoreflect.FileDescriptor
 
 const file_project_planton_provider_aws_awscertmanagercert_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Fproject/planton/provider/aws/awscertmanagercert/v1/stack_outputs.proto\x122project.planton.provider.aws.awscertmanagercert.v1\";\n" +
+	"Fproject/planton/provider/aws/awscertmanagercert/v1/stack_outputs.proto\x122project.planton.provider.aws.awscertmanagercert.v1\"s\n" +
 	"\x1eAwsCertManagerCertStackOutputs\x12\x19\n" +
-	"\bcert_arn\x18\x01 \x01(\tR\acertArnB\xb3\x03\n" +
+	"\bcert_arn\x18\x01 \x01(\tR\acertArn\x126\n" +
+	"\x17certificate_domain_name\x18\x02 \x01(\tR\x15certificateDomainNameB\xb3\x03\n" +
 	"6com.project.planton.provider.aws.awscertmanagercert.v1B\x11StackOutputsProtoP\x01Zwgithub.com/project-planton/project-planton/apis/project/planton/provider/aws/awscertmanagercert/v1;awscertmanagercertv1\xa2\x02\x05PPPAA\xaa\x022Project.Planton.Provider.Aws.Awscertmanagercert.V1\xca\x022Project\\Planton\\Provider\\Aws\\Awscertmanagercert\\V1\xe2\x02>Project\\Planton\\Provider\\Aws\\Awscertmanagercert\\V1\\GPBMetadata\xea\x027Project::Planton::Provider::Aws::Awscertmanagercert::V1b\x06proto3"
 
 var (

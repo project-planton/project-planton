@@ -1,12 +1,13 @@
 package awssecuritygroupv1
 
 import (
+	"testing"
+
 	"github.com/bufbuild/protovalidate-go"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	"github.com/project-planton/project-planton/apis/project/planton/shared"
 	foreignkeyv1 "github.com/project-planton/project-planton/apis/project/planton/shared/foreignkey/v1"
-	"testing"
 )
 
 func TestAwsSecurityGroup(t *testing.T) {

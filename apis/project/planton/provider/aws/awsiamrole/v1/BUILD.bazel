@@ -25,7 +25,7 @@ go_library(
 
 go_test(
     name = "awsiamrole_test",
-    srcs = ["api_test.go"],
+    srcs = ["spec_test.go"],
     embed = [":awsiamrole"],
     deps = [
         "//apis/project/planton/shared",

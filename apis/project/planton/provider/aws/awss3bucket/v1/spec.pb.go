@@ -7,6 +7,7 @@
 package awss3bucketv1
 
 import (
+	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -96,11 +97,11 @@ var File_project_planton_provider_aws_awss3bucket_v1_spec_proto protoreflect.Fil
 
 const file_project_planton_provider_aws_awss3bucket_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"6project/planton/provider/aws/awss3bucket/v1/spec.proto\x12+project.planton.provider.aws.awss3bucket.v1\"M\n" +
+	"6project/planton/provider/aws/awss3bucket/v1/spec.proto\x12+project.planton.provider.aws.awss3bucket.v1\x1a\x1bbuf/validate/validate.proto\"V\n" +
 	"\x0fAwsS3BucketSpec\x12\x1b\n" +
-	"\tis_public\x18\x01 \x01(\bR\bisPublic\x12\x1d\n" +
+	"\tis_public\x18\x01 \x01(\bR\bisPublic\x12&\n" +
 	"\n" +
-	"aws_region\x18\x02 \x01(\tR\tawsRegionB\xfa\x02\n" +
+	"aws_region\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\tawsRegionB\xfa\x02\n" +
 	"/com.project.planton.provider.aws.awss3bucket.v1B\tSpecProtoP\x01Zigithub.com/project-planton/project-planton/apis/project/planton/provider/aws/awss3bucket/v1;awss3bucketv1\xa2\x02\x05PPPAA\xaa\x02+Project.Planton.Provider.Aws.Awss3bucket.V1\xca\x02+Project\\Planton\\Provider\\Aws\\Awss3bucket\\V1\xe2\x027Project\\Planton\\Provider\\Aws\\Awss3bucket\\V1\\GPBMetadata\xea\x020Project::Planton::Provider::Aws::Awss3bucket::V1b\x06proto3"
 
 var (

@@ -24,7 +24,7 @@ go_library(
 
 go_test(
     name = "awsdynamodb_test",
-    srcs = ["api_test.go"],
+    srcs = ["spec_test.go"],
     embed = [":awsdynamodb"],
     deps = [
         "//apis/project/planton/shared",

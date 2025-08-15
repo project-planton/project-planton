@@ -5,8 +5,9 @@ import (
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 
-	"github.com/project-planton/project-planton/apis/project/planton/shared"
 	"testing"
+
+	"github.com/project-planton/project-planton/apis/project/planton/shared"
 )
 
 func TestAwsSecretsManager(t *testing.T) {

@@ -9,4 +9,7 @@ message AwsEcsClusterStackOutputs {
 
   // cluster_arn is the ARN of the ECS cluster.
   string cluster_arn = 2;
+
+  // cluster_capacity_providers lists capacity providers associated with the cluster.
+  repeated string cluster_capacity_providers = 3;
 }

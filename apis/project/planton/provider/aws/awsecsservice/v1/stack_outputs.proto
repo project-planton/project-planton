@@ -24,4 +24,10 @@ message AwsEcsServiceStackOutputs {
 
   // cloudwatch_log_group_arn is the ARN of the CloudWatch log group for the service.
   string cloudwatch_log_group_arn = 7;
+
+  // service_arn is the Amazon Resource Name of the ECS service.
+  string service_arn = 8;
+
+  // target_group_arn is the ARN of the associated target group when ALB/NLB is enabled.
+  string target_group_arn = 9;
 }

@@ -24,7 +24,7 @@ go_library(
 
 go_test(
     name = "awsroute53zone_test",
-    srcs = ["api_test.go"],
+    srcs = ["spec_test.go"],
     embed = [":awsroute53zone"],
     deps = [
         "//apis/project/planton/shared",

@@ -32,6 +32,8 @@ type AwsVpcStackOutputs struct {
 	PrivateSubnets []*AwsVpcSubnetStackOutputs `protobuf:"bytes,3,rep,name=private_subnets,json=privateSubnets,proto3" json:"private_subnets,omitempty"`
 	// public subnets
 	PublicSubnets []*AwsVpcSubnetStackOutputs `protobuf:"bytes,4,rep,name=public_subnets,json=publicSubnets,proto3" json:"public_subnets,omitempty"`
+	// vpc_cidr is the CIDR block associated with the VPC.
+	VpcCidr       string `protobuf:"bytes,5,opt,name=vpc_cidr,json=vpcCidr,proto3" json:"vpc_cidr,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -92,6 +94,13 @@ func (x *AwsVpcStackOutputs) GetPublicSubnets() []*AwsVpcSubnetStackOutputs {
 		return x.PublicSubnets
 	}
 	return nil
+}
+
+func (x *AwsVpcStackOutputs) GetVpcCidr() string {
+	if x != nil {
+		return x.VpcCidr
+	}
+	return ""
 }
 
 // aws-vpc subnet outputs
@@ -235,12 +244,13 @@ var File_project_planton_provider_aws_awsvpc_v1_stack_outputs_proto protoreflect
 
 const file_project_planton_provider_aws_awsvpc_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	":project/planton/provider/aws/awsvpc/v1/stack_outputs.proto\x12&project.planton.provider.aws.awsvpc.v1\"\xaf\x02\n" +
+	":project/planton/provider/aws/awsvpc/v1/stack_outputs.proto\x12&project.planton.provider.aws.awsvpc.v1\"\xca\x02\n" +
 	"\x12AwsVpcStackOutputs\x12\x15\n" +
 	"\x06vpc_id\x18\x01 \x01(\tR\x05vpcId\x12.\n" +
 	"\x13internet_gateway_id\x18\x02 \x01(\tR\x11internetGatewayId\x12i\n" +
 	"\x0fprivate_subnets\x18\x03 \x03(\v2@.project.planton.provider.aws.awsvpc.v1.AwsVpcSubnetStackOutputsR\x0eprivateSubnets\x12g\n" +
-	"\x0epublic_subnets\x18\x04 \x03(\v2@.project.planton.provider.aws.awsvpc.v1.AwsVpcSubnetStackOutputsR\rpublicSubnets\"\xb9\x01\n" +
+	"\x0epublic_subnets\x18\x04 \x03(\v2@.project.planton.provider.aws.awsvpc.v1.AwsVpcSubnetStackOutputsR\rpublicSubnets\x12\x19\n" +
+	"\bvpc_cidr\x18\x05 \x01(\tR\avpcCidr\"\xb9\x01\n" +
 	"\x18AwsVpcSubnetStackOutputs\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x0e\n" +
 	"\x02id\x18\x02 \x01(\tR\x02id\x12\x12\n" +

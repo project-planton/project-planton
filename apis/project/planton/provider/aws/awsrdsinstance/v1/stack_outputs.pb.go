@@ -40,6 +40,8 @@ type AwsRdsInstanceStackOutputs struct {
 	RdsParameterGroup string `protobuf:"bytes,7,opt,name=rds_parameter_group,json=rdsParameterGroup,proto3" json:"rds_parameter_group,omitempty"`
 	// The options group assigned to the RDS instance.
 	RdsOptionsGroup string `protobuf:"bytes,8,opt,name=rds_options_group,json=rdsOptionsGroup,proto3" json:"rds_options_group,omitempty"`
+	// The port on which the database accepts connections.
+	RdsInstancePort int32 `protobuf:"varint,9,opt,name=rds_instance_port,json=rdsInstancePort,proto3" json:"rds_instance_port,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -130,11 +132,18 @@ func (x *AwsRdsInstanceStackOutputs) GetRdsOptionsGroup() string {
 	return ""
 }
 
+func (x *AwsRdsInstanceStackOutputs) GetRdsInstancePort() int32 {
+	if x != nil {
+		return x.RdsInstancePort
+	}
+	return 0
+}
+
 var File_project_planton_provider_aws_awsrdsinstance_v1_stack_outputs_proto protoreflect.FileDescriptor
 
 const file_project_planton_provider_aws_awsrdsinstance_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Bproject/planton/provider/aws/awsrdsinstance/v1/stack_outputs.proto\x12.project.planton.provider.aws.awsrdsinstance.v1\"\x88\x03\n" +
+	"Bproject/planton/provider/aws/awsrdsinstance/v1/stack_outputs.proto\x12.project.planton.provider.aws.awsrdsinstance.v1\"\xb4\x03\n" +
 	"\x1aAwsRdsInstanceStackOutputs\x122\n" +
 	"\x15rds_instance_endpoint\x18\x01 \x01(\tR\x13rdsInstanceEndpoint\x12&\n" +
 	"\x0frds_instance_id\x18\x02 \x01(\tR\rrdsInstanceId\x12(\n" +
@@ -143,7 +152,8 @@ const file_project_planton_provider_aws_awsrdsinstance_v1_stack_outputs_proto_ra
 	"\x10rds_subnet_group\x18\x05 \x01(\tR\x0erdsSubnetGroup\x12,\n" +
 	"\x12rds_security_group\x18\x06 \x01(\tR\x10rdsSecurityGroup\x12.\n" +
 	"\x13rds_parameter_group\x18\a \x01(\tR\x11rdsParameterGroup\x12*\n" +
-	"\x11rds_options_group\x18\b \x01(\tR\x0frdsOptionsGroupB\x97\x03\n" +
+	"\x11rds_options_group\x18\b \x01(\tR\x0frdsOptionsGroup\x12*\n" +
+	"\x11rds_instance_port\x18\t \x01(\x05R\x0frdsInstancePortB\x97\x03\n" +
 	"2com.project.planton.provider.aws.awsrdsinstance.v1B\x11StackOutputsProtoP\x01Zogithub.com/project-planton/project-planton/apis/project/planton/provider/aws/awsrdsinstance/v1;awsrdsinstancev1\xa2\x02\x05PPPAA\xaa\x02.Project.Planton.Provider.Aws.Awsrdsinstance.V1\xca\x02.Project\\Planton\\Provider\\Aws\\Awsrdsinstance\\V1\xe2\x02:Project\\Planton\\Provider\\Aws\\Awsrdsinstance\\V1\\GPBMetadata\xea\x023Project::Planton::Provider::Aws::Awsrdsinstance::V1b\x06proto3"
 
 var (

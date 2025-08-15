@@ -17,4 +17,7 @@ message AwsClientVpnStackOutputs {
   // Each key in the map is a subnet ID (from the spec’s subnet_ids list), and the value is the corresponding AWS association ID (e.g., "cvpn-assoc-0abcd1234efgh5678") for that subnet’s association with the Client VPN endpoint.
   // These IDs can be used to reference or manage specific target network associations (for example, if removing an association later).
   map<string, string> subnet_association_ids = 3;
+
+  // The DNS name clients use to connect to the Client VPN endpoint.
+  string endpoint_dns_name = 4;
 }

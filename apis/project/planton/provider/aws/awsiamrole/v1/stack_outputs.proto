@@ -9,4 +9,7 @@ message AwsIamRoleStackOutputs {
 
   // role_name is the name of the IAM role in AWS.
   string role_name = 2;
+
+  // instance_profile_arn is the ARN of the instance profile if one was created and attached to this role.
+  string instance_profile_arn = 3;
 }

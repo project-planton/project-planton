@@ -33,7 +33,9 @@ type AwsEksClusterStackOutputs struct {
 	// oidc_issuer_url is the URL of the OpenID Connect issuer for the cluster (used for IAM Roles for Service Accounts).
 	OidcIssuerUrl string `protobuf:"bytes,4,opt,name=oidc_issuer_url,json=oidcIssuerUrl,proto3" json:"oidc_issuer_url,omitempty"`
 	// cluster_arn is the Amazon Resource Name of the EKS cluster.
-	ClusterArn    string `protobuf:"bytes,5,opt,name=cluster_arn,json=clusterArn,proto3" json:"cluster_arn,omitempty"`
+	ClusterArn string `protobuf:"bytes,5,opt,name=cluster_arn,json=clusterArn,proto3" json:"cluster_arn,omitempty"`
+	// name is the EKS cluster name.
+	Name          string `protobuf:"bytes,6,opt,name=name,proto3" json:"name,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -103,18 +105,26 @@ func (x *AwsEksClusterStackOutputs) GetClusterArn() string {
 	return ""
 }
 
+func (x *AwsEksClusterStackOutputs) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
 var File_project_planton_provider_aws_awsekscluster_v1_stack_outputs_proto protoreflect.FileDescriptor
 
 const file_project_planton_provider_aws_awsekscluster_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Aproject/planton/provider/aws/awsekscluster/v1/stack_outputs.proto\x12-project.planton.provider.aws.awsekscluster.v1\"\xf1\x01\n" +
+	"Aproject/planton/provider/aws/awsekscluster/v1/stack_outputs.proto\x12-project.planton.provider.aws.awsekscluster.v1\"\x85\x02\n" +
 	"\x19AwsEksClusterStackOutputs\x12\x1a\n" +
 	"\bendpoint\x18\x01 \x01(\tR\bendpoint\x124\n" +
 	"\x16cluster_ca_certificate\x18\x02 \x01(\tR\x14clusterCaCertificate\x129\n" +
 	"\x19cluster_security_group_id\x18\x03 \x01(\tR\x16clusterSecurityGroupId\x12&\n" +
 	"\x0foidc_issuer_url\x18\x04 \x01(\tR\roidcIssuerUrl\x12\x1f\n" +
 	"\vcluster_arn\x18\x05 \x01(\tR\n" +
-	"clusterArnB\x90\x03\n" +
+	"clusterArn\x12\x12\n" +
+	"\x04name\x18\x06 \x01(\tR\x04nameB\x90\x03\n" +
 	"1com.project.planton.provider.aws.awsekscluster.v1B\x11StackOutputsProtoP\x01Zmgithub.com/project-planton/project-planton/apis/project/planton/provider/aws/awsekscluster/v1;awseksclusterv1\xa2\x02\x05PPPAA\xaa\x02-Project.Planton.Provider.Aws.Awsekscluster.V1\xca\x02-Project\\Planton\\Provider\\Aws\\Awsekscluster\\V1\xe2\x029Project\\Planton\\Provider\\Aws\\Awsekscluster\\V1\\GPBMetadata\xea\x022Project::Planton::Provider::Aws::Awsekscluster::V1b\x06proto3"
 
 var (

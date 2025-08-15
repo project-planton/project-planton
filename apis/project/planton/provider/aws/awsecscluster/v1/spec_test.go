@@ -1,8 +1,9 @@
 package awsecsclusterv1
 
 import (
-	"github.com/project-planton/project-planton/apis/project/planton/shared"
 	"testing"
+
+	"github.com/project-planton/project-planton/apis/project/planton/shared"
 
 	"github.com/bufbuild/protovalidate-go"
 	. "github.com/onsi/ginkgo/v2"

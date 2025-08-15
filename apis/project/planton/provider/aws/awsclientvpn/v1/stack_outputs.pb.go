@@ -36,8 +36,10 @@ type AwsClientVpnStackOutputs struct {
 	// Each key in the map is a subnet ID (from the spec’s subnet_ids list), and the value is the corresponding AWS association ID (e.g., "cvpn-assoc-0abcd1234efgh5678") for that subnet’s association with the Client VPN endpoint.
 	// These IDs can be used to reference or manage specific target network associations (for example, if removing an association later).
 	SubnetAssociationIds map[string]string `protobuf:"bytes,3,rep,name=subnet_association_ids,json=subnetAssociationIds,proto3" json:"subnet_association_ids,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
-	unknownFields        protoimpl.UnknownFields
-	sizeCache            protoimpl.SizeCache
+	// The DNS name clients use to connect to the Client VPN endpoint.
+	EndpointDnsName string `protobuf:"bytes,4,opt,name=endpoint_dns_name,json=endpointDnsName,proto3" json:"endpoint_dns_name,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *AwsClientVpnStackOutputs) Reset() {
@@ -91,15 +93,23 @@ func (x *AwsClientVpnStackOutputs) GetSubnetAssociationIds() map[string]string {
 	return nil
 }
 
+func (x *AwsClientVpnStackOutputs) GetEndpointDnsName() string {
+	if x != nil {
+		return x.EndpointDnsName
+	}
+	return ""
+}
+
 var File_project_planton_provider_aws_awsclientvpn_v1_stack_outputs_proto protoreflect.FileDescriptor
 
 const file_project_planton_provider_aws_awsclientvpn_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"@project/planton/provider/aws/awsclientvpn/v1/stack_outputs.proto\x12,project.planton.provider.aws.awsclientvpn.v1\"\xdd\x02\n" +
+	"@project/planton/provider/aws/awsclientvpn/v1/stack_outputs.proto\x12,project.planton.provider.aws.awsclientvpn.v1\"\x89\x03\n" +
 	"\x18AwsClientVpnStackOutputs\x123\n" +
 	"\x16client_vpn_endpoint_id\x18\x01 \x01(\tR\x13clientVpnEndpointId\x12*\n" +
 	"\x11security_group_id\x18\x02 \x01(\tR\x0fsecurityGroupId\x12\x96\x01\n" +
-	"\x16subnet_association_ids\x18\x03 \x03(\v2`.project.planton.provider.aws.awsclientvpn.v1.AwsClientVpnStackOutputs.SubnetAssociationIdsEntryR\x14subnetAssociationIds\x1aG\n" +
+	"\x16subnet_association_ids\x18\x03 \x03(\v2`.project.planton.provider.aws.awsclientvpn.v1.AwsClientVpnStackOutputs.SubnetAssociationIdsEntryR\x14subnetAssociationIds\x12*\n" +
+	"\x11endpoint_dns_name\x18\x04 \x01(\tR\x0fendpointDnsName\x1aG\n" +
 	"\x19SubnetAssociationIdsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01B\x89\x03\n" +

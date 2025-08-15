@@ -1,0 +1,6 @@
+apiVersion: aws.project-planton.org/v1
+kind: AwsStaticWebsite
+metadata:
+  name: awsstaticwebsite-demo
+spec: {}
+
