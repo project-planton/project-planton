@@ -1,59 +1,127 @@
 variable "metadata" {
-  description = "Metadata for the resource, including name and labels"
-  type = object({
-    name = string,
-    id = optional(string),
-    org = optional(string),
-    env = optional(string),
-    labels = optional(map(string)),
-    tags = optional(list(string)),
-    version = optional(object({ id = string, message = string }))
-  })
-}
-
-
-variable "spec" {
-  description = "spec"
+  description = "metadata"
   type = object({
 
-    # The AWS region in which to create the EKS cluster.
-    # This must be a valid AWS region where EKS is available.
-    # Note: The EKS cluster will be recreated if this value is updated.
-    # For a list of AWS regions, see: https://aws.amazon.com/about-aws/global-infrastructure/regions_az/
-    region = string
+    # name of the resource
+    name = string
 
-    # Security Groups for the EKS cluster
-    security_groups = list(string)
+    # id of the resource
+    id = string
 
-    # Subnets for the EKS cluster
-    subnets = list(string)
+    # id of the organization to which the api-resource belongs to
+    org = string
 
-    # role arn for the EKS cluster
-    role_arn = string
+    # environment to which the resource belongs to
+    env = string
 
-    # Worker Node Role ARN
-    node_role_arn = string
-
-    # Instance type for the EKS worker nodes
-    instance_type = string
-
-    # Desired size of the EKS worker node group
-    desired_size = number
-
-    # Maximum size of the EKS worker node group
-    max_size = number
-
-    # Minimum size of the EKS worker node group
-    min_size = number
-
-    # Description for tags
-    tags = object({
+    # labels for the resource
+    labels = object({
 
       # Description for key
       key = string
 
       # Description for value
       value = string
+    })
+
+    # annotations for the resource
+    annotations = object({
+
+      # Description for key
+      key = string
+
+      # Description for value
+      value = string
+    })
+
+    # tags for the resource
+    tags = list(string)
+  })
+}
+
+variable "spec" {
+  description = "spec"
+  type = object({
+
+    # Description for subnet_ids
+    subnet_ids = list(object({
+
+      # Description for value
+      value = string
+
+      # Description for value_from
+      value_from = object({
+
+        # Description for kind
+        kind = string
+
+        # Description for env
+        env = string
+
+        # Description for name
+        name = string
+
+        # Description for field_path
+        field_path = string
+      })
+    }))
+
+    # Description for cluster_role_arn
+    cluster_role_arn = object({
+
+      # Description for value
+      value = string
+
+      # Description for value_from
+      value_from = object({
+
+        # Description for kind
+        kind = string
+
+        # Description for env
+        env = string
+
+        # Description for name
+        name = string
+
+        # Description for field_path
+        field_path = string
+      })
+    })
+
+    # Description for version
+    version = string
+
+    # Description for disable_public_endpoint
+    disable_public_endpoint = bool
+
+    # Description for public_access_cidrs
+    public_access_cidrs = list(string)
+
+    # Description for enable_control_plane_logs
+    enable_control_plane_logs = bool
+
+    # Description for kms_key_arn
+    kms_key_arn = object({
+
+      # Description for value
+      value = string
+
+      # Description for value_from
+      value_from = object({
+
+        # Description for kind
+        kind = string
+
+        # Description for env
+        env = string
+
+        # Description for name
+        name = string
+
+        # Description for field_path
+        field_path = string
+      })
     })
   })
 }
