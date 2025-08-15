@@ -31,8 +31,7 @@ func securityGroup(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) 
 		return errors.Wrap(err, "unable to create AWS Security Group")
 	}
 
-	// Export stack outputs for broader ProjectPlanton usage:
-	ctx.Export(OpSecurityGroupVpcId, pulumi.String(spec.VpcId.GetValue()))
+	// Export stack outputs
 
 	// If you want to expose the Security Group ID, do so here:
 	ctx.Export(OpSecurityGroupId, sg.ID())
