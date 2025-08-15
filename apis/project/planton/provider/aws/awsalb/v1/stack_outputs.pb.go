@@ -32,10 +32,8 @@ type AwsAlbStackOutputs struct {
 	LoadBalancerDnsName string `protobuf:"bytes,3,opt,name=load_balancer_dns_name,json=loadBalancerDnsName,proto3" json:"load_balancer_dns_name,omitempty"`
 	// load_balancer_hosted_zone_id is the Route53 hosted zone ID for the ALB's DNS entry.
 	LoadBalancerHostedZoneId string `protobuf:"bytes,4,opt,name=load_balancer_hosted_zone_id,json=loadBalancerHostedZoneId,proto3" json:"load_balancer_hosted_zone_id,omitempty"`
-	// security_group_id is the ID of the security group associated to the ALB (if created by the module).
-	SecurityGroupId string `protobuf:"bytes,5,opt,name=security_group_id,json=securityGroupId,proto3" json:"security_group_id,omitempty"`
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
+	unknownFields            protoimpl.UnknownFields
+	sizeCache                protoimpl.SizeCache
 }
 
 func (x *AwsAlbStackOutputs) Reset() {
@@ -96,24 +94,16 @@ func (x *AwsAlbStackOutputs) GetLoadBalancerHostedZoneId() string {
 	return ""
 }
 
-func (x *AwsAlbStackOutputs) GetSecurityGroupId() string {
-	if x != nil {
-		return x.SecurityGroupId
-	}
-	return ""
-}
-
 var File_project_planton_provider_aws_awsalb_v1_stack_outputs_proto protoreflect.FileDescriptor
 
 const file_project_planton_provider_aws_awsalb_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	":project/planton/provider/aws/awsalb/v1/stack_outputs.proto\x12&project.planton.provider.aws.awsalb.v1\"\x8f\x02\n" +
+	":project/planton/provider/aws/awsalb/v1/stack_outputs.proto\x12&project.planton.provider.aws.awsalb.v1\"\xe3\x01\n" +
 	"\x12AwsAlbStackOutputs\x12*\n" +
 	"\x11load_balancer_arn\x18\x01 \x01(\tR\x0floadBalancerArn\x12,\n" +
 	"\x12load_balancer_name\x18\x02 \x01(\tR\x10loadBalancerName\x123\n" +
 	"\x16load_balancer_dns_name\x18\x03 \x01(\tR\x13loadBalancerDnsName\x12>\n" +
-	"\x1cload_balancer_hosted_zone_id\x18\x04 \x01(\tR\x18loadBalancerHostedZoneId\x12*\n" +
-	"\x11security_group_id\x18\x05 \x01(\tR\x0fsecurityGroupIdB\xdf\x02\n" +
+	"\x1cload_balancer_hosted_zone_id\x18\x04 \x01(\tR\x18loadBalancerHostedZoneIdB\xdf\x02\n" +
 	"*com.project.planton.provider.aws.awsalb.v1B\x11StackOutputsProtoP\x01Z_github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsalb/v1;awsalbv1\xa2\x02\x05PPPAA\xaa\x02&Project.Planton.Provider.Aws.Awsalb.V1\xca\x02&Project\\Planton\\Provider\\Aws\\Awsalb\\V1\xe2\x022Project\\Planton\\Provider\\Aws\\Awsalb\\V1\\GPBMetadata\xea\x02+Project::Planton::Provider::Aws::Awsalb::V1b\x06proto3"
 
 var (

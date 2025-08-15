@@ -12,13 +12,19 @@ func Resources(ctx *pulumi.Context, stackInput *awslambdav1.AwsLambdaStackInput)
 	awsCredential := stackInput.ProviderCredential
 
 	//create aws provider using the credentials from the input
-	awsProvider, err := aws.NewProvider(ctx,
-		"classic-provider",
-		&aws.ProviderArgs{
-			AccessKey: pulumi.String(awsCredential.AccessKeyId),
-			SecretKey: pulumi.String(awsCredential.SecretAccessKey),
-			Region:    pulumi.String(awsCredential.Region),
-		})
+	var awsProvider *aws.Provider
+	var err error
+	if awsCredential == nil {
+		awsProvider, err = aws.NewProvider(ctx, "classic-provider", &aws.ProviderArgs{})
+	} else {
+		awsProvider, err = aws.NewProvider(ctx,
+			"classic-provider",
+			&aws.ProviderArgs{
+				AccessKey: pulumi.String(awsCredential.AccessKeyId),
+				SecretKey: pulumi.String(awsCredential.SecretAccessKey),
+				Region:    pulumi.String(awsCredential.Region),
+			})
+	}
 	if err != nil {
 		return errors.Wrap(err, "failed to create aws provider")
 	}
@@ -48,6 +54,7 @@ func Resources(ctx *pulumi.Context, stackInput *awslambdav1.AwsLambdaStackInput)
 	ctx.Export(OpLambdaFunctionArn, createdLambdaFunction.Arn)
 	ctx.Export(OpLambdaFunctionName, createdLambdaFunction.Name)
 	ctx.Export(OpIamRoleName, createdIamRole.Name)
+	ctx.Export(OpFunctionUrl, pulumi.String(""))
 
 	return nil
 }
