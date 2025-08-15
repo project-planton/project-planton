@@ -11,14 +11,20 @@ func Resources(ctx *pulumi.Context, stackInput *awsrdsclusterv1.AwsRdsClusterSta
 	locals := initializeLocals(ctx, stackInput)
 	awsCredential := stackInput.ProviderCredential
 
-	//create aws provider using the credentials from the input
-	awsProvider, err := aws.NewProvider(ctx,
-		"classic-provider",
-		&aws.ProviderArgs{
-			AccessKey: pulumi.String(awsCredential.AccessKeyId),
-			SecretKey: pulumi.String(awsCredential.SecretAccessKey),
-			Region:    pulumi.String(awsCredential.Region),
-		})
+	//create aws provider using the credentials from the input (fallback to default when nil)
+	var awsProvider *aws.Provider
+	var err error
+	if awsCredential == nil {
+		awsProvider, err = aws.NewProvider(ctx, "classic-provider", &aws.ProviderArgs{})
+	} else {
+		awsProvider, err = aws.NewProvider(ctx,
+			"classic-provider",
+			&aws.ProviderArgs{
+				AccessKey: pulumi.String(awsCredential.AccessKeyId),
+				SecretKey: pulumi.String(awsCredential.SecretAccessKey),
+				Region:    pulumi.String(awsCredential.Region),
+			})
+	}
 	if err != nil {
 		return errors.Wrap(err, "failed to create aws provider")
 	}
@@ -37,6 +43,9 @@ func Resources(ctx *pulumi.Context, stackInput *awsrdsclusterv1.AwsRdsClusterSta
 	ctx.Export(OpClusterIdentifier, createdRdsCluster.ClusterIdentifier)
 	ctx.Export(OpMasterEndpoint, createdRdsCluster.Endpoint)
 	ctx.Export(OpReaderEndpoint, createdRdsCluster.ReaderEndpoint)
+	if locals.AwsRdsCluster.Spec.DatabasePort > 0 {
+		ctx.Export(OpPort, pulumi.Int(locals.AwsRdsCluster.Spec.DatabasePort))
+	}
 
 	// Create RDS Cluster Instance
 	_, err = rdsClusterInstance(ctx, locals, awsProvider, createdRdsCluster)
