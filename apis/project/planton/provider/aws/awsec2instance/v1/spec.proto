@@ -18,19 +18,23 @@ import "project/planton/shared/options/options.proto";
 message AwsEc2InstanceSpec {
   //name of the EC2 instance.
   string instance_name = 1 [
-    (buf.validate.field).required = true
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 1
   ];
   // Amazon Machine Image ID to use for launching the instance.
   // This is the unique identifier of the OS image (AMI) that the EC2 will run.
   // Example: "ami-0abcdef1234567890" for an Ubuntu or Amazon Linux image.
   string ami_id = 2 [
-    (buf.validate.field).required = true
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 1,
+    (buf.validate.field).string.pattern = "^ami-"
   ];
 
   // EC2 instance type (flavor) determining vCPU count and memory.
   // Example: "t3.small" (2 vCPUs, 2 GiB RAM) or "m5.large" (2 vCPUs, 8 GiB RAM).
   string instance_type = 3 [
-    (buf.validate.field).required = true
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 1
   ];
 
   // Reference to the target subnet where this instance will reside.
@@ -57,7 +61,8 @@ message AwsEc2InstanceSpec {
   // - BASTION: Use a traditional SSH method with a key pair (requires a key_name for the EC2 instance).
   // - INSTANCE_CONNECT: Use AWS EC2 Instance Connect (temporary key injection, also requires a key_name).
   AwsEc2InstanceConnectionMethod connection_method = 6 [
-    (project.planton.shared.options.default) = "SSM"
+    (project.planton.shared.options.default) = "SSM",
+    (buf.validate.field).enum.defined_only = true
   ];
 
   // The ARN of an IAM instance profile to attach to the EC2 instance.
@@ -77,7 +82,8 @@ message AwsEc2InstanceSpec {
   // This defines the storage capacity for the instance's root filesystem.
   // Defaults to 30 GiB if not specified.
   int32 root_volume_size_gb = 9 [
-    (project.planton.shared.options.default) = "30"
+    (project.planton.shared.options.default) = "30",
+    (buf.validate.field).int32.gt = 0
   ];
 
   // Map of tags to apply to the EC2 instance.
@@ -98,6 +104,18 @@ message AwsEc2InstanceSpec {
   // If true, prevents the instance from being terminated via the AWS API (enables termination protection).
   // This adds a safety measure against accidental deletion of the instance.
   bool disable_api_termination = 13;
+
+  option (buf.validate.message).cel = {
+    id: "ssm_requires_iam_profile",
+    message: "iam_instance_profile_arn must be set when connection_method is SSM",
+    expression: "this.connection_method == 0 ? ((has(this.iam_instance_profile_arn.value) && this.iam_instance_profile_arn.value != \"\") || has(this.iam_instance_profile_arn.value_from)) : true"
+  };
+
+  option (buf.validate.message).cel = {
+    id: "ssh_requires_key_name",
+    message: "key_name must be set when connection_method is BASTION or INSTANCE_CONNECT",
+    expression: "(this.connection_method == 1 || this.connection_method == 2) ? this.key_name != \"\" : true"
+  };
 }
 
 // Defines the possible connection methods for accessing the EC2 instance.

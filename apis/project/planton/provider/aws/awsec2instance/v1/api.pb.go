@@ -23,8 +23,8 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// AwsEc2Instance represents a containerized application deployed on AWS ECS.
-// This resource manages ECS services that can run on either Fargate or EC2.
+// AwsEc2Instance represents a single EC2 virtual machine instance on AWS.
+// This resource provisions one EC2 instance with networking, IAM, and access configuration.
 type AwsEc2Instance struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// api-version must be set to "aws.project-planton.org/v1".

@@ -36,7 +36,7 @@ project-planton tofu destroy --manifest hack/manifest.yaml --auto-approve
 - Optional: link to `iac/hack/manifest.yaml` (created by rule 008).
 
 EXAMPLES CONTENT (iac/tf/examples.md)
-- If root `examples.md` exists: copy its content verbatim
+- If root `examples.md` exists: copy its content but keep only Terraform/tofu-related CLI flows. Remove any Pulumi commands and sections (e.g., bullets or code blocks containing `project-planton pulumi`, or headings like "Pulumi deploy").
 - Otherwise, generate a minimal example manifest for `<Kind>` (Basic example section) and optional additional examples if obvious from `<Kind>Spec`
 
 SUCCESS CRITERIA
