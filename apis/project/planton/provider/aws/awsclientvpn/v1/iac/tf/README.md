@@ -1,17 +1,23 @@
 # Terraform Module to Deploy AwsClientVpn
 
-This Terraform module provisions an `AwsClientVpn` endpoint using the ProjectPlanton CLI (tofu) with the default local backend.
+This module provisions an AWS Client VPN endpoint for secure remote access into a VPC using OpenVPN.
+It sets up the endpoint, target subnet associations, authorization rules, and optional connection logging.
 
-## CLI
-```bash
+Generated `variables.tf` reflects the proto schema for `AwsClientVpn`.
+
+## Usage
+
+Use the ProjectPlanton CLI (tofu) with the default local backend:
+
+```shell
 project-planton tofu init --manifest hack/manifest.yaml
 project-planton tofu plan --manifest hack/manifest.yaml
 project-planton tofu apply --manifest hack/manifest.yaml --auto-approve
 project-planton tofu destroy --manifest hack/manifest.yaml --auto-approve
 ```
 
-Credentials are provided via stack input through the CLI, not in the `spec` of the manifest.
+**Note**: Credentials are provided via stack input (CLI), not in the manifest `spec`.
 
-See `iac/tf/hack/manifest.yaml` for the minimal example manifest.
+For more examples, see [`examples.md`](./examples.md) and [`hack/manifest.yaml`](../hack/manifest.yaml).
 
 

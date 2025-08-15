@@ -6,6 +6,15 @@ resource "aws_ecs_cluster" "this" {
     value = local.container_insights_value
   }
 
+  dynamic "configuration" {
+    for_each = local.enable_execute_command ? [1] : []
+    content {
+      execute_command_configuration {
+        logging = "DEFAULT"
+      }
+    }
+  }
+
   tags = local.tags
 }
 
@@ -15,6 +24,12 @@ resource "aws_ecs_cluster_capacity_providers" "this" {
 
   cluster_name       = aws_ecs_cluster.this.name
   capacity_providers = var.spec.capacity_providers
+
+  default_capacity_provider_strategy {
+    capacity_provider = var.spec.capacity_providers[0]
+    weight           = 1
+    base             = 0
+  }
 }
 
 

@@ -1,9 +1,9 @@
-# Terraform Module to Deploy AwsRoute53Zone
+# Terraform Module to Deploy AwsEksCluster
 
-This module provisions an AWS Route 53 hosted zone with support for multiple DNS record types and comprehensive domain management.
-It includes configurable DNS records, TTL settings, and scalable DNS resolution for internet applications and internal services.
+This module provisions an AWS EKS (Elastic Kubernetes Service) cluster with support for high availability, security, and monitoring.
+It includes optional KMS encryption, control plane logging, and configurable network access settings.
 
-Generated `variables.tf` reflects the proto schema for `AwsRoute53Zone`.
+Generated `variables.tf` reflects the proto schema for `AwsEksCluster`.
 
 ## Usage
 

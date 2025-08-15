@@ -1,9 +1,9 @@
-# Terraform Module to Deploy AwsRoute53Zone
+# Terraform Module to Deploy AwsEksNodeGroup
 
-This module provisions an AWS Route 53 hosted zone with support for multiple DNS record types and comprehensive domain management.
-It includes configurable DNS records, TTL settings, and scalable DNS resolution for internet applications and internal services.
+This module provisions an AWS EKS (Elastic Kubernetes Service) node group with support for auto-scaling, Spot instances, and SSH access.
+It includes configurable instance types, disk sizes, and Kubernetes labels for worker node management.
 
-Generated `variables.tf` reflects the proto schema for `AwsRoute53Zone`.
+Generated `variables.tf` reflects the proto schema for `AwsEksNodeGroup`.
 
 ## Usage
 
@@ -19,3 +19,4 @@ project-planton tofu destroy --manifest hack/manifest.yaml --auto-approve
 **Note**: Credentials are provided via stack input (CLI), not in the manifest `spec`.
 
 For more examples, see [`examples.md`](./examples.md) and [`hack/manifest.yaml`](../hack/manifest.yaml).
+

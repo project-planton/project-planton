@@ -1,9 +1,9 @@
-# Terraform Module to Deploy AwsRoute53Zone
+# Terraform Module to Deploy AwsEcsCluster
 
-This module provisions an AWS Route 53 hosted zone with support for multiple DNS record types and comprehensive domain management.
-It includes configurable DNS records, TTL settings, and scalable DNS resolution for internet applications and internal services.
+This module provisions an AWS ECS (Elastic Container Service) cluster with support for Fargate and Fargate Spot capacity providers.
+It includes optional CloudWatch Container Insights and ECS Exec capabilities for monitoring and debugging.
 
-Generated `variables.tf` reflects the proto schema for `AwsRoute53Zone`.
+Generated `variables.tf` reflects the proto schema for `AwsEcsCluster`.
 
 ## Usage
 

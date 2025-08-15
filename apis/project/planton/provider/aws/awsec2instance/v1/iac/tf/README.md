@@ -1,8 +1,13 @@
 # Terraform Module to Deploy AwsEc2Instance
 
-This module provisions a single EC2 instance on AWS using ProjectPlanton's tofu (Terraform) integration.
+This module provisions a single AWS EC2 virtual machine instance with networking, IAM, and access configuration.
+It supports multiple connection methods including SSM, SSH via bastion, and EC2 Instance Connect.
 
-## CLI usage (local backend)
+Generated `variables.tf` reflects the proto schema for `AwsEc2Instance`.
+
+## Usage
+
+Use the ProjectPlanton CLI (tofu) with the default local backend:
 
 ```shell
 project-planton tofu init --manifest hack/manifest.yaml
@@ -11,8 +16,8 @@ project-planton tofu apply --manifest hack/manifest.yaml --auto-approve
 project-planton tofu destroy --manifest hack/manifest.yaml --auto-approve
 ```
 
-Notes:
-- Provider credentials are supplied via stack input (through the CLI), not inside the manifest `spec`.
-- The `hack/manifest.yaml` is created by the forge rule 008.
+**Note**: Credentials are provided via stack input (CLI), not in the manifest `spec`.
+
+For more examples, see [`examples.md`](./examples.md) and [`hack/manifest.yaml`](../hack/manifest.yaml).
 
 

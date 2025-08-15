@@ -5,11 +5,15 @@ locals {
     "Name" = local.resource_name
   }, try(var.metadata.labels, {}))
 
-  # settings
-  container_insights_enabled = try(var.spec.enable_container_insights, true)
-  container_insights_value   = local.container_insights_enabled ? "enabled" : "disabled"
+  # safe settings with defaults
+  safe_enable_container_insights = try(var.spec.enable_container_insights, true)
+  safe_enable_execute_command    = try(var.spec.enable_execute_command, false)
+  safe_capacity_providers        = try(var.spec.capacity_providers, [])
 
-  has_capacity_providers = length(try(var.spec.capacity_providers, [])) > 0
+  # computed values
+  container_insights_value = local.safe_enable_container_insights ? "enabled" : "disabled"
+  enable_execute_command   = local.safe_enable_execute_command
+  has_capacity_providers   = length(local.safe_capacity_providers) > 0
 }
 
 

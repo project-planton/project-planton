@@ -1,9 +1,9 @@
-# Terraform Module to Deploy AwsRoute53Zone
+# Terraform Module to Deploy AwsKmsKey
 
-This module provisions an AWS Route 53 hosted zone with support for multiple DNS record types and comprehensive domain management.
-It includes configurable DNS records, TTL settings, and scalable DNS resolution for internet applications and internal services.
+This module provisions an AWS KMS (Key Management Service) key with support for symmetric and asymmetric encryption, key rotation, and optional aliases.
+It includes configurable key types, deletion windows, and comprehensive encryption management capabilities.
 
-Generated `variables.tf` reflects the proto schema for `AwsRoute53Zone`.
+Generated `variables.tf` reflects the proto schema for `AwsKmsKey`.
 
 ## Usage
 
@@ -19,3 +19,4 @@ project-planton tofu destroy --manifest hack/manifest.yaml --auto-approve
 **Note**: Credentials are provided via stack input (CLI), not in the manifest `spec`.
 
 For more examples, see [`examples.md`](./examples.md) and [`hack/manifest.yaml`](../hack/manifest.yaml).
+

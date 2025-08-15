@@ -18,4 +18,14 @@ output "registry_id" {
   value       = aws_ecr_repository.this.registry_id
 }
 
+output "repository_uri" {
+  description = "The URI of the repository."
+  value       = aws_ecr_repository.this.repository_url
+}
+
+output "lifecycle_policy" {
+  description = "The lifecycle policy attached to the repository."
+  value       = aws_ecr_lifecycle_policy.this.policy
+}
+
 

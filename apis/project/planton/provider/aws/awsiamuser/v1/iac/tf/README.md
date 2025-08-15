@@ -1,9 +1,9 @@
-# Terraform Module to Deploy AwsRoute53Zone
+# Terraform Module to Deploy AwsIamUser
 
-This module provisions an AWS Route 53 hosted zone with support for multiple DNS record types and comprehensive domain management.
-It includes configurable DNS records, TTL settings, and scalable DNS resolution for internet applications and internal services.
+This module provisions an AWS IAM user with support for managed policies, inline policies, and optional access key creation.
+It includes configurable user names, policy attachments, and secure credential management for CI/CD and application use cases.
 
-Generated `variables.tf` reflects the proto schema for `AwsRoute53Zone`.
+Generated `variables.tf` reflects the proto schema for `AwsIamUser`.
 
 ## Usage
 
@@ -19,3 +19,4 @@ project-planton tofu destroy --manifest hack/manifest.yaml --auto-approve
 **Note**: Credentials are provided via stack input (CLI), not in the manifest `spec`.
 
 For more examples, see [`examples.md`](./examples.md) and [`hack/manifest.yaml`](../hack/manifest.yaml).
+
