@@ -1,3 +1,56 @@
+# Pulumi Module to Deploy AwsRoute53Zone
+
+## CLI usage (ProjectPlanton pulumi)
+
+```bash
+# Preview
+project-planton pulumi preview \
+  --manifest ../hack/manifest.yaml \
+  --stack organization/<project>/<stack> \
+  --module-dir .
+
+# Update (apply)
+project-planton pulumi update \
+  --manifest ../hack/manifest.yaml \
+  --stack organization/<project>/<stack> \
+  --module-dir . \
+  --yes
+
+# Refresh
+project-planton pulumi refresh \
+  --manifest ../hack/manifest.yaml \
+  --stack organization/<project>/<stack> \
+  --module-dir .
+
+# Destroy
+project-planton pulumi destroy \
+  --manifest ../hack/manifest.yaml \
+  --stack organization/<project>/<stack> \
+  --module-dir .
+```
+
+## Debugging
+
+This module includes a `debug.sh` helper. To enable debugging, edit `Pulumi.yaml` and uncomment the `runtime.options.binary` line so Pulumi runs the program via the script:
+
+```yaml
+name: aws-module-test-pulumi-project
+runtime:
+  name: go
+#  options:
+#    binary: ./debug.sh
+```
+
+Then make the script executable and run your command (e.g., `preview` or `update`). See `docs/pages/docs/guide/debug-pulumi-modules.mdx` for full instructions.
+
+```bash
+chmod +x debug.sh
+project-planton pulumi preview \
+  --manifest ../hack/manifest.yaml \
+  --stack organization/<project>/<stack> \
+  --module-dir .
+```
+
 # AWS Route53 Zone Pulumi Module
 
 This Pulumi module is designed to automate the creation and management of Route53 hosted zones and DNS records on AWS using a Kubernetes-like API resource model. The module is part of Planton Cloud’s unified APIs, allowing developers to define infrastructure in a declarative YAML format. By leveraging the Pulumi infrastructure-as-code platform, this module simplifies the provisioning process across AWS environments, ensuring efficient DNS management.

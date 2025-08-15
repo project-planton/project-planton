@@ -1,3 +1,26 @@
+```yaml
+apiVersion: aws.project-planton.org/v1
+kind: AwsAlb
+metadata:
+  name: example
+spec: {}
+```
+
+CLI:
+
+```bash
+project-planton pulumi preview \
+  --manifest ../hack/manifest.yaml \
+  --stack organization/<project>/<stack> \
+  --module-dir .
+
+project-planton pulumi update \
+  --manifest ../hack/manifest.yaml \
+  --stack organization/<project>/<stack> \
+  --module-dir . \
+  --yes
+```
+
 # Create using CLI
 
 Create a YAML file using one of the examples below. After the YAML is created, use the following command to apply with

@@ -1,3 +1,26 @@
+```yaml
+apiVersion: aws.project-planton.org/v1
+kind: AwsRdsCluster
+metadata:
+  name: example
+spec: {}
+```
+
+CLI:
+
+```bash
+project-planton pulumi preview \
+  --manifest ../hack/manifest.yaml \
+  --stack organization/<project>/<stack> \
+  --module-dir .
+
+project-planton pulumi update \
+  --manifest ../hack/manifest.yaml \
+  --stack organization/<project>/<stack> \
+  --module-dir . \
+  --yes
+```
+
 Here are a few examples for the `AwsRdsCluster` API resource, showing different configurations for an RDS cluster on AWS. These examples demonstrate basic and more advanced usage of the resource, including autoscaling and security configurations.
 
 ---

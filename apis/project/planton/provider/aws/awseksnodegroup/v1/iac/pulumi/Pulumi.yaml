@@ -1,6 +1,5 @@
-#name should be updated based on the choice of 'project' name in pulumi backend
-name: project-planton-prod
+name: awseksnodegroup-pulumi-project
 runtime:
   name: go
-#  options:
-#    binary: ./debug.sh
+# options:
+#   binary: ./debug.sh
