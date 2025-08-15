@@ -5,8 +5,8 @@ go_library(
     srcs = [
         "locals.go",
         "main.go",
-        "user.go",
         "outputs.go",
+        "user.go",
     ],
     importpath = "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsiamuser/v1/iac/pulumi/module",
     visibility = ["//visibility:public"],

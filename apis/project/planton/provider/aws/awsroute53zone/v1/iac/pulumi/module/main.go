@@ -2,9 +2,10 @@ package module
 
 import (
 	"fmt"
+	"strings"
+
 	"github.com/pulumi/pulumi-aws-native/sdk/go/aws"
 	awsclassic "github.com/pulumi/pulumi-aws/sdk/v7/go/aws"
-	"strings"
 
 	"github.com/pkg/errors"
 	awsroute53zonev1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsroute53zone/v1"
@@ -14,8 +15,8 @@ import (
 )
 
 func Resources(ctx *pulumi.Context, stackInput *awsroute53zonev1.AwsRoute53ZoneStackInput) error {
-	//create a variable with descriptive name for the api-resource in the input
-	awsRoute53Zone := stackInput.Target
+	locals := initializeLocals(ctx, stackInput)
+	awsRoute53Zone := locals.AwsRoute53Zone
 
 	awsCredential := stackInput.ProviderCredential
 	var provider *aws.Provider
