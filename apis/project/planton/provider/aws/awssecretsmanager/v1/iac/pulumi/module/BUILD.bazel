@@ -5,8 +5,8 @@ go_library(
     srcs = [
         "locals.go",
         "main.go",
-        "secret.go",
         "outputs.go",
+        "secret.go",
     ],
     importpath = "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awssecretsmanager/v1/iac/pulumi/module",
     visibility = ["//visibility:public"],
@@ -16,6 +16,7 @@ go_library(
         "//pkg/iac/pulumi/pulumimodule/provider/aws/awstagkeys",
         "@com_github_pkg_errors//:errors",
         "@com_github_pulumi_pulumi_aws_sdk_v7//go/aws",
+        "@com_github_pulumi_pulumi_aws_sdk_v7//go/aws/secretsmanager",
         "@com_github_pulumi_pulumi_sdk_v3//go/pulumi",
     ],
 )

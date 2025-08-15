@@ -3,10 +3,10 @@ load("@rules_go//go:def.bzl", "go_library")
 go_library(
     name = "module",
     srcs = [
-        "main.go",
         "locals.go",
-        "static_website.go",
+        "main.go",
         "outputs.go",
+        "static_website.go",
     ],
     importpath = "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsstaticwebsite/v1/iac/pulumi/module",
     visibility = ["//visibility:public"],
