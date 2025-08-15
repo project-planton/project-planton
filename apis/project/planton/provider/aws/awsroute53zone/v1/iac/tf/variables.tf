@@ -1,13 +1,41 @@
 variable "metadata" {
-  description = "Metadata for the resource, including name and labels"
+  description = "metadata for the resource\nid format \"<id-prefix>-<env-id>-<normalized-resource-name>\""
   type = object({
-    name = string,
-    id = optional(string),
-    org = optional(string),
-    env = optional(string),
-    labels = optional(map(string)),
-    tags = optional(list(string)),
-    version = optional(object({ id = string, message = string }))
+
+    # name of the resource
+    name = string
+
+    # id of the resource
+    id = string
+
+    # id of the organization to which the api-resource belongs to
+    org = string
+
+    # environment to which the resource belongs to
+    env = string
+
+    # labels for the resource
+    labels = object({
+
+      # Description for key
+      key = string
+
+      # Description for value
+      value = string
+    })
+
+    # annotations for the resource
+    annotations = object({
+
+      # Description for key
+      key = string
+
+      # Description for value
+      value = string
+    })
+
+    # tags for the resource
+    tags = list(string)
   })
 }
 
@@ -18,7 +46,7 @@ variable "spec" {
     # The DNS records that are added to the zone.
     # Each record represents a DNS resource record, such as A, AAAA, CNAME, MX, TXT, etc.
     # These records define how your domain or subdomains are routed to your resources.
-    records = optional(list(object({
+    records = list(object({
 
       # The DNS record type.
       # This specifies the type of DNS record, such as A, AAAA, CNAME, MX, TXT, etc.
@@ -38,7 +66,7 @@ variable "spec" {
 
       # The Time To Live (TTL) for the DNS record, in seconds.
       # TTL specifies how long DNS resolvers should cache the DNS record before querying again.
-      ttl_seconds = optional(number, 60)
-    })))
+      ttl_seconds = number
+    }))
   })
 }

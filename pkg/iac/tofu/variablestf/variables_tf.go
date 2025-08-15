@@ -3,13 +3,14 @@ package variablestf
 import (
 	"bytes"
 	"fmt"
+	"strings"
+
 	"github.com/pkg/errors"
 	"github.com/project-planton/project-planton/internal/apidocs"
 	"github.com/project-planton/project-planton/pkg/strings/caseconverter"
-	"github.com/pseudomuto/protoc-gen-doc"
+	gendoc "github.com/pseudomuto/protoc-gen-doc"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
-	"strings"
 )
 
 var fieldDescriptions = map[string]string{
@@ -164,6 +165,11 @@ func scalarOrMessageToTFType(parentMsg protoreflect.MessageDescriptor, fd protor
 	case protoreflect.EnumKind:
 		return tfPrimitive("string"), nil
 	case protoreflect.MessageKind:
+		// Treat google.protobuf JSON wrapper types as simple strings to avoid deep recursion
+		fullName := string(fd.Message().FullName())
+		if isWellKnownJsonType(fullName) {
+			return tfPrimitive("string"), nil
+		}
 		return messageToTerraformObject(fd.Message(), fd, apiDocsJson)
 	default:
 		return nil, fmt.Errorf("unsupported field kind: %v", kind)
@@ -246,4 +252,15 @@ func findFieldDescription(apiDocsJson *gendoc.Template, messageFullName, fieldNa
 	}
 
 	return ""
+}
+
+// isWellKnownJsonType returns true for protobuf well-known types representing JSON
+// so we map them to primitive string in Terraform variable schema
+func isWellKnownJsonType(fullName string) bool {
+	switch fullName {
+	case "google.protobuf.Struct", "google.protobuf.Value", "google.protobuf.ListValue":
+		return true
+	default:
+		return false
+	}
 }

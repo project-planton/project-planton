@@ -1,5 +1,5 @@
 variable "metadata" {
-  description = "metadata"
+  description = "metadata for all resource objects on planton-cloud"
   type = object({
 
     # name of the resource
@@ -40,14 +40,11 @@ variable "metadata" {
 }
 
 variable "spec" {
-  description = "spec"
+  description = "Specification for Deployment Component"
   type = object({
 
-    # Description for enable_cdn
-    enable_cdn = bool
-
-    # Description for route53_zone_id
-    route53_zone_id = object({
+    # Description for cluster_name
+    cluster_name = object({
 
       # Description for value
       value = string
@@ -69,11 +66,8 @@ variable "spec" {
       })
     })
 
-    # Description for domain_aliases
-    domain_aliases = list(string)
-
-    # Description for certificate_arn
-    certificate_arn = object({
+    # Description for node_role_arn
+    node_role_arn = object({
 
       # Description for value
       value = string
@@ -95,8 +89,8 @@ variable "spec" {
       })
     })
 
-    # Description for content_bucket_arn
-    content_bucket_arn = object({
+    # Description for subnet_ids
+    subnet_ids = list(object({
 
       # Description for value
       value = string
@@ -116,76 +110,35 @@ variable "spec" {
         # Description for field_path
         field_path = string
       })
+    }))
+
+    # Description for instance_type
+    instance_type = string
+
+    # Description for scaling
+    scaling = object({
+
+      # Description for min_size
+      min_size = number
+
+      # Description for max_size
+      max_size = number
+
+      # Description for desired_size
+      desired_size = number
     })
 
-    # Description for content_prefix
-    content_prefix = string
+    # Description for capacity_type
+    capacity_type = string
 
-    # Description for is_spa
-    is_spa = bool
+    # Description for disk_size_gb
+    disk_size_gb = number
 
-    # Description for index_document
-    index_document = string
+    # Description for ssh_key_name
+    ssh_key_name = string
 
-    # Description for error_document
-    error_document = string
-
-    # Description for default_ttl_seconds
-    default_ttl_seconds = number
-
-    # Description for max_ttl_seconds
-    max_ttl_seconds = number
-
-    # Description for min_ttl_seconds
-    min_ttl_seconds = number
-
-    # Description for compress
-    compress = bool
-
-    # Description for ipv6_enabled
-    ipv6_enabled = bool
-
-    # Description for price_class
-    price_class = string
-
-    # Description for logging
-    logging = object({
-
-      # Description for s3_enabled
-      s3_enabled = bool
-
-      # Description for s3_target_bucket_arn
-      s3_target_bucket_arn = object({
-
-        # Description for value
-        value = string
-
-        # Description for value_from
-        value_from = object({
-
-          # Description for kind
-          kind = string
-
-          # Description for env
-          env = string
-
-          # Description for name
-          name = string
-
-          # Description for field_path
-          field_path = string
-        })
-      })
-
-      # Description for s3_target_prefix
-      s3_target_prefix = string
-
-      # Description for cdn_enabled
-      cdn_enabled = bool
-    })
-
-    # Description for tags
-    tags = object({
+    # Description for labels
+    labels = object({
 
       # Description for key
       key = string

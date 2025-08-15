@@ -1,16 +1,16 @@
 # main.tf
 
 resource "aws_security_group" "this" {
-  name        = var.name
-  description = var.description
-  vpc_id      = var.vpc_id
+  name        = var.metadata.name
+  description = var.spec.description
+  vpc_id      = var.spec.vpc_id.value
 
   # ingress rules
   # each item in var.ingress maps to one AWS ingress rule
   dynamic "ingress" {
-    for_each = var.ingress
+    for_each = var.spec.ingress
     content {
-      description      = ingress.value.rule_description
+      description      = ingress.value.description
       protocol         = ingress.value.protocol
       from_port        = ingress.value.from_port
       to_port          = ingress.value.to_port
@@ -24,9 +24,9 @@ resource "aws_security_group" "this" {
   # egress rules
   # each item in var.egress maps to one AWS egress rule
   dynamic "egress" {
-    for_each = var.egress
+    for_each = var.spec.egress
     content {
-      description      = egress.value.rule_description
+      description      = egress.value.description
       protocol         = egress.value.protocol
       from_port        = egress.value.from_port
       to_port          = egress.value.to_port
@@ -37,5 +37,5 @@ resource "aws_security_group" "this" {
     }
   }
 
-  tags = var.tags
+  tags = var.metadata.labels
 }

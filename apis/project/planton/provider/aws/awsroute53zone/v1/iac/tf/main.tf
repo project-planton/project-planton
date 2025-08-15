@@ -1,7 +1,7 @@
 ##############################
 # Route53 Hosted Zone
 ##############################
-resource "aws_aws_route53_zone" "r53_zone" {
+resource "aws_route53_zone" "r53_zone" {
   # var.metadata.name is expected to be something like "example.com"
   name = var.metadata.name
 
@@ -20,7 +20,7 @@ resource "aws_aws_route53_zone" "r53_zone" {
 resource "aws_route53_record" "records" {
   for_each = local.normalized_records
 
-  zone_id = aws_aws_route53_zone.r53_zone.zone_id
+  zone_id = aws_route53_zone.r53_zone.zone_id
   name    = each.value.name
   type    = each.value.record_type
   ttl     = each.value.ttl_seconds == 0 ? 300 : each.value.ttl_seconds

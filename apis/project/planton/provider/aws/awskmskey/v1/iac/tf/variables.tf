@@ -1,5 +1,5 @@
 variable "metadata" {
-  description = "metadata"
+  description = "metadata for all resource objects on planton-cloud"
   type = object({
 
     # name of the resource
@@ -40,12 +40,22 @@ variable "metadata" {
 }
 
 variable "spec" {
-  description = "spec"
+  description = "Specification for Deployment Component"
   type = object({
 
-    # List of secret names to create in AWS Secrets Manager.
-    # Each name corresponds to a unique secret that will be securely stored and managed.
-    # Secret names must be unique within your AWS account and region.
-    secret_names = list(string)
+    # Description for key_spec
+    key_spec = string
+
+    # Description for description
+    description = string
+
+    # Description for disable_key_rotation
+    disable_key_rotation = bool
+
+    # Description for deletion_window_days
+    deletion_window_days = number
+
+    # Description for alias_name
+    alias_name = string
   })
 }

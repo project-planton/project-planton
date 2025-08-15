@@ -10,7 +10,7 @@ locals {
   base_tags = {
     "resource"      = "true"
     "resource_id"   = local.resource_id
-    "resource_kind" = "aws_secrets_manager"
+    "resource_kind" = "aws_route53_zone"
   }
 
   # Organization tag only if var.metadata.org is non-empty
