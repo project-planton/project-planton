@@ -10,7 +10,7 @@ output "cluster_arn" {
 
 output "cluster_capacity_providers" {
   description = "The capacity providers associated with this cluster."
-  value       = aws_ecs_cluster.this.capacity_providers
+  value       = local.has_capacity_providers ? var.spec.capacity_providers : []
 }
 
 

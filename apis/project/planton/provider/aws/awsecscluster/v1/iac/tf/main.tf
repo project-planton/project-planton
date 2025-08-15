@@ -6,16 +6,15 @@ resource "aws_ecs_cluster" "this" {
     value = local.container_insights_value
   }
 
-  dynamic "capacity_providers" {
-    for_each = local.has_capacity_providers ? [1] : []
-    content {
-      # terraform requires a schema structure; use top-level argument instead
-    }
-  }
-
-  capacity_providers = try(var.spec.capacity_providers, null)
-
   tags = local.tags
+}
+
+# Attach capacity providers to the cluster if specified
+resource "aws_ecs_cluster_capacity_providers" "this" {
+  count = local.has_capacity_providers ? 1 : 0
+
+  cluster_name       = aws_ecs_cluster.this.name
+  capacity_providers = var.spec.capacity_providers
 }
 
 
