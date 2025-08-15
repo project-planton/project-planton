@@ -4,6 +4,7 @@ const (
 	OpTableName                          = "table_name"
 	OpTableArn                           = "table_arn"
 	OpTableStreamArn                     = "table_stream_arn"
+	OpStreamLabel                        = "stream_label"
 	OpAutoscalingReadPolicyArn           = "autoscaling_read_policy_arn"
 	OpAutoscalingWritePolicyArn          = "autoscaling_write_policy_arn"
 	OpAutoscalingIndexReadPolicyArnList  = "autoscaling_index_read_policy_arn_list"

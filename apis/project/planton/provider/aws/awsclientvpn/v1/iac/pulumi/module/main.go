@@ -8,6 +8,7 @@ import (
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/datatypes/stringmaps"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/datatypes/stringmaps/convertstringmaps"
 	"github.com/pulumi/pulumi-aws/sdk/v7/go/aws"
+	"github.com/pulumi/pulumi-aws/sdk/v7/go/aws/ec2"
 	"github.com/pulumi/pulumi-aws/sdk/v7/go/aws/ec2clientvpn"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
@@ -88,6 +89,7 @@ func Resources(ctx *pulumi.Context, stackInput *awsclientvpnv1.AwsClientVpnStack
 			SecurityGroupIds:      securityGroupIds,
 			AuthenticationOptions: authOptions,
 			ConnectionLogOptions:  logOptions,
+			DnsServers:            pulumi.ToStringArray(locals.AwsClientVpn.Spec.DnsServers),
 			Tags: convertstringmaps.ConvertGoStringMapToPulumiStringMap(
 				stringmaps.AddEntry(locals.AwsTags, "Name", locals.AwsClientVpn.Metadata.Name)),
 		}, pulumi.Provider(provider))
@@ -95,6 +97,7 @@ func Resources(ctx *pulumi.Context, stackInput *awsclientvpnv1.AwsClientVpnStack
 		return errors.Wrap(err, "create endpoint")
 	}
 	ctx.Export(OpClientVpnEndpointId, createdClientVpnEndpoint.ID())
+	ctx.Export(OpEndpointDnsName, createdClientVpnEndpoint.DnsName)
 
 	// --------------------------------------- Subnet associations
 	for _, subnetRef := range locals.AwsClientVpn.Spec.Subnets {

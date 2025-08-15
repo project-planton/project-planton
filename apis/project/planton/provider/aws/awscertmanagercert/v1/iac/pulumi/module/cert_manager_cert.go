@@ -69,5 +69,6 @@ func certManagerCert(ctx *pulumi.Context, locals *Locals, provider *aws.Provider
 
 	// Export the certificate ARN
 	ctx.Export(OpCertArn, cert.Arn)
+	ctx.Export(OpCertificateDomainName, pulumi.String(spec.PrimaryDomainName))
 	return nil
 }
