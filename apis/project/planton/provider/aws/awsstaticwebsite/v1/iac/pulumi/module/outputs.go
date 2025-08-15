@@ -1,5 +1,6 @@
 package module
 
 const (
-	OpOutputKey = "value"
+	// Maps to AwsStaticWebsiteStackOutputs.bucket_id
+	OpBucketId = "bucket_id"
 )
