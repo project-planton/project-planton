@@ -1,0 +1,12 @@
+apiVersion: aws.project-planton.org/v1
+kind: AwsDynamodb
+metadata:
+  name: awsdynamodb-demo
+spec:
+  table_name: awsdynamodb-demo-table
+  aws_region: us-east-1
+  billing_mode: BILLING_MODE_PAY_PER_REQUEST
+  partition_key_name: id
+  partition_key_type: ATTRIBUTE_TYPE_STRING
+  point_in_time_recovery_enabled: false
+  server_side_encryption_enabled: true

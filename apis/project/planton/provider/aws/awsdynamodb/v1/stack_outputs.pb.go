@@ -21,25 +21,19 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// aws_dynamodb stack outputs
+// AwsDynamodbStackOutputs captures observable identifiers from DynamoDB table creation.
 type AwsDynamodbStackOutputs struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// DynamoDB table name
-	TableName string `protobuf:"bytes,1,opt,name=table_name,json=tableName,proto3" json:"table_name,omitempty"`
-	// DynamoDB table ARN
-	TableArn string `protobuf:"bytes,2,opt,name=table_arn,json=tableArn,proto3" json:"table_arn,omitempty"`
-	// DynamoDB table stream ARN
-	TableStreamArn string `protobuf:"bytes,3,opt,name=table_stream_arn,json=tableStreamArn,proto3" json:"table_stream_arn,omitempty"`
-	// Autoscaling read policy ARN
-	AutoscalingReadPolicyArn string `protobuf:"bytes,4,opt,name=autoscaling_read_policy_arn,json=autoscalingReadPolicyArn,proto3" json:"autoscaling_read_policy_arn,omitempty"`
-	// Autoscaling write policy ARN
-	AutoscalingWritePolicyArn string `protobuf:"bytes,5,opt,name=autoscaling_write_policy_arn,json=autoscalingWritePolicyArn,proto3" json:"autoscaling_write_policy_arn,omitempty"`
-	// Autoscaling index read policy ARN list
-	AutoscalingIndexReadPolicyArnList string `protobuf:"bytes,6,opt,name=autoscaling_index_read_policy_arn_list,json=autoscalingIndexReadPolicyArnList,proto3" json:"autoscaling_index_read_policy_arn_list,omitempty"`
-	// Autoscaling index write policy ARN list
-	AutoscalingIndexWritePolicyArnList string `protobuf:"bytes,7,opt,name=autoscaling_index_write_policy_arn_list,json=autoscalingIndexWritePolicyArnList,proto3" json:"autoscaling_index_write_policy_arn_list,omitempty"`
-	// stream_label is the label of the stream (when streams are enabled).
-	StreamLabel   string `protobuf:"bytes,8,opt,name=stream_label,json=streamLabel,proto3" json:"stream_label,omitempty"`
+	// The ARN of the DynamoDB table
+	TableArn string `protobuf:"bytes,1,opt,name=table_arn,json=tableArn,proto3" json:"table_arn,omitempty"`
+	// The ID of the DynamoDB table
+	TableId string `protobuf:"bytes,2,opt,name=table_id,json=tableId,proto3" json:"table_id,omitempty"`
+	// The name of the DynamoDB table
+	TableName string `protobuf:"bytes,3,opt,name=table_name,json=tableName,proto3" json:"table_name,omitempty"`
+	// The stream ARN if point-in-time recovery is enabled
+	StreamArn string `protobuf:"bytes,4,opt,name=stream_arn,json=streamArn,proto3" json:"stream_arn,omitempty"`
+	// The AWS region where the table is located
+	AwsRegion     string `protobuf:"bytes,5,opt,name=aws_region,json=awsRegion,proto3" json:"aws_region,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -74,13 +68,6 @@ func (*AwsDynamodbStackOutputs) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_aws_awsdynamodb_v1_stack_outputs_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *AwsDynamodbStackOutputs) GetTableName() string {
-	if x != nil {
-		return x.TableName
-	}
-	return ""
-}
-
 func (x *AwsDynamodbStackOutputs) GetTableArn() string {
 	if x != nil {
 		return x.TableArn
@@ -88,44 +75,30 @@ func (x *AwsDynamodbStackOutputs) GetTableArn() string {
 	return ""
 }
 
-func (x *AwsDynamodbStackOutputs) GetTableStreamArn() string {
+func (x *AwsDynamodbStackOutputs) GetTableId() string {
 	if x != nil {
-		return x.TableStreamArn
+		return x.TableId
 	}
 	return ""
 }
 
-func (x *AwsDynamodbStackOutputs) GetAutoscalingReadPolicyArn() string {
+func (x *AwsDynamodbStackOutputs) GetTableName() string {
 	if x != nil {
-		return x.AutoscalingReadPolicyArn
+		return x.TableName
 	}
 	return ""
 }
 
-func (x *AwsDynamodbStackOutputs) GetAutoscalingWritePolicyArn() string {
+func (x *AwsDynamodbStackOutputs) GetStreamArn() string {
 	if x != nil {
-		return x.AutoscalingWritePolicyArn
+		return x.StreamArn
 	}
 	return ""
 }
 
-func (x *AwsDynamodbStackOutputs) GetAutoscalingIndexReadPolicyArnList() string {
+func (x *AwsDynamodbStackOutputs) GetAwsRegion() string {
 	if x != nil {
-		return x.AutoscalingIndexReadPolicyArnList
-	}
-	return ""
-}
-
-func (x *AwsDynamodbStackOutputs) GetAutoscalingIndexWritePolicyArnList() string {
-	if x != nil {
-		return x.AutoscalingIndexWritePolicyArnList
-	}
-	return ""
-}
-
-func (x *AwsDynamodbStackOutputs) GetStreamLabel() string {
-	if x != nil {
-		return x.StreamLabel
+		return x.AwsRegion
 	}
 	return ""
 }
@@ -134,17 +107,16 @@ var File_project_planton_provider_aws_awsdynamodb_v1_stack_outputs_proto protore
 
 const file_project_planton_provider_aws_awsdynamodb_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"?project/planton/provider/aws/awsdynamodb/v1/stack_outputs.proto\x12+project.planton.provider.aws.awsdynamodb.v1\"\xca\x03\n" +
-	"\x17AwsDynamodbStackOutputs\x12\x1d\n" +
+	"?project/planton/provider/aws/awsdynamodb/v1/stack_outputs.proto\x12+project.planton.provider.aws.awsdynamodb.v1\"\xae\x01\n" +
+	"\x17AwsDynamodbStackOutputs\x12\x1b\n" +
+	"\ttable_arn\x18\x01 \x01(\tR\btableArn\x12\x19\n" +
+	"\btable_id\x18\x02 \x01(\tR\atableId\x12\x1d\n" +
 	"\n" +
-	"table_name\x18\x01 \x01(\tR\ttableName\x12\x1b\n" +
-	"\ttable_arn\x18\x02 \x01(\tR\btableArn\x12(\n" +
-	"\x10table_stream_arn\x18\x03 \x01(\tR\x0etableStreamArn\x12=\n" +
-	"\x1bautoscaling_read_policy_arn\x18\x04 \x01(\tR\x18autoscalingReadPolicyArn\x12?\n" +
-	"\x1cautoscaling_write_policy_arn\x18\x05 \x01(\tR\x19autoscalingWritePolicyArn\x12Q\n" +
-	"&autoscaling_index_read_policy_arn_list\x18\x06 \x01(\tR!autoscalingIndexReadPolicyArnList\x12S\n" +
-	"'autoscaling_index_write_policy_arn_list\x18\a \x01(\tR\"autoscalingIndexWritePolicyArnList\x12!\n" +
-	"\fstream_label\x18\b \x01(\tR\vstreamLabelB\x82\x03\n" +
+	"table_name\x18\x03 \x01(\tR\ttableName\x12\x1d\n" +
+	"\n" +
+	"stream_arn\x18\x04 \x01(\tR\tstreamArn\x12\x1d\n" +
+	"\n" +
+	"aws_region\x18\x05 \x01(\tR\tawsRegionB\x82\x03\n" +
 	"/com.project.planton.provider.aws.awsdynamodb.v1B\x11StackOutputsProtoP\x01Zigithub.com/project-planton/project-planton/apis/project/planton/provider/aws/awsdynamodb/v1;awsdynamodbv1\xa2\x02\x05PPPAA\xaa\x02+Project.Planton.Provider.Aws.Awsdynamodb.V1\xca\x02+Project\\Planton\\Provider\\Aws\\Awsdynamodb\\V1\xe2\x027Project\\Planton\\Provider\\Aws\\Awsdynamodb\\V1\\GPBMetadata\xea\x020Project::Planton::Provider::Aws::Awsdynamodb::V1b\x06proto3"
 
 var (

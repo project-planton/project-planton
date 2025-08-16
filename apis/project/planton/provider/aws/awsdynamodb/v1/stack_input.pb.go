@@ -25,18 +25,18 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// aws-dynamodb stack-input
+// AwsDynamodbStackInput defines the input required to deploy an AWS DynamoDB table.
 type AwsDynamodbStackInput struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// iac-provisioner
+	// IaC provisioner (Pulumi or Terraform)
 	Provisioner shared.IacProvisioner `protobuf:"varint,1,opt,name=provisioner,proto3,enum=project.planton.shared.IacProvisioner" json:"provisioner,omitempty"`
-	// pulumi input required when the provisioner is pulumi
+	// Pulumi stack information required when the provisioner is Pulumi
 	Pulumi *pulumi.PulumiStackInfo `protobuf:"bytes,2,opt,name=pulumi,proto3" json:"pulumi,omitempty"`
-	// terraform input required when the provisioner is terraform
+	// Terraform stack information required when the provisioner is Terraform
 	Terraform *terraform.TerraformStackInfo `protobuf:"bytes,3,opt,name=terraform,proto3" json:"terraform,omitempty"`
-	// target cloud-resource
+	// Target DynamoDB resource to be deployed
 	Target *AwsDynamodb `protobuf:"bytes,4,opt,name=target,proto3" json:"target,omitempty"`
-	// provider-credential
+	// AWS provider credentials for authentication
 	ProviderCredential *v1.AwsCredentialSpec `protobuf:"bytes,5,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache

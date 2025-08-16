@@ -8,43 +8,43 @@ import "project/planton/provider/aws/awsdynamodb/v1/stack_outputs.proto";
 import "project/planton/shared/status.proto";
 import "project/planton/shared/metadata.proto";
 
-//aws-dynamodb
+// AwsDynamodb represents an AWS DynamoDB table resource.
 message AwsDynamodb {
-  //api-version
-  string api_version = 1[
-    (buf.validate.field).string.const = 'aws.project-planton.org/v1'
+  // API version for the resource
+  string api_version = 1 [
+    (buf.validate.field).string.const = "aws.project-planton.org/v1"
   ];
 
-  //resource-kind
+  // Resource kind
   string kind = 2 [
-    (buf.validate.field).string.const = 'AwsDynamodb'
+    (buf.validate.field).string.const = "AwsDynamodb"
   ];
 
-  //metadata
+  // Resource metadata
   project.planton.shared.ApiResourceMetadata metadata = 3 [
     (buf.validate.field).required = true
   ];
 
-  //spec
+  // Resource specification
   AwsDynamodbSpec spec = 4 [
     (buf.validate.field).required = true
   ];
 
-  //status
+  // Resource status
   AwsDynamodbStatus status = 5;
 }
 
-//aws-dynamodb status
+// AwsDynamodbStatus represents the status of an AWS DynamoDB table resource.
 message AwsDynamodbStatus {
-  //lifecycle
+  // Resource lifecycle information
   project.planton.shared.ApiResourceLifecycle lifecycle = 99;
 
-  //audit-info
+  // Resource audit information
   project.planton.shared.ApiResourceAudit audit = 98;
 
-  //stack-job id
+  // Stack job ID for the deployment
   string stack_job_id = 97;
 
-  //stack-outputs
+  // Stack outputs from the deployment
   AwsDynamodbStackOutputs outputs = 1;
 }
