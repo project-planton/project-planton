@@ -28,6 +28,10 @@ type AwsClientVpnStackOutputs struct {
 	// The AWS-assigned identifier for the Client VPN endpoint (e.g., "cvpn-endpoint-012345abcdeEXAMPLE").
 	// Use this ID for any AWS CLI or API operations on the Client VPN, and to retrieve or revoke the client configuration file.
 	ClientVpnEndpointId string `protobuf:"bytes,1,opt,name=client_vpn_endpoint_id,json=clientVpnEndpointId,proto3" json:"client_vpn_endpoint_id,omitempty"`
+	// The ID of the security group applied to the Client VPN endpoint’s target network associations.
+	// If the spec did not provide any security_group_ids, this will be the ID of the security group that Project Planton created (or the VPC default).
+	// This security group governs traffic between VPN clients and VPC resources.
+	SecurityGroupId string `protobuf:"bytes,2,opt,name=security_group_id,json=securityGroupId,proto3" json:"security_group_id,omitempty"`
 	// A map of subnet association IDs for each associated target subnet.
 	// Each key in the map is a subnet ID (from the spec’s subnet_ids list), and the value is the corresponding AWS association ID (e.g., "cvpn-assoc-0abcd1234efgh5678") for that subnet’s association with the Client VPN endpoint.
 	// These IDs can be used to reference or manage specific target network associations (for example, if removing an association later).
@@ -75,6 +79,13 @@ func (x *AwsClientVpnStackOutputs) GetClientVpnEndpointId() string {
 	return ""
 }
 
+func (x *AwsClientVpnStackOutputs) GetSecurityGroupId() string {
+	if x != nil {
+		return x.SecurityGroupId
+	}
+	return ""
+}
+
 func (x *AwsClientVpnStackOutputs) GetSubnetAssociationIds() map[string]string {
 	if x != nil {
 		return x.SubnetAssociationIds
@@ -93,9 +104,10 @@ var File_project_planton_provider_aws_awsclientvpn_v1_stack_outputs_proto protor
 
 const file_project_planton_provider_aws_awsclientvpn_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"@project/planton/provider/aws/awsclientvpn/v1/stack_outputs.proto\x12,project.planton.provider.aws.awsclientvpn.v1\"\xdd\x02\n" +
+	"@project/planton/provider/aws/awsclientvpn/v1/stack_outputs.proto\x12,project.planton.provider.aws.awsclientvpn.v1\"\x89\x03\n" +
 	"\x18AwsClientVpnStackOutputs\x123\n" +
-	"\x16client_vpn_endpoint_id\x18\x01 \x01(\tR\x13clientVpnEndpointId\x12\x96\x01\n" +
+	"\x16client_vpn_endpoint_id\x18\x01 \x01(\tR\x13clientVpnEndpointId\x12*\n" +
+	"\x11security_group_id\x18\x02 \x01(\tR\x0fsecurityGroupId\x12\x96\x01\n" +
 	"\x16subnet_association_ids\x18\x03 \x03(\v2`.project.planton.provider.aws.awsclientvpn.v1.AwsClientVpnStackOutputs.SubnetAssociationIdsEntryR\x14subnetAssociationIds\x12*\n" +
 	"\x11endpoint_dns_name\x18\x04 \x01(\tR\x0fendpointDnsName\x1aG\n" +
 	"\x19SubnetAssociationIdsEntry\x12\x10\n" +
