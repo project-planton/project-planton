@@ -7,13 +7,12 @@ AWS CloudFront is a global content delivery network (CDN). This resource provisi
 - aliases: Optional custom domain names (CNAMEs) like cdn.example.com.
 - certificate_arn: ACM certificate ARN in us-east-1 required when using aliases.
 - price_class: Edge location price class: PRICE_CLASS_100, PRICE_CLASS_200, or PRICE_CLASS_ALL.
-- origins: List of origins with id, domain_name, and optional origin_path.
-- default_origin_id: The origin id used by the default cache behavior.
+- origins: List of origins with domain_name, optional origin_path, and is_default flag.
 - default_root_object: Default object to serve when no object is specified (e.g., index.html).
 
 Validation highlights:
 - aliases unique; if aliases set, certificate_arn must be non-empty.
-- origins must contain at least one item; default_origin_id must match an origin id.
+- origins must contain at least one item; exactly one origin must be marked as default.
 - Enums are enforced to defined values only.
 
 ## Stack outputs

@@ -10,10 +10,19 @@ message AwsCloudFrontSpec {
   bool enabled = 1;
 
   // Aliases (CNAMEs) for the distribution, e.g., "cdn.example.com".
-  repeated string aliases = 2 [(buf.validate.field).repeated.unique = true];
+  repeated string aliases = 2 [
+    (buf.validate.field).repeated.unique = true,
+    (buf.validate.field).repeated.items = {
+      string: {
+        pattern: "^[A-Za-z0-9\\-\\.]+\\.[A-Za-z]{2,}$"
+      }
+    }
+  ];
 
   // ACM certificate ARN for custom domains in the us-east-1 region.
-  string certificate_arn = 3;
+  string certificate_arn = 3 [
+    (buf.validate.field).string.pattern = "^$|^arn:aws:acm:us-east-1:[0-9]{12}:certificate/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$"
+  ];
 
   // Price class for edge locations.
   enum PriceClass {
@@ -24,26 +33,32 @@ message AwsCloudFrontSpec {
   }
   PriceClass price_class = 4 [(buf.validate.field).enum.defined_only = true];
 
-  // Origin definition (minimal).
+  // Origin definition.
   message Origin {
-    // Unique identifier used to reference the origin in behaviors.
-    string id = 1 [(buf.validate.field).string.min_len = 1];
-
     // DNS name of the origin, e.g., "my-bucket.s3.amazonaws.com".
-    string domain_name = 2 [(buf.validate.field).string.min_len = 1];
+    string domain_name = 1 [
+      (buf.validate.field).string.min_len = 1,
+      (buf.validate.field).string.pattern = "^[A-Za-z0-9\\-\\.]+\\.[A-Za-z]{2,}$"
+    ];
 
     // Optional origin path that CloudFront appends to requests.
-    string origin_path = 3;
+    string origin_path = 2 [
+      (buf.validate.field).string.pattern = "^$|^/[A-Za-z0-9\\-\\_\\/\\.]*$"
+    ];
+
+    // Whether this origin is used as the default origin for the distribution.
+    // Exactly one origin must be marked as default.
+    bool is_default = 3;
   }
 
   // List of origins available to the distribution.
+  // Must contain at least one origin with exactly one marked as default.
   repeated Origin origins = 5 [(buf.validate.field).repeated.min_items = 1];
 
-  // The id of the origin used by the default cache behavior.
-  string default_origin_id = 6 [(buf.validate.field).string.min_len = 1];
-
   // Default root object, e.g., "index.html".
-  string default_root_object = 7;
+  string default_root_object = 6 [
+    (buf.validate.field).string.pattern = "^[A-Za-z0-9\\-\\.\\_]*$"
+  ];
 
   // Conditional validations
   option (buf.validate.message).cel = {
@@ -53,9 +68,9 @@ message AwsCloudFrontSpec {
   };
 
   option (buf.validate.message).cel = {
-    id: "default_origin_must_exist",
-    message: "default_origin_id must match one of origins.id",
-    expression: "this.origins.exists(o, o.id == this.default_origin_id)"
+    id: "exactly_one_default_origin",
+    message: "exactly one origin must be marked as default",
+    expression: "this.origins.filter(o, o.is_default).size() == 1"
   };
 }
 

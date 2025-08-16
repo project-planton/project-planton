@@ -86,11 +86,10 @@ type AwsCloudFrontSpec struct {
 	CertificateArn string                       `protobuf:"bytes,3,opt,name=certificate_arn,json=certificateArn,proto3" json:"certificate_arn,omitempty"`
 	PriceClass     AwsCloudFrontSpec_PriceClass `protobuf:"varint,4,opt,name=price_class,json=priceClass,proto3,enum=project.planton.provider.aws.awscloudfront.v1.AwsCloudFrontSpec_PriceClass" json:"price_class,omitempty"`
 	// List of origins available to the distribution.
+	// Must contain at least one origin with exactly one marked as default.
 	Origins []*AwsCloudFrontSpec_Origin `protobuf:"bytes,5,rep,name=origins,proto3" json:"origins,omitempty"`
-	// The id of the origin used by the default cache behavior.
-	DefaultOriginId string `protobuf:"bytes,6,opt,name=default_origin_id,json=defaultOriginId,proto3" json:"default_origin_id,omitempty"`
 	// Default root object, e.g., "index.html".
-	DefaultRootObject string `protobuf:"bytes,7,opt,name=default_root_object,json=defaultRootObject,proto3" json:"default_root_object,omitempty"`
+	DefaultRootObject string `protobuf:"bytes,6,opt,name=default_root_object,json=defaultRootObject,proto3" json:"default_root_object,omitempty"`
 	unknownFields     protoimpl.UnknownFields
 	sizeCache         protoimpl.SizeCache
 }
@@ -160,13 +159,6 @@ func (x *AwsCloudFrontSpec) GetOrigins() []*AwsCloudFrontSpec_Origin {
 	return nil
 }
 
-func (x *AwsCloudFrontSpec) GetDefaultOriginId() string {
-	if x != nil {
-		return x.DefaultOriginId
-	}
-	return ""
-}
-
 func (x *AwsCloudFrontSpec) GetDefaultRootObject() string {
 	if x != nil {
 		return x.DefaultRootObject
@@ -174,15 +166,16 @@ func (x *AwsCloudFrontSpec) GetDefaultRootObject() string {
 	return ""
 }
 
-// Origin definition (minimal).
+// Origin definition.
 type AwsCloudFrontSpec_Origin struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// Unique identifier used to reference the origin in behaviors.
-	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	// DNS name of the origin, e.g., "my-bucket.s3.amazonaws.com".
-	DomainName string `protobuf:"bytes,2,opt,name=domain_name,json=domainName,proto3" json:"domain_name,omitempty"`
+	DomainName string `protobuf:"bytes,1,opt,name=domain_name,json=domainName,proto3" json:"domain_name,omitempty"`
 	// Optional origin path that CloudFront appends to requests.
-	OriginPath    string `protobuf:"bytes,3,opt,name=origin_path,json=originPath,proto3" json:"origin_path,omitempty"`
+	OriginPath string `protobuf:"bytes,2,opt,name=origin_path,json=originPath,proto3" json:"origin_path,omitempty"`
+	// Whether this origin is used as the default origin for the distribution.
+	// Exactly one origin must be marked as default.
+	IsDefault     bool `protobuf:"varint,3,opt,name=is_default,json=isDefault,proto3" json:"is_default,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -217,13 +210,6 @@ func (*AwsCloudFrontSpec_Origin) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_aws_awscloudfront_v1_spec_proto_rawDescGZIP(), []int{0, 0}
 }
 
-func (x *AwsCloudFrontSpec_Origin) GetId() string {
-	if x != nil {
-		return x.Id
-	}
-	return ""
-}
-
 func (x *AwsCloudFrontSpec_Origin) GetDomainName() string {
 	if x != nil {
 		return x.DomainName
@@ -238,34 +224,41 @@ func (x *AwsCloudFrontSpec_Origin) GetOriginPath() string {
 	return ""
 }
 
+func (x *AwsCloudFrontSpec_Origin) GetIsDefault() bool {
+	if x != nil {
+		return x.IsDefault
+	}
+	return false
+}
+
 var File_project_planton_provider_aws_awscloudfront_v1_spec_proto protoreflect.FileDescriptor
 
 const file_project_planton_provider_aws_awscloudfront_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"8project/planton/provider/aws/awscloudfront/v1/spec.proto\x12-project.planton.provider.aws.awscloudfront.v1\x1a\x1bbuf/validate/validate.proto\"\xb1\a\n" +
+	"8project/planton/provider/aws/awscloudfront/v1/spec.proto\x12-project.planton.provider.aws.awscloudfront.v1\x1a\x1bbuf/validate/validate.proto\"\xfa\b\n" +
 	"\x11AwsCloudFrontSpec\x12\x18\n" +
-	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\"\n" +
-	"\aaliases\x18\x02 \x03(\tB\b\xbaH\x05\x92\x01\x02\x18\x01R\aaliases\x12'\n" +
-	"\x0fcertificate_arn\x18\x03 \x01(\tR\x0ecertificateArn\x12v\n" +
+	"\aenabled\x18\x01 \x01(\bR\aenabled\x12H\n" +
+	"\aaliases\x18\x02 \x03(\tB.\xbaH+\x92\x01(\x18\x01\"$r\"2 ^[A-Za-z0-9\\-\\.]+\\.[A-Za-z]{2,}$R\aaliases\x12\x9d\x01\n" +
+	"\x0fcertificate_arn\x18\x03 \x01(\tBt\xbaHqro2m^$|^arn:aws:acm:us-east-1:[0-9]{12}:certificate/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$R\x0ecertificateArn\x12v\n" +
 	"\vprice_class\x18\x04 \x01(\x0e2K.project.planton.provider.aws.awscloudfront.v1.AwsCloudFrontSpec.PriceClassB\b\xbaH\x05\x82\x01\x02\x10\x01R\n" +
 	"priceClass\x12k\n" +
-	"\aorigins\x18\x05 \x03(\v2G.project.planton.provider.aws.awscloudfront.v1.AwsCloudFrontSpec.OriginB\b\xbaH\x05\x92\x01\x02\b\x01R\aorigins\x123\n" +
-	"\x11default_origin_id\x18\x06 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x0fdefaultOriginId\x12.\n" +
-	"\x13default_root_object\x18\a \x01(\tR\x11defaultRootObject\x1al\n" +
-	"\x06Origin\x12\x17\n" +
-	"\x02id\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x02id\x12(\n" +
-	"\vdomain_name\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\n" +
-	"domainName\x12\x1f\n" +
-	"\vorigin_path\x18\x03 \x01(\tR\n" +
-	"originPath\"h\n" +
+	"\aorigins\x18\x05 \x03(\v2G.project.planton.provider.aws.awscloudfront.v1.AwsCloudFrontSpec.OriginB\b\xbaH\x05\x92\x01\x02\b\x01R\aorigins\x12K\n" +
+	"\x13default_root_object\x18\x06 \x01(\tB\x1b\xbaH\x18r\x162\x14^[A-Za-z0-9\\-\\.\\_]*$R\x11defaultRootObject\x1a\xb7\x01\n" +
+	"\x06Origin\x12J\n" +
+	"\vdomain_name\x18\x01 \x01(\tB)\xbaH&r$\x10\x012 ^[A-Za-z0-9\\-\\.]+\\.[A-Za-z]{2,}$R\n" +
+	"domainName\x12B\n" +
+	"\vorigin_path\x18\x02 \x01(\tB!\xbaH\x1er\x1c2\x1a^$|^/[A-Za-z0-9\\-\\_\\/\\.]*$R\n" +
+	"originPath\x12\x1d\n" +
+	"\n" +
+	"is_default\x18\x03 \x01(\bR\tisDefault\"h\n" +
 	"\n" +
 	"PriceClass\x12\x1b\n" +
 	"\x17PRICE_CLASS_UNSPECIFIED\x10\x00\x12\x13\n" +
 	"\x0fPRICE_CLASS_100\x10\x01\x12\x13\n" +
 	"\x0fPRICE_CLASS_200\x10\x02\x12\x13\n" +
-	"\x0fPRICE_CLASS_ALL\x10\x03:\x92\x02\xbaH\x8e\x02\x1a\x85\x01\n" +
-	"\x14aliases_require_cert\x125certificate_arn must be set when aliases are provided\x1a6this.aliases.size() == 0 || this.certificate_arn != \"\"\x1a\x83\x01\n" +
-	"\x19default_origin_must_exist\x12.default_origin_id must match one of origins.id\x1a6this.origins.exists(o, o.id == this.default_origin_id)B\x88\x03\n" +
+	"\x0fPRICE_CLASS_ALL\x10\x03:\x8a\x02\xbaH\x86\x02\x1a\x85\x01\n" +
+	"\x14aliases_require_cert\x125certificate_arn must be set when aliases are provided\x1a6this.aliases.size() == 0 || this.certificate_arn != \"\"\x1a|\n" +
+	"\x1aexactly_one_default_origin\x12,exactly one origin must be marked as default\x1a0this.origins.filter(o, o.is_default).size() == 1B\x88\x03\n" +
 	"1com.project.planton.provider.aws.awscloudfront.v1B\tSpecProtoP\x01Zmgithub.com/project-planton/project-planton/apis/project/planton/provider/aws/awscloudfront/v1;awscloudfrontv1\xa2\x02\x05PPPAA\xaa\x02-Project.Planton.Provider.Aws.Awscloudfront.V1\xca\x02-Project\\Planton\\Provider\\Aws\\Awscloudfront\\V1\xe2\x029Project\\Planton\\Provider\\Aws\\Awscloudfront\\V1\\GPBMetadata\xea\x022Project::Planton::Provider::Aws::Awscloudfront::V1b\x06proto3"
 
 var (

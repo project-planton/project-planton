@@ -1,3 +1,18 @@
+locals {
+  # Generate unique IDs for origins since Terraform requires them
+  origins_with_ids = [
+    for i, origin in var.spec.origins : merge(origin, {
+      generated_id = "origin-${i + 1}"
+    })
+  ]
+  
+  # Find the default origin
+  default_origin = [
+    for origin in local.origins_with_ids : origin
+    if origin.is_default
+  ][0]
+}
+
 resource "aws_cloudfront_distribution" "this" {
   enabled             = var.spec.enabled
   aliases             = try(var.spec.aliases, null)
@@ -5,10 +20,10 @@ resource "aws_cloudfront_distribution" "this" {
   default_root_object = try(var.spec.default_root_object, null)
 
   dynamic "origin" {
-    for_each = { for o in var.spec.origins : o.id => o }
+    for_each = { for o in local.origins_with_ids : o.generated_id => o }
     content {
       domain_name = origin.value.domain_name
-      origin_id   = origin.value.id
+      origin_id   = origin.value.generated_id
       origin_path = try(origin.value.origin_path, null)
 
       custom_origin_config {
@@ -21,7 +36,7 @@ resource "aws_cloudfront_distribution" "this" {
   }
 
   default_cache_behavior {
-    target_origin_id       = var.spec.default_origin_id
+    target_origin_id       = local.default_origin.generated_id
     viewer_protocol_policy = "redirect-to-https"
     allowed_methods        = ["GET", "HEAD"]
     cached_methods         = ["GET", "HEAD"]

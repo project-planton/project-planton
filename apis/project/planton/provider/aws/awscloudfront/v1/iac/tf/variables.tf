@@ -58,18 +58,15 @@ variable "spec" {
     # Description for origins
     origins = list(object({
 
-      # Description for id
-      id = string
-
       # Description for domain_name
       domain_name = string
 
       # Description for origin_path
       origin_path = string
-    }))
 
-    # Description for default_origin_id
-    default_origin_id = string
+      # Description for is_default
+      is_default = bool
+    }))
 
     # Description for default_root_object
     default_root_object = string
