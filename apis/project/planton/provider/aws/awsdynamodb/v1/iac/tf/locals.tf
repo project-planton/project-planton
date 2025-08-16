@@ -1,34 +1,18 @@
 locals {
-  #############################################################################
-  # resource_id: either metadata.id or metadata.name
-  #############################################################################
-  resource_id = (
-    var.metadata.id != null && var.metadata.id != ""
-    ? var.metadata.id
-    : var.metadata.name
-  )
+  # Safe locals to avoid null dereferences
+  safe_metadata = var.metadata
+  safe_spec     = var.spec
 
-  #############################################################################
-  # Base labels
-  #############################################################################
-  base_labels = {
-    "resource"      = "true"
-    "resource_id"   = local.resource_id
-    "resource_kind" = "aws_dynamodb"
-  }
-
-  # Organization label only if var.metadata.org is non-empty
-  org_label = (
-  var.metadata.org != null && var.metadata.org != ""
-  ) ? { "organization" = var.metadata.org } : {}
-
-  # Environment label only if var.metadata.env is non-empty
-  env_label = (
-  var.metadata.env != null && try(var.metadata.env, "") != ""
-  ) ? { "environment" = var.metadata.env } : {}
-
-  #############################################################################
-  # Merge labels
-  #############################################################################
-  final_labels = merge(local.base_labels, local.org_label, local.env_label)
+  # Computed booleans for conditional flows
+  has_sort_key = local.safe_spec.sort_key_name != null && local.safe_spec.sort_key_name != ""
+  is_provisioned_billing = local.safe_spec.billing_mode == "PROVISIONED"
+  is_pay_per_request_billing = local.safe_spec.billing_mode == "PAY_PER_REQUEST"
+  
+  # Safe defaults for capacity units
+  safe_read_capacity_units = local.is_provisioned_billing ? local.safe_spec.read_capacity_units : null
+  safe_write_capacity_units = local.is_provisioned_billing ? local.safe_spec.write_capacity_units : null
+  
+  # Safe defaults for encryption and recovery
+  safe_server_side_encryption_enabled = local.safe_spec.server_side_encryption_enabled != null ? local.safe_spec.server_side_encryption_enabled : true
+  safe_point_in_time_recovery_enabled = local.safe_spec.point_in_time_recovery_enabled != null ? local.safe_spec.point_in_time_recovery_enabled : false
 }

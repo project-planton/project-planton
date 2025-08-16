@@ -1,266 +1,153 @@
 # Create using CLI
 
-Create a YAML file using the examples shown below. After the YAML file is created, use the following command to apply:
+Create a YAML file using one of the examples shown below. After the YAML file is created, use the command below to apply the configuration:
 
 ```shell
 planton apply -f <yaml-path>
 ```
 
-# Basic Example
+## Minimal manifest (YAML)
 
-This basic example creates a DynamoDB table with a simple primary key.
+This minimal example creates a DynamoDB table with only the required fields using pay-per-request billing.
 
 ```yaml
 apiVersion: aws.project-planton.org/v1
 kind: AwsDynamodb
 metadata:
-  name: my-simple-table
+  name: my-minimal-table
 spec:
-  awsCredentialId: my-aws-credential-id
-  table:
-    tableName: my-simple-table
-    billingMode: PAY_PER_REQUEST
-    hashKey:
-      name: id
-      type: S
-    attributes:
-      - name: id
-        type: S
+  table_name: my-minimal-table
+  aws_region: us-east-1
+  billing_mode: BILLING_MODE_PAY_PER_REQUEST
+  partition_key_name: id
+  partition_key_type: ATTRIBUTE_TYPE_STRING
 ```
 
-# Example with Provisioned Capacity and Autoscaling
+## Provisioned billing with sort key
 
-This example creates a DynamoDB table with provisioned read and write capacity, along with autoscaling configurations.
+This example demonstrates a DynamoDB table with provisioned billing mode and a composite key (partition key + sort key).
 
 ```yaml
 apiVersion: aws.project-planton.org/v1
 kind: AwsDynamodb
 metadata:
-  name: my-autoscaling-table
+  name: my-provisioned-table
 spec:
-  awsCredentialId: my-aws-credential-id
-  table:
-    tableName: my-autoscaling-table
-    billingMode: PROVISIONED
-    readCapacity: 5
-    writeCapacity: 5
-    hashKey:
-      name: userId
-      type: S
-    attributes:
-      - name: userId
-        type: S
-    autoScale:
-      isEnabled: true
-      readCapacity:
-        minCapacity: 5
-        maxCapacity: 100
-        targetUtilization: 70
-      writeCapacity:
-        minCapacity: 5
-        maxCapacity: 100
-        targetUtilization: 70
+  table_name: my-provisioned-table
+  aws_region: us-west-2
+  billing_mode: BILLING_MODE_PROVISIONED
+  partition_key_name: user_id
+  partition_key_type: ATTRIBUTE_TYPE_STRING
+  sort_key_name: timestamp
+  sort_key_type: ATTRIBUTE_TYPE_NUMBER
+  read_capacity_units: 5
+  write_capacity_units: 5
+  point_in_time_recovery_enabled: true
+  server_side_encryption_enabled: true
 ```
 
-# Example with Global Secondary Index
+## High-performance table with binary keys
 
-This example creates a DynamoDB table with a global secondary index (GSI) to enable queries on a non-primary key attribute.
+This example shows a DynamoDB table optimized for high-performance workloads with binary partition keys and enhanced security features.
 
 ```yaml
 apiVersion: aws.project-planton.org/v1
 kind: AwsDynamodb
 metadata:
-  name: my-gsi-table
+  name: my-high-performance-table
 spec:
-  awsCredentialId: my-aws-credential-id
-  table:
-    tableName: my-gsi-table
-    billingMode: PAY_PER_REQUEST
-    hashKey:
-      name: orderId
-      type: S
-    attributes:
-      - name: orderId
-        type: S
-      - name: customerId
-        type: S
-    globalSecondaryIndexes:
-      - name: CustomerIndex
-        hashKey:
-          name: customerId
-          type: S
-        projectionType: ALL
+  table_name: my-high-performance-table
+  aws_region: us-east-1
+  billing_mode: BILLING_MODE_PROVISIONED
+  partition_key_name: session_id
+  partition_key_type: ATTRIBUTE_TYPE_BINARY
+  sort_key_name: event_id
+  sort_key_type: ATTRIBUTE_TYPE_BINARY
+  read_capacity_units: 100
+  write_capacity_units: 100
+  point_in_time_recovery_enabled: true
+  server_side_encryption_enabled: true
 ```
 
-# Example with Stream Enabled and Server-Side Encryption
+## Development table with pay-per-request
 
-This example creates a DynamoDB table with stream enabled and server-side encryption using a specified AWS KMS key.
+This example creates a cost-effective development table using pay-per-request billing with minimal configuration.
 
 ```yaml
 apiVersion: aws.project-planton.org/v1
 kind: AwsDynamodb
 metadata:
-  name: my-secure-table
+  name: my-dev-table
 spec:
-  awsCredentialId: my-aws-credential-id
-  table:
-    tableName: my-secure-table
-    billingMode: PAY_PER_REQUEST
-    hashKey:
-      name: sessionId
-      type: S
-    attributes:
-      - name: sessionId
-        type: S
-    enableStreams: true
-    streamViewType: NEW_AND_OLD_IMAGES
-    serverSideEncryption:
-      isEnabled: true
-      kmsKeyArn: arn:aws:kms:us-west-2:123456789012:key/your-kms-key-id
+  table_name: my-dev-table
+  aws_region: us-east-1
+  billing_mode: BILLING_MODE_PAY_PER_REQUEST
+  partition_key_name: id
+  partition_key_type: ATTRIBUTE_TYPE_STRING
+  sort_key_name: created_at
+  sort_key_type: ATTRIBUTE_TYPE_NUMBER
+  point_in_time_recovery_enabled: false
+  server_side_encryption_enabled: true
 ```
 
-# Example with Time to Live (TTL) Configuration
+## Production table with numeric keys
 
-This example creates a DynamoDB table with TTL enabled on a specified attribute.
+This example demonstrates a production-ready DynamoDB table with numeric partition keys and comprehensive backup and security features.
 
 ```yaml
 apiVersion: aws.project-planton.org/v1
 kind: AwsDynamodb
 metadata:
-  name: my-ttl-table
+  name: my-production-table
 spec:
-  awsCredentialId: my-aws-credential-id
-  table:
-    tableName: my-ttl-table
-    billingMode: PAY_PER_REQUEST
-    hashKey:
-      name: tokenId
-      type: S
-    attributes:
-      - name: tokenId
-        type: S
-      - name: expirationTime
-        type: N
-    ttl:
-      isEnabled: true
-      attributeName: expirationTime
+  table_name: my-production-table
+  aws_region: us-west-2
+  billing_mode: BILLING_MODE_PROVISIONED
+  partition_key_name: customer_id
+  partition_key_type: ATTRIBUTE_TYPE_NUMBER
+  sort_key_name: order_date
+  sort_key_type: ATTRIBUTE_TYPE_STRING
+  read_capacity_units: 50
+  write_capacity_units: 25
+  point_in_time_recovery_enabled: true
+  server_side_encryption_enabled: true
 ```
 
-# Example with Point-in-Time Recovery
+## CLI Flows
 
-This example creates a DynamoDB table with point-in-time recovery enabled for data protection.
+### Validate manifest
 
-```yaml
-apiVersion: aws.project-planton.org/v1
-kind: AwsDynamodb
-metadata:
-  name: my-pitr-table
-spec:
-  awsCredentialId: my-aws-credential-id
-  table:
-    tableName: my-pitr-table
-    billingMode: PAY_PER_REQUEST
-    hashKey:
-      name: recordId
-      type: S
-    attributes:
-      - name: recordId
-        type: S
-    pointInTimeRecovery:
-      isEnabled: true
+Validate your DynamoDB manifest before deployment:
+
+```bash
+project-planton validate --manifest dynamodb-table.yaml
 ```
 
-# Example with Local Secondary Index
+### Deploy with Pulumi
 
-This example creates a DynamoDB table with a local secondary index (LSI).
+Deploy using Pulumi as the IaC backend:
 
-```yaml
-apiVersion: aws.project-planton.org/v1
-kind: AwsDynamodb
-metadata:
-  name: my-lsi-table
-spec:
-  awsCredentialId: my-aws-credential-id
-  table:
-    tableName: my-lsi-table
-    billingMode: PAY_PER_REQUEST
-    hashKey:
-      name: userId
-      type: S
-    rangeKey:
-      name: timestamp
-      type: N
-    attributes:
-      - name: userId
-        type: S
-      - name: timestamp
-        type: N
-      - name: status
-        type: S
-    localSecondaryIndexes:
-      - name: StatusIndex
-        rangeKey:
-          name: status
-          type: S
-        projectionType: ALL
+```bash
+project-planton pulumi update --manifest dynamodb-table.yaml --stack my-org/my-project/dynamodb-stack --module-dir ./modules
 ```
 
-# Example with Data Import from S3
+### Deploy with Terraform
 
-This example creates a DynamoDB table and imports data from an S3 bucket.
+Deploy using Terraform as the IaC backend:
 
-```yaml
-apiVersion: aws.project-planton.org/v1
-kind: AwsDynamodb
-metadata:
-  name: my-import-table
-spec:
-  awsCredentialId: my-aws-credential-id
-  table:
-    tableName: my-import-table
-    billingMode: PAY_PER_REQUEST
-    hashKey:
-      name: productId
-      type: S
-    attributes:
-      - name: productId
-        type: S
-    importTable:
-      inputCompressionType: GZIP
-      inputFormat: DYNAMODB_JSON
-      s3BucketSource:
-        bucket: my-data-bucket
-        keyPrefix: data/imports/
-```
-
-# Example with Multiple Replica Regions (Global Table)
-
-This example creates a DynamoDB Global Table with replicas in multiple regions.
-
-```yaml
-apiVersion: aws.project-planton.org/v1
-kind: AwsDynamodb
-metadata:
-  name: my-global-table
-spec:
-  awsCredentialId: my-aws-credential-id
-  table:
-    tableName: my-global-table
-    billingMode: PAY_PER_REQUEST
-    hashKey:
-      name: itemId
-      type: S
-    attributes:
-      - name: itemId
-        type: S
-    replicaRegionNames:
-      - us-east-1
-      - eu-west-1
-      - ap-southeast-1
+```bash
+project-planton tofu apply --manifest dynamodb-table.yaml --auto-approve
 ```
 
 ---
 
-These examples illustrate various configurations of the `AwsDynamodb` API resource, demonstrating how to define DynamoDB tables with different features such as autoscaling, indexes, encryption, TTL, point-in-time recovery, data import, and global tables across multiple regions.
+These examples illustrate various configurations of the `AwsDynamodb` API resource, demonstrating how to define DynamoDB tables with different billing modes, key schemas, capacity settings, and security features.
 
-Please ensure that you replace placeholder values like `my-aws-credential-id`, `your-kms-key-id`, bucket names, and region codes with your actual configuration details.
+**Note**: Provider credentials are supplied via stack input, not in the spec. Ensure your AWS credentials are properly configured in your Planton Cloud environment before deployment.
+
+**Important considerations**:
+- Choose the appropriate billing mode based on your usage patterns
+- Design your key schema carefully for optimal performance
+- Enable point-in-time recovery for production workloads
+- Always enable server-side encryption for security
+- Monitor your capacity usage and adjust as needed

@@ -1,14 +1,10 @@
-# Create using CLI
+# AWS DynamoDB Pulumi Module Examples
 
-Create a YAML file using the examples shown below. After the YAML file is created, use the following command to apply:
+This document provides comprehensive examples of how to use the AWS DynamoDB Pulumi module for various use cases.
 
-```shell
-planton apply -f <yaml-path>
-```
+## Basic DynamoDB Table with Pay-Per-Request Billing
 
-# Basic Example
-
-This basic example creates a DynamoDB table with a simple primary key.
+This example creates a simple DynamoDB table with a string partition key using pay-per-request billing mode.
 
 ```yaml
 apiVersion: aws.project-planton.org/v1
@@ -16,252 +12,286 @@ kind: AwsDynamodb
 metadata:
   name: my-simple-table
 spec:
-  awsCredentialId: my-aws-credential-id
-  table:
-    tableName: my-simple-table
-    billingMode: PAY_PER_REQUEST
-    hashKey:
-      name: id
-      type: S
-    attributes:
-      - name: id
-        type: S
+  tableName: my-simple-table
+  awsRegion: us-east-1
+  billingMode: PAY_PER_REQUEST
+  partitionKeyName: id
+  partitionKeyType: STRING
+  serverSideEncryptionEnabled: true
+  pointInTimeRecoveryEnabled: true
 ```
 
-# Example with Provisioned Capacity and Autoscaling
+## DynamoDB Table with Provisioned Billing
 
-This example creates a DynamoDB table with provisioned read and write capacity, along with autoscaling configurations.
+This example creates a DynamoDB table with provisioned billing mode, specifying read and write capacity units.
 
 ```yaml
 apiVersion: aws.project-planton.org/v1
 kind: AwsDynamodb
 metadata:
-  name: my-autoscaling-table
+  name: my-provisioned-table
 spec:
-  awsCredentialId: my-aws-credential-id
-  table:
-    tableName: my-autoscaling-table
-    billingMode: PROVISIONED
-    readCapacity: 5
-    writeCapacity: 5
-    hashKey:
-      name: userId
-      type: S
-    attributes:
-      - name: userId
-        type: S
-    autoScale:
-      isEnabled: true
-      readCapacity:
-        minCapacity: 5
-        maxCapacity: 100
-        targetUtilization: 70
-      writeCapacity:
-        minCapacity: 5
-        maxCapacity: 100
-        targetUtilization: 70
+  tableName: my-provisioned-table
+  awsRegion: us-west-2
+  billingMode: PROVISIONED
+  partitionKeyName: user_id
+  partitionKeyType: STRING
+  readCapacityUnits: 5
+  writeCapacityUnits: 5
+  serverSideEncryptionEnabled: true
+  pointInTimeRecoveryEnabled: true
 ```
 
-# Example with Global Secondary Index
+## DynamoDB Table with Composite Key
 
-This example creates a DynamoDB table with a global secondary index (GSI) to enable queries on a non-primary key attribute.
+This example creates a DynamoDB table with both a partition key and a sort key for more complex data modeling.
 
 ```yaml
 apiVersion: aws.project-planton.org/v1
 kind: AwsDynamodb
 metadata:
-  name: my-gsi-table
+  name: my-composite-table
 spec:
-  awsCredentialId: my-aws-credential-id
-  table:
-    tableName: my-gsi-table
-    billingMode: PAY_PER_REQUEST
-    hashKey:
-      name: orderId
-      type: S
-    attributes:
-      - name: orderId
-        type: S
-      - name: customerId
-        type: S
-    globalSecondaryIndexes:
-      - name: CustomerIndex
-        hashKey:
-          name: customerId
-          type: S
-        projectionType: ALL
+  tableName: my-composite-table
+  awsRegion: eu-west-1
+  billingMode: PAY_PER_REQUEST
+  partitionKeyName: user_id
+  partitionKeyType: STRING
+  sortKeyName: timestamp
+  sortKeyType: NUMBER
+  serverSideEncryptionEnabled: true
+  pointInTimeRecoveryEnabled: true
 ```
 
-# Example with Stream Enabled and Server-Side Encryption
+## DynamoDB Table with Binary Partition Key
 
-This example creates a DynamoDB table with stream enabled and server-side encryption using a specified AWS KMS key.
+This example creates a DynamoDB table using a binary partition key, useful for storing binary data as keys.
 
 ```yaml
 apiVersion: aws.project-planton.org/v1
 kind: AwsDynamodb
 metadata:
-  name: my-secure-table
+  name: my-binary-table
 spec:
-  awsCredentialId: my-aws-credential-id
-  table:
-    tableName: my-secure-table
-    billingMode: PAY_PER_REQUEST
-    hashKey:
-      name: sessionId
-      type: S
-    attributes:
-      - name: sessionId
-        type: S
-    enableStreams: true
-    streamViewType: NEW_AND_OLD_IMAGES
-    serverSideEncryption:
-      isEnabled: true
-      kmsKeyArn: arn:aws:kms:us-west-2:123456789012:key/your-kms-key-id
+  tableName: my-binary-table
+  awsRegion: ap-southeast-1
+  billingMode: PROVISIONED
+  partitionKeyName: binary_id
+  partitionKeyType: BINARY
+  readCapacityUnits: 10
+  writeCapacityUnits: 10
+  serverSideEncryptionEnabled: true
+  pointInTimeRecoveryEnabled: true
 ```
 
-# Example with Time to Live (TTL) Configuration
+## DynamoDB Table for User Sessions
 
-This example creates a DynamoDB table with TTL enabled on a specified attribute.
+This example creates a DynamoDB table optimized for storing user session data with TTL support.
 
 ```yaml
 apiVersion: aws.project-planton.org/v1
 kind: AwsDynamodb
 metadata:
-  name: my-ttl-table
+  name: user-sessions-table
 spec:
-  awsCredentialId: my-aws-credential-id
-  table:
-    tableName: my-ttl-table
-    billingMode: PAY_PER_REQUEST
-    hashKey:
-      name: tokenId
-      type: S
-    attributes:
-      - name: tokenId
-        type: S
-      - name: expirationTime
-        type: N
-    ttl:
-      isEnabled: true
-      attributeName: expirationTime
+  tableName: user-sessions-table
+  awsRegion: us-east-1
+  billingMode: PAY_PER_REQUEST
+  partitionKeyName: session_id
+  partitionKeyType: STRING
+  sortKeyName: user_id
+  sortKeyType: STRING
+  serverSideEncryptionEnabled: true
+  pointInTimeRecoveryEnabled: true
 ```
 
-# Example with Point-in-Time Recovery
+## DynamoDB Table for E-commerce Orders
 
-This example creates a DynamoDB table with point-in-time recovery enabled for data protection.
+This example creates a DynamoDB table for storing e-commerce order data with customer and order information.
 
 ```yaml
 apiVersion: aws.project-planton.org/v1
 kind: AwsDynamodb
 metadata:
-  name: my-pitr-table
+  name: ecommerce-orders-table
 spec:
-  awsCredentialId: my-aws-credential-id
-  table:
-    tableName: my-pitr-table
-    billingMode: PAY_PER_REQUEST
-    hashKey:
-      name: recordId
-      type: S
-    attributes:
-      - name: recordId
-        type: S
-    pointInTimeRecovery:
-      isEnabled: true
+  tableName: ecommerce-orders-table
+  awsRegion: us-west-2
+  billingMode: PROVISIONED
+  partitionKeyName: customer_id
+  partitionKeyType: STRING
+  sortKeyName: order_id
+  sortKeyType: STRING
+  readCapacityUnits: 20
+  writeCapacityUnits: 15
+  serverSideEncryptionEnabled: true
+  pointInTimeRecoveryEnabled: true
 ```
 
-# Example with Local Secondary Index
+## DynamoDB Table for IoT Device Data
 
-This example creates a DynamoDB table with a local secondary index (LSI).
+This example creates a DynamoDB table for storing IoT device telemetry data with timestamp-based sorting.
 
 ```yaml
 apiVersion: aws.project-planton.org/v1
 kind: AwsDynamodb
 metadata:
-  name: my-lsi-table
+  name: iot-telemetry-table
 spec:
-  awsCredentialId: my-aws-credential-id
-  table:
-    tableName: my-lsi-table
-    billingMode: PAY_PER_REQUEST
-    hashKey:
-      name: userId
-      type: S
-    rangeKey:
-      name: timestamp
-      type: N
-    attributes:
-      - name: userId
-        type: S
-      - name: timestamp
-        type: N
-      - name: status
-        type: S
-    localSecondaryIndexes:
-      - name: StatusIndex
-        rangeKey:
-          name: status
-          type: S
-        projectionType: ALL
+  tableName: iot-telemetry-table
+  awsRegion: eu-central-1
+  billingMode: PAY_PER_REQUEST
+  partitionKeyName: device_id
+  partitionKeyType: STRING
+  sortKeyName: timestamp
+  sortKeyType: NUMBER
+  serverSideEncryptionEnabled: true
+  pointInTimeRecoveryEnabled: true
 ```
 
-# Example with Data Import from S3
+## DynamoDB Table for Gaming Leaderboards
 
-This example creates a DynamoDB table and imports data from an S3 bucket.
+This example creates a DynamoDB table for storing gaming leaderboard data with score-based sorting.
 
 ```yaml
 apiVersion: aws.project-planton.org/v1
 kind: AwsDynamodb
 metadata:
-  name: my-import-table
+  name: gaming-leaderboard-table
 spec:
-  awsCredentialId: my-aws-credential-id
-  table:
-    tableName: my-import-table
-    billingMode: PAY_PER_REQUEST
-    hashKey:
-      name: productId
-      type: S
-    attributes:
-      - name: productId
-        type: S
-    importTable:
-      inputCompressionType: GZIP
-      inputFormat: DYNAMODB_JSON
-      s3BucketSource:
-        bucket: my-data-bucket
-        keyPrefix: data/imports/
+  tableName: gaming-leaderboard-table
+  awsRegion: ap-northeast-1
+  billingMode: PROVISIONED
+  partitionKeyName: game_id
+  partitionKeyType: STRING
+  sortKeyName: score
+  sortKeyType: NUMBER
+  readCapacityUnits: 25
+  writeCapacityUnits: 20
+  serverSideEncryptionEnabled: true
+  pointInTimeRecoveryEnabled: true
 ```
 
-# Example with Multiple Replica Regions (Global Table)
+## DynamoDB Table for Content Management
 
-This example creates a DynamoDB Global Table with replicas in multiple regions.
+This example creates a DynamoDB table for storing content with category and creation date sorting.
 
 ```yaml
 apiVersion: aws.project-planton.org/v1
 kind: AwsDynamodb
 metadata:
-  name: my-global-table
+  name: content-management-table
 spec:
-  awsCredentialId: my-aws-credential-id
-  table:
-    tableName: my-global-table
-    billingMode: PAY_PER_REQUEST
-    hashKey:
-      name: itemId
-      type: S
-    attributes:
-      - name: itemId
-        type: S
-    replicaRegionNames:
-      - us-east-1
-      - eu-west-1
-      - ap-southeast-1
+  tableName: content-management-table
+  awsRegion: sa-east-1
+  billingMode: PAY_PER_REQUEST
+  partitionKeyName: content_id
+  partitionKeyType: STRING
+  sortKeyName: category
+  sortKeyType: STRING
+  serverSideEncryptionEnabled: true
+  pointInTimeRecoveryEnabled: true
 ```
 
----
+## DynamoDB Table for Financial Transactions
 
-These examples illustrate various configurations of the `AwsDynamodb` API resource, demonstrating how to define DynamoDB tables with different features such as autoscaling, indexes, encryption, TTL, point-in-time recovery, data import, and global tables across multiple regions.
+This example creates a DynamoDB table for storing financial transaction data with account and transaction date.
 
-Please ensure that you replace placeholder values like `my-aws-credential-id`, `your-kms-key-id`, bucket names, and region codes with your actual configuration details.
+```yaml
+apiVersion: aws.project-planton.org/v1
+kind: AwsDynamodb
+metadata:
+  name: financial-transactions-table
+spec:
+  tableName: financial-transactions-table
+  awsRegion: us-east-1
+  billingMode: PROVISIONED
+  partitionKeyName: account_id
+  partitionKeyType: STRING
+  sortKeyName: transaction_date
+  sortKeyType: NUMBER
+  readCapacityUnits: 30
+  writeCapacityUnits: 25
+  serverSideEncryptionEnabled: true
+  pointInTimeRecoveryEnabled: true
+```
 
+## Manifest File Example
+
+Here's a complete manifest file that can be used with the Project Planton CLI:
+
+```yaml
+apiVersion: aws.project-planton.org/v1
+kind: AwsDynamodb
+metadata:
+  name: example-dynamodb-table
+  org: my-organization
+  env: production
+  id: example-dynamodb-table-001
+spec:
+  tableName: example-dynamodb-table
+  awsRegion: us-east-1
+  billingMode: PAY_PER_REQUEST
+  partitionKeyName: id
+  partitionKeyType: STRING
+  sortKeyName: created_at
+  sortKeyType: NUMBER
+  serverSideEncryptionEnabled: true
+  pointInTimeRecoveryEnabled: true
+```
+
+## CLI Commands
+
+### Preview Changes
+```bash
+project-planton pulumi preview \
+  --manifest ../hack/manifest.yaml \
+  --stack organization/my-project/dynamodb-stack \
+  --module-dir .
+```
+
+### Apply Changes
+```bash
+project-planton pulumi update \
+  --manifest ../hack/manifest.yaml \
+  --stack organization/my-project/dynamodb-stack \
+  --module-dir . \
+  --yes
+```
+
+### Refresh State
+```bash
+project-planton pulumi refresh \
+  --manifest ../hack/manifest.yaml \
+  --stack organization/my-project/dynamodb-stack \
+  --module-dir .
+```
+
+### Destroy Resources
+```bash
+project-planton pulumi destroy \
+  --manifest ../hack/manifest.yaml \
+  --stack organization/my-project/dynamodb-stack \
+  --module-dir .
+```
+
+## Usage Notes
+
+1. **Table Names**: Must be unique within the AWS account and region, between 3-255 characters, and contain only alphanumeric characters, hyphens, and underscores.
+
+2. **Billing Mode Selection**:
+   - Use `PAY_PER_REQUEST` for unpredictable workloads or development environments
+   - Use `PROVISIONED` for predictable workloads with known capacity requirements
+
+3. **Key Design**:
+   - Choose partition keys that distribute data evenly across partitions
+   - Use sort keys to enable efficient range queries
+   - Consider access patterns when designing your key schema
+
+4. **Security**:
+   - Always enable server-side encryption for production tables
+   - Enable point-in-time recovery for critical data backup requirements
+
+5. **Capacity Planning**:
+   - Monitor CloudWatch metrics to optimize provisioned capacity
+   - Use auto-scaling for provisioned tables with variable workloads

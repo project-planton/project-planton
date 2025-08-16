@@ -1,41 +1,29 @@
-# Table name
-output "table_name" {
-  description = "Name of the DynamoDB table."
-  value       = aws_dynamodb_table.this.name
-}
-
 # Table ARN
 output "table_arn" {
-  description = "ARN of the DynamoDB table."
-  value       = aws_dynamodb_table.this.arn
+  description = "The ARN of the DynamoDB table"
+  value       = aws_dynamodb_table.table.arn
 }
 
-# Table stream ARN
-output "table_stream_arn" {
-  description = "DynamoDB table stream ARN (if streams are enabled)."
-  value       = aws_dynamodb_table.this.stream_arn
+# Table ID
+output "table_id" {
+  description = "The ID of the DynamoDB table"
+  value       = aws_dynamodb_table.table.id
 }
 
-# Autoscaling read policy ARN for the table (null if autoscaling is disabled)
-output "autoscaling_read_policy_arn" {
-  description = "ARN of the read autoscaling policy for the table."
-  value       = length(aws_appautoscaling_policy.table_read) > 0 ? aws_appautoscaling_policy.table_read[0].arn : null
+# Table Name
+output "table_name" {
+  description = "The name of the DynamoDB table"
+  value       = aws_dynamodb_table.table.name
 }
 
-# Autoscaling write policy ARN for the table (null if autoscaling is disabled)
-output "autoscaling_write_policy_arn" {
-  description = "ARN of the write autoscaling policy for the table."
-  value       = length(aws_appautoscaling_policy.table_write) > 0 ? aws_appautoscaling_policy.table_write[0].arn : null
+# Stream ARN (only if point-in-time recovery is enabled)
+output "stream_arn" {
+  description = "The stream ARN if point-in-time recovery is enabled"
+  value       = local.safe_point_in_time_recovery_enabled ? aws_dynamodb_table.table.stream_arn : null
 }
 
-# List of autoscaling read policy ARNs for each GSI
-output "autoscaling_index_read_policy_arn_list" {
-  description = "List of read autoscaling policy ARNs for each global secondary index."
-  value       = length(aws_appautoscaling_policy.gsi_read) > 0 ? [for _, r in aws_appautoscaling_policy.gsi_read : r.arn] : []
-}
-
-# List of autoscaling write policy ARNs for each GSI
-output "autoscaling_index_write_policy_arn_list" {
-  description = "List of write autoscaling policy ARNs for each global secondary index."
-  value       = length(aws_appautoscaling_policy.gsi_write) > 0 ? [for _, r in aws_appautoscaling_policy.gsi_write : r.arn] : []
+# AWS Region
+output "aws_region" {
+  description = "The AWS region where the table is located"
+  value       = local.safe_spec.aws_region
 }

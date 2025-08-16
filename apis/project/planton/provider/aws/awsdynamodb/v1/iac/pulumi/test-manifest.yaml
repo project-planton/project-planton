@@ -1,0 +1,17 @@
+apiVersion: aws.project-planton.org/v1
+kind: AwsDynamodb
+metadata:
+  name: test-dynamodb-table
+  org: test-org
+  env: development
+  id: test-dynamodb-table-001
+spec:
+  tableName: test-dynamodb-table
+  awsRegion: us-east-1
+  billingMode: PAY_PER_REQUEST
+  partitionKeyName: id
+  partitionKeyType: STRING
+  sortKeyName: created_at
+  sortKeyType: NUMBER
+  serverSideEncryptionEnabled: true
+  pointInTimeRecoveryEnabled: true

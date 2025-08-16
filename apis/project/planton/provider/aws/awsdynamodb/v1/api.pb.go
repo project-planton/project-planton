@@ -23,18 +23,18 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// aws-dynamodb
+// AwsDynamodb represents an AWS DynamoDB table resource.
 type AwsDynamodb struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// api-version
+	// API version for the resource
 	ApiVersion string `protobuf:"bytes,1,opt,name=api_version,json=apiVersion,proto3" json:"api_version,omitempty"`
-	// resource-kind
+	// Resource kind
 	Kind string `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
-	// metadata
+	// Resource metadata
 	Metadata *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
-	// spec
+	// Resource specification
 	Spec *AwsDynamodbSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
-	// status
+	// Resource status
 	Status        *AwsDynamodbStatus `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -105,16 +105,16 @@ func (x *AwsDynamodb) GetStatus() *AwsDynamodbStatus {
 	return nil
 }
 
-// aws-dynamodb status
+// AwsDynamodbStatus represents the status of an AWS DynamoDB table resource.
 type AwsDynamodbStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// lifecycle
+	// Resource lifecycle information
 	Lifecycle *shared.ApiResourceLifecycle `protobuf:"bytes,99,opt,name=lifecycle,proto3" json:"lifecycle,omitempty"`
-	// audit-info
+	// Resource audit information
 	Audit *shared.ApiResourceAudit `protobuf:"bytes,98,opt,name=audit,proto3" json:"audit,omitempty"`
-	// stack-job id
+	// Stack job ID for the deployment
 	StackJobId string `protobuf:"bytes,97,opt,name=stack_job_id,json=stackJobId,proto3" json:"stack_job_id,omitempty"`
-	// stack-outputs
+	// Stack outputs from the deployment
 	Outputs       *AwsDynamodbStackOutputs `protobuf:"bytes,1,opt,name=outputs,proto3" json:"outputs,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
