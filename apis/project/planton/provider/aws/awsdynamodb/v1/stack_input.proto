@@ -8,20 +8,13 @@ import "project/planton/shared/iac/pulumi/pulumi.proto";
 import "project/planton/shared/iac.proto";
 import "project/planton/shared/iac/terraform/terraform.proto";
 
-// AwsDynamodbStackInput defines the input required to deploy an AWS DynamoDB table.
+// AwsDynamodbStackInput is the input envelope passed to IaC modules for provisioning.
 message AwsDynamodbStackInput {
-  // IaC provisioner (Pulumi or Terraform)
   project.planton.shared.IacProvisioner provisioner = 1;
-  
-  // Pulumi stack information required when the provisioner is Pulumi
   project.planton.shared.iac.pulumi.PulumiStackInfo pulumi = 2;
-  
-  // Terraform stack information required when the provisioner is Terraform
   project.planton.shared.iac.terraform.TerraformStackInfo terraform = 3;
-  
-  // Target DynamoDB resource to be deployed
   AwsDynamodb target = 4;
-  
-  // AWS provider credentials for authentication
   project.planton.credential.awscredential.v1.AwsCredentialSpec provider_credential = 5;
 }
+
+

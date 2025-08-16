@@ -1,8 +1,5 @@
-name: aws-dynamodb-module
+name: awsdynamodb-pulumi-project
 runtime:
   name: go
-  options:
-    binary: ./pulumi
-# Uncomment the line below to enable debugging
-#    binary: ./debug.sh
-description: AWS DynamoDB table deployment module for Project Planton
+
+

@@ -3,10 +3,24 @@ kind: AwsDynamodb
 metadata:
   name: awsdynamodb-demo
 spec:
-  table_name: awsdynamodb-demo-table
-  aws_region: us-east-1
-  billing_mode: BILLING_MODE_PAY_PER_REQUEST
-  partition_key_name: id
-  partition_key_type: ATTRIBUTE_TYPE_STRING
-  point_in_time_recovery_enabled: false
-  server_side_encryption_enabled: true
+  billingMode: BILLING_MODE_PAY_PER_REQUEST
+  attributeDefinitions:
+    - name: pk
+      type: ATTRIBUTE_TYPE_S
+  keySchema:
+    - attributeName: pk
+      keyType: KEY_TYPE_HASH
+  # ttl:
+  #   enabled: false
+  #   attributeName: ""
+  # streamEnabled: false
+  # streamViewType: STREAM_VIEW_TYPE_UNSPECIFIED
+  # pointInTimeRecoveryEnabled: false
+  # serverSideEncryption:
+  #   enabled: false
+  #   kmsKeyArn: ""
+  # tableClass: TABLE_CLASS_UNSPECIFIED
+  # deletionProtectionEnabled: false
+  # contributorInsightsEnabled: false
+
+

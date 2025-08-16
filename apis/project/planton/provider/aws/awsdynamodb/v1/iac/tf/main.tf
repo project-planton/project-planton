@@ -1,53 +1,49 @@
-# AWS DynamoDB Table
-resource "aws_dynamodb_table" "table" {
-  name           = local.safe_spec.table_name
-  billing_mode   = local.safe_spec.billing_mode
-  hash_key       = local.safe_spec.partition_key_name
-  
-  # Sort key (range key) - only if specified
-  range_key = local.has_sort_key ? local.safe_spec.sort_key_name : null
-  
-  # Read capacity units - only for PROVISIONED billing
-  read_capacity = local.is_provisioned_billing ? local.safe_read_capacity_units : null
-  
-  # Write capacity units - only for PROVISIONED billing
-  write_capacity = local.is_provisioned_billing ? local.safe_write_capacity_units : null
-  
+resource "aws_dynamodb_table" "this" {
+  name = var.spec.table_name != "" ? var.spec.table_name : var.metadata.name
+
+  # Billing
+  billing_mode  = var.spec.billing_mode == "PAY_PER_REQUEST" ? "PAY_PER_REQUEST" : null
+  read_capacity  = var.spec.billing_mode == "PROVISIONED" ? var.spec.read_capacity_units : null
+  write_capacity = var.spec.billing_mode == "PROVISIONED" ? var.spec.write_capacity_units : null
+
+  # Keys
+  hash_key  = var.spec.partition_key_name
+  range_key = var.spec.sort_key_name != "" ? var.spec.sort_key_name : null
+
+  # Attributes
+  attribute {
+    name = var.spec.partition_key_name
+    type = var.spec.partition_key_type
+  }
+
+  dynamic "attribute" {
+    for_each = var.spec.sort_key_name != "" ? [1] : []
+    content {
+      name = var.spec.sort_key_name
+      type = var.spec.sort_key_type
+    }
+  }
+
   # Point-in-time recovery
   point_in_time_recovery {
-    enabled = local.safe_point_in_time_recovery_enabled
+    enabled = try(var.spec.point_in_time_recovery_enabled, false)
   }
-  
-  # Server-side encryption
-  server_side_encryption {
-    enabled = local.safe_server_side_encryption_enabled
-  }
-  
-  # Attribute definitions
-  attribute {
-    name = local.safe_spec.partition_key_name
-    type = local.safe_spec.partition_key_type
-  }
-  
-  # Sort key attribute definition - only if specified
-  dynamic "attribute" {
-    for_each = local.has_sort_key ? [1] : []
+
+  # Server-side encryption (AWS owned key when enabled)
+  dynamic "server_side_encryption" {
+    for_each = try(var.spec.server_side_encryption_enabled, false) ? [1] : []
     content {
-      name = local.safe_spec.sort_key_name
-      type = local.safe_spec.sort_key_type
+      enabled = true
     }
   }
-  
-  # Tags
-  tags = merge(
-    {
-      Name = local.safe_spec.table_name
-      Environment = local.safe_metadata.env
-      Organization = local.safe_metadata.org
-      ManagedBy = "project-planton"
-    },
-    {
-      for tag in local.safe_metadata.tags : tag => tag
-    }
-  )
+
+  tags = {
+    "planton:resource"      = "true"
+    "planton:organization"  = var.metadata.org
+    "planton:environment"   = var.metadata.env
+    "planton:resource_kind" = "AwsDynamodb"
+    "planton:resource_id"   = var.metadata.id
+  }
 }
+
+
