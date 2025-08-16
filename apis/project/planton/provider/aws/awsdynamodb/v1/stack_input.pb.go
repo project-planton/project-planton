@@ -25,19 +25,14 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// AwsDynamodbStackInput defines the input required to deploy an AWS DynamoDB table.
+// AwsDynamodbStackInput is the input envelope passed to IaC modules for provisioning.
 type AwsDynamodbStackInput struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// IaC provisioner (Pulumi or Terraform)
-	Provisioner shared.IacProvisioner `protobuf:"varint,1,opt,name=provisioner,proto3,enum=project.planton.shared.IacProvisioner" json:"provisioner,omitempty"`
-	// Pulumi stack information required when the provisioner is Pulumi
-	Pulumi *pulumi.PulumiStackInfo `protobuf:"bytes,2,opt,name=pulumi,proto3" json:"pulumi,omitempty"`
-	// Terraform stack information required when the provisioner is Terraform
-	Terraform *terraform.TerraformStackInfo `protobuf:"bytes,3,opt,name=terraform,proto3" json:"terraform,omitempty"`
-	// Target DynamoDB resource to be deployed
-	Target *AwsDynamodb `protobuf:"bytes,4,opt,name=target,proto3" json:"target,omitempty"`
-	// AWS provider credentials for authentication
-	ProviderCredential *v1.AwsCredentialSpec `protobuf:"bytes,5,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
+	state              protoimpl.MessageState        `protogen:"open.v1"`
+	Provisioner        shared.IacProvisioner         `protobuf:"varint,1,opt,name=provisioner,proto3,enum=project.planton.shared.IacProvisioner" json:"provisioner,omitempty"`
+	Pulumi             *pulumi.PulumiStackInfo       `protobuf:"bytes,2,opt,name=pulumi,proto3" json:"pulumi,omitempty"`
+	Terraform          *terraform.TerraformStackInfo `protobuf:"bytes,3,opt,name=terraform,proto3" json:"terraform,omitempty"`
+	Target             *AwsDynamodb                  `protobuf:"bytes,4,opt,name=target,proto3" json:"target,omitempty"`
+	ProviderCredential *v1.AwsCredentialSpec         `protobuf:"bytes,5,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
 }

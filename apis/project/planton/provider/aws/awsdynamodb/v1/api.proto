@@ -8,43 +8,21 @@ import "project/planton/provider/aws/awsdynamodb/v1/stack_outputs.proto";
 import "project/planton/shared/status.proto";
 import "project/planton/shared/metadata.proto";
 
-// AwsDynamodb represents an AWS DynamoDB table resource.
+// AwsDynamodb is the Kubernetes-style resource envelope for a DynamoDB table.
 message AwsDynamodb {
-  // API version for the resource
-  string api_version = 1 [
-    (buf.validate.field).string.const = "aws.project-planton.org/v1"
-  ];
-
-  // Resource kind
-  string kind = 2 [
-    (buf.validate.field).string.const = "AwsDynamodb"
-  ];
-
-  // Resource metadata
-  project.planton.shared.ApiResourceMetadata metadata = 3 [
-    (buf.validate.field).required = true
-  ];
-
-  // Resource specification
-  AwsDynamodbSpec spec = 4 [
-    (buf.validate.field).required = true
-  ];
-
-  // Resource status
+  string api_version = 1 [(buf.validate.field).string.const = "aws.project-planton.org/v1"];
+  string kind = 2 [(buf.validate.field).string.const = "AwsDynamodb"];
+  project.planton.shared.ApiResourceMetadata metadata = 3 [(buf.validate.field).required = true];
+  AwsDynamodbSpec spec = 4 [(buf.validate.field).required = true];
   AwsDynamodbStatus status = 5;
 }
 
-// AwsDynamodbStatus represents the status of an AWS DynamoDB table resource.
+// AwsDynamodbStatus captures lifecycle, audit, job linkage, and observable outputs.
 message AwsDynamodbStatus {
-  // Resource lifecycle information
   project.planton.shared.ApiResourceLifecycle lifecycle = 99;
-
-  // Resource audit information
   project.planton.shared.ApiResourceAudit audit = 98;
-
-  // Stack job ID for the deployment
   string stack_job_id = 97;
-
-  // Stack outputs from the deployment
   AwsDynamodbStackOutputs outputs = 1;
 }
+
+

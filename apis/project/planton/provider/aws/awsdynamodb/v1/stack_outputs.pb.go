@@ -21,19 +21,19 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// AwsDynamodbStackOutputs captures observable identifiers from DynamoDB table creation.
+// AwsDynamodbStackOutputs captures observable identifiers from a DynamoDB table.
 type AwsDynamodbStackOutputs struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The ARN of the DynamoDB table
-	TableArn string `protobuf:"bytes,1,opt,name=table_arn,json=tableArn,proto3" json:"table_arn,omitempty"`
-	// The ID of the DynamoDB table
-	TableId string `protobuf:"bytes,2,opt,name=table_id,json=tableId,proto3" json:"table_id,omitempty"`
-	// The name of the DynamoDB table
-	TableName string `protobuf:"bytes,3,opt,name=table_name,json=tableName,proto3" json:"table_name,omitempty"`
-	// The stream ARN if point-in-time recovery is enabled
+	// Table name
+	TableName string `protobuf:"bytes,1,opt,name=table_name,json=tableName,proto3" json:"table_name,omitempty"`
+	// Table ARN
+	TableArn string `protobuf:"bytes,2,opt,name=table_arn,json=tableArn,proto3" json:"table_arn,omitempty"`
+	// Provider-assigned table ID (if available)
+	TableId string `protobuf:"bytes,3,opt,name=table_id,json=tableId,proto3" json:"table_id,omitempty"`
+	// Stream ARN when streams are enabled
 	StreamArn string `protobuf:"bytes,4,opt,name=stream_arn,json=streamArn,proto3" json:"stream_arn,omitempty"`
-	// The AWS region where the table is located
-	AwsRegion     string `protobuf:"bytes,5,opt,name=aws_region,json=awsRegion,proto3" json:"aws_region,omitempty"`
+	// Stream label when streams are enabled
+	StreamLabel   string `protobuf:"bytes,5,opt,name=stream_label,json=streamLabel,proto3" json:"stream_label,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -68,6 +68,13 @@ func (*AwsDynamodbStackOutputs) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_aws_awsdynamodb_v1_stack_outputs_proto_rawDescGZIP(), []int{0}
 }
 
+func (x *AwsDynamodbStackOutputs) GetTableName() string {
+	if x != nil {
+		return x.TableName
+	}
+	return ""
+}
+
 func (x *AwsDynamodbStackOutputs) GetTableArn() string {
 	if x != nil {
 		return x.TableArn
@@ -82,13 +89,6 @@ func (x *AwsDynamodbStackOutputs) GetTableId() string {
 	return ""
 }
 
-func (x *AwsDynamodbStackOutputs) GetTableName() string {
-	if x != nil {
-		return x.TableName
-	}
-	return ""
-}
-
 func (x *AwsDynamodbStackOutputs) GetStreamArn() string {
 	if x != nil {
 		return x.StreamArn
@@ -96,9 +96,9 @@ func (x *AwsDynamodbStackOutputs) GetStreamArn() string {
 	return ""
 }
 
-func (x *AwsDynamodbStackOutputs) GetAwsRegion() string {
+func (x *AwsDynamodbStackOutputs) GetStreamLabel() string {
 	if x != nil {
-		return x.AwsRegion
+		return x.StreamLabel
 	}
 	return ""
 }
@@ -107,16 +107,15 @@ var File_project_planton_provider_aws_awsdynamodb_v1_stack_outputs_proto protore
 
 const file_project_planton_provider_aws_awsdynamodb_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"?project/planton/provider/aws/awsdynamodb/v1/stack_outputs.proto\x12+project.planton.provider.aws.awsdynamodb.v1\"\xae\x01\n" +
-	"\x17AwsDynamodbStackOutputs\x12\x1b\n" +
-	"\ttable_arn\x18\x01 \x01(\tR\btableArn\x12\x19\n" +
-	"\btable_id\x18\x02 \x01(\tR\atableId\x12\x1d\n" +
+	"?project/planton/provider/aws/awsdynamodb/v1/stack_outputs.proto\x12+project.planton.provider.aws.awsdynamodb.v1\"\xb2\x01\n" +
+	"\x17AwsDynamodbStackOutputs\x12\x1d\n" +
 	"\n" +
-	"table_name\x18\x03 \x01(\tR\ttableName\x12\x1d\n" +
+	"table_name\x18\x01 \x01(\tR\ttableName\x12\x1b\n" +
+	"\ttable_arn\x18\x02 \x01(\tR\btableArn\x12\x19\n" +
+	"\btable_id\x18\x03 \x01(\tR\atableId\x12\x1d\n" +
 	"\n" +
-	"stream_arn\x18\x04 \x01(\tR\tstreamArn\x12\x1d\n" +
-	"\n" +
-	"aws_region\x18\x05 \x01(\tR\tawsRegionB\x82\x03\n" +
+	"stream_arn\x18\x04 \x01(\tR\tstreamArn\x12!\n" +
+	"\fstream_label\x18\x05 \x01(\tR\vstreamLabelB\x82\x03\n" +
 	"/com.project.planton.provider.aws.awsdynamodb.v1B\x11StackOutputsProtoP\x01Zigithub.com/project-planton/project-planton/apis/project/planton/provider/aws/awsdynamodb/v1;awsdynamodbv1\xa2\x02\x05PPPAA\xaa\x02+Project.Planton.Provider.Aws.Awsdynamodb.V1\xca\x02+Project\\Planton\\Provider\\Aws\\Awsdynamodb\\V1\xe2\x027Project\\Planton\\Provider\\Aws\\Awsdynamodb\\V1\\GPBMetadata\xea\x020Project::Planton::Provider::Aws::Awsdynamodb::V1b\x06proto3"
 
 var (

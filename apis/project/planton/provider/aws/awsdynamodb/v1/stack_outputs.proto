@@ -2,20 +2,22 @@ syntax = "proto3";
 
 package project.planton.provider.aws.awsdynamodb.v1;
 
-// AwsDynamodbStackOutputs captures observable identifiers from DynamoDB table creation.
+// AwsDynamodbStackOutputs captures observable identifiers from a DynamoDB table.
 message AwsDynamodbStackOutputs {
-  // The ARN of the DynamoDB table
-  string table_arn = 1;
-  
-  // The ID of the DynamoDB table
-  string table_id = 2;
-  
-  // The name of the DynamoDB table
-  string table_name = 3;
-  
-  // The stream ARN if point-in-time recovery is enabled
+  // Table name
+  string table_name = 1;
+
+  // Table ARN
+  string table_arn = 2;
+
+  // Provider-assigned table ID (if available)
+  string table_id = 3;
+
+  // Stream ARN when streams are enabled
   string stream_arn = 4;
-  
-  // The AWS region where the table is located
-  string aws_region = 5;
+
+  // Stream label when streams are enabled
+  string stream_label = 5;
 }
+
+
