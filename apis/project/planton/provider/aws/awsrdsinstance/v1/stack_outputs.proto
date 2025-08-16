@@ -20,4 +20,7 @@ message AwsRdsInstanceStackOutputs {
   string rds_parameter_group = 7;
   // The options group assigned to the RDS instance.
   string rds_options_group = 8;
+
+  // The port on which the database accepts connections.
+  int32 rds_instance_port = 9;
 }

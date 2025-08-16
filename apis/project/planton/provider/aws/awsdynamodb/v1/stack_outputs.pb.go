@@ -38,8 +38,10 @@ type AwsDynamodbStackOutputs struct {
 	AutoscalingIndexReadPolicyArnList string `protobuf:"bytes,6,opt,name=autoscaling_index_read_policy_arn_list,json=autoscalingIndexReadPolicyArnList,proto3" json:"autoscaling_index_read_policy_arn_list,omitempty"`
 	// Autoscaling index write policy ARN list
 	AutoscalingIndexWritePolicyArnList string `protobuf:"bytes,7,opt,name=autoscaling_index_write_policy_arn_list,json=autoscalingIndexWritePolicyArnList,proto3" json:"autoscaling_index_write_policy_arn_list,omitempty"`
-	unknownFields                      protoimpl.UnknownFields
-	sizeCache                          protoimpl.SizeCache
+	// stream_label is the label of the stream (when streams are enabled).
+	StreamLabel   string `protobuf:"bytes,8,opt,name=stream_label,json=streamLabel,proto3" json:"stream_label,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *AwsDynamodbStackOutputs) Reset() {
@@ -121,11 +123,18 @@ func (x *AwsDynamodbStackOutputs) GetAutoscalingIndexWritePolicyArnList() string
 	return ""
 }
 
+func (x *AwsDynamodbStackOutputs) GetStreamLabel() string {
+	if x != nil {
+		return x.StreamLabel
+	}
+	return ""
+}
+
 var File_project_planton_provider_aws_awsdynamodb_v1_stack_outputs_proto protoreflect.FileDescriptor
 
 const file_project_planton_provider_aws_awsdynamodb_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"?project/planton/provider/aws/awsdynamodb/v1/stack_outputs.proto\x12+project.planton.provider.aws.awsdynamodb.v1\"\xa7\x03\n" +
+	"?project/planton/provider/aws/awsdynamodb/v1/stack_outputs.proto\x12+project.planton.provider.aws.awsdynamodb.v1\"\xca\x03\n" +
 	"\x17AwsDynamodbStackOutputs\x12\x1d\n" +
 	"\n" +
 	"table_name\x18\x01 \x01(\tR\ttableName\x12\x1b\n" +
@@ -134,7 +143,8 @@ const file_project_planton_provider_aws_awsdynamodb_v1_stack_outputs_proto_rawDe
 	"\x1bautoscaling_read_policy_arn\x18\x04 \x01(\tR\x18autoscalingReadPolicyArn\x12?\n" +
 	"\x1cautoscaling_write_policy_arn\x18\x05 \x01(\tR\x19autoscalingWritePolicyArn\x12Q\n" +
 	"&autoscaling_index_read_policy_arn_list\x18\x06 \x01(\tR!autoscalingIndexReadPolicyArnList\x12S\n" +
-	"'autoscaling_index_write_policy_arn_list\x18\a \x01(\tR\"autoscalingIndexWritePolicyArnListB\x82\x03\n" +
+	"'autoscaling_index_write_policy_arn_list\x18\a \x01(\tR\"autoscalingIndexWritePolicyArnList\x12!\n" +
+	"\fstream_label\x18\b \x01(\tR\vstreamLabelB\x82\x03\n" +
 	"/com.project.planton.provider.aws.awsdynamodb.v1B\x11StackOutputsProtoP\x01Zigithub.com/project-planton/project-planton/apis/project/planton/provider/aws/awsdynamodb/v1;awsdynamodbv1\xa2\x02\x05PPPAA\xaa\x02+Project.Planton.Provider.Aws.Awsdynamodb.V1\xca\x02+Project\\Planton\\Provider\\Aws\\Awsdynamodb\\V1\xe2\x027Project\\Planton\\Provider\\Aws\\Awsdynamodb\\V1\\GPBMetadata\xea\x020Project::Planton::Provider::Aws::Awsdynamodb::V1b\x06proto3"
 
 var (

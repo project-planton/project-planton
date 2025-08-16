@@ -1,9 +1,0 @@
-apiVersion: aws.project-planton.org/v1
-kind: AwsEcrRepo
-metadata:
-  name: backend-api-repo
-spec:
-  repositoryName: github.com/d33-test/backend-api
-  imageTagMutability: IMMUTABLE
-  encryptionType: AES256
-  forceDelete: false

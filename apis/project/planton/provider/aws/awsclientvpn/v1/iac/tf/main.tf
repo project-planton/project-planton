@@ -30,6 +30,9 @@ resource "aws_ec2_client_vpn_endpoint" "this" {
 
   dns_servers = length(local.safe_dns_servers) > 0 ? local.safe_dns_servers : null
 
+  # Apply security groups to target network associations. If none provided, use the module-created SG.
+  security_group_ids = local.association_security_group_ids
+
   tags = {
     Name = local.endpoint_name
   }

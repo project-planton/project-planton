@@ -8,19 +8,34 @@ import (
 )
 
 func Resources(ctx *pulumi.Context, stackInput *awsstaticwebsitev1.AwsStaticWebsiteStackInput) error {
+	locals := initializeLocals(ctx, stackInput)
+
 	awsCredential := stackInput.ProviderCredential
 
-	//create aws provider using the credentials from the input
-	_, err := aws.NewProvider(ctx,
-		"classic-provider",
-		&aws.ProviderArgs{
-			AccessKey: pulumi.String(awsCredential.AccessKeyId),
-			SecretKey: pulumi.String(awsCredential.SecretAccessKey),
-			Region:    pulumi.String(awsCredential.Region),
-		})
+	// initialize aws-native provider (fallback to default when credentials are not provided)
+	var provider *aws.Provider
+	var err error
+	if awsCredential == nil {
+		provider, err = aws.NewProvider(ctx, "native-provider", &aws.ProviderArgs{})
+	} else {
+		provider, err = aws.NewProvider(ctx,
+			"native-provider",
+			&aws.ProviderArgs{
+				AccessKey: pulumi.String(awsCredential.AccessKeyId),
+				SecretKey: pulumi.String(awsCredential.SecretAccessKey),
+				Region:    pulumi.String(awsCredential.Region),
+			})
+	}
 	if err != nil {
 		return errors.Wrap(err, "failed to create aws provider")
 	}
+
+	created, err := staticWebsite(ctx, locals, provider)
+	if err != nil {
+		return errors.Wrap(err, "failed to create static website")
+	}
+
+	ctx.Export(OpBucketId, created.BucketId)
 
 	return nil
 }

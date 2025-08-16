@@ -30,8 +30,10 @@ type AwsRdsClusterStackOutputs struct {
 	ClusterIdentifier string `protobuf:"bytes,2,opt,name=cluster_identifier,json=clusterIdentifier,proto3" json:"cluster_identifier,omitempty"`
 	// The endpoint that directs connections to the read-only replica instances.
 	ReaderEndpoint string `protobuf:"bytes,3,opt,name=reader_endpoint,json=readerEndpoint,proto3" json:"reader_endpoint,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
+	// The port on which the cluster accepts connections.
+	Port          int32 `protobuf:"varint,4,opt,name=port,proto3" json:"port,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *AwsRdsClusterStackOutputs) Reset() {
@@ -85,15 +87,23 @@ func (x *AwsRdsClusterStackOutputs) GetReaderEndpoint() string {
 	return ""
 }
 
+func (x *AwsRdsClusterStackOutputs) GetPort() int32 {
+	if x != nil {
+		return x.Port
+	}
+	return 0
+}
+
 var File_project_planton_provider_aws_awsrdscluster_v1_stack_outputs_proto protoreflect.FileDescriptor
 
 const file_project_planton_provider_aws_awsrdscluster_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Aproject/planton/provider/aws/awsrdscluster/v1/stack_outputs.proto\x12-project.planton.provider.aws.awsrdscluster.v1\"\x9c\x01\n" +
+	"Aproject/planton/provider/aws/awsrdscluster/v1/stack_outputs.proto\x12-project.planton.provider.aws.awsrdscluster.v1\"\xb0\x01\n" +
 	"\x19AwsRdsClusterStackOutputs\x12'\n" +
 	"\x0fmaster_endpoint\x18\x01 \x01(\tR\x0emasterEndpoint\x12-\n" +
 	"\x12cluster_identifier\x18\x02 \x01(\tR\x11clusterIdentifier\x12'\n" +
-	"\x0freader_endpoint\x18\x03 \x01(\tR\x0ereaderEndpointB\x90\x03\n" +
+	"\x0freader_endpoint\x18\x03 \x01(\tR\x0ereaderEndpoint\x12\x12\n" +
+	"\x04port\x18\x04 \x01(\x05R\x04portB\x90\x03\n" +
 	"1com.project.planton.provider.aws.awsrdscluster.v1B\x11StackOutputsProtoP\x01Zmgithub.com/project-planton/project-planton/apis/project/planton/provider/aws/awsrdscluster/v1;awsrdsclusterv1\xa2\x02\x05PPPAA\xaa\x02-Project.Planton.Provider.Aws.Awsrdscluster.V1\xca\x02-Project\\Planton\\Provider\\Aws\\Awsrdscluster\\V1\xe2\x029Project\\Planton\\Provider\\Aws\\Awsrdscluster\\V1\\GPBMetadata\xea\x022Project::Planton::Provider::Aws::Awsrdscluster::V1b\x06proto3"
 
 var (

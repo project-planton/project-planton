@@ -10,4 +10,7 @@ message AwsRdsClusterStackOutputs {
   string cluster_identifier = 2;
   // The endpoint that directs connections to the read-only replica instances.
   string reader_endpoint = 3;
+
+  // The port on which the cluster accepts connections.
+  int32 port = 4;
 }

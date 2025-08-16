@@ -3,6 +3,8 @@ load("@rules_go//go:def.bzl", "go_library")
 go_library(
     name = "module",
     srcs = [
+        "kms.go",
+        "locals.go",
         "main.go",
         "outputs.go",
     ],
@@ -10,6 +12,11 @@ go_library(
     visibility = ["//visibility:public"],
     deps = [
         "//apis/project/planton/provider/aws/awskmskey/v1:awskmskey",
+        "//apis/project/planton/shared/cloudresourcekind",
+        "//pkg/iac/pulumi/pulumimodule/provider/aws/awstagkeys",
+        "@com_github_pkg_errors//:errors",
+        "@com_github_pulumi_pulumi_aws_sdk_v7//go/aws",
+        "@com_github_pulumi_pulumi_aws_sdk_v7//go/aws/kms",
         "@com_github_pulumi_pulumi_sdk_v3//go/pulumi",
     ],
 )

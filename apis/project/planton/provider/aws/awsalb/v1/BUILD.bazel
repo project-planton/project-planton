@@ -25,7 +25,7 @@ go_library(
 
 go_test(
     name = "awsalb_test",
-    srcs = ["api_test.go"],
+    srcs = ["spec_test.go"],
     embed = [":awsalb"],
     deps = [
         "//apis/project/planton/shared",

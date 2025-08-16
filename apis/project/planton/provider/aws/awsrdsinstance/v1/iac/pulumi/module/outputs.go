@@ -9,4 +9,5 @@ const (
 	OpRdsSecurityGroup    = "rds_security_group"
 	OpRdsParameterGroup   = "rds_parameter_group"
 	OpRdsOptionsGroup     = "rds_options_group"
+	OpRdsInstancePort     = "rds_instance_port"
 )

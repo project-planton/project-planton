@@ -1,21 +1,21 @@
-# Terraform Module to Deploy AWS DynamoDB table
+# Terraform Module to Deploy AwsVpc
+
+This module provisions AWS Virtual Private Clouds (VPCs) with support for multi-AZ subnet configuration, NAT gateways, internet gateways, and comprehensive DNS management.
+It includes configurable CIDR blocks, availability zones, subnet sizing, and network infrastructure for secure and scalable AWS environments.
+
+Generated `variables.tf` reflects the proto schema for `AwsVpc`.
+
+## Usage
+
+Use the ProjectPlanton CLI (tofu) with the default local backend:
 
 ```shell
-project-planton tofu init --manifest hack/manifest.yaml --backend-type s3 \
-  --backend-config="bucket=planton-cloud-tf-state-backend" \
-  --backend-config="dynamodb_table=planton-cloud-tf-state-backend-lock" \
-  --backend-config="region=ap-south-2" \
-  --backend-config="key=project-planton/aws-stacks/test-aws-vpc.tfstate"
-```
-
-```shell
+project-planton tofu init --manifest hack/manifest.yaml
 project-planton tofu plan --manifest hack/manifest.yaml
-```
-
-```shell
 project-planton tofu apply --manifest hack/manifest.yaml --auto-approve
-```
-
-```shell
 project-planton tofu destroy --manifest hack/manifest.yaml --auto-approve
 ```
+
+**Note**: Credentials are provided via stack input (CLI), not in the manifest `spec`.
+
+For more examples, see [`examples.md`](./examples.md) and [`hack/manifest.yaml`](../hack/manifest.yaml).

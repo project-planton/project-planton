@@ -29,9 +29,11 @@ type AwsRoute53ZoneStackOutputs struct {
 	// hosted-zone name
 	ZoneName string `protobuf:"bytes,2,opt,name=zone_name,json=zoneName,proto3" json:"zone_name,omitempty"`
 	// The list of nameservers for the Managed Zone created for the DNS Domain.
-	Nameservers   []string `protobuf:"bytes,3,rep,name=nameservers,proto3" json:"nameservers,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	Nameservers []string `protobuf:"bytes,3,rep,name=nameservers,proto3" json:"nameservers,omitempty"`
+	// caller_reference is the unique string that identifies the request to create the hosted zone.
+	CallerReference string `protobuf:"bytes,4,opt,name=caller_reference,json=callerReference,proto3" json:"caller_reference,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *AwsRoute53ZoneStackOutputs) Reset() {
@@ -85,15 +87,23 @@ func (x *AwsRoute53ZoneStackOutputs) GetNameservers() []string {
 	return nil
 }
 
+func (x *AwsRoute53ZoneStackOutputs) GetCallerReference() string {
+	if x != nil {
+		return x.CallerReference
+	}
+	return ""
+}
+
 var File_project_planton_provider_aws_awsroute53zone_v1_stack_outputs_proto protoreflect.FileDescriptor
 
 const file_project_planton_provider_aws_awsroute53zone_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Bproject/planton/provider/aws/awsroute53zone/v1/stack_outputs.proto\x12.project.planton.provider.aws.awsroute53zone.v1\"t\n" +
+	"Bproject/planton/provider/aws/awsroute53zone/v1/stack_outputs.proto\x12.project.planton.provider.aws.awsroute53zone.v1\"\x9f\x01\n" +
 	"\x1aAwsRoute53ZoneStackOutputs\x12\x17\n" +
 	"\azone_id\x18\x01 \x01(\tR\x06zoneId\x12\x1b\n" +
 	"\tzone_name\x18\x02 \x01(\tR\bzoneName\x12 \n" +
-	"\vnameservers\x18\x03 \x03(\tR\vnameserversB\x97\x03\n" +
+	"\vnameservers\x18\x03 \x03(\tR\vnameservers\x12)\n" +
+	"\x10caller_reference\x18\x04 \x01(\tR\x0fcallerReferenceB\x97\x03\n" +
 	"2com.project.planton.provider.aws.awsroute53zone.v1B\x11StackOutputsProtoP\x01Zogithub.com/project-planton/project-planton/apis/project/planton/provider/aws/awsroute53zone/v1;awsroute53zonev1\xa2\x02\x05PPPAA\xaa\x02.Project.Planton.Provider.Aws.Awsroute53zone.V1\xca\x02.Project\\Planton\\Provider\\Aws\\Awsroute53zone\\V1\xe2\x02:Project\\Planton\\Provider\\Aws\\Awsroute53zone\\V1\\GPBMetadata\xea\x023Project::Planton::Provider::Aws::Awsroute53zone::V1b\x06proto3"
 
 var (

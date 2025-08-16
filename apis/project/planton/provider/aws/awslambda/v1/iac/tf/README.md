@@ -1,21 +1,21 @@
-# Terraform Module to Deploy AWS DynamoDB table
+# Terraform Module to Deploy AwsLambda
+
+This module provisions an AWS Lambda function with support for multiple deployment types, IAM roles, VPC integration, and monitoring.
+It includes configurable runtime environments, environment variables, CloudWatch logging, and comprehensive serverless function management.
+
+Generated `variables.tf` reflects the proto schema for `AwsLambda`.
+
+## Usage
+
+Use the ProjectPlanton CLI (tofu) with the default local backend:
 
 ```shell
-project-planton tofu init --manifest hack/manifest.yaml --backend-type s3 \
-  --backend-config="bucket=planton-cloud-tf-state-backend" \
-  --backend-config="dynamodb_table=planton-cloud-tf-state-backend-lock" \
-  --backend-config="region=ap-south-2" \
-  --backend-config="key=project-planton/aws-stacks/test-aws-lambda.tfstate"
-```
-
-```shell
+project-planton tofu init --manifest hack/manifest.yaml
 project-planton tofu plan --manifest hack/manifest.yaml
-```
-
-```shell
 project-planton tofu apply --manifest hack/manifest.yaml --auto-approve
-```
-
-```shell
 project-planton tofu destroy --manifest hack/manifest.yaml --auto-approve
 ```
+
+**Note**: Credentials are provided via stack input (CLI), not in the manifest `spec`.
+
+For more examples, see [`examples.md`](./examples.md) and [`hack/manifest.yaml`](../hack/manifest.yaml).

@@ -1,7 +1,0 @@
-apiVersion: aws.project-planton.org/v1
-kind: AwsS3Bucket
-metadata:
-  name: project-planton-org-test-aws-s3-bucket
-spec:
-  awsRegion: us-east-1
-  isPublic: true

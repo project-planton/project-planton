@@ -113,6 +113,7 @@ func ecsService(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) err
 	}
 
 	var loadBalancerDNS pulumi.StringInput = pulumi.String("")
+	var createdTargetGroupArn pulumi.StringInput = pulumi.String("")
 
 	// Guard against nil dereference when alb block is omitted
 	if spec.Alb != nil && spec.Alb.Enabled && spec.Container.Port != 0 {
@@ -150,6 +151,7 @@ func ecsService(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) err
 		if err != nil {
 			return errors.Wrap(err, "failed to create ALB target group")
 		}
+		createdTargetGroupArn = targetGroup.Arn
 
 		serviceArgs.LoadBalancers = ecs.ServiceLoadBalancerArray{
 			&ecs.ServiceLoadBalancerArgs{
@@ -245,6 +247,8 @@ func ecsService(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) err
 	ctx.Export(OpAwsEcsServiceName, awsEcsService.Name)
 	ctx.Export(OpEcsClusterName, pulumi.String(spec.ClusterArn.GetValue()))
 	ctx.Export(OpLoadBalancerDnsName, loadBalancerDNS)
+	ctx.Export(OpServiceArn, awsEcsService.Arn)
+	ctx.Export(OpTargetGroupArn, createdTargetGroupArn)
 
 	var serviceUrl pulumi.StringInput = pulumi.String("")
 	if spec.Alb != nil &&

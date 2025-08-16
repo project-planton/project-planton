@@ -16,5 +16,14 @@ func initializeLocals(ctx *pulumi.Context, stackInput *awsrdsinstancev1.AwsRdsIn
 	//assign value for the locals variable to make it available across the project
 	locals.AwsRdsInstance = stackInput.Target
 
+	// initialize standardized labels
+	locals.Labels = map[string]string{
+		"planton.org/resource":      "true",
+		"planton.org/organization":  locals.AwsRdsInstance.Metadata.Org,
+		"planton.org/environment":   locals.AwsRdsInstance.Metadata.Env,
+		"planton.org/resource-kind": "AwsRdsInstance",
+		"planton.org/resource-id":   locals.AwsRdsInstance.Metadata.Id,
+	}
+
 	return locals
 }

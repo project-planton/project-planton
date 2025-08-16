@@ -88,6 +88,7 @@ func Resources(ctx *pulumi.Context, stackInput *awsclientvpnv1.AwsClientVpnStack
 			SecurityGroupIds:      securityGroupIds,
 			AuthenticationOptions: authOptions,
 			ConnectionLogOptions:  logOptions,
+			DnsServers:            pulumi.ToStringArray(locals.AwsClientVpn.Spec.DnsServers),
 			Tags: convertstringmaps.ConvertGoStringMapToPulumiStringMap(
 				stringmaps.AddEntry(locals.AwsTags, "Name", locals.AwsClientVpn.Metadata.Name)),
 		}, pulumi.Provider(provider))
@@ -95,6 +96,7 @@ func Resources(ctx *pulumi.Context, stackInput *awsclientvpnv1.AwsClientVpnStack
 		return errors.Wrap(err, "create endpoint")
 	}
 	ctx.Export(OpClientVpnEndpointId, createdClientVpnEndpoint.ID())
+	ctx.Export(OpEndpointDnsName, createdClientVpnEndpoint.DnsName)
 
 	// --------------------------------------- Subnet associations
 	for _, subnetRef := range locals.AwsClientVpn.Spec.Subnets {

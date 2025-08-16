@@ -27,9 +27,11 @@ type AwsEcsClusterStackOutputs struct {
 	// cluster_name is the final name of the ECS cluster.
 	ClusterName string `protobuf:"bytes,1,opt,name=cluster_name,json=clusterName,proto3" json:"cluster_name,omitempty"`
 	// cluster_arn is the ARN of the ECS cluster.
-	ClusterArn    string `protobuf:"bytes,2,opt,name=cluster_arn,json=clusterArn,proto3" json:"cluster_arn,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	ClusterArn string `protobuf:"bytes,2,opt,name=cluster_arn,json=clusterArn,proto3" json:"cluster_arn,omitempty"`
+	// cluster_capacity_providers lists capacity providers associated with the cluster.
+	ClusterCapacityProviders []string `protobuf:"bytes,3,rep,name=cluster_capacity_providers,json=clusterCapacityProviders,proto3" json:"cluster_capacity_providers,omitempty"`
+	unknownFields            protoimpl.UnknownFields
+	sizeCache                protoimpl.SizeCache
 }
 
 func (x *AwsEcsClusterStackOutputs) Reset() {
@@ -76,15 +78,23 @@ func (x *AwsEcsClusterStackOutputs) GetClusterArn() string {
 	return ""
 }
 
+func (x *AwsEcsClusterStackOutputs) GetClusterCapacityProviders() []string {
+	if x != nil {
+		return x.ClusterCapacityProviders
+	}
+	return nil
+}
+
 var File_project_planton_provider_aws_awsecscluster_v1_stack_outputs_proto protoreflect.FileDescriptor
 
 const file_project_planton_provider_aws_awsecscluster_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Aproject/planton/provider/aws/awsecscluster/v1/stack_outputs.proto\x12-project.planton.provider.aws.awsecscluster.v1\"_\n" +
+	"Aproject/planton/provider/aws/awsecscluster/v1/stack_outputs.proto\x12-project.planton.provider.aws.awsecscluster.v1\"\x9d\x01\n" +
 	"\x19AwsEcsClusterStackOutputs\x12!\n" +
 	"\fcluster_name\x18\x01 \x01(\tR\vclusterName\x12\x1f\n" +
 	"\vcluster_arn\x18\x02 \x01(\tR\n" +
-	"clusterArnB\x90\x03\n" +
+	"clusterArn\x12<\n" +
+	"\x1acluster_capacity_providers\x18\x03 \x03(\tR\x18clusterCapacityProvidersB\x90\x03\n" +
 	"1com.project.planton.provider.aws.awsecscluster.v1B\x11StackOutputsProtoP\x01Zmgithub.com/project-planton/project-planton/apis/project/planton/provider/aws/awsecscluster/v1;awsecsclusterv1\xa2\x02\x05PPPAA\xaa\x02-Project.Planton.Provider.Aws.Awsecscluster.V1\xca\x02-Project\\Planton\\Provider\\Aws\\Awsecscluster\\V1\xe2\x029Project\\Planton\\Provider\\Aws\\Awsecscluster\\V1\\GPBMetadata\xea\x022Project::Planton::Provider::Aws::Awsecscluster::V1b\x06proto3"
 
 var (

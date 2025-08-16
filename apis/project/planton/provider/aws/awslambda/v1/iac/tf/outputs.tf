@@ -20,3 +20,8 @@ output "lambda_function_name" {
   description = "Name of the created Lambda Function"
   value       = aws_lambda_function.this.function_name
 }
+
+output "function_url" {
+  description = "Lambda Function URL if configured"
+  value       = ""
+}

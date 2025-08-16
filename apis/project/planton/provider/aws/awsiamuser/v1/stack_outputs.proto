@@ -16,4 +16,10 @@ message AwsIamUserStackOutputs {
 
   // console_url is the AWS console sign-in URL for this user.
   string console_url = 4;
+
+  // user_name is the friendly name of the IAM user.
+  string user_name = 5;
+
+  // user_id is the stable unique ID of the IAM user.
+  string user_id = 6;
 }

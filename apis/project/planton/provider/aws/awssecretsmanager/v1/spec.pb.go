@@ -7,6 +7,7 @@
 package awssecretsmanagerv1
 
 import (
+	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -78,9 +79,10 @@ var File_project_planton_provider_aws_awssecretsmanager_v1_spec_proto protorefle
 
 const file_project_planton_provider_aws_awssecretsmanager_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"<project/planton/provider/aws/awssecretsmanager/v1/spec.proto\x121project.planton.provider.aws.awssecretsmanager.v1\":\n" +
-	"\x15AwsSecretsManagerSpec\x12!\n" +
-	"\fsecret_names\x18\x01 \x03(\tR\vsecretNamesB\xa4\x03\n" +
+	"<project/planton/provider/aws/awssecretsmanager/v1/spec.proto\x121project.planton.provider.aws.awssecretsmanager.v1\x1a\x1bbuf/validate/validate.proto\"L\n" +
+	"\x15AwsSecretsManagerSpec\x123\n" +
+	"\fsecret_names\x18\x01 \x03(\tB\x10\xbaH\r\x92\x01\n" +
+	"\b\x01\x18\x01\"\x04r\x02\x10\x01R\vsecretNamesB\xa4\x03\n" +
 	"5com.project.planton.provider.aws.awssecretsmanager.v1B\tSpecProtoP\x01Zugithub.com/project-planton/project-planton/apis/project/planton/provider/aws/awssecretsmanager/v1;awssecretsmanagerv1\xa2\x02\x05PPPAA\xaa\x021Project.Planton.Provider.Aws.Awssecretsmanager.V1\xca\x021Project\\Planton\\Provider\\Aws\\Awssecretsmanager\\V1\xe2\x02=Project\\Planton\\Provider\\Aws\\Awssecretsmanager\\V1\\GPBMetadata\xea\x026Project::Planton::Provider::Aws::Awssecretsmanager::V1b\x06proto3"
 
 var (

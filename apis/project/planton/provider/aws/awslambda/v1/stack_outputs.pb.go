@@ -32,8 +32,10 @@ type AwsLambdaStackOutputs struct {
 	IamRoleName string `protobuf:"bytes,3,opt,name=iam_role_name,json=iamRoleName,proto3" json:"iam_role_name,omitempty"`
 	// cloud watch log group name
 	CloudwatchLogGroupName string `protobuf:"bytes,4,opt,name=cloudwatch_log_group_name,json=cloudwatchLogGroupName,proto3" json:"cloudwatch_log_group_name,omitempty"`
-	unknownFields          protoimpl.UnknownFields
-	sizeCache              protoimpl.SizeCache
+	// function_url is the Lambda Function URL if configured.
+	FunctionUrl   string `protobuf:"bytes,5,opt,name=function_url,json=functionUrl,proto3" json:"function_url,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *AwsLambdaStackOutputs) Reset() {
@@ -94,16 +96,24 @@ func (x *AwsLambdaStackOutputs) GetCloudwatchLogGroupName() string {
 	return ""
 }
 
+func (x *AwsLambdaStackOutputs) GetFunctionUrl() string {
+	if x != nil {
+		return x.FunctionUrl
+	}
+	return ""
+}
+
 var File_project_planton_provider_aws_awslambda_v1_stack_outputs_proto protoreflect.FileDescriptor
 
 const file_project_planton_provider_aws_awslambda_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"=project/planton/provider/aws/awslambda/v1/stack_outputs.proto\x12)project.planton.provider.aws.awslambda.v1\"\xd8\x01\n" +
+	"=project/planton/provider/aws/awslambda/v1/stack_outputs.proto\x12)project.planton.provider.aws.awslambda.v1\"\xfb\x01\n" +
 	"\x15AwsLambdaStackOutputs\x12.\n" +
 	"\x13lambda_function_arn\x18\x01 \x01(\tR\x11lambdaFunctionArn\x120\n" +
 	"\x14lambda_function_name\x18\x02 \x01(\tR\x12lambdaFunctionName\x12\"\n" +
 	"\riam_role_name\x18\x03 \x01(\tR\viamRoleName\x129\n" +
-	"\x19cloudwatch_log_group_name\x18\x04 \x01(\tR\x16cloudwatchLogGroupNameB\xf4\x02\n" +
+	"\x19cloudwatch_log_group_name\x18\x04 \x01(\tR\x16cloudwatchLogGroupName\x12!\n" +
+	"\ffunction_url\x18\x05 \x01(\tR\vfunctionUrlB\xf4\x02\n" +
 	"-com.project.planton.provider.aws.awslambda.v1B\x11StackOutputsProtoP\x01Zegithub.com/project-planton/project-planton/apis/project/planton/provider/aws/awslambda/v1;awslambdav1\xa2\x02\x05PPPAA\xaa\x02)Project.Planton.Provider.Aws.Awslambda.V1\xca\x02)Project\\Planton\\Provider\\Aws\\Awslambda\\V1\xe2\x025Project\\Planton\\Provider\\Aws\\Awslambda\\V1\\GPBMetadata\xea\x02.Project::Planton::Provider::Aws::Awslambda::V1b\x06proto3"
 
 var (

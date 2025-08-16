@@ -1,3 +1,54 @@
+```yaml
+apiVersion: aws.project-planton.org/v1
+kind: AwsS3Bucket
+metadata:
+  name: example-s3
+spec:
+  # example minimal spec; adjust as needed per your use case
+  isPublic: false
+  awsRegion: us-east-1
+```
+
+CLI:
+
+```bash
+project-planton pulumi preview \
+  --manifest ../hack/manifest.yaml \
+  --stack organization/<project>/<stack> \
+  --module-dir .
+
+project-planton pulumi update \
+  --manifest ../hack/manifest.yaml \
+  --stack organization/<project>/<stack> \
+  --module-dir . \
+  --yes
+```
+
+```yaml
+apiVersion: aws.project-planton.org/v1
+kind: AwsS3Bucket
+metadata:
+  name: example-s3
+spec:
+  isPublic: false
+  awsRegion: us-east-1
+```
+
+CLI:
+
+```bash
+project-planton pulumi preview \
+  --manifest ../hack/manifest.yaml \
+  --stack organization/<project>/<stack> \
+  --module-dir .
+
+project-planton pulumi update \
+  --manifest ../hack/manifest.yaml \
+  --stack organization/<project>/<stack> \
+  --module-dir . \
+  --yes
+```
+
 # Create using CLI
 
 Create a YAML file using one of the examples shown below. After the YAML file is created, use the command below to apply the configuration:

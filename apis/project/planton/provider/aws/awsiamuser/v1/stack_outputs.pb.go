@@ -32,7 +32,11 @@ type AwsIamUserStackOutputs struct {
 	// This value is sensitive and should be handled securely.
 	SecretAccessKey string `protobuf:"bytes,3,opt,name=secret_access_key,json=secretAccessKey,proto3" json:"secret_access_key,omitempty"`
 	// console_url is the AWS console sign-in URL for this user.
-	ConsoleUrl    string `protobuf:"bytes,4,opt,name=console_url,json=consoleUrl,proto3" json:"console_url,omitempty"`
+	ConsoleUrl string `protobuf:"bytes,4,opt,name=console_url,json=consoleUrl,proto3" json:"console_url,omitempty"`
+	// user_name is the friendly name of the IAM user.
+	UserName string `protobuf:"bytes,5,opt,name=user_name,json=userName,proto3" json:"user_name,omitempty"`
+	// user_id is the stable unique ID of the IAM user.
+	UserId        string `protobuf:"bytes,6,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -95,17 +99,33 @@ func (x *AwsIamUserStackOutputs) GetConsoleUrl() string {
 	return ""
 }
 
+func (x *AwsIamUserStackOutputs) GetUserName() string {
+	if x != nil {
+		return x.UserName
+	}
+	return ""
+}
+
+func (x *AwsIamUserStackOutputs) GetUserId() string {
+	if x != nil {
+		return x.UserId
+	}
+	return ""
+}
+
 var File_project_planton_provider_aws_awsiamuser_v1_stack_outputs_proto protoreflect.FileDescriptor
 
 const file_project_planton_provider_aws_awsiamuser_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	">project/planton/provider/aws/awsiamuser/v1/stack_outputs.proto\x12*project.planton.provider.aws.awsiamuser.v1\"\xa4\x01\n" +
+	">project/planton/provider/aws/awsiamuser/v1/stack_outputs.proto\x12*project.planton.provider.aws.awsiamuser.v1\"\xda\x01\n" +
 	"\x16AwsIamUserStackOutputs\x12\x19\n" +
 	"\buser_arn\x18\x01 \x01(\tR\auserArn\x12\"\n" +
 	"\raccess_key_id\x18\x02 \x01(\tR\vaccessKeyId\x12*\n" +
 	"\x11secret_access_key\x18\x03 \x01(\tR\x0fsecretAccessKey\x12\x1f\n" +
 	"\vconsole_url\x18\x04 \x01(\tR\n" +
-	"consoleUrlB\xfb\x02\n" +
+	"consoleUrl\x12\x1b\n" +
+	"\tuser_name\x18\x05 \x01(\tR\buserName\x12\x17\n" +
+	"\auser_id\x18\x06 \x01(\tR\x06userIdB\xfb\x02\n" +
 	".com.project.planton.provider.aws.awsiamuser.v1B\x11StackOutputsProtoP\x01Zggithub.com/project-planton/project-planton/apis/project/planton/provider/aws/awsiamuser/v1;awsiamuserv1\xa2\x02\x05PPPAA\xaa\x02*Project.Planton.Provider.Aws.Awsiamuser.V1\xca\x02*Project\\Planton\\Provider\\Aws\\Awsiamuser\\V1\xe2\x026Project\\Planton\\Provider\\Aws\\Awsiamuser\\V1\\GPBMetadata\xea\x02/Project::Planton::Provider::Aws::Awsiamuser::V1b\x06proto3"
 
 var (

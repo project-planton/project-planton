@@ -12,4 +12,7 @@ message AwsLambdaStackOutputs {
   string iam_role_name = 3;
   // cloud watch log group name
   string cloudwatch_log_group_name = 4;
+
+  // function_url is the Lambda Function URL if configured.
+  string function_url = 5;
 }

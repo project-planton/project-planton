@@ -205,5 +205,10 @@ func table(ctx *pulumi.Context, locals *Locals, awsProvider *aws.Provider) (*dyn
 	ctx.Export(OpTableArn, createdDynamodbTable.Arn)
 	ctx.Export(OpTableStreamArn, createdDynamodbTable.StreamArn)
 
+	// export stream label when streams are enabled
+	if awsDynamodb.Spec.EnableStreams || len(awsDynamodb.Spec.ReplicaRegionNames) > 0 {
+		ctx.Export(OpStreamLabel, createdDynamodbTable.StreamLabel)
+	}
+
 	return createdDynamodbTable, nil
 }
