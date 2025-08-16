@@ -20,9 +20,8 @@ spec:
   enabled: true
   priceClass: PRICE_CLASS_100
   origins:
-    - id: origin-1
-      domainName: my-bucket.s3.amazonaws.com
-  defaultOriginId: origin-1
+    - domainName: my-bucket.s3.amazonaws.com
+      isDefault: true
   defaultRootObject: index.html
 ```
 
@@ -30,6 +29,7 @@ This example creates a basic CloudFront distribution:
 • Uses S3 bucket as origin with custom domain name.
 • Sets price class to PRICE_CLASS_100 for cost optimization.
 • Configures index.html as the default root object.
+• Marks the origin as default using the isDefault flag.
 
 ---
 
@@ -48,9 +48,8 @@ spec:
   certificateArn: arn:aws:acm:us-east-1:123456789012:certificate/abcd1234-5678-efgh-ijkl-123456abcdef
   priceClass: PRICE_CLASS_200
   origins:
-    - id: origin-1
-      domainName: my-bucket.s3.amazonaws.com
-  defaultOriginId: origin-1
+    - domainName: my-bucket.s3.amazonaws.com
+      isDefault: true
   defaultRootObject: index.html
 ```
 
@@ -58,6 +57,7 @@ This example includes custom domain configuration:
 • Uses custom domain aliases (cdn.example.com, static.example.com).
 • Requires ACM certificate ARN in us-east-1 region.
 • Sets price class to PRICE_CLASS_200 for broader edge location coverage.
+• Marks the origin as default using the isDefault flag.
 
 ---
 
@@ -72,22 +72,22 @@ spec:
   enabled: true
   priceClass: PRICE_CLASS_ALL
   origins:
-    - id: s3-origin
-      domainName: my-bucket.s3.amazonaws.com
-    - id: api-origin
-      domainName: api.example.com
+    - domainName: my-bucket.s3.amazonaws.com
+      isDefault: true
+    - domainName: api.example.com
       originPath: /v1
-    - id: cdn-origin
-      domainName: cdn.example.com
-  defaultOriginId: s3-origin
+      isDefault: false
+    - domainName: cdn.example.com
+      isDefault: false
   defaultRootObject: index.html
 ```
 
 This example demonstrates multiple origins:
-• S3 bucket as primary origin for static content.
+• S3 bucket as primary origin for static content (marked as default).
 • API origin with custom path for backend services.
 • CDN origin for additional content sources.
 • Uses PRICE_CLASS_ALL for maximum edge location coverage.
+• Exactly one origin must be marked as default.
 
 ---
 
@@ -106,9 +106,8 @@ spec:
   certificateArn: arn:aws:acm:us-east-1:123456789012:certificate/website-cert-1234
   priceClass: PRICE_CLASS_100
   origins:
-    - id: website-origin
-      domainName: website-bucket.s3-website-us-east-1.amazonaws.com
-  defaultOriginId: website-origin
+    - domainName: website-bucket.s3-website-us-east-1.amazonaws.com
+      isDefault: true
   defaultRootObject: index.html
 ```
 
@@ -116,6 +115,7 @@ This example is optimized for static websites:
 • Uses S3 website endpoint as origin.
 • Configures both apex and www domain aliases.
 • Includes ACM certificate for HTTPS support.
+• Marks the origin as default using the isDefault flag.
 
 ---
 
@@ -129,15 +129,15 @@ metadata:
 spec:
   enabled: true
   origins:
-    - id: origin-1
-      domainName: my-bucket.s3.amazonaws.com
-  defaultOriginId: origin-1
+    - domainName: my-bucket.s3.amazonaws.com
+      isDefault: true
 ```
 
 A minimal configuration with:
 • Only required fields specified.
 • Uses default CloudFront certificate (no custom domain).
 • Default price class and cache behavior.
+• Marks the origin as default using the isDefault flag.
 
 ---
 

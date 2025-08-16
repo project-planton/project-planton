@@ -10,12 +10,17 @@ import (
 func createDistribution(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) (*cloudfront.Distribution, error) {
 	spec := locals.Spec
 
-	// Build origins from spec
+	// Build origins from spec and find the default origin
 	var origins cloudfront.DistributionOriginArray
-	for _, o := range spec.Origins {
+	var defaultOriginId pulumi.StringInput
+
+	for i, o := range spec.Origins {
+		// Generate a unique origin ID for Pulumi
+		originId := pulumi.Sprintf("origin-%d", i+1)
+
 		originArgs := &cloudfront.DistributionOriginArgs{
 			DomainName: pulumi.String(o.DomainName),
-			OriginId:   pulumi.String(o.Id),
+			OriginId:   originId,
 		}
 		if o.OriginPath != "" {
 			originArgs.OriginPath = pulumi.String(o.OriginPath)
@@ -30,11 +35,16 @@ func createDistribution(ctx *pulumi.Context, locals *Locals, provider *aws.Provi
 			},
 		}
 		origins = append(origins, originArgs)
+
+		// Set the default origin ID if this origin is marked as default
+		if o.IsDefault {
+			defaultOriginId = originId
+		}
 	}
 
 	// Default cache behavior: minimal safe settings
 	defaultBehavior := &cloudfront.DistributionDefaultCacheBehaviorArgs{
-		TargetOriginId:       pulumi.String(spec.DefaultOriginId),
+		TargetOriginId:       defaultOriginId,
 		ViewerProtocolPolicy: pulumi.String("redirect-to-https"),
 		AllowedMethods: pulumi.StringArray{
 			pulumi.String("GET"), pulumi.String("HEAD"),
