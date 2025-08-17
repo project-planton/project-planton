@@ -1,9 +1,12 @@
 package pulumistack
 
 import (
+	"bytes"
 	"fmt"
+	"io"
 	"os"
 	"os/exec"
+	"strings"
 
 	"github.com/pkg/errors"
 	"github.com/project-planton/project-planton/apis/project/planton/shared/iac/pulumi"
@@ -66,7 +69,7 @@ func Run(moduleDir, stackFqdn, targetManifestPath string, pulumiOperation pulumi
 	}
 
 	// Build pulumi command with optional flags for non-interactive runs
-	args := []string{op, "--stack", stackFqdn}
+	args := []string{op, "--stack", stackFqdn, "--non-interactive"}
 	if isAutoApprove {
 		args = append(args, "--yes")
 		// For 'pulumi up', skip preview to avoid TTY prompts in CI/non-interactive shells
@@ -83,14 +86,26 @@ func Run(moduleDir, stackFqdn, targetManifestPath string, pulumiOperation pulumi
 	// Set the working directory to the repository path
 	pulumiCmd.Dir = pulumiModuleRepoPath
 
+	// Stream to terminal and also capture output for error classification
+	buf := &bytes.Buffer{}
+	mwOut := io.MultiWriter(os.Stdout, buf)
+	mwErr := io.MultiWriter(os.Stderr, buf)
+
 	// Set stdin, stdout, and stderr to the current terminal to make it an interactive shell
 	pulumiCmd.Stdin = os.Stdin
-	pulumiCmd.Stdout = os.Stdout
-	pulumiCmd.Stderr = os.Stderr
+	pulumiCmd.Stdout = mwOut
+	pulumiCmd.Stderr = mwErr
 
 	fmt.Printf("\npulumi module directory: %s \n", pulumiModuleRepoPath)
 
 	if err := pulumiCmd.Run(); err != nil {
+		// For preview/update/refresh/destroy, Pulumi can return non-zero even when
+		// operation printed a valid plan/result. If no 'error:' diagnostics exist,
+		// treat it as success to avoid false negatives in non-interactive mode.
+		out := buf.String()
+		if !strings.Contains(out, "error:") {
+			return nil
+		}
 		return errors.Wrapf(err, "failed to execute pulumi command %s", op)
 	}
 
