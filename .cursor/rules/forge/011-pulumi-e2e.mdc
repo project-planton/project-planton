@@ -53,7 +53,6 @@ project-planton pulumi preview \
   --manifest apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/hack/manifest.yaml \
   --stack organization/<project>/<stack> \
   --module-dir apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/pulumi | cat
-
 # Apply changes
 project-planton pulumi update \
   --manifest apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/hack/manifest.yaml \
@@ -72,6 +71,12 @@ project-planton pulumi destroy \
   --manifest apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/hack/manifest.yaml \
   --stack organization/<project>/<stack> \
   --module-dir apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/pulumi | cat
+
+# Optional: Remove local stack state (cleanup)
+: ${REPO_ROOT:=$(pwd)}
+cd "$REPO_ROOT"/apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/pulumi
+pulumi stack rm organization/<project>/<stack> --yes --force | cat
+cd - >/dev/null
 ```
 
 ERROR POLICY

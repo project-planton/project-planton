@@ -3,176 +3,197 @@ syntax = "proto3";
 package project.planton.provider.aws.awslambda.v1;
 
 import "buf/validate/validate.proto";
+import "project/planton/shared/foreignkey/v1/foreign_key.proto";
 
-// AwsLambdaSpec defines the specification required to deploy an AWS Lambda function, encapsulating all configurations
-// including the function itself, IAM roles, logging configurations, and permissions for invoking the function.
-message AwsLambdaSpec {
-  // aws lambda function spec
-  AwsLambdaFunction function = 1 [
-    (buf.validate.field).required = true
+// AWSLambdaSpec defines the desired configuration for an AWS Lambda function.
+//
+// Supported code packaging models:
+// - Zip/S3: Provide an archive in S3 via `code.s3` and set `runtime` and `handler`.
+// - Container image: Provide an ECR image via `code.image_uri`. In this mode `runtime`
+//   and `handler` are defined by the image and are ignored here.
+//
+// Notes:
+// - This spec intentionally contains no validations or CEL rules; those are added later.
+// - Credentials, region, and deployment workflow live outside this spec in stack inputs.
+message AWSLambdaSpec {
+  // Human-readable function name shown in the AWS Console and APIs.
+  // Must be unique per account/region. If omitted, the platform may derive a
+  // stable name from the resource metadata (e.g., org, environment, resource name).
+  // Allowed characters and length are enforced by AWS; keep it concise and DNS-like.
+  string function_name = 1 [(buf.validate.field).string.min_len = 1];
+
+  // Free-form description visible in the AWS Console to document the purpose
+  // and behavior of the function. Useful for operational context and search.
+  string description = 2;
+
+  // IAM role ARN that the function assumes at runtime. The role should trust the
+  // Lambda service principal (lambda.amazonaws.com) and include permissions for
+  // logs (CloudWatch), VPC access if configured, KMS decryption when `kms_key_arn`
+  // is set, and any AWS services the function calls.
+  string role_arn = 3 [
+    (buf.validate.field).string = { pattern: "^$|^arn:aws:iam::[0-9]{12}:role/.+" }
   ];
 
-  // aws lambda function iam spec
-  AwsLambdaIamRole iam_role = 2;
+  // Language/runtime for zip/S3 deployments. Ignored for container image code.
+  // Examples: "nodejs18.x", "python3.11", "java21", "go1.x", "dotnet8", "ruby3.3", "provided.al2".
+  // Use "provided.al2" for custom runtimes or native binaries packaged in the zip.
+  string runtime = 4;
 
-  // aws lambda cloud watch log group
-  AwsLambdaCloudwatchLogGroup cloudwatch_log_group = 3;
+  // Entrypoint for zip/S3 deployments. Format is language-specific, e.g.:
+  // - Node.js:    "index.handler"
+  // - Python:     "module.function"
+  // - Java:       "package.Class::method"
+  // - .NET:       "Assembly::Namespace.Class::Method"
+  // - Go/custom:  usually "bootstrap" when using a custom runtime
+  // Ignored for container image code where the image CMD/ENTRYPOINT defines it.
+  string handler = 5;
 
-  // Defines which external source(s) can invoke this function (action 'lambda:InvokeFunction'). Attributes map to
-  // those of https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_permission.
-  // NOTE: to keep things simple, we only expose a subset of said attributes. If a more complex configuration is
-  // needed, declare the necessary lambda permissions outside of this module
-  repeated AwsLambdaInvokeFunctionPermission invoke_function_permissions = 4;
+  // Memory allocation in megabytes. CPU, network, and some I/O scale with this
+  // value. Choose the smallest value that meets performance goals to control cost.
+  // Typical AWS-supported range is 128–10240 MB.
+  int32 memory_mb = 6;
+
+  // Maximum execution time per invocation in seconds. Set slightly higher than
+  // the worst-case expected runtime. Typical AWS-supported range is 1–900 seconds.
+  int32 timeout_seconds = 7;
+
+  // Hard limit on concurrent executions for this function. Behavior:
+  // - Omit or set to -1 to use the unreserved account pool (no dedicated cap).
+  // - Set to 0 to effectively disable invocations (useful for maintenance).
+  // - Set to a positive integer to reserve that many concurrent executions.
+  int32 reserved_concurrency = 8;
+
+  // Key/value environment variables available to the function at runtime.
+  // Avoid embedding sensitive values directly; prefer external secret sources.
+  // When `kms_key_arn` is set, AWS encrypts these at rest using the specified key.
+  map<string, string> environment = 9;
+
+  // Subnets in which the Lambda function will create network interfaces.
+  // Typically private subnets. Provide at least two across different AZs for HA.
+  // Accepts either literal subnet IDs (value) or references to other resources
+  // that expose subnet IDs via their status/outputs.
+  repeated project.planton.shared.foreignkey.v1.StringValueOrRef subnets = 10 [
+    (buf.validate.field).repeated.unique = true
+  ];
+
+  // Security groups attached to the Lambda ENIs. Ensure outbound rules allow
+  // access to required services (e.g., databases, AWS endpoints, the Internet
+  // via NAT if needed). Accepts either literal security group IDs (value) or
+  // references to a resource that provides a security group ID output.
+  repeated project.planton.shared.foreignkey.v1.StringValueOrRef security_groups = 11 [
+    (buf.validate.field).repeated.unique = true
+  ];
+
+  // Processor architecture of the execution environment. Use ARM64 for better
+  // price/performance when your language/runtime supports it; use X86_64 for
+  // legacy dependencies or runtimes not available on ARM64.
+  Architecture architecture = 12 [
+    (buf.validate.field).enum.defined_only = true
+  ];
+
+  // ARNs of Lambda layers to include. Layers can package shared code or native
+  // dependencies. Up to five layers may be attached; order matters. Layers must
+  // be compatible with the selected runtime and architecture.
+  repeated string layer_arns = 13 [
+    (buf.validate.field).repeated = { max_items: 5, unique: true },
+    (buf.validate.field).repeated.items = { string: { min_len: 1 } }
+  ];
+
+  // Customer-managed KMS key ARN used to encrypt environment variables at rest.
+  // The execution role must have permission to decrypt with this key.
+  string kms_key_arn = 14 [
+    (buf.validate.field).string = { pattern: "^$|^arn:aws:kms:[^:]+:[0-9]{12}:key/.+" }
+  ];
+
+  // Source of the function code. Select the type and populate the corresponding
+  // fields below. Validation is applied downstream to ensure consistency.
+  CodeSourceType code_source_type = 15 [
+    (buf.validate.field).enum.defined_only = true
+  ];
+
+  // S3 location of the deployment package (zip archive) for zip-based code.
+  // The archive should contain your compiled artifacts and the handler.
+  // Prefer a bucket in the same region as the function to avoid cross-region copies.
+  S3Code s3 = 20;
+
+  // Reference to an image stored in ECR for container-based code. The image
+  // defines the runtime and handler via its entrypoint/CMD. Example:
+  // "123456789012.dkr.ecr.us-east-1.amazonaws.com/repo:tag".
+  string image_uri = 21;
+
+  // Message-level validations tying fields together.
+  option (buf.validate.message).cel = {
+    id: "code_source_type_required",
+    message: "code_source_type must be set",
+    expression: "this.code_source_type != 0"
+  };
+
+  option (buf.validate.message).cel = {
+    id: "s3_requires_runtime_handler_and_excludes_image",
+    message: "when code_source_type is S3, set s3, runtime, and handler; image_uri must be empty",
+    expression: "this.code_source_type != 1 || (has(this.s3) && this.image_uri == '' && this.runtime != '' && this.handler != '')"
+  };
+
+  option (buf.validate.message).cel = {
+    id: "image_requires_image_uri_and_excludes_s3",
+    message: "when code_source_type is IMAGE, set image_uri and do not set s3",
+    expression: "this.code_source_type != 2 || (this.image_uri != '' && !has(this.s3))"
+  };
+
+  option (buf.validate.message).cel = {
+    id: "memory_range_or_default",
+    message: "memory_mb must be between 128 and 10240 when set",
+    expression: "this.memory_mb == 0 || (this.memory_mb >= 128 && this.memory_mb <= 10240)"
+  };
+
+  option (buf.validate.message).cel = {
+    id: "timeout_range_or_default",
+    message: "timeout_seconds must be between 1 and 900 when set",
+    expression: "this.timeout_seconds == 0 || (this.timeout_seconds >= 1 && this.timeout_seconds <= 900)"
+  };
+
+  option (buf.validate.message).cel = {
+    id: "reserved_concurrency_semantics",
+    message: "reserved_concurrency must be -1, 0, or a positive integer",
+    expression: "this.reserved_concurrency == -1 || this.reserved_concurrency == 0 || this.reserved_concurrency > 0"
+  };
 }
 
-// AwsLambdaFunction represents the configuration of an AWS Lambda function, including properties such as
-// architectures, handler, runtime, memory size, timeouts, environment variables, VPC configuration, and other
-// optional settings.
-message AwsLambdaFunction {
-  // Instruction set architecture for your Lambda function. Valid values are `["x8664"]` and `["arm64"]`.
-  // Default is `["x8664"]`. Removing this attribute, function's architecture stay the same.
-  repeated string architectures = 1;
-  // Description of what your Lambda Function does.
-  string description = 2;
-  // Configuration block. Detailed below.
-  AwsLambdaFunctionFileSystemConfig file_system_config = 3;
-  // Function [entrypoint](https://docs.aws.amazon.com/lambda/latest/dg/walkthrough-custom-events-create-test-function.html) in your code.
-  string handler = 4;
-  // ECR image URI containing the function's deployment package. Exactly one of `filename`, `imageUri`,  or `s3Bucket` must be specified.
-  string image_uri = 5;
-  // Amazon Resource Name (ARN) of the AWS Key Management Service (KMS) key that is used to encrypt environment variables.
-  // If this configuration is not provided when environment variables are in use, AWS Lambda uses a default service key.
-  // If this configuration is provided when environment variables are not in use,
-  // the AWS Lambda API does not save this configuration and the provider will show a perpetual difference of adding
-  // the key. To fix the perpetual difference, remove this configuration.
-  string kms_key_arn = 6;
-  // List of Lambda Layer Version ARNs (maximum of 5) to attach to your Lambda Function.
-  // See [Lambda Layers](https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html)
-  repeated string layers = 7;
-  // Amount of memory in MB your Lambda Function can use at runtime. Defaults to `128`.
-  // See [Limits](https://docs.aws.amazon.com/lambda/latest/dg/limits.html)
-  int32 memory_size = 8;
-  // Lambda deployment package type. Valid values are `Zip` and `Image`. Defaults to `Zip`.
-  string package_type = 9;
-  // Whether to publish creation/change as new Lambda Function Version. Defaults to `false`.
-  bool publish = 10;
-  // Amount of reserved concurrent executions for this lambda function. A value of `0` disables lambda from
-  // being triggered and `-1` removes any concurrency limitations. Defaults to Unreserved Concurrency Limits `-1`.
-  // See [Managing Concurrency](https://docs.aws.amazon.com/lambda/latest/dg/concurrent-executions.html)
-  int32 reserved_concurrent_executions = 11;
-  // Identifier of the function's runtime.
-  // See [Runtimes](https://docs.aws.amazon.com/lambda/latest/dg/API_CreateFunction.html#SSS-CreateFunction-request-Runtime) for valid values.
-  string runtime = 12;
-  // S3 bucket location containing the function's deployment package. This bucket must reside in the same AWS region
-  // where you are creating the Lambda function. Exactly one of `filename`, `imageUri`, or `s3Bucket` must be specified.
-  // When `s3Bucket` is set, `s3Key` is required.
-  string s3_bucket = 13;
-  // S3 key of an object containing the function's deployment package. When `s3Bucket` is set, `s3Key` is required.
-  string s3_key = 14;
-  // Object version containing the function's deployment package. Conflicts with `filename` and `imageUri`.
-  string s3_object_version = 15;
-  // Used to trigger updates. Must be set to a base64-encoded SHA256 hash of the package file specified with either
-  // filename or s3_key. The usual way to set this is filebase64sha256('file.zip') where 'file.zip' is the local filename
-  // of the lambda function source archive.
-  string source_code_hash = 16;
-  // Amount of time your Lambda Function has to run in seconds. Defaults to `3`.
-  // See [Limits](https://docs.aws.amazon.com/lambda/latest/dg/limits.html).
-  int32 timeout = 17;
-  // Map of environment variables that are accessible from the function code during execution. If provided at least one key must be present.
-  map<string, string> variables = 18;
-  // ARN of an SNS topic or SQS queue to notify when an invocation fails. If this option is used, the function's IAM
-  // role must be granted suitable access to write to the target object, which means allowing either
-  // the `sns:Publish` or `sqs:SendMessage` action on this ARN, depending on which service is targeted.
-  string dead_letter_config_target_arn = 19;
-  // The Lambda OCI [image configurations](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_function#image_config)
-  AwsLambdaFunctionImageConfig image_config = 20;
-  // Whether to sample and trace a subset of incoming requests with AWS X-Ray. Valid values are `PassThrough` and `Active`.
-  // If `PassThrough`, Lambda will only trace the request from an upstream service if it contains a tracing header
-  // with "sampled=1". If `Active`, Lambda will respect any tracing header it receives from an upstream service.
-  // If no tracing header is received, Lambda will call X-Ray for a tracing decision.
-  string tracing_config_mode = 21;
-  // VPC configuration
-  AwsLambdaFunctionVpcConfig vpc_config = 22;
-  // The size of the Lambda function Ephemeral storage(`/tmp`) represented in MB.
-  // The minimum supported `ephemeralStorage` value defaults to `512`MB and the maximum supported value is `10240`MB.
-  int32 ephemeral_storage_size = 23;
+// S3Code describes the S3 location for a zip-based deployment package.
+// Use this when publishing code as an archive rather than a container image.
+message S3Code {
+  // S3 bucket name that contains the deployment package. Prefer a bucket in
+  // the same AWS region as the Lambda function for faster, cheaper deployments.
+  string bucket = 1 [(buf.validate.field).string.min_len = 1];
+
+  // S3 object key (path) to the deployment package zip.
+  string key = 2 [(buf.validate.field).string.min_len = 1];
+
+  // Optional object version to pin a specific artifact when versioning is enabled.
+  string object_version = 3;
 }
 
-// AwsLambdaFunctionFileSystemConfig configures the file system access for the Lambda function, allowing it to
-// access an Amazon EFS file system via an Access Point.
-message AwsLambdaFunctionFileSystemConfig {
-  // Amazon Resource Name (ARN) of the Amazon EFS Access Point that provides access to the file system.
-  string arn = 1;
-  // Path where the function can access the file system, starting with /mnt/.
-  string local_mount_path = 2;
+// Architecture enumerates supported CPU architectures for Lambda.
+enum Architecture {
+  // Let the platform or provider default select the architecture.
+  ARCHITECTURE_UNSPECIFIED = 0;
+  // 64-bit x86. Choose this for compatibility with x86-only dependencies.
+  X86_64 = 1;
+  // 64-bit ARM. Often offers better price/performance when supported.
+  ARM64 = 2;
 }
 
-// AwsLambdaFunctionImageConfig specifies the image configuration values for a container image Lambda function,
-// including command overrides, entry point, and working directory.
-message AwsLambdaFunctionImageConfig {
-  // Parameters that you want to pass in with `entryPoint`.
-  repeated string commands = 1;
-  // Entry point to your application, which is typically the location of the runtime executable.
-  repeated string entry_points = 2;
-  // Working directory.
-  string working_directory = 3;
+// Message-level validations moved inside AWSLambdaSpec.
+
+// CodeSourceType identifies how the function code is supplied.
+enum CodeSourceType {
+  CODE_SOURCE_TYPE_UNSPECIFIED = 0;
+  // Code is provided as a zip archive in S3; use the `s3` field and set
+  // `runtime` and `handler` accordingly.
+  CODE_SOURCE_TYPE_S3 = 1;
+  // Code is provided as a container image in ECR; set `image_uri`. The image
+  // defines runtime and handler, so `runtime` and `handler` here are ignored.
+  CODE_SOURCE_TYPE_IMAGE = 2;
 }
 
-// AwsLambdaFunctionVpcConfig provides VPC configuration for the Lambda function, specifying the VPC, subnets, and
-// security groups for the function's network interface.
-message AwsLambdaFunctionVpcConfig {
-  // List of security group IDs associated with the Lambda function.
-  repeated string security_group_ids = 1;
-  // List of subnet IDs associated with the Lambda function.
-  repeated string subnet_ids = 2;
-  // ID of the VPC.
-  string vpc_id = 3;
-}
 
-// AwsLambdaIamRole defines the IAM role configuration for the Lambda function, including permissions boundaries,
-// custom policies, and settings for Lambda@Edge and CloudWatch Lambda Insights.
-message AwsLambdaIamRole {
-  // ARN of the policy that is used to set the permissions boundary for the role
-  string permissions_boundary = 1;
-  // Enable Lambda@Edge for your Node.js or Python functions. The required trust relationship and publishing of
-  // function versions will be configured in this module.
-  bool lambda_at_edge_enabled = 2;
-  // Enable CloudWatch Lambda Insights for the Lambda Function.
-  bool cloudwatch_lambda_insights_enabled = 3;
-  // List of AWS Systems Manager Parameter Store parameter names. The IAM role of this Lambda function will be enhanced
-  // with read permissions for those parameters. Parameters must start with a forward slash and can be encrypted with the
-  // default KMS key.
-  repeated string ssm_parameter_names = 4;
-  // ARNs of custom policies to be attached to the lambda role
-  repeated string custom_iam_policy_arns = 5;
-  // Inline policy document (JSON) to attach to the lambda role
-  string inline_iam_policy = 6;
-}
-
-// AwsLambdaCloudwatchLogGroup configures the CloudWatch Log Group for the Lambda function, including retention
-// settings and KMS key for encrypting log data.
-message AwsLambdaCloudwatchLogGroup {
-  // The ARN of the KMS Key to use when encrypting log data.
-  // Please note, after the AWS KMS CMK is disassociated from the log group, AWS CloudWatch Logs stops encrypting newly
-  // ingested data for the log group.
-  // All previously ingested data remains encrypted, and AWS CloudWatch Logs requires permissions for the CMK whenever
-  // the encrypted data is requested.
-  string kms_key_arn = 1;
-  // Number of days you want to retain log events in the log group
-  int32 retention_in_days = 2;
-}
-
-// AwsLambdaInvokeFunctionPermission defines which external sources can invoke the Lambda function, specifying the
-// principal and source ARN.
-message AwsLambdaInvokeFunctionPermission {
-  //  The principal who is getting this permission e.g., `s3.amazonaws.com`,
-  // an AWS account ID, or AWS IAM principal, or AWS service principal such as `events.amazonaws.com` or `sns.amazonaws.com`.
-  string principal = 1;
-  // When the principal is an AWS service, the ARN of the specific resource within that service to grant permission to.
-  // Without this, any resource from `principal` will be granted permission – even if that resource is from another account.
-  // For S3, this should be the ARN of the S3 Bucket.
-  // For EventBridge events, this should be the ARN of the EventBridge Rule.
-  // For API Gateway, this should be the ARN of the API, as described
-  // [here](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-control-access-using-iam-policies-to-invoke-api.html).
-  string source_arn = 2;
-}

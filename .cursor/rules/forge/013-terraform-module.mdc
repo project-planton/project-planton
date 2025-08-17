@@ -24,7 +24,7 @@ DISCOVERY (MANDATORY BEFORE EDITS)
 SCOPE
 - Target directory: `apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/tf/`
 - Create or update:
-  - `variables.tf` — GENERATED via CLI (see below)
+  - `variables.tf` — GENERATED via CLI (see below). Do not hand-edit. If module logic needs convenience shapes (e.g., `table_name`, `hash_key`), derive those in `locals.tf` from the generated variables instead of changing `variables.tf`.
   - `main.tf` — core resources tied to spec 80/20 fields, with explicit ordering/depends_on as needed
   - `outputs.tf` — outputs mapping to `<Kind>StackOutputs`
   - `locals.tf` — safe_* locals and computed booleans for conditional flows
@@ -39,7 +39,7 @@ make local | cat
 ```bash
 project-planton tofu generate-variables <Kind> --output-file apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/tf/variables.tf | cat
 ```
-- Do NOT handcraft `variables.tf`. The generator uses `variablestf.ProtoToVariablesTF` and repo API docs to produce the exact schema expected by ProjectPlanton.
+- Do NOT handcraft `variables.tf`. The generator uses `variablestf.ProtoToVariablesTF` and repo API docs to produce the exact schema expected by ProjectPlanton. Derive any convenience values in `locals.tf` and reference them from `main.tf`.
 
 CONTENT GUIDELINES (NON-generated files)
 - provider.tf:

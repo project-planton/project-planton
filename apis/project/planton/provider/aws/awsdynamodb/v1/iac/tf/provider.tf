@@ -2,13 +2,11 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = ">= 5.0"
+      version = "= 5.82.0"
     }
   }
 }
 
-provider "aws" {
-  # Region is supplied via stack input credentials/environment
-}
+provider "aws" {}
 
 

@@ -1,21 +1,26 @@
 output "table_name" {
-  value = aws_dynamodb_table.this.name
+  description = "The DynamoDB table name."
+  value       = aws_dynamodb_table.this.name
 }
 
 output "table_arn" {
-  value = aws_dynamodb_table.this.arn
+  description = "The DynamoDB table ARN."
+  value       = aws_dynamodb_table.this.arn
 }
 
 output "table_id" {
-  value = aws_dynamodb_table.this.id
+  description = "The provider-assigned table ID."
+  value       = aws_dynamodb_table.this.id
 }
 
 output "stream_arn" {
-  value = try(aws_dynamodb_table.this.stream_arn, null)
+  description = "The stream ARN if streams are enabled."
+  value       = aws_dynamodb_table.this.stream_arn
 }
 
 output "stream_label" {
-  value = try(aws_dynamodb_table.this.stream_label, null)
+  description = "The stream label if streams are enabled."
+  value       = aws_dynamodb_table.this.stream_label
 }
 
 

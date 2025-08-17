@@ -24,7 +24,7 @@ make local | cat
 DISCOVERY (MANDATORY BEFORE RUN)
 - Verify these paths exist for the target resource:
   - `apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/tf/`
-  - `apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/tf/hack/manifest.yaml`
+  - `apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/hack/manifest.yaml` (use this manifest; do not create a separate tf/hack copy)
 
 SCOPE
 - Execute non-interactive end-to-end run using ProjectPlanton CLI (tofu) with the default local backend (no backend flags):
