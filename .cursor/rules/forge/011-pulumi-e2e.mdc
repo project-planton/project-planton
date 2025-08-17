@@ -14,7 +14,7 @@ PREREQUISITES
 - Pulumi module package exists under `iac/pulumi/module/` (rule 009)
 - Pulumi entrypoint exists under `iac/pulumi/main.go` (rule 010)
 - Top-level hack manifest exists at `iac/hack/manifest.yaml` (rule 008)
-- Required cloud credentials are configured in the environment or accessible to the CLI
+- Required cloud credentials are configured and available to Pulumi via ambient lookup (no flags by default)
 
 PREP: INSTALL LOCAL CLI BUILD
 Install the local CLI so it picks up latest proto and behavior changes.
