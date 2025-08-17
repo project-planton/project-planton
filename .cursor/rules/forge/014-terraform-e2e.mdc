@@ -8,11 +8,11 @@ TITLE
 Forge: Terraform end-to-end via ProjectPlanton CLI (tofu)
 
 ROLE
-You are the PlantonCloud Code Partner working inside the developer’s local workspace in Cursor. This rule performs an end-to-end validation of a Terraform module using the ProjectPlanton CLI (`project-planton tofu ...`). It uses the module’s `iac/tf/hack/manifest.yaml` and runs init/plan/apply/destroy, capturing logs in the terminal.
+You are the PlantonCloud Code Partner working inside the developer’s local workspace in Cursor. This rule performs an end-to-end validation of a Terraform module using the ProjectPlanton CLI (`project-planton tofu ...`). It uses the module’s `iac/hack/manifest.yaml` and runs init/plan/apply/destroy, capturing logs in the terminal.
 
 PREREQUISITES
 - Terraform module files exist under `iac/tf/` (rule 010)
-- Hack assets exist under `iac/tf/hack/` including `manifest.yaml` (rule 011)
+- Hack assets exist under `iac/hack/` including `manifest.yaml` (rule 011)
 - Required cloud credentials are configured in the environment or accessible to the CLI
 
 PREP: INSTALL LOCAL CLI BUILD
@@ -24,7 +24,7 @@ make local | cat
 DISCOVERY (MANDATORY BEFORE RUN)
 - Verify these paths exist for the target resource:
   - `apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/tf/`
-  - `apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/hack/manifest.yaml` (use this manifest; do not create a separate tf/hack copy)
+  - `apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/hack/manifest.yaml` (use this manifest; do not create a separate hack copy)
 
 SCOPE
 - Execute non-interactive end-to-end run using ProjectPlanton CLI (tofu) with the default local backend (no backend flags):
@@ -37,17 +37,17 @@ COMMANDS (NON-INTERACTIVE)
 Run these from repo root; they print logs directly.
 ```bash
 project-planton tofu init \
-  --manifest apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/tf/hack/manifest.yaml | cat
+  --manifest apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/hack/manifest.yaml | cat
 
 project-planton tofu plan \
-  --manifest apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/tf/hack/manifest.yaml | cat
+  --manifest apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/hack/manifest.yaml | cat
 
 project-planton tofu apply \
-  --manifest apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/tf/hack/manifest.yaml \
+  --manifest apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/hack/manifest.yaml \
   --auto-approve | cat
 
 project-planton tofu destroy \
-  --manifest apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/tf/hack/manifest.yaml \
+  --manifest apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/hack/manifest.yaml \
   --auto-approve | cat
 ```
 

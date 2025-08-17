@@ -6,6 +6,7 @@ import (
 	"github.com/bufbuild/protovalidate-go"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
+	foreignkeyv1 "github.com/project-planton/project-planton/apis/project/planton/shared/foreignkey/v1"
 )
 
 func TestAWSLambdaSpec(t *testing.T) {
@@ -19,7 +20,7 @@ var _ = Describe("AWSLambdaSpec validations", func() {
 	BeforeEach(func() {
 		spec = &AWSLambdaSpec{
 			FunctionName:        "my-func",
-			RoleArn:             "arn:aws:iam::123456789012:role/service-role/my-role",
+			RoleArn:             &foreignkeyv1.StringValueOrRef{LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "arn:aws:iam::123456789012:role/service-role/my-role"}},
 			Runtime:             "nodejs18.x",
 			Handler:             "index.handler",
 			MemoryMb:            512,
@@ -29,8 +30,8 @@ var _ = Describe("AWSLambdaSpec validations", func() {
 			Subnets:             nil, // optional
 			SecurityGroups:      nil, // optional
 			Architecture:        Architecture_X86_64,
-			LayerArns:           []string{"arn:aws:lambda:us-east-1:123456789012:layer:my-layer:1"},
-			KmsKeyArn:           "",
+			LayerArns:           []*foreignkeyv1.StringValueOrRef{{LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "arn:aws:lambda:us-east-1:123456789012:layer:my-layer:1"}}},
+			KmsKeyArn:           nil,
 			CodeSourceType:      CodeSourceType_CODE_SOURCE_TYPE_S3,
 			S3: &S3Code{
 				Bucket: "my-bucket",
@@ -51,8 +52,8 @@ var _ = Describe("AWSLambdaSpec validations", func() {
 		Expect(err).NotTo(BeNil())
 	})
 
-	It("fails when role_arn is an invalid format", func() {
-		spec.RoleArn = "not-an-arn"
+	It("fails when role_arn is missing", func() {
+		spec.RoleArn = nil
 		err := protovalidate.Validate(spec)
 		Expect(err).NotTo(BeNil())
 	})

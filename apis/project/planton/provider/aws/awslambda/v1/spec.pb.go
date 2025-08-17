@@ -150,11 +150,9 @@ type AWSLambdaSpec struct {
 	// Free-form description visible in the AWS Console to document the purpose
 	// and behavior of the function. Useful for operational context and search.
 	Description string `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
-	// IAM role ARN that the function assumes at runtime. The role should trust the
-	// Lambda service principal (lambda.amazonaws.com) and include permissions for
-	// logs (CloudWatch), VPC access if configured, KMS decryption when `kms_key_arn`
-	// is set, and any AWS services the function calls.
-	RoleArn string `protobuf:"bytes,3,opt,name=role_arn,json=roleArn,proto3" json:"role_arn,omitempty"`
+	// Execution role for the function. Accepts a direct role ARN (value) or a reference
+	// to another resource that surfaces a role ARN in its outputs (e.g., AwsIamRole).
+	RoleArn *v1.StringValueOrRef `protobuf:"bytes,3,opt,name=role_arn,json=roleArn,proto3" json:"role_arn,omitempty"`
 	// Language/runtime for zip/S3 deployments. Ignored for container image code.
 	// Examples: "nodejs18.x", "python3.11", "java21", "go1.x", "dotnet8", "ruby3.3", "provided.al2".
 	// Use "provided.al2" for custom runtimes or native binaries packaged in the zip.
@@ -197,24 +195,23 @@ type AWSLambdaSpec struct {
 	// price/performance when your language/runtime supports it; use X86_64 for
 	// legacy dependencies or runtimes not available on ARM64.
 	Architecture Architecture `protobuf:"varint,12,opt,name=architecture,proto3,enum=project.planton.provider.aws.awslambda.v1.Architecture" json:"architecture,omitempty"`
-	// ARNs of Lambda layers to include. Layers can package shared code or native
-	// dependencies. Up to five layers may be attached; order matters. Layers must
-	// be compatible with the selected runtime and architecture.
-	LayerArns []string `protobuf:"bytes,13,rep,name=layer_arns,json=layerArns,proto3" json:"layer_arns,omitempty"`
-	// Customer-managed KMS key ARN used to encrypt environment variables at rest.
-	// The execution role must have permission to decrypt with this key.
-	KmsKeyArn string `protobuf:"bytes,14,opt,name=kms_key_arn,json=kmsKeyArn,proto3" json:"kms_key_arn,omitempty"`
+	// Layer ARNs to include. Accepts direct ARNs (value) or references to resources
+	// that provide layer ARNs as outputs. Up to five layers may be attached; order matters.
+	LayerArns []*v1.StringValueOrRef `protobuf:"bytes,13,rep,name=layer_arns,json=layerArns,proto3" json:"layer_arns,omitempty"`
+	// Customer-managed KMS key used to encrypt environment variables at rest.
+	// Accepts a direct key ARN (value) or a reference to a KMS key resource output.
+	KmsKeyArn *v1.StringValueOrRef `protobuf:"bytes,14,opt,name=kms_key_arn,json=kmsKeyArn,proto3" json:"kms_key_arn,omitempty"`
 	// Source of the function code. Select the type and populate the corresponding
 	// fields below. Validation is applied downstream to ensure consistency.
 	CodeSourceType CodeSourceType `protobuf:"varint,15,opt,name=code_source_type,json=codeSourceType,proto3,enum=project.planton.provider.aws.awslambda.v1.CodeSourceType" json:"code_source_type,omitempty"`
 	// S3 location of the deployment package (zip archive) for zip-based code.
 	// The archive should contain your compiled artifacts and the handler.
 	// Prefer a bucket in the same region as the function to avoid cross-region copies.
-	S3 *S3Code `protobuf:"bytes,20,opt,name=s3,proto3" json:"s3,omitempty"`
+	S3 *S3Code `protobuf:"bytes,16,opt,name=s3,proto3" json:"s3,omitempty"`
 	// Reference to an image stored in ECR for container-based code. The image
 	// defines the runtime and handler via its entrypoint/CMD. Example:
 	// "123456789012.dkr.ecr.us-east-1.amazonaws.com/repo:tag".
-	ImageUri      string `protobuf:"bytes,21,opt,name=image_uri,json=imageUri,proto3" json:"image_uri,omitempty"`
+	ImageUri      string `protobuf:"bytes,17,opt,name=image_uri,json=imageUri,proto3" json:"image_uri,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -263,11 +260,11 @@ func (x *AWSLambdaSpec) GetDescription() string {
 	return ""
 }
 
-func (x *AWSLambdaSpec) GetRoleArn() string {
+func (x *AWSLambdaSpec) GetRoleArn() *v1.StringValueOrRef {
 	if x != nil {
 		return x.RoleArn
 	}
-	return ""
+	return nil
 }
 
 func (x *AWSLambdaSpec) GetRuntime() string {
@@ -333,18 +330,18 @@ func (x *AWSLambdaSpec) GetArchitecture() Architecture {
 	return Architecture_ARCHITECTURE_UNSPECIFIED
 }
 
-func (x *AWSLambdaSpec) GetLayerArns() []string {
+func (x *AWSLambdaSpec) GetLayerArns() []*v1.StringValueOrRef {
 	if x != nil {
 		return x.LayerArns
 	}
 	return nil
 }
 
-func (x *AWSLambdaSpec) GetKmsKeyArn() string {
+func (x *AWSLambdaSpec) GetKmsKeyArn() *v1.StringValueOrRef {
 	if x != nil {
 		return x.KmsKeyArn
 	}
-	return ""
+	return nil
 }
 
 func (x *AWSLambdaSpec) GetCodeSourceType() CodeSourceType {
@@ -438,32 +435,32 @@ var File_project_planton_provider_aws_awslambda_v1_spec_proto protoreflect.FileD
 
 const file_project_planton_provider_aws_awslambda_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"4project/planton/provider/aws/awslambda/v1/spec.proto\x12)project.planton.provider.aws.awslambda.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\"\x8d\x11\n" +
+	"4project/planton/provider/aws/awslambda/v1/spec.proto\x12)project.planton.provider.aws.awslambda.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\"\xc9\x13\n" +
 	"\rAWSLambdaSpec\x12,\n" +
 	"\rfunction_name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\ffunctionName\x12 \n" +
-	"\vdescription\x18\x02 \x01(\tR\vdescription\x12D\n" +
-	"\brole_arn\x18\x03 \x01(\tB)\xbaH&r$2\"^$|^arn:aws:iam::[0-9]{12}:role/.+R\aroleArn\x12\x18\n" +
+	"\vdescription\x18\x02 \x01(\tR\vdescription\x12y\n" +
+	"\brole_arn\x18\x03 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB&\xbaH\x03\xc8\x01\x01\x88\xd4a\xd0\x01\x92\xd4a\x17status.outputs.role_arnR\aroleArn\x12\x18\n" +
 	"\aruntime\x18\x04 \x01(\tR\aruntime\x12\x18\n" +
 	"\ahandler\x18\x05 \x01(\tR\ahandler\x12\x1b\n" +
 	"\tmemory_mb\x18\x06 \x01(\x05R\bmemoryMb\x12'\n" +
 	"\x0ftimeout_seconds\x18\a \x01(\x05R\x0etimeoutSeconds\x121\n" +
 	"\x14reserved_concurrency\x18\b \x01(\x05R\x13reservedConcurrency\x12k\n" +
-	"\venvironment\x18\t \x03(\v2I.project.planton.provider.aws.awslambda.v1.AWSLambdaSpec.EnvironmentEntryR\venvironment\x12Z\n" +
+	"\venvironment\x18\t \x03(\v2I.project.planton.provider.aws.awslambda.v1.AWSLambdaSpec.EnvironmentEntryR\venvironment\x12W\n" +
 	"\asubnets\x18\n" +
-	" \x03(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB\b\xbaH\x05\x92\x01\x02\x18\x01R\asubnets\x12i\n" +
-	"\x0fsecurity_groups\x18\v \x03(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB\b\xbaH\x05\x92\x01\x02\x18\x01R\x0esecurityGroups\x12e\n" +
-	"\farchitecture\x18\f \x01(\x0e27.project.planton.provider.aws.awslambda.v1.ArchitectureB\b\xbaH\x05\x82\x01\x02\x10\x01R\farchitecture\x12/\n" +
+	" \x03(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB\x05\x88\xd4a\xd9\x01R\asubnets\x12\x8a\x01\n" +
+	"\x0fsecurity_groups\x18\v \x03(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB)\x88\xd4a\xd7\x01\x92\xd4a status.outputs.security_group_idR\x0esecurityGroups\x12e\n" +
+	"\farchitecture\x18\f \x01(\x0e27.project.planton.provider.aws.awslambda.v1.ArchitectureB\b\xbaH\x05\x82\x01\x02\x10\x01R\farchitecture\x12U\n" +
 	"\n" +
-	"layer_arns\x18\r \x03(\tB\x10\xbaH\r\x92\x01\n" +
-	"\x10\x05\x18\x01\"\x04r\x02\x10\x01R\tlayerArns\x12M\n" +
-	"\vkms_key_arn\x18\x0e \x01(\tB-\xbaH*r(2&^$|^arn:aws:kms:[^:]+:[0-9]{12}:key/.+R\tkmsKeyArn\x12m\n" +
+	"layer_arns\x18\r \x03(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefR\tlayerArns\x12w\n" +
+	"\vkms_key_arn\x18\x0e \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB\x1f\x88\xd4a\xdc\x01\x92\xd4a\x16status.outputs.key_arnR\tkmsKeyArn\x12m\n" +
 	"\x10code_source_type\x18\x0f \x01(\x0e29.project.planton.provider.aws.awslambda.v1.CodeSourceTypeB\b\xbaH\x05\x82\x01\x02\x10\x01R\x0ecodeSourceType\x12A\n" +
-	"\x02s3\x18\x14 \x01(\v21.project.planton.provider.aws.awslambda.v1.S3CodeR\x02s3\x12\x1b\n" +
-	"\timage_uri\x18\x15 \x01(\tR\bimageUri\x1a>\n" +
+	"\x02s3\x18\x10 \x01(\v21.project.planton.provider.aws.awslambda.v1.S3CodeR\x02s3\x12\x1b\n" +
+	"\timage_uri\x18\x11 \x01(\tR\bimageUri\x1a>\n" +
 	"\x10EnvironmentEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:\x8e\b\xbaH\x8a\b\x1aU\n" +
-	"\x19code_source_type_required\x12\x1ccode_source_type must be set\x1a\x1athis.code_source_type != 0\x1a\xf6\x01\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:\xa6\t\xbaH\xa2\t\x1aU\n" +
+	"\x19code_source_type_required\x12\x1ccode_source_type must be set\x1a\x1athis.code_source_type != 0\x1a\x95\x01\n" +
+	"\rrole_required\x121role_arn must be provided as a value or reference\x1aQhas(this.role_arn) && (has(this.role_arn.value) || has(this.role_arn.value_from))\x1a\xf6\x01\n" +
 	".s3_requires_runtime_handler_and_excludes_image\x12Rwhen code_source_type is S3, set s3, runtime, and handler; image_uri must be empty\x1apthis.code_source_type != 1 || (has(this.s3) && this.image_uri == '' && this.runtime != '' && this.handler != '')\x1a\xb2\x01\n" +
 	"(image_requires_image_uri_and_excludes_s3\x12?when code_source_type is IMAGE, set image_uri and do not set s3\x1aEthis.code_source_type != 2 || (this.image_uri != '' && !has(this.s3))\x1a\x96\x01\n" +
 	"\x17memory_range_or_default\x120memory_mb must be between 128 and 10240 when set\x1aIthis.memory_mb == 0 || (this.memory_mb >= 128 && this.memory_mb <= 10240)\x1a\xa7\x01\n" +
@@ -507,17 +504,20 @@ var file_project_planton_provider_aws_awslambda_v1_spec_proto_goTypes = []any{
 	(*v1.StringValueOrRef)(nil), // 5: project.planton.shared.foreignkey.v1.StringValueOrRef
 }
 var file_project_planton_provider_aws_awslambda_v1_spec_proto_depIdxs = []int32{
-	4, // 0: project.planton.provider.aws.awslambda.v1.AWSLambdaSpec.environment:type_name -> project.planton.provider.aws.awslambda.v1.AWSLambdaSpec.EnvironmentEntry
-	5, // 1: project.planton.provider.aws.awslambda.v1.AWSLambdaSpec.subnets:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
-	5, // 2: project.planton.provider.aws.awslambda.v1.AWSLambdaSpec.security_groups:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
-	0, // 3: project.planton.provider.aws.awslambda.v1.AWSLambdaSpec.architecture:type_name -> project.planton.provider.aws.awslambda.v1.Architecture
-	1, // 4: project.planton.provider.aws.awslambda.v1.AWSLambdaSpec.code_source_type:type_name -> project.planton.provider.aws.awslambda.v1.CodeSourceType
-	3, // 5: project.planton.provider.aws.awslambda.v1.AWSLambdaSpec.s3:type_name -> project.planton.provider.aws.awslambda.v1.S3Code
-	6, // [6:6] is the sub-list for method output_type
-	6, // [6:6] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	5, // 0: project.planton.provider.aws.awslambda.v1.AWSLambdaSpec.role_arn:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
+	4, // 1: project.planton.provider.aws.awslambda.v1.AWSLambdaSpec.environment:type_name -> project.planton.provider.aws.awslambda.v1.AWSLambdaSpec.EnvironmentEntry
+	5, // 2: project.planton.provider.aws.awslambda.v1.AWSLambdaSpec.subnets:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
+	5, // 3: project.planton.provider.aws.awslambda.v1.AWSLambdaSpec.security_groups:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
+	0, // 4: project.planton.provider.aws.awslambda.v1.AWSLambdaSpec.architecture:type_name -> project.planton.provider.aws.awslambda.v1.Architecture
+	5, // 5: project.planton.provider.aws.awslambda.v1.AWSLambdaSpec.layer_arns:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
+	5, // 6: project.planton.provider.aws.awslambda.v1.AWSLambdaSpec.kms_key_arn:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
+	1, // 7: project.planton.provider.aws.awslambda.v1.AWSLambdaSpec.code_source_type:type_name -> project.planton.provider.aws.awslambda.v1.CodeSourceType
+	3, // 8: project.planton.provider.aws.awslambda.v1.AWSLambdaSpec.s3:type_name -> project.planton.provider.aws.awslambda.v1.S3Code
+	9, // [9:9] is the sub-list for method output_type
+	9, // [9:9] is the sub-list for method input_type
+	9, // [9:9] is the sub-list for extension type_name
+	9, // [9:9] is the sub-list for extension extendee
+	0, // [0:9] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_provider_aws_awslambda_v1_spec_proto_init() }

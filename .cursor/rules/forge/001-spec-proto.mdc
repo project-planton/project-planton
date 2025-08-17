@@ -33,16 +33,26 @@ SPEC.PROTO CONTENT REQUIREMENTS
 - Syntax and package:
   - `syntax = "proto3";`
   - `package project.planton.provider.<provider>.<kindfolder>.v1;`
-- Imports: none (no validations in this step).
+- Imports: none (no validations in this step). Exception: you MAY import `project/planton/shared/foreignkey/v1/foreign_key.proto` when you need value-or-reference fields.
 - Define a single top-level message named `<Kind>Spec`.
 - Include only essential 80/20 fields and enums to capture common usage.
+- For cross-resource identifiers (for example, ARNs/IDs like IAM Role ARN, KMS Key ARN, Security Group IDs, Subnet IDs, Route53 Zone IDs, etc.), prefer using `project.planton.shared.foreignkey.v1.StringValueOrRef` (or `Int32ValueOrRef` for numbers) instead of raw strings/ints. This enables Canvas visualization and cross-resource wiring.
+- When using `StringValueOrRef` for well-known kinds, set default hints using field options:
+  - `(project.planton.shared.foreignkey.v1.default_kind) = <CloudResourceKind>`
+  - `(project.planton.shared.foreignkey.v1.default_kind_field_path) = "status.outputs.<field>"`
+  Examples:
+  - Subnets: default_kind = AwsVpc
+  - Security groups: default_kind = AwsSecurityGroup, default_kind_field_path = "status.outputs.security_group_id"
+  - IAM role: default_kind = AwsIamRole, default_kind_field_path = "status.outputs.role_arn"
+  - KMS key: default_kind = AwsKmsKey, default_kind_field_path = "status.outputs.key_arn"
+  - Skip defaults if a future resource kind does not yet exist (e.g., Lambda Layer) — use plain `StringValueOrRef` without defaults.
 - Provide brief comments for fields and enums. Keep it readable.
 - Avoid provider credentials in this file (those belong to stack_input later).
 - Avoid deep nesting unless absolutely required.
 
 IMPLEMENTATION NOTES
 - Use official provider docs and reputable references to pick 80/20 fields, but keep this draft simple; deeper validations come in later rules.
-- Prefer strings for IDs/ARNs and simple enums for finite choices.
+- Prefer `StringValueOrRef` for IDs/ARNs that refer to other resources. Use simple enums for finite choices.
 - Provide sensible comments that explain purpose and typical values.
 
 BUILD & VERIFY (NON-INTERACTIVE)

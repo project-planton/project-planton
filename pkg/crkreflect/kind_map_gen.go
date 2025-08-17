@@ -152,7 +152,7 @@ var ProviderAwsMap = map[cloudresourcekind.CloudResourceKind]proto.Message{
 	cloudresourcekind.CloudResourceKind_AwsIamRole:         &awsiamrolev1.AwsIamRole{},
 	cloudresourcekind.CloudResourceKind_AwsIamUser:         &awsiamuserv1.AwsIamUser{},
 	cloudresourcekind.CloudResourceKind_AwsKmsKey:          &awskmskeyv1.AwsKmsKey{},
-	cloudresourcekind.CloudResourceKind_AwsLambda:          &awslambdav1.AwsLambda{},
+	cloudresourcekind.CloudResourceKind_AwsLambda:          &awslambdav1.AWSLambda{},
 	cloudresourcekind.CloudResourceKind_AwsRdsCluster:      &awsrdsclusterv1.AwsRdsCluster{},
 	cloudresourcekind.CloudResourceKind_AwsRdsInstance:     &awsrdsinstancev1.AwsRdsInstance{},
 	cloudresourcekind.CloudResourceKind_AwsRoute53Zone:     &awsroute53zonev1.AwsRoute53Zone{},

@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package project.planton.provider.aws.awslambda.v1;
+
+import "buf/validate/validate.proto";
+import "project/planton/provider/aws/awslambda/v1/spec.proto";
+import "project/planton/provider/aws/awslambda/v1/stack_outputs.proto";
+import "project/planton/shared/status.proto";
+import "project/planton/shared/metadata.proto";
+
+// AWSLambda is the API envelope for an AWS Lambda function resource.
+message AWSLambda {
+  // api-version must be set to "aws.project-planton.org/v1".
+  string api_version = 1 [
+    (buf.validate.field).string.const = "aws.project-planton.org/v1"
+  ];
+
+  // resource-kind for this Lambda resource, must be "AWSLambda".
+  string kind = 2 [
+    (buf.validate.field).string.const = "AWSLambda"
+  ];
+
+  // metadata captures identifying information (name, org, version, etc.).
+  project.planton.shared.ApiResourceMetadata metadata = 3 [
+    (buf.validate.field).required = true
+  ];
+
+  // spec holds the desired configuration for the Lambda function.
+  AWSLambdaSpec spec = 4 [
+    (buf.validate.field).required = true
+  ];
+
+  // status holds runtime or post-deployment information.
+  AWSLambdaStatus status = 5;
+}
+
+// AWSLambdaStatus describes the status fields for an AWS Lambda resource.
+message AWSLambdaStatus {
+  // lifecycle indicates if the resource is active or has been marked for removal.
+  project.planton.shared.ApiResourceLifecycle lifecycle = 99;
+
+  // audit contains creation and update information for the resource.
+  project.planton.shared.ApiResourceAudit audit = 98;
+
+  // stack_job_id stores the ID of the Pulumi/Terraform stack job responsible for provisioning.
+  string stack_job_id = 97;
+
+  // outputs captures the observable values returned by Pulumi/Terraform after provisioning.
+  AWSLambdaStackOutputs outputs = 1;
+}
+
+

@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package project.planton.provider.aws.awslambda.v1;
+
+import "project/planton/shared/iac.proto";
+import "project/planton/shared/iac/pulumi/pulumi.proto";
+import "project/planton/shared/iac/terraform/terraform.proto";
+import "project/planton/provider/aws/awslambda/v1/api.proto";
+import "project/planton/credential/awscredential/v1/spec.proto";
+
+// AWSLambdaStackInput defines the inputs passed to IaC to provision an AWS Lambda resource.
+message AWSLambdaStackInput {
+  // IaC provisioner to use (Pulumi or Terraform)
+  project.planton.shared.IacProvisioner provisioner = 1;
+
+  // Pulumi-specific stack information
+  project.planton.shared.iac.pulumi.PulumiStackInfo pulumi = 2;
+
+  // Terraform-specific stack information
+  project.planton.shared.iac.terraform.TerraformStackInfo terraform = 3;
+
+  // Target API resource describing the desired Lambda configuration
+  AWSLambda target = 4;
+
+  // Cloud provider credentials to use for provisioning
+  project.planton.credential.awscredential.v1.AwsCredentialSpec provider_credential = 5;
+}
+
+
