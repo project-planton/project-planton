@@ -83,6 +83,11 @@ vet:
 fmt:
 	go fmt ./...
 
+.PHONY: lint
+lint:
+	@bash hack/guards/ensure_correct_paths.sh
+	@echo "Lint checks passed."
+
 .PHONY: clean
 clean:
 	rm -rf ${build_dir}

@@ -1,27 +1,26 @@
-###############################################################################
-# Outputs
-###############################################################################
-output "iam_role_name" {
-  description = "Name of the IAM Role created for the Lambda Function"
-  value       = aws_iam_role.lambda.name
+output "function_arn" {
+  description = "The ARN of the Lambda function."
+  value       = try(aws_lambda_function.this[0].arn, null)
 }
 
-output "cloudwatch_log_group_name" {
-  description = "Name of the CloudWatch Log Group for the Lambda Function"
-  value       = local.create_cloudwatch_log_group ? aws_cloudwatch_log_group.lambda[0].name : null
+output "function_name" {
+  description = "The name of the Lambda function."
+  value       = try(aws_lambda_function.this[0].function_name, null)
 }
 
-output "lambda_function_arn" {
-  description = "ARN of the created Lambda Function"
-  value       = aws_lambda_function.this.arn
+output "log_group_name" {
+  description = "CloudWatch Logs log group name for the function."
+  value       = try(aws_cloudwatch_log_group.lambda[0].name, null)
 }
 
-output "lambda_function_name" {
-  description = "Name of the created Lambda Function"
-  value       = aws_lambda_function.this.function_name
+output "role_arn" {
+  description = "Execution role ARN used by the Lambda function."
+  value       = aws_iam_role.lambda.arn
 }
 
-output "function_url" {
-  description = "Lambda Function URL if configured"
-  value       = ""
+output "layer_arns" {
+  description = "List of layer ARNs attached to the Lambda function."
+  value       = try(aws_lambda_function.this[0].layers, [])
 }
+
+

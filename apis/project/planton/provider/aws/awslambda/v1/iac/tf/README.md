@@ -1,21 +1,15 @@
-# Terraform Module to Deploy AwsLambda
+# Terraform Module to Deploy AWSLambda
 
-This module provisions an AWS Lambda function with support for multiple deployment types, IAM roles, VPC integration, and monitoring.
-It includes configurable runtime environments, environment variables, CloudWatch logging, and comprehensive serverless function management.
+This module deploys an `AWSLambda` resource using Terraform via the ProjectPlanton CLI (tofu).
 
-Generated `variables.tf` reflects the proto schema for `AwsLambda`.
+## CLI
 
-## Usage
-
-Use the ProjectPlanton CLI (tofu) with the default local backend:
-
-```shell
+```bash
 project-planton tofu init --manifest hack/manifest.yaml
 project-planton tofu plan --manifest hack/manifest.yaml
 project-planton tofu apply --manifest hack/manifest.yaml --auto-approve
 project-planton tofu destroy --manifest hack/manifest.yaml --auto-approve
 ```
 
-**Note**: Credentials are provided via stack input (CLI), not in the manifest `spec`.
-
-For more examples, see [`examples.md`](./examples.md) and [`hack/manifest.yaml`](../hack/manifest.yaml).
+- Credentials are provided via the CLI stack input, not stored in the manifest `spec`.
+- Example manifest: see `apis/project/planton/provider/aws/awslambda/v1/iac/hack/manifest.yaml`.

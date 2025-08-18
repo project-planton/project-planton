@@ -1,9 +1,9 @@
 package module
 
 const (
-	OpIamRoleName            = "iam_role_name"
-	OpLambdaFunctionArn      = "lambda_function_arn"
-	OpLambdaFunctionName     = "lambda_function_name"
-	OpCloudwatchLogGroupName = "cloudwatch_log_group_name"
-	OpFunctionUrl            = "function_url"
+	OpFunctionArn  = "function_arn"
+	OpFunctionName = "function_name"
+	OpLogGroupName = "log_group_name"
+	OpRoleArn      = "role_arn"
+	OpLayerArns    = "layer_arns"
 )

@@ -23,3 +23,6 @@ bazel-bin
 bazel-out
 bazel-testlogs
 bazel-project-planton
+Pulumi.*.yaml
+!Pulumi.yaml
+

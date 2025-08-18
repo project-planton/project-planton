@@ -21,19 +21,19 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// aws-lambda stack outputs
+// AwsLambdaStackOutputs captures observable identifiers produced after provisioning an AWS Lambda function.
 type AwsLambdaStackOutputs struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// arn of the lambda function created on aws
-	LambdaFunctionArn string `protobuf:"bytes,1,opt,name=lambda_function_arn,json=lambdaFunctionArn,proto3" json:"lambda_function_arn,omitempty"`
-	// name of the lambda function created on aws
-	LambdaFunctionName string `protobuf:"bytes,2,opt,name=lambda_function_name,json=lambdaFunctionName,proto3" json:"lambda_function_name,omitempty"`
-	// iam role name
-	IamRoleName string `protobuf:"bytes,3,opt,name=iam_role_name,json=iamRoleName,proto3" json:"iam_role_name,omitempty"`
-	// cloud watch log group name
-	CloudwatchLogGroupName string `protobuf:"bytes,4,opt,name=cloudwatch_log_group_name,json=cloudwatchLogGroupName,proto3" json:"cloudwatch_log_group_name,omitempty"`
-	// function_url is the Lambda Function URL if configured.
-	FunctionUrl   string `protobuf:"bytes,5,opt,name=function_url,json=functionUrl,proto3" json:"function_url,omitempty"`
+	// function_arn is the full ARN of the Lambda function.
+	FunctionArn string `protobuf:"bytes,1,opt,name=function_arn,json=functionArn,proto3" json:"function_arn,omitempty"`
+	// function_name is the final name of the Lambda function.
+	FunctionName string `protobuf:"bytes,2,opt,name=function_name,json=functionName,proto3" json:"function_name,omitempty"`
+	// log_group_name is the CloudWatch Logs log group created for the function (e.g., "/aws/lambda/<function_name>").
+	LogGroupName string `protobuf:"bytes,3,opt,name=log_group_name,json=logGroupName,proto3" json:"log_group_name,omitempty"`
+	// role_arn is the execution role ARN that the function assumes.
+	RoleArn string `protobuf:"bytes,4,opt,name=role_arn,json=roleArn,proto3" json:"role_arn,omitempty"`
+	// layer_arns is the set of layer ARNs attached to the function (if any).
+	LayerArns     []string `protobuf:"bytes,5,rep,name=layer_arns,json=layerArns,proto3" json:"layer_arns,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -68,52 +68,53 @@ func (*AwsLambdaStackOutputs) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_aws_awslambda_v1_stack_outputs_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *AwsLambdaStackOutputs) GetLambdaFunctionArn() string {
+func (x *AwsLambdaStackOutputs) GetFunctionArn() string {
 	if x != nil {
-		return x.LambdaFunctionArn
+		return x.FunctionArn
 	}
 	return ""
 }
 
-func (x *AwsLambdaStackOutputs) GetLambdaFunctionName() string {
+func (x *AwsLambdaStackOutputs) GetFunctionName() string {
 	if x != nil {
-		return x.LambdaFunctionName
+		return x.FunctionName
 	}
 	return ""
 }
 
-func (x *AwsLambdaStackOutputs) GetIamRoleName() string {
+func (x *AwsLambdaStackOutputs) GetLogGroupName() string {
 	if x != nil {
-		return x.IamRoleName
+		return x.LogGroupName
 	}
 	return ""
 }
 
-func (x *AwsLambdaStackOutputs) GetCloudwatchLogGroupName() string {
+func (x *AwsLambdaStackOutputs) GetRoleArn() string {
 	if x != nil {
-		return x.CloudwatchLogGroupName
+		return x.RoleArn
 	}
 	return ""
 }
 
-func (x *AwsLambdaStackOutputs) GetFunctionUrl() string {
+func (x *AwsLambdaStackOutputs) GetLayerArns() []string {
 	if x != nil {
-		return x.FunctionUrl
+		return x.LayerArns
 	}
-	return ""
+	return nil
 }
 
 var File_project_planton_provider_aws_awslambda_v1_stack_outputs_proto protoreflect.FileDescriptor
 
 const file_project_planton_provider_aws_awslambda_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"=project/planton/provider/aws/awslambda/v1/stack_outputs.proto\x12)project.planton.provider.aws.awslambda.v1\"\xfb\x01\n" +
-	"\x15AwsLambdaStackOutputs\x12.\n" +
-	"\x13lambda_function_arn\x18\x01 \x01(\tR\x11lambdaFunctionArn\x120\n" +
-	"\x14lambda_function_name\x18\x02 \x01(\tR\x12lambdaFunctionName\x12\"\n" +
-	"\riam_role_name\x18\x03 \x01(\tR\viamRoleName\x129\n" +
-	"\x19cloudwatch_log_group_name\x18\x04 \x01(\tR\x16cloudwatchLogGroupName\x12!\n" +
-	"\ffunction_url\x18\x05 \x01(\tR\vfunctionUrlB\xf4\x02\n" +
+	"=project/planton/provider/aws/awslambda/v1/stack_outputs.proto\x12)project.planton.provider.aws.awslambda.v1\"\xbf\x01\n" +
+	"\x15AwsLambdaStackOutputs\x12!\n" +
+	"\ffunction_arn\x18\x01 \x01(\tR\vfunctionArn\x12#\n" +
+	"\rfunction_name\x18\x02 \x01(\tR\ffunctionName\x12$\n" +
+	"\x0elog_group_name\x18\x03 \x01(\tR\flogGroupName\x12\x19\n" +
+	"\brole_arn\x18\x04 \x01(\tR\aroleArn\x12\x1d\n" +
+	"\n" +
+	"layer_arns\x18\x05 \x03(\tR\tlayerArnsB\xf4\x02\n" +
 	"-com.project.planton.provider.aws.awslambda.v1B\x11StackOutputsProtoP\x01Zegithub.com/project-planton/project-planton/apis/project/planton/provider/aws/awslambda/v1;awslambdav1\xa2\x02\x05PPPAA\xaa\x02)Project.Planton.Provider.Aws.Awslambda.V1\xca\x02)Project\\Planton\\Provider\\Aws\\Awslambda\\V1\xe2\x025Project\\Planton\\Provider\\Aws\\Awslambda\\V1\\GPBMetadata\xea\x02.Project::Planton::Provider::Aws::Awslambda::V1b\x06proto3"
 
 var (

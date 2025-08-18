@@ -14,13 +14,14 @@ PREREQUISITES
 - Pulumi module package exists under `iac/pulumi/module/` (rule 009)
 - Pulumi entrypoint exists under `iac/pulumi/main.go` (rule 010)
 - Top-level hack manifest exists at `iac/hack/manifest.yaml` (rule 008)
-- Required cloud credentials are configured in the environment or accessible to the CLI
+- Required cloud credentials are configured and available to Pulumi via ambient lookup (no flags by default)
 
 PREP: INSTALL LOCAL CLI BUILD
 Install the local CLI so it picks up latest proto and behavior changes.
 ```bash
 : ${REPO_ROOT:=$(pwd)}
 make -C "$REPO_ROOT" local | cat
+make -C "$REPO_ROOT" lint | cat
 ```
 
 PREP: INITIALIZE PULUMI BACKEND AND STACK (NON-INTERACTIVE)
@@ -53,7 +54,6 @@ project-planton pulumi preview \
   --manifest apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/hack/manifest.yaml \
   --stack organization/<project>/<stack> \
   --module-dir apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/pulumi | cat
-
 # Apply changes
 project-planton pulumi update \
   --manifest apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/hack/manifest.yaml \
@@ -72,6 +72,12 @@ project-planton pulumi destroy \
   --manifest apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/hack/manifest.yaml \
   --stack organization/<project>/<stack> \
   --module-dir apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/pulumi | cat
+
+# Optional: Remove local stack state (cleanup)
+: ${REPO_ROOT:=$(pwd)}
+cd "$REPO_ROOT"/apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/pulumi
+pulumi stack rm organization/<project>/<stack> --yes --force | cat
+cd - >/dev/null
 ```
 
 ERROR POLICY

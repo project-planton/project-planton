@@ -7,13 +7,14 @@ package main
 import (
 	"bytes"
 	"fmt"
-	"github.com/project-planton/project-planton/pkg/crkreflect"
 	"go/format"
 	"os"
 	"path/filepath"
 	"sort"
 	"strings"
 	"text/template"
+
+	"github.com/project-planton/project-planton/pkg/crkreflect"
 
 	"github.com/pkg/errors"
 	cloudresourcekind "github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"

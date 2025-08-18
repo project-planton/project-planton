@@ -90,7 +90,8 @@ var _ = Describe("AwsCloudFrontSpec validations", func() {
 ```
 
 BUILD & RUN (NON-INTERACTIVE)
-- Execute tests for the target directory:
+- Run path guard lint, then execute tests for the target directory:
+  - `make lint | cat`
   - `go test ./apis/project/planton/provider/<provider>/<kindfolder>/v1/... | cat`
 - If failures occur:
   1) If due to CEL expression semantics (e.g., nil-safety, enum comparisons), update CEL within `spec.proto` to a safe equivalent. Rebuild protos:

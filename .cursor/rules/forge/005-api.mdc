@@ -49,6 +49,7 @@ VALIDATION NOTES
 
 BUILD & VERIFY (NON-INTERACTIVE)
 - After writing `api.proto`, run:
+  - `make lint | cat`
   - `make -C apis build | cat`
 - Fix import paths/consts up to 3 attempts if build errors occur, then re-run.
 - On success, announce completion and point to the file path.

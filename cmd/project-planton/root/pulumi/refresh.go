@@ -42,7 +42,7 @@ func refreshHandler(cmd *cobra.Command, args []string) {
 	}
 
 	err = pulumistack.Run(moduleDir, stackFqdn, targetManifestPath,
-		pulumi.PulumiOperationType_refresh, false, valueOverrides, credentialOptions...)
+		pulumi.PulumiOperationType_refresh, false, true, valueOverrides, credentialOptions...)
 	if err != nil {
 		log.Fatalf("failed to run pulumi: %v", err)
 	}

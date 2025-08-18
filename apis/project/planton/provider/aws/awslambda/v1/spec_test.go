@@ -6,50 +6,113 @@ import (
 	"github.com/bufbuild/protovalidate-go"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/project-planton/project-planton/apis/project/planton/shared"
+	foreignkeyv1 "github.com/project-planton/project-planton/apis/project/planton/shared/foreignkey/v1"
 )
 
-func TestAwsLambda(t *testing.T) {
+func TestAwsLambdaSpec(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "AwsLambda Suite")
+	RunSpecs(t, "AwsLambdaSpec Validation Suite")
 }
 
-var _ = Describe("AwsLambda Custom Validation Tests", func() {
-	Describe("When valid input is passed", func() {
-		Context("aws_lambda", func() {
-			var input *AwsLambda
+var _ = Describe("AwsLambdaSpec validations", func() {
+	var spec *AwsLambdaSpec
 
-			BeforeEach(func() {
-				input = &AwsLambda{
-					ApiVersion: "aws.project-planton.org/v1",
-					Kind:       "AwsLambda",
-					Metadata: &shared.ApiResourceMetadata{
-						Name: "my-lambda-resource",
-					},
-					Spec: &AwsLambdaSpec{
-						Function: &AwsLambdaFunction{
-							Handler: "testHandler",
-						},
-					},
-				}
-			})
+	BeforeEach(func() {
+		spec = &AwsLambdaSpec{
+			FunctionName:        "my-func",
+			RoleArn:             &foreignkeyv1.StringValueOrRef{LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "arn:aws:iam::123456789012:role/service-role/my-role"}},
+			Runtime:             "nodejs18.x",
+			Handler:             "index.handler",
+			MemoryMb:            512,
+			TimeoutSeconds:      30,
+			ReservedConcurrency: 1,
+			Environment:         map[string]string{"FOO": "bar"},
+			Subnets:             nil, // optional
+			SecurityGroups:      nil, // optional
+			Architecture:        Architecture_X86_64,
+			LayerArns:           []*foreignkeyv1.StringValueOrRef{{LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "arn:aws:lambda:us-east-1:123456789012:layer:my-layer:1"}}},
+			KmsKeyArn:           nil,
+			CodeSourceType:      CodeSourceType_CODE_SOURCE_TYPE_S3,
+			S3: &S3Code{
+				Bucket: "my-bucket",
+				Key:    "artifacts/app.zip",
+			},
+			ImageUri: "",
+		}
+	})
 
-			It("should not return a validation error", func() {
-				err := protovalidate.Validate(input)
-				Expect(err).To(BeNil())
-			})
+	It("accepts a valid S3-based spec", func() {
+		err := protovalidate.Validate(spec)
+		Expect(err).To(BeNil())
+	})
 
-			It("should fail when api_version is incorrect", func() {
-				input.ApiVersion = "invalid-value"
-				err := protovalidate.Validate(input)
-				Expect(err).NotTo(BeNil())
-			})
+	It("fails when function_name is empty", func() {
+		spec.FunctionName = ""
+		err := protovalidate.Validate(spec)
+		Expect(err).NotTo(BeNil())
+	})
 
-			It("should fail when kind is incorrect", func() {
-				input.Kind = "SomeOtherKind"
-				err := protovalidate.Validate(input)
-				Expect(err).NotTo(BeNil())
-			})
-		})
+	It("fails when role_arn is missing", func() {
+		spec.RoleArn = nil
+		err := protovalidate.Validate(spec)
+		Expect(err).NotTo(BeNil())
+	})
+
+	It("fails when code_source_type is unspecified", func() {
+		spec.CodeSourceType = CodeSourceType_CODE_SOURCE_TYPE_UNSPECIFIED
+		err := protovalidate.Validate(spec)
+		Expect(err).NotTo(BeNil())
+	})
+
+	It("fails CEL when S3 type but missing runtime/handler or image_uri set", func() {
+		spec.CodeSourceType = CodeSourceType_CODE_SOURCE_TYPE_S3
+		spec.S3 = &S3Code{Bucket: "my-bucket", Key: "app.zip"}
+		spec.Runtime = ""
+		err := protovalidate.Validate(spec)
+		Expect(err).NotTo(BeNil())
+
+		spec.Runtime = "nodejs18.x"
+		spec.Handler = "index.handler"
+		spec.ImageUri = "123456789012.dkr.ecr.us-east-1.amazonaws.com/repo:tag"
+		err = protovalidate.Validate(spec)
+		Expect(err).NotTo(BeNil())
+	})
+
+	It("accepts a valid image-based spec and fails if s3 is set", func() {
+		spec.CodeSourceType = CodeSourceType_CODE_SOURCE_TYPE_IMAGE
+		spec.S3 = nil
+		spec.ImageUri = "123456789012.dkr.ecr.us-east-1.amazonaws.com/repo:tag"
+		// runtime/handler are ignored for image type in CEL
+		err := protovalidate.Validate(spec)
+		Expect(err).To(BeNil())
+
+		spec.S3 = &S3Code{Bucket: "b", Key: "k"}
+		err = protovalidate.Validate(spec)
+		Expect(err).NotTo(BeNil())
+	})
+
+	It("enforces memory and timeout bounds when set", func() {
+		spec.MemoryMb = 64
+		err := protovalidate.Validate(spec)
+		Expect(err).NotTo(BeNil())
+
+		spec.MemoryMb = 128
+		spec.TimeoutSeconds = 901
+		err = protovalidate.Validate(spec)
+		Expect(err).NotTo(BeNil())
+	})
+
+	It("enforces reserved_concurrency semantics", func() {
+		spec.ReservedConcurrency = -2
+		err := protovalidate.Validate(spec)
+		Expect(err).NotTo(BeNil())
+
+		spec.ReservedConcurrency = 0
+		err = protovalidate.Validate(spec)
+		Expect(err).To(BeNil())
+
+		spec.ReservedConcurrency = 5
+		err = protovalidate.Validate(spec)
+		Expect(err).To(BeNil())
 	})
 })

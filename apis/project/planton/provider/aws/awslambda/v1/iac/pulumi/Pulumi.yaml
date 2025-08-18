@@ -1,5 +1,8 @@
 name: awslambda-pulumi-project
 runtime:
   name: go
-# options:
-#   binary: ./debug.sh
+  # options:
+  #   binary: ./debug.sh
+
+
+

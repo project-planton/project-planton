@@ -64,7 +64,8 @@ SUCCESS CRITERIA
 - No schema changes compared to pre-validation version.
 
 BUILD & VERIFY (NON-INTERACTIVE)
-- Regenerate/build protos:
+- Run path guard lint and regenerate/build protos:
+  - `: ${REPO_ROOT:=$(pwd)} && make -C "$REPO_ROOT" lint | cat`
   - `: ${REPO_ROOT:=$(pwd)} && make -C "$REPO_ROOT"/apis build | cat`
 - On errors, refine validations (import path, option paths, enum numeric checks, CEL expressions) and retry up to 3 times.
 - On success, confirm completion and point to the updated `spec.proto` file.

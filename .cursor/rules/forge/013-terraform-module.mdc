@@ -8,7 +8,7 @@ TITLE
 Forge: Generate Terraform module (tf/) from proto definitions
 
 ROLE
-You are the PlantonCloud Code Partner working inside the developer’s local workspace in Cursor. This rule scaffolds the Terraform module for a resource under `iac/tf/`. It MUST first read the resource proto files to derive resources and outputs. For `variables.tf`, use the official generator built into the CLI to ensure compatibility.
+You are the PlantonCloud Code Partner working inside the developer’s local workspace in Cursor. This rule scaffolds the Terraform module for a resource under `iac/tf/`. It MUST first read the resource proto files to derive resources and outputs. For `variables.tf`, use the official generator built into the CLI to ensure compatibility. Follow industry-standard Terraform layout: split resources by concern across multiple `*.tf` files (no single controller/entrypoint is required; Terraform loads all files in the directory and builds one graph).
 
 DISCOVERY (MANDATORY BEFORE EDITS)
 - Open and read:
@@ -24,11 +24,15 @@ DISCOVERY (MANDATORY BEFORE EDITS)
 SCOPE
 - Target directory: `apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/tf/`
 - Create or update:
-  - `variables.tf` — GENERATED via CLI (see below)
-  - `main.tf` — core resources tied to spec 80/20 fields, with explicit ordering/depends_on as needed
+  - `variables.tf` — GENERATED via CLI (see below). Do not hand-edit. If module logic needs convenience shapes (e.g., `table_name`, `hash_key`), derive those in `locals.tf` from the generated variables instead of changing `variables.tf`.
+  - `provider.tf` — `required_providers` and minimal provider configuration
+  - `locals.tf` — `safe_*` locals and computed booleans for conditional flows
   - `outputs.tf` — outputs mapping to `<Kind>StackOutputs`
-  - `locals.tf` — safe_* locals and computed booleans for conditional flows
-  - `provider.tf` — required_providers and minimal provider configuration
+  - Resource files by concern (create only what is needed for the `<Kind>`):
+    - Examples: `security_group.tf`, `parameter_group.tf`, `instance.tf`, `dns.tf`, `iam.tf`, `data.tf`
+    - Each file contains the resources and data sources for that concern
+  - `main.tf` — OPTIONAL. If present, keep minimal. Use for tiny glue resources or high-level graph wiring. Do NOT stuff everything here.
+  - Optional nested submodules when a concern is large/reusable: place under `modules/<submodule_name>/` with its own standard files; call via `module` blocks from the root module
 
 GENERATING variables.tf (MANDATORY)
 - Install local CLI so it reflects current protos:
@@ -39,27 +43,37 @@ make local | cat
 ```bash
 project-planton tofu generate-variables <Kind> --output-file apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/tf/variables.tf | cat
 ```
-- Do NOT handcraft `variables.tf`. The generator uses `variablestf.ProtoToVariablesTF` and repo API docs to produce the exact schema expected by ProjectPlanton.
+- Do NOT handcraft `variables.tf`. The generator uses `variablestf.ProtoToVariablesTF` and repo API docs to produce the exact schema expected by ProjectPlanton. Derive any convenience values in `locals.tf` and reference them from `main.tf`.
 
 CONTENT GUIDELINES (NON-generated files)
+Industry-standard module structure in Terraform is multi-file. Terraform automatically loads all `*.tf` files in a directory; there is no required entrypoint. Prefer splitting by concern for readability and isolated changes.
+
 - provider.tf:
   - `terraform { required_providers { <prov> = { source = "<source>", version = ">= <min>" } } }`
   - Minimal provider configuration (region/project/etc.) without embedding secrets
 
 - locals.tf:
   - Add `safe_*` locals to avoid null dereferences and booleans for gating resources (e.g., DNS enabled)
+  - Derive convenience values from generated variables (do not edit `variables.tf`)
 
-- main.tf:
-  - Implement the minimal core resources to realize `<Kind>` using the official provider resources
-  - Use `depends_on` when order is required (e.g., parameter group before instance)
-  - Name resources predictably using `var.metadata.name`
+- resource files by concern (e.g., `security_group.tf`, `parameter_group.tf`, `instance.tf`, `dns.tf`, `iam.tf`):
+  - Implement the resources to realize `<Kind>` using the official provider resources
+  - Use references and implicit dependencies wherever possible; add `depends_on` only when order is required (e.g., parameter group before instance)
+  - Name resources predictably using `var.metadata.name` and consistent tagging conventions
+
+- data.tf (optional):
+  - Centralize data sources if not colocated with the resource concern file
+
+- main.tf (optional):
+  - Keep minimal or omit entirely. Use for thin glue or orchestration that does not belong to a single concern
 
 - outputs.tf:
   - Map outputs to `<Kind>StackOutputs` fields, sourcing from provisioned resources
 
 BUILD & VERIFY (NON-INTERACTIVE)
-- Initialize and validate the module:
+- Run path guard lint to prevent incorrect directories, then initialize and validate the module:
 ```bash
+make lint | cat
 terraform -chdir=apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/tf init -backend=false | cat
 terraform -chdir=apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/tf validate | cat
 ```
@@ -67,7 +81,8 @@ terraform -chdir=apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/tf
 
 SUCCESS CRITERIA
 - `variables.tf` generated by the CLI exists and matches the schema expected by ProjectPlanton
-- `main.tf`, `locals.tf`, `outputs.tf`, `provider.tf` exist and validate
+- `provider.tf`, `locals.tf`, `outputs.tf` exist and validate
+- At least one resource-specific `*.tf` file exists implementing the core resources for `<Kind>` (or `main.tf` contains them if used)
 
 OUTPUT STYLE IN CHAT
 - Show created/updated tf files and the exact CLI generation command used
@@ -75,3 +90,5 @@ OUTPUT STYLE IN CHAT
 
 NOTES
 - Using the generator ensures stable alignment with proto comments and shapes; do not drift from it.
+- Terraform does not require `main.tf`. File order does not matter; the graph is built from references across all files.
+- Create nested submodules only when a concern is large or reusable across kinds; otherwise keep everything in the root module split by concern.

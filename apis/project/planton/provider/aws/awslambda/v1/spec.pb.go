@@ -8,6 +8,7 @@ package awslambdav1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
+	v1 "github.com/project-planton/project-planton/apis/project/planton/shared/foreignkey/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -22,23 +23,197 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// AwsLambdaSpec defines the specification required to deploy an AWS Lambda function, encapsulating all configurations
-// including the function itself, IAM roles, logging configurations, and permissions for invoking the function.
+// Architecture enumerates supported CPU architectures for Lambda.
+type Architecture int32
+
+const (
+	// Let the platform or provider default select the architecture.
+	Architecture_ARCHITECTURE_UNSPECIFIED Architecture = 0
+	// 64-bit x86. Choose this for compatibility with x86-only dependencies.
+	Architecture_X86_64 Architecture = 1
+	// 64-bit ARM. Often offers better price/performance when supported.
+	Architecture_ARM64 Architecture = 2
+)
+
+// Enum value maps for Architecture.
+var (
+	Architecture_name = map[int32]string{
+		0: "ARCHITECTURE_UNSPECIFIED",
+		1: "X86_64",
+		2: "ARM64",
+	}
+	Architecture_value = map[string]int32{
+		"ARCHITECTURE_UNSPECIFIED": 0,
+		"X86_64":                   1,
+		"ARM64":                    2,
+	}
+)
+
+func (x Architecture) Enum() *Architecture {
+	p := new(Architecture)
+	*p = x
+	return p
+}
+
+func (x Architecture) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (Architecture) Descriptor() protoreflect.EnumDescriptor {
+	return file_project_planton_provider_aws_awslambda_v1_spec_proto_enumTypes[0].Descriptor()
+}
+
+func (Architecture) Type() protoreflect.EnumType {
+	return &file_project_planton_provider_aws_awslambda_v1_spec_proto_enumTypes[0]
+}
+
+func (x Architecture) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use Architecture.Descriptor instead.
+func (Architecture) EnumDescriptor() ([]byte, []int) {
+	return file_project_planton_provider_aws_awslambda_v1_spec_proto_rawDescGZIP(), []int{0}
+}
+
+// CodeSourceType identifies how the function code is supplied.
+type CodeSourceType int32
+
+const (
+	CodeSourceType_CODE_SOURCE_TYPE_UNSPECIFIED CodeSourceType = 0
+	// Code is provided as a zip archive in S3; use the `s3` field and set
+	// `runtime` and `handler` accordingly.
+	CodeSourceType_CODE_SOURCE_TYPE_S3 CodeSourceType = 1
+	// Code is provided as a container image in ECR; set `image_uri`. The image
+	// defines runtime and handler, so `runtime` and `handler` here are ignored.
+	CodeSourceType_CODE_SOURCE_TYPE_IMAGE CodeSourceType = 2
+)
+
+// Enum value maps for CodeSourceType.
+var (
+	CodeSourceType_name = map[int32]string{
+		0: "CODE_SOURCE_TYPE_UNSPECIFIED",
+		1: "CODE_SOURCE_TYPE_S3",
+		2: "CODE_SOURCE_TYPE_IMAGE",
+	}
+	CodeSourceType_value = map[string]int32{
+		"CODE_SOURCE_TYPE_UNSPECIFIED": 0,
+		"CODE_SOURCE_TYPE_S3":          1,
+		"CODE_SOURCE_TYPE_IMAGE":       2,
+	}
+)
+
+func (x CodeSourceType) Enum() *CodeSourceType {
+	p := new(CodeSourceType)
+	*p = x
+	return p
+}
+
+func (x CodeSourceType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (CodeSourceType) Descriptor() protoreflect.EnumDescriptor {
+	return file_project_planton_provider_aws_awslambda_v1_spec_proto_enumTypes[1].Descriptor()
+}
+
+func (CodeSourceType) Type() protoreflect.EnumType {
+	return &file_project_planton_provider_aws_awslambda_v1_spec_proto_enumTypes[1]
+}
+
+func (x CodeSourceType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use CodeSourceType.Descriptor instead.
+func (CodeSourceType) EnumDescriptor() ([]byte, []int) {
+	return file_project_planton_provider_aws_awslambda_v1_spec_proto_rawDescGZIP(), []int{1}
+}
+
+// AwsLambdaSpec defines the desired configuration for an AWS Lambda function.
+//
+// Supported code packaging models:
+//   - Zip/S3: Provide an archive in S3 via `code.s3` and set `runtime` and `handler`.
+//   - Container image: Provide an ECR image via `code.image_uri`. In this mode `runtime`
+//     and `handler` are defined by the image and are ignored here.
+//
+// Notes:
+// - This spec intentionally contains no validations or CEL rules; those are added later.
+// - Credentials, region, and deployment workflow live outside this spec in stack inputs.
 type AwsLambdaSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// aws lambda function spec
-	Function *AwsLambdaFunction `protobuf:"bytes,1,opt,name=function,proto3" json:"function,omitempty"`
-	// aws lambda function iam spec
-	IamRole *AwsLambdaIamRole `protobuf:"bytes,2,opt,name=iam_role,json=iamRole,proto3" json:"iam_role,omitempty"`
-	// aws lambda cloud watch log group
-	CloudwatchLogGroup *AwsLambdaCloudwatchLogGroup `protobuf:"bytes,3,opt,name=cloudwatch_log_group,json=cloudwatchLogGroup,proto3" json:"cloudwatch_log_group,omitempty"`
-	// Defines which external source(s) can invoke this function (action 'lambda:InvokeFunction'). Attributes map to
-	// those of https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_permission.
-	// NOTE: to keep things simple, we only expose a subset of said attributes. If a more complex configuration is
-	// needed, declare the necessary lambda permissions outside of this module
-	InvokeFunctionPermissions []*AwsLambdaInvokeFunctionPermission `protobuf:"bytes,4,rep,name=invoke_function_permissions,json=invokeFunctionPermissions,proto3" json:"invoke_function_permissions,omitempty"`
-	unknownFields             protoimpl.UnknownFields
-	sizeCache                 protoimpl.SizeCache
+	// Human-readable function name shown in the AWS Console and APIs.
+	// Must be unique per account/region. If omitted, the platform may derive a
+	// stable name from the resource metadata (e.g., org, environment, resource name).
+	// Allowed characters and length are enforced by AWS; keep it concise and DNS-like.
+	FunctionName string `protobuf:"bytes,1,opt,name=function_name,json=functionName,proto3" json:"function_name,omitempty"`
+	// Free-form description visible in the AWS Console to document the purpose
+	// and behavior of the function. Useful for operational context and search.
+	Description string `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
+	// Execution role for the function. Accepts a direct role ARN (value) or a reference
+	// to another resource that surfaces a role ARN in its outputs (e.g., AwsIamRole).
+	RoleArn *v1.StringValueOrRef `protobuf:"bytes,3,opt,name=role_arn,json=roleArn,proto3" json:"role_arn,omitempty"`
+	// Language/runtime for zip/S3 deployments. Ignored for container image code.
+	// Examples: "nodejs18.x", "python3.11", "java21", "go1.x", "dotnet8", "ruby3.3", "provided.al2".
+	// Use "provided.al2" for custom runtimes or native binaries packaged in the zip.
+	Runtime string `protobuf:"bytes,4,opt,name=runtime,proto3" json:"runtime,omitempty"`
+	// Entrypoint for zip/S3 deployments. Format is language-specific, e.g.:
+	// - Node.js:    "index.handler"
+	// - Python:     "module.function"
+	// - Java:       "package.Class::method"
+	// - .NET:       "Assembly::Namespace.Class::Method"
+	// - Go/custom:  usually "bootstrap" when using a custom runtime
+	// Ignored for container image code where the image CMD/ENTRYPOINT defines it.
+	Handler string `protobuf:"bytes,5,opt,name=handler,proto3" json:"handler,omitempty"`
+	// Memory allocation in megabytes. CPU, network, and some I/O scale with this
+	// value. Choose the smallest value that meets performance goals to control cost.
+	// Typical AWS-supported range is 128–10240 MB.
+	MemoryMb int32 `protobuf:"varint,6,opt,name=memory_mb,json=memoryMb,proto3" json:"memory_mb,omitempty"`
+	// Maximum execution time per invocation in seconds. Set slightly higher than
+	// the worst-case expected runtime. Typical AWS-supported range is 1–900 seconds.
+	TimeoutSeconds int32 `protobuf:"varint,7,opt,name=timeout_seconds,json=timeoutSeconds,proto3" json:"timeout_seconds,omitempty"`
+	// Hard limit on concurrent executions for this function. Behavior:
+	// - Omit or set to -1 to use the unreserved account pool (no dedicated cap).
+	// - Set to 0 to effectively disable invocations (useful for maintenance).
+	// - Set to a positive integer to reserve that many concurrent executions.
+	ReservedConcurrency int32 `protobuf:"varint,8,opt,name=reserved_concurrency,json=reservedConcurrency,proto3" json:"reserved_concurrency,omitempty"`
+	// Key/value environment variables available to the function at runtime.
+	// Avoid embedding sensitive values directly; prefer external secret sources.
+	// When `kms_key_arn` is set, AWS encrypts these at rest using the specified key.
+	Environment map[string]string `protobuf:"bytes,9,rep,name=environment,proto3" json:"environment,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	// Subnets in which the Lambda function will create network interfaces.
+	// Typically private subnets. Provide at least two across different AZs for HA.
+	// Accepts either literal subnet IDs (value) or references to other resources
+	// that expose subnet IDs via their status/outputs.
+	Subnets []*v1.StringValueOrRef `protobuf:"bytes,10,rep,name=subnets,proto3" json:"subnets,omitempty"`
+	// Security groups attached to the Lambda ENIs. Ensure outbound rules allow
+	// access to required services (e.g., databases, AWS endpoints, the Internet
+	// via NAT if needed). Accepts either literal security group IDs (value) or
+	// references to a resource that provides a security group ID output.
+	SecurityGroups []*v1.StringValueOrRef `protobuf:"bytes,11,rep,name=security_groups,json=securityGroups,proto3" json:"security_groups,omitempty"`
+	// Processor architecture of the execution environment. Use ARM64 for better
+	// price/performance when your language/runtime supports it; use X86_64 for
+	// legacy dependencies or runtimes not available on ARM64.
+	Architecture Architecture `protobuf:"varint,12,opt,name=architecture,proto3,enum=project.planton.provider.aws.awslambda.v1.Architecture" json:"architecture,omitempty"`
+	// Layer ARNs to include. Accepts direct ARNs (value) or references to resources
+	// that provide layer ARNs as outputs. Up to five layers may be attached; order matters.
+	LayerArns []*v1.StringValueOrRef `protobuf:"bytes,13,rep,name=layer_arns,json=layerArns,proto3" json:"layer_arns,omitempty"`
+	// Customer-managed KMS key used to encrypt environment variables at rest.
+	// Accepts a direct key ARN (value) or a reference to a KMS key resource output.
+	KmsKeyArn *v1.StringValueOrRef `protobuf:"bytes,14,opt,name=kms_key_arn,json=kmsKeyArn,proto3" json:"kms_key_arn,omitempty"`
+	// Source of the function code. Select the type and populate the corresponding
+	// fields below. Validation is applied downstream to ensure consistency.
+	CodeSourceType CodeSourceType `protobuf:"varint,15,opt,name=code_source_type,json=codeSourceType,proto3,enum=project.planton.provider.aws.awslambda.v1.CodeSourceType" json:"code_source_type,omitempty"`
+	// S3 location of the deployment package (zip archive) for zip-based code.
+	// The archive should contain your compiled artifacts and the handler.
+	// Prefer a bucket in the same region as the function to avoid cross-region copies.
+	S3 *S3Code `protobuf:"bytes,16,opt,name=s3,proto3" json:"s3,omitempty"`
+	// Reference to an image stored in ECR for container-based code. The image
+	// defines the runtime and handler via its entrypoint/CMD. Example:
+	// "123456789012.dkr.ecr.us-east-1.amazonaws.com/repo:tag".
+	ImageUri      string `protobuf:"bytes,17,opt,name=image_uri,json=imageUri,proto3" json:"image_uri,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *AwsLambdaSpec) Reset() {
@@ -71,676 +246,155 @@ func (*AwsLambdaSpec) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_aws_awslambda_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *AwsLambdaSpec) GetFunction() *AwsLambdaFunction {
+func (x *AwsLambdaSpec) GetFunctionName() string {
 	if x != nil {
-		return x.Function
+		return x.FunctionName
 	}
-	return nil
+	return ""
 }
 
-func (x *AwsLambdaSpec) GetIamRole() *AwsLambdaIamRole {
-	if x != nil {
-		return x.IamRole
-	}
-	return nil
-}
-
-func (x *AwsLambdaSpec) GetCloudwatchLogGroup() *AwsLambdaCloudwatchLogGroup {
-	if x != nil {
-		return x.CloudwatchLogGroup
-	}
-	return nil
-}
-
-func (x *AwsLambdaSpec) GetInvokeFunctionPermissions() []*AwsLambdaInvokeFunctionPermission {
-	if x != nil {
-		return x.InvokeFunctionPermissions
-	}
-	return nil
-}
-
-// AwsLambdaFunction represents the configuration of an AWS Lambda function, including properties such as
-// architectures, handler, runtime, memory size, timeouts, environment variables, VPC configuration, and other
-// optional settings.
-type AwsLambdaFunction struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// Instruction set architecture for your Lambda function. Valid values are `["x8664"]` and `["arm64"]`.
-	// Default is `["x8664"]`. Removing this attribute, function's architecture stay the same.
-	Architectures []string `protobuf:"bytes,1,rep,name=architectures,proto3" json:"architectures,omitempty"`
-	// Description of what your Lambda Function does.
-	Description string `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
-	// Configuration block. Detailed below.
-	FileSystemConfig *AwsLambdaFunctionFileSystemConfig `protobuf:"bytes,3,opt,name=file_system_config,json=fileSystemConfig,proto3" json:"file_system_config,omitempty"`
-	// Function [entrypoint](https://docs.aws.amazon.com/lambda/latest/dg/walkthrough-custom-events-create-test-function.html) in your code.
-	Handler string `protobuf:"bytes,4,opt,name=handler,proto3" json:"handler,omitempty"`
-	// ECR image URI containing the function's deployment package. Exactly one of `filename`, `imageUri`,  or `s3Bucket` must be specified.
-	ImageUri string `protobuf:"bytes,5,opt,name=image_uri,json=imageUri,proto3" json:"image_uri,omitempty"`
-	// Amazon Resource Name (ARN) of the AWS Key Management Service (KMS) key that is used to encrypt environment variables.
-	// If this configuration is not provided when environment variables are in use, AWS Lambda uses a default service key.
-	// If this configuration is provided when environment variables are not in use,
-	// the AWS Lambda API does not save this configuration and the provider will show a perpetual difference of adding
-	// the key. To fix the perpetual difference, remove this configuration.
-	KmsKeyArn string `protobuf:"bytes,6,opt,name=kms_key_arn,json=kmsKeyArn,proto3" json:"kms_key_arn,omitempty"`
-	// List of Lambda Layer Version ARNs (maximum of 5) to attach to your Lambda Function.
-	// See [Lambda Layers](https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html)
-	Layers []string `protobuf:"bytes,7,rep,name=layers,proto3" json:"layers,omitempty"`
-	// Amount of memory in MB your Lambda Function can use at runtime. Defaults to `128`.
-	// See [Limits](https://docs.aws.amazon.com/lambda/latest/dg/limits.html)
-	MemorySize int32 `protobuf:"varint,8,opt,name=memory_size,json=memorySize,proto3" json:"memory_size,omitempty"`
-	// Lambda deployment package type. Valid values are `Zip` and `Image`. Defaults to `Zip`.
-	PackageType string `protobuf:"bytes,9,opt,name=package_type,json=packageType,proto3" json:"package_type,omitempty"`
-	// Whether to publish creation/change as new Lambda Function Version. Defaults to `false`.
-	Publish bool `protobuf:"varint,10,opt,name=publish,proto3" json:"publish,omitempty"`
-	// Amount of reserved concurrent executions for this lambda function. A value of `0` disables lambda from
-	// being triggered and `-1` removes any concurrency limitations. Defaults to Unreserved Concurrency Limits `-1`.
-	// See [Managing Concurrency](https://docs.aws.amazon.com/lambda/latest/dg/concurrent-executions.html)
-	ReservedConcurrentExecutions int32 `protobuf:"varint,11,opt,name=reserved_concurrent_executions,json=reservedConcurrentExecutions,proto3" json:"reserved_concurrent_executions,omitempty"`
-	// Identifier of the function's runtime.
-	// See [Runtimes](https://docs.aws.amazon.com/lambda/latest/dg/API_CreateFunction.html#SSS-CreateFunction-request-Runtime) for valid values.
-	Runtime string `protobuf:"bytes,12,opt,name=runtime,proto3" json:"runtime,omitempty"`
-	// S3 bucket location containing the function's deployment package. This bucket must reside in the same AWS region
-	// where you are creating the Lambda function. Exactly one of `filename`, `imageUri`, or `s3Bucket` must be specified.
-	// When `s3Bucket` is set, `s3Key` is required.
-	S3Bucket string `protobuf:"bytes,13,opt,name=s3_bucket,json=s3Bucket,proto3" json:"s3_bucket,omitempty"`
-	// S3 key of an object containing the function's deployment package. When `s3Bucket` is set, `s3Key` is required.
-	S3Key string `protobuf:"bytes,14,opt,name=s3_key,json=s3Key,proto3" json:"s3_key,omitempty"`
-	// Object version containing the function's deployment package. Conflicts with `filename` and `imageUri`.
-	S3ObjectVersion string `protobuf:"bytes,15,opt,name=s3_object_version,json=s3ObjectVersion,proto3" json:"s3_object_version,omitempty"`
-	// Used to trigger updates. Must be set to a base64-encoded SHA256 hash of the package file specified with either
-	// filename or s3_key. The usual way to set this is filebase64sha256('file.zip') where 'file.zip' is the local filename
-	// of the lambda function source archive.
-	SourceCodeHash string `protobuf:"bytes,16,opt,name=source_code_hash,json=sourceCodeHash,proto3" json:"source_code_hash,omitempty"`
-	// Amount of time your Lambda Function has to run in seconds. Defaults to `3`.
-	// See [Limits](https://docs.aws.amazon.com/lambda/latest/dg/limits.html).
-	Timeout int32 `protobuf:"varint,17,opt,name=timeout,proto3" json:"timeout,omitempty"`
-	// Map of environment variables that are accessible from the function code during execution. If provided at least one key must be present.
-	Variables map[string]string `protobuf:"bytes,18,rep,name=variables,proto3" json:"variables,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
-	// ARN of an SNS topic or SQS queue to notify when an invocation fails. If this option is used, the function's IAM
-	// role must be granted suitable access to write to the target object, which means allowing either
-	// the `sns:Publish` or `sqs:SendMessage` action on this ARN, depending on which service is targeted.
-	DeadLetterConfigTargetArn string `protobuf:"bytes,19,opt,name=dead_letter_config_target_arn,json=deadLetterConfigTargetArn,proto3" json:"dead_letter_config_target_arn,omitempty"`
-	// The Lambda OCI [image configurations](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_function#image_config)
-	ImageConfig *AwsLambdaFunctionImageConfig `protobuf:"bytes,20,opt,name=image_config,json=imageConfig,proto3" json:"image_config,omitempty"`
-	// Whether to sample and trace a subset of incoming requests with AWS X-Ray. Valid values are `PassThrough` and `Active`.
-	// If `PassThrough`, Lambda will only trace the request from an upstream service if it contains a tracing header
-	// with "sampled=1". If `Active`, Lambda will respect any tracing header it receives from an upstream service.
-	// If no tracing header is received, Lambda will call X-Ray for a tracing decision.
-	TracingConfigMode string `protobuf:"bytes,21,opt,name=tracing_config_mode,json=tracingConfigMode,proto3" json:"tracing_config_mode,omitempty"`
-	// VPC configuration
-	VpcConfig *AwsLambdaFunctionVpcConfig `protobuf:"bytes,22,opt,name=vpc_config,json=vpcConfig,proto3" json:"vpc_config,omitempty"`
-	// The size of the Lambda function Ephemeral storage(`/tmp`) represented in MB.
-	// The minimum supported `ephemeralStorage` value defaults to `512`MB and the maximum supported value is `10240`MB.
-	EphemeralStorageSize int32 `protobuf:"varint,23,opt,name=ephemeral_storage_size,json=ephemeralStorageSize,proto3" json:"ephemeral_storage_size,omitempty"`
-	unknownFields        protoimpl.UnknownFields
-	sizeCache            protoimpl.SizeCache
-}
-
-func (x *AwsLambdaFunction) Reset() {
-	*x = AwsLambdaFunction{}
-	mi := &file_project_planton_provider_aws_awslambda_v1_spec_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *AwsLambdaFunction) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*AwsLambdaFunction) ProtoMessage() {}
-
-func (x *AwsLambdaFunction) ProtoReflect() protoreflect.Message {
-	mi := &file_project_planton_provider_aws_awslambda_v1_spec_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use AwsLambdaFunction.ProtoReflect.Descriptor instead.
-func (*AwsLambdaFunction) Descriptor() ([]byte, []int) {
-	return file_project_planton_provider_aws_awslambda_v1_spec_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *AwsLambdaFunction) GetArchitectures() []string {
-	if x != nil {
-		return x.Architectures
-	}
-	return nil
-}
-
-func (x *AwsLambdaFunction) GetDescription() string {
+func (x *AwsLambdaSpec) GetDescription() string {
 	if x != nil {
 		return x.Description
 	}
 	return ""
 }
 
-func (x *AwsLambdaFunction) GetFileSystemConfig() *AwsLambdaFunctionFileSystemConfig {
+func (x *AwsLambdaSpec) GetRoleArn() *v1.StringValueOrRef {
 	if x != nil {
-		return x.FileSystemConfig
+		return x.RoleArn
 	}
 	return nil
 }
 
-func (x *AwsLambdaFunction) GetHandler() string {
-	if x != nil {
-		return x.Handler
-	}
-	return ""
-}
-
-func (x *AwsLambdaFunction) GetImageUri() string {
-	if x != nil {
-		return x.ImageUri
-	}
-	return ""
-}
-
-func (x *AwsLambdaFunction) GetKmsKeyArn() string {
-	if x != nil {
-		return x.KmsKeyArn
-	}
-	return ""
-}
-
-func (x *AwsLambdaFunction) GetLayers() []string {
-	if x != nil {
-		return x.Layers
-	}
-	return nil
-}
-
-func (x *AwsLambdaFunction) GetMemorySize() int32 {
-	if x != nil {
-		return x.MemorySize
-	}
-	return 0
-}
-
-func (x *AwsLambdaFunction) GetPackageType() string {
-	if x != nil {
-		return x.PackageType
-	}
-	return ""
-}
-
-func (x *AwsLambdaFunction) GetPublish() bool {
-	if x != nil {
-		return x.Publish
-	}
-	return false
-}
-
-func (x *AwsLambdaFunction) GetReservedConcurrentExecutions() int32 {
-	if x != nil {
-		return x.ReservedConcurrentExecutions
-	}
-	return 0
-}
-
-func (x *AwsLambdaFunction) GetRuntime() string {
+func (x *AwsLambdaSpec) GetRuntime() string {
 	if x != nil {
 		return x.Runtime
 	}
 	return ""
 }
 
-func (x *AwsLambdaFunction) GetS3Bucket() string {
+func (x *AwsLambdaSpec) GetHandler() string {
 	if x != nil {
-		return x.S3Bucket
+		return x.Handler
 	}
 	return ""
 }
 
-func (x *AwsLambdaFunction) GetS3Key() string {
+func (x *AwsLambdaSpec) GetMemoryMb() int32 {
 	if x != nil {
-		return x.S3Key
-	}
-	return ""
-}
-
-func (x *AwsLambdaFunction) GetS3ObjectVersion() string {
-	if x != nil {
-		return x.S3ObjectVersion
-	}
-	return ""
-}
-
-func (x *AwsLambdaFunction) GetSourceCodeHash() string {
-	if x != nil {
-		return x.SourceCodeHash
-	}
-	return ""
-}
-
-func (x *AwsLambdaFunction) GetTimeout() int32 {
-	if x != nil {
-		return x.Timeout
+		return x.MemoryMb
 	}
 	return 0
 }
 
-func (x *AwsLambdaFunction) GetVariables() map[string]string {
+func (x *AwsLambdaSpec) GetTimeoutSeconds() int32 {
 	if x != nil {
-		return x.Variables
-	}
-	return nil
-}
-
-func (x *AwsLambdaFunction) GetDeadLetterConfigTargetArn() string {
-	if x != nil {
-		return x.DeadLetterConfigTargetArn
-	}
-	return ""
-}
-
-func (x *AwsLambdaFunction) GetImageConfig() *AwsLambdaFunctionImageConfig {
-	if x != nil {
-		return x.ImageConfig
-	}
-	return nil
-}
-
-func (x *AwsLambdaFunction) GetTracingConfigMode() string {
-	if x != nil {
-		return x.TracingConfigMode
-	}
-	return ""
-}
-
-func (x *AwsLambdaFunction) GetVpcConfig() *AwsLambdaFunctionVpcConfig {
-	if x != nil {
-		return x.VpcConfig
-	}
-	return nil
-}
-
-func (x *AwsLambdaFunction) GetEphemeralStorageSize() int32 {
-	if x != nil {
-		return x.EphemeralStorageSize
+		return x.TimeoutSeconds
 	}
 	return 0
 }
 
-// AwsLambdaFunctionFileSystemConfig configures the file system access for the Lambda function, allowing it to
-// access an Amazon EFS file system via an Access Point.
-type AwsLambdaFunctionFileSystemConfig struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// Amazon Resource Name (ARN) of the Amazon EFS Access Point that provides access to the file system.
-	Arn string `protobuf:"bytes,1,opt,name=arn,proto3" json:"arn,omitempty"`
-	// Path where the function can access the file system, starting with /mnt/.
-	LocalMountPath string `protobuf:"bytes,2,opt,name=local_mount_path,json=localMountPath,proto3" json:"local_mount_path,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
-}
-
-func (x *AwsLambdaFunctionFileSystemConfig) Reset() {
-	*x = AwsLambdaFunctionFileSystemConfig{}
-	mi := &file_project_planton_provider_aws_awslambda_v1_spec_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *AwsLambdaFunctionFileSystemConfig) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*AwsLambdaFunctionFileSystemConfig) ProtoMessage() {}
-
-func (x *AwsLambdaFunctionFileSystemConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_project_planton_provider_aws_awslambda_v1_spec_proto_msgTypes[2]
+func (x *AwsLambdaSpec) GetReservedConcurrency() int32 {
 	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
+		return x.ReservedConcurrency
 	}
-	return mi.MessageOf(x)
+	return 0
 }
 
-// Deprecated: Use AwsLambdaFunctionFileSystemConfig.ProtoReflect.Descriptor instead.
-func (*AwsLambdaFunctionFileSystemConfig) Descriptor() ([]byte, []int) {
-	return file_project_planton_provider_aws_awslambda_v1_spec_proto_rawDescGZIP(), []int{2}
-}
-
-func (x *AwsLambdaFunctionFileSystemConfig) GetArn() string {
+func (x *AwsLambdaSpec) GetEnvironment() map[string]string {
 	if x != nil {
-		return x.Arn
-	}
-	return ""
-}
-
-func (x *AwsLambdaFunctionFileSystemConfig) GetLocalMountPath() string {
-	if x != nil {
-		return x.LocalMountPath
-	}
-	return ""
-}
-
-// AwsLambdaFunctionImageConfig specifies the image configuration values for a container image Lambda function,
-// including command overrides, entry point, and working directory.
-type AwsLambdaFunctionImageConfig struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// Parameters that you want to pass in with `entryPoint`.
-	Commands []string `protobuf:"bytes,1,rep,name=commands,proto3" json:"commands,omitempty"`
-	// Entry point to your application, which is typically the location of the runtime executable.
-	EntryPoints []string `protobuf:"bytes,2,rep,name=entry_points,json=entryPoints,proto3" json:"entry_points,omitempty"`
-	// Working directory.
-	WorkingDirectory string `protobuf:"bytes,3,opt,name=working_directory,json=workingDirectory,proto3" json:"working_directory,omitempty"`
-	unknownFields    protoimpl.UnknownFields
-	sizeCache        protoimpl.SizeCache
-}
-
-func (x *AwsLambdaFunctionImageConfig) Reset() {
-	*x = AwsLambdaFunctionImageConfig{}
-	mi := &file_project_planton_provider_aws_awslambda_v1_spec_proto_msgTypes[3]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *AwsLambdaFunctionImageConfig) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*AwsLambdaFunctionImageConfig) ProtoMessage() {}
-
-func (x *AwsLambdaFunctionImageConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_project_planton_provider_aws_awslambda_v1_spec_proto_msgTypes[3]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use AwsLambdaFunctionImageConfig.ProtoReflect.Descriptor instead.
-func (*AwsLambdaFunctionImageConfig) Descriptor() ([]byte, []int) {
-	return file_project_planton_provider_aws_awslambda_v1_spec_proto_rawDescGZIP(), []int{3}
-}
-
-func (x *AwsLambdaFunctionImageConfig) GetCommands() []string {
-	if x != nil {
-		return x.Commands
+		return x.Environment
 	}
 	return nil
 }
 
-func (x *AwsLambdaFunctionImageConfig) GetEntryPoints() []string {
+func (x *AwsLambdaSpec) GetSubnets() []*v1.StringValueOrRef {
 	if x != nil {
-		return x.EntryPoints
+		return x.Subnets
 	}
 	return nil
 }
 
-func (x *AwsLambdaFunctionImageConfig) GetWorkingDirectory() string {
+func (x *AwsLambdaSpec) GetSecurityGroups() []*v1.StringValueOrRef {
 	if x != nil {
-		return x.WorkingDirectory
-	}
-	return ""
-}
-
-// AwsLambdaFunctionVpcConfig provides VPC configuration for the Lambda function, specifying the VPC, subnets, and
-// security groups for the function's network interface.
-type AwsLambdaFunctionVpcConfig struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// List of security group IDs associated with the Lambda function.
-	SecurityGroupIds []string `protobuf:"bytes,1,rep,name=security_group_ids,json=securityGroupIds,proto3" json:"security_group_ids,omitempty"`
-	// List of subnet IDs associated with the Lambda function.
-	SubnetIds []string `protobuf:"bytes,2,rep,name=subnet_ids,json=subnetIds,proto3" json:"subnet_ids,omitempty"`
-	// ID of the VPC.
-	VpcId         string `protobuf:"bytes,3,opt,name=vpc_id,json=vpcId,proto3" json:"vpc_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *AwsLambdaFunctionVpcConfig) Reset() {
-	*x = AwsLambdaFunctionVpcConfig{}
-	mi := &file_project_planton_provider_aws_awslambda_v1_spec_proto_msgTypes[4]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *AwsLambdaFunctionVpcConfig) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*AwsLambdaFunctionVpcConfig) ProtoMessage() {}
-
-func (x *AwsLambdaFunctionVpcConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_project_planton_provider_aws_awslambda_v1_spec_proto_msgTypes[4]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use AwsLambdaFunctionVpcConfig.ProtoReflect.Descriptor instead.
-func (*AwsLambdaFunctionVpcConfig) Descriptor() ([]byte, []int) {
-	return file_project_planton_provider_aws_awslambda_v1_spec_proto_rawDescGZIP(), []int{4}
-}
-
-func (x *AwsLambdaFunctionVpcConfig) GetSecurityGroupIds() []string {
-	if x != nil {
-		return x.SecurityGroupIds
+		return x.SecurityGroups
 	}
 	return nil
 }
 
-func (x *AwsLambdaFunctionVpcConfig) GetSubnetIds() []string {
+func (x *AwsLambdaSpec) GetArchitecture() Architecture {
 	if x != nil {
-		return x.SubnetIds
+		return x.Architecture
+	}
+	return Architecture_ARCHITECTURE_UNSPECIFIED
+}
+
+func (x *AwsLambdaSpec) GetLayerArns() []*v1.StringValueOrRef {
+	if x != nil {
+		return x.LayerArns
 	}
 	return nil
 }
 
-func (x *AwsLambdaFunctionVpcConfig) GetVpcId() string {
-	if x != nil {
-		return x.VpcId
-	}
-	return ""
-}
-
-// AwsLambdaIamRole defines the IAM role configuration for the Lambda function, including permissions boundaries,
-// custom policies, and settings for Lambda@Edge and CloudWatch Lambda Insights.
-type AwsLambdaIamRole struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// ARN of the policy that is used to set the permissions boundary for the role
-	PermissionsBoundary string `protobuf:"bytes,1,opt,name=permissions_boundary,json=permissionsBoundary,proto3" json:"permissions_boundary,omitempty"`
-	// Enable Lambda@Edge for your Node.js or Python functions. The required trust relationship and publishing of
-	// function versions will be configured in this module.
-	LambdaAtEdgeEnabled bool `protobuf:"varint,2,opt,name=lambda_at_edge_enabled,json=lambdaAtEdgeEnabled,proto3" json:"lambda_at_edge_enabled,omitempty"`
-	// Enable CloudWatch Lambda Insights for the Lambda Function.
-	CloudwatchLambdaInsightsEnabled bool `protobuf:"varint,3,opt,name=cloudwatch_lambda_insights_enabled,json=cloudwatchLambdaInsightsEnabled,proto3" json:"cloudwatch_lambda_insights_enabled,omitempty"`
-	// List of AWS Systems Manager Parameter Store parameter names. The IAM role of this Lambda function will be enhanced
-	// with read permissions for those parameters. Parameters must start with a forward slash and can be encrypted with the
-	// default KMS key.
-	SsmParameterNames []string `protobuf:"bytes,4,rep,name=ssm_parameter_names,json=ssmParameterNames,proto3" json:"ssm_parameter_names,omitempty"`
-	// ARNs of custom policies to be attached to the lambda role
-	CustomIamPolicyArns []string `protobuf:"bytes,5,rep,name=custom_iam_policy_arns,json=customIamPolicyArns,proto3" json:"custom_iam_policy_arns,omitempty"`
-	// Inline policy document (JSON) to attach to the lambda role
-	InlineIamPolicy string `protobuf:"bytes,6,opt,name=inline_iam_policy,json=inlineIamPolicy,proto3" json:"inline_iam_policy,omitempty"`
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
-}
-
-func (x *AwsLambdaIamRole) Reset() {
-	*x = AwsLambdaIamRole{}
-	mi := &file_project_planton_provider_aws_awslambda_v1_spec_proto_msgTypes[5]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *AwsLambdaIamRole) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*AwsLambdaIamRole) ProtoMessage() {}
-
-func (x *AwsLambdaIamRole) ProtoReflect() protoreflect.Message {
-	mi := &file_project_planton_provider_aws_awslambda_v1_spec_proto_msgTypes[5]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use AwsLambdaIamRole.ProtoReflect.Descriptor instead.
-func (*AwsLambdaIamRole) Descriptor() ([]byte, []int) {
-	return file_project_planton_provider_aws_awslambda_v1_spec_proto_rawDescGZIP(), []int{5}
-}
-
-func (x *AwsLambdaIamRole) GetPermissionsBoundary() string {
-	if x != nil {
-		return x.PermissionsBoundary
-	}
-	return ""
-}
-
-func (x *AwsLambdaIamRole) GetLambdaAtEdgeEnabled() bool {
-	if x != nil {
-		return x.LambdaAtEdgeEnabled
-	}
-	return false
-}
-
-func (x *AwsLambdaIamRole) GetCloudwatchLambdaInsightsEnabled() bool {
-	if x != nil {
-		return x.CloudwatchLambdaInsightsEnabled
-	}
-	return false
-}
-
-func (x *AwsLambdaIamRole) GetSsmParameterNames() []string {
-	if x != nil {
-		return x.SsmParameterNames
-	}
-	return nil
-}
-
-func (x *AwsLambdaIamRole) GetCustomIamPolicyArns() []string {
-	if x != nil {
-		return x.CustomIamPolicyArns
-	}
-	return nil
-}
-
-func (x *AwsLambdaIamRole) GetInlineIamPolicy() string {
-	if x != nil {
-		return x.InlineIamPolicy
-	}
-	return ""
-}
-
-// AwsLambdaCloudwatchLogGroup configures the CloudWatch Log Group for the Lambda function, including retention
-// settings and KMS key for encrypting log data.
-type AwsLambdaCloudwatchLogGroup struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The ARN of the KMS Key to use when encrypting log data.
-	// Please note, after the AWS KMS CMK is disassociated from the log group, AWS CloudWatch Logs stops encrypting newly
-	// ingested data for the log group.
-	// All previously ingested data remains encrypted, and AWS CloudWatch Logs requires permissions for the CMK whenever
-	// the encrypted data is requested.
-	KmsKeyArn string `protobuf:"bytes,1,opt,name=kms_key_arn,json=kmsKeyArn,proto3" json:"kms_key_arn,omitempty"`
-	// Number of days you want to retain log events in the log group
-	RetentionInDays int32 `protobuf:"varint,2,opt,name=retention_in_days,json=retentionInDays,proto3" json:"retention_in_days,omitempty"`
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
-}
-
-func (x *AwsLambdaCloudwatchLogGroup) Reset() {
-	*x = AwsLambdaCloudwatchLogGroup{}
-	mi := &file_project_planton_provider_aws_awslambda_v1_spec_proto_msgTypes[6]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *AwsLambdaCloudwatchLogGroup) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*AwsLambdaCloudwatchLogGroup) ProtoMessage() {}
-
-func (x *AwsLambdaCloudwatchLogGroup) ProtoReflect() protoreflect.Message {
-	mi := &file_project_planton_provider_aws_awslambda_v1_spec_proto_msgTypes[6]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use AwsLambdaCloudwatchLogGroup.ProtoReflect.Descriptor instead.
-func (*AwsLambdaCloudwatchLogGroup) Descriptor() ([]byte, []int) {
-	return file_project_planton_provider_aws_awslambda_v1_spec_proto_rawDescGZIP(), []int{6}
-}
-
-func (x *AwsLambdaCloudwatchLogGroup) GetKmsKeyArn() string {
+func (x *AwsLambdaSpec) GetKmsKeyArn() *v1.StringValueOrRef {
 	if x != nil {
 		return x.KmsKeyArn
 	}
+	return nil
+}
+
+func (x *AwsLambdaSpec) GetCodeSourceType() CodeSourceType {
+	if x != nil {
+		return x.CodeSourceType
+	}
+	return CodeSourceType_CODE_SOURCE_TYPE_UNSPECIFIED
+}
+
+func (x *AwsLambdaSpec) GetS3() *S3Code {
+	if x != nil {
+		return x.S3
+	}
+	return nil
+}
+
+func (x *AwsLambdaSpec) GetImageUri() string {
+	if x != nil {
+		return x.ImageUri
+	}
 	return ""
 }
 
-func (x *AwsLambdaCloudwatchLogGroup) GetRetentionInDays() int32 {
-	if x != nil {
-		return x.RetentionInDays
-	}
-	return 0
-}
-
-// AwsLambdaInvokeFunctionPermission defines which external sources can invoke the Lambda function, specifying the
-// principal and source ARN.
-type AwsLambdaInvokeFunctionPermission struct {
+// S3Code describes the S3 location for a zip-based deployment package.
+// Use this when publishing code as an archive rather than a container image.
+type S3Code struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	//	The principal who is getting this permission e.g., `s3.amazonaws.com`,
-	//
-	// an AWS account ID, or AWS IAM principal, or AWS service principal such as `events.amazonaws.com` or `sns.amazonaws.com`.
-	Principal string `protobuf:"bytes,1,opt,name=principal,proto3" json:"principal,omitempty"`
-	// When the principal is an AWS service, the ARN of the specific resource within that service to grant permission to.
-	// Without this, any resource from `principal` will be granted permission – even if that resource is from another account.
-	// For S3, this should be the ARN of the S3 Bucket.
-	// For EventBridge events, this should be the ARN of the EventBridge Rule.
-	// For API Gateway, this should be the ARN of the API, as described
-	// [here](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-control-access-using-iam-policies-to-invoke-api.html).
-	SourceArn     string `protobuf:"bytes,2,opt,name=source_arn,json=sourceArn,proto3" json:"source_arn,omitempty"`
+	// S3 bucket name that contains the deployment package. Prefer a bucket in
+	// the same AWS region as the Lambda function for faster, cheaper deployments.
+	Bucket string `protobuf:"bytes,1,opt,name=bucket,proto3" json:"bucket,omitempty"`
+	// S3 object key (path) to the deployment package zip.
+	Key string `protobuf:"bytes,2,opt,name=key,proto3" json:"key,omitempty"`
+	// Optional object version to pin a specific artifact when versioning is enabled.
+	ObjectVersion string `protobuf:"bytes,3,opt,name=object_version,json=objectVersion,proto3" json:"object_version,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *AwsLambdaInvokeFunctionPermission) Reset() {
-	*x = AwsLambdaInvokeFunctionPermission{}
-	mi := &file_project_planton_provider_aws_awslambda_v1_spec_proto_msgTypes[7]
+func (x *S3Code) Reset() {
+	*x = S3Code{}
+	mi := &file_project_planton_provider_aws_awslambda_v1_spec_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *AwsLambdaInvokeFunctionPermission) String() string {
+func (x *S3Code) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*AwsLambdaInvokeFunctionPermission) ProtoMessage() {}
+func (*S3Code) ProtoMessage() {}
 
-func (x *AwsLambdaInvokeFunctionPermission) ProtoReflect() protoreflect.Message {
-	mi := &file_project_planton_provider_aws_awslambda_v1_spec_proto_msgTypes[7]
+func (x *S3Code) ProtoReflect() protoreflect.Message {
+	mi := &file_project_planton_provider_aws_awslambda_v1_spec_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -751,21 +405,28 @@ func (x *AwsLambdaInvokeFunctionPermission) ProtoReflect() protoreflect.Message 
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use AwsLambdaInvokeFunctionPermission.ProtoReflect.Descriptor instead.
-func (*AwsLambdaInvokeFunctionPermission) Descriptor() ([]byte, []int) {
-	return file_project_planton_provider_aws_awslambda_v1_spec_proto_rawDescGZIP(), []int{7}
+// Deprecated: Use S3Code.ProtoReflect.Descriptor instead.
+func (*S3Code) Descriptor() ([]byte, []int) {
+	return file_project_planton_provider_aws_awslambda_v1_spec_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *AwsLambdaInvokeFunctionPermission) GetPrincipal() string {
+func (x *S3Code) GetBucket() string {
 	if x != nil {
-		return x.Principal
+		return x.Bucket
 	}
 	return ""
 }
 
-func (x *AwsLambdaInvokeFunctionPermission) GetSourceArn() string {
+func (x *S3Code) GetKey() string {
 	if x != nil {
-		return x.SourceArn
+		return x.Key
+	}
+	return ""
+}
+
+func (x *S3Code) GetObjectVersion() string {
+	if x != nil {
+		return x.ObjectVersion
 	}
 	return ""
 }
@@ -774,68 +435,50 @@ var File_project_planton_provider_aws_awslambda_v1_spec_proto protoreflect.FileD
 
 const file_project_planton_provider_aws_awslambda_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"4project/planton/provider/aws/awslambda/v1/spec.proto\x12)project.planton.provider.aws.awslambda.v1\x1a\x1bbuf/validate/validate.proto\"\xd2\x03\n" +
-	"\rAwsLambdaSpec\x12`\n" +
-	"\bfunction\x18\x01 \x01(\v2<.project.planton.provider.aws.awslambda.v1.AwsLambdaFunctionB\x06\xbaH\x03\xc8\x01\x01R\bfunction\x12V\n" +
-	"\biam_role\x18\x02 \x01(\v2;.project.planton.provider.aws.awslambda.v1.AwsLambdaIamRoleR\aiamRole\x12x\n" +
-	"\x14cloudwatch_log_group\x18\x03 \x01(\v2F.project.planton.provider.aws.awslambda.v1.AwsLambdaCloudwatchLogGroupR\x12cloudwatchLogGroup\x12\x8c\x01\n" +
-	"\x1binvoke_function_permissions\x18\x04 \x03(\v2L.project.planton.provider.aws.awslambda.v1.AwsLambdaInvokeFunctionPermissionR\x19invokeFunctionPermissions\"\xcb\t\n" +
-	"\x11AwsLambdaFunction\x12$\n" +
-	"\rarchitectures\x18\x01 \x03(\tR\rarchitectures\x12 \n" +
-	"\vdescription\x18\x02 \x01(\tR\vdescription\x12z\n" +
-	"\x12file_system_config\x18\x03 \x01(\v2L.project.planton.provider.aws.awslambda.v1.AwsLambdaFunctionFileSystemConfigR\x10fileSystemConfig\x12\x18\n" +
-	"\ahandler\x18\x04 \x01(\tR\ahandler\x12\x1b\n" +
-	"\timage_uri\x18\x05 \x01(\tR\bimageUri\x12\x1e\n" +
-	"\vkms_key_arn\x18\x06 \x01(\tR\tkmsKeyArn\x12\x16\n" +
-	"\x06layers\x18\a \x03(\tR\x06layers\x12\x1f\n" +
-	"\vmemory_size\x18\b \x01(\x05R\n" +
-	"memorySize\x12!\n" +
-	"\fpackage_type\x18\t \x01(\tR\vpackageType\x12\x18\n" +
-	"\apublish\x18\n" +
-	" \x01(\bR\apublish\x12D\n" +
-	"\x1ereserved_concurrent_executions\x18\v \x01(\x05R\x1creservedConcurrentExecutions\x12\x18\n" +
-	"\aruntime\x18\f \x01(\tR\aruntime\x12\x1b\n" +
-	"\ts3_bucket\x18\r \x01(\tR\bs3Bucket\x12\x15\n" +
-	"\x06s3_key\x18\x0e \x01(\tR\x05s3Key\x12*\n" +
-	"\x11s3_object_version\x18\x0f \x01(\tR\x0fs3ObjectVersion\x12(\n" +
-	"\x10source_code_hash\x18\x10 \x01(\tR\x0esourceCodeHash\x12\x18\n" +
-	"\atimeout\x18\x11 \x01(\x05R\atimeout\x12i\n" +
-	"\tvariables\x18\x12 \x03(\v2K.project.planton.provider.aws.awslambda.v1.AwsLambdaFunction.VariablesEntryR\tvariables\x12@\n" +
-	"\x1ddead_letter_config_target_arn\x18\x13 \x01(\tR\x19deadLetterConfigTargetArn\x12j\n" +
-	"\fimage_config\x18\x14 \x01(\v2G.project.planton.provider.aws.awslambda.v1.AwsLambdaFunctionImageConfigR\vimageConfig\x12.\n" +
-	"\x13tracing_config_mode\x18\x15 \x01(\tR\x11tracingConfigMode\x12d\n" +
+	"4project/planton/provider/aws/awslambda/v1/spec.proto\x12)project.planton.provider.aws.awslambda.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\"\xc9\x13\n" +
+	"\rAwsLambdaSpec\x12,\n" +
+	"\rfunction_name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\ffunctionName\x12 \n" +
+	"\vdescription\x18\x02 \x01(\tR\vdescription\x12y\n" +
+	"\brole_arn\x18\x03 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB&\xbaH\x03\xc8\x01\x01\x88\xd4a\xd0\x01\x92\xd4a\x17status.outputs.role_arnR\aroleArn\x12\x18\n" +
+	"\aruntime\x18\x04 \x01(\tR\aruntime\x12\x18\n" +
+	"\ahandler\x18\x05 \x01(\tR\ahandler\x12\x1b\n" +
+	"\tmemory_mb\x18\x06 \x01(\x05R\bmemoryMb\x12'\n" +
+	"\x0ftimeout_seconds\x18\a \x01(\x05R\x0etimeoutSeconds\x121\n" +
+	"\x14reserved_concurrency\x18\b \x01(\x05R\x13reservedConcurrency\x12k\n" +
+	"\venvironment\x18\t \x03(\v2I.project.planton.provider.aws.awslambda.v1.AwsLambdaSpec.EnvironmentEntryR\venvironment\x12W\n" +
+	"\asubnets\x18\n" +
+	" \x03(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB\x05\x88\xd4a\xd9\x01R\asubnets\x12\x8a\x01\n" +
+	"\x0fsecurity_groups\x18\v \x03(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB)\x88\xd4a\xd7\x01\x92\xd4a status.outputs.security_group_idR\x0esecurityGroups\x12e\n" +
+	"\farchitecture\x18\f \x01(\x0e27.project.planton.provider.aws.awslambda.v1.ArchitectureB\b\xbaH\x05\x82\x01\x02\x10\x01R\farchitecture\x12U\n" +
 	"\n" +
-	"vpc_config\x18\x16 \x01(\v2E.project.planton.provider.aws.awslambda.v1.AwsLambdaFunctionVpcConfigR\tvpcConfig\x124\n" +
-	"\x16ephemeral_storage_size\x18\x17 \x01(\x05R\x14ephemeralStorageSize\x1a<\n" +
-	"\x0eVariablesEntry\x12\x10\n" +
+	"layer_arns\x18\r \x03(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefR\tlayerArns\x12w\n" +
+	"\vkms_key_arn\x18\x0e \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB\x1f\x88\xd4a\xdc\x01\x92\xd4a\x16status.outputs.key_arnR\tkmsKeyArn\x12m\n" +
+	"\x10code_source_type\x18\x0f \x01(\x0e29.project.planton.provider.aws.awslambda.v1.CodeSourceTypeB\b\xbaH\x05\x82\x01\x02\x10\x01R\x0ecodeSourceType\x12A\n" +
+	"\x02s3\x18\x10 \x01(\v21.project.planton.provider.aws.awslambda.v1.S3CodeR\x02s3\x12\x1b\n" +
+	"\timage_uri\x18\x11 \x01(\tR\bimageUri\x1a>\n" +
+	"\x10EnvironmentEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"_\n" +
-	"!AwsLambdaFunctionFileSystemConfig\x12\x10\n" +
-	"\x03arn\x18\x01 \x01(\tR\x03arn\x12(\n" +
-	"\x10local_mount_path\x18\x02 \x01(\tR\x0elocalMountPath\"\x8a\x01\n" +
-	"\x1cAwsLambdaFunctionImageConfig\x12\x1a\n" +
-	"\bcommands\x18\x01 \x03(\tR\bcommands\x12!\n" +
-	"\fentry_points\x18\x02 \x03(\tR\ventryPoints\x12+\n" +
-	"\x11working_directory\x18\x03 \x01(\tR\x10workingDirectory\"\x80\x01\n" +
-	"\x1aAwsLambdaFunctionVpcConfig\x12,\n" +
-	"\x12security_group_ids\x18\x01 \x03(\tR\x10securityGroupIds\x12\x1d\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:\xa6\t\xbaH\xa2\t\x1aU\n" +
+	"\x19code_source_type_required\x12\x1ccode_source_type must be set\x1a\x1athis.code_source_type != 0\x1a\x95\x01\n" +
+	"\rrole_required\x121role_arn must be provided as a value or reference\x1aQhas(this.role_arn) && (has(this.role_arn.value) || has(this.role_arn.value_from))\x1a\xf6\x01\n" +
+	".s3_requires_runtime_handler_and_excludes_image\x12Rwhen code_source_type is S3, set s3, runtime, and handler; image_uri must be empty\x1apthis.code_source_type != 1 || (has(this.s3) && this.image_uri == '' && this.runtime != '' && this.handler != '')\x1a\xb2\x01\n" +
+	"(image_requires_image_uri_and_excludes_s3\x12?when code_source_type is IMAGE, set image_uri and do not set s3\x1aEthis.code_source_type != 2 || (this.image_uri != '' && !has(this.s3))\x1a\x96\x01\n" +
+	"\x17memory_range_or_default\x120memory_mb must be between 128 and 10240 when set\x1aIthis.memory_mb == 0 || (this.memory_mb >= 128 && this.memory_mb <= 10240)\x1a\xa7\x01\n" +
+	"\x18timeout_range_or_default\x122timeout_seconds must be between 1 and 900 when set\x1aWthis.timeout_seconds == 0 || (this.timeout_seconds >= 1 && this.timeout_seconds <= 900)\x1a\xbf\x01\n" +
+	"\x1ereserved_concurrency_semantics\x129reserved_concurrency must be -1, 0, or a positive integer\x1abthis.reserved_concurrency == -1 || this.reserved_concurrency == 0 || this.reserved_concurrency > 0\"k\n" +
+	"\x06S3Code\x12\x1f\n" +
+	"\x06bucket\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06bucket\x12\x19\n" +
+	"\x03key\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x03key\x12%\n" +
+	"\x0eobject_version\x18\x03 \x01(\tR\robjectVersion*C\n" +
+	"\fArchitecture\x12\x1c\n" +
+	"\x18ARCHITECTURE_UNSPECIFIED\x10\x00\x12\n" +
 	"\n" +
-	"subnet_ids\x18\x02 \x03(\tR\tsubnetIds\x12\x15\n" +
-	"\x06vpc_id\x18\x03 \x01(\tR\x05vpcId\"\xd8\x02\n" +
-	"\x10AwsLambdaIamRole\x121\n" +
-	"\x14permissions_boundary\x18\x01 \x01(\tR\x13permissionsBoundary\x123\n" +
-	"\x16lambda_at_edge_enabled\x18\x02 \x01(\bR\x13lambdaAtEdgeEnabled\x12K\n" +
-	"\"cloudwatch_lambda_insights_enabled\x18\x03 \x01(\bR\x1fcloudwatchLambdaInsightsEnabled\x12.\n" +
-	"\x13ssm_parameter_names\x18\x04 \x03(\tR\x11ssmParameterNames\x123\n" +
-	"\x16custom_iam_policy_arns\x18\x05 \x03(\tR\x13customIamPolicyArns\x12*\n" +
-	"\x11inline_iam_policy\x18\x06 \x01(\tR\x0finlineIamPolicy\"i\n" +
-	"\x1bAwsLambdaCloudwatchLogGroup\x12\x1e\n" +
-	"\vkms_key_arn\x18\x01 \x01(\tR\tkmsKeyArn\x12*\n" +
-	"\x11retention_in_days\x18\x02 \x01(\x05R\x0fretentionInDays\"`\n" +
-	"!AwsLambdaInvokeFunctionPermission\x12\x1c\n" +
-	"\tprincipal\x18\x01 \x01(\tR\tprincipal\x12\x1d\n" +
-	"\n" +
-	"source_arn\x18\x02 \x01(\tR\tsourceArnB\xec\x02\n" +
+	"\x06X86_64\x10\x01\x12\t\n" +
+	"\x05ARM64\x10\x02*g\n" +
+	"\x0eCodeSourceType\x12 \n" +
+	"\x1cCODE_SOURCE_TYPE_UNSPECIFIED\x10\x00\x12\x17\n" +
+	"\x13CODE_SOURCE_TYPE_S3\x10\x01\x12\x1a\n" +
+	"\x16CODE_SOURCE_TYPE_IMAGE\x10\x02B\xec\x02\n" +
 	"-com.project.planton.provider.aws.awslambda.v1B\tSpecProtoP\x01Zegithub.com/project-planton/project-planton/apis/project/planton/provider/aws/awslambda/v1;awslambdav1\xa2\x02\x05PPPAA\xaa\x02)Project.Planton.Provider.Aws.Awslambda.V1\xca\x02)Project\\Planton\\Provider\\Aws\\Awslambda\\V1\xe2\x025Project\\Planton\\Provider\\Aws\\Awslambda\\V1\\GPBMetadata\xea\x02.Project::Planton::Provider::Aws::Awslambda::V1b\x06proto3"
 
 var (
@@ -850,32 +493,31 @@ func file_project_planton_provider_aws_awslambda_v1_spec_proto_rawDescGZIP() []b
 	return file_project_planton_provider_aws_awslambda_v1_spec_proto_rawDescData
 }
 
-var file_project_planton_provider_aws_awslambda_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
+var file_project_planton_provider_aws_awslambda_v1_spec_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
+var file_project_planton_provider_aws_awslambda_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_project_planton_provider_aws_awslambda_v1_spec_proto_goTypes = []any{
-	(*AwsLambdaSpec)(nil),                     // 0: project.planton.provider.aws.awslambda.v1.AwsLambdaSpec
-	(*AwsLambdaFunction)(nil),                 // 1: project.planton.provider.aws.awslambda.v1.AwsLambdaFunction
-	(*AwsLambdaFunctionFileSystemConfig)(nil), // 2: project.planton.provider.aws.awslambda.v1.AwsLambdaFunctionFileSystemConfig
-	(*AwsLambdaFunctionImageConfig)(nil),      // 3: project.planton.provider.aws.awslambda.v1.AwsLambdaFunctionImageConfig
-	(*AwsLambdaFunctionVpcConfig)(nil),        // 4: project.planton.provider.aws.awslambda.v1.AwsLambdaFunctionVpcConfig
-	(*AwsLambdaIamRole)(nil),                  // 5: project.planton.provider.aws.awslambda.v1.AwsLambdaIamRole
-	(*AwsLambdaCloudwatchLogGroup)(nil),       // 6: project.planton.provider.aws.awslambda.v1.AwsLambdaCloudwatchLogGroup
-	(*AwsLambdaInvokeFunctionPermission)(nil), // 7: project.planton.provider.aws.awslambda.v1.AwsLambdaInvokeFunctionPermission
-	nil, // 8: project.planton.provider.aws.awslambda.v1.AwsLambdaFunction.VariablesEntry
+	(Architecture)(0),           // 0: project.planton.provider.aws.awslambda.v1.Architecture
+	(CodeSourceType)(0),         // 1: project.planton.provider.aws.awslambda.v1.CodeSourceType
+	(*AwsLambdaSpec)(nil),       // 2: project.planton.provider.aws.awslambda.v1.AwsLambdaSpec
+	(*S3Code)(nil),              // 3: project.planton.provider.aws.awslambda.v1.S3Code
+	nil,                         // 4: project.planton.provider.aws.awslambda.v1.AwsLambdaSpec.EnvironmentEntry
+	(*v1.StringValueOrRef)(nil), // 5: project.planton.shared.foreignkey.v1.StringValueOrRef
 }
 var file_project_planton_provider_aws_awslambda_v1_spec_proto_depIdxs = []int32{
-	1, // 0: project.planton.provider.aws.awslambda.v1.AwsLambdaSpec.function:type_name -> project.planton.provider.aws.awslambda.v1.AwsLambdaFunction
-	5, // 1: project.planton.provider.aws.awslambda.v1.AwsLambdaSpec.iam_role:type_name -> project.planton.provider.aws.awslambda.v1.AwsLambdaIamRole
-	6, // 2: project.planton.provider.aws.awslambda.v1.AwsLambdaSpec.cloudwatch_log_group:type_name -> project.planton.provider.aws.awslambda.v1.AwsLambdaCloudwatchLogGroup
-	7, // 3: project.planton.provider.aws.awslambda.v1.AwsLambdaSpec.invoke_function_permissions:type_name -> project.planton.provider.aws.awslambda.v1.AwsLambdaInvokeFunctionPermission
-	2, // 4: project.planton.provider.aws.awslambda.v1.AwsLambdaFunction.file_system_config:type_name -> project.planton.provider.aws.awslambda.v1.AwsLambdaFunctionFileSystemConfig
-	8, // 5: project.planton.provider.aws.awslambda.v1.AwsLambdaFunction.variables:type_name -> project.planton.provider.aws.awslambda.v1.AwsLambdaFunction.VariablesEntry
-	3, // 6: project.planton.provider.aws.awslambda.v1.AwsLambdaFunction.image_config:type_name -> project.planton.provider.aws.awslambda.v1.AwsLambdaFunctionImageConfig
-	4, // 7: project.planton.provider.aws.awslambda.v1.AwsLambdaFunction.vpc_config:type_name -> project.planton.provider.aws.awslambda.v1.AwsLambdaFunctionVpcConfig
-	8, // [8:8] is the sub-list for method output_type
-	8, // [8:8] is the sub-list for method input_type
-	8, // [8:8] is the sub-list for extension type_name
-	8, // [8:8] is the sub-list for extension extendee
-	0, // [0:8] is the sub-list for field type_name
+	5, // 0: project.planton.provider.aws.awslambda.v1.AwsLambdaSpec.role_arn:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
+	4, // 1: project.planton.provider.aws.awslambda.v1.AwsLambdaSpec.environment:type_name -> project.planton.provider.aws.awslambda.v1.AwsLambdaSpec.EnvironmentEntry
+	5, // 2: project.planton.provider.aws.awslambda.v1.AwsLambdaSpec.subnets:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
+	5, // 3: project.planton.provider.aws.awslambda.v1.AwsLambdaSpec.security_groups:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
+	0, // 4: project.planton.provider.aws.awslambda.v1.AwsLambdaSpec.architecture:type_name -> project.planton.provider.aws.awslambda.v1.Architecture
+	5, // 5: project.planton.provider.aws.awslambda.v1.AwsLambdaSpec.layer_arns:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
+	5, // 6: project.planton.provider.aws.awslambda.v1.AwsLambdaSpec.kms_key_arn:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
+	1, // 7: project.planton.provider.aws.awslambda.v1.AwsLambdaSpec.code_source_type:type_name -> project.planton.provider.aws.awslambda.v1.CodeSourceType
+	3, // 8: project.planton.provider.aws.awslambda.v1.AwsLambdaSpec.s3:type_name -> project.planton.provider.aws.awslambda.v1.S3Code
+	9, // [9:9] is the sub-list for method output_type
+	9, // [9:9] is the sub-list for method input_type
+	9, // [9:9] is the sub-list for extension type_name
+	9, // [9:9] is the sub-list for extension extendee
+	0, // [0:9] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_provider_aws_awslambda_v1_spec_proto_init() }
@@ -888,13 +530,14 @@ func file_project_planton_provider_aws_awslambda_v1_spec_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_project_planton_provider_aws_awslambda_v1_spec_proto_rawDesc), len(file_project_planton_provider_aws_awslambda_v1_spec_proto_rawDesc)),
-			NumEnums:      0,
-			NumMessages:   9,
+			NumEnums:      2,
+			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
 		GoTypes:           file_project_planton_provider_aws_awslambda_v1_spec_proto_goTypes,
 		DependencyIndexes: file_project_planton_provider_aws_awslambda_v1_spec_proto_depIdxs,
+		EnumInfos:         file_project_planton_provider_aws_awslambda_v1_spec_proto_enumTypes,
 		MessageInfos:      file_project_planton_provider_aws_awslambda_v1_spec_proto_msgTypes,
 	}.Build()
 	File_project_planton_provider_aws_awslambda_v1_spec_proto = out.File

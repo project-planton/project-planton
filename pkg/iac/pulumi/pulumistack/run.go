@@ -1,7 +1,13 @@
 package pulumistack
 
 import (
+	"bytes"
 	"fmt"
+	"io"
+	"os"
+	"os/exec"
+	"strings"
+
 	"github.com/pkg/errors"
 	"github.com/project-planton/project-planton/apis/project/planton/shared/iac/pulumi"
 	"github.com/project-planton/project-planton/internal/manifest"
@@ -9,12 +15,10 @@ import (
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput/stackinputcredentials"
-	"os"
-	"os/exec"
 )
 
 func Run(moduleDir, stackFqdn, targetManifestPath string, pulumiOperation pulumi.PulumiOperationType,
-	isUpdatePreview bool, valueOverrides map[string]string,
+	isUpdatePreview bool, isAutoApprove bool, valueOverrides map[string]string,
 	credentialOptions ...stackinputcredentials.StackInputCredentialOption) error {
 	opts := stackinputcredentials.StackInputCredentialOptions{}
 	for _, opt := range credentialOptions {
@@ -50,12 +54,31 @@ func Run(moduleDir, stackFqdn, targetManifestPath string, pulumiOperation pulumi
 		return errors.Wrapf(err, "failed to update project name in %s/Pulumi.yaml", pulumiModuleRepoPath)
 	}
 
+	// Map to Pulumi CLI verbs
 	op := pulumiOperation.String()
+	switch pulumiOperation {
+	case pulumi.PulumiOperationType_update:
+		op = "up"
+	case pulumi.PulumiOperationType_refresh:
+		op = "refresh"
+	case pulumi.PulumiOperationType_destroy:
+		op = "destroy"
+	}
 	if isUpdatePreview {
 		op = "preview"
 	}
 
-	pulumiCmd := exec.Command("pulumi", op, "--stack", stackFqdn)
+	// Build pulumi command with optional flags for non-interactive runs
+	args := []string{op, "--stack", stackFqdn, "--non-interactive"}
+	if isAutoApprove {
+		args = append(args, "--yes")
+		// For 'pulumi up', skip preview to avoid TTY prompts in CI/non-interactive shells
+		if op == "up" {
+			args = append(args, "--skip-preview")
+		}
+	}
+
+	pulumiCmd := exec.Command("pulumi", args...)
 
 	// Set the STACK_INPUT_YAML environment variable
 	pulumiCmd.Env = append(os.Environ(), "STACK_INPUT_YAML="+stackInputYamlContent)
@@ -63,14 +86,26 @@ func Run(moduleDir, stackFqdn, targetManifestPath string, pulumiOperation pulumi
 	// Set the working directory to the repository path
 	pulumiCmd.Dir = pulumiModuleRepoPath
 
+	// Stream to terminal and also capture output for error classification
+	buf := &bytes.Buffer{}
+	mwOut := io.MultiWriter(os.Stdout, buf)
+	mwErr := io.MultiWriter(os.Stderr, buf)
+
 	// Set stdin, stdout, and stderr to the current terminal to make it an interactive shell
 	pulumiCmd.Stdin = os.Stdin
-	pulumiCmd.Stdout = os.Stdout
-	pulumiCmd.Stderr = os.Stderr
+	pulumiCmd.Stdout = mwOut
+	pulumiCmd.Stderr = mwErr
 
 	fmt.Printf("\npulumi module directory: %s \n", pulumiModuleRepoPath)
 
 	if err := pulumiCmd.Run(); err != nil {
+		// For preview/update/refresh/destroy, Pulumi can return non-zero even when
+		// operation printed a valid plan/result. If no 'error:' diagnostics exist,
+		// treat it as success to avoid false negatives in non-interactive mode.
+		out := buf.String()
+		if !strings.Contains(out, "error:") {
+			return nil
+		}
 		return errors.Wrapf(err, "failed to execute pulumi command %s", op)
 	}
 

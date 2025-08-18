@@ -25,18 +25,18 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// aws-lambda stack-input
+// AwsLambdaStackInput defines the inputs passed to IaC to provision an AWS Lambda resource.
 type AwsLambdaStackInput struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// iac-provisioner
+	// IaC provisioner to use (Pulumi or Terraform)
 	Provisioner shared.IacProvisioner `protobuf:"varint,1,opt,name=provisioner,proto3,enum=project.planton.shared.IacProvisioner" json:"provisioner,omitempty"`
-	// pulumi input required when the provisioner is pulumi
+	// Pulumi-specific stack information
 	Pulumi *pulumi.PulumiStackInfo `protobuf:"bytes,2,opt,name=pulumi,proto3" json:"pulumi,omitempty"`
-	// terraform input required when the provisioner is terraform
+	// Terraform-specific stack information
 	Terraform *terraform.TerraformStackInfo `protobuf:"bytes,3,opt,name=terraform,proto3" json:"terraform,omitempty"`
-	// target cloud-resource
+	// Target API resource describing the desired Lambda configuration
 	Target *AwsLambda `protobuf:"bytes,4,opt,name=target,proto3" json:"target,omitempty"`
-	// provider-credential
+	// Cloud provider credentials to use for provisioning
 	ProviderCredential *v1.AwsCredentialSpec `protobuf:"bytes,5,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
@@ -111,7 +111,7 @@ var File_project_planton_provider_aws_awslambda_v1_stack_input_proto protoreflec
 
 const file_project_planton_provider_aws_awslambda_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	";project/planton/provider/aws/awslambda/v1/stack_input.proto\x12)project.planton.provider.aws.awslambda.v1\x1a6project/planton/credential/awscredential/v1/spec.proto\x1a3project/planton/provider/aws/awslambda/v1/api.proto\x1a.project/planton/shared/iac/pulumi/pulumi.proto\x1a project/planton/shared/iac.proto\x1a4project/planton/shared/iac/terraform/terraform.proto\"\xc2\x03\n" +
+	";project/planton/provider/aws/awslambda/v1/stack_input.proto\x12)project.planton.provider.aws.awslambda.v1\x1a project/planton/shared/iac.proto\x1a.project/planton/shared/iac/pulumi/pulumi.proto\x1a4project/planton/shared/iac/terraform/terraform.proto\x1a3project/planton/provider/aws/awslambda/v1/api.proto\x1a6project/planton/credential/awscredential/v1/spec.proto\"\xc2\x03\n" +
 	"\x13AwsLambdaStackInput\x12H\n" +
 	"\vprovisioner\x18\x01 \x01(\x0e2&.project.planton.shared.IacProvisionerR\vprovisioner\x12J\n" +
 	"\x06pulumi\x18\x02 \x01(\v22.project.planton.shared.iac.pulumi.PulumiStackInfoR\x06pulumi\x12V\n" +

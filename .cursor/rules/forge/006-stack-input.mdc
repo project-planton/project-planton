@@ -50,6 +50,7 @@ MESSAGE SHAPE
 
 BUILD & VERIFY (NON-INTERACTIVE)
 - After writing `stack_input.proto`, run:
+  - `make lint | cat`
   - `make -C apis build | cat`
 - Fix import paths or credential message types up to 3 attempts if build fails, then re-run.
 - On success, announce completion and point to the file path.

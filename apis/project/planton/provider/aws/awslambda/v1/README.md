@@ -1,68 +1,43 @@
-# Overview
+# AWSLambda
 
-The AWS Lambda API resource provides a consistent and streamlined interface for deploying and managing AWS Lambda functions within our cloud infrastructure. By abstracting the complexities of AWS Lambda configurations, this resource allows you to define and deploy serverless functions effortlessly while ensuring consistency and compliance across different environments.
+AWS Lambda lets you run code without provisioning or managing servers. This resource models an AWS Lambda function with common settings (runtime/handler or container image, memory/timeout, environment, VPC networking, layers, and encryption) and exposes observable outputs like function ARN and log group name.
 
-## Why We Created This API Resource
+## Spec fields (summary)
+- function_name: Name of the function (unique per account/region)
+- description: Free-text description for the function
+- role_arn: Execution role as value-or-reference (defaults to AwsIamRole → status.outputs.role_arn)
+- runtime: Language/runtime for zip/S3 code (ignored for container image)
+- handler: Entrypoint for zip/S3 code (ignored for container image)
+- memory_mb: Memory in MB (128–10240)
+- timeout_seconds: Max execution time in seconds (1–900)
+- reserved_concurrency: -1 (unreserved pool), 0 (disabled), or positive integer
+- environment: Key/value environment variables
+- subnets: Value-or-reference to VPC subnets (defaults to AwsVpc)
+- security_groups: Value-or-reference to security groups (defaults to AwsSecurityGroup → status.outputs.security_group_id)
+- architecture: X86_64 or ARM64
+- layer_arns: Value-or-reference to Lambda layers (no defaults yet)
+- kms_key_arn: Value-or-reference to KMS key (defaults to AwsKmsKey → status.outputs.key_arn)
+- code_source_type: S3 or IMAGE
+- s3: S3 bucket/key (and optional version) for zip package
+- image_uri: ECR image URI for container-based code
 
-Deploying AWS Lambda functions can be complex due to the numerous configuration options, dependencies, and best practices involved. To simplify this process and promote a standardized approach, we developed this API resource. It enables you to:
+## Stack outputs
+- function_arn: Full ARN of the function
+- function_name: Final function name
+- log_group_name: CloudWatch Logs group (e.g., /aws/lambda/<name>)
+- role_arn: Execution role ARN
+- layer_arns: Attached layer ARNs
 
-- **Simplify Deployment**: Easily configure and deploy Lambda functions without dealing with low-level AWS details.
-- **Ensure Consistency**: Maintain uniform configurations across different environments and functions.
-- **Improve Productivity**: Reduce the time and effort required to set up Lambda functions, allowing you to focus on writing code.
+## How it works
+This resource is orchestrated by the Project Planton CLI as part of a stack job. The CLI validates your manifest, generates stack inputs, and invokes IaC backends in this repo:
+- Pulumi (Go modules under iac/pulumi)
+- Terraform (modules under iac/tf)
 
-## Key Features
+Credentials and region live in stack input (provider_credential), not in the spec.
 
-### Environment Integration
-
-- **Environment Info**: Integrates seamlessly with our environment management system to deploy Lambda functions within specific environments.
-- **Stack Job Settings**: Supports custom stack job settings for infrastructure-as-code deployments.
-
-### AWS Credential Management
-
-- **AWS Credential ID**: Utilizes specified AWS credentials to ensure secure and authorized deployments.
-
-### Customizable Lambda Function Specifications
-
-- **Function Configuration**: Define essential settings such as function name, handler, runtime, and description.
-- **Architectures**: Support for multiple instruction set architectures, including `x86_64` and `arm64`.
-- **Memory and Timeout Settings**: Configure memory allocation and execution timeout to optimize performance.
-- **Environment Variables**: Set environment variables accessible during function execution.
-- **VPC Integration**: Configure VPC settings to run the Lambda function within a specified VPC for network isolation.
-
-### Advanced Configurations
-
-- **File System Access**: Configure access to Amazon EFS file systems for functions that require persistent storage.
-- **Layers Support**: Attach up to five Lambda layers to include additional code or content in your function.
-- **Dead Letter Queues**: Specify SNS topics or SQS queues to handle failed invocations.
-- **Image Support**: Deploy Lambda functions using container images from Amazon ECR.
-
-### IAM Role Management
-
-- **Custom IAM Policies**: Attach custom IAM policies to the Lambda execution role for fine-grained access control.
-- **Permissions Boundary**: Set permissions boundaries for the IAM role to limit its effective permissions.
-- **Lambda@Edge Support**: Enable Lambda@Edge for functions that need to run at AWS edge locations.
-
-### Monitoring and Logging
-
-- **CloudWatch Log Group Configuration**: Customize log group settings, including retention period and encryption.
-- **Tracing**: Enable AWS X-Ray tracing to monitor and troubleshoot function execution.
-- **CloudWatch Lambda Insights**: Enable enhanced monitoring for deeper visibility into function performance.
-
-### Security and Compliance
-
-- **KMS Key Integration**: Use AWS KMS keys to encrypt environment variables and log data.
-- **SSM Parameter Access**: Grant the function permission to read specific AWS Systems Manager Parameter Store parameters.
-
-### Invocation Permissions
-
-- **Fine-Grained Access Control**: Define which external sources (principals) can invoke the Lambda function.
-- **Source ARN Specification**: Restrict invocation permissions to specific resources, such as S3 buckets or EventBridge rules.
-
-## Benefits
-
-- **Simplified Deployment**: Abstracts the complexities of AWS Lambda configurations into an easy-to-use API.
-- **Consistency**: Ensures all Lambda functions adhere to organizational standards and best practices.
-- **Scalability**: Leverage Lambda's inherent scalability without worrying about server management.
-- **Security**: Integrate with AWS IAM, KMS, and VPCs to enhance security and compliance.
-- **Flexibility**: Customize functions extensively to meet specific application requirements.
-- **Cost Efficiency**: Optimize resource allocation and billing by configuring memory size and execution timeouts.
+## References
+- AWS Lambda: https://docs.aws.amazon.com/lambda/latest/dg/welcome.html
+- Lambda runtimes: https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html
+- Container images: https://docs.aws.amazon.com/lambda/latest/dg/images-create.html
+- VPC config: https://docs.aws.amazon.com/lambda/latest/dg/configuration-vpc.html
+- Environment variables & encryption: https://docs.aws.amazon.com/lambda/latest/dg/configuration-envvars.html

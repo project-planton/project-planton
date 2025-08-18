@@ -1,0 +1,17 @@
+apiVersion: aws.project-planton.org/v1
+kind: AWSLambda
+metadata:
+  name: awslambda-demo
+spec:
+  function:
+    packageType: Zip
+    runtime: nodejs18.x
+    handler: index.handler
+    s3Bucket: planton-lambda-e2e-996818459122-c51b3ce3
+    s3Key: lambda/hello.zip
+    memorySize: 128
+    timeout: 10
+  iamRole: {}
+  cloudwatchLogGroup:
+    retentionInDays: 7
+  # invokeFunctionPermissions: []

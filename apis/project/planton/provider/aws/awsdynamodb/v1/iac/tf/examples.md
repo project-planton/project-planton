@@ -1,6 +1,7 @@
-# Terraform examples for AwsDynamodb
+# AwsDynamodb examples
 
 ## Minimal manifest (YAML)
+A minimal PAY_PER_REQUEST table with a single HASH key.
 
 ```yaml
 apiVersion: aws.project-planton.org/v1
@@ -20,6 +21,7 @@ spec:
 ```
 
 ## PROVISIONED with GSI and TTL
+Table using PROVISIONED capacity, a GSI, TTL enabled, and streams enabled.
 
 ```yaml
 apiVersion: aws.project-planton.org/v1
@@ -60,26 +62,18 @@ spec:
   streamViewType: STREAM_VIEW_TYPE_NEW_AND_OLD_IMAGES
 ```
 
-## CLI flows (tofu)
+## CLI flows (Terraform/tofu)
 
-Init:
+Validate manifest:
 ```bash
-project-planton tofu init --manifest ../hack/manifest.yaml | cat
+project-planton validate --manifest ./manifest.yaml | cat
 ```
 
-Plan:
+Terraform deploy:
 ```bash
-project-planton tofu plan --manifest ../hack/manifest.yaml | cat
-```
-
-Apply:
-```bash
-project-planton tofu apply --manifest ../hack/manifest.yaml --auto-approve | cat
-```
-
-Destroy:
-```bash
-project-planton tofu destroy --manifest ../hack/manifest.yaml --auto-approve | cat
+project-planton tofu apply --manifest ./manifest.yaml --auto-approve | cat
 ```
 
 > Note: Provider credentials are supplied via stack input, not in the spec.
+
+

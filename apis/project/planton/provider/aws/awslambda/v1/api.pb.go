@@ -23,18 +23,18 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// aws-lambda
+// AwsLambda is the API envelope for an AWS Lambda function resource.
 type AwsLambda struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// api-version
+	// api-version must be set to "aws.project-planton.org/v1".
 	ApiVersion string `protobuf:"bytes,1,opt,name=api_version,json=apiVersion,proto3" json:"api_version,omitempty"`
-	// resource-kind
+	// resource-kind for this Lambda resource, must be "AwsLambda".
 	Kind string `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
-	// metadata
+	// metadata captures identifying information (name, org, version, etc.).
 	Metadata *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
-	// spec
+	// spec holds the desired configuration for the Lambda function.
 	Spec *AwsLambdaSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
-	// status
+	// status holds runtime or post-deployment information.
 	Status        *AwsLambdaStatus `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -105,16 +105,16 @@ func (x *AwsLambda) GetStatus() *AwsLambdaStatus {
 	return nil
 }
 
-// aws-lambda status
+// AwsLambdaStatus describes the status fields for an AWS Lambda resource.
 type AwsLambdaStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// lifecycle
+	// lifecycle indicates if the resource is active or has been marked for removal.
 	Lifecycle *shared.ApiResourceLifecycle `protobuf:"bytes,99,opt,name=lifecycle,proto3" json:"lifecycle,omitempty"`
-	// audit-info
+	// audit contains creation and update information for the resource.
 	Audit *shared.ApiResourceAudit `protobuf:"bytes,98,opt,name=audit,proto3" json:"audit,omitempty"`
-	// stack-job id
+	// stack_job_id stores the ID of the Pulumi/Terraform stack job responsible for provisioning.
 	StackJobId string `protobuf:"bytes,97,opt,name=stack_job_id,json=stackJobId,proto3" json:"stack_job_id,omitempty"`
-	// stack-outputs
+	// outputs captures the observable values returned by Pulumi/Terraform after provisioning.
 	Outputs       *AwsLambdaStackOutputs `protobuf:"bytes,1,opt,name=outputs,proto3" json:"outputs,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
