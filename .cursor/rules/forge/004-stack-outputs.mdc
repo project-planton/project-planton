@@ -39,7 +39,8 @@ IMPLEMENTATION NOTES
 
 BUILD & VERIFY (NON-INTERACTIVE)
 After writing `stack_outputs.proto`:
-- Run Buf build for the repo roots:
+- Run path guard lint and Buf build for the repo roots:
+  - `make lint | cat`
   - `make -C apis build | cat`
 - If build errors occur, fix package paths or message names up to 3 attempts, then re-run the build each time.
 - On success, announce completion and point the user to the created/updated file path.

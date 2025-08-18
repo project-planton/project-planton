@@ -22,6 +22,7 @@ SCOPE
 - Targets under `apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/tf/`:
   - Create/update `README.md` with CLI examples that use the default local backend
   - Create/update `examples.md` by copying root `examples.md` if present, else regenerate minimal examples from `<Kind>Spec`
+  - Run `make lint` before writes to ensure paths are correct; fix any incorrect `apis/project-planton/` placement before proceeding
 
 README CONTENT (iac/tf/README.md)
 - Title: `Terraform Module to Deploy <Kind>`
@@ -41,6 +42,7 @@ EXAMPLES CONTENT (iac/tf/examples.md)
 
 SUCCESS CRITERIA
 - `iac/tf/README.md` and `iac/tf/examples.md` exist and mirror usage/examples
+ - Path guard lint passes (no `apis/project-planton` directories)
 
 OUTPUT STYLE IN CHAT
 - Show created file paths and the CLI commands section

@@ -8,16 +8,16 @@ import "project/planton/provider/aws/awslambda/v1/stack_outputs.proto";
 import "project/planton/shared/status.proto";
 import "project/planton/shared/metadata.proto";
 
-// AWSLambda is the API envelope for an AWS Lambda function resource.
-message AWSLambda {
+// AwsLambda is the API envelope for an AWS Lambda function resource.
+message AwsLambda {
   // api-version must be set to "aws.project-planton.org/v1".
   string api_version = 1 [
     (buf.validate.field).string.const = "aws.project-planton.org/v1"
   ];
 
-  // resource-kind for this Lambda resource, must be "AWSLambda".
+  // resource-kind for this Lambda resource, must be "AwsLambda".
   string kind = 2 [
-    (buf.validate.field).string.const = "AWSLambda"
+    (buf.validate.field).string.const = "AwsLambda"
   ];
 
   // metadata captures identifying information (name, org, version, etc.).
@@ -26,16 +26,16 @@ message AWSLambda {
   ];
 
   // spec holds the desired configuration for the Lambda function.
-  AWSLambdaSpec spec = 4 [
+  AwsLambdaSpec spec = 4 [
     (buf.validate.field).required = true
   ];
 
   // status holds runtime or post-deployment information.
-  AWSLambdaStatus status = 5;
+  AwsLambdaStatus status = 5;
 }
 
-// AWSLambdaStatus describes the status fields for an AWS Lambda resource.
-message AWSLambdaStatus {
+// AwsLambdaStatus describes the status fields for an AWS Lambda resource.
+message AwsLambdaStatus {
   // lifecycle indicates if the resource is active or has been marked for removal.
   project.planton.shared.ApiResourceLifecycle lifecycle = 99;
 
@@ -46,7 +46,7 @@ message AWSLambdaStatus {
   string stack_job_id = 97;
 
   // outputs captures the observable values returned by Pulumi/Terraform after provisioning.
-  AWSLambdaStackOutputs outputs = 1;
+  AwsLambdaStackOutputs outputs = 1;
 }
 
 

@@ -71,8 +71,9 @@ Industry-standard module structure in Terraform is multi-file. Terraform automat
   - Map outputs to `<Kind>StackOutputs` fields, sourcing from provisioned resources
 
 BUILD & VERIFY (NON-INTERACTIVE)
-- Initialize and validate the module:
+- Run path guard lint to prevent incorrect directories, then initialize and validate the module:
 ```bash
+make lint | cat
 terraform -chdir=apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/tf init -backend=false | cat
 terraform -chdir=apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/tf validate | cat
 ```

@@ -130,7 +130,7 @@ func (CodeSourceType) EnumDescriptor() ([]byte, []int) {
 	return file_project_planton_provider_aws_awslambda_v1_spec_proto_rawDescGZIP(), []int{1}
 }
 
-// AWSLambdaSpec defines the desired configuration for an AWS Lambda function.
+// AwsLambdaSpec defines the desired configuration for an AWS Lambda function.
 //
 // Supported code packaging models:
 //   - Zip/S3: Provide an archive in S3 via `code.s3` and set `runtime` and `handler`.
@@ -140,7 +140,7 @@ func (CodeSourceType) EnumDescriptor() ([]byte, []int) {
 // Notes:
 // - This spec intentionally contains no validations or CEL rules; those are added later.
 // - Credentials, region, and deployment workflow live outside this spec in stack inputs.
-type AWSLambdaSpec struct {
+type AwsLambdaSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Human-readable function name shown in the AWS Console and APIs.
 	// Must be unique per account/region. If omitted, the platform may derive a
@@ -216,20 +216,20 @@ type AWSLambdaSpec struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *AWSLambdaSpec) Reset() {
-	*x = AWSLambdaSpec{}
+func (x *AwsLambdaSpec) Reset() {
+	*x = AwsLambdaSpec{}
 	mi := &file_project_planton_provider_aws_awslambda_v1_spec_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *AWSLambdaSpec) String() string {
+func (x *AwsLambdaSpec) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*AWSLambdaSpec) ProtoMessage() {}
+func (*AwsLambdaSpec) ProtoMessage() {}
 
-func (x *AWSLambdaSpec) ProtoReflect() protoreflect.Message {
+func (x *AwsLambdaSpec) ProtoReflect() protoreflect.Message {
 	mi := &file_project_planton_provider_aws_awslambda_v1_spec_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -241,124 +241,124 @@ func (x *AWSLambdaSpec) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use AWSLambdaSpec.ProtoReflect.Descriptor instead.
-func (*AWSLambdaSpec) Descriptor() ([]byte, []int) {
+// Deprecated: Use AwsLambdaSpec.ProtoReflect.Descriptor instead.
+func (*AwsLambdaSpec) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_aws_awslambda_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *AWSLambdaSpec) GetFunctionName() string {
+func (x *AwsLambdaSpec) GetFunctionName() string {
 	if x != nil {
 		return x.FunctionName
 	}
 	return ""
 }
 
-func (x *AWSLambdaSpec) GetDescription() string {
+func (x *AwsLambdaSpec) GetDescription() string {
 	if x != nil {
 		return x.Description
 	}
 	return ""
 }
 
-func (x *AWSLambdaSpec) GetRoleArn() *v1.StringValueOrRef {
+func (x *AwsLambdaSpec) GetRoleArn() *v1.StringValueOrRef {
 	if x != nil {
 		return x.RoleArn
 	}
 	return nil
 }
 
-func (x *AWSLambdaSpec) GetRuntime() string {
+func (x *AwsLambdaSpec) GetRuntime() string {
 	if x != nil {
 		return x.Runtime
 	}
 	return ""
 }
 
-func (x *AWSLambdaSpec) GetHandler() string {
+func (x *AwsLambdaSpec) GetHandler() string {
 	if x != nil {
 		return x.Handler
 	}
 	return ""
 }
 
-func (x *AWSLambdaSpec) GetMemoryMb() int32 {
+func (x *AwsLambdaSpec) GetMemoryMb() int32 {
 	if x != nil {
 		return x.MemoryMb
 	}
 	return 0
 }
 
-func (x *AWSLambdaSpec) GetTimeoutSeconds() int32 {
+func (x *AwsLambdaSpec) GetTimeoutSeconds() int32 {
 	if x != nil {
 		return x.TimeoutSeconds
 	}
 	return 0
 }
 
-func (x *AWSLambdaSpec) GetReservedConcurrency() int32 {
+func (x *AwsLambdaSpec) GetReservedConcurrency() int32 {
 	if x != nil {
 		return x.ReservedConcurrency
 	}
 	return 0
 }
 
-func (x *AWSLambdaSpec) GetEnvironment() map[string]string {
+func (x *AwsLambdaSpec) GetEnvironment() map[string]string {
 	if x != nil {
 		return x.Environment
 	}
 	return nil
 }
 
-func (x *AWSLambdaSpec) GetSubnets() []*v1.StringValueOrRef {
+func (x *AwsLambdaSpec) GetSubnets() []*v1.StringValueOrRef {
 	if x != nil {
 		return x.Subnets
 	}
 	return nil
 }
 
-func (x *AWSLambdaSpec) GetSecurityGroups() []*v1.StringValueOrRef {
+func (x *AwsLambdaSpec) GetSecurityGroups() []*v1.StringValueOrRef {
 	if x != nil {
 		return x.SecurityGroups
 	}
 	return nil
 }
 
-func (x *AWSLambdaSpec) GetArchitecture() Architecture {
+func (x *AwsLambdaSpec) GetArchitecture() Architecture {
 	if x != nil {
 		return x.Architecture
 	}
 	return Architecture_ARCHITECTURE_UNSPECIFIED
 }
 
-func (x *AWSLambdaSpec) GetLayerArns() []*v1.StringValueOrRef {
+func (x *AwsLambdaSpec) GetLayerArns() []*v1.StringValueOrRef {
 	if x != nil {
 		return x.LayerArns
 	}
 	return nil
 }
 
-func (x *AWSLambdaSpec) GetKmsKeyArn() *v1.StringValueOrRef {
+func (x *AwsLambdaSpec) GetKmsKeyArn() *v1.StringValueOrRef {
 	if x != nil {
 		return x.KmsKeyArn
 	}
 	return nil
 }
 
-func (x *AWSLambdaSpec) GetCodeSourceType() CodeSourceType {
+func (x *AwsLambdaSpec) GetCodeSourceType() CodeSourceType {
 	if x != nil {
 		return x.CodeSourceType
 	}
 	return CodeSourceType_CODE_SOURCE_TYPE_UNSPECIFIED
 }
 
-func (x *AWSLambdaSpec) GetS3() *S3Code {
+func (x *AwsLambdaSpec) GetS3() *S3Code {
 	if x != nil {
 		return x.S3
 	}
 	return nil
 }
 
-func (x *AWSLambdaSpec) GetImageUri() string {
+func (x *AwsLambdaSpec) GetImageUri() string {
 	if x != nil {
 		return x.ImageUri
 	}
@@ -436,7 +436,7 @@ var File_project_planton_provider_aws_awslambda_v1_spec_proto protoreflect.FileD
 const file_project_planton_provider_aws_awslambda_v1_spec_proto_rawDesc = "" +
 	"\n" +
 	"4project/planton/provider/aws/awslambda/v1/spec.proto\x12)project.planton.provider.aws.awslambda.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\"\xc9\x13\n" +
-	"\rAWSLambdaSpec\x12,\n" +
+	"\rAwsLambdaSpec\x12,\n" +
 	"\rfunction_name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\ffunctionName\x12 \n" +
 	"\vdescription\x18\x02 \x01(\tR\vdescription\x12y\n" +
 	"\brole_arn\x18\x03 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB&\xbaH\x03\xc8\x01\x01\x88\xd4a\xd0\x01\x92\xd4a\x17status.outputs.role_arnR\aroleArn\x12\x18\n" +
@@ -445,7 +445,7 @@ const file_project_planton_provider_aws_awslambda_v1_spec_proto_rawDesc = "" +
 	"\tmemory_mb\x18\x06 \x01(\x05R\bmemoryMb\x12'\n" +
 	"\x0ftimeout_seconds\x18\a \x01(\x05R\x0etimeoutSeconds\x121\n" +
 	"\x14reserved_concurrency\x18\b \x01(\x05R\x13reservedConcurrency\x12k\n" +
-	"\venvironment\x18\t \x03(\v2I.project.planton.provider.aws.awslambda.v1.AWSLambdaSpec.EnvironmentEntryR\venvironment\x12W\n" +
+	"\venvironment\x18\t \x03(\v2I.project.planton.provider.aws.awslambda.v1.AwsLambdaSpec.EnvironmentEntryR\venvironment\x12W\n" +
 	"\asubnets\x18\n" +
 	" \x03(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB\x05\x88\xd4a\xd9\x01R\asubnets\x12\x8a\x01\n" +
 	"\x0fsecurity_groups\x18\v \x03(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB)\x88\xd4a\xd7\x01\x92\xd4a status.outputs.security_group_idR\x0esecurityGroups\x12e\n" +
@@ -498,21 +498,21 @@ var file_project_planton_provider_aws_awslambda_v1_spec_proto_msgTypes = make([]
 var file_project_planton_provider_aws_awslambda_v1_spec_proto_goTypes = []any{
 	(Architecture)(0),           // 0: project.planton.provider.aws.awslambda.v1.Architecture
 	(CodeSourceType)(0),         // 1: project.planton.provider.aws.awslambda.v1.CodeSourceType
-	(*AWSLambdaSpec)(nil),       // 2: project.planton.provider.aws.awslambda.v1.AWSLambdaSpec
+	(*AwsLambdaSpec)(nil),       // 2: project.planton.provider.aws.awslambda.v1.AwsLambdaSpec
 	(*S3Code)(nil),              // 3: project.planton.provider.aws.awslambda.v1.S3Code
-	nil,                         // 4: project.planton.provider.aws.awslambda.v1.AWSLambdaSpec.EnvironmentEntry
+	nil,                         // 4: project.planton.provider.aws.awslambda.v1.AwsLambdaSpec.EnvironmentEntry
 	(*v1.StringValueOrRef)(nil), // 5: project.planton.shared.foreignkey.v1.StringValueOrRef
 }
 var file_project_planton_provider_aws_awslambda_v1_spec_proto_depIdxs = []int32{
-	5, // 0: project.planton.provider.aws.awslambda.v1.AWSLambdaSpec.role_arn:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
-	4, // 1: project.planton.provider.aws.awslambda.v1.AWSLambdaSpec.environment:type_name -> project.planton.provider.aws.awslambda.v1.AWSLambdaSpec.EnvironmentEntry
-	5, // 2: project.planton.provider.aws.awslambda.v1.AWSLambdaSpec.subnets:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
-	5, // 3: project.planton.provider.aws.awslambda.v1.AWSLambdaSpec.security_groups:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
-	0, // 4: project.planton.provider.aws.awslambda.v1.AWSLambdaSpec.architecture:type_name -> project.planton.provider.aws.awslambda.v1.Architecture
-	5, // 5: project.planton.provider.aws.awslambda.v1.AWSLambdaSpec.layer_arns:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
-	5, // 6: project.planton.provider.aws.awslambda.v1.AWSLambdaSpec.kms_key_arn:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
-	1, // 7: project.planton.provider.aws.awslambda.v1.AWSLambdaSpec.code_source_type:type_name -> project.planton.provider.aws.awslambda.v1.CodeSourceType
-	3, // 8: project.planton.provider.aws.awslambda.v1.AWSLambdaSpec.s3:type_name -> project.planton.provider.aws.awslambda.v1.S3Code
+	5, // 0: project.planton.provider.aws.awslambda.v1.AwsLambdaSpec.role_arn:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
+	4, // 1: project.planton.provider.aws.awslambda.v1.AwsLambdaSpec.environment:type_name -> project.planton.provider.aws.awslambda.v1.AwsLambdaSpec.EnvironmentEntry
+	5, // 2: project.planton.provider.aws.awslambda.v1.AwsLambdaSpec.subnets:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
+	5, // 3: project.planton.provider.aws.awslambda.v1.AwsLambdaSpec.security_groups:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
+	0, // 4: project.planton.provider.aws.awslambda.v1.AwsLambdaSpec.architecture:type_name -> project.planton.provider.aws.awslambda.v1.Architecture
+	5, // 5: project.planton.provider.aws.awslambda.v1.AwsLambdaSpec.layer_arns:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
+	5, // 6: project.planton.provider.aws.awslambda.v1.AwsLambdaSpec.kms_key_arn:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
+	1, // 7: project.planton.provider.aws.awslambda.v1.AwsLambdaSpec.code_source_type:type_name -> project.planton.provider.aws.awslambda.v1.CodeSourceType
+	3, // 8: project.planton.provider.aws.awslambda.v1.AwsLambdaSpec.s3:type_name -> project.planton.provider.aws.awslambda.v1.S3Code
 	9, // [9:9] is the sub-list for method output_type
 	9, // [9:9] is the sub-list for method input_type
 	9, // [9:9] is the sub-list for extension type_name

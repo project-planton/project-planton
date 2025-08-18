@@ -20,6 +20,7 @@ SCOPE
 - Target directory: `apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/hack/`
 - Create or update:
   - `iac/hack/manifest.yaml` — minimal YAML manifest for `<Kind>` with safe default values
+ - Run `make lint` before writes to ensure paths are correct; fix any incorrect `apis/project-planton/` placement before proceeding
 
 CONTENT REQUIREMENTS (manifest.yaml)
 - Structure:
@@ -37,6 +38,7 @@ spec:
 SUCCESS CRITERIA
 - `iac/hack/manifest.yaml` exists with a minimal, valid spec for `<Kind>`
 - It is at `.../v1/iac/hack/manifest.yaml` (not under `tf/` or `pulumi/`)
+ - Path guard lint passes (no `apis/project-planton` directories)
 
 OUTPUT STYLE IN CHAT
 - Show created path and a short snippet of the manifest.

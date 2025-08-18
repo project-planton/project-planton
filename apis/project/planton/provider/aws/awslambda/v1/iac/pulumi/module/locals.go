@@ -10,11 +10,11 @@ import (
 )
 
 type Locals struct {
-	AwsLambda *awslambdav1.AWSLambda
+	AwsLambda *awslambdav1.AwsLambda
 	AwsTags   map[string]string
 }
 
-func initializeLocals(ctx *pulumi.Context, in *awslambdav1.AWSLambdaStackInput) *Locals {
+func initializeLocals(ctx *pulumi.Context, in *awslambdav1.AwsLambdaStackInput) *Locals {
 	locals := &Locals{
 		AwsLambda: in.Target,
 	}

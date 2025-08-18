@@ -25,8 +25,8 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// AWSLambdaStackInput defines the inputs passed to IaC to provision an AWS Lambda resource.
-type AWSLambdaStackInput struct {
+// AwsLambdaStackInput defines the inputs passed to IaC to provision an AWS Lambda resource.
+type AwsLambdaStackInput struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// IaC provisioner to use (Pulumi or Terraform)
 	Provisioner shared.IacProvisioner `protobuf:"varint,1,opt,name=provisioner,proto3,enum=project.planton.shared.IacProvisioner" json:"provisioner,omitempty"`
@@ -35,27 +35,27 @@ type AWSLambdaStackInput struct {
 	// Terraform-specific stack information
 	Terraform *terraform.TerraformStackInfo `protobuf:"bytes,3,opt,name=terraform,proto3" json:"terraform,omitempty"`
 	// Target API resource describing the desired Lambda configuration
-	Target *AWSLambda `protobuf:"bytes,4,opt,name=target,proto3" json:"target,omitempty"`
+	Target *AwsLambda `protobuf:"bytes,4,opt,name=target,proto3" json:"target,omitempty"`
 	// Cloud provider credentials to use for provisioning
 	ProviderCredential *v1.AwsCredentialSpec `protobuf:"bytes,5,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
 }
 
-func (x *AWSLambdaStackInput) Reset() {
-	*x = AWSLambdaStackInput{}
+func (x *AwsLambdaStackInput) Reset() {
+	*x = AwsLambdaStackInput{}
 	mi := &file_project_planton_provider_aws_awslambda_v1_stack_input_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *AWSLambdaStackInput) String() string {
+func (x *AwsLambdaStackInput) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*AWSLambdaStackInput) ProtoMessage() {}
+func (*AwsLambdaStackInput) ProtoMessage() {}
 
-func (x *AWSLambdaStackInput) ProtoReflect() protoreflect.Message {
+func (x *AwsLambdaStackInput) ProtoReflect() protoreflect.Message {
 	mi := &file_project_planton_provider_aws_awslambda_v1_stack_input_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -67,40 +67,40 @@ func (x *AWSLambdaStackInput) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use AWSLambdaStackInput.ProtoReflect.Descriptor instead.
-func (*AWSLambdaStackInput) Descriptor() ([]byte, []int) {
+// Deprecated: Use AwsLambdaStackInput.ProtoReflect.Descriptor instead.
+func (*AwsLambdaStackInput) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_aws_awslambda_v1_stack_input_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *AWSLambdaStackInput) GetProvisioner() shared.IacProvisioner {
+func (x *AwsLambdaStackInput) GetProvisioner() shared.IacProvisioner {
 	if x != nil {
 		return x.Provisioner
 	}
 	return shared.IacProvisioner(0)
 }
 
-func (x *AWSLambdaStackInput) GetPulumi() *pulumi.PulumiStackInfo {
+func (x *AwsLambdaStackInput) GetPulumi() *pulumi.PulumiStackInfo {
 	if x != nil {
 		return x.Pulumi
 	}
 	return nil
 }
 
-func (x *AWSLambdaStackInput) GetTerraform() *terraform.TerraformStackInfo {
+func (x *AwsLambdaStackInput) GetTerraform() *terraform.TerraformStackInfo {
 	if x != nil {
 		return x.Terraform
 	}
 	return nil
 }
 
-func (x *AWSLambdaStackInput) GetTarget() *AWSLambda {
+func (x *AwsLambdaStackInput) GetTarget() *AwsLambda {
 	if x != nil {
 		return x.Target
 	}
 	return nil
 }
 
-func (x *AWSLambdaStackInput) GetProviderCredential() *v1.AwsCredentialSpec {
+func (x *AwsLambdaStackInput) GetProviderCredential() *v1.AwsCredentialSpec {
 	if x != nil {
 		return x.ProviderCredential
 	}
@@ -112,11 +112,11 @@ var File_project_planton_provider_aws_awslambda_v1_stack_input_proto protoreflec
 const file_project_planton_provider_aws_awslambda_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
 	";project/planton/provider/aws/awslambda/v1/stack_input.proto\x12)project.planton.provider.aws.awslambda.v1\x1a project/planton/shared/iac.proto\x1a.project/planton/shared/iac/pulumi/pulumi.proto\x1a4project/planton/shared/iac/terraform/terraform.proto\x1a3project/planton/provider/aws/awslambda/v1/api.proto\x1a6project/planton/credential/awscredential/v1/spec.proto\"\xc2\x03\n" +
-	"\x13AWSLambdaStackInput\x12H\n" +
+	"\x13AwsLambdaStackInput\x12H\n" +
 	"\vprovisioner\x18\x01 \x01(\x0e2&.project.planton.shared.IacProvisionerR\vprovisioner\x12J\n" +
 	"\x06pulumi\x18\x02 \x01(\v22.project.planton.shared.iac.pulumi.PulumiStackInfoR\x06pulumi\x12V\n" +
 	"\tterraform\x18\x03 \x01(\v28.project.planton.shared.iac.terraform.TerraformStackInfoR\tterraform\x12L\n" +
-	"\x06target\x18\x04 \x01(\v24.project.planton.provider.aws.awslambda.v1.AWSLambdaR\x06target\x12o\n" +
+	"\x06target\x18\x04 \x01(\v24.project.planton.provider.aws.awslambda.v1.AwsLambdaR\x06target\x12o\n" +
 	"\x13provider_credential\x18\x05 \x01(\v2>.project.planton.credential.awscredential.v1.AwsCredentialSpecR\x12providerCredentialB\xf2\x02\n" +
 	"-com.project.planton.provider.aws.awslambda.v1B\x0fStackInputProtoP\x01Zegithub.com/project-planton/project-planton/apis/project/planton/provider/aws/awslambda/v1;awslambdav1\xa2\x02\x05PPPAA\xaa\x02)Project.Planton.Provider.Aws.Awslambda.V1\xca\x02)Project\\Planton\\Provider\\Aws\\Awslambda\\V1\xe2\x025Project\\Planton\\Provider\\Aws\\Awslambda\\V1\\GPBMetadata\xea\x02.Project::Planton::Provider::Aws::Awslambda::V1b\x06proto3"
 
@@ -134,19 +134,19 @@ func file_project_planton_provider_aws_awslambda_v1_stack_input_proto_rawDescGZI
 
 var file_project_planton_provider_aws_awslambda_v1_stack_input_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_aws_awslambda_v1_stack_input_proto_goTypes = []any{
-	(*AWSLambdaStackInput)(nil),          // 0: project.planton.provider.aws.awslambda.v1.AWSLambdaStackInput
+	(*AwsLambdaStackInput)(nil),          // 0: project.planton.provider.aws.awslambda.v1.AwsLambdaStackInput
 	(shared.IacProvisioner)(0),           // 1: project.planton.shared.IacProvisioner
 	(*pulumi.PulumiStackInfo)(nil),       // 2: project.planton.shared.iac.pulumi.PulumiStackInfo
 	(*terraform.TerraformStackInfo)(nil), // 3: project.planton.shared.iac.terraform.TerraformStackInfo
-	(*AWSLambda)(nil),                    // 4: project.planton.provider.aws.awslambda.v1.AWSLambda
+	(*AwsLambda)(nil),                    // 4: project.planton.provider.aws.awslambda.v1.AwsLambda
 	(*v1.AwsCredentialSpec)(nil),         // 5: project.planton.credential.awscredential.v1.AwsCredentialSpec
 }
 var file_project_planton_provider_aws_awslambda_v1_stack_input_proto_depIdxs = []int32{
-	1, // 0: project.planton.provider.aws.awslambda.v1.AWSLambdaStackInput.provisioner:type_name -> project.planton.shared.IacProvisioner
-	2, // 1: project.planton.provider.aws.awslambda.v1.AWSLambdaStackInput.pulumi:type_name -> project.planton.shared.iac.pulumi.PulumiStackInfo
-	3, // 2: project.planton.provider.aws.awslambda.v1.AWSLambdaStackInput.terraform:type_name -> project.planton.shared.iac.terraform.TerraformStackInfo
-	4, // 3: project.planton.provider.aws.awslambda.v1.AWSLambdaStackInput.target:type_name -> project.planton.provider.aws.awslambda.v1.AWSLambda
-	5, // 4: project.planton.provider.aws.awslambda.v1.AWSLambdaStackInput.provider_credential:type_name -> project.planton.credential.awscredential.v1.AwsCredentialSpec
+	1, // 0: project.planton.provider.aws.awslambda.v1.AwsLambdaStackInput.provisioner:type_name -> project.planton.shared.IacProvisioner
+	2, // 1: project.planton.provider.aws.awslambda.v1.AwsLambdaStackInput.pulumi:type_name -> project.planton.shared.iac.pulumi.PulumiStackInfo
+	3, // 2: project.planton.provider.aws.awslambda.v1.AwsLambdaStackInput.terraform:type_name -> project.planton.shared.iac.terraform.TerraformStackInfo
+	4, // 3: project.planton.provider.aws.awslambda.v1.AwsLambdaStackInput.target:type_name -> project.planton.provider.aws.awslambda.v1.AwsLambda
+	5, // 4: project.planton.provider.aws.awslambda.v1.AwsLambdaStackInput.provider_credential:type_name -> project.planton.credential.awscredential.v1.AwsCredentialSpec
 	5, // [5:5] is the sub-list for method output_type
 	5, // [5:5] is the sub-list for method input_type
 	5, // [5:5] is the sub-list for extension type_name

@@ -9,16 +9,16 @@ import (
 	foreignkeyv1 "github.com/project-planton/project-planton/apis/project/planton/shared/foreignkey/v1"
 )
 
-func TestAWSLambdaSpec(t *testing.T) {
+func TestAwsLambdaSpec(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "AWSLambdaSpec Validation Suite")
+	RunSpecs(t, "AwsLambdaSpec Validation Suite")
 }
 
-var _ = Describe("AWSLambdaSpec validations", func() {
-	var spec *AWSLambdaSpec
+var _ = Describe("AwsLambdaSpec validations", func() {
+	var spec *AwsLambdaSpec
 
 	BeforeEach(func() {
-		spec = &AWSLambdaSpec{
+		spec = &AwsLambdaSpec{
 			FunctionName:        "my-func",
 			RoleArn:             &foreignkeyv1.StringValueOrRef{LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "arn:aws:iam::123456789012:role/service-role/my-role"}},
 			Runtime:             "nodejs18.x",

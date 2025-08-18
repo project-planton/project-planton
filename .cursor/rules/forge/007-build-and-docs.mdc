@@ -63,7 +63,8 @@ IMPLEMENTATION STEPS
 3) Render `examples.md` with multiple example manifests per the above (minimum: Minimal + 1 additional realistic scenario)
 
 BUILD & VERIFY (NON-INTERACTIVE)
-- Regenerate protos:
+- Run path guard lint and regenerate protos:
+  - `: ${REPO_ROOT:=$(pwd)} && make -C "$REPO_ROOT" lint | cat`
   - `: ${REPO_ROOT:=$(pwd)} && make -C "$REPO_ROOT"/apis build | cat`
 - Optional `go build` for the package:
   - `go build ./apis/project/planton/provider/<provider>/<kindfolder>/v1 | cat`
@@ -72,6 +73,7 @@ SUCCESS CRITERIA
 - `BUILD.bazel`, `README.md`, and `examples.md` exist at the resource path
 - `BUILD.bazel` compiles (optional `go build` succeeds)
 - Docs list fields and outputs accurately and reference official docs
+- Path guard lint passes (no `apis/project-planton` directories)
 
 OUTPUT STYLE IN CHAT
 - Show the created/updated paths and a brief outline of the docs sections

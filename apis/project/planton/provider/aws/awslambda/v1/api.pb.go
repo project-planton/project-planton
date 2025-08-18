@@ -23,37 +23,37 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// AWSLambda is the API envelope for an AWS Lambda function resource.
-type AWSLambda struct {
+// AwsLambda is the API envelope for an AWS Lambda function resource.
+type AwsLambda struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// api-version must be set to "aws.project-planton.org/v1".
 	ApiVersion string `protobuf:"bytes,1,opt,name=api_version,json=apiVersion,proto3" json:"api_version,omitempty"`
-	// resource-kind for this Lambda resource, must be "AWSLambda".
+	// resource-kind for this Lambda resource, must be "AwsLambda".
 	Kind string `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
 	// metadata captures identifying information (name, org, version, etc.).
 	Metadata *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// spec holds the desired configuration for the Lambda function.
-	Spec *AWSLambdaSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
+	Spec *AwsLambdaSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status holds runtime or post-deployment information.
-	Status        *AWSLambdaStatus `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
+	Status        *AwsLambdaStatus `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *AWSLambda) Reset() {
-	*x = AWSLambda{}
+func (x *AwsLambda) Reset() {
+	*x = AwsLambda{}
 	mi := &file_project_planton_provider_aws_awslambda_v1_api_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *AWSLambda) String() string {
+func (x *AwsLambda) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*AWSLambda) ProtoMessage() {}
+func (*AwsLambda) ProtoMessage() {}
 
-func (x *AWSLambda) ProtoReflect() protoreflect.Message {
+func (x *AwsLambda) ProtoReflect() protoreflect.Message {
 	mi := &file_project_planton_provider_aws_awslambda_v1_api_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -65,48 +65,48 @@ func (x *AWSLambda) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use AWSLambda.ProtoReflect.Descriptor instead.
-func (*AWSLambda) Descriptor() ([]byte, []int) {
+// Deprecated: Use AwsLambda.ProtoReflect.Descriptor instead.
+func (*AwsLambda) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_aws_awslambda_v1_api_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *AWSLambda) GetApiVersion() string {
+func (x *AwsLambda) GetApiVersion() string {
 	if x != nil {
 		return x.ApiVersion
 	}
 	return ""
 }
 
-func (x *AWSLambda) GetKind() string {
+func (x *AwsLambda) GetKind() string {
 	if x != nil {
 		return x.Kind
 	}
 	return ""
 }
 
-func (x *AWSLambda) GetMetadata() *shared.ApiResourceMetadata {
+func (x *AwsLambda) GetMetadata() *shared.ApiResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
 	return nil
 }
 
-func (x *AWSLambda) GetSpec() *AWSLambdaSpec {
+func (x *AwsLambda) GetSpec() *AwsLambdaSpec {
 	if x != nil {
 		return x.Spec
 	}
 	return nil
 }
 
-func (x *AWSLambda) GetStatus() *AWSLambdaStatus {
+func (x *AwsLambda) GetStatus() *AwsLambdaStatus {
 	if x != nil {
 		return x.Status
 	}
 	return nil
 }
 
-// AWSLambdaStatus describes the status fields for an AWS Lambda resource.
-type AWSLambdaStatus struct {
+// AwsLambdaStatus describes the status fields for an AWS Lambda resource.
+type AwsLambdaStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// lifecycle indicates if the resource is active or has been marked for removal.
 	Lifecycle *shared.ApiResourceLifecycle `protobuf:"bytes,99,opt,name=lifecycle,proto3" json:"lifecycle,omitempty"`
@@ -115,25 +115,25 @@ type AWSLambdaStatus struct {
 	// stack_job_id stores the ID of the Pulumi/Terraform stack job responsible for provisioning.
 	StackJobId string `protobuf:"bytes,97,opt,name=stack_job_id,json=stackJobId,proto3" json:"stack_job_id,omitempty"`
 	// outputs captures the observable values returned by Pulumi/Terraform after provisioning.
-	Outputs       *AWSLambdaStackOutputs `protobuf:"bytes,1,opt,name=outputs,proto3" json:"outputs,omitempty"`
+	Outputs       *AwsLambdaStackOutputs `protobuf:"bytes,1,opt,name=outputs,proto3" json:"outputs,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *AWSLambdaStatus) Reset() {
-	*x = AWSLambdaStatus{}
+func (x *AwsLambdaStatus) Reset() {
+	*x = AwsLambdaStatus{}
 	mi := &file_project_planton_provider_aws_awslambda_v1_api_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *AWSLambdaStatus) String() string {
+func (x *AwsLambdaStatus) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*AWSLambdaStatus) ProtoMessage() {}
+func (*AwsLambdaStatus) ProtoMessage() {}
 
-func (x *AWSLambdaStatus) ProtoReflect() protoreflect.Message {
+func (x *AwsLambdaStatus) ProtoReflect() protoreflect.Message {
 	mi := &file_project_planton_provider_aws_awslambda_v1_api_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -145,33 +145,33 @@ func (x *AWSLambdaStatus) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use AWSLambdaStatus.ProtoReflect.Descriptor instead.
-func (*AWSLambdaStatus) Descriptor() ([]byte, []int) {
+// Deprecated: Use AwsLambdaStatus.ProtoReflect.Descriptor instead.
+func (*AwsLambdaStatus) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_aws_awslambda_v1_api_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *AWSLambdaStatus) GetLifecycle() *shared.ApiResourceLifecycle {
+func (x *AwsLambdaStatus) GetLifecycle() *shared.ApiResourceLifecycle {
 	if x != nil {
 		return x.Lifecycle
 	}
 	return nil
 }
 
-func (x *AWSLambdaStatus) GetAudit() *shared.ApiResourceAudit {
+func (x *AwsLambdaStatus) GetAudit() *shared.ApiResourceAudit {
 	if x != nil {
 		return x.Audit
 	}
 	return nil
 }
 
-func (x *AWSLambdaStatus) GetStackJobId() string {
+func (x *AwsLambdaStatus) GetStackJobId() string {
 	if x != nil {
 		return x.StackJobId
 	}
 	return ""
 }
 
-func (x *AWSLambdaStatus) GetOutputs() *AWSLambdaStackOutputs {
+func (x *AwsLambdaStatus) GetOutputs() *AwsLambdaStackOutputs {
 	if x != nil {
 		return x.Outputs
 	}
@@ -183,21 +183,21 @@ var File_project_planton_provider_aws_awslambda_v1_api_proto protoreflect.FileDe
 const file_project_planton_provider_aws_awslambda_v1_api_proto_rawDesc = "" +
 	"\n" +
 	"3project/planton/provider/aws/awslambda/v1/api.proto\x12)project.planton.provider.aws.awslambda.v1\x1a\x1bbuf/validate/validate.proto\x1a4project/planton/provider/aws/awslambda/v1/spec.proto\x1a=project/planton/provider/aws/awslambda/v1/stack_outputs.proto\x1a#project/planton/shared/status.proto\x1a%project/planton/shared/metadata.proto\"\xf0\x02\n" +
-	"\tAWSLambda\x12B\n" +
+	"\tAwsLambda\x12B\n" +
 	"\vapi_version\x18\x01 \x01(\tB!\xbaH\x1er\x1c\n" +
 	"\x1aaws.project-planton.org/v1R\n" +
 	"apiVersion\x12$\n" +
 	"\x04kind\x18\x02 \x01(\tB\x10\xbaH\rr\v\n" +
-	"\tAWSLambdaR\x04kind\x12O\n" +
+	"\tAwsLambdaR\x04kind\x12O\n" +
 	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12T\n" +
-	"\x04spec\x18\x04 \x01(\v28.project.planton.provider.aws.awslambda.v1.AWSLambdaSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12R\n" +
-	"\x06status\x18\x05 \x01(\v2:.project.planton.provider.aws.awslambda.v1.AWSLambdaStatusR\x06status\"\x9b\x02\n" +
-	"\x0fAWSLambdaStatus\x12J\n" +
+	"\x04spec\x18\x04 \x01(\v28.project.planton.provider.aws.awslambda.v1.AwsLambdaSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12R\n" +
+	"\x06status\x18\x05 \x01(\v2:.project.planton.provider.aws.awslambda.v1.AwsLambdaStatusR\x06status\"\x9b\x02\n" +
+	"\x0fAwsLambdaStatus\x12J\n" +
 	"\tlifecycle\x18c \x01(\v2,.project.planton.shared.ApiResourceLifecycleR\tlifecycle\x12>\n" +
 	"\x05audit\x18b \x01(\v2(.project.planton.shared.ApiResourceAuditR\x05audit\x12 \n" +
 	"\fstack_job_id\x18a \x01(\tR\n" +
 	"stackJobId\x12Z\n" +
-	"\aoutputs\x18\x01 \x01(\v2@.project.planton.provider.aws.awslambda.v1.AWSLambdaStackOutputsR\aoutputsB\xeb\x02\n" +
+	"\aoutputs\x18\x01 \x01(\v2@.project.planton.provider.aws.awslambda.v1.AwsLambdaStackOutputsR\aoutputsB\xeb\x02\n" +
 	"-com.project.planton.provider.aws.awslambda.v1B\bApiProtoP\x01Zegithub.com/project-planton/project-planton/apis/project/planton/provider/aws/awslambda/v1;awslambdav1\xa2\x02\x05PPPAA\xaa\x02)Project.Planton.Provider.Aws.Awslambda.V1\xca\x02)Project\\Planton\\Provider\\Aws\\Awslambda\\V1\xe2\x025Project\\Planton\\Provider\\Aws\\Awslambda\\V1\\GPBMetadata\xea\x02.Project::Planton::Provider::Aws::Awslambda::V1b\x06proto3"
 
 var (
@@ -214,21 +214,21 @@ func file_project_planton_provider_aws_awslambda_v1_api_proto_rawDescGZIP() []by
 
 var file_project_planton_provider_aws_awslambda_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_aws_awslambda_v1_api_proto_goTypes = []any{
-	(*AWSLambda)(nil),                   // 0: project.planton.provider.aws.awslambda.v1.AWSLambda
-	(*AWSLambdaStatus)(nil),             // 1: project.planton.provider.aws.awslambda.v1.AWSLambdaStatus
+	(*AwsLambda)(nil),                   // 0: project.planton.provider.aws.awslambda.v1.AwsLambda
+	(*AwsLambdaStatus)(nil),             // 1: project.planton.provider.aws.awslambda.v1.AwsLambdaStatus
 	(*shared.ApiResourceMetadata)(nil),  // 2: project.planton.shared.ApiResourceMetadata
-	(*AWSLambdaSpec)(nil),               // 3: project.planton.provider.aws.awslambda.v1.AWSLambdaSpec
+	(*AwsLambdaSpec)(nil),               // 3: project.planton.provider.aws.awslambda.v1.AwsLambdaSpec
 	(*shared.ApiResourceLifecycle)(nil), // 4: project.planton.shared.ApiResourceLifecycle
 	(*shared.ApiResourceAudit)(nil),     // 5: project.planton.shared.ApiResourceAudit
-	(*AWSLambdaStackOutputs)(nil),       // 6: project.planton.provider.aws.awslambda.v1.AWSLambdaStackOutputs
+	(*AwsLambdaStackOutputs)(nil),       // 6: project.planton.provider.aws.awslambda.v1.AwsLambdaStackOutputs
 }
 var file_project_planton_provider_aws_awslambda_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.aws.awslambda.v1.AWSLambda.metadata:type_name -> project.planton.shared.ApiResourceMetadata
-	3, // 1: project.planton.provider.aws.awslambda.v1.AWSLambda.spec:type_name -> project.planton.provider.aws.awslambda.v1.AWSLambdaSpec
-	1, // 2: project.planton.provider.aws.awslambda.v1.AWSLambda.status:type_name -> project.planton.provider.aws.awslambda.v1.AWSLambdaStatus
-	4, // 3: project.planton.provider.aws.awslambda.v1.AWSLambdaStatus.lifecycle:type_name -> project.planton.shared.ApiResourceLifecycle
-	5, // 4: project.planton.provider.aws.awslambda.v1.AWSLambdaStatus.audit:type_name -> project.planton.shared.ApiResourceAudit
-	6, // 5: project.planton.provider.aws.awslambda.v1.AWSLambdaStatus.outputs:type_name -> project.planton.provider.aws.awslambda.v1.AWSLambdaStackOutputs
+	2, // 0: project.planton.provider.aws.awslambda.v1.AwsLambda.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	3, // 1: project.planton.provider.aws.awslambda.v1.AwsLambda.spec:type_name -> project.planton.provider.aws.awslambda.v1.AwsLambdaSpec
+	1, // 2: project.planton.provider.aws.awslambda.v1.AwsLambda.status:type_name -> project.planton.provider.aws.awslambda.v1.AwsLambdaStatus
+	4, // 3: project.planton.provider.aws.awslambda.v1.AwsLambdaStatus.lifecycle:type_name -> project.planton.shared.ApiResourceLifecycle
+	5, // 4: project.planton.provider.aws.awslambda.v1.AwsLambdaStatus.audit:type_name -> project.planton.shared.ApiResourceAudit
+	6, // 5: project.planton.provider.aws.awslambda.v1.AwsLambdaStatus.outputs:type_name -> project.planton.provider.aws.awslambda.v1.AwsLambdaStackOutputs
 	6, // [6:6] is the sub-list for method output_type
 	6, // [6:6] is the sub-list for method input_type
 	6, // [6:6] is the sub-list for extension type_name

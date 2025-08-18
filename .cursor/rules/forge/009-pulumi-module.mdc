@@ -132,7 +132,9 @@ go_library(
 ```
 
 BUILD & VERIFY (NON-INTERACTIVE)
-- `go build ./apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/pulumi/module | cat`
+- Run path guard lint to prevent incorrect directories, then build the module:
+  - `make lint | cat`
+  - `go build ./apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/pulumi/module | cat`
 - Fix imports/types/SDK deps up to 3 attempts and re-run.
 
 SUCCESS CRITERIA

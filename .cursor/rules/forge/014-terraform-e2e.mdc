@@ -19,6 +19,7 @@ PREP: INSTALL LOCAL CLI BUILD
 Run the local CLI build so the CLI picks up latest proto and behavior changes.
 ```bash
 make local | cat
+make lint | cat
 ```
 
 DISCOVERY (MANDATORY BEFORE RUN)

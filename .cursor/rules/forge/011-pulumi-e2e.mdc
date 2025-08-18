@@ -21,6 +21,7 @@ Install the local CLI so it picks up latest proto and behavior changes.
 ```bash
 : ${REPO_ROOT:=$(pwd)}
 make -C "$REPO_ROOT" local | cat
+make -C "$REPO_ROOT" lint | cat
 ```
 
 PREP: INITIALIZE PULUMI BACKEND AND STACK (NON-INTERACTIVE)

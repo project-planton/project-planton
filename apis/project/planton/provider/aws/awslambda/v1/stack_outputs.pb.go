@@ -21,8 +21,8 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// AWSLambdaStackOutputs captures observable identifiers produced after provisioning an AWS Lambda function.
-type AWSLambdaStackOutputs struct {
+// AwsLambdaStackOutputs captures observable identifiers produced after provisioning an AWS Lambda function.
+type AwsLambdaStackOutputs struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// function_arn is the full ARN of the Lambda function.
 	FunctionArn string `protobuf:"bytes,1,opt,name=function_arn,json=functionArn,proto3" json:"function_arn,omitempty"`
@@ -38,20 +38,20 @@ type AWSLambdaStackOutputs struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *AWSLambdaStackOutputs) Reset() {
-	*x = AWSLambdaStackOutputs{}
+func (x *AwsLambdaStackOutputs) Reset() {
+	*x = AwsLambdaStackOutputs{}
 	mi := &file_project_planton_provider_aws_awslambda_v1_stack_outputs_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *AWSLambdaStackOutputs) String() string {
+func (x *AwsLambdaStackOutputs) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*AWSLambdaStackOutputs) ProtoMessage() {}
+func (*AwsLambdaStackOutputs) ProtoMessage() {}
 
-func (x *AWSLambdaStackOutputs) ProtoReflect() protoreflect.Message {
+func (x *AwsLambdaStackOutputs) ProtoReflect() protoreflect.Message {
 	mi := &file_project_planton_provider_aws_awslambda_v1_stack_outputs_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -63,40 +63,40 @@ func (x *AWSLambdaStackOutputs) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use AWSLambdaStackOutputs.ProtoReflect.Descriptor instead.
-func (*AWSLambdaStackOutputs) Descriptor() ([]byte, []int) {
+// Deprecated: Use AwsLambdaStackOutputs.ProtoReflect.Descriptor instead.
+func (*AwsLambdaStackOutputs) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_aws_awslambda_v1_stack_outputs_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *AWSLambdaStackOutputs) GetFunctionArn() string {
+func (x *AwsLambdaStackOutputs) GetFunctionArn() string {
 	if x != nil {
 		return x.FunctionArn
 	}
 	return ""
 }
 
-func (x *AWSLambdaStackOutputs) GetFunctionName() string {
+func (x *AwsLambdaStackOutputs) GetFunctionName() string {
 	if x != nil {
 		return x.FunctionName
 	}
 	return ""
 }
 
-func (x *AWSLambdaStackOutputs) GetLogGroupName() string {
+func (x *AwsLambdaStackOutputs) GetLogGroupName() string {
 	if x != nil {
 		return x.LogGroupName
 	}
 	return ""
 }
 
-func (x *AWSLambdaStackOutputs) GetRoleArn() string {
+func (x *AwsLambdaStackOutputs) GetRoleArn() string {
 	if x != nil {
 		return x.RoleArn
 	}
 	return ""
 }
 
-func (x *AWSLambdaStackOutputs) GetLayerArns() []string {
+func (x *AwsLambdaStackOutputs) GetLayerArns() []string {
 	if x != nil {
 		return x.LayerArns
 	}
@@ -108,7 +108,7 @@ var File_project_planton_provider_aws_awslambda_v1_stack_outputs_proto protorefl
 const file_project_planton_provider_aws_awslambda_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
 	"=project/planton/provider/aws/awslambda/v1/stack_outputs.proto\x12)project.planton.provider.aws.awslambda.v1\"\xbf\x01\n" +
-	"\x15AWSLambdaStackOutputs\x12!\n" +
+	"\x15AwsLambdaStackOutputs\x12!\n" +
 	"\ffunction_arn\x18\x01 \x01(\tR\vfunctionArn\x12#\n" +
 	"\rfunction_name\x18\x02 \x01(\tR\ffunctionName\x12$\n" +
 	"\x0elog_group_name\x18\x03 \x01(\tR\flogGroupName\x12\x19\n" +
@@ -131,7 +131,7 @@ func file_project_planton_provider_aws_awslambda_v1_stack_outputs_proto_rawDescG
 
 var file_project_planton_provider_aws_awslambda_v1_stack_outputs_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_aws_awslambda_v1_stack_outputs_proto_goTypes = []any{
-	(*AWSLambdaStackOutputs)(nil), // 0: project.planton.provider.aws.awslambda.v1.AWSLambdaStackOutputs
+	(*AwsLambdaStackOutputs)(nil), // 0: project.planton.provider.aws.awslambda.v1.AwsLambdaStackOutputs
 }
 var file_project_planton_provider_aws_awslambda_v1_stack_outputs_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type

@@ -2,8 +2,8 @@ syntax = "proto3";
 
 package project.planton.provider.aws.awslambda.v1;
 
-// AWSLambdaStackOutputs captures observable identifiers produced after provisioning an AWS Lambda function.
-message AWSLambdaStackOutputs {
+// AwsLambdaStackOutputs captures observable identifiers produced after provisioning an AWS Lambda function.
+message AwsLambdaStackOutputs {
   // function_arn is the full ARN of the Lambda function.
   string function_arn = 1;
 

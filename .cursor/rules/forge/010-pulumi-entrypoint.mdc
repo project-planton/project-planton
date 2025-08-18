@@ -93,7 +93,8 @@ lint:
 ```
 
 BUILD & VERIFY (NON-INTERACTIVE)
-- Compile Pulumi program subtree:
+- Run path guard lint, then compile Pulumi program subtree:
+  - `make lint | cat`
   - `go build ./apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/pulumi/... | cat`
 - On errors, fix imports/paths/types up to 3 attempts and re-run.
 

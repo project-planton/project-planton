@@ -5,7 +5,7 @@ package project.planton.provider.aws.awslambda.v1;
 import "buf/validate/validate.proto";
 import "project/planton/shared/foreignkey/v1/foreign_key.proto";
 
-// AWSLambdaSpec defines the desired configuration for an AWS Lambda function.
+// AwsLambdaSpec defines the desired configuration for an AWS Lambda function.
 //
 // Supported code packaging models:
 // - Zip/S3: Provide an archive in S3 via `code.s3` and set `runtime` and `handler`.
@@ -15,7 +15,7 @@ import "project/planton/shared/foreignkey/v1/foreign_key.proto";
 // Notes:
 // - This spec intentionally contains no validations or CEL rules; those are added later.
 // - Credentials, region, and deployment workflow live outside this spec in stack inputs.
-message AWSLambdaSpec {
+message AwsLambdaSpec {
   // Human-readable function name shown in the AWS Console and APIs.
   // Must be unique per account/region. If omitted, the platform may derive a
   // stable name from the resource metadata (e.g., org, environment, resource name).
