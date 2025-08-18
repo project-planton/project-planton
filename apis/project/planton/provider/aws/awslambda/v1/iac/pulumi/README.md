@@ -53,3 +53,6 @@ runtime:
 `debug.sh` builds with `-gcflags "all=-N -l"` and starts `dlv` on port 2345.
 
 
+For more details, see the debugging guide at `docs/pages/docs/guide/debug-pulumi-modules.mdx`.
+
+
