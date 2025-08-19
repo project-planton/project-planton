@@ -129,7 +129,7 @@ message AwsLambdaSpec {
   option (buf.validate.message).cel = {
     id: "role_required",
     message: "role_arn must be provided as a value or reference",
-    expression: "has(this.role_arn) && (has(this.role_arn.value) || has(this.role_arn.value_from))"
+    expression: "has(this.role_arn.value) || has(this.role_arn.value_from)"
   };
 
   option (buf.validate.message).cel = {

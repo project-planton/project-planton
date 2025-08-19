@@ -435,7 +435,7 @@ var File_project_planton_provider_aws_awslambda_v1_spec_proto protoreflect.FileD
 
 const file_project_planton_provider_aws_awslambda_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"4project/planton/provider/aws/awslambda/v1/spec.proto\x12)project.planton.provider.aws.awslambda.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\"\xc9\x13\n" +
+	"4project/planton/provider/aws/awslambda/v1/spec.proto\x12)project.planton.provider.aws.awslambda.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\"\xb0\x13\n" +
 	"\rAwsLambdaSpec\x12,\n" +
 	"\rfunction_name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\ffunctionName\x12 \n" +
 	"\vdescription\x18\x02 \x01(\tR\vdescription\x12y\n" +
@@ -458,9 +458,9 @@ const file_project_planton_provider_aws_awslambda_v1_spec_proto_rawDesc = "" +
 	"\timage_uri\x18\x11 \x01(\tR\bimageUri\x1a>\n" +
 	"\x10EnvironmentEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:\xa6\t\xbaH\xa2\t\x1aU\n" +
-	"\x19code_source_type_required\x12\x1ccode_source_type must be set\x1a\x1athis.code_source_type != 0\x1a\x95\x01\n" +
-	"\rrole_required\x121role_arn must be provided as a value or reference\x1aQhas(this.role_arn) && (has(this.role_arn.value) || has(this.role_arn.value_from))\x1a\xf6\x01\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:\x8d\t\xbaH\x89\t\x1aU\n" +
+	"\x19code_source_type_required\x12\x1ccode_source_type must be set\x1a\x1athis.code_source_type != 0\x1a}\n" +
+	"\rrole_required\x121role_arn must be provided as a value or reference\x1a9has(this.role_arn.value) || has(this.role_arn.value_from)\x1a\xf6\x01\n" +
 	".s3_requires_runtime_handler_and_excludes_image\x12Rwhen code_source_type is S3, set s3, runtime, and handler; image_uri must be empty\x1apthis.code_source_type != 1 || (has(this.s3) && this.image_uri == '' && this.runtime != '' && this.handler != '')\x1a\xb2\x01\n" +
 	"(image_requires_image_uri_and_excludes_s3\x12?when code_source_type is IMAGE, set image_uri and do not set s3\x1aEthis.code_source_type != 2 || (this.image_uri != '' && !has(this.s3))\x1a\x96\x01\n" +
 	"\x17memory_range_or_default\x120memory_mb must be between 128 and 10240 when set\x1aIthis.memory_mb == 0 || (this.memory_mb >= 128 && this.memory_mb <= 10240)\x1a\xa7\x01\n" +

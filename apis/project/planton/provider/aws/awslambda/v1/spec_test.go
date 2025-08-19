@@ -115,4 +115,26 @@ var _ = Describe("AwsLambdaSpec validations", func() {
 		err = protovalidate.Validate(spec)
 		Expect(err).To(BeNil())
 	})
+
+	It("accepts the payload shape (S3 with role_arn literal)", func() {
+		s := &AwsLambdaSpec{
+			FunctionName:        "awslambda-demo",
+			Description:         "awslambda-demo",
+			RoleArn:             &foreignkeyv1.StringValueOrRef{LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "arn:aws:iam::123456789012:role/lambda-basic-exec"}},
+			Runtime:             "nodejs18.x",
+			Handler:             "index.handler",
+			MemoryMb:            128,
+			TimeoutSeconds:      10,
+			ReservedConcurrency: -1,
+			Architecture:        Architecture_X86_64,
+			KmsKeyArn:           &foreignkeyv1.StringValueOrRef{LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: ""}},
+			CodeSourceType:      CodeSourceType_CODE_SOURCE_TYPE_S3,
+			S3: &S3Code{
+				Bucket: "my-bucket",
+				Key:    "lambda/hello.zip",
+			},
+		}
+		err := protovalidate.Validate(s)
+		Expect(err).To(BeNil())
+	})
 })
