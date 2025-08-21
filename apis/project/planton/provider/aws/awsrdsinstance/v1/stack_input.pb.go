@@ -25,18 +25,18 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// aws-rds-instance stack-input
+// AwsRdsInstanceStackInput defines the inputs the CLI passes to provision the RDS instance.
 type AwsRdsInstanceStackInput struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// iac-provisioner
+	// Which provisioner to use (Pulumi or Terraform)
 	Provisioner shared.IacProvisioner `protobuf:"varint,1,opt,name=provisioner,proto3,enum=project.planton.shared.IacProvisioner" json:"provisioner,omitempty"`
-	// pulumi input required when the provisioner is pulumi
+	// Pulumi stack info when provisioner is Pulumi
 	Pulumi *pulumi.PulumiStackInfo `protobuf:"bytes,2,opt,name=pulumi,proto3" json:"pulumi,omitempty"`
-	// terraform input required when the provisioner is terraform
+	// Terraform stack info when provisioner is Terraform
 	Terraform *terraform.TerraformStackInfo `protobuf:"bytes,3,opt,name=terraform,proto3" json:"terraform,omitempty"`
-	// target cloud-resource
+	// Target resource (the full API object with metadata/spec)
 	Target *AwsRdsInstance `protobuf:"bytes,4,opt,name=target,proto3" json:"target,omitempty"`
-	// provider-credential
+	// Provider credential for AWS
 	ProviderCredential *v1.AwsCredentialSpec `protobuf:"bytes,5,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
@@ -111,7 +111,7 @@ var File_project_planton_provider_aws_awsrdsinstance_v1_stack_input_proto protor
 
 const file_project_planton_provider_aws_awsrdsinstance_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"@project/planton/provider/aws/awsrdsinstance/v1/stack_input.proto\x12.project.planton.provider.aws.awsrdsinstance.v1\x1a6project/planton/credential/awscredential/v1/spec.proto\x1a8project/planton/provider/aws/awsrdsinstance/v1/api.proto\x1a.project/planton/shared/iac/pulumi/pulumi.proto\x1a project/planton/shared/iac.proto\x1a4project/planton/shared/iac/terraform/terraform.proto\"\xd1\x03\n" +
+	"@project/planton/provider/aws/awsrdsinstance/v1/stack_input.proto\x12.project.planton.provider.aws.awsrdsinstance.v1\x1a project/planton/shared/iac.proto\x1a.project/planton/shared/iac/pulumi/pulumi.proto\x1a4project/planton/shared/iac/terraform/terraform.proto\x1a8project/planton/provider/aws/awsrdsinstance/v1/api.proto\x1a6project/planton/credential/awscredential/v1/spec.proto\"\xd1\x03\n" +
 	"\x18AwsRdsInstanceStackInput\x12H\n" +
 	"\vprovisioner\x18\x01 \x01(\x0e2&.project.planton.shared.IacProvisionerR\vprovisioner\x12J\n" +
 	"\x06pulumi\x18\x02 \x01(\v22.project.planton.shared.iac.pulumi.PulumiStackInfoR\x06pulumi\x12V\n" +

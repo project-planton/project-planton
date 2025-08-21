@@ -8,87 +8,33 @@ TITLE
 Forge: Generate Terraform module (tf/) from proto definitions
 
 ROLE
-You are the PlantonCloud Code Partner working inside the developer’s local workspace in Cursor. This rule scaffolds the Terraform module for a resource under `iac/tf/`. It MUST first read the resource proto files to derive resources and outputs. For `variables.tf`, use the official generator built into the CLI to ensure compatibility. Follow industry-standard Terraform layout: split resources by concern across multiple `*.tf` files (no single controller/entrypoint is required; Terraform loads all files in the directory and builds one graph).
+You are the PlantonCloud Code Partner working inside the developer’s local workspace in Cursor. This rule scaffolds the Terraform module for a resource under `iac/tf/`.
 
-DISCOVERY (MANDATORY BEFORE EDITS)
-- Open and read:
-  - `apis/project/planton/provider/<provider>/<kindfolder>/v1/api.proto`
-  - `apis/project/planton/provider/<provider>/<kindfolder>/v1/spec.proto`
-  - `apis/project/planton/provider/<provider>/<kindfolder>/v1/stack_input.proto`
-  - `apis/project/planton/provider/<provider>/<kindfolder>/v1/stack_outputs.proto`
-- Extract:
-  - `<Kind>` and `<Kind>Spec` fields to design core resources
-  - `<Kind>StackOutputs` fields to create outputs
-  - Provider type and minimal configuration
+TOOLS
+- Proto Readers: reuse readers for `api.proto`, `spec.proto`, `stack_input.proto`, `stack_outputs.proto`.
+- Variables Generator: `.cursor/tools/terraform_module_write.py` (run with `--make-local --generate-variables`)
+- Module Writer: `.cursor/tools/terraform_module_write.py`
+- Guide: `.cursor/info/terraform_module.md`
 
-SCOPE
-- Target directory: `apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/tf/`
-- Create or update:
-  - `variables.tf` — GENERATED via CLI (see below). Do not hand-edit. If module logic needs convenience shapes (e.g., `table_name`, `hash_key`), derive those in `locals.tf` from the generated variables instead of changing `variables.tf`.
-  - `provider.tf` — `required_providers` and minimal provider configuration
-  - `locals.tf` — `safe_*` locals and computed booleans for conditional flows
-  - `outputs.tf` — outputs mapping to `<Kind>StackOutputs`
-  - Resource files by concern (create only what is needed for the `<Kind>`):
-    - Examples: `security_group.tf`, `parameter_group.tf`, `instance.tf`, `dns.tf`, `iam.tf`, `data.tf`
-    - Each file contains the resources and data sources for that concern
-  - `main.tf` — OPTIONAL. If present, keep minimal. Use for tiny glue resources or high-level graph wiring. Do NOT stuff everything here.
-  - Optional nested submodules when a concern is large/reusable: place under `modules/<submodule_name>/` with its own standard files; call via `module` blocks from the root module
+SEQUENTIAL STEPS
+1) Read: Use proto readers to derive `<Kind>`, spec, outputs, and provider context.
+2) Generate variables and read it: `echo '{"files":[]}' | python3 .cursor/tools/terraform_module_write.py --provider <provider> --kindfolder <kindfolder> --kind <Kind> --stdin --make-local --generate-variables | cat`. Then open the generated `variables.tf` in the module path.
+3) Draft: Consult `.cursor/info/terraform_module.md`. Prepare a files JSON manifest for non-generated files.
+4) Write and validate:
+   - `cat <<'JSON' | python3 .cursor/tools/terraform_module_write.py --provider <provider> --kindfolder <kindfolder> --kind <Kind> --stdin --validate | cat`
+     { "files": [ {"name": "provider.tf", "content": "..."}, {"name": "locals.tf", "content": "..."}, {"name": "outputs.tf", "content": "..."} ] }
+     JSON
+   - If validation fails, refine and re-run (≤3).
 
-GENERATING variables.tf (MANDATORY)
-- Install local CLI so it reflects current protos:
-```bash
-make local | cat
-```
-- Run the generator with the correct kind name (PascalCase), outputting into the tf module directory:
-```bash
-project-planton tofu generate-variables <Kind> --output-file apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/tf/variables.tf | cat
-```
-- Do NOT handcraft `variables.tf`. The generator uses `variablestf.ProtoToVariablesTF` and repo API docs to produce the exact schema expected by ProjectPlanton. Derive any convenience values in `locals.tf` and reference them from `main.tf`.
-
-CONTENT GUIDELINES (NON-generated files)
-Industry-standard module structure in Terraform is multi-file. Terraform automatically loads all `*.tf` files in a directory; there is no required entrypoint. Prefer splitting by concern for readability and isolated changes.
-
-- provider.tf:
-  - `terraform { required_providers { <prov> = { source = "<source>", version = ">= <min>" } } }`
-  - Minimal provider configuration (region/project/etc.) without embedding secrets
-
-- locals.tf:
-  - Add `safe_*` locals to avoid null dereferences and booleans for gating resources (e.g., DNS enabled)
-  - Derive convenience values from generated variables (do not edit `variables.tf`)
-
-- resource files by concern (e.g., `security_group.tf`, `parameter_group.tf`, `instance.tf`, `dns.tf`, `iam.tf`):
-  - Implement the resources to realize `<Kind>` using the official provider resources
-  - Use references and implicit dependencies wherever possible; add `depends_on` only when order is required (e.g., parameter group before instance)
-  - Name resources predictably using `var.metadata.name` and consistent tagging conventions
-
-- data.tf (optional):
-  - Centralize data sources if not colocated with the resource concern file
-
-- main.tf (optional):
-  - Keep minimal or omit entirely. Use for thin glue or orchestration that does not belong to a single concern
-
-- outputs.tf:
-  - Map outputs to `<Kind>StackOutputs` fields, sourcing from provisioned resources
-
-BUILD & VERIFY (NON-INTERACTIVE)
-- Run path guard lint to prevent incorrect directories, then initialize and validate the module:
-```bash
-make lint | cat
-terraform -chdir=apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/tf init -backend=false | cat
-terraform -chdir=apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/tf validate | cat
-```
-- On errors, refine non-generated files and re-run (up to 3 attempts).
+OUTPUT
+- Show variables generation outcome (path/exit code) and confirm `variables.tf` was read.
+- Show created/updated file list and key JSON fields from the writer tool.
+- Show validate results.
 
 SUCCESS CRITERIA
-- `variables.tf` generated by the CLI exists and matches the schema expected by ProjectPlanton
-- `provider.tf`, `locals.tf`, `outputs.tf` exist and validate
-- At least one resource-specific `*.tf` file exists implementing the core resources for `<Kind>` (or `main.tf` contains them if used)
-
-OUTPUT STYLE IN CHAT
-- Show created/updated tf files and the exact CLI generation command used
-- Show the terraform init/validate commands
+- `variables.tf` is generated in step 2 at the module path and matches the expected schema
+- Drafted files reference inputs that exist in `variables.tf`
+- Core files (`provider.tf`, `locals.tf`, `outputs.tf`, resource files) exist and `terraform validate` passes
 
 NOTES
-- Using the generator ensures stable alignment with proto comments and shapes; do not drift from it.
-- Terraform does not require `main.tf`. File order does not matter; the graph is built from references across all files.
-- Create nested submodules only when a concern is large or reusable across kinds; otherwise keep everything in the root module split by concern.
+- Generate variables once up-front; derive convenience in `locals.tf`.

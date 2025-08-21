@@ -7,7 +7,7 @@ go_library(
     visibility = ["//visibility:private"],
     deps = [
         "//apis/project/planton/provider/aws/awsrdscluster/v1:awsrdscluster",
-        "//apis/project/planton/provider/aws/awsrdscluster/v1/iac/pulumi/module:module",
+        "//apis/project/planton/provider/aws/awsrdscluster/v1/iac/pulumi/module",
         "//pkg/iac/pulumi/pulumimodule/stackinput",
         "@com_github_pkg_errors//:errors",
         "@com_github_pulumi_pulumi_sdk_v3//go/pulumi",
@@ -19,5 +19,3 @@ go_binary(
     embed = [":pulumi_lib"],
     visibility = ["//visibility:public"],
 )
-
-
