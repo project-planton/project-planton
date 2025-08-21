@@ -1,17 +1,22 @@
 apiVersion: aws.project-planton.org/v1
-kind: AWSLambda
+kind: AwsLambda
 metadata:
   name: awslambda-demo
 spec:
-  function:
-    packageType: Zip
-    runtime: nodejs18.x
-    handler: index.handler
-    s3Bucket: planton-lambda-e2e-996818459122-c51b3ce3
-    s3Key: lambda/hello.zip
-    memorySize: 128
-    timeout: 10
-  iamRole: {}
-  cloudwatchLogGroup:
-    retentionInDays: 7
-  # invokeFunctionPermissions: []
+  function_name: awslambda-demo
+  role_arn: arn:aws:iam::123456789012:role/service-role/awslambda-demo-role
+  code_source_type: CODE_SOURCE_TYPE_S3
+  runtime: nodejs18.x
+  handler: index.handler
+  s3:
+    bucket: example-artifacts
+    key: lambda/hello.zip
+  memory_mb: 128
+  timeout_seconds: 10
+  # reserved_concurrency: -1
+  # environment: {}
+  # subnets: []
+  # security_groups: []
+  # architecture: X86_64
+  # layer_arns: []
+  # kms_key_arn: ""

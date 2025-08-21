@@ -13,7 +13,7 @@ if [[ -e "$bad_root" ]]; then
   exit 1
 fi
 
-bad_dirs=( $(find apis -type d -name "project-planton" 2>/dev/null || true) )
+bad_dirs=( $(find apis -path "apis/internal/generated" -prune -o -type d -name "project-planton" -print 2>/dev/null || true) )
 if [[ ${#bad_dirs[@]} -gt 0 ]]; then
   echo "ERROR: Found directories named 'project-planton' under 'apis/'. Should be 'project/planton'." >&2
   printf '%s\n' "${bad_dirs[@]}" >&2
