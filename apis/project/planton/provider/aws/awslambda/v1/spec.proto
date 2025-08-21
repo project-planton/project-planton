@@ -127,12 +127,6 @@ message AwsLambdaSpec {
   };
 
   option (buf.validate.message).cel = {
-    id: "role_required",
-    message: "role_arn must be provided as a value or reference",
-    expression: "has(this.role_arn) && (has(this.role_arn.value) || has(this.role_arn.value_from))"
-  };
-
-  option (buf.validate.message).cel = {
     id: "s3_requires_runtime_handler_and_excludes_image",
     message: "when code_source_type is S3, set s3, runtime, and handler; image_uri must be empty",
     expression: "this.code_source_type != 1 || (has(this.s3) && this.image_uri == '' && this.runtime != '' && this.handler != '')"
