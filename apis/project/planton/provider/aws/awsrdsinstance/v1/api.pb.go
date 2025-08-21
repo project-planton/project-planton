@@ -23,19 +23,19 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// aws-rds
+// AwsRdsInstance represents a single AWS RDS DB instance.
 type AwsRdsInstance struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// api-version
+	// api-version must be set to "aws.project-planton.org/v1".
 	ApiVersion string `protobuf:"bytes,1,opt,name=api_version,json=apiVersion,proto3" json:"api_version,omitempty"`
-	// resource-kind
+	// resource-kind for this resource, must be "AwsRdsInstance".
 	Kind string `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
-	// metadata
+	// metadata captures identifying information (name, org, version, etc.).
 	Metadata *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
-	// spec
+	// spec holds the core configuration data defining the DB instance.
 	Spec *AwsRdsInstanceSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
-	// status
-	Status        *AwsRdsStatus `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
+	// status holds runtime or post-deployment information.
+	Status        *AwsRdsInstanceStatus `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -98,42 +98,42 @@ func (x *AwsRdsInstance) GetSpec() *AwsRdsInstanceSpec {
 	return nil
 }
 
-func (x *AwsRdsInstance) GetStatus() *AwsRdsStatus {
+func (x *AwsRdsInstance) GetStatus() *AwsRdsInstanceStatus {
 	if x != nil {
 		return x.Status
 	}
 	return nil
 }
 
-// aws-rds status
-type AwsRdsStatus struct {
+// AwsRdsInstanceStatus describes the status fields for an RDS instance resource.
+type AwsRdsInstanceStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// lifecycle
+	// lifecycle indicates if the resource is active or has been marked for removal.
 	Lifecycle *shared.ApiResourceLifecycle `protobuf:"bytes,99,opt,name=lifecycle,proto3" json:"lifecycle,omitempty"`
-	// audit-info
+	// audit contains creation and update information for the resource.
 	Audit *shared.ApiResourceAudit `protobuf:"bytes,98,opt,name=audit,proto3" json:"audit,omitempty"`
-	// stack-job id
+	// stack_job_id stores the ID of the stack job responsible for provisioning.
 	StackJobId string `protobuf:"bytes,97,opt,name=stack_job_id,json=stackJobId,proto3" json:"stack_job_id,omitempty"`
-	// stack-outputs
+	// outputs captures observable stack outputs returned by Pulumi/Terraform after provisioning.
 	Outputs       *AwsRdsInstanceStackOutputs `protobuf:"bytes,1,opt,name=outputs,proto3" json:"outputs,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *AwsRdsStatus) Reset() {
-	*x = AwsRdsStatus{}
+func (x *AwsRdsInstanceStatus) Reset() {
+	*x = AwsRdsInstanceStatus{}
 	mi := &file_project_planton_provider_aws_awsrdsinstance_v1_api_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *AwsRdsStatus) String() string {
+func (x *AwsRdsInstanceStatus) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*AwsRdsStatus) ProtoMessage() {}
+func (*AwsRdsInstanceStatus) ProtoMessage() {}
 
-func (x *AwsRdsStatus) ProtoReflect() protoreflect.Message {
+func (x *AwsRdsInstanceStatus) ProtoReflect() protoreflect.Message {
 	mi := &file_project_planton_provider_aws_awsrdsinstance_v1_api_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -145,33 +145,33 @@ func (x *AwsRdsStatus) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use AwsRdsStatus.ProtoReflect.Descriptor instead.
-func (*AwsRdsStatus) Descriptor() ([]byte, []int) {
+// Deprecated: Use AwsRdsInstanceStatus.ProtoReflect.Descriptor instead.
+func (*AwsRdsInstanceStatus) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_aws_awsrdsinstance_v1_api_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *AwsRdsStatus) GetLifecycle() *shared.ApiResourceLifecycle {
+func (x *AwsRdsInstanceStatus) GetLifecycle() *shared.ApiResourceLifecycle {
 	if x != nil {
 		return x.Lifecycle
 	}
 	return nil
 }
 
-func (x *AwsRdsStatus) GetAudit() *shared.ApiResourceAudit {
+func (x *AwsRdsInstanceStatus) GetAudit() *shared.ApiResourceAudit {
 	if x != nil {
 		return x.Audit
 	}
 	return nil
 }
 
-func (x *AwsRdsStatus) GetStackJobId() string {
+func (x *AwsRdsInstanceStatus) GetStackJobId() string {
 	if x != nil {
 		return x.StackJobId
 	}
 	return ""
 }
 
-func (x *AwsRdsStatus) GetOutputs() *AwsRdsInstanceStackOutputs {
+func (x *AwsRdsInstanceStatus) GetOutputs() *AwsRdsInstanceStackOutputs {
 	if x != nil {
 		return x.Outputs
 	}
@@ -182,7 +182,7 @@ var File_project_planton_provider_aws_awsrdsinstance_v1_api_proto protoreflect.F
 
 const file_project_planton_provider_aws_awsrdsinstance_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"8project/planton/provider/aws/awsrdsinstance/v1/api.proto\x12.project.planton.provider.aws.awsrdsinstance.v1\x1a\x1bbuf/validate/validate.proto\x1a9project/planton/provider/aws/awsrdsinstance/v1/spec.proto\x1aBproject/planton/provider/aws/awsrdsinstance/v1/stack_outputs.proto\x1a#project/planton/shared/status.proto\x1a%project/planton/shared/metadata.proto\"\x86\x03\n" +
+	"8project/planton/provider/aws/awsrdsinstance/v1/api.proto\x12.project.planton.provider.aws.awsrdsinstance.v1\x1a\x1bbuf/validate/validate.proto\x1a9project/planton/provider/aws/awsrdsinstance/v1/spec.proto\x1aBproject/planton/provider/aws/awsrdsinstance/v1/stack_outputs.proto\x1a#project/planton/shared/status.proto\x1a%project/planton/shared/metadata.proto\"\x8e\x03\n" +
 	"\x0eAwsRdsInstance\x12B\n" +
 	"\vapi_version\x18\x01 \x01(\tB!\xbaH\x1er\x1c\n" +
 	"\x1aaws.project-planton.org/v1R\n" +
@@ -190,9 +190,9 @@ const file_project_planton_provider_aws_awsrdsinstance_v1_api_proto_rawDesc = ""
 	"\x04kind\x18\x02 \x01(\tB\x15\xbaH\x12r\x10\n" +
 	"\x0eAwsRdsInstanceR\x04kind\x12O\n" +
 	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12^\n" +
-	"\x04spec\x18\x04 \x01(\v2B.project.planton.provider.aws.awsrdsinstance.v1.AwsRdsInstanceSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12T\n" +
-	"\x06status\x18\x05 \x01(\v2<.project.planton.provider.aws.awsrdsinstance.v1.AwsRdsStatusR\x06status\"\xa2\x02\n" +
-	"\fAwsRdsStatus\x12J\n" +
+	"\x04spec\x18\x04 \x01(\v2B.project.planton.provider.aws.awsrdsinstance.v1.AwsRdsInstanceSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12\\\n" +
+	"\x06status\x18\x05 \x01(\v2D.project.planton.provider.aws.awsrdsinstance.v1.AwsRdsInstanceStatusR\x06status\"\xaa\x02\n" +
+	"\x14AwsRdsInstanceStatus\x12J\n" +
 	"\tlifecycle\x18c \x01(\v2,.project.planton.shared.ApiResourceLifecycleR\tlifecycle\x12>\n" +
 	"\x05audit\x18b \x01(\v2(.project.planton.shared.ApiResourceAuditR\x05audit\x12 \n" +
 	"\fstack_job_id\x18a \x01(\tR\n" +
@@ -215,7 +215,7 @@ func file_project_planton_provider_aws_awsrdsinstance_v1_api_proto_rawDescGZIP()
 var file_project_planton_provider_aws_awsrdsinstance_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_aws_awsrdsinstance_v1_api_proto_goTypes = []any{
 	(*AwsRdsInstance)(nil),              // 0: project.planton.provider.aws.awsrdsinstance.v1.AwsRdsInstance
-	(*AwsRdsStatus)(nil),                // 1: project.planton.provider.aws.awsrdsinstance.v1.AwsRdsStatus
+	(*AwsRdsInstanceStatus)(nil),        // 1: project.planton.provider.aws.awsrdsinstance.v1.AwsRdsInstanceStatus
 	(*shared.ApiResourceMetadata)(nil),  // 2: project.planton.shared.ApiResourceMetadata
 	(*AwsRdsInstanceSpec)(nil),          // 3: project.planton.provider.aws.awsrdsinstance.v1.AwsRdsInstanceSpec
 	(*shared.ApiResourceLifecycle)(nil), // 4: project.planton.shared.ApiResourceLifecycle
@@ -225,10 +225,10 @@ var file_project_planton_provider_aws_awsrdsinstance_v1_api_proto_goTypes = []an
 var file_project_planton_provider_aws_awsrdsinstance_v1_api_proto_depIdxs = []int32{
 	2, // 0: project.planton.provider.aws.awsrdsinstance.v1.AwsRdsInstance.metadata:type_name -> project.planton.shared.ApiResourceMetadata
 	3, // 1: project.planton.provider.aws.awsrdsinstance.v1.AwsRdsInstance.spec:type_name -> project.planton.provider.aws.awsrdsinstance.v1.AwsRdsInstanceSpec
-	1, // 2: project.planton.provider.aws.awsrdsinstance.v1.AwsRdsInstance.status:type_name -> project.planton.provider.aws.awsrdsinstance.v1.AwsRdsStatus
-	4, // 3: project.planton.provider.aws.awsrdsinstance.v1.AwsRdsStatus.lifecycle:type_name -> project.planton.shared.ApiResourceLifecycle
-	5, // 4: project.planton.provider.aws.awsrdsinstance.v1.AwsRdsStatus.audit:type_name -> project.planton.shared.ApiResourceAudit
-	6, // 5: project.planton.provider.aws.awsrdsinstance.v1.AwsRdsStatus.outputs:type_name -> project.planton.provider.aws.awsrdsinstance.v1.AwsRdsInstanceStackOutputs
+	1, // 2: project.planton.provider.aws.awsrdsinstance.v1.AwsRdsInstance.status:type_name -> project.planton.provider.aws.awsrdsinstance.v1.AwsRdsInstanceStatus
+	4, // 3: project.planton.provider.aws.awsrdsinstance.v1.AwsRdsInstanceStatus.lifecycle:type_name -> project.planton.shared.ApiResourceLifecycle
+	5, // 4: project.planton.provider.aws.awsrdsinstance.v1.AwsRdsInstanceStatus.audit:type_name -> project.planton.shared.ApiResourceAudit
+	6, // 5: project.planton.provider.aws.awsrdsinstance.v1.AwsRdsInstanceStatus.outputs:type_name -> project.planton.provider.aws.awsrdsinstance.v1.AwsRdsInstanceStackOutputs
 	6, // [6:6] is the sub-list for method output_type
 	6, // [6:6] is the sub-list for method input_type
 	6, // [6:6] is the sub-list for extension type_name

@@ -8,108 +8,34 @@ TITLE
 Forge: Add and run spec-level validation tests (protovalidate + Ginkgo/Gomega)
 
 ROLE
-You are the PlantonCloud Code Partner working inside the developer’s local workspace in Cursor. This rule creates and executes Go tests focused on validating `spec.proto` rules (including CEL expressions) for a Planton resource. The goal is to surface runtime validation issues that do not appear during proto build/codegen.
+You are the PlantonCloud Code Partner working inside the developer’s local workspace in Cursor. This rule creates and executes Go tests focused on validating `spec.proto` rules for a resource kind.
 
 SCOPE
-- Target resource directory: `apis/project/planton/provider/<provider>/<kindfolder>/v1/`.
-- Create `spec_test.go` for testing `<Kind>Spec` validations using `github.com/bufbuild/protovalidate-go` with Ginkgo v2 and Gomega.
-- Cover both field-level validations and CEL message-level rules.
-- Run tests non-interactively and auto-refine failing CEL expressions or test inputs up to 3 attempts.
-- Do NOT modify field names or numbers in the schema. Only adjust CEL expressions or test inputs if needed.
+- Target directory: `apis/project/planton/provider/<provider>/<kindfolder>/v1/`.
+- Create `spec_test.go` covering field-level and CEL validations.
+- Do not change schema; only tests are created/updated.
 
-PACKAGE & FILE STRUCTURE
-- File: `apis/project/planton/provider/<provider>/<kindfolder>/v1/spec_test.go`
-- Package: `package <kindfolder>v1` (same as generated go package for the resource)
-- Use Ginkgo suite pattern with `Test<Kind>Spec(t *testing.T)` and `Describe/Context/It` blocks.
+TOOLS
+- Reader: `.cursor/tools/spec_proto_reader.py`
+- Test Writer+Run: `.cursor/tools/spec_tests_write_and_run.py`
+- Tests guide: `.cursor/info/spec_tests.md`
 
-TEST CONTENT GUIDELINES
-- Import:
-  - `github.com/bufbuild/protovalidate-go`
-  - `. "github.com/onsi/ginkgo/v2"`
-  - `. "github.com/onsi/gomega"`
-  - Optionally `github.com/project-planton/project-planton/apis/project/planton/shared/validateutil` for violation assertions
-- Positive tests: construct minimal valid `<Kind>Spec` to satisfy all rules.
-- Negative tests: provoke violations for key rules, including:
-  - Required string min_len
-  - Repeated min_items / uniqueness
-  - Enum defined_only and non-zero enforcement
-  - CEL conditional rules (e.g., when `aliases` non-empty, `certificate_arn` must be set; ordering constraints; mutually exclusive fields)
-- Validate with `err := protovalidate.Validate(spec)` and assert `BeNil()` or `NotTo(BeNil())`.
-- For detailed assertions, decode violation list using `protovalidate.New().Validate()` and match with `validateutil.Match` where stable.
+SEQUENTIAL STEPS
+1) Read `spec.proto` using the reader tool to confirm target package and kind.
+2) Draft `spec_test.go` using `.cursor/info/spec_tests.md` as guidance (suite skeleton, positive/negative cases).
+3) Write and run tests:
+   - `cat <<'GO' | python3 .cursor/tools/spec_tests_write_and_run.py --provider <provider> --kindfolder <kindfolder> --stdin | cat`
+   - If `test_succeeded` is false, refine tests (or, if clearly a CEL robustness issue, refine CEL in `spec.proto` via the validate rule) and retry (≤3).
 
-EXAMPLE SKELETON (adapt to actual schema; do not paste verbatim)
-```go
-package awscloudfrontv1
+OUTPUT
+- Show created/updated path and key JSON fields from the tool.
+- On success: confirm file path. On error: brief fix and rerun (≤3).
 
-import (
-    "testing"
-
-    "github.com/bufbuild/protovalidate-go"
-    . "github.com/onsi/ginkgo/v2"
-    . "github.com/onsi/gomega"
-)
-
-func TestAwsCloudFrontSpec(t *testing.T) {
-    RegisterFailHandler(Fail)
-    RunSpecs(t, "AwsCloudFrontSpec Validation Suite")
-}
-
-var _ = Describe("AwsCloudFrontSpec validations", func() {
-    var spec *AwsCloudFrontSpec
-
-    BeforeEach(func() {
-        spec = &AwsCloudFrontSpec{
-            Aliases: []string{"cdn.example.com"},
-            CertificateArn: "arn:aws:acm:us-east-1:123456789012:certificate/abc",
-            PriceClass: AwsCloudFrontSpec_PRICE_CLASS_100,
-            Origins: []*AwsCloudFrontSpec_Origin{{ Id: "origin-1", DomainName: "bucket.s3.amazonaws.com" }},
-            DefaultCacheBehavior: &AwsCloudFrontSpec_DefaultCacheBehavior{
-                OriginId: "origin-1",
-                ViewerProtocolPolicy: AwsCloudFrontSpec_DefaultCacheBehavior_HTTPS_ONLY,
-            },
-        }
-    })
-
-    It("accepts a valid spec", func() {
-        err := protovalidate.Validate(spec)
-        Expect(err).To(BeNil())
-    })
-
-    It("fails when aliases are set but certificate_arn is empty (CEL)", func() {
-        spec.CertificateArn = ""
-        err := protovalidate.Validate(spec)
-        Expect(err).NotTo(BeNil())
-    })
-
-    It("fails when default behavior viewer_protocol_policy is unspecified (CEL)", func() {
-        spec.DefaultCacheBehavior.ViewerProtocolPolicy = AwsCloudFrontSpec_DefaultCacheBehavior_VIEWER_PROTOCOL_POLICY_UNSPECIFIED
-        err := protovalidate.Validate(spec)
-        Expect(err).NotTo(BeNil())
-    })
-})
-```
-
-BUILD & RUN (NON-INTERACTIVE)
-- Run path guard lint, then execute tests for the target directory:
-  - `make lint | cat`
-  - `go test ./apis/project/planton/provider/<provider>/<kindfolder>/v1/... | cat`
-- If failures occur:
-  1) If due to CEL expression semantics (e.g., nil-safety, enum comparisons), update CEL within `spec.proto` to a safe equivalent. Rebuild protos:
-     - `: ${REPO_ROOT:=$(pwd)} && make -C "$REPO_ROOT"/apis build | cat`
-  2) If due to incorrect test assumptions, minimally adjust test inputs to satisfy expected rules.
-  3) Re-run `go test` after each change. Up to 3 attempts before asking one precise question.
+SUCCESS
+- `spec_test.go` exists and compiles; tool reports `test_succeeded: true`.
+- Positive and negative cases cover core validations.
 
 SUCCESS CRITERIA
 - `spec_test.go` exists and compiles.
 - `go test` for the resource passes with both positive and negative cases.
 - CEL expressions are robust (no runtime panics) and enforce intended constraints.
-
-OUTPUT STYLE IN CHAT
-- Show a concise tree of created paths with brief reasons.
-- Show the non-interactive command(s) to run.
-- If successful: confirm the file path to review.
-- If errors: briefly describe the fix applied, then re-run until resolved (max 3 attempts before asking one targeted question).
-
-NOTES
-- Prefer simple, robust CEL: guard against nils, compare enums by numeric values where needed.
-- Keep tests small and targeted; avoid over-constraining with brittle regexes or provider-specific formats in tests unless necessary.

@@ -8,48 +8,32 @@ TITLE
 Forge: Generate stack_outputs.proto for a resource (observable outputs only)
 
 ROLE
-You are the PlantonCloud Code Partner working inside the developer’s local workspace in Cursor. This rule focuses ONLY on creating the `stack_outputs.proto` for a Planton resource to capture observable outputs produced by the underlying provider after provisioning. Do NOT create or modify other files (no spec/api/stack_input/IaC) in this rule.
+You are the PlantonCloud Code Partner working inside the developer’s local workspace in Cursor. This rule creates `stack_outputs.proto` for a resource to capture observable outputs. Do not create/modify other files.
 
 SCOPE
-- Given a natural-language request like “Add <provider> <resource>”, detect the provider and kind.
-- Create or reuse the target folder under `apis/project/planton/provider/<provider>/<kindfolder>/v1/`.
-- Generate `stack_outputs.proto` defining `<Kind>StackOutputs` with fields representing IDs, ARNs, URLs, endpoints, domain names, hosted zone IDs, and other non-secret identifiers typically returned by the provider.
-- No validations, no custom options, and no imports in this file.
+- Detect provider and kind.
+- Do not manually create folders; writer tool handles directories.
+- Generate `stack_outputs.proto` defining `<Kind>StackOutputs` with non-secret observable outputs only.
 
-FOLDER & NAMING CONVENTIONS
-- Kind (PascalCase): e.g., AwsCloudFront, GcpPubsubTopic, AzureKeyVault
-- Kind keyword (snake_case): aws_cloudfront, gcp_pubsub_topic, azure_key_vault
-- Folder name (lowercase, no underscores): awscloudfront, gcppubsubtopic, azurekeyvault
-- File path: `apis/project/planton/provider/<provider>/<kindfolder>/v1/stack_outputs.proto`
-- Do NOT include `go_package` options in new proto files.
+TOOLS
+- Reader: `.cursor/tools/stack_outputs_reader.py`
+- Writer+Build: `.cursor/tools/stack_outputs_write_and_build.py`
+- Authoring guide: `.cursor/info/stack_outputs.md`
 
-STACK_OUTPUTS CONTENT REQUIREMENTS
-- Syntax and package:
-  - `syntax = "proto3";`
-  - `package project.planton.provider.<provider>.<kindfolder>.v1;`
-- Define a single top-level message named `<Kind>StackOutputs`.
-- Include only observable, non-secret outputs that are stable enough to be consumed by other components (e.g., IDs/ARNs/URLs/hostnames/zone IDs/ports). Avoid sensitive values like passwords, private keys, or tokens.
-- Prefer `string` type for IDs/ARNs/URIs/hostnames. Use numeric types only when the provider returns numbers (e.g., ports). Use `repeated` only when multiple values are inherently produced.
-- Keep field names snake_case, concise, and aligned with provider terminology where possible.
-- Add brief comments describing each field.
+SEQUENTIAL STEPS
+1) Read: `python3 .cursor/tools/stack_outputs_reader.py --provider <provider> --kindfolder <kindfolder>`
+2) Draft: Read `.cursor/info/stack_outputs.md`, then author `stack_outputs.proto` content accordingly.
+3) Write+Build: `cat <<'PROTO' | python3 .cursor/tools/stack_outputs_write_and_build.py --provider <provider> --kindfolder <kindfolder> --stdin | cat`
+   - If `build_succeeded` is false, refine content and retry (≤6).
 
-IMPLEMENTATION NOTES
-- Derive outputs from official provider docs or common IaC outputs for the resource.
-- Keep this output schema small and practical (80/20). Additional outputs can be added by future rules if needed.
+OUTPUT
+- Show created/updated path and key JSON fields from tools.
+- On success: confirm file path. On error: brief fix and rerun (≤6).
 
-BUILD & VERIFY (NON-INTERACTIVE)
-After writing `stack_outputs.proto`:
-- Run path guard lint and Buf build for the repo roots:
-  - `make lint | cat`
-  - `make -C apis build | cat`
-- If build errors occur, fix package paths or message names up to 3 attempts, then re-run the build each time.
-- On success, announce completion and point the user to the created/updated file path.
-
-SUCCESS CRITERIA
-- `stack_outputs.proto` exists at the correct path with proper `syntax` and `package`.
-- Defines `<Kind>StackOutputs` with practical, non-secret outputs.
-- `make -C apis build` succeeds without errors.
-- No other files are created or modified by this rule.
+SUCCESS
+- Correct path, syntax, and package.
+- Practical, non-secret outputs only.
+- Writer tool reports `build_succeeded: true`.
 
 OUTPUT STYLE IN CHAT
 - Show a concise tree of the created/updated path and fields added.

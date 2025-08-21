@@ -1,39 +1,27 @@
-output "rds_instance_endpoint" {
-  description = "Endpoint of the RDS instance"
-  value       = aws_db_instance.this.endpoint
-}
-
 output "rds_instance_id" {
-  description = "ID of the RDS instance"
-  value       = aws_db_instance.this.id
+  value = aws_db_instance.this.id
 }
 
 output "rds_instance_arn" {
-  description = "ARN of the RDS instance"
-  value       = aws_db_instance.this.arn
+  value = aws_db_instance.this.arn
 }
 
-output "rds_instance_address" {
-  description = "Address of the RDS instance"
-  value       = aws_db_instance.this.address
+output "rds_instance_endpoint" {
+  value = aws_db_instance.this.address
+}
+
+output "rds_instance_port" {
+  value = aws_db_instance.this.port
 }
 
 output "rds_subnet_group" {
-  description = "Name of the DB Subnet Group used by this RDS instance"
-  value       = local.final_db_subnet_group_name
+  value = coalesce(try(var.spec.db_subnet_group_name.value, null), try(aws_db_subnet_group.this[0].name, null))
 }
 
 output "rds_security_group" {
-  description = "Name of the default security group created for this RDS instance"
-  value       = aws_security_group.default.name
+  value = try(element(local.ingress_sg_ids, 0), "")
 }
 
 output "rds_parameter_group" {
-  description = "Name of the DB Parameter Group used by this RDS instance"
-  value       = local.final_parameter_group_name
-}
-
-output "rds_options_group" {
-  description = "Name of the DB Option Group used by this RDS instance"
-  value       = local.final_option_group_name
+  value = try(var.spec.parameter_group_name, "")
 }

@@ -3,13 +3,13 @@ load("@rules_go//go:def.bzl", "go_library")
 go_library(
     name = "module",
     srcs = [
+        "cluster_param_group.go",
         "locals.go",
         "main.go",
         "outputs.go",
+        "rds_cluster.go",
         "security_group.go",
         "subnet_group.go",
-        "cluster_param_group.go",
-        "rds_cluster.go",
     ],
     importpath = "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsrdscluster/v1/iac/pulumi/module",
     visibility = ["//visibility:public"],
@@ -22,5 +22,3 @@ go_library(
         "@com_github_pulumi_pulumi_sdk_v3//go/pulumi",
     ],
 )
-
-

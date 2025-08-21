@@ -7,15 +7,34 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-func subnetGroup(ctx *pulumi.Context, locals *Locals, awsProvider *aws.Provider) (*rds.SubnetGroup, error) {
-	subnetGroup, err := rds.NewSubnetGroup(ctx, "default", &rds.SubnetGroupArgs{
-		Name:      pulumi.String(locals.AwsRdsInstance.Metadata.Id),
-		SubnetIds: pulumi.ToStringArray(locals.AwsRdsInstance.Spec.SubnetIds),
-		Tags:      pulumi.ToStringMap(locals.Labels),
-	}, pulumi.Provider(awsProvider))
-	if err != nil {
-		return nil, errors.Wrap(err, "failed to create subnet group")
+// subnetGroup creates a DB Subnet Group when subnetIds are provided and dbSubnetGroupName is not set.
+func subnetGroup(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) (*rds.SubnetGroup, error) {
+	spec := locals.AwsRdsInstance.Spec
+	if spec == nil {
+		return nil, nil
 	}
 
-	return subnetGroup, nil
+	if (spec.DbSubnetGroupName != nil && spec.DbSubnetGroupName.GetValue() != "") || len(spec.SubnetIds) == 0 {
+		return nil, nil
+	}
+
+	var subnetIds pulumi.StringArray
+	for _, s := range spec.SubnetIds {
+		if s.GetValue() != "" {
+			subnetIds = append(subnetIds, pulumi.String(s.GetValue()))
+		}
+	}
+	if len(subnetIds) == 0 {
+		return nil, nil
+	}
+
+	sg, err := rds.NewSubnetGroup(ctx, "instance-subnet-group", &rds.SubnetGroupArgs{
+		Name:      pulumi.String(locals.AwsRdsInstance.Metadata.Id),
+		SubnetIds: subnetIds,
+		Tags:      pulumi.ToStringMap(locals.Labels),
+	}, pulumi.Provider(provider))
+	if err != nil {
+		return nil, errors.Wrap(err, "create subnet group")
+	}
+	return sg, nil
 }

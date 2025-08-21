@@ -5,18 +5,15 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
+// Locals captures convenient references and computed labels for the module.
 type Locals struct {
 	AwsRdsInstance *awsrdsinstancev1.AwsRdsInstance
 	Labels         map[string]string
 }
 
-func initializeLocals(ctx *pulumi.Context, stackInput *awsrdsinstancev1.AwsRdsInstanceStackInput) *Locals {
+func initializeLocals(ctx *pulumi.Context, in *awsrdsinstancev1.AwsRdsInstanceStackInput) *Locals {
 	locals := &Locals{}
-
-	//assign value for the locals variable to make it available across the project
-	locals.AwsRdsInstance = stackInput.Target
-
-	// initialize standardized labels
+	locals.AwsRdsInstance = in.Target
 	locals.Labels = map[string]string{
 		"planton.org/resource":      "true",
 		"planton.org/organization":  locals.AwsRdsInstance.Metadata.Org,
@@ -24,6 +21,5 @@ func initializeLocals(ctx *pulumi.Context, stackInput *awsrdsinstancev1.AwsRdsIn
 		"planton.org/resource-kind": "AwsRdsInstance",
 		"planton.org/resource-id":   locals.AwsRdsInstance.Metadata.Id,
 	}
-
 	return locals
 }

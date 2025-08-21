@@ -8,95 +8,42 @@ TITLE
 Forge: Pulumi end-to-end via ProjectPlanton CLI (pulumi)
 
 ROLE
-You are the PlantonCloud Code Partner working inside the developer’s local workspace in Cursor. This rule performs an end-to-end validation of a Pulumi module using the ProjectPlanton CLI (`project-planton pulumi ...`). It uses the module’s top-level `iac/hack/manifest.yaml` and runs preview/update/refresh/destroy, capturing logs.
+You are the PlantonCloud Code Partner working inside the developer’s local workspace in Cursor. This rule runs an end-to-end update using the local CLI and the resource’s Pulumi module.
 
-PREREQUISITES
-- Pulumi module package exists under `iac/pulumi/module/` (rule 009)
-- Pulumi entrypoint exists under `iac/pulumi/main.go` (rule 010)
-- Top-level hack manifest exists at `iac/hack/manifest.yaml` (rule 008)
-- Required cloud credentials are configured and available to Pulumi via ambient lookup (no flags by default)
+TOOLS
+- E2E Runner: `.cursor/tools/pulumi_e2e_run.py`
+- Guide: `.cursor/info/pulumi_e2e.md`
 
-PREP: INSTALL LOCAL CLI BUILD
-Install the local CLI so it picks up latest proto and behavior changes.
-```bash
-: ${REPO_ROOT:=$(pwd)}
-make -C "$REPO_ROOT" local | cat
-make -C "$REPO_ROOT" lint | cat
-```
-
-PREP: INITIALIZE PULUMI BACKEND AND STACK (NON-INTERACTIVE)
-Pulumi requires an initialized backend and an existing stack. Initialize a local backend and create/select the stack in the module directory.
-```bash
-: ${REPO_ROOT:=$(pwd)}
-export PULUMI_CONFIG_PASSPHRASE="test"
-cd "$REPO_ROOT"/apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/pulumi
-pulumi login --local | cat
-pulumi stack select --create organization/<project>/<stack> | cat
-```
-
-DISCOVERY (MANDATORY BEFORE RUN)
-- Verify these paths exist for the target resource:
-  - `apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/pulumi/`
-  - `apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/hack/manifest.yaml`
+SEQUENTIAL STEPS
+1) Draft: Read `.cursor/info/pulumi_e2e.md` and decide `--manifest`, `--stack` (use `organization/<project>/<stack>` for local), and optional `--pulumi-login`.
+2) Run deterministically:
+   - `python3 .cursor/tools/pulumi_e2e_run.py --provider <provider> --kindfolder <kindfolder> --manifest <path> --stack <org/project/stack> [--pulumi-login <url>] | cat`
+3) If update fails, refine Pulumi module and retry (≤3).
 
 SCOPE
-- Execute non-interactive end-to-end run using ProjectPlanton CLI (pulumi):
-  - Preview
-  - Update (apply)
-  - Refresh
-  - Destroy
+- Require module and entrypoint to exist from prior rules.
+- Use local backend unless otherwise provided.
 
-COMMANDS (NON-INTERACTIVE)
-Run these from repo root; they print logs directly.
-```bash
-# Preview changes
-project-planton pulumi preview \
-  --manifest apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/hack/manifest.yaml \
-  --stack organization/<project>/<stack> \
-  --module-dir apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/pulumi | cat
-# Apply changes
-project-planton pulumi update \
-  --manifest apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/hack/manifest.yaml \
-  --stack organization/<project>/<stack> \
-  --module-dir apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/pulumi \
-  --yes | cat
+DEFAULTS
+- Manifest: `apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/hack/manifest.yaml`
 
-# Refresh state
-project-planton pulumi refresh \
-  --manifest apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/hack/manifest.yaml \
-  --stack organization/<project>/<stack> \
-  --module-dir apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/pulumi | cat
-
-# Destroy resources
-project-planton pulumi destroy \
-  --manifest apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/hack/manifest.yaml \
-  --stack organization/<project>/<stack> \
-  --module-dir apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/pulumi | cat
-
-# Optional: Remove local stack state (cleanup)
-: ${REPO_ROOT:=$(pwd)}
-cd "$REPO_ROOT"/apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/pulumi
-pulumi stack rm organization/<project>/<stack> --yes --force | cat
-cd - >/dev/null
-```
-
-ERROR POLICY
-- If a step fails, adjust the `iac/hack/manifest.yaml` minimal values and retry up to 3 times
-- Do not embed secrets in the manifest; rely on environment-based credentials
+OUTPUT
+- Show deterministic tool invocation and summarized results (make local, login, stack select, update).
+- If errors: show summaries and fixes applied; re-run (≤3).
 
 SUCCESS CRITERIA
-- Local CLI installed via `make local` completes successfully
-- Local Pulumi backend initialized and stack created/selected
-- Preview shows expected changes
-- Update completes without errors
-- Refresh completes without errors
-- Destroy completes without errors (clean teardown)
+- Pulumi update completes successfully (`update_succeeded: true`).
+- Outputs are exported as expected.
 
-OUTPUT STYLE IN CHAT
-- Print each command before running and stream its logs
-- Summarize which steps succeeded and note any adjustments made
+ERROR POLICY
+- If a step fails, adjust the module code or manifest minimal values and retry up to 3 times.
+- Do not embed secrets in the manifest; rely on environment-based credentials.
+
+ 
+
+ 
 
 NOTES
-- The CLI wraps Pulumi; logs mirror Pulumi output
-- The `--module-dir` points to the resource’s Pulumi module directory
- - With the local backend (`pulumi login --local`), use the literal org `organization` in stack names: `organization/<project>/<stack>`
+- The CLI wraps Pulumi; logs mirror Pulumi output.
+- The `--module-dir` points to the resource’s Pulumi module directory.
+- With the local backend, use the literal org `organization` in stack names: `organization/<project>/<stack>`.

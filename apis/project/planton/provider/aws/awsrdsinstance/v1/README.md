@@ -1,93 +1,38 @@
-# Overview
+# AwsRdsInstance
 
-The AWS RDS Instance API resource provides a consistent and streamlined interface for deploying and managing individual Amazon RDS (Relational Database Service) instances within our cloud infrastructure. By abstracting the complexities of RDS instance configurations, this resource enables you to define your database instances effortlessly while ensuring consistency and compliance across different environments.
+Provision a single AWS RDS DB instance (PostgreSQL, MySQL, MariaDB, Oracle, SQL Server). Focuses on essential networking, engine selection, sizing, and credentials.
 
-## Why We Created This API Resource
+## Spec fields (summary)
+- subnet_ids: Private subnets for the DB subnet group (>=2) or use db_subnet_group_name.
+- db_subnet_group_name: Existing DB subnet group name (alternative to subnet_ids).
+- security_group_ids: Security groups to associate with the instance.
+- engine: Database engine (e.g., postgres, mysql, mariadb, oracle-se2, sqlserver-ex).
+- engine_version: Desired engine version (e.g., 14.10 for Postgres).
+- instance_class: DB instance class (e.g., db.t3.micro, db.m6g.large).
+- allocated_storage_gb: Allocated storage for the instance in GiB (>0).
+- storage_encrypted: Enable storage encryption.
+- kms_key_id: KMS key ARN/alias for encryption when enabled.
+- username: Master username.
+- password: Master user password.
+- port: Database port (0–65535).
+- publicly_accessible: Whether to allocate a public IP.
+- multi_az: Enable Multi-AZ deployment.
+- parameter_group_name: Optional DB parameter group name.
+- option_group_name: Optional option group name.
 
-Managing RDS instances can be complex due to the numerous configuration options, networking setups, and best practices that need to be considered. To simplify this process and promote a standardized approach, we developed this API resource. It allows you to:
+## Stack outputs
+- rds_instance_id: RDS instance identifier.
+- rds_instance_arn: RDS instance ARN.
+- rds_instance_endpoint: Endpoint hostname.
+- rds_instance_port: Database port.
+- rds_subnet_group: Subnet group name.
+- rds_security_group: Associated security group ID.
+- rds_parameter_group: Parameter group name.
 
-- **Simplify Deployment**: Easily configure and deploy RDS instances without delving into low-level AWS details.
-- **Ensure Consistency**: Maintain uniform configurations across different environments and instances.
-- **Enhance Productivity**: Reduce the time and effort required to set up RDS instances, allowing you to focus on application development.
+## How it works
+- The CLI passes a Stack Input with provisioner choice (Pulumi or Terraform), stack info, the target `AwsRdsInstance` resource, and AWS credentials to the corresponding module.
 
-## Key Features
-
-### Environment Integration
-
-- **Environment Info**: Seamlessly integrates with our environment management system to deploy instances within specific environments.
-- **Stack Job Settings**: Supports custom stack job settings for infrastructure-as-code deployments.
-
-### AWS Credential Management
-
-- **AWS Credential ID**: Utilizes specified AWS credentials to ensure secure and authorized deployments.
-
-### Customizable Instance Specifications
-
-#### Database Configuration
-
-- **Engine and Version**: Specify the database engine (e.g., `mysql`, `postgres`, `oracle`) and engine version to meet application requirements.
-- **Instance Class**: Choose the instance class (e.g., `db.t3.micro`, `db.m5.large`) to optimize performance and cost.
-- **Database Name**: Optionally create a database upon instance creation by specifying `db_name`.
-
-#### Storage Configuration
-
-- **Allocated Storage**: Define the initial storage allocation in gibibytes.
-- **Storage Type**: Select storage types such as `gp2`, `gp3`, `io1`, or `standard` for different performance characteristics.
-- **Provisioned IOPS**: Configure IOPS for storage types that support it (`io1`, `gp3`) to enhance performance.
-- **Storage Autoscaling**: Set `max_allocated_storage` to enable automatic storage scaling based on demand.
-
-#### Networking and Security
-
-- **VPC Integration**: Deploy the RDS instance within a specified VPC, using subnet groups and security groups for network isolation.
-- **Subnet Configuration**: Provide subnet IDs, a DB subnet group name, or an availability zone for flexible network placement.
-- **Security Groups**: Attach security groups to manage inbound and outbound traffic to the instance.
-- **Public Accessibility**: Optionally make the database accessible from the public internet by setting `is_publicly_accessible`.
-
-#### Database Credentials
-
-- **Master Username and Password**: Configure credentials for the master user or allow AWS to manage the password via Secrets Manager.
-- **KMS Encryption**: Optionally use a custom KMS key to encrypt passwords stored in Secrets Manager.
-
-### Advanced Configurations
-
-#### Parameter and Option Groups
-
-- **Parameter Groups**: Specify custom DB parameter group names and parameters for fine-tuned database settings.
-- **Option Groups**: Configure DB option groups with specific options suitable for your database engine.
-
-#### Multi-AZ Deployment
-
-- **High Availability**: Enable Multi-AZ deployment to enhance availability and durability by automatically replicating data to a standby instance in a different availability zone.
-
-#### Monitoring and Logging
-
-- **Enhanced Monitoring**: Enable enhanced monitoring and specify the monitoring interval for deeper insights into instance performance.
-- **CloudWatch Logs Export**: Enable exporting of database logs to CloudWatch Logs for centralized monitoring.
-- **Performance Insights**: Enable Performance Insights for advanced monitoring and specify retention periods and KMS keys.
-
-#### Backup and Maintenance
-
-- **Automated Backups**: Configure backup retention periods and backup windows to protect your data.
-- **Maintenance Window**: Specify a preferred maintenance window for system updates and patches.
-- **Final Snapshot**: Control whether a final snapshot is created before instance deletion and enable deletion protection to prevent accidental deletions.
-
-#### Replication and Restoration
-
-- **Read Replicas**: Create read replicas by specifying a source DB instance identifier for scalability and disaster recovery.
-- **Point-in-Time Restore**: Restore the database to a specific point in time using the `restore_to_point_in_time` configuration.
-
-### Security and Compliance
-
-- **IAM Database Authentication**: Enable IAM authentication for database access to simplify credential management.
-- **Encryption at Rest**: Enable storage encryption and specify a KMS key for enhanced data security.
-- **Deletion Protection**: Enable deletion protection to prevent accidental deletion of the database instance.
-- **SSL/TLS Configuration**: Specify the CA certificate identifier for SSL connections to secure data in transit.
-
-## Benefits
-
-- **Simplified Deployment**: Reduces the complexity involved in setting up RDS instances with a user-friendly API.
-- **Consistency**: Ensures all instances adhere to organizational standards for security, performance, and scalability.
-- **Scalability**: Leverages features like read replicas and storage autoscaling to handle varying workloads efficiently.
-- **Security**: Integrates with AWS KMS, IAM, and VPCs to enhance security and compliance.
-- **Cost Optimization**: Allows fine-grained control over instance types, storage options, and scaling policies to optimize costs.
-- **Flexibility**: Provides extensive customization to meet specific application requirements without compromising best practices.
+## References
+- AWS RDS Instances: https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Overview.DBInstance.html
+- Engine versions (PostgreSQL): https://docs.aws.amazon.com/AmazonRDS/latest/PostgreSQLReleaseNotes/Welcome.html
+- Engine versions (MySQL): https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/MySQL.Concepts.VersionMgmt.html

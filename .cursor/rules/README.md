@@ -18,7 +18,7 @@ This directory contains automation rules used by Cursor to scaffold and validate
 3) Split runs across two chats (recommended balance)
 - Chat A (Rules 001–008)
   - Kick off with the provider/kind context once: `@001-spec-proto Add AWS CloudFront`
-  - Then: `@002-spec-validate`, `@003-spec-tests`, `@004-stack-outputs`, `@005-api`, `@006-stack-input`, `@007-build-and-docs`, `@008-hack-manifest`
+  - Then: `@002-spec-validate`, `@003-spec-tests`, `@004-stack-outputs`, `@005-api`, `@006-stack-input`, `@007-docs`, `@008-hack-manifest`
 - Chat B (Rules 009–015)
   - Then: `@009-pulumi-module`, `@010-pulumi-entrypoint`, `@011-pulumi-e2e`, `@012-pulumi-docs`, `@013-terraform-module`, `@014-terraform-e2e`, `@015-terraform-docs`
 - Benefit: Clear separation between API scaffolding and IaC steps; fewer long steps per chat while still retaining convenience.
@@ -31,7 +31,7 @@ This directory contains automation rules used by Cursor to scaffold and validate
 - 004-stack-outputs.mdc — Generate stack_outputs.proto
 - 005-api.mdc — Generate api.proto wiring metadata/spec/status
 - 006-stack-input.mdc — Generate stack_input.proto
-- 007-build-and-docs.mdc — Generate BUILD.bazel, README.md, examples.md (root resource folder)
+- 007-docs.mdc — Generate README.md and examples.md
 - 008-hack-manifest.mdc — Generate top-level iac/hack/manifest.yaml
 - 009-pulumi-module.mdc — Scaffold pulumi module/ (controller, locals, outputs, resources)
 - 010-pulumi-entrypoint.mdc — Add pulumi entrypoint, Pulumi.yaml, Makefile, BUILD

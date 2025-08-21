@@ -2,22 +2,26 @@ syntax = "proto3";
 
 package project.planton.provider.aws.awsrdsinstance.v1;
 
-import "project/planton/credential/awscredential/v1/spec.proto";
-import "project/planton/provider/aws/awsrdsinstance/v1/api.proto";
-import "project/planton/shared/iac/pulumi/pulumi.proto";
 import "project/planton/shared/iac.proto";
+import "project/planton/shared/iac/pulumi/pulumi.proto";
 import "project/planton/shared/iac/terraform/terraform.proto";
+import "project/planton/provider/aws/awsrdsinstance/v1/api.proto";
+import "project/planton/credential/awscredential/v1/spec.proto";
 
-//aws-rds-instance stack-input
+// AwsRdsInstanceStackInput defines the inputs the CLI passes to provision the RDS instance.
 message AwsRdsInstanceStackInput {
-  //iac-provisioner
+  // Which provisioner to use (Pulumi or Terraform)
   project.planton.shared.IacProvisioner provisioner = 1;
-  //pulumi input required when the provisioner is pulumi
+
+  // Pulumi stack info when provisioner is Pulumi
   project.planton.shared.iac.pulumi.PulumiStackInfo pulumi = 2;
-  //terraform input required when the provisioner is terraform
+
+  // Terraform stack info when provisioner is Terraform
   project.planton.shared.iac.terraform.TerraformStackInfo terraform = 3;
-  //target cloud-resource
+
+  // Target resource (the full API object with metadata/spec)
   AwsRdsInstance target = 4;
-  //provider-credential
+
+  // Provider credential for AWS
   project.planton.credential.awscredential.v1.AwsCredentialSpec provider_credential = 5;
 }
