@@ -13,6 +13,7 @@ go_library(
     deps = [
         "//apis/project/planton/credential/awscredential/v1:awscredential",
         "//apis/project/planton/shared",
+        "//apis/project/planton/shared/foreignkey/v1:foreignkey",
         "//apis/project/planton/shared/iac/pulumi",
         "//apis/project/planton/shared/iac/terraform",
         "//apis/project/planton/shared/options",

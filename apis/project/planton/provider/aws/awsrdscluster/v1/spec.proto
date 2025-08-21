@@ -3,255 +3,219 @@ syntax = "proto3";
 package project.planton.provider.aws.awsrdscluster.v1;
 
 import "buf/validate/validate.proto";
+import "project/planton/shared/foreignkey/v1/foreign_key.proto";
 import "project/planton/shared/options/options.proto";
 
-// AwsRdsClusterSpec defines the specification required to deploy an AWS RDS (Relational Database Service) Cluster.
-// This message encapsulates all configurations necessary for setting up an RDS cluster, including engine settings,
-// instance configurations, networking, security, backup and maintenance options, and scaling configurations.
+// AwsRdsClusterSpec defines the specification required to deploy an AWS RDS DB Cluster
+// (commonly Amazon Aurora MySQL/PostgreSQL, or Multi-AZ DB Cluster). It focuses on
+// the cluster-level configuration. Instance-level settings (class, monitoring, etc.)
+// are modeled separately by instance resources.
 message AwsRdsClusterSpec {
-  // Name of the database engine to be used for this DB cluster. Valid Values: `aurora-mysql`,
-  // `aurora-postgresql`, `mysql`, `postgres`. (Note that `mysql` and `postgres` are Multi-AZ RDS clusters).
-  string engine = 1 [
-    (buf.validate.field).required = true,
-    (buf.validate.field).string = {
-      in: ["aurora-mysql", "aurora-postgresql", "mysql", "postgres"]
-    }
+  // subnet_ids is the list of subnet IDs used by the DB subnet group for the cluster.
+  // Provide at least two subnets in distinct Availability Zones for high availability.
+  repeated project.planton.shared.foreignkey.v1.StringValueOrRef subnet_ids = 1 [
+    (project.planton.shared.foreignkey.v1.default_kind) = AwsVpc,
+    (project.planton.shared.foreignkey.v1.default_kind_field_path) = "status.outputs.private_subnets.[*].id"
   ];
 
-  // Database engine version. Updating this argument results in an outage.
-  // See the [Aurora MySQL](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/AuroraMySQL.Updates.html) and
-  // [Aurora Postgres](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/AuroraPostgreSQL.Updates.html)
-  // documentation for your configured engine to determine this value, or by running
-  // `aws rds describe-db-engine-versions`. For example with Aurora MySQL 2, a potential value for this
-  // argument is `5.7.mysql_aurora.2.03.2`. The value can contain a partial version where supported by the API.
-  // The actual engine version used is returned in the attribute `engineVersionActual`
-  string engine_version = 2 [
-    (buf.validate.field).required = true
+  // Optional name of an existing DB subnet group to use instead of providing subnet_ids.
+  project.planton.shared.foreignkey.v1.StringValueOrRef db_subnet_group_name = 2;
+
+  // vpc_security_group_ids are additional security groups attached to the cluster.
+  repeated project.planton.shared.foreignkey.v1.StringValueOrRef security_group_ids = 3 [
+    (buf.validate.field).repeated.unique = true,
+    (project.planton.shared.foreignkey.v1.default_kind) = AwsSecurityGroup,
+    (project.planton.shared.foreignkey.v1.default_kind_field_path) = "status.outputs.security_group_id"
   ];
 
-  // Database engine mode. Valid values: `global` (only valid for Aurora MySQL 1.21 and earlier),
-  // `parallelquery`, `provisioned`, `serverless`. Defaults to: `provisioned`.
-  // See the [RDS User Guide](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-serverless.html)
-  // for limitations when using `serverless`.
-  string engine_mode = 3 [
-    (planton.shared.options.default) = "provisioned",
-    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
-    (buf.validate.field).string = {
-      in: ["global", "multimaster", "parallelquery", "provisioned", "serverless"]
-    }
+  // allowed_cidr_blocks are IPv4 CIDRs to allow ingress to the cluster SG (if created/managed here).
+  // Example: "10.0.0.0/16", "0.0.0.0/0"
+  repeated string allowed_cidr_blocks = 4 [
+    (buf.validate.field).repeated.items.string.pattern = "^(?:25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)(?:\\.(?:25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)){3}/(?:[0-9]|[12]\\d|3[0-2])$",
+    (buf.validate.field).repeated.unique = true
   ];
 
-  // Family of the DB parameter group.
-  string cluster_family = 4 [
-    (buf.validate.field).required = true
+  // associate_security_group_ids lists existing SGs to associate (alongside any created/managed SG).
+  repeated project.planton.shared.foreignkey.v1.StringValueOrRef associate_security_group_ids = 5 [
+    (buf.validate.field).repeated.unique = true,
+    (project.planton.shared.foreignkey.v1.default_kind) = AwsSecurityGroup,
+    (project.planton.shared.foreignkey.v1.default_kind_field_path) = "status.outputs.security_group_id"
   ];
 
-  // Instance class to use. For details on CPU and memory, see [Scaling Aurora DB Instances](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Aurora.Managing.html).
-  // Aurora uses `db.*` instance classes/types. Please see [AWS Documentation](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html)
-  // for currently available instance classes and complete details. For Aurora Serverless v2 use `db.serverless`.
-  // EC2 instance type for aws rds cluster
-  // https://aws.amazon.com/rds/aurora/pricing
-  string instance_type = 5 [
-    (buf.validate.field).required = true
-  ];
+  // database_name is the name of the initial database to create in the cluster.
+  string database_name = 6;
 
-  // aws rds cluster size
-  int32 cluster_size = 6 [
-    (planton.shared.options.default) = "1"
-  ];
-
-  // Set to true to allow RDS to manage the master user password in Secrets Manager. Cannot be set if master_password is provided
+  // manage_master_user_password, when true, lets RDS manage the master user password in AWS Secrets Manager.
   bool manage_master_user_password = 7 [
     (planton.shared.options.recommended_default) = "true"
   ];
 
-  // Amazon Web Services KMS key identifier is the key ARN, key ID, alias ARN, or alias name for the KMS key.
-  // To use a KMS key in a different Amazon Web Services account, specify the key ARN or alias ARN.
-  // If not specified, the default KMS key for your Amazon Web Services account is used.
-  string master_user_secret_kms_key_id = 8;
+  // master_user_secret_kms_key_id is the KMS key identifier (ARN/alias) for encrypting the managed secret.
+  project.planton.shared.foreignkey.v1.StringValueOrRef master_user_secret_kms_key_id = 8 [
+    (project.planton.shared.foreignkey.v1.default_kind) = AwsKmsKey,
+    (project.planton.shared.foreignkey.v1.default_kind_field_path) = "status.outputs.key_arn"
+  ];
 
-  // Username for the master DB user. Ignored if snapshot_identifier or replication_source_identifier is provided
-  string master_user = 9 [
+  // username is the master database user name.
+  string username = 9 [
     (planton.shared.options.default) = "master"
   ];
 
-  // Password for the master DB user. Ignored if snapshot_identifier or replication_source_identifier is provided
-  string master_password = 10;
+  // password is the master user password. Cannot be set when manage_master_user_password is true.
+  string password = 10;
 
-  // Database name (default is not to create a database)
-  string database_name = 11;
-
-  // Set true to make this database accessible from the public internet
-  bool is_publicly_accessible = 12 [
-    (planton.shared.options.recommended_default) = "true"
+  // port on which the cluster accepts connections.
+  int32 port = 11 [
+    (buf.validate.field).int32.gte = 0,
+    (buf.validate.field).int32.lte = 65535
   ];
 
-  // database port
-  int32 database_port = 13;
+  // engine for the cluster. Examples: "aurora-mysql", "aurora-postgresql".
+  string engine = 12 [
+    (buf.validate.field).required = true
+  ];
 
-  // VPC ID to create the cluster in (e.g. `vpc-a22222ee`). Defaults to the region's default VPC.
-  string vpc_id = 14;
+  // engine_version to deploy. Example: "8.0.mysql_aurora.3.05.2" or "14.6" for Aurora PostgreSQL.
+  string engine_version = 13 [
+    (buf.validate.field).required = true
+  ];
 
-  // List of subnet IDs for the DB. DB instance will be created in the VPC associated with the DB subnet group
-  // provisioned using the subnet IDs. Specify one of `subnet_ids`, `db_subnet_group_name`
-  repeated string subnet_ids = 15;
+  // storage_encrypted indicates whether to enable storage encryption for the cluster.
+  bool storage_encrypted = 14;
 
-  // Name of DB subnet group. DB instance will be created in the VPC associated with the DB subnet group.
-  // Specify one of `subnet_ids`, `db_subnet_group_name`
-  string db_subnet_group_name = 16;
+  // kms_key_id KMS key ARN to use for storage encryption when storage_encrypted is true.
+  project.planton.shared.foreignkey.v1.StringValueOrRef kms_key_id = 15 [
+    (project.planton.shared.foreignkey.v1.default_kind) = AwsKmsKey,
+    (project.planton.shared.foreignkey.v1.default_kind_field_path) = "status.outputs.key_arn"
+  ];
 
-  // The IDs of the security groups from which to allow `ingress` traffic to the DB instance
-  repeated string security_group_ids = 17;
-  // Whether to allow traffic between resources inside the database's security group.
-  bool intra_security_group_traffic_enabled = 18;
-  // List of CIDRs allowed to access the database (in addition to security groups and subnets)
-  repeated string allowed_cidr_blocks = 19;
-  // The IDs of the existing security groups to associate with the DB instance
-  repeated string associate_security_group_ids = 20;
+  // enabled_cloudwatch_logs_exports lists database logs to export to CloudWatch Logs.
+  // Aurora MySQL: [audit, error, general, slowquery]
+  // Aurora PostgreSQL: [postgresql, upgrade]
+  repeated string enabled_cloudwatch_logs_exports = 16 [
+    (buf.validate.field).repeated.unique = true
+  ];
 
-  // Specifies whether or mappings of AWS Identity and Access Management (IAM) accounts to database accounts is enabled
-  bool iam_database_authentication_enabled = 21;
+  // deletion_protection prevents accidental deletion.
+  bool deletion_protection = 17;
 
-  // Specifies whether the DB cluster is encrypted
-  bool storage_encrypted = 22;
-  // The ARN for the KMS encryption key. When specifying `kms_key_arn`, `storage_encrypted` needs to be set to `true`
-  string storage_kms_key_arn = 23;
+  // preferred_maintenance_window in UTC, format 'ddd:hh24:mi-ddd:hh24:mi'.
+  string preferred_maintenance_window = 18 [
+    (buf.validate.field).string.pattern = "^(mon|tue|wed|thu|fri|sat|sun):([01][0-9]|2[0-3]):[0-5][0-9]-(mon|tue|wed|thu|fri|sat|sun):([01][0-9]|2[0-3]):[0-5][0-9]$"
+  ];
 
-  // Whether to enable Performance Insights
-  bool is_performance_insights_enabled = 24;
-  // The ARN for the KMS encryption key. When specifying `kms_key_arn`, `is_performance_insights_enabled` needs to be set to `true`
-  string performance_insights_kms_key_id = 25;
+  // backup_retention_period in days (> 0 to enable automated backups).
+  int32 backup_retention_period = 19 [
+    (buf.validate.field).int32.gte = 0,
+    (buf.validate.field).int32.lte = 35
+  ];
 
-  // Weekly time range during which system maintenance can occur, in UTC
-  string maintenance_window = 26;
+  // preferred_backup_window in UTC, format 'hh24:mi-hh24:mi'. Must not overlap maintenance window.
+  string preferred_backup_window = 20 [
+    (buf.validate.field).string.pattern = "^([01][0-9]|2[0-3]):[0-5][0-9]-([01][0-9]|2[0-3]):[0-5][0-9]$"
+  ];
 
-  // List of log types to enable for exporting to CloudWatch logs. If omitted, no logs will be exported.
-  // Valid values (depending on engine): alert, audit, error, general, listener, slowquery, trace, postgresql (PostgreSQL),
-  // upgrade (PostgreSQL).
-  repeated string enabled_cloudwatch_logs_exports = 27;
-  // A boolean flag to enable/disable the creation of the enhanced monitoring IAM role.
-  bool enhanced_monitoring_role_enabled = 28;
-  // Attributes used to format the Enhanced Monitoring IAM role.
-  // If this role hits IAM role length restrictions (max 64 characters),
-  // consider shortening these strings.
-  repeated string enhanced_monitoring_attributes = 29;
+  // copy_tags_to_snapshot copies tags from the cluster to snapshots.
+  bool copy_tags_to_snapshot = 21;
 
-  // The interval, in seconds, between points when enhanced monitoring metrics are collected for the DB instance.
-  // To disable collecting Enhanced Monitoring metrics, specify 0. The default is 0. Valid Values: 0, 1, 5, 10, 15, 30, 60
+  // skip_final_snapshot controls whether a final snapshot is created before cluster deletion.
+  bool skip_final_snapshot = 22;
+
+  // final_snapshot_identifier is the identifier to use for the final snapshot when skip_final_snapshot is false.
+  string final_snapshot_identifier = 23;
+
+  // iam_database_authentication_enabled enables mapping of IAM users/roles to database logins.
+  bool iam_database_authentication_enabled = 24;
+
+  // enable_http_endpoint enables the Data API for Aurora Serverless (where supported).
+  bool enable_http_endpoint = 25;
+
+  // serverless_v2_scaling controls Aurora Serverless v2 capacity scaling (if supported by engine/engine_version).
+  AwsRdsClusterServerlessV2ScalingConfiguration serverless_v2_scaling = 26;
+
+  // snapshot_identifier creates the cluster from the specified snapshot, when provided.
+  string snapshot_identifier = 27;
+
+  // replication_source_identifier creates a read replica of another cluster when provided (ARN or identifier).
+  string replication_source_identifier = 28;
+
+  // db_cluster_parameter_group_name is the cluster-level parameter group to associate.
+  string db_cluster_parameter_group_name = 29;
+
+  // cluster-level parameters to apply (depends on DB family).
+  repeated AwsRdsClusterParameter parameters = 30;
+
+  // vpc_id for the cluster networking context (optional; generally derivable from subnet_ids/subnet group).
+  project.planton.shared.foreignkey.v1.StringValueOrRef vpc_id = 31 [
+    (project.planton.shared.foreignkey.v1.default_kind) = AwsVpc,
+    (project.planton.shared.foreignkey.v1.default_kind_field_path) = "status.outputs.vpc_id"
+  ];
+
+  // Optional engine mode. For Aurora Serverless v1 use "serverless"; otherwise "provisioned".
+  string engine_mode = 32;
+
+  // storage_type for Aurora (if supported): "aurora" or "aurora-iopt1".
+  string storage_type = 33 [
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
+    (buf.validate.field).string = { in: ["aurora", "aurora-iopt1"] }
+  ];
+
+  // Conditional validations
   option (buf.validate.message).cel = {
-    id: "rds_monitoring_interval",
-    expression: "this.enhanced_monitoring_role_enabled && this.rds_monitoring_interval == 0"
-        "? 'rds_monitoring_interval should be greater than 0 if enhanced monitoring role is enabled'"
-        ": ''"
+    id: "final_snapshot_id_required_when_not_skipping",
+    message: "final_snapshot_identifier must be set when skip_final_snapshot is false",
+    expression: "this.skip_final_snapshot ? true : this.final_snapshot_identifier != \"\""
   };
-  int32 rds_monitoring_interval = 30 [
-    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
-    (buf.validate.field).int32 = {
-      in: [0, 1, 5, 10, 15, 30, 60]
-    }
-  ];
-  // Normally AWS makes a snapshot of the database before deleting it. Set this to `true` in order to skip this.
-  // NOTE: The final snapshot has a name derived from the cluster name. If you delete a cluster, get a final snapshot,
-  // then create a cluster of the same name, its final snapshot will fail with a name collision unless you delete
-  // the previous final snapshot first.
-  bool skip_final_snapshot = 31;
-  // Specifies whether the Cluster should have deletion protection enabled. The database can't be deleted when this value is set to `true`
-  bool deletion_protection = 32;
-  // Specifies whether or not to create this cluster from a snapshot
-  string snapshot_identifier = 33;
-  // Enable to allow major engine version upgrades when changing engine versions. Defaults to false.
-  bool allow_major_version_upgrade = 34;
-  // The identifier of the CA certificate for the DB instance
-  string ca_cert_identifier = 35;
-  // Number of days to retain backups for
-  int32 retention_period = 36;
-  // Daily time range during which the backups happen, UTC
-  string backup_window = 37;
 
-  AwsRdsClusterAutoScaling auto_scaling = 38;
-  // List of nested attributes with scaling properties. Only valid when `engine_mode` is set to `serverless`. This is required for Serverless v1
-  AwsRdsClusterScalingConfiguration scaling_configuration = 39;
-  // Nested attribute with scaling properties for ServerlessV2. Only valid when `engine_mode` is set to `provisioned.` This is required for Serverless v2
-  AwsRdsClusterServerless2ScalingConfiguration serverlessv2_scaling_configuration = 40;
-  // Name of the DB cluster parameter group to associate.
-  string cluster_parameter_group_name = 41;
-  // List of DB cluster parameters to apply
-  repeated AwsRdsClusterParameterGroupParameter cluster_parameters = 42;
+  option (buf.validate.message).cel = {
+    id: "subnets_or_group",
+    message: "Provide either subnet_ids (>=2) or db_subnet_group_name",
+    expression: "(this.subnet_ids.size() >= 2) || (has(this.db_subnet_group_name.value) || has(this.db_subnet_group_name.value_from))"
+  };
+
+  option (buf.validate.message).cel = {
+    id: "password_mutual_exclusion",
+    message: "password cannot be set when manage_master_user_password is true",
+    expression: "this.manage_master_user_password ? this.password == \"\" : true"
+  };
+
+  option (buf.validate.message).cel = {
+    id: "engine_mode_allowed",
+    message: "engine_mode, if set, must be 'serverless' or 'provisioned'",
+    expression: "this.engine_mode == \"\" || this.engine_mode == \"serverless\" || this.engine_mode == \"provisioned\""
+  };
+
+  option (buf.validate.message).cel = {
+    id: "logs_exports_match_engine",
+    message: "enabled_cloudwatch_logs_exports must match engine family",
+    expression: "this.engine.startsWith(\"aurora-mysql\") ? this.enabled_cloudwatch_logs_exports.all(x, x == \"audit\" || x == \"error\" || x == \"general\" || x == \"slowquery\") : (this.engine.startsWith(\"aurora-postgresql\") ? this.enabled_cloudwatch_logs_exports.all(x, x == \"postgresql\" || x == \"upgrade\") : true)"
+  };
 }
 
-// AwsRdsClusterAutoScaling defines the auto-scaling settings for the RDS cluster, allowing dynamic scaling of instances
-// based on specified metrics and policies.
-message AwsRdsClusterAutoScaling {
-  // Whether to enable cluster autoscaling
-  bool is_enabled = 1;
-  // Autoscaling policy type. `TargetTrackingScaling` and `StepScaling` are supported
-  string policy_type = 2;
-  // The metrics type to use. If this value isn't provided the default is CPU utilization
-  string target_metrics = 3;
-  // The target value to scale with respect to target metrics
-  double target_value = 4;
-  // The amount of time, in seconds, after a scaling activity completes and before the next scaling down activity can start. Default is 300s
-  int32 scale_in_cooldown = 5;
-  // The amount of time, in seconds, after a scaling activity completes and before the next scaling up activity can start. Default is 300s
-  int32 scale_out_cooldown = 6;
-  // Minimum number of instances to be maintained by the autoscaler
-  int32 min_capacity = 7;
-  // Maximum number of instances to be maintained by the autoscaler
-  int32 max_capacity = 8;
-}
-
-// AwsRdsClusterScalingConfiguration defines the scaling properties for Serverless v1 RDS clusters, allowing automatic
-// scaling based on usage patterns.
-message AwsRdsClusterScalingConfiguration {
-  // Whether to enable automatic pause. A DB cluster can be paused only when it's idle (it has no connections).
-  // If a DB cluster is paused for more than seven days, the DB cluster might be backed up with a snapshot.
-  // In this case, the DB cluster is restored when there is a request to connect to it.
-  bool auto_pause = 1;
-  // Maximum capacity for an Aurora DB cluster in `serverless` DB engine mode.
-  // The maximum capacity must be greater than or equal to the minimum capacity.
-  // Valid Aurora PostgreSQL capacity values are (`2`, `4`, `8`, `16`, `32`, `64`, `192`, and `384`). Defaults to `16`.
-  int32 max_capacity = 2;
-  // Minimum capacity for an Aurora DB cluster in `serverless` DB engine mode.
-  // The minimum capacity must be lesser than or equal to the maximum capacity.
-  // Valid Aurora PostgreSQL capacity values are (`2`, `4`, `8`, `16`, `32`, `64`, `192`, and `384`). Defaults to `2`.
-  int32 min_capacity = 3;
-  // Time, in seconds, before an Aurora DB cluster in serverless mode is paused. Valid values are `300` through `86400`. Defaults to `300`.
-  int32 seconds_until_auto_pause = 4 [
-    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
-    (buf.validate.field).int32.gte = 300,
-    (buf.validate.field).int32.lte = 86400
-  ];
-  // Action to take when the timeout is reached. Valid values: `ForceApplyCapacityChange`, `RollbackCapacityChange`.
-  // Defaults to `RollbackCapacityChange`.
-  // See [documentation](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-serverless-v1.how-it-works.html#aurora-serverless.how-it-works.timeout-action).
-  string timeout_action = 5[
-    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
-    (buf.validate.field).string = {
-      in: ["ForceApplyCapacityChange", "RollbackCapacityChange"]
-    }
-  ];
-}
-
-// AwsRdsClusterServerless2ScalingConfiguration defines the scaling properties for Serverless v2 RDS clusters, allowing
-// fine-grained automatic scaling.
-message AwsRdsClusterServerless2ScalingConfiguration {
-  // Minimum capacity for an Aurora DB cluster in `provisioned` DB engine mode. The minimum capacity must be
-  // lesser than or equal to the maximum capacity. Valid capacity values are in a range of `0.5` up to `128` in steps of `0.5`.
-  double max_capacity = 1;
-  // Maximum capacity for an Aurora DB cluster in `provisioned` DB engine mode. The maximum capacity must be
-  // greater than or equal to the minimum capacity. Valid capacity values are in a range of `0.5` up to `128` in steps of `0.5`.
-  double min_capacity = 2;
-}
-
-// AwsRdsClusterParameterGroupParameter represents a parameter to apply to the DB cluster parameter group, allowing
-// customization of database settings.
-message AwsRdsClusterParameterGroupParameter {
-  // "immediate" (default), or "pending-reboot". Some
-  // engines can't apply some parameters without a reboot, and you will need to
-  // specify "pending-reboot" here.
+// AwsRdsClusterParameter represents a cluster parameter to apply via the DB cluster parameter group.
+message AwsRdsClusterParameter {
+  // apply_method is either "immediate" (default) or "pending-reboot".
   string apply_method = 1;
-  // The name of the DB parameter.
+  // name of the parameter.
   string name = 2;
-  // The value of the DB parameter.
+  // value of the parameter.
   string value = 3;
 }
+
+// AwsRdsClusterServerlessV2ScalingConfiguration configures Aurora Serverless v2 capacity scaling.
+message AwsRdsClusterServerlessV2ScalingConfiguration {
+  // min_capacity is the minimum ACU.
+  double min_capacity = 1 [
+    (buf.validate.field).double.gt = 0
+  ];
+  // max_capacity is the maximum ACU.
+  double max_capacity = 2;
+
+  option (buf.validate.message).cel = {
+    id: "serverless_v2_scaling_bounds",
+    message: "max_capacity must be >= min_capacity when both are set",
+    expression: "this.max_capacity == 0.0 || this.max_capacity >= this.min_capacity"
+  };
+}
+
+

@@ -1,78 +1,40 @@
-# Overview
+# AwsRdsCluster
 
-The AWS RDS Cluster API resource offers a consistent and streamlined interface for deploying and managing Amazon RDS (Relational Database Service) clusters within our cloud infrastructure. By abstracting the complexities of RDS configurations, this resource enables you to define your database clusters effortlessly while ensuring consistency and compliance across different environments.
+AWS RDS Cluster (Aurora MySQL/PostgreSQL or Multi-AZ DB Cluster) resource. Defines cluster-level configuration such as networking (subnets/DB subnet group), engine/version, encryption, maintenance/backup windows, IAM DB auth, optional Data API, serverless v2 scaling, and cluster parameter group.
 
-## Why We Created This API Resource
+## Spec fields (80/20)
+- subnet_ids: Two or more subnet IDs (usually private) for the cluster. Alternative: set db_subnet_group_name instead.
+- db_subnet_group_name: Existing DB subnet group to use (instead of subnet_ids).
+- security_group_ids / associate_security_group_ids: Security groups to attach/use. Accepts literal or foreign-key references.
+- database_name: Initial DB name to create.
+- manage_master_user_password: Let RDS manage master user password via Secrets Manager (recommended default: true).
+- master_user_secret_kms_key_id: KMS key (ARN/alias) for the managed secret.
+- username/password: Master user credentials. If manage_master_user_password=true, do not set password.
+- engine / engine_version: Engine family and version (e.g., aurora-mysql, aurora-postgresql).
+- storage_encrypted / kms_key_id: Enable storage encryption and optional KMS key.
+- enabled_cloudwatch_logs_exports: Log exports; validated by engine family.
+- preferred_maintenance_window: ddd:hh:mm–ddd:hh:mm (UTC).
+- backup_retention_period / preferred_backup_window: Automated backups config.
+- copy_tags_to_snapshot / skip_final_snapshot / final_snapshot_identifier: Snapshot behavior on deletion.
+- iam_database_authentication_enabled: Enable IAM auth mappings.
+- enable_http_endpoint: Data API for Aurora Serverless (where supported).
+- serverless_v2_scaling: Min/max ACUs for Aurora Serverless v2.
+- db_cluster_parameter_group_name / parameters: Cluster parameter group and overrides.
 
-Managing RDS clusters can be intricate due to the multitude of configuration options, networking setups, and best practices that need to be considered. To simplify this process and promote a standardized approach, we developed this API resource. It allows you to:
+## Stack outputs
+- rds_cluster_endpoint: Writer endpoint DNS for the cluster.
+- rds_cluster_reader_endpoint: Reader endpoint for read replicas.
+- rds_cluster_id / rds_cluster_arn: Identifiers of the cluster.
+- rds_cluster_engine / rds_cluster_engine_version: Engine info provisioned.
+- rds_cluster_port: Port used by the cluster.
+- rds_subnet_group: Subnet group name in use.
+- rds_security_group: Security group used by the cluster (if managed here).
+- rds_cluster_parameter_group: Cluster parameter group name.
 
-- **Simplify Deployment**: Easily configure and deploy RDS clusters without delving into low-level AWS details.
-- **Ensure Consistency**: Maintain uniform configurations across different environments and clusters.
-- **Enhance Productivity**: Reduce the time and effort required to set up RDS clusters, allowing you to focus on application development.
+## How it works
+Project Planton provisions via Pulumi or Terraform modules defined in this repository. The API contract is protobuf-based (api.proto, spec.proto) and stack execution is orchestrated by the platform using the AwsRdsClusterStackInput (includes provider credentials and IaC info).
 
-## Key Features
-
-### Environment Integration
-
-- **Environment Info**: Seamlessly integrates with our environment management system to deploy clusters within specific environments.
-- **Stack Job Settings**: Supports custom stack job settings for infrastructure-as-code deployments.
-
-### AWS Credential Management
-
-- **AWS Credential ID**: Utilizes specified AWS credentials to ensure secure and authorized deployments.
-
-### Customizable Cluster Specifications
-
-- **Engine Configuration**: Specify the database engine (`e.g., aurora, aurora-mysql, aurora-postgresql`), engine version, and engine mode (`global`, `multimaster`, `parallelquery`, `provisioned`, `serverless`).
-- **Instance Type**: Choose the EC2 instance type for the RDS cluster instances to optimize performance and cost.
-- **Cluster Size**: Define the number of instances in the cluster to meet your availability and scalability requirements.
-- **Database Credentials**: Configure master username and password or enable AWS Secrets Manager for password management.
-
-### Networking and Security
-
-- **VPC Integration**: Deploy the RDS cluster within a specified VPC, using subnet groups and security groups for network isolation.
-- **Subnet Configuration**: Provide subnet IDs or a DB subnet group name to control where the cluster instances are deployed.
-- **Security Groups**: Attach security groups to manage inbound and outbound traffic to the cluster.
-- **Public Accessibility**: Optionally make the database accessible from the public internet by setting `is_publicly_accessible`.
-
-### Storage and Encryption
-
-- **Storage Encryption**: Enable encryption at rest for the cluster and specify a custom KMS key if needed.
-- **Performance Insights**: Enable Performance Insights for advanced monitoring and specify a KMS key for encryption.
-
-### Backup and Maintenance
-
-- **Automated Backups**: Configure backup retention periods and backup windows to protect your data.
-- **Maintenance Window**: Specify a preferred maintenance window for system updates and patches.
-- **Final Snapshot**: Control whether a final snapshot is created before cluster deletion and enable deletion protection to prevent accidental deletions.
-
-### Monitoring and Logging
-
-- **CloudWatch Logs Export**: Enable exporting of database logs to CloudWatch Logs for centralized monitoring.
-- **Enhanced Monitoring**: Enable enhanced monitoring and specify the monitoring interval for deeper insights into cluster performance.
-- **Monitoring Role**: Automatically create an IAM role for enhanced monitoring if required.
-
-### Scaling Options
-
-- **Auto Scaling**: Configure auto-scaling policies to adjust the number of instances based on load.
-- **Policy Type**: Choose between `TargetTrackingScaling` and `StepScaling`.
-- **Metrics and Targets**: Define metrics and target values for scaling actions.
-- **Serverless Configurations**:
-- **Serverless v1**: Use `scaling_configuration` to set up auto-scaling properties for serverless clusters, including min/max capacity and auto-pause settings.
-- **Serverless v2**: Utilize `serverlessv2_scaling_configuration` for provisioning serverless v2 clusters with granular capacity settings.
-
-### Advanced Configurations
-
-- **IAM Database Authentication**: Enable IAM authentication for database access.
-- **Parameter Groups**: Specify custom cluster parameter group names and parameters for fine-tuned database settings.
-- **Major Version Upgrades**: Control whether major engine version upgrades are allowed.
-- **SSL/TLS Configuration**: Specify the CA certificate identifier for SSL connections.
-
-## Benefits
-
-- **Simplified Deployment**: Reduces the complexity involved in setting up RDS clusters with a user-friendly API.
-- **Consistency**: Ensures all clusters adhere to organizational standards for security, performance, and scalability.
-- **Scalability**: Leverages auto-scaling and serverless options to handle varying workloads efficiently.
-- **Security**: Integrates with AWS KMS, IAM, and VPCs to enhance security and compliance.
-- **Cost Optimization**: Allows fine-grained control over instance types, scaling policies, and storage options to optimize costs.
-- **Flexibility**: Provides extensive customization to meet specific application requirements without compromising best practices.
+## References
+- AWS RDS Aurora: https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/CHAP_AuroraOverview.html
+- Create DB Cluster API: https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_CreateDBCluster.html
+- Log exports: https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_LogAccess.html
