@@ -1,0 +1,5 @@
+name: awsrdscluster-pulumi-project
+runtime:
+  name: go
+
+
