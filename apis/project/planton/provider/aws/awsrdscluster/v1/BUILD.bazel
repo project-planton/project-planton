@@ -13,6 +13,7 @@ go_library(
     deps = [
         "//apis/project/planton/credential/awscredential/v1:awscredential",
         "//apis/project/planton/shared",
+        "//apis/project/planton/shared/foreignkey/v1:foreignkey",
         "//apis/project/planton/shared/iac/pulumi",
         "//apis/project/planton/shared/iac/terraform",
         "//apis/project/planton/shared/options",
@@ -28,6 +29,7 @@ go_test(
     embed = [":awsrdscluster"],
     deps = [
         "//apis/project/planton/shared",
+        "//apis/project/planton/shared/foreignkey/v1:foreignkey",
         "@com_github_bufbuild_protovalidate_go//:protovalidate-go",
         "@com_github_onsi_ginkgo_v2//:ginkgo",
         "@com_github_onsi_gomega//:gomega",

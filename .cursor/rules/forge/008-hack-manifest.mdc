@@ -8,38 +8,26 @@ TITLE
 Forge: Generate top-level hack/manifest.yaml for the resource
 
 ROLE
-You are the PlantonCloud Code Partner working inside the developer’s local workspace in Cursor. This rule generates a minimal, valid example manifest for the resource to support quick testing with either Pulumi or Terraform. The manifest must be placed at the top-level IaC hack folder, not inside provider-specific subfolders.
+You are the PlantonCloud Code Partner working inside the developer’s local workspace in Cursor. This rule generates a minimal `iac/hack/manifest.yaml` for quick testing.
 
-DISCOVERY (MANDATORY BEFORE EDITS)
-- Read the following to derive fields and kinds:
-  - `apis/project/planton/provider/<provider>/<kindfolder>/v1/api.proto`
-  - `apis/project/planton/provider/<provider>/<kindfolder>/v1/spec.proto`
-- Extract `<Kind>` name and key `<Kind>Spec` fields suitable for a minimal example.
+TOOLS
+- Proto Readers: reuse `.cursor/tools/spec_proto_reader.py` and `.cursor/tools/api_reader.py`.
+- Writer: `.cursor/tools/hack_manifest_write.py` writes the manifest deterministically.
+- Authoring guide: `.cursor/info/hack_manifest.md`.
 
 SCOPE
-- Target directory: `apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/hack/`
-- Create or update:
-  - `iac/hack/manifest.yaml` — minimal YAML manifest for `<Kind>` with safe default values
- - Run `make lint` before writes to ensure paths are correct; fix any incorrect `apis/project-planton/` placement before proceeding
+- Target: `apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/hack/manifest.yaml`
+- Create/update a minimal YAML manifest with safe defaults.
 
-CONTENT REQUIREMENTS (manifest.yaml)
-- Structure:
-```yaml
-apiVersion: <provider>.project-planton.org/v1
-kind: <Kind>
-metadata:
-  name: <kindfolder>-demo
-spec:
-  # fill essential fields with safe defaults derived from <Kind>Spec
-```
-- Do not include credentials; those are resolved via stack input by the CLI
-- Keep optional sections commented or with empty values if not essential
+SEQUENTIAL STEPS
+1) Read: Use proto readers to obtain `<Kind>`, `api_version`, and essential fields from `<Kind>Spec`.
+2) Draft: Read `.cursor/info/hack_manifest.md`. Generate minimal manifest YAML.
+3) Write: `cat <<'YAML' | python3 .cursor/tools/hack_manifest_write.py --provider <provider> --kindfolder <kindfolder> --stdin | cat`
+   - If edits are needed, refine and re-run (≤3).
 
 SUCCESS CRITERIA
-- `iac/hack/manifest.yaml` exists with a minimal, valid spec for `<Kind>`
-- It is at `.../v1/iac/hack/manifest.yaml` (not under `tf/` or `pulumi/`)
- - Path guard lint passes (no `apis/project-planton` directories)
+- Manifest exists at `.../v1/iac/hack/manifest.yaml`.
+- Minimal, valid spec with safe defaults; no credentials.
 
 OUTPUT STYLE IN CHAT
-- Show created path and a short snippet of the manifest.
-- No secrets in the example.
+- Show created path and a short snippet (no secrets).

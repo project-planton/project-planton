@@ -3,14 +3,11 @@ load("@rules_go//go:def.bzl", "go_library")
 go_library(
     name = "module",
     srcs = [
-        "app_auto_scaling.go",
-        "cluster_parameter_group.go",
-        "enhanced_monitoring.go",
+        "cluster_param_group.go",
         "locals.go",
         "main.go",
         "outputs.go",
         "rds_cluster.go",
-        "rds_cluster_instance.go",
         "security_group.go",
         "subnet_group.go",
     ],
@@ -18,12 +15,9 @@ go_library(
     visibility = ["//visibility:public"],
     deps = [
         "//apis/project/planton/provider/aws/awsrdscluster/v1:awsrdscluster",
-        "@com_github_azure_go_autorest_autorest_to//:to",
         "@com_github_pkg_errors//:errors",
         "@com_github_pulumi_pulumi_aws_sdk_v7//go/aws",
-        "@com_github_pulumi_pulumi_aws_sdk_v7//go/aws/appautoscaling",
         "@com_github_pulumi_pulumi_aws_sdk_v7//go/aws/ec2",
-        "@com_github_pulumi_pulumi_aws_sdk_v7//go/aws/iam",
         "@com_github_pulumi_pulumi_aws_sdk_v7//go/aws/rds",
         "@com_github_pulumi_pulumi_sdk_v3//go/pulumi",
     ],

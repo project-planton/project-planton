@@ -1,63 +1,77 @@
 package module
 
 import (
-	"github.com/pkg/errors"
-	awsrdsclusterv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsrdscluster/v1"
-	"github.com/pulumi/pulumi-aws/sdk/v7/go/aws"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+    "github.com/pkg/errors"
+    awsrdsclusterv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsrdscluster/v1"
+    "github.com/pulumi/pulumi-aws/sdk/v7/go/aws"
+    "github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-func Resources(ctx *pulumi.Context, stackInput *awsrdsclusterv1.AwsRdsClusterStackInput) error {
-	locals := initializeLocals(ctx, stackInput)
-	awsCredential := stackInput.ProviderCredential
+// Resources orchestrates creation of AWS RDS Cluster related resources and exports outputs.
+func Resources(ctx *pulumi.Context, in *awsrdsclusterv1.AwsRdsClusterStackInput) error {
+    locals := initializeLocals(ctx, in)
 
-	//create aws provider using the credentials from the input (fallback to default when nil)
-	var awsProvider *aws.Provider
-	var err error
-	if awsCredential == nil {
-		awsProvider, err = aws.NewProvider(ctx, "classic-provider", &aws.ProviderArgs{})
-	} else {
-		awsProvider, err = aws.NewProvider(ctx,
-			"classic-provider",
-			&aws.ProviderArgs{
-				AccessKey: pulumi.String(awsCredential.AccessKeyId),
-				SecretKey: pulumi.String(awsCredential.SecretAccessKey),
-				Region:    pulumi.String(awsCredential.Region),
-			})
-	}
-	if err != nil {
-		return errors.Wrap(err, "failed to create aws provider")
-	}
+    // Initialize AWS provider (default when no credentials provided)
+    var provider *aws.Provider
+    var err error
+    if in.ProviderCredential == nil {
+        provider, err = aws.NewProvider(ctx, "classic-provider", &aws.ProviderArgs{})
+        if err != nil {
+            return errors.Wrap(err, "failed to create default AWS provider")
+        }
+    } else {
+        provider, err = aws.NewProvider(ctx, "classic-provider", &aws.ProviderArgs{
+            AccessKey: pulumi.String(in.ProviderCredential.AccessKeyId),
+            SecretKey: pulumi.String(in.ProviderCredential.SecretAccessKey),
+            Region:    pulumi.String(in.ProviderCredential.Region),
+        })
+        if err != nil {
+            return errors.Wrap(err, "failed to create AWS provider with custom credentials")
+        }
+    }
 
-	createdSecurityGroup, err := securityGroup(ctx, locals, awsProvider)
-	if err != nil {
-		return errors.Wrap(err, "failed to create default security group")
-	}
+    // Security group (ingress from SGs and/or CIDRs)
+    createdSg, err := securityGroup(ctx, locals, provider)
+    if err != nil {
+        return errors.Wrap(err, "security group")
+    }
 
-	// Create RDS Cluster
-	createdRdsCluster, err := rdsCluster(ctx, locals, awsProvider, createdSecurityGroup)
-	if err != nil {
-		return errors.Wrap(err, "failed to create rds cluster")
-	}
+    // Subnet group (only when subnetIds provided and no name supplied)
+    createdSubnetGroup, err := subnetGroup(ctx, locals, provider)
+    if err != nil {
+        return errors.Wrap(err, "subnet group")
+    }
 
-	ctx.Export(OpClusterIdentifier, createdRdsCluster.ClusterIdentifier)
-	ctx.Export(OpMasterEndpoint, createdRdsCluster.Endpoint)
-	ctx.Export(OpReaderEndpoint, createdRdsCluster.ReaderEndpoint)
-	if locals.AwsRdsCluster.Spec.DatabasePort > 0 {
-		ctx.Export(OpPort, pulumi.Int(locals.AwsRdsCluster.Spec.DatabasePort))
-	}
+    // Cluster parameter group (when parameters provided or explicit family desired)
+    createdParamGroup, err := clusterParameterGroup(ctx, locals, provider)
+    if err != nil {
+        return errors.Wrap(err, "cluster parameter group")
+    }
 
-	// Create RDS Cluster Instance
-	_, err = rdsClusterInstance(ctx, locals, awsProvider, createdRdsCluster)
-	if err != nil {
-		return errors.Wrap(err, "failed to create rds cluster instances")
-	}
+    // Create the RDS Cluster
+    cluster, err := rdsCluster(ctx, locals, provider, createdSg, createdSubnetGroup, createdParamGroup)
+    if err != nil {
+        return errors.Wrap(err, "rds cluster")
+    }
 
-	// Create RDS Cluster Instance
-	err = appAutoscaling(ctx, locals, awsProvider, createdRdsCluster)
-	if err != nil {
-		return errors.Wrap(err, "failed to create auto scaling policy")
-	}
-
-	return nil
+    // Export outputs as defined in AwsRdsClusterStackOutputs
+    ctx.Export(OpRdsClusterEndpoint, cluster.Endpoint)
+    ctx.Export(OpRdsClusterReaderEndpoint, cluster.ReaderEndpoint)
+    ctx.Export(OpRdsClusterId, cluster.ID())
+    ctx.Export(OpRdsClusterArn, cluster.Arn)
+    ctx.Export(OpRdsClusterEngine, cluster.Engine)
+    ctx.Export(OpRdsClusterEngineVersion, cluster.EngineVersion)
+    ctx.Export(OpRdsClusterPort, cluster.Port)
+    if createdSubnetGroup != nil {
+        ctx.Export(OpRdsSubnetGroup, createdSubnetGroup.Name)
+    }
+    if createdSg != nil {
+        ctx.Export(OpRdsSecurityGroup, createdSg.Name)
+    }
+    if createdParamGroup != nil {
+        ctx.Export(OpRdsClusterParameterGroup, createdParamGroup.Name)
+    }
+    return nil
 }
+
+

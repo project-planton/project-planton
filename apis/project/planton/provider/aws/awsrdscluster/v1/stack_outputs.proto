@@ -2,15 +2,35 @@ syntax = "proto3";
 
 package project.planton.provider.aws.awsrdscluster.v1;
 
-// This message contains the outputs of the AWS RDS cluster stack as produced by Pulumi.
+// aws_rds_cluster stack outputs
 message AwsRdsClusterStackOutputs {
-  // The endpoint of the primary (writer) instance in the RDS cluster.
-  string master_endpoint = 1;
-  // The unique cluster identifier for the RDS cluster.
-  string cluster_identifier = 2;
-  // The endpoint that directs connections to the read-only replica instances.
-  string reader_endpoint = 3;
+  // The primary writer endpoint for the DB cluster.
+  string rds_cluster_endpoint = 1;
 
-  // The port on which the cluster accepts connections.
-  int32 port = 4;
+  // The reader endpoint for load-balanced read traffic across replicas.
+  string rds_cluster_reader_endpoint = 2;
+
+  // The AWS identifier of the DB cluster.
+  string rds_cluster_id = 3;
+
+  // The Amazon Resource Name of the DB cluster.
+  string rds_cluster_arn = 4;
+
+  // The engine and its version used by the cluster (e.g., aurora-mysql, aurora-postgresql).
+  string rds_cluster_engine = 5;
+  string rds_cluster_engine_version = 6;
+
+  // The port on which the DB cluster accepts connections.
+  int32 rds_cluster_port = 7;
+
+  // The name of the DB subnet group associated with the cluster.
+  string rds_subnet_group = 8;
+
+  // The security group associated with the cluster (if one is created/managed by the module).
+  string rds_security_group = 9;
+
+  // The DB cluster parameter group in use by the cluster.
+  string rds_cluster_parameter_group = 10;
 }
+
+

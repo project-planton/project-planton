@@ -1,19 +1,78 @@
+## Minimal manifest (YAML)
+
 ```yaml
 apiVersion: aws.project-planton.org/v1
 kind: AwsRdsCluster
 metadata:
-  name: example
-spec: {}
+  name: aurora-mysql-cluster
+spec:
+  # provide either 2+ subnet_ids or a db_subnet_group_name
+  subnetIds:
+    - subnet-aaaa
+    - subnet-bbbb
+  engine: aurora-mysql
+  engineVersion: 8.0.mysql_aurora.3.05.2
+  manageMasterUserPassword: true
+  preferredMaintenanceWindow: mon:00:00-tue:01:00
+  preferredBackupWindow: 00:00-01:00
+  skipFinalSnapshot: true
 ```
 
-CLI:
+## Aurora PostgreSQL with logs exports and KMS (YAML)
 
-```bash
+```yaml
+apiVersion: aws.project-planton.org/v1
+kind: AwsRdsCluster
+metadata:
+  name: aurora-pg-cluster
+spec:
+  dbSubnetGroupName:
+    valueFrom:
+      kind: AwsVpc
+      name: my-vpc
+      fieldPath: status.outputs.db_subnet_group
+  securityGroupIds:
+    - valueFrom:
+        kind: AwsSecurityGroup
+        name: db-ingress
+        fieldPath: status.outputs.security_group_id
+  engine: aurora-postgresql
+  engineVersion: 14.6
+  storageEncrypted: true
+  kmsKeyId:
+    valueFrom:
+      kind: AwsKmsKey
+      name: aurora-key
+      fieldPath: status.outputs.key_arn
+  enabledCloudwatchLogsExports:
+    - postgresql
+    - upgrade
+  preferredMaintenanceWindow: wed:02:00-wed:03:00
+  backupRetentionPeriod: 7
+  preferredBackupWindow: 02:00-03:00
+  copyTagsToSnapshot: true
+  skipFinalSnapshot: true
+  dbClusterParameterGroupName: default.aurora-postgresql14
+  parameters:
+    - name: rds.force_ssl
+      value: "1"
+      applyMethod: immediate
+```
+
+## CLI
+
+Preview:
+
+```shell
 project-planton pulumi preview \
   --manifest ../hack/manifest.yaml \
   --stack organization/<project>/<stack> \
   --module-dir .
+```
 
+Update (apply):
+
+```shell
 project-planton pulumi update \
   --manifest ../hack/manifest.yaml \
   --stack organization/<project>/<stack> \
@@ -21,134 +80,4 @@ project-planton pulumi update \
   --yes
 ```
 
-Here are a few examples for the `AwsRdsCluster` API resource, showing different configurations for an RDS cluster on AWS. These examples demonstrate basic and more advanced usage of the resource, including autoscaling and security configurations.
 
----
-
-### Basic Example
-
-```yaml
-apiVersion: aws.project-planton.org/v1
-kind: AwsRdsCluster
-metadata:
-  name: my-basic-rds-cluster
-spec:
-  awsCredentialId: my-aws-cred
-  engine: aurora
-  engineVersion: "5.6.10a"
-  engineMode: provisioned
-  instanceType: db.r5.large
-  clusterSize: 3
-  databaseName: mydb
-  masterUser: admin
-  masterPassword: supersecretpassword
-  vpcId: vpc-abc123
-  subnetIds:
-    - subnet-12345
-    - subnet-67890
-  securityGroupIds:
-    - sg-00112233
-  storageEncrypted: true
-  backupWindow: 23:00-01:00
-  retentionPeriod: 7
-```
-
----
-
-### Example with Autoscaling
-
-```yaml
-apiVersion: aws.project-planton.org/v1
-kind: AwsRdsCluster
-metadata:
-  name: auto-scaling-rds-cluster
-spec:
-  awsCredentialId: my-aws-cred
-  engine: aurora-postgresql
-  engineVersion: "11.6"
-  engineMode: serverless
-  instanceType: db.r5.large
-  clusterSize: 3
-  databaseName: mydb
-  masterUser: admin
-  masterPassword: supersecretpassword
-  vpcId: vpc-abc123
-  subnetIds:
-    - subnet-12345
-    - subnet-67890
-  securityGroupIds:
-    - sg-00112233
-  autoScaling:
-    isEnabled: true
-    policyType: TargetTrackingScaling
-    targetMetrics: CPUUtilization
-    targetValue: 70
-    minCapacity: 1
-    maxCapacity: 5
-  storageEncrypted: true
-  retentionPeriod: 7
-```
-
----
-
-### Example with Public Access and KMS Encryption
-
-```yaml
-apiVersion: aws.project-planton.org/v1
-kind: AwsRdsCluster
-metadata:
-  name: public-rds-cluster
-spec:
-  awsCredentialId: my-aws-cred
-  engine: aurora-mysql
-  engineVersion: "5.7.12"
-  engineMode: provisioned
-  instanceType: db.t3.medium
-  clusterSize: 2
-  databaseName: mypublicdb
-  masterUser: admin
-  masterPassword: supersecretpassword
-  isPubliclyAccessible: true
-  vpcId: vpc-abc123
-  subnetIds:
-    - subnet-abc123
-    - subnet-def456
-  securityGroupIds:
-    - sg-44556677
-  storageEncrypted: true
-  storageKmsKeyArn: arn:aws:kms:us-west-2:123456789012:key/abcd1234
-  backupWindow: 00:00-02:00
-  retentionPeriod: 14
-```
-
----
-
-### Example with Performance Insights
-
-```yaml
-apiVersion: aws.project-planton.org/v1
-kind: AwsRdsCluster
-metadata:
-  name: performance-insights-rds
-spec:
-  awsCredentialId: my-aws-cred
-  engine: aurora
-  engineVersion: "5.6.10a"
-  engineMode: provisioned
-  instanceType: db.r5.large
-  clusterSize: 3
-  databaseName: perfinsightsdb
-  masterUser: admin
-  masterPassword: supersecretpassword
-  vpcId: vpc-abc123
-  subnetIds:
-    - subnet-12345
-    - subnet-67890
-  securityGroupIds:
-    - sg-00112233
-  isPerformanceInsightsEnabled: true
-  performanceInsightsKmsKeyId: arn:aws:kms:us-west-2:123456789012:key/abcd1234
-  storageEncrypted: true
-  backupWindow: 01:00-03:00
-  retentionPeriod: 7
-```

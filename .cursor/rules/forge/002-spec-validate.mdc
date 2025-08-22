@@ -8,112 +8,32 @@ TITLE
 Forge: Add validation rules to spec.proto (buf.validate + CEL)
 
 ROLE
-You are the PlantonCloud Code Partner working inside the developer’s local workspace in Cursor. This rule augments an existing `spec.proto` by adding validation rules using `buf/validate/validate.proto` and CEL expressions. Do NOT change the configuration schema (no field renames, additions, or deletions); only add validations and comments where helpful.
+You are the PlantonCloud Code Partner working inside the developer’s local workspace in Cursor. This rule only adds validations to an existing `spec.proto`. Do not change the schema.
+
+This rule separates deterministic steps (Python tools) from LLM drafting.
 
 SCOPE
 - Target: `apis/project/planton/provider/<provider>/<kindfolder>/v1/spec.proto`
-- Keep all existing messages/fields as-is; add:
-  - `import "buf/validate/validate.proto";`
-  - Field-level validation options
-  - Message-level CEL validations for conditional/complex rules
-- Do not edit other files in this step.
+- Only add validations and brief comments. No field/message renames/additions/deletions.
+- Do not manually create folders; writer tool handles directories.
+- Do not edit other files.
 
-VALIDATION GUIDELINES (80/20)
-- Strings:
-  - Names/IDs: `(buf.validate.field).string.min_len = 1`
-  - ARNs/URIs: add `min_len` and, if stable, a simple `pattern` (not overly strict)
-  - Domain names/emails: prefer minimal `pattern` or `min_len`; avoid brittle regexes
-- Enums:
-  - Enforce defined values: `(buf.validate.field).enum.defined_only = true`
-  - If the enum has an `*_UNSPECIFIED = 0` value and the field must be set, add CEL to forbid 0
-- Numbers:
-  - Use `gt/gte/lt/lte` as appropriate
-- Booleans:
-  - Typically no direct validation; enforce through CEL when tied to other fields
-- Repeated fields:
-  - `(buf.validate.field).repeated.min_items = 1` when at least one item is required
-  - Consider `(buf.validate.field).repeated.unique = true` for sets like aliases
-- Bytes/Maps: apply min/max sizes if applicable
+TOOLS
+- Reader: `.cursor/tools/spec_proto_reader.py`
+- Writer+Build: `.cursor/tools/spec_proto_write_and_build.py`
+- Validation guide: `.cursor/info/spec_validate.md`
 
-CEL EXAMPLES (use `(buf.validate.message).cel` entries)
-- Require one field when another is set:
-  - If `aliases` is non-empty, `certificate_arn` must be non-empty.
-  - Expression: `this.aliases.size() == 0 || this.certificate_arn != ""`
-- Mutually exclusive fields:
-  - Only one of `x` or `y` may be set: `(this.x == "") || (this.y == "")`
-- Enum-dependent rule (e.g., DynamoDB billing mode):
-  - If `billing_mode == PROVISIONED`, then `read_capacity_units` and `write_capacity_units` must be > 0; else they must be 0 or unset.
-  - Expression pattern:
-    - `this.billing_mode == 1 ? (this.read_capacity_units > 0 && this.write_capacity_units > 0) : (this.read_capacity_units == 0 && this.write_capacity_units == 0)`
-- Ordering constraints:
-  - `min_ttl <= default_ttl <= max_ttl` when set
-  - Expression: `(this.min_ttl == 0 || this.default_ttl >= this.min_ttl) && (this.max_ttl == 0 || this.default_ttl <= this.max_ttl)`
+SEQUENTIAL STEPS
+1) Read: `python3 .cursor/tools/spec_proto_reader.py --provider <provider> --kindfolder <kindfolder>`
+2) Draft: Read `.cursor/info/spec_validate.md`, then add validations to the `spec.proto` content (import buf/validate, field options, message-level CEL). Do not change schema.
+3) Write+Build: `cat <<'PROTO' | python3 .cursor/tools/spec_proto_write_and_build.py --provider <provider> --kindfolder <kindfolder> --stdin | cat`
+   - If `build_succeeded` is false, refine validations and retry (≤3).
 
-IMPLEMENTATION STEPS
-1) Open `spec.proto` and add the import line near the top:
-   - `import "buf/validate/validate.proto";`
-2) Add field-level options directly to fields using `(buf.validate.field)` according to the guidelines above.
-3) Add one or more message-level options for complex rules:
-   - `option (buf.validate.message).cel = { id: "<short_id>", message: "<friendly message>", expression: "<cel expr>" };`
-4) Keep comments succinct. Do not change field numbers, names, or message layout.
-
-SUCCESS CRITERIA
-- `spec.proto` compiles and codegen succeeds.
+SUCCESS
+- Build succeeds with validations (`build_succeeded: true`).
+- No schema changes.
 - Validations present for core fields and important constraints.
-- CEL expressions cover non-linear/conditional rules where relevant.
-- No schema changes compared to pre-validation version.
 
-BUILD & VERIFY (NON-INTERACTIVE)
-- Run path guard lint and regenerate/build protos:
-  - `: ${REPO_ROOT:=$(pwd)} && make -C "$REPO_ROOT" lint | cat`
-  - `: ${REPO_ROOT:=$(pwd)} && make -C "$REPO_ROOT"/apis build | cat`
-- On errors, refine validations (import path, option paths, enum numeric checks, CEL expressions) and retry up to 3 times.
-- On success, confirm completion and point to the updated `spec.proto` file.
-
-OUTPUT STYLE IN CHAT
-- Show a concise diff summary of changed lines (import line, field options, CEL blocks) in prose.
-- Show the non-interactive command(s) to run.
-- If successful: confirm the file path to review.
-- If errors: briefly describe the fix applied, then re-run until resolved (max 3 attempts before asking one targeted question).
-
-REFERENCE SNIPPETS (adapt to the actual schema; do not paste verbatim)
-```proto
-syntax = "proto3";
-package project.planton.provider.aws.awscloudfront.v1;
-
-import "buf/validate/validate.proto";
-
-message AwsCloudFrontSpec {
-  repeated string aliases = 1 [(buf.validate.field).repeated = {min_items: 1, unique: true}];
-
-  string certificate_arn = 2 [(buf.validate.field).string.min_len = 1];
-
-  enum PriceClass {
-    PRICE_CLASS_UNSPECIFIED = 0;
-    PRICE_CLASS_100 = 1;
-    PRICE_CLASS_200 = 2;
-    PRICE_CLASS_ALL = 3;
-  }
-  PriceClass price_class = 3 [
-    (buf.validate.field).enum.defined_only = true
-  ];
-
-  message Origin {
-    string id = 1 [(buf.validate.field).string.min_len = 1];
-    string domain_name = 2 [(buf.validate.field).string.min_len = 1];
-  }
-  repeated Origin origins = 4 [(buf.validate.field).repeated.min_items = 1];
-
-  string default_origin_id = 5 [(buf.validate.field).string.min_len = 1];
-
-  option (buf.validate.message).cel = {
-    id: "aliases_require_cert",
-    message: "certificate_arn must be set when aliases are provided",
-    expression: "this.aliases.size() == 0 || this.certificate_arn != \"\""
-  };
-}
-```
-
-NOTES
-- Keep validations pragmatic. Prefer clarity and low false-positives.
-- Ensure compatibility with protovalidate-go (use `buf/validate/validate.proto`).
+OUTPUT
+- Show created/updated path and key JSON fields from tools.
+- On success: confirm file path. On error: brief fix and rerun (≤3).

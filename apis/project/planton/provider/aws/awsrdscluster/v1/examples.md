@@ -1,63 +1,80 @@
-# Create using CLI
-
-Create a YAML file using the examples shown below. After the YAML file is created, use the following command to apply:
-
-```shell
-planton apply -f <yaml-path>
-```
-
-# Basic Example
+## Minimal manifest (YAML)
 
 ```yaml
 apiVersion: aws.project-planton.org/v1
-kind: AwsCloudFront
+kind: AwsRdsCluster
 metadata:
-  name: my-cloudfront-distribution
+  name: aurora-mysql-cluster
 spec:
-  awsCredentialId: my-aws-credential-id
+  # provide either 2+ subnet_ids or a db_subnet_group_name
+  subnetIds:
+    - subnet-aaaa
+    - subnet-bbbb
+  engine: aurora-mysql
+  engineVersion: 8.0.mysql_aurora.3.05.2
+  manageMasterUserPassword: true
+  preferredMaintenanceWindow: mon:00:00-tue:01:00
+  preferredBackupWindow: 00:00-01:00
+  skipFinalSnapshot: true
 ```
 
-# Example with Environment Information
+## Aurora PostgreSQL with logs exports and KMS (YAML)
 
 ```yaml
 apiVersion: aws.project-planton.org/v1
-kind: AwsCloudFront
+kind: AwsRdsCluster
 metadata:
-  name: my-env-cloudfront-distribution
+  name: aurora-pg-cluster
 spec:
-  environmentInfo:
-    envId: production-environment
-  awsCredentialId: prod-aws-credential-id
+  dbSubnetGroupName:
+    valueFrom:
+      kind: AwsVpc
+      name: my-vpc
+      fieldPath: status.outputs.db_subnet_group
+  securityGroupIds:
+    - valueFrom:
+        kind: AwsSecurityGroup
+        name: db-ingress
+        fieldPath: status.outputs.security_group_id
+  engine: aurora-postgresql
+  engineVersion: 14.6
+  storageEncrypted: true
+  kmsKeyId:
+    valueFrom:
+      kind: AwsKmsKey
+      name: aurora-key
+      fieldPath: status.outputs.key_arn
+  enabledCloudwatchLogsExports:
+    - postgresql
+    - upgrade
+  preferredMaintenanceWindow: wed:02:00-wed:03:00
+  backupRetentionPeriod: 7
+  preferredBackupWindow: 02:00-03:00
+  copyTagsToSnapshot: true
+  skipFinalSnapshot: true
+  dbClusterParameterGroupName: default.aurora-postgresql14
+  parameters:
+    - name: rds.force_ssl
+      value: "1"
+      applyMethod: immediate
 ```
 
-# Example with Stack Job Settings
+## CLI flows
 
-```yaml
-apiVersion: aws.project-planton.org/v1
-kind: AwsCloudFront
-metadata:
-  name: advanced-cloudfront-distribution
-spec:
-  stackJobSettings:
-    pulumiBackendCredentialId: my-pulumi-backend-credential
-    stackJobRunnerId: my-stack-job-runner
-  awsCredentialId: advanced-aws-credential-id
+Validate:
+
+```bash
+project-planton validate --manifest rds-cluster.yaml
 ```
 
-# Example with All Available Fields
+Pulumi deploy:
 
-```yaml
-apiVersion: aws.project-planton.org/v1
-kind: AwsCloudFront
-metadata:
-  name: full-config-cloudfront-distribution
-spec:
-  environmentInfo:
-    envId: dev-environment
-  stackJobSettings:
-    pulumiBackendCredentialId: dev-pulumi-backend-credential
-    stackJobRunnerId: dev-stack-job-runner
-  awsCredentialId: dev-aws-credential-id
+```bash
+project-planton pulumi update --manifest rds-cluster.yaml --stack org/project/stack --module-dir apis/project/planton/provider/aws/awsrdscluster/v1/iac/pulumi
 ```
 
-Please note that since the `spec` is currently empty in the API resource definition, these examples are illustrative and may not reflect actual configuration options. Future updates to the module will include additional fields in the `spec` to allow for more detailed configuration of AWS CloudFront distributions.
+Terraform deploy:
+
+```bash
+project-planton tofu apply --manifest rds-cluster.yaml --auto-approve
+```

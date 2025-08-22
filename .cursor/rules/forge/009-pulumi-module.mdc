@@ -8,140 +8,36 @@ TITLE
 Forge: Generate Pulumi module package (module/ only, multi-resource orchestration)
 
 ROLE
-You are the PlantonCloud Code Partner working inside the developer’s local workspace in Cursor. This rule scaffolds ONLY the Pulumi module package for a resource, under `iac/pulumi/module/`. It must reflect real patterns in the repo: initialize locals, init provider, create multiple resources via separate functions (with ordering and conditionals), and export outputs mapped to `<Kind>StackOutputs`.
+You are the PlantonCloud Code Partner working inside the developer’s local workspace in Cursor. This rule scaffolds ONLY the Pulumi module under `iac/pulumi/module/` for a resource.
 
-DISCOVERY (MANDATORY BEFORE EDITS)
-- Open and read these files from the target directory to derive types and behavior:
-  - `apis/project/planton/provider/<provider>/<kindfolder>/v1/api.proto`
-  - `apis/project/planton/provider/<provider>/<kindfolder>/v1/spec.proto`
-  - `apis/project/planton/provider/<provider>/<kindfolder>/v1/stack_input.proto`
-  - `apis/project/planton/provider/<provider>/<kindfolder>/v1/stack_outputs.proto`
-- Also read the provider credential proto referenced by `stack_input.proto`, e.g.:
-  - AWS: `apis/project/planton/credential/awscredential/v1/spec.proto`
-  - GCP: `apis/project/planton/credential/gcpcredential/v1/spec.proto`
-  - Azure: `apis/project/planton/credential/azurecredential/v1/spec.proto`
-  - Kubernetes: `apis/project/planton/credential/kubernetesclustercredential/v1/spec.proto`
-- From these, extract:
-  - `<Kind>` name and package path: `github.com/project-planton/project-planton/apis/project/planton/provider/<provider>/<kindfolder>/v1`
-  - `<Kind>StackInput` type name and the provider credential message type/fields
-  - `<Kind>Spec` fields to inform which resources to create and conditionals
-  - `<Kind>StackOutputs` fields to define output constants and what to export
+TOOLS
+- Proto Readers: reuse readers for `api.proto`, `spec.proto`, `stack_input.proto`, `stack_outputs.proto`.
+- Module Writer: `.cursor/tools/pulumi_module_write.py` writes multiple files to the module directory.
+- Authoring guide: `.cursor/info/pulumi_module.md`.
 
 SCOPE
-- Detect provider and kind from the request.
+- Detect provider and kind.
 - Target: `apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/pulumi/module/`
-- Create/update:
-  - `main.go` — controller function `Resources(ctx *pulumi.Context, in *<pkg>.<Kind>StackInput) error`
-  - `locals.go` — `initializeLocals(ctx, in)` returning a typed locals struct holding `in.Target`, `in.Target.Spec`, derived values, and convenience accessors
-  - `outputs.go` — output constants aligned to `<Kind>StackOutputs` and tiny helpers
-  - `<resource_name>.go` — one or more resource creator functions (e.g., security group, option/parameter groups, instance)
-  - `BUILD.bazel` — go_library for module with correct deps
+- Create/update typical files: `main.go`, `locals.go`, `outputs.go`, `resource_*.go` (do not add BUILD.bazel here).
 
-CONTROLLER PATTERN (main.go)
-- Initialize locals: `locals := initializeLocals(ctx, in)`
-- Initialize provider from `in.ProviderCredential`, with a safe default when nil (as seen in ALB)
-- Call resource functions in dependency order, each returning typed results
-- Guard optional flows with spec-based conditionals (e.g., DNS enabled)
-- Export outputs using constants from `outputs.go`, mapping to `<Kind>StackOutputs` fields discovered in DISCOVERY
+SEQUENTIAL STEPS
+1) Read: Use proto readers to derive package paths, `<Kind>`, `<Kind>Spec`, `<Kind>StackInput`, `<Kind>StackOutputs`, and credential type.
+2) Draft: Read `.cursor/info/pulumi_module.md`. Generate content for module files (controller, locals, outputs, resource_*.go) according to the guide.
+3) Write: Provide a JSON manifest to the module writer tool:
+   - `cat <<'JSON' | python3 .cursor/tools/pulumi_module_write.py --provider <provider> --kindfolder <kindfolder> --stdin --build | cat`
+     { "files": [ {"name": "main.go", "content": "..."}, {"name": "locals.go", "content": "..."} ] }
+     JSON
+   - If build fails, refine content and re-run (≤3).
 
-EXAMPLE CONTROLLER SKELETON (adapt kind/provider)
-```go
-package module
-
-import (
-    "github.com/pkg/errors"
-    <pkgalias> "github.com/project-planton/project-planton/apis/project/planton/provider/<provider>/<kindfolder>/v1"
-    <providerimport>
-    "github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-)
-
-func Resources(ctx *pulumi.Context, in *<pkgalias>.<Kind>StackInput) error {
-    locals := initializeLocals(ctx, in)
-
-    provider, err := createProvider(ctx, in)
-    if err != nil { return errors.Wrap(err, "create provider") }
-
-    // Example orchestration (adjust to spec):
-    // sg, err := securityGroup(ctx, locals, provider)
-    // if err != nil { return errors.Wrap(err, "security group") }
-    // params, err := parameterGroup(ctx, locals, provider)
-    // if err != nil { return errors.Wrap(err, "parameter group") }
-    // inst, err := rdsInstance(ctx, locals, provider, sg, params)
-    // if err != nil { return errors.Wrap(err, "rds instance") }
-
-    // Conditional flows
-    // if locals.Spec.Dns.GetEnabled() { if err := dns(...); err != nil { return errors.Wrap(err, "dns") } }
-
-    // Export outputs (replace with real values according to <Kind>StackOutputs)
-    // ctx.Export(OpPrimaryId, inst.ResourceId)
-    // ctx.Export(OpEndpoint, inst.Endpoint)
-    return nil
-}
-```
-
-LOCALS (locals.go)
-- Provide `initializeLocals(ctx, in)` returning a struct with fields:
-  - `Ctx *pulumi.Context`
-  - `Input *<pkg>.<Kind>StackInput`
-  - `Target *<pkg>.<Kind>`
-  - `Spec *<pkg>.<Kind>Spec`
-  - Derived values as needed (strings, maps, flags)
-
-OUTPUTS (outputs.go)
-- Define constants named after `<Kind>StackOutputs` fields discovered in DISCOVERY.
-- Optional helpers:
-```go
-package module
-
-const (
-    // Example; replace with actual names from <Kind>StackOutputs
-    OpPrimaryId = "primary_id"
-    OpEndpoint  = "endpoint"
-)
-```
-
-RESOURCE FUNCTIONS (resource_*.go)
-- Split by logical concern (e.g., `security_group.go`, `parameter_group.go`, `instance.go`, `dns.go`)
-- Function signature pattern:
-  - `func <part>(ctx *pulumi.Context, locals *Locals, provider *<provider>.Provider, deps ...<refs>) (<result>, error)`
-- Use provider SDK (e.g., `github.com/pulumi/pulumi-aws/sdk/v7/go/aws/...`)
-- Return typed results holding resource refs and any Pulumi outputs
-- Use `pulumi.DependsOn` if explicit ordering is needed beyond data references
-
-PROVIDER INIT (main.go or helper)
-- Create provider with credentials from `in.ProviderCredential` when present; otherwise default provider.
-- Provider SDK import must match `<provider>`.
-
-BUILD.bazel (module/)
-```bzl
-load("@rules_go//go:def.bzl", "go_library")
-
-go_library(
-    name = "module",
-    srcs = glob(["*.go"]),
-    importpath = "github.com/project-planton/project-planton/apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/pulumi/module",
-    visibility = ["//visibility:public"],
-    deps = [
-        "//apis/project/planton/provider/<provider>/<kindfolder>/v1:<kindfolder>",
-        "@com_github_pkg_errors//:errors",
-        "@com_github_pulumi_pulumi_sdk_v3//go/pulumi",
-        # Add provider-specific Pulumi SDK, e.g.,
-        # @com_github_pulumi_pulumi_aws_sdk_v7//go/aws
-    ],
-)
-```
-
-BUILD & VERIFY (NON-INTERACTIVE)
-- Run path guard lint to prevent incorrect directories, then build the module:
-  - `make lint | cat`
-  - `go build ./apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/pulumi/module | cat`
-- Fix imports/types/SDK deps up to 3 attempts and re-run.
+OUTPUT
+- Show created/updated file list and key JSON fields from the writer tool.
+- On build failure: note the error and re-run after fixes (≤3).
 
 SUCCESS CRITERIA
 - `module/` contains controller, locals, outputs, and resource files reflecting multi-resource orchestration.
 - Outputs map to `<Kind>StackOutputs`.
-- `go build` for module succeeds.
+- If `--build` used, `go build` succeeds.
 
 NOTES
-- Rule 009 handles entrypoint `iac/pulumi/main.go`, `Pulumi.yaml`, `Makefile`, and binary BUILD.
-- Use in-repo patterns (e.g., `awsalb`, `awsrdsinstance`) as guidance; always derive names/types/outputs from the proto files you read in DISCOVERY.
+- Rule 010 handles entrypoint `iac/pulumi/main.go`, `Pulumi.yaml`, `Makefile`, and binary BUILD.
+- Use in-repo patterns (e.g., `awsalb`, `awsrdsinstance`) as guidance; always derive names/types/outputs from the proto files you read.

@@ -1,21 +1,29 @@
 # Terraform Module to Deploy AwsRdsCluster
 
-This module provisions an AWS RDS (Relational Database Service) cluster with support for multiple database engines, high availability, and scalability.
-It includes configurable engine types, instance configurations, VPC integration, security features, and comprehensive database management capabilities.
+This module provisions an AWS RDS Cluster (Aurora MySQL/PostgreSQL or Multi-AZ DB Cluster) aligned with the Project Planton API.
 
-Generated `variables.tf` reflects the proto schema for `AwsRdsCluster`.
-
-## Usage
-
-Use the ProjectPlanton CLI (tofu) with the default local backend:
+## CLI (local backend)
 
 ```shell
-project-planton tofu init --manifest hack/manifest.yaml
-project-planton tofu plan --manifest hack/manifest.yaml
-project-planton tofu apply --manifest hack/manifest.yaml --auto-approve
-project-planton tofu destroy --manifest hack/manifest.yaml --auto-approve
+project-planton tofu init --manifest ../hack/manifest.yaml
+project-planton tofu plan --manifest ../hack/manifest.yaml
+project-planton tofu apply --manifest ../hack/manifest.yaml --auto-approve
+project-planton tofu destroy --manifest ../hack/manifest.yaml --auto-approve
 ```
 
-**Note**: Credentials are provided via stack input (CLI), not in the manifest `spec`.
+Credentials are passed via the stack input through the CLI, not in `spec`.
 
-For more examples, see [`examples.md`](./examples.md) and [`hack/manifest.yaml`](../hack/manifest.yaml).
+## Files
+- `variables.tf` (generated; do not edit)
+- `provider.tf` — provider setup
+- `locals.tf` — computed locals and flags
+- `security_group.tf` — optional managed SG and rules
+- `subnet_group.tf` — DB subnet group when subnet IDs provided
+- `cluster_param_group.tf` — optional cluster parameter group
+- `rds_cluster.tf` — main cluster resource
+- `outputs.tf` — outputs matching `AwsRdsClusterStackOutputs`
+
+## Examples
+See `../../examples.md` for example manifests.
+
+

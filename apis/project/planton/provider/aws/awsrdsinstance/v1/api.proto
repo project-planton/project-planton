@@ -8,43 +8,43 @@ import "project/planton/provider/aws/awsrdsinstance/v1/stack_outputs.proto";
 import "project/planton/shared/status.proto";
 import "project/planton/shared/metadata.proto";
 
-//aws-rds
+// AwsRdsInstance represents a single AWS RDS DB instance.
 message AwsRdsInstance {
-  //api-version
-  string api_version = 1[
-    (buf.validate.field).string.const = 'aws.project-planton.org/v1'
+  // api-version must be set to "aws.project-planton.org/v1".
+  string api_version = 1 [
+    (buf.validate.field).string.const = "aws.project-planton.org/v1"
   ];
 
-  //resource-kind
+  // resource-kind for this resource, must be "AwsRdsInstance".
   string kind = 2 [
     (buf.validate.field).string.const = 'AwsRdsInstance'
   ];
 
-  //metadata
+  // metadata captures identifying information (name, org, version, etc.).
   project.planton.shared.ApiResourceMetadata metadata = 3 [
     (buf.validate.field).required = true
   ];
 
-  //spec
+  // spec holds the core configuration data defining the DB instance.
   AwsRdsInstanceSpec spec = 4 [
     (buf.validate.field).required = true
   ];
 
-  //status
-  AwsRdsStatus status = 5;
+  // status holds runtime or post-deployment information.
+  AwsRdsInstanceStatus status = 5;
 }
 
-//aws-rds status
-message AwsRdsStatus {
-  //lifecycle
+// AwsRdsInstanceStatus describes the status fields for an RDS instance resource.
+message AwsRdsInstanceStatus {
+  // lifecycle indicates if the resource is active or has been marked for removal.
   project.planton.shared.ApiResourceLifecycle lifecycle = 99;
 
-  //audit-info
+  // audit contains creation and update information for the resource.
   project.planton.shared.ApiResourceAudit audit = 98;
 
-  //stack-job id
+  // stack_job_id stores the ID of the stack job responsible for provisioning.
   string stack_job_id = 97;
 
-  //stack-outputs
+  // outputs captures observable stack outputs returned by Pulumi/Terraform after provisioning.
   AwsRdsInstanceStackOutputs outputs = 1;
 }

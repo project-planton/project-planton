@@ -8,10 +8,10 @@ import "project/planton/provider/aws/awsrdscluster/v1/stack_outputs.proto";
 import "project/planton/shared/status.proto";
 import "project/planton/shared/metadata.proto";
 
-//aws-rds-cluster
+// aws-rds-cluster
 message AwsRdsCluster {
   //api-version
-  string api_version = 1[
+  string api_version = 1 [
     (buf.validate.field).string.const = 'aws.project-planton.org/v1'
   ];
 
@@ -34,7 +34,7 @@ message AwsRdsCluster {
   AwsRdsClusterStatus status = 5;
 }
 
-//aws-rds-cluster status
+// aws-rds-cluster status
 message AwsRdsClusterStatus {
   //lifecycle
   project.planton.shared.ApiResourceLifecycle lifecycle = 99;
@@ -48,3 +48,5 @@ message AwsRdsClusterStatus {
   //stack-outputs
   AwsRdsClusterStackOutputs outputs = 1;
 }
+
+
