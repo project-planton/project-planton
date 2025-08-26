@@ -134,3 +134,15 @@ run-docs:
 .PHONY: build-docs
 build-docs:
 	pushd docs;make build;popd
+
+# ── website (site/) ────────────────────────────────────────────────────────────
+.PHONY: run-site
+run-site:
+	cd site && npm install --no-audit --no-fund
+	cd site && npm run dev
+
+.PHONY: preview-site
+preview-site:
+	cd site && npm install --no-audit --no-fund
+	cd site && npm run build
+	cd site && npm run preview
