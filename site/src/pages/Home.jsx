@@ -60,17 +60,15 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white">
+    <div className="min-h-screen bg-slate-950 text-white overflow-x-hidden">
       {/* Navigation */}
       <nav className="fixed top-0 w-full bg-slate-950/95 backdrop-blur-sm border-b border-slate-800 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-lg flex items-center justify-center">
-                <Code className="w-5 h-5 text-white" />
-              </div>
-              <span className="text-xl font-bold">ProjectPlanton</span>
+              <img src="/icon.png" alt="ProjectPlanton logo" className="h-9 w-auto object-contain" />
+              <img src="/logo-text.svg" alt="ProjectPlanton" className="h-10 w-auto object-contain" />
             </div>
 
             {/* Desktop Navigation */}
@@ -81,7 +79,7 @@ export default function Home() {
                   onClick={() => scrollToSection(item.id)}
                   className={`text-sm font-medium transition-colors duration-200 ${
                     activeSection === item.id
-                      ? 'text-blue-400'
+                      ? 'text-[#7a4183]'
                       : 'text-slate-300 hover:text-white'
                   }`}
                 >
@@ -120,7 +118,7 @@ export default function Home() {
                   onClick={() => scrollToSection(item.id)}
                   className={`block w-full text-left py-2 text-base font-medium transition-colors duration-200 ${
                     activeSection === item.id
-                      ? 'text-blue-400'
+                      ? 'text-[#7a4183]'
                       : 'text-slate-300 hover:text-white'
                   }`}
                 >

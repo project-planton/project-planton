@@ -80,9 +80,9 @@ jobs:
           </div>
         </CardHeader>
         <CardContent>
-          <div className="bg-slate-950 rounded-lg p-6 font-mono text-sm overflow-x-auto">
-            <pre className="text-slate-300 whitespace-pre-wrap">
-              <code>{workflowCode}</code>
+          <div className="bg-slate-950 rounded-lg p-6 font-mono text-sm overflow-x-auto max-w-full">
+            <pre className="text-slate-300 whitespace-pre-wrap break-words w-full">
+              <code className="block">{workflowCode}</code>
             </pre>
           </div>
         </CardContent>

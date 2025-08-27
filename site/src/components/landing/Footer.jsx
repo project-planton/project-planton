@@ -16,10 +16,8 @@ export default function Footer() {
           {/* Brand */}
           <div className="md:col-span-2">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-lg flex items-center justify-center">
-                <Github className="w-5 h-5 text-white" />
-              </div>
-              <span className="text-xl font-bold text-white">ProjectPlanton</span>
+              <img src="/icon.png" alt="ProjectPlanton mark" className="h-9 w-auto object-contain" />
+              <img src="/logo-text.svg" alt="ProjectPlanton" className="h-10 w-auto object-contain" />
             </div>
             <p className="text-slate-400 max-w-md mb-6">
               Kubernetes‑style manifests for multi‑cloud infrastructure. 
@@ -82,7 +80,7 @@ export default function Footer() {
 
         <div className="border-t border-slate-800 mt-12 pt-8 text-center">
           <p className="text-slate-500">
-            © 2024 ProjectPlanton. All rights reserved.
+            © 2025 ProjectPlanton. All rights reserved.
           </p>
         </div>
       </div>
