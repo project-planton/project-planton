@@ -16,8 +16,8 @@ export default function Footer() {
           {/* Brand */}
           <div className="md:col-span-2">
             <div className="flex items-center gap-3 mb-4">
-              <img src="/icon.png" alt="ProjectPlanton mark" className="h-8 w-auto object-contain" />
-              <img src="/logo-text.svg" alt="ProjectPlanton" className="h-8 sm:h-10 w-auto object-contain" />
+              <img src="/icon.png" alt="ProjectPlanton mark" className="h-9 w-auto object-contain" />
+              <img src="/logo-text.svg" alt="ProjectPlanton" className="h-10 w-auto object-contain" />
             </div>
             <p className="text-slate-400 max-w-md mb-6">
               Kubernetes‑style manifests for multi‑cloud infrastructure. 

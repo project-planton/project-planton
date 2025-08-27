@@ -67,8 +67,8 @@ export default function Home() {
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
             <div className="flex items-center gap-3">
-              <img src="/icon.png" alt="ProjectPlanton logo" className="h-7 w-auto object-contain" />
-              <img src="/logo-text.svg" alt="ProjectPlanton" className="h-5 sm:h-6 w-auto object-contain" />
+              <img src="/icon.png" alt="ProjectPlanton logo" className="h-9 w-auto object-contain" />
+              <img src="/logo-text.svg" alt="ProjectPlanton" className="h-10 w-auto object-contain" />
             </div>
 
             {/* Desktop Navigation */}
