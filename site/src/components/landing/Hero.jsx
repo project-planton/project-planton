@@ -56,7 +56,7 @@ export default function Hero() {
               Open‑Source Multi‑Cloud
             </span>
             <br />
-            <span className="bg-gradient-to-r from-blue-400 via-cyan-400 to-emerald-400 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-[#7a4183] via-purple-500 to-pink-500 bg-clip-text text-transparent">
               Infrastructure Framework
             </span>
           </h1>
@@ -72,7 +72,7 @@ export default function Hero() {
             <Button
               size="lg"
               onClick={copyToClipboard}
-              className="bg-blue-600 hover:bg-blue-700 text-white font-mono text-sm px-8 py-3 h-auto"
+              className="bg-[#7a4183] hover:bg-[#693772] text-white font-mono text-sm px-8 py-3 h-auto"
             >
               {copied ? (
                 <>
@@ -115,7 +115,7 @@ export default function Hero() {
           <div className="mt-16 pt-16 border-t border-slate-800">
             <p className="text-3xl font-bold text-center">
               <span className="text-slate-400">Define once.</span>
-              <span className="text-blue-400 ml-4">Deploy anywhere.</span>
+              <span className="text-[#7a4183] ml-4">Deploy anywhere.</span>
             </p>
           </div>
         </div>

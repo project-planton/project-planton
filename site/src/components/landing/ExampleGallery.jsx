@@ -220,16 +220,16 @@ project-planton pulumi update --manifest redis-kubernetes.yaml --stack myorg/app
                     </div>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    <div className="bg-slate-950 rounded-lg p-4 font-mono text-xs overflow-x-auto">
-                      <pre className="text-slate-300 whitespace-pre-wrap">
-                        <code>{example.manifest}</code>
+                    <div className="bg-slate-950 rounded-lg p-4 font-mono text-xs overflow-x-auto max-w-full">
+                      <pre className="text-slate-300 whitespace-pre-wrap break-words w-full">
+                        <code className="block">{example.manifest}</code>
                       </pre>
                     </div>
                     <div>
                       <h4 className="text-sm font-bold text-white mb-2">Deploy:</h4>
-                      <div className="bg-slate-900 rounded-lg p-3 font-mono text-xs overflow-x-auto">
-                        <pre className="text-green-400">
-                          <code>{example.deploy}</code>
+                      <div className="bg-slate-900 rounded-lg p-3 font-mono text-xs overflow-x-auto max-w-full">
+                        <pre className="text-green-400 whitespace-pre-wrap break-words w-full">
+                          <code className="block">{example.deploy}</code>
                         </pre>
                       </div>
                     </div>

@@ -29,19 +29,19 @@ export default function Quickstart() {
       id: 'deploy',
       title: '3. Deploy',
       code: `# Pulumi (example)
-project-planton pulumi up \\
-  --manifest manifest.yaml \\
-  --stack myorg/myproject/dev \\
-  --module-dir . \\
+project-planton pulumi up \
+  --manifest manifest.yaml \
+  --stack myorg/myproject/dev \
+  --module-dir . \
   --set metadata.labels.env=dev
 
 # OpenTofu (example)
-project-planton tofu init \\
-  --manifest manifest.yaml \\
-  --backend-type s3 \\
-  --backend-config bucket=my-tf-state-bucket \\
-  --backend-config dynamodb_table=my-tf-locks \\
-  --backend-config region=us-west-2 \\
+project-planton tofu init \
+  --manifest manifest.yaml \
+  --backend-type s3 \
+  --backend-config bucket=my-tf-state-bucket \
+  --backend-config dynamodb_table=my-tf-locks \
+  --backend-config region=us-west-2 \
   --backend-config key=stacks/myproject/dev.tfstate
 
 project-planton tofu plan --manifest manifest.yaml
@@ -96,9 +96,9 @@ project-planton tofu destroy --manifest manifest.yaml --auto-approve`
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="bg-slate-950 rounded-lg p-4 font-mono text-sm overflow-x-auto">
-                <pre className="text-slate-300 whitespace-pre-wrap">
-                  <code>{step.code}</code>
+              <div className="bg-slate-950 rounded-lg p-4 font-mono text-sm overflow-x-auto max-w-full">
+                <pre className="text-slate-300 whitespace-pre-wrap break-words w-full">
+                  <code className="block">{step.code}</code>
                 </pre>
               </div>
             </CardContent>

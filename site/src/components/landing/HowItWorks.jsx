@@ -46,14 +46,14 @@ export default function HowItWorks() {
 
       {/* Workflow Diagram */}
       <div className="mb-16">
-        <div className="flex flex-col lg:flex-row items-center justify-center gap-4 lg:gap-8">
+        <div className="flex flex-col lg:flex-row items-center justify-center gap-4 lg:gap-8 w-full">
           {steps.map((step, index) => {
             const Icon = step.icon;
             return (
-              <div key={index} className="flex flex-col lg:flex-row items-center gap-4">
-                <Card className="bg-slate-900/50 border-slate-700 w-full lg:w-64">
+              <div key={index} className="flex flex-col lg:flex-row items-center gap-4 w-full sm:max-w-md lg:w-80">
+                <Card className="bg-slate-900/50 border-slate-700 w-full lg:w-80">
                   <CardContent className="p-6 text-center">
-                    <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-xl flex items-center justify-center mx-auto mb-4">
+                    <div className="w-12 h-12 bg-gradient-to-r from-[#7a4183] to-purple-500 rounded-xl flex items-center justify-center mx-auto mb-4">
                       <Icon className="w-6 h-6 text-white" />
                     </div>
                     <h3 className="text-lg font-bold text-white mb-2">{step.title}</h3>
