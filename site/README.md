@@ -1,20 +1,31 @@
-# Base44 App
+ProjectPlanton website (Next.js)
 
+This is the migrated Next.js App Router project for the `site` Vite app.
 
-This app was created automatically by Base44.
-It's a Vite+React app that communicates with the Base44 API.
+Key packages:
 
-## Running the app
+- Next.js 15 (App Router)
+- Tailwind CSS v4
+- React 19
+- Radix UI (tabs), CVA, tailwind-merge, clsx
 
-```bash
-npm install
-npm run dev
-```
-
-## Building the app
+Dev commands (Yarn):
 
 ```bash
-npm run build
+yarn dev
+yarn build
+yarn start
+yarn lint
 ```
 
-For more information and support, please contact Base44 support at app@base44.com.
+Folder structure:
+
+- `src/app` – Next.js App Router pages and routes (home, robots, sitemap)
+- `src/components` – UI primitives and page sections
+- `src/lib/utils.ts` – `cn()` helper for classnames
+- `public/` – static assets (`icon.png`, `logo-text.svg`)
+
+Notes:
+
+- All Base44 SDK references have been removed in this project.
+- The UI sections mirror the original Vite site components.

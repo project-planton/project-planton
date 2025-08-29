@@ -138,11 +138,11 @@ build-docs:
 # ── website (site/) ────────────────────────────────────────────────────────────
 .PHONY: run-site
 run-site:
-	cd site && npm install --no-audit --no-fund
-	cd site && npm run dev
+	cd site && yarn 
+	cd site && yarn dev
 
 .PHONY: preview-site
 preview-site:
-	cd site && npm install --no-audit --no-fund
-	cd site && npm run build
-	cd site && npm run preview
+	cd site && yarn 
+	cd site && yarn build
+	cd site && make preview-site

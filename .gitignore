@@ -4,11 +4,7 @@ build/
 site/node_modules/
 site/build/
 site/.yarn/*
-site/!.yarn/patches
-site/!.yarn/plugins
-site/!.yarn/releases
-site/!.yarn/sdks
-site/!.yarn/versions
+site/!next-env.d.ts
 apis/internal/
 apis/generated/
 
