@@ -16,6 +16,12 @@ endif
 
 build_cmd=go build -v ${LDFLAGS}
 
+clean-bazel:
+	rm -rf .bazelbsp bazel-bin bazel-out bazel-testlogs bazel-project-planton
+
+reset-ide: clean-bazel
+	rm -rf .idea
+
 .PHONY: deps
 deps:
 	go mod download
