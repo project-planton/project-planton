@@ -23,16 +23,10 @@ export default function Hero() {
 
 	return (
 		<div className="relative overflow-hidden font-sans">
-			{/* Indigo → Navy gradient */}
-			<div className="absolute inset-0 bg-gradient-to-b from-indigo-950 via-indigo-900 to-slate-950" />
-			{/* Subtle dot overlay */}
-			<div
-				className="absolute inset-0 opacity-30"
-				style={{
-					backgroundImage:
-						"url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23334155' fill-opacity='0.12'%3E%3Ccircle cx='30' cy='30' r='1'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\")",
-				}}
-			/>
+			{/* Deep purple gradient to match production */}
+			<div className="absolute inset-0 bg-gradient-to-b from-[#0b0713] via-[#140a26] to-[#0a0912]" />
+			{/* Radial magenta glow */}
+			<div className="absolute inset-0 pointer-events-none bg-[radial-gradient(1200px_500px_at_50%_8%,rgba(217,70,239,0.18),rgba(0,0,0,0))]" />
 
 			<div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 				<div className="min-h-[calc(100vh-64px)] flex items-center justify-center">
@@ -48,9 +42,9 @@ export default function Hero() {
 
 						{/* Heading */}
 						<h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6">
-							<span className="bg-gradient-to-r from-white via-fuchsia-300 to-fuchsia-500 bg-clip-text text-transparent">Open‑Source Multi‑Cloud</span>
+							<span className="text-white">Open‑Source Multi‑Cloud</span>
 							<br />
-							<span className="bg-gradient-to-r from-white via-fuchsia-300 to-fuchsia-500 bg-clip-text text-transparent">Infrastructure Framework</span>
+							<span className="bg-gradient-to-r from-[#f0abfc] via-[#f472b6] to-[#d946ef] bg-clip-text text-transparent">Infrastructure Framework</span>
 						</h1>
 
 						{/* Subheading */}
@@ -64,7 +58,7 @@ export default function Hero() {
 							<Button
 								size="lg"
 								onClick={copyToClipboard}
-								className="rounded-full bg-[#7a4183] hover:bg-[#7a4183]/90 text-white font-mono text-sm px-8 py-3 h-auto shadow-lg shadow-fuchsia-700/25 transform-gpu transition-all hover:brightness-110 hover:-translate-y-0.5 focus-visible:ring-2 focus-visible:ring-fuchsia-400/50"
+								className="rounded-full bg-gradient-to-r from-[#7a4183] to-[#d946ef] text-white font-mono text-sm px-8 py-3 h-auto shadow-lg shadow-fuchsia-800/30 transform-gpu transition-all hover:brightness-110 hover:-translate-y-0.5 focus-visible:ring-2 focus-visible:ring-fuchsia-400/50"
 							>
 								{copied ? (
 									<>
@@ -83,7 +77,7 @@ export default function Hero() {
 								size="lg"
 								variant="outline"
 								onClick={scrollToExample}
-								className="rounded-full border border-fuchsia-500/40 text-slate-100 bg-white/0 hover:bg-fuchsia-500/10 hover:border-fuchsia-300 px-8 py-3 h-auto transform-gpu transition-all hover:-translate-y-0.5 focus-visible:ring-2 focus-visible:ring-fuchsia-400/40"
+								className="rounded-full border border-white/20 text-slate-100 bg-transparent hover:bg-white/5 hover:border-white/40 px-8 py-3 h-auto transform-gpu transition-all hover:-translate-y-0.5 focus-visible:ring-2 focus-visible:ring-fuchsia-400/40"
 							>
 								Try an Example
 								<ArrowDown className="w-4 h-4 ml-2" />
@@ -107,7 +101,7 @@ export default function Hero() {
 						<div className="mt-16 pt-12 border-t border-white/10">
 							<p className="text-2xl sm:text-3xl font-bold text-center">
 								<span className="text-slate-300">Define once.</span>
-								<span className="text-[#d946ef] ml-3">Deploy anywhere.</span>
+								<span className="ml-3 bg-gradient-to-r from-[#f0abfc] via-[#f472b6] to-[#d946ef] bg-clip-text text-transparent">Deploy anywhere.</span>
 							</p>
 						</div>
 					</div>
