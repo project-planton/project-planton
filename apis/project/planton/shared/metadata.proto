@@ -7,26 +7,23 @@ import "buf/validate/validate.proto";
 //metadata for all resource objects on planton-cloud
 message ApiResourceMetadata {
   // name of the resource
-  string name = 1 [
-    (buf.validate.field).required = true,
-    (buf.validate.field).string.min_len = 3,
-    (buf.validate.field).string.max_len = 63
-  ];
-
+  string name = 1;
+  // slug for the resource
+  string slug = 2;
   // id of the resource
-  string id = 2;
+  string id = 3;
   // id of the organization to which the api-resource belongs to
-  string org = 3;
+  string org = 4;
   // environment to which the resource belongs to
-  string env = 4;
+  string env = 5;
   // labels for the resource
-  map<string, string> labels = 5;
+  map<string, string> labels = 6;
   // annotations for the resource
-  map<string, string> annotations = 6;
+  map<string, string> annotations = 7;
   // tags for the resource
-  repeated string tags = 7;
+  repeated string tags = 8;
   //metadata for resource version
-  ApiResourceMetadataVersion version = 8;
+  ApiResourceMetadataVersion version = 9;
 }
 
 // version information for api-resource to be used in api-resource metadata

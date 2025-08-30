@@ -27,20 +27,22 @@ type ApiResourceMetadata struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// name of the resource
 	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	// slug for the resource
+	Slug string `protobuf:"bytes,2,opt,name=slug,proto3" json:"slug,omitempty"`
 	// id of the resource
-	Id string `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
+	Id string `protobuf:"bytes,3,opt,name=id,proto3" json:"id,omitempty"`
 	// id of the organization to which the api-resource belongs to
-	Org string `protobuf:"bytes,3,opt,name=org,proto3" json:"org,omitempty"`
+	Org string `protobuf:"bytes,4,opt,name=org,proto3" json:"org,omitempty"`
 	// environment to which the resource belongs to
-	Env string `protobuf:"bytes,4,opt,name=env,proto3" json:"env,omitempty"`
+	Env string `protobuf:"bytes,5,opt,name=env,proto3" json:"env,omitempty"`
 	// labels for the resource
-	Labels map[string]string `protobuf:"bytes,5,rep,name=labels,proto3" json:"labels,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	Labels map[string]string `protobuf:"bytes,6,rep,name=labels,proto3" json:"labels,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	// annotations for the resource
-	Annotations map[string]string `protobuf:"bytes,6,rep,name=annotations,proto3" json:"annotations,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	Annotations map[string]string `protobuf:"bytes,7,rep,name=annotations,proto3" json:"annotations,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	// tags for the resource
-	Tags []string `protobuf:"bytes,7,rep,name=tags,proto3" json:"tags,omitempty"`
+	Tags []string `protobuf:"bytes,8,rep,name=tags,proto3" json:"tags,omitempty"`
 	// metadata for resource version
-	Version       *ApiResourceMetadataVersion `protobuf:"bytes,8,opt,name=version,proto3" json:"version,omitempty"`
+	Version       *ApiResourceMetadataVersion `protobuf:"bytes,9,opt,name=version,proto3" json:"version,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -78,6 +80,13 @@ func (*ApiResourceMetadata) Descriptor() ([]byte, []int) {
 func (x *ApiResourceMetadata) GetName() string {
 	if x != nil {
 		return x.Name
+	}
+	return ""
+}
+
+func (x *ApiResourceMetadata) GetSlug() string {
+	if x != nil {
+		return x.Slug
 	}
 	return ""
 }
@@ -188,16 +197,17 @@ var File_project_planton_shared_metadata_proto protoreflect.FileDescriptor
 
 const file_project_planton_shared_metadata_proto_rawDesc = "" +
 	"\n" +
-	"%project/planton/shared/metadata.proto\x12\x16project.planton.shared\x1a\x1bbuf/validate/validate.proto\"\xf9\x03\n" +
-	"\x13ApiResourceMetadata\x12 \n" +
-	"\x04name\x18\x01 \x01(\tB\f\xbaH\t\xc8\x01\x01r\x04\x10\x03\x18?R\x04name\x12\x0e\n" +
-	"\x02id\x18\x02 \x01(\tR\x02id\x12\x10\n" +
-	"\x03org\x18\x03 \x01(\tR\x03org\x12\x10\n" +
-	"\x03env\x18\x04 \x01(\tR\x03env\x12O\n" +
-	"\x06labels\x18\x05 \x03(\v27.project.planton.shared.ApiResourceMetadata.LabelsEntryR\x06labels\x12^\n" +
-	"\vannotations\x18\x06 \x03(\v2<.project.planton.shared.ApiResourceMetadata.AnnotationsEntryR\vannotations\x12\x12\n" +
-	"\x04tags\x18\a \x03(\tR\x04tags\x12L\n" +
-	"\aversion\x18\b \x01(\v22.project.planton.shared.ApiResourceMetadataVersionR\aversion\x1a9\n" +
+	"%project/planton/shared/metadata.proto\x12\x16project.planton.shared\x1a\x1bbuf/validate/validate.proto\"\xff\x03\n" +
+	"\x13ApiResourceMetadata\x12\x12\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x12\x12\n" +
+	"\x04slug\x18\x02 \x01(\tR\x04slug\x12\x0e\n" +
+	"\x02id\x18\x03 \x01(\tR\x02id\x12\x10\n" +
+	"\x03org\x18\x04 \x01(\tR\x03org\x12\x10\n" +
+	"\x03env\x18\x05 \x01(\tR\x03env\x12O\n" +
+	"\x06labels\x18\x06 \x03(\v27.project.planton.shared.ApiResourceMetadata.LabelsEntryR\x06labels\x12^\n" +
+	"\vannotations\x18\a \x03(\v2<.project.planton.shared.ApiResourceMetadata.AnnotationsEntryR\vannotations\x12\x12\n" +
+	"\x04tags\x18\b \x03(\tR\x04tags\x12L\n" +
+	"\aversion\x18\t \x01(\v22.project.planton.shared.ApiResourceMetadataVersionR\aversion\x1a9\n" +
 	"\vLabelsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\x1a>\n" +
