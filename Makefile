@@ -16,6 +16,8 @@ endif
 
 build_cmd=go build -v ${LDFLAGS}
 
+PARALLEL?=$(shell getconf _NPROCESSORS_ONLN 2>/dev/null || sysctl -n hw.ncpu)
+
 clean-bazel:
 	rm -rf .bazelbsp bazel-bin bazel-out bazel-testlogs bazel-project-planton
 
@@ -76,7 +78,7 @@ ${build_dir}/${name}: deps vet
 
 .PHONY: test
 test:
-	go test -race -v -count=1 ./...
+	go test -race -v -count=1 -p $(PARALLEL) -parallel $(PARALLEL) ./...
 
 .PHONY: run
 run: build
