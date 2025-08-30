@@ -29,7 +29,7 @@ message KubernetesCloudResourceKindMeta {
   //this is only applicable when provider is kubernetes
   string namespace_prefix = 1;
   //category of the kubernetes cloud-resource kind
-  KubernetesCloudResourceType category = 2;
+  KubernetesCloudResourceCategory category = 2;
 }
 
 enum CloudResourceKind {

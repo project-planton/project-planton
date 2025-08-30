@@ -515,7 +515,7 @@ type KubernetesCloudResourceKindMeta struct {
 	// this is only applicable when provider is kubernetes
 	NamespacePrefix string `protobuf:"bytes,1,opt,name=namespace_prefix,json=namespacePrefix,proto3" json:"namespace_prefix,omitempty"`
 	// category of the kubernetes cloud-resource kind
-	Category      KubernetesCloudResourceType `protobuf:"varint,2,opt,name=category,proto3,enum=project.planton.shared.cloudresourcekind.KubernetesCloudResourceType" json:"category,omitempty"`
+	Category      KubernetesCloudResourceCategory `protobuf:"varint,2,opt,name=category,proto3,enum=project.planton.shared.cloudresourcekind.KubernetesCloudResourceCategory" json:"category,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -557,11 +557,11 @@ func (x *KubernetesCloudResourceKindMeta) GetNamespacePrefix() string {
 	return ""
 }
 
-func (x *KubernetesCloudResourceKindMeta) GetCategory() KubernetesCloudResourceType {
+func (x *KubernetesCloudResourceKindMeta) GetCategory() KubernetesCloudResourceCategory {
 	if x != nil {
 		return x.Category
 	}
-	return KubernetesCloudResourceType_kubernetes_cloud_resource_type_unspecified
+	return KubernetesCloudResourceCategory_kubernetes_cloud_resource_category_unspecified
 }
 
 var file_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto_extTypes = []protoimpl.ExtensionInfo{
@@ -590,10 +590,10 @@ const file_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto_ra
 	"\bprovider\x18\x01 \x01(\x0e2?.project.planton.shared.cloudresourcekind.CloudResourceProviderR\bprovider\x12\x1b\n" +
 	"\tid_prefix\x18\x02 \x01(\tR\bidPrefix\x12&\n" +
 	"\x0fis_service_kind\x18\x03 \x01(\bR\risServiceKind\x12r\n" +
-	"\x0fkubernetes_meta\x18\x04 \x01(\v2I.project.planton.shared.cloudresourcekind.KubernetesCloudResourceKindMetaR\x0ekubernetesMeta\"\xaf\x01\n" +
+	"\x0fkubernetes_meta\x18\x04 \x01(\v2I.project.planton.shared.cloudresourcekind.KubernetesCloudResourceKindMetaR\x0ekubernetesMeta\"\xb3\x01\n" +
 	"\x1fKubernetesCloudResourceKindMeta\x12)\n" +
-	"\x10namespace_prefix\x18\x01 \x01(\tR\x0fnamespacePrefix\x12a\n" +
-	"\bcategory\x18\x02 \x01(\x0e2E.project.planton.shared.cloudresourcekind.KubernetesCloudResourceTypeR\bcategory*\xc1'\n" +
+	"\x10namespace_prefix\x18\x01 \x01(\tR\x0fnamespacePrefix\x12e\n" +
+	"\bcategory\x18\x02 \x01(\x0e2I.project.planton.shared.cloudresourcekind.KubernetesCloudResourceCategoryR\bcategory*\xc1'\n" +
 	"\x11CloudResourceKind\x12\x0f\n" +
 	"\vunspecified\x10\x00\x12,\n" +
 	"\x19FirstTestCloudApiResource\x10\x01\x1a\r\xa2\xf7\x04\t\b\x01\x12\x05tcar1\x12-\n" +
@@ -834,13 +834,13 @@ var file_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto_goTy
 	(*CloudResourceKindMeta)(nil),           // 1: project.planton.shared.cloudresourcekind.CloudResourceKindMeta
 	(*KubernetesCloudResourceKindMeta)(nil), // 2: project.planton.shared.cloudresourcekind.KubernetesCloudResourceKindMeta
 	(CloudResourceProvider)(0),              // 3: project.planton.shared.cloudresourcekind.CloudResourceProvider
-	(KubernetesCloudResourceType)(0),        // 4: project.planton.shared.cloudresourcekind.KubernetesCloudResourceType
+	(KubernetesCloudResourceCategory)(0),    // 4: project.planton.shared.cloudresourcekind.KubernetesCloudResourceCategory
 	(*descriptorpb.EnumValueOptions)(nil),   // 5: google.protobuf.EnumValueOptions
 }
 var file_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto_depIdxs = []int32{
 	3, // 0: project.planton.shared.cloudresourcekind.CloudResourceKindMeta.provider:type_name -> project.planton.shared.cloudresourcekind.CloudResourceProvider
 	2, // 1: project.planton.shared.cloudresourcekind.CloudResourceKindMeta.kubernetes_meta:type_name -> project.planton.shared.cloudresourcekind.KubernetesCloudResourceKindMeta
-	4, // 2: project.planton.shared.cloudresourcekind.KubernetesCloudResourceKindMeta.category:type_name -> project.planton.shared.cloudresourcekind.KubernetesCloudResourceType
+	4, // 2: project.planton.shared.cloudresourcekind.KubernetesCloudResourceKindMeta.category:type_name -> project.planton.shared.cloudresourcekind.KubernetesCloudResourceCategory
 	5, // 3: project.planton.shared.cloudresourcekind.meta:extendee -> google.protobuf.EnumValueOptions
 	1, // 4: project.planton.shared.cloudresourcekind.meta:type_name -> project.planton.shared.cloudresourcekind.CloudResourceKindMeta
 	5, // [5:5] is the sub-list for method output_type

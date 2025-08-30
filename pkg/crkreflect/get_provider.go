@@ -24,16 +24,16 @@ func GetProvider(
 		return cloudresourcekind.CloudResourceProvider_cloud_resource_provider_unspecified
 	}
 
-	if !proto.HasExtension(valDesc.Options(), cloudresourcekind.E_Provider) {
+	if !proto.HasExtension(valDesc.Options(), cloudresourcekind.E_Meta) {
 		return cloudresourcekind.CloudResourceProvider_cloud_resource_provider_unspecified
 	}
 
-	prov, ok := proto.GetExtension(
+	cloudResourceKindMeta, ok := proto.GetExtension(
 		valDesc.Options(),
-		cloudresourcekind.E_Provider,
-	).(cloudresourcekind.CloudResourceProvider)
-	if !ok {
+		cloudresourcekind.E_Meta,
+	).(*cloudresourcekind.CloudResourceKindMeta)
+	if !ok || cloudResourceKindMeta == nil {
 		return cloudresourcekind.CloudResourceProvider_cloud_resource_provider_unspecified
 	}
-	return prov
+	return cloudResourceKindMeta.Provider
 }

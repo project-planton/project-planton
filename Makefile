@@ -5,7 +5,7 @@ name_local=project-planton
 pkg=github.com/project-planton/project-planton
 build_dir=build
 LDFLAGS=-ldflags "-X ${pkg}/internal/cli/version.Version=${version}"
-BAZEL?=bazel
+BAZEL?=./bazelw
 
 # If BUILDBUDDY_API_KEY is set, enable the :bb config and inject only the header.
 ifneq ($(strip $(BUILDBUDDY_API_KEY)),)
@@ -34,6 +34,7 @@ build_darwin: vet
 .PHONY: protos
 protos:
 	pushd apis;make build;popd
+	${BAZEL} run //:gazelle
 
 .PHONY: bazel-mod-tidy
 bazel-mod-tidy:

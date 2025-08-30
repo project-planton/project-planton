@@ -21,53 +21,53 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// kubernetes cloud resource type
-type KubernetesCloudResourceType int32
+// kubernetes cloud resource category
+type KubernetesCloudResourceCategory int32
 
 const (
-	KubernetesCloudResourceType_kubernetes_cloud_resource_type_unspecified KubernetesCloudResourceType = 0
-	KubernetesCloudResourceType_addon                                      KubernetesCloudResourceType = 1
-	KubernetesCloudResourceType_workload                                   KubernetesCloudResourceType = 2
+	KubernetesCloudResourceCategory_kubernetes_cloud_resource_category_unspecified KubernetesCloudResourceCategory = 0
+	KubernetesCloudResourceCategory_addon                                          KubernetesCloudResourceCategory = 1
+	KubernetesCloudResourceCategory_workload                                       KubernetesCloudResourceCategory = 2
 )
 
-// Enum value maps for KubernetesCloudResourceType.
+// Enum value maps for KubernetesCloudResourceCategory.
 var (
-	KubernetesCloudResourceType_name = map[int32]string{
-		0: "kubernetes_cloud_resource_type_unspecified",
+	KubernetesCloudResourceCategory_name = map[int32]string{
+		0: "kubernetes_cloud_resource_category_unspecified",
 		1: "addon",
 		2: "workload",
 	}
-	KubernetesCloudResourceType_value = map[string]int32{
-		"kubernetes_cloud_resource_type_unspecified": 0,
+	KubernetesCloudResourceCategory_value = map[string]int32{
+		"kubernetes_cloud_resource_category_unspecified": 0,
 		"addon":    1,
 		"workload": 2,
 	}
 )
 
-func (x KubernetesCloudResourceType) Enum() *KubernetesCloudResourceType {
-	p := new(KubernetesCloudResourceType)
+func (x KubernetesCloudResourceCategory) Enum() *KubernetesCloudResourceCategory {
+	p := new(KubernetesCloudResourceCategory)
 	*p = x
 	return p
 }
 
-func (x KubernetesCloudResourceType) String() string {
+func (x KubernetesCloudResourceCategory) String() string {
 	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
 }
 
-func (KubernetesCloudResourceType) Descriptor() protoreflect.EnumDescriptor {
+func (KubernetesCloudResourceCategory) Descriptor() protoreflect.EnumDescriptor {
 	return file_project_planton_shared_cloudresourcekind_kubernetes_proto_enumTypes[0].Descriptor()
 }
 
-func (KubernetesCloudResourceType) Type() protoreflect.EnumType {
+func (KubernetesCloudResourceCategory) Type() protoreflect.EnumType {
 	return &file_project_planton_shared_cloudresourcekind_kubernetes_proto_enumTypes[0]
 }
 
-func (x KubernetesCloudResourceType) Number() protoreflect.EnumNumber {
+func (x KubernetesCloudResourceCategory) Number() protoreflect.EnumNumber {
 	return protoreflect.EnumNumber(x)
 }
 
-// Deprecated: Use KubernetesCloudResourceType.Descriptor instead.
-func (KubernetesCloudResourceType) EnumDescriptor() ([]byte, []int) {
+// Deprecated: Use KubernetesCloudResourceCategory.Descriptor instead.
+func (KubernetesCloudResourceCategory) EnumDescriptor() ([]byte, []int) {
 	return file_project_planton_shared_cloudresourcekind_kubernetes_proto_rawDescGZIP(), []int{0}
 }
 
@@ -75,9 +75,9 @@ var File_project_planton_shared_cloudresourcekind_kubernetes_proto protoreflect.
 
 const file_project_planton_shared_cloudresourcekind_kubernetes_proto_rawDesc = "" +
 	"\n" +
-	"9project/planton/shared/cloudresourcekind/kubernetes.proto\x12(project.planton.shared.cloudresourcekind*f\n" +
-	"\x1bKubernetesCloudResourceType\x12.\n" +
-	"*kubernetes_cloud_resource_type_unspecified\x10\x00\x12\t\n" +
+	"9project/planton/shared/cloudresourcekind/kubernetes.proto\x12(project.planton.shared.cloudresourcekind*n\n" +
+	"\x1fKubernetesCloudResourceCategory\x122\n" +
+	".kubernetes_cloud_resource_category_unspecified\x10\x00\x12\t\n" +
 	"\x05addon\x10\x01\x12\f\n" +
 	"\bworkload\x10\x02B\xdd\x02\n" +
 	",com.project.planton.shared.cloudresourcekindB\x0fKubernetesProtoP\x01ZXgithub.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind\xa2\x02\x04PPSC\xaa\x02(Project.Planton.Shared.Cloudresourcekind\xca\x02(Project\\Planton\\Shared\\Cloudresourcekind\xe2\x024Project\\Planton\\Shared\\Cloudresourcekind\\GPBMetadata\xea\x02+Project::Planton::Shared::Cloudresourcekindb\x06proto3"
@@ -96,7 +96,7 @@ func file_project_planton_shared_cloudresourcekind_kubernetes_proto_rawDescGZIP(
 
 var file_project_planton_shared_cloudresourcekind_kubernetes_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_project_planton_shared_cloudresourcekind_kubernetes_proto_goTypes = []any{
-	(KubernetesCloudResourceType)(0), // 0: project.planton.shared.cloudresourcekind.KubernetesCloudResourceType
+	(KubernetesCloudResourceCategory)(0), // 0: project.planton.shared.cloudresourcekind.KubernetesCloudResourceCategory
 }
 var file_project_planton_shared_cloudresourcekind_kubernetes_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type

@@ -1,11 +1,12 @@
 package crkreflect
 
 import (
+	"os"
+
 	"github.com/pkg/errors"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"gopkg.in/yaml.v3"
-	"os"
 )
 
 const (

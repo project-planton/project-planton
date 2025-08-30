@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+###############################################################################
+# Bazel wrapper (simple, no token cache)
+###############################################################################
+
+# 1. Install bazelisk once
+if ! command -v bazelisk >/dev/null 2>&1 ; then
+  echo "Installing bazelisk..."
+  mkdir -p "${HOME}/.local/bin"
+  curl -sSfL \
+    "https://github.com/bazelbuild/bazelisk/releases/latest/download/bazelisk-$(uname -s | tr '[:upper:]' '[:lower:]')-$(uname -m)" \
+    -o "${HOME}/.local/bin/bazelisk"
+  chmod +x "${HOME}/.local/bin/bazelisk"
+  export PATH="${HOME}/.local/bin:${PATH}"
+fi
+
+# 5. Delegate to bazelisk (env-vars are forwarded by .bazelrc)
+exec bazelisk "$@"
