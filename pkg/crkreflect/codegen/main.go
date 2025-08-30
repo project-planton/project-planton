@@ -93,7 +93,7 @@ func run() error {
 
 	for _, cloudResourceKind := range crkreflect.KindsList() {
 		provider := crkreflect.GetProvider(cloudResourceKind)
-		if provider == cloudresourcekind.ProjectPlantonCloudResourceProvider_test {
+		if provider == cloudresourcekind.CloudResourceProvider_test {
 			// skip test values
 			continue
 		}
@@ -108,14 +108,14 @@ func run() error {
 
 		// kubernetes special‑case
 		var importPath string
-		if provRaw == cloudresourcekind.ProjectPlantonCloudResourceProvider_kubernetes.String() {
+		if provRaw == cloudresourcekind.CloudResourceProvider_kubernetes.String() {
 			kubernetesResourceType := crkreflect.GetKubernetesResourceType(cloudResourceKind)
 
 			importPath = fmt.Sprintf(
 				"github.com/project-planton/project-planton/apis/project/planton/provider/%s/%s/%s/v1",
 				provSlug, kubernetesResourceType, lowerKind)
 
-			putUniqueEntry(kubernetesResourceType == cloudresourcekind.ProjectPlantonKubernetesResourceType_addon,
+			putUniqueEntry(kubernetesResourceType == cloudresourcekind.KubernetesCloudResourceType_addon,
 				&k8sAddon, &k8sWorkload,
 				entry{
 					KindConst:   kindName,

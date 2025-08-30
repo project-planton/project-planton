@@ -2,11 +2,11 @@ package crkreflect
 
 import "github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
 
-func ProvidersList() []cloudresourcekind.ProjectPlantonCloudResourceProvider {
-	resp := make([]cloudresourcekind.ProjectPlantonCloudResourceProvider, 0)
+func ProvidersList() []cloudresourcekind.CloudResourceProvider {
+	resp := make([]cloudresourcekind.CloudResourceProvider, 0)
 	// Iterate over all the enum values in ApiResourceKind
-	for _, enumValue := range cloudresourcekind.ProjectPlantonCloudResourceProvider_value {
-		resp = append(resp, cloudresourcekind.ProjectPlantonCloudResourceProvider(enumValue))
+	for _, enumValue := range cloudresourcekind.CloudResourceProvider_value {
+		resp = append(resp, cloudresourcekind.CloudResourceProvider(enumValue))
 	}
 	return resp
 }

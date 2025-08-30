@@ -5,3 +5,4 @@ build:
 	buf generate
 	cp -R generated/stubs/go/github.com/project-planton/project-planton/apis/. .
 	rm -rf generated/stubs
+	bazel run //:gazelle

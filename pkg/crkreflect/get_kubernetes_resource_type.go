@@ -11,9 +11,9 @@ import (
 // kind is unknown it returns the “unspecified” sentinel.
 func GetKubernetesResourceType(
 	kind cloudresourcekind.CloudResourceKind,
-) cloudresourcekind.ProjectPlantonKubernetesResourceType {
+) cloudresourcekind.KubernetesCloudResourceType {
 	var unspecified = cloudresourcekind.
-		ProjectPlantonKubernetesResourceType_project_planton_kubernetes_resource_type_unspecified
+		KubernetesCloudResourceType_kubernetes_cloud_resource_type_unspecified
 
 	desc := kind.Descriptor()
 	if desc == nil {
@@ -25,14 +25,14 @@ func GetKubernetesResourceType(
 		return unspecified
 	}
 
-	if !proto.HasExtension(valDesc.Options(), cloudresourcekind.E_KubernetesResourceType) {
+	if !proto.HasExtension(valDesc.Options(), cloudresourcekind.E_KubernetesType) {
 		return unspecified
 	}
 
 	rt, ok := proto.GetExtension(
 		valDesc.Options(),
-		cloudresourcekind.E_KubernetesResourceType,
-	).(cloudresourcekind.ProjectPlantonKubernetesResourceType)
+		cloudresourcekind.E_KubernetesType,
+	).(cloudresourcekind.KubernetesCloudResourceType)
 	if !ok {
 		return unspecified
 	}
