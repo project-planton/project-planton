@@ -5,9 +5,6 @@ package project.planton.provider.gcp.gcpgkeclustercore.v1;
 import "project/planton/credential/gcpcredential/v1/spec.proto";
 import "project/planton/credential/kubernetesclustercredential/v1/spec.proto";
 import "project/planton/provider/gcp/gcpgkeclustercore/v1/api.proto";
-import "project/planton/shared/iac/pulumi/pulumi.proto";
-import "project/planton/shared/iac/terraform/terraform.proto";
-import "project/planton/shared/iac.proto";
 
 //input for gcp-gke-cluster-core stack
 message GcpGkeClusterCoreStackInput {

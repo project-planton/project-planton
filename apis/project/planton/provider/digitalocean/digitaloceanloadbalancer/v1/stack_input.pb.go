@@ -8,9 +8,6 @@ package digitaloceanloadbalancerv1
 
 import (
 	v1 "github.com/project-planton/project-planton/apis/project/planton/credential/digitaloceancredential/v1"
-	_ "github.com/project-planton/project-planton/apis/project/planton/shared"
-	_ "github.com/project-planton/project-planton/apis/project/planton/shared/iac/pulumi"
-	_ "github.com/project-planton/project-planton/apis/project/planton/shared/iac/terraform"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -84,7 +81,7 @@ var File_project_planton_provider_digitalocean_digitaloceanloadbalancer_v1_stack
 
 const file_project_planton_provider_digitalocean_digitaloceanloadbalancer_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Sproject/planton/provider/digitalocean/digitaloceanloadbalancer/v1/stack_input.proto\x12Aproject.planton.provider.digitalocean.digitaloceanloadbalancer.v1\x1a?project/planton/credential/digitaloceancredential/v1/spec.proto\x1aKproject/planton/provider/digitalocean/digitaloceanloadbalancer/v1/api.proto\x1a project/planton/shared/iac.proto\x1a.project/planton/shared/iac/pulumi/pulumi.proto\x1a4project/planton/shared/iac/terraform/terraform.proto\"\x9d\x02\n" +
+	"Sproject/planton/provider/digitalocean/digitaloceanloadbalancer/v1/stack_input.proto\x12Aproject.planton.provider.digitalocean.digitaloceanloadbalancer.v1\x1a?project/planton/credential/digitaloceancredential/v1/spec.proto\x1aKproject/planton/provider/digitalocean/digitaloceanloadbalancer/v1/api.proto\"\x9d\x02\n" +
 	"\"DigitalOceanLoadBalancerStackInput\x12s\n" +
 	"\x06target\x18\x01 \x01(\v2[.project.planton.provider.digitalocean.digitaloceanloadbalancer.v1.DigitalOceanLoadBalancerR\x06target\x12\x81\x01\n" +
 	"\x13provider_credential\x18\x02 \x01(\v2P.project.planton.credential.digitaloceancredential.v1.DigitalOceanCredentialSpecR\x12providerCredentialB\x92\x04\n" +

@@ -8,9 +8,6 @@ package civokubernetesnodepoolv1
 
 import (
 	v1 "github.com/project-planton/project-planton/apis/project/planton/credential/civocredential/v1"
-	_ "github.com/project-planton/project-planton/apis/project/planton/shared"
-	_ "github.com/project-planton/project-planton/apis/project/planton/shared/iac/pulumi"
-	_ "github.com/project-planton/project-planton/apis/project/planton/shared/iac/terraform"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -84,7 +81,7 @@ var File_project_planton_provider_civo_civokubernetesnodepool_v1_stack_input_pro
 
 const file_project_planton_provider_civo_civokubernetesnodepool_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Iproject/planton/provider/civo/civokubernetesnodepool/v1/stack_input.proto\x127project.planton.provider.civo.civokubernetesnodepool.v1\x1a7project/planton/credential/civocredential/v1/spec.proto\x1aAproject/planton/provider/civo/civokubernetesnodepool/v1/api.proto\x1a project/planton/shared/iac.proto\x1a.project/planton/shared/iac/pulumi/pulumi.proto\x1a4project/planton/shared/iac/terraform/terraform.proto\"\xfe\x01\n" +
+	"Iproject/planton/provider/civo/civokubernetesnodepool/v1/stack_input.proto\x127project.planton.provider.civo.civokubernetesnodepool.v1\x1a7project/planton/credential/civocredential/v1/spec.proto\x1aAproject/planton/provider/civo/civokubernetesnodepool/v1/api.proto\"\xfe\x01\n" +
 	" CivoKubernetesNodePoolStackInput\x12g\n" +
 	"\x06target\x18\x01 \x01(\v2O.project.planton.provider.civo.civokubernetesnodepool.v1.CivoKubernetesNodePoolR\x06target\x12q\n" +
 	"\x13provider_credential\x18\x02 \x01(\v2@.project.planton.credential.civocredential.v1.CivoCredentialSpecR\x12providerCredentialB\xd4\x03\n" +

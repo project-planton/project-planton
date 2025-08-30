@@ -9,9 +9,6 @@ package gcpgkeaddonbundlev1
 import (
 	v1 "github.com/project-planton/project-planton/apis/project/planton/credential/gcpcredential/v1"
 	v11 "github.com/project-planton/project-planton/apis/project/planton/credential/kubernetesclustercredential/v1"
-	_ "github.com/project-planton/project-planton/apis/project/planton/shared"
-	_ "github.com/project-planton/project-planton/apis/project/planton/shared/iac/pulumi"
-	_ "github.com/project-planton/project-planton/apis/project/planton/shared/iac/terraform"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -103,7 +100,7 @@ var File_project_planton_provider_gcp_gcpgkeaddonbundle_v1_stack_input_proto pro
 
 const file_project_planton_provider_gcp_gcpgkeaddonbundle_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Cproject/planton/provider/gcp/gcpgkeaddonbundle/v1/stack_input.proto\x121project.planton.provider.gcp.gcpgkeaddonbundle.v1\x1a6project/planton/credential/gcpcredential/v1/spec.proto\x1aDproject/planton/credential/kubernetesclustercredential/v1/spec.proto\x1a;project/planton/provider/gcp/gcpgkeaddonbundle/v1/api.proto\x1a.project/planton/shared/iac/pulumi/pulumi.proto\x1a4project/planton/shared/iac/terraform/terraform.proto\x1a project/planton/shared/iac.proto\"\xf4\x03\n" +
+	"Cproject/planton/provider/gcp/gcpgkeaddonbundle/v1/stack_input.proto\x121project.planton.provider.gcp.gcpgkeaddonbundle.v1\x1a6project/planton/credential/gcpcredential/v1/spec.proto\x1aDproject/planton/credential/kubernetesclustercredential/v1/spec.proto\x1a;project/planton/provider/gcp/gcpgkeaddonbundle/v1/api.proto\"\xf4\x03\n" +
 	"\x1bGcpGkeAddonBundleStackInput\x12\\\n" +
 	"\x06target\x18\x01 \x01(\v2D.project.planton.provider.gcp.gcpgkeaddonbundle.v1.GcpGkeAddonBundleR\x06target\x12e\n" +
 	"\x0egcp_credential\x18\x05 \x01(\v2>.project.planton.credential.gcpcredential.v1.GcpCredentialSpecR\rgcpCredential\x12\x9e\x01\n" +

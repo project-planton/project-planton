@@ -8,9 +8,6 @@ package civocertificatev1
 
 import (
 	v1 "github.com/project-planton/project-planton/apis/project/planton/credential/civocredential/v1"
-	_ "github.com/project-planton/project-planton/apis/project/planton/shared"
-	_ "github.com/project-planton/project-planton/apis/project/planton/shared/iac/pulumi"
-	_ "github.com/project-planton/project-planton/apis/project/planton/shared/iac/terraform"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -84,7 +81,7 @@ var File_project_planton_provider_civo_civocertificate_v1_stack_input_proto prot
 
 const file_project_planton_provider_civo_civocertificate_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Bproject/planton/provider/civo/civocertificate/v1/stack_input.proto\x120project.planton.provider.civo.civocertificate.v1\x1a7project/planton/credential/civocredential/v1/spec.proto\x1a:project/planton/provider/civo/civocertificate/v1/api.proto\x1a project/planton/shared/iac.proto\x1a.project/planton/shared/iac/pulumi/pulumi.proto\x1a4project/planton/shared/iac/terraform/terraform.proto\"\xe9\x01\n" +
+	"Bproject/planton/provider/civo/civocertificate/v1/stack_input.proto\x120project.planton.provider.civo.civocertificate.v1\x1a7project/planton/credential/civocredential/v1/spec.proto\x1a:project/planton/provider/civo/civocertificate/v1/api.proto\"\xe9\x01\n" +
 	"\x19CivoCertificateStackInput\x12Y\n" +
 	"\x06target\x18\x01 \x01(\v2A.project.planton.provider.civo.civocertificate.v1.CivoCertificateR\x06target\x12q\n" +
 	"\x13provider_credential\x18\x02 \x01(\v2@.project.planton.credential.civocredential.v1.CivoCredentialSpecR\x12providerCredentialB\xa2\x03\n" +

@@ -9,7 +9,6 @@ package gcpartifactregistryrepov1
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	shared "github.com/project-planton/project-planton/apis/project/planton/shared"
-	_ "github.com/project-planton/project-planton/apis/project/planton/shared/iac/pulumi"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -183,7 +182,7 @@ var File_project_planton_provider_gcp_gcpartifactregistryrepo_v1_api_proto proto
 
 const file_project_planton_provider_gcp_gcpartifactregistryrepo_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Aproject/planton/provider/gcp/gcpartifactregistryrepo/v1/api.proto\x127project.planton.provider.gcp.gcpartifactregistryrepo.v1\x1a\x1bbuf/validate/validate.proto\x1aBproject/planton/provider/gcp/gcpartifactregistryrepo/v1/spec.proto\x1aKproject/planton/provider/gcp/gcpartifactregistryrepo/v1/stack_outputs.proto\x1a.project/planton/shared/iac/pulumi/pulumi.proto\x1a#project/planton/shared/status.proto\x1a%project/planton/shared/metadata.proto\"\xc4\x03\n" +
+	"Aproject/planton/provider/gcp/gcpartifactregistryrepo/v1/api.proto\x127project.planton.provider.gcp.gcpartifactregistryrepo.v1\x1a\x1bbuf/validate/validate.proto\x1aBproject/planton/provider/gcp/gcpartifactregistryrepo/v1/spec.proto\x1aKproject/planton/provider/gcp/gcpartifactregistryrepo/v1/stack_outputs.proto\x1a#project/planton/shared/status.proto\x1a%project/planton/shared/metadata.proto\"\xc4\x03\n" +
 	"\x17GcpArtifactRegistryRepo\x12B\n" +
 	"\vapi_version\x18\x01 \x01(\tB!\xbaH\x1er\x1c\n" +
 	"\x1agcp.project-planton.org/v1R\n" +

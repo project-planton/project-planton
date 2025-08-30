@@ -8,9 +8,6 @@ package cloudflarer2bucketv1
 
 import (
 	v1 "github.com/project-planton/project-planton/apis/project/planton/credential/cloudflarecredential/v1"
-	_ "github.com/project-planton/project-planton/apis/project/planton/shared"
-	_ "github.com/project-planton/project-planton/apis/project/planton/shared/iac/pulumi"
-	_ "github.com/project-planton/project-planton/apis/project/planton/shared/iac/terraform"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -84,7 +81,7 @@ var File_project_planton_provider_cloudflare_cloudflarer2bucket_v1_stack_input_p
 
 const file_project_planton_provider_cloudflare_cloudflarer2bucket_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Kproject/planton/provider/cloudflare/cloudflarer2bucket/v1/stack_input.proto\x129project.planton.provider.cloudflare.cloudflarer2bucket.v1\x1a=project/planton/credential/cloudflarecredential/v1/spec.proto\x1aCproject/planton/provider/cloudflare/cloudflarer2bucket/v1/api.proto\x1a project/planton/shared/iac.proto\x1a.project/planton/shared/iac/pulumi/pulumi.proto\x1a4project/planton/shared/iac/terraform/terraform.proto\"\x84\x02\n" +
+	"Kproject/planton/provider/cloudflare/cloudflarer2bucket/v1/stack_input.proto\x129project.planton.provider.cloudflare.cloudflarer2bucket.v1\x1a=project/planton/credential/cloudflarecredential/v1/spec.proto\x1aCproject/planton/provider/cloudflare/cloudflarer2bucket/v1/api.proto\"\x84\x02\n" +
 	"\x1cCloudflareR2BucketStackInput\x12e\n" +
 	"\x06target\x18\x01 \x01(\v2M.project.planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2BucketR\x06target\x12}\n" +
 	"\x13provider_credential\x18\x02 \x01(\v2L.project.planton.credential.cloudflarecredential.v1.CloudflareCredentialSpecR\x12providerCredentialB\xdb\x03\n" +

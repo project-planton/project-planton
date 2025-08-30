@@ -4,9 +4,6 @@ package project.planton.provider.digitalocean.digitaloceandnszone.v1;
 
 import "project/planton/credential/digitaloceancredential/v1/spec.proto";
 import "project/planton/provider/digitalocean/digitaloceandnszone/v1/api.proto";
-import "project/planton/shared/iac.proto";
-import "project/planton/shared/iac/pulumi/pulumi.proto";
-import "project/planton/shared/iac/terraform/terraform.proto";
 
 //digital-ocean-dns-zone stack-input
 message DigitalOceanDnsZoneStackInput {

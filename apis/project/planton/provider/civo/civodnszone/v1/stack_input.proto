@@ -4,9 +4,6 @@ package project.planton.provider.civo.civodnszone.v1;
 
 import "project/planton/credential/civocredential/v1/spec.proto";
 import "project/planton/provider/civo/civodnszone/v1/api.proto";
-import "project/planton/shared/iac.proto";
-import "project/planton/shared/iac/pulumi/pulumi.proto";
-import "project/planton/shared/iac/terraform/terraform.proto";
 
 //civo-dns-zone stack-input
 message CivoDnsZoneStackInput {

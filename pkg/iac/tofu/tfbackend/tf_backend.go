@@ -2,10 +2,11 @@ package tfbackend
 
 import (
 	"fmt"
-	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/apis/project/planton/shared/iac/terraform"
 	"os"
 	"path/filepath"
+
+	"github.com/pkg/errors"
+	"github.com/project-planton/project-planton/apis/project/planton/shared/iac/terraform"
 )
 
 // WriteBackendFile creates a `backend.tf` file in projectDir using the backend type specified by tofuBackendType.

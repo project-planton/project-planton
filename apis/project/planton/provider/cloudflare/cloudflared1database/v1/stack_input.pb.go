@@ -8,9 +8,6 @@ package cloudflared1databasev1
 
 import (
 	v1 "github.com/project-planton/project-planton/apis/project/planton/credential/cloudflarecredential/v1"
-	_ "github.com/project-planton/project-planton/apis/project/planton/shared"
-	_ "github.com/project-planton/project-planton/apis/project/planton/shared/iac/pulumi"
-	_ "github.com/project-planton/project-planton/apis/project/planton/shared/iac/terraform"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -84,7 +81,7 @@ var File_project_planton_provider_cloudflare_cloudflared1database_v1_stack_input
 
 const file_project_planton_provider_cloudflare_cloudflared1database_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Mproject/planton/provider/cloudflare/cloudflared1database/v1/stack_input.proto\x12;project.planton.provider.cloudflare.cloudflared1database.v1\x1a=project/planton/credential/cloudflarecredential/v1/spec.proto\x1aEproject/planton/provider/cloudflare/cloudflared1database/v1/api.proto\x1a project/planton/shared/iac.proto\x1a.project/planton/shared/iac/pulumi/pulumi.proto\x1a4project/planton/shared/iac/terraform/terraform.proto\"\x8a\x02\n" +
+	"Mproject/planton/provider/cloudflare/cloudflared1database/v1/stack_input.proto\x12;project.planton.provider.cloudflare.cloudflared1database.v1\x1a=project/planton/credential/cloudflarecredential/v1/spec.proto\x1aEproject/planton/provider/cloudflare/cloudflared1database/v1/api.proto\"\x8a\x02\n" +
 	"\x1eCloudflareD1DatabaseStackInput\x12i\n" +
 	"\x06target\x18\x01 \x01(\v2Q.project.planton.provider.cloudflare.cloudflared1database.v1.CloudflareD1DatabaseR\x06target\x12}\n" +
 	"\x13provider_credential\x18\x02 \x01(\v2L.project.planton.credential.cloudflarecredential.v1.CloudflareCredentialSpecR\x12providerCredentialB\xea\x03\n" +

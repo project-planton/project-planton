@@ -8,9 +8,6 @@ package cloudflarezerotrustaccessapplicationv1
 
 import (
 	v1 "github.com/project-planton/project-planton/apis/project/planton/credential/cloudflarecredential/v1"
-	_ "github.com/project-planton/project-planton/apis/project/planton/shared"
-	_ "github.com/project-planton/project-planton/apis/project/planton/shared/iac/pulumi"
-	_ "github.com/project-planton/project-planton/apis/project/planton/shared/iac/terraform"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -84,7 +81,7 @@ var File_project_planton_provider_cloudflare_cloudflarezerotrustaccessapplicatio
 
 const file_project_planton_provider_cloudflare_cloudflarezerotrustaccessapplication_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"]project/planton/provider/cloudflare/cloudflarezerotrustaccessapplication/v1/stack_input.proto\x12Kproject.planton.provider.cloudflare.cloudflarezerotrustaccessapplication.v1\x1a=project/planton/credential/cloudflarecredential/v1/spec.proto\x1aUproject/planton/provider/cloudflare/cloudflarezerotrustaccessapplication/v1/api.proto\x1a project/planton/shared/iac.proto\x1a.project/planton/shared/iac/pulumi/pulumi.proto\x1a4project/planton/shared/iac/terraform/terraform.proto\"\xbb\x02\n" +
+	"]project/planton/provider/cloudflare/cloudflarezerotrustaccessapplication/v1/stack_input.proto\x12Kproject.planton.provider.cloudflare.cloudflarezerotrustaccessapplication.v1\x1a=project/planton/credential/cloudflarecredential/v1/spec.proto\x1aUproject/planton/provider/cloudflare/cloudflarezerotrustaccessapplication/v1/api.proto\"\xbb\x02\n" +
 	".CloudflareZeroTrustAccessApplicationStackInput\x12\x89\x01\n" +
 	"\x06target\x18\x01 \x01(\v2q.project.planton.provider.cloudflare.cloudflarezerotrustaccessapplication.v1.CloudflareZeroTrustAccessApplicationR\x06target\x12}\n" +
 	"\x13provider_credential\x18\x02 \x01(\v2L.project.planton.credential.cloudflarecredential.v1.CloudflareCredentialSpecR\x12providerCredentialB\xda\x04\n" +

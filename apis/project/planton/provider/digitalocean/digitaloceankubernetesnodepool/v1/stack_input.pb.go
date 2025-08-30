@@ -8,9 +8,6 @@ package digitaloceankubernetesnodepoolv1
 
 import (
 	v1 "github.com/project-planton/project-planton/apis/project/planton/credential/digitaloceancredential/v1"
-	_ "github.com/project-planton/project-planton/apis/project/planton/shared"
-	_ "github.com/project-planton/project-planton/apis/project/planton/shared/iac/pulumi"
-	_ "github.com/project-planton/project-planton/apis/project/planton/shared/iac/terraform"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -84,7 +81,7 @@ var File_project_planton_provider_digitalocean_digitaloceankubernetesnodepool_v1
 
 const file_project_planton_provider_digitalocean_digitaloceankubernetesnodepool_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Yproject/planton/provider/digitalocean/digitaloceankubernetesnodepool/v1/stack_input.proto\x12Gproject.planton.provider.digitalocean.digitaloceankubernetesnodepool.v1\x1a?project/planton/credential/digitaloceancredential/v1/spec.proto\x1aQproject/planton/provider/digitalocean/digitaloceankubernetesnodepool/v1/api.proto\x1a project/planton/shared/iac.proto\x1a.project/planton/shared/iac/pulumi/pulumi.proto\x1a4project/planton/shared/iac/terraform/terraform.proto\"\xaf\x02\n" +
+	"Yproject/planton/provider/digitalocean/digitaloceankubernetesnodepool/v1/stack_input.proto\x12Gproject.planton.provider.digitalocean.digitaloceankubernetesnodepool.v1\x1a?project/planton/credential/digitaloceancredential/v1/spec.proto\x1aQproject/planton/provider/digitalocean/digitaloceankubernetesnodepool/v1/api.proto\"\xaf\x02\n" +
 	"(DigitalOceanKubernetesNodePoolStackInput\x12\x7f\n" +
 	"\x06target\x18\x01 \x01(\v2g.project.planton.provider.digitalocean.digitaloceankubernetesnodepool.v1.DigitalOceanKubernetesNodePoolR\x06target\x12\x81\x01\n" +
 	"\x13provider_credential\x18\x02 \x01(\v2P.project.planton.credential.digitaloceancredential.v1.DigitalOceanCredentialSpecR\x12providerCredentialB\xbc\x04\n" +

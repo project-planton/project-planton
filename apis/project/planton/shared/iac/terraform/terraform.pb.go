@@ -7,8 +7,6 @@
 package terraform
 
 import (
-	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	iacgitrepo "github.com/project-planton/project-planton/apis/project/planton/shared/iac/iacgitrepo"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -22,67 +20,6 @@ const (
 	// Verify that runtime/protoimpl is sufficiently up-to-date.
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
-
-// terraform backend type
-type TerraformBackendType int32
-
-const (
-	// Unspecified or unknown backend type.
-	TerraformBackendType_terraform_backend_type_unspecified TerraformBackendType = 0
-	// Local filesystem backend (the default if none is configured).
-	TerraformBackendType_local TerraformBackendType = 1
-	// Amazon S3-based backend for remote state storage.
-	TerraformBackendType_s3 TerraformBackendType = 2
-	// Google Cloud Storage backend for storing state.
-	TerraformBackendType_gcs TerraformBackendType = 3
-	// Azure Resource Manager backend using Azure Blob Storage.
-	TerraformBackendType_azurerm TerraformBackendType = 4
-)
-
-// Enum value maps for TerraformBackendType.
-var (
-	TerraformBackendType_name = map[int32]string{
-		0: "terraform_backend_type_unspecified",
-		1: "local",
-		2: "s3",
-		3: "gcs",
-		4: "azurerm",
-	}
-	TerraformBackendType_value = map[string]int32{
-		"terraform_backend_type_unspecified": 0,
-		"local":                              1,
-		"s3":                                 2,
-		"gcs":                                3,
-		"azurerm":                            4,
-	}
-)
-
-func (x TerraformBackendType) Enum() *TerraformBackendType {
-	p := new(TerraformBackendType)
-	*p = x
-	return p
-}
-
-func (x TerraformBackendType) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (TerraformBackendType) Descriptor() protoreflect.EnumDescriptor {
-	return file_project_planton_shared_iac_terraform_terraform_proto_enumTypes[0].Descriptor()
-}
-
-func (TerraformBackendType) Type() protoreflect.EnumType {
-	return &file_project_planton_shared_iac_terraform_terraform_proto_enumTypes[0]
-}
-
-func (x TerraformBackendType) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use TerraformBackendType.Descriptor instead.
-func (TerraformBackendType) EnumDescriptor() ([]byte, []int) {
-	return file_project_planton_shared_iac_terraform_terraform_proto_rawDescGZIP(), []int{0}
-}
 
 // terraform operation type
 // the recommended best practice to prefix the entry with enum name has been intentionally ignored
@@ -129,11 +66,11 @@ func (x TerraformOperationType) String() string {
 }
 
 func (TerraformOperationType) Descriptor() protoreflect.EnumDescriptor {
-	return file_project_planton_shared_iac_terraform_terraform_proto_enumTypes[1].Descriptor()
+	return file_project_planton_shared_iac_terraform_terraform_proto_enumTypes[0].Descriptor()
 }
 
 func (TerraformOperationType) Type() protoreflect.EnumType {
-	return &file_project_planton_shared_iac_terraform_terraform_proto_enumTypes[1]
+	return &file_project_planton_shared_iac_terraform_terraform_proto_enumTypes[0]
 }
 
 func (x TerraformOperationType) Number() protoreflect.EnumNumber {
@@ -142,502 +79,88 @@ func (x TerraformOperationType) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use TerraformOperationType.Descriptor instead.
 func (TerraformOperationType) EnumDescriptor() ([]byte, []int) {
-	return file_project_planton_shared_iac_terraform_terraform_proto_rawDescGZIP(), []int{1}
-}
-
-// Terraform stack info
-type TerraformStackInfo struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// terraform stack operations
-	Operations []*TerraformStackOperation `protobuf:"bytes,1,rep,name=operations,proto3" json:"operations,omitempty"`
-	// terraform backend
-	Backend *TerraformBackend `protobuf:"bytes,2,opt,name=backend,proto3" json:"backend,omitempty"`
-	// iac-module git-repo
-	GitRepo       *iacgitrepo.IacGitRepo `protobuf:"bytes,3,opt,name=git_repo,json=gitRepo,proto3" json:"git_repo,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *TerraformStackInfo) Reset() {
-	*x = TerraformStackInfo{}
-	mi := &file_project_planton_shared_iac_terraform_terraform_proto_msgTypes[0]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *TerraformStackInfo) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*TerraformStackInfo) ProtoMessage() {}
-
-func (x *TerraformStackInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_project_planton_shared_iac_terraform_terraform_proto_msgTypes[0]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use TerraformStackInfo.ProtoReflect.Descriptor instead.
-func (*TerraformStackInfo) Descriptor() ([]byte, []int) {
 	return file_project_planton_shared_iac_terraform_terraform_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *TerraformStackInfo) GetOperations() []*TerraformStackOperation {
-	if x != nil {
-		return x.Operations
+// terraform backend type
+type TerraformBackendType int32
+
+const (
+	// Unspecified or unknown backend type.
+	TerraformBackendType_terraform_backend_type_unspecified TerraformBackendType = 0
+	// Local filesystem backend (the default if none is configured).
+	TerraformBackendType_local TerraformBackendType = 1
+	// Amazon S3-based backend for remote state storage.
+	TerraformBackendType_s3 TerraformBackendType = 2
+	// Google Cloud Storage backend for storing state.
+	TerraformBackendType_gcs TerraformBackendType = 3
+	// Azure Resource Manager backend using Azure Blob Storage.
+	TerraformBackendType_azurerm TerraformBackendType = 4
+)
+
+// Enum value maps for TerraformBackendType.
+var (
+	TerraformBackendType_name = map[int32]string{
+		0: "terraform_backend_type_unspecified",
+		1: "local",
+		2: "s3",
+		3: "gcs",
+		4: "azurerm",
 	}
-	return nil
-}
-
-func (x *TerraformStackInfo) GetBackend() *TerraformBackend {
-	if x != nil {
-		return x.Backend
+	TerraformBackendType_value = map[string]int32{
+		"terraform_backend_type_unspecified": 0,
+		"local":                              1,
+		"s3":                                 2,
+		"gcs":                                3,
+		"azurerm":                            4,
 	}
-	return nil
+)
+
+func (x TerraformBackendType) Enum() *TerraformBackendType {
+	p := new(TerraformBackendType)
+	*p = x
+	return p
 }
 
-func (x *TerraformStackInfo) GetGitRepo() *iacgitrepo.IacGitRepo {
-	if x != nil {
-		return x.GitRepo
-	}
-	return nil
+func (x TerraformBackendType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
 }
 
-// terraform-backend-credential spec
-// These credentials are used for managing Terraform state storage, which can be configured for different cloud providers or local environments.
-// For example, these credentials can be used to store state files in AWS S3, Google Cloud Storage, Azure Blob Storage, or locally on the file system.
-// Properly configuring these backends is essential for managing and maintaining infrastructure state efficiently.
-type TerraformBackend struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// terraform backend type
-	Type TerraformBackendType `protobuf:"varint,1,opt,name=type,proto3,enum=project.planton.shared.iac.terraform.TerraformBackendType" json:"type,omitempty"`
-	// s3 backend spec
-	S3 *TerraformS3Backend `protobuf:"bytes,2,opt,name=s3,proto3" json:"s3,omitempty"`
-	// gcs backend spec
-	Gcs *TerraformGcsBackend `protobuf:"bytes,3,opt,name=gcs,proto3" json:"gcs,omitempty"`
-	// azure-blob-storage backend spec
-	Azurerm       *TerraformAzurermBackend `protobuf:"bytes,4,opt,name=azurerm,proto3" json:"azurerm,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+func (TerraformBackendType) Descriptor() protoreflect.EnumDescriptor {
+	return file_project_planton_shared_iac_terraform_terraform_proto_enumTypes[1].Descriptor()
 }
 
-func (x *TerraformBackend) Reset() {
-	*x = TerraformBackend{}
-	mi := &file_project_planton_shared_iac_terraform_terraform_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
+func (TerraformBackendType) Type() protoreflect.EnumType {
+	return &file_project_planton_shared_iac_terraform_terraform_proto_enumTypes[1]
 }
 
-func (x *TerraformBackend) String() string {
-	return protoimpl.X.MessageStringOf(x)
+func (x TerraformBackendType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
 }
 
-func (*TerraformBackend) ProtoMessage() {}
-
-func (x *TerraformBackend) ProtoReflect() protoreflect.Message {
-	mi := &file_project_planton_shared_iac_terraform_terraform_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use TerraformBackend.ProtoReflect.Descriptor instead.
-func (*TerraformBackend) Descriptor() ([]byte, []int) {
+// Deprecated: Use TerraformBackendType.Descriptor instead.
+func (TerraformBackendType) EnumDescriptor() ([]byte, []int) {
 	return file_project_planton_shared_iac_terraform_terraform_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *TerraformBackend) GetType() TerraformBackendType {
-	if x != nil {
-		return x.Type
-	}
-	return TerraformBackendType_terraform_backend_type_unspecified
-}
-
-func (x *TerraformBackend) GetS3() *TerraformS3Backend {
-	if x != nil {
-		return x.S3
-	}
-	return nil
-}
-
-func (x *TerraformBackend) GetGcs() *TerraformGcsBackend {
-	if x != nil {
-		return x.Gcs
-	}
-	return nil
-}
-
-func (x *TerraformBackend) GetAzurerm() *TerraformAzurermBackend {
-	if x != nil {
-		return x.Azurerm
-	}
-	return nil
-}
-
-// terraform stack operation
-type TerraformStackOperation struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// terraform operation
-	Operation TerraformOperationType `protobuf:"varint,1,opt,name=operation,proto3,enum=project.planton.shared.iac.terraform.TerraformOperationType" json:"operation,omitempty"`
-	// run preview of terraform operation
-	Preview       bool `protobuf:"varint,2,opt,name=preview,proto3" json:"preview,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *TerraformStackOperation) Reset() {
-	*x = TerraformStackOperation{}
-	mi := &file_project_planton_shared_iac_terraform_terraform_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *TerraformStackOperation) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*TerraformStackOperation) ProtoMessage() {}
-
-func (x *TerraformStackOperation) ProtoReflect() protoreflect.Message {
-	mi := &file_project_planton_shared_iac_terraform_terraform_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use TerraformStackOperation.ProtoReflect.Descriptor instead.
-func (*TerraformStackOperation) Descriptor() ([]byte, []int) {
-	return file_project_planton_shared_iac_terraform_terraform_proto_rawDescGZIP(), []int{2}
-}
-
-func (x *TerraformStackOperation) GetOperation() TerraformOperationType {
-	if x != nil {
-		return x.Operation
-	}
-	return TerraformOperationType_terraform_operation_type_unspecified
-}
-
-func (x *TerraformStackOperation) GetPreview() bool {
-	if x != nil {
-		return x.Preview
-	}
-	return false
-}
-
-// terraform-backend-credential spec for aws-s3 backend
-// https://developer.hashicorp.com/terraform/language/backend/s3
-type TerraformS3Backend struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// name of s3-bucket
-	Bucket string `protobuf:"bytes,1,opt,name=bucket,proto3" json:"bucket,omitempty"`
-	// aws-access-key-id
-	AwsAccessKeyId string `protobuf:"bytes,2,opt,name=aws_access_key_id,json=awsAccessKeyId,proto3" json:"aws_access_key_id,omitempty"`
-	// aws-secret-access-key
-	AwsSecretAccessKey string `protobuf:"bytes,3,opt,name=aws_secret_access_key,json=awsSecretAccessKey,proto3" json:"aws_secret_access_key,omitempty"`
-	// aws-region
-	Region string `protobuf:"bytes,4,opt,name=region,proto3" json:"region,omitempty"`
-	// dynamodb-table for state locking
-	// this is optional, but recommended for production environments
-	DynamodbTable string `protobuf:"bytes,5,opt,name=dynamodb_table,json=dynamodbTable,proto3" json:"dynamodb_table,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *TerraformS3Backend) Reset() {
-	*x = TerraformS3Backend{}
-	mi := &file_project_planton_shared_iac_terraform_terraform_proto_msgTypes[3]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *TerraformS3Backend) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*TerraformS3Backend) ProtoMessage() {}
-
-func (x *TerraformS3Backend) ProtoReflect() protoreflect.Message {
-	mi := &file_project_planton_shared_iac_terraform_terraform_proto_msgTypes[3]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use TerraformS3Backend.ProtoReflect.Descriptor instead.
-func (*TerraformS3Backend) Descriptor() ([]byte, []int) {
-	return file_project_planton_shared_iac_terraform_terraform_proto_rawDescGZIP(), []int{3}
-}
-
-func (x *TerraformS3Backend) GetBucket() string {
-	if x != nil {
-		return x.Bucket
-	}
-	return ""
-}
-
-func (x *TerraformS3Backend) GetAwsAccessKeyId() string {
-	if x != nil {
-		return x.AwsAccessKeyId
-	}
-	return ""
-}
-
-func (x *TerraformS3Backend) GetAwsSecretAccessKey() string {
-	if x != nil {
-		return x.AwsSecretAccessKey
-	}
-	return ""
-}
-
-func (x *TerraformS3Backend) GetRegion() string {
-	if x != nil {
-		return x.Region
-	}
-	return ""
-}
-
-func (x *TerraformS3Backend) GetDynamodbTable() string {
-	if x != nil {
-		return x.DynamodbTable
-	}
-	return ""
-}
-
-// terraform-backend-credential spec for google-cloud-storage backend
-// https://developer.hashicorp.com/terraform/language/backend/gcs
-type TerraformGcsBackend struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// name of gcs-bucket
-	GcsBucket string `protobuf:"bytes,1,opt,name=gcs_bucket,json=gcsBucket,proto3" json:"gcs_bucket,omitempty"`
-	// base64 encoded gcp service-account-key json
-	ServiceAccountKeyBase64 string `protobuf:"bytes,2,opt,name=service_account_key_base64,json=serviceAccountKeyBase64,proto3" json:"service_account_key_base64,omitempty"`
-	unknownFields           protoimpl.UnknownFields
-	sizeCache               protoimpl.SizeCache
-}
-
-func (x *TerraformGcsBackend) Reset() {
-	*x = TerraformGcsBackend{}
-	mi := &file_project_planton_shared_iac_terraform_terraform_proto_msgTypes[4]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *TerraformGcsBackend) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*TerraformGcsBackend) ProtoMessage() {}
-
-func (x *TerraformGcsBackend) ProtoReflect() protoreflect.Message {
-	mi := &file_project_planton_shared_iac_terraform_terraform_proto_msgTypes[4]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use TerraformGcsBackend.ProtoReflect.Descriptor instead.
-func (*TerraformGcsBackend) Descriptor() ([]byte, []int) {
-	return file_project_planton_shared_iac_terraform_terraform_proto_rawDescGZIP(), []int{4}
-}
-
-func (x *TerraformGcsBackend) GetGcsBucket() string {
-	if x != nil {
-		return x.GcsBucket
-	}
-	return ""
-}
-
-func (x *TerraformGcsBackend) GetServiceAccountKeyBase64() string {
-	if x != nil {
-		return x.ServiceAccountKeyBase64
-	}
-	return ""
-}
-
-// terraform-backend-credential spec for azure-blob-storage backend
-// https://developer.hashicorp.com/terraform/language/backend/azurerm
-type TerraformAzurermBackend struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// azure resource-group-name
-	ResourceGroupName string `protobuf:"bytes,1,opt,name=resource_group_name,json=resourceGroupName,proto3" json:"resource_group_name,omitempty"`
-	// azure storage-account-name
-	StorageAccountName string `protobuf:"bytes,2,opt,name=storage_account_name,json=storageAccountName,proto3" json:"storage_account_name,omitempty"`
-	// container name
-	ContainerName string `protobuf:"bytes,3,opt,name=container_name,json=containerName,proto3" json:"container_name,omitempty"`
-	// The Azure Client ID, which is used to identify the application making requests to Azure services.
-	// This is a required field, and it must be a valid non-empty string.
-	ClientId string `protobuf:"bytes,4,opt,name=client_id,json=clientId,proto3" json:"client_id,omitempty"`
-	// The Azure Client Secret, which is used to authenticate the application with Azure services.
-	// This is a required field, and it must be a valid non-empty string.
-	ClientSecret string `protobuf:"bytes,5,opt,name=client_secret,json=clientSecret,proto3" json:"client_secret,omitempty"`
-	// The Azure Tenant ID, which uniquely identifies the Azure Active Directory (AAD) tenant.
-	// This is a required field, and it must be a valid non-empty string.
-	TenantId string `protobuf:"bytes,6,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id,omitempty"`
-	// The Azure Subscription ID, which uniquely identifies the Azure subscription.
-	// This is a required field, and it must be a valid non-empty string.
-	SubscriptionId string `protobuf:"bytes,7,opt,name=subscription_id,json=subscriptionId,proto3" json:"subscription_id,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
-}
-
-func (x *TerraformAzurermBackend) Reset() {
-	*x = TerraformAzurermBackend{}
-	mi := &file_project_planton_shared_iac_terraform_terraform_proto_msgTypes[5]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *TerraformAzurermBackend) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*TerraformAzurermBackend) ProtoMessage() {}
-
-func (x *TerraformAzurermBackend) ProtoReflect() protoreflect.Message {
-	mi := &file_project_planton_shared_iac_terraform_terraform_proto_msgTypes[5]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use TerraformAzurermBackend.ProtoReflect.Descriptor instead.
-func (*TerraformAzurermBackend) Descriptor() ([]byte, []int) {
-	return file_project_planton_shared_iac_terraform_terraform_proto_rawDescGZIP(), []int{5}
-}
-
-func (x *TerraformAzurermBackend) GetResourceGroupName() string {
-	if x != nil {
-		return x.ResourceGroupName
-	}
-	return ""
-}
-
-func (x *TerraformAzurermBackend) GetStorageAccountName() string {
-	if x != nil {
-		return x.StorageAccountName
-	}
-	return ""
-}
-
-func (x *TerraformAzurermBackend) GetContainerName() string {
-	if x != nil {
-		return x.ContainerName
-	}
-	return ""
-}
-
-func (x *TerraformAzurermBackend) GetClientId() string {
-	if x != nil {
-		return x.ClientId
-	}
-	return ""
-}
-
-func (x *TerraformAzurermBackend) GetClientSecret() string {
-	if x != nil {
-		return x.ClientSecret
-	}
-	return ""
-}
-
-func (x *TerraformAzurermBackend) GetTenantId() string {
-	if x != nil {
-		return x.TenantId
-	}
-	return ""
-}
-
-func (x *TerraformAzurermBackend) GetSubscriptionId() string {
-	if x != nil {
-		return x.SubscriptionId
-	}
-	return ""
 }
 
 var File_project_planton_shared_iac_terraform_terraform_proto protoreflect.FileDescriptor
 
 const file_project_planton_shared_iac_terraform_terraform_proto_rawDesc = "" +
 	"\n" +
-	"4project/planton/shared/iac/terraform/terraform.proto\x12$project.planton.shared.iac.terraform\x1a\x1bbuf/validate/validate.proto\x1a8project/planton/shared/iac/iacgitrepo/iac_git_repo.proto\"\x93\x02\n" +
-	"\x12TerraformStackInfo\x12]\n" +
-	"\n" +
-	"operations\x18\x01 \x03(\v2=.project.planton.shared.iac.terraform.TerraformStackOperationR\n" +
-	"operations\x12P\n" +
-	"\abackend\x18\x02 \x01(\v26.project.planton.shared.iac.terraform.TerraformBackendR\abackend\x12L\n" +
-	"\bgit_repo\x18\x03 \x01(\v21.project.planton.shared.iac.iacgitrepo.IacGitRepoR\agitRepo\"\xa2\x05\n" +
-	"\x10TerraformBackend\x12V\n" +
-	"\x04type\x18\x01 \x01(\x0e2:.project.planton.shared.iac.terraform.TerraformBackendTypeB\x06\xbaH\x03\xc8\x01\x01R\x04type\x12H\n" +
-	"\x02s3\x18\x02 \x01(\v28.project.planton.shared.iac.terraform.TerraformS3BackendR\x02s3\x12K\n" +
-	"\x03gcs\x18\x03 \x01(\v29.project.planton.shared.iac.terraform.TerraformGcsBackendR\x03gcs\x12W\n" +
-	"\aazurerm\x18\x04 \x01(\v2=.project.planton.shared.iac.terraform.TerraformAzurermBackendR\aazurerm:\xc5\x02\xbaH\xc1\x02\x1aa\n" +
-	"\vs3.required\x1aRthis.type == 2 && !has(this.s3)? 's3 details is mandatory when provider is s3': ''\x1ae\n" +
-	"\fgcs.required\x1aUthis.type == 3 && !has(this.gcs)? 'gcs details is mandatory when provider is gcs': ''\x1au\n" +
-	"\x10azurerm.required\x1aathis.type == 4 && !has(this.azurerm)? 'azurerm details is mandatory when provider is azurerm': ''\"\x8f\x01\n" +
-	"\x17TerraformStackOperation\x12Z\n" +
-	"\toperation\x18\x01 \x01(\x0e2<.project.planton.shared.iac.terraform.TerraformOperationTypeR\toperation\x12\x18\n" +
-	"\apreview\x18\x02 \x01(\bR\apreview\"\xe9\x01\n" +
-	"\x12TerraformS3Backend\x12\x1e\n" +
-	"\x06bucket\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x06bucket\x121\n" +
-	"\x11aws_access_key_id\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x0eawsAccessKeyId\x129\n" +
-	"\x15aws_secret_access_key\x18\x03 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x12awsSecretAccessKey\x12\x1e\n" +
-	"\x06region\x18\x04 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x06region\x12%\n" +
-	"\x0edynamodb_table\x18\x05 \x01(\tR\rdynamodbTable\"\x81\x01\n" +
-	"\x13TerraformGcsBackend\x12%\n" +
-	"\n" +
-	"gcs_bucket\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\tgcsBucket\x12C\n" +
-	"\x1aservice_account_key_base64\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x17serviceAccountKeyBase64\"\xe2\x02\n" +
-	"\x17TerraformAzurermBackend\x126\n" +
-	"\x13resource_group_name\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x11resourceGroupName\x128\n" +
-	"\x14storage_account_name\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x12storageAccountName\x12-\n" +
-	"\x0econtainer_name\x18\x03 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\rcontainerName\x12#\n" +
-	"\tclient_id\x18\x04 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bclientId\x12+\n" +
-	"\rclient_secret\x18\x05 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\fclientSecret\x12#\n" +
-	"\ttenant_id\x18\x06 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\btenantId\x12/\n" +
-	"\x0fsubscription_id\x18\a \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x0esubscriptionId*g\n" +
-	"\x14TerraformBackendType\x12&\n" +
-	"\"terraform_backend_type_unspecified\x10\x00\x12\t\n" +
-	"\x05local\x10\x01\x12\x06\n" +
-	"\x02s3\x10\x02\x12\a\n" +
-	"\x03gcs\x10\x03\x12\v\n" +
-	"\aazurerm\x10\x04*{\n" +
+	"4project/planton/shared/iac/terraform/terraform.proto\x12$project.planton.shared.iac.terraform*{\n" +
 	"\x16TerraformOperationType\x12(\n" +
 	"$terraform_operation_type_unspecified\x10\x00\x12\b\n" +
 	"\x04init\x10\x01\x12\v\n" +
 	"\arefresh\x10\x02\x12\b\n" +
 	"\x04plan\x10\x03\x12\t\n" +
 	"\x05apply\x10\x04\x12\v\n" +
-	"\adestroy\x10\x05B\xc6\x02\n" +
+	"\adestroy\x10\x05*g\n" +
+	"\x14TerraformBackendType\x12&\n" +
+	"\"terraform_backend_type_unspecified\x10\x00\x12\t\n" +
+	"\x05local\x10\x01\x12\x06\n" +
+	"\x02s3\x10\x02\x12\a\n" +
+	"\x03gcs\x10\x03\x12\v\n" +
+	"\aazurerm\x10\x04B\xc6\x02\n" +
 	"(com.project.planton.shared.iac.terraformB\x0eTerraformProtoP\x01ZTgithub.com/project-planton/project-planton/apis/project/planton/shared/iac/terraform\xa2\x02\x05PPSIT\xaa\x02$Project.Planton.Shared.Iac.Terraform\xca\x02$Project\\Planton\\Shared\\Iac\\Terraform\xe2\x020Project\\Planton\\Shared\\Iac\\Terraform\\GPBMetadata\xea\x02(Project::Planton::Shared::Iac::Terraformb\x06proto3"
 
 var (
@@ -653,32 +176,16 @@ func file_project_planton_shared_iac_terraform_terraform_proto_rawDescGZIP() []b
 }
 
 var file_project_planton_shared_iac_terraform_terraform_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
-var file_project_planton_shared_iac_terraform_terraform_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_project_planton_shared_iac_terraform_terraform_proto_goTypes = []any{
-	(TerraformBackendType)(0),       // 0: project.planton.shared.iac.terraform.TerraformBackendType
-	(TerraformOperationType)(0),     // 1: project.planton.shared.iac.terraform.TerraformOperationType
-	(*TerraformStackInfo)(nil),      // 2: project.planton.shared.iac.terraform.TerraformStackInfo
-	(*TerraformBackend)(nil),        // 3: project.planton.shared.iac.terraform.TerraformBackend
-	(*TerraformStackOperation)(nil), // 4: project.planton.shared.iac.terraform.TerraformStackOperation
-	(*TerraformS3Backend)(nil),      // 5: project.planton.shared.iac.terraform.TerraformS3Backend
-	(*TerraformGcsBackend)(nil),     // 6: project.planton.shared.iac.terraform.TerraformGcsBackend
-	(*TerraformAzurermBackend)(nil), // 7: project.planton.shared.iac.terraform.TerraformAzurermBackend
-	(*iacgitrepo.IacGitRepo)(nil),   // 8: project.planton.shared.iac.iacgitrepo.IacGitRepo
+	(TerraformOperationType)(0), // 0: project.planton.shared.iac.terraform.TerraformOperationType
+	(TerraformBackendType)(0),   // 1: project.planton.shared.iac.terraform.TerraformBackendType
 }
 var file_project_planton_shared_iac_terraform_terraform_proto_depIdxs = []int32{
-	4, // 0: project.planton.shared.iac.terraform.TerraformStackInfo.operations:type_name -> project.planton.shared.iac.terraform.TerraformStackOperation
-	3, // 1: project.planton.shared.iac.terraform.TerraformStackInfo.backend:type_name -> project.planton.shared.iac.terraform.TerraformBackend
-	8, // 2: project.planton.shared.iac.terraform.TerraformStackInfo.git_repo:type_name -> project.planton.shared.iac.iacgitrepo.IacGitRepo
-	0, // 3: project.planton.shared.iac.terraform.TerraformBackend.type:type_name -> project.planton.shared.iac.terraform.TerraformBackendType
-	5, // 4: project.planton.shared.iac.terraform.TerraformBackend.s3:type_name -> project.planton.shared.iac.terraform.TerraformS3Backend
-	6, // 5: project.planton.shared.iac.terraform.TerraformBackend.gcs:type_name -> project.planton.shared.iac.terraform.TerraformGcsBackend
-	7, // 6: project.planton.shared.iac.terraform.TerraformBackend.azurerm:type_name -> project.planton.shared.iac.terraform.TerraformAzurermBackend
-	1, // 7: project.planton.shared.iac.terraform.TerraformStackOperation.operation:type_name -> project.planton.shared.iac.terraform.TerraformOperationType
-	8, // [8:8] is the sub-list for method output_type
-	8, // [8:8] is the sub-list for method input_type
-	8, // [8:8] is the sub-list for extension type_name
-	8, // [8:8] is the sub-list for extension extendee
-	0, // [0:8] is the sub-list for field type_name
+	0, // [0:0] is the sub-list for method output_type
+	0, // [0:0] is the sub-list for method input_type
+	0, // [0:0] is the sub-list for extension type_name
+	0, // [0:0] is the sub-list for extension extendee
+	0, // [0:0] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_shared_iac_terraform_terraform_proto_init() }
@@ -692,14 +199,13 @@ func file_project_planton_shared_iac_terraform_terraform_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_project_planton_shared_iac_terraform_terraform_proto_rawDesc), len(file_project_planton_shared_iac_terraform_terraform_proto_rawDesc)),
 			NumEnums:      2,
-			NumMessages:   6,
+			NumMessages:   0,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
 		GoTypes:           file_project_planton_shared_iac_terraform_terraform_proto_goTypes,
 		DependencyIndexes: file_project_planton_shared_iac_terraform_terraform_proto_depIdxs,
 		EnumInfos:         file_project_planton_shared_iac_terraform_terraform_proto_enumTypes,
-		MessageInfos:      file_project_planton_shared_iac_terraform_terraform_proto_msgTypes,
 	}.Build()
 	File_project_planton_shared_iac_terraform_terraform_proto = out.File
 	file_project_planton_shared_iac_terraform_terraform_proto_goTypes = nil

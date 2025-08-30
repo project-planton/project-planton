@@ -8,9 +8,6 @@ package digitaloceandnszonev1
 
 import (
 	v1 "github.com/project-planton/project-planton/apis/project/planton/credential/digitaloceancredential/v1"
-	_ "github.com/project-planton/project-planton/apis/project/planton/shared"
-	_ "github.com/project-planton/project-planton/apis/project/planton/shared/iac/pulumi"
-	_ "github.com/project-planton/project-planton/apis/project/planton/shared/iac/terraform"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -84,7 +81,7 @@ var File_project_planton_provider_digitalocean_digitaloceandnszone_v1_stack_inpu
 
 const file_project_planton_provider_digitalocean_digitaloceandnszone_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Nproject/planton/provider/digitalocean/digitaloceandnszone/v1/stack_input.proto\x12<project.planton.provider.digitalocean.digitaloceandnszone.v1\x1a?project/planton/credential/digitaloceancredential/v1/spec.proto\x1aFproject/planton/provider/digitalocean/digitaloceandnszone/v1/api.proto\x1a project/planton/shared/iac.proto\x1a.project/planton/shared/iac/pulumi/pulumi.proto\x1a4project/planton/shared/iac/terraform/terraform.proto\"\x8e\x02\n" +
+	"Nproject/planton/provider/digitalocean/digitaloceandnszone/v1/stack_input.proto\x12<project.planton.provider.digitalocean.digitaloceandnszone.v1\x1a?project/planton/credential/digitaloceancredential/v1/spec.proto\x1aFproject/planton/provider/digitalocean/digitaloceandnszone/v1/api.proto\"\x8e\x02\n" +
 	"\x1dDigitalOceanDnsZoneStackInput\x12i\n" +
 	"\x06target\x18\x01 \x01(\v2Q.project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDnsZoneR\x06target\x12\x81\x01\n" +
 	"\x13provider_credential\x18\x02 \x01(\v2P.project.planton.credential.digitaloceancredential.v1.DigitalOceanCredentialSpecR\x12providerCredentialB\xef\x03\n" +
