@@ -123,13 +123,20 @@ release-buf:
 release-github:
 	git tag ${version}
 	git push origin ${version}
-#	gh release create ${version} \
-#		 --generate-notes \
-#         --title ${version} \
-#         build/project-planton-darwin-amd64 \
-#         build/project-planton-darwin-arm64 \
-#         build/project-planton-linux \
-#         apis/internal/generated/docs/docs.json
+	@if ! command -v gh >/dev/null 2>&1; then \
+		echo "GitHub CLI (gh) not found. Install from https://cli.github.com/"; \
+		exit 1; \
+	fi
+	@if ! gh auth status >/dev/null 2>&1; then \
+		echo "GitHub CLI is not authenticated. Run: gh auth login"; \
+		exit 1; \
+	fi
+	@assets=""; \
+	for f in ${build_dir}/${name}-darwin-amd64 ${build_dir}/${name}-darwin-arm64 ${build_dir}/${name}-linux apis/internal/generated/docs/docs.json; do \
+		if [ -f "$$f" ]; then assets="$$assets $$f"; fi; \
+	done; \
+	echo "Creating GitHub release ${version} with assets: $$assets"; \
+	gh release create "${version}" --title "${version}" --generate-notes $$assets
 
 .PHONY: release
 release: protos build-cli test release-github release-buf
