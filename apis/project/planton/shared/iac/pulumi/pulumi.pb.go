@@ -76,6 +76,69 @@ func (PulumiOperationType) EnumDescriptor() ([]byte, []int) {
 	return file_project_planton_shared_iac_pulumi_pulumi_proto_rawDescGZIP(), []int{0}
 }
 
+// https://www.pulumi.com/docs/concepts/state
+// PulumiBackendType enum represents the various backends supported for storing Pulumi state.
+// Each backend type has its own use cases and advantages depending on the project requirements.
+// - local_file_system: Suitable for small projects or local development/testing environments.
+// - http: A centralized backend provided by Pulumi for managing state across distributed teams.
+// - aws_s3: AWS S3 can be used for scalable and reliable state storage, commonly used in AWS environments.
+// - google_cloud_storage: GCP's storage solution for state files, ideal for projects hosted on Google Cloud.
+// - azure_blob_storage: Azure Blob Storage for state storage, typically used for projects hosted on Microsoft Azure.
+type PulumiBackendType int32
+
+const (
+	PulumiBackendType_type_unspecified PulumiBackendType = 0
+	PulumiBackendType_http             PulumiBackendType = 1
+	PulumiBackendType_s3               PulumiBackendType = 2
+	PulumiBackendType_gcs              PulumiBackendType = 3
+	PulumiBackendType_azurerm          PulumiBackendType = 4
+)
+
+// Enum value maps for PulumiBackendType.
+var (
+	PulumiBackendType_name = map[int32]string{
+		0: "type_unspecified",
+		1: "http",
+		2: "s3",
+		3: "gcs",
+		4: "azurerm",
+	}
+	PulumiBackendType_value = map[string]int32{
+		"type_unspecified": 0,
+		"http":             1,
+		"s3":               2,
+		"gcs":              3,
+		"azurerm":          4,
+	}
+)
+
+func (x PulumiBackendType) Enum() *PulumiBackendType {
+	p := new(PulumiBackendType)
+	*p = x
+	return p
+}
+
+func (x PulumiBackendType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (PulumiBackendType) Descriptor() protoreflect.EnumDescriptor {
+	return file_project_planton_shared_iac_pulumi_pulumi_proto_enumTypes[1].Descriptor()
+}
+
+func (PulumiBackendType) Type() protoreflect.EnumType {
+	return &file_project_planton_shared_iac_pulumi_pulumi_proto_enumTypes[1]
+}
+
+func (x PulumiBackendType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use PulumiBackendType.Descriptor instead.
+func (PulumiBackendType) EnumDescriptor() ([]byte, []int) {
+	return file_project_planton_shared_iac_pulumi_pulumi_proto_rawDescGZIP(), []int{1}
+}
+
 var File_project_planton_shared_iac_pulumi_pulumi_proto protoreflect.FileDescriptor
 
 const file_project_planton_shared_iac_pulumi_pulumi_proto_rawDesc = "" +
@@ -86,7 +149,13 @@ const file_project_planton_shared_iac_pulumi_pulumi_proto_rawDesc = "" +
 	"\arefresh\x10\x01\x12\n" +
 	"\n" +
 	"\x06update\x10\x02\x12\v\n" +
-	"\adestroy\x10\x03B\xb1\x02\n" +
+	"\adestroy\x10\x03*Q\n" +
+	"\x11PulumiBackendType\x12\x14\n" +
+	"\x10type_unspecified\x10\x00\x12\b\n" +
+	"\x04http\x10\x01\x12\x06\n" +
+	"\x02s3\x10\x02\x12\a\n" +
+	"\x03gcs\x10\x03\x12\v\n" +
+	"\aazurerm\x10\x04B\xb1\x02\n" +
 	"%com.project.planton.shared.iac.pulumiB\vPulumiProtoP\x01ZQgithub.com/project-planton/project-planton/apis/project/planton/shared/iac/pulumi\xa2\x02\x05PPSIP\xaa\x02!Project.Planton.Shared.Iac.Pulumi\xca\x02!Project\\Planton\\Shared\\Iac\\Pulumi\xe2\x02-Project\\Planton\\Shared\\Iac\\Pulumi\\GPBMetadata\xea\x02%Project::Planton::Shared::Iac::Pulumib\x06proto3"
 
 var (
@@ -101,9 +170,10 @@ func file_project_planton_shared_iac_pulumi_pulumi_proto_rawDescGZIP() []byte {
 	return file_project_planton_shared_iac_pulumi_pulumi_proto_rawDescData
 }
 
-var file_project_planton_shared_iac_pulumi_pulumi_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_project_planton_shared_iac_pulumi_pulumi_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
 var file_project_planton_shared_iac_pulumi_pulumi_proto_goTypes = []any{
 	(PulumiOperationType)(0), // 0: project.planton.shared.iac.pulumi.PulumiOperationType
+	(PulumiBackendType)(0),   // 1: project.planton.shared.iac.pulumi.PulumiBackendType
 }
 var file_project_planton_shared_iac_pulumi_pulumi_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type
@@ -123,7 +193,7 @@ func file_project_planton_shared_iac_pulumi_pulumi_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_project_planton_shared_iac_pulumi_pulumi_proto_rawDesc), len(file_project_planton_shared_iac_pulumi_pulumi_proto_rawDesc)),
-			NumEnums:      1,
+			NumEnums:      2,
 			NumMessages:   0,
 			NumExtensions: 0,
 			NumServices:   0,
