@@ -10,14 +10,8 @@ import "project/planton/shared/iac/terraform/terraform.proto";
 
 //cloudflare-load-balancer stack-input
 message CloudflareLoadBalancerStackInput {
-  //iac-provisioner
-  project.planton.shared.IacProvisioner provisioner = 1;
-  //pulumi input required when the provisioner is pulumi
-  project.planton.shared.iac.pulumi.PulumiStackInfo pulumi = 2;
-  //terraform input required when the provisioner is terraform
-  project.planton.shared.iac.terraform.TerraformStackInfo terraform = 3;
   //target cloud-resource
-  CloudflareLoadBalancer target = 4;
+  CloudflareLoadBalancer target = 1;
   //provider-credential
-  project.planton.credential.cloudflarecredential.v1.CloudflareCredentialSpec provider_credential = 5;
+  project.planton.credential.cloudflarecredential.v1.CloudflareCredentialSpec provider_credential = 2;
 }

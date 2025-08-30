@@ -8,9 +8,6 @@ package gcpcloudcdnv1
 
 import (
 	v1 "github.com/project-planton/project-planton/apis/project/planton/credential/gcpcredential/v1"
-	shared "github.com/project-planton/project-planton/apis/project/planton/shared"
-	pulumi "github.com/project-planton/project-planton/apis/project/planton/shared/iac/pulumi"
-	terraform "github.com/project-planton/project-planton/apis/project/planton/shared/iac/terraform"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -28,16 +25,10 @@ const (
 // gcp-cloud-cdn stack-input
 type GcpCloudCdnStackInput struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// iac-provisioner
-	Provisioner shared.IacProvisioner `protobuf:"varint,1,opt,name=provisioner,proto3,enum=project.planton.shared.IacProvisioner" json:"provisioner,omitempty"`
-	// pulumi input required when the provisioner is pulumi
-	Pulumi *pulumi.PulumiStackInfo `protobuf:"bytes,2,opt,name=pulumi,proto3" json:"pulumi,omitempty"`
-	// terraform input required when the provisioner is terraform
-	Terraform *terraform.TerraformStackInfo `protobuf:"bytes,3,opt,name=terraform,proto3" json:"terraform,omitempty"`
 	// target cloud-resource
-	Target *GcpCloudCdn `protobuf:"bytes,4,opt,name=target,proto3" json:"target,omitempty"`
+	Target *GcpCloudCdn `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
 	// provider-credential
-	ProviderCredential *v1.GcpCredentialSpec `protobuf:"bytes,5,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
+	ProviderCredential *v1.GcpCredentialSpec `protobuf:"bytes,2,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
 }
@@ -72,27 +63,6 @@ func (*GcpCloudCdnStackInput) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_gcp_gcpcloudcdn_v1_stack_input_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *GcpCloudCdnStackInput) GetProvisioner() shared.IacProvisioner {
-	if x != nil {
-		return x.Provisioner
-	}
-	return shared.IacProvisioner(0)
-}
-
-func (x *GcpCloudCdnStackInput) GetPulumi() *pulumi.PulumiStackInfo {
-	if x != nil {
-		return x.Pulumi
-	}
-	return nil
-}
-
-func (x *GcpCloudCdnStackInput) GetTerraform() *terraform.TerraformStackInfo {
-	if x != nil {
-		return x.Terraform
-	}
-	return nil
-}
-
 func (x *GcpCloudCdnStackInput) GetTarget() *GcpCloudCdn {
 	if x != nil {
 		return x.Target
@@ -111,13 +81,10 @@ var File_project_planton_provider_gcp_gcpcloudcdn_v1_stack_input_proto protorefl
 
 const file_project_planton_provider_gcp_gcpcloudcdn_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"=project/planton/provider/gcp/gcpcloudcdn/v1/stack_input.proto\x12+project.planton.provider.gcp.gcpcloudcdn.v1\x1a6project/planton/credential/gcpcredential/v1/spec.proto\x1a5project/planton/provider/gcp/gcpcloudcdn/v1/api.proto\x1a.project/planton/shared/iac/pulumi/pulumi.proto\x1a project/planton/shared/iac.proto\x1a4project/planton/shared/iac/terraform/terraform.proto\"\xc8\x03\n" +
-	"\x15GcpCloudCdnStackInput\x12H\n" +
-	"\vprovisioner\x18\x01 \x01(\x0e2&.project.planton.shared.IacProvisionerR\vprovisioner\x12J\n" +
-	"\x06pulumi\x18\x02 \x01(\v22.project.planton.shared.iac.pulumi.PulumiStackInfoR\x06pulumi\x12V\n" +
-	"\tterraform\x18\x03 \x01(\v28.project.planton.shared.iac.terraform.TerraformStackInfoR\tterraform\x12P\n" +
-	"\x06target\x18\x04 \x01(\v28.project.planton.provider.gcp.gcpcloudcdn.v1.GcpCloudCdnR\x06target\x12o\n" +
-	"\x13provider_credential\x18\x05 \x01(\v2>.project.planton.credential.gcpcredential.v1.GcpCredentialSpecR\x12providerCredentialB\x80\x03\n" +
+	"=project/planton/provider/gcp/gcpcloudcdn/v1/stack_input.proto\x12+project.planton.provider.gcp.gcpcloudcdn.v1\x1a6project/planton/credential/gcpcredential/v1/spec.proto\x1a5project/planton/provider/gcp/gcpcloudcdn/v1/api.proto\"\xda\x01\n" +
+	"\x15GcpCloudCdnStackInput\x12P\n" +
+	"\x06target\x18\x01 \x01(\v28.project.planton.provider.gcp.gcpcloudcdn.v1.GcpCloudCdnR\x06target\x12o\n" +
+	"\x13provider_credential\x18\x02 \x01(\v2>.project.planton.credential.gcpcredential.v1.GcpCredentialSpecR\x12providerCredentialB\x80\x03\n" +
 	"/com.project.planton.provider.gcp.gcpcloudcdn.v1B\x0fStackInputProtoP\x01Zigithub.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpcloudcdn/v1;gcpcloudcdnv1\xa2\x02\x05PPPGG\xaa\x02+Project.Planton.Provider.Gcp.Gcpcloudcdn.V1\xca\x02+Project\\Planton\\Provider\\Gcp\\Gcpcloudcdn\\V1\xe2\x027Project\\Planton\\Provider\\Gcp\\Gcpcloudcdn\\V1\\GPBMetadata\xea\x020Project::Planton::Provider::Gcp::Gcpcloudcdn::V1b\x06proto3"
 
 var (
@@ -134,24 +101,18 @@ func file_project_planton_provider_gcp_gcpcloudcdn_v1_stack_input_proto_rawDescG
 
 var file_project_planton_provider_gcp_gcpcloudcdn_v1_stack_input_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_gcp_gcpcloudcdn_v1_stack_input_proto_goTypes = []any{
-	(*GcpCloudCdnStackInput)(nil),        // 0: project.planton.provider.gcp.gcpcloudcdn.v1.GcpCloudCdnStackInput
-	(shared.IacProvisioner)(0),           // 1: project.planton.shared.IacProvisioner
-	(*pulumi.PulumiStackInfo)(nil),       // 2: project.planton.shared.iac.pulumi.PulumiStackInfo
-	(*terraform.TerraformStackInfo)(nil), // 3: project.planton.shared.iac.terraform.TerraformStackInfo
-	(*GcpCloudCdn)(nil),                  // 4: project.planton.provider.gcp.gcpcloudcdn.v1.GcpCloudCdn
-	(*v1.GcpCredentialSpec)(nil),         // 5: project.planton.credential.gcpcredential.v1.GcpCredentialSpec
+	(*GcpCloudCdnStackInput)(nil), // 0: project.planton.provider.gcp.gcpcloudcdn.v1.GcpCloudCdnStackInput
+	(*GcpCloudCdn)(nil),           // 1: project.planton.provider.gcp.gcpcloudcdn.v1.GcpCloudCdn
+	(*v1.GcpCredentialSpec)(nil),  // 2: project.planton.credential.gcpcredential.v1.GcpCredentialSpec
 }
 var file_project_planton_provider_gcp_gcpcloudcdn_v1_stack_input_proto_depIdxs = []int32{
-	1, // 0: project.planton.provider.gcp.gcpcloudcdn.v1.GcpCloudCdnStackInput.provisioner:type_name -> project.planton.shared.IacProvisioner
-	2, // 1: project.planton.provider.gcp.gcpcloudcdn.v1.GcpCloudCdnStackInput.pulumi:type_name -> project.planton.shared.iac.pulumi.PulumiStackInfo
-	3, // 2: project.planton.provider.gcp.gcpcloudcdn.v1.GcpCloudCdnStackInput.terraform:type_name -> project.planton.shared.iac.terraform.TerraformStackInfo
-	4, // 3: project.planton.provider.gcp.gcpcloudcdn.v1.GcpCloudCdnStackInput.target:type_name -> project.planton.provider.gcp.gcpcloudcdn.v1.GcpCloudCdn
-	5, // 4: project.planton.provider.gcp.gcpcloudcdn.v1.GcpCloudCdnStackInput.provider_credential:type_name -> project.planton.credential.gcpcredential.v1.GcpCredentialSpec
-	5, // [5:5] is the sub-list for method output_type
-	5, // [5:5] is the sub-list for method input_type
-	5, // [5:5] is the sub-list for extension type_name
-	5, // [5:5] is the sub-list for extension extendee
-	0, // [0:5] is the sub-list for field type_name
+	1, // 0: project.planton.provider.gcp.gcpcloudcdn.v1.GcpCloudCdnStackInput.target:type_name -> project.planton.provider.gcp.gcpcloudcdn.v1.GcpCloudCdn
+	2, // 1: project.planton.provider.gcp.gcpcloudcdn.v1.GcpCloudCdnStackInput.provider_credential:type_name -> project.planton.credential.gcpcredential.v1.GcpCredentialSpec
+	2, // [2:2] is the sub-list for method output_type
+	2, // [2:2] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_provider_gcp_gcpcloudcdn_v1_stack_input_proto_init() }

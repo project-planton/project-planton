@@ -8,9 +8,9 @@ package cloudflarednszonev1
 
 import (
 	v1 "github.com/project-planton/project-planton/apis/project/planton/credential/cloudflarecredential/v1"
-	shared "github.com/project-planton/project-planton/apis/project/planton/shared"
-	pulumi "github.com/project-planton/project-planton/apis/project/planton/shared/iac/pulumi"
-	terraform "github.com/project-planton/project-planton/apis/project/planton/shared/iac/terraform"
+	_ "github.com/project-planton/project-planton/apis/project/planton/shared"
+	_ "github.com/project-planton/project-planton/apis/project/planton/shared/iac/pulumi"
+	_ "github.com/project-planton/project-planton/apis/project/planton/shared/iac/terraform"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -28,16 +28,10 @@ const (
 // cloudflare-dns-zone stack-input
 type CloudflareDnsZoneStackInput struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// iac-provisioner
-	Provisioner shared.IacProvisioner `protobuf:"varint,1,opt,name=provisioner,proto3,enum=project.planton.shared.IacProvisioner" json:"provisioner,omitempty"`
-	// pulumi input required when the provisioner is pulumi
-	Pulumi *pulumi.PulumiStackInfo `protobuf:"bytes,2,opt,name=pulumi,proto3" json:"pulumi,omitempty"`
-	// terraform input required when the provisioner is terraform
-	Terraform *terraform.TerraformStackInfo `protobuf:"bytes,3,opt,name=terraform,proto3" json:"terraform,omitempty"`
 	// target cloud-resource
-	Target *CloudflareDnsZone `protobuf:"bytes,4,opt,name=target,proto3" json:"target,omitempty"`
+	Target *CloudflareDnsZone `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
 	// provider-credential
-	ProviderCredential *v1.CloudflareCredentialSpec `protobuf:"bytes,5,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
+	ProviderCredential *v1.CloudflareCredentialSpec `protobuf:"bytes,2,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
 }
@@ -72,27 +66,6 @@ func (*CloudflareDnsZoneStackInput) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_cloudflare_cloudflarednszone_v1_stack_input_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *CloudflareDnsZoneStackInput) GetProvisioner() shared.IacProvisioner {
-	if x != nil {
-		return x.Provisioner
-	}
-	return shared.IacProvisioner(0)
-}
-
-func (x *CloudflareDnsZoneStackInput) GetPulumi() *pulumi.PulumiStackInfo {
-	if x != nil {
-		return x.Pulumi
-	}
-	return nil
-}
-
-func (x *CloudflareDnsZoneStackInput) GetTerraform() *terraform.TerraformStackInfo {
-	if x != nil {
-		return x.Terraform
-	}
-	return nil
-}
-
 func (x *CloudflareDnsZoneStackInput) GetTarget() *CloudflareDnsZone {
 	if x != nil {
 		return x.Target
@@ -111,13 +84,10 @@ var File_project_planton_provider_cloudflare_cloudflarednszone_v1_stack_input_pr
 
 const file_project_planton_provider_cloudflare_cloudflarednszone_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Jproject/planton/provider/cloudflare/cloudflarednszone/v1/stack_input.proto\x128project.planton.provider.cloudflare.cloudflarednszone.v1\x1a=project/planton/credential/cloudflarecredential/v1/spec.proto\x1aBproject/planton/provider/cloudflare/cloudflarednszone/v1/api.proto\x1a project/planton/shared/iac.proto\x1a.project/planton/shared/iac/pulumi/pulumi.proto\x1a4project/planton/shared/iac/terraform/terraform.proto\"\xef\x03\n" +
-	"\x1bCloudflareDnsZoneStackInput\x12H\n" +
-	"\vprovisioner\x18\x01 \x01(\x0e2&.project.planton.shared.IacProvisionerR\vprovisioner\x12J\n" +
-	"\x06pulumi\x18\x02 \x01(\v22.project.planton.shared.iac.pulumi.PulumiStackInfoR\x06pulumi\x12V\n" +
-	"\tterraform\x18\x03 \x01(\v28.project.planton.shared.iac.terraform.TerraformStackInfoR\tterraform\x12c\n" +
-	"\x06target\x18\x04 \x01(\v2K.project.planton.provider.cloudflare.cloudflarednszone.v1.CloudflareDnsZoneR\x06target\x12}\n" +
-	"\x13provider_credential\x18\x05 \x01(\v2L.project.planton.credential.cloudflarecredential.v1.CloudflareCredentialSpecR\x12providerCredentialB\xd4\x03\n" +
+	"Jproject/planton/provider/cloudflare/cloudflarednszone/v1/stack_input.proto\x128project.planton.provider.cloudflare.cloudflarednszone.v1\x1a=project/planton/credential/cloudflarecredential/v1/spec.proto\x1aBproject/planton/provider/cloudflare/cloudflarednszone/v1/api.proto\x1a project/planton/shared/iac.proto\x1a.project/planton/shared/iac/pulumi/pulumi.proto\x1a4project/planton/shared/iac/terraform/terraform.proto\"\x81\x02\n" +
+	"\x1bCloudflareDnsZoneStackInput\x12c\n" +
+	"\x06target\x18\x01 \x01(\v2K.project.planton.provider.cloudflare.cloudflarednszone.v1.CloudflareDnsZoneR\x06target\x12}\n" +
+	"\x13provider_credential\x18\x02 \x01(\v2L.project.planton.credential.cloudflarecredential.v1.CloudflareCredentialSpecR\x12providerCredentialB\xd4\x03\n" +
 	"<com.project.planton.provider.cloudflare.cloudflarednszone.v1B\x0fStackInputProtoP\x01Z|github.com/project-planton/project-planton/apis/project/planton/provider/cloudflare/cloudflarednszone/v1;cloudflarednszonev1\xa2\x02\x05PPPCC\xaa\x028Project.Planton.Provider.Cloudflare.Cloudflarednszone.V1\xca\x028Project\\Planton\\Provider\\Cloudflare\\Cloudflarednszone\\V1\xe2\x02DProject\\Planton\\Provider\\Cloudflare\\Cloudflarednszone\\V1\\GPBMetadata\xea\x02=Project::Planton::Provider::Cloudflare::Cloudflarednszone::V1b\x06proto3"
 
 var (
@@ -134,24 +104,18 @@ func file_project_planton_provider_cloudflare_cloudflarednszone_v1_stack_input_p
 
 var file_project_planton_provider_cloudflare_cloudflarednszone_v1_stack_input_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_cloudflare_cloudflarednszone_v1_stack_input_proto_goTypes = []any{
-	(*CloudflareDnsZoneStackInput)(nil),  // 0: project.planton.provider.cloudflare.cloudflarednszone.v1.CloudflareDnsZoneStackInput
-	(shared.IacProvisioner)(0),           // 1: project.planton.shared.IacProvisioner
-	(*pulumi.PulumiStackInfo)(nil),       // 2: project.planton.shared.iac.pulumi.PulumiStackInfo
-	(*terraform.TerraformStackInfo)(nil), // 3: project.planton.shared.iac.terraform.TerraformStackInfo
-	(*CloudflareDnsZone)(nil),            // 4: project.planton.provider.cloudflare.cloudflarednszone.v1.CloudflareDnsZone
-	(*v1.CloudflareCredentialSpec)(nil),  // 5: project.planton.credential.cloudflarecredential.v1.CloudflareCredentialSpec
+	(*CloudflareDnsZoneStackInput)(nil), // 0: project.planton.provider.cloudflare.cloudflarednszone.v1.CloudflareDnsZoneStackInput
+	(*CloudflareDnsZone)(nil),           // 1: project.planton.provider.cloudflare.cloudflarednszone.v1.CloudflareDnsZone
+	(*v1.CloudflareCredentialSpec)(nil), // 2: project.planton.credential.cloudflarecredential.v1.CloudflareCredentialSpec
 }
 var file_project_planton_provider_cloudflare_cloudflarednszone_v1_stack_input_proto_depIdxs = []int32{
-	1, // 0: project.planton.provider.cloudflare.cloudflarednszone.v1.CloudflareDnsZoneStackInput.provisioner:type_name -> project.planton.shared.IacProvisioner
-	2, // 1: project.planton.provider.cloudflare.cloudflarednszone.v1.CloudflareDnsZoneStackInput.pulumi:type_name -> project.planton.shared.iac.pulumi.PulumiStackInfo
-	3, // 2: project.planton.provider.cloudflare.cloudflarednszone.v1.CloudflareDnsZoneStackInput.terraform:type_name -> project.planton.shared.iac.terraform.TerraformStackInfo
-	4, // 3: project.planton.provider.cloudflare.cloudflarednszone.v1.CloudflareDnsZoneStackInput.target:type_name -> project.planton.provider.cloudflare.cloudflarednszone.v1.CloudflareDnsZone
-	5, // 4: project.planton.provider.cloudflare.cloudflarednszone.v1.CloudflareDnsZoneStackInput.provider_credential:type_name -> project.planton.credential.cloudflarecredential.v1.CloudflareCredentialSpec
-	5, // [5:5] is the sub-list for method output_type
-	5, // [5:5] is the sub-list for method input_type
-	5, // [5:5] is the sub-list for extension type_name
-	5, // [5:5] is the sub-list for extension extendee
-	0, // [0:5] is the sub-list for field type_name
+	1, // 0: project.planton.provider.cloudflare.cloudflarednszone.v1.CloudflareDnsZoneStackInput.target:type_name -> project.planton.provider.cloudflare.cloudflarednszone.v1.CloudflareDnsZone
+	2, // 1: project.planton.provider.cloudflare.cloudflarednszone.v1.CloudflareDnsZoneStackInput.provider_credential:type_name -> project.planton.credential.cloudflarecredential.v1.CloudflareCredentialSpec
+	2, // [2:2] is the sub-list for method output_type
+	2, // [2:2] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_provider_cloudflare_cloudflarednszone_v1_stack_input_proto_init() }
