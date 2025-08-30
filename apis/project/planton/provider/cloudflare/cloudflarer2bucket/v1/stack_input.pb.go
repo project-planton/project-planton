@@ -8,9 +8,6 @@ package cloudflarer2bucketv1
 
 import (
 	v1 "github.com/project-planton/project-planton/apis/project/planton/credential/cloudflarecredential/v1"
-	shared "github.com/project-planton/project-planton/apis/project/planton/shared"
-	pulumi "github.com/project-planton/project-planton/apis/project/planton/shared/iac/pulumi"
-	terraform "github.com/project-planton/project-planton/apis/project/planton/shared/iac/terraform"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -28,16 +25,10 @@ const (
 // cloudflare-r2-bucket stack-input
 type CloudflareR2BucketStackInput struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// iac-provisioner
-	Provisioner shared.IacProvisioner `protobuf:"varint,1,opt,name=provisioner,proto3,enum=project.planton.shared.IacProvisioner" json:"provisioner,omitempty"`
-	// pulumi input required when the provisioner is pulumi
-	Pulumi *pulumi.PulumiStackInfo `protobuf:"bytes,2,opt,name=pulumi,proto3" json:"pulumi,omitempty"`
-	// terraform input required when the provisioner is terraform
-	Terraform *terraform.TerraformStackInfo `protobuf:"bytes,3,opt,name=terraform,proto3" json:"terraform,omitempty"`
 	// target cloud-resource
-	Target *CloudflareR2Bucket `protobuf:"bytes,4,opt,name=target,proto3" json:"target,omitempty"`
+	Target *CloudflareR2Bucket `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
 	// provider-credential
-	ProviderCredential *v1.CloudflareCredentialSpec `protobuf:"bytes,5,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
+	ProviderCredential *v1.CloudflareCredentialSpec `protobuf:"bytes,2,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
 }
@@ -72,27 +63,6 @@ func (*CloudflareR2BucketStackInput) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_cloudflare_cloudflarer2bucket_v1_stack_input_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *CloudflareR2BucketStackInput) GetProvisioner() shared.IacProvisioner {
-	if x != nil {
-		return x.Provisioner
-	}
-	return shared.IacProvisioner(0)
-}
-
-func (x *CloudflareR2BucketStackInput) GetPulumi() *pulumi.PulumiStackInfo {
-	if x != nil {
-		return x.Pulumi
-	}
-	return nil
-}
-
-func (x *CloudflareR2BucketStackInput) GetTerraform() *terraform.TerraformStackInfo {
-	if x != nil {
-		return x.Terraform
-	}
-	return nil
-}
-
 func (x *CloudflareR2BucketStackInput) GetTarget() *CloudflareR2Bucket {
 	if x != nil {
 		return x.Target
@@ -111,13 +81,10 @@ var File_project_planton_provider_cloudflare_cloudflarer2bucket_v1_stack_input_p
 
 const file_project_planton_provider_cloudflare_cloudflarer2bucket_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Kproject/planton/provider/cloudflare/cloudflarer2bucket/v1/stack_input.proto\x129project.planton.provider.cloudflare.cloudflarer2bucket.v1\x1a=project/planton/credential/cloudflarecredential/v1/spec.proto\x1aCproject/planton/provider/cloudflare/cloudflarer2bucket/v1/api.proto\x1a project/planton/shared/iac.proto\x1a.project/planton/shared/iac/pulumi/pulumi.proto\x1a4project/planton/shared/iac/terraform/terraform.proto\"\xf2\x03\n" +
-	"\x1cCloudflareR2BucketStackInput\x12H\n" +
-	"\vprovisioner\x18\x01 \x01(\x0e2&.project.planton.shared.IacProvisionerR\vprovisioner\x12J\n" +
-	"\x06pulumi\x18\x02 \x01(\v22.project.planton.shared.iac.pulumi.PulumiStackInfoR\x06pulumi\x12V\n" +
-	"\tterraform\x18\x03 \x01(\v28.project.planton.shared.iac.terraform.TerraformStackInfoR\tterraform\x12e\n" +
-	"\x06target\x18\x04 \x01(\v2M.project.planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2BucketR\x06target\x12}\n" +
-	"\x13provider_credential\x18\x05 \x01(\v2L.project.planton.credential.cloudflarecredential.v1.CloudflareCredentialSpecR\x12providerCredentialB\xdb\x03\n" +
+	"Kproject/planton/provider/cloudflare/cloudflarer2bucket/v1/stack_input.proto\x129project.planton.provider.cloudflare.cloudflarer2bucket.v1\x1a=project/planton/credential/cloudflarecredential/v1/spec.proto\x1aCproject/planton/provider/cloudflare/cloudflarer2bucket/v1/api.proto\"\x84\x02\n" +
+	"\x1cCloudflareR2BucketStackInput\x12e\n" +
+	"\x06target\x18\x01 \x01(\v2M.project.planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2BucketR\x06target\x12}\n" +
+	"\x13provider_credential\x18\x02 \x01(\v2L.project.planton.credential.cloudflarecredential.v1.CloudflareCredentialSpecR\x12providerCredentialB\xdb\x03\n" +
 	"=com.project.planton.provider.cloudflare.cloudflarer2bucket.v1B\x0fStackInputProtoP\x01Z~github.com/project-planton/project-planton/apis/project/planton/provider/cloudflare/cloudflarer2bucket/v1;cloudflarer2bucketv1\xa2\x02\x05PPPCC\xaa\x029Project.Planton.Provider.Cloudflare.Cloudflarer2bucket.V1\xca\x029Project\\Planton\\Provider\\Cloudflare\\Cloudflarer2bucket\\V1\xe2\x02EProject\\Planton\\Provider\\Cloudflare\\Cloudflarer2bucket\\V1\\GPBMetadata\xea\x02>Project::Planton::Provider::Cloudflare::Cloudflarer2bucket::V1b\x06proto3"
 
 var (
@@ -135,23 +102,17 @@ func file_project_planton_provider_cloudflare_cloudflarer2bucket_v1_stack_input_
 var file_project_planton_provider_cloudflare_cloudflarer2bucket_v1_stack_input_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_cloudflare_cloudflarer2bucket_v1_stack_input_proto_goTypes = []any{
 	(*CloudflareR2BucketStackInput)(nil), // 0: project.planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2BucketStackInput
-	(shared.IacProvisioner)(0),           // 1: project.planton.shared.IacProvisioner
-	(*pulumi.PulumiStackInfo)(nil),       // 2: project.planton.shared.iac.pulumi.PulumiStackInfo
-	(*terraform.TerraformStackInfo)(nil), // 3: project.planton.shared.iac.terraform.TerraformStackInfo
-	(*CloudflareR2Bucket)(nil),           // 4: project.planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2Bucket
-	(*v1.CloudflareCredentialSpec)(nil),  // 5: project.planton.credential.cloudflarecredential.v1.CloudflareCredentialSpec
+	(*CloudflareR2Bucket)(nil),           // 1: project.planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2Bucket
+	(*v1.CloudflareCredentialSpec)(nil),  // 2: project.planton.credential.cloudflarecredential.v1.CloudflareCredentialSpec
 }
 var file_project_planton_provider_cloudflare_cloudflarer2bucket_v1_stack_input_proto_depIdxs = []int32{
-	1, // 0: project.planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2BucketStackInput.provisioner:type_name -> project.planton.shared.IacProvisioner
-	2, // 1: project.planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2BucketStackInput.pulumi:type_name -> project.planton.shared.iac.pulumi.PulumiStackInfo
-	3, // 2: project.planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2BucketStackInput.terraform:type_name -> project.planton.shared.iac.terraform.TerraformStackInfo
-	4, // 3: project.planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2BucketStackInput.target:type_name -> project.planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2Bucket
-	5, // 4: project.planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2BucketStackInput.provider_credential:type_name -> project.planton.credential.cloudflarecredential.v1.CloudflareCredentialSpec
-	5, // [5:5] is the sub-list for method output_type
-	5, // [5:5] is the sub-list for method input_type
-	5, // [5:5] is the sub-list for extension type_name
-	5, // [5:5] is the sub-list for extension extendee
-	0, // [0:5] is the sub-list for field type_name
+	1, // 0: project.planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2BucketStackInput.target:type_name -> project.planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2Bucket
+	2, // 1: project.planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2BucketStackInput.provider_credential:type_name -> project.planton.credential.cloudflarecredential.v1.CloudflareCredentialSpec
+	2, // [2:2] is the sub-list for method output_type
+	2, // [2:2] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_provider_cloudflare_cloudflarer2bucket_v1_stack_input_proto_init() }

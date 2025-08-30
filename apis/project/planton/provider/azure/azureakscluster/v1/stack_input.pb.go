@@ -8,9 +8,6 @@ package azureaksclusterv1
 
 import (
 	v1 "github.com/project-planton/project-planton/apis/project/planton/credential/azurecredential/v1"
-	shared "github.com/project-planton/project-planton/apis/project/planton/shared"
-	pulumi "github.com/project-planton/project-planton/apis/project/planton/shared/iac/pulumi"
-	terraform "github.com/project-planton/project-planton/apis/project/planton/shared/iac/terraform"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -28,16 +25,10 @@ const (
 // azure-aks-cluster stack-input
 type AzureAksClusterStackInput struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// iac-provisioner
-	Provisioner shared.IacProvisioner `protobuf:"varint,1,opt,name=provisioner,proto3,enum=project.planton.shared.IacProvisioner" json:"provisioner,omitempty"`
-	// pulumi input required when the provisioner is pulumi
-	Pulumi *pulumi.PulumiStackInfo `protobuf:"bytes,2,opt,name=pulumi,proto3" json:"pulumi,omitempty"`
-	// terraform input required when the provisioner is terraform
-	Terraform *terraform.TerraformStackInfo `protobuf:"bytes,3,opt,name=terraform,proto3" json:"terraform,omitempty"`
 	// target cloud-resource
-	Target *AzureAksCluster `protobuf:"bytes,4,opt,name=target,proto3" json:"target,omitempty"`
+	Target *AzureAksCluster `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
 	// provider-credential
-	ProviderCredential *v1.AzureCredentialSpec `protobuf:"bytes,5,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
+	ProviderCredential *v1.AzureCredentialSpec `protobuf:"bytes,2,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
 }
@@ -72,27 +63,6 @@ func (*AzureAksClusterStackInput) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_azure_azureakscluster_v1_stack_input_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *AzureAksClusterStackInput) GetProvisioner() shared.IacProvisioner {
-	if x != nil {
-		return x.Provisioner
-	}
-	return shared.IacProvisioner(0)
-}
-
-func (x *AzureAksClusterStackInput) GetPulumi() *pulumi.PulumiStackInfo {
-	if x != nil {
-		return x.Pulumi
-	}
-	return nil
-}
-
-func (x *AzureAksClusterStackInput) GetTerraform() *terraform.TerraformStackInfo {
-	if x != nil {
-		return x.Terraform
-	}
-	return nil
-}
-
 func (x *AzureAksClusterStackInput) GetTarget() *AzureAksCluster {
 	if x != nil {
 		return x.Target
@@ -111,13 +81,10 @@ var File_project_planton_provider_azure_azureakscluster_v1_stack_input_proto pro
 
 const file_project_planton_provider_azure_azureakscluster_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Cproject/planton/provider/azure/azureakscluster/v1/stack_input.proto\x121project.planton.provider.azure.azureakscluster.v1\x1a8project/planton/credential/azurecredential/v1/spec.proto\x1a;project/planton/provider/azure/azureakscluster/v1/api.proto\x1a.project/planton/shared/iac/pulumi/pulumi.proto\x1a project/planton/shared/iac.proto\x1a4project/planton/shared/iac/terraform/terraform.proto\"\xda\x03\n" +
-	"\x19AzureAksClusterStackInput\x12H\n" +
-	"\vprovisioner\x18\x01 \x01(\x0e2&.project.planton.shared.IacProvisionerR\vprovisioner\x12J\n" +
-	"\x06pulumi\x18\x02 \x01(\v22.project.planton.shared.iac.pulumi.PulumiStackInfoR\x06pulumi\x12V\n" +
-	"\tterraform\x18\x03 \x01(\v28.project.planton.shared.iac.terraform.TerraformStackInfoR\tterraform\x12Z\n" +
-	"\x06target\x18\x04 \x01(\v2B.project.planton.provider.azure.azureakscluster.v1.AzureAksClusterR\x06target\x12s\n" +
-	"\x13provider_credential\x18\x05 \x01(\v2B.project.planton.credential.azurecredential.v1.AzureCredentialSpecR\x12providerCredentialB\xa8\x03\n" +
+	"Cproject/planton/provider/azure/azureakscluster/v1/stack_input.proto\x121project.planton.provider.azure.azureakscluster.v1\x1a8project/planton/credential/azurecredential/v1/spec.proto\x1a;project/planton/provider/azure/azureakscluster/v1/api.proto\"\xec\x01\n" +
+	"\x19AzureAksClusterStackInput\x12Z\n" +
+	"\x06target\x18\x01 \x01(\v2B.project.planton.provider.azure.azureakscluster.v1.AzureAksClusterR\x06target\x12s\n" +
+	"\x13provider_credential\x18\x02 \x01(\v2B.project.planton.credential.azurecredential.v1.AzureCredentialSpecR\x12providerCredentialB\xa8\x03\n" +
 	"5com.project.planton.provider.azure.azureakscluster.v1B\x0fStackInputProtoP\x01Zsgithub.com/project-planton/project-planton/apis/project/planton/provider/azure/azureakscluster/v1;azureaksclusterv1\xa2\x02\x05PPPAA\xaa\x021Project.Planton.Provider.Azure.Azureakscluster.V1\xca\x021Project\\Planton\\Provider\\Azure\\Azureakscluster\\V1\xe2\x02=Project\\Planton\\Provider\\Azure\\Azureakscluster\\V1\\GPBMetadata\xea\x026Project::Planton::Provider::Azure::Azureakscluster::V1b\x06proto3"
 
 var (
@@ -134,24 +101,18 @@ func file_project_planton_provider_azure_azureakscluster_v1_stack_input_proto_ra
 
 var file_project_planton_provider_azure_azureakscluster_v1_stack_input_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_azure_azureakscluster_v1_stack_input_proto_goTypes = []any{
-	(*AzureAksClusterStackInput)(nil),    // 0: project.planton.provider.azure.azureakscluster.v1.AzureAksClusterStackInput
-	(shared.IacProvisioner)(0),           // 1: project.planton.shared.IacProvisioner
-	(*pulumi.PulumiStackInfo)(nil),       // 2: project.planton.shared.iac.pulumi.PulumiStackInfo
-	(*terraform.TerraformStackInfo)(nil), // 3: project.planton.shared.iac.terraform.TerraformStackInfo
-	(*AzureAksCluster)(nil),              // 4: project.planton.provider.azure.azureakscluster.v1.AzureAksCluster
-	(*v1.AzureCredentialSpec)(nil),       // 5: project.planton.credential.azurecredential.v1.AzureCredentialSpec
+	(*AzureAksClusterStackInput)(nil), // 0: project.planton.provider.azure.azureakscluster.v1.AzureAksClusterStackInput
+	(*AzureAksCluster)(nil),           // 1: project.planton.provider.azure.azureakscluster.v1.AzureAksCluster
+	(*v1.AzureCredentialSpec)(nil),    // 2: project.planton.credential.azurecredential.v1.AzureCredentialSpec
 }
 var file_project_planton_provider_azure_azureakscluster_v1_stack_input_proto_depIdxs = []int32{
-	1, // 0: project.planton.provider.azure.azureakscluster.v1.AzureAksClusterStackInput.provisioner:type_name -> project.planton.shared.IacProvisioner
-	2, // 1: project.planton.provider.azure.azureakscluster.v1.AzureAksClusterStackInput.pulumi:type_name -> project.planton.shared.iac.pulumi.PulumiStackInfo
-	3, // 2: project.planton.provider.azure.azureakscluster.v1.AzureAksClusterStackInput.terraform:type_name -> project.planton.shared.iac.terraform.TerraformStackInfo
-	4, // 3: project.planton.provider.azure.azureakscluster.v1.AzureAksClusterStackInput.target:type_name -> project.planton.provider.azure.azureakscluster.v1.AzureAksCluster
-	5, // 4: project.planton.provider.azure.azureakscluster.v1.AzureAksClusterStackInput.provider_credential:type_name -> project.planton.credential.azurecredential.v1.AzureCredentialSpec
-	5, // [5:5] is the sub-list for method output_type
-	5, // [5:5] is the sub-list for method input_type
-	5, // [5:5] is the sub-list for extension type_name
-	5, // [5:5] is the sub-list for extension extendee
-	0, // [0:5] is the sub-list for field type_name
+	1, // 0: project.planton.provider.azure.azureakscluster.v1.AzureAksClusterStackInput.target:type_name -> project.planton.provider.azure.azureakscluster.v1.AzureAksCluster
+	2, // 1: project.planton.provider.azure.azureakscluster.v1.AzureAksClusterStackInput.provider_credential:type_name -> project.planton.credential.azurecredential.v1.AzureCredentialSpec
+	2, // [2:2] is the sub-list for method output_type
+	2, // [2:2] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_provider_azure_azureakscluster_v1_stack_input_proto_init() }

@@ -4,20 +4,11 @@ package project.planton.provider.digitalocean.digitaloceancertificate.v1;
 
 import "project/planton/credential/digitaloceancredential/v1/spec.proto";
 import "project/planton/provider/digitalocean/digitaloceancertificate/v1/api.proto";
-import "project/planton/shared/iac.proto";
-import "project/planton/shared/iac/pulumi/pulumi.proto";
-import "project/planton/shared/iac/terraform/terraform.proto";
 
 //digital-ocean-certificate stack-input
 message DigitalOceanCertificateStackInput {
-  //iac-provisioner
-  project.planton.shared.IacProvisioner provisioner = 1;
-  //pulumi input required when the provisioner is pulumi
-  project.planton.shared.iac.pulumi.PulumiStackInfo pulumi = 2;
-  //terraform input required when the provisioner is terraform
-  project.planton.shared.iac.terraform.TerraformStackInfo terraform = 3;
   //target cloud-resource
-  DigitalOceanCertificate target = 4;
+  DigitalOceanCertificate target = 1;
   //provider-credential
-  project.planton.credential.digitaloceancredential.v1.DigitalOceanCredentialSpec provider_credential = 5;
+  project.planton.credential.digitaloceancredential.v1.DigitalOceanCredentialSpec provider_credential = 2;
 }

@@ -9,7 +9,6 @@ package gcpsecretsmanagerv1
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	shared "github.com/project-planton/project-planton/apis/project/planton/shared"
-	_ "github.com/project-planton/project-planton/apis/project/planton/shared/iac/pulumi"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -183,7 +182,7 @@ var File_project_planton_provider_gcp_gcpsecretsmanager_v1_api_proto protoreflec
 
 const file_project_planton_provider_gcp_gcpsecretsmanager_v1_api_proto_rawDesc = "" +
 	"\n" +
-	";project/planton/provider/gcp/gcpsecretsmanager/v1/api.proto\x121project.planton.provider.gcp.gcpsecretsmanager.v1\x1a\x1bbuf/validate/validate.proto\x1a<project/planton/provider/gcp/gcpsecretsmanager/v1/spec.proto\x1aEproject/planton/provider/gcp/gcpsecretsmanager/v1/stack_outputs.proto\x1a.project/planton/shared/iac/pulumi/pulumi.proto\x1a#project/planton/shared/status.proto\x1a%project/planton/shared/metadata.proto\"\xa0\x03\n" +
+	";project/planton/provider/gcp/gcpsecretsmanager/v1/api.proto\x121project.planton.provider.gcp.gcpsecretsmanager.v1\x1a\x1bbuf/validate/validate.proto\x1a<project/planton/provider/gcp/gcpsecretsmanager/v1/spec.proto\x1aEproject/planton/provider/gcp/gcpsecretsmanager/v1/stack_outputs.proto\x1a#project/planton/shared/status.proto\x1a%project/planton/shared/metadata.proto\"\xa0\x03\n" +
 	"\x11GcpSecretsManager\x12B\n" +
 	"\vapi_version\x18\x01 \x01(\tB!\xbaH\x1er\x1c\n" +
 	"\x1agcp.project-planton.org/v1R\n" +

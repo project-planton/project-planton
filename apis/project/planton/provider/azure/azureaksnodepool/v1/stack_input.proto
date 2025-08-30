@@ -4,20 +4,11 @@ package project.planton.provider.azure.azureaksnodepool.v1;
 
 import "project/planton/credential/azurecredential/v1/spec.proto";
 import "project/planton/provider/azure/azureaksnodepool/v1/api.proto";
-import "project/planton/shared/iac/pulumi/pulumi.proto";
-import "project/planton/shared/iac.proto";
-import "project/planton/shared/iac/terraform/terraform.proto";
 
 //azure-aks-node-pool stack-input
 message AzureAksNodePoolStackInput {
-  //iac-provisioner
-  project.planton.shared.IacProvisioner provisioner = 1;
-  //pulumi input required when the provisioner is pulumi
-  project.planton.shared.iac.pulumi.PulumiStackInfo pulumi = 2;
-  //terraform input required when the provisioner is terraform
-  project.planton.shared.iac.terraform.TerraformStackInfo terraform = 3;
   //target cloud-resource
-  AzureAksNodePool target = 4;
+  AzureAksNodePool target = 1;
   //provider-credential
-  project.planton.credential.azurecredential.v1.AzureCredentialSpec provider_credential = 5;
+  project.planton.credential.azurecredential.v1.AzureCredentialSpec provider_credential = 2;
 }

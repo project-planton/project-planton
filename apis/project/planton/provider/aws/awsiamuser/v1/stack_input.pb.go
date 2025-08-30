@@ -8,9 +8,6 @@ package awsiamuserv1
 
 import (
 	v1 "github.com/project-planton/project-planton/apis/project/planton/credential/awscredential/v1"
-	shared "github.com/project-planton/project-planton/apis/project/planton/shared"
-	pulumi "github.com/project-planton/project-planton/apis/project/planton/shared/iac/pulumi"
-	terraform "github.com/project-planton/project-planton/apis/project/planton/shared/iac/terraform"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -28,16 +25,10 @@ const (
 // aws-iam-user stack-input
 type AwsIamUserStackInput struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// iac-provisioner
-	Provisioner shared.IacProvisioner `protobuf:"varint,1,opt,name=provisioner,proto3,enum=project.planton.shared.IacProvisioner" json:"provisioner,omitempty"`
-	// pulumi input required when the provisioner is pulumi
-	Pulumi *pulumi.PulumiStackInfo `protobuf:"bytes,2,opt,name=pulumi,proto3" json:"pulumi,omitempty"`
-	// terraform input required when the provisioner is terraform
-	Terraform *terraform.TerraformStackInfo `protobuf:"bytes,3,opt,name=terraform,proto3" json:"terraform,omitempty"`
 	// target cloud-resource
-	Target *AwsIamUser `protobuf:"bytes,4,opt,name=target,proto3" json:"target,omitempty"`
+	Target *AwsIamUser `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
 	// provider-credential
-	ProviderCredential *v1.AwsCredentialSpec `protobuf:"bytes,5,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
+	ProviderCredential *v1.AwsCredentialSpec `protobuf:"bytes,2,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
 }
@@ -72,27 +63,6 @@ func (*AwsIamUserStackInput) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_aws_awsiamuser_v1_stack_input_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *AwsIamUserStackInput) GetProvisioner() shared.IacProvisioner {
-	if x != nil {
-		return x.Provisioner
-	}
-	return shared.IacProvisioner(0)
-}
-
-func (x *AwsIamUserStackInput) GetPulumi() *pulumi.PulumiStackInfo {
-	if x != nil {
-		return x.Pulumi
-	}
-	return nil
-}
-
-func (x *AwsIamUserStackInput) GetTerraform() *terraform.TerraformStackInfo {
-	if x != nil {
-		return x.Terraform
-	}
-	return nil
-}
-
 func (x *AwsIamUserStackInput) GetTarget() *AwsIamUser {
 	if x != nil {
 		return x.Target
@@ -111,13 +81,10 @@ var File_project_planton_provider_aws_awsiamuser_v1_stack_input_proto protorefle
 
 const file_project_planton_provider_aws_awsiamuser_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"<project/planton/provider/aws/awsiamuser/v1/stack_input.proto\x12*project.planton.provider.aws.awsiamuser.v1\x1a6project/planton/credential/awscredential/v1/spec.proto\x1a4project/planton/provider/aws/awsiamuser/v1/api.proto\x1a.project/planton/shared/iac/pulumi/pulumi.proto\x1a project/planton/shared/iac.proto\x1a4project/planton/shared/iac/terraform/terraform.proto\"\xc5\x03\n" +
-	"\x14AwsIamUserStackInput\x12H\n" +
-	"\vprovisioner\x18\x01 \x01(\x0e2&.project.planton.shared.IacProvisionerR\vprovisioner\x12J\n" +
-	"\x06pulumi\x18\x02 \x01(\v22.project.planton.shared.iac.pulumi.PulumiStackInfoR\x06pulumi\x12V\n" +
-	"\tterraform\x18\x03 \x01(\v28.project.planton.shared.iac.terraform.TerraformStackInfoR\tterraform\x12N\n" +
-	"\x06target\x18\x04 \x01(\v26.project.planton.provider.aws.awsiamuser.v1.AwsIamUserR\x06target\x12o\n" +
-	"\x13provider_credential\x18\x05 \x01(\v2>.project.planton.credential.awscredential.v1.AwsCredentialSpecR\x12providerCredentialB\xf9\x02\n" +
+	"<project/planton/provider/aws/awsiamuser/v1/stack_input.proto\x12*project.planton.provider.aws.awsiamuser.v1\x1a6project/planton/credential/awscredential/v1/spec.proto\x1a4project/planton/provider/aws/awsiamuser/v1/api.proto\"\xd7\x01\n" +
+	"\x14AwsIamUserStackInput\x12N\n" +
+	"\x06target\x18\x01 \x01(\v26.project.planton.provider.aws.awsiamuser.v1.AwsIamUserR\x06target\x12o\n" +
+	"\x13provider_credential\x18\x02 \x01(\v2>.project.planton.credential.awscredential.v1.AwsCredentialSpecR\x12providerCredentialB\xf9\x02\n" +
 	".com.project.planton.provider.aws.awsiamuser.v1B\x0fStackInputProtoP\x01Zggithub.com/project-planton/project-planton/apis/project/planton/provider/aws/awsiamuser/v1;awsiamuserv1\xa2\x02\x05PPPAA\xaa\x02*Project.Planton.Provider.Aws.Awsiamuser.V1\xca\x02*Project\\Planton\\Provider\\Aws\\Awsiamuser\\V1\xe2\x026Project\\Planton\\Provider\\Aws\\Awsiamuser\\V1\\GPBMetadata\xea\x02/Project::Planton::Provider::Aws::Awsiamuser::V1b\x06proto3"
 
 var (
@@ -134,24 +101,18 @@ func file_project_planton_provider_aws_awsiamuser_v1_stack_input_proto_rawDescGZ
 
 var file_project_planton_provider_aws_awsiamuser_v1_stack_input_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_aws_awsiamuser_v1_stack_input_proto_goTypes = []any{
-	(*AwsIamUserStackInput)(nil),         // 0: project.planton.provider.aws.awsiamuser.v1.AwsIamUserStackInput
-	(shared.IacProvisioner)(0),           // 1: project.planton.shared.IacProvisioner
-	(*pulumi.PulumiStackInfo)(nil),       // 2: project.planton.shared.iac.pulumi.PulumiStackInfo
-	(*terraform.TerraformStackInfo)(nil), // 3: project.planton.shared.iac.terraform.TerraformStackInfo
-	(*AwsIamUser)(nil),                   // 4: project.planton.provider.aws.awsiamuser.v1.AwsIamUser
-	(*v1.AwsCredentialSpec)(nil),         // 5: project.planton.credential.awscredential.v1.AwsCredentialSpec
+	(*AwsIamUserStackInput)(nil), // 0: project.planton.provider.aws.awsiamuser.v1.AwsIamUserStackInput
+	(*AwsIamUser)(nil),           // 1: project.planton.provider.aws.awsiamuser.v1.AwsIamUser
+	(*v1.AwsCredentialSpec)(nil), // 2: project.planton.credential.awscredential.v1.AwsCredentialSpec
 }
 var file_project_planton_provider_aws_awsiamuser_v1_stack_input_proto_depIdxs = []int32{
-	1, // 0: project.planton.provider.aws.awsiamuser.v1.AwsIamUserStackInput.provisioner:type_name -> project.planton.shared.IacProvisioner
-	2, // 1: project.planton.provider.aws.awsiamuser.v1.AwsIamUserStackInput.pulumi:type_name -> project.planton.shared.iac.pulumi.PulumiStackInfo
-	3, // 2: project.planton.provider.aws.awsiamuser.v1.AwsIamUserStackInput.terraform:type_name -> project.planton.shared.iac.terraform.TerraformStackInfo
-	4, // 3: project.planton.provider.aws.awsiamuser.v1.AwsIamUserStackInput.target:type_name -> project.planton.provider.aws.awsiamuser.v1.AwsIamUser
-	5, // 4: project.planton.provider.aws.awsiamuser.v1.AwsIamUserStackInput.provider_credential:type_name -> project.planton.credential.awscredential.v1.AwsCredentialSpec
-	5, // [5:5] is the sub-list for method output_type
-	5, // [5:5] is the sub-list for method input_type
-	5, // [5:5] is the sub-list for extension type_name
-	5, // [5:5] is the sub-list for extension extendee
-	0, // [0:5] is the sub-list for field type_name
+	1, // 0: project.planton.provider.aws.awsiamuser.v1.AwsIamUserStackInput.target:type_name -> project.planton.provider.aws.awsiamuser.v1.AwsIamUser
+	2, // 1: project.planton.provider.aws.awsiamuser.v1.AwsIamUserStackInput.provider_credential:type_name -> project.planton.credential.awscredential.v1.AwsCredentialSpec
+	2, // [2:2] is the sub-list for method output_type
+	2, // [2:2] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_provider_aws_awsiamuser_v1_stack_input_proto_init() }

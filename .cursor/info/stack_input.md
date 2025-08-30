@@ -30,8 +30,8 @@ Purpose: author `stack_input.proto` for a resource kind, defining how the CLI pa
   1. `project.planton.shared.IacProvisioner provisioner = 1;`
   2. `project.planton.shared.iac.pulumi.PulumiStackInfo pulumi = 2;`
   3. `project.planton.shared.iac.terraform.TerraformStackInfo terraform = 3;`
-  4. `<Kind> target = 4;` (from `api.proto`)
-  5. `provider_credential = 5;` (provider-specific credential spec type per import above)
+  4. `<Kind> target = 1;` (from `api.proto`)
+  5. `provider_credential = 2;` (provider-specific credential spec type per import above)
 
 ## Notes
 - Keep field ordering and numbers stable.

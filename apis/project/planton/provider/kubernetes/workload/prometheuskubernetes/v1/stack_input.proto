@@ -4,20 +4,11 @@ package project.planton.provider.kubernetes.workload.prometheuskubernetes.v1;
 
 import "project/planton/credential/kubernetesclustercredential/v1/spec.proto";
 import "project/planton/provider/kubernetes/workload/prometheuskubernetes/v1/api.proto";
-import "project/planton/shared/iac/pulumi/pulumi.proto";
-import "project/planton/shared/iac.proto";
-import "project/planton/shared/iac/terraform/terraform.proto";
 
 //prometheus-kubernetes stack-input
 message PrometheusKubernetesStackInput {
-  //iac-provisioner
-  project.planton.shared.IacProvisioner provisioner = 1;
-  //pulumi input required when the provisioner is pulumi
-  project.planton.shared.iac.pulumi.PulumiStackInfo pulumi = 2;
-  //terraform input required when the provisioner is terraform
-  project.planton.shared.iac.terraform.TerraformStackInfo terraform = 3;
   //target cloud-resource
-  PrometheusKubernetes target = 4;
+  PrometheusKubernetes target = 1;
   //provider-credential
-  project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec provider_credential = 5;
+  project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec provider_credential = 2;
 }

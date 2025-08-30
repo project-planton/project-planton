@@ -8,9 +8,6 @@ package digitaloceandropletv1
 
 import (
 	v1 "github.com/project-planton/project-planton/apis/project/planton/credential/digitaloceancredential/v1"
-	shared "github.com/project-planton/project-planton/apis/project/planton/shared"
-	pulumi "github.com/project-planton/project-planton/apis/project/planton/shared/iac/pulumi"
-	terraform "github.com/project-planton/project-planton/apis/project/planton/shared/iac/terraform"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -28,16 +25,10 @@ const (
 // digital-ocean-droplet stack-input
 type DigitalOceanDropletStackInput struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// iac-provisioner
-	Provisioner shared.IacProvisioner `protobuf:"varint,1,opt,name=provisioner,proto3,enum=project.planton.shared.IacProvisioner" json:"provisioner,omitempty"`
-	// pulumi input required when the provisioner is pulumi
-	Pulumi *pulumi.PulumiStackInfo `protobuf:"bytes,2,opt,name=pulumi,proto3" json:"pulumi,omitempty"`
-	// terraform input required when the provisioner is terraform
-	Terraform *terraform.TerraformStackInfo `protobuf:"bytes,3,opt,name=terraform,proto3" json:"terraform,omitempty"`
 	// target cloud-resource
-	Target *DigitalOceanDroplet `protobuf:"bytes,4,opt,name=target,proto3" json:"target,omitempty"`
+	Target *DigitalOceanDroplet `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
 	// provider-credential
-	ProviderCredential *v1.DigitalOceanCredentialSpec `protobuf:"bytes,5,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
+	ProviderCredential *v1.DigitalOceanCredentialSpec `protobuf:"bytes,2,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
 }
@@ -72,27 +63,6 @@ func (*DigitalOceanDropletStackInput) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_digitalocean_digitaloceandroplet_v1_stack_input_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *DigitalOceanDropletStackInput) GetProvisioner() shared.IacProvisioner {
-	if x != nil {
-		return x.Provisioner
-	}
-	return shared.IacProvisioner(0)
-}
-
-func (x *DigitalOceanDropletStackInput) GetPulumi() *pulumi.PulumiStackInfo {
-	if x != nil {
-		return x.Pulumi
-	}
-	return nil
-}
-
-func (x *DigitalOceanDropletStackInput) GetTerraform() *terraform.TerraformStackInfo {
-	if x != nil {
-		return x.Terraform
-	}
-	return nil
-}
-
 func (x *DigitalOceanDropletStackInput) GetTarget() *DigitalOceanDroplet {
 	if x != nil {
 		return x.Target
@@ -111,13 +81,10 @@ var File_project_planton_provider_digitalocean_digitaloceandroplet_v1_stack_inpu
 
 const file_project_planton_provider_digitalocean_digitaloceandroplet_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Nproject/planton/provider/digitalocean/digitaloceandroplet/v1/stack_input.proto\x12<project.planton.provider.digitalocean.digitaloceandroplet.v1\x1a?project/planton/credential/digitaloceancredential/v1/spec.proto\x1aFproject/planton/provider/digitalocean/digitaloceandroplet/v1/api.proto\x1a project/planton/shared/iac.proto\x1a.project/planton/shared/iac/pulumi/pulumi.proto\x1a4project/planton/shared/iac/terraform/terraform.proto\"\xfc\x03\n" +
-	"\x1dDigitalOceanDropletStackInput\x12H\n" +
-	"\vprovisioner\x18\x01 \x01(\x0e2&.project.planton.shared.IacProvisionerR\vprovisioner\x12J\n" +
-	"\x06pulumi\x18\x02 \x01(\v22.project.planton.shared.iac.pulumi.PulumiStackInfoR\x06pulumi\x12V\n" +
-	"\tterraform\x18\x03 \x01(\v28.project.planton.shared.iac.terraform.TerraformStackInfoR\tterraform\x12i\n" +
-	"\x06target\x18\x04 \x01(\v2Q.project.planton.provider.digitalocean.digitaloceandroplet.v1.DigitalOceanDropletR\x06target\x12\x81\x01\n" +
-	"\x13provider_credential\x18\x05 \x01(\v2P.project.planton.credential.digitaloceancredential.v1.DigitalOceanCredentialSpecR\x12providerCredentialB\xef\x03\n" +
+	"Nproject/planton/provider/digitalocean/digitaloceandroplet/v1/stack_input.proto\x12<project.planton.provider.digitalocean.digitaloceandroplet.v1\x1a?project/planton/credential/digitaloceancredential/v1/spec.proto\x1aFproject/planton/provider/digitalocean/digitaloceandroplet/v1/api.proto\"\x8e\x02\n" +
+	"\x1dDigitalOceanDropletStackInput\x12i\n" +
+	"\x06target\x18\x01 \x01(\v2Q.project.planton.provider.digitalocean.digitaloceandroplet.v1.DigitalOceanDropletR\x06target\x12\x81\x01\n" +
+	"\x13provider_credential\x18\x02 \x01(\v2P.project.planton.credential.digitaloceancredential.v1.DigitalOceanCredentialSpecR\x12providerCredentialB\xef\x03\n" +
 	"@com.project.planton.provider.digitalocean.digitaloceandroplet.v1B\x0fStackInputProtoP\x01Z\x82\x01github.com/project-planton/project-planton/apis/project/planton/provider/digitalocean/digitaloceandroplet/v1;digitaloceandropletv1\xa2\x02\x05PPPDD\xaa\x02<Project.Planton.Provider.Digitalocean.Digitaloceandroplet.V1\xca\x02<Project\\Planton\\Provider\\Digitalocean\\Digitaloceandroplet\\V1\xe2\x02HProject\\Planton\\Provider\\Digitalocean\\Digitaloceandroplet\\V1\\GPBMetadata\xea\x02AProject::Planton::Provider::Digitalocean::Digitaloceandroplet::V1b\x06proto3"
 
 var (
@@ -135,23 +102,17 @@ func file_project_planton_provider_digitalocean_digitaloceandroplet_v1_stack_inp
 var file_project_planton_provider_digitalocean_digitaloceandroplet_v1_stack_input_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_digitalocean_digitaloceandroplet_v1_stack_input_proto_goTypes = []any{
 	(*DigitalOceanDropletStackInput)(nil), // 0: project.planton.provider.digitalocean.digitaloceandroplet.v1.DigitalOceanDropletStackInput
-	(shared.IacProvisioner)(0),            // 1: project.planton.shared.IacProvisioner
-	(*pulumi.PulumiStackInfo)(nil),        // 2: project.planton.shared.iac.pulumi.PulumiStackInfo
-	(*terraform.TerraformStackInfo)(nil),  // 3: project.planton.shared.iac.terraform.TerraformStackInfo
-	(*DigitalOceanDroplet)(nil),           // 4: project.planton.provider.digitalocean.digitaloceandroplet.v1.DigitalOceanDroplet
-	(*v1.DigitalOceanCredentialSpec)(nil), // 5: project.planton.credential.digitaloceancredential.v1.DigitalOceanCredentialSpec
+	(*DigitalOceanDroplet)(nil),           // 1: project.planton.provider.digitalocean.digitaloceandroplet.v1.DigitalOceanDroplet
+	(*v1.DigitalOceanCredentialSpec)(nil), // 2: project.planton.credential.digitaloceancredential.v1.DigitalOceanCredentialSpec
 }
 var file_project_planton_provider_digitalocean_digitaloceandroplet_v1_stack_input_proto_depIdxs = []int32{
-	1, // 0: project.planton.provider.digitalocean.digitaloceandroplet.v1.DigitalOceanDropletStackInput.provisioner:type_name -> project.planton.shared.IacProvisioner
-	2, // 1: project.planton.provider.digitalocean.digitaloceandroplet.v1.DigitalOceanDropletStackInput.pulumi:type_name -> project.planton.shared.iac.pulumi.PulumiStackInfo
-	3, // 2: project.planton.provider.digitalocean.digitaloceandroplet.v1.DigitalOceanDropletStackInput.terraform:type_name -> project.planton.shared.iac.terraform.TerraformStackInfo
-	4, // 3: project.planton.provider.digitalocean.digitaloceandroplet.v1.DigitalOceanDropletStackInput.target:type_name -> project.planton.provider.digitalocean.digitaloceandroplet.v1.DigitalOceanDroplet
-	5, // 4: project.planton.provider.digitalocean.digitaloceandroplet.v1.DigitalOceanDropletStackInput.provider_credential:type_name -> project.planton.credential.digitaloceancredential.v1.DigitalOceanCredentialSpec
-	5, // [5:5] is the sub-list for method output_type
-	5, // [5:5] is the sub-list for method input_type
-	5, // [5:5] is the sub-list for extension type_name
-	5, // [5:5] is the sub-list for extension extendee
-	0, // [0:5] is the sub-list for field type_name
+	1, // 0: project.planton.provider.digitalocean.digitaloceandroplet.v1.DigitalOceanDropletStackInput.target:type_name -> project.planton.provider.digitalocean.digitaloceandroplet.v1.DigitalOceanDroplet
+	2, // 1: project.planton.provider.digitalocean.digitaloceandroplet.v1.DigitalOceanDropletStackInput.provider_credential:type_name -> project.planton.credential.digitaloceancredential.v1.DigitalOceanCredentialSpec
+	2, // [2:2] is the sub-list for method output_type
+	2, // [2:2] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() {
