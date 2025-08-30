@@ -13,31 +13,27 @@ import (
 // “unspecified” sentinel.
 func GetProvider(
 	kind cloudresourcekind.CloudResourceKind,
-) cloudresourcekind.ProjectPlantonCloudResourceProvider {
+) cloudresourcekind.CloudResourceProvider {
 	desc := kind.Descriptor()
 	if desc == nil {
-		return cloudresourcekind.
-			ProjectPlantonCloudResourceProvider_project_planton_cloud_resource_provider_unspecified
+		return cloudresourcekind.CloudResourceProvider_cloud_resource_provider_unspecified
 	}
 
 	valDesc := desc.Values().ByNumber(protoreflect.EnumNumber(kind))
 	if valDesc == nil {
-		return cloudresourcekind.
-			ProjectPlantonCloudResourceProvider_project_planton_cloud_resource_provider_unspecified
+		return cloudresourcekind.CloudResourceProvider_cloud_resource_provider_unspecified
 	}
 
 	if !proto.HasExtension(valDesc.Options(), cloudresourcekind.E_Provider) {
-		return cloudresourcekind.
-			ProjectPlantonCloudResourceProvider_project_planton_cloud_resource_provider_unspecified
+		return cloudresourcekind.CloudResourceProvider_cloud_resource_provider_unspecified
 	}
 
 	prov, ok := proto.GetExtension(
 		valDesc.Options(),
 		cloudresourcekind.E_Provider,
-	).(cloudresourcekind.ProjectPlantonCloudResourceProvider)
+	).(cloudresourcekind.CloudResourceProvider)
 	if !ok {
-		return cloudresourcekind.
-			ProjectPlantonCloudResourceProvider_project_planton_cloud_resource_provider_unspecified
+		return cloudresourcekind.CloudResourceProvider_cloud_resource_provider_unspecified
 	}
 	return prov
 }

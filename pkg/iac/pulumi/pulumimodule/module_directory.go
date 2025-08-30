@@ -1,6 +1,11 @@
 package pulumimodule
 
 import (
+	"os"
+	"os/exec"
+	"path/filepath"
+	"strings"
+
 	"github.com/pkg/errors"
 	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
 	"github.com/project-planton/project-planton/internal/cli/version"
@@ -8,10 +13,6 @@ import (
 	"github.com/project-planton/project-planton/pkg/crkreflect"
 	"github.com/project-planton/project-planton/pkg/fileutil"
 	"github.com/project-planton/project-planton/pkg/iac/gitrepo"
-	"os"
-	"os/exec"
-	"path/filepath"
-	"strings"
 )
 
 func GetPath(moduleDir string, stackFqdn, kindName string) (string, error) {
@@ -77,7 +78,7 @@ func IsPulumiModuleDirectory(moduleDir string) (bool, error) {
 func getPulumiModulePath(moduleRepoDir, kindName string) (string, error) {
 	kind := crkreflect.KindFromString(kindName)
 	kindProvider := crkreflect.GetProvider(kind)
-	if kindProvider == cloudresourcekind.ProjectPlantonCloudResourceProvider_project_planton_cloud_resource_provider_unspecified {
+	if kindProvider == cloudresourcekind.CloudResourceProvider_cloud_resource_provider_unspecified {
 		return "", errors.New("failed to get kind provider")
 	}
 
@@ -86,7 +87,7 @@ func getPulumiModulePath(moduleRepoDir, kindName string) (string, error) {
 		"apis/project/planton/provider",
 		strings.ReplaceAll(kindProvider.String(), "_", ""))
 
-	if kindProvider == cloudresourcekind.ProjectPlantonCloudResourceProvider_kubernetes {
+	if kindProvider == cloudresourcekind.CloudResourceProvider_kubernetes {
 		kindDirPath = filepath.Join(kindDirPath, crkreflect.GetKubernetesResourceType(kind).String())
 	}
 

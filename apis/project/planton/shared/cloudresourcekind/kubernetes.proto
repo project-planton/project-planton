@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package project.planton.shared.cloudresourcekind;
+
+//kubernetes cloud resource type
+enum KubernetesCloudResourceType {
+  kubernetes_cloud_resource_type_unspecified = 0;
+  addon = 1;
+  workload = 2;
+}

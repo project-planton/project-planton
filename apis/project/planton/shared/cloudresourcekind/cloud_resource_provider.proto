@@ -2,8 +2,9 @@ syntax = "proto3";
 
 package project.planton.shared.cloudresourcekind;
 
-enum ProjectPlantonCloudResourceProvider {
-  project_planton_cloud_resource_provider_unspecified = 0;
+//cloud resource provider
+enum CloudResourceProvider {
+  cloud_resource_provider_unspecified = 0;
   test = 1;
   
   atlas = 2;
@@ -16,10 +17,4 @@ enum ProjectPlantonCloudResourceProvider {
   gcp = 9;
   kubernetes = 10;
   snowflake = 11;
-}
-
-enum ProjectPlantonKubernetesResourceType {
-  project_planton_kubernetes_resource_type_unspecified = 0;
-  addon = 1;
-  workload = 2;
 }

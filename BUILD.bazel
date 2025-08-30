@@ -1,6 +1,8 @@
 load("@gazelle//:def.bzl", "gazelle")
 load("@rules_go//go:def.bzl", "go_binary", "go_library")
 
+exports_files([".bazelrc"])
+
 # Keep Gazelle minimal. We will not generate proto rules here; buf handles stubs.
 # Disable Gazelle proto generation globally to avoid conflicts with buf outputs.
 # You can still enable per-package if needed later.
@@ -9,6 +11,10 @@ load("@rules_go//go:def.bzl", "go_binary", "go_library")
 
 gazelle(
     name = "gazelle",
+    args = [
+        "-proto",
+        "disable",
+    ],  # prevent proto/go_proto generation globally
 )
 
 go_library(
