@@ -78,7 +78,7 @@ ${build_dir}/${name}: deps vet
 
 .PHONY: test
 test:
-	go test -race -v -count=1 -p $(PARALLEL) -parallel $(PARALLEL) ./...
+	go test -race -v -count=1 -p $(PARALLEL) ./...
 
 .PHONY: run
 run: build
