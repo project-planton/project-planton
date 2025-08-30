@@ -222,9 +222,7 @@ func (x *ApiResourceAuditActor) GetAvatar() string {
 type ApiResourceLifecycle struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// flag to indicate if the resource is not deleted and is active
-	IsActive bool `protobuf:"varint,1,opt,name=is_active,json=isActive,proto3" json:"is_active,omitempty"`
-	// flag to indicate if the resource is paused
-	IsPaused      bool `protobuf:"varint,2,opt,name=is_paused,json=isPaused,proto3" json:"is_paused,omitempty"`
+	IsActive      bool `protobuf:"varint,1,opt,name=is_active,json=isActive,proto3" json:"is_active,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -262,13 +260,6 @@ func (*ApiResourceLifecycle) Descriptor() ([]byte, []int) {
 func (x *ApiResourceLifecycle) GetIsActive() bool {
 	if x != nil {
 		return x.IsActive
-	}
-	return false
-}
-
-func (x *ApiResourceLifecycle) GetIsPaused() bool {
-	if x != nil {
-		return x.IsPaused
 	}
 	return false
 }
@@ -349,10 +340,9 @@ const file_project_planton_shared_status_proto_rawDesc = "" +
 	"\x05event\x18\x05 \x01(\tR\x05event\"?\n" +
 	"\x15ApiResourceAuditActor\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x16\n" +
-	"\x06avatar\x18\x02 \x01(\tR\x06avatar\"P\n" +
+	"\x06avatar\x18\x02 \x01(\tR\x06avatar\"3\n" +
 	"\x14ApiResourceLifecycle\x12\x1b\n" +
-	"\tis_active\x18\x01 \x01(\bR\bisActive\x12\x1b\n" +
-	"\tis_paused\x18\x02 \x01(\bR\bisPaused\"\xb0\x01\n" +
+	"\tis_active\x18\x01 \x01(\bR\bisActive\"\xb0\x01\n" +
 	"\"ApiResourceLifecycleAndAuditStatus\x12J\n" +
 	"\tlifecycle\x18c \x01(\v2,.project.planton.shared.ApiResourceLifecycleR\tlifecycle\x12>\n" +
 	"\x05audit\x18b \x01(\v2(.project.planton.shared.ApiResourceAuditR\x05auditB\xeb\x01\n" +

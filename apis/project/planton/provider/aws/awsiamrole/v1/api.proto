@@ -38,15 +38,6 @@ message AwsIamRole {
 
 // AwsIamRoleStatus describes the status fields for an ECS service resource.
 message AwsIamRoleStatus {
-  // lifecycle indicates if the resource is active or has been marked for removal.
-  project.planton.shared.ApiResourceLifecycle lifecycle = 99;
-
-  // audit contains creation and update information for the resource.
-  project.planton.shared.ApiResourceAudit audit = 98;
-
-  // stack_job_id stores the ID of the Pulumi/Terraform stack job responsible for provisioning.
-  string stack_job_id = 97;
-
   // stack_outputs captures the outputs returned by Pulumi/Terraform after provisioning.
   AwsIamRoleStackOutputs outputs = 1;
 }

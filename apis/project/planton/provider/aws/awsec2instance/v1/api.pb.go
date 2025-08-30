@@ -110,12 +110,6 @@ func (x *AwsEc2Instance) GetStatus() *AwsEc2InstanceStatus {
 // AwsEc2InstanceStatus describes the status fields for an ECS service resource.
 type AwsEc2InstanceStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// lifecycle indicates if the resource is active or has been marked for removal.
-	Lifecycle *shared.ApiResourceLifecycle `protobuf:"bytes,99,opt,name=lifecycle,proto3" json:"lifecycle,omitempty"`
-	// audit contains creation and update information for the resource.
-	Audit *shared.ApiResourceAudit `protobuf:"bytes,98,opt,name=audit,proto3" json:"audit,omitempty"`
-	// stack_job_id stores the ID of the Pulumi/Terraform stack job responsible for provisioning.
-	StackJobId string `protobuf:"bytes,97,opt,name=stack_job_id,json=stackJobId,proto3" json:"stack_job_id,omitempty"`
 	// stack_outputs captures the outputs returned by Pulumi/Terraform after provisioning.
 	Outputs       *AwsEc2InstanceStackOutputs `protobuf:"bytes,1,opt,name=outputs,proto3" json:"outputs,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -152,27 +146,6 @@ func (*AwsEc2InstanceStatus) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_aws_awsec2instance_v1_api_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *AwsEc2InstanceStatus) GetLifecycle() *shared.ApiResourceLifecycle {
-	if x != nil {
-		return x.Lifecycle
-	}
-	return nil
-}
-
-func (x *AwsEc2InstanceStatus) GetAudit() *shared.ApiResourceAudit {
-	if x != nil {
-		return x.Audit
-	}
-	return nil
-}
-
-func (x *AwsEc2InstanceStatus) GetStackJobId() string {
-	if x != nil {
-		return x.StackJobId
-	}
-	return ""
-}
-
 func (x *AwsEc2InstanceStatus) GetOutputs() *AwsEc2InstanceStackOutputs {
 	if x != nil {
 		return x.Outputs
@@ -193,12 +166,8 @@ const file_project_planton_provider_aws_awsec2instance_v1_api_proto_rawDesc = ""
 	"\x0eAwsEc2InstanceR\x04kind\x12O\n" +
 	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12^\n" +
 	"\x04spec\x18\x04 \x01(\v2B.project.planton.provider.aws.awsec2instance.v1.AwsEc2InstanceSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12\\\n" +
-	"\x06status\x18\x05 \x01(\v2D.project.planton.provider.aws.awsec2instance.v1.AwsEc2InstanceStatusR\x06status\"\xaa\x02\n" +
-	"\x14AwsEc2InstanceStatus\x12J\n" +
-	"\tlifecycle\x18c \x01(\v2,.project.planton.shared.ApiResourceLifecycleR\tlifecycle\x12>\n" +
-	"\x05audit\x18b \x01(\v2(.project.planton.shared.ApiResourceAuditR\x05audit\x12 \n" +
-	"\fstack_job_id\x18a \x01(\tR\n" +
-	"stackJobId\x12d\n" +
+	"\x06status\x18\x05 \x01(\v2D.project.planton.provider.aws.awsec2instance.v1.AwsEc2InstanceStatusR\x06status\"|\n" +
+	"\x14AwsEc2InstanceStatus\x12d\n" +
 	"\aoutputs\x18\x01 \x01(\v2J.project.planton.provider.aws.awsec2instance.v1.AwsEc2InstanceStackOutputsR\aoutputsB\x8e\x03\n" +
 	"2com.project.planton.provider.aws.awsec2instance.v1B\bApiProtoP\x01Zogithub.com/project-planton/project-planton/apis/project/planton/provider/aws/awsec2instance/v1;awsec2instancev1\xa2\x02\x05PPPAA\xaa\x02.Project.Planton.Provider.Aws.Awsec2instance.V1\xca\x02.Project\\Planton\\Provider\\Aws\\Awsec2instance\\V1\xe2\x02:Project\\Planton\\Provider\\Aws\\Awsec2instance\\V1\\GPBMetadata\xea\x023Project::Planton::Provider::Aws::Awsec2instance::V1b\x06proto3"
 
@@ -216,26 +185,22 @@ func file_project_planton_provider_aws_awsec2instance_v1_api_proto_rawDescGZIP()
 
 var file_project_planton_provider_aws_awsec2instance_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_aws_awsec2instance_v1_api_proto_goTypes = []any{
-	(*AwsEc2Instance)(nil),              // 0: project.planton.provider.aws.awsec2instance.v1.AwsEc2Instance
-	(*AwsEc2InstanceStatus)(nil),        // 1: project.planton.provider.aws.awsec2instance.v1.AwsEc2InstanceStatus
-	(*shared.ApiResourceMetadata)(nil),  // 2: project.planton.shared.ApiResourceMetadata
-	(*AwsEc2InstanceSpec)(nil),          // 3: project.planton.provider.aws.awsec2instance.v1.AwsEc2InstanceSpec
-	(*shared.ApiResourceLifecycle)(nil), // 4: project.planton.shared.ApiResourceLifecycle
-	(*shared.ApiResourceAudit)(nil),     // 5: project.planton.shared.ApiResourceAudit
-	(*AwsEc2InstanceStackOutputs)(nil),  // 6: project.planton.provider.aws.awsec2instance.v1.AwsEc2InstanceStackOutputs
+	(*AwsEc2Instance)(nil),             // 0: project.planton.provider.aws.awsec2instance.v1.AwsEc2Instance
+	(*AwsEc2InstanceStatus)(nil),       // 1: project.planton.provider.aws.awsec2instance.v1.AwsEc2InstanceStatus
+	(*shared.ApiResourceMetadata)(nil), // 2: project.planton.shared.ApiResourceMetadata
+	(*AwsEc2InstanceSpec)(nil),         // 3: project.planton.provider.aws.awsec2instance.v1.AwsEc2InstanceSpec
+	(*AwsEc2InstanceStackOutputs)(nil), // 4: project.planton.provider.aws.awsec2instance.v1.AwsEc2InstanceStackOutputs
 }
 var file_project_planton_provider_aws_awsec2instance_v1_api_proto_depIdxs = []int32{
 	2, // 0: project.planton.provider.aws.awsec2instance.v1.AwsEc2Instance.metadata:type_name -> project.planton.shared.ApiResourceMetadata
 	3, // 1: project.planton.provider.aws.awsec2instance.v1.AwsEc2Instance.spec:type_name -> project.planton.provider.aws.awsec2instance.v1.AwsEc2InstanceSpec
 	1, // 2: project.planton.provider.aws.awsec2instance.v1.AwsEc2Instance.status:type_name -> project.planton.provider.aws.awsec2instance.v1.AwsEc2InstanceStatus
-	4, // 3: project.planton.provider.aws.awsec2instance.v1.AwsEc2InstanceStatus.lifecycle:type_name -> project.planton.shared.ApiResourceLifecycle
-	5, // 4: project.planton.provider.aws.awsec2instance.v1.AwsEc2InstanceStatus.audit:type_name -> project.planton.shared.ApiResourceAudit
-	6, // 5: project.planton.provider.aws.awsec2instance.v1.AwsEc2InstanceStatus.outputs:type_name -> project.planton.provider.aws.awsec2instance.v1.AwsEc2InstanceStackOutputs
-	6, // [6:6] is the sub-list for method output_type
-	6, // [6:6] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	4, // 3: project.planton.provider.aws.awsec2instance.v1.AwsEc2InstanceStatus.outputs:type_name -> project.planton.provider.aws.awsec2instance.v1.AwsEc2InstanceStackOutputs
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_provider_aws_awsec2instance_v1_api_proto_init() }

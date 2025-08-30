@@ -110,12 +110,6 @@ func (x *AwsEcsCluster) GetStatus() *AwsEcsClusterStatus {
 // AwsEcsClusterStatus describes the status fields for an ECS service resource.
 type AwsEcsClusterStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// lifecycle indicates if the resource is active or has been marked for removal.
-	Lifecycle *shared.ApiResourceLifecycle `protobuf:"bytes,99,opt,name=lifecycle,proto3" json:"lifecycle,omitempty"`
-	// audit contains creation and update information for the resource.
-	Audit *shared.ApiResourceAudit `protobuf:"bytes,98,opt,name=audit,proto3" json:"audit,omitempty"`
-	// stack_job_id stores the ID of the Pulumi/Terraform stack job responsible for provisioning.
-	StackJobId string `protobuf:"bytes,97,opt,name=stack_job_id,json=stackJobId,proto3" json:"stack_job_id,omitempty"`
 	// stack_outputs captures the outputs returned by Pulumi/Terraform after provisioning.
 	Outputs       *AwsEcsClusterStackOutputs `protobuf:"bytes,1,opt,name=outputs,proto3" json:"outputs,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -152,27 +146,6 @@ func (*AwsEcsClusterStatus) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_aws_awsecscluster_v1_api_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *AwsEcsClusterStatus) GetLifecycle() *shared.ApiResourceLifecycle {
-	if x != nil {
-		return x.Lifecycle
-	}
-	return nil
-}
-
-func (x *AwsEcsClusterStatus) GetAudit() *shared.ApiResourceAudit {
-	if x != nil {
-		return x.Audit
-	}
-	return nil
-}
-
-func (x *AwsEcsClusterStatus) GetStackJobId() string {
-	if x != nil {
-		return x.StackJobId
-	}
-	return ""
-}
-
 func (x *AwsEcsClusterStatus) GetOutputs() *AwsEcsClusterStackOutputs {
 	if x != nil {
 		return x.Outputs
@@ -193,12 +166,8 @@ const file_project_planton_provider_aws_awsecscluster_v1_api_proto_rawDesc = "" 
 	"\rAwsEcsClusterR\x04kind\x12O\n" +
 	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12\\\n" +
 	"\x04spec\x18\x04 \x01(\v2@.project.planton.provider.aws.awsecscluster.v1.AwsEcsClusterSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12Z\n" +
-	"\x06status\x18\x05 \x01(\v2B.project.planton.provider.aws.awsecscluster.v1.AwsEcsClusterStatusR\x06status\"\xa7\x02\n" +
-	"\x13AwsEcsClusterStatus\x12J\n" +
-	"\tlifecycle\x18c \x01(\v2,.project.planton.shared.ApiResourceLifecycleR\tlifecycle\x12>\n" +
-	"\x05audit\x18b \x01(\v2(.project.planton.shared.ApiResourceAuditR\x05audit\x12 \n" +
-	"\fstack_job_id\x18a \x01(\tR\n" +
-	"stackJobId\x12b\n" +
+	"\x06status\x18\x05 \x01(\v2B.project.planton.provider.aws.awsecscluster.v1.AwsEcsClusterStatusR\x06status\"y\n" +
+	"\x13AwsEcsClusterStatus\x12b\n" +
 	"\aoutputs\x18\x01 \x01(\v2H.project.planton.provider.aws.awsecscluster.v1.AwsEcsClusterStackOutputsR\aoutputsB\x87\x03\n" +
 	"1com.project.planton.provider.aws.awsecscluster.v1B\bApiProtoP\x01Zmgithub.com/project-planton/project-planton/apis/project/planton/provider/aws/awsecscluster/v1;awsecsclusterv1\xa2\x02\x05PPPAA\xaa\x02-Project.Planton.Provider.Aws.Awsecscluster.V1\xca\x02-Project\\Planton\\Provider\\Aws\\Awsecscluster\\V1\xe2\x029Project\\Planton\\Provider\\Aws\\Awsecscluster\\V1\\GPBMetadata\xea\x022Project::Planton::Provider::Aws::Awsecscluster::V1b\x06proto3"
 
@@ -216,26 +185,22 @@ func file_project_planton_provider_aws_awsecscluster_v1_api_proto_rawDescGZIP() 
 
 var file_project_planton_provider_aws_awsecscluster_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_aws_awsecscluster_v1_api_proto_goTypes = []any{
-	(*AwsEcsCluster)(nil),               // 0: project.planton.provider.aws.awsecscluster.v1.AwsEcsCluster
-	(*AwsEcsClusterStatus)(nil),         // 1: project.planton.provider.aws.awsecscluster.v1.AwsEcsClusterStatus
-	(*shared.ApiResourceMetadata)(nil),  // 2: project.planton.shared.ApiResourceMetadata
-	(*AwsEcsClusterSpec)(nil),           // 3: project.planton.provider.aws.awsecscluster.v1.AwsEcsClusterSpec
-	(*shared.ApiResourceLifecycle)(nil), // 4: project.planton.shared.ApiResourceLifecycle
-	(*shared.ApiResourceAudit)(nil),     // 5: project.planton.shared.ApiResourceAudit
-	(*AwsEcsClusterStackOutputs)(nil),   // 6: project.planton.provider.aws.awsecscluster.v1.AwsEcsClusterStackOutputs
+	(*AwsEcsCluster)(nil),              // 0: project.planton.provider.aws.awsecscluster.v1.AwsEcsCluster
+	(*AwsEcsClusterStatus)(nil),        // 1: project.planton.provider.aws.awsecscluster.v1.AwsEcsClusterStatus
+	(*shared.ApiResourceMetadata)(nil), // 2: project.planton.shared.ApiResourceMetadata
+	(*AwsEcsClusterSpec)(nil),          // 3: project.planton.provider.aws.awsecscluster.v1.AwsEcsClusterSpec
+	(*AwsEcsClusterStackOutputs)(nil),  // 4: project.planton.provider.aws.awsecscluster.v1.AwsEcsClusterStackOutputs
 }
 var file_project_planton_provider_aws_awsecscluster_v1_api_proto_depIdxs = []int32{
 	2, // 0: project.planton.provider.aws.awsecscluster.v1.AwsEcsCluster.metadata:type_name -> project.planton.shared.ApiResourceMetadata
 	3, // 1: project.planton.provider.aws.awsecscluster.v1.AwsEcsCluster.spec:type_name -> project.planton.provider.aws.awsecscluster.v1.AwsEcsClusterSpec
 	1, // 2: project.planton.provider.aws.awsecscluster.v1.AwsEcsCluster.status:type_name -> project.planton.provider.aws.awsecscluster.v1.AwsEcsClusterStatus
-	4, // 3: project.planton.provider.aws.awsecscluster.v1.AwsEcsClusterStatus.lifecycle:type_name -> project.planton.shared.ApiResourceLifecycle
-	5, // 4: project.planton.provider.aws.awsecscluster.v1.AwsEcsClusterStatus.audit:type_name -> project.planton.shared.ApiResourceAudit
-	6, // 5: project.planton.provider.aws.awsecscluster.v1.AwsEcsClusterStatus.outputs:type_name -> project.planton.provider.aws.awsecscluster.v1.AwsEcsClusterStackOutputs
-	6, // [6:6] is the sub-list for method output_type
-	6, // [6:6] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	4, // 3: project.planton.provider.aws.awsecscluster.v1.AwsEcsClusterStatus.outputs:type_name -> project.planton.provider.aws.awsecscluster.v1.AwsEcsClusterStackOutputs
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_provider_aws_awsecscluster_v1_api_proto_init() }

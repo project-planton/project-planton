@@ -47,8 +47,6 @@ message ApiResourceAuditActor {
 message ApiResourceLifecycle {
   // flag to indicate if the resource is not deleted and is active
   bool is_active = 1;
-  // flag to indicate if the resource is paused
-  bool is_paused = 2;
 }
 
 // api-resource status containing just the lifecycle and audit messages.
