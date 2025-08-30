@@ -8,150 +8,169 @@ import "project/planton/shared/cloudresourcekind/kubernetes.proto";
 
 //enum value options for api-resource-kind
 extend google.protobuf.EnumValueOptions {
-  CloudResourceProvider provider = 10100;
-  KubernetesCloudResourceType kubernetes_type = 10101;
-  string id_prefix = 10102;
+  CloudResourceKindMeta meta = 10100;
+}
+
+//api-resource-kind cloud-resource meta
+message CloudResourceKindMeta {
+  //cloud-resource provider
+  CloudResourceProvider provider = 1;
+  //cloud-resource id-prefix
+  string id_prefix = 2;
+  //flag indicating whether the cloud-resource kind can be used to launch a service.
+  bool is_service_kind = 3;
+  //kubernetes metadata. only applicable when provider is kubernetes
+  KubernetesCloudResourceKindMeta kubernetes_meta = 4;
+}
+
+// kubernetes cloud-resource kind meta
+message KubernetesCloudResourceKindMeta {
+  //prefix to be used for kubernetes namespace
+  //this is only applicable when provider is kubernetes
+  string namespace_prefix = 1;
+  //category of the kubernetes cloud-resource kind
+  KubernetesCloudResourceType category = 2;
 }
 
 enum CloudResourceKind {
   // 0: Default/unspecified
-  unspecified = 0 [(provider) = test];
+  unspecified = 0;
 
   // 1–49: Test/dev/custom
-  FirstTestCloudApiResource = 1 [(provider) = test, (id_prefix) = "tcar1"];
-  SecondTestCloudApiResource = 2 [(provider) = test, (id_prefix) = "tcar2"];
-  ThirdTestCloudApiResource = 3 [(provider) = test, (id_prefix) = "tcar3"];
+  FirstTestCloudApiResource = 1[(meta) = {provider: test, id_prefix:"tcar1"}];
+  SecondTestCloudApiResource = 2 [(meta) = {provider: test, id_prefix: "tcar2"}];
+  ThirdTestCloudApiResource = 3 [(meta) = {provider: test, id_prefix: "tcar3"}];
 
   // 50–199: saas platform resources
-  ConfluentKafka = 50 [(provider) = confluent, (id_prefix) = "conkaf"];
-  MongodbAtlas = 51 [(provider) = atlas, (id_prefix) = "mdbatl"];
-  SnowflakeDatabase = 52 [(provider) = snowflake, (id_prefix) = "snowdb"];
+  ConfluentKafka = 50 [(meta) = {provider: confluent, id_prefix: "conkaf"}];
+  MongodbAtlas = 51 [(meta) = {provider: atlas, id_prefix: "mdbatl"}];
+  SnowflakeDatabase = 52 [(meta) = {provider: snowflake, id_prefix: "snowdb"}];
 
   // 200–399: AWS resources
-  AwsAlb = 200 [(provider) = aws, (id_prefix) = "awsalb"];
-  AwsCertManagerCert = 201 [(provider) = aws, (id_prefix) = "acmcert"];
-  AwsCloudFront = 202 [(provider) = aws, (id_prefix) = "awscf"];
-  AwsDynamodb = 203 [(provider) = aws, (id_prefix) = "awsdyn"];
-  AwsEcrRepo = 204 [(provider) = aws, (id_prefix) = "ecr"];
-  AwsEcsCluster = 205 [(provider) = aws, (id_prefix) = "ecsclu"];
-  AwsEcsService = 206 [(provider) = aws, (id_prefix) = "ecssvc"];
-  AwsEksCluster = 207 [(provider) = aws, (id_prefix) = "eks"];
-  AwsIamRole = 208 [(provider) = aws, (id_prefix) = "air"];
-  AwsLambda = 209 [(provider) = aws, (id_prefix) = "lambda"];
-  AwsRdsCluster = 210 [(provider) = aws, (id_prefix) = "rdsclu"];
-  AwsRdsInstance = 211 [(provider) = aws, (id_prefix) = "rdsins"];
-  AwsRoute53Zone = 212 [(provider) = aws, (id_prefix) = "r53z"];
-  AwsS3Bucket = 213 [(provider) = aws, (id_prefix) = "s3bkt"];
-  AwsSecretsManager = 214 [(provider) = aws, (id_prefix) = "awssm"];
-  AwsSecurityGroup = 215 [(provider) = aws, (id_prefix) = "awssg"];
-  AwsStaticWebsite = 216 [(provider) = aws, (id_prefix) = "awsweb"];
-  AwsVpc = 217 [(provider) = aws, (id_prefix) = "awsvpc"];
-  AwsEksNodeGroup = 218 [(provider) = aws, (id_prefix) = "eksng"];
-  AwsIamUser = 219 [(provider) = aws, (id_prefix) = "awsuser"];
-  AwsKmsKey = 220 [(provider) = aws, (id_prefix) = "awskms"];
-  AwsEc2Instance = 221 [(provider) = aws, (id_prefix) = "ec2inst"];
-  AwsClientVpn = 222 [(provider) = aws, (id_prefix) = "awsvpn"];
+  AwsAlb = 200 [(meta) = {provider: aws, id_prefix: "awsalb"}];
+  AwsCertManagerCert = 201 [(meta) = {provider: aws, id_prefix: "acmcert"}];
+  AwsCloudFront = 202 [(meta) = {provider: aws, id_prefix: "awscf"}];
+  AwsDynamodb = 203 [(meta) = {provider: aws, id_prefix: "awsdyn"}];
+  AwsEcrRepo = 204 [(meta) = {provider: aws, id_prefix: "ecr"}];
+  AwsEcsCluster = 205 [(meta) = {provider: aws, id_prefix: "ecsclu"}];
+  AwsEcsService = 206 [(meta) = {provider: aws, id_prefix: "ecssvc"}];
+  AwsEksCluster = 207 [(meta) = {provider: aws, id_prefix: "eks"}];
+  AwsIamRole = 208 [(meta) = {provider: aws, id_prefix: "air"}];
+  AwsLambda = 209 [(meta) = {provider: aws, id_prefix: "lambda"}];
+  AwsRdsCluster = 210 [(meta) = {provider: aws, id_prefix: "rdsclu"}];
+  AwsRdsInstance = 211 [(meta) = {provider: aws, id_prefix: "rdsins"}];
+  AwsRoute53Zone = 212 [(meta) = {provider: aws, id_prefix: "r53z"}];
+  AwsS3Bucket = 213 [(meta) = {provider: aws, id_prefix: "s3bkt"}];
+  AwsSecretsManager = 214 [(meta) = {provider: aws, id_prefix: "awssm"}];
+  AwsSecurityGroup = 215 [(meta) = {provider: aws, id_prefix: "awssg"}];
+  AwsStaticWebsite = 216 [(meta) = {provider: aws, id_prefix: "awsweb"}];
+  AwsVpc = 217 [(meta) = {provider: aws, id_prefix: "awsvpc"}];
+  AwsEksNodeGroup = 218 [(meta) = {provider: aws, id_prefix: "eksng"}];
+  AwsIamUser = 219 [(meta) = {provider: aws, id_prefix: "awsuser"}];
+  AwsKmsKey = 220 [(meta) = {provider: aws, id_prefix: "awskms"}];
+  AwsEc2Instance = 221 [(meta) = {provider: aws, id_prefix: "ec2inst"}];
+  AwsClientVpn = 222 [(meta) = {provider: aws, id_prefix: "awsvpn"}];
 
   // 400–599: Azure resources
-  AzureAksCluster = 400 [(provider) = azure, (id_prefix) = "aks"];
-  AzureAksNodePool = 401 [(provider) = azure, (id_prefix) = "aksnp"];
-  AzureContainerRegistry = 402 [(provider) = azure, (id_prefix) = "acr"];
-  AzureDnsZone = 403 [(provider) = azure, (id_prefix) = "azdns"];
-  AzureKeyVault = 404 [(provider) = azure, (id_prefix) = "azkv"];
-  AzureVpc = 405 [(provider) = azure, (id_prefix) = "azvpc"];
-  AzureNatGateway = 406 [(provider) = azure, (id_prefix) = "aznat"];
+  AzureAksCluster = 400 [(meta) = {provider: azure, id_prefix: "aks"}];
+  AzureAksNodePool = 401 [(meta) = {provider: azure, id_prefix: "aksnp"}];
+  AzureContainerRegistry = 402 [(meta) = {provider: azure, id_prefix: "acr"}];
+  AzureDnsZone = 403 [(meta) = {provider: azure, id_prefix: "azdns"}];
+  AzureKeyVault = 404 [(meta) = {provider: azure, id_prefix: "azkv"}];
+  AzureVpc = 405 [(meta) = {provider: azure, id_prefix: "azvpc"}];
+  AzureNatGateway = 406 [(meta) = {provider: azure, id_prefix: "aznat"}];
 
   // 600–799: GCP resources
-  GcpArtifactRegistryRepo = 600 [(provider) = gcp, (id_prefix) = "gcpart"];
-  GcpCloudCdn = 601 [(provider) = gcp, (id_prefix) = "gcpcdn"];
-  GcpCloudFunction = 602 [(provider) = gcp, (id_prefix) = "cldfunc"];
-  GcpCloudRun = 603 [(provider) = gcp, (id_prefix) = "cldrun"];
-  GcpCloudSql = 604 [(provider) = gcp, (id_prefix) = "gcpsql"];
-  GcpDnsZone = 605 [(provider) = gcp, (id_prefix) = "gcpdns"];
-  GcpGcsBucket = 606 [(provider) = gcp, (id_prefix) = "gcsbkt"];
-  GcpGkeAddonBundle = 607 [(provider) = gcp, (id_prefix) = "gkeadd"];
-  GcpGkeCluster = 608 [(provider) = gcp, (id_prefix) = "gke"];
-  GcpSecretsManager = 609 [(provider) = gcp, (id_prefix) = "gcpsm"];
-  GcpStaticWebsite = 610 [(provider) = gcp, (id_prefix) = "gcpweb"];
-  GcpProject = 611 [(provider) = gcp, (id_prefix) = "gcpprj"];
-  GcpVpc = 612 [(provider) = gcp, (id_prefix) = "gcpvpc"];
-  GcpSubnetwork = 613 [(provider) = gcp, (id_prefix) = "gcpsnw"];
-  GcpRouterNat = 614 [(provider) = gcp, (id_prefix) = "gcprnat"];
-  GcpGkeClusterCore = 615 [(provider) = gcp, (id_prefix) = "gkecore"];
-  GcpGkeNodePool = 616 [(provider) = gcp, (id_prefix) = "gkenp"];
-  GcpServiceAccount = 617 [(provider) = gcp, (id_prefix) = "gsa"];
-  GcpGkeWorkloadIdentityBinding = 618 [(provider) = gcp, (id_prefix) = "gkewib"];
+  GcpArtifactRegistryRepo = 600 [(meta) = {provider: gcp, id_prefix: "gcpart"}];
+  GcpCloudCdn = 601 [(meta) = {provider: gcp, id_prefix: "gcpcdn"}];
+  GcpCloudFunction = 602 [(meta) = {provider: gcp, id_prefix: "cldfunc"}];
+  GcpCloudRun = 603 [(meta) = {provider: gcp, id_prefix: "cldrun"}];
+  GcpCloudSql = 604 [(meta) = {provider: gcp, id_prefix: "gcpsql"}];
+  GcpDnsZone = 605 [(meta) = {provider: gcp, id_prefix: "gcpdns"}];
+  GcpGcsBucket = 606 [(meta) = {provider: gcp, id_prefix: "gcsbkt"}];
+  GcpGkeAddonBundle = 607 [(meta) = {provider: gcp, id_prefix: "gkeadd"}];
+  GcpGkeCluster = 608 [(meta) = {provider: gcp, id_prefix: "gke"}];
+  GcpSecretsManager = 609 [(meta) = {provider: gcp, id_prefix: "gcpsm"}];
+  GcpStaticWebsite = 610 [(meta) = {provider: gcp, id_prefix: "gcpweb"}];
+  GcpProject = 611 [(meta) = {provider: gcp, id_prefix: "gcpprj"}];
+  GcpVpc = 612 [(meta) = {provider: gcp, id_prefix: "gcpvpc"}];
+  GcpSubnetwork = 613 [(meta) = {provider: gcp, id_prefix: "gcpsnw"}];
+  GcpRouterNat = 614 [(meta) = {provider: gcp, id_prefix: "gcprnat"}];
+  GcpGkeClusterCore = 615 [(meta) = {provider: gcp, id_prefix: "gkecore"}];
+  GcpGkeNodePool = 616 [(meta) = {provider: gcp, id_prefix: "gkenp"}];
+  GcpServiceAccount = 617 [(meta) = {provider: gcp, id_prefix: "gsa"}];
+  GcpGkeWorkloadIdentityBinding = 618 [(meta) = {provider: gcp, id_prefix: "gkewib"}];
 
   // 800–999: Kubernetes resources
-  ArgocdKubernetes = 800 [(provider) = kubernetes, (id_prefix) = "argk8s", (kubernetes_type) = workload];
-  CronJobKubernetes = 801 [(provider) = kubernetes, (id_prefix) = "cronk8s", (kubernetes_type) = workload];
-  ElasticsearchKubernetes = 802 [(provider) = kubernetes, (id_prefix) = "elak8s", (kubernetes_type) = workload];
-  GitlabKubernetes = 803 [(provider) = kubernetes, (id_prefix) = "glk8s", (kubernetes_type) = workload];
-  GrafanaKubernetes = 804 [(provider) = kubernetes, (id_prefix) = "grak8s", (kubernetes_type) = workload];
-  HelmRelease = 805 [(provider) = kubernetes, (id_prefix) = "hlmk8s", (kubernetes_type) = workload];
-  JenkinsKubernetes = 806 [(provider) = kubernetes, (id_prefix) = "jenk8s", (kubernetes_type) = workload];
-  KafkaKubernetes = 807 [(provider) = kubernetes, (id_prefix) = "kafk8s", (kubernetes_type) = workload];
-  KeycloakKubernetes = 808 [(provider) = kubernetes, (id_prefix) = "keyk8s", (kubernetes_type) = workload];
-  KubernetesHttpEndpoint = 809 [(provider) = kubernetes, (id_prefix) = "k8shttp", (kubernetes_type) = workload];
-  LocustKubernetes = 810 [(provider) = kubernetes, (id_prefix) = "lock8s", (kubernetes_type) = workload];
-  MicroserviceKubernetes = 811 [(provider) = kubernetes, (id_prefix) = "msk8s", (kubernetes_type) = workload];
-  MongodbKubernetes = 812 [(provider) = kubernetes, (id_prefix) = "mdbk8s", (kubernetes_type) = workload];
-  Neo4jKubernetes = 813 [(provider) = kubernetes, (id_prefix) = "neok8s", (kubernetes_type) = workload];
-  OpenFgaKubernetes = 814 [(provider) = kubernetes, (id_prefix) = "fgak8s", (kubernetes_type) = workload];
-  PostgresKubernetes = 815 [(provider) = kubernetes, (id_prefix) = "pgk8s", (kubernetes_type) = workload];
-  PrometheusKubernetes = 816 [(provider) = kubernetes, (id_prefix) = "pmtk8s", (kubernetes_type) = workload];
-  RedisKubernetes = 817 [(provider) = kubernetes, (id_prefix) = "redk8s", (kubernetes_type) = workload];
-  SignozKubernetes = 818 [(provider) = kubernetes, (id_prefix) = "sigk8s", (kubernetes_type) = workload];
-  SolrKubernetes = 819 [(provider) = kubernetes, (id_prefix) = "solk8s", (kubernetes_type) = workload];
-  StackJobRunnerKubernetes = 820 [(provider) = kubernetes, (id_prefix) = "sjrk8s", (kubernetes_type) = workload];
-  TemporalKubernetes = 821 [(provider) = kubernetes, (id_prefix) = "tprlk8s", (kubernetes_type) = workload];
-  NatsKubernetes = 822 [(provider) = kubernetes, (id_prefix) = "natsk8s", (kubernetes_type) = workload];
-  CertManagerKubernetes = 823 [(provider) = kubernetes, (id_prefix) = "cmk8s", (kubernetes_type) = addon];
-  ElasticOperatorKubernetes = 824 [(provider) = kubernetes, (id_prefix) = "elaopk8s", (kubernetes_type) = addon];
-  ExternalDnsKubernetes = 825 [(provider) = kubernetes, (id_prefix) = "extdnsk8s", (kubernetes_type) = addon];
-  IngressNginxKubernetes = 826 [(provider) = kubernetes, (id_prefix) = "ngxk8s", (kubernetes_type) = addon];
-  IstioKubernetes = 827 [(provider) = kubernetes, (id_prefix) = "istk8s", (kubernetes_type) = addon];
-  KafkaOperatorKubernetes = 828 [(provider) = kubernetes, (id_prefix) = "kfkopk8s", (kubernetes_type) = addon];
-  PostgresOperatorKubernetes = 829 [(provider) = kubernetes, (id_prefix) = "pgopk8s", (kubernetes_type) = addon];
-  SolrOperatorKubernetes = 830 [(provider) = kubernetes, (id_prefix) = "slropk8s", (kubernetes_type) = addon];
-  ExternalSecretsKubernetes = 831 [(provider) = kubernetes, (id_prefix) = "extseck8s", (kubernetes_type) = addon];
+  ArgocdKubernetes = 800 [(meta) = {provider: kubernetes, id_prefix: "argk8s", kubernetes_meta: {category: workload, namespace_prefix: "argo"}}];
+  CronJobKubernetes = 801 [(meta) = {provider: kubernetes, id_prefix: "cronk8s", kubernetes_meta: {category: workload, namespace_prefix: "cron"}}];
+  ElasticsearchKubernetes = 802 [(meta) = {provider: kubernetes, id_prefix: "elak8s", kubernetes_meta: {category: workload, namespace_prefix: "elasticsearch"}}];
+  GitlabKubernetes = 803 [(meta) = {provider: kubernetes, id_prefix: "glk8s", kubernetes_meta: {category: workload, namespace_prefix: "gitlab"}}];
+  GrafanaKubernetes = 804 [(meta) = {provider: kubernetes, id_prefix: "grak8s", kubernetes_meta: {category: workload, namespace_prefix: "grafana"}}];
+  HelmRelease = 805 [(meta) = {provider: kubernetes, id_prefix: "hlmk8s", kubernetes_meta: {category: workload, namespace_prefix: "helm"}}];
+  JenkinsKubernetes = 806 [(meta) = {provider: kubernetes, id_prefix: "jenk8s", kubernetes_meta: {category: workload, namespace_prefix: "jenkins"}}];
+  KafkaKubernetes = 807 [(meta) = {provider: kubernetes, id_prefix: "kafk8s", kubernetes_meta: {category: workload, namespace_prefix: "kafka"}}];
+  KeycloakKubernetes = 808 [(meta) = {provider: kubernetes, id_prefix: "keyk8s", kubernetes_meta: {category: workload, namespace_prefix: "keycloak"}}];
+  KubernetesHttpEndpoint = 809 [(meta) = {provider: kubernetes, id_prefix: "k8shttp", kubernetes_meta: {category: workload}}];
+  LocustKubernetes = 810 [(meta) = {provider: kubernetes, id_prefix: "lock8s", kubernetes_meta: {category: workload, namespace_prefix: "locust"}}];
+  MicroserviceKubernetes = 811 [(meta) = {provider: kubernetes, id_prefix: "msk8s", is_service_kind: true, kubernetes_meta: {category: workload, namespace_prefix: "service"}}];
+  MongodbKubernetes = 812 [(meta) = {provider: kubernetes, id_prefix: "mdbk8s", kubernetes_meta: {category: workload, namespace_prefix: "mongodb"}}];
+  Neo4jKubernetes = 813 [(meta) = {provider: kubernetes, id_prefix: "neok8s", kubernetes_meta: {category: workload, namespace_prefix: "neo4j"}}];
+  OpenFgaKubernetes = 814 [(meta) = {provider: kubernetes, id_prefix: "fgak8s", kubernetes_meta: {category: workload, namespace_prefix: "openfga"}}];
+  PostgresKubernetes = 815 [(meta) = {provider: kubernetes, id_prefix: "pgk8s", kubernetes_meta: {category: workload, namespace_prefix: "postgres"}}];
+  PrometheusKubernetes = 816 [(meta) = {provider: kubernetes, id_prefix: "pmtk8s", kubernetes_meta: {category: workload, namespace_prefix: "prometheus"}}];
+  RedisKubernetes = 817 [(meta) = {provider: kubernetes, id_prefix: "redk8s", kubernetes_meta: {category: workload, namespace_prefix: "redis"}}];
+  SignozKubernetes = 818 [(meta) = {provider: kubernetes, id_prefix: "sigk8s", kubernetes_meta: {category: workload, namespace_prefix: "signoz"}}];
+  SolrKubernetes = 819 [(meta) = {provider: kubernetes, id_prefix: "solk8s", kubernetes_meta: {category: workload, namespace_prefix: "solr"}}];
+  StackJobRunnerKubernetes = 820 [(meta) = {provider: kubernetes, id_prefix: "sjrk8s", kubernetes_meta: {category: workload, namespace_prefix: "sjr"}}];
+  TemporalKubernetes = 821 [(meta) = {provider: kubernetes, id_prefix: "tprlk8s", kubernetes_meta: {category: workload, namespace_prefix: "temporal"}}];
+  NatsKubernetes = 822 [(meta) = {provider: kubernetes, id_prefix: "natsk8s", kubernetes_meta: {category: workload, namespace_prefix: "nats"}}];
+  CertManagerKubernetes = 823 [(meta) = {provider: kubernetes, id_prefix: "cmk8s", kubernetes_meta: {category: addon}}];
+  ElasticOperatorKubernetes = 824 [(meta) = {provider: kubernetes, id_prefix: "elaopk8s", kubernetes_meta: {category: addon}}];
+  ExternalDnsKubernetes = 825 [(meta) = {provider: kubernetes, id_prefix: "extdnsk8s", kubernetes_meta: {category: addon}}];
+  IngressNginxKubernetes = 826 [(meta) = {provider: kubernetes, id_prefix: "ngxk8s", kubernetes_meta: {category: addon}}];
+  IstioKubernetes = 827 [(meta) = {provider: kubernetes, id_prefix: "istk8s", kubernetes_meta: {category: addon}}];
+  KafkaOperatorKubernetes = 828 [(meta) = {provider: kubernetes, id_prefix: "kfkopk8s", kubernetes_meta: {category: addon}}];
+  PostgresOperatorKubernetes = 829 [(meta) = {provider: kubernetes, id_prefix: "pgopk8s", kubernetes_meta: {category: addon}}];
+  SolrOperatorKubernetes = 830 [(meta) = {provider: kubernetes, id_prefix: "slropk8s", kubernetes_meta: {category: addon}}];
+  ExternalSecretsKubernetes = 831 [(meta) = {provider: kubernetes, id_prefix: "extseck8s", kubernetes_meta: {category: addon}}];
 
   // 1200–1499: DigitalOcean resources
-  DigitalOceanAppPlatformService = 1200 [(provider) = digital_ocean, (id_prefix) = "doapp"];
-  DigitalOceanBucket = 1201 [(provider) = digital_ocean, (id_prefix) = "dobkt"];
-  DigitalOceanContainerRegistry = 1202 [(provider) = digital_ocean, (id_prefix) = "docr"];
-  DigitalOceanDatabaseCluster = 1203 [(provider) = digital_ocean, (id_prefix) = "dodb"];
-  DigitalOceanDnsZone = 1204 [(provider) = digital_ocean, (id_prefix) = "dodns"];
-  DigitalOceanDroplet = 1205 [(provider) = digital_ocean, (id_prefix) = "dodrop"];
-  DigitalOceanFirewall = 1206 [(provider) = digital_ocean, (id_prefix) = "dofw"];
-  DigitalOceanFunction = 1207 [(provider) = digital_ocean, (id_prefix) = "dofn"];
-  DigitalOceanKubernetesCluster = 1208 [(provider) = digital_ocean, (id_prefix) = "dokc"];
-  DigitalOceanKubernetesNodePool = 1209 [(provider) = digital_ocean, (id_prefix) = "doknp"];
-  DigitalOceanLoadBalancer = 1210 [(provider) = digital_ocean, (id_prefix) = "dolb"];
-  DigitalOceanVolume = 1211 [(provider) = digital_ocean, (id_prefix) = "dovol"];
-  DigitalOceanVpc = 1212 [(provider) = digital_ocean, (id_prefix) = "dovpc"];
-  DigitalOceanCertificate = 1213 [(provider) = digital_ocean, (id_prefix) = "docert"];
+  DigitalOceanAppPlatformService = 1200 [(meta) = {provider: digital_ocean, id_prefix: "doapp"}];
+  DigitalOceanBucket = 1201 [(meta) = {provider: digital_ocean, id_prefix: "dobkt"}];
+  DigitalOceanContainerRegistry = 1202 [(meta) = {provider: digital_ocean, id_prefix: "docr"}];
+  DigitalOceanDatabaseCluster = 1203 [(meta) = {provider: digital_ocean, id_prefix: "dodb"}];
+  DigitalOceanDnsZone = 1204 [(meta) = {provider: digital_ocean, id_prefix: "dodns"}];
+  DigitalOceanDroplet = 1205 [(meta) = {provider: digital_ocean, id_prefix: "dodrop"}];
+  DigitalOceanFirewall = 1206 [(meta) = {provider: digital_ocean, id_prefix: "dofw"}];
+  DigitalOceanFunction = 1207 [(meta) = {provider: digital_ocean, id_prefix: "dofn"}];
+  DigitalOceanKubernetesCluster = 1208 [(meta) = {provider: digital_ocean, id_prefix: "dokc"}];
+  DigitalOceanKubernetesNodePool = 1209 [(meta) = {provider: digital_ocean, id_prefix: "doknp"}];
+  DigitalOceanLoadBalancer = 1210 [(meta) = {provider: digital_ocean, id_prefix: "dolb"}];
+  DigitalOceanVolume = 1211 [(meta) = {provider: digital_ocean, id_prefix: "dovol"}];
+  DigitalOceanVpc = 1212 [(meta) = {provider: digital_ocean, id_prefix: "dovpc"}];
+  DigitalOceanCertificate = 1213 [(meta) = {provider: digital_ocean, id_prefix: "docert"}];
 
   // 1500–1799: Civo resources
-  CivoBucket = 1500 [(provider) = civo, (id_prefix) = "cibkt"];
-  CivoCertificate = 1501 [(provider) = civo, (id_prefix) = "cicert"];
-  CivoComputeInstance = 1502 [(provider) = civo, (id_prefix) = "ciinst"];
-  CivoDatabase = 1503 [(provider) = civo, (id_prefix) = "cidb"];
-  CivoDnsZone = 1504 [(provider) = civo, (id_prefix) = "cidns"];
-  CivoFirewall = 1505 [(provider) = civo, (id_prefix) = "cifw"];
-  CivoIpAddress = 1506 [(provider) = civo, (id_prefix) = "ciip"];
-  CivoKubernetesCluster = 1507 [(provider) = civo, (id_prefix) = "cikc"];
-  CivoKubernetesNodePool = 1508 [(provider) = civo, (id_prefix) = "ciknp"];
-  CivoLoadBalancer = 1509 [(provider) = civo, (id_prefix) = "cilb"];
-  CivoVolume = 1510 [(provider) = civo, (id_prefix) = "civol"];
-  CivoVpc = 1511 [(provider) = civo, (id_prefix) = "civpc"];
+  CivoBucket = 1500 [(meta) = {provider: civo, id_prefix: "cibkt"}];
+  CivoCertificate = 1501 [(meta) = {provider: civo, id_prefix: "cicert"}];
+  CivoComputeInstance = 1502 [(meta) = {provider: civo, id_prefix: "ciinst"}];
+  CivoDatabase = 1503 [(meta) = {provider: civo, id_prefix: "cidb"}];
+  CivoDnsZone = 1504 [(meta) = {provider: civo, id_prefix: "cidns"}];
+  CivoFirewall = 1505 [(meta) = {provider: civo, id_prefix: "cifw"}];
+  CivoIpAddress = 1506 [(meta) = {provider: civo, id_prefix: "ciip"}];
+  CivoKubernetesCluster = 1507 [(meta) = {provider: civo, id_prefix: "cikc"}];
+  CivoKubernetesNodePool = 1508 [(meta) = {provider: civo, id_prefix: "ciknp"}];
+  CivoLoadBalancer = 1509 [(meta) = {provider: civo, id_prefix: "cilb"}];
+  CivoVolume = 1510 [(meta) = {provider: civo, id_prefix: "civol"}];
+  CivoVpc = 1511 [(meta) = {provider: civo, id_prefix: "civpc"}];
 
   // 1800–2099: Cloudflare resources
-  CloudflareDnsZone = 1800 [(provider) = cloudflare, (id_prefix) = "cfdns"];
-  CloudflareKvNamespace = 1801 [(provider) = cloudflare, (id_prefix) = "cfkvn"];
-  CloudflareR2Bucket = 1802 [(provider) = cloudflare, (id_prefix) = "cfr2b"];
-  CloudflareWorker = 1803 [(provider) = cloudflare, (id_prefix) = "cfwrk"];
-  CloudflareLoadBalancer = 1804 [(provider) = cloudflare, (id_prefix) = "cflb"];
-  CloudflareD1Database = 1805 [(provider) = cloudflare, (id_prefix) = "cfd1db"];
-  CloudflareZeroTrustAccessApplication = 1806 [(provider) = cloudflare, (id_prefix) = "cfzta"];
+  CloudflareDnsZone = 1800 [(meta) = {provider: cloudflare, id_prefix: "cfdns"}];
+  CloudflareKvNamespace = 1801 [(meta) = {provider: cloudflare, id_prefix: "cfkvn"}];
+  CloudflareR2Bucket = 1802 [(meta) = {provider: cloudflare, id_prefix: "cfr2b"}];
+  CloudflareWorker = 1803 [(meta) = {provider: cloudflare, id_prefix: "cfwrk"}];
+  CloudflareLoadBalancer = 1804 [(meta) = {provider: cloudflare, id_prefix: "cflb"}];
+  CloudflareD1Database = 1805 [(meta) = {provider: cloudflare, id_prefix: "cfd1db"}];
+  CloudflareZeroTrustAccessApplication = 1806 [(meta) = {provider: cloudflare, id_prefix: "cfzta"}];
 }
