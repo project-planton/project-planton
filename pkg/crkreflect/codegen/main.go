@@ -17,7 +17,7 @@ import (
 	"github.com/project-planton/project-planton/pkg/crkreflect"
 
 	"github.com/pkg/errors"
-	cloudresourcekind "github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
+	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
 )
 
 // -----------------------------------------------------------------------------
@@ -93,7 +93,8 @@ func run() error {
 
 	for _, cloudResourceKind := range crkreflect.KindsList() {
 		provider := crkreflect.GetProvider(cloudResourceKind)
-		if provider == cloudresourcekind.CloudResourceProvider_test {
+		if provider == cloudresourcekind.CloudResourceProvider_cloud_resource_provider_unspecified ||
+			provider == cloudresourcekind.CloudResourceProvider_test {
 			// skip test values
 			continue
 		}
@@ -115,7 +116,7 @@ func run() error {
 				"github.com/project-planton/project-planton/apis/project/planton/provider/%s/%s/%s/v1",
 				provSlug, kubernetesResourceType, lowerKind)
 
-			putUniqueEntry(kubernetesResourceType == cloudresourcekind.KubernetesCloudResourceType_addon,
+			putUniqueEntry(kubernetesResourceType == cloudresourcekind.KubernetesCloudResourceCategory_addon,
 				&k8sAddon, &k8sWorkload,
 				entry{
 					KindConst:   kindName,

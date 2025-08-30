@@ -3,7 +3,7 @@ load("@rules_go//go:def.bzl", "go_library")
 go_library(
     name = "crkreflect",
     srcs = [
-        "get_kubernetes_resource_type.go",
+        "get_kubernetes_resource_category.go",
         "get_provider.go",
         "kind_extractor.go",
         "kind_from_string.go",
