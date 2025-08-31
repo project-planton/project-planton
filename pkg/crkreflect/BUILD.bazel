@@ -13,6 +13,7 @@ go_library(
         "kind_map_gen.go",
         "kind_meta.go",
         "kind_name_by_kind.go",
+        "kind_to_kind_meta_map.go",
         "kinds_list.go",
         "provider_meta.go",
         "providers_list.go",
