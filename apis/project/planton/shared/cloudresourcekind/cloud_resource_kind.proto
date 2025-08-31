@@ -23,12 +23,16 @@ message CloudResourceKindMeta {
   CloudResourceProvider provider = 1;
   //cloud-resource kind version
   CloudResourceKindVersion version = 2;
+  //name of the kind. this might be different from the enum value.
+  // ex: AwsVpcV2 enum will still have "kind: AwsVpc" but groupVersion will have "aws.project-planton.org/v2".
+  //this is only set in options when the name is different from enum value.
+  string name = 3;
   //cloud-resource id-prefix
-  string id_prefix = 3;
+  string id_prefix = 4;
   //flag indicating whether the cloud-resource kind can be used to launch a service.
-  bool is_service_kind = 4;
+  bool is_service_kind = 5;
   //kubernetes metadata. only applicable when provider is kubernetes
-  KubernetesCloudResourceKindMeta kubernetes_meta = 5;
+  KubernetesCloudResourceKindMeta kubernetes_meta = 6;
 }
 
 // kubernetes cloud-resource kind meta
