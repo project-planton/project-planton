@@ -104,7 +104,7 @@ func getTerraformModulePath(moduleRepoDir, kindName string) (string, error) {
 		strings.ReplaceAll(kindProvider.String(), "_", ""))
 
 	if kindProvider == cloudresourcekind.CloudResourceProvider_kubernetes {
-		kindDirPath = filepath.Join(kindDirPath, crkreflect.GetKubernetesResourceType(kind).String())
+		kindDirPath = filepath.Join(kindDirPath, crkreflect.GetKubernetesResourceCategory(kind).String())
 	}
 
 	terraformModulePath := filepath.Join(

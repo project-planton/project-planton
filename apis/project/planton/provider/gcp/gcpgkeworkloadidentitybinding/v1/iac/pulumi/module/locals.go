@@ -12,9 +12,9 @@ import (
 
 // Locals keeps frequently‑used values (metadata, labels, credentials) handy for the module.
 type Locals struct {
-	GcpCredentialSpec *gcpcredentialv1.GcpCredentialSpec
-	GcpGkeWorkloadIdentityBinding            *gcpgkeworkloadidentitybindingv1.GcpGkeWorkloadIdentityBinding
-	GcpLabels         map[string]string
+	GcpCredentialSpec             *gcpcredentialv1.GcpCredentialSpec
+	GcpGkeWorkloadIdentityBinding *gcpgkeworkloadidentitybindingv1.GcpGkeWorkloadIdentityBinding
+	GcpLabels                     map[string]string
 }
 
 // initializeLocals populates the Locals struct from the stack input.

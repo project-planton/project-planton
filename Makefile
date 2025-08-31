@@ -67,7 +67,7 @@ generate-kubernetes-types:
 build-cli: ${build_dir}/${name}
 
 .PHONY: build
-build: protos generate-cloud-resource-kind-map bazel-mod-tidy bazel-gazelle bazel-build-cli build-cli
+build: protos generate-cloud-resource-kind-map bazel-mod-tidy bazel-gazelle bazel-build-cli fmt build-cli
 
 ${build_dir}/${name}: deps vet
 	GOOS=darwin GOARCH=amd64 ${build_cmd} -o ${build_dir}/${name}-darwin-amd64 .

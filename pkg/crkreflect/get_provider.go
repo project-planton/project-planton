@@ -2,8 +2,6 @@ package crkreflect
 
 import (
 	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
-	"google.golang.org/protobuf/proto"
-	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
 // GetProvider returns the Cloud‑resource **provider** recorded in the
@@ -14,26 +12,9 @@ import (
 func GetProvider(
 	kind cloudresourcekind.CloudResourceKind,
 ) cloudresourcekind.CloudResourceProvider {
-	desc := kind.Descriptor()
-	if desc == nil {
+	kindMeta, err := KindMeta(kind)
+	if err != nil {
 		return cloudresourcekind.CloudResourceProvider_cloud_resource_provider_unspecified
 	}
-
-	valDesc := desc.Values().ByNumber(protoreflect.EnumNumber(kind))
-	if valDesc == nil {
-		return cloudresourcekind.CloudResourceProvider_cloud_resource_provider_unspecified
-	}
-
-	if !proto.HasExtension(valDesc.Options(), cloudresourcekind.E_Meta) {
-		return cloudresourcekind.CloudResourceProvider_cloud_resource_provider_unspecified
-	}
-
-	cloudResourceKindMeta, ok := proto.GetExtension(
-		valDesc.Options(),
-		cloudresourcekind.E_Meta,
-	).(*cloudresourcekind.CloudResourceKindMeta)
-	if !ok || cloudResourceKindMeta == nil {
-		return cloudresourcekind.CloudResourceProvider_cloud_resource_provider_unspecified
-	}
-	return cloudResourceKindMeta.Provider
+	return kindMeta.Provider
 }
