@@ -1,4 +1,4 @@
-load("@rules_go//go:def.bzl", "go_library")
+load("@rules_go//go:def.bzl", "go_library", "go_test")
 
 go_library(
     name = "crkreflect",
@@ -6,6 +6,9 @@ go_library(
         "get_kubernetes_resource_category.go",
         "get_provider.go",
         "group_version.go",
+        "id_prefix.go",
+        "id_prefix_from_id.go",
+        "kind_by_id_prefix.go",
         "kind_by_kind_name.go",
         "kind_extractor.go",
         "kind_from_string.go",
@@ -146,4 +149,11 @@ go_library(
         "@org_golang_google_protobuf//proto",
         "@org_golang_google_protobuf//reflect/protoreflect",
     ],
+)
+
+go_test(
+    name = "crkreflect_test",
+    srcs = ["kind_by_id_prefix_test.go"],
+    embed = [":crkreflect"],
+    deps = ["//apis/project/planton/shared/cloudresourcekind"],
 )
