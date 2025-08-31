@@ -12,16 +12,16 @@ func dbInstance(ctx *pulumi.Context, locals *Locals, provider *aws.Provider, cre
 	spec := locals.AwsRdsInstance.Spec
 
 	args := &rds.InstanceArgs{
-		Identifier:        pulumi.String(locals.AwsRdsInstance.Metadata.Id),
-		Engine:            pulumi.String(spec.Engine),
-		EngineVersion:     pulumi.String(spec.EngineVersion),
-		InstanceClass:     pulumi.String(spec.InstanceClass),
-		AllocatedStorage:  pulumi.Int(int(spec.AllocatedStorageGb)),
-		StorageEncrypted:  pulumi.Bool(spec.StorageEncrypted),
-		Port:              pulumi.Int(int(spec.Port)),
+		Identifier:         pulumi.String(locals.AwsRdsInstance.Metadata.Id),
+		Engine:             pulumi.String(spec.Engine),
+		EngineVersion:      pulumi.String(spec.EngineVersion),
+		InstanceClass:      pulumi.String(spec.InstanceClass),
+		AllocatedStorage:   pulumi.Int(int(spec.AllocatedStorageGb)),
+		StorageEncrypted:   pulumi.Bool(spec.StorageEncrypted),
+		Port:               pulumi.Int(int(spec.Port)),
 		PubliclyAccessible: pulumi.Bool(spec.PubliclyAccessible),
-		MultiAz:           pulumi.Bool(spec.MultiAz),
-		Tags:              pulumi.ToStringMap(locals.Labels),
+		MultiAz:            pulumi.Bool(spec.MultiAz),
+		Tags:               pulumi.ToStringMap(locals.Labels),
 	}
 
 	if spec.KmsKeyId != nil && spec.KmsKeyId.GetValue() != "" {

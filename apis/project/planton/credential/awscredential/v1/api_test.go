@@ -42,7 +42,7 @@ var _ = Describe("AwsCredentialSpec Custom Validation Tests", func() {
 			Expect(err).To(BeNil())
 		})
 	})
-	
+
 	Describe("account_id custom numeric check", func() {
 		Context("when account_id is purely numeric", func() {
 			It("should pass validation", func() {

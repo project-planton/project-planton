@@ -9,6 +9,7 @@ package cloudresourcekind
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	descriptorpb "google.golang.org/protobuf/types/descriptorpb"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
@@ -27,16 +28,16 @@ type CloudResourceProvider int32
 const (
 	CloudResourceProvider_cloud_resource_provider_unspecified CloudResourceProvider = 0
 	CloudResourceProvider_test                                CloudResourceProvider = 1
-	CloudResourceProvider_atlas                               CloudResourceProvider = 2
-	CloudResourceProvider_aws                                 CloudResourceProvider = 3
-	CloudResourceProvider_azure                               CloudResourceProvider = 4
-	CloudResourceProvider_civo                                CloudResourceProvider = 5
-	CloudResourceProvider_cloudflare                          CloudResourceProvider = 6
-	CloudResourceProvider_confluent                           CloudResourceProvider = 7
-	CloudResourceProvider_digital_ocean                       CloudResourceProvider = 8
-	CloudResourceProvider_gcp                                 CloudResourceProvider = 9
-	CloudResourceProvider_kubernetes                          CloudResourceProvider = 10
-	CloudResourceProvider_snowflake                           CloudResourceProvider = 11
+	CloudResourceProvider_atlas                               CloudResourceProvider = 11
+	CloudResourceProvider_aws                                 CloudResourceProvider = 12
+	CloudResourceProvider_azure                               CloudResourceProvider = 13
+	CloudResourceProvider_civo                                CloudResourceProvider = 14
+	CloudResourceProvider_cloudflare                          CloudResourceProvider = 15
+	CloudResourceProvider_confluent                           CloudResourceProvider = 16
+	CloudResourceProvider_digital_ocean                       CloudResourceProvider = 17
+	CloudResourceProvider_gcp                                 CloudResourceProvider = 18
+	CloudResourceProvider_kubernetes                          CloudResourceProvider = 19
+	CloudResourceProvider_snowflake                           CloudResourceProvider = 20
 )
 
 // Enum value maps for CloudResourceProvider.
@@ -44,30 +45,30 @@ var (
 	CloudResourceProvider_name = map[int32]string{
 		0:  "cloud_resource_provider_unspecified",
 		1:  "test",
-		2:  "atlas",
-		3:  "aws",
-		4:  "azure",
-		5:  "civo",
-		6:  "cloudflare",
-		7:  "confluent",
-		8:  "digital_ocean",
-		9:  "gcp",
-		10: "kubernetes",
-		11: "snowflake",
+		11: "atlas",
+		12: "aws",
+		13: "azure",
+		14: "civo",
+		15: "cloudflare",
+		16: "confluent",
+		17: "digital_ocean",
+		18: "gcp",
+		19: "kubernetes",
+		20: "snowflake",
 	}
 	CloudResourceProvider_value = map[string]int32{
 		"cloud_resource_provider_unspecified": 0,
 		"test":                                1,
-		"atlas":                               2,
-		"aws":                                 3,
-		"azure":                               4,
-		"civo":                                5,
-		"cloudflare":                          6,
-		"confluent":                           7,
-		"digital_ocean":                       8,
-		"gcp":                                 9,
-		"kubernetes":                          10,
-		"snowflake":                           11,
+		"atlas":                               11,
+		"aws":                                 12,
+		"azure":                               13,
+		"civo":                                14,
+		"cloudflare":                          15,
+		"confluent":                           16,
+		"digital_ocean":                       17,
+		"gcp":                                 18,
+		"kubernetes":                          19,
+		"snowflake":                           20,
 	}
 )
 
@@ -98,27 +99,115 @@ func (CloudResourceProvider) EnumDescriptor() ([]byte, []int) {
 	return file_project_planton_shared_cloudresourcekind_cloud_resource_provider_proto_rawDescGZIP(), []int{0}
 }
 
+// metadata for cloud-resource-provider
+type CloudResourceProviderMeta struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// name of the cloud-resource-provider group
+	Group string `protobuf:"bytes,1,opt,name=group,proto3" json:"group,omitempty"`
+	// display name of the cloud-resource-provider group
+	DisplayName   string `protobuf:"bytes,2,opt,name=display_name,json=displayName,proto3" json:"display_name,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CloudResourceProviderMeta) Reset() {
+	*x = CloudResourceProviderMeta{}
+	mi := &file_project_planton_shared_cloudresourcekind_cloud_resource_provider_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CloudResourceProviderMeta) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CloudResourceProviderMeta) ProtoMessage() {}
+
+func (x *CloudResourceProviderMeta) ProtoReflect() protoreflect.Message {
+	mi := &file_project_planton_shared_cloudresourcekind_cloud_resource_provider_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CloudResourceProviderMeta.ProtoReflect.Descriptor instead.
+func (*CloudResourceProviderMeta) Descriptor() ([]byte, []int) {
+	return file_project_planton_shared_cloudresourcekind_cloud_resource_provider_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *CloudResourceProviderMeta) GetGroup() string {
+	if x != nil {
+		return x.Group
+	}
+	return ""
+}
+
+func (x *CloudResourceProviderMeta) GetDisplayName() string {
+	if x != nil {
+		return x.DisplayName
+	}
+	return ""
+}
+
+var file_project_planton_shared_cloudresourcekind_cloud_resource_provider_proto_extTypes = []protoimpl.ExtensionInfo{
+	{
+		ExtendedType:  (*descriptorpb.EnumValueOptions)(nil),
+		ExtensionType: (*CloudResourceProviderMeta)(nil),
+		Field:         81101,
+		Name:          "project.planton.shared.cloudresourcekind.provider_meta",
+		Tag:           "bytes,81101,opt,name=provider_meta",
+		Filename:      "project/planton/shared/cloudresourcekind/cloud_resource_provider.proto",
+	},
+}
+
+// Extension fields to descriptorpb.EnumValueOptions.
+var (
+	// optional project.planton.shared.cloudresourcekind.CloudResourceProviderMeta provider_meta = 81101;
+	E_ProviderMeta = &file_project_planton_shared_cloudresourcekind_cloud_resource_provider_proto_extTypes[0]
+)
+
 var File_project_planton_shared_cloudresourcekind_cloud_resource_provider_proto protoreflect.FileDescriptor
 
 const file_project_planton_shared_cloudresourcekind_cloud_resource_provider_proto_rawDesc = "" +
 	"\n" +
-	"Fproject/planton/shared/cloudresourcekind/cloud_resource_provider.proto\x12(project.planton.shared.cloudresourcekind*\xcd\x01\n" +
+	"Fproject/planton/shared/cloudresourcekind/cloud_resource_provider.proto\x12(project.planton.shared.cloudresourcekind\x1a google/protobuf/descriptor.proto\"T\n" +
+	"\x19CloudResourceProviderMeta\x12\x14\n" +
+	"\x05group\x18\x01 \x01(\tR\x05group\x12!\n" +
+	"\fdisplay_name\x18\x02 \x01(\tR\vdisplayName*\xc4\x05\n" +
 	"\x15CloudResourceProvider\x12'\n" +
-	"#cloud_resource_provider_unspecified\x10\x00\x12\b\n" +
-	"\x04test\x10\x01\x12\t\n" +
-	"\x05atlas\x10\x02\x12\a\n" +
-	"\x03aws\x10\x03\x12\t\n" +
-	"\x05azure\x10\x04\x12\b\n" +
-	"\x04civo\x10\x05\x12\x0e\n" +
+	"#cloud_resource_provider_unspecified\x10\x00\x12>\n" +
+	"\x04test\x10\x01\x1a4\xea\xcc'0\n" +
+	"\x18test.project-planton.org\x12\x14Test Cloud Resources\x129\n" +
+	"\x05atlas\x10\v\x1a.\xea\xcc'*\n" +
+	"\x19atlas.project-planton.org\x12\rMongoDB Atlas\x12+\n" +
+	"\x03aws\x10\f\x1a\"\xea\xcc'\x1e\n" +
+	"\x17aws.project-planton.org\x12\x03AWS\x121\n" +
+	"\x05azure\x10\r\x1a&\xea\xcc'\"\n" +
+	"\x19azure.project-planton.org\x12\x05Azure\x12.\n" +
+	"\x04civo\x10\x0e\x1a$\xea\xcc' \n" +
+	"\x18civo.project-planton.org\x12\x04Civo\x12@\n" +
 	"\n" +
-	"cloudflare\x10\x06\x12\r\n" +
-	"\tconfluent\x10\a\x12\x11\n" +
-	"\rdigital_ocean\x10\b\x12\a\n" +
-	"\x03gcp\x10\t\x12\x0e\n" +
+	"cloudflare\x10\x0f\x1a0\xea\xcc',\n" +
+	"\x1ecloudflare.project-planton.org\x12\n" +
+	"Cloudflare\x12=\n" +
+	"\tconfluent\x10\x10\x1a.\xea\xcc'*\n" +
+	"\x1dconfluent.project-planton.org\x12\tConfluent\x12H\n" +
+	"\rdigital_ocean\x10\x11\x1a5\xea\xcc'1\n" +
+	"!digital-ocean.project-planton.org\x12\fDigitalOcean\x12+\n" +
+	"\x03gcp\x10\x12\x1a\"\xea\xcc'\x1e\n" +
+	"\x17gcp.project-planton.org\x12\x03GCP\x12@\n" +
 	"\n" +
-	"kubernetes\x10\n" +
-	"\x12\r\n" +
-	"\tsnowflake\x10\vB\xe8\x02\n" +
+	"kubernetes\x10\x13\x1a0\xea\xcc',\n" +
+	"\x1ekubernetes.project-planton.org\x12\n" +
+	"Kubernetes\x12=\n" +
+	"\tsnowflake\x10\x14\x1a.\xea\xcc'*\n" +
+	"\x1dsnowflake.project-planton.org\x12\tSnowflake:\x8d\x01\n" +
+	"\rprovider_meta\x12!.google.protobuf.EnumValueOptions\x18\xcd\xf9\x04 \x01(\v2C.project.planton.shared.cloudresourcekind.CloudResourceProviderMetaR\fproviderMetaB\xe8\x02\n" +
 	",com.project.planton.shared.cloudresourcekindB\x1aCloudResourceProviderProtoP\x01ZXgithub.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind\xa2\x02\x04PPSC\xaa\x02(Project.Planton.Shared.Cloudresourcekind\xca\x02(Project\\Planton\\Shared\\Cloudresourcekind\xe2\x024Project\\Planton\\Shared\\Cloudresourcekind\\GPBMetadata\xea\x02+Project::Planton::Shared::Cloudresourcekindb\x06proto3"
 
 var (
@@ -134,14 +223,19 @@ func file_project_planton_shared_cloudresourcekind_cloud_resource_provider_proto
 }
 
 var file_project_planton_shared_cloudresourcekind_cloud_resource_provider_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_project_planton_shared_cloudresourcekind_cloud_resource_provider_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_shared_cloudresourcekind_cloud_resource_provider_proto_goTypes = []any{
-	(CloudResourceProvider)(0), // 0: project.planton.shared.cloudresourcekind.CloudResourceProvider
+	(CloudResourceProvider)(0),            // 0: project.planton.shared.cloudresourcekind.CloudResourceProvider
+	(*CloudResourceProviderMeta)(nil),     // 1: project.planton.shared.cloudresourcekind.CloudResourceProviderMeta
+	(*descriptorpb.EnumValueOptions)(nil), // 2: google.protobuf.EnumValueOptions
 }
 var file_project_planton_shared_cloudresourcekind_cloud_resource_provider_proto_depIdxs = []int32{
-	0, // [0:0] is the sub-list for method output_type
-	0, // [0:0] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
+	2, // 0: project.planton.shared.cloudresourcekind.provider_meta:extendee -> google.protobuf.EnumValueOptions
+	1, // 1: project.planton.shared.cloudresourcekind.provider_meta:type_name -> project.planton.shared.cloudresourcekind.CloudResourceProviderMeta
+	2, // [2:2] is the sub-list for method output_type
+	2, // [2:2] is the sub-list for method input_type
+	1, // [1:2] is the sub-list for extension type_name
+	0, // [0:1] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name
 }
 
@@ -156,13 +250,15 @@ func file_project_planton_shared_cloudresourcekind_cloud_resource_provider_proto
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_project_planton_shared_cloudresourcekind_cloud_resource_provider_proto_rawDesc), len(file_project_planton_shared_cloudresourcekind_cloud_resource_provider_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   0,
-			NumExtensions: 0,
+			NumMessages:   1,
+			NumExtensions: 1,
 			NumServices:   0,
 		},
 		GoTypes:           file_project_planton_shared_cloudresourcekind_cloud_resource_provider_proto_goTypes,
 		DependencyIndexes: file_project_planton_shared_cloudresourcekind_cloud_resource_provider_proto_depIdxs,
 		EnumInfos:         file_project_planton_shared_cloudresourcekind_cloud_resource_provider_proto_enumTypes,
+		MessageInfos:      file_project_planton_shared_cloudresourcekind_cloud_resource_provider_proto_msgTypes,
+		ExtensionInfos:    file_project_planton_shared_cloudresourcekind_cloud_resource_provider_proto_extTypes,
 	}.Build()
 	File_project_planton_shared_cloudresourcekind_cloud_resource_provider_proto = out.File
 	file_project_planton_shared_cloudresourcekind_cloud_resource_provider_proto_goTypes = nil

@@ -110,7 +110,7 @@ func run() error {
 		// kubernetes special‑case
 		var importPath string
 		if provRaw == cloudresourcekind.CloudResourceProvider_kubernetes.String() {
-			kubernetesResourceType := crkreflect.GetKubernetesResourceType(cloudResourceKind)
+			kubernetesResourceType := crkreflect.GetKubernetesResourceCategory(cloudResourceKind)
 
 			importPath = fmt.Sprintf(
 				"github.com/project-planton/project-planton/apis/project/planton/provider/%s/%s/%s/v1",
