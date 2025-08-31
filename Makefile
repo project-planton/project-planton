@@ -42,6 +42,9 @@ protos:
 bazel-mod-tidy:
 	${BAZEL} mod tidy
 
+.PHONY: gazelle
+gazelle: bazel-gazelle
+
 .PHONY: bazel-gazelle
 bazel-gazelle:
 	${BAZEL} run ${BAZEL_REMOTE_FLAGS} //:gazelle

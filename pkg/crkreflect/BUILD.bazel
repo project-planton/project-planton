@@ -10,6 +10,7 @@ go_library(
         "kind_from_string.go",
         "kind_map_gen.go",
         "kind_meta.go",
+        "kind_name_by_kind.go",
         "kinds_list.go",
         "provider_meta.go",
         "providers_list.go",
