@@ -1,9 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { Github, Menu, X } from "lucide-react";
-import dynamic from "next/dynamic";
 import Image from "next/image";
-const Hero = dynamic(() => import("@/components/sections/Hero"), { ssr: false });
+import Hero from "@/components/sections/Hero";
 import FeatureCards from "@/components/sections/FeatureCards";
 import HowItWorks from "@/components/sections/HowItWorks";
 import Quickstart from "@/components/sections/Quickstart";
