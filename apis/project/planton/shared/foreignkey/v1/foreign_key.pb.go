@@ -29,7 +29,7 @@ type ValueFromRef struct {
 	state         protoimpl.MessageState              `protogen:"open.v1"`
 	Kind          cloudresourcekind.CloudResourceKind `protobuf:"varint,1,opt,name=kind,proto3,enum=project.planton.shared.cloudresourcekind.CloudResourceKind" json:"kind,omitempty"`
 	Env           string                              `protobuf:"bytes,2,opt,name=env,proto3" json:"env,omitempty"`
-	Name          string                              `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
+	Slug          string                              `protobuf:"bytes,3,opt,name=slug,proto3" json:"slug,omitempty"`
 	FieldPath     string                              `protobuf:"bytes,4,opt,name=field_path,json=fieldPath,proto3" json:"field_path,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -79,9 +79,9 @@ func (x *ValueFromRef) GetEnv() string {
 	return ""
 }
 
-func (x *ValueFromRef) GetName() string {
+func (x *ValueFromRef) GetSlug() string {
 	if x != nil {
-		return x.Name
+		return x.Slug
 	}
 	return ""
 }
@@ -298,7 +298,7 @@ const file_project_planton_shared_foreignkey_v1_foreign_key_proto_rawDesc = "" +
 	"\fValueFromRef\x12O\n" +
 	"\x04kind\x18\x01 \x01(\x0e2;.project.planton.shared.cloudresourcekind.CloudResourceKindR\x04kind\x12\x10\n" +
 	"\x03env\x18\x02 \x01(\tR\x03env\x12\x1a\n" +
-	"\x04name\x18\x03 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\x12\x1d\n" +
+	"\x04slug\x18\x03 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04slug\x12\x1d\n" +
 	"\n" +
 	"field_path\x18\x04 \x01(\tR\tfieldPath\"\x91\x01\n" +
 	"\x10StringValueOrRef\x12\x16\n" +

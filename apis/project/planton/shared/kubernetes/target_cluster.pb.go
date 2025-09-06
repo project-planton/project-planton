@@ -115,8 +115,8 @@ type KubernetesClusterCloudResourceSelector struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// can be either gcp-gke-cluster-core
 	ClusterKind cloudresourcekind.CloudResourceKind `protobuf:"varint,1,opt,name=cluster_kind,json=clusterKind,proto3,enum=project.planton.shared.cloudresourcekind.CloudResourceKind" json:"cluster_kind,omitempty"`
-	// name of the kubernetes cluster in the same environment as the addon
-	ClusterName   string `protobuf:"bytes,2,opt,name=cluster_name,json=clusterName,proto3" json:"cluster_name,omitempty"`
+	// slug of the kubernetes cluster in the same environment as the addon
+	ClusterSlug   string `protobuf:"bytes,2,opt,name=cluster_slug,json=clusterSlug,proto3" json:"cluster_slug,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -158,9 +158,9 @@ func (x *KubernetesClusterCloudResourceSelector) GetClusterKind() cloudresourcek
 	return cloudresourcekind.CloudResourceKind(0)
 }
 
-func (x *KubernetesClusterCloudResourceSelector) GetClusterName() string {
+func (x *KubernetesClusterCloudResourceSelector) GetClusterSlug() string {
 	if x != nil {
-		return x.ClusterName
+		return x.ClusterSlug
 	}
 	return ""
 }
@@ -176,7 +176,7 @@ const file_project_planton_shared_kubernetes_target_cluster_proto_rawDesc = "" +
 	"\x11credential_source\"\xbf\x01\n" +
 	"&KubernetesClusterCloudResourceSelector\x12r\n" +
 	"\fcluster_kind\x18\x01 \x01(\x0e2;.project.planton.shared.cloudresourcekind.CloudResourceKindB\x12\xbaH\x0f\x82\x01\f\x18\x90\x03\x18\xe7\x04\x18\xda\x01\x18\xb8\tR\vclusterKind\x12!\n" +
-	"\fcluster_name\x18\x02 \x01(\tR\vclusterNameB\xb6\x02\n" +
+	"\fcluster_slug\x18\x02 \x01(\tR\vclusterSlugB\xb6\x02\n" +
 	"%com.project.planton.shared.kubernetesB\x12TargetClusterProtoP\x01ZQgithub.com/project-planton/project-planton/apis/project/planton/shared/kubernetes\xa2\x02\x04PPSK\xaa\x02!Project.Planton.Shared.Kubernetes\xca\x02!Project\\Planton\\Shared\\Kubernetes\xe2\x02-Project\\Planton\\Shared\\Kubernetes\\GPBMetadata\xea\x02$Project::Planton::Shared::Kubernetesb\x06proto3"
 
 var (

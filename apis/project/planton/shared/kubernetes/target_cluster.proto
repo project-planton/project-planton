@@ -27,6 +27,6 @@ message KubernetesClusterCloudResourceSelector {
         1208  //DigitalOceanKubernetesCluster
       ]}
   ];
-  //name of the kubernetes cluster in the same environment as the addon
-  string cluster_name = 2;
+  //slug of the kubernetes cluster in the same environment as the addon
+  string cluster_slug = 2;
 }
