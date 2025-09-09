@@ -3,35 +3,33 @@ package awsstaticwebsitev1
 import (
 	"testing"
 
-	"github.com/bufbuild/protovalidate-go"
+	"buf.build/go/protovalidate"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	"github.com/project-planton/project-planton/apis/project/planton/shared"
 )
 
-func TestAwsStaticWebsite(t *testing.T) {
+func TestAwsStaticWebsiteSpec(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "AwsStaticWebsite Suite")
+	RunSpecs(t, "AwsStaticWebsiteSpec Custom Validation Tests")
 }
 
-var _ = Describe("AwsStaticWebsite Custom Validation Tests", func() {
+var _ = Describe("AwsStaticWebsiteSpec Custom Validation Tests", func() {
 
 	Describe("When valid input is passed", func() {
-		Context("aws", func() {
-			var input *AwsStaticWebsite
+		Context("aws_static_website", func() {
 
-			BeforeEach(func() {
-				input = &AwsStaticWebsite{
+			It("should not return a validation error for minimal valid fields", func() {
+				input := &AwsStaticWebsite{
 					ApiVersion: "aws.project-planton.org/v1",
 					Kind:       "AwsStaticWebsite",
 					Metadata: &shared.ApiResourceMetadata{
-						Name: "my-aws-website",
+						Name: "test-static-website",
 					},
-					Spec: &AwsStaticWebsiteSpec{},
+					Spec: &AwsStaticWebsiteSpec{
+						// No required fields, just use defaults
+					},
 				}
-			})
-
-			It("should not return a validation error", func() {
 				err := protovalidate.Validate(input)
 				Expect(err).To(BeNil())
 			})

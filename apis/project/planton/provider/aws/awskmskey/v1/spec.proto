@@ -24,7 +24,8 @@ message AwsKmsKeySpec {
   // deletion_window_days is the waiting period (in days) before deletion of the KMS key.
   // Allowed range is 7–30 days (inclusive). Default is 30 days.
   int32 deletion_window_days = 4 [
-    (buf.validate.field).int32 = {gte: 7, lte: 30},
+    (buf.validate.field).int32.gte = 7,
+    (buf.validate.field).int32.lte = 30,
     (project.planton.shared.options.recommended_default) = "30"
   ];
 

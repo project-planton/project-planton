@@ -29,9 +29,7 @@ message AwsEksClusterSpec {
 
   // version is the Kubernetes version of the cluster control plane to deploy (e.g., "1.25").
   // Must match the pattern ^1\.(2[4-9]|3[0-9])$ (for example, "1.24", "1.25", etc.). If not set, the latest supported version is used.
-  string version = 3 [
-    (buf.validate.field).string.pattern = "^1\\.(2[4-9]|3[0-9])$"
-  ];
+  string version = 3;
 
   // disable_public_endpoint determines if the cluster's API endpoint should be private-only.
   // If false (default), the cluster API endpoint is publicly accessible; if true, the endpoint is accessible only within the VPC.

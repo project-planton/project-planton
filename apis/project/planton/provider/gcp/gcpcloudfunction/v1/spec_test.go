@@ -3,29 +3,31 @@ package gcpcloudfunctionv1
 import (
 	"testing"
 
-	"github.com/bufbuild/protovalidate-go"
+	"buf.build/go/protovalidate"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	"github.com/project-planton/project-planton/apis/project/planton/shared"
 )
 
-func TestGcpCloudFunction(t *testing.T) {
+func TestGcpCloudFunctionSpec(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "GcpCloudFunction Suite")
+	RunSpecs(t, "GcpCloudFunctionSpec Custom Validation Tests")
 }
 
-var _ = Describe("GcpCloudFunction Custom Validation Tests", func() {
+var _ = Describe("GcpCloudFunctionSpec Custom Validation Tests", func() {
+
 	Describe("When valid input is passed", func() {
-		Context("GCP", func() {
-			It("should not return a validation error", func() {
+		Context("gcp_cloud_function", func() {
+
+			It("should not return a validation error for minimal valid fields", func() {
 				input := &GcpCloudFunction{
 					ApiVersion: "gcp.project-planton.org/v1",
 					Kind:       "GcpCloudFunction",
 					Metadata: &shared.ApiResourceMetadata{
-						Name: "test-function",
+						Name: "test-cloud-function",
 					},
 					Spec: &GcpCloudFunctionSpec{
-						GcpProjectId: "my-gcp-project",
+						GcpProjectId: "test-project-123",
 					},
 				}
 				err := protovalidate.Validate(input)

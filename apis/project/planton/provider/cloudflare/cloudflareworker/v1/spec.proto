@@ -10,7 +10,6 @@ import "project/planton/shared/cloudresourcekind/cloud_resource_kind.proto";
 message CloudflareWorkerSpec {
   // A unique name for the Worker script (alphanumeric and hyphen characters only, no underscores).
   string script_name = 1 [
-    (buf.validate.field).string.pattern = "^[0-9A-Za-z\\-]+$",
     (buf.validate.field).string.min_len = 1
   ];
 

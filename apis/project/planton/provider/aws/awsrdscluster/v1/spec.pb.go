@@ -488,7 +488,7 @@ var File_project_planton_provider_aws_awsrdscluster_v1_spec_proto protoreflect.F
 
 const file_project_planton_provider_aws_awsrdscluster_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"8project/planton/provider/aws/awsrdscluster/v1/spec.proto\x12-project.planton.provider.aws.awsrdscluster.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\"\xce\x1e\n" +
+	"8project/planton/provider/aws/awsrdscluster/v1/spec.proto\x12-project.planton.provider.aws.awsrdscluster.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\"\x99\x1e\n" +
 	"\x11AwsRdsClusterSpec\x12\x85\x01\n" +
 	"\n" +
 	"subnet_ids\x18\x01 \x03(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB.\x88\xd4a\xd9\x01\x92\xd4a%status.outputs.private_subnets.[*].idR\tsubnetIds\x12g\n" +
@@ -529,9 +529,9 @@ const file_project_planton_provider_aws_awsrdscluster_v1_spec_proto_rawDesc = ""
 	"\x06vpc_id\x18\x1f \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB\x1e\x88\xd4a\xd9\x01\x92\xd4a\x15status.outputs.vpc_idR\x05vpcId\x12\x1f\n" +
 	"\vengine_mode\x18  \x01(\tR\n" +
 	"engineMode\x12A\n" +
-	"\fstorage_type\x18! \x01(\tB\x1e\xbaH\x1b\xd8\x01\x01r\x16R\x06auroraR\faurora-iopt1R\vstorageType:\xda\b\xbaH\xd6\b\x1a\xbf\x01\n" +
-	",final_snapshot_id_required_when_not_skipping\x12Gfinal_snapshot_identifier must be set when skip_final_snapshot is false\x1aFthis.skip_final_snapshot ? true : this.final_snapshot_identifier != \"\"\x1a\xc1\x01\n" +
-	"\x10subnets_or_group\x127Provide either subnet_ids (>=2) or db_subnet_group_name\x1at(this.subnet_ids.size() >= 2) || (has(this.db_subnet_group_name.value) || has(this.db_subnet_group_name.value_from))\x1a\x9b\x01\n" +
+	"\fstorage_type\x18! \x01(\tB\x1e\xbaH\x1b\xd8\x01\x01r\x16R\x06auroraR\faurora-iopt1R\vstorageType:\xa5\b\xbaH\xa1\b\x1a\xbf\x01\n" +
+	",final_snapshot_id_required_when_not_skipping\x12Gfinal_snapshot_identifier must be set when skip_final_snapshot is false\x1aFthis.skip_final_snapshot ? true : this.final_snapshot_identifier != \"\"\x1a\x8c\x01\n" +
+	"\x10subnets_or_group\x127Provide either subnet_ids (>=2) or db_subnet_group_name\x1a?(this.subnet_ids.size() >= 2) || has(this.db_subnet_group_name)\x1a\x9b\x01\n" +
 	"\x19password_mutual_exclusion\x12?password cannot be set when manage_master_user_password is true\x1a=this.manage_master_user_password ? this.password == \"\" : true\x1a\xb2\x01\n" +
 	"\x13engine_mode_allowed\x12:engine_mode, if set, must be 'serverless' or 'provisioned'\x1a_this.engine_mode == \"\" || this.engine_mode == \"serverless\" || this.engine_mode == \"provisioned\"\x1a\xfa\x02\n" +
 	"\x19logs_exports_match_engine\x128enabled_cloudwatch_logs_exports must match engine family\x1a\xa2\x02this.engine.startsWith(\"aurora-mysql\") ? this.enabled_cloudwatch_logs_exports.all(x, x == \"audit\" || x == \"error\" || x == \"general\" || x == \"slowquery\") : (this.engine.startsWith(\"aurora-postgresql\") ? this.enabled_cloudwatch_logs_exports.all(x, x == \"postgresql\" || x == \"upgrade\") : true)\"e\n" +

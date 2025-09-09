@@ -175,9 +175,9 @@ var File_project_planton_provider_cloudflare_cloudflareworker_v1_spec_proto prot
 
 const file_project_planton_provider_cloudflare_cloudflareworker_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Bproject/planton/provider/cloudflare/cloudflareworker/v1/spec.proto\x127project.planton.provider.cloudflare.cloudflareworker.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1aBproject/planton/shared/cloudresourcekind/cloud_resource_kind.proto\"\xd4\x05\n" +
-	"\x14CloudflareWorkerSpec\x12:\n" +
-	"\vscript_name\x18\x01 \x01(\tB\x19\xbaH\x16r\x14\x10\x012\x10^[0-9A-Za-z\\-]+$R\n" +
+	"Bproject/planton/provider/cloudflare/cloudflareworker/v1/spec.proto\x127project.planton.provider.cloudflare.cloudflareworker.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1aBproject/planton/shared/cloudresourcekind/cloud_resource_kind.proto\"\xc2\x05\n" +
+	"\x14CloudflareWorkerSpec\x12(\n" +
+	"\vscript_name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\n" +
 	"scriptName\x12c\n" +
 	"\rscript_source\x18\x02 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB\x06\xbaH\x03\xc8\x01\x01R\fscriptSource\x12y\n" +
 	"\vkv_bindings\x18\x03 \x03(\v22.project.planton.shared.foreignkey.v1.ValueFromRefB$\x88\xd4a\x89\x0e\x92\xd4a\x1bstatus.outputs.namespace_idR\n" +

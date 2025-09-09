@@ -36,6 +36,7 @@ message AzureAksNodePoolSpec {
   // Zones to spread this node pool across for high availability (e.g., ["1", "2", "3"] for three zones).
   // If unspecified, nodes are not pinned to specific zones (using region defaults). If specified, at least 2 zones should be provided for HA.
   repeated string availability_zones = 5 [
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
     (buf.validate.field).repeated.min_items = 2,
     (buf.validate.field).repeated.items = {
       string: { in: ["1", "2", "3"] }

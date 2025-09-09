@@ -1,40 +1,35 @@
 package awssecretsmanagerv1
 
 import (
-	"github.com/bufbuild/protovalidate-go"
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
-
 	"testing"
 
+	"buf.build/go/protovalidate"
+	. "github.com/onsi/ginkgo/v2"
+	. "github.com/onsi/gomega"
 	"github.com/project-planton/project-planton/apis/project/planton/shared"
 )
 
-func TestAwsSecretsManager(t *testing.T) {
+func TestAwsSecretsManagerSpec(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "AwsSecretsManager Suite")
+	RunSpecs(t, "AwsSecretsManagerSpec Custom Validation Tests")
 }
 
-var _ = Describe("AwsSecretsManager Custom Validation Tests", func() {
-
-	var input *AwsSecretsManager
-
-	BeforeEach(func() {
-		input = &AwsSecretsManager{
-			ApiVersion: "aws.project-planton.org/v1",
-			Kind:       "AwsSecretsManager",
-			Metadata: &shared.ApiResourceMetadata{
-				Name: "test-secret-manager",
-			},
-			Spec: &AwsSecretsManagerSpec{
-				SecretNames: []string{"my-secret-1", "another-secret"},
-			},
-		}
-	})
+var _ = Describe("AwsSecretsManagerSpec Custom Validation Tests", func() {
 
 	Describe("When valid input is passed", func() {
-		Context("aws", func() {
-			It("should not return a validation error", func() {
+		Context("aws_secrets_manager", func() {
+
+			It("should not return a validation error for minimal valid fields", func() {
+				input := &AwsSecretsManager{
+					ApiVersion: "aws.project-planton.org/v1",
+					Kind:       "AwsSecretsManager",
+					Metadata: &shared.ApiResourceMetadata{
+						Name: "test-secrets-manager",
+					},
+					Spec: &AwsSecretsManagerSpec{
+						SecretNames: []string{"test-secret"},
+					},
+				}
 				err := protovalidate.Validate(input)
 				Expect(err).To(BeNil())
 			})

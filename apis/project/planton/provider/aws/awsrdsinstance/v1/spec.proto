@@ -86,6 +86,6 @@ message AwsRdsInstanceSpec {
   option (buf.validate.message).cel = {
     id: "subnets_or_group",
     message: "Provide either subnet_ids (>=2) or db_subnet_group_name",
-    expression: "(this.subnet_ids.size() >= 2) || (has(this.db_subnet_group_name.value) || has(this.db_subnet_group_name.value_from))"
+    expression: "(this.subnet_ids.size() >= 2) || has(this.db_subnet_group_name)"
   };
 }
