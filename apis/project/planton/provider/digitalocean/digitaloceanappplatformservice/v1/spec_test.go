@@ -8,8 +8,8 @@ import (
 	"buf.build/go/protovalidate"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/project-planton/project-planton/apis/project/planton/shared"
 	"github.com/project-planton/project-planton/apis/project/planton/provider/digitalocean"
+	"github.com/project-planton/project-planton/apis/project/planton/shared"
 )
 
 func TestDigitalOceanAppPlatformServiceSpec(t *testing.T) {

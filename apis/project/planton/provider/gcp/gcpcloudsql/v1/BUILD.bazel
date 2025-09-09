@@ -21,10 +21,7 @@ go_library(
 
 go_test(
     name = "gcpcloudsql_test",
-    srcs = [
-        "api_test.go",
-        "spec_test.go",
-    ],
+    srcs = ["spec_test.go"],
     embed = [":gcpcloudsql"],
     deps = [
         "//apis/project/planton/shared",

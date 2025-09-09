@@ -33,7 +33,7 @@ var _ = Describe("AzureAksNodePoolSpec Custom Validation Tests", func() {
 							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-aks-cluster"},
 						},
 						VmSize:            "Standard_D4s_v3",
-						InitialNodeCount: 2,
+						InitialNodeCount:  2,
 						AvailabilityZones: []string{"1", "2"}, // Add at least 2 zones for HA
 					},
 				}

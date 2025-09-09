@@ -4,6 +4,7 @@ go 1.23.4
 
 require (
 	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.36.6-20250717165733-d22d418d82d8.1
+	buf.build/go/protovalidate v0.14.0
 	github.com/Masterminds/sprig v2.15.0+incompatible
 	github.com/blang/semver v3.5.1+incompatible
 	github.com/google/uuid v1.6.0
@@ -39,7 +40,6 @@ require (
 )
 
 require (
-	buf.build/go/protovalidate v0.14.0 // indirect
 	cel.dev/expr v0.23.1 // indirect
 	dario.cat/mergo v1.0.0 // indirect
 	github.com/BurntSushi/toml v1.2.1 // indirect

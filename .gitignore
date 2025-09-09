@@ -21,4 +21,4 @@ bazel-testlogs
 bazel-project-planton
 Pulumi.*.yaml
 !Pulumi.yaml
-test-run.log
+test-*.log

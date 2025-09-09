@@ -38,7 +38,7 @@ var _ = Describe("AwsRdsClusterSpec Custom Validation Tests", func() {
 						},
 						Engine:                     "aurora-mysql",
 						EngineVersion:              "8.0.mysql_aurora.3.05.2",
-						SkipFinalSnapshot:          true, // Skip final snapshot to avoid requiring final_snapshot_identifier
+						SkipFinalSnapshot:          true,                  // Skip final snapshot to avoid requiring final_snapshot_identifier
 						PreferredMaintenanceWindow: "mon:03:00-mon:04:00", // Valid format
 						PreferredBackupWindow:      "05:00-06:00",         // Valid backup window format
 					},

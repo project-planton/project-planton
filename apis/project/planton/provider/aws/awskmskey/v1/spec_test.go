@@ -27,7 +27,7 @@ var _ = Describe("AwsKmsKeySpec Custom Validation Tests", func() {
 						Name: "test-kms-key",
 					},
 					Spec: &AwsKmsKeySpec{
-						DeletionWindowDays: 30, // Valid value between 7-30
+						DeletionWindowDays: 30,               // Valid value between 7-30
 						AliasName:          "alias/test-key", // Valid alias format
 					},
 				}

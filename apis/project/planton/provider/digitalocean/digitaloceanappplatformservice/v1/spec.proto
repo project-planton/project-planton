@@ -10,6 +10,17 @@ import "project/planton/provider/digitalocean/region.proto";
 // DigitalOceanAppPlatformServiceSpec defines the specification required to deploy a containerized service or application on DigitalOcean App Platform.
 // It focuses on essential fields (following the 80/20 principle) such as the service's source (either a git repository or a container image from DigitalOcean Container Registry), resource sizing, scaling, and optional custom domain configuration.
 message DigitalOceanAppPlatformServiceSpec {
+  option (buf.validate.message).cel = {
+    id: "source_required",
+    message: "Either git_source or image_source must be specified",
+    expression: "has(this.git_source) || has(this.image_source)"
+  };
+  option (buf.validate.message).cel = {
+    id: "autoscale_config",
+    message: "When enable_autoscale is true, min_instance_count and max_instance_count must be set and greater than 0",
+    expression: "!this.enable_autoscale || (this.min_instance_count > 0 && this.max_instance_count > 0)"
+  };
+
   // name of the app (must be unique within the user's DigitalOcean account).
   // Constraints: should be DNS-friendly (e.g., lowercase alphanumeric and hyphens), maximum 63 characters.
   string service_name = 1 [

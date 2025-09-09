@@ -35,7 +35,7 @@ var _ = Describe("GcpSubnetworkSpec Custom Validation Tests", func() {
 						VpcSelfLink: &foreignkeyv1.StringValueOrRef{
 							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "projects/test-project-123/global/networks/test-vpc"},
 						},
-						Region:       "us-central1",
+						Region:      "us-central1",
 						IpCidrRange: "10.0.0.0/24",
 					},
 				}

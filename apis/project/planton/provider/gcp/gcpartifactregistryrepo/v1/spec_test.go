@@ -9,12 +9,12 @@ import (
 	"github.com/project-planton/project-planton/apis/project/planton/shared"
 )
 
-func TestGcpArtifactRegistryRepoSpec(t *testing.T) {
+func TestGcpArtifactRegistryRepo(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "GcpArtifactRegistryRepoSpec Custom Validation Tests")
+	RunSpecs(t, "GcpArtifactRegistryRepo Suite")
 }
 
-var _ = Describe("GcpArtifactRegistryRepoSpec Custom Validation Tests", func() {
+var _ = Describe("GcpArtifactRegistryRepo Custom Validation Tests", func() {
 
 	Describe("When valid input is passed", func() {
 		Context("gcp_artifact_registry_repo", func() {
@@ -30,6 +30,24 @@ var _ = Describe("GcpArtifactRegistryRepoSpec Custom Validation Tests", func() {
 						RepoFormat: GcpArtifactRegistryRepoFormat_DOCKER,
 						ProjectId:  "test-project-123",
 						Region:     "us-central1",
+					},
+				}
+				err := protovalidate.Validate(input)
+				Expect(err).To(BeNil())
+			})
+
+			It("should not return a validation error with public access enabled", func() {
+				input := &GcpArtifactRegistryRepo{
+					ApiVersion: "gcp.project-planton.org/v1",
+					Kind:       "GcpArtifactRegistryRepo",
+					Metadata: &shared.ApiResourceMetadata{
+						Name: "test-repo",
+					},
+					Spec: &GcpArtifactRegistryRepoSpec{
+						RepoFormat:         GcpArtifactRegistryRepoFormat_DOCKER,
+						ProjectId:          "some-project-id",
+						Region:             "us-west2",
+						EnablePublicAccess: true,
 					},
 				}
 				err := protovalidate.Validate(input)

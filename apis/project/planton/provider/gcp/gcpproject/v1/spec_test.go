@@ -28,7 +28,7 @@ var _ = Describe("GcpProjectSpec Custom Validation Tests", func() {
 					},
 					Spec: &GcpProjectSpec{
 						BillingAccountId: "0123AB-4567CD-89EFGH", // Valid billing account format
-						OwnerMember:      "user@example.com",      // Valid email address
+						OwnerMember:      "user@example.com",     // Valid email address
 					},
 				}
 				err := protovalidate.Validate(input)

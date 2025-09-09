@@ -1,8 +1,8 @@
 package manifest
 
 import (
-	"fmt"
 	"buf.build/go/protovalidate"
+	"fmt"
 	"github.com/pkg/errors"
 )
 

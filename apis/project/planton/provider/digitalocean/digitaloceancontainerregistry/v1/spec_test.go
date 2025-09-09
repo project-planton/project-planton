@@ -6,8 +6,8 @@ import (
 	"buf.build/go/protovalidate"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/project-planton/project-planton/apis/project/planton/shared"
 	"github.com/project-planton/project-planton/apis/project/planton/provider/digitalocean"
+	"github.com/project-planton/project-planton/apis/project/planton/shared"
 )
 
 func TestDigitalOceanContainerRegistrySpec(t *testing.T) {
@@ -28,7 +28,7 @@ var _ = Describe("DigitalOceanContainerRegistrySpec Custom Validation Tests", fu
 						Name: "test-container-registry",
 					},
 					Spec: &DigitalOceanContainerRegistrySpec{
-						Name:              "test-registry",
+						Name:             "test-registry",
 						SubscriptionTier: DigitalOceanContainerRegistryTier_STARTER,
 						Region:           digitalocean.DigitalOceanRegion_nyc3,
 					},

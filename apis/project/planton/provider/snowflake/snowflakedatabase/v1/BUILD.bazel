@@ -21,10 +21,7 @@ go_library(
 
 go_test(
     name = "snowflakedatabase_test",
-    srcs = [
-        "api_test.go",
-        "spec_test.go",
-    ],
+    srcs = ["spec_test.go"],
     embed = [":snowflakedatabase"],
     deps = [
         "//apis/project/planton/shared",
