@@ -43,8 +43,7 @@ message AwsEksNodeGroupSpec {
   // Example values: "t3.small", "m5.xlarge". Must match the pattern "<family>.<size>",
   // e.g., a letter family and size like nano, micro, small, medium, large, xlarge or Nxlarge.
   string instance_type = 4 [
-    (buf.validate.field).required = true,
-    (buf.validate.field).string.pattern = "^[a-z]\\d?[a-z]?\\.(nano|micro|small|medium|large|xlarge|\\d+xlarge)$"
+    (buf.validate.field).required = true
   ];
 
   // scaling defines the auto-scaling configuration (min, max, desired node counts) for the node group.

@@ -137,12 +137,12 @@ var File_project_planton_provider_aws_awsekscluster_v1_spec_proto protoreflect.F
 
 const file_project_planton_provider_aws_awsekscluster_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"8project/planton/provider/aws/awsekscluster/v1/spec.proto\x12-project.planton.provider.aws.awsekscluster.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\"\xf6\x05\n" +
+	"8project/planton/provider/aws/awsekscluster/v1/spec.proto\x12-project.planton.provider.aws.awsekscluster.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\"\xd9\x05\n" +
 	"\x11AwsEksClusterSpec\x12\x90\x01\n" +
 	"\n" +
 	"subnet_ids\x18\x01 \x03(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB9\xbaH\b\xc8\x01\x01\x92\x01\x02\b\x02\x88\xd4a\xd9\x01\x92\xd4a%status.outputs.private_subnets.[*].idR\tsubnetIds\x12\x88\x01\n" +
-	"\x10cluster_role_arn\x18\x02 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB&\xbaH\x03\xc8\x01\x01\x88\xd4a\xd0\x01\x92\xd4a\x17status.outputs.role_arnR\x0eclusterRoleArn\x125\n" +
-	"\aversion\x18\x03 \x01(\tB\x1b\xbaH\x18r\x162\x14^1\\.(2[4-9]|3[0-9])$R\aversion\x126\n" +
+	"\x10cluster_role_arn\x18\x02 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB&\xbaH\x03\xc8\x01\x01\x88\xd4a\xd0\x01\x92\xd4a\x17status.outputs.role_arnR\x0eclusterRoleArn\x12\x18\n" +
+	"\aversion\x18\x03 \x01(\tR\aversion\x126\n" +
 	"\x17disable_public_endpoint\x18\x04 \x01(\bR\x15disablePublicEndpoint\x12\x9f\x01\n" +
 	"\x13public_access_cidrs\x18\x05 \x03(\tBo\xbaHl\x92\x01i\"gre2c^(?:25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)(?:\\.(?:25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)){3}/(?:[0-9]|[12]\\d|3[0-2])$R\x11publicAccessCidrs\x129\n" +
 	"\x19enable_control_plane_logs\x18\x06 \x01(\bR\x16enableControlPlaneLogs\x12w\n" +

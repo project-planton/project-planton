@@ -276,13 +276,13 @@ var File_project_planton_provider_aws_awseksnodegroup_v1_spec_proto protoreflect
 
 const file_project_planton_provider_aws_awseksnodegroup_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	":project/planton/provider/aws/awseksnodegroup/v1/spec.proto\x12/project.planton.provider.aws.awseksnodegroup.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\"\x9d\b\n" +
+	":project/planton/provider/aws/awseksnodegroup/v1/spec.proto\x12/project.planton.provider.aws.awseksnodegroup.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\"\xd7\a\n" +
 	"\x13AwsEksNodeGroupSpec\x12w\n" +
 	"\fcluster_name\x18\x01 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB\x1c\xbaH\x03\xc8\x01\x01\x88\xd4a\xcf\x01\x92\xd4a\rmetadata.nameR\vclusterName\x12\x82\x01\n" +
 	"\rnode_role_arn\x18\x02 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB&\xbaH\x03\xc8\x01\x01\x88\xd4a\xd0\x01\x92\xd4a\x17status.outputs.role_arnR\vnodeRoleArn\x12\x90\x01\n" +
 	"\n" +
-	"subnet_ids\x18\x03 \x03(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB9\xbaH\b\xc8\x01\x01\x92\x01\x02\b\x02\x88\xd4a\xd9\x01\x92\xd4a%status.outputs.private_subnets.[*].idR\tsubnetIds\x12q\n" +
-	"\rinstance_type\x18\x04 \x01(\tBL\xbaHI\xc8\x01\x01rD2B^[a-z]\\d?[a-z]?\\.(nano|micro|small|medium|large|xlarge|\\d+xlarge)$R\finstanceType\x12o\n" +
+	"subnet_ids\x18\x03 \x03(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB9\xbaH\b\xc8\x01\x01\x92\x01\x02\b\x02\x88\xd4a\xd9\x01\x92\xd4a%status.outputs.private_subnets.[*].idR\tsubnetIds\x12+\n" +
+	"\rinstance_type\x18\x04 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\finstanceType\x12o\n" +
 	"\ascaling\x18\x05 \x01(\v2M.project.planton.provider.aws.awseksnodegroup.v1.AwsEksNodeGroupScalingConfigB\x06\xbaH\x03\xc8\x01\x01R\ascaling\x12\x80\x01\n" +
 	"\rcapacity_type\x18\x06 \x01(\x0e2L.project.planton.provider.aws.awseksnodegroup.v1.AwsEksNodeGroupCapacityTypeB\r\x92\xa6\x1d\ton_demandR\fcapacityType\x12)\n" +
 	"\fdisk_size_gb\x18\a \x01(\x05B\a\x92\xa6\x1d\x03100R\n" +

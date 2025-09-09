@@ -12,12 +12,12 @@ import "project/planton/shared/metadata.proto";
 message DigitalOceanVpc {
   //api-version
   string api_version = 1[
-    (buf.validate.field).string.const = 'digital-ocean.project-planton.org/v1'
+    (buf.validate.field).string.const = "digital-ocean.project-planton.org/v1"
   ];
 
   //resource-kind
   string kind = 2 [
-    (buf.validate.field).string.const = 'DigitalOceanVpc'
+    (buf.validate.field).string.const = "DigitalOceanVpc"
   ];
 
   //metadata

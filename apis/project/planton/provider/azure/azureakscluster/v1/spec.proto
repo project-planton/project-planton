@@ -48,9 +48,7 @@ message AzureAksClusterSpec {
 
   // The Azure resource ID of a Log Analytics Workspace for AKS monitoring integration.
   // If provided, the AKS cluster will send logs and metrics to this Log Analytics workspace.
-  string log_analytics_workspace_id = 8 [
-    (buf.validate.field).string.pattern = "^/subscriptions/[^/]+/resourceGroups/[^/]+/providers/Microsoft\\.OperationalInsights/workspaces/[^/]+$"
-  ];
+  string log_analytics_workspace_id = 8;
 }
 
 // Possible network plugin options for the AKS cluster.

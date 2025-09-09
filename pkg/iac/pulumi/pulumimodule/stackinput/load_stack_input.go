@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/bufbuild/protovalidate-go"
+	"buf.build/go/protovalidate"
 	"github.com/pkg/errors"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/stackinput/fieldsextractor"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"

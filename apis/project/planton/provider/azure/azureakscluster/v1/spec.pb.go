@@ -192,7 +192,7 @@ var File_project_planton_provider_azure_azureakscluster_v1_spec_proto protorefle
 
 const file_project_planton_provider_azure_azureakscluster_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"<project/planton/provider/azure/azureakscluster/v1/spec.proto\x121project.planton.provider.azure.azureakscluster.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\"\xc5\x06\n" +
+	"<project/planton/provider/azure/azureakscluster/v1/spec.proto\x121project.planton.provider.azure.azureakscluster.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\"\xd6\x05\n" +
 	"\x13AzureAksClusterSpec\x12\x1e\n" +
 	"\x06region\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x06region\x12\x8b\x01\n" +
 	"\x0evnet_subnet_id\x18\x02 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB-\xbaH\x03\xc8\x01\x01\x88\xd4a\x95\x03\x92\xd4a\x1estatus.outputs.nodes_subnet_idR\fvnetSubnetId\x12v\n" +
@@ -200,8 +200,8 @@ const file_project_planton_provider_azure_azureakscluster_v1_spec_proto_rawDesc 
 	"\x12kubernetes_version\x18\x04 \x01(\tB\b\x92\xa6\x1d\x041.30R\x11kubernetesVersion\x126\n" +
 	"\x17private_cluster_enabled\x18\x05 \x01(\bR\x15privateClusterEnabled\x12\xb7\x01\n" +
 	"\x14authorized_ip_ranges\x18\x06 \x03(\tB\x84\x01\xbaH\x80\x01\x92\x01}\"{ry2w^(?:25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])(?:\\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])){3}(?:\\/(?:3[0-2]|[12]?[0-9]))?$R\x12authorizedIpRanges\x121\n" +
-	"\x15disable_azure_ad_rbac\x18\a \x01(\bR\x12disableAzureAdRbac\x12\xa9\x01\n" +
-	"\x1alog_analytics_workspace_id\x18\b \x01(\tBl\xbaHirg2e^/subscriptions/[^/]+/resourceGroups/[^/]+/providers/Microsoft\\.OperationalInsights/workspaces/[^/]+$R\x17logAnalyticsWorkspaceId*:\n" +
+	"\x15disable_azure_ad_rbac\x18\a \x01(\bR\x12disableAzureAdRbac\x12;\n" +
+	"\x1alog_analytics_workspace_id\x18\b \x01(\tR\x17logAnalyticsWorkspaceId*:\n" +
 	"\x1cAzureAksClusterNetworkPlugin\x12\r\n" +
 	"\tAZURE_CNI\x10\x00\x12\v\n" +
 	"\aKUBENET\x10\x01B\xa2\x03\n" +

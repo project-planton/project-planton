@@ -3,7 +3,7 @@ package awsec2instancev1
 import (
 	"testing"
 
-	"github.com/bufbuild/protovalidate-go"
+	"buf.build/go/protovalidate"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	fk "github.com/project-planton/project-planton/apis/project/planton/shared/foreignkey/v1"

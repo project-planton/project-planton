@@ -8,7 +8,7 @@ Purpose: create Go tests that exercise `spec.proto` validations (field options a
 - Use Ginkgo v2 and Gomega with protovalidate-go.
 
 ## Imports
-- `github.com/bufbuild/protovalidate-go`
+- `buf.build/go/protovalidate`
 - `. "github.com/onsi/ginkgo/v2"`
 - `. "github.com/onsi/gomega"`
 - Optionally: `github.com/project-planton/project-planton/apis/project/planton/shared/validateutil`
@@ -33,7 +33,7 @@ package awscloudfrontv1
 
 import (
   "testing"
-  "github.com/bufbuild/protovalidate-go"
+  "buf.build/go/protovalidate"
   . "github.com/onsi/ginkgo/v2"
   . "github.com/onsi/gomega"
 )

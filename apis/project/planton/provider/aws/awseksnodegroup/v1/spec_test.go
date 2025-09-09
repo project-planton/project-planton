@@ -1,0 +1,59 @@
+package awseksnodegroupv1
+
+import (
+	"testing"
+
+	foreignkeyv1 "github.com/project-planton/project-planton/apis/project/planton/shared/foreignkey/v1"
+
+	"buf.build/go/protovalidate"
+	. "github.com/onsi/ginkgo/v2"
+	. "github.com/onsi/gomega"
+	"github.com/project-planton/project-planton/apis/project/planton/shared"
+)
+
+func TestAwsEksNodeGroupSpec(t *testing.T) {
+	RegisterFailHandler(Fail)
+	RunSpecs(t, "AwsEksNodeGroupSpec Custom Validation Tests")
+}
+
+var _ = Describe("AwsEksNodeGroupSpec Custom Validation Tests", func() {
+
+	Describe("When valid input is passed", func() {
+		Context("aws_eks_node_group", func() {
+
+			It("should not return a validation error for minimal valid fields", func() {
+				input := &AwsEksNodeGroup{
+					ApiVersion: "aws.project-planton.org/v1",
+					Kind:       "AwsEksNodeGroup",
+					Metadata: &shared.ApiResourceMetadata{
+						Name: "test-node-group",
+					},
+					Spec: &AwsEksNodeGroupSpec{
+						ClusterName: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-eks-cluster"},
+						},
+						NodeRoleArn: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "arn:aws:iam::123456789012:role/EksNodeRole"},
+						},
+						SubnetIds: []*foreignkeyv1.StringValueOrRef{
+							{
+								LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "subnet-12345678"},
+							},
+							{
+								LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "subnet-87654321"},
+							},
+						},
+						InstanceType: "t3.small",
+						Scaling: &AwsEksNodeGroupScalingConfig{
+							MinSize:     1,
+							MaxSize:     3,
+							DesiredSize: 2,
+						},
+					},
+				}
+				err := protovalidate.Validate(input)
+				Expect(err).To(BeNil())
+			})
+		})
+	})
+})

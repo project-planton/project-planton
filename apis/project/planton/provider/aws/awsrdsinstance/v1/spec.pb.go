@@ -211,7 +211,7 @@ var File_project_planton_provider_aws_awsrdsinstance_v1_spec_proto protoreflect.
 
 const file_project_planton_provider_aws_awsrdsinstance_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"9project/planton/provider/aws/awsrdsinstance/v1/spec.proto\x12.project.planton.provider.aws.awsrdsinstance.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\"\xde\t\n" +
+	"9project/planton/provider/aws/awsrdsinstance/v1/spec.proto\x12.project.planton.provider.aws.awsrdsinstance.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\"\xa9\t\n" +
 	"\x12AwsRdsInstanceSpec\x12\x85\x01\n" +
 	"\n" +
 	"subnet_ids\x18\x01 \x03(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB.\x88\xd4a\xd9\x01\x92\xd4a%status.outputs.private_subnets.[*].idR\tsubnetIds\x12g\n" +
@@ -231,8 +231,8 @@ const file_project_planton_provider_aws_awsrdsinstance_v1_spec_proto_rawDesc = "
 	"\x13publicly_accessible\x18\r \x01(\bR\x12publiclyAccessible\x12\x19\n" +
 	"\bmulti_az\x18\x0e \x01(\bR\amultiAz\x120\n" +
 	"\x14parameter_group_name\x18\x0f \x01(\tR\x12parameterGroupName\x12*\n" +
-	"\x11option_group_name\x18\x10 \x01(\tR\x0foptionGroupName:\xc8\x01\xbaH\xc4\x01\x1a\xc1\x01\n" +
-	"\x10subnets_or_group\x127Provide either subnet_ids (>=2) or db_subnet_group_name\x1at(this.subnet_ids.size() >= 2) || (has(this.db_subnet_group_name.value) || has(this.db_subnet_group_name.value_from))B\x8f\x03\n" +
+	"\x11option_group_name\x18\x10 \x01(\tR\x0foptionGroupName:\x93\x01\xbaH\x8f\x01\x1a\x8c\x01\n" +
+	"\x10subnets_or_group\x127Provide either subnet_ids (>=2) or db_subnet_group_name\x1a?(this.subnet_ids.size() >= 2) || has(this.db_subnet_group_name)B\x8f\x03\n" +
 	"2com.project.planton.provider.aws.awsrdsinstance.v1B\tSpecProtoP\x01Zogithub.com/project-planton/project-planton/apis/project/planton/provider/aws/awsrdsinstance/v1;awsrdsinstancev1\xa2\x02\x05PPPAA\xaa\x02.Project.Planton.Provider.Aws.Awsrdsinstance.V1\xca\x02.Project\\Planton\\Provider\\Aws\\Awsrdsinstance\\V1\xe2\x02:Project\\Planton\\Provider\\Aws\\Awsrdsinstance\\V1\\GPBMetadata\xea\x023Project::Planton::Provider::Aws::Awsrdsinstance::V1b\x06proto3"
 
 var (

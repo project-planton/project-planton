@@ -28,7 +28,7 @@ func Match(actual *validate.Violation, expected *ExpectedViolation) {
 
 	// Same pattern for constraint ID
 	var wantConstraintId = expected.ConstraintId
-	Expect(actual.ConstraintId).To(BeEquivalentTo(&wantConstraintId))
+	Expect(actual.RuleId).To(BeEquivalentTo(&wantConstraintId))
 
 	// And again for the violation message
 	var wantMessage = expected.Message

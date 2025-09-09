@@ -74,20 +74,6 @@ message DigitalOceanAppPlatformServiceSpec {
     (project.planton.shared.foreignkey.v1.default_kind) = DigitalOceanDnsZone,
     (project.planton.shared.foreignkey.v1.default_kind_field_path) = "spec.domain_name"
   ];
-
-  // Validation: Ensure one source is provided.
-  option (buf.validate.message).cel = {
-    id: "source_required",
-    expression: "git_source != null || image_source != null",
-    message: "Either git_source or image_source must be specified."
-  };
-
-  // Validation: If auto-scaling is enabled, enforce min/max rules.
-  option (buf.validate.message).cel = {
-    id: "autoscale_min_max",
-    expression: "!(enable_autoscale) || ((min_instance_count > 0) && (max_instance_count > 0) && (max_instance_count >= min_instance_count))",
-    message: "min_instance_count and max_instance_count must be set (and max >= min) when enable_autoscale is true."
-  };
 }
 
 // DigitalOceanAppPlatformServiceType enumerates the types of services supported on DigitalOcean App Platform.

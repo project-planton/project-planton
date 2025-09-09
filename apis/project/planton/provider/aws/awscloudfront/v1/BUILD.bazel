@@ -24,7 +24,7 @@ go_test(
     srcs = ["spec_test.go"],
     embed = [":awscloudfront"],
     deps = [
-        "@com_github_bufbuild_protovalidate_go//:protovalidate-go",
+        "@build_buf_go_protovalidate//:protovalidate",
         "@com_github_onsi_ginkgo_v2//:ginkgo",
         "@com_github_onsi_gomega//:gomega",
     ],

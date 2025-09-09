@@ -1,0 +1,43 @@
+package gcprouternatv1
+
+import (
+	"testing"
+
+	foreignkeyv1 "github.com/project-planton/project-planton/apis/project/planton/shared/foreignkey/v1"
+
+	"buf.build/go/protovalidate"
+	. "github.com/onsi/ginkgo/v2"
+	. "github.com/onsi/gomega"
+	"github.com/project-planton/project-planton/apis/project/planton/shared"
+)
+
+func TestGcpRouterNatSpec(t *testing.T) {
+	RegisterFailHandler(Fail)
+	RunSpecs(t, "GcpRouterNatSpec Custom Validation Tests")
+}
+
+var _ = Describe("GcpRouterNatSpec Custom Validation Tests", func() {
+
+	Describe("When valid input is passed", func() {
+		Context("gcp_router_nat", func() {
+
+			It("should not return a validation error for minimal valid fields", func() {
+				input := &GcpRouterNat{
+					ApiVersion: "gcp.project-planton.org/v1",
+					Kind:       "GcpRouterNat",
+					Metadata: &shared.ApiResourceMetadata{
+						Name: "test-router-nat",
+					},
+					Spec: &GcpRouterNatSpec{
+						VpcSelfLink: &foreignkeyv1.StringValueOrRef{
+							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "projects/test-project-123/global/networks/test-vpc"},
+						},
+						Region: "us-central1",
+					},
+				}
+				err := protovalidate.Validate(input)
+				Expect(err).To(BeNil())
+			})
+		})
+	})
+})
