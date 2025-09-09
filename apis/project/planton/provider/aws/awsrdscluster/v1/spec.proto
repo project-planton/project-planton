@@ -23,7 +23,6 @@ message AwsRdsClusterSpec {
 
   // vpc_security_group_ids are additional security groups attached to the cluster.
   repeated project.planton.shared.foreignkey.v1.StringValueOrRef security_group_ids = 3 [
-    (buf.validate.field).repeated.unique = true,
     (project.planton.shared.foreignkey.v1.default_kind) = AwsSecurityGroup,
     (project.planton.shared.foreignkey.v1.default_kind_field_path) = "status.outputs.security_group_id"
   ];
@@ -37,7 +36,6 @@ message AwsRdsClusterSpec {
 
   // associate_security_group_ids lists existing SGs to associate (alongside any created/managed SG).
   repeated project.planton.shared.foreignkey.v1.StringValueOrRef associate_security_group_ids = 5 [
-    (buf.validate.field).repeated.unique = true,
     (project.planton.shared.foreignkey.v1.default_kind) = AwsSecurityGroup,
     (project.planton.shared.foreignkey.v1.default_kind_field_path) = "status.outputs.security_group_id"
   ];

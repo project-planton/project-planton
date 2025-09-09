@@ -488,14 +488,14 @@ var File_project_planton_provider_aws_awsrdscluster_v1_spec_proto protoreflect.F
 
 const file_project_planton_provider_aws_awsrdscluster_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"8project/planton/provider/aws/awsrdscluster/v1/spec.proto\x12-project.planton.provider.aws.awsrdscluster.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\"\xde\x1e\n" +
+	"8project/planton/provider/aws/awsrdscluster/v1/spec.proto\x12-project.planton.provider.aws.awsrdscluster.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\"\xce\x1e\n" +
 	"\x11AwsRdsClusterSpec\x12\x85\x01\n" +
 	"\n" +
 	"subnet_ids\x18\x01 \x03(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB.\x88\xd4a\xd9\x01\x92\xd4a%status.outputs.private_subnets.[*].idR\tsubnetIds\x12g\n" +
-	"\x14db_subnet_group_name\x18\x02 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefR\x11dbSubnetGroupName\x12\x97\x01\n" +
-	"\x12security_group_ids\x18\x03 \x03(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB1\xbaH\x05\x92\x01\x02\x18\x01\x88\xd4a\xd7\x01\x92\xd4a status.outputs.security_group_idR\x10securityGroupIds\x12\xa1\x01\n" +
-	"\x13allowed_cidr_blocks\x18\x04 \x03(\tBq\xbaHn\x92\x01k\x18\x01\"gre2c^(?:25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)(?:\\.(?:25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)){3}/(?:[0-9]|[12]\\d|3[0-2])$R\x11allowedCidrBlocks\x12\xaa\x01\n" +
-	"\x1cassociate_security_group_ids\x18\x05 \x03(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB1\xbaH\x05\x92\x01\x02\x18\x01\x88\xd4a\xd7\x01\x92\xd4a status.outputs.security_group_idR\x19associateSecurityGroupIds\x12#\n" +
+	"\x14db_subnet_group_name\x18\x02 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefR\x11dbSubnetGroupName\x12\x8f\x01\n" +
+	"\x12security_group_ids\x18\x03 \x03(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB)\x88\xd4a\xd7\x01\x92\xd4a status.outputs.security_group_idR\x10securityGroupIds\x12\xa1\x01\n" +
+	"\x13allowed_cidr_blocks\x18\x04 \x03(\tBq\xbaHn\x92\x01k\x18\x01\"gre2c^(?:25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)(?:\\.(?:25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)){3}/(?:[0-9]|[12]\\d|3[0-2])$R\x11allowedCidrBlocks\x12\xa2\x01\n" +
+	"\x1cassociate_security_group_ids\x18\x05 \x03(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB)\x88\xd4a\xd7\x01\x92\xd4a status.outputs.security_group_idR\x19associateSecurityGroupIds\x12#\n" +
 	"\rdatabase_name\x18\x06 \x01(\tR\fdatabaseName\x12G\n" +
 	"\x1bmanage_master_user_password\x18\a \x01(\bB\b\x92\xa6\x1d\x04trueR\x18manageMasterUserPassword\x12\x98\x01\n" +
 	"\x1dmaster_user_secret_kms_key_id\x18\b \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB\x1f\x88\xd4a\xdc\x01\x92\xd4a\x16status.outputs.key_arnR\x18masterUserSecretKmsKeyId\x12&\n" +
