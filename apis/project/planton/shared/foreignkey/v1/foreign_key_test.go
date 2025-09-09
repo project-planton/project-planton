@@ -38,7 +38,7 @@ var _ = Describe("ForeignKey Oneof Tests", func() {
 						ValueFrom: &ValueFromRef{
 							Kind:      cloudresourcekind.CloudResourceKind_FirstTestCloudApiResource,
 							Env:       "dev",
-							Slug:      "my-cert",
+							Name:      "my-cert",
 							FieldPath: "status.outputs.cert_arn",
 						},
 					},
@@ -60,7 +60,7 @@ var _ = Describe("ForeignKey Oneof Tests", func() {
 					ValueFrom: &ValueFromRef{
 						Kind: cloudresourcekind.CloudResourceKind_FirstTestCloudApiResource,
 						Env:  "dev",
-						Slug: "overwrites-literal",
+						Name: "overwrites-literal",
 					},
 				}
 				err := protovalidate.Validate(input)
@@ -68,7 +68,7 @@ var _ = Describe("ForeignKey Oneof Tests", func() {
 
 				// Because this is a oneof, the 'Value' is no longer set
 				Expect(input.GetValue()).To(Equal(""))
-				Expect(input.GetValueFrom().GetSlug()).To(Equal("overwrites-literal"))
+				Expect(input.GetValueFrom().GetName()).To(Equal("overwrites-literal"))
 			})
 		})
 	})
@@ -93,7 +93,7 @@ var _ = Describe("ForeignKey Oneof Tests", func() {
 						ValueFrom: &ValueFromRef{
 							Kind: cloudresourcekind.CloudResourceKind_FirstTestCloudApiResource,
 							Env:  "dev",
-							Slug: "ref-int32",
+							Name: "ref-int32",
 						},
 					},
 				}
@@ -115,7 +115,7 @@ var _ = Describe("ForeignKey Oneof Tests", func() {
 					ValueFrom: &ValueFromRef{
 						Kind: cloudresourcekind.CloudResourceKind_FirstTestCloudApiResource,
 						Env:  "dev",
-						Slug: "ref-overwrites-int",
+						Name: "ref-overwrites-int",
 					},
 				}
 				err := protovalidate.Validate(input)
@@ -123,7 +123,7 @@ var _ = Describe("ForeignKey Oneof Tests", func() {
 
 				// Because it's a oneof, the integer literal is no longer set
 				Expect(input.GetValue()).To(BeEquivalentTo(0))
-				Expect(input.GetValueFrom().GetSlug()).To(Equal("ref-overwrites-int"))
+				Expect(input.GetValueFrom().GetName()).To(Equal("ref-overwrites-int"))
 			})
 		})
 	})
