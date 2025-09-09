@@ -488,7 +488,8 @@ var File_project_planton_provider_digitalocean_digitaloceanappplatformservice_v1
 
 const file_project_planton_provider_digitalocean_digitaloceanappplatformservice_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Rproject/planton/provider/digitalocean/digitaloceanappplatformservice/v1/spec.proto\x12Gproject.planton.provider.digitalocean.digitaloceanappplatformservice.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\x1a2project/planton/provider/digitalocean/region.proto\"\x8a\r\n" +
+	"Rproject/planton/provider/digitalocean/digitaloceanappplatformservice/v1/spec.proto\x12Gproject.planton.provider.digitalocean.digitaloceanappplatformservice.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\x1a2project/planton/provider/digitalocean/region.proto\"\xb5\n" +
+	"\n" +
 	"\"DigitalOceanAppPlatformServiceSpec\x12N\n" +
 	"\fservice_name\x18\x01 \x01(\tB+\xbaH(\xc8\x01\x01r#\x18?2\x1f^[a-z0-9]([-a-z0-9]*[a-z0-9])?$R\vserviceName\x12Y\n" +
 	"\x06region\x18\x02 \x01(\x0e29.project.planton.provider.digitalocean.DigitalOceanRegionB\x06\xbaH\x03\xc8\x01\x01R\x06region\x12\x96\x01\n" +
@@ -506,9 +507,7 @@ const file_project_planton_provider_digitalocean_digitaloceanappplatformservice_
 	"\rcustom_domain\x18\f \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB\x19\x88\xd4a\xb4\t\x92\xd4a\x10spec.domain_nameR\fcustomDomain\x1a6\n" +
 	"\bEnvEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:\xd2\x02\xbaH\xce\x02\x1av\n" +
-	"\x0fsource_required\x123Either git_source or image_source must be specified\x1a.has(this.git_source) || has(this.image_source)\x1a\xd3\x01\n" +
-	"\x10autoscale_config\x12gWhen enable_autoscale is true, min_instance_count and max_instance_count must be set and greater than 0\x1aV!this.enable_autoscale || (this.min_instance_count > 0 && this.max_instance_count > 0)B\b\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01B\b\n" +
 	"\x06source\"\xab\x01\n" +
 	" DigitalOceanAppPlatformGitSource\x12!\n" +
 	"\brepo_url\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\arepoUrl\x12\x1e\n" +

@@ -73,53 +73,6 @@ var _ = Describe("DigitalOceanAppPlatformServiceSpec Custom Validation Tests", f
 				Expect(err).To(BeNil())
 			})
 
-			It("should return a validation error when no source is provided", func() {
-				input := &DigitalOceanAppPlatformService{
-					ApiVersion: "digital-ocean.project-planton.org/v1",
-					Kind:       "DigitalOceanAppPlatformService",
-					Metadata: &shared.ApiResourceMetadata{
-						Name: "test-app-service",
-					},
-					Spec: &DigitalOceanAppPlatformServiceSpec{
-						ServiceName:      "test-service",
-						Region:           digitalocean.DigitalOceanRegion_nyc3,
-						ServiceType:      DigitalOceanAppPlatformServiceType_web_service,
-						InstanceSizeSlug: DigitalOceanAppPlatformInstanceSize_basic_xxs,
-						// No source provided - should fail validation
-					},
-				}
-				err := protovalidate.Validate(input)
-				Expect(err).NotTo(BeNil())
-				Expect(err.Error()).To(ContainSubstring("Either git_source or image_source must be specified"))
-			})
-
-			It("should return a validation error when autoscale is enabled but min/max not set", func() {
-				input := &DigitalOceanAppPlatformService{
-					ApiVersion: "digital-ocean.project-planton.org/v1",
-					Kind:       "DigitalOceanAppPlatformService",
-					Metadata: &shared.ApiResourceMetadata{
-						Name: "test-app-service",
-					},
-					Spec: &DigitalOceanAppPlatformServiceSpec{
-						ServiceName:      "test-service",
-						Region:           digitalocean.DigitalOceanRegion_nyc3,
-						ServiceType:      DigitalOceanAppPlatformServiceType_web_service,
-						InstanceSizeSlug: DigitalOceanAppPlatformInstanceSize_basic_xxs,
-						EnableAutoscale:  true,
-						// Missing min_instance_count and max_instance_count
-						Source: &DigitalOceanAppPlatformServiceSpec_GitSource{
-							GitSource: &DigitalOceanAppPlatformGitSource{
-								RepoUrl: "https://github.com/example/repo.git",
-								Branch:  "main",
-							},
-						},
-					},
-				}
-				err := protovalidate.Validate(input)
-				Expect(err).NotTo(BeNil())
-				Expect(err.Error()).To(ContainSubstring("min_instance_count and max_instance_count must be set"))
-			})
-
 			It("should not return a validation error when autoscale is properly configured", func() {
 				input := &DigitalOceanAppPlatformService{
 					ApiVersion: "digital-ocean.project-planton.org/v1",
