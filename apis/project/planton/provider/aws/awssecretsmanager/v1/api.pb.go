@@ -108,12 +108,6 @@ func (x *AwsSecretsManager) GetStatus() *AwsSecretsManagerStatus {
 // aws-secrets-manager status
 type AwsSecretsManagerStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// lifecycle
-	Lifecycle *shared.ApiResourceLifecycle `protobuf:"bytes,99,opt,name=lifecycle,proto3" json:"lifecycle,omitempty"`
-	// audit-info
-	Audit *shared.ApiResourceAudit `protobuf:"bytes,98,opt,name=audit,proto3" json:"audit,omitempty"`
-	// stack-job id
-	StackJobId string `protobuf:"bytes,97,opt,name=stack_job_id,json=stackJobId,proto3" json:"stack_job_id,omitempty"`
 	// stack-outputs
 	Outputs       *AwsSecretsManagerStackOutputs `protobuf:"bytes,1,opt,name=outputs,proto3" json:"outputs,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -150,27 +144,6 @@ func (*AwsSecretsManagerStatus) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_aws_awssecretsmanager_v1_api_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *AwsSecretsManagerStatus) GetLifecycle() *shared.ApiResourceLifecycle {
-	if x != nil {
-		return x.Lifecycle
-	}
-	return nil
-}
-
-func (x *AwsSecretsManagerStatus) GetAudit() *shared.ApiResourceAudit {
-	if x != nil {
-		return x.Audit
-	}
-	return nil
-}
-
-func (x *AwsSecretsManagerStatus) GetStackJobId() string {
-	if x != nil {
-		return x.StackJobId
-	}
-	return ""
-}
-
 func (x *AwsSecretsManagerStatus) GetOutputs() *AwsSecretsManagerStackOutputs {
 	if x != nil {
 		return x.Outputs
@@ -191,12 +164,8 @@ const file_project_planton_provider_aws_awssecretsmanager_v1_api_proto_rawDesc =
 	"\x11AwsSecretsManagerR\x04kind\x12O\n" +
 	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12d\n" +
 	"\x04spec\x18\x04 \x01(\v2H.project.planton.provider.aws.awssecretsmanager.v1.AwsSecretsManagerSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12b\n" +
-	"\x06status\x18\x05 \x01(\v2J.project.planton.provider.aws.awssecretsmanager.v1.AwsSecretsManagerStatusR\x06status\"\xb3\x02\n" +
-	"\x17AwsSecretsManagerStatus\x12J\n" +
-	"\tlifecycle\x18c \x01(\v2,.project.planton.shared.ApiResourceLifecycleR\tlifecycle\x12>\n" +
-	"\x05audit\x18b \x01(\v2(.project.planton.shared.ApiResourceAuditR\x05audit\x12 \n" +
-	"\fstack_job_id\x18a \x01(\tR\n" +
-	"stackJobId\x12j\n" +
+	"\x06status\x18\x05 \x01(\v2J.project.planton.provider.aws.awssecretsmanager.v1.AwsSecretsManagerStatusR\x06status\"\x85\x01\n" +
+	"\x17AwsSecretsManagerStatus\x12j\n" +
 	"\aoutputs\x18\x01 \x01(\v2P.project.planton.provider.aws.awssecretsmanager.v1.AwsSecretsManagerStackOutputsR\aoutputsB\xa3\x03\n" +
 	"5com.project.planton.provider.aws.awssecretsmanager.v1B\bApiProtoP\x01Zugithub.com/project-planton/project-planton/apis/project/planton/provider/aws/awssecretsmanager/v1;awssecretsmanagerv1\xa2\x02\x05PPPAA\xaa\x021Project.Planton.Provider.Aws.Awssecretsmanager.V1\xca\x021Project\\Planton\\Provider\\Aws\\Awssecretsmanager\\V1\xe2\x02=Project\\Planton\\Provider\\Aws\\Awssecretsmanager\\V1\\GPBMetadata\xea\x026Project::Planton::Provider::Aws::Awssecretsmanager::V1b\x06proto3"
 
@@ -218,22 +187,18 @@ var file_project_planton_provider_aws_awssecretsmanager_v1_api_proto_goTypes = [
 	(*AwsSecretsManagerStatus)(nil),       // 1: project.planton.provider.aws.awssecretsmanager.v1.AwsSecretsManagerStatus
 	(*shared.ApiResourceMetadata)(nil),    // 2: project.planton.shared.ApiResourceMetadata
 	(*AwsSecretsManagerSpec)(nil),         // 3: project.planton.provider.aws.awssecretsmanager.v1.AwsSecretsManagerSpec
-	(*shared.ApiResourceLifecycle)(nil),   // 4: project.planton.shared.ApiResourceLifecycle
-	(*shared.ApiResourceAudit)(nil),       // 5: project.planton.shared.ApiResourceAudit
-	(*AwsSecretsManagerStackOutputs)(nil), // 6: project.planton.provider.aws.awssecretsmanager.v1.AwsSecretsManagerStackOutputs
+	(*AwsSecretsManagerStackOutputs)(nil), // 4: project.planton.provider.aws.awssecretsmanager.v1.AwsSecretsManagerStackOutputs
 }
 var file_project_planton_provider_aws_awssecretsmanager_v1_api_proto_depIdxs = []int32{
 	2, // 0: project.planton.provider.aws.awssecretsmanager.v1.AwsSecretsManager.metadata:type_name -> project.planton.shared.ApiResourceMetadata
 	3, // 1: project.planton.provider.aws.awssecretsmanager.v1.AwsSecretsManager.spec:type_name -> project.planton.provider.aws.awssecretsmanager.v1.AwsSecretsManagerSpec
 	1, // 2: project.planton.provider.aws.awssecretsmanager.v1.AwsSecretsManager.status:type_name -> project.planton.provider.aws.awssecretsmanager.v1.AwsSecretsManagerStatus
-	4, // 3: project.planton.provider.aws.awssecretsmanager.v1.AwsSecretsManagerStatus.lifecycle:type_name -> project.planton.shared.ApiResourceLifecycle
-	5, // 4: project.planton.provider.aws.awssecretsmanager.v1.AwsSecretsManagerStatus.audit:type_name -> project.planton.shared.ApiResourceAudit
-	6, // 5: project.planton.provider.aws.awssecretsmanager.v1.AwsSecretsManagerStatus.outputs:type_name -> project.planton.provider.aws.awssecretsmanager.v1.AwsSecretsManagerStackOutputs
-	6, // [6:6] is the sub-list for method output_type
-	6, // [6:6] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	4, // 3: project.planton.provider.aws.awssecretsmanager.v1.AwsSecretsManagerStatus.outputs:type_name -> project.planton.provider.aws.awssecretsmanager.v1.AwsSecretsManagerStackOutputs
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_provider_aws_awssecretsmanager_v1_api_proto_init() }

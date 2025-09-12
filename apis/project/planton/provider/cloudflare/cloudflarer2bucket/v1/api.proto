@@ -36,15 +36,6 @@ message CloudflareR2Bucket {
 
 // cloudflare-r2-bucket status
 message CloudflareR2BucketStatus {
-  //lifecycle
-  project.planton.shared.ApiResourceLifecycle lifecycle = 99;
-
-  //audit-info
-  project.planton.shared.ApiResourceAudit audit = 98;
-
-  //stack-job id
-  string stack_job_id = 97;
-
   //stack-outputs
   //  cloudflare-r2-bucket stack-outputs
   CloudflareR2BucketStackOutputs outputs = 1;

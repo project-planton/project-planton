@@ -108,12 +108,6 @@ func (x *ElasticOperatorKubernetes) GetStatus() *ElasticOperatorKubernetesStatus
 // elastic-operator-kubernetes status.
 type ElasticOperatorKubernetesStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// lifecycle
-	Lifecycle *shared.ApiResourceLifecycle `protobuf:"bytes,99,opt,name=lifecycle,proto3" json:"lifecycle,omitempty"`
-	// audit-info
-	Audit *shared.ApiResourceAudit `protobuf:"bytes,98,opt,name=audit,proto3" json:"audit,omitempty"`
-	// stack-job id
-	StackJobId string `protobuf:"bytes,97,opt,name=stack_job_id,json=stackJobId,proto3" json:"stack_job_id,omitempty"`
 	// stack-outputs
 	Outputs       *ElasticOperatorKubernetesStackOutputs `protobuf:"bytes,1,opt,name=outputs,proto3" json:"outputs,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -150,27 +144,6 @@ func (*ElasticOperatorKubernetesStatus) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_kubernetes_addon_elasticoperatorkubernetes_v1_api_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *ElasticOperatorKubernetesStatus) GetLifecycle() *shared.ApiResourceLifecycle {
-	if x != nil {
-		return x.Lifecycle
-	}
-	return nil
-}
-
-func (x *ElasticOperatorKubernetesStatus) GetAudit() *shared.ApiResourceAudit {
-	if x != nil {
-		return x.Audit
-	}
-	return nil
-}
-
-func (x *ElasticOperatorKubernetesStatus) GetStackJobId() string {
-	if x != nil {
-		return x.StackJobId
-	}
-	return ""
-}
-
 func (x *ElasticOperatorKubernetesStatus) GetOutputs() *ElasticOperatorKubernetesStackOutputs {
 	if x != nil {
 		return x.Outputs
@@ -191,12 +164,8 @@ const file_project_planton_provider_kubernetes_addon_elasticoperatorkubernetes_v
 	"\x19ElasticOperatorKubernetesR\x04kind\x12O\n" +
 	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12\x81\x01\n" +
 	"\x04spec\x18\x04 \x01(\v2e.project.planton.provider.kubernetes.addon.elasticoperatorkubernetes.v1.ElasticOperatorKubernetesSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12\x7f\n" +
-	"\x06status\x18\x05 \x01(\v2g.project.planton.provider.kubernetes.addon.elasticoperatorkubernetes.v1.ElasticOperatorKubernetesStatusR\x06status\"\xd9\x02\n" +
-	"\x1fElasticOperatorKubernetesStatus\x12J\n" +
-	"\tlifecycle\x18c \x01(\v2,.project.planton.shared.ApiResourceLifecycleR\tlifecycle\x12>\n" +
-	"\x05audit\x18b \x01(\v2(.project.planton.shared.ApiResourceAuditR\x05audit\x12 \n" +
-	"\fstack_job_id\x18a \x01(\tR\n" +
-	"stackJobId\x12\x87\x01\n" +
+	"\x06status\x18\x05 \x01(\v2g.project.planton.provider.kubernetes.addon.elasticoperatorkubernetes.v1.ElasticOperatorKubernetesStatusR\x06status\"\xab\x01\n" +
+	"\x1fElasticOperatorKubernetesStatus\x12\x87\x01\n" +
 	"\aoutputs\x18\x01 \x01(\v2m.project.planton.provider.kubernetes.addon.elasticoperatorkubernetes.v1.ElasticOperatorKubernetesStackOutputsR\aoutputsB\xac\x04\n" +
 	"Jcom.project.planton.provider.kubernetes.addon.elasticoperatorkubernetes.v1B\bApiProtoP\x01Z\x92\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/addon/elasticoperatorkubernetes/v1;elasticoperatorkubernetesv1\xa2\x02\x06PPPKAE\xaa\x02FProject.Planton.Provider.Kubernetes.Addon.Elasticoperatorkubernetes.V1\xca\x02FProject\\Planton\\Provider\\Kubernetes\\Addon\\Elasticoperatorkubernetes\\V1\xe2\x02RProject\\Planton\\Provider\\Kubernetes\\Addon\\Elasticoperatorkubernetes\\V1\\GPBMetadata\xea\x02LProject::Planton::Provider::Kubernetes::Addon::Elasticoperatorkubernetes::V1b\x06proto3"
 
@@ -218,22 +187,18 @@ var file_project_planton_provider_kubernetes_addon_elasticoperatorkubernetes_v1_
 	(*ElasticOperatorKubernetesStatus)(nil),       // 1: project.planton.provider.kubernetes.addon.elasticoperatorkubernetes.v1.ElasticOperatorKubernetesStatus
 	(*shared.ApiResourceMetadata)(nil),            // 2: project.planton.shared.ApiResourceMetadata
 	(*ElasticOperatorKubernetesSpec)(nil),         // 3: project.planton.provider.kubernetes.addon.elasticoperatorkubernetes.v1.ElasticOperatorKubernetesSpec
-	(*shared.ApiResourceLifecycle)(nil),           // 4: project.planton.shared.ApiResourceLifecycle
-	(*shared.ApiResourceAudit)(nil),               // 5: project.planton.shared.ApiResourceAudit
-	(*ElasticOperatorKubernetesStackOutputs)(nil), // 6: project.planton.provider.kubernetes.addon.elasticoperatorkubernetes.v1.ElasticOperatorKubernetesStackOutputs
+	(*ElasticOperatorKubernetesStackOutputs)(nil), // 4: project.planton.provider.kubernetes.addon.elasticoperatorkubernetes.v1.ElasticOperatorKubernetesStackOutputs
 }
 var file_project_planton_provider_kubernetes_addon_elasticoperatorkubernetes_v1_api_proto_depIdxs = []int32{
 	2, // 0: project.planton.provider.kubernetes.addon.elasticoperatorkubernetes.v1.ElasticOperatorKubernetes.metadata:type_name -> project.planton.shared.ApiResourceMetadata
 	3, // 1: project.planton.provider.kubernetes.addon.elasticoperatorkubernetes.v1.ElasticOperatorKubernetes.spec:type_name -> project.planton.provider.kubernetes.addon.elasticoperatorkubernetes.v1.ElasticOperatorKubernetesSpec
 	1, // 2: project.planton.provider.kubernetes.addon.elasticoperatorkubernetes.v1.ElasticOperatorKubernetes.status:type_name -> project.planton.provider.kubernetes.addon.elasticoperatorkubernetes.v1.ElasticOperatorKubernetesStatus
-	4, // 3: project.planton.provider.kubernetes.addon.elasticoperatorkubernetes.v1.ElasticOperatorKubernetesStatus.lifecycle:type_name -> project.planton.shared.ApiResourceLifecycle
-	5, // 4: project.planton.provider.kubernetes.addon.elasticoperatorkubernetes.v1.ElasticOperatorKubernetesStatus.audit:type_name -> project.planton.shared.ApiResourceAudit
-	6, // 5: project.planton.provider.kubernetes.addon.elasticoperatorkubernetes.v1.ElasticOperatorKubernetesStatus.outputs:type_name -> project.planton.provider.kubernetes.addon.elasticoperatorkubernetes.v1.ElasticOperatorKubernetesStackOutputs
-	6, // [6:6] is the sub-list for method output_type
-	6, // [6:6] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	4, // 3: project.planton.provider.kubernetes.addon.elasticoperatorkubernetes.v1.ElasticOperatorKubernetesStatus.outputs:type_name -> project.planton.provider.kubernetes.addon.elasticoperatorkubernetes.v1.ElasticOperatorKubernetesStackOutputs
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() {

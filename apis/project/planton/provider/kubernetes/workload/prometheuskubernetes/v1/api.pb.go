@@ -108,12 +108,6 @@ func (x *PrometheusKubernetes) GetStatus() *PrometheusKubernetesStatus {
 // prometheus-kubernetes status.
 type PrometheusKubernetesStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// lifecycle
-	Lifecycle *shared.ApiResourceLifecycle `protobuf:"bytes,99,opt,name=lifecycle,proto3" json:"lifecycle,omitempty"`
-	// audit-info
-	Audit *shared.ApiResourceAudit `protobuf:"bytes,98,opt,name=audit,proto3" json:"audit,omitempty"`
-	// stack-job id
-	StackJobId string `protobuf:"bytes,97,opt,name=stack_job_id,json=stackJobId,proto3" json:"stack_job_id,omitempty"`
 	// stack-outputs
 	Outputs       *PrometheusKubernetesStackOutputs `protobuf:"bytes,1,opt,name=outputs,proto3" json:"outputs,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -150,27 +144,6 @@ func (*PrometheusKubernetesStatus) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_kubernetes_workload_prometheuskubernetes_v1_api_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *PrometheusKubernetesStatus) GetLifecycle() *shared.ApiResourceLifecycle {
-	if x != nil {
-		return x.Lifecycle
-	}
-	return nil
-}
-
-func (x *PrometheusKubernetesStatus) GetAudit() *shared.ApiResourceAudit {
-	if x != nil {
-		return x.Audit
-	}
-	return nil
-}
-
-func (x *PrometheusKubernetesStatus) GetStackJobId() string {
-	if x != nil {
-		return x.StackJobId
-	}
-	return ""
-}
-
 func (x *PrometheusKubernetesStatus) GetOutputs() *PrometheusKubernetesStackOutputs {
 	if x != nil {
 		return x.Outputs
@@ -191,12 +164,8 @@ const file_project_planton_provider_kubernetes_workload_prometheuskubernetes_v1_
 	"\x14PrometheusKubernetesR\x04kind\x12O\n" +
 	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12z\n" +
 	"\x04spec\x18\x04 \x01(\v2^.project.planton.provider.kubernetes.workload.prometheuskubernetes.v1.PrometheusKubernetesSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12x\n" +
-	"\x06status\x18\x05 \x01(\v2`.project.planton.provider.kubernetes.workload.prometheuskubernetes.v1.PrometheusKubernetesStatusR\x06status\"\xcd\x02\n" +
-	"\x1aPrometheusKubernetesStatus\x12J\n" +
-	"\tlifecycle\x18c \x01(\v2,.project.planton.shared.ApiResourceLifecycleR\tlifecycle\x12>\n" +
-	"\x05audit\x18b \x01(\v2(.project.planton.shared.ApiResourceAuditR\x05audit\x12 \n" +
-	"\fstack_job_id\x18a \x01(\tR\n" +
-	"stackJobId\x12\x80\x01\n" +
+	"\x06status\x18\x05 \x01(\v2`.project.planton.provider.kubernetes.workload.prometheuskubernetes.v1.PrometheusKubernetesStatusR\x06status\"\x9f\x01\n" +
+	"\x1aPrometheusKubernetesStatus\x12\x80\x01\n" +
 	"\aoutputs\x18\x01 \x01(\v2f.project.planton.provider.kubernetes.workload.prometheuskubernetes.v1.PrometheusKubernetesStackOutputsR\aoutputsB\x9b\x04\n" +
 	"Hcom.project.planton.provider.kubernetes.workload.prometheuskubernetes.v1B\bApiProtoP\x01Z\x8b\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/prometheuskubernetes/v1;prometheuskubernetesv1\xa2\x02\x06PPPKWP\xaa\x02DProject.Planton.Provider.Kubernetes.Workload.Prometheuskubernetes.V1\xca\x02DProject\\Planton\\Provider\\Kubernetes\\Workload\\Prometheuskubernetes\\V1\xe2\x02PProject\\Planton\\Provider\\Kubernetes\\Workload\\Prometheuskubernetes\\V1\\GPBMetadata\xea\x02JProject::Planton::Provider::Kubernetes::Workload::Prometheuskubernetes::V1b\x06proto3"
 
@@ -218,22 +187,18 @@ var file_project_planton_provider_kubernetes_workload_prometheuskubernetes_v1_ap
 	(*PrometheusKubernetesStatus)(nil),       // 1: project.planton.provider.kubernetes.workload.prometheuskubernetes.v1.PrometheusKubernetesStatus
 	(*shared.ApiResourceMetadata)(nil),       // 2: project.planton.shared.ApiResourceMetadata
 	(*PrometheusKubernetesSpec)(nil),         // 3: project.planton.provider.kubernetes.workload.prometheuskubernetes.v1.PrometheusKubernetesSpec
-	(*shared.ApiResourceLifecycle)(nil),      // 4: project.planton.shared.ApiResourceLifecycle
-	(*shared.ApiResourceAudit)(nil),          // 5: project.planton.shared.ApiResourceAudit
-	(*PrometheusKubernetesStackOutputs)(nil), // 6: project.planton.provider.kubernetes.workload.prometheuskubernetes.v1.PrometheusKubernetesStackOutputs
+	(*PrometheusKubernetesStackOutputs)(nil), // 4: project.planton.provider.kubernetes.workload.prometheuskubernetes.v1.PrometheusKubernetesStackOutputs
 }
 var file_project_planton_provider_kubernetes_workload_prometheuskubernetes_v1_api_proto_depIdxs = []int32{
 	2, // 0: project.planton.provider.kubernetes.workload.prometheuskubernetes.v1.PrometheusKubernetes.metadata:type_name -> project.planton.shared.ApiResourceMetadata
 	3, // 1: project.planton.provider.kubernetes.workload.prometheuskubernetes.v1.PrometheusKubernetes.spec:type_name -> project.planton.provider.kubernetes.workload.prometheuskubernetes.v1.PrometheusKubernetesSpec
 	1, // 2: project.planton.provider.kubernetes.workload.prometheuskubernetes.v1.PrometheusKubernetes.status:type_name -> project.planton.provider.kubernetes.workload.prometheuskubernetes.v1.PrometheusKubernetesStatus
-	4, // 3: project.planton.provider.kubernetes.workload.prometheuskubernetes.v1.PrometheusKubernetesStatus.lifecycle:type_name -> project.planton.shared.ApiResourceLifecycle
-	5, // 4: project.planton.provider.kubernetes.workload.prometheuskubernetes.v1.PrometheusKubernetesStatus.audit:type_name -> project.planton.shared.ApiResourceAudit
-	6, // 5: project.planton.provider.kubernetes.workload.prometheuskubernetes.v1.PrometheusKubernetesStatus.outputs:type_name -> project.planton.provider.kubernetes.workload.prometheuskubernetes.v1.PrometheusKubernetesStackOutputs
-	6, // [6:6] is the sub-list for method output_type
-	6, // [6:6] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	4, // 3: project.planton.provider.kubernetes.workload.prometheuskubernetes.v1.PrometheusKubernetesStatus.outputs:type_name -> project.planton.provider.kubernetes.workload.prometheuskubernetes.v1.PrometheusKubernetesStackOutputs
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() {

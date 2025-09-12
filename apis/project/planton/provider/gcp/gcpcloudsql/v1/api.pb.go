@@ -108,12 +108,6 @@ func (x *GcpCloudSql) GetStatus() *GcpCloudSqlStatus {
 // gcp-cloud-sql status
 type GcpCloudSqlStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// lifecycle
-	Lifecycle *shared.ApiResourceLifecycle `protobuf:"bytes,99,opt,name=lifecycle,proto3" json:"lifecycle,omitempty"`
-	// audit-info
-	Audit *shared.ApiResourceAudit `protobuf:"bytes,98,opt,name=audit,proto3" json:"audit,omitempty"`
-	// stack-job id
-	StackJobId string `protobuf:"bytes,97,opt,name=stack_job_id,json=stackJobId,proto3" json:"stack_job_id,omitempty"`
 	// stack-outputs
 	Outputs       *GcpCloudSqlStackOutputs `protobuf:"bytes,1,opt,name=outputs,proto3" json:"outputs,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -150,27 +144,6 @@ func (*GcpCloudSqlStatus) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_gcp_gcpcloudsql_v1_api_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *GcpCloudSqlStatus) GetLifecycle() *shared.ApiResourceLifecycle {
-	if x != nil {
-		return x.Lifecycle
-	}
-	return nil
-}
-
-func (x *GcpCloudSqlStatus) GetAudit() *shared.ApiResourceAudit {
-	if x != nil {
-		return x.Audit
-	}
-	return nil
-}
-
-func (x *GcpCloudSqlStatus) GetStackJobId() string {
-	if x != nil {
-		return x.StackJobId
-	}
-	return ""
-}
-
 func (x *GcpCloudSqlStatus) GetOutputs() *GcpCloudSqlStackOutputs {
 	if x != nil {
 		return x.Outputs
@@ -191,12 +164,8 @@ const file_project_planton_provider_gcp_gcpcloudsql_v1_api_proto_rawDesc = "" +
 	"\vGcpCloudSqlR\x04kind\x12O\n" +
 	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12X\n" +
 	"\x04spec\x18\x04 \x01(\v2<.project.planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12V\n" +
-	"\x06status\x18\x05 \x01(\v2>.project.planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlStatusR\x06status\"\xa1\x02\n" +
-	"\x11GcpCloudSqlStatus\x12J\n" +
-	"\tlifecycle\x18c \x01(\v2,.project.planton.shared.ApiResourceLifecycleR\tlifecycle\x12>\n" +
-	"\x05audit\x18b \x01(\v2(.project.planton.shared.ApiResourceAuditR\x05audit\x12 \n" +
-	"\fstack_job_id\x18a \x01(\tR\n" +
-	"stackJobId\x12^\n" +
+	"\x06status\x18\x05 \x01(\v2>.project.planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlStatusR\x06status\"s\n" +
+	"\x11GcpCloudSqlStatus\x12^\n" +
 	"\aoutputs\x18\x01 \x01(\v2D.project.planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlStackOutputsR\aoutputsB\xf9\x02\n" +
 	"/com.project.planton.provider.gcp.gcpcloudsql.v1B\bApiProtoP\x01Zigithub.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpcloudsql/v1;gcpcloudsqlv1\xa2\x02\x05PPPGG\xaa\x02+Project.Planton.Provider.Gcp.Gcpcloudsql.V1\xca\x02+Project\\Planton\\Provider\\Gcp\\Gcpcloudsql\\V1\xe2\x027Project\\Planton\\Provider\\Gcp\\Gcpcloudsql\\V1\\GPBMetadata\xea\x020Project::Planton::Provider::Gcp::Gcpcloudsql::V1b\x06proto3"
 
@@ -214,26 +183,22 @@ func file_project_planton_provider_gcp_gcpcloudsql_v1_api_proto_rawDescGZIP() []
 
 var file_project_planton_provider_gcp_gcpcloudsql_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_gcp_gcpcloudsql_v1_api_proto_goTypes = []any{
-	(*GcpCloudSql)(nil),                 // 0: project.planton.provider.gcp.gcpcloudsql.v1.GcpCloudSql
-	(*GcpCloudSqlStatus)(nil),           // 1: project.planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlStatus
-	(*shared.ApiResourceMetadata)(nil),  // 2: project.planton.shared.ApiResourceMetadata
-	(*GcpCloudSqlSpec)(nil),             // 3: project.planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlSpec
-	(*shared.ApiResourceLifecycle)(nil), // 4: project.planton.shared.ApiResourceLifecycle
-	(*shared.ApiResourceAudit)(nil),     // 5: project.planton.shared.ApiResourceAudit
-	(*GcpCloudSqlStackOutputs)(nil),     // 6: project.planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlStackOutputs
+	(*GcpCloudSql)(nil),                // 0: project.planton.provider.gcp.gcpcloudsql.v1.GcpCloudSql
+	(*GcpCloudSqlStatus)(nil),          // 1: project.planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlStatus
+	(*shared.ApiResourceMetadata)(nil), // 2: project.planton.shared.ApiResourceMetadata
+	(*GcpCloudSqlSpec)(nil),            // 3: project.planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlSpec
+	(*GcpCloudSqlStackOutputs)(nil),    // 4: project.planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlStackOutputs
 }
 var file_project_planton_provider_gcp_gcpcloudsql_v1_api_proto_depIdxs = []int32{
 	2, // 0: project.planton.provider.gcp.gcpcloudsql.v1.GcpCloudSql.metadata:type_name -> project.planton.shared.ApiResourceMetadata
 	3, // 1: project.planton.provider.gcp.gcpcloudsql.v1.GcpCloudSql.spec:type_name -> project.planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlSpec
 	1, // 2: project.planton.provider.gcp.gcpcloudsql.v1.GcpCloudSql.status:type_name -> project.planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlStatus
-	4, // 3: project.planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlStatus.lifecycle:type_name -> project.planton.shared.ApiResourceLifecycle
-	5, // 4: project.planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlStatus.audit:type_name -> project.planton.shared.ApiResourceAudit
-	6, // 5: project.planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlStatus.outputs:type_name -> project.planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlStackOutputs
-	6, // [6:6] is the sub-list for method output_type
-	6, // [6:6] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	4, // 3: project.planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlStatus.outputs:type_name -> project.planton.provider.gcp.gcpcloudsql.v1.GcpCloudSqlStackOutputs
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_provider_gcp_gcpcloudsql_v1_api_proto_init() }

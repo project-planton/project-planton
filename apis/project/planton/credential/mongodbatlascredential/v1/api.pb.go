@@ -35,7 +35,7 @@ type MongodbAtlasCredential struct {
 	// spec
 	Spec *MongodbAtlasCredentialSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status
-	Status        *shared.ApiResourceLifecycleAndAuditStatus `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
+	Status        *shared.ApiResourceAuditStatus `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -98,7 +98,7 @@ func (x *MongodbAtlasCredential) GetSpec() *MongodbAtlasCredentialSpec {
 	return nil
 }
 
-func (x *MongodbAtlasCredential) GetStatus() *shared.ApiResourceLifecycleAndAuditStatus {
+func (x *MongodbAtlasCredential) GetStatus() *shared.ApiResourceAuditStatus {
 	if x != nil {
 		return x.Status
 	}
@@ -109,7 +109,7 @@ var File_project_planton_credential_mongodbatlascredential_v1_api_proto protoref
 
 const file_project_planton_credential_mongodbatlascredential_v1_api_proto_rawDesc = "" +
 	"\n" +
-	">project/planton/credential/mongodbatlascredential/v1/api.proto\x124project.planton.credential.mongodbatlascredential.v1\x1a\x1bbuf/validate/validate.proto\x1a#project/planton/shared/status.proto\x1a%project/planton/shared/metadata.proto\x1a?project/planton/credential/mongodbatlascredential/v1/spec.proto\"\xa1\x03\n" +
+	">project/planton/credential/mongodbatlascredential/v1/api.proto\x124project.planton.credential.mongodbatlascredential.v1\x1a\x1bbuf/validate/validate.proto\x1a#project/planton/shared/status.proto\x1a%project/planton/shared/metadata.proto\x1a?project/planton/credential/mongodbatlascredential/v1/spec.proto\"\x95\x03\n" +
 	"\x16MongodbAtlasCredential\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!credential.project-planton.org/v1R\n" +
@@ -117,8 +117,8 @@ const file_project_planton_credential_mongodbatlascredential_v1_api_proto_rawDes
 	"\x04kind\x18\x02 \x01(\tB\x1d\xbaH\x1ar\x18\n" +
 	"\x16MongodbAtlasCredentialR\x04kind\x12O\n" +
 	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12d\n" +
-	"\x04spec\x18\x04 \x01(\v2P.project.planton.credential.mongodbatlascredential.v1.MongodbAtlasCredentialSpecR\x04spec\x12R\n" +
-	"\x06status\x18\x05 \x01(\v2:.project.planton.shared.ApiResourceLifecycleAndAuditStatusR\x06statusB\xb8\x03\n" +
+	"\x04spec\x18\x04 \x01(\v2P.project.planton.credential.mongodbatlascredential.v1.MongodbAtlasCredentialSpecR\x04spec\x12F\n" +
+	"\x06status\x18\x05 \x01(\v2..project.planton.shared.ApiResourceAuditStatusR\x06statusB\xb8\x03\n" +
 	"8com.project.planton.credential.mongodbatlascredential.v1B\bApiProtoP\x01Z}github.com/project-planton/project-planton/apis/project/planton/credential/mongodbatlascredential/v1;mongodbatlascredentialv1\xa2\x02\x04PPCM\xaa\x024Project.Planton.Credential.Mongodbatlascredential.V1\xca\x024Project\\Planton\\Credential\\Mongodbatlascredential\\V1\xe2\x02@Project\\Planton\\Credential\\Mongodbatlascredential\\V1\\GPBMetadata\xea\x028Project::Planton::Credential::Mongodbatlascredential::V1b\x06proto3"
 
 var (
@@ -135,15 +135,15 @@ func file_project_planton_credential_mongodbatlascredential_v1_api_proto_rawDesc
 
 var file_project_planton_credential_mongodbatlascredential_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_credential_mongodbatlascredential_v1_api_proto_goTypes = []any{
-	(*MongodbAtlasCredential)(nil),                    // 0: project.planton.credential.mongodbatlascredential.v1.MongodbAtlasCredential
-	(*shared.ApiResourceMetadata)(nil),                // 1: project.planton.shared.ApiResourceMetadata
-	(*MongodbAtlasCredentialSpec)(nil),                // 2: project.planton.credential.mongodbatlascredential.v1.MongodbAtlasCredentialSpec
-	(*shared.ApiResourceLifecycleAndAuditStatus)(nil), // 3: project.planton.shared.ApiResourceLifecycleAndAuditStatus
+	(*MongodbAtlasCredential)(nil),        // 0: project.planton.credential.mongodbatlascredential.v1.MongodbAtlasCredential
+	(*shared.ApiResourceMetadata)(nil),    // 1: project.planton.shared.ApiResourceMetadata
+	(*MongodbAtlasCredentialSpec)(nil),    // 2: project.planton.credential.mongodbatlascredential.v1.MongodbAtlasCredentialSpec
+	(*shared.ApiResourceAuditStatus)(nil), // 3: project.planton.shared.ApiResourceAuditStatus
 }
 var file_project_planton_credential_mongodbatlascredential_v1_api_proto_depIdxs = []int32{
 	1, // 0: project.planton.credential.mongodbatlascredential.v1.MongodbAtlasCredential.metadata:type_name -> project.planton.shared.ApiResourceMetadata
 	2, // 1: project.planton.credential.mongodbatlascredential.v1.MongodbAtlasCredential.spec:type_name -> project.planton.credential.mongodbatlascredential.v1.MongodbAtlasCredentialSpec
-	3, // 2: project.planton.credential.mongodbatlascredential.v1.MongodbAtlasCredential.status:type_name -> project.planton.shared.ApiResourceLifecycleAndAuditStatus
+	3, // 2: project.planton.credential.mongodbatlascredential.v1.MongodbAtlasCredential.status:type_name -> project.planton.shared.ApiResourceAuditStatus
 	3, // [3:3] is the sub-list for method output_type
 	3, // [3:3] is the sub-list for method input_type
 	3, // [3:3] is the sub-list for extension type_name

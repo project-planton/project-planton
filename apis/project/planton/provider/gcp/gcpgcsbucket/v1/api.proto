@@ -36,15 +36,6 @@ message GcpGcsBucket {
 
 //gcp-gcs-bucket status
 message GcpGcsBucketStatus {
-  //lifecycle
-  project.planton.shared.ApiResourceLifecycle lifecycle = 99;
-
-  //audit-info
-  project.planton.shared.ApiResourceAudit audit = 98;
-
-  //stack-job id
-  string stack_job_id = 97;
-
   //stack-outputs
   GcpGcsBucketStackOutputs outputs = 1;
 }

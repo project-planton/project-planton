@@ -43,17 +43,8 @@ message ApiResourceAuditActor {
   string avatar = 2;
 }
 
-//lifecycle
-message ApiResourceLifecycle {
-  // flag to indicate if the resource is not deleted and is active
-  bool is_active = 1;
-}
-
-// api-resource status containing just the lifecycle and audit messages.
-message ApiResourceLifecycleAndAuditStatus {
-  //lifecycle
-  ApiResourceLifecycle lifecycle = 99;
-
+// api-resource status containing just audit message.
+message ApiResourceAuditStatus {
   //audit info
-  ApiResourceAudit audit = 98;
+  ApiResourceAudit audit = 99;
 }

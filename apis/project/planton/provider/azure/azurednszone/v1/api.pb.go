@@ -108,12 +108,6 @@ func (x *AzureDnsZone) GetStatus() *AzureDnsZoneStatus {
 // azure-dns-zone status
 type AzureDnsZoneStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// lifecycle
-	Lifecycle *shared.ApiResourceLifecycle `protobuf:"bytes,99,opt,name=lifecycle,proto3" json:"lifecycle,omitempty"`
-	// audit-info
-	Audit *shared.ApiResourceAudit `protobuf:"bytes,98,opt,name=audit,proto3" json:"audit,omitempty"`
-	// stack-job id
-	StackJobId string `protobuf:"bytes,97,opt,name=stack_job_id,json=stackJobId,proto3" json:"stack_job_id,omitempty"`
 	// stack-outputs
 	//
 	//	azure-dns-zone stack-outputs
@@ -152,27 +146,6 @@ func (*AzureDnsZoneStatus) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_azure_azurednszone_v1_api_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *AzureDnsZoneStatus) GetLifecycle() *shared.ApiResourceLifecycle {
-	if x != nil {
-		return x.Lifecycle
-	}
-	return nil
-}
-
-func (x *AzureDnsZoneStatus) GetAudit() *shared.ApiResourceAudit {
-	if x != nil {
-		return x.Audit
-	}
-	return nil
-}
-
-func (x *AzureDnsZoneStatus) GetStackJobId() string {
-	if x != nil {
-		return x.StackJobId
-	}
-	return ""
-}
-
 func (x *AzureDnsZoneStatus) GetOutputs() *AzureDnsZoneStackOutputs {
 	if x != nil {
 		return x.Outputs
@@ -193,12 +166,8 @@ const file_project_planton_provider_azure_azurednszone_v1_api_proto_rawDesc = ""
 	"\fAzureDnsZoneR\x04kind\x12O\n" +
 	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12\\\n" +
 	"\x04spec\x18\x04 \x01(\v2@.project.planton.provider.azure.azurednszone.v1.AzureDnsZoneSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12Z\n" +
-	"\x06status\x18\x05 \x01(\v2B.project.planton.provider.azure.azurednszone.v1.AzureDnsZoneStatusR\x06status\"\xa6\x02\n" +
-	"\x12AzureDnsZoneStatus\x12J\n" +
-	"\tlifecycle\x18c \x01(\v2,.project.planton.shared.ApiResourceLifecycleR\tlifecycle\x12>\n" +
-	"\x05audit\x18b \x01(\v2(.project.planton.shared.ApiResourceAuditR\x05audit\x12 \n" +
-	"\fstack_job_id\x18a \x01(\tR\n" +
-	"stackJobId\x12b\n" +
+	"\x06status\x18\x05 \x01(\v2B.project.planton.provider.azure.azurednszone.v1.AzureDnsZoneStatusR\x06status\"x\n" +
+	"\x12AzureDnsZoneStatus\x12b\n" +
 	"\aoutputs\x18\x01 \x01(\v2H.project.planton.provider.azure.azurednszone.v1.AzureDnsZoneStackOutputsR\aoutputsB\x8c\x03\n" +
 	"2com.project.planton.provider.azure.azurednszone.v1B\bApiProtoP\x01Zmgithub.com/project-planton/project-planton/apis/project/planton/provider/azure/azurednszone/v1;azurednszonev1\xa2\x02\x05PPPAA\xaa\x02.Project.Planton.Provider.Azure.Azurednszone.V1\xca\x02.Project\\Planton\\Provider\\Azure\\Azurednszone\\V1\xe2\x02:Project\\Planton\\Provider\\Azure\\Azurednszone\\V1\\GPBMetadata\xea\x023Project::Planton::Provider::Azure::Azurednszone::V1b\x06proto3"
 
@@ -216,26 +185,22 @@ func file_project_planton_provider_azure_azurednszone_v1_api_proto_rawDescGZIP()
 
 var file_project_planton_provider_azure_azurednszone_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_azure_azurednszone_v1_api_proto_goTypes = []any{
-	(*AzureDnsZone)(nil),                // 0: project.planton.provider.azure.azurednszone.v1.AzureDnsZone
-	(*AzureDnsZoneStatus)(nil),          // 1: project.planton.provider.azure.azurednszone.v1.AzureDnsZoneStatus
-	(*shared.ApiResourceMetadata)(nil),  // 2: project.planton.shared.ApiResourceMetadata
-	(*AzureDnsZoneSpec)(nil),            // 3: project.planton.provider.azure.azurednszone.v1.AzureDnsZoneSpec
-	(*shared.ApiResourceLifecycle)(nil), // 4: project.planton.shared.ApiResourceLifecycle
-	(*shared.ApiResourceAudit)(nil),     // 5: project.planton.shared.ApiResourceAudit
-	(*AzureDnsZoneStackOutputs)(nil),    // 6: project.planton.provider.azure.azurednszone.v1.AzureDnsZoneStackOutputs
+	(*AzureDnsZone)(nil),               // 0: project.planton.provider.azure.azurednszone.v1.AzureDnsZone
+	(*AzureDnsZoneStatus)(nil),         // 1: project.planton.provider.azure.azurednszone.v1.AzureDnsZoneStatus
+	(*shared.ApiResourceMetadata)(nil), // 2: project.planton.shared.ApiResourceMetadata
+	(*AzureDnsZoneSpec)(nil),           // 3: project.planton.provider.azure.azurednszone.v1.AzureDnsZoneSpec
+	(*AzureDnsZoneStackOutputs)(nil),   // 4: project.planton.provider.azure.azurednszone.v1.AzureDnsZoneStackOutputs
 }
 var file_project_planton_provider_azure_azurednszone_v1_api_proto_depIdxs = []int32{
 	2, // 0: project.planton.provider.azure.azurednszone.v1.AzureDnsZone.metadata:type_name -> project.planton.shared.ApiResourceMetadata
 	3, // 1: project.planton.provider.azure.azurednszone.v1.AzureDnsZone.spec:type_name -> project.planton.provider.azure.azurednszone.v1.AzureDnsZoneSpec
 	1, // 2: project.planton.provider.azure.azurednszone.v1.AzureDnsZone.status:type_name -> project.planton.provider.azure.azurednszone.v1.AzureDnsZoneStatus
-	4, // 3: project.planton.provider.azure.azurednszone.v1.AzureDnsZoneStatus.lifecycle:type_name -> project.planton.shared.ApiResourceLifecycle
-	5, // 4: project.planton.provider.azure.azurednszone.v1.AzureDnsZoneStatus.audit:type_name -> project.planton.shared.ApiResourceAudit
-	6, // 5: project.planton.provider.azure.azurednszone.v1.AzureDnsZoneStatus.outputs:type_name -> project.planton.provider.azure.azurednszone.v1.AzureDnsZoneStackOutputs
-	6, // [6:6] is the sub-list for method output_type
-	6, // [6:6] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	4, // 3: project.planton.provider.azure.azurednszone.v1.AzureDnsZoneStatus.outputs:type_name -> project.planton.provider.azure.azurednszone.v1.AzureDnsZoneStackOutputs
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_provider_azure_azurednszone_v1_api_proto_init() }

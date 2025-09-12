@@ -108,12 +108,6 @@ func (x *CivoDatabase) GetStatus() *CivoDatabaseStatus {
 // civo-database status
 type CivoDatabaseStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// lifecycle
-	Lifecycle *shared.ApiResourceLifecycle `protobuf:"bytes,99,opt,name=lifecycle,proto3" json:"lifecycle,omitempty"`
-	// audit-info
-	Audit *shared.ApiResourceAudit `protobuf:"bytes,98,opt,name=audit,proto3" json:"audit,omitempty"`
-	// stack-job id
-	StackJobId string `protobuf:"bytes,97,opt,name=stack_job_id,json=stackJobId,proto3" json:"stack_job_id,omitempty"`
 	// stack-outputs
 	//
 	//	civo-database stack-outputs
@@ -152,27 +146,6 @@ func (*CivoDatabaseStatus) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_civo_civodatabase_v1_api_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *CivoDatabaseStatus) GetLifecycle() *shared.ApiResourceLifecycle {
-	if x != nil {
-		return x.Lifecycle
-	}
-	return nil
-}
-
-func (x *CivoDatabaseStatus) GetAudit() *shared.ApiResourceAudit {
-	if x != nil {
-		return x.Audit
-	}
-	return nil
-}
-
-func (x *CivoDatabaseStatus) GetStackJobId() string {
-	if x != nil {
-		return x.StackJobId
-	}
-	return ""
-}
-
 func (x *CivoDatabaseStatus) GetOutputs() *CivoDatabaseStackOutputs {
 	if x != nil {
 		return x.Outputs
@@ -193,12 +166,8 @@ const file_project_planton_provider_civo_civodatabase_v1_api_proto_rawDesc = "" 
 	"\fCivoDatabaseR\x04kind\x12O\n" +
 	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12[\n" +
 	"\x04spec\x18\x04 \x01(\v2?.project.planton.provider.civo.civodatabase.v1.CivoDatabaseSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12Y\n" +
-	"\x06status\x18\x05 \x01(\v2A.project.planton.provider.civo.civodatabase.v1.CivoDatabaseStatusR\x06status\"\xa5\x02\n" +
-	"\x12CivoDatabaseStatus\x12J\n" +
-	"\tlifecycle\x18c \x01(\v2,.project.planton.shared.ApiResourceLifecycleR\tlifecycle\x12>\n" +
-	"\x05audit\x18b \x01(\v2(.project.planton.shared.ApiResourceAuditR\x05audit\x12 \n" +
-	"\fstack_job_id\x18a \x01(\tR\n" +
-	"stackJobId\x12a\n" +
+	"\x06status\x18\x05 \x01(\v2A.project.planton.provider.civo.civodatabase.v1.CivoDatabaseStatusR\x06status\"w\n" +
+	"\x12CivoDatabaseStatus\x12a\n" +
 	"\aoutputs\x18\x01 \x01(\v2G.project.planton.provider.civo.civodatabase.v1.CivoDatabaseStackOutputsR\aoutputsB\x86\x03\n" +
 	"1com.project.planton.provider.civo.civodatabase.v1B\bApiProtoP\x01Zlgithub.com/project-planton/project-planton/apis/project/planton/provider/civo/civodatabase/v1;civodatabasev1\xa2\x02\x05PPPCC\xaa\x02-Project.Planton.Provider.Civo.Civodatabase.V1\xca\x02-Project\\Planton\\Provider\\Civo\\Civodatabase\\V1\xe2\x029Project\\Planton\\Provider\\Civo\\Civodatabase\\V1\\GPBMetadata\xea\x022Project::Planton::Provider::Civo::Civodatabase::V1b\x06proto3"
 
@@ -216,26 +185,22 @@ func file_project_planton_provider_civo_civodatabase_v1_api_proto_rawDescGZIP() 
 
 var file_project_planton_provider_civo_civodatabase_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_civo_civodatabase_v1_api_proto_goTypes = []any{
-	(*CivoDatabase)(nil),                // 0: project.planton.provider.civo.civodatabase.v1.CivoDatabase
-	(*CivoDatabaseStatus)(nil),          // 1: project.planton.provider.civo.civodatabase.v1.CivoDatabaseStatus
-	(*shared.ApiResourceMetadata)(nil),  // 2: project.planton.shared.ApiResourceMetadata
-	(*CivoDatabaseSpec)(nil),            // 3: project.planton.provider.civo.civodatabase.v1.CivoDatabaseSpec
-	(*shared.ApiResourceLifecycle)(nil), // 4: project.planton.shared.ApiResourceLifecycle
-	(*shared.ApiResourceAudit)(nil),     // 5: project.planton.shared.ApiResourceAudit
-	(*CivoDatabaseStackOutputs)(nil),    // 6: project.planton.provider.civo.civodatabase.v1.CivoDatabaseStackOutputs
+	(*CivoDatabase)(nil),               // 0: project.planton.provider.civo.civodatabase.v1.CivoDatabase
+	(*CivoDatabaseStatus)(nil),         // 1: project.planton.provider.civo.civodatabase.v1.CivoDatabaseStatus
+	(*shared.ApiResourceMetadata)(nil), // 2: project.planton.shared.ApiResourceMetadata
+	(*CivoDatabaseSpec)(nil),           // 3: project.planton.provider.civo.civodatabase.v1.CivoDatabaseSpec
+	(*CivoDatabaseStackOutputs)(nil),   // 4: project.planton.provider.civo.civodatabase.v1.CivoDatabaseStackOutputs
 }
 var file_project_planton_provider_civo_civodatabase_v1_api_proto_depIdxs = []int32{
 	2, // 0: project.planton.provider.civo.civodatabase.v1.CivoDatabase.metadata:type_name -> project.planton.shared.ApiResourceMetadata
 	3, // 1: project.planton.provider.civo.civodatabase.v1.CivoDatabase.spec:type_name -> project.planton.provider.civo.civodatabase.v1.CivoDatabaseSpec
 	1, // 2: project.planton.provider.civo.civodatabase.v1.CivoDatabase.status:type_name -> project.planton.provider.civo.civodatabase.v1.CivoDatabaseStatus
-	4, // 3: project.planton.provider.civo.civodatabase.v1.CivoDatabaseStatus.lifecycle:type_name -> project.planton.shared.ApiResourceLifecycle
-	5, // 4: project.planton.provider.civo.civodatabase.v1.CivoDatabaseStatus.audit:type_name -> project.planton.shared.ApiResourceAudit
-	6, // 5: project.planton.provider.civo.civodatabase.v1.CivoDatabaseStatus.outputs:type_name -> project.planton.provider.civo.civodatabase.v1.CivoDatabaseStackOutputs
-	6, // [6:6] is the sub-list for method output_type
-	6, // [6:6] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	4, // 3: project.planton.provider.civo.civodatabase.v1.CivoDatabaseStatus.outputs:type_name -> project.planton.provider.civo.civodatabase.v1.CivoDatabaseStackOutputs
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_provider_civo_civodatabase_v1_api_proto_init() }

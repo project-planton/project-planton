@@ -36,15 +36,6 @@ message CloudflareKvNamespace {
 
 // cloudflare-kv-namespace status
 message CloudflareKvNamespaceStatus {
-  //lifecycle
-  project.planton.shared.ApiResourceLifecycle lifecycle = 99;
-
-  //audit-info
-  project.planton.shared.ApiResourceAudit audit = 98;
-
-  //stack-job id
-  string stack_job_id = 97;
-
   //stack-outputs
   //  cloudflare-kv-namespace stack-outputs
   CloudflareKvNamespaceStackOutputs outputs = 1;

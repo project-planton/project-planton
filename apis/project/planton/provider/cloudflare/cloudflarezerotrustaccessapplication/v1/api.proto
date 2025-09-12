@@ -36,15 +36,6 @@ message CloudflareZeroTrustAccessApplication {
 
 // cloudflare-zero-trust-access-application status
 message CloudflareZeroTrustAccessApplicationStatus {
-  //lifecycle
-  project.planton.shared.ApiResourceLifecycle lifecycle = 99;
-
-  //audit-info
-  project.planton.shared.ApiResourceAudit audit = 98;
-
-  //stack-job id
-  string stack_job_id = 97;
-
   //stack-outputs
   //  cloudflare-zero-trust-access-application stack-outputs
   CloudflareZeroTrustAccessApplicationStackOutputs outputs = 1;

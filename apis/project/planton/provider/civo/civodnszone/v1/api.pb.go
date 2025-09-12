@@ -108,12 +108,6 @@ func (x *CivoDnsZone) GetStatus() *CivoDnsZoneStatus {
 // civo-dns-zone status
 type CivoDnsZoneStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// lifecycle
-	Lifecycle *shared.ApiResourceLifecycle `protobuf:"bytes,99,opt,name=lifecycle,proto3" json:"lifecycle,omitempty"`
-	// audit-info
-	Audit *shared.ApiResourceAudit `protobuf:"bytes,98,opt,name=audit,proto3" json:"audit,omitempty"`
-	// stack-job id
-	StackJobId string `protobuf:"bytes,97,opt,name=stack_job_id,json=stackJobId,proto3" json:"stack_job_id,omitempty"`
 	// stack-outputs
 	//
 	//	civo-dns-zone stack-outputs
@@ -152,27 +146,6 @@ func (*CivoDnsZoneStatus) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_civo_civodnszone_v1_api_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *CivoDnsZoneStatus) GetLifecycle() *shared.ApiResourceLifecycle {
-	if x != nil {
-		return x.Lifecycle
-	}
-	return nil
-}
-
-func (x *CivoDnsZoneStatus) GetAudit() *shared.ApiResourceAudit {
-	if x != nil {
-		return x.Audit
-	}
-	return nil
-}
-
-func (x *CivoDnsZoneStatus) GetStackJobId() string {
-	if x != nil {
-		return x.StackJobId
-	}
-	return ""
-}
-
 func (x *CivoDnsZoneStatus) GetOutputs() *CivoDnsZoneStackOutputs {
 	if x != nil {
 		return x.Outputs
@@ -193,12 +166,8 @@ const file_project_planton_provider_civo_civodnszone_v1_api_proto_rawDesc = "" +
 	"\vCivoDnsZoneR\x04kind\x12O\n" +
 	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12Y\n" +
 	"\x04spec\x18\x04 \x01(\v2=.project.planton.provider.civo.civodnszone.v1.CivoDnsZoneSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12W\n" +
-	"\x06status\x18\x05 \x01(\v2?.project.planton.provider.civo.civodnszone.v1.CivoDnsZoneStatusR\x06status\"\xa2\x02\n" +
-	"\x11CivoDnsZoneStatus\x12J\n" +
-	"\tlifecycle\x18c \x01(\v2,.project.planton.shared.ApiResourceLifecycleR\tlifecycle\x12>\n" +
-	"\x05audit\x18b \x01(\v2(.project.planton.shared.ApiResourceAuditR\x05audit\x12 \n" +
-	"\fstack_job_id\x18a \x01(\tR\n" +
-	"stackJobId\x12_\n" +
+	"\x06status\x18\x05 \x01(\v2?.project.planton.provider.civo.civodnszone.v1.CivoDnsZoneStatusR\x06status\"t\n" +
+	"\x11CivoDnsZoneStatus\x12_\n" +
 	"\aoutputs\x18\x01 \x01(\v2E.project.planton.provider.civo.civodnszone.v1.CivoDnsZoneStackOutputsR\aoutputsB\xff\x02\n" +
 	"0com.project.planton.provider.civo.civodnszone.v1B\bApiProtoP\x01Zjgithub.com/project-planton/project-planton/apis/project/planton/provider/civo/civodnszone/v1;civodnszonev1\xa2\x02\x05PPPCC\xaa\x02,Project.Planton.Provider.Civo.Civodnszone.V1\xca\x02,Project\\Planton\\Provider\\Civo\\Civodnszone\\V1\xe2\x028Project\\Planton\\Provider\\Civo\\Civodnszone\\V1\\GPBMetadata\xea\x021Project::Planton::Provider::Civo::Civodnszone::V1b\x06proto3"
 
@@ -216,26 +185,22 @@ func file_project_planton_provider_civo_civodnszone_v1_api_proto_rawDescGZIP() [
 
 var file_project_planton_provider_civo_civodnszone_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_civo_civodnszone_v1_api_proto_goTypes = []any{
-	(*CivoDnsZone)(nil),                 // 0: project.planton.provider.civo.civodnszone.v1.CivoDnsZone
-	(*CivoDnsZoneStatus)(nil),           // 1: project.planton.provider.civo.civodnszone.v1.CivoDnsZoneStatus
-	(*shared.ApiResourceMetadata)(nil),  // 2: project.planton.shared.ApiResourceMetadata
-	(*CivoDnsZoneSpec)(nil),             // 3: project.planton.provider.civo.civodnszone.v1.CivoDnsZoneSpec
-	(*shared.ApiResourceLifecycle)(nil), // 4: project.planton.shared.ApiResourceLifecycle
-	(*shared.ApiResourceAudit)(nil),     // 5: project.planton.shared.ApiResourceAudit
-	(*CivoDnsZoneStackOutputs)(nil),     // 6: project.planton.provider.civo.civodnszone.v1.CivoDnsZoneStackOutputs
+	(*CivoDnsZone)(nil),                // 0: project.planton.provider.civo.civodnszone.v1.CivoDnsZone
+	(*CivoDnsZoneStatus)(nil),          // 1: project.planton.provider.civo.civodnszone.v1.CivoDnsZoneStatus
+	(*shared.ApiResourceMetadata)(nil), // 2: project.planton.shared.ApiResourceMetadata
+	(*CivoDnsZoneSpec)(nil),            // 3: project.planton.provider.civo.civodnszone.v1.CivoDnsZoneSpec
+	(*CivoDnsZoneStackOutputs)(nil),    // 4: project.planton.provider.civo.civodnszone.v1.CivoDnsZoneStackOutputs
 }
 var file_project_planton_provider_civo_civodnszone_v1_api_proto_depIdxs = []int32{
 	2, // 0: project.planton.provider.civo.civodnszone.v1.CivoDnsZone.metadata:type_name -> project.planton.shared.ApiResourceMetadata
 	3, // 1: project.planton.provider.civo.civodnszone.v1.CivoDnsZone.spec:type_name -> project.planton.provider.civo.civodnszone.v1.CivoDnsZoneSpec
 	1, // 2: project.planton.provider.civo.civodnszone.v1.CivoDnsZone.status:type_name -> project.planton.provider.civo.civodnszone.v1.CivoDnsZoneStatus
-	4, // 3: project.planton.provider.civo.civodnszone.v1.CivoDnsZoneStatus.lifecycle:type_name -> project.planton.shared.ApiResourceLifecycle
-	5, // 4: project.planton.provider.civo.civodnszone.v1.CivoDnsZoneStatus.audit:type_name -> project.planton.shared.ApiResourceAudit
-	6, // 5: project.planton.provider.civo.civodnszone.v1.CivoDnsZoneStatus.outputs:type_name -> project.planton.provider.civo.civodnszone.v1.CivoDnsZoneStackOutputs
-	6, // [6:6] is the sub-list for method output_type
-	6, // [6:6] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	4, // 3: project.planton.provider.civo.civodnszone.v1.CivoDnsZoneStatus.outputs:type_name -> project.planton.provider.civo.civodnszone.v1.CivoDnsZoneStackOutputs
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_provider_civo_civodnszone_v1_api_proto_init() }

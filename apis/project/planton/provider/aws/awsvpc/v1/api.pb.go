@@ -108,12 +108,6 @@ func (x *AwsVpc) GetStatus() *AwsVpcStatus {
 // aws-vpc status
 type AwsVpcStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// lifecycle
-	Lifecycle *shared.ApiResourceLifecycle `protobuf:"bytes,99,opt,name=lifecycle,proto3" json:"lifecycle,omitempty"`
-	// audit-info
-	Audit *shared.ApiResourceAudit `protobuf:"bytes,98,opt,name=audit,proto3" json:"audit,omitempty"`
-	// stack-job id
-	StackJobId string `protobuf:"bytes,97,opt,name=stack_job_id,json=stackJobId,proto3" json:"stack_job_id,omitempty"`
 	// stack-outputs
 	Outputs       *AwsVpcStackOutputs `protobuf:"bytes,1,opt,name=outputs,proto3" json:"outputs,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -150,27 +144,6 @@ func (*AwsVpcStatus) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_aws_awsvpc_v1_api_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *AwsVpcStatus) GetLifecycle() *shared.ApiResourceLifecycle {
-	if x != nil {
-		return x.Lifecycle
-	}
-	return nil
-}
-
-func (x *AwsVpcStatus) GetAudit() *shared.ApiResourceAudit {
-	if x != nil {
-		return x.Audit
-	}
-	return nil
-}
-
-func (x *AwsVpcStatus) GetStackJobId() string {
-	if x != nil {
-		return x.StackJobId
-	}
-	return ""
-}
-
 func (x *AwsVpcStatus) GetOutputs() *AwsVpcStackOutputs {
 	if x != nil {
 		return x.Outputs
@@ -192,12 +165,8 @@ const file_project_planton_provider_aws_awsvpc_v1_api_proto_rawDesc = "" +
 	"\x06AwsVpcR\x04kind\x12O\n" +
 	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12N\n" +
 	"\x04spec\x18\x04 \x01(\v22.project.planton.provider.aws.awsvpc.v1.AwsVpcSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12L\n" +
-	"\x06status\x18\x05 \x01(\v24.project.planton.provider.aws.awsvpc.v1.AwsVpcStatusR\x06status\"\x92\x02\n" +
-	"\fAwsVpcStatus\x12J\n" +
-	"\tlifecycle\x18c \x01(\v2,.project.planton.shared.ApiResourceLifecycleR\tlifecycle\x12>\n" +
-	"\x05audit\x18b \x01(\v2(.project.planton.shared.ApiResourceAuditR\x05audit\x12 \n" +
-	"\fstack_job_id\x18a \x01(\tR\n" +
-	"stackJobId\x12T\n" +
+	"\x06status\x18\x05 \x01(\v24.project.planton.provider.aws.awsvpc.v1.AwsVpcStatusR\x06status\"d\n" +
+	"\fAwsVpcStatus\x12T\n" +
 	"\aoutputs\x18\x01 \x01(\v2:.project.planton.provider.aws.awsvpc.v1.AwsVpcStackOutputsR\aoutputsB\xd6\x02\n" +
 	"*com.project.planton.provider.aws.awsvpc.v1B\bApiProtoP\x01Z_github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsvpc/v1;awsvpcv1\xa2\x02\x05PPPAA\xaa\x02&Project.Planton.Provider.Aws.Awsvpc.V1\xca\x02&Project\\Planton\\Provider\\Aws\\Awsvpc\\V1\xe2\x022Project\\Planton\\Provider\\Aws\\Awsvpc\\V1\\GPBMetadata\xea\x02+Project::Planton::Provider::Aws::Awsvpc::V1b\x06proto3"
 
@@ -215,26 +184,22 @@ func file_project_planton_provider_aws_awsvpc_v1_api_proto_rawDescGZIP() []byte 
 
 var file_project_planton_provider_aws_awsvpc_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_aws_awsvpc_v1_api_proto_goTypes = []any{
-	(*AwsVpc)(nil),                      // 0: project.planton.provider.aws.awsvpc.v1.AwsVpc
-	(*AwsVpcStatus)(nil),                // 1: project.planton.provider.aws.awsvpc.v1.AwsVpcStatus
-	(*shared.ApiResourceMetadata)(nil),  // 2: project.planton.shared.ApiResourceMetadata
-	(*AwsVpcSpec)(nil),                  // 3: project.planton.provider.aws.awsvpc.v1.AwsVpcSpec
-	(*shared.ApiResourceLifecycle)(nil), // 4: project.planton.shared.ApiResourceLifecycle
-	(*shared.ApiResourceAudit)(nil),     // 5: project.planton.shared.ApiResourceAudit
-	(*AwsVpcStackOutputs)(nil),          // 6: project.planton.provider.aws.awsvpc.v1.AwsVpcStackOutputs
+	(*AwsVpc)(nil),                     // 0: project.planton.provider.aws.awsvpc.v1.AwsVpc
+	(*AwsVpcStatus)(nil),               // 1: project.planton.provider.aws.awsvpc.v1.AwsVpcStatus
+	(*shared.ApiResourceMetadata)(nil), // 2: project.planton.shared.ApiResourceMetadata
+	(*AwsVpcSpec)(nil),                 // 3: project.planton.provider.aws.awsvpc.v1.AwsVpcSpec
+	(*AwsVpcStackOutputs)(nil),         // 4: project.planton.provider.aws.awsvpc.v1.AwsVpcStackOutputs
 }
 var file_project_planton_provider_aws_awsvpc_v1_api_proto_depIdxs = []int32{
 	2, // 0: project.planton.provider.aws.awsvpc.v1.AwsVpc.metadata:type_name -> project.planton.shared.ApiResourceMetadata
 	3, // 1: project.planton.provider.aws.awsvpc.v1.AwsVpc.spec:type_name -> project.planton.provider.aws.awsvpc.v1.AwsVpcSpec
 	1, // 2: project.planton.provider.aws.awsvpc.v1.AwsVpc.status:type_name -> project.planton.provider.aws.awsvpc.v1.AwsVpcStatus
-	4, // 3: project.planton.provider.aws.awsvpc.v1.AwsVpcStatus.lifecycle:type_name -> project.planton.shared.ApiResourceLifecycle
-	5, // 4: project.planton.provider.aws.awsvpc.v1.AwsVpcStatus.audit:type_name -> project.planton.shared.ApiResourceAudit
-	6, // 5: project.planton.provider.aws.awsvpc.v1.AwsVpcStatus.outputs:type_name -> project.planton.provider.aws.awsvpc.v1.AwsVpcStackOutputs
-	6, // [6:6] is the sub-list for method output_type
-	6, // [6:6] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	4, // 3: project.planton.provider.aws.awsvpc.v1.AwsVpcStatus.outputs:type_name -> project.planton.provider.aws.awsvpc.v1.AwsVpcStackOutputs
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_provider_aws_awsvpc_v1_api_proto_init() }

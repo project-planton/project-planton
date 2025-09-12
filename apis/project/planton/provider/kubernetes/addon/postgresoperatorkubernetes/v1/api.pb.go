@@ -108,12 +108,6 @@ func (x *PostgresOperatorKubernetes) GetStatus() *PostgresOperatorKubernetesStat
 // postgres-operator-kubernetes status.
 type PostgresOperatorKubernetesStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// lifecycle
-	Lifecycle *shared.ApiResourceLifecycle `protobuf:"bytes,99,opt,name=lifecycle,proto3" json:"lifecycle,omitempty"`
-	// audit-info
-	Audit *shared.ApiResourceAudit `protobuf:"bytes,98,opt,name=audit,proto3" json:"audit,omitempty"`
-	// stack-job id
-	StackJobId string `protobuf:"bytes,97,opt,name=stack_job_id,json=stackJobId,proto3" json:"stack_job_id,omitempty"`
 	// stack-outputs
 	Outputs       *PostgresOperatorKubernetesStackOutputs `protobuf:"bytes,1,opt,name=outputs,proto3" json:"outputs,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -150,27 +144,6 @@ func (*PostgresOperatorKubernetesStatus) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_kubernetes_addon_postgresoperatorkubernetes_v1_api_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *PostgresOperatorKubernetesStatus) GetLifecycle() *shared.ApiResourceLifecycle {
-	if x != nil {
-		return x.Lifecycle
-	}
-	return nil
-}
-
-func (x *PostgresOperatorKubernetesStatus) GetAudit() *shared.ApiResourceAudit {
-	if x != nil {
-		return x.Audit
-	}
-	return nil
-}
-
-func (x *PostgresOperatorKubernetesStatus) GetStackJobId() string {
-	if x != nil {
-		return x.StackJobId
-	}
-	return ""
-}
-
 func (x *PostgresOperatorKubernetesStatus) GetOutputs() *PostgresOperatorKubernetesStackOutputs {
 	if x != nil {
 		return x.Outputs
@@ -191,12 +164,8 @@ const file_project_planton_provider_kubernetes_addon_postgresoperatorkubernetes_
 	"\x1aPostgresOperatorKubernetesR\x04kind\x12O\n" +
 	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12\x83\x01\n" +
 	"\x04spec\x18\x04 \x01(\v2g.project.planton.provider.kubernetes.addon.postgresoperatorkubernetes.v1.PostgresOperatorKubernetesSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12\x81\x01\n" +
-	"\x06status\x18\x05 \x01(\v2i.project.planton.provider.kubernetes.addon.postgresoperatorkubernetes.v1.PostgresOperatorKubernetesStatusR\x06status\"\xdc\x02\n" +
-	" PostgresOperatorKubernetesStatus\x12J\n" +
-	"\tlifecycle\x18c \x01(\v2,.project.planton.shared.ApiResourceLifecycleR\tlifecycle\x12>\n" +
-	"\x05audit\x18b \x01(\v2(.project.planton.shared.ApiResourceAuditR\x05audit\x12 \n" +
-	"\fstack_job_id\x18a \x01(\tR\n" +
-	"stackJobId\x12\x89\x01\n" +
+	"\x06status\x18\x05 \x01(\v2i.project.planton.provider.kubernetes.addon.postgresoperatorkubernetes.v1.PostgresOperatorKubernetesStatusR\x06status\"\xae\x01\n" +
+	" PostgresOperatorKubernetesStatus\x12\x89\x01\n" +
 	"\aoutputs\x18\x01 \x01(\v2o.project.planton.provider.kubernetes.addon.postgresoperatorkubernetes.v1.PostgresOperatorKubernetesStackOutputsR\aoutputsB\xb3\x04\n" +
 	"Kcom.project.planton.provider.kubernetes.addon.postgresoperatorkubernetes.v1B\bApiProtoP\x01Z\x94\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/addon/postgresoperatorkubernetes/v1;postgresoperatorkubernetesv1\xa2\x02\x06PPPKAP\xaa\x02GProject.Planton.Provider.Kubernetes.Addon.Postgresoperatorkubernetes.V1\xca\x02GProject\\Planton\\Provider\\Kubernetes\\Addon\\Postgresoperatorkubernetes\\V1\xe2\x02SProject\\Planton\\Provider\\Kubernetes\\Addon\\Postgresoperatorkubernetes\\V1\\GPBMetadata\xea\x02MProject::Planton::Provider::Kubernetes::Addon::Postgresoperatorkubernetes::V1b\x06proto3"
 
@@ -218,22 +187,18 @@ var file_project_planton_provider_kubernetes_addon_postgresoperatorkubernetes_v1
 	(*PostgresOperatorKubernetesStatus)(nil),       // 1: project.planton.provider.kubernetes.addon.postgresoperatorkubernetes.v1.PostgresOperatorKubernetesStatus
 	(*shared.ApiResourceMetadata)(nil),             // 2: project.planton.shared.ApiResourceMetadata
 	(*PostgresOperatorKubernetesSpec)(nil),         // 3: project.planton.provider.kubernetes.addon.postgresoperatorkubernetes.v1.PostgresOperatorKubernetesSpec
-	(*shared.ApiResourceLifecycle)(nil),            // 4: project.planton.shared.ApiResourceLifecycle
-	(*shared.ApiResourceAudit)(nil),                // 5: project.planton.shared.ApiResourceAudit
-	(*PostgresOperatorKubernetesStackOutputs)(nil), // 6: project.planton.provider.kubernetes.addon.postgresoperatorkubernetes.v1.PostgresOperatorKubernetesStackOutputs
+	(*PostgresOperatorKubernetesStackOutputs)(nil), // 4: project.planton.provider.kubernetes.addon.postgresoperatorkubernetes.v1.PostgresOperatorKubernetesStackOutputs
 }
 var file_project_planton_provider_kubernetes_addon_postgresoperatorkubernetes_v1_api_proto_depIdxs = []int32{
 	2, // 0: project.planton.provider.kubernetes.addon.postgresoperatorkubernetes.v1.PostgresOperatorKubernetes.metadata:type_name -> project.planton.shared.ApiResourceMetadata
 	3, // 1: project.planton.provider.kubernetes.addon.postgresoperatorkubernetes.v1.PostgresOperatorKubernetes.spec:type_name -> project.planton.provider.kubernetes.addon.postgresoperatorkubernetes.v1.PostgresOperatorKubernetesSpec
 	1, // 2: project.planton.provider.kubernetes.addon.postgresoperatorkubernetes.v1.PostgresOperatorKubernetes.status:type_name -> project.planton.provider.kubernetes.addon.postgresoperatorkubernetes.v1.PostgresOperatorKubernetesStatus
-	4, // 3: project.planton.provider.kubernetes.addon.postgresoperatorkubernetes.v1.PostgresOperatorKubernetesStatus.lifecycle:type_name -> project.planton.shared.ApiResourceLifecycle
-	5, // 4: project.planton.provider.kubernetes.addon.postgresoperatorkubernetes.v1.PostgresOperatorKubernetesStatus.audit:type_name -> project.planton.shared.ApiResourceAudit
-	6, // 5: project.planton.provider.kubernetes.addon.postgresoperatorkubernetes.v1.PostgresOperatorKubernetesStatus.outputs:type_name -> project.planton.provider.kubernetes.addon.postgresoperatorkubernetes.v1.PostgresOperatorKubernetesStackOutputs
-	6, // [6:6] is the sub-list for method output_type
-	6, // [6:6] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	4, // 3: project.planton.provider.kubernetes.addon.postgresoperatorkubernetes.v1.PostgresOperatorKubernetesStatus.outputs:type_name -> project.planton.provider.kubernetes.addon.postgresoperatorkubernetes.v1.PostgresOperatorKubernetesStackOutputs
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() {

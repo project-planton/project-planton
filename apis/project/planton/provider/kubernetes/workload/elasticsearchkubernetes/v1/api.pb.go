@@ -108,12 +108,6 @@ func (x *ElasticsearchKubernetes) GetStatus() *ElasticsearchKubernetesStatus {
 // elasticsearch-kubernetes status.
 type ElasticsearchKubernetesStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// lifecycle
-	Lifecycle *shared.ApiResourceLifecycle `protobuf:"bytes,99,opt,name=lifecycle,proto3" json:"lifecycle,omitempty"`
-	// audit-info
-	Audit *shared.ApiResourceAudit `protobuf:"bytes,98,opt,name=audit,proto3" json:"audit,omitempty"`
-	// stack-job id
-	StackJobId string `protobuf:"bytes,97,opt,name=stack_job_id,json=stackJobId,proto3" json:"stack_job_id,omitempty"`
 	// stack-outputs
 	Outputs       *ElasticsearchKubernetesStackOutputs `protobuf:"bytes,1,opt,name=outputs,proto3" json:"outputs,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -150,27 +144,6 @@ func (*ElasticsearchKubernetesStatus) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_v1_api_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *ElasticsearchKubernetesStatus) GetLifecycle() *shared.ApiResourceLifecycle {
-	if x != nil {
-		return x.Lifecycle
-	}
-	return nil
-}
-
-func (x *ElasticsearchKubernetesStatus) GetAudit() *shared.ApiResourceAudit {
-	if x != nil {
-		return x.Audit
-	}
-	return nil
-}
-
-func (x *ElasticsearchKubernetesStatus) GetStackJobId() string {
-	if x != nil {
-		return x.StackJobId
-	}
-	return ""
-}
-
 func (x *ElasticsearchKubernetesStatus) GetOutputs() *ElasticsearchKubernetesStackOutputs {
 	if x != nil {
 		return x.Outputs
@@ -191,12 +164,8 @@ const file_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_
 	"\x17ElasticsearchKubernetesR\x04kind\x12O\n" +
 	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12\x80\x01\n" +
 	"\x04spec\x18\x04 \x01(\v2d.project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12~\n" +
-	"\x06status\x18\x05 \x01(\v2f.project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesStatusR\x06status\"\xd6\x02\n" +
-	"\x1dElasticsearchKubernetesStatus\x12J\n" +
-	"\tlifecycle\x18c \x01(\v2,.project.planton.shared.ApiResourceLifecycleR\tlifecycle\x12>\n" +
-	"\x05audit\x18b \x01(\v2(.project.planton.shared.ApiResourceAuditR\x05audit\x12 \n" +
-	"\fstack_job_id\x18a \x01(\tR\n" +
-	"stackJobId\x12\x86\x01\n" +
+	"\x06status\x18\x05 \x01(\v2f.project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesStatusR\x06status\"\xa8\x01\n" +
+	"\x1dElasticsearchKubernetesStatus\x12\x86\x01\n" +
 	"\aoutputs\x18\x01 \x01(\v2l.project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesStackOutputsR\aoutputsB\xb0\x04\n" +
 	"Kcom.project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1B\bApiProtoP\x01Z\x91\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/elasticsearchkubernetes/v1;elasticsearchkubernetesv1\xa2\x02\x06PPPKWE\xaa\x02GProject.Planton.Provider.Kubernetes.Workload.Elasticsearchkubernetes.V1\xca\x02GProject\\Planton\\Provider\\Kubernetes\\Workload\\Elasticsearchkubernetes\\V1\xe2\x02SProject\\Planton\\Provider\\Kubernetes\\Workload\\Elasticsearchkubernetes\\V1\\GPBMetadata\xea\x02MProject::Planton::Provider::Kubernetes::Workload::Elasticsearchkubernetes::V1b\x06proto3"
 
@@ -218,22 +187,18 @@ var file_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_v1
 	(*ElasticsearchKubernetesStatus)(nil),       // 1: project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesStatus
 	(*shared.ApiResourceMetadata)(nil),          // 2: project.planton.shared.ApiResourceMetadata
 	(*ElasticsearchKubernetesSpec)(nil),         // 3: project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesSpec
-	(*shared.ApiResourceLifecycle)(nil),         // 4: project.planton.shared.ApiResourceLifecycle
-	(*shared.ApiResourceAudit)(nil),             // 5: project.planton.shared.ApiResourceAudit
-	(*ElasticsearchKubernetesStackOutputs)(nil), // 6: project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesStackOutputs
+	(*ElasticsearchKubernetesStackOutputs)(nil), // 4: project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesStackOutputs
 }
 var file_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_v1_api_proto_depIdxs = []int32{
 	2, // 0: project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetes.metadata:type_name -> project.planton.shared.ApiResourceMetadata
 	3, // 1: project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetes.spec:type_name -> project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesSpec
 	1, // 2: project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetes.status:type_name -> project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesStatus
-	4, // 3: project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesStatus.lifecycle:type_name -> project.planton.shared.ApiResourceLifecycle
-	5, // 4: project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesStatus.audit:type_name -> project.planton.shared.ApiResourceAudit
-	6, // 5: project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesStatus.outputs:type_name -> project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesStackOutputs
-	6, // [6:6] is the sub-list for method output_type
-	6, // [6:6] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	4, // 3: project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesStatus.outputs:type_name -> project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesStackOutputs
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() {

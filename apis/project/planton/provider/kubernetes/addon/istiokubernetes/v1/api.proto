@@ -36,15 +36,6 @@ message IstioKubernetes {
 
 //istio-kubernetes status.
 message IstioKubernetesStatus {
-  //lifecycle
-  project.planton.shared.ApiResourceLifecycle lifecycle = 99;
-
-  //audit-info
-  project.planton.shared.ApiResourceAudit audit = 98;
-
-  //stack-job id
-  string stack_job_id = 97;
-
   //stack-outputs
   IstioKubernetesStackOutputs outputs = 1;
 }

@@ -36,15 +36,6 @@ message GcpGkeCluster {
 
 // gcp-gke-cluster status
 message GcpGkeClusterStatus {
-  //lifecycle
-  project.planton.shared.ApiResourceLifecycle lifecycle = 99;
-
-  //audit-info
-  project.planton.shared.ApiResourceAudit audit = 98;
-
-  //stack-job id
-  string stack_job_id = 97;
-
   //stack-outputs
   GcpGkeClusterStackOutputs outputs = 1;
 }

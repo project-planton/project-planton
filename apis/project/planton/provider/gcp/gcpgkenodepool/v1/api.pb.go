@@ -108,12 +108,6 @@ func (x *GcpGkeNodePool) GetStatus() *GcpGkeNodePoolStatus {
 // gcp-gke-node-pool status.
 type GcpGkeNodePoolStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// lifecycle
-	Lifecycle *shared.ApiResourceLifecycle `protobuf:"bytes,99,opt,name=lifecycle,proto3" json:"lifecycle,omitempty"`
-	// audit-info
-	Audit *shared.ApiResourceAudit `protobuf:"bytes,98,opt,name=audit,proto3" json:"audit,omitempty"`
-	// stack-job id
-	StackJobId string `protobuf:"bytes,97,opt,name=stack_job_id,json=stackJobId,proto3" json:"stack_job_id,omitempty"`
 	// stack-outputs
 	Outputs       *GcpGkeNodePoolStackOutputs `protobuf:"bytes,1,opt,name=outputs,proto3" json:"outputs,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -150,27 +144,6 @@ func (*GcpGkeNodePoolStatus) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_gcp_gcpgkenodepool_v1_api_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *GcpGkeNodePoolStatus) GetLifecycle() *shared.ApiResourceLifecycle {
-	if x != nil {
-		return x.Lifecycle
-	}
-	return nil
-}
-
-func (x *GcpGkeNodePoolStatus) GetAudit() *shared.ApiResourceAudit {
-	if x != nil {
-		return x.Audit
-	}
-	return nil
-}
-
-func (x *GcpGkeNodePoolStatus) GetStackJobId() string {
-	if x != nil {
-		return x.StackJobId
-	}
-	return ""
-}
-
 func (x *GcpGkeNodePoolStatus) GetOutputs() *GcpGkeNodePoolStackOutputs {
 	if x != nil {
 		return x.Outputs
@@ -191,12 +164,8 @@ const file_project_planton_provider_gcp_gcpgkenodepool_v1_api_proto_rawDesc = ""
 	"\x0eGcpGkeNodePoolR\x04kind\x12O\n" +
 	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12^\n" +
 	"\x04spec\x18\x04 \x01(\v2B.project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePoolSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12\\\n" +
-	"\x06status\x18\x05 \x01(\v2D.project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePoolStatusR\x06status\"\xaa\x02\n" +
-	"\x14GcpGkeNodePoolStatus\x12J\n" +
-	"\tlifecycle\x18c \x01(\v2,.project.planton.shared.ApiResourceLifecycleR\tlifecycle\x12>\n" +
-	"\x05audit\x18b \x01(\v2(.project.planton.shared.ApiResourceAuditR\x05audit\x12 \n" +
-	"\fstack_job_id\x18a \x01(\tR\n" +
-	"stackJobId\x12d\n" +
+	"\x06status\x18\x05 \x01(\v2D.project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePoolStatusR\x06status\"|\n" +
+	"\x14GcpGkeNodePoolStatus\x12d\n" +
 	"\aoutputs\x18\x01 \x01(\v2J.project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePoolStackOutputsR\aoutputsB\x8e\x03\n" +
 	"2com.project.planton.provider.gcp.gcpgkenodepool.v1B\bApiProtoP\x01Zogithub.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpgkenodepool/v1;gcpgkenodepoolv1\xa2\x02\x05PPPGG\xaa\x02.Project.Planton.Provider.Gcp.Gcpgkenodepool.V1\xca\x02.Project\\Planton\\Provider\\Gcp\\Gcpgkenodepool\\V1\xe2\x02:Project\\Planton\\Provider\\Gcp\\Gcpgkenodepool\\V1\\GPBMetadata\xea\x023Project::Planton::Provider::Gcp::Gcpgkenodepool::V1b\x06proto3"
 
@@ -214,26 +183,22 @@ func file_project_planton_provider_gcp_gcpgkenodepool_v1_api_proto_rawDescGZIP()
 
 var file_project_planton_provider_gcp_gcpgkenodepool_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_gcp_gcpgkenodepool_v1_api_proto_goTypes = []any{
-	(*GcpGkeNodePool)(nil),              // 0: project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePool
-	(*GcpGkeNodePoolStatus)(nil),        // 1: project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePoolStatus
-	(*shared.ApiResourceMetadata)(nil),  // 2: project.planton.shared.ApiResourceMetadata
-	(*GcpGkeNodePoolSpec)(nil),          // 3: project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePoolSpec
-	(*shared.ApiResourceLifecycle)(nil), // 4: project.planton.shared.ApiResourceLifecycle
-	(*shared.ApiResourceAudit)(nil),     // 5: project.planton.shared.ApiResourceAudit
-	(*GcpGkeNodePoolStackOutputs)(nil),  // 6: project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePoolStackOutputs
+	(*GcpGkeNodePool)(nil),             // 0: project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePool
+	(*GcpGkeNodePoolStatus)(nil),       // 1: project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePoolStatus
+	(*shared.ApiResourceMetadata)(nil), // 2: project.planton.shared.ApiResourceMetadata
+	(*GcpGkeNodePoolSpec)(nil),         // 3: project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePoolSpec
+	(*GcpGkeNodePoolStackOutputs)(nil), // 4: project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePoolStackOutputs
 }
 var file_project_planton_provider_gcp_gcpgkenodepool_v1_api_proto_depIdxs = []int32{
 	2, // 0: project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePool.metadata:type_name -> project.planton.shared.ApiResourceMetadata
 	3, // 1: project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePool.spec:type_name -> project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePoolSpec
 	1, // 2: project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePool.status:type_name -> project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePoolStatus
-	4, // 3: project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePoolStatus.lifecycle:type_name -> project.planton.shared.ApiResourceLifecycle
-	5, // 4: project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePoolStatus.audit:type_name -> project.planton.shared.ApiResourceAudit
-	6, // 5: project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePoolStatus.outputs:type_name -> project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePoolStackOutputs
-	6, // [6:6] is the sub-list for method output_type
-	6, // [6:6] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	4, // 3: project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePoolStatus.outputs:type_name -> project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePoolStackOutputs
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_provider_gcp_gcpgkenodepool_v1_api_proto_init() }

@@ -218,29 +218,29 @@ func (x *ApiResourceAuditActor) GetAvatar() string {
 	return ""
 }
 
-// lifecycle
-type ApiResourceLifecycle struct {
+// api-resource status containing just audit message.
+type ApiResourceAuditStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// flag to indicate if the resource is not deleted and is active
-	IsActive      bool `protobuf:"varint,1,opt,name=is_active,json=isActive,proto3" json:"is_active,omitempty"`
+	// audit info
+	Audit         *ApiResourceAudit `protobuf:"bytes,99,opt,name=audit,proto3" json:"audit,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ApiResourceLifecycle) Reset() {
-	*x = ApiResourceLifecycle{}
+func (x *ApiResourceAuditStatus) Reset() {
+	*x = ApiResourceAuditStatus{}
 	mi := &file_project_planton_shared_status_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ApiResourceLifecycle) String() string {
+func (x *ApiResourceAuditStatus) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ApiResourceLifecycle) ProtoMessage() {}
+func (*ApiResourceAuditStatus) ProtoMessage() {}
 
-func (x *ApiResourceLifecycle) ProtoReflect() protoreflect.Message {
+func (x *ApiResourceAuditStatus) ProtoReflect() protoreflect.Message {
 	mi := &file_project_planton_shared_status_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -252,67 +252,12 @@ func (x *ApiResourceLifecycle) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ApiResourceLifecycle.ProtoReflect.Descriptor instead.
-func (*ApiResourceLifecycle) Descriptor() ([]byte, []int) {
+// Deprecated: Use ApiResourceAuditStatus.ProtoReflect.Descriptor instead.
+func (*ApiResourceAuditStatus) Descriptor() ([]byte, []int) {
 	return file_project_planton_shared_status_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *ApiResourceLifecycle) GetIsActive() bool {
-	if x != nil {
-		return x.IsActive
-	}
-	return false
-}
-
-// api-resource status containing just the lifecycle and audit messages.
-type ApiResourceLifecycleAndAuditStatus struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// lifecycle
-	Lifecycle *ApiResourceLifecycle `protobuf:"bytes,99,opt,name=lifecycle,proto3" json:"lifecycle,omitempty"`
-	// audit info
-	Audit         *ApiResourceAudit `protobuf:"bytes,98,opt,name=audit,proto3" json:"audit,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ApiResourceLifecycleAndAuditStatus) Reset() {
-	*x = ApiResourceLifecycleAndAuditStatus{}
-	mi := &file_project_planton_shared_status_proto_msgTypes[4]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ApiResourceLifecycleAndAuditStatus) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ApiResourceLifecycleAndAuditStatus) ProtoMessage() {}
-
-func (x *ApiResourceLifecycleAndAuditStatus) ProtoReflect() protoreflect.Message {
-	mi := &file_project_planton_shared_status_proto_msgTypes[4]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ApiResourceLifecycleAndAuditStatus.ProtoReflect.Descriptor instead.
-func (*ApiResourceLifecycleAndAuditStatus) Descriptor() ([]byte, []int) {
-	return file_project_planton_shared_status_proto_rawDescGZIP(), []int{4}
-}
-
-func (x *ApiResourceLifecycleAndAuditStatus) GetLifecycle() *ApiResourceLifecycle {
-	if x != nil {
-		return x.Lifecycle
-	}
-	return nil
-}
-
-func (x *ApiResourceLifecycleAndAuditStatus) GetAudit() *ApiResourceAudit {
+func (x *ApiResourceAuditStatus) GetAudit() *ApiResourceAudit {
 	if x != nil {
 		return x.Audit
 	}
@@ -340,12 +285,9 @@ const file_project_planton_shared_status_proto_rawDesc = "" +
 	"\x05event\x18\x05 \x01(\tR\x05event\"?\n" +
 	"\x15ApiResourceAuditActor\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x16\n" +
-	"\x06avatar\x18\x02 \x01(\tR\x06avatar\"3\n" +
-	"\x14ApiResourceLifecycle\x12\x1b\n" +
-	"\tis_active\x18\x01 \x01(\bR\bisActive\"\xb0\x01\n" +
-	"\"ApiResourceLifecycleAndAuditStatus\x12J\n" +
-	"\tlifecycle\x18c \x01(\v2,.project.planton.shared.ApiResourceLifecycleR\tlifecycle\x12>\n" +
-	"\x05audit\x18b \x01(\v2(.project.planton.shared.ApiResourceAuditR\x05auditB\xeb\x01\n" +
+	"\x06avatar\x18\x02 \x01(\tR\x06avatar\"X\n" +
+	"\x16ApiResourceAuditStatus\x12>\n" +
+	"\x05audit\x18c \x01(\v2(.project.planton.shared.ApiResourceAuditR\x05auditB\xeb\x01\n" +
 	"\x1acom.project.planton.sharedB\vStatusProtoP\x01ZFgithub.com/project-planton/project-planton/apis/project/planton/shared\xa2\x02\x03PPS\xaa\x02\x16Project.Planton.Shared\xca\x02\x16Project\\Planton\\Shared\xe2\x02\"Project\\Planton\\Shared\\GPBMetadata\xea\x02\x18Project::Planton::Sharedb\x06proto3"
 
 var (
@@ -360,29 +302,27 @@ func file_project_planton_shared_status_proto_rawDescGZIP() []byte {
 	return file_project_planton_shared_status_proto_rawDescData
 }
 
-var file_project_planton_shared_status_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+var file_project_planton_shared_status_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_project_planton_shared_status_proto_goTypes = []any{
-	(*ApiResourceAudit)(nil),                   // 0: project.planton.shared.ApiResourceAudit
-	(*ApiResourceAuditInfo)(nil),               // 1: project.planton.shared.ApiResourceAuditInfo
-	(*ApiResourceAuditActor)(nil),              // 2: project.planton.shared.ApiResourceAuditActor
-	(*ApiResourceLifecycle)(nil),               // 3: project.planton.shared.ApiResourceLifecycle
-	(*ApiResourceLifecycleAndAuditStatus)(nil), // 4: project.planton.shared.ApiResourceLifecycleAndAuditStatus
-	(*timestamppb.Timestamp)(nil),              // 5: google.protobuf.Timestamp
+	(*ApiResourceAudit)(nil),       // 0: project.planton.shared.ApiResourceAudit
+	(*ApiResourceAuditInfo)(nil),   // 1: project.planton.shared.ApiResourceAuditInfo
+	(*ApiResourceAuditActor)(nil),  // 2: project.planton.shared.ApiResourceAuditActor
+	(*ApiResourceAuditStatus)(nil), // 3: project.planton.shared.ApiResourceAuditStatus
+	(*timestamppb.Timestamp)(nil),  // 4: google.protobuf.Timestamp
 }
 var file_project_planton_shared_status_proto_depIdxs = []int32{
 	1, // 0: project.planton.shared.ApiResourceAudit.spec_audit:type_name -> project.planton.shared.ApiResourceAuditInfo
 	1, // 1: project.planton.shared.ApiResourceAudit.status_audit:type_name -> project.planton.shared.ApiResourceAuditInfo
 	2, // 2: project.planton.shared.ApiResourceAuditInfo.created_by:type_name -> project.planton.shared.ApiResourceAuditActor
-	5, // 3: project.planton.shared.ApiResourceAuditInfo.created_at:type_name -> google.protobuf.Timestamp
+	4, // 3: project.planton.shared.ApiResourceAuditInfo.created_at:type_name -> google.protobuf.Timestamp
 	2, // 4: project.planton.shared.ApiResourceAuditInfo.updated_by:type_name -> project.planton.shared.ApiResourceAuditActor
-	5, // 5: project.planton.shared.ApiResourceAuditInfo.updated_at:type_name -> google.protobuf.Timestamp
-	3, // 6: project.planton.shared.ApiResourceLifecycleAndAuditStatus.lifecycle:type_name -> project.planton.shared.ApiResourceLifecycle
-	0, // 7: project.planton.shared.ApiResourceLifecycleAndAuditStatus.audit:type_name -> project.planton.shared.ApiResourceAudit
-	8, // [8:8] is the sub-list for method output_type
-	8, // [8:8] is the sub-list for method input_type
-	8, // [8:8] is the sub-list for extension type_name
-	8, // [8:8] is the sub-list for extension extendee
-	0, // [0:8] is the sub-list for field type_name
+	4, // 5: project.planton.shared.ApiResourceAuditInfo.updated_at:type_name -> google.protobuf.Timestamp
+	0, // 6: project.planton.shared.ApiResourceAuditStatus.audit:type_name -> project.planton.shared.ApiResourceAudit
+	7, // [7:7] is the sub-list for method output_type
+	7, // [7:7] is the sub-list for method input_type
+	7, // [7:7] is the sub-list for extension type_name
+	7, // [7:7] is the sub-list for extension extendee
+	0, // [0:7] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_shared_status_proto_init() }
@@ -396,7 +336,7 @@ func file_project_planton_shared_status_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_project_planton_shared_status_proto_rawDesc), len(file_project_planton_shared_status_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   5,
+			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

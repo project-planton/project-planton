@@ -108,12 +108,6 @@ func (x *AwsS3Bucket) GetStatus() *AwsS3BucketStatus {
 // aws-s3-bucket status
 type AwsS3BucketStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// lifecycle
-	Lifecycle *shared.ApiResourceLifecycle `protobuf:"bytes,99,opt,name=lifecycle,proto3" json:"lifecycle,omitempty"`
-	// audit-info
-	Audit *shared.ApiResourceAudit `protobuf:"bytes,98,opt,name=audit,proto3" json:"audit,omitempty"`
-	// stack-job id
-	StackJobId string `protobuf:"bytes,97,opt,name=stack_job_id,json=stackJobId,proto3" json:"stack_job_id,omitempty"`
 	// stack-outputs
 	Outputs       *AwsS3BucketStackOutputs `protobuf:"bytes,1,opt,name=outputs,proto3" json:"outputs,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -150,27 +144,6 @@ func (*AwsS3BucketStatus) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_aws_awss3bucket_v1_api_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *AwsS3BucketStatus) GetLifecycle() *shared.ApiResourceLifecycle {
-	if x != nil {
-		return x.Lifecycle
-	}
-	return nil
-}
-
-func (x *AwsS3BucketStatus) GetAudit() *shared.ApiResourceAudit {
-	if x != nil {
-		return x.Audit
-	}
-	return nil
-}
-
-func (x *AwsS3BucketStatus) GetStackJobId() string {
-	if x != nil {
-		return x.StackJobId
-	}
-	return ""
-}
-
 func (x *AwsS3BucketStatus) GetOutputs() *AwsS3BucketStackOutputs {
 	if x != nil {
 		return x.Outputs
@@ -191,12 +164,8 @@ const file_project_planton_provider_aws_awss3bucket_v1_api_proto_rawDesc = "" +
 	"\vAwsS3BucketR\x04kind\x12O\n" +
 	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12X\n" +
 	"\x04spec\x18\x04 \x01(\v2<.project.planton.provider.aws.awss3bucket.v1.AwsS3BucketSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12V\n" +
-	"\x06status\x18\x05 \x01(\v2>.project.planton.provider.aws.awss3bucket.v1.AwsS3BucketStatusR\x06status\"\xa1\x02\n" +
-	"\x11AwsS3BucketStatus\x12J\n" +
-	"\tlifecycle\x18c \x01(\v2,.project.planton.shared.ApiResourceLifecycleR\tlifecycle\x12>\n" +
-	"\x05audit\x18b \x01(\v2(.project.planton.shared.ApiResourceAuditR\x05audit\x12 \n" +
-	"\fstack_job_id\x18a \x01(\tR\n" +
-	"stackJobId\x12^\n" +
+	"\x06status\x18\x05 \x01(\v2>.project.planton.provider.aws.awss3bucket.v1.AwsS3BucketStatusR\x06status\"s\n" +
+	"\x11AwsS3BucketStatus\x12^\n" +
 	"\aoutputs\x18\x01 \x01(\v2D.project.planton.provider.aws.awss3bucket.v1.AwsS3BucketStackOutputsR\aoutputsB\xf9\x02\n" +
 	"/com.project.planton.provider.aws.awss3bucket.v1B\bApiProtoP\x01Zigithub.com/project-planton/project-planton/apis/project/planton/provider/aws/awss3bucket/v1;awss3bucketv1\xa2\x02\x05PPPAA\xaa\x02+Project.Planton.Provider.Aws.Awss3bucket.V1\xca\x02+Project\\Planton\\Provider\\Aws\\Awss3bucket\\V1\xe2\x027Project\\Planton\\Provider\\Aws\\Awss3bucket\\V1\\GPBMetadata\xea\x020Project::Planton::Provider::Aws::Awss3bucket::V1b\x06proto3"
 
@@ -214,26 +183,22 @@ func file_project_planton_provider_aws_awss3bucket_v1_api_proto_rawDescGZIP() []
 
 var file_project_planton_provider_aws_awss3bucket_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_aws_awss3bucket_v1_api_proto_goTypes = []any{
-	(*AwsS3Bucket)(nil),                 // 0: project.planton.provider.aws.awss3bucket.v1.AwsS3Bucket
-	(*AwsS3BucketStatus)(nil),           // 1: project.planton.provider.aws.awss3bucket.v1.AwsS3BucketStatus
-	(*shared.ApiResourceMetadata)(nil),  // 2: project.planton.shared.ApiResourceMetadata
-	(*AwsS3BucketSpec)(nil),             // 3: project.planton.provider.aws.awss3bucket.v1.AwsS3BucketSpec
-	(*shared.ApiResourceLifecycle)(nil), // 4: project.planton.shared.ApiResourceLifecycle
-	(*shared.ApiResourceAudit)(nil),     // 5: project.planton.shared.ApiResourceAudit
-	(*AwsS3BucketStackOutputs)(nil),     // 6: project.planton.provider.aws.awss3bucket.v1.AwsS3BucketStackOutputs
+	(*AwsS3Bucket)(nil),                // 0: project.planton.provider.aws.awss3bucket.v1.AwsS3Bucket
+	(*AwsS3BucketStatus)(nil),          // 1: project.planton.provider.aws.awss3bucket.v1.AwsS3BucketStatus
+	(*shared.ApiResourceMetadata)(nil), // 2: project.planton.shared.ApiResourceMetadata
+	(*AwsS3BucketSpec)(nil),            // 3: project.planton.provider.aws.awss3bucket.v1.AwsS3BucketSpec
+	(*AwsS3BucketStackOutputs)(nil),    // 4: project.planton.provider.aws.awss3bucket.v1.AwsS3BucketStackOutputs
 }
 var file_project_planton_provider_aws_awss3bucket_v1_api_proto_depIdxs = []int32{
 	2, // 0: project.planton.provider.aws.awss3bucket.v1.AwsS3Bucket.metadata:type_name -> project.planton.shared.ApiResourceMetadata
 	3, // 1: project.planton.provider.aws.awss3bucket.v1.AwsS3Bucket.spec:type_name -> project.planton.provider.aws.awss3bucket.v1.AwsS3BucketSpec
 	1, // 2: project.planton.provider.aws.awss3bucket.v1.AwsS3Bucket.status:type_name -> project.planton.provider.aws.awss3bucket.v1.AwsS3BucketStatus
-	4, // 3: project.planton.provider.aws.awss3bucket.v1.AwsS3BucketStatus.lifecycle:type_name -> project.planton.shared.ApiResourceLifecycle
-	5, // 4: project.planton.provider.aws.awss3bucket.v1.AwsS3BucketStatus.audit:type_name -> project.planton.shared.ApiResourceAudit
-	6, // 5: project.planton.provider.aws.awss3bucket.v1.AwsS3BucketStatus.outputs:type_name -> project.planton.provider.aws.awss3bucket.v1.AwsS3BucketStackOutputs
-	6, // [6:6] is the sub-list for method output_type
-	6, // [6:6] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	4, // 3: project.planton.provider.aws.awss3bucket.v1.AwsS3BucketStatus.outputs:type_name -> project.planton.provider.aws.awss3bucket.v1.AwsS3BucketStackOutputs
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_provider_aws_awss3bucket_v1_api_proto_init() }

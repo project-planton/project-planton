@@ -108,12 +108,6 @@ func (x *AzureVpc) GetStatus() *AzureVpcStatus {
 // azure-vpc status
 type AzureVpcStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// lifecycle
-	Lifecycle *shared.ApiResourceLifecycle `protobuf:"bytes,99,opt,name=lifecycle,proto3" json:"lifecycle,omitempty"`
-	// audit-info
-	Audit *shared.ApiResourceAudit `protobuf:"bytes,98,opt,name=audit,proto3" json:"audit,omitempty"`
-	// stack-job id
-	StackJobId string `protobuf:"bytes,97,opt,name=stack_job_id,json=stackJobId,proto3" json:"stack_job_id,omitempty"`
 	// stack-outputs
 	//
 	//	azure-vpc stack-outputs
@@ -152,27 +146,6 @@ func (*AzureVpcStatus) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_azure_azurevpc_v1_api_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *AzureVpcStatus) GetLifecycle() *shared.ApiResourceLifecycle {
-	if x != nil {
-		return x.Lifecycle
-	}
-	return nil
-}
-
-func (x *AzureVpcStatus) GetAudit() *shared.ApiResourceAudit {
-	if x != nil {
-		return x.Audit
-	}
-	return nil
-}
-
-func (x *AzureVpcStatus) GetStackJobId() string {
-	if x != nil {
-		return x.StackJobId
-	}
-	return ""
-}
-
 func (x *AzureVpcStatus) GetOutputs() *AzureVpcStackOutputs {
 	if x != nil {
 		return x.Outputs
@@ -194,12 +167,8 @@ const file_project_planton_provider_azure_azurevpc_v1_api_proto_rawDesc = "" +
 	"\bAzureVpcR\x04kind\x12O\n" +
 	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12T\n" +
 	"\x04spec\x18\x04 \x01(\v28.project.planton.provider.azure.azurevpc.v1.AzureVpcSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12R\n" +
-	"\x06status\x18\x05 \x01(\v2:.project.planton.provider.azure.azurevpc.v1.AzureVpcStatusR\x06status\"\x9a\x02\n" +
-	"\x0eAzureVpcStatus\x12J\n" +
-	"\tlifecycle\x18c \x01(\v2,.project.planton.shared.ApiResourceLifecycleR\tlifecycle\x12>\n" +
-	"\x05audit\x18b \x01(\v2(.project.planton.shared.ApiResourceAuditR\x05audit\x12 \n" +
-	"\fstack_job_id\x18a \x01(\tR\n" +
-	"stackJobId\x12Z\n" +
+	"\x06status\x18\x05 \x01(\v2:.project.planton.provider.azure.azurevpc.v1.AzureVpcStatusR\x06status\"l\n" +
+	"\x0eAzureVpcStatus\x12Z\n" +
 	"\aoutputs\x18\x01 \x01(\v2@.project.planton.provider.azure.azurevpc.v1.AzureVpcStackOutputsR\aoutputsB\xf0\x02\n" +
 	".com.project.planton.provider.azure.azurevpc.v1B\bApiProtoP\x01Zegithub.com/project-planton/project-planton/apis/project/planton/provider/azure/azurevpc/v1;azurevpcv1\xa2\x02\x05PPPAA\xaa\x02*Project.Planton.Provider.Azure.Azurevpc.V1\xca\x02*Project\\Planton\\Provider\\Azure\\Azurevpc\\V1\xe2\x026Project\\Planton\\Provider\\Azure\\Azurevpc\\V1\\GPBMetadata\xea\x02/Project::Planton::Provider::Azure::Azurevpc::V1b\x06proto3"
 
@@ -217,26 +186,22 @@ func file_project_planton_provider_azure_azurevpc_v1_api_proto_rawDescGZIP() []b
 
 var file_project_planton_provider_azure_azurevpc_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_azure_azurevpc_v1_api_proto_goTypes = []any{
-	(*AzureVpc)(nil),                    // 0: project.planton.provider.azure.azurevpc.v1.AzureVpc
-	(*AzureVpcStatus)(nil),              // 1: project.planton.provider.azure.azurevpc.v1.AzureVpcStatus
-	(*shared.ApiResourceMetadata)(nil),  // 2: project.planton.shared.ApiResourceMetadata
-	(*AzureVpcSpec)(nil),                // 3: project.planton.provider.azure.azurevpc.v1.AzureVpcSpec
-	(*shared.ApiResourceLifecycle)(nil), // 4: project.planton.shared.ApiResourceLifecycle
-	(*shared.ApiResourceAudit)(nil),     // 5: project.planton.shared.ApiResourceAudit
-	(*AzureVpcStackOutputs)(nil),        // 6: project.planton.provider.azure.azurevpc.v1.AzureVpcStackOutputs
+	(*AzureVpc)(nil),                   // 0: project.planton.provider.azure.azurevpc.v1.AzureVpc
+	(*AzureVpcStatus)(nil),             // 1: project.planton.provider.azure.azurevpc.v1.AzureVpcStatus
+	(*shared.ApiResourceMetadata)(nil), // 2: project.planton.shared.ApiResourceMetadata
+	(*AzureVpcSpec)(nil),               // 3: project.planton.provider.azure.azurevpc.v1.AzureVpcSpec
+	(*AzureVpcStackOutputs)(nil),       // 4: project.planton.provider.azure.azurevpc.v1.AzureVpcStackOutputs
 }
 var file_project_planton_provider_azure_azurevpc_v1_api_proto_depIdxs = []int32{
 	2, // 0: project.planton.provider.azure.azurevpc.v1.AzureVpc.metadata:type_name -> project.planton.shared.ApiResourceMetadata
 	3, // 1: project.planton.provider.azure.azurevpc.v1.AzureVpc.spec:type_name -> project.planton.provider.azure.azurevpc.v1.AzureVpcSpec
 	1, // 2: project.planton.provider.azure.azurevpc.v1.AzureVpc.status:type_name -> project.planton.provider.azure.azurevpc.v1.AzureVpcStatus
-	4, // 3: project.planton.provider.azure.azurevpc.v1.AzureVpcStatus.lifecycle:type_name -> project.planton.shared.ApiResourceLifecycle
-	5, // 4: project.planton.provider.azure.azurevpc.v1.AzureVpcStatus.audit:type_name -> project.planton.shared.ApiResourceAudit
-	6, // 5: project.planton.provider.azure.azurevpc.v1.AzureVpcStatus.outputs:type_name -> project.planton.provider.azure.azurevpc.v1.AzureVpcStackOutputs
-	6, // [6:6] is the sub-list for method output_type
-	6, // [6:6] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	4, // 3: project.planton.provider.azure.azurevpc.v1.AzureVpcStatus.outputs:type_name -> project.planton.provider.azure.azurevpc.v1.AzureVpcStackOutputs
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_provider_azure_azurevpc_v1_api_proto_init() }

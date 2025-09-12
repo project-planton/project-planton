@@ -108,12 +108,6 @@ func (x *GcpGcsBucket) GetStatus() *GcpGcsBucketStatus {
 // gcp-gcs-bucket status
 type GcpGcsBucketStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// lifecycle
-	Lifecycle *shared.ApiResourceLifecycle `protobuf:"bytes,99,opt,name=lifecycle,proto3" json:"lifecycle,omitempty"`
-	// audit-info
-	Audit *shared.ApiResourceAudit `protobuf:"bytes,98,opt,name=audit,proto3" json:"audit,omitempty"`
-	// stack-job id
-	StackJobId string `protobuf:"bytes,97,opt,name=stack_job_id,json=stackJobId,proto3" json:"stack_job_id,omitempty"`
 	// stack-outputs
 	Outputs       *GcpGcsBucketStackOutputs `protobuf:"bytes,1,opt,name=outputs,proto3" json:"outputs,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -150,27 +144,6 @@ func (*GcpGcsBucketStatus) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_gcp_gcpgcsbucket_v1_api_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *GcpGcsBucketStatus) GetLifecycle() *shared.ApiResourceLifecycle {
-	if x != nil {
-		return x.Lifecycle
-	}
-	return nil
-}
-
-func (x *GcpGcsBucketStatus) GetAudit() *shared.ApiResourceAudit {
-	if x != nil {
-		return x.Audit
-	}
-	return nil
-}
-
-func (x *GcpGcsBucketStatus) GetStackJobId() string {
-	if x != nil {
-		return x.StackJobId
-	}
-	return ""
-}
-
 func (x *GcpGcsBucketStatus) GetOutputs() *GcpGcsBucketStackOutputs {
 	if x != nil {
 		return x.Outputs
@@ -191,12 +164,8 @@ const file_project_planton_provider_gcp_gcpgcsbucket_v1_api_proto_rawDesc = "" +
 	"\fGcpGcsBucketR\x04kind\x12O\n" +
 	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12Z\n" +
 	"\x04spec\x18\x04 \x01(\v2>.project.planton.provider.gcp.gcpgcsbucket.v1.GcpGcsBucketSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12X\n" +
-	"\x06status\x18\x05 \x01(\v2@.project.planton.provider.gcp.gcpgcsbucket.v1.GcpGcsBucketStatusR\x06status\"\xa4\x02\n" +
-	"\x12GcpGcsBucketStatus\x12J\n" +
-	"\tlifecycle\x18c \x01(\v2,.project.planton.shared.ApiResourceLifecycleR\tlifecycle\x12>\n" +
-	"\x05audit\x18b \x01(\v2(.project.planton.shared.ApiResourceAuditR\x05audit\x12 \n" +
-	"\fstack_job_id\x18a \x01(\tR\n" +
-	"stackJobId\x12`\n" +
+	"\x06status\x18\x05 \x01(\v2@.project.planton.provider.gcp.gcpgcsbucket.v1.GcpGcsBucketStatusR\x06status\"v\n" +
+	"\x12GcpGcsBucketStatus\x12`\n" +
 	"\aoutputs\x18\x01 \x01(\v2F.project.planton.provider.gcp.gcpgcsbucket.v1.GcpGcsBucketStackOutputsR\aoutputsB\x80\x03\n" +
 	"0com.project.planton.provider.gcp.gcpgcsbucket.v1B\bApiProtoP\x01Zkgithub.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpgcsbucket/v1;gcpgcsbucketv1\xa2\x02\x05PPPGG\xaa\x02,Project.Planton.Provider.Gcp.Gcpgcsbucket.V1\xca\x02,Project\\Planton\\Provider\\Gcp\\Gcpgcsbucket\\V1\xe2\x028Project\\Planton\\Provider\\Gcp\\Gcpgcsbucket\\V1\\GPBMetadata\xea\x021Project::Planton::Provider::Gcp::Gcpgcsbucket::V1b\x06proto3"
 
@@ -214,26 +183,22 @@ func file_project_planton_provider_gcp_gcpgcsbucket_v1_api_proto_rawDescGZIP() [
 
 var file_project_planton_provider_gcp_gcpgcsbucket_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_gcp_gcpgcsbucket_v1_api_proto_goTypes = []any{
-	(*GcpGcsBucket)(nil),                // 0: project.planton.provider.gcp.gcpgcsbucket.v1.GcpGcsBucket
-	(*GcpGcsBucketStatus)(nil),          // 1: project.planton.provider.gcp.gcpgcsbucket.v1.GcpGcsBucketStatus
-	(*shared.ApiResourceMetadata)(nil),  // 2: project.planton.shared.ApiResourceMetadata
-	(*GcpGcsBucketSpec)(nil),            // 3: project.planton.provider.gcp.gcpgcsbucket.v1.GcpGcsBucketSpec
-	(*shared.ApiResourceLifecycle)(nil), // 4: project.planton.shared.ApiResourceLifecycle
-	(*shared.ApiResourceAudit)(nil),     // 5: project.planton.shared.ApiResourceAudit
-	(*GcpGcsBucketStackOutputs)(nil),    // 6: project.planton.provider.gcp.gcpgcsbucket.v1.GcpGcsBucketStackOutputs
+	(*GcpGcsBucket)(nil),               // 0: project.planton.provider.gcp.gcpgcsbucket.v1.GcpGcsBucket
+	(*GcpGcsBucketStatus)(nil),         // 1: project.planton.provider.gcp.gcpgcsbucket.v1.GcpGcsBucketStatus
+	(*shared.ApiResourceMetadata)(nil), // 2: project.planton.shared.ApiResourceMetadata
+	(*GcpGcsBucketSpec)(nil),           // 3: project.planton.provider.gcp.gcpgcsbucket.v1.GcpGcsBucketSpec
+	(*GcpGcsBucketStackOutputs)(nil),   // 4: project.planton.provider.gcp.gcpgcsbucket.v1.GcpGcsBucketStackOutputs
 }
 var file_project_planton_provider_gcp_gcpgcsbucket_v1_api_proto_depIdxs = []int32{
 	2, // 0: project.planton.provider.gcp.gcpgcsbucket.v1.GcpGcsBucket.metadata:type_name -> project.planton.shared.ApiResourceMetadata
 	3, // 1: project.planton.provider.gcp.gcpgcsbucket.v1.GcpGcsBucket.spec:type_name -> project.planton.provider.gcp.gcpgcsbucket.v1.GcpGcsBucketSpec
 	1, // 2: project.planton.provider.gcp.gcpgcsbucket.v1.GcpGcsBucket.status:type_name -> project.planton.provider.gcp.gcpgcsbucket.v1.GcpGcsBucketStatus
-	4, // 3: project.planton.provider.gcp.gcpgcsbucket.v1.GcpGcsBucketStatus.lifecycle:type_name -> project.planton.shared.ApiResourceLifecycle
-	5, // 4: project.planton.provider.gcp.gcpgcsbucket.v1.GcpGcsBucketStatus.audit:type_name -> project.planton.shared.ApiResourceAudit
-	6, // 5: project.planton.provider.gcp.gcpgcsbucket.v1.GcpGcsBucketStatus.outputs:type_name -> project.planton.provider.gcp.gcpgcsbucket.v1.GcpGcsBucketStackOutputs
-	6, // [6:6] is the sub-list for method output_type
-	6, // [6:6] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	4, // 3: project.planton.provider.gcp.gcpgcsbucket.v1.GcpGcsBucketStatus.outputs:type_name -> project.planton.provider.gcp.gcpgcsbucket.v1.GcpGcsBucketStackOutputs
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_provider_gcp_gcpgcsbucket_v1_api_proto_init() }

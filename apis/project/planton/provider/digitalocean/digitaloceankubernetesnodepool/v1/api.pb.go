@@ -108,12 +108,6 @@ func (x *DigitalOceanKubernetesNodePool) GetStatus() *DigitalOceanKubernetesNode
 // digital-ocean-kubernetes-node-pool status
 type DigitalOceanKubernetesNodePoolStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// lifecycle
-	Lifecycle *shared.ApiResourceLifecycle `protobuf:"bytes,99,opt,name=lifecycle,proto3" json:"lifecycle,omitempty"`
-	// audit-info
-	Audit *shared.ApiResourceAudit `protobuf:"bytes,98,opt,name=audit,proto3" json:"audit,omitempty"`
-	// stack-job id
-	StackJobId string `protobuf:"bytes,97,opt,name=stack_job_id,json=stackJobId,proto3" json:"stack_job_id,omitempty"`
 	// stack-outputs
 	//
 	//	digital-ocean-kubernetes-node-pool stack-outputs
@@ -152,27 +146,6 @@ func (*DigitalOceanKubernetesNodePoolStatus) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_digitalocean_digitaloceankubernetesnodepool_v1_api_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *DigitalOceanKubernetesNodePoolStatus) GetLifecycle() *shared.ApiResourceLifecycle {
-	if x != nil {
-		return x.Lifecycle
-	}
-	return nil
-}
-
-func (x *DigitalOceanKubernetesNodePoolStatus) GetAudit() *shared.ApiResourceAudit {
-	if x != nil {
-		return x.Audit
-	}
-	return nil
-}
-
-func (x *DigitalOceanKubernetesNodePoolStatus) GetStackJobId() string {
-	if x != nil {
-		return x.StackJobId
-	}
-	return ""
-}
-
 func (x *DigitalOceanKubernetesNodePoolStatus) GetOutputs() *DigitalOceanKubernetesNodePoolStackOutputs {
 	if x != nil {
 		return x.Outputs
@@ -193,12 +166,8 @@ const file_project_planton_provider_digitalocean_digitaloceankubernetesnodepool_
 	"\x1eDigitalOceanKubernetesNodePoolR\x04kind\x12O\n" +
 	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12\x87\x01\n" +
 	"\x04spec\x18\x04 \x01(\v2k.project.planton.provider.digitalocean.digitaloceankubernetesnodepool.v1.DigitalOceanKubernetesNodePoolSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12\x85\x01\n" +
-	"\x06status\x18\x05 \x01(\v2m.project.planton.provider.digitalocean.digitaloceankubernetesnodepool.v1.DigitalOceanKubernetesNodePoolStatusR\x06status\"\xe4\x02\n" +
-	"$DigitalOceanKubernetesNodePoolStatus\x12J\n" +
-	"\tlifecycle\x18c \x01(\v2,.project.planton.shared.ApiResourceLifecycleR\tlifecycle\x12>\n" +
-	"\x05audit\x18b \x01(\v2(.project.planton.shared.ApiResourceAuditR\x05audit\x12 \n" +
-	"\fstack_job_id\x18a \x01(\tR\n" +
-	"stackJobId\x12\x8d\x01\n" +
+	"\x06status\x18\x05 \x01(\v2m.project.planton.provider.digitalocean.digitaloceankubernetesnodepool.v1.DigitalOceanKubernetesNodePoolStatusR\x06status\"\xb6\x01\n" +
+	"$DigitalOceanKubernetesNodePoolStatus\x12\x8d\x01\n" +
 	"\aoutputs\x18\x01 \x01(\v2s.project.planton.provider.digitalocean.digitaloceankubernetesnodepool.v1.DigitalOceanKubernetesNodePoolStackOutputsR\aoutputsB\xb5\x04\n" +
 	"Kcom.project.planton.provider.digitalocean.digitaloceankubernetesnodepool.v1B\bApiProtoP\x01Z\x98\x01github.com/project-planton/project-planton/apis/project/planton/provider/digitalocean/digitaloceankubernetesnodepool/v1;digitaloceankubernetesnodepoolv1\xa2\x02\x05PPPDD\xaa\x02GProject.Planton.Provider.Digitalocean.Digitaloceankubernetesnodepool.V1\xca\x02GProject\\Planton\\Provider\\Digitalocean\\Digitaloceankubernetesnodepool\\V1\xe2\x02SProject\\Planton\\Provider\\Digitalocean\\Digitaloceankubernetesnodepool\\V1\\GPBMetadata\xea\x02LProject::Planton::Provider::Digitalocean::Digitaloceankubernetesnodepool::V1b\x06proto3"
 
@@ -220,22 +189,18 @@ var file_project_planton_provider_digitalocean_digitaloceankubernetesnodepool_v1
 	(*DigitalOceanKubernetesNodePoolStatus)(nil),       // 1: project.planton.provider.digitalocean.digitaloceankubernetesnodepool.v1.DigitalOceanKubernetesNodePoolStatus
 	(*shared.ApiResourceMetadata)(nil),                 // 2: project.planton.shared.ApiResourceMetadata
 	(*DigitalOceanKubernetesNodePoolSpec)(nil),         // 3: project.planton.provider.digitalocean.digitaloceankubernetesnodepool.v1.DigitalOceanKubernetesNodePoolSpec
-	(*shared.ApiResourceLifecycle)(nil),                // 4: project.planton.shared.ApiResourceLifecycle
-	(*shared.ApiResourceAudit)(nil),                    // 5: project.planton.shared.ApiResourceAudit
-	(*DigitalOceanKubernetesNodePoolStackOutputs)(nil), // 6: project.planton.provider.digitalocean.digitaloceankubernetesnodepool.v1.DigitalOceanKubernetesNodePoolStackOutputs
+	(*DigitalOceanKubernetesNodePoolStackOutputs)(nil), // 4: project.planton.provider.digitalocean.digitaloceankubernetesnodepool.v1.DigitalOceanKubernetesNodePoolStackOutputs
 }
 var file_project_planton_provider_digitalocean_digitaloceankubernetesnodepool_v1_api_proto_depIdxs = []int32{
 	2, // 0: project.planton.provider.digitalocean.digitaloceankubernetesnodepool.v1.DigitalOceanKubernetesNodePool.metadata:type_name -> project.planton.shared.ApiResourceMetadata
 	3, // 1: project.planton.provider.digitalocean.digitaloceankubernetesnodepool.v1.DigitalOceanKubernetesNodePool.spec:type_name -> project.planton.provider.digitalocean.digitaloceankubernetesnodepool.v1.DigitalOceanKubernetesNodePoolSpec
 	1, // 2: project.planton.provider.digitalocean.digitaloceankubernetesnodepool.v1.DigitalOceanKubernetesNodePool.status:type_name -> project.planton.provider.digitalocean.digitaloceankubernetesnodepool.v1.DigitalOceanKubernetesNodePoolStatus
-	4, // 3: project.planton.provider.digitalocean.digitaloceankubernetesnodepool.v1.DigitalOceanKubernetesNodePoolStatus.lifecycle:type_name -> project.planton.shared.ApiResourceLifecycle
-	5, // 4: project.planton.provider.digitalocean.digitaloceankubernetesnodepool.v1.DigitalOceanKubernetesNodePoolStatus.audit:type_name -> project.planton.shared.ApiResourceAudit
-	6, // 5: project.planton.provider.digitalocean.digitaloceankubernetesnodepool.v1.DigitalOceanKubernetesNodePoolStatus.outputs:type_name -> project.planton.provider.digitalocean.digitaloceankubernetesnodepool.v1.DigitalOceanKubernetesNodePoolStackOutputs
-	6, // [6:6] is the sub-list for method output_type
-	6, // [6:6] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	4, // 3: project.planton.provider.digitalocean.digitaloceankubernetesnodepool.v1.DigitalOceanKubernetesNodePoolStatus.outputs:type_name -> project.planton.provider.digitalocean.digitaloceankubernetesnodepool.v1.DigitalOceanKubernetesNodePoolStackOutputs
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() {

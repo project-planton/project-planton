@@ -108,12 +108,6 @@ func (x *CloudflareR2Bucket) GetStatus() *CloudflareR2BucketStatus {
 // cloudflare-r2-bucket status
 type CloudflareR2BucketStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// lifecycle
-	Lifecycle *shared.ApiResourceLifecycle `protobuf:"bytes,99,opt,name=lifecycle,proto3" json:"lifecycle,omitempty"`
-	// audit-info
-	Audit *shared.ApiResourceAudit `protobuf:"bytes,98,opt,name=audit,proto3" json:"audit,omitempty"`
-	// stack-job id
-	StackJobId string `protobuf:"bytes,97,opt,name=stack_job_id,json=stackJobId,proto3" json:"stack_job_id,omitempty"`
 	// stack-outputs
 	//
 	//	cloudflare-r2-bucket stack-outputs
@@ -152,27 +146,6 @@ func (*CloudflareR2BucketStatus) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_cloudflare_cloudflarer2bucket_v1_api_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *CloudflareR2BucketStatus) GetLifecycle() *shared.ApiResourceLifecycle {
-	if x != nil {
-		return x.Lifecycle
-	}
-	return nil
-}
-
-func (x *CloudflareR2BucketStatus) GetAudit() *shared.ApiResourceAudit {
-	if x != nil {
-		return x.Audit
-	}
-	return nil
-}
-
-func (x *CloudflareR2BucketStatus) GetStackJobId() string {
-	if x != nil {
-		return x.StackJobId
-	}
-	return ""
-}
-
 func (x *CloudflareR2BucketStatus) GetOutputs() *CloudflareR2BucketStackOutputs {
 	if x != nil {
 		return x.Outputs
@@ -193,12 +166,8 @@ const file_project_planton_provider_cloudflare_cloudflarer2bucket_v1_api_proto_r
 	"\x12CloudflareR2BucketR\x04kind\x12O\n" +
 	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12m\n" +
 	"\x04spec\x18\x04 \x01(\v2Q.project.planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2BucketSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12k\n" +
-	"\x06status\x18\x05 \x01(\v2S.project.planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2BucketStatusR\x06status\"\xbd\x02\n" +
-	"\x18CloudflareR2BucketStatus\x12J\n" +
-	"\tlifecycle\x18c \x01(\v2,.project.planton.shared.ApiResourceLifecycleR\tlifecycle\x12>\n" +
-	"\x05audit\x18b \x01(\v2(.project.planton.shared.ApiResourceAuditR\x05audit\x12 \n" +
-	"\fstack_job_id\x18a \x01(\tR\n" +
-	"stackJobId\x12s\n" +
+	"\x06status\x18\x05 \x01(\v2S.project.planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2BucketStatusR\x06status\"\x8f\x01\n" +
+	"\x18CloudflareR2BucketStatus\x12s\n" +
 	"\aoutputs\x18\x01 \x01(\v2Y.project.planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2BucketStackOutputsR\aoutputsB\xd4\x03\n" +
 	"=com.project.planton.provider.cloudflare.cloudflarer2bucket.v1B\bApiProtoP\x01Z~github.com/project-planton/project-planton/apis/project/planton/provider/cloudflare/cloudflarer2bucket/v1;cloudflarer2bucketv1\xa2\x02\x05PPPCC\xaa\x029Project.Planton.Provider.Cloudflare.Cloudflarer2bucket.V1\xca\x029Project\\Planton\\Provider\\Cloudflare\\Cloudflarer2bucket\\V1\xe2\x02EProject\\Planton\\Provider\\Cloudflare\\Cloudflarer2bucket\\V1\\GPBMetadata\xea\x02>Project::Planton::Provider::Cloudflare::Cloudflarer2bucket::V1b\x06proto3"
 
@@ -220,22 +189,18 @@ var file_project_planton_provider_cloudflare_cloudflarer2bucket_v1_api_proto_goT
 	(*CloudflareR2BucketStatus)(nil),       // 1: project.planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2BucketStatus
 	(*shared.ApiResourceMetadata)(nil),     // 2: project.planton.shared.ApiResourceMetadata
 	(*CloudflareR2BucketSpec)(nil),         // 3: project.planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2BucketSpec
-	(*shared.ApiResourceLifecycle)(nil),    // 4: project.planton.shared.ApiResourceLifecycle
-	(*shared.ApiResourceAudit)(nil),        // 5: project.planton.shared.ApiResourceAudit
-	(*CloudflareR2BucketStackOutputs)(nil), // 6: project.planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2BucketStackOutputs
+	(*CloudflareR2BucketStackOutputs)(nil), // 4: project.planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2BucketStackOutputs
 }
 var file_project_planton_provider_cloudflare_cloudflarer2bucket_v1_api_proto_depIdxs = []int32{
 	2, // 0: project.planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2Bucket.metadata:type_name -> project.planton.shared.ApiResourceMetadata
 	3, // 1: project.planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2Bucket.spec:type_name -> project.planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2BucketSpec
 	1, // 2: project.planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2Bucket.status:type_name -> project.planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2BucketStatus
-	4, // 3: project.planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2BucketStatus.lifecycle:type_name -> project.planton.shared.ApiResourceLifecycle
-	5, // 4: project.planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2BucketStatus.audit:type_name -> project.planton.shared.ApiResourceAudit
-	6, // 5: project.planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2BucketStatus.outputs:type_name -> project.planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2BucketStackOutputs
-	6, // [6:6] is the sub-list for method output_type
-	6, // [6:6] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	4, // 3: project.planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2BucketStatus.outputs:type_name -> project.planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2BucketStackOutputs
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_provider_cloudflare_cloudflarer2bucket_v1_api_proto_init() }

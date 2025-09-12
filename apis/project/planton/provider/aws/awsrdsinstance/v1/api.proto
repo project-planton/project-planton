@@ -36,15 +36,6 @@ message AwsRdsInstance {
 
 // AwsRdsInstanceStatus describes the status fields for an RDS instance resource.
 message AwsRdsInstanceStatus {
-  // lifecycle indicates if the resource is active or has been marked for removal.
-  project.planton.shared.ApiResourceLifecycle lifecycle = 99;
-
-  // audit contains creation and update information for the resource.
-  project.planton.shared.ApiResourceAudit audit = 98;
-
-  // stack_job_id stores the ID of the stack job responsible for provisioning.
-  string stack_job_id = 97;
-
-  // outputs captures observable stack outputs returned by Pulumi/Terraform after provisioning.
+  // stack-outputs
   AwsRdsInstanceStackOutputs outputs = 1;
 }

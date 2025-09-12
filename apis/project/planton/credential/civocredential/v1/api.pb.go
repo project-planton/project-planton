@@ -35,7 +35,7 @@ type CivoCredential struct {
 	// spec
 	Spec *CivoCredentialSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status
-	Status        *shared.ApiResourceLifecycleAndAuditStatus `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
+	Status        *shared.ApiResourceAuditStatus `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -98,7 +98,7 @@ func (x *CivoCredential) GetSpec() *CivoCredentialSpec {
 	return nil
 }
 
-func (x *CivoCredential) GetStatus() *shared.ApiResourceLifecycleAndAuditStatus {
+func (x *CivoCredential) GetStatus() *shared.ApiResourceAuditStatus {
 	if x != nil {
 		return x.Status
 	}
@@ -109,7 +109,7 @@ var File_project_planton_credential_civocredential_v1_api_proto protoreflect.Fil
 
 const file_project_planton_credential_civocredential_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"6project/planton/credential/civocredential/v1/api.proto\x12,project.planton.credential.civocredential.v1\x1a\x1bbuf/validate/validate.proto\x1a#project/planton/shared/status.proto\x1a%project/planton/shared/metadata.proto\x1a7project/planton/credential/civocredential/v1/spec.proto\"\x81\x03\n" +
+	"6project/planton/credential/civocredential/v1/api.proto\x12,project.planton.credential.civocredential.v1\x1a\x1bbuf/validate/validate.proto\x1a#project/planton/shared/status.proto\x1a%project/planton/shared/metadata.proto\x1a7project/planton/credential/civocredential/v1/spec.proto\"\xf5\x02\n" +
 	"\x0eCivoCredential\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!credential.project-planton.org/v1R\n" +
@@ -117,8 +117,8 @@ const file_project_planton_credential_civocredential_v1_api_proto_rawDesc = "" +
 	"\x04kind\x18\x02 \x01(\tB\x15\xbaH\x12r\x10\n" +
 	"\x0eCivoCredentialR\x04kind\x12O\n" +
 	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12T\n" +
-	"\x04spec\x18\x04 \x01(\v2@.project.planton.credential.civocredential.v1.CivoCredentialSpecR\x04spec\x12R\n" +
-	"\x06status\x18\x05 \x01(\v2:.project.planton.shared.ApiResourceLifecycleAndAuditStatusR\x06statusB\x80\x03\n" +
+	"\x04spec\x18\x04 \x01(\v2@.project.planton.credential.civocredential.v1.CivoCredentialSpecR\x04spec\x12F\n" +
+	"\x06status\x18\x05 \x01(\v2..project.planton.shared.ApiResourceAuditStatusR\x06statusB\x80\x03\n" +
 	"0com.project.planton.credential.civocredential.v1B\bApiProtoP\x01Zmgithub.com/project-planton/project-planton/apis/project/planton/credential/civocredential/v1;civocredentialv1\xa2\x02\x04PPCC\xaa\x02,Project.Planton.Credential.Civocredential.V1\xca\x02,Project\\Planton\\Credential\\Civocredential\\V1\xe2\x028Project\\Planton\\Credential\\Civocredential\\V1\\GPBMetadata\xea\x020Project::Planton::Credential::Civocredential::V1b\x06proto3"
 
 var (
@@ -135,15 +135,15 @@ func file_project_planton_credential_civocredential_v1_api_proto_rawDescGZIP() [
 
 var file_project_planton_credential_civocredential_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_credential_civocredential_v1_api_proto_goTypes = []any{
-	(*CivoCredential)(nil),                            // 0: project.planton.credential.civocredential.v1.CivoCredential
-	(*shared.ApiResourceMetadata)(nil),                // 1: project.planton.shared.ApiResourceMetadata
-	(*CivoCredentialSpec)(nil),                        // 2: project.planton.credential.civocredential.v1.CivoCredentialSpec
-	(*shared.ApiResourceLifecycleAndAuditStatus)(nil), // 3: project.planton.shared.ApiResourceLifecycleAndAuditStatus
+	(*CivoCredential)(nil),                // 0: project.planton.credential.civocredential.v1.CivoCredential
+	(*shared.ApiResourceMetadata)(nil),    // 1: project.planton.shared.ApiResourceMetadata
+	(*CivoCredentialSpec)(nil),            // 2: project.planton.credential.civocredential.v1.CivoCredentialSpec
+	(*shared.ApiResourceAuditStatus)(nil), // 3: project.planton.shared.ApiResourceAuditStatus
 }
 var file_project_planton_credential_civocredential_v1_api_proto_depIdxs = []int32{
 	1, // 0: project.planton.credential.civocredential.v1.CivoCredential.metadata:type_name -> project.planton.shared.ApiResourceMetadata
 	2, // 1: project.planton.credential.civocredential.v1.CivoCredential.spec:type_name -> project.planton.credential.civocredential.v1.CivoCredentialSpec
-	3, // 2: project.planton.credential.civocredential.v1.CivoCredential.status:type_name -> project.planton.shared.ApiResourceLifecycleAndAuditStatus
+	3, // 2: project.planton.credential.civocredential.v1.CivoCredential.status:type_name -> project.planton.shared.ApiResourceAuditStatus
 	3, // [3:3] is the sub-list for method output_type
 	3, // [3:3] is the sub-list for method input_type
 	3, // [3:3] is the sub-list for extension type_name

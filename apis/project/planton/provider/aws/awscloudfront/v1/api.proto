@@ -19,10 +19,6 @@ message AwsCloudFront {
 
 // AwsCloudFrontStatus captures lifecycle, audit and stack outputs.
 message AwsCloudFrontStatus {
-  project.planton.shared.ApiResourceLifecycle lifecycle = 99;
-  project.planton.shared.ApiResourceAudit audit = 98;
-  string stack_job_id = 97;
+  //stack-outputs
   AwsCloudFrontStackOutputs outputs = 1;
 }
-
-

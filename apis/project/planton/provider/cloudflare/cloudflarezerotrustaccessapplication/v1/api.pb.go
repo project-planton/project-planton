@@ -108,12 +108,6 @@ func (x *CloudflareZeroTrustAccessApplication) GetStatus() *CloudflareZeroTrustA
 // cloudflare-zero-trust-access-application status
 type CloudflareZeroTrustAccessApplicationStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// lifecycle
-	Lifecycle *shared.ApiResourceLifecycle `protobuf:"bytes,99,opt,name=lifecycle,proto3" json:"lifecycle,omitempty"`
-	// audit-info
-	Audit *shared.ApiResourceAudit `protobuf:"bytes,98,opt,name=audit,proto3" json:"audit,omitempty"`
-	// stack-job id
-	StackJobId string `protobuf:"bytes,97,opt,name=stack_job_id,json=stackJobId,proto3" json:"stack_job_id,omitempty"`
 	// stack-outputs
 	//
 	//	cloudflare-zero-trust-access-application stack-outputs
@@ -152,27 +146,6 @@ func (*CloudflareZeroTrustAccessApplicationStatus) Descriptor() ([]byte, []int) 
 	return file_project_planton_provider_cloudflare_cloudflarezerotrustaccessapplication_v1_api_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *CloudflareZeroTrustAccessApplicationStatus) GetLifecycle() *shared.ApiResourceLifecycle {
-	if x != nil {
-		return x.Lifecycle
-	}
-	return nil
-}
-
-func (x *CloudflareZeroTrustAccessApplicationStatus) GetAudit() *shared.ApiResourceAudit {
-	if x != nil {
-		return x.Audit
-	}
-	return nil
-}
-
-func (x *CloudflareZeroTrustAccessApplicationStatus) GetStackJobId() string {
-	if x != nil {
-		return x.StackJobId
-	}
-	return ""
-}
-
 func (x *CloudflareZeroTrustAccessApplicationStatus) GetOutputs() *CloudflareZeroTrustAccessApplicationStackOutputs {
 	if x != nil {
 		return x.Outputs
@@ -193,12 +166,8 @@ const file_project_planton_provider_cloudflare_cloudflarezerotrustaccessapplicat
 	"$CloudflareZeroTrustAccessApplicationR\x04kind\x12O\n" +
 	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12\x91\x01\n" +
 	"\x04spec\x18\x04 \x01(\v2u.project.planton.provider.cloudflare.cloudflarezerotrustaccessapplication.v1.CloudflareZeroTrustAccessApplicationSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12\x8f\x01\n" +
-	"\x06status\x18\x05 \x01(\v2w.project.planton.provider.cloudflare.cloudflarezerotrustaccessapplication.v1.CloudflareZeroTrustAccessApplicationStatusR\x06status\"\xf4\x02\n" +
-	"*CloudflareZeroTrustAccessApplicationStatus\x12J\n" +
-	"\tlifecycle\x18c \x01(\v2,.project.planton.shared.ApiResourceLifecycleR\tlifecycle\x12>\n" +
-	"\x05audit\x18b \x01(\v2(.project.planton.shared.ApiResourceAuditR\x05audit\x12 \n" +
-	"\fstack_job_id\x18a \x01(\tR\n" +
-	"stackJobId\x12\x97\x01\n" +
+	"\x06status\x18\x05 \x01(\v2w.project.planton.provider.cloudflare.cloudflarezerotrustaccessapplication.v1.CloudflareZeroTrustAccessApplicationStatusR\x06status\"\xc6\x01\n" +
+	"*CloudflareZeroTrustAccessApplicationStatus\x12\x97\x01\n" +
 	"\aoutputs\x18\x01 \x01(\v2}.project.planton.provider.cloudflare.cloudflarezerotrustaccessapplication.v1.CloudflareZeroTrustAccessApplicationStackOutputsR\aoutputsB\xd3\x04\n" +
 	"Ocom.project.planton.provider.cloudflare.cloudflarezerotrustaccessapplication.v1B\bApiProtoP\x01Z\xa2\x01github.com/project-planton/project-planton/apis/project/planton/provider/cloudflare/cloudflarezerotrustaccessapplication/v1;cloudflarezerotrustaccessapplicationv1\xa2\x02\x05PPPCC\xaa\x02KProject.Planton.Provider.Cloudflare.Cloudflarezerotrustaccessapplication.V1\xca\x02KProject\\Planton\\Provider\\Cloudflare\\Cloudflarezerotrustaccessapplication\\V1\xe2\x02WProject\\Planton\\Provider\\Cloudflare\\Cloudflarezerotrustaccessapplication\\V1\\GPBMetadata\xea\x02PProject::Planton::Provider::Cloudflare::Cloudflarezerotrustaccessapplication::V1b\x06proto3"
 
@@ -220,22 +189,18 @@ var file_project_planton_provider_cloudflare_cloudflarezerotrustaccessapplicatio
 	(*CloudflareZeroTrustAccessApplicationStatus)(nil),       // 1: project.planton.provider.cloudflare.cloudflarezerotrustaccessapplication.v1.CloudflareZeroTrustAccessApplicationStatus
 	(*shared.ApiResourceMetadata)(nil),                       // 2: project.planton.shared.ApiResourceMetadata
 	(*CloudflareZeroTrustAccessApplicationSpec)(nil),         // 3: project.planton.provider.cloudflare.cloudflarezerotrustaccessapplication.v1.CloudflareZeroTrustAccessApplicationSpec
-	(*shared.ApiResourceLifecycle)(nil),                      // 4: project.planton.shared.ApiResourceLifecycle
-	(*shared.ApiResourceAudit)(nil),                          // 5: project.planton.shared.ApiResourceAudit
-	(*CloudflareZeroTrustAccessApplicationStackOutputs)(nil), // 6: project.planton.provider.cloudflare.cloudflarezerotrustaccessapplication.v1.CloudflareZeroTrustAccessApplicationStackOutputs
+	(*CloudflareZeroTrustAccessApplicationStackOutputs)(nil), // 4: project.planton.provider.cloudflare.cloudflarezerotrustaccessapplication.v1.CloudflareZeroTrustAccessApplicationStackOutputs
 }
 var file_project_planton_provider_cloudflare_cloudflarezerotrustaccessapplication_v1_api_proto_depIdxs = []int32{
 	2, // 0: project.planton.provider.cloudflare.cloudflarezerotrustaccessapplication.v1.CloudflareZeroTrustAccessApplication.metadata:type_name -> project.planton.shared.ApiResourceMetadata
 	3, // 1: project.planton.provider.cloudflare.cloudflarezerotrustaccessapplication.v1.CloudflareZeroTrustAccessApplication.spec:type_name -> project.planton.provider.cloudflare.cloudflarezerotrustaccessapplication.v1.CloudflareZeroTrustAccessApplicationSpec
 	1, // 2: project.planton.provider.cloudflare.cloudflarezerotrustaccessapplication.v1.CloudflareZeroTrustAccessApplication.status:type_name -> project.planton.provider.cloudflare.cloudflarezerotrustaccessapplication.v1.CloudflareZeroTrustAccessApplicationStatus
-	4, // 3: project.planton.provider.cloudflare.cloudflarezerotrustaccessapplication.v1.CloudflareZeroTrustAccessApplicationStatus.lifecycle:type_name -> project.planton.shared.ApiResourceLifecycle
-	5, // 4: project.planton.provider.cloudflare.cloudflarezerotrustaccessapplication.v1.CloudflareZeroTrustAccessApplicationStatus.audit:type_name -> project.planton.shared.ApiResourceAudit
-	6, // 5: project.planton.provider.cloudflare.cloudflarezerotrustaccessapplication.v1.CloudflareZeroTrustAccessApplicationStatus.outputs:type_name -> project.planton.provider.cloudflare.cloudflarezerotrustaccessapplication.v1.CloudflareZeroTrustAccessApplicationStackOutputs
-	6, // [6:6] is the sub-list for method output_type
-	6, // [6:6] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	4, // 3: project.planton.provider.cloudflare.cloudflarezerotrustaccessapplication.v1.CloudflareZeroTrustAccessApplicationStatus.outputs:type_name -> project.planton.provider.cloudflare.cloudflarezerotrustaccessapplication.v1.CloudflareZeroTrustAccessApplicationStackOutputs
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() {

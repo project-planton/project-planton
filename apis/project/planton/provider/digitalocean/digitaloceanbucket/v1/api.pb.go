@@ -108,12 +108,6 @@ func (x *DigitalOceanBucket) GetStatus() *DigitalOceanBucketStatus {
 // digital-ocean-bucket status
 type DigitalOceanBucketStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// lifecycle
-	Lifecycle *shared.ApiResourceLifecycle `protobuf:"bytes,99,opt,name=lifecycle,proto3" json:"lifecycle,omitempty"`
-	// audit-info
-	Audit *shared.ApiResourceAudit `protobuf:"bytes,98,opt,name=audit,proto3" json:"audit,omitempty"`
-	// stack-job id
-	StackJobId string `protobuf:"bytes,97,opt,name=stack_job_id,json=stackJobId,proto3" json:"stack_job_id,omitempty"`
 	// stack-outputs
 	//
 	//	digital-ocean-bucket stack-outputs
@@ -152,27 +146,6 @@ func (*DigitalOceanBucketStatus) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_digitalocean_digitaloceanbucket_v1_api_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *DigitalOceanBucketStatus) GetLifecycle() *shared.ApiResourceLifecycle {
-	if x != nil {
-		return x.Lifecycle
-	}
-	return nil
-}
-
-func (x *DigitalOceanBucketStatus) GetAudit() *shared.ApiResourceAudit {
-	if x != nil {
-		return x.Audit
-	}
-	return nil
-}
-
-func (x *DigitalOceanBucketStatus) GetStackJobId() string {
-	if x != nil {
-		return x.StackJobId
-	}
-	return ""
-}
-
 func (x *DigitalOceanBucketStatus) GetOutputs() *DigitalOceanBucketStackOutputs {
 	if x != nil {
 		return x.Outputs
@@ -193,12 +166,8 @@ const file_project_planton_provider_digitalocean_digitaloceanbucket_v1_api_proto
 	"\x12DigitalOceanBucketR\x04kind\x12O\n" +
 	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12o\n" +
 	"\x04spec\x18\x04 \x01(\v2S.project.planton.provider.digitalocean.digitaloceanbucket.v1.DigitalOceanBucketSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12m\n" +
-	"\x06status\x18\x05 \x01(\v2U.project.planton.provider.digitalocean.digitaloceanbucket.v1.DigitalOceanBucketStatusR\x06status\"\xbf\x02\n" +
-	"\x18DigitalOceanBucketStatus\x12J\n" +
-	"\tlifecycle\x18c \x01(\v2,.project.planton.shared.ApiResourceLifecycleR\tlifecycle\x12>\n" +
-	"\x05audit\x18b \x01(\v2(.project.planton.shared.ApiResourceAuditR\x05audit\x12 \n" +
-	"\fstack_job_id\x18a \x01(\tR\n" +
-	"stackJobId\x12u\n" +
+	"\x06status\x18\x05 \x01(\v2U.project.planton.provider.digitalocean.digitaloceanbucket.v1.DigitalOceanBucketStatusR\x06status\"\x91\x01\n" +
+	"\x18DigitalOceanBucketStatus\x12u\n" +
 	"\aoutputs\x18\x01 \x01(\v2[.project.planton.provider.digitalocean.digitaloceanbucket.v1.DigitalOceanBucketStackOutputsR\aoutputsB\xe1\x03\n" +
 	"?com.project.planton.provider.digitalocean.digitaloceanbucket.v1B\bApiProtoP\x01Z\x80\x01github.com/project-planton/project-planton/apis/project/planton/provider/digitalocean/digitaloceanbucket/v1;digitaloceanbucketv1\xa2\x02\x05PPPDD\xaa\x02;Project.Planton.Provider.Digitalocean.Digitaloceanbucket.V1\xca\x02;Project\\Planton\\Provider\\Digitalocean\\Digitaloceanbucket\\V1\xe2\x02GProject\\Planton\\Provider\\Digitalocean\\Digitaloceanbucket\\V1\\GPBMetadata\xea\x02@Project::Planton::Provider::Digitalocean::Digitaloceanbucket::V1b\x06proto3"
 
@@ -220,22 +189,18 @@ var file_project_planton_provider_digitalocean_digitaloceanbucket_v1_api_proto_g
 	(*DigitalOceanBucketStatus)(nil),       // 1: project.planton.provider.digitalocean.digitaloceanbucket.v1.DigitalOceanBucketStatus
 	(*shared.ApiResourceMetadata)(nil),     // 2: project.planton.shared.ApiResourceMetadata
 	(*DigitalOceanBucketSpec)(nil),         // 3: project.planton.provider.digitalocean.digitaloceanbucket.v1.DigitalOceanBucketSpec
-	(*shared.ApiResourceLifecycle)(nil),    // 4: project.planton.shared.ApiResourceLifecycle
-	(*shared.ApiResourceAudit)(nil),        // 5: project.planton.shared.ApiResourceAudit
-	(*DigitalOceanBucketStackOutputs)(nil), // 6: project.planton.provider.digitalocean.digitaloceanbucket.v1.DigitalOceanBucketStackOutputs
+	(*DigitalOceanBucketStackOutputs)(nil), // 4: project.planton.provider.digitalocean.digitaloceanbucket.v1.DigitalOceanBucketStackOutputs
 }
 var file_project_planton_provider_digitalocean_digitaloceanbucket_v1_api_proto_depIdxs = []int32{
 	2, // 0: project.planton.provider.digitalocean.digitaloceanbucket.v1.DigitalOceanBucket.metadata:type_name -> project.planton.shared.ApiResourceMetadata
 	3, // 1: project.planton.provider.digitalocean.digitaloceanbucket.v1.DigitalOceanBucket.spec:type_name -> project.planton.provider.digitalocean.digitaloceanbucket.v1.DigitalOceanBucketSpec
 	1, // 2: project.planton.provider.digitalocean.digitaloceanbucket.v1.DigitalOceanBucket.status:type_name -> project.planton.provider.digitalocean.digitaloceanbucket.v1.DigitalOceanBucketStatus
-	4, // 3: project.planton.provider.digitalocean.digitaloceanbucket.v1.DigitalOceanBucketStatus.lifecycle:type_name -> project.planton.shared.ApiResourceLifecycle
-	5, // 4: project.planton.provider.digitalocean.digitaloceanbucket.v1.DigitalOceanBucketStatus.audit:type_name -> project.planton.shared.ApiResourceAudit
-	6, // 5: project.planton.provider.digitalocean.digitaloceanbucket.v1.DigitalOceanBucketStatus.outputs:type_name -> project.planton.provider.digitalocean.digitaloceanbucket.v1.DigitalOceanBucketStackOutputs
-	6, // [6:6] is the sub-list for method output_type
-	6, // [6:6] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	4, // 3: project.planton.provider.digitalocean.digitaloceanbucket.v1.DigitalOceanBucketStatus.outputs:type_name -> project.planton.provider.digitalocean.digitaloceanbucket.v1.DigitalOceanBucketStackOutputs
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_provider_digitalocean_digitaloceanbucket_v1_api_proto_init() }

@@ -36,15 +36,6 @@ message AzureDnsZone {
 
 // azure-dns-zone status
 message AzureDnsZoneStatus {
-  //lifecycle
-  project.planton.shared.ApiResourceLifecycle lifecycle = 99;
-
-  //audit-info
-  project.planton.shared.ApiResourceAudit audit = 98;
-
-  //stack-job id
-  string stack_job_id = 97;
-
   //stack-outputs
   //  azure-dns-zone stack-outputs
   AzureDnsZoneStackOutputs outputs = 1;

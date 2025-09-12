@@ -108,12 +108,6 @@ func (x *AzureNatGateway) GetStatus() *AzureNatGatewayStatus {
 // azure-nat-gateway status
 type AzureNatGatewayStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// lifecycle
-	Lifecycle *shared.ApiResourceLifecycle `protobuf:"bytes,99,opt,name=lifecycle,proto3" json:"lifecycle,omitempty"`
-	// audit-info
-	Audit *shared.ApiResourceAudit `protobuf:"bytes,98,opt,name=audit,proto3" json:"audit,omitempty"`
-	// stack-job id
-	StackJobId string `protobuf:"bytes,97,opt,name=stack_job_id,json=stackJobId,proto3" json:"stack_job_id,omitempty"`
 	// stack-outputs
 	//
 	//	azure-nat-gateway stack-outputs
@@ -152,27 +146,6 @@ func (*AzureNatGatewayStatus) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_azure_azurenatgateway_v1_api_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *AzureNatGatewayStatus) GetLifecycle() *shared.ApiResourceLifecycle {
-	if x != nil {
-		return x.Lifecycle
-	}
-	return nil
-}
-
-func (x *AzureNatGatewayStatus) GetAudit() *shared.ApiResourceAudit {
-	if x != nil {
-		return x.Audit
-	}
-	return nil
-}
-
-func (x *AzureNatGatewayStatus) GetStackJobId() string {
-	if x != nil {
-		return x.StackJobId
-	}
-	return ""
-}
-
 func (x *AzureNatGatewayStatus) GetOutputs() *AzureNatGatewayStackOutputs {
 	if x != nil {
 		return x.Outputs
@@ -193,12 +166,8 @@ const file_project_planton_provider_azure_azurenatgateway_v1_api_proto_rawDesc =
 	"\x0fAzureNatGatewayR\x04kind\x12O\n" +
 	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12b\n" +
 	"\x04spec\x18\x04 \x01(\v2F.project.planton.provider.azure.azurenatgateway.v1.AzureNatGatewaySpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12`\n" +
-	"\x06status\x18\x05 \x01(\v2H.project.planton.provider.azure.azurenatgateway.v1.AzureNatGatewayStatusR\x06status\"\xaf\x02\n" +
-	"\x15AzureNatGatewayStatus\x12J\n" +
-	"\tlifecycle\x18c \x01(\v2,.project.planton.shared.ApiResourceLifecycleR\tlifecycle\x12>\n" +
-	"\x05audit\x18b \x01(\v2(.project.planton.shared.ApiResourceAuditR\x05audit\x12 \n" +
-	"\fstack_job_id\x18a \x01(\tR\n" +
-	"stackJobId\x12h\n" +
+	"\x06status\x18\x05 \x01(\v2H.project.planton.provider.azure.azurenatgateway.v1.AzureNatGatewayStatusR\x06status\"\x81\x01\n" +
+	"\x15AzureNatGatewayStatus\x12h\n" +
 	"\aoutputs\x18\x01 \x01(\v2N.project.planton.provider.azure.azurenatgateway.v1.AzureNatGatewayStackOutputsR\aoutputsB\xa1\x03\n" +
 	"5com.project.planton.provider.azure.azurenatgateway.v1B\bApiProtoP\x01Zsgithub.com/project-planton/project-planton/apis/project/planton/provider/azure/azurenatgateway/v1;azurenatgatewayv1\xa2\x02\x05PPPAA\xaa\x021Project.Planton.Provider.Azure.Azurenatgateway.V1\xca\x021Project\\Planton\\Provider\\Azure\\Azurenatgateway\\V1\xe2\x02=Project\\Planton\\Provider\\Azure\\Azurenatgateway\\V1\\GPBMetadata\xea\x026Project::Planton::Provider::Azure::Azurenatgateway::V1b\x06proto3"
 
@@ -220,22 +189,18 @@ var file_project_planton_provider_azure_azurenatgateway_v1_api_proto_goTypes = [
 	(*AzureNatGatewayStatus)(nil),       // 1: project.planton.provider.azure.azurenatgateway.v1.AzureNatGatewayStatus
 	(*shared.ApiResourceMetadata)(nil),  // 2: project.planton.shared.ApiResourceMetadata
 	(*AzureNatGatewaySpec)(nil),         // 3: project.planton.provider.azure.azurenatgateway.v1.AzureNatGatewaySpec
-	(*shared.ApiResourceLifecycle)(nil), // 4: project.planton.shared.ApiResourceLifecycle
-	(*shared.ApiResourceAudit)(nil),     // 5: project.planton.shared.ApiResourceAudit
-	(*AzureNatGatewayStackOutputs)(nil), // 6: project.planton.provider.azure.azurenatgateway.v1.AzureNatGatewayStackOutputs
+	(*AzureNatGatewayStackOutputs)(nil), // 4: project.planton.provider.azure.azurenatgateway.v1.AzureNatGatewayStackOutputs
 }
 var file_project_planton_provider_azure_azurenatgateway_v1_api_proto_depIdxs = []int32{
 	2, // 0: project.planton.provider.azure.azurenatgateway.v1.AzureNatGateway.metadata:type_name -> project.planton.shared.ApiResourceMetadata
 	3, // 1: project.planton.provider.azure.azurenatgateway.v1.AzureNatGateway.spec:type_name -> project.planton.provider.azure.azurenatgateway.v1.AzureNatGatewaySpec
 	1, // 2: project.planton.provider.azure.azurenatgateway.v1.AzureNatGateway.status:type_name -> project.planton.provider.azure.azurenatgateway.v1.AzureNatGatewayStatus
-	4, // 3: project.planton.provider.azure.azurenatgateway.v1.AzureNatGatewayStatus.lifecycle:type_name -> project.planton.shared.ApiResourceLifecycle
-	5, // 4: project.planton.provider.azure.azurenatgateway.v1.AzureNatGatewayStatus.audit:type_name -> project.planton.shared.ApiResourceAudit
-	6, // 5: project.planton.provider.azure.azurenatgateway.v1.AzureNatGatewayStatus.outputs:type_name -> project.planton.provider.azure.azurenatgateway.v1.AzureNatGatewayStackOutputs
-	6, // [6:6] is the sub-list for method output_type
-	6, // [6:6] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	4, // 3: project.planton.provider.azure.azurenatgateway.v1.AzureNatGatewayStatus.outputs:type_name -> project.planton.provider.azure.azurenatgateway.v1.AzureNatGatewayStackOutputs
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_provider_azure_azurenatgateway_v1_api_proto_init() }

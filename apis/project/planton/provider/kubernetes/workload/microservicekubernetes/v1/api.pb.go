@@ -108,12 +108,6 @@ func (x *MicroserviceKubernetes) GetStatus() *MicroserviceKubernetesStatus {
 // microservice-kubernetes-status
 type MicroserviceKubernetesStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// lifecycle
-	Lifecycle *shared.ApiResourceLifecycle `protobuf:"bytes,99,opt,name=lifecycle,proto3" json:"lifecycle,omitempty"`
-	// audit-info
-	Audit *shared.ApiResourceAudit `protobuf:"bytes,98,opt,name=audit,proto3" json:"audit,omitempty"`
-	// stack-job id
-	StackJobId string `protobuf:"bytes,97,opt,name=stack_job_id,json=stackJobId,proto3" json:"stack_job_id,omitempty"`
 	// stack-outputs
 	Outputs       *MicroserviceKubernetesStackOutputs `protobuf:"bytes,1,opt,name=outputs,proto3" json:"outputs,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -150,27 +144,6 @@ func (*MicroserviceKubernetesStatus) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_kubernetes_workload_microservicekubernetes_v1_api_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *MicroserviceKubernetesStatus) GetLifecycle() *shared.ApiResourceLifecycle {
-	if x != nil {
-		return x.Lifecycle
-	}
-	return nil
-}
-
-func (x *MicroserviceKubernetesStatus) GetAudit() *shared.ApiResourceAudit {
-	if x != nil {
-		return x.Audit
-	}
-	return nil
-}
-
-func (x *MicroserviceKubernetesStatus) GetStackJobId() string {
-	if x != nil {
-		return x.StackJobId
-	}
-	return ""
-}
-
 func (x *MicroserviceKubernetesStatus) GetOutputs() *MicroserviceKubernetesStackOutputs {
 	if x != nil {
 		return x.Outputs
@@ -191,12 +164,8 @@ const file_project_planton_provider_kubernetes_workload_microservicekubernetes_v
 	"\x16MicroserviceKubernetesR\x04kind\x12O\n" +
 	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12~\n" +
 	"\x04spec\x18\x04 \x01(\v2b.project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12|\n" +
-	"\x06status\x18\x05 \x01(\v2d.project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesStatusR\x06status\"\xd3\x02\n" +
-	"\x1cMicroserviceKubernetesStatus\x12J\n" +
-	"\tlifecycle\x18c \x01(\v2,.project.planton.shared.ApiResourceLifecycleR\tlifecycle\x12>\n" +
-	"\x05audit\x18b \x01(\v2(.project.planton.shared.ApiResourceAuditR\x05audit\x12 \n" +
-	"\fstack_job_id\x18a \x01(\tR\n" +
-	"stackJobId\x12\x84\x01\n" +
+	"\x06status\x18\x05 \x01(\v2d.project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesStatusR\x06status\"\xa5\x01\n" +
+	"\x1cMicroserviceKubernetesStatus\x12\x84\x01\n" +
 	"\aoutputs\x18\x01 \x01(\v2j.project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesStackOutputsR\aoutputsB\xa9\x04\n" +
 	"Jcom.project.planton.provider.kubernetes.workload.microservicekubernetes.v1B\bApiProtoP\x01Z\x8f\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/microservicekubernetes/v1;microservicekubernetesv1\xa2\x02\x06PPPKWM\xaa\x02FProject.Planton.Provider.Kubernetes.Workload.Microservicekubernetes.V1\xca\x02FProject\\Planton\\Provider\\Kubernetes\\Workload\\Microservicekubernetes\\V1\xe2\x02RProject\\Planton\\Provider\\Kubernetes\\Workload\\Microservicekubernetes\\V1\\GPBMetadata\xea\x02LProject::Planton::Provider::Kubernetes::Workload::Microservicekubernetes::V1b\x06proto3"
 
@@ -218,22 +187,18 @@ var file_project_planton_provider_kubernetes_workload_microservicekubernetes_v1_
 	(*MicroserviceKubernetesStatus)(nil),       // 1: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesStatus
 	(*shared.ApiResourceMetadata)(nil),         // 2: project.planton.shared.ApiResourceMetadata
 	(*MicroserviceKubernetesSpec)(nil),         // 3: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesSpec
-	(*shared.ApiResourceLifecycle)(nil),        // 4: project.planton.shared.ApiResourceLifecycle
-	(*shared.ApiResourceAudit)(nil),            // 5: project.planton.shared.ApiResourceAudit
-	(*MicroserviceKubernetesStackOutputs)(nil), // 6: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesStackOutputs
+	(*MicroserviceKubernetesStackOutputs)(nil), // 4: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesStackOutputs
 }
 var file_project_planton_provider_kubernetes_workload_microservicekubernetes_v1_api_proto_depIdxs = []int32{
 	2, // 0: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetes.metadata:type_name -> project.planton.shared.ApiResourceMetadata
 	3, // 1: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetes.spec:type_name -> project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesSpec
 	1, // 2: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetes.status:type_name -> project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesStatus
-	4, // 3: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesStatus.lifecycle:type_name -> project.planton.shared.ApiResourceLifecycle
-	5, // 4: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesStatus.audit:type_name -> project.planton.shared.ApiResourceAudit
-	6, // 5: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesStatus.outputs:type_name -> project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesStackOutputs
-	6, // [6:6] is the sub-list for method output_type
-	6, // [6:6] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	4, // 3: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesStatus.outputs:type_name -> project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesStackOutputs
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() {

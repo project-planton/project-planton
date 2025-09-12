@@ -108,12 +108,6 @@ func (x *OpenFgaKubernetes) GetStatus() *OpenFgaKubernetesStatus {
 // open-fga-kubernetes status.
 type OpenFgaKubernetesStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// lifecycle
-	Lifecycle *shared.ApiResourceLifecycle `protobuf:"bytes,99,opt,name=lifecycle,proto3" json:"lifecycle,omitempty"`
-	// audit-info
-	Audit *shared.ApiResourceAudit `protobuf:"bytes,98,opt,name=audit,proto3" json:"audit,omitempty"`
-	// stack-job id
-	StackJobId string `protobuf:"bytes,97,opt,name=stack_job_id,json=stackJobId,proto3" json:"stack_job_id,omitempty"`
 	// stack-outputs
 	Outputs       *OpenFgaKubernetesStackOutputs `protobuf:"bytes,1,opt,name=outputs,proto3" json:"outputs,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -150,27 +144,6 @@ func (*OpenFgaKubernetesStatus) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_kubernetes_workload_openfgakubernetes_v1_api_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *OpenFgaKubernetesStatus) GetLifecycle() *shared.ApiResourceLifecycle {
-	if x != nil {
-		return x.Lifecycle
-	}
-	return nil
-}
-
-func (x *OpenFgaKubernetesStatus) GetAudit() *shared.ApiResourceAudit {
-	if x != nil {
-		return x.Audit
-	}
-	return nil
-}
-
-func (x *OpenFgaKubernetesStatus) GetStackJobId() string {
-	if x != nil {
-		return x.StackJobId
-	}
-	return ""
-}
-
 func (x *OpenFgaKubernetesStatus) GetOutputs() *OpenFgaKubernetesStackOutputs {
 	if x != nil {
 		return x.Outputs
@@ -191,12 +164,8 @@ const file_project_planton_provider_kubernetes_workload_openfgakubernetes_v1_api
 	"\x11OpenFgaKubernetesR\x04kind\x12O\n" +
 	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12t\n" +
 	"\x04spec\x18\x04 \x01(\v2X.project.planton.provider.kubernetes.workload.openfgakubernetes.v1.OpenFgaKubernetesSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12r\n" +
-	"\x06status\x18\x05 \x01(\v2Z.project.planton.provider.kubernetes.workload.openfgakubernetes.v1.OpenFgaKubernetesStatusR\x06status\"\xc3\x02\n" +
-	"\x17OpenFgaKubernetesStatus\x12J\n" +
-	"\tlifecycle\x18c \x01(\v2,.project.planton.shared.ApiResourceLifecycleR\tlifecycle\x12>\n" +
-	"\x05audit\x18b \x01(\v2(.project.planton.shared.ApiResourceAuditR\x05audit\x12 \n" +
-	"\fstack_job_id\x18a \x01(\tR\n" +
-	"stackJobId\x12z\n" +
+	"\x06status\x18\x05 \x01(\v2Z.project.planton.provider.kubernetes.workload.openfgakubernetes.v1.OpenFgaKubernetesStatusR\x06status\"\x95\x01\n" +
+	"\x17OpenFgaKubernetesStatus\x12z\n" +
 	"\aoutputs\x18\x01 \x01(\v2`.project.planton.provider.kubernetes.workload.openfgakubernetes.v1.OpenFgaKubernetesStackOutputsR\aoutputsB\x86\x04\n" +
 	"Ecom.project.planton.provider.kubernetes.workload.openfgakubernetes.v1B\bApiProtoP\x01Z\x85\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/openfgakubernetes/v1;openfgakubernetesv1\xa2\x02\x06PPPKWO\xaa\x02AProject.Planton.Provider.Kubernetes.Workload.Openfgakubernetes.V1\xca\x02AProject\\Planton\\Provider\\Kubernetes\\Workload\\Openfgakubernetes\\V1\xe2\x02MProject\\Planton\\Provider\\Kubernetes\\Workload\\Openfgakubernetes\\V1\\GPBMetadata\xea\x02GProject::Planton::Provider::Kubernetes::Workload::Openfgakubernetes::V1b\x06proto3"
 
@@ -218,22 +187,18 @@ var file_project_planton_provider_kubernetes_workload_openfgakubernetes_v1_api_p
 	(*OpenFgaKubernetesStatus)(nil),       // 1: project.planton.provider.kubernetes.workload.openfgakubernetes.v1.OpenFgaKubernetesStatus
 	(*shared.ApiResourceMetadata)(nil),    // 2: project.planton.shared.ApiResourceMetadata
 	(*OpenFgaKubernetesSpec)(nil),         // 3: project.planton.provider.kubernetes.workload.openfgakubernetes.v1.OpenFgaKubernetesSpec
-	(*shared.ApiResourceLifecycle)(nil),   // 4: project.planton.shared.ApiResourceLifecycle
-	(*shared.ApiResourceAudit)(nil),       // 5: project.planton.shared.ApiResourceAudit
-	(*OpenFgaKubernetesStackOutputs)(nil), // 6: project.planton.provider.kubernetes.workload.openfgakubernetes.v1.OpenFgaKubernetesStackOutputs
+	(*OpenFgaKubernetesStackOutputs)(nil), // 4: project.planton.provider.kubernetes.workload.openfgakubernetes.v1.OpenFgaKubernetesStackOutputs
 }
 var file_project_planton_provider_kubernetes_workload_openfgakubernetes_v1_api_proto_depIdxs = []int32{
 	2, // 0: project.planton.provider.kubernetes.workload.openfgakubernetes.v1.OpenFgaKubernetes.metadata:type_name -> project.planton.shared.ApiResourceMetadata
 	3, // 1: project.planton.provider.kubernetes.workload.openfgakubernetes.v1.OpenFgaKubernetes.spec:type_name -> project.planton.provider.kubernetes.workload.openfgakubernetes.v1.OpenFgaKubernetesSpec
 	1, // 2: project.planton.provider.kubernetes.workload.openfgakubernetes.v1.OpenFgaKubernetes.status:type_name -> project.planton.provider.kubernetes.workload.openfgakubernetes.v1.OpenFgaKubernetesStatus
-	4, // 3: project.planton.provider.kubernetes.workload.openfgakubernetes.v1.OpenFgaKubernetesStatus.lifecycle:type_name -> project.planton.shared.ApiResourceLifecycle
-	5, // 4: project.planton.provider.kubernetes.workload.openfgakubernetes.v1.OpenFgaKubernetesStatus.audit:type_name -> project.planton.shared.ApiResourceAudit
-	6, // 5: project.planton.provider.kubernetes.workload.openfgakubernetes.v1.OpenFgaKubernetesStatus.outputs:type_name -> project.planton.provider.kubernetes.workload.openfgakubernetes.v1.OpenFgaKubernetesStackOutputs
-	6, // [6:6] is the sub-list for method output_type
-	6, // [6:6] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	4, // 3: project.planton.provider.kubernetes.workload.openfgakubernetes.v1.OpenFgaKubernetesStatus.outputs:type_name -> project.planton.provider.kubernetes.workload.openfgakubernetes.v1.OpenFgaKubernetesStackOutputs
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_provider_kubernetes_workload_openfgakubernetes_v1_api_proto_init() }

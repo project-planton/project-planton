@@ -35,7 +35,7 @@ type AzureCredential struct {
 	// spec
 	Spec *AzureCredentialSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status
-	Status        *shared.ApiResourceLifecycleAndAuditStatus `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
+	Status        *shared.ApiResourceAuditStatus `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -98,7 +98,7 @@ func (x *AzureCredential) GetSpec() *AzureCredentialSpec {
 	return nil
 }
 
-func (x *AzureCredential) GetStatus() *shared.ApiResourceLifecycleAndAuditStatus {
+func (x *AzureCredential) GetStatus() *shared.ApiResourceAuditStatus {
 	if x != nil {
 		return x.Status
 	}
@@ -109,7 +109,7 @@ var File_project_planton_credential_azurecredential_v1_api_proto protoreflect.Fi
 
 const file_project_planton_credential_azurecredential_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"7project/planton/credential/azurecredential/v1/api.proto\x12-project.planton.credential.azurecredential.v1\x1a\x1bbuf/validate/validate.proto\x1a8project/planton/credential/azurecredential/v1/spec.proto\x1a#project/planton/shared/status.proto\x1a%project/planton/shared/metadata.proto\"\x85\x03\n" +
+	"7project/planton/credential/azurecredential/v1/api.proto\x12-project.planton.credential.azurecredential.v1\x1a\x1bbuf/validate/validate.proto\x1a8project/planton/credential/azurecredential/v1/spec.proto\x1a#project/planton/shared/status.proto\x1a%project/planton/shared/metadata.proto\"\xf9\x02\n" +
 	"\x0fAzureCredential\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!credential.project-planton.org/v1R\n" +
@@ -117,8 +117,8 @@ const file_project_planton_credential_azurecredential_v1_api_proto_rawDesc = "" 
 	"\x04kind\x18\x02 \x01(\tB\x16\xbaH\x13r\x11\n" +
 	"\x0fAzureCredentialR\x04kind\x12O\n" +
 	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12V\n" +
-	"\x04spec\x18\x04 \x01(\v2B.project.planton.credential.azurecredential.v1.AzureCredentialSpecR\x04spec\x12R\n" +
-	"\x06status\x18\x05 \x01(\v2:.project.planton.shared.ApiResourceLifecycleAndAuditStatusR\x06statusB\x87\x03\n" +
+	"\x04spec\x18\x04 \x01(\v2B.project.planton.credential.azurecredential.v1.AzureCredentialSpecR\x04spec\x12F\n" +
+	"\x06status\x18\x05 \x01(\v2..project.planton.shared.ApiResourceAuditStatusR\x06statusB\x87\x03\n" +
 	"1com.project.planton.credential.azurecredential.v1B\bApiProtoP\x01Zogithub.com/project-planton/project-planton/apis/project/planton/credential/azurecredential/v1;azurecredentialv1\xa2\x02\x04PPCA\xaa\x02-Project.Planton.Credential.Azurecredential.V1\xca\x02-Project\\Planton\\Credential\\Azurecredential\\V1\xe2\x029Project\\Planton\\Credential\\Azurecredential\\V1\\GPBMetadata\xea\x021Project::Planton::Credential::Azurecredential::V1b\x06proto3"
 
 var (
@@ -135,15 +135,15 @@ func file_project_planton_credential_azurecredential_v1_api_proto_rawDescGZIP() 
 
 var file_project_planton_credential_azurecredential_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_credential_azurecredential_v1_api_proto_goTypes = []any{
-	(*AzureCredential)(nil),                           // 0: project.planton.credential.azurecredential.v1.AzureCredential
-	(*shared.ApiResourceMetadata)(nil),                // 1: project.planton.shared.ApiResourceMetadata
-	(*AzureCredentialSpec)(nil),                       // 2: project.planton.credential.azurecredential.v1.AzureCredentialSpec
-	(*shared.ApiResourceLifecycleAndAuditStatus)(nil), // 3: project.planton.shared.ApiResourceLifecycleAndAuditStatus
+	(*AzureCredential)(nil),               // 0: project.planton.credential.azurecredential.v1.AzureCredential
+	(*shared.ApiResourceMetadata)(nil),    // 1: project.planton.shared.ApiResourceMetadata
+	(*AzureCredentialSpec)(nil),           // 2: project.planton.credential.azurecredential.v1.AzureCredentialSpec
+	(*shared.ApiResourceAuditStatus)(nil), // 3: project.planton.shared.ApiResourceAuditStatus
 }
 var file_project_planton_credential_azurecredential_v1_api_proto_depIdxs = []int32{
 	1, // 0: project.planton.credential.azurecredential.v1.AzureCredential.metadata:type_name -> project.planton.shared.ApiResourceMetadata
 	2, // 1: project.planton.credential.azurecredential.v1.AzureCredential.spec:type_name -> project.planton.credential.azurecredential.v1.AzureCredentialSpec
-	3, // 2: project.planton.credential.azurecredential.v1.AzureCredential.status:type_name -> project.planton.shared.ApiResourceLifecycleAndAuditStatus
+	3, // 2: project.planton.credential.azurecredential.v1.AzureCredential.status:type_name -> project.planton.shared.ApiResourceAuditStatus
 	3, // [3:3] is the sub-list for method output_type
 	3, // [3:3] is the sub-list for method input_type
 	3, // [3:3] is the sub-list for extension type_name

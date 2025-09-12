@@ -108,12 +108,6 @@ func (x *CivoVpc) GetStatus() *CivoVpcStatus {
 // civo-vpc status
 type CivoVpcStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// lifecycle
-	Lifecycle *shared.ApiResourceLifecycle `protobuf:"bytes,99,opt,name=lifecycle,proto3" json:"lifecycle,omitempty"`
-	// audit-info
-	Audit *shared.ApiResourceAudit `protobuf:"bytes,98,opt,name=audit,proto3" json:"audit,omitempty"`
-	// stack-job id
-	StackJobId string `protobuf:"bytes,97,opt,name=stack_job_id,json=stackJobId,proto3" json:"stack_job_id,omitempty"`
 	// stack-outputs
 	//
 	//	civo-vpc stack-outputs
@@ -152,27 +146,6 @@ func (*CivoVpcStatus) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_civo_civovpc_v1_api_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *CivoVpcStatus) GetLifecycle() *shared.ApiResourceLifecycle {
-	if x != nil {
-		return x.Lifecycle
-	}
-	return nil
-}
-
-func (x *CivoVpcStatus) GetAudit() *shared.ApiResourceAudit {
-	if x != nil {
-		return x.Audit
-	}
-	return nil
-}
-
-func (x *CivoVpcStatus) GetStackJobId() string {
-	if x != nil {
-		return x.StackJobId
-	}
-	return ""
-}
-
 func (x *CivoVpcStatus) GetOutputs() *CivoVpcStackOutputs {
 	if x != nil {
 		return x.Outputs
@@ -193,12 +166,8 @@ const file_project_planton_provider_civo_civovpc_v1_api_proto_rawDesc = "" +
 	"\aCivoVpcR\x04kind\x12O\n" +
 	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12Q\n" +
 	"\x04spec\x18\x04 \x01(\v25.project.planton.provider.civo.civovpc.v1.CivoVpcSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12O\n" +
-	"\x06status\x18\x05 \x01(\v27.project.planton.provider.civo.civovpc.v1.CivoVpcStatusR\x06status\"\x96\x02\n" +
-	"\rCivoVpcStatus\x12J\n" +
-	"\tlifecycle\x18c \x01(\v2,.project.planton.shared.ApiResourceLifecycleR\tlifecycle\x12>\n" +
-	"\x05audit\x18b \x01(\v2(.project.planton.shared.ApiResourceAuditR\x05audit\x12 \n" +
-	"\fstack_job_id\x18a \x01(\tR\n" +
-	"stackJobId\x12W\n" +
+	"\x06status\x18\x05 \x01(\v27.project.planton.provider.civo.civovpc.v1.CivoVpcStatusR\x06status\"h\n" +
+	"\rCivoVpcStatus\x12W\n" +
 	"\aoutputs\x18\x01 \x01(\v2=.project.planton.provider.civo.civovpc.v1.CivoVpcStackOutputsR\aoutputsB\xe3\x02\n" +
 	",com.project.planton.provider.civo.civovpc.v1B\bApiProtoP\x01Zbgithub.com/project-planton/project-planton/apis/project/planton/provider/civo/civovpc/v1;civovpcv1\xa2\x02\x05PPPCC\xaa\x02(Project.Planton.Provider.Civo.Civovpc.V1\xca\x02(Project\\Planton\\Provider\\Civo\\Civovpc\\V1\xe2\x024Project\\Planton\\Provider\\Civo\\Civovpc\\V1\\GPBMetadata\xea\x02-Project::Planton::Provider::Civo::Civovpc::V1b\x06proto3"
 
@@ -216,26 +185,22 @@ func file_project_planton_provider_civo_civovpc_v1_api_proto_rawDescGZIP() []byt
 
 var file_project_planton_provider_civo_civovpc_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_civo_civovpc_v1_api_proto_goTypes = []any{
-	(*CivoVpc)(nil),                     // 0: project.planton.provider.civo.civovpc.v1.CivoVpc
-	(*CivoVpcStatus)(nil),               // 1: project.planton.provider.civo.civovpc.v1.CivoVpcStatus
-	(*shared.ApiResourceMetadata)(nil),  // 2: project.planton.shared.ApiResourceMetadata
-	(*CivoVpcSpec)(nil),                 // 3: project.planton.provider.civo.civovpc.v1.CivoVpcSpec
-	(*shared.ApiResourceLifecycle)(nil), // 4: project.planton.shared.ApiResourceLifecycle
-	(*shared.ApiResourceAudit)(nil),     // 5: project.planton.shared.ApiResourceAudit
-	(*CivoVpcStackOutputs)(nil),         // 6: project.planton.provider.civo.civovpc.v1.CivoVpcStackOutputs
+	(*CivoVpc)(nil),                    // 0: project.planton.provider.civo.civovpc.v1.CivoVpc
+	(*CivoVpcStatus)(nil),              // 1: project.planton.provider.civo.civovpc.v1.CivoVpcStatus
+	(*shared.ApiResourceMetadata)(nil), // 2: project.planton.shared.ApiResourceMetadata
+	(*CivoVpcSpec)(nil),                // 3: project.planton.provider.civo.civovpc.v1.CivoVpcSpec
+	(*CivoVpcStackOutputs)(nil),        // 4: project.planton.provider.civo.civovpc.v1.CivoVpcStackOutputs
 }
 var file_project_planton_provider_civo_civovpc_v1_api_proto_depIdxs = []int32{
 	2, // 0: project.planton.provider.civo.civovpc.v1.CivoVpc.metadata:type_name -> project.planton.shared.ApiResourceMetadata
 	3, // 1: project.planton.provider.civo.civovpc.v1.CivoVpc.spec:type_name -> project.planton.provider.civo.civovpc.v1.CivoVpcSpec
 	1, // 2: project.planton.provider.civo.civovpc.v1.CivoVpc.status:type_name -> project.planton.provider.civo.civovpc.v1.CivoVpcStatus
-	4, // 3: project.planton.provider.civo.civovpc.v1.CivoVpcStatus.lifecycle:type_name -> project.planton.shared.ApiResourceLifecycle
-	5, // 4: project.planton.provider.civo.civovpc.v1.CivoVpcStatus.audit:type_name -> project.planton.shared.ApiResourceAudit
-	6, // 5: project.planton.provider.civo.civovpc.v1.CivoVpcStatus.outputs:type_name -> project.planton.provider.civo.civovpc.v1.CivoVpcStackOutputs
-	6, // [6:6] is the sub-list for method output_type
-	6, // [6:6] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	4, // 3: project.planton.provider.civo.civovpc.v1.CivoVpcStatus.outputs:type_name -> project.planton.provider.civo.civovpc.v1.CivoVpcStackOutputs
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_provider_civo_civovpc_v1_api_proto_init() }

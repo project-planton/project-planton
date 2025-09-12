@@ -35,7 +35,7 @@ type KubernetesClusterCredential struct {
 	// spec
 	Spec *KubernetesClusterCredentialSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status
-	Status        *shared.ApiResourceLifecycleAndAuditStatus `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
+	Status        *shared.ApiResourceAuditStatus `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -98,7 +98,7 @@ func (x *KubernetesClusterCredential) GetSpec() *KubernetesClusterCredentialSpec
 	return nil
 }
 
-func (x *KubernetesClusterCredential) GetStatus() *shared.ApiResourceLifecycleAndAuditStatus {
+func (x *KubernetesClusterCredential) GetStatus() *shared.ApiResourceAuditStatus {
 	if x != nil {
 		return x.Status
 	}
@@ -109,7 +109,7 @@ var File_project_planton_credential_kubernetesclustercredential_v1_api_proto pro
 
 const file_project_planton_credential_kubernetesclustercredential_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Cproject/planton/credential/kubernetesclustercredential/v1/api.proto\x129project.planton.credential.kubernetesclustercredential.v1\x1a\x1bbuf/validate/validate.proto\x1a#project/planton/shared/status.proto\x1a%project/planton/shared/metadata.proto\x1aDproject/planton/credential/kubernetesclustercredential/v1/spec.proto\"\xb5\x03\n" +
+	"Cproject/planton/credential/kubernetesclustercredential/v1/api.proto\x129project.planton.credential.kubernetesclustercredential.v1\x1a\x1bbuf/validate/validate.proto\x1a#project/planton/shared/status.proto\x1a%project/planton/shared/metadata.proto\x1aDproject/planton/credential/kubernetesclustercredential/v1/spec.proto\"\xa9\x03\n" +
 	"\x1bKubernetesClusterCredential\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!credential.project-planton.org/v1R\n" +
@@ -117,8 +117,8 @@ const file_project_planton_credential_kubernetesclustercredential_v1_api_proto_r
 	"\x04kind\x18\x02 \x01(\tB\"\xbaH\x1fr\x1d\n" +
 	"\x1bKubernetesClusterCredentialR\x04kind\x12O\n" +
 	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12n\n" +
-	"\x04spec\x18\x04 \x01(\v2Z.project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpecR\x04spec\x12R\n" +
-	"\x06status\x18\x05 \x01(\v2:.project.planton.shared.ApiResourceLifecycleAndAuditStatusR\x06statusB\xdc\x03\n" +
+	"\x04spec\x18\x04 \x01(\v2Z.project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpecR\x04spec\x12F\n" +
+	"\x06status\x18\x05 \x01(\v2..project.planton.shared.ApiResourceAuditStatusR\x06statusB\xdc\x03\n" +
 	"=com.project.planton.credential.kubernetesclustercredential.v1B\bApiProtoP\x01Z\x87\x01github.com/project-planton/project-planton/apis/project/planton/credential/kubernetesclustercredential/v1;kubernetesclustercredentialv1\xa2\x02\x04PPCK\xaa\x029Project.Planton.Credential.Kubernetesclustercredential.V1\xca\x029Project\\Planton\\Credential\\Kubernetesclustercredential\\V1\xe2\x02EProject\\Planton\\Credential\\Kubernetesclustercredential\\V1\\GPBMetadata\xea\x02=Project::Planton::Credential::Kubernetesclustercredential::V1b\x06proto3"
 
 var (
@@ -135,15 +135,15 @@ func file_project_planton_credential_kubernetesclustercredential_v1_api_proto_ra
 
 var file_project_planton_credential_kubernetesclustercredential_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_credential_kubernetesclustercredential_v1_api_proto_goTypes = []any{
-	(*KubernetesClusterCredential)(nil),               // 0: project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredential
-	(*shared.ApiResourceMetadata)(nil),                // 1: project.planton.shared.ApiResourceMetadata
-	(*KubernetesClusterCredentialSpec)(nil),           // 2: project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec
-	(*shared.ApiResourceLifecycleAndAuditStatus)(nil), // 3: project.planton.shared.ApiResourceLifecycleAndAuditStatus
+	(*KubernetesClusterCredential)(nil),     // 0: project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredential
+	(*shared.ApiResourceMetadata)(nil),      // 1: project.planton.shared.ApiResourceMetadata
+	(*KubernetesClusterCredentialSpec)(nil), // 2: project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec
+	(*shared.ApiResourceAuditStatus)(nil),   // 3: project.planton.shared.ApiResourceAuditStatus
 }
 var file_project_planton_credential_kubernetesclustercredential_v1_api_proto_depIdxs = []int32{
 	1, // 0: project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredential.metadata:type_name -> project.planton.shared.ApiResourceMetadata
 	2, // 1: project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredential.spec:type_name -> project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec
-	3, // 2: project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredential.status:type_name -> project.planton.shared.ApiResourceLifecycleAndAuditStatus
+	3, // 2: project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredential.status:type_name -> project.planton.shared.ApiResourceAuditStatus
 	3, // [3:3] is the sub-list for method output_type
 	3, // [3:3] is the sub-list for method input_type
 	3, // [3:3] is the sub-list for extension type_name

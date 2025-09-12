@@ -36,15 +36,6 @@ message DigitalOceanLoadBalancer {
 
 // digital-ocean-load-balancer status
 message DigitalOceanLoadBalancerStatus {
-  //lifecycle
-  project.planton.shared.ApiResourceLifecycle lifecycle = 99;
-
-  //audit-info
-  project.planton.shared.ApiResourceAudit audit = 98;
-
-  //stack-job id
-  string stack_job_id = 97;
-
   //stack-outputs
   //  digital-ocean-load-balancer stack-outputs
   DigitalOceanLoadBalancerStackOutputs outputs = 1;

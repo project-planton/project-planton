@@ -108,12 +108,6 @@ func (x *KafkaOperatorKubernetes) GetStatus() *KafkaOperatorKubernetesStatus {
 // kafka-operator-kubernetes status.
 type KafkaOperatorKubernetesStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// lifecycle
-	Lifecycle *shared.ApiResourceLifecycle `protobuf:"bytes,99,opt,name=lifecycle,proto3" json:"lifecycle,omitempty"`
-	// audit-info
-	Audit *shared.ApiResourceAudit `protobuf:"bytes,98,opt,name=audit,proto3" json:"audit,omitempty"`
-	// stack-job id
-	StackJobId string `protobuf:"bytes,97,opt,name=stack_job_id,json=stackJobId,proto3" json:"stack_job_id,omitempty"`
 	// stack-outputs
 	Outputs       *KafkaOperatorKubernetesStackOutputs `protobuf:"bytes,1,opt,name=outputs,proto3" json:"outputs,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -150,27 +144,6 @@ func (*KafkaOperatorKubernetesStatus) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_kubernetes_addon_kafkaoperatorkubernetes_v1_api_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *KafkaOperatorKubernetesStatus) GetLifecycle() *shared.ApiResourceLifecycle {
-	if x != nil {
-		return x.Lifecycle
-	}
-	return nil
-}
-
-func (x *KafkaOperatorKubernetesStatus) GetAudit() *shared.ApiResourceAudit {
-	if x != nil {
-		return x.Audit
-	}
-	return nil
-}
-
-func (x *KafkaOperatorKubernetesStatus) GetStackJobId() string {
-	if x != nil {
-		return x.StackJobId
-	}
-	return ""
-}
-
 func (x *KafkaOperatorKubernetesStatus) GetOutputs() *KafkaOperatorKubernetesStackOutputs {
 	if x != nil {
 		return x.Outputs
@@ -191,12 +164,8 @@ const file_project_planton_provider_kubernetes_addon_kafkaoperatorkubernetes_v1_
 	"\x17KafkaOperatorKubernetesR\x04kind\x12O\n" +
 	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12}\n" +
 	"\x04spec\x18\x04 \x01(\v2a.project.planton.provider.kubernetes.addon.kafkaoperatorkubernetes.v1.KafkaOperatorKubernetesSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12{\n" +
-	"\x06status\x18\x05 \x01(\v2c.project.planton.provider.kubernetes.addon.kafkaoperatorkubernetes.v1.KafkaOperatorKubernetesStatusR\x06status\"\xd3\x02\n" +
-	"\x1dKafkaOperatorKubernetesStatus\x12J\n" +
-	"\tlifecycle\x18c \x01(\v2,.project.planton.shared.ApiResourceLifecycleR\tlifecycle\x12>\n" +
-	"\x05audit\x18b \x01(\v2(.project.planton.shared.ApiResourceAuditR\x05audit\x12 \n" +
-	"\fstack_job_id\x18a \x01(\tR\n" +
-	"stackJobId\x12\x83\x01\n" +
+	"\x06status\x18\x05 \x01(\v2c.project.planton.provider.kubernetes.addon.kafkaoperatorkubernetes.v1.KafkaOperatorKubernetesStatusR\x06status\"\xa5\x01\n" +
+	"\x1dKafkaOperatorKubernetesStatus\x12\x83\x01\n" +
 	"\aoutputs\x18\x01 \x01(\v2i.project.planton.provider.kubernetes.addon.kafkaoperatorkubernetes.v1.KafkaOperatorKubernetesStackOutputsR\aoutputsB\x9e\x04\n" +
 	"Hcom.project.planton.provider.kubernetes.addon.kafkaoperatorkubernetes.v1B\bApiProtoP\x01Z\x8e\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/addon/kafkaoperatorkubernetes/v1;kafkaoperatorkubernetesv1\xa2\x02\x06PPPKAK\xaa\x02DProject.Planton.Provider.Kubernetes.Addon.Kafkaoperatorkubernetes.V1\xca\x02DProject\\Planton\\Provider\\Kubernetes\\Addon\\Kafkaoperatorkubernetes\\V1\xe2\x02PProject\\Planton\\Provider\\Kubernetes\\Addon\\Kafkaoperatorkubernetes\\V1\\GPBMetadata\xea\x02JProject::Planton::Provider::Kubernetes::Addon::Kafkaoperatorkubernetes::V1b\x06proto3"
 
@@ -218,22 +187,18 @@ var file_project_planton_provider_kubernetes_addon_kafkaoperatorkubernetes_v1_ap
 	(*KafkaOperatorKubernetesStatus)(nil),       // 1: project.planton.provider.kubernetes.addon.kafkaoperatorkubernetes.v1.KafkaOperatorKubernetesStatus
 	(*shared.ApiResourceMetadata)(nil),          // 2: project.planton.shared.ApiResourceMetadata
 	(*KafkaOperatorKubernetesSpec)(nil),         // 3: project.planton.provider.kubernetes.addon.kafkaoperatorkubernetes.v1.KafkaOperatorKubernetesSpec
-	(*shared.ApiResourceLifecycle)(nil),         // 4: project.planton.shared.ApiResourceLifecycle
-	(*shared.ApiResourceAudit)(nil),             // 5: project.planton.shared.ApiResourceAudit
-	(*KafkaOperatorKubernetesStackOutputs)(nil), // 6: project.planton.provider.kubernetes.addon.kafkaoperatorkubernetes.v1.KafkaOperatorKubernetesStackOutputs
+	(*KafkaOperatorKubernetesStackOutputs)(nil), // 4: project.planton.provider.kubernetes.addon.kafkaoperatorkubernetes.v1.KafkaOperatorKubernetesStackOutputs
 }
 var file_project_planton_provider_kubernetes_addon_kafkaoperatorkubernetes_v1_api_proto_depIdxs = []int32{
 	2, // 0: project.planton.provider.kubernetes.addon.kafkaoperatorkubernetes.v1.KafkaOperatorKubernetes.metadata:type_name -> project.planton.shared.ApiResourceMetadata
 	3, // 1: project.planton.provider.kubernetes.addon.kafkaoperatorkubernetes.v1.KafkaOperatorKubernetes.spec:type_name -> project.planton.provider.kubernetes.addon.kafkaoperatorkubernetes.v1.KafkaOperatorKubernetesSpec
 	1, // 2: project.planton.provider.kubernetes.addon.kafkaoperatorkubernetes.v1.KafkaOperatorKubernetes.status:type_name -> project.planton.provider.kubernetes.addon.kafkaoperatorkubernetes.v1.KafkaOperatorKubernetesStatus
-	4, // 3: project.planton.provider.kubernetes.addon.kafkaoperatorkubernetes.v1.KafkaOperatorKubernetesStatus.lifecycle:type_name -> project.planton.shared.ApiResourceLifecycle
-	5, // 4: project.planton.provider.kubernetes.addon.kafkaoperatorkubernetes.v1.KafkaOperatorKubernetesStatus.audit:type_name -> project.planton.shared.ApiResourceAudit
-	6, // 5: project.planton.provider.kubernetes.addon.kafkaoperatorkubernetes.v1.KafkaOperatorKubernetesStatus.outputs:type_name -> project.planton.provider.kubernetes.addon.kafkaoperatorkubernetes.v1.KafkaOperatorKubernetesStackOutputs
-	6, // [6:6] is the sub-list for method output_type
-	6, // [6:6] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	4, // 3: project.planton.provider.kubernetes.addon.kafkaoperatorkubernetes.v1.KafkaOperatorKubernetesStatus.outputs:type_name -> project.planton.provider.kubernetes.addon.kafkaoperatorkubernetes.v1.KafkaOperatorKubernetesStackOutputs
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() {

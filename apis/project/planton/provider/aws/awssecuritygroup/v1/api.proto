@@ -36,15 +36,6 @@ message AwsSecurityGroup {
 
 //aws-security-group status
 message AwsSecurityGroupStatus {
-  //lifecycle
-  project.planton.shared.ApiResourceLifecycle lifecycle = 99;
-
-  //audit-info
-  project.planton.shared.ApiResourceAudit audit = 98;
-
-  //stack-job id
-  string stack_job_id = 97;
-
   //stack-outputs
   AwsSecurityGroupStackOutputs outputs = 1;
 }

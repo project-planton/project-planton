@@ -108,12 +108,6 @@ func (x *GcpSubnetwork) GetStatus() *GcpSubnetworkStatus {
 // gcp-subnetwork status
 type GcpSubnetworkStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// lifecycle
-	Lifecycle *shared.ApiResourceLifecycle `protobuf:"bytes,99,opt,name=lifecycle,proto3" json:"lifecycle,omitempty"`
-	// audit-info
-	Audit *shared.ApiResourceAudit `protobuf:"bytes,98,opt,name=audit,proto3" json:"audit,omitempty"`
-	// stack-job id
-	StackJobId string `protobuf:"bytes,97,opt,name=stack_job_id,json=stackJobId,proto3" json:"stack_job_id,omitempty"`
 	// stack-outputs
 	//
 	//	stack outputs
@@ -152,27 +146,6 @@ func (*GcpSubnetworkStatus) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_gcp_gcpsubnetwork_v1_api_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *GcpSubnetworkStatus) GetLifecycle() *shared.ApiResourceLifecycle {
-	if x != nil {
-		return x.Lifecycle
-	}
-	return nil
-}
-
-func (x *GcpSubnetworkStatus) GetAudit() *shared.ApiResourceAudit {
-	if x != nil {
-		return x.Audit
-	}
-	return nil
-}
-
-func (x *GcpSubnetworkStatus) GetStackJobId() string {
-	if x != nil {
-		return x.StackJobId
-	}
-	return ""
-}
-
 func (x *GcpSubnetworkStatus) GetOutputs() *GcpSubnetworkStackOutputs {
 	if x != nil {
 		return x.Outputs
@@ -193,12 +166,8 @@ const file_project_planton_provider_gcp_gcpsubnetwork_v1_api_proto_rawDesc = "" 
 	"\rGcpSubnetworkR\x04kind\x12O\n" +
 	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12\\\n" +
 	"\x04spec\x18\x04 \x01(\v2@.project.planton.provider.gcp.gcpsubnetwork.v1.GcpSubnetworkSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12Z\n" +
-	"\x06status\x18\x05 \x01(\v2B.project.planton.provider.gcp.gcpsubnetwork.v1.GcpSubnetworkStatusR\x06status\"\xa7\x02\n" +
-	"\x13GcpSubnetworkStatus\x12J\n" +
-	"\tlifecycle\x18c \x01(\v2,.project.planton.shared.ApiResourceLifecycleR\tlifecycle\x12>\n" +
-	"\x05audit\x18b \x01(\v2(.project.planton.shared.ApiResourceAuditR\x05audit\x12 \n" +
-	"\fstack_job_id\x18a \x01(\tR\n" +
-	"stackJobId\x12b\n" +
+	"\x06status\x18\x05 \x01(\v2B.project.planton.provider.gcp.gcpsubnetwork.v1.GcpSubnetworkStatusR\x06status\"y\n" +
+	"\x13GcpSubnetworkStatus\x12b\n" +
 	"\aoutputs\x18\x01 \x01(\v2H.project.planton.provider.gcp.gcpsubnetwork.v1.GcpSubnetworkStackOutputsR\aoutputsB\x87\x03\n" +
 	"1com.project.planton.provider.gcp.gcpsubnetwork.v1B\bApiProtoP\x01Zmgithub.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpsubnetwork/v1;gcpsubnetworkv1\xa2\x02\x05PPPGG\xaa\x02-Project.Planton.Provider.Gcp.Gcpsubnetwork.V1\xca\x02-Project\\Planton\\Provider\\Gcp\\Gcpsubnetwork\\V1\xe2\x029Project\\Planton\\Provider\\Gcp\\Gcpsubnetwork\\V1\\GPBMetadata\xea\x022Project::Planton::Provider::Gcp::Gcpsubnetwork::V1b\x06proto3"
 
@@ -216,26 +185,22 @@ func file_project_planton_provider_gcp_gcpsubnetwork_v1_api_proto_rawDescGZIP() 
 
 var file_project_planton_provider_gcp_gcpsubnetwork_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_gcp_gcpsubnetwork_v1_api_proto_goTypes = []any{
-	(*GcpSubnetwork)(nil),               // 0: project.planton.provider.gcp.gcpsubnetwork.v1.GcpSubnetwork
-	(*GcpSubnetworkStatus)(nil),         // 1: project.planton.provider.gcp.gcpsubnetwork.v1.GcpSubnetworkStatus
-	(*shared.ApiResourceMetadata)(nil),  // 2: project.planton.shared.ApiResourceMetadata
-	(*GcpSubnetworkSpec)(nil),           // 3: project.planton.provider.gcp.gcpsubnetwork.v1.GcpSubnetworkSpec
-	(*shared.ApiResourceLifecycle)(nil), // 4: project.planton.shared.ApiResourceLifecycle
-	(*shared.ApiResourceAudit)(nil),     // 5: project.planton.shared.ApiResourceAudit
-	(*GcpSubnetworkStackOutputs)(nil),   // 6: project.planton.provider.gcp.gcpsubnetwork.v1.GcpSubnetworkStackOutputs
+	(*GcpSubnetwork)(nil),              // 0: project.planton.provider.gcp.gcpsubnetwork.v1.GcpSubnetwork
+	(*GcpSubnetworkStatus)(nil),        // 1: project.planton.provider.gcp.gcpsubnetwork.v1.GcpSubnetworkStatus
+	(*shared.ApiResourceMetadata)(nil), // 2: project.planton.shared.ApiResourceMetadata
+	(*GcpSubnetworkSpec)(nil),          // 3: project.planton.provider.gcp.gcpsubnetwork.v1.GcpSubnetworkSpec
+	(*GcpSubnetworkStackOutputs)(nil),  // 4: project.planton.provider.gcp.gcpsubnetwork.v1.GcpSubnetworkStackOutputs
 }
 var file_project_planton_provider_gcp_gcpsubnetwork_v1_api_proto_depIdxs = []int32{
 	2, // 0: project.planton.provider.gcp.gcpsubnetwork.v1.GcpSubnetwork.metadata:type_name -> project.planton.shared.ApiResourceMetadata
 	3, // 1: project.planton.provider.gcp.gcpsubnetwork.v1.GcpSubnetwork.spec:type_name -> project.planton.provider.gcp.gcpsubnetwork.v1.GcpSubnetworkSpec
 	1, // 2: project.planton.provider.gcp.gcpsubnetwork.v1.GcpSubnetwork.status:type_name -> project.planton.provider.gcp.gcpsubnetwork.v1.GcpSubnetworkStatus
-	4, // 3: project.planton.provider.gcp.gcpsubnetwork.v1.GcpSubnetworkStatus.lifecycle:type_name -> project.planton.shared.ApiResourceLifecycle
-	5, // 4: project.planton.provider.gcp.gcpsubnetwork.v1.GcpSubnetworkStatus.audit:type_name -> project.planton.shared.ApiResourceAudit
-	6, // 5: project.planton.provider.gcp.gcpsubnetwork.v1.GcpSubnetworkStatus.outputs:type_name -> project.planton.provider.gcp.gcpsubnetwork.v1.GcpSubnetworkStackOutputs
-	6, // [6:6] is the sub-list for method output_type
-	6, // [6:6] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	4, // 3: project.planton.provider.gcp.gcpsubnetwork.v1.GcpSubnetworkStatus.outputs:type_name -> project.planton.provider.gcp.gcpsubnetwork.v1.GcpSubnetworkStackOutputs
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_provider_gcp_gcpsubnetwork_v1_api_proto_init() }

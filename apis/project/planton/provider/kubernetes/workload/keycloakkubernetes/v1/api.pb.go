@@ -108,12 +108,6 @@ func (x *KeycloakKubernetes) GetStatus() *KeycloakKubernetesStatus {
 // keycloak-kubernetes status.
 type KeycloakKubernetesStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// lifecycle
-	Lifecycle *shared.ApiResourceLifecycle `protobuf:"bytes,99,opt,name=lifecycle,proto3" json:"lifecycle,omitempty"`
-	// audit-info
-	Audit *shared.ApiResourceAudit `protobuf:"bytes,98,opt,name=audit,proto3" json:"audit,omitempty"`
-	// stack-job id
-	StackJobId string `protobuf:"bytes,97,opt,name=stack_job_id,json=stackJobId,proto3" json:"stack_job_id,omitempty"`
 	// stack-outputs
 	Outputs       *KeycloakKubernetesStackOutputs `protobuf:"bytes,1,opt,name=outputs,proto3" json:"outputs,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -150,27 +144,6 @@ func (*KeycloakKubernetesStatus) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_kubernetes_workload_keycloakkubernetes_v1_api_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *KeycloakKubernetesStatus) GetLifecycle() *shared.ApiResourceLifecycle {
-	if x != nil {
-		return x.Lifecycle
-	}
-	return nil
-}
-
-func (x *KeycloakKubernetesStatus) GetAudit() *shared.ApiResourceAudit {
-	if x != nil {
-		return x.Audit
-	}
-	return nil
-}
-
-func (x *KeycloakKubernetesStatus) GetStackJobId() string {
-	if x != nil {
-		return x.StackJobId
-	}
-	return ""
-}
-
 func (x *KeycloakKubernetesStatus) GetOutputs() *KeycloakKubernetesStackOutputs {
 	if x != nil {
 		return x.Outputs
@@ -191,12 +164,8 @@ const file_project_planton_provider_kubernetes_workload_keycloakkubernetes_v1_ap
 	"\x12KeycloakKubernetesR\x04kind\x12O\n" +
 	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12v\n" +
 	"\x04spec\x18\x04 \x01(\v2Z.project.planton.provider.kubernetes.workload.keycloakkubernetes.v1.KeycloakKubernetesSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12t\n" +
-	"\x06status\x18\x05 \x01(\v2\\.project.planton.provider.kubernetes.workload.keycloakkubernetes.v1.KeycloakKubernetesStatusR\x06status\"\xc6\x02\n" +
-	"\x18KeycloakKubernetesStatus\x12J\n" +
-	"\tlifecycle\x18c \x01(\v2,.project.planton.shared.ApiResourceLifecycleR\tlifecycle\x12>\n" +
-	"\x05audit\x18b \x01(\v2(.project.planton.shared.ApiResourceAuditR\x05audit\x12 \n" +
-	"\fstack_job_id\x18a \x01(\tR\n" +
-	"stackJobId\x12|\n" +
+	"\x06status\x18\x05 \x01(\v2\\.project.planton.provider.kubernetes.workload.keycloakkubernetes.v1.KeycloakKubernetesStatusR\x06status\"\x98\x01\n" +
+	"\x18KeycloakKubernetesStatus\x12|\n" +
 	"\aoutputs\x18\x01 \x01(\v2b.project.planton.provider.kubernetes.workload.keycloakkubernetes.v1.KeycloakKubernetesStackOutputsR\aoutputsB\x8d\x04\n" +
 	"Fcom.project.planton.provider.kubernetes.workload.keycloakkubernetes.v1B\bApiProtoP\x01Z\x87\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/keycloakkubernetes/v1;keycloakkubernetesv1\xa2\x02\x06PPPKWK\xaa\x02BProject.Planton.Provider.Kubernetes.Workload.Keycloakkubernetes.V1\xca\x02BProject\\Planton\\Provider\\Kubernetes\\Workload\\Keycloakkubernetes\\V1\xe2\x02NProject\\Planton\\Provider\\Kubernetes\\Workload\\Keycloakkubernetes\\V1\\GPBMetadata\xea\x02HProject::Planton::Provider::Kubernetes::Workload::Keycloakkubernetes::V1b\x06proto3"
 
@@ -218,22 +187,18 @@ var file_project_planton_provider_kubernetes_workload_keycloakkubernetes_v1_api_
 	(*KeycloakKubernetesStatus)(nil),       // 1: project.planton.provider.kubernetes.workload.keycloakkubernetes.v1.KeycloakKubernetesStatus
 	(*shared.ApiResourceMetadata)(nil),     // 2: project.planton.shared.ApiResourceMetadata
 	(*KeycloakKubernetesSpec)(nil),         // 3: project.planton.provider.kubernetes.workload.keycloakkubernetes.v1.KeycloakKubernetesSpec
-	(*shared.ApiResourceLifecycle)(nil),    // 4: project.planton.shared.ApiResourceLifecycle
-	(*shared.ApiResourceAudit)(nil),        // 5: project.planton.shared.ApiResourceAudit
-	(*KeycloakKubernetesStackOutputs)(nil), // 6: project.planton.provider.kubernetes.workload.keycloakkubernetes.v1.KeycloakKubernetesStackOutputs
+	(*KeycloakKubernetesStackOutputs)(nil), // 4: project.planton.provider.kubernetes.workload.keycloakkubernetes.v1.KeycloakKubernetesStackOutputs
 }
 var file_project_planton_provider_kubernetes_workload_keycloakkubernetes_v1_api_proto_depIdxs = []int32{
 	2, // 0: project.planton.provider.kubernetes.workload.keycloakkubernetes.v1.KeycloakKubernetes.metadata:type_name -> project.planton.shared.ApiResourceMetadata
 	3, // 1: project.planton.provider.kubernetes.workload.keycloakkubernetes.v1.KeycloakKubernetes.spec:type_name -> project.planton.provider.kubernetes.workload.keycloakkubernetes.v1.KeycloakKubernetesSpec
 	1, // 2: project.planton.provider.kubernetes.workload.keycloakkubernetes.v1.KeycloakKubernetes.status:type_name -> project.planton.provider.kubernetes.workload.keycloakkubernetes.v1.KeycloakKubernetesStatus
-	4, // 3: project.planton.provider.kubernetes.workload.keycloakkubernetes.v1.KeycloakKubernetesStatus.lifecycle:type_name -> project.planton.shared.ApiResourceLifecycle
-	5, // 4: project.planton.provider.kubernetes.workload.keycloakkubernetes.v1.KeycloakKubernetesStatus.audit:type_name -> project.planton.shared.ApiResourceAudit
-	6, // 5: project.planton.provider.kubernetes.workload.keycloakkubernetes.v1.KeycloakKubernetesStatus.outputs:type_name -> project.planton.provider.kubernetes.workload.keycloakkubernetes.v1.KeycloakKubernetesStackOutputs
-	6, // [6:6] is the sub-list for method output_type
-	6, // [6:6] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	4, // 3: project.planton.provider.kubernetes.workload.keycloakkubernetes.v1.KeycloakKubernetesStatus.outputs:type_name -> project.planton.provider.kubernetes.workload.keycloakkubernetes.v1.KeycloakKubernetesStackOutputs
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_provider_kubernetes_workload_keycloakkubernetes_v1_api_proto_init() }

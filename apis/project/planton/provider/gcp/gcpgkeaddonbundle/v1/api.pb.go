@@ -108,12 +108,6 @@ func (x *GcpGkeAddonBundle) GetStatus() *GcpGkeAddonBundleStatus {
 // gcp-gke-addon-bundle status.
 type GcpGkeAddonBundleStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// lifecycle
-	Lifecycle *shared.ApiResourceLifecycle `protobuf:"bytes,99,opt,name=lifecycle,proto3" json:"lifecycle,omitempty"`
-	// audit-info
-	Audit *shared.ApiResourceAudit `protobuf:"bytes,98,opt,name=audit,proto3" json:"audit,omitempty"`
-	// stack-job id
-	StackJobId string `protobuf:"bytes,97,opt,name=stack_job_id,json=stackJobId,proto3" json:"stack_job_id,omitempty"`
 	// stack-outputs
 	Outputs       *GcpGkeAddonBundleStackOutputs `protobuf:"bytes,1,opt,name=outputs,proto3" json:"outputs,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -150,27 +144,6 @@ func (*GcpGkeAddonBundleStatus) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_gcp_gcpgkeaddonbundle_v1_api_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *GcpGkeAddonBundleStatus) GetLifecycle() *shared.ApiResourceLifecycle {
-	if x != nil {
-		return x.Lifecycle
-	}
-	return nil
-}
-
-func (x *GcpGkeAddonBundleStatus) GetAudit() *shared.ApiResourceAudit {
-	if x != nil {
-		return x.Audit
-	}
-	return nil
-}
-
-func (x *GcpGkeAddonBundleStatus) GetStackJobId() string {
-	if x != nil {
-		return x.StackJobId
-	}
-	return ""
-}
-
 func (x *GcpGkeAddonBundleStatus) GetOutputs() *GcpGkeAddonBundleStackOutputs {
 	if x != nil {
 		return x.Outputs
@@ -191,12 +164,8 @@ const file_project_planton_provider_gcp_gcpgkeaddonbundle_v1_api_proto_rawDesc =
 	"\x11GcpGkeAddonBundleR\x04kind\x12O\n" +
 	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12d\n" +
 	"\x04spec\x18\x04 \x01(\v2H.project.planton.provider.gcp.gcpgkeaddonbundle.v1.GcpGkeAddonBundleSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12b\n" +
-	"\x06status\x18\x05 \x01(\v2J.project.planton.provider.gcp.gcpgkeaddonbundle.v1.GcpGkeAddonBundleStatusR\x06status\"\xb3\x02\n" +
-	"\x17GcpGkeAddonBundleStatus\x12J\n" +
-	"\tlifecycle\x18c \x01(\v2,.project.planton.shared.ApiResourceLifecycleR\tlifecycle\x12>\n" +
-	"\x05audit\x18b \x01(\v2(.project.planton.shared.ApiResourceAuditR\x05audit\x12 \n" +
-	"\fstack_job_id\x18a \x01(\tR\n" +
-	"stackJobId\x12j\n" +
+	"\x06status\x18\x05 \x01(\v2J.project.planton.provider.gcp.gcpgkeaddonbundle.v1.GcpGkeAddonBundleStatusR\x06status\"\x85\x01\n" +
+	"\x17GcpGkeAddonBundleStatus\x12j\n" +
 	"\aoutputs\x18\x01 \x01(\v2P.project.planton.provider.gcp.gcpgkeaddonbundle.v1.GcpGkeAddonBundleStackOutputsR\aoutputsB\xa3\x03\n" +
 	"5com.project.planton.provider.gcp.gcpgkeaddonbundle.v1B\bApiProtoP\x01Zugithub.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpgkeaddonbundle/v1;gcpgkeaddonbundlev1\xa2\x02\x05PPPGG\xaa\x021Project.Planton.Provider.Gcp.Gcpgkeaddonbundle.V1\xca\x021Project\\Planton\\Provider\\Gcp\\Gcpgkeaddonbundle\\V1\xe2\x02=Project\\Planton\\Provider\\Gcp\\Gcpgkeaddonbundle\\V1\\GPBMetadata\xea\x026Project::Planton::Provider::Gcp::Gcpgkeaddonbundle::V1b\x06proto3"
 
@@ -218,22 +187,18 @@ var file_project_planton_provider_gcp_gcpgkeaddonbundle_v1_api_proto_goTypes = [
 	(*GcpGkeAddonBundleStatus)(nil),       // 1: project.planton.provider.gcp.gcpgkeaddonbundle.v1.GcpGkeAddonBundleStatus
 	(*shared.ApiResourceMetadata)(nil),    // 2: project.planton.shared.ApiResourceMetadata
 	(*GcpGkeAddonBundleSpec)(nil),         // 3: project.planton.provider.gcp.gcpgkeaddonbundle.v1.GcpGkeAddonBundleSpec
-	(*shared.ApiResourceLifecycle)(nil),   // 4: project.planton.shared.ApiResourceLifecycle
-	(*shared.ApiResourceAudit)(nil),       // 5: project.planton.shared.ApiResourceAudit
-	(*GcpGkeAddonBundleStackOutputs)(nil), // 6: project.planton.provider.gcp.gcpgkeaddonbundle.v1.GcpGkeAddonBundleStackOutputs
+	(*GcpGkeAddonBundleStackOutputs)(nil), // 4: project.planton.provider.gcp.gcpgkeaddonbundle.v1.GcpGkeAddonBundleStackOutputs
 }
 var file_project_planton_provider_gcp_gcpgkeaddonbundle_v1_api_proto_depIdxs = []int32{
 	2, // 0: project.planton.provider.gcp.gcpgkeaddonbundle.v1.GcpGkeAddonBundle.metadata:type_name -> project.planton.shared.ApiResourceMetadata
 	3, // 1: project.planton.provider.gcp.gcpgkeaddonbundle.v1.GcpGkeAddonBundle.spec:type_name -> project.planton.provider.gcp.gcpgkeaddonbundle.v1.GcpGkeAddonBundleSpec
 	1, // 2: project.planton.provider.gcp.gcpgkeaddonbundle.v1.GcpGkeAddonBundle.status:type_name -> project.planton.provider.gcp.gcpgkeaddonbundle.v1.GcpGkeAddonBundleStatus
-	4, // 3: project.planton.provider.gcp.gcpgkeaddonbundle.v1.GcpGkeAddonBundleStatus.lifecycle:type_name -> project.planton.shared.ApiResourceLifecycle
-	5, // 4: project.planton.provider.gcp.gcpgkeaddonbundle.v1.GcpGkeAddonBundleStatus.audit:type_name -> project.planton.shared.ApiResourceAudit
-	6, // 5: project.planton.provider.gcp.gcpgkeaddonbundle.v1.GcpGkeAddonBundleStatus.outputs:type_name -> project.planton.provider.gcp.gcpgkeaddonbundle.v1.GcpGkeAddonBundleStackOutputs
-	6, // [6:6] is the sub-list for method output_type
-	6, // [6:6] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	4, // 3: project.planton.provider.gcp.gcpgkeaddonbundle.v1.GcpGkeAddonBundleStatus.outputs:type_name -> project.planton.provider.gcp.gcpgkeaddonbundle.v1.GcpGkeAddonBundleStackOutputs
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_provider_gcp_gcpgkeaddonbundle_v1_api_proto_init() }

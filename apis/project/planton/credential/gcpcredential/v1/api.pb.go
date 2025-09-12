@@ -35,7 +35,7 @@ type GcpCredential struct {
 	// spec
 	Spec *GcpCredentialSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status
-	Status        *shared.ApiResourceLifecycleAndAuditStatus `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
+	Status        *shared.ApiResourceAuditStatus `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -98,7 +98,7 @@ func (x *GcpCredential) GetSpec() *GcpCredentialSpec {
 	return nil
 }
 
-func (x *GcpCredential) GetStatus() *shared.ApiResourceLifecycleAndAuditStatus {
+func (x *GcpCredential) GetStatus() *shared.ApiResourceAuditStatus {
 	if x != nil {
 		return x.Status
 	}
@@ -109,7 +109,7 @@ var File_project_planton_credential_gcpcredential_v1_api_proto protoreflect.File
 
 const file_project_planton_credential_gcpcredential_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"5project/planton/credential/gcpcredential/v1/api.proto\x12+project.planton.credential.gcpcredential.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/credential/gcpcredential/v1/spec.proto\x1a#project/planton/shared/status.proto\x1a%project/planton/shared/metadata.proto\"\xfd\x02\n" +
+	"5project/planton/credential/gcpcredential/v1/api.proto\x12+project.planton.credential.gcpcredential.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/credential/gcpcredential/v1/spec.proto\x1a#project/planton/shared/status.proto\x1a%project/planton/shared/metadata.proto\"\xf1\x02\n" +
 	"\rGcpCredential\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!credential.project-planton.org/v1R\n" +
@@ -117,8 +117,8 @@ const file_project_planton_credential_gcpcredential_v1_api_proto_rawDesc = "" +
 	"\x04kind\x18\x02 \x01(\tB\x14\xbaH\x11r\x0f\n" +
 	"\rGcpCredentialR\x04kind\x12O\n" +
 	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12R\n" +
-	"\x04spec\x18\x04 \x01(\v2>.project.planton.credential.gcpcredential.v1.GcpCredentialSpecR\x04spec\x12R\n" +
-	"\x06status\x18\x05 \x01(\v2:.project.planton.shared.ApiResourceLifecycleAndAuditStatusR\x06statusB\xf9\x02\n" +
+	"\x04spec\x18\x04 \x01(\v2>.project.planton.credential.gcpcredential.v1.GcpCredentialSpecR\x04spec\x12F\n" +
+	"\x06status\x18\x05 \x01(\v2..project.planton.shared.ApiResourceAuditStatusR\x06statusB\xf9\x02\n" +
 	"/com.project.planton.credential.gcpcredential.v1B\bApiProtoP\x01Zkgithub.com/project-planton/project-planton/apis/project/planton/credential/gcpcredential/v1;gcpcredentialv1\xa2\x02\x04PPCG\xaa\x02+Project.Planton.Credential.Gcpcredential.V1\xca\x02+Project\\Planton\\Credential\\Gcpcredential\\V1\xe2\x027Project\\Planton\\Credential\\Gcpcredential\\V1\\GPBMetadata\xea\x02/Project::Planton::Credential::Gcpcredential::V1b\x06proto3"
 
 var (
@@ -135,15 +135,15 @@ func file_project_planton_credential_gcpcredential_v1_api_proto_rawDescGZIP() []
 
 var file_project_planton_credential_gcpcredential_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_credential_gcpcredential_v1_api_proto_goTypes = []any{
-	(*GcpCredential)(nil),                             // 0: project.planton.credential.gcpcredential.v1.GcpCredential
-	(*shared.ApiResourceMetadata)(nil),                // 1: project.planton.shared.ApiResourceMetadata
-	(*GcpCredentialSpec)(nil),                         // 2: project.planton.credential.gcpcredential.v1.GcpCredentialSpec
-	(*shared.ApiResourceLifecycleAndAuditStatus)(nil), // 3: project.planton.shared.ApiResourceLifecycleAndAuditStatus
+	(*GcpCredential)(nil),                 // 0: project.planton.credential.gcpcredential.v1.GcpCredential
+	(*shared.ApiResourceMetadata)(nil),    // 1: project.planton.shared.ApiResourceMetadata
+	(*GcpCredentialSpec)(nil),             // 2: project.planton.credential.gcpcredential.v1.GcpCredentialSpec
+	(*shared.ApiResourceAuditStatus)(nil), // 3: project.planton.shared.ApiResourceAuditStatus
 }
 var file_project_planton_credential_gcpcredential_v1_api_proto_depIdxs = []int32{
 	1, // 0: project.planton.credential.gcpcredential.v1.GcpCredential.metadata:type_name -> project.planton.shared.ApiResourceMetadata
 	2, // 1: project.planton.credential.gcpcredential.v1.GcpCredential.spec:type_name -> project.planton.credential.gcpcredential.v1.GcpCredentialSpec
-	3, // 2: project.planton.credential.gcpcredential.v1.GcpCredential.status:type_name -> project.planton.shared.ApiResourceLifecycleAndAuditStatus
+	3, // 2: project.planton.credential.gcpcredential.v1.GcpCredential.status:type_name -> project.planton.shared.ApiResourceAuditStatus
 	3, // [3:3] is the sub-list for method output_type
 	3, // [3:3] is the sub-list for method input_type
 	3, // [3:3] is the sub-list for extension type_name

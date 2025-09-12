@@ -108,12 +108,6 @@ func (x *DigitalOceanDatabaseCluster) GetStatus() *DigitalOceanDatabaseClusterSt
 // digital-ocean-database-cluster status
 type DigitalOceanDatabaseClusterStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// lifecycle
-	Lifecycle *shared.ApiResourceLifecycle `protobuf:"bytes,99,opt,name=lifecycle,proto3" json:"lifecycle,omitempty"`
-	// audit-info
-	Audit *shared.ApiResourceAudit `protobuf:"bytes,98,opt,name=audit,proto3" json:"audit,omitempty"`
-	// stack-job id
-	StackJobId string `protobuf:"bytes,97,opt,name=stack_job_id,json=stackJobId,proto3" json:"stack_job_id,omitempty"`
 	// stack-outputs
 	//
 	//	digital-ocean-database-cluster stack-outputs
@@ -152,27 +146,6 @@ func (*DigitalOceanDatabaseClusterStatus) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_digitalocean_digitaloceandatabasecluster_v1_api_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *DigitalOceanDatabaseClusterStatus) GetLifecycle() *shared.ApiResourceLifecycle {
-	if x != nil {
-		return x.Lifecycle
-	}
-	return nil
-}
-
-func (x *DigitalOceanDatabaseClusterStatus) GetAudit() *shared.ApiResourceAudit {
-	if x != nil {
-		return x.Audit
-	}
-	return nil
-}
-
-func (x *DigitalOceanDatabaseClusterStatus) GetStackJobId() string {
-	if x != nil {
-		return x.StackJobId
-	}
-	return ""
-}
-
 func (x *DigitalOceanDatabaseClusterStatus) GetOutputs() *DigitalOceanDatabaseClusterStackOutputs {
 	if x != nil {
 		return x.Outputs
@@ -193,12 +166,8 @@ const file_project_planton_provider_digitalocean_digitaloceandatabasecluster_v1_
 	"\x1bDigitalOceanDatabaseClusterR\x04kind\x12O\n" +
 	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12\x81\x01\n" +
 	"\x04spec\x18\x04 \x01(\v2e.project.planton.provider.digitalocean.digitaloceandatabasecluster.v1.DigitalOceanDatabaseClusterSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12\x7f\n" +
-	"\x06status\x18\x05 \x01(\v2g.project.planton.provider.digitalocean.digitaloceandatabasecluster.v1.DigitalOceanDatabaseClusterStatusR\x06status\"\xdb\x02\n" +
-	"!DigitalOceanDatabaseClusterStatus\x12J\n" +
-	"\tlifecycle\x18c \x01(\v2,.project.planton.shared.ApiResourceLifecycleR\tlifecycle\x12>\n" +
-	"\x05audit\x18b \x01(\v2(.project.planton.shared.ApiResourceAuditR\x05audit\x12 \n" +
-	"\fstack_job_id\x18a \x01(\tR\n" +
-	"stackJobId\x12\x87\x01\n" +
+	"\x06status\x18\x05 \x01(\v2g.project.planton.provider.digitalocean.digitaloceandatabasecluster.v1.DigitalOceanDatabaseClusterStatusR\x06status\"\xad\x01\n" +
+	"!DigitalOceanDatabaseClusterStatus\x12\x87\x01\n" +
 	"\aoutputs\x18\x01 \x01(\v2m.project.planton.provider.digitalocean.digitaloceandatabasecluster.v1.DigitalOceanDatabaseClusterStackOutputsR\aoutputsB\xa0\x04\n" +
 	"Hcom.project.planton.provider.digitalocean.digitaloceandatabasecluster.v1B\bApiProtoP\x01Z\x92\x01github.com/project-planton/project-planton/apis/project/planton/provider/digitalocean/digitaloceandatabasecluster/v1;digitaloceandatabaseclusterv1\xa2\x02\x05PPPDD\xaa\x02DProject.Planton.Provider.Digitalocean.Digitaloceandatabasecluster.V1\xca\x02DProject\\Planton\\Provider\\Digitalocean\\Digitaloceandatabasecluster\\V1\xe2\x02PProject\\Planton\\Provider\\Digitalocean\\Digitaloceandatabasecluster\\V1\\GPBMetadata\xea\x02IProject::Planton::Provider::Digitalocean::Digitaloceandatabasecluster::V1b\x06proto3"
 
@@ -220,22 +189,18 @@ var file_project_planton_provider_digitalocean_digitaloceandatabasecluster_v1_ap
 	(*DigitalOceanDatabaseClusterStatus)(nil),       // 1: project.planton.provider.digitalocean.digitaloceandatabasecluster.v1.DigitalOceanDatabaseClusterStatus
 	(*shared.ApiResourceMetadata)(nil),              // 2: project.planton.shared.ApiResourceMetadata
 	(*DigitalOceanDatabaseClusterSpec)(nil),         // 3: project.planton.provider.digitalocean.digitaloceandatabasecluster.v1.DigitalOceanDatabaseClusterSpec
-	(*shared.ApiResourceLifecycle)(nil),             // 4: project.planton.shared.ApiResourceLifecycle
-	(*shared.ApiResourceAudit)(nil),                 // 5: project.planton.shared.ApiResourceAudit
-	(*DigitalOceanDatabaseClusterStackOutputs)(nil), // 6: project.planton.provider.digitalocean.digitaloceandatabasecluster.v1.DigitalOceanDatabaseClusterStackOutputs
+	(*DigitalOceanDatabaseClusterStackOutputs)(nil), // 4: project.planton.provider.digitalocean.digitaloceandatabasecluster.v1.DigitalOceanDatabaseClusterStackOutputs
 }
 var file_project_planton_provider_digitalocean_digitaloceandatabasecluster_v1_api_proto_depIdxs = []int32{
 	2, // 0: project.planton.provider.digitalocean.digitaloceandatabasecluster.v1.DigitalOceanDatabaseCluster.metadata:type_name -> project.planton.shared.ApiResourceMetadata
 	3, // 1: project.planton.provider.digitalocean.digitaloceandatabasecluster.v1.DigitalOceanDatabaseCluster.spec:type_name -> project.planton.provider.digitalocean.digitaloceandatabasecluster.v1.DigitalOceanDatabaseClusterSpec
 	1, // 2: project.planton.provider.digitalocean.digitaloceandatabasecluster.v1.DigitalOceanDatabaseCluster.status:type_name -> project.planton.provider.digitalocean.digitaloceandatabasecluster.v1.DigitalOceanDatabaseClusterStatus
-	4, // 3: project.planton.provider.digitalocean.digitaloceandatabasecluster.v1.DigitalOceanDatabaseClusterStatus.lifecycle:type_name -> project.planton.shared.ApiResourceLifecycle
-	5, // 4: project.planton.provider.digitalocean.digitaloceandatabasecluster.v1.DigitalOceanDatabaseClusterStatus.audit:type_name -> project.planton.shared.ApiResourceAudit
-	6, // 5: project.planton.provider.digitalocean.digitaloceandatabasecluster.v1.DigitalOceanDatabaseClusterStatus.outputs:type_name -> project.planton.provider.digitalocean.digitaloceandatabasecluster.v1.DigitalOceanDatabaseClusterStackOutputs
-	6, // [6:6] is the sub-list for method output_type
-	6, // [6:6] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	4, // 3: project.planton.provider.digitalocean.digitaloceandatabasecluster.v1.DigitalOceanDatabaseClusterStatus.outputs:type_name -> project.planton.provider.digitalocean.digitaloceandatabasecluster.v1.DigitalOceanDatabaseClusterStackOutputs
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() {

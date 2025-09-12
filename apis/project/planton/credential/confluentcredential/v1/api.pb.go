@@ -35,7 +35,7 @@ type ConfluentCredential struct {
 	// spec
 	Spec *ConfluentCredentialSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status
-	Status        *shared.ApiResourceLifecycleAndAuditStatus `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
+	Status        *shared.ApiResourceAuditStatus `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -98,7 +98,7 @@ func (x *ConfluentCredential) GetSpec() *ConfluentCredentialSpec {
 	return nil
 }
 
-func (x *ConfluentCredential) GetStatus() *shared.ApiResourceLifecycleAndAuditStatus {
+func (x *ConfluentCredential) GetStatus() *shared.ApiResourceAuditStatus {
 	if x != nil {
 		return x.Status
 	}
@@ -109,7 +109,7 @@ var File_project_planton_credential_confluentcredential_v1_api_proto protoreflec
 
 const file_project_planton_credential_confluentcredential_v1_api_proto_rawDesc = "" +
 	"\n" +
-	";project/planton/credential/confluentcredential/v1/api.proto\x121project.planton.credential.confluentcredential.v1\x1a\x1bbuf/validate/validate.proto\x1a<project/planton/credential/confluentcredential/v1/spec.proto\x1a#project/planton/shared/status.proto\x1a%project/planton/shared/metadata.proto\"\x95\x03\n" +
+	";project/planton/credential/confluentcredential/v1/api.proto\x121project.planton.credential.confluentcredential.v1\x1a\x1bbuf/validate/validate.proto\x1a<project/planton/credential/confluentcredential/v1/spec.proto\x1a#project/planton/shared/status.proto\x1a%project/planton/shared/metadata.proto\"\x89\x03\n" +
 	"\x13ConfluentCredential\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!credential.project-planton.org/v1R\n" +
@@ -117,8 +117,8 @@ const file_project_planton_credential_confluentcredential_v1_api_proto_rawDesc =
 	"\x04kind\x18\x02 \x01(\tB\x1a\xbaH\x17r\x15\n" +
 	"\x13ConfluentCredentialR\x04kind\x12O\n" +
 	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12^\n" +
-	"\x04spec\x18\x04 \x01(\v2J.project.planton.credential.confluentcredential.v1.ConfluentCredentialSpecR\x04spec\x12R\n" +
-	"\x06status\x18\x05 \x01(\v2:.project.planton.shared.ApiResourceLifecycleAndAuditStatusR\x06statusB\xa3\x03\n" +
+	"\x04spec\x18\x04 \x01(\v2J.project.planton.credential.confluentcredential.v1.ConfluentCredentialSpecR\x04spec\x12F\n" +
+	"\x06status\x18\x05 \x01(\v2..project.planton.shared.ApiResourceAuditStatusR\x06statusB\xa3\x03\n" +
 	"5com.project.planton.credential.confluentcredential.v1B\bApiProtoP\x01Zwgithub.com/project-planton/project-planton/apis/project/planton/credential/confluentcredential/v1;confluentcredentialv1\xa2\x02\x04PPCC\xaa\x021Project.Planton.Credential.Confluentcredential.V1\xca\x021Project\\Planton\\Credential\\Confluentcredential\\V1\xe2\x02=Project\\Planton\\Credential\\Confluentcredential\\V1\\GPBMetadata\xea\x025Project::Planton::Credential::Confluentcredential::V1b\x06proto3"
 
 var (
@@ -135,15 +135,15 @@ func file_project_planton_credential_confluentcredential_v1_api_proto_rawDescGZI
 
 var file_project_planton_credential_confluentcredential_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_credential_confluentcredential_v1_api_proto_goTypes = []any{
-	(*ConfluentCredential)(nil),                       // 0: project.planton.credential.confluentcredential.v1.ConfluentCredential
-	(*shared.ApiResourceMetadata)(nil),                // 1: project.planton.shared.ApiResourceMetadata
-	(*ConfluentCredentialSpec)(nil),                   // 2: project.planton.credential.confluentcredential.v1.ConfluentCredentialSpec
-	(*shared.ApiResourceLifecycleAndAuditStatus)(nil), // 3: project.planton.shared.ApiResourceLifecycleAndAuditStatus
+	(*ConfluentCredential)(nil),           // 0: project.planton.credential.confluentcredential.v1.ConfluentCredential
+	(*shared.ApiResourceMetadata)(nil),    // 1: project.planton.shared.ApiResourceMetadata
+	(*ConfluentCredentialSpec)(nil),       // 2: project.planton.credential.confluentcredential.v1.ConfluentCredentialSpec
+	(*shared.ApiResourceAuditStatus)(nil), // 3: project.planton.shared.ApiResourceAuditStatus
 }
 var file_project_planton_credential_confluentcredential_v1_api_proto_depIdxs = []int32{
 	1, // 0: project.planton.credential.confluentcredential.v1.ConfluentCredential.metadata:type_name -> project.planton.shared.ApiResourceMetadata
 	2, // 1: project.planton.credential.confluentcredential.v1.ConfluentCredential.spec:type_name -> project.planton.credential.confluentcredential.v1.ConfluentCredentialSpec
-	3, // 2: project.planton.credential.confluentcredential.v1.ConfluentCredential.status:type_name -> project.planton.shared.ApiResourceLifecycleAndAuditStatus
+	3, // 2: project.planton.credential.confluentcredential.v1.ConfluentCredential.status:type_name -> project.planton.shared.ApiResourceAuditStatus
 	3, // [3:3] is the sub-list for method output_type
 	3, // [3:3] is the sub-list for method input_type
 	3, // [3:3] is the sub-list for extension type_name

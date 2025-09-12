@@ -36,15 +36,6 @@ message DigitalOceanKubernetesNodePool {
 
 // digital-ocean-kubernetes-node-pool status
 message DigitalOceanKubernetesNodePoolStatus {
-  //lifecycle
-  project.planton.shared.ApiResourceLifecycle lifecycle = 99;
-
-  //audit-info
-  project.planton.shared.ApiResourceAudit audit = 98;
-
-  //stack-job id
-  string stack_job_id = 97;
-
   //stack-outputs
   //  digital-ocean-kubernetes-node-pool stack-outputs
   DigitalOceanKubernetesNodePoolStackOutputs outputs = 1;

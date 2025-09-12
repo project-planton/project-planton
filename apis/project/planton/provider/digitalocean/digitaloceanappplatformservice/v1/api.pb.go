@@ -108,12 +108,6 @@ func (x *DigitalOceanAppPlatformService) GetStatus() *DigitalOceanAppPlatformSer
 // digital-ocean-app-platform-service status
 type DigitalOceanAppPlatformServiceStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// lifecycle
-	Lifecycle *shared.ApiResourceLifecycle `protobuf:"bytes,99,opt,name=lifecycle,proto3" json:"lifecycle,omitempty"`
-	// audit-info
-	Audit *shared.ApiResourceAudit `protobuf:"bytes,98,opt,name=audit,proto3" json:"audit,omitempty"`
-	// stack-job id
-	StackJobId string `protobuf:"bytes,97,opt,name=stack_job_id,json=stackJobId,proto3" json:"stack_job_id,omitempty"`
 	// stack-outputs
 	//
 	//	digital-ocean-app-platform-service stack-outputs
@@ -152,27 +146,6 @@ func (*DigitalOceanAppPlatformServiceStatus) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_digitalocean_digitaloceanappplatformservice_v1_api_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *DigitalOceanAppPlatformServiceStatus) GetLifecycle() *shared.ApiResourceLifecycle {
-	if x != nil {
-		return x.Lifecycle
-	}
-	return nil
-}
-
-func (x *DigitalOceanAppPlatformServiceStatus) GetAudit() *shared.ApiResourceAudit {
-	if x != nil {
-		return x.Audit
-	}
-	return nil
-}
-
-func (x *DigitalOceanAppPlatformServiceStatus) GetStackJobId() string {
-	if x != nil {
-		return x.StackJobId
-	}
-	return ""
-}
-
 func (x *DigitalOceanAppPlatformServiceStatus) GetOutputs() *DigitalOceanAppPlatformServiceStackOutputs {
 	if x != nil {
 		return x.Outputs
@@ -193,12 +166,8 @@ const file_project_planton_provider_digitalocean_digitaloceanappplatformservice_
 	"\x1eDigitalOceanAppPlatformServiceR\x04kind\x12O\n" +
 	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12\x87\x01\n" +
 	"\x04spec\x18\x04 \x01(\v2k.project.planton.provider.digitalocean.digitaloceanappplatformservice.v1.DigitalOceanAppPlatformServiceSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12\x85\x01\n" +
-	"\x06status\x18\x05 \x01(\v2m.project.planton.provider.digitalocean.digitaloceanappplatformservice.v1.DigitalOceanAppPlatformServiceStatusR\x06status\"\xe4\x02\n" +
-	"$DigitalOceanAppPlatformServiceStatus\x12J\n" +
-	"\tlifecycle\x18c \x01(\v2,.project.planton.shared.ApiResourceLifecycleR\tlifecycle\x12>\n" +
-	"\x05audit\x18b \x01(\v2(.project.planton.shared.ApiResourceAuditR\x05audit\x12 \n" +
-	"\fstack_job_id\x18a \x01(\tR\n" +
-	"stackJobId\x12\x8d\x01\n" +
+	"\x06status\x18\x05 \x01(\v2m.project.planton.provider.digitalocean.digitaloceanappplatformservice.v1.DigitalOceanAppPlatformServiceStatusR\x06status\"\xb6\x01\n" +
+	"$DigitalOceanAppPlatformServiceStatus\x12\x8d\x01\n" +
 	"\aoutputs\x18\x01 \x01(\v2s.project.planton.provider.digitalocean.digitaloceanappplatformservice.v1.DigitalOceanAppPlatformServiceStackOutputsR\aoutputsB\xb5\x04\n" +
 	"Kcom.project.planton.provider.digitalocean.digitaloceanappplatformservice.v1B\bApiProtoP\x01Z\x98\x01github.com/project-planton/project-planton/apis/project/planton/provider/digitalocean/digitaloceanappplatformservice/v1;digitaloceanappplatformservicev1\xa2\x02\x05PPPDD\xaa\x02GProject.Planton.Provider.Digitalocean.Digitaloceanappplatformservice.V1\xca\x02GProject\\Planton\\Provider\\Digitalocean\\Digitaloceanappplatformservice\\V1\xe2\x02SProject\\Planton\\Provider\\Digitalocean\\Digitaloceanappplatformservice\\V1\\GPBMetadata\xea\x02LProject::Planton::Provider::Digitalocean::Digitaloceanappplatformservice::V1b\x06proto3"
 
@@ -220,22 +189,18 @@ var file_project_planton_provider_digitalocean_digitaloceanappplatformservice_v1
 	(*DigitalOceanAppPlatformServiceStatus)(nil),       // 1: project.planton.provider.digitalocean.digitaloceanappplatformservice.v1.DigitalOceanAppPlatformServiceStatus
 	(*shared.ApiResourceMetadata)(nil),                 // 2: project.planton.shared.ApiResourceMetadata
 	(*DigitalOceanAppPlatformServiceSpec)(nil),         // 3: project.planton.provider.digitalocean.digitaloceanappplatformservice.v1.DigitalOceanAppPlatformServiceSpec
-	(*shared.ApiResourceLifecycle)(nil),                // 4: project.planton.shared.ApiResourceLifecycle
-	(*shared.ApiResourceAudit)(nil),                    // 5: project.planton.shared.ApiResourceAudit
-	(*DigitalOceanAppPlatformServiceStackOutputs)(nil), // 6: project.planton.provider.digitalocean.digitaloceanappplatformservice.v1.DigitalOceanAppPlatformServiceStackOutputs
+	(*DigitalOceanAppPlatformServiceStackOutputs)(nil), // 4: project.planton.provider.digitalocean.digitaloceanappplatformservice.v1.DigitalOceanAppPlatformServiceStackOutputs
 }
 var file_project_planton_provider_digitalocean_digitaloceanappplatformservice_v1_api_proto_depIdxs = []int32{
 	2, // 0: project.planton.provider.digitalocean.digitaloceanappplatformservice.v1.DigitalOceanAppPlatformService.metadata:type_name -> project.planton.shared.ApiResourceMetadata
 	3, // 1: project.planton.provider.digitalocean.digitaloceanappplatformservice.v1.DigitalOceanAppPlatformService.spec:type_name -> project.planton.provider.digitalocean.digitaloceanappplatformservice.v1.DigitalOceanAppPlatformServiceSpec
 	1, // 2: project.planton.provider.digitalocean.digitaloceanappplatformservice.v1.DigitalOceanAppPlatformService.status:type_name -> project.planton.provider.digitalocean.digitaloceanappplatformservice.v1.DigitalOceanAppPlatformServiceStatus
-	4, // 3: project.planton.provider.digitalocean.digitaloceanappplatformservice.v1.DigitalOceanAppPlatformServiceStatus.lifecycle:type_name -> project.planton.shared.ApiResourceLifecycle
-	5, // 4: project.planton.provider.digitalocean.digitaloceanappplatformservice.v1.DigitalOceanAppPlatformServiceStatus.audit:type_name -> project.planton.shared.ApiResourceAudit
-	6, // 5: project.planton.provider.digitalocean.digitaloceanappplatformservice.v1.DigitalOceanAppPlatformServiceStatus.outputs:type_name -> project.planton.provider.digitalocean.digitaloceanappplatformservice.v1.DigitalOceanAppPlatformServiceStackOutputs
-	6, // [6:6] is the sub-list for method output_type
-	6, // [6:6] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	4, // 3: project.planton.provider.digitalocean.digitaloceanappplatformservice.v1.DigitalOceanAppPlatformServiceStatus.outputs:type_name -> project.planton.provider.digitalocean.digitaloceanappplatformservice.v1.DigitalOceanAppPlatformServiceStackOutputs
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() {

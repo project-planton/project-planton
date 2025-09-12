@@ -19,10 +19,6 @@ message AwsDynamodb {
 
 // AwsDynamodbStatus captures lifecycle, audit, job linkage, and observable outputs.
 message AwsDynamodbStatus {
-  project.planton.shared.ApiResourceLifecycle lifecycle = 99;
-  project.planton.shared.ApiResourceAudit audit = 98;
-  string stack_job_id = 97;
+  //stack-outputs
   AwsDynamodbStackOutputs outputs = 1;
 }
-
-

@@ -108,12 +108,6 @@ func (x *AzureAksNodePool) GetStatus() *AzureAksNodePoolStatus {
 // azure-aks-node-pool status
 type AzureAksNodePoolStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// lifecycle
-	Lifecycle *shared.ApiResourceLifecycle `protobuf:"bytes,99,opt,name=lifecycle,proto3" json:"lifecycle,omitempty"`
-	// audit-info
-	Audit *shared.ApiResourceAudit `protobuf:"bytes,98,opt,name=audit,proto3" json:"audit,omitempty"`
-	// stack-job id
-	StackJobId string `protobuf:"bytes,97,opt,name=stack_job_id,json=stackJobId,proto3" json:"stack_job_id,omitempty"`
 	// stack-outputs
 	//
 	//	azure-aks-node-pool stack-outputs
@@ -152,27 +146,6 @@ func (*AzureAksNodePoolStatus) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_azure_azureaksnodepool_v1_api_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *AzureAksNodePoolStatus) GetLifecycle() *shared.ApiResourceLifecycle {
-	if x != nil {
-		return x.Lifecycle
-	}
-	return nil
-}
-
-func (x *AzureAksNodePoolStatus) GetAudit() *shared.ApiResourceAudit {
-	if x != nil {
-		return x.Audit
-	}
-	return nil
-}
-
-func (x *AzureAksNodePoolStatus) GetStackJobId() string {
-	if x != nil {
-		return x.StackJobId
-	}
-	return ""
-}
-
 func (x *AzureAksNodePoolStatus) GetOutputs() *AzureAksNodePoolStackOutputs {
 	if x != nil {
 		return x.Outputs
@@ -193,12 +166,8 @@ const file_project_planton_provider_azure_azureaksnodepool_v1_api_proto_rawDesc 
 	"\x10AzureAksNodePoolR\x04kind\x12O\n" +
 	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12d\n" +
 	"\x04spec\x18\x04 \x01(\v2H.project.planton.provider.azure.azureaksnodepool.v1.AzureAksNodePoolSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12b\n" +
-	"\x06status\x18\x05 \x01(\v2J.project.planton.provider.azure.azureaksnodepool.v1.AzureAksNodePoolStatusR\x06status\"\xb2\x02\n" +
-	"\x16AzureAksNodePoolStatus\x12J\n" +
-	"\tlifecycle\x18c \x01(\v2,.project.planton.shared.ApiResourceLifecycleR\tlifecycle\x12>\n" +
-	"\x05audit\x18b \x01(\v2(.project.planton.shared.ApiResourceAuditR\x05audit\x12 \n" +
-	"\fstack_job_id\x18a \x01(\tR\n" +
-	"stackJobId\x12j\n" +
+	"\x06status\x18\x05 \x01(\v2J.project.planton.provider.azure.azureaksnodepool.v1.AzureAksNodePoolStatusR\x06status\"\x84\x01\n" +
+	"\x16AzureAksNodePoolStatus\x12j\n" +
 	"\aoutputs\x18\x01 \x01(\v2P.project.planton.provider.azure.azureaksnodepool.v1.AzureAksNodePoolStackOutputsR\aoutputsB\xa8\x03\n" +
 	"6com.project.planton.provider.azure.azureaksnodepool.v1B\bApiProtoP\x01Zugithub.com/project-planton/project-planton/apis/project/planton/provider/azure/azureaksnodepool/v1;azureaksnodepoolv1\xa2\x02\x05PPPAA\xaa\x022Project.Planton.Provider.Azure.Azureaksnodepool.V1\xca\x022Project\\Planton\\Provider\\Azure\\Azureaksnodepool\\V1\xe2\x02>Project\\Planton\\Provider\\Azure\\Azureaksnodepool\\V1\\GPBMetadata\xea\x027Project::Planton::Provider::Azure::Azureaksnodepool::V1b\x06proto3"
 
@@ -220,22 +189,18 @@ var file_project_planton_provider_azure_azureaksnodepool_v1_api_proto_goTypes = 
 	(*AzureAksNodePoolStatus)(nil),       // 1: project.planton.provider.azure.azureaksnodepool.v1.AzureAksNodePoolStatus
 	(*shared.ApiResourceMetadata)(nil),   // 2: project.planton.shared.ApiResourceMetadata
 	(*AzureAksNodePoolSpec)(nil),         // 3: project.planton.provider.azure.azureaksnodepool.v1.AzureAksNodePoolSpec
-	(*shared.ApiResourceLifecycle)(nil),  // 4: project.planton.shared.ApiResourceLifecycle
-	(*shared.ApiResourceAudit)(nil),      // 5: project.planton.shared.ApiResourceAudit
-	(*AzureAksNodePoolStackOutputs)(nil), // 6: project.planton.provider.azure.azureaksnodepool.v1.AzureAksNodePoolStackOutputs
+	(*AzureAksNodePoolStackOutputs)(nil), // 4: project.planton.provider.azure.azureaksnodepool.v1.AzureAksNodePoolStackOutputs
 }
 var file_project_planton_provider_azure_azureaksnodepool_v1_api_proto_depIdxs = []int32{
 	2, // 0: project.planton.provider.azure.azureaksnodepool.v1.AzureAksNodePool.metadata:type_name -> project.planton.shared.ApiResourceMetadata
 	3, // 1: project.planton.provider.azure.azureaksnodepool.v1.AzureAksNodePool.spec:type_name -> project.planton.provider.azure.azureaksnodepool.v1.AzureAksNodePoolSpec
 	1, // 2: project.planton.provider.azure.azureaksnodepool.v1.AzureAksNodePool.status:type_name -> project.planton.provider.azure.azureaksnodepool.v1.AzureAksNodePoolStatus
-	4, // 3: project.planton.provider.azure.azureaksnodepool.v1.AzureAksNodePoolStatus.lifecycle:type_name -> project.planton.shared.ApiResourceLifecycle
-	5, // 4: project.planton.provider.azure.azureaksnodepool.v1.AzureAksNodePoolStatus.audit:type_name -> project.planton.shared.ApiResourceAudit
-	6, // 5: project.planton.provider.azure.azureaksnodepool.v1.AzureAksNodePoolStatus.outputs:type_name -> project.planton.provider.azure.azureaksnodepool.v1.AzureAksNodePoolStackOutputs
-	6, // [6:6] is the sub-list for method output_type
-	6, // [6:6] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	4, // 3: project.planton.provider.azure.azureaksnodepool.v1.AzureAksNodePoolStatus.outputs:type_name -> project.planton.provider.azure.azureaksnodepool.v1.AzureAksNodePoolStackOutputs
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_provider_azure_azureaksnodepool_v1_api_proto_init() }

@@ -108,12 +108,6 @@ func (x *AwsRoute53Zone) GetStatus() *AwsRoute53ZoneStatus {
 // Status for the AWS Route53 Zone
 type AwsRoute53ZoneStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// lifecycle
-	Lifecycle *shared.ApiResourceLifecycle `protobuf:"bytes,99,opt,name=lifecycle,proto3" json:"lifecycle,omitempty"`
-	// audit-info
-	Audit *shared.ApiResourceAudit `protobuf:"bytes,98,opt,name=audit,proto3" json:"audit,omitempty"`
-	// stack-job id
-	StackJobId string `protobuf:"bytes,97,opt,name=stack_job_id,json=stackJobId,proto3" json:"stack_job_id,omitempty"`
 	// stack-outputs
 	//
 	//	stack outputs
@@ -152,27 +146,6 @@ func (*AwsRoute53ZoneStatus) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_aws_awsroute53zone_v1_api_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *AwsRoute53ZoneStatus) GetLifecycle() *shared.ApiResourceLifecycle {
-	if x != nil {
-		return x.Lifecycle
-	}
-	return nil
-}
-
-func (x *AwsRoute53ZoneStatus) GetAudit() *shared.ApiResourceAudit {
-	if x != nil {
-		return x.Audit
-	}
-	return nil
-}
-
-func (x *AwsRoute53ZoneStatus) GetStackJobId() string {
-	if x != nil {
-		return x.StackJobId
-	}
-	return ""
-}
-
 func (x *AwsRoute53ZoneStatus) GetOutputs() *AwsRoute53ZoneStackOutputs {
 	if x != nil {
 		return x.Outputs
@@ -193,12 +166,8 @@ const file_project_planton_provider_aws_awsroute53zone_v1_api_proto_rawDesc = ""
 	"\x0eAwsRoute53ZoneR\x04kind\x12O\n" +
 	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12^\n" +
 	"\x04spec\x18\x04 \x01(\v2B.project.planton.provider.aws.awsroute53zone.v1.AwsRoute53ZoneSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12\\\n" +
-	"\x06status\x18\x05 \x01(\v2D.project.planton.provider.aws.awsroute53zone.v1.AwsRoute53ZoneStatusR\x06status\"\xaa\x02\n" +
-	"\x14AwsRoute53ZoneStatus\x12J\n" +
-	"\tlifecycle\x18c \x01(\v2,.project.planton.shared.ApiResourceLifecycleR\tlifecycle\x12>\n" +
-	"\x05audit\x18b \x01(\v2(.project.planton.shared.ApiResourceAuditR\x05audit\x12 \n" +
-	"\fstack_job_id\x18a \x01(\tR\n" +
-	"stackJobId\x12d\n" +
+	"\x06status\x18\x05 \x01(\v2D.project.planton.provider.aws.awsroute53zone.v1.AwsRoute53ZoneStatusR\x06status\"|\n" +
+	"\x14AwsRoute53ZoneStatus\x12d\n" +
 	"\aoutputs\x18\x01 \x01(\v2J.project.planton.provider.aws.awsroute53zone.v1.AwsRoute53ZoneStackOutputsR\aoutputsB\x8e\x03\n" +
 	"2com.project.planton.provider.aws.awsroute53zone.v1B\bApiProtoP\x01Zogithub.com/project-planton/project-planton/apis/project/planton/provider/aws/awsroute53zone/v1;awsroute53zonev1\xa2\x02\x05PPPAA\xaa\x02.Project.Planton.Provider.Aws.Awsroute53zone.V1\xca\x02.Project\\Planton\\Provider\\Aws\\Awsroute53zone\\V1\xe2\x02:Project\\Planton\\Provider\\Aws\\Awsroute53zone\\V1\\GPBMetadata\xea\x023Project::Planton::Provider::Aws::Awsroute53zone::V1b\x06proto3"
 
@@ -216,26 +185,22 @@ func file_project_planton_provider_aws_awsroute53zone_v1_api_proto_rawDescGZIP()
 
 var file_project_planton_provider_aws_awsroute53zone_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_aws_awsroute53zone_v1_api_proto_goTypes = []any{
-	(*AwsRoute53Zone)(nil),              // 0: project.planton.provider.aws.awsroute53zone.v1.AwsRoute53Zone
-	(*AwsRoute53ZoneStatus)(nil),        // 1: project.planton.provider.aws.awsroute53zone.v1.AwsRoute53ZoneStatus
-	(*shared.ApiResourceMetadata)(nil),  // 2: project.planton.shared.ApiResourceMetadata
-	(*AwsRoute53ZoneSpec)(nil),          // 3: project.planton.provider.aws.awsroute53zone.v1.AwsRoute53ZoneSpec
-	(*shared.ApiResourceLifecycle)(nil), // 4: project.planton.shared.ApiResourceLifecycle
-	(*shared.ApiResourceAudit)(nil),     // 5: project.planton.shared.ApiResourceAudit
-	(*AwsRoute53ZoneStackOutputs)(nil),  // 6: project.planton.provider.aws.awsroute53zone.v1.AwsRoute53ZoneStackOutputs
+	(*AwsRoute53Zone)(nil),             // 0: project.planton.provider.aws.awsroute53zone.v1.AwsRoute53Zone
+	(*AwsRoute53ZoneStatus)(nil),       // 1: project.planton.provider.aws.awsroute53zone.v1.AwsRoute53ZoneStatus
+	(*shared.ApiResourceMetadata)(nil), // 2: project.planton.shared.ApiResourceMetadata
+	(*AwsRoute53ZoneSpec)(nil),         // 3: project.planton.provider.aws.awsroute53zone.v1.AwsRoute53ZoneSpec
+	(*AwsRoute53ZoneStackOutputs)(nil), // 4: project.planton.provider.aws.awsroute53zone.v1.AwsRoute53ZoneStackOutputs
 }
 var file_project_planton_provider_aws_awsroute53zone_v1_api_proto_depIdxs = []int32{
 	2, // 0: project.planton.provider.aws.awsroute53zone.v1.AwsRoute53Zone.metadata:type_name -> project.planton.shared.ApiResourceMetadata
 	3, // 1: project.planton.provider.aws.awsroute53zone.v1.AwsRoute53Zone.spec:type_name -> project.planton.provider.aws.awsroute53zone.v1.AwsRoute53ZoneSpec
 	1, // 2: project.planton.provider.aws.awsroute53zone.v1.AwsRoute53Zone.status:type_name -> project.planton.provider.aws.awsroute53zone.v1.AwsRoute53ZoneStatus
-	4, // 3: project.planton.provider.aws.awsroute53zone.v1.AwsRoute53ZoneStatus.lifecycle:type_name -> project.planton.shared.ApiResourceLifecycle
-	5, // 4: project.planton.provider.aws.awsroute53zone.v1.AwsRoute53ZoneStatus.audit:type_name -> project.planton.shared.ApiResourceAudit
-	6, // 5: project.planton.provider.aws.awsroute53zone.v1.AwsRoute53ZoneStatus.outputs:type_name -> project.planton.provider.aws.awsroute53zone.v1.AwsRoute53ZoneStackOutputs
-	6, // [6:6] is the sub-list for method output_type
-	6, // [6:6] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	4, // 3: project.planton.provider.aws.awsroute53zone.v1.AwsRoute53ZoneStatus.outputs:type_name -> project.planton.provider.aws.awsroute53zone.v1.AwsRoute53ZoneStackOutputs
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_provider_aws_awsroute53zone_v1_api_proto_init() }

@@ -108,12 +108,6 @@ func (x *SolrKubernetes) GetStatus() *SolrKubernetesStatus {
 // solr-kubernetes status
 type SolrKubernetesStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// lifecycle
-	Lifecycle *shared.ApiResourceLifecycle `protobuf:"bytes,99,opt,name=lifecycle,proto3" json:"lifecycle,omitempty"`
-	// audit-info
-	Audit *shared.ApiResourceAudit `protobuf:"bytes,98,opt,name=audit,proto3" json:"audit,omitempty"`
-	// stack-job id
-	StackJobId string `protobuf:"bytes,97,opt,name=stack_job_id,json=stackJobId,proto3" json:"stack_job_id,omitempty"`
 	// stack-outputs
 	Outputs       *SolrKubernetesStackOutputs `protobuf:"bytes,1,opt,name=outputs,proto3" json:"outputs,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -150,27 +144,6 @@ func (*SolrKubernetesStatus) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_kubernetes_workload_solrkubernetes_v1_api_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *SolrKubernetesStatus) GetLifecycle() *shared.ApiResourceLifecycle {
-	if x != nil {
-		return x.Lifecycle
-	}
-	return nil
-}
-
-func (x *SolrKubernetesStatus) GetAudit() *shared.ApiResourceAudit {
-	if x != nil {
-		return x.Audit
-	}
-	return nil
-}
-
-func (x *SolrKubernetesStatus) GetStackJobId() string {
-	if x != nil {
-		return x.StackJobId
-	}
-	return ""
-}
-
 func (x *SolrKubernetesStatus) GetOutputs() *SolrKubernetesStackOutputs {
 	if x != nil {
 		return x.Outputs
@@ -191,12 +164,8 @@ const file_project_planton_provider_kubernetes_workload_solrkubernetes_v1_api_pr
 	"\x0eSolrKubernetesR\x04kind\x12O\n" +
 	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12n\n" +
 	"\x04spec\x18\x04 \x01(\v2R.project.planton.provider.kubernetes.workload.solrkubernetes.v1.SolrKubernetesSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12l\n" +
-	"\x06status\x18\x05 \x01(\v2T.project.planton.provider.kubernetes.workload.solrkubernetes.v1.SolrKubernetesStatusR\x06status\"\xba\x02\n" +
-	"\x14SolrKubernetesStatus\x12J\n" +
-	"\tlifecycle\x18c \x01(\v2,.project.planton.shared.ApiResourceLifecycleR\tlifecycle\x12>\n" +
-	"\x05audit\x18b \x01(\v2(.project.planton.shared.ApiResourceAuditR\x05audit\x12 \n" +
-	"\fstack_job_id\x18a \x01(\tR\n" +
-	"stackJobId\x12t\n" +
+	"\x06status\x18\x05 \x01(\v2T.project.planton.provider.kubernetes.workload.solrkubernetes.v1.SolrKubernetesStatusR\x06status\"\x8c\x01\n" +
+	"\x14SolrKubernetesStatus\x12t\n" +
 	"\aoutputs\x18\x01 \x01(\v2Z.project.planton.provider.kubernetes.workload.solrkubernetes.v1.SolrKubernetesStackOutputsR\aoutputsB\xf0\x03\n" +
 	"Bcom.project.planton.provider.kubernetes.workload.solrkubernetes.v1B\bApiProtoP\x01Z\x7fgithub.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/solrkubernetes/v1;solrkubernetesv1\xa2\x02\x06PPPKWS\xaa\x02>Project.Planton.Provider.Kubernetes.Workload.Solrkubernetes.V1\xca\x02>Project\\Planton\\Provider\\Kubernetes\\Workload\\Solrkubernetes\\V1\xe2\x02JProject\\Planton\\Provider\\Kubernetes\\Workload\\Solrkubernetes\\V1\\GPBMetadata\xea\x02DProject::Planton::Provider::Kubernetes::Workload::Solrkubernetes::V1b\x06proto3"
 
@@ -214,26 +183,22 @@ func file_project_planton_provider_kubernetes_workload_solrkubernetes_v1_api_pro
 
 var file_project_planton_provider_kubernetes_workload_solrkubernetes_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_kubernetes_workload_solrkubernetes_v1_api_proto_goTypes = []any{
-	(*SolrKubernetes)(nil),              // 0: project.planton.provider.kubernetes.workload.solrkubernetes.v1.SolrKubernetes
-	(*SolrKubernetesStatus)(nil),        // 1: project.planton.provider.kubernetes.workload.solrkubernetes.v1.SolrKubernetesStatus
-	(*shared.ApiResourceMetadata)(nil),  // 2: project.planton.shared.ApiResourceMetadata
-	(*SolrKubernetesSpec)(nil),          // 3: project.planton.provider.kubernetes.workload.solrkubernetes.v1.SolrKubernetesSpec
-	(*shared.ApiResourceLifecycle)(nil), // 4: project.planton.shared.ApiResourceLifecycle
-	(*shared.ApiResourceAudit)(nil),     // 5: project.planton.shared.ApiResourceAudit
-	(*SolrKubernetesStackOutputs)(nil),  // 6: project.planton.provider.kubernetes.workload.solrkubernetes.v1.SolrKubernetesStackOutputs
+	(*SolrKubernetes)(nil),             // 0: project.planton.provider.kubernetes.workload.solrkubernetes.v1.SolrKubernetes
+	(*SolrKubernetesStatus)(nil),       // 1: project.planton.provider.kubernetes.workload.solrkubernetes.v1.SolrKubernetesStatus
+	(*shared.ApiResourceMetadata)(nil), // 2: project.planton.shared.ApiResourceMetadata
+	(*SolrKubernetesSpec)(nil),         // 3: project.planton.provider.kubernetes.workload.solrkubernetes.v1.SolrKubernetesSpec
+	(*SolrKubernetesStackOutputs)(nil), // 4: project.planton.provider.kubernetes.workload.solrkubernetes.v1.SolrKubernetesStackOutputs
 }
 var file_project_planton_provider_kubernetes_workload_solrkubernetes_v1_api_proto_depIdxs = []int32{
 	2, // 0: project.planton.provider.kubernetes.workload.solrkubernetes.v1.SolrKubernetes.metadata:type_name -> project.planton.shared.ApiResourceMetadata
 	3, // 1: project.planton.provider.kubernetes.workload.solrkubernetes.v1.SolrKubernetes.spec:type_name -> project.planton.provider.kubernetes.workload.solrkubernetes.v1.SolrKubernetesSpec
 	1, // 2: project.planton.provider.kubernetes.workload.solrkubernetes.v1.SolrKubernetes.status:type_name -> project.planton.provider.kubernetes.workload.solrkubernetes.v1.SolrKubernetesStatus
-	4, // 3: project.planton.provider.kubernetes.workload.solrkubernetes.v1.SolrKubernetesStatus.lifecycle:type_name -> project.planton.shared.ApiResourceLifecycle
-	5, // 4: project.planton.provider.kubernetes.workload.solrkubernetes.v1.SolrKubernetesStatus.audit:type_name -> project.planton.shared.ApiResourceAudit
-	6, // 5: project.planton.provider.kubernetes.workload.solrkubernetes.v1.SolrKubernetesStatus.outputs:type_name -> project.planton.provider.kubernetes.workload.solrkubernetes.v1.SolrKubernetesStackOutputs
-	6, // [6:6] is the sub-list for method output_type
-	6, // [6:6] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	4, // 3: project.planton.provider.kubernetes.workload.solrkubernetes.v1.SolrKubernetesStatus.outputs:type_name -> project.planton.provider.kubernetes.workload.solrkubernetes.v1.SolrKubernetesStackOutputs
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_provider_kubernetes_workload_solrkubernetes_v1_api_proto_init() }

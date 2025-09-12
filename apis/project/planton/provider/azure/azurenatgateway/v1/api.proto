@@ -36,15 +36,6 @@ message AzureNatGateway {
 
 // azure-nat-gateway status
 message AzureNatGatewayStatus {
-  //lifecycle
-  project.planton.shared.ApiResourceLifecycle lifecycle = 99;
-
-  //audit-info
-  project.planton.shared.ApiResourceAudit audit = 98;
-
-  //stack-job id
-  string stack_job_id = 97;
-
   //stack-outputs
   //  azure-nat-gateway stack-outputs
   AzureNatGatewayStackOutputs outputs = 1;

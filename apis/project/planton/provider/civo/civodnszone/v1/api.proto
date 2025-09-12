@@ -36,15 +36,6 @@ message CivoDnsZone {
 
 // civo-dns-zone status
 message CivoDnsZoneStatus {
-  //lifecycle
-  project.planton.shared.ApiResourceLifecycle lifecycle = 99;
-
-  //audit-info
-  project.planton.shared.ApiResourceAudit audit = 98;
-
-  //stack-job id
-  string stack_job_id = 97;
-
   //stack-outputs
   //  civo-dns-zone stack-outputs
   CivoDnsZoneStackOutputs outputs = 1;

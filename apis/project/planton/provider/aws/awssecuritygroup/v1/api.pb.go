@@ -108,12 +108,6 @@ func (x *AwsSecurityGroup) GetStatus() *AwsSecurityGroupStatus {
 // aws-security-group status
 type AwsSecurityGroupStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// lifecycle
-	Lifecycle *shared.ApiResourceLifecycle `protobuf:"bytes,99,opt,name=lifecycle,proto3" json:"lifecycle,omitempty"`
-	// audit-info
-	Audit *shared.ApiResourceAudit `protobuf:"bytes,98,opt,name=audit,proto3" json:"audit,omitempty"`
-	// stack-job id
-	StackJobId string `protobuf:"bytes,97,opt,name=stack_job_id,json=stackJobId,proto3" json:"stack_job_id,omitempty"`
 	// stack-outputs
 	Outputs       *AwsSecurityGroupStackOutputs `protobuf:"bytes,1,opt,name=outputs,proto3" json:"outputs,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -150,27 +144,6 @@ func (*AwsSecurityGroupStatus) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_aws_awssecuritygroup_v1_api_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *AwsSecurityGroupStatus) GetLifecycle() *shared.ApiResourceLifecycle {
-	if x != nil {
-		return x.Lifecycle
-	}
-	return nil
-}
-
-func (x *AwsSecurityGroupStatus) GetAudit() *shared.ApiResourceAudit {
-	if x != nil {
-		return x.Audit
-	}
-	return nil
-}
-
-func (x *AwsSecurityGroupStatus) GetStackJobId() string {
-	if x != nil {
-		return x.StackJobId
-	}
-	return ""
-}
-
 func (x *AwsSecurityGroupStatus) GetOutputs() *AwsSecurityGroupStackOutputs {
 	if x != nil {
 		return x.Outputs
@@ -191,12 +164,8 @@ const file_project_planton_provider_aws_awssecuritygroup_v1_api_proto_rawDesc = 
 	"\x10AwsSecurityGroupR\x04kind\x12O\n" +
 	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12b\n" +
 	"\x04spec\x18\x04 \x01(\v2F.project.planton.provider.aws.awssecuritygroup.v1.AwsSecurityGroupSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12`\n" +
-	"\x06status\x18\x05 \x01(\v2H.project.planton.provider.aws.awssecuritygroup.v1.AwsSecurityGroupStatusR\x06status\"\xb0\x02\n" +
-	"\x16AwsSecurityGroupStatus\x12J\n" +
-	"\tlifecycle\x18c \x01(\v2,.project.planton.shared.ApiResourceLifecycleR\tlifecycle\x12>\n" +
-	"\x05audit\x18b \x01(\v2(.project.planton.shared.ApiResourceAuditR\x05audit\x12 \n" +
-	"\fstack_job_id\x18a \x01(\tR\n" +
-	"stackJobId\x12h\n" +
+	"\x06status\x18\x05 \x01(\v2H.project.planton.provider.aws.awssecuritygroup.v1.AwsSecurityGroupStatusR\x06status\"\x82\x01\n" +
+	"\x16AwsSecurityGroupStatus\x12h\n" +
 	"\aoutputs\x18\x01 \x01(\v2N.project.planton.provider.aws.awssecuritygroup.v1.AwsSecurityGroupStackOutputsR\aoutputsB\x9c\x03\n" +
 	"4com.project.planton.provider.aws.awssecuritygroup.v1B\bApiProtoP\x01Zsgithub.com/project-planton/project-planton/apis/project/planton/provider/aws/awssecuritygroup/v1;awssecuritygroupv1\xa2\x02\x05PPPAA\xaa\x020Project.Planton.Provider.Aws.Awssecuritygroup.V1\xca\x020Project\\Planton\\Provider\\Aws\\Awssecuritygroup\\V1\xe2\x02<Project\\Planton\\Provider\\Aws\\Awssecuritygroup\\V1\\GPBMetadata\xea\x025Project::Planton::Provider::Aws::Awssecuritygroup::V1b\x06proto3"
 
@@ -218,22 +187,18 @@ var file_project_planton_provider_aws_awssecuritygroup_v1_api_proto_goTypes = []
 	(*AwsSecurityGroupStatus)(nil),       // 1: project.planton.provider.aws.awssecuritygroup.v1.AwsSecurityGroupStatus
 	(*shared.ApiResourceMetadata)(nil),   // 2: project.planton.shared.ApiResourceMetadata
 	(*AwsSecurityGroupSpec)(nil),         // 3: project.planton.provider.aws.awssecuritygroup.v1.AwsSecurityGroupSpec
-	(*shared.ApiResourceLifecycle)(nil),  // 4: project.planton.shared.ApiResourceLifecycle
-	(*shared.ApiResourceAudit)(nil),      // 5: project.planton.shared.ApiResourceAudit
-	(*AwsSecurityGroupStackOutputs)(nil), // 6: project.planton.provider.aws.awssecuritygroup.v1.AwsSecurityGroupStackOutputs
+	(*AwsSecurityGroupStackOutputs)(nil), // 4: project.planton.provider.aws.awssecuritygroup.v1.AwsSecurityGroupStackOutputs
 }
 var file_project_planton_provider_aws_awssecuritygroup_v1_api_proto_depIdxs = []int32{
 	2, // 0: project.planton.provider.aws.awssecuritygroup.v1.AwsSecurityGroup.metadata:type_name -> project.planton.shared.ApiResourceMetadata
 	3, // 1: project.planton.provider.aws.awssecuritygroup.v1.AwsSecurityGroup.spec:type_name -> project.planton.provider.aws.awssecuritygroup.v1.AwsSecurityGroupSpec
 	1, // 2: project.planton.provider.aws.awssecuritygroup.v1.AwsSecurityGroup.status:type_name -> project.planton.provider.aws.awssecuritygroup.v1.AwsSecurityGroupStatus
-	4, // 3: project.planton.provider.aws.awssecuritygroup.v1.AwsSecurityGroupStatus.lifecycle:type_name -> project.planton.shared.ApiResourceLifecycle
-	5, // 4: project.planton.provider.aws.awssecuritygroup.v1.AwsSecurityGroupStatus.audit:type_name -> project.planton.shared.ApiResourceAudit
-	6, // 5: project.planton.provider.aws.awssecuritygroup.v1.AwsSecurityGroupStatus.outputs:type_name -> project.planton.provider.aws.awssecuritygroup.v1.AwsSecurityGroupStackOutputs
-	6, // [6:6] is the sub-list for method output_type
-	6, // [6:6] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	4, // 3: project.planton.provider.aws.awssecuritygroup.v1.AwsSecurityGroupStatus.outputs:type_name -> project.planton.provider.aws.awssecuritygroup.v1.AwsSecurityGroupStackOutputs
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_provider_aws_awssecuritygroup_v1_api_proto_init() }

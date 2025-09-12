@@ -108,12 +108,6 @@ func (x *CivoIpAddress) GetStatus() *CivoIpAddressStatus {
 // civo-ip-address status
 type CivoIpAddressStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// lifecycle
-	Lifecycle *shared.ApiResourceLifecycle `protobuf:"bytes,99,opt,name=lifecycle,proto3" json:"lifecycle,omitempty"`
-	// audit-info
-	Audit *shared.ApiResourceAudit `protobuf:"bytes,98,opt,name=audit,proto3" json:"audit,omitempty"`
-	// stack-job id
-	StackJobId string `protobuf:"bytes,97,opt,name=stack_job_id,json=stackJobId,proto3" json:"stack_job_id,omitempty"`
 	// stack-outputs
 	//
 	//	civo-ip-address stack-outputs
@@ -152,27 +146,6 @@ func (*CivoIpAddressStatus) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_civo_civoipaddress_v1_api_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *CivoIpAddressStatus) GetLifecycle() *shared.ApiResourceLifecycle {
-	if x != nil {
-		return x.Lifecycle
-	}
-	return nil
-}
-
-func (x *CivoIpAddressStatus) GetAudit() *shared.ApiResourceAudit {
-	if x != nil {
-		return x.Audit
-	}
-	return nil
-}
-
-func (x *CivoIpAddressStatus) GetStackJobId() string {
-	if x != nil {
-		return x.StackJobId
-	}
-	return ""
-}
-
 func (x *CivoIpAddressStatus) GetOutputs() *CivoIpAddressStackOutputs {
 	if x != nil {
 		return x.Outputs
@@ -193,12 +166,8 @@ const file_project_planton_provider_civo_civoipaddress_v1_api_proto_rawDesc = ""
 	"\rCivoIpAddressR\x04kind\x12O\n" +
 	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12]\n" +
 	"\x04spec\x18\x04 \x01(\v2A.project.planton.provider.civo.civoipaddress.v1.CivoIpAddressSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12[\n" +
-	"\x06status\x18\x05 \x01(\v2C.project.planton.provider.civo.civoipaddress.v1.CivoIpAddressStatusR\x06status\"\xa8\x02\n" +
-	"\x13CivoIpAddressStatus\x12J\n" +
-	"\tlifecycle\x18c \x01(\v2,.project.planton.shared.ApiResourceLifecycleR\tlifecycle\x12>\n" +
-	"\x05audit\x18b \x01(\v2(.project.planton.shared.ApiResourceAuditR\x05audit\x12 \n" +
-	"\fstack_job_id\x18a \x01(\tR\n" +
-	"stackJobId\x12c\n" +
+	"\x06status\x18\x05 \x01(\v2C.project.planton.provider.civo.civoipaddress.v1.CivoIpAddressStatusR\x06status\"z\n" +
+	"\x13CivoIpAddressStatus\x12c\n" +
 	"\aoutputs\x18\x01 \x01(\v2I.project.planton.provider.civo.civoipaddress.v1.CivoIpAddressStackOutputsR\aoutputsB\x8d\x03\n" +
 	"2com.project.planton.provider.civo.civoipaddress.v1B\bApiProtoP\x01Zngithub.com/project-planton/project-planton/apis/project/planton/provider/civo/civoipaddress/v1;civoipaddressv1\xa2\x02\x05PPPCC\xaa\x02.Project.Planton.Provider.Civo.Civoipaddress.V1\xca\x02.Project\\Planton\\Provider\\Civo\\Civoipaddress\\V1\xe2\x02:Project\\Planton\\Provider\\Civo\\Civoipaddress\\V1\\GPBMetadata\xea\x023Project::Planton::Provider::Civo::Civoipaddress::V1b\x06proto3"
 
@@ -216,26 +185,22 @@ func file_project_planton_provider_civo_civoipaddress_v1_api_proto_rawDescGZIP()
 
 var file_project_planton_provider_civo_civoipaddress_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_civo_civoipaddress_v1_api_proto_goTypes = []any{
-	(*CivoIpAddress)(nil),               // 0: project.planton.provider.civo.civoipaddress.v1.CivoIpAddress
-	(*CivoIpAddressStatus)(nil),         // 1: project.planton.provider.civo.civoipaddress.v1.CivoIpAddressStatus
-	(*shared.ApiResourceMetadata)(nil),  // 2: project.planton.shared.ApiResourceMetadata
-	(*CivoIpAddressSpec)(nil),           // 3: project.planton.provider.civo.civoipaddress.v1.CivoIpAddressSpec
-	(*shared.ApiResourceLifecycle)(nil), // 4: project.planton.shared.ApiResourceLifecycle
-	(*shared.ApiResourceAudit)(nil),     // 5: project.planton.shared.ApiResourceAudit
-	(*CivoIpAddressStackOutputs)(nil),   // 6: project.planton.provider.civo.civoipaddress.v1.CivoIpAddressStackOutputs
+	(*CivoIpAddress)(nil),              // 0: project.planton.provider.civo.civoipaddress.v1.CivoIpAddress
+	(*CivoIpAddressStatus)(nil),        // 1: project.planton.provider.civo.civoipaddress.v1.CivoIpAddressStatus
+	(*shared.ApiResourceMetadata)(nil), // 2: project.planton.shared.ApiResourceMetadata
+	(*CivoIpAddressSpec)(nil),          // 3: project.planton.provider.civo.civoipaddress.v1.CivoIpAddressSpec
+	(*CivoIpAddressStackOutputs)(nil),  // 4: project.planton.provider.civo.civoipaddress.v1.CivoIpAddressStackOutputs
 }
 var file_project_planton_provider_civo_civoipaddress_v1_api_proto_depIdxs = []int32{
 	2, // 0: project.planton.provider.civo.civoipaddress.v1.CivoIpAddress.metadata:type_name -> project.planton.shared.ApiResourceMetadata
 	3, // 1: project.planton.provider.civo.civoipaddress.v1.CivoIpAddress.spec:type_name -> project.planton.provider.civo.civoipaddress.v1.CivoIpAddressSpec
 	1, // 2: project.planton.provider.civo.civoipaddress.v1.CivoIpAddress.status:type_name -> project.planton.provider.civo.civoipaddress.v1.CivoIpAddressStatus
-	4, // 3: project.planton.provider.civo.civoipaddress.v1.CivoIpAddressStatus.lifecycle:type_name -> project.planton.shared.ApiResourceLifecycle
-	5, // 4: project.planton.provider.civo.civoipaddress.v1.CivoIpAddressStatus.audit:type_name -> project.planton.shared.ApiResourceAudit
-	6, // 5: project.planton.provider.civo.civoipaddress.v1.CivoIpAddressStatus.outputs:type_name -> project.planton.provider.civo.civoipaddress.v1.CivoIpAddressStackOutputs
-	6, // [6:6] is the sub-list for method output_type
-	6, // [6:6] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	4, // 3: project.planton.provider.civo.civoipaddress.v1.CivoIpAddressStatus.outputs:type_name -> project.planton.provider.civo.civoipaddress.v1.CivoIpAddressStackOutputs
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_provider_civo_civoipaddress_v1_api_proto_init() }
