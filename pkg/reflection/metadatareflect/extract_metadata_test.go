@@ -1,8 +1,9 @@
 package metadatareflect
 
 import (
-	awss3bucketv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awss3bucket/v1"
 	"testing"
+
+	awss3bucketv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awss3bucket/v1"
 
 	"github.com/project-planton/project-planton/apis/project/planton/shared"
 	"google.golang.org/protobuf/proto"
@@ -31,7 +32,7 @@ func TestExtractMetadata(t *testing.T) {
 		},
 		{
 			name:  "when metadata object is the input, nil should be returned",
-			input: &shared.ApiResourceLifecycleAndAuditStatus{},
+			input: &shared.ApiResourceAuditStatus{},
 			want:  nil,
 		},
 	}

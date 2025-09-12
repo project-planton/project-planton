@@ -1,8 +1,9 @@
 package metadatareflect
 
 import (
-	awss3bucketv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awss3bucket/v1"
 	"testing"
+
+	awss3bucketv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awss3bucket/v1"
 
 	"github.com/project-planton/project-planton/apis/project/planton/shared"
 	"google.golang.org/protobuf/proto"
@@ -31,9 +32,9 @@ func TestInjectMetadata(t *testing.T) {
 		},
 		{
 			name:  "when message has no metadata field the call is a no‑op",
-			input: &shared.ApiResourceLifecycleAndAuditStatus{},
+			input: &shared.ApiResourceAuditStatus{},
 			meta:  &shared.ApiResourceMetadata{Id: "test-id"},
-			want:  &shared.ApiResourceLifecycleAndAuditStatus{},
+			want:  &shared.ApiResourceAuditStatus{},
 		},
 	}
 

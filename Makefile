@@ -141,7 +141,8 @@ release-github:
 		if [ -f "$$f" ]; then assets="$$assets $$f"; fi; \
 	done; \
 	echo "Creating GitHub release ${version} with assets: $$assets"; \
-	gh release create "${version}" --title "${version}" --generate-notes $$assets
+#	gh release create "${version}" --title "${version}" --generate-notes $$assets
+	gh release create "${version}" --title "${version}" --generate-notes
 
 .PHONY: release
 release: protos build-cli test release-github release-buf
