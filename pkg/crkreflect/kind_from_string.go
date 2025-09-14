@@ -8,6 +8,7 @@ import (
 var AliasMap = map[cloudresourcekind.CloudResourceKind][]string{}
 
 func KindFromString(cloudResourceKindString string) cloudresourcekind.CloudResourceKind {
+	// Check aliases first (exact match)
 	for kind, aliases := range AliasMap {
 		for _, alias := range aliases {
 			if alias == cloudResourceKindString {
@@ -16,11 +17,19 @@ func KindFromString(cloudResourceKindString string) cloudresourcekind.CloudResou
 		}
 	}
 
-	cloudResourceKindString = strings.ReplaceAll(cloudResourceKindString, "-", "")
-	cloudResourceKindString = strings.ReplaceAll(cloudResourceKindString, "_", "")
+	// Normalize the input string for comparison
+	normalizedInput := strings.ReplaceAll(cloudResourceKindString, "-", "")
+	normalizedInput = strings.ReplaceAll(normalizedInput, "_", "")
+	normalizedInput = strings.ToLower(normalizedInput)
 
 	for _, k := range KindsList() {
-		if strings.EqualFold(k.String(), cloudResourceKindString) {
+		// Normalize the enum value for comparison
+		normalizedEnum := strings.ReplaceAll(k.String(), "-", "")
+		normalizedEnum = strings.ReplaceAll(normalizedEnum, "_", "")
+		normalizedEnum = strings.ToLower(normalizedEnum)
+
+		// Compare normalized values
+		if normalizedInput == normalizedEnum {
 			return k
 		}
 	}

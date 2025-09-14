@@ -153,7 +153,10 @@ go_library(
 
 go_test(
     name = "crkreflect_test",
-    srcs = ["kind_by_id_prefix_test.go"],
+    srcs = [
+        "kind_by_id_prefix_test.go",
+        "kind_from_string_test.go",
+    ],
     embed = [":crkreflect"],
     deps = ["//apis/project/planton/shared/cloudresourcekind"],
 )
