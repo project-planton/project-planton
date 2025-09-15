@@ -199,7 +199,7 @@ func (x *ExternalDnsGkeConfig) GetDnsZoneId() *v1.StringValueOrRef {
 	return nil
 }
 
-// ExternalDnsEksConfig defines configuration for ExternalDNS on EKS with AWS Route 53.
+// ExternalDnsEksConfig defines configuration for ExternalDNS on EKS with AWS Route53 .
 type ExternalDnsEksConfig struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Route53ZoneId *v1.StringValueOrRef   `protobuf:"bytes,1,opt,name=route53_zone_id,json=route53ZoneId,proto3" json:"route53_zone_id,omitempty"`

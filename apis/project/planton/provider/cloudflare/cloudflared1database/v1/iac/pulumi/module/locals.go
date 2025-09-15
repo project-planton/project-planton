@@ -13,7 +13,7 @@ type Locals struct {
 }
 
 // initializeLocals copies stack‑input fields into the Locals struct.
-// Mirrors the style used in other Project Planton modules.
+// Mirrors the style used in other Project Planton modules.
 func initializeLocals(_ *pulumi.Context, stackInput *cloudflared1databasev1.CloudflareD1DatabaseStackInput) *Locals {
 	locals := &Locals{}
 	locals.CloudflareD1Database = stackInput.Target

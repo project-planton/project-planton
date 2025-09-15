@@ -16,7 +16,7 @@ Chart manifests live in the [`templates`](templates) directory; every tunable va
 |--------------------------------------------------|----------------|----------------------------|
 | **Custom VPC** (+ public & private subnets, NAT) | Yes            | —                          |
 | **Security Group**                               | Yes            | —                          |
-| **Route 53 Hosted Zone**                         | Yes            | —                          |
+| **Route53 Hosted Zone**                         | Yes            | —                          |
 | **Elastic Container Registry (ECR) Repo**        | Yes            | —                          |
 | **ECS Cluster (Fargate + Spot)**                 | Yes            | —                          |
 | **Application Load Balancer (ALB)**              | Yes            | —                          |
@@ -46,7 +46,7 @@ Booleans are shown as **unquoted YAML booleans** (`true` /`false`) to avoid stri
 |----------------------------------|------------------------------------|-------------------------|----------------------|
 | **availability\_zone\_1**        | First AZ for the subnet pair       | `us‑east‑1a`            | Default `us‑east‑1a` |
 | **availability\_zone\_2**        | Second AZ for the subnet pair      | `us‑east‑1b`            | Default `us‑east‑1b` |
-| **domain\_name**                 | Route 53 zone domain               | `example.com`           | Required             |
+| **domain\_name**                 | Route53 zone domain               | `example.com`           | Required             |
 | **load\_balancer\_domain\_name** | DNS name served by the ALB         | `app.example.com`       | Required             |
 | **service\_name**                | ECS service / task family name     | `nginx`                 | Default `nginx`      |
 | **service\_image\_repo\_name**   | ECR repository for images          | `shopping-cart-service` | Required             |
@@ -68,8 +68,8 @@ Booleans are shown as **unquoted YAML booleans** (`true` /`false`) to avoid stri
 
 ## Important Notes
 
-* Ensure your **Route 53** zone (`domain_name`) already exists, or delegate the domain before applying the chart.
-* When `httpsEnabled: true`, ACM issues a *DNS‑validated* certificate—Route 53 records must be publicly resolvable
+* Ensure your **Route53 ** zone (`domain_name`) already exists, or delegate the domain before applying the chart.
+* When `httpsEnabled: true`, ACM issues a *DNS‑validated* certificate—Route53 records must be publicly resolvable
   during validation.
 * The chart creates a **public** ALB. If you need an internal ALB, you can extend the template with a `publicAlbEnabled`
   flag following the same pattern.

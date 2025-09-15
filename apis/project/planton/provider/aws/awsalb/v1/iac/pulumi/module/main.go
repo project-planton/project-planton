@@ -36,7 +36,7 @@ func Resources(ctx *pulumi.Context, stackInput *awsalbv1.AwsAlbStackInput) error
 		return errors.Wrap(err, "failed to create aws_alb resource")
 	}
 
-	// If the user wants DNS, set up Route 53 records
+	// If the user wants DNS, set up Route53 records
 	if locals.AwsAlb.Spec.Dns.GetEnabled() {
 		if err := dns(ctx, locals, provider, albResource); err != nil {
 			return errors.Wrap(err, "failed to configure DNS")

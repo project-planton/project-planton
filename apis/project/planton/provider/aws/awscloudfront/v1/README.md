@@ -18,7 +18,7 @@ Validation highlights:
 ## Stack outputs
 - distribution_id: CloudFront distribution ID.
 - domain_name: CloudFront distribution domain (e.g., d123.cloudfront.net).
-- hosted_zone_id: Route 53 hosted zone ID for aliasing to CloudFront.
+- hosted_zone_id: Route53 hosted zone ID for aliasing to CloudFront.
 
 ## How it works
 This module can be provisioned with Pulumi or Terraform via the CLI. Stack inputs wire the chosen IaC backend, target manifest, and provider credentials.

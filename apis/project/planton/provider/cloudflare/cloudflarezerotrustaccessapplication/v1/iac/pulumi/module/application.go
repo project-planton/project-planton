@@ -16,7 +16,7 @@ func application(
 	cloudflareProvider *cloudflare.Provider,
 ) (*cloudflare.AccessApplication, error) {
 
-	// --- Access Application --------------------------------------------------
+	// --- Access Application --------------------------------------------------
 	appArgs := &cloudflare.AccessApplicationArgs{
 		Name:   pulumi.String(locals.CloudflareZeroTrustAccessApplication.Spec.ApplicationName),
 		ZoneId: pulumi.String(locals.CloudflareZeroTrustAccessApplication.Spec.ZoneId),
@@ -40,7 +40,7 @@ func application(
 		return nil, errors.Wrap(err, "failed to create access application")
 	}
 
-	// --- Access Policy -------------------------------------------------------
+	// --- Access Policy -------------------------------------------------------
 	var includeBlocks cloudflare.AccessPolicyIncludeArray
 	if len(locals.CloudflareZeroTrustAccessApplication.Spec.AllowedEmails) > 0 {
 		var emails pulumi.StringArray
@@ -90,7 +90,7 @@ func application(
 		return nil, errors.Wrap(err, "failed to create access policy")
 	}
 
-	// --- Stack Outputs -------------------------------------------------------
+	// --- Stack Outputs -------------------------------------------------------
 	ctx.Export(OpApplicationId, createdAccessApplication.ID())
 	ctx.Export(OpPublicHostname, pulumi.String(locals.CloudflareZeroTrustAccessApplication.Spec.Hostname))
 	ctx.Export(OpPolicyId, createdAccessPolicy.ID())

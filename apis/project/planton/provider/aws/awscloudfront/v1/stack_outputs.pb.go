@@ -28,7 +28,7 @@ type AwsCloudFrontStackOutputs struct {
 	DistributionId string `protobuf:"bytes,1,opt,name=distribution_id,json=distributionId,proto3" json:"distribution_id,omitempty"`
 	// CloudFront distribution domain name (e.g., d123.cloudfront.net).
 	DomainName string `protobuf:"bytes,2,opt,name=domain_name,json=domainName,proto3" json:"domain_name,omitempty"`
-	// Route 53 hosted zone ID used for aliasing to CloudFront.
+	// Route53 hosted zone ID used for aliasing to CloudFront.
 	HostedZoneId  string `protobuf:"bytes,3,opt,name=hosted_zone_id,json=hostedZoneId,proto3" json:"hosted_zone_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache

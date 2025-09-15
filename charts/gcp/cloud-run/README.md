@@ -46,7 +46,7 @@ Individual configurations may be modified directly in your GCP account or throug
 - The GCP Cloud Run Quick Start Chart is intended for initial provisioning only. Subsequent changes or management of
   resources
   must be handled individually.
-- Verify DNS configurations within Route 53 to ensure seamless ALB and SSL certificate operations.
+- Verify DNS configurations within Route53 to ensure seamless ALB and SSL certificate operations.
 
 ---
 

@@ -6,7 +6,7 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// database provisions the Cloudflare D1 database and exports its outputs.
+// database provisions the Cloudflare D1 database and exports its outputs.
 func database(
 	ctx *pulumi.Context,
 	locals *Locals,
@@ -35,7 +35,7 @@ func database(
 	ctx.Export(OpDatabaseName, createdD1Database.Name)
 
 	// NOTE: Pulumi’s Cloudflare provider (v6.4.1) does not yet expose a connection
-	// string for D1. We export an empty value to satisfy the Project Planton schema.
+	// string for D1. We export an empty value to satisfy the Project Planton schema.
 	ctx.Export(OpConnectionString, pulumi.String(""))
 
 	return createdD1Database, nil

@@ -1539,7 +1539,7 @@ type ChallengeSpecSolverDns01 struct {
 	CnameStrategy *string                               `pulumi:"cnameStrategy"`
 	Digitalocean  *ChallengeSpecSolverDns01Digitalocean `pulumi:"digitalocean"`
 	Rfc2136       *ChallengeSpecSolverDns01Rfc2136      `pulumi:"rfc2136"`
-	Route53       *ChallengeSpecSolverDns01Route53      `pulumi:"route53"`
+	Route53      *ChallengeSpecSolverDns01Route53     `pulumi:"route53"`
 	Webhook       *ChallengeSpecSolverDns01Webhook      `pulumi:"webhook"`
 }
 
@@ -1567,7 +1567,7 @@ type ChallengeSpecSolverDns01Args struct {
 	CnameStrategy pulumi.StringPtrInput                        `pulumi:"cnameStrategy"`
 	Digitalocean  ChallengeSpecSolverDns01DigitaloceanPtrInput `pulumi:"digitalocean"`
 	Rfc2136       ChallengeSpecSolverDns01Rfc2136PtrInput      `pulumi:"rfc2136"`
-	Route53       ChallengeSpecSolverDns01Route53PtrInput      `pulumi:"route53"`
+	Route53      ChallengeSpecSolverDns01Route53PtrInput      `pulumi:"route53"`
 	Webhook       ChallengeSpecSolverDns01WebhookPtrInput      `pulumi:"webhook"`
 }
 
@@ -7537,7 +7537,7 @@ type ChallengeSpecSolverDns01Patch struct {
 	CnameStrategy *string                                    `pulumi:"cnameStrategy"`
 	Digitalocean  *ChallengeSpecSolverDns01DigitaloceanPatch `pulumi:"digitalocean"`
 	Rfc2136       *ChallengeSpecSolverDns01Rfc2136Patch      `pulumi:"rfc2136"`
-	Route53       *ChallengeSpecSolverDns01Route53Patch      `pulumi:"route53"`
+	Route53      *ChallengeSpecSolverDns01Route53Patch      `pulumi:"route53"`
 	Webhook       *ChallengeSpecSolverDns01WebhookPatch      `pulumi:"webhook"`
 }
 
@@ -7565,7 +7565,7 @@ type ChallengeSpecSolverDns01PatchArgs struct {
 	CnameStrategy pulumi.StringPtrInput                             `pulumi:"cnameStrategy"`
 	Digitalocean  ChallengeSpecSolverDns01DigitaloceanPatchPtrInput `pulumi:"digitalocean"`
 	Rfc2136       ChallengeSpecSolverDns01Rfc2136PatchPtrInput      `pulumi:"rfc2136"`
-	Route53       ChallengeSpecSolverDns01Route53PatchPtrInput      `pulumi:"route53"`
+	Route53      ChallengeSpecSolverDns01Route53PatchPtrInput      `pulumi:"route53"`
 	Webhook       ChallengeSpecSolverDns01WebhookPatchPtrInput      `pulumi:"webhook"`
 }
 

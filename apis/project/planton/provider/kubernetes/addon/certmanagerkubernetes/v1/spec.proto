@@ -50,7 +50,7 @@ message CertManagerGkeConfig {
   ];
 }
 
-// AWS Route 53 + IRSA.
+// AWS Route53 + IRSA.
 message CertManagerEksConfig {
   project.planton.shared.foreignkey.v1.StringValueOrRef route53_zone_id = 1 [
     (buf.validate.field).required = true,

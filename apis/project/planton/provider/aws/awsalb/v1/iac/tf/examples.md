@@ -100,9 +100,9 @@ spec:
 ```
 
 In this example:
-• DNS management is enabled for Route 53.
+• DNS management is enabled for Route53 .
 • Two hostnames point to the ALB.
-• Route 53 zone ID is specified for DNS record creation.
+• Route53 zone ID is specified for DNS record creation.
 
 ---
 

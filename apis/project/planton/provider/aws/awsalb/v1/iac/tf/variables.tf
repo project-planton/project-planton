@@ -103,14 +103,14 @@ variable "spec" {
     # If omitted, AWS default is 60 seconds.
     idle_timeout_seconds = number
 
-    # dns configuration allows the resource to manage Route 53 DNS if enabled.
+    # dns configuration allows the resource to manage Route53 DNS if enabled.
     dns = object({
 
       # enabled, when set to true, indicates that the ALB resource
-      # should create DNS records in Route 53.
+      # should create DNS records in Route53 .
       enabled = bool
 
-      # route53_zone_id is the Route 53 Hosted Zone ID where DNS records
+      # route53_zone_id is the Route53 Hosted Zone ID where DNS records
       # will be created.
       route53_zone_id = object({
 

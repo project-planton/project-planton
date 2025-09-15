@@ -1,12 +1,12 @@
 # Overview
 
-The AWS Route 53 Zone API resource provides a consistent and streamlined interface for creating and managing DNS zones and records within Amazon Route 53, AWS's scalable DNS web service. By abstracting the complexities of DNS management, this resource allows you to define your DNS configurations effortlessly while ensuring consistency and compliance across different environments.
+The AWS Route53 Zone API resource provides a consistent and streamlined interface for creating and managing DNS zones and records within Amazon Route53 , AWS's scalable DNS web service. By abstracting the complexities of DNS management, this resource allows you to define your DNS configurations effortlessly while ensuring consistency and compliance across different environments.
 
 ## Why We Created This API Resource
 
 Managing DNS zones and records can be complex due to the intricacies of DNS configurations, record types, and best practices. To simplify this process and promote a standardized approach, we developed this API resource. It enables you to:
 
-- **Simplify DNS Management**: Easily create and manage DNS zones and records without dealing with low-level AWS Route 53 configurations.
+- **Simplify DNS Management**: Easily create and manage DNS zones and records without dealing with low-level AWS Route53 configurations.
 - **Ensure Consistency**: Maintain uniform DNS configurations across different environments and applications.
 - **Enhance Productivity**: Reduce the time and effort required to manage DNS settings, allowing you to focus on application development and deployment.
 
@@ -19,11 +19,11 @@ Managing DNS zones and records can be complex due to the intricacies of DNS conf
 
 ### AWS Credential Management
 
-- **AWS Credential ID**: Utilizes specified AWS credentials to ensure secure and authorized operations within AWS Route 53.
+- **AWS Credential ID**: Utilizes specified AWS credentials to ensure secure and authorized operations within AWS Route53 .
 
 ### Simplified DNS Zone and Record Management
 
-- **DNS Zone Creation**: Automatically creates Route 53 DNS zones based on specified domain names.
+- **DNS Zone Creation**: Automatically creates Route53 DNS zones based on specified domain names.
 - **DNS Record Management**: Define DNS records within the zone, specifying record types, names, values, and TTLs.
     - **Record Types Supported**: Supports various DNS record types as defined in the `DnsRecordType` enum, such as `A`, `AAAA`, `CNAME`, `MX`, `TXT`, etc.
     - **Record Names**: Specify the fully qualified domain name (FQDN) for each record. The name should end with a dot (e.g., `example.com.`).
@@ -38,7 +38,7 @@ Managing DNS zones and records can be complex due to the intricacies of DNS conf
 
 ## Benefits
 
-- **Simplified Deployment**: Abstracts the complexities of AWS Route 53 configurations into an easy-to-use API.
+- **Simplified Deployment**: Abstracts the complexities of AWS Route53 configurations into an easy-to-use API.
 - **Consistency**: Ensures all DNS zones and records adhere to organizational standards and best practices.
 - **Scalability**: Allows for efficient management of DNS settings as your application and infrastructure grow.
 - **Security**: Manages DNS configurations securely using specified AWS credentials, reducing the risk of unauthorized changes.

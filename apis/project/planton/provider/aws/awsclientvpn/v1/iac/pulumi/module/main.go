@@ -12,7 +12,7 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// Resources – entry‑point invoked by the Project Planton engine
+// Resources – entry‑point invoked by the Project Planton engine
 func Resources(ctx *pulumi.Context, stackInput *awsclientvpnv1.AwsClientVpnStackInput) error {
 
 	// ------------------------------------------------------------------ locals

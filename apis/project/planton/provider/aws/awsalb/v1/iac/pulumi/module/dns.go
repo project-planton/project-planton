@@ -10,7 +10,7 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// dns configures Route 53 alias records for the ALB if dns_config.enabled is true.
+// dns configures Route53 alias records for the ALB if dns_config.enabled is true.
 func dns(
 	ctx *pulumi.Context,
 	locals *Locals,

@@ -6,7 +6,7 @@ configuration—into a single resource that fits naturally into the ProjectPlant
 
 - **Automated ALB Provisioning**: Quickly create and configure internet-facing or internal ALBs, handling subnets,
   security groups, and IP address types in one cohesive manifest.
-- **Built-In DNS Management**: Optionally manage Route 53 DNS records (e.g., `hostnames`, `route53ZoneId`) to map your
+- **Built-In DNS Management**: Optionally manage Route53 DNS records (e.g., `hostnames`, `route53ZoneId`) to map your
   ALB to custom domains without separate steps.
 - **SSL Made Simple**: Enable SSL and specify a certificate ARN in one place, eliminating tedious manual setup.
 - **Consistent Multi-Cloud Support**: Use the same CLI and YAML-based workflow as other ProjectPlanton components,

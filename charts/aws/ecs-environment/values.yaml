@@ -9,7 +9,7 @@ params:
     value: us-east-1b
 
   - name: domain_name
-    description: Route 53 Hosted‑Zone domain
+    description: Route53 Hosted‑Zone domain
     value: example.com
 
   - name: load_balancer_domain_name

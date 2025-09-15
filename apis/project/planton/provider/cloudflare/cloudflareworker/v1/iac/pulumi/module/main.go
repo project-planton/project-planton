@@ -7,7 +7,7 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// Resources is the entry‑point expected by the Project Planton CLI.
+// Resources is the entry‑point expected by the Project Planton CLI.
 func Resources(
 	ctx *pulumi.Context,
 	stackInput *cloudflareworkerv1.CloudflareWorkerStackInput,

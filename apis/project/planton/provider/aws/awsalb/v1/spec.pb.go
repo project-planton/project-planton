@@ -42,7 +42,7 @@ type AwsAlbSpec struct {
 	// sets the idle timeout in seconds for connections to the ALB.
 	// If omitted, AWS default is 60 seconds.
 	IdleTimeoutSeconds int32 `protobuf:"varint,6,opt,name=idle_timeout_seconds,json=idleTimeoutSeconds,proto3" json:"idle_timeout_seconds,omitempty"`
-	// dns configuration allows the resource to manage Route 53 DNS if enabled.
+	// dns configuration allows the resource to manage Route53 DNS if enabled.
 	Dns *AwsAlbDns `protobuf:"bytes,7,opt,name=dns,proto3" json:"dns,omitempty"`
 	// ssl configuration allows a single toggle for SSL, plus a certificate ARN if enabled.
 	Ssl           *AwsAlbSsl `protobuf:"bytes,8,opt,name=ssl,proto3" json:"ssl,omitempty"`
@@ -129,13 +129,13 @@ func (x *AwsAlbSpec) GetSsl() *AwsAlbSsl {
 	return nil
 }
 
-// AwsAlbDns defines the Route 53 DNS configuration for the ALB.
+// AwsAlbDns defines the Route53 DNS configuration for the ALB.
 type AwsAlbDns struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// enabled, when set to true, indicates that the ALB resource
-	// should create DNS records in Route 53.
+	// should create DNS records in Route53 .
 	Enabled bool `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`
-	// route53_zone_id is the Route 53 Hosted Zone ID where DNS records
+	// route53_zone_id is the Route53 Hosted Zone ID where DNS records
 	// will be created.
 	Route53ZoneId *v1.StringValueOrRef `protobuf:"bytes,2,opt,name=route53_zone_id,json=route53ZoneId,proto3" json:"route53_zone_id,omitempty"`
 	// hostnames is a list of domain names (e.g., ["app.example.com"])

@@ -10,7 +10,7 @@ message AwsCloudFrontStackOutputs {
   // CloudFront distribution domain name (e.g., d123.cloudfront.net).
   string domain_name = 2;
 
-  // Route 53 hosted zone ID used for aliasing to CloudFront.
+  // Route53 hosted zone ID used for aliasing to CloudFront.
   string hosted_zone_id = 3;
 }
 

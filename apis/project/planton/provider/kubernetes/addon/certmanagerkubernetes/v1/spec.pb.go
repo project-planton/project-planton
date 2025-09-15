@@ -220,7 +220,7 @@ func (x *CertManagerGkeConfig) GetGsaEmail() string {
 	return ""
 }
 
-// AWS Route 53 + IRSA.
+// AWS Route53 + IRSA.
 type CertManagerEksConfig struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Route53ZoneId *v1.StringValueOrRef   `protobuf:"bytes,1,opt,name=route53_zone_id,json=route53ZoneId,proto3" json:"route53_zone_id,omitempty"`

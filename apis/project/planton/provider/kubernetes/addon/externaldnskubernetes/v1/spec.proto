@@ -37,7 +37,7 @@ message ExternalDnsGkeConfig {
   ];
 }
 
-// ExternalDnsEksConfig defines configuration for ExternalDNS on EKS with AWS Route 53.
+// ExternalDnsEksConfig defines configuration for ExternalDNS on EKS with AWS Route53 .
 message ExternalDnsEksConfig {
   project.planton.shared.foreignkey.v1.StringValueOrRef route53_zone_id = 1  [
     (buf.validate.field).required = true,

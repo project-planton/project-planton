@@ -37,20 +37,20 @@ message AwsAlbSpec {
     (project.planton.shared.options.recommended_default) = "60"
   ];
 
-  // dns configuration allows the resource to manage Route 53 DNS if enabled.
+  // dns configuration allows the resource to manage Route53 DNS if enabled.
   AwsAlbDns dns = 7;
 
   // ssl configuration allows a single toggle for SSL, plus a certificate ARN if enabled.
   AwsAlbSsl ssl = 8;
 }
 
-// AwsAlbDns defines the Route 53 DNS configuration for the ALB.
+// AwsAlbDns defines the Route53 DNS configuration for the ALB.
 message AwsAlbDns {
   // enabled, when set to true, indicates that the ALB resource
-  // should create DNS records in Route 53.
+  // should create DNS records in Route53 .
   bool enabled = 1;
 
-  // route53_zone_id is the Route 53 Hosted Zone ID where DNS records
+  // route53_zone_id is the Route53 Hosted Zone ID where DNS records
   // will be created.
   project.planton.shared.foreignkey.v1.StringValueOrRef route53_zone_id = 2 [
     (project.planton.shared.foreignkey.v1.default_kind) = AwsRoute53Zone,

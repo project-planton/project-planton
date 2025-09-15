@@ -8,7 +8,7 @@ params:
   value: us-central1
 
 - name: domain_name
-  description: Custom domain name managed by Route 53 (e.g., example.com)
+  description: Custom domain name managed by Route53 (e.g., example.com)
   value: example.com
 
 - name: service_name

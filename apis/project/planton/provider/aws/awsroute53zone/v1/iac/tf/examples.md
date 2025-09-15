@@ -1,6 +1,6 @@
-# AWS Route 53 Zone Examples
+# AWS Route53 Zone Examples
 
-Below are several examples demonstrating how to define an AWS Route 53 Zone component in
+Below are several examples demonstrating how to define an AWS Route53 Zone component in
 ProjectPlanton. After creating one of these YAML manifests, apply it with Terraform using the ProjectPlanton CLI:
 
 ```shell
@@ -9,7 +9,7 @@ project-planton tofu apply --manifest <yaml-path> --stack <stack-name>
 
 ---
 
-## Basic Route 53 Zone
+## Basic Route53 Zone
 
 ```yaml
 apiVersion: aws.project-planton.org/v1
@@ -25,7 +25,7 @@ spec:
       ttlSeconds: 300
 ```
 
-This example creates a basic Route 53 hosted zone:
+This example creates a basic Route53 hosted zone:
 • Domain name: example.com
 • A record pointing to IP address 192.0.2.1
 • 300-second TTL for caching
@@ -33,7 +33,7 @@ This example creates a basic Route 53 hosted zone:
 
 ---
 
-## Route 53 Zone with Multiple Records
+## Route53 Zone with Multiple Records
 
 ```yaml
 apiVersion: aws.project-planton.org/v1
@@ -67,7 +67,7 @@ This example includes multiple record types:
 
 ---
 
-## Route 53 Zone with Email Configuration
+## Route53 Zone with Email Configuration
 
 ```yaml
 apiVersion: aws.project-planton.org/v1
@@ -102,7 +102,7 @@ This example configures email services:
 
 ---
 
-## Route 53 Zone with Load Balancer Integration
+## Route53 Zone with Load Balancer Integration
 
 ```yaml
 apiVersion: aws.project-planton.org/v1
@@ -136,7 +136,7 @@ This example integrates with AWS load balancers:
 
 ---
 
-## Route 53 Zone with CDN Integration
+## Route53 Zone with CDN Integration
 
 ```yaml
 apiVersion: aws.project-planton.org/v1
@@ -170,7 +170,7 @@ This example integrates with CloudFront CDN:
 
 ---
 
-## Route 53 Zone with Subdomain Management
+## Route53 Zone with Subdomain Management
 
 ```yaml
 apiVersion: aws.project-planton.org/v1
@@ -214,7 +214,7 @@ This example manages multiple environments:
 
 ---
 
-## Route 53 Zone with Security Records
+## Route53 Zone with Security Records
 
 ```yaml
 apiVersion: aws.project-planton.org/v1
@@ -256,7 +256,7 @@ This example includes security-focused records:
 
 ---
 
-## Route 53 Zone with Service Discovery
+## Route53 Zone with Service Discovery
 
 ```yaml
 apiVersion: aws.project-planton.org/v1
@@ -300,7 +300,7 @@ This example includes service discovery records:
 
 ---
 
-## Route 53 Zone with Geographic Routing
+## Route53 Zone with Geographic Routing
 
 ```yaml
 apiVersion: aws.project-planton.org/v1
@@ -346,7 +346,7 @@ This example supports geographic routing:
 
 ## After Deploying
 
-Once you've applied your manifest with ProjectPlanton tofu, you can confirm that the Route 53 zone is active via the AWS console or by
+Once you've applied your manifest with ProjectPlanton tofu, you can confirm that the Route53 zone is active via the AWS console or by
 using the AWS CLI:
 
 ```shell
@@ -365,4 +365,4 @@ To list DNS records in the zone:
 aws route53 list-resource-record-sets --hosted-zone-id <your-zone-id>
 ```
 
-This will show the Route 53 zone details including nameservers, record sets, and configuration information.
+This will show the Route53 zone details including nameservers, record sets, and configuration information.
