@@ -1,9 +1,0 @@
----
-apiVersion: aws.project-planton.org/v1
-kind: AwsEcrRepo
-metadata:
-  name: ecr-repo
-spec:
-  encryptionType: AES256
-  imageImmutable: true
-  repositoryName: "{{ values.service_image_repo_name }}"
