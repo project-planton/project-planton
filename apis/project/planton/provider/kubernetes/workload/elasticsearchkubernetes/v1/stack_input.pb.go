@@ -29,8 +29,10 @@ type ElasticsearchKubernetesStackInput struct {
 	Target *ElasticsearchKubernetes `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
 	// provider-credential
 	ProviderCredential *v1.KubernetesClusterCredentialSpec `protobuf:"bytes,2,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	// kubernetes namespace
+	KubernetesNamespace string `protobuf:"bytes,3,opt,name=kubernetes_namespace,json=kubernetesNamespace,proto3" json:"kubernetes_namespace,omitempty"`
+	unknownFields       protoimpl.UnknownFields
+	sizeCache           protoimpl.SizeCache
 }
 
 func (x *ElasticsearchKubernetesStackInput) Reset() {
@@ -77,14 +79,22 @@ func (x *ElasticsearchKubernetesStackInput) GetProviderCredential() *v1.Kubernet
 	return nil
 }
 
+func (x *ElasticsearchKubernetesStackInput) GetKubernetesNamespace() string {
+	if x != nil {
+		return x.KubernetesNamespace
+	}
+	return ""
+}
+
 var File_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_v1_stack_input_proto protoreflect.FileDescriptor
 
 const file_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Yproject/planton/provider/kubernetes/workload/elasticsearchkubernetes/v1/stack_input.proto\x12Gproject.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1\x1aDproject/planton/credential/kubernetesclustercredential/v1/spec.proto\x1aQproject/planton/provider/kubernetes/workload/elasticsearchkubernetes/v1/api.proto\"\xab\x02\n" +
+	"Yproject/planton/provider/kubernetes/workload/elasticsearchkubernetes/v1/stack_input.proto\x12Gproject.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1\x1aDproject/planton/credential/kubernetesclustercredential/v1/spec.proto\x1aQproject/planton/provider/kubernetes/workload/elasticsearchkubernetes/v1/api.proto\"\xde\x02\n" +
 	"!ElasticsearchKubernetesStackInput\x12x\n" +
 	"\x06target\x18\x01 \x01(\v2`.project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesR\x06target\x12\x8b\x01\n" +
-	"\x13provider_credential\x18\x02 \x01(\v2Z.project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpecR\x12providerCredentialB\xb7\x04\n" +
+	"\x13provider_credential\x18\x02 \x01(\v2Z.project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpecR\x12providerCredential\x121\n" +
+	"\x14kubernetes_namespace\x18\x03 \x01(\tR\x13kubernetesNamespaceB\xb7\x04\n" +
 	"Kcom.project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1B\x0fStackInputProtoP\x01Z\x91\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/elasticsearchkubernetes/v1;elasticsearchkubernetesv1\xa2\x02\x06PPPKWE\xaa\x02GProject.Planton.Provider.Kubernetes.Workload.Elasticsearchkubernetes.V1\xca\x02GProject\\Planton\\Provider\\Kubernetes\\Workload\\Elasticsearchkubernetes\\V1\xe2\x02SProject\\Planton\\Provider\\Kubernetes\\Workload\\Elasticsearchkubernetes\\V1\\GPBMetadata\xea\x02MProject::Planton::Provider::Kubernetes::Workload::Elasticsearchkubernetes::V1b\x06proto3"
 
 var (

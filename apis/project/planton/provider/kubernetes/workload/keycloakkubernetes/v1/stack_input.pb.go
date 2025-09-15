@@ -29,8 +29,10 @@ type KeycloakKubernetesStackInput struct {
 	Target *KeycloakKubernetes `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
 	// provider-credential
 	ProviderCredential *v1.KubernetesClusterCredentialSpec `protobuf:"bytes,2,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	// kubernetes namespace
+	KubernetesNamespace string `protobuf:"bytes,3,opt,name=kubernetes_namespace,json=kubernetesNamespace,proto3" json:"kubernetes_namespace,omitempty"`
+	unknownFields       protoimpl.UnknownFields
+	sizeCache           protoimpl.SizeCache
 }
 
 func (x *KeycloakKubernetesStackInput) Reset() {
@@ -77,14 +79,22 @@ func (x *KeycloakKubernetesStackInput) GetProviderCredential() *v1.KubernetesClu
 	return nil
 }
 
+func (x *KeycloakKubernetesStackInput) GetKubernetesNamespace() string {
+	if x != nil {
+		return x.KubernetesNamespace
+	}
+	return ""
+}
+
 var File_project_planton_provider_kubernetes_workload_keycloakkubernetes_v1_stack_input_proto protoreflect.FileDescriptor
 
 const file_project_planton_provider_kubernetes_workload_keycloakkubernetes_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Tproject/planton/provider/kubernetes/workload/keycloakkubernetes/v1/stack_input.proto\x12Bproject.planton.provider.kubernetes.workload.keycloakkubernetes.v1\x1aDproject/planton/credential/kubernetesclustercredential/v1/spec.proto\x1aLproject/planton/provider/kubernetes/workload/keycloakkubernetes/v1/api.proto\"\x9c\x02\n" +
+	"Tproject/planton/provider/kubernetes/workload/keycloakkubernetes/v1/stack_input.proto\x12Bproject.planton.provider.kubernetes.workload.keycloakkubernetes.v1\x1aDproject/planton/credential/kubernetesclustercredential/v1/spec.proto\x1aLproject/planton/provider/kubernetes/workload/keycloakkubernetes/v1/api.proto\"\xcf\x02\n" +
 	"\x1cKeycloakKubernetesStackInput\x12n\n" +
 	"\x06target\x18\x01 \x01(\v2V.project.planton.provider.kubernetes.workload.keycloakkubernetes.v1.KeycloakKubernetesR\x06target\x12\x8b\x01\n" +
-	"\x13provider_credential\x18\x02 \x01(\v2Z.project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpecR\x12providerCredentialB\x94\x04\n" +
+	"\x13provider_credential\x18\x02 \x01(\v2Z.project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpecR\x12providerCredential\x121\n" +
+	"\x14kubernetes_namespace\x18\x03 \x01(\tR\x13kubernetesNamespaceB\x94\x04\n" +
 	"Fcom.project.planton.provider.kubernetes.workload.keycloakkubernetes.v1B\x0fStackInputProtoP\x01Z\x87\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/keycloakkubernetes/v1;keycloakkubernetesv1\xa2\x02\x06PPPKWK\xaa\x02BProject.Planton.Provider.Kubernetes.Workload.Keycloakkubernetes.V1\xca\x02BProject\\Planton\\Provider\\Kubernetes\\Workload\\Keycloakkubernetes\\V1\xe2\x02NProject\\Planton\\Provider\\Kubernetes\\Workload\\Keycloakkubernetes\\V1\\GPBMetadata\xea\x02HProject::Planton::Provider::Kubernetes::Workload::Keycloakkubernetes::V1b\x06proto3"
 
 var (

@@ -29,8 +29,10 @@ type SolrKubernetesStackInput struct {
 	Target *SolrKubernetes `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
 	// provider-credential
 	ProviderCredential *v1.KubernetesClusterCredentialSpec `protobuf:"bytes,2,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	// kubernetes namespace
+	KubernetesNamespace string `protobuf:"bytes,3,opt,name=kubernetes_namespace,json=kubernetesNamespace,proto3" json:"kubernetes_namespace,omitempty"`
+	unknownFields       protoimpl.UnknownFields
+	sizeCache           protoimpl.SizeCache
 }
 
 func (x *SolrKubernetesStackInput) Reset() {
@@ -77,14 +79,22 @@ func (x *SolrKubernetesStackInput) GetProviderCredential() *v1.KubernetesCluster
 	return nil
 }
 
+func (x *SolrKubernetesStackInput) GetKubernetesNamespace() string {
+	if x != nil {
+		return x.KubernetesNamespace
+	}
+	return ""
+}
+
 var File_project_planton_provider_kubernetes_workload_solrkubernetes_v1_stack_input_proto protoreflect.FileDescriptor
 
 const file_project_planton_provider_kubernetes_workload_solrkubernetes_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Pproject/planton/provider/kubernetes/workload/solrkubernetes/v1/stack_input.proto\x12>project.planton.provider.kubernetes.workload.solrkubernetes.v1\x1aDproject/planton/credential/kubernetesclustercredential/v1/spec.proto\x1aHproject/planton/provider/kubernetes/workload/solrkubernetes/v1/api.proto\"\x90\x02\n" +
+	"Pproject/planton/provider/kubernetes/workload/solrkubernetes/v1/stack_input.proto\x12>project.planton.provider.kubernetes.workload.solrkubernetes.v1\x1aDproject/planton/credential/kubernetesclustercredential/v1/spec.proto\x1aHproject/planton/provider/kubernetes/workload/solrkubernetes/v1/api.proto\"\xc3\x02\n" +
 	"\x18SolrKubernetesStackInput\x12f\n" +
 	"\x06target\x18\x01 \x01(\v2N.project.planton.provider.kubernetes.workload.solrkubernetes.v1.SolrKubernetesR\x06target\x12\x8b\x01\n" +
-	"\x13provider_credential\x18\x02 \x01(\v2Z.project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpecR\x12providerCredentialB\xf7\x03\n" +
+	"\x13provider_credential\x18\x02 \x01(\v2Z.project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpecR\x12providerCredential\x121\n" +
+	"\x14kubernetes_namespace\x18\x03 \x01(\tR\x13kubernetesNamespaceB\xf7\x03\n" +
 	"Bcom.project.planton.provider.kubernetes.workload.solrkubernetes.v1B\x0fStackInputProtoP\x01Z\x7fgithub.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/solrkubernetes/v1;solrkubernetesv1\xa2\x02\x06PPPKWS\xaa\x02>Project.Planton.Provider.Kubernetes.Workload.Solrkubernetes.V1\xca\x02>Project\\Planton\\Provider\\Kubernetes\\Workload\\Solrkubernetes\\V1\xe2\x02JProject\\Planton\\Provider\\Kubernetes\\Workload\\Solrkubernetes\\V1\\GPBMetadata\xea\x02DProject::Planton::Provider::Kubernetes::Workload::Solrkubernetes::V1b\x06proto3"
 
 var (

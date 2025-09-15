@@ -57,6 +57,8 @@ func initializeLocals(ctx *pulumi.Context,
 	if target.Metadata.Labels != nil &&
 		target.Metadata.Labels[overridelabels.KubernetesNamespaceLabelKey] != "" {
 		locals.Namespace = target.Metadata.Labels[overridelabels.KubernetesNamespaceLabelKey]
+	} else {
+		locals.Namespace = stackInput.KubernetesNamespace
 	}
 	ctx.Export(OpNamespace, pulumi.String(locals.Namespace))
 

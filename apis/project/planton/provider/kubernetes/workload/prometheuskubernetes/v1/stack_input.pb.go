@@ -29,8 +29,10 @@ type PrometheusKubernetesStackInput struct {
 	Target *PrometheusKubernetes `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
 	// provider-credential
 	ProviderCredential *v1.KubernetesClusterCredentialSpec `protobuf:"bytes,2,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	// kubernetes namespace
+	KubernetesNamespace string `protobuf:"bytes,3,opt,name=kubernetes_namespace,json=kubernetesNamespace,proto3" json:"kubernetes_namespace,omitempty"`
+	unknownFields       protoimpl.UnknownFields
+	sizeCache           protoimpl.SizeCache
 }
 
 func (x *PrometheusKubernetesStackInput) Reset() {
@@ -77,14 +79,22 @@ func (x *PrometheusKubernetesStackInput) GetProviderCredential() *v1.KubernetesC
 	return nil
 }
 
+func (x *PrometheusKubernetesStackInput) GetKubernetesNamespace() string {
+	if x != nil {
+		return x.KubernetesNamespace
+	}
+	return ""
+}
+
 var File_project_planton_provider_kubernetes_workload_prometheuskubernetes_v1_stack_input_proto protoreflect.FileDescriptor
 
 const file_project_planton_provider_kubernetes_workload_prometheuskubernetes_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Vproject/planton/provider/kubernetes/workload/prometheuskubernetes/v1/stack_input.proto\x12Dproject.planton.provider.kubernetes.workload.prometheuskubernetes.v1\x1aDproject/planton/credential/kubernetesclustercredential/v1/spec.proto\x1aNproject/planton/provider/kubernetes/workload/prometheuskubernetes/v1/api.proto\"\xa2\x02\n" +
+	"Vproject/planton/provider/kubernetes/workload/prometheuskubernetes/v1/stack_input.proto\x12Dproject.planton.provider.kubernetes.workload.prometheuskubernetes.v1\x1aDproject/planton/credential/kubernetesclustercredential/v1/spec.proto\x1aNproject/planton/provider/kubernetes/workload/prometheuskubernetes/v1/api.proto\"\xd5\x02\n" +
 	"\x1ePrometheusKubernetesStackInput\x12r\n" +
 	"\x06target\x18\x01 \x01(\v2Z.project.planton.provider.kubernetes.workload.prometheuskubernetes.v1.PrometheusKubernetesR\x06target\x12\x8b\x01\n" +
-	"\x13provider_credential\x18\x02 \x01(\v2Z.project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpecR\x12providerCredentialB\xa2\x04\n" +
+	"\x13provider_credential\x18\x02 \x01(\v2Z.project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpecR\x12providerCredential\x121\n" +
+	"\x14kubernetes_namespace\x18\x03 \x01(\tR\x13kubernetesNamespaceB\xa2\x04\n" +
 	"Hcom.project.planton.provider.kubernetes.workload.prometheuskubernetes.v1B\x0fStackInputProtoP\x01Z\x8b\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/prometheuskubernetes/v1;prometheuskubernetesv1\xa2\x02\x06PPPKWP\xaa\x02DProject.Planton.Provider.Kubernetes.Workload.Prometheuskubernetes.V1\xca\x02DProject\\Planton\\Provider\\Kubernetes\\Workload\\Prometheuskubernetes\\V1\xe2\x02PProject\\Planton\\Provider\\Kubernetes\\Workload\\Prometheuskubernetes\\V1\\GPBMetadata\xea\x02JProject::Planton::Provider::Kubernetes::Workload::Prometheuskubernetes::V1b\x06proto3"
 
 var (

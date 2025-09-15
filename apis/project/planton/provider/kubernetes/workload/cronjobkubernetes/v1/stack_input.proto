@@ -11,6 +11,8 @@ message CronJobKubernetesStackInput {
   CronJobKubernetes target = 1;
   //provider-credential
   project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec provider_credential = 2;
+  //kubernetes namespace
+  string kubernetes_namespace = 3;
   //docker-config-json to be used for setting up image-pull-secret
-  string docker_config_json = 6;
+  string docker_config_json = 4;
 }

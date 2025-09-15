@@ -29,8 +29,10 @@ type HelmReleaseStackInput struct {
 	Target *HelmRelease `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
 	// provider-credential
 	ProviderCredential *v1.KubernetesClusterCredentialSpec `protobuf:"bytes,2,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	// kubernetes namespace
+	KubernetesNamespace string `protobuf:"bytes,3,opt,name=kubernetes_namespace,json=kubernetesNamespace,proto3" json:"kubernetes_namespace,omitempty"`
+	unknownFields       protoimpl.UnknownFields
+	sizeCache           protoimpl.SizeCache
 }
 
 func (x *HelmReleaseStackInput) Reset() {
@@ -77,14 +79,22 @@ func (x *HelmReleaseStackInput) GetProviderCredential() *v1.KubernetesClusterCre
 	return nil
 }
 
+func (x *HelmReleaseStackInput) GetKubernetesNamespace() string {
+	if x != nil {
+		return x.KubernetesNamespace
+	}
+	return ""
+}
+
 var File_project_planton_provider_kubernetes_workload_helmrelease_v1_stack_input_proto protoreflect.FileDescriptor
 
 const file_project_planton_provider_kubernetes_workload_helmrelease_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Mproject/planton/provider/kubernetes/workload/helmrelease/v1/stack_input.proto\x12;project.planton.provider.kubernetes.workload.helmrelease.v1\x1aDproject/planton/credential/kubernetesclustercredential/v1/spec.proto\x1aEproject/planton/provider/kubernetes/workload/helmrelease/v1/api.proto\"\x87\x02\n" +
+	"Mproject/planton/provider/kubernetes/workload/helmrelease/v1/stack_input.proto\x12;project.planton.provider.kubernetes.workload.helmrelease.v1\x1aDproject/planton/credential/kubernetesclustercredential/v1/spec.proto\x1aEproject/planton/provider/kubernetes/workload/helmrelease/v1/api.proto\"\xba\x02\n" +
 	"\x15HelmReleaseStackInput\x12`\n" +
 	"\x06target\x18\x01 \x01(\v2H.project.planton.provider.kubernetes.workload.helmrelease.v1.HelmReleaseR\x06target\x12\x8b\x01\n" +
-	"\x13provider_credential\x18\x02 \x01(\v2Z.project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpecR\x12providerCredentialB\xe2\x03\n" +
+	"\x13provider_credential\x18\x02 \x01(\v2Z.project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpecR\x12providerCredential\x121\n" +
+	"\x14kubernetes_namespace\x18\x03 \x01(\tR\x13kubernetesNamespaceB\xe2\x03\n" +
 	"?com.project.planton.provider.kubernetes.workload.helmrelease.v1B\x0fStackInputProtoP\x01Zygithub.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/helmrelease/v1;helmreleasev1\xa2\x02\x06PPPKWH\xaa\x02;Project.Planton.Provider.Kubernetes.Workload.Helmrelease.V1\xca\x02;Project\\Planton\\Provider\\Kubernetes\\Workload\\Helmrelease\\V1\xe2\x02GProject\\Planton\\Provider\\Kubernetes\\Workload\\Helmrelease\\V1\\GPBMetadata\xea\x02AProject::Planton::Provider::Kubernetes::Workload::Helmrelease::V1b\x06proto3"
 
 var (

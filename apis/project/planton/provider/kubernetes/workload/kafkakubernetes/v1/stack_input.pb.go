@@ -29,8 +29,10 @@ type KafkaKubernetesStackInput struct {
 	Target *KafkaKubernetes `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
 	// provider-credential
 	ProviderCredential *v1.KubernetesClusterCredentialSpec `protobuf:"bytes,2,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	// kubernetes namespace
+	KubernetesNamespace string `protobuf:"bytes,3,opt,name=kubernetes_namespace,json=kubernetesNamespace,proto3" json:"kubernetes_namespace,omitempty"`
+	unknownFields       protoimpl.UnknownFields
+	sizeCache           protoimpl.SizeCache
 }
 
 func (x *KafkaKubernetesStackInput) Reset() {
@@ -77,14 +79,22 @@ func (x *KafkaKubernetesStackInput) GetProviderCredential() *v1.KubernetesCluste
 	return nil
 }
 
+func (x *KafkaKubernetesStackInput) GetKubernetesNamespace() string {
+	if x != nil {
+		return x.KubernetesNamespace
+	}
+	return ""
+}
+
 var File_project_planton_provider_kubernetes_workload_kafkakubernetes_v1_stack_input_proto protoreflect.FileDescriptor
 
 const file_project_planton_provider_kubernetes_workload_kafkakubernetes_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Qproject/planton/provider/kubernetes/workload/kafkakubernetes/v1/stack_input.proto\x12?project.planton.provider.kubernetes.workload.kafkakubernetes.v1\x1aDproject/planton/credential/kubernetesclustercredential/v1/spec.proto\x1aIproject/planton/provider/kubernetes/workload/kafkakubernetes/v1/api.proto\"\x93\x02\n" +
+	"Qproject/planton/provider/kubernetes/workload/kafkakubernetes/v1/stack_input.proto\x12?project.planton.provider.kubernetes.workload.kafkakubernetes.v1\x1aDproject/planton/credential/kubernetesclustercredential/v1/spec.proto\x1aIproject/planton/provider/kubernetes/workload/kafkakubernetes/v1/api.proto\"\xc6\x02\n" +
 	"\x19KafkaKubernetesStackInput\x12h\n" +
 	"\x06target\x18\x01 \x01(\v2P.project.planton.provider.kubernetes.workload.kafkakubernetes.v1.KafkaKubernetesR\x06target\x12\x8b\x01\n" +
-	"\x13provider_credential\x18\x02 \x01(\v2Z.project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpecR\x12providerCredentialB\xff\x03\n" +
+	"\x13provider_credential\x18\x02 \x01(\v2Z.project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpecR\x12providerCredential\x121\n" +
+	"\x14kubernetes_namespace\x18\x03 \x01(\tR\x13kubernetesNamespaceB\xff\x03\n" +
 	"Ccom.project.planton.provider.kubernetes.workload.kafkakubernetes.v1B\x0fStackInputProtoP\x01Z\x81\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/kafkakubernetes/v1;kafkakubernetesv1\xa2\x02\x06PPPKWK\xaa\x02?Project.Planton.Provider.Kubernetes.Workload.Kafkakubernetes.V1\xca\x02?Project\\Planton\\Provider\\Kubernetes\\Workload\\Kafkakubernetes\\V1\xe2\x02KProject\\Planton\\Provider\\Kubernetes\\Workload\\Kafkakubernetes\\V1\\GPBMetadata\xea\x02EProject::Planton::Provider::Kubernetes::Workload::Kafkakubernetes::V1b\x06proto3"
 
 var (

@@ -11,4 +11,6 @@ message PostgresKubernetesStackInput {
   PostgresKubernetes target = 1;
   //provider-credential
   project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec provider_credential = 2;
+  //kubernetes namespace
+  string kubernetes_namespace = 3;
 }

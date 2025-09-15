@@ -1,8 +1,9 @@
 package module
 
 import (
-	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
 	"strconv"
+
+	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
 
 	cronjobkubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/cronjobkubernetes/v1"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/kuberneteslabelkeys"
@@ -50,6 +51,8 @@ func initializeLocals(ctx *pulumi.Context, stackInput *cronjobkubernetesv1.CronJ
 	if target.Metadata.Labels != nil &&
 		target.Metadata.Labels[overridelabels.KubernetesNamespaceLabelKey] != "" {
 		locals.Namespace = target.Metadata.Labels[overridelabels.KubernetesNamespaceLabelKey]
+	} else {
+		locals.Namespace = stackInput.KubernetesNamespace
 	}
 
 	// export namespace as an output

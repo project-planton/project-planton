@@ -29,8 +29,10 @@ type MicroserviceKubernetesStackInput struct {
 	Target *MicroserviceKubernetes `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
 	// provider-credential
 	ProviderCredential *v1.KubernetesClusterCredentialSpec `protobuf:"bytes,2,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
+	// kubernetes namespace
+	KubernetesNamespace string `protobuf:"bytes,3,opt,name=kubernetes_namespace,json=kubernetesNamespace,proto3" json:"kubernetes_namespace,omitempty"`
 	// docker-config-json to be used for setting up image-pull-secret
-	DockerConfigJson string `protobuf:"bytes,6,opt,name=docker_config_json,json=dockerConfigJson,proto3" json:"docker_config_json,omitempty"`
+	DockerConfigJson string `protobuf:"bytes,4,opt,name=docker_config_json,json=dockerConfigJson,proto3" json:"docker_config_json,omitempty"`
 	unknownFields    protoimpl.UnknownFields
 	sizeCache        protoimpl.SizeCache
 }
@@ -79,6 +81,13 @@ func (x *MicroserviceKubernetesStackInput) GetProviderCredential() *v1.Kubernete
 	return nil
 }
 
+func (x *MicroserviceKubernetesStackInput) GetKubernetesNamespace() string {
+	if x != nil {
+		return x.KubernetesNamespace
+	}
+	return ""
+}
+
 func (x *MicroserviceKubernetesStackInput) GetDockerConfigJson() string {
 	if x != nil {
 		return x.DockerConfigJson
@@ -90,11 +99,12 @@ var File_project_planton_provider_kubernetes_workload_microservicekubernetes_v1_
 
 const file_project_planton_provider_kubernetes_workload_microservicekubernetes_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Xproject/planton/provider/kubernetes/workload/microservicekubernetes/v1/stack_input.proto\x12Fproject.planton.provider.kubernetes.workload.microservicekubernetes.v1\x1aDproject/planton/credential/kubernetesclustercredential/v1/spec.proto\x1aPproject/planton/provider/kubernetes/workload/microservicekubernetes/v1/api.proto\"\xd6\x02\n" +
+	"Xproject/planton/provider/kubernetes/workload/microservicekubernetes/v1/stack_input.proto\x12Fproject.planton.provider.kubernetes.workload.microservicekubernetes.v1\x1aDproject/planton/credential/kubernetesclustercredential/v1/spec.proto\x1aPproject/planton/provider/kubernetes/workload/microservicekubernetes/v1/api.proto\"\x89\x03\n" +
 	" MicroserviceKubernetesStackInput\x12v\n" +
 	"\x06target\x18\x01 \x01(\v2^.project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesR\x06target\x12\x8b\x01\n" +
-	"\x13provider_credential\x18\x02 \x01(\v2Z.project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpecR\x12providerCredential\x12,\n" +
-	"\x12docker_config_json\x18\x06 \x01(\tR\x10dockerConfigJsonB\xb0\x04\n" +
+	"\x13provider_credential\x18\x02 \x01(\v2Z.project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpecR\x12providerCredential\x121\n" +
+	"\x14kubernetes_namespace\x18\x03 \x01(\tR\x13kubernetesNamespace\x12,\n" +
+	"\x12docker_config_json\x18\x04 \x01(\tR\x10dockerConfigJsonB\xb0\x04\n" +
 	"Jcom.project.planton.provider.kubernetes.workload.microservicekubernetes.v1B\x0fStackInputProtoP\x01Z\x8f\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/microservicekubernetes/v1;microservicekubernetesv1\xa2\x02\x06PPPKWM\xaa\x02FProject.Planton.Provider.Kubernetes.Workload.Microservicekubernetes.V1\xca\x02FProject\\Planton\\Provider\\Kubernetes\\Workload\\Microservicekubernetes\\V1\xe2\x02RProject\\Planton\\Provider\\Kubernetes\\Workload\\Microservicekubernetes\\V1\\GPBMetadata\xea\x02LProject::Planton::Provider::Kubernetes::Workload::Microservicekubernetes::V1b\x06proto3"
 
 var (

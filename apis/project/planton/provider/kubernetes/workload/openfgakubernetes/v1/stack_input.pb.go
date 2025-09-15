@@ -29,8 +29,10 @@ type OpenFgaKubernetesStackInput struct {
 	Target *OpenFgaKubernetes `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
 	// provider-credential
 	ProviderCredential *v1.KubernetesClusterCredentialSpec `protobuf:"bytes,2,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	// kubernetes namespace
+	KubernetesNamespace string `protobuf:"bytes,3,opt,name=kubernetes_namespace,json=kubernetesNamespace,proto3" json:"kubernetes_namespace,omitempty"`
+	unknownFields       protoimpl.UnknownFields
+	sizeCache           protoimpl.SizeCache
 }
 
 func (x *OpenFgaKubernetesStackInput) Reset() {
@@ -77,14 +79,22 @@ func (x *OpenFgaKubernetesStackInput) GetProviderCredential() *v1.KubernetesClus
 	return nil
 }
 
+func (x *OpenFgaKubernetesStackInput) GetKubernetesNamespace() string {
+	if x != nil {
+		return x.KubernetesNamespace
+	}
+	return ""
+}
+
 var File_project_planton_provider_kubernetes_workload_openfgakubernetes_v1_stack_input_proto protoreflect.FileDescriptor
 
 const file_project_planton_provider_kubernetes_workload_openfgakubernetes_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Sproject/planton/provider/kubernetes/workload/openfgakubernetes/v1/stack_input.proto\x12Aproject.planton.provider.kubernetes.workload.openfgakubernetes.v1\x1aDproject/planton/credential/kubernetesclustercredential/v1/spec.proto\x1aKproject/planton/provider/kubernetes/workload/openfgakubernetes/v1/api.proto\"\x99\x02\n" +
+	"Sproject/planton/provider/kubernetes/workload/openfgakubernetes/v1/stack_input.proto\x12Aproject.planton.provider.kubernetes.workload.openfgakubernetes.v1\x1aDproject/planton/credential/kubernetesclustercredential/v1/spec.proto\x1aKproject/planton/provider/kubernetes/workload/openfgakubernetes/v1/api.proto\"\xcc\x02\n" +
 	"\x1bOpenFgaKubernetesStackInput\x12l\n" +
 	"\x06target\x18\x01 \x01(\v2T.project.planton.provider.kubernetes.workload.openfgakubernetes.v1.OpenFgaKubernetesR\x06target\x12\x8b\x01\n" +
-	"\x13provider_credential\x18\x02 \x01(\v2Z.project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpecR\x12providerCredentialB\x8d\x04\n" +
+	"\x13provider_credential\x18\x02 \x01(\v2Z.project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpecR\x12providerCredential\x121\n" +
+	"\x14kubernetes_namespace\x18\x03 \x01(\tR\x13kubernetesNamespaceB\x8d\x04\n" +
 	"Ecom.project.planton.provider.kubernetes.workload.openfgakubernetes.v1B\x0fStackInputProtoP\x01Z\x85\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/openfgakubernetes/v1;openfgakubernetesv1\xa2\x02\x06PPPKWO\xaa\x02AProject.Planton.Provider.Kubernetes.Workload.Openfgakubernetes.V1\xca\x02AProject\\Planton\\Provider\\Kubernetes\\Workload\\Openfgakubernetes\\V1\xe2\x02MProject\\Planton\\Provider\\Kubernetes\\Workload\\Openfgakubernetes\\V1\\GPBMetadata\xea\x02GProject::Planton::Provider::Kubernetes::Workload::Openfgakubernetes::V1b\x06proto3"
 
 var (
