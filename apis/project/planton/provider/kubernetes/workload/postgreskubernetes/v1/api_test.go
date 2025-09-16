@@ -4,21 +4,21 @@ import (
 	"testing"
 
 	"buf.build/go/protovalidate"
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
+	"github.com/onsi/ginkgo/v2"
+	"github.com/onsi/gomega"
 	"github.com/project-planton/project-planton/apis/project/planton/shared"
 	"github.com/project-planton/project-planton/apis/project/planton/shared/kubernetes"
 )
 
 func TestPostgresKubernetes(t *testing.T) {
-	RegisterFailHandler(Fail)
-	RunSpecs(t, "PostgresKubernetes Suite")
+	gomega.RegisterFailHandler(ginkgo.Fail)
+	ginkgo.RunSpecs(t, "PostgresKubernetes Suite")
 }
 
-var _ = Describe("PostgresKubernetes Custom Validation Tests", func() {
+var _ = ginkgo.Describe("PostgresKubernetes Custom Validation Tests", func() {
 	var input *PostgresKubernetes
 
-	BeforeEach(func() {
+	ginkgo.BeforeEach(func() {
 		input = &PostgresKubernetes{
 			ApiVersion: "kubernetes.project-planton.org/v1",
 			Kind:       "PostgresKubernetes",
@@ -47,11 +47,11 @@ var _ = Describe("PostgresKubernetes Custom Validation Tests", func() {
 		}
 	})
 
-	Describe("When valid input is passed", func() {
-		Context("postgres_kubernetes", func() {
-			It("should not return a validation error", func() {
+	ginkgo.Describe("When valid input is passed", func() {
+		ginkgo.Context("postgres_kubernetes", func() {
+			ginkgo.It("should not return a validation error", func() {
 				err := protovalidate.Validate(input)
-				Expect(err).To(BeNil())
+				gomega.Expect(err).To(gomega.BeNil())
 			})
 		})
 	})

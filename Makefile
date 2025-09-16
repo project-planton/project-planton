@@ -64,7 +64,7 @@ generate-cloud-resource-kind-map:
 
 .PHONY: generate-kubernetes-types
 generate-kubernetes-types:
-	pushd pkg/kubernetestypes;make build;popd
+	pushd pkg/kubernetes/kubernetestypes;make build;popd
 
 .PHONY: build-cli
 build-cli: ${build_dir}/${name}

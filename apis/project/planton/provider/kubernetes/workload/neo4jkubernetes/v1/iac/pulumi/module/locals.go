@@ -9,7 +9,7 @@ import (
 
 	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/kuberneteslabelkeys"
-	"github.com/project-planton/project-planton/pkg/overridelabels"
+	"github.com/project-planton/project-planton/pkg/kubernetes/kuberneteslabels"
 )
 
 // Locals struct mirrors the "locals" concept from Terraform,
@@ -74,7 +74,7 @@ func initializeLocals(
 	// but allowing override if there's a label for it.
 	locals.Namespace = target.Metadata.Name
 	if target.Metadata.Labels != nil {
-		if overrideNS, exists := target.Metadata.Labels[overridelabels.KubernetesNamespaceLabelKey]; exists {
+		if overrideNS, exists := target.Metadata.Labels[kuberneteslabels.NamespaceLabelKey]; exists {
 			locals.Namespace = overrideNS
 		}
 	}

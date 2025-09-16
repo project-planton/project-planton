@@ -2,12 +2,13 @@ package module
 
 import (
 	"fmt"
+	"strconv"
+
 	postgreskubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/postgreskubernetes/v1"
 	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/kuberneteslabelkeys"
-	"github.com/project-planton/project-planton/pkg/overridelabels"
+	"github.com/project-planton/project-planton/pkg/kubernetes/kuberneteslabels"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"strconv"
 )
 
 type Locals struct {
@@ -50,8 +51,8 @@ func initializeLocals(ctx *pulumi.Context, stackInput *postgreskubernetesv1.Post
 	locals.Namespace = target.Metadata.Name
 
 	if target.Metadata.Labels != nil &&
-		target.Metadata.Labels[overridelabels.KubernetesNamespaceLabelKey] != "" {
-		locals.Namespace = target.Metadata.Labels[overridelabels.KubernetesNamespaceLabelKey]
+		target.Metadata.Labels[kuberneteslabels.NamespaceLabelKey] != "" {
+		locals.Namespace = target.Metadata.Labels[kuberneteslabels.NamespaceLabelKey]
 	} else {
 		locals.Namespace = stackInput.KubernetesNamespace
 	}

@@ -4,20 +4,20 @@ import (
 	"testing"
 
 	"buf.build/go/protovalidate"
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
+	"github.com/onsi/ginkgo/v2"
+	"github.com/onsi/gomega"
 	"github.com/project-planton/project-planton/apis/project/planton/shared"
 )
 
 func TestSnowflakeCredential(t *testing.T) {
-	RegisterFailHandler(Fail)
-	RunSpecs(t, "SnowflakeCredential Suite")
+	gomega.RegisterFailHandler(ginkgo.Fail)
+	ginkgo.RunSpecs(t, "SnowflakeCredential Suite")
 }
 
-var _ = Describe("SnowflakeCredentialSpec Custom Validation Tests", func() {
+var _ = ginkgo.Describe("SnowflakeCredentialSpec Custom Validation Tests", func() {
 	var input *SnowflakeCredential
 
-	BeforeEach(func() {
+	ginkgo.BeforeEach(func() {
 		input = &SnowflakeCredential{
 			ApiVersion: "credential.project-planton.org/v1",
 			Kind:       "SnowflakeCredential",
@@ -33,29 +33,29 @@ var _ = Describe("SnowflakeCredentialSpec Custom Validation Tests", func() {
 		}
 	})
 
-	Describe("When valid input is passed", func() {
-		Context("with correct api_version and kind", func() {
-			It("should not return a validation error", func() {
+	ginkgo.Describe("When valid input is passed", func() {
+		ginkgo.Context("with correct api_version and kind", func() {
+			ginkgo.It("should not return a validation error", func() {
 				err := protovalidate.Validate(input)
-				Expect(err).To(BeNil())
+				gomega.Expect(err).To(gomega.BeNil())
 			})
 		})
 	})
 
-	Describe("When invalid input is passed", func() {
-		Context("with incorrect api_version", func() {
-			It("should return a validation error", func() {
+	ginkgo.Describe("When invalid input is passed", func() {
+		ginkgo.Context("with incorrect api_version", func() {
+			ginkgo.It("should return a validation error", func() {
 				input.ApiVersion = "invalid-value"
 				err := protovalidate.Validate(input)
-				Expect(err).ToNot(BeNil())
+				gomega.Expect(err).ToNot(gomega.BeNil())
 			})
 		})
 
-		Context("with incorrect kind", func() {
-			It("should return a validation error", func() {
+		ginkgo.Context("with incorrect kind", func() {
+			ginkgo.It("should return a validation error", func() {
 				input.Kind = "NotSnowflakeCredential"
 				err := protovalidate.Validate(input)
-				Expect(err).ToNot(BeNil())
+				gomega.Expect(err).ToNot(gomega.BeNil())
 			})
 		})
 	})

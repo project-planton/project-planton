@@ -3,25 +3,25 @@ package azureaksnodepoolv1
 import (
 	"testing"
 
+	"github.com/onsi/ginkgo/v2"
+	"github.com/onsi/gomega"
 	foreignkeyv1 "github.com/project-planton/project-planton/apis/project/planton/shared/foreignkey/v1"
 
 	"buf.build/go/protovalidate"
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
 	"github.com/project-planton/project-planton/apis/project/planton/shared"
 )
 
 func TestAzureAksNodePoolSpec(t *testing.T) {
-	RegisterFailHandler(Fail)
-	RunSpecs(t, "AzureAksNodePoolSpec Custom Validation Tests")
+	gomega.RegisterFailHandler(ginkgo.Fail)
+	ginkgo.RunSpecs(t, "AzureAksNodePoolSpec Custom Validation Tests")
 }
 
-var _ = Describe("AzureAksNodePoolSpec Custom Validation Tests", func() {
+var _ = ginkgo.Describe("AzureAksNodePoolSpec Custom Validation Tests", func() {
 
-	Describe("When valid input is passed", func() {
-		Context("azure_aks_node_pool", func() {
+	ginkgo.Describe("When valid input is passed", func() {
+		ginkgo.Context("azure_aks_node_pool", func() {
 
-			It("should not return a validation error for minimal valid fields", func() {
+			ginkgo.It("should not return a validation error for minimal valid fields", func() {
 				input := &AzureAksNodePool{
 					ApiVersion: "azure.project-planton.org/v1",
 					Kind:       "AzureAksNodePool",
@@ -38,7 +38,7 @@ var _ = Describe("AzureAksNodePoolSpec Custom Validation Tests", func() {
 					},
 				}
 				err := protovalidate.Validate(input)
-				Expect(err).To(BeNil())
+				gomega.Expect(err).To(gomega.BeNil())
 			})
 		})
 	})

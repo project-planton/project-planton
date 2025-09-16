@@ -44,7 +44,7 @@ func TestAwsCloudFrontSpec(t *testing.T) {
 }
 
 var _ = Describe("AwsCloudFrontSpec validations", func() {
-  It("accepts a valid spec", func() {
+  ginkgo.It("accepts a valid spec", func() {
     // construct minimal valid spec then
     Expect(protovalidate.Validate(&AwsCloudFrontSpec{})).To(BeNil())
   })

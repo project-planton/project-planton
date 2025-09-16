@@ -2,6 +2,7 @@ package module
 
 import (
 	"fmt"
+
 	"github.com/project-planton/project-planton/internal/valuefrom"
 
 	"github.com/pkg/errors"

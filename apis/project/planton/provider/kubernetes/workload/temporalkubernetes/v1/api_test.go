@@ -4,21 +4,21 @@ import (
 	"testing"
 
 	"buf.build/go/protovalidate"
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
+	"github.com/onsi/ginkgo/v2"
+	"github.com/onsi/gomega"
 	"github.com/project-planton/project-planton/apis/project/planton/shared"
 	"github.com/project-planton/project-planton/apis/project/planton/shared/kubernetes"
 )
 
 func TestTemporalKubernetes(t *testing.T) {
-	RegisterFailHandler(Fail)
-	RunSpecs(t, "TemporalKubernetes Suite")
+	gomega.RegisterFailHandler(ginkgo.Fail)
+	ginkgo.RunSpecs(t, "TemporalKubernetes Suite")
 }
 
-var _ = Describe("TemporalKubernetes Custom Validation Tests", func() {
+var _ = ginkgo.Describe("TemporalKubernetes Custom Validation Tests", func() {
 	var input *TemporalKubernetes
 
-	BeforeEach(func() {
+	ginkgo.BeforeEach(func() {
 		input = &TemporalKubernetes{
 			ApiVersion: "kubernetes.project-planton.org/v1",
 			Kind:       "TemporalKubernetes",
@@ -34,9 +34,9 @@ var _ = Describe("TemporalKubernetes Custom Validation Tests", func() {
 		}
 	})
 
-	Describe("When valid input is passed", func() {
-		Context("with cassandra external database and external elasticsearch", func() {
-			BeforeEach(func() {
+	ginkgo.Describe("When valid input is passed", func() {
+		ginkgo.Context("with cassandra external database and external elasticsearch", func() {
+			ginkgo.BeforeEach(func() {
 				input.Spec.Database = &TemporalKubernetesDatabaseConfig{
 					Backend: TemporalKubernetesDatabaseBackend_cassandra,
 					ExternalDatabase: &TemporalKubernetesExternalDatabase{
@@ -57,14 +57,14 @@ var _ = Describe("TemporalKubernetes Custom Validation Tests", func() {
 				}
 			})
 
-			It("should not return a validation error", func() {
+			ginkgo.It("should not return a validation error", func() {
 				err := protovalidate.Validate(input)
-				Expect(err).To(BeNil())
+				gomega.Expect(err).To(gomega.BeNil())
 			})
 		})
 
-		Context("with postgresql external database", func() {
-			BeforeEach(func() {
+		ginkgo.Context("with postgresql external database", func() {
+			ginkgo.BeforeEach(func() {
 				input.Spec.Database = &TemporalKubernetesDatabaseConfig{
 					Backend: TemporalKubernetesDatabaseBackend_postgresql,
 					ExternalDatabase: &TemporalKubernetesExternalDatabase{
@@ -79,14 +79,14 @@ var _ = Describe("TemporalKubernetes Custom Validation Tests", func() {
 				}
 			})
 
-			It("should not return a validation error", func() {
+			ginkgo.It("should not return a validation error", func() {
 				err := protovalidate.Validate(input)
-				Expect(err).To(BeNil())
+				gomega.Expect(err).To(gomega.BeNil())
 			})
 		})
 
-		Context("with mysql external database", func() {
-			BeforeEach(func() {
+		ginkgo.Context("with mysql external database", func() {
+			ginkgo.BeforeEach(func() {
 				input.Spec.Database = &TemporalKubernetesDatabaseConfig{
 					Backend: TemporalKubernetesDatabaseBackend_mysql,
 					ExternalDatabase: &TemporalKubernetesExternalDatabase{
@@ -100,9 +100,9 @@ var _ = Describe("TemporalKubernetes Custom Validation Tests", func() {
 				}
 			})
 
-			It("should not return a validation error", func() {
+			ginkgo.It("should not return a validation error", func() {
 				err := protovalidate.Validate(input)
-				Expect(err).To(BeNil())
+				gomega.Expect(err).To(gomega.BeNil())
 			})
 		})
 	})

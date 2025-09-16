@@ -4,20 +4,20 @@ import (
 	"testing"
 
 	"buf.build/go/protovalidate"
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
+	"github.com/onsi/ginkgo/v2"
+	"github.com/onsi/gomega"
 	"github.com/project-planton/project-planton/apis/project/planton/shared"
 )
 
 func TestConfluentKafka(t *testing.T) {
-	RegisterFailHandler(Fail)
-	RunSpecs(t, "ConfluentKafka Suite")
+	gomega.RegisterFailHandler(ginkgo.Fail)
+	ginkgo.RunSpecs(t, "ConfluentKafka Suite")
 }
 
-var _ = Describe("ConfluentKafka Custom Validation Tests", func() {
+var _ = ginkgo.Describe("ConfluentKafka Custom Validation Tests", func() {
 	var input *ConfluentKafka
 
-	BeforeEach(func() {
+	ginkgo.BeforeEach(func() {
 		input = &ConfluentKafka{
 			ApiVersion: "confluent.project-planton.org/v1",
 			Kind:       "ConfluentKafka",
@@ -32,60 +32,60 @@ var _ = Describe("ConfluentKafka Custom Validation Tests", func() {
 		}
 	})
 
-	Describe("When valid input is passed", func() {
-		Context("AWS", func() {
-			It("should not return a validation error", func() {
+	ginkgo.Describe("When valid input is passed", func() {
+		ginkgo.Context("AWS", func() {
+			ginkgo.It("should not return a validation error", func() {
 				input.Spec.Cloud = "AWS"
 				input.Spec.Availability = "SINGLE_ZONE"
 				err := protovalidate.Validate(input)
-				Expect(err).To(BeNil())
+				gomega.Expect(err).To(gomega.BeNil())
 			})
 		})
 
-		Context("GCP", func() {
-			It("should not return a validation error", func() {
+		ginkgo.Context("GCP", func() {
+			ginkgo.It("should not return a validation error", func() {
 				input.Spec.Cloud = "GCP"
 				input.Spec.Availability = "MULTI_ZONE"
 				err := protovalidate.Validate(input)
-				Expect(err).To(BeNil())
+				gomega.Expect(err).To(gomega.BeNil())
 			})
 		})
 
-		Context("AZURE", func() {
-			It("should not return a validation error", func() {
+		ginkgo.Context("AZURE", func() {
+			ginkgo.It("should not return a validation error", func() {
 				input.Spec.Cloud = "AZURE"
 				input.Spec.Availability = "HIGH"
 				err := protovalidate.Validate(input)
-				Expect(err).To(BeNil())
+				gomega.Expect(err).To(gomega.BeNil())
 			})
 		})
 	})
 
-	Describe("Cloud Field Validation", func() {
-		It("should fail validation if the cloud field is invalid", func() {
+	ginkgo.Describe("Cloud Field Validation", func() {
+		ginkgo.It("should fail validation if the cloud field is invalid", func() {
 			input.Spec.Cloud = "IBM"
 			err := protovalidate.Validate(input)
-			Expect(err).NotTo(BeNil())
+			gomega.Expect(err).NotTo(gomega.BeNil())
 		})
 
-		It("should allow the cloud field to be omitted", func() {
+		ginkgo.It("should allow the cloud field to be omitted", func() {
 			input.Spec.Cloud = ""
 			err := protovalidate.Validate(input)
-			Expect(err).To(BeNil())
+			gomega.Expect(err).To(gomega.BeNil())
 		})
 	})
 
-	Describe("Availability Field Validation", func() {
-		It("should fail validation if the availability field is invalid", func() {
+	ginkgo.Describe("Availability Field Validation", func() {
+		ginkgo.It("should fail validation if the availability field is invalid", func() {
 			input.Spec.Availability = "UNSUPPORTED_ZONE"
 			err := protovalidate.Validate(input)
-			Expect(err).NotTo(BeNil())
+			gomega.Expect(err).NotTo(gomega.BeNil())
 		})
 
-		It("should allow the availability field to be omitted", func() {
+		ginkgo.It("should allow the availability field to be omitted", func() {
 			input.Spec.Availability = ""
 			err := protovalidate.Validate(input)
-			Expect(err).To(BeNil())
+			gomega.Expect(err).To(gomega.BeNil())
 		})
 	})
 })

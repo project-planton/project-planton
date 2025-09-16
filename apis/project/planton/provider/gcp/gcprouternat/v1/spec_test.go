@@ -3,25 +3,25 @@ package gcprouternatv1
 import (
 	"testing"
 
+	"github.com/onsi/ginkgo/v2"
+	"github.com/onsi/gomega"
 	foreignkeyv1 "github.com/project-planton/project-planton/apis/project/planton/shared/foreignkey/v1"
 
 	"buf.build/go/protovalidate"
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
 	"github.com/project-planton/project-planton/apis/project/planton/shared"
 )
 
 func TestGcpRouterNatSpec(t *testing.T) {
-	RegisterFailHandler(Fail)
-	RunSpecs(t, "GcpRouterNatSpec Custom Validation Tests")
+	gomega.RegisterFailHandler(ginkgo.Fail)
+	ginkgo.RunSpecs(t, "GcpRouterNatSpec Custom Validation Tests")
 }
 
-var _ = Describe("GcpRouterNatSpec Custom Validation Tests", func() {
+var _ = ginkgo.Describe("GcpRouterNatSpec Custom Validation Tests", func() {
 
-	Describe("When valid input is passed", func() {
-		Context("gcp_router_nat", func() {
+	ginkgo.Describe("When valid input is passed", func() {
+		ginkgo.Context("gcp_router_nat", func() {
 
-			It("should not return a validation error for minimal valid fields", func() {
+			ginkgo.It("should not return a validation error for minimal valid fields", func() {
 				input := &GcpRouterNat{
 					ApiVersion: "gcp.project-planton.org/v1",
 					Kind:       "GcpRouterNat",
@@ -36,7 +36,7 @@ var _ = Describe("GcpRouterNatSpec Custom Validation Tests", func() {
 					},
 				}
 				err := protovalidate.Validate(input)
-				Expect(err).To(BeNil())
+				gomega.Expect(err).To(gomega.BeNil())
 			})
 		})
 	})

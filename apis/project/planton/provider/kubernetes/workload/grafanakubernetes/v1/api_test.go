@@ -4,20 +4,20 @@ import (
 	"testing"
 
 	"buf.build/go/protovalidate"
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
+	"github.com/onsi/ginkgo/v2"
+	"github.com/onsi/gomega"
 	"github.com/project-planton/project-planton/apis/project/planton/shared"
 )
 
 func TestGrafanaKubernetes(t *testing.T) {
-	RegisterFailHandler(Fail)
-	RunSpecs(t, "GrafanaKubernetes Suite")
+	gomega.RegisterFailHandler(ginkgo.Fail)
+	ginkgo.RunSpecs(t, "GrafanaKubernetes Suite")
 }
 
-var _ = Describe("GrafanaKubernetes Custom Validation Tests", func() {
+var _ = ginkgo.Describe("GrafanaKubernetes Custom Validation Tests", func() {
 	var input *GrafanaKubernetes
 
-	BeforeEach(func() {
+	ginkgo.BeforeEach(func() {
 		input = &GrafanaKubernetes{
 			ApiVersion: "kubernetes.project-planton.org/v1",
 			Kind:       "GrafanaKubernetes",
@@ -30,11 +30,11 @@ var _ = Describe("GrafanaKubernetes Custom Validation Tests", func() {
 		}
 	})
 
-	Describe("When valid input is passed", func() {
-		Context("grafana_kubernetes", func() {
-			It("should not return a validation error", func() {
+	ginkgo.Describe("When valid input is passed", func() {
+		ginkgo.Context("grafana_kubernetes", func() {
+			ginkgo.It("should not return a validation error", func() {
 				err := protovalidate.Validate(input)
-				Expect(err).To(BeNil())
+				gomega.Expect(err).To(gomega.BeNil())
 			})
 		})
 	})

@@ -2,11 +2,12 @@ package module
 
 import (
 	"fmt"
-	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
 	"net"
 	"sort"
 	"strconv"
+
+	"github.com/pkg/errors"
+	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
 
 	awsvpcv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsvpc/v1"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/aws/awstagkeys"

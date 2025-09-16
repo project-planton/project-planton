@@ -3,26 +3,26 @@ package digitaloceankubernetesclusterv1
 import (
 	"testing"
 
+	"github.com/onsi/ginkgo/v2"
+	"github.com/onsi/gomega"
 	foreignkeyv1 "github.com/project-planton/project-planton/apis/project/planton/shared/foreignkey/v1"
 
 	"buf.build/go/protovalidate"
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
 	"github.com/project-planton/project-planton/apis/project/planton/provider/digitalocean"
 	"github.com/project-planton/project-planton/apis/project/planton/shared"
 )
 
 func TestDigitalOceanKubernetesClusterSpec(t *testing.T) {
-	RegisterFailHandler(Fail)
-	RunSpecs(t, "DigitalOceanKubernetesClusterSpec Custom Validation Tests")
+	gomega.RegisterFailHandler(ginkgo.Fail)
+	ginkgo.RunSpecs(t, "DigitalOceanKubernetesClusterSpec Custom Validation Tests")
 }
 
-var _ = Describe("DigitalOceanKubernetesClusterSpec Custom Validation Tests", func() {
+var _ = ginkgo.Describe("DigitalOceanKubernetesClusterSpec Custom Validation Tests", func() {
 
-	Describe("When valid input is passed", func() {
-		Context("digitalocean_kubernetes_cluster", func() {
+	ginkgo.Describe("When valid input is passed", func() {
+		ginkgo.Context("digitalocean_kubernetes_cluster", func() {
 
-			It("should not return a validation error for minimal valid fields", func() {
+			ginkgo.It("should not return a validation error for minimal valid fields", func() {
 				input := &DigitalOceanKubernetesCluster{
 					ApiVersion: "digital-ocean.project-planton.org/v1",
 					Kind:       "DigitalOceanKubernetesCluster",
@@ -43,7 +43,7 @@ var _ = Describe("DigitalOceanKubernetesClusterSpec Custom Validation Tests", fu
 					},
 				}
 				err := protovalidate.Validate(input)
-				Expect(err).To(BeNil())
+				gomega.Expect(err).To(gomega.BeNil())
 			})
 		})
 	})

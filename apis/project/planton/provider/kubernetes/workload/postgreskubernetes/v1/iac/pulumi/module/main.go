@@ -4,7 +4,7 @@ import (
 	"github.com/pkg/errors"
 	postgreskubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/postgreskubernetes/v1"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/pulumikubernetesprovider"
-	zalandov1 "github.com/project-planton/project-planton/pkg/kubernetestypes/zalandooperator/kubernetes/acid/v1"
+	zalandov1 "github.com/project-planton/project-planton/pkg/kubernetes/kubernetestypes/zalandooperator/kubernetes/acid/v1"
 	kubernetescorev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
 	metav1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/meta/v1"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"

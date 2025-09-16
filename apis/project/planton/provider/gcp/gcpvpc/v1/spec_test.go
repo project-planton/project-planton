@@ -3,25 +3,25 @@ package gcpvpcv1
 import (
 	"testing"
 
+	"github.com/onsi/ginkgo/v2"
+	"github.com/onsi/gomega"
 	foreignkeyv1 "github.com/project-planton/project-planton/apis/project/planton/shared/foreignkey/v1"
 
 	"buf.build/go/protovalidate"
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
 	"github.com/project-planton/project-planton/apis/project/planton/shared"
 )
 
 func TestGcpVpcSpec(t *testing.T) {
-	RegisterFailHandler(Fail)
-	RunSpecs(t, "GcpVpcSpec Custom Validation Tests")
+	gomega.RegisterFailHandler(ginkgo.Fail)
+	ginkgo.RunSpecs(t, "GcpVpcSpec Custom Validation Tests")
 }
 
-var _ = Describe("GcpVpcSpec Custom Validation Tests", func() {
+var _ = ginkgo.Describe("GcpVpcSpec Custom Validation Tests", func() {
 
-	Describe("When valid input is passed", func() {
-		Context("gcp_vpc", func() {
+	ginkgo.Describe("When valid input is passed", func() {
+		ginkgo.Context("gcp_vpc", func() {
 
-			It("should not return a validation error for minimal valid fields", func() {
+			ginkgo.It("should not return a validation error for minimal valid fields", func() {
 				input := &GcpVpc{
 					ApiVersion: "gcp.project-planton.org/v1",
 					Kind:       "GcpVpc",
@@ -35,7 +35,7 @@ var _ = Describe("GcpVpcSpec Custom Validation Tests", func() {
 					},
 				}
 				err := protovalidate.Validate(input)
-				Expect(err).To(BeNil())
+				gomega.Expect(err).To(gomega.BeNil())
 			})
 		})
 	})

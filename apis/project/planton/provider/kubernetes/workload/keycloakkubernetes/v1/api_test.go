@@ -4,21 +4,21 @@ import (
 	"testing"
 
 	"buf.build/go/protovalidate"
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
+	"github.com/onsi/ginkgo/v2"
+	"github.com/onsi/gomega"
 	"github.com/project-planton/project-planton/apis/project/planton/shared"
 	"github.com/project-planton/project-planton/apis/project/planton/shared/kubernetes"
 )
 
 func TestKeycloakKubernetes(t *testing.T) {
-	RegisterFailHandler(Fail)
-	RunSpecs(t, "KeycloakKubernetes Suite")
+	gomega.RegisterFailHandler(ginkgo.Fail)
+	ginkgo.RunSpecs(t, "KeycloakKubernetes Suite")
 }
 
-var _ = Describe("KeycloakKubernetes Custom Validation Tests", func() {
+var _ = ginkgo.Describe("KeycloakKubernetes Custom Validation Tests", func() {
 	var input *KeycloakKubernetes
 
-	BeforeEach(func() {
+	ginkgo.BeforeEach(func() {
 		input = &KeycloakKubernetes{
 			ApiVersion: "kubernetes.project-planton.org/v1",
 			Kind:       "KeycloakKubernetes",
@@ -45,11 +45,11 @@ var _ = Describe("KeycloakKubernetes Custom Validation Tests", func() {
 		}
 	})
 
-	Describe("When valid input is passed", func() {
-		Context("keycloak_kubernetes", func() {
-			It("should not return a validation error", func() {
+	ginkgo.Describe("When valid input is passed", func() {
+		ginkgo.Context("keycloak_kubernetes", func() {
+			ginkgo.It("should not return a validation error", func() {
 				err := protovalidate.Validate(input)
-				Expect(err).To(BeNil())
+				gomega.Expect(err).To(gomega.BeNil())
 			})
 		})
 	})

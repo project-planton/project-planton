@@ -4,22 +4,22 @@ import (
 	"testing"
 
 	"buf.build/go/protovalidate"
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
+	"github.com/onsi/ginkgo/v2"
+	"github.com/onsi/gomega"
 	"github.com/project-planton/project-planton/apis/project/planton/shared"
 )
 
 func TestAzureDnsZoneSpec(t *testing.T) {
-	RegisterFailHandler(Fail)
-	RunSpecs(t, "AzureDnsZoneSpec Custom Validation Tests")
+	gomega.RegisterFailHandler(ginkgo.Fail)
+	ginkgo.RunSpecs(t, "AzureDnsZoneSpec Custom Validation Tests")
 }
 
-var _ = Describe("AzureDnsZoneSpec Custom Validation Tests", func() {
+var _ = ginkgo.Describe("AzureDnsZoneSpec Custom Validation Tests", func() {
 
-	Describe("When valid input is passed", func() {
-		Context("azure_dns_zone", func() {
+	ginkgo.Describe("When valid input is passed", func() {
+		ginkgo.Context("azure_dns_zone", func() {
 
-			It("should not return a validation error for minimal valid fields", func() {
+			ginkgo.It("should not return a validation error for minimal valid fields", func() {
 				input := &AzureDnsZone{
 					ApiVersion: "azure.project-planton.org/v1",
 					Kind:       "AzureDnsZone",
@@ -32,7 +32,7 @@ var _ = Describe("AzureDnsZoneSpec Custom Validation Tests", func() {
 					},
 				}
 				err := protovalidate.Validate(input)
-				Expect(err).To(BeNil())
+				gomega.Expect(err).To(gomega.BeNil())
 			})
 		})
 	})

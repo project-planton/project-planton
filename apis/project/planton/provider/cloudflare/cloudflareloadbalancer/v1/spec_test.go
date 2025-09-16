@@ -3,25 +3,25 @@ package cloudflareloadbalancerv1
 import (
 	"testing"
 
+	"github.com/onsi/ginkgo/v2"
+	"github.com/onsi/gomega"
 	foreignkeyv1 "github.com/project-planton/project-planton/apis/project/planton/shared/foreignkey/v1"
 
 	"buf.build/go/protovalidate"
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
 	"github.com/project-planton/project-planton/apis/project/planton/shared"
 )
 
 func TestCloudflareLoadBalancerSpec(t *testing.T) {
-	RegisterFailHandler(Fail)
-	RunSpecs(t, "CloudflareLoadBalancerSpec Custom Validation Tests")
+	gomega.RegisterFailHandler(ginkgo.Fail)
+	ginkgo.RunSpecs(t, "CloudflareLoadBalancerSpec Custom Validation Tests")
 }
 
-var _ = Describe("CloudflareLoadBalancerSpec Custom Validation Tests", func() {
+var _ = ginkgo.Describe("CloudflareLoadBalancerSpec Custom Validation Tests", func() {
 
-	Describe("When valid input is passed", func() {
-		Context("cloudflare_load_balancer", func() {
+	ginkgo.Describe("When valid input is passed", func() {
+		ginkgo.Context("cloudflare_load_balancer", func() {
 
-			It("should not return a validation error for minimal valid fields", func() {
+			ginkgo.It("should not return a validation error for minimal valid fields", func() {
 				input := &CloudflareLoadBalancer{
 					ApiVersion: "cloudflare.project-planton.org/v1",
 					Kind:       "CloudflareLoadBalancer",
@@ -42,7 +42,7 @@ var _ = Describe("CloudflareLoadBalancerSpec Custom Validation Tests", func() {
 					},
 				}
 				err := protovalidate.Validate(input)
-				Expect(err).To(BeNil())
+				gomega.Expect(err).To(gomega.BeNil())
 			})
 		})
 	})

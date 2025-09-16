@@ -4,22 +4,22 @@ import (
 	"testing"
 
 	"buf.build/go/protovalidate"
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
+	"github.com/onsi/ginkgo/v2"
+	"github.com/onsi/gomega"
 	"github.com/project-planton/project-planton/apis/project/planton/shared"
 )
 
 func TestAwsIamUserSpec(t *testing.T) {
-	RegisterFailHandler(Fail)
-	RunSpecs(t, "AwsIamUserSpec Custom Validation Tests")
+	gomega.RegisterFailHandler(ginkgo.Fail)
+	ginkgo.RunSpecs(t, "AwsIamUserSpec Custom Validation Tests")
 }
 
-var _ = Describe("AwsIamUserSpec Custom Validation Tests", func() {
+var _ = ginkgo.Describe("AwsIamUserSpec Custom Validation Tests", func() {
 
-	Describe("When valid input is passed", func() {
-		Context("aws_iam_user", func() {
+	ginkgo.Describe("When valid input is passed", func() {
+		ginkgo.Context("aws_iam_user", func() {
 
-			It("should not return a validation error for minimal valid fields", func() {
+			ginkgo.It("should not return a validation error for minimal valid fields", func() {
 				input := &AwsIamUser{
 					ApiVersion: "aws.project-planton.org/v1",
 					Kind:       "AwsIamUser",
@@ -31,7 +31,7 @@ var _ = Describe("AwsIamUserSpec Custom Validation Tests", func() {
 					},
 				}
 				err := protovalidate.Validate(input)
-				Expect(err).To(BeNil())
+				gomega.Expect(err).To(gomega.BeNil())
 			})
 		})
 	})

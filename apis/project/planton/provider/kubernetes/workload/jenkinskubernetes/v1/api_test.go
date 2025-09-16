@@ -4,21 +4,21 @@ import (
 	"testing"
 
 	"buf.build/go/protovalidate"
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
+	"github.com/onsi/ginkgo/v2"
+	"github.com/onsi/gomega"
 	"github.com/project-planton/project-planton/apis/project/planton/shared"
 	"github.com/project-planton/project-planton/apis/project/planton/shared/kubernetes"
 )
 
 func TestJenkinsKubernetes(t *testing.T) {
-	RegisterFailHandler(Fail)
-	RunSpecs(t, "JenkinsKubernetes Suite")
+	gomega.RegisterFailHandler(ginkgo.Fail)
+	ginkgo.RunSpecs(t, "JenkinsKubernetes Suite")
 }
 
-var _ = Describe("JenkinsKubernetes Custom Validation Tests", func() {
+var _ = ginkgo.Describe("JenkinsKubernetes Custom Validation Tests", func() {
 	var input *JenkinsKubernetes
 
-	BeforeEach(func() {
+	ginkgo.BeforeEach(func() {
 		input = &JenkinsKubernetes{
 			ApiVersion: "kubernetes.project-planton.org/v1",
 			Kind:       "JenkinsKubernetes",
@@ -43,11 +43,11 @@ var _ = Describe("JenkinsKubernetes Custom Validation Tests", func() {
 		}
 	})
 
-	Describe("When valid input is passed", func() {
-		Context("jenkins_kubernetes", func() {
-			It("should not return a validation error", func() {
+	ginkgo.Describe("When valid input is passed", func() {
+		ginkgo.Context("jenkins_kubernetes", func() {
+			ginkgo.It("should not return a validation error", func() {
 				err := protovalidate.Validate(input)
-				Expect(err).To(BeNil())
+				gomega.Expect(err).To(gomega.BeNil())
 			})
 		})
 	})

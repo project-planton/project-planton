@@ -4,20 +4,20 @@ import (
 	"testing"
 
 	"buf.build/go/protovalidate"
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
+	"github.com/onsi/ginkgo/v2"
+	"github.com/onsi/gomega"
 	"github.com/project-planton/project-planton/apis/project/planton/shared"
 )
 
 func TestKubernetesClusterCredential(t *testing.T) {
-	RegisterFailHandler(Fail)
-	RunSpecs(t, "KubernetesClusterCredential Suite")
+	gomega.RegisterFailHandler(ginkgo.Fail)
+	ginkgo.RunSpecs(t, "KubernetesClusterCredential Suite")
 }
 
-var _ = Describe("KubernetesClusterCredentialSpec Custom Validation Tests", func() {
+var _ = ginkgo.Describe("KubernetesClusterCredentialSpec Custom Validation Tests", func() {
 	var input *KubernetesClusterCredential
 
-	BeforeEach(func() {
+	ginkgo.BeforeEach(func() {
 		input = &KubernetesClusterCredential{
 			ApiVersion: "credential.project-planton.org/v1",
 			Kind:       "KubernetesClusterCredential",
@@ -28,9 +28,9 @@ var _ = Describe("KubernetesClusterCredentialSpec Custom Validation Tests", func
 		}
 	})
 
-	Describe("When valid input is passed", func() {
-		Context("gcp_gke", func() {
-			It("should not return a validation error", func() {
+	ginkgo.Describe("When valid input is passed", func() {
+		ginkgo.Context("gcp_gke", func() {
+			ginkgo.It("should not return a validation error", func() {
 				input.Spec.Provider = KubernetesProvider_gcp_gke
 				input.Spec.GcpGke = &KubernetesClusterCredentialGcpGke{
 					ClusterEndpoint:         "https://example-gke-endpoint.com",
@@ -38,25 +38,25 @@ var _ = Describe("KubernetesClusterCredentialSpec Custom Validation Tests", func
 					ServiceAccountKeyBase64: "base64ServiceAccountKeyData",
 				}
 				err := protovalidate.Validate(input)
-				Expect(err).To(BeNil())
+				gomega.Expect(err).To(gomega.BeNil())
 			})
 		})
 
-		Context("aws_eks", func() {
-			It("should not return a validation error", func() {
+		ginkgo.Context("aws_eks", func() {
+			ginkgo.It("should not return a validation error", func() {
 				input.Spec.Provider = KubernetesProvider_aws_eks
 				input.Spec.AwsEks = &KubernetesClusterCredentialAwsEks{}
 				err := protovalidate.Validate(input)
-				Expect(err).To(BeNil())
+				gomega.Expect(err).To(gomega.BeNil())
 			})
 		})
 
-		Context("azure_aks", func() {
-			It("should not return a validation error", func() {
+		ginkgo.Context("azure_aks", func() {
+			ginkgo.It("should not return a validation error", func() {
 				input.Spec.Provider = KubernetesProvider_azure_aks
 				input.Spec.AzureAks = &KubernetesClusterCredentialAzureAks{}
 				err := protovalidate.Validate(input)
-				Expect(err).To(BeNil())
+				gomega.Expect(err).To(gomega.BeNil())
 			})
 		})
 	})
