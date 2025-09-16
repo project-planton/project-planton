@@ -3,24 +3,24 @@ package awsecsclusterv1
 import (
 	"testing"
 
+	"github.com/onsi/ginkgo/v2"
+	"github.com/onsi/gomega"
 	"github.com/project-planton/project-planton/apis/project/planton/shared"
 
 	"buf.build/go/protovalidate"
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
 )
 
 func TestAwsEcsCluster(t *testing.T) {
-	RegisterFailHandler(Fail)
-	RunSpecs(t, "AwsEcsCluster Suite")
+	gomega.RegisterFailHandler(ginkgo.Fail)
+	ginkgo.RunSpecs(t, "AwsEcsCluster Suite")
 }
 
-var _ = Describe("KubernetesClusterCredentialSpec Custom Validation Tests", func() {
-	Describe("When valid input is passed", func() {
-		Context("aws_ecs_cluster", func() {
+var _ = ginkgo.Describe("KubernetesClusterCredentialSpec Custom Validation Tests", func() {
+	ginkgo.Describe("When valid input is passed", func() {
+		ginkgo.Context("aws_ecs_cluster", func() {
 			var input *AwsEcsCluster
 
-			BeforeEach(func() {
+			ginkgo.BeforeEach(func() {
 				input = &AwsEcsCluster{
 					ApiVersion: "aws.project-planton.org/v1",
 					Kind:       "AwsEcsCluster",
@@ -35,9 +35,9 @@ var _ = Describe("KubernetesClusterCredentialSpec Custom Validation Tests", func
 				}
 			})
 
-			It("should not return a validation error", func() {
+			ginkgo.It("should not return a validation error", func() {
 				err := protovalidate.Validate(input)
-				Expect(err).To(BeNil())
+				gomega.Expect(err).To(gomega.BeNil())
 			})
 		})
 	})

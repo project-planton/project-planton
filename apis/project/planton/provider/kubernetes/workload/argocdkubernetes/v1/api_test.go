@@ -4,20 +4,20 @@ import (
 	"testing"
 
 	"buf.build/go/protovalidate"
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
+	"github.com/onsi/ginkgo/v2"
+	"github.com/onsi/gomega"
 	"github.com/project-planton/project-planton/apis/project/planton/shared"
 )
 
 func TestArgocdKubernetes(t *testing.T) {
-	RegisterFailHandler(Fail)
-	RunSpecs(t, "ArgocdKubernetes Suite")
+	gomega.RegisterFailHandler(ginkgo.Fail)
+	ginkgo.RunSpecs(t, "ArgocdKubernetes Suite")
 }
 
-var _ = Describe("ArgocdKubernetes Custom Validation Tests", func() {
+var _ = ginkgo.Describe("ArgocdKubernetes Custom Validation Tests", func() {
 	var input *ArgocdKubernetes
 
-	BeforeEach(func() {
+	ginkgo.BeforeEach(func() {
 		input = &ArgocdKubernetes{
 			ApiVersion: "kubernetes.project-planton.org/v1",
 			Kind:       "ArgocdKubernetes",
@@ -30,11 +30,11 @@ var _ = Describe("ArgocdKubernetes Custom Validation Tests", func() {
 		}
 	})
 
-	Describe("When valid input is passed", func() {
-		Context("argocd_kubernetes", func() {
-			It("should not return a validation error", func() {
+	ginkgo.Describe("When valid input is passed", func() {
+		ginkgo.Context("argocd_kubernetes", func() {
+			ginkgo.It("should not return a validation error", func() {
 				err := protovalidate.Validate(input)
-				Expect(err).To(BeNil())
+				gomega.Expect(err).To(gomega.BeNil())
 			})
 		})
 	})

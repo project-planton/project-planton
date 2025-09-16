@@ -47,6 +47,10 @@ project-planton pulumi [command]
 - `--snowflake-credential string`: Path of the Snowflake credential file.
 - `--stack string`: Pulumi stack fully-qualified name in the format of `<org>/<project>/<stack>`.
 
+<Callout type="info" emoji="💡">
+    **Backend Configuration via Labels**: Starting with the latest version, you can embed backend configuration directly in your manifest using labels instead of CLI flags. The CLI will automatically detect and use these labels. See the [Backend Config via Labels](/docs/guide/manifest-backend-config) guide for details.
+</Callout>
+
 **Credential Handling**:
 
 Pulumi requires credentials for deploying infrastructure on different cloud platforms like AWS, GCP, Azure, and Kubernetes. By default, ProjectPlanton relies on Pulumi's credential lookup from the environment. However, for added flexibility, ProjectPlanton provides **Credential APIs** that let users configure credentials through YAML files for easier team collaboration.

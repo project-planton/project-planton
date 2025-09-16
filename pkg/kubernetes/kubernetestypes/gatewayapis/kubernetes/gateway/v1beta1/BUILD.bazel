@@ -1,0 +1,29 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "v1beta1",
+    srcs = [
+        "gateway.go",
+        "gatewayClass.go",
+        "gatewayClassList.go",
+        "gatewayClassPatch.go",
+        "gatewayList.go",
+        "gatewayPatch.go",
+        "httproute.go",
+        "httprouteList.go",
+        "httproutePatch.go",
+        "init.go",
+        "pulumiTypes.go",
+        "referenceGrant.go",
+        "referenceGrantList.go",
+        "referenceGrantPatch.go",
+    ],
+    importpath = "github.com/project-planton/project-planton/pkg/kubernetes/kubernetestypes/gatewayapis/kubernetes/gateway/v1beta1",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@com_github_blang_semver//:semver",
+        "@com_github_pulumi_pulumi_kubernetes_sdk_v4//go/kubernetes/meta/v1:meta",
+        "@com_github_pulumi_pulumi_kubernetes_sdk_v4//go/kubernetes/utilities",
+        "@com_github_pulumi_pulumi_sdk_v3//go/pulumi",
+    ],
+)

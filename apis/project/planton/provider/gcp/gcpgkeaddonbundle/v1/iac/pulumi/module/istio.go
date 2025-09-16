@@ -3,7 +3,7 @@ package module
 import (
 	"github.com/pkg/errors"
 	"github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpgkeaddonbundle/v1/iac/pulumi/module/vars"
-	istiov1alpha3 "github.com/project-planton/project-planton/pkg/kubernetestypes/istio/kubernetes/networking/v1alpha3"
+	istiov1alpha3 "github.com/project-planton/project-planton/pkg/kubernetes/kubernetestypes/istio/kubernetes/networking/v1alpha3"
 	"github.com/pulumi/pulumi-gcp/sdk/v8/go/gcp"
 	"github.com/pulumi/pulumi-gcp/sdk/v8/go/gcp/compute"
 	pulumikubernetes "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes"

@@ -1,24 +1,25 @@
 package elasticsearchkubernetesv1
 
 import (
-	"github.com/project-planton/project-planton/apis/project/planton/shared/kubernetes"
 	"testing"
 
+	"github.com/onsi/ginkgo/v2"
+	"github.com/onsi/gomega"
+	"github.com/project-planton/project-planton/apis/project/planton/shared/kubernetes"
+
 	"buf.build/go/protovalidate"
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
 	"github.com/project-planton/project-planton/apis/project/planton/shared"
 )
 
 func TestElasticsearchKubernetes(t *testing.T) {
-	RegisterFailHandler(Fail)
-	RunSpecs(t, "ElasticsearchKubernetes Suite")
+	gomega.RegisterFailHandler(ginkgo.Fail)
+	ginkgo.RunSpecs(t, "ElasticsearchKubernetes Suite")
 }
 
-var _ = Describe("ElasticsearchKubernetes Custom Validation Tests", func() {
+var _ = ginkgo.Describe("ElasticsearchKubernetes Custom Validation Tests", func() {
 	var input *ElasticsearchKubernetes
 
-	BeforeEach(func() {
+	ginkgo.BeforeEach(func() {
 		input = &ElasticsearchKubernetes{
 			ApiVersion: "kubernetes.project-planton.org/v1",
 			Kind:       "ElasticsearchKubernetes",
@@ -62,11 +63,11 @@ var _ = Describe("ElasticsearchKubernetes Custom Validation Tests", func() {
 		}
 	})
 
-	Describe("When valid input is passed", func() {
-		Context("elasticsearch_kubernetes", func() {
-			It("should not return a validation error", func() {
+	ginkgo.Describe("When valid input is passed", func() {
+		ginkgo.Context("elasticsearch_kubernetes", func() {
+			ginkgo.It("should not return a validation error", func() {
 				err := protovalidate.Validate(input)
-				Expect(err).To(BeNil())
+				gomega.Expect(err).To(gomega.BeNil())
 			})
 		})
 	})

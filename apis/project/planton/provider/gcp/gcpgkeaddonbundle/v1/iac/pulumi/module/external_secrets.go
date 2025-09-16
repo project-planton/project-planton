@@ -2,9 +2,10 @@ package module
 
 import (
 	"fmt"
+
 	"github.com/pkg/errors"
 	"github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpgkeaddonbundle/v1/iac/pulumi/module/vars"
-	externalsecretsv1 "github.com/project-planton/project-planton/pkg/kubernetestypes/externalsecrets/kubernetes/external_secrets/v1beta1"
+	externalsecretsv1 "github.com/project-planton/project-planton/pkg/kubernetes/kubernetestypes/externalsecrets/kubernetes/external_secrets/v1beta1"
 	"github.com/pulumi/pulumi-gcp/sdk/v8/go/gcp"
 	"github.com/pulumi/pulumi-gcp/sdk/v8/go/gcp/projects"
 	"github.com/pulumi/pulumi-gcp/sdk/v8/go/gcp/serviceaccount"

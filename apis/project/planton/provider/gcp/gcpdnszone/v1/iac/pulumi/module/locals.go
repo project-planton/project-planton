@@ -1,11 +1,12 @@
 package module
 
 import (
+	"strconv"
+
 	gcpdnszonev1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpdnszone/v1"
 	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/gcp/gcplabelkeys"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"strconv"
 )
 
 type Locals struct {

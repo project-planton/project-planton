@@ -3,6 +3,7 @@ package module
 
 import (
 	"fmt"
+
 	"github.com/pkg/errors"
 	kubernetescorev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
 	kubernetesmeta "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/meta/v1"

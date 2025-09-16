@@ -1,8 +1,9 @@
 package module
 
 import (
-	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
 	"strconv"
+
+	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
 
 	awscertv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awscertmanagercert/v1"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/aws/awstagkeys"

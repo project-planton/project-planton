@@ -4,17 +4,17 @@ import (
 	"testing"
 
 	"buf.build/go/protovalidate"
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
+	"github.com/onsi/ginkgo/v2"
+	"github.com/onsi/gomega"
 	fk "github.com/project-planton/project-planton/apis/project/planton/shared/foreignkey/v1"
 )
 
 func TestAwsEc2InstanceSpec(t *testing.T) {
-	RegisterFailHandler(Fail)
-	RunSpecs(t, "AwsEc2InstanceSpec Validation Suite")
+	gomega.RegisterFailHandler(ginkgo.Fail)
+	ginkgo.RunSpecs(t, "AwsEc2InstanceSpec Validation Suite")
 }
 
-var _ = Describe("AwsEc2InstanceSpec validations", func() {
+var _ = ginkgo.Describe("AwsEc2InstanceSpec validations", func() {
 	var spec *AwsEc2InstanceSpec
 
 	newSubnet := func(id string) *fk.StringValueOrRef {
@@ -29,7 +29,7 @@ var _ = Describe("AwsEc2InstanceSpec validations", func() {
 		return &fk.StringValueOrRef{LiteralOrRef: &fk.StringValueOrRef_Value{Value: arn}}
 	}
 
-	BeforeEach(func() {
+	ginkgo.BeforeEach(func() {
 		spec = &AwsEc2InstanceSpec{
 			InstanceName: "web-1",
 			AmiId:        "ami-0123456789abcdef0",
@@ -45,67 +45,67 @@ var _ = Describe("AwsEc2InstanceSpec validations", func() {
 		}
 	})
 
-	It("accepts a valid SSM spec", func() {
+	ginkgo.It("accepts a valid SSM spec", func() {
 		err := protovalidate.Validate(spec)
-		Expect(err).To(BeNil())
+		gomega.Expect(err).To(gomega.BeNil())
 	})
 
-	It("fails when instance_name is empty", func() {
+	ginkgo.It("fails when instance_name is empty", func() {
 		spec.InstanceName = ""
 		err := protovalidate.Validate(spec)
-		Expect(err).NotTo(BeNil())
+		gomega.Expect(err).NotTo(gomega.BeNil())
 	})
 
-	It("fails when ami_id does not start with ami-", func() {
+	ginkgo.It("fails when ami_id does not start with ami-", func() {
 		spec.AmiId = "image-123"
 		err := protovalidate.Validate(spec)
-		Expect(err).NotTo(BeNil())
+		gomega.Expect(err).NotTo(gomega.BeNil())
 	})
 
-	It("fails when instance_type is empty", func() {
+	ginkgo.It("fails when instance_type is empty", func() {
 		spec.InstanceType = ""
 		err := protovalidate.Validate(spec)
-		Expect(err).NotTo(BeNil())
+		gomega.Expect(err).NotTo(gomega.BeNil())
 	})
 
-	It("fails when security_group_ids is empty", func() {
+	ginkgo.It("fails when security_group_ids is empty", func() {
 		spec.SecurityGroupIds = []*fk.StringValueOrRef{}
 		err := protovalidate.Validate(spec)
-		Expect(err).NotTo(BeNil())
+		gomega.Expect(err).NotTo(gomega.BeNil())
 	})
 
-	It("fails when root_volume_size_gb is not greater than 0", func() {
+	ginkgo.It("fails when root_volume_size_gb is not greater than 0", func() {
 		spec.RootVolumeSizeGb = 0
 		err := protovalidate.Validate(spec)
-		Expect(err).NotTo(BeNil())
+		gomega.Expect(err).NotTo(gomega.BeNil())
 	})
 
-	It("fails when connection_method is an undefined enum value", func() {
+	ginkgo.It("fails when connection_method is an undefined enum value", func() {
 		spec.ConnectionMethod = AwsEc2InstanceConnectionMethod(99)
 		err := protovalidate.Validate(spec)
-		Expect(err).NotTo(BeNil())
+		gomega.Expect(err).NotTo(gomega.BeNil())
 	})
 
-	It("fails when connection_method is SSM and iam_instance_profile_arn is not set (CEL)", func() {
+	ginkgo.It("fails when connection_method is SSM and iam_instance_profile_arn is not set (CEL)", func() {
 		spec.ConnectionMethod = AwsEc2InstanceConnectionMethod_SSM
 		spec.IamInstanceProfileArn = nil
 		err := protovalidate.Validate(spec)
-		Expect(err).NotTo(BeNil())
+		gomega.Expect(err).NotTo(gomega.BeNil())
 	})
 
-	It("fails when connection_method is BASTION and key_name is empty (CEL)", func() {
+	ginkgo.It("fails when connection_method is BASTION and key_name is empty (CEL)", func() {
 		spec.ConnectionMethod = AwsEc2InstanceConnectionMethod_BASTION
 		spec.IamInstanceProfileArn = nil
 		spec.KeyName = ""
 		err := protovalidate.Validate(spec)
-		Expect(err).NotTo(BeNil())
+		gomega.Expect(err).NotTo(gomega.BeNil())
 	})
 
-	It("accepts a valid BASTION spec with key_name set", func() {
+	ginkgo.It("accepts a valid BASTION spec with key_name set", func() {
 		spec.ConnectionMethod = AwsEc2InstanceConnectionMethod_BASTION
 		spec.IamInstanceProfileArn = nil
 		spec.KeyName = "my-key"
 		err := protovalidate.Validate(spec)
-		Expect(err).To(BeNil())
+		gomega.Expect(err).To(gomega.BeNil())
 	})
 })

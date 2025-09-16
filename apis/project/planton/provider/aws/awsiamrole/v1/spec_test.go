@@ -4,22 +4,22 @@ import (
 	"testing"
 
 	"buf.build/go/protovalidate"
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
+	"github.com/onsi/ginkgo/v2"
+	"github.com/onsi/gomega"
 	"google.golang.org/protobuf/types/known/structpb"
 
 	"github.com/project-planton/project-planton/apis/project/planton/shared"
 )
 
 func TestAwsIamRole(t *testing.T) {
-	RegisterFailHandler(Fail)
-	RunSpecs(t, "AwsIamRole Suite")
+	gomega.RegisterFailHandler(ginkgo.Fail)
+	ginkgo.RunSpecs(t, "AwsIamRole Suite")
 }
 
-var _ = Describe("AwsIamRole Custom Validation Tests", func() {
-	Describe("When valid input is passed", func() {
-		Context("aws_iam_role", func() {
-			It("should not return a validation error", func() {
+var _ = ginkgo.Describe("AwsIamRole Custom Validation Tests", func() {
+	ginkgo.Describe("When valid input is passed", func() {
+		ginkgo.Context("aws_iam_role", func() {
+			ginkgo.It("should not return a validation error", func() {
 				input := &AwsIamRole{
 					ApiVersion: "aws.project-planton.org/v1",
 					Kind:       "AwsIamRole",
@@ -34,7 +34,7 @@ var _ = Describe("AwsIamRole Custom Validation Tests", func() {
 					},
 				}
 				err := protovalidate.Validate(input)
-				Expect(err).To(BeNil())
+				gomega.Expect(err).To(gomega.BeNil())
 			})
 		})
 	})

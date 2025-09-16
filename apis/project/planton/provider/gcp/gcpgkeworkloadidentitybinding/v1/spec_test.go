@@ -3,25 +3,25 @@ package gcpgkeworkloadidentitybindingv1
 import (
 	"testing"
 
+	"github.com/onsi/ginkgo/v2"
+	"github.com/onsi/gomega"
 	foreignkeyv1 "github.com/project-planton/project-planton/apis/project/planton/shared/foreignkey/v1"
 
 	"buf.build/go/protovalidate"
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
 	"github.com/project-planton/project-planton/apis/project/planton/shared"
 )
 
 func TestGcpGkeWorkloadIdentityBindingSpec(t *testing.T) {
-	RegisterFailHandler(Fail)
-	RunSpecs(t, "GcpGkeWorkloadIdentityBindingSpec Custom Validation Tests")
+	gomega.RegisterFailHandler(ginkgo.Fail)
+	ginkgo.RunSpecs(t, "GcpGkeWorkloadIdentityBindingSpec Custom Validation Tests")
 }
 
-var _ = Describe("GcpGkeWorkloadIdentityBindingSpec Custom Validation Tests", func() {
+var _ = ginkgo.Describe("GcpGkeWorkloadIdentityBindingSpec Custom Validation Tests", func() {
 
-	Describe("When valid input is passed", func() {
-		Context("gcp_gke_workload_identity_binding", func() {
+	ginkgo.Describe("When valid input is passed", func() {
+		ginkgo.Context("gcp_gke_workload_identity_binding", func() {
 
-			It("should not return a validation error for minimal valid fields", func() {
+			ginkgo.It("should not return a validation error for minimal valid fields", func() {
 				input := &GcpGkeWorkloadIdentityBinding{
 					ApiVersion: "gcp.project-planton.org/v1",
 					Kind:       "GcpGkeWorkloadIdentityBinding",
@@ -40,7 +40,7 @@ var _ = Describe("GcpGkeWorkloadIdentityBindingSpec Custom Validation Tests", fu
 					},
 				}
 				err := protovalidate.Validate(input)
-				Expect(err).To(BeNil())
+				gomega.Expect(err).To(gomega.BeNil())
 			})
 		})
 	})

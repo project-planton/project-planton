@@ -2,12 +2,13 @@ package module
 
 import (
 	"fmt"
+	"strings"
+
 	"github.com/pkg/errors"
 	gcpprojectv1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpproject/v1"
 	"github.com/pulumi/pulumi-gcp/sdk/v8/go/gcp/organizations"
 	"github.com/pulumi/pulumi-random/sdk/v4/go/random"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"strings"
 )
 
 func project(ctx *pulumi.Context, locals *Locals) (*organizations.Project, error) {

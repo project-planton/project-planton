@@ -1,10 +1,11 @@
 package module
 
 import (
-	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
-	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/gcp/gcplabelkeys"
 	"strconv"
 	"strings"
+
+	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
+	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/gcp/gcplabelkeys"
 
 	gcpcredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/gcpcredential/v1"
 	gcpcloudrunv1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpcloudrun/v1"

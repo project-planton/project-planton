@@ -3,26 +3,26 @@ package awsecsservicev1
 import (
 	"testing"
 
+	"github.com/onsi/ginkgo/v2"
+	"github.com/onsi/gomega"
 	"github.com/project-planton/project-planton/apis/project/planton/shared"
 	foreignkeyv1 "github.com/project-planton/project-planton/apis/project/planton/shared/foreignkey/v1"
 
 	"buf.build/go/protovalidate"
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
 )
 
 func TestAwsEcsService(t *testing.T) {
-	RegisterFailHandler(Fail)
-	RunSpecs(t, "AwsEcsService Suite")
+	gomega.RegisterFailHandler(ginkgo.Fail)
+	ginkgo.RunSpecs(t, "AwsEcsService Suite")
 }
 
-var _ = Describe("AwsEcsService Custom Validation Tests", func() {
+var _ = ginkgo.Describe("AwsEcsService Custom Validation Tests", func() {
 
-	Describe("When valid input is passed", func() {
-		Context("aws_ecs_service", func() {
+	ginkgo.Describe("When valid input is passed", func() {
+		ginkgo.Context("aws_ecs_service", func() {
 			var validInput *AwsEcsService
 
-			BeforeEach(func() {
+			ginkgo.BeforeEach(func() {
 				validInput = &AwsEcsService{
 					ApiVersion: "aws.project-planton.org/v1",
 					Kind:       "AwsEcsService",
@@ -63,17 +63,17 @@ var _ = Describe("AwsEcsService Custom Validation Tests", func() {
 				}
 			})
 
-			It("should not return a validation error", func() {
+			ginkgo.It("should not return a validation error", func() {
 				err := protovalidate.Validate(validInput)
-				Expect(err).To(BeNil())
+				gomega.Expect(err).To(gomega.BeNil())
 			})
 		})
 	})
 
-	Context("api_version validations", func() {
+	ginkgo.Context("api_version validations", func() {
 		var input *AwsEcsService
 
-		BeforeEach(func() {
+		ginkgo.BeforeEach(func() {
 			input = &AwsEcsService{
 				ApiVersion: "aws.project-planton.org/v1",
 				Kind:       "AwsEcsService",
@@ -104,17 +104,17 @@ var _ = Describe("AwsEcsService Custom Validation Tests", func() {
 			}
 		})
 
-		It("should fail if api_version does not match 'aws.project-planton.org/v1'", func() {
+		ginkgo.It("should fail if api_version does not match 'aws.project-planton.org/v1'", func() {
 			input.ApiVersion = "invalid-version"
 			err := protovalidate.Validate(input)
-			Expect(err).NotTo(BeNil())
+			gomega.Expect(err).NotTo(gomega.BeNil())
 		})
 	})
 
-	Context("kind validations", func() {
+	ginkgo.Context("kind validations", func() {
 		var input *AwsEcsService
 
-		BeforeEach(func() {
+		ginkgo.BeforeEach(func() {
 			input = &AwsEcsService{
 				ApiVersion: "aws.project-planton.org/v1",
 				Kind:       "AwsEcsService",
@@ -145,17 +145,17 @@ var _ = Describe("AwsEcsService Custom Validation Tests", func() {
 			}
 		})
 
-		It("should fail if kind does not match 'AwsEcsService'", func() {
+		ginkgo.It("should fail if kind does not match 'AwsEcsService'", func() {
 			input.Kind = "SomeOtherKind"
 			err := protovalidate.Validate(input)
-			Expect(err).NotTo(BeNil())
+			gomega.Expect(err).NotTo(gomega.BeNil())
 		})
 	})
 
-	Context("routing_type validations", func() {
+	ginkgo.Context("routing_type validations", func() {
 		var input *AwsEcsService
 
-		BeforeEach(func() {
+		ginkgo.BeforeEach(func() {
 			input = &AwsEcsService{
 				ApiVersion: "aws.project-planton.org/v1",
 				Kind:       "AwsEcsService",
@@ -196,22 +196,22 @@ var _ = Describe("AwsEcsService Custom Validation Tests", func() {
 			}
 		})
 
-		It("should allow 'path'", func() {
+		ginkgo.It("should allow 'path'", func() {
 			input.Spec.Alb.RoutingType = "path"
 			err := protovalidate.Validate(input)
-			Expect(err).To(BeNil())
+			gomega.Expect(err).To(gomega.BeNil())
 		})
 
-		It("should allow 'hostname'", func() {
+		ginkgo.It("should allow 'hostname'", func() {
 			input.Spec.Alb.RoutingType = "hostname"
 			err := protovalidate.Validate(input)
-			Expect(err).To(BeNil())
+			gomega.Expect(err).To(gomega.BeNil())
 		})
 
-		It("should fail for any other value", func() {
+		ginkgo.It("should fail for any other value", func() {
 			input.Spec.Alb.RoutingType = "invalid"
 			err := protovalidate.Validate(input)
-			Expect(err).NotTo(BeNil())
+			gomega.Expect(err).NotTo(gomega.BeNil())
 		})
 	})
 })

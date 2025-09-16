@@ -4,22 +4,22 @@ import (
 	"testing"
 
 	"buf.build/go/protovalidate"
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
+	"github.com/onsi/ginkgo/v2"
+	"github.com/onsi/gomega"
 	"github.com/project-planton/project-planton/apis/project/planton/shared"
 )
 
 func TestGcpArtifactRegistryRepo(t *testing.T) {
-	RegisterFailHandler(Fail)
-	RunSpecs(t, "GcpArtifactRegistryRepo Suite")
+	gomega.RegisterFailHandler(ginkgo.Fail)
+	ginkgo.RunSpecs(t, "GcpArtifactRegistryRepo Suite")
 }
 
-var _ = Describe("GcpArtifactRegistryRepo Custom Validation Tests", func() {
+var _ = ginkgo.Describe("GcpArtifactRegistryRepo Custom Validation Tests", func() {
 
-	Describe("When valid input is passed", func() {
-		Context("gcp_artifact_registry_repo", func() {
+	ginkgo.Describe("When valid input is passed", func() {
+		ginkgo.Context("gcp_artifact_registry_repo", func() {
 
-			It("should not return a validation error for minimal valid fields", func() {
+			ginkgo.It("should not return a validation error for minimal valid fields", func() {
 				input := &GcpArtifactRegistryRepo{
 					ApiVersion: "gcp.project-planton.org/v1",
 					Kind:       "GcpArtifactRegistryRepo",
@@ -33,10 +33,10 @@ var _ = Describe("GcpArtifactRegistryRepo Custom Validation Tests", func() {
 					},
 				}
 				err := protovalidate.Validate(input)
-				Expect(err).To(BeNil())
+				gomega.Expect(err).To(gomega.BeNil())
 			})
 
-			It("should not return a validation error with public access enabled", func() {
+			ginkgo.It("should not return a validation error with public access enabled", func() {
 				input := &GcpArtifactRegistryRepo{
 					ApiVersion: "gcp.project-planton.org/v1",
 					Kind:       "GcpArtifactRegistryRepo",
@@ -51,7 +51,7 @@ var _ = Describe("GcpArtifactRegistryRepo Custom Validation Tests", func() {
 					},
 				}
 				err := protovalidate.Validate(input)
-				Expect(err).To(BeNil())
+				gomega.Expect(err).To(gomega.BeNil())
 			})
 		})
 	})

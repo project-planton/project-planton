@@ -4,20 +4,20 @@ import (
 	"testing"
 
 	"buf.build/go/protovalidate"
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
+	"github.com/onsi/ginkgo/v2"
+	"github.com/onsi/gomega"
 	"github.com/project-planton/project-planton/apis/project/planton/shared"
 )
 
 func TestNatsKubernetes(t *testing.T) {
-	RegisterFailHandler(Fail)
-	RunSpecs(t, "NatsKubernetes Suite")
+	gomega.RegisterFailHandler(ginkgo.Fail)
+	ginkgo.RunSpecs(t, "NatsKubernetes Suite")
 }
 
-var _ = Describe("NatsKubernetes Custom Validation Tests", func() {
+var _ = ginkgo.Describe("NatsKubernetes Custom Validation Tests", func() {
 	var input *NatsKubernetes
 
-	BeforeEach(func() {
+	ginkgo.BeforeEach(func() {
 		input = &NatsKubernetes{
 			ApiVersion: "kubernetes.project-planton.org/v1",
 			Kind:       "NatsKubernetes",
@@ -36,11 +36,11 @@ var _ = Describe("NatsKubernetes Custom Validation Tests", func() {
 		}
 	})
 
-	Describe("When valid input is passed", func() {
-		Context("with replicas greater than zero", func() {
-			It("should not return a validation error", func() {
+	ginkgo.Describe("When valid input is passed", func() {
+		ginkgo.Context("with replicas greater than zero", func() {
+			ginkgo.It("should not return a validation error", func() {
 				err := protovalidate.Validate(input)
-				Expect(err).To(BeNil())
+				gomega.Expect(err).To(gomega.BeNil())
 			})
 		})
 	})

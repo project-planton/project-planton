@@ -4,9 +4,8 @@ import (
 	"testing"
 
 	"buf.build/go/protovalidate"
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
-
+	"github.com/onsi/ginkgo/v2"
+	"github.com/onsi/gomega"
 	"github.com/project-planton/project-planton/apis/project/planton/shared"
 )
 
@@ -20,16 +19,16 @@ func stringOfLength(n int) string {
 }
 
 func TestAwsEcrRepoSpec(t *testing.T) {
-	RegisterFailHandler(Fail)
-	RunSpecs(t, "AwsEcrRepoSpec Custom Validation Tests")
+	gomega.RegisterFailHandler(ginkgo.Fail)
+	ginkgo.RunSpecs(t, "AwsEcrRepoSpec Custom Validation Tests")
 }
 
-var _ = Describe("AwsEcrRepoSpec Custom Validation Tests", func() {
-	Describe("When valid input is passed", func() {
-		Context("aws_ecr_repo", func() {
+var _ = ginkgo.Describe("AwsEcrRepoSpec Custom Validation Tests", func() {
+	ginkgo.Describe("When valid input is passed", func() {
+		ginkgo.Context("aws_ecr_repo", func() {
 			var input *AwsEcrRepo
 
-			BeforeEach(func() {
+			ginkgo.BeforeEach(func() {
 				input = &AwsEcrRepo{
 					ApiVersion: "aws.project-planton.org/v1",
 					Kind:       "AwsEcrRepo",
@@ -45,48 +44,48 @@ var _ = Describe("AwsEcrRepoSpec Custom Validation Tests", func() {
 				}
 			})
 
-			It("should not return a validation error", func() {
+			ginkgo.It("should not return a validation error", func() {
 				err := protovalidate.Validate(input)
-				Expect(err).To(BeNil())
+				gomega.Expect(err).To(gomega.BeNil())
 			})
 
-			Context("repository_name length constraints", func() {
-				It("should fail if repository_name is too short", func() {
+			ginkgo.Context("repository_name length constraints", func() {
+				ginkgo.It("should fail if repository_name is too short", func() {
 					input.Spec.RepositoryName = "a"
 					err := protovalidate.Validate(input)
-					Expect(err).NotTo(BeNil())
+					gomega.Expect(err).NotTo(gomega.BeNil())
 				})
 
-				It("should fail if repository_name is too long", func() {
+				ginkgo.It("should fail if repository_name is too long", func() {
 					input.Spec.RepositoryName = stringOfLength(257)
 					err := protovalidate.Validate(input)
-					Expect(err).NotTo(BeNil())
+					gomega.Expect(err).NotTo(gomega.BeNil())
 				})
 
-				It("should succeed if repository_name length is within the valid range", func() {
+				ginkgo.It("should succeed if repository_name length is within the valid range", func() {
 					input.Spec.RepositoryName = "valid-repo-123"
 					err := protovalidate.Validate(input)
-					Expect(err).To(BeNil())
+					gomega.Expect(err).To(gomega.BeNil())
 				})
 			})
 
-			Context("encryption_type constraints", func() {
-				It("should fail if encryption_type is invalid", func() {
+			ginkgo.Context("encryption_type constraints", func() {
+				ginkgo.It("should fail if encryption_type is invalid", func() {
 					input.Spec.EncryptionType = "INVALID"
 					err := protovalidate.Validate(input)
-					Expect(err).NotTo(BeNil())
+					gomega.Expect(err).NotTo(gomega.BeNil())
 				})
 
-				It("should succeed if encryption_type is AES256", func() {
+				ginkgo.It("should succeed if encryption_type is AES256", func() {
 					input.Spec.EncryptionType = "AES256"
 					err := protovalidate.Validate(input)
-					Expect(err).To(BeNil())
+					gomega.Expect(err).To(gomega.BeNil())
 				})
 
-				It("should succeed if encryption_type is KMS", func() {
+				ginkgo.It("should succeed if encryption_type is KMS", func() {
 					input.Spec.EncryptionType = "KMS"
 					err := protovalidate.Validate(input)
-					Expect(err).To(BeNil())
+					gomega.Expect(err).To(gomega.BeNil())
 				})
 			})
 		})

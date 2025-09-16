@@ -3,25 +3,25 @@ package gcpgkeclustercorev1
 import (
 	"testing"
 
+	"github.com/onsi/ginkgo/v2"
+	"github.com/onsi/gomega"
 	foreignkeyv1 "github.com/project-planton/project-planton/apis/project/planton/shared/foreignkey/v1"
 
 	"buf.build/go/protovalidate"
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
 	"github.com/project-planton/project-planton/apis/project/planton/shared"
 )
 
 func TestGcpGkeClusterCoreSpec(t *testing.T) {
-	RegisterFailHandler(Fail)
-	RunSpecs(t, "GcpGkeClusterCoreSpec Custom Validation Tests")
+	gomega.RegisterFailHandler(ginkgo.Fail)
+	ginkgo.RunSpecs(t, "GcpGkeClusterCoreSpec Custom Validation Tests")
 }
 
-var _ = Describe("GcpGkeClusterCoreSpec Custom Validation Tests", func() {
+var _ = ginkgo.Describe("GcpGkeClusterCoreSpec Custom Validation Tests", func() {
 
-	Describe("When valid input is passed", func() {
-		Context("gcp_gke_cluster_core", func() {
+	ginkgo.Describe("When valid input is passed", func() {
+		ginkgo.Context("gcp_gke_cluster_core", func() {
 
-			It("should not return a validation error for minimal valid fields", func() {
+			ginkgo.It("should not return a validation error for minimal valid fields", func() {
 				input := &GcpGkeClusterCore{
 					ApiVersion: "gcp.project-planton.org/v1",
 					Kind:       "GcpGkeClusterCore",
@@ -49,7 +49,7 @@ var _ = Describe("GcpGkeClusterCoreSpec Custom Validation Tests", func() {
 					},
 				}
 				err := protovalidate.Validate(input)
-				Expect(err).To(BeNil())
+				gomega.Expect(err).To(gomega.BeNil())
 			})
 		})
 	})

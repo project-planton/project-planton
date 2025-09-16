@@ -2,6 +2,7 @@ package module
 
 import (
 	"fmt"
+
 	"github.com/pulumi/pulumi-gcp/sdk/v8/go/gcp/cloudrun"
 
 	"github.com/pkg/errors"

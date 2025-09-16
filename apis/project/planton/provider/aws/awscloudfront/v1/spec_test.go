@@ -4,19 +4,19 @@ import (
 	"testing"
 
 	"buf.build/go/protovalidate"
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
+	"github.com/onsi/ginkgo/v2"
+	"github.com/onsi/gomega"
 )
 
 func TestAwsCloudFrontSpec(t *testing.T) {
-	RegisterFailHandler(Fail)
-	RunSpecs(t, "AwsCloudFrontSpec Validation Suite")
+	gomega.RegisterFailHandler(ginkgo.Fail)
+	ginkgo.RunSpecs(t, "AwsCloudFrontSpec Validation Suite")
 }
 
-var _ = Describe("AwsCloudFrontSpec validations", func() {
+var _ = ginkgo.Describe("AwsCloudFrontSpec validations", func() {
 	var spec *AwsCloudFrontSpec
 
-	BeforeEach(func() {
+	ginkgo.BeforeEach(func() {
 		spec = &AwsCloudFrontSpec{
 			Enabled:        true,
 			Aliases:        []string{"cdn.example.com"},
@@ -38,19 +38,19 @@ var _ = Describe("AwsCloudFrontSpec validations", func() {
 		}
 	})
 
-	It("accepts a valid CloudFront spec", func() {
+	ginkgo.It("accepts a valid CloudFront spec", func() {
 		err := protovalidate.Validate(spec)
-		Expect(err).To(BeNil())
+		gomega.Expect(err).To(gomega.BeNil())
 	})
 
-	It("accepts a valid spec without aliases and certificate", func() {
+	ginkgo.It("accepts a valid spec without aliases and certificate", func() {
 		spec.Aliases = []string{}
 		spec.CertificateArn = ""
 		err := protovalidate.Validate(spec)
-		Expect(err).To(BeNil())
+		gomega.Expect(err).To(gomega.BeNil())
 	})
 
-	It("accepts a valid spec with single origin", func() {
+	ginkgo.It("accepts a valid spec with single origin", func() {
 		spec.Origins = []*AwsCloudFrontSpec_Origin{
 			{
 				DomainName: "my-bucket.s3.amazonaws.com",
@@ -59,148 +59,148 @@ var _ = Describe("AwsCloudFrontSpec validations", func() {
 			},
 		}
 		err := protovalidate.Validate(spec)
-		Expect(err).To(BeNil())
+		gomega.Expect(err).To(gomega.BeNil())
 	})
 
 	// Field validation tests
-	It("fails when aliases contain invalid domain names", func() {
+	ginkgo.It("fails when aliases contain invalid domain names", func() {
 		spec.Aliases = []string{"invalid-domain"}
 		err := protovalidate.Validate(spec)
-		Expect(err).NotTo(BeNil())
+		gomega.Expect(err).NotTo(gomega.BeNil())
 	})
 
-	It("fails when aliases contain duplicate values", func() {
+	ginkgo.It("fails when aliases contain duplicate values", func() {
 		spec.Aliases = []string{"cdn.example.com", "cdn.example.com"}
 		err := protovalidate.Validate(spec)
-		Expect(err).NotTo(BeNil())
+		gomega.Expect(err).NotTo(gomega.BeNil())
 	})
 
-	It("fails when certificate_arn has invalid format", func() {
+	ginkgo.It("fails when certificate_arn has invalid format", func() {
 		spec.CertificateArn = "invalid-arn"
 		err := protovalidate.Validate(spec)
-		Expect(err).NotTo(BeNil())
+		gomega.Expect(err).NotTo(gomega.BeNil())
 	})
 
-	It("fails when price_class is undefined", func() {
+	ginkgo.It("fails when price_class is undefined", func() {
 		spec.PriceClass = AwsCloudFrontSpec_PriceClass(99)
 		err := protovalidate.Validate(spec)
-		Expect(err).NotTo(BeNil())
+		gomega.Expect(err).NotTo(gomega.BeNil())
 	})
 
-	It("fails when origins is empty", func() {
+	ginkgo.It("fails when origins is empty", func() {
 		spec.Origins = []*AwsCloudFrontSpec_Origin{}
 		err := protovalidate.Validate(spec)
-		Expect(err).NotTo(BeNil())
+		gomega.Expect(err).NotTo(gomega.BeNil())
 	})
 
-	It("fails when origin domain_name is empty", func() {
+	ginkgo.It("fails when origin domain_name is empty", func() {
 		spec.Origins[0].DomainName = ""
 		err := protovalidate.Validate(spec)
-		Expect(err).NotTo(BeNil())
+		gomega.Expect(err).NotTo(gomega.BeNil())
 	})
 
-	It("fails when origin domain_name has invalid format", func() {
+	ginkgo.It("fails when origin domain_name has invalid format", func() {
 		spec.Origins[0].DomainName = "invalid-domain"
 		err := protovalidate.Validate(spec)
-		Expect(err).NotTo(BeNil())
+		gomega.Expect(err).NotTo(gomega.BeNil())
 	})
 
-	It("fails when origin_path doesn't start with /", func() {
+	ginkgo.It("fails when origin_path doesn't start with /", func() {
 		spec.Origins[0].OriginPath = "assets"
 		err := protovalidate.Validate(spec)
-		Expect(err).NotTo(BeNil())
+		gomega.Expect(err).NotTo(gomega.BeNil())
 	})
 
-	It("fails when default_root_object has invalid characters", func() {
+	ginkgo.It("fails when default_root_object has invalid characters", func() {
 		spec.DefaultRootObject = "index.html!"
 		err := protovalidate.Validate(spec)
-		Expect(err).NotTo(BeNil())
+		gomega.Expect(err).NotTo(gomega.BeNil())
 	})
 
 	// CEL expression tests
-	It("fails when aliases are provided but certificate_arn is empty (aliases_require_cert)", func() {
+	ginkgo.It("fails when aliases are provided but certificate_arn is empty (aliases_require_cert)", func() {
 		spec.Aliases = []string{"cdn.example.com"}
 		spec.CertificateArn = ""
 		err := protovalidate.Validate(spec)
-		Expect(err).NotTo(BeNil())
+		gomega.Expect(err).NotTo(gomega.BeNil())
 	})
 
-	It("passes when aliases are empty and certificate_arn is empty (aliases_require_cert)", func() {
+	ginkgo.It("passes when aliases are empty and certificate_arn is empty (aliases_require_cert)", func() {
 		spec.Aliases = []string{}
 		spec.CertificateArn = ""
 		err := protovalidate.Validate(spec)
-		Expect(err).To(BeNil())
+		gomega.Expect(err).To(gomega.BeNil())
 	})
 
-	It("passes when aliases are provided and certificate_arn is set (aliases_require_cert)", func() {
+	ginkgo.It("passes when aliases are provided and certificate_arn is set (aliases_require_cert)", func() {
 		spec.Aliases = []string{"cdn.example.com"}
 		spec.CertificateArn = "arn:aws:acm:us-east-1:123456789012:certificate/12345678-1234-1234-1234-123456789012"
 		err := protovalidate.Validate(spec)
-		Expect(err).To(BeNil())
+		gomega.Expect(err).To(gomega.BeNil())
 	})
 
-	It("fails when no origin is marked as default (exactly_one_default_origin)", func() {
+	ginkgo.It("fails when no origin is marked as default (exactly_one_default_origin)", func() {
 		spec.Origins[0].IsDefault = false
 		spec.Origins[1].IsDefault = false
 		err := protovalidate.Validate(spec)
-		Expect(err).NotTo(BeNil())
+		gomega.Expect(err).NotTo(gomega.BeNil())
 	})
 
-	It("fails when multiple origins are marked as default (exactly_one_default_origin)", func() {
+	ginkgo.It("fails when multiple origins are marked as default (exactly_one_default_origin)", func() {
 		spec.Origins[0].IsDefault = true
 		spec.Origins[1].IsDefault = true
 		err := protovalidate.Validate(spec)
-		Expect(err).NotTo(BeNil())
+		gomega.Expect(err).NotTo(gomega.BeNil())
 	})
 
-	It("passes when exactly one origin is marked as default (exactly_one_default_origin)", func() {
+	ginkgo.It("passes when exactly one origin is marked as default (exactly_one_default_origin)", func() {
 		spec.Origins[0].IsDefault = true
 		spec.Origins[1].IsDefault = false
 		err := protovalidate.Validate(spec)
-		Expect(err).To(BeNil())
+		gomega.Expect(err).To(gomega.BeNil())
 	})
 
-	It("passes when exactly one origin is marked as default in different position (exactly_one_default_origin)", func() {
+	ginkgo.It("passes when exactly one origin is marked as default in different position (exactly_one_default_origin)", func() {
 		spec.Origins[0].IsDefault = false
 		spec.Origins[1].IsDefault = true
 		err := protovalidate.Validate(spec)
-		Expect(err).To(BeNil())
+		gomega.Expect(err).To(gomega.BeNil())
 	})
 
 	// Edge cases
-	It("accepts valid domain names with hyphens", func() {
+	ginkgo.It("accepts valid domain names with hyphens", func() {
 		spec.Aliases = []string{"my-cdn.example.com"}
 		err := protovalidate.Validate(spec)
-		Expect(err).To(BeNil())
+		gomega.Expect(err).To(gomega.BeNil())
 	})
 
-	It("accepts valid domain names with numbers", func() {
+	ginkgo.It("accepts valid domain names with numbers", func() {
 		spec.Aliases = []string{"cdn1.example.com"}
 		err := protovalidate.Validate(spec)
-		Expect(err).To(BeNil())
+		gomega.Expect(err).To(gomega.BeNil())
 	})
 
-	It("accepts valid origin paths with underscores and hyphens", func() {
+	ginkgo.It("accepts valid origin paths with underscores and hyphens", func() {
 		spec.Origins[0].OriginPath = "/assets/images"
 		err := protovalidate.Validate(spec)
-		Expect(err).To(BeNil())
+		gomega.Expect(err).To(gomega.BeNil())
 	})
 
-	It("accepts empty origin_path", func() {
+	ginkgo.It("accepts empty origin_path", func() {
 		spec.Origins[0].OriginPath = ""
 		err := protovalidate.Validate(spec)
-		Expect(err).To(BeNil())
+		gomega.Expect(err).To(gomega.BeNil())
 	})
 
-	It("accepts valid default_root_object with underscores", func() {
+	ginkgo.It("accepts valid default_root_object with underscores", func() {
 		spec.DefaultRootObject = "index_main.html"
 		err := protovalidate.Validate(spec)
-		Expect(err).To(BeNil())
+		gomega.Expect(err).To(gomega.BeNil())
 	})
 
-	It("accepts empty default_root_object", func() {
+	ginkgo.It("accepts empty default_root_object", func() {
 		spec.DefaultRootObject = ""
 		err := protovalidate.Validate(spec)
-		Expect(err).To(BeNil())
+		gomega.Expect(err).To(gomega.BeNil())
 	})
 })

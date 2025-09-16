@@ -47,7 +47,7 @@ Usage: In Ask mode, invoke explicitly as `@pr-info`.
 - `internal/manifest`
 - `internal/cli/flag`
 - `pkg/protobufyaml`
-- `pkg/kubernetestypes`
+- `pkg/kubernetes/kubernetestypes`
 - `pkg/ulidgen`
 - `docs`
 - `gists/provider/kubernetes`
@@ -87,7 +87,7 @@ Determine the `<scope-path>` from the changed files. Use the most impacted area 
   - `internal/<pkg>/**` → `internal/<pkg>` (e.g., `internal/manifest`, `internal/cli/panic`)
 
 - Go libraries
-  - `pkg/<lib>/**` → `pkg/<lib>` (e.g., `pkg/protobufyaml`, `pkg/ulidgen`, `pkg/kubernetestypes`)
+  - `pkg/<lib>/**` → `pkg/<lib>` (e.g., `pkg/protobufyaml`, `pkg/ulidgen`, `pkg/kubernetes/kubernetestypes`)
 
 - Documentation and website
   - `docs/**` or root docs content → `docs`

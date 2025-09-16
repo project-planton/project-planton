@@ -4,20 +4,20 @@ import (
 	"testing"
 
 	"buf.build/go/protovalidate"
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
+	"github.com/onsi/ginkgo/v2"
+	"github.com/onsi/gomega"
 	"github.com/project-planton/project-planton/apis/project/planton/shared"
 )
 
 func TestKubernetesHttpEndpoint(t *testing.T) {
-	RegisterFailHandler(Fail)
-	RunSpecs(t, "KubernetesHttpEndpoint Suite")
+	gomega.RegisterFailHandler(ginkgo.Fail)
+	ginkgo.RunSpecs(t, "KubernetesHttpEndpoint Suite")
 }
 
-var _ = Describe("KubernetesHttpEndpoint Custom Validation Tests", func() {
+var _ = ginkgo.Describe("KubernetesHttpEndpoint Custom Validation Tests", func() {
 	var input *KubernetesHttpEndpoint
 
-	BeforeEach(func() {
+	ginkgo.BeforeEach(func() {
 		input = &KubernetesHttpEndpoint{
 			ApiVersion: "kubernetes.project-planton.org/v1",
 			Kind:       "KubernetesHttpEndpoint",
@@ -42,11 +42,11 @@ var _ = Describe("KubernetesHttpEndpoint Custom Validation Tests", func() {
 		}
 	})
 
-	Describe("When valid input is passed", func() {
-		Context("kubernetes_http_endpoint", func() {
-			It("should not return a validation error", func() {
+	ginkgo.Describe("When valid input is passed", func() {
+		ginkgo.Context("kubernetes_http_endpoint", func() {
+			ginkgo.It("should not return a validation error", func() {
 				err := protovalidate.Validate(input)
-				Expect(err).To(BeNil())
+				gomega.Expect(err).To(gomega.BeNil())
 			})
 		})
 	})

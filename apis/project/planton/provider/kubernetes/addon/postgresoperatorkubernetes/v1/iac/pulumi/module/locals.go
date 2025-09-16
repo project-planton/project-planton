@@ -1,10 +1,11 @@
 package module
 
 import (
+	"strconv"
+
 	postgresoperatorkubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/addon/postgresoperatorkubernetes/v1"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/kuberneteslabelkeys"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"strconv"
 )
 
 // Locals collect computed values that are reused across resources.

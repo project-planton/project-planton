@@ -4,22 +4,22 @@ import (
 	"testing"
 
 	"buf.build/go/protovalidate"
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
+	"github.com/onsi/ginkgo/v2"
+	"github.com/onsi/gomega"
 	"github.com/project-planton/project-planton/apis/project/planton/shared"
 )
 
 func TestAzureVpcSpec(t *testing.T) {
-	RegisterFailHandler(Fail)
-	RunSpecs(t, "AzureVpcSpec Custom Validation Tests")
+	gomega.RegisterFailHandler(ginkgo.Fail)
+	ginkgo.RunSpecs(t, "AzureVpcSpec Custom Validation Tests")
 }
 
-var _ = Describe("AzureVpcSpec Custom Validation Tests", func() {
+var _ = ginkgo.Describe("AzureVpcSpec Custom Validation Tests", func() {
 
-	Describe("When valid input is passed", func() {
-		Context("azure_vpc", func() {
+	ginkgo.Describe("When valid input is passed", func() {
+		ginkgo.Context("azure_vpc", func() {
 
-			It("should not return a validation error for minimal valid fields", func() {
+			ginkgo.It("should not return a validation error for minimal valid fields", func() {
 				input := &AzureVpc{
 					ApiVersion: "azure.project-planton.org/v1",
 					Kind:       "AzureVpc",
@@ -32,7 +32,7 @@ var _ = Describe("AzureVpcSpec Custom Validation Tests", func() {
 					},
 				}
 				err := protovalidate.Validate(input)
-				Expect(err).To(BeNil())
+				gomega.Expect(err).To(gomega.BeNil())
 			})
 		})
 	})

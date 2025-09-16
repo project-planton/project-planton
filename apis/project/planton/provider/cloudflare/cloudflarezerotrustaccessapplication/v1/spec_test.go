@@ -4,22 +4,22 @@ import (
 	"testing"
 
 	"buf.build/go/protovalidate"
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
+	"github.com/onsi/ginkgo/v2"
+	"github.com/onsi/gomega"
 	"github.com/project-planton/project-planton/apis/project/planton/shared"
 )
 
 func TestCloudflareZeroTrustAccessApplicationSpec(t *testing.T) {
-	RegisterFailHandler(Fail)
-	RunSpecs(t, "CloudflareZeroTrustAccessApplicationSpec Custom Validation Tests")
+	gomega.RegisterFailHandler(ginkgo.Fail)
+	ginkgo.RunSpecs(t, "CloudflareZeroTrustAccessApplicationSpec Custom Validation Tests")
 }
 
-var _ = Describe("CloudflareZeroTrustAccessApplicationSpec Custom Validation Tests", func() {
+var _ = ginkgo.Describe("CloudflareZeroTrustAccessApplicationSpec Custom Validation Tests", func() {
 
-	Describe("When valid input is passed", func() {
-		Context("cloudflare_zero_trust_access_application", func() {
+	ginkgo.Describe("When valid input is passed", func() {
+		ginkgo.Context("cloudflare_zero_trust_access_application", func() {
 
-			It("should not return a validation error for minimal valid fields", func() {
+			ginkgo.It("should not return a validation error for minimal valid fields", func() {
 				input := &CloudflareZeroTrustAccessApplication{
 					ApiVersion: "cloudflare.project-planton.org/v1",
 					Kind:       "CloudflareZeroTrustAccessApplication",
@@ -33,7 +33,7 @@ var _ = Describe("CloudflareZeroTrustAccessApplicationSpec Custom Validation Tes
 					},
 				}
 				err := protovalidate.Validate(input)
-				Expect(err).To(BeNil())
+				gomega.Expect(err).To(gomega.BeNil())
 			})
 		})
 	})

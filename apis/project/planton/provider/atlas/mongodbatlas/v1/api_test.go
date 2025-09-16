@@ -4,23 +4,23 @@ import (
 	"testing"
 
 	"buf.build/go/protovalidate"
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
+	"github.com/onsi/ginkgo/v2"
+	"github.com/onsi/gomega"
 	"github.com/project-planton/project-planton/apis/project/planton/shared"
 )
 
 func TestMongodbAtlas(t *testing.T) {
-	RegisterFailHandler(Fail)
-	RunSpecs(t, "MongodbAtlas Suite")
+	gomega.RegisterFailHandler(ginkgo.Fail)
+	ginkgo.RunSpecs(t, "MongodbAtlas Suite")
 }
 
-var _ = Describe("KubernetesClusterCredentialSpec Custom Validation Tests", func() {
+var _ = ginkgo.Describe("KubernetesClusterCredentialSpec Custom Validation Tests", func() {
 
-	Describe("When valid input is passed", func() {
-		Context("mongodb_atlas", func() {
+	ginkgo.Describe("When valid input is passed", func() {
+		ginkgo.Context("mongodb_atlas", func() {
 			var input *MongodbAtlas
 
-			BeforeEach(func() {
+			ginkgo.BeforeEach(func() {
 				input = &MongodbAtlas{
 					ApiVersion: "atlas.project-planton.org/v1",
 					Kind:       "MongodbAtlas",
@@ -44,9 +44,9 @@ var _ = Describe("KubernetesClusterCredentialSpec Custom Validation Tests", func
 				}
 			})
 
-			It("should not return a validation error", func() {
+			ginkgo.It("should not return a validation error", func() {
 				err := protovalidate.Validate(input)
-				Expect(err).To(BeNil())
+				gomega.Expect(err).To(gomega.BeNil())
 			})
 		})
 	})

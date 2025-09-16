@@ -4,22 +4,22 @@ import (
 	"testing"
 
 	"buf.build/go/protovalidate"
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
+	"github.com/onsi/ginkgo/v2"
+	"github.com/onsi/gomega"
 	"github.com/project-planton/project-planton/apis/project/planton/shared"
 	foreignkeyv1 "github.com/project-planton/project-planton/apis/project/planton/shared/foreignkey/v1"
 )
 
 func TestAwsCertManagerCert(t *testing.T) {
-	RegisterFailHandler(Fail)
-	RunSpecs(t, "AwsCertManagerCert Suite")
+	gomega.RegisterFailHandler(ginkgo.Fail)
+	ginkgo.RunSpecs(t, "AwsCertManagerCert Suite")
 }
 
-var _ = Describe("AwsCertManagerCert", func() {
+var _ = ginkgo.Describe("AwsCertManagerCert", func() {
 
 	var input *AwsCertManagerCert
 
-	BeforeEach(func() {
+	ginkgo.BeforeEach(func() {
 		input = &AwsCertManagerCert{
 			ApiVersion: "aws.project-planton.org/v1",
 			Kind:       "AwsCertManagerCert",
@@ -40,58 +40,58 @@ var _ = Describe("AwsCertManagerCert", func() {
 		}
 	})
 
-	Context("when valid input is passed", func() {
-		It("should not return a validation error", func() {
+	ginkgo.Context("when valid input is passed", func() {
+		ginkgo.It("should not return a validation error", func() {
 			err := protovalidate.Validate(input)
-			Expect(err).To(BeNil())
+			gomega.Expect(err).To(gomega.BeNil())
 		})
 	})
 
-	Context("Domain Pattern Validations", func() {
+	ginkgo.Context("Domain Pattern Validations", func() {
 
-		Context("PrimaryDomainName", func() {
-			It("should accept a valid apex domain", func() {
+		ginkgo.Context("PrimaryDomainName", func() {
+			ginkgo.It("should accept a valid apex domain", func() {
 				input.Spec.PrimaryDomainName = "example.com"
 				err := protovalidate.Validate(input)
-				Expect(err).To(BeNil())
+				gomega.Expect(err).To(gomega.BeNil())
 			})
 
-			It("should accept a valid wildcard domain", func() {
+			ginkgo.It("should accept a valid wildcard domain", func() {
 				input.Spec.PrimaryDomainName = "*.example.com"
 				err := protovalidate.Validate(input)
-				Expect(err).To(BeNil())
+				gomega.Expect(err).To(gomega.BeNil())
 			})
 
-			It("should reject a domain missing a TLD", func() {
+			ginkgo.It("should reject a domain missing a TLD", func() {
 				input.Spec.PrimaryDomainName = "example"
 				err := protovalidate.Validate(input)
-				Expect(err).NotTo(BeNil())
+				gomega.Expect(err).NotTo(gomega.BeNil())
 			})
 
-			It("should reject multiple wildcard asterisks", func() {
+			ginkgo.It("should reject multiple wildcard asterisks", func() {
 				input.Spec.PrimaryDomainName = "**.example.com"
 				err := protovalidate.Validate(input)
-				Expect(err).NotTo(BeNil())
+				gomega.Expect(err).NotTo(gomega.BeNil())
 			})
 
-			It("should reject a domain with invalid characters", func() {
+			ginkgo.It("should reject a domain with invalid characters", func() {
 				input.Spec.PrimaryDomainName = "exa@mple.com"
 				err := protovalidate.Validate(input)
-				Expect(err).NotTo(BeNil())
+				gomega.Expect(err).NotTo(gomega.BeNil())
 			})
 		})
 
-		Context("AlternateDomainNames", func() {
-			It("should accept multiple valid domains", func() {
+		ginkgo.Context("AlternateDomainNames", func() {
+			ginkgo.It("should accept multiple valid domains", func() {
 				input.Spec.AlternateDomainNames = []string{"www.example.com", "*.foo.org"}
 				err := protovalidate.Validate(input)
-				Expect(err).To(BeNil())
+				gomega.Expect(err).To(gomega.BeNil())
 			})
 
-			It("should reject if any domain is invalid", func() {
+			ginkgo.It("should reject if any domain is invalid", func() {
 				input.Spec.AlternateDomainNames = []string{"www.example.com", "invalid@@domain"}
 				err := protovalidate.Validate(input)
-				Expect(err).NotTo(BeNil())
+				gomega.Expect(err).NotTo(gomega.BeNil())
 			})
 		})
 	})

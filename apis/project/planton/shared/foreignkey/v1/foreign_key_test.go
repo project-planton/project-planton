@@ -2,24 +2,25 @@
 package foreignkeyv1
 
 import (
-	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
 	"testing"
 
+	"github.com/onsi/ginkgo/v2"
+	"github.com/onsi/gomega"
+	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
+
 	"buf.build/go/protovalidate"
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
 )
 
 func TestForeignKey(t *testing.T) {
-	RegisterFailHandler(Fail)
-	RunSpecs(t, "ForeignKey Suite")
+	gomega.RegisterFailHandler(ginkgo.Fail)
+	ginkgo.RunSpecs(t, "ForeignKey Suite")
 }
 
-var _ = Describe("ForeignKey Oneof Tests", func() {
+var _ = ginkgo.Describe("ForeignKey Oneof Tests", func() {
 
-	Describe("StringValueOrRef usage", func() {
-		Context("when setting a literal value only", func() {
-			It("should not return a validation error", func() {
+	ginkgo.Describe("StringValueOrRef usage", func() {
+		ginkgo.Context("when setting a literal value only", func() {
+			ginkgo.It("should not return a validation error", func() {
 				input := &StringValueOrRef{
 					LiteralOrRef: &StringValueOrRef_Value{
 						Value: "my-string",
@@ -27,12 +28,12 @@ var _ = Describe("ForeignKey Oneof Tests", func() {
 				}
 				// No custom rule; we expect no errors from protovalidate
 				err := protovalidate.Validate(input)
-				Expect(err).To(BeNil())
+				gomega.Expect(err).To(gomega.BeNil())
 			})
 		})
 
-		Context("when setting a ValueFromRef only", func() {
-			It("should not return a validation error", func() {
+		ginkgo.Context("when setting a ValueFromRef only", func() {
+			ginkgo.It("should not return a validation error", func() {
 				input := &StringValueOrRef{
 					LiteralOrRef: &StringValueOrRef_ValueFrom{
 						ValueFrom: &ValueFromRef{
@@ -44,12 +45,12 @@ var _ = Describe("ForeignKey Oneof Tests", func() {
 					},
 				}
 				err := protovalidate.Validate(input)
-				Expect(err).To(BeNil())
+				gomega.Expect(err).To(gomega.BeNil())
 			})
 		})
 
-		Context("when setting both (proto oneof overwrites the first)", func() {
-			It("should end up with the last field set and not produce a validation error", func() {
+		ginkgo.Context("when setting both (proto oneof overwrites the first)", func() {
+			ginkgo.It("should end up with the last field set and not produce a validation error", func() {
 				// The 'value' gets overwritten by the oneof assignment to 'value_from'
 				input := &StringValueOrRef{
 					LiteralOrRef: &StringValueOrRef_Value{
@@ -64,30 +65,30 @@ var _ = Describe("ForeignKey Oneof Tests", func() {
 					},
 				}
 				err := protovalidate.Validate(input)
-				Expect(err).To(BeNil())
+				gomega.Expect(err).To(gomega.BeNil())
 
 				// Because this is a oneof, the 'Value' is no longer set
-				Expect(input.GetValue()).To(Equal(""))
-				Expect(input.GetValueFrom().GetName()).To(Equal("overwrites-literal"))
+				gomega.Expect(input.GetValue()).To(gomega.Equal(""))
+				gomega.Expect(input.GetValueFrom().GetName()).To(gomega.Equal("overwrites-literal"))
 			})
 		})
 	})
 
-	Describe("Int32ValueOrRef usage", func() {
-		Context("when setting an int32 literal only", func() {
-			It("should not return a validation error", func() {
+	ginkgo.Describe("Int32ValueOrRef usage", func() {
+		ginkgo.Context("when setting an int32 literal only", func() {
+			ginkgo.It("should not return a validation error", func() {
 				input := &Int32ValueOrRef{
 					LiteralOrRef: &Int32ValueOrRef_Value{
 						Value: 123,
 					},
 				}
 				err := protovalidate.Validate(input)
-				Expect(err).To(BeNil())
+				gomega.Expect(err).To(gomega.BeNil())
 			})
 		})
 
-		Context("when setting a ValueFromRef only", func() {
-			It("should not return a validation error", func() {
+		ginkgo.Context("when setting a ValueFromRef only", func() {
+			ginkgo.It("should not return a validation error", func() {
 				input := &Int32ValueOrRef{
 					LiteralOrRef: &Int32ValueOrRef_ValueFrom{
 						ValueFrom: &ValueFromRef{
@@ -98,12 +99,12 @@ var _ = Describe("ForeignKey Oneof Tests", func() {
 					},
 				}
 				err := protovalidate.Validate(input)
-				Expect(err).To(BeNil())
+				gomega.Expect(err).To(gomega.BeNil())
 			})
 		})
 
-		Context("when setting both fields in code sequentially", func() {
-			It("should overwrite the first field with the second (no error)", func() {
+		ginkgo.Context("when setting both fields in code sequentially", func() {
+			ginkgo.It("should overwrite the first field with the second (no error)", func() {
 				input := &Int32ValueOrRef{
 					LiteralOrRef: &Int32ValueOrRef_Value{
 						Value: 456,
@@ -119,11 +120,11 @@ var _ = Describe("ForeignKey Oneof Tests", func() {
 					},
 				}
 				err := protovalidate.Validate(input)
-				Expect(err).To(BeNil())
+				gomega.Expect(err).To(gomega.BeNil())
 
 				// Because it's a oneof, the integer literal is no longer set
-				Expect(input.GetValue()).To(BeEquivalentTo(0))
-				Expect(input.GetValueFrom().GetName()).To(Equal("ref-overwrites-int"))
+				gomega.Expect(input.GetValue()).To(gomega.BeEquivalentTo(0))
+				gomega.Expect(input.GetValueFrom().GetName()).To(gomega.Equal("ref-overwrites-int"))
 			})
 		})
 	})

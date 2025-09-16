@@ -4,23 +4,23 @@ import (
 	"testing"
 
 	"buf.build/go/protovalidate"
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
+	"github.com/onsi/ginkgo/v2"
+	"github.com/onsi/gomega"
 	"github.com/project-planton/project-planton/apis/project/planton/provider/digitalocean"
 	"github.com/project-planton/project-planton/apis/project/planton/shared"
 )
 
 func TestDigitalOceanContainerRegistrySpec(t *testing.T) {
-	RegisterFailHandler(Fail)
-	RunSpecs(t, "DigitalOceanContainerRegistrySpec Custom Validation Tests")
+	gomega.RegisterFailHandler(ginkgo.Fail)
+	ginkgo.RunSpecs(t, "DigitalOceanContainerRegistrySpec Custom Validation Tests")
 }
 
-var _ = Describe("DigitalOceanContainerRegistrySpec Custom Validation Tests", func() {
+var _ = ginkgo.Describe("DigitalOceanContainerRegistrySpec Custom Validation Tests", func() {
 
-	Describe("When valid input is passed", func() {
-		Context("digitalocean_container_registry", func() {
+	ginkgo.Describe("When valid input is passed", func() {
+		ginkgo.Context("digitalocean_container_registry", func() {
 
-			It("should not return a validation error for minimal valid fields", func() {
+			ginkgo.It("should not return a validation error for minimal valid fields", func() {
 				input := &DigitalOceanContainerRegistry{
 					ApiVersion: "digital-ocean.project-planton.org/v1",
 					Kind:       "DigitalOceanContainerRegistry",
@@ -34,7 +34,7 @@ var _ = Describe("DigitalOceanContainerRegistrySpec Custom Validation Tests", fu
 					},
 				}
 				err := protovalidate.Validate(input)
-				Expect(err).To(BeNil())
+				gomega.Expect(err).To(gomega.BeNil())
 			})
 		})
 	})
