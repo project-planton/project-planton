@@ -23,6 +23,3 @@ go_test(
         "@com_github_stretchr_testify//assert",
     ],
 )
-
-# Export README for documentation
-exports_files(["README.md"])

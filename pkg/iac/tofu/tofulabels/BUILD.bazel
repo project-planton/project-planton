@@ -6,6 +6,3 @@ go_library(
     importpath = "github.com/project-planton/project-planton/pkg/iac/tofu/tofulabels",
     visibility = ["//visibility:public"],
 )
-
-# Export README for documentation
-exports_files(["README.md"])
