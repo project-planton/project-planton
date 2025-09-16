@@ -6,27 +6,27 @@ import (
 )
 
 const (
-	PlantonCloudDomain           = "planton.cloud"
-	PlantonCloudDomainNormalized = "planton-cloud"
+	PlantonAiDomain           = "planton.ai"
+	PlantonAiDomainNormalized = "planton-ai"
 )
 
 func WithDomainPrefix(label string) string {
-	return fmt.Sprintf("%s/%s", PlantonCloudDomain, label)
+	return fmt.Sprintf("%s/%s", PlantonAiDomain, label)
 }
 
 // WithNormalizedDomainPrefix uses prefix that does not contain dots or slashes which
 // are not accepted for label keys on gcp projects.
 // underscore is used in place of slash.
 func WithNormalizedDomainPrefix(labelKey string) string {
-	return fmt.Sprintf("%s_%s", PlantonCloudDomainNormalized, labelKey)
+	return fmt.Sprintf("%s_%s", PlantonAiDomainNormalized, labelKey)
 }
 
 // WithoutPrefix returns the label without the prefix.
 // prometheus label rules explained in https://stackoverflow.com/a/71507356 are also processed while removing the prefix.
 func WithoutPrefix(label string) string {
-	l := strings.TrimPrefix(label, PlantonCloudDomain)
+	l := strings.TrimPrefix(label, PlantonAiDomain)
 	//prometheus replaces dots with underscores
-	l = strings.TrimPrefix(label, strings.ReplaceAll(PlantonCloudDomain, ".", "_"))
+	l = strings.TrimPrefix(label, strings.ReplaceAll(PlantonAiDomain, ".", "_"))
 	l = strings.TrimPrefix(label, "/")
 	//prometheus replaces slashes with underscores
 	l = strings.TrimPrefix(label, "_")
@@ -53,9 +53,9 @@ func WithPrometheusFormat(label string) string {
 //// ex: planton_cloud_company will be converted to planton.cloud/company
 //// rules: replace "planton_cloud_" with "planton.cloud/"
 //func FromPrometheusFormat(label string) string {
-//	prometheusFormattedPrefix := strings.ReplaceAll(PlantonCloudDomain, ".", "_")
+//	prometheusFormattedPrefix := strings.ReplaceAll(PlantonAiDomain, ".", "_")
 //	//replace prometheus formatted prefix with normal prefix
-//	l := strings.ReplaceAll(label, prometheusFormattedPrefix, PlantonCloudDomain)
+//	l := strings.ReplaceAll(label, prometheusFormattedPrefix, PlantonAiDomain)
 //	//replace all other underscores with slashes
 //	l = strings.ReplaceAll(l, "_", "/")
 //	return l

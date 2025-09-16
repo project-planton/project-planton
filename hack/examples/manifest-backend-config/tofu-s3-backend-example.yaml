@@ -1,0 +1,21 @@
+# Example manifest with Terraform/Tofu S3 backend configuration in labels
+# This manifest configures remote state storage in AWS S3
+apiVersion: aws.planton.cloud/v1
+kind: EksCluster
+metadata:
+  id: main-cluster
+  name: Main EKS Cluster
+  labels:
+    # Terraform/Tofu backend configuration for S3
+    terraform.project-planton.org/backend.type: "s3"
+    terraform.project-planton.org/backend.object: "my-terraform-state-bucket/eks/main-cluster/terraform.tfstate"
+spec:
+  awsCredentialId: aws-prod-creds
+  region: us-west-2
+  kubernetesVersion: "1.28"
+  nodeGroups:
+    - name: default
+      instanceType: t3.medium
+      minSize: 2
+      maxSize: 5
+      desiredSize: 3
