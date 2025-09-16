@@ -31,3 +31,13 @@ func ExtractMetadata(msg proto.Message) *shared.ApiResourceMetadata {
 
 	return &metadata
 }
+
+// ExtractLabels extracts labels from a manifest's metadata
+// Returns nil if no metadata or labels are found
+func ExtractLabels(msg proto.Message) map[string]string {
+	metadata := ExtractMetadata(msg)
+	if metadata == nil {
+		return nil
+	}
+	return metadata.Labels
+}

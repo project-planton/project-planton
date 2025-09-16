@@ -1,0 +1,11 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "pulumilabels",
+    srcs = ["labels.go"],
+    importpath = "github.com/project-planton/project-planton/pkg/iac/pulumi/pulumilabels",
+    visibility = ["//visibility:public"],
+)
+
+# Export README for documentation
+exports_files(["README.md"])
