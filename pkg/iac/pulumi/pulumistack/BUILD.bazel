@@ -12,9 +12,11 @@ go_library(
         "//apis/project/planton/shared/iac/pulumi",
         "//internal/manifest",
         "//pkg/crkreflect",
+        "//pkg/iac/pulumi/backendconfig",
         "//pkg/iac/pulumi/pulumimodule",
         "//pkg/iac/stackinput",
         "//pkg/iac/stackinput/stackinputcredentials",
         "@com_github_pkg_errors//:errors",
+        "@com_github_sirupsen_logrus//:logrus",
     ],
 )

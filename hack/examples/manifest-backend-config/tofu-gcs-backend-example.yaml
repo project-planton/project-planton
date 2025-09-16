@@ -1,0 +1,23 @@
+# Example manifest with Terraform/Tofu GCS backend configuration in labels
+# This manifest configures remote state storage in Google Cloud Storage
+apiVersion: gcp.planton.cloud/v1
+kind: GkeCluster
+metadata:
+  id: staging-cluster
+  name: Staging GKE Cluster
+  labels:
+    # Terraform/Tofu backend configuration for Google Cloud Storage
+    terraform.project-planton.org/backend.type: "gcs"
+    terraform.project-planton.org/backend.object: "project-terraform-state/gke/staging-cluster/default.tfstate"
+spec:
+  gcpCredentialId: gcp-staging-creds
+  projectId: my-project-staging
+  region: us-central1
+  zone: us-central1-a
+  kubernetesVersion: "1.28"
+  nodePools:
+    - name: default
+      machineType: n2-standard-2
+      initialNodeCount: 3
+      minNodeCount: 1
+      maxNodeCount: 10

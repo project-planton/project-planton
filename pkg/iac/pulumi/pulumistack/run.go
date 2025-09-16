@@ -12,9 +12,11 @@ import (
 	"github.com/project-planton/project-planton/apis/project/planton/shared/iac/pulumi"
 	"github.com/project-planton/project-planton/internal/manifest"
 	"github.com/project-planton/project-planton/pkg/crkreflect"
+	"github.com/project-planton/project-planton/pkg/iac/pulumi/backendconfig"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput/stackinputcredentials"
+	log "github.com/sirupsen/logrus"
 )
 
 func Run(moduleDir, stackFqdn, targetManifestPath string, pulumiOperation pulumi.PulumiOperationType,
@@ -30,19 +32,37 @@ func Run(moduleDir, stackFqdn, targetManifestPath string, pulumiOperation pulumi
 		return errors.Wrapf(err, "failed to override values in target manifest file")
 	}
 
+	// Try to extract backend configuration from manifest labels
+	// If found, use it instead of the provided stackFqdn
+	finalStackFqdn := stackFqdn
+	if manifestBackendConfig, err := backendconfig.ExtractFromManifest(manifestObject); err == nil && manifestBackendConfig != nil {
+		if manifestBackendConfig.StackFqdn != "" {
+			log.Infof("Using Pulumi stack from manifest labels: %s", manifestBackendConfig.StackFqdn)
+			finalStackFqdn = manifestBackendConfig.StackFqdn
+		}
+	} else if err != nil {
+		// Only log debug message if extraction failed (not just missing labels)
+		log.Debugf("Could not extract Pulumi backend config from manifest labels: %v", err)
+	}
+
+	// Validate that we have a stack FQDN
+	if finalStackFqdn == "" {
+		return errors.New("Pulumi stack FQDN is required. Provide it via --stack flag or set pulumi.project-planton.org/stack.fqdn label in manifest")
+	}
+
 	kindName, err := crkreflect.ExtractKindFromProto(manifestObject)
 	if err != nil {
 		return errors.Wrapf(err, "failed to extract kind name from manifest proto")
 	}
 
-	pulumiModuleRepoPath, err := pulumimodule.GetPath(moduleDir, stackFqdn, kindName)
+	pulumiModuleRepoPath, err := pulumimodule.GetPath(moduleDir, finalStackFqdn, kindName)
 	if err != nil {
 		return errors.Wrapf(err, "failed to get pulumi-module directory")
 	}
 
-	pulumiProjectName, err := ExtractProjectName(stackFqdn)
+	pulumiProjectName, err := ExtractProjectName(finalStackFqdn)
 	if err != nil {
-		return errors.Wrapf(err, "failed to extract project name from %s stack fqdn", stackFqdn)
+		return errors.Wrapf(err, "failed to extract project name from %s stack fqdn", finalStackFqdn)
 	}
 
 	stackInputYamlContent, err := stackinput.BuildStackInputYaml(manifestObject, opts)
@@ -69,7 +89,7 @@ func Run(moduleDir, stackFqdn, targetManifestPath string, pulumiOperation pulumi
 	}
 
 	// Build pulumi command with optional flags for non-interactive runs
-	args := []string{op, "--stack", stackFqdn, "--non-interactive"}
+	args := []string{op, "--stack", finalStackFqdn, "--non-interactive"}
 	if isAutoApprove {
 		args = append(args, "--yes")
 		// For 'pulumi up', skip preview to avoid TTY prompts in CI/non-interactive shells

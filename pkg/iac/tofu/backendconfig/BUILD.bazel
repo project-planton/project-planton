@@ -1,4 +1,4 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+load("@rules_go//go:def.bzl", "go_library", "go_test")
 
 go_library(
     name = "backendconfig",
@@ -23,6 +23,3 @@ go_test(
         "@com_github_stretchr_testify//assert",
     ],
 )
-
-# Export README for documentation
-exports_files(["README.md"])
