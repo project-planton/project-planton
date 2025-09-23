@@ -28,6 +28,10 @@ message ApiResourceMetadata {
 
 // version information for api-resource to be used in api-resource metadata
 message ApiResourceMetadataVersion {
+  //identifier for api-resource version
   string id = 1;
+  //message describing the version. think of commit message.
   string message = 2;
+  //previous version-id that links this version to the previous.
+  string previous_version_id = 3;
 }

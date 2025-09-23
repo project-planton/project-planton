@@ -142,11 +142,15 @@ func (x *ApiResourceMetadata) GetVersion() *ApiResourceMetadataVersion {
 
 // version information for api-resource to be used in api-resource metadata
 type ApiResourceMetadataVersion struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// identifier for api-resource version
+	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	// message describing the version. think of commit message.
+	Message string `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	// previous version-id that links this version to the previous.
+	PreviousVersionId string `protobuf:"bytes,3,opt,name=previous_version_id,json=previousVersionId,proto3" json:"previous_version_id,omitempty"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
 }
 
 func (x *ApiResourceMetadataVersion) Reset() {
@@ -193,6 +197,13 @@ func (x *ApiResourceMetadataVersion) GetMessage() string {
 	return ""
 }
 
+func (x *ApiResourceMetadataVersion) GetPreviousVersionId() string {
+	if x != nil {
+		return x.PreviousVersionId
+	}
+	return ""
+}
+
 var File_project_planton_shared_metadata_proto protoreflect.FileDescriptor
 
 const file_project_planton_shared_metadata_proto_rawDesc = "" +
@@ -213,10 +224,11 @@ const file_project_planton_shared_metadata_proto_rawDesc = "" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\x1a>\n" +
 	"\x10AnnotationsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"F\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"v\n" +
 	"\x1aApiResourceMetadataVersion\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
-	"\amessage\x18\x02 \x01(\tR\amessageB\xed\x01\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\x12.\n" +
+	"\x13previous_version_id\x18\x03 \x01(\tR\x11previousVersionIdB\xed\x01\n" +
 	"\x1acom.project.planton.sharedB\rMetadataProtoP\x01ZFgithub.com/project-planton/project-planton/apis/project/planton/shared\xa2\x02\x03PPS\xaa\x02\x16Project.Planton.Shared\xca\x02\x16Project\\Planton\\Shared\xe2\x02\"Project\\Planton\\Shared\\GPBMetadata\xea\x02\x18Project::Planton::Sharedb\x06proto3"
 
 var (
