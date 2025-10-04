@@ -8,6 +8,7 @@ go_library(
         "locals.go",
         "main.go",
         "outputs.go",
+        "pdb.go",
         "secret.go",
         "service.go",
         "variables.go",
@@ -15,6 +16,7 @@ go_library(
     importpath = "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/microservicekubernetes/v1/iac/pulumi/module",
     visibility = ["//visibility:public"],
     deps = [
+        "//apis/project/planton/provider/kubernetes",
         "//apis/project/planton/provider/kubernetes/workload/microservicekubernetes/v1:microservicekubernetes",
         "//apis/project/planton/shared/cloudresourcekind",
         "//pkg/iac/pulumi/pulumimodule/datatypes/stringmaps/sortstringmap",
@@ -28,6 +30,7 @@ go_library(
         "@com_github_pulumi_pulumi_kubernetes_sdk_v4//go/kubernetes/apps/v1:apps",
         "@com_github_pulumi_pulumi_kubernetes_sdk_v4//go/kubernetes/core/v1:core",
         "@com_github_pulumi_pulumi_kubernetes_sdk_v4//go/kubernetes/meta/v1:meta",
+        "@com_github_pulumi_pulumi_kubernetes_sdk_v4//go/kubernetes/policy/v1:policy",
         "@com_github_pulumi_pulumi_sdk_v3//go/pulumi",
     ],
 )

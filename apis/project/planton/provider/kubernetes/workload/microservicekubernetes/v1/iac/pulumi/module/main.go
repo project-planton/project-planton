@@ -59,5 +59,10 @@ func Resources(ctx *pulumi.Context, stackInput *microservicekubernetesv1.Microse
 		}
 	}
 
+	//create pod disruption budget if enabled
+	if err := podDisruptionBudget(ctx, locals, createdNamespace); err != nil {
+		return errors.Wrap(err, "failed to create pod disruption budget")
+	}
+
 	return nil
 }
