@@ -7,6 +7,7 @@ require (
 	buf.build/go/protovalidate v0.14.0
 	github.com/Masterminds/sprig v2.15.0+incompatible
 	github.com/blang/semver v3.5.1+incompatible
+	github.com/fatih/color v1.18.0
 	github.com/google/uuid v1.6.0
 	github.com/hashicorp/hcl/v2 v2.22.0
 	github.com/iancoleman/strcase v0.3.0
@@ -67,7 +68,6 @@ require (
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/djherbis/times v1.5.0 // indirect
 	github.com/emirpasic/gods v1.18.1 // indirect
-	github.com/fatih/color v1.18.0 // indirect
 	github.com/fxamacker/cbor/v2 v2.7.0 // indirect
 	github.com/go-errors/errors v1.4.2 // indirect
 	github.com/go-git/gcfg v1.5.1-0.20230307220236-3a3c6141e376 // indirect

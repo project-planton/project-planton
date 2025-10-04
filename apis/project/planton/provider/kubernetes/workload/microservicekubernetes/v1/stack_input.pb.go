@@ -32,6 +32,33 @@ type MicroserviceKubernetesStackInput struct {
 	// kubernetes namespace
 	KubernetesNamespace string `protobuf:"bytes,3,opt,name=kubernetes_namespace,json=kubernetesNamespace,proto3" json:"kubernetes_namespace,omitempty"`
 	// docker-config-json to be used for setting up image-pull-secret
+	//
+	// why is this field important?
+	// kubernetes needs authentication credentials to pull images from private container registries.
+	// an image pull secret is a kubernetes secret that stores docker registry credentials,
+	// allowing the kubelet to pull private images for your pods.
+	//
+	// when is an image pull secret needed?
+	// - standard kubernetes clusters: required for all private registries (gcr, ecr, docker hub, etc.)
+	// - self-hosted registries: required for any private container registry
+	// - multi-cloud deployments: needed when pulling images across cloud boundaries
+	//
+	// when is an image pull secret NOT needed?
+	// - gke with workload identity: uses IAM bindings instead of explicit credentials
+	// - eks with irsa (iam roles for service accounts): uses AWS IAM roles for authentication
+	// - aks with workload identity: uses azure managed identities
+	// - public images: no authentication required for public registries
+	//
+	// priority order:
+	// 1. if this field is set, it takes precedence (used by Planton Cloud)
+	// 2. if not set, check metadata.labels["kubernetes.planton.io/docker-config-json-file"] for file path
+	// 3. if neither set, no image pull secret is created (assumes workload identity or public images)
+	//
+	// example docker-config-json:
+	// {"auths":{"registry.example.com":{"username":"user","password":"pass","auth":"dXNlcjpwYXNz"}}}
+	//
+	// for more details on image pull secrets, see:
+	// https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
 	DockerConfigJson string `protobuf:"bytes,4,opt,name=docker_config_json,json=dockerConfigJson,proto3" json:"docker_config_json,omitempty"`
 	unknownFields    protoimpl.UnknownFields
 	sizeCache        protoimpl.SizeCache

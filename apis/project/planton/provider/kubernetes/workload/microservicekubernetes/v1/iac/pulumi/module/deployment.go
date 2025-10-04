@@ -127,22 +127,12 @@ func deployment(ctx *pulumi.Context, locals *Locals,
 		TerminationGracePeriodSeconds: pulumi.IntPtr(60),
 	}
 
-	if locals.ImagePullSecretData != nil {
-		// create image pull secret resources
-		createdImagePullSecret, err := kubernetescorev1.NewSecret(ctx,
-			"image-pull-secret",
-			&kubernetescorev1.SecretArgs{
-				Metadata: &metav1.ObjectMetaArgs{
-					Name:      pulumi.String("image-pull-secret"),
-					Namespace: createdNamespace.Metadata.Name(),
-					Labels:    pulumi.ToStringMap(locals.Labels),
-				},
-				Type:       pulumi.String("kubernetes.io/dockerconfigjson"),
-				StringData: pulumi.ToStringMap(locals.ImagePullSecretData),
-			}, pulumi.Parent(createdNamespace))
-		if err != nil {
-			return nil, errors.Wrap(err, "failed to add image pull secret")
-		}
+	// Create image pull secret if configured
+	createdImagePullSecret, err := imagePullSecret(ctx, locals, createdNamespace)
+	if err != nil {
+		return nil, err
+	}
+	if createdImagePullSecret != nil {
 		podSpecArgs.ImagePullSecrets = kubernetescorev1.LocalObjectReferenceArray{
 			kubernetescorev1.LocalObjectReferenceArgs{
 				Name: createdImagePullSecret.Metadata.Name(),

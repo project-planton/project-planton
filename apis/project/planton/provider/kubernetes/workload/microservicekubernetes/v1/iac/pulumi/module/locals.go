@@ -1,8 +1,12 @@
 package module
 
 import (
+	"encoding/json"
 	"fmt"
+	"os"
+	"path/filepath"
 	"strconv"
+	"strings"
 
 	"github.com/pkg/errors"
 	microservicekubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/microservicekubernetes/v1"
@@ -70,8 +74,21 @@ func initializeLocals(ctx *pulumi.Context, stackInput *microservicekubernetesv1.
 
 	ctx.Export(OpNamespace, pulumi.String(locals.Namespace))
 
+	// Priority 1: StackInput (used by Planton Cloud - takes precedence)
+	// If present, use it and don't check the label at all
 	if stackInput.DockerConfigJson != "" {
 		locals.ImagePullSecretData = map[string]string{".dockerconfigjson": stackInput.DockerConfigJson}
+	} else {
+		// Priority 2: Label with file path (for open-source users)
+		// Only checked if stackInput.DockerConfigJson is empty
+		if dockerConfigFilePath := target.Metadata.Labels[kuberneteslabels.DockerConfigJsonFileLabelKey]; dockerConfigFilePath != "" {
+			dockerConfigJson, err := loadDockerConfigFromFile(dockerConfigFilePath)
+			if err != nil {
+				return nil, errors.Wrapf(err, "failed to load docker config from file specified in label: %s", dockerConfigFilePath)
+			}
+			locals.ImagePullSecretData = map[string]string{".dockerconfigjson": dockerConfigJson}
+		}
+		// Priority 3: If neither set, ImagePullSecretData remains nil (no image pull secret)
 	}
 
 	locals.KubeServiceName = target.Spec.Version
@@ -131,4 +148,41 @@ func initializeLocals(ctx *pulumi.Context, stackInput *microservicekubernetesv1.
 	}
 
 	return locals, nil
+}
+
+// loadDockerConfigFromFile reads docker config JSON from the specified file path.
+// Returns error if file doesn't exist or can't be read.
+func loadDockerConfigFromFile(filePath string) (string, error) {
+	// Expand ~ to home directory if present
+	if strings.HasPrefix(filePath, "~/") {
+		homeDir, err := os.UserHomeDir()
+		if err != nil {
+			return "", errors.Wrap(err, "failed to get user home directory")
+		}
+		filePath = filepath.Join(homeDir, filePath[2:])
+	}
+
+	// Check if file exists
+	if _, err := os.Stat(filePath); os.IsNotExist(err) {
+		return "", errors.Errorf("docker config file does not exist: %s", filePath)
+	}
+
+	// Read file content
+	content, err := os.ReadFile(filePath)
+	if err != nil {
+		return "", errors.Wrapf(err, "failed to read docker config file: %s", filePath)
+	}
+
+	// Validate it's not empty
+	if len(content) == 0 {
+		return "", errors.Errorf("docker config file is empty: %s", filePath)
+	}
+
+	// Optional: Basic JSON validation
+	var js json.RawMessage
+	if err := json.Unmarshal(content, &js); err != nil {
+		return "", errors.Wrapf(err, "docker config file contains invalid JSON: %s", filePath)
+	}
+
+	return string(content), nil
 }

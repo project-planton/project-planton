@@ -4,6 +4,7 @@ go_library(
     name = "module",
     srcs = [
         "deployment.go",
+        "image_pull_secret.go",
         "ingress.go",
         "locals.go",
         "main.go",
