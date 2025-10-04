@@ -39,7 +39,7 @@ func PrintInfo(msg string) {
 func PrintHandoff(tool string) {
 	cyan := color.New(color.FgCyan, color.Bold).SprintFunc()
 	yellow := color.New(color.FgYellow).SprintFunc()
-	
+
 	fmt.Println()
 	fmt.Printf("%s %s\n", Handshake, cyan("Handing off to "+tool+"..."))
 	fmt.Printf("   %s\n", yellow("Output below is from "+tool))

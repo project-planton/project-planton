@@ -69,12 +69,19 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kafkakubernetesv1.KafkaKu
 		locals.Labels[kuberneteslabelkeys.Environment] = target.Metadata.Env
 	}
 
+	// Priority order:
+	// 1. Default: metadata.name
+	// 2. Override with custom label if provided
+	// 3. Override with stackInput if provided
+
 	locals.Namespace = target.Metadata.Name
 
 	if target.Metadata.Labels != nil &&
 		target.Metadata.Labels[kuberneteslabels.NamespaceLabelKey] != "" {
 		locals.Namespace = target.Metadata.Labels[kuberneteslabels.NamespaceLabelKey]
-	} else {
+	}
+
+	if stackInput.KubernetesNamespace != "" {
 		locals.Namespace = stackInput.KubernetesNamespace
 	}
 

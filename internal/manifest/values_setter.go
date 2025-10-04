@@ -77,23 +77,23 @@ func formatOverrideError(err error) error {
 
 	// Build the error message
 	var msg strings.Builder
-	
+
 	msg.WriteString("\n")
 	msg.WriteString(red("╔═══════════════════════════════════════════════════════════════════════════════╗") + "\n")
 	msg.WriteString(red("║") + bold("                    ❌  FIELD OVERRIDE FAILED                                  ") + red("║") + "\n")
 	msg.WriteString(red("╚═══════════════════════════════════════════════════════════════════════════════╝") + "\n\n")
-	
+
 	msg.WriteString(yellow("⚠️  Override Error:\n\n"))
-	
+
 	// Display the actual error (clean it up)
 	errMsg := err.Error()
 	errMsg = strings.TrimPrefix(errMsg, "failed to load manifest with overrides: ")
 	errMsg = strings.TrimSpace(errMsg)
-	msg.WriteString(cyan("   " + errMsg) + "\n\n")
-	
+	msg.WriteString(cyan("   "+errMsg) + "\n\n")
+
 	// Provide helpful guidance
 	msg.WriteString(bold("💡 Common Issues:\n\n"))
-	
+
 	if strings.Contains(errMsg, "unsupported field type") {
 		msg.WriteString("   You're trying to override a complex/nested field with a simple value.\n")
 		msg.WriteString("   For nested fields, you need to specify the complete path:\n\n")
@@ -109,13 +109,13 @@ func formatOverrideError(err error) error {
 		msg.WriteString("   Check your --set flag syntax and ensure the field path is correct.\n")
 		msg.WriteString("   Field paths must use dot notation (e.g., spec.container.app.image.repo).\n")
 	}
-	
+
 	msg.WriteString("\n")
 	msg.WriteString(bold("📋 Helpful Commands:\n\n"))
 	msg.WriteString("   • View manifest structure:  " + cyan("project-planton load-manifest --kustomize-dir _kustomize --overlay prod") + "\n")
 	msg.WriteString("   • See available fields:     " + cyan("project-planton load-manifest --help") + "\n")
 	msg.WriteString("\n")
-	
+
 	msg.WriteString(bold("📚 Documentation: ") + cyan("https://github.com/project-planton/project-planton/tree/main/apis\n"))
 	msg.WriteString("\n")
 

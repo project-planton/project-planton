@@ -15,6 +15,7 @@ go_library(
     visibility = ["//visibility:public"],
     deps = [
         "//apis/project/planton/shared/iac/terraform",
+        "//internal/cli/cliprint",
         "//internal/cli/flag",
         "//internal/cli/manifest",
         "//internal/cli/workspace",

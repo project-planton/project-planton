@@ -38,7 +38,7 @@ func applyHandler(cmd *cobra.Command, args []string) {
 	// Check which manifest source is being used for informative messages
 	kustomizeDir, _ := cmd.Flags().GetString(string(flag.KustomizeDir))
 	overlay, _ := cmd.Flags().GetString(string(flag.Overlay))
-	
+
 	if kustomizeDir != "" && overlay != "" {
 		cliprint.PrintStep(fmt.Sprintf("Building manifest from kustomize overlay: %s", overlay))
 	} else {
@@ -60,7 +60,7 @@ func applyHandler(cmd *cobra.Command, args []string) {
 	if len(valueOverrides) > 0 {
 		cliprint.PrintStep(fmt.Sprintf("Applying %d field override(s)...", len(valueOverrides)))
 	}
-	
+
 	finalManifestPath, isTempOverrides, err := manifest.ApplyOverridesToFile(targetManifestPath, valueOverrides)
 	if err != nil {
 		fmt.Println(err)
