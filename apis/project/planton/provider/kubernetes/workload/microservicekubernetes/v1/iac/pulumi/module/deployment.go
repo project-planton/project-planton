@@ -291,12 +291,12 @@ func buildDeploymentStrategy(protoStrategy *microservicekubernetesv1.Microservic
 
 	// Set maxUnavailable if configured
 	if protoStrategy.MaxUnavailable != "" {
-		rollingUpdate.MaxUnavailable = pulumi.String(protoStrategy.MaxUnavailable)
+		rollingUpdate.MaxUnavailable = parseIntOrString(protoStrategy.MaxUnavailable)
 	}
 
 	// Set maxSurge if configured
 	if protoStrategy.MaxSurge != "" {
-		rollingUpdate.MaxSurge = pulumi.String(protoStrategy.MaxSurge)
+		rollingUpdate.MaxSurge = parseIntOrString(protoStrategy.MaxSurge)
 	}
 
 	strategy := &appsv1.DeploymentStrategyArgs{

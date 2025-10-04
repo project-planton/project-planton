@@ -27,12 +27,12 @@ func podDisruptionBudget(ctx *pulumi.Context, locals *Locals,
 
 	// Set minAvailable or maxUnavailable (they are mutually exclusive)
 	if pdbConfig.MinAvailable != "" {
-		pdbSpec.MinAvailable = pulumi.String(pdbConfig.MinAvailable)
+		pdbSpec.MinAvailable = parseIntOrString(pdbConfig.MinAvailable)
 	} else if pdbConfig.MaxUnavailable != "" {
-		pdbSpec.MaxUnavailable = pulumi.String(pdbConfig.MaxUnavailable)
+		pdbSpec.MaxUnavailable = parseIntOrString(pdbConfig.MaxUnavailable)
 	} else {
 		// Default to minAvailable: 1 if neither is specified
-		pdbSpec.MinAvailable = pulumi.String("1")
+		pdbSpec.MinAvailable = pulumi.Int(1)
 	}
 
 	_, err := policyv1.NewPodDisruptionBudget(ctx,
