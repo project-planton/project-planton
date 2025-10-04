@@ -1,8 +1,11 @@
 package tofu
 
 import (
+	"os"
+
 	"github.com/project-planton/project-planton/apis/project/planton/shared/iac/terraform"
 	"github.com/project-planton/project-planton/internal/cli/flag"
+	"github.com/project-planton/project-planton/internal/cli/manifest"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput/stackinputcredentials"
 	"github.com/project-planton/project-planton/pkg/iac/tofu/tofumodule"
 	log "github.com/sirupsen/logrus"
@@ -23,24 +26,22 @@ func destroyHandler(cmd *cobra.Command, args []string) {
 	isAutoApprove, err := cmd.Flags().GetBool(string(flag.AutoApprove))
 	flag.HandleFlagErr(err, flag.AutoApprove)
 
-	inputDir, err := cmd.Flags().GetString(string(flag.InputDir))
-	flag.HandleFlagErr(err, flag.InputDir)
-
 	moduleDir, err := cmd.Flags().GetString(string(flag.ModuleDir))
 	flag.HandleFlagErrAndValue(err, flag.ModuleDir, moduleDir)
 
 	valueOverrides, err := cmd.Flags().GetStringToString(string(flag.Set))
 	flag.HandleFlagErr(err, flag.Set)
 
-	credentialOptions := make([]stackinputcredentials.StackInputCredentialOption, 0)
-	targetManifestPath := inputDir + "/target.yaml"
-
-	if inputDir == "" {
-		targetManifestPath, err = cmd.Flags().GetString(string(flag.Manifest))
-		flag.HandleFlagErrAndValue(err, flag.Manifest, targetManifestPath)
+	// Resolve manifest path with priority: --manifest > --input-dir > --kustomize-dir + --overlay
+	targetManifestPath, isTemp, err := manifest.ResolveManifestPath(cmd)
+	if err != nil {
+		log.Fatalf("failed to resolve manifest: %v", err)
+	}
+	if isTemp {
+		defer os.Remove(targetManifestPath)
 	}
 
-	credentialOptions, err = stackinputcredentials.BuildWithFlags(cmd.Flags())
+	credentialOptions, err := stackinputcredentials.BuildWithFlags(cmd.Flags())
 	if err != nil {
 		log.Fatalf("failed to build credentiaal options: %v", err)
 	}

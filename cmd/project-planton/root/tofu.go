@@ -22,6 +22,8 @@ func init() {
 	Tofu.PersistentFlags().String(string(flag.Manifest), "", "path of the deployment-component manifest file")
 
 	Tofu.PersistentFlags().String(string(flag.InputDir), "", "directory containing target.yaml and credential yaml files")
+	Tofu.PersistentFlags().String(string(flag.KustomizeDir), "", "directory containing kustomize configuration")
+	Tofu.PersistentFlags().String(string(flag.Overlay), "", "kustomize overlay to use (e.g., prod, dev, staging)")
 	Tofu.PersistentFlags().String(string(flag.ModuleDir), pwd, "directory containing the terraform module")
 	Tofu.PersistentFlags().StringToString(string(flag.Set), map[string]string{}, "override resource manifest values using key=value pairs")
 
