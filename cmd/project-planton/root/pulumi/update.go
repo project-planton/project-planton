@@ -11,7 +11,6 @@ import (
 	"github.com/project-planton/project-planton/internal/manifest"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumistack"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput/stackinputcredentials"
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -46,7 +45,8 @@ func updateHandler(cmd *cobra.Command, args []string) {
 	// Resolve manifest path with priority: --manifest > --input-dir > --kustomize-dir + --overlay
 	targetManifestPath, isTemp, err := climanifest.ResolveManifestPath(cmd)
 	if err != nil {
-		log.Fatalf("failed to resolve manifest: %v", err)
+		cliprint.PrintError(fmt.Sprintf("Failed to resolve manifest: %v", err))
+		os.Exit(1)
 	}
 	if isTemp {
 		defer os.Remove(targetManifestPath)
@@ -81,7 +81,8 @@ func updateHandler(cmd *cobra.Command, args []string) {
 	cliprint.PrintStep("Preparing Pulumi execution...")
 	credentialOptions, err := stackinputcredentials.BuildWithFlags(cmd.Flags())
 	if err != nil {
-		log.Fatalf("failed to build credentiaal options: %v", err)
+		cliprint.PrintError(fmt.Sprintf("Failed to build credential options: %v", err))
+		os.Exit(1)
 	}
 	cliprint.PrintSuccess("Execution prepared")
 
@@ -90,6 +91,8 @@ func updateHandler(cmd *cobra.Command, args []string) {
 	err = pulumistack.Run(moduleDir, stackFqdn, targetManifestPath,
 		pulumi.PulumiOperationType_update, false, true, valueOverrides, credentialOptions...)
 	if err != nil {
-		log.Fatalf("failed to run pulumi: %v", err)
+		cliprint.PrintPulumiFailure()
+		os.Exit(1)
 	}
+	cliprint.PrintPulumiSuccess()
 }

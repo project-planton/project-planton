@@ -16,7 +16,6 @@ import (
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput/stackinputcredentials"
-	log "github.com/sirupsen/logrus"
 )
 
 func Run(moduleDir, stackFqdn, targetManifestPath string, pulumiOperation pulumi.PulumiOperationType,
@@ -37,12 +36,9 @@ func Run(moduleDir, stackFqdn, targetManifestPath string, pulumiOperation pulumi
 	finalStackFqdn := stackFqdn
 	if manifestBackendConfig, err := backendconfig.ExtractFromManifest(manifestObject); err == nil && manifestBackendConfig != nil {
 		if manifestBackendConfig.StackFqdn != "" {
-			log.Infof("Using Pulumi stack from manifest labels: %s", manifestBackendConfig.StackFqdn)
+			fmt.Printf("Using Pulumi stack from manifest labels: %s\n\n", manifestBackendConfig.StackFqdn)
 			finalStackFqdn = manifestBackendConfig.StackFqdn
 		}
-	} else if err != nil {
-		// Only log debug message if extraction failed (not just missing labels)
-		log.Debugf("Could not extract Pulumi backend config from manifest labels: %v", err)
 	}
 
 	// Validate that we have a stack FQDN

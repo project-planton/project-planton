@@ -45,3 +45,20 @@ func PrintHandoff(tool string) {
 	fmt.Printf("   %s\n", yellow("Output below is from "+tool))
 	fmt.Println()
 }
+
+// PrintPulumiSuccess prints a success message after Pulumi execution completes
+func PrintPulumiSuccess() {
+	green := color.New(color.FgGreen, color.Bold).SprintFunc()
+	fmt.Println()
+	fmt.Printf("%s %s\n", CheckMark, green("Pulumi execution completed successfully"))
+}
+
+// PrintPulumiFailure prints a failure message after Pulumi execution fails
+func PrintPulumiFailure() {
+	red := color.New(color.FgRed, color.Bold).SprintFunc()
+	yellow := color.New(color.FgYellow).SprintFunc()
+	fmt.Println()
+	fmt.Printf("%s %s\n", RedTick, red("Pulumi execution failed"))
+	fmt.Printf("   %s\n", yellow("Check the above output from Pulumi CLI to understand the root cause"))
+	fmt.Println()
+}
