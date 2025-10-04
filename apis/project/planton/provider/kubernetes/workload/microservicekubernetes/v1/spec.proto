@@ -4,13 +4,13 @@ package project.planton.provider.kubernetes.workload.microservicekubernetes.v1;
 
 import "buf/validate/validate.proto";
 import "project/planton/shared/kubernetes/kubernetes.proto";
+import "project/planton/provider/kubernetes/probe.proto";
 import "project/planton/shared/kubernetes/options.proto";
 
 /**
  * **MicroserviceKubernetesSpec** defines the configuration for deploying a microservice on a Kubernetes cluster.
  * This message includes specifications for the microservice version, container configurations, ingress settings,
- * and availability options. By setting these parameters, you can manage how your microservice is deployed,
- * scaled, and accessed within the Kubernetes environment.
+ * and availability options for zero-downtime deployments.
  */
 message MicroserviceKubernetesSpec {
   //The version of the microservice being deployed.
@@ -44,7 +44,7 @@ message MicroserviceKubernetesSpec {
   project.planton.shared.kubernetes.IngressSpec ingress = 4;
 
   //The availability configuration for the microservice.
-  //This includes settings for minimum replicas and autoscaling options.
+  //This includes settings for replicas, autoscaling, deployment strategy, and pod disruption budgets.
   MicroserviceKubernetesAvailability availability = 5;
 }
 
@@ -64,7 +64,7 @@ message MicroserviceKubernetesContainer {
 
 /**
  * **MicroserviceKubernetesContainerApp** specifies the configuration for the main application container.
- * It includes the container image, resource allocations, environment variables, and ports.
+ * It includes the container image, resource allocations, environment variables, ports, and health probes.
  */
 message MicroserviceKubernetesContainerApp {
   /**
@@ -99,6 +99,32 @@ message MicroserviceKubernetesContainerApp {
    * A list of ports to be configured for the application container.
    */
   repeated MicroserviceKubernetesContainerAppPort ports = 4;
+
+  /**
+   * Liveness probe configuration.
+   * Periodic probe of container liveness. Container will be restarted if the probe fails.
+   * This helps detect and recover from deadlocks or unresponsive applications.
+   * Reference: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#container-probes
+   */
+  project.planton.provider.kubernetes.Probe liveness_probe = 5;
+
+  /**
+   * Readiness probe configuration.
+   * Periodic probe of container service readiness. Container will be removed from service endpoints if the probe fails.
+   * This ensures traffic is only routed to pods that are ready to handle requests.
+   * Essential for zero-downtime deployments.
+   * Reference: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#container-probes
+   */
+  project.planton.provider.kubernetes.Probe readiness_probe = 6;
+
+  /**
+   * Startup probe configuration.
+   * Indicates whether the application within the container is started.
+   * All other probes are disabled if a startup probe is provided, until it succeeds.
+   * Useful for slow-starting containers to avoid them getting killed by liveness probes before they are up.
+   * Reference: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#container-probes
+   */
+  project.planton.provider.kubernetes.Probe startup_probe = 7;
 }
 
 /**
@@ -170,7 +196,8 @@ message MicroserviceKubernetesContainerAppPort {
 
 /**
  * **MicroserviceKubernetesAvailability** specifies the availability configuration for the microservice.
- * It includes settings for minimum replicas and horizontal pod autoscaling.
+ * Groups all settings related to high availability: replicas, autoscaling, deployment strategy, and disruption budgets.
+ * Proper configuration of these fields enables zero-downtime deployments and resilient operations.
  */
 message MicroserviceKubernetesAvailability {
   //The minimum number of pod replicas to maintain.
@@ -178,6 +205,16 @@ message MicroserviceKubernetesAvailability {
 
   //The configuration for horizontal pod autoscaling.
   MicroserviceKubernetesAvailabilityHpa horizontal_pod_autoscaling = 2;
+
+  // Deployment strategy configuration for rolling updates.
+  // Controls how pod updates are rolled out to achieve zero-downtime deployments.
+  // If not specified, uses Kubernetes default (maxUnavailable: 25%, maxSurge: 25%).
+  MicroserviceKubernetesDeploymentStrategy deployment_strategy = 3;
+
+  // Pod disruption budget configuration.
+  // Ensures minimum availability during voluntary disruptions (node maintenance, cluster upgrades).
+  // Helps prevent service outages during infrastructure operations.
+  MicroserviceKubernetesPodDisruptionBudget pod_disruption_budget = 4;
 }
 
 /**
@@ -193,4 +230,73 @@ message MicroserviceKubernetesAvailabilityHpa {
 
   //The target memory utilization to trigger autoscaling (e.g., "1Gi").
   string target_memory_utilization = 3;
+}
+
+/**
+ * **MicroserviceKubernetesDeploymentStrategy** defines the deployment strategy for rolling updates.
+ * This controls how Kubernetes replaces old pods with new ones during updates.
+ * Proper configuration enables zero-downtime deployments.
+ * Reference: https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy
+ */
+message MicroserviceKubernetesDeploymentStrategy {
+  /**
+   * The maximum number of pods that can be unavailable during the update.
+   * Can be an absolute number (e.g., 0) or a percentage of desired pods (e.g., "25%").
+   * 
+   * For zero-downtime deployments, set to 0 or "0%".
+   * This ensures at least the desired number of pods are always available.
+   * 
+   * Defaults to 25% if not specified.
+   * Cannot be 0 if max_surge is also 0.
+   */
+  string max_unavailable = 1;
+
+  /**
+   * The maximum number of pods that can be created above the desired number of pods.
+   * Can be an absolute number (e.g., 1) or a percentage of desired pods (e.g., "25%").
+   * 
+   * For zero-downtime deployments with max_unavailable=0, set to at least 1 or "100%".
+   * This allows new pods to be created before old ones are terminated.
+   * 
+   * Defaults to 25% if not specified.
+   * Cannot be 0 if max_unavailable is also 0.
+   */
+  string max_surge = 2;
+}
+
+/**
+ * **MicroserviceKubernetesPodDisruptionBudget** configures a PodDisruptionBudget (PDB) to ensure
+ * minimum availability during voluntary disruptions like node maintenance or cluster upgrades.
+ * Reference: https://kubernetes.io/docs/concepts/workloads/pods/disruptions/
+ */
+message MicroserviceKubernetesPodDisruptionBudget {
+  /**
+   * Enable or disable PodDisruptionBudget creation.
+   * When disabled, no PDB is created and the cluster can evict pods freely.
+   * When enabled, the cluster must respect the min_available constraint.
+   */
+  bool enabled = 1;
+
+  /**
+   * Minimum number of pods that must be available during voluntary disruptions.
+   * Can be an absolute number (e.g., 1) or a percentage (e.g., "50%").
+   * 
+   * For high availability, typically set to:
+   * - 1 for single-replica services (ensures at least one pod always available)
+   * - N-1 for N-replica services (allows one pod to be disrupted at a time)
+   * - A percentage like "50%" for large replica counts
+   * 
+   * Cannot be used together with max_unavailable.
+   * If both min_available and max_unavailable are not set, defaults to 1.
+   */
+  string min_available = 2;
+
+  /**
+   * Maximum number of pods that can be unavailable during voluntary disruptions.
+   * Can be an absolute number (e.g., 1) or a percentage (e.g., "50%").
+   * 
+   * This is an alternative to min_available.
+   * Cannot be used together with min_available.
+   */
+  string max_unavailable = 3;
 }
