@@ -763,9 +763,11 @@ const file_project_planton_provider_kubernetes_workload_microservicekubernetes_v
 	"\favailability\x18\x05 \x01(\v2j.project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesAvailabilityR\favailability\"\xf2\x01\n" +
 	"\x1fMicroserviceKubernetesContainer\x12\x84\x01\n" +
 	"\x03app\x18\x01 \x01(\v2j.project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainerAppB\x06\xbaH\x03\xc8\x01\x01R\x03app\x12H\n" +
-	"\bsidecars\x18\x02 \x03(\v2,.project.planton.shared.kubernetes.ContainerR\bsidecars\"\xe6\x05\n" +
-	"\"MicroserviceKubernetesContainerApp\x12G\n" +
-	"\x05image\x18\x01 \x01(\v21.project.planton.shared.kubernetes.ContainerImageR\x05image\x12v\n" +
+	"\bsidecars\x18\x02 \x03(\v2,.project.planton.shared.kubernetes.ContainerR\bsidecars\"\xa7\a\n" +
+	"\"MicroserviceKubernetesContainerApp\x12\x87\x02\n" +
+	"\x05image\x18\x01 \x01(\v21.project.planton.shared.kubernetes.ContainerImageB\xbd\x01\xbaH\xb9\x01\xba\x01Z\n" +
+	"\x1dspec.container.app.image.repo\x12\x16Image repo is required\x1a!has(this.repo) && this.repo != ''\xba\x01V\n" +
+	"\x1cspec.container.app.image.tag\x12\x15Image tag is required\x1a\x1fhas(this.tag) && this.tag != ''\xc8\x01\x01R\x05image\x12v\n" +
 	"\tresources\x18\x02 \x01(\v25.project.planton.shared.kubernetes.ContainerResourcesB!\xba\xfb\xa4\x02\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +

@@ -5,7 +5,8 @@ import (
 
 	"github.com/project-planton/project-planton/apis/project/planton/shared/iac/pulumi"
 	"github.com/project-planton/project-planton/internal/cli/flag"
-	"github.com/project-planton/project-planton/internal/cli/manifest"
+	climanifest "github.com/project-planton/project-planton/internal/cli/manifest"
+	"github.com/project-planton/project-planton/internal/manifest"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumistack"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput/stackinputcredentials"
 	log "github.com/sirupsen/logrus"
@@ -22,19 +23,25 @@ func previewHandler(cmd *cobra.Command, args []string) {
 	moduleDir, err := cmd.Flags().GetString(string(flag.ModuleDir))
 	flag.HandleFlagErrAndValue(err, flag.ModuleDir, moduleDir)
 
+	// Stack can be provided via flag or extracted from manifest
 	stackFqdn, err := cmd.Flags().GetString(string(flag.Stack))
-	flag.HandleFlagErrAndValue(err, flag.Stack, stackFqdn)
+	flag.HandleFlagErr(err, flag.Stack)
 
 	valueOverrides, err := cmd.Flags().GetStringToString(string(flag.Set))
 	flag.HandleFlagErr(err, flag.Set)
 
 	// Resolve manifest path with priority: --manifest > --input-dir > --kustomize-dir + --overlay
-	targetManifestPath, isTemp, err := manifest.ResolveManifestPath(cmd)
+	targetManifestPath, isTemp, err := climanifest.ResolveManifestPath(cmd)
 	if err != nil {
 		log.Fatalf("failed to resolve manifest: %v", err)
 	}
 	if isTemp {
 		defer os.Remove(targetManifestPath)
+	}
+
+	// Validate manifest before proceeding
+	if err := manifest.Validate(targetManifestPath); err != nil {
+		log.Fatalf("manifest validation failed: %v", err)
 	}
 
 	credentialOptions, err := stackinputcredentials.BuildWithFlags(cmd.Flags())
