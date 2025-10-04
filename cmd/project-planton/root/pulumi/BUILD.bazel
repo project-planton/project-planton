@@ -12,10 +12,12 @@ go_library(
     visibility = ["//visibility:public"],
     deps = [
         "//apis/project/planton/shared/iac/pulumi",
+        "//internal/cli/cliprint",
         "//internal/cli/flag",
+        "//internal/cli/manifest",
+        "//internal/manifest",
         "//pkg/iac/pulumi/pulumistack",
         "//pkg/iac/stackinput/stackinputcredentials",
-        "@com_github_sirupsen_logrus//:logrus",
         "@com_github_spf13_cobra//:cobra",
     ],
 )

@@ -5,6 +5,7 @@ go_library(
     srcs = [
         "kubernetes.pb.go",
         "options.pb.go",
+        "probe.pb.go",
         "target_cluster.pb.go",
     ],
     importpath = "github.com/project-planton/project-planton/apis/project/planton/shared/kubernetes",

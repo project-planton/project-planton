@@ -8,6 +8,7 @@ package microservicekubernetesv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
+	kubernetes1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes"
 	kubernetes "github.com/project-planton/project-planton/apis/project/planton/shared/kubernetes"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -26,8 +27,7 @@ const (
 // *
 // **MicroserviceKubernetesSpec** defines the configuration for deploying a microservice on a Kubernetes cluster.
 // This message includes specifications for the microservice version, container configurations, ingress settings,
-// and availability options. By setting these parameters, you can manage how your microservice is deployed,
-// scaled, and accessed within the Kubernetes environment.
+// and availability options for zero-downtime deployments.
 type MicroserviceKubernetesSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// The version of the microservice being deployed.
@@ -41,7 +41,7 @@ type MicroserviceKubernetesSpec struct {
 	// This defines how the microservice can be accessed externally.
 	Ingress *kubernetes.IngressSpec `protobuf:"bytes,4,opt,name=ingress,proto3" json:"ingress,omitempty"`
 	// The availability configuration for the microservice.
-	// This includes settings for minimum replicas and autoscaling options.
+	// This includes settings for replicas, autoscaling, deployment strategy, and pod disruption budgets.
 	Availability  *MicroserviceKubernetesAvailability `protobuf:"bytes,5,opt,name=availability,proto3" json:"availability,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -164,7 +164,7 @@ func (x *MicroserviceKubernetesContainer) GetSidecars() []*kubernetes.Container 
 
 // *
 // **MicroserviceKubernetesContainerApp** specifies the configuration for the main application container.
-// It includes the container image, resource allocations, environment variables, and ports.
+// It includes the container image, resource allocations, environment variables, ports, and health probes.
 type MicroserviceKubernetesContainerApp struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// *
@@ -181,7 +181,27 @@ type MicroserviceKubernetesContainerApp struct {
 	Env *MicroserviceKubernetesContainerAppEnv `protobuf:"bytes,3,opt,name=env,proto3" json:"env,omitempty"`
 	// *
 	// A list of ports to be configured for the application container.
-	Ports         []*MicroserviceKubernetesContainerAppPort `protobuf:"bytes,4,rep,name=ports,proto3" json:"ports,omitempty"`
+	Ports []*MicroserviceKubernetesContainerAppPort `protobuf:"bytes,4,rep,name=ports,proto3" json:"ports,omitempty"`
+	// *
+	// Liveness probe configuration.
+	// Periodic probe of container liveness. Container will be restarted if the probe fails.
+	// This helps detect and recover from deadlocks or unresponsive applications.
+	// Reference: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#container-probes
+	LivenessProbe *kubernetes1.Probe `protobuf:"bytes,5,opt,name=liveness_probe,json=livenessProbe,proto3" json:"liveness_probe,omitempty"`
+	// *
+	// Readiness probe configuration.
+	// Periodic probe of container service readiness. Container will be removed from service endpoints if the probe fails.
+	// This ensures traffic is only routed to pods that are ready to handle requests.
+	// Essential for zero-downtime deployments.
+	// Reference: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#container-probes
+	ReadinessProbe *kubernetes1.Probe `protobuf:"bytes,6,opt,name=readiness_probe,json=readinessProbe,proto3" json:"readiness_probe,omitempty"`
+	// *
+	// Startup probe configuration.
+	// Indicates whether the application within the container is started.
+	// All other probes are disabled if a startup probe is provided, until it succeeds.
+	// Useful for slow-starting containers to avoid them getting killed by liveness probes before they are up.
+	// Reference: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#container-probes
+	StartupProbe  *kubernetes1.Probe `protobuf:"bytes,7,opt,name=startup_probe,json=startupProbe,proto3" json:"startup_probe,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -240,6 +260,27 @@ func (x *MicroserviceKubernetesContainerApp) GetEnv() *MicroserviceKubernetesCon
 func (x *MicroserviceKubernetesContainerApp) GetPorts() []*MicroserviceKubernetesContainerAppPort {
 	if x != nil {
 		return x.Ports
+	}
+	return nil
+}
+
+func (x *MicroserviceKubernetesContainerApp) GetLivenessProbe() *kubernetes1.Probe {
+	if x != nil {
+		return x.LivenessProbe
+	}
+	return nil
+}
+
+func (x *MicroserviceKubernetesContainerApp) GetReadinessProbe() *kubernetes1.Probe {
+	if x != nil {
+		return x.ReadinessProbe
+	}
+	return nil
+}
+
+func (x *MicroserviceKubernetesContainerApp) GetStartupProbe() *kubernetes1.Probe {
+	if x != nil {
+		return x.StartupProbe
 	}
 	return nil
 }
@@ -404,15 +445,24 @@ func (x *MicroserviceKubernetesContainerAppPort) GetIsIngressPort() bool {
 
 // *
 // **MicroserviceKubernetesAvailability** specifies the availability configuration for the microservice.
-// It includes settings for minimum replicas and horizontal pod autoscaling.
+// Groups all settings related to high availability: replicas, autoscaling, deployment strategy, and disruption budgets.
+// Proper configuration of these fields enables zero-downtime deployments and resilient operations.
 type MicroserviceKubernetesAvailability struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// The minimum number of pod replicas to maintain.
 	MinReplicas int32 `protobuf:"varint,1,opt,name=min_replicas,json=minReplicas,proto3" json:"min_replicas,omitempty"`
 	// The configuration for horizontal pod autoscaling.
 	HorizontalPodAutoscaling *MicroserviceKubernetesAvailabilityHpa `protobuf:"bytes,2,opt,name=horizontal_pod_autoscaling,json=horizontalPodAutoscaling,proto3" json:"horizontal_pod_autoscaling,omitempty"`
-	unknownFields            protoimpl.UnknownFields
-	sizeCache                protoimpl.SizeCache
+	// Deployment strategy configuration for rolling updates.
+	// Controls how pod updates are rolled out to achieve zero-downtime deployments.
+	// If not specified, uses Kubernetes default (maxUnavailable: 25%, maxSurge: 25%).
+	DeploymentStrategy *MicroserviceKubernetesDeploymentStrategy `protobuf:"bytes,3,opt,name=deployment_strategy,json=deploymentStrategy,proto3" json:"deployment_strategy,omitempty"`
+	// Pod disruption budget configuration.
+	// Ensures minimum availability during voluntary disruptions (node maintenance, cluster upgrades).
+	// Helps prevent service outages during infrastructure operations.
+	PodDisruptionBudget *MicroserviceKubernetesPodDisruptionBudget `protobuf:"bytes,4,opt,name=pod_disruption_budget,json=podDisruptionBudget,proto3" json:"pod_disruption_budget,omitempty"`
+	unknownFields       protoimpl.UnknownFields
+	sizeCache           protoimpl.SizeCache
 }
 
 func (x *MicroserviceKubernetesAvailability) Reset() {
@@ -455,6 +505,20 @@ func (x *MicroserviceKubernetesAvailability) GetMinReplicas() int32 {
 func (x *MicroserviceKubernetesAvailability) GetHorizontalPodAutoscaling() *MicroserviceKubernetesAvailabilityHpa {
 	if x != nil {
 		return x.HorizontalPodAutoscaling
+	}
+	return nil
+}
+
+func (x *MicroserviceKubernetesAvailability) GetDeploymentStrategy() *MicroserviceKubernetesDeploymentStrategy {
+	if x != nil {
+		return x.DeploymentStrategy
+	}
+	return nil
+}
+
+func (x *MicroserviceKubernetesAvailability) GetPodDisruptionBudget() *MicroserviceKubernetesPodDisruptionBudget {
+	if x != nil {
+		return x.PodDisruptionBudget
 	}
 	return nil
 }
@@ -525,11 +589,171 @@ func (x *MicroserviceKubernetesAvailabilityHpa) GetTargetMemoryUtilization() str
 	return ""
 }
 
+// *
+// **MicroserviceKubernetesDeploymentStrategy** defines the deployment strategy for rolling updates.
+// This controls how Kubernetes replaces old pods with new ones during updates.
+// Proper configuration enables zero-downtime deployments.
+// Reference: https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy
+type MicroserviceKubernetesDeploymentStrategy struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// *
+	// The maximum number of pods that can be unavailable during the update.
+	// Can be an absolute number (e.g., 0) or a percentage of desired pods (e.g., "25%").
+	//
+	// For zero-downtime deployments, set to 0 or "0%".
+	// This ensures at least the desired number of pods are always available.
+	//
+	// Defaults to 25% if not specified.
+	// Cannot be 0 if max_surge is also 0.
+	MaxUnavailable string `protobuf:"bytes,1,opt,name=max_unavailable,json=maxUnavailable,proto3" json:"max_unavailable,omitempty"`
+	// *
+	// The maximum number of pods that can be created above the desired number of pods.
+	// Can be an absolute number (e.g., 1) or a percentage of desired pods (e.g., "25%").
+	//
+	// For zero-downtime deployments with max_unavailable=0, set to at least 1 or "100%".
+	// This allows new pods to be created before old ones are terminated.
+	//
+	// Defaults to 25% if not specified.
+	// Cannot be 0 if max_unavailable is also 0.
+	MaxSurge      string `protobuf:"bytes,2,opt,name=max_surge,json=maxSurge,proto3" json:"max_surge,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *MicroserviceKubernetesDeploymentStrategy) Reset() {
+	*x = MicroserviceKubernetesDeploymentStrategy{}
+	mi := &file_project_planton_provider_kubernetes_workload_microservicekubernetes_v1_spec_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *MicroserviceKubernetesDeploymentStrategy) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MicroserviceKubernetesDeploymentStrategy) ProtoMessage() {}
+
+func (x *MicroserviceKubernetesDeploymentStrategy) ProtoReflect() protoreflect.Message {
+	mi := &file_project_planton_provider_kubernetes_workload_microservicekubernetes_v1_spec_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MicroserviceKubernetesDeploymentStrategy.ProtoReflect.Descriptor instead.
+func (*MicroserviceKubernetesDeploymentStrategy) Descriptor() ([]byte, []int) {
+	return file_project_planton_provider_kubernetes_workload_microservicekubernetes_v1_spec_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *MicroserviceKubernetesDeploymentStrategy) GetMaxUnavailable() string {
+	if x != nil {
+		return x.MaxUnavailable
+	}
+	return ""
+}
+
+func (x *MicroserviceKubernetesDeploymentStrategy) GetMaxSurge() string {
+	if x != nil {
+		return x.MaxSurge
+	}
+	return ""
+}
+
+// *
+// **MicroserviceKubernetesPodDisruptionBudget** configures a PodDisruptionBudget (PDB) to ensure
+// minimum availability during voluntary disruptions like node maintenance or cluster upgrades.
+// Reference: https://kubernetes.io/docs/concepts/workloads/pods/disruptions/
+type MicroserviceKubernetesPodDisruptionBudget struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// *
+	// Enable or disable PodDisruptionBudget creation.
+	// When disabled, no PDB is created and the cluster can evict pods freely.
+	// When enabled, the cluster must respect the min_available constraint.
+	Enabled bool `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`
+	// *
+	// Minimum number of pods that must be available during voluntary disruptions.
+	// Can be an absolute number (e.g., 1) or a percentage (e.g., "50%").
+	//
+	// For high availability, typically set to:
+	// - 1 for single-replica services (ensures at least one pod always available)
+	// - N-1 for N-replica services (allows one pod to be disrupted at a time)
+	// - A percentage like "50%" for large replica counts
+	//
+	// Cannot be used together with max_unavailable.
+	// If both min_available and max_unavailable are not set, defaults to 1.
+	MinAvailable string `protobuf:"bytes,2,opt,name=min_available,json=minAvailable,proto3" json:"min_available,omitempty"`
+	// *
+	// Maximum number of pods that can be unavailable during voluntary disruptions.
+	// Can be an absolute number (e.g., 1) or a percentage (e.g., "50%").
+	//
+	// This is an alternative to min_available.
+	// Cannot be used together with min_available.
+	MaxUnavailable string `protobuf:"bytes,3,opt,name=max_unavailable,json=maxUnavailable,proto3" json:"max_unavailable,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *MicroserviceKubernetesPodDisruptionBudget) Reset() {
+	*x = MicroserviceKubernetesPodDisruptionBudget{}
+	mi := &file_project_planton_provider_kubernetes_workload_microservicekubernetes_v1_spec_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *MicroserviceKubernetesPodDisruptionBudget) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MicroserviceKubernetesPodDisruptionBudget) ProtoMessage() {}
+
+func (x *MicroserviceKubernetesPodDisruptionBudget) ProtoReflect() protoreflect.Message {
+	mi := &file_project_planton_provider_kubernetes_workload_microservicekubernetes_v1_spec_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MicroserviceKubernetesPodDisruptionBudget.ProtoReflect.Descriptor instead.
+func (*MicroserviceKubernetesPodDisruptionBudget) Descriptor() ([]byte, []int) {
+	return file_project_planton_provider_kubernetes_workload_microservicekubernetes_v1_spec_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *MicroserviceKubernetesPodDisruptionBudget) GetEnabled() bool {
+	if x != nil {
+		return x.Enabled
+	}
+	return false
+}
+
+func (x *MicroserviceKubernetesPodDisruptionBudget) GetMinAvailable() string {
+	if x != nil {
+		return x.MinAvailable
+	}
+	return ""
+}
+
+func (x *MicroserviceKubernetesPodDisruptionBudget) GetMaxUnavailable() string {
+	if x != nil {
+		return x.MaxUnavailable
+	}
+	return ""
+}
+
 var File_project_planton_provider_kubernetes_workload_microservicekubernetes_v1_spec_proto protoreflect.FileDescriptor
 
 const file_project_planton_provider_kubernetes_workload_microservicekubernetes_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Qproject/planton/provider/kubernetes/workload/microservicekubernetes/v1/spec.proto\x12Fproject.planton.provider.kubernetes.workload.microservicekubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\"\xf3\x04\n" +
+	"Qproject/planton/provider/kubernetes/workload/microservicekubernetes/v1/spec.proto\x12Fproject.planton.provider.kubernetes.workload.microservicekubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/provider/kubernetes/probe.proto\x1a/project/planton/shared/kubernetes/options.proto\"\xf3\x04\n" +
 	"\x1aMicroserviceKubernetesSpec\x12\xe9\x01\n" +
 	"\aversion\x18\x01 \x01(\tB\xce\x01\xbaH\xca\x01\xba\x01l\n" +
 	"\x12spec.version.chars\x128Only lowercase letters, numbers, and hyphens are allowed\x1a\x1cthis.matches('^[a-z0-9-]+$')\xba\x01R\n" +
@@ -539,15 +763,20 @@ const file_project_planton_provider_kubernetes_workload_microservicekubernetes_v
 	"\favailability\x18\x05 \x01(\v2j.project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesAvailabilityR\favailability\"\xf2\x01\n" +
 	"\x1fMicroserviceKubernetesContainer\x12\x84\x01\n" +
 	"\x03app\x18\x01 \x01(\v2j.project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainerAppB\x06\xbaH\x03\xc8\x01\x01R\x03app\x12H\n" +
-	"\bsidecars\x18\x02 \x03(\v2,.project.planton.shared.kubernetes.ContainerR\bsidecars\"\xed\x03\n" +
-	"\"MicroserviceKubernetesContainerApp\x12G\n" +
-	"\x05image\x18\x01 \x01(\v21.project.planton.shared.kubernetes.ContainerImageR\x05image\x12v\n" +
+	"\bsidecars\x18\x02 \x03(\v2,.project.planton.shared.kubernetes.ContainerR\bsidecars\"\xa7\a\n" +
+	"\"MicroserviceKubernetesContainerApp\x12\x87\x02\n" +
+	"\x05image\x18\x01 \x01(\v21.project.planton.shared.kubernetes.ContainerImageB\xbd\x01\xbaH\xb9\x01\xba\x01Z\n" +
+	"\x1dspec.container.app.image.repo\x12\x16Image repo is required\x1a!has(this.repo) && this.repo != ''\xba\x01V\n" +
+	"\x1cspec.container.app.image.tag\x12\x15Image tag is required\x1a\x1fhas(this.tag) && this.tag != ''\xc8\x01\x01R\x05image\x12v\n" +
 	"\tresources\x18\x02 \x01(\v25.project.planton.shared.kubernetes.ContainerResourcesB!\xba\xfb\xa4\x02\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
 	"\x0350m\x12\x05100MiR\tresources\x12\x7f\n" +
 	"\x03env\x18\x03 \x01(\v2m.project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainerAppEnvR\x03env\x12\x84\x01\n" +
-	"\x05ports\x18\x04 \x03(\v2n.project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainerAppPortR\x05ports\"\xd5\x03\n" +
+	"\x05ports\x18\x04 \x03(\v2n.project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainerAppPortR\x05ports\x12Q\n" +
+	"\x0eliveness_probe\x18\x05 \x01(\v2*.project.planton.provider.kubernetes.ProbeR\rlivenessProbe\x12S\n" +
+	"\x0freadiness_probe\x18\x06 \x01(\v2*.project.planton.provider.kubernetes.ProbeR\x0ereadinessProbe\x12O\n" +
+	"\rstartup_probe\x18\a \x01(\v2*.project.planton.provider.kubernetes.ProbeR\fstartupProbe\"\xd5\x03\n" +
 	"%MicroserviceKubernetesContainerAppEnv\x12\x9a\x01\n" +
 	"\tvariables\x18\x01 \x03(\v2|.project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainerAppEnv.VariablesEntryR\tvariables\x12\x94\x01\n" +
 	"\asecrets\x18\x02 \x03(\v2z.project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainerAppEnv.SecretsEntryR\asecrets\x1a<\n" +
@@ -565,15 +794,24 @@ const file_project_planton_provider_kubernetes_workload_microservicekubernetes_v
 	")spec.container.app.ports.network_protocol\x12<The network protocol must be one of \"SCTP\", \"TCP\", or \"UDP\".\x1a\x1ethis in [\"SCTP\", \"TCP\", \"UDP\"]\xc8\x01\x01R\x0fnetworkProtocol\x12)\n" +
 	"\fapp_protocol\x18\x04 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\vappProtocol\x12)\n" +
 	"\fservice_port\x18\x05 \x01(\x05B\x06\xbaH\x03\xc8\x01\x01R\vservicePort\x12&\n" +
-	"\x0fis_ingress_port\x18\x06 \x01(\bR\risIngressPort\"\xf5\x01\n" +
+	"\x0fis_ingress_port\x18\x06 \x01(\bR\risIngressPort\"\xc1\x04\n" +
 	"\"MicroserviceKubernetesAvailability\x12!\n" +
 	"\fmin_replicas\x18\x01 \x01(\x05R\vminReplicas\x12\xab\x01\n" +
-	"\x1ahorizontal_pod_autoscaling\x18\x02 \x01(\v2m.project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesAvailabilityHpaR\x18horizontalPodAutoscaling\"\xc7\x01\n" +
+	"\x1ahorizontal_pod_autoscaling\x18\x02 \x01(\v2m.project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesAvailabilityHpaR\x18horizontalPodAutoscaling\x12\xa1\x01\n" +
+	"\x13deployment_strategy\x18\x03 \x01(\v2p.project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesDeploymentStrategyR\x12deploymentStrategy\x12\xa5\x01\n" +
+	"\x15pod_disruption_budget\x18\x04 \x01(\v2q.project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesPodDisruptionBudgetR\x13podDisruptionBudget\"\xc7\x01\n" +
 	"%MicroserviceKubernetesAvailabilityHpa\x12\x1d\n" +
 	"\n" +
 	"is_enabled\x18\x01 \x01(\bR\tisEnabled\x12C\n" +
 	"\x1etarget_cpu_utilization_percent\x18\x02 \x01(\x01R\x1btargetCpuUtilizationPercent\x12:\n" +
-	"\x19target_memory_utilization\x18\x03 \x01(\tR\x17targetMemoryUtilizationB\xaa\x04\n" +
+	"\x19target_memory_utilization\x18\x03 \x01(\tR\x17targetMemoryUtilization\"p\n" +
+	"(MicroserviceKubernetesDeploymentStrategy\x12'\n" +
+	"\x0fmax_unavailable\x18\x01 \x01(\tR\x0emaxUnavailable\x12\x1b\n" +
+	"\tmax_surge\x18\x02 \x01(\tR\bmaxSurge\"\x93\x01\n" +
+	")MicroserviceKubernetesPodDisruptionBudget\x12\x18\n" +
+	"\aenabled\x18\x01 \x01(\bR\aenabled\x12#\n" +
+	"\rmin_available\x18\x02 \x01(\tR\fminAvailable\x12'\n" +
+	"\x0fmax_unavailable\x18\x03 \x01(\tR\x0emaxUnavailableB\xaa\x04\n" +
 	"Jcom.project.planton.provider.kubernetes.workload.microservicekubernetes.v1B\tSpecProtoP\x01Z\x8f\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/microservicekubernetes/v1;microservicekubernetesv1\xa2\x02\x06PPPKWM\xaa\x02FProject.Planton.Provider.Kubernetes.Workload.Microservicekubernetes.V1\xca\x02FProject\\Planton\\Provider\\Kubernetes\\Workload\\Microservicekubernetes\\V1\xe2\x02RProject\\Planton\\Provider\\Kubernetes\\Workload\\Microservicekubernetes\\V1\\GPBMetadata\xea\x02LProject::Planton::Provider::Kubernetes::Workload::Microservicekubernetes::V1b\x06proto3"
 
 var (
@@ -588,40 +826,48 @@ func file_project_planton_provider_kubernetes_workload_microservicekubernetes_v1
 	return file_project_planton_provider_kubernetes_workload_microservicekubernetes_v1_spec_proto_rawDescData
 }
 
-var file_project_planton_provider_kubernetes_workload_microservicekubernetes_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
+var file_project_planton_provider_kubernetes_workload_microservicekubernetes_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
 var file_project_planton_provider_kubernetes_workload_microservicekubernetes_v1_spec_proto_goTypes = []any{
-	(*MicroserviceKubernetesSpec)(nil),             // 0: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesSpec
-	(*MicroserviceKubernetesContainer)(nil),        // 1: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainer
-	(*MicroserviceKubernetesContainerApp)(nil),     // 2: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainerApp
-	(*MicroserviceKubernetesContainerAppEnv)(nil),  // 3: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainerAppEnv
-	(*MicroserviceKubernetesContainerAppPort)(nil), // 4: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainerAppPort
-	(*MicroserviceKubernetesAvailability)(nil),     // 5: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesAvailability
-	(*MicroserviceKubernetesAvailabilityHpa)(nil),  // 6: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesAvailabilityHpa
-	nil,                                   // 7: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainerAppEnv.VariablesEntry
-	nil,                                   // 8: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainerAppEnv.SecretsEntry
-	(*kubernetes.IngressSpec)(nil),        // 9: project.planton.shared.kubernetes.IngressSpec
-	(*kubernetes.Container)(nil),          // 10: project.planton.shared.kubernetes.Container
-	(*kubernetes.ContainerImage)(nil),     // 11: project.planton.shared.kubernetes.ContainerImage
-	(*kubernetes.ContainerResources)(nil), // 12: project.planton.shared.kubernetes.ContainerResources
+	(*MicroserviceKubernetesSpec)(nil),                // 0: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesSpec
+	(*MicroserviceKubernetesContainer)(nil),           // 1: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainer
+	(*MicroserviceKubernetesContainerApp)(nil),        // 2: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainerApp
+	(*MicroserviceKubernetesContainerAppEnv)(nil),     // 3: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainerAppEnv
+	(*MicroserviceKubernetesContainerAppPort)(nil),    // 4: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainerAppPort
+	(*MicroserviceKubernetesAvailability)(nil),        // 5: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesAvailability
+	(*MicroserviceKubernetesAvailabilityHpa)(nil),     // 6: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesAvailabilityHpa
+	(*MicroserviceKubernetesDeploymentStrategy)(nil),  // 7: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesDeploymentStrategy
+	(*MicroserviceKubernetesPodDisruptionBudget)(nil), // 8: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesPodDisruptionBudget
+	nil,                                   // 9: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainerAppEnv.VariablesEntry
+	nil,                                   // 10: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainerAppEnv.SecretsEntry
+	(*kubernetes.IngressSpec)(nil),        // 11: project.planton.shared.kubernetes.IngressSpec
+	(*kubernetes.Container)(nil),          // 12: project.planton.shared.kubernetes.Container
+	(*kubernetes.ContainerImage)(nil),     // 13: project.planton.shared.kubernetes.ContainerImage
+	(*kubernetes.ContainerResources)(nil), // 14: project.planton.shared.kubernetes.ContainerResources
+	(*kubernetes1.Probe)(nil),             // 15: project.planton.provider.kubernetes.Probe
 }
 var file_project_planton_provider_kubernetes_workload_microservicekubernetes_v1_spec_proto_depIdxs = []int32{
 	1,  // 0: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesSpec.container:type_name -> project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainer
-	9,  // 1: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesSpec.ingress:type_name -> project.planton.shared.kubernetes.IngressSpec
+	11, // 1: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesSpec.ingress:type_name -> project.planton.shared.kubernetes.IngressSpec
 	5,  // 2: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesSpec.availability:type_name -> project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesAvailability
 	2,  // 3: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainer.app:type_name -> project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainerApp
-	10, // 4: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainer.sidecars:type_name -> project.planton.shared.kubernetes.Container
-	11, // 5: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainerApp.image:type_name -> project.planton.shared.kubernetes.ContainerImage
-	12, // 6: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainerApp.resources:type_name -> project.planton.shared.kubernetes.ContainerResources
+	12, // 4: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainer.sidecars:type_name -> project.planton.shared.kubernetes.Container
+	13, // 5: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainerApp.image:type_name -> project.planton.shared.kubernetes.ContainerImage
+	14, // 6: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainerApp.resources:type_name -> project.planton.shared.kubernetes.ContainerResources
 	3,  // 7: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainerApp.env:type_name -> project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainerAppEnv
 	4,  // 8: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainerApp.ports:type_name -> project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainerAppPort
-	7,  // 9: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainerAppEnv.variables:type_name -> project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainerAppEnv.VariablesEntry
-	8,  // 10: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainerAppEnv.secrets:type_name -> project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainerAppEnv.SecretsEntry
-	6,  // 11: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesAvailability.horizontal_pod_autoscaling:type_name -> project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesAvailabilityHpa
-	12, // [12:12] is the sub-list for method output_type
-	12, // [12:12] is the sub-list for method input_type
-	12, // [12:12] is the sub-list for extension type_name
-	12, // [12:12] is the sub-list for extension extendee
-	0,  // [0:12] is the sub-list for field type_name
+	15, // 9: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainerApp.liveness_probe:type_name -> project.planton.provider.kubernetes.Probe
+	15, // 10: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainerApp.readiness_probe:type_name -> project.planton.provider.kubernetes.Probe
+	15, // 11: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainerApp.startup_probe:type_name -> project.planton.provider.kubernetes.Probe
+	9,  // 12: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainerAppEnv.variables:type_name -> project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainerAppEnv.VariablesEntry
+	10, // 13: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainerAppEnv.secrets:type_name -> project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesContainerAppEnv.SecretsEntry
+	6,  // 14: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesAvailability.horizontal_pod_autoscaling:type_name -> project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesAvailabilityHpa
+	7,  // 15: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesAvailability.deployment_strategy:type_name -> project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesDeploymentStrategy
+	8,  // 16: project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesAvailability.pod_disruption_budget:type_name -> project.planton.provider.kubernetes.workload.microservicekubernetes.v1.MicroserviceKubernetesPodDisruptionBudget
+	17, // [17:17] is the sub-list for method output_type
+	17, // [17:17] is the sub-list for method input_type
+	17, // [17:17] is the sub-list for extension type_name
+	17, // [17:17] is the sub-list for extension extendee
+	0,  // [0:17] is the sub-list for field type_name
 }
 
 func init() {
@@ -637,7 +883,7 @@ func file_project_planton_provider_kubernetes_workload_microservicekubernetes_v1
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_project_planton_provider_kubernetes_workload_microservicekubernetes_v1_spec_proto_rawDesc), len(file_project_planton_provider_kubernetes_workload_microservicekubernetes_v1_spec_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   9,
+			NumMessages:   11,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
