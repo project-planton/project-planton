@@ -1,11 +1,13 @@
 package pulumi
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/project-planton/project-planton/apis/project/planton/shared/iac/pulumi"
 	"github.com/project-planton/project-planton/internal/cli/flag"
-	"github.com/project-planton/project-planton/internal/cli/manifest"
+	climanifest "github.com/project-planton/project-planton/internal/cli/manifest"
+	"github.com/project-planton/project-planton/internal/manifest"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumistack"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput/stackinputcredentials"
 	log "github.com/sirupsen/logrus"
@@ -30,12 +32,18 @@ func destroyHandler(cmd *cobra.Command, args []string) {
 	flag.HandleFlagErr(err, flag.Set)
 
 	// Resolve manifest path with priority: --manifest > --input-dir > --kustomize-dir + --overlay
-	targetManifestPath, isTemp, err := manifest.ResolveManifestPath(cmd)
+	targetManifestPath, isTemp, err := climanifest.ResolveManifestPath(cmd)
 	if err != nil {
 		log.Fatalf("failed to resolve manifest: %v", err)
 	}
 	if isTemp {
 		defer os.Remove(targetManifestPath)
+	}
+
+	// Validate manifest before proceeding
+	if err := manifest.Validate(targetManifestPath); err != nil {
+		fmt.Println(err)
+		os.Exit(1)
 	}
 
 	credentialOptions, err := stackinputcredentials.BuildWithFlags(cmd.Flags())

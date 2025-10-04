@@ -1,6 +1,7 @@
 package pulumi
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/project-planton/project-planton/apis/project/planton/shared/iac/pulumi"
@@ -41,7 +42,8 @@ func previewHandler(cmd *cobra.Command, args []string) {
 
 	// Validate manifest before proceeding
 	if err := manifest.Validate(targetManifestPath); err != nil {
-		log.Fatalf("manifest validation failed: %v", err)
+		fmt.Println(err)
+		os.Exit(1)
 	}
 
 	credentialOptions, err := stackinputcredentials.BuildWithFlags(cmd.Flags())
