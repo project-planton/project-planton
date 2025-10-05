@@ -24,31 +24,38 @@ const (
 )
 
 // Supported Cloudflare R2 bucket regions (location hints).
+// These values must match Cloudflare's expected location strings exactly.
 type CloudflareR2Location int32
 
 const (
 	CloudflareR2Location_CLOUDFLARE_R2_LOCATION_UNSPECIFIED CloudflareR2Location = 0
-	CloudflareR2Location_WEUR                               CloudflareR2Location = 1 // Western Europe region
-	CloudflareR2Location_ENW                                CloudflareR2Location = 2 // Eastern North America region
-	CloudflareR2Location_APE                                CloudflareR2Location = 3 // Asia-Pacific East region
-	CloudflareR2Location_USW                                CloudflareR2Location = 4 // US West (Western North America) region
+	CloudflareR2Location_WNAM                               CloudflareR2Location = 1 // Western North America (US West)
+	CloudflareR2Location_ENAM                               CloudflareR2Location = 2 // Eastern North America (US East)
+	CloudflareR2Location_WEUR                               CloudflareR2Location = 3 // Western Europe
+	CloudflareR2Location_EEUR                               CloudflareR2Location = 4 // Eastern Europe
+	CloudflareR2Location_APAC                               CloudflareR2Location = 5 // Asia-Pacific
+	CloudflareR2Location_OC                                 CloudflareR2Location = 6 // Oceania
 )
 
 // Enum value maps for CloudflareR2Location.
 var (
 	CloudflareR2Location_name = map[int32]string{
 		0: "CLOUDFLARE_R2_LOCATION_UNSPECIFIED",
-		1: "WEUR",
-		2: "ENW",
-		3: "APE",
-		4: "USW",
+		1: "WNAM",
+		2: "ENAM",
+		3: "WEUR",
+		4: "EEUR",
+		5: "APAC",
+		6: "OC",
 	}
 	CloudflareR2Location_value = map[string]int32{
 		"CLOUDFLARE_R2_LOCATION_UNSPECIFIED": 0,
-		"WEUR":                               1,
-		"ENW":                                2,
-		"APE":                                3,
-		"USW":                                4,
+		"WNAM":                               1,
+		"ENAM":                               2,
+		"WEUR":                               3,
+		"EEUR":                               4,
+		"APAC":                               5,
+		"OC":                                 6,
 	}
 )
 
@@ -84,12 +91,14 @@ type CloudflareR2BucketSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// bucket name (DNS-compatible, 3–63 characters)
 	BucketName string `protobuf:"bytes,1,opt,name=bucket_name,json=bucketName,proto3" json:"bucket_name,omitempty"`
+	// The Cloudflare account ID in which to create the bucket.
+	AccountId string `protobuf:"bytes,2,opt,name=account_id,json=accountId,proto3" json:"account_id,omitempty"`
 	// primary region for the bucket (location hint)
-	Location CloudflareR2Location `protobuf:"varint,2,opt,name=location,proto3,enum=project.planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2Location" json:"location,omitempty"`
+	Location CloudflareR2Location `protobuf:"varint,3,opt,name=location,proto3,enum=project.planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2Location" json:"location,omitempty"`
 	// expose bucket via public URL (Cloudflare-managed r2.dev domain; default: false)
-	PublicAccess bool `protobuf:"varint,3,opt,name=public_access,json=publicAccess,proto3" json:"public_access,omitempty"`
+	PublicAccess bool `protobuf:"varint,4,opt,name=public_access,json=publicAccess,proto3" json:"public_access,omitempty"`
 	// enable object versioning for the bucket (default: false)
-	VersioningEnabled bool `protobuf:"varint,4,opt,name=versioning_enabled,json=versioningEnabled,proto3" json:"versioning_enabled,omitempty"`
+	VersioningEnabled bool `protobuf:"varint,5,opt,name=versioning_enabled,json=versioningEnabled,proto3" json:"versioning_enabled,omitempty"`
 	unknownFields     protoimpl.UnknownFields
 	sizeCache         protoimpl.SizeCache
 }
@@ -131,6 +140,13 @@ func (x *CloudflareR2BucketSpec) GetBucketName() string {
 	return ""
 }
 
+func (x *CloudflareR2BucketSpec) GetAccountId() string {
+	if x != nil {
+		return x.AccountId
+	}
+	return ""
+}
+
 func (x *CloudflareR2BucketSpec) GetLocation() CloudflareR2Location {
 	if x != nil {
 		return x.Location
@@ -156,19 +172,23 @@ var File_project_planton_provider_cloudflare_cloudflarer2bucket_v1_spec_proto pr
 
 const file_project_planton_provider_cloudflare_cloudflarer2bucket_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Dproject/planton/provider/cloudflare/cloudflarer2bucket/v1/spec.proto\x129project.planton.provider.cloudflare.cloudflarer2bucket.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\"\xb1\x02\n" +
+	"Dproject/planton/provider/cloudflare/cloudflarer2bucket/v1/spec.proto\x129project.planton.provider.cloudflare.cloudflarer2bucket.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\"\xf0\x02\n" +
 	"\x16CloudflareR2BucketSpec\x12N\n" +
 	"\vbucket_name\x18\x01 \x01(\tB-\xbaH*\xc8\x01\x01r%\x10\x03\x18?2\x1f^[a-z0-9]([-a-z0-9]*[a-z0-9])?$R\n" +
-	"bucketName\x12s\n" +
-	"\blocation\x18\x02 \x01(\x0e2O.project.planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2LocationB\x06\xbaH\x03\xc8\x01\x01R\blocation\x12#\n" +
-	"\rpublic_access\x18\x03 \x01(\bR\fpublicAccess\x12-\n" +
-	"\x12versioning_enabled\x18\x04 \x01(\bR\x11versioningEnabled*c\n" +
+	"bucketName\x12=\n" +
+	"\n" +
+	"account_id\x18\x02 \x01(\tB\x1e\xbaH\x1b\xc8\x01\x01r\x162\x11^[0-9a-fA-F]{32}$\x98\x01 R\taccountId\x12s\n" +
+	"\blocation\x18\x03 \x01(\x0e2O.project.planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2LocationB\x06\xbaH\x03\xc8\x01\x01R\blocation\x12#\n" +
+	"\rpublic_access\x18\x04 \x01(\bR\fpublicAccess\x12-\n" +
+	"\x12versioning_enabled\x18\x05 \x01(\bR\x11versioningEnabled*x\n" +
 	"\x14CloudflareR2Location\x12&\n" +
 	"\"CLOUDFLARE_R2_LOCATION_UNSPECIFIED\x10\x00\x12\b\n" +
-	"\x04WEUR\x10\x01\x12\a\n" +
-	"\x03ENW\x10\x02\x12\a\n" +
-	"\x03APE\x10\x03\x12\a\n" +
-	"\x03USW\x10\x04B\xd5\x03\n" +
+	"\x04WNAM\x10\x01\x12\b\n" +
+	"\x04ENAM\x10\x02\x12\b\n" +
+	"\x04WEUR\x10\x03\x12\b\n" +
+	"\x04EEUR\x10\x04\x12\b\n" +
+	"\x04APAC\x10\x05\x12\x06\n" +
+	"\x02OC\x10\x06B\xd5\x03\n" +
 	"=com.project.planton.provider.cloudflare.cloudflarer2bucket.v1B\tSpecProtoP\x01Z~github.com/project-planton/project-planton/apis/project/planton/provider/cloudflare/cloudflarer2bucket/v1;cloudflarer2bucketv1\xa2\x02\x05PPPCC\xaa\x029Project.Planton.Provider.Cloudflare.Cloudflarer2bucket.V1\xca\x029Project\\Planton\\Provider\\Cloudflare\\Cloudflarer2bucket\\V1\xe2\x02EProject\\Planton\\Provider\\Cloudflare\\Cloudflarer2bucket\\V1\\GPBMetadata\xea\x02>Project::Planton::Provider::Cloudflare::Cloudflarer2bucket::V1b\x06proto3"
 
 var (

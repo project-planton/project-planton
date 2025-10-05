@@ -31,7 +31,7 @@ func worker_script(
 
 	// 4. Build arguments directly from proto fields.
 	scriptArgs := &cloudfl.WorkerScriptArgs{
-		AccountId: pulumi.String(locals.CloudflareCredentialSpec.AccountId),
+		AccountId: pulumi.String(locals.CloudflareWorker.Spec.AccountId),
 		Name:      pulumi.String(locals.CloudflareWorker.Spec.ScriptName),
 		Content:   pulumi.String(locals.CloudflareWorker.Spec.ScriptSource.GetValue()),
 	}

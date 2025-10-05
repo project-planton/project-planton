@@ -4,6 +4,7 @@ go_library(
     name = "pulumi",
     srcs = [
         "destroy.go",
+        "init.go",
         "preview.go",
         "refresh.go",
         "update.go",
