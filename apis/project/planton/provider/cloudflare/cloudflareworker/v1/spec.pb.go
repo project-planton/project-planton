@@ -78,16 +78,18 @@ type CloudflareWorkerSpec struct {
 	ScriptName string `protobuf:"bytes,1,opt,name=script_name,json=scriptName,proto3" json:"script_name,omitempty"`
 	// Reference or literal path/URL to the Worker script code bundle.
 	ScriptSource *v1.StringValueOrRef `protobuf:"bytes,2,opt,name=script_source,json=scriptSource,proto3" json:"script_source,omitempty"`
+	// The Cloudflare account ID in which to create the worker.
+	AccountId string `protobuf:"bytes,3,opt,name=account_id,json=accountId,proto3" json:"account_id,omitempty"`
 	// (Optional) One or more KV namespaces to bind to this Worker (referenced by CloudflareKVNamespace.namespace_id).
-	KvBindings []*v1.ValueFromRef `protobuf:"bytes,3,rep,name=kv_bindings,json=kvBindings,proto3" json:"kv_bindings,omitempty"`
+	KvBindings []*v1.ValueFromRef `protobuf:"bytes,4,rep,name=kv_bindings,json=kvBindings,proto3" json:"kv_bindings,omitempty"`
 	// (Optional) URL pattern to attach this Worker to (must correspond to a domain under an existing CloudflareDnsZone).
-	RoutePattern string `protobuf:"bytes,4,opt,name=route_pattern,json=routePattern,proto3" json:"route_pattern,omitempty"`
+	RoutePattern string `protobuf:"bytes,5,opt,name=route_pattern,json=routePattern,proto3" json:"route_pattern,omitempty"`
 	// (Optional) Compatibility date for the Worker script (YYYY-MM-DD). If unset, defaults to today's date.
-	CompatibilityDate string `protobuf:"bytes,5,opt,name=compatibility_date,json=compatibilityDate,proto3" json:"compatibility_date,omitempty"`
+	CompatibilityDate string `protobuf:"bytes,6,opt,name=compatibility_date,json=compatibilityDate,proto3" json:"compatibility_date,omitempty"`
 	// (Optional) Billing/usage model for the Worker. Defaults to BUNDLED if unspecified.
-	UsageModel CloudflareWorkerUsageModel `protobuf:"varint,6,opt,name=usage_model,json=usageModel,proto3,enum=project.planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerUsageModel" json:"usage_model,omitempty"`
+	UsageModel CloudflareWorkerUsageModel `protobuf:"varint,7,opt,name=usage_model,json=usageModel,proto3,enum=project.planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerUsageModel" json:"usage_model,omitempty"`
 	// (Optional) Plaintext environment variables to provide to the Worker script.
-	EnvVars       map[string]string `protobuf:"bytes,7,rep,name=env_vars,json=envVars,proto3" json:"env_vars,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	EnvVars       map[string]string `protobuf:"bytes,8,rep,name=env_vars,json=envVars,proto3" json:"env_vars,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -136,6 +138,13 @@ func (x *CloudflareWorkerSpec) GetScriptSource() *v1.StringValueOrRef {
 	return nil
 }
 
+func (x *CloudflareWorkerSpec) GetAccountId() string {
+	if x != nil {
+		return x.AccountId
+	}
+	return ""
+}
+
 func (x *CloudflareWorkerSpec) GetKvBindings() []*v1.ValueFromRef {
 	if x != nil {
 		return x.KvBindings
@@ -175,18 +184,20 @@ var File_project_planton_provider_cloudflare_cloudflareworker_v1_spec_proto prot
 
 const file_project_planton_provider_cloudflare_cloudflareworker_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Bproject/planton/provider/cloudflare/cloudflareworker/v1/spec.proto\x127project.planton.provider.cloudflare.cloudflareworker.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1aBproject/planton/shared/cloudresourcekind/cloud_resource_kind.proto\"\xc2\x05\n" +
+	"Bproject/planton/provider/cloudflare/cloudflareworker/v1/spec.proto\x127project.planton.provider.cloudflare.cloudflareworker.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1aBproject/planton/shared/cloudresourcekind/cloud_resource_kind.proto\"\x81\x06\n" +
 	"\x14CloudflareWorkerSpec\x12(\n" +
 	"\vscript_name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\n" +
 	"scriptName\x12c\n" +
-	"\rscript_source\x18\x02 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB\x06\xbaH\x03\xc8\x01\x01R\fscriptSource\x12y\n" +
-	"\vkv_bindings\x18\x03 \x03(\v22.project.planton.shared.foreignkey.v1.ValueFromRefB$\x88\xd4a\x89\x0e\x92\xd4a\x1bstatus.outputs.namespace_idR\n" +
+	"\rscript_source\x18\x02 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB\x06\xbaH\x03\xc8\x01\x01R\fscriptSource\x12=\n" +
+	"\n" +
+	"account_id\x18\x03 \x01(\tB\x1e\xbaH\x1b\xc8\x01\x01r\x162\x11^[0-9a-fA-F]{32}$\x98\x01 R\taccountId\x12y\n" +
+	"\vkv_bindings\x18\x04 \x03(\v22.project.planton.shared.foreignkey.v1.ValueFromRefB$\x88\xd4a\x89\x0e\x92\xd4a\x1bstatus.outputs.namespace_idR\n" +
 	"kvBindings\x12#\n" +
-	"\rroute_pattern\x18\x04 \x01(\tR\froutePattern\x12R\n" +
-	"\x12compatibility_date\x18\x05 \x01(\tB#\xbaH r\x1e2\x1c^[0-9]{4}-[0-9]{2}-[0-9]{2}$R\x11compatibilityDate\x12t\n" +
-	"\vusage_model\x18\x06 \x01(\x0e2S.project.planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerUsageModelR\n" +
+	"\rroute_pattern\x18\x05 \x01(\tR\froutePattern\x12R\n" +
+	"\x12compatibility_date\x18\x06 \x01(\tB#\xbaH r\x1e2\x1c^[0-9]{4}-[0-9]{2}-[0-9]{2}$R\x11compatibilityDate\x12t\n" +
+	"\vusage_model\x18\a \x01(\x0e2S.project.planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerUsageModelR\n" +
 	"usageModel\x12u\n" +
-	"\benv_vars\x18\a \x03(\v2Z.project.planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerSpec.EnvVarsEntryR\aenvVars\x1a:\n" +
+	"\benv_vars\x18\b \x03(\v2Z.project.planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerSpec.EnvVarsEntryR\aenvVars\x1a:\n" +
 	"\fEnvVarsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01*6\n" +

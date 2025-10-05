@@ -42,4 +42,3 @@ func parseIntOrString(value string) pulumi.Input {
 	// Fallback to string (may cause validation error, but preserves original value)
 	return pulumi.String(value)
 }
-

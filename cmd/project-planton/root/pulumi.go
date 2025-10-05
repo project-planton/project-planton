@@ -40,6 +40,7 @@ func init() {
 	Pulumi.PersistentFlags().String(string(flag.SnowflakeCredential), "", "path of the snowflake-credential file")
 
 	Pulumi.AddCommand(
+		pulumi.Init,
 		pulumi.Refresh,
 		pulumi.Preview,
 		pulumi.Update,

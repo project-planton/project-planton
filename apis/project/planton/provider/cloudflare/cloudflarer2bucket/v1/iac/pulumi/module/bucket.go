@@ -16,16 +16,21 @@ func bucket(
 ) (*cloudflare.R2Bucket, error) {
 
 	// 1. Translate the enum into Cloudflare's location string.
+	// Cloudflare expects UPPERCASE location values.
 	var bucketLocation string
 	switch locals.CloudflareR2Bucket.Spec.Location {
+	case cloudflarer2bucketv1.CloudflareR2Location_WNAM:
+		bucketLocation = "WNAM"
+	case cloudflarer2bucketv1.CloudflareR2Location_ENAM:
+		bucketLocation = "ENAM"
 	case cloudflarer2bucketv1.CloudflareR2Location_WEUR:
-		bucketLocation = "weur"
-	case cloudflarer2bucketv1.CloudflareR2Location_ENW:
-		bucketLocation = "enam"
-	case cloudflarer2bucketv1.CloudflareR2Location_APE:
-		bucketLocation = "apac"
-	case cloudflarer2bucketv1.CloudflareR2Location_USW:
-		bucketLocation = "wnam"
+		bucketLocation = "WEUR"
+	case cloudflarer2bucketv1.CloudflareR2Location_EEUR:
+		bucketLocation = "EEUR"
+	case cloudflarer2bucketv1.CloudflareR2Location_APAC:
+		bucketLocation = "APAC"
+	case cloudflarer2bucketv1.CloudflareR2Location_OC:
+		bucketLocation = "OC"
 	default:
 		bucketLocation = "auto"
 	}
@@ -35,7 +40,7 @@ func bucket(
 		ctx,
 		"bucket",
 		&cloudflare.R2BucketArgs{
-			AccountId: pulumi.String(locals.CloudflareCredentialSpec.AccountId),
+			AccountId: pulumi.String(locals.CloudflareR2Bucket.Spec.AccountId),
 			Name:      pulumi.String(locals.CloudflareR2Bucket.Spec.BucketName),
 			Location:  pulumi.String(bucketLocation),
 		},

@@ -23,3 +23,5 @@ Pulumi.*.yaml
 !Pulumi.yaml
 test-*.log
 .cursor/workspace/
+cursor/
+.git-ignored/

@@ -9,12 +9,12 @@ import (
 	"github.com/project-planton/project-planton/apis/project/planton/shared"
 )
 
-func TestMongodbAtlasCredential(t *testing.T) {
+func TestMongodbAtlasCredentialSpec(t *testing.T) {
 	gomega.RegisterFailHandler(ginkgo.Fail)
-	ginkgo.RunSpecs(t, "MongodbAtlasCredential Suite")
+	ginkgo.RunSpecs(t, "MongodbAtlasCredentialSpec Validation Tests")
 }
 
-var _ = ginkgo.Describe("MongodbAtlasCredentialSpec Custom Validation Tests", func() {
+var _ = ginkgo.Describe("MongodbAtlasCredentialSpec Validation Tests", func() {
 	var input *MongodbAtlasCredential
 
 	ginkgo.BeforeEach(func() {
@@ -32,10 +32,27 @@ var _ = ginkgo.Describe("MongodbAtlasCredentialSpec Custom Validation Tests", fu
 	})
 
 	ginkgo.Describe("When valid input is passed", func() {
-		ginkgo.Context("with a valid MongodbAtlasCredentialSpec", func() {
+		ginkgo.Context("with valid credentials", func() {
 			ginkgo.It("should not return a validation error", func() {
 				err := protovalidate.Validate(input)
 				gomega.Expect(err).To(gomega.BeNil())
+			})
+		})
+	})
+
+	ginkgo.Describe("When invalid input is passed", func() {
+		ginkgo.Context("missing required fields", func() {
+
+			ginkgo.It("should return error if public_key is missing", func() {
+				input.Spec.PublicKey = ""
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).NotTo(gomega.BeNil())
+			})
+
+			ginkgo.It("should return error if private_key is missing", func() {
+				input.Spec.PrivateKey = ""
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).NotTo(gomega.BeNil())
 			})
 		})
 	})

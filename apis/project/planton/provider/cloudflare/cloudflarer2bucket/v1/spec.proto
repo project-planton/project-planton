@@ -6,12 +6,15 @@ import "buf/validate/validate.proto";
 import "project/planton/shared/options/options.proto";
 
 // Supported Cloudflare R2 bucket regions (location hints).
+// These values must match Cloudflare's expected location strings exactly.
 enum CloudflareR2Location {
   CLOUDFLARE_R2_LOCATION_UNSPECIFIED = 0;
-  WEUR = 1;  // Western Europe region
-  ENW  = 2;  // Eastern North America region
-  APE  = 3;  // Asia-Pacific East region
-  USW  = 4;  // US West (Western North America) region
+  WNAM = 1;  // Western North America (US West)
+  ENAM = 2;  // Eastern North America (US East)
+  WEUR = 3;  // Western Europe
+  EEUR = 4;  // Eastern Europe
+  APAC = 5;  // Asia-Pacific
+  OC   = 6;  // Oceania
 }
 
 // CloudflareR2BucketSpec defines the user configuration for a Cloudflare R2 bucket.
@@ -24,14 +27,21 @@ message CloudflareR2BucketSpec {
     (buf.validate.field).string.max_len = 63
   ];
 
+  // The Cloudflare account ID in which to create the bucket.
+  string account_id = 2 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.len = 32,
+    (buf.validate.field).string.pattern = "^[0-9a-fA-F]{32}$"
+  ];
+
   // primary region for the bucket (location hint)
-  CloudflareR2Location location = 2 [
+  CloudflareR2Location location = 3 [
     (buf.validate.field).required = true
   ];
 
   // expose bucket via public URL (Cloudflare-managed r2.dev domain; default: false)
-  bool public_access = 3;
+  bool public_access = 4;
 
   // enable object versioning for the bucket (default: false)
-  bool versioning_enabled = 4;
+  bool versioning_enabled = 5;
 }

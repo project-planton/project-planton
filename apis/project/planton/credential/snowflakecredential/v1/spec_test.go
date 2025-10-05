@@ -9,12 +9,12 @@ import (
 	"github.com/project-planton/project-planton/apis/project/planton/shared"
 )
 
-func TestSnowflakeCredential(t *testing.T) {
+func TestSnowflakeCredentialSpec(t *testing.T) {
 	gomega.RegisterFailHandler(ginkgo.Fail)
-	ginkgo.RunSpecs(t, "SnowflakeCredential Suite")
+	ginkgo.RunSpecs(t, "SnowflakeCredentialSpec Validation Tests")
 }
 
-var _ = ginkgo.Describe("SnowflakeCredentialSpec Custom Validation Tests", func() {
+var _ = ginkgo.Describe("SnowflakeCredentialSpec Validation Tests", func() {
 	var input *SnowflakeCredential
 
 	ginkgo.BeforeEach(func() {
@@ -34,7 +34,7 @@ var _ = ginkgo.Describe("SnowflakeCredentialSpec Custom Validation Tests", func(
 	})
 
 	ginkgo.Describe("When valid input is passed", func() {
-		ginkgo.Context("with correct api_version and kind", func() {
+		ginkgo.Context("with valid credentials", func() {
 			ginkgo.It("should not return a validation error", func() {
 				err := protovalidate.Validate(input)
 				gomega.Expect(err).To(gomega.BeNil())
@@ -43,19 +43,24 @@ var _ = ginkgo.Describe("SnowflakeCredentialSpec Custom Validation Tests", func(
 	})
 
 	ginkgo.Describe("When invalid input is passed", func() {
-		ginkgo.Context("with incorrect api_version", func() {
-			ginkgo.It("should return a validation error", func() {
-				input.ApiVersion = "invalid-value"
-				err := protovalidate.Validate(input)
-				gomega.Expect(err).ToNot(gomega.BeNil())
-			})
-		})
+		ginkgo.Context("missing required fields", func() {
 
-		ginkgo.Context("with incorrect kind", func() {
-			ginkgo.It("should return a validation error", func() {
-				input.Kind = "NotSnowflakeCredential"
+			ginkgo.It("should return error if account is missing", func() {
+				input.Spec.Account = ""
 				err := protovalidate.Validate(input)
-				gomega.Expect(err).ToNot(gomega.BeNil())
+				gomega.Expect(err).NotTo(gomega.BeNil())
+			})
+
+			ginkgo.It("should return error if username is missing", func() {
+				input.Spec.Username = ""
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).NotTo(gomega.BeNil())
+			})
+
+			ginkgo.It("should return error if password is missing", func() {
+				input.Spec.Password = ""
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).NotTo(gomega.BeNil())
 			})
 		})
 	})

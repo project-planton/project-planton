@@ -1,0 +1,64 @@
+---
+description: Proto Validation coding guidelines for ProjectPlanton
+globs:
+  - apis/**/*.proto
+alwaysApply: false
+---
+
+# Rule: Protobuf Validation Rules (action)
+
+## CEL Expressions
+- **ALWAYS** use `this.` prefix when referencing fields in CEL expressions
+  ```protobuf
+  // ✅ Correct
+  expression: "this.auth_scheme != 0"
+  
+  // ❌ Wrong - will fail to compile
+  expression: "auth_scheme != 0"
+  ```
+
+## Conditional/Optional Fields
+- Use `(buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE` for fields that are conditionally required
+  ```protobuf
+  // Field only required for certain auth schemes
+  string api_token = 2 [
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
+    (buf.validate.field).string.min_len = 20
+  ];
+  ```
+- Without `ignore`, validation runs even on empty values and will fail
+
+## Valid Ignore Enum Values
+- Use `IGNORE_IF_ZERO_VALUE` (not `IGNORE_IF_DEFAULT_VALUE` or `IGNORE_IF_UNPOPULATED`)
+
+## Cross-Field Validation Pattern
+```protobuf
+option (buf.validate.message).cel = {
+  id: "unique.validation.id",
+  message: "Human-readable error message",
+  expression: "this.field1 != value || (this.field2 condition && this.field3 condition)"
+};
+```
+
+## Organizing Related Fields
+- Group related optional fields into separate messages
+  ```protobuf
+  // ✅ Good - R2 config is self-contained
+  message CloudflareCredentialsR2Spec {
+    string access_key_id = 1 [(buf.validate.field).required = true];
+    string secret_access_key = 2 [(buf.validate.field).required = true];
+    string endpoint = 3;  // Optional within the group
+  }
+  
+  message MainSpec {
+    CloudflareCredentialsR2Spec r2 = 6;  // Optional - entire group can be omitted
+  }
+  ```
+
+## Testing
+- **ALWAYS** write `spec_test.go` with test cases for:
+  - Valid scenarios for each configuration combination
+  - Invalid scenarios to ensure validation catches errors
+  - Cross-field validation rules
+- Run `make build` in apis/ to regenerate proto files after changes
+- Test format: Use ginkgo/gomega similar to existing test files

@@ -28,11 +28,156 @@ var _ = ginkgo.Describe("CloudflareR2BucketSpec Custom Validation Tests", func()
 					},
 					Spec: &CloudflareR2BucketSpec{
 						BucketName: "test-bucket",
+						AccountId:  "00000000000000000000000000000000",
 						Location:   CloudflareR2Location_WEUR,
 					},
 				}
 				err := protovalidate.Validate(input)
 				gomega.Expect(err).To(gomega.BeNil())
+			})
+
+			ginkgo.It("should not return a validation error with public access enabled", func() {
+				input := &CloudflareR2Bucket{
+					ApiVersion: "cloudflare.project-planton.org/v1",
+					Kind:       "CloudflareR2Bucket",
+					Metadata: &shared.ApiResourceMetadata{
+						Name: "test-r2-bucket-public",
+					},
+					Spec: &CloudflareR2BucketSpec{
+						BucketName:   "test-public-bucket",
+						AccountId:    "00000000000000000000000000000000",
+						Location:     CloudflareR2Location_WEUR,
+						PublicAccess: true,
+					},
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+
+			ginkgo.It("should not return a validation error with versioning enabled", func() {
+				input := &CloudflareR2Bucket{
+					ApiVersion: "cloudflare.project-planton.org/v1",
+					Kind:       "CloudflareR2Bucket",
+					Metadata: &shared.ApiResourceMetadata{
+						Name: "test-r2-bucket-versioned",
+					},
+					Spec: &CloudflareR2BucketSpec{
+						BucketName:        "test-versioned-bucket",
+						AccountId:         "00000000000000000000000000000000",
+						Location:          CloudflareR2Location_APAC,
+						VersioningEnabled: true,
+					},
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+		})
+	})
+
+	ginkgo.Describe("When invalid input is passed", func() {
+		ginkgo.Context("account_id validation", func() {
+
+			ginkgo.It("should return error if account_id is missing", func() {
+				input := &CloudflareR2Bucket{
+					ApiVersion: "cloudflare.project-planton.org/v1",
+					Kind:       "CloudflareR2Bucket",
+					Metadata: &shared.ApiResourceMetadata{
+						Name: "test-no-account",
+					},
+					Spec: &CloudflareR2BucketSpec{
+						BucketName: "test-bucket",
+						Location:   CloudflareR2Location_WEUR,
+					},
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).NotTo(gomega.BeNil())
+			})
+
+			ginkgo.It("should return error if account_id is not 32 characters", func() {
+				input := &CloudflareR2Bucket{
+					ApiVersion: "cloudflare.project-planton.org/v1",
+					Kind:       "CloudflareR2Bucket",
+					Metadata: &shared.ApiResourceMetadata{
+						Name: "test-short-account",
+					},
+					Spec: &CloudflareR2BucketSpec{
+						BucketName: "test-bucket",
+						AccountId:  "123",
+						Location:   CloudflareR2Location_WEUR,
+					},
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).NotTo(gomega.BeNil())
+			})
+
+			ginkgo.It("should return error if account_id contains non-hex characters", func() {
+				input := &CloudflareR2Bucket{
+					ApiVersion: "cloudflare.project-planton.org/v1",
+					Kind:       "CloudflareR2Bucket",
+					Metadata: &shared.ApiResourceMetadata{
+						Name: "test-invalid-hex",
+					},
+					Spec: &CloudflareR2BucketSpec{
+						BucketName: "test-bucket",
+						AccountId:  "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ",
+						Location:   CloudflareR2Location_WEUR,
+					},
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).NotTo(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("bucket_name validation", func() {
+
+			ginkgo.It("should return error if bucket_name is missing", func() {
+				input := &CloudflareR2Bucket{
+					ApiVersion: "cloudflare.project-planton.org/v1",
+					Kind:       "CloudflareR2Bucket",
+					Metadata: &shared.ApiResourceMetadata{
+						Name: "test-no-bucket-name",
+					},
+					Spec: &CloudflareR2BucketSpec{
+						AccountId: "00000000000000000000000000000000",
+						Location:  CloudflareR2Location_WEUR,
+					},
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).NotTo(gomega.BeNil())
+			})
+
+			ginkgo.It("should return error if bucket_name is too short", func() {
+				input := &CloudflareR2Bucket{
+					ApiVersion: "cloudflare.project-planton.org/v1",
+					Kind:       "CloudflareR2Bucket",
+					Metadata: &shared.ApiResourceMetadata{
+						Name: "test-short-bucket",
+					},
+					Spec: &CloudflareR2BucketSpec{
+						BucketName: "ab",
+						AccountId:  "00000000000000000000000000000000",
+						Location:   CloudflareR2Location_WEUR,
+					},
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).NotTo(gomega.BeNil())
+			})
+
+			ginkgo.It("should return error if bucket_name contains invalid characters", func() {
+				input := &CloudflareR2Bucket{
+					ApiVersion: "cloudflare.project-planton.org/v1",
+					Kind:       "CloudflareR2Bucket",
+					Metadata: &shared.ApiResourceMetadata{
+						Name: "test-invalid-bucket",
+					},
+					Spec: &CloudflareR2BucketSpec{
+						BucketName: "Test_Bucket",
+						AccountId:  "00000000000000000000000000000000",
+						Location:   CloudflareR2Location_WEUR,
+					},
+				}
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).NotTo(gomega.BeNil())
 			})
 		})
 	})
