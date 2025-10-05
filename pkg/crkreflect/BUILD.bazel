@@ -18,6 +18,7 @@ go_library(
         "kind_name_by_kind.go",
         "kind_to_kind_meta_map.go",
         "kinds_list.go",
+        "new_instance.go",
         "provider_meta.go",
         "providers_list.go",
     ],

@@ -1,17 +1,18 @@
 package manifest
 
 import (
+	"io"
+	"net/http"
+	"net/url"
+	"os"
+	"path/filepath"
+
 	"github.com/pkg/errors"
 	"github.com/project-planton/project-planton/internal/cli/workspace"
 	"github.com/project-planton/project-planton/pkg/crkreflect"
 	"github.com/project-planton/project-planton/pkg/ulidgen"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
-	"io"
-	"net/http"
-	"net/url"
-	"os"
-	"path/filepath"
 	"sigs.k8s.io/yaml"
 )
 
