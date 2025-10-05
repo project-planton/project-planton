@@ -6,6 +6,7 @@ go_library(
         "deployment.go",
         "image_pull_secret.go",
         "ingress.go",
+        "intorstring.go",
         "locals.go",
         "main.go",
         "outputs.go",
