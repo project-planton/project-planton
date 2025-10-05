@@ -29,7 +29,6 @@ var _ = ginkgo.Describe("CloudflareCredentialSpec Validation Tests", func() {
 					Spec: &CloudflareCredentialSpec{
 						AuthScheme: CloudflareAuthScheme_api_token,
 						ApiToken:   "12345678901234567890",
-						AccountId:  "00000000000000000000000000000000",
 					},
 				}
 				err := protovalidate.Validate(input)
@@ -46,7 +45,6 @@ var _ = ginkgo.Describe("CloudflareCredentialSpec Validation Tests", func() {
 					Spec: &CloudflareCredentialSpec{
 						AuthScheme: CloudflareAuthScheme_api_token,
 						ApiToken:   "12345678901234567890",
-						AccountId:  "00000000000000000000000000000000",
 						R2: &CloudflareCredentialsR2Spec{
 							AccessKeyId:     "12345678901234567890",
 							SecretAccessKey: "12345678901234567890abcdef",
@@ -67,7 +65,6 @@ var _ = ginkgo.Describe("CloudflareCredentialSpec Validation Tests", func() {
 					Spec: &CloudflareCredentialSpec{
 						AuthScheme: CloudflareAuthScheme_api_token,
 						ApiToken:   "12345678901234567890",
-						AccountId:  "00000000000000000000000000000000",
 						R2: &CloudflareCredentialsR2Spec{
 							AccessKeyId:     "12345678901234567890",
 							SecretAccessKey: "12345678901234567890abcdef",
@@ -93,7 +90,6 @@ var _ = ginkgo.Describe("CloudflareCredentialSpec Validation Tests", func() {
 						AuthScheme: CloudflareAuthScheme_legacy_api_key,
 						ApiKey:     "12345678901234567890",
 						Email:      "user@example.com",
-						AccountId:  "00000000000000000000000000000000",
 					},
 				}
 				err := protovalidate.Validate(input)
@@ -111,7 +107,6 @@ var _ = ginkgo.Describe("CloudflareCredentialSpec Validation Tests", func() {
 						AuthScheme: CloudflareAuthScheme_legacy_api_key,
 						ApiKey:     "12345678901234567890",
 						Email:      "user@example.com",
-						AccountId:  "00000000000000000000000000000000",
 						R2: &CloudflareCredentialsR2Spec{
 							AccessKeyId:     "12345678901234567890",
 							SecretAccessKey: "12345678901234567890abcdef",
@@ -136,60 +131,6 @@ var _ = ginkgo.Describe("CloudflareCredentialSpec Validation Tests", func() {
 					},
 					Spec: &CloudflareCredentialSpec{
 						AuthScheme: CloudflareAuthScheme_cloudflare_auth_scheme_unspecified,
-						AccountId:  "00000000000000000000000000000000",
-					},
-				}
-				err := protovalidate.Validate(input)
-				gomega.Expect(err).NotTo(gomega.BeNil())
-			})
-		})
-
-		ginkgo.Context("account_id validation", func() {
-
-			ginkgo.It("should return error if account_id is missing", func() {
-				input := &CloudflareCredential{
-					ApiVersion: "credential.project-planton.org/v1",
-					Kind:       "CloudflareCredential",
-					Metadata: &shared.ApiResourceMetadata{
-						Name: "test-no-account",
-					},
-					Spec: &CloudflareCredentialSpec{
-						AuthScheme: CloudflareAuthScheme_api_token,
-						ApiToken:   "12345678901234567890",
-					},
-				}
-				err := protovalidate.Validate(input)
-				gomega.Expect(err).NotTo(gomega.BeNil())
-			})
-
-			ginkgo.It("should return error if account_id is not 32 characters", func() {
-				input := &CloudflareCredential{
-					ApiVersion: "credential.project-planton.org/v1",
-					Kind:       "CloudflareCredential",
-					Metadata: &shared.ApiResourceMetadata{
-						Name: "test-short-account",
-					},
-					Spec: &CloudflareCredentialSpec{
-						AuthScheme: CloudflareAuthScheme_api_token,
-						ApiToken:   "12345678901234567890",
-						AccountId:  "123",
-					},
-				}
-				err := protovalidate.Validate(input)
-				gomega.Expect(err).NotTo(gomega.BeNil())
-			})
-
-			ginkgo.It("should return error if account_id contains non-hex characters", func() {
-				input := &CloudflareCredential{
-					ApiVersion: "credential.project-planton.org/v1",
-					Kind:       "CloudflareCredential",
-					Metadata: &shared.ApiResourceMetadata{
-						Name: "test-invalid-hex",
-					},
-					Spec: &CloudflareCredentialSpec{
-						AuthScheme: CloudflareAuthScheme_api_token,
-						ApiToken:   "12345678901234567890",
-						AccountId:  "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ",
 					},
 				}
 				err := protovalidate.Validate(input)
@@ -208,7 +149,6 @@ var _ = ginkgo.Describe("CloudflareCredentialSpec Validation Tests", func() {
 					},
 					Spec: &CloudflareCredentialSpec{
 						AuthScheme: CloudflareAuthScheme_api_token,
-						AccountId:  "00000000000000000000000000000000",
 					},
 				}
 				err := protovalidate.Validate(input)
@@ -225,7 +165,6 @@ var _ = ginkgo.Describe("CloudflareCredentialSpec Validation Tests", func() {
 					Spec: &CloudflareCredentialSpec{
 						AuthScheme: CloudflareAuthScheme_api_token,
 						ApiToken:   "short",
-						AccountId:  "00000000000000000000000000000000",
 					},
 				}
 				err := protovalidate.Validate(input)
@@ -243,7 +182,6 @@ var _ = ginkgo.Describe("CloudflareCredentialSpec Validation Tests", func() {
 						AuthScheme: CloudflareAuthScheme_api_token,
 						ApiToken:   "12345678901234567890",
 						ApiKey:     "12345678901234567890",
-						AccountId:  "00000000000000000000000000000000",
 					},
 				}
 				err := protovalidate.Validate(input)
@@ -261,7 +199,6 @@ var _ = ginkgo.Describe("CloudflareCredentialSpec Validation Tests", func() {
 						AuthScheme: CloudflareAuthScheme_api_token,
 						ApiToken:   "12345678901234567890",
 						Email:      "user@example.com",
-						AccountId:  "00000000000000000000000000000000",
 					},
 				}
 				err := protovalidate.Validate(input)
@@ -281,7 +218,6 @@ var _ = ginkgo.Describe("CloudflareCredentialSpec Validation Tests", func() {
 					Spec: &CloudflareCredentialSpec{
 						AuthScheme: CloudflareAuthScheme_legacy_api_key,
 						Email:      "user@example.com",
-						AccountId:  "00000000000000000000000000000000",
 					},
 				}
 				err := protovalidate.Validate(input)
@@ -298,7 +234,6 @@ var _ = ginkgo.Describe("CloudflareCredentialSpec Validation Tests", func() {
 					Spec: &CloudflareCredentialSpec{
 						AuthScheme: CloudflareAuthScheme_legacy_api_key,
 						ApiKey:     "12345678901234567890",
-						AccountId:  "00000000000000000000000000000000",
 					},
 				}
 				err := protovalidate.Validate(input)
@@ -316,7 +251,6 @@ var _ = ginkgo.Describe("CloudflareCredentialSpec Validation Tests", func() {
 						AuthScheme: CloudflareAuthScheme_legacy_api_key,
 						ApiKey:     "short",
 						Email:      "user@example.com",
-						AccountId:  "00000000000000000000000000000000",
 					},
 				}
 				err := protovalidate.Validate(input)
@@ -334,7 +268,6 @@ var _ = ginkgo.Describe("CloudflareCredentialSpec Validation Tests", func() {
 						AuthScheme: CloudflareAuthScheme_legacy_api_key,
 						ApiKey:     "12345678901234567890",
 						Email:      "not-an-email",
-						AccountId:  "00000000000000000000000000000000",
 					},
 				}
 				err := protovalidate.Validate(input)
@@ -353,7 +286,6 @@ var _ = ginkgo.Describe("CloudflareCredentialSpec Validation Tests", func() {
 						ApiKey:     "12345678901234567890",
 						ApiToken:   "12345678901234567890",
 						Email:      "user@example.com",
-						AccountId:  "00000000000000000000000000000000",
 					},
 				}
 				err := protovalidate.Validate(input)
@@ -373,7 +305,6 @@ var _ = ginkgo.Describe("CloudflareCredentialSpec Validation Tests", func() {
 					Spec: &CloudflareCredentialSpec{
 						AuthScheme: CloudflareAuthScheme_api_token,
 						ApiToken:   "12345678901234567890",
-						AccountId:  "00000000000000000000000000000000",
 						R2: &CloudflareCredentialsR2Spec{
 							AccessKeyId:     "short",
 							SecretAccessKey: "12345678901234567890abcdef",
@@ -394,7 +325,6 @@ var _ = ginkgo.Describe("CloudflareCredentialSpec Validation Tests", func() {
 					Spec: &CloudflareCredentialSpec{
 						AuthScheme: CloudflareAuthScheme_api_token,
 						ApiToken:   "12345678901234567890",
-						AccountId:  "00000000000000000000000000000000",
 						R2: &CloudflareCredentialsR2Spec{
 							AccessKeyId:     "12345678901234567890",
 							SecretAccessKey: "short",
@@ -415,7 +345,6 @@ var _ = ginkgo.Describe("CloudflareCredentialSpec Validation Tests", func() {
 					Spec: &CloudflareCredentialSpec{
 						AuthScheme: CloudflareAuthScheme_api_token,
 						ApiToken:   "12345678901234567890",
-						AccountId:  "00000000000000000000000000000000",
 						R2: &CloudflareCredentialsR2Spec{
 							SecretAccessKey: "12345678901234567890abcdef",
 						},
@@ -435,7 +364,6 @@ var _ = ginkgo.Describe("CloudflareCredentialSpec Validation Tests", func() {
 					Spec: &CloudflareCredentialSpec{
 						AuthScheme: CloudflareAuthScheme_api_token,
 						ApiToken:   "12345678901234567890",
-						AccountId:  "00000000000000000000000000000000",
 						R2: &CloudflareCredentialsR2Spec{
 							AccessKeyId: "12345678901234567890",
 						},
@@ -455,7 +383,6 @@ var _ = ginkgo.Describe("CloudflareCredentialSpec Validation Tests", func() {
 					Spec: &CloudflareCredentialSpec{
 						AuthScheme: CloudflareAuthScheme_api_token,
 						ApiToken:   "12345678901234567890",
-						AccountId:  "00000000000000000000000000000000",
 						R2: &CloudflareCredentialsR2Spec{
 							AccessKeyId:     "12345678901234567890",
 							SecretAccessKey: "12345678901234567890abcdef",
@@ -469,4 +396,3 @@ var _ = ginkgo.Describe("CloudflareCredentialSpec Validation Tests", func() {
 		})
 	})
 })
-

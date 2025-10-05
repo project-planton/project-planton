@@ -9,12 +9,12 @@ import (
 	"github.com/project-planton/project-planton/apis/project/planton/shared"
 )
 
-func TestKubernetesClusterCredential(t *testing.T) {
+func TestKubernetesClusterCredentialSpec(t *testing.T) {
 	gomega.RegisterFailHandler(ginkgo.Fail)
-	ginkgo.RunSpecs(t, "KubernetesClusterCredential Suite")
+	ginkgo.RunSpecs(t, "KubernetesClusterCredentialSpec Validation Tests")
 }
 
-var _ = ginkgo.Describe("KubernetesClusterCredentialSpec Custom Validation Tests", func() {
+var _ = ginkgo.Describe("KubernetesClusterCredentialSpec Validation Tests", func() {
 	var input *KubernetesClusterCredential
 
 	ginkgo.BeforeEach(func() {

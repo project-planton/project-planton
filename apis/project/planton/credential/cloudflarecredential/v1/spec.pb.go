@@ -84,12 +84,9 @@ type CloudflareCredentialSpec struct {
 	ApiKey string `protobuf:"bytes,3,opt,name=api_key,json=apiKey,proto3" json:"api_key,omitempty"`
 	// Account email (paired with api_key for legacy scheme).
 	Email string `protobuf:"bytes,4,opt,name=email,proto3" json:"email,omitempty"`
-	// **Required** Cloudflare Account ID (32‑char hex) that all provider
-	// operations will default to.
-	AccountId string `protobuf:"bytes,5,opt,name=account_id,json=accountId,proto3" json:"account_id,omitempty"`
 	// R2 Storage credentials (S3-compatible object storage).
 	// Optional: only required if you need to access R2 buckets.
-	R2            *CloudflareCredentialsR2Spec `protobuf:"bytes,6,opt,name=r2,proto3" json:"r2,omitempty"`
+	R2            *CloudflareCredentialsR2Spec `protobuf:"bytes,5,opt,name=r2,proto3" json:"r2,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -148,13 +145,6 @@ func (x *CloudflareCredentialSpec) GetApiKey() string {
 func (x *CloudflareCredentialSpec) GetEmail() string {
 	if x != nil {
 		return x.Email
-	}
-	return ""
-}
-
-func (x *CloudflareCredentialSpec) GetAccountId() string {
-	if x != nil {
-		return x.AccountId
 	}
 	return ""
 }
@@ -237,7 +227,7 @@ var File_project_planton_credential_cloudflarecredential_v1_spec_proto protorefl
 
 const file_project_planton_credential_cloudflarecredential_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"=project/planton/credential/cloudflarecredential/v1/spec.proto\x122project.planton.credential.cloudflarecredential.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\"\xde\b\n" +
+	"=project/planton/credential/cloudflarecredential/v1/spec.proto\x122project.planton.credential.cloudflarecredential.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\"\xb3\a\n" +
 	"\x18CloudflareCredentialSpec\x12v\n" +
 	"\vauth_scheme\x18\x01 \x01(\x0e2H.project.planton.credential.cloudflarecredential.v1.CloudflareAuthSchemeB\v\xbaH\b\xc8\x01\x01\x82\x01\x02\x10\x01R\n" +
 	"authScheme\x12'\n" +
@@ -246,11 +236,8 @@ const file_project_planton_credential_cloudflarecredential_v1_spec_proto_rawDesc
 	"\aapi_key\x18\x03 \x01(\tB\n" +
 	"\xbaH\a\xd8\x01\x01r\x02\x10\x14R\x06apiKey\x12 \n" +
 	"\x05email\x18\x04 \x01(\tB\n" +
-	"\xbaH\a\xd8\x01\x01r\x02`\x01R\x05email\x12\xa8\x01\n" +
-	"\n" +
-	"account_id\x18\x05 \x01(\tB\x88\x01\xbaH\x84\x01\xba\x01~\n" +
-	"!spec.cloudflare.account_id_format\x126account_id must be a 32‑character hexadecimal string\x1a!this.matches('^[0-9a-fA-F]{32}$')\xc8\x01\x01R\taccountId\x12_\n" +
-	"\x02r2\x18\x06 \x01(\v2O.project.planton.credential.cloudflarecredential.v1.CloudflareCredentialsR2SpecR\x02r2:\xcd\x04\xbaH\xc9\x04\x1ab\n" +
+	"\xbaH\a\xd8\x01\x01r\x02`\x01R\x05email\x12_\n" +
+	"\x02r2\x18\x05 \x01(\v2O.project.planton.credential.cloudflarecredential.v1.CloudflareCredentialsR2SpecR\x02r2:\xcd\x04\xbaH\xc9\x04\x1ab\n" +
 	"$spec.cloudflare.auth_scheme_selected\x12#auth_scheme must not be UNSPECIFIED\x1a\x15this.auth_scheme != 0\x1a\xeb\x01\n" +
 	"%spec.cloudflare.api_token_requirement\x12Yapi_token must be provided and api_key/email must be empty when auth_scheme is API_TOKEN.\x1agthis.auth_scheme != 1 || (size(this.api_token) > 0 && size(this.api_key) == 0 && size(this.email) == 0)\x1a\xf4\x01\n" +
 	"&spec.cloudflare.legacy_key_requirement\x12bapi_key and email must be provided and api_token must be empty when auth_scheme is LEGACY_API_KEY.\x1afthis.auth_scheme != 2 || (size(this.api_token) == 0 && size(this.api_key) > 0 && size(this.email) > 0)\"\xae\x01\n" +

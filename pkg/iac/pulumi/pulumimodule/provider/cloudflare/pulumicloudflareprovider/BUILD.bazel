@@ -7,6 +7,8 @@ go_library(
     visibility = ["//visibility:public"],
     deps = [
         "//apis/project/planton/credential/cloudflarecredential/v1:cloudflarecredential",
+        "//pkg/iac/pulumi/pulumimodule/pulumi/pulumioutput",
+        "@com_github_pkg_errors//:errors",
         "@com_github_pulumi_pulumi_cloudflare_sdk_v5//go/cloudflare",
         "@com_github_pulumi_pulumi_sdk_v3//go/pulumi",
     ],

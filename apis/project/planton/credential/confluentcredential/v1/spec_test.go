@@ -9,12 +9,12 @@ import (
 	"github.com/project-planton/project-planton/apis/project/planton/shared"
 )
 
-func TestConfluentCredential(t *testing.T) {
+func TestConfluentCredentialSpec(t *testing.T) {
 	gomega.RegisterFailHandler(ginkgo.Fail)
-	ginkgo.RunSpecs(t, "ConfluentCredential Suite")
+	ginkgo.RunSpecs(t, "ConfluentCredentialSpec Validation Tests")
 }
 
-var _ = ginkgo.Describe("KubernetesClusterCredentialSpec Custom Validation Tests", func() {
+var _ = ginkgo.Describe("ConfluentCredentialSpec Validation Tests", func() {
 	var input *ConfluentCredential
 
 	ginkgo.BeforeEach(func() {
@@ -32,7 +32,7 @@ var _ = ginkgo.Describe("KubernetesClusterCredentialSpec Custom Validation Tests
 	})
 
 	ginkgo.Describe("When valid input is passed", func() {
-		ginkgo.Context("confluent_credential", func() {
+		ginkgo.Context("with valid credentials", func() {
 			ginkgo.It("should not return a validation error", func() {
 				err := protovalidate.Validate(input)
 				gomega.Expect(err).To(gomega.BeNil())
@@ -40,18 +40,17 @@ var _ = ginkgo.Describe("KubernetesClusterCredentialSpec Custom Validation Tests
 		})
 	})
 
-	ginkgo.Describe("When invalid domain-specific constraints are passed", func() {
-		ginkgo.Context("api_version mismatch", func() {
-			ginkgo.It("should return a validation error if api_version is incorrect", func() {
-				input.ApiVersion = "invalid.version"
+	ginkgo.Describe("When invalid input is passed", func() {
+		ginkgo.Context("missing required fields", func() {
+
+			ginkgo.It("should return error if api_key is missing", func() {
+				input.Spec.ApiKey = ""
 				err := protovalidate.Validate(input)
 				gomega.Expect(err).NotTo(gomega.BeNil())
 			})
-		})
 
-		ginkgo.Context("kind mismatch", func() {
-			ginkgo.It("should return a validation error if kind is incorrect", func() {
-				input.Kind = "NotConfluentCredential"
+			ginkgo.It("should return error if api_secret is missing", func() {
+				input.Spec.ApiSecret = ""
 				err := protovalidate.Validate(input)
 				gomega.Expect(err).NotTo(gomega.BeNil())
 			})

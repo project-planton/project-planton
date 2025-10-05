@@ -1,8 +1,11 @@
 ---
-alwaysApply: true
+description: Proto Validation coding guidelines for ProjectPlanton
+globs:
+  - apis/**/*.proto
+alwaysApply: false
 ---
 
-# Protobuf Validation Rules
+# Rule: Protobuf Validation Rules (action)
 
 ## CEL Expressions
 - **ALWAYS** use `this.` prefix when referencing fields in CEL expressions
