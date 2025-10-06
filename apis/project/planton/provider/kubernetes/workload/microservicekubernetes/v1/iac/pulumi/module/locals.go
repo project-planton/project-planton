@@ -29,6 +29,7 @@ type Locals struct {
 	MicroserviceKubernetes       *microservicekubernetesv1.MicroserviceKubernetes
 	ImagePullSecretData          map[string]string
 	Labels                       map[string]string
+	SelectorLabels               map[string]string
 }
 
 func initializeLocals(ctx *pulumi.Context, stackInput *microservicekubernetesv1.MicroserviceKubernetesStackInput) (*Locals, error) {
@@ -38,7 +39,15 @@ func initializeLocals(ctx *pulumi.Context, stackInput *microservicekubernetesv1.
 
 	target := stackInput.Target
 
+	// Static selector labels that never change
+	// Since there's always only one deployment per namespace, we use a constant label
+	locals.SelectorLabels = map[string]string{
+		"app": "microservice",
+	}
+
+	// Full labels include both selector labels and metadata labels
 	locals.Labels = map[string]string{
+		"app":                            "microservice", // Include selector label
 		kuberneteslabelkeys.Resource:     strconv.FormatBool(true),
 		kuberneteslabelkeys.ResourceName: target.Metadata.Name,
 		kuberneteslabelkeys.ResourceKind: cloudresourcekind.CloudResourceKind_MicroserviceKubernetes.String(),

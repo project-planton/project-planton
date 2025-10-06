@@ -57,10 +57,13 @@ bazel-build-cli:
 bazel-test:
 	${BAZEL} test ${BAZEL_REMOTE_FLAGS} --test_output=errors //...
 
+# Generates kind_map_gen.go containing ToMessageMap.
+# The "-tags codegen" flag is REQUIRED to avoid chicken-and-egg compilation errors.
+# See pkg/crkreflect/new_instance.go and pkg/crkreflect/codegen/main.go for details.
 .PHONY: generate-cloud-resource-kind-map
 generate-cloud-resource-kind-map:
 	rm -f pkg/crkreflect/kind_map_gen.go
-	go run ./pkg/crkreflect/codegen
+	go run -tags codegen ./pkg/crkreflect/codegen
 
 .PHONY: generate-kubernetes-types
 generate-kubernetes-types:

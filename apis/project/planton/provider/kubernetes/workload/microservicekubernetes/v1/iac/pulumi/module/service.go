@@ -37,7 +37,7 @@ func service(ctx *pulumi.Context, locals *Locals,
 			},
 			Spec: &kubernetescorev1.ServiceSpecArgs{
 				Type:     pulumi.String("ClusterIP"),
-				Selector: pulumi.ToStringMap(locals.Labels),
+				Selector: pulumi.ToStringMap(locals.SelectorLabels),
 				Ports:    portsArray,
 			},
 		}, pulumi.Parent(createdNamespace), pulumi.DependsOn([]pulumi.Resource{createdDeployment}))

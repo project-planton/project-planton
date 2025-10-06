@@ -155,7 +155,7 @@ func deployment(ctx *pulumi.Context, locals *Locals,
 				Replicas: pulumi.Int(locals.MicroserviceKubernetes.Spec.Availability.MinReplicas),
 				Strategy: buildDeploymentStrategy(locals.MicroserviceKubernetes.Spec.Availability.DeploymentStrategy),
 				Selector: &metav1.LabelSelectorArgs{
-					MatchLabels: pulumi.ToStringMap(locals.Labels),
+					MatchLabels: pulumi.ToStringMap(locals.SelectorLabels),
 				},
 				Template: &kubernetescorev1.PodTemplateSpecArgs{
 					Metadata: &metav1.ObjectMetaArgs{
