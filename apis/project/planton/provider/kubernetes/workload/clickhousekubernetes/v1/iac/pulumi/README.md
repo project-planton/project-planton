@@ -38,6 +38,19 @@ See [examples.md](examples.md) for usage details and step-by-step examples. In g
 
 to apply the resource on your cluster.
 
+## Important: Docker Image Registry
+
+**⚠️ Bitnami Registry Changes (September 2025)**
+
+Due to Bitnami's transition to a paid model, this module now uses `docker.io/bitnamilegacy` registry for ClickHouse and ZooKeeper images. The legacy images receive no updates or security patches but provide a temporary migration solution.
+
+**Long-term Alternatives:**
+- Subscribe to Bitnami Secure Images ($50k-$72k/year)
+- Use official ClickHouse images from clickhouse.com
+- Build custom images from open-source Bitnami code (Apache 2.0)
+
+For more details, see: https://github.com/bitnami/containers/issues/83267
+
 ## Getting Started
 
 1. **Craft Your Specification**  

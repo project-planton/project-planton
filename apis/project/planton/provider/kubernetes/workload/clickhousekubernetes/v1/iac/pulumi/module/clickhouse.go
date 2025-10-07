@@ -30,6 +30,16 @@ func clickhouse(ctx *pulumi.Context, locals *Locals,
 			"existingSecretKey": pulumi.String(vars.ClickhousePasswordKey),
 			"username":          pulumi.String(vars.DefaultUsername),
 		},
+		// Use bitnamilegacy registry due to Bitnami discontinuing free Docker Hub images (Sep 2025)
+		// See: https://github.com/bitnami/containers/issues/83267
+		// Global image registry override for all Bitnami images (including ClickHouse and ZooKeeper)
+		"global": pulumi.Map{
+			"imageRegistry": pulumi.String("docker.io/bitnamilegacy"),
+		},
+		// ClickHouse specific image - just the image name (no registry prefix)
+		"image": pulumi.Map{
+			"repository": pulumi.String("clickhouse"),
+		},
 	}
 
 	// Configure clustering if enabled
@@ -41,6 +51,10 @@ func clickhouse(ctx *pulumi.Context, locals *Locals,
 		}
 		helmValues["zookeeper"] = pulumi.Map{
 			"enabled": pulumi.Bool(true),
+			// ZooKeeper image - just the image name (global.imageRegistry handles the registry)
+			"image": pulumi.Map{
+				"repository": pulumi.String("zookeeper"),
+			},
 		}
 	}
 

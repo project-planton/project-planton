@@ -236,6 +236,41 @@ spec:
 
 ---
 
+## 8. Using Alternative Docker Registry
+
+Due to Bitnami's registry changes, you can override the default bitnamilegacy registry to use official ClickHouse images or other sources.
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: ClickhouseKubernetes
+metadata:
+  name: custom-registry-clickhouse
+spec:
+  container:
+    replicas: 1
+    isPersistenceEnabled: true
+    diskSize: 20Gi
+    resources:
+      requests:
+        cpu: 200m
+        memory: 512Mi
+      limits:
+        cpu: 2000m
+        memory: 4Gi
+  helmValues:
+    image.registry: docker.io
+    image.repository: clickhouse/clickhouse-server
+    image.tag: "24.8"
+```
+
+**Key points**:
+- Override default bitnamilegacy registry with official ClickHouse images
+- Use official vendor images directly from ClickHouse
+- Provides long-term stability without Bitnami dependency
+- Custom image tags for version control
+
+---
+
 ## Conclusion
 
 These examples illustrate the breadth of **ClickhouseKubernetes** features, from basic single-node deployments to advanced distributed clusters with sharding and replication. By consolidating Kubernetes manifests behind a concise API resource definition, you can maintain consistency, reduce error-prone manual config, and accelerate delivery cycles.
