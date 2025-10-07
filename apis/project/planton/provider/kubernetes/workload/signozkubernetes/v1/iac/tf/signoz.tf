@@ -13,6 +13,13 @@ resource "helm_release" "signoz" {
           podLabels        = local.final_labels
           commonLabels     = local.final_labels
 
+          # Use bitnamilegacy registry due to Bitnami discontinuing free Docker Hub images (Sep 2025)
+          # See: https://github.com/bitnami/containers/issues/83267
+          # Global image registry override for all Bitnami images (ClickHouse and ZooKeeper dependencies)
+          global = {
+            imageRegistry = "docker.io/bitnamilegacy"
+          }
+
           # Configure SigNoz container (main binary with UI, API, Ruler, Alertmanager)
           signoz = merge(
             {
