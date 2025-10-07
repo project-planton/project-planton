@@ -1,8 +1,6 @@
 package module
 
 import (
-	"encoding/base64"
-
 	"github.com/pkg/errors"
 	clickhousekubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/clickhousekubernetes/v1"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/pulumikubernetesprovider"
@@ -38,44 +36,45 @@ func Resources(ctx *pulumi.Context, stackInput *clickhousekubernetesv1.Clickhous
 	}
 
 	//create new random secret to set as password
+	// Use only safe special characters to avoid encoding problems in connection strings
 	createdRandomString, err := random.NewRandomPassword(ctx,
 		"root-password",
 		&random.RandomPasswordArgs{
-			Length:     pulumi.Int(16),
-			Special:    pulumi.Bool(true),
-			Numeric:    pulumi.Bool(true),
-			Upper:      pulumi.Bool(true),
-			Lower:      pulumi.Bool(true),
-			MinSpecial: pulumi.Int(3),
-			MinNumeric: pulumi.Int(2),
-			MinUpper:   pulumi.Int(2),
-			MinLower:   pulumi.Int(2),
+			Length:          pulumi.Int(20),
+			Special:         pulumi.Bool(true),
+			Numeric:         pulumi.Bool(true),
+			Upper:           pulumi.Bool(true),
+			Lower:           pulumi.Bool(true),
+			MinSpecial:      pulumi.Int(2),
+			MinNumeric:      pulumi.Int(3),
+			MinUpper:        pulumi.Int(3),
+			MinLower:        pulumi.Int(3),
+			OverrideSpecial: pulumi.String("-_+="),
 		}, pulumi.Parent(createdNamespace))
 	if err != nil {
 		return errors.Wrap(err, "failed to generate random password value")
 	}
 
-	// Encode the password in Base64
-	createdBase64Password := createdRandomString.Result.ApplyT(func(p string) (string, error) {
-		return base64.StdEncoding.EncodeToString([]byte(p)), nil
-	}).(pulumi.StringOutput)
-
 	// create kubernetes secret to store generated password
-	_, err = kubernetescorev1.NewSecret(ctx,
+	// Note: Kubernetes automatically base64 encodes secret data, so we use StringData instead
+	createdSecret, err := kubernetescorev1.NewSecret(ctx,
 		locals.ClickhouseKubernetes.Metadata.Name,
 		&kubernetescorev1.SecretArgs{
 			Metadata: &metav1.ObjectMetaArgs{
 				Name:      pulumi.String(locals.ClickhouseKubernetes.Metadata.Name),
 				Namespace: createdNamespace.Metadata.Name(),
 			},
-			Data: pulumi.StringMap{
-				vars.ClickhousePasswordKey: createdBase64Password,
+			StringData: pulumi.StringMap{
+				vars.ClickhousePasswordKey: createdRandomString.Result,
 			},
 		}, pulumi.Parent(createdNamespace))
+	if err != nil {
+		return errors.Wrap(err, "failed to create password secret")
+	}
 
-	//create clickhouse using helm-chart
-	if err := clickhouse(ctx, locals, createdNamespace); err != nil {
-		return errors.Wrap(err, "failed to create clickhouse helm-chart resources")
+	// Create ClickHouseInstallation CRD using Altinity operator
+	if err := clickhouseInstallation(ctx, locals, createdNamespace, createdSecret); err != nil {
+		return errors.Wrap(err, "failed to create ClickHouseInstallation")
 	}
 
 	//create service of type load-balancer if ingress is enabled.

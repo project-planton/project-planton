@@ -1,6 +1,14 @@
 # ClickHouse Kubernetes Terraform Module - Examples
 
-## Example 1: Minimal Configuration
+This document provides examples demonstrating various ClickHouse cluster configurations using the Altinity ClickHouse Operator.
+
+## Prerequisites
+
+The **Altinity ClickHouse Operator** must be installed on your Kubernetes cluster before deploying these examples.
+
+---
+
+## Example 1: Minimal Standalone Configuration
 
 ```hcl
 module "clickhouse_basic" {
@@ -11,200 +19,16 @@ module "clickhouse_basic" {
   }
 
   spec = {
-    container = {
-      replicas               = 1
-      is_persistence_enabled = true
-      disk_size              = "8Gi"
-      resources = {
-        requests = {
-          cpu    = "100m"
-          memory = "256Mi"
-        }
-        limits = {
-          cpu    = "1000m"
-          memory = "2Gi"
-        }
-      }
-    }
-  }
-}
-```
-
-## Example 2: Production with Ingress
-
-```hcl
-module "clickhouse_production" {
-  source = "../../tf"
-
-  metadata = {
-    name = "production-clickhouse"
-    org  = "acme-corp"
-    env  = "production"
-  }
-
-  spec = {
-    container = {
-      replicas               = 1
-      is_persistence_enabled = true
-      disk_size              = "100Gi"
-      resources = {
-        requests = {
-          cpu    = "500m"
-          memory = "2Gi"
-        }
-        limits = {
-          cpu    = "4000m"
-          memory = "8Gi"
-        }
-      }
-    }
-    ingress = {
-      is_enabled = true
-      dns_domain = "example.com"
-    }
-  }
-}
-
-# Outputs
-output "clickhouse_endpoint" {
-  value = module.clickhouse_production.kube_endpoint
-}
-
-output "clickhouse_external_url" {
-  value = module.clickhouse_production.external_hostname
-}
-```
-
-## Example 3: Clustered Deployment
-
-```hcl
-module "clickhouse_cluster" {
-  source = "../../tf"
-
-  metadata = {
-    name = "clustered-clickhouse"
-    org  = "data-team"
-    env  = "production"
-  }
-
-  spec = {
-    container = {
-      replicas               = 3
-      is_persistence_enabled = true
-      disk_size              = "50Gi"
-      resources = {
-        requests = {
-          cpu    = "500m"
-          memory = "2Gi"
-        }
-        limits = {
-          cpu    = "2000m"
-          memory = "4Gi"
-        }
-      }
-    }
-    cluster = {
-      is_enabled    = true
-      shard_count   = 3
-      replica_count = 2
-    }
-    ingress = {
-      is_enabled = true
-      dns_domain = "analytics.example.com"
-    }
-  }
-}
-```
-
-## Example 4: Custom Helm Values
-
-```hcl
-module "clickhouse_custom" {
-  source = "../../tf"
-
-  metadata = {
-    name = "custom-clickhouse"
-  }
-
-  spec = {
-    container = {
-      replicas               = 2
-      is_persistence_enabled = true
-      disk_size              = "30Gi"
-      resources = {
-        requests = {
-          cpu    = "200m"
-          memory = "512Mi"
-        }
-        limits = {
-          cpu    = "2000m"
-          memory = "4Gi"
-        }
-      }
-    }
-    helm_values = {
-      "auth.username" = "clickhouse_user"
-      "defaultConfigurationOverrides" = <<-EOT
-        <clickhouse>
-          <max_connections>100</max_connections>
-          <max_concurrent_queries>50</max_concurrent_queries>
-        </clickhouse>
-      EOT
-    }
-  }
-}
-```
-
-## Example 5: Development Environment
-
-```hcl
-module "clickhouse_dev" {
-  source = "../../tf"
-
-  metadata = {
-    name = "dev-clickhouse"
-    env  = "development"
-  }
-
-  spec = {
-    container = {
-      replicas               = 1
-      is_persistence_enabled = false
-      disk_size              = "1Gi"
-      resources = {
-        requests = {
-          cpu    = "50m"
-          memory = "128Mi"
-        }
-        limits = {
-          cpu    = "500m"
-          memory = "512Mi"
-        }
-      }
-    }
-  }
-}
-```
-
-## Example 6: Using Official ClickHouse Images
-
-```hcl
-module "clickhouse_official" {
-  source = "../../tf"
-
-  metadata = {
-    name = "official-clickhouse"
-  }
-
-  spec = {
+    cluster_name = "dev-cluster"
+    
     container = {
       replicas               = 1
       is_persistence_enabled = true
       disk_size              = "20Gi"
       resources = {
         requests = {
-          cpu    = "200m"
-          memory = "512Mi"
+          cpu    = "500m"
+          memory = "1Gi"
         }
         limits = {
           cpu    = "2000m"
@@ -212,12 +36,245 @@ module "clickhouse_official" {
         }
       }
     }
-    helm_values = {
-      "global.imageRegistry" = ""
-      "image.registry"       = "docker.io"
-      "image.repository"     = "clickhouse/clickhouse-server"
-      "image.tag"            = "24.8"
+  }
+}
+```
+
+---
+
+## Example 2: Production with Version Pinning
+
+```hcl
+module "clickhouse_production" {
+  source = "../../tf"
+
+  metadata = {
+    name = "prod-clickhouse"
+    org  = "my-org"
+    env  = "production"
+  }
+
+  spec = {
+    cluster_name = "production-analytics"
+    version      = "24.8"
+    
+    container = {
+      replicas               = 1
+      is_persistence_enabled = true
+      disk_size              = "200Gi"
+      resources = {
+        requests = {
+          cpu    = "2000m"
+          memory = "8Gi"
+        }
+        limits = {
+          cpu    = "8000m"
+          memory = "32Gi"
+        }
+      }
     }
   }
 }
 ```
+
+---
+
+## Example 3: Distributed Cluster with Sharding
+
+```hcl
+module "clickhouse_distributed" {
+  source = "../../tf"
+
+  metadata = {
+    name = "distributed-analytics"
+  }
+
+  spec = {
+    cluster_name = "analytics-cluster"
+    
+    container = {
+      replicas               = 1
+      is_persistence_enabled = true
+      disk_size              = "100Gi"
+      resources = {
+        requests = {
+          cpu    = "1000m"
+          memory = "4Gi"
+        }
+        limits = {
+          cpu    = "4000m"
+          memory = "16Gi"
+        }
+      }
+    }
+    
+    cluster = {
+      is_enabled    = true
+      shard_count   = 4
+      replica_count = 1
+    }
+  }
+}
+```
+
+**Key points**:
+- 4 shards for horizontal scaling
+- ZooKeeper automatically managed by operator
+- Distributed query execution
+
+---
+
+## Example 4: High Availability Cluster
+
+```hcl
+module "clickhouse_ha" {
+  source = "../../tf"
+
+  metadata = {
+    name = "ha-clickhouse"
+    env  = "production"
+  }
+
+  spec = {
+    cluster_name = "ha-analytics"
+    version      = "24.8"
+    
+    container = {
+      replicas               = 1
+      is_persistence_enabled = true
+      disk_size              = "150Gi"
+      resources = {
+        requests = {
+          cpu    = "2000m"
+          memory = "8Gi"
+        }
+        limits = {
+          cpu    = "6000m"
+          memory = "24Gi"
+        }
+      }
+    }
+    
+    cluster = {
+      is_enabled    = true
+      shard_count   = 3
+      replica_count = 3
+    }
+  }
+}
+```
+
+**Key points**:
+- 3 shards with 3 replicas each (9 total nodes)
+- High availability - survives 2 node failures per shard
+- Data replicated across nodes
+
+---
+
+## Example 5: Cluster with External ZooKeeper
+
+```hcl
+module "clickhouse_external_zk" {
+  source = "../../tf"
+
+  metadata = {
+    name = "enterprise-clickhouse"
+  }
+
+  spec = {
+    cluster_name = "enterprise-cluster"
+    
+    container = {
+      replicas               = 1
+      is_persistence_enabled = true
+      disk_size              = "200Gi"
+      resources = {
+        requests = {
+          cpu    = "4000m"
+          memory = "16Gi"
+        }
+        limits = {
+          cpu    = "12000m"
+          memory = "48Gi"
+        }
+      }
+    }
+    
+    cluster = {
+      is_enabled    = true
+      shard_count   = 6
+      replica_count = 2
+    }
+    
+    zookeeper = {
+      use_external = true
+      nodes = [
+        "zk-0.zookeeper.default.svc.cluster.local:2181",
+        "zk-1.zookeeper.default.svc.cluster.local:2181",
+        "zk-2.zookeeper.default.svc.cluster.local:2181"
+      ]
+    }
+  }
+}
+```
+
+**Key points**:
+- External ZooKeeper for shared coordination
+- 6 shards with 2 replicas (12 total nodes)
+- Enterprise-scale resources
+
+---
+
+## Example 6: With Ingress for External Access
+
+```hcl
+module "clickhouse_public" {
+  source = "../../tf"
+
+  metadata = {
+    name = "public-clickhouse"
+  }
+
+  spec = {
+    cluster_name = "public-cluster"
+    
+    container = {
+      replicas               = 1
+      is_persistence_enabled = true
+      disk_size              = "100Gi"
+      resources = {
+        requests = {
+          cpu    = "1000m"
+          memory = "4Gi"
+        }
+        limits = {
+          cpu    = "4000m"
+          memory = "16Gi"
+        }
+      }
+    }
+    
+    ingress = {
+      is_enabled = true
+      dns_domain = "example.com"
+    }
+  }
+}
+```
+
+**Key points**:
+- LoadBalancer service with external DNS
+- External hostname: `public-clickhouse.example.com`
+- Both HTTP (8123) and native (9000) ports exposed
+
+---
+
+## Deployment Architecture
+
+All deployments use the **Altinity ClickHouse Operator** which:
+- Creates ClickHouseInstallation custom resources
+- Manages StatefulSets, Services, and ConfigMaps
+- Handles ZooKeeper coordination for clusters
+- Provides rolling upgrades and self-healing
+- Uses official ClickHouse container images
+

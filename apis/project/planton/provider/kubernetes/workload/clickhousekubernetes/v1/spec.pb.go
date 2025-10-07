@@ -28,22 +28,34 @@ const (
 // *
 // **ClickhouseKubernetesSpec** defines the configuration for deploying ClickHouse on a Kubernetes cluster.
 // This message specifies the parameters needed to create and manage a ClickHouse deployment within a Kubernetes environment.
-// It includes container specifications, ingress settings, and cluster configuration options.
+// It includes cluster name, container specifications, ingress settings, and cluster configuration options.
+//
+// The deployment uses the Altinity ClickHouse Operator, which provides production-grade ClickHouse cluster management
+// with features like automated upgrades, scaling, and ZooKeeper coordination.
 type ClickhouseKubernetesSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The container specifications for the ClickHouse deployment.
-	Container *ClickhouseKubernetesContainer `protobuf:"bytes,1,opt,name=container,proto3" json:"container,omitempty"`
-	// The ingress configuration for the ClickHouse deployment.
-	Ingress *kubernetes.IngressSpec `protobuf:"bytes,2,opt,name=ingress,proto3" json:"ingress,omitempty"`
-	// The cluster configuration for ClickHouse sharding and replication.
-	Cluster *ClickhouseKubernetesClusterConfig `protobuf:"bytes,3,opt,name=cluster,proto3" json:"cluster,omitempty"`
 	// *
-	// A map of key-value pairs that provide additional customization options for the Helm chart used
-	// to deploy ClickHouse on Kubernetes. These values allow for further refinement of the deployment,
-	// such as customizing resource limits, setting environment variables, or specifying version tags.
-	// For detailed information on the available options, refer to the Helm chart documentation at:
-	// https://artifacthub.io/packages/helm/bitnami/clickhouse
-	HelmValues    map[string]string `protobuf:"bytes,4,rep,name=helm_values,json=helmValues,proto3" json:"helm_values,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	// The name of the ClickHouse cluster.
+	// This is used as the identifier for the ClickHouseInstallation custom resource.
+	// Must be a valid DNS subdomain name (lowercase alphanumeric with hyphens).
+	// Defaults to the resource metadata name if not specified.
+	ClusterName string `protobuf:"bytes,1,opt,name=cluster_name,json=clusterName,proto3" json:"cluster_name,omitempty"`
+	// The container specifications for the ClickHouse deployment.
+	Container *ClickhouseKubernetesContainer `protobuf:"bytes,2,opt,name=container,proto3" json:"container,omitempty"`
+	// The ingress configuration for the ClickHouse deployment.
+	Ingress *kubernetes.IngressSpec `protobuf:"bytes,3,opt,name=ingress,proto3" json:"ingress,omitempty"`
+	// The cluster configuration for ClickHouse sharding and replication.
+	Cluster *ClickhouseKubernetesClusterConfig `protobuf:"bytes,4,opt,name=cluster,proto3" json:"cluster,omitempty"`
+	// *
+	// The ClickHouse version to deploy (e.g., "24.3", "23.8").
+	// If not specified, the operator's default stable version will be used.
+	// It's recommended to specify a version for production deployments to ensure consistency.
+	Version string `protobuf:"bytes,5,opt,name=version,proto3" json:"version,omitempty"`
+	// *
+	// ZooKeeper configuration for cluster coordination.
+	// Optional. If not specified, the operator will automatically manage ZooKeeper for clustered deployments.
+	// For production clusters with high availability requirements, consider using external ZooKeeper.
+	Zookeeper     *ClickhouseKubernetesZookeeperConfig `protobuf:"bytes,6,opt,name=zookeeper,proto3" json:"zookeeper,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -78,6 +90,13 @@ func (*ClickhouseKubernetesSpec) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_kubernetes_workload_clickhousekubernetes_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
+func (x *ClickhouseKubernetesSpec) GetClusterName() string {
+	if x != nil {
+		return x.ClusterName
+	}
+	return ""
+}
+
 func (x *ClickhouseKubernetesSpec) GetContainer() *ClickhouseKubernetesContainer {
 	if x != nil {
 		return x.Container
@@ -99,33 +118,45 @@ func (x *ClickhouseKubernetesSpec) GetCluster() *ClickhouseKubernetesClusterConf
 	return nil
 }
 
-func (x *ClickhouseKubernetesSpec) GetHelmValues() map[string]string {
+func (x *ClickhouseKubernetesSpec) GetVersion() string {
 	if x != nil {
-		return x.HelmValues
+		return x.Version
+	}
+	return ""
+}
+
+func (x *ClickhouseKubernetesSpec) GetZookeeper() *ClickhouseKubernetesZookeeperConfig {
+	if x != nil {
+		return x.Zookeeper
 	}
 	return nil
 }
 
 // *
 // **ClickhouseKubernetesContainer** specifies the container configuration for the ClickHouse application.
-// It includes settings such as the number of replicas, resource allocations, data persistence options, and disk size.
+// It includes resource allocations, data persistence options, and disk size.
 // Proper configuration ensures optimal performance and data reliability for your ClickHouse deployment.
 type ClickhouseKubernetesContainer struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The number of ClickHouse pods to deploy.
+	// *
+	// The number of ClickHouse replicas (pods) to deploy.
+	// For non-clustered deployments, this is the total number of ClickHouse pods.
+	// For clustered deployments, this value is ignored in favor of shard_count * replica_count.
+	// Must be at least 1.
 	Replicas int32 `protobuf:"varint,1,opt,name=replicas,proto3" json:"replicas,omitempty"`
-	// The CPU and memory resources allocated to the ClickHouse container.
+	// The CPU and memory resources allocated to each ClickHouse container.
 	Resources *kubernetes.ContainerResources `protobuf:"bytes,2,opt,name=resources,proto3" json:"resources,omitempty"`
 	// *
 	// A flag to enable or disable data persistence for ClickHouse.
 	// When enabled, data is persisted to a storage volume, allowing data to survive pod restarts.
-	// Defaults to `true`.
+	// Defaults to `true`. Strongly recommended for production use.
 	IsPersistenceEnabled bool `protobuf:"varint,3,opt,name=is_persistence_enabled,json=isPersistenceEnabled,proto3" json:"is_persistence_enabled,omitempty"`
 	// *
-	// The size of the persistent volume attached to each ClickHouse pod (e.g., "10Gi").
+	// The size of the persistent volume attached to each ClickHouse pod (e.g., "50Gi", "100Gi").
 	// If the client does not provide a value, a default value is configured.
 	// This attribute is ignored when persistence is not enabled.
-	// **Note:** This value cannot be modified after creation due to Kubernetes limitations on stateful sets.
+	// **Note:** This value cannot be easily modified after creation due to Kubernetes limitations.
+	// Plan for growth and allocate sufficient storage initially.
 	DiskSize      string `protobuf:"bytes,4,opt,name=disk_size,json=diskSize,proto3" json:"disk_size,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -192,22 +223,32 @@ func (x *ClickhouseKubernetesContainer) GetDiskSize() string {
 // *
 // **ClickhouseKubernetesClusterConfig** defines the clustering configuration for ClickHouse.
 // This includes settings for sharding and replication to enable distributed ClickHouse deployments.
+//
+// Clustering provides horizontal scaling and high availability. When clustering is enabled:
+// - Data is distributed across shards for parallel processing
+// - Each shard can have multiple replicas for redundancy
+// - ZooKeeper is used for cluster coordination (automatically managed by the operator)
 type ClickhouseKubernetesClusterConfig struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// *
 	// A flag to enable or disable clustering mode for ClickHouse.
-	// When enabled, ClickHouse will be deployed in a distributed cluster configuration.
-	// Defaults to `false`.
+	// When enabled, ClickHouse will be deployed in a distributed cluster configuration with sharding and replication.
+	// When disabled, a single standalone ClickHouse instance is deployed.
+	// Defaults to `false` (standalone mode suitable for development and small workloads).
 	IsEnabled bool `protobuf:"varint,1,opt,name=is_enabled,json=isEnabled,proto3" json:"is_enabled,omitempty"`
 	// *
 	// The number of shards in the ClickHouse cluster.
-	// Sharding distributes data across multiple nodes for horizontal scaling.
+	// Sharding distributes data across multiple nodes for horizontal scaling and improved query performance.
+	// Each shard processes queries in parallel, allowing for massive throughput.
 	// This value is ignored if clustering is not enabled.
+	// Typical values: 2-8 for most use cases, can go higher for very large deployments.
 	ShardCount int32 `protobuf:"varint,2,opt,name=shard_count,json=shardCount,proto3" json:"shard_count,omitempty"`
 	// *
 	// The number of replicas for each shard.
 	// Replication provides data redundancy and high availability.
+	// If one replica fails, queries can be served by other replicas in the same shard.
 	// This value is ignored if clustering is not enabled.
+	// Typical values: 2-3 (more than 3 replicas is rarely needed).
 	ReplicaCount  int32 `protobuf:"varint,3,opt,name=replica_count,json=replicaCount,proto3" json:"replica_count,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -264,6 +305,72 @@ func (x *ClickhouseKubernetesClusterConfig) GetReplicaCount() int32 {
 	return 0
 }
 
+// *
+// **ClickhouseKubernetesZookeeperConfig** defines the ZooKeeper configuration for ClickHouse cluster coordination.
+// ZooKeeper is required for clustered ClickHouse deployments to manage distributed operations.
+//
+// For most use cases, the operator's auto-managed ZooKeeper is sufficient. This configuration allows
+// specifying external ZooKeeper for advanced scenarios or when ZooKeeper is shared across multiple services.
+type ClickhouseKubernetesZookeeperConfig struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// *
+	// A flag to use external ZooKeeper instead of operator-managed ZooKeeper.
+	// When false (default), the operator automatically provisions and manages ZooKeeper pods.
+	// When true, you must provide external ZooKeeper nodes.
+	UseExternal bool `protobuf:"varint,1,opt,name=use_external,json=useExternal,proto3" json:"use_external,omitempty"`
+	// *
+	// List of external ZooKeeper nodes in the format "host:port".
+	// This is only used when use_external is true.
+	// Example: ["zk-0.zk-headless.default.svc.cluster.local:2181", "zk-1.zk-headless.default.svc.cluster.local:2181"]
+	Nodes         []string `protobuf:"bytes,2,rep,name=nodes,proto3" json:"nodes,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ClickhouseKubernetesZookeeperConfig) Reset() {
+	*x = ClickhouseKubernetesZookeeperConfig{}
+	mi := &file_project_planton_provider_kubernetes_workload_clickhousekubernetes_v1_spec_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ClickhouseKubernetesZookeeperConfig) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ClickhouseKubernetesZookeeperConfig) ProtoMessage() {}
+
+func (x *ClickhouseKubernetesZookeeperConfig) ProtoReflect() protoreflect.Message {
+	mi := &file_project_planton_provider_kubernetes_workload_clickhousekubernetes_v1_spec_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ClickhouseKubernetesZookeeperConfig.ProtoReflect.Descriptor instead.
+func (*ClickhouseKubernetesZookeeperConfig) Descriptor() ([]byte, []int) {
+	return file_project_planton_provider_kubernetes_workload_clickhousekubernetes_v1_spec_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *ClickhouseKubernetesZookeeperConfig) GetUseExternal() bool {
+	if x != nil {
+		return x.UseExternal
+	}
+	return false
+}
+
+func (x *ClickhouseKubernetesZookeeperConfig) GetNodes() []string {
+	if x != nil {
+		return x.Nodes
+	}
+	return nil
+}
+
 var file_project_planton_provider_kubernetes_workload_clickhousekubernetes_v1_spec_proto_extTypes = []protoimpl.ExtensionInfo{
 	{
 		ExtendedType:  (*descriptorpb.FieldOptions)(nil),
@@ -285,19 +392,17 @@ var File_project_planton_provider_kubernetes_workload_clickhousekubernetes_v1_sp
 
 const file_project_planton_provider_kubernetes_workload_clickhousekubernetes_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Oproject/planton/provider/kubernetes/workload/clickhousekubernetes/v1/spec.proto\x12Dproject.planton.provider.kubernetes.workload.clickhousekubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\x1a,project/planton/shared/options/options.proto\x1a google/protobuf/descriptor.proto\"\xec\x04\n" +
-	"\x18ClickhouseKubernetesSpec\x12\xb0\x01\n" +
-	"\tcontainer\x18\x01 \x01(\v2c.project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickhouseKubernetesContainerB-ʵ\xfd\x01(\b\x01\x12\x1d\n" +
+	"Oproject/planton/provider/kubernetes/workload/clickhousekubernetes/v1/spec.proto\x12Dproject.planton.provider.kubernetes.workload.clickhousekubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\x1a,project/planton/shared/options/options.proto\x1a google/protobuf/descriptor.proto\"\x89\x05\n" +
+	"\x18ClickhouseKubernetesSpec\x12I\n" +
+	"\fcluster_name\x18\x01 \x01(\tB&\xbaH#r!2\x1f^[a-z0-9]([-a-z0-9]*[a-z0-9])?$R\vclusterName\x12\xaf\x01\n" +
+	"\tcontainer\x18\x02 \x01(\v2c.project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickhouseKubernetesContainerB,ʵ\xfd\x01'\b\x01\x12\x1b\n" +
 	"\f\n" +
-	"\x051000m\x12\x032Gi\x12\r\n" +
-	"\x04100m\x12\x05256Mi\x18\x01\"\x038GiR\tcontainer\x12H\n" +
-	"\aingress\x18\x02 \x01(\v2..project.planton.shared.kubernetes.IngressSpecR\aingress\x12\x81\x01\n" +
-	"\acluster\x18\x03 \x01(\v2g.project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickhouseKubernetesClusterConfigR\acluster\x12\x8f\x01\n" +
-	"\vhelm_values\x18\x04 \x03(\v2n.project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickhouseKubernetesSpec.HelmValuesEntryR\n" +
-	"helmValues\x1a=\n" +
-	"\x0fHelmValuesEntry\x12\x10\n" +
-	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xcc\x04\n" +
+	"\x052000m\x12\x034Gi\x12\v\n" +
+	"\x04500m\x12\x031Gi\x18\x01\"\x0450GiR\tcontainer\x12H\n" +
+	"\aingress\x18\x03 \x01(\v2..project.planton.shared.kubernetes.IngressSpecR\aingress\x12\x81\x01\n" +
+	"\acluster\x18\x04 \x01(\v2g.project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickhouseKubernetesClusterConfigR\acluster\x12\x18\n" +
+	"\aversion\x18\x05 \x01(\tR\aversion\x12\x87\x01\n" +
+	"\tzookeeper\x18\x06 \x01(\v2i.project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickhouseKubernetesZookeeperConfigR\tzookeeper\"\xcc\x04\n" +
 	"\x1dClickhouseKubernetesContainer\x12#\n" +
 	"\breplicas\x18\x01 \x01(\x05B\a\xbaH\x04\x1a\x02(\x01R\breplicas\x12S\n" +
 	"\tresources\x18\x02 \x01(\v25.project.planton.shared.kubernetes.ContainerResourcesR\tresources\x124\n" +
@@ -310,7 +415,11 @@ const file_project_planton_provider_kubernetes_workload_clickhousekubernetes_v1_
 	"\vshard_count\x18\x02 \x01(\x05R\n" +
 	"shardCount\x12#\n" +
 	"\rreplica_count\x18\x03 \x01(\x05R\freplicaCount:\xbe\x01\xbaH\xba\x01\x1a\xb7\x01\n" +
-	" spec.cluster.counts_when_enabled\x12KShard count and replica count must be at least 1 when clustering is enabled\x1aF!this.is_enabled || (this.shard_count >= 1 && this.replica_count >= 1):\xb1\x01\n" +
+	" spec.cluster.counts_when_enabled\x12KShard count and replica count must be at least 1 when clustering is enabled\x1aF!this.is_enabled || (this.shard_count >= 1 && this.replica_count >= 1)\"\x86\x02\n" +
+	"#ClickhouseKubernetesZookeeperConfig\x12!\n" +
+	"\fuse_external\x18\x01 \x01(\bR\vuseExternal\x12\x14\n" +
+	"\x05nodes\x18\x02 \x03(\tR\x05nodes:\xa5\x01\xbaH\xa1\x01\x1a\x9e\x01\n" +
+	"\"spec.zookeeper.nodes_when_external\x12KAt least one ZooKeeper node must be specified when using external ZooKeeper\x1a+!this.use_external || size(this.nodes) >= 1:\xb1\x01\n" +
 	"\x11default_container\x12\x1d.google.protobuf.FieldOptions\x18\xd9\xd6\x1f \x01(\v2c.project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickhouseKubernetesContainerR\x10defaultContainerB\x9c\x04\n" +
 	"Hcom.project.planton.provider.kubernetes.workload.clickhousekubernetes.v1B\tSpecProtoP\x01Z\x8b\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/clickhousekubernetes/v1;clickhousekubernetesv1\xa2\x02\x06PPPKWC\xaa\x02DProject.Planton.Provider.Kubernetes.Workload.Clickhousekubernetes.V1\xca\x02DProject\\Planton\\Provider\\Kubernetes\\Workload\\Clickhousekubernetes\\V1\xe2\x02PProject\\Planton\\Provider\\Kubernetes\\Workload\\Clickhousekubernetes\\V1\\GPBMetadata\xea\x02JProject::Planton::Provider::Kubernetes::Workload::Clickhousekubernetes::V1b\x06proto3"
 
@@ -328,19 +437,19 @@ func file_project_planton_provider_kubernetes_workload_clickhousekubernetes_v1_s
 
 var file_project_planton_provider_kubernetes_workload_clickhousekubernetes_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_project_planton_provider_kubernetes_workload_clickhousekubernetes_v1_spec_proto_goTypes = []any{
-	(*ClickhouseKubernetesSpec)(nil),          // 0: project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickhouseKubernetesSpec
-	(*ClickhouseKubernetesContainer)(nil),     // 1: project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickhouseKubernetesContainer
-	(*ClickhouseKubernetesClusterConfig)(nil), // 2: project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickhouseKubernetesClusterConfig
-	nil,                                   // 3: project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickhouseKubernetesSpec.HelmValuesEntry
-	(*kubernetes.IngressSpec)(nil),        // 4: project.planton.shared.kubernetes.IngressSpec
-	(*kubernetes.ContainerResources)(nil), // 5: project.planton.shared.kubernetes.ContainerResources
-	(*descriptorpb.FieldOptions)(nil),     // 6: google.protobuf.FieldOptions
+	(*ClickhouseKubernetesSpec)(nil),            // 0: project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickhouseKubernetesSpec
+	(*ClickhouseKubernetesContainer)(nil),       // 1: project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickhouseKubernetesContainer
+	(*ClickhouseKubernetesClusterConfig)(nil),   // 2: project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickhouseKubernetesClusterConfig
+	(*ClickhouseKubernetesZookeeperConfig)(nil), // 3: project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickhouseKubernetesZookeeperConfig
+	(*kubernetes.IngressSpec)(nil),              // 4: project.planton.shared.kubernetes.IngressSpec
+	(*kubernetes.ContainerResources)(nil),       // 5: project.planton.shared.kubernetes.ContainerResources
+	(*descriptorpb.FieldOptions)(nil),           // 6: google.protobuf.FieldOptions
 }
 var file_project_planton_provider_kubernetes_workload_clickhousekubernetes_v1_spec_proto_depIdxs = []int32{
 	1, // 0: project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickhouseKubernetesSpec.container:type_name -> project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickhouseKubernetesContainer
 	4, // 1: project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickhouseKubernetesSpec.ingress:type_name -> project.planton.shared.kubernetes.IngressSpec
 	2, // 2: project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickhouseKubernetesSpec.cluster:type_name -> project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickhouseKubernetesClusterConfig
-	3, // 3: project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickhouseKubernetesSpec.helm_values:type_name -> project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickhouseKubernetesSpec.HelmValuesEntry
+	3, // 3: project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickhouseKubernetesSpec.zookeeper:type_name -> project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickhouseKubernetesZookeeperConfig
 	5, // 4: project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickhouseKubernetesContainer.resources:type_name -> project.planton.shared.kubernetes.ContainerResources
 	6, // 5: project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.default_container:extendee -> google.protobuf.FieldOptions
 	1, // 6: project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.default_container:type_name -> project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickhouseKubernetesContainer

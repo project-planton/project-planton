@@ -15,6 +15,7 @@ const (
 	ConfluentCredential    Flag = "confluent-credential"
 	Destroy                Flag = "destroy"
 	DockerCredential       Flag = "docker-credential"
+	Force                  Flag = "force"
 	GcpCredential          Flag = "gcp-credential"
 	InputDir               Flag = "input-dir"
 	KubernetesCluster      Flag = "kubernetes-cluster"

@@ -4,7 +4,7 @@ output "namespace" {
 }
 
 output "service" {
-  description = "The base name of the ClickHouse service (Helm fullname override)."
+  description = "The base name of the ClickHouse service created by the operator."
   value       = local.kube_service_name
 }
 
@@ -14,7 +14,7 @@ output "kube_endpoint" {
 }
 
 output "port_forward_command" {
-  description = "Handy command to port-forward traffic to the ClickHouse service on localhost:8123 -> 8123."
+  description = "Command to port-forward traffic to the ClickHouse service on localhost:8123."
   value       = "kubectl port-forward -n ${local.namespace} service/${local.kube_service_name} 8123:8123"
 }
 
@@ -30,7 +30,7 @@ output "internal_hostname" {
 
 output "username" {
   description = "The default ClickHouse username."
-  value       = "default"
+  value       = local.default_username
 }
 
 output "password_secret_name" {
@@ -40,5 +40,5 @@ output "password_secret_name" {
 
 output "password_secret_key" {
   description = "Key within the Secret that contains the ClickHouse password."
-  value       = "admin-password"
+  value       = local.password_secret_key
 }

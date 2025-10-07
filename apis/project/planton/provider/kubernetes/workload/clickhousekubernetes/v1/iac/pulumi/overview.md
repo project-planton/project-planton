@@ -1,90 +1,262 @@
 # Overview
 
-The **ClickhouseKubernetes** API resource streamlines and standardizes how developers deploy ClickHouse database clusters onto Kubernetes. This Pulumi module interprets a `ClickhouseKubernetesStackInput`, which includes core details like Kubernetes credentials and the ClickHouse configuration. From this input, the module automatically creates and manages:
+The **ClickhouseKubernetes** API resource provides an intuitive, production-grade way to deploy and manage ClickHouse database clusters on Kubernetes using the **Altinity ClickHouse Operator**. This Pulumi module interprets a `ClickhouseKubernetesStackInput`, which includes Kubernetes credentials and your ClickHouse cluster specification, and generates a ClickHouseInstallation custom resource that the Altinity operator reconciles into a fully functional ClickHouse deployment.
 
-- **Kubernetes Namespaces**
-- **Helm Chart Deployments** for ClickHouse using the Bitnami chart
-- **StatefulSets** with persistent volumes for data storage
-- **Services** for exposing ClickHouse internally
-- **LoadBalancer Services** (optional) for external access
-- **Secrets** for storing auto-generated passwords securely
-- **ZooKeeper** (optional) for cluster coordination in distributed setups
+## Architecture
 
-Developers simply provide a declarative resource specification – focusing on resource allocations, persistence settings, clustering configuration, and ingress preferences – while the module handles the underlying Kubernetes constructs.
+The deployment follows a modern, operator-based architecture that separates concerns and leverages Kubernetes-native patterns:
 
-### Key Features
+### Component Overview
 
-1. **Deployment Automation**  
-   Eliminates the need to write manual Kubernetes definitions for namespaces, statefulsets, or services. The module compiles your specification into a robust, ready-to-run ClickHouse cluster.
-
-2. **Flexible Clustering**  
-   Deploy ClickHouse in standalone mode or as a distributed cluster with configurable sharding and replication. Horizontal scaling and high availability built-in.
-
-3. **Persistence Management**  
-   Toggle data persistence with configurable disk sizes. When enabled, data survives pod restarts and node failures.
-
-4. **Security First**  
-   Automatically generates secure random passwords and stores them in Kubernetes Secrets. Credentials never appear in version control or container images.
-
-5. **Resource Optimization**  
-   Specify CPU and memory requests/limits for containers. This ensures your ClickHouse cluster can run efficiently without jeopardizing the cluster's stability.
-
-6. **Optional External Access**  
-   Enable ingress to expose ClickHouse via LoadBalancer services with external DNS annotations. Perfect for connecting external analytics tools.
-
-7. **Helm Chart Integration**  
-   Leverages the official Bitnami ClickHouse Helm chart with extensive customization options through the `helmValues` field.
-
-### Architecture
-
-**Standalone Mode:**
 ```
-┌─────────────────────────────────────┐
-│  Namespace                          │
-│  ┌───────────────────────────────┐  │
-│  │  StatefulSet (ClickHouse)     │  │
-│  │  - Persistent Volume          │  │
-│  │  - Auto-generated Password    │  │
-│  └───────────────────────────────┘  │
-│  ┌───────────────────────────────┐  │
-│  │  Service (ClusterIP)          │  │
-│  └───────────────────────────────┘  │
-│  ┌───────────────────────────────┐  │
-│  │  LoadBalancer (Optional)      │  │
-│  └───────────────────────────────┘  │
-└─────────────────────────────────────┘
-```
-
-**Clustered Mode:**
-```
-┌────────────────────────────────────────────────────┐
-│  Namespace                                         │
-│  ┌──────────────────────────────────────────────┐  │
-│  │  ZooKeeper (for coordination)                │  │
-│  └──────────────────────────────────────────────┘  │
-│  ┌──────────────────────────────────────────────┐  │
-│  │  Shard 1                                     │  │
-│  │  ├─ Replica 1 (Persistent Volume)           │  │
-│  │  └─ Replica 2 (Persistent Volume)           │  │
-│  └──────────────────────────────────────────────┘  │
-│  ┌──────────────────────────────────────────────┐  │
-│  │  Shard 2                                     │  │
-│  │  ├─ Replica 1 (Persistent Volume)           │  │
-│  │  └─ Replica 2 (Persistent Volume)           │  │
-│  └──────────────────────────────────────────────┘  │
-│  ┌──────────────────────────────────────────────┐  │
-│  │  Services & LoadBalancers                    │  │
-│  └──────────────────────────────────────────────┘  │
-└────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────┐
+│  Kubernetes Cluster                                         │
+│                                                             │
+│  ┌───────────────────────────────────────────────────────┐ │
+│  │  clickhouse-operator namespace                        │ │
+│  │  ┌─────────────────────────────────────────────────┐  │ │
+│  │  │  Altinity ClickHouse Operator                   │  │ │
+│  │  │  (watches ClickHouseInstallation CRDs)          │  │ │
+│  │  └─────────────────────────────────────────────────┘  │ │
+│  └───────────────────────────────────────────────────────┘ │
+│                                                             │
+│  ┌───────────────────────────────────────────────────────┐ │
+│  │  Application Namespace (e.g., my-clickhouse)          │ │
+│  │                                                         │ │
+│  │  1. Pulumi Module Creates:                             │ │
+│  │  ┌─────────────────────────────────────────────────┐  │ │
+│  │  │  ClickHouseInstallation CRD                      │  │ │
+│  │  │  (cluster topology, resources, persistence)      │  │ │
+│  │  └─────────────────────────────────────────────────┘  │ │
+│  │  ┌─────────────────────────────────────────────────┐  │ │
+│  │  │  Secret (auto-generated password)                │  │ │
+│  │  └─────────────────────────────────────────────────┘  │ │
+│  │                                                         │ │
+│  │  2. Operator Reconciles to Create:                     │ │
+│  │  ┌─────────────────────────────────────────────────┐  │ │
+│  │  │  StatefulSets (ClickHouse pods)                  │  │ │
+│  │  │  ├─ Pod with persistent volumes                  │  │ │
+│  │  │  ├─ Pod with persistent volumes                  │  │ │
+│  │  │  └─ ...                                          │  │ │
+│  │  └─────────────────────────────────────────────────┘  │ │
+│  │  ┌─────────────────────────────────────────────────┐  │ │
+│  │  │  Services (cluster communication)                │  │ │
+│  │  │  ├─ cluster service                              │  │ │
+│  │  │  └─ shard services                               │  │ │
+│  │  └─────────────────────────────────────────────────┘  │ │
+│  │  ┌─────────────────────────────────────────────────┐  │ │
+│  │  │  ConfigMaps (ClickHouse configuration)           │  │ │
+│  │  └─────────────────────────────────────────────────┘  │ │
+│  │  ┌─────────────────────────────────────────────────┐  │ │
+│  │  │  ZooKeeper StatefulSet (for clustering)         │  │ │
+│  │  │  (optional, auto-managed by operator)            │  │ │
+│  │  └─────────────────────────────────────────────────┘  │ │
+│  │  ┌─────────────────────────────────────────────────┐  │ │
+│  │  │  LoadBalancer Service (optional ingress)         │  │ │
+│  │  └─────────────────────────────────────────────────┘  │ │
+│  └───────────────────────────────────────────────────────┘ │
+└─────────────────────────────────────────────────────────────┘
 ```
 
-### Use Cases
+### Deployment Flow
 
-- **Real-time Analytics**: Deploy ClickHouse for high-performance OLAP queries on streaming data
-- **Data Warehousing**: Build scalable data warehouses with ClickHouse's columnar storage
-- **Log Analytics**: Process and analyze massive log volumes efficiently
-- **Time-Series Data**: Handle time-series workloads with ClickHouse's optimized storage engine
-- **Business Intelligence**: Power BI dashboards with fast analytical queries
-- **Event Analytics**: Track and analyze user events at scale
+1. **User defines** ClickHouse cluster spec (cluster name, resources, topology)
+2. **Pulumi module generates** ClickHouseInstallation CRD and Secret
+3. **Altinity operator watches** for ClickHouseInstallation resources
+4. **Operator creates** StatefulSets, Services, ConfigMaps, ZooKeeper (if needed)
+5. **ClickHouse cluster** becomes operational and self-healing
+6. **Operator continuously reconciles** to maintain desired state
 
-Overall, **ClickhouseKubernetes** helps you focus on your data and analytics workflows. By delegating the Kubernetes resource orchestration to this module, you gain a cleaner, more consistent deployment experience across development, staging, and production environments.
+### Key Benefits of Operator-Based Architecture
+
+- **Declarative Management**: Define desired state, operator ensures actual state matches
+- **Self-Healing**: Operator automatically recovers from failures
+- **Rolling Updates**: Zero-downtime upgrades and configuration changes
+- **Scaling**: Add/remove shards and replicas without manual intervention
+- **Best Practices**: Operator encodes years of ClickHouse operational expertise
+
+## Standalone Mode Architecture
+
+For development, testing, or small production workloads, deploy a single ClickHouse instance:
+
+```
+┌───────────────────────────────────────────────────────┐
+│  Application Namespace                                │
+│                                                       │
+│  ┌─────────────────────────────────────────────────┐ │
+│  │  ClickHouseInstallation                          │ │
+│  │  clusterName: my-clickhouse                      │ │
+│  │  shards: 1, replicas: 1                          │ │
+│  └─────────────────────────────────────────────────┘ │
+│                                                       │
+│  ┌─────────────────────────────────────────────────┐ │
+│  │  StatefulSet (1 pod)                             │ │
+│  │  ┌───────────────────────────────────────────┐  │ │
+│  │  │  ClickHouse Pod                            │  │ │
+│  │  │  - CPU: 2 cores, Memory: 4Gi              │  │ │
+│  │  │  - Persistent Volume: 50Gi                 │  │ │
+│  │  │  - Port 8123 (HTTP), 9000 (Native)        │  │ │
+│  │  └───────────────────────────────────────────┘  │ │
+│  └─────────────────────────────────────────────────┘ │
+│                                                       │
+│  ┌─────────────────────────────────────────────────┐ │
+│  │  Service (ClusterIP)                             │ │
+│  │  my-clickhouse.namespace.svc.cluster.local       │ │
+│  └─────────────────────────────────────────────────┘ │
+│                                                       │
+│  ┌─────────────────────────────────────────────────┐ │
+│  │  LoadBalancer (if ingress enabled)               │ │
+│  │  External: my-clickhouse.example.com             │ │
+│  └─────────────────────────────────────────────────┘ │
+└───────────────────────────────────────────────────────┘
+```
+
+**Characteristics:**
+- Single point of failure (acceptable for non-critical workloads)
+- Simple configuration and operation
+- Lower resource usage
+- Faster startup time
+
+## Clustered Mode Architecture
+
+For production workloads requiring high availability and horizontal scaling:
+
+```
+┌──────────────────────────────────────────────────────────────────────┐
+│  Application Namespace                                               │
+│                                                                      │
+│  ┌────────────────────────────────────────────────────────────────┐ │
+│  │  ClickHouseInstallation                                         │ │
+│  │  clusterName: production-cluster                                │ │
+│  │  shards: 3, replicas: 2                                         │ │
+│  └────────────────────────────────────────────────────────────────┘ │
+│                                                                      │
+│  ┌────────────────────────────────────────────────────────────────┐ │
+│  │  ZooKeeper StatefulSet (auto-managed)                           │ │
+│  │  - Coordinates distributed operations                           │ │
+│  │  - Manages replica synchronization                              │ │
+│  └────────────────────────────────────────────────────────────────┘ │
+│                                                                      │
+│  ┌─────────────────────────────────┐                                │
+│  │  Shard 1                        │                                │
+│  │  ┌──────────────────────────┐   │                                │
+│  │  │ Replica 1 Pod            │   │  ← Data Shard A                │
+│  │  │ + Persistent Volume      │   │                                │
+│  │  └──────────────────────────┘   │                                │
+│  │  ┌──────────────────────────┐   │                                │
+│  │  │ Replica 2 Pod            │   │  ← Data Shard A (copy)         │
+│  │  │ + Persistent Volume      │   │                                │
+│  │  └──────────────────────────┘   │                                │
+│  └─────────────────────────────────┘                                │
+│                                                                      │
+│  ┌─────────────────────────────────┐                                │
+│  │  Shard 2                        │                                │
+│  │  ┌──────────────────────────┐   │                                │
+│  │  │ Replica 1 Pod            │   │  ← Data Shard B                │
+│  │  │ + Persistent Volume      │   │                                │
+│  │  └──────────────────────────┘   │                                │
+│  │  ┌──────────────────────────┐   │                                │
+│  │  │ Replica 2 Pod            │   │  ← Data Shard B (copy)         │
+│  │  │ + Persistent Volume      │   │                                │
+│  │  └──────────────────────────┘   │                                │
+│  └─────────────────────────────────┘                                │
+│                                                                      │
+│  ┌─────────────────────────────────┐                                │
+│  │  Shard 3                        │                                │
+│  │  ┌──────────────────────────┐   │                                │
+│  │  │ Replica 1 Pod            │   │  ← Data Shard C                │
+│  │  │ + Persistent Volume      │   │                                │
+│  │  └──────────────────────────┘   │                                │
+│  │  ┌──────────────────────────┐   │                                │
+│  │  │ Replica 2 Pod            │   │  ← Data Shard C (copy)         │
+│  │  │ + Persistent Volume      │   │                                │
+│  │  └──────────────────────────┘   │                                │
+│  └─────────────────────────────────┘                                │
+│                                                                      │
+│  ┌────────────────────────────────────────────────────────────────┐ │
+│  │  Services                                                       │ │
+│  │  - Cluster service (load balances across all replicas)         │ │
+│  │  - Shard services (direct access to specific shards)           │ │
+│  └────────────────────────────────────────────────────────────────┘ │
+└──────────────────────────────────────────────────────────────────────┘
+```
+
+**Characteristics:**
+- **Horizontal Scaling**: Data distributed across 3 shards (A, B, C)
+- **High Availability**: 2 replicas per shard (survives 1 node failure per shard)
+- **Query Parallelization**: Each shard processes queries in parallel
+- **Fault Tolerance**: ZooKeeper ensures consistency during failures
+- **Load Balancing**: Queries distributed across replicas
+
+### Data Distribution Example
+
+With 3 shards and 2 replicas:
+- **Total Nodes**: 6 ClickHouse pods
+- **Data Distribution**: Each shard holds 1/3 of the data
+- **Replication**: Each shard's data is duplicated on 2 nodes
+- **Query Performance**: ~3x faster for distributed queries (parallel processing)
+- **Fault Tolerance**: Can lose 1 node per shard without data loss
+
+## Operator Capabilities
+
+The Altinity ClickHouse Operator provides enterprise-grade automation:
+
+### Lifecycle Management
+- **Rolling Upgrades**: Update ClickHouse versions without downtime
+- **Scaling**: Add/remove shards and replicas dynamically
+- **Configuration Changes**: Update settings with automatic rollout
+
+### High Availability
+- **Automatic Failover**: Replicas take over if primary fails
+- **ZooKeeper Management**: Operator provisions and manages ZooKeeper automatically
+- **Health Monitoring**: Continuous health checks and auto-recovery
+
+### Storage Management
+- **Persistent Volumes**: Automatically provisions PVCs for each pod
+- **Volume Expansion**: Supports dynamic volume resizing (if storage class allows)
+- **Backup Integration**: Hooks for backup and recovery workflows
+
+### Security
+- **Secret Management**: Integrates with Kubernetes Secrets for credentials
+- **Network Policies**: Supports pod-to-pod encryption
+- **RBAC Integration**: Works with Kubernetes RBAC
+
+## Use Cases
+
+### Real-time Analytics
+Deploy ClickHouse for sub-second OLAP queries on streaming data from Kafka, Kinesis, or other sources.
+
+### Data Warehousing
+Build scalable data warehouses leveraging ClickHouse's columnar storage and compression (90%+ compression ratios).
+
+### Log Analytics
+Process and analyze billions of log events per day with millisecond query latency.
+
+### Time-Series Data
+Handle time-series workloads like metrics, IoT sensor data, and financial tick data with optimized storage engines.
+
+### Business Intelligence
+Power real-time dashboards and BI tools with instant query responses on massive datasets.
+
+### Event Analytics
+Track and analyze user behavioral events, clickstreams, and product analytics at scale.
+
+### Machine Learning Features
+Generate real-time ML features and aggregations for training and inference pipelines.
+
+## Why Altinity Operator?
+
+The Altinity ClickHouse Operator is the industry standard for running ClickHouse on Kubernetes:
+
+- **Battle-Tested**: Used by thousands of production deployments worldwide
+- **Active Development**: Regular updates and security patches from Altinity team
+- **Community Support**: Large community, extensive documentation, and professional support available
+- **Feature-Rich**: Comprehensive feature set beyond basic deployment
+- **ClickHouse Native**: Built by ClickHouse experts, optimized for ClickHouse-specific patterns
+- **Cloud-Agnostic**: Works on any Kubernetes cluster (EKS, GKE, AKS, self-hosted)
+
+## Summary
+
+The **ClickhouseKubernetes** module provides a clean, intuitive API that abstracts the complexity of operator-based ClickHouse deployments. You define your desired cluster topology and resource allocations; the Altinity operator handles all the operational complexity. This results in production-grade ClickHouse clusters that are reliable, scalable, and easy to manage.
+
+By leveraging the Altinity operator, you benefit from years of operational expertise and best practices encoded into the operator's reconciliation logic, allowing you to focus on your data and analytics rather than Kubernetes complexity.

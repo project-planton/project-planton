@@ -3,8 +3,10 @@ load("@rules_go//go:def.bzl", "go_library")
 go_library(
     name = "pulumistack",
     srcs = [
+        "cancel.go",
         "init.go",
         "project_name.go",
+        "remove.go",
         "run.go",
     ],
     importpath = "github.com/project-planton/project-planton/pkg/iac/pulumi/pulumistack",

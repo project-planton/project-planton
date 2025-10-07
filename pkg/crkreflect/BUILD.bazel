@@ -109,6 +109,7 @@ go_library(
         "//apis/project/planton/provider/gcp/gcpstaticwebsite/v1:gcpstaticwebsite",
         "//apis/project/planton/provider/gcp/gcpsubnetwork/v1:gcpsubnetwork",
         "//apis/project/planton/provider/gcp/gcpvpc/v1:gcpvpc",
+        "//apis/project/planton/provider/kubernetes/addon/altinityoperatorkubernetes/v1:altinityoperatorkubernetes",
         "//apis/project/planton/provider/kubernetes/addon/certmanagerkubernetes/v1:certmanagerkubernetes",
         "//apis/project/planton/provider/kubernetes/addon/elasticoperatorkubernetes/v1:elasticoperatorkubernetes",
         "//apis/project/planton/provider/kubernetes/addon/externaldnskubernetes/v1:externaldnskubernetes",

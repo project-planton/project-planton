@@ -13,13 +13,6 @@ resource "helm_release" "signoz" {
           podLabels        = local.final_labels
           commonLabels     = local.final_labels
 
-          # Use bitnamilegacy registry due to Bitnami discontinuing free Docker Hub images (Sep 2025)
-          # See: https://github.com/bitnami/containers/issues/83267
-          # Global image registry override for all Bitnami images (ClickHouse and ZooKeeper dependencies)
-          global = {
-            imageRegistry = "docker.io/bitnamilegacy"
-          }
-
           # Configure SigNoz container (main binary with UI, API, Ruler, Alertmanager)
           signoz = merge(
             {
@@ -69,11 +62,18 @@ resource "helm_release" "signoz" {
           )
 
           # Configure database (ClickHouse)
-          # External ClickHouse configuration
+          # Self-managed ClickHouse configuration
           clickhouse = !var.spec.database.is_external ? merge(
             {
               enabled      = true
               replicaCount = var.spec.database.managed_database.container.replicas
+              # Use bitnamilegacy registry due to Bitnami discontinuing free Docker Hub images (Sep 2025)
+              # See: https://github.com/bitnami/containers/issues/83267
+              # ClickHouse specific image override (not using global.imageRegistry to avoid affecting Altinity operator)
+              image = {
+                registry   = "docker.io"
+                repository = "bitnamilegacy/clickhouse"
+              }
               resources = {
                 limits = {
                   cpu    = var.spec.database.managed_database.container.resources.limits.cpu
@@ -123,6 +123,13 @@ resource "helm_release" "signoz" {
             {
               enabled      = true
               replicaCount = var.spec.database.managed_database.zookeeper.container.replicas
+              # Use bitnamilegacy registry due to Bitnami discontinuing free Docker Hub images (Sep 2025)
+              # See: https://github.com/bitnami/containers/issues/83267
+              # ZooKeeper specific image override (not using global.imageRegistry to avoid affecting Altinity operator)
+              image = {
+                registry   = "docker.io"
+                repository = "bitnamilegacy/zookeeper"
+              }
               resources = {
                 limits = {
                   cpu    = var.spec.database.managed_database.zookeeper.container.resources.limits.cpu

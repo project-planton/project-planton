@@ -71,10 +71,17 @@ func initializeLocals(ctx *pulumi.Context, stackInput *clickhousekubernetesv1.Cl
 
 	locals.KubeServiceName = target.Metadata.Name
 
+	// Determine cluster name - use spec.cluster_name if provided, otherwise use metadata.name
+	clusterName := target.Spec.ClusterName
+	if clusterName == "" {
+		clusterName = target.Metadata.Name
+	}
+
+	// Altinity operator uses these labels for pod selection
+	// These labels are automatically applied by the operator to ClickHouse pods
 	locals.ClickhousePodSelectorLabels = map[string]string{
-		"app.kubernetes.io/component": "clickhouse",
-		"app.kubernetes.io/instance":  locals.Namespace,
-		"app.kubernetes.io/name":      "clickhouse",
+		"clickhouse.altinity.com/chi":     clusterName,
+		"clickhouse.altinity.com/cluster": clusterName,
 	}
 
 	//export kubernetes service name

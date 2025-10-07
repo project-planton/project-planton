@@ -11,12 +11,12 @@ Think of Pulumi as your infrastructure's version control system. Just as Git let
 ### The Infrastructure Lifecycle
 
 ```
-┌──────────┐    ┌─────────┐    ┌────────┐    ┌─────────┐    ┌─────────┐
-│   init   │ -> │ preview │ -> │   up   │ -> │ refresh │ -> │ destroy │
-└──────────┘    └─────────┘    └────────┘    └─────────┘    └─────────┘
-     │               │              │              │              │
-  Create          Review         Deploy        Sync State     Teardown
-   Stack          Changes       Resources      with Cloud     Resources
+┌──────────┐    ┌─────────┐    ┌────────┐    ┌─────────┐    ┌─────────┐    ┌────────┐
+│   init   │ -> │ preview │ -> │   up   │ -> │ refresh │ -> │ destroy │ -> │ delete │
+└──────────┘    └─────────┘    └────────┘    └─────────┘    └─────────┘    └────────┘
+     │               │              │              │              │              │
+  Create          Review         Deploy        Sync State     Teardown       Remove
+   Stack          Changes       Resources      with Cloud     Resources      Stack
 ```
 
 ### Key Concepts
@@ -478,6 +478,186 @@ project-planton pulumi destroy --manifest prod.yaml
 
 ---
 
+### `delete` (or `rm`) - Remove Stack Metadata
+
+**What it does**: Deletes a Pulumi stack and all its configuration/state from the backend. This removes the stack metadata itself, not the cloud resources. Think of this as "deleting the Git repository" for your infrastructure tracking.
+
+**When to use**:
+- After destroying all resources and you no longer need the stack tracking
+- Cleaning up stack metadata for decommissioned projects
+- Removing accidentally created or test stacks
+- Freeing up stack names for reuse
+
+**Behavior**:
+- Removes the stack from your Pulumi backend (state storage)
+- Deletes all stack configuration and history
+- Does NOT destroy cloud resources (run `destroy` first if resources exist)
+- By default, refuses to delete stacks that still have resources
+- With `--force`, removes stack even if resources exist (dangerous!)
+- **Cannot be undone** once executed
+
+**Usage**:
+
+```bash
+project-planton pulumi delete --manifest <manifest-file> [flags]
+```
+
+**Aliases**: You can use `delete` or `rm` interchangeably.
+
+**Examples**:
+
+```bash
+# Standard workflow: destroy resources first, then remove stack
+project-planton pulumi destroy \
+  --manifest ops/resources/temp-env.yaml \
+  --yes
+
+# After resources are gone, remove the stack metadata
+project-planton pulumi delete \
+  --manifest ops/resources/temp-env.yaml
+
+# Using the 'rm' alias
+project-planton pulumi rm \
+  --manifest ops/resources/old-stack.yaml
+
+# Force removal (skip resource check) - use with extreme caution
+project-planton pulumi delete \
+  --manifest ops/resources/abandoned-stack.yaml \
+  --force
+
+# Remove stack via explicit stack FQDN
+project-planton pulumi delete \
+  --manifest ops/resources/resource.yaml \
+  --stack my-org/my-project/dev.TestStack.old
+```
+
+**What you'll see**:
+
+```
+● Loading manifest...
+✔ Manifest loaded
+● Validating manifest...
+✔ Manifest validated
+● Deleting Pulumi stack...
+
+🤝 Handing off to Pulumi...
+   Output below is from Pulumi
+
+Using Pulumi stack from manifest labels: planton-cloud/planton-cloud/dev.TestResource.temp
+
+pulumi module directory: /path/to/module
+Removing stack: planton-cloud/planton-cloud/dev.TestResource.temp
+
+Stack 'planton-cloud/planton-cloud/dev.TestResource.temp' has been removed!
+
+✓ Successfully removed stack: planton-cloud/planton-cloud/dev.TestResource.temp
+
+✔ Pulumi execution succeeded
+```
+
+**⚠️ Critical Warnings**:
+
+1. **Resources check**: By default, Pulumi refuses to delete stacks that still have resources. This is your safety net.
+2. **Destroy first**: Always run `destroy` before `delete` to properly clean up cloud resources.
+3. **State loss**: Once deleted, you lose all stack history, outputs, and configuration. No undo.
+4. **Force flag danger**: Using `--force` bypasses resource checks. Only use if you're absolutely certain resources are gone or managed elsewhere.
+5. **Orphaned resources**: If you force-delete a stack with resources, those resources become orphaned (unmanaged by Pulumi).
+
+**Difference: `destroy` vs `delete`**:
+
+```
+destroy:
+  - Tears down cloud resources (VMs, databases, etc.)
+  - Leaves stack metadata intact
+  - Updates state to reflect empty stack
+  - Resources are gone, but Pulumi still tracks the stack
+
+delete (rm):
+  - Removes stack metadata from backend
+  - Does NOT touch cloud resources
+  - Pulumi stops tracking this stack entirely
+  - Used AFTER destroy to clean up metadata
+```
+
+**Recommended Workflow**:
+
+```bash
+# Step 1: Verify what resources exist
+project-planton pulumi preview --manifest my-stack.yaml
+
+# Step 2: Destroy the cloud resources
+project-planton pulumi destroy --manifest my-stack.yaml
+
+# Step 3: Verify resources are gone (should show empty stack)
+project-planton pulumi preview --manifest my-stack.yaml
+
+# Step 4: Remove the stack metadata
+project-planton pulumi delete --manifest my-stack.yaml
+
+# Done! Stack and resources are completely gone
+```
+
+**When to use `--force`**:
+
+```bash
+# Scenario 1: Stack state is corrupted, resources already manually deleted
+# You know resources are gone but Pulumi state is wrong
+project-planton pulumi delete --manifest broken-stack.yaml --force
+
+# Scenario 2: Resources were imported/migrated to another stack
+# Original stack should no longer manage them
+project-planton pulumi delete --manifest old-stack.yaml --force
+
+# Scenario 3: Test/development stack with resources you don't care about
+# (Still not recommended - better to destroy properly)
+project-planton pulumi delete --manifest test-stack.yaml --force
+```
+
+**Best Practices**:
+
+```bash
+# ✅ Good: Complete cleanup workflow
+project-planton pulumi destroy --manifest stack.yaml --yes
+project-planton pulumi delete --manifest stack.yaml
+
+# ⚠️ Risky: Forcing without verification
+project-planton pulumi delete --manifest stack.yaml --force
+
+# ✅ Good: Verify stack FQDN before deleting
+pulumi stack --stack <stack-fqdn>  # Check what's in the stack
+project-planton pulumi delete --manifest stack.yaml
+
+# ✅ Good: Export state before deleting (backup)
+pulumi stack export --stack <stack-fqdn> > backup.json
+project-planton pulumi delete --manifest stack.yaml
+```
+
+**Troubleshooting**:
+
+**Error: "Stack still has resources"**
+
+```bash
+# Problem: Trying to delete stack with resources
+# Solution: Destroy resources first
+project-planton pulumi destroy --manifest stack.yaml
+project-planton pulumi delete --manifest stack.yaml
+
+# Or if resources are actually gone (state is wrong)
+project-planton pulumi refresh --manifest stack.yaml  # Sync state
+project-planton pulumi delete --manifest stack.yaml
+```
+
+**Error: "Stack not found"**
+
+```bash
+# Problem: Stack already deleted or never existed
+# Solution: Verify stack FQDN
+pulumi stack ls  # List all stacks
+# If not listed, it's already gone (nothing to do)
+```
+
+---
+
 ## Common Flags
 
 All commands support these flags. They're like the universal remote for infrastructure management.
@@ -530,6 +710,13 @@ project-planton pulumi up \
 
 ```bash
 project-planton pulumi up --manifest resource.yaml --yes
+```
+
+**`--force`**: Force removal of stack even if resources exist (only for `delete`/`rm` command).
+
+```bash
+# Use with extreme caution - only when you're certain resources are gone
+project-planton pulumi delete --manifest resource.yaml --force
 ```
 
 **`--set <key>=<value>`**: Override manifest values at runtime (repeatable flag).

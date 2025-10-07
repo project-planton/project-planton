@@ -31,6 +31,6 @@ resource "kubernetes_service_v1" "ingress_external_lb" {
   }
 
   depends_on = [
-    helm_release.clickhouse
+    kubernetes_manifest.clickhouse_installation
   ]
 }

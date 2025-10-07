@@ -1,71 +1,93 @@
-resource "helm_release" "clickhouse" {
-  name       = local.resource_id
-  repository = "https://charts.bitnami.com/bitnami"
-  chart      = "clickhouse"
-  version    = "6.2.15"
-  namespace  = kubernetes_namespace_v1.clickhouse_namespace.metadata[0].name
+resource "kubernetes_manifest" "clickhouse_installation" {
+  manifest = {
+    apiVersion = "clickhouse.altinity.com/v1"
+    kind       = "ClickHouseInstallation"
 
-  values = [
-    yamlencode(
-      merge(
-        {
-          fullnameOverride  = var.metadata.name
-          namespaceOverride = local.namespace
-          shards            = var.spec.container.replicas
-          replicaCount      = var.spec.container.replicas
-          
-          # Use bitnamilegacy registry due to Bitnami discontinuing free Docker Hub images (Sep 2025)
-          # See: https://github.com/bitnami/containers/issues/83267
-          global = {
-            imageRegistry = "docker.io/bitnamilegacy"
-          }
-          
-          image = {
-            repository = "clickhouse"
-          }
-          
-          resources = {
-            limits = {
-              cpu    = var.spec.container.resources.limits.cpu
-              memory = var.spec.container.resources.limits.memory
-            }
-            requests = {
-              cpu    = var.spec.container.resources.requests.cpu
-              memory = var.spec.container.resources.requests.memory
+    metadata = {
+      name      = local.cluster_name
+      namespace = kubernetes_namespace_v1.clickhouse_namespace.metadata[0].name
+      labels    = local.final_labels
+    }
+
+    spec = {
+      configuration = {
+        # User configuration with password from secret
+        users = {
+          "${local.default_username}/password_sha256_hex" = {
+            k8s_secret = {
+              name = kubernetes_secret_v1.clickhouse_password.metadata[0].name
+              key  = local.password_secret_key
             }
           }
-          
-          persistence = {
-            enabled = var.spec.container.is_persistence_enabled
-            size    = var.spec.container.disk_size
-          }
-          
-          podLabels    = local.final_labels
-          commonLabels = local.final_labels
-          
-          auth = {
-            existingSecret    = kubernetes_secret_v1.clickhouse_password.metadata[0].name
-            existingSecretKey = "admin-password"
-            username          = "default"
-          }
-          
-          # Configure clustering if enabled
-          keeper = local.cluster_is_enabled ? {
-            enabled = true
-          } : null
-          
-          zookeeper = local.cluster_is_enabled ? {
-            enabled = true
-            image = {
-              repository = "zookeeper"
+        }
+
+        # Cluster configuration
+        clusters = [
+          {
+            name = local.cluster_name
+            layout = {
+              shardsCount   = local.shard_count
+              replicasCount = local.replica_count
             }
-          } : null
-        },
-        # Merge any user-provided helm_values
-        var.spec.helm_values != null ? var.spec.helm_values : {}
-      )
-    )
-  ]
+          }
+        ]
+
+        # ZooKeeper configuration (for clustered deployments)
+        zookeeper = local.cluster_is_enabled ? local.zookeeper_config : null
+      }
+
+      # Default templates
+      defaults = {
+        templates = {
+          podTemplate             = "clickhouse-pod"
+          dataVolumeClaimTemplate = "data-volume"
+        }
+      }
+
+      # Templates
+      templates = {
+        # Pod template with container resources
+        podTemplates = [
+          {
+            name = "clickhouse-pod"
+            spec = {
+              containers = [
+                {
+                  name  = "clickhouse"
+                  image = "clickhouse/clickhouse-server:${local.clickhouse_version}"
+                  resources = {
+                    requests = {
+                      cpu    = var.spec.container.resources.requests.cpu
+                      memory = var.spec.container.resources.requests.memory
+                    }
+                    limits = {
+                      cpu    = var.spec.container.resources.limits.cpu
+                      memory = var.spec.container.resources.limits.memory
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        ]
+
+        # Volume claim template for persistence
+        volumeClaimTemplates = [
+          {
+            name = "data-volume"
+            spec = {
+              accessModes = ["ReadWriteOnce"]
+              resources = {
+                requests = {
+                  storage = var.spec.container.disk_size
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
 
   depends_on = [
     kubernetes_namespace_v1.clickhouse_namespace,

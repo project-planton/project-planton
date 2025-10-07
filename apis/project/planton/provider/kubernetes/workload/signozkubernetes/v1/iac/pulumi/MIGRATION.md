@@ -79,9 +79,11 @@ spec:
       zookeeper:
         isEnabled: false
   helmValues:
-    global.imageRegistry: "docker.io/bitnamilegacy"
-    clickhouse.image.repository: "clickhouse"
-    zookeeper.image.repository: "zookeeper"
+    # Override specific images (not using global.imageRegistry to avoid affecting Altinity operator)
+    clickhouse.image.registry: "docker.io"
+    clickhouse.image.repository: "bitnamilegacy/clickhouse"
+    zookeeper.image.registry: "docker.io"
+    zookeeper.image.repository: "bitnamilegacy/zookeeper"
 ```
 
 Then run:
@@ -92,18 +94,28 @@ project-planton pulumi up --manifest signoz.yaml \
 
 ### For New Deployments
 
-New deployments automatically use the `bitnamilegacy` registry. No additional configuration needed.
+New deployments automatically use the `bitnamilegacy` registry for ClickHouse and ZooKeeper images. No additional configuration needed unless you want to use official images (see alternatives below).
 
 ## Long-term Alternatives
 
 ### For ClickHouse Dependency
 
-1. **Use Official ClickHouse Images** (Recommended):
+1. **Use Official ClickHouse Images** (Recommended for long-term):
    ```yaml
    helmValues:
      clickhouse.image.registry: "docker.io"
      clickhouse.image.repository: "clickhouse/clickhouse-server"
      clickhouse.image.tag: "24.8"
+   ```
+
+   Or specify in the spec directly:
+   ```yaml
+   database:
+     managedDatabase:
+       container:
+         image:
+           repo: clickhouse/clickhouse-server
+           tag: "24.8"
    ```
 
 2. **Altinity ClickHouse Operator**: Consider using the Altinity ClickHouse Operator which uses official images
@@ -119,6 +131,17 @@ New deployments automatically use the `bitnamilegacy` registry. No additional co
      zookeeper.image.registry: "docker.io"
      zookeeper.image.repository: "zookeeper"
      zookeeper.image.tag: "3.8"
+   ```
+
+   Or specify in the spec directly:
+   ```yaml
+   database:
+     managedDatabase:
+       zookeeper:
+         container:
+           image:
+             repo: zookeeper
+             tag: "3.8"
    ```
 
 2. **External ZooKeeper**: Deploy ZooKeeper separately using the official operator or helm chart

@@ -34,6 +34,10 @@ elastic_operator_release=v2.14.0
 #https://github.com/keycloak/keycloak-k8s-resources/tree/25.0.4/kubernetes
 keycloak_release=25.0.4
 
+#https://github.com/Altinity/clickhouse-operator/tree/master/deploy/operator
+#https://github.com/Altinity/clickhouse-operator/tree/0.25.4
+altinity_operator_release=0.25.4
+
 .PHONY: clean
 clean:
 	rm -rf ${go_build_dir}
@@ -96,8 +100,12 @@ gen-keycloak:
 	crd2pulumi --force --goPath=keycloak https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/${keycloak_release}/kubernetes/keycloakrealmimports.k8s.keycloak.org-v1.yml \
 		https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/${keycloak_release}/kubernetes/keycloaks.k8s.keycloak.org-v1.yml
 
+.PHONY: gen-altinity-operator
+gen-altinity-operator:
+	crd2pulumi --force --goPath=altinityoperator https://raw.githubusercontent.com/Altinity/clickhouse-operator/${altinity_operator_release}/deploy/operator/clickhouse-operator-install-bundle.yaml
+
 .PHONY: gen
-gen: clean gen-gateway-apis gen-istio gen-cert-manager gen-solr-operator gen-strimzi-operator gen-zalando-operator gen-external-secrets gen-elastic-operator gen-keycloak
+gen: clean gen-gateway-apis gen-istio gen-cert-manager gen-solr-operator gen-strimzi-operator gen-zalando-operator gen-external-secrets gen-elastic-operator gen-keycloak gen-altinity-operator
 
 .PHONY: build
 build: clean gen

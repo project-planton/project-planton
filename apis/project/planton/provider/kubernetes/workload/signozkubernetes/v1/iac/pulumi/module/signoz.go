@@ -18,12 +18,6 @@ func signoz(ctx *pulumi.Context, locals *Locals,
 		"fullnameOverride": pulumi.String(locals.SignozKubernetes.Metadata.Name),
 		"podLabels":        pulumi.ToStringMap(locals.KubernetesLabels),
 		"commonLabels":     pulumi.ToStringMap(locals.KubernetesLabels),
-		// Use bitnamilegacy registry due to Bitnami discontinuing free Docker Hub images (Sep 2025)
-		// See: https://github.com/bitnami/containers/issues/83267
-		// Global image registry override for all Bitnami images (ClickHouse and ZooKeeper dependencies)
-		"global": pulumi.Map{
-			"imageRegistry": pulumi.String("docker.io/bitnamilegacy"),
-		},
 	}
 
 	// Configure SigNoz container (main binary with UI, API, Ruler, Alertmanager)
@@ -93,6 +87,21 @@ func signoz(ctx *pulumi.Context, locals *Locals,
 				managed := locals.SignozKubernetes.Spec.Database.ManagedDatabase
 				clickhouseValues := pulumi.Map{
 					"enabled": pulumi.Bool(true),
+					// Use bitnamilegacy registry due to Bitnami discontinuing free Docker Hub images (Sep 2025)
+					// See: https://github.com/bitnami/containers/issues/83267
+					// ClickHouse specific image override (not using global.imageRegistry to avoid affecting Altinity operator)
+					"image": pulumi.Map{
+						"registry":   pulumi.String("docker.io"),
+						"repository": pulumi.String("bitnamilegacy/clickhouse"),
+					},
+					// ZooKeeper is a subchart dependency of ClickHouse in SigNoz
+					// Override ZooKeeper image here under clickhouse.zookeeper
+					"zookeeper": pulumi.Map{
+						"image": pulumi.Map{
+							"registry":   pulumi.String("docker.io"),
+							"repository": pulumi.String("bitnamilegacy/zookeeper"),
+						},
+					},
 				}
 
 				// ClickHouse container configuration
@@ -106,6 +115,7 @@ func signoz(ctx *pulumi.Context, locals *Locals,
 
 					if managed.Container.Image != nil {
 						clickhouseValues["image"] = pulumi.Map{
+							"registry":   pulumi.String("docker.io"),
 							"repository": pulumi.String(managed.Container.Image.Repo),
 							"tag":        pulumi.String(managed.Container.Image.Tag),
 						}
@@ -128,37 +138,48 @@ func signoz(ctx *pulumi.Context, locals *Locals,
 				helmValues["clickhouse"] = clickhouseValues
 
 				// Zookeeper configuration (required for distributed ClickHouse)
+				// Note: In SigNoz, ZooKeeper settings must be configured under clickhouse.zookeeper
 				if managed.Zookeeper != nil && managed.Zookeeper.IsEnabled {
-					zookeeperValues := pulumi.Map{
-						"enabled": pulumi.Bool(true),
+					// Get existing clickhouse.zookeeper map or create new one
+					zkConfig, hasZk := clickhouseValues["zookeeper"].(pulumi.Map)
+					if !hasZk {
+						zkConfig = pulumi.Map{}
 					}
 
+					zkConfig["enabled"] = pulumi.Bool(true)
+
 					if managed.Zookeeper.Container != nil {
-						zookeeperValues["replicaCount"] = pulumi.Int(int(managed.Zookeeper.Container.Replicas))
+						zkConfig["replicaCount"] = pulumi.Int(int(managed.Zookeeper.Container.Replicas))
 
 						if managed.Zookeeper.Container.Resources != nil {
-							zookeeperValues["resources"] = containerresources.ConvertToPulumiMap(
+							zkConfig["resources"] = containerresources.ConvertToPulumiMap(
 								managed.Zookeeper.Container.Resources)
 						}
 
 						if managed.Zookeeper.Container.Image != nil {
-							zookeeperValues["image"] = pulumi.Map{
+							zkConfig["image"] = pulumi.Map{
+								"registry":   pulumi.String("docker.io"),
 								"repository": pulumi.String(managed.Zookeeper.Container.Image.Repo),
 								"tag":        pulumi.String(managed.Zookeeper.Container.Image.Tag),
 							}
 						}
 
-						zookeeperValues["persistence"] = pulumi.Map{
+						zkConfig["persistence"] = pulumi.Map{
 							"size": pulumi.String(managed.Zookeeper.Container.DiskSize),
 						}
 					}
 
-					helmValues["zookeeper"] = zookeeperValues
+					// Update the clickhouse.zookeeper configuration
+					clickhouseValues["zookeeper"] = zkConfig
 				} else {
-					// Explicitly disable Zookeeper if not needed
-					helmValues["zookeeper"] = pulumi.Map{
-						"enabled": pulumi.Bool(false),
+					// Get existing clickhouse.zookeeper map or create new one
+					zkConfig, hasZk := clickhouseValues["zookeeper"].(pulumi.Map)
+					if !hasZk {
+						zkConfig = pulumi.Map{}
 					}
+					// Explicitly disable Zookeeper if not needed
+					zkConfig["enabled"] = pulumi.Bool(false)
+					clickhouseValues["zookeeper"] = zkConfig
 				}
 			}
 		}

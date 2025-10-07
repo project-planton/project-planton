@@ -1,179 +1,18 @@
 # ClickhouseKubernetes - Example Configurations
 
-This document provides a series of examples demonstrating various configurations of the **ClickhouseKubernetes** API resource. Each example shows a typical use case, with corresponding YAML that can be applied via `planton apply -f <filename>`.
+This document provides examples demonstrating various configurations of the **ClickhouseKubernetes** API resource using the Altinity ClickHouse Operator. Each example shows a typical use case with corresponding YAML that can be applied via `planton pulumi up`.
 
 ---
 
-## 1. Minimal Configuration
+## Prerequisites
 
-A simple example deploying ClickHouse with default settings for resource allocation and persistence enabled.
-
-```yaml
-apiVersion: kubernetes.project-planton.org/v1
-kind: ClickhouseKubernetes
-metadata:
-  name: minimal-clickhouse
-spec:
-  container:
-    replicas: 1
-    isPersistenceEnabled: true
-    diskSize: 8Gi
-    resources:
-      requests:
-        cpu: 100m
-        memory: 256Mi
-      limits:
-        cpu: 1000m
-        memory: 2Gi
-```
-
-**Key points**:
-- Single replica with 8Gi persistent volume
-- Default resource allocations suitable for development/testing
-- No external ingress configured
+The **Altinity ClickHouse Operator** must be installed on your cluster before deploying these examples. See the main [README.md](README.md) for installation instructions.
 
 ---
 
-## 2. Production Configuration with Larger Resources
+## 1. Minimal Standalone Instance
 
-Demonstrates a production-ready ClickHouse deployment with substantial resource allocations for high-performance workloads.
-
-```yaml
-apiVersion: kubernetes.project-planton.org/v1
-kind: ClickhouseKubernetes
-metadata:
-  name: production-clickhouse
-spec:
-  container:
-    replicas: 1
-    isPersistenceEnabled: true
-    diskSize: 100Gi
-    resources:
-      requests:
-        cpu: 500m
-        memory: 2Gi
-      limits:
-        cpu: 4000m
-        memory: 8Gi
-```
-
-**Key points**:
-- Larger persistent volume (100Gi) for storing substantial datasets
-- Higher CPU and memory allocations for better query performance
-- Still single replica (standalone mode)
-
----
-
-## 3. Clustered Deployment with Sharding and Replication
-
-Example of a distributed ClickHouse cluster with sharding for horizontal scalability and replication for high availability.
-
-```yaml
-apiVersion: kubernetes.project-planton.org/v1
-kind: ClickhouseKubernetes
-metadata:
-  name: clustered-clickhouse
-spec:
-  container:
-    replicas: 3
-    isPersistenceEnabled: true
-    diskSize: 50Gi
-    resources:
-      requests:
-        cpu: 500m
-        memory: 2Gi
-      limits:
-        cpu: 2000m
-        memory: 4Gi
-  cluster:
-    isEnabled: true
-    shardCount: 3
-    replicaCount: 2
-```
-
-**Key points**:
-- Clustering enabled with 3 shards and 2 replicas per shard
-- Distributed query processing across multiple nodes
-- ZooKeeper automatically deployed for cluster coordination
-- Suitable for large-scale analytics workloads
-
----
-
-## 4. Custom Helm Values Configuration
-
-Demonstrates how to customize the ClickHouse deployment using Helm chart values for advanced configurations.
-
-```yaml
-apiVersion: kubernetes.project-planton.org/v1
-kind: ClickhouseKubernetes
-metadata:
-  name: custom-clickhouse
-spec:
-  container:
-    replicas: 2
-    isPersistenceEnabled: true
-    diskSize: 30Gi
-    resources:
-      requests:
-        cpu: 200m
-        memory: 512Mi
-      limits:
-        cpu: 2000m
-        memory: 4Gi
-  helmValues:
-    auth.username: clickhouse_user
-    defaultConfigurationOverrides: |
-      <clickhouse>
-        <max_connections>100</max_connections>
-        <max_concurrent_queries>50</max_concurrent_queries>
-      </clickhouse>
-```
-
-**Key points**:
-- Custom username configuration
-- Override ClickHouse server configuration parameters
-- Fine-tune connection and query limits
-- Leverage full power of Bitnami ClickHouse Helm chart
-
----
-
-## 5. Ingress-Enabled Deployment for External Access
-
-In this example, ingress is enabled to allow external access to the ClickHouse cluster via a LoadBalancer service.
-
-```yaml
-apiVersion: kubernetes.project-planton.org/v1
-kind: ClickhouseKubernetes
-metadata:
-  name: ingress-clickhouse
-spec:
-  container:
-    replicas: 1
-    isPersistenceEnabled: true
-    diskSize: 20Gi
-    resources:
-      requests:
-        cpu: 200m
-        memory: 512Mi
-      limits:
-        cpu: 2000m
-        memory: 4Gi
-  ingress:
-    isEnabled: true
-    dnsDomain: example.com
-```
-
-**Key points**:
-- LoadBalancer service created with external DNS annotation
-- External hostname: `ingress-clickhouse.example.com`
-- Internal hostname also configured for in-cluster access
-- Both HTTP (8123) and native (9000) ports exposed
-
----
-
-## 6. Development Environment with Minimal Resources
-
-This example shows a minimal configuration suitable for local development or testing with reduced resource allocations and no persistence.
+A simple single-node ClickHouse deployment suitable for development and testing.
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
@@ -181,40 +20,78 @@ kind: ClickhouseKubernetes
 metadata:
   name: dev-clickhouse
 spec:
+  clusterName: dev-cluster
   container:
     replicas: 1
-    isPersistenceEnabled: false
+    isPersistenceEnabled: true
+    diskSize: 20Gi
     resources:
       requests:
-        cpu: 50m
-        memory: 128Mi
-      limits:
         cpu: 500m
-        memory: 512Mi
+        memory: 1Gi
+      limits:
+        cpu: 2000m
+        memory: 4Gi
 ```
 
 **Key points**:
-- No persistence (ephemeral storage)
-- Minimal resource allocation
-- Quick startup for development/testing
-- Data lost on pod restart
+- Single replica with 20Gi persistent volume
+- Suitable resource allocations for development
+- Operator manages all Kubernetes resources
+- No clustering - standalone mode
 
 ---
 
-## 7. High Availability Setup
+## 2. Production Standalone with Custom Cluster Name
 
-Example of a highly available ClickHouse deployment with multiple replicas and adequate resources.
+Production-ready single-node deployment with larger resources and explicit cluster naming.
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
 kind: ClickhouseKubernetes
 metadata:
-  name: ha-clickhouse
+  name: prod-clickhouse
+  org: my-org
+  env: production
 spec:
+  clusterName: production-analytics
+  version: "24.3"
   container:
-    replicas: 3
+    replicas: 1
     isPersistenceEnabled: true
-    diskSize: 50Gi
+    diskSize: 200Gi
+    resources:
+      requests:
+        cpu: 2000m
+        memory: 8Gi
+      limits:
+        cpu: 8000m
+        memory: 32Gi
+```
+
+**Key points**:
+- Custom cluster name: `production-analytics`
+- Pinned ClickHouse version for stability
+- Large persistent volume (200Gi)
+- High resource allocation for production workloads
+- Organization and environment metadata for tracking
+
+---
+
+## 3. Distributed Cluster with Sharding
+
+Horizontally scaled cluster with multiple shards for parallel query processing.
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: ClickhouseKubernetes
+metadata:
+  name: distributed-analytics
+spec:
+  clusterName: analytics-cluster
+  container:
+    isPersistenceEnabled: true
+    diskSize: 100Gi
     resources:
       requests:
         cpu: 1000m
@@ -224,67 +101,308 @@ spec:
         memory: 16Gi
   cluster:
     isEnabled: true
-    shardCount: 2
-    replicaCount: 3
+    shardCount: 4
+    replicaCount: 1
 ```
 
 **Key points**:
-- 2 shards with 3 replicas each (total 6 nodes)
-- High resource allocation for production workloads
-- Data replicated across nodes for redundancy
-- Query load distributed across shards
+- 4 shards for horizontal scaling
+- 1 replica per shard (4 total nodes)
+- ZooKeeper automatically managed by operator
+- Distributed query execution across shards
+- Each shard processes subset of data
 
 ---
 
-## 8. Using Alternative Docker Registry
+## 4. High Availability Cluster with Replication
 
-Due to Bitnami's registry changes, you can override the default bitnamilegacy registry to use official ClickHouse images or other sources.
+Production cluster with replication for high availability and fault tolerance.
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
 kind: ClickhouseKubernetes
 metadata:
-  name: custom-registry-clickhouse
+  name: ha-clickhouse
 spec:
+  clusterName: ha-analytics
+  version: "24.3"
   container:
-    replicas: 1
     isPersistenceEnabled: true
-    diskSize: 20Gi
+    diskSize: 150Gi
     resources:
       requests:
-        cpu: 200m
-        memory: 512Mi
-      limits:
         cpu: 2000m
-        memory: 4Gi
-  helmValues:
-    image.registry: docker.io
-    image.repository: clickhouse/clickhouse-server
-    image.tag: "24.8"
+        memory: 8Gi
+      limits:
+        cpu: 6000m
+        memory: 24Gi
+  cluster:
+    isEnabled: true
+    shardCount: 3
+    replicaCount: 3
 ```
 
 **Key points**:
-- Override default bitnamilegacy registry with official ClickHouse images
-- Use official vendor images directly from ClickHouse
-- Provides long-term stability without Bitnami dependency
-- Custom image tags for version control
+- 3 shards with 3 replicas each (9 total nodes)
+- High availability - survives 2 node failures per shard
+- Data automatically replicated across replicas
+- Query load balanced across replicas
+- Operator manages ZooKeeper for coordination
 
 ---
 
-## Conclusion
+## 5. Cluster with External ZooKeeper
 
-These examples illustrate the breadth of **ClickhouseKubernetes** features, from basic single-node deployments to advanced distributed clusters with sharding and replication. By consolidating Kubernetes manifests behind a concise API resource definition, you can maintain consistency, reduce error-prone manual config, and accelerate delivery cycles.
+Advanced configuration using external ZooKeeper for shared coordination across multiple ClickHouse clusters.
 
-> **Getting Started**
-> 1. Create a YAML file for your ClickHouse cluster (e.g., `clickhouse.yaml`).
-> 2. Run:
->    ```shell
->    planton apply -f clickhouse.yaml
->    ```
-> 3. Verify the deployment:
->    ```shell
->    kubectl get pods -n <namespace>
->    kubectl logs -n <namespace> <pod-name>
->    ```
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: ClickhouseKubernetes
+metadata:
+  name: enterprise-clickhouse
+spec:
+  clusterName: enterprise-cluster
+  container:
+    isPersistenceEnabled: true
+    diskSize: 200Gi
+    resources:
+      requests:
+        cpu: 4000m
+        memory: 16Gi
+      limits:
+        cpu: 12000m
+        memory: 48Gi
+  cluster:
+    isEnabled: true
+    shardCount: 6
+    replicaCount: 2
+  zookeeper:
+    useExternal: true
+    nodes:
+      - "zk-0.zookeeper.default.svc.cluster.local:2181"
+      - "zk-1.zookeeper.default.svc.cluster.local:2181"
+      - "zk-2.zookeeper.default.svc.cluster.local:2181"
+```
 
-For additional details, see the [ClickhouseKubernetes API documentation](../README.md), or reach out to our support team.
+**Key points**:
+- External ZooKeeper for production-grade coordination
+- 6 shards with 2 replicas (12 total nodes)
+- Enterprise-scale resources
+- Shared ZooKeeper can coordinate multiple ClickHouse clusters
+- Better isolation and control over ZooKeeper
+
+---
+
+## 6. Development Cluster with Ephemeral Storage
+
+Lightweight cluster for testing and development with no persistence.
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: ClickhouseKubernetes
+metadata:
+  name: test-clickhouse
+spec:
+  clusterName: test-cluster
+  container:
+    replicas: 1
+    isPersistenceEnabled: false
+    resources:
+      requests:
+        cpu: 100m
+        memory: 512Mi
+      limits:
+        cpu: 500m
+        memory: 2Gi
+```
+
+**Key points**:
+- No persistent storage - data lost on restart
+- Minimal resources for quick testing
+- Fast startup and teardown
+- Cost-effective for temporary workloads
+
+---
+
+## 7. Ingress-Enabled Cluster with External Access
+
+Cluster exposed to external clients via LoadBalancer with DNS.
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: ClickhouseKubernetes
+metadata:
+  name: public-analytics
+spec:
+  clusterName: public-cluster
+  container:
+    replicas: 1
+    isPersistenceEnabled: true
+    diskSize: 100Gi
+    resources:
+      requests:
+        cpu: 1000m
+        memory: 4Gi
+      limits:
+        cpu: 4000m
+        memory: 16Gi
+  ingress:
+    isEnabled: true
+    dnsDomain: example.com
+```
+
+**Key points**:
+- LoadBalancer service for external access
+- External DNS: `public-analytics.example.com`
+- Both HTTP (8123) and native (9000) ports exposed
+- Suitable for external analytics tools and dashboards
+- Consider security implications (firewall, authentication)
+
+---
+
+## 8. Multi-Environment with Custom Versions
+
+Example showing version pinning for different environments.
+
+```yaml
+# Staging Environment
+apiVersion: kubernetes.project-planton.org/v1
+kind: ClickhouseKubernetes
+metadata:
+  name: staging-clickhouse
+  env: staging
+spec:
+  clusterName: staging-analytics
+  version: "24.4"  # Testing newer version
+  container:
+    replicas: 1
+    isPersistenceEnabled: true
+    diskSize: 50Gi
+    resources:
+      requests:
+        cpu: 500m
+        memory: 2Gi
+      limits:
+        cpu: 2000m
+        memory: 8Gi
+
+---
+
+# Production Environment
+apiVersion: kubernetes.project-planton.org/v1
+kind: ClickhouseKubernetes
+metadata:
+  name: production-clickhouse
+  env: production
+spec:
+  clusterName: production-analytics
+  version: "24.3"  # Stable version
+  container:
+    isPersistenceEnabled: true
+    diskSize: 200Gi
+    resources:
+      requests:
+        cpu: 2000m
+        memory: 8Gi
+      limits:
+        cpu: 8000m
+        memory: 32Gi
+  cluster:
+    isEnabled: true
+    shardCount: 4
+    replicaCount: 2
+```
+
+**Key points**:
+- Different versions for testing vs production
+- Staging validates new versions before production
+- Environment-specific resource allocations
+- Consistent configuration structure across environments
+
+---
+
+## Deployment Instructions
+
+1. **Ensure Operator is Installed**:
+   ```bash
+   kubectl get pods -n clickhouse-operator
+   ```
+
+2. **Apply Configuration**:
+   ```bash
+   planton pulumi up --stack-input clickhouse.yaml \
+     --module-dir apis/project/planton/provider/kubernetes/workload/clickhousekubernetes/v1/iac/pulumi
+   ```
+
+3. **Verify Deployment**:
+   ```bash
+   # Check ClickHouseInstallation
+   kubectl get clickhouseinstallations -n <namespace>
+   
+   # Check pods
+   kubectl get pods -n <namespace>
+   
+   # Check services
+   kubectl get svc -n <namespace>
+   ```
+
+4. **Access ClickHouse**:
+   ```bash
+   # Use port-forward command from stack outputs
+   kubectl port-forward -n <namespace> service/<cluster-name> 8123:8123
+   
+   # Connect with clickhouse-client
+   clickhouse-client --host localhost --port 8123
+   ```
+
+---
+
+## Best Practices
+
+### Resource Sizing
+- **Development**: 500m CPU, 1-2Gi memory
+- **Production standalone**: 2-4 CPU cores, 8-16Gi memory  
+- **Production clustered**: 4-8 CPU cores, 16-48Gi memory per node
+
+### Storage Planning
+- **Small datasets** (<100GB): 20-50Gi per node
+- **Medium datasets** (100GB-1TB): 100-500Gi per node
+- **Large datasets** (>1TB): 500Gi-2Ti per node, consider sharding
+
+### Clustering Strategy
+- **Development/Testing**: Standalone (1 node)
+- **Small production**: 2-3 shards, 2 replicas (4-6 nodes)
+- **Large production**: 4-8 shards, 2-3 replicas (8-24 nodes)
+
+### Version Management
+- Pin specific versions in production
+- Test new versions in staging first
+- Follow Altinity/ClickHouse release notes for breaking changes
+
+---
+
+## Troubleshooting
+
+### Check Operator Logs
+```bash
+kubectl logs -n clickhouse-operator deployment/clickhouse-operator
+```
+
+### Check ClickHouseInstallation Status
+```bash
+kubectl describe clickhouseinstallation <cluster-name> -n <namespace>
+```
+
+### Check ClickHouse Logs
+```bash
+kubectl logs -n <namespace> <pod-name>
+```
+
+### Verify ZooKeeper Connectivity (Clustered Mode)
+```bash
+kubectl exec -n <namespace> <pod-name> -- clickhouse-client --query "SELECT * FROM system.zookeeper WHERE path='/'"
+```
+
+---
+
+For additional details and advanced configurations, see the [ClickhouseKubernetes API documentation](../README.md) and the [Altinity Operator documentation](https://github.com/Altinity/clickhouse-operator).

@@ -15,70 +15,94 @@ extend google.protobuf.FieldOptions {
 /**
  * **ClickhouseKubernetesSpec** defines the configuration for deploying ClickHouse on a Kubernetes cluster.
  * This message specifies the parameters needed to create and manage a ClickHouse deployment within a Kubernetes environment.
- * It includes container specifications, ingress settings, and cluster configuration options.
+ * It includes cluster name, container specifications, ingress settings, and cluster configuration options.
+ * 
+ * The deployment uses the Altinity ClickHouse Operator, which provides production-grade ClickHouse cluster management
+ * with features like automated upgrades, scaling, and ZooKeeper coordination.
  */
 message ClickhouseKubernetesSpec {
+  /**
+   * The name of the ClickHouse cluster.
+   * This is used as the identifier for the ClickHouseInstallation custom resource.
+   * Must be a valid DNS subdomain name (lowercase alphanumeric with hyphens).
+   * Defaults to the resource metadata name if not specified.
+   */
+  string cluster_name = 1 [
+    (buf.validate.field).string.pattern = "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"
+  ];
+
   // The container specifications for the ClickHouse deployment.
-  ClickhouseKubernetesContainer container = 1 [
+  ClickhouseKubernetesContainer container = 2 [
     (default_container) = {
       replicas: 1,
       resources:  {
         limits {
-          cpu: "1000m"
-          memory: "2Gi"
+          cpu: "2000m"
+          memory: "4Gi"
         },
         requests {
-          cpu: "100m"
-          memory: "256Mi"
+          cpu: "500m"
+          memory: "1Gi"
         }
       },
       is_persistence_enabled: true,
-      disk_size: "8Gi"
+      disk_size: "50Gi"
     }
   ];
 
   // The ingress configuration for the ClickHouse deployment.
-  project.planton.shared.kubernetes.IngressSpec ingress = 2;
+  project.planton.shared.kubernetes.IngressSpec ingress = 3;
 
   // The cluster configuration for ClickHouse sharding and replication.
-  ClickhouseKubernetesClusterConfig cluster = 3;
+  ClickhouseKubernetesClusterConfig cluster = 4;
 
   /**
-   * A map of key-value pairs that provide additional customization options for the Helm chart used
-   * to deploy ClickHouse on Kubernetes. These values allow for further refinement of the deployment,
-   * such as customizing resource limits, setting environment variables, or specifying version tags.
-   * For detailed information on the available options, refer to the Helm chart documentation at:
-   * https://artifacthub.io/packages/helm/bitnami/clickhouse
+   * The ClickHouse version to deploy (e.g., "24.3", "23.8").
+   * If not specified, the operator's default stable version will be used.
+   * It's recommended to specify a version for production deployments to ensure consistency.
    */
-  map<string, string> helm_values = 4;
+  string version = 5;
+
+  /**
+   * ZooKeeper configuration for cluster coordination.
+   * Optional. If not specified, the operator will automatically manage ZooKeeper for clustered deployments.
+   * For production clusters with high availability requirements, consider using external ZooKeeper.
+   */
+  ClickhouseKubernetesZookeeperConfig zookeeper = 6;
 }
 
 /**
  * **ClickhouseKubernetesContainer** specifies the container configuration for the ClickHouse application.
- * It includes settings such as the number of replicas, resource allocations, data persistence options, and disk size.
+ * It includes resource allocations, data persistence options, and disk size.
  * Proper configuration ensures optimal performance and data reliability for your ClickHouse deployment.
  */
 message ClickhouseKubernetesContainer {
-  // The number of ClickHouse pods to deploy.
+  /**
+   * The number of ClickHouse replicas (pods) to deploy.
+   * For non-clustered deployments, this is the total number of ClickHouse pods.
+   * For clustered deployments, this value is ignored in favor of shard_count * replica_count.
+   * Must be at least 1.
+   */
   int32 replicas = 1 [
     (buf.validate.field).int32.gte = 1
   ];
 
-  // The CPU and memory resources allocated to the ClickHouse container.
+  // The CPU and memory resources allocated to each ClickHouse container.
   project.planton.shared.kubernetes.ContainerResources resources = 2;
 
   /**
    * A flag to enable or disable data persistence for ClickHouse.
    * When enabled, data is persisted to a storage volume, allowing data to survive pod restarts.
-   * Defaults to `true`.
+   * Defaults to `true`. Strongly recommended for production use.
    */
   bool is_persistence_enabled = 3;
 
   /**
-   * The size of the persistent volume attached to each ClickHouse pod (e.g., "10Gi").
+   * The size of the persistent volume attached to each ClickHouse pod (e.g., "50Gi", "100Gi").
    * If the client does not provide a value, a default value is configured.
    * This attribute is ignored when persistence is not enabled.
-   * **Note:** This value cannot be modified after creation due to Kubernetes limitations on stateful sets.
+   * **Note:** This value cannot be easily modified after creation due to Kubernetes limitations.
+   * Plan for growth and allocate sufficient storage initially.
    */
   string disk_size = 4;
 
@@ -92,26 +116,36 @@ message ClickhouseKubernetesContainer {
 /**
  * **ClickhouseKubernetesClusterConfig** defines the clustering configuration for ClickHouse.
  * This includes settings for sharding and replication to enable distributed ClickHouse deployments.
+ * 
+ * Clustering provides horizontal scaling and high availability. When clustering is enabled:
+ * - Data is distributed across shards for parallel processing
+ * - Each shard can have multiple replicas for redundancy
+ * - ZooKeeper is used for cluster coordination (automatically managed by the operator)
  */
 message ClickhouseKubernetesClusterConfig {
   /**
    * A flag to enable or disable clustering mode for ClickHouse.
-   * When enabled, ClickHouse will be deployed in a distributed cluster configuration.
-   * Defaults to `false`.
+   * When enabled, ClickHouse will be deployed in a distributed cluster configuration with sharding and replication.
+   * When disabled, a single standalone ClickHouse instance is deployed.
+   * Defaults to `false` (standalone mode suitable for development and small workloads).
    */
   bool is_enabled = 1;
 
   /**
    * The number of shards in the ClickHouse cluster.
-   * Sharding distributes data across multiple nodes for horizontal scaling.
+   * Sharding distributes data across multiple nodes for horizontal scaling and improved query performance.
+   * Each shard processes queries in parallel, allowing for massive throughput.
    * This value is ignored if clustering is not enabled.
+   * Typical values: 2-8 for most use cases, can go higher for very large deployments.
    */
   int32 shard_count = 2;
 
   /**
    * The number of replicas for each shard.
    * Replication provides data redundancy and high availability.
+   * If one replica fails, queries can be served by other replicas in the same shard.
    * This value is ignored if clustering is not enabled.
+   * Typical values: 2-3 (more than 3 replicas is rarely needed).
    */
   int32 replica_count = 3;
 
@@ -119,5 +153,34 @@ message ClickhouseKubernetesClusterConfig {
     id: "spec.cluster.counts_when_enabled",
     expression: "!this.is_enabled || (this.shard_count >= 1 && this.replica_count >= 1)"
     message: "Shard count and replica count must be at least 1 when clustering is enabled"
+  };
+}
+
+/**
+ * **ClickhouseKubernetesZookeeperConfig** defines the ZooKeeper configuration for ClickHouse cluster coordination.
+ * ZooKeeper is required for clustered ClickHouse deployments to manage distributed operations.
+ * 
+ * For most use cases, the operator's auto-managed ZooKeeper is sufficient. This configuration allows
+ * specifying external ZooKeeper for advanced scenarios or when ZooKeeper is shared across multiple services.
+ */
+message ClickhouseKubernetesZookeeperConfig {
+  /**
+   * A flag to use external ZooKeeper instead of operator-managed ZooKeeper.
+   * When false (default), the operator automatically provisions and manages ZooKeeper pods.
+   * When true, you must provide external ZooKeeper nodes.
+   */
+  bool use_external = 1;
+
+  /**
+   * List of external ZooKeeper nodes in the format "host:port".
+   * This is only used when use_external is true.
+   * Example: ["zk-0.zk-headless.default.svc.cluster.local:2181", "zk-1.zk-headless.default.svc.cluster.local:2181"]
+   */
+  repeated string nodes = 2;
+
+  option (buf.validate.message).cel = {
+    id: "spec.zookeeper.nodes_when_external",
+    expression: "!this.use_external || size(this.nodes) >= 1"
+    message: "At least one ZooKeeper node must be specified when using external ZooKeeper"
   };
 }

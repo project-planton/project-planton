@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package project.planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1;
+
+import "project/planton/credential/kubernetesclustercredential/v1/spec.proto";
+import "project/planton/provider/kubernetes/addon/altinityoperatorkubernetes/v1/api.proto";
+
+//altinity-operator-kubernetes stack-input
+message AltinityOperatorKubernetesStackInput {
+  //target cloud-resource
+  AltinityOperatorKubernetes target = 1;
+  //provider-credential
+  project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec provider_credential = 2;
+}
+

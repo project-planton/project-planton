@@ -1,15 +1,15 @@
 # Overview
 
-The **ClickHouse Kubernetes API Resource** provides a standardized and efficient way to deploy ClickHouse onto Kubernetes clusters. This API resource simplifies the deployment process by encapsulating all necessary configurations, enabling consistent and repeatable ClickHouse deployments across various environments.
+The **ClickHouse Kubernetes API Resource** provides a production-grade, operator-based way to deploy and manage ClickHouse clusters on Kubernetes. This API resource uses the **Altinity ClickHouse Operator** to deliver enterprise-level features including automated upgrades, scaling, backup, and recovery.
 
 ## Purpose
 
-Deploying ClickHouse on Kubernetes involves complex configurations, including resource management, storage persistence, clustering, and environment settings. The ClickHouse Kubernetes API Resource aims to:
+Deploying ClickHouse on Kubernetes requires managing complex distributed systems with sharding, replication, and coordination. The ClickHouse Kubernetes API Resource aims to:
 
-- **Standardize Deployments**: Offer a consistent interface for deploying ClickHouse, reducing complexity and minimizing errors.
-- **Simplify Configuration Management**: Centralize all deployment settings, making it easier to manage, update, and replicate configurations.
-- **Enable Scalability**: Support both standalone and clustered deployments with configurable sharding and replication.
-- **Enhance Flexibility**: Allow granular control over various components like replicas, resources, and persistence to meet specific requirements.
+- **Simplify Operations**: Leverage the Altinity operator to handle lifecycle management, rolling upgrades, and failure recovery automatically.
+- **Standardize Deployments**: Offer an intuitive, deployment-agnostic interface following the 80/20 Pareto principle - focus on what 80% of users need.
+- **Enable Production-Grade Clusters**: Support both standalone and distributed deployments with configurable sharding and replication.
+- **Provide Type Safety**: Use strongly-typed Kubernetes custom resources for compile-time validation and better developer experience.
 
 ## Key Features
 
@@ -22,30 +22,23 @@ Deploying ClickHouse on Kubernetes involves complex configurations, including re
 
 - **Kubernetes Cluster Credential ID**: Specify credentials required to access and configure the target Kubernetes cluster securely.
 
-### ClickHouse Container Configuration
+### Cluster Configuration
 
-- **Replicas**: Define the number of ClickHouse pod instances. Recommended default is `1`.
-- **Resources**: Allocate CPU and memory resources for the ClickHouse container to optimize performance.
-  - Default CPU: 100m (requests), 1000m (limits)
-  - Default Memory: 256Mi (requests), 2Gi (limits)
+- **Cluster Name**: Configurable cluster identifier used for the ClickHouseInstallation resource.
+- **Version**: Pin specific ClickHouse versions (e.g., "24.8") for consistency and stability.
+- **Replicas**: Define the number of ClickHouse pod instances for standalone deployments.
+- **Resources**: Allocate CPU and memory resources for optimal performance.
+  - Production defaults: 500m CPU (requests), 2000m (limits), 1Gi memory (requests), 4Gi (limits)
 - **Persistence**:
-  - **Enable Persistence**: Toggle data persistence for ClickHouse. When enabled, data is stored in a persistent volume, allowing data to survive pod restarts.
-  - **Disk Size**: Specify the size of the persistent volume attached to each ClickHouse pod (e.g., `8Gi`). This is mandatory if persistence is enabled.
+  - **Enable Persistence**: Toggle data persistence (strongly recommended for production).
+  - **Disk Size**: Specify persistent volume size (e.g., `50Gi`, `100Gi`). Plan for growth.
 
-### Clustering Configuration
+### Distributed Clustering
 
 - **Cluster Mode**: Enable distributed ClickHouse deployments with sharding and replication.
-- **Shard Count**: Define the number of shards for horizontal data distribution.
+- **Shard Count**: Define the number of shards for horizontal data distribution and parallel query processing.
 - **Replica Count**: Specify the number of replicas per shard for high availability and data redundancy.
-
-### Helm Chart Customization
-
-- **Helm Values**: Provide a map of key-value pairs for additional customization options via the ClickHouse Helm chart. This allows for:
-  - Customizing resource limits
-  - Setting environment variables
-  - Specifying version tags
-  - Configuring ClickHouse-specific settings
-  - For detailed options, refer to the [ClickHouse Helm Chart documentation](https://artifacthub.io/packages/helm/bitnami/clickhouse)
+- **ZooKeeper**: Automatically managed by the operator for cluster coordination, or configure external ZooKeeper for advanced scenarios.
 
 ### Networking and Ingress
 
@@ -53,12 +46,13 @@ Deploying ClickHouse on Kubernetes involves complex configurations, including re
 
 ## Benefits
 
-- **Consistency Across Deployments**: Using a standardized API resource ensures deployments are predictable and maintainable.
-- **Reduced Complexity**: Simplifies the deployment process by abstracting complex Kubernetes and Helm configurations.
-- **Scalability and Flexibility**: Easily adjust replicas and resources to handle varying workloads and performance requirements.
-- **Data Persistence**: Optionally enable data persistence to ensure data durability across pod restarts and failures.
-- **High Availability**: Support for clustering with sharding and replication enables fault-tolerant deployments.
-- **Customization**: Enables detailed customization through Helm values to fit specific use cases.
+- **Production-Ready**: Leverage the battle-tested Altinity operator used by enterprises worldwide for operational excellence.
+- **Self-Healing**: Automatic recovery from failures, rolling upgrades, and continuous reconciliation to maintain desired state.
+- **Simplified Operations**: The operator handles complex lifecycle operations - you focus on your data, not Kubernetes complexity.
+- **Scalability and Flexibility**: Easily scale from single nodes to distributed clusters with hundreds of nodes.
+- **Data Persistence**: Production-grade persistent storage with automatic volume provisioning and management.
+- **High Availability**: Native support for clustering with sharding, replication, and ZooKeeper coordination.
+- **Type Safety**: Strongly-typed configuration with compile-time validation and IDE support.
 
 ## Use Cases
 

@@ -1,30 +1,38 @@
 # ClickHouse Kubernetes Pulumi Module
 
+## Overview
+
+This module deploys production-grade ClickHouse clusters on Kubernetes using the **Altinity ClickHouse Operator**. The operator provides enterprise-level features including automated upgrades, scaling, backup, and recovery.
+
 ## Key Features
 
+- **Operator-Based Deployment**  
+  Uses the Altinity ClickHouse Operator for production-grade cluster management. The operator handles complex operations like rolling upgrades, scaling, and failure recovery automatically.
+
 - **Standardized API Resource Model**  
-  Provides a unified way to define and deploy ClickHouse on Kubernetes. By describing resource allocations, persistence settings, and optional clustering in a simple API resource, you ensure consistency across environments.
+  Provides an intuitive, deployment-agnostic API for defining ClickHouse clusters. Focus on what you need (resources, persistence, clustering) without worrying about underlying implementation details.
 
-- **Automated Kubernetes Resource Creation**  
-  Automatically creates Namespaces, Helm chart deployments, Services, and optional Load Balancer resources based on the provided specifications. Eliminates the need for hand-maintained YAML files.
+- **Automated CRD Management**  
+  Automatically generates and applies ClickHouseInstallation custom resources. The operator reconciles these to create StatefulSets, Services, ConfigMaps, and other Kubernetes resources.
 
-- **ClickHouse Configuration**  
-  Supports detailed specifications for ClickHouse containers, including resource limits/requests, persistence volumes, and clustering configurations for sharding and replication.
+- **Flexible Cluster Topologies**  
+  Deploy standalone instances for development or distributed clusters with configurable sharding and replication for production workloads.
 
-- **Clustering Support**  
-  Enable distributed ClickHouse deployments with configurable sharding and replication for horizontal scalability and high availability.
+- **Production-Grade Features**  
+  - Automatic ZooKeeper management for cluster coordination
+  - Rolling updates with zero downtime
+  - Persistent storage with configurable sizes
+  - Resource limits and requests for optimal performance
+  - Built-in monitoring and metrics
 
-- **Persistence Management**  
-  Toggle data persistence with configurable disk sizes. When enabled, data is stored in persistent volumes, allowing data to survive pod restarts.
-
-- **Password Management**  
-  Automatically generates secure random passwords stored in Kubernetes Secrets, ensuring credentials stay out of version control and container images.
+- **Security Best Practices**  
+  Automatically generates secure random passwords stored in Kubernetes Secrets. Credentials never appear in manifests or version control.
 
 - **Ingress Integration**  
-  When enabled, the module sets up Load Balancer services with external DNS annotations, allowing for external access to your ClickHouse cluster.
+  Optional LoadBalancer service with external DNS annotations for external access to your ClickHouse cluster.
 
 - **Output Exports**  
-  Exports useful values such as namespace, service name, internal service FQDN, port-forward commands, and credentials. These can be leveraged for further automation or debugging.
+  Exports namespace, service names, endpoints, credentials, and port-forward commands for easy integration and debugging.
 
 ## Usage
 
@@ -38,66 +46,82 @@ See [examples.md](examples.md) for usage details and step-by-step examples. In g
 
 to apply the resource on your cluster.
 
-## Important: Docker Image Registry
+## Prerequisites
 
-**⚠️ Bitnami Registry Changes (September 2025)**
+The **Altinity ClickHouse Operator** must be installed on your Kubernetes cluster before deploying ClickHouse instances. Use the `ClickhouseOperatorKubernetes` module to install the operator:
 
-Due to Bitnami's transition to a paid model, this module now uses `docker.io/bitnamilegacy` registry for ClickHouse and ZooKeeper images. The legacy images receive no updates or security patches but provide a temporary migration solution.
+```bash
+planton pulumi up --stack-input clickhouse-operator.yaml \
+  --module-dir apis/project/planton/provider/kubernetes/addon/clickhouseoperatorkubernetes/v1/iac/pulumi
+```
 
-**Long-term Alternatives:**
-- Subscribe to Bitnami Secure Images ($50k-$72k/year)
-- Use official ClickHouse images from clickhouse.com
-- Build custom images from open-source Bitnami code (Apache 2.0)
-
-For more details, see: https://github.com/bitnami/containers/issues/83267
+The operator typically installs in the `clickhouse-operator` namespace and watches all namespaces for ClickHouseInstallation resources.
 
 ## Getting Started
 
-1. **Craft Your Specification**  
-   Include container resource info, persistence settings, and optionally clustering preferences. If you need external access, enable ingress.
+1. **Install the Operator** (one-time setup per cluster)  
+   Deploy the Altinity ClickHouse Operator using the operator deployment module.
 
-2. **Apply via CLI**  
-   Execute `planton pulumi up --stack-input <clickhouse-spec.yaml>` (or your organization's standard CLI command). The Pulumi module automatically compiles your specification into Kubernetes resources.
+2. **Define Your ClickHouse Cluster**  
+   Create a YAML specification with cluster name, resources, persistence, and clustering settings. See [examples.md](examples.md) for common configurations.
 
-3. **Validate & Observe**  
-   Check the logs of your ClickHouse deployment, confirm the Namespace, StatefulSet, and Service are created, and if ingress is enabled, verify external access.
+3. **Deploy the Cluster**  
+   Execute `planton pulumi up --stack-input <clickhouse-spec.yaml>`. The module generates a ClickHouseInstallation CRD, and the operator creates all necessary Kubernetes resources.
 
-## Module Structure
+4. **Verify Deployment**  
+   Check that ClickHouse pods are running, services are created, and the cluster is accessible. Use the exported port-forward command for local testing.
+
+## Module Architecture
 
 1. **Initialization**  
-   Reads your `ClickhouseKubernetesStackInput` (containing cluster creds, resource definitions), sets up local variables, and merges labels.
+   Reads your `ClickhouseKubernetesStackInput` (cluster credentials, resource definitions), initializes local variables, and prepares Kubernetes labels.
 
 2. **Provider Setup**  
-   Establishes a Pulumi Kubernetes Provider for your target cluster.
+   Establishes a Pulumi Kubernetes Provider using the supplied cluster credentials.
 
 3. **Namespace Creation**  
-   Creates (or identifies) a namespace to house all your ClickHouse resources.
+   Creates a dedicated namespace for your ClickHouse resources with appropriate labels for resource tracking.
 
 4. **Secret Management**  
-   Generates a secure random password and stores it in a Kubernetes Secret for ClickHouse authentication.
+   Generates a cryptographically secure random password and stores it in a Kubernetes Secret for ClickHouse authentication.
 
-5. **Helm Chart Deployment**  
-   Deploys the Bitnami ClickHouse Helm chart with configured values for resources, persistence, clustering, and authentication.
+5. **ClickHouseInstallation CRD Generation**  
+   Builds a ClickHouseInstallation custom resource with:
+   - Cluster topology (shards, replicas)
+   - Resource allocations (CPU, memory)
+   - Persistence configuration (disk size, storage class)
+   - ZooKeeper settings (auto-managed or external)
+   - Security settings (password references)
 
-6. **Service Configuration (Optional)**  
-   If ingress is enabled, creates a LoadBalancer Service for external access with DNS annotations.
+6. **CRD Application**  
+   Applies the ClickHouseInstallation to Kubernetes. The Altinity operator watches for these resources and reconciles the actual state:
+   - Creates StatefulSets for ClickHouse pods
+   - Sets up Services for cluster communication
+   - Configures ConfigMaps with ClickHouse settings
+   - Manages ZooKeeper (if needed for clustering)
 
-7. **Output Exports**  
-   Publishes final references (e.g., namespace, service name, cluster endpoints, credentials), which can aid in post-deployment automation.
+7. **Ingress Service (Optional)**  
+   If enabled, creates a LoadBalancer Service with external DNS annotations for public access.
+
+8. **Output Exports**  
+   Exports useful values: namespace, service names, endpoints, credentials, and port-forward commands.
 
 ## Benefits
 
-- **Simplified Deployment**  
-  Focus on high-level configuration rather than writing raw Kubernetes manifests. Consistent patterns reduce the risk of misconfiguration.
+- **Production-Ready**  
+  Leverage the battle-tested Altinity operator used by enterprises worldwide. Benefit from years of operational experience built into the operator.
 
-- **Security & Compliance**  
-  Minimizes exposure of credentials by auto-generating passwords and storing them securely in Kubernetes Secrets.
+- **Simplified Operations**  
+  The operator handles complex lifecycle operations: upgrades, scaling, backups, and recovery. You focus on your data, not Kubernetes complexity.
 
-- **Scalability**  
-  Easily configure standalone or clustered deployments with sharding and replication for handling large-scale analytical workloads.
+- **Cloud-Native Architecture**  
+  CRD-based deployment follows Kubernetes best practices. Declarative configuration ensures reproducible deployments across environments.
 
-- **Extensibility**  
-  The module is built on Pulumi's Kubernetes provider. You can augment or override resources if your team needs advanced configurations through helm_values.
+- **Flexibility at Scale**  
+  Start with a single node for development, seamlessly scale to distributed clusters with hundreds of nodes for production analytics.
+
+- **Vendor Independence**  
+  Uses official ClickHouse container images from clickhouse.com. No dependency on deprecated or commercial registries.
 
 ## Contributing
 

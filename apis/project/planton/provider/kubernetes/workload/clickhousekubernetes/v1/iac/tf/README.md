@@ -2,29 +2,28 @@
 
 ## Overview
 
-This Terraform module deploys ClickHouse on Kubernetes using the Bitnami Helm chart. It provides a declarative way to manage ClickHouse clusters with support for persistence, clustering, and external access.
+This Terraform module deploys production-grade ClickHouse clusters on Kubernetes using the **Altinity ClickHouse Operator**. The operator provides enterprise-level features including automated upgrades, scaling, backup, and recovery.
 
 ## Key Features
 
+- **Operator-Based Deployment**: Uses the Altinity ClickHouse Operator for production-grade cluster management
+- **CRD-Native**: Deploys ClickHouseInstallation custom resources that the operator reconciles
 - **Namespace Management**: Automatically creates and manages a dedicated Kubernetes namespace
-- **Helm Chart Deployment**: Uses Bitnami ClickHouse Helm chart with customizable values
-- **Persistence**: Configurable persistent volumes for data storage
+- **Persistence**: Configurable persistent volumes for data storage with flexible sizing
 - **Clustering**: Optional sharding and replication for distributed deployments
+- **ZooKeeper Integration**: Auto-managed ZooKeeper for cluster coordination, or configure external ZooKeeper
 - **Security**: Auto-generated passwords stored in Kubernetes Secrets
 - **Ingress**: Optional LoadBalancer service for external access
-- **Bitnami Legacy Support**: Configured to use `docker.io/bitnamilegacy` registry
+- **Version Control**: Pin specific ClickHouse versions for stability
+- **Production-Ready**: Leverages official ClickHouse images from clickhouse.com
 
-## Important: Docker Image Registry
+## Prerequisites
 
-**⚠️ Bitnami Registry Changes (September 2025)**
-
-This module uses `docker.io/bitnamilegacy` registry by default due to Bitnami discontinuing free Docker Hub images. The legacy images receive no updates or security patches but provide a temporary migration solution.
-
-See: https://github.com/bitnami/containers/issues/83267
+The **Altinity ClickHouse Operator** must be installed on your Kubernetes cluster before using this module. Install the operator using the `ClickhouseOperatorKubernetes` module.
 
 ## Usage
 
-### Basic Example
+### Basic Standalone Example
 
 ```hcl
 module "clickhouse" {
@@ -37,6 +36,9 @@ module "clickhouse" {
   }
 
   spec = {
+    cluster_name = "production-analytics"
+    version      = "24.8"
+    
     container = {
       replicas               = 1
       is_persistence_enabled = true
@@ -52,6 +54,7 @@ module "clickhouse" {
         }
       }
     }
+    
     ingress = {
       is_enabled = true
       dns_domain = "example.com"
@@ -60,7 +63,7 @@ module "clickhouse" {
 }
 ```
 
-### With Clustering
+### With Distributed Clustering
 
 ```hcl
 module "clickhouse_cluster" {
@@ -99,14 +102,13 @@ module "clickhouse_cluster" {
 
 - Terraform >= 1.0
 - Kubernetes cluster with kubectl access
-- Helm 3.x
+- **Altinity ClickHouse Operator** installed on the cluster
 
 ## Providers
 
 | Name | Version |
 |------|---------|
 | kubernetes | ~> 2.35 |
-| helm | ~> 2.9 |
 | random | ~> 3.5 |
 
 ## Resources Created
@@ -114,8 +116,14 @@ module "clickhouse_cluster" {
 - `kubernetes_namespace_v1.clickhouse_namespace` - Dedicated namespace
 - `random_password.clickhouse_password` - Auto-generated password
 - `kubernetes_secret_v1.clickhouse_password` - Password secret
-- `helm_release.clickhouse` - ClickHouse Helm chart
+- `kubernetes_manifest.clickhouse_installation` - ClickHouseInstallation CRD
 - `kubernetes_service_v1.ingress_external_lb` - LoadBalancer (if ingress enabled)
+
+The operator then reconciles the ClickHouseInstallation to create:
+- StatefulSets for ClickHouse pods
+- Services for cluster communication
+- ConfigMaps with ClickHouse configuration
+- ZooKeeper (if clustering is enabled)
 
 ## Outputs
 
