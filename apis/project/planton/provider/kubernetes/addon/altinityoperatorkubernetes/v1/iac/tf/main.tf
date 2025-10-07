@@ -15,12 +15,17 @@ resource "helm_release" "altinity_operator" {
   name       = "altinity-clickhouse-operator"
   repository = "https://docs.altinity.com/clickhouse-operator/"
   chart      = "altinity-clickhouse-operator"
-  version    = "0.23.6"
+  version    = "0.25.4"
   namespace  = kubernetes_namespace.altinity_operator.metadata[0].name
 
   set {
     name  = "operator.createCRD"
     value = "true"
+  }
+
+  set {
+    name  = "watchNamespaces"
+    value = "{}"
   }
 
   set {

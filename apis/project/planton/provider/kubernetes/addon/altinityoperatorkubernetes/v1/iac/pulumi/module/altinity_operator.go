@@ -55,6 +55,8 @@ func Resources(ctx *pulumi.Context, stackInput *altinityoperatorkubernetesv1.Alt
 				},
 			},
 		},
+		// Enable cluster-wide watching by setting watchNamespaces to empty array
+		"watchNamespaces": pulumi.Array{},
 	}
 
 	// deploy the operator via Helm
