@@ -119,6 +119,7 @@ go_library(
         "//apis/project/planton/provider/kubernetes/addon/postgresoperatorkubernetes/v1:postgresoperatorkubernetes",
         "//apis/project/planton/provider/kubernetes/addon/solroperatorkubernetes/v1:solroperatorkubernetes",
         "//apis/project/planton/provider/kubernetes/workload/argocdkubernetes/v1:argocdkubernetes",
+        "//apis/project/planton/provider/kubernetes/workload/clickhousekubernetes/v1:clickhousekubernetes",
         "//apis/project/planton/provider/kubernetes/workload/cronjobkubernetes/v1:cronjobkubernetes",
         "//apis/project/planton/provider/kubernetes/workload/elasticsearchkubernetes/v1:elasticsearchkubernetes",
         "//apis/project/planton/provider/kubernetes/workload/gitlabkubernetes/v1:gitlabkubernetes",

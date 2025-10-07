@@ -1,0 +1,123 @@
+syntax = "proto3";
+
+package project.planton.provider.kubernetes.workload.clickhousekubernetes.v1;
+
+import "buf/validate/validate.proto";
+import "project/planton/shared/kubernetes/kubernetes.proto";
+import "project/planton/shared/kubernetes/options.proto";
+import "project/planton/shared/options/options.proto";
+import "google/protobuf/descriptor.proto";
+
+extend google.protobuf.FieldOptions {
+  ClickhouseKubernetesContainer default_container = 519001;
+}
+
+/**
+ * **ClickhouseKubernetesSpec** defines the configuration for deploying ClickHouse on a Kubernetes cluster.
+ * This message specifies the parameters needed to create and manage a ClickHouse deployment within a Kubernetes environment.
+ * It includes container specifications, ingress settings, and cluster configuration options.
+ */
+message ClickhouseKubernetesSpec {
+  // The container specifications for the ClickHouse deployment.
+  ClickhouseKubernetesContainer container = 1 [
+    (default_container) = {
+      replicas: 1,
+      resources:  {
+        limits {
+          cpu: "1000m"
+          memory: "2Gi"
+        },
+        requests {
+          cpu: "100m"
+          memory: "256Mi"
+        }
+      },
+      is_persistence_enabled: true,
+      disk_size: "8Gi"
+    }
+  ];
+
+  // The ingress configuration for the ClickHouse deployment.
+  project.planton.shared.kubernetes.IngressSpec ingress = 2;
+
+  // The cluster configuration for ClickHouse sharding and replication.
+  ClickhouseKubernetesClusterConfig cluster = 3;
+
+  /**
+   * A map of key-value pairs that provide additional customization options for the Helm chart used
+   * to deploy ClickHouse on Kubernetes. These values allow for further refinement of the deployment,
+   * such as customizing resource limits, setting environment variables, or specifying version tags.
+   * For detailed information on the available options, refer to the Helm chart documentation at:
+   * https://artifacthub.io/packages/helm/bitnami/clickhouse
+   */
+  map<string, string> helm_values = 4;
+}
+
+/**
+ * **ClickhouseKubernetesContainer** specifies the container configuration for the ClickHouse application.
+ * It includes settings such as the number of replicas, resource allocations, data persistence options, and disk size.
+ * Proper configuration ensures optimal performance and data reliability for your ClickHouse deployment.
+ */
+message ClickhouseKubernetesContainer {
+  // The number of ClickHouse pods to deploy.
+  int32 replicas = 1 [
+    (buf.validate.field).int32.gte = 1
+  ];
+
+  // The CPU and memory resources allocated to the ClickHouse container.
+  project.planton.shared.kubernetes.ContainerResources resources = 2;
+
+  /**
+   * A flag to enable or disable data persistence for ClickHouse.
+   * When enabled, data is persisted to a storage volume, allowing data to survive pod restarts.
+   * Defaults to `true`.
+   */
+  bool is_persistence_enabled = 3;
+
+  /**
+   * The size of the persistent volume attached to each ClickHouse pod (e.g., "10Gi").
+   * If the client does not provide a value, a default value is configured.
+   * This attribute is ignored when persistence is not enabled.
+   * **Note:** This value cannot be modified after creation due to Kubernetes limitations on stateful sets.
+   */
+  string disk_size = 4;
+
+  option (buf.validate.message).cel = {
+    id: "spec.container.disk_size.required",
+    expression: "((!this.is_persistence_enabled && (size(this.disk_size) == 0 || this.disk_size == '')) || (this.is_persistence_enabled && size(this.disk_size) > 0 && this.disk_size.matches('^\\\\d+(\\\\.\\\\d+)?\\\\s?(Ki|Mi|Gi|Ti|Pi|Ei|K|M|G|T|P|E)$')))"
+    message: "Disk size is required and must match the format if persistence is enabled"
+  };
+}
+
+/**
+ * **ClickhouseKubernetesClusterConfig** defines the clustering configuration for ClickHouse.
+ * This includes settings for sharding and replication to enable distributed ClickHouse deployments.
+ */
+message ClickhouseKubernetesClusterConfig {
+  /**
+   * A flag to enable or disable clustering mode for ClickHouse.
+   * When enabled, ClickHouse will be deployed in a distributed cluster configuration.
+   * Defaults to `false`.
+   */
+  bool is_enabled = 1;
+
+  /**
+   * The number of shards in the ClickHouse cluster.
+   * Sharding distributes data across multiple nodes for horizontal scaling.
+   * This value is ignored if clustering is not enabled.
+   */
+  int32 shard_count = 2;
+
+  /**
+   * The number of replicas for each shard.
+   * Replication provides data redundancy and high availability.
+   * This value is ignored if clustering is not enabled.
+   */
+  int32 replica_count = 3;
+
+  option (buf.validate.message).cel = {
+    id: "spec.cluster.counts_when_enabled",
+    expression: "!this.is_enabled || (this.shard_count >= 1 && this.replica_count >= 1)"
+    message: "Shard count and replica count must be at least 1 when clustering is enabled"
+  };
+}

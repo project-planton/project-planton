@@ -103,6 +103,7 @@ import (
 	postgresoperatorkubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/addon/postgresoperatorkubernetes/v1"
 	solroperatorkubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/addon/solroperatorkubernetes/v1"
 	argocdkubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/argocdkubernetes/v1"
+	clickhousekubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/clickhousekubernetes/v1"
 	cronjobkubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/cronjobkubernetes/v1"
 	elasticsearchkubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/elasticsearchkubernetes/v1"
 	gitlabkubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/gitlabkubernetes/v1"
@@ -266,6 +267,7 @@ var ProviderKubernetesAddonMap = map[cloudresourcekind.CloudResourceKind]proto.M
 
 var ProviderKubernetesWorkloadMap = map[cloudresourcekind.CloudResourceKind]proto.Message{
 	cloudresourcekind.CloudResourceKind_ArgocdKubernetes:         &argocdkubernetesv1.ArgocdKubernetes{},
+	cloudresourcekind.CloudResourceKind_ClickhouseKubernetes:     &clickhousekubernetesv1.ClickhouseKubernetes{},
 	cloudresourcekind.CloudResourceKind_CronJobKubernetes:        &cronjobkubernetesv1.CronJobKubernetes{},
 	cloudresourcekind.CloudResourceKind_ElasticsearchKubernetes:  &elasticsearchkubernetesv1.ElasticsearchKubernetes{},
 	cloudresourcekind.CloudResourceKind_GitlabKubernetes:         &gitlabkubernetesv1.GitlabKubernetes{},
