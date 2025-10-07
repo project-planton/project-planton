@@ -105,7 +105,7 @@ func (x *SignozKubernetes) GetStatus() *SignozKubernetesStatus {
 	return nil
 }
 
-// signoz-kubernetes status.
+// signoz-kubernetes status
 type SignozKubernetesStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// stack-outputs
