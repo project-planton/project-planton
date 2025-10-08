@@ -55,8 +55,19 @@ func Resources(ctx *pulumi.Context, stackInput *altinityoperatorkubernetesv1.Alt
 				},
 			},
 		},
-		// Enable cluster-wide watching by setting watchNamespaces to empty array
-		"watchNamespaces": pulumi.Array{},
+		// Configure operator to watch all namespaces cluster-wide
+		// Use regex pattern ".*" to match all namespaces (empty array watches only installation namespace)
+		"configs": pulumi.Map{
+			"files": pulumi.Map{
+				"config.yaml": pulumi.Map{
+					"watch": pulumi.Map{
+						"namespaces": pulumi.Array{
+							pulumi.String(".*"),
+						},
+					},
+				},
+			},
+		},
 	}
 
 	// deploy the operator via Helm
