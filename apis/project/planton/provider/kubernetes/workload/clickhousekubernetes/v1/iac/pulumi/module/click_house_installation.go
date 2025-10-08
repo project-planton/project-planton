@@ -79,7 +79,7 @@ func buildConfiguration(
 		},
 		vars.DefaultUsername + "/networks/ip": pulumi.Array{
 			pulumi.String("0.0.0.0/0"), // Allow connections from any IPv4 address
-			pulumi.String("::/0"), // Allow connections from any IPv6 address
+			pulumi.String("::/0"),      // Allow connections from any IPv6 address
 		},
 	}
 
