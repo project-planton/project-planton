@@ -61,12 +61,25 @@ func buildConfiguration(
 	createdSecret *kubernetescorev1.Secret,
 ) *altinityv1.ClickHouseInstallationSpecConfigurationArgs {
 	// Build users configuration with secret reference
+	// Using modern valueFrom.secretKeyRef syntax (recommended since operator v0.23.x)
+	// Note: Using 'password' field (plaintext in config, will be hashed by operator)
+	// The secret contains plaintext password, operator will hash it when deploying to ClickHouse
+	//
+	// Network access configuration:
+	// This is necessary for external applications (like SigNoz) to connect to ClickHouse
+	// Allow any IPv4 and IPv6 address
 	users := pulumi.Map{
-		vars.DefaultUsername + "/password_sha256_hex": pulumi.Map{
-			"k8s_secret": pulumi.Map{
-				"name": createdSecret.Metadata.Name(),
-				"key":  pulumi.String(vars.ClickhousePasswordKey),
+		vars.DefaultUsername + "/password": pulumi.Map{
+			"valueFrom": pulumi.Map{
+				"secretKeyRef": pulumi.Map{
+					"name": createdSecret.Metadata.Name(),
+					"key":  pulumi.String(vars.ClickhousePasswordKey),
+				},
 			},
+		},
+		vars.DefaultUsername + "/networks/ip": pulumi.Array{
+			pulumi.String("0.0.0.0/0"), // Allow connections from any IPv4 address
+			pulumi.String("::/0"), // Allow connections from any IPv6 address
 		},
 	}
 

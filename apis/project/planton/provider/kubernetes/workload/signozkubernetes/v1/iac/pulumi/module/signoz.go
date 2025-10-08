@@ -185,65 +185,9 @@ func signoz(ctx *pulumi.Context, locals *Locals,
 		}
 	}
 
-	// Configure SigNoz UI ingress
-	if locals.SignozKubernetes.Spec.SignozIngress != nil && locals.SignozKubernetes.Spec.SignozIngress.Enabled {
-		ingressValues := pulumi.Map{
-			"enabled": pulumi.Bool(true),
-			"hosts": pulumi.Array{
-				pulumi.Map{
-					"host": pulumi.String(locals.IngressExternalHostname),
-					"paths": pulumi.Array{
-						pulumi.Map{
-							"path": pulumi.String("/"),
-							"port": pulumi.Int(vars.SignozUIPort),
-						},
-					},
-				},
-			},
-		}
-
-		// TLS configuration would be handled through Helm values if needed
-
-		helmValues["signoz"] = pulumi.Map{
-			"ingress": ingressValues,
-		}
-	}
-
-	// Configure OTel Collector ingress
-	if locals.SignozKubernetes.Spec.OtelCollectorIngress != nil &&
-		locals.SignozKubernetes.Spec.OtelCollectorIngress.Enabled {
-		// Note: In production, separate ingress resources may be needed for gRPC and HTTP
-		// due to nginx annotation requirements (nginx.ingress.kubernetes.io/backend-protocol: "GRPC")
-		ingressValues := pulumi.Map{
-			"enabled": pulumi.Bool(true),
-			"hosts": pulumi.Array{
-				pulumi.Map{
-					"host": pulumi.String(locals.OtelCollectorExternalGrpcHostname),
-					"paths": pulumi.Array{
-						pulumi.Map{
-							"path": pulumi.String("/"),
-							"port": pulumi.Int(vars.OtelGrpcPort),
-						},
-					},
-				},
-				pulumi.Map{
-					"host": pulumi.String(locals.OtelCollectorExternalHttpHostname),
-					"paths": pulumi.Array{
-						pulumi.Map{
-							"path": pulumi.String("/"),
-							"port": pulumi.Int(vars.OtelHttpPort),
-						},
-					},
-				},
-			},
-		}
-
-		// TLS configuration would be handled through Helm values if needed
-
-		helmValues["otelCollector"] = pulumi.Map{
-			"ingress": ingressValues,
-		}
-	}
+	// Note: Ingress is NOT configured via Helm chart values
+	// We use Kubernetes Gateway API for ingress (see ingress.go)
+	// This provides better control and consistency with other workloads
 
 	// Merge custom Helm values
 	mergestringmaps.MergeMapToPulumiMap(helmValues, locals.SignozKubernetes.Spec.HelmValues)

@@ -49,7 +49,7 @@ func clickhouseKeeperInstallation(
 			Spec: &clickhousekeeperv1.ClickHouseKeeperInstallationSpecArgs{
 				Configuration: buildKeeperConfiguration(replicas),
 				// Defaults removed - not supported in Altinity operator 0.23.6
-				Templates:     buildKeeperTemplates(diskSize, keeperConfig),
+				Templates: buildKeeperTemplates(diskSize, keeperConfig),
 			},
 		},
 		pulumi.Parent(createdNamespace),

@@ -23,6 +23,9 @@ type Locals struct {
 	KubePortForwardCommand            string
 	IngressExternalHostname           string
 	IngressInternalHostname           string
+	IngressHostnames                  []string
+	IngressCertClusterIssuerName      string
+	IngressCertSecretName             string
 	OtelCollectorExternalGrpcHostname string
 	OtelCollectorExternalHttpHostname string
 	ClickhouseEndpoint                string
@@ -119,6 +122,17 @@ func initializeLocals(ctx *pulumi.Context, stackInput *signozkubernetesv1.Signoz
 		locals.IngressInternalHostname = fmt.Sprintf("%s-internal.%s", locals.Namespace,
 			target.Spec.SignozIngress.DnsDomain)
 		ctx.Export(OpInternalHostname, pulumi.String(locals.IngressInternalHostname))
+
+		locals.IngressHostnames = []string{
+			locals.IngressExternalHostname,
+			locals.IngressInternalHostname,
+		}
+
+		// ClusterIssuer should already exist on the cluster
+		// Typically managed by cluster administrator or created by Planton Cloud
+		locals.IngressCertClusterIssuerName = target.Spec.SignozIngress.DnsDomain
+
+		locals.IngressCertSecretName = fmt.Sprintf("cert-%s", locals.Namespace)
 	}
 
 	// Ingress configuration for OTel Collector
