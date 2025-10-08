@@ -19,6 +19,7 @@ var _ = ginkgo.Describe("ClickHouseKubernetesSpec validations", func() {
 
 	ginkgo.BeforeEach(func() {
 		spec = &ClickHouseKubernetesSpec{
+			ClusterName: "test-cluster",
 			Container: &ClickHouseKubernetesContainer{
 				Replicas:             1,
 				IsPersistenceEnabled: true,
