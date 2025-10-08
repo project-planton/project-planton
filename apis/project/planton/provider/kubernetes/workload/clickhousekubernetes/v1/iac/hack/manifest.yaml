@@ -1,5 +1,5 @@
 apiVersion: kubernetes.project-planton.org/v1
-kind: ClickhouseKubernetes
+kind: ClickHouseKubernetes
 metadata:
   name: clickhousekubernetes-demo
 spec:

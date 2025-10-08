@@ -1,6 +1,6 @@
-# ClickhouseKubernetes - Example Configurations
+# ClickHouseKubernetes - Example Configurations
 
-This document provides examples demonstrating various configurations of the **ClickhouseKubernetes** API resource using the Altinity ClickHouse Operator. Each example shows a typical use case with corresponding YAML that can be applied via `planton pulumi up`.
+This document provides examples demonstrating various configurations of the **ClickHouseKubernetes** API resource using the Altinity ClickHouse Operator. Each example shows a typical use case with corresponding YAML that can be applied via `planton pulumi up`.
 
 ---
 
@@ -16,7 +16,7 @@ A simple single-node ClickHouse deployment suitable for development and testing.
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: ClickhouseKubernetes
+kind: ClickHouseKubernetes
 metadata:
   name: dev-clickhouse
 spec:
@@ -48,7 +48,7 @@ Production-ready single-node deployment with larger resources and explicit clust
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: ClickhouseKubernetes
+kind: ClickHouseKubernetes
 metadata:
   name: prod-clickhouse
   org: my-org
@@ -78,13 +78,13 @@ spec:
 
 ---
 
-## 3. Distributed Cluster with Sharding
+## 3. Distributed Cluster with Auto-Managed ClickHouse Keeper
 
-Horizontally scaled cluster with multiple shards for parallel query processing.
+Horizontally scaled cluster with multiple shards for parallel query processing using auto-managed ClickHouse Keeper.
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: ClickhouseKubernetes
+kind: ClickHouseKubernetes
 metadata:
   name: distributed-analytics
 spec:
@@ -103,24 +103,26 @@ spec:
     isEnabled: true
     shardCount: 4
     replicaCount: 1
+  # coordination: not specified = auto-managed ClickHouse Keeper (default)
 ```
 
 **Key points**:
 - 4 shards for horizontal scaling
 - 1 replica per shard (4 total nodes)
-- ZooKeeper automatically managed by operator
+- ClickHouse Keeper automatically referenced (80% use case)
 - Distributed query execution across shards
 - Each shard processes subset of data
+- Note: Deploy ClickHouseKeeperInstallation separately first
 
 ---
 
-## 4. High Availability Cluster with Replication
+## 4. High Availability Cluster with Production Keeper Configuration
 
-Production cluster with replication for high availability and fault tolerance.
+Production cluster with replication for high availability and 3-node ClickHouse Keeper ensemble.
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: ClickhouseKubernetes
+kind: ClickHouseKubernetes
 metadata:
   name: ha-clickhouse
 spec:
@@ -140,24 +142,37 @@ spec:
     isEnabled: true
     shardCount: 3
     replicaCount: 3
+  coordination:
+    type: keeper
+    keeperConfig:
+      replicas: 3  # Production HA: survives 1 node failure
+      diskSize: "20Gi"
+      resources:
+        requests:
+          cpu: "200m"
+          memory: "512Mi"
+        limits:
+          cpu: "1000m"
+          memory: "2Gi"
 ```
 
 **Key points**:
-- 3 shards with 3 replicas each (9 total nodes)
+- 3 shards with 3 replicas each (9 total ClickHouse nodes)
 - High availability - survives 2 node failures per shard
 - Data automatically replicated across replicas
 - Query load balanced across replicas
-- Operator manages ZooKeeper for coordination
+- 3-node ClickHouse Keeper for production coordination (survives 1 Keeper failure)
+- Custom Keeper resources for larger clusters
 
 ---
 
-## 5. Cluster with External ZooKeeper
+## 5. Cluster with External ClickHouse Keeper
 
-Advanced configuration using external ZooKeeper for shared coordination across multiple ClickHouse clusters.
+Advanced configuration using external ClickHouse Keeper for shared coordination across multiple ClickHouse clusters.
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: ClickhouseKubernetes
+kind: ClickHouseKubernetes
 metadata:
   name: enterprise-clickhouse
 spec:
@@ -176,20 +191,50 @@ spec:
     isEnabled: true
     shardCount: 6
     replicaCount: 2
-  zookeeper:
-    useExternal: true
-    nodes:
-      - "zk-0.zookeeper.default.svc.cluster.local:2181"
-      - "zk-1.zookeeper.default.svc.cluster.local:2181"
-      - "zk-2.zookeeper.default.svc.cluster.local:2181"
+  coordination:
+    type: external_keeper
+    externalConfig:
+      nodes:
+        - "keeper-shared:2181"
 ```
 
 **Key points**:
-- External ZooKeeper for production-grade coordination
+- External ClickHouse Keeper for production-grade coordination
 - 6 shards with 2 replicas (12 total nodes)
 - Enterprise-scale resources
-- Shared ZooKeeper can coordinate multiple ClickHouse clusters
-- Better isolation and control over ZooKeeper
+- Shared Keeper can coordinate multiple ClickHouse clusters
+- Better isolation and control over coordination service
+
+---
+
+## 5b. Cluster with External ZooKeeper (Legacy)
+
+For environments with existing ZooKeeper infrastructure (e.g., shared with Kafka).
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: ClickHouseKubernetes
+metadata:
+  name: enterprise-with-zk
+spec:
+  clusterName: enterprise-cluster
+  cluster:
+    isEnabled: true
+    shardCount: 6
+    replicaCount: 2
+  coordination:
+    type: external_zookeeper
+    externalConfig:
+      nodes:
+        - "zk-0.zookeeper.default.svc.cluster.local:2181"
+        - "zk-1.zookeeper.default.svc.cluster.local:2181"
+        - "zk-2.zookeeper.default.svc.cluster.local:2181"
+```
+
+**Key points**:
+- External ZooKeeper for legacy integration
+- Shared ZooKeeper infrastructure with Kafka, Solr, etc.
+- Multiple ZK nodes for redundancy
 
 ---
 
@@ -199,7 +244,7 @@ Lightweight cluster for testing and development with no persistence.
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: ClickhouseKubernetes
+kind: ClickHouseKubernetes
 metadata:
   name: test-clickhouse
 spec:
@@ -230,7 +275,7 @@ Cluster exposed to external clients via LoadBalancer with DNS.
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: ClickhouseKubernetes
+kind: ClickHouseKubernetes
 metadata:
   name: public-analytics
 spec:
@@ -260,14 +305,61 @@ spec:
 
 ---
 
-## 8. Multi-Environment with Custom Versions
+## 8. SigNoz Backend Configuration
+
+Optimized configuration for deploying ClickHouse as a SigNoz observability backend.
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: ClickHouseKubernetes
+metadata:
+  name: signoz-backend
+  org: my-org
+  env: production
+spec:
+  clusterName: cluster  # SigNoz requires cluster name to be "cluster"
+  version: "24.8"
+  container:
+    isPersistenceEnabled: true
+    diskSize: "50Gi"  # Scale based on retention needs
+    resources:
+      requests:
+        cpu: "500m"
+        memory: "1Gi"
+      limits:
+        cpu: "2000m"
+        memory: "4Gi"
+  cluster:
+    isEnabled: true
+    shardCount: 2      # Start with 2, scale as data grows
+    replicaCount: 2    # HA for production observability
+  coordination:
+    type: keeper
+    keeperConfig:
+      replicas: 3  # Production HA for observability infrastructure
+  ingress:
+    enabled: true
+    dnsDomain: example.com
+```
+
+**Key points**:
+- Cluster name "cluster" is required by SigNoz (hardcoded in migrations)
+- 2 shards × 2 replicas = 4 ClickHouse pods for distributed data
+- 3 ClickHouse Keeper nodes for coordination reliability
+- Ingress enabled for external access
+- Sized for production observability workloads
+- ClickHouse Keeper (not ZooKeeper) for resource efficiency
+
+---
+
+## 9. Multi-Environment with Custom Versions
 
 Example showing version pinning for different environments.
 
 ```yaml
 # Staging Environment
 apiVersion: kubernetes.project-planton.org/v1
-kind: ClickhouseKubernetes
+kind: ClickHouseKubernetes
 metadata:
   name: staging-clickhouse
   env: staging
@@ -290,7 +382,7 @@ spec:
 
 # Production Environment
 apiVersion: kubernetes.project-planton.org/v1
-kind: ClickhouseKubernetes
+kind: ClickHouseKubernetes
 metadata:
   name: production-clickhouse
   env: production
@@ -398,11 +490,24 @@ kubectl describe clickhouseinstallation <cluster-name> -n <namespace>
 kubectl logs -n <namespace> <pod-name>
 ```
 
-### Verify ZooKeeper Connectivity (Clustered Mode)
+### Verify Coordination Connectivity (Clustered Mode)
 ```bash
+# Verify ClickHouse can connect to coordination service (Keeper or ZooKeeper)
 kubectl exec -n <namespace> <pod-name> -- clickhouse-client --query "SELECT * FROM system.zookeeper WHERE path='/'"
+
+# Check cluster topology
+kubectl exec -n <namespace> <pod-name> -- clickhouse-client --query "SELECT * FROM system.clusters"
+```
+
+### Check ClickHouse Keeper Status (if using auto-managed Keeper)
+```bash
+# Check ClickHouseKeeperInstallation resource
+kubectl get clickhousekeeperinstallation -n <namespace>
+
+# Check Keeper pods
+kubectl get pods -n <namespace> -l "app.kubernetes.io/name=clickhouse-keeper"
 ```
 
 ---
 
-For additional details and advanced configurations, see the [ClickhouseKubernetes API documentation](../README.md) and the [Altinity Operator documentation](https://github.com/Altinity/clickhouse-operator).
+For additional details and advanced configurations, see the [ClickHouseKubernetes API documentation](../README.md) and the [Altinity Operator documentation](https://github.com/Altinity/clickhouse-operator).

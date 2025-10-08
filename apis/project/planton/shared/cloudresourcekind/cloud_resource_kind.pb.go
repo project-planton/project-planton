@@ -167,7 +167,7 @@ const (
 	CloudResourceKind_PostgresOperatorKubernetes CloudResourceKind = 829
 	CloudResourceKind_SolrOperatorKubernetes     CloudResourceKind = 830
 	CloudResourceKind_ExternalSecretsKubernetes  CloudResourceKind = 831
-	CloudResourceKind_ClickhouseKubernetes       CloudResourceKind = 832
+	CloudResourceKind_ClickHouseKubernetes       CloudResourceKind = 832
 	CloudResourceKind_AltinityOperatorKubernetes CloudResourceKind = 833
 	// 1200–1499: DigitalOcean resources
 	CloudResourceKind_DigitalOceanAppPlatformService CloudResourceKind = 1200
@@ -298,7 +298,7 @@ var (
 		829:  "PostgresOperatorKubernetes",
 		830:  "SolrOperatorKubernetes",
 		831:  "ExternalSecretsKubernetes",
-		832:  "ClickhouseKubernetes",
+		832:  "ClickHouseKubernetes",
 		833:  "AltinityOperatorKubernetes",
 		1200: "DigitalOceanAppPlatformService",
 		1201: "DigitalOceanBucket",
@@ -423,7 +423,7 @@ var (
 		"PostgresOperatorKubernetes":           829,
 		"SolrOperatorKubernetes":               830,
 		"ExternalSecretsKubernetes":            831,
-		"ClickhouseKubernetes":                 832,
+		"ClickHouseKubernetes":                 832,
 		"AltinityOperatorKubernetes":           833,
 		"DigitalOceanAppPlatformService":       1200,
 		"DigitalOceanBucket":                   1201,
@@ -794,7 +794,7 @@ const file_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto_ra
 	"\x1aPostgresOperatorKubernetes\x10\xbd\x06\x1a\x15\xa2\xf7\x04\x11\b\x13\x10\x01\"\apgopk8s2\x02\x10\x01\x123\n" +
 	"\x16SolrOperatorKubernetes\x10\xbe\x06\x1a\x16\xa2\xf7\x04\x12\b\x13\x10\x01\"\bslropk8s2\x02\x10\x01\x127\n" +
 	"\x19ExternalSecretsKubernetes\x10\xbf\x06\x1a\x17\xa2\xf7\x04\x13\b\x13\x10\x01\"\textseck8s2\x02\x10\x01\x12:\n" +
-	"\x14ClickhouseKubernetes\x10\xc0\x06\x1a\x1f\xa2\xf7\x04\x1b\b\x13\x10\x01\"\x05chk8s2\x0e\n" +
+	"\x14ClickHouseKubernetes\x10\xc0\x06\x1a\x1f\xa2\xf7\x04\x1b\b\x13\x10\x01\"\x05chk8s2\x0e\n" +
 	"\n" +
 	"clickhouse\x10\x02\x127\n" +
 	"\x1aAltinityOperatorKubernetes\x10\xc1\x06\x1a\x16\xa2\xf7\x04\x12\b\x13\x10\x01\"\baltopk8s2\x02\x10\x01\x124\n" +

@@ -9,17 +9,17 @@ import (
 	"github.com/project-planton/project-planton/apis/project/planton/shared/kubernetes"
 )
 
-func TestClickhouseKubernetesSpec(t *testing.T) {
+func TestClickHouseKubernetesSpec(t *testing.T) {
 	gomega.RegisterFailHandler(ginkgo.Fail)
-	ginkgo.RunSpecs(t, "ClickhouseKubernetesSpec Validation Suite")
+	ginkgo.RunSpecs(t, "ClickHouseKubernetesSpec Validation Suite")
 }
 
-var _ = ginkgo.Describe("ClickhouseKubernetesSpec validations", func() {
-	var spec *ClickhouseKubernetesSpec
+var _ = ginkgo.Describe("ClickHouseKubernetesSpec validations", func() {
+	var spec *ClickHouseKubernetesSpec
 
 	ginkgo.BeforeEach(func() {
-		spec = &ClickhouseKubernetesSpec{
-			Container: &ClickhouseKubernetesContainer{
+		spec = &ClickHouseKubernetesSpec{
+			Container: &ClickHouseKubernetesContainer{
 				Replicas:             1,
 				IsPersistenceEnabled: true,
 				DiskSize:             "8Gi",
@@ -56,7 +56,7 @@ var _ = ginkgo.Describe("ClickhouseKubernetesSpec validations", func() {
 
 		ginkgo.Context("spec with clustering enabled", func() {
 			ginkgo.It("should not return a validation error with valid shard and replica counts", func() {
-				spec.Cluster = &ClickhouseKubernetesClusterConfig{
+				spec.Cluster = &ClickHouseKubernetesClusterConfig{
 					IsEnabled:    true,
 					ShardCount:   2,
 					ReplicaCount: 2,
@@ -96,7 +96,7 @@ var _ = ginkgo.Describe("ClickhouseKubernetesSpec validations", func() {
 
 		ginkgo.Context("spec with clustering enabled but invalid counts", func() {
 			ginkgo.It("should return a validation error when shard_count is zero", func() {
-				spec.Cluster = &ClickhouseKubernetesClusterConfig{
+				spec.Cluster = &ClickHouseKubernetesClusterConfig{
 					IsEnabled:    true,
 					ShardCount:   0,
 					ReplicaCount: 2,
@@ -106,7 +106,7 @@ var _ = ginkgo.Describe("ClickhouseKubernetesSpec validations", func() {
 			})
 
 			ginkgo.It("should return a validation error when replica_count is zero", func() {
-				spec.Cluster = &ClickhouseKubernetesClusterConfig{
+				spec.Cluster = &ClickHouseKubernetesClusterConfig{
 					IsEnabled:    true,
 					ShardCount:   2,
 					ReplicaCount: 0,
@@ -118,7 +118,7 @@ var _ = ginkgo.Describe("ClickhouseKubernetesSpec validations", func() {
 
 		ginkgo.Context("spec with clustering disabled", func() {
 			ginkgo.It("should not validate cluster counts when clustering is disabled", func() {
-				spec.Cluster = &ClickhouseKubernetesClusterConfig{
+				spec.Cluster = &ClickHouseKubernetesClusterConfig{
 					IsEnabled:    false,
 					ShardCount:   0,
 					ReplicaCount: 0,

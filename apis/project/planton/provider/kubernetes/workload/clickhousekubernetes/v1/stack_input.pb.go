@@ -22,11 +22,11 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// clickhouse-kubernetes stack-input
-type ClickhouseKubernetesStackInput struct {
+// click-house-kubernetes stack-input
+type ClickHouseKubernetesStackInput struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// target cloud-resource
-	Target *ClickhouseKubernetes `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
+	Target *ClickHouseKubernetes `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
 	// provider-credential
 	ProviderCredential *v1.KubernetesClusterCredentialSpec `protobuf:"bytes,2,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
 	// kubernetes namespace
@@ -35,20 +35,20 @@ type ClickhouseKubernetesStackInput struct {
 	sizeCache           protoimpl.SizeCache
 }
 
-func (x *ClickhouseKubernetesStackInput) Reset() {
-	*x = ClickhouseKubernetesStackInput{}
+func (x *ClickHouseKubernetesStackInput) Reset() {
+	*x = ClickHouseKubernetesStackInput{}
 	mi := &file_project_planton_provider_kubernetes_workload_clickhousekubernetes_v1_stack_input_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ClickhouseKubernetesStackInput) String() string {
+func (x *ClickHouseKubernetesStackInput) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ClickhouseKubernetesStackInput) ProtoMessage() {}
+func (*ClickHouseKubernetesStackInput) ProtoMessage() {}
 
-func (x *ClickhouseKubernetesStackInput) ProtoReflect() protoreflect.Message {
+func (x *ClickHouseKubernetesStackInput) ProtoReflect() protoreflect.Message {
 	mi := &file_project_planton_provider_kubernetes_workload_clickhousekubernetes_v1_stack_input_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -60,26 +60,26 @@ func (x *ClickhouseKubernetesStackInput) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ClickhouseKubernetesStackInput.ProtoReflect.Descriptor instead.
-func (*ClickhouseKubernetesStackInput) Descriptor() ([]byte, []int) {
+// Deprecated: Use ClickHouseKubernetesStackInput.ProtoReflect.Descriptor instead.
+func (*ClickHouseKubernetesStackInput) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_kubernetes_workload_clickhousekubernetes_v1_stack_input_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *ClickhouseKubernetesStackInput) GetTarget() *ClickhouseKubernetes {
+func (x *ClickHouseKubernetesStackInput) GetTarget() *ClickHouseKubernetes {
 	if x != nil {
 		return x.Target
 	}
 	return nil
 }
 
-func (x *ClickhouseKubernetesStackInput) GetProviderCredential() *v1.KubernetesClusterCredentialSpec {
+func (x *ClickHouseKubernetesStackInput) GetProviderCredential() *v1.KubernetesClusterCredentialSpec {
 	if x != nil {
 		return x.ProviderCredential
 	}
 	return nil
 }
 
-func (x *ClickhouseKubernetesStackInput) GetKubernetesNamespace() string {
+func (x *ClickHouseKubernetesStackInput) GetKubernetesNamespace() string {
 	if x != nil {
 		return x.KubernetesNamespace
 	}
@@ -91,8 +91,8 @@ var File_project_planton_provider_kubernetes_workload_clickhousekubernetes_v1_st
 const file_project_planton_provider_kubernetes_workload_clickhousekubernetes_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
 	"Vproject/planton/provider/kubernetes/workload/clickhousekubernetes/v1/stack_input.proto\x12Dproject.planton.provider.kubernetes.workload.clickhousekubernetes.v1\x1aDproject/planton/credential/kubernetesclustercredential/v1/spec.proto\x1aNproject/planton/provider/kubernetes/workload/clickhousekubernetes/v1/api.proto\"\xd5\x02\n" +
-	"\x1eClickhouseKubernetesStackInput\x12r\n" +
-	"\x06target\x18\x01 \x01(\v2Z.project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickhouseKubernetesR\x06target\x12\x8b\x01\n" +
+	"\x1eClickHouseKubernetesStackInput\x12r\n" +
+	"\x06target\x18\x01 \x01(\v2Z.project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickHouseKubernetesR\x06target\x12\x8b\x01\n" +
 	"\x13provider_credential\x18\x02 \x01(\v2Z.project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpecR\x12providerCredential\x121\n" +
 	"\x14kubernetes_namespace\x18\x03 \x01(\tR\x13kubernetesNamespaceB\xa2\x04\n" +
 	"Hcom.project.planton.provider.kubernetes.workload.clickhousekubernetes.v1B\x0fStackInputProtoP\x01Z\x8b\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/clickhousekubernetes/v1;clickhousekubernetesv1\xa2\x02\x06PPPKWC\xaa\x02DProject.Planton.Provider.Kubernetes.Workload.Clickhousekubernetes.V1\xca\x02DProject\\Planton\\Provider\\Kubernetes\\Workload\\Clickhousekubernetes\\V1\xe2\x02PProject\\Planton\\Provider\\Kubernetes\\Workload\\Clickhousekubernetes\\V1\\GPBMetadata\xea\x02JProject::Planton::Provider::Kubernetes::Workload::Clickhousekubernetes::V1b\x06proto3"
@@ -111,13 +111,13 @@ func file_project_planton_provider_kubernetes_workload_clickhousekubernetes_v1_s
 
 var file_project_planton_provider_kubernetes_workload_clickhousekubernetes_v1_stack_input_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_kubernetes_workload_clickhousekubernetes_v1_stack_input_proto_goTypes = []any{
-	(*ClickhouseKubernetesStackInput)(nil),     // 0: project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickhouseKubernetesStackInput
-	(*ClickhouseKubernetes)(nil),               // 1: project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickhouseKubernetes
+	(*ClickHouseKubernetesStackInput)(nil),     // 0: project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickHouseKubernetesStackInput
+	(*ClickHouseKubernetes)(nil),               // 1: project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickHouseKubernetes
 	(*v1.KubernetesClusterCredentialSpec)(nil), // 2: project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec
 }
 var file_project_planton_provider_kubernetes_workload_clickhousekubernetes_v1_stack_input_proto_depIdxs = []int32{
-	1, // 0: project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickhouseKubernetesStackInput.target:type_name -> project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickhouseKubernetes
-	2, // 1: project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickhouseKubernetesStackInput.provider_credential:type_name -> project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec
+	1, // 0: project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickHouseKubernetesStackInput.target:type_name -> project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickHouseKubernetes
+	2, // 1: project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickHouseKubernetesStackInput.provider_credential:type_name -> project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

@@ -243,7 +243,7 @@ After implementation, the operator should:
 1. Deploy successfully to any Kubernetes cluster
 2. Install all Altinity ClickHouse CRDs
 3. Watch all namespaces for ClickHouseInstallation resources
-4. Be reusable by workload deployments (future ClickhouseKubernetes component)
+4. Be reusable by workload deployments (future ClickHouseKubernetes component)
 
 ## Key Differences from Existing Patterns
 
@@ -252,7 +252,7 @@ The Altinity operator is more complex than Kafka/Postgres operators because:
 - It handles complex ClickHouse cluster topologies
 - It has extensive CRD configurations
 
-Keep the operator deployment simple - just get it installed. The complexity of configuring actual ClickHouse clusters will be in the separate ClickhouseKubernetes workload component.
+Keep the operator deployment simple - just get it installed. The complexity of configuring actual ClickHouse clusters will be in the separate ClickHouseKubernetes workload component.
 
 ## Success Criteria
 
@@ -282,7 +282,7 @@ project-planton pulumi up --manifest clickhouse-operator.yaml \
 ## Notes
 
 - The operator deployment is stateless - it just installs the operator
-- Actual ClickHouse clusters will be deployed separately using ClickhouseKubernetes workload component
+- Actual ClickHouse clusters will be deployed separately using ClickHouseKubernetes workload component
 - Keep spec.proto minimal - only target cluster and operator resources
 - Follow existing conventions exactly for consistency
 - Don't add features that aren't in other operator deployments

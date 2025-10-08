@@ -19,11 +19,12 @@ This module deploys production-grade ClickHouse clusters on Kubernetes using the
   Deploy standalone instances for development or distributed clusters with configurable sharding and replication for production workloads.
 
 - **Production-Grade Features**  
-  - Automatic ZooKeeper management for cluster coordination
+  - ClickHouse Keeper coordination (75% more efficient than ZooKeeper)
   - Rolling updates with zero downtime
   - Persistent storage with configurable sizes
   - Resource limits and requests for optimal performance
   - Built-in monitoring and metrics
+  - Flexible coordination options (auto-managed Keeper, external Keeper, or ZooKeeper)
 
 - **Security Best Practices**  
   Automatically generates secure random passwords stored in Kubernetes Secrets. Credentials never appear in manifests or version control.
@@ -38,7 +39,7 @@ This module deploys production-grade ClickHouse clusters on Kubernetes using the
 
 See [examples.md](examples.md) for usage details and step-by-step examples. In general:
 
-1. Define a YAML resource describing your ClickHouse cluster using the **ClickhouseKubernetes** API.
+1. Define a YAML resource describing your ClickHouse cluster using the **ClickHouseKubernetes** API.
 2. Run:
    ```bash
    planton pulumi up --stack-input <your-clickhouse-file.yaml>
@@ -74,7 +75,7 @@ The operator typically installs in the `clickhouse-operator` namespace and watch
 ## Module Architecture
 
 1. **Initialization**  
-   Reads your `ClickhouseKubernetesStackInput` (cluster credentials, resource definitions), initializes local variables, and prepares Kubernetes labels.
+   Reads your `ClickHouseKubernetesStackInput` (cluster credentials, resource definitions), initializes local variables, and prepares Kubernetes labels.
 
 2. **Provider Setup**  
    Establishes a Pulumi Kubernetes Provider using the supplied cluster credentials.
@@ -90,20 +91,23 @@ The operator typically installs in the `clickhouse-operator` namespace and watch
    - Cluster topology (shards, replicas)
    - Resource allocations (CPU, memory)
    - Persistence configuration (disk size, storage class)
-   - ZooKeeper settings (auto-managed or external)
+   - Coordination settings (ClickHouse Keeper or ZooKeeper references)
    - Security settings (password references)
 
-6. **CRD Application**  
+6. **Coordination Service Setup** (Optional)  
+   For auto-managed ClickHouse Keeper, the operator will create a ClickHouseKeeperInstallation resource automatically. For external coordination, references the provided nodes.
+
+7. **CRD Application**  
    Applies the ClickHouseInstallation to Kubernetes. The Altinity operator watches for these resources and reconciles the actual state:
    - Creates StatefulSets for ClickHouse pods
    - Sets up Services for cluster communication
    - Configures ConfigMaps with ClickHouse settings
-   - Manages ZooKeeper (if needed for clustering)
+   - Manages ClickHouse Keeper (for auto-managed coordination)
 
-7. **Ingress Service (Optional)**  
+8. **Ingress Service (Optional)**  
    If enabled, creates a LoadBalancer Service with external DNS annotations for public access.
 
-8. **Output Exports**  
+9. **Output Exports**  
    Exports useful values: namespace, service names, endpoints, credentials, and port-forward commands.
 
 ## Benefits

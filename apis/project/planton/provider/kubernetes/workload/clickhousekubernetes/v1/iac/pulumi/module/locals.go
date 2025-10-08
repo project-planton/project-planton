@@ -17,23 +17,23 @@ type Locals struct {
 	KubePortForwardCommand      string
 	KubeServiceFqdn             string
 	KubeServiceName             string
-	ClickhouseKubernetes        *clickhousekubernetesv1.ClickhouseKubernetes
+	ClickHouseKubernetes        *clickhousekubernetesv1.ClickHouseKubernetes
 	Namespace                   string
 	ClickhousePodSelectorLabels map[string]string
 	KubernetesLabels            map[string]string
 }
 
-func initializeLocals(ctx *pulumi.Context, stackInput *clickhousekubernetesv1.ClickhouseKubernetesStackInput) *Locals {
+func initializeLocals(ctx *pulumi.Context, stackInput *clickhousekubernetesv1.ClickHouseKubernetesStackInput) *Locals {
 	locals := &Locals{}
 
-	locals.ClickhouseKubernetes = stackInput.Target
+	locals.ClickHouseKubernetes = stackInput.Target
 
 	target := stackInput.Target
 
 	locals.KubernetesLabels = map[string]string{
 		kuberneteslabelkeys.Resource:     strconv.FormatBool(true),
 		kuberneteslabelkeys.ResourceName: target.Metadata.Name,
-		kuberneteslabelkeys.ResourceKind: cloudresourcekind.CloudResourceKind_ClickhouseKubernetes.String(),
+		kuberneteslabelkeys.ResourceKind: cloudresourcekind.CloudResourceKind_ClickHouseKubernetes.String(),
 	}
 
 	if target.Metadata.Id != "" {

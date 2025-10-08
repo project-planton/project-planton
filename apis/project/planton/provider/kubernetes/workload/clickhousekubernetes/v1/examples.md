@@ -20,7 +20,7 @@ This example demonstrates a minimal standalone ClickHouse deployment suitable fo
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: ClickhouseKubernetes
+kind: ClickHouseKubernetes
 metadata:
   name: dev-clickhouse
 spec:
@@ -47,7 +47,7 @@ Production-ready standalone deployment with larger resources and explicit versio
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: ClickhouseKubernetes
+kind: ClickHouseKubernetes
 metadata:
   name: prod-clickhouse
   org: my-org
@@ -77,7 +77,7 @@ Horizontally scaled cluster with multiple shards for parallel query processing.
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: ClickhouseKubernetes
+kind: ClickHouseKubernetes
 metadata:
   name: distributed-clickhouse
 spec:
@@ -107,7 +107,7 @@ Production cluster with replication for high availability and fault tolerance.
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: ClickhouseKubernetes
+kind: ClickHouseKubernetes
 metadata:
   name: ha-clickhouse
 spec:
@@ -144,7 +144,7 @@ Advanced configuration using external ZooKeeper for shared coordination across m
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: ClickhouseKubernetes
+kind: ClickHouseKubernetes
 metadata:
   name: enterprise-clickhouse
 spec:
@@ -180,7 +180,7 @@ Cluster exposed to external clients via LoadBalancer with DNS.
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: ClickhouseKubernetes
+kind: ClickHouseKubernetes
 metadata:
   name: public-clickhouse
 spec:
@@ -215,7 +215,7 @@ Lightweight configuration for testing with minimal resources and ephemeral stora
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: ClickhouseKubernetes
+kind: ClickHouseKubernetes
 metadata:
   name: dev-clickhouse
 spec:

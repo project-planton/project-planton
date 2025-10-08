@@ -269,7 +269,7 @@ var ProviderKubernetesAddonMap = map[cloudresourcekind.CloudResourceKind]proto.M
 
 var ProviderKubernetesWorkloadMap = map[cloudresourcekind.CloudResourceKind]proto.Message{
 	cloudresourcekind.CloudResourceKind_ArgocdKubernetes:         &argocdkubernetesv1.ArgocdKubernetes{},
-	cloudresourcekind.CloudResourceKind_ClickhouseKubernetes:     &clickhousekubernetesv1.ClickhouseKubernetes{},
+	cloudresourcekind.CloudResourceKind_ClickHouseKubernetes:     &clickhousekubernetesv1.ClickHouseKubernetes{},
 	cloudresourcekind.CloudResourceKind_CronJobKubernetes:        &cronjobkubernetesv1.CronJobKubernetes{},
 	cloudresourcekind.CloudResourceKind_ElasticsearchKubernetes:  &elasticsearchkubernetesv1.ElasticsearchKubernetes{},
 	cloudresourcekind.CloudResourceKind_GitlabKubernetes:         &gitlabkubernetesv1.GitlabKubernetes{},

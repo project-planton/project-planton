@@ -16,12 +16,12 @@ func clickhouseInstallation(
 	createdNamespace *kubernetescorev1.Namespace,
 	createdSecret *kubernetescorev1.Secret,
 ) error {
-	spec := locals.ClickhouseKubernetes.Spec
+	spec := locals.ClickHouseKubernetes.Spec
 
 	// Determine cluster name
 	clusterName := spec.ClusterName
 	if clusterName == "" {
-		clusterName = locals.ClickhouseKubernetes.Metadata.Name
+		clusterName = locals.ClickHouseKubernetes.Metadata.Name
 	}
 
 	// Determine ClickHouse version
@@ -57,7 +57,7 @@ func clickhouseInstallation(
 // buildConfiguration generates the configuration section of the CHI spec
 func buildConfiguration(
 	clusterName string,
-	spec *clickhousekubernetesv1.ClickhouseKubernetesSpec,
+	spec *clickhousekubernetesv1.ClickHouseKubernetesSpec,
 	createdSecret *kubernetescorev1.Secret,
 ) *altinityv1.ClickHouseInstallationSpecConfigurationArgs {
 	// Build users configuration with secret reference
@@ -97,38 +97,12 @@ func buildConfiguration(
 		},
 	}
 
-	// Add ZooKeeper configuration for clustered deployments
+	// Add coordination configuration for clustered deployments
 	if isClustered {
-		config.Zookeeper = buildZookeeperConfig(spec)
+		config.Zookeeper = buildCoordinationConfig(spec)
 	}
 
 	return config
-}
-
-// buildZookeeperConfig generates the ZooKeeper configuration
-func buildZookeeperConfig(spec *clickhousekubernetesv1.ClickhouseKubernetesSpec) *altinityv1.ClickHouseInstallationSpecConfigurationZookeeperArgs {
-	// If external ZooKeeper is configured
-	if spec.Zookeeper != nil && spec.Zookeeper.UseExternal && len(spec.Zookeeper.Nodes) > 0 {
-		nodes := make(altinityv1.ClickHouseInstallationSpecConfigurationZookeeperNodesArray, len(spec.Zookeeper.Nodes))
-		for i, node := range spec.Zookeeper.Nodes {
-			nodes[i] = &altinityv1.ClickHouseInstallationSpecConfigurationZookeeperNodesArgs{
-				Host: pulumi.String(node),
-			}
-		}
-		return &altinityv1.ClickHouseInstallationSpecConfigurationZookeeperArgs{
-			Nodes: nodes,
-		}
-	}
-
-	// Use operator-managed ZooKeeper (auto-provisioned)
-	return &altinityv1.ClickHouseInstallationSpecConfigurationZookeeperArgs{
-		Nodes: altinityv1.ClickHouseInstallationSpecConfigurationZookeeperNodesArray{
-			&altinityv1.ClickHouseInstallationSpecConfigurationZookeeperNodesArgs{
-				Host: pulumi.String("zookeeper"),
-				Port: pulumi.IntPtr(vars.ZookeeperPort),
-			},
-		},
-	}
 }
 
 // buildDefaults generates the defaults section referencing templates
@@ -143,7 +117,7 @@ func buildDefaults() *altinityv1.ClickHouseInstallationSpecDefaultsArgs {
 
 // buildTemplates generates the templates section (pod and volume claim templates)
 func buildTemplates(
-	spec *clickhousekubernetesv1.ClickhouseKubernetesSpec,
+	spec *clickhousekubernetesv1.ClickHouseKubernetesSpec,
 	version string,
 ) *altinityv1.ClickHouseInstallationSpecTemplatesArgs {
 	return &altinityv1.ClickHouseInstallationSpecTemplatesArgs{
@@ -154,7 +128,7 @@ func buildTemplates(
 
 // buildPodTemplates generates the pod template with container resources
 func buildPodTemplates(
-	spec *clickhousekubernetesv1.ClickhouseKubernetesSpec,
+	spec *clickhousekubernetesv1.ClickHouseKubernetesSpec,
 	version string,
 ) altinityv1.ClickHouseInstallationSpecTemplatesPodTemplatesArray {
 	resources := spec.Container.Resources
@@ -188,7 +162,7 @@ func buildPodTemplates(
 
 // buildVolumeClaimTemplates generates the persistence volume claim template
 func buildVolumeClaimTemplates(
-	spec *clickhousekubernetesv1.ClickhouseKubernetesSpec,
+	spec *clickhousekubernetesv1.ClickHouseKubernetesSpec,
 ) altinityv1.ClickHouseInstallationSpecTemplatesVolumeClaimTemplatesArray {
 	diskSize := "1Gi" // minimal default
 	if spec.Container.IsPersistenceEnabled && spec.Container.DiskSize != "" {

@@ -10,7 +10,7 @@ locals {
   base_labels = {
     "resource"      = "true"
     "resource_id"   = local.resource_id
-    "resource_kind" = "clickhouse_kubernetes"
+    "resource_kind" = "click_house_kubernetes"
   }
 
   # Organization label only if var.metadata.org is non-empty

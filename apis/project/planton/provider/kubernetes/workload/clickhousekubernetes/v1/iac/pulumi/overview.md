@@ -1,6 +1,6 @@
 # Overview
 
-The **ClickhouseKubernetes** API resource provides an intuitive, production-grade way to deploy and manage ClickHouse database clusters on Kubernetes using the **Altinity ClickHouse Operator**. This Pulumi module interprets a `ClickhouseKubernetesStackInput`, which includes Kubernetes credentials and your ClickHouse cluster specification, and generates a ClickHouseInstallation custom resource that the Altinity operator reconciles into a fully functional ClickHouse deployment.
+The **ClickHouseKubernetes** API resource provides an intuitive, production-grade way to deploy and manage ClickHouse database clusters on Kubernetes using the **Altinity ClickHouse Operator**. This Pulumi module interprets a `ClickHouseKubernetesStackInput`, which includes Kubernetes credentials and your ClickHouse cluster specification, and generates a ClickHouseInstallation custom resource that the Altinity operator reconciles into a fully functional ClickHouse deployment.
 
 ## Architecture
 
@@ -257,6 +257,6 @@ The Altinity ClickHouse Operator is the industry standard for running ClickHouse
 
 ## Summary
 
-The **ClickhouseKubernetes** module provides a clean, intuitive API that abstracts the complexity of operator-based ClickHouse deployments. You define your desired cluster topology and resource allocations; the Altinity operator handles all the operational complexity. This results in production-grade ClickHouse clusters that are reliable, scalable, and easy to manage.
+The **ClickHouseKubernetes** module provides a clean, intuitive API that abstracts the complexity of operator-based ClickHouse deployments. You define your desired cluster topology and resource allocations; the Altinity operator handles all the operational complexity. This results in production-grade ClickHouse clusters that are reliable, scalable, and easy to manage.
 
 By leveraging the Altinity operator, you benefit from years of operational expertise and best practices encoded into the operator's reconciliation logic, allowing you to focus on your data and analytics rather than Kubernetes complexity.

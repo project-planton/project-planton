@@ -23,8 +23,8 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// clickhouse-kubernetes
-type ClickhouseKubernetes struct {
+// click-house-kubernetes
+type ClickHouseKubernetes struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// api-version
 	ApiVersion string `protobuf:"bytes,1,opt,name=api_version,json=apiVersion,proto3" json:"api_version,omitempty"`
@@ -33,27 +33,27 @@ type ClickhouseKubernetes struct {
 	// metadata
 	Metadata *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// spec
-	Spec *ClickhouseKubernetesSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
+	Spec *ClickHouseKubernetesSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status
-	Status        *ClickhouseKubernetesStatus `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
+	Status        *ClickHouseKubernetesStatus `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ClickhouseKubernetes) Reset() {
-	*x = ClickhouseKubernetes{}
+func (x *ClickHouseKubernetes) Reset() {
+	*x = ClickHouseKubernetes{}
 	mi := &file_project_planton_provider_kubernetes_workload_clickhousekubernetes_v1_api_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ClickhouseKubernetes) String() string {
+func (x *ClickHouseKubernetes) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ClickhouseKubernetes) ProtoMessage() {}
+func (*ClickHouseKubernetes) ProtoMessage() {}
 
-func (x *ClickhouseKubernetes) ProtoReflect() protoreflect.Message {
+func (x *ClickHouseKubernetes) ProtoReflect() protoreflect.Message {
 	mi := &file_project_planton_provider_kubernetes_workload_clickhousekubernetes_v1_api_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -65,69 +65,69 @@ func (x *ClickhouseKubernetes) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ClickhouseKubernetes.ProtoReflect.Descriptor instead.
-func (*ClickhouseKubernetes) Descriptor() ([]byte, []int) {
+// Deprecated: Use ClickHouseKubernetes.ProtoReflect.Descriptor instead.
+func (*ClickHouseKubernetes) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_kubernetes_workload_clickhousekubernetes_v1_api_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *ClickhouseKubernetes) GetApiVersion() string {
+func (x *ClickHouseKubernetes) GetApiVersion() string {
 	if x != nil {
 		return x.ApiVersion
 	}
 	return ""
 }
 
-func (x *ClickhouseKubernetes) GetKind() string {
+func (x *ClickHouseKubernetes) GetKind() string {
 	if x != nil {
 		return x.Kind
 	}
 	return ""
 }
 
-func (x *ClickhouseKubernetes) GetMetadata() *shared.ApiResourceMetadata {
+func (x *ClickHouseKubernetes) GetMetadata() *shared.ApiResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
 	return nil
 }
 
-func (x *ClickhouseKubernetes) GetSpec() *ClickhouseKubernetesSpec {
+func (x *ClickHouseKubernetes) GetSpec() *ClickHouseKubernetesSpec {
 	if x != nil {
 		return x.Spec
 	}
 	return nil
 }
 
-func (x *ClickhouseKubernetes) GetStatus() *ClickhouseKubernetesStatus {
+func (x *ClickHouseKubernetes) GetStatus() *ClickHouseKubernetesStatus {
 	if x != nil {
 		return x.Status
 	}
 	return nil
 }
 
-// clickhouse-kubernetes status
-type ClickhouseKubernetesStatus struct {
+// click-house-kubernetes status
+type ClickHouseKubernetesStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// stack-outputs
-	Outputs       *ClickhouseKubernetesStackOutputs `protobuf:"bytes,1,opt,name=outputs,proto3" json:"outputs,omitempty"`
+	Outputs       *ClickHouseKubernetesStackOutputs `protobuf:"bytes,1,opt,name=outputs,proto3" json:"outputs,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ClickhouseKubernetesStatus) Reset() {
-	*x = ClickhouseKubernetesStatus{}
+func (x *ClickHouseKubernetesStatus) Reset() {
+	*x = ClickHouseKubernetesStatus{}
 	mi := &file_project_planton_provider_kubernetes_workload_clickhousekubernetes_v1_api_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ClickhouseKubernetesStatus) String() string {
+func (x *ClickHouseKubernetesStatus) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ClickhouseKubernetesStatus) ProtoMessage() {}
+func (*ClickHouseKubernetesStatus) ProtoMessage() {}
 
-func (x *ClickhouseKubernetesStatus) ProtoReflect() protoreflect.Message {
+func (x *ClickHouseKubernetesStatus) ProtoReflect() protoreflect.Message {
 	mi := &file_project_planton_provider_kubernetes_workload_clickhousekubernetes_v1_api_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -139,12 +139,12 @@ func (x *ClickhouseKubernetesStatus) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ClickhouseKubernetesStatus.ProtoReflect.Descriptor instead.
-func (*ClickhouseKubernetesStatus) Descriptor() ([]byte, []int) {
+// Deprecated: Use ClickHouseKubernetesStatus.ProtoReflect.Descriptor instead.
+func (*ClickHouseKubernetesStatus) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_kubernetes_workload_clickhousekubernetes_v1_api_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *ClickhouseKubernetesStatus) GetOutputs() *ClickhouseKubernetesStackOutputs {
+func (x *ClickHouseKubernetesStatus) GetOutputs() *ClickHouseKubernetesStackOutputs {
 	if x != nil {
 		return x.Outputs
 	}
@@ -156,17 +156,17 @@ var File_project_planton_provider_kubernetes_workload_clickhousekubernetes_v1_ap
 const file_project_planton_provider_kubernetes_workload_clickhousekubernetes_v1_api_proto_rawDesc = "" +
 	"\n" +
 	"Nproject/planton/provider/kubernetes/workload/clickhousekubernetes/v1/api.proto\x12Dproject.planton.provider.kubernetes.workload.clickhousekubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1aOproject/planton/provider/kubernetes/workload/clickhousekubernetes/v1/spec.proto\x1aXproject/planton/provider/kubernetes/workload/clickhousekubernetes/v1/stack_outputs.proto\x1a#project/planton/shared/status.proto\x1a%project/planton/shared/metadata.proto\"\xd9\x03\n" +
-	"\x14ClickhouseKubernetes\x12I\n" +
+	"\x14ClickHouseKubernetes\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!kubernetes.project-planton.org/v1R\n" +
 	"apiVersion\x12/\n" +
 	"\x04kind\x18\x02 \x01(\tB\x1b\xbaH\x18r\x16\n" +
-	"\x14ClickhouseKubernetesR\x04kind\x12O\n" +
+	"\x14ClickHouseKubernetesR\x04kind\x12O\n" +
 	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12z\n" +
-	"\x04spec\x18\x04 \x01(\v2^.project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickhouseKubernetesSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12x\n" +
-	"\x06status\x18\x05 \x01(\v2`.project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickhouseKubernetesStatusR\x06status\"\x9f\x01\n" +
-	"\x1aClickhouseKubernetesStatus\x12\x80\x01\n" +
-	"\aoutputs\x18\x01 \x01(\v2f.project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickhouseKubernetesStackOutputsR\aoutputsB\x9b\x04\n" +
+	"\x04spec\x18\x04 \x01(\v2^.project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickHouseKubernetesSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12x\n" +
+	"\x06status\x18\x05 \x01(\v2`.project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickHouseKubernetesStatusR\x06status\"\x9f\x01\n" +
+	"\x1aClickHouseKubernetesStatus\x12\x80\x01\n" +
+	"\aoutputs\x18\x01 \x01(\v2f.project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickHouseKubernetesStackOutputsR\aoutputsB\x9b\x04\n" +
 	"Hcom.project.planton.provider.kubernetes.workload.clickhousekubernetes.v1B\bApiProtoP\x01Z\x8b\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/clickhousekubernetes/v1;clickhousekubernetesv1\xa2\x02\x06PPPKWC\xaa\x02DProject.Planton.Provider.Kubernetes.Workload.Clickhousekubernetes.V1\xca\x02DProject\\Planton\\Provider\\Kubernetes\\Workload\\Clickhousekubernetes\\V1\xe2\x02PProject\\Planton\\Provider\\Kubernetes\\Workload\\Clickhousekubernetes\\V1\\GPBMetadata\xea\x02JProject::Planton::Provider::Kubernetes::Workload::Clickhousekubernetes::V1b\x06proto3"
 
 var (
@@ -183,17 +183,17 @@ func file_project_planton_provider_kubernetes_workload_clickhousekubernetes_v1_a
 
 var file_project_planton_provider_kubernetes_workload_clickhousekubernetes_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_kubernetes_workload_clickhousekubernetes_v1_api_proto_goTypes = []any{
-	(*ClickhouseKubernetes)(nil),             // 0: project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickhouseKubernetes
-	(*ClickhouseKubernetesStatus)(nil),       // 1: project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickhouseKubernetesStatus
+	(*ClickHouseKubernetes)(nil),             // 0: project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickHouseKubernetes
+	(*ClickHouseKubernetesStatus)(nil),       // 1: project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickHouseKubernetesStatus
 	(*shared.ApiResourceMetadata)(nil),       // 2: project.planton.shared.ApiResourceMetadata
-	(*ClickhouseKubernetesSpec)(nil),         // 3: project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickhouseKubernetesSpec
-	(*ClickhouseKubernetesStackOutputs)(nil), // 4: project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickhouseKubernetesStackOutputs
+	(*ClickHouseKubernetesSpec)(nil),         // 3: project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickHouseKubernetesSpec
+	(*ClickHouseKubernetesStackOutputs)(nil), // 4: project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickHouseKubernetesStackOutputs
 }
 var file_project_planton_provider_kubernetes_workload_clickhousekubernetes_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickhouseKubernetes.metadata:type_name -> project.planton.shared.ApiResourceMetadata
-	3, // 1: project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickhouseKubernetes.spec:type_name -> project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickhouseKubernetesSpec
-	1, // 2: project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickhouseKubernetes.status:type_name -> project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickhouseKubernetesStatus
-	4, // 3: project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickhouseKubernetesStatus.outputs:type_name -> project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickhouseKubernetesStackOutputs
+	2, // 0: project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickHouseKubernetes.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	3, // 1: project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickHouseKubernetes.spec:type_name -> project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickHouseKubernetesSpec
+	1, // 2: project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickHouseKubernetes.status:type_name -> project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickHouseKubernetesStatus
+	4, // 3: project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickHouseKubernetesStatus.outputs:type_name -> project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickHouseKubernetesStackOutputs
 	4, // [4:4] is the sub-list for method output_type
 	4, // [4:4] is the sub-list for method input_type
 	4, // [4:4] is the sub-list for extension type_name
