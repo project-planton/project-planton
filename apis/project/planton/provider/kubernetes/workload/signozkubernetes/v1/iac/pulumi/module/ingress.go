@@ -168,7 +168,8 @@ func ingress(ctx *pulumi.Context, locals *Locals, kubernetesProvider *kubernetes
 						},
 						BackendRefs: gatewayv1.HTTPRouteSpecRulesBackendRefsArray{
 							gatewayv1.HTTPRouteSpecRulesBackendRefsArgs{
-								Name:      pulumi.String(locals.SignozServiceName),
+								// Route to the actual frontend service created by SigNoz Helm chart
+								Name:      pulumi.Sprintf("%s-frontend", locals.SignozKubernetes.Metadata.Name),
 								Namespace: createdNamespace.Metadata.Name(),
 								Port:      pulumi.Int(vars.SignozFrontendPort),
 							},
