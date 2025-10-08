@@ -3,6 +3,8 @@ load("@rules_go//go:def.bzl", "go_library")
 go_library(
     name = "pulumi",
     srcs = [
+        "cancel.go",
+        "delete.go",
         "destroy.go",
         "init.go",
         "preview.go",

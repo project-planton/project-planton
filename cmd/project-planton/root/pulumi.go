@@ -29,6 +29,7 @@ func init() {
 
 	Pulumi.PersistentFlags().String(string(flag.Stack), "", "pulumi stack fqdn in the format of <org>/<project>/<stack>")
 	Pulumi.PersistentFlags().Bool(string(flag.Yes), false, "Automatically approve and perform the update after previewing it")
+	Pulumi.PersistentFlags().Bool(string(flag.Force), false, "Force removal of stack even if resources exist (use with delete/rm command)")
 
 	Pulumi.PersistentFlags().String(string(flag.AwsCredential), "", "path of the aws-credential file")
 	Pulumi.PersistentFlags().String(string(flag.AzureCredential), "", "path of the azure-credential file")
@@ -45,5 +46,7 @@ func init() {
 		pulumi.Preview,
 		pulumi.Update,
 		pulumi.Destroy,
+		pulumi.Delete,
+		pulumi.Cancel,
 	)
 }

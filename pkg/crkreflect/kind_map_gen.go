@@ -93,6 +93,7 @@ import (
 	gcpstaticwebsitev1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpstaticwebsite/v1"
 	gcpsubnetworkv1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpsubnetwork/v1"
 	gcpvpcv1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpvpc/v1"
+	altinityoperatorkubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/addon/altinityoperatorkubernetes/v1"
 	certmanagerkubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/addon/certmanagerkubernetes/v1"
 	elasticoperatorkubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/addon/elasticoperatorkubernetes/v1"
 	externaldnskubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/addon/externaldnskubernetes/v1"
@@ -103,6 +104,7 @@ import (
 	postgresoperatorkubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/addon/postgresoperatorkubernetes/v1"
 	solroperatorkubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/addon/solroperatorkubernetes/v1"
 	argocdkubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/argocdkubernetes/v1"
+	clickhousekubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/clickhousekubernetes/v1"
 	cronjobkubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/cronjobkubernetes/v1"
 	elasticsearchkubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/elasticsearchkubernetes/v1"
 	gitlabkubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/gitlabkubernetes/v1"
@@ -253,6 +255,7 @@ var ProviderSnowflakeMap = map[cloudresourcekind.CloudResourceKind]proto.Message
 }
 
 var ProviderKubernetesAddonMap = map[cloudresourcekind.CloudResourceKind]proto.Message{
+	cloudresourcekind.CloudResourceKind_AltinityOperatorKubernetes: &altinityoperatorkubernetesv1.AltinityOperatorKubernetes{},
 	cloudresourcekind.CloudResourceKind_CertManagerKubernetes:      &certmanagerkubernetesv1.CertManagerKubernetes{},
 	cloudresourcekind.CloudResourceKind_ElasticOperatorKubernetes:  &elasticoperatorkubernetesv1.ElasticOperatorKubernetes{},
 	cloudresourcekind.CloudResourceKind_ExternalDnsKubernetes:      &externaldnskubernetesv1.ExternalDnsKubernetes{},
@@ -266,6 +269,7 @@ var ProviderKubernetesAddonMap = map[cloudresourcekind.CloudResourceKind]proto.M
 
 var ProviderKubernetesWorkloadMap = map[cloudresourcekind.CloudResourceKind]proto.Message{
 	cloudresourcekind.CloudResourceKind_ArgocdKubernetes:         &argocdkubernetesv1.ArgocdKubernetes{},
+	cloudresourcekind.CloudResourceKind_ClickHouseKubernetes:     &clickhousekubernetesv1.ClickHouseKubernetes{},
 	cloudresourcekind.CloudResourceKind_CronJobKubernetes:        &cronjobkubernetesv1.CronJobKubernetes{},
 	cloudresourcekind.CloudResourceKind_ElasticsearchKubernetes:  &elasticsearchkubernetesv1.ElasticsearchKubernetes{},
 	cloudresourcekind.CloudResourceKind_GitlabKubernetes:         &gitlabkubernetesv1.GitlabKubernetes{},

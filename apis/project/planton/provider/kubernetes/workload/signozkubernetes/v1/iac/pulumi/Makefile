@@ -18,3 +18,5 @@ build:deps vet fmt
 update-deps:
 	go get github.com/project-planton/project-planton@latest
 	
+	go get github.com/project-planton/kubernetes-crd-pulumi-types
+

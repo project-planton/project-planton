@@ -1,58 +1,123 @@
-# SignozKubernetes Pulumi Module
+# SigNoz Kubernetes Pulumi Module
 
 ## Key Features
 
-### Standardized API Resource Structure
-- **apiVersion & kind**: Aligns with Kubernetes standards, ensuring ease of integration and familiarity for developers.
-- **metadata**: Utilizes standard Kubernetes metadata fields for resource identification and management.
-- **spec**: Defines the necessary parameters for deploying Signoz, including Kubernetes cluster credentials.
-- **status**: Captures real-time updates and outputs from the deployed infrastructure, enhancing monitoring and visibility.
+- **Standardized API Resource Model**  
+  Provides a unified way to define and deploy SigNoz observability platform on Kubernetes. By describing resource allocations, database configuration, and component settings in a simple API resource, you ensure consistency across environments.
 
-### Seamless Cloud Integration
-- **Multi-Cloud Support**: Leverages Pulumi's cloud-agnostic capabilities to deploy Signoz across various cloud providers.
-- **Kubernetes Credentials Management**: Utilizes Kubernetes cluster credentials to securely provision resources, adhering to best security practices.
-- **Automated Outputs Handling**: Captures and manages Pulumi outputs within the API resource status, providing essential deployment information.
+- **Automated Kubernetes Resource Creation**  
+  Automatically creates Namespaces, Helm chart deployments, Services, and optional Load Balancer resources based on the provided specifications. Eliminates the need for hand-maintained YAML files.
 
-### Developer-Friendly CLI
-- **Unified Deployment Command**: Employs the `planton pulumi up --stack-input <api-resource.yaml>` command to simplify the deployment process.
-- **Default Module Configuration**: Automatically configures stack inputs using default Pulumi modules, reducing setup complexity for developers.
-- **Git Integration**: Allows developers to specify custom Pulumi modules via Git repository details, enabling flexible and customized deployments.
+- **Dual Database Modes**  
+  Supports both self-managed ClickHouse deployment within the cluster and external ClickHouse integration, providing flexibility for different operational requirements.
 
-### Robust Documentation and Validation
-- **Buf.Build Documentation**: Provides comprehensive and accessible documentation through buf.build, ensuring developers have the necessary guidance.
-- **Validation Rules**: Implements validation rules within the API resource specifications to enforce correct configurations and prevent deployment errors.
+- **OpenTelemetry Native**  
+  Built on OpenTelemetry standards, SigNoz unifies logs, metrics, and traces in a single platform with seamless correlation and vendor-neutral instrumentation.
 
-## Installation
+- **High Availability Support**  
+  Configure distributed ClickHouse clusters with sharding and replication, coordinated by Zookeeper for production-grade deployments.
 
-To install the SignozKubernetes Pulumi module, follow the standard Pulumi module installation procedures. Ensure that you have Pulumi and the necessary dependencies installed on your development machine.
+- **Scalable Data Ingestion**  
+  Deploy multiple OpenTelemetry Collector replicas to handle high-volume telemetry data ingestion with horizontal scaling.
+
+- **Component Independence**  
+  Scale SigNoz UI/API, OpenTelemetry Collector, and ClickHouse independently based on workload requirements.
+
+- **Persistence Management**  
+  Configure data persistence with customizable disk sizes for ClickHouse. When enabled, telemetry data survives pod restarts.
+
+- **Ingress Integration**  
+  When enabled, the module sets up Load Balancer services with external DNS annotations for both SigNoz UI and OpenTelemetry Collector endpoints.
+
+- **Output Exports**  
+  Exports useful values such as namespace, service names, internal service FQDNs, port-forward commands, and ClickHouse credentials. These can be leveraged for further automation or debugging.
 
 ## Usage
 
-Refer to the example section for usage instructions.
+See [examples.md](examples.md) for usage details and step-by-step examples. In general:
 
-## API Reference
+1. Define a YAML resource describing your SigNoz cluster using the **SignozKubernetes** API.
+2. Run:
+   ```bash
+   planton pulumi up --stack-input <your-signoz-file.yaml>
+   ```
 
-### SignozKubernetesSpec
-Defines the configuration for deploying Signoz within a Kubernetes cluster.
+to apply the resource on your cluster.
 
-- **kubernetes_cluster_credential_id**: Identifier for the Kubernetes cluster credentials to be used for provisioning resources.
+## Important: Docker Image Registry
 
-### SignozKubernetesStackInputs
-Specifies the inputs required for the SignozKubernetes stack.
+**⚠️ Bitnami Registry Changes (September 2025)**
 
-- **pulumi**: Pulumi-specific input configurations.
-- **target**: The target `SignozKubernetes` API resource.
-- **kubernetes_cluster**: Specifications for the Kubernetes cluster credentials.
+Due to Bitnami's transition to a paid model, this module now uses `docker.io/bitnamilegacy` registry for ClickHouse and ZooKeeper images (when using self-managed mode). The legacy images receive no updates or security patches but provide a temporary migration solution.
 
-### SignozKubernetesStackOutputs
-Provides outputs from the deployed Signoz infrastructure.
+**Long-term Alternatives:**
+- Subscribe to Bitnami Secure Images ($50k-$72k/year)
+- Use official ClickHouse and ZooKeeper images
+- Configure external ClickHouse database
+- Build custom images from open-source Bitnami code (Apache 2.0)
 
-- **namespace**: Kubernetes namespace where Signoz is deployed.
+For more details, see: [MIGRATION.md](MIGRATION.md) or https://github.com/bitnami/containers/issues/83267
+
+## Getting Started
+
+1. **Craft Your Specification**  
+   Include SigNoz container settings, OpenTelemetry Collector configuration, database mode (self-managed or external), and optionally ingress preferences. If you need external access, enable ingress for both UI and data ingestion.
+
+2. **Apply via CLI**  
+   Execute `planton pulumi up --stack-input <signoz-spec.yaml>` (or your organization's standard CLI command). The Pulumi module automatically compiles your specification into Kubernetes resources.
+
+3. **Validate & Observe**  
+   Check the logs of your SigNoz deployment, confirm the Namespace, Deployments, and Services are created, and if ingress is enabled, verify external access.
+
+## Module Structure
+
+1. **Initialization**  
+   Reads your `SignozKubernetesStackInput` (containing cluster creds, resource definitions), sets up local variables, and merges labels.
+
+2. **Provider Setup**  
+   Establishes a Pulumi Kubernetes Provider for your target cluster.
+
+3. **Namespace Creation**  
+   Creates (or identifies) a namespace to house all your SigNoz resources.
+
+4. **Helm Chart Deployment**  
+   Deploys the SigNoz Helm chart with configured values for:
+   - SigNoz binary (UI, API, Ruler, Alertmanager)
+   - OpenTelemetry Collector
+   - ClickHouse (self-managed mode) or external connection
+   - Zookeeper (for distributed ClickHouse clusters)
+
+5. **Output Exports**  
+   Publishes final references (e.g., namespace, service names, cluster endpoints, ClickHouse credentials), which can aid in post-deployment automation.
+
+## Benefits
+
+- **Simplified Deployment**  
+  Focus on high-level configuration rather than writing raw Kubernetes manifests. Consistent patterns reduce the risk of misconfiguration.
+
+- **Unified Observability**  
+  Single platform for logs, metrics, and traces eliminates tool sprawl and reduces operational complexity.
+
+- **Cost Effective**  
+  Self-hosted deployment with predictable infrastructure costs vs. per-GB SaaS pricing from proprietary solutions.
+
+- **OpenTelemetry Native**  
+  Leverage open standards and avoid vendor lock-in. Instrument once with OpenTelemetry, use with any backend.
+
+- **Scalability**  
+  Easily configure standalone or clustered deployments with independent component scaling to handle varying workloads.
+
+- **Data Control**  
+  Full control over telemetry data location and retention for compliance requirements.
+
+- **Extensibility**  
+  The module is built on Pulumi's Kubernetes provider. You can augment or override resources if your team needs advanced configurations through helm_values.
 
 ## Contributing
 
-Contributions are welcome! Please refer to the contributing guidelines for more information on how to get involved.
+Contributions are always welcome! Please open an issue or submit a pull request in the main repository if you want to add features, fix bugs, or improve documentation.
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE).
+This project is licensed under the [MIT License](LICENSE). Feel free to adapt it for your internal workflows.
+

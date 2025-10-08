@@ -5,12 +5,13 @@ package project.planton.provider.kubernetes.workload.signozkubernetes.v1;
 import "project/planton/credential/kubernetesclustercredential/v1/spec.proto";
 import "project/planton/provider/kubernetes/workload/signozkubernetes/v1/api.proto";
 
-//input for signoz-kubernetes stack
+// signoz-kubernetes stack-input
 message SignozKubernetesStackInput {
-  //target cloud-resource
+  // target cloud-resource
   SignozKubernetes target = 1;
-  //provider-credential
+  // provider-credential
   project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec provider_credential = 2;
-  //kubernetes namespace
+  // kubernetes namespace
   string kubernetes_namespace = 3;
 }
+

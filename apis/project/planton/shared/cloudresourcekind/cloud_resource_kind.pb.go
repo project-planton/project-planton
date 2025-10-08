@@ -167,6 +167,8 @@ const (
 	CloudResourceKind_PostgresOperatorKubernetes CloudResourceKind = 829
 	CloudResourceKind_SolrOperatorKubernetes     CloudResourceKind = 830
 	CloudResourceKind_ExternalSecretsKubernetes  CloudResourceKind = 831
+	CloudResourceKind_ClickHouseKubernetes       CloudResourceKind = 832
+	CloudResourceKind_AltinityOperatorKubernetes CloudResourceKind = 833
 	// 1200–1499: DigitalOcean resources
 	CloudResourceKind_DigitalOceanAppPlatformService CloudResourceKind = 1200
 	CloudResourceKind_DigitalOceanBucket             CloudResourceKind = 1201
@@ -296,6 +298,8 @@ var (
 		829:  "PostgresOperatorKubernetes",
 		830:  "SolrOperatorKubernetes",
 		831:  "ExternalSecretsKubernetes",
+		832:  "ClickHouseKubernetes",
+		833:  "AltinityOperatorKubernetes",
 		1200: "DigitalOceanAppPlatformService",
 		1201: "DigitalOceanBucket",
 		1202: "DigitalOceanContainerRegistry",
@@ -419,6 +423,8 @@ var (
 		"PostgresOperatorKubernetes":           829,
 		"SolrOperatorKubernetes":               830,
 		"ExternalSecretsKubernetes":            831,
+		"ClickHouseKubernetes":                 832,
+		"AltinityOperatorKubernetes":           833,
 		"DigitalOceanAppPlatformService":       1200,
 		"DigitalOceanBucket":                   1201,
 		"DigitalOceanContainerRegistry":        1202,
@@ -665,7 +671,7 @@ const file_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto_ra
 	"\bcategory\x18\x02 \x01(\x0e2I.project.planton.shared.cloudresourcekind.KubernetesCloudResourceCategoryR\bcategory*O\n" +
 	"\x18CloudResourceKindVersion\x12+\n" +
 	"'cloud_resource_kind_version_unspecified\x10\x00\x12\x06\n" +
-	"\x02v1\x10\x01*\xb1)\n" +
+	"\x02v1\x10\x01*\xa6*\n" +
 	"\x11CloudResourceKind\x12\x0f\n" +
 	"\vunspecified\x10\x00\x12.\n" +
 	"\x19FirstTestCloudApiResource\x10\x01\x1a\x0f\xa2\xf7\x04\v\b\x01\x10\x01\"\x05tcar1\x12/\n" +
@@ -787,7 +793,11 @@ const file_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto_ra
 	"\x17KafkaOperatorKubernetes\x10\xbc\x06\x1a\x16\xa2\xf7\x04\x12\b\x13\x10\x01\"\bkfkopk8s2\x02\x10\x01\x126\n" +
 	"\x1aPostgresOperatorKubernetes\x10\xbd\x06\x1a\x15\xa2\xf7\x04\x11\b\x13\x10\x01\"\apgopk8s2\x02\x10\x01\x123\n" +
 	"\x16SolrOperatorKubernetes\x10\xbe\x06\x1a\x16\xa2\xf7\x04\x12\b\x13\x10\x01\"\bslropk8s2\x02\x10\x01\x127\n" +
-	"\x19ExternalSecretsKubernetes\x10\xbf\x06\x1a\x17\xa2\xf7\x04\x13\b\x13\x10\x01\"\textseck8s2\x02\x10\x01\x124\n" +
+	"\x19ExternalSecretsKubernetes\x10\xbf\x06\x1a\x17\xa2\xf7\x04\x13\b\x13\x10\x01\"\textseck8s2\x02\x10\x01\x12:\n" +
+	"\x14ClickHouseKubernetes\x10\xc0\x06\x1a\x1f\xa2\xf7\x04\x1b\b\x13\x10\x01\"\x05chk8s2\x0e\n" +
+	"\n" +
+	"clickhouse\x10\x02\x127\n" +
+	"\x1aAltinityOperatorKubernetes\x10\xc1\x06\x1a\x16\xa2\xf7\x04\x12\b\x13\x10\x01\"\baltopk8s2\x02\x10\x01\x124\n" +
 	"\x1eDigitalOceanAppPlatformService\x10\xb0\t\x1a\x0f\xa2\xf7\x04\v\b\x11\x10\x01\"\x05doapp\x12(\n" +
 	"\x12DigitalOceanBucket\x10\xb1\t\x1a\x0f\xa2\xf7\x04\v\b\x11\x10\x01\"\x05dobkt\x122\n" +
 	"\x1dDigitalOceanContainerRegistry\x10\xb2\t\x1a\x0e\xa2\xf7\x04\n" +

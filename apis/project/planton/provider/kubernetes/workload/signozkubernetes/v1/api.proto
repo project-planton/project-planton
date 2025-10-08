@@ -8,34 +8,35 @@ import "project/planton/provider/kubernetes/workload/signozkubernetes/v1/stack_o
 import "project/planton/shared/status.proto";
 import "project/planton/shared/metadata.proto";
 
-//signoz-kubernetes
+// signoz-kubernetes
 message SignozKubernetes {
-  //api-version
+  // api-version
   string api_version = 1 [
     (buf.validate.field).string.const = 'kubernetes.project-planton.org/v1'
   ];
 
-  //resource-kind
+  // resource-kind
   string kind = 2 [
     (buf.validate.field).string.const = 'SignozKubernetes'
   ];
 
-  //metadata
+  // metadata
   project.planton.shared.ApiResourceMetadata metadata = 3 [
     (buf.validate.field).required = true
   ];
 
-  //spec
+  // spec
   SignozKubernetesSpec spec = 4 [
     (buf.validate.field).required = true
   ];
 
-  //status
+  // status
   SignozKubernetesStatus status = 5;
 }
 
-//signoz-kubernetes status.
+// signoz-kubernetes status
 message SignozKubernetesStatus {
-  //stack-outputs
+  // stack-outputs
   SignozKubernetesStackOutputs outputs = 1;
 }
+
