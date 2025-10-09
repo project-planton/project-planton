@@ -83,6 +83,17 @@ message ClickHouseKubernetesSpec {
    * If both 'coordination' and 'zookeeper' are specified, 'coordination' takes precedence.
    */
   ClickHouseKubernetesZookeeperConfig zookeeper = 7 [deprecated = true];
+
+  /**
+   * Logging configuration for ClickHouse server.
+   * Controls the verbosity of ClickHouse server logs.
+   * 
+   * Required field. Defaults to 'information' level (recommended for production).
+   * Use 'debug' or 'trace' levels only for troubleshooting as they generate significant log volume.
+   */
+  ClickHouseKubernetesLoggingConfig logging = 8 [
+    (buf.validate.field).required = true
+  ];
 }
 
 /**
@@ -296,6 +307,48 @@ message ClickHouseKubernetesExternalCoordinationConfig {
   repeated string nodes = 1 [
     (buf.validate.field).repeated.min_items = 1
   ];
+}
+
+/**
+ * **ClickHouseKubernetesLoggingConfig** defines logging configuration for ClickHouse server.
+ * Controls the verbosity and behavior of ClickHouse server logs.
+ * 
+ * ClickHouse logging can significantly impact I/O performance and disk usage.
+ * Choose the appropriate level based on your operational needs.
+ */
+message ClickHouseKubernetesLoggingConfig {
+  /**
+   * Log level for ClickHouse server.
+   */
+  enum LogLevel {
+    // Information level: Logs errors, warnings, and important operational events.
+    // Default and recommended for production environments.
+    // Typical log volume: 5-10 MB/day per pod under normal load.
+    information = 0;
+    
+    // Debug level: Logs detailed debugging information including query execution details.
+    // Use for troubleshooting specific issues.
+    // Warning: Generates 10-50x more logs than information level.
+    // Typical log volume: 50-500 MB/day per pod.
+    debug = 1;
+    
+    // Trace level: Logs extensive tracing information including internal operations.
+    // Use only for deep troubleshooting or development.
+    // Warning: Generates 50-100x more logs than information level.
+    // Can impact performance due to I/O overhead.
+    // Typical log volume: 500MB-5GB/day per pod.
+    trace = 2;
+  }
+
+  /**
+   * The log level for ClickHouse server logs.
+   * Defaults to 'information' if not specified.
+   * 
+   * Production recommendation: Use 'information' for normal operations.
+   * Temporarily switch to 'debug' or 'trace' when troubleshooting specific issues,
+   * then revert to 'information' to avoid excessive log volume.
+   */
+  LogLevel level = 1;
 }
 
 /**

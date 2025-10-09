@@ -101,6 +101,11 @@ func buildConfiguration(
 			ShardsCount:   pulumi.IntPtr(shardCount),
 			ReplicasCount: pulumi.IntPtr(replicaCount),
 		},
+		// Enable inter-cluster authentication for distributed queries
+		// Required for multi-node clusters to authenticate with each other
+		Secret: &altinityv1.ClickHouseInstallationSpecConfigurationClustersSecretArgs{
+			Auto: pulumi.String("true"),
+		},
 	}
 
 	config := &altinityv1.ClickHouseInstallationSpecConfigurationArgs{
@@ -108,13 +113,19 @@ func buildConfiguration(
 		Clusters: altinityv1.ClickHouseInstallationSpecConfigurationClustersArray{
 			cluster,
 		},
-		Files: pulumi.Map{
-			"config.d/logging.xml": pulumi.String(`<clickhouse>
+	}
+
+	// Add logging configuration if specified (overrides Altinity operator's debug default)
+	// Uses the enum's string representation (e.g., "information", "debug", "trace")
+	if spec.Logging != nil {
+		logLevel := spec.Logging.Level.String()
+		config.Files = pulumi.Map{
+			"config.d/logging.xml": pulumi.Sprintf(`<clickhouse>
     <logger>
-        <level>information</level>
+        <level>%s</level>
     </logger>
-</clickhouse>`),
-		},
+</clickhouse>`, logLevel),
+		}
 	}
 
 	// Add coordination configuration for clustered deployments
