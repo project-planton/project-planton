@@ -13,7 +13,7 @@ import (
 )
 
 // createOtelCollectorIngress creates Kubernetes Gateway API resources for OpenTelemetry Collector external access
-// This includes Certificate, Gateway, and HTTPRoute resources for both gRPC and HTTP endpoints
+// This includes Certificate, Gateway, and HTTPRoute resources for HTTP endpoint
 func createOtelCollectorIngress(ctx *pulumi.Context, locals *Locals, kubernetesProvider *kubernetes.Provider,
 	createdNamespace *kubernetescorev1.Namespace) error {
 
@@ -24,10 +24,9 @@ func createOtelCollectorIngress(ctx *pulumi.Context, locals *Locals, kubernetesP
 		return nil
 	}
 
-	// Certificate for OTEL Collector endpoints (both gRPC and HTTP)
-	otelCertName := fmt.Sprintf("cert-%s-otel", locals.Namespace)
+	// Certificate for OTEL Collector HTTP endpoint
+	otelCertName := fmt.Sprintf("cert-%s-otel-http", locals.Namespace)
 	otelHostnames := []string{
-		locals.OtelCollectorExternalGrpcHostname,
 		locals.OtelCollectorExternalHttpHostname,
 	}
 
@@ -52,12 +51,12 @@ func createOtelCollectorIngress(ctx *pulumi.Context, locals *Locals, kubernetesP
 		return errors.Wrap(err, "error creating OTEL Collector certificate")
 	}
 
-	// Gateway for OTEL Collector endpoints
+	// Gateway for OTEL Collector HTTP endpoint
 	createdOtelGateway, err := gatewayv1.NewGateway(ctx,
-		"otel-external",
+		"otel-http-external",
 		&gatewayv1.GatewayArgs{
 			Metadata: metav1.ObjectMetaArgs{
-				Name:      pulumi.Sprintf("%s-otel-external", locals.Namespace),
+				Name:      pulumi.Sprintf("%s-otel-http-external", locals.Namespace),
 				Namespace: pulumi.String(vars.IstioIngressNamespace),
 				Labels:    pulumi.ToStringMap(locals.KubernetesLabels),
 			},
@@ -70,26 +69,6 @@ func createOtelCollectorIngress(ctx *pulumi.Context, locals *Locals, kubernetesP
 					},
 				},
 				Listeners: gatewayv1.GatewaySpecListenersArray{
-					// HTTPS listener for gRPC endpoint (port 443, gRPC over TLS)
-					&gatewayv1.GatewaySpecListenersArgs{
-						Name:     pulumi.String("https-otel-grpc"),
-						Hostname: pulumi.String(locals.OtelCollectorExternalGrpcHostname),
-						Port:     pulumi.Int(443),
-						Protocol: pulumi.String("HTTPS"),
-						Tls: &gatewayv1.GatewaySpecListenersTlsArgs{
-							Mode: pulumi.String("Terminate"),
-							CertificateRefs: gatewayv1.GatewaySpecListenersTlsCertificateRefsArray{
-								gatewayv1.GatewaySpecListenersTlsCertificateRefsArgs{
-									Name: pulumi.String(otelCertName),
-								},
-							},
-						},
-						AllowedRoutes: gatewayv1.GatewaySpecListenersAllowedRoutesArgs{
-							Namespaces: gatewayv1.GatewaySpecListenersAllowedRoutesNamespacesArgs{
-								From: pulumi.String("All"),
-							},
-						},
-					},
 					// HTTPS listener for HTTP endpoint (port 443)
 					&gatewayv1.GatewaySpecListenersArgs{
 						Name:     pulumi.String("https-otel-http"),
@@ -114,52 +93,7 @@ func createOtelCollectorIngress(ctx *pulumi.Context, locals *Locals, kubernetesP
 			},
 		}, pulumi.Provider(kubernetesProvider), pulumi.DependsOn([]pulumi.Resource{addedOtelCertificate}))
 	if err != nil {
-		return errors.Wrap(err, "error creating OTEL Collector gateway")
-	}
-
-	// HTTPRoute for gRPC endpoint (routes to OTEL Collector gRPC port 4317)
-	// Note: gRPC works over HTTP/2, so HTTPRoute is appropriate here
-	_, err = gatewayv1.NewHTTPRoute(ctx,
-		"https-otel-grpc",
-		&gatewayv1.HTTPRouteArgs{
-			Metadata: metav1.ObjectMetaArgs{
-				Name:      pulumi.String("https-otel-grpc"),
-				Namespace: createdNamespace.Metadata.Name(),
-				Labels:    pulumi.ToStringMap(locals.KubernetesLabels),
-			},
-			Spec: gatewayv1.HTTPRouteSpecArgs{
-				Hostnames: pulumi.StringArray{pulumi.String(locals.OtelCollectorExternalGrpcHostname)},
-				ParentRefs: gatewayv1.HTTPRouteSpecParentRefsArray{
-					gatewayv1.HTTPRouteSpecParentRefsArgs{
-						Name:        pulumi.Sprintf("%s-otel-external", locals.Namespace),
-						Namespace:   createdOtelGateway.Metadata.Namespace(),
-						SectionName: pulumi.String("https-otel-grpc"),
-					},
-				},
-				Rules: gatewayv1.HTTPRouteSpecRulesArray{
-					gatewayv1.HTTPRouteSpecRulesArgs{
-						Matches: gatewayv1.HTTPRouteSpecRulesMatchesArray{
-							gatewayv1.HTTPRouteSpecRulesMatchesArgs{
-								Path: gatewayv1.HTTPRouteSpecRulesMatchesPathArgs{
-									Type:  pulumi.String("PathPrefix"),
-									Value: pulumi.String("/"),
-								},
-							},
-						},
-						BackendRefs: gatewayv1.HTTPRouteSpecRulesBackendRefsArray{
-							gatewayv1.HTTPRouteSpecRulesBackendRefsArgs{
-								// Route to OTEL Collector gRPC port (4317)
-								Name:      pulumi.Sprintf("%s-otel-collector", locals.SignozKubernetes.Metadata.Name),
-								Namespace: createdNamespace.Metadata.Name(),
-								Port:      pulumi.Int(vars.OtelGrpcPort),
-							},
-						},
-					},
-				},
-			},
-		}, pulumi.Parent(createdNamespace))
-	if err != nil {
-		return errors.Wrap(err, "error creating HTTPRoute for OTEL Collector gRPC endpoint")
+		return errors.Wrap(err, "error creating OTEL Collector HTTP gateway")
 	}
 
 	// HTTPRoute for HTTP endpoint (routes to OTEL Collector HTTP port 4318)
@@ -175,7 +109,7 @@ func createOtelCollectorIngress(ctx *pulumi.Context, locals *Locals, kubernetesP
 				Hostnames: pulumi.StringArray{pulumi.String(locals.OtelCollectorExternalHttpHostname)},
 				ParentRefs: gatewayv1.HTTPRouteSpecParentRefsArray{
 					gatewayv1.HTTPRouteSpecParentRefsArgs{
-						Name:        pulumi.Sprintf("%s-otel-external", locals.Namespace),
+						Name:        pulumi.Sprintf("%s-otel-http-external", locals.Namespace),
 						Namespace:   createdOtelGateway.Metadata.Namespace(),
 						SectionName: pulumi.String("https-otel-http"),
 					},
