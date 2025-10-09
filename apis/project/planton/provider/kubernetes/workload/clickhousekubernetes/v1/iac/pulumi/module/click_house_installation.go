@@ -108,6 +108,13 @@ func buildConfiguration(
 		Clusters: altinityv1.ClickHouseInstallationSpecConfigurationClustersArray{
 			cluster,
 		},
+		Files: pulumi.Map{
+			"config.d/logging.xml": pulumi.String(`<clickhouse>
+    <logger>
+        <level>information</level>
+    </logger>
+</clickhouse>`),
+		},
 	}
 
 	// Add coordination configuration for clustered deployments
