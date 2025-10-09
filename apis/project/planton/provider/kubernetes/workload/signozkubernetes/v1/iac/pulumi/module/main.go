@@ -38,9 +38,14 @@ func Resources(ctx *pulumi.Context, stackInput *signozkubernetesv1.SignozKuberne
 		return errors.Wrap(err, "failed to create signoz helm-chart resources")
 	}
 
-	//create ingress resources using Gateway API
-	if err := ingress(ctx, locals, kubernetesProvider, createdNamespace); err != nil {
-		return errors.Wrap(err, "failed to create ingress resources")
+	//create SigNoz UI ingress resources using Gateway API
+	if err := createSignozUIIngress(ctx, locals, kubernetesProvider, createdNamespace); err != nil {
+		return errors.Wrap(err, "failed to create signoz ui ingress resources")
+	}
+
+	//create OTEL Collector ingress resources using Gateway API
+	if err := createOtelCollectorIngress(ctx, locals, kubernetesProvider, createdNamespace); err != nil {
+		return errors.Wrap(err, "failed to create otel collector ingress resources")
 	}
 
 	return nil

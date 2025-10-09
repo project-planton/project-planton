@@ -10,9 +10,9 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// ingress creates Kubernetes Gateway API resources for SigNoz UI external access
+// createSignozUIIngress creates Kubernetes Gateway API resources for SigNoz UI external access
 // This includes Certificate, Gateway, and HTTPRoute resources following the Gateway API standard
-func ingress(ctx *pulumi.Context, locals *Locals, kubernetesProvider *kubernetes.Provider,
+func createSignozUIIngress(ctx *pulumi.Context, locals *Locals, kubernetesProvider *kubernetes.Provider,
 	createdNamespace *kubernetescorev1.Namespace) error {
 
 	// Skip if ingress is not enabled

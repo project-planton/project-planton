@@ -87,8 +87,120 @@ For more details, see: [MIGRATION.md](MIGRATION.md) or https://github.com/bitnam
    - ClickHouse (self-managed mode) or external connection
    - Zookeeper (for distributed ClickHouse clusters)
 
-5. **Output Exports**  
+5. **Ingress Resources** (Optional)  
+   If ingress is enabled, creates Kubernetes Gateway API resources for external access:
+   - **SigNoz UI Ingress** (`ingress_signoz.go`): Certificate, Gateway, and HTTPRoutes for web UI access
+   - **OTEL Collector Ingress** (`ingress_otel.go`): Certificate, Gateway, and HTTPRoutes for telemetry data ingestion
+
+6. **Output Exports**  
    Publishes final references (e.g., namespace, service names, cluster endpoints, ClickHouse credentials), which can aid in post-deployment automation.
+
+## Ingress Architecture
+
+The module supports two types of external ingress, each implemented in a dedicated file:
+
+### SigNoz UI Ingress
+
+**Implementation**: `module/ingress_signoz.go`
+
+Creates external access to the SigNoz web interface for viewing traces, metrics, and logs.
+
+**Resources Created** (in `istio-ingress` namespace):
+- **Certificate**: TLS certificate for the UI hostname (managed by cert-manager)
+- **Gateway**: Kubernetes Gateway with HTTPS listener (port 443) and HTTP listener (port 80)
+- **HTTPRoutes**: 
+  - HTTP to HTTPS redirect (301)
+  - HTTPS traffic routing to SigNoz frontend service (port 3301)
+
+**Endpoints**:
+- External: `{namespace}.{dns-domain}` (e.g., `signoz-app-prod-main.planton.live`)
+- Internal: `{namespace}-internal.{dns-domain}` (e.g., `signoz-app-prod-main-internal.planton.live`)
+
+**Configuration**:
+```yaml
+signozIngress:
+  enabled: true
+  dnsDomain: planton.live
+```
+
+### OTEL Collector Ingress
+
+**Implementation**: `module/ingress_otel.go`
+
+Creates external access to OpenTelemetry Collector for telemetry data ingestion from sources outside the Kubernetes cluster (CLI tools, services on developer laptops, external applications).
+
+**Resources Created** (in `istio-ingress` namespace):
+- **Certificate**: TLS certificate covering both gRPC and HTTP hostnames
+- **Gateway**: Kubernetes Gateway with two HTTPS listeners:
+  - `https-otel-grpc`: For gRPC traffic (OTLP/gRPC protocol)
+  - `https-otel-http`: For HTTP traffic (OTLP/HTTP protocol)
+- **HTTPRoutes**:
+  - gRPC route to OTEL Collector service port 4317
+  - HTTP route to OTEL Collector service port 4318
+
+**Endpoints**:
+- gRPC: `{namespace}-ingest-grpc.{dns-domain}` (e.g., `signoz-app-prod-main-ingest-grpc.planton.live`)
+- HTTP: `{namespace}-ingest-http.{dns-domain}` (e.g., `signoz-app-prod-main-ingest-http.planton.live`)
+
+**Configuration**:
+```yaml
+otelCollectorIngress:
+  enabled: true
+  dnsDomain: planton.live
+```
+
+**Usage Example (Java/Spring Boot)**:
+```yaml
+# application.yml
+otel:
+  exporter:
+    otlp:
+      endpoint: https://signoz-app-prod-main-ingest-grpc.planton.live:443
+  traces:
+    exporter: otlp
+  metrics:
+    exporter: otlp
+```
+
+**Usage Example (CLI/Environment Variables)**:
+```bash
+export OTEL_EXPORTER_OTLP_ENDPOINT=https://signoz-app-prod-main-ingest-grpc.planton.live:443
+export OTEL_TRACES_EXPORTER=otlp
+```
+
+### Why HTTPRoute for gRPC?
+
+gRPC uses HTTP/2 as its transport protocol. In Gateway API:
+- HTTPRoute can handle gRPC traffic (gRPC is essentially HTTP/2)
+- The Gateway listener uses HTTPS protocol with TLS termination
+- The HTTPRoute routes traffic to the OTEL Collector gRPC port (4317)
+- This is the standard, widely-supported approach in Gateway API
+
+### TLS Configuration
+
+- **External (Client to Gateway)**: HTTPS/TLS on port 443
+- **Internal (Gateway to Service)**: Plain HTTP/gRPC (no TLS)
+- TLS termination happens at the Gateway (Istio Ingress)
+- Certificates automatically managed by cert-manager using Let's Encrypt
+
+### Traffic Flow Example
+
+**OTEL Collector gRPC Traffic**:
+```
+Java App on Laptop
+  ↓ gRPC over HTTPS (port 443)
+DNS: signoz-app-prod-main-ingest-grpc.planton.live
+  ↓
+Istio Ingress Gateway
+  ↓ TLS Termination
+HTTPRoute: https-otel-grpc
+  ↓ gRPC (port 4317)
+Service: main-otel-collector
+  ↓
+OTEL Collector Pod
+  ↓ Processes & Batches
+ClickHouse Database
+```
 
 ## Benefits
 

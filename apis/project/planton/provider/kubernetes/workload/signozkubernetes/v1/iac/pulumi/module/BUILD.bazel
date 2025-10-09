@@ -3,7 +3,8 @@ load("@rules_go//go:def.bzl", "go_library")
 go_library(
     name = "module",
     srcs = [
-        "ingress.go",
+        "ingress_otel.go",
+        "ingress_signoz.go",
         "locals.go",
         "main.go",
         "outputs.go",
