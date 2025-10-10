@@ -24,6 +24,7 @@ Each changelog entry should include:
 
 ## Recent Changes
 
+- [2025-10-10: Percona Server MongoDB Operator Support](./2025-10-10-percona-server-mongodb-operator.md) - Added support for deploying and managing the Percona Server for MongoDB Operator on Kubernetes clusters with automated deployment, backup, and high availability features
 - [2025-10-10: PostgreSQL Backup and Disaster Recovery](./2025-10-10-postgres-backup-configuration.md) - Added comprehensive backup and disaster recovery capabilities for PostgreSQL databases with operator-level defaults and per-database overrides
 - [2025-09-16: Manifest Backend Configuration](./2025-09-16-manifest-backend-configuration.md) - Added support for embedding Pulumi and Terraform/Tofu backend configuration in manifest labels
 

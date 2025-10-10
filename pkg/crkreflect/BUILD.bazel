@@ -117,6 +117,7 @@ go_library(
         "//apis/project/planton/provider/kubernetes/addon/ingressnginxkubernetes/v1:ingressnginxkubernetes",
         "//apis/project/planton/provider/kubernetes/addon/istiokubernetes/v1:istiokubernetes",
         "//apis/project/planton/provider/kubernetes/addon/kafkaoperatorkubernetes/v1:kafkaoperatorkubernetes",
+        "//apis/project/planton/provider/kubernetes/addon/perconaservermongodboperator/v1:perconaservermongodboperator",
         "//apis/project/planton/provider/kubernetes/addon/postgresoperatorkubernetes/v1:postgresoperatorkubernetes",
         "//apis/project/planton/provider/kubernetes/addon/solroperatorkubernetes/v1:solroperatorkubernetes",
         "//apis/project/planton/provider/kubernetes/workload/argocdkubernetes/v1:argocdkubernetes",

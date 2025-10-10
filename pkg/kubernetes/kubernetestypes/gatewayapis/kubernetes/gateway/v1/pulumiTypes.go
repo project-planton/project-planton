@@ -14285,7 +14285,7 @@ func (o GRPCRouteStatusParentsArrayOutput) Index(i pulumi.IntInput) GRPCRouteSta
 	}).(GRPCRouteStatusParentsOutput)
 }
 
-// Condition contains details for one aspect of the current state of this API ElasticOperatorKubernetes.
+// Condition contains details for one aspect of the current state of this API Resource.
 // ---
 // This struct is intended for direct use as an array at the field path .status.conditions.  For example,
 //
@@ -14339,7 +14339,7 @@ type GRPCRouteStatusParentsConditionsInput interface {
 	ToGRPCRouteStatusParentsConditionsOutputWithContext(context.Context) GRPCRouteStatusParentsConditionsOutput
 }
 
-// Condition contains details for one aspect of the current state of this API ElasticOperatorKubernetes.
+// Condition contains details for one aspect of the current state of this API Resource.
 // ---
 // This struct is intended for direct use as an array at the field path .status.conditions.  For example,
 //
@@ -14419,7 +14419,7 @@ func (i GRPCRouteStatusParentsConditionsArray) ToGRPCRouteStatusParentsCondition
 	return pulumi.ToOutputWithContext(ctx, i).(GRPCRouteStatusParentsConditionsArrayOutput)
 }
 
-// Condition contains details for one aspect of the current state of this API ElasticOperatorKubernetes.
+// Condition contains details for one aspect of the current state of this API Resource.
 // ---
 // This struct is intended for direct use as an array at the field path .status.conditions.  For example,
 //
@@ -14511,7 +14511,7 @@ func (o GRPCRouteStatusParentsConditionsArrayOutput) Index(i pulumi.IntInput) GR
 	}).(GRPCRouteStatusParentsConditionsOutput)
 }
 
-// Condition contains details for one aspect of the current state of this API ElasticOperatorKubernetes.
+// Condition contains details for one aspect of the current state of this API Resource.
 // ---
 // This struct is intended for direct use as an array at the field path .status.conditions.  For example,
 //
@@ -14565,7 +14565,7 @@ type GRPCRouteStatusParentsConditionsPatchInput interface {
 	ToGRPCRouteStatusParentsConditionsPatchOutputWithContext(context.Context) GRPCRouteStatusParentsConditionsPatchOutput
 }
 
-// Condition contains details for one aspect of the current state of this API ElasticOperatorKubernetes.
+// Condition contains details for one aspect of the current state of this API Resource.
 // ---
 // This struct is intended for direct use as an array at the field path .status.conditions.  For example,
 //
@@ -14645,7 +14645,7 @@ func (i GRPCRouteStatusParentsConditionsPatchArray) ToGRPCRouteStatusParentsCond
 	return pulumi.ToOutputWithContext(ctx, i).(GRPCRouteStatusParentsConditionsPatchArrayOutput)
 }
 
-// Condition contains details for one aspect of the current state of this API ElasticOperatorKubernetes.
+// Condition contains details for one aspect of the current state of this API Resource.
 // ---
 // This struct is intended for direct use as an array at the field path .status.conditions.  For example,
 //
@@ -17760,7 +17760,7 @@ func (o GatewayClassStatusPtrOutput) Conditions() GatewayClassStatusConditionsAr
 	}).(GatewayClassStatusConditionsArrayOutput)
 }
 
-// Condition contains details for one aspect of the current state of this API ElasticOperatorKubernetes.
+// Condition contains details for one aspect of the current state of this API Resource.
 // ---
 // This struct is intended for direct use as an array at the field path .status.conditions.  For example,
 //
@@ -17814,7 +17814,7 @@ type GatewayClassStatusConditionsInput interface {
 	ToGatewayClassStatusConditionsOutputWithContext(context.Context) GatewayClassStatusConditionsOutput
 }
 
-// Condition contains details for one aspect of the current state of this API ElasticOperatorKubernetes.
+// Condition contains details for one aspect of the current state of this API Resource.
 // ---
 // This struct is intended for direct use as an array at the field path .status.conditions.  For example,
 //
@@ -17894,7 +17894,7 @@ func (i GatewayClassStatusConditionsArray) ToGatewayClassStatusConditionsArrayOu
 	return pulumi.ToOutputWithContext(ctx, i).(GatewayClassStatusConditionsArrayOutput)
 }
 
-// Condition contains details for one aspect of the current state of this API ElasticOperatorKubernetes.
+// Condition contains details for one aspect of the current state of this API Resource.
 // ---
 // This struct is intended for direct use as an array at the field path .status.conditions.  For example,
 //
@@ -17986,7 +17986,7 @@ func (o GatewayClassStatusConditionsArrayOutput) Index(i pulumi.IntInput) Gatewa
 	}).(GatewayClassStatusConditionsOutput)
 }
 
-// Condition contains details for one aspect of the current state of this API ElasticOperatorKubernetes.
+// Condition contains details for one aspect of the current state of this API Resource.
 // ---
 // This struct is intended for direct use as an array at the field path .status.conditions.  For example,
 //
@@ -18040,7 +18040,7 @@ type GatewayClassStatusConditionsPatchInput interface {
 	ToGatewayClassStatusConditionsPatchOutputWithContext(context.Context) GatewayClassStatusConditionsPatchOutput
 }
 
-// Condition contains details for one aspect of the current state of this API ElasticOperatorKubernetes.
+// Condition contains details for one aspect of the current state of this API Resource.
 // ---
 // This struct is intended for direct use as an array at the field path .status.conditions.  For example,
 //
@@ -18120,7 +18120,7 @@ func (i GatewayClassStatusConditionsPatchArray) ToGatewayClassStatusConditionsPa
 	return pulumi.ToOutputWithContext(ctx, i).(GatewayClassStatusConditionsPatchArrayOutput)
 }
 
-// Condition contains details for one aspect of the current state of this API ElasticOperatorKubernetes.
+// Condition contains details for one aspect of the current state of this API Resource.
 // ---
 // This struct is intended for direct use as an array at the field path .status.conditions.  For example,
 //
@@ -24107,7 +24107,7 @@ func (o GatewayStatusAddressesPatchArrayOutput) Index(i pulumi.IntInput) Gateway
 	}).(GatewayStatusAddressesPatchOutput)
 }
 
-// Condition contains details for one aspect of the current state of this API ElasticOperatorKubernetes.
+// Condition contains details for one aspect of the current state of this API Resource.
 // ---
 // This struct is intended for direct use as an array at the field path .status.conditions.  For example,
 //
@@ -24161,7 +24161,7 @@ type GatewayStatusConditionsInput interface {
 	ToGatewayStatusConditionsOutputWithContext(context.Context) GatewayStatusConditionsOutput
 }
 
-// Condition contains details for one aspect of the current state of this API ElasticOperatorKubernetes.
+// Condition contains details for one aspect of the current state of this API Resource.
 // ---
 // This struct is intended for direct use as an array at the field path .status.conditions.  For example,
 //
@@ -24241,7 +24241,7 @@ func (i GatewayStatusConditionsArray) ToGatewayStatusConditionsArrayOutputWithCo
 	return pulumi.ToOutputWithContext(ctx, i).(GatewayStatusConditionsArrayOutput)
 }
 
-// Condition contains details for one aspect of the current state of this API ElasticOperatorKubernetes.
+// Condition contains details for one aspect of the current state of this API Resource.
 // ---
 // This struct is intended for direct use as an array at the field path .status.conditions.  For example,
 //
@@ -24333,7 +24333,7 @@ func (o GatewayStatusConditionsArrayOutput) Index(i pulumi.IntInput) GatewayStat
 	}).(GatewayStatusConditionsOutput)
 }
 
-// Condition contains details for one aspect of the current state of this API ElasticOperatorKubernetes.
+// Condition contains details for one aspect of the current state of this API Resource.
 // ---
 // This struct is intended for direct use as an array at the field path .status.conditions.  For example,
 //
@@ -24387,7 +24387,7 @@ type GatewayStatusConditionsPatchInput interface {
 	ToGatewayStatusConditionsPatchOutputWithContext(context.Context) GatewayStatusConditionsPatchOutput
 }
 
-// Condition contains details for one aspect of the current state of this API ElasticOperatorKubernetes.
+// Condition contains details for one aspect of the current state of this API Resource.
 // ---
 // This struct is intended for direct use as an array at the field path .status.conditions.  For example,
 //
@@ -24467,7 +24467,7 @@ func (i GatewayStatusConditionsPatchArray) ToGatewayStatusConditionsPatchArrayOu
 	return pulumi.ToOutputWithContext(ctx, i).(GatewayStatusConditionsPatchArrayOutput)
 }
 
-// Condition contains details for one aspect of the current state of this API ElasticOperatorKubernetes.
+// Condition contains details for one aspect of the current state of this API Resource.
 // ---
 // This struct is intended for direct use as an array at the field path .status.conditions.  For example,
 //
@@ -24758,7 +24758,7 @@ func (o GatewayStatusListenersArrayOutput) Index(i pulumi.IntInput) GatewayStatu
 	}).(GatewayStatusListenersOutput)
 }
 
-// Condition contains details for one aspect of the current state of this API ElasticOperatorKubernetes.
+// Condition contains details for one aspect of the current state of this API Resource.
 // ---
 // This struct is intended for direct use as an array at the field path .status.conditions.  For example,
 //
@@ -24812,7 +24812,7 @@ type GatewayStatusListenersConditionsInput interface {
 	ToGatewayStatusListenersConditionsOutputWithContext(context.Context) GatewayStatusListenersConditionsOutput
 }
 
-// Condition contains details for one aspect of the current state of this API ElasticOperatorKubernetes.
+// Condition contains details for one aspect of the current state of this API Resource.
 // ---
 // This struct is intended for direct use as an array at the field path .status.conditions.  For example,
 //
@@ -24892,7 +24892,7 @@ func (i GatewayStatusListenersConditionsArray) ToGatewayStatusListenersCondition
 	return pulumi.ToOutputWithContext(ctx, i).(GatewayStatusListenersConditionsArrayOutput)
 }
 
-// Condition contains details for one aspect of the current state of this API ElasticOperatorKubernetes.
+// Condition contains details for one aspect of the current state of this API Resource.
 // ---
 // This struct is intended for direct use as an array at the field path .status.conditions.  For example,
 //
@@ -24984,7 +24984,7 @@ func (o GatewayStatusListenersConditionsArrayOutput) Index(i pulumi.IntInput) Ga
 	}).(GatewayStatusListenersConditionsOutput)
 }
 
-// Condition contains details for one aspect of the current state of this API ElasticOperatorKubernetes.
+// Condition contains details for one aspect of the current state of this API Resource.
 // ---
 // This struct is intended for direct use as an array at the field path .status.conditions.  For example,
 //
@@ -25038,7 +25038,7 @@ type GatewayStatusListenersConditionsPatchInput interface {
 	ToGatewayStatusListenersConditionsPatchOutputWithContext(context.Context) GatewayStatusListenersConditionsPatchOutput
 }
 
-// Condition contains details for one aspect of the current state of this API ElasticOperatorKubernetes.
+// Condition contains details for one aspect of the current state of this API Resource.
 // ---
 // This struct is intended for direct use as an array at the field path .status.conditions.  For example,
 //
@@ -25118,7 +25118,7 @@ func (i GatewayStatusListenersConditionsPatchArray) ToGatewayStatusListenersCond
 	return pulumi.ToOutputWithContext(ctx, i).(GatewayStatusListenersConditionsPatchArrayOutput)
 }
 
-// Condition contains details for one aspect of the current state of this API ElasticOperatorKubernetes.
+// Condition contains details for one aspect of the current state of this API Resource.
 // ---
 // This struct is intended for direct use as an array at the field path .status.conditions.  For example,
 //
@@ -45792,7 +45792,7 @@ func (o HTTPRouteStatusParentsArrayOutput) Index(i pulumi.IntInput) HTTPRouteSta
 	}).(HTTPRouteStatusParentsOutput)
 }
 
-// Condition contains details for one aspect of the current state of this API ElasticOperatorKubernetes.
+// Condition contains details for one aspect of the current state of this API Resource.
 // ---
 // This struct is intended for direct use as an array at the field path .status.conditions.  For example,
 //
@@ -45846,7 +45846,7 @@ type HTTPRouteStatusParentsConditionsInput interface {
 	ToHTTPRouteStatusParentsConditionsOutputWithContext(context.Context) HTTPRouteStatusParentsConditionsOutput
 }
 
-// Condition contains details for one aspect of the current state of this API ElasticOperatorKubernetes.
+// Condition contains details for one aspect of the current state of this API Resource.
 // ---
 // This struct is intended for direct use as an array at the field path .status.conditions.  For example,
 //
@@ -45926,7 +45926,7 @@ func (i HTTPRouteStatusParentsConditionsArray) ToHTTPRouteStatusParentsCondition
 	return pulumi.ToOutputWithContext(ctx, i).(HTTPRouteStatusParentsConditionsArrayOutput)
 }
 
-// Condition contains details for one aspect of the current state of this API ElasticOperatorKubernetes.
+// Condition contains details for one aspect of the current state of this API Resource.
 // ---
 // This struct is intended for direct use as an array at the field path .status.conditions.  For example,
 //
@@ -46018,7 +46018,7 @@ func (o HTTPRouteStatusParentsConditionsArrayOutput) Index(i pulumi.IntInput) HT
 	}).(HTTPRouteStatusParentsConditionsOutput)
 }
 
-// Condition contains details for one aspect of the current state of this API ElasticOperatorKubernetes.
+// Condition contains details for one aspect of the current state of this API Resource.
 // ---
 // This struct is intended for direct use as an array at the field path .status.conditions.  For example,
 //
@@ -46072,7 +46072,7 @@ type HTTPRouteStatusParentsConditionsPatchInput interface {
 	ToHTTPRouteStatusParentsConditionsPatchOutputWithContext(context.Context) HTTPRouteStatusParentsConditionsPatchOutput
 }
 
-// Condition contains details for one aspect of the current state of this API ElasticOperatorKubernetes.
+// Condition contains details for one aspect of the current state of this API Resource.
 // ---
 // This struct is intended for direct use as an array at the field path .status.conditions.  For example,
 //
@@ -46152,7 +46152,7 @@ func (i HTTPRouteStatusParentsConditionsPatchArray) ToHTTPRouteStatusParentsCond
 	return pulumi.ToOutputWithContext(ctx, i).(HTTPRouteStatusParentsConditionsPatchArrayOutput)
 }
 
-// Condition contains details for one aspect of the current state of this API ElasticOperatorKubernetes.
+// Condition contains details for one aspect of the current state of this API Resource.
 // ---
 // This struct is intended for direct use as an array at the field path .status.conditions.  For example,
 //

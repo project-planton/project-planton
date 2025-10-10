@@ -14285,7 +14285,7 @@ func (o GRPCRouteStatusParentsArrayOutput) Index(i pulumi.IntInput) GRPCRouteSta
 	}).(GRPCRouteStatusParentsOutput)
 }
 
-// Condition contains details for one aspect of the current state of this API ElasticOperatorKubernetes.
+// Condition contains details for one aspect of the current state of this API Resource.
 // ---
 // This struct is intended for direct use as an array at the field path .status.conditions.  For example,
 //
@@ -14339,7 +14339,7 @@ type GRPCRouteStatusParentsConditionsInput interface {
 	ToGRPCRouteStatusParentsConditionsOutputWithContext(context.Context) GRPCRouteStatusParentsConditionsOutput
 }
 
-// Condition contains details for one aspect of the current state of this API ElasticOperatorKubernetes.
+// Condition contains details for one aspect of the current state of this API Resource.
 // ---
 // This struct is intended for direct use as an array at the field path .status.conditions.  For example,
 //
@@ -14419,7 +14419,7 @@ func (i GRPCRouteStatusParentsConditionsArray) ToGRPCRouteStatusParentsCondition
 	return pulumi.ToOutputWithContext(ctx, i).(GRPCRouteStatusParentsConditionsArrayOutput)
 }
 
-// Condition contains details for one aspect of the current state of this API ElasticOperatorKubernetes.
+// Condition contains details for one aspect of the current state of this API Resource.
 // ---
 // This struct is intended for direct use as an array at the field path .status.conditions.  For example,
 //
@@ -14511,7 +14511,7 @@ func (o GRPCRouteStatusParentsConditionsArrayOutput) Index(i pulumi.IntInput) GR
 	}).(GRPCRouteStatusParentsConditionsOutput)
 }
 
-// Condition contains details for one aspect of the current state of this API ElasticOperatorKubernetes.
+// Condition contains details for one aspect of the current state of this API Resource.
 // ---
 // This struct is intended for direct use as an array at the field path .status.conditions.  For example,
 //
@@ -14565,7 +14565,7 @@ type GRPCRouteStatusParentsConditionsPatchInput interface {
 	ToGRPCRouteStatusParentsConditionsPatchOutputWithContext(context.Context) GRPCRouteStatusParentsConditionsPatchOutput
 }
 
-// Condition contains details for one aspect of the current state of this API ElasticOperatorKubernetes.
+// Condition contains details for one aspect of the current state of this API Resource.
 // ---
 // This struct is intended for direct use as an array at the field path .status.conditions.  For example,
 //
@@ -14645,7 +14645,7 @@ func (i GRPCRouteStatusParentsConditionsPatchArray) ToGRPCRouteStatusParentsCond
 	return pulumi.ToOutputWithContext(ctx, i).(GRPCRouteStatusParentsConditionsPatchArrayOutput)
 }
 
-// Condition contains details for one aspect of the current state of this API ElasticOperatorKubernetes.
+// Condition contains details for one aspect of the current state of this API Resource.
 // ---
 // This struct is intended for direct use as an array at the field path .status.conditions.  For example,
 //

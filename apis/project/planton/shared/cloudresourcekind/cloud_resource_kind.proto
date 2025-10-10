@@ -148,6 +148,7 @@ enum CloudResourceKind {
   ExternalSecretsKubernetes = 831 [(kind_meta) = {provider: kubernetes, version: v1, id_prefix: "extseck8s", kubernetes_meta: {category: addon}}];
   ClickHouseKubernetes = 832 [(kind_meta) = {provider: kubernetes, version: v1, id_prefix: "chk8s", kubernetes_meta: {category: workload, namespace_prefix: "clickhouse"}}];
   AltinityOperatorKubernetes = 833 [(kind_meta) = {provider: kubernetes, version: v1, id_prefix: "altopk8s", kubernetes_meta: {category: addon}}];
+  PerconaServerMongodbOperator = 834 [(kind_meta) = {provider: kubernetes, version: v1, id_prefix: "percmdbop", kubernetes_meta: {category: addon}}];
 
   // 1200–1499: DigitalOcean resources
   DigitalOceanAppPlatformService = 1200 [(kind_meta) = {provider: digital_ocean, version: v1, id_prefix: "doapp"}];

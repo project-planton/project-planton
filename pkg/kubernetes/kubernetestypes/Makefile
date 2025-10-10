@@ -38,6 +38,18 @@ keycloak_release=25.0.4
 #https://github.com/Altinity/clickhouse-operator/tree/0.25.4
 altinity_operator_release=0.25.4
 
+#https://github.com/percona/percona-server-mongodb-operator/tree/main/deploy
+#https://github.com/percona/percona-server-mongodb-operator/releases/tag/v1.20.1
+percona_mongodb_operator_release=v1.20.1
+
+#https://github.com/percona/percona-server-mysql-operator/tree/main/deploy
+#https://github.com/percona/percona-server-mysql-operator/releases/tag/v0.12.0
+percona_mysql_operator_release=v0.12.0
+
+#https://github.com/percona/percona-postgresql-operator/tree/main/deploy
+#https://github.com/percona/percona-postgresql-operator/releases/tag/v2.0.0
+percona_postgres_operator_release=v2.0.0
+
 .PHONY: clean
 clean:
 	rm -rf ${go_build_dir}
@@ -102,10 +114,27 @@ gen-keycloak:
 
 .PHONY: gen-altinity-operator
 gen-altinity-operator:
-	crd2pulumi --force --goPath=altinityoperator https://raw.githubusercontent.com/Altinity/clickhouse-operator/${altinity_operator_release}/deploy/operator/clickhouse-operator-install-bundle.yaml
+	@echo "Extracting CRDs from Altinity bundle..."
+	@curl -s https://raw.githubusercontent.com/Altinity/clickhouse-operator/${altinity_operator_release}/deploy/operator/clickhouse-operator-install-bundle.yaml | \
+		awk '/^kind: CustomResourceDefinition$$/,/^---$$/' | \
+		sed '/name: clickhouseoperatorconfigurations.clickhouse.altinity.com/,/^---$$/d' > /tmp/altinity-crds-only.yaml
+	crd2pulumi --force --goPath=altinityoperator /tmp/altinity-crds-only.yaml
+	@echo "Generated Altinity operator types (excluding ClickHouseOperatorConfiguration)"
+
+.PHONY: gen-percona-mongodb
+gen-percona-mongodb:
+	crd2pulumi --force --goPath=perconamongodb https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/${percona_mongodb_operator_release}/deploy/crd.yaml
+
+.PHONY: gen-percona-mysql
+gen-percona-mysql:
+	crd2pulumi --force --goPath=perconamysql https://raw.githubusercontent.com/percona/percona-server-mysql-operator/${percona_mysql_operator_release}/deploy/crd.yaml
+
+.PHONY: gen-percona-postgres
+gen-percona-postgres:
+	crd2pulumi --force --goPath=perconapostgres https://raw.githubusercontent.com/percona/percona-postgresql-operator/${percona_postgres_operator_release}/deploy/crd.yaml
 
 .PHONY: gen
-gen: clean gen-gateway-apis gen-istio gen-cert-manager gen-solr-operator gen-strimzi-operator gen-zalando-operator gen-external-secrets gen-elastic-operator gen-keycloak gen-altinity-operator
+gen: clean gen-gateway-apis gen-istio gen-cert-manager gen-solr-operator gen-strimzi-operator gen-zalando-operator gen-external-secrets gen-elastic-operator gen-keycloak gen-altinity-operator gen-percona-mongodb gen-percona-mysql gen-percona-postgres
 
 .PHONY: build
 build: clean gen
