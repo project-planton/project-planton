@@ -13,6 +13,36 @@ extend google.protobuf.FieldOptions {
   PostgresKubernetesContainer default_container = 534001;
 }
 
+// Manager-agnostic backup configuration for a PostgreSQL database.
+// This configuration allows per-database backup overrides independent of the operator implementation.
+// When specified, these settings override operator-level backup configuration.
+message PostgresKubernetesBackupConfig {
+  // Optional: Custom S3/R2 prefix path for this database's backups
+  // If not specified, uses operator-level default or standard naming
+  // Example: "backups/my-app/production/postgres/$(PGVERSION)"
+  // Note: $(PGVERSION) will be replaced by the Postgres version
+  string s3_prefix = 1;
+
+  // Optional: Custom backup schedule in cron format
+  // If not specified, uses operator-level schedule
+  // Example: "0 3 * * *" for 3 AM daily backups
+  string backup_schedule = 2;
+
+  // Optional: Enable or disable backups for this specific database
+  // If true, backups are explicitly enabled (overrides operator setting)
+  // If false, backups are explicitly disabled for this database
+  // If not specified, uses operator-level setting
+  optional bool enable_backup = 3;
+
+  // Optional: Enable or disable restore capability
+  // If not specified, uses operator-level setting
+  optional bool enable_restore = 4;
+
+  // Optional: Enable or disable clone capability
+  // If not specified, uses operator-level setting
+  optional bool enable_clone = 5;
+}
+
 /**
  * **PostgresKubernetesSpec** defines the configuration for deploying PostgreSQL on a Kubernetes cluster.
  * This message specifies the parameters needed to create and manage a PostgreSQL deployment within a Kubernetes environment.
@@ -39,6 +69,11 @@ message PostgresKubernetesSpec {
 
   //The ingress configuration for the PostgreSQL deployment.
   project.planton.shared.kubernetes.IngressSpec ingress = 2;
+
+  // Optional: Per-database backup configuration
+  // When specified, these settings override the operator-level backup configuration
+  // If not specified, the database inherits operator-level backup settings
+  PostgresKubernetesBackupConfig backup_config = 3;
 }
 
 /**
