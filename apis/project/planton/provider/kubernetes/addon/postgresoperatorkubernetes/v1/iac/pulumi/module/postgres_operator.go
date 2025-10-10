@@ -27,7 +27,41 @@ func postgresOperator(ctx *pulumi.Context, locals *Locals, kubernetesProvider *p
 		return errors.Wrap(err, "failed to create namespace")
 	}
 
-	// 2. Helm release
+	// 2. Create backup Secret and ConfigMap if backup_config is specified
+	backupConfigMapName, err := createBackupResources(
+		ctx,
+		locals.PostgresOperatorKubernetes.Spec.BackupConfig,
+		createdNamespace.Metadata.Name().Elem(),
+		kubernetesProvider,
+		locals.KubernetesLabels,
+	)
+	if err != nil {
+		return errors.Wrap(err, "failed to create backup resources")
+	}
+
+	// 3. Build Helm values with backup ConfigMap if configured
+	helmValues := backupConfigMapName.ApplyT(func(cmName string) pulumi.Map {
+		baseValues := pulumi.Map{
+			"configKubernetes": pulumi.Map{
+				"inherited_labels": pulumi.ToStringArray([]string{
+					kuberneteslabelkeys.Resource,
+					kuberneteslabelkeys.Organization,
+					kuberneteslabelkeys.Environment,
+					kuberneteslabelkeys.ResourceKind,
+					kuberneteslabelkeys.ResourceId,
+				}),
+			},
+		}
+
+		// Add pod_environment_configmap if backup is configured
+		if cmName != "" {
+			baseValues["configKubernetes"].(pulumi.Map)["pod_environment_configmap"] = pulumi.String(cmName)
+		}
+
+		return baseValues
+	}).(pulumi.MapOutput)
+
+	// 4. Helm release
 	_, err = helm.NewRelease(ctx,
 		"postgres-operator",
 		&helm.ReleaseArgs{
@@ -41,17 +75,7 @@ func postgresOperator(ctx *pulumi.Context, locals *Locals, kubernetesProvider *p
 			CleanupOnFail:   pulumi.Bool(true),
 			WaitForJobs:     pulumi.Bool(true),
 			Timeout:         pulumi.Int(180),
-			Values: pulumi.Map{
-				"configKubernetes": pulumi.Map{
-					"inherited_labels": pulumi.ToStringArray([]string{
-						kuberneteslabelkeys.Resource,
-						kuberneteslabelkeys.Organization,
-						kuberneteslabelkeys.Environment,
-						kuberneteslabelkeys.ResourceKind,
-						kuberneteslabelkeys.ResourceId,
-					}),
-				},
-			},
+			Values:          helmValues,
 		},
 		pulumi.Parent(createdNamespace),
 		pulumi.IgnoreChanges([]string{"status", "description", "resourceNames"}),
@@ -60,7 +84,7 @@ func postgresOperator(ctx *pulumi.Context, locals *Locals, kubernetesProvider *p
 		return errors.Wrap(err, "failed to create helm release")
 	}
 
-	// 3. Export stack‑output(s)
+	// 5. Export stack‑output(s)
 	ctx.Export(OpNamespace, createdNamespace.Metadata.Name())
 
 	return nil
