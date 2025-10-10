@@ -101,6 +101,7 @@ import (
 	ingressnginxkubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/addon/ingressnginxkubernetes/v1"
 	istiokubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/addon/istiokubernetes/v1"
 	kafkaoperatorkubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/addon/kafkaoperatorkubernetes/v1"
+	perconaservermongodboperatorv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/addon/perconaservermongodboperator/v1"
 	postgresoperatorkubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/addon/postgresoperatorkubernetes/v1"
 	solroperatorkubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/addon/solroperatorkubernetes/v1"
 	argocdkubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/argocdkubernetes/v1"
@@ -255,16 +256,17 @@ var ProviderSnowflakeMap = map[cloudresourcekind.CloudResourceKind]proto.Message
 }
 
 var ProviderKubernetesAddonMap = map[cloudresourcekind.CloudResourceKind]proto.Message{
-	cloudresourcekind.CloudResourceKind_AltinityOperatorKubernetes: &altinityoperatorkubernetesv1.AltinityOperatorKubernetes{},
-	cloudresourcekind.CloudResourceKind_CertManagerKubernetes:      &certmanagerkubernetesv1.CertManagerKubernetes{},
-	cloudresourcekind.CloudResourceKind_ElasticOperatorKubernetes:  &elasticoperatorkubernetesv1.ElasticOperatorKubernetes{},
-	cloudresourcekind.CloudResourceKind_ExternalDnsKubernetes:      &externaldnskubernetesv1.ExternalDnsKubernetes{},
-	cloudresourcekind.CloudResourceKind_ExternalSecretsKubernetes:  &externalsecretskubernetesv1.ExternalSecretsKubernetes{},
-	cloudresourcekind.CloudResourceKind_IngressNginxKubernetes:     &ingressnginxkubernetesv1.IngressNginxKubernetes{},
-	cloudresourcekind.CloudResourceKind_IstioKubernetes:            &istiokubernetesv1.IstioKubernetes{},
-	cloudresourcekind.CloudResourceKind_KafkaOperatorKubernetes:    &kafkaoperatorkubernetesv1.KafkaOperatorKubernetes{},
-	cloudresourcekind.CloudResourceKind_PostgresOperatorKubernetes: &postgresoperatorkubernetesv1.PostgresOperatorKubernetes{},
-	cloudresourcekind.CloudResourceKind_SolrOperatorKubernetes:     &solroperatorkubernetesv1.SolrOperatorKubernetes{},
+	cloudresourcekind.CloudResourceKind_AltinityOperatorKubernetes:   &altinityoperatorkubernetesv1.AltinityOperatorKubernetes{},
+	cloudresourcekind.CloudResourceKind_CertManagerKubernetes:        &certmanagerkubernetesv1.CertManagerKubernetes{},
+	cloudresourcekind.CloudResourceKind_ElasticOperatorKubernetes:    &elasticoperatorkubernetesv1.ElasticOperatorKubernetes{},
+	cloudresourcekind.CloudResourceKind_ExternalDnsKubernetes:        &externaldnskubernetesv1.ExternalDnsKubernetes{},
+	cloudresourcekind.CloudResourceKind_ExternalSecretsKubernetes:    &externalsecretskubernetesv1.ExternalSecretsKubernetes{},
+	cloudresourcekind.CloudResourceKind_IngressNginxKubernetes:       &ingressnginxkubernetesv1.IngressNginxKubernetes{},
+	cloudresourcekind.CloudResourceKind_IstioKubernetes:              &istiokubernetesv1.IstioKubernetes{},
+	cloudresourcekind.CloudResourceKind_KafkaOperatorKubernetes:      &kafkaoperatorkubernetesv1.KafkaOperatorKubernetes{},
+	cloudresourcekind.CloudResourceKind_PerconaServerMongodbOperator: &perconaservermongodboperatorv1.PerconaServerMongodbOperator{},
+	cloudresourcekind.CloudResourceKind_PostgresOperatorKubernetes:   &postgresoperatorkubernetesv1.PostgresOperatorKubernetes{},
+	cloudresourcekind.CloudResourceKind_SolrOperatorKubernetes:       &solroperatorkubernetesv1.SolrOperatorKubernetes{},
 }
 
 var ProviderKubernetesWorkloadMap = map[cloudresourcekind.CloudResourceKind]proto.Message{

@@ -14,11 +14,9725 @@ import (
 
 var _ = utilities.GetEnvOrDefault
 
+// Template for Kafka `StrimziPodSet` resource.
+type KafkaSpecKafkaTemplatePodSetPatch struct {
+	Metadata *KafkaSpecKafkaTemplatePodSetMetadataPatch `pulumi:"metadata"`
+}
+
+// KafkaSpecKafkaTemplatePodSetPatchInput is an input type that accepts KafkaSpecKafkaTemplatePodSetPatchArgs and KafkaSpecKafkaTemplatePodSetPatchOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplatePodSetPatchInput` via:
+//
+//	KafkaSpecKafkaTemplatePodSetPatchArgs{...}
+type KafkaSpecKafkaTemplatePodSetPatchInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplatePodSetPatchOutput() KafkaSpecKafkaTemplatePodSetPatchOutput
+	ToKafkaSpecKafkaTemplatePodSetPatchOutputWithContext(context.Context) KafkaSpecKafkaTemplatePodSetPatchOutput
+}
+
+// Template for Kafka `StrimziPodSet` resource.
+type KafkaSpecKafkaTemplatePodSetPatchArgs struct {
+	Metadata KafkaSpecKafkaTemplatePodSetMetadataPatchPtrInput `pulumi:"metadata"`
+}
+
+func (KafkaSpecKafkaTemplatePodSetPatchArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplatePodSetPatch)(nil)).Elem()
+}
+
+func (i KafkaSpecKafkaTemplatePodSetPatchArgs) ToKafkaSpecKafkaTemplatePodSetPatchOutput() KafkaSpecKafkaTemplatePodSetPatchOutput {
+	return i.ToKafkaSpecKafkaTemplatePodSetPatchOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplatePodSetPatchArgs) ToKafkaSpecKafkaTemplatePodSetPatchOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodSetPatchOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodSetPatchOutput)
+}
+
+func (i KafkaSpecKafkaTemplatePodSetPatchArgs) ToKafkaSpecKafkaTemplatePodSetPatchPtrOutput() KafkaSpecKafkaTemplatePodSetPatchPtrOutput {
+	return i.ToKafkaSpecKafkaTemplatePodSetPatchPtrOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplatePodSetPatchArgs) ToKafkaSpecKafkaTemplatePodSetPatchPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodSetPatchPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodSetPatchOutput).ToKafkaSpecKafkaTemplatePodSetPatchPtrOutputWithContext(ctx)
+}
+
+// KafkaSpecKafkaTemplatePodSetPatchPtrInput is an input type that accepts KafkaSpecKafkaTemplatePodSetPatchArgs, KafkaSpecKafkaTemplatePodSetPatchPtr and KafkaSpecKafkaTemplatePodSetPatchPtrOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplatePodSetPatchPtrInput` via:
+//
+//	        KafkaSpecKafkaTemplatePodSetPatchArgs{...}
+//
+//	or:
+//
+//	        nil
+type KafkaSpecKafkaTemplatePodSetPatchPtrInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplatePodSetPatchPtrOutput() KafkaSpecKafkaTemplatePodSetPatchPtrOutput
+	ToKafkaSpecKafkaTemplatePodSetPatchPtrOutputWithContext(context.Context) KafkaSpecKafkaTemplatePodSetPatchPtrOutput
+}
+
+type kafkaSpecKafkaTemplatePodSetPatchPtrType KafkaSpecKafkaTemplatePodSetPatchArgs
+
+func KafkaSpecKafkaTemplatePodSetPatchPtr(v *KafkaSpecKafkaTemplatePodSetPatchArgs) KafkaSpecKafkaTemplatePodSetPatchPtrInput {
+	return (*kafkaSpecKafkaTemplatePodSetPatchPtrType)(v)
+}
+
+func (*kafkaSpecKafkaTemplatePodSetPatchPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecKafkaTemplatePodSetPatch)(nil)).Elem()
+}
+
+func (i *kafkaSpecKafkaTemplatePodSetPatchPtrType) ToKafkaSpecKafkaTemplatePodSetPatchPtrOutput() KafkaSpecKafkaTemplatePodSetPatchPtrOutput {
+	return i.ToKafkaSpecKafkaTemplatePodSetPatchPtrOutputWithContext(context.Background())
+}
+
+func (i *kafkaSpecKafkaTemplatePodSetPatchPtrType) ToKafkaSpecKafkaTemplatePodSetPatchPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodSetPatchPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodSetPatchPtrOutput)
+}
+
+// Template for Kafka `StrimziPodSet` resource.
+type KafkaSpecKafkaTemplatePodSetPatchOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplatePodSetPatchOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplatePodSetPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplatePodSetPatchOutput) ToKafkaSpecKafkaTemplatePodSetPatchOutput() KafkaSpecKafkaTemplatePodSetPatchOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodSetPatchOutput) ToKafkaSpecKafkaTemplatePodSetPatchOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodSetPatchOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodSetPatchOutput) ToKafkaSpecKafkaTemplatePodSetPatchPtrOutput() KafkaSpecKafkaTemplatePodSetPatchPtrOutput {
+	return o.ToKafkaSpecKafkaTemplatePodSetPatchPtrOutputWithContext(context.Background())
+}
+
+func (o KafkaSpecKafkaTemplatePodSetPatchOutput) ToKafkaSpecKafkaTemplatePodSetPatchPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodSetPatchPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v KafkaSpecKafkaTemplatePodSetPatch) *KafkaSpecKafkaTemplatePodSetPatch {
+		return &v
+	}).(KafkaSpecKafkaTemplatePodSetPatchPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodSetPatchOutput) Metadata() KafkaSpecKafkaTemplatePodSetMetadataPatchPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodSetPatch) *KafkaSpecKafkaTemplatePodSetMetadataPatch {
+		return v.Metadata
+	}).(KafkaSpecKafkaTemplatePodSetMetadataPatchPtrOutput)
+}
+
+type KafkaSpecKafkaTemplatePodSetPatchPtrOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplatePodSetPatchPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecKafkaTemplatePodSetPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplatePodSetPatchPtrOutput) ToKafkaSpecKafkaTemplatePodSetPatchPtrOutput() KafkaSpecKafkaTemplatePodSetPatchPtrOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodSetPatchPtrOutput) ToKafkaSpecKafkaTemplatePodSetPatchPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodSetPatchPtrOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodSetPatchPtrOutput) Elem() KafkaSpecKafkaTemplatePodSetPatchOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodSetPatch) KafkaSpecKafkaTemplatePodSetPatch {
+		if v != nil {
+			return *v
+		}
+		var ret KafkaSpecKafkaTemplatePodSetPatch
+		return ret
+	}).(KafkaSpecKafkaTemplatePodSetPatchOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodSetPatchPtrOutput) Metadata() KafkaSpecKafkaTemplatePodSetMetadataPatchPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodSetPatch) *KafkaSpecKafkaTemplatePodSetMetadataPatch {
+		if v == nil {
+			return nil
+		}
+		return v.Metadata
+	}).(KafkaSpecKafkaTemplatePodSetMetadataPatchPtrOutput)
+}
+
+type KafkaSpecKafkaTemplatePodTolerations struct {
+	Effect            *string `pulumi:"effect"`
+	Key               *string `pulumi:"key"`
+	Operator          *string `pulumi:"operator"`
+	TolerationSeconds *int    `pulumi:"tolerationSeconds"`
+	Value             *string `pulumi:"value"`
+}
+
+// KafkaSpecKafkaTemplatePodTolerationsInput is an input type that accepts KafkaSpecKafkaTemplatePodTolerationsArgs and KafkaSpecKafkaTemplatePodTolerationsOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplatePodTolerationsInput` via:
+//
+//	KafkaSpecKafkaTemplatePodTolerationsArgs{...}
+type KafkaSpecKafkaTemplatePodTolerationsInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplatePodTolerationsOutput() KafkaSpecKafkaTemplatePodTolerationsOutput
+	ToKafkaSpecKafkaTemplatePodTolerationsOutputWithContext(context.Context) KafkaSpecKafkaTemplatePodTolerationsOutput
+}
+
+type KafkaSpecKafkaTemplatePodTolerationsArgs struct {
+	Effect            pulumi.StringPtrInput `pulumi:"effect"`
+	Key               pulumi.StringPtrInput `pulumi:"key"`
+	Operator          pulumi.StringPtrInput `pulumi:"operator"`
+	TolerationSeconds pulumi.IntPtrInput    `pulumi:"tolerationSeconds"`
+	Value             pulumi.StringPtrInput `pulumi:"value"`
+}
+
+func (KafkaSpecKafkaTemplatePodTolerationsArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplatePodTolerations)(nil)).Elem()
+}
+
+func (i KafkaSpecKafkaTemplatePodTolerationsArgs) ToKafkaSpecKafkaTemplatePodTolerationsOutput() KafkaSpecKafkaTemplatePodTolerationsOutput {
+	return i.ToKafkaSpecKafkaTemplatePodTolerationsOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplatePodTolerationsArgs) ToKafkaSpecKafkaTemplatePodTolerationsOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodTolerationsOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodTolerationsOutput)
+}
+
+// KafkaSpecKafkaTemplatePodTolerationsArrayInput is an input type that accepts KafkaSpecKafkaTemplatePodTolerationsArray and KafkaSpecKafkaTemplatePodTolerationsArrayOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplatePodTolerationsArrayInput` via:
+//
+//	KafkaSpecKafkaTemplatePodTolerationsArray{ KafkaSpecKafkaTemplatePodTolerationsArgs{...} }
+type KafkaSpecKafkaTemplatePodTolerationsArrayInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplatePodTolerationsArrayOutput() KafkaSpecKafkaTemplatePodTolerationsArrayOutput
+	ToKafkaSpecKafkaTemplatePodTolerationsArrayOutputWithContext(context.Context) KafkaSpecKafkaTemplatePodTolerationsArrayOutput
+}
+
+type KafkaSpecKafkaTemplatePodTolerationsArray []KafkaSpecKafkaTemplatePodTolerationsInput
+
+func (KafkaSpecKafkaTemplatePodTolerationsArray) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]KafkaSpecKafkaTemplatePodTolerations)(nil)).Elem()
+}
+
+func (i KafkaSpecKafkaTemplatePodTolerationsArray) ToKafkaSpecKafkaTemplatePodTolerationsArrayOutput() KafkaSpecKafkaTemplatePodTolerationsArrayOutput {
+	return i.ToKafkaSpecKafkaTemplatePodTolerationsArrayOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplatePodTolerationsArray) ToKafkaSpecKafkaTemplatePodTolerationsArrayOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodTolerationsArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodTolerationsArrayOutput)
+}
+
+type KafkaSpecKafkaTemplatePodTolerationsOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplatePodTolerationsOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplatePodTolerations)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplatePodTolerationsOutput) ToKafkaSpecKafkaTemplatePodTolerationsOutput() KafkaSpecKafkaTemplatePodTolerationsOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodTolerationsOutput) ToKafkaSpecKafkaTemplatePodTolerationsOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodTolerationsOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodTolerationsOutput) Effect() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodTolerations) *string { return v.Effect }).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodTolerationsOutput) Key() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodTolerations) *string { return v.Key }).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodTolerationsOutput) Operator() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodTolerations) *string { return v.Operator }).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodTolerationsOutput) TolerationSeconds() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodTolerations) *int { return v.TolerationSeconds }).(pulumi.IntPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodTolerationsOutput) Value() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodTolerations) *string { return v.Value }).(pulumi.StringPtrOutput)
+}
+
+type KafkaSpecKafkaTemplatePodTolerationsArrayOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplatePodTolerationsArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]KafkaSpecKafkaTemplatePodTolerations)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplatePodTolerationsArrayOutput) ToKafkaSpecKafkaTemplatePodTolerationsArrayOutput() KafkaSpecKafkaTemplatePodTolerationsArrayOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodTolerationsArrayOutput) ToKafkaSpecKafkaTemplatePodTolerationsArrayOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodTolerationsArrayOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodTolerationsArrayOutput) Index(i pulumi.IntInput) KafkaSpecKafkaTemplatePodTolerationsOutput {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) KafkaSpecKafkaTemplatePodTolerations {
+		return vs[0].([]KafkaSpecKafkaTemplatePodTolerations)[vs[1].(int)]
+	}).(KafkaSpecKafkaTemplatePodTolerationsOutput)
+}
+
+type KafkaSpecKafkaTemplatePodTolerationsPatch struct {
+	Effect            *string `pulumi:"effect"`
+	Key               *string `pulumi:"key"`
+	Operator          *string `pulumi:"operator"`
+	TolerationSeconds *int    `pulumi:"tolerationSeconds"`
+	Value             *string `pulumi:"value"`
+}
+
+// KafkaSpecKafkaTemplatePodTolerationsPatchInput is an input type that accepts KafkaSpecKafkaTemplatePodTolerationsPatchArgs and KafkaSpecKafkaTemplatePodTolerationsPatchOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplatePodTolerationsPatchInput` via:
+//
+//	KafkaSpecKafkaTemplatePodTolerationsPatchArgs{...}
+type KafkaSpecKafkaTemplatePodTolerationsPatchInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplatePodTolerationsPatchOutput() KafkaSpecKafkaTemplatePodTolerationsPatchOutput
+	ToKafkaSpecKafkaTemplatePodTolerationsPatchOutputWithContext(context.Context) KafkaSpecKafkaTemplatePodTolerationsPatchOutput
+}
+
+type KafkaSpecKafkaTemplatePodTolerationsPatchArgs struct {
+	Effect            pulumi.StringPtrInput `pulumi:"effect"`
+	Key               pulumi.StringPtrInput `pulumi:"key"`
+	Operator          pulumi.StringPtrInput `pulumi:"operator"`
+	TolerationSeconds pulumi.IntPtrInput    `pulumi:"tolerationSeconds"`
+	Value             pulumi.StringPtrInput `pulumi:"value"`
+}
+
+func (KafkaSpecKafkaTemplatePodTolerationsPatchArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplatePodTolerationsPatch)(nil)).Elem()
+}
+
+func (i KafkaSpecKafkaTemplatePodTolerationsPatchArgs) ToKafkaSpecKafkaTemplatePodTolerationsPatchOutput() KafkaSpecKafkaTemplatePodTolerationsPatchOutput {
+	return i.ToKafkaSpecKafkaTemplatePodTolerationsPatchOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplatePodTolerationsPatchArgs) ToKafkaSpecKafkaTemplatePodTolerationsPatchOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodTolerationsPatchOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodTolerationsPatchOutput)
+}
+
+// KafkaSpecKafkaTemplatePodTolerationsPatchArrayInput is an input type that accepts KafkaSpecKafkaTemplatePodTolerationsPatchArray and KafkaSpecKafkaTemplatePodTolerationsPatchArrayOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplatePodTolerationsPatchArrayInput` via:
+//
+//	KafkaSpecKafkaTemplatePodTolerationsPatchArray{ KafkaSpecKafkaTemplatePodTolerationsPatchArgs{...} }
+type KafkaSpecKafkaTemplatePodTolerationsPatchArrayInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplatePodTolerationsPatchArrayOutput() KafkaSpecKafkaTemplatePodTolerationsPatchArrayOutput
+	ToKafkaSpecKafkaTemplatePodTolerationsPatchArrayOutputWithContext(context.Context) KafkaSpecKafkaTemplatePodTolerationsPatchArrayOutput
+}
+
+type KafkaSpecKafkaTemplatePodTolerationsPatchArray []KafkaSpecKafkaTemplatePodTolerationsPatchInput
+
+func (KafkaSpecKafkaTemplatePodTolerationsPatchArray) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]KafkaSpecKafkaTemplatePodTolerationsPatch)(nil)).Elem()
+}
+
+func (i KafkaSpecKafkaTemplatePodTolerationsPatchArray) ToKafkaSpecKafkaTemplatePodTolerationsPatchArrayOutput() KafkaSpecKafkaTemplatePodTolerationsPatchArrayOutput {
+	return i.ToKafkaSpecKafkaTemplatePodTolerationsPatchArrayOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplatePodTolerationsPatchArray) ToKafkaSpecKafkaTemplatePodTolerationsPatchArrayOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodTolerationsPatchArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodTolerationsPatchArrayOutput)
+}
+
+type KafkaSpecKafkaTemplatePodTolerationsPatchOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplatePodTolerationsPatchOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplatePodTolerationsPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplatePodTolerationsPatchOutput) ToKafkaSpecKafkaTemplatePodTolerationsPatchOutput() KafkaSpecKafkaTemplatePodTolerationsPatchOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodTolerationsPatchOutput) ToKafkaSpecKafkaTemplatePodTolerationsPatchOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodTolerationsPatchOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodTolerationsPatchOutput) Effect() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodTolerationsPatch) *string { return v.Effect }).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodTolerationsPatchOutput) Key() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodTolerationsPatch) *string { return v.Key }).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodTolerationsPatchOutput) Operator() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodTolerationsPatch) *string { return v.Operator }).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodTolerationsPatchOutput) TolerationSeconds() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodTolerationsPatch) *int { return v.TolerationSeconds }).(pulumi.IntPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodTolerationsPatchOutput) Value() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodTolerationsPatch) *string { return v.Value }).(pulumi.StringPtrOutput)
+}
+
+type KafkaSpecKafkaTemplatePodTolerationsPatchArrayOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplatePodTolerationsPatchArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]KafkaSpecKafkaTemplatePodTolerationsPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplatePodTolerationsPatchArrayOutput) ToKafkaSpecKafkaTemplatePodTolerationsPatchArrayOutput() KafkaSpecKafkaTemplatePodTolerationsPatchArrayOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodTolerationsPatchArrayOutput) ToKafkaSpecKafkaTemplatePodTolerationsPatchArrayOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodTolerationsPatchArrayOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodTolerationsPatchArrayOutput) Index(i pulumi.IntInput) KafkaSpecKafkaTemplatePodTolerationsPatchOutput {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) KafkaSpecKafkaTemplatePodTolerationsPatch {
+		return vs[0].([]KafkaSpecKafkaTemplatePodTolerationsPatch)[vs[1].(int)]
+	}).(KafkaSpecKafkaTemplatePodTolerationsPatchOutput)
+}
+
+type KafkaSpecKafkaTemplatePodTopologySpreadConstraints struct {
+	LabelSelector      *KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelector `pulumi:"labelSelector"`
+	MatchLabelKeys     []string                                                         `pulumi:"matchLabelKeys"`
+	MaxSkew            *int                                                             `pulumi:"maxSkew"`
+	MinDomains         *int                                                             `pulumi:"minDomains"`
+	NodeAffinityPolicy *string                                                          `pulumi:"nodeAffinityPolicy"`
+	NodeTaintsPolicy   *string                                                          `pulumi:"nodeTaintsPolicy"`
+	TopologyKey        *string                                                          `pulumi:"topologyKey"`
+	WhenUnsatisfiable  *string                                                          `pulumi:"whenUnsatisfiable"`
+}
+
+// KafkaSpecKafkaTemplatePodTopologySpreadConstraintsInput is an input type that accepts KafkaSpecKafkaTemplatePodTopologySpreadConstraintsArgs and KafkaSpecKafkaTemplatePodTopologySpreadConstraintsOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplatePodTopologySpreadConstraintsInput` via:
+//
+//	KafkaSpecKafkaTemplatePodTopologySpreadConstraintsArgs{...}
+type KafkaSpecKafkaTemplatePodTopologySpreadConstraintsInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsOutput() KafkaSpecKafkaTemplatePodTopologySpreadConstraintsOutput
+	ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsOutputWithContext(context.Context) KafkaSpecKafkaTemplatePodTopologySpreadConstraintsOutput
+}
+
+type KafkaSpecKafkaTemplatePodTopologySpreadConstraintsArgs struct {
+	LabelSelector      KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPtrInput `pulumi:"labelSelector"`
+	MatchLabelKeys     pulumi.StringArrayInput                                                 `pulumi:"matchLabelKeys"`
+	MaxSkew            pulumi.IntPtrInput                                                      `pulumi:"maxSkew"`
+	MinDomains         pulumi.IntPtrInput                                                      `pulumi:"minDomains"`
+	NodeAffinityPolicy pulumi.StringPtrInput                                                   `pulumi:"nodeAffinityPolicy"`
+	NodeTaintsPolicy   pulumi.StringPtrInput                                                   `pulumi:"nodeTaintsPolicy"`
+	TopologyKey        pulumi.StringPtrInput                                                   `pulumi:"topologyKey"`
+	WhenUnsatisfiable  pulumi.StringPtrInput                                                   `pulumi:"whenUnsatisfiable"`
+}
+
+func (KafkaSpecKafkaTemplatePodTopologySpreadConstraintsArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplatePodTopologySpreadConstraints)(nil)).Elem()
+}
+
+func (i KafkaSpecKafkaTemplatePodTopologySpreadConstraintsArgs) ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsOutput() KafkaSpecKafkaTemplatePodTopologySpreadConstraintsOutput {
+	return i.ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplatePodTopologySpreadConstraintsArgs) ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodTopologySpreadConstraintsOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodTopologySpreadConstraintsOutput)
+}
+
+// KafkaSpecKafkaTemplatePodTopologySpreadConstraintsArrayInput is an input type that accepts KafkaSpecKafkaTemplatePodTopologySpreadConstraintsArray and KafkaSpecKafkaTemplatePodTopologySpreadConstraintsArrayOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplatePodTopologySpreadConstraintsArrayInput` via:
+//
+//	KafkaSpecKafkaTemplatePodTopologySpreadConstraintsArray{ KafkaSpecKafkaTemplatePodTopologySpreadConstraintsArgs{...} }
+type KafkaSpecKafkaTemplatePodTopologySpreadConstraintsArrayInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsArrayOutput() KafkaSpecKafkaTemplatePodTopologySpreadConstraintsArrayOutput
+	ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsArrayOutputWithContext(context.Context) KafkaSpecKafkaTemplatePodTopologySpreadConstraintsArrayOutput
+}
+
+type KafkaSpecKafkaTemplatePodTopologySpreadConstraintsArray []KafkaSpecKafkaTemplatePodTopologySpreadConstraintsInput
+
+func (KafkaSpecKafkaTemplatePodTopologySpreadConstraintsArray) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]KafkaSpecKafkaTemplatePodTopologySpreadConstraints)(nil)).Elem()
+}
+
+func (i KafkaSpecKafkaTemplatePodTopologySpreadConstraintsArray) ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsArrayOutput() KafkaSpecKafkaTemplatePodTopologySpreadConstraintsArrayOutput {
+	return i.ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsArrayOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplatePodTopologySpreadConstraintsArray) ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsArrayOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodTopologySpreadConstraintsArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodTopologySpreadConstraintsArrayOutput)
+}
+
+type KafkaSpecKafkaTemplatePodTopologySpreadConstraintsOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplatePodTopologySpreadConstraintsOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplatePodTopologySpreadConstraints)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplatePodTopologySpreadConstraintsOutput) ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsOutput() KafkaSpecKafkaTemplatePodTopologySpreadConstraintsOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodTopologySpreadConstraintsOutput) ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodTopologySpreadConstraintsOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodTopologySpreadConstraintsOutput) LabelSelector() KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodTopologySpreadConstraints) *KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelector {
+		return v.LabelSelector
+	}).(KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodTopologySpreadConstraintsOutput) MatchLabelKeys() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodTopologySpreadConstraints) []string { return v.MatchLabelKeys }).(pulumi.StringArrayOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodTopologySpreadConstraintsOutput) MaxSkew() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodTopologySpreadConstraints) *int { return v.MaxSkew }).(pulumi.IntPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodTopologySpreadConstraintsOutput) MinDomains() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodTopologySpreadConstraints) *int { return v.MinDomains }).(pulumi.IntPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodTopologySpreadConstraintsOutput) NodeAffinityPolicy() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodTopologySpreadConstraints) *string { return v.NodeAffinityPolicy }).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodTopologySpreadConstraintsOutput) NodeTaintsPolicy() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodTopologySpreadConstraints) *string { return v.NodeTaintsPolicy }).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodTopologySpreadConstraintsOutput) TopologyKey() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodTopologySpreadConstraints) *string { return v.TopologyKey }).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodTopologySpreadConstraintsOutput) WhenUnsatisfiable() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodTopologySpreadConstraints) *string { return v.WhenUnsatisfiable }).(pulumi.StringPtrOutput)
+}
+
+type KafkaSpecKafkaTemplatePodTopologySpreadConstraintsArrayOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplatePodTopologySpreadConstraintsArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]KafkaSpecKafkaTemplatePodTopologySpreadConstraints)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplatePodTopologySpreadConstraintsArrayOutput) ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsArrayOutput() KafkaSpecKafkaTemplatePodTopologySpreadConstraintsArrayOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodTopologySpreadConstraintsArrayOutput) ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsArrayOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodTopologySpreadConstraintsArrayOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodTopologySpreadConstraintsArrayOutput) Index(i pulumi.IntInput) KafkaSpecKafkaTemplatePodTopologySpreadConstraintsOutput {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) KafkaSpecKafkaTemplatePodTopologySpreadConstraints {
+		return vs[0].([]KafkaSpecKafkaTemplatePodTopologySpreadConstraints)[vs[1].(int)]
+	}).(KafkaSpecKafkaTemplatePodTopologySpreadConstraintsOutput)
+}
+
+type KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelector struct {
+	MatchExpressions []KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressions `pulumi:"matchExpressions"`
+	MatchLabels      map[string]string                                                                 `pulumi:"matchLabels"`
+}
+
+// KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorInput is an input type that accepts KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorArgs and KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorInput` via:
+//
+//	KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorArgs{...}
+type KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorOutput() KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorOutput
+	ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorOutputWithContext(context.Context) KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorOutput
+}
+
+type KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorArgs struct {
+	MatchExpressions KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsArrayInput `pulumi:"matchExpressions"`
+	MatchLabels      pulumi.StringMapInput                                                                     `pulumi:"matchLabels"`
+}
+
+func (KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelector)(nil)).Elem()
+}
+
+func (i KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorArgs) ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorOutput() KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorOutput {
+	return i.ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorArgs) ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorOutput)
+}
+
+func (i KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorArgs) ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPtrOutput() KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPtrOutput {
+	return i.ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPtrOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorArgs) ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorOutput).ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPtrOutputWithContext(ctx)
+}
+
+// KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPtrInput is an input type that accepts KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorArgs, KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPtr and KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPtrOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPtrInput` via:
+//
+//	        KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorArgs{...}
+//
+//	or:
+//
+//	        nil
+type KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPtrInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPtrOutput() KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPtrOutput
+	ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPtrOutputWithContext(context.Context) KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPtrOutput
+}
+
+type kafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPtrType KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorArgs
+
+func KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPtr(v *KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorArgs) KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPtrInput {
+	return (*kafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPtrType)(v)
+}
+
+func (*kafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelector)(nil)).Elem()
+}
+
+func (i *kafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPtrType) ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPtrOutput() KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPtrOutput {
+	return i.ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPtrOutputWithContext(context.Background())
+}
+
+func (i *kafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPtrType) ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPtrOutput)
+}
+
+type KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelector)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorOutput) ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorOutput() KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorOutput) ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorOutput) ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPtrOutput() KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPtrOutput {
+	return o.ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPtrOutputWithContext(context.Background())
+}
+
+func (o KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorOutput) ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelector) *KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelector {
+		return &v
+	}).(KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorOutput) MatchExpressions() KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsArrayOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelector) []KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressions {
+		return v.MatchExpressions
+	}).(KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsArrayOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorOutput) MatchLabels() pulumi.StringMapOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelector) map[string]string {
+		return v.MatchLabels
+	}).(pulumi.StringMapOutput)
+}
+
+type KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPtrOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelector)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPtrOutput) ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPtrOutput() KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPtrOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPtrOutput) ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPtrOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPtrOutput) Elem() KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelector) KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelector {
+		if v != nil {
+			return *v
+		}
+		var ret KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelector
+		return ret
+	}).(KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPtrOutput) MatchExpressions() KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsArrayOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelector) []KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressions {
+		if v == nil {
+			return nil
+		}
+		return v.MatchExpressions
+	}).(KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsArrayOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPtrOutput) MatchLabels() pulumi.StringMapOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelector) map[string]string {
+		if v == nil {
+			return nil
+		}
+		return v.MatchLabels
+	}).(pulumi.StringMapOutput)
+}
+
+type KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressions struct {
+	Key      *string  `pulumi:"key"`
+	Operator *string  `pulumi:"operator"`
+	Values   []string `pulumi:"values"`
+}
+
+// KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsInput is an input type that accepts KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsArgs and KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsInput` via:
+//
+//	KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsArgs{...}
+type KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsOutput() KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsOutput
+	ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsOutputWithContext(context.Context) KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsOutput
+}
+
+type KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsArgs struct {
+	Key      pulumi.StringPtrInput   `pulumi:"key"`
+	Operator pulumi.StringPtrInput   `pulumi:"operator"`
+	Values   pulumi.StringArrayInput `pulumi:"values"`
+}
+
+func (KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressions)(nil)).Elem()
+}
+
+func (i KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsArgs) ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsOutput() KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsOutput {
+	return i.ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsArgs) ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsOutput)
+}
+
+// KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsArrayInput is an input type that accepts KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsArray and KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsArrayOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsArrayInput` via:
+//
+//	KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsArray{ KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsArgs{...} }
+type KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsArrayInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsArrayOutput() KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsArrayOutput
+	ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsArrayOutputWithContext(context.Context) KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsArrayOutput
+}
+
+type KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsArray []KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsInput
+
+func (KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsArray) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressions)(nil)).Elem()
+}
+
+func (i KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsArray) ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsArrayOutput() KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsArrayOutput {
+	return i.ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsArrayOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsArray) ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsArrayOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsArrayOutput)
+}
+
+type KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressions)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsOutput) ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsOutput() KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsOutput) ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsOutput) Key() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressions) *string {
+		return v.Key
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsOutput) Operator() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressions) *string {
+		return v.Operator
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsOutput) Values() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressions) []string {
+		return v.Values
+	}).(pulumi.StringArrayOutput)
+}
+
+type KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsArrayOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressions)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsArrayOutput) ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsArrayOutput() KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsArrayOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsArrayOutput) ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsArrayOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsArrayOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsArrayOutput) Index(i pulumi.IntInput) KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsOutput {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressions {
+		return vs[0].([]KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressions)[vs[1].(int)]
+	}).(KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsOutput)
+}
+
+type KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatch struct {
+	Key      *string  `pulumi:"key"`
+	Operator *string  `pulumi:"operator"`
+	Values   []string `pulumi:"values"`
+}
+
+// KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchInput is an input type that accepts KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchArgs and KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchInput` via:
+//
+//	KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchArgs{...}
+type KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchOutput() KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchOutput
+	ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchOutputWithContext(context.Context) KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchOutput
+}
+
+type KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchArgs struct {
+	Key      pulumi.StringPtrInput   `pulumi:"key"`
+	Operator pulumi.StringPtrInput   `pulumi:"operator"`
+	Values   pulumi.StringArrayInput `pulumi:"values"`
+}
+
+func (KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatch)(nil)).Elem()
+}
+
+func (i KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchArgs) ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchOutput() KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchOutput {
+	return i.ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchArgs) ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchOutput)
+}
+
+// KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchArrayInput is an input type that accepts KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchArray and KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchArrayOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchArrayInput` via:
+//
+//	KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchArray{ KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchArgs{...} }
+type KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchArrayInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchArrayOutput() KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchArrayOutput
+	ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchArrayOutputWithContext(context.Context) KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchArrayOutput
+}
+
+type KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchArray []KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchInput
+
+func (KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchArray) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatch)(nil)).Elem()
+}
+
+func (i KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchArray) ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchArrayOutput() KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchArrayOutput {
+	return i.ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchArrayOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchArray) ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchArrayOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchArrayOutput)
+}
+
+type KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchOutput) ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchOutput() KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchOutput) ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchOutput) Key() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatch) *string {
+		return v.Key
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchOutput) Operator() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatch) *string {
+		return v.Operator
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchOutput) Values() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatch) []string {
+		return v.Values
+	}).(pulumi.StringArrayOutput)
+}
+
+type KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchArrayOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchArrayOutput) ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchArrayOutput() KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchArrayOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchArrayOutput) ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchArrayOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchArrayOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchArrayOutput) Index(i pulumi.IntInput) KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchOutput {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatch {
+		return vs[0].([]KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatch)[vs[1].(int)]
+	}).(KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchOutput)
+}
+
+type KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatch struct {
+	MatchExpressions []KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatch `pulumi:"matchExpressions"`
+	MatchLabels      map[string]string                                                                      `pulumi:"matchLabels"`
+}
+
+// KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchInput is an input type that accepts KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchArgs and KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchInput` via:
+//
+//	KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchArgs{...}
+type KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchOutput() KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchOutput
+	ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchOutputWithContext(context.Context) KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchOutput
+}
+
+type KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchArgs struct {
+	MatchExpressions KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchArrayInput `pulumi:"matchExpressions"`
+	MatchLabels      pulumi.StringMapInput                                                                          `pulumi:"matchLabels"`
+}
+
+func (KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatch)(nil)).Elem()
+}
+
+func (i KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchArgs) ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchOutput() KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchOutput {
+	return i.ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchArgs) ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchOutput)
+}
+
+func (i KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchArgs) ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchPtrOutput() KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchPtrOutput {
+	return i.ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchPtrOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchArgs) ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchOutput).ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchPtrOutputWithContext(ctx)
+}
+
+// KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchPtrInput is an input type that accepts KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchArgs, KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchPtr and KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchPtrOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchPtrInput` via:
+//
+//	        KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchArgs{...}
+//
+//	or:
+//
+//	        nil
+type KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchPtrInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchPtrOutput() KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchPtrOutput
+	ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchPtrOutputWithContext(context.Context) KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchPtrOutput
+}
+
+type kafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchPtrType KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchArgs
+
+func KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchPtr(v *KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchArgs) KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchPtrInput {
+	return (*kafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchPtrType)(v)
+}
+
+func (*kafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatch)(nil)).Elem()
+}
+
+func (i *kafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchPtrType) ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchPtrOutput() KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchPtrOutput {
+	return i.ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchPtrOutputWithContext(context.Background())
+}
+
+func (i *kafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchPtrType) ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchPtrOutput)
+}
+
+type KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchOutput) ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchOutput() KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchOutput) ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchOutput) ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchPtrOutput() KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchPtrOutput {
+	return o.ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchPtrOutputWithContext(context.Background())
+}
+
+func (o KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchOutput) ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatch) *KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatch {
+		return &v
+	}).(KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchOutput) MatchExpressions() KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchArrayOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatch) []KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatch {
+		return v.MatchExpressions
+	}).(KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchArrayOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchOutput) MatchLabels() pulumi.StringMapOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatch) map[string]string {
+		return v.MatchLabels
+	}).(pulumi.StringMapOutput)
+}
+
+type KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchPtrOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchPtrOutput) ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchPtrOutput() KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchPtrOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchPtrOutput) ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchPtrOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchPtrOutput) Elem() KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatch) KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatch {
+		if v != nil {
+			return *v
+		}
+		var ret KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatch
+		return ret
+	}).(KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchPtrOutput) MatchExpressions() KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchArrayOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatch) []KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatch {
+		if v == nil {
+			return nil
+		}
+		return v.MatchExpressions
+	}).(KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchArrayOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchPtrOutput) MatchLabels() pulumi.StringMapOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatch) map[string]string {
+		if v == nil {
+			return nil
+		}
+		return v.MatchLabels
+	}).(pulumi.StringMapOutput)
+}
+
+type KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatch struct {
+	LabelSelector      *KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatch `pulumi:"labelSelector"`
+	MatchLabelKeys     []string                                                              `pulumi:"matchLabelKeys"`
+	MaxSkew            *int                                                                  `pulumi:"maxSkew"`
+	MinDomains         *int                                                                  `pulumi:"minDomains"`
+	NodeAffinityPolicy *string                                                               `pulumi:"nodeAffinityPolicy"`
+	NodeTaintsPolicy   *string                                                               `pulumi:"nodeTaintsPolicy"`
+	TopologyKey        *string                                                               `pulumi:"topologyKey"`
+	WhenUnsatisfiable  *string                                                               `pulumi:"whenUnsatisfiable"`
+}
+
+// KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchInput is an input type that accepts KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchArgs and KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchInput` via:
+//
+//	KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchArgs{...}
+type KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchOutput() KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchOutput
+	ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchOutputWithContext(context.Context) KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchOutput
+}
+
+type KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchArgs struct {
+	LabelSelector      KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchPtrInput `pulumi:"labelSelector"`
+	MatchLabelKeys     pulumi.StringArrayInput                                                      `pulumi:"matchLabelKeys"`
+	MaxSkew            pulumi.IntPtrInput                                                           `pulumi:"maxSkew"`
+	MinDomains         pulumi.IntPtrInput                                                           `pulumi:"minDomains"`
+	NodeAffinityPolicy pulumi.StringPtrInput                                                        `pulumi:"nodeAffinityPolicy"`
+	NodeTaintsPolicy   pulumi.StringPtrInput                                                        `pulumi:"nodeTaintsPolicy"`
+	TopologyKey        pulumi.StringPtrInput                                                        `pulumi:"topologyKey"`
+	WhenUnsatisfiable  pulumi.StringPtrInput                                                        `pulumi:"whenUnsatisfiable"`
+}
+
+func (KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatch)(nil)).Elem()
+}
+
+func (i KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchArgs) ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchOutput() KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchOutput {
+	return i.ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchArgs) ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchOutput)
+}
+
+// KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchArrayInput is an input type that accepts KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchArray and KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchArrayOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchArrayInput` via:
+//
+//	KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchArray{ KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchArgs{...} }
+type KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchArrayInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchArrayOutput() KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchArrayOutput
+	ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchArrayOutputWithContext(context.Context) KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchArrayOutput
+}
+
+type KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchArray []KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchInput
+
+func (KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchArray) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatch)(nil)).Elem()
+}
+
+func (i KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchArray) ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchArrayOutput() KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchArrayOutput {
+	return i.ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchArrayOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchArray) ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchArrayOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchArrayOutput)
+}
+
+type KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchOutput) ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchOutput() KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchOutput) ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchOutput) LabelSelector() KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatch) *KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatch {
+		return v.LabelSelector
+	}).(KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchOutput) MatchLabelKeys() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatch) []string { return v.MatchLabelKeys }).(pulumi.StringArrayOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchOutput) MaxSkew() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatch) *int { return v.MaxSkew }).(pulumi.IntPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchOutput) MinDomains() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatch) *int { return v.MinDomains }).(pulumi.IntPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchOutput) NodeAffinityPolicy() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatch) *string { return v.NodeAffinityPolicy }).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchOutput) NodeTaintsPolicy() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatch) *string { return v.NodeTaintsPolicy }).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchOutput) TopologyKey() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatch) *string { return v.TopologyKey }).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchOutput) WhenUnsatisfiable() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatch) *string { return v.WhenUnsatisfiable }).(pulumi.StringPtrOutput)
+}
+
+type KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchArrayOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchArrayOutput) ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchArrayOutput() KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchArrayOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchArrayOutput) ToKafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchArrayOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchArrayOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchArrayOutput) Index(i pulumi.IntInput) KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchOutput {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatch {
+		return vs[0].([]KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatch)[vs[1].(int)]
+	}).(KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchOutput)
+}
+
+type KafkaSpecKafkaTemplatePodVolumes struct {
+	ConfigMap *KafkaSpecKafkaTemplatePodVolumesConfigMap `pulumi:"configMap"`
+	Csi       *KafkaSpecKafkaTemplatePodVolumesCsi       `pulumi:"csi"`
+	EmptyDir  *KafkaSpecKafkaTemplatePodVolumesEmptyDir  `pulumi:"emptyDir"`
+	Image     *KafkaSpecKafkaTemplatePodVolumesImage     `pulumi:"image"`
+	// Name to use for the volume. Required.
+	Name                  *string                                                `pulumi:"name"`
+	PersistentVolumeClaim *KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaim `pulumi:"persistentVolumeClaim"`
+	Secret                *KafkaSpecKafkaTemplatePodVolumesSecret                `pulumi:"secret"`
+}
+
+// KafkaSpecKafkaTemplatePodVolumesInput is an input type that accepts KafkaSpecKafkaTemplatePodVolumesArgs and KafkaSpecKafkaTemplatePodVolumesOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplatePodVolumesInput` via:
+//
+//	KafkaSpecKafkaTemplatePodVolumesArgs{...}
+type KafkaSpecKafkaTemplatePodVolumesInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplatePodVolumesOutput() KafkaSpecKafkaTemplatePodVolumesOutput
+	ToKafkaSpecKafkaTemplatePodVolumesOutputWithContext(context.Context) KafkaSpecKafkaTemplatePodVolumesOutput
+}
+
+type KafkaSpecKafkaTemplatePodVolumesArgs struct {
+	ConfigMap KafkaSpecKafkaTemplatePodVolumesConfigMapPtrInput `pulumi:"configMap"`
+	Csi       KafkaSpecKafkaTemplatePodVolumesCsiPtrInput       `pulumi:"csi"`
+	EmptyDir  KafkaSpecKafkaTemplatePodVolumesEmptyDirPtrInput  `pulumi:"emptyDir"`
+	Image     KafkaSpecKafkaTemplatePodVolumesImagePtrInput     `pulumi:"image"`
+	// Name to use for the volume. Required.
+	Name                  pulumi.StringPtrInput                                         `pulumi:"name"`
+	PersistentVolumeClaim KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPtrInput `pulumi:"persistentVolumeClaim"`
+	Secret                KafkaSpecKafkaTemplatePodVolumesSecretPtrInput                `pulumi:"secret"`
+}
+
+func (KafkaSpecKafkaTemplatePodVolumesArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumes)(nil)).Elem()
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesArgs) ToKafkaSpecKafkaTemplatePodVolumesOutput() KafkaSpecKafkaTemplatePodVolumesOutput {
+	return i.ToKafkaSpecKafkaTemplatePodVolumesOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesArgs) ToKafkaSpecKafkaTemplatePodVolumesOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodVolumesOutput)
+}
+
+// KafkaSpecKafkaTemplatePodVolumesArrayInput is an input type that accepts KafkaSpecKafkaTemplatePodVolumesArray and KafkaSpecKafkaTemplatePodVolumesArrayOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplatePodVolumesArrayInput` via:
+//
+//	KafkaSpecKafkaTemplatePodVolumesArray{ KafkaSpecKafkaTemplatePodVolumesArgs{...} }
+type KafkaSpecKafkaTemplatePodVolumesArrayInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplatePodVolumesArrayOutput() KafkaSpecKafkaTemplatePodVolumesArrayOutput
+	ToKafkaSpecKafkaTemplatePodVolumesArrayOutputWithContext(context.Context) KafkaSpecKafkaTemplatePodVolumesArrayOutput
+}
+
+type KafkaSpecKafkaTemplatePodVolumesArray []KafkaSpecKafkaTemplatePodVolumesInput
+
+func (KafkaSpecKafkaTemplatePodVolumesArray) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]KafkaSpecKafkaTemplatePodVolumes)(nil)).Elem()
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesArray) ToKafkaSpecKafkaTemplatePodVolumesArrayOutput() KafkaSpecKafkaTemplatePodVolumesArrayOutput {
+	return i.ToKafkaSpecKafkaTemplatePodVolumesArrayOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesArray) ToKafkaSpecKafkaTemplatePodVolumesArrayOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodVolumesArrayOutput)
+}
+
+type KafkaSpecKafkaTemplatePodVolumesOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplatePodVolumesOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumes)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesOutput) ToKafkaSpecKafkaTemplatePodVolumesOutput() KafkaSpecKafkaTemplatePodVolumesOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesOutput) ToKafkaSpecKafkaTemplatePodVolumesOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesOutput) ConfigMap() KafkaSpecKafkaTemplatePodVolumesConfigMapPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumes) *KafkaSpecKafkaTemplatePodVolumesConfigMap {
+		return v.ConfigMap
+	}).(KafkaSpecKafkaTemplatePodVolumesConfigMapPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesOutput) Csi() KafkaSpecKafkaTemplatePodVolumesCsiPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumes) *KafkaSpecKafkaTemplatePodVolumesCsi { return v.Csi }).(KafkaSpecKafkaTemplatePodVolumesCsiPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesOutput) EmptyDir() KafkaSpecKafkaTemplatePodVolumesEmptyDirPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumes) *KafkaSpecKafkaTemplatePodVolumesEmptyDir { return v.EmptyDir }).(KafkaSpecKafkaTemplatePodVolumesEmptyDirPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesOutput) Image() KafkaSpecKafkaTemplatePodVolumesImagePtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumes) *KafkaSpecKafkaTemplatePodVolumesImage { return v.Image }).(KafkaSpecKafkaTemplatePodVolumesImagePtrOutput)
+}
+
+// Name to use for the volume. Required.
+func (o KafkaSpecKafkaTemplatePodVolumesOutput) Name() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumes) *string { return v.Name }).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesOutput) PersistentVolumeClaim() KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumes) *KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaim {
+		return v.PersistentVolumeClaim
+	}).(KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesOutput) Secret() KafkaSpecKafkaTemplatePodVolumesSecretPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumes) *KafkaSpecKafkaTemplatePodVolumesSecret { return v.Secret }).(KafkaSpecKafkaTemplatePodVolumesSecretPtrOutput)
+}
+
+type KafkaSpecKafkaTemplatePodVolumesArrayOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplatePodVolumesArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]KafkaSpecKafkaTemplatePodVolumes)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesArrayOutput) ToKafkaSpecKafkaTemplatePodVolumesArrayOutput() KafkaSpecKafkaTemplatePodVolumesArrayOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesArrayOutput) ToKafkaSpecKafkaTemplatePodVolumesArrayOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesArrayOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesArrayOutput) Index(i pulumi.IntInput) KafkaSpecKafkaTemplatePodVolumesOutput {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) KafkaSpecKafkaTemplatePodVolumes {
+		return vs[0].([]KafkaSpecKafkaTemplatePodVolumes)[vs[1].(int)]
+	}).(KafkaSpecKafkaTemplatePodVolumesOutput)
+}
+
+// `ConfigMap` to use to populate the volume.
+type KafkaSpecKafkaTemplatePodVolumesConfigMap struct {
+	DefaultMode *int                                             `pulumi:"defaultMode"`
+	Items       []KafkaSpecKafkaTemplatePodVolumesConfigMapItems `pulumi:"items"`
+	Name        *string                                          `pulumi:"name"`
+	Optional    *bool                                            `pulumi:"optional"`
+}
+
+// KafkaSpecKafkaTemplatePodVolumesConfigMapInput is an input type that accepts KafkaSpecKafkaTemplatePodVolumesConfigMap and KafkaSpecKafkaTemplatePodVolumesConfigMapOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplatePodVolumesConfigMapInput` via:
+//
+//	KafkaSpecKafkaTemplatePodVolumesConfigMap{ "key": KafkaSpecKafkaTemplatePodVolumesConfigArgs{...} }
+type KafkaSpecKafkaTemplatePodVolumesConfigMapInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplatePodVolumesConfigMapOutput() KafkaSpecKafkaTemplatePodVolumesConfigMapOutput
+	ToKafkaSpecKafkaTemplatePodVolumesConfigMapOutputWithContext(context.Context) KafkaSpecKafkaTemplatePodVolumesConfigMapOutput
+}
+
+// `ConfigMap` to use to populate the volume.
+type KafkaSpecKafkaTemplatePodVolumesConfigMapArgs struct {
+	DefaultMode pulumi.IntPtrInput                                       `pulumi:"defaultMode"`
+	Items       KafkaSpecKafkaTemplatePodVolumesConfigMapItemsArrayInput `pulumi:"items"`
+	Name        pulumi.StringPtrInput                                    `pulumi:"name"`
+	Optional    pulumi.BoolPtrInput                                      `pulumi:"optional"`
+}
+
+func (KafkaSpecKafkaTemplatePodVolumesConfigMapArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesConfigMap)(nil)).Elem()
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesConfigMapArgs) ToKafkaSpecKafkaTemplatePodVolumesConfigMapOutput() KafkaSpecKafkaTemplatePodVolumesConfigMapOutput {
+	return i.ToKafkaSpecKafkaTemplatePodVolumesConfigMapOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesConfigMapArgs) ToKafkaSpecKafkaTemplatePodVolumesConfigMapOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesConfigMapOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodVolumesConfigMapOutput)
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesConfigMapArgs) ToKafkaSpecKafkaTemplatePodVolumesConfigMapPtrOutput() KafkaSpecKafkaTemplatePodVolumesConfigMapPtrOutput {
+	return i.ToKafkaSpecKafkaTemplatePodVolumesConfigMapPtrOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesConfigMapArgs) ToKafkaSpecKafkaTemplatePodVolumesConfigMapPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesConfigMapPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodVolumesConfigMapOutput).ToKafkaSpecKafkaTemplatePodVolumesConfigMapPtrOutputWithContext(ctx)
+}
+
+// KafkaSpecKafkaTemplatePodVolumesConfigMapPtrInput is an input type that accepts KafkaSpecKafkaTemplatePodVolumesConfigMapArgs, KafkaSpecKafkaTemplatePodVolumesConfigMapPtr and KafkaSpecKafkaTemplatePodVolumesConfigMapPtrOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplatePodVolumesConfigMapPtrInput` via:
+//
+//	        KafkaSpecKafkaTemplatePodVolumesConfigMapArgs{...}
+//
+//	or:
+//
+//	        nil
+type KafkaSpecKafkaTemplatePodVolumesConfigMapPtrInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplatePodVolumesConfigMapPtrOutput() KafkaSpecKafkaTemplatePodVolumesConfigMapPtrOutput
+	ToKafkaSpecKafkaTemplatePodVolumesConfigMapPtrOutputWithContext(context.Context) KafkaSpecKafkaTemplatePodVolumesConfigMapPtrOutput
+}
+
+type kafkaSpecKafkaTemplatePodVolumesConfigMapPtrType KafkaSpecKafkaTemplatePodVolumesConfigMapArgs
+
+func KafkaSpecKafkaTemplatePodVolumesConfigMapPtr(v *KafkaSpecKafkaTemplatePodVolumesConfigMapArgs) KafkaSpecKafkaTemplatePodVolumesConfigMapPtrInput {
+	return (*kafkaSpecKafkaTemplatePodVolumesConfigMapPtrType)(v)
+}
+
+func (*kafkaSpecKafkaTemplatePodVolumesConfigMapPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecKafkaTemplatePodVolumesConfigMap)(nil)).Elem()
+}
+
+func (i *kafkaSpecKafkaTemplatePodVolumesConfigMapPtrType) ToKafkaSpecKafkaTemplatePodVolumesConfigMapPtrOutput() KafkaSpecKafkaTemplatePodVolumesConfigMapPtrOutput {
+	return i.ToKafkaSpecKafkaTemplatePodVolumesConfigMapPtrOutputWithContext(context.Background())
+}
+
+func (i *kafkaSpecKafkaTemplatePodVolumesConfigMapPtrType) ToKafkaSpecKafkaTemplatePodVolumesConfigMapPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesConfigMapPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodVolumesConfigMapPtrOutput)
+}
+
+// `ConfigMap` to use to populate the volume.
+type KafkaSpecKafkaTemplatePodVolumesConfigMapOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplatePodVolumesConfigMapOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesConfigMap)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesConfigMapOutput) ToKafkaSpecKafkaTemplatePodVolumesConfigMapOutput() KafkaSpecKafkaTemplatePodVolumesConfigMapOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesConfigMapOutput) ToKafkaSpecKafkaTemplatePodVolumesConfigMapOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesConfigMapOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesConfigMapOutput) ToKafkaSpecKafkaTemplatePodVolumesConfigMapPtrOutput() KafkaSpecKafkaTemplatePodVolumesConfigMapPtrOutput {
+	return o.ToKafkaSpecKafkaTemplatePodVolumesConfigMapPtrOutputWithContext(context.Background())
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesConfigMapOutput) ToKafkaSpecKafkaTemplatePodVolumesConfigMapPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesConfigMapPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v KafkaSpecKafkaTemplatePodVolumesConfigMap) *KafkaSpecKafkaTemplatePodVolumesConfigMap {
+		return &v
+	}).(KafkaSpecKafkaTemplatePodVolumesConfigMapPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesConfigMapOutput) DefaultMode() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumesConfigMap) *int { return v.DefaultMode }).(pulumi.IntPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesConfigMapOutput) Items() KafkaSpecKafkaTemplatePodVolumesConfigMapItemsArrayOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumesConfigMap) []KafkaSpecKafkaTemplatePodVolumesConfigMapItems {
+		return v.Items
+	}).(KafkaSpecKafkaTemplatePodVolumesConfigMapItemsArrayOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesConfigMapOutput) Name() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumesConfigMap) *string { return v.Name }).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesConfigMapOutput) Optional() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumesConfigMap) *bool { return v.Optional }).(pulumi.BoolPtrOutput)
+}
+
+type KafkaSpecKafkaTemplatePodVolumesConfigMapPtrOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplatePodVolumesConfigMapPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecKafkaTemplatePodVolumesConfigMap)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesConfigMapPtrOutput) ToKafkaSpecKafkaTemplatePodVolumesConfigMapPtrOutput() KafkaSpecKafkaTemplatePodVolumesConfigMapPtrOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesConfigMapPtrOutput) ToKafkaSpecKafkaTemplatePodVolumesConfigMapPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesConfigMapPtrOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesConfigMapPtrOutput) Elem() KafkaSpecKafkaTemplatePodVolumesConfigMapOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodVolumesConfigMap) KafkaSpecKafkaTemplatePodVolumesConfigMap {
+		if v != nil {
+			return *v
+		}
+		var ret KafkaSpecKafkaTemplatePodVolumesConfigMap
+		return ret
+	}).(KafkaSpecKafkaTemplatePodVolumesConfigMapOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesConfigMapPtrOutput) DefaultMode() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodVolumesConfigMap) *int {
+		if v == nil {
+			return nil
+		}
+		return v.DefaultMode
+	}).(pulumi.IntPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesConfigMapPtrOutput) Items() KafkaSpecKafkaTemplatePodVolumesConfigMapItemsArrayOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodVolumesConfigMap) []KafkaSpecKafkaTemplatePodVolumesConfigMapItems {
+		if v == nil {
+			return nil
+		}
+		return v.Items
+	}).(KafkaSpecKafkaTemplatePodVolumesConfigMapItemsArrayOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesConfigMapPtrOutput) Name() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodVolumesConfigMap) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Name
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesConfigMapPtrOutput) Optional() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodVolumesConfigMap) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.Optional
+	}).(pulumi.BoolPtrOutput)
+}
+
+type KafkaSpecKafkaTemplatePodVolumesConfigMapItems struct {
+	Key  *string `pulumi:"key"`
+	Mode *int    `pulumi:"mode"`
+	Path *string `pulumi:"path"`
+}
+
+// KafkaSpecKafkaTemplatePodVolumesConfigMapItemsInput is an input type that accepts KafkaSpecKafkaTemplatePodVolumesConfigMapItemsArgs and KafkaSpecKafkaTemplatePodVolumesConfigMapItemsOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplatePodVolumesConfigMapItemsInput` via:
+//
+//	KafkaSpecKafkaTemplatePodVolumesConfigMapItemsArgs{...}
+type KafkaSpecKafkaTemplatePodVolumesConfigMapItemsInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplatePodVolumesConfigMapItemsOutput() KafkaSpecKafkaTemplatePodVolumesConfigMapItemsOutput
+	ToKafkaSpecKafkaTemplatePodVolumesConfigMapItemsOutputWithContext(context.Context) KafkaSpecKafkaTemplatePodVolumesConfigMapItemsOutput
+}
+
+type KafkaSpecKafkaTemplatePodVolumesConfigMapItemsArgs struct {
+	Key  pulumi.StringPtrInput `pulumi:"key"`
+	Mode pulumi.IntPtrInput    `pulumi:"mode"`
+	Path pulumi.StringPtrInput `pulumi:"path"`
+}
+
+func (KafkaSpecKafkaTemplatePodVolumesConfigMapItemsArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesConfigMapItems)(nil)).Elem()
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesConfigMapItemsArgs) ToKafkaSpecKafkaTemplatePodVolumesConfigMapItemsOutput() KafkaSpecKafkaTemplatePodVolumesConfigMapItemsOutput {
+	return i.ToKafkaSpecKafkaTemplatePodVolumesConfigMapItemsOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesConfigMapItemsArgs) ToKafkaSpecKafkaTemplatePodVolumesConfigMapItemsOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesConfigMapItemsOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodVolumesConfigMapItemsOutput)
+}
+
+// KafkaSpecKafkaTemplatePodVolumesConfigMapItemsArrayInput is an input type that accepts KafkaSpecKafkaTemplatePodVolumesConfigMapItemsArray and KafkaSpecKafkaTemplatePodVolumesConfigMapItemsArrayOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplatePodVolumesConfigMapItemsArrayInput` via:
+//
+//	KafkaSpecKafkaTemplatePodVolumesConfigMapItemsArray{ KafkaSpecKafkaTemplatePodVolumesConfigMapItemsArgs{...} }
+type KafkaSpecKafkaTemplatePodVolumesConfigMapItemsArrayInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplatePodVolumesConfigMapItemsArrayOutput() KafkaSpecKafkaTemplatePodVolumesConfigMapItemsArrayOutput
+	ToKafkaSpecKafkaTemplatePodVolumesConfigMapItemsArrayOutputWithContext(context.Context) KafkaSpecKafkaTemplatePodVolumesConfigMapItemsArrayOutput
+}
+
+type KafkaSpecKafkaTemplatePodVolumesConfigMapItemsArray []KafkaSpecKafkaTemplatePodVolumesConfigMapItemsInput
+
+func (KafkaSpecKafkaTemplatePodVolumesConfigMapItemsArray) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]KafkaSpecKafkaTemplatePodVolumesConfigMapItems)(nil)).Elem()
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesConfigMapItemsArray) ToKafkaSpecKafkaTemplatePodVolumesConfigMapItemsArrayOutput() KafkaSpecKafkaTemplatePodVolumesConfigMapItemsArrayOutput {
+	return i.ToKafkaSpecKafkaTemplatePodVolumesConfigMapItemsArrayOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesConfigMapItemsArray) ToKafkaSpecKafkaTemplatePodVolumesConfigMapItemsArrayOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesConfigMapItemsArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodVolumesConfigMapItemsArrayOutput)
+}
+
+type KafkaSpecKafkaTemplatePodVolumesConfigMapItemsOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplatePodVolumesConfigMapItemsOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesConfigMapItems)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesConfigMapItemsOutput) ToKafkaSpecKafkaTemplatePodVolumesConfigMapItemsOutput() KafkaSpecKafkaTemplatePodVolumesConfigMapItemsOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesConfigMapItemsOutput) ToKafkaSpecKafkaTemplatePodVolumesConfigMapItemsOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesConfigMapItemsOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesConfigMapItemsOutput) Key() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumesConfigMapItems) *string { return v.Key }).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesConfigMapItemsOutput) Mode() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumesConfigMapItems) *int { return v.Mode }).(pulumi.IntPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesConfigMapItemsOutput) Path() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumesConfigMapItems) *string { return v.Path }).(pulumi.StringPtrOutput)
+}
+
+type KafkaSpecKafkaTemplatePodVolumesConfigMapItemsArrayOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplatePodVolumesConfigMapItemsArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]KafkaSpecKafkaTemplatePodVolumesConfigMapItems)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesConfigMapItemsArrayOutput) ToKafkaSpecKafkaTemplatePodVolumesConfigMapItemsArrayOutput() KafkaSpecKafkaTemplatePodVolumesConfigMapItemsArrayOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesConfigMapItemsArrayOutput) ToKafkaSpecKafkaTemplatePodVolumesConfigMapItemsArrayOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesConfigMapItemsArrayOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesConfigMapItemsArrayOutput) Index(i pulumi.IntInput) KafkaSpecKafkaTemplatePodVolumesConfigMapItemsOutput {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) KafkaSpecKafkaTemplatePodVolumesConfigMapItems {
+		return vs[0].([]KafkaSpecKafkaTemplatePodVolumesConfigMapItems)[vs[1].(int)]
+	}).(KafkaSpecKafkaTemplatePodVolumesConfigMapItemsOutput)
+}
+
+type KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatch struct {
+	Key  *string `pulumi:"key"`
+	Mode *int    `pulumi:"mode"`
+	Path *string `pulumi:"path"`
+}
+
+// KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchInput is an input type that accepts KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchArgs and KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchInput` via:
+//
+//	KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchArgs{...}
+type KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchOutput() KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchOutput
+	ToKafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchOutputWithContext(context.Context) KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchOutput
+}
+
+type KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchArgs struct {
+	Key  pulumi.StringPtrInput `pulumi:"key"`
+	Mode pulumi.IntPtrInput    `pulumi:"mode"`
+	Path pulumi.StringPtrInput `pulumi:"path"`
+}
+
+func (KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatch)(nil)).Elem()
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchArgs) ToKafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchOutput() KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchOutput {
+	return i.ToKafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchArgs) ToKafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchOutput)
+}
+
+// KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchArrayInput is an input type that accepts KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchArray and KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchArrayOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchArrayInput` via:
+//
+//	KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchArray{ KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchArgs{...} }
+type KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchArrayInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchArrayOutput() KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchArrayOutput
+	ToKafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchArrayOutputWithContext(context.Context) KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchArrayOutput
+}
+
+type KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchArray []KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchInput
+
+func (KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchArray) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatch)(nil)).Elem()
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchArray) ToKafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchArrayOutput() KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchArrayOutput {
+	return i.ToKafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchArrayOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchArray) ToKafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchArrayOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchArrayOutput)
+}
+
+type KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchOutput) ToKafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchOutput() KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchOutput) ToKafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchOutput) Key() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatch) *string { return v.Key }).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchOutput) Mode() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatch) *int { return v.Mode }).(pulumi.IntPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchOutput) Path() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatch) *string { return v.Path }).(pulumi.StringPtrOutput)
+}
+
+type KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchArrayOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchArrayOutput) ToKafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchArrayOutput() KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchArrayOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchArrayOutput) ToKafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchArrayOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchArrayOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchArrayOutput) Index(i pulumi.IntInput) KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchOutput {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatch {
+		return vs[0].([]KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatch)[vs[1].(int)]
+	}).(KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchOutput)
+}
+
+// `ConfigMap` to use to populate the volume.
+type KafkaSpecKafkaTemplatePodVolumesConfigMapPatch struct {
+	DefaultMode *int                                                  `pulumi:"defaultMode"`
+	Items       []KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatch `pulumi:"items"`
+	Name        *string                                               `pulumi:"name"`
+	Optional    *bool                                                 `pulumi:"optional"`
+}
+
+// KafkaSpecKafkaTemplatePodVolumesConfigMapPatchInput is an input type that accepts KafkaSpecKafkaTemplatePodVolumesConfigMapPatchArgs and KafkaSpecKafkaTemplatePodVolumesConfigMapPatchOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplatePodVolumesConfigMapPatchInput` via:
+//
+//	KafkaSpecKafkaTemplatePodVolumesConfigMapPatchArgs{...}
+type KafkaSpecKafkaTemplatePodVolumesConfigMapPatchInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplatePodVolumesConfigMapPatchOutput() KafkaSpecKafkaTemplatePodVolumesConfigMapPatchOutput
+	ToKafkaSpecKafkaTemplatePodVolumesConfigMapPatchOutputWithContext(context.Context) KafkaSpecKafkaTemplatePodVolumesConfigMapPatchOutput
+}
+
+// `ConfigMap` to use to populate the volume.
+type KafkaSpecKafkaTemplatePodVolumesConfigMapPatchArgs struct {
+	DefaultMode pulumi.IntPtrInput                                            `pulumi:"defaultMode"`
+	Items       KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchArrayInput `pulumi:"items"`
+	Name        pulumi.StringPtrInput                                         `pulumi:"name"`
+	Optional    pulumi.BoolPtrInput                                           `pulumi:"optional"`
+}
+
+func (KafkaSpecKafkaTemplatePodVolumesConfigMapPatchArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesConfigMapPatch)(nil)).Elem()
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesConfigMapPatchArgs) ToKafkaSpecKafkaTemplatePodVolumesConfigMapPatchOutput() KafkaSpecKafkaTemplatePodVolumesConfigMapPatchOutput {
+	return i.ToKafkaSpecKafkaTemplatePodVolumesConfigMapPatchOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesConfigMapPatchArgs) ToKafkaSpecKafkaTemplatePodVolumesConfigMapPatchOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesConfigMapPatchOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodVolumesConfigMapPatchOutput)
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesConfigMapPatchArgs) ToKafkaSpecKafkaTemplatePodVolumesConfigMapPatchPtrOutput() KafkaSpecKafkaTemplatePodVolumesConfigMapPatchPtrOutput {
+	return i.ToKafkaSpecKafkaTemplatePodVolumesConfigMapPatchPtrOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesConfigMapPatchArgs) ToKafkaSpecKafkaTemplatePodVolumesConfigMapPatchPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesConfigMapPatchPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodVolumesConfigMapPatchOutput).ToKafkaSpecKafkaTemplatePodVolumesConfigMapPatchPtrOutputWithContext(ctx)
+}
+
+// KafkaSpecKafkaTemplatePodVolumesConfigMapPatchPtrInput is an input type that accepts KafkaSpecKafkaTemplatePodVolumesConfigMapPatchArgs, KafkaSpecKafkaTemplatePodVolumesConfigMapPatchPtr and KafkaSpecKafkaTemplatePodVolumesConfigMapPatchPtrOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplatePodVolumesConfigMapPatchPtrInput` via:
+//
+//	        KafkaSpecKafkaTemplatePodVolumesConfigMapPatchArgs{...}
+//
+//	or:
+//
+//	        nil
+type KafkaSpecKafkaTemplatePodVolumesConfigMapPatchPtrInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplatePodVolumesConfigMapPatchPtrOutput() KafkaSpecKafkaTemplatePodVolumesConfigMapPatchPtrOutput
+	ToKafkaSpecKafkaTemplatePodVolumesConfigMapPatchPtrOutputWithContext(context.Context) KafkaSpecKafkaTemplatePodVolumesConfigMapPatchPtrOutput
+}
+
+type kafkaSpecKafkaTemplatePodVolumesConfigMapPatchPtrType KafkaSpecKafkaTemplatePodVolumesConfigMapPatchArgs
+
+func KafkaSpecKafkaTemplatePodVolumesConfigMapPatchPtr(v *KafkaSpecKafkaTemplatePodVolumesConfigMapPatchArgs) KafkaSpecKafkaTemplatePodVolumesConfigMapPatchPtrInput {
+	return (*kafkaSpecKafkaTemplatePodVolumesConfigMapPatchPtrType)(v)
+}
+
+func (*kafkaSpecKafkaTemplatePodVolumesConfigMapPatchPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecKafkaTemplatePodVolumesConfigMapPatch)(nil)).Elem()
+}
+
+func (i *kafkaSpecKafkaTemplatePodVolumesConfigMapPatchPtrType) ToKafkaSpecKafkaTemplatePodVolumesConfigMapPatchPtrOutput() KafkaSpecKafkaTemplatePodVolumesConfigMapPatchPtrOutput {
+	return i.ToKafkaSpecKafkaTemplatePodVolumesConfigMapPatchPtrOutputWithContext(context.Background())
+}
+
+func (i *kafkaSpecKafkaTemplatePodVolumesConfigMapPatchPtrType) ToKafkaSpecKafkaTemplatePodVolumesConfigMapPatchPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesConfigMapPatchPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodVolumesConfigMapPatchPtrOutput)
+}
+
+// `ConfigMap` to use to populate the volume.
+type KafkaSpecKafkaTemplatePodVolumesConfigMapPatchOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplatePodVolumesConfigMapPatchOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesConfigMapPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesConfigMapPatchOutput) ToKafkaSpecKafkaTemplatePodVolumesConfigMapPatchOutput() KafkaSpecKafkaTemplatePodVolumesConfigMapPatchOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesConfigMapPatchOutput) ToKafkaSpecKafkaTemplatePodVolumesConfigMapPatchOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesConfigMapPatchOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesConfigMapPatchOutput) ToKafkaSpecKafkaTemplatePodVolumesConfigMapPatchPtrOutput() KafkaSpecKafkaTemplatePodVolumesConfigMapPatchPtrOutput {
+	return o.ToKafkaSpecKafkaTemplatePodVolumesConfigMapPatchPtrOutputWithContext(context.Background())
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesConfigMapPatchOutput) ToKafkaSpecKafkaTemplatePodVolumesConfigMapPatchPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesConfigMapPatchPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v KafkaSpecKafkaTemplatePodVolumesConfigMapPatch) *KafkaSpecKafkaTemplatePodVolumesConfigMapPatch {
+		return &v
+	}).(KafkaSpecKafkaTemplatePodVolumesConfigMapPatchPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesConfigMapPatchOutput) DefaultMode() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumesConfigMapPatch) *int { return v.DefaultMode }).(pulumi.IntPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesConfigMapPatchOutput) Items() KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchArrayOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumesConfigMapPatch) []KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatch {
+		return v.Items
+	}).(KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchArrayOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesConfigMapPatchOutput) Name() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumesConfigMapPatch) *string { return v.Name }).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesConfigMapPatchOutput) Optional() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumesConfigMapPatch) *bool { return v.Optional }).(pulumi.BoolPtrOutput)
+}
+
+type KafkaSpecKafkaTemplatePodVolumesConfigMapPatchPtrOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplatePodVolumesConfigMapPatchPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecKafkaTemplatePodVolumesConfigMapPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesConfigMapPatchPtrOutput) ToKafkaSpecKafkaTemplatePodVolumesConfigMapPatchPtrOutput() KafkaSpecKafkaTemplatePodVolumesConfigMapPatchPtrOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesConfigMapPatchPtrOutput) ToKafkaSpecKafkaTemplatePodVolumesConfigMapPatchPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesConfigMapPatchPtrOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesConfigMapPatchPtrOutput) Elem() KafkaSpecKafkaTemplatePodVolumesConfigMapPatchOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodVolumesConfigMapPatch) KafkaSpecKafkaTemplatePodVolumesConfigMapPatch {
+		if v != nil {
+			return *v
+		}
+		var ret KafkaSpecKafkaTemplatePodVolumesConfigMapPatch
+		return ret
+	}).(KafkaSpecKafkaTemplatePodVolumesConfigMapPatchOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesConfigMapPatchPtrOutput) DefaultMode() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodVolumesConfigMapPatch) *int {
+		if v == nil {
+			return nil
+		}
+		return v.DefaultMode
+	}).(pulumi.IntPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesConfigMapPatchPtrOutput) Items() KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchArrayOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodVolumesConfigMapPatch) []KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatch {
+		if v == nil {
+			return nil
+		}
+		return v.Items
+	}).(KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchArrayOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesConfigMapPatchPtrOutput) Name() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodVolumesConfigMapPatch) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Name
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesConfigMapPatchPtrOutput) Optional() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodVolumesConfigMapPatch) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.Optional
+	}).(pulumi.BoolPtrOutput)
+}
+
+// `CSIVolumeSource` object to use to populate the volume.
+type KafkaSpecKafkaTemplatePodVolumesCsi struct {
+	Driver               *string                                                  `pulumi:"driver"`
+	FsType               *string                                                  `pulumi:"fsType"`
+	NodePublishSecretRef *KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRef `pulumi:"nodePublishSecretRef"`
+	ReadOnly             *bool                                                    `pulumi:"readOnly"`
+	VolumeAttributes     map[string]string                                        `pulumi:"volumeAttributes"`
+}
+
+// KafkaSpecKafkaTemplatePodVolumesCsiInput is an input type that accepts KafkaSpecKafkaTemplatePodVolumesCsiArgs and KafkaSpecKafkaTemplatePodVolumesCsiOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplatePodVolumesCsiInput` via:
+//
+//	KafkaSpecKafkaTemplatePodVolumesCsiArgs{...}
+type KafkaSpecKafkaTemplatePodVolumesCsiInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplatePodVolumesCsiOutput() KafkaSpecKafkaTemplatePodVolumesCsiOutput
+	ToKafkaSpecKafkaTemplatePodVolumesCsiOutputWithContext(context.Context) KafkaSpecKafkaTemplatePodVolumesCsiOutput
+}
+
+// `CSIVolumeSource` object to use to populate the volume.
+type KafkaSpecKafkaTemplatePodVolumesCsiArgs struct {
+	Driver               pulumi.StringPtrInput                                           `pulumi:"driver"`
+	FsType               pulumi.StringPtrInput                                           `pulumi:"fsType"`
+	NodePublishSecretRef KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPtrInput `pulumi:"nodePublishSecretRef"`
+	ReadOnly             pulumi.BoolPtrInput                                             `pulumi:"readOnly"`
+	VolumeAttributes     pulumi.StringMapInput                                           `pulumi:"volumeAttributes"`
+}
+
+func (KafkaSpecKafkaTemplatePodVolumesCsiArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesCsi)(nil)).Elem()
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesCsiArgs) ToKafkaSpecKafkaTemplatePodVolumesCsiOutput() KafkaSpecKafkaTemplatePodVolumesCsiOutput {
+	return i.ToKafkaSpecKafkaTemplatePodVolumesCsiOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesCsiArgs) ToKafkaSpecKafkaTemplatePodVolumesCsiOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesCsiOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodVolumesCsiOutput)
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesCsiArgs) ToKafkaSpecKafkaTemplatePodVolumesCsiPtrOutput() KafkaSpecKafkaTemplatePodVolumesCsiPtrOutput {
+	return i.ToKafkaSpecKafkaTemplatePodVolumesCsiPtrOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesCsiArgs) ToKafkaSpecKafkaTemplatePodVolumesCsiPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesCsiPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodVolumesCsiOutput).ToKafkaSpecKafkaTemplatePodVolumesCsiPtrOutputWithContext(ctx)
+}
+
+// KafkaSpecKafkaTemplatePodVolumesCsiPtrInput is an input type that accepts KafkaSpecKafkaTemplatePodVolumesCsiArgs, KafkaSpecKafkaTemplatePodVolumesCsiPtr and KafkaSpecKafkaTemplatePodVolumesCsiPtrOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplatePodVolumesCsiPtrInput` via:
+//
+//	        KafkaSpecKafkaTemplatePodVolumesCsiArgs{...}
+//
+//	or:
+//
+//	        nil
+type KafkaSpecKafkaTemplatePodVolumesCsiPtrInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplatePodVolumesCsiPtrOutput() KafkaSpecKafkaTemplatePodVolumesCsiPtrOutput
+	ToKafkaSpecKafkaTemplatePodVolumesCsiPtrOutputWithContext(context.Context) KafkaSpecKafkaTemplatePodVolumesCsiPtrOutput
+}
+
+type kafkaSpecKafkaTemplatePodVolumesCsiPtrType KafkaSpecKafkaTemplatePodVolumesCsiArgs
+
+func KafkaSpecKafkaTemplatePodVolumesCsiPtr(v *KafkaSpecKafkaTemplatePodVolumesCsiArgs) KafkaSpecKafkaTemplatePodVolumesCsiPtrInput {
+	return (*kafkaSpecKafkaTemplatePodVolumesCsiPtrType)(v)
+}
+
+func (*kafkaSpecKafkaTemplatePodVolumesCsiPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecKafkaTemplatePodVolumesCsi)(nil)).Elem()
+}
+
+func (i *kafkaSpecKafkaTemplatePodVolumesCsiPtrType) ToKafkaSpecKafkaTemplatePodVolumesCsiPtrOutput() KafkaSpecKafkaTemplatePodVolumesCsiPtrOutput {
+	return i.ToKafkaSpecKafkaTemplatePodVolumesCsiPtrOutputWithContext(context.Background())
+}
+
+func (i *kafkaSpecKafkaTemplatePodVolumesCsiPtrType) ToKafkaSpecKafkaTemplatePodVolumesCsiPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesCsiPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodVolumesCsiPtrOutput)
+}
+
+// `CSIVolumeSource` object to use to populate the volume.
+type KafkaSpecKafkaTemplatePodVolumesCsiOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplatePodVolumesCsiOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesCsi)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesCsiOutput) ToKafkaSpecKafkaTemplatePodVolumesCsiOutput() KafkaSpecKafkaTemplatePodVolumesCsiOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesCsiOutput) ToKafkaSpecKafkaTemplatePodVolumesCsiOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesCsiOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesCsiOutput) ToKafkaSpecKafkaTemplatePodVolumesCsiPtrOutput() KafkaSpecKafkaTemplatePodVolumesCsiPtrOutput {
+	return o.ToKafkaSpecKafkaTemplatePodVolumesCsiPtrOutputWithContext(context.Background())
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesCsiOutput) ToKafkaSpecKafkaTemplatePodVolumesCsiPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesCsiPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v KafkaSpecKafkaTemplatePodVolumesCsi) *KafkaSpecKafkaTemplatePodVolumesCsi {
+		return &v
+	}).(KafkaSpecKafkaTemplatePodVolumesCsiPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesCsiOutput) Driver() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumesCsi) *string { return v.Driver }).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesCsiOutput) FsType() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumesCsi) *string { return v.FsType }).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesCsiOutput) NodePublishSecretRef() KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumesCsi) *KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRef {
+		return v.NodePublishSecretRef
+	}).(KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesCsiOutput) ReadOnly() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumesCsi) *bool { return v.ReadOnly }).(pulumi.BoolPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesCsiOutput) VolumeAttributes() pulumi.StringMapOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumesCsi) map[string]string { return v.VolumeAttributes }).(pulumi.StringMapOutput)
+}
+
+type KafkaSpecKafkaTemplatePodVolumesCsiPtrOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplatePodVolumesCsiPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecKafkaTemplatePodVolumesCsi)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesCsiPtrOutput) ToKafkaSpecKafkaTemplatePodVolumesCsiPtrOutput() KafkaSpecKafkaTemplatePodVolumesCsiPtrOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesCsiPtrOutput) ToKafkaSpecKafkaTemplatePodVolumesCsiPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesCsiPtrOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesCsiPtrOutput) Elem() KafkaSpecKafkaTemplatePodVolumesCsiOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodVolumesCsi) KafkaSpecKafkaTemplatePodVolumesCsi {
+		if v != nil {
+			return *v
+		}
+		var ret KafkaSpecKafkaTemplatePodVolumesCsi
+		return ret
+	}).(KafkaSpecKafkaTemplatePodVolumesCsiOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesCsiPtrOutput) Driver() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodVolumesCsi) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Driver
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesCsiPtrOutput) FsType() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodVolumesCsi) *string {
+		if v == nil {
+			return nil
+		}
+		return v.FsType
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesCsiPtrOutput) NodePublishSecretRef() KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodVolumesCsi) *KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRef {
+		if v == nil {
+			return nil
+		}
+		return v.NodePublishSecretRef
+	}).(KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesCsiPtrOutput) ReadOnly() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodVolumesCsi) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.ReadOnly
+	}).(pulumi.BoolPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesCsiPtrOutput) VolumeAttributes() pulumi.StringMapOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodVolumesCsi) map[string]string {
+		if v == nil {
+			return nil
+		}
+		return v.VolumeAttributes
+	}).(pulumi.StringMapOutput)
+}
+
+type KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRef struct {
+	Name *string `pulumi:"name"`
+}
+
+// KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefInput is an input type that accepts KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefArgs and KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefInput` via:
+//
+//	KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefArgs{...}
+type KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefOutput() KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefOutput
+	ToKafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefOutputWithContext(context.Context) KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefOutput
+}
+
+type KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefArgs struct {
+	Name pulumi.StringPtrInput `pulumi:"name"`
+}
+
+func (KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRef)(nil)).Elem()
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefArgs) ToKafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefOutput() KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefOutput {
+	return i.ToKafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefArgs) ToKafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefOutput)
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefArgs) ToKafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPtrOutput() KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPtrOutput {
+	return i.ToKafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPtrOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefArgs) ToKafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefOutput).ToKafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPtrOutputWithContext(ctx)
+}
+
+// KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPtrInput is an input type that accepts KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefArgs, KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPtr and KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPtrOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPtrInput` via:
+//
+//	        KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefArgs{...}
+//
+//	or:
+//
+//	        nil
+type KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPtrInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPtrOutput() KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPtrOutput
+	ToKafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPtrOutputWithContext(context.Context) KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPtrOutput
+}
+
+type kafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPtrType KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefArgs
+
+func KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPtr(v *KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefArgs) KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPtrInput {
+	return (*kafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPtrType)(v)
+}
+
+func (*kafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRef)(nil)).Elem()
+}
+
+func (i *kafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPtrType) ToKafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPtrOutput() KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPtrOutput {
+	return i.ToKafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPtrOutputWithContext(context.Background())
+}
+
+func (i *kafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPtrType) ToKafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPtrOutput)
+}
+
+type KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRef)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefOutput) ToKafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefOutput() KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefOutput) ToKafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefOutput) ToKafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPtrOutput() KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPtrOutput {
+	return o.ToKafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPtrOutputWithContext(context.Background())
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefOutput) ToKafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRef) *KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRef {
+		return &v
+	}).(KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefOutput) Name() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRef) *string { return v.Name }).(pulumi.StringPtrOutput)
+}
+
+type KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPtrOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRef)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPtrOutput) ToKafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPtrOutput() KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPtrOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPtrOutput) ToKafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPtrOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPtrOutput) Elem() KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRef) KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRef {
+		if v != nil {
+			return *v
+		}
+		var ret KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRef
+		return ret
+	}).(KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPtrOutput) Name() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRef) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Name
+	}).(pulumi.StringPtrOutput)
+}
+
+type KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatch struct {
+	Name *string `pulumi:"name"`
+}
+
+// KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchInput is an input type that accepts KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchArgs and KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchInput` via:
+//
+//	KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchArgs{...}
+type KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchOutput() KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchOutput
+	ToKafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchOutputWithContext(context.Context) KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchOutput
+}
+
+type KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchArgs struct {
+	Name pulumi.StringPtrInput `pulumi:"name"`
+}
+
+func (KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatch)(nil)).Elem()
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchArgs) ToKafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchOutput() KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchOutput {
+	return i.ToKafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchArgs) ToKafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchOutput)
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchArgs) ToKafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutput() KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutput {
+	return i.ToKafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchArgs) ToKafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchOutput).ToKafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutputWithContext(ctx)
+}
+
+// KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchPtrInput is an input type that accepts KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchArgs, KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchPtr and KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchPtrInput` via:
+//
+//	        KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchArgs{...}
+//
+//	or:
+//
+//	        nil
+type KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchPtrInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutput() KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutput
+	ToKafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutputWithContext(context.Context) KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutput
+}
+
+type kafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchPtrType KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchArgs
+
+func KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchPtr(v *KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchArgs) KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchPtrInput {
+	return (*kafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchPtrType)(v)
+}
+
+func (*kafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatch)(nil)).Elem()
+}
+
+func (i *kafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchPtrType) ToKafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutput() KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutput {
+	return i.ToKafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutputWithContext(context.Background())
+}
+
+func (i *kafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchPtrType) ToKafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutput)
+}
+
+type KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchOutput) ToKafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchOutput() KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchOutput) ToKafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchOutput) ToKafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutput() KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutput {
+	return o.ToKafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutputWithContext(context.Background())
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchOutput) ToKafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatch) *KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatch {
+		return &v
+	}).(KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchOutput) Name() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatch) *string { return v.Name }).(pulumi.StringPtrOutput)
+}
+
+type KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutput) ToKafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutput() KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutput) ToKafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutput) Elem() KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatch) KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatch {
+		if v != nil {
+			return *v
+		}
+		var ret KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatch
+		return ret
+	}).(KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutput) Name() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatch) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Name
+	}).(pulumi.StringPtrOutput)
+}
+
+// `CSIVolumeSource` object to use to populate the volume.
+type KafkaSpecKafkaTemplatePodVolumesCsiPatch struct {
+	Driver               *string                                                       `pulumi:"driver"`
+	FsType               *string                                                       `pulumi:"fsType"`
+	NodePublishSecretRef *KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatch `pulumi:"nodePublishSecretRef"`
+	ReadOnly             *bool                                                         `pulumi:"readOnly"`
+	VolumeAttributes     map[string]string                                             `pulumi:"volumeAttributes"`
+}
+
+// KafkaSpecKafkaTemplatePodVolumesCsiPatchInput is an input type that accepts KafkaSpecKafkaTemplatePodVolumesCsiPatchArgs and KafkaSpecKafkaTemplatePodVolumesCsiPatchOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplatePodVolumesCsiPatchInput` via:
+//
+//	KafkaSpecKafkaTemplatePodVolumesCsiPatchArgs{...}
+type KafkaSpecKafkaTemplatePodVolumesCsiPatchInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplatePodVolumesCsiPatchOutput() KafkaSpecKafkaTemplatePodVolumesCsiPatchOutput
+	ToKafkaSpecKafkaTemplatePodVolumesCsiPatchOutputWithContext(context.Context) KafkaSpecKafkaTemplatePodVolumesCsiPatchOutput
+}
+
+// `CSIVolumeSource` object to use to populate the volume.
+type KafkaSpecKafkaTemplatePodVolumesCsiPatchArgs struct {
+	Driver               pulumi.StringPtrInput                                                `pulumi:"driver"`
+	FsType               pulumi.StringPtrInput                                                `pulumi:"fsType"`
+	NodePublishSecretRef KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchPtrInput `pulumi:"nodePublishSecretRef"`
+	ReadOnly             pulumi.BoolPtrInput                                                  `pulumi:"readOnly"`
+	VolumeAttributes     pulumi.StringMapInput                                                `pulumi:"volumeAttributes"`
+}
+
+func (KafkaSpecKafkaTemplatePodVolumesCsiPatchArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesCsiPatch)(nil)).Elem()
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesCsiPatchArgs) ToKafkaSpecKafkaTemplatePodVolumesCsiPatchOutput() KafkaSpecKafkaTemplatePodVolumesCsiPatchOutput {
+	return i.ToKafkaSpecKafkaTemplatePodVolumesCsiPatchOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesCsiPatchArgs) ToKafkaSpecKafkaTemplatePodVolumesCsiPatchOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesCsiPatchOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodVolumesCsiPatchOutput)
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesCsiPatchArgs) ToKafkaSpecKafkaTemplatePodVolumesCsiPatchPtrOutput() KafkaSpecKafkaTemplatePodVolumesCsiPatchPtrOutput {
+	return i.ToKafkaSpecKafkaTemplatePodVolumesCsiPatchPtrOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesCsiPatchArgs) ToKafkaSpecKafkaTemplatePodVolumesCsiPatchPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesCsiPatchPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodVolumesCsiPatchOutput).ToKafkaSpecKafkaTemplatePodVolumesCsiPatchPtrOutputWithContext(ctx)
+}
+
+// KafkaSpecKafkaTemplatePodVolumesCsiPatchPtrInput is an input type that accepts KafkaSpecKafkaTemplatePodVolumesCsiPatchArgs, KafkaSpecKafkaTemplatePodVolumesCsiPatchPtr and KafkaSpecKafkaTemplatePodVolumesCsiPatchPtrOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplatePodVolumesCsiPatchPtrInput` via:
+//
+//	        KafkaSpecKafkaTemplatePodVolumesCsiPatchArgs{...}
+//
+//	or:
+//
+//	        nil
+type KafkaSpecKafkaTemplatePodVolumesCsiPatchPtrInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplatePodVolumesCsiPatchPtrOutput() KafkaSpecKafkaTemplatePodVolumesCsiPatchPtrOutput
+	ToKafkaSpecKafkaTemplatePodVolumesCsiPatchPtrOutputWithContext(context.Context) KafkaSpecKafkaTemplatePodVolumesCsiPatchPtrOutput
+}
+
+type kafkaSpecKafkaTemplatePodVolumesCsiPatchPtrType KafkaSpecKafkaTemplatePodVolumesCsiPatchArgs
+
+func KafkaSpecKafkaTemplatePodVolumesCsiPatchPtr(v *KafkaSpecKafkaTemplatePodVolumesCsiPatchArgs) KafkaSpecKafkaTemplatePodVolumesCsiPatchPtrInput {
+	return (*kafkaSpecKafkaTemplatePodVolumesCsiPatchPtrType)(v)
+}
+
+func (*kafkaSpecKafkaTemplatePodVolumesCsiPatchPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecKafkaTemplatePodVolumesCsiPatch)(nil)).Elem()
+}
+
+func (i *kafkaSpecKafkaTemplatePodVolumesCsiPatchPtrType) ToKafkaSpecKafkaTemplatePodVolumesCsiPatchPtrOutput() KafkaSpecKafkaTemplatePodVolumesCsiPatchPtrOutput {
+	return i.ToKafkaSpecKafkaTemplatePodVolumesCsiPatchPtrOutputWithContext(context.Background())
+}
+
+func (i *kafkaSpecKafkaTemplatePodVolumesCsiPatchPtrType) ToKafkaSpecKafkaTemplatePodVolumesCsiPatchPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesCsiPatchPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodVolumesCsiPatchPtrOutput)
+}
+
+// `CSIVolumeSource` object to use to populate the volume.
+type KafkaSpecKafkaTemplatePodVolumesCsiPatchOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplatePodVolumesCsiPatchOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesCsiPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesCsiPatchOutput) ToKafkaSpecKafkaTemplatePodVolumesCsiPatchOutput() KafkaSpecKafkaTemplatePodVolumesCsiPatchOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesCsiPatchOutput) ToKafkaSpecKafkaTemplatePodVolumesCsiPatchOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesCsiPatchOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesCsiPatchOutput) ToKafkaSpecKafkaTemplatePodVolumesCsiPatchPtrOutput() KafkaSpecKafkaTemplatePodVolumesCsiPatchPtrOutput {
+	return o.ToKafkaSpecKafkaTemplatePodVolumesCsiPatchPtrOutputWithContext(context.Background())
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesCsiPatchOutput) ToKafkaSpecKafkaTemplatePodVolumesCsiPatchPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesCsiPatchPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v KafkaSpecKafkaTemplatePodVolumesCsiPatch) *KafkaSpecKafkaTemplatePodVolumesCsiPatch {
+		return &v
+	}).(KafkaSpecKafkaTemplatePodVolumesCsiPatchPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesCsiPatchOutput) Driver() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumesCsiPatch) *string { return v.Driver }).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesCsiPatchOutput) FsType() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumesCsiPatch) *string { return v.FsType }).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesCsiPatchOutput) NodePublishSecretRef() KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumesCsiPatch) *KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatch {
+		return v.NodePublishSecretRef
+	}).(KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesCsiPatchOutput) ReadOnly() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumesCsiPatch) *bool { return v.ReadOnly }).(pulumi.BoolPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesCsiPatchOutput) VolumeAttributes() pulumi.StringMapOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumesCsiPatch) map[string]string { return v.VolumeAttributes }).(pulumi.StringMapOutput)
+}
+
+type KafkaSpecKafkaTemplatePodVolumesCsiPatchPtrOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplatePodVolumesCsiPatchPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecKafkaTemplatePodVolumesCsiPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesCsiPatchPtrOutput) ToKafkaSpecKafkaTemplatePodVolumesCsiPatchPtrOutput() KafkaSpecKafkaTemplatePodVolumesCsiPatchPtrOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesCsiPatchPtrOutput) ToKafkaSpecKafkaTemplatePodVolumesCsiPatchPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesCsiPatchPtrOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesCsiPatchPtrOutput) Elem() KafkaSpecKafkaTemplatePodVolumesCsiPatchOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodVolumesCsiPatch) KafkaSpecKafkaTemplatePodVolumesCsiPatch {
+		if v != nil {
+			return *v
+		}
+		var ret KafkaSpecKafkaTemplatePodVolumesCsiPatch
+		return ret
+	}).(KafkaSpecKafkaTemplatePodVolumesCsiPatchOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesCsiPatchPtrOutput) Driver() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodVolumesCsiPatch) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Driver
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesCsiPatchPtrOutput) FsType() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodVolumesCsiPatch) *string {
+		if v == nil {
+			return nil
+		}
+		return v.FsType
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesCsiPatchPtrOutput) NodePublishSecretRef() KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodVolumesCsiPatch) *KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatch {
+		if v == nil {
+			return nil
+		}
+		return v.NodePublishSecretRef
+	}).(KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesCsiPatchPtrOutput) ReadOnly() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodVolumesCsiPatch) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.ReadOnly
+	}).(pulumi.BoolPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesCsiPatchPtrOutput) VolumeAttributes() pulumi.StringMapOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodVolumesCsiPatch) map[string]string {
+		if v == nil {
+			return nil
+		}
+		return v.VolumeAttributes
+	}).(pulumi.StringMapOutput)
+}
+
+// `EmptyDir` to use to populate the volume.
+type KafkaSpecKafkaTemplatePodVolumesEmptyDir struct {
+	Medium    *string                                            `pulumi:"medium"`
+	SizeLimit *KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimit `pulumi:"sizeLimit"`
+}
+
+// KafkaSpecKafkaTemplatePodVolumesEmptyDirInput is an input type that accepts KafkaSpecKafkaTemplatePodVolumesEmptyDirArgs and KafkaSpecKafkaTemplatePodVolumesEmptyDirOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplatePodVolumesEmptyDirInput` via:
+//
+//	KafkaSpecKafkaTemplatePodVolumesEmptyDirArgs{...}
+type KafkaSpecKafkaTemplatePodVolumesEmptyDirInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplatePodVolumesEmptyDirOutput() KafkaSpecKafkaTemplatePodVolumesEmptyDirOutput
+	ToKafkaSpecKafkaTemplatePodVolumesEmptyDirOutputWithContext(context.Context) KafkaSpecKafkaTemplatePodVolumesEmptyDirOutput
+}
+
+// `EmptyDir` to use to populate the volume.
+type KafkaSpecKafkaTemplatePodVolumesEmptyDirArgs struct {
+	Medium    pulumi.StringPtrInput                                     `pulumi:"medium"`
+	SizeLimit KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPtrInput `pulumi:"sizeLimit"`
+}
+
+func (KafkaSpecKafkaTemplatePodVolumesEmptyDirArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesEmptyDir)(nil)).Elem()
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesEmptyDirArgs) ToKafkaSpecKafkaTemplatePodVolumesEmptyDirOutput() KafkaSpecKafkaTemplatePodVolumesEmptyDirOutput {
+	return i.ToKafkaSpecKafkaTemplatePodVolumesEmptyDirOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesEmptyDirArgs) ToKafkaSpecKafkaTemplatePodVolumesEmptyDirOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesEmptyDirOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodVolumesEmptyDirOutput)
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesEmptyDirArgs) ToKafkaSpecKafkaTemplatePodVolumesEmptyDirPtrOutput() KafkaSpecKafkaTemplatePodVolumesEmptyDirPtrOutput {
+	return i.ToKafkaSpecKafkaTemplatePodVolumesEmptyDirPtrOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesEmptyDirArgs) ToKafkaSpecKafkaTemplatePodVolumesEmptyDirPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesEmptyDirPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodVolumesEmptyDirOutput).ToKafkaSpecKafkaTemplatePodVolumesEmptyDirPtrOutputWithContext(ctx)
+}
+
+// KafkaSpecKafkaTemplatePodVolumesEmptyDirPtrInput is an input type that accepts KafkaSpecKafkaTemplatePodVolumesEmptyDirArgs, KafkaSpecKafkaTemplatePodVolumesEmptyDirPtr and KafkaSpecKafkaTemplatePodVolumesEmptyDirPtrOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplatePodVolumesEmptyDirPtrInput` via:
+//
+//	        KafkaSpecKafkaTemplatePodVolumesEmptyDirArgs{...}
+//
+//	or:
+//
+//	        nil
+type KafkaSpecKafkaTemplatePodVolumesEmptyDirPtrInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplatePodVolumesEmptyDirPtrOutput() KafkaSpecKafkaTemplatePodVolumesEmptyDirPtrOutput
+	ToKafkaSpecKafkaTemplatePodVolumesEmptyDirPtrOutputWithContext(context.Context) KafkaSpecKafkaTemplatePodVolumesEmptyDirPtrOutput
+}
+
+type kafkaSpecKafkaTemplatePodVolumesEmptyDirPtrType KafkaSpecKafkaTemplatePodVolumesEmptyDirArgs
+
+func KafkaSpecKafkaTemplatePodVolumesEmptyDirPtr(v *KafkaSpecKafkaTemplatePodVolumesEmptyDirArgs) KafkaSpecKafkaTemplatePodVolumesEmptyDirPtrInput {
+	return (*kafkaSpecKafkaTemplatePodVolumesEmptyDirPtrType)(v)
+}
+
+func (*kafkaSpecKafkaTemplatePodVolumesEmptyDirPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecKafkaTemplatePodVolumesEmptyDir)(nil)).Elem()
+}
+
+func (i *kafkaSpecKafkaTemplatePodVolumesEmptyDirPtrType) ToKafkaSpecKafkaTemplatePodVolumesEmptyDirPtrOutput() KafkaSpecKafkaTemplatePodVolumesEmptyDirPtrOutput {
+	return i.ToKafkaSpecKafkaTemplatePodVolumesEmptyDirPtrOutputWithContext(context.Background())
+}
+
+func (i *kafkaSpecKafkaTemplatePodVolumesEmptyDirPtrType) ToKafkaSpecKafkaTemplatePodVolumesEmptyDirPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesEmptyDirPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodVolumesEmptyDirPtrOutput)
+}
+
+// `EmptyDir` to use to populate the volume.
+type KafkaSpecKafkaTemplatePodVolumesEmptyDirOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplatePodVolumesEmptyDirOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesEmptyDir)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesEmptyDirOutput) ToKafkaSpecKafkaTemplatePodVolumesEmptyDirOutput() KafkaSpecKafkaTemplatePodVolumesEmptyDirOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesEmptyDirOutput) ToKafkaSpecKafkaTemplatePodVolumesEmptyDirOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesEmptyDirOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesEmptyDirOutput) ToKafkaSpecKafkaTemplatePodVolumesEmptyDirPtrOutput() KafkaSpecKafkaTemplatePodVolumesEmptyDirPtrOutput {
+	return o.ToKafkaSpecKafkaTemplatePodVolumesEmptyDirPtrOutputWithContext(context.Background())
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesEmptyDirOutput) ToKafkaSpecKafkaTemplatePodVolumesEmptyDirPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesEmptyDirPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v KafkaSpecKafkaTemplatePodVolumesEmptyDir) *KafkaSpecKafkaTemplatePodVolumesEmptyDir {
+		return &v
+	}).(KafkaSpecKafkaTemplatePodVolumesEmptyDirPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesEmptyDirOutput) Medium() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumesEmptyDir) *string { return v.Medium }).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesEmptyDirOutput) SizeLimit() KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumesEmptyDir) *KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimit {
+		return v.SizeLimit
+	}).(KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPtrOutput)
+}
+
+type KafkaSpecKafkaTemplatePodVolumesEmptyDirPtrOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplatePodVolumesEmptyDirPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecKafkaTemplatePodVolumesEmptyDir)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesEmptyDirPtrOutput) ToKafkaSpecKafkaTemplatePodVolumesEmptyDirPtrOutput() KafkaSpecKafkaTemplatePodVolumesEmptyDirPtrOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesEmptyDirPtrOutput) ToKafkaSpecKafkaTemplatePodVolumesEmptyDirPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesEmptyDirPtrOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesEmptyDirPtrOutput) Elem() KafkaSpecKafkaTemplatePodVolumesEmptyDirOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodVolumesEmptyDir) KafkaSpecKafkaTemplatePodVolumesEmptyDir {
+		if v != nil {
+			return *v
+		}
+		var ret KafkaSpecKafkaTemplatePodVolumesEmptyDir
+		return ret
+	}).(KafkaSpecKafkaTemplatePodVolumesEmptyDirOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesEmptyDirPtrOutput) Medium() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodVolumesEmptyDir) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Medium
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesEmptyDirPtrOutput) SizeLimit() KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodVolumesEmptyDir) *KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimit {
+		if v == nil {
+			return nil
+		}
+		return v.SizeLimit
+	}).(KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPtrOutput)
+}
+
+// `EmptyDir` to use to populate the volume.
+type KafkaSpecKafkaTemplatePodVolumesEmptyDirPatch struct {
+	Medium    *string                                                 `pulumi:"medium"`
+	SizeLimit *KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatch `pulumi:"sizeLimit"`
+}
+
+// KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchInput is an input type that accepts KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchArgs and KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchInput` via:
+//
+//	KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchArgs{...}
+type KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplatePodVolumesEmptyDirPatchOutput() KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchOutput
+	ToKafkaSpecKafkaTemplatePodVolumesEmptyDirPatchOutputWithContext(context.Context) KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchOutput
+}
+
+// `EmptyDir` to use to populate the volume.
+type KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchArgs struct {
+	Medium    pulumi.StringPtrInput                                          `pulumi:"medium"`
+	SizeLimit KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchPtrInput `pulumi:"sizeLimit"`
+}
+
+func (KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesEmptyDirPatch)(nil)).Elem()
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchArgs) ToKafkaSpecKafkaTemplatePodVolumesEmptyDirPatchOutput() KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchOutput {
+	return i.ToKafkaSpecKafkaTemplatePodVolumesEmptyDirPatchOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchArgs) ToKafkaSpecKafkaTemplatePodVolumesEmptyDirPatchOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchOutput)
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchArgs) ToKafkaSpecKafkaTemplatePodVolumesEmptyDirPatchPtrOutput() KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchPtrOutput {
+	return i.ToKafkaSpecKafkaTemplatePodVolumesEmptyDirPatchPtrOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchArgs) ToKafkaSpecKafkaTemplatePodVolumesEmptyDirPatchPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchOutput).ToKafkaSpecKafkaTemplatePodVolumesEmptyDirPatchPtrOutputWithContext(ctx)
+}
+
+// KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchPtrInput is an input type that accepts KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchArgs, KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchPtr and KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchPtrOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchPtrInput` via:
+//
+//	        KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchArgs{...}
+//
+//	or:
+//
+//	        nil
+type KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchPtrInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplatePodVolumesEmptyDirPatchPtrOutput() KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchPtrOutput
+	ToKafkaSpecKafkaTemplatePodVolumesEmptyDirPatchPtrOutputWithContext(context.Context) KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchPtrOutput
+}
+
+type kafkaSpecKafkaTemplatePodVolumesEmptyDirPatchPtrType KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchArgs
+
+func KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchPtr(v *KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchArgs) KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchPtrInput {
+	return (*kafkaSpecKafkaTemplatePodVolumesEmptyDirPatchPtrType)(v)
+}
+
+func (*kafkaSpecKafkaTemplatePodVolumesEmptyDirPatchPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecKafkaTemplatePodVolumesEmptyDirPatch)(nil)).Elem()
+}
+
+func (i *kafkaSpecKafkaTemplatePodVolumesEmptyDirPatchPtrType) ToKafkaSpecKafkaTemplatePodVolumesEmptyDirPatchPtrOutput() KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchPtrOutput {
+	return i.ToKafkaSpecKafkaTemplatePodVolumesEmptyDirPatchPtrOutputWithContext(context.Background())
+}
+
+func (i *kafkaSpecKafkaTemplatePodVolumesEmptyDirPatchPtrType) ToKafkaSpecKafkaTemplatePodVolumesEmptyDirPatchPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchPtrOutput)
+}
+
+// `EmptyDir` to use to populate the volume.
+type KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesEmptyDirPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchOutput) ToKafkaSpecKafkaTemplatePodVolumesEmptyDirPatchOutput() KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchOutput) ToKafkaSpecKafkaTemplatePodVolumesEmptyDirPatchOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchOutput) ToKafkaSpecKafkaTemplatePodVolumesEmptyDirPatchPtrOutput() KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchPtrOutput {
+	return o.ToKafkaSpecKafkaTemplatePodVolumesEmptyDirPatchPtrOutputWithContext(context.Background())
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchOutput) ToKafkaSpecKafkaTemplatePodVolumesEmptyDirPatchPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v KafkaSpecKafkaTemplatePodVolumesEmptyDirPatch) *KafkaSpecKafkaTemplatePodVolumesEmptyDirPatch {
+		return &v
+	}).(KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchOutput) Medium() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumesEmptyDirPatch) *string { return v.Medium }).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchOutput) SizeLimit() KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumesEmptyDirPatch) *KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatch {
+		return v.SizeLimit
+	}).(KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchPtrOutput)
+}
+
+type KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchPtrOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecKafkaTemplatePodVolumesEmptyDirPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchPtrOutput) ToKafkaSpecKafkaTemplatePodVolumesEmptyDirPatchPtrOutput() KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchPtrOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchPtrOutput) ToKafkaSpecKafkaTemplatePodVolumesEmptyDirPatchPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchPtrOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchPtrOutput) Elem() KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodVolumesEmptyDirPatch) KafkaSpecKafkaTemplatePodVolumesEmptyDirPatch {
+		if v != nil {
+			return *v
+		}
+		var ret KafkaSpecKafkaTemplatePodVolumesEmptyDirPatch
+		return ret
+	}).(KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchPtrOutput) Medium() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodVolumesEmptyDirPatch) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Medium
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchPtrOutput) SizeLimit() KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodVolumesEmptyDirPatch) *KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatch {
+		if v == nil {
+			return nil
+		}
+		return v.SizeLimit
+	}).(KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchPtrOutput)
+}
+
+type KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimit struct {
+	Amount *string `pulumi:"amount"`
+	Format *string `pulumi:"format"`
+}
+
+// KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitInput is an input type that accepts KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitArgs and KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitInput` via:
+//
+//	KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitArgs{...}
+type KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitOutput() KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitOutput
+	ToKafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitOutputWithContext(context.Context) KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitOutput
+}
+
+type KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitArgs struct {
+	Amount pulumi.StringPtrInput `pulumi:"amount"`
+	Format pulumi.StringPtrInput `pulumi:"format"`
+}
+
+func (KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimit)(nil)).Elem()
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitArgs) ToKafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitOutput() KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitOutput {
+	return i.ToKafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitArgs) ToKafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitOutput)
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitArgs) ToKafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPtrOutput() KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPtrOutput {
+	return i.ToKafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPtrOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitArgs) ToKafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitOutput).ToKafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPtrOutputWithContext(ctx)
+}
+
+// KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPtrInput is an input type that accepts KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitArgs, KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPtr and KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPtrOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPtrInput` via:
+//
+//	        KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitArgs{...}
+//
+//	or:
+//
+//	        nil
+type KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPtrInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPtrOutput() KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPtrOutput
+	ToKafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPtrOutputWithContext(context.Context) KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPtrOutput
+}
+
+type kafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPtrType KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitArgs
+
+func KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPtr(v *KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitArgs) KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPtrInput {
+	return (*kafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPtrType)(v)
+}
+
+func (*kafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimit)(nil)).Elem()
+}
+
+func (i *kafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPtrType) ToKafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPtrOutput() KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPtrOutput {
+	return i.ToKafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPtrOutputWithContext(context.Background())
+}
+
+func (i *kafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPtrType) ToKafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPtrOutput)
+}
+
+type KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimit)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitOutput) ToKafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitOutput() KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitOutput) ToKafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitOutput) ToKafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPtrOutput() KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPtrOutput {
+	return o.ToKafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPtrOutputWithContext(context.Background())
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitOutput) ToKafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimit) *KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimit {
+		return &v
+	}).(KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitOutput) Amount() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimit) *string { return v.Amount }).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitOutput) Format() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimit) *string { return v.Format }).(pulumi.StringPtrOutput)
+}
+
+type KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPtrOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimit)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPtrOutput) ToKafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPtrOutput() KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPtrOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPtrOutput) ToKafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPtrOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPtrOutput) Elem() KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimit) KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimit {
+		if v != nil {
+			return *v
+		}
+		var ret KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimit
+		return ret
+	}).(KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPtrOutput) Amount() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimit) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Amount
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPtrOutput) Format() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimit) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Format
+	}).(pulumi.StringPtrOutput)
+}
+
+type KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatch struct {
+	Amount *string `pulumi:"amount"`
+	Format *string `pulumi:"format"`
+}
+
+// KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchInput is an input type that accepts KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchArgs and KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchInput` via:
+//
+//	KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchArgs{...}
+type KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchOutput() KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchOutput
+	ToKafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchOutputWithContext(context.Context) KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchOutput
+}
+
+type KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchArgs struct {
+	Amount pulumi.StringPtrInput `pulumi:"amount"`
+	Format pulumi.StringPtrInput `pulumi:"format"`
+}
+
+func (KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatch)(nil)).Elem()
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchArgs) ToKafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchOutput() KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchOutput {
+	return i.ToKafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchArgs) ToKafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchOutput)
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchArgs) ToKafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchPtrOutput() KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchPtrOutput {
+	return i.ToKafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchPtrOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchArgs) ToKafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchOutput).ToKafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchPtrOutputWithContext(ctx)
+}
+
+// KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchPtrInput is an input type that accepts KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchArgs, KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchPtr and KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchPtrOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchPtrInput` via:
+//
+//	        KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchArgs{...}
+//
+//	or:
+//
+//	        nil
+type KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchPtrInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchPtrOutput() KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchPtrOutput
+	ToKafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchPtrOutputWithContext(context.Context) KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchPtrOutput
+}
+
+type kafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchPtrType KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchArgs
+
+func KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchPtr(v *KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchArgs) KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchPtrInput {
+	return (*kafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchPtrType)(v)
+}
+
+func (*kafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatch)(nil)).Elem()
+}
+
+func (i *kafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchPtrType) ToKafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchPtrOutput() KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchPtrOutput {
+	return i.ToKafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchPtrOutputWithContext(context.Background())
+}
+
+func (i *kafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchPtrType) ToKafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchPtrOutput)
+}
+
+type KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchOutput) ToKafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchOutput() KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchOutput) ToKafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchOutput) ToKafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchPtrOutput() KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchPtrOutput {
+	return o.ToKafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchPtrOutputWithContext(context.Background())
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchOutput) ToKafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatch) *KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatch {
+		return &v
+	}).(KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchOutput) Amount() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatch) *string { return v.Amount }).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchOutput) Format() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatch) *string { return v.Format }).(pulumi.StringPtrOutput)
+}
+
+type KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchPtrOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchPtrOutput) ToKafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchPtrOutput() KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchPtrOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchPtrOutput) ToKafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchPtrOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchPtrOutput) Elem() KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatch) KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatch {
+		if v != nil {
+			return *v
+		}
+		var ret KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatch
+		return ret
+	}).(KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchPtrOutput) Amount() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatch) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Amount
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchPtrOutput) Format() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatch) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Format
+	}).(pulumi.StringPtrOutput)
+}
+
+// `ImageVolumeSource` object to use to populate the volume.
+type KafkaSpecKafkaTemplatePodVolumesImage struct {
+	PullPolicy *string `pulumi:"pullPolicy"`
+	Reference  *string `pulumi:"reference"`
+}
+
+// KafkaSpecKafkaTemplatePodVolumesImageInput is an input type that accepts KafkaSpecKafkaTemplatePodVolumesImageArgs and KafkaSpecKafkaTemplatePodVolumesImageOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplatePodVolumesImageInput` via:
+//
+//	KafkaSpecKafkaTemplatePodVolumesImageArgs{...}
+type KafkaSpecKafkaTemplatePodVolumesImageInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplatePodVolumesImageOutput() KafkaSpecKafkaTemplatePodVolumesImageOutput
+	ToKafkaSpecKafkaTemplatePodVolumesImageOutputWithContext(context.Context) KafkaSpecKafkaTemplatePodVolumesImageOutput
+}
+
+// `ImageVolumeSource` object to use to populate the volume.
+type KafkaSpecKafkaTemplatePodVolumesImageArgs struct {
+	PullPolicy pulumi.StringPtrInput `pulumi:"pullPolicy"`
+	Reference  pulumi.StringPtrInput `pulumi:"reference"`
+}
+
+func (KafkaSpecKafkaTemplatePodVolumesImageArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesImage)(nil)).Elem()
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesImageArgs) ToKafkaSpecKafkaTemplatePodVolumesImageOutput() KafkaSpecKafkaTemplatePodVolumesImageOutput {
+	return i.ToKafkaSpecKafkaTemplatePodVolumesImageOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesImageArgs) ToKafkaSpecKafkaTemplatePodVolumesImageOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesImageOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodVolumesImageOutput)
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesImageArgs) ToKafkaSpecKafkaTemplatePodVolumesImagePtrOutput() KafkaSpecKafkaTemplatePodVolumesImagePtrOutput {
+	return i.ToKafkaSpecKafkaTemplatePodVolumesImagePtrOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesImageArgs) ToKafkaSpecKafkaTemplatePodVolumesImagePtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesImagePtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodVolumesImageOutput).ToKafkaSpecKafkaTemplatePodVolumesImagePtrOutputWithContext(ctx)
+}
+
+// KafkaSpecKafkaTemplatePodVolumesImagePtrInput is an input type that accepts KafkaSpecKafkaTemplatePodVolumesImageArgs, KafkaSpecKafkaTemplatePodVolumesImagePtr and KafkaSpecKafkaTemplatePodVolumesImagePtrOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplatePodVolumesImagePtrInput` via:
+//
+//	        KafkaSpecKafkaTemplatePodVolumesImageArgs{...}
+//
+//	or:
+//
+//	        nil
+type KafkaSpecKafkaTemplatePodVolumesImagePtrInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplatePodVolumesImagePtrOutput() KafkaSpecKafkaTemplatePodVolumesImagePtrOutput
+	ToKafkaSpecKafkaTemplatePodVolumesImagePtrOutputWithContext(context.Context) KafkaSpecKafkaTemplatePodVolumesImagePtrOutput
+}
+
+type kafkaSpecKafkaTemplatePodVolumesImagePtrType KafkaSpecKafkaTemplatePodVolumesImageArgs
+
+func KafkaSpecKafkaTemplatePodVolumesImagePtr(v *KafkaSpecKafkaTemplatePodVolumesImageArgs) KafkaSpecKafkaTemplatePodVolumesImagePtrInput {
+	return (*kafkaSpecKafkaTemplatePodVolumesImagePtrType)(v)
+}
+
+func (*kafkaSpecKafkaTemplatePodVolumesImagePtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecKafkaTemplatePodVolumesImage)(nil)).Elem()
+}
+
+func (i *kafkaSpecKafkaTemplatePodVolumesImagePtrType) ToKafkaSpecKafkaTemplatePodVolumesImagePtrOutput() KafkaSpecKafkaTemplatePodVolumesImagePtrOutput {
+	return i.ToKafkaSpecKafkaTemplatePodVolumesImagePtrOutputWithContext(context.Background())
+}
+
+func (i *kafkaSpecKafkaTemplatePodVolumesImagePtrType) ToKafkaSpecKafkaTemplatePodVolumesImagePtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesImagePtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodVolumesImagePtrOutput)
+}
+
+// `ImageVolumeSource` object to use to populate the volume.
+type KafkaSpecKafkaTemplatePodVolumesImageOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplatePodVolumesImageOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesImage)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesImageOutput) ToKafkaSpecKafkaTemplatePodVolumesImageOutput() KafkaSpecKafkaTemplatePodVolumesImageOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesImageOutput) ToKafkaSpecKafkaTemplatePodVolumesImageOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesImageOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesImageOutput) ToKafkaSpecKafkaTemplatePodVolumesImagePtrOutput() KafkaSpecKafkaTemplatePodVolumesImagePtrOutput {
+	return o.ToKafkaSpecKafkaTemplatePodVolumesImagePtrOutputWithContext(context.Background())
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesImageOutput) ToKafkaSpecKafkaTemplatePodVolumesImagePtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesImagePtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v KafkaSpecKafkaTemplatePodVolumesImage) *KafkaSpecKafkaTemplatePodVolumesImage {
+		return &v
+	}).(KafkaSpecKafkaTemplatePodVolumesImagePtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesImageOutput) PullPolicy() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumesImage) *string { return v.PullPolicy }).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesImageOutput) Reference() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumesImage) *string { return v.Reference }).(pulumi.StringPtrOutput)
+}
+
+type KafkaSpecKafkaTemplatePodVolumesImagePtrOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplatePodVolumesImagePtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecKafkaTemplatePodVolumesImage)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesImagePtrOutput) ToKafkaSpecKafkaTemplatePodVolumesImagePtrOutput() KafkaSpecKafkaTemplatePodVolumesImagePtrOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesImagePtrOutput) ToKafkaSpecKafkaTemplatePodVolumesImagePtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesImagePtrOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesImagePtrOutput) Elem() KafkaSpecKafkaTemplatePodVolumesImageOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodVolumesImage) KafkaSpecKafkaTemplatePodVolumesImage {
+		if v != nil {
+			return *v
+		}
+		var ret KafkaSpecKafkaTemplatePodVolumesImage
+		return ret
+	}).(KafkaSpecKafkaTemplatePodVolumesImageOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesImagePtrOutput) PullPolicy() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodVolumesImage) *string {
+		if v == nil {
+			return nil
+		}
+		return v.PullPolicy
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesImagePtrOutput) Reference() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodVolumesImage) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Reference
+	}).(pulumi.StringPtrOutput)
+}
+
+// `ImageVolumeSource` object to use to populate the volume.
+type KafkaSpecKafkaTemplatePodVolumesImagePatch struct {
+	PullPolicy *string `pulumi:"pullPolicy"`
+	Reference  *string `pulumi:"reference"`
+}
+
+// KafkaSpecKafkaTemplatePodVolumesImagePatchInput is an input type that accepts KafkaSpecKafkaTemplatePodVolumesImagePatchArgs and KafkaSpecKafkaTemplatePodVolumesImagePatchOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplatePodVolumesImagePatchInput` via:
+//
+//	KafkaSpecKafkaTemplatePodVolumesImagePatchArgs{...}
+type KafkaSpecKafkaTemplatePodVolumesImagePatchInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplatePodVolumesImagePatchOutput() KafkaSpecKafkaTemplatePodVolumesImagePatchOutput
+	ToKafkaSpecKafkaTemplatePodVolumesImagePatchOutputWithContext(context.Context) KafkaSpecKafkaTemplatePodVolumesImagePatchOutput
+}
+
+// `ImageVolumeSource` object to use to populate the volume.
+type KafkaSpecKafkaTemplatePodVolumesImagePatchArgs struct {
+	PullPolicy pulumi.StringPtrInput `pulumi:"pullPolicy"`
+	Reference  pulumi.StringPtrInput `pulumi:"reference"`
+}
+
+func (KafkaSpecKafkaTemplatePodVolumesImagePatchArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesImagePatch)(nil)).Elem()
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesImagePatchArgs) ToKafkaSpecKafkaTemplatePodVolumesImagePatchOutput() KafkaSpecKafkaTemplatePodVolumesImagePatchOutput {
+	return i.ToKafkaSpecKafkaTemplatePodVolumesImagePatchOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesImagePatchArgs) ToKafkaSpecKafkaTemplatePodVolumesImagePatchOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesImagePatchOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodVolumesImagePatchOutput)
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesImagePatchArgs) ToKafkaSpecKafkaTemplatePodVolumesImagePatchPtrOutput() KafkaSpecKafkaTemplatePodVolumesImagePatchPtrOutput {
+	return i.ToKafkaSpecKafkaTemplatePodVolumesImagePatchPtrOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesImagePatchArgs) ToKafkaSpecKafkaTemplatePodVolumesImagePatchPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesImagePatchPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodVolumesImagePatchOutput).ToKafkaSpecKafkaTemplatePodVolumesImagePatchPtrOutputWithContext(ctx)
+}
+
+// KafkaSpecKafkaTemplatePodVolumesImagePatchPtrInput is an input type that accepts KafkaSpecKafkaTemplatePodVolumesImagePatchArgs, KafkaSpecKafkaTemplatePodVolumesImagePatchPtr and KafkaSpecKafkaTemplatePodVolumesImagePatchPtrOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplatePodVolumesImagePatchPtrInput` via:
+//
+//	        KafkaSpecKafkaTemplatePodVolumesImagePatchArgs{...}
+//
+//	or:
+//
+//	        nil
+type KafkaSpecKafkaTemplatePodVolumesImagePatchPtrInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplatePodVolumesImagePatchPtrOutput() KafkaSpecKafkaTemplatePodVolumesImagePatchPtrOutput
+	ToKafkaSpecKafkaTemplatePodVolumesImagePatchPtrOutputWithContext(context.Context) KafkaSpecKafkaTemplatePodVolumesImagePatchPtrOutput
+}
+
+type kafkaSpecKafkaTemplatePodVolumesImagePatchPtrType KafkaSpecKafkaTemplatePodVolumesImagePatchArgs
+
+func KafkaSpecKafkaTemplatePodVolumesImagePatchPtr(v *KafkaSpecKafkaTemplatePodVolumesImagePatchArgs) KafkaSpecKafkaTemplatePodVolumesImagePatchPtrInput {
+	return (*kafkaSpecKafkaTemplatePodVolumesImagePatchPtrType)(v)
+}
+
+func (*kafkaSpecKafkaTemplatePodVolumesImagePatchPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecKafkaTemplatePodVolumesImagePatch)(nil)).Elem()
+}
+
+func (i *kafkaSpecKafkaTemplatePodVolumesImagePatchPtrType) ToKafkaSpecKafkaTemplatePodVolumesImagePatchPtrOutput() KafkaSpecKafkaTemplatePodVolumesImagePatchPtrOutput {
+	return i.ToKafkaSpecKafkaTemplatePodVolumesImagePatchPtrOutputWithContext(context.Background())
+}
+
+func (i *kafkaSpecKafkaTemplatePodVolumesImagePatchPtrType) ToKafkaSpecKafkaTemplatePodVolumesImagePatchPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesImagePatchPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodVolumesImagePatchPtrOutput)
+}
+
+// `ImageVolumeSource` object to use to populate the volume.
+type KafkaSpecKafkaTemplatePodVolumesImagePatchOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplatePodVolumesImagePatchOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesImagePatch)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesImagePatchOutput) ToKafkaSpecKafkaTemplatePodVolumesImagePatchOutput() KafkaSpecKafkaTemplatePodVolumesImagePatchOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesImagePatchOutput) ToKafkaSpecKafkaTemplatePodVolumesImagePatchOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesImagePatchOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesImagePatchOutput) ToKafkaSpecKafkaTemplatePodVolumesImagePatchPtrOutput() KafkaSpecKafkaTemplatePodVolumesImagePatchPtrOutput {
+	return o.ToKafkaSpecKafkaTemplatePodVolumesImagePatchPtrOutputWithContext(context.Background())
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesImagePatchOutput) ToKafkaSpecKafkaTemplatePodVolumesImagePatchPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesImagePatchPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v KafkaSpecKafkaTemplatePodVolumesImagePatch) *KafkaSpecKafkaTemplatePodVolumesImagePatch {
+		return &v
+	}).(KafkaSpecKafkaTemplatePodVolumesImagePatchPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesImagePatchOutput) PullPolicy() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumesImagePatch) *string { return v.PullPolicy }).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesImagePatchOutput) Reference() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumesImagePatch) *string { return v.Reference }).(pulumi.StringPtrOutput)
+}
+
+type KafkaSpecKafkaTemplatePodVolumesImagePatchPtrOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplatePodVolumesImagePatchPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecKafkaTemplatePodVolumesImagePatch)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesImagePatchPtrOutput) ToKafkaSpecKafkaTemplatePodVolumesImagePatchPtrOutput() KafkaSpecKafkaTemplatePodVolumesImagePatchPtrOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesImagePatchPtrOutput) ToKafkaSpecKafkaTemplatePodVolumesImagePatchPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesImagePatchPtrOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesImagePatchPtrOutput) Elem() KafkaSpecKafkaTemplatePodVolumesImagePatchOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodVolumesImagePatch) KafkaSpecKafkaTemplatePodVolumesImagePatch {
+		if v != nil {
+			return *v
+		}
+		var ret KafkaSpecKafkaTemplatePodVolumesImagePatch
+		return ret
+	}).(KafkaSpecKafkaTemplatePodVolumesImagePatchOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesImagePatchPtrOutput) PullPolicy() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodVolumesImagePatch) *string {
+		if v == nil {
+			return nil
+		}
+		return v.PullPolicy
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesImagePatchPtrOutput) Reference() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodVolumesImagePatch) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Reference
+	}).(pulumi.StringPtrOutput)
+}
+
+type KafkaSpecKafkaTemplatePodVolumesPatch struct {
+	ConfigMap *KafkaSpecKafkaTemplatePodVolumesConfigMapPatch `pulumi:"configMap"`
+	Csi       *KafkaSpecKafkaTemplatePodVolumesCsiPatch       `pulumi:"csi"`
+	EmptyDir  *KafkaSpecKafkaTemplatePodVolumesEmptyDirPatch  `pulumi:"emptyDir"`
+	Image     *KafkaSpecKafkaTemplatePodVolumesImagePatch     `pulumi:"image"`
+	// Name to use for the volume. Required.
+	Name                  *string                                                     `pulumi:"name"`
+	PersistentVolumeClaim *KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatch `pulumi:"persistentVolumeClaim"`
+	Secret                *KafkaSpecKafkaTemplatePodVolumesSecretPatch                `pulumi:"secret"`
+}
+
+// KafkaSpecKafkaTemplatePodVolumesPatchInput is an input type that accepts KafkaSpecKafkaTemplatePodVolumesPatchArgs and KafkaSpecKafkaTemplatePodVolumesPatchOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplatePodVolumesPatchInput` via:
+//
+//	KafkaSpecKafkaTemplatePodVolumesPatchArgs{...}
+type KafkaSpecKafkaTemplatePodVolumesPatchInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplatePodVolumesPatchOutput() KafkaSpecKafkaTemplatePodVolumesPatchOutput
+	ToKafkaSpecKafkaTemplatePodVolumesPatchOutputWithContext(context.Context) KafkaSpecKafkaTemplatePodVolumesPatchOutput
+}
+
+type KafkaSpecKafkaTemplatePodVolumesPatchArgs struct {
+	ConfigMap KafkaSpecKafkaTemplatePodVolumesConfigMapPatchPtrInput `pulumi:"configMap"`
+	Csi       KafkaSpecKafkaTemplatePodVolumesCsiPatchPtrInput       `pulumi:"csi"`
+	EmptyDir  KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchPtrInput  `pulumi:"emptyDir"`
+	Image     KafkaSpecKafkaTemplatePodVolumesImagePatchPtrInput     `pulumi:"image"`
+	// Name to use for the volume. Required.
+	Name                  pulumi.StringPtrInput                                              `pulumi:"name"`
+	PersistentVolumeClaim KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchPtrInput `pulumi:"persistentVolumeClaim"`
+	Secret                KafkaSpecKafkaTemplatePodVolumesSecretPatchPtrInput                `pulumi:"secret"`
+}
+
+func (KafkaSpecKafkaTemplatePodVolumesPatchArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesPatch)(nil)).Elem()
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesPatchArgs) ToKafkaSpecKafkaTemplatePodVolumesPatchOutput() KafkaSpecKafkaTemplatePodVolumesPatchOutput {
+	return i.ToKafkaSpecKafkaTemplatePodVolumesPatchOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesPatchArgs) ToKafkaSpecKafkaTemplatePodVolumesPatchOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesPatchOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodVolumesPatchOutput)
+}
+
+// KafkaSpecKafkaTemplatePodVolumesPatchArrayInput is an input type that accepts KafkaSpecKafkaTemplatePodVolumesPatchArray and KafkaSpecKafkaTemplatePodVolumesPatchArrayOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplatePodVolumesPatchArrayInput` via:
+//
+//	KafkaSpecKafkaTemplatePodVolumesPatchArray{ KafkaSpecKafkaTemplatePodVolumesPatchArgs{...} }
+type KafkaSpecKafkaTemplatePodVolumesPatchArrayInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplatePodVolumesPatchArrayOutput() KafkaSpecKafkaTemplatePodVolumesPatchArrayOutput
+	ToKafkaSpecKafkaTemplatePodVolumesPatchArrayOutputWithContext(context.Context) KafkaSpecKafkaTemplatePodVolumesPatchArrayOutput
+}
+
+type KafkaSpecKafkaTemplatePodVolumesPatchArray []KafkaSpecKafkaTemplatePodVolumesPatchInput
+
+func (KafkaSpecKafkaTemplatePodVolumesPatchArray) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]KafkaSpecKafkaTemplatePodVolumesPatch)(nil)).Elem()
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesPatchArray) ToKafkaSpecKafkaTemplatePodVolumesPatchArrayOutput() KafkaSpecKafkaTemplatePodVolumesPatchArrayOutput {
+	return i.ToKafkaSpecKafkaTemplatePodVolumesPatchArrayOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesPatchArray) ToKafkaSpecKafkaTemplatePodVolumesPatchArrayOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesPatchArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodVolumesPatchArrayOutput)
+}
+
+type KafkaSpecKafkaTemplatePodVolumesPatchOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplatePodVolumesPatchOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesPatchOutput) ToKafkaSpecKafkaTemplatePodVolumesPatchOutput() KafkaSpecKafkaTemplatePodVolumesPatchOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesPatchOutput) ToKafkaSpecKafkaTemplatePodVolumesPatchOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesPatchOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesPatchOutput) ConfigMap() KafkaSpecKafkaTemplatePodVolumesConfigMapPatchPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumesPatch) *KafkaSpecKafkaTemplatePodVolumesConfigMapPatch {
+		return v.ConfigMap
+	}).(KafkaSpecKafkaTemplatePodVolumesConfigMapPatchPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesPatchOutput) Csi() KafkaSpecKafkaTemplatePodVolumesCsiPatchPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumesPatch) *KafkaSpecKafkaTemplatePodVolumesCsiPatch { return v.Csi }).(KafkaSpecKafkaTemplatePodVolumesCsiPatchPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesPatchOutput) EmptyDir() KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumesPatch) *KafkaSpecKafkaTemplatePodVolumesEmptyDirPatch {
+		return v.EmptyDir
+	}).(KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesPatchOutput) Image() KafkaSpecKafkaTemplatePodVolumesImagePatchPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumesPatch) *KafkaSpecKafkaTemplatePodVolumesImagePatch {
+		return v.Image
+	}).(KafkaSpecKafkaTemplatePodVolumesImagePatchPtrOutput)
+}
+
+// Name to use for the volume. Required.
+func (o KafkaSpecKafkaTemplatePodVolumesPatchOutput) Name() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumesPatch) *string { return v.Name }).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesPatchOutput) PersistentVolumeClaim() KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumesPatch) *KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatch {
+		return v.PersistentVolumeClaim
+	}).(KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesPatchOutput) Secret() KafkaSpecKafkaTemplatePodVolumesSecretPatchPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumesPatch) *KafkaSpecKafkaTemplatePodVolumesSecretPatch {
+		return v.Secret
+	}).(KafkaSpecKafkaTemplatePodVolumesSecretPatchPtrOutput)
+}
+
+type KafkaSpecKafkaTemplatePodVolumesPatchArrayOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplatePodVolumesPatchArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]KafkaSpecKafkaTemplatePodVolumesPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesPatchArrayOutput) ToKafkaSpecKafkaTemplatePodVolumesPatchArrayOutput() KafkaSpecKafkaTemplatePodVolumesPatchArrayOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesPatchArrayOutput) ToKafkaSpecKafkaTemplatePodVolumesPatchArrayOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesPatchArrayOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesPatchArrayOutput) Index(i pulumi.IntInput) KafkaSpecKafkaTemplatePodVolumesPatchOutput {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) KafkaSpecKafkaTemplatePodVolumesPatch {
+		return vs[0].([]KafkaSpecKafkaTemplatePodVolumesPatch)[vs[1].(int)]
+	}).(KafkaSpecKafkaTemplatePodVolumesPatchOutput)
+}
+
+// `PersistentVolumeClaim` object to use to populate the volume.
+type KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaim struct {
+	ClaimName *string `pulumi:"claimName"`
+	ReadOnly  *bool   `pulumi:"readOnly"`
+}
+
+// KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimInput is an input type that accepts KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimArgs and KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimInput` via:
+//
+//	KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimArgs{...}
+type KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimOutput() KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimOutput
+	ToKafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimOutputWithContext(context.Context) KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimOutput
+}
+
+// `PersistentVolumeClaim` object to use to populate the volume.
+type KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimArgs struct {
+	ClaimName pulumi.StringPtrInput `pulumi:"claimName"`
+	ReadOnly  pulumi.BoolPtrInput   `pulumi:"readOnly"`
+}
+
+func (KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaim)(nil)).Elem()
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimArgs) ToKafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimOutput() KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimOutput {
+	return i.ToKafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimArgs) ToKafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimOutput)
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimArgs) ToKafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPtrOutput() KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPtrOutput {
+	return i.ToKafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPtrOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimArgs) ToKafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimOutput).ToKafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPtrOutputWithContext(ctx)
+}
+
+// KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPtrInput is an input type that accepts KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimArgs, KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPtr and KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPtrOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPtrInput` via:
+//
+//	        KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimArgs{...}
+//
+//	or:
+//
+//	        nil
+type KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPtrInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPtrOutput() KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPtrOutput
+	ToKafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPtrOutputWithContext(context.Context) KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPtrOutput
+}
+
+type kafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPtrType KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimArgs
+
+func KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPtr(v *KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimArgs) KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPtrInput {
+	return (*kafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPtrType)(v)
+}
+
+func (*kafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaim)(nil)).Elem()
+}
+
+func (i *kafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPtrType) ToKafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPtrOutput() KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPtrOutput {
+	return i.ToKafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPtrOutputWithContext(context.Background())
+}
+
+func (i *kafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPtrType) ToKafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPtrOutput)
+}
+
+// `PersistentVolumeClaim` object to use to populate the volume.
+type KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaim)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimOutput) ToKafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimOutput() KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimOutput) ToKafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimOutput) ToKafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPtrOutput() KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPtrOutput {
+	return o.ToKafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPtrOutputWithContext(context.Background())
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimOutput) ToKafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaim) *KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaim {
+		return &v
+	}).(KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimOutput) ClaimName() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaim) *string { return v.ClaimName }).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimOutput) ReadOnly() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaim) *bool { return v.ReadOnly }).(pulumi.BoolPtrOutput)
+}
+
+type KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPtrOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaim)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPtrOutput) ToKafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPtrOutput() KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPtrOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPtrOutput) ToKafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPtrOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPtrOutput) Elem() KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaim) KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaim {
+		if v != nil {
+			return *v
+		}
+		var ret KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaim
+		return ret
+	}).(KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPtrOutput) ClaimName() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaim) *string {
+		if v == nil {
+			return nil
+		}
+		return v.ClaimName
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPtrOutput) ReadOnly() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaim) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.ReadOnly
+	}).(pulumi.BoolPtrOutput)
+}
+
+// `PersistentVolumeClaim` object to use to populate the volume.
+type KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatch struct {
+	ClaimName *string `pulumi:"claimName"`
+	ReadOnly  *bool   `pulumi:"readOnly"`
+}
+
+// KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchInput is an input type that accepts KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchArgs and KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchInput` via:
+//
+//	KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchArgs{...}
+type KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchOutput() KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchOutput
+	ToKafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchOutputWithContext(context.Context) KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchOutput
+}
+
+// `PersistentVolumeClaim` object to use to populate the volume.
+type KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchArgs struct {
+	ClaimName pulumi.StringPtrInput `pulumi:"claimName"`
+	ReadOnly  pulumi.BoolPtrInput   `pulumi:"readOnly"`
+}
+
+func (KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatch)(nil)).Elem()
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchArgs) ToKafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchOutput() KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchOutput {
+	return i.ToKafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchArgs) ToKafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchOutput)
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchArgs) ToKafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchPtrOutput() KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchPtrOutput {
+	return i.ToKafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchPtrOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchArgs) ToKafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchOutput).ToKafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchPtrOutputWithContext(ctx)
+}
+
+// KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchPtrInput is an input type that accepts KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchArgs, KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchPtr and KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchPtrOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchPtrInput` via:
+//
+//	        KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchArgs{...}
+//
+//	or:
+//
+//	        nil
+type KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchPtrInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchPtrOutput() KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchPtrOutput
+	ToKafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchPtrOutputWithContext(context.Context) KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchPtrOutput
+}
+
+type kafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchPtrType KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchArgs
+
+func KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchPtr(v *KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchArgs) KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchPtrInput {
+	return (*kafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchPtrType)(v)
+}
+
+func (*kafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatch)(nil)).Elem()
+}
+
+func (i *kafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchPtrType) ToKafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchPtrOutput() KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchPtrOutput {
+	return i.ToKafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchPtrOutputWithContext(context.Background())
+}
+
+func (i *kafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchPtrType) ToKafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchPtrOutput)
+}
+
+// `PersistentVolumeClaim` object to use to populate the volume.
+type KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchOutput) ToKafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchOutput() KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchOutput) ToKafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchOutput) ToKafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchPtrOutput() KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchPtrOutput {
+	return o.ToKafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchPtrOutputWithContext(context.Background())
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchOutput) ToKafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatch) *KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatch {
+		return &v
+	}).(KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchOutput) ClaimName() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatch) *string { return v.ClaimName }).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchOutput) ReadOnly() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatch) *bool { return v.ReadOnly }).(pulumi.BoolPtrOutput)
+}
+
+type KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchPtrOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchPtrOutput) ToKafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchPtrOutput() KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchPtrOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchPtrOutput) ToKafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchPtrOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchPtrOutput) Elem() KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatch) KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatch {
+		if v != nil {
+			return *v
+		}
+		var ret KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatch
+		return ret
+	}).(KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchPtrOutput) ClaimName() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatch) *string {
+		if v == nil {
+			return nil
+		}
+		return v.ClaimName
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchPtrOutput) ReadOnly() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatch) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.ReadOnly
+	}).(pulumi.BoolPtrOutput)
+}
+
+// `Secret` to use to populate the volume.
+type KafkaSpecKafkaTemplatePodVolumesSecret struct {
+	DefaultMode *int                                          `pulumi:"defaultMode"`
+	Items       []KafkaSpecKafkaTemplatePodVolumesSecretItems `pulumi:"items"`
+	Optional    *bool                                         `pulumi:"optional"`
+	SecretName  *string                                       `pulumi:"secretName"`
+}
+
+// KafkaSpecKafkaTemplatePodVolumesSecretInput is an input type that accepts KafkaSpecKafkaTemplatePodVolumesSecretArgs and KafkaSpecKafkaTemplatePodVolumesSecretOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplatePodVolumesSecretInput` via:
+//
+//	KafkaSpecKafkaTemplatePodVolumesSecretArgs{...}
+type KafkaSpecKafkaTemplatePodVolumesSecretInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplatePodVolumesSecretOutput() KafkaSpecKafkaTemplatePodVolumesSecretOutput
+	ToKafkaSpecKafkaTemplatePodVolumesSecretOutputWithContext(context.Context) KafkaSpecKafkaTemplatePodVolumesSecretOutput
+}
+
+// `Secret` to use to populate the volume.
+type KafkaSpecKafkaTemplatePodVolumesSecretArgs struct {
+	DefaultMode pulumi.IntPtrInput                                    `pulumi:"defaultMode"`
+	Items       KafkaSpecKafkaTemplatePodVolumesSecretItemsArrayInput `pulumi:"items"`
+	Optional    pulumi.BoolPtrInput                                   `pulumi:"optional"`
+	SecretName  pulumi.StringPtrInput                                 `pulumi:"secretName"`
+}
+
+func (KafkaSpecKafkaTemplatePodVolumesSecretArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesSecret)(nil)).Elem()
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesSecretArgs) ToKafkaSpecKafkaTemplatePodVolumesSecretOutput() KafkaSpecKafkaTemplatePodVolumesSecretOutput {
+	return i.ToKafkaSpecKafkaTemplatePodVolumesSecretOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesSecretArgs) ToKafkaSpecKafkaTemplatePodVolumesSecretOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesSecretOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodVolumesSecretOutput)
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesSecretArgs) ToKafkaSpecKafkaTemplatePodVolumesSecretPtrOutput() KafkaSpecKafkaTemplatePodVolumesSecretPtrOutput {
+	return i.ToKafkaSpecKafkaTemplatePodVolumesSecretPtrOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesSecretArgs) ToKafkaSpecKafkaTemplatePodVolumesSecretPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesSecretPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodVolumesSecretOutput).ToKafkaSpecKafkaTemplatePodVolumesSecretPtrOutputWithContext(ctx)
+}
+
+// KafkaSpecKafkaTemplatePodVolumesSecretPtrInput is an input type that accepts KafkaSpecKafkaTemplatePodVolumesSecretArgs, KafkaSpecKafkaTemplatePodVolumesSecretPtr and KafkaSpecKafkaTemplatePodVolumesSecretPtrOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplatePodVolumesSecretPtrInput` via:
+//
+//	        KafkaSpecKafkaTemplatePodVolumesSecretArgs{...}
+//
+//	or:
+//
+//	        nil
+type KafkaSpecKafkaTemplatePodVolumesSecretPtrInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplatePodVolumesSecretPtrOutput() KafkaSpecKafkaTemplatePodVolumesSecretPtrOutput
+	ToKafkaSpecKafkaTemplatePodVolumesSecretPtrOutputWithContext(context.Context) KafkaSpecKafkaTemplatePodVolumesSecretPtrOutput
+}
+
+type kafkaSpecKafkaTemplatePodVolumesSecretPtrType KafkaSpecKafkaTemplatePodVolumesSecretArgs
+
+func KafkaSpecKafkaTemplatePodVolumesSecretPtr(v *KafkaSpecKafkaTemplatePodVolumesSecretArgs) KafkaSpecKafkaTemplatePodVolumesSecretPtrInput {
+	return (*kafkaSpecKafkaTemplatePodVolumesSecretPtrType)(v)
+}
+
+func (*kafkaSpecKafkaTemplatePodVolumesSecretPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecKafkaTemplatePodVolumesSecret)(nil)).Elem()
+}
+
+func (i *kafkaSpecKafkaTemplatePodVolumesSecretPtrType) ToKafkaSpecKafkaTemplatePodVolumesSecretPtrOutput() KafkaSpecKafkaTemplatePodVolumesSecretPtrOutput {
+	return i.ToKafkaSpecKafkaTemplatePodVolumesSecretPtrOutputWithContext(context.Background())
+}
+
+func (i *kafkaSpecKafkaTemplatePodVolumesSecretPtrType) ToKafkaSpecKafkaTemplatePodVolumesSecretPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesSecretPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodVolumesSecretPtrOutput)
+}
+
+// `Secret` to use to populate the volume.
+type KafkaSpecKafkaTemplatePodVolumesSecretOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplatePodVolumesSecretOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesSecret)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesSecretOutput) ToKafkaSpecKafkaTemplatePodVolumesSecretOutput() KafkaSpecKafkaTemplatePodVolumesSecretOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesSecretOutput) ToKafkaSpecKafkaTemplatePodVolumesSecretOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesSecretOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesSecretOutput) ToKafkaSpecKafkaTemplatePodVolumesSecretPtrOutput() KafkaSpecKafkaTemplatePodVolumesSecretPtrOutput {
+	return o.ToKafkaSpecKafkaTemplatePodVolumesSecretPtrOutputWithContext(context.Background())
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesSecretOutput) ToKafkaSpecKafkaTemplatePodVolumesSecretPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesSecretPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v KafkaSpecKafkaTemplatePodVolumesSecret) *KafkaSpecKafkaTemplatePodVolumesSecret {
+		return &v
+	}).(KafkaSpecKafkaTemplatePodVolumesSecretPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesSecretOutput) DefaultMode() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumesSecret) *int { return v.DefaultMode }).(pulumi.IntPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesSecretOutput) Items() KafkaSpecKafkaTemplatePodVolumesSecretItemsArrayOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumesSecret) []KafkaSpecKafkaTemplatePodVolumesSecretItems {
+		return v.Items
+	}).(KafkaSpecKafkaTemplatePodVolumesSecretItemsArrayOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesSecretOutput) Optional() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumesSecret) *bool { return v.Optional }).(pulumi.BoolPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesSecretOutput) SecretName() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumesSecret) *string { return v.SecretName }).(pulumi.StringPtrOutput)
+}
+
+type KafkaSpecKafkaTemplatePodVolumesSecretPtrOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplatePodVolumesSecretPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecKafkaTemplatePodVolumesSecret)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesSecretPtrOutput) ToKafkaSpecKafkaTemplatePodVolumesSecretPtrOutput() KafkaSpecKafkaTemplatePodVolumesSecretPtrOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesSecretPtrOutput) ToKafkaSpecKafkaTemplatePodVolumesSecretPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesSecretPtrOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesSecretPtrOutput) Elem() KafkaSpecKafkaTemplatePodVolumesSecretOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodVolumesSecret) KafkaSpecKafkaTemplatePodVolumesSecret {
+		if v != nil {
+			return *v
+		}
+		var ret KafkaSpecKafkaTemplatePodVolumesSecret
+		return ret
+	}).(KafkaSpecKafkaTemplatePodVolumesSecretOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesSecretPtrOutput) DefaultMode() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodVolumesSecret) *int {
+		if v == nil {
+			return nil
+		}
+		return v.DefaultMode
+	}).(pulumi.IntPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesSecretPtrOutput) Items() KafkaSpecKafkaTemplatePodVolumesSecretItemsArrayOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodVolumesSecret) []KafkaSpecKafkaTemplatePodVolumesSecretItems {
+		if v == nil {
+			return nil
+		}
+		return v.Items
+	}).(KafkaSpecKafkaTemplatePodVolumesSecretItemsArrayOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesSecretPtrOutput) Optional() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodVolumesSecret) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.Optional
+	}).(pulumi.BoolPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesSecretPtrOutput) SecretName() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodVolumesSecret) *string {
+		if v == nil {
+			return nil
+		}
+		return v.SecretName
+	}).(pulumi.StringPtrOutput)
+}
+
+type KafkaSpecKafkaTemplatePodVolumesSecretItems struct {
+	Key  *string `pulumi:"key"`
+	Mode *int    `pulumi:"mode"`
+	Path *string `pulumi:"path"`
+}
+
+// KafkaSpecKafkaTemplatePodVolumesSecretItemsInput is an input type that accepts KafkaSpecKafkaTemplatePodVolumesSecretItemsArgs and KafkaSpecKafkaTemplatePodVolumesSecretItemsOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplatePodVolumesSecretItemsInput` via:
+//
+//	KafkaSpecKafkaTemplatePodVolumesSecretItemsArgs{...}
+type KafkaSpecKafkaTemplatePodVolumesSecretItemsInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplatePodVolumesSecretItemsOutput() KafkaSpecKafkaTemplatePodVolumesSecretItemsOutput
+	ToKafkaSpecKafkaTemplatePodVolumesSecretItemsOutputWithContext(context.Context) KafkaSpecKafkaTemplatePodVolumesSecretItemsOutput
+}
+
+type KafkaSpecKafkaTemplatePodVolumesSecretItemsArgs struct {
+	Key  pulumi.StringPtrInput `pulumi:"key"`
+	Mode pulumi.IntPtrInput    `pulumi:"mode"`
+	Path pulumi.StringPtrInput `pulumi:"path"`
+}
+
+func (KafkaSpecKafkaTemplatePodVolumesSecretItemsArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesSecretItems)(nil)).Elem()
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesSecretItemsArgs) ToKafkaSpecKafkaTemplatePodVolumesSecretItemsOutput() KafkaSpecKafkaTemplatePodVolumesSecretItemsOutput {
+	return i.ToKafkaSpecKafkaTemplatePodVolumesSecretItemsOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesSecretItemsArgs) ToKafkaSpecKafkaTemplatePodVolumesSecretItemsOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesSecretItemsOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodVolumesSecretItemsOutput)
+}
+
+// KafkaSpecKafkaTemplatePodVolumesSecretItemsArrayInput is an input type that accepts KafkaSpecKafkaTemplatePodVolumesSecretItemsArray and KafkaSpecKafkaTemplatePodVolumesSecretItemsArrayOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplatePodVolumesSecretItemsArrayInput` via:
+//
+//	KafkaSpecKafkaTemplatePodVolumesSecretItemsArray{ KafkaSpecKafkaTemplatePodVolumesSecretItemsArgs{...} }
+type KafkaSpecKafkaTemplatePodVolumesSecretItemsArrayInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplatePodVolumesSecretItemsArrayOutput() KafkaSpecKafkaTemplatePodVolumesSecretItemsArrayOutput
+	ToKafkaSpecKafkaTemplatePodVolumesSecretItemsArrayOutputWithContext(context.Context) KafkaSpecKafkaTemplatePodVolumesSecretItemsArrayOutput
+}
+
+type KafkaSpecKafkaTemplatePodVolumesSecretItemsArray []KafkaSpecKafkaTemplatePodVolumesSecretItemsInput
+
+func (KafkaSpecKafkaTemplatePodVolumesSecretItemsArray) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]KafkaSpecKafkaTemplatePodVolumesSecretItems)(nil)).Elem()
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesSecretItemsArray) ToKafkaSpecKafkaTemplatePodVolumesSecretItemsArrayOutput() KafkaSpecKafkaTemplatePodVolumesSecretItemsArrayOutput {
+	return i.ToKafkaSpecKafkaTemplatePodVolumesSecretItemsArrayOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesSecretItemsArray) ToKafkaSpecKafkaTemplatePodVolumesSecretItemsArrayOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesSecretItemsArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodVolumesSecretItemsArrayOutput)
+}
+
+type KafkaSpecKafkaTemplatePodVolumesSecretItemsOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplatePodVolumesSecretItemsOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesSecretItems)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesSecretItemsOutput) ToKafkaSpecKafkaTemplatePodVolumesSecretItemsOutput() KafkaSpecKafkaTemplatePodVolumesSecretItemsOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesSecretItemsOutput) ToKafkaSpecKafkaTemplatePodVolumesSecretItemsOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesSecretItemsOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesSecretItemsOutput) Key() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumesSecretItems) *string { return v.Key }).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesSecretItemsOutput) Mode() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumesSecretItems) *int { return v.Mode }).(pulumi.IntPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesSecretItemsOutput) Path() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumesSecretItems) *string { return v.Path }).(pulumi.StringPtrOutput)
+}
+
+type KafkaSpecKafkaTemplatePodVolumesSecretItemsArrayOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplatePodVolumesSecretItemsArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]KafkaSpecKafkaTemplatePodVolumesSecretItems)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesSecretItemsArrayOutput) ToKafkaSpecKafkaTemplatePodVolumesSecretItemsArrayOutput() KafkaSpecKafkaTemplatePodVolumesSecretItemsArrayOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesSecretItemsArrayOutput) ToKafkaSpecKafkaTemplatePodVolumesSecretItemsArrayOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesSecretItemsArrayOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesSecretItemsArrayOutput) Index(i pulumi.IntInput) KafkaSpecKafkaTemplatePodVolumesSecretItemsOutput {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) KafkaSpecKafkaTemplatePodVolumesSecretItems {
+		return vs[0].([]KafkaSpecKafkaTemplatePodVolumesSecretItems)[vs[1].(int)]
+	}).(KafkaSpecKafkaTemplatePodVolumesSecretItemsOutput)
+}
+
+type KafkaSpecKafkaTemplatePodVolumesSecretItemsPatch struct {
+	Key  *string `pulumi:"key"`
+	Mode *int    `pulumi:"mode"`
+	Path *string `pulumi:"path"`
+}
+
+// KafkaSpecKafkaTemplatePodVolumesSecretItemsPatchInput is an input type that accepts KafkaSpecKafkaTemplatePodVolumesSecretItemsPatchArgs and KafkaSpecKafkaTemplatePodVolumesSecretItemsPatchOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplatePodVolumesSecretItemsPatchInput` via:
+//
+//	KafkaSpecKafkaTemplatePodVolumesSecretItemsPatchArgs{...}
+type KafkaSpecKafkaTemplatePodVolumesSecretItemsPatchInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplatePodVolumesSecretItemsPatchOutput() KafkaSpecKafkaTemplatePodVolumesSecretItemsPatchOutput
+	ToKafkaSpecKafkaTemplatePodVolumesSecretItemsPatchOutputWithContext(context.Context) KafkaSpecKafkaTemplatePodVolumesSecretItemsPatchOutput
+}
+
+type KafkaSpecKafkaTemplatePodVolumesSecretItemsPatchArgs struct {
+	Key  pulumi.StringPtrInput `pulumi:"key"`
+	Mode pulumi.IntPtrInput    `pulumi:"mode"`
+	Path pulumi.StringPtrInput `pulumi:"path"`
+}
+
+func (KafkaSpecKafkaTemplatePodVolumesSecretItemsPatchArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesSecretItemsPatch)(nil)).Elem()
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesSecretItemsPatchArgs) ToKafkaSpecKafkaTemplatePodVolumesSecretItemsPatchOutput() KafkaSpecKafkaTemplatePodVolumesSecretItemsPatchOutput {
+	return i.ToKafkaSpecKafkaTemplatePodVolumesSecretItemsPatchOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesSecretItemsPatchArgs) ToKafkaSpecKafkaTemplatePodVolumesSecretItemsPatchOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesSecretItemsPatchOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodVolumesSecretItemsPatchOutput)
+}
+
+// KafkaSpecKafkaTemplatePodVolumesSecretItemsPatchArrayInput is an input type that accepts KafkaSpecKafkaTemplatePodVolumesSecretItemsPatchArray and KafkaSpecKafkaTemplatePodVolumesSecretItemsPatchArrayOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplatePodVolumesSecretItemsPatchArrayInput` via:
+//
+//	KafkaSpecKafkaTemplatePodVolumesSecretItemsPatchArray{ KafkaSpecKafkaTemplatePodVolumesSecretItemsPatchArgs{...} }
+type KafkaSpecKafkaTemplatePodVolumesSecretItemsPatchArrayInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplatePodVolumesSecretItemsPatchArrayOutput() KafkaSpecKafkaTemplatePodVolumesSecretItemsPatchArrayOutput
+	ToKafkaSpecKafkaTemplatePodVolumesSecretItemsPatchArrayOutputWithContext(context.Context) KafkaSpecKafkaTemplatePodVolumesSecretItemsPatchArrayOutput
+}
+
+type KafkaSpecKafkaTemplatePodVolumesSecretItemsPatchArray []KafkaSpecKafkaTemplatePodVolumesSecretItemsPatchInput
+
+func (KafkaSpecKafkaTemplatePodVolumesSecretItemsPatchArray) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]KafkaSpecKafkaTemplatePodVolumesSecretItemsPatch)(nil)).Elem()
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesSecretItemsPatchArray) ToKafkaSpecKafkaTemplatePodVolumesSecretItemsPatchArrayOutput() KafkaSpecKafkaTemplatePodVolumesSecretItemsPatchArrayOutput {
+	return i.ToKafkaSpecKafkaTemplatePodVolumesSecretItemsPatchArrayOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesSecretItemsPatchArray) ToKafkaSpecKafkaTemplatePodVolumesSecretItemsPatchArrayOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesSecretItemsPatchArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodVolumesSecretItemsPatchArrayOutput)
+}
+
+type KafkaSpecKafkaTemplatePodVolumesSecretItemsPatchOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplatePodVolumesSecretItemsPatchOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesSecretItemsPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesSecretItemsPatchOutput) ToKafkaSpecKafkaTemplatePodVolumesSecretItemsPatchOutput() KafkaSpecKafkaTemplatePodVolumesSecretItemsPatchOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesSecretItemsPatchOutput) ToKafkaSpecKafkaTemplatePodVolumesSecretItemsPatchOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesSecretItemsPatchOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesSecretItemsPatchOutput) Key() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumesSecretItemsPatch) *string { return v.Key }).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesSecretItemsPatchOutput) Mode() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumesSecretItemsPatch) *int { return v.Mode }).(pulumi.IntPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesSecretItemsPatchOutput) Path() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumesSecretItemsPatch) *string { return v.Path }).(pulumi.StringPtrOutput)
+}
+
+type KafkaSpecKafkaTemplatePodVolumesSecretItemsPatchArrayOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplatePodVolumesSecretItemsPatchArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]KafkaSpecKafkaTemplatePodVolumesSecretItemsPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesSecretItemsPatchArrayOutput) ToKafkaSpecKafkaTemplatePodVolumesSecretItemsPatchArrayOutput() KafkaSpecKafkaTemplatePodVolumesSecretItemsPatchArrayOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesSecretItemsPatchArrayOutput) ToKafkaSpecKafkaTemplatePodVolumesSecretItemsPatchArrayOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesSecretItemsPatchArrayOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesSecretItemsPatchArrayOutput) Index(i pulumi.IntInput) KafkaSpecKafkaTemplatePodVolumesSecretItemsPatchOutput {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) KafkaSpecKafkaTemplatePodVolumesSecretItemsPatch {
+		return vs[0].([]KafkaSpecKafkaTemplatePodVolumesSecretItemsPatch)[vs[1].(int)]
+	}).(KafkaSpecKafkaTemplatePodVolumesSecretItemsPatchOutput)
+}
+
+// `Secret` to use to populate the volume.
+type KafkaSpecKafkaTemplatePodVolumesSecretPatch struct {
+	DefaultMode *int                                               `pulumi:"defaultMode"`
+	Items       []KafkaSpecKafkaTemplatePodVolumesSecretItemsPatch `pulumi:"items"`
+	Optional    *bool                                              `pulumi:"optional"`
+	SecretName  *string                                            `pulumi:"secretName"`
+}
+
+// KafkaSpecKafkaTemplatePodVolumesSecretPatchInput is an input type that accepts KafkaSpecKafkaTemplatePodVolumesSecretPatchArgs and KafkaSpecKafkaTemplatePodVolumesSecretPatchOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplatePodVolumesSecretPatchInput` via:
+//
+//	KafkaSpecKafkaTemplatePodVolumesSecretPatchArgs{...}
+type KafkaSpecKafkaTemplatePodVolumesSecretPatchInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplatePodVolumesSecretPatchOutput() KafkaSpecKafkaTemplatePodVolumesSecretPatchOutput
+	ToKafkaSpecKafkaTemplatePodVolumesSecretPatchOutputWithContext(context.Context) KafkaSpecKafkaTemplatePodVolumesSecretPatchOutput
+}
+
+// `Secret` to use to populate the volume.
+type KafkaSpecKafkaTemplatePodVolumesSecretPatchArgs struct {
+	DefaultMode pulumi.IntPtrInput                                         `pulumi:"defaultMode"`
+	Items       KafkaSpecKafkaTemplatePodVolumesSecretItemsPatchArrayInput `pulumi:"items"`
+	Optional    pulumi.BoolPtrInput                                        `pulumi:"optional"`
+	SecretName  pulumi.StringPtrInput                                      `pulumi:"secretName"`
+}
+
+func (KafkaSpecKafkaTemplatePodVolumesSecretPatchArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesSecretPatch)(nil)).Elem()
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesSecretPatchArgs) ToKafkaSpecKafkaTemplatePodVolumesSecretPatchOutput() KafkaSpecKafkaTemplatePodVolumesSecretPatchOutput {
+	return i.ToKafkaSpecKafkaTemplatePodVolumesSecretPatchOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesSecretPatchArgs) ToKafkaSpecKafkaTemplatePodVolumesSecretPatchOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesSecretPatchOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodVolumesSecretPatchOutput)
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesSecretPatchArgs) ToKafkaSpecKafkaTemplatePodVolumesSecretPatchPtrOutput() KafkaSpecKafkaTemplatePodVolumesSecretPatchPtrOutput {
+	return i.ToKafkaSpecKafkaTemplatePodVolumesSecretPatchPtrOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplatePodVolumesSecretPatchArgs) ToKafkaSpecKafkaTemplatePodVolumesSecretPatchPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesSecretPatchPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodVolumesSecretPatchOutput).ToKafkaSpecKafkaTemplatePodVolumesSecretPatchPtrOutputWithContext(ctx)
+}
+
+// KafkaSpecKafkaTemplatePodVolumesSecretPatchPtrInput is an input type that accepts KafkaSpecKafkaTemplatePodVolumesSecretPatchArgs, KafkaSpecKafkaTemplatePodVolumesSecretPatchPtr and KafkaSpecKafkaTemplatePodVolumesSecretPatchPtrOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplatePodVolumesSecretPatchPtrInput` via:
+//
+//	        KafkaSpecKafkaTemplatePodVolumesSecretPatchArgs{...}
+//
+//	or:
+//
+//	        nil
+type KafkaSpecKafkaTemplatePodVolumesSecretPatchPtrInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplatePodVolumesSecretPatchPtrOutput() KafkaSpecKafkaTemplatePodVolumesSecretPatchPtrOutput
+	ToKafkaSpecKafkaTemplatePodVolumesSecretPatchPtrOutputWithContext(context.Context) KafkaSpecKafkaTemplatePodVolumesSecretPatchPtrOutput
+}
+
+type kafkaSpecKafkaTemplatePodVolumesSecretPatchPtrType KafkaSpecKafkaTemplatePodVolumesSecretPatchArgs
+
+func KafkaSpecKafkaTemplatePodVolumesSecretPatchPtr(v *KafkaSpecKafkaTemplatePodVolumesSecretPatchArgs) KafkaSpecKafkaTemplatePodVolumesSecretPatchPtrInput {
+	return (*kafkaSpecKafkaTemplatePodVolumesSecretPatchPtrType)(v)
+}
+
+func (*kafkaSpecKafkaTemplatePodVolumesSecretPatchPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecKafkaTemplatePodVolumesSecretPatch)(nil)).Elem()
+}
+
+func (i *kafkaSpecKafkaTemplatePodVolumesSecretPatchPtrType) ToKafkaSpecKafkaTemplatePodVolumesSecretPatchPtrOutput() KafkaSpecKafkaTemplatePodVolumesSecretPatchPtrOutput {
+	return i.ToKafkaSpecKafkaTemplatePodVolumesSecretPatchPtrOutputWithContext(context.Background())
+}
+
+func (i *kafkaSpecKafkaTemplatePodVolumesSecretPatchPtrType) ToKafkaSpecKafkaTemplatePodVolumesSecretPatchPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesSecretPatchPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplatePodVolumesSecretPatchPtrOutput)
+}
+
+// `Secret` to use to populate the volume.
+type KafkaSpecKafkaTemplatePodVolumesSecretPatchOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplatePodVolumesSecretPatchOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesSecretPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesSecretPatchOutput) ToKafkaSpecKafkaTemplatePodVolumesSecretPatchOutput() KafkaSpecKafkaTemplatePodVolumesSecretPatchOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesSecretPatchOutput) ToKafkaSpecKafkaTemplatePodVolumesSecretPatchOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesSecretPatchOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesSecretPatchOutput) ToKafkaSpecKafkaTemplatePodVolumesSecretPatchPtrOutput() KafkaSpecKafkaTemplatePodVolumesSecretPatchPtrOutput {
+	return o.ToKafkaSpecKafkaTemplatePodVolumesSecretPatchPtrOutputWithContext(context.Background())
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesSecretPatchOutput) ToKafkaSpecKafkaTemplatePodVolumesSecretPatchPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesSecretPatchPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v KafkaSpecKafkaTemplatePodVolumesSecretPatch) *KafkaSpecKafkaTemplatePodVolumesSecretPatch {
+		return &v
+	}).(KafkaSpecKafkaTemplatePodVolumesSecretPatchPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesSecretPatchOutput) DefaultMode() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumesSecretPatch) *int { return v.DefaultMode }).(pulumi.IntPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesSecretPatchOutput) Items() KafkaSpecKafkaTemplatePodVolumesSecretItemsPatchArrayOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumesSecretPatch) []KafkaSpecKafkaTemplatePodVolumesSecretItemsPatch {
+		return v.Items
+	}).(KafkaSpecKafkaTemplatePodVolumesSecretItemsPatchArrayOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesSecretPatchOutput) Optional() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumesSecretPatch) *bool { return v.Optional }).(pulumi.BoolPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesSecretPatchOutput) SecretName() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplatePodVolumesSecretPatch) *string { return v.SecretName }).(pulumi.StringPtrOutput)
+}
+
+type KafkaSpecKafkaTemplatePodVolumesSecretPatchPtrOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplatePodVolumesSecretPatchPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecKafkaTemplatePodVolumesSecretPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesSecretPatchPtrOutput) ToKafkaSpecKafkaTemplatePodVolumesSecretPatchPtrOutput() KafkaSpecKafkaTemplatePodVolumesSecretPatchPtrOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesSecretPatchPtrOutput) ToKafkaSpecKafkaTemplatePodVolumesSecretPatchPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplatePodVolumesSecretPatchPtrOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesSecretPatchPtrOutput) Elem() KafkaSpecKafkaTemplatePodVolumesSecretPatchOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodVolumesSecretPatch) KafkaSpecKafkaTemplatePodVolumesSecretPatch {
+		if v != nil {
+			return *v
+		}
+		var ret KafkaSpecKafkaTemplatePodVolumesSecretPatch
+		return ret
+	}).(KafkaSpecKafkaTemplatePodVolumesSecretPatchOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesSecretPatchPtrOutput) DefaultMode() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodVolumesSecretPatch) *int {
+		if v == nil {
+			return nil
+		}
+		return v.DefaultMode
+	}).(pulumi.IntPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesSecretPatchPtrOutput) Items() KafkaSpecKafkaTemplatePodVolumesSecretItemsPatchArrayOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodVolumesSecretPatch) []KafkaSpecKafkaTemplatePodVolumesSecretItemsPatch {
+		if v == nil {
+			return nil
+		}
+		return v.Items
+	}).(KafkaSpecKafkaTemplatePodVolumesSecretItemsPatchArrayOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesSecretPatchPtrOutput) Optional() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodVolumesSecretPatch) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.Optional
+	}).(pulumi.BoolPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplatePodVolumesSecretPatchPtrOutput) SecretName() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplatePodVolumesSecretPatch) *string {
+		if v == nil {
+			return nil
+		}
+		return v.SecretName
+	}).(pulumi.StringPtrOutput)
+}
+
+// Template for the Kafka service account.
+type KafkaSpecKafkaTemplateServiceAccount struct {
+	Metadata *KafkaSpecKafkaTemplateServiceAccountMetadata `pulumi:"metadata"`
+}
+
+// KafkaSpecKafkaTemplateServiceAccountInput is an input type that accepts KafkaSpecKafkaTemplateServiceAccountArgs and KafkaSpecKafkaTemplateServiceAccountOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplateServiceAccountInput` via:
+//
+//	KafkaSpecKafkaTemplateServiceAccountArgs{...}
+type KafkaSpecKafkaTemplateServiceAccountInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplateServiceAccountOutput() KafkaSpecKafkaTemplateServiceAccountOutput
+	ToKafkaSpecKafkaTemplateServiceAccountOutputWithContext(context.Context) KafkaSpecKafkaTemplateServiceAccountOutput
+}
+
+// Template for the Kafka service account.
+type KafkaSpecKafkaTemplateServiceAccountArgs struct {
+	Metadata KafkaSpecKafkaTemplateServiceAccountMetadataPtrInput `pulumi:"metadata"`
+}
+
+func (KafkaSpecKafkaTemplateServiceAccountArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplateServiceAccount)(nil)).Elem()
+}
+
+func (i KafkaSpecKafkaTemplateServiceAccountArgs) ToKafkaSpecKafkaTemplateServiceAccountOutput() KafkaSpecKafkaTemplateServiceAccountOutput {
+	return i.ToKafkaSpecKafkaTemplateServiceAccountOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplateServiceAccountArgs) ToKafkaSpecKafkaTemplateServiceAccountOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplateServiceAccountOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplateServiceAccountOutput)
+}
+
+func (i KafkaSpecKafkaTemplateServiceAccountArgs) ToKafkaSpecKafkaTemplateServiceAccountPtrOutput() KafkaSpecKafkaTemplateServiceAccountPtrOutput {
+	return i.ToKafkaSpecKafkaTemplateServiceAccountPtrOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplateServiceAccountArgs) ToKafkaSpecKafkaTemplateServiceAccountPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplateServiceAccountPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplateServiceAccountOutput).ToKafkaSpecKafkaTemplateServiceAccountPtrOutputWithContext(ctx)
+}
+
+// KafkaSpecKafkaTemplateServiceAccountPtrInput is an input type that accepts KafkaSpecKafkaTemplateServiceAccountArgs, KafkaSpecKafkaTemplateServiceAccountPtr and KafkaSpecKafkaTemplateServiceAccountPtrOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplateServiceAccountPtrInput` via:
+//
+//	        KafkaSpecKafkaTemplateServiceAccountArgs{...}
+//
+//	or:
+//
+//	        nil
+type KafkaSpecKafkaTemplateServiceAccountPtrInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplateServiceAccountPtrOutput() KafkaSpecKafkaTemplateServiceAccountPtrOutput
+	ToKafkaSpecKafkaTemplateServiceAccountPtrOutputWithContext(context.Context) KafkaSpecKafkaTemplateServiceAccountPtrOutput
+}
+
+type kafkaSpecKafkaTemplateServiceAccountPtrType KafkaSpecKafkaTemplateServiceAccountArgs
+
+func KafkaSpecKafkaTemplateServiceAccountPtr(v *KafkaSpecKafkaTemplateServiceAccountArgs) KafkaSpecKafkaTemplateServiceAccountPtrInput {
+	return (*kafkaSpecKafkaTemplateServiceAccountPtrType)(v)
+}
+
+func (*kafkaSpecKafkaTemplateServiceAccountPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecKafkaTemplateServiceAccount)(nil)).Elem()
+}
+
+func (i *kafkaSpecKafkaTemplateServiceAccountPtrType) ToKafkaSpecKafkaTemplateServiceAccountPtrOutput() KafkaSpecKafkaTemplateServiceAccountPtrOutput {
+	return i.ToKafkaSpecKafkaTemplateServiceAccountPtrOutputWithContext(context.Background())
+}
+
+func (i *kafkaSpecKafkaTemplateServiceAccountPtrType) ToKafkaSpecKafkaTemplateServiceAccountPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplateServiceAccountPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplateServiceAccountPtrOutput)
+}
+
+// Template for the Kafka service account.
+type KafkaSpecKafkaTemplateServiceAccountOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplateServiceAccountOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplateServiceAccount)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplateServiceAccountOutput) ToKafkaSpecKafkaTemplateServiceAccountOutput() KafkaSpecKafkaTemplateServiceAccountOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplateServiceAccountOutput) ToKafkaSpecKafkaTemplateServiceAccountOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplateServiceAccountOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplateServiceAccountOutput) ToKafkaSpecKafkaTemplateServiceAccountPtrOutput() KafkaSpecKafkaTemplateServiceAccountPtrOutput {
+	return o.ToKafkaSpecKafkaTemplateServiceAccountPtrOutputWithContext(context.Background())
+}
+
+func (o KafkaSpecKafkaTemplateServiceAccountOutput) ToKafkaSpecKafkaTemplateServiceAccountPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplateServiceAccountPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v KafkaSpecKafkaTemplateServiceAccount) *KafkaSpecKafkaTemplateServiceAccount {
+		return &v
+	}).(KafkaSpecKafkaTemplateServiceAccountPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplateServiceAccountOutput) Metadata() KafkaSpecKafkaTemplateServiceAccountMetadataPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplateServiceAccount) *KafkaSpecKafkaTemplateServiceAccountMetadata {
+		return v.Metadata
+	}).(KafkaSpecKafkaTemplateServiceAccountMetadataPtrOutput)
+}
+
+type KafkaSpecKafkaTemplateServiceAccountPtrOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplateServiceAccountPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecKafkaTemplateServiceAccount)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplateServiceAccountPtrOutput) ToKafkaSpecKafkaTemplateServiceAccountPtrOutput() KafkaSpecKafkaTemplateServiceAccountPtrOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplateServiceAccountPtrOutput) ToKafkaSpecKafkaTemplateServiceAccountPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplateServiceAccountPtrOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplateServiceAccountPtrOutput) Elem() KafkaSpecKafkaTemplateServiceAccountOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplateServiceAccount) KafkaSpecKafkaTemplateServiceAccount {
+		if v != nil {
+			return *v
+		}
+		var ret KafkaSpecKafkaTemplateServiceAccount
+		return ret
+	}).(KafkaSpecKafkaTemplateServiceAccountOutput)
+}
+
+func (o KafkaSpecKafkaTemplateServiceAccountPtrOutput) Metadata() KafkaSpecKafkaTemplateServiceAccountMetadataPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplateServiceAccount) *KafkaSpecKafkaTemplateServiceAccountMetadata {
+		if v == nil {
+			return nil
+		}
+		return v.Metadata
+	}).(KafkaSpecKafkaTemplateServiceAccountMetadataPtrOutput)
+}
+
+// Metadata applied to the resource.
+type KafkaSpecKafkaTemplateServiceAccountMetadata struct {
+	// Annotations added to the Kubernetes resource.
+	Annotations map[string]string `pulumi:"annotations"`
+	// Labels added to the Kubernetes resource.
+	Labels map[string]string `pulumi:"labels"`
+}
+
+// KafkaSpecKafkaTemplateServiceAccountMetadataInput is an input type that accepts KafkaSpecKafkaTemplateServiceAccountMetadataArgs and KafkaSpecKafkaTemplateServiceAccountMetadataOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplateServiceAccountMetadataInput` via:
+//
+//	KafkaSpecKafkaTemplateServiceAccountMetadataArgs{...}
+type KafkaSpecKafkaTemplateServiceAccountMetadataInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplateServiceAccountMetadataOutput() KafkaSpecKafkaTemplateServiceAccountMetadataOutput
+	ToKafkaSpecKafkaTemplateServiceAccountMetadataOutputWithContext(context.Context) KafkaSpecKafkaTemplateServiceAccountMetadataOutput
+}
+
+// Metadata applied to the resource.
+type KafkaSpecKafkaTemplateServiceAccountMetadataArgs struct {
+	// Annotations added to the Kubernetes resource.
+	Annotations pulumi.StringMapInput `pulumi:"annotations"`
+	// Labels added to the Kubernetes resource.
+	Labels pulumi.StringMapInput `pulumi:"labels"`
+}
+
+func (KafkaSpecKafkaTemplateServiceAccountMetadataArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplateServiceAccountMetadata)(nil)).Elem()
+}
+
+func (i KafkaSpecKafkaTemplateServiceAccountMetadataArgs) ToKafkaSpecKafkaTemplateServiceAccountMetadataOutput() KafkaSpecKafkaTemplateServiceAccountMetadataOutput {
+	return i.ToKafkaSpecKafkaTemplateServiceAccountMetadataOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplateServiceAccountMetadataArgs) ToKafkaSpecKafkaTemplateServiceAccountMetadataOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplateServiceAccountMetadataOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplateServiceAccountMetadataOutput)
+}
+
+func (i KafkaSpecKafkaTemplateServiceAccountMetadataArgs) ToKafkaSpecKafkaTemplateServiceAccountMetadataPtrOutput() KafkaSpecKafkaTemplateServiceAccountMetadataPtrOutput {
+	return i.ToKafkaSpecKafkaTemplateServiceAccountMetadataPtrOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplateServiceAccountMetadataArgs) ToKafkaSpecKafkaTemplateServiceAccountMetadataPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplateServiceAccountMetadataPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplateServiceAccountMetadataOutput).ToKafkaSpecKafkaTemplateServiceAccountMetadataPtrOutputWithContext(ctx)
+}
+
+// KafkaSpecKafkaTemplateServiceAccountMetadataPtrInput is an input type that accepts KafkaSpecKafkaTemplateServiceAccountMetadataArgs, KafkaSpecKafkaTemplateServiceAccountMetadataPtr and KafkaSpecKafkaTemplateServiceAccountMetadataPtrOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplateServiceAccountMetadataPtrInput` via:
+//
+//	        KafkaSpecKafkaTemplateServiceAccountMetadataArgs{...}
+//
+//	or:
+//
+//	        nil
+type KafkaSpecKafkaTemplateServiceAccountMetadataPtrInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplateServiceAccountMetadataPtrOutput() KafkaSpecKafkaTemplateServiceAccountMetadataPtrOutput
+	ToKafkaSpecKafkaTemplateServiceAccountMetadataPtrOutputWithContext(context.Context) KafkaSpecKafkaTemplateServiceAccountMetadataPtrOutput
+}
+
+type kafkaSpecKafkaTemplateServiceAccountMetadataPtrType KafkaSpecKafkaTemplateServiceAccountMetadataArgs
+
+func KafkaSpecKafkaTemplateServiceAccountMetadataPtr(v *KafkaSpecKafkaTemplateServiceAccountMetadataArgs) KafkaSpecKafkaTemplateServiceAccountMetadataPtrInput {
+	return (*kafkaSpecKafkaTemplateServiceAccountMetadataPtrType)(v)
+}
+
+func (*kafkaSpecKafkaTemplateServiceAccountMetadataPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecKafkaTemplateServiceAccountMetadata)(nil)).Elem()
+}
+
+func (i *kafkaSpecKafkaTemplateServiceAccountMetadataPtrType) ToKafkaSpecKafkaTemplateServiceAccountMetadataPtrOutput() KafkaSpecKafkaTemplateServiceAccountMetadataPtrOutput {
+	return i.ToKafkaSpecKafkaTemplateServiceAccountMetadataPtrOutputWithContext(context.Background())
+}
+
+func (i *kafkaSpecKafkaTemplateServiceAccountMetadataPtrType) ToKafkaSpecKafkaTemplateServiceAccountMetadataPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplateServiceAccountMetadataPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplateServiceAccountMetadataPtrOutput)
+}
+
+// Metadata applied to the resource.
+type KafkaSpecKafkaTemplateServiceAccountMetadataOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplateServiceAccountMetadataOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplateServiceAccountMetadata)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplateServiceAccountMetadataOutput) ToKafkaSpecKafkaTemplateServiceAccountMetadataOutput() KafkaSpecKafkaTemplateServiceAccountMetadataOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplateServiceAccountMetadataOutput) ToKafkaSpecKafkaTemplateServiceAccountMetadataOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplateServiceAccountMetadataOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplateServiceAccountMetadataOutput) ToKafkaSpecKafkaTemplateServiceAccountMetadataPtrOutput() KafkaSpecKafkaTemplateServiceAccountMetadataPtrOutput {
+	return o.ToKafkaSpecKafkaTemplateServiceAccountMetadataPtrOutputWithContext(context.Background())
+}
+
+func (o KafkaSpecKafkaTemplateServiceAccountMetadataOutput) ToKafkaSpecKafkaTemplateServiceAccountMetadataPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplateServiceAccountMetadataPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v KafkaSpecKafkaTemplateServiceAccountMetadata) *KafkaSpecKafkaTemplateServiceAccountMetadata {
+		return &v
+	}).(KafkaSpecKafkaTemplateServiceAccountMetadataPtrOutput)
+}
+
+// Annotations added to the Kubernetes resource.
+func (o KafkaSpecKafkaTemplateServiceAccountMetadataOutput) Annotations() pulumi.StringMapOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplateServiceAccountMetadata) map[string]string { return v.Annotations }).(pulumi.StringMapOutput)
+}
+
+// Labels added to the Kubernetes resource.
+func (o KafkaSpecKafkaTemplateServiceAccountMetadataOutput) Labels() pulumi.StringMapOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplateServiceAccountMetadata) map[string]string { return v.Labels }).(pulumi.StringMapOutput)
+}
+
+type KafkaSpecKafkaTemplateServiceAccountMetadataPtrOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplateServiceAccountMetadataPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecKafkaTemplateServiceAccountMetadata)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplateServiceAccountMetadataPtrOutput) ToKafkaSpecKafkaTemplateServiceAccountMetadataPtrOutput() KafkaSpecKafkaTemplateServiceAccountMetadataPtrOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplateServiceAccountMetadataPtrOutput) ToKafkaSpecKafkaTemplateServiceAccountMetadataPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplateServiceAccountMetadataPtrOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplateServiceAccountMetadataPtrOutput) Elem() KafkaSpecKafkaTemplateServiceAccountMetadataOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplateServiceAccountMetadata) KafkaSpecKafkaTemplateServiceAccountMetadata {
+		if v != nil {
+			return *v
+		}
+		var ret KafkaSpecKafkaTemplateServiceAccountMetadata
+		return ret
+	}).(KafkaSpecKafkaTemplateServiceAccountMetadataOutput)
+}
+
+// Annotations added to the Kubernetes resource.
+func (o KafkaSpecKafkaTemplateServiceAccountMetadataPtrOutput) Annotations() pulumi.StringMapOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplateServiceAccountMetadata) map[string]string {
+		if v == nil {
+			return nil
+		}
+		return v.Annotations
+	}).(pulumi.StringMapOutput)
+}
+
+// Labels added to the Kubernetes resource.
+func (o KafkaSpecKafkaTemplateServiceAccountMetadataPtrOutput) Labels() pulumi.StringMapOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplateServiceAccountMetadata) map[string]string {
+		if v == nil {
+			return nil
+		}
+		return v.Labels
+	}).(pulumi.StringMapOutput)
+}
+
+// Metadata applied to the resource.
+type KafkaSpecKafkaTemplateServiceAccountMetadataPatch struct {
+	// Annotations added to the Kubernetes resource.
+	Annotations map[string]string `pulumi:"annotations"`
+	// Labels added to the Kubernetes resource.
+	Labels map[string]string `pulumi:"labels"`
+}
+
+// KafkaSpecKafkaTemplateServiceAccountMetadataPatchInput is an input type that accepts KafkaSpecKafkaTemplateServiceAccountMetadataPatchArgs and KafkaSpecKafkaTemplateServiceAccountMetadataPatchOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplateServiceAccountMetadataPatchInput` via:
+//
+//	KafkaSpecKafkaTemplateServiceAccountMetadataPatchArgs{...}
+type KafkaSpecKafkaTemplateServiceAccountMetadataPatchInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplateServiceAccountMetadataPatchOutput() KafkaSpecKafkaTemplateServiceAccountMetadataPatchOutput
+	ToKafkaSpecKafkaTemplateServiceAccountMetadataPatchOutputWithContext(context.Context) KafkaSpecKafkaTemplateServiceAccountMetadataPatchOutput
+}
+
+// Metadata applied to the resource.
+type KafkaSpecKafkaTemplateServiceAccountMetadataPatchArgs struct {
+	// Annotations added to the Kubernetes resource.
+	Annotations pulumi.StringMapInput `pulumi:"annotations"`
+	// Labels added to the Kubernetes resource.
+	Labels pulumi.StringMapInput `pulumi:"labels"`
+}
+
+func (KafkaSpecKafkaTemplateServiceAccountMetadataPatchArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplateServiceAccountMetadataPatch)(nil)).Elem()
+}
+
+func (i KafkaSpecKafkaTemplateServiceAccountMetadataPatchArgs) ToKafkaSpecKafkaTemplateServiceAccountMetadataPatchOutput() KafkaSpecKafkaTemplateServiceAccountMetadataPatchOutput {
+	return i.ToKafkaSpecKafkaTemplateServiceAccountMetadataPatchOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplateServiceAccountMetadataPatchArgs) ToKafkaSpecKafkaTemplateServiceAccountMetadataPatchOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplateServiceAccountMetadataPatchOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplateServiceAccountMetadataPatchOutput)
+}
+
+func (i KafkaSpecKafkaTemplateServiceAccountMetadataPatchArgs) ToKafkaSpecKafkaTemplateServiceAccountMetadataPatchPtrOutput() KafkaSpecKafkaTemplateServiceAccountMetadataPatchPtrOutput {
+	return i.ToKafkaSpecKafkaTemplateServiceAccountMetadataPatchPtrOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplateServiceAccountMetadataPatchArgs) ToKafkaSpecKafkaTemplateServiceAccountMetadataPatchPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplateServiceAccountMetadataPatchPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplateServiceAccountMetadataPatchOutput).ToKafkaSpecKafkaTemplateServiceAccountMetadataPatchPtrOutputWithContext(ctx)
+}
+
+// KafkaSpecKafkaTemplateServiceAccountMetadataPatchPtrInput is an input type that accepts KafkaSpecKafkaTemplateServiceAccountMetadataPatchArgs, KafkaSpecKafkaTemplateServiceAccountMetadataPatchPtr and KafkaSpecKafkaTemplateServiceAccountMetadataPatchPtrOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplateServiceAccountMetadataPatchPtrInput` via:
+//
+//	        KafkaSpecKafkaTemplateServiceAccountMetadataPatchArgs{...}
+//
+//	or:
+//
+//	        nil
+type KafkaSpecKafkaTemplateServiceAccountMetadataPatchPtrInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplateServiceAccountMetadataPatchPtrOutput() KafkaSpecKafkaTemplateServiceAccountMetadataPatchPtrOutput
+	ToKafkaSpecKafkaTemplateServiceAccountMetadataPatchPtrOutputWithContext(context.Context) KafkaSpecKafkaTemplateServiceAccountMetadataPatchPtrOutput
+}
+
+type kafkaSpecKafkaTemplateServiceAccountMetadataPatchPtrType KafkaSpecKafkaTemplateServiceAccountMetadataPatchArgs
+
+func KafkaSpecKafkaTemplateServiceAccountMetadataPatchPtr(v *KafkaSpecKafkaTemplateServiceAccountMetadataPatchArgs) KafkaSpecKafkaTemplateServiceAccountMetadataPatchPtrInput {
+	return (*kafkaSpecKafkaTemplateServiceAccountMetadataPatchPtrType)(v)
+}
+
+func (*kafkaSpecKafkaTemplateServiceAccountMetadataPatchPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecKafkaTemplateServiceAccountMetadataPatch)(nil)).Elem()
+}
+
+func (i *kafkaSpecKafkaTemplateServiceAccountMetadataPatchPtrType) ToKafkaSpecKafkaTemplateServiceAccountMetadataPatchPtrOutput() KafkaSpecKafkaTemplateServiceAccountMetadataPatchPtrOutput {
+	return i.ToKafkaSpecKafkaTemplateServiceAccountMetadataPatchPtrOutputWithContext(context.Background())
+}
+
+func (i *kafkaSpecKafkaTemplateServiceAccountMetadataPatchPtrType) ToKafkaSpecKafkaTemplateServiceAccountMetadataPatchPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplateServiceAccountMetadataPatchPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplateServiceAccountMetadataPatchPtrOutput)
+}
+
+// Metadata applied to the resource.
+type KafkaSpecKafkaTemplateServiceAccountMetadataPatchOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplateServiceAccountMetadataPatchOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplateServiceAccountMetadataPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplateServiceAccountMetadataPatchOutput) ToKafkaSpecKafkaTemplateServiceAccountMetadataPatchOutput() KafkaSpecKafkaTemplateServiceAccountMetadataPatchOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplateServiceAccountMetadataPatchOutput) ToKafkaSpecKafkaTemplateServiceAccountMetadataPatchOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplateServiceAccountMetadataPatchOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplateServiceAccountMetadataPatchOutput) ToKafkaSpecKafkaTemplateServiceAccountMetadataPatchPtrOutput() KafkaSpecKafkaTemplateServiceAccountMetadataPatchPtrOutput {
+	return o.ToKafkaSpecKafkaTemplateServiceAccountMetadataPatchPtrOutputWithContext(context.Background())
+}
+
+func (o KafkaSpecKafkaTemplateServiceAccountMetadataPatchOutput) ToKafkaSpecKafkaTemplateServiceAccountMetadataPatchPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplateServiceAccountMetadataPatchPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v KafkaSpecKafkaTemplateServiceAccountMetadataPatch) *KafkaSpecKafkaTemplateServiceAccountMetadataPatch {
+		return &v
+	}).(KafkaSpecKafkaTemplateServiceAccountMetadataPatchPtrOutput)
+}
+
+// Annotations added to the Kubernetes resource.
+func (o KafkaSpecKafkaTemplateServiceAccountMetadataPatchOutput) Annotations() pulumi.StringMapOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplateServiceAccountMetadataPatch) map[string]string { return v.Annotations }).(pulumi.StringMapOutput)
+}
+
+// Labels added to the Kubernetes resource.
+func (o KafkaSpecKafkaTemplateServiceAccountMetadataPatchOutput) Labels() pulumi.StringMapOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplateServiceAccountMetadataPatch) map[string]string { return v.Labels }).(pulumi.StringMapOutput)
+}
+
+type KafkaSpecKafkaTemplateServiceAccountMetadataPatchPtrOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplateServiceAccountMetadataPatchPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecKafkaTemplateServiceAccountMetadataPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplateServiceAccountMetadataPatchPtrOutput) ToKafkaSpecKafkaTemplateServiceAccountMetadataPatchPtrOutput() KafkaSpecKafkaTemplateServiceAccountMetadataPatchPtrOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplateServiceAccountMetadataPatchPtrOutput) ToKafkaSpecKafkaTemplateServiceAccountMetadataPatchPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplateServiceAccountMetadataPatchPtrOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplateServiceAccountMetadataPatchPtrOutput) Elem() KafkaSpecKafkaTemplateServiceAccountMetadataPatchOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplateServiceAccountMetadataPatch) KafkaSpecKafkaTemplateServiceAccountMetadataPatch {
+		if v != nil {
+			return *v
+		}
+		var ret KafkaSpecKafkaTemplateServiceAccountMetadataPatch
+		return ret
+	}).(KafkaSpecKafkaTemplateServiceAccountMetadataPatchOutput)
+}
+
+// Annotations added to the Kubernetes resource.
+func (o KafkaSpecKafkaTemplateServiceAccountMetadataPatchPtrOutput) Annotations() pulumi.StringMapOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplateServiceAccountMetadataPatch) map[string]string {
+		if v == nil {
+			return nil
+		}
+		return v.Annotations
+	}).(pulumi.StringMapOutput)
+}
+
+// Labels added to the Kubernetes resource.
+func (o KafkaSpecKafkaTemplateServiceAccountMetadataPatchPtrOutput) Labels() pulumi.StringMapOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplateServiceAccountMetadataPatch) map[string]string {
+		if v == nil {
+			return nil
+		}
+		return v.Labels
+	}).(pulumi.StringMapOutput)
+}
+
+// Template for the Kafka service account.
+type KafkaSpecKafkaTemplateServiceAccountPatch struct {
+	Metadata *KafkaSpecKafkaTemplateServiceAccountMetadataPatch `pulumi:"metadata"`
+}
+
+// KafkaSpecKafkaTemplateServiceAccountPatchInput is an input type that accepts KafkaSpecKafkaTemplateServiceAccountPatchArgs and KafkaSpecKafkaTemplateServiceAccountPatchOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplateServiceAccountPatchInput` via:
+//
+//	KafkaSpecKafkaTemplateServiceAccountPatchArgs{...}
+type KafkaSpecKafkaTemplateServiceAccountPatchInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplateServiceAccountPatchOutput() KafkaSpecKafkaTemplateServiceAccountPatchOutput
+	ToKafkaSpecKafkaTemplateServiceAccountPatchOutputWithContext(context.Context) KafkaSpecKafkaTemplateServiceAccountPatchOutput
+}
+
+// Template for the Kafka service account.
+type KafkaSpecKafkaTemplateServiceAccountPatchArgs struct {
+	Metadata KafkaSpecKafkaTemplateServiceAccountMetadataPatchPtrInput `pulumi:"metadata"`
+}
+
+func (KafkaSpecKafkaTemplateServiceAccountPatchArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplateServiceAccountPatch)(nil)).Elem()
+}
+
+func (i KafkaSpecKafkaTemplateServiceAccountPatchArgs) ToKafkaSpecKafkaTemplateServiceAccountPatchOutput() KafkaSpecKafkaTemplateServiceAccountPatchOutput {
+	return i.ToKafkaSpecKafkaTemplateServiceAccountPatchOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplateServiceAccountPatchArgs) ToKafkaSpecKafkaTemplateServiceAccountPatchOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplateServiceAccountPatchOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplateServiceAccountPatchOutput)
+}
+
+func (i KafkaSpecKafkaTemplateServiceAccountPatchArgs) ToKafkaSpecKafkaTemplateServiceAccountPatchPtrOutput() KafkaSpecKafkaTemplateServiceAccountPatchPtrOutput {
+	return i.ToKafkaSpecKafkaTemplateServiceAccountPatchPtrOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplateServiceAccountPatchArgs) ToKafkaSpecKafkaTemplateServiceAccountPatchPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplateServiceAccountPatchPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplateServiceAccountPatchOutput).ToKafkaSpecKafkaTemplateServiceAccountPatchPtrOutputWithContext(ctx)
+}
+
+// KafkaSpecKafkaTemplateServiceAccountPatchPtrInput is an input type that accepts KafkaSpecKafkaTemplateServiceAccountPatchArgs, KafkaSpecKafkaTemplateServiceAccountPatchPtr and KafkaSpecKafkaTemplateServiceAccountPatchPtrOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplateServiceAccountPatchPtrInput` via:
+//
+//	        KafkaSpecKafkaTemplateServiceAccountPatchArgs{...}
+//
+//	or:
+//
+//	        nil
+type KafkaSpecKafkaTemplateServiceAccountPatchPtrInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplateServiceAccountPatchPtrOutput() KafkaSpecKafkaTemplateServiceAccountPatchPtrOutput
+	ToKafkaSpecKafkaTemplateServiceAccountPatchPtrOutputWithContext(context.Context) KafkaSpecKafkaTemplateServiceAccountPatchPtrOutput
+}
+
+type kafkaSpecKafkaTemplateServiceAccountPatchPtrType KafkaSpecKafkaTemplateServiceAccountPatchArgs
+
+func KafkaSpecKafkaTemplateServiceAccountPatchPtr(v *KafkaSpecKafkaTemplateServiceAccountPatchArgs) KafkaSpecKafkaTemplateServiceAccountPatchPtrInput {
+	return (*kafkaSpecKafkaTemplateServiceAccountPatchPtrType)(v)
+}
+
+func (*kafkaSpecKafkaTemplateServiceAccountPatchPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecKafkaTemplateServiceAccountPatch)(nil)).Elem()
+}
+
+func (i *kafkaSpecKafkaTemplateServiceAccountPatchPtrType) ToKafkaSpecKafkaTemplateServiceAccountPatchPtrOutput() KafkaSpecKafkaTemplateServiceAccountPatchPtrOutput {
+	return i.ToKafkaSpecKafkaTemplateServiceAccountPatchPtrOutputWithContext(context.Background())
+}
+
+func (i *kafkaSpecKafkaTemplateServiceAccountPatchPtrType) ToKafkaSpecKafkaTemplateServiceAccountPatchPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplateServiceAccountPatchPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplateServiceAccountPatchPtrOutput)
+}
+
+// Template for the Kafka service account.
+type KafkaSpecKafkaTemplateServiceAccountPatchOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplateServiceAccountPatchOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplateServiceAccountPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplateServiceAccountPatchOutput) ToKafkaSpecKafkaTemplateServiceAccountPatchOutput() KafkaSpecKafkaTemplateServiceAccountPatchOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplateServiceAccountPatchOutput) ToKafkaSpecKafkaTemplateServiceAccountPatchOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplateServiceAccountPatchOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplateServiceAccountPatchOutput) ToKafkaSpecKafkaTemplateServiceAccountPatchPtrOutput() KafkaSpecKafkaTemplateServiceAccountPatchPtrOutput {
+	return o.ToKafkaSpecKafkaTemplateServiceAccountPatchPtrOutputWithContext(context.Background())
+}
+
+func (o KafkaSpecKafkaTemplateServiceAccountPatchOutput) ToKafkaSpecKafkaTemplateServiceAccountPatchPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplateServiceAccountPatchPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v KafkaSpecKafkaTemplateServiceAccountPatch) *KafkaSpecKafkaTemplateServiceAccountPatch {
+		return &v
+	}).(KafkaSpecKafkaTemplateServiceAccountPatchPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplateServiceAccountPatchOutput) Metadata() KafkaSpecKafkaTemplateServiceAccountMetadataPatchPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplateServiceAccountPatch) *KafkaSpecKafkaTemplateServiceAccountMetadataPatch {
+		return v.Metadata
+	}).(KafkaSpecKafkaTemplateServiceAccountMetadataPatchPtrOutput)
+}
+
+type KafkaSpecKafkaTemplateServiceAccountPatchPtrOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplateServiceAccountPatchPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecKafkaTemplateServiceAccountPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplateServiceAccountPatchPtrOutput) ToKafkaSpecKafkaTemplateServiceAccountPatchPtrOutput() KafkaSpecKafkaTemplateServiceAccountPatchPtrOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplateServiceAccountPatchPtrOutput) ToKafkaSpecKafkaTemplateServiceAccountPatchPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplateServiceAccountPatchPtrOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplateServiceAccountPatchPtrOutput) Elem() KafkaSpecKafkaTemplateServiceAccountPatchOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplateServiceAccountPatch) KafkaSpecKafkaTemplateServiceAccountPatch {
+		if v != nil {
+			return *v
+		}
+		var ret KafkaSpecKafkaTemplateServiceAccountPatch
+		return ret
+	}).(KafkaSpecKafkaTemplateServiceAccountPatchOutput)
+}
+
+func (o KafkaSpecKafkaTemplateServiceAccountPatchPtrOutput) Metadata() KafkaSpecKafkaTemplateServiceAccountMetadataPatchPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplateServiceAccountPatch) *KafkaSpecKafkaTemplateServiceAccountMetadataPatch {
+		if v == nil {
+			return nil
+		}
+		return v.Metadata
+	}).(KafkaSpecKafkaTemplateServiceAccountMetadataPatchPtrOutput)
+}
+
+// Template for Kafka `StatefulSet`.
+type KafkaSpecKafkaTemplateStatefulset struct {
+	Metadata *KafkaSpecKafkaTemplateStatefulsetMetadata `pulumi:"metadata"`
+	// PodManagementPolicy which will be used for this StatefulSet. Valid values are `Parallel` and `OrderedReady`. Defaults to `Parallel`.
+	PodManagementPolicy *string `pulumi:"podManagementPolicy"`
+}
+
+// KafkaSpecKafkaTemplateStatefulsetInput is an input type that accepts KafkaSpecKafkaTemplateStatefulsetArgs and KafkaSpecKafkaTemplateStatefulsetOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplateStatefulsetInput` via:
+//
+//	KafkaSpecKafkaTemplateStatefulsetArgs{...}
+type KafkaSpecKafkaTemplateStatefulsetInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplateStatefulsetOutput() KafkaSpecKafkaTemplateStatefulsetOutput
+	ToKafkaSpecKafkaTemplateStatefulsetOutputWithContext(context.Context) KafkaSpecKafkaTemplateStatefulsetOutput
+}
+
+// Template for Kafka `StatefulSet`.
+type KafkaSpecKafkaTemplateStatefulsetArgs struct {
+	Metadata KafkaSpecKafkaTemplateStatefulsetMetadataPtrInput `pulumi:"metadata"`
+	// PodManagementPolicy which will be used for this StatefulSet. Valid values are `Parallel` and `OrderedReady`. Defaults to `Parallel`.
+	PodManagementPolicy pulumi.StringPtrInput `pulumi:"podManagementPolicy"`
+}
+
+func (KafkaSpecKafkaTemplateStatefulsetArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplateStatefulset)(nil)).Elem()
+}
+
+func (i KafkaSpecKafkaTemplateStatefulsetArgs) ToKafkaSpecKafkaTemplateStatefulsetOutput() KafkaSpecKafkaTemplateStatefulsetOutput {
+	return i.ToKafkaSpecKafkaTemplateStatefulsetOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplateStatefulsetArgs) ToKafkaSpecKafkaTemplateStatefulsetOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplateStatefulsetOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplateStatefulsetOutput)
+}
+
+func (i KafkaSpecKafkaTemplateStatefulsetArgs) ToKafkaSpecKafkaTemplateStatefulsetPtrOutput() KafkaSpecKafkaTemplateStatefulsetPtrOutput {
+	return i.ToKafkaSpecKafkaTemplateStatefulsetPtrOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplateStatefulsetArgs) ToKafkaSpecKafkaTemplateStatefulsetPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplateStatefulsetPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplateStatefulsetOutput).ToKafkaSpecKafkaTemplateStatefulsetPtrOutputWithContext(ctx)
+}
+
+// KafkaSpecKafkaTemplateStatefulsetPtrInput is an input type that accepts KafkaSpecKafkaTemplateStatefulsetArgs, KafkaSpecKafkaTemplateStatefulsetPtr and KafkaSpecKafkaTemplateStatefulsetPtrOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplateStatefulsetPtrInput` via:
+//
+//	        KafkaSpecKafkaTemplateStatefulsetArgs{...}
+//
+//	or:
+//
+//	        nil
+type KafkaSpecKafkaTemplateStatefulsetPtrInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplateStatefulsetPtrOutput() KafkaSpecKafkaTemplateStatefulsetPtrOutput
+	ToKafkaSpecKafkaTemplateStatefulsetPtrOutputWithContext(context.Context) KafkaSpecKafkaTemplateStatefulsetPtrOutput
+}
+
+type kafkaSpecKafkaTemplateStatefulsetPtrType KafkaSpecKafkaTemplateStatefulsetArgs
+
+func KafkaSpecKafkaTemplateStatefulsetPtr(v *KafkaSpecKafkaTemplateStatefulsetArgs) KafkaSpecKafkaTemplateStatefulsetPtrInput {
+	return (*kafkaSpecKafkaTemplateStatefulsetPtrType)(v)
+}
+
+func (*kafkaSpecKafkaTemplateStatefulsetPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecKafkaTemplateStatefulset)(nil)).Elem()
+}
+
+func (i *kafkaSpecKafkaTemplateStatefulsetPtrType) ToKafkaSpecKafkaTemplateStatefulsetPtrOutput() KafkaSpecKafkaTemplateStatefulsetPtrOutput {
+	return i.ToKafkaSpecKafkaTemplateStatefulsetPtrOutputWithContext(context.Background())
+}
+
+func (i *kafkaSpecKafkaTemplateStatefulsetPtrType) ToKafkaSpecKafkaTemplateStatefulsetPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplateStatefulsetPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplateStatefulsetPtrOutput)
+}
+
+// Template for Kafka `StatefulSet`.
+type KafkaSpecKafkaTemplateStatefulsetOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplateStatefulsetOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplateStatefulset)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplateStatefulsetOutput) ToKafkaSpecKafkaTemplateStatefulsetOutput() KafkaSpecKafkaTemplateStatefulsetOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplateStatefulsetOutput) ToKafkaSpecKafkaTemplateStatefulsetOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplateStatefulsetOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplateStatefulsetOutput) ToKafkaSpecKafkaTemplateStatefulsetPtrOutput() KafkaSpecKafkaTemplateStatefulsetPtrOutput {
+	return o.ToKafkaSpecKafkaTemplateStatefulsetPtrOutputWithContext(context.Background())
+}
+
+func (o KafkaSpecKafkaTemplateStatefulsetOutput) ToKafkaSpecKafkaTemplateStatefulsetPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplateStatefulsetPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v KafkaSpecKafkaTemplateStatefulset) *KafkaSpecKafkaTemplateStatefulset {
+		return &v
+	}).(KafkaSpecKafkaTemplateStatefulsetPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplateStatefulsetOutput) Metadata() KafkaSpecKafkaTemplateStatefulsetMetadataPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplateStatefulset) *KafkaSpecKafkaTemplateStatefulsetMetadata {
+		return v.Metadata
+	}).(KafkaSpecKafkaTemplateStatefulsetMetadataPtrOutput)
+}
+
+// PodManagementPolicy which will be used for this StatefulSet. Valid values are `Parallel` and `OrderedReady`. Defaults to `Parallel`.
+func (o KafkaSpecKafkaTemplateStatefulsetOutput) PodManagementPolicy() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplateStatefulset) *string { return v.PodManagementPolicy }).(pulumi.StringPtrOutput)
+}
+
+type KafkaSpecKafkaTemplateStatefulsetPtrOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplateStatefulsetPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecKafkaTemplateStatefulset)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplateStatefulsetPtrOutput) ToKafkaSpecKafkaTemplateStatefulsetPtrOutput() KafkaSpecKafkaTemplateStatefulsetPtrOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplateStatefulsetPtrOutput) ToKafkaSpecKafkaTemplateStatefulsetPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplateStatefulsetPtrOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplateStatefulsetPtrOutput) Elem() KafkaSpecKafkaTemplateStatefulsetOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplateStatefulset) KafkaSpecKafkaTemplateStatefulset {
+		if v != nil {
+			return *v
+		}
+		var ret KafkaSpecKafkaTemplateStatefulset
+		return ret
+	}).(KafkaSpecKafkaTemplateStatefulsetOutput)
+}
+
+func (o KafkaSpecKafkaTemplateStatefulsetPtrOutput) Metadata() KafkaSpecKafkaTemplateStatefulsetMetadataPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplateStatefulset) *KafkaSpecKafkaTemplateStatefulsetMetadata {
+		if v == nil {
+			return nil
+		}
+		return v.Metadata
+	}).(KafkaSpecKafkaTemplateStatefulsetMetadataPtrOutput)
+}
+
+// PodManagementPolicy which will be used for this StatefulSet. Valid values are `Parallel` and `OrderedReady`. Defaults to `Parallel`.
+func (o KafkaSpecKafkaTemplateStatefulsetPtrOutput) PodManagementPolicy() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplateStatefulset) *string {
+		if v == nil {
+			return nil
+		}
+		return v.PodManagementPolicy
+	}).(pulumi.StringPtrOutput)
+}
+
+// Metadata applied to the resource.
+type KafkaSpecKafkaTemplateStatefulsetMetadata struct {
+	// Annotations added to the Kubernetes resource.
+	Annotations map[string]string `pulumi:"annotations"`
+	// Labels added to the Kubernetes resource.
+	Labels map[string]string `pulumi:"labels"`
+}
+
+// KafkaSpecKafkaTemplateStatefulsetMetadataInput is an input type that accepts KafkaSpecKafkaTemplateStatefulsetMetadataArgs and KafkaSpecKafkaTemplateStatefulsetMetadataOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplateStatefulsetMetadataInput` via:
+//
+//	KafkaSpecKafkaTemplateStatefulsetMetadataArgs{...}
+type KafkaSpecKafkaTemplateStatefulsetMetadataInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplateStatefulsetMetadataOutput() KafkaSpecKafkaTemplateStatefulsetMetadataOutput
+	ToKafkaSpecKafkaTemplateStatefulsetMetadataOutputWithContext(context.Context) KafkaSpecKafkaTemplateStatefulsetMetadataOutput
+}
+
+// Metadata applied to the resource.
+type KafkaSpecKafkaTemplateStatefulsetMetadataArgs struct {
+	// Annotations added to the Kubernetes resource.
+	Annotations pulumi.StringMapInput `pulumi:"annotations"`
+	// Labels added to the Kubernetes resource.
+	Labels pulumi.StringMapInput `pulumi:"labels"`
+}
+
+func (KafkaSpecKafkaTemplateStatefulsetMetadataArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplateStatefulsetMetadata)(nil)).Elem()
+}
+
+func (i KafkaSpecKafkaTemplateStatefulsetMetadataArgs) ToKafkaSpecKafkaTemplateStatefulsetMetadataOutput() KafkaSpecKafkaTemplateStatefulsetMetadataOutput {
+	return i.ToKafkaSpecKafkaTemplateStatefulsetMetadataOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplateStatefulsetMetadataArgs) ToKafkaSpecKafkaTemplateStatefulsetMetadataOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplateStatefulsetMetadataOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplateStatefulsetMetadataOutput)
+}
+
+func (i KafkaSpecKafkaTemplateStatefulsetMetadataArgs) ToKafkaSpecKafkaTemplateStatefulsetMetadataPtrOutput() KafkaSpecKafkaTemplateStatefulsetMetadataPtrOutput {
+	return i.ToKafkaSpecKafkaTemplateStatefulsetMetadataPtrOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplateStatefulsetMetadataArgs) ToKafkaSpecKafkaTemplateStatefulsetMetadataPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplateStatefulsetMetadataPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplateStatefulsetMetadataOutput).ToKafkaSpecKafkaTemplateStatefulsetMetadataPtrOutputWithContext(ctx)
+}
+
+// KafkaSpecKafkaTemplateStatefulsetMetadataPtrInput is an input type that accepts KafkaSpecKafkaTemplateStatefulsetMetadataArgs, KafkaSpecKafkaTemplateStatefulsetMetadataPtr and KafkaSpecKafkaTemplateStatefulsetMetadataPtrOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplateStatefulsetMetadataPtrInput` via:
+//
+//	        KafkaSpecKafkaTemplateStatefulsetMetadataArgs{...}
+//
+//	or:
+//
+//	        nil
+type KafkaSpecKafkaTemplateStatefulsetMetadataPtrInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplateStatefulsetMetadataPtrOutput() KafkaSpecKafkaTemplateStatefulsetMetadataPtrOutput
+	ToKafkaSpecKafkaTemplateStatefulsetMetadataPtrOutputWithContext(context.Context) KafkaSpecKafkaTemplateStatefulsetMetadataPtrOutput
+}
+
+type kafkaSpecKafkaTemplateStatefulsetMetadataPtrType KafkaSpecKafkaTemplateStatefulsetMetadataArgs
+
+func KafkaSpecKafkaTemplateStatefulsetMetadataPtr(v *KafkaSpecKafkaTemplateStatefulsetMetadataArgs) KafkaSpecKafkaTemplateStatefulsetMetadataPtrInput {
+	return (*kafkaSpecKafkaTemplateStatefulsetMetadataPtrType)(v)
+}
+
+func (*kafkaSpecKafkaTemplateStatefulsetMetadataPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecKafkaTemplateStatefulsetMetadata)(nil)).Elem()
+}
+
+func (i *kafkaSpecKafkaTemplateStatefulsetMetadataPtrType) ToKafkaSpecKafkaTemplateStatefulsetMetadataPtrOutput() KafkaSpecKafkaTemplateStatefulsetMetadataPtrOutput {
+	return i.ToKafkaSpecKafkaTemplateStatefulsetMetadataPtrOutputWithContext(context.Background())
+}
+
+func (i *kafkaSpecKafkaTemplateStatefulsetMetadataPtrType) ToKafkaSpecKafkaTemplateStatefulsetMetadataPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplateStatefulsetMetadataPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplateStatefulsetMetadataPtrOutput)
+}
+
+// Metadata applied to the resource.
+type KafkaSpecKafkaTemplateStatefulsetMetadataOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplateStatefulsetMetadataOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplateStatefulsetMetadata)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplateStatefulsetMetadataOutput) ToKafkaSpecKafkaTemplateStatefulsetMetadataOutput() KafkaSpecKafkaTemplateStatefulsetMetadataOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplateStatefulsetMetadataOutput) ToKafkaSpecKafkaTemplateStatefulsetMetadataOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplateStatefulsetMetadataOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplateStatefulsetMetadataOutput) ToKafkaSpecKafkaTemplateStatefulsetMetadataPtrOutput() KafkaSpecKafkaTemplateStatefulsetMetadataPtrOutput {
+	return o.ToKafkaSpecKafkaTemplateStatefulsetMetadataPtrOutputWithContext(context.Background())
+}
+
+func (o KafkaSpecKafkaTemplateStatefulsetMetadataOutput) ToKafkaSpecKafkaTemplateStatefulsetMetadataPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplateStatefulsetMetadataPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v KafkaSpecKafkaTemplateStatefulsetMetadata) *KafkaSpecKafkaTemplateStatefulsetMetadata {
+		return &v
+	}).(KafkaSpecKafkaTemplateStatefulsetMetadataPtrOutput)
+}
+
+// Annotations added to the Kubernetes resource.
+func (o KafkaSpecKafkaTemplateStatefulsetMetadataOutput) Annotations() pulumi.StringMapOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplateStatefulsetMetadata) map[string]string { return v.Annotations }).(pulumi.StringMapOutput)
+}
+
+// Labels added to the Kubernetes resource.
+func (o KafkaSpecKafkaTemplateStatefulsetMetadataOutput) Labels() pulumi.StringMapOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplateStatefulsetMetadata) map[string]string { return v.Labels }).(pulumi.StringMapOutput)
+}
+
+type KafkaSpecKafkaTemplateStatefulsetMetadataPtrOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplateStatefulsetMetadataPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecKafkaTemplateStatefulsetMetadata)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplateStatefulsetMetadataPtrOutput) ToKafkaSpecKafkaTemplateStatefulsetMetadataPtrOutput() KafkaSpecKafkaTemplateStatefulsetMetadataPtrOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplateStatefulsetMetadataPtrOutput) ToKafkaSpecKafkaTemplateStatefulsetMetadataPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplateStatefulsetMetadataPtrOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplateStatefulsetMetadataPtrOutput) Elem() KafkaSpecKafkaTemplateStatefulsetMetadataOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplateStatefulsetMetadata) KafkaSpecKafkaTemplateStatefulsetMetadata {
+		if v != nil {
+			return *v
+		}
+		var ret KafkaSpecKafkaTemplateStatefulsetMetadata
+		return ret
+	}).(KafkaSpecKafkaTemplateStatefulsetMetadataOutput)
+}
+
+// Annotations added to the Kubernetes resource.
+func (o KafkaSpecKafkaTemplateStatefulsetMetadataPtrOutput) Annotations() pulumi.StringMapOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplateStatefulsetMetadata) map[string]string {
+		if v == nil {
+			return nil
+		}
+		return v.Annotations
+	}).(pulumi.StringMapOutput)
+}
+
+// Labels added to the Kubernetes resource.
+func (o KafkaSpecKafkaTemplateStatefulsetMetadataPtrOutput) Labels() pulumi.StringMapOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplateStatefulsetMetadata) map[string]string {
+		if v == nil {
+			return nil
+		}
+		return v.Labels
+	}).(pulumi.StringMapOutput)
+}
+
+// Metadata applied to the resource.
+type KafkaSpecKafkaTemplateStatefulsetMetadataPatch struct {
+	// Annotations added to the Kubernetes resource.
+	Annotations map[string]string `pulumi:"annotations"`
+	// Labels added to the Kubernetes resource.
+	Labels map[string]string `pulumi:"labels"`
+}
+
+// KafkaSpecKafkaTemplateStatefulsetMetadataPatchInput is an input type that accepts KafkaSpecKafkaTemplateStatefulsetMetadataPatchArgs and KafkaSpecKafkaTemplateStatefulsetMetadataPatchOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplateStatefulsetMetadataPatchInput` via:
+//
+//	KafkaSpecKafkaTemplateStatefulsetMetadataPatchArgs{...}
+type KafkaSpecKafkaTemplateStatefulsetMetadataPatchInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplateStatefulsetMetadataPatchOutput() KafkaSpecKafkaTemplateStatefulsetMetadataPatchOutput
+	ToKafkaSpecKafkaTemplateStatefulsetMetadataPatchOutputWithContext(context.Context) KafkaSpecKafkaTemplateStatefulsetMetadataPatchOutput
+}
+
+// Metadata applied to the resource.
+type KafkaSpecKafkaTemplateStatefulsetMetadataPatchArgs struct {
+	// Annotations added to the Kubernetes resource.
+	Annotations pulumi.StringMapInput `pulumi:"annotations"`
+	// Labels added to the Kubernetes resource.
+	Labels pulumi.StringMapInput `pulumi:"labels"`
+}
+
+func (KafkaSpecKafkaTemplateStatefulsetMetadataPatchArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplateStatefulsetMetadataPatch)(nil)).Elem()
+}
+
+func (i KafkaSpecKafkaTemplateStatefulsetMetadataPatchArgs) ToKafkaSpecKafkaTemplateStatefulsetMetadataPatchOutput() KafkaSpecKafkaTemplateStatefulsetMetadataPatchOutput {
+	return i.ToKafkaSpecKafkaTemplateStatefulsetMetadataPatchOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplateStatefulsetMetadataPatchArgs) ToKafkaSpecKafkaTemplateStatefulsetMetadataPatchOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplateStatefulsetMetadataPatchOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplateStatefulsetMetadataPatchOutput)
+}
+
+func (i KafkaSpecKafkaTemplateStatefulsetMetadataPatchArgs) ToKafkaSpecKafkaTemplateStatefulsetMetadataPatchPtrOutput() KafkaSpecKafkaTemplateStatefulsetMetadataPatchPtrOutput {
+	return i.ToKafkaSpecKafkaTemplateStatefulsetMetadataPatchPtrOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplateStatefulsetMetadataPatchArgs) ToKafkaSpecKafkaTemplateStatefulsetMetadataPatchPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplateStatefulsetMetadataPatchPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplateStatefulsetMetadataPatchOutput).ToKafkaSpecKafkaTemplateStatefulsetMetadataPatchPtrOutputWithContext(ctx)
+}
+
+// KafkaSpecKafkaTemplateStatefulsetMetadataPatchPtrInput is an input type that accepts KafkaSpecKafkaTemplateStatefulsetMetadataPatchArgs, KafkaSpecKafkaTemplateStatefulsetMetadataPatchPtr and KafkaSpecKafkaTemplateStatefulsetMetadataPatchPtrOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplateStatefulsetMetadataPatchPtrInput` via:
+//
+//	        KafkaSpecKafkaTemplateStatefulsetMetadataPatchArgs{...}
+//
+//	or:
+//
+//	        nil
+type KafkaSpecKafkaTemplateStatefulsetMetadataPatchPtrInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplateStatefulsetMetadataPatchPtrOutput() KafkaSpecKafkaTemplateStatefulsetMetadataPatchPtrOutput
+	ToKafkaSpecKafkaTemplateStatefulsetMetadataPatchPtrOutputWithContext(context.Context) KafkaSpecKafkaTemplateStatefulsetMetadataPatchPtrOutput
+}
+
+type kafkaSpecKafkaTemplateStatefulsetMetadataPatchPtrType KafkaSpecKafkaTemplateStatefulsetMetadataPatchArgs
+
+func KafkaSpecKafkaTemplateStatefulsetMetadataPatchPtr(v *KafkaSpecKafkaTemplateStatefulsetMetadataPatchArgs) KafkaSpecKafkaTemplateStatefulsetMetadataPatchPtrInput {
+	return (*kafkaSpecKafkaTemplateStatefulsetMetadataPatchPtrType)(v)
+}
+
+func (*kafkaSpecKafkaTemplateStatefulsetMetadataPatchPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecKafkaTemplateStatefulsetMetadataPatch)(nil)).Elem()
+}
+
+func (i *kafkaSpecKafkaTemplateStatefulsetMetadataPatchPtrType) ToKafkaSpecKafkaTemplateStatefulsetMetadataPatchPtrOutput() KafkaSpecKafkaTemplateStatefulsetMetadataPatchPtrOutput {
+	return i.ToKafkaSpecKafkaTemplateStatefulsetMetadataPatchPtrOutputWithContext(context.Background())
+}
+
+func (i *kafkaSpecKafkaTemplateStatefulsetMetadataPatchPtrType) ToKafkaSpecKafkaTemplateStatefulsetMetadataPatchPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplateStatefulsetMetadataPatchPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplateStatefulsetMetadataPatchPtrOutput)
+}
+
+// Metadata applied to the resource.
+type KafkaSpecKafkaTemplateStatefulsetMetadataPatchOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplateStatefulsetMetadataPatchOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplateStatefulsetMetadataPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplateStatefulsetMetadataPatchOutput) ToKafkaSpecKafkaTemplateStatefulsetMetadataPatchOutput() KafkaSpecKafkaTemplateStatefulsetMetadataPatchOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplateStatefulsetMetadataPatchOutput) ToKafkaSpecKafkaTemplateStatefulsetMetadataPatchOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplateStatefulsetMetadataPatchOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplateStatefulsetMetadataPatchOutput) ToKafkaSpecKafkaTemplateStatefulsetMetadataPatchPtrOutput() KafkaSpecKafkaTemplateStatefulsetMetadataPatchPtrOutput {
+	return o.ToKafkaSpecKafkaTemplateStatefulsetMetadataPatchPtrOutputWithContext(context.Background())
+}
+
+func (o KafkaSpecKafkaTemplateStatefulsetMetadataPatchOutput) ToKafkaSpecKafkaTemplateStatefulsetMetadataPatchPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplateStatefulsetMetadataPatchPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v KafkaSpecKafkaTemplateStatefulsetMetadataPatch) *KafkaSpecKafkaTemplateStatefulsetMetadataPatch {
+		return &v
+	}).(KafkaSpecKafkaTemplateStatefulsetMetadataPatchPtrOutput)
+}
+
+// Annotations added to the Kubernetes resource.
+func (o KafkaSpecKafkaTemplateStatefulsetMetadataPatchOutput) Annotations() pulumi.StringMapOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplateStatefulsetMetadataPatch) map[string]string { return v.Annotations }).(pulumi.StringMapOutput)
+}
+
+// Labels added to the Kubernetes resource.
+func (o KafkaSpecKafkaTemplateStatefulsetMetadataPatchOutput) Labels() pulumi.StringMapOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplateStatefulsetMetadataPatch) map[string]string { return v.Labels }).(pulumi.StringMapOutput)
+}
+
+type KafkaSpecKafkaTemplateStatefulsetMetadataPatchPtrOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplateStatefulsetMetadataPatchPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecKafkaTemplateStatefulsetMetadataPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplateStatefulsetMetadataPatchPtrOutput) ToKafkaSpecKafkaTemplateStatefulsetMetadataPatchPtrOutput() KafkaSpecKafkaTemplateStatefulsetMetadataPatchPtrOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplateStatefulsetMetadataPatchPtrOutput) ToKafkaSpecKafkaTemplateStatefulsetMetadataPatchPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplateStatefulsetMetadataPatchPtrOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplateStatefulsetMetadataPatchPtrOutput) Elem() KafkaSpecKafkaTemplateStatefulsetMetadataPatchOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplateStatefulsetMetadataPatch) KafkaSpecKafkaTemplateStatefulsetMetadataPatch {
+		if v != nil {
+			return *v
+		}
+		var ret KafkaSpecKafkaTemplateStatefulsetMetadataPatch
+		return ret
+	}).(KafkaSpecKafkaTemplateStatefulsetMetadataPatchOutput)
+}
+
+// Annotations added to the Kubernetes resource.
+func (o KafkaSpecKafkaTemplateStatefulsetMetadataPatchPtrOutput) Annotations() pulumi.StringMapOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplateStatefulsetMetadataPatch) map[string]string {
+		if v == nil {
+			return nil
+		}
+		return v.Annotations
+	}).(pulumi.StringMapOutput)
+}
+
+// Labels added to the Kubernetes resource.
+func (o KafkaSpecKafkaTemplateStatefulsetMetadataPatchPtrOutput) Labels() pulumi.StringMapOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplateStatefulsetMetadataPatch) map[string]string {
+		if v == nil {
+			return nil
+		}
+		return v.Labels
+	}).(pulumi.StringMapOutput)
+}
+
+// Template for Kafka `StatefulSet`.
+type KafkaSpecKafkaTemplateStatefulsetPatch struct {
+	Metadata *KafkaSpecKafkaTemplateStatefulsetMetadataPatch `pulumi:"metadata"`
+	// PodManagementPolicy which will be used for this StatefulSet. Valid values are `Parallel` and `OrderedReady`. Defaults to `Parallel`.
+	PodManagementPolicy *string `pulumi:"podManagementPolicy"`
+}
+
+// KafkaSpecKafkaTemplateStatefulsetPatchInput is an input type that accepts KafkaSpecKafkaTemplateStatefulsetPatchArgs and KafkaSpecKafkaTemplateStatefulsetPatchOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplateStatefulsetPatchInput` via:
+//
+//	KafkaSpecKafkaTemplateStatefulsetPatchArgs{...}
+type KafkaSpecKafkaTemplateStatefulsetPatchInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplateStatefulsetPatchOutput() KafkaSpecKafkaTemplateStatefulsetPatchOutput
+	ToKafkaSpecKafkaTemplateStatefulsetPatchOutputWithContext(context.Context) KafkaSpecKafkaTemplateStatefulsetPatchOutput
+}
+
+// Template for Kafka `StatefulSet`.
+type KafkaSpecKafkaTemplateStatefulsetPatchArgs struct {
+	Metadata KafkaSpecKafkaTemplateStatefulsetMetadataPatchPtrInput `pulumi:"metadata"`
+	// PodManagementPolicy which will be used for this StatefulSet. Valid values are `Parallel` and `OrderedReady`. Defaults to `Parallel`.
+	PodManagementPolicy pulumi.StringPtrInput `pulumi:"podManagementPolicy"`
+}
+
+func (KafkaSpecKafkaTemplateStatefulsetPatchArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplateStatefulsetPatch)(nil)).Elem()
+}
+
+func (i KafkaSpecKafkaTemplateStatefulsetPatchArgs) ToKafkaSpecKafkaTemplateStatefulsetPatchOutput() KafkaSpecKafkaTemplateStatefulsetPatchOutput {
+	return i.ToKafkaSpecKafkaTemplateStatefulsetPatchOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplateStatefulsetPatchArgs) ToKafkaSpecKafkaTemplateStatefulsetPatchOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplateStatefulsetPatchOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplateStatefulsetPatchOutput)
+}
+
+func (i KafkaSpecKafkaTemplateStatefulsetPatchArgs) ToKafkaSpecKafkaTemplateStatefulsetPatchPtrOutput() KafkaSpecKafkaTemplateStatefulsetPatchPtrOutput {
+	return i.ToKafkaSpecKafkaTemplateStatefulsetPatchPtrOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTemplateStatefulsetPatchArgs) ToKafkaSpecKafkaTemplateStatefulsetPatchPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplateStatefulsetPatchPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplateStatefulsetPatchOutput).ToKafkaSpecKafkaTemplateStatefulsetPatchPtrOutputWithContext(ctx)
+}
+
+// KafkaSpecKafkaTemplateStatefulsetPatchPtrInput is an input type that accepts KafkaSpecKafkaTemplateStatefulsetPatchArgs, KafkaSpecKafkaTemplateStatefulsetPatchPtr and KafkaSpecKafkaTemplateStatefulsetPatchPtrOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTemplateStatefulsetPatchPtrInput` via:
+//
+//	        KafkaSpecKafkaTemplateStatefulsetPatchArgs{...}
+//
+//	or:
+//
+//	        nil
+type KafkaSpecKafkaTemplateStatefulsetPatchPtrInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTemplateStatefulsetPatchPtrOutput() KafkaSpecKafkaTemplateStatefulsetPatchPtrOutput
+	ToKafkaSpecKafkaTemplateStatefulsetPatchPtrOutputWithContext(context.Context) KafkaSpecKafkaTemplateStatefulsetPatchPtrOutput
+}
+
+type kafkaSpecKafkaTemplateStatefulsetPatchPtrType KafkaSpecKafkaTemplateStatefulsetPatchArgs
+
+func KafkaSpecKafkaTemplateStatefulsetPatchPtr(v *KafkaSpecKafkaTemplateStatefulsetPatchArgs) KafkaSpecKafkaTemplateStatefulsetPatchPtrInput {
+	return (*kafkaSpecKafkaTemplateStatefulsetPatchPtrType)(v)
+}
+
+func (*kafkaSpecKafkaTemplateStatefulsetPatchPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecKafkaTemplateStatefulsetPatch)(nil)).Elem()
+}
+
+func (i *kafkaSpecKafkaTemplateStatefulsetPatchPtrType) ToKafkaSpecKafkaTemplateStatefulsetPatchPtrOutput() KafkaSpecKafkaTemplateStatefulsetPatchPtrOutput {
+	return i.ToKafkaSpecKafkaTemplateStatefulsetPatchPtrOutputWithContext(context.Background())
+}
+
+func (i *kafkaSpecKafkaTemplateStatefulsetPatchPtrType) ToKafkaSpecKafkaTemplateStatefulsetPatchPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplateStatefulsetPatchPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTemplateStatefulsetPatchPtrOutput)
+}
+
+// Template for Kafka `StatefulSet`.
+type KafkaSpecKafkaTemplateStatefulsetPatchOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplateStatefulsetPatchOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTemplateStatefulsetPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplateStatefulsetPatchOutput) ToKafkaSpecKafkaTemplateStatefulsetPatchOutput() KafkaSpecKafkaTemplateStatefulsetPatchOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplateStatefulsetPatchOutput) ToKafkaSpecKafkaTemplateStatefulsetPatchOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplateStatefulsetPatchOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplateStatefulsetPatchOutput) ToKafkaSpecKafkaTemplateStatefulsetPatchPtrOutput() KafkaSpecKafkaTemplateStatefulsetPatchPtrOutput {
+	return o.ToKafkaSpecKafkaTemplateStatefulsetPatchPtrOutputWithContext(context.Background())
+}
+
+func (o KafkaSpecKafkaTemplateStatefulsetPatchOutput) ToKafkaSpecKafkaTemplateStatefulsetPatchPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplateStatefulsetPatchPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v KafkaSpecKafkaTemplateStatefulsetPatch) *KafkaSpecKafkaTemplateStatefulsetPatch {
+		return &v
+	}).(KafkaSpecKafkaTemplateStatefulsetPatchPtrOutput)
+}
+
+func (o KafkaSpecKafkaTemplateStatefulsetPatchOutput) Metadata() KafkaSpecKafkaTemplateStatefulsetMetadataPatchPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplateStatefulsetPatch) *KafkaSpecKafkaTemplateStatefulsetMetadataPatch {
+		return v.Metadata
+	}).(KafkaSpecKafkaTemplateStatefulsetMetadataPatchPtrOutput)
+}
+
+// PodManagementPolicy which will be used for this StatefulSet. Valid values are `Parallel` and `OrderedReady`. Defaults to `Parallel`.
+func (o KafkaSpecKafkaTemplateStatefulsetPatchOutput) PodManagementPolicy() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTemplateStatefulsetPatch) *string { return v.PodManagementPolicy }).(pulumi.StringPtrOutput)
+}
+
+type KafkaSpecKafkaTemplateStatefulsetPatchPtrOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTemplateStatefulsetPatchPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecKafkaTemplateStatefulsetPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTemplateStatefulsetPatchPtrOutput) ToKafkaSpecKafkaTemplateStatefulsetPatchPtrOutput() KafkaSpecKafkaTemplateStatefulsetPatchPtrOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplateStatefulsetPatchPtrOutput) ToKafkaSpecKafkaTemplateStatefulsetPatchPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTemplateStatefulsetPatchPtrOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTemplateStatefulsetPatchPtrOutput) Elem() KafkaSpecKafkaTemplateStatefulsetPatchOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplateStatefulsetPatch) KafkaSpecKafkaTemplateStatefulsetPatch {
+		if v != nil {
+			return *v
+		}
+		var ret KafkaSpecKafkaTemplateStatefulsetPatch
+		return ret
+	}).(KafkaSpecKafkaTemplateStatefulsetPatchOutput)
+}
+
+func (o KafkaSpecKafkaTemplateStatefulsetPatchPtrOutput) Metadata() KafkaSpecKafkaTemplateStatefulsetMetadataPatchPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplateStatefulsetPatch) *KafkaSpecKafkaTemplateStatefulsetMetadataPatch {
+		if v == nil {
+			return nil
+		}
+		return v.Metadata
+	}).(KafkaSpecKafkaTemplateStatefulsetMetadataPatchPtrOutput)
+}
+
+// PodManagementPolicy which will be used for this StatefulSet. Valid values are `Parallel` and `OrderedReady`. Defaults to `Parallel`.
+func (o KafkaSpecKafkaTemplateStatefulsetPatchPtrOutput) PodManagementPolicy() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTemplateStatefulsetPatch) *string {
+		if v == nil {
+			return nil
+		}
+		return v.PodManagementPolicy
+	}).(pulumi.StringPtrOutput)
+}
+
+// Configure the tiered storage feature for Kafka brokers.
+type KafkaSpecKafkaTieredStorage struct {
+	RemoteStorageManager *KafkaSpecKafkaTieredStorageRemoteStorageManager `pulumi:"remoteStorageManager"`
+	// Storage type, only 'custom' is supported at the moment.
+	Type *string `pulumi:"type"`
+}
+
+// KafkaSpecKafkaTieredStorageInput is an input type that accepts KafkaSpecKafkaTieredStorageArgs and KafkaSpecKafkaTieredStorageOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTieredStorageInput` via:
+//
+//	KafkaSpecKafkaTieredStorageArgs{...}
+type KafkaSpecKafkaTieredStorageInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTieredStorageOutput() KafkaSpecKafkaTieredStorageOutput
+	ToKafkaSpecKafkaTieredStorageOutputWithContext(context.Context) KafkaSpecKafkaTieredStorageOutput
+}
+
+// Configure the tiered storage feature for Kafka brokers.
+type KafkaSpecKafkaTieredStorageArgs struct {
+	RemoteStorageManager KafkaSpecKafkaTieredStorageRemoteStorageManagerPtrInput `pulumi:"remoteStorageManager"`
+	// Storage type, only 'custom' is supported at the moment.
+	Type pulumi.StringPtrInput `pulumi:"type"`
+}
+
+func (KafkaSpecKafkaTieredStorageArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTieredStorage)(nil)).Elem()
+}
+
+func (i KafkaSpecKafkaTieredStorageArgs) ToKafkaSpecKafkaTieredStorageOutput() KafkaSpecKafkaTieredStorageOutput {
+	return i.ToKafkaSpecKafkaTieredStorageOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTieredStorageArgs) ToKafkaSpecKafkaTieredStorageOutputWithContext(ctx context.Context) KafkaSpecKafkaTieredStorageOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTieredStorageOutput)
+}
+
+func (i KafkaSpecKafkaTieredStorageArgs) ToKafkaSpecKafkaTieredStoragePtrOutput() KafkaSpecKafkaTieredStoragePtrOutput {
+	return i.ToKafkaSpecKafkaTieredStoragePtrOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTieredStorageArgs) ToKafkaSpecKafkaTieredStoragePtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTieredStoragePtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTieredStorageOutput).ToKafkaSpecKafkaTieredStoragePtrOutputWithContext(ctx)
+}
+
+// KafkaSpecKafkaTieredStoragePtrInput is an input type that accepts KafkaSpecKafkaTieredStorageArgs, KafkaSpecKafkaTieredStoragePtr and KafkaSpecKafkaTieredStoragePtrOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTieredStoragePtrInput` via:
+//
+//	        KafkaSpecKafkaTieredStorageArgs{...}
+//
+//	or:
+//
+//	        nil
+type KafkaSpecKafkaTieredStoragePtrInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTieredStoragePtrOutput() KafkaSpecKafkaTieredStoragePtrOutput
+	ToKafkaSpecKafkaTieredStoragePtrOutputWithContext(context.Context) KafkaSpecKafkaTieredStoragePtrOutput
+}
+
+type kafkaSpecKafkaTieredStoragePtrType KafkaSpecKafkaTieredStorageArgs
+
+func KafkaSpecKafkaTieredStoragePtr(v *KafkaSpecKafkaTieredStorageArgs) KafkaSpecKafkaTieredStoragePtrInput {
+	return (*kafkaSpecKafkaTieredStoragePtrType)(v)
+}
+
+func (*kafkaSpecKafkaTieredStoragePtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecKafkaTieredStorage)(nil)).Elem()
+}
+
+func (i *kafkaSpecKafkaTieredStoragePtrType) ToKafkaSpecKafkaTieredStoragePtrOutput() KafkaSpecKafkaTieredStoragePtrOutput {
+	return i.ToKafkaSpecKafkaTieredStoragePtrOutputWithContext(context.Background())
+}
+
+func (i *kafkaSpecKafkaTieredStoragePtrType) ToKafkaSpecKafkaTieredStoragePtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTieredStoragePtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTieredStoragePtrOutput)
+}
+
+// Configure the tiered storage feature for Kafka brokers.
+type KafkaSpecKafkaTieredStorageOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTieredStorageOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTieredStorage)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTieredStorageOutput) ToKafkaSpecKafkaTieredStorageOutput() KafkaSpecKafkaTieredStorageOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTieredStorageOutput) ToKafkaSpecKafkaTieredStorageOutputWithContext(ctx context.Context) KafkaSpecKafkaTieredStorageOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTieredStorageOutput) ToKafkaSpecKafkaTieredStoragePtrOutput() KafkaSpecKafkaTieredStoragePtrOutput {
+	return o.ToKafkaSpecKafkaTieredStoragePtrOutputWithContext(context.Background())
+}
+
+func (o KafkaSpecKafkaTieredStorageOutput) ToKafkaSpecKafkaTieredStoragePtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTieredStoragePtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v KafkaSpecKafkaTieredStorage) *KafkaSpecKafkaTieredStorage {
+		return &v
+	}).(KafkaSpecKafkaTieredStoragePtrOutput)
+}
+
+func (o KafkaSpecKafkaTieredStorageOutput) RemoteStorageManager() KafkaSpecKafkaTieredStorageRemoteStorageManagerPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTieredStorage) *KafkaSpecKafkaTieredStorageRemoteStorageManager {
+		return v.RemoteStorageManager
+	}).(KafkaSpecKafkaTieredStorageRemoteStorageManagerPtrOutput)
+}
+
+// Storage type, only 'custom' is supported at the moment.
+func (o KafkaSpecKafkaTieredStorageOutput) Type() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTieredStorage) *string { return v.Type }).(pulumi.StringPtrOutput)
+}
+
+type KafkaSpecKafkaTieredStoragePtrOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTieredStoragePtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecKafkaTieredStorage)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTieredStoragePtrOutput) ToKafkaSpecKafkaTieredStoragePtrOutput() KafkaSpecKafkaTieredStoragePtrOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTieredStoragePtrOutput) ToKafkaSpecKafkaTieredStoragePtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTieredStoragePtrOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTieredStoragePtrOutput) Elem() KafkaSpecKafkaTieredStorageOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTieredStorage) KafkaSpecKafkaTieredStorage {
+		if v != nil {
+			return *v
+		}
+		var ret KafkaSpecKafkaTieredStorage
+		return ret
+	}).(KafkaSpecKafkaTieredStorageOutput)
+}
+
+func (o KafkaSpecKafkaTieredStoragePtrOutput) RemoteStorageManager() KafkaSpecKafkaTieredStorageRemoteStorageManagerPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTieredStorage) *KafkaSpecKafkaTieredStorageRemoteStorageManager {
+		if v == nil {
+			return nil
+		}
+		return v.RemoteStorageManager
+	}).(KafkaSpecKafkaTieredStorageRemoteStorageManagerPtrOutput)
+}
+
+// Storage type, only 'custom' is supported at the moment.
+func (o KafkaSpecKafkaTieredStoragePtrOutput) Type() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTieredStorage) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Type
+	}).(pulumi.StringPtrOutput)
+}
+
+// Configure the tiered storage feature for Kafka brokers.
+type KafkaSpecKafkaTieredStoragePatch struct {
+	RemoteStorageManager *KafkaSpecKafkaTieredStorageRemoteStorageManagerPatch `pulumi:"remoteStorageManager"`
+	// Storage type, only 'custom' is supported at the moment.
+	Type *string `pulumi:"type"`
+}
+
+// KafkaSpecKafkaTieredStoragePatchInput is an input type that accepts KafkaSpecKafkaTieredStoragePatchArgs and KafkaSpecKafkaTieredStoragePatchOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTieredStoragePatchInput` via:
+//
+//	KafkaSpecKafkaTieredStoragePatchArgs{...}
+type KafkaSpecKafkaTieredStoragePatchInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTieredStoragePatchOutput() KafkaSpecKafkaTieredStoragePatchOutput
+	ToKafkaSpecKafkaTieredStoragePatchOutputWithContext(context.Context) KafkaSpecKafkaTieredStoragePatchOutput
+}
+
+// Configure the tiered storage feature for Kafka brokers.
+type KafkaSpecKafkaTieredStoragePatchArgs struct {
+	RemoteStorageManager KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchPtrInput `pulumi:"remoteStorageManager"`
+	// Storage type, only 'custom' is supported at the moment.
+	Type pulumi.StringPtrInput `pulumi:"type"`
+}
+
+func (KafkaSpecKafkaTieredStoragePatchArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTieredStoragePatch)(nil)).Elem()
+}
+
+func (i KafkaSpecKafkaTieredStoragePatchArgs) ToKafkaSpecKafkaTieredStoragePatchOutput() KafkaSpecKafkaTieredStoragePatchOutput {
+	return i.ToKafkaSpecKafkaTieredStoragePatchOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTieredStoragePatchArgs) ToKafkaSpecKafkaTieredStoragePatchOutputWithContext(ctx context.Context) KafkaSpecKafkaTieredStoragePatchOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTieredStoragePatchOutput)
+}
+
+func (i KafkaSpecKafkaTieredStoragePatchArgs) ToKafkaSpecKafkaTieredStoragePatchPtrOutput() KafkaSpecKafkaTieredStoragePatchPtrOutput {
+	return i.ToKafkaSpecKafkaTieredStoragePatchPtrOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTieredStoragePatchArgs) ToKafkaSpecKafkaTieredStoragePatchPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTieredStoragePatchPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTieredStoragePatchOutput).ToKafkaSpecKafkaTieredStoragePatchPtrOutputWithContext(ctx)
+}
+
+// KafkaSpecKafkaTieredStoragePatchPtrInput is an input type that accepts KafkaSpecKafkaTieredStoragePatchArgs, KafkaSpecKafkaTieredStoragePatchPtr and KafkaSpecKafkaTieredStoragePatchPtrOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTieredStoragePatchPtrInput` via:
+//
+//	        KafkaSpecKafkaTieredStoragePatchArgs{...}
+//
+//	or:
+//
+//	        nil
+type KafkaSpecKafkaTieredStoragePatchPtrInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTieredStoragePatchPtrOutput() KafkaSpecKafkaTieredStoragePatchPtrOutput
+	ToKafkaSpecKafkaTieredStoragePatchPtrOutputWithContext(context.Context) KafkaSpecKafkaTieredStoragePatchPtrOutput
+}
+
+type kafkaSpecKafkaTieredStoragePatchPtrType KafkaSpecKafkaTieredStoragePatchArgs
+
+func KafkaSpecKafkaTieredStoragePatchPtr(v *KafkaSpecKafkaTieredStoragePatchArgs) KafkaSpecKafkaTieredStoragePatchPtrInput {
+	return (*kafkaSpecKafkaTieredStoragePatchPtrType)(v)
+}
+
+func (*kafkaSpecKafkaTieredStoragePatchPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecKafkaTieredStoragePatch)(nil)).Elem()
+}
+
+func (i *kafkaSpecKafkaTieredStoragePatchPtrType) ToKafkaSpecKafkaTieredStoragePatchPtrOutput() KafkaSpecKafkaTieredStoragePatchPtrOutput {
+	return i.ToKafkaSpecKafkaTieredStoragePatchPtrOutputWithContext(context.Background())
+}
+
+func (i *kafkaSpecKafkaTieredStoragePatchPtrType) ToKafkaSpecKafkaTieredStoragePatchPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTieredStoragePatchPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTieredStoragePatchPtrOutput)
+}
+
+// Configure the tiered storage feature for Kafka brokers.
+type KafkaSpecKafkaTieredStoragePatchOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTieredStoragePatchOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTieredStoragePatch)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTieredStoragePatchOutput) ToKafkaSpecKafkaTieredStoragePatchOutput() KafkaSpecKafkaTieredStoragePatchOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTieredStoragePatchOutput) ToKafkaSpecKafkaTieredStoragePatchOutputWithContext(ctx context.Context) KafkaSpecKafkaTieredStoragePatchOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTieredStoragePatchOutput) ToKafkaSpecKafkaTieredStoragePatchPtrOutput() KafkaSpecKafkaTieredStoragePatchPtrOutput {
+	return o.ToKafkaSpecKafkaTieredStoragePatchPtrOutputWithContext(context.Background())
+}
+
+func (o KafkaSpecKafkaTieredStoragePatchOutput) ToKafkaSpecKafkaTieredStoragePatchPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTieredStoragePatchPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v KafkaSpecKafkaTieredStoragePatch) *KafkaSpecKafkaTieredStoragePatch {
+		return &v
+	}).(KafkaSpecKafkaTieredStoragePatchPtrOutput)
+}
+
+func (o KafkaSpecKafkaTieredStoragePatchOutput) RemoteStorageManager() KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTieredStoragePatch) *KafkaSpecKafkaTieredStorageRemoteStorageManagerPatch {
+		return v.RemoteStorageManager
+	}).(KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchPtrOutput)
+}
+
+// Storage type, only 'custom' is supported at the moment.
+func (o KafkaSpecKafkaTieredStoragePatchOutput) Type() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTieredStoragePatch) *string { return v.Type }).(pulumi.StringPtrOutput)
+}
+
+type KafkaSpecKafkaTieredStoragePatchPtrOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTieredStoragePatchPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecKafkaTieredStoragePatch)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTieredStoragePatchPtrOutput) ToKafkaSpecKafkaTieredStoragePatchPtrOutput() KafkaSpecKafkaTieredStoragePatchPtrOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTieredStoragePatchPtrOutput) ToKafkaSpecKafkaTieredStoragePatchPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTieredStoragePatchPtrOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTieredStoragePatchPtrOutput) Elem() KafkaSpecKafkaTieredStoragePatchOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTieredStoragePatch) KafkaSpecKafkaTieredStoragePatch {
+		if v != nil {
+			return *v
+		}
+		var ret KafkaSpecKafkaTieredStoragePatch
+		return ret
+	}).(KafkaSpecKafkaTieredStoragePatchOutput)
+}
+
+func (o KafkaSpecKafkaTieredStoragePatchPtrOutput) RemoteStorageManager() KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTieredStoragePatch) *KafkaSpecKafkaTieredStorageRemoteStorageManagerPatch {
+		if v == nil {
+			return nil
+		}
+		return v.RemoteStorageManager
+	}).(KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchPtrOutput)
+}
+
+// Storage type, only 'custom' is supported at the moment.
+func (o KafkaSpecKafkaTieredStoragePatchPtrOutput) Type() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTieredStoragePatch) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Type
+	}).(pulumi.StringPtrOutput)
+}
+
+// Configuration for the Remote Storage Manager.
+type KafkaSpecKafkaTieredStorageRemoteStorageManager struct {
+	// The class name for the `RemoteStorageManager` implementation.
+	ClassName *string `pulumi:"className"`
+	// The class path for the `RemoteStorageManager` implementation.
+	ClassPath *string `pulumi:"classPath"`
+	// The additional configuration map for the `RemoteStorageManager` implementation. Keys will be automatically prefixed with `rsm.config.`, and added to Kafka broker configuration.
+	Config map[string]string `pulumi:"config"`
+}
+
+// KafkaSpecKafkaTieredStorageRemoteStorageManagerInput is an input type that accepts KafkaSpecKafkaTieredStorageRemoteStorageManagerArgs and KafkaSpecKafkaTieredStorageRemoteStorageManagerOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTieredStorageRemoteStorageManagerInput` via:
+//
+//	KafkaSpecKafkaTieredStorageRemoteStorageManagerArgs{...}
+type KafkaSpecKafkaTieredStorageRemoteStorageManagerInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTieredStorageRemoteStorageManagerOutput() KafkaSpecKafkaTieredStorageRemoteStorageManagerOutput
+	ToKafkaSpecKafkaTieredStorageRemoteStorageManagerOutputWithContext(context.Context) KafkaSpecKafkaTieredStorageRemoteStorageManagerOutput
+}
+
+// Configuration for the Remote Storage Manager.
+type KafkaSpecKafkaTieredStorageRemoteStorageManagerArgs struct {
+	// The class name for the `RemoteStorageManager` implementation.
+	ClassName pulumi.StringPtrInput `pulumi:"className"`
+	// The class path for the `RemoteStorageManager` implementation.
+	ClassPath pulumi.StringPtrInput `pulumi:"classPath"`
+	// The additional configuration map for the `RemoteStorageManager` implementation. Keys will be automatically prefixed with `rsm.config.`, and added to Kafka broker configuration.
+	Config pulumi.StringMapInput `pulumi:"config"`
+}
+
+func (KafkaSpecKafkaTieredStorageRemoteStorageManagerArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTieredStorageRemoteStorageManager)(nil)).Elem()
+}
+
+func (i KafkaSpecKafkaTieredStorageRemoteStorageManagerArgs) ToKafkaSpecKafkaTieredStorageRemoteStorageManagerOutput() KafkaSpecKafkaTieredStorageRemoteStorageManagerOutput {
+	return i.ToKafkaSpecKafkaTieredStorageRemoteStorageManagerOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTieredStorageRemoteStorageManagerArgs) ToKafkaSpecKafkaTieredStorageRemoteStorageManagerOutputWithContext(ctx context.Context) KafkaSpecKafkaTieredStorageRemoteStorageManagerOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTieredStorageRemoteStorageManagerOutput)
+}
+
+func (i KafkaSpecKafkaTieredStorageRemoteStorageManagerArgs) ToKafkaSpecKafkaTieredStorageRemoteStorageManagerPtrOutput() KafkaSpecKafkaTieredStorageRemoteStorageManagerPtrOutput {
+	return i.ToKafkaSpecKafkaTieredStorageRemoteStorageManagerPtrOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTieredStorageRemoteStorageManagerArgs) ToKafkaSpecKafkaTieredStorageRemoteStorageManagerPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTieredStorageRemoteStorageManagerPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTieredStorageRemoteStorageManagerOutput).ToKafkaSpecKafkaTieredStorageRemoteStorageManagerPtrOutputWithContext(ctx)
+}
+
+// KafkaSpecKafkaTieredStorageRemoteStorageManagerPtrInput is an input type that accepts KafkaSpecKafkaTieredStorageRemoteStorageManagerArgs, KafkaSpecKafkaTieredStorageRemoteStorageManagerPtr and KafkaSpecKafkaTieredStorageRemoteStorageManagerPtrOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTieredStorageRemoteStorageManagerPtrInput` via:
+//
+//	        KafkaSpecKafkaTieredStorageRemoteStorageManagerArgs{...}
+//
+//	or:
+//
+//	        nil
+type KafkaSpecKafkaTieredStorageRemoteStorageManagerPtrInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTieredStorageRemoteStorageManagerPtrOutput() KafkaSpecKafkaTieredStorageRemoteStorageManagerPtrOutput
+	ToKafkaSpecKafkaTieredStorageRemoteStorageManagerPtrOutputWithContext(context.Context) KafkaSpecKafkaTieredStorageRemoteStorageManagerPtrOutput
+}
+
+type kafkaSpecKafkaTieredStorageRemoteStorageManagerPtrType KafkaSpecKafkaTieredStorageRemoteStorageManagerArgs
+
+func KafkaSpecKafkaTieredStorageRemoteStorageManagerPtr(v *KafkaSpecKafkaTieredStorageRemoteStorageManagerArgs) KafkaSpecKafkaTieredStorageRemoteStorageManagerPtrInput {
+	return (*kafkaSpecKafkaTieredStorageRemoteStorageManagerPtrType)(v)
+}
+
+func (*kafkaSpecKafkaTieredStorageRemoteStorageManagerPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecKafkaTieredStorageRemoteStorageManager)(nil)).Elem()
+}
+
+func (i *kafkaSpecKafkaTieredStorageRemoteStorageManagerPtrType) ToKafkaSpecKafkaTieredStorageRemoteStorageManagerPtrOutput() KafkaSpecKafkaTieredStorageRemoteStorageManagerPtrOutput {
+	return i.ToKafkaSpecKafkaTieredStorageRemoteStorageManagerPtrOutputWithContext(context.Background())
+}
+
+func (i *kafkaSpecKafkaTieredStorageRemoteStorageManagerPtrType) ToKafkaSpecKafkaTieredStorageRemoteStorageManagerPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTieredStorageRemoteStorageManagerPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTieredStorageRemoteStorageManagerPtrOutput)
+}
+
+// Configuration for the Remote Storage Manager.
+type KafkaSpecKafkaTieredStorageRemoteStorageManagerOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTieredStorageRemoteStorageManagerOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTieredStorageRemoteStorageManager)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTieredStorageRemoteStorageManagerOutput) ToKafkaSpecKafkaTieredStorageRemoteStorageManagerOutput() KafkaSpecKafkaTieredStorageRemoteStorageManagerOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTieredStorageRemoteStorageManagerOutput) ToKafkaSpecKafkaTieredStorageRemoteStorageManagerOutputWithContext(ctx context.Context) KafkaSpecKafkaTieredStorageRemoteStorageManagerOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTieredStorageRemoteStorageManagerOutput) ToKafkaSpecKafkaTieredStorageRemoteStorageManagerPtrOutput() KafkaSpecKafkaTieredStorageRemoteStorageManagerPtrOutput {
+	return o.ToKafkaSpecKafkaTieredStorageRemoteStorageManagerPtrOutputWithContext(context.Background())
+}
+
+func (o KafkaSpecKafkaTieredStorageRemoteStorageManagerOutput) ToKafkaSpecKafkaTieredStorageRemoteStorageManagerPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTieredStorageRemoteStorageManagerPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v KafkaSpecKafkaTieredStorageRemoteStorageManager) *KafkaSpecKafkaTieredStorageRemoteStorageManager {
+		return &v
+	}).(KafkaSpecKafkaTieredStorageRemoteStorageManagerPtrOutput)
+}
+
+// The class name for the `RemoteStorageManager` implementation.
+func (o KafkaSpecKafkaTieredStorageRemoteStorageManagerOutput) ClassName() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTieredStorageRemoteStorageManager) *string { return v.ClassName }).(pulumi.StringPtrOutput)
+}
+
+// The class path for the `RemoteStorageManager` implementation.
+func (o KafkaSpecKafkaTieredStorageRemoteStorageManagerOutput) ClassPath() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTieredStorageRemoteStorageManager) *string { return v.ClassPath }).(pulumi.StringPtrOutput)
+}
+
+// The additional configuration map for the `RemoteStorageManager` implementation. Keys will be automatically prefixed with `rsm.config.`, and added to Kafka broker configuration.
+func (o KafkaSpecKafkaTieredStorageRemoteStorageManagerOutput) Config() pulumi.StringMapOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTieredStorageRemoteStorageManager) map[string]string { return v.Config }).(pulumi.StringMapOutput)
+}
+
+type KafkaSpecKafkaTieredStorageRemoteStorageManagerPtrOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTieredStorageRemoteStorageManagerPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecKafkaTieredStorageRemoteStorageManager)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTieredStorageRemoteStorageManagerPtrOutput) ToKafkaSpecKafkaTieredStorageRemoteStorageManagerPtrOutput() KafkaSpecKafkaTieredStorageRemoteStorageManagerPtrOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTieredStorageRemoteStorageManagerPtrOutput) ToKafkaSpecKafkaTieredStorageRemoteStorageManagerPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTieredStorageRemoteStorageManagerPtrOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTieredStorageRemoteStorageManagerPtrOutput) Elem() KafkaSpecKafkaTieredStorageRemoteStorageManagerOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTieredStorageRemoteStorageManager) KafkaSpecKafkaTieredStorageRemoteStorageManager {
+		if v != nil {
+			return *v
+		}
+		var ret KafkaSpecKafkaTieredStorageRemoteStorageManager
+		return ret
+	}).(KafkaSpecKafkaTieredStorageRemoteStorageManagerOutput)
+}
+
+// The class name for the `RemoteStorageManager` implementation.
+func (o KafkaSpecKafkaTieredStorageRemoteStorageManagerPtrOutput) ClassName() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTieredStorageRemoteStorageManager) *string {
+		if v == nil {
+			return nil
+		}
+		return v.ClassName
+	}).(pulumi.StringPtrOutput)
+}
+
+// The class path for the `RemoteStorageManager` implementation.
+func (o KafkaSpecKafkaTieredStorageRemoteStorageManagerPtrOutput) ClassPath() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTieredStorageRemoteStorageManager) *string {
+		if v == nil {
+			return nil
+		}
+		return v.ClassPath
+	}).(pulumi.StringPtrOutput)
+}
+
+// The additional configuration map for the `RemoteStorageManager` implementation. Keys will be automatically prefixed with `rsm.config.`, and added to Kafka broker configuration.
+func (o KafkaSpecKafkaTieredStorageRemoteStorageManagerPtrOutput) Config() pulumi.StringMapOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTieredStorageRemoteStorageManager) map[string]string {
+		if v == nil {
+			return nil
+		}
+		return v.Config
+	}).(pulumi.StringMapOutput)
+}
+
+// Configuration for the Remote Storage Manager.
+type KafkaSpecKafkaTieredStorageRemoteStorageManagerPatch struct {
+	// The class name for the `RemoteStorageManager` implementation.
+	ClassName *string `pulumi:"className"`
+	// The class path for the `RemoteStorageManager` implementation.
+	ClassPath *string `pulumi:"classPath"`
+	// The additional configuration map for the `RemoteStorageManager` implementation. Keys will be automatically prefixed with `rsm.config.`, and added to Kafka broker configuration.
+	Config map[string]string `pulumi:"config"`
+}
+
+// KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchInput is an input type that accepts KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchArgs and KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchInput` via:
+//
+//	KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchArgs{...}
+type KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTieredStorageRemoteStorageManagerPatchOutput() KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchOutput
+	ToKafkaSpecKafkaTieredStorageRemoteStorageManagerPatchOutputWithContext(context.Context) KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchOutput
+}
+
+// Configuration for the Remote Storage Manager.
+type KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchArgs struct {
+	// The class name for the `RemoteStorageManager` implementation.
+	ClassName pulumi.StringPtrInput `pulumi:"className"`
+	// The class path for the `RemoteStorageManager` implementation.
+	ClassPath pulumi.StringPtrInput `pulumi:"classPath"`
+	// The additional configuration map for the `RemoteStorageManager` implementation. Keys will be automatically prefixed with `rsm.config.`, and added to Kafka broker configuration.
+	Config pulumi.StringMapInput `pulumi:"config"`
+}
+
+func (KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTieredStorageRemoteStorageManagerPatch)(nil)).Elem()
+}
+
+func (i KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchArgs) ToKafkaSpecKafkaTieredStorageRemoteStorageManagerPatchOutput() KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchOutput {
+	return i.ToKafkaSpecKafkaTieredStorageRemoteStorageManagerPatchOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchArgs) ToKafkaSpecKafkaTieredStorageRemoteStorageManagerPatchOutputWithContext(ctx context.Context) KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchOutput)
+}
+
+func (i KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchArgs) ToKafkaSpecKafkaTieredStorageRemoteStorageManagerPatchPtrOutput() KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchPtrOutput {
+	return i.ToKafkaSpecKafkaTieredStorageRemoteStorageManagerPatchPtrOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchArgs) ToKafkaSpecKafkaTieredStorageRemoteStorageManagerPatchPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchOutput).ToKafkaSpecKafkaTieredStorageRemoteStorageManagerPatchPtrOutputWithContext(ctx)
+}
+
+// KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchPtrInput is an input type that accepts KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchArgs, KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchPtr and KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchPtrOutput values.
+// You can construct a concrete instance of `KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchPtrInput` via:
+//
+//	        KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchArgs{...}
+//
+//	or:
+//
+//	        nil
+type KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchPtrInput interface {
+	pulumi.Input
+
+	ToKafkaSpecKafkaTieredStorageRemoteStorageManagerPatchPtrOutput() KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchPtrOutput
+	ToKafkaSpecKafkaTieredStorageRemoteStorageManagerPatchPtrOutputWithContext(context.Context) KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchPtrOutput
+}
+
+type kafkaSpecKafkaTieredStorageRemoteStorageManagerPatchPtrType KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchArgs
+
+func KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchPtr(v *KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchArgs) KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchPtrInput {
+	return (*kafkaSpecKafkaTieredStorageRemoteStorageManagerPatchPtrType)(v)
+}
+
+func (*kafkaSpecKafkaTieredStorageRemoteStorageManagerPatchPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecKafkaTieredStorageRemoteStorageManagerPatch)(nil)).Elem()
+}
+
+func (i *kafkaSpecKafkaTieredStorageRemoteStorageManagerPatchPtrType) ToKafkaSpecKafkaTieredStorageRemoteStorageManagerPatchPtrOutput() KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchPtrOutput {
+	return i.ToKafkaSpecKafkaTieredStorageRemoteStorageManagerPatchPtrOutputWithContext(context.Background())
+}
+
+func (i *kafkaSpecKafkaTieredStorageRemoteStorageManagerPatchPtrType) ToKafkaSpecKafkaTieredStorageRemoteStorageManagerPatchPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchPtrOutput)
+}
+
+// Configuration for the Remote Storage Manager.
+type KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecKafkaTieredStorageRemoteStorageManagerPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchOutput) ToKafkaSpecKafkaTieredStorageRemoteStorageManagerPatchOutput() KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchOutput) ToKafkaSpecKafkaTieredStorageRemoteStorageManagerPatchOutputWithContext(ctx context.Context) KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchOutput) ToKafkaSpecKafkaTieredStorageRemoteStorageManagerPatchPtrOutput() KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchPtrOutput {
+	return o.ToKafkaSpecKafkaTieredStorageRemoteStorageManagerPatchPtrOutputWithContext(context.Background())
+}
+
+func (o KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchOutput) ToKafkaSpecKafkaTieredStorageRemoteStorageManagerPatchPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v KafkaSpecKafkaTieredStorageRemoteStorageManagerPatch) *KafkaSpecKafkaTieredStorageRemoteStorageManagerPatch {
+		return &v
+	}).(KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchPtrOutput)
+}
+
+// The class name for the `RemoteStorageManager` implementation.
+func (o KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchOutput) ClassName() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTieredStorageRemoteStorageManagerPatch) *string { return v.ClassName }).(pulumi.StringPtrOutput)
+}
+
+// The class path for the `RemoteStorageManager` implementation.
+func (o KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchOutput) ClassPath() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTieredStorageRemoteStorageManagerPatch) *string { return v.ClassPath }).(pulumi.StringPtrOutput)
+}
+
+// The additional configuration map for the `RemoteStorageManager` implementation. Keys will be automatically prefixed with `rsm.config.`, and added to Kafka broker configuration.
+func (o KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchOutput) Config() pulumi.StringMapOutput {
+	return o.ApplyT(func(v KafkaSpecKafkaTieredStorageRemoteStorageManagerPatch) map[string]string { return v.Config }).(pulumi.StringMapOutput)
+}
+
+type KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchPtrOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecKafkaTieredStorageRemoteStorageManagerPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchPtrOutput) ToKafkaSpecKafkaTieredStorageRemoteStorageManagerPatchPtrOutput() KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchPtrOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchPtrOutput) ToKafkaSpecKafkaTieredStorageRemoteStorageManagerPatchPtrOutputWithContext(ctx context.Context) KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchPtrOutput {
+	return o
+}
+
+func (o KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchPtrOutput) Elem() KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTieredStorageRemoteStorageManagerPatch) KafkaSpecKafkaTieredStorageRemoteStorageManagerPatch {
+		if v != nil {
+			return *v
+		}
+		var ret KafkaSpecKafkaTieredStorageRemoteStorageManagerPatch
+		return ret
+	}).(KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchOutput)
+}
+
+// The class name for the `RemoteStorageManager` implementation.
+func (o KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchPtrOutput) ClassName() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTieredStorageRemoteStorageManagerPatch) *string {
+		if v == nil {
+			return nil
+		}
+		return v.ClassName
+	}).(pulumi.StringPtrOutput)
+}
+
+// The class path for the `RemoteStorageManager` implementation.
+func (o KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchPtrOutput) ClassPath() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTieredStorageRemoteStorageManagerPatch) *string {
+		if v == nil {
+			return nil
+		}
+		return v.ClassPath
+	}).(pulumi.StringPtrOutput)
+}
+
+// The additional configuration map for the `RemoteStorageManager` implementation. Keys will be automatically prefixed with `rsm.config.`, and added to Kafka broker configuration.
+func (o KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchPtrOutput) Config() pulumi.StringMapOutput {
+	return o.ApplyT(func(v *KafkaSpecKafkaTieredStorageRemoteStorageManagerPatch) map[string]string {
+		if v == nil {
+			return nil
+		}
+		return v.Config
+	}).(pulumi.StringMapOutput)
+}
+
+// The specification of the Kafka cluster.
+type KafkaSpecPatch struct {
+	ClientsCa      *KafkaSpecClientsCaPatch      `pulumi:"clientsCa"`
+	ClusterCa      *KafkaSpecClusterCaPatch      `pulumi:"clusterCa"`
+	CruiseControl  *KafkaSpecCruiseControlPatch  `pulumi:"cruiseControl"`
+	EntityOperator *KafkaSpecEntityOperatorPatch `pulumi:"entityOperator"`
+	JmxTrans       *KafkaSpecJmxTransPatch       `pulumi:"jmxTrans"`
+	Kafka          *KafkaSpecKafkaPatch          `pulumi:"kafka"`
+	KafkaExporter  *KafkaSpecKafkaExporterPatch  `pulumi:"kafkaExporter"`
+	// A list of time windows for maintenance tasks (that is, certificates renewal). Each time window is defined by a cron expression.
+	MaintenanceTimeWindows []string                 `pulumi:"maintenanceTimeWindows"`
+	Zookeeper              *KafkaSpecZookeeperPatch `pulumi:"zookeeper"`
+}
+
+// KafkaSpecPatchInput is an input type that accepts KafkaSpecPatchArgs and KafkaSpecPatchOutput values.
+// You can construct a concrete instance of `KafkaSpecPatchInput` via:
+//
+//	KafkaSpecPatchArgs{...}
+type KafkaSpecPatchInput interface {
+	pulumi.Input
+
+	ToKafkaSpecPatchOutput() KafkaSpecPatchOutput
+	ToKafkaSpecPatchOutputWithContext(context.Context) KafkaSpecPatchOutput
+}
+
+// The specification of the Kafka cluster.
+type KafkaSpecPatchArgs struct {
+	ClientsCa      KafkaSpecClientsCaPatchPtrInput      `pulumi:"clientsCa"`
+	ClusterCa      KafkaSpecClusterCaPatchPtrInput      `pulumi:"clusterCa"`
+	CruiseControl  KafkaSpecCruiseControlPatchPtrInput  `pulumi:"cruiseControl"`
+	EntityOperator KafkaSpecEntityOperatorPatchPtrInput `pulumi:"entityOperator"`
+	JmxTrans       KafkaSpecJmxTransPatchPtrInput       `pulumi:"jmxTrans"`
+	Kafka          KafkaSpecKafkaPatchPtrInput          `pulumi:"kafka"`
+	KafkaExporter  KafkaSpecKafkaExporterPatchPtrInput  `pulumi:"kafkaExporter"`
+	// A list of time windows for maintenance tasks (that is, certificates renewal). Each time window is defined by a cron expression.
+	MaintenanceTimeWindows pulumi.StringArrayInput         `pulumi:"maintenanceTimeWindows"`
+	Zookeeper              KafkaSpecZookeeperPatchPtrInput `pulumi:"zookeeper"`
+}
+
+func (KafkaSpecPatchArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecPatch)(nil)).Elem()
+}
+
+func (i KafkaSpecPatchArgs) ToKafkaSpecPatchOutput() KafkaSpecPatchOutput {
+	return i.ToKafkaSpecPatchOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecPatchArgs) ToKafkaSpecPatchOutputWithContext(ctx context.Context) KafkaSpecPatchOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecPatchOutput)
+}
+
+func (i KafkaSpecPatchArgs) ToKafkaSpecPatchPtrOutput() KafkaSpecPatchPtrOutput {
+	return i.ToKafkaSpecPatchPtrOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecPatchArgs) ToKafkaSpecPatchPtrOutputWithContext(ctx context.Context) KafkaSpecPatchPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecPatchOutput).ToKafkaSpecPatchPtrOutputWithContext(ctx)
+}
+
+// KafkaSpecPatchPtrInput is an input type that accepts KafkaSpecPatchArgs, KafkaSpecPatchPtr and KafkaSpecPatchPtrOutput values.
+// You can construct a concrete instance of `KafkaSpecPatchPtrInput` via:
+//
+//	        KafkaSpecPatchArgs{...}
+//
+//	or:
+//
+//	        nil
+type KafkaSpecPatchPtrInput interface {
+	pulumi.Input
+
+	ToKafkaSpecPatchPtrOutput() KafkaSpecPatchPtrOutput
+	ToKafkaSpecPatchPtrOutputWithContext(context.Context) KafkaSpecPatchPtrOutput
+}
+
+type kafkaSpecPatchPtrType KafkaSpecPatchArgs
+
+func KafkaSpecPatchPtr(v *KafkaSpecPatchArgs) KafkaSpecPatchPtrInput {
+	return (*kafkaSpecPatchPtrType)(v)
+}
+
+func (*kafkaSpecPatchPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecPatch)(nil)).Elem()
+}
+
+func (i *kafkaSpecPatchPtrType) ToKafkaSpecPatchPtrOutput() KafkaSpecPatchPtrOutput {
+	return i.ToKafkaSpecPatchPtrOutputWithContext(context.Background())
+}
+
+func (i *kafkaSpecPatchPtrType) ToKafkaSpecPatchPtrOutputWithContext(ctx context.Context) KafkaSpecPatchPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecPatchPtrOutput)
+}
+
+// The specification of the Kafka cluster.
+type KafkaSpecPatchOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecPatchOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecPatchOutput) ToKafkaSpecPatchOutput() KafkaSpecPatchOutput {
+	return o
+}
+
+func (o KafkaSpecPatchOutput) ToKafkaSpecPatchOutputWithContext(ctx context.Context) KafkaSpecPatchOutput {
+	return o
+}
+
+func (o KafkaSpecPatchOutput) ToKafkaSpecPatchPtrOutput() KafkaSpecPatchPtrOutput {
+	return o.ToKafkaSpecPatchPtrOutputWithContext(context.Background())
+}
+
+func (o KafkaSpecPatchOutput) ToKafkaSpecPatchPtrOutputWithContext(ctx context.Context) KafkaSpecPatchPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v KafkaSpecPatch) *KafkaSpecPatch {
+		return &v
+	}).(KafkaSpecPatchPtrOutput)
+}
+
+func (o KafkaSpecPatchOutput) ClientsCa() KafkaSpecClientsCaPatchPtrOutput {
+	return o.ApplyT(func(v KafkaSpecPatch) *KafkaSpecClientsCaPatch { return v.ClientsCa }).(KafkaSpecClientsCaPatchPtrOutput)
+}
+
+func (o KafkaSpecPatchOutput) ClusterCa() KafkaSpecClusterCaPatchPtrOutput {
+	return o.ApplyT(func(v KafkaSpecPatch) *KafkaSpecClusterCaPatch { return v.ClusterCa }).(KafkaSpecClusterCaPatchPtrOutput)
+}
+
+func (o KafkaSpecPatchOutput) CruiseControl() KafkaSpecCruiseControlPatchPtrOutput {
+	return o.ApplyT(func(v KafkaSpecPatch) *KafkaSpecCruiseControlPatch { return v.CruiseControl }).(KafkaSpecCruiseControlPatchPtrOutput)
+}
+
+func (o KafkaSpecPatchOutput) EntityOperator() KafkaSpecEntityOperatorPatchPtrOutput {
+	return o.ApplyT(func(v KafkaSpecPatch) *KafkaSpecEntityOperatorPatch { return v.EntityOperator }).(KafkaSpecEntityOperatorPatchPtrOutput)
+}
+
+func (o KafkaSpecPatchOutput) JmxTrans() KafkaSpecJmxTransPatchPtrOutput {
+	return o.ApplyT(func(v KafkaSpecPatch) *KafkaSpecJmxTransPatch { return v.JmxTrans }).(KafkaSpecJmxTransPatchPtrOutput)
+}
+
+func (o KafkaSpecPatchOutput) Kafka() KafkaSpecKafkaPatchPtrOutput {
+	return o.ApplyT(func(v KafkaSpecPatch) *KafkaSpecKafkaPatch { return v.Kafka }).(KafkaSpecKafkaPatchPtrOutput)
+}
+
+func (o KafkaSpecPatchOutput) KafkaExporter() KafkaSpecKafkaExporterPatchPtrOutput {
+	return o.ApplyT(func(v KafkaSpecPatch) *KafkaSpecKafkaExporterPatch { return v.KafkaExporter }).(KafkaSpecKafkaExporterPatchPtrOutput)
+}
+
+// A list of time windows for maintenance tasks (that is, certificates renewal). Each time window is defined by a cron expression.
+func (o KafkaSpecPatchOutput) MaintenanceTimeWindows() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v KafkaSpecPatch) []string { return v.MaintenanceTimeWindows }).(pulumi.StringArrayOutput)
+}
+
+func (o KafkaSpecPatchOutput) Zookeeper() KafkaSpecZookeeperPatchPtrOutput {
+	return o.ApplyT(func(v KafkaSpecPatch) *KafkaSpecZookeeperPatch { return v.Zookeeper }).(KafkaSpecZookeeperPatchPtrOutput)
+}
+
+type KafkaSpecPatchPtrOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecPatchPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecPatchPtrOutput) ToKafkaSpecPatchPtrOutput() KafkaSpecPatchPtrOutput {
+	return o
+}
+
+func (o KafkaSpecPatchPtrOutput) ToKafkaSpecPatchPtrOutputWithContext(ctx context.Context) KafkaSpecPatchPtrOutput {
+	return o
+}
+
+func (o KafkaSpecPatchPtrOutput) Elem() KafkaSpecPatchOutput {
+	return o.ApplyT(func(v *KafkaSpecPatch) KafkaSpecPatch {
+		if v != nil {
+			return *v
+		}
+		var ret KafkaSpecPatch
+		return ret
+	}).(KafkaSpecPatchOutput)
+}
+
+func (o KafkaSpecPatchPtrOutput) ClientsCa() KafkaSpecClientsCaPatchPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecPatch) *KafkaSpecClientsCaPatch {
+		if v == nil {
+			return nil
+		}
+		return v.ClientsCa
+	}).(KafkaSpecClientsCaPatchPtrOutput)
+}
+
+func (o KafkaSpecPatchPtrOutput) ClusterCa() KafkaSpecClusterCaPatchPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecPatch) *KafkaSpecClusterCaPatch {
+		if v == nil {
+			return nil
+		}
+		return v.ClusterCa
+	}).(KafkaSpecClusterCaPatchPtrOutput)
+}
+
+func (o KafkaSpecPatchPtrOutput) CruiseControl() KafkaSpecCruiseControlPatchPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecPatch) *KafkaSpecCruiseControlPatch {
+		if v == nil {
+			return nil
+		}
+		return v.CruiseControl
+	}).(KafkaSpecCruiseControlPatchPtrOutput)
+}
+
+func (o KafkaSpecPatchPtrOutput) EntityOperator() KafkaSpecEntityOperatorPatchPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecPatch) *KafkaSpecEntityOperatorPatch {
+		if v == nil {
+			return nil
+		}
+		return v.EntityOperator
+	}).(KafkaSpecEntityOperatorPatchPtrOutput)
+}
+
+func (o KafkaSpecPatchPtrOutput) JmxTrans() KafkaSpecJmxTransPatchPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecPatch) *KafkaSpecJmxTransPatch {
+		if v == nil {
+			return nil
+		}
+		return v.JmxTrans
+	}).(KafkaSpecJmxTransPatchPtrOutput)
+}
+
+func (o KafkaSpecPatchPtrOutput) Kafka() KafkaSpecKafkaPatchPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecPatch) *KafkaSpecKafkaPatch {
+		if v == nil {
+			return nil
+		}
+		return v.Kafka
+	}).(KafkaSpecKafkaPatchPtrOutput)
+}
+
+func (o KafkaSpecPatchPtrOutput) KafkaExporter() KafkaSpecKafkaExporterPatchPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecPatch) *KafkaSpecKafkaExporterPatch {
+		if v == nil {
+			return nil
+		}
+		return v.KafkaExporter
+	}).(KafkaSpecKafkaExporterPatchPtrOutput)
+}
+
+// A list of time windows for maintenance tasks (that is, certificates renewal). Each time window is defined by a cron expression.
+func (o KafkaSpecPatchPtrOutput) MaintenanceTimeWindows() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v *KafkaSpecPatch) []string {
+		if v == nil {
+			return nil
+		}
+		return v.MaintenanceTimeWindows
+	}).(pulumi.StringArrayOutput)
+}
+
+func (o KafkaSpecPatchPtrOutput) Zookeeper() KafkaSpecZookeeperPatchPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecPatch) *KafkaSpecZookeeperPatch {
+		if v == nil {
+			return nil
+		}
+		return v.Zookeeper
+	}).(KafkaSpecZookeeperPatchPtrOutput)
+}
+
+// As of Strimzi 0.46.0, ZooKeeper-based Apache Kafka clusters are not supported anymore and this option is ignored.
+type KafkaSpecZookeeper struct {
+	// The ZooKeeper broker config. Properties with the following prefixes cannot be set: server., dataDir, dataLogDir, clientPort, authProvider, quorum.auth, requireClientAuthScheme, snapshot.trust.empty, standaloneEnabled, reconfigEnabled, 4lw.commands.whitelist, secureClientPort, ssl., serverCnxnFactory, sslQuorum (with the exception of: ssl.protocol, ssl.quorum.protocol, ssl.enabledProtocols, ssl.quorum.enabledProtocols, ssl.ciphersuites, ssl.quorum.ciphersuites, ssl.hostnameVerification, ssl.quorum.hostnameVerification).
+	Config map[string]interface{} `pulumi:"config"`
+	// The container image used for ZooKeeper pods. If no image name is explicitly specified, it is determined based on the Kafka version set in `spec.kafka.version`. The image names are specifically mapped to corresponding versions in the Cluster Operator configuration.
+	Image          *string                           `pulumi:"image"`
+	JmxOptions     *KafkaSpecZookeeperJmxOptions     `pulumi:"jmxOptions"`
+	JvmOptions     *KafkaSpecZookeeperJvmOptions     `pulumi:"jvmOptions"`
+	LivenessProbe  *KafkaSpecZookeeperLivenessProbe  `pulumi:"livenessProbe"`
+	Logging        *KafkaSpecZookeeperLogging        `pulumi:"logging"`
+	MetricsConfig  *KafkaSpecZookeeperMetricsConfig  `pulumi:"metricsConfig"`
+	ReadinessProbe *KafkaSpecZookeeperReadinessProbe `pulumi:"readinessProbe"`
+	// The number of pods in the cluster.
+	Replicas  *int                         `pulumi:"replicas"`
+	Resources *KafkaSpecZookeeperResources `pulumi:"resources"`
+	Storage   *KafkaSpecZookeeperStorage   `pulumi:"storage"`
+	Template  *KafkaSpecZookeeperTemplate  `pulumi:"template"`
+}
+
+// KafkaSpecZookeeperInput is an input type that accepts KafkaSpecZookeeperArgs and KafkaSpecZookeeperOutput values.
+// You can construct a concrete instance of `KafkaSpecZookeeperInput` via:
+//
+//	KafkaSpecZookeeperArgs{...}
+type KafkaSpecZookeeperInput interface {
+	pulumi.Input
+
+	ToKafkaSpecZookeeperOutput() KafkaSpecZookeeperOutput
+	ToKafkaSpecZookeeperOutputWithContext(context.Context) KafkaSpecZookeeperOutput
+}
+
+// As of Strimzi 0.46.0, ZooKeeper-based Apache Kafka clusters are not supported anymore and this option is ignored.
+type KafkaSpecZookeeperArgs struct {
+	// The ZooKeeper broker config. Properties with the following prefixes cannot be set: server., dataDir, dataLogDir, clientPort, authProvider, quorum.auth, requireClientAuthScheme, snapshot.trust.empty, standaloneEnabled, reconfigEnabled, 4lw.commands.whitelist, secureClientPort, ssl., serverCnxnFactory, sslQuorum (with the exception of: ssl.protocol, ssl.quorum.protocol, ssl.enabledProtocols, ssl.quorum.enabledProtocols, ssl.ciphersuites, ssl.quorum.ciphersuites, ssl.hostnameVerification, ssl.quorum.hostnameVerification).
+	Config pulumi.MapInput `pulumi:"config"`
+	// The container image used for ZooKeeper pods. If no image name is explicitly specified, it is determined based on the Kafka version set in `spec.kafka.version`. The image names are specifically mapped to corresponding versions in the Cluster Operator configuration.
+	Image          pulumi.StringPtrInput                    `pulumi:"image"`
+	JmxOptions     KafkaSpecZookeeperJmxOptionsPtrInput     `pulumi:"jmxOptions"`
+	JvmOptions     KafkaSpecZookeeperJvmOptionsPtrInput     `pulumi:"jvmOptions"`
+	LivenessProbe  KafkaSpecZookeeperLivenessProbePtrInput  `pulumi:"livenessProbe"`
+	Logging        KafkaSpecZookeeperLoggingPtrInput        `pulumi:"logging"`
+	MetricsConfig  KafkaSpecZookeeperMetricsConfigPtrInput  `pulumi:"metricsConfig"`
+	ReadinessProbe KafkaSpecZookeeperReadinessProbePtrInput `pulumi:"readinessProbe"`
+	// The number of pods in the cluster.
+	Replicas  pulumi.IntPtrInput                  `pulumi:"replicas"`
+	Resources KafkaSpecZookeeperResourcesPtrInput `pulumi:"resources"`
+	Storage   KafkaSpecZookeeperStoragePtrInput   `pulumi:"storage"`
+	Template  KafkaSpecZookeeperTemplatePtrInput  `pulumi:"template"`
+}
+
+func (KafkaSpecZookeeperArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecZookeeper)(nil)).Elem()
+}
+
+func (i KafkaSpecZookeeperArgs) ToKafkaSpecZookeeperOutput() KafkaSpecZookeeperOutput {
+	return i.ToKafkaSpecZookeeperOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecZookeeperArgs) ToKafkaSpecZookeeperOutputWithContext(ctx context.Context) KafkaSpecZookeeperOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperOutput)
+}
+
+func (i KafkaSpecZookeeperArgs) ToKafkaSpecZookeeperPtrOutput() KafkaSpecZookeeperPtrOutput {
+	return i.ToKafkaSpecZookeeperPtrOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecZookeeperArgs) ToKafkaSpecZookeeperPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperOutput).ToKafkaSpecZookeeperPtrOutputWithContext(ctx)
+}
+
+// KafkaSpecZookeeperPtrInput is an input type that accepts KafkaSpecZookeeperArgs, KafkaSpecZookeeperPtr and KafkaSpecZookeeperPtrOutput values.
+// You can construct a concrete instance of `KafkaSpecZookeeperPtrInput` via:
+//
+//	        KafkaSpecZookeeperArgs{...}
+//
+//	or:
+//
+//	        nil
+type KafkaSpecZookeeperPtrInput interface {
+	pulumi.Input
+
+	ToKafkaSpecZookeeperPtrOutput() KafkaSpecZookeeperPtrOutput
+	ToKafkaSpecZookeeperPtrOutputWithContext(context.Context) KafkaSpecZookeeperPtrOutput
+}
+
+type kafkaSpecZookeeperPtrType KafkaSpecZookeeperArgs
+
+func KafkaSpecZookeeperPtr(v *KafkaSpecZookeeperArgs) KafkaSpecZookeeperPtrInput {
+	return (*kafkaSpecZookeeperPtrType)(v)
+}
+
+func (*kafkaSpecZookeeperPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecZookeeper)(nil)).Elem()
+}
+
+func (i *kafkaSpecZookeeperPtrType) ToKafkaSpecZookeeperPtrOutput() KafkaSpecZookeeperPtrOutput {
+	return i.ToKafkaSpecZookeeperPtrOutputWithContext(context.Background())
+}
+
+func (i *kafkaSpecZookeeperPtrType) ToKafkaSpecZookeeperPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperPtrOutput)
+}
+
+// As of Strimzi 0.46.0, ZooKeeper-based Apache Kafka clusters are not supported anymore and this option is ignored.
+type KafkaSpecZookeeperOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecZookeeperOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecZookeeper)(nil)).Elem()
+}
+
+func (o KafkaSpecZookeeperOutput) ToKafkaSpecZookeeperOutput() KafkaSpecZookeeperOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperOutput) ToKafkaSpecZookeeperOutputWithContext(ctx context.Context) KafkaSpecZookeeperOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperOutput) ToKafkaSpecZookeeperPtrOutput() KafkaSpecZookeeperPtrOutput {
+	return o.ToKafkaSpecZookeeperPtrOutputWithContext(context.Background())
+}
+
+func (o KafkaSpecZookeeperOutput) ToKafkaSpecZookeeperPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v KafkaSpecZookeeper) *KafkaSpecZookeeper {
+		return &v
+	}).(KafkaSpecZookeeperPtrOutput)
+}
+
+// The ZooKeeper broker config. Properties with the following prefixes cannot be set: server., dataDir, dataLogDir, clientPort, authProvider, quorum.auth, requireClientAuthScheme, snapshot.trust.empty, standaloneEnabled, reconfigEnabled, 4lw.commands.whitelist, secureClientPort, ssl., serverCnxnFactory, sslQuorum (with the exception of: ssl.protocol, ssl.quorum.protocol, ssl.enabledProtocols, ssl.quorum.enabledProtocols, ssl.ciphersuites, ssl.quorum.ciphersuites, ssl.hostnameVerification, ssl.quorum.hostnameVerification).
+func (o KafkaSpecZookeeperOutput) Config() pulumi.MapOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeper) map[string]interface{} { return v.Config }).(pulumi.MapOutput)
+}
+
+// The container image used for ZooKeeper pods. If no image name is explicitly specified, it is determined based on the Kafka version set in `spec.kafka.version`. The image names are specifically mapped to corresponding versions in the Cluster Operator configuration.
+func (o KafkaSpecZookeeperOutput) Image() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeper) *string { return v.Image }).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecZookeeperOutput) JmxOptions() KafkaSpecZookeeperJmxOptionsPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeper) *KafkaSpecZookeeperJmxOptions { return v.JmxOptions }).(KafkaSpecZookeeperJmxOptionsPtrOutput)
+}
+
+func (o KafkaSpecZookeeperOutput) JvmOptions() KafkaSpecZookeeperJvmOptionsPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeper) *KafkaSpecZookeeperJvmOptions { return v.JvmOptions }).(KafkaSpecZookeeperJvmOptionsPtrOutput)
+}
+
+func (o KafkaSpecZookeeperOutput) LivenessProbe() KafkaSpecZookeeperLivenessProbePtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeper) *KafkaSpecZookeeperLivenessProbe { return v.LivenessProbe }).(KafkaSpecZookeeperLivenessProbePtrOutput)
+}
+
+func (o KafkaSpecZookeeperOutput) Logging() KafkaSpecZookeeperLoggingPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeper) *KafkaSpecZookeeperLogging { return v.Logging }).(KafkaSpecZookeeperLoggingPtrOutput)
+}
+
+func (o KafkaSpecZookeeperOutput) MetricsConfig() KafkaSpecZookeeperMetricsConfigPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeper) *KafkaSpecZookeeperMetricsConfig { return v.MetricsConfig }).(KafkaSpecZookeeperMetricsConfigPtrOutput)
+}
+
+func (o KafkaSpecZookeeperOutput) ReadinessProbe() KafkaSpecZookeeperReadinessProbePtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeper) *KafkaSpecZookeeperReadinessProbe { return v.ReadinessProbe }).(KafkaSpecZookeeperReadinessProbePtrOutput)
+}
+
+// The number of pods in the cluster.
+func (o KafkaSpecZookeeperOutput) Replicas() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeper) *int { return v.Replicas }).(pulumi.IntPtrOutput)
+}
+
+func (o KafkaSpecZookeeperOutput) Resources() KafkaSpecZookeeperResourcesPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeper) *KafkaSpecZookeeperResources { return v.Resources }).(KafkaSpecZookeeperResourcesPtrOutput)
+}
+
+func (o KafkaSpecZookeeperOutput) Storage() KafkaSpecZookeeperStoragePtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeper) *KafkaSpecZookeeperStorage { return v.Storage }).(KafkaSpecZookeeperStoragePtrOutput)
+}
+
+func (o KafkaSpecZookeeperOutput) Template() KafkaSpecZookeeperTemplatePtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeper) *KafkaSpecZookeeperTemplate { return v.Template }).(KafkaSpecZookeeperTemplatePtrOutput)
+}
+
+type KafkaSpecZookeeperPtrOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecZookeeperPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecZookeeper)(nil)).Elem()
+}
+
+func (o KafkaSpecZookeeperPtrOutput) ToKafkaSpecZookeeperPtrOutput() KafkaSpecZookeeperPtrOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperPtrOutput) ToKafkaSpecZookeeperPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperPtrOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperPtrOutput) Elem() KafkaSpecZookeeperOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeper) KafkaSpecZookeeper {
+		if v != nil {
+			return *v
+		}
+		var ret KafkaSpecZookeeper
+		return ret
+	}).(KafkaSpecZookeeperOutput)
+}
+
+// The ZooKeeper broker config. Properties with the following prefixes cannot be set: server., dataDir, dataLogDir, clientPort, authProvider, quorum.auth, requireClientAuthScheme, snapshot.trust.empty, standaloneEnabled, reconfigEnabled, 4lw.commands.whitelist, secureClientPort, ssl., serverCnxnFactory, sslQuorum (with the exception of: ssl.protocol, ssl.quorum.protocol, ssl.enabledProtocols, ssl.quorum.enabledProtocols, ssl.ciphersuites, ssl.quorum.ciphersuites, ssl.hostnameVerification, ssl.quorum.hostnameVerification).
+func (o KafkaSpecZookeeperPtrOutput) Config() pulumi.MapOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeper) map[string]interface{} {
+		if v == nil {
+			return nil
+		}
+		return v.Config
+	}).(pulumi.MapOutput)
+}
+
+// The container image used for ZooKeeper pods. If no image name is explicitly specified, it is determined based on the Kafka version set in `spec.kafka.version`. The image names are specifically mapped to corresponding versions in the Cluster Operator configuration.
+func (o KafkaSpecZookeeperPtrOutput) Image() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeper) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Image
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecZookeeperPtrOutput) JmxOptions() KafkaSpecZookeeperJmxOptionsPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeper) *KafkaSpecZookeeperJmxOptions {
+		if v == nil {
+			return nil
+		}
+		return v.JmxOptions
+	}).(KafkaSpecZookeeperJmxOptionsPtrOutput)
+}
+
+func (o KafkaSpecZookeeperPtrOutput) JvmOptions() KafkaSpecZookeeperJvmOptionsPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeper) *KafkaSpecZookeeperJvmOptions {
+		if v == nil {
+			return nil
+		}
+		return v.JvmOptions
+	}).(KafkaSpecZookeeperJvmOptionsPtrOutput)
+}
+
+func (o KafkaSpecZookeeperPtrOutput) LivenessProbe() KafkaSpecZookeeperLivenessProbePtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeper) *KafkaSpecZookeeperLivenessProbe {
+		if v == nil {
+			return nil
+		}
+		return v.LivenessProbe
+	}).(KafkaSpecZookeeperLivenessProbePtrOutput)
+}
+
+func (o KafkaSpecZookeeperPtrOutput) Logging() KafkaSpecZookeeperLoggingPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeper) *KafkaSpecZookeeperLogging {
+		if v == nil {
+			return nil
+		}
+		return v.Logging
+	}).(KafkaSpecZookeeperLoggingPtrOutput)
+}
+
+func (o KafkaSpecZookeeperPtrOutput) MetricsConfig() KafkaSpecZookeeperMetricsConfigPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeper) *KafkaSpecZookeeperMetricsConfig {
+		if v == nil {
+			return nil
+		}
+		return v.MetricsConfig
+	}).(KafkaSpecZookeeperMetricsConfigPtrOutput)
+}
+
+func (o KafkaSpecZookeeperPtrOutput) ReadinessProbe() KafkaSpecZookeeperReadinessProbePtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeper) *KafkaSpecZookeeperReadinessProbe {
+		if v == nil {
+			return nil
+		}
+		return v.ReadinessProbe
+	}).(KafkaSpecZookeeperReadinessProbePtrOutput)
+}
+
+// The number of pods in the cluster.
+func (o KafkaSpecZookeeperPtrOutput) Replicas() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeper) *int {
+		if v == nil {
+			return nil
+		}
+		return v.Replicas
+	}).(pulumi.IntPtrOutput)
+}
+
+func (o KafkaSpecZookeeperPtrOutput) Resources() KafkaSpecZookeeperResourcesPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeper) *KafkaSpecZookeeperResources {
+		if v == nil {
+			return nil
+		}
+		return v.Resources
+	}).(KafkaSpecZookeeperResourcesPtrOutput)
+}
+
+func (o KafkaSpecZookeeperPtrOutput) Storage() KafkaSpecZookeeperStoragePtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeper) *KafkaSpecZookeeperStorage {
+		if v == nil {
+			return nil
+		}
+		return v.Storage
+	}).(KafkaSpecZookeeperStoragePtrOutput)
+}
+
+func (o KafkaSpecZookeeperPtrOutput) Template() KafkaSpecZookeeperTemplatePtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeper) *KafkaSpecZookeeperTemplate {
+		if v == nil {
+			return nil
+		}
+		return v.Template
+	}).(KafkaSpecZookeeperTemplatePtrOutput)
+}
+
+// JMX Options for Zookeeper nodes.
+type KafkaSpecZookeeperJmxOptions struct {
+	Authentication *KafkaSpecZookeeperJmxOptionsAuthentication `pulumi:"authentication"`
+}
+
+// KafkaSpecZookeeperJmxOptionsInput is an input type that accepts KafkaSpecZookeeperJmxOptionsArgs and KafkaSpecZookeeperJmxOptionsOutput values.
+// You can construct a concrete instance of `KafkaSpecZookeeperJmxOptionsInput` via:
+//
+//	KafkaSpecZookeeperJmxOptionsArgs{...}
+type KafkaSpecZookeeperJmxOptionsInput interface {
+	pulumi.Input
+
+	ToKafkaSpecZookeeperJmxOptionsOutput() KafkaSpecZookeeperJmxOptionsOutput
+	ToKafkaSpecZookeeperJmxOptionsOutputWithContext(context.Context) KafkaSpecZookeeperJmxOptionsOutput
+}
+
+// JMX Options for Zookeeper nodes.
+type KafkaSpecZookeeperJmxOptionsArgs struct {
+	Authentication KafkaSpecZookeeperJmxOptionsAuthenticationPtrInput `pulumi:"authentication"`
+}
+
+func (KafkaSpecZookeeperJmxOptionsArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecZookeeperJmxOptions)(nil)).Elem()
+}
+
+func (i KafkaSpecZookeeperJmxOptionsArgs) ToKafkaSpecZookeeperJmxOptionsOutput() KafkaSpecZookeeperJmxOptionsOutput {
+	return i.ToKafkaSpecZookeeperJmxOptionsOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecZookeeperJmxOptionsArgs) ToKafkaSpecZookeeperJmxOptionsOutputWithContext(ctx context.Context) KafkaSpecZookeeperJmxOptionsOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperJmxOptionsOutput)
+}
+
+func (i KafkaSpecZookeeperJmxOptionsArgs) ToKafkaSpecZookeeperJmxOptionsPtrOutput() KafkaSpecZookeeperJmxOptionsPtrOutput {
+	return i.ToKafkaSpecZookeeperJmxOptionsPtrOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecZookeeperJmxOptionsArgs) ToKafkaSpecZookeeperJmxOptionsPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperJmxOptionsPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperJmxOptionsOutput).ToKafkaSpecZookeeperJmxOptionsPtrOutputWithContext(ctx)
+}
+
+// KafkaSpecZookeeperJmxOptionsPtrInput is an input type that accepts KafkaSpecZookeeperJmxOptionsArgs, KafkaSpecZookeeperJmxOptionsPtr and KafkaSpecZookeeperJmxOptionsPtrOutput values.
+// You can construct a concrete instance of `KafkaSpecZookeeperJmxOptionsPtrInput` via:
+//
+//	        KafkaSpecZookeeperJmxOptionsArgs{...}
+//
+//	or:
+//
+//	        nil
+type KafkaSpecZookeeperJmxOptionsPtrInput interface {
+	pulumi.Input
+
+	ToKafkaSpecZookeeperJmxOptionsPtrOutput() KafkaSpecZookeeperJmxOptionsPtrOutput
+	ToKafkaSpecZookeeperJmxOptionsPtrOutputWithContext(context.Context) KafkaSpecZookeeperJmxOptionsPtrOutput
+}
+
+type kafkaSpecZookeeperJmxOptionsPtrType KafkaSpecZookeeperJmxOptionsArgs
+
+func KafkaSpecZookeeperJmxOptionsPtr(v *KafkaSpecZookeeperJmxOptionsArgs) KafkaSpecZookeeperJmxOptionsPtrInput {
+	return (*kafkaSpecZookeeperJmxOptionsPtrType)(v)
+}
+
+func (*kafkaSpecZookeeperJmxOptionsPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecZookeeperJmxOptions)(nil)).Elem()
+}
+
+func (i *kafkaSpecZookeeperJmxOptionsPtrType) ToKafkaSpecZookeeperJmxOptionsPtrOutput() KafkaSpecZookeeperJmxOptionsPtrOutput {
+	return i.ToKafkaSpecZookeeperJmxOptionsPtrOutputWithContext(context.Background())
+}
+
+func (i *kafkaSpecZookeeperJmxOptionsPtrType) ToKafkaSpecZookeeperJmxOptionsPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperJmxOptionsPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperJmxOptionsPtrOutput)
+}
+
+// JMX Options for Zookeeper nodes.
+type KafkaSpecZookeeperJmxOptionsOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecZookeeperJmxOptionsOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecZookeeperJmxOptions)(nil)).Elem()
+}
+
+func (o KafkaSpecZookeeperJmxOptionsOutput) ToKafkaSpecZookeeperJmxOptionsOutput() KafkaSpecZookeeperJmxOptionsOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperJmxOptionsOutput) ToKafkaSpecZookeeperJmxOptionsOutputWithContext(ctx context.Context) KafkaSpecZookeeperJmxOptionsOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperJmxOptionsOutput) ToKafkaSpecZookeeperJmxOptionsPtrOutput() KafkaSpecZookeeperJmxOptionsPtrOutput {
+	return o.ToKafkaSpecZookeeperJmxOptionsPtrOutputWithContext(context.Background())
+}
+
+func (o KafkaSpecZookeeperJmxOptionsOutput) ToKafkaSpecZookeeperJmxOptionsPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperJmxOptionsPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v KafkaSpecZookeeperJmxOptions) *KafkaSpecZookeeperJmxOptions {
+		return &v
+	}).(KafkaSpecZookeeperJmxOptionsPtrOutput)
+}
+
+func (o KafkaSpecZookeeperJmxOptionsOutput) Authentication() KafkaSpecZookeeperJmxOptionsAuthenticationPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperJmxOptions) *KafkaSpecZookeeperJmxOptionsAuthentication {
+		return v.Authentication
+	}).(KafkaSpecZookeeperJmxOptionsAuthenticationPtrOutput)
+}
+
+type KafkaSpecZookeeperJmxOptionsPtrOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecZookeeperJmxOptionsPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecZookeeperJmxOptions)(nil)).Elem()
+}
+
+func (o KafkaSpecZookeeperJmxOptionsPtrOutput) ToKafkaSpecZookeeperJmxOptionsPtrOutput() KafkaSpecZookeeperJmxOptionsPtrOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperJmxOptionsPtrOutput) ToKafkaSpecZookeeperJmxOptionsPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperJmxOptionsPtrOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperJmxOptionsPtrOutput) Elem() KafkaSpecZookeeperJmxOptionsOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperJmxOptions) KafkaSpecZookeeperJmxOptions {
+		if v != nil {
+			return *v
+		}
+		var ret KafkaSpecZookeeperJmxOptions
+		return ret
+	}).(KafkaSpecZookeeperJmxOptionsOutput)
+}
+
+func (o KafkaSpecZookeeperJmxOptionsPtrOutput) Authentication() KafkaSpecZookeeperJmxOptionsAuthenticationPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperJmxOptions) *KafkaSpecZookeeperJmxOptionsAuthentication {
+		if v == nil {
+			return nil
+		}
+		return v.Authentication
+	}).(KafkaSpecZookeeperJmxOptionsAuthenticationPtrOutput)
+}
+
+// Authentication configuration for connecting to the JMX port.
+type KafkaSpecZookeeperJmxOptionsAuthentication struct {
+	// Authentication type. Currently the only supported types are `password`.`password` type creates a username and protected port with no TLS.
+	Type *string `pulumi:"type"`
+}
+
+// KafkaSpecZookeeperJmxOptionsAuthenticationInput is an input type that accepts KafkaSpecZookeeperJmxOptionsAuthenticationArgs and KafkaSpecZookeeperJmxOptionsAuthenticationOutput values.
+// You can construct a concrete instance of `KafkaSpecZookeeperJmxOptionsAuthenticationInput` via:
+//
+//	KafkaSpecZookeeperJmxOptionsAuthenticationArgs{...}
+type KafkaSpecZookeeperJmxOptionsAuthenticationInput interface {
+	pulumi.Input
+
+	ToKafkaSpecZookeeperJmxOptionsAuthenticationOutput() KafkaSpecZookeeperJmxOptionsAuthenticationOutput
+	ToKafkaSpecZookeeperJmxOptionsAuthenticationOutputWithContext(context.Context) KafkaSpecZookeeperJmxOptionsAuthenticationOutput
+}
+
+// Authentication configuration for connecting to the JMX port.
+type KafkaSpecZookeeperJmxOptionsAuthenticationArgs struct {
+	// Authentication type. Currently the only supported types are `password`.`password` type creates a username and protected port with no TLS.
+	Type pulumi.StringPtrInput `pulumi:"type"`
+}
+
+func (KafkaSpecZookeeperJmxOptionsAuthenticationArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecZookeeperJmxOptionsAuthentication)(nil)).Elem()
+}
+
+func (i KafkaSpecZookeeperJmxOptionsAuthenticationArgs) ToKafkaSpecZookeeperJmxOptionsAuthenticationOutput() KafkaSpecZookeeperJmxOptionsAuthenticationOutput {
+	return i.ToKafkaSpecZookeeperJmxOptionsAuthenticationOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecZookeeperJmxOptionsAuthenticationArgs) ToKafkaSpecZookeeperJmxOptionsAuthenticationOutputWithContext(ctx context.Context) KafkaSpecZookeeperJmxOptionsAuthenticationOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperJmxOptionsAuthenticationOutput)
+}
+
+func (i KafkaSpecZookeeperJmxOptionsAuthenticationArgs) ToKafkaSpecZookeeperJmxOptionsAuthenticationPtrOutput() KafkaSpecZookeeperJmxOptionsAuthenticationPtrOutput {
+	return i.ToKafkaSpecZookeeperJmxOptionsAuthenticationPtrOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecZookeeperJmxOptionsAuthenticationArgs) ToKafkaSpecZookeeperJmxOptionsAuthenticationPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperJmxOptionsAuthenticationPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperJmxOptionsAuthenticationOutput).ToKafkaSpecZookeeperJmxOptionsAuthenticationPtrOutputWithContext(ctx)
+}
+
+// KafkaSpecZookeeperJmxOptionsAuthenticationPtrInput is an input type that accepts KafkaSpecZookeeperJmxOptionsAuthenticationArgs, KafkaSpecZookeeperJmxOptionsAuthenticationPtr and KafkaSpecZookeeperJmxOptionsAuthenticationPtrOutput values.
+// You can construct a concrete instance of `KafkaSpecZookeeperJmxOptionsAuthenticationPtrInput` via:
+//
+//	        KafkaSpecZookeeperJmxOptionsAuthenticationArgs{...}
+//
+//	or:
+//
+//	        nil
+type KafkaSpecZookeeperJmxOptionsAuthenticationPtrInput interface {
+	pulumi.Input
+
+	ToKafkaSpecZookeeperJmxOptionsAuthenticationPtrOutput() KafkaSpecZookeeperJmxOptionsAuthenticationPtrOutput
+	ToKafkaSpecZookeeperJmxOptionsAuthenticationPtrOutputWithContext(context.Context) KafkaSpecZookeeperJmxOptionsAuthenticationPtrOutput
+}
+
+type kafkaSpecZookeeperJmxOptionsAuthenticationPtrType KafkaSpecZookeeperJmxOptionsAuthenticationArgs
+
+func KafkaSpecZookeeperJmxOptionsAuthenticationPtr(v *KafkaSpecZookeeperJmxOptionsAuthenticationArgs) KafkaSpecZookeeperJmxOptionsAuthenticationPtrInput {
+	return (*kafkaSpecZookeeperJmxOptionsAuthenticationPtrType)(v)
+}
+
+func (*kafkaSpecZookeeperJmxOptionsAuthenticationPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecZookeeperJmxOptionsAuthentication)(nil)).Elem()
+}
+
+func (i *kafkaSpecZookeeperJmxOptionsAuthenticationPtrType) ToKafkaSpecZookeeperJmxOptionsAuthenticationPtrOutput() KafkaSpecZookeeperJmxOptionsAuthenticationPtrOutput {
+	return i.ToKafkaSpecZookeeperJmxOptionsAuthenticationPtrOutputWithContext(context.Background())
+}
+
+func (i *kafkaSpecZookeeperJmxOptionsAuthenticationPtrType) ToKafkaSpecZookeeperJmxOptionsAuthenticationPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperJmxOptionsAuthenticationPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperJmxOptionsAuthenticationPtrOutput)
+}
+
+// Authentication configuration for connecting to the JMX port.
+type KafkaSpecZookeeperJmxOptionsAuthenticationOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecZookeeperJmxOptionsAuthenticationOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecZookeeperJmxOptionsAuthentication)(nil)).Elem()
+}
+
+func (o KafkaSpecZookeeperJmxOptionsAuthenticationOutput) ToKafkaSpecZookeeperJmxOptionsAuthenticationOutput() KafkaSpecZookeeperJmxOptionsAuthenticationOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperJmxOptionsAuthenticationOutput) ToKafkaSpecZookeeperJmxOptionsAuthenticationOutputWithContext(ctx context.Context) KafkaSpecZookeeperJmxOptionsAuthenticationOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperJmxOptionsAuthenticationOutput) ToKafkaSpecZookeeperJmxOptionsAuthenticationPtrOutput() KafkaSpecZookeeperJmxOptionsAuthenticationPtrOutput {
+	return o.ToKafkaSpecZookeeperJmxOptionsAuthenticationPtrOutputWithContext(context.Background())
+}
+
+func (o KafkaSpecZookeeperJmxOptionsAuthenticationOutput) ToKafkaSpecZookeeperJmxOptionsAuthenticationPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperJmxOptionsAuthenticationPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v KafkaSpecZookeeperJmxOptionsAuthentication) *KafkaSpecZookeeperJmxOptionsAuthentication {
+		return &v
+	}).(KafkaSpecZookeeperJmxOptionsAuthenticationPtrOutput)
+}
+
+// Authentication type. Currently the only supported types are `password`.`password` type creates a username and protected port with no TLS.
+func (o KafkaSpecZookeeperJmxOptionsAuthenticationOutput) Type() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperJmxOptionsAuthentication) *string { return v.Type }).(pulumi.StringPtrOutput)
+}
+
+type KafkaSpecZookeeperJmxOptionsAuthenticationPtrOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecZookeeperJmxOptionsAuthenticationPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecZookeeperJmxOptionsAuthentication)(nil)).Elem()
+}
+
+func (o KafkaSpecZookeeperJmxOptionsAuthenticationPtrOutput) ToKafkaSpecZookeeperJmxOptionsAuthenticationPtrOutput() KafkaSpecZookeeperJmxOptionsAuthenticationPtrOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperJmxOptionsAuthenticationPtrOutput) ToKafkaSpecZookeeperJmxOptionsAuthenticationPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperJmxOptionsAuthenticationPtrOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperJmxOptionsAuthenticationPtrOutput) Elem() KafkaSpecZookeeperJmxOptionsAuthenticationOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperJmxOptionsAuthentication) KafkaSpecZookeeperJmxOptionsAuthentication {
+		if v != nil {
+			return *v
+		}
+		var ret KafkaSpecZookeeperJmxOptionsAuthentication
+		return ret
+	}).(KafkaSpecZookeeperJmxOptionsAuthenticationOutput)
+}
+
+// Authentication type. Currently the only supported types are `password`.`password` type creates a username and protected port with no TLS.
+func (o KafkaSpecZookeeperJmxOptionsAuthenticationPtrOutput) Type() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperJmxOptionsAuthentication) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Type
+	}).(pulumi.StringPtrOutput)
+}
+
+// Authentication configuration for connecting to the JMX port.
+type KafkaSpecZookeeperJmxOptionsAuthenticationPatch struct {
+	// Authentication type. Currently the only supported types are `password`.`password` type creates a username and protected port with no TLS.
+	Type *string `pulumi:"type"`
+}
+
+// KafkaSpecZookeeperJmxOptionsAuthenticationPatchInput is an input type that accepts KafkaSpecZookeeperJmxOptionsAuthenticationPatchArgs and KafkaSpecZookeeperJmxOptionsAuthenticationPatchOutput values.
+// You can construct a concrete instance of `KafkaSpecZookeeperJmxOptionsAuthenticationPatchInput` via:
+//
+//	KafkaSpecZookeeperJmxOptionsAuthenticationPatchArgs{...}
+type KafkaSpecZookeeperJmxOptionsAuthenticationPatchInput interface {
+	pulumi.Input
+
+	ToKafkaSpecZookeeperJmxOptionsAuthenticationPatchOutput() KafkaSpecZookeeperJmxOptionsAuthenticationPatchOutput
+	ToKafkaSpecZookeeperJmxOptionsAuthenticationPatchOutputWithContext(context.Context) KafkaSpecZookeeperJmxOptionsAuthenticationPatchOutput
+}
+
+// Authentication configuration for connecting to the JMX port.
+type KafkaSpecZookeeperJmxOptionsAuthenticationPatchArgs struct {
+	// Authentication type. Currently the only supported types are `password`.`password` type creates a username and protected port with no TLS.
+	Type pulumi.StringPtrInput `pulumi:"type"`
+}
+
+func (KafkaSpecZookeeperJmxOptionsAuthenticationPatchArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecZookeeperJmxOptionsAuthenticationPatch)(nil)).Elem()
+}
+
+func (i KafkaSpecZookeeperJmxOptionsAuthenticationPatchArgs) ToKafkaSpecZookeeperJmxOptionsAuthenticationPatchOutput() KafkaSpecZookeeperJmxOptionsAuthenticationPatchOutput {
+	return i.ToKafkaSpecZookeeperJmxOptionsAuthenticationPatchOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecZookeeperJmxOptionsAuthenticationPatchArgs) ToKafkaSpecZookeeperJmxOptionsAuthenticationPatchOutputWithContext(ctx context.Context) KafkaSpecZookeeperJmxOptionsAuthenticationPatchOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperJmxOptionsAuthenticationPatchOutput)
+}
+
+func (i KafkaSpecZookeeperJmxOptionsAuthenticationPatchArgs) ToKafkaSpecZookeeperJmxOptionsAuthenticationPatchPtrOutput() KafkaSpecZookeeperJmxOptionsAuthenticationPatchPtrOutput {
+	return i.ToKafkaSpecZookeeperJmxOptionsAuthenticationPatchPtrOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecZookeeperJmxOptionsAuthenticationPatchArgs) ToKafkaSpecZookeeperJmxOptionsAuthenticationPatchPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperJmxOptionsAuthenticationPatchPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperJmxOptionsAuthenticationPatchOutput).ToKafkaSpecZookeeperJmxOptionsAuthenticationPatchPtrOutputWithContext(ctx)
+}
+
+// KafkaSpecZookeeperJmxOptionsAuthenticationPatchPtrInput is an input type that accepts KafkaSpecZookeeperJmxOptionsAuthenticationPatchArgs, KafkaSpecZookeeperJmxOptionsAuthenticationPatchPtr and KafkaSpecZookeeperJmxOptionsAuthenticationPatchPtrOutput values.
+// You can construct a concrete instance of `KafkaSpecZookeeperJmxOptionsAuthenticationPatchPtrInput` via:
+//
+//	        KafkaSpecZookeeperJmxOptionsAuthenticationPatchArgs{...}
+//
+//	or:
+//
+//	        nil
+type KafkaSpecZookeeperJmxOptionsAuthenticationPatchPtrInput interface {
+	pulumi.Input
+
+	ToKafkaSpecZookeeperJmxOptionsAuthenticationPatchPtrOutput() KafkaSpecZookeeperJmxOptionsAuthenticationPatchPtrOutput
+	ToKafkaSpecZookeeperJmxOptionsAuthenticationPatchPtrOutputWithContext(context.Context) KafkaSpecZookeeperJmxOptionsAuthenticationPatchPtrOutput
+}
+
+type kafkaSpecZookeeperJmxOptionsAuthenticationPatchPtrType KafkaSpecZookeeperJmxOptionsAuthenticationPatchArgs
+
+func KafkaSpecZookeeperJmxOptionsAuthenticationPatchPtr(v *KafkaSpecZookeeperJmxOptionsAuthenticationPatchArgs) KafkaSpecZookeeperJmxOptionsAuthenticationPatchPtrInput {
+	return (*kafkaSpecZookeeperJmxOptionsAuthenticationPatchPtrType)(v)
+}
+
+func (*kafkaSpecZookeeperJmxOptionsAuthenticationPatchPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecZookeeperJmxOptionsAuthenticationPatch)(nil)).Elem()
+}
+
+func (i *kafkaSpecZookeeperJmxOptionsAuthenticationPatchPtrType) ToKafkaSpecZookeeperJmxOptionsAuthenticationPatchPtrOutput() KafkaSpecZookeeperJmxOptionsAuthenticationPatchPtrOutput {
+	return i.ToKafkaSpecZookeeperJmxOptionsAuthenticationPatchPtrOutputWithContext(context.Background())
+}
+
+func (i *kafkaSpecZookeeperJmxOptionsAuthenticationPatchPtrType) ToKafkaSpecZookeeperJmxOptionsAuthenticationPatchPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperJmxOptionsAuthenticationPatchPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperJmxOptionsAuthenticationPatchPtrOutput)
+}
+
+// Authentication configuration for connecting to the JMX port.
+type KafkaSpecZookeeperJmxOptionsAuthenticationPatchOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecZookeeperJmxOptionsAuthenticationPatchOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecZookeeperJmxOptionsAuthenticationPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecZookeeperJmxOptionsAuthenticationPatchOutput) ToKafkaSpecZookeeperJmxOptionsAuthenticationPatchOutput() KafkaSpecZookeeperJmxOptionsAuthenticationPatchOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperJmxOptionsAuthenticationPatchOutput) ToKafkaSpecZookeeperJmxOptionsAuthenticationPatchOutputWithContext(ctx context.Context) KafkaSpecZookeeperJmxOptionsAuthenticationPatchOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperJmxOptionsAuthenticationPatchOutput) ToKafkaSpecZookeeperJmxOptionsAuthenticationPatchPtrOutput() KafkaSpecZookeeperJmxOptionsAuthenticationPatchPtrOutput {
+	return o.ToKafkaSpecZookeeperJmxOptionsAuthenticationPatchPtrOutputWithContext(context.Background())
+}
+
+func (o KafkaSpecZookeeperJmxOptionsAuthenticationPatchOutput) ToKafkaSpecZookeeperJmxOptionsAuthenticationPatchPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperJmxOptionsAuthenticationPatchPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v KafkaSpecZookeeperJmxOptionsAuthenticationPatch) *KafkaSpecZookeeperJmxOptionsAuthenticationPatch {
+		return &v
+	}).(KafkaSpecZookeeperJmxOptionsAuthenticationPatchPtrOutput)
+}
+
+// Authentication type. Currently the only supported types are `password`.`password` type creates a username and protected port with no TLS.
+func (o KafkaSpecZookeeperJmxOptionsAuthenticationPatchOutput) Type() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperJmxOptionsAuthenticationPatch) *string { return v.Type }).(pulumi.StringPtrOutput)
+}
+
+type KafkaSpecZookeeperJmxOptionsAuthenticationPatchPtrOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecZookeeperJmxOptionsAuthenticationPatchPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecZookeeperJmxOptionsAuthenticationPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecZookeeperJmxOptionsAuthenticationPatchPtrOutput) ToKafkaSpecZookeeperJmxOptionsAuthenticationPatchPtrOutput() KafkaSpecZookeeperJmxOptionsAuthenticationPatchPtrOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperJmxOptionsAuthenticationPatchPtrOutput) ToKafkaSpecZookeeperJmxOptionsAuthenticationPatchPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperJmxOptionsAuthenticationPatchPtrOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperJmxOptionsAuthenticationPatchPtrOutput) Elem() KafkaSpecZookeeperJmxOptionsAuthenticationPatchOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperJmxOptionsAuthenticationPatch) KafkaSpecZookeeperJmxOptionsAuthenticationPatch {
+		if v != nil {
+			return *v
+		}
+		var ret KafkaSpecZookeeperJmxOptionsAuthenticationPatch
+		return ret
+	}).(KafkaSpecZookeeperJmxOptionsAuthenticationPatchOutput)
+}
+
+// Authentication type. Currently the only supported types are `password`.`password` type creates a username and protected port with no TLS.
+func (o KafkaSpecZookeeperJmxOptionsAuthenticationPatchPtrOutput) Type() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperJmxOptionsAuthenticationPatch) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Type
+	}).(pulumi.StringPtrOutput)
+}
+
+// JMX Options for Zookeeper nodes.
+type KafkaSpecZookeeperJmxOptionsPatch struct {
+	Authentication *KafkaSpecZookeeperJmxOptionsAuthenticationPatch `pulumi:"authentication"`
+}
+
+// KafkaSpecZookeeperJmxOptionsPatchInput is an input type that accepts KafkaSpecZookeeperJmxOptionsPatchArgs and KafkaSpecZookeeperJmxOptionsPatchOutput values.
+// You can construct a concrete instance of `KafkaSpecZookeeperJmxOptionsPatchInput` via:
+//
+//	KafkaSpecZookeeperJmxOptionsPatchArgs{...}
+type KafkaSpecZookeeperJmxOptionsPatchInput interface {
+	pulumi.Input
+
+	ToKafkaSpecZookeeperJmxOptionsPatchOutput() KafkaSpecZookeeperJmxOptionsPatchOutput
+	ToKafkaSpecZookeeperJmxOptionsPatchOutputWithContext(context.Context) KafkaSpecZookeeperJmxOptionsPatchOutput
+}
+
+// JMX Options for Zookeeper nodes.
+type KafkaSpecZookeeperJmxOptionsPatchArgs struct {
+	Authentication KafkaSpecZookeeperJmxOptionsAuthenticationPatchPtrInput `pulumi:"authentication"`
+}
+
+func (KafkaSpecZookeeperJmxOptionsPatchArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecZookeeperJmxOptionsPatch)(nil)).Elem()
+}
+
+func (i KafkaSpecZookeeperJmxOptionsPatchArgs) ToKafkaSpecZookeeperJmxOptionsPatchOutput() KafkaSpecZookeeperJmxOptionsPatchOutput {
+	return i.ToKafkaSpecZookeeperJmxOptionsPatchOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecZookeeperJmxOptionsPatchArgs) ToKafkaSpecZookeeperJmxOptionsPatchOutputWithContext(ctx context.Context) KafkaSpecZookeeperJmxOptionsPatchOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperJmxOptionsPatchOutput)
+}
+
+func (i KafkaSpecZookeeperJmxOptionsPatchArgs) ToKafkaSpecZookeeperJmxOptionsPatchPtrOutput() KafkaSpecZookeeperJmxOptionsPatchPtrOutput {
+	return i.ToKafkaSpecZookeeperJmxOptionsPatchPtrOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecZookeeperJmxOptionsPatchArgs) ToKafkaSpecZookeeperJmxOptionsPatchPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperJmxOptionsPatchPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperJmxOptionsPatchOutput).ToKafkaSpecZookeeperJmxOptionsPatchPtrOutputWithContext(ctx)
+}
+
+// KafkaSpecZookeeperJmxOptionsPatchPtrInput is an input type that accepts KafkaSpecZookeeperJmxOptionsPatchArgs, KafkaSpecZookeeperJmxOptionsPatchPtr and KafkaSpecZookeeperJmxOptionsPatchPtrOutput values.
+// You can construct a concrete instance of `KafkaSpecZookeeperJmxOptionsPatchPtrInput` via:
+//
+//	        KafkaSpecZookeeperJmxOptionsPatchArgs{...}
+//
+//	or:
+//
+//	        nil
+type KafkaSpecZookeeperJmxOptionsPatchPtrInput interface {
+	pulumi.Input
+
+	ToKafkaSpecZookeeperJmxOptionsPatchPtrOutput() KafkaSpecZookeeperJmxOptionsPatchPtrOutput
+	ToKafkaSpecZookeeperJmxOptionsPatchPtrOutputWithContext(context.Context) KafkaSpecZookeeperJmxOptionsPatchPtrOutput
+}
+
+type kafkaSpecZookeeperJmxOptionsPatchPtrType KafkaSpecZookeeperJmxOptionsPatchArgs
+
+func KafkaSpecZookeeperJmxOptionsPatchPtr(v *KafkaSpecZookeeperJmxOptionsPatchArgs) KafkaSpecZookeeperJmxOptionsPatchPtrInput {
+	return (*kafkaSpecZookeeperJmxOptionsPatchPtrType)(v)
+}
+
+func (*kafkaSpecZookeeperJmxOptionsPatchPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecZookeeperJmxOptionsPatch)(nil)).Elem()
+}
+
+func (i *kafkaSpecZookeeperJmxOptionsPatchPtrType) ToKafkaSpecZookeeperJmxOptionsPatchPtrOutput() KafkaSpecZookeeperJmxOptionsPatchPtrOutput {
+	return i.ToKafkaSpecZookeeperJmxOptionsPatchPtrOutputWithContext(context.Background())
+}
+
+func (i *kafkaSpecZookeeperJmxOptionsPatchPtrType) ToKafkaSpecZookeeperJmxOptionsPatchPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperJmxOptionsPatchPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperJmxOptionsPatchPtrOutput)
+}
+
+// JMX Options for Zookeeper nodes.
+type KafkaSpecZookeeperJmxOptionsPatchOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecZookeeperJmxOptionsPatchOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecZookeeperJmxOptionsPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecZookeeperJmxOptionsPatchOutput) ToKafkaSpecZookeeperJmxOptionsPatchOutput() KafkaSpecZookeeperJmxOptionsPatchOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperJmxOptionsPatchOutput) ToKafkaSpecZookeeperJmxOptionsPatchOutputWithContext(ctx context.Context) KafkaSpecZookeeperJmxOptionsPatchOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperJmxOptionsPatchOutput) ToKafkaSpecZookeeperJmxOptionsPatchPtrOutput() KafkaSpecZookeeperJmxOptionsPatchPtrOutput {
+	return o.ToKafkaSpecZookeeperJmxOptionsPatchPtrOutputWithContext(context.Background())
+}
+
+func (o KafkaSpecZookeeperJmxOptionsPatchOutput) ToKafkaSpecZookeeperJmxOptionsPatchPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperJmxOptionsPatchPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v KafkaSpecZookeeperJmxOptionsPatch) *KafkaSpecZookeeperJmxOptionsPatch {
+		return &v
+	}).(KafkaSpecZookeeperJmxOptionsPatchPtrOutput)
+}
+
+func (o KafkaSpecZookeeperJmxOptionsPatchOutput) Authentication() KafkaSpecZookeeperJmxOptionsAuthenticationPatchPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperJmxOptionsPatch) *KafkaSpecZookeeperJmxOptionsAuthenticationPatch {
+		return v.Authentication
+	}).(KafkaSpecZookeeperJmxOptionsAuthenticationPatchPtrOutput)
+}
+
+type KafkaSpecZookeeperJmxOptionsPatchPtrOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecZookeeperJmxOptionsPatchPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecZookeeperJmxOptionsPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecZookeeperJmxOptionsPatchPtrOutput) ToKafkaSpecZookeeperJmxOptionsPatchPtrOutput() KafkaSpecZookeeperJmxOptionsPatchPtrOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperJmxOptionsPatchPtrOutput) ToKafkaSpecZookeeperJmxOptionsPatchPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperJmxOptionsPatchPtrOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperJmxOptionsPatchPtrOutput) Elem() KafkaSpecZookeeperJmxOptionsPatchOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperJmxOptionsPatch) KafkaSpecZookeeperJmxOptionsPatch {
+		if v != nil {
+			return *v
+		}
+		var ret KafkaSpecZookeeperJmxOptionsPatch
+		return ret
+	}).(KafkaSpecZookeeperJmxOptionsPatchOutput)
+}
+
+func (o KafkaSpecZookeeperJmxOptionsPatchPtrOutput) Authentication() KafkaSpecZookeeperJmxOptionsAuthenticationPatchPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperJmxOptionsPatch) *KafkaSpecZookeeperJmxOptionsAuthenticationPatch {
+		if v == nil {
+			return nil
+		}
+		return v.Authentication
+	}).(KafkaSpecZookeeperJmxOptionsAuthenticationPatchPtrOutput)
+}
+
+// JVM Options for pods.
+type KafkaSpecZookeeperJvmOptions struct {
+	// A map of -XX options to the JVM.
+	XX map[string]string `pulumi:"-XX"`
+	// -Xms option to to the JVM.
+	Xms *string `pulumi:"-Xms"`
+	// -Xmx option to to the JVM.
+	Xmx *string `pulumi:"-Xmx"`
+	// Specifies whether the Garbage Collection logging is enabled. The default is false.
+	GcLoggingEnabled *bool `pulumi:"gcLoggingEnabled"`
+	// A map of additional system properties which will be passed using the `-D` option to the JVM.
+	JavaSystemProperties []KafkaSpecZookeeperJvmOptionsJavaSystemProperties `pulumi:"javaSystemProperties"`
+}
+
+// KafkaSpecZookeeperJvmOptionsInput is an input type that accepts KafkaSpecZookeeperJvmOptionsArgs and KafkaSpecZookeeperJvmOptionsOutput values.
+// You can construct a concrete instance of `KafkaSpecZookeeperJvmOptionsInput` via:
+//
+//	KafkaSpecZookeeperJvmOptionsArgs{...}
+type KafkaSpecZookeeperJvmOptionsInput interface {
+	pulumi.Input
+
+	ToKafkaSpecZookeeperJvmOptionsOutput() KafkaSpecZookeeperJvmOptionsOutput
+	ToKafkaSpecZookeeperJvmOptionsOutputWithContext(context.Context) KafkaSpecZookeeperJvmOptionsOutput
+}
+
+// JVM Options for pods.
+type KafkaSpecZookeeperJvmOptionsArgs struct {
+	// A map of -XX options to the JVM.
+	XX pulumi.StringMapInput `pulumi:"-XX"`
+	// -Xms option to to the JVM.
+	Xms pulumi.StringPtrInput `pulumi:"-Xms"`
+	// -Xmx option to to the JVM.
+	Xmx pulumi.StringPtrInput `pulumi:"-Xmx"`
+	// Specifies whether the Garbage Collection logging is enabled. The default is false.
+	GcLoggingEnabled pulumi.BoolPtrInput `pulumi:"gcLoggingEnabled"`
+	// A map of additional system properties which will be passed using the `-D` option to the JVM.
+	JavaSystemProperties KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesArrayInput `pulumi:"javaSystemProperties"`
+}
+
+func (KafkaSpecZookeeperJvmOptionsArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecZookeeperJvmOptions)(nil)).Elem()
+}
+
+func (i KafkaSpecZookeeperJvmOptionsArgs) ToKafkaSpecZookeeperJvmOptionsOutput() KafkaSpecZookeeperJvmOptionsOutput {
+	return i.ToKafkaSpecZookeeperJvmOptionsOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecZookeeperJvmOptionsArgs) ToKafkaSpecZookeeperJvmOptionsOutputWithContext(ctx context.Context) KafkaSpecZookeeperJvmOptionsOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperJvmOptionsOutput)
+}
+
+func (i KafkaSpecZookeeperJvmOptionsArgs) ToKafkaSpecZookeeperJvmOptionsPtrOutput() KafkaSpecZookeeperJvmOptionsPtrOutput {
+	return i.ToKafkaSpecZookeeperJvmOptionsPtrOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecZookeeperJvmOptionsArgs) ToKafkaSpecZookeeperJvmOptionsPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperJvmOptionsPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperJvmOptionsOutput).ToKafkaSpecZookeeperJvmOptionsPtrOutputWithContext(ctx)
+}
+
+// KafkaSpecZookeeperJvmOptionsPtrInput is an input type that accepts KafkaSpecZookeeperJvmOptionsArgs, KafkaSpecZookeeperJvmOptionsPtr and KafkaSpecZookeeperJvmOptionsPtrOutput values.
+// You can construct a concrete instance of `KafkaSpecZookeeperJvmOptionsPtrInput` via:
+//
+//	        KafkaSpecZookeeperJvmOptionsArgs{...}
+//
+//	or:
+//
+//	        nil
+type KafkaSpecZookeeperJvmOptionsPtrInput interface {
+	pulumi.Input
+
+	ToKafkaSpecZookeeperJvmOptionsPtrOutput() KafkaSpecZookeeperJvmOptionsPtrOutput
+	ToKafkaSpecZookeeperJvmOptionsPtrOutputWithContext(context.Context) KafkaSpecZookeeperJvmOptionsPtrOutput
+}
+
+type kafkaSpecZookeeperJvmOptionsPtrType KafkaSpecZookeeperJvmOptionsArgs
+
+func KafkaSpecZookeeperJvmOptionsPtr(v *KafkaSpecZookeeperJvmOptionsArgs) KafkaSpecZookeeperJvmOptionsPtrInput {
+	return (*kafkaSpecZookeeperJvmOptionsPtrType)(v)
+}
+
+func (*kafkaSpecZookeeperJvmOptionsPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecZookeeperJvmOptions)(nil)).Elem()
+}
+
+func (i *kafkaSpecZookeeperJvmOptionsPtrType) ToKafkaSpecZookeeperJvmOptionsPtrOutput() KafkaSpecZookeeperJvmOptionsPtrOutput {
+	return i.ToKafkaSpecZookeeperJvmOptionsPtrOutputWithContext(context.Background())
+}
+
+func (i *kafkaSpecZookeeperJvmOptionsPtrType) ToKafkaSpecZookeeperJvmOptionsPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperJvmOptionsPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperJvmOptionsPtrOutput)
+}
+
+// JVM Options for pods.
+type KafkaSpecZookeeperJvmOptionsOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecZookeeperJvmOptionsOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecZookeeperJvmOptions)(nil)).Elem()
+}
+
+func (o KafkaSpecZookeeperJvmOptionsOutput) ToKafkaSpecZookeeperJvmOptionsOutput() KafkaSpecZookeeperJvmOptionsOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperJvmOptionsOutput) ToKafkaSpecZookeeperJvmOptionsOutputWithContext(ctx context.Context) KafkaSpecZookeeperJvmOptionsOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperJvmOptionsOutput) ToKafkaSpecZookeeperJvmOptionsPtrOutput() KafkaSpecZookeeperJvmOptionsPtrOutput {
+	return o.ToKafkaSpecZookeeperJvmOptionsPtrOutputWithContext(context.Background())
+}
+
+func (o KafkaSpecZookeeperJvmOptionsOutput) ToKafkaSpecZookeeperJvmOptionsPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperJvmOptionsPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v KafkaSpecZookeeperJvmOptions) *KafkaSpecZookeeperJvmOptions {
+		return &v
+	}).(KafkaSpecZookeeperJvmOptionsPtrOutput)
+}
+
+// A map of -XX options to the JVM.
+func (o KafkaSpecZookeeperJvmOptionsOutput) XX() pulumi.StringMapOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperJvmOptions) map[string]string { return v.XX }).(pulumi.StringMapOutput)
+}
+
+// -Xms option to to the JVM.
+func (o KafkaSpecZookeeperJvmOptionsOutput) Xms() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperJvmOptions) *string { return v.Xms }).(pulumi.StringPtrOutput)
+}
+
+// -Xmx option to to the JVM.
+func (o KafkaSpecZookeeperJvmOptionsOutput) Xmx() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperJvmOptions) *string { return v.Xmx }).(pulumi.StringPtrOutput)
+}
+
+// Specifies whether the Garbage Collection logging is enabled. The default is false.
+func (o KafkaSpecZookeeperJvmOptionsOutput) GcLoggingEnabled() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperJvmOptions) *bool { return v.GcLoggingEnabled }).(pulumi.BoolPtrOutput)
+}
+
+// A map of additional system properties which will be passed using the `-D` option to the JVM.
+func (o KafkaSpecZookeeperJvmOptionsOutput) JavaSystemProperties() KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesArrayOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperJvmOptions) []KafkaSpecZookeeperJvmOptionsJavaSystemProperties {
+		return v.JavaSystemProperties
+	}).(KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesArrayOutput)
+}
+
+type KafkaSpecZookeeperJvmOptionsPtrOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecZookeeperJvmOptionsPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecZookeeperJvmOptions)(nil)).Elem()
+}
+
+func (o KafkaSpecZookeeperJvmOptionsPtrOutput) ToKafkaSpecZookeeperJvmOptionsPtrOutput() KafkaSpecZookeeperJvmOptionsPtrOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperJvmOptionsPtrOutput) ToKafkaSpecZookeeperJvmOptionsPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperJvmOptionsPtrOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperJvmOptionsPtrOutput) Elem() KafkaSpecZookeeperJvmOptionsOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperJvmOptions) KafkaSpecZookeeperJvmOptions {
+		if v != nil {
+			return *v
+		}
+		var ret KafkaSpecZookeeperJvmOptions
+		return ret
+	}).(KafkaSpecZookeeperJvmOptionsOutput)
+}
+
+// A map of -XX options to the JVM.
+func (o KafkaSpecZookeeperJvmOptionsPtrOutput) XX() pulumi.StringMapOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperJvmOptions) map[string]string {
+		if v == nil {
+			return nil
+		}
+		return v.XX
+	}).(pulumi.StringMapOutput)
+}
+
+// -Xms option to to the JVM.
+func (o KafkaSpecZookeeperJvmOptionsPtrOutput) Xms() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperJvmOptions) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Xms
+	}).(pulumi.StringPtrOutput)
+}
+
+// -Xmx option to to the JVM.
+func (o KafkaSpecZookeeperJvmOptionsPtrOutput) Xmx() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperJvmOptions) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Xmx
+	}).(pulumi.StringPtrOutput)
+}
+
+// Specifies whether the Garbage Collection logging is enabled. The default is false.
+func (o KafkaSpecZookeeperJvmOptionsPtrOutput) GcLoggingEnabled() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperJvmOptions) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.GcLoggingEnabled
+	}).(pulumi.BoolPtrOutput)
+}
+
+// A map of additional system properties which will be passed using the `-D` option to the JVM.
+func (o KafkaSpecZookeeperJvmOptionsPtrOutput) JavaSystemProperties() KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesArrayOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperJvmOptions) []KafkaSpecZookeeperJvmOptionsJavaSystemProperties {
+		if v == nil {
+			return nil
+		}
+		return v.JavaSystemProperties
+	}).(KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesArrayOutput)
+}
+
+type KafkaSpecZookeeperJvmOptionsJavaSystemProperties struct {
+	// The system property name.
+	Name *string `pulumi:"name"`
+	// The system property value.
+	Value *string `pulumi:"value"`
+}
+
+// KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesInput is an input type that accepts KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesArgs and KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesOutput values.
+// You can construct a concrete instance of `KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesInput` via:
+//
+//	KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesArgs{...}
+type KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesInput interface {
+	pulumi.Input
+
+	ToKafkaSpecZookeeperJvmOptionsJavaSystemPropertiesOutput() KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesOutput
+	ToKafkaSpecZookeeperJvmOptionsJavaSystemPropertiesOutputWithContext(context.Context) KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesOutput
+}
+
+type KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesArgs struct {
+	// The system property name.
+	Name pulumi.StringPtrInput `pulumi:"name"`
+	// The system property value.
+	Value pulumi.StringPtrInput `pulumi:"value"`
+}
+
+func (KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecZookeeperJvmOptionsJavaSystemProperties)(nil)).Elem()
+}
+
+func (i KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesArgs) ToKafkaSpecZookeeperJvmOptionsJavaSystemPropertiesOutput() KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesOutput {
+	return i.ToKafkaSpecZookeeperJvmOptionsJavaSystemPropertiesOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesArgs) ToKafkaSpecZookeeperJvmOptionsJavaSystemPropertiesOutputWithContext(ctx context.Context) KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesOutput)
+}
+
+// KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesArrayInput is an input type that accepts KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesArray and KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesArrayOutput values.
+// You can construct a concrete instance of `KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesArrayInput` via:
+//
+//	KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesArray{ KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesArgs{...} }
+type KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesArrayInput interface {
+	pulumi.Input
+
+	ToKafkaSpecZookeeperJvmOptionsJavaSystemPropertiesArrayOutput() KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesArrayOutput
+	ToKafkaSpecZookeeperJvmOptionsJavaSystemPropertiesArrayOutputWithContext(context.Context) KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesArrayOutput
+}
+
+type KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesArray []KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesInput
+
+func (KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesArray) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]KafkaSpecZookeeperJvmOptionsJavaSystemProperties)(nil)).Elem()
+}
+
+func (i KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesArray) ToKafkaSpecZookeeperJvmOptionsJavaSystemPropertiesArrayOutput() KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesArrayOutput {
+	return i.ToKafkaSpecZookeeperJvmOptionsJavaSystemPropertiesArrayOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesArray) ToKafkaSpecZookeeperJvmOptionsJavaSystemPropertiesArrayOutputWithContext(ctx context.Context) KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesArrayOutput)
+}
+
+type KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecZookeeperJvmOptionsJavaSystemProperties)(nil)).Elem()
+}
+
+func (o KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesOutput) ToKafkaSpecZookeeperJvmOptionsJavaSystemPropertiesOutput() KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesOutput) ToKafkaSpecZookeeperJvmOptionsJavaSystemPropertiesOutputWithContext(ctx context.Context) KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesOutput {
+	return o
+}
+
+// The system property name.
+func (o KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesOutput) Name() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperJvmOptionsJavaSystemProperties) *string { return v.Name }).(pulumi.StringPtrOutput)
+}
+
+// The system property value.
+func (o KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesOutput) Value() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperJvmOptionsJavaSystemProperties) *string { return v.Value }).(pulumi.StringPtrOutput)
+}
+
+type KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesArrayOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]KafkaSpecZookeeperJvmOptionsJavaSystemProperties)(nil)).Elem()
+}
+
+func (o KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesArrayOutput) ToKafkaSpecZookeeperJvmOptionsJavaSystemPropertiesArrayOutput() KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesArrayOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesArrayOutput) ToKafkaSpecZookeeperJvmOptionsJavaSystemPropertiesArrayOutputWithContext(ctx context.Context) KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesArrayOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesArrayOutput) Index(i pulumi.IntInput) KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesOutput {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) KafkaSpecZookeeperJvmOptionsJavaSystemProperties {
+		return vs[0].([]KafkaSpecZookeeperJvmOptionsJavaSystemProperties)[vs[1].(int)]
+	}).(KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesOutput)
+}
+
+type KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatch struct {
+	// The system property name.
+	Name *string `pulumi:"name"`
+	// The system property value.
+	Value *string `pulumi:"value"`
+}
+
+// KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchInput is an input type that accepts KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchArgs and KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchOutput values.
+// You can construct a concrete instance of `KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchInput` via:
+//
+//	KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchArgs{...}
+type KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchInput interface {
+	pulumi.Input
+
+	ToKafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchOutput() KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchOutput
+	ToKafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchOutputWithContext(context.Context) KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchOutput
+}
+
+type KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchArgs struct {
+	// The system property name.
+	Name pulumi.StringPtrInput `pulumi:"name"`
+	// The system property value.
+	Value pulumi.StringPtrInput `pulumi:"value"`
+}
+
+func (KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatch)(nil)).Elem()
+}
+
+func (i KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchArgs) ToKafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchOutput() KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchOutput {
+	return i.ToKafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchArgs) ToKafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchOutputWithContext(ctx context.Context) KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchOutput)
+}
+
+// KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchArrayInput is an input type that accepts KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchArray and KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchArrayOutput values.
+// You can construct a concrete instance of `KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchArrayInput` via:
+//
+//	KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchArray{ KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchArgs{...} }
+type KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchArrayInput interface {
+	pulumi.Input
+
+	ToKafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchArrayOutput() KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchArrayOutput
+	ToKafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchArrayOutputWithContext(context.Context) KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchArrayOutput
+}
+
+type KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchArray []KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchInput
+
+func (KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchArray) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatch)(nil)).Elem()
+}
+
+func (i KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchArray) ToKafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchArrayOutput() KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchArrayOutput {
+	return i.ToKafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchArrayOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchArray) ToKafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchArrayOutputWithContext(ctx context.Context) KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchArrayOutput)
+}
+
+type KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchOutput) ToKafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchOutput() KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchOutput) ToKafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchOutputWithContext(ctx context.Context) KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchOutput {
+	return o
+}
+
+// The system property name.
+func (o KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchOutput) Name() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatch) *string { return v.Name }).(pulumi.StringPtrOutput)
+}
+
+// The system property value.
+func (o KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchOutput) Value() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatch) *string { return v.Value }).(pulumi.StringPtrOutput)
+}
+
+type KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchArrayOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchArrayOutput) ToKafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchArrayOutput() KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchArrayOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchArrayOutput) ToKafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchArrayOutputWithContext(ctx context.Context) KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchArrayOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchArrayOutput) Index(i pulumi.IntInput) KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchOutput {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatch {
+		return vs[0].([]KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatch)[vs[1].(int)]
+	}).(KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchOutput)
+}
+
+// JVM Options for pods.
+type KafkaSpecZookeeperJvmOptionsPatch struct {
+	// A map of -XX options to the JVM.
+	XX map[string]string `pulumi:"-XX"`
+	// -Xms option to to the JVM.
+	Xms *string `pulumi:"-Xms"`
+	// -Xmx option to to the JVM.
+	Xmx *string `pulumi:"-Xmx"`
+	// Specifies whether the Garbage Collection logging is enabled. The default is false.
+	GcLoggingEnabled *bool `pulumi:"gcLoggingEnabled"`
+	// A map of additional system properties which will be passed using the `-D` option to the JVM.
+	JavaSystemProperties []KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatch `pulumi:"javaSystemProperties"`
+}
+
+// KafkaSpecZookeeperJvmOptionsPatchInput is an input type that accepts KafkaSpecZookeeperJvmOptionsPatchArgs and KafkaSpecZookeeperJvmOptionsPatchOutput values.
+// You can construct a concrete instance of `KafkaSpecZookeeperJvmOptionsPatchInput` via:
+//
+//	KafkaSpecZookeeperJvmOptionsPatchArgs{...}
+type KafkaSpecZookeeperJvmOptionsPatchInput interface {
+	pulumi.Input
+
+	ToKafkaSpecZookeeperJvmOptionsPatchOutput() KafkaSpecZookeeperJvmOptionsPatchOutput
+	ToKafkaSpecZookeeperJvmOptionsPatchOutputWithContext(context.Context) KafkaSpecZookeeperJvmOptionsPatchOutput
+}
+
+// JVM Options for pods.
+type KafkaSpecZookeeperJvmOptionsPatchArgs struct {
+	// A map of -XX options to the JVM.
+	XX pulumi.StringMapInput `pulumi:"-XX"`
+	// -Xms option to to the JVM.
+	Xms pulumi.StringPtrInput `pulumi:"-Xms"`
+	// -Xmx option to to the JVM.
+	Xmx pulumi.StringPtrInput `pulumi:"-Xmx"`
+	// Specifies whether the Garbage Collection logging is enabled. The default is false.
+	GcLoggingEnabled pulumi.BoolPtrInput `pulumi:"gcLoggingEnabled"`
+	// A map of additional system properties which will be passed using the `-D` option to the JVM.
+	JavaSystemProperties KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchArrayInput `pulumi:"javaSystemProperties"`
+}
+
+func (KafkaSpecZookeeperJvmOptionsPatchArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecZookeeperJvmOptionsPatch)(nil)).Elem()
+}
+
+func (i KafkaSpecZookeeperJvmOptionsPatchArgs) ToKafkaSpecZookeeperJvmOptionsPatchOutput() KafkaSpecZookeeperJvmOptionsPatchOutput {
+	return i.ToKafkaSpecZookeeperJvmOptionsPatchOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecZookeeperJvmOptionsPatchArgs) ToKafkaSpecZookeeperJvmOptionsPatchOutputWithContext(ctx context.Context) KafkaSpecZookeeperJvmOptionsPatchOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperJvmOptionsPatchOutput)
+}
+
+func (i KafkaSpecZookeeperJvmOptionsPatchArgs) ToKafkaSpecZookeeperJvmOptionsPatchPtrOutput() KafkaSpecZookeeperJvmOptionsPatchPtrOutput {
+	return i.ToKafkaSpecZookeeperJvmOptionsPatchPtrOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecZookeeperJvmOptionsPatchArgs) ToKafkaSpecZookeeperJvmOptionsPatchPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperJvmOptionsPatchPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperJvmOptionsPatchOutput).ToKafkaSpecZookeeperJvmOptionsPatchPtrOutputWithContext(ctx)
+}
+
+// KafkaSpecZookeeperJvmOptionsPatchPtrInput is an input type that accepts KafkaSpecZookeeperJvmOptionsPatchArgs, KafkaSpecZookeeperJvmOptionsPatchPtr and KafkaSpecZookeeperJvmOptionsPatchPtrOutput values.
+// You can construct a concrete instance of `KafkaSpecZookeeperJvmOptionsPatchPtrInput` via:
+//
+//	        KafkaSpecZookeeperJvmOptionsPatchArgs{...}
+//
+//	or:
+//
+//	        nil
+type KafkaSpecZookeeperJvmOptionsPatchPtrInput interface {
+	pulumi.Input
+
+	ToKafkaSpecZookeeperJvmOptionsPatchPtrOutput() KafkaSpecZookeeperJvmOptionsPatchPtrOutput
+	ToKafkaSpecZookeeperJvmOptionsPatchPtrOutputWithContext(context.Context) KafkaSpecZookeeperJvmOptionsPatchPtrOutput
+}
+
+type kafkaSpecZookeeperJvmOptionsPatchPtrType KafkaSpecZookeeperJvmOptionsPatchArgs
+
+func KafkaSpecZookeeperJvmOptionsPatchPtr(v *KafkaSpecZookeeperJvmOptionsPatchArgs) KafkaSpecZookeeperJvmOptionsPatchPtrInput {
+	return (*kafkaSpecZookeeperJvmOptionsPatchPtrType)(v)
+}
+
+func (*kafkaSpecZookeeperJvmOptionsPatchPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecZookeeperJvmOptionsPatch)(nil)).Elem()
+}
+
+func (i *kafkaSpecZookeeperJvmOptionsPatchPtrType) ToKafkaSpecZookeeperJvmOptionsPatchPtrOutput() KafkaSpecZookeeperJvmOptionsPatchPtrOutput {
+	return i.ToKafkaSpecZookeeperJvmOptionsPatchPtrOutputWithContext(context.Background())
+}
+
+func (i *kafkaSpecZookeeperJvmOptionsPatchPtrType) ToKafkaSpecZookeeperJvmOptionsPatchPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperJvmOptionsPatchPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperJvmOptionsPatchPtrOutput)
+}
+
+// JVM Options for pods.
+type KafkaSpecZookeeperJvmOptionsPatchOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecZookeeperJvmOptionsPatchOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecZookeeperJvmOptionsPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecZookeeperJvmOptionsPatchOutput) ToKafkaSpecZookeeperJvmOptionsPatchOutput() KafkaSpecZookeeperJvmOptionsPatchOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperJvmOptionsPatchOutput) ToKafkaSpecZookeeperJvmOptionsPatchOutputWithContext(ctx context.Context) KafkaSpecZookeeperJvmOptionsPatchOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperJvmOptionsPatchOutput) ToKafkaSpecZookeeperJvmOptionsPatchPtrOutput() KafkaSpecZookeeperJvmOptionsPatchPtrOutput {
+	return o.ToKafkaSpecZookeeperJvmOptionsPatchPtrOutputWithContext(context.Background())
+}
+
+func (o KafkaSpecZookeeperJvmOptionsPatchOutput) ToKafkaSpecZookeeperJvmOptionsPatchPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperJvmOptionsPatchPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v KafkaSpecZookeeperJvmOptionsPatch) *KafkaSpecZookeeperJvmOptionsPatch {
+		return &v
+	}).(KafkaSpecZookeeperJvmOptionsPatchPtrOutput)
+}
+
+// A map of -XX options to the JVM.
+func (o KafkaSpecZookeeperJvmOptionsPatchOutput) XX() pulumi.StringMapOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperJvmOptionsPatch) map[string]string { return v.XX }).(pulumi.StringMapOutput)
+}
+
+// -Xms option to to the JVM.
+func (o KafkaSpecZookeeperJvmOptionsPatchOutput) Xms() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperJvmOptionsPatch) *string { return v.Xms }).(pulumi.StringPtrOutput)
+}
+
+// -Xmx option to to the JVM.
+func (o KafkaSpecZookeeperJvmOptionsPatchOutput) Xmx() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperJvmOptionsPatch) *string { return v.Xmx }).(pulumi.StringPtrOutput)
+}
+
+// Specifies whether the Garbage Collection logging is enabled. The default is false.
+func (o KafkaSpecZookeeperJvmOptionsPatchOutput) GcLoggingEnabled() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperJvmOptionsPatch) *bool { return v.GcLoggingEnabled }).(pulumi.BoolPtrOutput)
+}
+
+// A map of additional system properties which will be passed using the `-D` option to the JVM.
+func (o KafkaSpecZookeeperJvmOptionsPatchOutput) JavaSystemProperties() KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchArrayOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperJvmOptionsPatch) []KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatch {
+		return v.JavaSystemProperties
+	}).(KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchArrayOutput)
+}
+
+type KafkaSpecZookeeperJvmOptionsPatchPtrOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecZookeeperJvmOptionsPatchPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecZookeeperJvmOptionsPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecZookeeperJvmOptionsPatchPtrOutput) ToKafkaSpecZookeeperJvmOptionsPatchPtrOutput() KafkaSpecZookeeperJvmOptionsPatchPtrOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperJvmOptionsPatchPtrOutput) ToKafkaSpecZookeeperJvmOptionsPatchPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperJvmOptionsPatchPtrOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperJvmOptionsPatchPtrOutput) Elem() KafkaSpecZookeeperJvmOptionsPatchOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperJvmOptionsPatch) KafkaSpecZookeeperJvmOptionsPatch {
+		if v != nil {
+			return *v
+		}
+		var ret KafkaSpecZookeeperJvmOptionsPatch
+		return ret
+	}).(KafkaSpecZookeeperJvmOptionsPatchOutput)
+}
+
+// A map of -XX options to the JVM.
+func (o KafkaSpecZookeeperJvmOptionsPatchPtrOutput) XX() pulumi.StringMapOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperJvmOptionsPatch) map[string]string {
+		if v == nil {
+			return nil
+		}
+		return v.XX
+	}).(pulumi.StringMapOutput)
+}
+
+// -Xms option to to the JVM.
+func (o KafkaSpecZookeeperJvmOptionsPatchPtrOutput) Xms() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperJvmOptionsPatch) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Xms
+	}).(pulumi.StringPtrOutput)
+}
+
+// -Xmx option to to the JVM.
+func (o KafkaSpecZookeeperJvmOptionsPatchPtrOutput) Xmx() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperJvmOptionsPatch) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Xmx
+	}).(pulumi.StringPtrOutput)
+}
+
+// Specifies whether the Garbage Collection logging is enabled. The default is false.
+func (o KafkaSpecZookeeperJvmOptionsPatchPtrOutput) GcLoggingEnabled() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperJvmOptionsPatch) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.GcLoggingEnabled
+	}).(pulumi.BoolPtrOutput)
+}
+
+// A map of additional system properties which will be passed using the `-D` option to the JVM.
+func (o KafkaSpecZookeeperJvmOptionsPatchPtrOutput) JavaSystemProperties() KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchArrayOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperJvmOptionsPatch) []KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatch {
+		if v == nil {
+			return nil
+		}
+		return v.JavaSystemProperties
+	}).(KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchArrayOutput)
+}
+
+// Pod liveness checking.
+type KafkaSpecZookeeperLivenessProbe struct {
+	// Minimum consecutive failures for the probe to be considered failed after having succeeded. Defaults to 3. Minimum value is 1.
+	FailureThreshold *int `pulumi:"failureThreshold"`
+	// The initial delay before first the health is first checked. Default to 15 seconds. Minimum value is 0.
+	InitialDelaySeconds *int `pulumi:"initialDelaySeconds"`
+	// How often (in seconds) to perform the probe. Default to 10 seconds. Minimum value is 1.
+	PeriodSeconds *int `pulumi:"periodSeconds"`
+	// Minimum consecutive successes for the probe to be considered successful after having failed. Defaults to 1. Must be 1 for liveness. Minimum value is 1.
+	SuccessThreshold *int `pulumi:"successThreshold"`
+	// The timeout for each attempted health check. Default to 5 seconds. Minimum value is 1.
+	TimeoutSeconds *int `pulumi:"timeoutSeconds"`
+}
+
+// KafkaSpecZookeeperLivenessProbeInput is an input type that accepts KafkaSpecZookeeperLivenessProbeArgs and KafkaSpecZookeeperLivenessProbeOutput values.
+// You can construct a concrete instance of `KafkaSpecZookeeperLivenessProbeInput` via:
+//
+//	KafkaSpecZookeeperLivenessProbeArgs{...}
+type KafkaSpecZookeeperLivenessProbeInput interface {
+	pulumi.Input
+
+	ToKafkaSpecZookeeperLivenessProbeOutput() KafkaSpecZookeeperLivenessProbeOutput
+	ToKafkaSpecZookeeperLivenessProbeOutputWithContext(context.Context) KafkaSpecZookeeperLivenessProbeOutput
+}
+
+// Pod liveness checking.
+type KafkaSpecZookeeperLivenessProbeArgs struct {
+	// Minimum consecutive failures for the probe to be considered failed after having succeeded. Defaults to 3. Minimum value is 1.
+	FailureThreshold pulumi.IntPtrInput `pulumi:"failureThreshold"`
+	// The initial delay before first the health is first checked. Default to 15 seconds. Minimum value is 0.
+	InitialDelaySeconds pulumi.IntPtrInput `pulumi:"initialDelaySeconds"`
+	// How often (in seconds) to perform the probe. Default to 10 seconds. Minimum value is 1.
+	PeriodSeconds pulumi.IntPtrInput `pulumi:"periodSeconds"`
+	// Minimum consecutive successes for the probe to be considered successful after having failed. Defaults to 1. Must be 1 for liveness. Minimum value is 1.
+	SuccessThreshold pulumi.IntPtrInput `pulumi:"successThreshold"`
+	// The timeout for each attempted health check. Default to 5 seconds. Minimum value is 1.
+	TimeoutSeconds pulumi.IntPtrInput `pulumi:"timeoutSeconds"`
+}
+
+func (KafkaSpecZookeeperLivenessProbeArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecZookeeperLivenessProbe)(nil)).Elem()
+}
+
+func (i KafkaSpecZookeeperLivenessProbeArgs) ToKafkaSpecZookeeperLivenessProbeOutput() KafkaSpecZookeeperLivenessProbeOutput {
+	return i.ToKafkaSpecZookeeperLivenessProbeOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecZookeeperLivenessProbeArgs) ToKafkaSpecZookeeperLivenessProbeOutputWithContext(ctx context.Context) KafkaSpecZookeeperLivenessProbeOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperLivenessProbeOutput)
+}
+
+func (i KafkaSpecZookeeperLivenessProbeArgs) ToKafkaSpecZookeeperLivenessProbePtrOutput() KafkaSpecZookeeperLivenessProbePtrOutput {
+	return i.ToKafkaSpecZookeeperLivenessProbePtrOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecZookeeperLivenessProbeArgs) ToKafkaSpecZookeeperLivenessProbePtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperLivenessProbePtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperLivenessProbeOutput).ToKafkaSpecZookeeperLivenessProbePtrOutputWithContext(ctx)
+}
+
+// KafkaSpecZookeeperLivenessProbePtrInput is an input type that accepts KafkaSpecZookeeperLivenessProbeArgs, KafkaSpecZookeeperLivenessProbePtr and KafkaSpecZookeeperLivenessProbePtrOutput values.
+// You can construct a concrete instance of `KafkaSpecZookeeperLivenessProbePtrInput` via:
+//
+//	        KafkaSpecZookeeperLivenessProbeArgs{...}
+//
+//	or:
+//
+//	        nil
+type KafkaSpecZookeeperLivenessProbePtrInput interface {
+	pulumi.Input
+
+	ToKafkaSpecZookeeperLivenessProbePtrOutput() KafkaSpecZookeeperLivenessProbePtrOutput
+	ToKafkaSpecZookeeperLivenessProbePtrOutputWithContext(context.Context) KafkaSpecZookeeperLivenessProbePtrOutput
+}
+
+type kafkaSpecZookeeperLivenessProbePtrType KafkaSpecZookeeperLivenessProbeArgs
+
+func KafkaSpecZookeeperLivenessProbePtr(v *KafkaSpecZookeeperLivenessProbeArgs) KafkaSpecZookeeperLivenessProbePtrInput {
+	return (*kafkaSpecZookeeperLivenessProbePtrType)(v)
+}
+
+func (*kafkaSpecZookeeperLivenessProbePtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecZookeeperLivenessProbe)(nil)).Elem()
+}
+
+func (i *kafkaSpecZookeeperLivenessProbePtrType) ToKafkaSpecZookeeperLivenessProbePtrOutput() KafkaSpecZookeeperLivenessProbePtrOutput {
+	return i.ToKafkaSpecZookeeperLivenessProbePtrOutputWithContext(context.Background())
+}
+
+func (i *kafkaSpecZookeeperLivenessProbePtrType) ToKafkaSpecZookeeperLivenessProbePtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperLivenessProbePtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperLivenessProbePtrOutput)
+}
+
+// Pod liveness checking.
+type KafkaSpecZookeeperLivenessProbeOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecZookeeperLivenessProbeOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecZookeeperLivenessProbe)(nil)).Elem()
+}
+
+func (o KafkaSpecZookeeperLivenessProbeOutput) ToKafkaSpecZookeeperLivenessProbeOutput() KafkaSpecZookeeperLivenessProbeOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperLivenessProbeOutput) ToKafkaSpecZookeeperLivenessProbeOutputWithContext(ctx context.Context) KafkaSpecZookeeperLivenessProbeOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperLivenessProbeOutput) ToKafkaSpecZookeeperLivenessProbePtrOutput() KafkaSpecZookeeperLivenessProbePtrOutput {
+	return o.ToKafkaSpecZookeeperLivenessProbePtrOutputWithContext(context.Background())
+}
+
+func (o KafkaSpecZookeeperLivenessProbeOutput) ToKafkaSpecZookeeperLivenessProbePtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperLivenessProbePtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v KafkaSpecZookeeperLivenessProbe) *KafkaSpecZookeeperLivenessProbe {
+		return &v
+	}).(KafkaSpecZookeeperLivenessProbePtrOutput)
+}
+
+// Minimum consecutive failures for the probe to be considered failed after having succeeded. Defaults to 3. Minimum value is 1.
+func (o KafkaSpecZookeeperLivenessProbeOutput) FailureThreshold() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperLivenessProbe) *int { return v.FailureThreshold }).(pulumi.IntPtrOutput)
+}
+
+// The initial delay before first the health is first checked. Default to 15 seconds. Minimum value is 0.
+func (o KafkaSpecZookeeperLivenessProbeOutput) InitialDelaySeconds() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperLivenessProbe) *int { return v.InitialDelaySeconds }).(pulumi.IntPtrOutput)
+}
+
+// How often (in seconds) to perform the probe. Default to 10 seconds. Minimum value is 1.
+func (o KafkaSpecZookeeperLivenessProbeOutput) PeriodSeconds() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperLivenessProbe) *int { return v.PeriodSeconds }).(pulumi.IntPtrOutput)
+}
+
+// Minimum consecutive successes for the probe to be considered successful after having failed. Defaults to 1. Must be 1 for liveness. Minimum value is 1.
+func (o KafkaSpecZookeeperLivenessProbeOutput) SuccessThreshold() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperLivenessProbe) *int { return v.SuccessThreshold }).(pulumi.IntPtrOutput)
+}
+
+// The timeout for each attempted health check. Default to 5 seconds. Minimum value is 1.
+func (o KafkaSpecZookeeperLivenessProbeOutput) TimeoutSeconds() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperLivenessProbe) *int { return v.TimeoutSeconds }).(pulumi.IntPtrOutput)
+}
+
+type KafkaSpecZookeeperLivenessProbePtrOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecZookeeperLivenessProbePtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecZookeeperLivenessProbe)(nil)).Elem()
+}
+
+func (o KafkaSpecZookeeperLivenessProbePtrOutput) ToKafkaSpecZookeeperLivenessProbePtrOutput() KafkaSpecZookeeperLivenessProbePtrOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperLivenessProbePtrOutput) ToKafkaSpecZookeeperLivenessProbePtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperLivenessProbePtrOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperLivenessProbePtrOutput) Elem() KafkaSpecZookeeperLivenessProbeOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperLivenessProbe) KafkaSpecZookeeperLivenessProbe {
+		if v != nil {
+			return *v
+		}
+		var ret KafkaSpecZookeeperLivenessProbe
+		return ret
+	}).(KafkaSpecZookeeperLivenessProbeOutput)
+}
+
+// Minimum consecutive failures for the probe to be considered failed after having succeeded. Defaults to 3. Minimum value is 1.
+func (o KafkaSpecZookeeperLivenessProbePtrOutput) FailureThreshold() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperLivenessProbe) *int {
+		if v == nil {
+			return nil
+		}
+		return v.FailureThreshold
+	}).(pulumi.IntPtrOutput)
+}
+
+// The initial delay before first the health is first checked. Default to 15 seconds. Minimum value is 0.
+func (o KafkaSpecZookeeperLivenessProbePtrOutput) InitialDelaySeconds() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperLivenessProbe) *int {
+		if v == nil {
+			return nil
+		}
+		return v.InitialDelaySeconds
+	}).(pulumi.IntPtrOutput)
+}
+
+// How often (in seconds) to perform the probe. Default to 10 seconds. Minimum value is 1.
+func (o KafkaSpecZookeeperLivenessProbePtrOutput) PeriodSeconds() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperLivenessProbe) *int {
+		if v == nil {
+			return nil
+		}
+		return v.PeriodSeconds
+	}).(pulumi.IntPtrOutput)
+}
+
+// Minimum consecutive successes for the probe to be considered successful after having failed. Defaults to 1. Must be 1 for liveness. Minimum value is 1.
+func (o KafkaSpecZookeeperLivenessProbePtrOutput) SuccessThreshold() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperLivenessProbe) *int {
+		if v == nil {
+			return nil
+		}
+		return v.SuccessThreshold
+	}).(pulumi.IntPtrOutput)
+}
+
+// The timeout for each attempted health check. Default to 5 seconds. Minimum value is 1.
+func (o KafkaSpecZookeeperLivenessProbePtrOutput) TimeoutSeconds() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperLivenessProbe) *int {
+		if v == nil {
+			return nil
+		}
+		return v.TimeoutSeconds
+	}).(pulumi.IntPtrOutput)
+}
+
+// Pod liveness checking.
+type KafkaSpecZookeeperLivenessProbePatch struct {
+	// Minimum consecutive failures for the probe to be considered failed after having succeeded. Defaults to 3. Minimum value is 1.
+	FailureThreshold *int `pulumi:"failureThreshold"`
+	// The initial delay before first the health is first checked. Default to 15 seconds. Minimum value is 0.
+	InitialDelaySeconds *int `pulumi:"initialDelaySeconds"`
+	// How often (in seconds) to perform the probe. Default to 10 seconds. Minimum value is 1.
+	PeriodSeconds *int `pulumi:"periodSeconds"`
+	// Minimum consecutive successes for the probe to be considered successful after having failed. Defaults to 1. Must be 1 for liveness. Minimum value is 1.
+	SuccessThreshold *int `pulumi:"successThreshold"`
+	// The timeout for each attempted health check. Default to 5 seconds. Minimum value is 1.
+	TimeoutSeconds *int `pulumi:"timeoutSeconds"`
+}
+
+// KafkaSpecZookeeperLivenessProbePatchInput is an input type that accepts KafkaSpecZookeeperLivenessProbePatchArgs and KafkaSpecZookeeperLivenessProbePatchOutput values.
+// You can construct a concrete instance of `KafkaSpecZookeeperLivenessProbePatchInput` via:
+//
+//	KafkaSpecZookeeperLivenessProbePatchArgs{...}
+type KafkaSpecZookeeperLivenessProbePatchInput interface {
+	pulumi.Input
+
+	ToKafkaSpecZookeeperLivenessProbePatchOutput() KafkaSpecZookeeperLivenessProbePatchOutput
+	ToKafkaSpecZookeeperLivenessProbePatchOutputWithContext(context.Context) KafkaSpecZookeeperLivenessProbePatchOutput
+}
+
+// Pod liveness checking.
+type KafkaSpecZookeeperLivenessProbePatchArgs struct {
+	// Minimum consecutive failures for the probe to be considered failed after having succeeded. Defaults to 3. Minimum value is 1.
+	FailureThreshold pulumi.IntPtrInput `pulumi:"failureThreshold"`
+	// The initial delay before first the health is first checked. Default to 15 seconds. Minimum value is 0.
+	InitialDelaySeconds pulumi.IntPtrInput `pulumi:"initialDelaySeconds"`
+	// How often (in seconds) to perform the probe. Default to 10 seconds. Minimum value is 1.
+	PeriodSeconds pulumi.IntPtrInput `pulumi:"periodSeconds"`
+	// Minimum consecutive successes for the probe to be considered successful after having failed. Defaults to 1. Must be 1 for liveness. Minimum value is 1.
+	SuccessThreshold pulumi.IntPtrInput `pulumi:"successThreshold"`
+	// The timeout for each attempted health check. Default to 5 seconds. Minimum value is 1.
+	TimeoutSeconds pulumi.IntPtrInput `pulumi:"timeoutSeconds"`
+}
+
+func (KafkaSpecZookeeperLivenessProbePatchArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecZookeeperLivenessProbePatch)(nil)).Elem()
+}
+
+func (i KafkaSpecZookeeperLivenessProbePatchArgs) ToKafkaSpecZookeeperLivenessProbePatchOutput() KafkaSpecZookeeperLivenessProbePatchOutput {
+	return i.ToKafkaSpecZookeeperLivenessProbePatchOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecZookeeperLivenessProbePatchArgs) ToKafkaSpecZookeeperLivenessProbePatchOutputWithContext(ctx context.Context) KafkaSpecZookeeperLivenessProbePatchOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperLivenessProbePatchOutput)
+}
+
+func (i KafkaSpecZookeeperLivenessProbePatchArgs) ToKafkaSpecZookeeperLivenessProbePatchPtrOutput() KafkaSpecZookeeperLivenessProbePatchPtrOutput {
+	return i.ToKafkaSpecZookeeperLivenessProbePatchPtrOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecZookeeperLivenessProbePatchArgs) ToKafkaSpecZookeeperLivenessProbePatchPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperLivenessProbePatchPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperLivenessProbePatchOutput).ToKafkaSpecZookeeperLivenessProbePatchPtrOutputWithContext(ctx)
+}
+
+// KafkaSpecZookeeperLivenessProbePatchPtrInput is an input type that accepts KafkaSpecZookeeperLivenessProbePatchArgs, KafkaSpecZookeeperLivenessProbePatchPtr and KafkaSpecZookeeperLivenessProbePatchPtrOutput values.
+// You can construct a concrete instance of `KafkaSpecZookeeperLivenessProbePatchPtrInput` via:
+//
+//	        KafkaSpecZookeeperLivenessProbePatchArgs{...}
+//
+//	or:
+//
+//	        nil
+type KafkaSpecZookeeperLivenessProbePatchPtrInput interface {
+	pulumi.Input
+
+	ToKafkaSpecZookeeperLivenessProbePatchPtrOutput() KafkaSpecZookeeperLivenessProbePatchPtrOutput
+	ToKafkaSpecZookeeperLivenessProbePatchPtrOutputWithContext(context.Context) KafkaSpecZookeeperLivenessProbePatchPtrOutput
+}
+
+type kafkaSpecZookeeperLivenessProbePatchPtrType KafkaSpecZookeeperLivenessProbePatchArgs
+
+func KafkaSpecZookeeperLivenessProbePatchPtr(v *KafkaSpecZookeeperLivenessProbePatchArgs) KafkaSpecZookeeperLivenessProbePatchPtrInput {
+	return (*kafkaSpecZookeeperLivenessProbePatchPtrType)(v)
+}
+
+func (*kafkaSpecZookeeperLivenessProbePatchPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecZookeeperLivenessProbePatch)(nil)).Elem()
+}
+
+func (i *kafkaSpecZookeeperLivenessProbePatchPtrType) ToKafkaSpecZookeeperLivenessProbePatchPtrOutput() KafkaSpecZookeeperLivenessProbePatchPtrOutput {
+	return i.ToKafkaSpecZookeeperLivenessProbePatchPtrOutputWithContext(context.Background())
+}
+
+func (i *kafkaSpecZookeeperLivenessProbePatchPtrType) ToKafkaSpecZookeeperLivenessProbePatchPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperLivenessProbePatchPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperLivenessProbePatchPtrOutput)
+}
+
+// Pod liveness checking.
+type KafkaSpecZookeeperLivenessProbePatchOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecZookeeperLivenessProbePatchOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecZookeeperLivenessProbePatch)(nil)).Elem()
+}
+
+func (o KafkaSpecZookeeperLivenessProbePatchOutput) ToKafkaSpecZookeeperLivenessProbePatchOutput() KafkaSpecZookeeperLivenessProbePatchOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperLivenessProbePatchOutput) ToKafkaSpecZookeeperLivenessProbePatchOutputWithContext(ctx context.Context) KafkaSpecZookeeperLivenessProbePatchOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperLivenessProbePatchOutput) ToKafkaSpecZookeeperLivenessProbePatchPtrOutput() KafkaSpecZookeeperLivenessProbePatchPtrOutput {
+	return o.ToKafkaSpecZookeeperLivenessProbePatchPtrOutputWithContext(context.Background())
+}
+
+func (o KafkaSpecZookeeperLivenessProbePatchOutput) ToKafkaSpecZookeeperLivenessProbePatchPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperLivenessProbePatchPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v KafkaSpecZookeeperLivenessProbePatch) *KafkaSpecZookeeperLivenessProbePatch {
+		return &v
+	}).(KafkaSpecZookeeperLivenessProbePatchPtrOutput)
+}
+
+// Minimum consecutive failures for the probe to be considered failed after having succeeded. Defaults to 3. Minimum value is 1.
+func (o KafkaSpecZookeeperLivenessProbePatchOutput) FailureThreshold() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperLivenessProbePatch) *int { return v.FailureThreshold }).(pulumi.IntPtrOutput)
+}
+
+// The initial delay before first the health is first checked. Default to 15 seconds. Minimum value is 0.
+func (o KafkaSpecZookeeperLivenessProbePatchOutput) InitialDelaySeconds() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperLivenessProbePatch) *int { return v.InitialDelaySeconds }).(pulumi.IntPtrOutput)
+}
+
+// How often (in seconds) to perform the probe. Default to 10 seconds. Minimum value is 1.
+func (o KafkaSpecZookeeperLivenessProbePatchOutput) PeriodSeconds() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperLivenessProbePatch) *int { return v.PeriodSeconds }).(pulumi.IntPtrOutput)
+}
+
+// Minimum consecutive successes for the probe to be considered successful after having failed. Defaults to 1. Must be 1 for liveness. Minimum value is 1.
+func (o KafkaSpecZookeeperLivenessProbePatchOutput) SuccessThreshold() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperLivenessProbePatch) *int { return v.SuccessThreshold }).(pulumi.IntPtrOutput)
+}
+
+// The timeout for each attempted health check. Default to 5 seconds. Minimum value is 1.
+func (o KafkaSpecZookeeperLivenessProbePatchOutput) TimeoutSeconds() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperLivenessProbePatch) *int { return v.TimeoutSeconds }).(pulumi.IntPtrOutput)
+}
+
+type KafkaSpecZookeeperLivenessProbePatchPtrOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecZookeeperLivenessProbePatchPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecZookeeperLivenessProbePatch)(nil)).Elem()
+}
+
+func (o KafkaSpecZookeeperLivenessProbePatchPtrOutput) ToKafkaSpecZookeeperLivenessProbePatchPtrOutput() KafkaSpecZookeeperLivenessProbePatchPtrOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperLivenessProbePatchPtrOutput) ToKafkaSpecZookeeperLivenessProbePatchPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperLivenessProbePatchPtrOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperLivenessProbePatchPtrOutput) Elem() KafkaSpecZookeeperLivenessProbePatchOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperLivenessProbePatch) KafkaSpecZookeeperLivenessProbePatch {
+		if v != nil {
+			return *v
+		}
+		var ret KafkaSpecZookeeperLivenessProbePatch
+		return ret
+	}).(KafkaSpecZookeeperLivenessProbePatchOutput)
+}
+
+// Minimum consecutive failures for the probe to be considered failed after having succeeded. Defaults to 3. Minimum value is 1.
+func (o KafkaSpecZookeeperLivenessProbePatchPtrOutput) FailureThreshold() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperLivenessProbePatch) *int {
+		if v == nil {
+			return nil
+		}
+		return v.FailureThreshold
+	}).(pulumi.IntPtrOutput)
+}
+
+// The initial delay before first the health is first checked. Default to 15 seconds. Minimum value is 0.
+func (o KafkaSpecZookeeperLivenessProbePatchPtrOutput) InitialDelaySeconds() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperLivenessProbePatch) *int {
+		if v == nil {
+			return nil
+		}
+		return v.InitialDelaySeconds
+	}).(pulumi.IntPtrOutput)
+}
+
+// How often (in seconds) to perform the probe. Default to 10 seconds. Minimum value is 1.
+func (o KafkaSpecZookeeperLivenessProbePatchPtrOutput) PeriodSeconds() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperLivenessProbePatch) *int {
+		if v == nil {
+			return nil
+		}
+		return v.PeriodSeconds
+	}).(pulumi.IntPtrOutput)
+}
+
+// Minimum consecutive successes for the probe to be considered successful after having failed. Defaults to 1. Must be 1 for liveness. Minimum value is 1.
+func (o KafkaSpecZookeeperLivenessProbePatchPtrOutput) SuccessThreshold() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperLivenessProbePatch) *int {
+		if v == nil {
+			return nil
+		}
+		return v.SuccessThreshold
+	}).(pulumi.IntPtrOutput)
+}
+
+// The timeout for each attempted health check. Default to 5 seconds. Minimum value is 1.
+func (o KafkaSpecZookeeperLivenessProbePatchPtrOutput) TimeoutSeconds() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperLivenessProbePatch) *int {
+		if v == nil {
+			return nil
+		}
+		return v.TimeoutSeconds
+	}).(pulumi.IntPtrOutput)
+}
+
+// Logging configuration for ZooKeeper.
+type KafkaSpecZookeeperLogging struct {
+	// A Map from logger name to logger level.
+	Loggers map[string]string `pulumi:"loggers"`
+	// Logging type, must be either 'inline' or 'external'.
+	Type      *string                             `pulumi:"type"`
+	ValueFrom *KafkaSpecZookeeperLoggingValueFrom `pulumi:"valueFrom"`
+}
+
+// KafkaSpecZookeeperLoggingInput is an input type that accepts KafkaSpecZookeeperLoggingArgs and KafkaSpecZookeeperLoggingOutput values.
+// You can construct a concrete instance of `KafkaSpecZookeeperLoggingInput` via:
+//
+//	KafkaSpecZookeeperLoggingArgs{...}
+type KafkaSpecZookeeperLoggingInput interface {
+	pulumi.Input
+
+	ToKafkaSpecZookeeperLoggingOutput() KafkaSpecZookeeperLoggingOutput
+	ToKafkaSpecZookeeperLoggingOutputWithContext(context.Context) KafkaSpecZookeeperLoggingOutput
+}
+
+// Logging configuration for ZooKeeper.
+type KafkaSpecZookeeperLoggingArgs struct {
+	// A Map from logger name to logger level.
+	Loggers pulumi.StringMapInput `pulumi:"loggers"`
+	// Logging type, must be either 'inline' or 'external'.
+	Type      pulumi.StringPtrInput                      `pulumi:"type"`
+	ValueFrom KafkaSpecZookeeperLoggingValueFromPtrInput `pulumi:"valueFrom"`
+}
+
+func (KafkaSpecZookeeperLoggingArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecZookeeperLogging)(nil)).Elem()
+}
+
+func (i KafkaSpecZookeeperLoggingArgs) ToKafkaSpecZookeeperLoggingOutput() KafkaSpecZookeeperLoggingOutput {
+	return i.ToKafkaSpecZookeeperLoggingOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecZookeeperLoggingArgs) ToKafkaSpecZookeeperLoggingOutputWithContext(ctx context.Context) KafkaSpecZookeeperLoggingOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperLoggingOutput)
+}
+
+func (i KafkaSpecZookeeperLoggingArgs) ToKafkaSpecZookeeperLoggingPtrOutput() KafkaSpecZookeeperLoggingPtrOutput {
+	return i.ToKafkaSpecZookeeperLoggingPtrOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecZookeeperLoggingArgs) ToKafkaSpecZookeeperLoggingPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperLoggingPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperLoggingOutput).ToKafkaSpecZookeeperLoggingPtrOutputWithContext(ctx)
+}
+
+// KafkaSpecZookeeperLoggingPtrInput is an input type that accepts KafkaSpecZookeeperLoggingArgs, KafkaSpecZookeeperLoggingPtr and KafkaSpecZookeeperLoggingPtrOutput values.
+// You can construct a concrete instance of `KafkaSpecZookeeperLoggingPtrInput` via:
+//
+//	        KafkaSpecZookeeperLoggingArgs{...}
+//
+//	or:
+//
+//	        nil
+type KafkaSpecZookeeperLoggingPtrInput interface {
+	pulumi.Input
+
+	ToKafkaSpecZookeeperLoggingPtrOutput() KafkaSpecZookeeperLoggingPtrOutput
+	ToKafkaSpecZookeeperLoggingPtrOutputWithContext(context.Context) KafkaSpecZookeeperLoggingPtrOutput
+}
+
+type kafkaSpecZookeeperLoggingPtrType KafkaSpecZookeeperLoggingArgs
+
+func KafkaSpecZookeeperLoggingPtr(v *KafkaSpecZookeeperLoggingArgs) KafkaSpecZookeeperLoggingPtrInput {
+	return (*kafkaSpecZookeeperLoggingPtrType)(v)
+}
+
+func (*kafkaSpecZookeeperLoggingPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecZookeeperLogging)(nil)).Elem()
+}
+
+func (i *kafkaSpecZookeeperLoggingPtrType) ToKafkaSpecZookeeperLoggingPtrOutput() KafkaSpecZookeeperLoggingPtrOutput {
+	return i.ToKafkaSpecZookeeperLoggingPtrOutputWithContext(context.Background())
+}
+
+func (i *kafkaSpecZookeeperLoggingPtrType) ToKafkaSpecZookeeperLoggingPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperLoggingPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperLoggingPtrOutput)
+}
+
+// Logging configuration for ZooKeeper.
+type KafkaSpecZookeeperLoggingOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecZookeeperLoggingOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecZookeeperLogging)(nil)).Elem()
+}
+
+func (o KafkaSpecZookeeperLoggingOutput) ToKafkaSpecZookeeperLoggingOutput() KafkaSpecZookeeperLoggingOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperLoggingOutput) ToKafkaSpecZookeeperLoggingOutputWithContext(ctx context.Context) KafkaSpecZookeeperLoggingOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperLoggingOutput) ToKafkaSpecZookeeperLoggingPtrOutput() KafkaSpecZookeeperLoggingPtrOutput {
+	return o.ToKafkaSpecZookeeperLoggingPtrOutputWithContext(context.Background())
+}
+
+func (o KafkaSpecZookeeperLoggingOutput) ToKafkaSpecZookeeperLoggingPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperLoggingPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v KafkaSpecZookeeperLogging) *KafkaSpecZookeeperLogging {
+		return &v
+	}).(KafkaSpecZookeeperLoggingPtrOutput)
+}
+
+// A Map from logger name to logger level.
+func (o KafkaSpecZookeeperLoggingOutput) Loggers() pulumi.StringMapOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperLogging) map[string]string { return v.Loggers }).(pulumi.StringMapOutput)
+}
+
+// Logging type, must be either 'inline' or 'external'.
+func (o KafkaSpecZookeeperLoggingOutput) Type() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperLogging) *string { return v.Type }).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecZookeeperLoggingOutput) ValueFrom() KafkaSpecZookeeperLoggingValueFromPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperLogging) *KafkaSpecZookeeperLoggingValueFrom { return v.ValueFrom }).(KafkaSpecZookeeperLoggingValueFromPtrOutput)
+}
+
+type KafkaSpecZookeeperLoggingPtrOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecZookeeperLoggingPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecZookeeperLogging)(nil)).Elem()
+}
+
+func (o KafkaSpecZookeeperLoggingPtrOutput) ToKafkaSpecZookeeperLoggingPtrOutput() KafkaSpecZookeeperLoggingPtrOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperLoggingPtrOutput) ToKafkaSpecZookeeperLoggingPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperLoggingPtrOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperLoggingPtrOutput) Elem() KafkaSpecZookeeperLoggingOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperLogging) KafkaSpecZookeeperLogging {
+		if v != nil {
+			return *v
+		}
+		var ret KafkaSpecZookeeperLogging
+		return ret
+	}).(KafkaSpecZookeeperLoggingOutput)
+}
+
+// A Map from logger name to logger level.
+func (o KafkaSpecZookeeperLoggingPtrOutput) Loggers() pulumi.StringMapOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperLogging) map[string]string {
+		if v == nil {
+			return nil
+		}
+		return v.Loggers
+	}).(pulumi.StringMapOutput)
+}
+
+// Logging type, must be either 'inline' or 'external'.
+func (o KafkaSpecZookeeperLoggingPtrOutput) Type() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperLogging) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Type
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecZookeeperLoggingPtrOutput) ValueFrom() KafkaSpecZookeeperLoggingValueFromPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperLogging) *KafkaSpecZookeeperLoggingValueFrom {
+		if v == nil {
+			return nil
+		}
+		return v.ValueFrom
+	}).(KafkaSpecZookeeperLoggingValueFromPtrOutput)
+}
+
+// Logging configuration for ZooKeeper.
+type KafkaSpecZookeeperLoggingPatch struct {
+	// A Map from logger name to logger level.
+	Loggers map[string]string `pulumi:"loggers"`
+	// Logging type, must be either 'inline' or 'external'.
+	Type      *string                                  `pulumi:"type"`
+	ValueFrom *KafkaSpecZookeeperLoggingValueFromPatch `pulumi:"valueFrom"`
+}
+
+// KafkaSpecZookeeperLoggingPatchInput is an input type that accepts KafkaSpecZookeeperLoggingPatchArgs and KafkaSpecZookeeperLoggingPatchOutput values.
+// You can construct a concrete instance of `KafkaSpecZookeeperLoggingPatchInput` via:
+//
+//	KafkaSpecZookeeperLoggingPatchArgs{...}
+type KafkaSpecZookeeperLoggingPatchInput interface {
+	pulumi.Input
+
+	ToKafkaSpecZookeeperLoggingPatchOutput() KafkaSpecZookeeperLoggingPatchOutput
+	ToKafkaSpecZookeeperLoggingPatchOutputWithContext(context.Context) KafkaSpecZookeeperLoggingPatchOutput
+}
+
+// Logging configuration for ZooKeeper.
+type KafkaSpecZookeeperLoggingPatchArgs struct {
+	// A Map from logger name to logger level.
+	Loggers pulumi.StringMapInput `pulumi:"loggers"`
+	// Logging type, must be either 'inline' or 'external'.
+	Type      pulumi.StringPtrInput                           `pulumi:"type"`
+	ValueFrom KafkaSpecZookeeperLoggingValueFromPatchPtrInput `pulumi:"valueFrom"`
+}
+
+func (KafkaSpecZookeeperLoggingPatchArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecZookeeperLoggingPatch)(nil)).Elem()
+}
+
+func (i KafkaSpecZookeeperLoggingPatchArgs) ToKafkaSpecZookeeperLoggingPatchOutput() KafkaSpecZookeeperLoggingPatchOutput {
+	return i.ToKafkaSpecZookeeperLoggingPatchOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecZookeeperLoggingPatchArgs) ToKafkaSpecZookeeperLoggingPatchOutputWithContext(ctx context.Context) KafkaSpecZookeeperLoggingPatchOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperLoggingPatchOutput)
+}
+
+func (i KafkaSpecZookeeperLoggingPatchArgs) ToKafkaSpecZookeeperLoggingPatchPtrOutput() KafkaSpecZookeeperLoggingPatchPtrOutput {
+	return i.ToKafkaSpecZookeeperLoggingPatchPtrOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecZookeeperLoggingPatchArgs) ToKafkaSpecZookeeperLoggingPatchPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperLoggingPatchPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperLoggingPatchOutput).ToKafkaSpecZookeeperLoggingPatchPtrOutputWithContext(ctx)
+}
+
+// KafkaSpecZookeeperLoggingPatchPtrInput is an input type that accepts KafkaSpecZookeeperLoggingPatchArgs, KafkaSpecZookeeperLoggingPatchPtr and KafkaSpecZookeeperLoggingPatchPtrOutput values.
+// You can construct a concrete instance of `KafkaSpecZookeeperLoggingPatchPtrInput` via:
+//
+//	        KafkaSpecZookeeperLoggingPatchArgs{...}
+//
+//	or:
+//
+//	        nil
+type KafkaSpecZookeeperLoggingPatchPtrInput interface {
+	pulumi.Input
+
+	ToKafkaSpecZookeeperLoggingPatchPtrOutput() KafkaSpecZookeeperLoggingPatchPtrOutput
+	ToKafkaSpecZookeeperLoggingPatchPtrOutputWithContext(context.Context) KafkaSpecZookeeperLoggingPatchPtrOutput
+}
+
+type kafkaSpecZookeeperLoggingPatchPtrType KafkaSpecZookeeperLoggingPatchArgs
+
+func KafkaSpecZookeeperLoggingPatchPtr(v *KafkaSpecZookeeperLoggingPatchArgs) KafkaSpecZookeeperLoggingPatchPtrInput {
+	return (*kafkaSpecZookeeperLoggingPatchPtrType)(v)
+}
+
+func (*kafkaSpecZookeeperLoggingPatchPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecZookeeperLoggingPatch)(nil)).Elem()
+}
+
+func (i *kafkaSpecZookeeperLoggingPatchPtrType) ToKafkaSpecZookeeperLoggingPatchPtrOutput() KafkaSpecZookeeperLoggingPatchPtrOutput {
+	return i.ToKafkaSpecZookeeperLoggingPatchPtrOutputWithContext(context.Background())
+}
+
+func (i *kafkaSpecZookeeperLoggingPatchPtrType) ToKafkaSpecZookeeperLoggingPatchPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperLoggingPatchPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperLoggingPatchPtrOutput)
+}
+
+// Logging configuration for ZooKeeper.
+type KafkaSpecZookeeperLoggingPatchOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecZookeeperLoggingPatchOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecZookeeperLoggingPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecZookeeperLoggingPatchOutput) ToKafkaSpecZookeeperLoggingPatchOutput() KafkaSpecZookeeperLoggingPatchOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperLoggingPatchOutput) ToKafkaSpecZookeeperLoggingPatchOutputWithContext(ctx context.Context) KafkaSpecZookeeperLoggingPatchOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperLoggingPatchOutput) ToKafkaSpecZookeeperLoggingPatchPtrOutput() KafkaSpecZookeeperLoggingPatchPtrOutput {
+	return o.ToKafkaSpecZookeeperLoggingPatchPtrOutputWithContext(context.Background())
+}
+
+func (o KafkaSpecZookeeperLoggingPatchOutput) ToKafkaSpecZookeeperLoggingPatchPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperLoggingPatchPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v KafkaSpecZookeeperLoggingPatch) *KafkaSpecZookeeperLoggingPatch {
+		return &v
+	}).(KafkaSpecZookeeperLoggingPatchPtrOutput)
+}
+
+// A Map from logger name to logger level.
+func (o KafkaSpecZookeeperLoggingPatchOutput) Loggers() pulumi.StringMapOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperLoggingPatch) map[string]string { return v.Loggers }).(pulumi.StringMapOutput)
+}
+
+// Logging type, must be either 'inline' or 'external'.
+func (o KafkaSpecZookeeperLoggingPatchOutput) Type() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperLoggingPatch) *string { return v.Type }).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecZookeeperLoggingPatchOutput) ValueFrom() KafkaSpecZookeeperLoggingValueFromPatchPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperLoggingPatch) *KafkaSpecZookeeperLoggingValueFromPatch { return v.ValueFrom }).(KafkaSpecZookeeperLoggingValueFromPatchPtrOutput)
+}
+
+type KafkaSpecZookeeperLoggingPatchPtrOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecZookeeperLoggingPatchPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecZookeeperLoggingPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecZookeeperLoggingPatchPtrOutput) ToKafkaSpecZookeeperLoggingPatchPtrOutput() KafkaSpecZookeeperLoggingPatchPtrOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperLoggingPatchPtrOutput) ToKafkaSpecZookeeperLoggingPatchPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperLoggingPatchPtrOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperLoggingPatchPtrOutput) Elem() KafkaSpecZookeeperLoggingPatchOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperLoggingPatch) KafkaSpecZookeeperLoggingPatch {
+		if v != nil {
+			return *v
+		}
+		var ret KafkaSpecZookeeperLoggingPatch
+		return ret
+	}).(KafkaSpecZookeeperLoggingPatchOutput)
+}
+
+// A Map from logger name to logger level.
+func (o KafkaSpecZookeeperLoggingPatchPtrOutput) Loggers() pulumi.StringMapOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperLoggingPatch) map[string]string {
+		if v == nil {
+			return nil
+		}
+		return v.Loggers
+	}).(pulumi.StringMapOutput)
+}
+
+// Logging type, must be either 'inline' or 'external'.
+func (o KafkaSpecZookeeperLoggingPatchPtrOutput) Type() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperLoggingPatch) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Type
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecZookeeperLoggingPatchPtrOutput) ValueFrom() KafkaSpecZookeeperLoggingValueFromPatchPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperLoggingPatch) *KafkaSpecZookeeperLoggingValueFromPatch {
+		if v == nil {
+			return nil
+		}
+		return v.ValueFrom
+	}).(KafkaSpecZookeeperLoggingValueFromPatchPtrOutput)
+}
+
+// `ConfigMap` entry where the logging configuration is stored.
+type KafkaSpecZookeeperLoggingValueFrom struct {
+	ConfigMapKeyRef *KafkaSpecZookeeperLoggingValueFromConfigMapKeyRef `pulumi:"configMapKeyRef"`
+}
+
+// KafkaSpecZookeeperLoggingValueFromInput is an input type that accepts KafkaSpecZookeeperLoggingValueFromArgs and KafkaSpecZookeeperLoggingValueFromOutput values.
+// You can construct a concrete instance of `KafkaSpecZookeeperLoggingValueFromInput` via:
+//
+//	KafkaSpecZookeeperLoggingValueFromArgs{...}
+type KafkaSpecZookeeperLoggingValueFromInput interface {
+	pulumi.Input
+
+	ToKafkaSpecZookeeperLoggingValueFromOutput() KafkaSpecZookeeperLoggingValueFromOutput
+	ToKafkaSpecZookeeperLoggingValueFromOutputWithContext(context.Context) KafkaSpecZookeeperLoggingValueFromOutput
+}
+
+// `ConfigMap` entry where the logging configuration is stored.
+type KafkaSpecZookeeperLoggingValueFromArgs struct {
+	ConfigMapKeyRef KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPtrInput `pulumi:"configMapKeyRef"`
+}
+
+func (KafkaSpecZookeeperLoggingValueFromArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecZookeeperLoggingValueFrom)(nil)).Elem()
+}
+
+func (i KafkaSpecZookeeperLoggingValueFromArgs) ToKafkaSpecZookeeperLoggingValueFromOutput() KafkaSpecZookeeperLoggingValueFromOutput {
+	return i.ToKafkaSpecZookeeperLoggingValueFromOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecZookeeperLoggingValueFromArgs) ToKafkaSpecZookeeperLoggingValueFromOutputWithContext(ctx context.Context) KafkaSpecZookeeperLoggingValueFromOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperLoggingValueFromOutput)
+}
+
+func (i KafkaSpecZookeeperLoggingValueFromArgs) ToKafkaSpecZookeeperLoggingValueFromPtrOutput() KafkaSpecZookeeperLoggingValueFromPtrOutput {
+	return i.ToKafkaSpecZookeeperLoggingValueFromPtrOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecZookeeperLoggingValueFromArgs) ToKafkaSpecZookeeperLoggingValueFromPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperLoggingValueFromPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperLoggingValueFromOutput).ToKafkaSpecZookeeperLoggingValueFromPtrOutputWithContext(ctx)
+}
+
+// KafkaSpecZookeeperLoggingValueFromPtrInput is an input type that accepts KafkaSpecZookeeperLoggingValueFromArgs, KafkaSpecZookeeperLoggingValueFromPtr and KafkaSpecZookeeperLoggingValueFromPtrOutput values.
+// You can construct a concrete instance of `KafkaSpecZookeeperLoggingValueFromPtrInput` via:
+//
+//	        KafkaSpecZookeeperLoggingValueFromArgs{...}
+//
+//	or:
+//
+//	        nil
+type KafkaSpecZookeeperLoggingValueFromPtrInput interface {
+	pulumi.Input
+
+	ToKafkaSpecZookeeperLoggingValueFromPtrOutput() KafkaSpecZookeeperLoggingValueFromPtrOutput
+	ToKafkaSpecZookeeperLoggingValueFromPtrOutputWithContext(context.Context) KafkaSpecZookeeperLoggingValueFromPtrOutput
+}
+
+type kafkaSpecZookeeperLoggingValueFromPtrType KafkaSpecZookeeperLoggingValueFromArgs
+
+func KafkaSpecZookeeperLoggingValueFromPtr(v *KafkaSpecZookeeperLoggingValueFromArgs) KafkaSpecZookeeperLoggingValueFromPtrInput {
+	return (*kafkaSpecZookeeperLoggingValueFromPtrType)(v)
+}
+
+func (*kafkaSpecZookeeperLoggingValueFromPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecZookeeperLoggingValueFrom)(nil)).Elem()
+}
+
+func (i *kafkaSpecZookeeperLoggingValueFromPtrType) ToKafkaSpecZookeeperLoggingValueFromPtrOutput() KafkaSpecZookeeperLoggingValueFromPtrOutput {
+	return i.ToKafkaSpecZookeeperLoggingValueFromPtrOutputWithContext(context.Background())
+}
+
+func (i *kafkaSpecZookeeperLoggingValueFromPtrType) ToKafkaSpecZookeeperLoggingValueFromPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperLoggingValueFromPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperLoggingValueFromPtrOutput)
+}
+
+// `ConfigMap` entry where the logging configuration is stored.
+type KafkaSpecZookeeperLoggingValueFromOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecZookeeperLoggingValueFromOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecZookeeperLoggingValueFrom)(nil)).Elem()
+}
+
+func (o KafkaSpecZookeeperLoggingValueFromOutput) ToKafkaSpecZookeeperLoggingValueFromOutput() KafkaSpecZookeeperLoggingValueFromOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperLoggingValueFromOutput) ToKafkaSpecZookeeperLoggingValueFromOutputWithContext(ctx context.Context) KafkaSpecZookeeperLoggingValueFromOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperLoggingValueFromOutput) ToKafkaSpecZookeeperLoggingValueFromPtrOutput() KafkaSpecZookeeperLoggingValueFromPtrOutput {
+	return o.ToKafkaSpecZookeeperLoggingValueFromPtrOutputWithContext(context.Background())
+}
+
+func (o KafkaSpecZookeeperLoggingValueFromOutput) ToKafkaSpecZookeeperLoggingValueFromPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperLoggingValueFromPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v KafkaSpecZookeeperLoggingValueFrom) *KafkaSpecZookeeperLoggingValueFrom {
+		return &v
+	}).(KafkaSpecZookeeperLoggingValueFromPtrOutput)
+}
+
+func (o KafkaSpecZookeeperLoggingValueFromOutput) ConfigMapKeyRef() KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperLoggingValueFrom) *KafkaSpecZookeeperLoggingValueFromConfigMapKeyRef {
+		return v.ConfigMapKeyRef
+	}).(KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPtrOutput)
+}
+
+type KafkaSpecZookeeperLoggingValueFromPtrOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecZookeeperLoggingValueFromPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecZookeeperLoggingValueFrom)(nil)).Elem()
+}
+
+func (o KafkaSpecZookeeperLoggingValueFromPtrOutput) ToKafkaSpecZookeeperLoggingValueFromPtrOutput() KafkaSpecZookeeperLoggingValueFromPtrOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperLoggingValueFromPtrOutput) ToKafkaSpecZookeeperLoggingValueFromPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperLoggingValueFromPtrOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperLoggingValueFromPtrOutput) Elem() KafkaSpecZookeeperLoggingValueFromOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperLoggingValueFrom) KafkaSpecZookeeperLoggingValueFrom {
+		if v != nil {
+			return *v
+		}
+		var ret KafkaSpecZookeeperLoggingValueFrom
+		return ret
+	}).(KafkaSpecZookeeperLoggingValueFromOutput)
+}
+
+func (o KafkaSpecZookeeperLoggingValueFromPtrOutput) ConfigMapKeyRef() KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperLoggingValueFrom) *KafkaSpecZookeeperLoggingValueFromConfigMapKeyRef {
+		if v == nil {
+			return nil
+		}
+		return v.ConfigMapKeyRef
+	}).(KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPtrOutput)
+}
+
+// Reference to the key in the ConfigMap containing the configuration.
+type KafkaSpecZookeeperLoggingValueFromConfigMapKeyRef struct {
+	Key      *string `pulumi:"key"`
+	Name     *string `pulumi:"name"`
+	Optional *bool   `pulumi:"optional"`
+}
+
+// KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefInput is an input type that accepts KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefArgs and KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefOutput values.
+// You can construct a concrete instance of `KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefInput` via:
+//
+//	KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefArgs{...}
+type KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefInput interface {
+	pulumi.Input
+
+	ToKafkaSpecZookeeperLoggingValueFromConfigMapKeyRefOutput() KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefOutput
+	ToKafkaSpecZookeeperLoggingValueFromConfigMapKeyRefOutputWithContext(context.Context) KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefOutput
+}
+
+// Reference to the key in the ConfigMap containing the configuration.
+type KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefArgs struct {
+	Key      pulumi.StringPtrInput `pulumi:"key"`
+	Name     pulumi.StringPtrInput `pulumi:"name"`
+	Optional pulumi.BoolPtrInput   `pulumi:"optional"`
+}
+
+func (KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecZookeeperLoggingValueFromConfigMapKeyRef)(nil)).Elem()
+}
+
+func (i KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefArgs) ToKafkaSpecZookeeperLoggingValueFromConfigMapKeyRefOutput() KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefOutput {
+	return i.ToKafkaSpecZookeeperLoggingValueFromConfigMapKeyRefOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefArgs) ToKafkaSpecZookeeperLoggingValueFromConfigMapKeyRefOutputWithContext(ctx context.Context) KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefOutput)
+}
+
+func (i KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefArgs) ToKafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPtrOutput() KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPtrOutput {
+	return i.ToKafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPtrOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefArgs) ToKafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefOutput).ToKafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPtrOutputWithContext(ctx)
+}
+
+// KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPtrInput is an input type that accepts KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefArgs, KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPtr and KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPtrOutput values.
+// You can construct a concrete instance of `KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPtrInput` via:
+//
+//	        KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefArgs{...}
+//
+//	or:
+//
+//	        nil
+type KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPtrInput interface {
+	pulumi.Input
+
+	ToKafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPtrOutput() KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPtrOutput
+	ToKafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPtrOutputWithContext(context.Context) KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPtrOutput
+}
+
+type kafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPtrType KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefArgs
+
+func KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPtr(v *KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefArgs) KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPtrInput {
+	return (*kafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPtrType)(v)
+}
+
+func (*kafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecZookeeperLoggingValueFromConfigMapKeyRef)(nil)).Elem()
+}
+
+func (i *kafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPtrType) ToKafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPtrOutput() KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPtrOutput {
+	return i.ToKafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPtrOutputWithContext(context.Background())
+}
+
+func (i *kafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPtrType) ToKafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPtrOutput)
+}
+
+// Reference to the key in the ConfigMap containing the configuration.
+type KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecZookeeperLoggingValueFromConfigMapKeyRef)(nil)).Elem()
+}
+
+func (o KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefOutput) ToKafkaSpecZookeeperLoggingValueFromConfigMapKeyRefOutput() KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefOutput) ToKafkaSpecZookeeperLoggingValueFromConfigMapKeyRefOutputWithContext(ctx context.Context) KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefOutput) ToKafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPtrOutput() KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPtrOutput {
+	return o.ToKafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPtrOutputWithContext(context.Background())
+}
+
+func (o KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefOutput) ToKafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v KafkaSpecZookeeperLoggingValueFromConfigMapKeyRef) *KafkaSpecZookeeperLoggingValueFromConfigMapKeyRef {
+		return &v
+	}).(KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPtrOutput)
+}
+
+func (o KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefOutput) Key() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperLoggingValueFromConfigMapKeyRef) *string { return v.Key }).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefOutput) Name() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperLoggingValueFromConfigMapKeyRef) *string { return v.Name }).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefOutput) Optional() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperLoggingValueFromConfigMapKeyRef) *bool { return v.Optional }).(pulumi.BoolPtrOutput)
+}
+
+type KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPtrOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecZookeeperLoggingValueFromConfigMapKeyRef)(nil)).Elem()
+}
+
+func (o KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPtrOutput) ToKafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPtrOutput() KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPtrOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPtrOutput) ToKafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPtrOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPtrOutput) Elem() KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperLoggingValueFromConfigMapKeyRef) KafkaSpecZookeeperLoggingValueFromConfigMapKeyRef {
+		if v != nil {
+			return *v
+		}
+		var ret KafkaSpecZookeeperLoggingValueFromConfigMapKeyRef
+		return ret
+	}).(KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefOutput)
+}
+
+func (o KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPtrOutput) Key() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperLoggingValueFromConfigMapKeyRef) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Key
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPtrOutput) Name() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperLoggingValueFromConfigMapKeyRef) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Name
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPtrOutput) Optional() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperLoggingValueFromConfigMapKeyRef) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.Optional
+	}).(pulumi.BoolPtrOutput)
+}
+
+// Reference to the key in the ConfigMap containing the configuration.
+type KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatch struct {
+	Key      *string `pulumi:"key"`
+	Name     *string `pulumi:"name"`
+	Optional *bool   `pulumi:"optional"`
+}
+
+// KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchInput is an input type that accepts KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchArgs and KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchOutput values.
+// You can construct a concrete instance of `KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchInput` via:
+//
+//	KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchArgs{...}
+type KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchInput interface {
+	pulumi.Input
+
+	ToKafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchOutput() KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchOutput
+	ToKafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchOutputWithContext(context.Context) KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchOutput
+}
+
+// Reference to the key in the ConfigMap containing the configuration.
+type KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchArgs struct {
+	Key      pulumi.StringPtrInput `pulumi:"key"`
+	Name     pulumi.StringPtrInput `pulumi:"name"`
+	Optional pulumi.BoolPtrInput   `pulumi:"optional"`
+}
+
+func (KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatch)(nil)).Elem()
+}
+
+func (i KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchArgs) ToKafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchOutput() KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchOutput {
+	return i.ToKafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchArgs) ToKafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchOutputWithContext(ctx context.Context) KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchOutput)
+}
+
+func (i KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchArgs) ToKafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchPtrOutput() KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchPtrOutput {
+	return i.ToKafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchPtrOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchArgs) ToKafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchOutput).ToKafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchPtrOutputWithContext(ctx)
+}
+
+// KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchPtrInput is an input type that accepts KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchArgs, KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchPtr and KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchPtrOutput values.
+// You can construct a concrete instance of `KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchPtrInput` via:
+//
+//	        KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchArgs{...}
+//
+//	or:
+//
+//	        nil
+type KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchPtrInput interface {
+	pulumi.Input
+
+	ToKafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchPtrOutput() KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchPtrOutput
+	ToKafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchPtrOutputWithContext(context.Context) KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchPtrOutput
+}
+
+type kafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchPtrType KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchArgs
+
+func KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchPtr(v *KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchArgs) KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchPtrInput {
+	return (*kafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchPtrType)(v)
+}
+
+func (*kafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatch)(nil)).Elem()
+}
+
+func (i *kafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchPtrType) ToKafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchPtrOutput() KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchPtrOutput {
+	return i.ToKafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchPtrOutputWithContext(context.Background())
+}
+
+func (i *kafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchPtrType) ToKafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchPtrOutput)
+}
+
+// Reference to the key in the ConfigMap containing the configuration.
+type KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchOutput) ToKafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchOutput() KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchOutput) ToKafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchOutputWithContext(ctx context.Context) KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchOutput) ToKafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchPtrOutput() KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchPtrOutput {
+	return o.ToKafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchPtrOutputWithContext(context.Background())
+}
+
+func (o KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchOutput) ToKafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatch) *KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatch {
+		return &v
+	}).(KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchPtrOutput)
+}
+
+func (o KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchOutput) Key() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatch) *string { return v.Key }).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchOutput) Name() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatch) *string { return v.Name }).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchOutput) Optional() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatch) *bool { return v.Optional }).(pulumi.BoolPtrOutput)
+}
+
+type KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchPtrOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchPtrOutput) ToKafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchPtrOutput() KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchPtrOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchPtrOutput) ToKafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchPtrOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchPtrOutput) Elem() KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatch) KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatch {
+		if v != nil {
+			return *v
+		}
+		var ret KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatch
+		return ret
+	}).(KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchOutput)
+}
+
+func (o KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchPtrOutput) Key() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatch) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Key
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchPtrOutput) Name() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatch) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Name
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchPtrOutput) Optional() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatch) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.Optional
+	}).(pulumi.BoolPtrOutput)
+}
+
+// `ConfigMap` entry where the logging configuration is stored.
+type KafkaSpecZookeeperLoggingValueFromPatch struct {
+	ConfigMapKeyRef *KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatch `pulumi:"configMapKeyRef"`
+}
+
+// KafkaSpecZookeeperLoggingValueFromPatchInput is an input type that accepts KafkaSpecZookeeperLoggingValueFromPatchArgs and KafkaSpecZookeeperLoggingValueFromPatchOutput values.
+// You can construct a concrete instance of `KafkaSpecZookeeperLoggingValueFromPatchInput` via:
+//
+//	KafkaSpecZookeeperLoggingValueFromPatchArgs{...}
+type KafkaSpecZookeeperLoggingValueFromPatchInput interface {
+	pulumi.Input
+
+	ToKafkaSpecZookeeperLoggingValueFromPatchOutput() KafkaSpecZookeeperLoggingValueFromPatchOutput
+	ToKafkaSpecZookeeperLoggingValueFromPatchOutputWithContext(context.Context) KafkaSpecZookeeperLoggingValueFromPatchOutput
+}
+
+// `ConfigMap` entry where the logging configuration is stored.
+type KafkaSpecZookeeperLoggingValueFromPatchArgs struct {
+	ConfigMapKeyRef KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchPtrInput `pulumi:"configMapKeyRef"`
+}
+
+func (KafkaSpecZookeeperLoggingValueFromPatchArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecZookeeperLoggingValueFromPatch)(nil)).Elem()
+}
+
+func (i KafkaSpecZookeeperLoggingValueFromPatchArgs) ToKafkaSpecZookeeperLoggingValueFromPatchOutput() KafkaSpecZookeeperLoggingValueFromPatchOutput {
+	return i.ToKafkaSpecZookeeperLoggingValueFromPatchOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecZookeeperLoggingValueFromPatchArgs) ToKafkaSpecZookeeperLoggingValueFromPatchOutputWithContext(ctx context.Context) KafkaSpecZookeeperLoggingValueFromPatchOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperLoggingValueFromPatchOutput)
+}
+
+func (i KafkaSpecZookeeperLoggingValueFromPatchArgs) ToKafkaSpecZookeeperLoggingValueFromPatchPtrOutput() KafkaSpecZookeeperLoggingValueFromPatchPtrOutput {
+	return i.ToKafkaSpecZookeeperLoggingValueFromPatchPtrOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecZookeeperLoggingValueFromPatchArgs) ToKafkaSpecZookeeperLoggingValueFromPatchPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperLoggingValueFromPatchPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperLoggingValueFromPatchOutput).ToKafkaSpecZookeeperLoggingValueFromPatchPtrOutputWithContext(ctx)
+}
+
+// KafkaSpecZookeeperLoggingValueFromPatchPtrInput is an input type that accepts KafkaSpecZookeeperLoggingValueFromPatchArgs, KafkaSpecZookeeperLoggingValueFromPatchPtr and KafkaSpecZookeeperLoggingValueFromPatchPtrOutput values.
+// You can construct a concrete instance of `KafkaSpecZookeeperLoggingValueFromPatchPtrInput` via:
+//
+//	        KafkaSpecZookeeperLoggingValueFromPatchArgs{...}
+//
+//	or:
+//
+//	        nil
+type KafkaSpecZookeeperLoggingValueFromPatchPtrInput interface {
+	pulumi.Input
+
+	ToKafkaSpecZookeeperLoggingValueFromPatchPtrOutput() KafkaSpecZookeeperLoggingValueFromPatchPtrOutput
+	ToKafkaSpecZookeeperLoggingValueFromPatchPtrOutputWithContext(context.Context) KafkaSpecZookeeperLoggingValueFromPatchPtrOutput
+}
+
+type kafkaSpecZookeeperLoggingValueFromPatchPtrType KafkaSpecZookeeperLoggingValueFromPatchArgs
+
+func KafkaSpecZookeeperLoggingValueFromPatchPtr(v *KafkaSpecZookeeperLoggingValueFromPatchArgs) KafkaSpecZookeeperLoggingValueFromPatchPtrInput {
+	return (*kafkaSpecZookeeperLoggingValueFromPatchPtrType)(v)
+}
+
+func (*kafkaSpecZookeeperLoggingValueFromPatchPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecZookeeperLoggingValueFromPatch)(nil)).Elem()
+}
+
+func (i *kafkaSpecZookeeperLoggingValueFromPatchPtrType) ToKafkaSpecZookeeperLoggingValueFromPatchPtrOutput() KafkaSpecZookeeperLoggingValueFromPatchPtrOutput {
+	return i.ToKafkaSpecZookeeperLoggingValueFromPatchPtrOutputWithContext(context.Background())
+}
+
+func (i *kafkaSpecZookeeperLoggingValueFromPatchPtrType) ToKafkaSpecZookeeperLoggingValueFromPatchPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperLoggingValueFromPatchPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperLoggingValueFromPatchPtrOutput)
+}
+
+// `ConfigMap` entry where the logging configuration is stored.
+type KafkaSpecZookeeperLoggingValueFromPatchOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecZookeeperLoggingValueFromPatchOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecZookeeperLoggingValueFromPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecZookeeperLoggingValueFromPatchOutput) ToKafkaSpecZookeeperLoggingValueFromPatchOutput() KafkaSpecZookeeperLoggingValueFromPatchOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperLoggingValueFromPatchOutput) ToKafkaSpecZookeeperLoggingValueFromPatchOutputWithContext(ctx context.Context) KafkaSpecZookeeperLoggingValueFromPatchOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperLoggingValueFromPatchOutput) ToKafkaSpecZookeeperLoggingValueFromPatchPtrOutput() KafkaSpecZookeeperLoggingValueFromPatchPtrOutput {
+	return o.ToKafkaSpecZookeeperLoggingValueFromPatchPtrOutputWithContext(context.Background())
+}
+
+func (o KafkaSpecZookeeperLoggingValueFromPatchOutput) ToKafkaSpecZookeeperLoggingValueFromPatchPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperLoggingValueFromPatchPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v KafkaSpecZookeeperLoggingValueFromPatch) *KafkaSpecZookeeperLoggingValueFromPatch {
+		return &v
+	}).(KafkaSpecZookeeperLoggingValueFromPatchPtrOutput)
+}
+
+func (o KafkaSpecZookeeperLoggingValueFromPatchOutput) ConfigMapKeyRef() KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperLoggingValueFromPatch) *KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatch {
+		return v.ConfigMapKeyRef
+	}).(KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchPtrOutput)
+}
+
+type KafkaSpecZookeeperLoggingValueFromPatchPtrOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecZookeeperLoggingValueFromPatchPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecZookeeperLoggingValueFromPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecZookeeperLoggingValueFromPatchPtrOutput) ToKafkaSpecZookeeperLoggingValueFromPatchPtrOutput() KafkaSpecZookeeperLoggingValueFromPatchPtrOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperLoggingValueFromPatchPtrOutput) ToKafkaSpecZookeeperLoggingValueFromPatchPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperLoggingValueFromPatchPtrOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperLoggingValueFromPatchPtrOutput) Elem() KafkaSpecZookeeperLoggingValueFromPatchOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperLoggingValueFromPatch) KafkaSpecZookeeperLoggingValueFromPatch {
+		if v != nil {
+			return *v
+		}
+		var ret KafkaSpecZookeeperLoggingValueFromPatch
+		return ret
+	}).(KafkaSpecZookeeperLoggingValueFromPatchOutput)
+}
+
+func (o KafkaSpecZookeeperLoggingValueFromPatchPtrOutput) ConfigMapKeyRef() KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperLoggingValueFromPatch) *KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatch {
+		if v == nil {
+			return nil
+		}
+		return v.ConfigMapKeyRef
+	}).(KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchPtrOutput)
+}
+
+// Metrics configuration.
+type KafkaSpecZookeeperMetricsConfig struct {
+	// Metrics type. The supported types are `jmxPrometheusExporter` and `strimziMetricsReporter`. Type `jmxPrometheusExporter` uses the Prometheus JMX Exporter to expose Kafka JMX metrics in Prometheus format through an HTTP endpoint. Type `strimziMetricsReporter` uses the Strimzi Metrics Reporter to directly expose Kafka metrics in Prometheus format through an HTTP endpoint.
+	Type      *string                                   `pulumi:"type"`
+	ValueFrom *KafkaSpecZookeeperMetricsConfigValueFrom `pulumi:"valueFrom"`
+	Values    *KafkaSpecZookeeperMetricsConfigValues    `pulumi:"values"`
+}
+
+// KafkaSpecZookeeperMetricsConfigInput is an input type that accepts KafkaSpecZookeeperMetricsConfigArgs and KafkaSpecZookeeperMetricsConfigOutput values.
+// You can construct a concrete instance of `KafkaSpecZookeeperMetricsConfigInput` via:
+//
+//	KafkaSpecZookeeperMetricsConfigArgs{...}
+type KafkaSpecZookeeperMetricsConfigInput interface {
+	pulumi.Input
+
+	ToKafkaSpecZookeeperMetricsConfigOutput() KafkaSpecZookeeperMetricsConfigOutput
+	ToKafkaSpecZookeeperMetricsConfigOutputWithContext(context.Context) KafkaSpecZookeeperMetricsConfigOutput
+}
+
+// Metrics configuration.
+type KafkaSpecZookeeperMetricsConfigArgs struct {
+	// Metrics type. The supported types are `jmxPrometheusExporter` and `strimziMetricsReporter`. Type `jmxPrometheusExporter` uses the Prometheus JMX Exporter to expose Kafka JMX metrics in Prometheus format through an HTTP endpoint. Type `strimziMetricsReporter` uses the Strimzi Metrics Reporter to directly expose Kafka metrics in Prometheus format through an HTTP endpoint.
+	Type      pulumi.StringPtrInput                            `pulumi:"type"`
+	ValueFrom KafkaSpecZookeeperMetricsConfigValueFromPtrInput `pulumi:"valueFrom"`
+	Values    KafkaSpecZookeeperMetricsConfigValuesPtrInput    `pulumi:"values"`
+}
+
+func (KafkaSpecZookeeperMetricsConfigArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecZookeeperMetricsConfig)(nil)).Elem()
+}
+
+func (i KafkaSpecZookeeperMetricsConfigArgs) ToKafkaSpecZookeeperMetricsConfigOutput() KafkaSpecZookeeperMetricsConfigOutput {
+	return i.ToKafkaSpecZookeeperMetricsConfigOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecZookeeperMetricsConfigArgs) ToKafkaSpecZookeeperMetricsConfigOutputWithContext(ctx context.Context) KafkaSpecZookeeperMetricsConfigOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperMetricsConfigOutput)
+}
+
+func (i KafkaSpecZookeeperMetricsConfigArgs) ToKafkaSpecZookeeperMetricsConfigPtrOutput() KafkaSpecZookeeperMetricsConfigPtrOutput {
+	return i.ToKafkaSpecZookeeperMetricsConfigPtrOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecZookeeperMetricsConfigArgs) ToKafkaSpecZookeeperMetricsConfigPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperMetricsConfigPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperMetricsConfigOutput).ToKafkaSpecZookeeperMetricsConfigPtrOutputWithContext(ctx)
+}
+
+// KafkaSpecZookeeperMetricsConfigPtrInput is an input type that accepts KafkaSpecZookeeperMetricsConfigArgs, KafkaSpecZookeeperMetricsConfigPtr and KafkaSpecZookeeperMetricsConfigPtrOutput values.
+// You can construct a concrete instance of `KafkaSpecZookeeperMetricsConfigPtrInput` via:
+//
+//	        KafkaSpecZookeeperMetricsConfigArgs{...}
+//
+//	or:
+//
+//	        nil
+type KafkaSpecZookeeperMetricsConfigPtrInput interface {
+	pulumi.Input
+
+	ToKafkaSpecZookeeperMetricsConfigPtrOutput() KafkaSpecZookeeperMetricsConfigPtrOutput
+	ToKafkaSpecZookeeperMetricsConfigPtrOutputWithContext(context.Context) KafkaSpecZookeeperMetricsConfigPtrOutput
+}
+
+type kafkaSpecZookeeperMetricsConfigPtrType KafkaSpecZookeeperMetricsConfigArgs
+
+func KafkaSpecZookeeperMetricsConfigPtr(v *KafkaSpecZookeeperMetricsConfigArgs) KafkaSpecZookeeperMetricsConfigPtrInput {
+	return (*kafkaSpecZookeeperMetricsConfigPtrType)(v)
+}
+
+func (*kafkaSpecZookeeperMetricsConfigPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecZookeeperMetricsConfig)(nil)).Elem()
+}
+
+func (i *kafkaSpecZookeeperMetricsConfigPtrType) ToKafkaSpecZookeeperMetricsConfigPtrOutput() KafkaSpecZookeeperMetricsConfigPtrOutput {
+	return i.ToKafkaSpecZookeeperMetricsConfigPtrOutputWithContext(context.Background())
+}
+
+func (i *kafkaSpecZookeeperMetricsConfigPtrType) ToKafkaSpecZookeeperMetricsConfigPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperMetricsConfigPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperMetricsConfigPtrOutput)
+}
+
+// Metrics configuration.
+type KafkaSpecZookeeperMetricsConfigOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecZookeeperMetricsConfigOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecZookeeperMetricsConfig)(nil)).Elem()
+}
+
+func (o KafkaSpecZookeeperMetricsConfigOutput) ToKafkaSpecZookeeperMetricsConfigOutput() KafkaSpecZookeeperMetricsConfigOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperMetricsConfigOutput) ToKafkaSpecZookeeperMetricsConfigOutputWithContext(ctx context.Context) KafkaSpecZookeeperMetricsConfigOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperMetricsConfigOutput) ToKafkaSpecZookeeperMetricsConfigPtrOutput() KafkaSpecZookeeperMetricsConfigPtrOutput {
+	return o.ToKafkaSpecZookeeperMetricsConfigPtrOutputWithContext(context.Background())
+}
+
+func (o KafkaSpecZookeeperMetricsConfigOutput) ToKafkaSpecZookeeperMetricsConfigPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperMetricsConfigPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v KafkaSpecZookeeperMetricsConfig) *KafkaSpecZookeeperMetricsConfig {
+		return &v
+	}).(KafkaSpecZookeeperMetricsConfigPtrOutput)
+}
+
+// Metrics type. The supported types are `jmxPrometheusExporter` and `strimziMetricsReporter`. Type `jmxPrometheusExporter` uses the Prometheus JMX Exporter to expose Kafka JMX metrics in Prometheus format through an HTTP endpoint. Type `strimziMetricsReporter` uses the Strimzi Metrics Reporter to directly expose Kafka metrics in Prometheus format through an HTTP endpoint.
+func (o KafkaSpecZookeeperMetricsConfigOutput) Type() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperMetricsConfig) *string { return v.Type }).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecZookeeperMetricsConfigOutput) ValueFrom() KafkaSpecZookeeperMetricsConfigValueFromPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperMetricsConfig) *KafkaSpecZookeeperMetricsConfigValueFrom { return v.ValueFrom }).(KafkaSpecZookeeperMetricsConfigValueFromPtrOutput)
+}
+
+func (o KafkaSpecZookeeperMetricsConfigOutput) Values() KafkaSpecZookeeperMetricsConfigValuesPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperMetricsConfig) *KafkaSpecZookeeperMetricsConfigValues { return v.Values }).(KafkaSpecZookeeperMetricsConfigValuesPtrOutput)
+}
+
+type KafkaSpecZookeeperMetricsConfigPtrOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecZookeeperMetricsConfigPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecZookeeperMetricsConfig)(nil)).Elem()
+}
+
+func (o KafkaSpecZookeeperMetricsConfigPtrOutput) ToKafkaSpecZookeeperMetricsConfigPtrOutput() KafkaSpecZookeeperMetricsConfigPtrOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperMetricsConfigPtrOutput) ToKafkaSpecZookeeperMetricsConfigPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperMetricsConfigPtrOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperMetricsConfigPtrOutput) Elem() KafkaSpecZookeeperMetricsConfigOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperMetricsConfig) KafkaSpecZookeeperMetricsConfig {
+		if v != nil {
+			return *v
+		}
+		var ret KafkaSpecZookeeperMetricsConfig
+		return ret
+	}).(KafkaSpecZookeeperMetricsConfigOutput)
+}
+
+// Metrics type. The supported types are `jmxPrometheusExporter` and `strimziMetricsReporter`. Type `jmxPrometheusExporter` uses the Prometheus JMX Exporter to expose Kafka JMX metrics in Prometheus format through an HTTP endpoint. Type `strimziMetricsReporter` uses the Strimzi Metrics Reporter to directly expose Kafka metrics in Prometheus format through an HTTP endpoint.
+func (o KafkaSpecZookeeperMetricsConfigPtrOutput) Type() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperMetricsConfig) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Type
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecZookeeperMetricsConfigPtrOutput) ValueFrom() KafkaSpecZookeeperMetricsConfigValueFromPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperMetricsConfig) *KafkaSpecZookeeperMetricsConfigValueFrom {
+		if v == nil {
+			return nil
+		}
+		return v.ValueFrom
+	}).(KafkaSpecZookeeperMetricsConfigValueFromPtrOutput)
+}
+
+func (o KafkaSpecZookeeperMetricsConfigPtrOutput) Values() KafkaSpecZookeeperMetricsConfigValuesPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperMetricsConfig) *KafkaSpecZookeeperMetricsConfigValues {
+		if v == nil {
+			return nil
+		}
+		return v.Values
+	}).(KafkaSpecZookeeperMetricsConfigValuesPtrOutput)
+}
+
 // Metrics configuration.
 type KafkaSpecZookeeperMetricsConfigPatch struct {
-	// Metrics type. Only 'jmxPrometheusExporter' supported currently.
+	// Metrics type. The supported types are `jmxPrometheusExporter` and `strimziMetricsReporter`. Type `jmxPrometheusExporter` uses the Prometheus JMX Exporter to expose Kafka JMX metrics in Prometheus format through an HTTP endpoint. Type `strimziMetricsReporter` uses the Strimzi Metrics Reporter to directly expose Kafka metrics in Prometheus format through an HTTP endpoint.
 	Type      *string                                        `pulumi:"type"`
 	ValueFrom *KafkaSpecZookeeperMetricsConfigValueFromPatch `pulumi:"valueFrom"`
+	Values    *KafkaSpecZookeeperMetricsConfigValuesPatch    `pulumi:"values"`
 }
 
 // KafkaSpecZookeeperMetricsConfigPatchInput is an input type that accepts KafkaSpecZookeeperMetricsConfigPatchArgs and KafkaSpecZookeeperMetricsConfigPatchOutput values.
@@ -34,9 +9748,10 @@ type KafkaSpecZookeeperMetricsConfigPatchInput interface {
 
 // Metrics configuration.
 type KafkaSpecZookeeperMetricsConfigPatchArgs struct {
-	// Metrics type. Only 'jmxPrometheusExporter' supported currently.
+	// Metrics type. The supported types are `jmxPrometheusExporter` and `strimziMetricsReporter`. Type `jmxPrometheusExporter` uses the Prometheus JMX Exporter to expose Kafka JMX metrics in Prometheus format through an HTTP endpoint. Type `strimziMetricsReporter` uses the Strimzi Metrics Reporter to directly expose Kafka metrics in Prometheus format through an HTTP endpoint.
 	Type      pulumi.StringPtrInput                                 `pulumi:"type"`
 	ValueFrom KafkaSpecZookeeperMetricsConfigValueFromPatchPtrInput `pulumi:"valueFrom"`
+	Values    KafkaSpecZookeeperMetricsConfigValuesPatchPtrInput    `pulumi:"values"`
 }
 
 func (KafkaSpecZookeeperMetricsConfigPatchArgs) ElementType() reflect.Type {
@@ -117,7 +9832,7 @@ func (o KafkaSpecZookeeperMetricsConfigPatchOutput) ToKafkaSpecZookeeperMetricsC
 	}).(KafkaSpecZookeeperMetricsConfigPatchPtrOutput)
 }
 
-// Metrics type. Only 'jmxPrometheusExporter' supported currently.
+// Metrics type. The supported types are `jmxPrometheusExporter` and `strimziMetricsReporter`. Type `jmxPrometheusExporter` uses the Prometheus JMX Exporter to expose Kafka JMX metrics in Prometheus format through an HTTP endpoint. Type `strimziMetricsReporter` uses the Strimzi Metrics Reporter to directly expose Kafka metrics in Prometheus format through an HTTP endpoint.
 func (o KafkaSpecZookeeperMetricsConfigPatchOutput) Type() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v KafkaSpecZookeeperMetricsConfigPatch) *string { return v.Type }).(pulumi.StringPtrOutput)
 }
@@ -126,6 +9841,12 @@ func (o KafkaSpecZookeeperMetricsConfigPatchOutput) ValueFrom() KafkaSpecZookeep
 	return o.ApplyT(func(v KafkaSpecZookeeperMetricsConfigPatch) *KafkaSpecZookeeperMetricsConfigValueFromPatch {
 		return v.ValueFrom
 	}).(KafkaSpecZookeeperMetricsConfigValueFromPatchPtrOutput)
+}
+
+func (o KafkaSpecZookeeperMetricsConfigPatchOutput) Values() KafkaSpecZookeeperMetricsConfigValuesPatchPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperMetricsConfigPatch) *KafkaSpecZookeeperMetricsConfigValuesPatch {
+		return v.Values
+	}).(KafkaSpecZookeeperMetricsConfigValuesPatchPtrOutput)
 }
 
 type KafkaSpecZookeeperMetricsConfigPatchPtrOutput struct{ *pulumi.OutputState }
@@ -152,7 +9873,7 @@ func (o KafkaSpecZookeeperMetricsConfigPatchPtrOutput) Elem() KafkaSpecZookeeper
 	}).(KafkaSpecZookeeperMetricsConfigPatchOutput)
 }
 
-// Metrics type. Only 'jmxPrometheusExporter' supported currently.
+// Metrics type. The supported types are `jmxPrometheusExporter` and `strimziMetricsReporter`. Type `jmxPrometheusExporter` uses the Prometheus JMX Exporter to expose Kafka JMX metrics in Prometheus format through an HTTP endpoint. Type `strimziMetricsReporter` uses the Strimzi Metrics Reporter to directly expose Kafka metrics in Prometheus format through an HTTP endpoint.
 func (o KafkaSpecZookeeperMetricsConfigPatchPtrOutput) Type() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *KafkaSpecZookeeperMetricsConfigPatch) *string {
 		if v == nil {
@@ -169,6 +9890,15 @@ func (o KafkaSpecZookeeperMetricsConfigPatchPtrOutput) ValueFrom() KafkaSpecZook
 		}
 		return v.ValueFrom
 	}).(KafkaSpecZookeeperMetricsConfigValueFromPatchPtrOutput)
+}
+
+func (o KafkaSpecZookeeperMetricsConfigPatchPtrOutput) Values() KafkaSpecZookeeperMetricsConfigValuesPatchPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperMetricsConfigPatch) *KafkaSpecZookeeperMetricsConfigValuesPatch {
+		if v == nil {
+			return nil
+		}
+		return v.Values
+	}).(KafkaSpecZookeeperMetricsConfigValuesPatchPtrOutput)
 }
 
 // ConfigMap entry where the Prometheus JMX Exporter configuration is stored.
@@ -779,7 +10509,287 @@ func (o KafkaSpecZookeeperMetricsConfigValueFromPatchPtrOutput) ConfigMapKeyRef(
 	}).(KafkaSpecZookeeperMetricsConfigValueFromConfigMapKeyRefPatchPtrOutput)
 }
 
-// Configuration of the ZooKeeper cluster. This section is required when running a ZooKeeper-based Apache Kafka cluster.
+// Configuration values for the Strimzi Metrics Reporter.
+type KafkaSpecZookeeperMetricsConfigValues struct {
+	// A list of regex patterns to filter the metrics to collect. Should contain at least one element.
+	AllowList []string `pulumi:"allowList"`
+}
+
+// KafkaSpecZookeeperMetricsConfigValuesInput is an input type that accepts KafkaSpecZookeeperMetricsConfigValuesArgs and KafkaSpecZookeeperMetricsConfigValuesOutput values.
+// You can construct a concrete instance of `KafkaSpecZookeeperMetricsConfigValuesInput` via:
+//
+//	KafkaSpecZookeeperMetricsConfigValuesArgs{...}
+type KafkaSpecZookeeperMetricsConfigValuesInput interface {
+	pulumi.Input
+
+	ToKafkaSpecZookeeperMetricsConfigValuesOutput() KafkaSpecZookeeperMetricsConfigValuesOutput
+	ToKafkaSpecZookeeperMetricsConfigValuesOutputWithContext(context.Context) KafkaSpecZookeeperMetricsConfigValuesOutput
+}
+
+// Configuration values for the Strimzi Metrics Reporter.
+type KafkaSpecZookeeperMetricsConfigValuesArgs struct {
+	// A list of regex patterns to filter the metrics to collect. Should contain at least one element.
+	AllowList pulumi.StringArrayInput `pulumi:"allowList"`
+}
+
+func (KafkaSpecZookeeperMetricsConfigValuesArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecZookeeperMetricsConfigValues)(nil)).Elem()
+}
+
+func (i KafkaSpecZookeeperMetricsConfigValuesArgs) ToKafkaSpecZookeeperMetricsConfigValuesOutput() KafkaSpecZookeeperMetricsConfigValuesOutput {
+	return i.ToKafkaSpecZookeeperMetricsConfigValuesOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecZookeeperMetricsConfigValuesArgs) ToKafkaSpecZookeeperMetricsConfigValuesOutputWithContext(ctx context.Context) KafkaSpecZookeeperMetricsConfigValuesOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperMetricsConfigValuesOutput)
+}
+
+func (i KafkaSpecZookeeperMetricsConfigValuesArgs) ToKafkaSpecZookeeperMetricsConfigValuesPtrOutput() KafkaSpecZookeeperMetricsConfigValuesPtrOutput {
+	return i.ToKafkaSpecZookeeperMetricsConfigValuesPtrOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecZookeeperMetricsConfigValuesArgs) ToKafkaSpecZookeeperMetricsConfigValuesPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperMetricsConfigValuesPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperMetricsConfigValuesOutput).ToKafkaSpecZookeeperMetricsConfigValuesPtrOutputWithContext(ctx)
+}
+
+// KafkaSpecZookeeperMetricsConfigValuesPtrInput is an input type that accepts KafkaSpecZookeeperMetricsConfigValuesArgs, KafkaSpecZookeeperMetricsConfigValuesPtr and KafkaSpecZookeeperMetricsConfigValuesPtrOutput values.
+// You can construct a concrete instance of `KafkaSpecZookeeperMetricsConfigValuesPtrInput` via:
+//
+//	        KafkaSpecZookeeperMetricsConfigValuesArgs{...}
+//
+//	or:
+//
+//	        nil
+type KafkaSpecZookeeperMetricsConfigValuesPtrInput interface {
+	pulumi.Input
+
+	ToKafkaSpecZookeeperMetricsConfigValuesPtrOutput() KafkaSpecZookeeperMetricsConfigValuesPtrOutput
+	ToKafkaSpecZookeeperMetricsConfigValuesPtrOutputWithContext(context.Context) KafkaSpecZookeeperMetricsConfigValuesPtrOutput
+}
+
+type kafkaSpecZookeeperMetricsConfigValuesPtrType KafkaSpecZookeeperMetricsConfigValuesArgs
+
+func KafkaSpecZookeeperMetricsConfigValuesPtr(v *KafkaSpecZookeeperMetricsConfigValuesArgs) KafkaSpecZookeeperMetricsConfigValuesPtrInput {
+	return (*kafkaSpecZookeeperMetricsConfigValuesPtrType)(v)
+}
+
+func (*kafkaSpecZookeeperMetricsConfigValuesPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecZookeeperMetricsConfigValues)(nil)).Elem()
+}
+
+func (i *kafkaSpecZookeeperMetricsConfigValuesPtrType) ToKafkaSpecZookeeperMetricsConfigValuesPtrOutput() KafkaSpecZookeeperMetricsConfigValuesPtrOutput {
+	return i.ToKafkaSpecZookeeperMetricsConfigValuesPtrOutputWithContext(context.Background())
+}
+
+func (i *kafkaSpecZookeeperMetricsConfigValuesPtrType) ToKafkaSpecZookeeperMetricsConfigValuesPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperMetricsConfigValuesPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperMetricsConfigValuesPtrOutput)
+}
+
+// Configuration values for the Strimzi Metrics Reporter.
+type KafkaSpecZookeeperMetricsConfigValuesOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecZookeeperMetricsConfigValuesOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecZookeeperMetricsConfigValues)(nil)).Elem()
+}
+
+func (o KafkaSpecZookeeperMetricsConfigValuesOutput) ToKafkaSpecZookeeperMetricsConfigValuesOutput() KafkaSpecZookeeperMetricsConfigValuesOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperMetricsConfigValuesOutput) ToKafkaSpecZookeeperMetricsConfigValuesOutputWithContext(ctx context.Context) KafkaSpecZookeeperMetricsConfigValuesOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperMetricsConfigValuesOutput) ToKafkaSpecZookeeperMetricsConfigValuesPtrOutput() KafkaSpecZookeeperMetricsConfigValuesPtrOutput {
+	return o.ToKafkaSpecZookeeperMetricsConfigValuesPtrOutputWithContext(context.Background())
+}
+
+func (o KafkaSpecZookeeperMetricsConfigValuesOutput) ToKafkaSpecZookeeperMetricsConfigValuesPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperMetricsConfigValuesPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v KafkaSpecZookeeperMetricsConfigValues) *KafkaSpecZookeeperMetricsConfigValues {
+		return &v
+	}).(KafkaSpecZookeeperMetricsConfigValuesPtrOutput)
+}
+
+// A list of regex patterns to filter the metrics to collect. Should contain at least one element.
+func (o KafkaSpecZookeeperMetricsConfigValuesOutput) AllowList() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperMetricsConfigValues) []string { return v.AllowList }).(pulumi.StringArrayOutput)
+}
+
+type KafkaSpecZookeeperMetricsConfigValuesPtrOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecZookeeperMetricsConfigValuesPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecZookeeperMetricsConfigValues)(nil)).Elem()
+}
+
+func (o KafkaSpecZookeeperMetricsConfigValuesPtrOutput) ToKafkaSpecZookeeperMetricsConfigValuesPtrOutput() KafkaSpecZookeeperMetricsConfigValuesPtrOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperMetricsConfigValuesPtrOutput) ToKafkaSpecZookeeperMetricsConfigValuesPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperMetricsConfigValuesPtrOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperMetricsConfigValuesPtrOutput) Elem() KafkaSpecZookeeperMetricsConfigValuesOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperMetricsConfigValues) KafkaSpecZookeeperMetricsConfigValues {
+		if v != nil {
+			return *v
+		}
+		var ret KafkaSpecZookeeperMetricsConfigValues
+		return ret
+	}).(KafkaSpecZookeeperMetricsConfigValuesOutput)
+}
+
+// A list of regex patterns to filter the metrics to collect. Should contain at least one element.
+func (o KafkaSpecZookeeperMetricsConfigValuesPtrOutput) AllowList() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperMetricsConfigValues) []string {
+		if v == nil {
+			return nil
+		}
+		return v.AllowList
+	}).(pulumi.StringArrayOutput)
+}
+
+// Configuration values for the Strimzi Metrics Reporter.
+type KafkaSpecZookeeperMetricsConfigValuesPatch struct {
+	// A list of regex patterns to filter the metrics to collect. Should contain at least one element.
+	AllowList []string `pulumi:"allowList"`
+}
+
+// KafkaSpecZookeeperMetricsConfigValuesPatchInput is an input type that accepts KafkaSpecZookeeperMetricsConfigValuesPatchArgs and KafkaSpecZookeeperMetricsConfigValuesPatchOutput values.
+// You can construct a concrete instance of `KafkaSpecZookeeperMetricsConfigValuesPatchInput` via:
+//
+//	KafkaSpecZookeeperMetricsConfigValuesPatchArgs{...}
+type KafkaSpecZookeeperMetricsConfigValuesPatchInput interface {
+	pulumi.Input
+
+	ToKafkaSpecZookeeperMetricsConfigValuesPatchOutput() KafkaSpecZookeeperMetricsConfigValuesPatchOutput
+	ToKafkaSpecZookeeperMetricsConfigValuesPatchOutputWithContext(context.Context) KafkaSpecZookeeperMetricsConfigValuesPatchOutput
+}
+
+// Configuration values for the Strimzi Metrics Reporter.
+type KafkaSpecZookeeperMetricsConfigValuesPatchArgs struct {
+	// A list of regex patterns to filter the metrics to collect. Should contain at least one element.
+	AllowList pulumi.StringArrayInput `pulumi:"allowList"`
+}
+
+func (KafkaSpecZookeeperMetricsConfigValuesPatchArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecZookeeperMetricsConfigValuesPatch)(nil)).Elem()
+}
+
+func (i KafkaSpecZookeeperMetricsConfigValuesPatchArgs) ToKafkaSpecZookeeperMetricsConfigValuesPatchOutput() KafkaSpecZookeeperMetricsConfigValuesPatchOutput {
+	return i.ToKafkaSpecZookeeperMetricsConfigValuesPatchOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecZookeeperMetricsConfigValuesPatchArgs) ToKafkaSpecZookeeperMetricsConfigValuesPatchOutputWithContext(ctx context.Context) KafkaSpecZookeeperMetricsConfigValuesPatchOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperMetricsConfigValuesPatchOutput)
+}
+
+func (i KafkaSpecZookeeperMetricsConfigValuesPatchArgs) ToKafkaSpecZookeeperMetricsConfigValuesPatchPtrOutput() KafkaSpecZookeeperMetricsConfigValuesPatchPtrOutput {
+	return i.ToKafkaSpecZookeeperMetricsConfigValuesPatchPtrOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecZookeeperMetricsConfigValuesPatchArgs) ToKafkaSpecZookeeperMetricsConfigValuesPatchPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperMetricsConfigValuesPatchPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperMetricsConfigValuesPatchOutput).ToKafkaSpecZookeeperMetricsConfigValuesPatchPtrOutputWithContext(ctx)
+}
+
+// KafkaSpecZookeeperMetricsConfigValuesPatchPtrInput is an input type that accepts KafkaSpecZookeeperMetricsConfigValuesPatchArgs, KafkaSpecZookeeperMetricsConfigValuesPatchPtr and KafkaSpecZookeeperMetricsConfigValuesPatchPtrOutput values.
+// You can construct a concrete instance of `KafkaSpecZookeeperMetricsConfigValuesPatchPtrInput` via:
+//
+//	        KafkaSpecZookeeperMetricsConfigValuesPatchArgs{...}
+//
+//	or:
+//
+//	        nil
+type KafkaSpecZookeeperMetricsConfigValuesPatchPtrInput interface {
+	pulumi.Input
+
+	ToKafkaSpecZookeeperMetricsConfigValuesPatchPtrOutput() KafkaSpecZookeeperMetricsConfigValuesPatchPtrOutput
+	ToKafkaSpecZookeeperMetricsConfigValuesPatchPtrOutputWithContext(context.Context) KafkaSpecZookeeperMetricsConfigValuesPatchPtrOutput
+}
+
+type kafkaSpecZookeeperMetricsConfigValuesPatchPtrType KafkaSpecZookeeperMetricsConfigValuesPatchArgs
+
+func KafkaSpecZookeeperMetricsConfigValuesPatchPtr(v *KafkaSpecZookeeperMetricsConfigValuesPatchArgs) KafkaSpecZookeeperMetricsConfigValuesPatchPtrInput {
+	return (*kafkaSpecZookeeperMetricsConfigValuesPatchPtrType)(v)
+}
+
+func (*kafkaSpecZookeeperMetricsConfigValuesPatchPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecZookeeperMetricsConfigValuesPatch)(nil)).Elem()
+}
+
+func (i *kafkaSpecZookeeperMetricsConfigValuesPatchPtrType) ToKafkaSpecZookeeperMetricsConfigValuesPatchPtrOutput() KafkaSpecZookeeperMetricsConfigValuesPatchPtrOutput {
+	return i.ToKafkaSpecZookeeperMetricsConfigValuesPatchPtrOutputWithContext(context.Background())
+}
+
+func (i *kafkaSpecZookeeperMetricsConfigValuesPatchPtrType) ToKafkaSpecZookeeperMetricsConfigValuesPatchPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperMetricsConfigValuesPatchPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperMetricsConfigValuesPatchPtrOutput)
+}
+
+// Configuration values for the Strimzi Metrics Reporter.
+type KafkaSpecZookeeperMetricsConfigValuesPatchOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecZookeeperMetricsConfigValuesPatchOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecZookeeperMetricsConfigValuesPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecZookeeperMetricsConfigValuesPatchOutput) ToKafkaSpecZookeeperMetricsConfigValuesPatchOutput() KafkaSpecZookeeperMetricsConfigValuesPatchOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperMetricsConfigValuesPatchOutput) ToKafkaSpecZookeeperMetricsConfigValuesPatchOutputWithContext(ctx context.Context) KafkaSpecZookeeperMetricsConfigValuesPatchOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperMetricsConfigValuesPatchOutput) ToKafkaSpecZookeeperMetricsConfigValuesPatchPtrOutput() KafkaSpecZookeeperMetricsConfigValuesPatchPtrOutput {
+	return o.ToKafkaSpecZookeeperMetricsConfigValuesPatchPtrOutputWithContext(context.Background())
+}
+
+func (o KafkaSpecZookeeperMetricsConfigValuesPatchOutput) ToKafkaSpecZookeeperMetricsConfigValuesPatchPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperMetricsConfigValuesPatchPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v KafkaSpecZookeeperMetricsConfigValuesPatch) *KafkaSpecZookeeperMetricsConfigValuesPatch {
+		return &v
+	}).(KafkaSpecZookeeperMetricsConfigValuesPatchPtrOutput)
+}
+
+// A list of regex patterns to filter the metrics to collect. Should contain at least one element.
+func (o KafkaSpecZookeeperMetricsConfigValuesPatchOutput) AllowList() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperMetricsConfigValuesPatch) []string { return v.AllowList }).(pulumi.StringArrayOutput)
+}
+
+type KafkaSpecZookeeperMetricsConfigValuesPatchPtrOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecZookeeperMetricsConfigValuesPatchPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecZookeeperMetricsConfigValuesPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecZookeeperMetricsConfigValuesPatchPtrOutput) ToKafkaSpecZookeeperMetricsConfigValuesPatchPtrOutput() KafkaSpecZookeeperMetricsConfigValuesPatchPtrOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperMetricsConfigValuesPatchPtrOutput) ToKafkaSpecZookeeperMetricsConfigValuesPatchPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperMetricsConfigValuesPatchPtrOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperMetricsConfigValuesPatchPtrOutput) Elem() KafkaSpecZookeeperMetricsConfigValuesPatchOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperMetricsConfigValuesPatch) KafkaSpecZookeeperMetricsConfigValuesPatch {
+		if v != nil {
+			return *v
+		}
+		var ret KafkaSpecZookeeperMetricsConfigValuesPatch
+		return ret
+	}).(KafkaSpecZookeeperMetricsConfigValuesPatchOutput)
+}
+
+// A list of regex patterns to filter the metrics to collect. Should contain at least one element.
+func (o KafkaSpecZookeeperMetricsConfigValuesPatchPtrOutput) AllowList() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperMetricsConfigValuesPatch) []string {
+		if v == nil {
+			return nil
+		}
+		return v.AllowList
+	}).(pulumi.StringArrayOutput)
+}
+
+// As of Strimzi 0.46.0, ZooKeeper-based Apache Kafka clusters are not supported anymore and this option is ignored.
 type KafkaSpecZookeeperPatch struct {
 	// The ZooKeeper broker config. Properties with the following prefixes cannot be set: server., dataDir, dataLogDir, clientPort, authProvider, quorum.auth, requireClientAuthScheme, snapshot.trust.empty, standaloneEnabled, reconfigEnabled, 4lw.commands.whitelist, secureClientPort, ssl., serverCnxnFactory, sslQuorum (with the exception of: ssl.protocol, ssl.quorum.protocol, ssl.enabledProtocols, ssl.quorum.enabledProtocols, ssl.ciphersuites, ssl.quorum.ciphersuites, ssl.hostnameVerification, ssl.quorum.hostnameVerification).
 	Config map[string]interface{} `pulumi:"config"`
@@ -809,7 +10819,7 @@ type KafkaSpecZookeeperPatchInput interface {
 	ToKafkaSpecZookeeperPatchOutputWithContext(context.Context) KafkaSpecZookeeperPatchOutput
 }
 
-// Configuration of the ZooKeeper cluster. This section is required when running a ZooKeeper-based Apache Kafka cluster.
+// As of Strimzi 0.46.0, ZooKeeper-based Apache Kafka clusters are not supported anymore and this option is ignored.
 type KafkaSpecZookeeperPatchArgs struct {
 	// The ZooKeeper broker config. Properties with the following prefixes cannot be set: server., dataDir, dataLogDir, clientPort, authProvider, quorum.auth, requireClientAuthScheme, snapshot.trust.empty, standaloneEnabled, reconfigEnabled, 4lw.commands.whitelist, secureClientPort, ssl., serverCnxnFactory, sslQuorum (with the exception of: ssl.protocol, ssl.quorum.protocol, ssl.enabledProtocols, ssl.quorum.enabledProtocols, ssl.ciphersuites, ssl.quorum.ciphersuites, ssl.hostnameVerification, ssl.quorum.hostnameVerification).
 	Config pulumi.MapInput `pulumi:"config"`
@@ -881,7 +10891,7 @@ func (i *kafkaSpecZookeeperPatchPtrType) ToKafkaSpecZookeeperPatchPtrOutputWithC
 	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperPatchPtrOutput)
 }
 
-// Configuration of the ZooKeeper cluster. This section is required when running a ZooKeeper-based Apache Kafka cluster.
+// As of Strimzi 0.46.0, ZooKeeper-based Apache Kafka clusters are not supported anymore and this option is ignored.
 type KafkaSpecZookeeperPatchOutput struct{ *pulumi.OutputState }
 
 func (KafkaSpecZookeeperPatchOutput) ElementType() reflect.Type {
@@ -1691,7 +11701,8 @@ func (o KafkaSpecZookeeperResourcesPtrOutput) Requests() pulumi.MapOutput {
 }
 
 type KafkaSpecZookeeperResourcesClaims struct {
-	Name *string `pulumi:"name"`
+	Name    *string `pulumi:"name"`
+	Request *string `pulumi:"request"`
 }
 
 // KafkaSpecZookeeperResourcesClaimsInput is an input type that accepts KafkaSpecZookeeperResourcesClaimsArgs and KafkaSpecZookeeperResourcesClaimsOutput values.
@@ -1706,7 +11717,8 @@ type KafkaSpecZookeeperResourcesClaimsInput interface {
 }
 
 type KafkaSpecZookeeperResourcesClaimsArgs struct {
-	Name pulumi.StringPtrInput `pulumi:"name"`
+	Name    pulumi.StringPtrInput `pulumi:"name"`
+	Request pulumi.StringPtrInput `pulumi:"request"`
 }
 
 func (KafkaSpecZookeeperResourcesClaimsArgs) ElementType() reflect.Type {
@@ -1764,6 +11776,10 @@ func (o KafkaSpecZookeeperResourcesClaimsOutput) Name() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v KafkaSpecZookeeperResourcesClaims) *string { return v.Name }).(pulumi.StringPtrOutput)
 }
 
+func (o KafkaSpecZookeeperResourcesClaimsOutput) Request() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperResourcesClaims) *string { return v.Request }).(pulumi.StringPtrOutput)
+}
+
 type KafkaSpecZookeeperResourcesClaimsArrayOutput struct{ *pulumi.OutputState }
 
 func (KafkaSpecZookeeperResourcesClaimsArrayOutput) ElementType() reflect.Type {
@@ -1785,7 +11801,8 @@ func (o KafkaSpecZookeeperResourcesClaimsArrayOutput) Index(i pulumi.IntInput) K
 }
 
 type KafkaSpecZookeeperResourcesClaimsPatch struct {
-	Name *string `pulumi:"name"`
+	Name    *string `pulumi:"name"`
+	Request *string `pulumi:"request"`
 }
 
 // KafkaSpecZookeeperResourcesClaimsPatchInput is an input type that accepts KafkaSpecZookeeperResourcesClaimsPatchArgs and KafkaSpecZookeeperResourcesClaimsPatchOutput values.
@@ -1800,7 +11817,8 @@ type KafkaSpecZookeeperResourcesClaimsPatchInput interface {
 }
 
 type KafkaSpecZookeeperResourcesClaimsPatchArgs struct {
-	Name pulumi.StringPtrInput `pulumi:"name"`
+	Name    pulumi.StringPtrInput `pulumi:"name"`
+	Request pulumi.StringPtrInput `pulumi:"request"`
 }
 
 func (KafkaSpecZookeeperResourcesClaimsPatchArgs) ElementType() reflect.Type {
@@ -1856,6 +11874,10 @@ func (o KafkaSpecZookeeperResourcesClaimsPatchOutput) ToKafkaSpecZookeeperResour
 
 func (o KafkaSpecZookeeperResourcesClaimsPatchOutput) Name() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v KafkaSpecZookeeperResourcesClaimsPatch) *string { return v.Name }).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecZookeeperResourcesClaimsPatchOutput) Request() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperResourcesClaimsPatch) *string { return v.Request }).(pulumi.StringPtrOutput)
 }
 
 type KafkaSpecZookeeperResourcesClaimsPatchArrayOutput struct{ *pulumi.OutputState }
@@ -2054,7 +12076,7 @@ type KafkaSpecZookeeperStorage struct {
 	Id *int `pulumi:"id"`
 	// Specifies whether this volume should be used for storing KRaft metadata. This property is optional. When set, the only currently supported value is `shared`. At most one volume can have this property set.
 	KraftMetadata *string `pulumi:"kraftMetadata"`
-	// Overrides for individual brokers. The `overrides` field allows you to specify a different configuration for different brokers.
+	// As of Strimzi 0.46.0, the storage overrides for individual brokers are not supported anymore and this option is ignored.
 	Overrides []KafkaSpecZookeeperStorageOverrides `pulumi:"overrides"`
 	// Specifies a specific persistent volume to use. It contains key:value pairs representing labels for selecting such a volume.
 	Selector map[string]string `pulumi:"selector"`
@@ -2087,7 +12109,7 @@ type KafkaSpecZookeeperStorageArgs struct {
 	Id pulumi.IntPtrInput `pulumi:"id"`
 	// Specifies whether this volume should be used for storing KRaft metadata. This property is optional. When set, the only currently supported value is `shared`. At most one volume can have this property set.
 	KraftMetadata pulumi.StringPtrInput `pulumi:"kraftMetadata"`
-	// Overrides for individual brokers. The `overrides` field allows you to specify a different configuration for different brokers.
+	// As of Strimzi 0.46.0, the storage overrides for individual brokers are not supported anymore and this option is ignored.
 	Overrides KafkaSpecZookeeperStorageOverridesArrayInput `pulumi:"overrides"`
 	// Specifies a specific persistent volume to use. It contains key:value pairs representing labels for selecting such a volume.
 	Selector pulumi.StringMapInput `pulumi:"selector"`
@@ -2197,7 +12219,7 @@ func (o KafkaSpecZookeeperStorageOutput) KraftMetadata() pulumi.StringPtrOutput 
 	return o.ApplyT(func(v KafkaSpecZookeeperStorage) *string { return v.KraftMetadata }).(pulumi.StringPtrOutput)
 }
 
-// Overrides for individual brokers. The `overrides` field allows you to specify a different configuration for different brokers.
+// As of Strimzi 0.46.0, the storage overrides for individual brokers are not supported anymore and this option is ignored.
 func (o KafkaSpecZookeeperStorageOutput) Overrides() KafkaSpecZookeeperStorageOverridesArrayOutput {
 	return o.ApplyT(func(v KafkaSpecZookeeperStorage) []KafkaSpecZookeeperStorageOverrides { return v.Overrides }).(KafkaSpecZookeeperStorageOverridesArrayOutput)
 }
@@ -2286,7 +12308,7 @@ func (o KafkaSpecZookeeperStoragePtrOutput) KraftMetadata() pulumi.StringPtrOutp
 	}).(pulumi.StringPtrOutput)
 }
 
-// Overrides for individual brokers. The `overrides` field allows you to specify a different configuration for different brokers.
+// As of Strimzi 0.46.0, the storage overrides for individual brokers are not supported anymore and this option is ignored.
 func (o KafkaSpecZookeeperStoragePtrOutput) Overrides() KafkaSpecZookeeperStorageOverridesArrayOutput {
 	return o.ApplyT(func(v *KafkaSpecZookeeperStorage) []KafkaSpecZookeeperStorageOverrides {
 		if v == nil {
@@ -2558,7 +12580,7 @@ type KafkaSpecZookeeperStoragePatch struct {
 	Id *int `pulumi:"id"`
 	// Specifies whether this volume should be used for storing KRaft metadata. This property is optional. When set, the only currently supported value is `shared`. At most one volume can have this property set.
 	KraftMetadata *string `pulumi:"kraftMetadata"`
-	// Overrides for individual brokers. The `overrides` field allows you to specify a different configuration for different brokers.
+	// As of Strimzi 0.46.0, the storage overrides for individual brokers are not supported anymore and this option is ignored.
 	Overrides []KafkaSpecZookeeperStorageOverridesPatch `pulumi:"overrides"`
 	// Specifies a specific persistent volume to use. It contains key:value pairs representing labels for selecting such a volume.
 	Selector map[string]string `pulumi:"selector"`
@@ -2591,7 +12613,7 @@ type KafkaSpecZookeeperStoragePatchArgs struct {
 	Id pulumi.IntPtrInput `pulumi:"id"`
 	// Specifies whether this volume should be used for storing KRaft metadata. This property is optional. When set, the only currently supported value is `shared`. At most one volume can have this property set.
 	KraftMetadata pulumi.StringPtrInput `pulumi:"kraftMetadata"`
-	// Overrides for individual brokers. The `overrides` field allows you to specify a different configuration for different brokers.
+	// As of Strimzi 0.46.0, the storage overrides for individual brokers are not supported anymore and this option is ignored.
 	Overrides KafkaSpecZookeeperStorageOverridesPatchArrayInput `pulumi:"overrides"`
 	// Specifies a specific persistent volume to use. It contains key:value pairs representing labels for selecting such a volume.
 	Selector pulumi.StringMapInput `pulumi:"selector"`
@@ -2701,7 +12723,7 @@ func (o KafkaSpecZookeeperStoragePatchOutput) KraftMetadata() pulumi.StringPtrOu
 	return o.ApplyT(func(v KafkaSpecZookeeperStoragePatch) *string { return v.KraftMetadata }).(pulumi.StringPtrOutput)
 }
 
-// Overrides for individual brokers. The `overrides` field allows you to specify a different configuration for different brokers.
+// As of Strimzi 0.46.0, the storage overrides for individual brokers are not supported anymore and this option is ignored.
 func (o KafkaSpecZookeeperStoragePatchOutput) Overrides() KafkaSpecZookeeperStorageOverridesPatchArrayOutput {
 	return o.ApplyT(func(v KafkaSpecZookeeperStoragePatch) []KafkaSpecZookeeperStorageOverridesPatch { return v.Overrides }).(KafkaSpecZookeeperStorageOverridesPatchArrayOutput)
 }
@@ -2790,7 +12812,7 @@ func (o KafkaSpecZookeeperStoragePatchPtrOutput) KraftMetadata() pulumi.StringPt
 	}).(pulumi.StringPtrOutput)
 }
 
-// Overrides for individual brokers. The `overrides` field allows you to specify a different configuration for different brokers.
+// As of Strimzi 0.46.0, the storage overrides for individual brokers are not supported anymore and this option is ignored.
 func (o KafkaSpecZookeeperStoragePatchPtrOutput) Overrides() KafkaSpecZookeeperStorageOverridesPatchArrayOutput {
 	return o.ApplyT(func(v *KafkaSpecZookeeperStoragePatch) []KafkaSpecZookeeperStorageOverridesPatch {
 		if v == nil {
@@ -5938,7 +15960,10 @@ func (o KafkaSpecZookeeperTemplatePersistentVolumeClaimPatchPtrOutput) Metadata(
 
 // Template for ZooKeeper `Pods`.
 type KafkaSpecZookeeperTemplatePod struct {
-	Affinity *KafkaSpecZookeeperTemplatePodAffinity `pulumi:"affinity"`
+	Affinity  *KafkaSpecZookeeperTemplatePodAffinity  `pulumi:"affinity"`
+	DnsConfig *KafkaSpecZookeeperTemplatePodDnsConfig `pulumi:"dnsConfig"`
+	// The pod's DNSPolicy. Defaults to `ClusterFirst`. Valid values are `ClusterFirstWithHostNet`, `ClusterFirst`, `Default` or `None`.
+	DnsPolicy *string `pulumi:"dnsPolicy"`
 	// Indicates whether information about services should be injected into Pod's environment variables.
 	EnableServiceLinks *bool `pulumi:"enableServiceLinks"`
 	// The pod's HostAliases. HostAliases is an optional list of hosts and IPs that will be injected into the Pod's hosts file if specified.
@@ -5976,7 +16001,10 @@ type KafkaSpecZookeeperTemplatePodInput interface {
 
 // Template for ZooKeeper `Pods`.
 type KafkaSpecZookeeperTemplatePodArgs struct {
-	Affinity KafkaSpecZookeeperTemplatePodAffinityPtrInput `pulumi:"affinity"`
+	Affinity  KafkaSpecZookeeperTemplatePodAffinityPtrInput  `pulumi:"affinity"`
+	DnsConfig KafkaSpecZookeeperTemplatePodDnsConfigPtrInput `pulumi:"dnsConfig"`
+	// The pod's DNSPolicy. Defaults to `ClusterFirst`. Valid values are `ClusterFirstWithHostNet`, `ClusterFirst`, `Default` or `None`.
+	DnsPolicy pulumi.StringPtrInput `pulumi:"dnsPolicy"`
 	// Indicates whether information about services should be injected into Pod's environment variables.
 	EnableServiceLinks pulumi.BoolPtrInput `pulumi:"enableServiceLinks"`
 	// The pod's HostAliases. HostAliases is an optional list of hosts and IPs that will be injected into the Pod's hosts file if specified.
@@ -6083,6 +16111,15 @@ func (o KafkaSpecZookeeperTemplatePodOutput) Affinity() KafkaSpecZookeeperTempla
 	return o.ApplyT(func(v KafkaSpecZookeeperTemplatePod) *KafkaSpecZookeeperTemplatePodAffinity { return v.Affinity }).(KafkaSpecZookeeperTemplatePodAffinityPtrOutput)
 }
 
+func (o KafkaSpecZookeeperTemplatePodOutput) DnsConfig() KafkaSpecZookeeperTemplatePodDnsConfigPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperTemplatePod) *KafkaSpecZookeeperTemplatePodDnsConfig { return v.DnsConfig }).(KafkaSpecZookeeperTemplatePodDnsConfigPtrOutput)
+}
+
+// The pod's DNSPolicy. Defaults to `ClusterFirst`. Valid values are `ClusterFirstWithHostNet`, `ClusterFirst`, `Default` or `None`.
+func (o KafkaSpecZookeeperTemplatePodOutput) DnsPolicy() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperTemplatePod) *string { return v.DnsPolicy }).(pulumi.StringPtrOutput)
+}
+
 // Indicates whether information about services should be injected into Pod's environment variables.
 func (o KafkaSpecZookeeperTemplatePodOutput) EnableServiceLinks() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v KafkaSpecZookeeperTemplatePod) *bool { return v.EnableServiceLinks }).(pulumi.BoolPtrOutput)
@@ -6178,6 +16215,25 @@ func (o KafkaSpecZookeeperTemplatePodPtrOutput) Affinity() KafkaSpecZookeeperTem
 		}
 		return v.Affinity
 	}).(KafkaSpecZookeeperTemplatePodAffinityPtrOutput)
+}
+
+func (o KafkaSpecZookeeperTemplatePodPtrOutput) DnsConfig() KafkaSpecZookeeperTemplatePodDnsConfigPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperTemplatePod) *KafkaSpecZookeeperTemplatePodDnsConfig {
+		if v == nil {
+			return nil
+		}
+		return v.DnsConfig
+	}).(KafkaSpecZookeeperTemplatePodDnsConfigPtrOutput)
+}
+
+// The pod's DNSPolicy. Defaults to `ClusterFirst`. Valid values are `ClusterFirstWithHostNet`, `ClusterFirst`, `Default` or `None`.
+func (o KafkaSpecZookeeperTemplatePodPtrOutput) DnsPolicy() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperTemplatePod) *string {
+		if v == nil {
+			return nil
+		}
+		return v.DnsPolicy
+	}).(pulumi.StringPtrOutput)
 }
 
 // Indicates whether information about services should be injected into Pod's environment variables.
@@ -16138,6 +26194,542 @@ func (o KafkaSpecZookeeperTemplatePodDisruptionBudgetPatchPtrOutput) Metadata() 
 	}).(KafkaSpecZookeeperTemplatePodDisruptionBudgetMetadataPatchPtrOutput)
 }
 
+// The pod's DNSConfig. If specified, it will be merged to the generated DNS configuration based on the DNSPolicy.
+type KafkaSpecZookeeperTemplatePodDnsConfig struct {
+	Nameservers []string                                        `pulumi:"nameservers"`
+	Options     []KafkaSpecZookeeperTemplatePodDnsConfigOptions `pulumi:"options"`
+	Searches    []string                                        `pulumi:"searches"`
+}
+
+// KafkaSpecZookeeperTemplatePodDnsConfigInput is an input type that accepts KafkaSpecZookeeperTemplatePodDnsConfigArgs and KafkaSpecZookeeperTemplatePodDnsConfigOutput values.
+// You can construct a concrete instance of `KafkaSpecZookeeperTemplatePodDnsConfigInput` via:
+//
+//	KafkaSpecZookeeperTemplatePodDnsConfigArgs{...}
+type KafkaSpecZookeeperTemplatePodDnsConfigInput interface {
+	pulumi.Input
+
+	ToKafkaSpecZookeeperTemplatePodDnsConfigOutput() KafkaSpecZookeeperTemplatePodDnsConfigOutput
+	ToKafkaSpecZookeeperTemplatePodDnsConfigOutputWithContext(context.Context) KafkaSpecZookeeperTemplatePodDnsConfigOutput
+}
+
+// The pod's DNSConfig. If specified, it will be merged to the generated DNS configuration based on the DNSPolicy.
+type KafkaSpecZookeeperTemplatePodDnsConfigArgs struct {
+	Nameservers pulumi.StringArrayInput                                 `pulumi:"nameservers"`
+	Options     KafkaSpecZookeeperTemplatePodDnsConfigOptionsArrayInput `pulumi:"options"`
+	Searches    pulumi.StringArrayInput                                 `pulumi:"searches"`
+}
+
+func (KafkaSpecZookeeperTemplatePodDnsConfigArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecZookeeperTemplatePodDnsConfig)(nil)).Elem()
+}
+
+func (i KafkaSpecZookeeperTemplatePodDnsConfigArgs) ToKafkaSpecZookeeperTemplatePodDnsConfigOutput() KafkaSpecZookeeperTemplatePodDnsConfigOutput {
+	return i.ToKafkaSpecZookeeperTemplatePodDnsConfigOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecZookeeperTemplatePodDnsConfigArgs) ToKafkaSpecZookeeperTemplatePodDnsConfigOutputWithContext(ctx context.Context) KafkaSpecZookeeperTemplatePodDnsConfigOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperTemplatePodDnsConfigOutput)
+}
+
+func (i KafkaSpecZookeeperTemplatePodDnsConfigArgs) ToKafkaSpecZookeeperTemplatePodDnsConfigPtrOutput() KafkaSpecZookeeperTemplatePodDnsConfigPtrOutput {
+	return i.ToKafkaSpecZookeeperTemplatePodDnsConfigPtrOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecZookeeperTemplatePodDnsConfigArgs) ToKafkaSpecZookeeperTemplatePodDnsConfigPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperTemplatePodDnsConfigPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperTemplatePodDnsConfigOutput).ToKafkaSpecZookeeperTemplatePodDnsConfigPtrOutputWithContext(ctx)
+}
+
+// KafkaSpecZookeeperTemplatePodDnsConfigPtrInput is an input type that accepts KafkaSpecZookeeperTemplatePodDnsConfigArgs, KafkaSpecZookeeperTemplatePodDnsConfigPtr and KafkaSpecZookeeperTemplatePodDnsConfigPtrOutput values.
+// You can construct a concrete instance of `KafkaSpecZookeeperTemplatePodDnsConfigPtrInput` via:
+//
+//	        KafkaSpecZookeeperTemplatePodDnsConfigArgs{...}
+//
+//	or:
+//
+//	        nil
+type KafkaSpecZookeeperTemplatePodDnsConfigPtrInput interface {
+	pulumi.Input
+
+	ToKafkaSpecZookeeperTemplatePodDnsConfigPtrOutput() KafkaSpecZookeeperTemplatePodDnsConfigPtrOutput
+	ToKafkaSpecZookeeperTemplatePodDnsConfigPtrOutputWithContext(context.Context) KafkaSpecZookeeperTemplatePodDnsConfigPtrOutput
+}
+
+type kafkaSpecZookeeperTemplatePodDnsConfigPtrType KafkaSpecZookeeperTemplatePodDnsConfigArgs
+
+func KafkaSpecZookeeperTemplatePodDnsConfigPtr(v *KafkaSpecZookeeperTemplatePodDnsConfigArgs) KafkaSpecZookeeperTemplatePodDnsConfigPtrInput {
+	return (*kafkaSpecZookeeperTemplatePodDnsConfigPtrType)(v)
+}
+
+func (*kafkaSpecZookeeperTemplatePodDnsConfigPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecZookeeperTemplatePodDnsConfig)(nil)).Elem()
+}
+
+func (i *kafkaSpecZookeeperTemplatePodDnsConfigPtrType) ToKafkaSpecZookeeperTemplatePodDnsConfigPtrOutput() KafkaSpecZookeeperTemplatePodDnsConfigPtrOutput {
+	return i.ToKafkaSpecZookeeperTemplatePodDnsConfigPtrOutputWithContext(context.Background())
+}
+
+func (i *kafkaSpecZookeeperTemplatePodDnsConfigPtrType) ToKafkaSpecZookeeperTemplatePodDnsConfigPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperTemplatePodDnsConfigPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperTemplatePodDnsConfigPtrOutput)
+}
+
+// The pod's DNSConfig. If specified, it will be merged to the generated DNS configuration based on the DNSPolicy.
+type KafkaSpecZookeeperTemplatePodDnsConfigOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecZookeeperTemplatePodDnsConfigOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecZookeeperTemplatePodDnsConfig)(nil)).Elem()
+}
+
+func (o KafkaSpecZookeeperTemplatePodDnsConfigOutput) ToKafkaSpecZookeeperTemplatePodDnsConfigOutput() KafkaSpecZookeeperTemplatePodDnsConfigOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperTemplatePodDnsConfigOutput) ToKafkaSpecZookeeperTemplatePodDnsConfigOutputWithContext(ctx context.Context) KafkaSpecZookeeperTemplatePodDnsConfigOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperTemplatePodDnsConfigOutput) ToKafkaSpecZookeeperTemplatePodDnsConfigPtrOutput() KafkaSpecZookeeperTemplatePodDnsConfigPtrOutput {
+	return o.ToKafkaSpecZookeeperTemplatePodDnsConfigPtrOutputWithContext(context.Background())
+}
+
+func (o KafkaSpecZookeeperTemplatePodDnsConfigOutput) ToKafkaSpecZookeeperTemplatePodDnsConfigPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperTemplatePodDnsConfigPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v KafkaSpecZookeeperTemplatePodDnsConfig) *KafkaSpecZookeeperTemplatePodDnsConfig {
+		return &v
+	}).(KafkaSpecZookeeperTemplatePodDnsConfigPtrOutput)
+}
+
+func (o KafkaSpecZookeeperTemplatePodDnsConfigOutput) Nameservers() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperTemplatePodDnsConfig) []string { return v.Nameservers }).(pulumi.StringArrayOutput)
+}
+
+func (o KafkaSpecZookeeperTemplatePodDnsConfigOutput) Options() KafkaSpecZookeeperTemplatePodDnsConfigOptionsArrayOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperTemplatePodDnsConfig) []KafkaSpecZookeeperTemplatePodDnsConfigOptions {
+		return v.Options
+	}).(KafkaSpecZookeeperTemplatePodDnsConfigOptionsArrayOutput)
+}
+
+func (o KafkaSpecZookeeperTemplatePodDnsConfigOutput) Searches() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperTemplatePodDnsConfig) []string { return v.Searches }).(pulumi.StringArrayOutput)
+}
+
+type KafkaSpecZookeeperTemplatePodDnsConfigPtrOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecZookeeperTemplatePodDnsConfigPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecZookeeperTemplatePodDnsConfig)(nil)).Elem()
+}
+
+func (o KafkaSpecZookeeperTemplatePodDnsConfigPtrOutput) ToKafkaSpecZookeeperTemplatePodDnsConfigPtrOutput() KafkaSpecZookeeperTemplatePodDnsConfigPtrOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperTemplatePodDnsConfigPtrOutput) ToKafkaSpecZookeeperTemplatePodDnsConfigPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperTemplatePodDnsConfigPtrOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperTemplatePodDnsConfigPtrOutput) Elem() KafkaSpecZookeeperTemplatePodDnsConfigOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperTemplatePodDnsConfig) KafkaSpecZookeeperTemplatePodDnsConfig {
+		if v != nil {
+			return *v
+		}
+		var ret KafkaSpecZookeeperTemplatePodDnsConfig
+		return ret
+	}).(KafkaSpecZookeeperTemplatePodDnsConfigOutput)
+}
+
+func (o KafkaSpecZookeeperTemplatePodDnsConfigPtrOutput) Nameservers() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperTemplatePodDnsConfig) []string {
+		if v == nil {
+			return nil
+		}
+		return v.Nameservers
+	}).(pulumi.StringArrayOutput)
+}
+
+func (o KafkaSpecZookeeperTemplatePodDnsConfigPtrOutput) Options() KafkaSpecZookeeperTemplatePodDnsConfigOptionsArrayOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperTemplatePodDnsConfig) []KafkaSpecZookeeperTemplatePodDnsConfigOptions {
+		if v == nil {
+			return nil
+		}
+		return v.Options
+	}).(KafkaSpecZookeeperTemplatePodDnsConfigOptionsArrayOutput)
+}
+
+func (o KafkaSpecZookeeperTemplatePodDnsConfigPtrOutput) Searches() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperTemplatePodDnsConfig) []string {
+		if v == nil {
+			return nil
+		}
+		return v.Searches
+	}).(pulumi.StringArrayOutput)
+}
+
+type KafkaSpecZookeeperTemplatePodDnsConfigOptions struct {
+	Name  *string `pulumi:"name"`
+	Value *string `pulumi:"value"`
+}
+
+// KafkaSpecZookeeperTemplatePodDnsConfigOptionsInput is an input type that accepts KafkaSpecZookeeperTemplatePodDnsConfigOptionsArgs and KafkaSpecZookeeperTemplatePodDnsConfigOptionsOutput values.
+// You can construct a concrete instance of `KafkaSpecZookeeperTemplatePodDnsConfigOptionsInput` via:
+//
+//	KafkaSpecZookeeperTemplatePodDnsConfigOptionsArgs{...}
+type KafkaSpecZookeeperTemplatePodDnsConfigOptionsInput interface {
+	pulumi.Input
+
+	ToKafkaSpecZookeeperTemplatePodDnsConfigOptionsOutput() KafkaSpecZookeeperTemplatePodDnsConfigOptionsOutput
+	ToKafkaSpecZookeeperTemplatePodDnsConfigOptionsOutputWithContext(context.Context) KafkaSpecZookeeperTemplatePodDnsConfigOptionsOutput
+}
+
+type KafkaSpecZookeeperTemplatePodDnsConfigOptionsArgs struct {
+	Name  pulumi.StringPtrInput `pulumi:"name"`
+	Value pulumi.StringPtrInput `pulumi:"value"`
+}
+
+func (KafkaSpecZookeeperTemplatePodDnsConfigOptionsArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecZookeeperTemplatePodDnsConfigOptions)(nil)).Elem()
+}
+
+func (i KafkaSpecZookeeperTemplatePodDnsConfigOptionsArgs) ToKafkaSpecZookeeperTemplatePodDnsConfigOptionsOutput() KafkaSpecZookeeperTemplatePodDnsConfigOptionsOutput {
+	return i.ToKafkaSpecZookeeperTemplatePodDnsConfigOptionsOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecZookeeperTemplatePodDnsConfigOptionsArgs) ToKafkaSpecZookeeperTemplatePodDnsConfigOptionsOutputWithContext(ctx context.Context) KafkaSpecZookeeperTemplatePodDnsConfigOptionsOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperTemplatePodDnsConfigOptionsOutput)
+}
+
+// KafkaSpecZookeeperTemplatePodDnsConfigOptionsArrayInput is an input type that accepts KafkaSpecZookeeperTemplatePodDnsConfigOptionsArray and KafkaSpecZookeeperTemplatePodDnsConfigOptionsArrayOutput values.
+// You can construct a concrete instance of `KafkaSpecZookeeperTemplatePodDnsConfigOptionsArrayInput` via:
+//
+//	KafkaSpecZookeeperTemplatePodDnsConfigOptionsArray{ KafkaSpecZookeeperTemplatePodDnsConfigOptionsArgs{...} }
+type KafkaSpecZookeeperTemplatePodDnsConfigOptionsArrayInput interface {
+	pulumi.Input
+
+	ToKafkaSpecZookeeperTemplatePodDnsConfigOptionsArrayOutput() KafkaSpecZookeeperTemplatePodDnsConfigOptionsArrayOutput
+	ToKafkaSpecZookeeperTemplatePodDnsConfigOptionsArrayOutputWithContext(context.Context) KafkaSpecZookeeperTemplatePodDnsConfigOptionsArrayOutput
+}
+
+type KafkaSpecZookeeperTemplatePodDnsConfigOptionsArray []KafkaSpecZookeeperTemplatePodDnsConfigOptionsInput
+
+func (KafkaSpecZookeeperTemplatePodDnsConfigOptionsArray) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]KafkaSpecZookeeperTemplatePodDnsConfigOptions)(nil)).Elem()
+}
+
+func (i KafkaSpecZookeeperTemplatePodDnsConfigOptionsArray) ToKafkaSpecZookeeperTemplatePodDnsConfigOptionsArrayOutput() KafkaSpecZookeeperTemplatePodDnsConfigOptionsArrayOutput {
+	return i.ToKafkaSpecZookeeperTemplatePodDnsConfigOptionsArrayOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecZookeeperTemplatePodDnsConfigOptionsArray) ToKafkaSpecZookeeperTemplatePodDnsConfigOptionsArrayOutputWithContext(ctx context.Context) KafkaSpecZookeeperTemplatePodDnsConfigOptionsArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperTemplatePodDnsConfigOptionsArrayOutput)
+}
+
+type KafkaSpecZookeeperTemplatePodDnsConfigOptionsOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecZookeeperTemplatePodDnsConfigOptionsOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecZookeeperTemplatePodDnsConfigOptions)(nil)).Elem()
+}
+
+func (o KafkaSpecZookeeperTemplatePodDnsConfigOptionsOutput) ToKafkaSpecZookeeperTemplatePodDnsConfigOptionsOutput() KafkaSpecZookeeperTemplatePodDnsConfigOptionsOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperTemplatePodDnsConfigOptionsOutput) ToKafkaSpecZookeeperTemplatePodDnsConfigOptionsOutputWithContext(ctx context.Context) KafkaSpecZookeeperTemplatePodDnsConfigOptionsOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperTemplatePodDnsConfigOptionsOutput) Name() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperTemplatePodDnsConfigOptions) *string { return v.Name }).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecZookeeperTemplatePodDnsConfigOptionsOutput) Value() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperTemplatePodDnsConfigOptions) *string { return v.Value }).(pulumi.StringPtrOutput)
+}
+
+type KafkaSpecZookeeperTemplatePodDnsConfigOptionsArrayOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecZookeeperTemplatePodDnsConfigOptionsArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]KafkaSpecZookeeperTemplatePodDnsConfigOptions)(nil)).Elem()
+}
+
+func (o KafkaSpecZookeeperTemplatePodDnsConfigOptionsArrayOutput) ToKafkaSpecZookeeperTemplatePodDnsConfigOptionsArrayOutput() KafkaSpecZookeeperTemplatePodDnsConfigOptionsArrayOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperTemplatePodDnsConfigOptionsArrayOutput) ToKafkaSpecZookeeperTemplatePodDnsConfigOptionsArrayOutputWithContext(ctx context.Context) KafkaSpecZookeeperTemplatePodDnsConfigOptionsArrayOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperTemplatePodDnsConfigOptionsArrayOutput) Index(i pulumi.IntInput) KafkaSpecZookeeperTemplatePodDnsConfigOptionsOutput {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) KafkaSpecZookeeperTemplatePodDnsConfigOptions {
+		return vs[0].([]KafkaSpecZookeeperTemplatePodDnsConfigOptions)[vs[1].(int)]
+	}).(KafkaSpecZookeeperTemplatePodDnsConfigOptionsOutput)
+}
+
+type KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatch struct {
+	Name  *string `pulumi:"name"`
+	Value *string `pulumi:"value"`
+}
+
+// KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchInput is an input type that accepts KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchArgs and KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchOutput values.
+// You can construct a concrete instance of `KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchInput` via:
+//
+//	KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchArgs{...}
+type KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchInput interface {
+	pulumi.Input
+
+	ToKafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchOutput() KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchOutput
+	ToKafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchOutputWithContext(context.Context) KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchOutput
+}
+
+type KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchArgs struct {
+	Name  pulumi.StringPtrInput `pulumi:"name"`
+	Value pulumi.StringPtrInput `pulumi:"value"`
+}
+
+func (KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatch)(nil)).Elem()
+}
+
+func (i KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchArgs) ToKafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchOutput() KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchOutput {
+	return i.ToKafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchArgs) ToKafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchOutputWithContext(ctx context.Context) KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchOutput)
+}
+
+// KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchArrayInput is an input type that accepts KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchArray and KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchArrayOutput values.
+// You can construct a concrete instance of `KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchArrayInput` via:
+//
+//	KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchArray{ KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchArgs{...} }
+type KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchArrayInput interface {
+	pulumi.Input
+
+	ToKafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchArrayOutput() KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchArrayOutput
+	ToKafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchArrayOutputWithContext(context.Context) KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchArrayOutput
+}
+
+type KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchArray []KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchInput
+
+func (KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchArray) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatch)(nil)).Elem()
+}
+
+func (i KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchArray) ToKafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchArrayOutput() KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchArrayOutput {
+	return i.ToKafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchArrayOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchArray) ToKafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchArrayOutputWithContext(ctx context.Context) KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchArrayOutput)
+}
+
+type KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchOutput) ToKafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchOutput() KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchOutput) ToKafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchOutputWithContext(ctx context.Context) KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchOutput) Name() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatch) *string { return v.Name }).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchOutput) Value() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatch) *string { return v.Value }).(pulumi.StringPtrOutput)
+}
+
+type KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchArrayOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchArrayOutput) ToKafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchArrayOutput() KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchArrayOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchArrayOutput) ToKafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchArrayOutputWithContext(ctx context.Context) KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchArrayOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchArrayOutput) Index(i pulumi.IntInput) KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchOutput {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatch {
+		return vs[0].([]KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatch)[vs[1].(int)]
+	}).(KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchOutput)
+}
+
+// The pod's DNSConfig. If specified, it will be merged to the generated DNS configuration based on the DNSPolicy.
+type KafkaSpecZookeeperTemplatePodDnsConfigPatch struct {
+	Nameservers []string                                             `pulumi:"nameservers"`
+	Options     []KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatch `pulumi:"options"`
+	Searches    []string                                             `pulumi:"searches"`
+}
+
+// KafkaSpecZookeeperTemplatePodDnsConfigPatchInput is an input type that accepts KafkaSpecZookeeperTemplatePodDnsConfigPatchArgs and KafkaSpecZookeeperTemplatePodDnsConfigPatchOutput values.
+// You can construct a concrete instance of `KafkaSpecZookeeperTemplatePodDnsConfigPatchInput` via:
+//
+//	KafkaSpecZookeeperTemplatePodDnsConfigPatchArgs{...}
+type KafkaSpecZookeeperTemplatePodDnsConfigPatchInput interface {
+	pulumi.Input
+
+	ToKafkaSpecZookeeperTemplatePodDnsConfigPatchOutput() KafkaSpecZookeeperTemplatePodDnsConfigPatchOutput
+	ToKafkaSpecZookeeperTemplatePodDnsConfigPatchOutputWithContext(context.Context) KafkaSpecZookeeperTemplatePodDnsConfigPatchOutput
+}
+
+// The pod's DNSConfig. If specified, it will be merged to the generated DNS configuration based on the DNSPolicy.
+type KafkaSpecZookeeperTemplatePodDnsConfigPatchArgs struct {
+	Nameservers pulumi.StringArrayInput                                      `pulumi:"nameservers"`
+	Options     KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchArrayInput `pulumi:"options"`
+	Searches    pulumi.StringArrayInput                                      `pulumi:"searches"`
+}
+
+func (KafkaSpecZookeeperTemplatePodDnsConfigPatchArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecZookeeperTemplatePodDnsConfigPatch)(nil)).Elem()
+}
+
+func (i KafkaSpecZookeeperTemplatePodDnsConfigPatchArgs) ToKafkaSpecZookeeperTemplatePodDnsConfigPatchOutput() KafkaSpecZookeeperTemplatePodDnsConfigPatchOutput {
+	return i.ToKafkaSpecZookeeperTemplatePodDnsConfigPatchOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecZookeeperTemplatePodDnsConfigPatchArgs) ToKafkaSpecZookeeperTemplatePodDnsConfigPatchOutputWithContext(ctx context.Context) KafkaSpecZookeeperTemplatePodDnsConfigPatchOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperTemplatePodDnsConfigPatchOutput)
+}
+
+func (i KafkaSpecZookeeperTemplatePodDnsConfigPatchArgs) ToKafkaSpecZookeeperTemplatePodDnsConfigPatchPtrOutput() KafkaSpecZookeeperTemplatePodDnsConfigPatchPtrOutput {
+	return i.ToKafkaSpecZookeeperTemplatePodDnsConfigPatchPtrOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecZookeeperTemplatePodDnsConfigPatchArgs) ToKafkaSpecZookeeperTemplatePodDnsConfigPatchPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperTemplatePodDnsConfigPatchPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperTemplatePodDnsConfigPatchOutput).ToKafkaSpecZookeeperTemplatePodDnsConfigPatchPtrOutputWithContext(ctx)
+}
+
+// KafkaSpecZookeeperTemplatePodDnsConfigPatchPtrInput is an input type that accepts KafkaSpecZookeeperTemplatePodDnsConfigPatchArgs, KafkaSpecZookeeperTemplatePodDnsConfigPatchPtr and KafkaSpecZookeeperTemplatePodDnsConfigPatchPtrOutput values.
+// You can construct a concrete instance of `KafkaSpecZookeeperTemplatePodDnsConfigPatchPtrInput` via:
+//
+//	        KafkaSpecZookeeperTemplatePodDnsConfigPatchArgs{...}
+//
+//	or:
+//
+//	        nil
+type KafkaSpecZookeeperTemplatePodDnsConfigPatchPtrInput interface {
+	pulumi.Input
+
+	ToKafkaSpecZookeeperTemplatePodDnsConfigPatchPtrOutput() KafkaSpecZookeeperTemplatePodDnsConfigPatchPtrOutput
+	ToKafkaSpecZookeeperTemplatePodDnsConfigPatchPtrOutputWithContext(context.Context) KafkaSpecZookeeperTemplatePodDnsConfigPatchPtrOutput
+}
+
+type kafkaSpecZookeeperTemplatePodDnsConfigPatchPtrType KafkaSpecZookeeperTemplatePodDnsConfigPatchArgs
+
+func KafkaSpecZookeeperTemplatePodDnsConfigPatchPtr(v *KafkaSpecZookeeperTemplatePodDnsConfigPatchArgs) KafkaSpecZookeeperTemplatePodDnsConfigPatchPtrInput {
+	return (*kafkaSpecZookeeperTemplatePodDnsConfigPatchPtrType)(v)
+}
+
+func (*kafkaSpecZookeeperTemplatePodDnsConfigPatchPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecZookeeperTemplatePodDnsConfigPatch)(nil)).Elem()
+}
+
+func (i *kafkaSpecZookeeperTemplatePodDnsConfigPatchPtrType) ToKafkaSpecZookeeperTemplatePodDnsConfigPatchPtrOutput() KafkaSpecZookeeperTemplatePodDnsConfigPatchPtrOutput {
+	return i.ToKafkaSpecZookeeperTemplatePodDnsConfigPatchPtrOutputWithContext(context.Background())
+}
+
+func (i *kafkaSpecZookeeperTemplatePodDnsConfigPatchPtrType) ToKafkaSpecZookeeperTemplatePodDnsConfigPatchPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperTemplatePodDnsConfigPatchPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperTemplatePodDnsConfigPatchPtrOutput)
+}
+
+// The pod's DNSConfig. If specified, it will be merged to the generated DNS configuration based on the DNSPolicy.
+type KafkaSpecZookeeperTemplatePodDnsConfigPatchOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecZookeeperTemplatePodDnsConfigPatchOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecZookeeperTemplatePodDnsConfigPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecZookeeperTemplatePodDnsConfigPatchOutput) ToKafkaSpecZookeeperTemplatePodDnsConfigPatchOutput() KafkaSpecZookeeperTemplatePodDnsConfigPatchOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperTemplatePodDnsConfigPatchOutput) ToKafkaSpecZookeeperTemplatePodDnsConfigPatchOutputWithContext(ctx context.Context) KafkaSpecZookeeperTemplatePodDnsConfigPatchOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperTemplatePodDnsConfigPatchOutput) ToKafkaSpecZookeeperTemplatePodDnsConfigPatchPtrOutput() KafkaSpecZookeeperTemplatePodDnsConfigPatchPtrOutput {
+	return o.ToKafkaSpecZookeeperTemplatePodDnsConfigPatchPtrOutputWithContext(context.Background())
+}
+
+func (o KafkaSpecZookeeperTemplatePodDnsConfigPatchOutput) ToKafkaSpecZookeeperTemplatePodDnsConfigPatchPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperTemplatePodDnsConfigPatchPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v KafkaSpecZookeeperTemplatePodDnsConfigPatch) *KafkaSpecZookeeperTemplatePodDnsConfigPatch {
+		return &v
+	}).(KafkaSpecZookeeperTemplatePodDnsConfigPatchPtrOutput)
+}
+
+func (o KafkaSpecZookeeperTemplatePodDnsConfigPatchOutput) Nameservers() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperTemplatePodDnsConfigPatch) []string { return v.Nameservers }).(pulumi.StringArrayOutput)
+}
+
+func (o KafkaSpecZookeeperTemplatePodDnsConfigPatchOutput) Options() KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchArrayOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperTemplatePodDnsConfigPatch) []KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatch {
+		return v.Options
+	}).(KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchArrayOutput)
+}
+
+func (o KafkaSpecZookeeperTemplatePodDnsConfigPatchOutput) Searches() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperTemplatePodDnsConfigPatch) []string { return v.Searches }).(pulumi.StringArrayOutput)
+}
+
+type KafkaSpecZookeeperTemplatePodDnsConfigPatchPtrOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecZookeeperTemplatePodDnsConfigPatchPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecZookeeperTemplatePodDnsConfigPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecZookeeperTemplatePodDnsConfigPatchPtrOutput) ToKafkaSpecZookeeperTemplatePodDnsConfigPatchPtrOutput() KafkaSpecZookeeperTemplatePodDnsConfigPatchPtrOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperTemplatePodDnsConfigPatchPtrOutput) ToKafkaSpecZookeeperTemplatePodDnsConfigPatchPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperTemplatePodDnsConfigPatchPtrOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperTemplatePodDnsConfigPatchPtrOutput) Elem() KafkaSpecZookeeperTemplatePodDnsConfigPatchOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperTemplatePodDnsConfigPatch) KafkaSpecZookeeperTemplatePodDnsConfigPatch {
+		if v != nil {
+			return *v
+		}
+		var ret KafkaSpecZookeeperTemplatePodDnsConfigPatch
+		return ret
+	}).(KafkaSpecZookeeperTemplatePodDnsConfigPatchOutput)
+}
+
+func (o KafkaSpecZookeeperTemplatePodDnsConfigPatchPtrOutput) Nameservers() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperTemplatePodDnsConfigPatch) []string {
+		if v == nil {
+			return nil
+		}
+		return v.Nameservers
+	}).(pulumi.StringArrayOutput)
+}
+
+func (o KafkaSpecZookeeperTemplatePodDnsConfigPatchPtrOutput) Options() KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchArrayOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperTemplatePodDnsConfigPatch) []KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatch {
+		if v == nil {
+			return nil
+		}
+		return v.Options
+	}).(KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchArrayOutput)
+}
+
+func (o KafkaSpecZookeeperTemplatePodDnsConfigPatchPtrOutput) Searches() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperTemplatePodDnsConfigPatch) []string {
+		if v == nil {
+			return nil
+		}
+		return v.Searches
+	}).(pulumi.StringArrayOutput)
+}
+
 type KafkaSpecZookeeperTemplatePodHostAliases struct {
 	Hostnames []string `pulumi:"hostnames"`
 	Ip        *string  `pulumi:"ip"`
@@ -16846,7 +27438,10 @@ func (o KafkaSpecZookeeperTemplatePodMetadataPatchPtrOutput) Labels() pulumi.Str
 
 // Template for ZooKeeper `Pods`.
 type KafkaSpecZookeeperTemplatePodPatch struct {
-	Affinity *KafkaSpecZookeeperTemplatePodAffinityPatch `pulumi:"affinity"`
+	Affinity  *KafkaSpecZookeeperTemplatePodAffinityPatch  `pulumi:"affinity"`
+	DnsConfig *KafkaSpecZookeeperTemplatePodDnsConfigPatch `pulumi:"dnsConfig"`
+	// The pod's DNSPolicy. Defaults to `ClusterFirst`. Valid values are `ClusterFirstWithHostNet`, `ClusterFirst`, `Default` or `None`.
+	DnsPolicy *string `pulumi:"dnsPolicy"`
 	// Indicates whether information about services should be injected into Pod's environment variables.
 	EnableServiceLinks *bool `pulumi:"enableServiceLinks"`
 	// The pod's HostAliases. HostAliases is an optional list of hosts and IPs that will be injected into the Pod's hosts file if specified.
@@ -16884,7 +27479,10 @@ type KafkaSpecZookeeperTemplatePodPatchInput interface {
 
 // Template for ZooKeeper `Pods`.
 type KafkaSpecZookeeperTemplatePodPatchArgs struct {
-	Affinity KafkaSpecZookeeperTemplatePodAffinityPatchPtrInput `pulumi:"affinity"`
+	Affinity  KafkaSpecZookeeperTemplatePodAffinityPatchPtrInput  `pulumi:"affinity"`
+	DnsConfig KafkaSpecZookeeperTemplatePodDnsConfigPatchPtrInput `pulumi:"dnsConfig"`
+	// The pod's DNSPolicy. Defaults to `ClusterFirst`. Valid values are `ClusterFirstWithHostNet`, `ClusterFirst`, `Default` or `None`.
+	DnsPolicy pulumi.StringPtrInput `pulumi:"dnsPolicy"`
 	// Indicates whether information about services should be injected into Pod's environment variables.
 	EnableServiceLinks pulumi.BoolPtrInput `pulumi:"enableServiceLinks"`
 	// The pod's HostAliases. HostAliases is an optional list of hosts and IPs that will be injected into the Pod's hosts file if specified.
@@ -16993,6 +27591,17 @@ func (o KafkaSpecZookeeperTemplatePodPatchOutput) Affinity() KafkaSpecZookeeperT
 	}).(KafkaSpecZookeeperTemplatePodAffinityPatchPtrOutput)
 }
 
+func (o KafkaSpecZookeeperTemplatePodPatchOutput) DnsConfig() KafkaSpecZookeeperTemplatePodDnsConfigPatchPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperTemplatePodPatch) *KafkaSpecZookeeperTemplatePodDnsConfigPatch {
+		return v.DnsConfig
+	}).(KafkaSpecZookeeperTemplatePodDnsConfigPatchPtrOutput)
+}
+
+// The pod's DNSPolicy. Defaults to `ClusterFirst`. Valid values are `ClusterFirstWithHostNet`, `ClusterFirst`, `Default` or `None`.
+func (o KafkaSpecZookeeperTemplatePodPatchOutput) DnsPolicy() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperTemplatePodPatch) *string { return v.DnsPolicy }).(pulumi.StringPtrOutput)
+}
+
 // Indicates whether information about services should be injected into Pod's environment variables.
 func (o KafkaSpecZookeeperTemplatePodPatchOutput) EnableServiceLinks() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v KafkaSpecZookeeperTemplatePodPatch) *bool { return v.EnableServiceLinks }).(pulumi.BoolPtrOutput)
@@ -17096,6 +27705,25 @@ func (o KafkaSpecZookeeperTemplatePodPatchPtrOutput) Affinity() KafkaSpecZookeep
 		}
 		return v.Affinity
 	}).(KafkaSpecZookeeperTemplatePodAffinityPatchPtrOutput)
+}
+
+func (o KafkaSpecZookeeperTemplatePodPatchPtrOutput) DnsConfig() KafkaSpecZookeeperTemplatePodDnsConfigPatchPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperTemplatePodPatch) *KafkaSpecZookeeperTemplatePodDnsConfigPatch {
+		if v == nil {
+			return nil
+		}
+		return v.DnsConfig
+	}).(KafkaSpecZookeeperTemplatePodDnsConfigPatchPtrOutput)
+}
+
+// The pod's DNSPolicy. Defaults to `ClusterFirst`. Valid values are `ClusterFirstWithHostNet`, `ClusterFirst`, `Default` or `None`.
+func (o KafkaSpecZookeeperTemplatePodPatchPtrOutput) DnsPolicy() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperTemplatePodPatch) *string {
+		if v == nil {
+			return nil
+		}
+		return v.DnsPolicy
+	}).(pulumi.StringPtrOutput)
 }
 
 // Indicates whether information about services should be injected into Pod's environment variables.
@@ -17218,17 +27846,19 @@ func (o KafkaSpecZookeeperTemplatePodPatchPtrOutput) Volumes() KafkaSpecZookeepe
 
 // Configures pod-level security attributes and common container settings.
 type KafkaSpecZookeeperTemplatePodSecurityContext struct {
-	AppArmorProfile     *KafkaSpecZookeeperTemplatePodSecurityContextAppArmorProfile `pulumi:"appArmorProfile"`
-	FsGroup             *int                                                         `pulumi:"fsGroup"`
-	FsGroupChangePolicy *string                                                      `pulumi:"fsGroupChangePolicy"`
-	RunAsGroup          *int                                                         `pulumi:"runAsGroup"`
-	RunAsNonRoot        *bool                                                        `pulumi:"runAsNonRoot"`
-	RunAsUser           *int                                                         `pulumi:"runAsUser"`
-	SeLinuxOptions      *KafkaSpecZookeeperTemplatePodSecurityContextSeLinuxOptions  `pulumi:"seLinuxOptions"`
-	SeccompProfile      *KafkaSpecZookeeperTemplatePodSecurityContextSeccompProfile  `pulumi:"seccompProfile"`
-	SupplementalGroups  []int                                                        `pulumi:"supplementalGroups"`
-	Sysctls             []KafkaSpecZookeeperTemplatePodSecurityContextSysctls        `pulumi:"sysctls"`
-	WindowsOptions      *KafkaSpecZookeeperTemplatePodSecurityContextWindowsOptions  `pulumi:"windowsOptions"`
+	AppArmorProfile          *KafkaSpecZookeeperTemplatePodSecurityContextAppArmorProfile `pulumi:"appArmorProfile"`
+	FsGroup                  *int                                                         `pulumi:"fsGroup"`
+	FsGroupChangePolicy      *string                                                      `pulumi:"fsGroupChangePolicy"`
+	RunAsGroup               *int                                                         `pulumi:"runAsGroup"`
+	RunAsNonRoot             *bool                                                        `pulumi:"runAsNonRoot"`
+	RunAsUser                *int                                                         `pulumi:"runAsUser"`
+	SeLinuxChangePolicy      *string                                                      `pulumi:"seLinuxChangePolicy"`
+	SeLinuxOptions           *KafkaSpecZookeeperTemplatePodSecurityContextSeLinuxOptions  `pulumi:"seLinuxOptions"`
+	SeccompProfile           *KafkaSpecZookeeperTemplatePodSecurityContextSeccompProfile  `pulumi:"seccompProfile"`
+	SupplementalGroups       []int                                                        `pulumi:"supplementalGroups"`
+	SupplementalGroupsPolicy *string                                                      `pulumi:"supplementalGroupsPolicy"`
+	Sysctls                  []KafkaSpecZookeeperTemplatePodSecurityContextSysctls        `pulumi:"sysctls"`
+	WindowsOptions           *KafkaSpecZookeeperTemplatePodSecurityContextWindowsOptions  `pulumi:"windowsOptions"`
 }
 
 // KafkaSpecZookeeperTemplatePodSecurityContextInput is an input type that accepts KafkaSpecZookeeperTemplatePodSecurityContextArgs and KafkaSpecZookeeperTemplatePodSecurityContextOutput values.
@@ -17244,17 +27874,19 @@ type KafkaSpecZookeeperTemplatePodSecurityContextInput interface {
 
 // Configures pod-level security attributes and common container settings.
 type KafkaSpecZookeeperTemplatePodSecurityContextArgs struct {
-	AppArmorProfile     KafkaSpecZookeeperTemplatePodSecurityContextAppArmorProfilePtrInput `pulumi:"appArmorProfile"`
-	FsGroup             pulumi.IntPtrInput                                                  `pulumi:"fsGroup"`
-	FsGroupChangePolicy pulumi.StringPtrInput                                               `pulumi:"fsGroupChangePolicy"`
-	RunAsGroup          pulumi.IntPtrInput                                                  `pulumi:"runAsGroup"`
-	RunAsNonRoot        pulumi.BoolPtrInput                                                 `pulumi:"runAsNonRoot"`
-	RunAsUser           pulumi.IntPtrInput                                                  `pulumi:"runAsUser"`
-	SeLinuxOptions      KafkaSpecZookeeperTemplatePodSecurityContextSeLinuxOptionsPtrInput  `pulumi:"seLinuxOptions"`
-	SeccompProfile      KafkaSpecZookeeperTemplatePodSecurityContextSeccompProfilePtrInput  `pulumi:"seccompProfile"`
-	SupplementalGroups  pulumi.IntArrayInput                                                `pulumi:"supplementalGroups"`
-	Sysctls             KafkaSpecZookeeperTemplatePodSecurityContextSysctlsArrayInput       `pulumi:"sysctls"`
-	WindowsOptions      KafkaSpecZookeeperTemplatePodSecurityContextWindowsOptionsPtrInput  `pulumi:"windowsOptions"`
+	AppArmorProfile          KafkaSpecZookeeperTemplatePodSecurityContextAppArmorProfilePtrInput `pulumi:"appArmorProfile"`
+	FsGroup                  pulumi.IntPtrInput                                                  `pulumi:"fsGroup"`
+	FsGroupChangePolicy      pulumi.StringPtrInput                                               `pulumi:"fsGroupChangePolicy"`
+	RunAsGroup               pulumi.IntPtrInput                                                  `pulumi:"runAsGroup"`
+	RunAsNonRoot             pulumi.BoolPtrInput                                                 `pulumi:"runAsNonRoot"`
+	RunAsUser                pulumi.IntPtrInput                                                  `pulumi:"runAsUser"`
+	SeLinuxChangePolicy      pulumi.StringPtrInput                                               `pulumi:"seLinuxChangePolicy"`
+	SeLinuxOptions           KafkaSpecZookeeperTemplatePodSecurityContextSeLinuxOptionsPtrInput  `pulumi:"seLinuxOptions"`
+	SeccompProfile           KafkaSpecZookeeperTemplatePodSecurityContextSeccompProfilePtrInput  `pulumi:"seccompProfile"`
+	SupplementalGroups       pulumi.IntArrayInput                                                `pulumi:"supplementalGroups"`
+	SupplementalGroupsPolicy pulumi.StringPtrInput                                               `pulumi:"supplementalGroupsPolicy"`
+	Sysctls                  KafkaSpecZookeeperTemplatePodSecurityContextSysctlsArrayInput       `pulumi:"sysctls"`
+	WindowsOptions           KafkaSpecZookeeperTemplatePodSecurityContextWindowsOptionsPtrInput  `pulumi:"windowsOptions"`
 }
 
 func (KafkaSpecZookeeperTemplatePodSecurityContextArgs) ElementType() reflect.Type {
@@ -17361,6 +27993,10 @@ func (o KafkaSpecZookeeperTemplatePodSecurityContextOutput) RunAsUser() pulumi.I
 	return o.ApplyT(func(v KafkaSpecZookeeperTemplatePodSecurityContext) *int { return v.RunAsUser }).(pulumi.IntPtrOutput)
 }
 
+func (o KafkaSpecZookeeperTemplatePodSecurityContextOutput) SeLinuxChangePolicy() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperTemplatePodSecurityContext) *string { return v.SeLinuxChangePolicy }).(pulumi.StringPtrOutput)
+}
+
 func (o KafkaSpecZookeeperTemplatePodSecurityContextOutput) SeLinuxOptions() KafkaSpecZookeeperTemplatePodSecurityContextSeLinuxOptionsPtrOutput {
 	return o.ApplyT(func(v KafkaSpecZookeeperTemplatePodSecurityContext) *KafkaSpecZookeeperTemplatePodSecurityContextSeLinuxOptions {
 		return v.SeLinuxOptions
@@ -17375,6 +28011,10 @@ func (o KafkaSpecZookeeperTemplatePodSecurityContextOutput) SeccompProfile() Kaf
 
 func (o KafkaSpecZookeeperTemplatePodSecurityContextOutput) SupplementalGroups() pulumi.IntArrayOutput {
 	return o.ApplyT(func(v KafkaSpecZookeeperTemplatePodSecurityContext) []int { return v.SupplementalGroups }).(pulumi.IntArrayOutput)
+}
+
+func (o KafkaSpecZookeeperTemplatePodSecurityContextOutput) SupplementalGroupsPolicy() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperTemplatePodSecurityContext) *string { return v.SupplementalGroupsPolicy }).(pulumi.StringPtrOutput)
 }
 
 func (o KafkaSpecZookeeperTemplatePodSecurityContextOutput) Sysctls() KafkaSpecZookeeperTemplatePodSecurityContextSysctlsArrayOutput {
@@ -17467,6 +28107,15 @@ func (o KafkaSpecZookeeperTemplatePodSecurityContextPtrOutput) RunAsUser() pulum
 	}).(pulumi.IntPtrOutput)
 }
 
+func (o KafkaSpecZookeeperTemplatePodSecurityContextPtrOutput) SeLinuxChangePolicy() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperTemplatePodSecurityContext) *string {
+		if v == nil {
+			return nil
+		}
+		return v.SeLinuxChangePolicy
+	}).(pulumi.StringPtrOutput)
+}
+
 func (o KafkaSpecZookeeperTemplatePodSecurityContextPtrOutput) SeLinuxOptions() KafkaSpecZookeeperTemplatePodSecurityContextSeLinuxOptionsPtrOutput {
 	return o.ApplyT(func(v *KafkaSpecZookeeperTemplatePodSecurityContext) *KafkaSpecZookeeperTemplatePodSecurityContextSeLinuxOptions {
 		if v == nil {
@@ -17492,6 +28141,15 @@ func (o KafkaSpecZookeeperTemplatePodSecurityContextPtrOutput) SupplementalGroup
 		}
 		return v.SupplementalGroups
 	}).(pulumi.IntArrayOutput)
+}
+
+func (o KafkaSpecZookeeperTemplatePodSecurityContextPtrOutput) SupplementalGroupsPolicy() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperTemplatePodSecurityContext) *string {
+		if v == nil {
+			return nil
+		}
+		return v.SupplementalGroupsPolicy
+	}).(pulumi.StringPtrOutput)
 }
 
 func (o KafkaSpecZookeeperTemplatePodSecurityContextPtrOutput) Sysctls() KafkaSpecZookeeperTemplatePodSecurityContextSysctlsArrayOutput {
@@ -17812,17 +28470,19 @@ func (o KafkaSpecZookeeperTemplatePodSecurityContextAppArmorProfilePatchPtrOutpu
 
 // Configures pod-level security attributes and common container settings.
 type KafkaSpecZookeeperTemplatePodSecurityContextPatch struct {
-	AppArmorProfile     *KafkaSpecZookeeperTemplatePodSecurityContextAppArmorProfilePatch `pulumi:"appArmorProfile"`
-	FsGroup             *int                                                              `pulumi:"fsGroup"`
-	FsGroupChangePolicy *string                                                           `pulumi:"fsGroupChangePolicy"`
-	RunAsGroup          *int                                                              `pulumi:"runAsGroup"`
-	RunAsNonRoot        *bool                                                             `pulumi:"runAsNonRoot"`
-	RunAsUser           *int                                                              `pulumi:"runAsUser"`
-	SeLinuxOptions      *KafkaSpecZookeeperTemplatePodSecurityContextSeLinuxOptionsPatch  `pulumi:"seLinuxOptions"`
-	SeccompProfile      *KafkaSpecZookeeperTemplatePodSecurityContextSeccompProfilePatch  `pulumi:"seccompProfile"`
-	SupplementalGroups  []int                                                             `pulumi:"supplementalGroups"`
-	Sysctls             []KafkaSpecZookeeperTemplatePodSecurityContextSysctlsPatch        `pulumi:"sysctls"`
-	WindowsOptions      *KafkaSpecZookeeperTemplatePodSecurityContextWindowsOptionsPatch  `pulumi:"windowsOptions"`
+	AppArmorProfile          *KafkaSpecZookeeperTemplatePodSecurityContextAppArmorProfilePatch `pulumi:"appArmorProfile"`
+	FsGroup                  *int                                                              `pulumi:"fsGroup"`
+	FsGroupChangePolicy      *string                                                           `pulumi:"fsGroupChangePolicy"`
+	RunAsGroup               *int                                                              `pulumi:"runAsGroup"`
+	RunAsNonRoot             *bool                                                             `pulumi:"runAsNonRoot"`
+	RunAsUser                *int                                                              `pulumi:"runAsUser"`
+	SeLinuxChangePolicy      *string                                                           `pulumi:"seLinuxChangePolicy"`
+	SeLinuxOptions           *KafkaSpecZookeeperTemplatePodSecurityContextSeLinuxOptionsPatch  `pulumi:"seLinuxOptions"`
+	SeccompProfile           *KafkaSpecZookeeperTemplatePodSecurityContextSeccompProfilePatch  `pulumi:"seccompProfile"`
+	SupplementalGroups       []int                                                             `pulumi:"supplementalGroups"`
+	SupplementalGroupsPolicy *string                                                           `pulumi:"supplementalGroupsPolicy"`
+	Sysctls                  []KafkaSpecZookeeperTemplatePodSecurityContextSysctlsPatch        `pulumi:"sysctls"`
+	WindowsOptions           *KafkaSpecZookeeperTemplatePodSecurityContextWindowsOptionsPatch  `pulumi:"windowsOptions"`
 }
 
 // KafkaSpecZookeeperTemplatePodSecurityContextPatchInput is an input type that accepts KafkaSpecZookeeperTemplatePodSecurityContextPatchArgs and KafkaSpecZookeeperTemplatePodSecurityContextPatchOutput values.
@@ -17838,17 +28498,19 @@ type KafkaSpecZookeeperTemplatePodSecurityContextPatchInput interface {
 
 // Configures pod-level security attributes and common container settings.
 type KafkaSpecZookeeperTemplatePodSecurityContextPatchArgs struct {
-	AppArmorProfile     KafkaSpecZookeeperTemplatePodSecurityContextAppArmorProfilePatchPtrInput `pulumi:"appArmorProfile"`
-	FsGroup             pulumi.IntPtrInput                                                       `pulumi:"fsGroup"`
-	FsGroupChangePolicy pulumi.StringPtrInput                                                    `pulumi:"fsGroupChangePolicy"`
-	RunAsGroup          pulumi.IntPtrInput                                                       `pulumi:"runAsGroup"`
-	RunAsNonRoot        pulumi.BoolPtrInput                                                      `pulumi:"runAsNonRoot"`
-	RunAsUser           pulumi.IntPtrInput                                                       `pulumi:"runAsUser"`
-	SeLinuxOptions      KafkaSpecZookeeperTemplatePodSecurityContextSeLinuxOptionsPatchPtrInput  `pulumi:"seLinuxOptions"`
-	SeccompProfile      KafkaSpecZookeeperTemplatePodSecurityContextSeccompProfilePatchPtrInput  `pulumi:"seccompProfile"`
-	SupplementalGroups  pulumi.IntArrayInput                                                     `pulumi:"supplementalGroups"`
-	Sysctls             KafkaSpecZookeeperTemplatePodSecurityContextSysctlsPatchArrayInput       `pulumi:"sysctls"`
-	WindowsOptions      KafkaSpecZookeeperTemplatePodSecurityContextWindowsOptionsPatchPtrInput  `pulumi:"windowsOptions"`
+	AppArmorProfile          KafkaSpecZookeeperTemplatePodSecurityContextAppArmorProfilePatchPtrInput `pulumi:"appArmorProfile"`
+	FsGroup                  pulumi.IntPtrInput                                                       `pulumi:"fsGroup"`
+	FsGroupChangePolicy      pulumi.StringPtrInput                                                    `pulumi:"fsGroupChangePolicy"`
+	RunAsGroup               pulumi.IntPtrInput                                                       `pulumi:"runAsGroup"`
+	RunAsNonRoot             pulumi.BoolPtrInput                                                      `pulumi:"runAsNonRoot"`
+	RunAsUser                pulumi.IntPtrInput                                                       `pulumi:"runAsUser"`
+	SeLinuxChangePolicy      pulumi.StringPtrInput                                                    `pulumi:"seLinuxChangePolicy"`
+	SeLinuxOptions           KafkaSpecZookeeperTemplatePodSecurityContextSeLinuxOptionsPatchPtrInput  `pulumi:"seLinuxOptions"`
+	SeccompProfile           KafkaSpecZookeeperTemplatePodSecurityContextSeccompProfilePatchPtrInput  `pulumi:"seccompProfile"`
+	SupplementalGroups       pulumi.IntArrayInput                                                     `pulumi:"supplementalGroups"`
+	SupplementalGroupsPolicy pulumi.StringPtrInput                                                    `pulumi:"supplementalGroupsPolicy"`
+	Sysctls                  KafkaSpecZookeeperTemplatePodSecurityContextSysctlsPatchArrayInput       `pulumi:"sysctls"`
+	WindowsOptions           KafkaSpecZookeeperTemplatePodSecurityContextWindowsOptionsPatchPtrInput  `pulumi:"windowsOptions"`
 }
 
 func (KafkaSpecZookeeperTemplatePodSecurityContextPatchArgs) ElementType() reflect.Type {
@@ -17955,6 +28617,10 @@ func (o KafkaSpecZookeeperTemplatePodSecurityContextPatchOutput) RunAsUser() pul
 	return o.ApplyT(func(v KafkaSpecZookeeperTemplatePodSecurityContextPatch) *int { return v.RunAsUser }).(pulumi.IntPtrOutput)
 }
 
+func (o KafkaSpecZookeeperTemplatePodSecurityContextPatchOutput) SeLinuxChangePolicy() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperTemplatePodSecurityContextPatch) *string { return v.SeLinuxChangePolicy }).(pulumi.StringPtrOutput)
+}
+
 func (o KafkaSpecZookeeperTemplatePodSecurityContextPatchOutput) SeLinuxOptions() KafkaSpecZookeeperTemplatePodSecurityContextSeLinuxOptionsPatchPtrOutput {
 	return o.ApplyT(func(v KafkaSpecZookeeperTemplatePodSecurityContextPatch) *KafkaSpecZookeeperTemplatePodSecurityContextSeLinuxOptionsPatch {
 		return v.SeLinuxOptions
@@ -17969,6 +28635,10 @@ func (o KafkaSpecZookeeperTemplatePodSecurityContextPatchOutput) SeccompProfile(
 
 func (o KafkaSpecZookeeperTemplatePodSecurityContextPatchOutput) SupplementalGroups() pulumi.IntArrayOutput {
 	return o.ApplyT(func(v KafkaSpecZookeeperTemplatePodSecurityContextPatch) []int { return v.SupplementalGroups }).(pulumi.IntArrayOutput)
+}
+
+func (o KafkaSpecZookeeperTemplatePodSecurityContextPatchOutput) SupplementalGroupsPolicy() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperTemplatePodSecurityContextPatch) *string { return v.SupplementalGroupsPolicy }).(pulumi.StringPtrOutput)
 }
 
 func (o KafkaSpecZookeeperTemplatePodSecurityContextPatchOutput) Sysctls() KafkaSpecZookeeperTemplatePodSecurityContextSysctlsPatchArrayOutput {
@@ -18061,6 +28731,15 @@ func (o KafkaSpecZookeeperTemplatePodSecurityContextPatchPtrOutput) RunAsUser() 
 	}).(pulumi.IntPtrOutput)
 }
 
+func (o KafkaSpecZookeeperTemplatePodSecurityContextPatchPtrOutput) SeLinuxChangePolicy() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperTemplatePodSecurityContextPatch) *string {
+		if v == nil {
+			return nil
+		}
+		return v.SeLinuxChangePolicy
+	}).(pulumi.StringPtrOutput)
+}
+
 func (o KafkaSpecZookeeperTemplatePodSecurityContextPatchPtrOutput) SeLinuxOptions() KafkaSpecZookeeperTemplatePodSecurityContextSeLinuxOptionsPatchPtrOutput {
 	return o.ApplyT(func(v *KafkaSpecZookeeperTemplatePodSecurityContextPatch) *KafkaSpecZookeeperTemplatePodSecurityContextSeLinuxOptionsPatch {
 		if v == nil {
@@ -18086,6 +28765,15 @@ func (o KafkaSpecZookeeperTemplatePodSecurityContextPatchPtrOutput) Supplemental
 		}
 		return v.SupplementalGroups
 	}).(pulumi.IntArrayOutput)
+}
+
+func (o KafkaSpecZookeeperTemplatePodSecurityContextPatchPtrOutput) SupplementalGroupsPolicy() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperTemplatePodSecurityContextPatch) *string {
+		if v == nil {
+			return nil
+		}
+		return v.SupplementalGroupsPolicy
+	}).(pulumi.StringPtrOutput)
 }
 
 func (o KafkaSpecZookeeperTemplatePodSecurityContextPatchPtrOutput) Sysctls() KafkaSpecZookeeperTemplatePodSecurityContextSysctlsPatchArrayOutput {
@@ -20964,7 +31652,9 @@ func (o KafkaSpecZookeeperTemplatePodTopologySpreadConstraintsPatchArrayOutput) 
 
 type KafkaSpecZookeeperTemplatePodVolumes struct {
 	ConfigMap *KafkaSpecZookeeperTemplatePodVolumesConfigMap `pulumi:"configMap"`
+	Csi       *KafkaSpecZookeeperTemplatePodVolumesCsi       `pulumi:"csi"`
 	EmptyDir  *KafkaSpecZookeeperTemplatePodVolumesEmptyDir  `pulumi:"emptyDir"`
+	Image     *KafkaSpecZookeeperTemplatePodVolumesImage     `pulumi:"image"`
 	// Name to use for the volume. Required.
 	Name                  *string                                                    `pulumi:"name"`
 	PersistentVolumeClaim *KafkaSpecZookeeperTemplatePodVolumesPersistentVolumeClaim `pulumi:"persistentVolumeClaim"`
@@ -20984,7 +31674,9 @@ type KafkaSpecZookeeperTemplatePodVolumesInput interface {
 
 type KafkaSpecZookeeperTemplatePodVolumesArgs struct {
 	ConfigMap KafkaSpecZookeeperTemplatePodVolumesConfigMapPtrInput `pulumi:"configMap"`
+	Csi       KafkaSpecZookeeperTemplatePodVolumesCsiPtrInput       `pulumi:"csi"`
 	EmptyDir  KafkaSpecZookeeperTemplatePodVolumesEmptyDirPtrInput  `pulumi:"emptyDir"`
+	Image     KafkaSpecZookeeperTemplatePodVolumesImagePtrInput     `pulumi:"image"`
 	// Name to use for the volume. Required.
 	Name                  pulumi.StringPtrInput                                             `pulumi:"name"`
 	PersistentVolumeClaim KafkaSpecZookeeperTemplatePodVolumesPersistentVolumeClaimPtrInput `pulumi:"persistentVolumeClaim"`
@@ -21048,10 +31740,20 @@ func (o KafkaSpecZookeeperTemplatePodVolumesOutput) ConfigMap() KafkaSpecZookeep
 	}).(KafkaSpecZookeeperTemplatePodVolumesConfigMapPtrOutput)
 }
 
+func (o KafkaSpecZookeeperTemplatePodVolumesOutput) Csi() KafkaSpecZookeeperTemplatePodVolumesCsiPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperTemplatePodVolumes) *KafkaSpecZookeeperTemplatePodVolumesCsi { return v.Csi }).(KafkaSpecZookeeperTemplatePodVolumesCsiPtrOutput)
+}
+
 func (o KafkaSpecZookeeperTemplatePodVolumesOutput) EmptyDir() KafkaSpecZookeeperTemplatePodVolumesEmptyDirPtrOutput {
 	return o.ApplyT(func(v KafkaSpecZookeeperTemplatePodVolumes) *KafkaSpecZookeeperTemplatePodVolumesEmptyDir {
 		return v.EmptyDir
 	}).(KafkaSpecZookeeperTemplatePodVolumesEmptyDirPtrOutput)
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesOutput) Image() KafkaSpecZookeeperTemplatePodVolumesImagePtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperTemplatePodVolumes) *KafkaSpecZookeeperTemplatePodVolumesImage {
+		return v.Image
+	}).(KafkaSpecZookeeperTemplatePodVolumesImagePtrOutput)
 }
 
 // Name to use for the volume. Required.
@@ -21091,7 +31793,7 @@ func (o KafkaSpecZookeeperTemplatePodVolumesArrayOutput) Index(i pulumi.IntInput
 	}).(KafkaSpecZookeeperTemplatePodVolumesOutput)
 }
 
-// ConfigMap to use to populate the volume.
+// `ConfigMap` to use to populate the volume.
 type KafkaSpecZookeeperTemplatePodVolumesConfigMap struct {
 	DefaultMode *int                                                 `pulumi:"defaultMode"`
 	Items       []KafkaSpecZookeeperTemplatePodVolumesConfigMapItems `pulumi:"items"`
@@ -21110,7 +31812,7 @@ type KafkaSpecZookeeperTemplatePodVolumesConfigMapInput interface {
 	ToKafkaSpecZookeeperTemplatePodVolumesConfigMapOutputWithContext(context.Context) KafkaSpecZookeeperTemplatePodVolumesConfigMapOutput
 }
 
-// ConfigMap to use to populate the volume.
+// `ConfigMap` to use to populate the volume.
 type KafkaSpecZookeeperTemplatePodVolumesConfigMapArgs struct {
 	DefaultMode pulumi.IntPtrInput                                           `pulumi:"defaultMode"`
 	Items       KafkaSpecZookeeperTemplatePodVolumesConfigMapItemsArrayInput `pulumi:"items"`
@@ -21171,7 +31873,7 @@ func (i *kafkaSpecZookeeperTemplatePodVolumesConfigMapPtrType) ToKafkaSpecZookee
 	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperTemplatePodVolumesConfigMapPtrOutput)
 }
 
-// ConfigMap to use to populate the volume.
+// `ConfigMap` to use to populate the volume.
 type KafkaSpecZookeeperTemplatePodVolumesConfigMapOutput struct{ *pulumi.OutputState }
 
 func (KafkaSpecZookeeperTemplatePodVolumesConfigMapOutput) ElementType() reflect.Type {
@@ -21486,7 +32188,7 @@ func (o KafkaSpecZookeeperTemplatePodVolumesConfigMapItemsPatchArrayOutput) Inde
 	}).(KafkaSpecZookeeperTemplatePodVolumesConfigMapItemsPatchOutput)
 }
 
-// ConfigMap to use to populate the volume.
+// `ConfigMap` to use to populate the volume.
 type KafkaSpecZookeeperTemplatePodVolumesConfigMapPatch struct {
 	DefaultMode *int                                                      `pulumi:"defaultMode"`
 	Items       []KafkaSpecZookeeperTemplatePodVolumesConfigMapItemsPatch `pulumi:"items"`
@@ -21505,7 +32207,7 @@ type KafkaSpecZookeeperTemplatePodVolumesConfigMapPatchInput interface {
 	ToKafkaSpecZookeeperTemplatePodVolumesConfigMapPatchOutputWithContext(context.Context) KafkaSpecZookeeperTemplatePodVolumesConfigMapPatchOutput
 }
 
-// ConfigMap to use to populate the volume.
+// `ConfigMap` to use to populate the volume.
 type KafkaSpecZookeeperTemplatePodVolumesConfigMapPatchArgs struct {
 	DefaultMode pulumi.IntPtrInput                                                `pulumi:"defaultMode"`
 	Items       KafkaSpecZookeeperTemplatePodVolumesConfigMapItemsPatchArrayInput `pulumi:"items"`
@@ -21566,7 +32268,7 @@ func (i *kafkaSpecZookeeperTemplatePodVolumesConfigMapPatchPtrType) ToKafkaSpecZ
 	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperTemplatePodVolumesConfigMapPatchPtrOutput)
 }
 
-// ConfigMap to use to populate the volume.
+// `ConfigMap` to use to populate the volume.
 type KafkaSpecZookeeperTemplatePodVolumesConfigMapPatchOutput struct{ *pulumi.OutputState }
 
 func (KafkaSpecZookeeperTemplatePodVolumesConfigMapPatchOutput) ElementType() reflect.Type {
@@ -21669,7 +32371,669 @@ func (o KafkaSpecZookeeperTemplatePodVolumesConfigMapPatchPtrOutput) Optional() 
 	}).(pulumi.BoolPtrOutput)
 }
 
-// EmptyDir to use to populate the volume.
+// `CSIVolumeSource` object to use to populate the volume.
+type KafkaSpecZookeeperTemplatePodVolumesCsi struct {
+	Driver               *string                                                      `pulumi:"driver"`
+	FsType               *string                                                      `pulumi:"fsType"`
+	NodePublishSecretRef *KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRef `pulumi:"nodePublishSecretRef"`
+	ReadOnly             *bool                                                        `pulumi:"readOnly"`
+	VolumeAttributes     map[string]string                                            `pulumi:"volumeAttributes"`
+}
+
+// KafkaSpecZookeeperTemplatePodVolumesCsiInput is an input type that accepts KafkaSpecZookeeperTemplatePodVolumesCsiArgs and KafkaSpecZookeeperTemplatePodVolumesCsiOutput values.
+// You can construct a concrete instance of `KafkaSpecZookeeperTemplatePodVolumesCsiInput` via:
+//
+//	KafkaSpecZookeeperTemplatePodVolumesCsiArgs{...}
+type KafkaSpecZookeeperTemplatePodVolumesCsiInput interface {
+	pulumi.Input
+
+	ToKafkaSpecZookeeperTemplatePodVolumesCsiOutput() KafkaSpecZookeeperTemplatePodVolumesCsiOutput
+	ToKafkaSpecZookeeperTemplatePodVolumesCsiOutputWithContext(context.Context) KafkaSpecZookeeperTemplatePodVolumesCsiOutput
+}
+
+// `CSIVolumeSource` object to use to populate the volume.
+type KafkaSpecZookeeperTemplatePodVolumesCsiArgs struct {
+	Driver               pulumi.StringPtrInput                                               `pulumi:"driver"`
+	FsType               pulumi.StringPtrInput                                               `pulumi:"fsType"`
+	NodePublishSecretRef KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPtrInput `pulumi:"nodePublishSecretRef"`
+	ReadOnly             pulumi.BoolPtrInput                                                 `pulumi:"readOnly"`
+	VolumeAttributes     pulumi.StringMapInput                                               `pulumi:"volumeAttributes"`
+}
+
+func (KafkaSpecZookeeperTemplatePodVolumesCsiArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecZookeeperTemplatePodVolumesCsi)(nil)).Elem()
+}
+
+func (i KafkaSpecZookeeperTemplatePodVolumesCsiArgs) ToKafkaSpecZookeeperTemplatePodVolumesCsiOutput() KafkaSpecZookeeperTemplatePodVolumesCsiOutput {
+	return i.ToKafkaSpecZookeeperTemplatePodVolumesCsiOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecZookeeperTemplatePodVolumesCsiArgs) ToKafkaSpecZookeeperTemplatePodVolumesCsiOutputWithContext(ctx context.Context) KafkaSpecZookeeperTemplatePodVolumesCsiOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperTemplatePodVolumesCsiOutput)
+}
+
+func (i KafkaSpecZookeeperTemplatePodVolumesCsiArgs) ToKafkaSpecZookeeperTemplatePodVolumesCsiPtrOutput() KafkaSpecZookeeperTemplatePodVolumesCsiPtrOutput {
+	return i.ToKafkaSpecZookeeperTemplatePodVolumesCsiPtrOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecZookeeperTemplatePodVolumesCsiArgs) ToKafkaSpecZookeeperTemplatePodVolumesCsiPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperTemplatePodVolumesCsiPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperTemplatePodVolumesCsiOutput).ToKafkaSpecZookeeperTemplatePodVolumesCsiPtrOutputWithContext(ctx)
+}
+
+// KafkaSpecZookeeperTemplatePodVolumesCsiPtrInput is an input type that accepts KafkaSpecZookeeperTemplatePodVolumesCsiArgs, KafkaSpecZookeeperTemplatePodVolumesCsiPtr and KafkaSpecZookeeperTemplatePodVolumesCsiPtrOutput values.
+// You can construct a concrete instance of `KafkaSpecZookeeperTemplatePodVolumesCsiPtrInput` via:
+//
+//	        KafkaSpecZookeeperTemplatePodVolumesCsiArgs{...}
+//
+//	or:
+//
+//	        nil
+type KafkaSpecZookeeperTemplatePodVolumesCsiPtrInput interface {
+	pulumi.Input
+
+	ToKafkaSpecZookeeperTemplatePodVolumesCsiPtrOutput() KafkaSpecZookeeperTemplatePodVolumesCsiPtrOutput
+	ToKafkaSpecZookeeperTemplatePodVolumesCsiPtrOutputWithContext(context.Context) KafkaSpecZookeeperTemplatePodVolumesCsiPtrOutput
+}
+
+type kafkaSpecZookeeperTemplatePodVolumesCsiPtrType KafkaSpecZookeeperTemplatePodVolumesCsiArgs
+
+func KafkaSpecZookeeperTemplatePodVolumesCsiPtr(v *KafkaSpecZookeeperTemplatePodVolumesCsiArgs) KafkaSpecZookeeperTemplatePodVolumesCsiPtrInput {
+	return (*kafkaSpecZookeeperTemplatePodVolumesCsiPtrType)(v)
+}
+
+func (*kafkaSpecZookeeperTemplatePodVolumesCsiPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecZookeeperTemplatePodVolumesCsi)(nil)).Elem()
+}
+
+func (i *kafkaSpecZookeeperTemplatePodVolumesCsiPtrType) ToKafkaSpecZookeeperTemplatePodVolumesCsiPtrOutput() KafkaSpecZookeeperTemplatePodVolumesCsiPtrOutput {
+	return i.ToKafkaSpecZookeeperTemplatePodVolumesCsiPtrOutputWithContext(context.Background())
+}
+
+func (i *kafkaSpecZookeeperTemplatePodVolumesCsiPtrType) ToKafkaSpecZookeeperTemplatePodVolumesCsiPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperTemplatePodVolumesCsiPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperTemplatePodVolumesCsiPtrOutput)
+}
+
+// `CSIVolumeSource` object to use to populate the volume.
+type KafkaSpecZookeeperTemplatePodVolumesCsiOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecZookeeperTemplatePodVolumesCsiOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecZookeeperTemplatePodVolumesCsi)(nil)).Elem()
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesCsiOutput) ToKafkaSpecZookeeperTemplatePodVolumesCsiOutput() KafkaSpecZookeeperTemplatePodVolumesCsiOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesCsiOutput) ToKafkaSpecZookeeperTemplatePodVolumesCsiOutputWithContext(ctx context.Context) KafkaSpecZookeeperTemplatePodVolumesCsiOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesCsiOutput) ToKafkaSpecZookeeperTemplatePodVolumesCsiPtrOutput() KafkaSpecZookeeperTemplatePodVolumesCsiPtrOutput {
+	return o.ToKafkaSpecZookeeperTemplatePodVolumesCsiPtrOutputWithContext(context.Background())
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesCsiOutput) ToKafkaSpecZookeeperTemplatePodVolumesCsiPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperTemplatePodVolumesCsiPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v KafkaSpecZookeeperTemplatePodVolumesCsi) *KafkaSpecZookeeperTemplatePodVolumesCsi {
+		return &v
+	}).(KafkaSpecZookeeperTemplatePodVolumesCsiPtrOutput)
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesCsiOutput) Driver() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperTemplatePodVolumesCsi) *string { return v.Driver }).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesCsiOutput) FsType() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperTemplatePodVolumesCsi) *string { return v.FsType }).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesCsiOutput) NodePublishSecretRef() KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperTemplatePodVolumesCsi) *KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRef {
+		return v.NodePublishSecretRef
+	}).(KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPtrOutput)
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesCsiOutput) ReadOnly() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperTemplatePodVolumesCsi) *bool { return v.ReadOnly }).(pulumi.BoolPtrOutput)
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesCsiOutput) VolumeAttributes() pulumi.StringMapOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperTemplatePodVolumesCsi) map[string]string { return v.VolumeAttributes }).(pulumi.StringMapOutput)
+}
+
+type KafkaSpecZookeeperTemplatePodVolumesCsiPtrOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecZookeeperTemplatePodVolumesCsiPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecZookeeperTemplatePodVolumesCsi)(nil)).Elem()
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesCsiPtrOutput) ToKafkaSpecZookeeperTemplatePodVolumesCsiPtrOutput() KafkaSpecZookeeperTemplatePodVolumesCsiPtrOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesCsiPtrOutput) ToKafkaSpecZookeeperTemplatePodVolumesCsiPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperTemplatePodVolumesCsiPtrOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesCsiPtrOutput) Elem() KafkaSpecZookeeperTemplatePodVolumesCsiOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperTemplatePodVolumesCsi) KafkaSpecZookeeperTemplatePodVolumesCsi {
+		if v != nil {
+			return *v
+		}
+		var ret KafkaSpecZookeeperTemplatePodVolumesCsi
+		return ret
+	}).(KafkaSpecZookeeperTemplatePodVolumesCsiOutput)
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesCsiPtrOutput) Driver() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperTemplatePodVolumesCsi) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Driver
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesCsiPtrOutput) FsType() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperTemplatePodVolumesCsi) *string {
+		if v == nil {
+			return nil
+		}
+		return v.FsType
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesCsiPtrOutput) NodePublishSecretRef() KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperTemplatePodVolumesCsi) *KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRef {
+		if v == nil {
+			return nil
+		}
+		return v.NodePublishSecretRef
+	}).(KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPtrOutput)
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesCsiPtrOutput) ReadOnly() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperTemplatePodVolumesCsi) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.ReadOnly
+	}).(pulumi.BoolPtrOutput)
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesCsiPtrOutput) VolumeAttributes() pulumi.StringMapOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperTemplatePodVolumesCsi) map[string]string {
+		if v == nil {
+			return nil
+		}
+		return v.VolumeAttributes
+	}).(pulumi.StringMapOutput)
+}
+
+type KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRef struct {
+	Name *string `pulumi:"name"`
+}
+
+// KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefInput is an input type that accepts KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefArgs and KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefOutput values.
+// You can construct a concrete instance of `KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefInput` via:
+//
+//	KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefArgs{...}
+type KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefInput interface {
+	pulumi.Input
+
+	ToKafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefOutput() KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefOutput
+	ToKafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefOutputWithContext(context.Context) KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefOutput
+}
+
+type KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefArgs struct {
+	Name pulumi.StringPtrInput `pulumi:"name"`
+}
+
+func (KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRef)(nil)).Elem()
+}
+
+func (i KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefArgs) ToKafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefOutput() KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefOutput {
+	return i.ToKafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefArgs) ToKafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefOutputWithContext(ctx context.Context) KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefOutput)
+}
+
+func (i KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefArgs) ToKafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPtrOutput() KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPtrOutput {
+	return i.ToKafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPtrOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefArgs) ToKafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefOutput).ToKafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPtrOutputWithContext(ctx)
+}
+
+// KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPtrInput is an input type that accepts KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefArgs, KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPtr and KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPtrOutput values.
+// You can construct a concrete instance of `KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPtrInput` via:
+//
+//	        KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefArgs{...}
+//
+//	or:
+//
+//	        nil
+type KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPtrInput interface {
+	pulumi.Input
+
+	ToKafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPtrOutput() KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPtrOutput
+	ToKafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPtrOutputWithContext(context.Context) KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPtrOutput
+}
+
+type kafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPtrType KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefArgs
+
+func KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPtr(v *KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefArgs) KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPtrInput {
+	return (*kafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPtrType)(v)
+}
+
+func (*kafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRef)(nil)).Elem()
+}
+
+func (i *kafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPtrType) ToKafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPtrOutput() KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPtrOutput {
+	return i.ToKafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPtrOutputWithContext(context.Background())
+}
+
+func (i *kafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPtrType) ToKafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPtrOutput)
+}
+
+type KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRef)(nil)).Elem()
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefOutput) ToKafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefOutput() KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefOutput) ToKafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefOutputWithContext(ctx context.Context) KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefOutput) ToKafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPtrOutput() KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPtrOutput {
+	return o.ToKafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPtrOutputWithContext(context.Background())
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefOutput) ToKafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRef) *KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRef {
+		return &v
+	}).(KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPtrOutput)
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefOutput) Name() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRef) *string { return v.Name }).(pulumi.StringPtrOutput)
+}
+
+type KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPtrOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRef)(nil)).Elem()
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPtrOutput) ToKafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPtrOutput() KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPtrOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPtrOutput) ToKafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPtrOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPtrOutput) Elem() KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRef) KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRef {
+		if v != nil {
+			return *v
+		}
+		var ret KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRef
+		return ret
+	}).(KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefOutput)
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPtrOutput) Name() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRef) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Name
+	}).(pulumi.StringPtrOutput)
+}
+
+type KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatch struct {
+	Name *string `pulumi:"name"`
+}
+
+// KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchInput is an input type that accepts KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchArgs and KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchOutput values.
+// You can construct a concrete instance of `KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchInput` via:
+//
+//	KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchArgs{...}
+type KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchInput interface {
+	pulumi.Input
+
+	ToKafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchOutput() KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchOutput
+	ToKafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchOutputWithContext(context.Context) KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchOutput
+}
+
+type KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchArgs struct {
+	Name pulumi.StringPtrInput `pulumi:"name"`
+}
+
+func (KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatch)(nil)).Elem()
+}
+
+func (i KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchArgs) ToKafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchOutput() KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchOutput {
+	return i.ToKafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchArgs) ToKafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchOutputWithContext(ctx context.Context) KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchOutput)
+}
+
+func (i KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchArgs) ToKafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutput() KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutput {
+	return i.ToKafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchArgs) ToKafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchOutput).ToKafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutputWithContext(ctx)
+}
+
+// KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchPtrInput is an input type that accepts KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchArgs, KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchPtr and KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutput values.
+// You can construct a concrete instance of `KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchPtrInput` via:
+//
+//	        KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchArgs{...}
+//
+//	or:
+//
+//	        nil
+type KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchPtrInput interface {
+	pulumi.Input
+
+	ToKafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutput() KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutput
+	ToKafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutputWithContext(context.Context) KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutput
+}
+
+type kafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchPtrType KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchArgs
+
+func KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchPtr(v *KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchArgs) KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchPtrInput {
+	return (*kafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchPtrType)(v)
+}
+
+func (*kafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatch)(nil)).Elem()
+}
+
+func (i *kafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchPtrType) ToKafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutput() KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutput {
+	return i.ToKafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutputWithContext(context.Background())
+}
+
+func (i *kafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchPtrType) ToKafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutput)
+}
+
+type KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchOutput) ToKafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchOutput() KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchOutput) ToKafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchOutputWithContext(ctx context.Context) KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchOutput) ToKafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutput() KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutput {
+	return o.ToKafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutputWithContext(context.Background())
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchOutput) ToKafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatch) *KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatch {
+		return &v
+	}).(KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutput)
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchOutput) Name() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatch) *string { return v.Name }).(pulumi.StringPtrOutput)
+}
+
+type KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutput) ToKafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutput() KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutput) ToKafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutput) Elem() KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatch) KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatch {
+		if v != nil {
+			return *v
+		}
+		var ret KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatch
+		return ret
+	}).(KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchOutput)
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutput) Name() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatch) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Name
+	}).(pulumi.StringPtrOutput)
+}
+
+// `CSIVolumeSource` object to use to populate the volume.
+type KafkaSpecZookeeperTemplatePodVolumesCsiPatch struct {
+	Driver               *string                                                           `pulumi:"driver"`
+	FsType               *string                                                           `pulumi:"fsType"`
+	NodePublishSecretRef *KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatch `pulumi:"nodePublishSecretRef"`
+	ReadOnly             *bool                                                             `pulumi:"readOnly"`
+	VolumeAttributes     map[string]string                                                 `pulumi:"volumeAttributes"`
+}
+
+// KafkaSpecZookeeperTemplatePodVolumesCsiPatchInput is an input type that accepts KafkaSpecZookeeperTemplatePodVolumesCsiPatchArgs and KafkaSpecZookeeperTemplatePodVolumesCsiPatchOutput values.
+// You can construct a concrete instance of `KafkaSpecZookeeperTemplatePodVolumesCsiPatchInput` via:
+//
+//	KafkaSpecZookeeperTemplatePodVolumesCsiPatchArgs{...}
+type KafkaSpecZookeeperTemplatePodVolumesCsiPatchInput interface {
+	pulumi.Input
+
+	ToKafkaSpecZookeeperTemplatePodVolumesCsiPatchOutput() KafkaSpecZookeeperTemplatePodVolumesCsiPatchOutput
+	ToKafkaSpecZookeeperTemplatePodVolumesCsiPatchOutputWithContext(context.Context) KafkaSpecZookeeperTemplatePodVolumesCsiPatchOutput
+}
+
+// `CSIVolumeSource` object to use to populate the volume.
+type KafkaSpecZookeeperTemplatePodVolumesCsiPatchArgs struct {
+	Driver               pulumi.StringPtrInput                                                    `pulumi:"driver"`
+	FsType               pulumi.StringPtrInput                                                    `pulumi:"fsType"`
+	NodePublishSecretRef KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchPtrInput `pulumi:"nodePublishSecretRef"`
+	ReadOnly             pulumi.BoolPtrInput                                                      `pulumi:"readOnly"`
+	VolumeAttributes     pulumi.StringMapInput                                                    `pulumi:"volumeAttributes"`
+}
+
+func (KafkaSpecZookeeperTemplatePodVolumesCsiPatchArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecZookeeperTemplatePodVolumesCsiPatch)(nil)).Elem()
+}
+
+func (i KafkaSpecZookeeperTemplatePodVolumesCsiPatchArgs) ToKafkaSpecZookeeperTemplatePodVolumesCsiPatchOutput() KafkaSpecZookeeperTemplatePodVolumesCsiPatchOutput {
+	return i.ToKafkaSpecZookeeperTemplatePodVolumesCsiPatchOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecZookeeperTemplatePodVolumesCsiPatchArgs) ToKafkaSpecZookeeperTemplatePodVolumesCsiPatchOutputWithContext(ctx context.Context) KafkaSpecZookeeperTemplatePodVolumesCsiPatchOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperTemplatePodVolumesCsiPatchOutput)
+}
+
+func (i KafkaSpecZookeeperTemplatePodVolumesCsiPatchArgs) ToKafkaSpecZookeeperTemplatePodVolumesCsiPatchPtrOutput() KafkaSpecZookeeperTemplatePodVolumesCsiPatchPtrOutput {
+	return i.ToKafkaSpecZookeeperTemplatePodVolumesCsiPatchPtrOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecZookeeperTemplatePodVolumesCsiPatchArgs) ToKafkaSpecZookeeperTemplatePodVolumesCsiPatchPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperTemplatePodVolumesCsiPatchPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperTemplatePodVolumesCsiPatchOutput).ToKafkaSpecZookeeperTemplatePodVolumesCsiPatchPtrOutputWithContext(ctx)
+}
+
+// KafkaSpecZookeeperTemplatePodVolumesCsiPatchPtrInput is an input type that accepts KafkaSpecZookeeperTemplatePodVolumesCsiPatchArgs, KafkaSpecZookeeperTemplatePodVolumesCsiPatchPtr and KafkaSpecZookeeperTemplatePodVolumesCsiPatchPtrOutput values.
+// You can construct a concrete instance of `KafkaSpecZookeeperTemplatePodVolumesCsiPatchPtrInput` via:
+//
+//	        KafkaSpecZookeeperTemplatePodVolumesCsiPatchArgs{...}
+//
+//	or:
+//
+//	        nil
+type KafkaSpecZookeeperTemplatePodVolumesCsiPatchPtrInput interface {
+	pulumi.Input
+
+	ToKafkaSpecZookeeperTemplatePodVolumesCsiPatchPtrOutput() KafkaSpecZookeeperTemplatePodVolumesCsiPatchPtrOutput
+	ToKafkaSpecZookeeperTemplatePodVolumesCsiPatchPtrOutputWithContext(context.Context) KafkaSpecZookeeperTemplatePodVolumesCsiPatchPtrOutput
+}
+
+type kafkaSpecZookeeperTemplatePodVolumesCsiPatchPtrType KafkaSpecZookeeperTemplatePodVolumesCsiPatchArgs
+
+func KafkaSpecZookeeperTemplatePodVolumesCsiPatchPtr(v *KafkaSpecZookeeperTemplatePodVolumesCsiPatchArgs) KafkaSpecZookeeperTemplatePodVolumesCsiPatchPtrInput {
+	return (*kafkaSpecZookeeperTemplatePodVolumesCsiPatchPtrType)(v)
+}
+
+func (*kafkaSpecZookeeperTemplatePodVolumesCsiPatchPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecZookeeperTemplatePodVolumesCsiPatch)(nil)).Elem()
+}
+
+func (i *kafkaSpecZookeeperTemplatePodVolumesCsiPatchPtrType) ToKafkaSpecZookeeperTemplatePodVolumesCsiPatchPtrOutput() KafkaSpecZookeeperTemplatePodVolumesCsiPatchPtrOutput {
+	return i.ToKafkaSpecZookeeperTemplatePodVolumesCsiPatchPtrOutputWithContext(context.Background())
+}
+
+func (i *kafkaSpecZookeeperTemplatePodVolumesCsiPatchPtrType) ToKafkaSpecZookeeperTemplatePodVolumesCsiPatchPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperTemplatePodVolumesCsiPatchPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperTemplatePodVolumesCsiPatchPtrOutput)
+}
+
+// `CSIVolumeSource` object to use to populate the volume.
+type KafkaSpecZookeeperTemplatePodVolumesCsiPatchOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecZookeeperTemplatePodVolumesCsiPatchOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecZookeeperTemplatePodVolumesCsiPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesCsiPatchOutput) ToKafkaSpecZookeeperTemplatePodVolumesCsiPatchOutput() KafkaSpecZookeeperTemplatePodVolumesCsiPatchOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesCsiPatchOutput) ToKafkaSpecZookeeperTemplatePodVolumesCsiPatchOutputWithContext(ctx context.Context) KafkaSpecZookeeperTemplatePodVolumesCsiPatchOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesCsiPatchOutput) ToKafkaSpecZookeeperTemplatePodVolumesCsiPatchPtrOutput() KafkaSpecZookeeperTemplatePodVolumesCsiPatchPtrOutput {
+	return o.ToKafkaSpecZookeeperTemplatePodVolumesCsiPatchPtrOutputWithContext(context.Background())
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesCsiPatchOutput) ToKafkaSpecZookeeperTemplatePodVolumesCsiPatchPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperTemplatePodVolumesCsiPatchPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v KafkaSpecZookeeperTemplatePodVolumesCsiPatch) *KafkaSpecZookeeperTemplatePodVolumesCsiPatch {
+		return &v
+	}).(KafkaSpecZookeeperTemplatePodVolumesCsiPatchPtrOutput)
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesCsiPatchOutput) Driver() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperTemplatePodVolumesCsiPatch) *string { return v.Driver }).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesCsiPatchOutput) FsType() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperTemplatePodVolumesCsiPatch) *string { return v.FsType }).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesCsiPatchOutput) NodePublishSecretRef() KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperTemplatePodVolumesCsiPatch) *KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatch {
+		return v.NodePublishSecretRef
+	}).(KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutput)
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesCsiPatchOutput) ReadOnly() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperTemplatePodVolumesCsiPatch) *bool { return v.ReadOnly }).(pulumi.BoolPtrOutput)
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesCsiPatchOutput) VolumeAttributes() pulumi.StringMapOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperTemplatePodVolumesCsiPatch) map[string]string { return v.VolumeAttributes }).(pulumi.StringMapOutput)
+}
+
+type KafkaSpecZookeeperTemplatePodVolumesCsiPatchPtrOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecZookeeperTemplatePodVolumesCsiPatchPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecZookeeperTemplatePodVolumesCsiPatch)(nil)).Elem()
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesCsiPatchPtrOutput) ToKafkaSpecZookeeperTemplatePodVolumesCsiPatchPtrOutput() KafkaSpecZookeeperTemplatePodVolumesCsiPatchPtrOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesCsiPatchPtrOutput) ToKafkaSpecZookeeperTemplatePodVolumesCsiPatchPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperTemplatePodVolumesCsiPatchPtrOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesCsiPatchPtrOutput) Elem() KafkaSpecZookeeperTemplatePodVolumesCsiPatchOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperTemplatePodVolumesCsiPatch) KafkaSpecZookeeperTemplatePodVolumesCsiPatch {
+		if v != nil {
+			return *v
+		}
+		var ret KafkaSpecZookeeperTemplatePodVolumesCsiPatch
+		return ret
+	}).(KafkaSpecZookeeperTemplatePodVolumesCsiPatchOutput)
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesCsiPatchPtrOutput) Driver() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperTemplatePodVolumesCsiPatch) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Driver
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesCsiPatchPtrOutput) FsType() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperTemplatePodVolumesCsiPatch) *string {
+		if v == nil {
+			return nil
+		}
+		return v.FsType
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesCsiPatchPtrOutput) NodePublishSecretRef() KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperTemplatePodVolumesCsiPatch) *KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatch {
+		if v == nil {
+			return nil
+		}
+		return v.NodePublishSecretRef
+	}).(KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutput)
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesCsiPatchPtrOutput) ReadOnly() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperTemplatePodVolumesCsiPatch) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.ReadOnly
+	}).(pulumi.BoolPtrOutput)
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesCsiPatchPtrOutput) VolumeAttributes() pulumi.StringMapOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperTemplatePodVolumesCsiPatch) map[string]string {
+		if v == nil {
+			return nil
+		}
+		return v.VolumeAttributes
+	}).(pulumi.StringMapOutput)
+}
+
+// `EmptyDir` to use to populate the volume.
 type KafkaSpecZookeeperTemplatePodVolumesEmptyDir struct {
 	Medium    *string                                                `pulumi:"medium"`
 	SizeLimit *KafkaSpecZookeeperTemplatePodVolumesEmptyDirSizeLimit `pulumi:"sizeLimit"`
@@ -21686,7 +33050,7 @@ type KafkaSpecZookeeperTemplatePodVolumesEmptyDirInput interface {
 	ToKafkaSpecZookeeperTemplatePodVolumesEmptyDirOutputWithContext(context.Context) KafkaSpecZookeeperTemplatePodVolumesEmptyDirOutput
 }
 
-// EmptyDir to use to populate the volume.
+// `EmptyDir` to use to populate the volume.
 type KafkaSpecZookeeperTemplatePodVolumesEmptyDirArgs struct {
 	Medium    pulumi.StringPtrInput                                         `pulumi:"medium"`
 	SizeLimit KafkaSpecZookeeperTemplatePodVolumesEmptyDirSizeLimitPtrInput `pulumi:"sizeLimit"`
@@ -21745,7 +33109,7 @@ func (i *kafkaSpecZookeeperTemplatePodVolumesEmptyDirPtrType) ToKafkaSpecZookeep
 	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperTemplatePodVolumesEmptyDirPtrOutput)
 }
 
-// EmptyDir to use to populate the volume.
+// `EmptyDir` to use to populate the volume.
 type KafkaSpecZookeeperTemplatePodVolumesEmptyDirOutput struct{ *pulumi.OutputState }
 
 func (KafkaSpecZookeeperTemplatePodVolumesEmptyDirOutput) ElementType() reflect.Type {
@@ -21822,7 +33186,7 @@ func (o KafkaSpecZookeeperTemplatePodVolumesEmptyDirPtrOutput) SizeLimit() Kafka
 	}).(KafkaSpecZookeeperTemplatePodVolumesEmptyDirSizeLimitPtrOutput)
 }
 
-// EmptyDir to use to populate the volume.
+// `EmptyDir` to use to populate the volume.
 type KafkaSpecZookeeperTemplatePodVolumesEmptyDirPatch struct {
 	Medium    *string                                                     `pulumi:"medium"`
 	SizeLimit *KafkaSpecZookeeperTemplatePodVolumesEmptyDirSizeLimitPatch `pulumi:"sizeLimit"`
@@ -21839,7 +33203,7 @@ type KafkaSpecZookeeperTemplatePodVolumesEmptyDirPatchInput interface {
 	ToKafkaSpecZookeeperTemplatePodVolumesEmptyDirPatchOutputWithContext(context.Context) KafkaSpecZookeeperTemplatePodVolumesEmptyDirPatchOutput
 }
 
-// EmptyDir to use to populate the volume.
+// `EmptyDir` to use to populate the volume.
 type KafkaSpecZookeeperTemplatePodVolumesEmptyDirPatchArgs struct {
 	Medium    pulumi.StringPtrInput                                              `pulumi:"medium"`
 	SizeLimit KafkaSpecZookeeperTemplatePodVolumesEmptyDirSizeLimitPatchPtrInput `pulumi:"sizeLimit"`
@@ -21898,7 +33262,7 @@ func (i *kafkaSpecZookeeperTemplatePodVolumesEmptyDirPatchPtrType) ToKafkaSpecZo
 	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperTemplatePodVolumesEmptyDirPatchPtrOutput)
 }
 
-// EmptyDir to use to populate the volume.
+// `EmptyDir` to use to populate the volume.
 type KafkaSpecZookeeperTemplatePodVolumesEmptyDirPatchOutput struct{ *pulumi.OutputState }
 
 func (KafkaSpecZookeeperTemplatePodVolumesEmptyDirPatchOutput) ElementType() reflect.Type {
@@ -22271,9 +33635,313 @@ func (o KafkaSpecZookeeperTemplatePodVolumesEmptyDirSizeLimitPatchPtrOutput) For
 	}).(pulumi.StringPtrOutput)
 }
 
+// `ImageVolumeSource` object to use to populate the volume.
+type KafkaSpecZookeeperTemplatePodVolumesImage struct {
+	PullPolicy *string `pulumi:"pullPolicy"`
+	Reference  *string `pulumi:"reference"`
+}
+
+// KafkaSpecZookeeperTemplatePodVolumesImageInput is an input type that accepts KafkaSpecZookeeperTemplatePodVolumesImageArgs and KafkaSpecZookeeperTemplatePodVolumesImageOutput values.
+// You can construct a concrete instance of `KafkaSpecZookeeperTemplatePodVolumesImageInput` via:
+//
+//	KafkaSpecZookeeperTemplatePodVolumesImageArgs{...}
+type KafkaSpecZookeeperTemplatePodVolumesImageInput interface {
+	pulumi.Input
+
+	ToKafkaSpecZookeeperTemplatePodVolumesImageOutput() KafkaSpecZookeeperTemplatePodVolumesImageOutput
+	ToKafkaSpecZookeeperTemplatePodVolumesImageOutputWithContext(context.Context) KafkaSpecZookeeperTemplatePodVolumesImageOutput
+}
+
+// `ImageVolumeSource` object to use to populate the volume.
+type KafkaSpecZookeeperTemplatePodVolumesImageArgs struct {
+	PullPolicy pulumi.StringPtrInput `pulumi:"pullPolicy"`
+	Reference  pulumi.StringPtrInput `pulumi:"reference"`
+}
+
+func (KafkaSpecZookeeperTemplatePodVolumesImageArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecZookeeperTemplatePodVolumesImage)(nil)).Elem()
+}
+
+func (i KafkaSpecZookeeperTemplatePodVolumesImageArgs) ToKafkaSpecZookeeperTemplatePodVolumesImageOutput() KafkaSpecZookeeperTemplatePodVolumesImageOutput {
+	return i.ToKafkaSpecZookeeperTemplatePodVolumesImageOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecZookeeperTemplatePodVolumesImageArgs) ToKafkaSpecZookeeperTemplatePodVolumesImageOutputWithContext(ctx context.Context) KafkaSpecZookeeperTemplatePodVolumesImageOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperTemplatePodVolumesImageOutput)
+}
+
+func (i KafkaSpecZookeeperTemplatePodVolumesImageArgs) ToKafkaSpecZookeeperTemplatePodVolumesImagePtrOutput() KafkaSpecZookeeperTemplatePodVolumesImagePtrOutput {
+	return i.ToKafkaSpecZookeeperTemplatePodVolumesImagePtrOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecZookeeperTemplatePodVolumesImageArgs) ToKafkaSpecZookeeperTemplatePodVolumesImagePtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperTemplatePodVolumesImagePtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperTemplatePodVolumesImageOutput).ToKafkaSpecZookeeperTemplatePodVolumesImagePtrOutputWithContext(ctx)
+}
+
+// KafkaSpecZookeeperTemplatePodVolumesImagePtrInput is an input type that accepts KafkaSpecZookeeperTemplatePodVolumesImageArgs, KafkaSpecZookeeperTemplatePodVolumesImagePtr and KafkaSpecZookeeperTemplatePodVolumesImagePtrOutput values.
+// You can construct a concrete instance of `KafkaSpecZookeeperTemplatePodVolumesImagePtrInput` via:
+//
+//	        KafkaSpecZookeeperTemplatePodVolumesImageArgs{...}
+//
+//	or:
+//
+//	        nil
+type KafkaSpecZookeeperTemplatePodVolumesImagePtrInput interface {
+	pulumi.Input
+
+	ToKafkaSpecZookeeperTemplatePodVolumesImagePtrOutput() KafkaSpecZookeeperTemplatePodVolumesImagePtrOutput
+	ToKafkaSpecZookeeperTemplatePodVolumesImagePtrOutputWithContext(context.Context) KafkaSpecZookeeperTemplatePodVolumesImagePtrOutput
+}
+
+type kafkaSpecZookeeperTemplatePodVolumesImagePtrType KafkaSpecZookeeperTemplatePodVolumesImageArgs
+
+func KafkaSpecZookeeperTemplatePodVolumesImagePtr(v *KafkaSpecZookeeperTemplatePodVolumesImageArgs) KafkaSpecZookeeperTemplatePodVolumesImagePtrInput {
+	return (*kafkaSpecZookeeperTemplatePodVolumesImagePtrType)(v)
+}
+
+func (*kafkaSpecZookeeperTemplatePodVolumesImagePtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecZookeeperTemplatePodVolumesImage)(nil)).Elem()
+}
+
+func (i *kafkaSpecZookeeperTemplatePodVolumesImagePtrType) ToKafkaSpecZookeeperTemplatePodVolumesImagePtrOutput() KafkaSpecZookeeperTemplatePodVolumesImagePtrOutput {
+	return i.ToKafkaSpecZookeeperTemplatePodVolumesImagePtrOutputWithContext(context.Background())
+}
+
+func (i *kafkaSpecZookeeperTemplatePodVolumesImagePtrType) ToKafkaSpecZookeeperTemplatePodVolumesImagePtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperTemplatePodVolumesImagePtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperTemplatePodVolumesImagePtrOutput)
+}
+
+// `ImageVolumeSource` object to use to populate the volume.
+type KafkaSpecZookeeperTemplatePodVolumesImageOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecZookeeperTemplatePodVolumesImageOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecZookeeperTemplatePodVolumesImage)(nil)).Elem()
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesImageOutput) ToKafkaSpecZookeeperTemplatePodVolumesImageOutput() KafkaSpecZookeeperTemplatePodVolumesImageOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesImageOutput) ToKafkaSpecZookeeperTemplatePodVolumesImageOutputWithContext(ctx context.Context) KafkaSpecZookeeperTemplatePodVolumesImageOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesImageOutput) ToKafkaSpecZookeeperTemplatePodVolumesImagePtrOutput() KafkaSpecZookeeperTemplatePodVolumesImagePtrOutput {
+	return o.ToKafkaSpecZookeeperTemplatePodVolumesImagePtrOutputWithContext(context.Background())
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesImageOutput) ToKafkaSpecZookeeperTemplatePodVolumesImagePtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperTemplatePodVolumesImagePtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v KafkaSpecZookeeperTemplatePodVolumesImage) *KafkaSpecZookeeperTemplatePodVolumesImage {
+		return &v
+	}).(KafkaSpecZookeeperTemplatePodVolumesImagePtrOutput)
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesImageOutput) PullPolicy() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperTemplatePodVolumesImage) *string { return v.PullPolicy }).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesImageOutput) Reference() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperTemplatePodVolumesImage) *string { return v.Reference }).(pulumi.StringPtrOutput)
+}
+
+type KafkaSpecZookeeperTemplatePodVolumesImagePtrOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecZookeeperTemplatePodVolumesImagePtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecZookeeperTemplatePodVolumesImage)(nil)).Elem()
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesImagePtrOutput) ToKafkaSpecZookeeperTemplatePodVolumesImagePtrOutput() KafkaSpecZookeeperTemplatePodVolumesImagePtrOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesImagePtrOutput) ToKafkaSpecZookeeperTemplatePodVolumesImagePtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperTemplatePodVolumesImagePtrOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesImagePtrOutput) Elem() KafkaSpecZookeeperTemplatePodVolumesImageOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperTemplatePodVolumesImage) KafkaSpecZookeeperTemplatePodVolumesImage {
+		if v != nil {
+			return *v
+		}
+		var ret KafkaSpecZookeeperTemplatePodVolumesImage
+		return ret
+	}).(KafkaSpecZookeeperTemplatePodVolumesImageOutput)
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesImagePtrOutput) PullPolicy() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperTemplatePodVolumesImage) *string {
+		if v == nil {
+			return nil
+		}
+		return v.PullPolicy
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesImagePtrOutput) Reference() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperTemplatePodVolumesImage) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Reference
+	}).(pulumi.StringPtrOutput)
+}
+
+// `ImageVolumeSource` object to use to populate the volume.
+type KafkaSpecZookeeperTemplatePodVolumesImagePatch struct {
+	PullPolicy *string `pulumi:"pullPolicy"`
+	Reference  *string `pulumi:"reference"`
+}
+
+// KafkaSpecZookeeperTemplatePodVolumesImagePatchInput is an input type that accepts KafkaSpecZookeeperTemplatePodVolumesImagePatchArgs and KafkaSpecZookeeperTemplatePodVolumesImagePatchOutput values.
+// You can construct a concrete instance of `KafkaSpecZookeeperTemplatePodVolumesImagePatchInput` via:
+//
+//	KafkaSpecZookeeperTemplatePodVolumesImagePatchArgs{...}
+type KafkaSpecZookeeperTemplatePodVolumesImagePatchInput interface {
+	pulumi.Input
+
+	ToKafkaSpecZookeeperTemplatePodVolumesImagePatchOutput() KafkaSpecZookeeperTemplatePodVolumesImagePatchOutput
+	ToKafkaSpecZookeeperTemplatePodVolumesImagePatchOutputWithContext(context.Context) KafkaSpecZookeeperTemplatePodVolumesImagePatchOutput
+}
+
+// `ImageVolumeSource` object to use to populate the volume.
+type KafkaSpecZookeeperTemplatePodVolumesImagePatchArgs struct {
+	PullPolicy pulumi.StringPtrInput `pulumi:"pullPolicy"`
+	Reference  pulumi.StringPtrInput `pulumi:"reference"`
+}
+
+func (KafkaSpecZookeeperTemplatePodVolumesImagePatchArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecZookeeperTemplatePodVolumesImagePatch)(nil)).Elem()
+}
+
+func (i KafkaSpecZookeeperTemplatePodVolumesImagePatchArgs) ToKafkaSpecZookeeperTemplatePodVolumesImagePatchOutput() KafkaSpecZookeeperTemplatePodVolumesImagePatchOutput {
+	return i.ToKafkaSpecZookeeperTemplatePodVolumesImagePatchOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecZookeeperTemplatePodVolumesImagePatchArgs) ToKafkaSpecZookeeperTemplatePodVolumesImagePatchOutputWithContext(ctx context.Context) KafkaSpecZookeeperTemplatePodVolumesImagePatchOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperTemplatePodVolumesImagePatchOutput)
+}
+
+func (i KafkaSpecZookeeperTemplatePodVolumesImagePatchArgs) ToKafkaSpecZookeeperTemplatePodVolumesImagePatchPtrOutput() KafkaSpecZookeeperTemplatePodVolumesImagePatchPtrOutput {
+	return i.ToKafkaSpecZookeeperTemplatePodVolumesImagePatchPtrOutputWithContext(context.Background())
+}
+
+func (i KafkaSpecZookeeperTemplatePodVolumesImagePatchArgs) ToKafkaSpecZookeeperTemplatePodVolumesImagePatchPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperTemplatePodVolumesImagePatchPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperTemplatePodVolumesImagePatchOutput).ToKafkaSpecZookeeperTemplatePodVolumesImagePatchPtrOutputWithContext(ctx)
+}
+
+// KafkaSpecZookeeperTemplatePodVolumesImagePatchPtrInput is an input type that accepts KafkaSpecZookeeperTemplatePodVolumesImagePatchArgs, KafkaSpecZookeeperTemplatePodVolumesImagePatchPtr and KafkaSpecZookeeperTemplatePodVolumesImagePatchPtrOutput values.
+// You can construct a concrete instance of `KafkaSpecZookeeperTemplatePodVolumesImagePatchPtrInput` via:
+//
+//	        KafkaSpecZookeeperTemplatePodVolumesImagePatchArgs{...}
+//
+//	or:
+//
+//	        nil
+type KafkaSpecZookeeperTemplatePodVolumesImagePatchPtrInput interface {
+	pulumi.Input
+
+	ToKafkaSpecZookeeperTemplatePodVolumesImagePatchPtrOutput() KafkaSpecZookeeperTemplatePodVolumesImagePatchPtrOutput
+	ToKafkaSpecZookeeperTemplatePodVolumesImagePatchPtrOutputWithContext(context.Context) KafkaSpecZookeeperTemplatePodVolumesImagePatchPtrOutput
+}
+
+type kafkaSpecZookeeperTemplatePodVolumesImagePatchPtrType KafkaSpecZookeeperTemplatePodVolumesImagePatchArgs
+
+func KafkaSpecZookeeperTemplatePodVolumesImagePatchPtr(v *KafkaSpecZookeeperTemplatePodVolumesImagePatchArgs) KafkaSpecZookeeperTemplatePodVolumesImagePatchPtrInput {
+	return (*kafkaSpecZookeeperTemplatePodVolumesImagePatchPtrType)(v)
+}
+
+func (*kafkaSpecZookeeperTemplatePodVolumesImagePatchPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecZookeeperTemplatePodVolumesImagePatch)(nil)).Elem()
+}
+
+func (i *kafkaSpecZookeeperTemplatePodVolumesImagePatchPtrType) ToKafkaSpecZookeeperTemplatePodVolumesImagePatchPtrOutput() KafkaSpecZookeeperTemplatePodVolumesImagePatchPtrOutput {
+	return i.ToKafkaSpecZookeeperTemplatePodVolumesImagePatchPtrOutputWithContext(context.Background())
+}
+
+func (i *kafkaSpecZookeeperTemplatePodVolumesImagePatchPtrType) ToKafkaSpecZookeeperTemplatePodVolumesImagePatchPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperTemplatePodVolumesImagePatchPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperTemplatePodVolumesImagePatchPtrOutput)
+}
+
+// `ImageVolumeSource` object to use to populate the volume.
+type KafkaSpecZookeeperTemplatePodVolumesImagePatchOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecZookeeperTemplatePodVolumesImagePatchOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KafkaSpecZookeeperTemplatePodVolumesImagePatch)(nil)).Elem()
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesImagePatchOutput) ToKafkaSpecZookeeperTemplatePodVolumesImagePatchOutput() KafkaSpecZookeeperTemplatePodVolumesImagePatchOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesImagePatchOutput) ToKafkaSpecZookeeperTemplatePodVolumesImagePatchOutputWithContext(ctx context.Context) KafkaSpecZookeeperTemplatePodVolumesImagePatchOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesImagePatchOutput) ToKafkaSpecZookeeperTemplatePodVolumesImagePatchPtrOutput() KafkaSpecZookeeperTemplatePodVolumesImagePatchPtrOutput {
+	return o.ToKafkaSpecZookeeperTemplatePodVolumesImagePatchPtrOutputWithContext(context.Background())
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesImagePatchOutput) ToKafkaSpecZookeeperTemplatePodVolumesImagePatchPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperTemplatePodVolumesImagePatchPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v KafkaSpecZookeeperTemplatePodVolumesImagePatch) *KafkaSpecZookeeperTemplatePodVolumesImagePatch {
+		return &v
+	}).(KafkaSpecZookeeperTemplatePodVolumesImagePatchPtrOutput)
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesImagePatchOutput) PullPolicy() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperTemplatePodVolumesImagePatch) *string { return v.PullPolicy }).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesImagePatchOutput) Reference() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperTemplatePodVolumesImagePatch) *string { return v.Reference }).(pulumi.StringPtrOutput)
+}
+
+type KafkaSpecZookeeperTemplatePodVolumesImagePatchPtrOutput struct{ *pulumi.OutputState }
+
+func (KafkaSpecZookeeperTemplatePodVolumesImagePatchPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**KafkaSpecZookeeperTemplatePodVolumesImagePatch)(nil)).Elem()
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesImagePatchPtrOutput) ToKafkaSpecZookeeperTemplatePodVolumesImagePatchPtrOutput() KafkaSpecZookeeperTemplatePodVolumesImagePatchPtrOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesImagePatchPtrOutput) ToKafkaSpecZookeeperTemplatePodVolumesImagePatchPtrOutputWithContext(ctx context.Context) KafkaSpecZookeeperTemplatePodVolumesImagePatchPtrOutput {
+	return o
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesImagePatchPtrOutput) Elem() KafkaSpecZookeeperTemplatePodVolumesImagePatchOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperTemplatePodVolumesImagePatch) KafkaSpecZookeeperTemplatePodVolumesImagePatch {
+		if v != nil {
+			return *v
+		}
+		var ret KafkaSpecZookeeperTemplatePodVolumesImagePatch
+		return ret
+	}).(KafkaSpecZookeeperTemplatePodVolumesImagePatchOutput)
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesImagePatchPtrOutput) PullPolicy() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperTemplatePodVolumesImagePatch) *string {
+		if v == nil {
+			return nil
+		}
+		return v.PullPolicy
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesImagePatchPtrOutput) Reference() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *KafkaSpecZookeeperTemplatePodVolumesImagePatch) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Reference
+	}).(pulumi.StringPtrOutput)
+}
+
 type KafkaSpecZookeeperTemplatePodVolumesPatch struct {
 	ConfigMap *KafkaSpecZookeeperTemplatePodVolumesConfigMapPatch `pulumi:"configMap"`
+	Csi       *KafkaSpecZookeeperTemplatePodVolumesCsiPatch       `pulumi:"csi"`
 	EmptyDir  *KafkaSpecZookeeperTemplatePodVolumesEmptyDirPatch  `pulumi:"emptyDir"`
+	Image     *KafkaSpecZookeeperTemplatePodVolumesImagePatch     `pulumi:"image"`
 	// Name to use for the volume. Required.
 	Name                  *string                                                         `pulumi:"name"`
 	PersistentVolumeClaim *KafkaSpecZookeeperTemplatePodVolumesPersistentVolumeClaimPatch `pulumi:"persistentVolumeClaim"`
@@ -22293,7 +33961,9 @@ type KafkaSpecZookeeperTemplatePodVolumesPatchInput interface {
 
 type KafkaSpecZookeeperTemplatePodVolumesPatchArgs struct {
 	ConfigMap KafkaSpecZookeeperTemplatePodVolumesConfigMapPatchPtrInput `pulumi:"configMap"`
+	Csi       KafkaSpecZookeeperTemplatePodVolumesCsiPatchPtrInput       `pulumi:"csi"`
 	EmptyDir  KafkaSpecZookeeperTemplatePodVolumesEmptyDirPatchPtrInput  `pulumi:"emptyDir"`
+	Image     KafkaSpecZookeeperTemplatePodVolumesImagePatchPtrInput     `pulumi:"image"`
 	// Name to use for the volume. Required.
 	Name                  pulumi.StringPtrInput                                                  `pulumi:"name"`
 	PersistentVolumeClaim KafkaSpecZookeeperTemplatePodVolumesPersistentVolumeClaimPatchPtrInput `pulumi:"persistentVolumeClaim"`
@@ -22357,10 +34027,22 @@ func (o KafkaSpecZookeeperTemplatePodVolumesPatchOutput) ConfigMap() KafkaSpecZo
 	}).(KafkaSpecZookeeperTemplatePodVolumesConfigMapPatchPtrOutput)
 }
 
+func (o KafkaSpecZookeeperTemplatePodVolumesPatchOutput) Csi() KafkaSpecZookeeperTemplatePodVolumesCsiPatchPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperTemplatePodVolumesPatch) *KafkaSpecZookeeperTemplatePodVolumesCsiPatch {
+		return v.Csi
+	}).(KafkaSpecZookeeperTemplatePodVolumesCsiPatchPtrOutput)
+}
+
 func (o KafkaSpecZookeeperTemplatePodVolumesPatchOutput) EmptyDir() KafkaSpecZookeeperTemplatePodVolumesEmptyDirPatchPtrOutput {
 	return o.ApplyT(func(v KafkaSpecZookeeperTemplatePodVolumesPatch) *KafkaSpecZookeeperTemplatePodVolumesEmptyDirPatch {
 		return v.EmptyDir
 	}).(KafkaSpecZookeeperTemplatePodVolumesEmptyDirPatchPtrOutput)
+}
+
+func (o KafkaSpecZookeeperTemplatePodVolumesPatchOutput) Image() KafkaSpecZookeeperTemplatePodVolumesImagePatchPtrOutput {
+	return o.ApplyT(func(v KafkaSpecZookeeperTemplatePodVolumesPatch) *KafkaSpecZookeeperTemplatePodVolumesImagePatch {
+		return v.Image
+	}).(KafkaSpecZookeeperTemplatePodVolumesImagePatchPtrOutput)
 }
 
 // Name to use for the volume. Required.
@@ -22400,7 +34082,7 @@ func (o KafkaSpecZookeeperTemplatePodVolumesPatchArrayOutput) Index(i pulumi.Int
 	}).(KafkaSpecZookeeperTemplatePodVolumesPatchOutput)
 }
 
-// PersistentVolumeClaim object to use to populate the volume.
+// `PersistentVolumeClaim` object to use to populate the volume.
 type KafkaSpecZookeeperTemplatePodVolumesPersistentVolumeClaim struct {
 	ClaimName *string `pulumi:"claimName"`
 	ReadOnly  *bool   `pulumi:"readOnly"`
@@ -22417,7 +34099,7 @@ type KafkaSpecZookeeperTemplatePodVolumesPersistentVolumeClaimInput interface {
 	ToKafkaSpecZookeeperTemplatePodVolumesPersistentVolumeClaimOutputWithContext(context.Context) KafkaSpecZookeeperTemplatePodVolumesPersistentVolumeClaimOutput
 }
 
-// PersistentVolumeClaim object to use to populate the volume.
+// `PersistentVolumeClaim` object to use to populate the volume.
 type KafkaSpecZookeeperTemplatePodVolumesPersistentVolumeClaimArgs struct {
 	ClaimName pulumi.StringPtrInput `pulumi:"claimName"`
 	ReadOnly  pulumi.BoolPtrInput   `pulumi:"readOnly"`
@@ -22476,7 +34158,7 @@ func (i *kafkaSpecZookeeperTemplatePodVolumesPersistentVolumeClaimPtrType) ToKaf
 	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperTemplatePodVolumesPersistentVolumeClaimPtrOutput)
 }
 
-// PersistentVolumeClaim object to use to populate the volume.
+// `PersistentVolumeClaim` object to use to populate the volume.
 type KafkaSpecZookeeperTemplatePodVolumesPersistentVolumeClaimOutput struct{ *pulumi.OutputState }
 
 func (KafkaSpecZookeeperTemplatePodVolumesPersistentVolumeClaimOutput) ElementType() reflect.Type {
@@ -22551,7 +34233,7 @@ func (o KafkaSpecZookeeperTemplatePodVolumesPersistentVolumeClaimPtrOutput) Read
 	}).(pulumi.BoolPtrOutput)
 }
 
-// PersistentVolumeClaim object to use to populate the volume.
+// `PersistentVolumeClaim` object to use to populate the volume.
 type KafkaSpecZookeeperTemplatePodVolumesPersistentVolumeClaimPatch struct {
 	ClaimName *string `pulumi:"claimName"`
 	ReadOnly  *bool   `pulumi:"readOnly"`
@@ -22568,7 +34250,7 @@ type KafkaSpecZookeeperTemplatePodVolumesPersistentVolumeClaimPatchInput interfa
 	ToKafkaSpecZookeeperTemplatePodVolumesPersistentVolumeClaimPatchOutputWithContext(context.Context) KafkaSpecZookeeperTemplatePodVolumesPersistentVolumeClaimPatchOutput
 }
 
-// PersistentVolumeClaim object to use to populate the volume.
+// `PersistentVolumeClaim` object to use to populate the volume.
 type KafkaSpecZookeeperTemplatePodVolumesPersistentVolumeClaimPatchArgs struct {
 	ClaimName pulumi.StringPtrInput `pulumi:"claimName"`
 	ReadOnly  pulumi.BoolPtrInput   `pulumi:"readOnly"`
@@ -22627,7 +34309,7 @@ func (i *kafkaSpecZookeeperTemplatePodVolumesPersistentVolumeClaimPatchPtrType) 
 	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperTemplatePodVolumesPersistentVolumeClaimPatchPtrOutput)
 }
 
-// PersistentVolumeClaim object to use to populate the volume.
+// `PersistentVolumeClaim` object to use to populate the volume.
 type KafkaSpecZookeeperTemplatePodVolumesPersistentVolumeClaimPatchOutput struct{ *pulumi.OutputState }
 
 func (KafkaSpecZookeeperTemplatePodVolumesPersistentVolumeClaimPatchOutput) ElementType() reflect.Type {
@@ -22702,7 +34384,7 @@ func (o KafkaSpecZookeeperTemplatePodVolumesPersistentVolumeClaimPatchPtrOutput)
 	}).(pulumi.BoolPtrOutput)
 }
 
-// Secret to use populate the volume.
+// `Secret` to use to populate the volume.
 type KafkaSpecZookeeperTemplatePodVolumesSecret struct {
 	DefaultMode *int                                              `pulumi:"defaultMode"`
 	Items       []KafkaSpecZookeeperTemplatePodVolumesSecretItems `pulumi:"items"`
@@ -22721,7 +34403,7 @@ type KafkaSpecZookeeperTemplatePodVolumesSecretInput interface {
 	ToKafkaSpecZookeeperTemplatePodVolumesSecretOutputWithContext(context.Context) KafkaSpecZookeeperTemplatePodVolumesSecretOutput
 }
 
-// Secret to use populate the volume.
+// `Secret` to use to populate the volume.
 type KafkaSpecZookeeperTemplatePodVolumesSecretArgs struct {
 	DefaultMode pulumi.IntPtrInput                                        `pulumi:"defaultMode"`
 	Items       KafkaSpecZookeeperTemplatePodVolumesSecretItemsArrayInput `pulumi:"items"`
@@ -22782,7 +34464,7 @@ func (i *kafkaSpecZookeeperTemplatePodVolumesSecretPtrType) ToKafkaSpecZookeeper
 	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperTemplatePodVolumesSecretPtrOutput)
 }
 
-// Secret to use populate the volume.
+// `Secret` to use to populate the volume.
 type KafkaSpecZookeeperTemplatePodVolumesSecretOutput struct{ *pulumi.OutputState }
 
 func (KafkaSpecZookeeperTemplatePodVolumesSecretOutput) ElementType() reflect.Type {
@@ -23097,7 +34779,7 @@ func (o KafkaSpecZookeeperTemplatePodVolumesSecretItemsPatchArrayOutput) Index(i
 	}).(KafkaSpecZookeeperTemplatePodVolumesSecretItemsPatchOutput)
 }
 
-// Secret to use populate the volume.
+// `Secret` to use to populate the volume.
 type KafkaSpecZookeeperTemplatePodVolumesSecretPatch struct {
 	DefaultMode *int                                                   `pulumi:"defaultMode"`
 	Items       []KafkaSpecZookeeperTemplatePodVolumesSecretItemsPatch `pulumi:"items"`
@@ -23116,7 +34798,7 @@ type KafkaSpecZookeeperTemplatePodVolumesSecretPatchInput interface {
 	ToKafkaSpecZookeeperTemplatePodVolumesSecretPatchOutputWithContext(context.Context) KafkaSpecZookeeperTemplatePodVolumesSecretPatchOutput
 }
 
-// Secret to use populate the volume.
+// `Secret` to use to populate the volume.
 type KafkaSpecZookeeperTemplatePodVolumesSecretPatchArgs struct {
 	DefaultMode pulumi.IntPtrInput                                             `pulumi:"defaultMode"`
 	Items       KafkaSpecZookeeperTemplatePodVolumesSecretItemsPatchArrayInput `pulumi:"items"`
@@ -23177,7 +34859,7 @@ func (i *kafkaSpecZookeeperTemplatePodVolumesSecretPatchPtrType) ToKafkaSpecZook
 	return pulumi.ToOutputWithContext(ctx, i).(KafkaSpecZookeeperTemplatePodVolumesSecretPatchPtrOutput)
 }
 
-// Secret to use populate the volume.
+// `Secret` to use to populate the volume.
 type KafkaSpecZookeeperTemplatePodVolumesSecretPatchOutput struct{ *pulumi.OutputState }
 
 func (KafkaSpecZookeeperTemplatePodVolumesSecretPatchOutput) ElementType() reflect.Type {
@@ -28630,14 +40312,14 @@ func (o KafkaSpecZookeeperTemplateZookeeperContainerVolumeMountsPatchArrayOutput
 	}).(KafkaSpecZookeeperTemplateZookeeperContainerVolumeMountsPatchOutput)
 }
 
-// The status of the Kafka and ZooKeeper clusters, and Topic Operator.
+// The status of the Kafka cluster.
 type KafkaStatus struct {
 	AutoRebalance *KafkaStatusAutoRebalance `pulumi:"autoRebalance"`
 	// Kafka cluster Id.
 	ClusterId *string `pulumi:"clusterId"`
 	// List of status conditions.
 	Conditions []KafkaStatusConditions `pulumi:"conditions"`
-	// Defines where cluster metadata are stored. Possible values are: ZooKeeper if the metadata are stored in ZooKeeper; KRaftMigration if the controllers are connected to ZooKeeper, brokers are being rolled with Zookeeper migration enabled and connection information to controllers, and the metadata migration process is running; KRaftDualWriting if the metadata migration process finished and the cluster is in dual-write mode; KRaftPostMigration if the brokers are fully KRaft-based but controllers being rolled to disconnect from ZooKeeper; PreKRaft if brokers and controller are fully KRaft-based, metadata are stored in KRaft, but ZooKeeper must be deleted; KRaft if the metadata are stored in KRaft.
+	// Defines where cluster metadata are stored. Since Kafka KRaft has been fully adopted, the only applicable value is `KRaft`.
 	KafkaMetadataState *string `pulumi:"kafkaMetadataState"`
 	// The KRaft metadata.version currently used by the Kafka cluster.
 	KafkaMetadataVersion *string `pulumi:"kafkaMetadataVersion"`
@@ -28666,14 +40348,14 @@ type KafkaStatusInput interface {
 	ToKafkaStatusOutputWithContext(context.Context) KafkaStatusOutput
 }
 
-// The status of the Kafka and ZooKeeper clusters, and Topic Operator.
+// The status of the Kafka cluster.
 type KafkaStatusArgs struct {
 	AutoRebalance KafkaStatusAutoRebalancePtrInput `pulumi:"autoRebalance"`
 	// Kafka cluster Id.
 	ClusterId pulumi.StringPtrInput `pulumi:"clusterId"`
 	// List of status conditions.
 	Conditions KafkaStatusConditionsArrayInput `pulumi:"conditions"`
-	// Defines where cluster metadata are stored. Possible values are: ZooKeeper if the metadata are stored in ZooKeeper; KRaftMigration if the controllers are connected to ZooKeeper, brokers are being rolled with Zookeeper migration enabled and connection information to controllers, and the metadata migration process is running; KRaftDualWriting if the metadata migration process finished and the cluster is in dual-write mode; KRaftPostMigration if the brokers are fully KRaft-based but controllers being rolled to disconnect from ZooKeeper; PreKRaft if brokers and controller are fully KRaft-based, metadata are stored in KRaft, but ZooKeeper must be deleted; KRaft if the metadata are stored in KRaft.
+	// Defines where cluster metadata are stored. Since Kafka KRaft has been fully adopted, the only applicable value is `KRaft`.
 	KafkaMetadataState pulumi.StringPtrInput `pulumi:"kafkaMetadataState"`
 	// The KRaft metadata.version currently used by the Kafka cluster.
 	KafkaMetadataVersion pulumi.StringPtrInput `pulumi:"kafkaMetadataVersion"`
@@ -28744,7 +40426,7 @@ func (i *kafkaStatusPtrType) ToKafkaStatusPtrOutputWithContext(ctx context.Conte
 	return pulumi.ToOutputWithContext(ctx, i).(KafkaStatusPtrOutput)
 }
 
-// The status of the Kafka and ZooKeeper clusters, and Topic Operator.
+// The status of the Kafka cluster.
 type KafkaStatusOutput struct{ *pulumi.OutputState }
 
 func (KafkaStatusOutput) ElementType() reflect.Type {
@@ -28783,7 +40465,7 @@ func (o KafkaStatusOutput) Conditions() KafkaStatusConditionsArrayOutput {
 	return o.ApplyT(func(v KafkaStatus) []KafkaStatusConditions { return v.Conditions }).(KafkaStatusConditionsArrayOutput)
 }
 
-// Defines where cluster metadata are stored. Possible values are: ZooKeeper if the metadata are stored in ZooKeeper; KRaftMigration if the controllers are connected to ZooKeeper, brokers are being rolled with Zookeeper migration enabled and connection information to controllers, and the metadata migration process is running; KRaftDualWriting if the metadata migration process finished and the cluster is in dual-write mode; KRaftPostMigration if the brokers are fully KRaft-based but controllers being rolled to disconnect from ZooKeeper; PreKRaft if brokers and controller are fully KRaft-based, metadata are stored in KRaft, but ZooKeeper must be deleted; KRaft if the metadata are stored in KRaft.
+// Defines where cluster metadata are stored. Since Kafka KRaft has been fully adopted, the only applicable value is `KRaft`.
 func (o KafkaStatusOutput) KafkaMetadataState() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v KafkaStatus) *string { return v.KafkaMetadataState }).(pulumi.StringPtrOutput)
 }
@@ -28876,7 +40558,7 @@ func (o KafkaStatusPtrOutput) Conditions() KafkaStatusConditionsArrayOutput {
 	}).(KafkaStatusConditionsArrayOutput)
 }
 
-// Defines where cluster metadata are stored. Possible values are: ZooKeeper if the metadata are stored in ZooKeeper; KRaftMigration if the controllers are connected to ZooKeeper, brokers are being rolled with Zookeeper migration enabled and connection information to controllers, and the metadata migration process is running; KRaftDualWriting if the metadata migration process finished and the cluster is in dual-write mode; KRaftPostMigration if the brokers are fully KRaft-based but controllers being rolled to disconnect from ZooKeeper; PreKRaft if brokers and controller are fully KRaft-based, metadata are stored in KRaft, but ZooKeeper must be deleted; KRaft if the metadata are stored in KRaft.
+// Defines where cluster metadata are stored. Since Kafka KRaft has been fully adopted, the only applicable value is `KRaft`.
 func (o KafkaStatusPtrOutput) KafkaMetadataState() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *KafkaStatus) *string {
 		if v == nil {
@@ -30550,14 +42232,14 @@ func (o KafkaStatusListenersPatchArrayOutput) Index(i pulumi.IntInput) KafkaStat
 	}).(KafkaStatusListenersPatchOutput)
 }
 
-// The status of the Kafka and ZooKeeper clusters, and Topic Operator.
+// The status of the Kafka cluster.
 type KafkaStatusPatch struct {
 	AutoRebalance *KafkaStatusAutoRebalancePatch `pulumi:"autoRebalance"`
 	// Kafka cluster Id.
 	ClusterId *string `pulumi:"clusterId"`
 	// List of status conditions.
 	Conditions []KafkaStatusConditionsPatch `pulumi:"conditions"`
-	// Defines where cluster metadata are stored. Possible values are: ZooKeeper if the metadata are stored in ZooKeeper; KRaftMigration if the controllers are connected to ZooKeeper, brokers are being rolled with Zookeeper migration enabled and connection information to controllers, and the metadata migration process is running; KRaftDualWriting if the metadata migration process finished and the cluster is in dual-write mode; KRaftPostMigration if the brokers are fully KRaft-based but controllers being rolled to disconnect from ZooKeeper; PreKRaft if brokers and controller are fully KRaft-based, metadata are stored in KRaft, but ZooKeeper must be deleted; KRaft if the metadata are stored in KRaft.
+	// Defines where cluster metadata are stored. Since Kafka KRaft has been fully adopted, the only applicable value is `KRaft`.
 	KafkaMetadataState *string `pulumi:"kafkaMetadataState"`
 	// The KRaft metadata.version currently used by the Kafka cluster.
 	KafkaMetadataVersion *string `pulumi:"kafkaMetadataVersion"`
@@ -30586,14 +42268,14 @@ type KafkaStatusPatchInput interface {
 	ToKafkaStatusPatchOutputWithContext(context.Context) KafkaStatusPatchOutput
 }
 
-// The status of the Kafka and ZooKeeper clusters, and Topic Operator.
+// The status of the Kafka cluster.
 type KafkaStatusPatchArgs struct {
 	AutoRebalance KafkaStatusAutoRebalancePatchPtrInput `pulumi:"autoRebalance"`
 	// Kafka cluster Id.
 	ClusterId pulumi.StringPtrInput `pulumi:"clusterId"`
 	// List of status conditions.
 	Conditions KafkaStatusConditionsPatchArrayInput `pulumi:"conditions"`
-	// Defines where cluster metadata are stored. Possible values are: ZooKeeper if the metadata are stored in ZooKeeper; KRaftMigration if the controllers are connected to ZooKeeper, brokers are being rolled with Zookeeper migration enabled and connection information to controllers, and the metadata migration process is running; KRaftDualWriting if the metadata migration process finished and the cluster is in dual-write mode; KRaftPostMigration if the brokers are fully KRaft-based but controllers being rolled to disconnect from ZooKeeper; PreKRaft if brokers and controller are fully KRaft-based, metadata are stored in KRaft, but ZooKeeper must be deleted; KRaft if the metadata are stored in KRaft.
+	// Defines where cluster metadata are stored. Since Kafka KRaft has been fully adopted, the only applicable value is `KRaft`.
 	KafkaMetadataState pulumi.StringPtrInput `pulumi:"kafkaMetadataState"`
 	// The KRaft metadata.version currently used by the Kafka cluster.
 	KafkaMetadataVersion pulumi.StringPtrInput `pulumi:"kafkaMetadataVersion"`
@@ -30664,7 +42346,7 @@ func (i *kafkaStatusPatchPtrType) ToKafkaStatusPatchPtrOutputWithContext(ctx con
 	return pulumi.ToOutputWithContext(ctx, i).(KafkaStatusPatchPtrOutput)
 }
 
-// The status of the Kafka and ZooKeeper clusters, and Topic Operator.
+// The status of the Kafka cluster.
 type KafkaStatusPatchOutput struct{ *pulumi.OutputState }
 
 func (KafkaStatusPatchOutput) ElementType() reflect.Type {
@@ -30703,7 +42385,7 @@ func (o KafkaStatusPatchOutput) Conditions() KafkaStatusConditionsPatchArrayOutp
 	return o.ApplyT(func(v KafkaStatusPatch) []KafkaStatusConditionsPatch { return v.Conditions }).(KafkaStatusConditionsPatchArrayOutput)
 }
 
-// Defines where cluster metadata are stored. Possible values are: ZooKeeper if the metadata are stored in ZooKeeper; KRaftMigration if the controllers are connected to ZooKeeper, brokers are being rolled with Zookeeper migration enabled and connection information to controllers, and the metadata migration process is running; KRaftDualWriting if the metadata migration process finished and the cluster is in dual-write mode; KRaftPostMigration if the brokers are fully KRaft-based but controllers being rolled to disconnect from ZooKeeper; PreKRaft if brokers and controller are fully KRaft-based, metadata are stored in KRaft, but ZooKeeper must be deleted; KRaft if the metadata are stored in KRaft.
+// Defines where cluster metadata are stored. Since Kafka KRaft has been fully adopted, the only applicable value is `KRaft`.
 func (o KafkaStatusPatchOutput) KafkaMetadataState() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v KafkaStatusPatch) *string { return v.KafkaMetadataState }).(pulumi.StringPtrOutput)
 }
@@ -30796,7 +42478,7 @@ func (o KafkaStatusPatchPtrOutput) Conditions() KafkaStatusConditionsPatchArrayO
 	}).(KafkaStatusConditionsPatchArrayOutput)
 }
 
-// Defines where cluster metadata are stored. Possible values are: ZooKeeper if the metadata are stored in ZooKeeper; KRaftMigration if the controllers are connected to ZooKeeper, brokers are being rolled with Zookeeper migration enabled and connection information to controllers, and the metadata migration process is running; KRaftDualWriting if the metadata migration process finished and the cluster is in dual-write mode; KRaftPostMigration if the brokers are fully KRaft-based but controllers being rolled to disconnect from ZooKeeper; PreKRaft if brokers and controller are fully KRaft-based, metadata are stored in KRaft, but ZooKeeper must be deleted; KRaft if the metadata are stored in KRaft.
+// Defines where cluster metadata are stored. Since Kafka KRaft has been fully adopted, the only applicable value is `KRaft`.
 func (o KafkaStatusPatchPtrOutput) KafkaMetadataState() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *KafkaStatusPatch) *string {
 		if v == nil {
@@ -37387,6 +49069,130 @@ func (o KafkaUserStatusPatchPtrOutput) Username() pulumi.StringPtrOutput {
 }
 
 func init() {
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplatePodSetPatchInput)(nil)).Elem(), KafkaSpecKafkaTemplatePodSetPatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplatePodSetPatchPtrInput)(nil)).Elem(), KafkaSpecKafkaTemplatePodSetPatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplatePodTolerationsInput)(nil)).Elem(), KafkaSpecKafkaTemplatePodTolerationsArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplatePodTolerationsArrayInput)(nil)).Elem(), KafkaSpecKafkaTemplatePodTolerationsArray{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplatePodTolerationsPatchInput)(nil)).Elem(), KafkaSpecKafkaTemplatePodTolerationsPatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplatePodTolerationsPatchArrayInput)(nil)).Elem(), KafkaSpecKafkaTemplatePodTolerationsPatchArray{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplatePodTopologySpreadConstraintsInput)(nil)).Elem(), KafkaSpecKafkaTemplatePodTopologySpreadConstraintsArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplatePodTopologySpreadConstraintsArrayInput)(nil)).Elem(), KafkaSpecKafkaTemplatePodTopologySpreadConstraintsArray{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorInput)(nil)).Elem(), KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPtrInput)(nil)).Elem(), KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsInput)(nil)).Elem(), KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsArrayInput)(nil)).Elem(), KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsArray{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchInput)(nil)).Elem(), KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchArrayInput)(nil)).Elem(), KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchArray{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchInput)(nil)).Elem(), KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchPtrInput)(nil)).Elem(), KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchInput)(nil)).Elem(), KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchArrayInput)(nil)).Elem(), KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchArray{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesInput)(nil)).Elem(), KafkaSpecKafkaTemplatePodVolumesArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesArrayInput)(nil)).Elem(), KafkaSpecKafkaTemplatePodVolumesArray{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesConfigMapInput)(nil)).Elem(), KafkaSpecKafkaTemplatePodVolumesConfigMapArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesConfigMapPtrInput)(nil)).Elem(), KafkaSpecKafkaTemplatePodVolumesConfigMapArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesConfigMapItemsInput)(nil)).Elem(), KafkaSpecKafkaTemplatePodVolumesConfigMapItemsArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesConfigMapItemsArrayInput)(nil)).Elem(), KafkaSpecKafkaTemplatePodVolumesConfigMapItemsArray{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchInput)(nil)).Elem(), KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchArrayInput)(nil)).Elem(), KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchArray{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesConfigMapPatchInput)(nil)).Elem(), KafkaSpecKafkaTemplatePodVolumesConfigMapPatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesConfigMapPatchPtrInput)(nil)).Elem(), KafkaSpecKafkaTemplatePodVolumesConfigMapPatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesCsiInput)(nil)).Elem(), KafkaSpecKafkaTemplatePodVolumesCsiArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesCsiPtrInput)(nil)).Elem(), KafkaSpecKafkaTemplatePodVolumesCsiArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefInput)(nil)).Elem(), KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPtrInput)(nil)).Elem(), KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchInput)(nil)).Elem(), KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchPtrInput)(nil)).Elem(), KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesCsiPatchInput)(nil)).Elem(), KafkaSpecKafkaTemplatePodVolumesCsiPatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesCsiPatchPtrInput)(nil)).Elem(), KafkaSpecKafkaTemplatePodVolumesCsiPatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesEmptyDirInput)(nil)).Elem(), KafkaSpecKafkaTemplatePodVolumesEmptyDirArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesEmptyDirPtrInput)(nil)).Elem(), KafkaSpecKafkaTemplatePodVolumesEmptyDirArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchInput)(nil)).Elem(), KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchPtrInput)(nil)).Elem(), KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitInput)(nil)).Elem(), KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPtrInput)(nil)).Elem(), KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchInput)(nil)).Elem(), KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchPtrInput)(nil)).Elem(), KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesImageInput)(nil)).Elem(), KafkaSpecKafkaTemplatePodVolumesImageArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesImagePtrInput)(nil)).Elem(), KafkaSpecKafkaTemplatePodVolumesImageArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesImagePatchInput)(nil)).Elem(), KafkaSpecKafkaTemplatePodVolumesImagePatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesImagePatchPtrInput)(nil)).Elem(), KafkaSpecKafkaTemplatePodVolumesImagePatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesPatchInput)(nil)).Elem(), KafkaSpecKafkaTemplatePodVolumesPatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesPatchArrayInput)(nil)).Elem(), KafkaSpecKafkaTemplatePodVolumesPatchArray{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimInput)(nil)).Elem(), KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPtrInput)(nil)).Elem(), KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchInput)(nil)).Elem(), KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchPtrInput)(nil)).Elem(), KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesSecretInput)(nil)).Elem(), KafkaSpecKafkaTemplatePodVolumesSecretArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesSecretPtrInput)(nil)).Elem(), KafkaSpecKafkaTemplatePodVolumesSecretArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesSecretItemsInput)(nil)).Elem(), KafkaSpecKafkaTemplatePodVolumesSecretItemsArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesSecretItemsArrayInput)(nil)).Elem(), KafkaSpecKafkaTemplatePodVolumesSecretItemsArray{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesSecretItemsPatchInput)(nil)).Elem(), KafkaSpecKafkaTemplatePodVolumesSecretItemsPatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesSecretItemsPatchArrayInput)(nil)).Elem(), KafkaSpecKafkaTemplatePodVolumesSecretItemsPatchArray{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesSecretPatchInput)(nil)).Elem(), KafkaSpecKafkaTemplatePodVolumesSecretPatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplatePodVolumesSecretPatchPtrInput)(nil)).Elem(), KafkaSpecKafkaTemplatePodVolumesSecretPatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplateServiceAccountInput)(nil)).Elem(), KafkaSpecKafkaTemplateServiceAccountArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplateServiceAccountPtrInput)(nil)).Elem(), KafkaSpecKafkaTemplateServiceAccountArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplateServiceAccountMetadataInput)(nil)).Elem(), KafkaSpecKafkaTemplateServiceAccountMetadataArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplateServiceAccountMetadataPtrInput)(nil)).Elem(), KafkaSpecKafkaTemplateServiceAccountMetadataArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplateServiceAccountMetadataPatchInput)(nil)).Elem(), KafkaSpecKafkaTemplateServiceAccountMetadataPatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplateServiceAccountMetadataPatchPtrInput)(nil)).Elem(), KafkaSpecKafkaTemplateServiceAccountMetadataPatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplateServiceAccountPatchInput)(nil)).Elem(), KafkaSpecKafkaTemplateServiceAccountPatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplateServiceAccountPatchPtrInput)(nil)).Elem(), KafkaSpecKafkaTemplateServiceAccountPatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplateStatefulsetInput)(nil)).Elem(), KafkaSpecKafkaTemplateStatefulsetArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplateStatefulsetPtrInput)(nil)).Elem(), KafkaSpecKafkaTemplateStatefulsetArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplateStatefulsetMetadataInput)(nil)).Elem(), KafkaSpecKafkaTemplateStatefulsetMetadataArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplateStatefulsetMetadataPtrInput)(nil)).Elem(), KafkaSpecKafkaTemplateStatefulsetMetadataArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplateStatefulsetMetadataPatchInput)(nil)).Elem(), KafkaSpecKafkaTemplateStatefulsetMetadataPatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplateStatefulsetMetadataPatchPtrInput)(nil)).Elem(), KafkaSpecKafkaTemplateStatefulsetMetadataPatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplateStatefulsetPatchInput)(nil)).Elem(), KafkaSpecKafkaTemplateStatefulsetPatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTemplateStatefulsetPatchPtrInput)(nil)).Elem(), KafkaSpecKafkaTemplateStatefulsetPatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTieredStorageInput)(nil)).Elem(), KafkaSpecKafkaTieredStorageArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTieredStoragePtrInput)(nil)).Elem(), KafkaSpecKafkaTieredStorageArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTieredStoragePatchInput)(nil)).Elem(), KafkaSpecKafkaTieredStoragePatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTieredStoragePatchPtrInput)(nil)).Elem(), KafkaSpecKafkaTieredStoragePatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTieredStorageRemoteStorageManagerInput)(nil)).Elem(), KafkaSpecKafkaTieredStorageRemoteStorageManagerArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTieredStorageRemoteStorageManagerPtrInput)(nil)).Elem(), KafkaSpecKafkaTieredStorageRemoteStorageManagerArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchInput)(nil)).Elem(), KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchPtrInput)(nil)).Elem(), KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecPatchInput)(nil)).Elem(), KafkaSpecPatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecPatchPtrInput)(nil)).Elem(), KafkaSpecPatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperInput)(nil)).Elem(), KafkaSpecZookeeperArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperPtrInput)(nil)).Elem(), KafkaSpecZookeeperArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperJmxOptionsInput)(nil)).Elem(), KafkaSpecZookeeperJmxOptionsArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperJmxOptionsPtrInput)(nil)).Elem(), KafkaSpecZookeeperJmxOptionsArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperJmxOptionsAuthenticationInput)(nil)).Elem(), KafkaSpecZookeeperJmxOptionsAuthenticationArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperJmxOptionsAuthenticationPtrInput)(nil)).Elem(), KafkaSpecZookeeperJmxOptionsAuthenticationArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperJmxOptionsAuthenticationPatchInput)(nil)).Elem(), KafkaSpecZookeeperJmxOptionsAuthenticationPatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperJmxOptionsAuthenticationPatchPtrInput)(nil)).Elem(), KafkaSpecZookeeperJmxOptionsAuthenticationPatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperJmxOptionsPatchInput)(nil)).Elem(), KafkaSpecZookeeperJmxOptionsPatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperJmxOptionsPatchPtrInput)(nil)).Elem(), KafkaSpecZookeeperJmxOptionsPatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperJvmOptionsInput)(nil)).Elem(), KafkaSpecZookeeperJvmOptionsArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperJvmOptionsPtrInput)(nil)).Elem(), KafkaSpecZookeeperJvmOptionsArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesInput)(nil)).Elem(), KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesArrayInput)(nil)).Elem(), KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesArray{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchInput)(nil)).Elem(), KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchArrayInput)(nil)).Elem(), KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchArray{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperJvmOptionsPatchInput)(nil)).Elem(), KafkaSpecZookeeperJvmOptionsPatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperJvmOptionsPatchPtrInput)(nil)).Elem(), KafkaSpecZookeeperJvmOptionsPatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperLivenessProbeInput)(nil)).Elem(), KafkaSpecZookeeperLivenessProbeArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperLivenessProbePtrInput)(nil)).Elem(), KafkaSpecZookeeperLivenessProbeArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperLivenessProbePatchInput)(nil)).Elem(), KafkaSpecZookeeperLivenessProbePatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperLivenessProbePatchPtrInput)(nil)).Elem(), KafkaSpecZookeeperLivenessProbePatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperLoggingInput)(nil)).Elem(), KafkaSpecZookeeperLoggingArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperLoggingPtrInput)(nil)).Elem(), KafkaSpecZookeeperLoggingArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperLoggingPatchInput)(nil)).Elem(), KafkaSpecZookeeperLoggingPatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperLoggingPatchPtrInput)(nil)).Elem(), KafkaSpecZookeeperLoggingPatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperLoggingValueFromInput)(nil)).Elem(), KafkaSpecZookeeperLoggingValueFromArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperLoggingValueFromPtrInput)(nil)).Elem(), KafkaSpecZookeeperLoggingValueFromArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefInput)(nil)).Elem(), KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPtrInput)(nil)).Elem(), KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchInput)(nil)).Elem(), KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchPtrInput)(nil)).Elem(), KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperLoggingValueFromPatchInput)(nil)).Elem(), KafkaSpecZookeeperLoggingValueFromPatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperLoggingValueFromPatchPtrInput)(nil)).Elem(), KafkaSpecZookeeperLoggingValueFromPatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperMetricsConfigInput)(nil)).Elem(), KafkaSpecZookeeperMetricsConfigArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperMetricsConfigPtrInput)(nil)).Elem(), KafkaSpecZookeeperMetricsConfigArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperMetricsConfigPatchInput)(nil)).Elem(), KafkaSpecZookeeperMetricsConfigPatchArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperMetricsConfigPatchPtrInput)(nil)).Elem(), KafkaSpecZookeeperMetricsConfigPatchArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperMetricsConfigValueFromInput)(nil)).Elem(), KafkaSpecZookeeperMetricsConfigValueFromArgs{})
@@ -37397,6 +49203,10 @@ func init() {
 	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperMetricsConfigValueFromConfigMapKeyRefPatchPtrInput)(nil)).Elem(), KafkaSpecZookeeperMetricsConfigValueFromConfigMapKeyRefPatchArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperMetricsConfigValueFromPatchInput)(nil)).Elem(), KafkaSpecZookeeperMetricsConfigValueFromPatchArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperMetricsConfigValueFromPatchPtrInput)(nil)).Elem(), KafkaSpecZookeeperMetricsConfigValueFromPatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperMetricsConfigValuesInput)(nil)).Elem(), KafkaSpecZookeeperMetricsConfigValuesArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperMetricsConfigValuesPtrInput)(nil)).Elem(), KafkaSpecZookeeperMetricsConfigValuesArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperMetricsConfigValuesPatchInput)(nil)).Elem(), KafkaSpecZookeeperMetricsConfigValuesPatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperMetricsConfigValuesPatchPtrInput)(nil)).Elem(), KafkaSpecZookeeperMetricsConfigValuesPatchArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperPatchInput)(nil)).Elem(), KafkaSpecZookeeperPatchArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperPatchPtrInput)(nil)).Elem(), KafkaSpecZookeeperPatchArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperReadinessProbeInput)(nil)).Elem(), KafkaSpecZookeeperReadinessProbeArgs{})
@@ -37601,6 +49411,14 @@ func init() {
 	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperTemplatePodDisruptionBudgetMetadataPatchPtrInput)(nil)).Elem(), KafkaSpecZookeeperTemplatePodDisruptionBudgetMetadataPatchArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperTemplatePodDisruptionBudgetPatchInput)(nil)).Elem(), KafkaSpecZookeeperTemplatePodDisruptionBudgetPatchArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperTemplatePodDisruptionBudgetPatchPtrInput)(nil)).Elem(), KafkaSpecZookeeperTemplatePodDisruptionBudgetPatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperTemplatePodDnsConfigInput)(nil)).Elem(), KafkaSpecZookeeperTemplatePodDnsConfigArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperTemplatePodDnsConfigPtrInput)(nil)).Elem(), KafkaSpecZookeeperTemplatePodDnsConfigArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperTemplatePodDnsConfigOptionsInput)(nil)).Elem(), KafkaSpecZookeeperTemplatePodDnsConfigOptionsArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperTemplatePodDnsConfigOptionsArrayInput)(nil)).Elem(), KafkaSpecZookeeperTemplatePodDnsConfigOptionsArray{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchInput)(nil)).Elem(), KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchArrayInput)(nil)).Elem(), KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchArray{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperTemplatePodDnsConfigPatchInput)(nil)).Elem(), KafkaSpecZookeeperTemplatePodDnsConfigPatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperTemplatePodDnsConfigPatchPtrInput)(nil)).Elem(), KafkaSpecZookeeperTemplatePodDnsConfigPatchArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperTemplatePodHostAliasesInput)(nil)).Elem(), KafkaSpecZookeeperTemplatePodHostAliasesArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperTemplatePodHostAliasesArrayInput)(nil)).Elem(), KafkaSpecZookeeperTemplatePodHostAliasesArray{})
 	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperTemplatePodHostAliasesPatchInput)(nil)).Elem(), KafkaSpecZookeeperTemplatePodHostAliasesPatchArgs{})
@@ -37673,6 +49491,14 @@ func init() {
 	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperTemplatePodVolumesConfigMapItemsPatchArrayInput)(nil)).Elem(), KafkaSpecZookeeperTemplatePodVolumesConfigMapItemsPatchArray{})
 	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperTemplatePodVolumesConfigMapPatchInput)(nil)).Elem(), KafkaSpecZookeeperTemplatePodVolumesConfigMapPatchArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperTemplatePodVolumesConfigMapPatchPtrInput)(nil)).Elem(), KafkaSpecZookeeperTemplatePodVolumesConfigMapPatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperTemplatePodVolumesCsiInput)(nil)).Elem(), KafkaSpecZookeeperTemplatePodVolumesCsiArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperTemplatePodVolumesCsiPtrInput)(nil)).Elem(), KafkaSpecZookeeperTemplatePodVolumesCsiArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefInput)(nil)).Elem(), KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPtrInput)(nil)).Elem(), KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchInput)(nil)).Elem(), KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchPtrInput)(nil)).Elem(), KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperTemplatePodVolumesCsiPatchInput)(nil)).Elem(), KafkaSpecZookeeperTemplatePodVolumesCsiPatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperTemplatePodVolumesCsiPatchPtrInput)(nil)).Elem(), KafkaSpecZookeeperTemplatePodVolumesCsiPatchArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperTemplatePodVolumesEmptyDirInput)(nil)).Elem(), KafkaSpecZookeeperTemplatePodVolumesEmptyDirArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperTemplatePodVolumesEmptyDirPtrInput)(nil)).Elem(), KafkaSpecZookeeperTemplatePodVolumesEmptyDirArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperTemplatePodVolumesEmptyDirPatchInput)(nil)).Elem(), KafkaSpecZookeeperTemplatePodVolumesEmptyDirPatchArgs{})
@@ -37681,6 +49507,10 @@ func init() {
 	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperTemplatePodVolumesEmptyDirSizeLimitPtrInput)(nil)).Elem(), KafkaSpecZookeeperTemplatePodVolumesEmptyDirSizeLimitArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperTemplatePodVolumesEmptyDirSizeLimitPatchInput)(nil)).Elem(), KafkaSpecZookeeperTemplatePodVolumesEmptyDirSizeLimitPatchArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperTemplatePodVolumesEmptyDirSizeLimitPatchPtrInput)(nil)).Elem(), KafkaSpecZookeeperTemplatePodVolumesEmptyDirSizeLimitPatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperTemplatePodVolumesImageInput)(nil)).Elem(), KafkaSpecZookeeperTemplatePodVolumesImageArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperTemplatePodVolumesImagePtrInput)(nil)).Elem(), KafkaSpecZookeeperTemplatePodVolumesImageArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperTemplatePodVolumesImagePatchInput)(nil)).Elem(), KafkaSpecZookeeperTemplatePodVolumesImagePatchArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperTemplatePodVolumesImagePatchPtrInput)(nil)).Elem(), KafkaSpecZookeeperTemplatePodVolumesImagePatchArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperTemplatePodVolumesPatchInput)(nil)).Elem(), KafkaSpecZookeeperTemplatePodVolumesPatchArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperTemplatePodVolumesPatchArrayInput)(nil)).Elem(), KafkaSpecZookeeperTemplatePodVolumesPatchArray{})
 	pulumi.RegisterInputType(reflect.TypeOf((*KafkaSpecZookeeperTemplatePodVolumesPersistentVolumeClaimInput)(nil)).Elem(), KafkaSpecZookeeperTemplatePodVolumesPersistentVolumeClaimArgs{})
@@ -37867,6 +49697,130 @@ func init() {
 	pulumi.RegisterInputType(reflect.TypeOf((*KafkaUserStatusConditionsPatchArrayInput)(nil)).Elem(), KafkaUserStatusConditionsPatchArray{})
 	pulumi.RegisterInputType(reflect.TypeOf((*KafkaUserStatusPatchInput)(nil)).Elem(), KafkaUserStatusPatchArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*KafkaUserStatusPatchPtrInput)(nil)).Elem(), KafkaUserStatusPatchArgs{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplatePodSetPatchOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplatePodSetPatchPtrOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplatePodTolerationsOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplatePodTolerationsArrayOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplatePodTolerationsPatchOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplatePodTolerationsPatchArrayOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplatePodTopologySpreadConstraintsOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplatePodTopologySpreadConstraintsArrayOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPtrOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsArrayOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorMatchExpressionsPatchArrayOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplatePodTopologySpreadConstraintsLabelSelectorPatchPtrOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplatePodTopologySpreadConstraintsPatchArrayOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplatePodVolumesOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplatePodVolumesArrayOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplatePodVolumesConfigMapOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplatePodVolumesConfigMapPtrOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplatePodVolumesConfigMapItemsOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplatePodVolumesConfigMapItemsArrayOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplatePodVolumesConfigMapItemsPatchArrayOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplatePodVolumesConfigMapPatchOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplatePodVolumesConfigMapPatchPtrOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplatePodVolumesCsiOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplatePodVolumesCsiPtrOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPtrOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplatePodVolumesCsiPatchOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplatePodVolumesCsiPatchPtrOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplatePodVolumesEmptyDirOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplatePodVolumesEmptyDirPtrOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplatePodVolumesEmptyDirPatchPtrOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPtrOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplatePodVolumesEmptyDirSizeLimitPatchPtrOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplatePodVolumesImageOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplatePodVolumesImagePtrOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplatePodVolumesImagePatchOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplatePodVolumesImagePatchPtrOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplatePodVolumesPatchOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplatePodVolumesPatchArrayOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPtrOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplatePodVolumesPersistentVolumeClaimPatchPtrOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplatePodVolumesSecretOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplatePodVolumesSecretPtrOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplatePodVolumesSecretItemsOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplatePodVolumesSecretItemsArrayOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplatePodVolumesSecretItemsPatchOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplatePodVolumesSecretItemsPatchArrayOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplatePodVolumesSecretPatchOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplatePodVolumesSecretPatchPtrOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplateServiceAccountOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplateServiceAccountPtrOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplateServiceAccountMetadataOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplateServiceAccountMetadataPtrOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplateServiceAccountMetadataPatchOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplateServiceAccountMetadataPatchPtrOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplateServiceAccountPatchOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplateServiceAccountPatchPtrOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplateStatefulsetOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplateStatefulsetPtrOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplateStatefulsetMetadataOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplateStatefulsetMetadataPtrOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplateStatefulsetMetadataPatchOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplateStatefulsetMetadataPatchPtrOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplateStatefulsetPatchOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTemplateStatefulsetPatchPtrOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTieredStorageOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTieredStoragePtrOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTieredStoragePatchOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTieredStoragePatchPtrOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTieredStorageRemoteStorageManagerOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTieredStorageRemoteStorageManagerPtrOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchOutput{})
+	pulumi.RegisterOutputType(KafkaSpecKafkaTieredStorageRemoteStorageManagerPatchPtrOutput{})
+	pulumi.RegisterOutputType(KafkaSpecPatchOutput{})
+	pulumi.RegisterOutputType(KafkaSpecPatchPtrOutput{})
+	pulumi.RegisterOutputType(KafkaSpecZookeeperOutput{})
+	pulumi.RegisterOutputType(KafkaSpecZookeeperPtrOutput{})
+	pulumi.RegisterOutputType(KafkaSpecZookeeperJmxOptionsOutput{})
+	pulumi.RegisterOutputType(KafkaSpecZookeeperJmxOptionsPtrOutput{})
+	pulumi.RegisterOutputType(KafkaSpecZookeeperJmxOptionsAuthenticationOutput{})
+	pulumi.RegisterOutputType(KafkaSpecZookeeperJmxOptionsAuthenticationPtrOutput{})
+	pulumi.RegisterOutputType(KafkaSpecZookeeperJmxOptionsAuthenticationPatchOutput{})
+	pulumi.RegisterOutputType(KafkaSpecZookeeperJmxOptionsAuthenticationPatchPtrOutput{})
+	pulumi.RegisterOutputType(KafkaSpecZookeeperJmxOptionsPatchOutput{})
+	pulumi.RegisterOutputType(KafkaSpecZookeeperJmxOptionsPatchPtrOutput{})
+	pulumi.RegisterOutputType(KafkaSpecZookeeperJvmOptionsOutput{})
+	pulumi.RegisterOutputType(KafkaSpecZookeeperJvmOptionsPtrOutput{})
+	pulumi.RegisterOutputType(KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesOutput{})
+	pulumi.RegisterOutputType(KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesArrayOutput{})
+	pulumi.RegisterOutputType(KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchOutput{})
+	pulumi.RegisterOutputType(KafkaSpecZookeeperJvmOptionsJavaSystemPropertiesPatchArrayOutput{})
+	pulumi.RegisterOutputType(KafkaSpecZookeeperJvmOptionsPatchOutput{})
+	pulumi.RegisterOutputType(KafkaSpecZookeeperJvmOptionsPatchPtrOutput{})
+	pulumi.RegisterOutputType(KafkaSpecZookeeperLivenessProbeOutput{})
+	pulumi.RegisterOutputType(KafkaSpecZookeeperLivenessProbePtrOutput{})
+	pulumi.RegisterOutputType(KafkaSpecZookeeperLivenessProbePatchOutput{})
+	pulumi.RegisterOutputType(KafkaSpecZookeeperLivenessProbePatchPtrOutput{})
+	pulumi.RegisterOutputType(KafkaSpecZookeeperLoggingOutput{})
+	pulumi.RegisterOutputType(KafkaSpecZookeeperLoggingPtrOutput{})
+	pulumi.RegisterOutputType(KafkaSpecZookeeperLoggingPatchOutput{})
+	pulumi.RegisterOutputType(KafkaSpecZookeeperLoggingPatchPtrOutput{})
+	pulumi.RegisterOutputType(KafkaSpecZookeeperLoggingValueFromOutput{})
+	pulumi.RegisterOutputType(KafkaSpecZookeeperLoggingValueFromPtrOutput{})
+	pulumi.RegisterOutputType(KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefOutput{})
+	pulumi.RegisterOutputType(KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPtrOutput{})
+	pulumi.RegisterOutputType(KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchOutput{})
+	pulumi.RegisterOutputType(KafkaSpecZookeeperLoggingValueFromConfigMapKeyRefPatchPtrOutput{})
+	pulumi.RegisterOutputType(KafkaSpecZookeeperLoggingValueFromPatchOutput{})
+	pulumi.RegisterOutputType(KafkaSpecZookeeperLoggingValueFromPatchPtrOutput{})
+	pulumi.RegisterOutputType(KafkaSpecZookeeperMetricsConfigOutput{})
+	pulumi.RegisterOutputType(KafkaSpecZookeeperMetricsConfigPtrOutput{})
 	pulumi.RegisterOutputType(KafkaSpecZookeeperMetricsConfigPatchOutput{})
 	pulumi.RegisterOutputType(KafkaSpecZookeeperMetricsConfigPatchPtrOutput{})
 	pulumi.RegisterOutputType(KafkaSpecZookeeperMetricsConfigValueFromOutput{})
@@ -37877,6 +49831,10 @@ func init() {
 	pulumi.RegisterOutputType(KafkaSpecZookeeperMetricsConfigValueFromConfigMapKeyRefPatchPtrOutput{})
 	pulumi.RegisterOutputType(KafkaSpecZookeeperMetricsConfigValueFromPatchOutput{})
 	pulumi.RegisterOutputType(KafkaSpecZookeeperMetricsConfigValueFromPatchPtrOutput{})
+	pulumi.RegisterOutputType(KafkaSpecZookeeperMetricsConfigValuesOutput{})
+	pulumi.RegisterOutputType(KafkaSpecZookeeperMetricsConfigValuesPtrOutput{})
+	pulumi.RegisterOutputType(KafkaSpecZookeeperMetricsConfigValuesPatchOutput{})
+	pulumi.RegisterOutputType(KafkaSpecZookeeperMetricsConfigValuesPatchPtrOutput{})
 	pulumi.RegisterOutputType(KafkaSpecZookeeperPatchOutput{})
 	pulumi.RegisterOutputType(KafkaSpecZookeeperPatchPtrOutput{})
 	pulumi.RegisterOutputType(KafkaSpecZookeeperReadinessProbeOutput{})
@@ -38081,6 +50039,14 @@ func init() {
 	pulumi.RegisterOutputType(KafkaSpecZookeeperTemplatePodDisruptionBudgetMetadataPatchPtrOutput{})
 	pulumi.RegisterOutputType(KafkaSpecZookeeperTemplatePodDisruptionBudgetPatchOutput{})
 	pulumi.RegisterOutputType(KafkaSpecZookeeperTemplatePodDisruptionBudgetPatchPtrOutput{})
+	pulumi.RegisterOutputType(KafkaSpecZookeeperTemplatePodDnsConfigOutput{})
+	pulumi.RegisterOutputType(KafkaSpecZookeeperTemplatePodDnsConfigPtrOutput{})
+	pulumi.RegisterOutputType(KafkaSpecZookeeperTemplatePodDnsConfigOptionsOutput{})
+	pulumi.RegisterOutputType(KafkaSpecZookeeperTemplatePodDnsConfigOptionsArrayOutput{})
+	pulumi.RegisterOutputType(KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchOutput{})
+	pulumi.RegisterOutputType(KafkaSpecZookeeperTemplatePodDnsConfigOptionsPatchArrayOutput{})
+	pulumi.RegisterOutputType(KafkaSpecZookeeperTemplatePodDnsConfigPatchOutput{})
+	pulumi.RegisterOutputType(KafkaSpecZookeeperTemplatePodDnsConfigPatchPtrOutput{})
 	pulumi.RegisterOutputType(KafkaSpecZookeeperTemplatePodHostAliasesOutput{})
 	pulumi.RegisterOutputType(KafkaSpecZookeeperTemplatePodHostAliasesArrayOutput{})
 	pulumi.RegisterOutputType(KafkaSpecZookeeperTemplatePodHostAliasesPatchOutput{})
@@ -38153,6 +50119,14 @@ func init() {
 	pulumi.RegisterOutputType(KafkaSpecZookeeperTemplatePodVolumesConfigMapItemsPatchArrayOutput{})
 	pulumi.RegisterOutputType(KafkaSpecZookeeperTemplatePodVolumesConfigMapPatchOutput{})
 	pulumi.RegisterOutputType(KafkaSpecZookeeperTemplatePodVolumesConfigMapPatchPtrOutput{})
+	pulumi.RegisterOutputType(KafkaSpecZookeeperTemplatePodVolumesCsiOutput{})
+	pulumi.RegisterOutputType(KafkaSpecZookeeperTemplatePodVolumesCsiPtrOutput{})
+	pulumi.RegisterOutputType(KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefOutput{})
+	pulumi.RegisterOutputType(KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPtrOutput{})
+	pulumi.RegisterOutputType(KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchOutput{})
+	pulumi.RegisterOutputType(KafkaSpecZookeeperTemplatePodVolumesCsiNodePublishSecretRefPatchPtrOutput{})
+	pulumi.RegisterOutputType(KafkaSpecZookeeperTemplatePodVolumesCsiPatchOutput{})
+	pulumi.RegisterOutputType(KafkaSpecZookeeperTemplatePodVolumesCsiPatchPtrOutput{})
 	pulumi.RegisterOutputType(KafkaSpecZookeeperTemplatePodVolumesEmptyDirOutput{})
 	pulumi.RegisterOutputType(KafkaSpecZookeeperTemplatePodVolumesEmptyDirPtrOutput{})
 	pulumi.RegisterOutputType(KafkaSpecZookeeperTemplatePodVolumesEmptyDirPatchOutput{})
@@ -38161,6 +50135,10 @@ func init() {
 	pulumi.RegisterOutputType(KafkaSpecZookeeperTemplatePodVolumesEmptyDirSizeLimitPtrOutput{})
 	pulumi.RegisterOutputType(KafkaSpecZookeeperTemplatePodVolumesEmptyDirSizeLimitPatchOutput{})
 	pulumi.RegisterOutputType(KafkaSpecZookeeperTemplatePodVolumesEmptyDirSizeLimitPatchPtrOutput{})
+	pulumi.RegisterOutputType(KafkaSpecZookeeperTemplatePodVolumesImageOutput{})
+	pulumi.RegisterOutputType(KafkaSpecZookeeperTemplatePodVolumesImagePtrOutput{})
+	pulumi.RegisterOutputType(KafkaSpecZookeeperTemplatePodVolumesImagePatchOutput{})
+	pulumi.RegisterOutputType(KafkaSpecZookeeperTemplatePodVolumesImagePatchPtrOutput{})
 	pulumi.RegisterOutputType(KafkaSpecZookeeperTemplatePodVolumesPatchOutput{})
 	pulumi.RegisterOutputType(KafkaSpecZookeeperTemplatePodVolumesPatchArrayOutput{})
 	pulumi.RegisterOutputType(KafkaSpecZookeeperTemplatePodVolumesPersistentVolumeClaimOutput{})

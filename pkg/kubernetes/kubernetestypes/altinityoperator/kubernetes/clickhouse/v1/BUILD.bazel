@@ -9,7 +9,6 @@ go_library(
         "clickHouseInstallationTemplate.go",
         "clickHouseInstallationTemplateList.go",
         "clickHouseInstallationTemplatePatch.go",
-        "clickHouseOperatorConfigurationList.go",
         "init.go",
         "pulumiTypes.go",
     ],

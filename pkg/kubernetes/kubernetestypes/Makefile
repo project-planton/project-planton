@@ -114,7 +114,12 @@ gen-keycloak:
 
 .PHONY: gen-altinity-operator
 gen-altinity-operator:
-	crd2pulumi --force --goPath=altinityoperator https://raw.githubusercontent.com/Altinity/clickhouse-operator/${altinity_operator_release}/deploy/operator/clickhouse-operator-install-bundle.yaml
+	@echo "Extracting CRDs from Altinity bundle..."
+	@curl -s https://raw.githubusercontent.com/Altinity/clickhouse-operator/${altinity_operator_release}/deploy/operator/clickhouse-operator-install-bundle.yaml | \
+		awk '/^kind: CustomResourceDefinition$$/,/^---$$/' | \
+		sed '/name: clickhouseoperatorconfigurations.clickhouse.altinity.com/,/^---$$/d' > /tmp/altinity-crds-only.yaml
+	crd2pulumi --force --goPath=altinityoperator /tmp/altinity-crds-only.yaml
+	@echo "Generated Altinity operator types (excluding ClickHouseOperatorConfiguration)"
 
 .PHONY: gen-percona-mongodb
 gen-percona-mongodb:
