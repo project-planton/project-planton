@@ -3,7 +3,7 @@ package module
 import (
 	"github.com/pkg/errors"
 	clickhousekubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/clickhousekubernetes/v1"
-	clickhousekeeperv1 "github.com/project-planton/project-planton/pkg/kubernetes/kubernetestypes/kubernetes/clickhousekeeper/v1"
+	clickhousekeeperv1 "github.com/project-planton/project-planton/pkg/kubernetes/kubernetestypes/altinityoperator/kubernetes/clickhouse_keeper/v1"
 	kubernetescorev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
 	metav1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/meta/v1"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
