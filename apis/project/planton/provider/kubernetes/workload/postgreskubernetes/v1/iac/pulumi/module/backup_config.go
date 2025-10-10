@@ -72,4 +72,3 @@ func boolToString(value bool) string {
 	}
 	return "false"
 }
-

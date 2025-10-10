@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package project.planton.provider.kubernetes.addon.perconaoperatorkubernetes.v1;
+
+import "buf/validate/validate.proto";
+import "project/planton/provider/kubernetes/addon/perconaoperatorkubernetes/v1/spec.proto";
+import "project/planton/provider/kubernetes/addon/perconaoperatorkubernetes/v1/stack_outputs.proto";
+import "project/planton/shared/status.proto";
+import "project/planton/shared/metadata.proto";
+
+//percona-operator-kubernetes
+message PerconaOperatorKubernetes {
+  //api-version
+  string api_version = 1 [
+    (buf.validate.field).string.const = 'kubernetes.project-planton.org/v1'
+  ];
+
+  //resource-kind
+  string kind = 2 [
+    (buf.validate.field).string.const = 'PerconaOperatorKubernetes'
+  ];
+
+  //metadata
+  project.planton.shared.ApiResourceMetadata metadata = 3 [
+    (buf.validate.field).required = true
+  ];
+
+  //spec
+  PerconaOperatorKubernetesSpec spec = 4 [
+    (buf.validate.field).required = true
+  ];
+
+  //status
+  PerconaOperatorKubernetesStatus status = 5;
+}
+
+//percona-operator-kubernetes status
+message PerconaOperatorKubernetesStatus {
+  //stack-outputs
+  PerconaOperatorKubernetesStackOutputs outputs = 1;
+}
+
