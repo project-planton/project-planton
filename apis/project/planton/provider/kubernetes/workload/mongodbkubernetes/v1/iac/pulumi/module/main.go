@@ -1,8 +1,6 @@
 package module
 
 import (
-	"encoding/base64"
-
 	"github.com/pkg/errors"
 	mongodbkubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/mongodbkubernetes/v1"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/pulumikubernetesprovider"
@@ -55,27 +53,26 @@ func Resources(ctx *pulumi.Context, stackInput *mongodbkubernetesv1.MongodbKuber
 		return errors.Wrap(err, "failed to generate random password value")
 	}
 
-	// Encode the password in Base64
-	createdBase64Password := createdRandomString.Result.ApplyT(func(p string) (string, error) {
-		return base64.StdEncoding.EncodeToString([]byte(p)), nil
-	}).(pulumi.StringOutput)
-
-	// create kubernetes secret to store generated password
-	_, err = kubernetescorev1.NewSecret(ctx,
+	// Create kubernetes secret to store generated password
+	// Percona operator expects plaintext passwords in StringData (Kubernetes auto-encodes)
+	createdPasswordSecret, err := kubernetescorev1.NewSecret(ctx,
 		locals.MongodbKubernetes.Metadata.Name,
 		&kubernetescorev1.SecretArgs{
 			Metadata: &metav1.ObjectMetaArgs{
 				Name:      pulumi.String(locals.MongodbKubernetes.Metadata.Name),
 				Namespace: createdNamespace.Metadata.Name(),
 			},
-			Data: pulumi.StringMap{
-				vars.MongodbRootPasswordKey: createdBase64Password,
+			StringData: pulumi.StringMap{
+				vars.MongodbRootPasswordKey: createdRandomString.Result,
 			},
 		}, pulumi.Parent(createdNamespace))
+	if err != nil {
+		return errors.Wrap(err, "failed to create password secret")
+	}
 
-	//create mongodb using helm-chart
-	if err := mongodb(ctx, locals, createdNamespace); err != nil {
-		return errors.Wrap(err, "failed to create mongodb helm-chart resources")
+	// Create MongoDB using Percona operator CRD
+	if err := mongodb(ctx, locals, createdNamespace, createdPasswordSecret); err != nil {
+		return errors.Wrap(err, "failed to create MongoDB PerconaServerMongoDB resource")
 	}
 
 	//create service of type load-balancer if ingress is enabled.

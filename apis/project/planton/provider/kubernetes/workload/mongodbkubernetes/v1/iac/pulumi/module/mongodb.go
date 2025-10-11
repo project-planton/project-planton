@@ -1,54 +1,111 @@
 package module
 
 import (
+	"fmt"
+
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/datatypes/stringmaps/mergestringmaps"
-	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/containerresources"
+	mongodbkubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/mongodbkubernetes/v1"
+	psmdbv1 "github.com/project-planton/project-planton/pkg/kubernetes/kubernetestypes/perconamongodb/kubernetes/psmdb/v1"
 	kubernetescorev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
-	helmv3 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/helm/v3"
+	metav1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/meta/v1"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-func mongodb(ctx *pulumi.Context, locals *Locals,
-	createdNamespace *kubernetescorev1.Namespace) error {
+// mongodb creates a PerconaServerMongoDB custom resource using the Percona operator
+func mongodb(
+	ctx *pulumi.Context,
+	locals *Locals,
+	createdNamespace *kubernetescorev1.Namespace,
+	createdSecret *kubernetescorev1.Secret,
+) error {
+	spec := locals.MongodbKubernetes.Spec
 
-	// https://github.com/bitnami/charts/blob/main/bitnami/mongodb/values.yaml
-	var helmValues = pulumi.Map{
-		"fullnameOverride":  pulumi.String(locals.KubeServiceName),
-		"namespaceOverride": createdNamespace.Metadata.Name(),
-		"resources":         containerresources.ConvertToPulumiMap(locals.MongodbKubernetes.Spec.Container.Resources),
-		// todo: hard-coding this to 1 since we are only using `standalone` architecture,
-		// need to revisit this to handle `replicaSet` architecture
-		"replicaCount": pulumi.Int(1),
-		"persistence": pulumi.Map{
-			"enabled": pulumi.Bool(locals.MongodbKubernetes.Spec.Container.IsPersistenceEnabled),
-			"size":    pulumi.String(locals.MongodbKubernetes.Spec.Container.DiskSize),
-		},
-		"podLabels":      pulumi.ToStringMap(locals.KubernetesLabels),
-		"commonLabels":   pulumi.ToStringMap(locals.KubernetesLabels),
-		"useStatefulSet": pulumi.Bool(true),
-		"auth": pulumi.Map{
-			"existingSecret": pulumi.String(locals.KubeServiceName),
-		},
+	// Determine replica set size from container replicas
+	replicaSetSize := int(spec.Container.Replicas)
+	if replicaSetSize < 1 {
+		replicaSetSize = 1
 	}
 
-	mergestringmaps.MergeMapToPulumiMap(helmValues, locals.MongodbKubernetes.Spec.HelmValues)
-
-	// install helm-chart
-	_, err := helmv3.NewChart(ctx,
+	// Build the PerconaServerMongoDB CRD
+	_, err := psmdbv1.NewPerconaServerMongoDB(ctx,
 		locals.MongodbKubernetes.Metadata.Name,
-		helmv3.ChartArgs{
-			Chart:     pulumi.String(vars.HelmChartName),
-			Version:   pulumi.String(vars.HelmChartVersion),
-			Namespace: pulumi.String(locals.Namespace),
-			Values:    helmValues,
-			FetchArgs: helmv3.FetchArgs{
-				Repo: pulumi.String(vars.HelmChartRepoUrl),
+		&psmdbv1.PerconaServerMongoDBArgs{
+			Metadata: &metav1.ObjectMetaArgs{
+				Name:      pulumi.String(locals.MongodbKubernetes.Metadata.Name),
+				Namespace: createdNamespace.Metadata.Name(),
+				Labels:    pulumi.ToStringMap(locals.KubernetesLabels),
 			},
-		}, pulumi.Parent(createdNamespace))
-
+			Spec: &psmdbv1.PerconaServerMongoDBSpecArgs{
+				CrVersion: pulumi.String(vars.CRVersion),
+				Image:     pulumi.String(fmt.Sprintf("percona/percona-server-mongodb:%s", vars.MongoDBVersion)),
+				Replsets:  buildReplicaSets(spec, replicaSetSize),
+				Secrets:   buildSecrets(createdSecret),
+			},
+		},
+		pulumi.Parent(createdNamespace),
+	)
 	if err != nil {
-		return errors.Wrap(err, "failed to create mongodb helm-chart")
+		return errors.Wrap(err, "failed to create PerconaServerMongoDB")
 	}
+
 	return nil
+}
+
+// buildReplicaSets creates the replica set configuration
+func buildReplicaSets(
+	spec *mongodbkubernetesv1.MongodbKubernetesSpec,
+	replicaSetSize int,
+) psmdbv1.PerconaServerMongoDBSpecReplsetsArray {
+	replset := &psmdbv1.PerconaServerMongoDBSpecReplsetsArgs{
+		Name: pulumi.String(vars.ReplicaSetName),
+		Size: pulumi.Int(replicaSetSize),
+	}
+
+	// Configure resources
+	replset.Resources = buildResources(spec.Container)
+
+	// Configure persistence if enabled
+	if spec.Container.IsPersistenceEnabled && spec.Container.DiskSize != "" {
+		replset.VolumeSpec = buildVolumeSpec(spec.Container.DiskSize)
+	}
+
+	return psmdbv1.PerconaServerMongoDBSpecReplsetsArray{replset}
+}
+
+// buildResources maps container resources to Percona format
+func buildResources(container *mongodbkubernetesv1.MongodbKubernetesContainer) *psmdbv1.PerconaServerMongoDBSpecReplsetsResourcesArgs {
+	if container == nil || container.Resources == nil {
+		return nil
+	}
+
+	return &psmdbv1.PerconaServerMongoDBSpecReplsetsResourcesArgs{
+		Limits: pulumi.Map{
+			"cpu":    pulumi.String(container.Resources.Limits.Cpu),
+			"memory": pulumi.String(container.Resources.Limits.Memory),
+		},
+		Requests: pulumi.Map{
+			"cpu":    pulumi.String(container.Resources.Requests.Cpu),
+			"memory": pulumi.String(container.Resources.Requests.Memory),
+		},
+	}
+}
+
+// buildVolumeSpec creates the persistent volume configuration
+func buildVolumeSpec(diskSize string) *psmdbv1.PerconaServerMongoDBSpecReplsetsVolumeSpecArgs {
+	return &psmdbv1.PerconaServerMongoDBSpecReplsetsVolumeSpecArgs{
+		PersistentVolumeClaim: &psmdbv1.PerconaServerMongoDBSpecReplsetsVolumeSpecPersistentVolumeClaimArgs{
+			Resources: &psmdbv1.PerconaServerMongoDBSpecReplsetsVolumeSpecPersistentVolumeClaimResourcesArgs{
+				Requests: pulumi.Map{
+					"storage": pulumi.String(diskSize),
+				},
+			},
+		},
+	}
+}
+
+// buildSecrets creates the secrets reference for MongoDB authentication
+func buildSecrets(createdSecret *kubernetescorev1.Secret) *psmdbv1.PerconaServerMongoDBSpecSecretsArgs {
+	return &psmdbv1.PerconaServerMongoDBSpecSecretsArgs{
+		Users: createdSecret.Metadata.Name(),
+	}
 }

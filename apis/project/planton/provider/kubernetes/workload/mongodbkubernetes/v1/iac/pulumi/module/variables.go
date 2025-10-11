@@ -4,14 +4,14 @@ var vars = struct {
 	MongodbRootPasswordKey string
 	RootUsername           string
 	MongoDbPort            int
-	HelmChartName          string
-	HelmChartRepoUrl       string
-	HelmChartVersion       string
+	MongoDBVersion         string
+	CRVersion              string
+	ReplicaSetName         string
 }{
-	HelmChartName:          "mongodb",
-	HelmChartRepoUrl:       "https://charts.bitnami.com/bitnami",
-	HelmChartVersion:       "15.1.4",
-	MongodbRootPasswordKey: "mongodb-root-password",
-	RootUsername:           "root",
+	MongodbRootPasswordKey: "MONGODB_DATABASE_ADMIN_PASSWORD",
+	RootUsername:           "databaseAdmin",
 	MongoDbPort:            27017,
+	MongoDBVersion:         "8.0.4-3",
+	CRVersion:              "1.20.1",
+	ReplicaSetName:         "rs0",
 }
