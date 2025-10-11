@@ -5,7 +5,7 @@ var vars = struct {
 	HelmChartRepo    string
 	HelmChartVersion string
 }{
-	HelmChartName:    "pg-operator",
+	HelmChartName:    "pxc-operator",
 	HelmChartRepo:    "https://percona.github.io/percona-helm-charts/",
-	HelmChartVersion: "2.7.0",
+	HelmChartVersion: "1.18.0",
 }

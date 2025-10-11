@@ -1,12 +1,15 @@
 package manifest
 
 import (
+	"fmt"
 	"io"
 	"net/http"
 	"net/url"
 	"os"
 	"path/filepath"
+	"strings"
 
+	"github.com/fatih/color"
 	"github.com/pkg/errors"
 	"github.com/project-planton/project-planton/internal/cli/workspace"
 	"github.com/project-planton/project-planton/pkg/crkreflect"
@@ -49,7 +52,7 @@ func LoadManifest(manifestPath string) (proto.Message, error) {
 	manifest := crkreflect.ToMessageMap[cloudResourceKind]
 
 	if manifest == nil {
-		return nil, errors.Errorf("proto message not found for %s cloudResourceKind", cloudResourceKind.String())
+		return nil, formatUnsupportedResourceError(kindName)
 	}
 
 	if err := protojson.Unmarshal(jsonBytes, manifest); err != nil {
@@ -107,4 +110,51 @@ func isManifestPathUrl(manifestPath string) (bool, error) {
 	}
 
 	return true, nil
+}
+
+// formatUnsupportedResourceError creates a helpful error message when a cloud resource kind is not supported
+func formatUnsupportedResourceError(kindName string) error {
+	// Create colored output functions
+	red := color.New(color.FgRed, color.Bold).SprintFunc()
+	yellow := color.New(color.FgYellow, color.Bold).SprintFunc()
+	cyan := color.New(color.FgCyan, color.Bold).SprintFunc()
+	green := color.New(color.FgGreen, color.Bold).SprintFunc()
+	bold := color.New(color.Bold).SprintFunc()
+
+	var msg strings.Builder
+
+	msg.WriteString("\n")
+	msg.WriteString(red("╔═══════════════════════════════════════════════════════════════════════════════╗") + "\n")
+	msg.WriteString(red("║") + bold("                ⚠️  UNSUPPORTED CLOUD RESOURCE KIND                           ") + red("║") + "\n")
+	msg.WriteString(red("╚═══════════════════════════════════════════════════════════════════════════════╝") + "\n\n")
+
+	msg.WriteString(yellow("Resource Kind:") + " " + bold(kindName) + "\n\n")
+
+	msg.WriteString(red("❌ This cloud resource kind is not recognized.\n\n"))
+
+	msg.WriteString(cyan("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"))
+	msg.WriteString(bold("                           🔧 HOW TO FIX\n"))
+	msg.WriteString(cyan("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n"))
+
+	msg.WriteString(yellow("1. Check your manifest for typos in the 'kind' field\n\n"))
+	msg.WriteString("   Common mistakes:\n")
+	msg.WriteString("   • Extra characters (e.g., 'AwsEksCluster" + bold("s") + "')\n")
+	msg.WriteString("   • Wrong capitalization (e.g., 'Aws" + bold("EKS") + "Cluster')\n")
+	msg.WriteString("   • Misspelled resource name (e.g., 'AwsEks" + bold("Clster") + "')\n\n")
+
+	msg.WriteString(yellow("2. If the kind is correct, update your CLI to the latest version:\n\n"))
+	msg.WriteString("   " + green("brew update && brew upgrade project-planton") + "\n\n")
+	msg.WriteString("   Or if you haven't installed via Homebrew:\n\n")
+	msg.WriteString("   " + green("brew install project-planton/tap/project-planton") + "\n\n")
+	msg.WriteString("   Then verify:\n\n")
+	msg.WriteString("   " + green("project-planton version") + "\n\n")
+
+	msg.WriteString(yellow("3. Retry your command\n\n"))
+
+	msg.WriteString(cyan("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n"))
+
+	msg.WriteString(fmt.Sprintf(bold("💡 TIP: ") + "If you're developing a new cloud resource, ensure the proto files\n"))
+	msg.WriteString(fmt.Sprintf("   are compiled and the CLI binary is rebuilt.\n\n"))
+
+	return errors.New(msg.String())
 }

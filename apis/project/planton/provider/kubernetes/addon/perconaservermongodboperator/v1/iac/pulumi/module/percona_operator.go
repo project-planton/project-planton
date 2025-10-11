@@ -24,9 +24,6 @@ func Resources(ctx *pulumi.Context, stackInput *perconaservermongodboperatorv1.P
 
 	// determine namespace - use from spec or default
 	namespace := stackInput.Target.Spec.Namespace
-	if namespace == "" {
-		namespace = vars.DefaultNamespace
-	}
 
 	// create dedicated namespace
 	ns, err := corev1.NewNamespace(ctx, namespace,

@@ -101,7 +101,9 @@ import (
 	ingressnginxkubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/addon/ingressnginxkubernetes/v1"
 	istiokubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/addon/istiokubernetes/v1"
 	kafkaoperatorkubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/addon/kafkaoperatorkubernetes/v1"
+	perconapostgresqloperatorv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/addon/perconapostgresqloperator/v1"
 	perconaservermongodboperatorv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/addon/perconaservermongodboperator/v1"
+	perconaservermysqloperatorv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/addon/perconaservermysqloperator/v1"
 	postgresoperatorkubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/addon/postgresoperatorkubernetes/v1"
 	solroperatorkubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/addon/solroperatorkubernetes/v1"
 	argocdkubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/argocdkubernetes/v1"
@@ -264,7 +266,9 @@ var ProviderKubernetesAddonMap = map[cloudresourcekind.CloudResourceKind]proto.M
 	cloudresourcekind.CloudResourceKind_IngressNginxKubernetes:       &ingressnginxkubernetesv1.IngressNginxKubernetes{},
 	cloudresourcekind.CloudResourceKind_IstioKubernetes:              &istiokubernetesv1.IstioKubernetes{},
 	cloudresourcekind.CloudResourceKind_KafkaOperatorKubernetes:      &kafkaoperatorkubernetesv1.KafkaOperatorKubernetes{},
+	cloudresourcekind.CloudResourceKind_PerconaPostgresqlOperator:    &perconapostgresqloperatorv1.PerconaPostgresqlOperator{},
 	cloudresourcekind.CloudResourceKind_PerconaServerMongodbOperator: &perconaservermongodboperatorv1.PerconaServerMongodbOperator{},
+	cloudresourcekind.CloudResourceKind_PerconaServerMysqlOperator:   &perconaservermysqloperatorv1.PerconaServerMysqlOperator{},
 	cloudresourcekind.CloudResourceKind_PostgresOperatorKubernetes:   &postgresoperatorkubernetesv1.PostgresOperatorKubernetes{},
 	cloudresourcekind.CloudResourceKind_SolrOperatorKubernetes:       &solroperatorkubernetesv1.SolrOperatorKubernetes{},
 }
