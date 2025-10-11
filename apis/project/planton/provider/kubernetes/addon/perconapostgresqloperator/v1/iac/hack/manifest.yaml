@@ -1,0 +1,17 @@
+apiVersion: kubernetes.project-planton.org/v1
+kind: PerconaPostgresqlOperator
+metadata:
+  name: percona-pg-operator-test
+spec:
+  targetCluster:
+    credentialId: local-kind-cluster
+  namespace: percona-postgresql-operator
+  container:
+    resources:
+      limits:
+        cpu: 1000m
+        memory: 1Gi
+      requests:
+        cpu: 100m
+        memory: 256Mi
+
