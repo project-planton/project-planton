@@ -2,7 +2,7 @@ package module
 
 import (
 	"github.com/pkg/errors"
-	perconapostgresqloperatorv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/addon/perconapostgresqloperator/v1"
+	perconaservermysqloperatorv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/addon/perconaservermysqloperator/v1"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/pulumikubernetesprovider"
 	corev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
 	"github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/helm/v3"
@@ -10,8 +10,8 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// Resources creates all Pulumi resources for the Percona Operator for PostgreSQL Kubernetes add-on.
-func Resources(ctx *pulumi.Context, stackInput *perconapostgresqloperatorv1.PerconaPostgresqlOperatorStackInput) error {
+// Resources creates all Pulumi resources for the Percona Operator for MySQL Kubernetes add-on.
+func Resources(ctx *pulumi.Context, stackInput *perconaservermysqloperatorv1.PerconaServerMysqlOperatorStackInput) error {
 	// set up kubernetes provider from the supplied cluster credential
 	kubeProvider, err := pulumikubernetesprovider.GetWithKubernetesClusterCredential(
 		ctx, stackInput.ProviderCredential, "kubernetes")
@@ -52,7 +52,7 @@ func Resources(ctx *pulumi.Context, stackInput *perconapostgresqloperatorv1.Perc
 	}
 
 	// deploy the operator via Helm
-	_, err = helm.NewRelease(ctx, "percona-postgresql-operator",
+	_, err = helm.NewRelease(ctx, "percona-mysql-operator",
 		&helm.ReleaseArgs{
 			Name:            pulumi.String(vars.HelmChartName),
 			Namespace:       ns.Metadata.Name(),
@@ -72,7 +72,7 @@ func Resources(ctx *pulumi.Context, stackInput *perconapostgresqloperatorv1.Perc
 		pulumi.Parent(ns),
 		pulumi.IgnoreChanges([]string{"status", "description", "resourceNames"}))
 	if err != nil {
-		return errors.Wrap(err, "failed to install percona-postgresql-operator helm release")
+		return errors.Wrap(err, "failed to install percona-mysql-operator helm release")
 	}
 
 	// export stack outputs
