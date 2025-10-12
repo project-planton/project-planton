@@ -71,10 +71,12 @@ func initializeLocals(ctx *pulumi.Context, stackInput *mongodbkubernetesv1.Mongo
 
 	locals.KubeServiceName = target.Metadata.Name
 
+	// Percona operator uses these labels for pod selection
+	// These labels are automatically applied by the operator to MongoDB pods
 	locals.MongodbPodSelectorLabels = map[string]string{
-		"app.kubernetes.io/component": "mongodb",
-		"app.kubernetes.io/instance":  locals.Namespace,
-		"app.kubernetes.io/name":      "mongodb",
+		"app.kubernetes.io/name":       "percona-server-mongodb",
+		"app.kubernetes.io/instance":   target.Metadata.Name,
+		"app.kubernetes.io/managed-by": "percona-server-mongodb-operator",
 	}
 
 	//export kubernetes service name
