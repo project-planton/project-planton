@@ -31,7 +31,7 @@ func ingress(ctx *pulumi.Context, locals *Locals, createdNamespace *kubernetesco
 						TargetPort: pulumi.Int(5432),
 					},
 				},
-				Selector: pulumi.ToStringMap(locals.PostgresPodSectorLabels),
+				Selector: pulumi.ToStringMap(vars.PostgresPodSectorLabels),
 			},
 		}, pulumi.Parent(createdNamespace))
 	if err != nil {

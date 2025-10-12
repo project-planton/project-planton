@@ -19,7 +19,6 @@ type Locals struct {
 	KubeServiceName         string
 	Namespace               string
 	PostgresKubernetes      *postgreskubernetesv1.PostgresKubernetes
-	PostgresPodSectorLabels map[string]string
 	Labels                  map[string]string
 }
 
@@ -65,10 +64,6 @@ func initializeLocals(ctx *pulumi.Context, stackInput *postgreskubernetesv1.Post
 	}
 
 	ctx.Export(OpNamespace, pulumi.String(locals.Namespace))
-
-	locals.PostgresPodSectorLabels = map[string]string{
-		"team": vars.TeamId,
-	}
 
 	ctx.Export(OpUsernameSecretName,
 		pulumi.Sprintf("postgres.db-%s.credentials.postgresql.acid.zalan.do",
