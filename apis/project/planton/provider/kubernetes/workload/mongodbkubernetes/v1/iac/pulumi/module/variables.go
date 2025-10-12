@@ -11,7 +11,7 @@ var vars = struct {
 	MongodbRootPasswordKey: "MONGODB_DATABASE_ADMIN_PASSWORD",
 	RootUsername:           "databaseAdmin",
 	MongoDbPort:            27017,
-	MongoDBVersion:         "8.0.4-3",
+	MongoDBVersion:         "8.0.12-4",
 	CRVersion:              "1.20.1",
 	ReplicaSetName:         "rs0",
 }

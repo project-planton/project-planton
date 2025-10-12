@@ -680,7 +680,7 @@ const file_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto_ra
 	"\bcategory\x18\x02 \x01(\x0e2I.project.planton.shared.cloudresourcekind.KubernetesCloudResourceCategoryR\bcategory*O\n" +
 	"\x18CloudResourceKindVersion\x12+\n" +
 	"'cloud_resource_kind_version_unspecified\x10\x00\x12\x06\n" +
-	"\x02v1\x10\x01*\xd3+\n" +
+	"\x02v1\x10\x01*\xd1+\n" +
 	"\x11CloudResourceKind\x12\x0f\n" +
 	"\vunspecified\x10\x00\x12.\n" +
 	"\x19FirstTestCloudApiResource\x10\x01\x1a\x0f\xa2\xf7\x04\v\b\x01\x10\x01\"\x05tcar1\x12/\n" +
@@ -769,9 +769,9 @@ const file_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto_ra
 	"\n" +
 	"\x06locust\x10\x02\x12;\n" +
 	"\x16MicroserviceKubernetes\x10\xab\x06\x1a\x1e\xa2\xf7\x04\x1a\b\x13\x10\x01\"\x05msk8s(\x012\v\n" +
-	"\aservice\x10\x02\x125\n" +
-	"\x11MongodbKubernetes\x10\xac\x06\x1a\x1d\xa2\xf7\x04\x19\b\x13\x10\x01\"\x06mdbk8s2\v\n" +
-	"\amongodb\x10\x02\x121\n" +
+	"\aservice\x10\x02\x123\n" +
+	"\x11MongodbKubernetes\x10\xac\x06\x1a\x1b\xa2\xf7\x04\x17\b\x13\x10\x01\"\x06mdbk8s2\t\n" +
+	"\x05mongo\x10\x02\x121\n" +
 	"\x0fNeo4jKubernetes\x10\xad\x06\x1a\x1b\xa2\xf7\x04\x17\b\x13\x10\x01\"\x06neok8s2\t\n" +
 	"\x05neo4j\x10\x02\x125\n" +
 	"\x11OpenFgaKubernetes\x10\xae\x06\x1a\x1d\xa2\xf7\x04\x19\b\x13\x10\x01\"\x06fgak8s2\v\n" +

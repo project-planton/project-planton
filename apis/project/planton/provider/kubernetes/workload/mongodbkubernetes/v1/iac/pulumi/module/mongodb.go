@@ -40,6 +40,10 @@ func mongodb(
 				Image:     pulumi.String(fmt.Sprintf("percona/percona-server-mongodb:%s", vars.MongoDBVersion)),
 				Replsets:  buildReplicaSets(spec, replicaSetSize),
 				Secrets:   buildSecrets(createdSecret),
+				// Allow replica sets with less than 3 members for dev/test environments
+				UnsafeFlags: &psmdbv1.PerconaServerMongoDBSpecUnsafeFlagsArgs{
+					ReplsetSize: pulumi.Bool(true),
+				},
 			},
 		},
 		pulumi.Parent(createdNamespace),

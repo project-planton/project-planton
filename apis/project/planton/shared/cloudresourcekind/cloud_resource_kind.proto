@@ -126,7 +126,7 @@ enum CloudResourceKind {
   KubernetesHttpEndpoint = 809 [(kind_meta) = {provider: kubernetes, version: v1, id_prefix: "k8shttp", kubernetes_meta: {category: workload}}];
   LocustKubernetes = 810 [(kind_meta) = {provider: kubernetes, version: v1, id_prefix: "lock8s", kubernetes_meta: {category: workload, namespace_prefix: "locust"}}];
   MicroserviceKubernetes = 811 [(kind_meta) = {provider: kubernetes, version: v1, id_prefix: "msk8s", is_service_kind: true, kubernetes_meta: {category: workload, namespace_prefix: "service"}}];
-  MongodbKubernetes = 812 [(kind_meta) = {provider: kubernetes, version: v1, id_prefix: "mdbk8s", kubernetes_meta: {category: workload, namespace_prefix: "mongodb"}}];
+  MongodbKubernetes = 812 [(kind_meta) = {provider: kubernetes, version: v1, id_prefix: "mdbk8s", kubernetes_meta: {category: workload, namespace_prefix: "mongo"}}];
   Neo4jKubernetes = 813 [(kind_meta) = {provider: kubernetes, version: v1, id_prefix: "neok8s", kubernetes_meta: {category: workload, namespace_prefix: "neo4j"}}];
   OpenFgaKubernetes = 814 [(kind_meta) = {provider: kubernetes, version: v1, id_prefix: "fgak8s", kubernetes_meta: {category: workload, namespace_prefix: "openfga"}}];
   PostgresKubernetes = 815 [(kind_meta) = {provider: kubernetes, version: v1, id_prefix: "pgk8s", kubernetes_meta: {category: workload, namespace_prefix: "postgres"}}];

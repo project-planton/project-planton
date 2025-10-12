@@ -39,6 +39,8 @@ func Resources(ctx *pulumi.Context, stackInput *perconaservermongodboperatorv1.P
 
 	// prepare helm values with resource limits from spec
 	helmValues := pulumi.Map{
+		// Enable cluster-wide mode to watch all namespaces
+		"watchAllNamespaces": pulumi.Bool(true),
 		"resources": pulumi.Map{
 			"limits": pulumi.Map{
 				"cpu":    pulumi.String(stackInput.Target.Spec.Container.Resources.Limits.Cpu),
