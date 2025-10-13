@@ -8,22 +8,24 @@ import (
 )
 
 // Resources orchestrates creation of AWS RDS Cluster related resources and exports outputs.
-func Resources(ctx *pulumi.Context, in *awsrdsclusterv1.AwsRdsClusterStackInput) error {
-	locals := initializeLocals(ctx, in)
+func Resources(ctx *pulumi.Context, stackInput *awsrdsclusterv1.AwsRdsClusterStackInput) error {
+	locals := initializeLocals(ctx, stackInput)
 
-	// Initialize AWS provider (default when no credentials provided)
 	var provider *aws.Provider
 	var err error
-	if in.ProviderCredential == nil {
+	awsCredential := stackInput.ProviderCredential
+
+	if awsCredential == nil {
 		provider, err = aws.NewProvider(ctx, "classic-provider", &aws.ProviderArgs{})
 		if err != nil {
 			return errors.Wrap(err, "failed to create default AWS provider")
 		}
 	} else {
 		provider, err = aws.NewProvider(ctx, "classic-provider", &aws.ProviderArgs{
-			AccessKey: pulumi.String(in.ProviderCredential.AccessKeyId),
-			SecretKey: pulumi.String(in.ProviderCredential.SecretAccessKey),
-			Region:    pulumi.String(in.ProviderCredential.Region),
+			AccessKey: pulumi.String(awsCredential.AccessKeyId),
+			SecretKey: pulumi.String(awsCredential.SecretAccessKey),
+			Region:    pulumi.String(awsCredential.Region),
+			Token:     pulumi.StringPtr(awsCredential.SessionToken),
 		})
 		if err != nil {
 			return errors.Wrap(err, "failed to create AWS provider with custom credentials")

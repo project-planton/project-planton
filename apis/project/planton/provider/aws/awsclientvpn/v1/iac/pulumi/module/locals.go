@@ -14,7 +14,7 @@ type Locals struct {
 }
 
 // initializeLocals prepares the Locals struct and common AWS tags.
-func initializeLocals(ctx *pulumi.Context, stackInput *awsclientvpnv1.AwsClientVpnStackInput) (*Locals, error) {
+func initializeLocals(ctx *pulumi.Context, stackInput *awsclientvpnv1.AwsClientVpnStackInput) *Locals {
 	locals := &Locals{
 		AwsClientVpn: stackInput.Target,
 		AwsTags: map[string]string{
@@ -26,5 +26,5 @@ func initializeLocals(ctx *pulumi.Context, stackInput *awsclientvpnv1.AwsClientV
 			awstagkeys.ResourceKind: cloudresourcekind.CloudResourceKind_AwsClientVpn.String(),
 		},
 	}
-	return locals, nil
+	return locals
 }

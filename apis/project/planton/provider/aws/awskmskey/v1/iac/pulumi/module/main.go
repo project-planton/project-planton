@@ -10,10 +10,9 @@ import (
 func Resources(ctx *pulumi.Context, stackInput *awskmskeyv1.AwsKmsKeyStackInput) error {
 	locals := initializeLocals(ctx, stackInput)
 
-	awsCredential := stackInput.ProviderCredential
-
 	var provider *aws.Provider
 	var err error
+	awsCredential := stackInput.ProviderCredential
 
 	if awsCredential == nil {
 		provider, err = aws.NewProvider(ctx, "classic-provider", &aws.ProviderArgs{})
@@ -25,6 +24,7 @@ func Resources(ctx *pulumi.Context, stackInput *awskmskeyv1.AwsKmsKeyStackInput)
 			AccessKey: pulumi.String(awsCredential.AccessKeyId),
 			SecretKey: pulumi.String(awsCredential.SecretAccessKey),
 			Region:    pulumi.String(awsCredential.Region),
+			Token:     pulumi.StringPtr(awsCredential.SessionToken),
 		})
 		if err != nil {
 			return errors.Wrap(err, "failed to create AWS provider with custom credentials")

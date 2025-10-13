@@ -26,6 +26,7 @@ func Resources(ctx *pulumi.Context, stackInput *awsecrrepov1.AwsEcrRepoStackInpu
 			AccessKey: pulumi.String(awsCredential.AccessKeyId),
 			SecretKey: pulumi.String(awsCredential.SecretAccessKey),
 			Region:    pulumi.String(awsCredential.Region),
+			Token:     pulumi.StringPtr(awsCredential.SessionToken),
 		})
 		if err != nil {
 			return errors.Wrap(err, "failed to create AWS provider with custom credentials")

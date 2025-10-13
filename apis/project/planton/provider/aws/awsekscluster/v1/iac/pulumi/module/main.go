@@ -9,22 +9,23 @@ import (
 )
 
 func Resources(ctx *pulumi.Context, stackInput *awseksclusterv1.AwsEksClusterStackInput) (err error) {
-	// Provider initialization
-	awsCred := stackInput.ProviderCredential
 	var provider *aws.Provider
-	if awsCred == nil {
+	awsCredential := stackInput.ProviderCredential
+
+	if awsCredential == nil {
 		provider, err = aws.NewProvider(ctx, "classic-provider", &aws.ProviderArgs{})
 		if err != nil {
-			return errors.Wrap(err, "create default AWS provider")
+			return errors.Wrap(err, "failed to create default AWS provider")
 		}
 	} else {
 		provider, err = aws.NewProvider(ctx, "classic-provider", &aws.ProviderArgs{
-			Region:    pulumi.String(awsCred.Region),
-			AccessKey: pulumi.String(awsCred.AccessKeyId),
-			SecretKey: pulumi.String(awsCred.SecretAccessKey),
+			AccessKey: pulumi.String(awsCredential.AccessKeyId),
+			SecretKey: pulumi.String(awsCredential.SecretAccessKey),
+			Region:    pulumi.String(awsCredential.Region),
+			Token:     pulumi.StringPtr(awsCredential.SessionToken),
 		})
 		if err != nil {
-			return errors.Wrap(err, "create AWS provider")
+			return errors.Wrap(err, "failed to create AWS provider with custom credentials")
 		}
 	}
 

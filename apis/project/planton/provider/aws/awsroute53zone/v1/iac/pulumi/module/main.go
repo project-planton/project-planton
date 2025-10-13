@@ -55,6 +55,7 @@ func Resources(ctx *pulumi.Context, stackInput *awsroute53zonev1.AwsRoute53ZoneS
 				AccessKey: pulumi.String(awsCredential.AccessKeyId),
 				SecretKey: pulumi.String(awsCredential.SecretAccessKey),
 				Region:    pulumi.String(awsCredential.Region),
+				Token:     pulumi.StringPtr(awsCredential.SessionToken),
 			})
 		if err != nil {
 			return errors.Wrap(err, "failed to create default AWS classic provider")

@@ -18,26 +18,21 @@ func Resources(ctx *pulumi.Context, stackInput *awsvpcv1.AwsVpcStackInput) error
 		return errors.Wrap(err, "failed to initialize locals")
 	}
 
-	awsCredential := stackInput.ProviderCredential
 	var provider *aws.Provider
+	awsCredential := stackInput.ProviderCredential
 
-	// If the user didn't provide AWS credentials, create a default provider.
-	// Otherwise, inject custom credentials for the region, access key, etc.
 	if awsCredential == nil {
-		provider, err = aws.NewProvider(ctx,
-			"classic-provider",
-			&aws.ProviderArgs{})
+		provider, err = aws.NewProvider(ctx, "classic-provider", &aws.ProviderArgs{})
 		if err != nil {
 			return errors.Wrap(err, "failed to create default AWS provider")
 		}
 	} else {
-		provider, err = aws.NewProvider(ctx,
-			"classic-provider",
-			&aws.ProviderArgs{
-				AccessKey: pulumi.String(awsCredential.AccessKeyId),
-				SecretKey: pulumi.String(awsCredential.SecretAccessKey),
-				Region:    pulumi.String(awsCredential.Region),
-			})
+		provider, err = aws.NewProvider(ctx, "classic-provider", &aws.ProviderArgs{
+			AccessKey: pulumi.String(awsCredential.AccessKeyId),
+			SecretKey: pulumi.String(awsCredential.SecretAccessKey),
+			Region:    pulumi.String(awsCredential.Region),
+			Token:     pulumi.StringPtr(awsCredential.SessionToken),
+		})
 		if err != nil {
 			return errors.Wrap(err, "failed to create AWS provider with custom credentials")
 		}

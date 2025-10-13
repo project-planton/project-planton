@@ -11,30 +11,26 @@ import (
 // It wires provider credentials, initialises locals, and delegates
 // to ec2Instance(...) to create the EC2 VM.
 func Resources(ctx *pulumi.Context, stackInput *awsec2instancev1.AwsEc2InstanceStackInput) error {
-	locals := initialiseLocals(ctx, stackInput)
+	locals := initializeLocals(ctx, stackInput)
 
 	var provider *aws.Provider
 	var err error
+	awsCredential := stackInput.ProviderCredential
 
-	if stackInput.ProviderCredential == nil {
-		// Fall back to environment / shared‑config
-		provider, err = aws.NewProvider(ctx,
-			"classic-provider",
-			&aws.ProviderArgs{})
+	if awsCredential == nil {
+		provider, err = aws.NewProvider(ctx, "classic-provider", &aws.ProviderArgs{})
 		if err != nil {
-			return errors.Wrap(err, "create default AWS provider")
+			return errors.Wrap(err, "failed to create default AWS provider")
 		}
 	} else {
-		cred := stackInput.ProviderCredential
-		provider, err = aws.NewProvider(ctx,
-			"classic-provider",
-			&aws.ProviderArgs{
-				AccessKey: pulumi.String(cred.AccessKeyId),
-				SecretKey: pulumi.String(cred.SecretAccessKey),
-				Region:    pulumi.String(cred.Region),
-			})
+		provider, err = aws.NewProvider(ctx, "classic-provider", &aws.ProviderArgs{
+			AccessKey: pulumi.String(awsCredential.AccessKeyId),
+			SecretKey: pulumi.String(awsCredential.SecretAccessKey),
+			Region:    pulumi.String(awsCredential.Region),
+			Token:     pulumi.StringPtr(awsCredential.SessionToken),
+		})
 		if err != nil {
-			return errors.Wrap(err, "create AWS provider with custom credentials")
+			return errors.Wrap(err, "failed to create AWS provider with custom credentials")
 		}
 	}
 

@@ -7,20 +7,27 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-func Resources(ctx *pulumi.Context, in *awscloudfrontv1.AwsCloudFrontStackInput) error {
-	locals := initializeLocals(ctx, in)
+func Resources(ctx *pulumi.Context, stackInput *awscloudfrontv1.AwsCloudFrontStackInput) error {
+	locals := initializeLocals(ctx, stackInput)
 
-	cred := in.ProviderCredential
 	var provider *aws.Provider
 	var err error
-	if cred != nil {
-		provider, err = aws.NewProvider(ctx, "aws-provider", &aws.ProviderArgs{
-			AccessKey: pulumi.String(cred.AccessKeyId),
-			SecretKey: pulumi.String(cred.SecretAccessKey),
-			Region:    pulumi.String(cred.Region),
+	awsCredential := stackInput.ProviderCredential
+
+	if awsCredential == nil {
+		provider, err = aws.NewProvider(ctx, "classic-provider", &aws.ProviderArgs{})
+		if err != nil {
+			return errors.Wrap(err, "failed to create default AWS provider")
+		}
+	} else {
+		provider, err = aws.NewProvider(ctx, "classic-provider", &aws.ProviderArgs{
+			AccessKey: pulumi.String(awsCredential.AccessKeyId),
+			SecretKey: pulumi.String(awsCredential.SecretAccessKey),
+			Region:    pulumi.String(awsCredential.Region),
+			Token:     pulumi.StringPtr(awsCredential.SessionToken),
 		})
 		if err != nil {
-			return errors.Wrap(err, "create provider")
+			return errors.Wrap(err, "failed to create AWS provider with custom credentials")
 		}
 	}
 
