@@ -35,6 +35,9 @@ var _ = ginkgo.Describe("ClickHouseKubernetesSpec validations", func() {
 					},
 				},
 			},
+			Logging: &ClickHouseKubernetesLoggingConfig{
+				Level: ClickHouseKubernetesLoggingConfig_information,
+			},
 		}
 	})
 
