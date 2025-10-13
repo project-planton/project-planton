@@ -8,25 +8,27 @@ import (
 )
 
 // Resources orchestrates DynamoDB table creation and exports outputs.
-func Resources(ctx *pulumi.Context, in *awsdynamodbv1.AwsDynamodbStackInput) error {
-	locals := initializeLocals(ctx, in)
+func Resources(ctx *pulumi.Context, stackInput *awsdynamodbv1.AwsDynamodbStackInput) error {
+	locals := initializeLocals(ctx, stackInput)
 
 	var provider *aws.Provider
 	var err error
+	awsCredential := stackInput.ProviderCredential
 
-	if in.ProviderCredential == nil {
+	if awsCredential == nil {
 		provider, err = aws.NewProvider(ctx, "classic-provider", &aws.ProviderArgs{})
 		if err != nil {
-			return errors.Wrap(err, "create default AWS provider")
+			return errors.Wrap(err, "failed to create default AWS provider")
 		}
 	} else {
 		provider, err = aws.NewProvider(ctx, "classic-provider", &aws.ProviderArgs{
-			AccessKey: pulumi.String(in.ProviderCredential.AccessKeyId),
-			SecretKey: pulumi.String(in.ProviderCredential.SecretAccessKey),
-			Region:    pulumi.String(in.ProviderCredential.Region),
+			AccessKey: pulumi.String(awsCredential.AccessKeyId),
+			SecretKey: pulumi.String(awsCredential.SecretAccessKey),
+			Region:    pulumi.String(awsCredential.Region),
+			Token:     pulumi.StringPtr(awsCredential.SessionToken),
 		})
 		if err != nil {
-			return errors.Wrap(err, "create AWS provider with custom credentials")
+			return errors.Wrap(err, "failed to create AWS provider with custom credentials")
 		}
 	}
 

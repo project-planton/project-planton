@@ -16,8 +16,8 @@ type Locals struct {
 	AwsTags        map[string]string
 }
 
-// initialiseLocals converts the stack‑input into Locals.
-func initialiseLocals(ctx *pulumi.Context, stackInput *awsec2instancev1.AwsEc2InstanceStackInput) *Locals {
+// initializeLocals converts the stack‑input into Locals.
+func initializeLocals(ctx *pulumi.Context, stackInput *awsec2instancev1.AwsEc2InstanceStackInput) *Locals {
 	locals := &Locals{
 		AwsEc2Instance: stackInput.Target,
 	}

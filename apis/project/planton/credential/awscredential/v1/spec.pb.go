@@ -50,7 +50,13 @@ type AwsCredentialSpec struct {
 	// The AWS region to be used when configuring this AWS credential.
 	// This optional field allows specifying the region in which resources will be created or managed.
 	// For more information do refer this link https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.RegionsAndAvailabilityZones.html
-	Region        string `protobuf:"bytes,4,opt,name=region,proto3" json:"region,omitempty"`
+	Region string `protobuf:"bytes,4,opt,name=region,proto3" json:"region,omitempty"`
+	// The AWS Session Token, required when using temporary security credentials.
+	// This field is optional and only needed when using temporary credentials obtained through
+	// AWS STS operations (e.g., AssumeRole, GetSessionToken).
+	// Temporary credentials have Access Key IDs starting with 'ASIA'.
+	// For more information refer to https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp.html
+	SessionToken  string `protobuf:"bytes,5,opt,name=session_token,json=sessionToken,proto3" json:"session_token,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -113,11 +119,18 @@ func (x *AwsCredentialSpec) GetRegion() string {
 	return ""
 }
 
+func (x *AwsCredentialSpec) GetSessionToken() string {
+	if x != nil {
+		return x.SessionToken
+	}
+	return ""
+}
+
 var File_project_planton_credential_awscredential_v1_spec_proto protoreflect.FileDescriptor
 
 const file_project_planton_credential_awscredential_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"6project/planton/credential/awscredential/v1/spec.proto\x12+project.planton.credential.awscredential.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\"\xbc\x06\n" +
+	"6project/planton/credential/awscredential/v1/spec.proto\x12+project.planton.credential.awscredential.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\"\xe1\x06\n" +
 	"\x11AwsCredentialSpec\x12w\n" +
 	"\n" +
 	"account_id\x18\x01 \x01(\tBX\xbaHU\xba\x01O\n" +
@@ -127,7 +140,8 @@ const file_project_planton_credential_awscredential_v1_spec_proto_rawDesc = "" +
 	"\x12spec.access_key_id\x12GMust start with 'AKIA' or 'ASIA' followed by 16 alphanumeric characters\x1a%this.matches('^.{4}[a-zA-Z0-9]{16}$')\xc8\x01\x01r\x03\x98\x01\x14R\vaccessKeyId\x12\xdc\x02\n" +
 	"\x11secret_access_key\x18\x03 \x01(\tB\xaf\x02\xbaH\xab\x02\xba\x01\x9f\x02\n" +
 	"\x1aspec.aws.secret_access_key\x12\xdb\x01The provided AWS Secret Access Key is invalid. It must contain exactly 40 characters consisting of numbers, lowercase and uppercase letters, slashes (/), and plus signs (+). Please double-check your input and try again.\x1a#this.matches('^[0-9a-zA-Z/+]{40}$')\xc8\x01\x01r\x03\x98\x01(R\x0fsecretAccessKey\x12%\n" +
-	"\x06region\x18\x04 \x01(\tB\r\x8a\xa6\x1d\tus-west-2R\x06regionB\xfa\x02\n" +
+	"\x06region\x18\x04 \x01(\tB\r\x8a\xa6\x1d\tus-west-2R\x06region\x12#\n" +
+	"\rsession_token\x18\x05 \x01(\tR\fsessionTokenB\xfa\x02\n" +
 	"/com.project.planton.credential.awscredential.v1B\tSpecProtoP\x01Zkgithub.com/project-planton/project-planton/apis/project/planton/credential/awscredential/v1;awscredentialv1\xa2\x02\x04PPCA\xaa\x02+Project.Planton.Credential.Awscredential.V1\xca\x02+Project\\Planton\\Credential\\Awscredential\\V1\xe2\x027Project\\Planton\\Credential\\Awscredential\\V1\\GPBMetadata\xea\x02/Project::Planton::Credential::Awscredential::V1b\x06proto3"
 
 var (

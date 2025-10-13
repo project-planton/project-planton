@@ -10,21 +10,25 @@ import (
 
 // Resources is the main entry point for the aws_eks_node_group Pulumi module.
 func Resources(ctx *pulumi.Context, stackInput *awseksnodegroupv1.AwsEksNodeGroupStackInput) error {
-	// Provider
 	var provider *aws.Provider
 	var err error
-	if stackInput.ProviderCredential == nil {
+	awsCredential := stackInput.ProviderCredential
+
+	if awsCredential == nil {
 		provider, err = aws.NewProvider(ctx, "classic-provider", &aws.ProviderArgs{})
+		if err != nil {
+			return errors.Wrap(err, "failed to create default AWS provider")
+		}
 	} else {
-		cred := stackInput.ProviderCredential
 		provider, err = aws.NewProvider(ctx, "classic-provider", &aws.ProviderArgs{
-			Region:    pulumi.String(cred.Region),
-			AccessKey: pulumi.String(cred.AccessKeyId),
-			SecretKey: pulumi.String(cred.SecretAccessKey),
+			AccessKey: pulumi.String(awsCredential.AccessKeyId),
+			SecretKey: pulumi.String(awsCredential.SecretAccessKey),
+			Region:    pulumi.String(awsCredential.Region),
+			Token:     pulumi.StringPtr(awsCredential.SessionToken),
 		})
-	}
-	if err != nil {
-		return errors.Wrap(err, "create AWS provider")
+		if err != nil {
+			return errors.Wrap(err, "failed to create AWS provider with custom credentials")
+		}
 	}
 
 	target := stackInput.Target

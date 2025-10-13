@@ -14,27 +14,27 @@ import (
 
 // Resources – entry‑point invoked by the Project Planton engine
 func Resources(ctx *pulumi.Context, stackInput *awsclientvpnv1.AwsClientVpnStackInput) error {
+	locals := initializeLocals(ctx, stackInput)
 
-	// ------------------------------------------------------------------ locals
-	locals, err := initializeLocals(ctx, stackInput)
-	if err != nil {
-		return errors.Wrap(err, "initialize locals")
-	}
-
-	// ---------------------------------------------------------- AWS provider
 	var provider *aws.Provider
-	awsCred := stackInput.ProviderCredential
-	if awsCred == nil {
+	var err error
+	awsCredential := stackInput.ProviderCredential
+
+	if awsCredential == nil {
 		provider, err = aws.NewProvider(ctx, "classic-provider", &aws.ProviderArgs{})
+		if err != nil {
+			return errors.Wrap(err, "failed to create default AWS provider")
+		}
 	} else {
 		provider, err = aws.NewProvider(ctx, "classic-provider", &aws.ProviderArgs{
-			Region:    pulumi.String(awsCred.Region),
-			AccessKey: pulumi.String(awsCred.AccessKeyId),
-			SecretKey: pulumi.String(awsCred.SecretAccessKey),
+			AccessKey: pulumi.String(awsCredential.AccessKeyId),
+			SecretKey: pulumi.String(awsCredential.SecretAccessKey),
+			Region:    pulumi.String(awsCredential.Region),
+			Token:     pulumi.StringPtr(awsCredential.SessionToken),
 		})
-	}
-	if err != nil {
-		return errors.Wrap(err, "create AWS provider")
+		if err != nil {
+			return errors.Wrap(err, "failed to create AWS provider with custom credentials")
+		}
 	}
 
 	// Authentication (only certificate‑based for now)

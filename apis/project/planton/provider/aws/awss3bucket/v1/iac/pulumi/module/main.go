@@ -10,32 +10,23 @@ import (
 
 func Resources(ctx *pulumi.Context, stackInput *awss3bucketv1.AwsS3BucketStackInput) error {
 	locals := initializeLocals(ctx, stackInput)
+
+	var provider *aws.Provider
+	var err error
 	awsCredential := stackInput.ProviderCredential
 
-	// Initialize AWS provider with safe defaults when credentials are not provided
-	var nativeProvider *aws.Provider
-	var err error
 	if awsCredential == nil {
-		var args aws.ProviderArgs
-		if locals.AwsS3Bucket != nil && locals.AwsS3Bucket.Spec.AwsRegion != "" {
-			args.Region = pulumi.String(locals.AwsS3Bucket.Spec.AwsRegion)
-		}
-		nativeProvider, err = aws.NewProvider(ctx, "native-provider", &args)
+		provider, err = aws.NewProvider(ctx, "classic-provider", &aws.ProviderArgs{})
 		if err != nil {
 			return errors.Wrap(err, "failed to create default AWS provider")
 		}
 	} else {
-		region := awsCredential.Region
-		if region == "" && locals.AwsS3Bucket != nil && locals.AwsS3Bucket.Spec.AwsRegion != "" {
-			region = locals.AwsS3Bucket.Spec.AwsRegion
-		}
-		nativeProvider, err = aws.NewProvider(ctx,
-			"native-provider",
-			&aws.ProviderArgs{
-				AccessKey: pulumi.String(awsCredential.AccessKeyId),
-				SecretKey: pulumi.String(awsCredential.SecretAccessKey),
-				Region:    pulumi.String(region),
-			})
+		provider, err = aws.NewProvider(ctx, "classic-provider", &aws.ProviderArgs{
+			AccessKey: pulumi.String(awsCredential.AccessKeyId),
+			SecretKey: pulumi.String(awsCredential.SecretAccessKey),
+			Region:    pulumi.String(awsCredential.Region),
+			Token:     pulumi.StringPtr(awsCredential.SessionToken),
+		})
 		if err != nil {
 			return errors.Wrap(err, "failed to create AWS provider with custom credentials")
 		}
@@ -45,7 +36,7 @@ func Resources(ctx *pulumi.Context, stackInput *awss3bucketv1.AwsS3BucketStackIn
 	createdBucket, err := s3.NewBucket(ctx, "bucket",
 		&s3.BucketArgs{
 			BucketName: pulumi.String(locals.AwsS3Bucket.Metadata.Name),
-		}, pulumi.Provider(nativeProvider))
+		}, pulumi.Provider(provider))
 	if err != nil {
 		return errors.Wrap(err, "failed to create S3 bucket")
 	}
