@@ -37,8 +37,16 @@ var _ = ginkgo.Describe("AwsCredentialSpec Validation Tests", func() {
 	})
 
 	ginkgo.Describe("When valid input is passed", func() {
-		ginkgo.Context("with valid credentials", func() {
+		ginkgo.Context("with valid long-term credentials (AKIA prefix)", func() {
 			ginkgo.It("should not return a validation error", func() {
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+		})
+
+		ginkgo.Context("with valid temporary credentials (ASIA prefix)", func() {
+			ginkgo.It("should not return a validation error", func() {
+				input.Spec.AccessKeyId = "ASIA34ABCDEFGHIJKLMN"
 				err := protovalidate.Validate(input)
 				gomega.Expect(err).To(gomega.BeNil())
 			})
@@ -63,8 +71,14 @@ var _ = ginkgo.Describe("AwsCredentialSpec Validation Tests", func() {
 
 		ginkgo.Context("access_key_id validation", func() {
 
-			ginkgo.It("should fail if access_key_id does not start with AKIA", func() {
+			ginkgo.It("should fail if access_key_id does not start with AKIA or ASIA", func() {
 				input.Spec.AccessKeyId = "BKIAABCDEFGHIJKLMNOP"
+				err := protovalidate.Validate(input)
+				gomega.Expect(err).NotTo(gomega.BeNil())
+			})
+
+			ginkgo.It("should fail if access_key_id starts with ALIA (invalid prefix)", func() {
+				input.Spec.AccessKeyId = "ALIAABCDEFGHIJKLMNOP"
 				err := protovalidate.Validate(input)
 				gomega.Expect(err).NotTo(gomega.BeNil())
 			})

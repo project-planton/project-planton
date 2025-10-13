@@ -38,8 +38,8 @@ type AwsCredentialSpec struct {
 	// For more information do refer this link https://docs.aws.amazon.com/accounts/latest/reference/manage-acct-identifiers.html
 	AccountId string `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id,omitempty"`
 	// The AWS Access Key ID, which is used to authenticate API requests to AWS services.
-	// This is a required field, and it must always start with 'AKIA' followed by 16 alphanumeric characters.
-	// This field must contain exactly 20 characters, and validation rules ensure the correctness of the format.
+	// This is a required field, and it must start with either 'AKIA' (long-term credentials) or 'ASIA' (temporary security credentials)
+	// followed by 16 alphanumeric characters. This field must contain exactly 20 characters.
 	// For more information do refer this link https://docs.aws.amazon.com/IAM/latest/UserGuide/access-keys-admin-managed.html
 	AccessKeyId string `protobuf:"bytes,2,opt,name=access_key_id,json=accessKeyId,proto3" json:"access_key_id,omitempty"`
 	// The AWS Secret Access Key, which is used in combination with the access key ID to authenticate API requests to AWS services.
@@ -117,14 +117,14 @@ var File_project_planton_credential_awscredential_v1_spec_proto protoreflect.Fil
 
 const file_project_planton_credential_awscredential_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"6project/planton/credential/awscredential/v1/spec.proto\x12+project.planton.credential.awscredential.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\"\x97\x06\n" +
+	"6project/planton/credential/awscredential/v1/spec.proto\x12+project.planton.credential.awscredential.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\"\xbc\x06\n" +
 	"\x11AwsCredentialSpec\x12w\n" +
 	"\n" +
 	"account_id\x18\x01 \x01(\tBX\xbaHU\xba\x01O\n" +
-	"\x13spec.aws.account_id\x12\x1eOnly numbers (0-9) are allowed\x1a\x18this.matches('^[0-9]+$')\xc8\x01\x01R\taccountId\x12\x82\x02\n" +
-	"\raccess_key_id\x18\x02 \x01(\tB\xdd\x01\xbaH\xd9\x01\xba\x01I\n" +
-	"\x16spec.aws.access_key_id\x12\x16Must start with 'AKIA'\x1a\x17this.matches('^AKIA.*')\xba\x01\x81\x01\n" +
-	"\x16spec.aws.access_key_id\x12>Must start with 'AKIA' followed by 16 alphanumeric characters'\x1a'this.matches('^.{4}[a-zA-Z0-9]{16}.*$')\xc8\x01\x01r\x03\x98\x01\x14R\vaccessKeyId\x12\xdc\x02\n" +
+	"\x13spec.aws.account_id\x12\x1eOnly numbers (0-9) are allowed\x1a\x18this.matches('^[0-9]+$')\xc8\x01\x01R\taccountId\x12\xa7\x02\n" +
+	"\raccess_key_id\x18\x02 \x01(\tB\x82\x02\xbaH\xfe\x01\xba\x01k\n" +
+	"\x12spec.access_key_id\x128Must start with 'AKIA' (long-term) or 'ASIA' (temporary)\x1a\x1bthis.matches('^A(K|S)IA.*')\xba\x01\x84\x01\n" +
+	"\x12spec.access_key_id\x12GMust start with 'AKIA' or 'ASIA' followed by 16 alphanumeric characters\x1a%this.matches('^.{4}[a-zA-Z0-9]{16}$')\xc8\x01\x01r\x03\x98\x01\x14R\vaccessKeyId\x12\xdc\x02\n" +
 	"\x11secret_access_key\x18\x03 \x01(\tB\xaf\x02\xbaH\xab\x02\xba\x01\x9f\x02\n" +
 	"\x1aspec.aws.secret_access_key\x12\xdb\x01The provided AWS Secret Access Key is invalid. It must contain exactly 40 characters consisting of numbers, lowercase and uppercase letters, slashes (/), and plus signs (+). Please double-check your input and try again.\x1a#this.matches('^[0-9a-zA-Z/+]{40}$')\xc8\x01\x01r\x03\x98\x01(R\x0fsecretAccessKey\x12%\n" +
 	"\x06region\x18\x04 \x01(\tB\r\x8a\xa6\x1d\tus-west-2R\x06regionB\xfa\x02\n" +
