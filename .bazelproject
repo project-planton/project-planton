@@ -1,0 +1,18 @@
+# projectview.bazelproject
+# Two-space indentation is required.
+
+directories:
+  .
+  -bazel-bin
+  -bazel-out
+  -bazel-testlogs
+
+derive_targets_from_directories: false
+
+targets:
+  //:project-planton_lib
+  //:project-planton
+  //apis/...
+  //cmd/...
+  //internal/...
+  //pkg/...
