@@ -202,19 +202,19 @@ func helmChart(ctx *pulumi.Context, locals *Locals,
 // mapSearchAttributeType converts proto enum to Temporal search attribute type string
 func mapSearchAttributeType(attrType temporalkubernetesv1.TemporalKubernetesSearchAttributeType) string {
 	switch attrType {
-	case temporalkubernetesv1.TemporalKubernetesSearchAttributeType_keyword:
+	case temporalkubernetesv1.TemporalKubernetesSearchAttributeType_keyword_type:
 		return "Keyword"
-	case temporalkubernetesv1.TemporalKubernetesSearchAttributeType_text:
+	case temporalkubernetesv1.TemporalKubernetesSearchAttributeType_text_type:
 		return "Text"
-	case temporalkubernetesv1.TemporalKubernetesSearchAttributeType_int:
+	case temporalkubernetesv1.TemporalKubernetesSearchAttributeType_int_type:
 		return "Int"
-	case temporalkubernetesv1.TemporalKubernetesSearchAttributeType_double:
+	case temporalkubernetesv1.TemporalKubernetesSearchAttributeType_double_type:
 		return "Double"
-	case temporalkubernetesv1.TemporalKubernetesSearchAttributeType_bool:
+	case temporalkubernetesv1.TemporalKubernetesSearchAttributeType_bool_type:
 		return "Bool"
-	case temporalkubernetesv1.TemporalKubernetesSearchAttributeType_datetime:
+	case temporalkubernetesv1.TemporalKubernetesSearchAttributeType_datetime_type:
 		return "Datetime"
-	case temporalkubernetesv1.TemporalKubernetesSearchAttributeType_keyword_list:
+	case temporalkubernetesv1.TemporalKubernetesSearchAttributeType_keyword_list_type:
 		return "KeywordList"
 	default:
 		return "Keyword"
