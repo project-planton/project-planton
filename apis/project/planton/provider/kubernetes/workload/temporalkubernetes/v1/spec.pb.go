@@ -81,86 +81,15 @@ func (TemporalKubernetesDatabaseBackend) EnumDescriptor() ([]byte, []int) {
 	return file_project_planton_provider_kubernetes_workload_temporalkubernetes_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
-// temporal kubernetes search attribute type enumerates supported types
-type TemporalKubernetesSearchAttributeType int32
-
-const (
-	// unspecified should not be used
-	TemporalKubernetesSearchAttributeType_temporal_kubernetes_search_attribute_type_unspecified TemporalKubernetesSearchAttributeType = 0
-	// keyword type - exact match string (indexed, not analyzed)
-	TemporalKubernetesSearchAttributeType_keyword_type TemporalKubernetesSearchAttributeType = 1
-	// text type - full-text searchable string (analyzed, only works with Elasticsearch)
-	TemporalKubernetesSearchAttributeType_text_type TemporalKubernetesSearchAttributeType = 2
-	// int type - 64-bit integer
-	TemporalKubernetesSearchAttributeType_int_type TemporalKubernetesSearchAttributeType = 3
-	// double type - floating point number
-	TemporalKubernetesSearchAttributeType_double_type TemporalKubernetesSearchAttributeType = 4
-	// bool type - boolean value
-	TemporalKubernetesSearchAttributeType_bool_type TemporalKubernetesSearchAttributeType = 5
-	// datetime type - timestamp
-	TemporalKubernetesSearchAttributeType_datetime_type TemporalKubernetesSearchAttributeType = 6
-	// keyword_list type - array of keywords
-	TemporalKubernetesSearchAttributeType_keyword_list_type TemporalKubernetesSearchAttributeType = 7
-)
-
-// Enum value maps for TemporalKubernetesSearchAttributeType.
-var (
-	TemporalKubernetesSearchAttributeType_name = map[int32]string{
-		0: "temporal_kubernetes_search_attribute_type_unspecified",
-		1: "keyword_type",
-		2: "text_type",
-		3: "int_type",
-		4: "double_type",
-		5: "bool_type",
-		6: "datetime_type",
-		7: "keyword_list_type",
-	}
-	TemporalKubernetesSearchAttributeType_value = map[string]int32{
-		"temporal_kubernetes_search_attribute_type_unspecified": 0,
-		"keyword_type":      1,
-		"text_type":         2,
-		"int_type":          3,
-		"double_type":       4,
-		"bool_type":         5,
-		"datetime_type":     6,
-		"keyword_list_type": 7,
-	}
-)
-
-func (x TemporalKubernetesSearchAttributeType) Enum() *TemporalKubernetesSearchAttributeType {
-	p := new(TemporalKubernetesSearchAttributeType)
-	*p = x
-	return p
-}
-
-func (x TemporalKubernetesSearchAttributeType) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (TemporalKubernetesSearchAttributeType) Descriptor() protoreflect.EnumDescriptor {
-	return file_project_planton_provider_kubernetes_workload_temporalkubernetes_v1_spec_proto_enumTypes[1].Descriptor()
-}
-
-func (TemporalKubernetesSearchAttributeType) Type() protoreflect.EnumType {
-	return &file_project_planton_provider_kubernetes_workload_temporalkubernetes_v1_spec_proto_enumTypes[1]
-}
-
-func (x TemporalKubernetesSearchAttributeType) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use TemporalKubernetesSearchAttributeType.Descriptor instead.
-func (TemporalKubernetesSearchAttributeType) EnumDescriptor() ([]byte, []int) {
-	return file_project_planton_provider_kubernetes_workload_temporalkubernetes_v1_spec_proto_rawDescGZIP(), []int{1}
-}
-
 // defines a custom search attribute for Temporal workflows
 type TemporalKubernetesSearchAttribute struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// name of the search attribute (e.g., "CustomerId", "Environment")
 	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// type of the search attribute
-	Type          TemporalKubernetesSearchAttributeType `protobuf:"varint,2,opt,name=type,proto3,enum=project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesSearchAttributeType" json:"type,omitempty"`
+	// must be one of: Keyword, Text, Int, Double, Bool, Datetime, KeywordList
+	// note: Text type only works with Elasticsearch backend
+	Type          string `protobuf:"bytes,2,opt,name=type,proto3" json:"type,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -202,11 +131,11 @@ func (x *TemporalKubernetesSearchAttribute) GetName() string {
 	return ""
 }
 
-func (x *TemporalKubernetesSearchAttribute) GetType() TemporalKubernetesSearchAttributeType {
+func (x *TemporalKubernetesSearchAttribute) GetType() string {
 	if x != nil {
 		return x.Type
 	}
-	return TemporalKubernetesSearchAttributeType_temporal_kubernetes_search_attribute_type_unspecified
+	return ""
 }
 
 // temporal kubernetes spec defines minimal fields for deploying temporal on kubernetes.
@@ -233,10 +162,13 @@ type TemporalKubernetesSpec struct {
 	ExternalElasticsearch *TemporalKubernetesExternalElasticsearch `protobuf:"bytes,7,opt,name=external_elasticsearch,json=externalElasticsearch,proto3" json:"external_elasticsearch,omitempty"`
 	// custom search attributes to register in the Temporal cluster
 	// these attributes can be used to filter and query workflows
-	// note: 'text' type only works with Elasticsearch backend
+	// note: 'Text' type only works with Elasticsearch backend
 	SearchAttributes []*TemporalKubernetesSearchAttribute `protobuf:"bytes,8,rep,name=search_attributes,json=searchAttributes,proto3" json:"search_attributes,omitempty"`
-	unknownFields    protoimpl.UnknownFields
-	sizeCache        protoimpl.SizeCache
+	// version of the Temporal Helm chart to deploy (e.g., "0.62.0")
+	// if not specified, the default version configured in the Pulumi module will be used
+	Version       string `protobuf:"bytes,9,opt,name=version,proto3" json:"version,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *TemporalKubernetesSpec) Reset() {
@@ -323,6 +255,13 @@ func (x *TemporalKubernetesSpec) GetSearchAttributes() []*TemporalKubernetesSear
 		return x.SearchAttributes
 	}
 	return nil
+}
+
+func (x *TemporalKubernetesSpec) GetVersion() string {
+	if x != nil {
+		return x.Version
+	}
+	return ""
 }
 
 // groups database configuration settings.
@@ -558,10 +497,11 @@ var File_project_planton_provider_kubernetes_workload_temporalkubernetes_v1_spec
 
 const file_project_planton_provider_kubernetes_workload_temporalkubernetes_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Mproject/planton/provider/kubernetes/workload/temporalkubernetes/v1/spec.proto\x12Bproject.planton.provider.kubernetes.workload.temporalkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a,project/planton/shared/options/options.proto\"\xc7\x01\n" +
+	"Mproject/planton/provider/kubernetes/workload/temporalkubernetes/v1/spec.proto\x12Bproject.planton.provider.kubernetes.workload.temporalkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a,project/planton/shared/options/options.proto\"\xa3\x02\n" +
 	"!TemporalKubernetesSearchAttribute\x12\x1a\n" +
-	"\x04name\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\x12\x85\x01\n" +
-	"\x04type\x18\x02 \x01(\x0e2i.project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesSearchAttributeTypeB\x06\xbaH\x03\xc8\x01\x01R\x04type\"\xfa\x05\n" +
+	"\x04name\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\x12\xe1\x01\n" +
+	"\x04type\x18\x02 \x01(\tB\xcc\x01\xbaH\xc8\x01\xba\x01\xc1\x01\n" +
+	" type.valid_search_attribute_type\x12Ltype must be one of: Keyword, Text, Int, Double, Bool, Datetime, KeywordList\x1aOthis in ['Keyword', 'Text', 'Int', 'Double', 'Bool', 'Datetime', 'KeywordList']\xc8\x01\x01R\x04type\"\x94\x06\n" +
 	"\x16TemporalKubernetesSpec\x12\x88\x01\n" +
 	"\bdatabase\x18\x01 \x01(\v2d.project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesDatabaseConfigB\x06\xbaH\x03\xc8\x01\x01R\bdatabase\x12$\n" +
 	"\x0edisable_web_ui\x18\x02 \x01(\bR\fdisableWebUi\x12@\n" +
@@ -570,7 +510,8 @@ const file_project_planton_provider_kubernetes_workload_temporalkubernetes_v1_sp
 	"\x11cassandraReplicas\x18\x05 \x01(\x05B\x05\x8a\xa6\x1d\x011R\x11cassandraReplicas\x12H\n" +
 	"\aingress\x18\x06 \x01(\v2..project.planton.shared.kubernetes.IngressSpecR\aingress\x12\xa2\x01\n" +
 	"\x16external_elasticsearch\x18\a \x01(\v2k.project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesExternalElasticsearchR\x15externalElasticsearch\x12\x92\x01\n" +
-	"\x11search_attributes\x18\b \x03(\v2e.project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesSearchAttributeR\x10searchAttributes\"\xf2\x03\n" +
+	"\x11search_attributes\x18\b \x03(\v2e.project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesSearchAttributeR\x10searchAttributes\x12\x18\n" +
+	"\aversion\x18\t \x01(\tR\aversion\"\xf2\x03\n" +
 	" TemporalKubernetesDatabaseConfig\x12\x87\x01\n" +
 	"\abackend\x18\x01 \x01(\x0e2e.project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesDatabaseBackendB\x06\xbaH\x03\xc8\x01\x01R\abackend\x12\x93\x01\n" +
 	"\x11external_database\x18\x02 \x01(\v2f.project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesExternalDatabaseR\x10externalDatabase\x121\n" +
@@ -592,16 +533,7 @@ const file_project_planton_provider_kubernetes_workload_temporalkubernetes_v1_sp
 	"\tcassandra\x10\x01\x12\x0e\n" +
 	"\n" +
 	"postgresql\x10\x02\x12\t\n" +
-	"\x05mysql\x10\x03*\xdb\x01\n" +
-	"%TemporalKubernetesSearchAttributeType\x129\n" +
-	"5temporal_kubernetes_search_attribute_type_unspecified\x10\x00\x12\x10\n" +
-	"\fkeyword_type\x10\x01\x12\r\n" +
-	"\ttext_type\x10\x02\x12\f\n" +
-	"\bint_type\x10\x03\x12\x0f\n" +
-	"\vdouble_type\x10\x04\x12\r\n" +
-	"\tbool_type\x10\x05\x12\x11\n" +
-	"\rdatetime_type\x10\x06\x12\x15\n" +
-	"\x11keyword_list_type\x10\aB\x8e\x04\n" +
+	"\x05mysql\x10\x03B\x8e\x04\n" +
 	"Fcom.project.planton.provider.kubernetes.workload.temporalkubernetes.v1B\tSpecProtoP\x01Z\x87\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/temporalkubernetes/v1;temporalkubernetesv1\xa2\x02\x06PPPKWT\xaa\x02BProject.Planton.Provider.Kubernetes.Workload.Temporalkubernetes.V1\xca\x02BProject\\Planton\\Provider\\Kubernetes\\Workload\\Temporalkubernetes\\V1\xe2\x02NProject\\Planton\\Provider\\Kubernetes\\Workload\\Temporalkubernetes\\V1\\GPBMetadata\xea\x02HProject::Planton::Provider::Kubernetes::Workload::Temporalkubernetes::V1b\x06proto3"
 
 var (
@@ -616,31 +548,29 @@ func file_project_planton_provider_kubernetes_workload_temporalkubernetes_v1_spe
 	return file_project_planton_provider_kubernetes_workload_temporalkubernetes_v1_spec_proto_rawDescData
 }
 
-var file_project_planton_provider_kubernetes_workload_temporalkubernetes_v1_spec_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
+var file_project_planton_provider_kubernetes_workload_temporalkubernetes_v1_spec_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_project_planton_provider_kubernetes_workload_temporalkubernetes_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_project_planton_provider_kubernetes_workload_temporalkubernetes_v1_spec_proto_goTypes = []any{
 	(TemporalKubernetesDatabaseBackend)(0),          // 0: project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesDatabaseBackend
-	(TemporalKubernetesSearchAttributeType)(0),      // 1: project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesSearchAttributeType
-	(*TemporalKubernetesSearchAttribute)(nil),       // 2: project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesSearchAttribute
-	(*TemporalKubernetesSpec)(nil),                  // 3: project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesSpec
-	(*TemporalKubernetesDatabaseConfig)(nil),        // 4: project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesDatabaseConfig
-	(*TemporalKubernetesExternalDatabase)(nil),      // 5: project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesExternalDatabase
-	(*TemporalKubernetesExternalElasticsearch)(nil), // 6: project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesExternalElasticsearch
-	(*kubernetes.IngressSpec)(nil),                  // 7: project.planton.shared.kubernetes.IngressSpec
+	(*TemporalKubernetesSearchAttribute)(nil),       // 1: project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesSearchAttribute
+	(*TemporalKubernetesSpec)(nil),                  // 2: project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesSpec
+	(*TemporalKubernetesDatabaseConfig)(nil),        // 3: project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesDatabaseConfig
+	(*TemporalKubernetesExternalDatabase)(nil),      // 4: project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesExternalDatabase
+	(*TemporalKubernetesExternalElasticsearch)(nil), // 5: project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesExternalElasticsearch
+	(*kubernetes.IngressSpec)(nil),                  // 6: project.planton.shared.kubernetes.IngressSpec
 }
 var file_project_planton_provider_kubernetes_workload_temporalkubernetes_v1_spec_proto_depIdxs = []int32{
-	1, // 0: project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesSearchAttribute.type:type_name -> project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesSearchAttributeType
-	4, // 1: project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesSpec.database:type_name -> project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesDatabaseConfig
-	7, // 2: project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesSpec.ingress:type_name -> project.planton.shared.kubernetes.IngressSpec
-	6, // 3: project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesSpec.external_elasticsearch:type_name -> project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesExternalElasticsearch
-	2, // 4: project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesSpec.search_attributes:type_name -> project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesSearchAttribute
-	0, // 5: project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesDatabaseConfig.backend:type_name -> project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesDatabaseBackend
-	5, // 6: project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesDatabaseConfig.external_database:type_name -> project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesExternalDatabase
-	7, // [7:7] is the sub-list for method output_type
-	7, // [7:7] is the sub-list for method input_type
-	7, // [7:7] is the sub-list for extension type_name
-	7, // [7:7] is the sub-list for extension extendee
-	0, // [0:7] is the sub-list for field type_name
+	3, // 0: project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesSpec.database:type_name -> project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesDatabaseConfig
+	6, // 1: project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesSpec.ingress:type_name -> project.planton.shared.kubernetes.IngressSpec
+	5, // 2: project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesSpec.external_elasticsearch:type_name -> project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesExternalElasticsearch
+	1, // 3: project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesSpec.search_attributes:type_name -> project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesSearchAttribute
+	0, // 4: project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesDatabaseConfig.backend:type_name -> project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesDatabaseBackend
+	4, // 5: project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesDatabaseConfig.external_database:type_name -> project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesExternalDatabase
+	6, // [6:6] is the sub-list for method output_type
+	6, // [6:6] is the sub-list for method input_type
+	6, // [6:6] is the sub-list for extension type_name
+	6, // [6:6] is the sub-list for extension extendee
+	0, // [0:6] is the sub-list for field type_name
 }
 
 func init() {
@@ -655,7 +585,7 @@ func file_project_planton_provider_kubernetes_workload_temporalkubernetes_v1_spe
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_project_planton_provider_kubernetes_workload_temporalkubernetes_v1_spec_proto_rawDesc), len(file_project_planton_provider_kubernetes_workload_temporalkubernetes_v1_spec_proto_rawDesc)),
-			NumEnums:      2,
+			NumEnums:      1,
 			NumMessages:   5,
 			NumExtensions: 0,
 			NumServices:   0,
