@@ -7,3 +7,10 @@ spec:
     backend: cassandra
   ingress:
     isEnabled: false
+  searchAttributes:
+    - name: Environment
+      type: keyword
+    - name: CustomerId
+      type: keyword
+    - name: Priority
+      type: int

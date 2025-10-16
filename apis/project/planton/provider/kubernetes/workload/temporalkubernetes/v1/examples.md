@@ -146,3 +146,56 @@ spec:
 
 - Useful when integrating with existing database management procedures, enforcing naming conventions, or preventing
   automatic schema alterations.
+
+---
+
+## Example 6: Deployment with Custom Search Attributes
+
+Deploy Temporal with custom search attributes for advanced workflow filtering and querying capabilities.
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: TemporalKubernetes
+metadata:
+  name: temporal-with-search-attrs
+spec:
+  database:
+    backend: postgresql
+    externalDatabase:
+      host: postgres.example.com
+      port: 5432
+      username: temporal_user
+      password: secure_password
+  
+  externalElasticsearch:
+    host: elasticsearch.example.com
+    port: 9200
+    user: elastic
+    password: elastic_pass
+  
+  searchAttributes:
+    - name: CustomerId
+      type: keyword
+    - name: Environment
+      type: keyword
+    - name: Priority
+      type: int
+    - name: Amount
+      type: double
+    - name: IsActive
+      type: bool
+    - name: DeploymentDate
+      type: datetime
+    - name: Tags
+      type: keyword_list
+  
+  ingress:
+    enabled: true
+    host: temporal-search.example.com
+```
+
+**Use Case:**
+
+- Essential for production environments requiring workflow filtering by business dimensions (customer ID, environment, priority, etc.)
+- Enables building custom dashboards and analytics based on workflow metadata
+- Supports both SQL and Elasticsearch visibility stores (Text type requires Elasticsearch)

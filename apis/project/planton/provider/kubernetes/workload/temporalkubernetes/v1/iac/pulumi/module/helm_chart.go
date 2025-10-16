@@ -154,6 +154,32 @@ func helmChart(ctx *pulumi.Context, locals *Locals,
 		values["elasticsearch"] = pulumi.Map{"enabled": pulumi.Bool(false)}
 	}
 
+	// ------------------------------------------------- search attributes
+	if len(locals.TemporalKubernetes.Spec.SearchAttributes) > 0 {
+		searchAttrsMap := pulumi.Map{}
+		for _, attr := range locals.TemporalKubernetes.Spec.SearchAttributes {
+			typeName := mapSearchAttributeType(attr.Type)
+			searchAttrsMap[attr.Name] = pulumi.String(typeName)
+		}
+
+		// Configure via server dynamic config
+		if serverCfg, ok := values["server"].(pulumi.Map); ok {
+			if configMap, ok := serverCfg["config"].(pulumi.Map); ok {
+				configMap["customSearchAttributes"] = searchAttrsMap
+			} else {
+				serverCfg["config"] = pulumi.Map{
+					"customSearchAttributes": searchAttrsMap,
+				}
+			}
+		} else {
+			values["server"] = pulumi.Map{
+				"config": pulumi.Map{
+					"customSearchAttributes": searchAttrsMap,
+				},
+			}
+		}
+	}
+
 	// ------------------------------------------------------- install chart
 	_, err := helmv3.NewChart(ctx,
 		locals.TemporalKubernetes.Metadata.Name,
@@ -171,4 +197,26 @@ func helmChart(ctx *pulumi.Context, locals *Locals,
 	}
 
 	return nil
+}
+
+// mapSearchAttributeType converts proto enum to Temporal search attribute type string
+func mapSearchAttributeType(attrType temporalkubernetesv1.TemporalKubernetesSearchAttributeType) string {
+	switch attrType {
+	case temporalkubernetesv1.TemporalKubernetesSearchAttributeType_keyword:
+		return "Keyword"
+	case temporalkubernetesv1.TemporalKubernetesSearchAttributeType_text:
+		return "Text"
+	case temporalkubernetesv1.TemporalKubernetesSearchAttributeType_int:
+		return "Int"
+	case temporalkubernetesv1.TemporalKubernetesSearchAttributeType_double:
+		return "Double"
+	case temporalkubernetesv1.TemporalKubernetesSearchAttributeType_bool:
+		return "Bool"
+	case temporalkubernetesv1.TemporalKubernetesSearchAttributeType_datetime:
+		return "Datetime"
+	case temporalkubernetesv1.TemporalKubernetesSearchAttributeType_keyword_list:
+		return "KeywordList"
+	default:
+		return "Keyword"
+	}
 }

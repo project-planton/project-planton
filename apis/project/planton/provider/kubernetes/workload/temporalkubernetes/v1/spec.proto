@@ -21,6 +21,44 @@ enum TemporalKubernetesDatabaseBackend {
   mysql = 3;
 }
 
+// temporal kubernetes search attribute type enumerates supported types
+enum TemporalKubernetesSearchAttributeType {
+  // unspecified should not be used
+  temporal_kubernetes_search_attribute_type_unspecified = 0;
+
+  // keyword type - exact match string (indexed, not analyzed)
+  keyword = 1;
+
+  // text type - full-text searchable string (analyzed, only works with Elasticsearch)
+  text = 2;
+
+  // int type - 64-bit integer
+  int = 3;
+
+  // double type - floating point number
+  double = 4;
+
+  // bool type - boolean value
+  bool = 5;
+
+  // datetime type - timestamp
+  datetime = 6;
+
+  // keyword_list type - array of keywords
+  keyword_list = 7;
+}
+
+// defines a custom search attribute for Temporal workflows
+message TemporalKubernetesSearchAttribute {
+  // name of the search attribute (e.g., "CustomerId", "Environment")
+  string name = 1 [(buf.validate.field).required = true];
+
+  // type of the search attribute
+  TemporalKubernetesSearchAttributeType type = 2 [
+    (buf.validate.field).required = true
+  ];
+}
+
 // temporal kubernetes spec defines minimal fields for deploying temporal on kubernetes.
 message TemporalKubernetesSpec {
   // database configuration
@@ -46,6 +84,10 @@ message TemporalKubernetesSpec {
   project.planton.shared.kubernetes.IngressSpec ingress = 6;
   // external elasticsearch configuration to be used by temporal for configuring observability.
   TemporalKubernetesExternalElasticsearch external_elasticsearch = 7;
+  // custom search attributes to register in the Temporal cluster
+  // these attributes can be used to filter and query workflows
+  // note: 'text' type only works with Elasticsearch backend
+  repeated TemporalKubernetesSearchAttribute search_attributes = 8;
 }
 
 // groups database configuration settings.
