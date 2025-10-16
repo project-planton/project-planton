@@ -9,8 +9,8 @@ message AwsDynamodbSpec {
   // Billing mode for the table.
   enum BillingMode {
     BILLING_MODE_UNSPECIFIED = 0;
-    BILLING_MODE_PROVISIONED = 1;        // Specify RCUs/WCUs
-    BILLING_MODE_PAY_PER_REQUEST = 2;    // On-demand
+    BILLING_MODE_PROVISIONED = 1; // Specify RCUs/WCUs
+    BILLING_MODE_PAY_PER_REQUEST = 2; // On-demand
   }
 
   // Attribute data types supported by DynamoDB keys and indexes.
@@ -47,8 +47,8 @@ message AwsDynamodbSpec {
 
   // Defines an attribute name and type.
   message AttributeDefinition {
-    string name = 1 [(buf.validate.field).string.min_len = 1];           // Attribute name
-    AttributeType type = 2 [(buf.validate.field).enum.defined_only = true];    // Attribute type
+    string name = 1 [(buf.validate.field).string.min_len = 1]; // Attribute name
+    AttributeType type = 2 [(buf.validate.field).enum.defined_only = true]; // Attribute type
   }
 
   // Element of the key schema.
@@ -56,7 +56,7 @@ message AwsDynamodbSpec {
     string attribute_name = 1 [(buf.validate.field).string.min_len = 1]; // Must reference an attribute defined in attribute_definitions
     enum KeyType {
       KEY_TYPE_UNSPECIFIED = 0;
-      KEY_TYPE_HASH = 1;  // Partition key
+      KEY_TYPE_HASH = 1; // Partition key
       KEY_TYPE_RANGE = 2; // Sort key
     }
     KeyType key_type = 2 [(buf.validate.field).enum.defined_only = true];
@@ -64,58 +64,58 @@ message AwsDynamodbSpec {
 
   // Index projection configuration.
   message Projection {
-    ProjectionType type = 1 [(buf.validate.field).enum.defined_only = true];           // ALL, KEYS_ONLY, or INCLUDE
+    ProjectionType type = 1 [(buf.validate.field).enum.defined_only = true]; // ALL, KEYS_ONLY, or INCLUDE
     repeated string non_key_attributes = 2 [(buf.validate.field).repeated.unique = true]; // Used when type == INCLUDE
 
     option (buf.validate.message).cel = {
-      id: "include_requires_attributes",
-      message: "non_key_attributes must be set when projection type is INCLUDE, otherwise it must be empty",
+      id: "include_requires_attributes"
+      message: "non_key_attributes must be set when projection type is INCLUDE, otherwise it must be empty"
       expression: "this.type == 3 ? this.non_key_attributes.size() > 0 : this.non_key_attributes.size() == 0"
     };
   }
 
   // Provisioned capacity settings.
   message ProvisionedThroughput {
-    int64 read_capacity_units = 1 [(buf.validate.field).int64.gte = 0];  // RCUs
+    int64 read_capacity_units = 1 [(buf.validate.field).int64.gte = 0]; // RCUs
     int64 write_capacity_units = 2 [(buf.validate.field).int64.gte = 0]; // WCUs
   }
 
   // Global secondary index definition.
   message GlobalSecondaryIndex {
-    string name = 1 [(buf.validate.field).string.min_len = 1];                                // Index name
-    repeated KeySchemaElement key_schema = 2 [(buf.validate.field).repeated.min_items = 1];       // HASH and optional RANGE
-    Projection projection = 3;                      // Projection configuration
+    string name = 1 [(buf.validate.field).string.min_len = 1]; // Index name
+    repeated KeySchemaElement key_schema = 2 [(buf.validate.field).repeated.min_items = 1]; // HASH and optional RANGE
+    Projection projection = 3; // Projection configuration
     ProvisionedThroughput provisioned_throughput = 4; // Required when billing_mode is PROVISIONED
 
     option (buf.validate.message).cel = {
-      id: "gsi_key_schema_shape",
-      message: "GSI must have exactly one HASH key and at most one RANGE key",
+      id: "gsi_key_schema_shape"
+      message: "GSI must have exactly one HASH key and at most one RANGE key"
       expression: "this.key_schema.filter(k, k.key_type == 1).size() == 1 && this.key_schema.filter(k, k.key_type == 2).size() <= 1 && this.key_schema.size() >= 1 && this.key_schema.size() <= 2"
     };
   }
 
   // Local secondary index definition.
   message LocalSecondaryIndex {
-    string name = 1 [(buf.validate.field).string.min_len = 1];                          // Index name
+    string name = 1 [(buf.validate.field).string.min_len = 1]; // Index name
     repeated KeySchemaElement key_schema = 2 [(buf.validate.field).repeated.min_items = 2]; // Same HASH as table; alternate RANGE
-    Projection projection = 3;                // Projection configuration
+    Projection projection = 3; // Projection configuration
 
     option (buf.validate.message).cel = {
-      id: "lsi_key_schema_shape",
-      message: "LSI must have exactly one HASH key and one RANGE key",
+      id: "lsi_key_schema_shape"
+      message: "LSI must have exactly one HASH key and one RANGE key"
       expression: "this.key_schema.size() == 2 && this.key_schema.filter(k, k.key_type == 1).size() == 1 && this.key_schema.filter(k, k.key_type == 2).size() == 1"
     };
   }
 
   // Server-side encryption settings.
   message ServerSideEncryption {
-    bool enabled = 1;         // Enable SSE
-    string kms_key_arn = 2;   // Optional customer-managed KMS key ARN
+    bool enabled = 1; // Enable SSE
+    string kms_key_arn = 2; // Optional customer-managed KMS key ARN
   }
 
   // Time-to-live (TTL) configuration.
   message TimeToLive {
-    bool enabled = 1;          // Enable TTL
+    bool enabled = 1; // Enable TTL
     string attribute_name = 2; // Attribute storing TTL epoch time (in seconds)
   }
 
@@ -161,40 +161,38 @@ message AwsDynamodbSpec {
 
   // Message-level validations
   option (buf.validate.message).cel = {
-    id: "billing_mode_set",
-    message: "billing_mode must be set to PROVISIONED or PAY_PER_REQUEST",
+    id: "billing_mode_set"
+    message: "billing_mode must be set to PROVISIONED or PAY_PER_REQUEST"
     expression: "this.billing_mode != 0"
   };
 
   option (buf.validate.message).cel = {
-    id: "table_key_schema_shape",
-    message: "Table key_schema must have exactly one HASH key and at most one RANGE key (max 2 elements)",
+    id: "table_key_schema_shape"
+    message: "Table key_schema must have exactly one HASH key and at most one RANGE key (max 2 elements)"
     expression: "this.key_schema.filter(k, k.key_type == 1).size() == 1 && this.key_schema.filter(k, k.key_type == 2).size() <= 1 && this.key_schema.size() >= 1 && this.key_schema.size() <= 2"
   };
 
   option (buf.validate.message).cel = {
-    id: "provisioned_requires_throughput",
-    message: "When billing_mode is PROVISIONED, provisioned_throughput must be set with RCUs and WCUs > 0; for PAY_PER_REQUEST it must be unset or zero",
+    id: "provisioned_requires_throughput"
+    message: "When billing_mode is PROVISIONED, provisioned_throughput must be set with RCUs and WCUs > 0; for PAY_PER_REQUEST it must be unset or zero"
     expression: "this.billing_mode == 1 ? (has(this.provisioned_throughput) && this.provisioned_throughput.read_capacity_units > 0 && this.provisioned_throughput.write_capacity_units > 0) : (!has(this.provisioned_throughput) || (this.provisioned_throughput.read_capacity_units == 0 && this.provisioned_throughput.write_capacity_units == 0))"
   };
 
   option (buf.validate.message).cel = {
-    id: "stream_view_requires_enabled",
-    message: "stream_view_type must be set when stream_enabled is true, and must be UNSPECIFIED when disabled",
+    id: "stream_view_requires_enabled"
+    message: "stream_view_type must be set when stream_enabled is true, and must be UNSPECIFIED when disabled"
     expression: "this.stream_enabled ? this.stream_view_type != 0 : this.stream_view_type == 0"
   };
 
   option (buf.validate.message).cel = {
-    id: "ttl_attribute_when_enabled",
-    message: "ttl.attribute_name must be set when TTL is enabled, and must be empty when disabled",
+    id: "ttl_attribute_when_enabled"
+    message: "ttl.attribute_name must be set when TTL is enabled, and must be empty when disabled"
     expression: "!has(this.ttl) || (this.ttl.enabled ? this.ttl.attribute_name != \"\" : this.ttl.attribute_name == \"\")"
   };
 
   option (buf.validate.message).cel = {
-    id: "gsi_throughput_matches_billing",
-    message: "For each GSI: when billing_mode is PROVISIONED, provisioned_throughput must be set with RCUs/WCUs > 0; for PAY_PER_REQUEST it must be unset or zero",
+    id: "gsi_throughput_matches_billing"
+    message: "For each GSI: when billing_mode is PROVISIONED, provisioned_throughput must be set with RCUs/WCUs > 0; for PAY_PER_REQUEST it must be unset or zero"
     expression: "this.global_secondary_indexes.all(i, this.billing_mode == 1 ? (has(i.provisioned_throughput) && i.provisioned_throughput.read_capacity_units > 0 && i.provisioned_throughput.write_capacity_units > 0) : (!has(i.provisioned_throughput) || (i.provisioned_throughput.read_capacity_units == 0 && i.provisioned_throughput.write_capacity_units == 0)))"
   };
 }
-
-

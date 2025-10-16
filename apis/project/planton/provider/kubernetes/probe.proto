@@ -85,12 +85,10 @@ message HTTPHeader {
 message GRPCAction {
   // Port number of the gRPC service.
   // Number must be in the range 1 to 65535.
-  int32 port = 1 [
-    (buf.validate.field).int32 = {
-      gte: 1,
-      lte: 65535
-    }
-  ];
+  int32 port = 1 [(buf.validate.field).int32 = {
+    gte: 1
+    lte: 65535
+  }];
 
   // Service is the name of the service to check.
   // If not specified, the default behavior defined by gRPC is used.
@@ -120,4 +118,3 @@ message ExecAction {
   // - Non-zero: Failure
   repeated string command = 1;
 }
-

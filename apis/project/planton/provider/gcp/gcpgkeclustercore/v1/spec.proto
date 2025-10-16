@@ -3,7 +3,6 @@ syntax = "proto3";
 package project.planton.provider.gcp.gcpgkeclustercore.v1;
 
 import "buf/validate/validate.proto";
-
 import "project/planton/shared/foreignkey/v1/foreign_key.proto";
 import "project/planton/shared/options/options.proto";
 
@@ -55,9 +54,7 @@ message GcpGkeClusterCoreSpec {
   bool enable_public_nodes = 7;
 
   // Kubernetes release channel for auto-upgrades (Rapid, Regular, Stable, or NONE).
-  GkeReleaseChannel release_channel = 8 [
-    (project.planton.shared.options.default) = "REGULAR"
-  ];
+  GkeReleaseChannel release_channel = 8 [(project.planton.shared.options.default) = "REGULAR"];
 
   // Disable network policy enforcement (Calico)
   bool disable_network_policy = 9;

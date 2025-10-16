@@ -7,4 +7,3 @@ message PerconaServerMongodbOperatorStackOutputs {
   // Namespace where the operator is installed
   string namespace = 1;
 }
-

@@ -11,9 +11,7 @@ import "project/planton/shared/options/options.proto";
 // It focuses on essential parameters, following the 80/20 principle to expose only the most commonly used settings.
 message CivoKubernetesNodePoolSpec {
   // A name for the node pool. Must be unique within the Civo Kubernetes cluster.
-  string node_pool_name = 1 [
-    (buf.validate.field).required = true
-  ];
+  string node_pool_name = 1 [(buf.validate.field).required = true];
 
   // Reference to the Civo Kubernetes cluster in which to create this node pool.
   // Accepts the cluster's name or a reference to the CivoKubernetesCluster resource.
@@ -25,9 +23,7 @@ message CivoKubernetesNodePoolSpec {
 
   // The slug identifier for the size of each node in the pool (e.g., "g4s.kube.medium").
   // Defines the CPU and memory of the nodes.
-  string size = 3 [
-    (buf.validate.field).required = true
-  ];
+  string size = 3 [(buf.validate.field).required = true];
 
   // The number of nodes to provision in the pool. Must be at least 1.
   uint32 node_count = 4 [

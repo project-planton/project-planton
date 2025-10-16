@@ -157,7 +157,7 @@ var File_project_planton_provider_cloudflare_cloudflarezerotrustaccessapplicatio
 
 const file_project_planton_provider_cloudflare_cloudflarezerotrustaccessapplication_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Uproject/planton/provider/cloudflare/cloudflarezerotrustaccessapplication/v1/api.proto\x12Kproject.planton.provider.cloudflare.cloudflarezerotrustaccessapplication.v1\x1a\x1bbuf/validate/validate.proto\x1aVproject/planton/provider/cloudflare/cloudflarezerotrustaccessapplication/v1/spec.proto\x1a_project/planton/provider/cloudflare/cloudflarezerotrustaccessapplication/v1/stack_outputs.proto\x1a#project/planton/shared/status.proto\x1a%project/planton/shared/metadata.proto\"\xa9\x04\n" +
+	"Uproject/planton/provider/cloudflare/cloudflarezerotrustaccessapplication/v1/api.proto\x12Kproject.planton.provider.cloudflare.cloudflarezerotrustaccessapplication.v1\x1a\x1bbuf/validate/validate.proto\x1aVproject/planton/provider/cloudflare/cloudflarezerotrustaccessapplication/v1/spec.proto\x1a_project/planton/provider/cloudflare/cloudflarezerotrustaccessapplication/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\x1a#project/planton/shared/status.proto\"\xa9\x04\n" +
 	"$CloudflareZeroTrustAccessApplication\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!cloudflare.project-planton.org/v1R\n" +

@@ -5,30 +5,22 @@ package project.planton.provider.civo.civokubernetesnodepool.v1;
 import "buf/validate/validate.proto";
 import "project/planton/provider/civo/civokubernetesnodepool/v1/spec.proto";
 import "project/planton/provider/civo/civokubernetesnodepool/v1/stack_outputs.proto";
-import "project/planton/shared/status.proto";
 import "project/planton/shared/metadata.proto";
+import "project/planton/shared/status.proto";
 
 // civo-kubernetes-node-pool
 message CivoKubernetesNodePool {
   //api-version
-  string api_version = 1[
-    (buf.validate.field).string.const = 'civo.project-planton.org/v1'
-  ];
+  string api_version = 1 [(buf.validate.field).string.const = 'civo.project-planton.org/v1'];
 
   //resource-kind
-  string kind = 2 [
-    (buf.validate.field).string.const = 'CivoKubernetesNodePool'
-  ];
+  string kind = 2 [(buf.validate.field).string.const = 'CivoKubernetesNodePool'];
 
   //metadata
-  project.planton.shared.ApiResourceMetadata metadata = 3 [
-    (buf.validate.field).required = true
-  ];
+  project.planton.shared.ApiResourceMetadata metadata = 3 [(buf.validate.field).required = true];
 
   //spec
-  CivoKubernetesNodePoolSpec spec = 4 [
-    (buf.validate.field).required = true
-  ];
+  CivoKubernetesNodePoolSpec spec = 4 [(buf.validate.field).required = true];
 
   //status
   CivoKubernetesNodePoolStatus status = 5;

@@ -11,9 +11,7 @@ import "project/planton/shared/kubernetes/options.proto";
 // It includes container specifications and ingress settings to control resource allocation and external access.
 message ArgocdKubernetesSpec {
   // The container specifications for the Argo CD deployment.
-  ArgocdKubernetesArgocdContainer container = 1 [
-    (buf.validate.field).required = true
-  ];
+  ArgocdKubernetesArgocdContainer container = 1 [(buf.validate.field).required = true];
 
   // The ingress configuration for the Argo CD deployment.
   project.planton.shared.kubernetes.IngressSpec ingress = 3;
@@ -24,16 +22,14 @@ message ArgocdKubernetesSpec {
 // Recommended defaults: CPU requests - 50m, Memory requests - 256Mi, CPU limits - 1, Memory limits - 1Gi.
 message ArgocdKubernetesArgocdContainer {
   // The CPU and memory resources allocated to the Argo CD container.
-  project.planton.shared.kubernetes.ContainerResources resources = 1 [
-    (project.planton.shared.kubernetes.default_container_resources) = {
-      limits {
-        cpu: "1000m"
-        memory: "1Gi"
-      },
-      requests {
-        cpu: "50m"
-        memory: "100Mi"
-      }
+  project.planton.shared.kubernetes.ContainerResources resources = 1 [(project.planton.shared.kubernetes.default_container_resources) = {
+    limits: {
+      cpu: "1000m"
+      memory: "1Gi"
     }
-  ];
+    requests: {
+      cpu: "50m"
+      memory: "100Mi"
+    }
+  }];
 }

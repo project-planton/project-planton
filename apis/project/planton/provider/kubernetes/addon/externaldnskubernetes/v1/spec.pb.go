@@ -312,7 +312,7 @@ var File_project_planton_provider_kubernetes_addon_externaldnskubernetes_v1_spec
 
 const file_project_planton_provider_kubernetes_addon_externaldnskubernetes_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Mproject/planton/provider/kubernetes/addon/externaldnskubernetes/v1/spec.proto\x12Bproject.planton.provider.kubernetes.addon.externaldnskubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\x1a6project/planton/shared/kubernetes/target_cluster.proto\"\x80\x04\n" +
+	"Mproject/planton/provider/kubernetes/addon/externaldnskubernetes/v1/spec.proto\x12Bproject.planton.provider.kubernetes.addon.externaldnskubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a6project/planton/shared/kubernetes/target_cluster.proto\x1a,project/planton/shared/options/options.proto\"\x80\x04\n" +
 	"\x19ExternalDnsKubernetesSpec\x12f\n" +
 	"\x0etarget_cluster\x18\x01 \x01(\v2?.project.planton.shared.kubernetes.KubernetesAddonTargetClusterR\rtargetCluster\x12\x1b\n" +
 	"\timage_tag\x18\x02 \x01(\tR\bimageTag\x12m\n" +

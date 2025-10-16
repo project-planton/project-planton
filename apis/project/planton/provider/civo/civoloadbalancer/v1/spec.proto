@@ -3,9 +3,9 @@ syntax = "proto3";
 package project.planton.provider.civo.civoloadbalancer.v1;
 
 import "buf/validate/validate.proto";
-import "project/planton/shared/foreignkey/v1/foreign_key.proto";
-import "project/planton/shared/cloudresourcekind/cloud_resource_kind.proto";
 import "project/planton/provider/civo/region.proto";
+import "project/planton/shared/cloudresourcekind/cloud_resource_kind.proto";
+import "project/planton/shared/foreignkey/v1/foreign_key.proto";
 
 // CivoLoadBalancerSpec defines the specification for creating a Civo Load Balancer.
 // It focuses on essential parameters following the 80/20 principle, including region, network placement,
@@ -24,9 +24,7 @@ message CivoLoadBalancerSpec {
 
   // The Civo region where the Load Balancer will be created.
   // Determines the geographical location of the load balancer.
-  CivoRegion region = 2 [
-    (buf.validate.field).required = true
-  ];
+  CivoRegion region = 2 [(buf.validate.field).required = true];
 
   // Reference to the Civo Network in which to create the Load Balancer.
   // This should be a foreign key reference to an existing CivoNetwork resource.
@@ -91,9 +89,7 @@ message CivoLoadBalancerForwardingRule {
   ];
 
   // Protocol for incoming traffic on the load balancer’s entry port (e.g., HTTP, HTTPS, TCP).
-  CivoLoadBalancerProtocol entry_protocol = 2 [
-    (buf.validate.field).required = true
-  ];
+  CivoLoadBalancerProtocol entry_protocol = 2 [(buf.validate.field).required = true];
 
   // Port on the backend instances that will receive forwarded traffic.
   uint32 target_port = 3 [
@@ -103,9 +99,7 @@ message CivoLoadBalancerForwardingRule {
   ];
 
   // Protocol for traffic between the load balancer and the backend instances (e.g., HTTP, HTTPS, TCP).
-  CivoLoadBalancerProtocol target_protocol = 4 [
-    (buf.validate.field).required = true
-  ];
+  CivoLoadBalancerProtocol target_protocol = 4 [(buf.validate.field).required = true];
 }
 
 // HealthCheck defines how the load balancer checks the health of attached instances.
@@ -118,9 +112,7 @@ message CivoLoadBalancerHealthCheck {
   ];
 
   // Protocol to use for health checking (HTTP, HTTPS, or TCP).
-  CivoLoadBalancerProtocol protocol = 2 [
-    (buf.validate.field).required = true
-  ];
+  CivoLoadBalancerProtocol protocol = 2 [(buf.validate.field).required = true];
 
   // If using HTTP/HTTPS for health checks, the request path to probe (e.g., "/health").
   // Ignored for TCP health checks.

@@ -5,30 +5,22 @@ package project.planton.provider.gcp.gcpgkeclustercore.v1;
 import "buf/validate/validate.proto";
 import "project/planton/provider/gcp/gcpgkeclustercore/v1/spec.proto";
 import "project/planton/provider/gcp/gcpgkeclustercore/v1/stack_outputs.proto";
-import "project/planton/shared/status.proto";
 import "project/planton/shared/metadata.proto";
+import "project/planton/shared/status.proto";
 
 //gcp-gke-cluster-core
 message GcpGkeClusterCore {
   //api-version
-  string api_version = 1 [
-    (buf.validate.field).string.const = 'gcp.project-planton.org/v1'
-  ];
+  string api_version = 1 [(buf.validate.field).string.const = 'gcp.project-planton.org/v1'];
 
   //resource-kind
-  string kind = 2 [
-    (buf.validate.field).string.const = 'GcpGkeClusterCore'
-  ];
+  string kind = 2 [(buf.validate.field).string.const = 'GcpGkeClusterCore'];
 
   //metadata
-  project.planton.shared.ApiResourceMetadata metadata = 3[
-    (buf.validate.field).required = true
-  ];
+  project.planton.shared.ApiResourceMetadata metadata = 3 [(buf.validate.field).required = true];
 
   //spec
-  GcpGkeClusterCoreSpec spec = 4 [
-    (buf.validate.field).required = true
-  ];
+  GcpGkeClusterCoreSpec spec = 4 [(buf.validate.field).required = true];
 
   //status
   GcpGkeClusterCoreStatus status = 5;

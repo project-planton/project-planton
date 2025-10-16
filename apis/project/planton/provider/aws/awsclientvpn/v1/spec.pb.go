@@ -313,7 +313,7 @@ var File_project_planton_provider_aws_awsclientvpn_v1_spec_proto protoreflect.Fi
 
 const file_project_planton_provider_aws_awsclientvpn_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"7project/planton/provider/aws/awsclientvpn/v1/spec.proto\x12,project.planton.provider.aws.awsclientvpn.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\"\xff\x0f\n" +
+	"7project/planton/provider/aws/awsclientvpn/v1/spec.proto\x12,project.planton.provider.aws.awsclientvpn.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\"\xff\x0f\n" +
 	"\x10AwsClientVpnSpec\x12 \n" +
 	"\vdescription\x18\x01 \x01(\tR\vdescription\x12s\n" +
 	"\x06vpc_id\x18\x02 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB$\xbaH\x03\xc8\x01\x01\x88\xd4a\xd9\x01\x92\xd4a\x15status.outputs.vpc_idR\x05vpcId\x12b\n" +

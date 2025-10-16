@@ -184,7 +184,7 @@ var File_project_planton_provider_cloudflare_cloudflareworker_v1_spec_proto prot
 
 const file_project_planton_provider_cloudflare_cloudflareworker_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Bproject/planton/provider/cloudflare/cloudflareworker/v1/spec.proto\x127project.planton.provider.cloudflare.cloudflareworker.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1aBproject/planton/shared/cloudresourcekind/cloud_resource_kind.proto\"\x81\x06\n" +
+	"Bproject/planton/provider/cloudflare/cloudflareworker/v1/spec.proto\x127project.planton.provider.cloudflare.cloudflareworker.v1\x1a\x1bbuf/validate/validate.proto\x1aBproject/planton/shared/cloudresourcekind/cloud_resource_kind.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\"\x81\x06\n" +
 	"\x14CloudflareWorkerSpec\x12(\n" +
 	"\vscript_name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\n" +
 	"scriptName\x12c\n" +

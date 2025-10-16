@@ -223,7 +223,7 @@ var File_project_planton_provider_digitalocean_digitaloceandroplet_v1_spec_proto
 
 const file_project_planton_provider_digitalocean_digitaloceandroplet_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Gproject/planton/provider/digitalocean/digitaloceandroplet/v1/spec.proto\x12<project.planton.provider.digitalocean.digitaloceandroplet.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\x1a2project/planton/provider/digitalocean/region.proto\"\xe4\x06\n" +
+	"Gproject/planton/provider/digitalocean/digitaloceandroplet/v1/spec.proto\x12<project.planton.provider.digitalocean.digitaloceandroplet.v1\x1a\x1bbuf/validate/validate.proto\x1a2project/planton/provider/digitalocean/region.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\"\xe4\x06\n" +
 	"\x17DigitalOceanDropletSpec\x12N\n" +
 	"\fdroplet_name\x18\x01 \x01(\tB+\xbaH(\xc8\x01\x01r#\x18?2\x1f^[a-z0-9]([-a-z0-9]*[a-z0-9])?$R\vdropletName\x12Y\n" +
 	"\x06region\x18\x02 \x01(\x0e29.project.planton.provider.digitalocean.DigitalOceanRegionB\x06\xbaH\x03\xc8\x01\x01R\x06region\x126\n" +

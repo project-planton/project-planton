@@ -4,8 +4,8 @@ package project.planton.provider.kubernetes.addon.ingressnginxkubernetes.v1;
 
 import "buf/validate/validate.proto";
 import "project/planton/shared/foreignkey/v1/foreign_key.proto";
-import "project/planton/shared/options/options.proto";
 import "project/planton/shared/kubernetes/target_cluster.proto";
+import "project/planton/shared/options/options.proto";
 
 // IngressNginxKubernetesSpec defines configuration for ingress‑nginx on any cluster.
 message IngressNginxKubernetesSpec {

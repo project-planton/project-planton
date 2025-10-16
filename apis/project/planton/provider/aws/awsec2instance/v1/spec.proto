@@ -93,9 +93,7 @@ message AwsEc2InstanceSpec {
   // User data script to provide when launching the instance (cloud-init or shell script).
   // This can be a plaintext or base64-encoded string, up to 32 KiB.
   // Use this to perform initial configuration on boot (install packages, configure software, etc.).
-  string user_data = 11 [
-    (buf.validate.field).string.max_bytes = 32768
-  ];
+  string user_data = 11 [(buf.validate.field).string.max_bytes = 32768];
 
   // Enable EBS optimization for the instance (if supported by the instance type).
   // When true, the instance uses dedicated throughput for EBS I/O, which can improve performance for I/O-intensive workloads.
@@ -106,14 +104,14 @@ message AwsEc2InstanceSpec {
   bool disable_api_termination = 13;
 
   option (buf.validate.message).cel = {
-    id: "ssm_requires_iam_profile",
-    message: "iam_instance_profile_arn must be set when connection_method is SSM",
+    id: "ssm_requires_iam_profile"
+    message: "iam_instance_profile_arn must be set when connection_method is SSM"
     expression: "this.connection_method == 0 ? ((has(this.iam_instance_profile_arn.value) && this.iam_instance_profile_arn.value != \"\") || has(this.iam_instance_profile_arn.value_from)) : true"
   };
 
   option (buf.validate.message).cel = {
-    id: "ssh_requires_key_name",
-    message: "key_name must be set when connection_method is BASTION or INSTANCE_CONNECT",
+    id: "ssh_requires_key_name"
+    message: "key_name must be set when connection_method is BASTION or INSTANCE_CONNECT"
     expression: "(this.connection_method == 1 || this.connection_method == 2) ? this.key_name != \"\" : true"
   };
 }

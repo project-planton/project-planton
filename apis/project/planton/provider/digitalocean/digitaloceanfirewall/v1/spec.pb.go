@@ -313,7 +313,7 @@ var File_project_planton_provider_digitalocean_digitaloceanfirewall_v1_spec_prot
 
 const file_project_planton_provider_digitalocean_digitaloceanfirewall_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Hproject/planton/provider/digitalocean/digitaloceanfirewall/v1/spec.proto\x12=project.planton.provider.digitalocean.digitaloceanfirewall.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\x1a2project/planton/provider/digitalocean/region.proto\"\xf2\x02\n" +
+	"Hproject/planton/provider/digitalocean/digitaloceanfirewall/v1/spec.proto\x12=project.planton.provider.digitalocean.digitaloceanfirewall.v1\x1a\x1bbuf/validate/validate.proto\x1a2project/planton/provider/digitalocean/region.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\"\xf2\x02\n" +
 	"\x18DigitalOceanFirewallSpec\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x83\x01\n" +
 	"\rinbound_rules\x18\x02 \x03(\v2^.project.planton.provider.digitalocean.digitaloceanfirewall.v1.DigitalOceanFirewallInboundRuleR\finboundRules\x12\x86\x01\n" +

@@ -30,18 +30,14 @@ message Route53DnsRecord {
   // The DNS record type.
   // This specifies the type of DNS record, such as A, AAAA, CNAME, MX, TXT, etc.
   // The record type determines how the DNS query is processed and what kind of data is returned.
-  project.planton.shared.networking.enums.dnsrecordtype.DnsRecordType record_type = 1 [
-    (buf.validate.field).required = true
-  ];
+  project.planton.shared.networking.enums.dnsrecordtype.DnsRecordType record_type = 1 [(buf.validate.field).required = true];
 
   // The name of the DNS record, e.g., "example.com." or "dev.example.com.".
   // This is the domain name or subdomain for which the DNS record applies.
   // The value should always end with a dot, following DNS standards to denote a fully qualified domain name.
   string name = 2 [
     (buf.validate.field).required = true,
-    (buf.validate.field).string = {
-      pattern: "^(?:\\*\\.[A-Za-z0-9\\-\\.]+|[A-Za-z0-9\\-\\.]+\\.[A-Za-z]{2,})$"
-    }
+    (buf.validate.field).string = {pattern: "^(?:\\*\\.[A-Za-z0-9\\-\\.]+|[A-Za-z0-9\\-\\.]+\\.[A-Za-z]{2,})$"}
   ];
 
   // The values for the DNS record.

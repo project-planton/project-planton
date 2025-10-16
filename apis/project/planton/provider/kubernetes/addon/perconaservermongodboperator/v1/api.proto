@@ -5,30 +5,22 @@ package project.planton.provider.kubernetes.addon.perconaservermongodboperator.v
 import "buf/validate/validate.proto";
 import "project/planton/provider/kubernetes/addon/perconaservermongodboperator/v1/spec.proto";
 import "project/planton/provider/kubernetes/addon/perconaservermongodboperator/v1/stack_outputs.proto";
-import "project/planton/shared/status.proto";
 import "project/planton/shared/metadata.proto";
+import "project/planton/shared/status.proto";
 
 //percona-operator-kubernetes
 message PerconaServerMongodbOperator {
   //api-version
-  string api_version = 1 [
-    (buf.validate.field).string.const = 'kubernetes.project-planton.org/v1'
-  ];
+  string api_version = 1 [(buf.validate.field).string.const = 'kubernetes.project-planton.org/v1'];
 
   //resource-kind
-  string kind = 2 [
-    (buf.validate.field).string.const = 'PerconaServerMongodbOperator'
-  ];
+  string kind = 2 [(buf.validate.field).string.const = 'PerconaServerMongodbOperator'];
 
   //metadata
-  project.planton.shared.ApiResourceMetadata metadata = 3 [
-    (buf.validate.field).required = true
-  ];
+  project.planton.shared.ApiResourceMetadata metadata = 3 [(buf.validate.field).required = true];
 
   //spec
-  PerconaServerMongodbOperatorSpec spec = 4 [
-    (buf.validate.field).required = true
-  ];
+  PerconaServerMongodbOperatorSpec spec = 4 [(buf.validate.field).required = true];
 
   //status
   PerconaServerMongodbOperatorStatus status = 5;
@@ -39,4 +31,3 @@ message PerconaServerMongodbOperatorStatus {
   //stack-outputs
   PerconaServerMongodbOperatorStackOutputs outputs = 1;
 }
-

@@ -20,9 +20,7 @@ message DigitalOceanDatabaseClusterSpec {
 
   // The database engine for the cluster.
   // Allowed values include: POSTGRES, MYSQL, REDIS, MONGODB.
-  DigitalOceanDatabaseEngine engine = 2 [
-    (buf.validate.field).required = true
-  ];
+  DigitalOceanDatabaseEngine engine = 2 [(buf.validate.field).required = true];
 
   // The engine version for the cluster.
   // For example, "14" for PostgreSQL 14, "8" for MySQL 8, etc.
@@ -34,15 +32,11 @@ message DigitalOceanDatabaseClusterSpec {
 
   // The DigitalOcean region where the cluster will be created.
   // Determines the data center location for the cluster.
-  DigitalOceanRegion region = 4 [
-    (buf.validate.field).required = true
-  ];
+  DigitalOceanRegion region = 4 [(buf.validate.field).required = true];
 
   // The slug identifier for the cluster's node size (e.g., "db-s-2vcpu-4gb").
   // This defines the CPU/memory resources for each node in the cluster.
-  string size_slug = 5 [
-    (buf.validate.field).required = true
-  ];
+  string size_slug = 5 [(buf.validate.field).required = true];
 
   // The number of nodes in the cluster. Allowed values are 1 to 3 for primary nodes.
   uint32 node_count = 6 [

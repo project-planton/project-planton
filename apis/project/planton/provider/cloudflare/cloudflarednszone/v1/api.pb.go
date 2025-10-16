@@ -157,7 +157,7 @@ var File_project_planton_provider_cloudflare_cloudflarednszone_v1_api_proto prot
 
 const file_project_planton_provider_cloudflare_cloudflarednszone_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Bproject/planton/provider/cloudflare/cloudflarednszone/v1/api.proto\x128project.planton.provider.cloudflare.cloudflarednszone.v1\x1a\x1bbuf/validate/validate.proto\x1aCproject/planton/provider/cloudflare/cloudflarednszone/v1/spec.proto\x1aLproject/planton/provider/cloudflare/cloudflarednszone/v1/stack_outputs.proto\x1a#project/planton/shared/status.proto\x1a%project/planton/shared/metadata.proto\"\xb5\x03\n" +
+	"Bproject/planton/provider/cloudflare/cloudflarednszone/v1/api.proto\x128project.planton.provider.cloudflare.cloudflarednszone.v1\x1a\x1bbuf/validate/validate.proto\x1aCproject/planton/provider/cloudflare/cloudflarednszone/v1/spec.proto\x1aLproject/planton/provider/cloudflare/cloudflarednszone/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\x1a#project/planton/shared/status.proto\"\xb5\x03\n" +
 	"\x11CloudflareDnsZone\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!cloudflare.project-planton.org/v1R\n" +

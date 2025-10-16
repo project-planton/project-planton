@@ -11,7 +11,11 @@ message ConfluentKafkaSpec {
   string cloud = 1 [
     (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
     (buf.validate.field).string = {
-      in: ["AWS", "AZURE", "GCP"]
+      in: [
+        "AWS",
+        "AZURE",
+        "GCP"
+      ]
     }
   ];
 
@@ -20,7 +24,12 @@ message ConfluentKafkaSpec {
   string availability = 2 [
     (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
     (buf.validate.field).string = {
-      in: ["SINGLE_ZONE", "MULTI_ZONE", "LOW", "HIGH"]
+      in: [
+        "SINGLE_ZONE",
+        "MULTI_ZONE",
+        "LOW",
+        "HIGH"
+      ]
     }
   ];
 

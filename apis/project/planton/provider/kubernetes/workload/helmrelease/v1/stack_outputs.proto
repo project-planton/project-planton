@@ -7,4 +7,3 @@ message HelmReleaseStackOutputs {
   //namespace in which the helm release has been created.
   string namespace = 1;
 }
-

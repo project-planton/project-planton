@@ -19,5 +19,3 @@ message AwsDynamodbStackOutputs {
   // Stream label when streams are enabled
   string stream_label = 5;
 }
-
-

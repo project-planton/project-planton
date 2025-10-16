@@ -488,7 +488,7 @@ var File_project_planton_provider_digitalocean_digitaloceanappplatformservice_v1
 
 const file_project_planton_provider_digitalocean_digitaloceanappplatformservice_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Rproject/planton/provider/digitalocean/digitaloceanappplatformservice/v1/spec.proto\x12Gproject.planton.provider.digitalocean.digitaloceanappplatformservice.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\x1a2project/planton/provider/digitalocean/region.proto\"\xb5\n" +
+	"Rproject/planton/provider/digitalocean/digitaloceanappplatformservice/v1/spec.proto\x12Gproject.planton.provider.digitalocean.digitaloceanappplatformservice.v1\x1a\x1bbuf/validate/validate.proto\x1a2project/planton/provider/digitalocean/region.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\"\xb5\n" +
 	"\n" +
 	"\"DigitalOceanAppPlatformServiceSpec\x12N\n" +
 	"\fservice_name\x18\x01 \x01(\tB+\xbaH(\xc8\x01\x01r#\x18?2\x1f^[a-z0-9]([-a-z0-9]*[a-z0-9])?$R\vserviceName\x12Y\n" +

@@ -5,30 +5,22 @@ package project.planton.provider.digitalocean.digitaloceandatabasecluster.v1;
 import "buf/validate/validate.proto";
 import "project/planton/provider/digitalocean/digitaloceandatabasecluster/v1/spec.proto";
 import "project/planton/provider/digitalocean/digitaloceandatabasecluster/v1/stack_outputs.proto";
-import "project/planton/shared/status.proto";
 import "project/planton/shared/metadata.proto";
+import "project/planton/shared/status.proto";
 
 // digital-ocean-database-cluster
 message DigitalOceanDatabaseCluster {
   //api-version
-  string api_version = 1[
-    (buf.validate.field).string.const = 'digital-ocean.project-planton.org/v1'
-  ];
+  string api_version = 1 [(buf.validate.field).string.const = 'digital-ocean.project-planton.org/v1'];
 
   //resource-kind
-  string kind = 2 [
-    (buf.validate.field).string.const = 'DigitalOceanDatabaseCluster'
-  ];
+  string kind = 2 [(buf.validate.field).string.const = 'DigitalOceanDatabaseCluster'];
 
   //metadata
-  project.planton.shared.ApiResourceMetadata metadata = 3 [
-    (buf.validate.field).required = true
-  ];
+  project.planton.shared.ApiResourceMetadata metadata = 3 [(buf.validate.field).required = true];
 
   //spec
-  DigitalOceanDatabaseClusterSpec spec = 4 [
-    (buf.validate.field).required = true
-  ];
+  DigitalOceanDatabaseClusterSpec spec = 4 [(buf.validate.field).required = true];
 
   //status
   DigitalOceanDatabaseClusterStatus status = 5;

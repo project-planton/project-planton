@@ -86,7 +86,7 @@ var File_project_planton_provider_civo_civoipaddress_v1_spec_proto protoreflect.
 
 const file_project_planton_provider_civo_civoipaddress_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"9project/planton/provider/civo/civoipaddress/v1/spec.proto\x12.project.planton.provider.civo.civoipaddress.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\x1a*project/planton/provider/civo/region.proto\"\x89\x01\n" +
+	"9project/planton/provider/civo/civoipaddress/v1/spec.proto\x12.project.planton.provider.civo.civoipaddress.v1\x1a\x1bbuf/validate/validate.proto\x1a*project/planton/provider/civo/region.proto\x1a,project/planton/shared/options/options.proto\"\x89\x01\n" +
 	"\x11CivoIpAddressSpec\x12)\n" +
 	"\vdescription\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x18dR\vdescription\x12I\n" +
 	"\x06region\x18\x02 \x01(\x0e2).project.planton.provider.civo.CivoRegionB\x06\xbaH\x03\xc8\x01\x01R\x06regionB\x8e\x03\n" +

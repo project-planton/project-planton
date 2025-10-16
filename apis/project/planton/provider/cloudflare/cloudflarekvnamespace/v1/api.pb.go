@@ -157,7 +157,7 @@ var File_project_planton_provider_cloudflare_cloudflarekvnamespace_v1_api_proto 
 
 const file_project_planton_provider_cloudflare_cloudflarekvnamespace_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Fproject/planton/provider/cloudflare/cloudflarekvnamespace/v1/api.proto\x12<project.planton.provider.cloudflare.cloudflarekvnamespace.v1\x1a\x1bbuf/validate/validate.proto\x1aGproject/planton/provider/cloudflare/cloudflarekvnamespace/v1/spec.proto\x1aPproject/planton/provider/cloudflare/cloudflarekvnamespace/v1/stack_outputs.proto\x1a#project/planton/shared/status.proto\x1a%project/planton/shared/metadata.proto\"\xcd\x03\n" +
+	"Fproject/planton/provider/cloudflare/cloudflarekvnamespace/v1/api.proto\x12<project.planton.provider.cloudflare.cloudflarekvnamespace.v1\x1a\x1bbuf/validate/validate.proto\x1aGproject/planton/provider/cloudflare/cloudflarekvnamespace/v1/spec.proto\x1aPproject/planton/provider/cloudflare/cloudflarekvnamespace/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\x1a#project/planton/shared/status.proto\"\xcd\x03\n" +
 	"\x15CloudflareKvNamespace\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!cloudflare.project-planton.org/v1R\n" +

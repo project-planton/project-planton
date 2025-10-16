@@ -18,9 +18,7 @@ message CivoDatabaseSpec {
   ];
 
   // The database engine for the instance (MySQL or PostgreSQL).
-  CivoDatabaseEngine engine = 2 [
-    (buf.validate.field).required = true
-  ];
+  CivoDatabaseEngine engine = 2 [(buf.validate.field).required = true];
 
   // The engine version for the database.
   // For example: "8.0" for MySQL 8.0, "14" for PostgreSQL 14.
@@ -31,21 +29,15 @@ message CivoDatabaseSpec {
   ];
 
   // The Civo region where the database will be created.
-  CivoRegion region = 4 [
-    (buf.validate.field).required = true
-  ];
+  CivoRegion region = 4 [(buf.validate.field).required = true];
 
   // The plan or size identifier for the database instance (e.g., "g3.db.small").
   // This defines CPU, memory, and base storage for the instance.
-  string size_slug = 5 [
-    (buf.validate.field).required = true
-  ];
+  string size_slug = 5 [(buf.validate.field).required = true];
 
   // The number of replica nodes to add to the database (0 means no replicas, just the primary).
   // Typically use 0, 2, or 4 for a total of 1, 3, or 5 nodes in the cluster.
-  uint32 replicas = 6 [
-    (buf.validate.field).uint32.lte = 4
-  ];
+  uint32 replicas = 6 [(buf.validate.field).uint32.lte = 4];
 
   // The target private network for the database instance.
   // Provide a literal network UUID or a reference to a CivoNetwork resource.

@@ -155,7 +155,7 @@ var File_project_planton_provider_kubernetes_workload_cronjobkubernetes_v1_api_p
 
 const file_project_planton_provider_kubernetes_workload_cronjobkubernetes_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Kproject/planton/provider/kubernetes/workload/cronjobkubernetes/v1/api.proto\x12Aproject.planton.provider.kubernetes.workload.cronjobkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1aLproject/planton/provider/kubernetes/workload/cronjobkubernetes/v1/spec.proto\x1aUproject/planton/provider/kubernetes/workload/cronjobkubernetes/v1/stack_outputs.proto\x1a#project/planton/shared/status.proto\x1a%project/planton/shared/metadata.proto\"\xc7\x03\n" +
+	"Kproject/planton/provider/kubernetes/workload/cronjobkubernetes/v1/api.proto\x12Aproject.planton.provider.kubernetes.workload.cronjobkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1aLproject/planton/provider/kubernetes/workload/cronjobkubernetes/v1/spec.proto\x1aUproject/planton/provider/kubernetes/workload/cronjobkubernetes/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\x1a#project/planton/shared/status.proto\"\xc7\x03\n" +
 	"\x11CronJobKubernetes\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!kubernetes.project-planton.org/v1R\n" +

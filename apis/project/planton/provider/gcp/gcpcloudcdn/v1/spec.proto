@@ -11,7 +11,5 @@ import "buf/validate/validate.proto";
 // reducing latency for end-users.
 message GcpCloudCdnSpec {
   // The ID of the GCP project where the Cloud CDN resources will be created.
-  string gcp_project_id = 1 [
-    (buf.validate.field).required = true
-  ];
+  string gcp_project_id = 1 [(buf.validate.field).required = true];
 }

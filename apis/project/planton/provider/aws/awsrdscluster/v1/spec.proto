@@ -44,9 +44,7 @@ message AwsRdsClusterSpec {
   string database_name = 6;
 
   // manage_master_user_password, when true, lets RDS manage the master user password in AWS Secrets Manager.
-  bool manage_master_user_password = 7 [
-    (planton.shared.options.recommended_default) = "true"
-  ];
+  bool manage_master_user_password = 7 [(planton.shared.options.recommended_default) = "true"];
 
   // master_user_secret_kms_key_id is the KMS key identifier (ARN/alias) for encrypting the managed secret.
   project.planton.shared.foreignkey.v1.StringValueOrRef master_user_secret_kms_key_id = 8 [
@@ -55,9 +53,7 @@ message AwsRdsClusterSpec {
   ];
 
   // username is the master database user name.
-  string username = 9 [
-    (planton.shared.options.default) = "master"
-  ];
+  string username = 9 [(planton.shared.options.default) = "master"];
 
   // password is the master user password. Cannot be set when manage_master_user_password is true.
   string password = 10;
@@ -69,14 +65,10 @@ message AwsRdsClusterSpec {
   ];
 
   // engine for the cluster. Examples: "aurora-mysql", "aurora-postgresql".
-  string engine = 12 [
-    (buf.validate.field).required = true
-  ];
+  string engine = 12 [(buf.validate.field).required = true];
 
   // engine_version to deploy. Example: "8.0.mysql_aurora.3.05.2" or "14.6" for Aurora PostgreSQL.
-  string engine_version = 13 [
-    (buf.validate.field).required = true
-  ];
+  string engine_version = 13 [(buf.validate.field).required = true];
 
   // storage_encrypted indicates whether to enable storage encryption for the cluster.
   bool storage_encrypted = 14;
@@ -90,17 +82,13 @@ message AwsRdsClusterSpec {
   // enabled_cloudwatch_logs_exports lists database logs to export to CloudWatch Logs.
   // Aurora MySQL: [audit, error, general, slowquery]
   // Aurora PostgreSQL: [postgresql, upgrade]
-  repeated string enabled_cloudwatch_logs_exports = 16 [
-    (buf.validate.field).repeated.unique = true
-  ];
+  repeated string enabled_cloudwatch_logs_exports = 16 [(buf.validate.field).repeated.unique = true];
 
   // deletion_protection prevents accidental deletion.
   bool deletion_protection = 17;
 
   // preferred_maintenance_window in UTC, format 'ddd:hh24:mi-ddd:hh24:mi'.
-  string preferred_maintenance_window = 18 [
-    (buf.validate.field).string.pattern = "^(mon|tue|wed|thu|fri|sat|sun):([01][0-9]|2[0-3]):[0-5][0-9]-(mon|tue|wed|thu|fri|sat|sun):([01][0-9]|2[0-3]):[0-5][0-9]$"
-  ];
+  string preferred_maintenance_window = 18 [(buf.validate.field).string.pattern = "^(mon|tue|wed|thu|fri|sat|sun):([01][0-9]|2[0-3]):[0-5][0-9]-(mon|tue|wed|thu|fri|sat|sun):([01][0-9]|2[0-3]):[0-5][0-9]$"];
 
   // backup_retention_period in days (> 0 to enable automated backups).
   int32 backup_retention_period = 19 [
@@ -109,9 +97,7 @@ message AwsRdsClusterSpec {
   ];
 
   // preferred_backup_window in UTC, format 'hh24:mi-hh24:mi'. Must not overlap maintenance window.
-  string preferred_backup_window = 20 [
-    (buf.validate.field).string.pattern = "^([01][0-9]|2[0-3]):[0-5][0-9]-([01][0-9]|2[0-3]):[0-5][0-9]$"
-  ];
+  string preferred_backup_window = 20 [(buf.validate.field).string.pattern = "^([01][0-9]|2[0-3]):[0-5][0-9]-([01][0-9]|2[0-3]):[0-5][0-9]$"];
 
   // copy_tags_to_snapshot copies tags from the cluster to snapshots.
   bool copy_tags_to_snapshot = 21;
@@ -155,37 +141,42 @@ message AwsRdsClusterSpec {
   // storage_type for Aurora (if supported): "aurora" or "aurora-iopt1".
   string storage_type = 33 [
     (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
-    (buf.validate.field).string = { in: ["aurora", "aurora-iopt1"] }
+    (buf.validate.field).string = {
+      in: [
+        "aurora",
+        "aurora-iopt1"
+      ]
+    }
   ];
 
   // Conditional validations
   option (buf.validate.message).cel = {
-    id: "final_snapshot_id_required_when_not_skipping",
-    message: "final_snapshot_identifier must be set when skip_final_snapshot is false",
+    id: "final_snapshot_id_required_when_not_skipping"
+    message: "final_snapshot_identifier must be set when skip_final_snapshot is false"
     expression: "this.skip_final_snapshot ? true : this.final_snapshot_identifier != \"\""
   };
 
   option (buf.validate.message).cel = {
-    id: "subnets_or_group",
-    message: "Provide either subnet_ids (>=2) or db_subnet_group_name",
+    id: "subnets_or_group"
+    message: "Provide either subnet_ids (>=2) or db_subnet_group_name"
     expression: "(this.subnet_ids.size() >= 2) || has(this.db_subnet_group_name)"
   };
 
   option (buf.validate.message).cel = {
-    id: "password_mutual_exclusion",
-    message: "password cannot be set when manage_master_user_password is true",
+    id: "password_mutual_exclusion"
+    message: "password cannot be set when manage_master_user_password is true"
     expression: "this.manage_master_user_password ? this.password == \"\" : true"
   };
 
   option (buf.validate.message).cel = {
-    id: "engine_mode_allowed",
-    message: "engine_mode, if set, must be 'serverless' or 'provisioned'",
+    id: "engine_mode_allowed"
+    message: "engine_mode, if set, must be 'serverless' or 'provisioned'"
     expression: "this.engine_mode == \"\" || this.engine_mode == \"serverless\" || this.engine_mode == \"provisioned\""
   };
 
   option (buf.validate.message).cel = {
-    id: "logs_exports_match_engine",
-    message: "enabled_cloudwatch_logs_exports must match engine family",
+    id: "logs_exports_match_engine"
+    message: "enabled_cloudwatch_logs_exports must match engine family"
     expression: "this.engine.startsWith(\"aurora-mysql\") ? this.enabled_cloudwatch_logs_exports.all(x, x == \"audit\" || x == \"error\" || x == \"general\" || x == \"slowquery\") : (this.engine.startsWith(\"aurora-postgresql\") ? this.enabled_cloudwatch_logs_exports.all(x, x == \"postgresql\" || x == \"upgrade\") : true)"
   };
 }
@@ -203,17 +194,13 @@ message AwsRdsClusterParameter {
 // AwsRdsClusterServerlessV2ScalingConfiguration configures Aurora Serverless v2 capacity scaling.
 message AwsRdsClusterServerlessV2ScalingConfiguration {
   // min_capacity is the minimum ACU.
-  double min_capacity = 1 [
-    (buf.validate.field).double.gt = 0
-  ];
+  double min_capacity = 1 [(buf.validate.field).double.gt = 0];
   // max_capacity is the maximum ACU.
   double max_capacity = 2;
 
   option (buf.validate.message).cel = {
-    id: "serverless_v2_scaling_bounds",
-    message: "max_capacity must be >= min_capacity when both are set",
+    id: "serverless_v2_scaling_bounds"
+    message: "max_capacity must be >= min_capacity when both are set"
     expression: "this.max_capacity == 0.0 || this.max_capacity >= this.min_capacity"
   };
 }
-
-

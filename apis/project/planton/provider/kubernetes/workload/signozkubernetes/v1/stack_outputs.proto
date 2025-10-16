@@ -64,4 +64,3 @@ message SignozKubernetesStackOutputs {
   // kubernetes secret key for the ClickHouse password.
   project.planton.shared.kubernetes.KubernetesSecretKey clickhouse_password_secret = 14;
 }
-

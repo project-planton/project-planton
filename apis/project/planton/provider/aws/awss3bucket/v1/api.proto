@@ -5,30 +5,22 @@ package project.planton.provider.aws.awss3bucket.v1;
 import "buf/validate/validate.proto";
 import "project/planton/provider/aws/awss3bucket/v1/spec.proto";
 import "project/planton/provider/aws/awss3bucket/v1/stack_outputs.proto";
-import "project/planton/shared/status.proto";
 import "project/planton/shared/metadata.proto";
+import "project/planton/shared/status.proto";
 
 //aws-s3-bucket
 message AwsS3Bucket {
   //api-version
-  string api_version = 1[
-    (buf.validate.field).string.const = 'aws.project-planton.org/v1'
-  ];
+  string api_version = 1 [(buf.validate.field).string.const = 'aws.project-planton.org/v1'];
 
   //resource-kind
-  string kind = 2 [
-    (buf.validate.field).string.const = 'AwsS3Bucket'
-  ];
+  string kind = 2 [(buf.validate.field).string.const = 'AwsS3Bucket'];
 
   //metadata
-  project.planton.shared.ApiResourceMetadata metadata = 3 [
-    (buf.validate.field).required = true
-  ];
+  project.planton.shared.ApiResourceMetadata metadata = 3 [(buf.validate.field).required = true];
 
   //spec
-  AwsS3BucketSpec spec = 4 [
-    (buf.validate.field).required = true
-  ];
+  AwsS3BucketSpec spec = 4 [(buf.validate.field).required = true];
 
   //status
   AwsS3BucketStatus status = 5;

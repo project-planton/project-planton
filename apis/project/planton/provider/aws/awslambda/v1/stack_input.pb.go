@@ -81,7 +81,7 @@ var File_project_planton_provider_aws_awslambda_v1_stack_input_proto protoreflec
 
 const file_project_planton_provider_aws_awslambda_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	";project/planton/provider/aws/awslambda/v1/stack_input.proto\x12)project.planton.provider.aws.awslambda.v1\x1a3project/planton/provider/aws/awslambda/v1/api.proto\x1a6project/planton/credential/awscredential/v1/spec.proto\"\xd4\x01\n" +
+	";project/planton/provider/aws/awslambda/v1/stack_input.proto\x12)project.planton.provider.aws.awslambda.v1\x1a6project/planton/credential/awscredential/v1/spec.proto\x1a3project/planton/provider/aws/awslambda/v1/api.proto\"\xd4\x01\n" +
 	"\x13AwsLambdaStackInput\x12L\n" +
 	"\x06target\x18\x01 \x01(\v24.project.planton.provider.aws.awslambda.v1.AwsLambdaR\x06target\x12o\n" +
 	"\x13provider_credential\x18\x02 \x01(\v2>.project.planton.credential.awscredential.v1.AwsCredentialSpecR\x12providerCredentialB\xf2\x02\n" +

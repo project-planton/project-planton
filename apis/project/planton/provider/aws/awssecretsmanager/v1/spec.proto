@@ -15,7 +15,10 @@ message AwsSecretsManagerSpec {
   // Each name corresponds to a unique secret that will be securely stored and managed.
   // Secret names must be unique within your AWS account and region.
   repeated string secret_names = 1 [
-    (buf.validate.field).repeated = {min_items: 1, unique: true},
+    (buf.validate.field).repeated = {
+      min_items: 1
+      unique: true
+    },
     (buf.validate.field).repeated.items.string.min_len = 1
   ];
 }

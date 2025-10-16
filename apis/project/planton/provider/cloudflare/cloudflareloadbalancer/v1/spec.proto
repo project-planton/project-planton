@@ -8,9 +8,7 @@ import "project/planton/shared/options/options.proto";
 
 // CloudflareLoadBalancerSpec captures the essential fields to create a Cloudflare Load Balancer.
 message CloudflareLoadBalancerSpec {
-  string hostname = 1 [
-    (buf.validate.field).required = true
-  ];
+  string hostname = 1 [(buf.validate.field).required = true];
 
   // Foreign key reference to a Cloudflare DNS zone that contains the hostname.
   project.planton.shared.foreignkey.v1.StringValueOrRef zone_id = 2 [
@@ -26,14 +24,10 @@ message CloudflareLoadBalancerSpec {
   ];
 
   // Whether Cloudflare's proxy is enabled for this hostname (orange cloud). Defaults to true.
-  bool proxied = 4 [
-    (project.planton.shared.options.recommended_default) = "true"
-  ];
+  bool proxied = 4 [(project.planton.shared.options.recommended_default) = "true"];
 
   // HTTP path to use for health monitoring of origins. Defaults to "/".
-  string health_probe_path = 5 [
-    (project.planton.shared.options.recommended_default) = "/"
-  ];
+  string health_probe_path = 5 [(project.planton.shared.options.recommended_default) = "/"];
 
   // Session affinity setting (e.g., "cookie" to bind clients to an origin). Defaults to none.
   CloudflareLoadBalancerSessionAffinity session_affinity = 6;
@@ -45,19 +39,13 @@ message CloudflareLoadBalancerSpec {
 // Definition of an origin server in the Cloudflare load balancer.
 message CloudflareLoadBalancerOrigin {
   // A name to identify the origin.
-  string name = 1 [
-    (buf.validate.field).required = true
-  ];
+  string name = 1 [(buf.validate.field).required = true];
 
   // The origin address (IP or DNS hostname) reachable via HTTP(S).
-  string address = 2 [
-    (buf.validate.field).required = true
-  ];
+  string address = 2 [(buf.validate.field).required = true];
 
   // Weight for this origin (relative traffic share). Defaults to 1.
-  int32 weight = 3 [
-    (project.planton.shared.options.recommended_default) = "1"
-  ];
+  int32 weight = 3 [(project.planton.shared.options.recommended_default) = "1"];
 }
 
 // Supported session affinity options for Cloudflare load balancers.

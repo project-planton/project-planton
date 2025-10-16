@@ -846,7 +846,7 @@ var File_project_planton_provider_kubernetes_workload_clickhousekubernetes_v1_sp
 
 const file_project_planton_provider_kubernetes_workload_clickhousekubernetes_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Oproject/planton/provider/kubernetes/workload/clickhousekubernetes/v1/spec.proto\x12Dproject.planton.provider.kubernetes.workload.clickhousekubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\x1a,project/planton/shared/options/options.proto\x1a google/protobuf/descriptor.proto\"\xac\a\n" +
+	"Oproject/planton/provider/kubernetes/workload/clickhousekubernetes/v1/spec.proto\x12Dproject.planton.provider.kubernetes.workload.clickhousekubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\x1a,project/planton/shared/options/options.proto\"\xac\a\n" +
 	"\x18ClickHouseKubernetesSpec\x12I\n" +
 	"\fcluster_name\x18\x01 \x01(\tB&\xbaH#r!2\x1f^[a-z0-9]([-a-z0-9]*[a-z0-9])?$R\vclusterName\x12\xaf\x01\n" +
 	"\tcontainer\x18\x02 \x01(\v2c.project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickHouseKubernetesContainerB,ʵ\xfd\x01'\b\x01\x12\x1b\n" +

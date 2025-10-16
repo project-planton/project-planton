@@ -32,5 +32,3 @@ message AwsRdsClusterStackOutputs {
   // The DB cluster parameter group in use by the cluster.
   string rds_cluster_parameter_group = 10;
 }
-
-

@@ -109,7 +109,7 @@ var File_project_planton_credential_civocredential_v1_api_proto protoreflect.Fil
 
 const file_project_planton_credential_civocredential_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"6project/planton/credential/civocredential/v1/api.proto\x12,project.planton.credential.civocredential.v1\x1a\x1bbuf/validate/validate.proto\x1a#project/planton/shared/status.proto\x1a%project/planton/shared/metadata.proto\x1a7project/planton/credential/civocredential/v1/spec.proto\"\xf5\x02\n" +
+	"6project/planton/credential/civocredential/v1/api.proto\x12,project.planton.credential.civocredential.v1\x1a\x1bbuf/validate/validate.proto\x1a7project/planton/credential/civocredential/v1/spec.proto\x1a%project/planton/shared/metadata.proto\x1a#project/planton/shared/status.proto\"\xf5\x02\n" +
 	"\x0eCivoCredential\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!credential.project-planton.org/v1R\n" +

@@ -276,7 +276,7 @@ var File_project_planton_provider_aws_awseksnodegroup_v1_spec_proto protoreflect
 
 const file_project_planton_provider_aws_awseksnodegroup_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	":project/planton/provider/aws/awseksnodegroup/v1/spec.proto\x12/project.planton.provider.aws.awseksnodegroup.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\"\xd7\a\n" +
+	":project/planton/provider/aws/awseksnodegroup/v1/spec.proto\x12/project.planton.provider.aws.awseksnodegroup.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\"\xd7\a\n" +
 	"\x13AwsEksNodeGroupSpec\x12w\n" +
 	"\fcluster_name\x18\x01 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB\x1c\xbaH\x03\xc8\x01\x01\x88\xd4a\xcf\x01\x92\xd4a\rmetadata.nameR\vclusterName\x12\x82\x01\n" +
 	"\rnode_role_arn\x18\x02 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB&\xbaH\x03\xc8\x01\x01\x88\xd4a\xd0\x01\x92\xd4a\x17status.outputs.role_arnR\vnodeRoleArn\x12\x90\x01\n" +

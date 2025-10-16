@@ -155,7 +155,7 @@ var File_project_planton_provider_aws_awss3bucket_v1_api_proto protoreflect.File
 
 const file_project_planton_provider_aws_awss3bucket_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"5project/planton/provider/aws/awss3bucket/v1/api.proto\x12+project.planton.provider.aws.awss3bucket.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/provider/aws/awss3bucket/v1/spec.proto\x1a?project/planton/provider/aws/awss3bucket/v1/stack_outputs.proto\x1a#project/planton/shared/status.proto\x1a%project/planton/shared/metadata.proto\"\xfc\x02\n" +
+	"5project/planton/provider/aws/awss3bucket/v1/api.proto\x12+project.planton.provider.aws.awss3bucket.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/provider/aws/awss3bucket/v1/spec.proto\x1a?project/planton/provider/aws/awss3bucket/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\x1a#project/planton/shared/status.proto\"\xfc\x02\n" +
 	"\vAwsS3Bucket\x12B\n" +
 	"\vapi_version\x18\x01 \x01(\tB!\xbaH\x1er\x1c\n" +
 	"\x1aaws.project-planton.org/v1R\n" +

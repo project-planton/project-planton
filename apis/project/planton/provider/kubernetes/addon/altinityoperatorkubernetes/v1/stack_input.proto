@@ -12,4 +12,3 @@ message AltinityOperatorKubernetesStackInput {
   //provider-credential
   project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec provider_credential = 2;
 }
-

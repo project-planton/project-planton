@@ -2,9 +2,9 @@ syntax = "proto3";
 
 package project.planton.shared.foreignkey.v1;
 
-import "project/planton/shared/cloudresourcekind/cloud_resource_kind.proto";
-import "google/protobuf/descriptor.proto";
 import "buf/validate/validate.proto";
+import "google/protobuf/descriptor.proto";
+import "project/planton/shared/cloudresourcekind/cloud_resource_kind.proto";
 
 // Extend google.protobuf.FieldOptions to store default kind & field path metadata
 extend google.protobuf.FieldOptions {
@@ -16,9 +16,7 @@ extend google.protobuf.FieldOptions {
 message ValueFromRef {
   project.planton.shared.cloudresourcekind.CloudResourceKind kind = 1;
   string env = 2;
-  string name = 3 [
-    (buf.validate.field).required = true
-  ];
+  string name = 3 [(buf.validate.field).required = true];
   string field_path = 4;
 }
 

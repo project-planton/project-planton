@@ -81,7 +81,7 @@ var File_project_planton_provider_aws_awsrdsinstance_v1_stack_input_proto protor
 
 const file_project_planton_provider_aws_awsrdsinstance_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"@project/planton/provider/aws/awsrdsinstance/v1/stack_input.proto\x12.project.planton.provider.aws.awsrdsinstance.v1\x1a8project/planton/provider/aws/awsrdsinstance/v1/api.proto\x1a6project/planton/credential/awscredential/v1/spec.proto\"\xe3\x01\n" +
+	"@project/planton/provider/aws/awsrdsinstance/v1/stack_input.proto\x12.project.planton.provider.aws.awsrdsinstance.v1\x1a6project/planton/credential/awscredential/v1/spec.proto\x1a8project/planton/provider/aws/awsrdsinstance/v1/api.proto\"\xe3\x01\n" +
 	"\x18AwsRdsInstanceStackInput\x12V\n" +
 	"\x06target\x18\x01 \x01(\v2>.project.planton.provider.aws.awsrdsinstance.v1.AwsRdsInstanceR\x06target\x12o\n" +
 	"\x13provider_credential\x18\x02 \x01(\v2>.project.planton.credential.awscredential.v1.AwsCredentialSpecR\x12providerCredentialB\x95\x03\n" +

@@ -3,10 +3,10 @@ syntax = "proto3";
 package project.planton.provider.kubernetes.workload.neo4jkubernetes.v1;
 
 import "buf/validate/validate.proto";
+import "google/protobuf/descriptor.proto";
 import "project/planton/shared/kubernetes/kubernetes.proto";
 import "project/planton/shared/kubernetes/options.proto";
 import "project/planton/shared/options/options.proto";
-import "google/protobuf/descriptor.proto";
 
 extend google.protobuf.FieldOptions {
   Neo4jKubernetesContainer default_container = 5008130;
@@ -15,21 +15,19 @@ extend google.protobuf.FieldOptions {
 // Neo4jKubernetesSpec holds the minimal required fields to deploy a single-node Neo4j Community instance on Kubernetes.
 message Neo4jKubernetesSpec {
   // The specifications for the Neo4j container deployment.
-  Neo4jKubernetesContainer container = 1 [
-    (default_container) = {
-      resources:  {
-        limits {
-          cpu: "1000m"
-          memory: "1Gi"
-        },
-        requests {
-          cpu: "50m"
-          memory: "100Mi"
-        }
-      },
-      disk_size: "1Gi",
+  Neo4jKubernetesContainer container = 1 [(default_container) = {
+    resources: {
+      limits: {
+        cpu: "1000m"
+        memory: "1Gi"
+      }
+      requests: {
+        cpu: "50m"
+        memory: "100Mi"
+      }
     }
-  ];
+    disk_size: "1Gi"
+  }];
 
   // Optional extra memory config for Neo4j (heap, page cache).
   // By default, we rely on Neo4j’s internal defaults if unset.

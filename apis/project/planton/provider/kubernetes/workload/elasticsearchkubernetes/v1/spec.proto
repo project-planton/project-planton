@@ -19,41 +19,37 @@ extend google.protobuf.FieldOptions {
 // including resource allocation, persistence settings, and external access through ingress.
 message ElasticsearchKubernetesSpec {
   //The specifications for the Elasticsearch container deployment.
-  ElasticsearchKubernetesElasticsearchContainer elasticsearch_container = 1 [
-    (default_elasticsearch_container) = {
-      replicas: 1,
-      resources:  {
-        limits {
-          cpu: "1000m"
-          memory: "1Gi"
-        },
-        requests {
-          cpu: "50m"
-          memory: "100Mi"
-        }
-      },
-      is_persistence_enabled: true,
-      disk_size: "1Gi"
+  ElasticsearchKubernetesElasticsearchContainer elasticsearch_container = 1 [(default_elasticsearch_container) = {
+    replicas: 1
+    resources: {
+      limits: {
+        cpu: "1000m"
+        memory: "1Gi"
+      }
+      requests: {
+        cpu: "50m"
+        memory: "100Mi"
+      }
     }
-  ];
+    is_persistence_enabled: true
+    disk_size: "1Gi"
+  }];
 
   // The specifications for the Kibana container deployment.
-  ElasticsearchKubernetesKibanaContainer kibana_container = 2 [
-    (default_kibana_container) = {
-      is_enabled: true,
-      replicas: 1,
-      resources:  {
-        limits {
-          cpu: "1000m"
-          memory: "1Gi"
-        },
-        requests {
-          cpu: "50m"
-          memory: "100Mi"
-        }
-      },
+  ElasticsearchKubernetesKibanaContainer kibana_container = 2 [(default_kibana_container) = {
+    is_enabled: true
+    replicas: 1
+    resources: {
+      limits: {
+        cpu: "1000m"
+        memory: "1Gi"
+      }
+      requests: {
+        cpu: "50m"
+        memory: "100Mi"
+      }
     }
-  ];
+  }];
 
   // The ingress configuration for the Elasticsearch deployment.
   project.planton.shared.kubernetes.IngressSpec ingress = 3;
@@ -85,7 +81,7 @@ message ElasticsearchKubernetesElasticsearchContainer {
     // Consolidated validation logic:
     // If `is_persistence_enabled` is false, `disk_size` can be empty.
     // If `is_persistence_enabled` is true, `disk_size` must be non-empty and match the regex.
-    id: "spec.container.disk_size.required",
+    id: "spec.container.disk_size.required"
     expression: "((!this.is_persistence_enabled && (size(this.disk_size) == 0 || this.disk_size == '')) || (this.is_persistence_enabled && size(this.disk_size) > 0 && this.disk_size.matches('^\\\\d+(\\\\.\\\\d+)?\\\\s?(Ki|Mi|Gi|Ti|Pi|Ei|K|M|G|T|P|E)$')))"
     message: "Disk size is required and must match the format if persistence is enabled"
   };

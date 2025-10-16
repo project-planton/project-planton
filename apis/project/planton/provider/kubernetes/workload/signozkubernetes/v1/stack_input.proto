@@ -14,4 +14,3 @@ message SignozKubernetesStackInput {
   // kubernetes namespace
   string kubernetes_namespace = 3;
 }
-

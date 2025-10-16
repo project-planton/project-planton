@@ -13,16 +13,12 @@ message AwsCloudFrontSpec {
   repeated string aliases = 2 [
     (buf.validate.field).repeated.unique = true,
     (buf.validate.field).repeated.items = {
-      string: {
-        pattern: "^[A-Za-z0-9\\-\\.]+\\.[A-Za-z]{2,}$"
-      }
+      string: {pattern: "^[A-Za-z0-9\\-\\.]+\\.[A-Za-z]{2,}$"}
     }
   ];
 
   // ACM certificate ARN for custom domains in the us-east-1 region.
-  string certificate_arn = 3 [
-    (buf.validate.field).string.pattern = "^$|^arn:aws:acm:us-east-1:[0-9]{12}:certificate/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$"
-  ];
+  string certificate_arn = 3 [(buf.validate.field).string.pattern = "^$|^arn:aws:acm:us-east-1:[0-9]{12}:certificate/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$"];
 
   // Price class for edge locations.
   enum PriceClass {
@@ -42,9 +38,7 @@ message AwsCloudFrontSpec {
     ];
 
     // Optional origin path that CloudFront appends to requests.
-    string origin_path = 2 [
-      (buf.validate.field).string.pattern = "^$|^/[A-Za-z0-9\\-\\_\\/\\.]*$"
-    ];
+    string origin_path = 2 [(buf.validate.field).string.pattern = "^$|^/[A-Za-z0-9\\-\\_\\/\\.]*$"];
 
     // Whether this origin is used as the default origin for the distribution.
     // Exactly one origin must be marked as default.
@@ -56,22 +50,18 @@ message AwsCloudFrontSpec {
   repeated Origin origins = 5 [(buf.validate.field).repeated.min_items = 1];
 
   // Default root object, e.g., "index.html".
-  string default_root_object = 6 [
-    (buf.validate.field).string.pattern = "^[A-Za-z0-9\\-\\.\\_]*$"
-  ];
+  string default_root_object = 6 [(buf.validate.field).string.pattern = "^[A-Za-z0-9\\-\\.\\_]*$"];
 
   // Conditional validations
   option (buf.validate.message).cel = {
-    id: "aliases_require_cert",
-    message: "certificate_arn must be set when aliases are provided",
+    id: "aliases_require_cert"
+    message: "certificate_arn must be set when aliases are provided"
     expression: "this.aliases.size() == 0 || this.certificate_arn != \"\""
   };
 
   option (buf.validate.message).cel = {
-    id: "exactly_one_default_origin",
-    message: "exactly one origin must be marked as default",
+    id: "exactly_one_default_origin"
+    message: "exactly one origin must be marked as default"
     expression: "this.origins.filter(o, o.is_default).size() == 1"
   };
 }
-
-

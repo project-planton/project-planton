@@ -12,16 +12,12 @@ import "project/planton/shared/options/options.proto";
 message AzureVpcSpec {
   // The CIDR block defining the address space for the Virtual Network.
   // Example: "10.0.0.0/16" would allow IP addresses from 10.0.0.0 to 10.0.255.255.
-  string address_space_cidr = 1 [
-    (buf.validate.field).required = true
-  ];
+  string address_space_cidr = 1 [(buf.validate.field).required = true];
 
   // The CIDR block for the primary subnet that AKS cluster nodes will use.
   // This should be a subset of the address_space_cidr range.
   // Example: "10.0.0.0/18" would allocate the first half of a /16 address space to the nodes subnet.
-  string nodes_subnet_cidr = 2 [
-    (buf.validate.field).required = true
-  ];
+  string nodes_subnet_cidr = 2 [(buf.validate.field).required = true];
 
   // Toggle to enable a NAT Gateway for the nodes subnet to allow outbound Internet connectivity.
   // If set to true, a NAT Gateway resource will be created and associated with the subnet.

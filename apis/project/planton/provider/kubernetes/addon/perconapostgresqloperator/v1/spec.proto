@@ -13,33 +13,27 @@ import "project/planton/shared/kubernetes/target_cluster.proto";
 message PerconaPostgresqlOperatorSpec {
   // The Kubernetes cluster to install this operator on.
   project.planton.shared.kubernetes.KubernetesAddonTargetCluster target_cluster = 1;
-  
+
   // Kubernetes namespace to install the operator.
   // If not provided, defaults to "percona-postgresql-operator"
-  string namespace = 2 [
-    (buf.validate.field).string.pattern = "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"
-  ];
-  
+  string namespace = 2 [(buf.validate.field).string.pattern = "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"];
+
   // Container resource specifications for the operator
-  PerconaPostgresqlOperatorSpecContainer container = 3 [
-    (buf.validate.field).required = true
-  ];
+  PerconaPostgresqlOperatorSpecContainer container = 3 [(buf.validate.field).required = true];
 }
 
 // **PerconaPostgresqlOperatorSpecContainer** specifies the container configuration for the Percona operator.
 // It includes resource allocations for CPU and memory to ensure the operator runs efficiently.
 message PerconaPostgresqlOperatorSpecContainer {
   // CPU and memory resources for the operator pod
-  project.planton.shared.kubernetes.ContainerResources resources = 1 [
-    (project.planton.shared.kubernetes.default_container_resources) = {
-      limits {
-        cpu: "1000m"
-        memory: "1Gi"
-      },
-      requests {
-        cpu: "100m"
-        memory: "256Mi"
-      }
+  project.planton.shared.kubernetes.ContainerResources resources = 1 [(project.planton.shared.kubernetes.default_container_resources) = {
+    limits: {
+      cpu: "1000m"
+      memory: "1Gi"
     }
-  ];
+    requests: {
+      cpu: "100m"
+      memory: "256Mi"
+    }
+  }];
 }

@@ -26,9 +26,7 @@ message DigitalOceanDnsZoneSpec {
 message DigitalOceanDnsZoneRecord {
   // The host/name for the DNS record, relative to the zone.
   // For root records, use "@" to denote the zone itself.
-  string name = 1 [
-    (buf.validate.field).required = true
-  ];
+  string name = 1 [(buf.validate.field).required = true];
 
   // The value or values for the DNS record.
   // - For A/AAAA: one or more IP address(es).
@@ -43,13 +41,9 @@ message DigitalOceanDnsZoneRecord {
 
   // The time-to-live for this DNS record, in seconds.
   // Determines how long resolvers cache the record. Defaults to 3600 seconds (1 hour) if not set.
-  uint32 ttl_seconds = 3 [
-    (project.planton.shared.options.recommended_default) = "3600"
-  ];
+  uint32 ttl_seconds = 3 [(project.planton.shared.options.recommended_default) = "3600"];
 
   // The type of the DNS record.
   // This field is required and must be one of the supported record types.
-  project.planton.shared.networking.enums.dnsrecordtype.DnsRecordType type = 4 [
-    (buf.validate.field).required = true
-  ];
+  project.planton.shared.networking.enums.dnsrecordtype.DnsRecordType type = 4 [(buf.validate.field).required = true];
 }

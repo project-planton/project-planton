@@ -3,8 +3,8 @@ syntax = "proto3";
 package project.planton.provider.gcp.gcpgkeworkloadidentitybinding.v1;
 
 import "buf/validate/validate.proto";
-import "project/planton/shared/options/options.proto";
 import "project/planton/shared/foreignkey/v1/foreign_key.proto";
+import "project/planton/shared/options/options.proto";
 
 // GkeWorkloadIdentityBindingSpec describes an IAM policy binding that
 // allows a Kubernetes ServiceAccount (KSA) to impersonate a Google
@@ -27,12 +27,8 @@ message GcpGkeWorkloadIdentityBindingSpec {
   ];
 
   // Kubernetes namespace of the ServiceAccount running in the cluster.
-  string ksa_namespace = 3 [
-    (buf.validate.field).required = true
-  ];
+  string ksa_namespace = 3 [(buf.validate.field).required = true];
 
   // Name of the Kubernetes ServiceAccount.
-  string ksa_name = 4 [
-    (buf.validate.field).required = true
-  ];
+  string ksa_name = 4 [(buf.validate.field).required = true];
 }

@@ -294,7 +294,7 @@ var File_project_planton_shared_foreignkey_v1_foreign_key_proto protoreflect.Fil
 
 const file_project_planton_shared_foreignkey_v1_foreign_key_proto_rawDesc = "" +
 	"\n" +
-	"6project/planton/shared/foreignkey/v1/foreign_key.proto\x12$project.planton.shared.foreignkey.v1\x1aBproject/planton/shared/cloudresourcekind/cloud_resource_kind.proto\x1a google/protobuf/descriptor.proto\x1a\x1bbuf/validate/validate.proto\"\xac\x01\n" +
+	"6project/planton/shared/foreignkey/v1/foreign_key.proto\x12$project.planton.shared.foreignkey.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1aBproject/planton/shared/cloudresourcekind/cloud_resource_kind.proto\"\xac\x01\n" +
 	"\fValueFromRef\x12O\n" +
 	"\x04kind\x18\x01 \x01(\x0e2;.project.planton.shared.cloudresourcekind.CloudResourceKindR\x04kind\x12\x10\n" +
 	"\x03env\x18\x02 \x01(\tR\x03env\x12\x1a\n" +

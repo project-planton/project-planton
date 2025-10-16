@@ -114,7 +114,7 @@ var File_project_planton_provider_aws_awsiamrole_v1_spec_proto protoreflect.File
 
 const file_project_planton_provider_aws_awsiamrole_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"5project/planton/provider/aws/awsiamrole/v1/spec.proto\x12*project.planton.provider.aws.awsiamrole.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\x1a\x1cgoogle/protobuf/struct.proto\"\xa0\x03\n" +
+	"5project/planton/provider/aws/awsiamrole/v1/spec.proto\x12*project.planton.provider.aws.awsiamrole.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a,project/planton/shared/options/options.proto\"\xa0\x03\n" +
 	"\x0eAwsIamRoleSpec\x12 \n" +
 	"\vdescription\x18\x01 \x01(\tR\vdescription\x12\x19\n" +
 	"\x04path\x18\x02 \x01(\tB\x05\x92\xa6\x1d\x01/R\x04path\x12B\n" +

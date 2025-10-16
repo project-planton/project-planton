@@ -19,39 +19,35 @@ extend google.protobuf.FieldOptions {
 message LocustKubernetesSpec {
   // The master container specifications for the Locust cluster.
   // This defines the resource allocation and number of replicas for the master node.
-  LocustKubernetesContainer master_container = 1 [
-    (default_master_container) = {
-      replicas: 1,
-      resources:  {
-        limits {
-          cpu: "1000m"
-          memory: "1Gi"
-        },
-        requests {
-          cpu: "50m"
-          memory: "100Mi"
-        }
-      },
+  LocustKubernetesContainer master_container = 1 [(default_master_container) = {
+    replicas: 1
+    resources: {
+      limits: {
+        cpu: "1000m"
+        memory: "1Gi"
+      }
+      requests: {
+        cpu: "50m"
+        memory: "100Mi"
+      }
     }
-  ];
+  }];
 
   // The worker container specifications for the Locust cluster.
   // This defines the resource allocation and number of replicas for the worker nodes.
-  LocustKubernetesContainer worker_container = 2 [
-    (default_worker_container) = {
-      replicas: 1,
-      resources:  {
-        limits {
-          cpu: "1000m"
-          memory: "1Gi"
-        },
-        requests {
-          cpu: "50m"
-          memory: "100Mi"
-        }
-      },
+  LocustKubernetesContainer worker_container = 2 [(default_worker_container) = {
+    replicas: 1
+    resources: {
+      limits: {
+        cpu: "1000m"
+        memory: "1Gi"
+      }
+      requests: {
+        cpu: "50m"
+        memory: "100Mi"
+      }
     }
-  ];
+  }];
 
   // The ingress configuration for the Locust deployment.
   project.planton.shared.kubernetes.IngressSpec ingress = 3;
@@ -59,9 +55,7 @@ message LocustKubernetesSpec {
   // The load test parameters, including the main test script, additional library files,
   // and extra Python pip packages needed for test execution.
   // This specifies how the Locust nodes will simulate traffic and interact with the target application.
-  LocustKubernetesLoadTest load_test = 4 [
-    (buf.validate.field).required = true
-  ];
+  LocustKubernetesLoadTest load_test = 4 [(buf.validate.field).required = true];
 
   // A map of key-value pairs providing additional customization options for the Helm chart used
   // to deploy the Locust cluster. These values allow for further refinement of the deployment,
@@ -89,22 +83,16 @@ message LocustKubernetesContainer {
 message LocustKubernetesLoadTest {
   // A unique identifier or name for this particular load test specification.
   // It is used to reference or distinguish this test configuration among others within a testing suite or environment.
-  string name = 1 [
-    (buf.validate.field).required = true
-  ];
+  string name = 1 [(buf.validate.field).required = true];
 
   // The Python code for the main Locust test script.
   // This script defines the behavior of the simulated users and is crucial for executing the load test.
-  string main_py_content = 2 [
-    (buf.validate.field).required = true
-  ];
+  string main_py_content = 2 [(buf.validate.field).required = true];
 
   // A map where each entry consists of a filename and its associated Python code content.
   // These files typically contain additional classes or functions required by the main_py_content script.
   // The key of the map is the filename, and the value is the file content.
-  map<string,string> lib_files_content = 3 [
-    (buf.validate.field).required = true
-  ];
+  map<string, string> lib_files_content = 3 [(buf.validate.field).required = true];
 
   // A list of extra Python pip packages that are required for the load test.
   // These packages will be installed in the environment where the load test is executed,

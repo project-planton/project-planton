@@ -86,10 +86,11 @@ message ContainerImage {
 // It allows you to enable or disable ingress and specify the endpoint domain name for internal and external access.
 message IngressSpec {
   option (buf.validate.message).cel = {
-    id: "ingress.enabled.dns_domain.required",
-    expression: "this.enabled && size(this.dns_domain) == 0"
-        "? 'DNS Domain is required to enable ingress'"
-        ": ''"
+    id: "ingress.enabled.dns_domain.required"
+    expression:
+      "this.enabled && size(this.dns_domain) == 0"
+      "? 'DNS Domain is required to enable ingress'"
+      ": ''"
   };
 
   // A flag to enable or disable ingress.

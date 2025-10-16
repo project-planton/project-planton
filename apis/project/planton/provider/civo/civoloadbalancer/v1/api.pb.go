@@ -157,7 +157,7 @@ var File_project_planton_provider_civo_civoloadbalancer_v1_api_proto protoreflec
 
 const file_project_planton_provider_civo_civoloadbalancer_v1_api_proto_rawDesc = "" +
 	"\n" +
-	";project/planton/provider/civo/civoloadbalancer/v1/api.proto\x121project.planton.provider.civo.civoloadbalancer.v1\x1a\x1bbuf/validate/validate.proto\x1a<project/planton/provider/civo/civoloadbalancer/v1/spec.proto\x1aEproject/planton/provider/civo/civoloadbalancer/v1/stack_outputs.proto\x1a#project/planton/shared/status.proto\x1a%project/planton/shared/metadata.proto\"\x9d\x03\n" +
+	";project/planton/provider/civo/civoloadbalancer/v1/api.proto\x121project.planton.provider.civo.civoloadbalancer.v1\x1a\x1bbuf/validate/validate.proto\x1a<project/planton/provider/civo/civoloadbalancer/v1/spec.proto\x1aEproject/planton/provider/civo/civoloadbalancer/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\x1a#project/planton/shared/status.proto\"\x9d\x03\n" +
 	"\x10CivoLoadBalancer\x12C\n" +
 	"\vapi_version\x18\x01 \x01(\tB\"\xbaH\x1fr\x1d\n" +
 	"\x1bcivo.project-planton.org/v1R\n" +

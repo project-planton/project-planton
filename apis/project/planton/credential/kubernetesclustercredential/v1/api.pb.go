@@ -109,7 +109,7 @@ var File_project_planton_credential_kubernetesclustercredential_v1_api_proto pro
 
 const file_project_planton_credential_kubernetesclustercredential_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Cproject/planton/credential/kubernetesclustercredential/v1/api.proto\x129project.planton.credential.kubernetesclustercredential.v1\x1a\x1bbuf/validate/validate.proto\x1a#project/planton/shared/status.proto\x1a%project/planton/shared/metadata.proto\x1aDproject/planton/credential/kubernetesclustercredential/v1/spec.proto\"\xa9\x03\n" +
+	"Cproject/planton/credential/kubernetesclustercredential/v1/api.proto\x129project.planton.credential.kubernetesclustercredential.v1\x1a\x1bbuf/validate/validate.proto\x1aDproject/planton/credential/kubernetesclustercredential/v1/spec.proto\x1a%project/planton/shared/metadata.proto\x1a#project/planton/shared/status.proto\"\xa9\x03\n" +
 	"\x1bKubernetesClusterCredential\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!credential.project-planton.org/v1R\n" +

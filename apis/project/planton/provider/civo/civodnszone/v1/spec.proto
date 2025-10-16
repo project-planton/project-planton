@@ -26,9 +26,7 @@ message CivoDnsZoneSpec {
 message CivoDnsZoneRecord {
   // The host/name for the DNS record, relative to the zone.
   // For root (apex) records, use "@" to denote the zone itself.
-  string name = 1 [
-    (buf.validate.field).required = true
-  ];
+  string name = 1 [(buf.validate.field).required = true];
 
   // The value or values for the DNS record.
   // - For A/AAAA: one or more IP addresses.
@@ -43,13 +41,9 @@ message CivoDnsZoneRecord {
 
   // The time-to-live (TTL) for this DNS record, in seconds.
   // Determines how long resolvers cache the record. Defaults to 3600 seconds (1 hour) if not set.
-  uint32 ttl_seconds = 3 [
-    (project.planton.shared.options.recommended_default) = "3600"
-  ];
+  uint32 ttl_seconds = 3 [(project.planton.shared.options.recommended_default) = "3600"];
 
   // The DNS record type.
   // This field is required and must be one of the supported record types (A, AAAA, CNAME, MX, TXT, etc.).
-  project.planton.shared.networking.enums.dnsrecordtype.DnsRecordType type = 4 [
-    (buf.validate.field).required = true
-  ];
+  project.planton.shared.networking.enums.dnsrecordtype.DnsRecordType type = 4 [(buf.validate.field).required = true];
 }

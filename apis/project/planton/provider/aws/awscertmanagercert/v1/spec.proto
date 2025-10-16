@@ -18,9 +18,7 @@ message AwsCertManagerCertSpec {
   // The string is mandatory, so users must always supply a primary domain.
   string primary_domain_name = 1 [
     (buf.validate.field).required = true,
-    (buf.validate.field).string = {
-      pattern: "^(?:\\*\\.[A-Za-z0-9\\-\\.]+|[A-Za-z0-9\\-\\.]+\\.[A-Za-z]{2,})$"
-    }
+    (buf.validate.field).string = {pattern: "^(?:\\*\\.[A-Za-z0-9\\-\\.]+|[A-Za-z0-9\\-\\.]+\\.[A-Za-z]{2,})$"}
   ];
 
   // alternateDomainNames is an optional list of Subject Alternative Names (SANs) for the certificate.
@@ -29,9 +27,7 @@ message AwsCertManagerCertSpec {
   repeated string alternate_domain_names = 2 [
     (buf.validate.field).repeated.unique = true,
     (buf.validate.field).repeated.items = {
-      string: {
-        pattern: "^(?:\\*\\.[A-Za-z0-9\\-\\.]+|[A-Za-z0-9\\-\\.]+\\.[A-Za-z]{2,})$"
-      }
+      string: {pattern: "^(?:\\*\\.[A-Za-z0-9\\-\\.]+|[A-Za-z0-9\\-\\.]+\\.[A-Za-z]{2,})$"}
     }
   ];
 
@@ -50,7 +46,10 @@ message AwsCertManagerCertSpec {
   string validation_method = 4 [
     (project.planton.shared.options.default) = "DNS",
     (buf.validate.field).string = {
-      in: ["DNS", "EMAIL"]
+      in: [
+        "DNS",
+        "EMAIL"
+      ]
     }
   ];
 }

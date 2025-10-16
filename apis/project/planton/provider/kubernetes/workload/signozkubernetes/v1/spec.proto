@@ -3,10 +3,10 @@ syntax = "proto3";
 package project.planton.provider.kubernetes.workload.signozkubernetes.v1;
 
 import "buf/validate/validate.proto";
+import "google/protobuf/descriptor.proto";
 import "project/planton/shared/kubernetes/kubernetes.proto";
 import "project/planton/shared/kubernetes/options.proto";
 import "project/planton/shared/options/options.proto";
-import "google/protobuf/descriptor.proto";
 
 extend google.protobuf.FieldOptions {
   SignozKubernetesContainer default_signoz_container = 560001;
@@ -23,43 +23,37 @@ extend google.protobuf.FieldOptions {
  */
 message SignozKubernetesSpec {
   // The container specifications for the main SigNoz binary (UI, API server, Ruler, Alertmanager).
-  SignozKubernetesContainer signoz_container = 1 [
-    (default_signoz_container) = {
-      replicas: 1,
-      resources: {
-        limits {
-          cpu: "1000m"
-          memory: "2Gi"
-        },
-        requests {
-          cpu: "200m"
-          memory: "512Mi"
-        }
+  SignozKubernetesContainer signoz_container = 1 [(default_signoz_container) = {
+    replicas: 1
+    resources: {
+      limits: {
+        cpu: "1000m"
+        memory: "2Gi"
+      }
+      requests: {
+        cpu: "200m"
+        memory: "512Mi"
       }
     }
-  ];
+  }];
 
   // The container specifications for the OpenTelemetry Collector (data ingestion gateway).
-  SignozKubernetesContainer otel_collector_container = 2 [
-    (default_otel_collector_container) = {
-      replicas: 2,
-      resources: {
-        limits {
-          cpu: "2000m"
-          memory: "4Gi"
-        },
-        requests {
-          cpu: "500m"
-          memory: "1Gi"
-        }
+  SignozKubernetesContainer otel_collector_container = 2 [(default_otel_collector_container) = {
+    replicas: 2
+    resources: {
+      limits: {
+        cpu: "2000m"
+        memory: "4Gi"
+      }
+      requests: {
+        cpu: "500m"
+        memory: "1Gi"
       }
     }
-  ];
+  }];
 
   // The database configuration for SigNoz, supporting both self-managed and external ClickHouse.
-  SignozKubernetesDatabaseConfig database = 3 [
-    (buf.validate.field).required = true
-  ];
+  SignozKubernetesDatabaseConfig database = 3 [(buf.validate.field).required = true];
 
   // The ingress configuration for the SigNoz UI and API.
   project.planton.shared.kubernetes.IngressSpec signoz_ingress = 4;
@@ -83,9 +77,7 @@ message SignozKubernetesSpec {
  */
 message SignozKubernetesContainer {
   // The number of pods to deploy for this component.
-  int32 replicas = 1 [
-    (buf.validate.field).int32.gte = 1
-  ];
+  int32 replicas = 1 [(buf.validate.field).int32.gte = 1];
 
   // The CPU and memory resources allocated to the container.
   project.planton.shared.kubernetes.ContainerResources resources = 2;
@@ -121,7 +113,7 @@ message SignozKubernetesDatabaseConfig {
   SignozKubernetesManagedClickhouse managed_database = 3;
 
   option (buf.validate.message).cel = {
-    id: "spec.database.external_required",
+    id: "spec.database.external_required"
     expression: "!this.is_external || has(this.external_database)"
     message: "External database configuration is required when is_external is true"
   };
@@ -133,9 +125,7 @@ message SignozKubernetesDatabaseConfig {
  */
 message SignozKubernetesExternalClickhouse {
   // The hostname or endpoint of the external ClickHouse instance.
-  string host = 1 [
-    (buf.validate.field).required = true
-  ];
+  string host = 1 [(buf.validate.field).required = true];
 
   // The HTTP port for ClickHouse (default is 8123).
   int32 http_port = 2 [
@@ -152,22 +142,16 @@ message SignozKubernetesExternalClickhouse {
   ];
 
   // The name of the distributed cluster in ClickHouse configuration.
-  string cluster_name = 4 [
-    (project.planton.shared.options.default) = "cluster"
-  ];
+  string cluster_name = 4 [(project.planton.shared.options.default) = "cluster"];
 
   // Whether to use secure (TLS) connection to ClickHouse.
   bool is_secure = 5;
 
   // The username for authenticating to ClickHouse.
-  string username = 6 [
-    (buf.validate.field).required = true
-  ];
+  string username = 6 [(buf.validate.field).required = true];
 
   // The password for authenticating to ClickHouse.
-  string password = 7 [
-    (buf.validate.field).required = true
-  ];
+  string password = 7 [(buf.validate.field).required = true];
 }
 
 /**
@@ -176,23 +160,21 @@ message SignozKubernetesExternalClickhouse {
  */
 message SignozKubernetesManagedClickhouse {
   // The container specifications for ClickHouse.
-  SignozKubernetesClickhouseContainer container = 1 [
-    (default_clickhouse_container) = {
-      replicas: 1,
-      resources: {
-        limits {
-          cpu: "2000m"
-          memory: "4Gi"
-        },
-        requests {
-          cpu: "500m"
-          memory: "1Gi"
-        }
-      },
-      is_persistence_enabled: true,
-      disk_size: "20Gi"
+  SignozKubernetesClickhouseContainer container = 1 [(default_clickhouse_container) = {
+    replicas: 1
+    resources: {
+      limits: {
+        cpu: "2000m"
+        memory: "4Gi"
+      }
+      requests: {
+        cpu: "500m"
+        memory: "1Gi"
+      }
     }
-  ];
+    is_persistence_enabled: true
+    disk_size: "20Gi"
+  }];
 
   // The cluster configuration for ClickHouse (sharding and replication).
   SignozKubernetesClickhouseCluster cluster = 2;
@@ -207,9 +189,7 @@ message SignozKubernetesManagedClickhouse {
  */
 message SignozKubernetesClickhouseContainer {
   // The number of ClickHouse pods to deploy.
-  int32 replicas = 1 [
-    (buf.validate.field).int32.gte = 1
-  ];
+  int32 replicas = 1 [(buf.validate.field).int32.gte = 1];
 
   // The CPU and memory resources allocated to the ClickHouse container.
   project.planton.shared.kubernetes.ContainerResources resources = 2;
@@ -232,7 +212,7 @@ message SignozKubernetesClickhouseContainer {
   string disk_size = 5;
 
   option (buf.validate.message).cel = {
-    id: "spec.clickhouse.container.disk_size.required",
+    id: "spec.clickhouse.container.disk_size.required"
     expression: "((!this.is_persistence_enabled && (size(this.disk_size) == 0 || this.disk_size == '')) || (this.is_persistence_enabled && size(this.disk_size) > 0 && this.disk_size.matches('^\\\\d+(\\\\.\\\\d+)?\\\\s?(Ki|Mi|Gi|Ti|Pi|Ei|K|M|G|T|P|E)$')))"
     message: "Disk size is required and must match the format if persistence is enabled"
   };
@@ -268,7 +248,7 @@ message SignozKubernetesClickhouseCluster {
   int32 replica_count = 3;
 
   option (buf.validate.message).cel = {
-    id: "spec.clickhouse.cluster.counts_when_enabled",
+    id: "spec.clickhouse.cluster.counts_when_enabled"
     expression: "!this.is_enabled || (this.shard_count >= 1 && this.replica_count >= 1)"
     message: "Shard count and replica count must be at least 1 when clustering is enabled"
   };
@@ -287,22 +267,20 @@ message SignozKubernetesZookeeperConfig {
   bool is_enabled = 1;
 
   // The container specifications for Zookeeper.
-  SignozKubernetesZookeeperContainer container = 2 [
-    (default_zookeeper_container) = {
-      replicas: 1,
-      resources: {
-        limits {
-          cpu: "500m"
-          memory: "512Mi"
-        },
-        requests {
-          cpu: "100m"
-          memory: "256Mi"
-        }
-      },
-      disk_size: "8Gi"
+  SignozKubernetesZookeeperContainer container = 2 [(default_zookeeper_container) = {
+    replicas: 1
+    resources: {
+      limits: {
+        cpu: "500m"
+        memory: "512Mi"
+      }
+      requests: {
+        cpu: "100m"
+        memory: "256Mi"
+      }
     }
-  ];
+    disk_size: "8Gi"
+  }];
 }
 
 /**
@@ -313,9 +291,7 @@ message SignozKubernetesZookeeperContainer {
    * The number of Zookeeper pods to deploy.
    * For production, this should be an odd number (3 or 5) to maintain quorum.
    */
-  int32 replicas = 1 [
-    (buf.validate.field).int32.gte = 1
-  ];
+  int32 replicas = 1 [(buf.validate.field).int32.gte = 1];
 
   // The CPU and memory resources allocated to the Zookeeper container.
   project.planton.shared.kubernetes.ContainerResources resources = 2;
@@ -326,11 +302,9 @@ message SignozKubernetesZookeeperContainer {
   /**
    * The size of the persistent volume attached to each Zookeeper pod (e.g., "8Gi").
    */
-  string disk_size = 4 [
-    (buf.validate.field).cel = {
-      id: "spec.zookeeper.disk_size.required",
-      message: "Disk size is required and must match the format",
-      expression: "size(this) > 0 && this.matches('^\\\\d+(\\\\.\\\\d+)?\\\\s?(Ki|Mi|Gi|Ti|Pi|Ei|K|M|G|T|P|E)$')"
-    }
-  ];
+  string disk_size = 4 [(buf.validate.field).cel = {
+    id: "spec.zookeeper.disk_size.required"
+    message: "Disk size is required and must match the format"
+    expression: "size(this) > 0 && this.matches('^\\\\d+(\\\\.\\\\d+)?\\\\s?(Ki|Mi|Gi|Ti|Pi|Ei|K|M|G|T|P|E)$')"
+  }];
 }

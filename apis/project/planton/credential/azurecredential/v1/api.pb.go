@@ -109,7 +109,7 @@ var File_project_planton_credential_azurecredential_v1_api_proto protoreflect.Fi
 
 const file_project_planton_credential_azurecredential_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"7project/planton/credential/azurecredential/v1/api.proto\x12-project.planton.credential.azurecredential.v1\x1a\x1bbuf/validate/validate.proto\x1a8project/planton/credential/azurecredential/v1/spec.proto\x1a#project/planton/shared/status.proto\x1a%project/planton/shared/metadata.proto\"\xf9\x02\n" +
+	"7project/planton/credential/azurecredential/v1/api.proto\x12-project.planton.credential.azurecredential.v1\x1a\x1bbuf/validate/validate.proto\x1a8project/planton/credential/azurecredential/v1/spec.proto\x1a%project/planton/shared/metadata.proto\x1a#project/planton/shared/status.proto\"\xf9\x02\n" +
 	"\x0fAzureCredential\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!credential.project-planton.org/v1R\n" +

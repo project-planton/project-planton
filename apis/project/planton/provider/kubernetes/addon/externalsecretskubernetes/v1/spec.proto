@@ -23,9 +23,7 @@ message ExternalSecretsKubernetesSpec {
   ];
 
   // CPU / memory tuning for the ESO controller container.
-  ExternalSecretsKubernetesSpecContainer container = 3 [
-    (buf.validate.field).required = true
-  ];
+  ExternalSecretsKubernetesSpecContainer container = 3 [(buf.validate.field).required = true];
 
   // Provider‑specific glue.  Exactly one block should be set.
   oneof provider_config {
@@ -42,18 +40,16 @@ message ExternalSecretsKubernetesSpec {
 
 // Resource limits / requests for the controller container.
 message ExternalSecretsKubernetesSpecContainer {
-  project.planton.shared.kubernetes.ContainerResources resources = 1 [
-    (project.planton.shared.kubernetes.default_container_resources) = {
-      limits {
-        cpu: "1000m"
-        memory: "1Gi"
-      }
-      requests {
-        cpu: "50m"
-        memory: "100Mi"
-      }
+  project.planton.shared.kubernetes.ContainerResources resources = 1 [(project.planton.shared.kubernetes.default_container_resources) = {
+    limits: {
+      cpu: "1000m"
+      memory: "1Gi"
     }
-  ];
+    requests: {
+      cpu: "50m"
+      memory: "100Mi"
+    }
+  }];
 }
 
 // -----------------------------------------------------------------------------
@@ -66,16 +62,14 @@ message ExternalSecretsGkeConfig {
   project.planton.shared.foreignkey.v1.StringValueOrRef project_id = 1 [
     (buf.validate.field).required = true,
     (project.planton.shared.foreignkey.v1.default_kind) = GcpProject,
-    (project.planton.shared.foreignkey.v1.default_kind_field_path) =
-        "status.outputs.project_id"
+    (project.planton.shared.foreignkey.v1.default_kind_field_path) = "status.outputs.project_id"
   ];
 
   // Google service‑account e‑mail used via Workload Identity.
   string gsa_email = 2 [
     (buf.validate.field).required = true,
     (project.planton.shared.foreignkey.v1.default_kind) = GcpServiceAccount,
-    (project.planton.shared.foreignkey.v1.default_kind_field_path) =
-        "status.outputs.email"
+    (project.planton.shared.foreignkey.v1.default_kind_field_path) = "status.outputs.email"
   ];
 }
 

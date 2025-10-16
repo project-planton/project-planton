@@ -155,7 +155,7 @@ var File_project_planton_provider_kubernetes_addon_perconapostgresqloperator_v1_
 
 const file_project_planton_provider_kubernetes_addon_perconapostgresqloperator_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Pproject/planton/provider/kubernetes/addon/perconapostgresqloperator/v1/api.proto\x12Fproject.planton.provider.kubernetes.addon.perconapostgresqloperator.v1\x1a\x1bbuf/validate/validate.proto\x1aQproject/planton/provider/kubernetes/addon/perconapostgresqloperator/v1/spec.proto\x1aZproject/planton/provider/kubernetes/addon/perconapostgresqloperator/v1/stack_outputs.proto\x1a#project/planton/shared/status.proto\x1a%project/planton/shared/metadata.proto\"\xf2\x03\n" +
+	"Pproject/planton/provider/kubernetes/addon/perconapostgresqloperator/v1/api.proto\x12Fproject.planton.provider.kubernetes.addon.perconapostgresqloperator.v1\x1a\x1bbuf/validate/validate.proto\x1aQproject/planton/provider/kubernetes/addon/perconapostgresqloperator/v1/spec.proto\x1aZproject/planton/provider/kubernetes/addon/perconapostgresqloperator/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\x1a#project/planton/shared/status.proto\"\xf2\x03\n" +
 	"\x19PerconaPostgresqlOperator\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!kubernetes.project-planton.org/v1R\n" +

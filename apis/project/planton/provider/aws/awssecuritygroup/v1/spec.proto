@@ -24,8 +24,8 @@ message AwsSecurityGroupSpec {
     (buf.validate.field).required = true,
     // AWS max 255 chars for description.
     (buf.validate.field).cel = {
-      id: "description_length_check",
-      expression: "size(this) <= 255",
+      id: "description_length_check"
+      expression: "size(this) <= 255"
       message: "Description must not exceed 255 characters"
     }
   ];
@@ -45,9 +45,7 @@ message AwsSecurityGroupSpec {
 message SecurityGroupRule {
   // protocol indicates the protocol for the rule.
   // Common values: "tcp", "udp", "icmp", or "-1" (all protocols).
-  string protocol = 1 [
-    (buf.validate.field).required = true
-  ];
+  string protocol = 1 [(buf.validate.field).required = true];
 
   // from_port is the starting port in the range.
   // For single-port rules, from_port == to_port.
@@ -83,11 +81,9 @@ message SecurityGroupRule {
 
   // rule_description is an optional explanation of this specific rule,
   // aiding in clarity and maintenance. Max 255 chars recommended.
-  string description = 9 [
-    (buf.validate.field).cel = {
-      id: "rule_description_length_check",
-      expression: "size(this) <= 255",
-      message: "Rule description must not exceed 255 characters"
-    }
-  ];
+  string description = 9 [(buf.validate.field).cel = {
+    id: "rule_description_length_check"
+    expression: "size(this) <= 255"
+    message: "Rule description must not exceed 255 characters"
+  }];
 }

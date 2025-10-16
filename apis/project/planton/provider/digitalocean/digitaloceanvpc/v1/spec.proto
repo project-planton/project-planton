@@ -3,8 +3,8 @@ syntax = "proto3";
 package project.planton.provider.digitalocean.digitaloceanvpc.v1;
 
 import "buf/validate/validate.proto";
-import "project/planton/shared/options/options.proto";
 import "project/planton/provider/digitalocean/region.proto";
+import "project/planton/shared/options/options.proto";
 
 // DigitalOceanVpcSpec defines the specification required to deploy a DigitalOcean Virtual Private Cloud (VPC).
 // A DigitalOcean VPC allows you to create a private, isolated network for your Droplets and other resources,
@@ -13,9 +13,7 @@ import "project/planton/provider/digitalocean/region.proto";
 message DigitalOceanVpcSpec {
   // A human-readable description for the VPC.
   // Constraints: Maximum 100 characters.
-  string description = 1 [
-    (buf.validate.field).string.max_len = 100
-  ];
+  string description = 1 [(buf.validate.field).string.max_len = 100];
 
   // The DigitalOcean region where the VPC will be created.
   // This determines the geographical location of the VPC.
@@ -32,7 +30,5 @@ message DigitalOceanVpcSpec {
   // A boolean indicating whether this VPC should be set as the default for the specified region.
   // Only one VPC can be the default for a given region.
   // Default: false
-  bool is_default_for_region = 4 [
-    (project.planton.shared.options.recommended_default) = "false"
-  ];
+  bool is_default_for_region = 4 [(project.planton.shared.options.recommended_default) = "false"];
 }

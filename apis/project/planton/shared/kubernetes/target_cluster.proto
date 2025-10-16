@@ -18,15 +18,14 @@ message KubernetesAddonTargetCluster {
 // **KubernetesClusterCloudResourceSelector** defines a selector for a Kubernetes cluster in the same environment as the addon.
 message KubernetesClusterCloudResourceSelector {
   //can be either gcp-gke-cluster-core
-  project.planton.shared.cloudresourcekind.CloudResourceKind cluster_kind = 1 [
-    (buf.validate.field).enum = {
-      in: [
-        400, //AzureAksCluster
-        615, //GcpGkeClusterCore
-        218, //AwsEksClusterCore
-        1208  //DigitalOceanKubernetesCluster
-      ]}
-  ];
+  project.planton.shared.cloudresourcekind.CloudResourceKind cluster_kind = 1 [(buf.validate.field).enum = {
+    in: [
+      400, //AzureAksCluster
+      615, //GcpGkeClusterCore
+      218, //AwsEksClusterCore
+      1208 //DigitalOceanKubernetesCluster
+    ]
+  }];
   //name of the kubernetes cluster in the same environment as the addon
   // if the name is different from slug, use the value of slug here.
   // for the purposes of readbility, this field is named as cluster_name vs cluster_slug but the expected value is always slug.

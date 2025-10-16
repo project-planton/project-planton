@@ -157,7 +157,7 @@ var File_project_planton_provider_digitalocean_digitaloceanbucket_v1_spec_proto 
 
 const file_project_planton_provider_digitalocean_digitaloceanbucket_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Fproject/planton/provider/digitalocean/digitaloceanbucket/v1/spec.proto\x12;project.planton.provider.digitalocean.digitaloceanbucket.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\x1a2project/planton/provider/digitalocean/region.proto\"\x96\x03\n" +
+	"Fproject/planton/provider/digitalocean/digitaloceanbucket/v1/spec.proto\x12;project.planton.provider.digitalocean.digitaloceanbucket.v1\x1a\x1bbuf/validate/validate.proto\x1a2project/planton/provider/digitalocean/region.proto\x1a,project/planton/shared/options/options.proto\"\x96\x03\n" +
 	"\x16DigitalOceanBucketSpec\x12N\n" +
 	"\vbucket_name\x18\x01 \x01(\tB-\xbaH*\xc8\x01\x01r%\x10\x03\x18?2\x1f^[a-z0-9]([-a-z0-9]*[a-z0-9])?$R\n" +
 	"bucketName\x12Y\n" +

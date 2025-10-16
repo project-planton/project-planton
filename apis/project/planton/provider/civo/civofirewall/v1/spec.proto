@@ -3,16 +3,14 @@ syntax = "proto3";
 package project.planton.provider.civo.civofirewall.v1;
 
 import "buf/validate/validate.proto";
+import "project/planton/shared/cloudresourcekind/cloud_resource_kind.proto";
 import "project/planton/shared/foreignkey/v1/foreign_key.proto";
 import "project/planton/shared/options/options.proto";
-import "project/planton/shared/cloudresourcekind/cloud_resource_kind.proto";
 
 // CivoFirewallSpec defines the user configuration for a Civo firewall.
 message CivoFirewallSpec {
   // Name of the firewall (must be unique per Civo account/project).
-  string name = 1 [
-    (buf.validate.field).required = true
-  ];
+  string name = 1 [(buf.validate.field).required = true];
 
   // The network (VPC) in which to create this firewall. Must refer to an existing CivoNetwork.
   project.planton.shared.foreignkey.v1.StringValueOrRef network_id = 2 [
@@ -37,9 +35,7 @@ message CivoFirewallSpec {
 // Definition of an inbound (ingress) firewall rule.
 message CivoFirewallInboundRule {
   // Protocol to allow ("tcp", "udp", or "icmp").
-  string protocol = 1 [
-    (buf.validate.field).string.pattern = "^(tcp|udp|icmp)$"
-  ];
+  string protocol = 1 [(buf.validate.field).string.pattern = "^(tcp|udp|icmp)$"];
 
   // Port or port range to allow (e.g., "80", "443", "22", "8000-9000"; for "tcp"/"udp"
   // leave empty or use "1-65535" to allow all ports).
@@ -58,9 +54,7 @@ message CivoFirewallInboundRule {
 // Definition of an outbound (egress) firewall rule.
 message CivoFirewallOutboundRule {
   // Protocol to allow or deny ("tcp", "udp", or "icmp").
-  string protocol = 1 [
-    (buf.validate.field).string.pattern = "^(tcp|udp|icmp)$"
-  ];
+  string protocol = 1 [(buf.validate.field).string.pattern = "^(tcp|udp|icmp)$"];
 
   // Port or port range to allow/deny (format as in inbound rules).
   string port_range = 2;

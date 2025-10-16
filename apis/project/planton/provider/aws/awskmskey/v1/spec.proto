@@ -13,9 +13,7 @@ message AwsKmsKeySpec {
 
   // description is an optional description for the KMS key.
   // Maximum length is 250 characters.
-  string description = 2 [
-    (buf.validate.field).string.max_len = 250
-  ];
+  string description = 2 [(buf.validate.field).string.max_len = 250];
 
   // disable_key_rotation, if true, will disable the key's automatic annual rotation.
   // If false (default), rotation is enabled.
@@ -31,9 +29,7 @@ message AwsKmsKeySpec {
 
   // alias_name is an optional alias to assign to the KMS key.
   // It must begin with "alias/" and contain 1–250 allowed characters (letters, numbers, underscore, or hyphen).
-  string alias_name = 5 [
-    (buf.validate.field).string.pattern = "^alias/[A-Za-z0-9/_-]{1,250}$"
-  ];
+  string alias_name = 5 [(buf.validate.field).string.pattern = "^alias/[A-Za-z0-9/_-]{1,250}$"];
 }
 
 // KeySpec defines the cryptographic key type for the KMS key.

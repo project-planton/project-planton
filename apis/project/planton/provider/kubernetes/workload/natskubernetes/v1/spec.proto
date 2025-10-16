@@ -16,22 +16,20 @@ extend google.protobuf.FieldOptions {
 // NatsKubernetes spec holds the 80-20 configuration for a nats cluster on kubernetes.
 message NatsKubernetesSpec {
   // server container settings (replicas, resources, disk).
-  NatsKubernetesServerContainer server_container = 1 [
-    (default_server_container) = {
-      replicas: 1,
-      resources: {
-        limits {
-          cpu: "1000m"
-          memory: "2Gi"
-        },
-        requests {
-          cpu: "100m"
-          memory: "256Mi"
-        }
-      },
-      disk_size: "10Gi"
+  NatsKubernetesServerContainer server_container = 1 [(default_server_container) = {
+    replicas: 1
+    resources: {
+      limits: {
+        cpu: "1000m"
+        memory: "2Gi"
+      }
+      requests: {
+        cpu: "100m"
+        memory: "256Mi"
+      }
     }
-  ];
+    disk_size: "10Gi"
+  }];
   // disable jet-stream persistence
   bool disable_jet_stream = 2;
   // authentication settings for the nats cluster.
@@ -47,9 +45,7 @@ message NatsKubernetesSpec {
 // server container settings for the nats stateful-set.
 message NatsKubernetesServerContainer {
   // number of nats replicas; use an odd value for quorum.
-  int32 replicas = 1 [
-    (buf.validate.field).int32 = {gt: 0}
-  ];
+  int32 replicas = 1 [(buf.validate.field).int32 = {gt: 0}];
 
   // cpu and memory resources for each pod.
   project.planton.shared.kubernetes.ContainerResources resources = 2;

@@ -3,9 +3,9 @@ syntax = "proto3";
 package project.planton.provider.civo.civovolume.v1;
 
 import "buf/validate/validate.proto";
-import "project/planton/shared/options/options.proto";
-import "project/planton/shared/foreignkey/v1/foreign_key.proto";
 import "project/planton/provider/civo/region.proto";
+import "project/planton/shared/foreignkey/v1/foreign_key.proto";
+import "project/planton/shared/options/options.proto";
 
 // CivoVolumeSpec defines the specification required to create a Civo block storage volume.
 // A block storage volume provides expandable storage that can be attached to Civo instances.
@@ -22,9 +22,7 @@ message CivoVolumeSpec {
 
   // The Civo region where the volume will be created.
   // Must match the region of any instance that will attach to this volume.
-  CivoRegion region = 2 [
-    (buf.validate.field).required = true
-  ];
+  CivoRegion region = 2 [(buf.validate.field).required = true];
 
   // The size of the volume in GiB.
   // Constraints: between 1 and 16000 (inclusive).
@@ -53,7 +51,7 @@ message CivoVolumeSpec {
 
 // Supported filesystem types for formatting a Civo volume.
 enum CivoVolumeFilesystemType {
-  NONE = 0;  // Do not format the volume (leave unformatted).
-  EXT4 = 1;  // Format the volume with an ext4 filesystem.
-  XFS = 2;   // Format the volume with an XFS filesystem.
+  NONE = 0; // Do not format the volume (leave unformatted).
+  EXT4 = 1; // Format the volume with an ext4 filesystem.
+  XFS = 2; // Format the volume with an XFS filesystem.
 }

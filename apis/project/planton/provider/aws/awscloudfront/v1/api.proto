@@ -5,8 +5,8 @@ package project.planton.provider.aws.awscloudfront.v1;
 import "buf/validate/validate.proto";
 import "project/planton/provider/aws/awscloudfront/v1/spec.proto";
 import "project/planton/provider/aws/awscloudfront/v1/stack_outputs.proto";
-import "project/planton/shared/status.proto";
 import "project/planton/shared/metadata.proto";
+import "project/planton/shared/status.proto";
 
 // AwsCloudFront is the top-level API resource envelope.
 message AwsCloudFront {

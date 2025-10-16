@@ -155,7 +155,7 @@ var File_project_planton_provider_gcp_gcprouternat_v1_api_proto protoreflect.Fil
 
 const file_project_planton_provider_gcp_gcprouternat_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"6project/planton/provider/gcp/gcprouternat/v1/api.proto\x12,project.planton.provider.gcp.gcprouternat.v1\x1a\x1bbuf/validate/validate.proto\x1a7project/planton/provider/gcp/gcprouternat/v1/spec.proto\x1a@project/planton/provider/gcp/gcprouternat/v1/stack_outputs.proto\x1a#project/planton/shared/status.proto\x1a%project/planton/shared/metadata.proto\"\x82\x03\n" +
+	"6project/planton/provider/gcp/gcprouternat/v1/api.proto\x12,project.planton.provider.gcp.gcprouternat.v1\x1a\x1bbuf/validate/validate.proto\x1a7project/planton/provider/gcp/gcprouternat/v1/spec.proto\x1a@project/planton/provider/gcp/gcprouternat/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\x1a#project/planton/shared/status.proto\"\x82\x03\n" +
 	"\fGcpRouterNat\x12B\n" +
 	"\vapi_version\x18\x01 \x01(\tB!\xbaH\x1er\x1c\n" +
 	"\x1agcp.project-planton.org/v1R\n" +

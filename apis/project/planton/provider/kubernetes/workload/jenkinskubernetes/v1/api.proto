@@ -5,30 +5,22 @@ package project.planton.provider.kubernetes.workload.jenkinskubernetes.v1;
 import "buf/validate/validate.proto";
 import "project/planton/provider/kubernetes/workload/jenkinskubernetes/v1/spec.proto";
 import "project/planton/provider/kubernetes/workload/jenkinskubernetes/v1/stack_outputs.proto";
-import "project/planton/shared/status.proto";
 import "project/planton/shared/metadata.proto";
+import "project/planton/shared/status.proto";
 
 //jenkins-kubernetes
 message JenkinsKubernetes {
   //api-version
-  string api_version = 1 [
-    (buf.validate.field).string.const = 'kubernetes.project-planton.org/v1'
-  ];
+  string api_version = 1 [(buf.validate.field).string.const = 'kubernetes.project-planton.org/v1'];
 
   //resource-kind
-  string kind = 2 [
-    (buf.validate.field).string.const = 'JenkinsKubernetes'
-  ];
+  string kind = 2 [(buf.validate.field).string.const = 'JenkinsKubernetes'];
 
   //metadata
-  project.planton.shared.ApiResourceMetadata metadata = 3 [
-    (buf.validate.field).required = true
-  ];
+  project.planton.shared.ApiResourceMetadata metadata = 3 [(buf.validate.field).required = true];
 
   //spec
-  JenkinsKubernetesSpec spec = 4 [
-    (buf.validate.field).required = true
-  ];
+  JenkinsKubernetesSpec spec = 4 [(buf.validate.field).required = true];
 
   //status
   JenkinsKubernetesStatus status = 5;

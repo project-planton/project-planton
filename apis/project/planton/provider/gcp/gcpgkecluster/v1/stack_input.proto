@@ -2,8 +2,8 @@ syntax = "proto3";
 
 package project.planton.provider.gcp.gcpgkecluster.v1;
 
-import "project/planton/provider/gcp/gcpgkecluster/v1/api.proto";
 import "project/planton/credential/gcpcredential/v1/spec.proto";
+import "project/planton/provider/gcp/gcpgkecluster/v1/api.proto";
 
 //gcp-gke-cluster stack-input
 message GcpGkeClusterStackInput {

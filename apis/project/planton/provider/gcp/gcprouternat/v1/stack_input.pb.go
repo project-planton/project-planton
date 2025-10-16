@@ -81,7 +81,7 @@ var File_project_planton_provider_gcp_gcprouternat_v1_stack_input_proto protoref
 
 const file_project_planton_provider_gcp_gcprouternat_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	">project/planton/provider/gcp/gcprouternat/v1/stack_input.proto\x12,project.planton.provider.gcp.gcprouternat.v1\x1a6project/planton/provider/gcp/gcprouternat/v1/api.proto\x1a6project/planton/credential/gcpcredential/v1/spec.proto\"\xdd\x01\n" +
+	">project/planton/provider/gcp/gcprouternat/v1/stack_input.proto\x12,project.planton.provider.gcp.gcprouternat.v1\x1a6project/planton/credential/gcpcredential/v1/spec.proto\x1a6project/planton/provider/gcp/gcprouternat/v1/api.proto\"\xdd\x01\n" +
 	"\x16GcpRouterNatStackInput\x12R\n" +
 	"\x06target\x18\x01 \x01(\v2:.project.planton.provider.gcp.gcprouternat.v1.GcpRouterNatR\x06target\x12o\n" +
 	"\x13provider_credential\x18\x02 \x01(\v2>.project.planton.credential.gcpcredential.v1.GcpCredentialSpecR\x12providerCredentialB\x87\x03\n" +

@@ -3,5 +3,4 @@ syntax = "proto3";
 package project.planton.provider.gcp.gcpcloudcdn.v1;
 
 //gcp-cloud-cdn stack outputs
-message GcpCloudCdnStackOutputs {
-}
+message GcpCloudCdnStackOutputs {}

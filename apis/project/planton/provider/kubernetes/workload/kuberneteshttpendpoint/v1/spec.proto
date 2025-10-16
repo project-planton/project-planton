@@ -43,14 +43,10 @@ message KubernetesHttpEndpointRoutingRule {
   // The URL path prefix to match.
   // For example, if the endpoint domain name is `console.example.com`, and the `url_path_prefix` is `/api`,
   // then all requests matching `console.example.com/api/*` are forwarded to the configured Kubernetes service.
-  string url_path_prefix = 1 [
-    (buf.validate.field).required = true
-  ];
+  string url_path_prefix = 1 [(buf.validate.field).required = true];
 
   // The backend service to which the requests should be forwarded.
-  KubernetesHttpEndpointRoutingRuleBackendService backend_service = 2 [
-    (buf.validate.field).required = true
-  ];
+  KubernetesHttpEndpointRoutingRuleBackendService backend_service = 2 [(buf.validate.field).required = true];
 }
 
 // **KubernetesHttpEndpointRoutingRuleBackendService** specifies the backend Kubernetes service details

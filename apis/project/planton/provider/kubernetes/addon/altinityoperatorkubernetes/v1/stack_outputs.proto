@@ -7,4 +7,3 @@ message AltinityOperatorKubernetesStackOutputs {
   // Namespace where the operator is installed
   string namespace = 1;
 }
-

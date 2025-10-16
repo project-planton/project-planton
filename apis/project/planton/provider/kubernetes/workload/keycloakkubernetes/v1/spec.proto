@@ -22,16 +22,14 @@ message KeycloakKubernetesSpec {
 // Recommended defaults: CPU requests - 50m, Memory requests - 256Mi, CPU limits - 1, Memory limits - 1Gi.
 message KeycloakKubernetesContainer {
   // The CPU and memory resources allocated to the Keycloak container.
-  project.planton.shared.kubernetes.ContainerResources resources = 1 [
-    (project.planton.shared.kubernetes.default_container_resources) = {
-      limits {
-        cpu: "1000m"
-        memory: "1Gi"
-      },
-      requests {
-        cpu: "50m"
-        memory: "100Mi"
-      }
+  project.planton.shared.kubernetes.ContainerResources resources = 1 [(project.planton.shared.kubernetes.default_container_resources) = {
+    limits: {
+      cpu: "1000m"
+      memory: "1Gi"
     }
-  ];
+    requests: {
+      cpu: "50m"
+      memory: "100Mi"
+    }
+  }];
 }

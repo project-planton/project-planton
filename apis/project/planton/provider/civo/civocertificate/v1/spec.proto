@@ -25,18 +25,14 @@ message CivoCertificateSpec {
     option (buf.validate.oneof).required = true;
 
     CivoCertificateLetsEncryptParams lets_encrypt = 3;
-    CivoCertificateCustomParams      custom       = 4;
+    CivoCertificateCustomParams custom = 4;
   }
 
   // Optional free‑form description (≤ 128 chars).
-  string description = 5 [
-    (buf.validate.field).string.max_len = 128
-  ];
+  string description = 5 [(buf.validate.field).string.max_len = 128];
 
   // Optional tags; must be unique and lowercase kebab.
-  repeated string tags = 6 [
-    (buf.validate.field).repeated.unique = true
-  ];
+  repeated string tags = 6 [(buf.validate.field).repeated.unique = true];
 }
 
 // CivoCertificateType represents the certificate source.
@@ -54,9 +50,7 @@ message CivoCertificateLetsEncryptParams {
   repeated string domains = 1 [
     (buf.validate.field).required = true,
     (buf.validate.field).repeated.unique = true,
-    (buf.validate.field).repeated.items.string = {
-      pattern: "^(?:\\*\\.[A-Za-z0-9\\-\\.]+|[A-Za-z0-9\\-\\.]+\\.[A-Za-z]{2,})$"
-    }
+    (buf.validate.field).repeated.items.string = {pattern: "^(?:\\*\\.[A-Za-z0-9\\-\\.]+|[A-Za-z0-9\\-\\.]+\\.[A-Za-z]{2,})$"}
   ];
 
   // disable_auto_renew controls automatic renewal of the Let's Encrypt certificate.

@@ -9,32 +9,22 @@ import "project/planton/shared/options/options.proto";
 // DigitalOceanFunctionSpec defines the configuration for deploying a serverless function on DigitalOcean.
 message DigitalOceanFunctionSpec {
   // name is the name of the function. Must be unique within the project.
-  string function_name = 1 [
-    (buf.validate.field).required = true
-  ];
+  string function_name = 1 [(buf.validate.field).required = true];
 
   // region specifies the DigitalOcean region to deploy the function.
-  DigitalOceanRegion region = 2 [
-    (buf.validate.field).required = true
-  ];
+  DigitalOceanRegion region = 2 [(buf.validate.field).required = true];
 
   // runtime specifies the runtime environment for the function (e.g., Node.js, Python, Go, Rust, Deno).
-  DigitalOceanFunctionRuntime runtime = 3 [
-    (buf.validate.field).required = true
-  ];
+  DigitalOceanFunctionRuntime runtime = 3 [(buf.validate.field).required = true];
 
   // entrypoint is an optional function or script entrypoint name within the code.
   string entrypoint = 4;
 
   // memory_mb is the memory allocated to the function (in megabytes). Defaults to 256 if not specified.
-  uint32 memory_mb = 5 [
-    (project.planton.shared.options.recommended_default) = "256"
-  ];
+  uint32 memory_mb = 5 [(project.planton.shared.options.recommended_default) = "256"];
 
   // timeout_seconds is the maximum execution time for the function. Defaults to 60 seconds if not specified.
-  uint32 timeout_seconds = 6 [
-    (project.planton.shared.options.recommended_default) = "60"
-  ];
+  uint32 timeout_seconds = 6 [(project.planton.shared.options.recommended_default) = "60"];
 
   // environment is a set of environment variables for the function (key-value pairs).
   map<string, string> env = 7;

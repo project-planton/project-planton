@@ -157,7 +157,7 @@ var File_project_planton_provider_aws_awscertmanagercert_v1_api_proto protorefle
 
 const file_project_planton_provider_aws_awscertmanagercert_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"<project/planton/provider/aws/awscertmanagercert/v1/api.proto\x122project.planton.provider.aws.awscertmanagercert.v1\x1a\x1bbuf/validate/validate.proto\x1a=project/planton/provider/aws/awscertmanagercert/v1/spec.proto\x1aFproject/planton/provider/aws/awscertmanagercert/v1/stack_outputs.proto\x1a#project/planton/shared/status.proto\x1a%project/planton/shared/metadata.proto\"\xa6\x03\n" +
+	"<project/planton/provider/aws/awscertmanagercert/v1/api.proto\x122project.planton.provider.aws.awscertmanagercert.v1\x1a\x1bbuf/validate/validate.proto\x1a=project/planton/provider/aws/awscertmanagercert/v1/spec.proto\x1aFproject/planton/provider/aws/awscertmanagercert/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\x1a#project/planton/shared/status.proto\"\xa6\x03\n" +
 	"\x12AwsCertManagerCert\x12B\n" +
 	"\vapi_version\x18\x01 \x01(\tB!\xbaH\x1er\x1c\n" +
 	"\x1aaws.project-planton.org/v1R\n" +

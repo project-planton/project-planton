@@ -12,14 +12,10 @@ import "buf/validate/validate.proto";
 // with the desired accessibility, whether it's public or private, catering to your application's needs.
 message GcpGcsBucketSpec {
   // The ID of the GCP project where the storage bucket will be created.
-  string gcp_project_id = 1 [
-    (buf.validate.field).required = true
-  ];
+  string gcp_project_id = 1 [(buf.validate.field).required = true];
 
   // The GCP region where the storage bucket will be created.
-  string gcp_region = 2 [
-    (buf.validate.field).required = true
-  ];
+  string gcp_region = 2 [(buf.validate.field).required = true];
 
   // A flag indicating whether the GCS bucket should have external (public) access.
   // Defaults to `false`, meaning the bucket is private by default.

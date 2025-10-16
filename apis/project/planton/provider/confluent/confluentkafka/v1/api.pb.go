@@ -155,7 +155,7 @@ var File_project_planton_provider_confluent_confluentkafka_v1_api_proto protoref
 
 const file_project_planton_provider_confluent_confluentkafka_v1_api_proto_rawDesc = "" +
 	"\n" +
-	">project/planton/provider/confluent/confluentkafka/v1/api.proto\x124project.planton.provider.confluent.confluentkafka.v1\x1a\x1bbuf/validate/validate.proto\x1a?project/planton/provider/confluent/confluentkafka/v1/spec.proto\x1aHproject/planton/provider/confluent/confluentkafka/v1/stack_outputs.proto\x1a#project/planton/shared/status.proto\x1a%project/planton/shared/metadata.proto\"\xa0\x03\n" +
+	">project/planton/provider/confluent/confluentkafka/v1/api.proto\x124project.planton.provider.confluent.confluentkafka.v1\x1a\x1bbuf/validate/validate.proto\x1a?project/planton/provider/confluent/confluentkafka/v1/spec.proto\x1aHproject/planton/provider/confluent/confluentkafka/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\x1a#project/planton/shared/status.proto\"\xa0\x03\n" +
 	"\x0eConfluentKafka\x12H\n" +
 	"\vapi_version\x18\x01 \x01(\tB'\xbaH$r\"\n" +
 	" confluent.project-planton.org/v1R\n" +

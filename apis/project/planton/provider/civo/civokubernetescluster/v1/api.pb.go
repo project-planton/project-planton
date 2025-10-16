@@ -157,7 +157,7 @@ var File_project_planton_provider_civo_civokubernetescluster_v1_api_proto protor
 
 const file_project_planton_provider_civo_civokubernetescluster_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"@project/planton/provider/civo/civokubernetescluster/v1/api.proto\x126project.planton.provider.civo.civokubernetescluster.v1\x1a\x1bbuf/validate/validate.proto\x1aAproject/planton/provider/civo/civokubernetescluster/v1/spec.proto\x1aJproject/planton/provider/civo/civokubernetescluster/v1/stack_outputs.proto\x1a#project/planton/shared/status.proto\x1a%project/planton/shared/metadata.proto\"\xbb\x03\n" +
+	"@project/planton/provider/civo/civokubernetescluster/v1/api.proto\x126project.planton.provider.civo.civokubernetescluster.v1\x1a\x1bbuf/validate/validate.proto\x1aAproject/planton/provider/civo/civokubernetescluster/v1/spec.proto\x1aJproject/planton/provider/civo/civokubernetescluster/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\x1a#project/planton/shared/status.proto\"\xbb\x03\n" +
 	"\x15CivoKubernetesCluster\x12C\n" +
 	"\vapi_version\x18\x01 \x01(\tB\"\xbaH\x1fr\x1d\n" +
 	"\x1bcivo.project-planton.org/v1R\n" +

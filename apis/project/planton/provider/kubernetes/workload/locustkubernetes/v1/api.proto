@@ -5,30 +5,22 @@ package project.planton.provider.kubernetes.workload.locustkubernetes.v1;
 import "buf/validate/validate.proto";
 import "project/planton/provider/kubernetes/workload/locustkubernetes/v1/spec.proto";
 import "project/planton/provider/kubernetes/workload/locustkubernetes/v1/stack_outputs.proto";
-import "project/planton/shared/status.proto";
 import "project/planton/shared/metadata.proto";
+import "project/planton/shared/status.proto";
 
 //locust-kubernetes
 message LocustKubernetes {
   //api-version
-  string api_version = 1 [
-    (buf.validate.field).string.const = 'kubernetes.project-planton.org/v1'
-  ];
+  string api_version = 1 [(buf.validate.field).string.const = 'kubernetes.project-planton.org/v1'];
 
   //resource-kind
-  string kind = 2 [
-    (buf.validate.field).string.const = 'LocustKubernetes'
-  ];
+  string kind = 2 [(buf.validate.field).string.const = 'LocustKubernetes'];
 
   //metadata
-  project.planton.shared.ApiResourceMetadata metadata = 3 [
-    (buf.validate.field).required = true
-  ];
+  project.planton.shared.ApiResourceMetadata metadata = 3 [(buf.validate.field).required = true];
 
   //spec
-  LocustKubernetesSpec spec = 4 [
-    (buf.validate.field).required = true
-  ];
+  LocustKubernetesSpec spec = 4 [(buf.validate.field).required = true];
 
   //status
   LocustKubernetesStatus status = 5;

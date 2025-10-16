@@ -12,7 +12,6 @@ enum PulumiOperationType {
   destroy = 3;
 }
 
-
 //https://www.pulumi.com/docs/concepts/state
 // PulumiBackendType enum represents the various backends supported for storing Pulumi state.
 // Each backend type has its own use cases and advantages depending on the project requirements.

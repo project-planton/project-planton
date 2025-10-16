@@ -11,9 +11,7 @@ import "project/planton/shared/kubernetes/options.proto";
 // It includes container specifications and ingress settings to control resource allocation and external access.
 message GitlabKubernetesSpec {
   // The container specifications for the GitLab deployment.
-  GitlabKubernetesSpecContainer container = 1 [
-    (buf.validate.field).required = true
-  ];
+  GitlabKubernetesSpecContainer container = 1 [(buf.validate.field).required = true];
 
   // The ingress configuration for the GitLab deployment.
   project.planton.shared.kubernetes.IngressSpec ingress = 3;
@@ -23,16 +21,14 @@ message GitlabKubernetesSpec {
 // It includes resource allocations for CPU and memory to ensure the application runs efficiently.
 message GitlabKubernetesSpecContainer {
   // The CPU and memory resources allocated to the GitLab container.
-  project.planton.shared.kubernetes.ContainerResources resources = 1 [
-    (project.planton.shared.kubernetes.default_container_resources) = {
-      limits {
-        cpu: "1000m"
-        memory: "1Gi"
-      },
-      requests {
-        cpu: "50m"
-        memory: "100Mi"
-      }
+  project.planton.shared.kubernetes.ContainerResources resources = 1 [(project.planton.shared.kubernetes.default_container_resources) = {
+    limits: {
+      cpu: "1000m"
+      memory: "1Gi"
     }
-  ];
+    requests: {
+      cpu: "50m"
+      memory: "100Mi"
+    }
+  }];
 }

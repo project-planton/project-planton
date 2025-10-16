@@ -13,21 +13,15 @@ import "project/planton/shared/options/options.proto";
 message CivoKubernetesClusterSpec {
   // The name of the Kubernetes cluster.
   // Constraints: Must be unique per account. No spaces allowed (alphanumeric and hyphens recommended). If left blank, a random name will be assigned.
-  string cluster_name = 1 [
-    (buf.validate.field).required = true
-  ];
+  string cluster_name = 1 [(buf.validate.field).required = true];
 
   // The Civo region where the cluster will be created.
   // Determines where the cluster's control plane and nodes are provisioned.
-  CivoRegion region = 2 [
-    (buf.validate.field).required = true
-  ];
+  CivoRegion region = 2 [(buf.validate.field).required = true];
 
   // The Kubernetes version to use for the cluster (semantic versioning).
   // Must be a supported version on Civo (e.g., "1.26.3").
-  string kubernetes_version = 3 [
-    (buf.validate.field).required = true
-  ];
+  string kubernetes_version = 3 [(buf.validate.field).required = true];
 
   // Reference to the Civo network where the cluster will reside.
   // This must be an existing network in the same region. The network's ID is used for the cluster's networking.
@@ -40,9 +34,7 @@ message CivoKubernetesClusterSpec {
   // Whether to enable a highly available control plane for the cluster.
   // If true (when supported), the cluster is created with multiple master nodes for increased availability.
   // Default: false.
-  bool highly_available = 5 [
-    (project.planton.shared.options.recommended_default) = "false"
-  ];
+  bool highly_available = 5 [(project.planton.shared.options.recommended_default) = "false"];
 
   // Whether to enable automatic Kubernetes version patch upgrades for the cluster.
   // If true, the cluster will automatically upgrade to new patch releases of Kubernetes when available.
@@ -57,18 +49,14 @@ message CivoKubernetesClusterSpec {
   repeated string tags = 8;
 
   // Configuration for the cluster's default node pool.
-  CivoKubernetesClusterDefaultNodePool default_node_pool = 9 [
-    (buf.validate.field).required = true
-  ];
+  CivoKubernetesClusterDefaultNodePool default_node_pool = 9 [(buf.validate.field).required = true];
 }
 
 // Civo Kubernetes Cluster Default Node Pool
 message CivoKubernetesClusterDefaultNodePool {
   // The instance size (node flavor) for each node in the default pool (e.g., "g4s.kube.medium").
   // This defines the CPU and memory for the nodes.
-  string size = 1 [
-    (buf.validate.field).required = true
-  ];
+  string size = 1 [(buf.validate.field).required = true];
 
   // The number of nodes to provision in the default node pool.
   // Must be at least 1.

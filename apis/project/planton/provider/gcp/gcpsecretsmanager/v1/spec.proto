@@ -10,9 +10,7 @@ import "buf/validate/validate.proto";
 // enabling secure storage and access control for sensitive information like API keys, passwords, and certificates.
 message GcpSecretsManagerSpec {
   // The ID of the GCP project where the secrets will be created.
-  string project_id = 1 [
-    (buf.validate.field).required = true
-  ];
+  string project_id = 1 [(buf.validate.field).required = true];
 
   // A list of secret names to create in Google Cloud Secrets Manager.
   // Each name represents a unique secret that can store sensitive data securely.

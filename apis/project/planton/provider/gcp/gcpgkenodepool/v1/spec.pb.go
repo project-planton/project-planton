@@ -329,7 +329,7 @@ var File_project_planton_provider_gcp_gcpgkenodepool_v1_spec_proto protoreflect.
 
 const file_project_planton_provider_gcp_gcpgkenodepool_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"9project/planton/provider/gcp/gcpgkenodepool/v1/spec.proto\x12.project.planton.provider.gcp.gcpgkenodepool.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\"\x80\b\n" +
+	"9project/planton/provider/gcp/gcpgkenodepool/v1/spec.proto\x12.project.planton.provider.gcp.gcpgkenodepool.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\"\x80\b\n" +
 	"\x12GcpGkeNodePoolSpec\x12\x84\x01\n" +
 	"\x12cluster_project_id\x18\x01 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB\x1e\xbaH\x03\xc8\x01\x01\x88\xd4a\xe7\x04\x92\xd4a\x0fspec.project_idR\x10clusterProjectId\x12w\n" +
 	"\fcluster_name\x18\x02 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB\x1c\xbaH\x03\xc8\x01\x01\x88\xd4a\xe7\x04\x92\xd4a\rmetadata.nameR\vclusterName\x120\n" +

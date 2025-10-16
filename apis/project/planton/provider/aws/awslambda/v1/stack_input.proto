@@ -2,8 +2,8 @@ syntax = "proto3";
 
 package project.planton.provider.aws.awslambda.v1;
 
-import "project/planton/provider/aws/awslambda/v1/api.proto";
 import "project/planton/credential/awscredential/v1/spec.proto";
+import "project/planton/provider/aws/awslambda/v1/api.proto";
 
 // AwsLambdaStackInput defines the inputs passed to IaC to provision an AWS Lambda resource.
 message AwsLambdaStackInput {

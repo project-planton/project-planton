@@ -13,5 +13,3 @@ message AwsCloudFrontStackOutputs {
   // Route53 hosted zone ID used for aliasing to CloudFront.
   string hosted_zone_id = 3;
 }
-
-

@@ -155,7 +155,7 @@ var File_project_planton_provider_kubernetes_addon_istiokubernetes_v1_api_proto 
 
 const file_project_planton_provider_kubernetes_addon_istiokubernetes_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Fproject/planton/provider/kubernetes/addon/istiokubernetes/v1/api.proto\x12<project.planton.provider.kubernetes.addon.istiokubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1aGproject/planton/provider/kubernetes/addon/istiokubernetes/v1/spec.proto\x1aPproject/planton/provider/kubernetes/addon/istiokubernetes/v1/stack_outputs.proto\x1a#project/planton/shared/status.proto\x1a%project/planton/shared/metadata.proto\"\xb5\x03\n" +
+	"Fproject/planton/provider/kubernetes/addon/istiokubernetes/v1/api.proto\x12<project.planton.provider.kubernetes.addon.istiokubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1aGproject/planton/provider/kubernetes/addon/istiokubernetes/v1/spec.proto\x1aPproject/planton/provider/kubernetes/addon/istiokubernetes/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\x1a#project/planton/shared/status.proto\"\xb5\x03\n" +
 	"\x0fIstioKubernetes\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!kubernetes.project-planton.org/v1R\n" +

@@ -155,7 +155,7 @@ var File_project_planton_provider_kubernetes_workload_prometheuskubernetes_v1_ap
 
 const file_project_planton_provider_kubernetes_workload_prometheuskubernetes_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Nproject/planton/provider/kubernetes/workload/prometheuskubernetes/v1/api.proto\x12Dproject.planton.provider.kubernetes.workload.prometheuskubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1aOproject/planton/provider/kubernetes/workload/prometheuskubernetes/v1/spec.proto\x1aXproject/planton/provider/kubernetes/workload/prometheuskubernetes/v1/stack_outputs.proto\x1a#project/planton/shared/status.proto\x1a%project/planton/shared/metadata.proto\"\xd9\x03\n" +
+	"Nproject/planton/provider/kubernetes/workload/prometheuskubernetes/v1/api.proto\x12Dproject.planton.provider.kubernetes.workload.prometheuskubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1aOproject/planton/provider/kubernetes/workload/prometheuskubernetes/v1/spec.proto\x1aXproject/planton/provider/kubernetes/workload/prometheuskubernetes/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\x1a#project/planton/shared/status.proto\"\xd9\x03\n" +
 	"\x14PrometheusKubernetes\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!kubernetes.project-planton.org/v1R\n" +

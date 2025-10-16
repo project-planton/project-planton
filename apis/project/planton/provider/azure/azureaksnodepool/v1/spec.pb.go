@@ -238,7 +238,7 @@ var File_project_planton_provider_azure_azureaksnodepool_v1_spec_proto protorefl
 
 const file_project_planton_provider_azure_azureaksnodepool_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"=project/planton/provider/azure/azureaksnodepool/v1/spec.proto\x122project.planton.provider.azure.azureaksnodepool.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\"\xd6\x04\n" +
+	"=project/planton/provider/azure/azureaksnodepool/v1/spec.proto\x122project.planton.provider.azure.azureaksnodepool.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\"\xd6\x04\n" +
 	"\x14AzureAksNodePoolSpec\x12w\n" +
 	"\fcluster_name\x18\x01 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB\x1c\xbaH\x03\xc8\x01\x01\x88\xd4a\x90\x03\x92\xd4a\rmetadata.nameR\vclusterName\x12\x1f\n" +
 	"\avm_size\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x06vmSize\x128\n" +

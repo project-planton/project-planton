@@ -5,30 +5,22 @@ package project.planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1;
 import "buf/validate/validate.proto";
 import "project/planton/provider/kubernetes/addon/altinityoperatorkubernetes/v1/spec.proto";
 import "project/planton/provider/kubernetes/addon/altinityoperatorkubernetes/v1/stack_outputs.proto";
-import "project/planton/shared/status.proto";
 import "project/planton/shared/metadata.proto";
+import "project/planton/shared/status.proto";
 
 //altinity-operator-kubernetes
 message AltinityOperatorKubernetes {
   //api-version
-  string api_version = 1 [
-    (buf.validate.field).string.const = 'kubernetes.project-planton.org/v1'
-  ];
+  string api_version = 1 [(buf.validate.field).string.const = 'kubernetes.project-planton.org/v1'];
 
   //resource-kind
-  string kind = 2 [
-    (buf.validate.field).string.const = 'AltinityOperatorKubernetes'
-  ];
+  string kind = 2 [(buf.validate.field).string.const = 'AltinityOperatorKubernetes'];
 
   //metadata
-  project.planton.shared.ApiResourceMetadata metadata = 3 [
-    (buf.validate.field).required = true
-  ];
+  project.planton.shared.ApiResourceMetadata metadata = 3 [(buf.validate.field).required = true];
 
   //spec
-  AltinityOperatorKubernetesSpec spec = 4 [
-    (buf.validate.field).required = true
-  ];
+  AltinityOperatorKubernetesSpec spec = 4 [(buf.validate.field).required = true];
 
   //status
   AltinityOperatorKubernetesStatus status = 5;
@@ -39,4 +31,3 @@ message AltinityOperatorKubernetesStatus {
   //stack-outputs
   AltinityOperatorKubernetesStackOutputs outputs = 1;
 }
-

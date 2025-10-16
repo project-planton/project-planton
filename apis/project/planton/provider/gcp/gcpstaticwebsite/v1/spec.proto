@@ -10,7 +10,5 @@ import "buf/validate/validate.proto";
 // allowing you to host scalable and cost-effective websites without the need to manage any server infrastructure.
 message GcpStaticWebsiteSpec {
   // The ID of the GCP project where the storage bucket for the static website will be created.
-  string gcp_project_id = 1 [
-    (buf.validate.field).required = true
-  ];
+  string gcp_project_id = 1 [(buf.validate.field).required = true];
 }

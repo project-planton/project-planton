@@ -155,7 +155,7 @@ var File_project_planton_provider_aws_awssecuritygroup_v1_api_proto protoreflect
 
 const file_project_planton_provider_aws_awssecuritygroup_v1_api_proto_rawDesc = "" +
 	"\n" +
-	":project/planton/provider/aws/awssecuritygroup/v1/api.proto\x120project.planton.provider.aws.awssecuritygroup.v1\x1a\x1bbuf/validate/validate.proto\x1a;project/planton/provider/aws/awssecuritygroup/v1/spec.proto\x1aDproject/planton/provider/aws/awssecuritygroup/v1/stack_outputs.proto\x1a#project/planton/shared/status.proto\x1a%project/planton/shared/metadata.proto\"\x9a\x03\n" +
+	":project/planton/provider/aws/awssecuritygroup/v1/api.proto\x120project.planton.provider.aws.awssecuritygroup.v1\x1a\x1bbuf/validate/validate.proto\x1a;project/planton/provider/aws/awssecuritygroup/v1/spec.proto\x1aDproject/planton/provider/aws/awssecuritygroup/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\x1a#project/planton/shared/status.proto\"\x9a\x03\n" +
 	"\x10AwsSecurityGroup\x12B\n" +
 	"\vapi_version\x18\x01 \x01(\tB!\xbaH\x1er\x1c\n" +
 	"\x1aaws.project-planton.org/v1R\n" +

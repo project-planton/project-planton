@@ -18,15 +18,11 @@ message DigitalOceanContainerRegistrySpec {
   ];
 
   // Subscription tier slug (defines storage limits and pricing).
-  DigitalOceanContainerRegistryTier subscription_tier = 2 [
-    (buf.validate.field).required = true
-  ];
+  DigitalOceanContainerRegistryTier subscription_tier = 2 [(buf.validate.field).required = true];
 
   // Optional region slug where registry data is stored (e.g., "nyc3", "sfo3").
   // If omitted, DigitalOcean chooses a default/nearest region.
-  DigitalOceanRegion region = 3 [
-    (buf.validate.field).required = true
-  ];
+  DigitalOceanRegion region = 3 [(buf.validate.field).required = true];
 
   // Enable garbage collection of untagged images.
   // Default is false (no automatic GC).
@@ -36,7 +32,7 @@ message DigitalOceanContainerRegistrySpec {
 // Supported subscription tiers for a DigitalOcean Container Registry.
 enum DigitalOceanContainerRegistryTier {
   digitalocean_container_registry_tier_unspecified = 0;
-  STARTER = 1;        // Free tier, limited storage.
-  BASIC = 2;          // Paid tier, moderate storage.
-  PROFESSIONAL = 3;   // Paid tier, highest storage, production ready.
+  STARTER = 1; // Free tier, limited storage.
+  BASIC = 2; // Paid tier, moderate storage.
+  PROFESSIONAL = 3; // Paid tier, highest storage, production ready.
 }

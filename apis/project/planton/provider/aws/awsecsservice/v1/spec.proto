@@ -3,8 +3,8 @@ syntax = "proto3";
 package project.planton.provider.aws.awsecsservice.v1;
 
 import "buf/validate/validate.proto";
-import "project/planton/shared/options/options.proto";
 import "project/planton/shared/foreignkey/v1/foreign_key.proto";
+import "project/planton/shared/options/options.proto";
 
 // AwsEcsServiceSpec captures the minimal fields needed to deploy a Fargate-based ECS service
 // into an existing ECS cluster. It focuses on an 80/20 approach with an ALB-based ingress
@@ -20,14 +20,10 @@ message AwsEcsServiceSpec {
   ];
 
   // AWS ECS Service container configuration.
-  AwsEcsServiceContainer container = 2 [
-    (buf.validate.field).required = true
-  ];
+  AwsEcsServiceContainer container = 2 [(buf.validate.field).required = true];
 
   // ECS service network configuration.
-  AwsEcsServiceNetwork network = 3 [
-    (buf.validate.field).required = true
-  ];
+  AwsEcsServiceNetwork network = 3 [(buf.validate.field).required = true];
 
   // IAM configuration for the ECS service.
   AwsEcsServiceIam iam = 4;
@@ -51,23 +47,17 @@ message AwsEcsServiceContainer {
 
   // replicas is the number of task replicas to run for this service.
   // higher values improve availability at increased cost.
-  int32 replicas = 4 [
-    (project.planton.shared.options.recommended_default) = "1"
-  ];
+  int32 replicas = 4 [(project.planton.shared.options.recommended_default) = "1"];
 
   // cpu is the amount of vCPU (in CPU units) to allocate for the entire task.
   // Valid Fargate values include 256, 512, 1024, 2048, etc., subject to ECS constraints.
   // Example: 512
-  int32 cpu = 5 [
-    (buf.validate.field).required = true
-  ];
+  int32 cpu = 5 [(buf.validate.field).required = true];
 
   // memory is the total MiB of RAM for the task.
   // Valid values depend on CPU. For example, 512 CPU can pair with 1024–4096 MiB.
   // Example: 1024
-  int32 memory = 6 [
-    (buf.validate.field).required = true
-  ];
+  int32 memory = 6 [(buf.validate.field).required = true];
 
   // logging controls whether CloudWatch log configuration is injected automatically.
   AwsEcsServiceContainerLogging logging = 7;
@@ -78,9 +68,7 @@ message AwsEcsServiceContainerLogging {
   // If true (default), the module auto-creates a CloudWatch Log Group
   // named "/ecs/<serviceName>" with 30-day retention and configures
   // the awslogs driver.
-  bool enabled = 1 [
-    (project.planton.shared.options.recommended_default) = "true"
-  ];
+  bool enabled = 1 [(project.planton.shared.options.recommended_default) = "true"];
 }
 
 // AwsEcsServiceContainerImage represents the container image information.
@@ -105,11 +93,7 @@ message AwsEcsServiceContainerEnv {
 
   // s3_files is a list of S3 URIs whose contents are loaded as environment variables
   // via the ECS "environmentFiles" feature.
-  repeated string s3_files = 3 [
-    (buf.validate.field).repeated = {
-      unique: true
-    }
-  ];
+  repeated string s3_files = 3 [(buf.validate.field).repeated = {unique: true}];
 }
 
 // AwsEcsServiceNetwork defines the networking configuration for the ECS service.
@@ -162,11 +146,12 @@ message AwsEcsServiceAlb {
   // routingType can be "path" or "hostname" if enabled.
   // If "path", specify a path (e.g. "/my-service").
   // If "hostname", specify a hostname (e.g. "api.example.com").
-  string routing_type = 3 [
-    (buf.validate.field).string = {
-      in: ["path", "hostname"]
-    }
-  ];
+  string routing_type = 3 [(buf.validate.field).string = {
+    in: [
+      "path",
+      "hostname"
+    ]
+  }];
 
   // path is used if routingType = "path".
   string path = 4;
@@ -182,9 +167,7 @@ message AwsEcsServiceAlb {
 
   // listener_priority is the priority of the ALB listener rule.
   // Lower numbers have higher priority. This value should be unique across all rules for this ALB.
-  int32 listener_priority = 7 [
-    (project.planton.shared.options.default) = "100"
-  ];
+  int32 listener_priority = 7 [(project.planton.shared.options.default) = "100"];
 
   // health_check overrides the default target-group health check.
   AwsEcsServiceHealthCheck health_check = 8;
@@ -193,11 +176,13 @@ message AwsEcsServiceAlb {
 // AwsEcsServiceHealthCheck defines ALB target-group health check settings.
 message AwsEcsServiceHealthCheck {
   // protocol can be HTTP, HTTPS, or TCP.
-  string protocol = 1 [
-    (buf.validate.field).string = {
-      in: ["HTTP", "HTTPS", "TCP"]
-    }
-  ];
+  string protocol = 1 [(buf.validate.field).string = {
+    in: [
+      "HTTP",
+      "HTTPS",
+      "TCP"
+    ]
+  }];
 
   // path to ping (HTTP/HTTPS only), defaults to "/".
   string path = 2;

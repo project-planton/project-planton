@@ -720,7 +720,7 @@ var File_project_planton_provider_aws_awsecsservice_v1_spec_proto protoreflect.F
 
 const file_project_planton_provider_aws_awsecsservice_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"8project/planton/provider/aws/awsecsservice/v1/spec.proto\x12-project.planton.provider.aws.awsecsservice.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\"\x92\x04\n" +
+	"8project/planton/provider/aws/awsecsservice/v1/spec.proto\x12-project.planton.provider.aws.awsecsservice.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\"\x92\x04\n" +
 	"\x11AwsEcsServiceSpec\x12\x82\x01\n" +
 	"\vcluster_arn\x18\x01 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB)\xbaH\x03\xc8\x01\x01\x88\xd4a\xcd\x01\x92\xd4a\x1astatus.outputs.cluster_arnR\n" +
 	"clusterArn\x12k\n" +

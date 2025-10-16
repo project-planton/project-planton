@@ -29,11 +29,7 @@ message GcpProjectSpec {
 
   // Billing account ID in the form "0123AB-4567CD-89EFGH".
   // Strongly recommended for any project that will use billable services.
-  string billing_account_id = 3 [
-    (buf.validate.field).string = {
-      pattern: "^[A-Z0-9]{6}-[A-Z0-9]{6}-[A-Z0-9]{6}$"
-    }
-  ];
+  string billing_account_id = 3 [(buf.validate.field).string = {pattern: "^[A-Z0-9]{6}-[A-Z0-9]{6}-[A-Z0-9]{6}$"}];
 
   // Key/value metadata labels for cost allocation and governance.
   // GCP label keys must be <= 63 chars, lowercase letters, digits, or underscores.
@@ -42,19 +38,15 @@ message GcpProjectSpec {
   // If true, the auto-created "default" VPC network is deleted immediately
   // after project creation. Disabling the default network is a common
   // security hardening step.
-  bool disable_default_network = 5 [
-    (project.planton.shared.options.default) = "true"
-  ];
+  bool disable_default_network = 5 [(project.planton.shared.options.default) = "true"];
 
   // List of Cloud APIs to enable (e.g. "compute.googleapis.com").
   // Each entry must end with ".googleapis.com".
-  repeated string enabled_apis = 6 [
-    (buf.validate.field).repeated = {
-      items: {
-        string: {pattern: "^[a-z0-9]+\\.googleapis\\.com$"}
-      }
+  repeated string enabled_apis = 6 [(buf.validate.field).repeated = {
+    items: {
+      string: {pattern: "^[a-z0-9]+\\.googleapis\\.com$"}
     }
-  ];
+  }];
 
   // Optional IAM member (user / group / serviceAccount) to be granted
   // the Owner role at project creation.
@@ -62,7 +54,5 @@ message GcpProjectSpec {
   //   "group:devops-admins@example.com"
   //   "user:alice@example.com"
   //   "serviceAccount:ci-automation@example.iam.gserviceaccount.com"
-  string owner_member = 7 [
-    (buf.validate.field).string.email = true
-  ];
+  string owner_member = 7 [(buf.validate.field).string.email = true];
 }

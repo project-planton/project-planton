@@ -3,8 +3,8 @@ syntax = "proto3";
 package project.planton.provider.kubernetes.workload.microservicekubernetes.v1;
 
 import "buf/validate/validate.proto";
-import "project/planton/shared/kubernetes/kubernetes.proto";
 import "project/planton/provider/kubernetes/probe.proto";
+import "project/planton/shared/kubernetes/kubernetes.proto";
 import "project/planton/shared/kubernetes/options.proto";
 
 /**
@@ -20,14 +20,14 @@ message MicroserviceKubernetesSpec {
     (buf.validate.field).string.min_len = 1,
     (buf.validate.field).string.max_len = 30,
     (buf.validate.field).cel = {
-      id: "spec.version.chars",
-      message: "Only lowercase letters, numbers, and hyphens are allowed",
+      id: "spec.version.chars"
+      message: "Only lowercase letters, numbers, and hyphens are allowed"
       // https://regex101.com/r/NKTohE/1
       expression: "this.matches('^[a-z0-9-]+$')"
     },
     (buf.validate.field).cel = {
-      id: "spec.version.no-hyphen-ending",
-      message: "Must not end with a hyphen",
+      id: "spec.version.no-hyphen-ending"
+      message: "Must not end with a hyphen"
       // https://regex101.com/r/reQjcB/1
       expression: "this.matches('[^-]$')"
     }
@@ -35,9 +35,7 @@ message MicroserviceKubernetesSpec {
 
   // The container specifications for the microservice deployment.
   //This includes configurations for the main application container and any sidecar containers.
-  MicroserviceKubernetesContainer container = 3 [
-    (buf.validate.field).required = true
-  ];
+  MicroserviceKubernetesContainer container = 3 [(buf.validate.field).required = true];
 
   //The ingress configuration for the microservice.
   //This defines how the microservice can be accessed externally.
@@ -54,9 +52,7 @@ message MicroserviceKubernetesSpec {
  */
 message MicroserviceKubernetesContainer {
   // The main application container specifications.
-  MicroserviceKubernetesContainerApp app = 1 [
-    (buf.validate.field).required = true
-  ];
+  MicroserviceKubernetesContainerApp app = 1 [(buf.validate.field).required = true];
 
   //A list of sidecar containers to be deployed alongside the main application container.
   repeated project.planton.shared.kubernetes.Container sidecars = 2;
@@ -77,30 +73,28 @@ message MicroserviceKubernetesContainerApp {
   project.planton.shared.kubernetes.ContainerImage image = 1 [
     (buf.validate.field).required = true,
     (buf.validate.field).cel = {
-      id: "spec.container.app.image.repo",
-      message: "Image repo is required",
+      id: "spec.container.app.image.repo"
+      message: "Image repo is required"
       expression: "has(this.repo) && this.repo != ''"
     },
     (buf.validate.field).cel = {
-      id: "spec.container.app.image.tag",
-      message: "Image tag is required",
+      id: "spec.container.app.image.tag"
+      message: "Image tag is required"
       expression: "has(this.tag) && this.tag != ''"
     }
   ];
 
   // The CPU and memory resources allocated to the application container.
-  project.planton.shared.kubernetes.ContainerResources resources = 2 [
-    (project.planton.shared.kubernetes.default_container_resources) = {
-      limits {
-        cpu: "1000m"
-        memory: "1Gi"
-      },
-      requests {
-        cpu: "50m"
-        memory: "100Mi"
-      }
+  project.planton.shared.kubernetes.ContainerResources resources = 2 [(project.planton.shared.kubernetes.default_container_resources) = {
+    limits: {
+      cpu: "1000m"
+      memory: "1Gi"
     }
-  ];
+    requests: {
+      cpu: "50m"
+      memory: "100Mi"
+    }
+  }];
 
   /**
    * The environment variables and secrets for the application container.
@@ -166,26 +160,24 @@ message MicroserviceKubernetesContainerAppPort {
   string name = 1 [
     (buf.validate.field).required = true,
     (buf.validate.field).cel = {
-      id: "spec.container.app.ports.name",
-      message: "Name for ports must only contain lowercase alphanumeric characters and hyphens. Port names must also start and end with an alphanumeric character. For example, '123-abc' and 'web' are valid, but '123_abc' and '-web' are not.",
+      id: "spec.container.app.ports.name"
+      message: "Name for ports must only contain lowercase alphanumeric characters and hyphens. Port names must also start and end with an alphanumeric character. For example, '123-abc' and 'web' are valid, but '123_abc' and '-web' are not."
       // https://regex101.com/r/dugcdl/1
       expression: "this.matches('^[a-z0-9][a-z0-9-]*[a-z0-9]$')"
     }
   ];
 
   // The port number on the container.
-  int32 container_port = 2 [
-    (buf.validate.field).required = true
-  ];
+  int32 container_port = 2 [(buf.validate.field).required = true];
 
   //The network protocol used by the port (e.g., "TCP", "UDP", "SCTP").
   //Must be one of "TCP", "UDP", or "SCTP".
   string network_protocol = 3 [
     (buf.validate.field).required = true,
     (buf.validate.field).cel = {
-      id: "spec.container.app.ports.network_protocol",
-      message: 'The network protocol must be one of "SCTP", "TCP", or "UDP".',
-      expression: 'this in ["SCTP", "TCP", "UDP"]',
+      id: "spec.container.app.ports.network_protocol"
+      message: 'The network protocol must be one of "SCTP", "TCP", or "UDP".'
+      expression: 'this in ["SCTP", "TCP", "UDP"]'
     }
   ];
 
@@ -193,14 +185,10 @@ message MicroserviceKubernetesContainerAppPort {
   //This field is used for setting up the name of the service port in Kubernetes.
   //It is used during microservice deployment and is relevant for deployment and stateful set pod managers.
   //Refer to: https://kubernetes.io/docs/concepts/services-networking/service/#application-protocol
-  string app_protocol = 4 [
-    (buf.validate.field).required = true
-  ];
+  string app_protocol = 4 [(buf.validate.field).required = true];
 
   // The port number on the Kubernetes service.
-  int32 service_port = 5 [
-    (buf.validate.field).required = true
-  ];
+  int32 service_port = 5 [(buf.validate.field).required = true];
 
   //A flag indicating whether this port should be exposed via ingress.
   bool is_ingress_port = 6;
@@ -254,10 +242,10 @@ message MicroserviceKubernetesDeploymentStrategy {
   /**
    * The maximum number of pods that can be unavailable during the update.
    * Can be an absolute number (e.g., 0) or a percentage of desired pods (e.g., "25%").
-   * 
+   *
    * For zero-downtime deployments, set to 0 or "0%".
    * This ensures at least the desired number of pods are always available.
-   * 
+   *
    * Defaults to 25% if not specified.
    * Cannot be 0 if max_surge is also 0.
    */
@@ -266,10 +254,10 @@ message MicroserviceKubernetesDeploymentStrategy {
   /**
    * The maximum number of pods that can be created above the desired number of pods.
    * Can be an absolute number (e.g., 1) or a percentage of desired pods (e.g., "25%").
-   * 
+   *
    * For zero-downtime deployments with max_unavailable=0, set to at least 1 or "100%".
    * This allows new pods to be created before old ones are terminated.
-   * 
+   *
    * Defaults to 25% if not specified.
    * Cannot be 0 if max_unavailable is also 0.
    */
@@ -292,12 +280,12 @@ message MicroserviceKubernetesPodDisruptionBudget {
   /**
    * Minimum number of pods that must be available during voluntary disruptions.
    * Can be an absolute number (e.g., 1) or a percentage (e.g., "50%").
-   * 
+   *
    * For high availability, typically set to:
    * - 1 for single-replica services (ensures at least one pod always available)
    * - N-1 for N-replica services (allows one pod to be disrupted at a time)
    * - A percentage like "50%" for large replica counts
-   * 
+   *
    * Cannot be used together with max_unavailable.
    * If both min_available and max_unavailable are not set, defaults to 1.
    */
@@ -306,7 +294,7 @@ message MicroserviceKubernetesPodDisruptionBudget {
   /**
    * Maximum number of pods that can be unavailable during voluntary disruptions.
    * Can be an absolute number (e.g., 1) or a percentage (e.g., "50%").
-   * 
+   *
    * This is an alternative to min_available.
    * Cannot be used together with min_available.
    */

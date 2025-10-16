@@ -157,7 +157,7 @@ var File_project_planton_provider_cloudflare_cloudflared1database_v1_api_proto p
 
 const file_project_planton_provider_cloudflare_cloudflared1database_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Eproject/planton/provider/cloudflare/cloudflared1database/v1/api.proto\x12;project.planton.provider.cloudflare.cloudflared1database.v1\x1a\x1bbuf/validate/validate.proto\x1aFproject/planton/provider/cloudflare/cloudflared1database/v1/spec.proto\x1aOproject/planton/provider/cloudflare/cloudflared1database/v1/stack_outputs.proto\x1a#project/planton/shared/status.proto\x1a%project/planton/shared/metadata.proto\"\xc7\x03\n" +
+	"Eproject/planton/provider/cloudflare/cloudflared1database/v1/api.proto\x12;project.planton.provider.cloudflare.cloudflared1database.v1\x1a\x1bbuf/validate/validate.proto\x1aFproject/planton/provider/cloudflare/cloudflared1database/v1/spec.proto\x1aOproject/planton/provider/cloudflare/cloudflared1database/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\x1a#project/planton/shared/status.proto\"\xc7\x03\n" +
 	"\x14CloudflareD1Database\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!cloudflare.project-planton.org/v1R\n" +

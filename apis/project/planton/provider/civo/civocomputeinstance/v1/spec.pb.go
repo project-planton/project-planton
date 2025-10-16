@@ -164,7 +164,7 @@ var File_project_planton_provider_civo_civocomputeinstance_v1_spec_proto protore
 
 const file_project_planton_provider_civo_civocomputeinstance_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"?project/planton/provider/civo/civocomputeinstance/v1/spec.proto\x124project.planton.provider.civo.civocomputeinstance.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a*project/planton/provider/civo/region.proto\"\x9f\a\n" +
+	"?project/planton/provider/civo/civocomputeinstance/v1/spec.proto\x124project.planton.provider.civo.civocomputeinstance.v1\x1a\x1bbuf/validate/validate.proto\x1a*project/planton/provider/civo/region.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\"\x9f\a\n" +
 	"\x17CivoComputeInstanceSpec\x12S\n" +
 	"\rinstance_name\x18\x01 \x01(\tB.\xbaH+\xc8\x01\x01r&\x18?2\"^[a-z0-9]([a-z0-9\\.\\-]*[a-z0-9])?$R\finstanceName\x12I\n" +
 	"\x06region\x18\x02 \x01(\x0e2).project.planton.provider.civo.CivoRegionB\x06\xbaH\x03\xc8\x01\x01R\x06region\x12@\n" +

@@ -17,13 +17,9 @@ message CloudflareKvNamespaceSpec {
   // (Optional) Default time-to-live for key-value entries, in seconds.
   // If set to 0 or left unset, keys will never expire by default (infinite TTL).
   // If set to a positive value, it should be at least 60 seconds (minimum enforced by Cloudflare for expiring keys).
-  int32 ttl_seconds = 2 [
-    (buf.validate.field).int32.gte = 0
-  ];
+  int32 ttl_seconds = 2 [(buf.validate.field).int32.gte = 0];
 
   // (Optional) A short description of the namespace.
   // Useful for documentation or identifying the purpose of this KV store.
-  string description = 3 [
-    (buf.validate.field).string.max_len = 256
-  ];
+  string description = 3 [(buf.validate.field).string.max_len = 256];
 }

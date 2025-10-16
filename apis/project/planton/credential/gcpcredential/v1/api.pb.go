@@ -109,7 +109,7 @@ var File_project_planton_credential_gcpcredential_v1_api_proto protoreflect.File
 
 const file_project_planton_credential_gcpcredential_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"5project/planton/credential/gcpcredential/v1/api.proto\x12+project.planton.credential.gcpcredential.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/credential/gcpcredential/v1/spec.proto\x1a#project/planton/shared/status.proto\x1a%project/planton/shared/metadata.proto\"\xf1\x02\n" +
+	"5project/planton/credential/gcpcredential/v1/api.proto\x12+project.planton.credential.gcpcredential.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/credential/gcpcredential/v1/spec.proto\x1a%project/planton/shared/metadata.proto\x1a#project/planton/shared/status.proto\"\xf1\x02\n" +
 	"\rGcpCredential\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!credential.project-planton.org/v1R\n" +

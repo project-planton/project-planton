@@ -37,9 +37,7 @@ message AwsEksClusterSpec {
 
   // public_access_cidrs restricts which IPv4 CIDR blocks can access the cluster's public API endpoint.
   // If this list is empty, AWS defaults to 0.0.0.0/0 (all IPv4 addresses). Each entry must be a valid IPv4 CIDR (e.g., "203.0.113.0/24").
-  repeated string public_access_cidrs = 5 [
-    (buf.validate.field).repeated.items.string.pattern = "^(?:25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)(?:\\.(?:25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)){3}/(?:[0-9]|[12]\\d|3[0-2])$"
-  ];
+  repeated string public_access_cidrs = 5 [(buf.validate.field).repeated.items.string.pattern = "^(?:25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)(?:\\.(?:25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)){3}/(?:[0-9]|[12]\\d|3[0-2])$"];
 
   // enable_control_plane_logs, if true, enables all control plane log types for the cluster (API, audit, authenticator, controller manager, scheduler) to CloudWatch.
   // Default is false, meaning control plane logging is disabled unless explicitly enabled.

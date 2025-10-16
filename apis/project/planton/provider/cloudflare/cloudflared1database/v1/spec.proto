@@ -14,15 +14,11 @@ message CloudflareD1DatabaseSpec {
   ];
 
   // The Cloudflare account ID in which to create the database.
-  string account_id = 2 [
-    (buf.validate.field).required = true
-  ];
+  string account_id = 2 [(buf.validate.field).required = true];
 
   // The Cloudflare region where the D1 database will be hosted.
   // Allowed values include: WEUR, ENW, APE, USW. Defaults to WEUR if not specified.
-  CloudflareD1Region region = 3 [
-    (buf.validate.field).required = true
-  ];
+  CloudflareD1Region region = 3 [(buf.validate.field).required = true];
 
   // (Optional) Specify a primary key column name if an initial table migration is needed.
   string primary_key = 4;

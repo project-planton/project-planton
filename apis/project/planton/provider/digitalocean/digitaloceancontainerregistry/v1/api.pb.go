@@ -157,7 +157,7 @@ var File_project_planton_provider_digitalocean_digitaloceancontainerregistry_v1_
 
 const file_project_planton_provider_digitalocean_digitaloceancontainerregistry_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Pproject/planton/provider/digitalocean/digitaloceancontainerregistry/v1/api.proto\x12Fproject.planton.provider.digitalocean.digitaloceancontainerregistry.v1\x1a\x1bbuf/validate/validate.proto\x1aQproject/planton/provider/digitalocean/digitaloceancontainerregistry/v1/spec.proto\x1aZproject/planton/provider/digitalocean/digitaloceancontainerregistry/v1/stack_outputs.proto\x1a#project/planton/shared/status.proto\x1a%project/planton/shared/metadata.proto\"\x86\x04\n" +
+	"Pproject/planton/provider/digitalocean/digitaloceancontainerregistry/v1/api.proto\x12Fproject.planton.provider.digitalocean.digitaloceancontainerregistry.v1\x1a\x1bbuf/validate/validate.proto\x1aQproject/planton/provider/digitalocean/digitaloceancontainerregistry/v1/spec.proto\x1aZproject/planton/provider/digitalocean/digitaloceancontainerregistry/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\x1a#project/planton/shared/status.proto\"\x86\x04\n" +
 	"\x1dDigitalOceanContainerRegistry\x12L\n" +
 	"\vapi_version\x18\x01 \x01(\tB+\xbaH(r&\n" +
 	"$digital-ocean.project-planton.org/v1R\n" +

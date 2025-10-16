@@ -5,32 +5,24 @@ package project.planton.provider.aws.awsclientvpn.v1;
 import "buf/validate/validate.proto";
 import "project/planton/provider/aws/awsclientvpn/v1/spec.proto";
 import "project/planton/provider/aws/awsclientvpn/v1/stack_outputs.proto";
-import "project/planton/shared/status.proto";
 import "project/planton/shared/metadata.proto";
+import "project/planton/shared/status.proto";
 
 // AwsClientVpn represents an AWS Client VPN endpoint resource.
 // It encapsulates the configuration for a managed OpenVPN endpoint attached to a VPC.
 message AwsClientVpn {
   // api-version must be set to "aws.project-planton.org/v1".
-  string api_version = 1 [
-    (buf.validate.field).string.const = "aws.project-planton.org/v1"
-  ];
+  string api_version = 1 [(buf.validate.field).string.const = "aws.project-planton.org/v1"];
 
   // resource-kind for this Client VPN resource, must be "AwsClientVpn".
-  string kind = 2 [
-    (buf.validate.field).string.const = "AwsClientVpn"
-  ];
+  string kind = 2 [(buf.validate.field).string.const = "AwsClientVpn"];
 
   // metadata captures identifying information (name, org, version, etc.)
   // and must pass standard validations for resource naming.
-  project.planton.shared.ApiResourceMetadata metadata = 3 [
-    (buf.validate.field).required = true
-  ];
+  project.planton.shared.ApiResourceMetadata metadata = 3 [(buf.validate.field).required = true];
 
   // spec holds the core configuration data defining how the ECS service is deployed.
-  AwsClientVpnSpec spec = 4 [
-    (buf.validate.field).required = true
-  ];
+  AwsClientVpnSpec spec = 4 [(buf.validate.field).required = true];
 
   // status holds runtime or post-deployment information.
   AwsClientVpnStatus status = 5;

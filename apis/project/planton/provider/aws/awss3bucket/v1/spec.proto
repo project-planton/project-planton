@@ -1,6 +1,7 @@
 syntax = "proto3";
 
 package project.planton.provider.aws.awss3bucket.v1;
+
 import "buf/validate/validate.proto";
 
 // AwsS3BucketSpec defines the specification required to deploy an AWS AWS S3 Bucket.

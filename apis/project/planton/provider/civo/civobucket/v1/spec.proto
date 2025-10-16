@@ -3,8 +3,8 @@ syntax = "proto3";
 package project.planton.provider.civo.civobucket.v1;
 
 import "buf/validate/validate.proto";
-import "project/planton/shared/options/options.proto";
 import "project/planton/provider/civo/region.proto";
+import "project/planton/shared/options/options.proto";
 
 // CivoObjectStoreBucketSpec defines the user configuration for a Civo object storage bucket.
 message CivoBucketSpec {
@@ -17,15 +17,11 @@ message CivoBucketSpec {
   ];
 
   // region code for the bucket
-  CivoRegion region = 2 [
-    (buf.validate.field).required = true
-  ];
+  CivoRegion region = 2 [(buf.validate.field).required = true];
 
   // enable versioning for the bucket (disabled by default)
   bool versioning_enabled = 3;
 
   // tags to apply to the bucket (must be unique)
-  repeated string tags = 4 [
-    (buf.validate.field).repeated.unique = true
-  ];
+  repeated string tags = 4 [(buf.validate.field).repeated.unique = true];
 }

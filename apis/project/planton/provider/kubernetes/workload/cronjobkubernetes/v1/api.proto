@@ -5,30 +5,22 @@ package project.planton.provider.kubernetes.workload.cronjobkubernetes.v1;
 import "buf/validate/validate.proto";
 import "project/planton/provider/kubernetes/workload/cronjobkubernetes/v1/spec.proto";
 import "project/planton/provider/kubernetes/workload/cronjobkubernetes/v1/stack_outputs.proto";
-import "project/planton/shared/status.proto";
 import "project/planton/shared/metadata.proto";
+import "project/planton/shared/status.proto";
 
 //cron-job-kubernetes
 message CronJobKubernetes {
   //api-version
-  string api_version = 1 [
-    (buf.validate.field).string.const = 'kubernetes.project-planton.org/v1'
-  ];
+  string api_version = 1 [(buf.validate.field).string.const = 'kubernetes.project-planton.org/v1'];
 
   //resource-kind
-  string kind = 2 [
-    (buf.validate.field).string.const = 'CronJobKubernetes'
-  ];
+  string kind = 2 [(buf.validate.field).string.const = 'CronJobKubernetes'];
 
   //metadata
-  project.planton.shared.ApiResourceMetadata metadata = 3 [
-    (buf.validate.field).required = true
-  ];
+  project.planton.shared.ApiResourceMetadata metadata = 3 [(buf.validate.field).required = true];
 
   //spec
-  CronJobKubernetesSpec spec = 4 [
-    (buf.validate.field).required = true
-  ];
+  CronJobKubernetesSpec spec = 4 [(buf.validate.field).required = true];
 
   //status
   CronJobKubernetesStatus status = 5;

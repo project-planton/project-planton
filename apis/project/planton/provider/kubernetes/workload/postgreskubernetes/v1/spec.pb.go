@@ -278,7 +278,7 @@ var File_project_planton_provider_kubernetes_workload_postgreskubernetes_v1_spec
 
 const file_project_planton_provider_kubernetes_workload_postgreskubernetes_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Mproject/planton/provider/kubernetes/workload/postgreskubernetes/v1/spec.proto\x12Bproject.planton.provider.kubernetes.workload.postgreskubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\x1a,project/planton/shared/options/options.proto\x1a google/protobuf/descriptor.proto\"\x9a\x02\n" +
+	"Mproject/planton/provider/kubernetes/workload/postgreskubernetes/v1/spec.proto\x12Bproject.planton.provider.kubernetes.workload.postgreskubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\x1a,project/planton/shared/options/options.proto\"\x9a\x02\n" +
 	"\x1ePostgresKubernetesBackupConfig\x12\x1b\n" +
 	"\ts3_prefix\x18\x01 \x01(\tR\bs3Prefix\x12'\n" +
 	"\x0fbackup_schedule\x18\x02 \x01(\tR\x0ebackupSchedule\x12(\n" +

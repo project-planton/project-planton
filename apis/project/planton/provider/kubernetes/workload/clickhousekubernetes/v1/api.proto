@@ -5,30 +5,22 @@ package project.planton.provider.kubernetes.workload.clickhousekubernetes.v1;
 import "buf/validate/validate.proto";
 import "project/planton/provider/kubernetes/workload/clickhousekubernetes/v1/spec.proto";
 import "project/planton/provider/kubernetes/workload/clickhousekubernetes/v1/stack_outputs.proto";
-import "project/planton/shared/status.proto";
 import "project/planton/shared/metadata.proto";
+import "project/planton/shared/status.proto";
 
 // click-house-kubernetes
 message ClickHouseKubernetes {
   // api-version
-  string api_version = 1 [
-    (buf.validate.field).string.const = 'kubernetes.project-planton.org/v1'
-  ];
+  string api_version = 1 [(buf.validate.field).string.const = 'kubernetes.project-planton.org/v1'];
 
   // resource-kind
-  string kind = 2 [
-    (buf.validate.field).string.const = 'ClickHouseKubernetes'
-  ];
+  string kind = 2 [(buf.validate.field).string.const = 'ClickHouseKubernetes'];
 
   // metadata
-  project.planton.shared.ApiResourceMetadata metadata = 3 [
-    (buf.validate.field).required = true
-  ];
+  project.planton.shared.ApiResourceMetadata metadata = 3 [(buf.validate.field).required = true];
 
   // spec
-  ClickHouseKubernetesSpec spec = 4 [
-    (buf.validate.field).required = true
-  ];
+  ClickHouseKubernetesSpec spec = 4 [(buf.validate.field).required = true];
 
   // status
   ClickHouseKubernetesStatus status = 5;

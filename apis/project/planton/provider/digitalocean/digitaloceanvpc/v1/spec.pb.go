@@ -110,7 +110,7 @@ var File_project_planton_provider_digitalocean_digitaloceanvpc_v1_spec_proto pro
 
 const file_project_planton_provider_digitalocean_digitaloceanvpc_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Cproject/planton/provider/digitalocean/digitaloceanvpc/v1/spec.proto\x128project.planton.provider.digitalocean.digitaloceanvpc.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\x1a2project/planton/provider/digitalocean/region.proto\"\xb1\x02\n" +
+	"Cproject/planton/provider/digitalocean/digitaloceanvpc/v1/spec.proto\x128project.planton.provider.digitalocean.digitaloceanvpc.v1\x1a\x1bbuf/validate/validate.proto\x1a2project/planton/provider/digitalocean/region.proto\x1a,project/planton/shared/options/options.proto\"\xb1\x02\n" +
 	"\x13DigitalOceanVpcSpec\x12)\n" +
 	"\vdescription\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x18dR\vdescription\x12Y\n" +
 	"\x06region\x18\x02 \x01(\x0e29.project.planton.provider.digitalocean.DigitalOceanRegionB\x06\xbaH\x03\xc8\x01\x01R\x06region\x12V\n" +

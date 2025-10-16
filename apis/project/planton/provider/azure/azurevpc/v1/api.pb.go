@@ -157,7 +157,7 @@ var File_project_planton_provider_azure_azurevpc_v1_api_proto protoreflect.FileD
 
 const file_project_planton_provider_azure_azurevpc_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"4project/planton/provider/azure/azurevpc/v1/api.proto\x12*project.planton.provider.azure.azurevpc.v1\x1a\x1bbuf/validate/validate.proto\x1a5project/planton/provider/azure/azurevpc/v1/spec.proto\x1a>project/planton/provider/azure/azurevpc/v1/stack_outputs.proto\x1a#project/planton/shared/status.proto\x1a%project/planton/shared/metadata.proto\"\xf0\x02\n" +
+	"4project/planton/provider/azure/azurevpc/v1/api.proto\x12*project.planton.provider.azure.azurevpc.v1\x1a\x1bbuf/validate/validate.proto\x1a5project/planton/provider/azure/azurevpc/v1/spec.proto\x1a>project/planton/provider/azure/azurevpc/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\x1a#project/planton/shared/status.proto\"\xf0\x02\n" +
 	"\bAzureVpc\x12D\n" +
 	"\vapi_version\x18\x01 \x01(\tB#\xbaH r\x1e\n" +
 	"\x1cazure.project-planton.org/v1R\n" +

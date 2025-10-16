@@ -350,7 +350,7 @@ var File_project_planton_provider_digitalocean_digitaloceanloadbalancer_v1_spec_
 
 const file_project_planton_provider_digitalocean_digitaloceanloadbalancer_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Lproject/planton/provider/digitalocean/digitaloceanloadbalancer/v1/spec.proto\x12Aproject.planton.provider.digitalocean.digitaloceanloadbalancer.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1aBproject/planton/shared/cloudresourcekind/cloud_resource_kind.proto\x1a2project/planton/provider/digitalocean/region.proto\"\xc3\x06\n" +
+	"Lproject/planton/provider/digitalocean/digitaloceanloadbalancer/v1/spec.proto\x12Aproject.planton.provider.digitalocean.digitaloceanloadbalancer.v1\x1a\x1bbuf/validate/validate.proto\x1a2project/planton/provider/digitalocean/region.proto\x1aBproject/planton/shared/cloudresourcekind/cloud_resource_kind.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\"\xc3\x06\n" +
 	"\x1cDigitalOceanLoadBalancerSpec\x12H\n" +
 	"\x12load_balancer_name\x18\x01 \x01(\tB\x1a\xbaH\x17\xc8\x01\x01r\x12\x10\x01\x18@2\f^[a-z0-9-]+$R\x10loadBalancerName\x12Y\n" +
 	"\x06region\x18\x02 \x01(\x0e29.project.planton.provider.digitalocean.DigitalOceanRegionB\x06\xbaH\x03\xc8\x01\x01R\x06region\x12n\n" +

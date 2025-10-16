@@ -157,7 +157,7 @@ var File_project_planton_provider_digitalocean_digitaloceanloadbalancer_v1_api_p
 
 const file_project_planton_provider_digitalocean_digitaloceanloadbalancer_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Kproject/planton/provider/digitalocean/digitaloceanloadbalancer/v1/api.proto\x12Aproject.planton.provider.digitalocean.digitaloceanloadbalancer.v1\x1a\x1bbuf/validate/validate.proto\x1aLproject/planton/provider/digitalocean/digitaloceanloadbalancer/v1/spec.proto\x1aUproject/planton/provider/digitalocean/digitaloceanloadbalancer/v1/stack_outputs.proto\x1a#project/planton/shared/status.proto\x1a%project/planton/shared/metadata.proto\"\xe6\x03\n" +
+	"Kproject/planton/provider/digitalocean/digitaloceanloadbalancer/v1/api.proto\x12Aproject.planton.provider.digitalocean.digitaloceanloadbalancer.v1\x1a\x1bbuf/validate/validate.proto\x1aLproject/planton/provider/digitalocean/digitaloceanloadbalancer/v1/spec.proto\x1aUproject/planton/provider/digitalocean/digitaloceanloadbalancer/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\x1a#project/planton/shared/status.proto\"\xe6\x03\n" +
 	"\x18DigitalOceanLoadBalancer\x12L\n" +
 	"\vapi_version\x18\x01 \x01(\tB+\xbaH(r&\n" +
 	"$digital-ocean.project-planton.org/v1R\n" +

@@ -5,11 +5,10 @@ package project.planton.provider.kubernetes.workload.stackjobrunnerkubernetes.v1
 import "buf/validate/validate.proto";
 
 /**
- * **StackJobRunnerKubernetesSpec** defines the configuration for deploying the Stack Job Runner on a Kubernetes cluster.
- * This message specifies the parameters needed to create and manage a Stack Job Runner deployment within a Kubernetes environment.
- * The Stack Job Runner is responsible for executing jobs within the Planton Cloud stack, facilitating automated tasks and workflows.
+   * **StackJobRunnerKubernetesSpec** defines the configuration for deploying the Stack Job Runner on a Kubernetes cluster.
+   * This message specifies the parameters needed to create and manage a Stack Job Runner deployment within a Kubernetes environment.
+   * The Stack Job Runner is responsible for executing jobs within the Planton Cloud stack, facilitating automated tasks and workflows.
 
- * **Note:** Currently, no fields are specified. will be added soon in coming days
- */
-message StackJobRunnerKubernetesSpec {
-}
+   * **Note:** Currently, no fields are specified. will be added soon in coming days
+*/
+message StackJobRunnerKubernetesSpec {}

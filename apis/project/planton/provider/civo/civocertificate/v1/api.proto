@@ -5,30 +5,22 @@ package project.planton.provider.civo.civocertificate.v1;
 import "buf/validate/validate.proto";
 import "project/planton/provider/civo/civocertificate/v1/spec.proto";
 import "project/planton/provider/civo/civocertificate/v1/stack_outputs.proto";
-import "project/planton/shared/status.proto";
 import "project/planton/shared/metadata.proto";
+import "project/planton/shared/status.proto";
 
 // civo-certificate
 message CivoCertificate {
   //api-version
-  string api_version = 1[
-    (buf.validate.field).string.const = 'civo.project-planton.org/v1'
-  ];
+  string api_version = 1 [(buf.validate.field).string.const = 'civo.project-planton.org/v1'];
 
   //resource-kind
-  string kind = 2 [
-    (buf.validate.field).string.const = 'CivoCertificate'
-  ];
+  string kind = 2 [(buf.validate.field).string.const = 'CivoCertificate'];
 
   //metadata
-  project.planton.shared.ApiResourceMetadata metadata = 3 [
-    (buf.validate.field).required = true
-  ];
+  project.planton.shared.ApiResourceMetadata metadata = 3 [(buf.validate.field).required = true];
 
   //spec
-  CivoCertificateSpec spec = 4 [
-    (buf.validate.field).required = true
-  ];
+  CivoCertificateSpec spec = 4 [(buf.validate.field).required = true];
 
   //status
   CivoCertificateStatus status = 5;

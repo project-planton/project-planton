@@ -155,7 +155,7 @@ var File_project_planton_provider_kubernetes_workload_stackjobrunnerkubernetes_v
 
 const file_project_planton_provider_kubernetes_workload_stackjobrunnerkubernetes_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Rproject/planton/provider/kubernetes/workload/stackjobrunnerkubernetes/v1/api.proto\x12Hproject.planton.provider.kubernetes.workload.stackjobrunnerkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1aSproject/planton/provider/kubernetes/workload/stackjobrunnerkubernetes/v1/spec.proto\x1a\\project/planton/provider/kubernetes/workload/stackjobrunnerkubernetes/v1/stack_outputs.proto\x1a#project/planton/shared/status.proto\x1a%project/planton/shared/metadata.proto\"\xf3\x03\n" +
+	"Rproject/planton/provider/kubernetes/workload/stackjobrunnerkubernetes/v1/api.proto\x12Hproject.planton.provider.kubernetes.workload.stackjobrunnerkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1aSproject/planton/provider/kubernetes/workload/stackjobrunnerkubernetes/v1/spec.proto\x1a\\project/planton/provider/kubernetes/workload/stackjobrunnerkubernetes/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\x1a#project/planton/shared/status.proto\"\xf3\x03\n" +
 	"\x18StackJobRunnerKubernetes\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!kubernetes.project-planton.org/v1R\n" +

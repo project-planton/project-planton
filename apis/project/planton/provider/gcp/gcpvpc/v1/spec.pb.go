@@ -143,7 +143,7 @@ var File_project_planton_provider_gcp_gcpvpc_v1_spec_proto protoreflect.FileDesc
 
 const file_project_planton_provider_gcp_gcpvpc_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"1project/planton/provider/gcp/gcpvpc/v1/spec.proto\x12&project.planton.provider.gcp.gcpvpc.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\"\xb1\x02\n" +
+	"1project/planton/provider/gcp/gcpvpc/v1/spec.proto\x12&project.planton.provider.gcp.gcpvpc.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\"\xb1\x02\n" +
 	"\n" +
 	"GcpVpcSpec\x12\x7f\n" +
 	"\n" +

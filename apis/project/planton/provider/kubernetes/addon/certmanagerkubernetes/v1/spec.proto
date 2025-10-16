@@ -4,17 +4,15 @@ package project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1;
 
 import "buf/validate/validate.proto";
 import "project/planton/shared/foreignkey/v1/foreign_key.proto";
-import "project/planton/shared/options/options.proto";
 import "project/planton/shared/kubernetes/target_cluster.proto";
+import "project/planton/shared/options/options.proto";
 
 // CertManagerKubernetesSpec defines configuration for cert-manager on any cluster.
 message CertManagerKubernetesSpec {
   // The Kubernetes cluster to install this addon on.
   project.planton.shared.kubernetes.KubernetesAddonTargetCluster target_cluster = 1;
   // Upstream release channel or version tag (e.g. "v1.16").
-  string release_channel = 2 [
-    (project.planton.shared.options.default) = "stable"
-  ];
+  string release_channel = 2 [(project.planton.shared.options.default) = "stable"];
   // skip installation of self-signed issuer.
   bool skip_install_self_signed_issuer = 3;
   // Provider‑specific glue. Only one may be set.

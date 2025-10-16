@@ -3,8 +3,8 @@ syntax = "proto3";
 package project.planton.provider.gcp.gcpvpc.v1;
 
 import "buf/validate/validate.proto";
-import "project/planton/shared/options/options.proto";
 import "project/planton/shared/foreignkey/v1/foreign_key.proto";
+import "project/planton/shared/options/options.proto";
 
 // Allowed values for VPC dynamic routing mode.
 enum GcpVpcRoutingMode {
@@ -29,7 +29,5 @@ message GcpVpcSpec {
   // Dynamic routing mode for the VPC’s Cloud Routers: REGIONAL or GLOBAL.
   // **Default:** REGIONAL (Cloud Router adverts routes only in one region):contentReference[oaicite:5]{index=5}.
   // Use GLOBAL only for multi-region routing needs.
-  GcpVpcRoutingMode routing_mode = 3 [
-    (project.planton.shared.options.default) = "REGIONAL"
-  ];
+  GcpVpcRoutingMode routing_mode = 3 [(project.planton.shared.options.default) = "REGIONAL"];
 }

@@ -5,30 +5,22 @@ package project.planton.provider.digitalocean.digitaloceankubernetesnodepool.v1;
 import "buf/validate/validate.proto";
 import "project/planton/provider/digitalocean/digitaloceankubernetesnodepool/v1/spec.proto";
 import "project/planton/provider/digitalocean/digitaloceankubernetesnodepool/v1/stack_outputs.proto";
-import "project/planton/shared/status.proto";
 import "project/planton/shared/metadata.proto";
+import "project/planton/shared/status.proto";
 
 // digital-ocean-kubernetes-node-pool
 message DigitalOceanKubernetesNodePool {
   //api-version
-  string api_version = 1[
-    (buf.validate.field).string.const = 'digital-ocean.project-planton.org/v1'
-  ];
+  string api_version = 1 [(buf.validate.field).string.const = 'digital-ocean.project-planton.org/v1'];
 
   //resource-kind
-  string kind = 2 [
-    (buf.validate.field).string.const = 'DigitalOceanKubernetesNodePool'
-  ];
+  string kind = 2 [(buf.validate.field).string.const = 'DigitalOceanKubernetesNodePool'];
 
   //metadata
-  project.planton.shared.ApiResourceMetadata metadata = 3 [
-    (buf.validate.field).required = true
-  ];
+  project.planton.shared.ApiResourceMetadata metadata = 3 [(buf.validate.field).required = true];
 
   //spec
-  DigitalOceanKubernetesNodePoolSpec spec = 4 [
-    (buf.validate.field).required = true
-  ];
+  DigitalOceanKubernetesNodePoolSpec spec = 4 [(buf.validate.field).required = true];
 
   //status
   DigitalOceanKubernetesNodePoolStatus status = 5;

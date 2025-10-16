@@ -753,7 +753,7 @@ var File_project_planton_provider_kubernetes_workload_microservicekubernetes_v1_
 
 const file_project_planton_provider_kubernetes_workload_microservicekubernetes_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Qproject/planton/provider/kubernetes/workload/microservicekubernetes/v1/spec.proto\x12Fproject.planton.provider.kubernetes.workload.microservicekubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/provider/kubernetes/probe.proto\x1a/project/planton/shared/kubernetes/options.proto\"\xf3\x04\n" +
+	"Qproject/planton/provider/kubernetes/workload/microservicekubernetes/v1/spec.proto\x12Fproject.planton.provider.kubernetes.workload.microservicekubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a/project/planton/provider/kubernetes/probe.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\"\xf3\x04\n" +
 	"\x1aMicroserviceKubernetesSpec\x12\xe9\x01\n" +
 	"\aversion\x18\x01 \x01(\tB\xce\x01\xbaH\xca\x01\xba\x01l\n" +
 	"\x12spec.version.chars\x128Only lowercase letters, numbers, and hyphens are allowed\x1a\x1cthis.matches('^[a-z0-9-]+$')\xba\x01R\n" +

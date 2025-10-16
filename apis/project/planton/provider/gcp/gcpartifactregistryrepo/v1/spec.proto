@@ -25,21 +25,15 @@ enum GcpArtifactRegistryRepoFormat {
 // open-source projects that require public availability of their artifacts.
 message GcpArtifactRegistryRepoSpec {
   // The format of the repository in the Artifact Registry.
-  GcpArtifactRegistryRepoFormat repo_format = 1 [
-    (buf.validate.field).required = true
-  ];
+  GcpArtifactRegistryRepoFormat repo_format = 1 [(buf.validate.field).required = true];
 
   // The ID of the GCP project where the Artifact Registry resources will be created.
-  string project_id = 2 [
-    (buf.validate.field).required = true
-  ];
+  string project_id = 2 [(buf.validate.field).required = true];
 
   // The GCP region where the Artifact Registry will be created (e.g., "us-west2").
   // Selecting a region close to your Kubernetes clusters can reduce service startup time
   // by enabling faster downloads of container images.
-  string region = 3 [
-    (buf.validate.field).required = true
-  ];
+  string region = 3 [(buf.validate.field).required = true];
 
   // A flag indicating whether to allow unauthenticated access to artifacts published in the repositories.
   // Enable this for publishing artifacts for open-source projects that require public access.

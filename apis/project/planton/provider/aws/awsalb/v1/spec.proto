@@ -33,9 +33,7 @@ message AwsAlbSpec {
 
   // sets the idle timeout in seconds for connections to the ALB.
   // If omitted, AWS default is 60 seconds.
-  int32 idle_timeout_seconds = 6 [
-    (project.planton.shared.options.recommended_default) = "60"
-  ];
+  int32 idle_timeout_seconds = 6 [(project.planton.shared.options.recommended_default) = "60"];
 
   // dns configuration allows the resource to manage Route53 DNS if enabled.
   AwsAlbDns dns = 7;
@@ -59,11 +57,7 @@ message AwsAlbDns {
 
   // hostnames is a list of domain names (e.g., ["app.example.com"])
   // that will point to this ALB.
-  repeated string hostnames = 3 [
-    (buf.validate.field).repeated = {
-      unique: true
-    }
-  ];
+  repeated string hostnames = 3 [(buf.validate.field).repeated = {unique: true}];
 }
 
 // AwsAlbSsl defines a toggle for SSL, plus a certificate ARN required if enabled is true.

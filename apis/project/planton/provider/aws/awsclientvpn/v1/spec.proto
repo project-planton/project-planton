@@ -2,8 +2,8 @@ syntax = "proto3";
 package project.planton.provider.aws.awsclientvpn.v1;
 
 import "buf/validate/validate.proto";
-import "project/planton/shared/options/options.proto";
 import "project/planton/shared/foreignkey/v1/foreign_key.proto";
+import "project/planton/shared/options/options.proto";
 
 // AwsClientVpnSpec defines the configuration for an AWS Client VPN endpoint,
 // which enables secure OpenVPN access for clients into an AWS VPC. Developers can use
@@ -43,9 +43,7 @@ message AwsClientVpnSpec {
 
   // The authentication method for clients connecting to this VPN endpoint.
   // defaults to `certificate` (mutual TLS authentication using client certificates).
-  AwsClientVpnAuthenticationType authentication_type = 5 [
-    (buf.validate.field).enum.defined_only = true
-  ];
+  AwsClientVpnAuthenticationType authentication_type = 5 [(buf.validate.field).enum.defined_only = true];
 
   // The ARN of the ACM server certificate to use for the Client VPN endpoint. This TLS certificate is presented by the VPN server to clients upon connection.
   // The certificate must be present in AWS Certificate Manager in the same region. This field is **required** for establishing the VPN (mutual TLS requires a server cert, and user-based auth still needs a server certificate for encryption).
@@ -59,9 +57,7 @@ message AwsClientVpnSpec {
   // Typically, these correspond to private subnet ranges within the VPC (e.g., "10.0.0.0/16") or other networks.
   // For each CIDR here, an authorization rule will be created to allow clients to access that network.
   // If omitted, no default authorization rule is set (clients would not have access to any network until one is added).
-  repeated string cidr_authorization_rules = 7 [
-    (buf.validate.field).repeated.unique = true
-  ];
+  repeated string cidr_authorization_rules = 7 [(buf.validate.field).repeated.unique = true];
 
   // Enables or disables split-tunnel routing for the VPN. When `false`, only traffic destined for the above authorized CIDRs (internal networks) will go through the VPN, while all other Internet traffic stays local to the client.
   // When `true` (full-tunnel), all client traffic is routed through the VPN. Default is `false` (split-tunnel enabled) to limit VPN to internal traffic.
@@ -70,9 +66,7 @@ message AwsClientVpnSpec {
   // The port number on which the Client VPN endpoint will accept connections. The default (443) is commonly used for OpenVPN over TLS.
   // Using port 443 allows VPN traffic to more easily traverse corporate firewalls.
   // If a different port (e.g., 1194) is needed, it can be specified here.
-  int32 vpn_port = 9 [
-    (project.planton.shared.options.default) = "443"
-  ];
+  int32 vpn_port = 9 [(project.planton.shared.options.default) = "443"];
 
   // The transport protocol for VPN connections. Can be `tcp` or `udp`.
   AwsClientVpnTransportProtocol transport_protocol = 10 [
@@ -103,32 +97,32 @@ message AwsClientVpnSpec {
   ];
 
   option (buf.validate.message).cel = {
-    id: "vpn_port_allowed",
-    message: "vpn_port must be 443 (TCP) or 1194 (UDP) when set",
+    id: "vpn_port_allowed"
+    message: "vpn_port must be 443 (TCP) or 1194 (UDP) when set"
     expression: "this.vpn_port == 0 || this.vpn_port in [443, 1194]"
   };
 
   option (buf.validate.message).cel = {
-    id: "protocol_port_pairing",
-    message: "when both are set, transport_protocol must match vpn_port (TCP↔443, UDP↔1194)",
+    id: "protocol_port_pairing"
+    message: "when both are set, transport_protocol must match vpn_port (TCP↔443, UDP↔1194)"
     expression: "this.vpn_port == 0 || this.transport_protocol == 0 || (this.transport_protocol == 2 && this.vpn_port == 443) || (this.transport_protocol == 1 && this.vpn_port == 1194)"
   };
 
   option (buf.validate.message).cel = {
-    id: "auth_supported",
-    message: "only certificate-based authentication is supported in v1",
+    id: "auth_supported"
+    message: "only certificate-based authentication is supported in v1"
     expression: "this.authentication_type == 0"
   };
 
   option (buf.validate.message).cel = {
-    id: "cidr_auth_rules_format",
-    message: "each cidr_authorization_rules entry must be a valid IPv4 CIDR",
+    id: "cidr_auth_rules_format"
+    message: "each cidr_authorization_rules entry must be a valid IPv4 CIDR"
     expression: "this.cidr_authorization_rules.all(c, c.matches(\"^([0-9]{1,3}\\\\.){3}[0-9]{1,3}/([0-9]|[1-2][0-9]|3[0-2])$\"))"
   };
 
   option (buf.validate.message).cel = {
-    id: "dns_servers_format",
-    message: "dns_servers must be valid IPv4 addresses (max 2)",
+    id: "dns_servers_format"
+    message: "dns_servers must be valid IPv4 addresses (max 2)"
     expression: "this.dns_servers.all(s, s.matches(\"^([0-9]{1,3}\\\\.){3}[0-9]{1,3}$\"))"
   };
 }

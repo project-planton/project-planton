@@ -6,9 +6,7 @@ import "buf/validate/validate.proto";
 
 message GcpGkeAddonBundleSpec {
   // The GCP project ID in which the GKE cluster exists.
-  string cluster_project_id = 1 [
-    (buf.validate.field).required = true
-  ];
+  string cluster_project_id = 1 [(buf.validate.field).required = true];
 
   // Istio addon configuration
   GcpGkeAddonBundleIstio istio = 2;
@@ -48,11 +46,7 @@ message GcpGkeAddonBundleIstio {
   // A flag to control the installation of the Istio addon.
   bool enabled = 1;
   // The GCP region in which the GKE cluster exists.
-  string cluster_region = 2 [
-    (buf.validate.field).required = true
-  ];
+  string cluster_region = 2 [(buf.validate.field).required = true];
   // The GCP sub-network self-link in which the GKE cluster exists.
-  string sub_network_self_link = 3 [
-    (buf.validate.field).required = true
-  ];
+  string sub_network_self_link = 3 [(buf.validate.field).required = true];
 }

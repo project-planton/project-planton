@@ -5,30 +5,22 @@ package project.planton.provider.aws.awsrdsinstance.v1;
 import "buf/validate/validate.proto";
 import "project/planton/provider/aws/awsrdsinstance/v1/spec.proto";
 import "project/planton/provider/aws/awsrdsinstance/v1/stack_outputs.proto";
-import "project/planton/shared/status.proto";
 import "project/planton/shared/metadata.proto";
+import "project/planton/shared/status.proto";
 
 // AwsRdsInstance represents a single AWS RDS DB instance.
 message AwsRdsInstance {
   // api-version must be set to "aws.project-planton.org/v1".
-  string api_version = 1 [
-    (buf.validate.field).string.const = "aws.project-planton.org/v1"
-  ];
+  string api_version = 1 [(buf.validate.field).string.const = "aws.project-planton.org/v1"];
 
   // resource-kind for this resource, must be "AwsRdsInstance".
-  string kind = 2 [
-    (buf.validate.field).string.const = 'AwsRdsInstance'
-  ];
+  string kind = 2 [(buf.validate.field).string.const = 'AwsRdsInstance'];
 
   // metadata captures identifying information (name, org, version, etc.).
-  project.planton.shared.ApiResourceMetadata metadata = 3 [
-    (buf.validate.field).required = true
-  ];
+  project.planton.shared.ApiResourceMetadata metadata = 3 [(buf.validate.field).required = true];
 
   // spec holds the core configuration data defining the DB instance.
-  AwsRdsInstanceSpec spec = 4 [
-    (buf.validate.field).required = true
-  ];
+  AwsRdsInstanceSpec spec = 4 [(buf.validate.field).required = true];
 
   // status holds runtime or post-deployment information.
   AwsRdsInstanceStatus status = 5;

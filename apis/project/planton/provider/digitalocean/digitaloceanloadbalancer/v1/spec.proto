@@ -3,10 +3,10 @@ syntax = "proto3";
 package project.planton.provider.digitalocean.digitaloceanloadbalancer.v1;
 
 import "buf/validate/validate.proto";
-import "project/planton/shared/options/options.proto";
-import "project/planton/shared/foreignkey/v1/foreign_key.proto";
-import "project/planton/shared/cloudresourcekind/cloud_resource_kind.proto";
 import "project/planton/provider/digitalocean/region.proto";
+import "project/planton/shared/cloudresourcekind/cloud_resource_kind.proto";
+import "project/planton/shared/foreignkey/v1/foreign_key.proto";
+import "project/planton/shared/options/options.proto";
 
 // DigitalOceanLoadBalancerSpec defines the specification for creating a DigitalOcean Load Balancer.
 // It focuses on essential parameters following the 80/20 principle, including region, VPC placement,
@@ -24,9 +24,7 @@ message DigitalOceanLoadBalancerSpec {
 
   // The DigitalOcean region where the Load Balancer will be created.
   // Determines the geographical location of the load balancer.
-  DigitalOceanRegion region = 2 [
-    (buf.validate.field).required = true
-  ];
+  DigitalOceanRegion region = 2 [(buf.validate.field).required = true];
 
   // Reference to the DigitalOcean VPC in which to create the Load Balancer.
   // This should be a foreign key reference to an existing DigitalOceanVpc resource.
@@ -84,9 +82,7 @@ message DigitalOceanLoadBalancerForwardingRule {
   ];
 
   // Protocol for incoming traffic on the load balancer's entry port (e.g., HTTP, HTTPS, TCP).
-  DigitalOceanLoadBalancerProtocol entry_protocol = 2 [
-    (buf.validate.field).required = true
-  ];
+  DigitalOceanLoadBalancerProtocol entry_protocol = 2 [(buf.validate.field).required = true];
 
   // Port on the Droplet that will receive forwarded traffic.
   uint32 target_port = 3 [
@@ -96,9 +92,7 @@ message DigitalOceanLoadBalancerForwardingRule {
   ];
 
   // Protocol for traffic between the load balancer and the Droplet (e.g., HTTP, HTTPS, TCP).
-  DigitalOceanLoadBalancerProtocol target_protocol = 4 [
-    (buf.validate.field).required = true
-  ];
+  DigitalOceanLoadBalancerProtocol target_protocol = 4 [(buf.validate.field).required = true];
 }
 
 // HealthCheck defines how the load balancer checks the health of attached Droplets.
@@ -111,16 +105,12 @@ message DigitalOceanLoadBalancerHealthCheck {
   ];
 
   // Protocol to use for health checking (HTTP, HTTPS, or TCP).
-  DigitalOceanLoadBalancerProtocol protocol = 2 [
-    (buf.validate.field).required = true
-  ];
+  DigitalOceanLoadBalancerProtocol protocol = 2 [(buf.validate.field).required = true];
 
   // If using HTTP/HTTPS for health checks, the request path to probe (e.g., "/health").
   // Ignored for TCP health checks.
   string path = 3;
 
   // Interval (in seconds) between health check probes.
-  uint32 check_interval_sec = 4 [
-    (project.planton.shared.options.recommended_default) = "10"
-  ];
+  uint32 check_interval_sec = 4 [(project.planton.shared.options.recommended_default) = "10"];
 }

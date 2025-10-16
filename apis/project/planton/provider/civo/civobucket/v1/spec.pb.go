@@ -101,7 +101,7 @@ var File_project_planton_provider_civo_civobucket_v1_spec_proto protoreflect.Fil
 
 const file_project_planton_provider_civo_civobucket_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"6project/planton/provider/civo/civobucket/v1/spec.proto\x12+project.planton.provider.civo.civobucket.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\x1a*project/planton/provider/civo/region.proto\"\xf8\x01\n" +
+	"6project/planton/provider/civo/civobucket/v1/spec.proto\x12+project.planton.provider.civo.civobucket.v1\x1a\x1bbuf/validate/validate.proto\x1a*project/planton/provider/civo/region.proto\x1a,project/planton/shared/options/options.proto\"\xf8\x01\n" +
 	"\x0eCivoBucketSpec\x12N\n" +
 	"\vbucket_name\x18\x01 \x01(\tB-\xbaH*\xc8\x01\x01r%\x10\x03\x18?2\x1f^[a-z0-9]([-a-z0-9]*[a-z0-9])?$R\n" +
 	"bucketName\x12I\n" +

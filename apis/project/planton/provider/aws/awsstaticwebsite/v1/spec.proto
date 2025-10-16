@@ -12,9 +12,7 @@ import "project/planton/shared/options/options.proto";
 // and minimal S3 and CloudFront settings, while hiding long-tail settings.
 message AwsStaticWebsiteSpec {
   // Enable a CloudFront CDN in front of the S3 website. Recommended for production.
-  bool enable_cdn = 1 [
-    (project.planton.shared.options.recommended_default) = "true"
-  ];
+  bool enable_cdn = 1 [(project.planton.shared.options.recommended_default) = "true"];
 
   // Route53 hosted zone where DNS records will be created for the specified domain aliases.
   project.planton.shared.foreignkey.v1.StringValueOrRef route53_zone_id = 2 [
@@ -24,9 +22,7 @@ message AwsStaticWebsiteSpec {
 
   // Domain names (aliases) for the website (e.g., "app.example.com"). When provided with enable_cdn=true,
   // a certificate is required (from ACM) and DNS records are created in the zone.
-  repeated string domain_aliases = 3 [
-    (buf.validate.field).repeated.unique = true
-  ];
+  repeated string domain_aliases = 3 [(buf.validate.field).repeated.unique = true];
 
   // ACM certificate ARN used for TLS on CloudFront when domain_aliases are set.
   project.planton.shared.foreignkey.v1.StringValueOrRef certificate_arn = 4 [
@@ -47,12 +43,8 @@ message AwsStaticWebsiteSpec {
   bool is_spa = 7;
 
   // Index and error documents for the website.
-  string index_document = 8 [
-    (project.planton.shared.options.recommended_default) = "index.html"
-  ];
-  string error_document = 9 [
-    (project.planton.shared.options.recommended_default) = "error.html"
-  ];
+  string index_document = 8 [(project.planton.shared.options.recommended_default) = "index.html"];
+  string error_document = 9 [(project.planton.shared.options.recommended_default) = "error.html"];
 
   // Simple global cache TTL overrides for CDN. These map to default behavior TTLs.
   int32 default_ttl_seconds = 10 [
@@ -69,18 +61,20 @@ message AwsStaticWebsiteSpec {
   ];
 
   // Enable gzip/brotli compression and IPv6 on the CDN when enabled.
-  bool compress = 13 [
-    (project.planton.shared.options.recommended_default) = "true"
-  ];
-  bool ipv6_enabled = 14 [
-    (project.planton.shared.options.recommended_default) = "true"
-  ];
+  bool compress = 13 [(project.planton.shared.options.recommended_default) = "true"];
+  bool ipv6_enabled = 14 [(project.planton.shared.options.recommended_default) = "true"];
 
   // Price class for CloudFront. Controls the set of edge locations used.
   string price_class = 15 [
     (project.planton.shared.options.recommended_default) = "PriceClass_100",
     (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
-    (buf.validate.field).string = { in: ["PriceClass_100", "PriceClass_200", "PriceClass_All"] }
+    (buf.validate.field).string = {
+      in: [
+        "PriceClass_100",
+        "PriceClass_200",
+        "PriceClass_All"
+      ]
+    }
   ];
 
   // Access logging for S3 and CDN.
@@ -91,8 +85,8 @@ message AwsStaticWebsiteSpec {
 
   // Ensure certificate is present when using custom domains with CDN enabled.
   option (buf.validate.message).cel = {
-    id: "cdn_aliases_require_cert",
-    message: "certificate_arn must be set when enable_cdn is true and domain_aliases are provided",
+    id: "cdn_aliases_require_cert"
+    message: "certificate_arn must be set when enable_cdn is true and domain_aliases are provided"
     expression: "!this.enable_cdn || this.domain_aliases.size() == 0 || has(this.certificate_arn)"
   };
 }

@@ -30,9 +30,7 @@ message GcpServiceAccountSpec {
   // create_key indicates whether a key should be automatically generated
   // for this service account. If true, a JSON private key is created;
   // if false, no user-managed key is created.
-  bool create_key = 4 [
-    (project.planton.shared.options.default) = "false"
-  ];
+  bool create_key = 4 [(project.planton.shared.options.default) = "false"];
 
   // project_iam_roles is a list of IAM roles to be granted at the project level
   // to this service account. For example: ["roles/logging.logWriter", "roles/storage.admin"].

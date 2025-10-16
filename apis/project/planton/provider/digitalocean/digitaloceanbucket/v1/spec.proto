@@ -3,8 +3,8 @@ syntax = "proto3";
 package project.planton.provider.digitalocean.digitaloceanbucket.v1;
 
 import "buf/validate/validate.proto";
-import "project/planton/shared/options/options.proto";
 import "project/planton/provider/digitalocean/region.proto";
+import "project/planton/shared/options/options.proto";
 
 // DigitalOceanBucketSpec defines the user configuration for a DigitalOcean Spaces bucket.
 message DigitalOceanBucketSpec {
@@ -17,9 +17,7 @@ message DigitalOceanBucketSpec {
   ];
 
   // region slug (datacenter location for the bucket)
-  DigitalOceanRegion region = 2 [
-    (buf.validate.field).required = true
-  ];
+  DigitalOceanRegion region = 2 [(buf.validate.field).required = true];
 
   // access control setting for the bucket (private or public-read)
   DigitalOceanBucketAccessControl access_control = 3;
@@ -28,9 +26,7 @@ message DigitalOceanBucketSpec {
   bool versioning_enabled = 4;
 
   // tags to apply to the bucket (must be unique)
-  repeated string tags = 5 [
-    (buf.validate.field).repeated.unique = true
-  ];
+  repeated string tags = 5 [(buf.validate.field).repeated.unique = true];
 }
 
 // Supported access control settings for a bucket.

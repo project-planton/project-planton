@@ -5,30 +5,22 @@ package project.planton.provider.kubernetes.workload.gitlabkubernetes.v1;
 import "buf/validate/validate.proto";
 import "project/planton/provider/kubernetes/workload/gitlabkubernetes/v1/spec.proto";
 import "project/planton/provider/kubernetes/workload/gitlabkubernetes/v1/stack_outputs.proto";
-import "project/planton/shared/status.proto";
 import "project/planton/shared/metadata.proto";
+import "project/planton/shared/status.proto";
 
 //gitlab-kubernetes
 message GitlabKubernetes {
   //api-version
-  string api_version = 1 [
-    (buf.validate.field).string.const = 'kubernetes.project-planton.org/v1'
-  ];
+  string api_version = 1 [(buf.validate.field).string.const = 'kubernetes.project-planton.org/v1'];
 
   //resource-kind
-  string kind = 2 [
-    (buf.validate.field).string.const = 'GitlabKubernetes'
-  ];
+  string kind = 2 [(buf.validate.field).string.const = 'GitlabKubernetes'];
 
   //metadata
-  project.planton.shared.ApiResourceMetadata metadata = 3 [
-    (buf.validate.field).required = true
-  ];
+  project.planton.shared.ApiResourceMetadata metadata = 3 [(buf.validate.field).required = true];
 
   //spec
-  GitlabKubernetesSpec spec = 4 [
-    (buf.validate.field).required = true
-  ];
+  GitlabKubernetesSpec spec = 4 [(buf.validate.field).required = true];
 
   //status
   GitlabKubernetesStatus status = 5;

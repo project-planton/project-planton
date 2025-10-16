@@ -5,32 +5,24 @@ package project.planton.provider.aws.awscertmanagercert.v1;
 import "buf/validate/validate.proto";
 import "project/planton/provider/aws/awscertmanagercert/v1/spec.proto";
 import "project/planton/provider/aws/awscertmanagercert/v1/stack_outputs.proto";
-import "project/planton/shared/status.proto";
 import "project/planton/shared/metadata.proto";
+import "project/planton/shared/status.proto";
 
 // AwsCertManagerCert represents a containerized application deployed on AWS ECS.
 // This resource manages ECS services that can run on either Fargate or EC2.
 message AwsCertManagerCert {
   // api-version must be set to "aws.project-planton.org/v1".
-  string api_version = 1 [
-    (buf.validate.field).string.const = "aws.project-planton.org/v1"
-  ];
+  string api_version = 1 [(buf.validate.field).string.const = "aws.project-planton.org/v1"];
 
   // resource-kind for this ECS service resource.
-  string kind = 2 [
-    (buf.validate.field).string.const = "AwsCertManagerCert"
-  ];
+  string kind = 2 [(buf.validate.field).string.const = "AwsCertManagerCert"];
 
   // metadata captures identifying information (name, org, version, etc.)
   // and must pass standard validations for resource naming.
-  project.planton.shared.ApiResourceMetadata metadata = 3 [
-    (buf.validate.field).required = true
-  ];
+  project.planton.shared.ApiResourceMetadata metadata = 3 [(buf.validate.field).required = true];
 
   // spec holds the core configuration data defining how the ECS service is deployed.
-  AwsCertManagerCertSpec spec = 4 [
-    (buf.validate.field).required = true
-  ];
+  AwsCertManagerCertSpec spec = 4 [(buf.validate.field).required = true];
 
   // status holds runtime or post-deployment information.
   AwsCertManagerCertStatus status = 5;

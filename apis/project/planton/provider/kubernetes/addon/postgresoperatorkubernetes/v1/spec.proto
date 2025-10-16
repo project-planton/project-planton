@@ -43,9 +43,7 @@ message PostgresOperatorKubernetesBackupR2Config {
 // The Pulumi module will automatically create a Kubernetes Secret from the R2 credentials.
 message PostgresOperatorKubernetesBackupConfig {
   // Cloudflare R2 storage configuration (includes credentials)
-  PostgresOperatorKubernetesBackupR2Config r2_config = 1 [
-    (buf.validate.field).required = true
-  ];
+  PostgresOperatorKubernetesBackupR2Config r2_config = 1 [(buf.validate.field).required = true];
 
   // Optional: Custom S3 prefix template for WAL-G
   // Default: "backups/$(SCOPE)/$(PGVERSION)"
@@ -79,9 +77,7 @@ message PostgresOperatorKubernetesSpec {
   // The Kubernetes cluster to install this addon on.
   project.planton.shared.kubernetes.KubernetesAddonTargetCluster target_cluster = 1;
   // The container specifications for the GitLab deployment.
-  PostgresOperatorKubernetesSpecContainer container = 2 [
-    (buf.validate.field).required = true
-  ];
+  PostgresOperatorKubernetesSpecContainer container = 2 [(buf.validate.field).required = true];
   // Optional: Backup configuration for all databases managed by this operator
   PostgresOperatorKubernetesBackupConfig backup_config = 3;
 }
@@ -90,16 +86,14 @@ message PostgresOperatorKubernetesSpec {
 // It includes resource allocations for CPU and memory to ensure the application runs efficiently.
 message PostgresOperatorKubernetesSpecContainer {
   // The CPU and memory resources allocated to the GitLab container.
-  project.planton.shared.kubernetes.ContainerResources resources = 1 [
-    (project.planton.shared.kubernetes.default_container_resources) = {
-      limits {
-        cpu: "1000m"
-        memory: "1Gi"
-      },
-      requests {
-        cpu: "50m"
-        memory: "100Mi"
-      }
+  project.planton.shared.kubernetes.ContainerResources resources = 1 [(project.planton.shared.kubernetes.default_container_resources) = {
+    limits: {
+      cpu: "1000m"
+      memory: "1Gi"
     }
-  ];
+    requests: {
+      cpu: "50m"
+      memory: "100Mi"
+    }
+  }];
 }

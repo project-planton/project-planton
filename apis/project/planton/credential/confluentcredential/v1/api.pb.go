@@ -109,7 +109,7 @@ var File_project_planton_credential_confluentcredential_v1_api_proto protoreflec
 
 const file_project_planton_credential_confluentcredential_v1_api_proto_rawDesc = "" +
 	"\n" +
-	";project/planton/credential/confluentcredential/v1/api.proto\x121project.planton.credential.confluentcredential.v1\x1a\x1bbuf/validate/validate.proto\x1a<project/planton/credential/confluentcredential/v1/spec.proto\x1a#project/planton/shared/status.proto\x1a%project/planton/shared/metadata.proto\"\x89\x03\n" +
+	";project/planton/credential/confluentcredential/v1/api.proto\x121project.planton.credential.confluentcredential.v1\x1a\x1bbuf/validate/validate.proto\x1a<project/planton/credential/confluentcredential/v1/spec.proto\x1a%project/planton/shared/metadata.proto\x1a#project/planton/shared/status.proto\"\x89\x03\n" +
 	"\x13ConfluentCredential\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!credential.project-planton.org/v1R\n" +

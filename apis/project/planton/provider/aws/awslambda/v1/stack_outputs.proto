@@ -19,5 +19,3 @@ message AwsLambdaStackOutputs {
   // layer_arns is the set of layer ARNs attached to the function (if any).
   repeated string layer_arns = 5;
 }
-
-

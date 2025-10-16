@@ -3,9 +3,8 @@ syntax = "proto3";
 package project.planton.provider.gcp.gcprouternat.v1;
 
 import "buf/validate/validate.proto";
-import "project/planton/shared/options/options.proto";
-
 import "project/planton/shared/foreignkey/v1/foreign_key.proto";
+import "project/planton/shared/options/options.proto";
 
 // GcpRouterNatSpec defines configuration for a Cloud Router with a NAT gateway.
 message GcpRouterNatSpec {
@@ -18,10 +17,7 @@ message GcpRouterNatSpec {
   ];
 
   // GCP region for the Cloud Router and NAT.
-  string region = 2 [
-    (buf.validate.field).required = true
-    // (Optional: could add pattern validation for region format)
-  ];
+  string region = 2 [(buf.validate.field).required = true /* (Optional: could add pattern validation for region format) */];
 
   // Optional specific subnets to enable NAT on (if empty or not set, NAT covers all subnets in the region).
   repeated project.planton.shared.foreignkey.v1.StringValueOrRef subnetwork_self_links = 3;

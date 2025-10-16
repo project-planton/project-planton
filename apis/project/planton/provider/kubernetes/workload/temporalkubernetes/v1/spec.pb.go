@@ -92,11 +92,11 @@ const (
 	// text type - full-text searchable string (analyzed, only works with Elasticsearch)
 	TemporalKubernetesSearchAttributeType_text TemporalKubernetesSearchAttributeType = 2
 	// int type - 64-bit integer
-	TemporalKubernetesSearchAttributeType_int TemporalKubernetesSearchAttributeType = 3
+	TemporalKubernetesSearchAttributeType_int_type TemporalKubernetesSearchAttributeType = 3
 	// double type - floating point number
-	TemporalKubernetesSearchAttributeType_double TemporalKubernetesSearchAttributeType = 4
+	TemporalKubernetesSearchAttributeType_double_type TemporalKubernetesSearchAttributeType = 4
 	// bool type - boolean value
-	TemporalKubernetesSearchAttributeType_bool TemporalKubernetesSearchAttributeType = 5
+	TemporalKubernetesSearchAttributeType_bool_type TemporalKubernetesSearchAttributeType = 5
 	// datetime type - timestamp
 	TemporalKubernetesSearchAttributeType_datetime TemporalKubernetesSearchAttributeType = 6
 	// keyword_list type - array of keywords
@@ -109,9 +109,9 @@ var (
 		0: "temporal_kubernetes_search_attribute_type_unspecified",
 		1: "keyword",
 		2: "text",
-		3: "int",
-		4: "double",
-		5: "bool",
+		3: "int_type",
+		4: "double_type",
+		5: "bool_type",
 		6: "datetime",
 		7: "keyword_list",
 	}
@@ -119,9 +119,9 @@ var (
 		"temporal_kubernetes_search_attribute_type_unspecified": 0,
 		"keyword":      1,
 		"text":         2,
-		"int":          3,
-		"double":       4,
-		"bool":         5,
+		"int_type":     3,
+		"double_type":  4,
+		"bool_type":    5,
 		"datetime":     6,
 		"keyword_list": 7,
 	}
@@ -592,15 +592,14 @@ const file_project_planton_provider_kubernetes_workload_temporalkubernetes_v1_sp
 	"\tcassandra\x10\x01\x12\x0e\n" +
 	"\n" +
 	"postgresql\x10\x02\x12\t\n" +
-	"\x05mysql\x10\x03*\xb8\x01\n" +
+	"\x05mysql\x10\x03*\xc7\x01\n" +
 	"%TemporalKubernetesSearchAttributeType\x129\n" +
 	"5temporal_kubernetes_search_attribute_type_unspecified\x10\x00\x12\v\n" +
 	"\akeyword\x10\x01\x12\b\n" +
-	"\x04text\x10\x02\x12\a\n" +
-	"\x03int\x10\x03\x12\n" +
-	"\n" +
-	"\x06double\x10\x04\x12\b\n" +
-	"\x04bool\x10\x05\x12\f\n" +
+	"\x04text\x10\x02\x12\f\n" +
+	"\bint_type\x10\x03\x12\x0f\n" +
+	"\vdouble_type\x10\x04\x12\r\n" +
+	"\tbool_type\x10\x05\x12\f\n" +
 	"\bdatetime\x10\x06\x12\x10\n" +
 	"\fkeyword_list\x10\aB\x8e\x04\n" +
 	"Fcom.project.planton.provider.kubernetes.workload.temporalkubernetes.v1B\tSpecProtoP\x01Z\x87\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/temporalkubernetes/v1;temporalkubernetesv1\xa2\x02\x06PPPKWT\xaa\x02BProject.Planton.Provider.Kubernetes.Workload.Temporalkubernetes.V1\xca\x02BProject\\Planton\\Provider\\Kubernetes\\Workload\\Temporalkubernetes\\V1\xe2\x02NProject\\Planton\\Provider\\Kubernetes\\Workload\\Temporalkubernetes\\V1\\GPBMetadata\xea\x02HProject::Planton::Provider::Kubernetes::Workload::Temporalkubernetes::V1b\x06proto3"

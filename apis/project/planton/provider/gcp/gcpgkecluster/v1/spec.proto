@@ -11,22 +11,16 @@ import "project/planton/shared/options/options.proto";
 // node pools, Kubernetes addons, and ingress DNS domains.
 message GcpGkeClusterSpec {
   // The GCP project ID in which the GKE cluster will be created.
-  string cluster_project_id = 1 [
-    (buf.validate.field).required = true
-  ];
+  string cluster_project_id = 1 [(buf.validate.field).required = true];
 
   // The GCP region where the GKE cluster will be created.
   // **Warning:** The GKE cluster will be recreated if this value is updated.
   // Refer to: https://cloud.google.com/compute/docs/regions-zones
-  string region = 2 [
-    (project.planton.shared.options.default) = "us-central1"
-  ];
+  string region = 2 [(project.planton.shared.options.default) = "us-central1"];
 
   // The GCP zone where the GKE cluster will be created.
   // Refer to: https://cloud.google.com/compute/docs/regions-zones
-  string zone = 3 [
-    (project.planton.shared.options.default) = "us-central1-a"
-  ];
+  string zone = 3 [(project.planton.shared.options.default) = "us-central1-a"];
 
   GcpGkeClusterSharedVpcConfig shared_vpc_config = 4;
 
@@ -52,14 +46,13 @@ message GcpGkeClusterSharedVpcConfig {
 
   // The GCP project ID in which the GKE cluster will be created.
   option (buf.validate.message).cel = {
-    id: "spec.shared_vpc_config.vpc_project_id.required",
-    expression: "this.is_enabled && size(this.vpc_project_id) == 0"
-        "? 'VPC Project Id is required to setup shared-vpc'"
-        ": ''"
+    id: "spec.shared_vpc_config.vpc_project_id.required"
+    expression:
+      "this.is_enabled && size(this.vpc_project_id) == 0"
+      "? 'VPC Project Id is required to setup shared-vpc'"
+      ": ''"
   };
-  string vpc_project_id = 2 [
-    (buf.validate.field).required = true
-  ];
+  string vpc_project_id = 2 [(buf.validate.field).required = true];
 }
 
 // **GcpGkeClusterAutoscalingConfig** specifies the autoscaling settings for GKE clusters.
@@ -94,26 +87,24 @@ message GcpGkeClusterNodePool {
     (buf.validate.field).string.min_len = 1,
     (buf.validate.field).string.max_len = 25,
     (buf.validate.field).cel = {
-      id: "gcp.node_pool.name",
-      message: "Only alphanumeric characters (A-Z, a-z, 0-9) and hyphens are allowed",
+      id: "gcp.node_pool.name"
+      message: "Only alphanumeric characters (A-Z, a-z, 0-9) and hyphens are allowed"
       expression: "this.matches('^[A-Za-z0-9-]+$')"
     },
     (buf.validate.field).cel = {
-      id: "gcp.node_pool.name",
-      message: "Must not start with a hyphen",
+      id: "gcp.node_pool.name"
+      message: "Must not start with a hyphen"
       expression: "this.matches('^[^-].*$')"
     },
     (buf.validate.field).cel = {
-      id: "gcp.node_pool.name",
-      message: "Must not end with a hyphen",
+      id: "gcp.node_pool.name"
+      message: "Must not end with a hyphen"
       expression: "this.matches('[^-]$')"
     }
   ];
 
   // The machine type for the node pool (e.g., 'n2-custom-8-16234').
-  string machine_type = 2 [
-    (buf.validate.field).required = true
-  ];
+  string machine_type = 2 [(buf.validate.field).required = true];
 
   // The minimum number of nodes in the node pool. Defaults to 1.
   int32 min_node_count = 3;

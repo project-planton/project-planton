@@ -3,8 +3,8 @@ syntax = "proto3";
 package project.planton.provider.azure.azureaksnodepool.v1;
 
 import "buf/validate/validate.proto";
-import "project/planton/shared/options/options.proto";
 import "project/planton/shared/foreignkey/v1/foreign_key.proto";
+import "project/planton/shared/options/options.proto";
 
 // AzureAksNodePoolSpec defines the desired state of an AKS cluster node pool.
 message AzureAksNodePoolSpec {
@@ -18,9 +18,7 @@ message AzureAksNodePoolSpec {
 
   // VM size (SKU) for the nodes in this pool (e.g., "Standard_D4s_v3").
   // Determines the CPU/memory of each node. No default; user must specify.
-  string vm_size = 2 [
-    (buf.validate.field).required = true
-  ];
+  string vm_size = 2 [(buf.validate.field).required = true];
 
   // Number of nodes to create in this pool initially (if autoscaling is off, this is the fixed node count).
   // Must be at least 1.
@@ -31,7 +29,7 @@ message AzureAksNodePoolSpec {
 
   // Autoscaling configuration for this node pool. If set, cluster autoscaler is enabled for this pool.
   // If not provided, the node pool will have a fixed size (no autoscaling).
-  AzureAksNodePoolAutoscaling autoscaling = 4;  // optional
+  AzureAksNodePoolAutoscaling autoscaling = 4; // optional
 
   // Zones to spread this node pool across for high availability (e.g., ["1", "2", "3"] for three zones).
   // If unspecified, nodes are not pinned to specific zones (using region defaults). If specified, at least 2 zones should be provided for HA.
@@ -39,14 +37,18 @@ message AzureAksNodePoolSpec {
     (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
     (buf.validate.field).repeated.min_items = 2,
     (buf.validate.field).repeated.items = {
-      string: { in: ["1", "2", "3"] }
+      string: {
+        in: [
+          "1",
+          "2",
+          "3"
+        ]
+      }
     }
   ];
 
   // Operating system type for nodes. Defaults to Linux. Use "WINDOWS" for a Windows node pool (requires a cluster with Windows support).
-  AzureAksNodePoolOsType os_type = 6 [
-    (project.planton.shared.options.default) = "AZURE_AKS_NODE_POOL_OS_TYPE_LINUX"
-  ];
+  AzureAksNodePoolOsType os_type = 6 [(project.planton.shared.options.default) = "AZURE_AKS_NODE_POOL_OS_TYPE_LINUX"];
 
   // Use Spot (preemptible) VMs for this node pool to reduce cost. Defaults to false (regular on-demand VMs).
   bool spot_enabled = 7;
@@ -55,19 +57,15 @@ message AzureAksNodePoolSpec {
 // Autoscaling settings for an AKS node pool. Effective only if autoscaling is enabled.
 message AzureAksNodePoolAutoscaling {
   // Minimum number of nodes for this pool when autoscaler is active. Can be 0 for user node pools to allow scale-to-zero.
-  uint32 min_nodes = 1 [
-    (buf.validate.field).required = true
-  ];
+  uint32 min_nodes = 1 [(buf.validate.field).required = true];
 
   // Maximum number of nodes for this pool when autoscaler is active.
-  uint32 max_nodes = 2 [
-    (buf.validate.field).required = true
-  ];
+  uint32 max_nodes = 2 [(buf.validate.field).required = true];
 }
 
 // Enum for OS types in an AKS node pool.
 enum AzureAksNodePoolOsType {
   azure_aks_node_pool_os_type_unspecified = 0;
-  LINUX   = 1;
+  LINUX = 1;
   WINDOWS = 2;
 }

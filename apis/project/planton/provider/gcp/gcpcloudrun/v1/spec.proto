@@ -15,9 +15,7 @@ message GcpCloudRunSpec {
   // GCP project ID where the Cloud Run service will be created.
   string project_id = 1 [
     (buf.validate.field).required = true,
-    (buf.validate.field).string = {
-      pattern: "^[a-z][a-z0-9-]{4,28}[a-z0-9]$"
-    }
+    (buf.validate.field).string = {pattern: "^[a-z][a-z0-9-]{4,28}[a-z0-9]$"}
   ];
 
   // Region where the service is deployed, for example "us-central1".
@@ -27,20 +25,19 @@ message GcpCloudRunSpec {
   ];
 
   // Container configuration for the Cloud Run service.
-  GcpCloudRunContainer container = 3 [
-    (buf.validate.field).required = true
-  ];
+  GcpCloudRunContainer container = 3 [(buf.validate.field).required = true];
 
   // Maximum concurrent requests handled by one instance.
   int32 max_concurrency = 4 [
-    (buf.validate.field).int32 = {gte: 1,lte: 1000},
+    (buf.validate.field).int32 = {
+      gte: 1
+      lte: 1000
+    },
     (project.planton.shared.options.recommended_default) = "80"
   ];
 
   // If true, the service is publicly invokable by unauthenticated callers.
-  bool allow_unauthenticated = 5 [
-    (project.planton.shared.options.recommended_default) = "true"
-  ];
+  bool allow_unauthenticated = 5 [(project.planton.shared.options.recommended_default) = "true"];
 
   //Custom DNS mapping for the Cloud Run service.
   GcpCloudRunDns dns = 6;
@@ -58,28 +55,36 @@ message GcpCloudRunContainer {
   GcpCloudRunContainerEnv env = 2;
 
   // Container port that receives HTTP traffic.  Defaults to 8080 if unset.
-  int32 port = 3 [
-    (buf.validate.field).int32 = {gte: 1,lte: 65535}
-  ];
+  int32 port = 3 [(buf.validate.field).int32 = {
+    gte: 1
+    lte: 65535
+  }];
 
   // vCPU units allocated per instance.  Allowed values: 1, 2, 4.
   int32 cpu = 4 [
     (buf.validate.field).required = true,
-    (buf.validate.field).int32 = {in: [1, 2, 4]},
+    (buf.validate.field).int32 = {
+      in: [
+        1,
+        2,
+        4
+      ]
+    },
     (project.planton.shared.options.recommended_default) = "1"
   ];
 
   // Memory in MiB allocated per instance.  Valid range 128 – 32768.
   int32 memory = 5 [
     (buf.validate.field).required = true,
-    (buf.validate.field).int32 = {gte: 128,lte: 32768},
+    (buf.validate.field).int32 = {
+      gte: 128
+      lte: 32768
+    },
     (project.planton.shared.options.recommended_default) = "512"
   ];
 
   // Minimum and maximum number of container instances.
-  GcpCloudRunContainerReplicas replicas = 6 [
-    (buf.validate.field).required = true
-  ];
+  GcpCloudRunContainerReplicas replicas = 6 [(buf.validate.field).required = true];
 }
 
 /// GcpCloudRunContainerReplicas defines the minimum and maximum number of container instances
@@ -91,9 +96,7 @@ message GcpCloudRunContainerReplicas {
   ];
 
   // Maximum number of container instances Cloud Run may scale out to.
-  int32 max = 2 [
-    (buf.validate.field).int32 = {gte: 0}
-  ];
+  int32 max = 2 [(buf.validate.field).int32 = {gte: 0}];
 }
 
 /*
@@ -136,11 +139,9 @@ message GcpCloudRunDns {
   repeated string hostnames = 2 [
     (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
     (buf.validate.field).repeated = {
-      unique: true,
+      unique: true
       items: {
-        string: {
-          pattern: "^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$"
-        }
+        string: {pattern: "^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$"}
       }
     }
   ];
@@ -149,9 +150,8 @@ message GcpCloudRunDns {
   string managed_zone = 3;
 
   option (buf.validate.message).cel = {
-    id: "dns.enabled-requires-fields",
-    message: "hostnames and managed_zone must be set when dns.enabled is true",
-    expression:
-        "!this.enabled || (size(this.hostnames) > 0 && this.managed_zone != '')"
+    id: "dns.enabled-requires-fields"
+    message: "hostnames and managed_zone must be set when dns.enabled is true"
+    expression: "!this.enabled || (size(this.hostnames) > 0 && this.managed_zone != '')"
   };
 }

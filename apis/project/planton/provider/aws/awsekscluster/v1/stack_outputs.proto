@@ -19,6 +19,6 @@ message AwsEksClusterStackOutputs {
   // cluster_arn is the Amazon Resource Name of the EKS cluster.
   string cluster_arn = 5;
 
-   // name is the EKS cluster name.
-   string name = 6;
+  // name is the EKS cluster name.
+  string name = 6;
 }

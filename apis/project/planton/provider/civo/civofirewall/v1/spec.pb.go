@@ -279,7 +279,7 @@ var File_project_planton_provider_civo_civofirewall_v1_spec_proto protoreflect.F
 
 const file_project_planton_provider_civo_civofirewall_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"8project/planton/provider/civo/civofirewall/v1/spec.proto\x12-project.planton.provider.civo.civofirewall.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\x1aBproject/planton/shared/cloudresourcekind/cloud_resource_kind.proto\"\xa0\x03\n" +
+	"8project/planton/provider/civo/civofirewall/v1/spec.proto\x12-project.planton.provider.civo.civofirewall.v1\x1a\x1bbuf/validate/validate.proto\x1aBproject/planton/shared/cloudresourcekind/cloud_resource_kind.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\"\xa0\x03\n" +
 	"\x10CivoFirewallSpec\x12\x1a\n" +
 	"\x04name\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\x12\x7f\n" +
 	"\n" +

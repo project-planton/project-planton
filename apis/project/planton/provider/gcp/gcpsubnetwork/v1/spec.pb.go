@@ -181,7 +181,7 @@ var File_project_planton_provider_gcp_gcpsubnetwork_v1_spec_proto protoreflect.F
 
 const file_project_planton_provider_gcp_gcpsubnetwork_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"8project/planton/provider/gcp/gcpsubnetwork/v1/spec.proto\x12-project.planton.provider.gcp.gcpsubnetwork.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\"\xdf\x04\n" +
+	"8project/planton/provider/gcp/gcpsubnetwork/v1/spec.proto\x12-project.planton.provider.gcp.gcpsubnetwork.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\"\xdf\x04\n" +
 	"\x11GcpSubnetworkSpec\x12\x7f\n" +
 	"\n" +
 	"project_id\x18\x01 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB(\xbaH\x03\xc8\x01\x01\x88\xd4a\xe3\x04\x92\xd4a\x19status.outputs.project_idR\tprojectId\x12\x8b\x01\n" +
