@@ -9,8 +9,8 @@ spec:
     isEnabled: false
   searchAttributes:
     - name: Environment
-      type: keyword
+      type: Keyword
     - name: CustomerId
-      type: keyword
+      type: Keyword
     - name: Priority
-      type: int
+      type: Int

@@ -175,19 +175,19 @@ spec:
   
   searchAttributes:
     - name: CustomerId
-      type: keyword
+      type: Keyword
     - name: Environment
-      type: keyword
+      type: Keyword
     - name: Priority
-      type: int
+      type: Int
     - name: Amount
-      type: double
+      type: Double
     - name: IsActive
-      type: bool
+      type: Bool
     - name: DeploymentDate
-      type: datetime
+      type: Datetime
     - name: Tags
-      type: keyword_list
+      type: KeywordList
   
   ingress:
     enabled: true
