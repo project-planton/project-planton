@@ -27,10 +27,10 @@ enum TemporalKubernetesSearchAttributeType {
   temporal_kubernetes_search_attribute_type_unspecified = 0;
 
   // keyword type - exact match string (indexed, not analyzed)
-  keyword = 1;
+  keyword_type = 1;
 
   // text type - full-text searchable string (analyzed, only works with Elasticsearch)
-  text = 2;
+  text_type = 2;
 
   // int type - 64-bit integer
   int_type = 3;
@@ -42,10 +42,10 @@ enum TemporalKubernetesSearchAttributeType {
   bool_type = 5;
 
   // datetime type - timestamp
-  datetime = 6;
+  datetime_type = 6;
 
   // keyword_list type - array of keywords
-  keyword_list = 7;
+  keyword_list_type = 7;
 }
 
 // defines a custom search attribute for Temporal workflows

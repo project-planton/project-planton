@@ -88,9 +88,9 @@ const (
 	// unspecified should not be used
 	TemporalKubernetesSearchAttributeType_temporal_kubernetes_search_attribute_type_unspecified TemporalKubernetesSearchAttributeType = 0
 	// keyword type - exact match string (indexed, not analyzed)
-	TemporalKubernetesSearchAttributeType_keyword TemporalKubernetesSearchAttributeType = 1
+	TemporalKubernetesSearchAttributeType_keyword_type TemporalKubernetesSearchAttributeType = 1
 	// text type - full-text searchable string (analyzed, only works with Elasticsearch)
-	TemporalKubernetesSearchAttributeType_text TemporalKubernetesSearchAttributeType = 2
+	TemporalKubernetesSearchAttributeType_text_type TemporalKubernetesSearchAttributeType = 2
 	// int type - 64-bit integer
 	TemporalKubernetesSearchAttributeType_int_type TemporalKubernetesSearchAttributeType = 3
 	// double type - floating point number
@@ -98,32 +98,32 @@ const (
 	// bool type - boolean value
 	TemporalKubernetesSearchAttributeType_bool_type TemporalKubernetesSearchAttributeType = 5
 	// datetime type - timestamp
-	TemporalKubernetesSearchAttributeType_datetime TemporalKubernetesSearchAttributeType = 6
+	TemporalKubernetesSearchAttributeType_datetime_type TemporalKubernetesSearchAttributeType = 6
 	// keyword_list type - array of keywords
-	TemporalKubernetesSearchAttributeType_keyword_list TemporalKubernetesSearchAttributeType = 7
+	TemporalKubernetesSearchAttributeType_keyword_list_type TemporalKubernetesSearchAttributeType = 7
 )
 
 // Enum value maps for TemporalKubernetesSearchAttributeType.
 var (
 	TemporalKubernetesSearchAttributeType_name = map[int32]string{
 		0: "temporal_kubernetes_search_attribute_type_unspecified",
-		1: "keyword",
-		2: "text",
+		1: "keyword_type",
+		2: "text_type",
 		3: "int_type",
 		4: "double_type",
 		5: "bool_type",
-		6: "datetime",
-		7: "keyword_list",
+		6: "datetime_type",
+		7: "keyword_list_type",
 	}
 	TemporalKubernetesSearchAttributeType_value = map[string]int32{
 		"temporal_kubernetes_search_attribute_type_unspecified": 0,
-		"keyword":      1,
-		"text":         2,
-		"int_type":     3,
-		"double_type":  4,
-		"bool_type":    5,
-		"datetime":     6,
-		"keyword_list": 7,
+		"keyword_type":      1,
+		"text_type":         2,
+		"int_type":          3,
+		"double_type":       4,
+		"bool_type":         5,
+		"datetime_type":     6,
+		"keyword_list_type": 7,
 	}
 )
 
@@ -592,16 +592,16 @@ const file_project_planton_provider_kubernetes_workload_temporalkubernetes_v1_sp
 	"\tcassandra\x10\x01\x12\x0e\n" +
 	"\n" +
 	"postgresql\x10\x02\x12\t\n" +
-	"\x05mysql\x10\x03*\xc7\x01\n" +
+	"\x05mysql\x10\x03*\xdb\x01\n" +
 	"%TemporalKubernetesSearchAttributeType\x129\n" +
-	"5temporal_kubernetes_search_attribute_type_unspecified\x10\x00\x12\v\n" +
-	"\akeyword\x10\x01\x12\b\n" +
-	"\x04text\x10\x02\x12\f\n" +
+	"5temporal_kubernetes_search_attribute_type_unspecified\x10\x00\x12\x10\n" +
+	"\fkeyword_type\x10\x01\x12\r\n" +
+	"\ttext_type\x10\x02\x12\f\n" +
 	"\bint_type\x10\x03\x12\x0f\n" +
 	"\vdouble_type\x10\x04\x12\r\n" +
-	"\tbool_type\x10\x05\x12\f\n" +
-	"\bdatetime\x10\x06\x12\x10\n" +
-	"\fkeyword_list\x10\aB\x8e\x04\n" +
+	"\tbool_type\x10\x05\x12\x11\n" +
+	"\rdatetime_type\x10\x06\x12\x15\n" +
+	"\x11keyword_list_type\x10\aB\x8e\x04\n" +
 	"Fcom.project.planton.provider.kubernetes.workload.temporalkubernetes.v1B\tSpecProtoP\x01Z\x87\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/temporalkubernetes/v1;temporalkubernetesv1\xa2\x02\x06PPPKWT\xaa\x02BProject.Planton.Provider.Kubernetes.Workload.Temporalkubernetes.V1\xca\x02BProject\\Planton\\Provider\\Kubernetes\\Workload\\Temporalkubernetes\\V1\xe2\x02NProject\\Planton\\Provider\\Kubernetes\\Workload\\Temporalkubernetes\\V1\\GPBMetadata\xea\x02HProject::Planton::Provider::Kubernetes::Workload::Temporalkubernetes::V1b\x06proto3"
 
 var (
