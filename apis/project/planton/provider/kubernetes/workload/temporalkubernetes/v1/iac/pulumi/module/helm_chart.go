@@ -158,8 +158,8 @@ func helmChart(ctx *pulumi.Context, locals *Locals,
 	if len(locals.TemporalKubernetes.Spec.SearchAttributes) > 0 {
 		searchAttrsMap := pulumi.Map{}
 		for _, attr := range locals.TemporalKubernetes.Spec.SearchAttributes {
-			typeName := mapSearchAttributeType(attr.Type)
-			searchAttrsMap[attr.Name] = pulumi.String(typeName)
+			// attr.Type is now a string with Temporal's official naming
+			searchAttrsMap[attr.Name] = pulumi.String(attr.Type)
 		}
 
 		// Configure via server dynamic config
@@ -180,12 +180,19 @@ func helmChart(ctx *pulumi.Context, locals *Locals,
 		}
 	}
 
+	// ----------------------------------------------------------- version
+	// determine which version to use: spec.version if provided, otherwise default
+	chartVersion := vars.HelmChartVersion
+	if locals.TemporalKubernetes.Spec.Version != "" {
+		chartVersion = locals.TemporalKubernetes.Spec.Version
+	}
+
 	// ------------------------------------------------------- install chart
 	_, err := helmv3.NewChart(ctx,
 		locals.TemporalKubernetes.Metadata.Name,
 		helmv3.ChartArgs{
 			Chart:     pulumi.String(vars.HelmChartName),
-			Version:   pulumi.String(vars.HelmChartVersion),
+			Version:   pulumi.String(chartVersion),
 			Namespace: pulumi.String(locals.Namespace),
 			Values:    values,
 			FetchArgs: helmv3.FetchArgs{
@@ -197,26 +204,4 @@ func helmChart(ctx *pulumi.Context, locals *Locals,
 	}
 
 	return nil
-}
-
-// mapSearchAttributeType converts proto enum to Temporal search attribute type string
-func mapSearchAttributeType(attrType temporalkubernetesv1.TemporalKubernetesSearchAttributeType) string {
-	switch attrType {
-	case temporalkubernetesv1.TemporalKubernetesSearchAttributeType_keyword_type:
-		return "Keyword"
-	case temporalkubernetesv1.TemporalKubernetesSearchAttributeType_text_type:
-		return "Text"
-	case temporalkubernetesv1.TemporalKubernetesSearchAttributeType_int_type:
-		return "Int"
-	case temporalkubernetesv1.TemporalKubernetesSearchAttributeType_double_type:
-		return "Double"
-	case temporalkubernetesv1.TemporalKubernetesSearchAttributeType_bool_type:
-		return "Bool"
-	case temporalkubernetesv1.TemporalKubernetesSearchAttributeType_datetime_type:
-		return "Datetime"
-	case temporalkubernetesv1.TemporalKubernetesSearchAttributeType_keyword_list_type:
-		return "KeywordList"
-	default:
-		return "Keyword"
-	}
 }
