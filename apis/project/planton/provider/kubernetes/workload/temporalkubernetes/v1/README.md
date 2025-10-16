@@ -34,6 +34,12 @@ standardize the deployment process, the TemporalKubernetes component:
 - **External Elasticsearch Integration**: Supports external Elasticsearch clusters, enabling robust, scalable
   observability and monitoring features critical for production deployments.
 
+### Search Attributes
+
+- **Custom Search Attributes**: Define indexed fields for filtering and querying workflows in the Temporal UI and SDK.
+- **Type Safety**: Support for all Temporal search attribute types (Keyword, Text, Int, Double, Bool, Datetime, KeywordList).
+- **Backend Compatibility**: Works with both SQL and Elasticsearch visibility stores (note: Text type requires Elasticsearch).
+
 ### Deployment Simplicity
 
 - **Automatic UI and Frontend Exposure**: If ingress is enabled, the component automatically configures frontend
@@ -112,6 +118,45 @@ spec:
     enabled: false
 
   disableWebUi: true
+```
+
+### Example: Deploying with Custom Search Attributes
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: TemporalKubernetes
+metadata:
+  name: temporal-with-search-attrs
+spec:
+  database:
+    backend: postgresql
+    externalDatabase:
+      host: "postgres.example.com"
+      port: 5432
+      username: "temporal_user"
+      password: "secure_password"
+  
+  externalElasticsearch:
+    host: "elasticsearch.example.com"
+    port: 9200
+    user: "elastic"
+    password: "elastic_pass"
+  
+  searchAttributes:
+    - name: CustomerId
+      type: keyword
+    - name: Environment
+      type: keyword
+    - name: Priority
+      type: int
+    - name: Amount
+      type: double
+    - name: IsActive
+      type: bool
+    - name: DeploymentDate
+      type: datetime
+    - name: Tags
+      type: keyword_list
 ```
 
 ## Verifying Deployment
