@@ -170,20 +170,52 @@ message ExternalDnsCloudflareConfig {
 
 ### Critical Implementation Decisions
 
-#### 1. Secret Key Name: "apiKey"
+#### 1. Sources Must Be Top-Level Helm Values for RBAC Generation
+
+**Critical Discovery**: The ExternalDNS Helm chart only generates ClusterRole RBAC permissions when sources are specified as **top-level `sources` values**, not when passed via `extraArgs`.
+
+**Problem Encountered**:
+```go
+// ❌ WRONG - Does not generate RBAC
+extraArgs := pulumi.StringArray{
+    pulumi.String("--source=service"),
+    pulumi.String("--source=gateway-httproute"),
+}
+```
+
+**Solution**:
+```go
+// ✅ CORRECT - Generates proper RBAC
+values["sources"] = pulumi.StringArray{
+    pulumi.String("service"),
+    pulumi.String("ingress"),
+    pulumi.String("gateway-httproute"),
+}
+```
+
+**Symptoms when misconfigured**:
+- ClusterRole missing `gateway.networking.k8s.io` permissions
+- Pods crash with: `failed to sync *v1beta1.Gateway: context deadline exceeded with timeout 1m0s`
+- Gateway API client created but cannot list resources
+
+**Root Cause**: Helm chart templates conditionally generate RBAC rules based on the `sources` array, not by parsing `extraArgs`. This is by design in the chart architecture.
+
+**Source**: Research findings from kubernetes-sigs/external-dns Helm chart documentation and GitHub issue #5636
+
+#### 2. Secret Key Name: "apiKey"
 Despite using API tokens (not legacy API keys), the ExternalDNS Helm chart expects the secret key to be named `apiKey`. Using any other name (e.g., `apiToken`) causes authentication failures with cryptic error messages.
 
 **Source**: Research document section 3.1, GitHub issue kubernetes-sigs/external-dns#4263
 
-#### 2. Zone ID as ExtraArg
+#### 3. Zone ID as ExtraArg
 The zone ID must be passed as `--zone-id-filter` in `extraArgs`, not as a top-level Helm value `zoneIdFilters`. The latter is silently ignored, causing ExternalDNS to not scope to any zone.
 
-#### 3. Rate Limiting Optimization
+#### 4. Rate Limiting Optimization
 Set `--cloudflare-dns-records-per-page=5000` (the maximum) to minimize API calls. Cloudflare's API limit is 1,200 requests per 5 minutes, and without this optimization, large clusters can easily exceed it.
 
 **Source**: Research document section 4.2
 
-#### 4. Domain-Specific Resource Names
+#### 5. Domain-Specific Resource Names
 Resource names include the manifest's `metadata.name` to support multiple ExternalDNS instances:
 - Helm release: `external-dns-planton-cloud`, `external-dns-planton-live`
 - ServiceAccount: matches release name
@@ -308,6 +340,34 @@ spec:
 
 ExternalDNS automatically creates DNS records pointing to the Ingress controller's IP.
 
+### Using with Gateway API (Istio, Kong, etc.)
+
+```yaml
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: console-planton-cloud
+  namespace: istio-ingress
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: console.planton.cloud
+spec:
+  addresses:
+  - type: Hostname
+    value: ingress-external.istio-ingress.svc.cluster.local
+  gatewayClassName: istio
+  listeners:
+  - hostname: console.planton.cloud
+    port: 443
+    protocol: HTTPS
+```
+
+ExternalDNS automatically creates DNS records pointing to the Gateway's external IP.
+
+**Supported Gateway API Sources**:
+- `service` - Kubernetes Services (type: LoadBalancer)
+- `ingress` - Kubernetes Ingress resources
+- `gateway-httproute` - Gateway API Gateway and HTTPRoute resources
+
 ## Cloudflare Features
 
 ### 1. Proxy Mode (Orange Cloud)
@@ -416,10 +476,36 @@ kubectl get secret -n external-dns
 # cloudflare-api-token-external-dns-planton-cloud
 # cloudflare-api-token-external-dns-planton-live
 
-# Verify zone ID filters in logs
-stern external -n external-dns | grep ZoneIDFilter
-# Should show correct zone IDs for each instance
+# Verify zone ID filters and sources in logs
+stern external -n external-dns | grep -E "ZoneIDFilter|Sources"
+# Should show:
+# Sources:[service ingress gateway-httproute]
+# ZoneIDFilter:[7adff2f8326758cac24fd17f02ca3001]
+# ZoneIDFilter:[77c6a34cf87dd1e8b497dc895bf5ea1b]
+
+# Verify Gateway API RBAC permissions
+kubectl get clusterrole external-dns-planton-cloud -o yaml | grep -A 10 gateway.networking.k8s.io
+# Should show Gateway API permissions
 ```
+
+### Gateway API Support Testing
+
+Successfully tested Gateway API integration with Istio:
+
+**Test Case**: console.planton.cloud
+- **Gateway**: `console-planton-cloud` in `istio-ingress` namespace
+- **Service**: `ingress-external` with external IP `34.93.244.81`
+- **Annotation**: `external-dns.alpha.kubernetes.io/hostname: console.planton.cloud`
+- **Result**: ✅ DNS record created automatically in Cloudflare
+- **Proxy**: Orange cloud enabled
+
+**Verification Steps Performed**:
+1. Added ExternalDNS annotation to Gateway resource
+2. Applied manifest to cluster
+3. Monitored ExternalDNS logs for record creation
+4. Verified A record appeared in Cloudflare dashboard
+5. Tested DNS resolution with `dig console.planton.cloud`
+6. Confirmed HTTPS access working
 
 ## Architecture
 
@@ -517,7 +603,32 @@ ExternalDNS uses TXT records to track ownership:
 
 **Fix**: Implementation uses `apiKey` as the key name ✅ (Built into implementation)
 
-#### 4. Rate Limiting (Error 1015)
+#### 4. Gateway API Timeout Errors
+
+**Symptom**: 
+```
+failed to sync *v1beta1.Gateway: context deadline exceeded with timeout 1m0s
+failed to sync *v1beta1.HTTPRoute: context deadline exceeded with timeout 1m0s
+```
+
+**Cause**: Sources specified in `extraArgs` instead of top-level `sources` parameter. Helm chart does not generate Gateway API RBAC permissions when sources are only in `extraArgs`.
+
+**Fix**: Use top-level `sources` parameter ✅ (Fixed in implementation)
+
+**Verification**:
+```bash
+# Check ClusterRole has Gateway API permissions
+kubectl get clusterrole -l app.kubernetes.io/name=external-dns -o yaml | grep gateway.networking.k8s.io
+
+# Should show:
+# - apiGroups: [gateway.networking.k8s.io]
+#   resources: [gateways, httproutes, ...]
+#   verbs: [get, watch, list]
+```
+
+**Source**: Research findings, GitHub issue kubernetes-sigs/external-dns#5636
+
+#### 5. Rate Limiting (Error 1015)
 
 **Symptom**: `429 Too Many Requests`, DNS updates fail
 
@@ -678,8 +789,22 @@ None. This is a new provider addition with no impact on existing GKE, EKS, or AK
 ✅ **Production Deployment**: Successfully deployed to app-prod cluster  
 ✅ **Authentication**: Cloudflare API integration working  
 ✅ **DNS Record Creation**: Automated record creation verified  
+✅ **Gateway API Support**: Tested with Istio Gateway resources  
+✅ **RBAC Configuration**: Proper permissions for all sources (Service, Ingress, Gateway API)  
 ✅ **Documentation**: README created with examples and troubleshooting  
 ✅ **Rate Limiting**: Optimized for production scale  
+✅ **Production Testing**: console.planton.cloud DNS record created via Gateway annotation
+
+## Lessons Learned
+
+### 1. Helm Chart RBAC Generation Pattern
+The ExternalDNS Helm chart uses the top-level `sources` parameter for RBAC template generation, not `extraArgs`. This is a critical distinction that affects ClusterRole permissions.
+
+### 2. Research-Driven Development
+When encountering cryptic errors (timeout on Gateway API sync), structured research prompts helped identify the root cause quickly. The issue was not version incompatibility but configuration placement.
+
+### 3. Gateway API v1 Support
+ExternalDNS v0.19.0 fully supports both Gateway API v1 and v1beta1, eliminating concerns about version mismatches with modern Kubernetes clusters.
 
 ---
 

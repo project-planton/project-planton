@@ -114,6 +114,13 @@ func Resources(ctx *pulumi.Context, stackInput *externaldnsv1.ExternalDnsKuberne
 		// Configure provider
 		values["provider"] = pulumi.String("cloudflare")
 
+		// Top-level sources parameter (REQUIRED for RBAC generation)
+		values["sources"] = pulumi.StringArray{
+			pulumi.String("service"),
+			pulumi.String("ingress"),
+			pulumi.String("gateway-httproute"),
+		}
+
 		// Mount the API token secret as environment variable
 		values["env"] = pulumi.Array{
 			pulumi.Map{
@@ -127,7 +134,7 @@ func Resources(ctx *pulumi.Context, stackInput *externaldnsv1.ExternalDnsKuberne
 			},
 		}
 
-		// Configure extra args for Cloudflare-specific features
+		// Configure extra args for Cloudflare-specific features only
 		extraArgs := pulumi.StringArray{
 			pulumi.String("--cloudflare-dns-records-per-page=5000"),
 			pulumi.String(fmt.Sprintf("--zone-id-filter=%s", cf.DnsZoneId)),
