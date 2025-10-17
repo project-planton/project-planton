@@ -11,13 +11,18 @@ import "project/planton/shared/options/options.proto";
 message ExternalDnsKubernetesSpec {
   // The Kubernetes cluster to install this addon on.
   project.planton.shared.kubernetes.KubernetesAddonTargetCluster target_cluster = 1;
-  // Image tag such as "v0.13.6".
-  string image_tag = 2;
+  // Kubernetes namespace where ExternalDNS will be deployed.
+  string namespace = 2 [(project.planton.shared.options.default) = "external-dns"];
+  // ExternalDNS version such as "v0.19.0". Used to set the image tag.
+  string external_dns_version = 3 [(project.planton.shared.options.default) = "v0.19.0"];
+  // Helm chart version to deploy. If not specified, uses the default version.
+  string helm_chart_version = 4 [(project.planton.shared.options.default) = "1.19.0"];
   //provider-specific glue. Only one may be set.
   oneof provider_config {
     ExternalDnsGkeConfig gke = 200;
     ExternalDnsEksConfig eks = 201;
     ExternalDnsAksConfig aks = 202;
+    ExternalDnsCloudflareConfig cloudflare = 203;
   }
 }
 
@@ -54,4 +59,18 @@ message ExternalDnsAksConfig {
   string dns_zone_id = 1;
   // The Azure Managed Identity client ID to use for ExternalDNS.
   string managed_identity_client_id = 2;
+}
+
+// ExternalDnsCloudflareConfig defines configuration for ExternalDNS with Cloudflare DNS.
+message ExternalDnsCloudflareConfig {
+  // Cloudflare API token for authentication (scoped with Zone:Zone:Read and Zone:DNS:Edit permissions).
+  string api_token = 1 [(buf.validate.field).required = true];
+  
+  // Cloudflare DNS zone ID to manage. ExternalDNS will only manage records in this zone.
+  string dns_zone_id = 2 [(buf.validate.field).required = true];
+  
+  // Enable Cloudflare proxy (orange cloud) for all managed DNS records.
+  // When enabled, traffic routes through Cloudflare's edge network for DDoS protection, WAF, and CDN.
+  // Default: false
+  bool is_proxied = 3;
 }
