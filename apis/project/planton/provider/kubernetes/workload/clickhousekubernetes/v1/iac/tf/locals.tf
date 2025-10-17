@@ -50,17 +50,8 @@ locals {
   }
 
   # Safely handle optional ingress values
-  ingress_is_enabled = try(var.spec.ingress.is_enabled, false)
-  ingress_dns_domain = try(var.spec.ingress.dns_domain, "")
-
-  # External LB hostnames
-  ingress_external_hostname = (
-    local.ingress_is_enabled && local.ingress_dns_domain != ""
-  ) ? "${local.resource_id}.${local.ingress_dns_domain}" : null
-
-  ingress_internal_hostname = (
-    local.ingress_is_enabled && local.ingress_dns_domain != ""
-  ) ? "${local.resource_id}-internal.${local.ingress_dns_domain}" : null
+  ingress_is_enabled        = try(var.spec.ingress.enabled, false)
+  ingress_external_hostname = try(var.spec.ingress.hostname, null)
 
   # Cluster configuration
   cluster_is_enabled = try(var.spec.cluster.is_enabled, false)

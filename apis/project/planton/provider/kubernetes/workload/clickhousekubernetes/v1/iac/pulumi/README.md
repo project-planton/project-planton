@@ -30,7 +30,7 @@ This module deploys production-grade ClickHouse clusters on Kubernetes using the
   Automatically generates secure random passwords stored in Kubernetes Secrets. Credentials never appear in manifests or version control.
 
 - **Ingress Integration**  
-  Optional LoadBalancer service with external DNS annotations for external access to your ClickHouse cluster.
+  Optional LoadBalancer service with external DNS annotations for external access. Specify a custom hostname for your ClickHouse cluster (e.g., `clickhouse.example.com`).
 
 - **Output Exports**  
   Exports namespace, service names, endpoints, credentials, and port-forward commands for easy integration and debugging.

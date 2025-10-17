@@ -292,13 +292,13 @@ spec:
         cpu: 4000m
         memory: 16Gi
   ingress:
-    isEnabled: true
-    dnsDomain: example.com
+    enabled: true
+    hostname: clickhouse.example.com
 ```
 
 **Key points**:
 - LoadBalancer service for external access
-- External DNS: `public-analytics.example.com`
+- External DNS: `clickhouse.example.com`
 - Both HTTP (8123) and native (9000) ports exposed
 - Suitable for external analytics tools and dashboards
 - Consider security implications (firewall, authentication)
@@ -339,7 +339,7 @@ spec:
       replicas: 3  # Production HA for observability infrastructure
   ingress:
     enabled: true
-    dnsDomain: example.com
+    hostname: signoz-clickhouse.example.com
 ```
 
 **Key points**:

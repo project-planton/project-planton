@@ -23,11 +23,6 @@ output "external_hostname" {
   value       = local.ingress_external_hostname
 }
 
-output "internal_hostname" {
-  description = "The internal hostname for ClickHouse if ingress is enabled."
-  value       = local.ingress_internal_hostname
-}
-
 output "username" {
   description = "The default ClickHouse username."
   value       = local.default_username

@@ -13,7 +13,6 @@ import (
 
 type Locals struct {
 	IngressExternalHostname     string
-	IngressInternalHostname     string
 	KubePortForwardCommand      string
 	KubeServiceFqdn             string
 	KubeServiceName             string
@@ -100,21 +99,14 @@ func initializeLocals(ctx *pulumi.Context, stackInput *clickhousekubernetesv1.Cl
 
 	if target.Spec.Ingress == nil ||
 		!target.Spec.Ingress.Enabled ||
-		target.Spec.Ingress.DnsDomain == "" {
+		target.Spec.Ingress.Hostname == "" {
 		return locals
 	}
 
-	locals.IngressExternalHostname = fmt.Sprintf("%s.%s", locals.Namespace,
-		target.Spec.Ingress.DnsDomain)
+	locals.IngressExternalHostname = target.Spec.Ingress.Hostname
 
 	//export ingress-external-hostname
 	ctx.Export(OpExternalHostname, pulumi.String(locals.IngressExternalHostname))
-
-	locals.IngressInternalHostname = fmt.Sprintf("%s-internal.%s", locals.Namespace,
-		target.Spec.Ingress.DnsDomain)
-
-	//export ingress-internal-hostname
-	ctx.Export(OpInternalHostname, pulumi.String(locals.IngressInternalHostname))
 
 	return locals
 }

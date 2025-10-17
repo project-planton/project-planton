@@ -13,7 +13,7 @@ This Terraform module deploys production-grade ClickHouse clusters on Kubernetes
 - **Clustering**: Optional sharding and replication for distributed deployments
 - **ZooKeeper Integration**: Auto-managed ZooKeeper for cluster coordination, or configure external ZooKeeper
 - **Security**: Auto-generated passwords stored in Kubernetes Secrets
-- **Ingress**: Optional LoadBalancer service for external access
+- **Ingress**: Optional LoadBalancer service with custom hostname for external access
 - **Version Control**: Pin specific ClickHouse versions for stability
 - **Production-Ready**: Leverages official ClickHouse images from clickhouse.com
 
@@ -56,8 +56,8 @@ module "clickhouse" {
     }
     
     ingress = {
-      is_enabled = true
-      dns_domain = "example.com"
+      enabled  = true
+      hostname = "clickhouse.example.com"
     }
   }
 }
@@ -134,7 +134,6 @@ The operator then reconciles the ClickHouseInstallation to create:
 | kube_endpoint | Internal DNS name of the ClickHouse service |
 | port_forward_command | Command to port-forward to ClickHouse |
 | external_hostname | External hostname (if ingress enabled) |
-| internal_hostname | Internal hostname (if ingress enabled) |
 | username | ClickHouse username |
 | password_secret_name | Name of the password Secret |
 | password_secret_key | Key within the password Secret |
