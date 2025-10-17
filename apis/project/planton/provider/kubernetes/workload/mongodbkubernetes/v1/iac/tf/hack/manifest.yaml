@@ -12,8 +12,8 @@ spec:
       requests:
         cpu: 250m
         memory: 250Mi
-    isPersistenceEnabled: true
+    persistenceEnabled: true
     diskSize: 8Gi
   ingress:
-    isEnabled: true
-    dnsDomain: example.com
+    enabled: true
+    hostname: test-mongo-database.example.com

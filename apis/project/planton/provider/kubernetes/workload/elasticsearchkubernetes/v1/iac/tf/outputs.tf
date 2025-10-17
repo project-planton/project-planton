@@ -27,11 +27,6 @@ output "elasticsearch_external_hostname" {
   value       = local.elasticsearch_ingress_external_hostname
 }
 
-output "elasticsearch_internal_hostname" {
-  description = "Elasticsearch internal ingress hostname (if ingress is enabled)."
-  value       = local.elasticsearch_ingress_internal_hostname
-}
-
 output "elasticsearch_username" {
   description = "Elasticsearch username (default 'elastic')."
   value       = "elastic"
@@ -65,9 +60,4 @@ output "kibana_kube_endpoint" {
 output "kibana_external_hostname" {
   description = "Kibana external ingress hostname (if ingress is enabled)."
   value       = local.kibana_ingress_external_hostname
-}
-
-output "kibana_internal_hostname" {
-  description = "Kibana internal ingress hostname (if ingress is enabled)."
-  value       = local.kibana_ingress_internal_hostname
 }

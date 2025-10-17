@@ -27,9 +27,9 @@ var _ = ginkgo.Describe("MongodbKubernetes Custom Validation Tests", func() {
 			},
 			Spec: &MongodbKubernetesSpec{
 				Container: &MongodbKubernetesContainer{
-					Replicas:             1,
-					IsPersistenceEnabled: true,
-					DiskSize:             "10Gi", // valid format
+					Replicas:           1,
+					PersistenceEnabled: true,
+					DiskSize:           "10Gi", // valid format
 					Resources: &kubernetes.ContainerResources{
 						Limits: &kubernetes.CpuMemory{
 							Cpu:    "1000m",
@@ -41,7 +41,9 @@ var _ = ginkgo.Describe("MongodbKubernetes Custom Validation Tests", func() {
 						},
 					},
 				},
-				Ingress: nil, // Omitted or set as needed; not part of custom validation tests
+				Ingress: &MongodbKubernetesIngress{
+					Enabled: false,
+				},
 			},
 		}
 	})

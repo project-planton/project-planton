@@ -27,37 +27,46 @@ var _ = ginkgo.Describe("ElasticsearchKubernetes Custom Validation Tests", func(
 				Name: "test-es",
 			},
 			Spec: &ElasticsearchKubernetesSpec{
-				ElasticsearchContainer: &ElasticsearchKubernetesElasticsearchContainer{
-					Replicas:             1,
-					IsPersistenceEnabled: true,
-					DiskSize:             "10Gi", // valid format
-					Resources: &kubernetes.ContainerResources{
-						Limits: &kubernetes.CpuMemory{
-							Cpu:    "1000m",
-							Memory: "1Gi",
-						},
-						Requests: &kubernetes.CpuMemory{
-							Cpu:    "50m",
-							Memory: "100Mi",
-						},
-					},
-				},
-				KibanaContainer: &ElasticsearchKubernetesKibanaContainer{
-					IsEnabled: true,
-					Replicas:  1,
-					Resources: &kubernetes.ContainerResources{
-						Limits: &kubernetes.CpuMemory{
-							Cpu:    "1000m",
-							Memory: "1Gi",
-						},
-						Requests: &kubernetes.CpuMemory{
-							Cpu:    "50m",
-							Memory: "100Mi",
+				Elasticsearch: &ElasticsearchKubernetesElasticsearchSpec{
+					Container: &ElasticsearchKubernetesElasticsearchContainer{
+						Replicas:           1,
+						PersistenceEnabled: true,
+						DiskSize:           "10Gi", // valid format
+						Resources: &kubernetes.ContainerResources{
+							Limits: &kubernetes.CpuMemory{
+								Cpu:    "1000m",
+								Memory: "1Gi",
+							},
+							Requests: &kubernetes.CpuMemory{
+								Cpu:    "50m",
+								Memory: "100Mi",
+							},
 						},
 					},
+					Ingress: &ElasticsearchKubernetesIngress{
+						Enabled:  true,
+						Hostname: "elasticsearch.example.com",
+					},
 				},
-				Ingress: &kubernetes.IngressSpec{
-					DnsDomain: "elasticsearch.example.com",
+				Kibana: &ElasticsearchKubernetesKibanaSpec{
+					Enabled: true,
+					Container: &ElasticsearchKubernetesKibanaContainer{
+						Replicas: 1,
+						Resources: &kubernetes.ContainerResources{
+							Limits: &kubernetes.CpuMemory{
+								Cpu:    "1000m",
+								Memory: "1Gi",
+							},
+							Requests: &kubernetes.CpuMemory{
+								Cpu:    "50m",
+								Memory: "100Mi",
+							},
+						},
+					},
+					Ingress: &ElasticsearchKubernetesIngress{
+						Enabled:  true,
+						Hostname: "kibana.example.com",
+					},
 				},
 			},
 		}

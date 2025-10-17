@@ -255,8 +255,8 @@ module "clickhouse_public" {
     }
     
     ingress = {
-      is_enabled = true
-      dns_domain = "example.com"
+      enabled  = true
+      hostname = "clickhouse.example.com"
     }
   }
 }
@@ -264,7 +264,7 @@ module "clickhouse_public" {
 
 **Key points**:
 - LoadBalancer service with external DNS
-- External hostname: `public-clickhouse.example.com`
+- External hostname: `clickhouse.example.com`
 - Both HTTP (8123) and native (9000) ports exposed
 
 ---

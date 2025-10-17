@@ -3,7 +3,6 @@ package module
 const (
 	OpBoltUriKubeEndpoint = "op_bolt_uri_kube_endpoint"
 	OpExternalHostname    = "external_hostname"
-	OpInternalHostname    = "internal_hostname"
 	OpNamespace           = "namespace"
 	OpPasswordSecretKey   = "password_secret.key"
 	OpPasswordSecretName  = "password_secret.name"

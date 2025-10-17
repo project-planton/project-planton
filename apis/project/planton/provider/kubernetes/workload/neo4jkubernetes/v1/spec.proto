@@ -30,11 +30,11 @@ message Neo4jKubernetesSpec {
   }];
 
   // Optional extra memory config for Neo4j (heap, page cache).
-  // By default, we rely on Neo4j’s internal defaults if unset.
+  // By default, we rely on Neo4j's internal defaults if unset.
   Neo4jKubernetesMemoryConfig memory_config = 3;
 
-  //The ingress configuration for the Solr deployment.
-  project.planton.shared.kubernetes.IngressSpec ingress = 4;
+  // The ingress configuration for the Neo4j deployment.
+  Neo4jKubernetesIngress ingress = 4;
 }
 
 // Neo4jKubernetesContainer defines the container specifications for the Neo4j deployment.
@@ -46,10 +46,10 @@ message Neo4jKubernetesContainer {
   // When enabled, Neo4j stores its database files on a persistent volume,
   // allowing data to survive pod restarts.
   // Defaults to `false`.
-  bool is_persistence_enabled = 2;
+  bool persistence_enabled = 2;
 
-  // Size of the persistent volume if is_persistence_enabled=true (e.g., "10Gi").
-  // If is_persistence_enabled=false, this may be ignored or left empty.
+  // Size of the persistent volume if persistence_enabled=true (e.g., "10Gi").
+  // If persistence_enabled=false, this may be ignored or left empty.
   string disk_size = 3;
 }
 
@@ -62,4 +62,22 @@ message Neo4jKubernetesMemoryConfig {
   // Sets the page cache size for on-disk data (e.g., "512m").
   // If omitted, Neo4j uses a default or auto-detection.
   string page_cache = 2;
+}
+
+// Neo4jKubernetesIngress defines the ingress configuration for Neo4j.
+message Neo4jKubernetesIngress {
+  // Flag to enable or disable ingress.
+  // When enabled, creates a LoadBalancer service with external-dns annotations.
+  bool enabled = 1;
+
+  // The full hostname for external access (e.g., "neo4j.example.com").
+  // This hostname will be configured automatically via external-dns.
+  // Required when enabled is true.
+  string hostname = 2;
+
+  option (buf.validate.message).cel = {
+    id: "spec.ingress.hostname.required"
+    expression: "!this.enabled || size(this.hostname) > 0"
+    message: "hostname is required when ingress is enabled"
+  };
 }

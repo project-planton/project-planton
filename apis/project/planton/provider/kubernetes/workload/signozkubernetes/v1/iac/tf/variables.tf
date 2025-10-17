@@ -207,24 +207,28 @@ variable "spec" {
       }))
     })
 
-    # The ingress configuration for the SigNoz UI and API.
-    signoz_ingress = optional(object({
+    # The ingress configuration for SigNoz UI and OpenTelemetry Collector endpoints.
+    ingress = optional(object({
 
-      # A flag to enable or disable ingress.
-      is_enabled = bool
+      # Ingress configuration for SigNoz UI and API.
+      ui = optional(object({
 
-      # The DNS domain.
-      dns_domain = string
-    }))
+        # Flag to enable or disable ingress for the UI.
+        enabled = bool
 
-    # The ingress configuration for the OpenTelemetry Collector data ingestion endpoints.
-    otel_collector_ingress = optional(object({
+        # The full hostname for external access to the UI (e.g., "signoz.example.com").
+        hostname = string
+      }))
 
-      # A flag to enable or disable ingress.
-      is_enabled = bool
+      # Ingress configuration for OpenTelemetry Collector data ingestion endpoint.
+      otel_collector = optional(object({
 
-      # The DNS domain.
-      dns_domain = string
+        # Flag to enable or disable ingress for the OpenTelemetry Collector.
+        enabled = bool
+
+        # The full hostname for external access to the collector (e.g., "signoz-ingest.example.com").
+        hostname = string
+      }))
     }))
 
     # A map of key-value pairs that provide additional customization options for the SigNoz Helm chart.

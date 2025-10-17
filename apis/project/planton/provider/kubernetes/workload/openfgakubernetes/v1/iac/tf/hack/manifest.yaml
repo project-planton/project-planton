@@ -13,8 +13,8 @@ spec:
         cpu: 250m
         memory: 250Mi
   ingress:
-    isEnabled: true
-    dnsDomain: example.com
+    enabled: true
+    hostname: test-open-fga-server.example.com
   datastore:
     engine: postgres
     uri: postgres://postgres:somepassword@database-hostname:5432/some-database-name?sslmode=disable

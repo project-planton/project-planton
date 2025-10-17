@@ -27,6 +27,7 @@ message PostgresKubernetesStackOutputs {
   string external_hostname = 5;
 
   //internal postgres-kubernetes hostname. port is always 5432.
+  //DEPRECATED: This field is no longer populated and will be removed in a future version.
   string internal_hostname = 6;
 
   //kubernetes secret key for the username.

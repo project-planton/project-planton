@@ -57,7 +57,6 @@ Upon successful execution, the PostgresKubernetes module exports several key out
 - **Port Forward Command**: A command to set up port-forwarding for local access to PostgreSQL, which is useful when ingress is disabled for security reasons.
 - **Kube Endpoint**: The internal Kubernetes endpoint for accessing PostgreSQL from within the same Kubernetes cluster.
 - **External Hostname**: The public endpoint for accessing PostgreSQL from outside the Kubernetes cluster.
-- **Internal Hostname**: The private endpoint for accessing PostgreSQL from within the Kubernetes cluster.
 - **Username Secret**: Kubernetes secret key for the PostgreSQL username.
 - **Password Secret**: Kubernetes secret key for the PostgreSQL password.
 

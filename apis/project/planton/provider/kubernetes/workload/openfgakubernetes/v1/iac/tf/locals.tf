@@ -39,21 +39,16 @@ locals {
   # Handy port-forward command
   kube_port_forward_command = "kubectl port-forward -n ${local.namespace} service/${local.kube_service_name} 8080:8080"
 
-  # Safely handle optional ingress values
-  ingress_is_enabled = try(var.spec.ingress.is_enabled, false)
-  ingress_dns_domain = try(var.spec.ingress.dns_domain, "")
+  # Ingress configuration
+  ingress_is_enabled        = try(var.spec.ingress.enabled, false)
+  ingress_external_hostname = try(var.spec.ingress.hostname, null)
 
-  # External hostname (null if not applicable)
-  ingress_external_hostname = (
-  local.ingress_is_enabled && local.ingress_dns_domain != ""
-  ) ? "${local.resource_id}.${local.ingress_dns_domain}" : null
+  # Extract domain from hostname for certificate issuer
+  # Example: "openfga.example.com" -> "example.com"
+  ingress_cert_cluster_issuer_name = local.ingress_external_hostname != null ? (
+    join(".", slice(split(".", local.ingress_external_hostname), 1,
+      length(split(".", local.ingress_external_hostname))))
+  ) : null
 
-  # Internal hostname (null if not applicable)
-  ingress_internal_hostname = (
-  local.ingress_is_enabled && local.ingress_dns_domain != ""
-  ) ? "${local.resource_id}-internal.${local.ingress_dns_domain}" : null
-
-  # For certificate creation
-  ingress_cert_cluster_issuer_name = local.ingress_dns_domain != "" ? local.ingress_dns_domain : null
-  ingress_cert_secret_name         = local.resource_id
+  ingress_cert_secret_name = local.resource_id
 }

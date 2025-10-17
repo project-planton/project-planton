@@ -1,6 +1,6 @@
-# Only create resources if ingress is enabled and dns_domain is non-empty
+# Only create resources if ingress hostnames are configured
 resource "kubernetes_manifest" "ingress_certificate" {
-  count = local.ingress_is_enabled && local.ingress_dns_domain != "" ? 1 : 0
+  count = length(local.ingress_hostnames) > 0 ? 1 : 0
 
   manifest = yamldecode(
     yamlencode({
@@ -28,7 +28,7 @@ resource "kubernetes_manifest" "ingress_certificate" {
 ################################
 
 resource "kubernetes_manifest" "elasticsearch_external_gateway" {
-  count = local.ingress_is_enabled && local.ingress_dns_domain != "" ? 1 : 0
+  count = local.elasticsearch_ingress_is_enabled && local.elasticsearch_ingress_external_hostname != null ? 1 : 0
 
   manifest = yamldecode(
     yamlencode({
@@ -90,7 +90,7 @@ resource "kubernetes_manifest" "elasticsearch_external_gateway" {
 
 # HTTPRoute to redirect external HTTP->HTTPS
 resource "kubernetes_manifest" "elasticsearch_http_external_redirect" {
-  count = local.ingress_is_enabled && local.ingress_dns_domain != "" ? 1 : 0
+  count = local.elasticsearch_ingress_is_enabled && local.elasticsearch_ingress_external_hostname != null ? 1 : 0
 
   manifest = yamldecode(
     yamlencode({
@@ -136,7 +136,7 @@ resource "kubernetes_manifest" "elasticsearch_http_external_redirect" {
 
 # HTTPRoute to route external HTTPS traffic to Elasticsearch
 resource "kubernetes_manifest" "elasticsearch_https_external" {
-  count = local.ingress_is_enabled && local.ingress_dns_domain != "" ? 1 : 0
+  count = local.elasticsearch_ingress_is_enabled && local.elasticsearch_ingress_external_hostname != null ? 1 : 0
 
   manifest = yamldecode(
     yamlencode({
@@ -191,7 +191,7 @@ resource "kubernetes_manifest" "elasticsearch_https_external" {
 ################################
 
 resource "kubernetes_manifest" "kibana_external_gateway" {
-  count = local.ingress_is_enabled && local.ingress_dns_domain != "" ? 1 : 0
+  count = local.kibana_ingress_is_enabled && local.kibana_ingress_external_hostname != null ? 1 : 0
 
   manifest = yamldecode(
     yamlencode({
@@ -253,7 +253,7 @@ resource "kubernetes_manifest" "kibana_external_gateway" {
 
 # HTTPRoute to redirect external HTTP->HTTPS (Kibana)
 resource "kubernetes_manifest" "kibana_http_external_redirect" {
-  count = local.ingress_is_enabled && local.ingress_dns_domain != "" ? 1 : 0
+  count = local.kibana_ingress_is_enabled && local.kibana_ingress_external_hostname != null ? 1 : 0
 
   manifest = yamldecode(
     yamlencode({
@@ -299,7 +299,7 @@ resource "kubernetes_manifest" "kibana_http_external_redirect" {
 
 # HTTPRoute to route external HTTPS traffic to Kibana
 resource "kubernetes_manifest" "kibana_https_external" {
-  count = local.ingress_is_enabled && local.ingress_dns_domain != "" ? 1 : 0
+  count = local.kibana_ingress_is_enabled && local.kibana_ingress_external_hostname != null ? 1 : 0
 
   manifest = yamldecode(
     yamlencode({

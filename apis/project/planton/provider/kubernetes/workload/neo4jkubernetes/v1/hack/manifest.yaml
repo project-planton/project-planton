@@ -11,10 +11,10 @@ spec:
       limits:
         cpu: "1000m"
         memory: "1Gi"
-    isPersistenceEnabled: true
+    persistenceEnabled: true
     diskSize: "1Gi"
   memoryConfig:
     heapMax: "512m"
     pageCache: "256m"
   ingress:
-    isEnabled: false
+    enabled: false

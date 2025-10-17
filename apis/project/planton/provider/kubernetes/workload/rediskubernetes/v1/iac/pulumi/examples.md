@@ -27,7 +27,6 @@ kind: RedisKubernetes
 metadata:
   name: basic-redis
 spec:
-  kubernetes_cluster_credential_id: my-cluster-credential
   container:
     replicas: 1
     resources:
@@ -38,16 +37,6 @@ spec:
         cpu: 1
         memory: 1Gi
     is_persistence_enabled: false
-  ingress:
-    host: redis.example.com
-    tls:
-      enabled: true
-      secretName: redis-tls
-    rules:
-      - path: /redis
-        backend:
-          serviceName: basic-redis-service
-          servicePort: 6379
 ```
 
 ---
@@ -75,7 +64,6 @@ kind: RedisKubernetes
 metadata:
   name: persistent-redis
 spec:
-  kubernetes_cluster_credential_id: my-cluster-credential
   container:
     replicas: 3
     resources:
@@ -88,13 +76,6 @@ spec:
     is_persistence_enabled: true
     disk_size: 20Gi
   ingress:
-    host: persistent-redis.example.com
-    tls:
-      enabled: true
-      secretName: persistent-redis-tls
-    rules:
-      - path: /redis
-        backend:
-          serviceName: persistent-redis-service
-          servicePort: 6379
+    enabled: true
+    hostname: redis.example.com
 ```

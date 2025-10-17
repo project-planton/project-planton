@@ -47,16 +47,6 @@ locals {
   kube_port_forward_command = "kubectl port-forward -n ${local.namespace} service/${local.kube_service_name} 8080:8080"
 
   # Safely handle optional ingress values
-  ingress_is_enabled = try(var.spec.ingress.is_enabled, false)
-  ingress_dns_domain = try(var.spec.ingress.dns_domain, "")
-
-  # External hostname (null if not applicable)
-  ingress_external_hostname = (
-  local.ingress_is_enabled && local.ingress_dns_domain != ""
-  ) ? "${local.resource_id}.${local.ingress_dns_domain}" : null
-
-  # Internal hostname (null if not applicable)
-  ingress_internal_hostname = (
-  local.ingress_is_enabled && local.ingress_dns_domain != ""
-  ) ? "${local.resource_id}-internal.${local.ingress_dns_domain}" : null
+  ingress_is_enabled = try(var.spec.ingress.enabled, false)
+  ingress_external_hostname = try(var.spec.ingress.hostname, null)
 }

@@ -55,7 +55,7 @@ spec:
   kubernetesClusterCredentialId: my-cluster-credential-id
   container:
     replicas: 3
-    isPersistenceEnabled: true
+    persistenceEnabled: true
     diskSize: 10Gi
     resources:
       requests:
@@ -83,7 +83,7 @@ spec:
   kubernetesClusterCredentialId: my-cluster-credential-id
   container:
     replicas: 3
-    isPersistenceEnabled: true
+    persistenceEnabled: true
     diskSize: 20Gi
     resources:
       requests:
@@ -114,7 +114,7 @@ spec:
   kubernetesClusterCredentialId: my-cluster-credential-id
   container:
     replicas: 1
-    isPersistenceEnabled: true
+    persistenceEnabled: true
     diskSize: 5Gi
     resources:
       requests:
@@ -124,7 +124,8 @@ spec:
         cpu: 1000m
         memory: 1Gi
   ingress:
-    isEnabled: true
+    enabled: true
+    hostname: mongodb.example.com
 ```
 
 **Security Note**: When enabling ingress, ensure proper network policies and authentication are configured.
@@ -146,7 +147,7 @@ spec:
   kubernetesClusterCredentialId: my-cluster-credential-id
   container:
     replicas: 3
-    isPersistenceEnabled: true
+    persistenceEnabled: true
     diskSize: 100Gi
     resources:
       requests:

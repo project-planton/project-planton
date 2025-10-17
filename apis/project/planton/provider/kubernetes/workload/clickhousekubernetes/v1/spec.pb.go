@@ -168,7 +168,7 @@ type ClickHouseKubernetesSpec struct {
 	// The container specifications for the ClickHouse deployment.
 	Container *ClickHouseKubernetesContainer `protobuf:"bytes,2,opt,name=container,proto3" json:"container,omitempty"`
 	// The ingress configuration for the ClickHouse deployment.
-	Ingress *kubernetes.IngressSpec `protobuf:"bytes,3,opt,name=ingress,proto3" json:"ingress,omitempty"`
+	Ingress *ClickHouseKubernetesIngress `protobuf:"bytes,3,opt,name=ingress,proto3" json:"ingress,omitempty"`
 	// The cluster configuration for ClickHouse sharding and replication.
 	Cluster *ClickHouseKubernetesClusterConfig `protobuf:"bytes,4,opt,name=cluster,proto3" json:"cluster,omitempty"`
 	// *
@@ -250,7 +250,7 @@ func (x *ClickHouseKubernetesSpec) GetContainer() *ClickHouseKubernetesContainer
 	return nil
 }
 
-func (x *ClickHouseKubernetesSpec) GetIngress() *kubernetes.IngressSpec {
+func (x *ClickHouseKubernetesSpec) GetIngress() *ClickHouseKubernetesIngress {
 	if x != nil {
 		return x.Ingress
 	}
@@ -759,6 +759,68 @@ func (x *ClickHouseKubernetesLoggingConfig) GetLevel() ClickHouseKubernetesLoggi
 }
 
 // *
+// **ClickHouseKubernetesIngress** defines the ingress configuration for ClickHouse deployment.
+// Controls external access to the ClickHouse cluster via LoadBalancer with automatic DNS configuration.
+type ClickHouseKubernetesIngress struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// *
+	// Flag to enable or disable ingress.
+	// When enabled, creates a LoadBalancer service with external-dns annotations.
+	Enabled bool `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`
+	// *
+	// The full hostname for external access (e.g., "clickhouse.example.com").
+	// This hostname will be configured automatically via external-dns.
+	// Required when enabled is true.
+	Hostname      string `protobuf:"bytes,2,opt,name=hostname,proto3" json:"hostname,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ClickHouseKubernetesIngress) Reset() {
+	*x = ClickHouseKubernetesIngress{}
+	mi := &file_project_planton_provider_kubernetes_workload_clickhousekubernetes_v1_spec_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ClickHouseKubernetesIngress) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ClickHouseKubernetesIngress) ProtoMessage() {}
+
+func (x *ClickHouseKubernetesIngress) ProtoReflect() protoreflect.Message {
+	mi := &file_project_planton_provider_kubernetes_workload_clickhousekubernetes_v1_spec_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ClickHouseKubernetesIngress.ProtoReflect.Descriptor instead.
+func (*ClickHouseKubernetesIngress) Descriptor() ([]byte, []int) {
+	return file_project_planton_provider_kubernetes_workload_clickhousekubernetes_v1_spec_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *ClickHouseKubernetesIngress) GetEnabled() bool {
+	if x != nil {
+		return x.Enabled
+	}
+	return false
+}
+
+func (x *ClickHouseKubernetesIngress) GetHostname() string {
+	if x != nil {
+		return x.Hostname
+	}
+	return ""
+}
+
+// *
 // **ClickHouseKubernetesZookeeperConfig** defines the ZooKeeper configuration for ClickHouse cluster coordination.
 //
 // DEPRECATED: This message is deprecated in favor of ClickHouseKubernetesCoordinationConfig.
@@ -783,7 +845,7 @@ type ClickHouseKubernetesZookeeperConfig struct {
 
 func (x *ClickHouseKubernetesZookeeperConfig) Reset() {
 	*x = ClickHouseKubernetesZookeeperConfig{}
-	mi := &file_project_planton_provider_kubernetes_workload_clickhousekubernetes_v1_spec_proto_msgTypes[7]
+	mi := &file_project_planton_provider_kubernetes_workload_clickhousekubernetes_v1_spec_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -795,7 +857,7 @@ func (x *ClickHouseKubernetesZookeeperConfig) String() string {
 func (*ClickHouseKubernetesZookeeperConfig) ProtoMessage() {}
 
 func (x *ClickHouseKubernetesZookeeperConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_project_planton_provider_kubernetes_workload_clickhousekubernetes_v1_spec_proto_msgTypes[7]
+	mi := &file_project_planton_provider_kubernetes_workload_clickhousekubernetes_v1_spec_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -808,7 +870,7 @@ func (x *ClickHouseKubernetesZookeeperConfig) ProtoReflect() protoreflect.Messag
 
 // Deprecated: Use ClickHouseKubernetesZookeeperConfig.ProtoReflect.Descriptor instead.
 func (*ClickHouseKubernetesZookeeperConfig) Descriptor() ([]byte, []int) {
-	return file_project_planton_provider_kubernetes_workload_clickhousekubernetes_v1_spec_proto_rawDescGZIP(), []int{7}
+	return file_project_planton_provider_kubernetes_workload_clickhousekubernetes_v1_spec_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *ClickHouseKubernetesZookeeperConfig) GetUseExternal() bool {
@@ -846,14 +908,14 @@ var File_project_planton_provider_kubernetes_workload_clickhousekubernetes_v1_sp
 
 const file_project_planton_provider_kubernetes_workload_clickhousekubernetes_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Oproject/planton/provider/kubernetes/workload/clickhousekubernetes/v1/spec.proto\x12Dproject.planton.provider.kubernetes.workload.clickhousekubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\x1a,project/planton/shared/options/options.proto\"\xac\a\n" +
+	"Oproject/planton/provider/kubernetes/workload/clickhousekubernetes/v1/spec.proto\x12Dproject.planton.provider.kubernetes.workload.clickhousekubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\x1a,project/planton/shared/options/options.proto\"\xdf\a\n" +
 	"\x18ClickHouseKubernetesSpec\x12I\n" +
 	"\fcluster_name\x18\x01 \x01(\tB&\xbaH#r!2\x1f^[a-z0-9]([-a-z0-9]*[a-z0-9])?$R\vclusterName\x12\xaf\x01\n" +
 	"\tcontainer\x18\x02 \x01(\v2c.project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickHouseKubernetesContainerB,ʵ\xfd\x01'\b\x01\x12\x1b\n" +
 	"\f\n" +
 	"\x052000m\x12\x034Gi\x12\v\n" +
-	"\x04500m\x12\x031Gi\x18\x01\"\x0450GiR\tcontainer\x12H\n" +
-	"\aingress\x18\x03 \x01(\v2..project.planton.shared.kubernetes.IngressSpecR\aingress\x12\x81\x01\n" +
+	"\x04500m\x12\x031Gi\x18\x01\"\x0450GiR\tcontainer\x12{\n" +
+	"\aingress\x18\x03 \x01(\v2a.project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickHouseKubernetesIngressR\aingress\x12\x81\x01\n" +
 	"\acluster\x18\x04 \x01(\v2g.project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickHouseKubernetesClusterConfigR\acluster\x12\x18\n" +
 	"\aversion\x18\x05 \x01(\tR\aversion\x12\x90\x01\n" +
 	"\fcoordination\x18\x06 \x01(\v2l.project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickHouseKubernetesCoordinationConfigR\fcoordination\x12\x8b\x01\n" +
@@ -893,7 +955,11 @@ const file_project_planton_provider_kubernetes_workload_clickhousekubernetes_v1_
 	"\bLogLevel\x12\x0f\n" +
 	"\vinformation\x10\x00\x12\t\n" +
 	"\x05debug\x10\x01\x12\t\n" +
-	"\x05trace\x10\x02\"\x86\x02\n" +
+	"\x05trace\x10\x02\"\xd2\x01\n" +
+	"\x1bClickHouseKubernetesIngress\x12\x18\n" +
+	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x1a\n" +
+	"\bhostname\x18\x02 \x01(\tR\bhostname:}\xbaHz\x1ax\n" +
+	"\x1espec.ingress.hostname.required\x12,hostname is required when ingress is enabled\x1a(!this.enabled || size(this.hostname) > 0\"\x86\x02\n" +
 	"#ClickHouseKubernetesZookeeperConfig\x12!\n" +
 	"\fuse_external\x18\x01 \x01(\bR\vuseExternal\x12\x14\n" +
 	"\x05nodes\x18\x02 \x03(\tR\x05nodes:\xa5\x01\xbaH\xa1\x01\x1a\x9e\x01\n" +
@@ -914,7 +980,7 @@ func file_project_planton_provider_kubernetes_workload_clickhousekubernetes_v1_s
 }
 
 var file_project_planton_provider_kubernetes_workload_clickhousekubernetes_v1_spec_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
-var file_project_planton_provider_kubernetes_workload_clickhousekubernetes_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
+var file_project_planton_provider_kubernetes_workload_clickhousekubernetes_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
 var file_project_planton_provider_kubernetes_workload_clickhousekubernetes_v1_spec_proto_goTypes = []any{
 	(ClickHouseKubernetesCoordinationConfig_CoordinationType)(0), // 0: project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickHouseKubernetesCoordinationConfig.CoordinationType
 	(ClickHouseKubernetesLoggingConfig_LogLevel)(0),              // 1: project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickHouseKubernetesLoggingConfig.LogLevel
@@ -925,17 +991,17 @@ var file_project_planton_provider_kubernetes_workload_clickhousekubernetes_v1_sp
 	(*ClickHouseKubernetesKeeperConfig)(nil),                     // 6: project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickHouseKubernetesKeeperConfig
 	(*ClickHouseKubernetesExternalCoordinationConfig)(nil),       // 7: project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickHouseKubernetesExternalCoordinationConfig
 	(*ClickHouseKubernetesLoggingConfig)(nil),                    // 8: project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickHouseKubernetesLoggingConfig
-	(*ClickHouseKubernetesZookeeperConfig)(nil),                  // 9: project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickHouseKubernetesZookeeperConfig
-	(*kubernetes.IngressSpec)(nil),                               // 10: project.planton.shared.kubernetes.IngressSpec
+	(*ClickHouseKubernetesIngress)(nil),                          // 9: project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickHouseKubernetesIngress
+	(*ClickHouseKubernetesZookeeperConfig)(nil),                  // 10: project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickHouseKubernetesZookeeperConfig
 	(*kubernetes.ContainerResources)(nil),                        // 11: project.planton.shared.kubernetes.ContainerResources
 	(*descriptorpb.FieldOptions)(nil),                            // 12: google.protobuf.FieldOptions
 }
 var file_project_planton_provider_kubernetes_workload_clickhousekubernetes_v1_spec_proto_depIdxs = []int32{
 	3,  // 0: project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickHouseKubernetesSpec.container:type_name -> project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickHouseKubernetesContainer
-	10, // 1: project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickHouseKubernetesSpec.ingress:type_name -> project.planton.shared.kubernetes.IngressSpec
+	9,  // 1: project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickHouseKubernetesSpec.ingress:type_name -> project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickHouseKubernetesIngress
 	4,  // 2: project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickHouseKubernetesSpec.cluster:type_name -> project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickHouseKubernetesClusterConfig
 	5,  // 3: project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickHouseKubernetesSpec.coordination:type_name -> project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickHouseKubernetesCoordinationConfig
-	9,  // 4: project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickHouseKubernetesSpec.zookeeper:type_name -> project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickHouseKubernetesZookeeperConfig
+	10, // 4: project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickHouseKubernetesSpec.zookeeper:type_name -> project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickHouseKubernetesZookeeperConfig
 	8,  // 5: project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickHouseKubernetesSpec.logging:type_name -> project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickHouseKubernetesLoggingConfig
 	11, // 6: project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickHouseKubernetesContainer.resources:type_name -> project.planton.shared.kubernetes.ContainerResources
 	0,  // 7: project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickHouseKubernetesCoordinationConfig.type:type_name -> project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickHouseKubernetesCoordinationConfig.CoordinationType
@@ -965,7 +1031,7 @@ func file_project_planton_provider_kubernetes_workload_clickhousekubernetes_v1_s
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_project_planton_provider_kubernetes_workload_clickhousekubernetes_v1_spec_proto_rawDesc), len(file_project_planton_provider_kubernetes_workload_clickhousekubernetes_v1_spec_proto_rawDesc)),
 			NumEnums:      2,
-			NumMessages:   8,
+			NumMessages:   9,
 			NumExtensions: 1,
 			NumServices:   0,
 		},

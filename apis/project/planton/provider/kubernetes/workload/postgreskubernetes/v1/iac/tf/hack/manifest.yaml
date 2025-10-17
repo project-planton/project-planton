@@ -14,5 +14,5 @@ spec:
         memory: 250Mi
     diskSize: 1Gi
   ingress:
-    isEnabled: true
-    dnsDomain: example.com
+    enabled: true
+    hostname: test-postgres-database.example.com
