@@ -36,7 +36,7 @@ message OpenFgaKubernetesSpec {
   /**
    * The ingress configuration for the OpenFGA deployment.
    */
-  project.planton.shared.kubernetes.IngressSpec ingress = 2;
+  OpenFgaKubernetesIngress ingress = 2;
 
   /**
    * The data store configuration for OpenFGA.
@@ -83,4 +83,22 @@ message OpenFgaKubernetesDataStore {
    * - For PostgreSQL: `postgres://user:password@host:port/database`
    */
   string uri = 2 [(buf.validate.field).required = true];
+}
+
+/**
+ * OpenFgaKubernetesIngress defines the ingress configuration for OpenFGA.
+ */
+message OpenFgaKubernetesIngress {
+  // Flag to enable or disable ingress.
+  bool enabled = 1;
+
+  // The full hostname for external access (e.g., "openfga.example.com").
+  // Required when enabled is true.
+  string hostname = 2;
+
+  option (buf.validate.message).cel = {
+    id: "spec.ingress.hostname.required"
+    expression: "!this.enabled || size(this.hostname) > 0"
+    message: "hostname is required when ingress is enabled"
+  };
 }

@@ -67,11 +67,10 @@ func initializeLocals(ctx *pulumi.Context,
 	// ------------------------------ ingress ----------------------------------
 	if target.Spec.Ingress != nil &&
 		target.Spec.Ingress.Enabled &&
-		target.Spec.Ingress.DnsDomain != "" {
+		target.Spec.Ingress.Hostname != "" {
 
-		host := fmt.Sprintf("%s.%s", locals.Namespace, target.Spec.Ingress.DnsDomain)
 		locals.ClientURLExternal = fmt.Sprintf("nats://%s:%d",
-			host, vars.NatsClientPort)
+			target.Spec.Ingress.Hostname, vars.NatsClientPort)
 		ctx.Export(OpClientUrlExternal, pulumi.String(locals.ClientURLExternal))
 	}
 

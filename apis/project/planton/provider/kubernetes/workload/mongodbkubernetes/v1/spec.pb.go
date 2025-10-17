@@ -35,7 +35,7 @@ type MongodbKubernetesSpec struct {
 	Container *MongodbKubernetesContainer `protobuf:"bytes,1,opt,name=container,proto3" json:"container,omitempty"`
 	// *
 	// The ingress configuration for the MongoDB deployment.
-	Ingress *kubernetes.IngressSpec `protobuf:"bytes,2,opt,name=ingress,proto3" json:"ingress,omitempty"`
+	Ingress *MongodbKubernetesIngress `protobuf:"bytes,2,opt,name=ingress,proto3" json:"ingress,omitempty"`
 	// *
 	// A map of key-value pairs that provide additional customization options for the Helm chart used
 	// to deploy MongoDB on Kubernetes. These values allow for further refinement of the deployment,
@@ -84,7 +84,7 @@ func (x *MongodbKubernetesSpec) GetContainer() *MongodbKubernetesContainer {
 	return nil
 }
 
-func (x *MongodbKubernetesSpec) GetIngress() *kubernetes.IngressSpec {
+func (x *MongodbKubernetesSpec) GetIngress() *MongodbKubernetesIngress {
 	if x != nil {
 		return x.Ingress
 	}
@@ -96,6 +96,65 @@ func (x *MongodbKubernetesSpec) GetHelmValues() map[string]string {
 		return x.HelmValues
 	}
 	return nil
+}
+
+// *
+// MongodbKubernetesIngress defines ingress configuration for MongoDB.
+type MongodbKubernetesIngress struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Flag to enable or disable ingress.
+	// When enabled, creates a LoadBalancer service with external-dns annotations.
+	Enabled bool `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`
+	// The full hostname for external access (e.g., "mongodb.example.com").
+	// This hostname will be configured automatically via external-dns.
+	// Required when enabled is true.
+	Hostname      string `protobuf:"bytes,2,opt,name=hostname,proto3" json:"hostname,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *MongodbKubernetesIngress) Reset() {
+	*x = MongodbKubernetesIngress{}
+	mi := &file_project_planton_provider_kubernetes_workload_mongodbkubernetes_v1_spec_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *MongodbKubernetesIngress) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MongodbKubernetesIngress) ProtoMessage() {}
+
+func (x *MongodbKubernetesIngress) ProtoReflect() protoreflect.Message {
+	mi := &file_project_planton_provider_kubernetes_workload_mongodbkubernetes_v1_spec_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MongodbKubernetesIngress.ProtoReflect.Descriptor instead.
+func (*MongodbKubernetesIngress) Descriptor() ([]byte, []int) {
+	return file_project_planton_provider_kubernetes_workload_mongodbkubernetes_v1_spec_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *MongodbKubernetesIngress) GetEnabled() bool {
+	if x != nil {
+		return x.Enabled
+	}
+	return false
+}
+
+func (x *MongodbKubernetesIngress) GetHostname() string {
+	if x != nil {
+		return x.Hostname
+	}
+	return ""
 }
 
 // *
@@ -111,15 +170,15 @@ type MongodbKubernetesContainer struct {
 	// *
 	// A flag to enable or disable data persistence for MongoDB.
 	// When enabled, in-memory data is persisted to a storage volume, allowing data to survive pod restarts.
-	IsPersistenceEnabled bool   `protobuf:"varint,3,opt,name=is_persistence_enabled,json=isPersistenceEnabled,proto3" json:"is_persistence_enabled,omitempty"`
-	DiskSize             string `protobuf:"bytes,4,opt,name=disk_size,json=diskSize,proto3" json:"disk_size,omitempty"`
-	unknownFields        protoimpl.UnknownFields
-	sizeCache            protoimpl.SizeCache
+	PersistenceEnabled bool   `protobuf:"varint,3,opt,name=persistence_enabled,json=persistenceEnabled,proto3" json:"persistence_enabled,omitempty"`
+	DiskSize           string `protobuf:"bytes,4,opt,name=disk_size,json=diskSize,proto3" json:"disk_size,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
 }
 
 func (x *MongodbKubernetesContainer) Reset() {
 	*x = MongodbKubernetesContainer{}
-	mi := &file_project_planton_provider_kubernetes_workload_mongodbkubernetes_v1_spec_proto_msgTypes[1]
+	mi := &file_project_planton_provider_kubernetes_workload_mongodbkubernetes_v1_spec_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -131,7 +190,7 @@ func (x *MongodbKubernetesContainer) String() string {
 func (*MongodbKubernetesContainer) ProtoMessage() {}
 
 func (x *MongodbKubernetesContainer) ProtoReflect() protoreflect.Message {
-	mi := &file_project_planton_provider_kubernetes_workload_mongodbkubernetes_v1_spec_proto_msgTypes[1]
+	mi := &file_project_planton_provider_kubernetes_workload_mongodbkubernetes_v1_spec_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -144,7 +203,7 @@ func (x *MongodbKubernetesContainer) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MongodbKubernetesContainer.ProtoReflect.Descriptor instead.
 func (*MongodbKubernetesContainer) Descriptor() ([]byte, []int) {
-	return file_project_planton_provider_kubernetes_workload_mongodbkubernetes_v1_spec_proto_rawDescGZIP(), []int{1}
+	return file_project_planton_provider_kubernetes_workload_mongodbkubernetes_v1_spec_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *MongodbKubernetesContainer) GetReplicas() int32 {
@@ -161,9 +220,9 @@ func (x *MongodbKubernetesContainer) GetResources() *kubernetes.ContainerResourc
 	return nil
 }
 
-func (x *MongodbKubernetesContainer) GetIsPersistenceEnabled() bool {
+func (x *MongodbKubernetesContainer) GetPersistenceEnabled() bool {
 	if x != nil {
-		return x.IsPersistenceEnabled
+		return x.PersistenceEnabled
 	}
 	return false
 }
@@ -196,24 +255,28 @@ var File_project_planton_provider_kubernetes_workload_mongodbkubernetes_v1_spec_
 
 const file_project_planton_provider_kubernetes_workload_mongodbkubernetes_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Lproject/planton/provider/kubernetes/workload/mongodbkubernetes/v1/spec.proto\x12Aproject.planton.provider.kubernetes.workload.mongodbkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\x1a,project/planton/shared/options/options.proto\"\xd8\x03\n" +
+	"Lproject/planton/provider/kubernetes/workload/mongodbkubernetes/v1/spec.proto\x12Aproject.planton.provider.kubernetes.workload.mongodbkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\x1a,project/planton/shared/options/options.proto\"\x85\x04\n" +
 	"\x15MongodbKubernetesSpec\x12\xa9\x01\n" +
 	"\tcontainer\x18\x01 \x01(\v2].project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetesContainerB,\x8a\xe5\x82\x02'\b\x01\x12\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
-	"\x0350m\x12\x05100Mi\x18\x01\"\x031GiR\tcontainer\x12H\n" +
-	"\aingress\x18\x02 \x01(\v2..project.planton.shared.kubernetes.IngressSpecR\aingress\x12\x89\x01\n" +
+	"\x0350m\x12\x05100Mi\x18\x01\"\x031GiR\tcontainer\x12u\n" +
+	"\aingress\x18\x02 \x01(\v2[.project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetesIngressR\aingress\x12\x89\x01\n" +
 	"\vhelm_values\x18\x03 \x03(\v2h.project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetesSpec.HelmValuesEntryR\n" +
 	"helmValues\x1a=\n" +
 	"\x0fHelmValuesEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xc0\x04\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xcf\x01\n" +
+	"\x18MongodbKubernetesIngress\x12\x18\n" +
+	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x1a\n" +
+	"\bhostname\x18\x02 \x01(\tR\bhostname:}\xbaHz\x1ax\n" +
+	"\x1espec.ingress.hostname.required\x12,hostname is required when ingress is enabled\x1a(!this.enabled || size(this.hostname) > 0\"\xb5\x04\n" +
 	"\x1aMongodbKubernetesContainer\x12\x1a\n" +
 	"\breplicas\x18\x01 \x01(\x05R\breplicas\x12S\n" +
-	"\tresources\x18\x02 \x01(\v25.project.planton.shared.kubernetes.ContainerResourcesR\tresources\x124\n" +
-	"\x16is_persistence_enabled\x18\x03 \x01(\bR\x14isPersistenceEnabled\x12\x1b\n" +
-	"\tdisk_size\x18\x04 \x01(\tR\bdiskSize:\xdd\x02\xbaH\xd9\x02\x1a\xd6\x02\n" +
-	"!spec.container.disk_size.required\x12IDisk size is required and must match the format if persistence is enabled\x1a\xe5\x01((!this.is_persistence_enabled && (size(this.disk_size) == 0 || this.disk_size == '')) || (this.is_persistence_enabled && size(this.disk_size) > 0 && this.disk_size.matches('^\\\\d+(\\\\.\\\\d+)?\\\\s?(Ki|Mi|Gi|Ti|Pi|Ei|K|M|G|T|P|E)$'))):\xab\x01\n" +
+	"\tresources\x18\x02 \x01(\v25.project.planton.shared.kubernetes.ContainerResourcesR\tresources\x12/\n" +
+	"\x13persistence_enabled\x18\x03 \x01(\bR\x12persistenceEnabled\x12\x1b\n" +
+	"\tdisk_size\x18\x04 \x01(\tR\bdiskSize:\xd7\x02\xbaH\xd3\x02\x1a\xd0\x02\n" +
+	"!spec.container.disk_size.required\x12IDisk size is required and must match the format if persistence is enabled\x1a\xdf\x01((!this.persistence_enabled && (size(this.disk_size) == 0 || this.disk_size == '')) || (this.persistence_enabled && size(this.disk_size) > 0 && this.disk_size.matches('^\\\\d+(\\\\.\\\\d+)?\\\\s?(Ki|Mi|Gi|Ti|Pi|Ei|K|M|G|T|P|E)$'))):\xab\x01\n" +
 	"\x11default_container\x12\x1d.google.protobuf.FieldOptions\x18Ѭ  \x01(\v2].project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetesContainerR\x10defaultContainerB\x87\x04\n" +
 	"Ecom.project.planton.provider.kubernetes.workload.mongodbkubernetes.v1B\tSpecProtoP\x01Z\x85\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/mongodbkubernetes/v1;mongodbkubernetesv1\xa2\x02\x06PPPKWM\xaa\x02AProject.Planton.Provider.Kubernetes.Workload.Mongodbkubernetes.V1\xca\x02AProject\\Planton\\Provider\\Kubernetes\\Workload\\Mongodbkubernetes\\V1\xe2\x02MProject\\Planton\\Provider\\Kubernetes\\Workload\\Mongodbkubernetes\\V1\\GPBMetadata\xea\x02GProject::Planton::Provider::Kubernetes::Workload::Mongodbkubernetes::V1b\x06proto3"
 
@@ -229,22 +292,22 @@ func file_project_planton_provider_kubernetes_workload_mongodbkubernetes_v1_spec
 	return file_project_planton_provider_kubernetes_workload_mongodbkubernetes_v1_spec_proto_rawDescData
 }
 
-var file_project_planton_provider_kubernetes_workload_mongodbkubernetes_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_project_planton_provider_kubernetes_workload_mongodbkubernetes_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_project_planton_provider_kubernetes_workload_mongodbkubernetes_v1_spec_proto_goTypes = []any{
 	(*MongodbKubernetesSpec)(nil),         // 0: project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetesSpec
-	(*MongodbKubernetesContainer)(nil),    // 1: project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetesContainer
-	nil,                                   // 2: project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetesSpec.HelmValuesEntry
-	(*kubernetes.IngressSpec)(nil),        // 3: project.planton.shared.kubernetes.IngressSpec
+	(*MongodbKubernetesIngress)(nil),      // 1: project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetesIngress
+	(*MongodbKubernetesContainer)(nil),    // 2: project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetesContainer
+	nil,                                   // 3: project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetesSpec.HelmValuesEntry
 	(*kubernetes.ContainerResources)(nil), // 4: project.planton.shared.kubernetes.ContainerResources
 	(*descriptorpb.FieldOptions)(nil),     // 5: google.protobuf.FieldOptions
 }
 var file_project_planton_provider_kubernetes_workload_mongodbkubernetes_v1_spec_proto_depIdxs = []int32{
-	1, // 0: project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetesSpec.container:type_name -> project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetesContainer
-	3, // 1: project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetesSpec.ingress:type_name -> project.planton.shared.kubernetes.IngressSpec
-	2, // 2: project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetesSpec.helm_values:type_name -> project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetesSpec.HelmValuesEntry
+	2, // 0: project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetesSpec.container:type_name -> project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetesContainer
+	1, // 1: project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetesSpec.ingress:type_name -> project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetesIngress
+	3, // 2: project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetesSpec.helm_values:type_name -> project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetesSpec.HelmValuesEntry
 	4, // 3: project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetesContainer.resources:type_name -> project.planton.shared.kubernetes.ContainerResources
 	5, // 4: project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.default_container:extendee -> google.protobuf.FieldOptions
-	1, // 5: project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.default_container:type_name -> project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetesContainer
+	2, // 5: project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.default_container:type_name -> project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetesContainer
 	6, // [6:6] is the sub-list for method output_type
 	6, // [6:6] is the sub-list for method input_type
 	5, // [5:6] is the sub-list for extension type_name
@@ -263,7 +326,7 @@ func file_project_planton_provider_kubernetes_workload_mongodbkubernetes_v1_spec
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_project_planton_provider_kubernetes_workload_mongodbkubernetes_v1_spec_proto_rawDesc), len(file_project_planton_provider_kubernetes_workload_mongodbkubernetes_v1_spec_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   3,
+			NumMessages:   4,
 			NumExtensions: 1,
 			NumServices:   0,
 		},

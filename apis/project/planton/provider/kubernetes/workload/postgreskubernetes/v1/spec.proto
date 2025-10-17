@@ -65,7 +65,7 @@ message PostgresKubernetesSpec {
   }];
 
   //The ingress configuration for the PostgreSQL deployment.
-  project.planton.shared.kubernetes.IngressSpec ingress = 2;
+  PostgresKubernetesIngress ingress = 2;
 
   // Optional: Per-database backup configuration
   // When specified, these settings override the operator-level backup configuration
@@ -95,4 +95,25 @@ message PostgresKubernetesContainer {
     // Validation regex for disk size.
     expression: "this.matches('^\\\\d+(\\\\.\\\\d+)?\\\\s?(Ki|Mi|Gi|Ti|Pi|Ei|K|M|G|T|P|E)$') && size(this) > 0"
   }];
+}
+
+/**
+ * **PostgresKubernetesIngress** defines the ingress configuration for PostgreSQL.
+ * It allows enabling external access via LoadBalancer with hostname-based routing.
+ */
+message PostgresKubernetesIngress {
+  // Flag to enable or disable ingress.
+  // When enabled, creates a LoadBalancer service with external-dns annotations.
+  bool enabled = 1;
+
+  // The full hostname for external access (e.g., "postgres.example.com").
+  // This hostname will be configured automatically via external-dns.
+  // Required when enabled is true.
+  string hostname = 2;
+
+  option (buf.validate.message).cel = {
+    id: "spec.ingress.hostname.required"
+    expression: "!this.enabled || size(this.hostname) > 0"
+    message: "hostname is required when ingress is enabled"
+  };
 }

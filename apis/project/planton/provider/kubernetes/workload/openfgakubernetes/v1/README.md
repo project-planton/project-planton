@@ -36,7 +36,7 @@ Deploying OpenFGA in Kubernetes can involve complex configurations, especially w
 
 ### Ingress Configuration
 
-- **Ingress Spec**: Configures ingress rules to expose the OpenFGA service to external clients, allowing secure access to the OpenFGA API.
+- **Ingress Spec**: Configures ingress rules to expose the OpenFGA service to external clients. Users specify the full hostname (e.g., `openfga.example.com`) for secure access to the OpenFGA API.
 
 ### Data Store Configuration
 

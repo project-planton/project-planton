@@ -55,7 +55,7 @@ spec:
   tlsEnabled: true
   ingress:
     enabled: true
-    host: nats.example.com
+    hostname: nats.example.com
   disableNatsBox: false
 ```
 

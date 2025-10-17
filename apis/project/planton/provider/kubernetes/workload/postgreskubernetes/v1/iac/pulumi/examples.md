@@ -22,8 +22,8 @@ spec:
         memory: 1Gi
     disk_size: 10Gi
   ingress:
-    isEnabled: true
-    host: postgres-db.example.com
+    enabled: true
+    hostname: postgres-db.example.com
 ```
 
 ---
@@ -48,8 +48,8 @@ spec:
         memory: 2Gi
     disk_size: 20Gi
   ingress:
-    isEnabled: true
-    host: postgres-prod.example.com
+    enabled: true
+    hostname: postgres-prod.example.com
   env:
     variables:
       DATABASE_USER: admin
@@ -78,7 +78,7 @@ spec:
         memory: 4Gi
     disk_size: 50Gi
   ingress:
-    isEnabled: false
+    enabled: false
   env:
     secrets:
       DATABASE_PASSWORD: ${gcpsm-my-org-prod-gcp-secrets.db-password}

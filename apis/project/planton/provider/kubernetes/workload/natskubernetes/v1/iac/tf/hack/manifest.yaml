@@ -1,32 +1,24 @@
 apiVersion: kubernetes.project-planton.org/v1
 kind: NatsKubernetes
 metadata:
-  name: test-solr-cloud
+  name: nats-basic
 spec:
+  serverContainer:
+    replicas: 1
+    diskSize: "1Gi"
+    resources:
+      limits:
+        cpu: "1000m"
+        memory: "1Gi"
+      requests:
+        cpu: "100m"
+        memory: "100Mi"
+  disableJetStream: false
+  tlsEnabled: false
+  disableNatsBox: false
   ingress:
-    dnsDomain: example.com
-    isEnabled: true
-  solrContainer:
-    diskSize: 1Gi
-    image:
-      repo: solr
-      tag: 8.7.0
-    replicas: 1
-    resources:
-      limits:
-        cpu: 2000m
-        memory: 2Gi
-      requests:
-        cpu: 50m
-        memory: 250Mi
-  config: {}
-  zookeeperContainer:
-    diskSize: 1Gi
-    replicas: 1
-    resources:
-      limits:
-        cpu: 2000m
-        memory: 2Gi
-      requests:
-        cpu: 50m
-        memory: 250Mi
+    enabled: true
+    hostname: nats-basic.planton.live
+  auth:
+    enabled: true
+    scheme: basic_auth

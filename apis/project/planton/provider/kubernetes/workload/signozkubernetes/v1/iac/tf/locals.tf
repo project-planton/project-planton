@@ -50,31 +50,13 @@ locals {
   # Database configuration
   is_external_database = var.spec.database.is_external
 
-  # Safely handle optional ingress values for SigNoz UI
-  signoz_ingress_is_enabled = try(var.spec.signoz_ingress.is_enabled, false)
-  signoz_ingress_dns_domain = try(var.spec.signoz_ingress.dns_domain, "")
+  # SigNoz UI ingress
+  signoz_ingress_is_enabled        = try(var.spec.ingress.ui.enabled, false)
+  signoz_ingress_external_hostname = try(var.spec.ingress.ui.hostname, null)
 
-  # External hostnames for SigNoz UI
-  signoz_ingress_external_hostname = (
-    local.signoz_ingress_is_enabled && local.signoz_ingress_dns_domain != ""
-  ) ? "${local.resource_id}.${local.signoz_ingress_dns_domain}" : null
-
-  signoz_ingress_internal_hostname = (
-    local.signoz_ingress_is_enabled && local.signoz_ingress_dns_domain != ""
-  ) ? "${local.resource_id}-internal.${local.signoz_ingress_dns_domain}" : null
-
-  # Safely handle optional ingress values for OTel Collector
-  otel_collector_ingress_is_enabled = try(var.spec.otel_collector_ingress.is_enabled, false)
-  otel_collector_ingress_dns_domain = try(var.spec.otel_collector_ingress.dns_domain, "")
-
-  # External hostnames for OTel Collector
-  otel_collector_external_grpc_hostname = (
-    local.otel_collector_ingress_is_enabled && local.otel_collector_ingress_dns_domain != ""
-  ) ? "${local.resource_id}-ingest-grpc.${local.otel_collector_ingress_dns_domain}" : null
-
-  otel_collector_external_http_hostname = (
-    local.otel_collector_ingress_is_enabled && local.otel_collector_ingress_dns_domain != ""
-  ) ? "${local.resource_id}-ingest-http.${local.otel_collector_ingress_dns_domain}" : null
+  # OTel Collector ingress
+  otel_collector_ingress_is_enabled     = try(var.spec.ingress.otel_collector.enabled, false)
+  otel_collector_external_http_hostname = try(var.spec.ingress.otel_collector.hostname, null)
 
   # ClickHouse configuration (for self-managed mode)
   clickhouse_endpoint = (

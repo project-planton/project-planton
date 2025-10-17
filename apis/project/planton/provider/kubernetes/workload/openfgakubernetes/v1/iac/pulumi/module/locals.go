@@ -3,6 +3,7 @@ package module
 import (
 	"fmt"
 	"strconv"
+	"strings"
 
 	openfgakubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/openfgakubernetes/v1"
 	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
@@ -16,7 +17,6 @@ type Locals struct {
 	Namespace                    string
 	IngressCertClusterIssuerName string
 	IngressCertSecretName        string
-	IngressInternalHostname      string
 	IngressExternalHostname      string
 	IngressHostnames             []string
 	KubeServiceFqdn              string
@@ -87,31 +87,30 @@ func initializeLocals(ctx *pulumi.Context, stackInput *openfgakubernetesv1.OpenF
 
 	if target.Spec.Ingress == nil ||
 		!target.Spec.Ingress.Enabled ||
-		target.Spec.Ingress.DnsDomain == "" {
+		target.Spec.Ingress.Hostname == "" {
 		return locals
 	}
 
-	locals.IngressExternalHostname = fmt.Sprintf("%s.%s", locals.Namespace,
-		target.Spec.Ingress.DnsDomain)
-
-	locals.IngressInternalHostname = fmt.Sprintf("%s-internal.%s", locals.Namespace,
-		target.Spec.Ingress.DnsDomain)
+	locals.IngressExternalHostname = target.Spec.Ingress.Hostname
 
 	locals.IngressHostnames = []string{
 		locals.IngressExternalHostname,
-		locals.IngressInternalHostname,
 	}
 
-	//export ingress hostnames
+	//export ingress hostname
 	ctx.Export(OpExternalHostname, pulumi.String(locals.IngressExternalHostname))
-	ctx.Export(OpInternalHostname, pulumi.String(locals.IngressInternalHostname))
 
 	//note: a ClusterIssuer resource should have already exist on the kubernetes-cluster.
 	//this is typically taken care of by the kubernetes cluster administrator.
 	//if the kubernetes-cluster is created using Planton Cloud, then the cluster-issuer name will be
 	//same as the ingress-domain-name as long as the same ingress-domain-name is added to the list of
 	//ingress-domain-names for the GkeCluster/EksCluster/AksCluster spec.
-	locals.IngressCertClusterIssuerName = target.Spec.Ingress.DnsDomain
+	// Extract domain from hostname for certificate issuer
+	// Example: "openfga.example.com" -> "example.com"
+	parts := strings.Split(locals.IngressExternalHostname, ".")
+	if len(parts) > 1 {
+		locals.IngressCertClusterIssuerName = strings.Join(parts[1:], ".")
+	}
 
 	locals.IngressCertSecretName = locals.Namespace
 

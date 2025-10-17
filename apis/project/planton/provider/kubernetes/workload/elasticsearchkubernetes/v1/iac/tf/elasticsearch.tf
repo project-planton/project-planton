@@ -18,7 +18,7 @@ resource "kubernetes_manifest" "elasticsearch" {
         nodeSets = [
           {
             name = "elasticsearch"
-            count = var.spec.elasticsearch_container.replicas
+            count = var.spec.elasticsearch.container.replicas
 
             # Additional configuration
             config = {
@@ -39,12 +39,12 @@ resource "kubernetes_manifest" "elasticsearch" {
                     name = "elasticsearch"
                     resources = {
                       requests = {
-                        memory = var.spec.elasticsearch_container.resources.requests.memory
-                        cpu    = var.spec.elasticsearch_container.resources.requests.cpu
+                        memory = var.spec.elasticsearch.container.resources.requests.memory
+                        cpu    = var.spec.elasticsearch.container.resources.requests.cpu
                       }
                       limits = {
-                        memory = var.spec.elasticsearch_container.resources.limits.memory
-                        cpu    = var.spec.elasticsearch_container.resources.limits.cpu
+                        memory = var.spec.elasticsearch.container.resources.limits.memory
+                        cpu    = var.spec.elasticsearch.container.resources.limits.cpu
                       }
                     }
                   }
@@ -53,7 +53,7 @@ resource "kubernetes_manifest" "elasticsearch" {
             }
 
             # Volume claim templates if persistence is enabled
-            volumeClaimTemplates = var.spec.elasticsearch_container.is_persistence_enabled ? [
+            volumeClaimTemplates = var.spec.elasticsearch.container.persistence_enabled ? [
               {
                 metadata = {
                   name = "elasticsearch-data"
@@ -62,7 +62,7 @@ resource "kubernetes_manifest" "elasticsearch" {
                   accessModes = ["ReadWriteOnce"]
                   resources = {
                     requests = {
-                      storage = var.spec.elasticsearch_container.disk_size
+                      storage = var.spec.elasticsearch.container.disk_size
                     }
                   }
                 }
@@ -84,9 +84,9 @@ resource "kubernetes_manifest" "elasticsearch" {
   )
 }
 
-# 2) Optionally create Kibana CR if is_enabled == true
+# 2) Optionally create Kibana CR if enabled == true
 resource "kubernetes_manifest" "kibana" {
-  count = var.spec.kibana_container.is_enabled ? 1 : 0
+  count = var.spec.kibana.enabled ? 1 : 0
 
   manifest = yamldecode(
     yamlencode({
@@ -103,7 +103,7 @@ resource "kubernetes_manifest" "kibana" {
       }
       spec = {
         version = local.elasticsearch_version
-        count   = var.spec.kibana_container.replicas
+        count   = var.spec.kibana.container.replicas
 
         podTemplate = {
           spec = {
@@ -112,12 +112,12 @@ resource "kubernetes_manifest" "kibana" {
                 name = "kibana"
                 resources = {
                   requests = {
-                    memory = var.spec.kibana_container.resources.requests.memory
-                    cpu    = var.spec.kibana_container.resources.requests.cpu
+                    memory = var.spec.kibana.container.resources.requests.memory
+                    cpu    = var.spec.kibana.container.resources.requests.cpu
                   }
                   limits = {
-                    memory = var.spec.kibana_container.resources.limits.memory
-                    cpu    = var.spec.kibana_container.resources.limits.cpu
+                    memory = var.spec.kibana.container.resources.limits.memory
+                    cpu    = var.spec.kibana.container.resources.limits.cpu
                   }
                 }
               }

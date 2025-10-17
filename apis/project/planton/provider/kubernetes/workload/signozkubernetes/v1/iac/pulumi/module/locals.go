@@ -3,6 +3,7 @@ package module
 import (
 	"fmt"
 	"strconv"
+	"strings"
 
 	signozkubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/signozkubernetes/v1"
 	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
@@ -22,11 +23,9 @@ type Locals struct {
 	OtelCollectorHttpFqdn             string
 	KubePortForwardCommand            string
 	IngressExternalHostname           string
-	IngressInternalHostname           string
 	IngressHostnames                  []string
 	IngressCertClusterIssuerName      string
 	IngressCertSecretName             string
-	OtelCollectorExternalGrpcHostname string
 	OtelCollectorExternalHttpHostname string
 	ClickhouseEndpoint                string
 }
@@ -112,39 +111,34 @@ func initializeLocals(ctx *pulumi.Context, stackInput *signozkubernetesv1.Signoz
 	}
 
 	// Ingress configuration for SigNoz UI
-	if target.Spec.SignozIngress != nil &&
-		target.Spec.SignozIngress.Enabled &&
-		target.Spec.SignozIngress.DnsDomain != "" {
-		locals.IngressExternalHostname = fmt.Sprintf("%s.%s", locals.Namespace,
-			target.Spec.SignozIngress.DnsDomain)
+	if target.Spec.Ingress != nil &&
+		target.Spec.Ingress.Ui != nil &&
+		target.Spec.Ingress.Ui.Enabled &&
+		target.Spec.Ingress.Ui.Hostname != "" {
+		locals.IngressExternalHostname = target.Spec.Ingress.Ui.Hostname
 		ctx.Export(OpExternalHostname, pulumi.String(locals.IngressExternalHostname))
-
-		locals.IngressInternalHostname = fmt.Sprintf("%s-internal.%s", locals.Namespace,
-			target.Spec.SignozIngress.DnsDomain)
-		ctx.Export(OpInternalHostname, pulumi.String(locals.IngressInternalHostname))
 
 		locals.IngressHostnames = []string{
 			locals.IngressExternalHostname,
-			locals.IngressInternalHostname,
 		}
 
 		// ClusterIssuer should already exist on the cluster
+		// Extract domain from hostname for ClusterIssuer name
 		// Typically managed by cluster administrator or created by Planton Cloud
-		locals.IngressCertClusterIssuerName = target.Spec.SignozIngress.DnsDomain
+		hostnameParts := strings.Split(locals.IngressExternalHostname, ".")
+		if len(hostnameParts) > 1 {
+			locals.IngressCertClusterIssuerName = strings.Join(hostnameParts[1:], ".")
+		}
 
 		locals.IngressCertSecretName = fmt.Sprintf("cert-%s", locals.Namespace)
 	}
 
 	// Ingress configuration for OTel Collector
-	if target.Spec.OtelCollectorIngress != nil &&
-		target.Spec.OtelCollectorIngress.Enabled &&
-		target.Spec.OtelCollectorIngress.DnsDomain != "" {
-		locals.OtelCollectorExternalGrpcHostname = fmt.Sprintf("%s-ingest-grpc.%s", locals.Namespace,
-			target.Spec.OtelCollectorIngress.DnsDomain)
-		ctx.Export(OpOtelCollectorExternalGrpcHostname, pulumi.String(locals.OtelCollectorExternalGrpcHostname))
-
-		locals.OtelCollectorExternalHttpHostname = fmt.Sprintf("%s-ingest-http.%s", locals.Namespace,
-			target.Spec.OtelCollectorIngress.DnsDomain)
+	if target.Spec.Ingress != nil &&
+		target.Spec.Ingress.OtelCollector != nil &&
+		target.Spec.Ingress.OtelCollector.Enabled &&
+		target.Spec.Ingress.OtelCollector.Hostname != "" {
+		locals.OtelCollectorExternalHttpHostname = target.Spec.Ingress.OtelCollector.Hostname
 		ctx.Export(OpOtelCollectorExternalHttpHostname, pulumi.String(locals.OtelCollectorExternalHttpHostname))
 	}
 

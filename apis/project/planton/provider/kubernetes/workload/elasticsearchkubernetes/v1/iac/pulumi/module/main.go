@@ -37,7 +37,12 @@ func Resources(ctx *pulumi.Context, stackInput *elasticsearchkubernetesv1.Elasti
 		return errors.Wrap(err, "failed to create elastic search resources")
 	}
 
-	if locals.ElasticsearchKubernetes.Spec.Ingress.Enabled {
+	if (locals.ElasticsearchKubernetes.Spec.Elasticsearch.Ingress != nil &&
+		locals.ElasticsearchKubernetes.Spec.Elasticsearch.Ingress.Enabled) ||
+		(locals.ElasticsearchKubernetes.Spec.Kibana != nil &&
+			locals.ElasticsearchKubernetes.Spec.Kibana.Enabled &&
+			locals.ElasticsearchKubernetes.Spec.Kibana.Ingress != nil &&
+			locals.ElasticsearchKubernetes.Spec.Kibana.Ingress.Enabled) {
 		if err := ingress(ctx, locals, createdNamespace, kubernetesProvider); err != nil {
 			return errors.Wrap(err, "failed to create ingress resources")
 		}

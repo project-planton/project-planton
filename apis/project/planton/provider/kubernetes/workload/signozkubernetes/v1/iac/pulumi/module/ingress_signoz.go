@@ -16,9 +16,10 @@ func createSignozUIIngress(ctx *pulumi.Context, locals *Locals, kubernetesProvid
 	createdNamespace *kubernetescorev1.Namespace) error {
 
 	// Skip if ingress is not enabled
-	if locals.SignozKubernetes.Spec.SignozIngress == nil ||
-		!locals.SignozKubernetes.Spec.SignozIngress.Enabled ||
-		locals.SignozKubernetes.Spec.SignozIngress.DnsDomain == "" {
+	if locals.SignozKubernetes.Spec.Ingress == nil ||
+		locals.SignozKubernetes.Spec.Ingress.Ui == nil ||
+		!locals.SignozKubernetes.Spec.Ingress.Ui.Enabled ||
+		locals.SignozKubernetes.Spec.Ingress.Ui.Hostname == "" {
 		return nil
 	}
 
@@ -82,60 +83,11 @@ func createSignozUIIngress(ctx *pulumi.Context, locals *Locals, kubernetesProvid
 							},
 						},
 					},
-					// HTTP listener for redirect to HTTPS
-					&gatewayv1.GatewaySpecListenersArgs{
-						Name:     pulumi.String("http-external"),
-						Hostname: pulumi.String(locals.IngressExternalHostname),
-						Port:     pulumi.Int(80),
-						Protocol: pulumi.String("HTTP"),
-						AllowedRoutes: gatewayv1.GatewaySpecListenersAllowedRoutesArgs{
-							Namespaces: gatewayv1.GatewaySpecListenersAllowedRoutesNamespacesArgs{
-								From: pulumi.String("All"),
-							},
-						},
-					},
 				},
 			},
 		}, pulumi.Provider(kubernetesProvider), pulumi.DependsOn([]pulumi.Resource{addedCertificate}))
 	if err != nil {
 		return errors.Wrap(err, "error creating gateway")
-	}
-
-	// Create HTTPRoute for HTTP to HTTPS redirect
-	_, err = gatewayv1.NewHTTPRoute(ctx,
-		"http-external-redirect",
-		&gatewayv1.HTTPRouteArgs{
-			Metadata: metav1.ObjectMetaArgs{
-				Name:      pulumi.String("http-external-redirect"),
-				Namespace: createdNamespace.Metadata.Name(),
-				Labels:    pulumi.ToStringMap(locals.KubernetesLabels),
-			},
-			Spec: gatewayv1.HTTPRouteSpecArgs{
-				Hostnames: pulumi.StringArray{pulumi.String(locals.IngressExternalHostname)},
-				ParentRefs: gatewayv1.HTTPRouteSpecParentRefsArray{
-					gatewayv1.HTTPRouteSpecParentRefsArgs{
-						Name:        pulumi.Sprintf("%s-external", locals.Namespace),
-						Namespace:   createdGateway.Metadata.Namespace(),
-						SectionName: pulumi.String("http-external"),
-					},
-				},
-				Rules: gatewayv1.HTTPRouteSpecRulesArray{
-					gatewayv1.HTTPRouteSpecRulesArgs{
-						Filters: gatewayv1.HTTPRouteSpecRulesFiltersArray{
-							gatewayv1.HTTPRouteSpecRulesFiltersArgs{
-								RequestRedirect: gatewayv1.HTTPRouteSpecRulesFiltersRequestRedirectArgs{
-									Scheme:     pulumi.String("https"),
-									StatusCode: pulumi.Int(301),
-								},
-								Type: pulumi.String("RequestRedirect"),
-							},
-						},
-					},
-				},
-			},
-		}, pulumi.Parent(createdNamespace))
-	if err != nil {
-		return errors.Wrap(err, "error creating HTTP redirect route")
 	}
 
 	// Create HTTPRoute for HTTPS traffic to SigNoz frontend service

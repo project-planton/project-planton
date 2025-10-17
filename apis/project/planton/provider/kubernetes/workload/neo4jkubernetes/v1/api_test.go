@@ -38,8 +38,9 @@ var _ = ginkgo.Describe("Neo4JKubernetes Custom Validation Tests", func() {
 						},
 					},
 				},
-				Ingress: &kubernetes.IngressSpec{
-					DnsDomain: "neo4j.example.com",
+				Ingress: &Neo4JKubernetesIngress{
+					Enabled:  true,
+					Hostname: "neo4j.example.com",
 				},
 			},
 		}

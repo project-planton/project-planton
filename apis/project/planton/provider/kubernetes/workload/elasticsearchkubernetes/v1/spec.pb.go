@@ -26,17 +26,15 @@ const (
 )
 
 // **ElasticsearchKubernetesSpec** defines the configuration for deploying Elasticsearch on a Kubernetes cluster.
-// This message includes specifications for the Elasticsearch container, Kibana container, and ingress settings.
+// This message includes specifications for the Elasticsearch and Kibana, each with their own container and ingress settings.
 // By configuring these parameters, you can set up an Elasticsearch deployment tailored to your application's needs,
 // including resource allocation, persistence settings, and external access through ingress.
 type ElasticsearchKubernetesSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The specifications for the Elasticsearch container deployment.
-	ElasticsearchContainer *ElasticsearchKubernetesElasticsearchContainer `protobuf:"bytes,1,opt,name=elasticsearch_container,json=elasticsearchContainer,proto3" json:"elasticsearch_container,omitempty"`
-	// The specifications for the Kibana container deployment.
-	KibanaContainer *ElasticsearchKubernetesKibanaContainer `protobuf:"bytes,2,opt,name=kibana_container,json=kibanaContainer,proto3" json:"kibana_container,omitempty"`
-	// The ingress configuration for the Elasticsearch deployment.
-	Ingress       *kubernetes.IngressSpec `protobuf:"bytes,3,opt,name=ingress,proto3" json:"ingress,omitempty"`
+	// The elasticsearch configuration.
+	Elasticsearch *ElasticsearchKubernetesElasticsearchSpec `protobuf:"bytes,1,opt,name=elasticsearch,proto3" json:"elasticsearch,omitempty"`
+	// The kibana configuration.
+	Kibana        *ElasticsearchKubernetesKibanaSpec `protobuf:"bytes,2,opt,name=kibana,proto3" json:"kibana,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -71,21 +69,133 @@ func (*ElasticsearchKubernetesSpec) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *ElasticsearchKubernetesSpec) GetElasticsearchContainer() *ElasticsearchKubernetesElasticsearchContainer {
+func (x *ElasticsearchKubernetesSpec) GetElasticsearch() *ElasticsearchKubernetesElasticsearchSpec {
 	if x != nil {
-		return x.ElasticsearchContainer
+		return x.Elasticsearch
 	}
 	return nil
 }
 
-func (x *ElasticsearchKubernetesSpec) GetKibanaContainer() *ElasticsearchKubernetesKibanaContainer {
+func (x *ElasticsearchKubernetesSpec) GetKibana() *ElasticsearchKubernetesKibanaSpec {
 	if x != nil {
-		return x.KibanaContainer
+		return x.Kibana
 	}
 	return nil
 }
 
-func (x *ElasticsearchKubernetesSpec) GetIngress() *kubernetes.IngressSpec {
+// **ElasticsearchKubernetesElasticsearchSpec** groups Elasticsearch container and ingress configuration.
+type ElasticsearchKubernetesElasticsearchSpec struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Container configuration for Elasticsearch.
+	Container *ElasticsearchKubernetesElasticsearchContainer `protobuf:"bytes,1,opt,name=container,proto3" json:"container,omitempty"`
+	// Ingress configuration for Elasticsearch.
+	Ingress       *ElasticsearchKubernetesIngress `protobuf:"bytes,2,opt,name=ingress,proto3" json:"ingress,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ElasticsearchKubernetesElasticsearchSpec) Reset() {
+	*x = ElasticsearchKubernetesElasticsearchSpec{}
+	mi := &file_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_v1_spec_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ElasticsearchKubernetesElasticsearchSpec) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ElasticsearchKubernetesElasticsearchSpec) ProtoMessage() {}
+
+func (x *ElasticsearchKubernetesElasticsearchSpec) ProtoReflect() protoreflect.Message {
+	mi := &file_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_v1_spec_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ElasticsearchKubernetesElasticsearchSpec.ProtoReflect.Descriptor instead.
+func (*ElasticsearchKubernetesElasticsearchSpec) Descriptor() ([]byte, []int) {
+	return file_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_v1_spec_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *ElasticsearchKubernetesElasticsearchSpec) GetContainer() *ElasticsearchKubernetesElasticsearchContainer {
+	if x != nil {
+		return x.Container
+	}
+	return nil
+}
+
+func (x *ElasticsearchKubernetesElasticsearchSpec) GetIngress() *ElasticsearchKubernetesIngress {
+	if x != nil {
+		return x.Ingress
+	}
+	return nil
+}
+
+// **ElasticsearchKubernetesKibanaSpec** groups Kibana enabled flag, container and ingress configuration.
+type ElasticsearchKubernetesKibanaSpec struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Flag to enable or disable Kibana deployment. Defaults to false.
+	Enabled bool `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`
+	// Container configuration for Kibana.
+	Container *ElasticsearchKubernetesKibanaContainer `protobuf:"bytes,2,opt,name=container,proto3" json:"container,omitempty"`
+	// Ingress configuration for Kibana.
+	Ingress       *ElasticsearchKubernetesIngress `protobuf:"bytes,3,opt,name=ingress,proto3" json:"ingress,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ElasticsearchKubernetesKibanaSpec) Reset() {
+	*x = ElasticsearchKubernetesKibanaSpec{}
+	mi := &file_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_v1_spec_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ElasticsearchKubernetesKibanaSpec) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ElasticsearchKubernetesKibanaSpec) ProtoMessage() {}
+
+func (x *ElasticsearchKubernetesKibanaSpec) ProtoReflect() protoreflect.Message {
+	mi := &file_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_v1_spec_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ElasticsearchKubernetesKibanaSpec.ProtoReflect.Descriptor instead.
+func (*ElasticsearchKubernetesKibanaSpec) Descriptor() ([]byte, []int) {
+	return file_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_v1_spec_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *ElasticsearchKubernetesKibanaSpec) GetEnabled() bool {
+	if x != nil {
+		return x.Enabled
+	}
+	return false
+}
+
+func (x *ElasticsearchKubernetesKibanaSpec) GetContainer() *ElasticsearchKubernetesKibanaContainer {
+	if x != nil {
+		return x.Container
+	}
+	return nil
+}
+
+func (x *ElasticsearchKubernetesKibanaSpec) GetIngress() *ElasticsearchKubernetesIngress {
 	if x != nil {
 		return x.Ingress
 	}
@@ -103,15 +213,15 @@ type ElasticsearchKubernetesElasticsearchContainer struct {
 	Resources *kubernetes.ContainerResources `protobuf:"bytes,2,opt,name=resources,proto3" json:"resources,omitempty"`
 	// A flag to enable or disable data persistence for Elasticsearch.
 	// When enabled, in-memory data is persisted to a storage volume, allowing data to survive pod restarts.
-	IsPersistenceEnabled bool   `protobuf:"varint,3,opt,name=is_persistence_enabled,json=isPersistenceEnabled,proto3" json:"is_persistence_enabled,omitempty"`
-	DiskSize             string `protobuf:"bytes,4,opt,name=disk_size,json=diskSize,proto3" json:"disk_size,omitempty"`
-	unknownFields        protoimpl.UnknownFields
-	sizeCache            protoimpl.SizeCache
+	PersistenceEnabled bool   `protobuf:"varint,3,opt,name=persistence_enabled,json=persistenceEnabled,proto3" json:"persistence_enabled,omitempty"`
+	DiskSize           string `protobuf:"bytes,4,opt,name=disk_size,json=diskSize,proto3" json:"disk_size,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
 }
 
 func (x *ElasticsearchKubernetesElasticsearchContainer) Reset() {
 	*x = ElasticsearchKubernetesElasticsearchContainer{}
-	mi := &file_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_v1_spec_proto_msgTypes[1]
+	mi := &file_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_v1_spec_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -123,7 +233,7 @@ func (x *ElasticsearchKubernetesElasticsearchContainer) String() string {
 func (*ElasticsearchKubernetesElasticsearchContainer) ProtoMessage() {}
 
 func (x *ElasticsearchKubernetesElasticsearchContainer) ProtoReflect() protoreflect.Message {
-	mi := &file_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_v1_spec_proto_msgTypes[1]
+	mi := &file_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_v1_spec_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -136,7 +246,7 @@ func (x *ElasticsearchKubernetesElasticsearchContainer) ProtoReflect() protorefl
 
 // Deprecated: Use ElasticsearchKubernetesElasticsearchContainer.ProtoReflect.Descriptor instead.
 func (*ElasticsearchKubernetesElasticsearchContainer) Descriptor() ([]byte, []int) {
-	return file_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_v1_spec_proto_rawDescGZIP(), []int{1}
+	return file_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_v1_spec_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *ElasticsearchKubernetesElasticsearchContainer) GetReplicas() int32 {
@@ -153,9 +263,9 @@ func (x *ElasticsearchKubernetesElasticsearchContainer) GetResources() *kubernet
 	return nil
 }
 
-func (x *ElasticsearchKubernetesElasticsearchContainer) GetIsPersistenceEnabled() bool {
+func (x *ElasticsearchKubernetesElasticsearchContainer) GetPersistenceEnabled() bool {
 	if x != nil {
-		return x.IsPersistenceEnabled
+		return x.PersistenceEnabled
 	}
 	return false
 }
@@ -169,24 +279,21 @@ func (x *ElasticsearchKubernetesElasticsearchContainer) GetDiskSize() string {
 
 // **ElasticsearchKubernetesKibanaContainer** specifies the configuration for the Kibana container.
 // Kibana provides visualization capabilities for data stored in Elasticsearch.
-// This message allows you to enable Kibana, set the number of replicas, and allocate resources accordingly.
+// This message allows you to set the number of replicas and allocate resources accordingly.
 type ElasticsearchKubernetesKibanaContainer struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// A flag to enable or disable the deployment of Kibana for Elasticsearch.
-	// Defaults to `false`.
-	IsEnabled bool `protobuf:"varint,1,opt,name=is_enabled,json=isEnabled,proto3" json:"is_enabled,omitempty"`
 	// The number of Kibana pods to deploy.
 	// Recommended default is 1.
-	Replicas int32 `protobuf:"varint,2,opt,name=replicas,proto3" json:"replicas,omitempty"`
+	Replicas int32 `protobuf:"varint,1,opt,name=replicas,proto3" json:"replicas,omitempty"`
 	// The CPU and memory resources allocated to the Kibana container.
-	Resources     *kubernetes.ContainerResources `protobuf:"bytes,3,opt,name=resources,proto3" json:"resources,omitempty"`
+	Resources     *kubernetes.ContainerResources `protobuf:"bytes,2,opt,name=resources,proto3" json:"resources,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *ElasticsearchKubernetesKibanaContainer) Reset() {
 	*x = ElasticsearchKubernetesKibanaContainer{}
-	mi := &file_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_v1_spec_proto_msgTypes[2]
+	mi := &file_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_v1_spec_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -198,7 +305,7 @@ func (x *ElasticsearchKubernetesKibanaContainer) String() string {
 func (*ElasticsearchKubernetesKibanaContainer) ProtoMessage() {}
 
 func (x *ElasticsearchKubernetesKibanaContainer) ProtoReflect() protoreflect.Message {
-	mi := &file_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_v1_spec_proto_msgTypes[2]
+	mi := &file_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_v1_spec_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -211,14 +318,7 @@ func (x *ElasticsearchKubernetesKibanaContainer) ProtoReflect() protoreflect.Mes
 
 // Deprecated: Use ElasticsearchKubernetesKibanaContainer.ProtoReflect.Descriptor instead.
 func (*ElasticsearchKubernetesKibanaContainer) Descriptor() ([]byte, []int) {
-	return file_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_v1_spec_proto_rawDescGZIP(), []int{2}
-}
-
-func (x *ElasticsearchKubernetesKibanaContainer) GetIsEnabled() bool {
-	if x != nil {
-		return x.IsEnabled
-	}
-	return false
+	return file_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_v1_spec_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *ElasticsearchKubernetesKibanaContainer) GetReplicas() int32 {
@@ -235,61 +335,128 @@ func (x *ElasticsearchKubernetesKibanaContainer) GetResources() *kubernetes.Cont
 	return nil
 }
 
+// **ElasticsearchKubernetesIngress** defines the ingress configuration for Elasticsearch or Kibana.
+// It allows you to enable external access and specify the hostname.
+type ElasticsearchKubernetesIngress struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Flag to enable or disable ingress.
+	Enabled bool `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`
+	// The full hostname for external access (e.g., "elasticsearch.example.com").
+	// This hostname will be configured automatically via external-dns.
+	// Required when enabled is true.
+	Hostname      string `protobuf:"bytes,2,opt,name=hostname,proto3" json:"hostname,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ElasticsearchKubernetesIngress) Reset() {
+	*x = ElasticsearchKubernetesIngress{}
+	mi := &file_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_v1_spec_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ElasticsearchKubernetesIngress) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ElasticsearchKubernetesIngress) ProtoMessage() {}
+
+func (x *ElasticsearchKubernetesIngress) ProtoReflect() protoreflect.Message {
+	mi := &file_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_v1_spec_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ElasticsearchKubernetesIngress.ProtoReflect.Descriptor instead.
+func (*ElasticsearchKubernetesIngress) Descriptor() ([]byte, []int) {
+	return file_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_v1_spec_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *ElasticsearchKubernetesIngress) GetEnabled() bool {
+	if x != nil {
+		return x.Enabled
+	}
+	return false
+}
+
+func (x *ElasticsearchKubernetesIngress) GetHostname() string {
+	if x != nil {
+		return x.Hostname
+	}
+	return ""
+}
+
 var file_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_v1_spec_proto_extTypes = []protoimpl.ExtensionInfo{
 	{
 		ExtendedType:  (*descriptorpb.FieldOptions)(nil),
-		ExtensionType: (*ElasticsearchKubernetesElasticsearchContainer)(nil),
+		ExtensionType: (*ElasticsearchKubernetesElasticsearchSpec)(nil),
 		Field:         509001,
-		Name:          "project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.default_elasticsearch_container",
-		Tag:           "bytes,509001,opt,name=default_elasticsearch_container",
+		Name:          "project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.default_elasticsearch_spec",
+		Tag:           "bytes,509001,opt,name=default_elasticsearch_spec",
 		Filename:      "project/planton/provider/kubernetes/workload/elasticsearchkubernetes/v1/spec.proto",
 	},
 	{
 		ExtendedType:  (*descriptorpb.FieldOptions)(nil),
-		ExtensionType: (*ElasticsearchKubernetesKibanaContainer)(nil),
+		ExtensionType: (*ElasticsearchKubernetesKibanaSpec)(nil),
 		Field:         509002,
-		Name:          "project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.default_kibana_container",
-		Tag:           "bytes,509002,opt,name=default_kibana_container",
+		Name:          "project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.default_kibana_spec",
+		Tag:           "bytes,509002,opt,name=default_kibana_spec",
 		Filename:      "project/planton/provider/kubernetes/workload/elasticsearchkubernetes/v1/spec.proto",
 	},
 }
 
 // Extension fields to descriptorpb.FieldOptions.
 var (
-	// optional project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesElasticsearchContainer default_elasticsearch_container = 509001;
-	E_DefaultElasticsearchContainer = &file_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_v1_spec_proto_extTypes[0]
-	// optional project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesKibanaContainer default_kibana_container = 509002;
-	E_DefaultKibanaContainer = &file_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_v1_spec_proto_extTypes[1]
+	// optional project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesElasticsearchSpec default_elasticsearch_spec = 509001;
+	E_DefaultElasticsearchSpec = &file_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_v1_spec_proto_extTypes[0]
+	// optional project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesKibanaSpec default_kibana_spec = 509002;
+	E_DefaultKibanaSpec = &file_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_v1_spec_proto_extTypes[1]
 )
 
 var File_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_v1_spec_proto protoreflect.FileDescriptor
 
 const file_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Rproject/planton/provider/kubernetes/workload/elasticsearchkubernetes/v1/spec.proto\x12Gproject.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\x1a,project/planton/shared/options/options.proto\"\x8d\x04\n" +
-	"\x1bElasticsearchKubernetesSpec\x12\xdd\x01\n" +
-	"\x17elasticsearch_container\x18\x01 \x01(\v2v.project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesElasticsearchContainerB,\xca\xc4\xf8\x01'\b\x01\x12\x1c\n" +
+	"Rproject/planton/provider/kubernetes/workload/elasticsearchkubernetes/v1/spec.proto\x12Gproject.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\x1a,project/planton/shared/options/options.proto\"\x97\x03\n" +
+	"\x1bElasticsearchKubernetesSpec\x12\xc7\x01\n" +
+	"\relasticsearch\x18\x01 \x01(\v2q.project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesElasticsearchSpecB.\xca\xc4\xf8\x01)\n" +
+	"'\b\x01\x12\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
-	"\x0350m\x12\x05100Mi\x18\x01\"\x031GiR\x16elasticsearchContainer\x12\xc3\x01\n" +
-	"\x10kibana_container\x18\x02 \x01(\v2o.project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesKibanaContainerB'\xd2\xc4\xf8\x01\"\b\x01\x10\x01\x1a\x1c\n" +
+	"\x0350m\x12\x05100Mi\x18\x01\"\x031GiR\relasticsearch\x12\xad\x01\n" +
+	"\x06kibana\x18\x02 \x01(\v2j.project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesKibanaSpecB)\xd2\xc4\xf8\x01$\b\x01\x12 \b\x01\x12\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
-	"\x0350m\x12\x05100MiR\x0fkibanaContainer\x12H\n" +
-	"\aingress\x18\x03 \x01(\v2..project.planton.shared.kubernetes.IngressSpecR\aingress\"\xd3\x04\n" +
+	"\x0350m\x12\x05100MiR\x06kibana\"\xc5\x02\n" +
+	"(ElasticsearchKubernetesElasticsearchSpec\x12\x94\x01\n" +
+	"\tcontainer\x18\x01 \x01(\v2v.project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesElasticsearchContainerR\tcontainer\x12\x81\x01\n" +
+	"\aingress\x18\x02 \x01(\v2g.project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesIngressR\aingress\"\xd1\x02\n" +
+	"!ElasticsearchKubernetesKibanaSpec\x12\x18\n" +
+	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x8d\x01\n" +
+	"\tcontainer\x18\x02 \x01(\v2o.project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesKibanaContainerR\tcontainer\x12\x81\x01\n" +
+	"\aingress\x18\x03 \x01(\v2g.project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesIngressR\aingress\"\xd6\x04\n" +
 	"-ElasticsearchKubernetesElasticsearchContainer\x12\x1a\n" +
 	"\breplicas\x18\x01 \x01(\x05R\breplicas\x12S\n" +
-	"\tresources\x18\x02 \x01(\v25.project.planton.shared.kubernetes.ContainerResourcesR\tresources\x124\n" +
-	"\x16is_persistence_enabled\x18\x03 \x01(\bR\x14isPersistenceEnabled\x12\x1b\n" +
-	"\tdisk_size\x18\x04 \x01(\tR\bdiskSize:\xdd\x02\xbaH\xd9\x02\x1a\xd6\x02\n" +
-	"!spec.container.disk_size.required\x12IDisk size is required and must match the format if persistence is enabled\x1a\xe5\x01((!this.is_persistence_enabled && (size(this.disk_size) == 0 || this.disk_size == '')) || (this.is_persistence_enabled && size(this.disk_size) > 0 && this.disk_size.matches('^\\\\d+(\\\\.\\\\d+)?\\\\s?(Ki|Mi|Gi|Ti|Pi|Ei|K|M|G|T|P|E)$')))\"\xb8\x01\n" +
-	"&ElasticsearchKubernetesKibanaContainer\x12\x1d\n" +
-	"\n" +
-	"is_enabled\x18\x01 \x01(\bR\tisEnabled\x12\x1a\n" +
-	"\breplicas\x18\x02 \x01(\x05R\breplicas\x12S\n" +
-	"\tresources\x18\x03 \x01(\v25.project.planton.shared.kubernetes.ContainerResourcesR\tresources:\xdf\x01\n" +
-	"\x1fdefault_elasticsearch_container\x12\x1d.google.protobuf.FieldOptions\x18Ɉ\x1f \x01(\v2v.project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesElasticsearchContainerR\x1ddefaultElasticsearchContainer:\xca\x01\n" +
-	"\x18default_kibana_container\x12\x1d.google.protobuf.FieldOptions\x18ʈ\x1f \x01(\v2o.project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesKibanaContainerR\x16defaultKibanaContainerB\xb1\x04\n" +
+	"\tresources\x18\x02 \x01(\v25.project.planton.shared.kubernetes.ContainerResourcesR\tresources\x12/\n" +
+	"\x13persistence_enabled\x18\x03 \x01(\bR\x12persistenceEnabled\x12\x1b\n" +
+	"\tdisk_size\x18\x04 \x01(\tR\bdiskSize:\xe5\x02\xbaH\xe1\x02\x1a\xde\x02\n" +
+	"/spec.elasticsearch.container.disk_size.required\x12IDisk size is required and must match the format if persistence is enabled\x1a\xdf\x01((!this.persistence_enabled && (size(this.disk_size) == 0 || this.disk_size == '')) || (this.persistence_enabled && size(this.disk_size) > 0 && this.disk_size.matches('^\\\\d+(\\\\.\\\\d+)?\\\\s?(Ki|Mi|Gi|Ti|Pi|Ei|K|M|G|T|P|E)$')))\"\x99\x01\n" +
+	"&ElasticsearchKubernetesKibanaContainer\x12\x1a\n" +
+	"\breplicas\x18\x01 \x01(\x05R\breplicas\x12S\n" +
+	"\tresources\x18\x02 \x01(\v25.project.planton.shared.kubernetes.ContainerResourcesR\tresources\"\xd5\x01\n" +
+	"\x1eElasticsearchKubernetesIngress\x12\x18\n" +
+	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x1a\n" +
+	"\bhostname\x18\x02 \x01(\tR\bhostname:}\xbaHz\x1ax\n" +
+	"\x1espec.ingress.hostname.required\x12,hostname is required when ingress is enabled\x1a(!this.enabled || size(this.hostname) > 0:\xd0\x01\n" +
+	"\x1adefault_elasticsearch_spec\x12\x1d.google.protobuf.FieldOptions\x18Ɉ\x1f \x01(\v2q.project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesElasticsearchSpecR\x18defaultElasticsearchSpec:\xbb\x01\n" +
+	"\x13default_kibana_spec\x12\x1d.google.protobuf.FieldOptions\x18ʈ\x1f \x01(\v2j.project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesKibanaSpecR\x11defaultKibanaSpecB\xb1\x04\n" +
 	"Kcom.project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1B\tSpecProtoP\x01Z\x91\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/elasticsearchkubernetes/v1;elasticsearchkubernetesv1\xa2\x02\x06PPPKWE\xaa\x02GProject.Planton.Provider.Kubernetes.Workload.Elasticsearchkubernetes.V1\xca\x02GProject\\Planton\\Provider\\Kubernetes\\Workload\\Elasticsearchkubernetes\\V1\xe2\x02SProject\\Planton\\Provider\\Kubernetes\\Workload\\Elasticsearchkubernetes\\V1\\GPBMetadata\xea\x02MProject::Planton::Provider::Kubernetes::Workload::Elasticsearchkubernetes::V1b\x06proto3"
 
 var (
@@ -304,30 +471,35 @@ func file_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_v
 	return file_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_v1_spec_proto_rawDescData
 }
 
-var file_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_v1_spec_proto_goTypes = []any{
 	(*ElasticsearchKubernetesSpec)(nil),                   // 0: project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesSpec
-	(*ElasticsearchKubernetesElasticsearchContainer)(nil), // 1: project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesElasticsearchContainer
-	(*ElasticsearchKubernetesKibanaContainer)(nil),        // 2: project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesKibanaContainer
-	(*kubernetes.IngressSpec)(nil),                        // 3: project.planton.shared.kubernetes.IngressSpec
-	(*kubernetes.ContainerResources)(nil),                 // 4: project.planton.shared.kubernetes.ContainerResources
-	(*descriptorpb.FieldOptions)(nil),                     // 5: google.protobuf.FieldOptions
+	(*ElasticsearchKubernetesElasticsearchSpec)(nil),      // 1: project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesElasticsearchSpec
+	(*ElasticsearchKubernetesKibanaSpec)(nil),             // 2: project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesKibanaSpec
+	(*ElasticsearchKubernetesElasticsearchContainer)(nil), // 3: project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesElasticsearchContainer
+	(*ElasticsearchKubernetesKibanaContainer)(nil),        // 4: project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesKibanaContainer
+	(*ElasticsearchKubernetesIngress)(nil),                // 5: project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesIngress
+	(*kubernetes.ContainerResources)(nil),                 // 6: project.planton.shared.kubernetes.ContainerResources
+	(*descriptorpb.FieldOptions)(nil),                     // 7: google.protobuf.FieldOptions
 }
 var file_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_v1_spec_proto_depIdxs = []int32{
-	1, // 0: project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesSpec.elasticsearch_container:type_name -> project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesElasticsearchContainer
-	2, // 1: project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesSpec.kibana_container:type_name -> project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesKibanaContainer
-	3, // 2: project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesSpec.ingress:type_name -> project.planton.shared.kubernetes.IngressSpec
-	4, // 3: project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesElasticsearchContainer.resources:type_name -> project.planton.shared.kubernetes.ContainerResources
-	4, // 4: project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesKibanaContainer.resources:type_name -> project.planton.shared.kubernetes.ContainerResources
-	5, // 5: project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.default_elasticsearch_container:extendee -> google.protobuf.FieldOptions
-	5, // 6: project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.default_kibana_container:extendee -> google.protobuf.FieldOptions
-	1, // 7: project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.default_elasticsearch_container:type_name -> project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesElasticsearchContainer
-	2, // 8: project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.default_kibana_container:type_name -> project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesKibanaContainer
-	9, // [9:9] is the sub-list for method output_type
-	9, // [9:9] is the sub-list for method input_type
-	7, // [7:9] is the sub-list for extension type_name
-	5, // [5:7] is the sub-list for extension extendee
-	0, // [0:5] is the sub-list for field type_name
+	1,  // 0: project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesSpec.elasticsearch:type_name -> project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesElasticsearchSpec
+	2,  // 1: project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesSpec.kibana:type_name -> project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesKibanaSpec
+	3,  // 2: project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesElasticsearchSpec.container:type_name -> project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesElasticsearchContainer
+	5,  // 3: project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesElasticsearchSpec.ingress:type_name -> project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesIngress
+	4,  // 4: project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesKibanaSpec.container:type_name -> project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesKibanaContainer
+	5,  // 5: project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesKibanaSpec.ingress:type_name -> project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesIngress
+	6,  // 6: project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesElasticsearchContainer.resources:type_name -> project.planton.shared.kubernetes.ContainerResources
+	6,  // 7: project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesKibanaContainer.resources:type_name -> project.planton.shared.kubernetes.ContainerResources
+	7,  // 8: project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.default_elasticsearch_spec:extendee -> google.protobuf.FieldOptions
+	7,  // 9: project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.default_kibana_spec:extendee -> google.protobuf.FieldOptions
+	1,  // 10: project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.default_elasticsearch_spec:type_name -> project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesElasticsearchSpec
+	2,  // 11: project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.default_kibana_spec:type_name -> project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesKibanaSpec
+	12, // [12:12] is the sub-list for method output_type
+	12, // [12:12] is the sub-list for method input_type
+	10, // [10:12] is the sub-list for extension type_name
+	8,  // [8:10] is the sub-list for extension extendee
+	0,  // [0:8] is the sub-list for field type_name
 }
 
 func init() {
@@ -343,7 +515,7 @@ func file_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_v
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_v1_spec_proto_rawDesc), len(file_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_v1_spec_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   3,
+			NumMessages:   6,
 			NumExtensions: 2,
 			NumServices:   0,
 		},

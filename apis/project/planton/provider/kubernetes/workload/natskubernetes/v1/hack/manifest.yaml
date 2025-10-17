@@ -19,7 +19,7 @@ spec:
   disableNatsBox: false
   ingress:
     enabled: true
-    dnsDomain: planton.live
+    hostname: nats-basic.planton.live
   auth:
     enabled: true
     scheme: basic_auth

@@ -69,7 +69,7 @@ func buildReplicaSets(
 	replset.Resources = buildResources(spec.Container)
 
 	// Configure persistence if enabled
-	if spec.Container.IsPersistenceEnabled && spec.Container.DiskSize != "" {
+	if spec.Container.PersistenceEnabled && spec.Container.DiskSize != "" {
 		replset.VolumeSpec = buildVolumeSpec(spec.Container.DiskSize)
 	}
 

@@ -39,7 +39,10 @@ var _ = ginkgo.Describe("OpenFgaKubernetes Custom Validation Tests", func() {
 						},
 					},
 				},
-				Ingress: nil,
+				Ingress: &OpenFgaKubernetesIngress{
+					Enabled:  true,
+					Hostname: "test-openfga.example.com",
+				},
 				Datastore: &OpenFgaKubernetesDataStore{
 					Engine: "postgres",
 					Uri:    "postgres://user:pass@localhost:5432/testdb",

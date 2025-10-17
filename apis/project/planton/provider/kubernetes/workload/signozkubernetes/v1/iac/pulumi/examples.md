@@ -223,19 +223,20 @@ spec:
         isEnabled: false
       zookeeper:
         isEnabled: false
-  signozIngress:
-    enabled: true
-    dnsDomain: example.com
-  otelCollectorIngress:
-    enabled: true
-    dnsDomain: example.com
+  ingress:
+    ui:
+      enabled: true
+      hostname: signoz.example.com
+    otelCollector:
+      enabled: true
+      hostname: signoz-ingest.example.com
 ```
 
 **Key points**:
-- LoadBalancer services with external DNS annotations
-- External hostname for UI: `signoz-ingress.example.com`
-- External hostnames for OTel Collector gRPC and HTTP endpoints
-- Both UI and data ingestion accessible externally
+- Gateway API resources for external access
+- External hostname for UI: `signoz.example.com`
+- External hostname for OTel Collector HTTP endpoint: `signoz-ingest.example.com`
+- Both UI and data ingestion accessible externally via HTTPS
 
 ---
 

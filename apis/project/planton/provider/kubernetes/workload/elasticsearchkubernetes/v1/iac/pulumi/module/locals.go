@@ -3,6 +3,7 @@ package module
 import (
 	"fmt"
 	"strconv"
+	"strings"
 
 	elasticsearchkubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/elasticsearchkubernetes/v1"
 	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
@@ -13,14 +14,12 @@ import (
 
 type Locals struct {
 	ElasticsearchIngressExternalHostname string
-	ElasticsearchIngressInternalHostname string
 	ElasticsearchKubePortForwardCommand  string
 	ElasticsearchKubeServiceFqdn         string
 	ElasticsearchKubeServiceName         string
 	Namespace                            string
 	ElasticsearchKubernetes              *elasticsearchkubernetesv1.ElasticsearchKubernetes
 	KibanaIngressExternalHostname        string
-	KibanaIngressInternalHostname        string
 	KibanaKubePortForwardCommand         string
 	KibanaKubeServiceFqdn                string
 	KibanaKubeServiceName                string
@@ -109,40 +108,41 @@ func initializeLocals(ctx *pulumi.Context, stackInput *elasticsearchkubernetesv1
 	//export kube-port-forward command
 	ctx.Export(OpKibanaPortForwardCommand, pulumi.String(locals.KibanaKubePortForwardCommand))
 
-	if target.Spec.Ingress == nil ||
-		!target.Spec.Ingress.Enabled ||
-		target.Spec.Ingress.DnsDomain == "" {
-		return locals
+	// Elasticsearch ingress
+	if target.Spec.Elasticsearch.Ingress != nil &&
+		target.Spec.Elasticsearch.Ingress.Enabled &&
+		target.Spec.Elasticsearch.Ingress.Hostname != "" {
+
+		locals.ElasticsearchIngressExternalHostname = target.Spec.Elasticsearch.Ingress.Hostname
+		ctx.Export(OpElasticsearchExternalHostname, pulumi.String(locals.ElasticsearchIngressExternalHostname))
+		locals.IngressHostnames = append(locals.IngressHostnames, locals.ElasticsearchIngressExternalHostname)
 	}
 
-	locals.ElasticsearchIngressExternalHostname = fmt.Sprintf("%s.%s", locals.Namespace,
-		target.Spec.Ingress.DnsDomain)
+	// Kibana ingress
+	if target.Spec.Kibana != nil && target.Spec.Kibana.Enabled &&
+		target.Spec.Kibana.Ingress != nil &&
+		target.Spec.Kibana.Ingress.Enabled &&
+		target.Spec.Kibana.Ingress.Hostname != "" {
 
-	locals.ElasticsearchIngressInternalHostname = fmt.Sprintf("%s-internal.%s", locals.Namespace,
-		target.Spec.Ingress.DnsDomain)
-
-	locals.KibanaIngressExternalHostname = fmt.Sprintf("%s-kb.%s", locals.Namespace,
-		target.Spec.Ingress.DnsDomain)
-
-	locals.KibanaIngressInternalHostname = fmt.Sprintf("%s-kb-internal.%s", locals.Namespace,
-		target.Spec.Ingress.DnsDomain)
-
-	locals.IngressHostnames = []string{
-		locals.ElasticsearchIngressExternalHostname,
-		locals.ElasticsearchIngressInternalHostname,
-		locals.KibanaIngressExternalHostname,
-		locals.KibanaIngressInternalHostname,
+		locals.KibanaIngressExternalHostname = target.Spec.Kibana.Ingress.Hostname
+		ctx.Export(OpKibanaExternalHostname, pulumi.String(locals.KibanaIngressExternalHostname))
+		locals.IngressHostnames = append(locals.IngressHostnames, locals.KibanaIngressExternalHostname)
 	}
 
-	locals.IngressCertClusterIssuerName = target.Spec.Ingress.DnsDomain
-
-	locals.IngressCertSecretName = locals.Namespace
-
-	//export ingress hostnames
-	ctx.Export(OpElasticsearchExternalHostname, pulumi.String(locals.ElasticsearchIngressExternalHostname))
-	ctx.Export(OpElasticsearchInternalHostname, pulumi.String(locals.ElasticsearchIngressInternalHostname))
-	ctx.Export(OpKibanaExternalHostname, pulumi.String(locals.KibanaIngressExternalHostname))
-	ctx.Export(OpKibanaInternalHostname, pulumi.String(locals.KibanaIngressInternalHostname))
+	// Set certificate issuer and secret name if any ingress is enabled
+	if len(locals.IngressHostnames) > 0 {
+		// Use first available hostname to extract domain for cert issuer
+		firstHostname := locals.ElasticsearchIngressExternalHostname
+		if firstHostname == "" {
+			firstHostname = locals.KibanaIngressExternalHostname
+		}
+		// Extract domain from hostname for cert issuer
+		parts := strings.Split(firstHostname, ".")
+		if len(parts) > 1 {
+			locals.IngressCertClusterIssuerName = strings.Join(parts[1:], ".")
+		}
+		locals.IngressCertSecretName = locals.Namespace
+	}
 
 	return locals
 }

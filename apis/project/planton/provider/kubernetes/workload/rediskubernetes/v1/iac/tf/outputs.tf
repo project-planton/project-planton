@@ -22,8 +22,3 @@ output "external_hostname" {
   description = "The external LB hostname, if ingress is enabled."
   value       = local.ingress_external_hostname
 }
-
-output "internal_hostname" {
-  description = "The internal LB hostname, if ingress is enabled."
-  value       = local.ingress_internal_hostname
-}

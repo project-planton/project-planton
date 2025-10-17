@@ -76,7 +76,7 @@ func ingress(ctx *pulumi.Context,
 					},
 					&gatewayv1.GatewaySpecListenersArgs{
 						Name:     pulumi.String("http-external"),
-						Hostname: pulumi.String(locals.IngressInternalHostname),
+						Hostname: pulumi.String(locals.IngressExternalHostname),
 						Port:     pulumi.Int(80),
 						Protocol: pulumi.String("HTTP"),
 						AllowedRoutes: gatewayv1.GatewaySpecListenersAllowedRoutesArgs{

@@ -18,9 +18,10 @@ func createOtelCollectorIngress(ctx *pulumi.Context, locals *Locals, kubernetesP
 	createdNamespace *kubernetescorev1.Namespace) error {
 
 	// Skip if ingress is not enabled
-	if locals.SignozKubernetes.Spec.OtelCollectorIngress == nil ||
-		!locals.SignozKubernetes.Spec.OtelCollectorIngress.Enabled ||
-		locals.SignozKubernetes.Spec.OtelCollectorIngress.DnsDomain == "" {
+	if locals.SignozKubernetes.Spec.Ingress == nil ||
+		locals.SignozKubernetes.Spec.Ingress.OtelCollector == nil ||
+		!locals.SignozKubernetes.Spec.Ingress.OtelCollector.Enabled ||
+		locals.SignozKubernetes.Spec.Ingress.OtelCollector.Hostname == "" {
 		return nil
 	}
 

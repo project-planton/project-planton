@@ -53,7 +53,8 @@ spec:
         cpu: 1500m
         memory: 3Gi
   ingress:
-    isEnabled: true
+    enabled: true
+    hostname: neo4j.example.com
 ```
 
 ---

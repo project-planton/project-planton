@@ -21,7 +21,7 @@ func helmChart(
 	// honour ingress settings
 	ingressEnabled := locals.Neo4jKubernetes.Spec.Ingress != nil &&
 		locals.Neo4jKubernetes.Spec.Ingress.Enabled &&
-		locals.Neo4jKubernetes.Spec.Ingress.DnsDomain != ""
+		locals.Neo4jKubernetes.Spec.Ingress.Hostname != ""
 
 	// optional external LB
 	externalSvc := pulumi.Map{

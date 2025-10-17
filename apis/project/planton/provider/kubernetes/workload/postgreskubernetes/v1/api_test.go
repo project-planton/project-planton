@@ -40,8 +40,9 @@ var _ = ginkgo.Describe("PostgresKubernetes Custom Validation Tests", func() {
 					},
 					DiskSize: "2Gi", // valid disk size
 				},
-				Ingress: &kubernetes.IngressSpec{
-					DnsDomain: "postgres.example.com",
+				Ingress: &PostgresKubernetesIngress{
+					Enabled:  true,
+					Hostname: "postgres.example.com",
 				},
 			},
 		}

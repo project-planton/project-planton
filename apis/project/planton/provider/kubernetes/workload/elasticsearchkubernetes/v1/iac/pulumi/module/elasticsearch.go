@@ -14,7 +14,7 @@ func elasticsearch(ctx *pulumi.Context,
 	createdNamespace *kubernetescorev1.Namespace) error {
 
 	var volumeClaimTemplates = &elasticsearchv1.ElasticsearchSpecNodeSetsVolumeClaimTemplatesArray{}
-	if locals.ElasticsearchKubernetes.Spec.ElasticsearchContainer.IsPersistenceEnabled {
+	if locals.ElasticsearchKubernetes.Spec.Elasticsearch.Container.PersistenceEnabled {
 		volumeClaimTemplates = &elasticsearchv1.ElasticsearchSpecNodeSetsVolumeClaimTemplatesArray{
 			elasticsearchv1.ElasticsearchSpecNodeSetsVolumeClaimTemplatesArgs{
 				Metadata: &elasticsearchv1.ElasticsearchSpecNodeSetsVolumeClaimTemplatesMetadataArgs{
@@ -26,7 +26,7 @@ func elasticsearch(ctx *pulumi.Context,
 					},
 					Resources: &elasticsearchv1.ElasticsearchSpecNodeSetsVolumeClaimTemplatesSpecResourcesArgs{
 						Requests: pulumi.Map{
-							"storage": pulumi.String(locals.ElasticsearchKubernetes.Spec.ElasticsearchContainer.DiskSize),
+							"storage": pulumi.String(locals.ElasticsearchKubernetes.Spec.Elasticsearch.Container.DiskSize),
 						},
 					},
 				},
@@ -47,7 +47,7 @@ func elasticsearch(ctx *pulumi.Context,
 			NodeSets: elasticsearchv1.ElasticsearchSpecNodeSetsArray{
 				elasticsearchv1.ElasticsearchSpecNodeSetsArgs{
 					Name:  pulumi.String("elasticsearch"),
-					Count: pulumi.Int(locals.ElasticsearchKubernetes.Spec.ElasticsearchContainer.Replicas),
+					Count: pulumi.Int(locals.ElasticsearchKubernetes.Spec.Elasticsearch.Container.Replicas),
 					Config: pulumi.Map{
 						"node.roles":            pulumi.ToStringArray([]string{"master", "data", "ingest"}),
 						"node.store.allow_mmap": pulumi.Bool(false),
@@ -64,12 +64,12 @@ func elasticsearch(ctx *pulumi.Context,
 									"name": pulumi.String("elasticsearch"),
 									"resources": pulumi.Map{
 										"requests": pulumi.Map{
-											"memory": pulumi.String(locals.ElasticsearchKubernetes.Spec.ElasticsearchContainer.Resources.Requests.Memory),
-											"cpu":    pulumi.String(locals.ElasticsearchKubernetes.Spec.ElasticsearchContainer.Resources.Requests.Cpu),
+											"memory": pulumi.String(locals.ElasticsearchKubernetes.Spec.Elasticsearch.Container.Resources.Requests.Memory),
+											"cpu":    pulumi.String(locals.ElasticsearchKubernetes.Spec.Elasticsearch.Container.Resources.Requests.Cpu),
 										},
 										"limits": pulumi.Map{
-											"memory": pulumi.String(locals.ElasticsearchKubernetes.Spec.ElasticsearchContainer.Resources.Limits.Memory),
-											"cpu":    pulumi.String(locals.ElasticsearchKubernetes.Spec.ElasticsearchContainer.Resources.Limits.Cpu),
+											"memory": pulumi.String(locals.ElasticsearchKubernetes.Spec.Elasticsearch.Container.Resources.Limits.Memory),
+											"cpu":    pulumi.String(locals.ElasticsearchKubernetes.Spec.Elasticsearch.Container.Resources.Limits.Cpu),
 										},
 									},
 								},
@@ -93,7 +93,7 @@ func elasticsearch(ctx *pulumi.Context,
 		return errors.Wrapf(err, "failed to create elastic search")
 	}
 
-	if locals.ElasticsearchKubernetes.Spec.KibanaContainer.IsEnabled {
+	if locals.ElasticsearchKubernetes.Spec.Kibana.Enabled {
 		_, err = kibanav1.NewKibana(ctx, locals.ElasticsearchKubernetes.Metadata.Name, &kibanav1.KibanaArgs{
 			Metadata: metav1.ObjectMetaArgs{
 				Name:      pulumi.String(locals.ElasticsearchKubernetes.Metadata.Name),
@@ -105,7 +105,7 @@ func elasticsearch(ctx *pulumi.Context,
 			},
 			Spec: &kibanav1.KibanaSpecArgs{
 				Version: pulumi.String(vars.ElasticsearchVersion),
-				Count:   pulumi.Int(locals.ElasticsearchKubernetes.Spec.KibanaContainer.Replicas),
+				Count:   pulumi.Int(locals.ElasticsearchKubernetes.Spec.Kibana.Container.Replicas),
 				PodTemplate: pulumi.Map{
 					"spec": pulumi.Map{
 						"containers": pulumi.Array{
@@ -113,12 +113,12 @@ func elasticsearch(ctx *pulumi.Context,
 								"name": pulumi.String("kibana"),
 								"resources": pulumi.Map{
 									"requests": pulumi.Map{
-										"memory": pulumi.String(locals.ElasticsearchKubernetes.Spec.KibanaContainer.Resources.Requests.Memory),
-										"cpu":    pulumi.String(locals.ElasticsearchKubernetes.Spec.KibanaContainer.Resources.Requests.Cpu),
+										"memory": pulumi.String(locals.ElasticsearchKubernetes.Spec.Kibana.Container.Resources.Requests.Memory),
+										"cpu":    pulumi.String(locals.ElasticsearchKubernetes.Spec.Kibana.Container.Resources.Requests.Cpu),
 									},
 									"limits": pulumi.Map{
-										"memory": pulumi.String(locals.ElasticsearchKubernetes.Spec.KibanaContainer.Resources.Limits.Memory),
-										"cpu":    pulumi.String(locals.ElasticsearchKubernetes.Spec.KibanaContainer.Resources.Limits.Cpu),
+										"memory": pulumi.String(locals.ElasticsearchKubernetes.Spec.Kibana.Container.Resources.Limits.Memory),
+										"cpu":    pulumi.String(locals.ElasticsearchKubernetes.Spec.Kibana.Container.Resources.Limits.Cpu),
 									},
 								},
 							},
