@@ -22,7 +22,7 @@ func AddAwsCredentialEnvVars(stackInputContentMap map[string]interface{},
 		return credentialEnvVars, nil
 	}
 
-	credentialEnvVars["AWS_REGION"] = credentialSpec.Region
+	credentialEnvVars["AWS_REGION"] = credentialSpec.GetRegion()
 	credentialEnvVars["AWS_ACCESS_KEY_ID"] = credentialSpec.AccessKeyId
 	credentialEnvVars["AWS_SECRET_ACCESS_KEY"] = credentialSpec.SecretAccessKey
 

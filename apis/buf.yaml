@@ -2,9 +2,12 @@ version: v2
 name: buf.build/project-planton/apis
 deps:
   - buf.build/bufbuild/protovalidate
+plugins:
+  - plugin: buf-plugin-planton
 lint:
   use:
     - STANDARD
+    - DEFAULT_REQUIRES_OPTIONAL
   except:
     - FIELD_NOT_REQUIRED
     - PACKAGE_NO_IMPORT_CYCLE
