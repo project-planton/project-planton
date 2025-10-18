@@ -3,6 +3,7 @@ syntax = "proto3";
 package project.planton.shared;
 
 import "buf/validate/validate.proto";
+import "project/planton/shared/relationship/v1/relationship.proto";
 
 //metadata for all resource objects on planton-cloud
 message ApiResourceMetadata {
@@ -24,6 +25,8 @@ message ApiResourceMetadata {
   repeated string tags = 8;
   //metadata for resource version
   ApiResourceMetadataVersion version = 9;
+  //explicit relationships for the cloud-resource with other cloud-resources
+  repeated project.planton.shared.relationship.v1.CloudResourceRelationship relationships = 10;
 }
 
 // version information for api-resource to be used in api-resource metadata
