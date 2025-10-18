@@ -1,12 +1,9 @@
 package pulumistack
 
 import (
-	"bytes"
 	"fmt"
-	"io"
 	"os"
 	"os/exec"
-	"strings"
 
 	"github.com/pkg/errors"
 	"github.com/project-planton/project-planton/apis/project/planton/shared/iac/pulumi"
@@ -19,7 +16,7 @@ import (
 )
 
 func Run(moduleDir, stackFqdn, targetManifestPath string, pulumiOperation pulumi.PulumiOperationType,
-	isUpdatePreview bool, isAutoApprove bool, valueOverrides map[string]string,
+	isUpdatePreview bool, isAutoApprove bool, valueOverrides map[string]string, showDiff bool,
 	credentialOptions ...stackinputcredentials.StackInputCredentialOption) error {
 	opts := stackinputcredentials.StackInputCredentialOptions{}
 	for _, opt := range credentialOptions {
@@ -84,14 +81,17 @@ func Run(moduleDir, stackFqdn, targetManifestPath string, pulumiOperation pulumi
 		op = "preview"
 	}
 
-	// Build pulumi command with optional flags for non-interactive runs
-	args := []string{op, "--stack", finalStackFqdn, "--non-interactive"}
+	// Build pulumi command with optional flags
+	args := []string{op, "--stack", finalStackFqdn}
 	if isAutoApprove {
 		args = append(args, "--yes")
 		// For 'pulumi up', skip preview to avoid TTY prompts in CI/non-interactive shells
 		if op == "up" {
 			args = append(args, "--skip-preview")
 		}
+	}
+	if showDiff {
+		args = append(args, "--diff")
 	}
 
 	pulumiCmd := exec.Command("pulumi", args...)
@@ -102,26 +102,15 @@ func Run(moduleDir, stackFqdn, targetManifestPath string, pulumiOperation pulumi
 	// Set the working directory to the repository path
 	pulumiCmd.Dir = pulumiModuleRepoPath
 
-	// Stream to terminal and also capture output for error classification
-	buf := &bytes.Buffer{}
-	mwOut := io.MultiWriter(os.Stdout, buf)
-	mwErr := io.MultiWriter(os.Stderr, buf)
-
-	// Set stdin, stdout, and stderr to the current terminal to make it an interactive shell
+	// Set stdin, stdout, and stderr directly to the terminal for interactive output
+	// This allows Pulumi to detect TTY and use the interactive tree view
 	pulumiCmd.Stdin = os.Stdin
-	pulumiCmd.Stdout = mwOut
-	pulumiCmd.Stderr = mwErr
+	pulumiCmd.Stdout = os.Stdout
+	pulumiCmd.Stderr = os.Stderr
 
 	fmt.Printf("\npulumi module directory: %s \n", pulumiModuleRepoPath)
 
 	if err := pulumiCmd.Run(); err != nil {
-		// For preview/update/refresh/destroy, Pulumi can return non-zero even when
-		// operation printed a valid plan/result. If no 'error:' diagnostics exist,
-		// treat it as success to avoid false negatives in non-interactive mode.
-		out := buf.String()
-		if !strings.Contains(out, "error:") {
-			return nil
-		}
 		return errors.Wrapf(err, "failed to execute pulumi command %s", op)
 	}
 

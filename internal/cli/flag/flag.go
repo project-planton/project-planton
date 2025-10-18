@@ -14,6 +14,7 @@ const (
 	BackendType            Flag = "backend-type"
 	ConfluentCredential    Flag = "confluent-credential"
 	Destroy                Flag = "destroy"
+	Diff                   Flag = "diff"
 	DockerCredential       Flag = "docker-credential"
 	Force                  Flag = "force"
 	GcpCredential          Flag = "gcp-credential"
