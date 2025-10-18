@@ -1,7 +1,6 @@
 package manifest
 
 import (
-	"fmt"
 	"io"
 	"net/http"
 	"net/url"
@@ -160,8 +159,8 @@ func formatUnsupportedResourceError(kindName string) error {
 
 	msg.WriteString(cyan("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n"))
 
-	msg.WriteString(fmt.Sprintf(bold("💡 TIP: ") + "If you're developing a new cloud resource, ensure the proto files\n"))
-	msg.WriteString(fmt.Sprintf("   are compiled and the CLI binary is rebuilt.\n\n"))
+	msg.WriteString(bold("💡 TIP: ") + "If you're developing a new cloud resource, ensure the proto files\n")
+	msg.WriteString("   are compiled and the CLI binary is rebuilt.\n\n")
 
 	return errors.New(msg.String())
 }
