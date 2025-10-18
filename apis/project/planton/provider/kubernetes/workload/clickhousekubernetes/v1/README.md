@@ -62,7 +62,11 @@ ClickHouse clusters require coordination services for distributed operations (DD
 
 ### Networking and Ingress
 
-- **Ingress Configuration**: Set up Kubernetes Ingress resources to manage external access to ClickHouse, including hostname and path routing.
+- **Ingress Configuration**: Enable external access to ClickHouse via LoadBalancer service with automatic DNS configuration.
+  - **Enable/Disable**: Toggle ingress on or off.
+  - **Hostname**: Specify the full hostname for external access (e.g., `clickhouse.example.com`).
+  - Exposes both HTTP (8123) and native protocol (9000) ports.
+  - Uses `external-dns` annotations for automatic DNS record creation.
 
 ## Benefits
 

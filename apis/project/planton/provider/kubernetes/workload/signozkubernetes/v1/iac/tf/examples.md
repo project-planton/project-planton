@@ -297,14 +297,15 @@ module "signoz_with_ingress" {
       }
     }
 
-    signoz_ingress = {
-      is_enabled = true
-      dns_domain = "example.com"
-    }
-
-    otel_collector_ingress = {
-      is_enabled = true
-      dns_domain = "example.com"
+    ingress = {
+      ui = {
+        enabled  = true
+        hostname = "signoz.example.com"
+      }
+      otel_collector = {
+        enabled  = true
+        hostname = "signoz-ingest.example.com"
+      }
     }
   }
 }

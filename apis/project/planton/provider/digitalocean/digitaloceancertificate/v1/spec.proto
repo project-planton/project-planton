@@ -3,7 +3,6 @@ syntax = "proto3";
 package project.planton.provider.digitalocean.digitaloceancertificate.v1;
 
 import "buf/validate/validate.proto";
-import "project/planton/shared/options/options.proto";
 
 // DigitalOceanCertificateSpec defines the fields required to create an SSL certificate in DigitalOcean.
 message DigitalOceanCertificateSpec {

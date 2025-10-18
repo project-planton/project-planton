@@ -38,7 +38,7 @@ Deploying and managing PostgreSQL databases in Kubernetes can be complex due to 
 
 ### Ingress Configuration
 
-- **Ingress Spec**: Manage and control ingress traffic to the PostgreSQL instance by configuring ingress rules to expose the PostgreSQL service securely.
+- **Ingress Spec**: Manage and control external access to the PostgreSQL instance by configuring ingress with a custom hostname. When enabled, creates a LoadBalancer service with external-dns annotations for automatic DNS configuration. Users specify the exact hostname (e.g., `postgres.example.com`) instead of auto-constructed patterns, providing full control over the ingress endpoint.
 
 ## Benefits
 

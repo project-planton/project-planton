@@ -5,8 +5,6 @@ package project.planton.provider.kubernetes.workload.rediskubernetes.v1;
 import "buf/validate/validate.proto";
 import "google/protobuf/descriptor.proto";
 import "project/planton/shared/kubernetes/kubernetes.proto";
-import "project/planton/shared/kubernetes/options.proto";
-import "project/planton/shared/options/options.proto";
 
 extend google.protobuf.FieldOptions {
   RedisKubernetesContainer default_container = 537001;
@@ -36,7 +34,7 @@ message RedisKubernetesSpec {
   }];
 
   //The ingress configuration for the Redis deployment.
-  project.planton.shared.kubernetes.IngressSpec ingress = 2;
+  RedisKubernetesIngress ingress = 2;
 }
 
 // RedisKubernetesContainer defines the container specifications for the Redis deployment.
@@ -73,4 +71,24 @@ message RedisKubernetesContainer {
   };
 
   string disk_size = 4;
+}
+
+/**
+ * RedisKubernetesIngress defines the ingress configuration for Redis.
+ */
+message RedisKubernetesIngress {
+  // Flag to enable or disable ingress.
+  // When enabled, creates a LoadBalancer service with external-dns annotations.
+  bool enabled = 1;
+
+  // The full hostname for external access (e.g., "redis.example.com").
+  // This hostname will be configured automatically via external-dns.
+  // Required when enabled is true.
+  string hostname = 2;
+
+  option (buf.validate.message).cel = {
+    id: "spec.ingress.hostname.required"
+    expression: "!this.enabled || size(this.hostname) > 0"
+    message: "hostname is required when ingress is enabled"
+  };
 }

@@ -155,7 +155,7 @@ var File_project_planton_provider_kubernetes_workload_temporalkubernetes_v1_api_
 
 const file_project_planton_provider_kubernetes_workload_temporalkubernetes_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Lproject/planton/provider/kubernetes/workload/temporalkubernetes/v1/api.proto\x12Bproject.planton.provider.kubernetes.workload.temporalkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1aMproject/planton/provider/kubernetes/workload/temporalkubernetes/v1/spec.proto\x1aVproject/planton/provider/kubernetes/workload/temporalkubernetes/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\x1a#project/planton/shared/status.proto\"\xcd\x03\n" +
+	"Lproject/planton/provider/kubernetes/workload/temporalkubernetes/v1/api.proto\x12Bproject.planton.provider.kubernetes.workload.temporalkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1aMproject/planton/provider/kubernetes/workload/temporalkubernetes/v1/spec.proto\x1aVproject/planton/provider/kubernetes/workload/temporalkubernetes/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xcd\x03\n" +
 	"\x12TemporalKubernetes\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!kubernetes.project-planton.org/v1R\n" +

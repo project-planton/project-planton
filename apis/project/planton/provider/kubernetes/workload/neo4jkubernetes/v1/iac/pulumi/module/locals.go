@@ -27,9 +27,8 @@ type Locals struct {
 	// Pod selector labels for identifying the pods that run Neo4j.
 	Neo4jPodSelectorLabels map[string]string
 
-	// Calculated hostnames for external or internal Ingress usage.
+	// Calculated hostname for external Ingress usage.
 	IngressExternalHostname string
-	IngressInternalHostname string
 
 	// The name of the Kubernetes Service for the Neo4j instance.
 	KubeServiceName string
@@ -101,15 +100,12 @@ func initializeLocals(
 		locals.Namespace, locals.KubeServiceName)
 	ctx.Export(OpPortForwardCommand, pulumi.String(locals.KubePortForwardCommand))
 
-	// If ingress is enabled, set up external and internal hostnames.
+	// If ingress is enabled, use the hostname directly
 	if target.Spec.Ingress != nil &&
 		target.Spec.Ingress.Enabled &&
-		target.Spec.Ingress.DnsDomain != "" {
-		locals.IngressExternalHostname = fmt.Sprintf("%s.%s", locals.Namespace, target.Spec.Ingress.DnsDomain)
-		locals.IngressInternalHostname = fmt.Sprintf("%s-internal.%s", locals.Namespace, target.Spec.Ingress.DnsDomain)
-
+		target.Spec.Ingress.Hostname != "" {
+		locals.IngressExternalHostname = target.Spec.Ingress.Hostname
 		ctx.Export(OpExternalHostname, pulumi.String(locals.IngressExternalHostname))
-		ctx.Export(OpInternalHostname, pulumi.String(locals.IngressInternalHostname))
 	}
 
 	return locals

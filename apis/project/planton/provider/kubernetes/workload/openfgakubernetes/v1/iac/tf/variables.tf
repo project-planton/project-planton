@@ -53,10 +53,10 @@ variable "spec" {
     ingress = object({
 
       # A flag to enable or disable ingress.
-      is_enabled = bool
+      enabled = bool
 
-      # The dns domain.
-      dns_domain = string
+      # The full hostname for external access (e.g., "openfga.example.com").
+      hostname = string
     })
 
     # The data store configuration for OpenFGA.

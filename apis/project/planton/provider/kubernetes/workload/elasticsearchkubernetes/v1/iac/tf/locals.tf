@@ -35,50 +35,35 @@ locals {
   # Namespace is the resource_id
   namespace = local.resource_id
 
-  # Elasticsearch service name (ex: "myes-es-http")
+  # Service names and endpoints
   elasticsearch_kube_service_name = "${var.metadata.name}-es-http"
   elasticsearch_kube_service_fqdn = "${local.elasticsearch_kube_service_name}.${local.namespace}.svc.cluster.local"
   elasticsearch_kube_port_forward_command = "kubectl port-forward -n ${local.namespace} service/${local.elasticsearch_kube_service_name} 9200:9200"
 
-  # Kibana service name (ex: "myes-kb-http")
   kibana_kube_service_name = "${var.metadata.name}-kb-http"
   kibana_kube_service_fqdn = "${local.kibana_kube_service_name}.${local.namespace}.svc.cluster.local"
   kibana_kube_port_forward_command = "kubectl port-forward -n ${local.namespace} service/${local.kibana_kube_service_name} 5601:5601"
 
-  # Safely handle optional ingress fields via try(...)
-  ingress_is_enabled = try(var.spec.ingress.is_enabled, false)
-  ingress_dns_domain = try(var.spec.ingress.dns_domain, "")
+  # Elasticsearch ingress
+  elasticsearch_ingress_is_enabled = try(var.spec.elasticsearch.ingress.enabled, false)
+  elasticsearch_ingress_external_hostname = try(var.spec.elasticsearch.ingress.hostname, null)
 
-  # Elasticsearch external/internal hostnames if ingress is enabled
-  elasticsearch_ingress_external_hostname = (
-  local.ingress_is_enabled && local.ingress_dns_domain != ""
-  ) ? "${local.resource_id}.${local.ingress_dns_domain}" : null
+  # Kibana ingress
+  kibana_is_enabled = try(var.spec.kibana.enabled, false)
+  kibana_ingress_is_enabled = local.kibana_is_enabled && try(var.spec.kibana.ingress.enabled, false)
+  kibana_ingress_external_hostname = local.kibana_is_enabled ? try(var.spec.kibana.ingress.hostname, null) : null
 
-  elasticsearch_ingress_internal_hostname = (
-  local.ingress_is_enabled && local.ingress_dns_domain != ""
-  ) ? "${local.resource_id}-internal.${local.ingress_dns_domain}" : null
-
-  # Kibana external/internal hostnames if ingress is enabled
-  kibana_ingress_external_hostname = (
-  local.ingress_is_enabled && local.ingress_dns_domain != ""
-  ) ? "${local.resource_id}-kb.${local.ingress_dns_domain}" : null
-
-  kibana_ingress_internal_hostname = (
-  local.ingress_is_enabled && local.ingress_dns_domain != ""
-  ) ? "${local.resource_id}-kb-internal.${local.ingress_dns_domain}" : null
-
-  # Combine all hostnames for certificate usage if not null
+  # Combine hostnames for certificate
   ingress_hostnames = compact([
     local.elasticsearch_ingress_external_hostname,
-    local.elasticsearch_ingress_internal_hostname,
     local.kibana_ingress_external_hostname,
-    local.kibana_ingress_internal_hostname,
   ])
 
-  # The cluster issuer name for the certificate
-  ingress_cert_cluster_issuer_name = local.ingress_dns_domain
+  # Certificate issuer: extract domain from first hostname
+  ingress_cert_cluster_issuer_name = length(local.ingress_hostnames) > 0 ? (
+    join(".", slice(split(".", local.ingress_hostnames[0]), 1, length(split(".", local.ingress_hostnames[0]))))
+  ) : ""
 
-  # The generated secret name for the certificate
   ingress_cert_secret_name = local.resource_id
 
   # These match your Pulumi vars. Adjust as needed or make them variables.

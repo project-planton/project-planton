@@ -2,11 +2,6 @@ syntax = "proto3";
 
 package project.planton.provider.digitalocean.digitaloceanfirewall.v1;
 
-import "buf/validate/validate.proto";
-import "project/planton/provider/digitalocean/region.proto";
-import "project/planton/shared/foreignkey/v1/foreign_key.proto";
-import "project/planton/shared/options/options.proto";
-
 // DigitalOceanFirewallSpec defines the user configuration for a DigitalOcean Droplet (VM).
 message DigitalOceanFirewallSpec {
   // Name of the firewall for identification (must be unique per account/project).

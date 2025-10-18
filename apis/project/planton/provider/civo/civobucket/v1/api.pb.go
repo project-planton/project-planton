@@ -157,7 +157,7 @@ var File_project_planton_provider_civo_civobucket_v1_api_proto protoreflect.File
 
 const file_project_planton_provider_civo_civobucket_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"5project/planton/provider/civo/civobucket/v1/api.proto\x12+project.planton.provider.civo.civobucket.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/provider/civo/civobucket/v1/spec.proto\x1a?project/planton/provider/civo/civobucket/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\x1a#project/planton/shared/status.proto\"\xf9\x02\n" +
+	"5project/planton/provider/civo/civobucket/v1/api.proto\x12+project.planton.provider.civo.civobucket.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/provider/civo/civobucket/v1/spec.proto\x1a?project/planton/provider/civo/civobucket/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xf9\x02\n" +
 	"\n" +
 	"CivoBucket\x12C\n" +
 	"\vapi_version\x18\x01 \x01(\tB\"\xbaH\x1fr\x1d\n" +

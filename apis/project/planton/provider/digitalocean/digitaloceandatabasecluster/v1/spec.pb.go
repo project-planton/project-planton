@@ -9,9 +9,7 @@ package digitaloceandatabaseclusterv1
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	digitalocean "github.com/project-planton/project-planton/apis/project/planton/provider/digitalocean"
-	_ "github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
 	v1 "github.com/project-planton/project-planton/apis/project/planton/shared/foreignkey/v1"
-	_ "github.com/project-planton/project-planton/apis/project/planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -215,7 +213,7 @@ var File_project_planton_provider_digitalocean_digitaloceandatabasecluster_v1_sp
 
 const file_project_planton_provider_digitalocean_digitaloceandatabasecluster_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Oproject/planton/provider/digitalocean/digitaloceandatabasecluster/v1/spec.proto\x12Dproject.planton.provider.digitalocean.digitaloceandatabasecluster.v1\x1a\x1bbuf/validate/validate.proto\x1a2project/planton/provider/digitalocean/region.proto\x1aBproject/planton/shared/cloudresourcekind/cloud_resource_kind.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\"\x8f\x05\n" +
+	"Oproject/planton/provider/digitalocean/digitaloceandatabasecluster/v1/spec.proto\x12Dproject.planton.provider.digitalocean.digitaloceandatabasecluster.v1\x1a\x1bbuf/validate/validate.proto\x1a2project/planton/provider/digitalocean/region.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\"\x8f\x05\n" +
 	"\x1fDigitalOceanDatabaseClusterSpec\x12-\n" +
 	"\fcluster_name\x18\x01 \x01(\tB\n" +
 	"\xbaH\a\xc8\x01\x01r\x02\x18@R\vclusterName\x12\x80\x01\n" +

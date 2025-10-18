@@ -21,9 +21,8 @@ spec:
         cpu: 1
         memory: 1Gi
   ingress:
-    isEnabled: true
-    host: openfga.mycluster.example.com
-    path: /openfga
+    enabled: true
+    hostname: openfga.mycluster.example.com
   datastore:
     engine: postgres
     uri: postgres://user:password@db-host:5432/openfga
@@ -50,7 +49,7 @@ spec:
         cpu: 500m
         memory: 512Mi
   ingress:
-    isEnabled: false
+    enabled: false
   datastore:
     engine: mysql
     uri: mysql://user:password@mysql-db:3306/openfga
@@ -102,9 +101,8 @@ spec:
         cpu: 2000m
         memory: 4Gi
   ingress:
-    isEnabled: true
-    host: open-fga-ha.example.com
-    path: /openfga
+    enabled: true
+    hostname: open-fga-ha.example.com
   datastore:
     engine: postgres
     uri: postgres://user:securepassword@ha-db-host:5432/openfga

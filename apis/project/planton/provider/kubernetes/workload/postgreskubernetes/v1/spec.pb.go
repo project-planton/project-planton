@@ -9,7 +9,6 @@ package postgreskubernetesv1
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	kubernetes "github.com/project-planton/project-planton/apis/project/planton/shared/kubernetes"
-	_ "github.com/project-planton/project-planton/apis/project/planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	descriptorpb "google.golang.org/protobuf/types/descriptorpb"
@@ -128,7 +127,7 @@ type PostgresKubernetesSpec struct {
 	// The container specifications for the PostgreSQL deployment.
 	Container *PostgresKubernetesContainer `protobuf:"bytes,1,opt,name=container,proto3" json:"container,omitempty"`
 	// The ingress configuration for the PostgreSQL deployment.
-	Ingress *kubernetes.IngressSpec `protobuf:"bytes,2,opt,name=ingress,proto3" json:"ingress,omitempty"`
+	Ingress *PostgresKubernetesIngress `protobuf:"bytes,2,opt,name=ingress,proto3" json:"ingress,omitempty"`
 	// Optional: Per-database backup configuration
 	// When specified, these settings override the operator-level backup configuration
 	// If not specified, the database inherits operator-level backup settings
@@ -174,7 +173,7 @@ func (x *PostgresKubernetesSpec) GetContainer() *PostgresKubernetesContainer {
 	return nil
 }
 
-func (x *PostgresKubernetesSpec) GetIngress() *kubernetes.IngressSpec {
+func (x *PostgresKubernetesSpec) GetIngress() *PostgresKubernetesIngress {
 	if x != nil {
 		return x.Ingress
 	}
@@ -257,6 +256,66 @@ func (x *PostgresKubernetesContainer) GetDiskSize() string {
 	return ""
 }
 
+// *
+// **PostgresKubernetesIngress** defines the ingress configuration for PostgreSQL.
+// It allows enabling external access via LoadBalancer with hostname-based routing.
+type PostgresKubernetesIngress struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Flag to enable or disable ingress.
+	// When enabled, creates a LoadBalancer service with external-dns annotations.
+	Enabled bool `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`
+	// The full hostname for external access (e.g., "postgres.example.com").
+	// This hostname will be configured automatically via external-dns.
+	// Required when enabled is true.
+	Hostname      string `protobuf:"bytes,2,opt,name=hostname,proto3" json:"hostname,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PostgresKubernetesIngress) Reset() {
+	*x = PostgresKubernetesIngress{}
+	mi := &file_project_planton_provider_kubernetes_workload_postgreskubernetes_v1_spec_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PostgresKubernetesIngress) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PostgresKubernetesIngress) ProtoMessage() {}
+
+func (x *PostgresKubernetesIngress) ProtoReflect() protoreflect.Message {
+	mi := &file_project_planton_provider_kubernetes_workload_postgreskubernetes_v1_spec_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PostgresKubernetesIngress.ProtoReflect.Descriptor instead.
+func (*PostgresKubernetesIngress) Descriptor() ([]byte, []int) {
+	return file_project_planton_provider_kubernetes_workload_postgreskubernetes_v1_spec_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *PostgresKubernetesIngress) GetEnabled() bool {
+	if x != nil {
+		return x.Enabled
+	}
+	return false
+}
+
+func (x *PostgresKubernetesIngress) GetHostname() string {
+	if x != nil {
+		return x.Hostname
+	}
+	return ""
+}
+
 var file_project_planton_provider_kubernetes_workload_postgreskubernetes_v1_spec_proto_extTypes = []protoimpl.ExtensionInfo{
 	{
 		ExtendedType:  (*descriptorpb.FieldOptions)(nil),
@@ -278,7 +337,7 @@ var File_project_planton_provider_kubernetes_workload_postgreskubernetes_v1_spec
 
 const file_project_planton_provider_kubernetes_workload_postgreskubernetes_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Mproject/planton/provider/kubernetes/workload/postgreskubernetes/v1/spec.proto\x12Bproject.planton.provider.kubernetes.workload.postgreskubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\x1a,project/planton/shared/options/options.proto\"\x9a\x02\n" +
+	"Mproject/planton/provider/kubernetes/workload/postgreskubernetes/v1/spec.proto\x12Bproject.planton.provider.kubernetes.workload.postgreskubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\"\x9a\x02\n" +
 	"\x1ePostgresKubernetesBackupConfig\x12\x1b\n" +
 	"\ts3_prefix\x18\x01 \x01(\tR\bs3Prefix\x12'\n" +
 	"\x0fbackup_schedule\x18\x02 \x01(\tR\x0ebackupSchedule\x12(\n" +
@@ -287,19 +346,23 @@ const file_project_planton_provider_kubernetes_workload_postgreskubernetes_v1_sp
 	"\fenable_clone\x18\x05 \x01(\bH\x02R\venableClone\x88\x01\x01B\x10\n" +
 	"\x0e_enable_backupB\x11\n" +
 	"\x0f_enable_restoreB\x0f\n" +
-	"\r_enable_clone\"\x98\x03\n" +
+	"\r_enable_clone\"\xc7\x03\n" +
 	"\x16PostgresKubernetesSpec\x12\xa9\x01\n" +
 	"\tcontainer\x18\x01 \x01(\v2_.project.planton.provider.kubernetes.workload.postgreskubernetes.v1.PostgresKubernetesContainerB*\x8a߄\x02%\b\x01\x12\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
-	"\x0350m\x12\x05100Mi\x1a\x031GiR\tcontainer\x12H\n" +
-	"\aingress\x18\x02 \x01(\v2..project.planton.shared.kubernetes.IngressSpecR\aingress\x12\x87\x01\n" +
+	"\x0350m\x12\x05100Mi\x1a\x031GiR\tcontainer\x12w\n" +
+	"\aingress\x18\x02 \x01(\v2].project.planton.provider.kubernetes.workload.postgreskubernetes.v1.PostgresKubernetesIngressR\aingress\x12\x87\x01\n" +
 	"\rbackup_config\x18\x03 \x01(\v2b.project.planton.provider.kubernetes.workload.postgreskubernetes.v1.PostgresKubernetesBackupConfigR\fbackupConfig\"\xcd\x02\n" +
 	"\x1bPostgresKubernetesContainer\x12\x1a\n" +
 	"\breplicas\x18\x01 \x01(\x05R\breplicas\x12S\n" +
 	"\tresources\x18\x02 \x01(\v25.project.planton.shared.kubernetes.ContainerResourcesR\tresources\x12\xbc\x01\n" +
 	"\tdisk_size\x18\x03 \x01(\tB\x9e\x01\xbaH\x9a\x01\xba\x01\x96\x01\n" +
-	"!spec.container.disk_size.required\x12\x1aDisk size value is invalid\x1aUthis.matches('^\\\\d+(\\\\.\\\\d+)?\\\\s?(Ki|Mi|Gi|Ti|Pi|Ei|K|M|G|T|P|E)$') && size(this) > 0R\bdiskSize:\xad\x01\n" +
+	"!spec.container.disk_size.required\x12\x1aDisk size value is invalid\x1aUthis.matches('^\\\\d+(\\\\.\\\\d+)?\\\\s?(Ki|Mi|Gi|Ti|Pi|Ei|K|M|G|T|P|E)$') && size(this) > 0R\bdiskSize\"\xd0\x01\n" +
+	"\x19PostgresKubernetesIngress\x12\x18\n" +
+	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x1a\n" +
+	"\bhostname\x18\x02 \x01(\tR\bhostname:}\xbaHz\x1ax\n" +
+	"\x1espec.ingress.hostname.required\x12,hostname is required when ingress is enabled\x1a(!this.enabled || size(this.hostname) > 0:\xad\x01\n" +
 	"\x11default_container\x12\x1d.google.protobuf.FieldOptions\x18\xf1\xcb  \x01(\v2_.project.planton.provider.kubernetes.workload.postgreskubernetes.v1.PostgresKubernetesContainerR\x10defaultContainerB\x8e\x04\n" +
 	"Fcom.project.planton.provider.kubernetes.workload.postgreskubernetes.v1B\tSpecProtoP\x01Z\x87\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/postgreskubernetes/v1;postgreskubernetesv1\xa2\x02\x06PPPKWP\xaa\x02BProject.Planton.Provider.Kubernetes.Workload.Postgreskubernetes.V1\xca\x02BProject\\Planton\\Provider\\Kubernetes\\Workload\\Postgreskubernetes\\V1\xe2\x02NProject\\Planton\\Provider\\Kubernetes\\Workload\\Postgreskubernetes\\V1\\GPBMetadata\xea\x02HProject::Planton::Provider::Kubernetes::Workload::Postgreskubernetes::V1b\x06proto3"
 
@@ -315,18 +378,18 @@ func file_project_planton_provider_kubernetes_workload_postgreskubernetes_v1_spe
 	return file_project_planton_provider_kubernetes_workload_postgreskubernetes_v1_spec_proto_rawDescData
 }
 
-var file_project_planton_provider_kubernetes_workload_postgreskubernetes_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_project_planton_provider_kubernetes_workload_postgreskubernetes_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_project_planton_provider_kubernetes_workload_postgreskubernetes_v1_spec_proto_goTypes = []any{
 	(*PostgresKubernetesBackupConfig)(nil), // 0: project.planton.provider.kubernetes.workload.postgreskubernetes.v1.PostgresKubernetesBackupConfig
 	(*PostgresKubernetesSpec)(nil),         // 1: project.planton.provider.kubernetes.workload.postgreskubernetes.v1.PostgresKubernetesSpec
 	(*PostgresKubernetesContainer)(nil),    // 2: project.planton.provider.kubernetes.workload.postgreskubernetes.v1.PostgresKubernetesContainer
-	(*kubernetes.IngressSpec)(nil),         // 3: project.planton.shared.kubernetes.IngressSpec
+	(*PostgresKubernetesIngress)(nil),      // 3: project.planton.provider.kubernetes.workload.postgreskubernetes.v1.PostgresKubernetesIngress
 	(*kubernetes.ContainerResources)(nil),  // 4: project.planton.shared.kubernetes.ContainerResources
 	(*descriptorpb.FieldOptions)(nil),      // 5: google.protobuf.FieldOptions
 }
 var file_project_planton_provider_kubernetes_workload_postgreskubernetes_v1_spec_proto_depIdxs = []int32{
 	2, // 0: project.planton.provider.kubernetes.workload.postgreskubernetes.v1.PostgresKubernetesSpec.container:type_name -> project.planton.provider.kubernetes.workload.postgreskubernetes.v1.PostgresKubernetesContainer
-	3, // 1: project.planton.provider.kubernetes.workload.postgreskubernetes.v1.PostgresKubernetesSpec.ingress:type_name -> project.planton.shared.kubernetes.IngressSpec
+	3, // 1: project.planton.provider.kubernetes.workload.postgreskubernetes.v1.PostgresKubernetesSpec.ingress:type_name -> project.planton.provider.kubernetes.workload.postgreskubernetes.v1.PostgresKubernetesIngress
 	0, // 2: project.planton.provider.kubernetes.workload.postgreskubernetes.v1.PostgresKubernetesSpec.backup_config:type_name -> project.planton.provider.kubernetes.workload.postgreskubernetes.v1.PostgresKubernetesBackupConfig
 	4, // 3: project.planton.provider.kubernetes.workload.postgreskubernetes.v1.PostgresKubernetesContainer.resources:type_name -> project.planton.shared.kubernetes.ContainerResources
 	5, // 4: project.planton.provider.kubernetes.workload.postgreskubernetes.v1.default_container:extendee -> google.protobuf.FieldOptions
@@ -352,7 +415,7 @@ func file_project_planton_provider_kubernetes_workload_postgreskubernetes_v1_spe
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_project_planton_provider_kubernetes_workload_postgreskubernetes_v1_spec_proto_rawDesc), len(file_project_planton_provider_kubernetes_workload_postgreskubernetes_v1_spec_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   3,
+			NumMessages:   4,
 			NumExtensions: 1,
 			NumServices:   0,
 		},

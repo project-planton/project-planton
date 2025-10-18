@@ -7,10 +7,8 @@
 package ingressnginxkubernetesv1
 
 import (
-	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	v1 "github.com/project-planton/project-planton/apis/project/planton/shared/foreignkey/v1"
 	kubernetes "github.com/project-planton/project-planton/apis/project/planton/shared/kubernetes"
-	_ "github.com/project-planton/project-planton/apis/project/planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -343,7 +341,7 @@ var File_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v1_spe
 
 const file_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Nproject/planton/provider/kubernetes/addon/ingressnginxkubernetes/v1/spec.proto\x12Cproject.planton.provider.kubernetes.addon.ingressnginxkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a6project/planton/shared/kubernetes/target_cluster.proto\x1a,project/planton/shared/options/options.proto\"\xa8\x04\n" +
+	"Nproject/planton/provider/kubernetes/addon/ingressnginxkubernetes/v1/spec.proto\x12Cproject.planton.provider.kubernetes.addon.ingressnginxkubernetes.v1\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a6project/planton/shared/kubernetes/target_cluster.proto\"\xa8\x04\n" +
 	"\x1aIngressNginxKubernetesSpec\x12f\n" +
 	"\x0etarget_cluster\x18\x01 \x01(\v2?.project.planton.shared.kubernetes.KubernetesAddonTargetClusterR\rtargetCluster\x12#\n" +
 	"\rchart_version\x18\x02 \x01(\tR\fchartVersion\x12\x1a\n" +

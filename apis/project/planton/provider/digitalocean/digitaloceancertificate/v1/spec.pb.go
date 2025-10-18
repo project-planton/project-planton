@@ -8,7 +8,6 @@ package digitaloceancertificatev1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	_ "github.com/project-planton/project-planton/apis/project/planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -317,7 +316,7 @@ var File_project_planton_provider_digitalocean_digitaloceancertificate_v1_spec_p
 
 const file_project_planton_provider_digitalocean_digitaloceancertificate_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Kproject/planton/provider/digitalocean/digitaloceancertificate/v1/spec.proto\x12@project.planton.provider.digitalocean.digitaloceancertificate.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\"\xd0\x04\n" +
+	"Kproject/planton/provider/digitalocean/digitaloceancertificate/v1/spec.proto\x12@project.planton.provider.digitalocean.digitaloceancertificate.v1\x1a\x1bbuf/validate/validate.proto\"\xd0\x04\n" +
 	"\x1bDigitalOceanCertificateSpec\x127\n" +
 	"\x10certificate_name\x18\x01 \x01(\tB\f\xbaH\t\xc8\x01\x01r\x04\x10\x01\x18@R\x0fcertificateName\x12~\n" +
 	"\x04type\x18\x02 \x01(\x0e2].project.planton.provider.digitalocean.digitaloceancertificate.v1.DigitalOceanCertificateTypeB\v\xbaH\b\xc8\x01\x01\x82\x01\x02\x10\x01R\x04type\x12\x8f\x01\n" +

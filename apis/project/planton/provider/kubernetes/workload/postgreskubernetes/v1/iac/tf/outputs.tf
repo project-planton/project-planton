@@ -23,11 +23,6 @@ output "external_hostname" {
   value       = local.ingress_external_hostname
 }
 
-output "internal_hostname" {
-  description = "The internal hostname for Postgres if ingress is enabled."
-  value       = local.ingress_internal_hostname
-}
-
 output "password_secret_name" {
   description = "Name of the secret holding the Postgres password."
   # Matches the pattern used by Zalando's operator for password credentials

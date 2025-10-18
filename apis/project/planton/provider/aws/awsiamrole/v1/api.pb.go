@@ -157,7 +157,7 @@ var File_project_planton_provider_aws_awsiamrole_v1_api_proto protoreflect.FileD
 
 const file_project_planton_provider_aws_awsiamrole_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"4project/planton/provider/aws/awsiamrole/v1/api.proto\x12*project.planton.provider.aws.awsiamrole.v1\x1a\x1bbuf/validate/validate.proto\x1a5project/planton/provider/aws/awsiamrole/v1/spec.proto\x1a>project/planton/provider/aws/awsiamrole/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\x1a#project/planton/shared/status.proto\"\xf6\x02\n" +
+	"4project/planton/provider/aws/awsiamrole/v1/api.proto\x12*project.planton.provider.aws.awsiamrole.v1\x1a\x1bbuf/validate/validate.proto\x1a5project/planton/provider/aws/awsiamrole/v1/spec.proto\x1a>project/planton/provider/aws/awsiamrole/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xf6\x02\n" +
 	"\n" +
 	"AwsIamRole\x12B\n" +
 	"\vapi_version\x18\x01 \x01(\tB!\xbaH\x1er\x1c\n" +

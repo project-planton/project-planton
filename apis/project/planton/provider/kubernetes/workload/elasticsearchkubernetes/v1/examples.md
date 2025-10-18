@@ -37,24 +37,30 @@ metadata:
 spec:
   kubernetesClusterCredentialId: my-k8s-credentials
   elasticsearch:
-    resources:
-      requests:
-        cpu: 1
-        memory: 2Gi
-      limits:
-        cpu: 2
-        memory: 4Gi
+    container:
+      resources:
+        requests:
+          cpu: 1
+          memory: 2Gi
+        limits:
+          cpu: 2
+          memory: 4Gi
+    ingress:
+      enabled: true
+      hostname: search.example.com
   kibana:
-    resources:
-      requests:
-        cpu: 200m
-        memory: 512Mi
-      limits:
-        cpu: 500m
-        memory: 1Gi
-  ingress:
     enabled: true
-    hostname: search.example.com
+    container:
+      resources:
+        requests:
+          cpu: 200m
+          memory: 512Mi
+        limits:
+          cpu: 500m
+          memory: 1Gi
+    ingress:
+      enabled: true
+      hostname: search-kibana.example.com
 ```
 
 ---

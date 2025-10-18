@@ -34,9 +34,8 @@ func ingress(ctx *pulumi.Context, locals *Locals,
 	}
 
 	annotations := pulumi.StringMap{}
-	if locals.NatsKubernetes.Spec.Ingress.DnsDomain != "" {
-		host := fmt.Sprintf("%s.%s", locals.Namespace, locals.NatsKubernetes.Spec.Ingress.DnsDomain)
-		annotations["external-dns.alpha.kubernetes.io/hostname"] = pulumi.String(host)
+	if locals.NatsKubernetes.Spec.Ingress.Hostname != "" {
+		annotations["external-dns.alpha.kubernetes.io/hostname"] = pulumi.String(locals.NatsKubernetes.Spec.Ingress.Hostname)
 	}
 
 	createdLoadBalancerService, err := kubernetescorev1.NewService(ctx,

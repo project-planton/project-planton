@@ -41,8 +41,9 @@ var _ = ginkgo.Describe("RedisKubernetes Custom Validation Tests", func() {
 						},
 					},
 				},
-				Ingress: &kubernetes.IngressSpec{
-					DnsDomain: "redis.example.com",
+				Ingress: &RedisKubernetesIngress{
+					Enabled:  true,
+					Hostname: "redis.example.com",
 				},
 			},
 		}

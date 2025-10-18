@@ -83,7 +83,7 @@ func Resources(ctx *pulumi.Context, stackInput *postgreskubernetesv1.PostgresKub
 
 	if locals.PostgresKubernetes.Spec.Ingress == nil ||
 		!locals.PostgresKubernetes.Spec.Ingress.Enabled ||
-		locals.PostgresKubernetes.Spec.Ingress.DnsDomain == "" {
+		locals.PostgresKubernetes.Spec.Ingress.Hostname == "" {
 		//if ingress is not enabled, no load-balancer resource is required. so just exit the function.
 		return nil
 	}

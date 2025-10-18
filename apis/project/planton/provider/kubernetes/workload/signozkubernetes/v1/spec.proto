@@ -5,7 +5,6 @@ package project.planton.provider.kubernetes.workload.signozkubernetes.v1;
 import "buf/validate/validate.proto";
 import "google/protobuf/descriptor.proto";
 import "project/planton/shared/kubernetes/kubernetes.proto";
-import "project/planton/shared/kubernetes/options.proto";
 import "project/planton/shared/options/options.proto";
 
 extend google.protobuf.FieldOptions {
@@ -55,11 +54,8 @@ message SignozKubernetesSpec {
   // The database configuration for SigNoz, supporting both self-managed and external ClickHouse.
   SignozKubernetesDatabaseConfig database = 3 [(buf.validate.field).required = true];
 
-  // The ingress configuration for the SigNoz UI and API.
-  project.planton.shared.kubernetes.IngressSpec signoz_ingress = 4;
-
-  // The ingress configuration for the OpenTelemetry Collector data ingestion endpoints.
-  project.planton.shared.kubernetes.IngressSpec otel_collector_ingress = 5;
+  // The ingress configuration for SigNoz UI and OpenTelemetry Collector endpoints.
+  SignozKubernetesIngress ingress = 4;
 
   /**
    * A map of key-value pairs that provide additional customization options for the SigNoz Helm chart.
@@ -68,7 +64,7 @@ message SignozKubernetesSpec {
    * For detailed information on available options, refer to the Helm chart documentation at:
    * https://github.com/SigNoz/charts
    */
-  map<string, string> helm_values = 6;
+  map<string, string> helm_values = 5;
 }
 
 /**
@@ -307,4 +303,35 @@ message SignozKubernetesZookeeperContainer {
     message: "Disk size is required and must match the format"
     expression: "size(this) > 0 && this.matches('^\\\\d+(\\\\.\\\\d+)?\\\\s?(Ki|Mi|Gi|Ti|Pi|Ei|K|M|G|T|P|E)$')"
   }];
+}
+
+/**
+ * **SignozKubernetesIngress** defines the ingress configuration for SigNoz components.
+ * It provides separate ingress settings for the UI and OpenTelemetry Collector endpoints.
+ */
+message SignozKubernetesIngress {
+  // Ingress configuration for SigNoz UI and API.
+  SignozKubernetesIngressEndpoint ui = 1;
+
+  // Ingress configuration for OpenTelemetry Collector data ingestion endpoint.
+  SignozKubernetesIngressEndpoint otel_collector = 2;
+}
+
+/**
+ * **SignozKubernetesIngressEndpoint** defines ingress configuration for a specific SigNoz endpoint.
+ */
+message SignozKubernetesIngressEndpoint {
+  // Flag to enable or disable ingress for this endpoint.
+  bool enabled = 1;
+
+  // The full hostname for external access (e.g., "signoz.example.com").
+  // This hostname will be configured via Gateway API resources.
+  // Required when enabled is true.
+  string hostname = 2;
+
+  option (buf.validate.message).cel = {
+    id: "spec.ingress.hostname.required"
+    expression: "!this.enabled || size(this.hostname) > 0"
+    message: "hostname is required when ingress is enabled"
+  };
 }

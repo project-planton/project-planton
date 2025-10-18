@@ -9,7 +9,6 @@ package neo4jkubernetesv1
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	kubernetes "github.com/project-planton/project-planton/apis/project/planton/shared/kubernetes"
-	_ "github.com/project-planton/project-planton/apis/project/planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	descriptorpb "google.golang.org/protobuf/types/descriptorpb"
@@ -31,10 +30,10 @@ type Neo4JKubernetesSpec struct {
 	// The specifications for the Neo4j container deployment.
 	Container *Neo4JKubernetesContainer `protobuf:"bytes,1,opt,name=container,proto3" json:"container,omitempty"`
 	// Optional extra memory config for Neo4j (heap, page cache).
-	// By default, we rely on Neo4j’s internal defaults if unset.
+	// By default, we rely on Neo4j's internal defaults if unset.
 	MemoryConfig *Neo4JKubernetesMemoryConfig `protobuf:"bytes,3,opt,name=memory_config,json=memoryConfig,proto3" json:"memory_config,omitempty"`
-	// The ingress configuration for the Solr deployment.
-	Ingress       *kubernetes.IngressSpec `protobuf:"bytes,4,opt,name=ingress,proto3" json:"ingress,omitempty"`
+	// The ingress configuration for the Neo4j deployment.
+	Ingress       *Neo4JKubernetesIngress `protobuf:"bytes,4,opt,name=ingress,proto3" json:"ingress,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -83,7 +82,7 @@ func (x *Neo4JKubernetesSpec) GetMemoryConfig() *Neo4JKubernetesMemoryConfig {
 	return nil
 }
 
-func (x *Neo4JKubernetesSpec) GetIngress() *kubernetes.IngressSpec {
+func (x *Neo4JKubernetesSpec) GetIngress() *Neo4JKubernetesIngress {
 	if x != nil {
 		return x.Ingress
 	}
@@ -99,9 +98,9 @@ type Neo4JKubernetesContainer struct {
 	// When enabled, Neo4j stores its database files on a persistent volume,
 	// allowing data to survive pod restarts.
 	// Defaults to `false`.
-	IsPersistenceEnabled bool `protobuf:"varint,2,opt,name=is_persistence_enabled,json=isPersistenceEnabled,proto3" json:"is_persistence_enabled,omitempty"`
-	// Size of the persistent volume if is_persistence_enabled=true (e.g., "10Gi").
-	// If is_persistence_enabled=false, this may be ignored or left empty.
+	PersistenceEnabled bool `protobuf:"varint,2,opt,name=persistence_enabled,json=persistenceEnabled,proto3" json:"persistence_enabled,omitempty"`
+	// Size of the persistent volume if persistence_enabled=true (e.g., "10Gi").
+	// If persistence_enabled=false, this may be ignored or left empty.
 	DiskSize      string `protobuf:"bytes,3,opt,name=disk_size,json=diskSize,proto3" json:"disk_size,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -144,9 +143,9 @@ func (x *Neo4JKubernetesContainer) GetResources() *kubernetes.ContainerResources
 	return nil
 }
 
-func (x *Neo4JKubernetesContainer) GetIsPersistenceEnabled() bool {
+func (x *Neo4JKubernetesContainer) GetPersistenceEnabled() bool {
 	if x != nil {
-		return x.IsPersistenceEnabled
+		return x.PersistenceEnabled
 	}
 	return false
 }
@@ -215,6 +214,64 @@ func (x *Neo4JKubernetesMemoryConfig) GetPageCache() string {
 	return ""
 }
 
+// Neo4jKubernetesIngress defines the ingress configuration for Neo4j.
+type Neo4JKubernetesIngress struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Flag to enable or disable ingress.
+	// When enabled, creates a LoadBalancer service with external-dns annotations.
+	Enabled bool `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`
+	// The full hostname for external access (e.g., "neo4j.example.com").
+	// This hostname will be configured automatically via external-dns.
+	// Required when enabled is true.
+	Hostname      string `protobuf:"bytes,2,opt,name=hostname,proto3" json:"hostname,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Neo4JKubernetesIngress) Reset() {
+	*x = Neo4JKubernetesIngress{}
+	mi := &file_project_planton_provider_kubernetes_workload_neo4jkubernetes_v1_spec_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Neo4JKubernetesIngress) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Neo4JKubernetesIngress) ProtoMessage() {}
+
+func (x *Neo4JKubernetesIngress) ProtoReflect() protoreflect.Message {
+	mi := &file_project_planton_provider_kubernetes_workload_neo4jkubernetes_v1_spec_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Neo4JKubernetesIngress.ProtoReflect.Descriptor instead.
+func (*Neo4JKubernetesIngress) Descriptor() ([]byte, []int) {
+	return file_project_planton_provider_kubernetes_workload_neo4jkubernetes_v1_spec_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *Neo4JKubernetesIngress) GetEnabled() bool {
+	if x != nil {
+		return x.Enabled
+	}
+	return false
+}
+
+func (x *Neo4JKubernetesIngress) GetHostname() string {
+	if x != nil {
+		return x.Hostname
+	}
+	return ""
+}
+
 var file_project_planton_provider_kubernetes_workload_neo4jkubernetes_v1_spec_proto_extTypes = []protoimpl.ExtensionInfo{
 	{
 		ExtendedType:  (*descriptorpb.FieldOptions)(nil),
@@ -236,23 +293,27 @@ var File_project_planton_provider_kubernetes_workload_neo4jkubernetes_v1_spec_pr
 
 const file_project_planton_provider_kubernetes_workload_neo4jkubernetes_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Jproject/planton/provider/kubernetes/workload/neo4jkubernetes/v1/spec.proto\x12?project.planton.provider.kubernetes.workload.neo4jkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\x1a,project/planton/shared/options/options.proto\"\x87\x03\n" +
+	"Jproject/planton/provider/kubernetes/workload/neo4jkubernetes/v1/spec.proto\x12?project.planton.provider.kubernetes.workload.neo4jkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\"\xb0\x03\n" +
 	"\x13Neo4jKubernetesSpec\x12\xa1\x01\n" +
 	"\tcontainer\x18\x01 \x01(\v2Y.project.planton.provider.kubernetes.workload.neo4jkubernetes.v1.Neo4jKubernetesContainerB(\x92\xb0\x8d\x13#\n" +
 	"\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
 	"\x0350m\x12\x05100Mi\x1a\x031GiR\tcontainer\x12\x81\x01\n" +
-	"\rmemory_config\x18\x03 \x01(\v2\\.project.planton.provider.kubernetes.workload.neo4jkubernetes.v1.Neo4jKubernetesMemoryConfigR\fmemoryConfig\x12H\n" +
-	"\aingress\x18\x04 \x01(\v2..project.planton.shared.kubernetes.IngressSpecR\aingress\"\xc2\x01\n" +
+	"\rmemory_config\x18\x03 \x01(\v2\\.project.planton.provider.kubernetes.workload.neo4jkubernetes.v1.Neo4jKubernetesMemoryConfigR\fmemoryConfig\x12q\n" +
+	"\aingress\x18\x04 \x01(\v2W.project.planton.provider.kubernetes.workload.neo4jkubernetes.v1.Neo4jKubernetesIngressR\aingress\"\xbd\x01\n" +
 	"\x18Neo4jKubernetesContainer\x12S\n" +
-	"\tresources\x18\x01 \x01(\v25.project.planton.shared.kubernetes.ContainerResourcesR\tresources\x124\n" +
-	"\x16is_persistence_enabled\x18\x02 \x01(\bR\x14isPersistenceEnabled\x12\x1b\n" +
+	"\tresources\x18\x01 \x01(\v25.project.planton.shared.kubernetes.ContainerResourcesR\tresources\x12/\n" +
+	"\x13persistence_enabled\x18\x02 \x01(\bR\x12persistenceEnabled\x12\x1b\n" +
 	"\tdisk_size\x18\x03 \x01(\tR\bdiskSize\"W\n" +
 	"\x1bNeo4jKubernetesMemoryConfig\x12\x19\n" +
 	"\bheap_max\x18\x01 \x01(\tR\aheapMax\x12\x1d\n" +
 	"\n" +
-	"page_cache\x18\x02 \x01(\tR\tpageCache:\xa8\x01\n" +
+	"page_cache\x18\x02 \x01(\tR\tpageCache\"\xcd\x01\n" +
+	"\x16Neo4jKubernetesIngress\x12\x18\n" +
+	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x1a\n" +
+	"\bhostname\x18\x02 \x01(\tR\bhostname:}\xbaHz\x1ax\n" +
+	"\x1espec.ingress.hostname.required\x12,hostname is required when ingress is enabled\x1a(!this.enabled || size(this.hostname) > 0:\xa8\x01\n" +
 	"\x11default_container\x12\x1d.google.protobuf.FieldOptions\x18\x82ֱ\x02 \x01(\v2Y.project.planton.provider.kubernetes.workload.neo4jkubernetes.v1.Neo4jKubernetesContainerR\x10defaultContainerB\xf9\x03\n" +
 	"Ccom.project.planton.provider.kubernetes.workload.neo4jkubernetes.v1B\tSpecProtoP\x01Z\x81\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/neo4jkubernetes/v1;neo4jkubernetesv1\xa2\x02\x06PPPKWN\xaa\x02?Project.Planton.Provider.Kubernetes.Workload.Neo4jkubernetes.V1\xca\x02?Project\\Planton\\Provider\\Kubernetes\\Workload\\Neo4jkubernetes\\V1\xe2\x02KProject\\Planton\\Provider\\Kubernetes\\Workload\\Neo4jkubernetes\\V1\\GPBMetadata\xea\x02EProject::Planton::Provider::Kubernetes::Workload::Neo4jkubernetes::V1b\x06proto3"
 
@@ -268,19 +329,19 @@ func file_project_planton_provider_kubernetes_workload_neo4jkubernetes_v1_spec_p
 	return file_project_planton_provider_kubernetes_workload_neo4jkubernetes_v1_spec_proto_rawDescData
 }
 
-var file_project_planton_provider_kubernetes_workload_neo4jkubernetes_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_project_planton_provider_kubernetes_workload_neo4jkubernetes_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_project_planton_provider_kubernetes_workload_neo4jkubernetes_v1_spec_proto_goTypes = []any{
 	(*Neo4JKubernetesSpec)(nil),           // 0: project.planton.provider.kubernetes.workload.neo4jkubernetes.v1.Neo4jKubernetesSpec
 	(*Neo4JKubernetesContainer)(nil),      // 1: project.planton.provider.kubernetes.workload.neo4jkubernetes.v1.Neo4jKubernetesContainer
 	(*Neo4JKubernetesMemoryConfig)(nil),   // 2: project.planton.provider.kubernetes.workload.neo4jkubernetes.v1.Neo4jKubernetesMemoryConfig
-	(*kubernetes.IngressSpec)(nil),        // 3: project.planton.shared.kubernetes.IngressSpec
+	(*Neo4JKubernetesIngress)(nil),        // 3: project.planton.provider.kubernetes.workload.neo4jkubernetes.v1.Neo4jKubernetesIngress
 	(*kubernetes.ContainerResources)(nil), // 4: project.planton.shared.kubernetes.ContainerResources
 	(*descriptorpb.FieldOptions)(nil),     // 5: google.protobuf.FieldOptions
 }
 var file_project_planton_provider_kubernetes_workload_neo4jkubernetes_v1_spec_proto_depIdxs = []int32{
 	1, // 0: project.planton.provider.kubernetes.workload.neo4jkubernetes.v1.Neo4jKubernetesSpec.container:type_name -> project.planton.provider.kubernetes.workload.neo4jkubernetes.v1.Neo4jKubernetesContainer
 	2, // 1: project.planton.provider.kubernetes.workload.neo4jkubernetes.v1.Neo4jKubernetesSpec.memory_config:type_name -> project.planton.provider.kubernetes.workload.neo4jkubernetes.v1.Neo4jKubernetesMemoryConfig
-	3, // 2: project.planton.provider.kubernetes.workload.neo4jkubernetes.v1.Neo4jKubernetesSpec.ingress:type_name -> project.planton.shared.kubernetes.IngressSpec
+	3, // 2: project.planton.provider.kubernetes.workload.neo4jkubernetes.v1.Neo4jKubernetesSpec.ingress:type_name -> project.planton.provider.kubernetes.workload.neo4jkubernetes.v1.Neo4jKubernetesIngress
 	4, // 3: project.planton.provider.kubernetes.workload.neo4jkubernetes.v1.Neo4jKubernetesContainer.resources:type_name -> project.planton.shared.kubernetes.ContainerResources
 	5, // 4: project.planton.provider.kubernetes.workload.neo4jkubernetes.v1.default_container:extendee -> google.protobuf.FieldOptions
 	1, // 5: project.planton.provider.kubernetes.workload.neo4jkubernetes.v1.default_container:type_name -> project.planton.provider.kubernetes.workload.neo4jkubernetes.v1.Neo4jKubernetesContainer
@@ -302,7 +363,7 @@ func file_project_planton_provider_kubernetes_workload_neo4jkubernetes_v1_spec_p
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_project_planton_provider_kubernetes_workload_neo4jkubernetes_v1_spec_proto_rawDesc), len(file_project_planton_provider_kubernetes_workload_neo4jkubernetes_v1_spec_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   3,
+			NumMessages:   4,
 			NumExtensions: 1,
 			NumServices:   0,
 		},

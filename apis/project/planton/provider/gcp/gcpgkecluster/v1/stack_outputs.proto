@@ -2,7 +2,6 @@ syntax = "proto3";
 
 package project.planton.provider.gcp.gcpgkecluster.v1;
 
-import "project/planton/provider/gcp/gcpgkecluster/v1/spec.proto";
 import "project/planton/shared/gcp/gcp.proto";
 
 // status of the gcp-gke-cluster in gcp

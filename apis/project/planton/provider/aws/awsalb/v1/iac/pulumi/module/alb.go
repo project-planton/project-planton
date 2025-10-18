@@ -38,7 +38,7 @@ func alb(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) (*lb.LoadB
 		}
 
 		// HTTP listener on port 80 - redirect to HTTPS
-		httpListenerName := fmt.Sprintf("%s-http-redirect", locals.AwsAlb.Metadata.Name)
+		httpListenerName := fmt.Sprintf("%s-listener-80", locals.AwsAlb.Metadata.Name)
 		_, err = lb.NewListener(ctx, httpListenerName, &lb.ListenerArgs{
 			LoadBalancerArn: createdLoadBalancer.Arn,
 			Port:            pulumi.Int(80),
@@ -59,7 +59,7 @@ func alb(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) (*lb.LoadB
 		}
 
 		// HTTPS listener on port 443 with certificate
-		httpsListenerName := fmt.Sprintf("%s-https", locals.AwsAlb.Metadata.Name)
+		httpsListenerName := fmt.Sprintf("%s-listener-443", locals.AwsAlb.Metadata.Name)
 		_, err = lb.NewListener(ctx, httpsListenerName, &lb.ListenerArgs{
 			LoadBalancerArn: createdLoadBalancer.Arn,
 			Port:            pulumi.Int(443),
@@ -82,7 +82,7 @@ func alb(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) (*lb.LoadB
 		}
 	} else {
 		// SSL is not enabled - create simple HTTP listener on port 80
-		httpListenerName := fmt.Sprintf("%s-http", locals.AwsAlb.Metadata.Name)
+		httpListenerName := fmt.Sprintf("%s-listener-80", locals.AwsAlb.Metadata.Name)
 		_, err = lb.NewListener(ctx, httpListenerName, &lb.ListenerArgs{
 			LoadBalancerArn: createdLoadBalancer.Arn,
 			Port:            pulumi.Int(80),

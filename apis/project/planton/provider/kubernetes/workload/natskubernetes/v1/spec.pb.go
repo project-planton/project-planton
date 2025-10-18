@@ -89,7 +89,7 @@ type NatsKubernetesSpec struct {
 	// tls settings for the nats cluster.
 	TlsEnabled bool `protobuf:"varint,4,opt,name=tls_enabled,json=tlsEnabled,proto3" json:"tls_enabled,omitempty"`
 	// optional ingress configuration for external access.
-	Ingress *kubernetes.IngressSpec `protobuf:"bytes,5,opt,name=ingress,proto3" json:"ingress,omitempty"`
+	Ingress *NatsKubernetesIngress `protobuf:"bytes,5,opt,name=ingress,proto3" json:"ingress,omitempty"`
 	// toggle to deploy the nats-box utility pod.
 	DisableNatsBox bool `protobuf:"varint,6,opt,name=disable_nats_box,json=disableNatsBox,proto3" json:"disable_nats_box,omitempty"`
 	unknownFields  protoimpl.UnknownFields
@@ -154,7 +154,7 @@ func (x *NatsKubernetesSpec) GetTlsEnabled() bool {
 	return false
 }
 
-func (x *NatsKubernetesSpec) GetIngress() *kubernetes.IngressSpec {
+func (x *NatsKubernetesSpec) GetIngress() *NatsKubernetesIngress {
 	if x != nil {
 		return x.Ingress
 	}
@@ -352,6 +352,64 @@ func (x *NatsKubernetesAuth) GetNoAuthUser() *NatsKubernetesNoAuthUser {
 	return nil
 }
 
+// NatsKubernetesIngress defines ingress configuration for NATS external access.
+type NatsKubernetesIngress struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Flag to enable or disable ingress.
+	// When enabled, creates a LoadBalancer service for external access.
+	Enabled bool `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`
+	// The full hostname for external access (e.g., "nats.example.com").
+	// This hostname will be configured via external-dns annotations.
+	// Required when enabled is true.
+	Hostname      string `protobuf:"bytes,2,opt,name=hostname,proto3" json:"hostname,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *NatsKubernetesIngress) Reset() {
+	*x = NatsKubernetesIngress{}
+	mi := &file_project_planton_provider_kubernetes_workload_natskubernetes_v1_spec_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *NatsKubernetesIngress) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*NatsKubernetesIngress) ProtoMessage() {}
+
+func (x *NatsKubernetesIngress) ProtoReflect() protoreflect.Message {
+	mi := &file_project_planton_provider_kubernetes_workload_natskubernetes_v1_spec_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use NatsKubernetesIngress.ProtoReflect.Descriptor instead.
+func (*NatsKubernetesIngress) Descriptor() ([]byte, []int) {
+	return file_project_planton_provider_kubernetes_workload_natskubernetes_v1_spec_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *NatsKubernetesIngress) GetEnabled() bool {
+	if x != nil {
+		return x.Enabled
+	}
+	return false
+}
+
+func (x *NatsKubernetesIngress) GetHostname() string {
+	if x != nil {
+		return x.Hostname
+	}
+	return ""
+}
+
 var file_project_planton_provider_kubernetes_workload_natskubernetes_v1_spec_proto_extTypes = []protoimpl.ExtensionInfo{
 	{
 		ExtendedType:  (*descriptorpb.FieldOptions)(nil),
@@ -373,7 +431,7 @@ var File_project_planton_provider_kubernetes_workload_natskubernetes_v1_spec_pro
 
 const file_project_planton_provider_kubernetes_workload_natskubernetes_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Iproject/planton/provider/kubernetes/workload/natskubernetes/v1/spec.proto\x12>project.planton.provider.kubernetes.workload.natskubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\x1a,project/planton/shared/options/options.proto\"\xf8\x03\n" +
+	"Iproject/planton/provider/kubernetes/workload/natskubernetes/v1/spec.proto\x12>project.planton.provider.kubernetes.workload.natskubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a,project/planton/shared/options/options.proto\"\x9f\x04\n" +
 	"\x12NatsKubernetesSpec\x12\xb6\x01\n" +
 	"\x10server_container\x18\x01 \x01(\v2].project.planton.provider.kubernetes.workload.natskubernetes.v1.NatsKubernetesServerContainerB,ʬ\x80\x02'\b\x01\x12\x1d\n" +
 	"\f\n" +
@@ -382,8 +440,8 @@ const file_project_planton_provider_kubernetes_workload_natskubernetes_v1_spec_p
 	"\x12disable_jet_stream\x18\x02 \x01(\bR\x10disableJetStream\x12f\n" +
 	"\x04auth\x18\x03 \x01(\v2R.project.planton.provider.kubernetes.workload.natskubernetes.v1.NatsKubernetesAuthR\x04auth\x12\x1f\n" +
 	"\vtls_enabled\x18\x04 \x01(\bR\n" +
-	"tlsEnabled\x12H\n" +
-	"\aingress\x18\x05 \x01(\v2..project.planton.shared.kubernetes.IngressSpecR\aingress\x12(\n" +
+	"tlsEnabled\x12o\n" +
+	"\aingress\x18\x05 \x01(\v2U.project.planton.provider.kubernetes.workload.natskubernetes.v1.NatsKubernetesIngressR\aingress\x12(\n" +
 	"\x10disable_nats_box\x18\x06 \x01(\bR\x0edisableNatsBox\"\xc5\x01\n" +
 	"\x1dNatsKubernetesServerContainer\x12#\n" +
 	"\breplicas\x18\x01 \x01(\x05B\a\xbaH\x04\x1a\x02 \x00R\breplicas\x12S\n" +
@@ -396,7 +454,11 @@ const file_project_planton_provider_kubernetes_workload_natskubernetes_v1_spec_p
 	"\aenabled\x18\x01 \x01(\bR\aenabled\x12p\n" +
 	"\x06scheme\x18\x02 \x01(\x0e2X.project.planton.provider.kubernetes.workload.natskubernetes.v1.NatsKubernetesAuthSchemeR\x06scheme\x12z\n" +
 	"\fno_auth_user\x18\x03 \x01(\v2X.project.planton.provider.kubernetes.workload.natskubernetes.v1.NatsKubernetesNoAuthUserR\n" +
-	"noAuthUser*i\n" +
+	"noAuthUser\"\xcc\x01\n" +
+	"\x15NatsKubernetesIngress\x12\x18\n" +
+	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x1a\n" +
+	"\bhostname\x18\x02 \x01(\tR\bhostname:}\xbaHz\x1ax\n" +
+	"\x1espec.ingress.hostname.required\x12,hostname is required when ingress is enabled\x1a(!this.enabled || size(this.hostname) > 0*i\n" +
 	"\x18NatsKubernetesAuthScheme\x12+\n" +
 	"'nats_kubernetes_auth_scheme_unspecified\x10\x00\x12\x10\n" +
 	"\fbearer_token\x10\x01\x12\x0e\n" +
@@ -418,21 +480,21 @@ func file_project_planton_provider_kubernetes_workload_natskubernetes_v1_spec_pr
 }
 
 var file_project_planton_provider_kubernetes_workload_natskubernetes_v1_spec_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_project_planton_provider_kubernetes_workload_natskubernetes_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_project_planton_provider_kubernetes_workload_natskubernetes_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_project_planton_provider_kubernetes_workload_natskubernetes_v1_spec_proto_goTypes = []any{
 	(NatsKubernetesAuthScheme)(0),         // 0: project.planton.provider.kubernetes.workload.natskubernetes.v1.NatsKubernetesAuthScheme
 	(*NatsKubernetesSpec)(nil),            // 1: project.planton.provider.kubernetes.workload.natskubernetes.v1.NatsKubernetesSpec
 	(*NatsKubernetesServerContainer)(nil), // 2: project.planton.provider.kubernetes.workload.natskubernetes.v1.NatsKubernetesServerContainer
 	(*NatsKubernetesNoAuthUser)(nil),      // 3: project.planton.provider.kubernetes.workload.natskubernetes.v1.NatsKubernetesNoAuthUser
 	(*NatsKubernetesAuth)(nil),            // 4: project.planton.provider.kubernetes.workload.natskubernetes.v1.NatsKubernetesAuth
-	(*kubernetes.IngressSpec)(nil),        // 5: project.planton.shared.kubernetes.IngressSpec
+	(*NatsKubernetesIngress)(nil),         // 5: project.planton.provider.kubernetes.workload.natskubernetes.v1.NatsKubernetesIngress
 	(*kubernetes.ContainerResources)(nil), // 6: project.planton.shared.kubernetes.ContainerResources
 	(*descriptorpb.FieldOptions)(nil),     // 7: google.protobuf.FieldOptions
 }
 var file_project_planton_provider_kubernetes_workload_natskubernetes_v1_spec_proto_depIdxs = []int32{
 	2, // 0: project.planton.provider.kubernetes.workload.natskubernetes.v1.NatsKubernetesSpec.server_container:type_name -> project.planton.provider.kubernetes.workload.natskubernetes.v1.NatsKubernetesServerContainer
 	4, // 1: project.planton.provider.kubernetes.workload.natskubernetes.v1.NatsKubernetesSpec.auth:type_name -> project.planton.provider.kubernetes.workload.natskubernetes.v1.NatsKubernetesAuth
-	5, // 2: project.planton.provider.kubernetes.workload.natskubernetes.v1.NatsKubernetesSpec.ingress:type_name -> project.planton.shared.kubernetes.IngressSpec
+	5, // 2: project.planton.provider.kubernetes.workload.natskubernetes.v1.NatsKubernetesSpec.ingress:type_name -> project.planton.provider.kubernetes.workload.natskubernetes.v1.NatsKubernetesIngress
 	6, // 3: project.planton.provider.kubernetes.workload.natskubernetes.v1.NatsKubernetesServerContainer.resources:type_name -> project.planton.shared.kubernetes.ContainerResources
 	0, // 4: project.planton.provider.kubernetes.workload.natskubernetes.v1.NatsKubernetesAuth.scheme:type_name -> project.planton.provider.kubernetes.workload.natskubernetes.v1.NatsKubernetesAuthScheme
 	3, // 5: project.planton.provider.kubernetes.workload.natskubernetes.v1.NatsKubernetesAuth.no_auth_user:type_name -> project.planton.provider.kubernetes.workload.natskubernetes.v1.NatsKubernetesNoAuthUser
@@ -456,7 +518,7 @@ func file_project_planton_provider_kubernetes_workload_natskubernetes_v1_spec_pr
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_project_planton_provider_kubernetes_workload_natskubernetes_v1_spec_proto_rawDesc), len(file_project_planton_provider_kubernetes_workload_natskubernetes_v1_spec_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   4,
+			NumMessages:   5,
 			NumExtensions: 1,
 			NumServices:   0,
 		},

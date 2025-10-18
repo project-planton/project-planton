@@ -8,7 +8,6 @@ package cloudflarecredentialv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	_ "github.com/project-planton/project-planton/apis/project/planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -227,7 +226,7 @@ var File_project_planton_credential_cloudflarecredential_v1_spec_proto protorefl
 
 const file_project_planton_credential_cloudflarecredential_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"=project/planton/credential/cloudflarecredential/v1/spec.proto\x122project.planton.credential.cloudflarecredential.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\"\xb3\a\n" +
+	"=project/planton/credential/cloudflarecredential/v1/spec.proto\x122project.planton.credential.cloudflarecredential.v1\x1a\x1bbuf/validate/validate.proto\"\xb3\a\n" +
 	"\x18CloudflareCredentialSpec\x12v\n" +
 	"\vauth_scheme\x18\x01 \x01(\x0e2H.project.planton.credential.cloudflarecredential.v1.CloudflareAuthSchemeB\v\xbaH\b\xc8\x01\x01\x82\x01\x02\x10\x01R\n" +
 	"authScheme\x12'\n" +

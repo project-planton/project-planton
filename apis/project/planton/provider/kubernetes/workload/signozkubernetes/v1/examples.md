@@ -214,30 +214,13 @@ spec:
         isEnabled: false
       zookeeper:
         isEnabled: false
-  signozIngress:
-    enabled: true
-    hosts:
-      - hostname: signoz.example.com
-        paths:
-          - path: /
-            port: 8080
-    tls:
+  ingress:
+    ui:
       enabled: true
-      certManagerIssuer: letsencrypt-prod
-  otelCollectorIngress:
-    enabled: true
-    hosts:
-      - hostname: signoz-ingest-grpc.example.com
-        paths:
-          - path: /
-            port: 4317
-      - hostname: signoz-ingest-http.example.com
-        paths:
-          - path: /
-            port: 4318
-    tls:
+      hostname: signoz.example.com
+    otelCollector:
       enabled: true
-      certManagerIssuer: letsencrypt-prod
+      hostname: signoz-ingest.example.com
 ```
 
 ---

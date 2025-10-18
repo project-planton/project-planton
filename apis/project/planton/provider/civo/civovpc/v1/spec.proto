@@ -3,7 +3,6 @@ syntax = "proto3";
 package project.planton.provider.civo.civovpc.v1;
 
 import "buf/validate/validate.proto";
-import "project/planton/shared/options/options.proto";
 
 // CivoVpcSpec defines the specification for an isolated private network on Civo.
 message CivoVpcSpec {

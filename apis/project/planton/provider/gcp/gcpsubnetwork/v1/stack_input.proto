@@ -4,7 +4,6 @@ package project.planton.provider.gcp.gcpsubnetwork.v1;
 
 import "project/planton/credential/gcpcredential/v1/spec.proto";
 import "project/planton/provider/gcp/gcpsubnetwork/v1/api.proto";
-import "project/planton/provider/gcp/gcpsubnetwork/v1/stack_outputs.proto";
 
 //gcp-subnetwork stack-input
 message GcpSubnetworkStackInput {

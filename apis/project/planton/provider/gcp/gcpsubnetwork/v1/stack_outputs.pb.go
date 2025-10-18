@@ -153,7 +153,7 @@ var File_project_planton_provider_gcp_gcpsubnetwork_v1_stack_outputs_proto proto
 
 const file_project_planton_provider_gcp_gcpsubnetwork_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Aproject/planton/provider/gcp/gcpsubnetwork/v1/stack_outputs.proto\x12-project.planton.provider.gcp.gcpsubnetwork.v1\x1a8project/planton/provider/gcp/gcpsubnetwork/v1/spec.proto\"\x8c\x02\n" +
+	"Aproject/planton/provider/gcp/gcpsubnetwork/v1/stack_outputs.proto\x12-project.planton.provider.gcp.gcpsubnetwork.v1\"\x8c\x02\n" +
 	"\x19GcpSubnetworkStackOutputs\x120\n" +
 	"\x14subnetwork_self_link\x18\x01 \x01(\tR\x12subnetworkSelfLink\x12\x16\n" +
 	"\x06region\x18\x02 \x01(\tR\x06region\x12\"\n" +
@@ -196,7 +196,6 @@ func file_project_planton_provider_gcp_gcpsubnetwork_v1_stack_outputs_proto_init
 	if File_project_planton_provider_gcp_gcpsubnetwork_v1_stack_outputs_proto != nil {
 		return
 	}
-	file_project_planton_provider_gcp_gcpsubnetwork_v1_spec_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

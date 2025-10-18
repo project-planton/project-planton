@@ -50,7 +50,7 @@ variable "spec" {
 
       # A flag to enable or disable data persistence for MongoDB.
       # When enabled, in-memory data is persisted to a storage volume, allowing data to survive pod restarts.
-      is_persistence_enabled = bool
+      persistence_enabled = bool
 
       # Description for disk_size
       disk_size = string
@@ -60,10 +60,10 @@ variable "spec" {
     ingress = object({
 
       # A flag to enable or disable ingress.
-      is_enabled = bool
+      enabled = bool
 
-      # The dns domain.
-      dns_domain = string
+      # The full hostname for MongoDB access.
+      hostname = string
     })
 
     # A map of key-value pairs that provide additional customization options for the Helm chart used

@@ -5,8 +5,6 @@ package project.planton.provider.kubernetes.workload.clickhousekubernetes.v1;
 import "buf/validate/validate.proto";
 import "google/protobuf/descriptor.proto";
 import "project/planton/shared/kubernetes/kubernetes.proto";
-import "project/planton/shared/kubernetes/options.proto";
-import "project/planton/shared/options/options.proto";
 
 extend google.protobuf.FieldOptions {
   ClickHouseKubernetesContainer default_container = 519001;
@@ -47,7 +45,7 @@ message ClickHouseKubernetesSpec {
   }];
 
   // The ingress configuration for the ClickHouse deployment.
-  project.planton.shared.kubernetes.IngressSpec ingress = 3;
+  ClickHouseKubernetesIngress ingress = 3;
 
   // The cluster configuration for ClickHouse sharding and replication.
   ClickHouseKubernetesClusterConfig cluster = 4;
@@ -341,6 +339,31 @@ message ClickHouseKubernetesLoggingConfig {
    * then revert to 'information' to avoid excessive log volume.
    */
   LogLevel level = 1;
+}
+
+/**
+ * **ClickHouseKubernetesIngress** defines the ingress configuration for ClickHouse deployment.
+ * Controls external access to the ClickHouse cluster via LoadBalancer with automatic DNS configuration.
+ */
+message ClickHouseKubernetesIngress {
+  /**
+   * Flag to enable or disable ingress.
+   * When enabled, creates a LoadBalancer service with external-dns annotations.
+   */
+  bool enabled = 1;
+
+  /**
+   * The full hostname for external access (e.g., "clickhouse.example.com").
+   * This hostname will be configured automatically via external-dns.
+   * Required when enabled is true.
+   */
+  string hostname = 2;
+
+  option (buf.validate.message).cel = {
+    id: "spec.ingress.hostname.required"
+    expression: "!this.enabled || size(this.hostname) > 0"
+    message: "hostname is required when ingress is enabled"
+  };
 }
 
 /**

@@ -41,6 +41,7 @@ type PostgresKubernetesStackOutputs struct {
 	// external postgres-kubernetes hostname. port is always 5432.
 	ExternalHostname string `protobuf:"bytes,5,opt,name=external_hostname,json=externalHostname,proto3" json:"external_hostname,omitempty"`
 	// internal postgres-kubernetes hostname. port is always 5432.
+	// DEPRECATED: This field is no longer populated and will be removed in a future version.
 	InternalHostname string `protobuf:"bytes,6,opt,name=internal_hostname,json=internalHostname,proto3" json:"internal_hostname,omitempty"`
 	// kubernetes secret key for the username.
 	UsernameSecret *kubernetes.KubernetesSecretKey `protobuf:"bytes,8,opt,name=username_secret,json=usernameSecret,proto3" json:"username_secret,omitempty"`

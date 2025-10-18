@@ -7,7 +7,6 @@
 package snowflakedatabasev1
 
 import (
-	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -338,7 +337,7 @@ var File_project_planton_provider_snowflake_snowflakedatabase_v1_spec_proto prot
 
 const file_project_planton_provider_snowflake_snowflakedatabase_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Bproject/planton/provider/snowflake/snowflakedatabase/v1/spec.proto\x127project.planton.provider.snowflake.snowflakedatabase.v1\x1a\x1bbuf/validate/validate.proto\"\xcd\a\n" +
+	"Bproject/planton/provider/snowflake/snowflakedatabase/v1/spec.proto\x127project.planton.provider.snowflake.snowflakedatabase.v1\"\xcd\a\n" +
 	"\x15SnowflakeDatabaseSpec\x12\x18\n" +
 	"\acatalog\x18\x01 \x01(\tR\acatalog\x12\x18\n" +
 	"\acomment\x18\x02 \x01(\tR\acomment\x12<\n" +

@@ -6,7 +6,6 @@ import "buf/validate/validate.proto";
 import "project/planton/provider/aws/awsec2instance/v1/spec.proto";
 import "project/planton/provider/aws/awsec2instance/v1/stack_outputs.proto";
 import "project/planton/shared/metadata.proto";
-import "project/planton/shared/status.proto";
 
 // AwsEc2Instance represents a single EC2 virtual machine instance on AWS.
 // This resource provisions one EC2 instance with networking, IAM, and access configuration.

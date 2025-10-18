@@ -5,7 +5,6 @@ package project.planton.provider.kubernetes.workload.natskubernetes.v1;
 import "buf/validate/validate.proto";
 import "google/protobuf/descriptor.proto";
 import "project/planton/shared/kubernetes/kubernetes.proto";
-import "project/planton/shared/kubernetes/options.proto";
 import "project/planton/shared/options/options.proto";
 
 // custom option to store default values for the server container message
@@ -37,7 +36,7 @@ message NatsKubernetesSpec {
   // tls settings for the nats cluster.
   bool tls_enabled = 4;
   // optional ingress configuration for external access.
-  project.planton.shared.kubernetes.IngressSpec ingress = 5;
+  NatsKubernetesIngress ingress = 5;
   // toggle to deploy the nats-box utility pod.
   bool disable_nats_box = 6;
 }
@@ -83,4 +82,22 @@ message NatsKubernetesAuth {
   NatsKubernetesAuthScheme scheme = 2;
   // optional no-auth user configuration.
   NatsKubernetesNoAuthUser no_auth_user = 3;
+}
+
+// NatsKubernetesIngress defines ingress configuration for NATS external access.
+message NatsKubernetesIngress {
+  // Flag to enable or disable ingress.
+  // When enabled, creates a LoadBalancer service for external access.
+  bool enabled = 1;
+
+  // The full hostname for external access (e.g., "nats.example.com").
+  // This hostname will be configured via external-dns annotations.
+  // Required when enabled is true.
+  string hostname = 2;
+
+  option (buf.validate.message).cel = {
+    id: "spec.ingress.hostname.required"
+    expression: "!this.enabled || size(this.hostname) > 0"
+    message: "hostname is required when ingress is enabled"
+  };
 }

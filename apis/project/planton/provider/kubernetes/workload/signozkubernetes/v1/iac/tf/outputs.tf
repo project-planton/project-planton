@@ -38,16 +38,6 @@ output "external_hostname" {
   value       = local.signoz_ingress_external_hostname
 }
 
-output "internal_hostname" {
-  description = "The internal hostname for SigNoz UI if ingress is enabled."
-  value       = local.signoz_ingress_internal_hostname
-}
-
-output "otel_collector_external_grpc_hostname" {
-  description = "The external gRPC hostname for OpenTelemetry Collector if ingress is enabled."
-  value       = local.otel_collector_external_grpc_hostname
-}
-
 output "otel_collector_external_http_hostname" {
   description = "The external HTTP hostname for OpenTelemetry Collector if ingress is enabled."
   value       = local.otel_collector_external_http_hostname

@@ -6,7 +6,6 @@ import "buf/validate/validate.proto";
 import "project/planton/provider/aws/awsroute53zone/v1/spec.proto";
 import "project/planton/provider/aws/awsroute53zone/v1/stack_outputs.proto";
 import "project/planton/shared/metadata.proto";
-import "project/planton/shared/status.proto";
 
 //aws-route53-zone
 message AwsRoute53Zone {

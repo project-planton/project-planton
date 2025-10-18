@@ -157,7 +157,7 @@ var File_project_planton_provider_azure_azurecontainerregistry_v1_api_proto prot
 
 const file_project_planton_provider_azure_azurecontainerregistry_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Bproject/planton/provider/azure/azurecontainerregistry/v1/api.proto\x128project.planton.provider.azure.azurecontainerregistry.v1\x1a\x1bbuf/validate/validate.proto\x1aCproject/planton/provider/azure/azurecontainerregistry/v1/spec.proto\x1aLproject/planton/provider/azure/azurecontainerregistry/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\x1a#project/planton/shared/status.proto\"\xc4\x03\n" +
+	"Bproject/planton/provider/azure/azurecontainerregistry/v1/api.proto\x128project.planton.provider.azure.azurecontainerregistry.v1\x1a\x1bbuf/validate/validate.proto\x1aCproject/planton/provider/azure/azurecontainerregistry/v1/spec.proto\x1aLproject/planton/provider/azure/azurecontainerregistry/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xc4\x03\n" +
 	"\x16AzureContainerRegistry\x12D\n" +
 	"\vapi_version\x18\x01 \x01(\tB#\xbaH r\x1e\n" +
 	"\x1cazure.project-planton.org/v1R\n" +

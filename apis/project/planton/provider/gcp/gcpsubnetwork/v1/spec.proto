@@ -4,7 +4,6 @@ package project.planton.provider.gcp.gcpsubnetwork.v1;
 
 import "buf/validate/validate.proto";
 import "project/planton/shared/foreignkey/v1/foreign_key.proto";
-import "project/planton/shared/options/options.proto";
 
 // GcpSubnetworkSpec defines the user-provided settings for a GCP Subnetwork (custom mode).
 message GcpSubnetworkSpec {

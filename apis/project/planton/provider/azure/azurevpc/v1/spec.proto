@@ -3,7 +3,6 @@ syntax = "proto3";
 package project.planton.provider.azure.azurevpc.v1;
 
 import "buf/validate/validate.proto";
-import "project/planton/shared/options/options.proto";
 
 // AzureVpcSpec defines the configuration for an Azure Virtual Network (VNet).
 // This resource is typically used as the networking foundation for an AKS cluster.

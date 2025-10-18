@@ -1,6 +1,6 @@
-resource "kubernetes_namespace" "solr_namespace" {
+resource "kubernetes_namespace" "nats_namespace" {
   metadata {
     name   = local.namespace
-    labels = local.final_labels
+    labels = local.labels
   }
 }

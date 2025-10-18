@@ -60,8 +60,7 @@ Provides outputs from the deployed Redis infrastructure.
 - **service**: Kubernetes service name for Redis.
 - **port_forward_command**: Command to set up port-forwarding for local access.
 - **kube_endpoint**: Internal Kubernetes endpoint for Redis.
-- **external_hostname**: Public endpoint for external access.
-- **internal_hostname**: Internal endpoint for access within Kubernetes.
+- **external_hostname**: Public endpoint for external access (when ingress is enabled).
 - **username**: Redis authentication username.
 - **password_secret**: Kubernetes secret key for Redis password.
 

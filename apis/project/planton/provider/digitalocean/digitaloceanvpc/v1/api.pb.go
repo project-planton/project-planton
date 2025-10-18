@@ -157,7 +157,7 @@ var File_project_planton_provider_digitalocean_digitaloceanvpc_v1_api_proto prot
 
 const file_project_planton_provider_digitalocean_digitaloceanvpc_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Bproject/planton/provider/digitalocean/digitaloceanvpc/v1/api.proto\x128project.planton.provider.digitalocean.digitaloceanvpc.v1\x1a\x1bbuf/validate/validate.proto\x1aCproject/planton/provider/digitalocean/digitaloceanvpc/v1/spec.proto\x1aLproject/planton/provider/digitalocean/digitaloceanvpc/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\x1a#project/planton/shared/status.proto\"\xb0\x03\n" +
+	"Bproject/planton/provider/digitalocean/digitaloceanvpc/v1/api.proto\x128project.planton.provider.digitalocean.digitaloceanvpc.v1\x1a\x1bbuf/validate/validate.proto\x1aCproject/planton/provider/digitalocean/digitaloceanvpc/v1/spec.proto\x1aLproject/planton/provider/digitalocean/digitaloceanvpc/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xb0\x03\n" +
 	"\x0fDigitalOceanVpc\x12L\n" +
 	"\vapi_version\x18\x01 \x01(\tB+\xbaH(r&\n" +
 	"$digital-ocean.project-planton.org/v1R\n" +

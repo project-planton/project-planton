@@ -15,5 +15,5 @@ spec:
     isPersistenceEnabled: true
     diskSize: 1Gi
   ingress:
-    isEnabled: true
-    dnsDomain: example.com
+    enabled: true
+    hostname: test-redis-database.example.com

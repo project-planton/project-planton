@@ -470,20 +470,15 @@ const file_project_planton_provider_kubernetes_workload_kafkakubernetes_v1_spec_
 	"\tresources\x18\x03 \x01(\v25.project.planton.shared.kubernetes.ContainerResourcesB!\xba\xfb\xa4\x02\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
-	"\x0350m\x12\x05100MiR\tresources\"\xb9\b\n" +
+	"\x0350m\x12\x05100MiR\tresources\"\xed\b\n" +
 	"\n" +
-	"KafkaTopic\x12\xdf\x03\n" +
-	"\x04name\x18\x01 \x01(\tB\xca\x03\xbaH\xc6\x03\xba\x01Z\n" +
-	"\n" +
-	"topic.name\x12+Should start with an alphanumeric character\x1a\x1fthis.matches('^[a-zA-Z0-9].*$')\xba\x01p\n" +
-	"\n" +
-	"topic.name\x12?Only alphanumeric and ('.', '_' and '-') characters are allowed\x1a!this.matches('^[a-zA-Z0-9._-]+$')\xba\x019\n" +
-	"\n" +
-	"topic.name\x12\x15Must not contain '..'\x1a\x14!this.contains('..')\xba\x01S\n" +
-	"\n" +
-	"topic.name\x12%Must not contain non-ASCII characters\x1a\x1ethis.matches('^[\\x00-\\x7F]+$')\xba\x01W\n" +
-	"\n" +
-	"topic.name\x12)Should end with an alphanumeric character\x1a\x1ethis.matches('.*[a-zA-Z0-9]$')\xc8\x01\x01r\x05\x10\x01\x18\xf9\x01R\x04name\x12%\n" +
+	"KafkaTopic\x12\x93\x04\n" +
+	"\x04name\x18\x01 \x01(\tB\xfe\x03\xbaH\xfa\x03\xba\x01e\n" +
+	"\x15topic.name.startswith\x12+Should start with an alphanumeric character\x1a\x1fthis.matches('^[a-zA-Z0-9].*$')\xba\x01v\n" +
+	"\x10topic.name.chars\x12?Only alphanumeric and ('.', '_' and '-') characters are allowed\x1a!this.matches('^[a-zA-Z0-9._-]+$')\xba\x01H\n" +
+	"\x19topic.name.no_double_dots\x12\x15Must not contain '..'\x1a\x14!this.contains('..')\xba\x01^\n" +
+	"\x15topic.name.ascii_only\x12%Must not contain non-ASCII characters\x1a\x1ethis.matches('^[\\x00-\\x7F]+$')\xba\x01`\n" +
+	"\x13topic.name.endswith\x12)Should end with an alphanumeric character\x1a\x1ethis.matches('.*[a-zA-Z0-9]$')\xc8\x01\x01r\x05\x10\x01\x18\xf9\x01R\x04name\x12%\n" +
 	"\n" +
 	"partitions\x18\x02 \x01(\x05B\x05\x8a\xa6\x1d\x011R\n" +
 	"partitions\x12!\n" +

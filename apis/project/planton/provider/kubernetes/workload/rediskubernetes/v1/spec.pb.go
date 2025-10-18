@@ -9,7 +9,6 @@ package rediskubernetesv1
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	kubernetes "github.com/project-planton/project-planton/apis/project/planton/shared/kubernetes"
-	_ "github.com/project-planton/project-planton/apis/project/planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	descriptorpb "google.golang.org/protobuf/types/descriptorpb"
@@ -34,7 +33,7 @@ type RedisKubernetesSpec struct {
 	// The container specifications for the Redis deployment.
 	Container *RedisKubernetesContainer `protobuf:"bytes,1,opt,name=container,proto3" json:"container,omitempty"`
 	// The ingress configuration for the Redis deployment.
-	Ingress       *kubernetes.IngressSpec `protobuf:"bytes,2,opt,name=ingress,proto3" json:"ingress,omitempty"`
+	Ingress       *RedisKubernetesIngress `protobuf:"bytes,2,opt,name=ingress,proto3" json:"ingress,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -76,7 +75,7 @@ func (x *RedisKubernetesSpec) GetContainer() *RedisKubernetesContainer {
 	return nil
 }
 
-func (x *RedisKubernetesSpec) GetIngress() *kubernetes.IngressSpec {
+func (x *RedisKubernetesSpec) GetIngress() *RedisKubernetesIngress {
 	if x != nil {
 		return x.Ingress
 	}
@@ -159,6 +158,65 @@ func (x *RedisKubernetesContainer) GetDiskSize() string {
 	return ""
 }
 
+// *
+// RedisKubernetesIngress defines the ingress configuration for Redis.
+type RedisKubernetesIngress struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Flag to enable or disable ingress.
+	// When enabled, creates a LoadBalancer service with external-dns annotations.
+	Enabled bool `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`
+	// The full hostname for external access (e.g., "redis.example.com").
+	// This hostname will be configured automatically via external-dns.
+	// Required when enabled is true.
+	Hostname      string `protobuf:"bytes,2,opt,name=hostname,proto3" json:"hostname,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RedisKubernetesIngress) Reset() {
+	*x = RedisKubernetesIngress{}
+	mi := &file_project_planton_provider_kubernetes_workload_rediskubernetes_v1_spec_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RedisKubernetesIngress) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RedisKubernetesIngress) ProtoMessage() {}
+
+func (x *RedisKubernetesIngress) ProtoReflect() protoreflect.Message {
+	mi := &file_project_planton_provider_kubernetes_workload_rediskubernetes_v1_spec_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RedisKubernetesIngress.ProtoReflect.Descriptor instead.
+func (*RedisKubernetesIngress) Descriptor() ([]byte, []int) {
+	return file_project_planton_provider_kubernetes_workload_rediskubernetes_v1_spec_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *RedisKubernetesIngress) GetEnabled() bool {
+	if x != nil {
+		return x.Enabled
+	}
+	return false
+}
+
+func (x *RedisKubernetesIngress) GetHostname() string {
+	if x != nil {
+		return x.Hostname
+	}
+	return ""
+}
+
 var file_project_planton_provider_kubernetes_workload_rediskubernetes_v1_spec_proto_extTypes = []protoimpl.ExtensionInfo{
 	{
 		ExtendedType:  (*descriptorpb.FieldOptions)(nil),
@@ -180,19 +238,23 @@ var File_project_planton_provider_kubernetes_workload_rediskubernetes_v1_spec_pr
 
 const file_project_planton_provider_kubernetes_workload_rediskubernetes_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Jproject/planton/provider/kubernetes/workload/rediskubernetes/v1/spec.proto\x12?project.planton.provider.kubernetes.workload.rediskubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\x1a,project/planton/shared/options/options.proto\"\x87\x02\n" +
+	"Jproject/planton/provider/kubernetes/workload/rediskubernetes/v1/spec.proto\x12?project.planton.provider.kubernetes.workload.rediskubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\"\xb0\x02\n" +
 	"\x13RedisKubernetesSpec\x12\xa5\x01\n" +
 	"\tcontainer\x18\x01 \x01(\v2Y.project.planton.provider.kubernetes.workload.rediskubernetes.v1.RedisKubernetesContainerB,ʚ\x86\x02'\b\x01\x12\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
-	"\x0350m\x12\x05100Mi\x18\x01\"\x031GiR\tcontainer\x12H\n" +
-	"\aingress\x18\x02 \x01(\v2..project.planton.shared.kubernetes.IngressSpecR\aingress\"\xbe\x04\n" +
+	"\x0350m\x12\x05100Mi\x18\x01\"\x031GiR\tcontainer\x12q\n" +
+	"\aingress\x18\x02 \x01(\v2W.project.planton.provider.kubernetes.workload.rediskubernetes.v1.RedisKubernetesIngressR\aingress\"\xbe\x04\n" +
 	"\x18RedisKubernetesContainer\x12\x1a\n" +
 	"\breplicas\x18\x01 \x01(\x05R\breplicas\x12S\n" +
 	"\tresources\x18\x02 \x01(\v25.project.planton.shared.kubernetes.ContainerResourcesR\tresources\x124\n" +
 	"\x16is_persistence_enabled\x18\x03 \x01(\bR\x14isPersistenceEnabled\x12\x1b\n" +
 	"\tdisk_size\x18\x04 \x01(\tR\bdiskSize:\xdd\x02\xbaH\xd9\x02\x1a\xd6\x02\n" +
-	"!spec.container.disk_size.required\x12IDisk size is required and must match the format if persistence is enabled\x1a\xe5\x01((!this.is_persistence_enabled && (size(this.disk_size) == 0 || this.disk_size == '')) || (this.is_persistence_enabled && size(this.disk_size) > 0 && this.disk_size.matches('^\\\\d+(\\\\.\\\\d+)?\\\\s?(Ki|Mi|Gi|Ti|Pi|Ei|K|M|G|T|P|E)$'))):\xa7\x01\n" +
+	"!spec.container.disk_size.required\x12IDisk size is required and must match the format if persistence is enabled\x1a\xe5\x01((!this.is_persistence_enabled && (size(this.disk_size) == 0 || this.disk_size == '')) || (this.is_persistence_enabled && size(this.disk_size) > 0 && this.disk_size.matches('^\\\\d+(\\\\.\\\\d+)?\\\\s?(Ki|Mi|Gi|Ti|Pi|Ei|K|M|G|T|P|E)$')))\"\xcd\x01\n" +
+	"\x16RedisKubernetesIngress\x12\x18\n" +
+	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x1a\n" +
+	"\bhostname\x18\x02 \x01(\tR\bhostname:}\xbaHz\x1ax\n" +
+	"\x1espec.ingress.hostname.required\x12,hostname is required when ingress is enabled\x1a(!this.enabled || size(this.hostname) > 0:\xa7\x01\n" +
 	"\x11default_container\x12\x1d.google.protobuf.FieldOptions\x18\xa9\xe3  \x01(\v2Y.project.planton.provider.kubernetes.workload.rediskubernetes.v1.RedisKubernetesContainerR\x10defaultContainerB\xf9\x03\n" +
 	"Ccom.project.planton.provider.kubernetes.workload.rediskubernetes.v1B\tSpecProtoP\x01Z\x81\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/rediskubernetes/v1;rediskubernetesv1\xa2\x02\x06PPPKWR\xaa\x02?Project.Planton.Provider.Kubernetes.Workload.Rediskubernetes.V1\xca\x02?Project\\Planton\\Provider\\Kubernetes\\Workload\\Rediskubernetes\\V1\xe2\x02KProject\\Planton\\Provider\\Kubernetes\\Workload\\Rediskubernetes\\V1\\GPBMetadata\xea\x02EProject::Planton::Provider::Kubernetes::Workload::Rediskubernetes::V1b\x06proto3"
 
@@ -208,17 +270,17 @@ func file_project_planton_provider_kubernetes_workload_rediskubernetes_v1_spec_p
 	return file_project_planton_provider_kubernetes_workload_rediskubernetes_v1_spec_proto_rawDescData
 }
 
-var file_project_planton_provider_kubernetes_workload_rediskubernetes_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_project_planton_provider_kubernetes_workload_rediskubernetes_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_project_planton_provider_kubernetes_workload_rediskubernetes_v1_spec_proto_goTypes = []any{
 	(*RedisKubernetesSpec)(nil),           // 0: project.planton.provider.kubernetes.workload.rediskubernetes.v1.RedisKubernetesSpec
 	(*RedisKubernetesContainer)(nil),      // 1: project.planton.provider.kubernetes.workload.rediskubernetes.v1.RedisKubernetesContainer
-	(*kubernetes.IngressSpec)(nil),        // 2: project.planton.shared.kubernetes.IngressSpec
+	(*RedisKubernetesIngress)(nil),        // 2: project.planton.provider.kubernetes.workload.rediskubernetes.v1.RedisKubernetesIngress
 	(*kubernetes.ContainerResources)(nil), // 3: project.planton.shared.kubernetes.ContainerResources
 	(*descriptorpb.FieldOptions)(nil),     // 4: google.protobuf.FieldOptions
 }
 var file_project_planton_provider_kubernetes_workload_rediskubernetes_v1_spec_proto_depIdxs = []int32{
 	1, // 0: project.planton.provider.kubernetes.workload.rediskubernetes.v1.RedisKubernetesSpec.container:type_name -> project.planton.provider.kubernetes.workload.rediskubernetes.v1.RedisKubernetesContainer
-	2, // 1: project.planton.provider.kubernetes.workload.rediskubernetes.v1.RedisKubernetesSpec.ingress:type_name -> project.planton.shared.kubernetes.IngressSpec
+	2, // 1: project.planton.provider.kubernetes.workload.rediskubernetes.v1.RedisKubernetesSpec.ingress:type_name -> project.planton.provider.kubernetes.workload.rediskubernetes.v1.RedisKubernetesIngress
 	3, // 2: project.planton.provider.kubernetes.workload.rediskubernetes.v1.RedisKubernetesContainer.resources:type_name -> project.planton.shared.kubernetes.ContainerResources
 	4, // 3: project.planton.provider.kubernetes.workload.rediskubernetes.v1.default_container:extendee -> google.protobuf.FieldOptions
 	1, // 4: project.planton.provider.kubernetes.workload.rediskubernetes.v1.default_container:type_name -> project.planton.provider.kubernetes.workload.rediskubernetes.v1.RedisKubernetesContainer
@@ -240,7 +302,7 @@ func file_project_planton_provider_kubernetes_workload_rediskubernetes_v1_spec_p
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_project_planton_provider_kubernetes_workload_rediskubernetes_v1_spec_proto_rawDesc), len(file_project_planton_provider_kubernetes_workload_rediskubernetes_v1_spec_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   2,
+			NumMessages:   3,
 			NumExtensions: 1,
 			NumServices:   0,
 		},

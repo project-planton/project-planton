@@ -42,7 +42,7 @@ Deploying Redis in a Kubernetes environment can be complex, especially when deal
 
 ### Ingress Configuration
 
-- **Ingress Spec**: Configure ingress rules to expose the Redis service securely to external clients or internal systems within the Kubernetes environment.
+- **Ingress Hostname Control**: Configure a LoadBalancer service with external-dns annotations to expose the Redis service. Users have full control over the ingress hostname, allowing custom DNS patterns like `redis.example.com` or `cache-prod.company.com`. When ingress is enabled, the hostname field is required and the system creates a LoadBalancer service with the specified hostname configured via external-dns.
 
 ## Benefits
 

@@ -12,10 +12,7 @@ resource "kubernetes_manifest" "ingress_certificate" {
       labels    = local.final_labels
     }
     spec = {
-      dnsNames = [
-        for hostname in [local.ingress_external_hostname, local.ingress_internal_hostname]
-        : hostname if hostname != null
-      ]
+      dnsNames   = [local.ingress_external_hostname]
       secretName = local.ingress_cert_secret_name
       issuerRef = {
         kind = "ClusterIssuer"
@@ -72,7 +69,7 @@ resource "kubernetes_manifest" "gateway" {
         },
         {
           name     = "http-external"
-          hostname = local.ingress_internal_hostname
+          hostname = local.ingress_external_hostname
           port     = 80
           protocol = "HTTP"
           allowedRoutes = {

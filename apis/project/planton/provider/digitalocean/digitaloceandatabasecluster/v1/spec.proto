@@ -4,9 +4,7 @@ package project.planton.provider.digitalocean.digitaloceandatabasecluster.v1;
 
 import "buf/validate/validate.proto";
 import "project/planton/provider/digitalocean/region.proto";
-import "project/planton/shared/cloudresourcekind/cloud_resource_kind.proto";
 import "project/planton/shared/foreignkey/v1/foreign_key.proto";
-import "project/planton/shared/options/options.proto";
 
 // DigitalOceanDatabaseClusterSpec defines the essential configuration for creating a managed database cluster on DigitalOcean.
 // This follows the 80/20 principle: only the most commonly used fields are exposed to keep the API simple.

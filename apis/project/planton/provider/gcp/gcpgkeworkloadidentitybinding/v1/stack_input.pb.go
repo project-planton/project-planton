@@ -81,7 +81,7 @@ var File_project_planton_provider_gcp_gcpgkeworkloadidentitybinding_v1_stack_inp
 
 const file_project_planton_provider_gcp_gcpgkeworkloadidentitybinding_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Oproject/planton/provider/gcp/gcpgkeworkloadidentitybinding/v1/stack_input.proto\x12=project.planton.provider.gcp.gcpgkeworkloadidentitybinding.v1\x1a6project/planton/credential/gcpcredential/v1/spec.proto\x1aGproject/planton/provider/gcp/gcpgkeworkloadidentitybinding/v1/api.proto\x1aQproject/planton/provider/gcp/gcpgkeworkloadidentitybinding/v1/stack_outputs.proto\"\x90\x02\n" +
+	"Oproject/planton/provider/gcp/gcpgkeworkloadidentitybinding/v1/stack_input.proto\x12=project.planton.provider.gcp.gcpgkeworkloadidentitybinding.v1\x1a6project/planton/credential/gcpcredential/v1/spec.proto\x1aGproject/planton/provider/gcp/gcpgkeworkloadidentitybinding/v1/api.proto\"\x90\x02\n" +
 	"'GcpGkeWorkloadIdentityBindingStackInput\x12t\n" +
 	"\x06target\x18\x01 \x01(\v2\\.project.planton.provider.gcp.gcpgkeworkloadidentitybinding.v1.GcpGkeWorkloadIdentityBindingR\x06target\x12o\n" +
 	"\x13provider_credential\x18\x02 \x01(\v2>.project.planton.credential.gcpcredential.v1.GcpCredentialSpecR\x12providerCredentialB\xff\x03\n" +
@@ -123,7 +123,6 @@ func file_project_planton_provider_gcp_gcpgkeworkloadidentitybinding_v1_stack_in
 		return
 	}
 	file_project_planton_provider_gcp_gcpgkeworkloadidentitybinding_v1_api_proto_init()
-	file_project_planton_provider_gcp_gcpgkeworkloadidentitybinding_v1_stack_outputs_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

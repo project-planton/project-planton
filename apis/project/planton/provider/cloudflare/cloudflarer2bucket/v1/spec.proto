@@ -3,7 +3,6 @@ syntax = "proto3";
 package project.planton.provider.cloudflare.cloudflarer2bucket.v1;
 
 import "buf/validate/validate.proto";
-import "project/planton/shared/options/options.proto";
 
 // Supported Cloudflare R2 bucket regions (location hints).
 // These values must match Cloudflare's expected location strings exactly.

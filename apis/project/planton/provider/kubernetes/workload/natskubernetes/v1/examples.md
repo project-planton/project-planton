@@ -79,7 +79,7 @@ spec:
     diskSize: "10Gi"
   ingress:
     enabled: true
-    host: nats.example.com
+    hostname: nats.example.com
   auth:
     enabled: true
     scheme: basic_auth
@@ -151,7 +151,7 @@ spec:
   disableNatsBox: false
   ingress:
     enabled: true
-    host: nats-ha.example.com
+    hostname: nats-ha.example.com
   auth:
     enabled: true
     scheme: bearer_token

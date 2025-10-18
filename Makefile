@@ -38,6 +38,10 @@ protos:
 	pushd apis;make build;popd
 	${BAZEL} run //:gazelle
 
+.PHONY: buf-lint
+buf-lint:
+	$(MAKE) -C apis buf-lint
+
 .PHONY: bazel-mod-tidy
 bazel-mod-tidy:
 	${BAZEL} mod tidy

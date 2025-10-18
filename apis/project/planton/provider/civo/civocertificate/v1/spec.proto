@@ -3,7 +3,6 @@ syntax = "proto3";
 package project.planton.provider.civo.civocertificate.v1;
 
 import "buf/validate/validate.proto";
-import "project/planton/shared/options/options.proto";
 
 // CivoCertificateSpec defines the fields required to create a TLS certificate in Civo.
 message CivoCertificateSpec {

@@ -148,7 +148,7 @@ var File_project_planton_provider_gcp_gcpgkecluster_v1_stack_outputs_proto proto
 
 const file_project_planton_provider_gcp_gcpgkecluster_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Aproject/planton/provider/gcp/gcpgkecluster/v1/stack_outputs.proto\x12-project.planton.provider.gcp.gcpgkecluster.v1\x1a8project/planton/provider/gcp/gcpgkecluster/v1/spec.proto\x1a$project/planton/shared/gcp/gcp.proto\"\x8a\x04\n" +
+	"Aproject/planton/provider/gcp/gcpgkecluster/v1/stack_outputs.proto\x12-project.planton.provider.gcp.gcpgkecluster.v1\x1a$project/planton/shared/gcp/gcp.proto\"\x8a\x04\n" +
 	"\x19GcpGkeClusterStackOutputs\x12)\n" +
 	"\x10cluster_endpoint\x18\x01 \x01(\tR\x0fclusterEndpoint\x12&\n" +
 	"\x0fcluster_ca_data\x18\x02 \x01(\tR\rclusterCaData\x12&\n" +
@@ -192,7 +192,6 @@ func file_project_planton_provider_gcp_gcpgkecluster_v1_stack_outputs_proto_init
 	if File_project_planton_provider_gcp_gcpgkecluster_v1_stack_outputs_proto != nil {
 		return
 	}
-	file_project_planton_provider_gcp_gcpgkecluster_v1_spec_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

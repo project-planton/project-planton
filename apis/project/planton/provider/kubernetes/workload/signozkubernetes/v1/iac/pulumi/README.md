@@ -113,14 +113,14 @@ Creates external access to the SigNoz web interface for viewing traces, metrics,
   - HTTPS traffic routing to SigNoz frontend service (port 3301)
 
 **Endpoints**:
-- External: `{namespace}.{dns-domain}` (e.g., `signoz-app-prod-main.planton.live`)
-- Internal: `{namespace}-internal.{dns-domain}` (e.g., `signoz-app-prod-main-internal.planton.live`)
+- External: User-specified hostname (e.g., `signoz.planton.live`)
 
 **Configuration**:
 ```yaml
-signozIngress:
-  enabled: true
-  dnsDomain: planton.live
+ingress:
+  ui:
+    enabled: true
+    hostname: signoz.planton.live
 ```
 
 ### OTEL Collector Ingress
@@ -130,23 +130,19 @@ signozIngress:
 Creates external access to OpenTelemetry Collector for telemetry data ingestion from sources outside the Kubernetes cluster (CLI tools, services on developer laptops, external applications).
 
 **Resources Created** (in `istio-ingress` namespace):
-- **Certificate**: TLS certificate covering both gRPC and HTTP hostnames
-- **Gateway**: Kubernetes Gateway with two HTTPS listeners:
-  - `https-otel-grpc`: For gRPC traffic (OTLP/gRPC protocol)
-  - `https-otel-http`: For HTTP traffic (OTLP/HTTP protocol)
-- **HTTPRoutes**:
-  - gRPC route to OTEL Collector service port 4317
-  - HTTP route to OTEL Collector service port 4318
+- **Certificate**: TLS certificate for HTTP hostname
+- **Gateway**: Kubernetes Gateway with HTTPS listener for HTTP traffic (OTLP/HTTP protocol)
+- **HTTPRoute**: HTTP route to OTEL Collector service port 4318
 
 **Endpoints**:
-- gRPC: `{namespace}-ingest-grpc.{dns-domain}` (e.g., `signoz-app-prod-main-ingest-grpc.planton.live`)
-- HTTP: `{namespace}-ingest-http.{dns-domain}` (e.g., `signoz-app-prod-main-ingest-http.planton.live`)
+- HTTP: User-specified hostname (e.g., `signoz-ingest.planton.live`)
 
 **Configuration**:
 ```yaml
-otelCollectorIngress:
-  enabled: true
-  dnsDomain: planton.live
+ingress:
+  otelCollector:
+    enabled: true
+    hostname: signoz-ingest.planton.live
 ```
 
 **Usage Example (Java/Spring Boot)**:
@@ -155,7 +151,7 @@ otelCollectorIngress:
 otel:
   exporter:
     otlp:
-      endpoint: https://signoz-app-prod-main-ingest-grpc.planton.live:443
+      endpoint: https://signoz-ingest.planton.live
   traces:
     exporter: otlp
   metrics:
@@ -164,17 +160,9 @@ otel:
 
 **Usage Example (CLI/Environment Variables)**:
 ```bash
-export OTEL_EXPORTER_OTLP_ENDPOINT=https://signoz-app-prod-main-ingest-grpc.planton.live:443
+export OTEL_EXPORTER_OTLP_ENDPOINT=https://signoz-ingest.planton.live
 export OTEL_TRACES_EXPORTER=otlp
 ```
-
-### Why HTTPRoute for gRPC?
-
-gRPC uses HTTP/2 as its transport protocol. In Gateway API:
-- HTTPRoute can handle gRPC traffic (gRPC is essentially HTTP/2)
-- The Gateway listener uses HTTPS protocol with TLS termination
-- The HTTPRoute routes traffic to the OTEL Collector gRPC port (4317)
-- This is the standard, widely-supported approach in Gateway API
 
 ### TLS Configuration
 
@@ -185,17 +173,17 @@ gRPC uses HTTP/2 as its transport protocol. In Gateway API:
 
 ### Traffic Flow Example
 
-**OTEL Collector gRPC Traffic**:
+**OTEL Collector HTTP Traffic**:
 ```
-Java App on Laptop
-  ↓ gRPC over HTTPS (port 443)
-DNS: signoz-app-prod-main-ingest-grpc.planton.live
+Application
+  ↓ OTLP/HTTP over HTTPS (port 443)
+DNS: signoz-ingest.planton.live
   ↓
 Istio Ingress Gateway
   ↓ TLS Termination
-HTTPRoute: https-otel-grpc
-  ↓ gRPC (port 4317)
-Service: main-otel-collector
+HTTPRoute: https-otel-http
+  ↓ HTTP (port 4318)
+Service: signoz-otel-collector
   ↓
 OTEL Collector Pod
   ↓ Processes & Batches

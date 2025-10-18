@@ -7,7 +7,7 @@
 package shared
 
 import (
-	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
+	v1 "github.com/project-planton/project-planton/apis/project/planton/shared/relationship/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -42,7 +42,9 @@ type ApiResourceMetadata struct {
 	// tags for the resource
 	Tags []string `protobuf:"bytes,8,rep,name=tags,proto3" json:"tags,omitempty"`
 	// metadata for resource version
-	Version       *ApiResourceMetadataVersion `protobuf:"bytes,9,opt,name=version,proto3" json:"version,omitempty"`
+	Version *ApiResourceMetadataVersion `protobuf:"bytes,9,opt,name=version,proto3" json:"version,omitempty"`
+	// explicit relationships for the cloud-resource with other cloud-resources
+	Relationships []*v1.CloudResourceRelationship `protobuf:"bytes,10,rep,name=relationships,proto3" json:"relationships,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -140,6 +142,13 @@ func (x *ApiResourceMetadata) GetVersion() *ApiResourceMetadataVersion {
 	return nil
 }
 
+func (x *ApiResourceMetadata) GetRelationships() []*v1.CloudResourceRelationship {
+	if x != nil {
+		return x.Relationships
+	}
+	return nil
+}
+
 // version information for api-resource to be used in api-resource metadata
 type ApiResourceMetadataVersion struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -208,7 +217,7 @@ var File_project_planton_shared_metadata_proto protoreflect.FileDescriptor
 
 const file_project_planton_shared_metadata_proto_rawDesc = "" +
 	"\n" +
-	"%project/planton/shared/metadata.proto\x12\x16project.planton.shared\x1a\x1bbuf/validate/validate.proto\"\xff\x03\n" +
+	"%project/planton/shared/metadata.proto\x12\x16project.planton.shared\x1a9project/planton/shared/relationship/v1/relationship.proto\"\xe8\x04\n" +
 	"\x13ApiResourceMetadata\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x12\n" +
 	"\x04slug\x18\x02 \x01(\tR\x04slug\x12\x0e\n" +
@@ -218,7 +227,9 @@ const file_project_planton_shared_metadata_proto_rawDesc = "" +
 	"\x06labels\x18\x06 \x03(\v27.project.planton.shared.ApiResourceMetadata.LabelsEntryR\x06labels\x12^\n" +
 	"\vannotations\x18\a \x03(\v2<.project.planton.shared.ApiResourceMetadata.AnnotationsEntryR\vannotations\x12\x12\n" +
 	"\x04tags\x18\b \x03(\tR\x04tags\x12L\n" +
-	"\aversion\x18\t \x01(\v22.project.planton.shared.ApiResourceMetadataVersionR\aversion\x1a9\n" +
+	"\aversion\x18\t \x01(\v22.project.planton.shared.ApiResourceMetadataVersionR\aversion\x12g\n" +
+	"\rrelationships\x18\n" +
+	" \x03(\v2A.project.planton.shared.relationship.v1.CloudResourceRelationshipR\rrelationships\x1a9\n" +
 	"\vLabelsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\x1a>\n" +
@@ -245,20 +256,22 @@ func file_project_planton_shared_metadata_proto_rawDescGZIP() []byte {
 
 var file_project_planton_shared_metadata_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_project_planton_shared_metadata_proto_goTypes = []any{
-	(*ApiResourceMetadata)(nil),        // 0: project.planton.shared.ApiResourceMetadata
-	(*ApiResourceMetadataVersion)(nil), // 1: project.planton.shared.ApiResourceMetadataVersion
-	nil,                                // 2: project.planton.shared.ApiResourceMetadata.LabelsEntry
-	nil,                                // 3: project.planton.shared.ApiResourceMetadata.AnnotationsEntry
+	(*ApiResourceMetadata)(nil),          // 0: project.planton.shared.ApiResourceMetadata
+	(*ApiResourceMetadataVersion)(nil),   // 1: project.planton.shared.ApiResourceMetadataVersion
+	nil,                                  // 2: project.planton.shared.ApiResourceMetadata.LabelsEntry
+	nil,                                  // 3: project.planton.shared.ApiResourceMetadata.AnnotationsEntry
+	(*v1.CloudResourceRelationship)(nil), // 4: project.planton.shared.relationship.v1.CloudResourceRelationship
 }
 var file_project_planton_shared_metadata_proto_depIdxs = []int32{
 	2, // 0: project.planton.shared.ApiResourceMetadata.labels:type_name -> project.planton.shared.ApiResourceMetadata.LabelsEntry
 	3, // 1: project.planton.shared.ApiResourceMetadata.annotations:type_name -> project.planton.shared.ApiResourceMetadata.AnnotationsEntry
 	1, // 2: project.planton.shared.ApiResourceMetadata.version:type_name -> project.planton.shared.ApiResourceMetadataVersion
-	3, // [3:3] is the sub-list for method output_type
-	3, // [3:3] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	4, // 3: project.planton.shared.ApiResourceMetadata.relationships:type_name -> project.planton.shared.relationship.v1.CloudResourceRelationship
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_shared_metadata_proto_init() }

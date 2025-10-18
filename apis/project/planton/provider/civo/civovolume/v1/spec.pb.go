@@ -9,8 +9,6 @@ package civovolumev1
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	civo "github.com/project-planton/project-planton/apis/project/planton/provider/civo"
-	_ "github.com/project-planton/project-planton/apis/project/planton/shared/foreignkey/v1"
-	_ "github.com/project-planton/project-planton/apis/project/planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -178,7 +176,7 @@ var File_project_planton_provider_civo_civovolume_v1_spec_proto protoreflect.Fil
 
 const file_project_planton_provider_civo_civovolume_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"6project/planton/provider/civo/civovolume/v1/spec.proto\x12+project.planton.provider.civo.civovolume.v1\x1a\x1bbuf/validate/validate.proto\x1a*project/planton/provider/civo/region.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\"\x9a\x03\n" +
+	"6project/planton/provider/civo/civovolume/v1/spec.proto\x12+project.planton.provider.civo.civovolume.v1\x1a\x1bbuf/validate/validate.proto\x1a*project/planton/provider/civo/region.proto\"\x9a\x03\n" +
 	"\x0eCivoVolumeSpec\x12K\n" +
 	"\vvolume_name\x18\x01 \x01(\tB*\xbaH'\xc8\x01\x01r\"\x10\x01\x18@2\x1c^[a-z]([a-z0-9-]*[a-z0-9])?$R\n" +
 	"volumeName\x12I\n" +

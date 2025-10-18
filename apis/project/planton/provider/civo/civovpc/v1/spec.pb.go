@@ -8,7 +8,6 @@ package civovpcv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	_ "github.com/project-planton/project-planton/apis/project/planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -118,7 +117,7 @@ var File_project_planton_provider_civo_civovpc_v1_spec_proto protoreflect.FileDe
 
 const file_project_planton_provider_civo_civovpc_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"3project/planton/provider/civo/civovpc/v1/spec.proto\x12(project.planton.provider.civo.civovpc.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\"\x90\x02\n" +
+	"3project/planton/provider/civo/civovpc/v1/spec.proto\x12(project.planton.provider.civo.civovpc.v1\x1a\x1bbuf/validate/validate.proto\"\x90\x02\n" +
 	"\vCivoVpcSpec\x124\n" +
 	"\x12civo_credential_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x10civoCredentialId\x12)\n" +
 	"\fnetwork_name\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\vnetworkName\x12\x1e\n" +
