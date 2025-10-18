@@ -54,7 +54,6 @@ message ContainerPort {
   string name = 1;
 
   // The port number on the container.
-  // **Note:** Proto snake_case fields are automatically marshaled as camelCase in Kubernetes Container spec.
   int32 container_port = 2;
 
   // The protocol used by the port (e.g., "TCP" or "UDP").

@@ -228,7 +228,6 @@ type ContainerPort struct {
 	// The name of the port.
 	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// The port number on the container.
-	// **Note:** Proto snake_case fields are automatically marshaled as camelCase in Kubernetes Container spec.
 	ContainerPort int32 `protobuf:"varint,2,opt,name=container_port,json=containerPort,proto3" json:"container_port,omitempty"`
 	// The protocol used by the port (e.g., "TCP" or "UDP").
 	Protocol      string `protobuf:"bytes,3,opt,name=protocol,proto3" json:"protocol,omitempty"`
