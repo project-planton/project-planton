@@ -42,8 +42,12 @@ spec:
       user: temporalUser
       password: temporalPass
   ingress:
-    enabled: true
-    host: temporal.example.com
+    frontend:
+      enabled: true
+      hostname: temporal-frontend.example.com
+    webUi:
+      enabled: true
+      hostname: temporal-ui.example.com
   externalElasticsearch:
     host: elasticsearch.example.com
     port: 9200

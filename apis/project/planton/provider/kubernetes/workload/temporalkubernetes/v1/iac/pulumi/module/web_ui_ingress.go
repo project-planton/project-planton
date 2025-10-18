@@ -2,6 +2,7 @@ package module
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/pkg/errors"
 	certmanagerv1 "github.com/project-planton/project-planton/pkg/kubernetes/kubernetestypes/certmanager/kubernetes/cert_manager/v1"
@@ -20,16 +21,24 @@ func webUiIngress(ctx *pulumi.Context, locals *Locals,
 	createdNamespace *kubernetescorev1.Namespace) error {
 
 	if locals.TemporalKubernetes.Spec.Ingress == nil ||
-		!locals.TemporalKubernetes.Spec.Ingress.Enabled ||
-		locals.TemporalKubernetes.Spec.Ingress.DnsDomain == "" ||
+		locals.TemporalKubernetes.Spec.Ingress.WebUi == nil ||
+		!locals.TemporalKubernetes.Spec.Ingress.WebUi.Enabled ||
+		locals.TemporalKubernetes.Spec.Ingress.WebUi.Hostname == "" ||
 		locals.TemporalKubernetes.Spec.DisableWebUi {
 		// No UI ingress required.
 		return nil
 	}
 
 	// Hostname + cert secret name
-	uiHostname := locals.IngressUIHostname                    // <ns>-ui.<domain>
+	uiHostname := locals.IngressUIHostname                    // User-specified hostname
 	certSecret := fmt.Sprintf("%s-ui-cert", locals.Namespace) // deterministic
+
+	// Extract domain from hostname for ClusterIssuer name
+	hostnameParts := strings.Split(uiHostname, ".")
+	var clusterIssuerName string
+	if len(hostnameParts) > 1 {
+		clusterIssuerName = strings.Join(hostnameParts[1:], ".")
+	}
 
 	// --------------------- Certificate -------------------------------------
 	addedCertificate, err := certmanagerv1.NewCertificate(ctx,
@@ -45,7 +54,7 @@ func webUiIngress(ctx *pulumi.Context, locals *Locals,
 				SecretName: pulumi.String(certSecret),
 				IssuerRef: certmanagerv1.CertificateSpecIssuerRefArgs{
 					Kind: pulumi.String("ClusterIssuer"),
-					Name: pulumi.String(locals.TemporalKubernetes.Spec.Ingress.DnsDomain),
+					Name: pulumi.String(clusterIssuerName),
 				},
 			},
 		}, pulumi.Provider(kubernetesProvider))

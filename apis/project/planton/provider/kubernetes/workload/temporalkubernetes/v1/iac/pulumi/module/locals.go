@@ -100,16 +100,23 @@ func initializeLocals(ctx *pulumi.Context,
 	ctx.Export(OpPortForwardUICommand, pulumi.String(locals.PortForwardUICmd))
 
 	// ------------------------------- ingress ---------------------------------
+	// Frontend ingress
 	if target.Spec.Ingress != nil &&
-		target.Spec.Ingress.Enabled &&
-		target.Spec.Ingress.DnsDomain != "" {
+		target.Spec.Ingress.Frontend != nil &&
+		target.Spec.Ingress.Frontend.Enabled &&
+		target.Spec.Ingress.Frontend.Hostname != "" {
 
-		locals.IngressFrontendHostname = fmt.Sprintf("%s-frontend.%s",
-			locals.Namespace, target.Spec.Ingress.DnsDomain)
-		locals.IngressUIHostname = fmt.Sprintf("%s-ui.%s",
-			locals.Namespace, target.Spec.Ingress.DnsDomain)
-
+		locals.IngressFrontendHostname = target.Spec.Ingress.Frontend.Hostname
 		ctx.Export(OpExternalFrontendHostname, pulumi.String(locals.IngressFrontendHostname))
+	}
+
+	// Web UI ingress
+	if target.Spec.Ingress != nil &&
+		target.Spec.Ingress.WebUi != nil &&
+		target.Spec.Ingress.WebUi.Enabled &&
+		target.Spec.Ingress.WebUi.Hostname != "" {
+
+		locals.IngressUIHostname = target.Spec.Ingress.WebUi.Hostname
 		ctx.Export(OpExternalUIHostname, pulumi.String(locals.IngressUIHostname))
 	}
 

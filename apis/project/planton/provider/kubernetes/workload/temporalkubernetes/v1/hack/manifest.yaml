@@ -5,12 +5,3 @@ metadata:
 spec:
   database:
     backend: cassandra
-  ingress:
-    isEnabled: false
-  searchAttributes:
-    - name: Environment
-      type: Keyword
-    - name: CustomerId
-      type: Keyword
-    - name: Priority
-      type: Int

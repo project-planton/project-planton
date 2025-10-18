@@ -20,8 +20,12 @@ spec:
   database:
     backend: cassandra
   ingress:
-    enabled: true
-    host: temporal.example.com
+    frontend:
+      enabled: true
+      hostname: temporal-frontend.example.com
+    webUi:
+      enabled: true
+      hostname: temporal-ui.example.com
 ```
 
 **Use Case:**
@@ -49,8 +53,12 @@ spec:
       user: temporaluser
       password: securepassword
   ingress:
-    enabled: true
-    host: temporal-prod.example.com
+    frontend:
+      enabled: true
+      hostname: temporal-frontend-prod.example.com
+    webUi:
+      enabled: true
+      hostname: temporal-ui-prod.example.com
 ```
 
 **Use Case:**
@@ -78,8 +86,12 @@ spec:
     user: elasticuser
     password: elasticpassword
   ingress:
-    enabled: true
-    host: temporal-advanced.example.com
+    frontend:
+      enabled: true
+      hostname: temporal-frontend.example.com
+    webUi:
+      enabled: true
+      hostname: temporal-ui.example.com
 ```
 
 **Use Case:**
@@ -108,8 +120,9 @@ spec:
       password: securepassword
   disableWebUi: true
   ingress:
-    enabled: true
-    host: temporal-minimal.example.com
+    frontend:
+      enabled: true
+      hostname: temporal-frontend.example.com
 ```
 
 **Use Case:**

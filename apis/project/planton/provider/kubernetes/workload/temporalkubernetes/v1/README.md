@@ -91,14 +91,12 @@ spec:
     password: "elastic_password"
 
   ingress:
-    enabled: true
-    annotations:
-      externalDnsAlphaKubernetesIoHostname: "temporal.example.com"
-    hosts:
-      - host: "temporal.example.com"
-        paths:
-          - path: "/"
-            pathType: Prefix
+    frontend:
+      enabled: true
+      hostname: temporal-frontend.example.com
+    webUi:
+      enabled: true
+      hostname: temporal-ui.example.com
 
   disableWebUi: false
 ```
@@ -114,49 +112,7 @@ spec:
   database:
     backend: cassandra
 
-  ingress:
-    enabled: false
-
   disableWebUi: true
-```
-
-### Example: Deploying with Custom Search Attributes
-
-```yaml
-apiVersion: kubernetes.project-planton.org/v1
-kind: TemporalKubernetes
-metadata:
-  name: temporal-with-search-attrs
-spec:
-  database:
-    backend: postgresql
-    externalDatabase:
-      host: "postgres.example.com"
-      port: 5432
-      username: "temporal_user"
-      password: "secure_password"
-  
-  externalElasticsearch:
-    host: "elasticsearch.example.com"
-    port: 9200
-    user: "elastic"
-    password: "elastic_pass"
-  
-  searchAttributes:
-    - name: CustomerId
-      type: Keyword
-    - name: Environment
-      type: Keyword
-    - name: Priority
-      type: Int
-    - name: Amount
-      type: Double
-    - name: IsActive
-      type: Bool
-    - name: DeploymentDate
-      type: Datetime
-    - name: Tags
-      type: KeywordList
 ```
 
 ## Verifying Deployment

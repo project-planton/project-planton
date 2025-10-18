@@ -8,7 +8,6 @@ package temporalkubernetesv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	kubernetes "github.com/project-planton/project-planton/apis/project/planton/shared/kubernetes"
 	_ "github.com/project-planton/project-planton/apis/project/planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -100,7 +99,7 @@ type TemporalKubernetesSpec struct {
 	// The ingress configuration for the temporal deployment.
 	// if enabled, the frontend will be exposed using a load-balancer
 	// and also if web ui is enabled it will be exposed using the kubernetes ingress controller.
-	Ingress *kubernetes.IngressSpec `protobuf:"bytes,6,opt,name=ingress,proto3" json:"ingress,omitempty"`
+	Ingress *TemporalKubernetesIngress `protobuf:"bytes,6,opt,name=ingress,proto3" json:"ingress,omitempty"`
 	// external elasticsearch configuration to be used by temporal for configuring observability.
 	ExternalElasticsearch *TemporalKubernetesExternalElasticsearch `protobuf:"bytes,7,opt,name=external_elasticsearch,json=externalElasticsearch,proto3" json:"external_elasticsearch,omitempty"`
 	// version of the Temporal Helm chart to deploy (e.g., "0.62.0")
@@ -175,7 +174,7 @@ func (x *TemporalKubernetesSpec) GetCassandraReplicas() int32 {
 	return 0
 }
 
-func (x *TemporalKubernetesSpec) GetIngress() *kubernetes.IngressSpec {
+func (x *TemporalKubernetesSpec) GetIngress() *TemporalKubernetesIngress {
 	if x != nil {
 		return x.Ingress
 	}
@@ -425,18 +424,129 @@ func (x *TemporalKubernetesExternalElasticsearch) GetPassword() string {
 	return ""
 }
 
+// ingress configuration for temporal deployment with separate frontend and web ui endpoints
+type TemporalKubernetesIngress struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// frontend (gRPC) ingress configuration
+	Frontend *TemporalKubernetesIngressEndpoint `protobuf:"bytes,1,opt,name=frontend,proto3" json:"frontend,omitempty"`
+	// web ui ingress configuration
+	WebUi         *TemporalKubernetesIngressEndpoint `protobuf:"bytes,2,opt,name=web_ui,json=webUi,proto3" json:"web_ui,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *TemporalKubernetesIngress) Reset() {
+	*x = TemporalKubernetesIngress{}
+	mi := &file_project_planton_provider_kubernetes_workload_temporalkubernetes_v1_spec_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *TemporalKubernetesIngress) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*TemporalKubernetesIngress) ProtoMessage() {}
+
+func (x *TemporalKubernetesIngress) ProtoReflect() protoreflect.Message {
+	mi := &file_project_planton_provider_kubernetes_workload_temporalkubernetes_v1_spec_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use TemporalKubernetesIngress.ProtoReflect.Descriptor instead.
+func (*TemporalKubernetesIngress) Descriptor() ([]byte, []int) {
+	return file_project_planton_provider_kubernetes_workload_temporalkubernetes_v1_spec_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *TemporalKubernetesIngress) GetFrontend() *TemporalKubernetesIngressEndpoint {
+	if x != nil {
+		return x.Frontend
+	}
+	return nil
+}
+
+func (x *TemporalKubernetesIngress) GetWebUi() *TemporalKubernetesIngressEndpoint {
+	if x != nil {
+		return x.WebUi
+	}
+	return nil
+}
+
+// ingress endpoint configuration
+type TemporalKubernetesIngressEndpoint struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// flag to enable or disable ingress for this endpoint
+	Enabled bool `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`
+	// the full hostname for external access (e.g., "temporal-frontend.example.com")
+	// required when enabled is true
+	Hostname      string `protobuf:"bytes,2,opt,name=hostname,proto3" json:"hostname,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *TemporalKubernetesIngressEndpoint) Reset() {
+	*x = TemporalKubernetesIngressEndpoint{}
+	mi := &file_project_planton_provider_kubernetes_workload_temporalkubernetes_v1_spec_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *TemporalKubernetesIngressEndpoint) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*TemporalKubernetesIngressEndpoint) ProtoMessage() {}
+
+func (x *TemporalKubernetesIngressEndpoint) ProtoReflect() protoreflect.Message {
+	mi := &file_project_planton_provider_kubernetes_workload_temporalkubernetes_v1_spec_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use TemporalKubernetesIngressEndpoint.ProtoReflect.Descriptor instead.
+func (*TemporalKubernetesIngressEndpoint) Descriptor() ([]byte, []int) {
+	return file_project_planton_provider_kubernetes_workload_temporalkubernetes_v1_spec_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *TemporalKubernetesIngressEndpoint) GetEnabled() bool {
+	if x != nil {
+		return x.Enabled
+	}
+	return false
+}
+
+func (x *TemporalKubernetesIngressEndpoint) GetHostname() string {
+	if x != nil {
+		return x.Hostname
+	}
+	return ""
+}
+
 var File_project_planton_provider_kubernetes_workload_temporalkubernetes_v1_spec_proto protoreflect.FileDescriptor
 
 const file_project_planton_provider_kubernetes_workload_temporalkubernetes_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Mproject/planton/provider/kubernetes/workload/temporalkubernetes/v1/spec.proto\x12Bproject.planton.provider.kubernetes.workload.temporalkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a,project/planton/shared/options/options.proto\"\xa0\x05\n" +
+	"Mproject/planton/provider/kubernetes/workload/temporalkubernetes/v1/spec.proto\x12Bproject.planton.provider.kubernetes.workload.temporalkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\"\xcf\x05\n" +
 	"\x16TemporalKubernetesSpec\x12\x88\x01\n" +
 	"\bdatabase\x18\x01 \x01(\v2d.project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesDatabaseConfigB\x06\xbaH\x03\xc8\x01\x01R\bdatabase\x12$\n" +
 	"\x0edisable_web_ui\x18\x02 \x01(\bR\fdisableWebUi\x12B\n" +
 	"\x1denable_embedded_elasticsearch\x18\x03 \x01(\bR\x1benableEmbeddedElasticsearch\x126\n" +
 	"\x17enable_monitoring_stack\x18\x04 \x01(\bR\x15enableMonitoringStack\x129\n" +
-	"\x12cassandra_replicas\x18\x05 \x01(\x05B\x05\x8a\xa6\x1d\x011H\x00R\x11cassandraReplicas\x88\x01\x01\x12H\n" +
-	"\aingress\x18\x06 \x01(\v2..project.planton.shared.kubernetes.IngressSpecR\aingress\x12\xa2\x01\n" +
+	"\x12cassandra_replicas\x18\x05 \x01(\x05B\x05\x8a\xa6\x1d\x011H\x00R\x11cassandraReplicas\x88\x01\x01\x12w\n" +
+	"\aingress\x18\x06 \x01(\v2].project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesIngressR\aingress\x12\xa2\x01\n" +
 	"\x16external_elasticsearch\x18\a \x01(\v2k.project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesExternalElasticsearchR\x15externalElasticsearch\x12\x18\n" +
 	"\aversion\x18\b \x01(\tR\aversionB\x15\n" +
 	"\x13_cassandra_replicas\"\xa2\x04\n" +
@@ -457,7 +567,14 @@ const file_project_planton_provider_kubernetes_workload_temporalkubernetes_v1_sp
 	"\x04host\x18\x01 \x01(\tR\x04host\x12\x12\n" +
 	"\x04port\x18\x02 \x01(\x05R\x04port\x12\x12\n" +
 	"\x04user\x18\x03 \x01(\tR\x04user\x12\x1a\n" +
-	"\bpassword\x18\x04 \x01(\tR\bpassword*\x83\x01\n" +
+	"\bpassword\x18\x04 \x01(\tR\bpassword\"\x9d\x02\n" +
+	"\x19TemporalKubernetesIngress\x12\x81\x01\n" +
+	"\bfrontend\x18\x01 \x01(\v2e.project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesIngressEndpointR\bfrontend\x12|\n" +
+	"\x06web_ui\x18\x02 \x01(\v2e.project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesIngressEndpointR\x05webUi\"\xd8\x01\n" +
+	"!TemporalKubernetesIngressEndpoint\x12\x18\n" +
+	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x1a\n" +
+	"\bhostname\x18\x02 \x01(\tR\bhostname:}\xbaHz\x1ax\n" +
+	"\x1espec.ingress.hostname.required\x12,hostname is required when ingress is enabled\x1a(!this.enabled || size(this.hostname) > 0*\x83\x01\n" +
 	"!TemporalKubernetesDatabaseBackend\x124\n" +
 	"0temporal_kubernetes_database_backend_unspecified\x10\x00\x12\r\n" +
 	"\tcassandra\x10\x01\x12\x0e\n" +
@@ -479,26 +596,29 @@ func file_project_planton_provider_kubernetes_workload_temporalkubernetes_v1_spe
 }
 
 var file_project_planton_provider_kubernetes_workload_temporalkubernetes_v1_spec_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_project_planton_provider_kubernetes_workload_temporalkubernetes_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_project_planton_provider_kubernetes_workload_temporalkubernetes_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_project_planton_provider_kubernetes_workload_temporalkubernetes_v1_spec_proto_goTypes = []any{
 	(TemporalKubernetesDatabaseBackend)(0),          // 0: project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesDatabaseBackend
 	(*TemporalKubernetesSpec)(nil),                  // 1: project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesSpec
 	(*TemporalKubernetesDatabaseConfig)(nil),        // 2: project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesDatabaseConfig
 	(*TemporalKubernetesExternalDatabase)(nil),      // 3: project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesExternalDatabase
 	(*TemporalKubernetesExternalElasticsearch)(nil), // 4: project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesExternalElasticsearch
-	(*kubernetes.IngressSpec)(nil),                  // 5: project.planton.shared.kubernetes.IngressSpec
+	(*TemporalKubernetesIngress)(nil),               // 5: project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesIngress
+	(*TemporalKubernetesIngressEndpoint)(nil),       // 6: project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesIngressEndpoint
 }
 var file_project_planton_provider_kubernetes_workload_temporalkubernetes_v1_spec_proto_depIdxs = []int32{
 	2, // 0: project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesSpec.database:type_name -> project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesDatabaseConfig
-	5, // 1: project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesSpec.ingress:type_name -> project.planton.shared.kubernetes.IngressSpec
+	5, // 1: project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesSpec.ingress:type_name -> project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesIngress
 	4, // 2: project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesSpec.external_elasticsearch:type_name -> project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesExternalElasticsearch
 	0, // 3: project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesDatabaseConfig.backend:type_name -> project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesDatabaseBackend
 	3, // 4: project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesDatabaseConfig.external_database:type_name -> project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesExternalDatabase
-	5, // [5:5] is the sub-list for method output_type
-	5, // [5:5] is the sub-list for method input_type
-	5, // [5:5] is the sub-list for extension type_name
-	5, // [5:5] is the sub-list for extension extendee
-	0, // [0:5] is the sub-list for field type_name
+	6, // 5: project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesIngress.frontend:type_name -> project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesIngressEndpoint
+	6, // 6: project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesIngress.web_ui:type_name -> project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesIngressEndpoint
+	7, // [7:7] is the sub-list for method output_type
+	7, // [7:7] is the sub-list for method input_type
+	7, // [7:7] is the sub-list for extension type_name
+	7, // [7:7] is the sub-list for extension extendee
+	0, // [0:7] is the sub-list for field type_name
 }
 
 func init() {
@@ -516,7 +636,7 @@ func file_project_planton_provider_kubernetes_workload_temporalkubernetes_v1_spe
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_project_planton_provider_kubernetes_workload_temporalkubernetes_v1_spec_proto_rawDesc), len(file_project_planton_provider_kubernetes_workload_temporalkubernetes_v1_spec_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   4,
+			NumMessages:   6,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

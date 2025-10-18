@@ -7,7 +7,6 @@ import (
 	"github.com/onsi/ginkgo/v2"
 	"github.com/onsi/gomega"
 	"github.com/project-planton/project-planton/apis/project/planton/shared"
-	"github.com/project-planton/project-planton/apis/project/planton/shared/kubernetes"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -28,8 +27,15 @@ var _ = ginkgo.Describe("TemporalKubernetes Custom Validation Tests", func() {
 			},
 			Spec: &TemporalKubernetesSpec{
 				DisableWebUi: false,
-				Ingress: &kubernetes.IngressSpec{
-					DnsDomain: "temporal.example.com",
+				Ingress: &TemporalKubernetesIngress{
+					Frontend: &TemporalKubernetesIngressEndpoint{
+						Enabled:  true,
+						Hostname: "temporal-frontend.example.com",
+					},
+					WebUi: &TemporalKubernetesIngressEndpoint{
+						Enabled:  true,
+						Hostname: "temporal-ui.example.com",
+					},
 				},
 			},
 		}
