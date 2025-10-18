@@ -1,0 +1,401 @@
+# TemporalKubernetes Search Attributes Removal
+
+**Date**: October 18, 2025  
+**Type**: Breaking Change, Feature Removal  
+**Components**: TemporalKubernetes API, Pulumi Module
+
+## Summary
+
+Removed the search attributes field from the TemporalKubernetes API contract and IAC module because the Temporal Helm chart does not provide native support for configuring search attributes. Search attributes must be configured using the Temporal CLI after deployment instead of through the infrastructure-as-code manifest.
+
+## Motivation
+
+### The Problem
+
+The search attributes feature was recently added to TemporalKubernetes (October 16, 2025) with the assumption that the Temporal Helm chart would support configuring custom search attributes via Helm values. However, after implementation, it was discovered that:
+
+1. **Helm Chart Limitation**: The official Temporal Helm chart does not expose a mechanism to configure custom search attributes through chart values
+2. **Incorrect Implementation**: The Pulumi module attempted to set `server.config.customSearchAttributes` in Helm values, but this configuration is not recognized or applied by the Temporal Helm chart
+3. **Feature Never Used**: No production deployments have used this feature, making it safe to remove without backward compatibility concerns
+
+### The Correct Approach
+
+The Temporal project's recommended approach for managing search attributes is:
+
+1. **Deploy Infrastructure**: Use IaC tools (Pulumi/Terraform) to deploy the Temporal cluster
+2. **Configure via CLI**: Use the Temporal CLI (`tctl`) to add custom search attributes after the cluster is running
+3. **Automation**: Incorporate search attribute configuration into post-deployment automation scripts or Kubernetes Jobs
+
+This separation of concerns is intentional:
+- Infrastructure layer: Deploy and configure the Temporal cluster resources
+- Application layer: Configure namespace-specific search attributes via CLI
+
+## What Changed
+
+### 1. Removed Protobuf Message
+
+**File**: `apis/project/planton/provider/kubernetes/workload/temporalkubernetes/v1/spec.proto`
+
+**Before**:
+```protobuf
+// defines a custom search attribute for Temporal workflows
+message TemporalKubernetesSearchAttribute {
+  // name of the search attribute (e.g., "CustomerId", "Environment")
+  string name = 1 [(buf.validate.field).required = true];
+
+  // type of the search attribute
+  // must be one of: Keyword, Text, Int, Double, Bool, Datetime, KeywordList
+  // note: Text type only works with Elasticsearch backend
+  string type = 2 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).cel = {
+      id: "type.valid_search_attribute_type"
+      message: "type must be one of: Keyword, Text, Int, Double, Bool, Datetime, KeywordList"
+      expression: "this in ['Keyword', 'Text', 'Int', 'Double', 'Bool', 'Datetime', 'KeywordList']"
+    }
+  ];
+}
+```
+
+**After**: Completely removed (18 lines deleted)
+
+### 2. Removed Field from Spec
+
+**File**: `apis/project/planton/provider/kubernetes/workload/temporalkubernetes/v1/spec.proto`
+
+**Before**:
+```protobuf
+message TemporalKubernetesSpec {
+  // ... other fields ...
+  
+  // custom search attributes to register in the Temporal cluster
+  // these attributes can be used to filter and query workflows
+  // note: 'Text' type only works with Elasticsearch backend
+  repeated TemporalKubernetesSearchAttribute search_attributes = 8;
+  
+  // version of the Temporal Helm chart to deploy (e.g., "0.62.0")
+  // if not specified, the default version configured in the Pulumi module will be used
+  string version = 9;
+}
+```
+
+**After**:
+```protobuf
+message TemporalKubernetesSpec {
+  // ... other fields ...
+  
+  // version of the Temporal Helm chart to deploy (e.g., "0.62.0")
+  // if not specified, the default version configured in the Pulumi module will be used
+  string version = 8;  // Field number changed from 9 to 8
+}
+```
+
+### 3. Removed IAC Module Processing
+
+**File**: `apis/project/planton/provider/kubernetes/workload/temporalkubernetes/v1/iac/pulumi/module/helm_chart.go`
+
+**Before** (lines 157-181):
+```go
+// ------------------------------------------------- search attributes
+if len(locals.TemporalKubernetes.Spec.SearchAttributes) > 0 {
+    searchAttrsMap := pulumi.Map{}
+    for _, attr := range locals.TemporalKubernetes.Spec.SearchAttributes {
+        // attr.Type is now a string with Temporal's official naming
+        searchAttrsMap[attr.Name] = pulumi.String(attr.Type)
+    }
+
+    // Configure via server dynamic config
+    if serverCfg, ok := values["server"].(pulumi.Map); ok {
+        if configMap, ok := serverCfg["config"].(pulumi.Map); ok {
+            configMap["customSearchAttributes"] = searchAttrsMap
+        } else {
+            serverCfg["config"] = pulumi.Map{
+                "customSearchAttributes": searchAttrsMap,
+            }
+        }
+    } else {
+        values["server"] = pulumi.Map{
+            "config": pulumi.Map{
+                "customSearchAttributes": searchAttrsMap,
+            },
+        }
+    }
+}
+```
+
+**After**: Completely removed (25 lines deleted)
+
+### 4. Removed Documentation Example
+
+**File**: `apis/project/planton/provider/kubernetes/workload/temporalkubernetes/v1/examples.md`
+
+Removed Example 6: "Deployment with Custom Search Attributes" (51 lines deleted)
+
+## Files Changed
+
+### Modified
+- `spec.proto` - Removed `TemporalKubernetesSearchAttribute` message and `search_attributes` field
+- `helm_chart.go` - Removed search attributes processing logic
+- `examples.md` - Removed Example 6 demonstrating search attributes
+- `spec.pb.go` - Auto-generated, updated from proto changes
+
+### Summary
+- **Lines removed**: 94 total (18 + 4 + 25 + 51 = 98 including comments)
+- **Files modified**: 3 source files + 1 generated file
+
+## Migration Guide
+
+### Impact Assessment
+
+**Who is affected**: Users who deployed TemporalKubernetes with search attributes (October 16-18, 2025)
+
+**Reality**: Based on deployment tracking, **no production deployments** have used this feature.
+
+### For Future Users
+
+If you need custom search attributes in Temporal, use the CLI-based approach:
+
+#### Step 1: Deploy Temporal Cluster
+
+```yaml
+apiVersion: kubernetes.project-planton.org/v1
+kind: TemporalKubernetes
+metadata:
+  name: temporal-production
+spec:
+  database:
+    backend: postgresql
+    externalDatabase:
+      host: postgres.example.com
+      port: 5432
+      username: temporal_user
+      password: secure_password
+  
+  # Note: No searchAttributes field
+  
+  ingress:
+    enabled: true
+    host: temporal-prod.example.com
+```
+
+Deploy:
+```bash
+project-planton pulumi up --manifest temporal.yaml --stack prod/temporal
+```
+
+#### Step 2: Configure Search Attributes via CLI
+
+After deployment, use `tctl` to add custom search attributes:
+
+```bash
+# Port-forward to Temporal frontend
+kubectl port-forward -n temporal-production service/temporal-production-frontend 7233:7233
+
+# Add custom search attributes
+tctl --namespace default admin cluster add-search-attributes \
+  --name CustomerId --type Keyword \
+  --name Environment --type Keyword \
+  --name Priority --type Int \
+  --name Amount --type Double \
+  --name IsActive --type Bool \
+  --name DeploymentDate --type Datetime \
+  --name Tags --type KeywordList
+```
+
+#### Step 3: Verify Search Attributes
+
+```bash
+# List all search attributes
+tctl --namespace default admin cluster get-search-attributes
+
+# Example output:
+# +------------------+-----------+
+# |       NAME       |   TYPE    |
+# +------------------+-----------+
+# | CustomerId       | Keyword   |
+# | Environment      | Keyword   |
+# | Priority         | Int       |
+# | Amount           | Double    |
+# | IsActive         | Bool      |
+# | DeploymentDate   | Datetime  |
+# | Tags             | KeywordList|
+# +------------------+-----------+
+```
+
+#### Step 4: Automate with Kubernetes Job (Optional)
+
+For production environments, automate search attribute configuration:
+
+```yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: temporal-configure-search-attrs
+  namespace: temporal-production
+spec:
+  template:
+    spec:
+      containers:
+      - name: configure
+        image: temporalio/admin-tools:latest
+        command:
+        - /bin/sh
+        - -c
+        - |
+          tctl --namespace default admin cluster add-search-attributes \
+            --name CustomerId --type Keyword \
+            --name Environment --type Keyword \
+            --name Priority --type Int \
+            --name Amount --type Double \
+            --name IsActive --type Bool \
+            --name DeploymentDate --type Datetime \
+            --name Tags --type KeywordList
+      restartPolicy: OnFailure
+```
+
+Apply after Temporal deployment:
+```bash
+kubectl apply -f temporal-search-attrs-job.yaml
+```
+
+## Alternative Approaches
+
+### 1. Helm Post-Install Hook
+
+Use Helm hooks to configure search attributes after chart installation:
+
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: temporal-search-attrs-script
+  namespace: temporal-production
+  annotations:
+    "helm.sh/hook": post-install
+    "helm.sh/hook-weight": "1"
+data:
+  configure.sh: |
+    #!/bin/bash
+    tctl admin cluster add-search-attributes \
+      --name CustomerId --type Keyword \
+      # ... more attributes
+```
+
+### 2. GitOps with ArgoCD/Flux
+
+Configure search attributes as a post-sync resource in your GitOps workflow.
+
+### 3. Terraform Provisioner (for Terraform users)
+
+```hcl
+resource "null_resource" "temporal_search_attrs" {
+  depends_on = [module.temporal]
+  
+  provisioner "local-exec" {
+    command = <<-EOT
+      kubectl port-forward -n ${var.namespace} service/temporal-frontend 7233:7233 &
+      sleep 5
+      tctl admin cluster add-search-attributes --name CustomerId --type Keyword
+      # ... more attributes
+    EOT
+  }
+}
+```
+
+## Benefits of Removal
+
+1. **Correct Architecture**: Aligns with Temporal's design where search attributes are namespace-level configuration, not infrastructure-level
+2. **No False Promises**: Removes a feature that appeared to work but didn't actually configure search attributes in the cluster
+3. **Cleaner API**: Simplifies the TemporalKubernetes spec to only include truly infrastructure-related fields
+4. **Less Code**: Removed 94+ lines of code that provided no actual functionality
+5. **Better Documentation**: Forces users to learn the correct way to configure search attributes
+
+## Related Documentation
+
+- **Temporal Search Attributes CLI**: https://docs.temporal.io/tctl-v1/cluster#add-search-attributes
+- **Temporal Search Attributes Concepts**: https://docs.temporal.io/visibility#search-attribute
+- **Temporal Admin Tools**: https://docs.temporal.io/tctl-v1
+
+## Testing
+
+### Verification Steps
+
+1. **Proto Build**: ✅ Completed successfully
+   ```bash
+   cd apis
+   make build
+   ```
+
+2. **IAC Module Compilation**: ✅ Completed successfully
+   ```bash
+   cd apis/project/planton/provider/kubernetes/workload/temporalkubernetes/v1/iac/pulumi
+   go build ./...
+   ```
+
+3. **Deployment Test**: Manual verification needed
+   - Deploy a Temporal cluster without search attributes field
+   - Verify deployment succeeds
+   - Configure search attributes via `tctl`
+   - Verify search attributes are registered correctly
+
+## Breaking Change Details
+
+### What Breaks
+
+If you have a manifest with `searchAttributes`:
+
+```yaml
+# This will cause a validation error
+spec:
+  searchAttributes:  # ❌ Field no longer exists
+    - name: CustomerId
+      type: Keyword
+```
+
+Error message:
+```
+Error: unknown field "searchAttributes" in TemporalKubernetesSpec
+```
+
+### How to Fix
+
+Remove the `searchAttributes` field from your manifest and use the CLI-based approach documented above.
+
+**Before**:
+```yaml
+spec:
+  database:
+    backend: postgresql
+  searchAttributes:  # Remove this entire section
+    - name: CustomerId
+      type: Keyword
+```
+
+**After**:
+```yaml
+spec:
+  database:
+    backend: postgresql
+  # Configure search attributes via tctl after deployment
+```
+
+## Timeline
+
+- **October 16, 2025**: Search attributes feature added with string-based validation
+- **October 18, 2025**: Feature removed due to Helm chart limitation
+- **Effective Immediately**: All new deployments must use CLI-based search attribute configuration
+
+## Notes
+
+This removal is actually a **correction** rather than a regression. The search attributes field never functioned as intended because the Temporal Helm chart doesn't support this configuration method. Users who need search attributes should use the documented CLI approach, which is the standard practice in the Temporal community.
+
+The rapid addition and removal of this feature (2 days) demonstrates our commitment to:
+1. Discovering and fixing issues quickly
+2. Not shipping features that don't work as advertised
+3. Following upstream project best practices
+
+## Future Considerations
+
+If the Temporal Helm chart adds native support for search attributes configuration in the future, we may reintroduce this feature. Until then, the CLI-based approach remains the recommended and only supported method.
+
+

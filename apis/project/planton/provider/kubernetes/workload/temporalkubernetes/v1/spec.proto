@@ -21,24 +21,6 @@ enum TemporalKubernetesDatabaseBackend {
   mysql = 3;
 }
 
-// defines a custom search attribute for Temporal workflows
-message TemporalKubernetesSearchAttribute {
-  // name of the search attribute (e.g., "CustomerId", "Environment")
-  string name = 1 [(buf.validate.field).required = true];
-
-  // type of the search attribute
-  // must be one of: Keyword, Text, Int, Double, Bool, Datetime, KeywordList
-  // note: Text type only works with Elasticsearch backend
-  string type = 2 [
-    (buf.validate.field).required = true,
-    (buf.validate.field).cel = {
-      id: "type.valid_search_attribute_type"
-      message: "type must be one of: Keyword, Text, Int, Double, Bool, Datetime, KeywordList"
-      expression: "this in ['Keyword', 'Text', 'Int', 'Double', 'Bool', 'Datetime', 'KeywordList']"
-    }
-  ];
-}
-
 // temporal kubernetes spec defines minimal fields for deploying temporal on kubernetes.
 message TemporalKubernetesSpec {
   // database configuration
@@ -60,13 +42,9 @@ message TemporalKubernetesSpec {
   project.planton.shared.kubernetes.IngressSpec ingress = 6;
   // external elasticsearch configuration to be used by temporal for configuring observability.
   TemporalKubernetesExternalElasticsearch external_elasticsearch = 7;
-  // custom search attributes to register in the Temporal cluster
-  // these attributes can be used to filter and query workflows
-  // note: 'Text' type only works with Elasticsearch backend
-  repeated TemporalKubernetesSearchAttribute search_attributes = 8;
   // version of the Temporal Helm chart to deploy (e.g., "0.62.0")
   // if not specified, the default version configured in the Pulumi module will be used
-  string version = 9;
+  string version = 8;
 }
 
 // groups database configuration settings.
