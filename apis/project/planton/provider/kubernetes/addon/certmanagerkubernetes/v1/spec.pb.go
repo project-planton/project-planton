@@ -31,7 +31,7 @@ type CertManagerKubernetesSpec struct {
 	// The Kubernetes cluster to install this addon on.
 	TargetCluster *kubernetes.KubernetesAddonTargetCluster `protobuf:"bytes,1,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
 	// Upstream release channel or version tag (e.g. "v1.16").
-	ReleaseChannel string `protobuf:"bytes,2,opt,name=release_channel,json=releaseChannel,proto3" json:"release_channel,omitempty"`
+	ReleaseChannel *string `protobuf:"bytes,2,opt,name=release_channel,json=releaseChannel,proto3,oneof" json:"release_channel,omitempty"`
 	// skip installation of self-signed issuer.
 	SkipInstallSelfSignedIssuer bool `protobuf:"varint,3,opt,name=skip_install_self_signed_issuer,json=skipInstallSelfSignedIssuer,proto3" json:"skip_install_self_signed_issuer,omitempty"`
 	// Provider‑specific glue. Only one may be set.
@@ -84,8 +84,8 @@ func (x *CertManagerKubernetesSpec) GetTargetCluster() *kubernetes.KubernetesAdd
 }
 
 func (x *CertManagerKubernetesSpec) GetReleaseChannel() string {
-	if x != nil {
-		return x.ReleaseChannel
+	if x != nil && x.ReleaseChannel != nil {
+		return *x.ReleaseChannel
 	}
 	return ""
 }
@@ -333,16 +333,17 @@ var File_project_planton_provider_kubernetes_addon_certmanagerkubernetes_v1_spec
 
 const file_project_planton_provider_kubernetes_addon_certmanagerkubernetes_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Mproject/planton/provider/kubernetes/addon/certmanagerkubernetes/v1/spec.proto\x12Bproject.planton.provider.kubernetes.addon.certmanagerkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a6project/planton/shared/kubernetes/target_cluster.proto\x1a,project/planton/shared/options/options.proto\"\xdb\x04\n" +
+	"Mproject/planton/provider/kubernetes/addon/certmanagerkubernetes/v1/spec.proto\x12Bproject.planton.provider.kubernetes.addon.certmanagerkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a6project/planton/shared/kubernetes/target_cluster.proto\x1a,project/planton/shared/options/options.proto\"\xf4\x04\n" +
 	"\x19CertManagerKubernetesSpec\x12f\n" +
-	"\x0etarget_cluster\x18\x01 \x01(\v2?.project.planton.shared.kubernetes.KubernetesAddonTargetClusterR\rtargetCluster\x123\n" +
+	"\x0etarget_cluster\x18\x01 \x01(\v2?.project.planton.shared.kubernetes.KubernetesAddonTargetClusterR\rtargetCluster\x128\n" +
 	"\x0frelease_channel\x18\x02 \x01(\tB\n" +
-	"\x8a\xa6\x1d\x06stableR\x0ereleaseChannel\x12D\n" +
+	"\x8a\xa6\x1d\x06stableH\x01R\x0ereleaseChannel\x88\x01\x01\x12D\n" +
 	"\x1fskip_install_self_signed_issuer\x18\x03 \x01(\bR\x1bskipInstallSelfSignedIssuer\x12l\n" +
 	"\x03gke\x18d \x01(\v2X.project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1.CertManagerGkeConfigH\x00R\x03gke\x12l\n" +
 	"\x03eks\x18e \x01(\v2X.project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1.CertManagerEksConfigH\x00R\x03eks\x12l\n" +
 	"\x03aks\x18f \x01(\v2X.project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1.CertManagerAksConfigH\x00R\x03aksB\x11\n" +
-	"\x0fprovider_config\"\xd8\x02\n" +
+	"\x0fprovider_configB\x12\n" +
+	"\x10_release_channel\"\xd8\x02\n" +
 	"\x14CertManagerGkeConfig\x12\x7f\n" +
 	"\n" +
 	"project_id\x18\x01 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB(\xbaH\x03\xc8\x01\x01\x88\xd4a\xe3\x04\x92\xd4a\x19status.outputs.project_idR\tprojectId\x12}\n" +

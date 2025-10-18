@@ -49,7 +49,7 @@ type AwsRdsClusterSpec struct {
 	// master_user_secret_kms_key_id is the KMS key identifier (ARN/alias) for encrypting the managed secret.
 	MasterUserSecretKmsKeyId *v1.StringValueOrRef `protobuf:"bytes,8,opt,name=master_user_secret_kms_key_id,json=masterUserSecretKmsKeyId,proto3" json:"master_user_secret_kms_key_id,omitempty"`
 	// username is the master database user name.
-	Username string `protobuf:"bytes,9,opt,name=username,proto3" json:"username,omitempty"`
+	Username *string `protobuf:"bytes,9,opt,name=username,proto3,oneof" json:"username,omitempty"`
 	// password is the master user password. Cannot be set when manage_master_user_password is true.
 	Password string `protobuf:"bytes,10,opt,name=password,proto3" json:"password,omitempty"`
 	// port on which the cluster accepts connections.
@@ -191,8 +191,8 @@ func (x *AwsRdsClusterSpec) GetMasterUserSecretKmsKeyId() *v1.StringValueOrRef {
 }
 
 func (x *AwsRdsClusterSpec) GetUsername() string {
-	if x != nil {
-		return x.Username
+	if x != nil && x.Username != nil {
+		return *x.Username
 	}
 	return ""
 }
@@ -488,7 +488,7 @@ var File_project_planton_provider_aws_awsrdscluster_v1_spec_proto protoreflect.F
 
 const file_project_planton_provider_aws_awsrdscluster_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"8project/planton/provider/aws/awsrdscluster/v1/spec.proto\x12-project.planton.provider.aws.awsrdscluster.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\"\x99\x1e\n" +
+	"8project/planton/provider/aws/awsrdscluster/v1/spec.proto\x12-project.planton.provider.aws.awsrdscluster.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\"\xab\x1e\n" +
 	"\x11AwsRdsClusterSpec\x12\x85\x01\n" +
 	"\n" +
 	"subnet_ids\x18\x01 \x03(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB.\x88\xd4a\xd9\x01\x92\xd4a%status.outputs.private_subnets.[*].idR\tsubnetIds\x12g\n" +
@@ -498,9 +498,9 @@ const file_project_planton_provider_aws_awsrdscluster_v1_spec_proto_rawDesc = ""
 	"\x1cassociate_security_group_ids\x18\x05 \x03(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB)\x88\xd4a\xd7\x01\x92\xd4a status.outputs.security_group_idR\x19associateSecurityGroupIds\x12#\n" +
 	"\rdatabase_name\x18\x06 \x01(\tR\fdatabaseName\x12G\n" +
 	"\x1bmanage_master_user_password\x18\a \x01(\bB\b\x92\xa6\x1d\x04trueR\x18manageMasterUserPassword\x12\x98\x01\n" +
-	"\x1dmaster_user_secret_kms_key_id\x18\b \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB\x1f\x88\xd4a\xdc\x01\x92\xd4a\x16status.outputs.key_arnR\x18masterUserSecretKmsKeyId\x12&\n" +
+	"\x1dmaster_user_secret_kms_key_id\x18\b \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB\x1f\x88\xd4a\xdc\x01\x92\xd4a\x16status.outputs.key_arnR\x18masterUserSecretKmsKeyId\x12+\n" +
 	"\busername\x18\t \x01(\tB\n" +
-	"\x8a\xa6\x1d\x06masterR\busername\x12\x1a\n" +
+	"\x8a\xa6\x1d\x06masterH\x00R\busername\x88\x01\x01\x12\x1a\n" +
 	"\bpassword\x18\n" +
 	" \x01(\tR\bpassword\x12\x1f\n" +
 	"\x04port\x18\v \x01(\x05B\v\xbaH\b\x1a\x06\x18\xff\xff\x03(\x00R\x04port\x12\x1e\n" +
@@ -534,7 +534,8 @@ const file_project_planton_provider_aws_awsrdscluster_v1_spec_proto_rawDesc = ""
 	"\x10subnets_or_group\x127Provide either subnet_ids (>=2) or db_subnet_group_name\x1a?(this.subnet_ids.size() >= 2) || has(this.db_subnet_group_name)\x1a\x9b\x01\n" +
 	"\x19password_mutual_exclusion\x12?password cannot be set when manage_master_user_password is true\x1a=this.manage_master_user_password ? this.password == \"\" : true\x1a\xb2\x01\n" +
 	"\x13engine_mode_allowed\x12:engine_mode, if set, must be 'serverless' or 'provisioned'\x1a_this.engine_mode == \"\" || this.engine_mode == \"serverless\" || this.engine_mode == \"provisioned\"\x1a\xfa\x02\n" +
-	"\x19logs_exports_match_engine\x128enabled_cloudwatch_logs_exports must match engine family\x1a\xa2\x02this.engine.startsWith(\"aurora-mysql\") ? this.enabled_cloudwatch_logs_exports.all(x, x == \"audit\" || x == \"error\" || x == \"general\" || x == \"slowquery\") : (this.engine.startsWith(\"aurora-postgresql\") ? this.enabled_cloudwatch_logs_exports.all(x, x == \"postgresql\" || x == \"upgrade\") : true)\"e\n" +
+	"\x19logs_exports_match_engine\x128enabled_cloudwatch_logs_exports must match engine family\x1a\xa2\x02this.engine.startsWith(\"aurora-mysql\") ? this.enabled_cloudwatch_logs_exports.all(x, x == \"audit\" || x == \"error\" || x == \"general\" || x == \"slowquery\") : (this.engine.startsWith(\"aurora-postgresql\") ? this.enabled_cloudwatch_logs_exports.all(x, x == \"postgresql\" || x == \"upgrade\") : true)B\v\n" +
+	"\t_username\"e\n" +
 	"\x16AwsRdsClusterParameter\x12!\n" +
 	"\fapply_method\x18\x01 \x01(\tR\vapplyMethod\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x14\n" +
@@ -586,6 +587,7 @@ func file_project_planton_provider_aws_awsrdscluster_v1_spec_proto_init() {
 	if File_project_planton_provider_aws_awsrdscluster_v1_spec_proto != nil {
 		return
 	}
+	file_project_planton_provider_aws_awsrdscluster_v1_spec_proto_msgTypes[0].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

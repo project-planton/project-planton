@@ -23,7 +23,7 @@ func ec2Instance(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) er
 		err          error
 	)
 
-	switch locals.AwsEc2Instance.Spec.ConnectionMethod {
+	switch locals.AwsEc2Instance.Spec.GetConnectionMethod() {
 	case awsec2instancev1.AwsEc2InstanceConnectionMethod_SSM:
 		// SSM needs an instance profile
 		if locals.AwsEc2Instance.Spec.IamInstanceProfileArn == nil ||
@@ -64,9 +64,9 @@ func ec2Instance(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) er
 	// --------‑‑‑ Convert security‑group refs ---------------------------
 	sgIDs := pulumi.ToStringArray(valuefrom.ToStringArray(locals.AwsEc2Instance.Spec.SecurityGroupIds))
 
-	// --------‑‑‑ Root block device (always include – defaults to 30 GiB) -
+	// --------‑‑‑ Root block device (always include – defaults to 30 GiB) -
 	rootBlock := &ec2.InstanceRootBlockDeviceArgs{
-		VolumeSize: pulumi.Int(int(locals.AwsEc2Instance.Spec.RootVolumeSizeGb)),
+		VolumeSize: pulumi.Int(int(locals.AwsEc2Instance.Spec.GetRootVolumeSizeGb())),
 	}
 
 	// --------‑‑‑ Assemble EC2 arguments --------------------------------

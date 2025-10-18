@@ -8,6 +8,7 @@ import (
 	"github.com/onsi/gomega"
 	"github.com/project-planton/project-planton/apis/project/planton/shared"
 	foreignkeyv1 "github.com/project-planton/project-planton/apis/project/planton/shared/foreignkey/v1"
+	"google.golang.org/protobuf/proto"
 )
 
 func TestAwsCertManagerCert(t *testing.T) {
@@ -32,7 +33,7 @@ var _ = ginkgo.Describe("AwsCertManagerCert", func() {
 					"www.example.com",
 					"test.example.com",
 				},
-				ValidationMethod: "DNS",
+				ValidationMethod: proto.String("DNS"),
 				Route53HostedZoneId: &foreignkeyv1.StringValueOrRef{
 					LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-zone-id"},
 				},

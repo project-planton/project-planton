@@ -53,6 +53,12 @@ gazelle: bazel-gazelle
 bazel-gazelle:
 	${BAZEL} run ${BAZEL_REMOTE_FLAGS} //:gazelle
 
+.PHONY: reset-gazelle
+reset-gazelle:
+	@echo "Cleaning all BUILD.bazel files (excluding root)..."
+	@find . -mindepth 2 -name "BUILD.bazel" -type f -delete
+	@echo "✅ All BUILD.bazel files removed (root preserved). Run 'make gazelle' to regenerate them."
+
 .PHONY: bazel-build-cli
 bazel-build-cli:
 	${BAZEL} build ${BAZEL_REMOTE_FLAGS} //:project-planton

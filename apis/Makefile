@@ -11,7 +11,12 @@ fmt:
 	buf format -w
 
 .PHONY: lint
-lint: buf-lint
+lint: build-lint-plugin buf-lint
+
+.PHONY: build-lint-plugin
+build-lint-plugin:
+	@echo "Building buf lint plugin..."
+	@cd ../buf/lint/planton && go build -o $(shell go env GOPATH)/bin/buf-plugin-planton ./cmd/buf-plugin-planton
 
 .PHONY: buf-lint
 buf-lint:

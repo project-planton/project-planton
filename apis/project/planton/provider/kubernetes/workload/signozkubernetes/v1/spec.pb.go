@@ -265,11 +265,11 @@ type SignozKubernetesExternalClickhouse struct {
 	// The hostname or endpoint of the external ClickHouse instance.
 	Host string `protobuf:"bytes,1,opt,name=host,proto3" json:"host,omitempty"`
 	// The HTTP port for ClickHouse (default is 8123).
-	HttpPort int32 `protobuf:"varint,2,opt,name=http_port,json=httpPort,proto3" json:"http_port,omitempty"`
+	HttpPort *int32 `protobuf:"varint,2,opt,name=http_port,json=httpPort,proto3,oneof" json:"http_port,omitempty"`
 	// The TCP port for ClickHouse native protocol (default is 9000).
-	TcpPort int32 `protobuf:"varint,3,opt,name=tcp_port,json=tcpPort,proto3" json:"tcp_port,omitempty"`
+	TcpPort *int32 `protobuf:"varint,3,opt,name=tcp_port,json=tcpPort,proto3,oneof" json:"tcp_port,omitempty"`
 	// The name of the distributed cluster in ClickHouse configuration.
-	ClusterName string `protobuf:"bytes,4,opt,name=cluster_name,json=clusterName,proto3" json:"cluster_name,omitempty"`
+	ClusterName *string `protobuf:"bytes,4,opt,name=cluster_name,json=clusterName,proto3,oneof" json:"cluster_name,omitempty"`
 	// Whether to use secure (TLS) connection to ClickHouse.
 	IsSecure bool `protobuf:"varint,5,opt,name=is_secure,json=isSecure,proto3" json:"is_secure,omitempty"`
 	// The username for authenticating to ClickHouse.
@@ -318,22 +318,22 @@ func (x *SignozKubernetesExternalClickhouse) GetHost() string {
 }
 
 func (x *SignozKubernetesExternalClickhouse) GetHttpPort() int32 {
-	if x != nil {
-		return x.HttpPort
+	if x != nil && x.HttpPort != nil {
+		return *x.HttpPort
 	}
 	return 0
 }
 
 func (x *SignozKubernetesExternalClickhouse) GetTcpPort() int32 {
-	if x != nil {
-		return x.TcpPort
+	if x != nil && x.TcpPort != nil {
+		return *x.TcpPort
 	}
 	return 0
 }
 
 func (x *SignozKubernetesExternalClickhouse) GetClusterName() string {
-	if x != nil {
-		return x.ClusterName
+	if x != nil && x.ClusterName != nil {
+		return *x.ClusterName
 	}
 	return ""
 }
@@ -922,15 +922,19 @@ const file_project_planton_provider_kubernetes_workload_signozkubernetes_v1_spec
 	"isExternal\x12\x91\x01\n" +
 	"\x11external_database\x18\x02 \x01(\v2d.project.planton.provider.kubernetes.workload.signozkubernetes.v1.SignozKubernetesExternalClickhouseR\x10externalDatabase\x12\x8e\x01\n" +
 	"\x10managed_database\x18\x03 \x01(\v2c.project.planton.provider.kubernetes.workload.signozkubernetes.v1.SignozKubernetesManagedClickhouseR\x0fmanagedDatabase:\xa0\x01\xbaH\x9c\x01\x1a\x99\x01\n" +
-	"\x1fspec.database.external_required\x12DExternal database configuration is required when is_external is true\x1a0!this.is_external || has(this.external_database)\"\xb7\x02\n" +
+	"\x1fspec.database.external_required\x12DExternal database configuration is required when is_external is true\x1a0!this.is_external || has(this.external_database)\"\xf2\x02\n" +
 	"\"SignozKubernetesExternalClickhouse\x12\x1a\n" +
-	"\x04host\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04host\x120\n" +
-	"\thttp_port\x18\x02 \x01(\x05B\x13\xbaH\b\x1a\x06\x18\xff\xff\x03 \x00\x8a\xa6\x1d\x048123R\bhttpPort\x12.\n" +
-	"\btcp_port\x18\x03 \x01(\x05B\x13\xbaH\b\x1a\x06\x18\xff\xff\x03 \x00\x8a\xa6\x1d\x049000R\atcpPort\x12.\n" +
-	"\fcluster_name\x18\x04 \x01(\tB\v\x8a\xa6\x1d\aclusterR\vclusterName\x12\x1b\n" +
+	"\x04host\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04host\x125\n" +
+	"\thttp_port\x18\x02 \x01(\x05B\x13\xbaH\b\x1a\x06\x18\xff\xff\x03 \x00\x8a\xa6\x1d\x048123H\x00R\bhttpPort\x88\x01\x01\x123\n" +
+	"\btcp_port\x18\x03 \x01(\x05B\x13\xbaH\b\x1a\x06\x18\xff\xff\x03 \x00\x8a\xa6\x1d\x049000H\x01R\atcpPort\x88\x01\x01\x123\n" +
+	"\fcluster_name\x18\x04 \x01(\tB\v\x8a\xa6\x1d\aclusterH\x02R\vclusterName\x88\x01\x01\x12\x1b\n" +
 	"\tis_secure\x18\x05 \x01(\bR\bisSecure\x12\"\n" +
 	"\busername\x18\x06 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\busername\x12\"\n" +
-	"\bpassword\x18\a \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bpassword\"\xd7\x03\n" +
+	"\bpassword\x18\a \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bpasswordB\f\n" +
+	"\n" +
+	"_http_portB\v\n" +
+	"\t_tcp_portB\x0f\n" +
+	"\r_cluster_name\"\xd7\x03\n" +
 	"!SignozKubernetesManagedClickhouse\x12\xb1\x01\n" +
 	"\tcontainer\x18\x01 \x01(\v2e.project.planton.provider.kubernetes.workload.signozkubernetes.v1.SignozKubernetesClickhouseContainerB,\x9a\xb8\x91\x02'\b\x01\x12\x1b\n" +
 	"\f\n" +
@@ -1048,6 +1052,7 @@ func file_project_planton_provider_kubernetes_workload_signozkubernetes_v1_spec_
 	if File_project_planton_provider_kubernetes_workload_signozkubernetes_v1_spec_proto != nil {
 		return
 	}
+	file_project_planton_provider_kubernetes_workload_signozkubernetes_v1_spec_proto_msgTypes[3].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

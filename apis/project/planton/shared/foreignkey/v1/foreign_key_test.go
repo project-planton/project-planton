@@ -37,7 +37,7 @@ var _ = ginkgo.Describe("ForeignKey Oneof Tests", func() {
 				input := &StringValueOrRef{
 					LiteralOrRef: &StringValueOrRef_ValueFrom{
 						ValueFrom: &ValueFromRef{
-							Kind:      cloudresourcekind.CloudResourceKind_FirstTestCloudApiResource,
+							Kind:      cloudresourcekind.CloudResourceKind_TestCloudResourceOne,
 							Env:       "dev",
 							Name:      "my-cert",
 							FieldPath: "status.outputs.cert_arn",
@@ -59,7 +59,7 @@ var _ = ginkgo.Describe("ForeignKey Oneof Tests", func() {
 				}
 				input.LiteralOrRef = &StringValueOrRef_ValueFrom{
 					ValueFrom: &ValueFromRef{
-						Kind: cloudresourcekind.CloudResourceKind_FirstTestCloudApiResource,
+						Kind: cloudresourcekind.CloudResourceKind_TestCloudResourceOne,
 						Env:  "dev",
 						Name: "overwrites-literal",
 					},
@@ -92,7 +92,7 @@ var _ = ginkgo.Describe("ForeignKey Oneof Tests", func() {
 				input := &Int32ValueOrRef{
 					LiteralOrRef: &Int32ValueOrRef_ValueFrom{
 						ValueFrom: &ValueFromRef{
-							Kind: cloudresourcekind.CloudResourceKind_FirstTestCloudApiResource,
+							Kind: cloudresourcekind.CloudResourceKind_TestCloudResourceOne,
 							Env:  "dev",
 							Name: "ref-int32",
 						},
@@ -114,7 +114,7 @@ var _ = ginkgo.Describe("ForeignKey Oneof Tests", func() {
 				// Overwrite with ValueFromRef
 				input.LiteralOrRef = &Int32ValueOrRef_ValueFrom{
 					ValueFrom: &ValueFromRef{
-						Kind: cloudresourcekind.CloudResourceKind_FirstTestCloudApiResource,
+						Kind: cloudresourcekind.CloudResourceKind_TestCloudResourceOne,
 						Env:  "dev",
 						Name: "ref-overwrites-int",
 					},

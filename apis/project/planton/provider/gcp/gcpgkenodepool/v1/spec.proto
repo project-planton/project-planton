@@ -25,7 +25,7 @@ message GcpGkeNodePoolSpec {
 
   // Machine type for node VMs (e.g., "e2-medium", "n1-standard-4").
   // If unspecified, defaults to "e2-medium" (2 vCPU, 4 GB RAM).
-  string machine_type = 3 [(project.planton.shared.options.default) = "e2-medium"];
+  optional string machine_type = 3 [(project.planton.shared.options.default) = "e2-medium"];
 
   // Size of boot disk (GB) for each node. Min 10 GB. Defaults to 100 GB if unset.
   // Default 100 implied if not provided (handled in provisioning code or via options.default if supported).
@@ -33,7 +33,7 @@ message GcpGkeNodePoolSpec {
 
   // Type of boot disk: "pd-standard", "pd-ssd", or "pd-balanced".
   // Defaults to "pd-standard" for unspecified.
-  string disk_type = 5 [
+  optional string disk_type = 5 [
     (project.planton.shared.options.default) = "pd-standard",
     (buf.validate.field).string = {
       in: [
@@ -45,7 +45,7 @@ message GcpGkeNodePoolSpec {
   ];
 
   // Node image type (OS image). Default is "COS_CONTAINERD" (Container-Optimized OS with containerd).
-  string image_type = 6 [(project.planton.shared.options.default) = "COS_CONTAINERD" /* (No validation on allowed values here; GKE accepts specific strings like "COS", "COS_CONTAINERD", "UBUNTU", etc.) */];
+  optional string image_type = 6 [(project.planton.shared.options.default) = "COS_CONTAINERD" /* (No validation on allowed values here; GKE accepts specific strings like "COS", "COS_CONTAINERD", "UBUNTU", etc.) */];
 
   // Service account email for nodes. If not provided, the GKE default node service account is used.
   string service_account = 7;
@@ -76,7 +76,7 @@ message GcpGkeNodePoolAutoscaling {
   // Maximum nodes (per zone) when autoscaling.
   uint32 max_nodes = 2;
   // (Optional) Location policy for scaling ("BALANCED" or "ANY").
-  string location_policy = 3 [(project.planton.shared.options.default) = "BALANCED"];
+  optional string location_policy = 3 [(project.planton.shared.options.default) = "BALANCED"];
 }
 
 // Node management settings for auto-upgrade/repair.

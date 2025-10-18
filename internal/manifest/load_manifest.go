@@ -1,7 +1,6 @@
 package manifest
 
 import (
-	"fmt"
 	"io"
 	"net/http"
 	"net/url"
@@ -12,6 +11,7 @@ import (
 	"github.com/fatih/color"
 	"github.com/pkg/errors"
 	"github.com/project-planton/project-planton/internal/cli/workspace"
+	"github.com/project-planton/project-planton/internal/manifest/protodefaults"
 	"github.com/project-planton/project-planton/pkg/crkreflect"
 	"github.com/project-planton/project-planton/pkg/ulidgen"
 	"google.golang.org/protobuf/encoding/protojson"
@@ -58,6 +58,12 @@ func LoadManifest(manifestPath string) (proto.Message, error) {
 	if err := protojson.Unmarshal(jsonBytes, manifest); err != nil {
 		return nil, errors.Wrapf(err, "failed to load json into proto message from %s", manifestPath)
 	}
+
+	// Apply defaults from proto field options
+	if err := protodefaults.ApplyDefaults(manifest); err != nil {
+		return nil, errors.Wrap(err, "failed to apply default values")
+	}
+
 	return manifest, nil
 }
 
@@ -153,8 +159,8 @@ func formatUnsupportedResourceError(kindName string) error {
 
 	msg.WriteString(cyan("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n"))
 
-	msg.WriteString(fmt.Sprintf(bold("💡 TIP: ") + "If you're developing a new cloud resource, ensure the proto files\n"))
-	msg.WriteString(fmt.Sprintf("   are compiled and the CLI binary is rebuilt.\n\n"))
+	msg.WriteString(bold("💡 TIP: ") + "If you're developing a new cloud resource, ensure the proto files\n")
+	msg.WriteString("   are compiled and the CLI binary is rebuilt.\n\n")
 
 	return errors.New(msg.String())
 }

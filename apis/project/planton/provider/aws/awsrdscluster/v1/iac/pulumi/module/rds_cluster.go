@@ -55,12 +55,12 @@ func rdsCluster(
 		if spec.MasterUserSecretKmsKeyId != nil && spec.MasterUserSecretKmsKeyId.GetValue() != "" {
 			args.MasterUserSecretKmsKeyId = pulumi.String(spec.MasterUserSecretKmsKeyId.GetValue())
 		}
-		if spec.Username != "" {
-			args.MasterUsername = pulumi.String(spec.Username)
+		if spec.GetUsername() != "" {
+			args.MasterUsername = pulumi.String(spec.GetUsername())
 		}
 	} else {
-		if spec.Username != "" {
-			args.MasterUsername = pulumi.String(spec.Username)
+		if spec.GetUsername() != "" {
+			args.MasterUsername = pulumi.String(spec.GetUsername())
 		}
 		if spec.Password != "" {
 			args.MasterPassword = pulumi.String(spec.Password)

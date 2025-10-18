@@ -50,5 +50,5 @@ message AzureDnsRecord {
   repeated string values = 3 [(buf.validate.field).repeated.min_items = 1];
 
   // The Time To Live (TTL) for the DNS record, in seconds.
-  int32 ttl_seconds = 4 [(project.planton.shared.options.default) = "60"];
+  optional int32 ttl_seconds = 4 [(project.planton.shared.options.default) = "60"];
 }

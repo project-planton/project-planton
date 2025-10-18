@@ -7,6 +7,7 @@ import (
 	"github.com/onsi/ginkgo/v2"
 	"github.com/onsi/gomega"
 	foreignkeyv1 "github.com/project-planton/project-planton/apis/project/planton/shared/foreignkey/v1"
+	"google.golang.org/protobuf/proto"
 )
 
 func TestAwsClientVpnSpec(t *testing.T) {
@@ -28,7 +29,7 @@ var _ = ginkgo.Describe("AwsClientVpnSpec validations", func() {
 			ServerCertificateArn: &foreignkeyv1.StringValueOrRef{
 				LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "arn:aws:acm:us-east-1:123456789012:certificate/abc"},
 			},
-			VpnPort:           443,
+			VpnPort:           proto.Int32(443),
 			TransportProtocol: AwsClientVpnTransportProtocol(2),
 		}
 	})
@@ -91,7 +92,7 @@ var _ = ginkgo.Describe("AwsClientVpnSpec validations", func() {
 
 	ginkgo.It("fails when transport_protocol and vpn_port do not match", func() {
 		spec.TransportProtocol = AwsClientVpnTransportProtocol(1)
-		spec.VpnPort = 443
+		spec.VpnPort = proto.Int32(443)
 		err := protovalidate.Validate(spec)
 		gomega.Expect(err).NotTo(gomega.BeNil())
 	})

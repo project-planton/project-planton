@@ -44,7 +44,7 @@ func Resources(ctx *pulumi.Context, stackInput *awsroute53zonev1.AwsRoute53ZoneS
 			&aws.ProviderArgs{
 				AccessKey: pulumi.String(awsCredential.AccessKeyId),
 				SecretKey: pulumi.String(awsCredential.SecretAccessKey),
-				Region:    pulumi.String(awsCredential.Region),
+				Region:    pulumi.String(awsCredential.GetRegion()),
 			})
 		if err != nil {
 			return errors.Wrap(err, "failed to create AWS provider with custom credentials")
@@ -54,7 +54,7 @@ func Resources(ctx *pulumi.Context, stackInput *awsroute53zonev1.AwsRoute53ZoneS
 			&awsclassic.ProviderArgs{
 				AccessKey: pulumi.String(awsCredential.AccessKeyId),
 				SecretKey: pulumi.String(awsCredential.SecretAccessKey),
-				Region:    pulumi.String(awsCredential.Region),
+				Region:    pulumi.String(awsCredential.GetRegion()),
 				Token:     pulumi.StringPtr(awsCredential.SessionToken),
 			})
 		if err != nil {

@@ -54,7 +54,7 @@ message GcpGkeClusterCoreSpec {
   bool enable_public_nodes = 7;
 
   // Kubernetes release channel for auto-upgrades (Rapid, Regular, Stable, or NONE).
-  GkeReleaseChannel release_channel = 8 [(project.planton.shared.options.default) = "REGULAR"];
+  optional GkeReleaseChannel release_channel = 8 [(project.planton.shared.options.default) = "REGULAR"];
 
   // Disable network policy enforcement (Calico)
   bool disable_network_policy = 9;

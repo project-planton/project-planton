@@ -66,7 +66,7 @@ message AwsClientVpnSpec {
   // The port number on which the Client VPN endpoint will accept connections. The default (443) is commonly used for OpenVPN over TLS.
   // Using port 443 allows VPN traffic to more easily traverse corporate firewalls.
   // If a different port (e.g., 1194) is needed, it can be specified here.
-  int32 vpn_port = 9 [(project.planton.shared.options.default) = "443"];
+  optional int32 vpn_port = 9 [(project.planton.shared.options.default) = "443"];
 
   // The transport protocol for VPN connections. Can be `tcp` or `udp`.
   AwsClientVpnTransportProtocol transport_protocol = 10 [

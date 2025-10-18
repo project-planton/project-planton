@@ -29,7 +29,7 @@ func Resources(ctx *pulumi.Context, stackInput *awsclientvpnv1.AwsClientVpnStack
 		provider, err = aws.NewProvider(ctx, "classic-provider", &aws.ProviderArgs{
 			AccessKey: pulumi.String(awsCredential.AccessKeyId),
 			SecretKey: pulumi.String(awsCredential.SecretAccessKey),
-			Region:    pulumi.String(awsCredential.Region),
+			Region:    pulumi.String(awsCredential.GetRegion()),
 			Token:     pulumi.StringPtr(awsCredential.SessionToken),
 		})
 		if err != nil {
@@ -55,8 +55,8 @@ func Resources(ctx *pulumi.Context, stackInput *awsclientvpnv1.AwsClientVpnStack
 
 	// VPN port (default 443)
 	vpnPort := 443
-	if locals.AwsClientVpn.Spec.VpnPort != 0 {
-		vpnPort = int(locals.AwsClientVpn.Spec.VpnPort)
+	if locals.AwsClientVpn.Spec.VpnPort != nil && *locals.AwsClientVpn.Spec.VpnPort != 0 {
+		vpnPort = int(*locals.AwsClientVpn.Spec.VpnPort)
 	}
 
 	// Transport protocol

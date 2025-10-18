@@ -7,6 +7,7 @@ import (
 	"github.com/onsi/ginkgo/v2"
 	"github.com/onsi/gomega"
 	"github.com/project-planton/project-planton/apis/project/planton/shared"
+	"google.golang.org/protobuf/proto"
 )
 
 func TestAwsCredentialSpec(t *testing.T) {
@@ -31,7 +32,7 @@ var _ = ginkgo.Describe("AwsCredentialSpec Validation Tests", func() {
 				AccountId:       "123456789012",
 				AccessKeyId:     "AKIAABCDEFGHIJKLMNOP",
 				SecretAccessKey: "ABCDEFGHIJKLMNOPABCDEFGHIJKLMNOPABCDABCD",
-				Region:          "us-west-2",
+				Region:          proto.String("us-west-2"),
 			},
 		}
 	})

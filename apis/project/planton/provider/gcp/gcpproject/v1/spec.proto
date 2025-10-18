@@ -38,7 +38,7 @@ message GcpProjectSpec {
   // If true, the auto-created "default" VPC network is deleted immediately
   // after project creation. Disabling the default network is a common
   // security hardening step.
-  bool disable_default_network = 5 [(project.planton.shared.options.default) = "true"];
+  optional bool disable_default_network = 5 [(project.planton.shared.options.default) = "true"];
 
   // List of Cloud APIs to enable (e.g. "compute.googleapis.com").
   // Each entry must end with ".googleapis.com".

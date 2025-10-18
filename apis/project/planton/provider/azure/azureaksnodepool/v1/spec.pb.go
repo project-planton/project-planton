@@ -93,7 +93,7 @@ type AzureAksNodePoolSpec struct {
 	// If unspecified, nodes are not pinned to specific zones (using region defaults). If specified, at least 2 zones should be provided for HA.
 	AvailabilityZones []string `protobuf:"bytes,5,rep,name=availability_zones,json=availabilityZones,proto3" json:"availability_zones,omitempty"`
 	// Operating system type for nodes. Defaults to Linux. Use "WINDOWS" for a Windows node pool (requires a cluster with Windows support).
-	OsType AzureAksNodePoolOsType `protobuf:"varint,6,opt,name=os_type,json=osType,proto3,enum=project.planton.provider.azure.azureaksnodepool.v1.AzureAksNodePoolOsType" json:"os_type,omitempty"`
+	OsType *AzureAksNodePoolOsType `protobuf:"varint,6,opt,name=os_type,json=osType,proto3,enum=project.planton.provider.azure.azureaksnodepool.v1.AzureAksNodePoolOsType,oneof" json:"os_type,omitempty"`
 	// Use Spot (preemptible) VMs for this node pool to reduce cost. Defaults to false (regular on-demand VMs).
 	SpotEnabled   bool `protobuf:"varint,7,opt,name=spot_enabled,json=spotEnabled,proto3" json:"spot_enabled,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -166,8 +166,8 @@ func (x *AzureAksNodePoolSpec) GetAvailabilityZones() []string {
 }
 
 func (x *AzureAksNodePoolSpec) GetOsType() AzureAksNodePoolOsType {
-	if x != nil {
-		return x.OsType
+	if x != nil && x.OsType != nil {
+		return *x.OsType
 	}
 	return AzureAksNodePoolOsType_azure_aks_node_pool_os_type_unspecified
 }
@@ -238,16 +238,18 @@ var File_project_planton_provider_azure_azureaksnodepool_v1_spec_proto protorefl
 
 const file_project_planton_provider_azure_azureaksnodepool_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"=project/planton/provider/azure/azureaksnodepool/v1/spec.proto\x122project.planton.provider.azure.azureaksnodepool.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\"\xd6\x04\n" +
+	"=project/planton/provider/azure/azureaksnodepool/v1/spec.proto\x122project.planton.provider.azure.azureaksnodepool.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\"\xe7\x04\n" +
 	"\x14AzureAksNodePoolSpec\x12w\n" +
 	"\fcluster_name\x18\x01 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB\x1c\xbaH\x03\xc8\x01\x01\x88\xd4a\x90\x03\x92\xd4a\rmetadata.nameR\vclusterName\x12\x1f\n" +
 	"\avm_size\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x06vmSize\x128\n" +
 	"\x12initial_node_count\x18\x03 \x01(\x05B\n" +
 	"\xbaH\a\xc8\x01\x01\x1a\x02 \x00R\x10initialNodeCount\x12q\n" +
 	"\vautoscaling\x18\x04 \x01(\v2O.project.planton.provider.azure.azureaksnodepool.v1.AzureAksNodePoolAutoscalingR\vautoscaling\x12G\n" +
-	"\x12availability_zones\x18\x05 \x03(\tB\x18\xbaH\x15\xd8\x01\x01\x92\x01\x0f\b\x02\"\vr\tR\x011R\x012R\x013R\x11availabilityZones\x12\x8a\x01\n" +
-	"\aos_type\x18\x06 \x01(\x0e2J.project.planton.provider.azure.azureaksnodepool.v1.AzureAksNodePoolOsTypeB%\x8a\xa6\x1d!AZURE_AKS_NODE_POOL_OS_TYPE_LINUXR\x06osType\x12!\n" +
-	"\fspot_enabled\x18\a \x01(\bR\vspotEnabled\"g\n" +
+	"\x12availability_zones\x18\x05 \x03(\tB\x18\xbaH\x15\xd8\x01\x01\x92\x01\x0f\b\x02\"\vr\tR\x011R\x012R\x013R\x11availabilityZones\x12\x8f\x01\n" +
+	"\aos_type\x18\x06 \x01(\x0e2J.project.planton.provider.azure.azureaksnodepool.v1.AzureAksNodePoolOsTypeB%\x8a\xa6\x1d!AZURE_AKS_NODE_POOL_OS_TYPE_LINUXH\x00R\x06osType\x88\x01\x01\x12!\n" +
+	"\fspot_enabled\x18\a \x01(\bR\vspotEnabledB\n" +
+	"\n" +
+	"\b_os_type\"g\n" +
 	"\x1bAzureAksNodePoolAutoscaling\x12#\n" +
 	"\tmin_nodes\x18\x01 \x01(\rB\x06\xbaH\x03\xc8\x01\x01R\bminNodes\x12#\n" +
 	"\tmax_nodes\x18\x02 \x01(\rB\x06\xbaH\x03\xc8\x01\x01R\bmaxNodes*]\n" +
@@ -293,6 +295,7 @@ func file_project_planton_provider_azure_azureaksnodepool_v1_spec_proto_init() {
 	if File_project_planton_provider_azure_azureaksnodepool_v1_spec_proto != nil {
 		return
 	}
+	file_project_planton_provider_azure_azureaksnodepool_v1_spec_proto_msgTypes[0].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

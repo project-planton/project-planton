@@ -96,7 +96,7 @@ type GcpProjectSpec struct {
 	// If true, the auto-created "default" VPC network is deleted immediately
 	// after project creation. Disabling the default network is a common
 	// security hardening step.
-	DisableDefaultNetwork bool `protobuf:"varint,5,opt,name=disable_default_network,json=disableDefaultNetwork,proto3" json:"disable_default_network,omitempty"`
+	DisableDefaultNetwork *bool `protobuf:"varint,5,opt,name=disable_default_network,json=disableDefaultNetwork,proto3,oneof" json:"disable_default_network,omitempty"`
 	// List of Cloud APIs to enable (e.g. "compute.googleapis.com").
 	// Each entry must end with ".googleapis.com".
 	EnabledApis []string `protobuf:"bytes,6,rep,name=enabled_apis,json=enabledApis,proto3" json:"enabled_apis,omitempty"`
@@ -171,8 +171,8 @@ func (x *GcpProjectSpec) GetLabels() map[string]string {
 }
 
 func (x *GcpProjectSpec) GetDisableDefaultNetwork() bool {
-	if x != nil {
-		return x.DisableDefaultNetwork
+	if x != nil && x.DisableDefaultNetwork != nil {
+		return *x.DisableDefaultNetwork
 	}
 	return false
 }
@@ -195,19 +195,20 @@ var File_project_planton_provider_gcp_gcpproject_v1_spec_proto protoreflect.File
 
 const file_project_planton_provider_gcp_gcpproject_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"5project/planton/provider/gcp/gcpproject/v1/spec.proto\x12*project.planton.provider.gcp.gcpproject.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\"\xc2\x04\n" +
+	"5project/planton/provider/gcp/gcpproject/v1/spec.proto\x12*project.planton.provider.gcp.gcpproject.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\"\xe3\x04\n" +
 	"\x0eGcpProjectSpec\x12a\n" +
 	"\vparent_type\x18\x01 \x01(\x0e2@.project.planton.provider.gcp.gcpproject.v1.GcpProjectParentTypeR\n" +
 	"parentType\x12\x1b\n" +
 	"\tparent_id\x18\x02 \x01(\tR\bparentId\x12Z\n" +
 	"\x12billing_account_id\x18\x03 \x01(\tB,\xbaH)r'2%^[A-Z0-9]{6}-[A-Z0-9]{6}-[A-Z0-9]{6}$R\x10billingAccountId\x12^\n" +
-	"\x06labels\x18\x04 \x03(\v2F.project.planton.provider.gcp.gcpproject.v1.GcpProjectSpec.LabelsEntryR\x06labels\x12@\n" +
-	"\x17disable_default_network\x18\x05 \x01(\bB\b\x8a\xa6\x1d\x04trueR\x15disableDefaultNetwork\x12K\n" +
+	"\x06labels\x18\x04 \x03(\v2F.project.planton.provider.gcp.gcpproject.v1.GcpProjectSpec.LabelsEntryR\x06labels\x12E\n" +
+	"\x17disable_default_network\x18\x05 \x01(\bB\b\x8a\xa6\x1d\x04trueH\x00R\x15disableDefaultNetwork\x88\x01\x01\x12K\n" +
 	"\fenabled_apis\x18\x06 \x03(\tB(\xbaH%\x92\x01\"\" r\x1e2\x1c^[a-z0-9]+\\.googleapis\\.com$R\venabledApis\x12*\n" +
 	"\fowner_member\x18\a \x01(\tB\a\xbaH\x04r\x02`\x01R\vownerMember\x1a9\n" +
 	"\vLabelsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01*]\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01B\x1a\n" +
+	"\x18_disable_default_network*]\n" +
 	"\x14GcpProjectParentType\x12'\n" +
 	"#gcp_project_parent_type_unspecified\x10\x00\x12\x10\n" +
 	"\forganization\x10\x01\x12\n" +
@@ -249,6 +250,7 @@ func file_project_planton_provider_gcp_gcpproject_v1_spec_proto_init() {
 	if File_project_planton_provider_gcp_gcpproject_v1_spec_proto != nil {
 		return
 	}
+	file_project_planton_provider_gcp_gcpproject_v1_spec_proto_msgTypes[0].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

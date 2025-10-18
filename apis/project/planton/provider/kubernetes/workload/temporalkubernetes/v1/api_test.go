@@ -8,6 +8,7 @@ import (
 	"github.com/onsi/gomega"
 	"github.com/project-planton/project-planton/apis/project/planton/shared"
 	"github.com/project-planton/project-planton/apis/project/planton/shared/kubernetes"
+	"google.golang.org/protobuf/proto"
 )
 
 func TestTemporalKubernetes(t *testing.T) {
@@ -45,8 +46,8 @@ var _ = ginkgo.Describe("TemporalKubernetes Custom Validation Tests", func() {
 						Username: "temporal_user",
 						Password: "secret",
 					},
-					DatabaseName:           "temporal",
-					VisibilityName:         "temporal_visibility",
+					DatabaseName:           proto.String("temporal"),
+					VisibilityName:         proto.String("temporal_visibility"),
 					DisableAutoSchemaSetup: true,
 				}
 				input.Spec.ExternalElasticsearch = &TemporalKubernetesExternalElasticsearch{
@@ -73,8 +74,8 @@ var _ = ginkgo.Describe("TemporalKubernetes Custom Validation Tests", func() {
 						Username: "pg_user",
 						Password: "pg_password",
 					},
-					DatabaseName:           "temporal_pg",
-					VisibilityName:         "temporal_visibility_pg",
+					DatabaseName:           proto.String("temporal_pg"),
+					VisibilityName:         proto.String("temporal_visibility_pg"),
 					DisableAutoSchemaSetup: false,
 				}
 			})
@@ -95,8 +96,8 @@ var _ = ginkgo.Describe("TemporalKubernetes Custom Validation Tests", func() {
 						Username: "mysql_user",
 						Password: "mysql_password",
 					},
-					DatabaseName:   "temporal_mysql",
-					VisibilityName: "temporal_visibility_mysql",
+					DatabaseName:   proto.String("temporal_mysql"),
+					VisibilityName: proto.String("temporal_visibility_mysql"),
 				}
 			})
 
@@ -118,8 +119,8 @@ var _ = ginkgo.Describe("TemporalKubernetes Custom Validation Tests", func() {
 					Username: "pg_user",
 					Password: "pg_password",
 				},
-				DatabaseName:   "temporal_pg",
-				VisibilityName: "temporal_visibility_pg",
+				DatabaseName:   proto.String("temporal_pg"),
+				VisibilityName: proto.String("temporal_visibility_pg"),
 			}
 		})
 	})

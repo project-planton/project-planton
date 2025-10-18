@@ -12,11 +12,11 @@ message ExternalDnsKubernetesSpec {
   // The Kubernetes cluster to install this addon on.
   project.planton.shared.kubernetes.KubernetesAddonTargetCluster target_cluster = 1;
   // Kubernetes namespace where ExternalDNS will be deployed.
-  string namespace = 2 [(project.planton.shared.options.default) = "external-dns"];
+  optional string namespace = 2 [(project.planton.shared.options.default) = "external-dns"];
   // ExternalDNS version such as "v0.19.0". Used to set the image tag.
-  string external_dns_version = 3 [(project.planton.shared.options.default) = "v0.19.0"];
+  optional string external_dns_version = 3 [(project.planton.shared.options.default) = "v0.19.0"];
   // Helm chart version to deploy. If not specified, uses the default version.
-  string helm_chart_version = 4 [(project.planton.shared.options.default) = "1.19.0"];
+  optional string helm_chart_version = 4 [(project.planton.shared.options.default) = "1.19.0"];
   //provider-specific glue. Only one may be set.
   oneof provider_config {
     ExternalDnsGkeConfig gke = 200;

@@ -60,7 +60,7 @@ message AwsEc2InstanceSpec {
   // - SSM: Use AWS Systems Manager Session Manager (no SSH key needed, requires an IAM instance profile with SSM permissions).
   // - BASTION: Use a traditional SSH method with a key pair (requires a key_name for the EC2 instance).
   // - INSTANCE_CONNECT: Use AWS EC2 Instance Connect (temporary key injection, also requires a key_name).
-  AwsEc2InstanceConnectionMethod connection_method = 6 [
+  optional AwsEc2InstanceConnectionMethod connection_method = 6 [
     (project.planton.shared.options.default) = "SSM",
     (buf.validate.field).enum.defined_only = true
   ];
@@ -81,7 +81,7 @@ message AwsEc2InstanceSpec {
   // Size of the root EBS volume in GiB.
   // This defines the storage capacity for the instance's root filesystem.
   // Defaults to 30 GiB if not specified.
-  int32 root_volume_size_gb = 9 [
+  optional int32 root_volume_size_gb = 9 [
     (project.planton.shared.options.default) = "30",
     (buf.validate.field).int32.gt = 0
   ];

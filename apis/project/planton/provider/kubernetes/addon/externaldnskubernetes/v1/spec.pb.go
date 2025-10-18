@@ -31,11 +31,11 @@ type ExternalDnsKubernetesSpec struct {
 	// The Kubernetes cluster to install this addon on.
 	TargetCluster *kubernetes.KubernetesAddonTargetCluster `protobuf:"bytes,1,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
 	// Kubernetes namespace where ExternalDNS will be deployed.
-	Namespace string `protobuf:"bytes,2,opt,name=namespace,proto3" json:"namespace,omitempty"`
+	Namespace *string `protobuf:"bytes,2,opt,name=namespace,proto3,oneof" json:"namespace,omitempty"`
 	// ExternalDNS version such as "v0.19.0". Used to set the image tag.
-	ExternalDnsVersion string `protobuf:"bytes,3,opt,name=external_dns_version,json=externalDnsVersion,proto3" json:"external_dns_version,omitempty"`
+	ExternalDnsVersion *string `protobuf:"bytes,3,opt,name=external_dns_version,json=externalDnsVersion,proto3,oneof" json:"external_dns_version,omitempty"`
 	// Helm chart version to deploy. If not specified, uses the default version.
-	HelmChartVersion string `protobuf:"bytes,4,opt,name=helm_chart_version,json=helmChartVersion,proto3" json:"helm_chart_version,omitempty"`
+	HelmChartVersion *string `protobuf:"bytes,4,opt,name=helm_chart_version,json=helmChartVersion,proto3,oneof" json:"helm_chart_version,omitempty"`
 	// provider-specific glue. Only one may be set.
 	//
 	// Types that are valid to be assigned to ProviderConfig:
@@ -87,22 +87,22 @@ func (x *ExternalDnsKubernetesSpec) GetTargetCluster() *kubernetes.KubernetesAdd
 }
 
 func (x *ExternalDnsKubernetesSpec) GetNamespace() string {
-	if x != nil {
-		return x.Namespace
+	if x != nil && x.Namespace != nil {
+		return *x.Namespace
 	}
 	return ""
 }
 
 func (x *ExternalDnsKubernetesSpec) GetExternalDnsVersion() string {
-	if x != nil {
-		return x.ExternalDnsVersion
+	if x != nil && x.ExternalDnsVersion != nil {
+		return *x.ExternalDnsVersion
 	}
 	return ""
 }
 
 func (x *ExternalDnsKubernetesSpec) GetHelmChartVersion() string {
-	if x != nil {
-		return x.HelmChartVersion
+	if x != nil && x.HelmChartVersion != nil {
+		return *x.HelmChartVersion
 	}
 	return ""
 }
@@ -412,20 +412,24 @@ var File_project_planton_provider_kubernetes_addon_externaldnskubernetes_v1_spec
 
 const file_project_planton_provider_kubernetes_addon_externaldnskubernetes_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Mproject/planton/provider/kubernetes/addon/externaldnskubernetes/v1/spec.proto\x12Bproject.planton.provider.kubernetes.addon.externaldnskubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a6project/planton/shared/kubernetes/target_cluster.proto\x1a,project/planton/shared/options/options.proto\"\x91\x06\n" +
+	"Mproject/planton/provider/kubernetes/addon/externaldnskubernetes/v1/spec.proto\x12Bproject.planton.provider.kubernetes.addon.externaldnskubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a6project/planton/shared/kubernetes/target_cluster.proto\x1a,project/planton/shared/options/options.proto\"\xde\x06\n" +
 	"\x19ExternalDnsKubernetesSpec\x12f\n" +
-	"\x0etarget_cluster\x18\x01 \x01(\v2?.project.planton.shared.kubernetes.KubernetesAddonTargetClusterR\rtargetCluster\x12.\n" +
-	"\tnamespace\x18\x02 \x01(\tB\x10\x8a\xa6\x1d\fexternal-dnsR\tnamespace\x12=\n" +
-	"\x14external_dns_version\x18\x03 \x01(\tB\v\x8a\xa6\x1d\av0.19.0R\x12externalDnsVersion\x128\n" +
+	"\x0etarget_cluster\x18\x01 \x01(\v2?.project.planton.shared.kubernetes.KubernetesAddonTargetClusterR\rtargetCluster\x123\n" +
+	"\tnamespace\x18\x02 \x01(\tB\x10\x8a\xa6\x1d\fexternal-dnsH\x01R\tnamespace\x88\x01\x01\x12B\n" +
+	"\x14external_dns_version\x18\x03 \x01(\tB\v\x8a\xa6\x1d\av0.19.0H\x02R\x12externalDnsVersion\x88\x01\x01\x12=\n" +
 	"\x12helm_chart_version\x18\x04 \x01(\tB\n" +
-	"\x8a\xa6\x1d\x061.19.0R\x10helmChartVersion\x12m\n" +
+	"\x8a\xa6\x1d\x061.19.0H\x03R\x10helmChartVersion\x88\x01\x01\x12m\n" +
 	"\x03gke\x18\xc8\x01 \x01(\v2X.project.planton.provider.kubernetes.addon.externaldnskubernetes.v1.ExternalDnsGkeConfigH\x00R\x03gke\x12m\n" +
 	"\x03eks\x18\xc9\x01 \x01(\v2X.project.planton.provider.kubernetes.addon.externaldnskubernetes.v1.ExternalDnsEksConfigH\x00R\x03eks\x12m\n" +
 	"\x03aks\x18\xca\x01 \x01(\v2X.project.planton.provider.kubernetes.addon.externaldnskubernetes.v1.ExternalDnsAksConfigH\x00R\x03aks\x12\x82\x01\n" +
 	"\n" +
 	"cloudflare\x18\xcb\x01 \x01(\v2_.project.planton.provider.kubernetes.addon.externaldnskubernetes.v1.ExternalDnsCloudflareConfigH\x00R\n" +
 	"cloudflareB\x11\n" +
-	"\x0fprovider_config\"\x96\x02\n" +
+	"\x0fprovider_configB\f\n" +
+	"\n" +
+	"_namespaceB\x17\n" +
+	"\x15_external_dns_versionB\x15\n" +
+	"\x13_helm_chart_version\"\x96\x02\n" +
 	"\x14ExternalDnsGkeConfig\x12\x7f\n" +
 	"\n" +
 	"project_id\x18\x01 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB(\xbaH\x03\xc8\x01\x01\x88\xd4a\xe3\x04\x92\xd4a\x19status.outputs.project_idR\tprojectId\x12}\n" +

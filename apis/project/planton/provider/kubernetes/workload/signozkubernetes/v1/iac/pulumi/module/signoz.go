@@ -73,9 +73,9 @@ func signoz(ctx *pulumi.Context, locals *Locals,
 				}
 				helmValues["externalClickhouse"] = pulumi.Map{
 					"host":     pulumi.String(ext.Host),
-					"httpPort": pulumi.Int(int(ext.HttpPort)),
-					"tcpPort":  pulumi.Int(int(ext.TcpPort)),
-					"cluster":  pulumi.String(ext.ClusterName),
+					"httpPort": pulumi.Int(int(ext.GetHttpPort())),
+					"tcpPort":  pulumi.Int(int(ext.GetTcpPort())),
+					"cluster":  pulumi.String(ext.GetClusterName()),
 					"secure":   pulumi.Bool(ext.IsSecure),
 					"user":     pulumi.String(ext.Username),
 					"password": pulumi.String(ext.Password),

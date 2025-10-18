@@ -3,12 +3,13 @@ module(
 )
 
 # ─── Go rules + Gazelle ──────────────────────────────────────────────────────
-bazel_dep(name = "rules_go", version = "0.56.1")
+bazel_dep(name = "rules_go", version = "0.57.0")
 bazel_dep(name = "gazelle", version = "0.45.0")
 
 # Pin the Go toolchain Bazel uses (hermetic; no host Go required)
 go_sdk = use_extension("@rules_go//go:extensions.bzl", "go_sdk")
-go_sdk.download(version = "1.23.4")
+go_sdk.download(version = "1.24.0")
+go_sdk.nogo(nogo = "//:project_planton_nogo")
 
 # Read Go deps from this repo's go.mod (bzlmod-friendly)
 go_deps = use_extension("@gazelle//:extensions.bzl", "go_deps")
@@ -17,6 +18,11 @@ go_deps.module(
     path = "buf.build/go/protovalidate",
     sum = "h1:kr/rC/no+DtRyYX+8KXLDxNnI1rINz0imk5K44ZpZ3A=",
     version = "v0.14.0",
+)
+go_deps.module(
+    path = "golang.org/x/tools",
+    sum = "h1:zdAyfUGbYmuVokhzVmghFl2ZJh5QhcfebBgmVPFYA+8=",
+    version = "v0.15.0",
 )
 use_repo(
     go_deps,
@@ -57,6 +63,7 @@ use_repo(
     "io_k8s_sigs_yaml",
     "io_k8s_utils",
     "org_golang_google_protobuf",
+    "org_golang_x_tools",
 )
 
 # NOTE: Run `bazel mod tidy` to expand the required use_repo(...) entries below.

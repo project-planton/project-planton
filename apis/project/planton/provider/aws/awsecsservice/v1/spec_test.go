@@ -9,6 +9,7 @@ import (
 	foreignkeyv1 "github.com/project-planton/project-planton/apis/project/planton/shared/foreignkey/v1"
 
 	"buf.build/go/protovalidate"
+	"google.golang.org/protobuf/proto"
 )
 
 func TestAwsEcsService(t *testing.T) {
@@ -57,7 +58,7 @@ var _ = ginkgo.Describe("AwsEcsService Custom Validation Tests", func() {
 							},
 							RoutingType:      "path",
 							ListenerPort:     80,
-							ListenerPriority: 100,
+							ListenerPriority: proto.Int32(100),
 						},
 					},
 				}
@@ -190,7 +191,7 @@ var _ = ginkgo.Describe("AwsEcsService Custom Validation Tests", func() {
 						},
 						RoutingType:      "path",
 						ListenerPort:     80,
-						ListenerPriority: 100,
+						ListenerPriority: proto.Int32(100),
 					},
 				},
 			}

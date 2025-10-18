@@ -33,7 +33,7 @@ type ExternalSecretsKubernetesSpec struct {
 	TargetCluster *kubernetes.KubernetesAddonTargetCluster `protobuf:"bytes,1,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
 	// How often the controller polls the backing secret store (in seconds).
 	// Very small values can incur high cloud‑API costs.
-	PollIntervalSeconds uint32 `protobuf:"varint,2,opt,name=poll_interval_seconds,json=pollIntervalSeconds,proto3" json:"poll_interval_seconds,omitempty"`
+	PollIntervalSeconds *uint32 `protobuf:"varint,2,opt,name=poll_interval_seconds,json=pollIntervalSeconds,proto3,oneof" json:"poll_interval_seconds,omitempty"`
 	// CPU / memory tuning for the ESO controller container.
 	Container *ExternalSecretsKubernetesSpecContainer `protobuf:"bytes,3,opt,name=container,proto3" json:"container,omitempty"`
 	// Provider‑specific glue.  Exactly one block should be set.
@@ -86,8 +86,8 @@ func (x *ExternalSecretsKubernetesSpec) GetTargetCluster() *kubernetes.Kubernete
 }
 
 func (x *ExternalSecretsKubernetesSpec) GetPollIntervalSeconds() uint32 {
-	if x != nil {
-		return x.PollIntervalSeconds
+	if x != nil && x.PollIntervalSeconds != nil {
+		return *x.PollIntervalSeconds
 	}
 	return 0
 }
@@ -372,15 +372,16 @@ var File_project_planton_provider_kubernetes_addon_externalsecretskubernetes_v1_
 
 const file_project_planton_provider_kubernetes_addon_externalsecretskubernetes_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Qproject/planton/provider/kubernetes/addon/externalsecretskubernetes/v1/spec.proto\x12Fproject.planton.provider.kubernetes.addon.externalsecretskubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\x1a6project/planton/shared/kubernetes/target_cluster.proto\x1a,project/planton/shared/options/options.proto\"\xd6\x05\n" +
+	"Qproject/planton/provider/kubernetes/addon/externalsecretskubernetes/v1/spec.proto\x12Fproject.planton.provider.kubernetes.addon.externalsecretskubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\x1a6project/planton/shared/kubernetes/target_cluster.proto\x1a,project/planton/shared/options/options.proto\"\xf5\x05\n" +
 	"\x1dExternalSecretsKubernetesSpec\x12f\n" +
-	"\x0etarget_cluster\x18\x01 \x01(\v2?.project.planton.shared.kubernetes.KubernetesAddonTargetClusterR\rtargetCluster\x12A\n" +
-	"\x15poll_interval_seconds\x18\x02 \x01(\rB\r\xbaH\x04*\x02 \x00\x8a\xa6\x1d\x0210R\x13pollIntervalSeconds\x12\x94\x01\n" +
+	"\x0etarget_cluster\x18\x01 \x01(\v2?.project.planton.shared.kubernetes.KubernetesAddonTargetClusterR\rtargetCluster\x12F\n" +
+	"\x15poll_interval_seconds\x18\x02 \x01(\rB\r\xbaH\x04*\x02 \x00\x8a\xa6\x1d\x0210H\x01R\x13pollIntervalSeconds\x88\x01\x01\x12\x94\x01\n" +
 	"\tcontainer\x18\x03 \x01(\v2n.project.planton.provider.kubernetes.addon.externalsecretskubernetes.v1.ExternalSecretsKubernetesSpecContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\x12t\n" +
 	"\x03gke\x18d \x01(\v2`.project.planton.provider.kubernetes.addon.externalsecretskubernetes.v1.ExternalSecretsGkeConfigH\x00R\x03gke\x12t\n" +
 	"\x03eks\x18e \x01(\v2`.project.planton.provider.kubernetes.addon.externalsecretskubernetes.v1.ExternalSecretsEksConfigH\x00R\x03eks\x12t\n" +
 	"\x03aks\x18f \x01(\v2`.project.planton.provider.kubernetes.addon.externalsecretskubernetes.v1.ExternalSecretsAksConfigH\x00R\x03aksB\x11\n" +
-	"\x0fprovider_config\"\xa0\x01\n" +
+	"\x0fprovider_configB\x18\n" +
+	"\x16_poll_interval_seconds\"\xa0\x01\n" +
 	"&ExternalSecretsKubernetesSpecContainer\x12v\n" +
 	"\tresources\x18\x01 \x01(\v25.project.planton.shared.kubernetes.ContainerResourcesB!\xba\xfb\xa4\x02\x1c\n" +
 	"\f\n" +

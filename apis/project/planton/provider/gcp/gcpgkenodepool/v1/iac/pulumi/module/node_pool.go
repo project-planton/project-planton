@@ -32,7 +32,7 @@ func nodePool(ctx *pulumi.Context,
 				MinNodeCount: pulumi.Int(int(x.Autoscaling.MinNodes)),
 				MaxNodeCount: pulumi.Int(int(x.Autoscaling.MaxNodes)),
 				LocationPolicy: pulumi.StringPtr(
-					x.Autoscaling.LocationPolicy),
+					x.Autoscaling.GetLocationPolicy()),
 			}
 		}
 	}
@@ -70,7 +70,7 @@ func nodePool(ctx *pulumi.Context,
 	// ----- Node‑config ---------------------------------------------------
 
 	nodeConfig := &container.NodePoolNodeConfigArgs{
-		MachineType: pulumi.String(spec.MachineType),
+		MachineType: pulumi.String(spec.GetMachineType()),
 		Preemptible: pulumi.Bool(spec.Spot),
 		Labels:      pulumi.ToStringMap(mergedLabels),
 		Tags: pulumi.StringArray{
@@ -84,13 +84,13 @@ func nodePool(ctx *pulumi.Context,
 			pulumi.String("https://www.googleapis.com/auth/logging.write"),
 			pulumi.String("https://www.googleapis.com/auth/devstorage.read_only"),
 		},
-		ImageType: pulumi.StringPtr(spec.ImageType),
+		ImageType: pulumi.StringPtr(spec.GetImageType()),
 	}
 	if spec.DiskSizeGb > 0 {
 		nodeConfig.DiskSizeGb = pulumi.IntPtr(int(spec.DiskSizeGb))
 	}
-	if spec.DiskType != "" {
-		nodeConfig.DiskType = pulumi.StringPtr(spec.DiskType)
+	if spec.DiskType != nil && *spec.DiskType != "" {
+		nodeConfig.DiskType = pulumi.StringPtr(*spec.DiskType)
 	}
 	if spec.ServiceAccount != "" {
 		nodeConfig.ServiceAccount = pulumi.StringPtr(spec.ServiceAccount)

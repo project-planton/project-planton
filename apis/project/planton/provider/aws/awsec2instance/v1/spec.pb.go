@@ -112,7 +112,7 @@ type AwsEc2InstanceSpec struct {
 	// - SSM: Use AWS Systems Manager Session Manager (no SSH key needed, requires an IAM instance profile with SSM permissions).
 	// - BASTION: Use a traditional SSH method with a key pair (requires a key_name for the EC2 instance).
 	// - INSTANCE_CONNECT: Use AWS EC2 Instance Connect (temporary key injection, also requires a key_name).
-	ConnectionMethod AwsEc2InstanceConnectionMethod `protobuf:"varint,6,opt,name=connection_method,json=connectionMethod,proto3,enum=project.planton.provider.aws.awsec2instance.v1.AwsEc2InstanceConnectionMethod" json:"connection_method,omitempty"`
+	ConnectionMethod *AwsEc2InstanceConnectionMethod `protobuf:"varint,6,opt,name=connection_method,json=connectionMethod,proto3,enum=project.planton.provider.aws.awsec2instance.v1.AwsEc2InstanceConnectionMethod,oneof" json:"connection_method,omitempty"`
 	// The ARN of an IAM instance profile to attach to the EC2 instance.
 	// This profile should include an IAM role with necessary permissions (for example, SSM Session Manager access if using SSM).
 	// **Required if** connection_method is SSM; optional otherwise.
@@ -124,7 +124,7 @@ type AwsEc2InstanceSpec struct {
 	// Size of the root EBS volume in GiB.
 	// This defines the storage capacity for the instance's root filesystem.
 	// Defaults to 30 GiB if not specified.
-	RootVolumeSizeGb int32 `protobuf:"varint,9,opt,name=root_volume_size_gb,json=rootVolumeSizeGb,proto3" json:"root_volume_size_gb,omitempty"`
+	RootVolumeSizeGb *int32 `protobuf:"varint,9,opt,name=root_volume_size_gb,json=rootVolumeSizeGb,proto3,oneof" json:"root_volume_size_gb,omitempty"`
 	// Map of tags to apply to the EC2 instance.
 	// Tags are key-value pairs for metadata and organization of AWS resources (e.g., {"env": "production", "app": "web"}).
 	Tags map[string]string `protobuf:"bytes,10,rep,name=tags,proto3" json:"tags,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
@@ -208,8 +208,8 @@ func (x *AwsEc2InstanceSpec) GetSecurityGroupIds() []*v1.StringValueOrRef {
 }
 
 func (x *AwsEc2InstanceSpec) GetConnectionMethod() AwsEc2InstanceConnectionMethod {
-	if x != nil {
-		return x.ConnectionMethod
+	if x != nil && x.ConnectionMethod != nil {
+		return *x.ConnectionMethod
 	}
 	return AwsEc2InstanceConnectionMethod_SSM
 }
@@ -229,8 +229,8 @@ func (x *AwsEc2InstanceSpec) GetKeyName() string {
 }
 
 func (x *AwsEc2InstanceSpec) GetRootVolumeSizeGb() int32 {
-	if x != nil {
-		return x.RootVolumeSizeGb
+	if x != nil && x.RootVolumeSizeGb != nil {
+		return *x.RootVolumeSizeGb
 	}
 	return 0
 }
@@ -267,7 +267,7 @@ var File_project_planton_provider_aws_awsec2instance_v1_spec_proto protoreflect.
 
 const file_project_planton_provider_aws_awsec2instance_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"9project/planton/provider/aws/awsec2instance/v1/spec.proto\x12.project.planton.provider.aws.awsec2instance.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\"\xbc\f\n" +
+	"9project/planton/provider/aws/awsec2instance/v1/spec.proto\x12.project.planton.provider.aws.awsec2instance.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\"\xf4\f\n" +
 	"\x12AwsEc2InstanceSpec\x12/\n" +
 	"\rinstance_name\x18\x01 \x01(\tB\n" +
 	"\xbaH\a\xc8\x01\x01r\x02\x10\x01R\finstanceName\x12(\n" +
@@ -275,11 +275,11 @@ const file_project_planton_provider_aws_awsec2instance_v1_spec_proto_rawDesc = "
 	"\rinstance_type\x18\x03 \x01(\tB\n" +
 	"\xbaH\a\xc8\x01\x01r\x02\x10\x01R\finstanceType\x12\x85\x01\n" +
 	"\tsubnet_id\x18\x04 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB0\xbaH\x03\xc8\x01\x01\x88\xd4a\xd9\x01\x92\xd4a!status.outputs.private_subnets.idR\bsubnetId\x12\x9a\x01\n" +
-	"\x12security_group_ids\x18\x05 \x03(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB4\xbaH\b\xc8\x01\x01\x92\x01\x02\b\x01\x88\xd4a\xd7\x01\x92\xd4a status.outputs.security_group_idR\x10securityGroupIds\x12\x8c\x01\n" +
-	"\x11connection_method\x18\x06 \x01(\x0e2N.project.planton.provider.aws.awsec2instance.v1.AwsEc2InstanceConnectionMethodB\x0f\xbaH\x05\x82\x01\x02\x10\x01\x8a\xa6\x1d\x03SSMR\x10connectionMethod\x12\x91\x01\n" +
+	"\x12security_group_ids\x18\x05 \x03(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB4\xbaH\b\xc8\x01\x01\x92\x01\x02\b\x01\x88\xd4a\xd7\x01\x92\xd4a status.outputs.security_group_idR\x10securityGroupIds\x12\x91\x01\n" +
+	"\x11connection_method\x18\x06 \x01(\x0e2N.project.planton.provider.aws.awsec2instance.v1.AwsEc2InstanceConnectionMethodB\x0f\xbaH\x05\x82\x01\x02\x10\x01\x8a\xa6\x1d\x03SSMH\x00R\x10connectionMethod\x88\x01\x01\x12\x91\x01\n" +
 	"\x18iam_instance_profile_arn\x18\a \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB \x88\xd4a\xd0\x01\x92\xd4a\x17status.outputs.role_arnR\x15iamInstanceProfileArn\x12\x19\n" +
-	"\bkey_name\x18\b \x01(\tR\akeyName\x12<\n" +
-	"\x13root_volume_size_gb\x18\t \x01(\x05B\r\xbaH\x04\x1a\x02 \x00\x8a\xa6\x1d\x0230R\x10rootVolumeSizeGb\x12`\n" +
+	"\bkey_name\x18\b \x01(\tR\akeyName\x12A\n" +
+	"\x13root_volume_size_gb\x18\t \x01(\x05B\r\xbaH\x04\x1a\x02 \x00\x8a\xa6\x1d\x0230H\x01R\x10rootVolumeSizeGb\x88\x01\x01\x12`\n" +
 	"\x04tags\x18\n" +
 	" \x03(\v2L.project.planton.provider.aws.awsec2instance.v1.AwsEc2InstanceSpec.TagsEntryR\x04tags\x12&\n" +
 	"\tuser_data\x18\v \x01(\tB\t\xbaH\x06r\x04(\x80\x80\x02R\buserData\x12#\n" +
@@ -289,7 +289,9 @@ const file_project_planton_provider_aws_awsec2instance_v1_spec_proto_rawDesc = "
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:\xd8\x03\xbaH\xd4\x03\x1a\x90\x02\n" +
 	"\x18ssm_requires_iam_profile\x12Biam_instance_profile_arn must be set when connection_method is SSM\x1a\xaf\x01this.connection_method == 0 ? ((has(this.iam_instance_profile_arn.value) && this.iam_instance_profile_arn.value != \"\") || has(this.iam_instance_profile_arn.value_from)) : true\x1a\xbe\x01\n" +
-	"\x15ssh_requires_key_name\x12Jkey_name must be set when connection_method is BASTION or INSTANCE_CONNECT\x1aY(this.connection_method == 1 || this.connection_method == 2) ? this.key_name != \"\" : true*L\n" +
+	"\x15ssh_requires_key_name\x12Jkey_name must be set when connection_method is BASTION or INSTANCE_CONNECT\x1aY(this.connection_method == 1 || this.connection_method == 2) ? this.key_name != \"\" : trueB\x14\n" +
+	"\x12_connection_methodB\x16\n" +
+	"\x14_root_volume_size_gb*L\n" +
 	"\x1eAwsEc2InstanceConnectionMethod\x12\a\n" +
 	"\x03SSM\x10\x00\x12\v\n" +
 	"\aBASTION\x10\x01\x12\x14\n" +
@@ -334,6 +336,7 @@ func file_project_planton_provider_aws_awsec2instance_v1_spec_proto_init() {
 	if File_project_planton_provider_aws_awsec2instance_v1_spec_proto != nil {
 		return
 	}
+	file_project_planton_provider_aws_awsec2instance_v1_spec_proto_msgTypes[0].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

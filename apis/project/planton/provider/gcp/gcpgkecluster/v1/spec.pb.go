@@ -34,10 +34,10 @@ type GcpGkeClusterSpec struct {
 	// The GCP region where the GKE cluster will be created.
 	// **Warning:** The GKE cluster will be recreated if this value is updated.
 	// Refer to: https://cloud.google.com/compute/docs/regions-zones
-	Region string `protobuf:"bytes,2,opt,name=region,proto3" json:"region,omitempty"`
+	Region *string `protobuf:"bytes,2,opt,name=region,proto3,oneof" json:"region,omitempty"`
 	// The GCP zone where the GKE cluster will be created.
 	// Refer to: https://cloud.google.com/compute/docs/regions-zones
-	Zone            string                        `protobuf:"bytes,3,opt,name=zone,proto3" json:"zone,omitempty"`
+	Zone            *string                       `protobuf:"bytes,3,opt,name=zone,proto3,oneof" json:"zone,omitempty"`
 	SharedVpcConfig *GcpGkeClusterSharedVpcConfig `protobuf:"bytes,4,opt,name=shared_vpc_config,json=sharedVpcConfig,proto3" json:"shared_vpc_config,omitempty"`
 	// A flag to toggle workload logs for the GKE cluster environment.
 	// When enabled, logs from Kubernetes pods will be sent to Google Cloud Logging.
@@ -89,15 +89,15 @@ func (x *GcpGkeClusterSpec) GetClusterProjectId() string {
 }
 
 func (x *GcpGkeClusterSpec) GetRegion() string {
-	if x != nil {
-		return x.Region
+	if x != nil && x.Region != nil {
+		return *x.Region
 	}
 	return ""
 }
 
 func (x *GcpGkeClusterSpec) GetZone() string {
-	if x != nil {
-		return x.Zone
+	if x != nil && x.Zone != nil {
+		return *x.Zone
 	}
 	return ""
 }
@@ -362,16 +362,18 @@ var File_project_planton_provider_gcp_gcpgkecluster_v1_spec_proto protoreflect.F
 
 const file_project_planton_provider_gcp_gcpgkecluster_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"8project/planton/provider/gcp/gcpgkecluster/v1/spec.proto\x12-project.planton.provider.gcp.gcpgkecluster.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\"\xbe\x04\n" +
+	"8project/planton/provider/gcp/gcpgkecluster/v1/spec.proto\x12-project.planton.provider.gcp.gcpgkecluster.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\"\xdc\x04\n" +
 	"\x11GcpGkeClusterSpec\x124\n" +
-	"\x12cluster_project_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x10clusterProjectId\x12'\n" +
-	"\x06region\x18\x02 \x01(\tB\x0f\x8a\xa6\x1d\vus-central1R\x06region\x12%\n" +
-	"\x04zone\x18\x03 \x01(\tB\x11\x8a\xa6\x1d\rus-central1-aR\x04zone\x12w\n" +
+	"\x12cluster_project_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x10clusterProjectId\x12,\n" +
+	"\x06region\x18\x02 \x01(\tB\x0f\x8a\xa6\x1d\vus-central1H\x00R\x06region\x88\x01\x01\x12*\n" +
+	"\x04zone\x18\x03 \x01(\tB\x11\x8a\xa6\x1d\rus-central1-aH\x01R\x04zone\x88\x01\x01\x12w\n" +
 	"\x11shared_vpc_config\x18\x04 \x01(\v2K.project.planton.provider.gcp.gcpgkecluster.v1.GcpGkeClusterSharedVpcConfigR\x0fsharedVpcConfig\x127\n" +
 	"\x18is_workload_logs_enabled\x18\x05 \x01(\bR\x15isWorkloadLogsEnabled\x12\x8b\x01\n" +
 	"\x1acluster_autoscaling_config\x18\x06 \x01(\v2M.project.planton.provider.gcp.gcpgkecluster.v1.GcpGkeClusterAutoscalingConfigR\x18clusterAutoscalingConfig\x12c\n" +
 	"\n" +
-	"node_pools\x18\a \x03(\v2D.project.planton.provider.gcp.gcpgkecluster.v1.GcpGkeClusterNodePoolR\tnodePools\"\x8e\x02\n" +
+	"node_pools\x18\a \x03(\v2D.project.planton.provider.gcp.gcpgkecluster.v1.GcpGkeClusterNodePoolR\tnodePoolsB\t\n" +
+	"\a_regionB\a\n" +
+	"\x05_zone\"\x8e\x02\n" +
 	"\x1cGcpGkeClusterSharedVpcConfig\x12\x1d\n" +
 	"\n" +
 	"is_enabled\x18\x01 \x01(\bR\tisEnabled\x12,\n" +
@@ -430,6 +432,7 @@ func file_project_planton_provider_gcp_gcpgkecluster_v1_spec_proto_init() {
 	if File_project_planton_provider_gcp_gcpgkecluster_v1_spec_proto != nil {
 		return
 	}
+	file_project_planton_provider_gcp_gcpgkecluster_v1_spec_proto_msgTypes[0].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

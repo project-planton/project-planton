@@ -17,7 +17,7 @@ message ExternalSecretsKubernetesSpec {
 
   // How often the controller polls the backing secret store (in seconds).
   // Very small values can incur high cloud‑API costs.
-  uint32 poll_interval_seconds = 2 [
+  optional uint32 poll_interval_seconds = 2 [
     (project.planton.shared.options.default) = "10",
     (buf.validate.field).uint32.gt = 0
   ];

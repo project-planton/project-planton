@@ -168,7 +168,7 @@ type AwsClientVpnSpec struct {
 	// The port number on which the Client VPN endpoint will accept connections. The default (443) is commonly used for OpenVPN over TLS.
 	// Using port 443 allows VPN traffic to more easily traverse corporate firewalls.
 	// If a different port (e.g., 1194) is needed, it can be specified here.
-	VpnPort int32 `protobuf:"varint,9,opt,name=vpn_port,json=vpnPort,proto3" json:"vpn_port,omitempty"`
+	VpnPort *int32 `protobuf:"varint,9,opt,name=vpn_port,json=vpnPort,proto3,oneof" json:"vpn_port,omitempty"`
 	// The transport protocol for VPN connections. Can be `tcp` or `udp`.
 	TransportProtocol AwsClientVpnTransportProtocol `protobuf:"varint,10,opt,name=transport_protocol,json=transportProtocol,proto3,enum=project.planton.provider.aws.awsclientvpn.v1.AwsClientVpnTransportProtocol" json:"transport_protocol,omitempty"`
 	// The CloudWatch Logs group name for VPN connection logs. If specified, connection logging is enabled for this Client VPN endpoint.
@@ -275,8 +275,8 @@ func (x *AwsClientVpnSpec) GetDisableSplitTunnel() bool {
 }
 
 func (x *AwsClientVpnSpec) GetVpnPort() int32 {
-	if x != nil {
-		return x.VpnPort
+	if x != nil && x.VpnPort != nil {
+		return *x.VpnPort
 	}
 	return 0
 }
@@ -313,7 +313,7 @@ var File_project_planton_provider_aws_awsclientvpn_v1_spec_proto protoreflect.Fi
 
 const file_project_planton_provider_aws_awsclientvpn_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"7project/planton/provider/aws/awsclientvpn/v1/spec.proto\x12,project.planton.provider.aws.awsclientvpn.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\"\xff\x0f\n" +
+	"7project/planton/provider/aws/awsclientvpn/v1/spec.proto\x12,project.planton.provider.aws.awsclientvpn.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\"\x91\x10\n" +
 	"\x10AwsClientVpnSpec\x12 \n" +
 	"\vdescription\x18\x01 \x01(\tR\vdescription\x12s\n" +
 	"\x06vpc_id\x18\x02 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB$\xbaH\x03\xc8\x01\x01\x88\xd4a\xd9\x01\x92\xd4a\x15status.outputs.vpc_idR\x05vpcId\x12b\n" +
@@ -322,8 +322,8 @@ const file_project_planton_provider_aws_awsclientvpn_v1_spec_proto_rawDesc = "" 
 	"\x13authentication_type\x18\x05 \x01(\x0e2L.project.planton.provider.aws.awsclientvpn.v1.AwsClientVpnAuthenticationTypeB\b\xbaH\x05\x82\x01\x02\x10\x01R\x12authenticationType\x12\x94\x01\n" +
 	"\x16server_certificate_arn\x18\x06 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB&\xbaH\x03\xc8\x01\x01\x88\xd4a\xc9\x01\x92\xd4a\x17status.outputs.cert_arnR\x14serverCertificateArn\x12B\n" +
 	"\x18cidr_authorization_rules\x18\a \x03(\tB\b\xbaH\x05\x92\x01\x02\x18\x01R\x16cidrAuthorizationRules\x120\n" +
-	"\x14disable_split_tunnel\x18\b \x01(\bR\x12disableSplitTunnel\x12\"\n" +
-	"\bvpn_port\x18\t \x01(\x05B\a\x8a\xa6\x1d\x03443R\avpnPort\x12\x8b\x01\n" +
+	"\x14disable_split_tunnel\x18\b \x01(\bR\x12disableSplitTunnel\x12'\n" +
+	"\bvpn_port\x18\t \x01(\x05B\a\x8a\xa6\x1d\x03443H\x00R\avpnPort\x88\x01\x01\x12\x8b\x01\n" +
 	"\x12transport_protocol\x18\n" +
 	" \x01(\x0e2K.project.planton.provider.aws.awsclientvpn.v1.AwsClientVpnTransportProtocolB\x0f\xbaH\x05\x82\x01\x02\x10\x01\x92\xa6\x1d\x03tcpR\x11transportProtocol\x12$\n" +
 	"\x0elog_group_name\x18\v \x01(\tR\flogGroupName\x12\x8a\x01\n" +
@@ -335,7 +335,8 @@ const file_project_planton_provider_aws_awsclientvpn_v1_spec_proto_rawDesc = "" 
 	"\x15protocol_port_pairing\x12Qwhen both are set, transport_protocol must match vpn_port (TCP↔443, UDP↔1194)\x1a\xa7\x01this.vpn_port == 0 || this.transport_protocol == 0 || (this.transport_protocol == 2 && this.vpn_port == 443) || (this.transport_protocol == 1 && this.vpn_port == 1194)\x1ai\n" +
 	"\x0eauth_supported\x128only certificate-based authentication is supported in v1\x1a\x1dthis.authentication_type == 0\x1a\xc4\x01\n" +
 	"\x16cidr_auth_rules_format\x12=each cidr_authorization_rules entry must be a valid IPv4 CIDR\x1akthis.cidr_authorization_rules.all(c, c.matches(\"^([0-9]{1,3}\\\\.){3}[0-9]{1,3}/([0-9]|[1-2][0-9]|3[0-2])$\"))\x1a\x8c\x01\n" +
-	"\x12dns_servers_format\x120dns_servers must be valid IPv4 addresses (max 2)\x1aDthis.dns_servers.all(s, s.matches(\"^([0-9]{1,3}\\\\.){3}[0-9]{1,3}$\"))*M\n" +
+	"\x12dns_servers_format\x120dns_servers must be valid IPv4 addresses (max 2)\x1aDthis.dns_servers.all(s, s.matches(\"^([0-9]{1,3}\\\\.){3}[0-9]{1,3}$\"))B\v\n" +
+	"\t_vpn_port*M\n" +
 	"\x1eAwsClientVpnAuthenticationType\x12\x0f\n" +
 	"\vcertificate\x10\x00\x12\r\n" +
 	"\tdirectory\x10\x02\x12\v\n" +
@@ -385,6 +386,7 @@ func file_project_planton_provider_aws_awsclientvpn_v1_spec_proto_init() {
 	if File_project_planton_provider_aws_awsclientvpn_v1_spec_proto != nil {
 		return
 	}
+	file_project_planton_provider_aws_awsclientvpn_v1_spec_proto_msgTypes[0].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

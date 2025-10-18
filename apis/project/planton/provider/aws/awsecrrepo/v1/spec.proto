@@ -26,7 +26,7 @@ message AwsEcrRepoSpec {
   // EncryptionType determines how images are encrypted at rest in ECR.
   // By default, AWS uses AES-256 (service-managed keys). Choose KMS to use
   // a customer-managed key (CMK).
-  string encryption_type = 3 [
+  optional string encryption_type = 3 [
     (project.planton.shared.options.default) = "AES256",
     (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
     (buf.validate.field).string = {

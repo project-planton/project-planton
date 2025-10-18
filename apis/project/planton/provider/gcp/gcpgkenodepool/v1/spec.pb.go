@@ -35,15 +35,15 @@ type GcpGkeNodePoolSpec struct {
 	ClusterName *v1.StringValueOrRef `protobuf:"bytes,2,opt,name=cluster_name,json=clusterName,proto3" json:"cluster_name,omitempty"`
 	// Machine type for node VMs (e.g., "e2-medium", "n1-standard-4").
 	// If unspecified, defaults to "e2-medium" (2 vCPU, 4 GB RAM).
-	MachineType string `protobuf:"bytes,3,opt,name=machine_type,json=machineType,proto3" json:"machine_type,omitempty"`
+	MachineType *string `protobuf:"bytes,3,opt,name=machine_type,json=machineType,proto3,oneof" json:"machine_type,omitempty"`
 	// Size of boot disk (GB) for each node. Min 10 GB. Defaults to 100 GB if unset.
 	// Default 100 implied if not provided (handled in provisioning code or via options.default if supported).
 	DiskSizeGb uint32 `protobuf:"varint,4,opt,name=disk_size_gb,json=diskSizeGb,proto3" json:"disk_size_gb,omitempty"`
 	// Type of boot disk: "pd-standard", "pd-ssd", or "pd-balanced".
 	// Defaults to "pd-standard" for unspecified.
-	DiskType string `protobuf:"bytes,5,opt,name=disk_type,json=diskType,proto3" json:"disk_type,omitempty"`
+	DiskType *string `protobuf:"bytes,5,opt,name=disk_type,json=diskType,proto3,oneof" json:"disk_type,omitempty"`
 	// Node image type (OS image). Default is "COS_CONTAINERD" (Container-Optimized OS with containerd).
-	ImageType string `protobuf:"bytes,6,opt,name=image_type,json=imageType,proto3" json:"image_type,omitempty"`
+	ImageType *string `protobuf:"bytes,6,opt,name=image_type,json=imageType,proto3,oneof" json:"image_type,omitempty"`
 	// Service account email for nodes. If not provided, the GKE default node service account is used.
 	ServiceAccount string `protobuf:"bytes,7,opt,name=service_account,json=serviceAccount,proto3" json:"service_account,omitempty"`
 	// Auto-upgrade and Auto-repair settings for node management.
@@ -108,8 +108,8 @@ func (x *GcpGkeNodePoolSpec) GetClusterName() *v1.StringValueOrRef {
 }
 
 func (x *GcpGkeNodePoolSpec) GetMachineType() string {
-	if x != nil {
-		return x.MachineType
+	if x != nil && x.MachineType != nil {
+		return *x.MachineType
 	}
 	return ""
 }
@@ -122,15 +122,15 @@ func (x *GcpGkeNodePoolSpec) GetDiskSizeGb() uint32 {
 }
 
 func (x *GcpGkeNodePoolSpec) GetDiskType() string {
-	if x != nil {
-		return x.DiskType
+	if x != nil && x.DiskType != nil {
+		return *x.DiskType
 	}
 	return ""
 }
 
 func (x *GcpGkeNodePoolSpec) GetImageType() string {
-	if x != nil {
-		return x.ImageType
+	if x != nil && x.ImageType != nil {
+		return *x.ImageType
 	}
 	return ""
 }
@@ -214,7 +214,7 @@ type GcpGkeNodePoolAutoscaling struct {
 	// Maximum nodes (per zone) when autoscaling.
 	MaxNodes uint32 `protobuf:"varint,2,opt,name=max_nodes,json=maxNodes,proto3" json:"max_nodes,omitempty"`
 	// (Optional) Location policy for scaling ("BALANCED" or "ANY").
-	LocationPolicy string `protobuf:"bytes,3,opt,name=location_policy,json=locationPolicy,proto3" json:"location_policy,omitempty"`
+	LocationPolicy *string `protobuf:"bytes,3,opt,name=location_policy,json=locationPolicy,proto3,oneof" json:"location_policy,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -264,8 +264,8 @@ func (x *GcpGkeNodePoolAutoscaling) GetMaxNodes() uint32 {
 }
 
 func (x *GcpGkeNodePoolAutoscaling) GetLocationPolicy() string {
-	if x != nil {
-		return x.LocationPolicy
+	if x != nil && x.LocationPolicy != nil {
+		return *x.LocationPolicy
 	}
 	return ""
 }
@@ -329,16 +329,16 @@ var File_project_planton_provider_gcp_gcpgkenodepool_v1_spec_proto protoreflect.
 
 const file_project_planton_provider_gcp_gcpgkenodepool_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"9project/planton/provider/gcp/gcpgkenodepool/v1/spec.proto\x12.project.planton.provider.gcp.gcpgkenodepool.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\"\x80\b\n" +
+	"9project/planton/provider/gcp/gcpgkenodepool/v1/spec.proto\x12.project.planton.provider.gcp.gcpgkenodepool.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\"\xbd\b\n" +
 	"\x12GcpGkeNodePoolSpec\x12\x84\x01\n" +
 	"\x12cluster_project_id\x18\x01 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB\x1e\xbaH\x03\xc8\x01\x01\x88\xd4a\xe7\x04\x92\xd4a\x0fspec.project_idR\x10clusterProjectId\x12w\n" +
-	"\fcluster_name\x18\x02 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB\x1c\xbaH\x03\xc8\x01\x01\x88\xd4a\xe7\x04\x92\xd4a\rmetadata.nameR\vclusterName\x120\n" +
-	"\fmachine_type\x18\x03 \x01(\tB\r\x8a\xa6\x1d\te2-mediumR\vmachineType\x12 \n" +
+	"\fcluster_name\x18\x02 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB\x1c\xbaH\x03\xc8\x01\x01\x88\xd4a\xe7\x04\x92\xd4a\rmetadata.nameR\vclusterName\x125\n" +
+	"\fmachine_type\x18\x03 \x01(\tB\r\x8a\xa6\x1d\te2-mediumH\x01R\vmachineType\x88\x01\x01\x12 \n" +
 	"\fdisk_size_gb\x18\x04 \x01(\rR\n" +
-	"diskSizeGb\x12S\n" +
-	"\tdisk_type\x18\x05 \x01(\tB6\xbaH$r\"R\vpd-standardR\x06pd-ssdR\vpd-balanced\x8a\xa6\x1d\vpd-standardR\bdiskType\x121\n" +
+	"diskSizeGb\x12X\n" +
+	"\tdisk_type\x18\x05 \x01(\tB6\xbaH$r\"R\vpd-standardR\x06pd-ssdR\vpd-balanced\x8a\xa6\x1d\vpd-standardH\x02R\bdiskType\x88\x01\x01\x126\n" +
 	"\n" +
-	"image_type\x18\x06 \x01(\tB\x12\x8a\xa6\x1d\x0eCOS_CONTAINERDR\timageType\x12'\n" +
+	"image_type\x18\x06 \x01(\tB\x12\x8a\xa6\x1d\x0eCOS_CONTAINERDH\x03R\timageType\x88\x01\x01\x12'\n" +
 	"\x0fservice_account\x18\a \x01(\tR\x0eserviceAccount\x12{\n" +
 	"\n" +
 	"management\x18\b \x01(\v2S.project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeClusterNodePoolNodeManagementB\x06\xbaH\x03\xc8\x01\x00R\n" +
@@ -353,11 +353,16 @@ const file_project_planton_provider_gcp_gcpgkenodepool_v1_spec_proto_rawDesc = "
 	"\x0fNodeLabelsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01B\x10\n" +
-	"\x0enode_pool_size\"\x8c\x01\n" +
+	"\x0enode_pool_sizeB\x0f\n" +
+	"\r_machine_typeB\f\n" +
+	"\n" +
+	"_disk_typeB\r\n" +
+	"\v_image_type\"\xa5\x01\n" +
 	"\x19GcpGkeNodePoolAutoscaling\x12\x1b\n" +
 	"\tmin_nodes\x18\x01 \x01(\rR\bminNodes\x12\x1b\n" +
-	"\tmax_nodes\x18\x02 \x01(\rR\bmaxNodes\x125\n" +
-	"\x0flocation_policy\x18\x03 \x01(\tB\f\x8a\xa6\x1d\bBALANCEDR\x0elocationPolicy\"\x87\x01\n" +
+	"\tmax_nodes\x18\x02 \x01(\rR\bmaxNodes\x12:\n" +
+	"\x0flocation_policy\x18\x03 \x01(\tB\f\x8a\xa6\x1d\bBALANCEDH\x00R\x0elocationPolicy\x88\x01\x01B\x12\n" +
+	"\x10_location_policy\"\x87\x01\n" +
 	"#GcpGkeClusterNodePoolNodeManagement\x120\n" +
 	"\x14disable_auto_upgrade\x18\x01 \x01(\bR\x12disableAutoUpgrade\x12.\n" +
 	"\x13disable_auto_repair\x18\x02 \x01(\bR\x11disableAutoRepairB\x8f\x03\n" +
@@ -405,6 +410,7 @@ func file_project_planton_provider_gcp_gcpgkenodepool_v1_spec_proto_init() {
 		(*GcpGkeNodePoolSpec_NodeCount)(nil),
 		(*GcpGkeNodePoolSpec_Autoscaling)(nil),
 	}
+	file_project_planton_provider_gcp_gcpgkenodepool_v1_spec_proto_msgTypes[1].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

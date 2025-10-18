@@ -214,8 +214,8 @@ func ecsService(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) err
 		if len(conditions) > 0 {
 			// ---------------- choose priority -------------------
 			priority := defaultAlbPriority
-			if spec.Alb.ListenerPriority != 0 {
-				priority = int(spec.Alb.ListenerPriority)
+			if spec.Alb.ListenerPriority != nil && *spec.Alb.ListenerPriority != 0 {
+				priority = int(*spec.Alb.ListenerPriority)
 			}
 
 			_, err := lb.NewListenerRule(ctx,
