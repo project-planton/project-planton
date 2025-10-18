@@ -61,8 +61,10 @@ The CLI performs:
 | `spec.database.externalDatabase.*`     | External DB connection (host, port, user, password); password creates a Kubernetes Secret. |
 | `spec.database.disableAutoSchemaSetup` | Disables auto schema initialization.                                                       |
 | `spec.disableWebUi`                    | Option to disable Temporal Web UI deployment.                                              |
-| `spec.ingress.isEnabled`               | Enables external ingress.                                                                  |
-| `spec.ingress.dnsDomain`               | Root domain for generating ingress hostnames.                                              |
+| `spec.ingress.frontend.enabled`        | Enables external ingress for frontend (gRPC).                                              |
+| `spec.ingress.frontend.hostname`       | Full hostname for frontend access (e.g., "temporal-frontend.example.com").                 |
+| `spec.ingress.webUi.enabled`           | Enables external ingress for web UI.                                                       |
+| `spec.ingress.webUi.hostname`          | Full hostname for web UI access (e.g., "temporal-ui.example.com").                         |
 | `spec.externalElasticsearch.*`         | Connects Temporal to an external Elasticsearch cluster for observability.                  |
 
 ---

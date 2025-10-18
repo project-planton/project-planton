@@ -3,7 +3,6 @@ syntax = "proto3";
 package project.planton.provider.kubernetes.workload.temporalkubernetes.v1;
 
 import "buf/validate/validate.proto";
-import "project/planton/shared/kubernetes/kubernetes.proto";
 import "project/planton/shared/options/options.proto";
 
 // temporal kubernetes database backend enumerates the supported databases.
@@ -39,7 +38,7 @@ message TemporalKubernetesSpec {
   //The ingress configuration for the temporal deployment.
   //if enabled, the frontend will be exposed using a load-balancer
   // and also if web ui is enabled it will be exposed using the kubernetes ingress controller.
-  project.planton.shared.kubernetes.IngressSpec ingress = 6;
+  TemporalKubernetesIngress ingress = 6;
   // external elasticsearch configuration to be used by temporal for configuring observability.
   TemporalKubernetesExternalElasticsearch external_elasticsearch = 7;
   // version of the Temporal Helm chart to deploy (e.g., "0.62.0")
@@ -94,4 +93,29 @@ message TemporalKubernetesExternalElasticsearch {
 
   // optional password, if the external cluster requires auth
   string password = 4;
+}
+
+// ingress configuration for temporal deployment with separate frontend and web ui endpoints
+message TemporalKubernetesIngress {
+  // frontend (gRPC) ingress configuration
+  TemporalKubernetesIngressEndpoint frontend = 1;
+
+  // web ui ingress configuration
+  TemporalKubernetesIngressEndpoint web_ui = 2;
+}
+
+// ingress endpoint configuration
+message TemporalKubernetesIngressEndpoint {
+  // flag to enable or disable ingress for this endpoint
+  bool enabled = 1;
+
+  // the full hostname for external access (e.g., "temporal-frontend.example.com")
+  // required when enabled is true
+  string hostname = 2;
+
+  option (buf.validate.message).cel = {
+    id: "spec.ingress.hostname.required"
+    expression: "!this.enabled || size(this.hostname) > 0"
+    message: "hostname is required when ingress is enabled"
+  };
 }
