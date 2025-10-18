@@ -98,7 +98,7 @@ type GcpGkeClusterCoreSpec struct {
 	// Whether nodes should be created with public IPs
 	EnablePublicNodes bool `protobuf:"varint,7,opt,name=enable_public_nodes,json=enablePublicNodes,proto3" json:"enable_public_nodes,omitempty"`
 	// Kubernetes release channel for auto-upgrades (Rapid, Regular, Stable, or NONE).
-	ReleaseChannel GkeReleaseChannel `protobuf:"varint,8,opt,name=release_channel,json=releaseChannel,proto3,enum=project.planton.provider.gcp.gcpgkeclustercore.v1.GkeReleaseChannel" json:"release_channel,omitempty"`
+	ReleaseChannel *GkeReleaseChannel `protobuf:"varint,8,opt,name=release_channel,json=releaseChannel,proto3,enum=project.planton.provider.gcp.gcpgkeclustercore.v1.GkeReleaseChannel,oneof" json:"release_channel,omitempty"`
 	// Disable network policy enforcement (Calico)
 	DisableNetworkPolicy bool `protobuf:"varint,9,opt,name=disable_network_policy,json=disableNetworkPolicy,proto3" json:"disable_network_policy,omitempty"`
 	// Disable Workload Identity for pods (mapping KSA to GCP service accounts).
@@ -189,8 +189,8 @@ func (x *GcpGkeClusterCoreSpec) GetEnablePublicNodes() bool {
 }
 
 func (x *GcpGkeClusterCoreSpec) GetReleaseChannel() GkeReleaseChannel {
-	if x != nil {
-		return x.ReleaseChannel
+	if x != nil && x.ReleaseChannel != nil {
+		return *x.ReleaseChannel
 	}
 	return GkeReleaseChannel_gke_release_channel_unspecified
 }
@@ -220,7 +220,7 @@ var File_project_planton_provider_gcp_gcpgkeclustercore_v1_spec_proto protorefle
 
 const file_project_planton_provider_gcp_gcpgkeclustercore_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"<project/planton/provider/gcp/gcpgkeclustercore/v1/spec.proto\x121project.planton.provider.gcp.gcpgkeclustercore.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\"\xd2\t\n" +
+	"<project/planton/provider/gcp/gcpgkeclustercore/v1/spec.proto\x121project.planton.provider.gcp.gcpgkeclustercore.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\"\xeb\t\n" +
 	"\x15GcpGkeClusterCoreSpec\x12\x7f\n" +
 	"\n" +
 	"project_id\x18\x01 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB(\xbaH\x03\xc8\x01\x01\x88\xd4a\xe3\x04\x92\xd4a\x19status.outputs.project_idR\tprojectId\x12C\n" +
@@ -229,12 +229,13 @@ const file_project_planton_provider_gcp_gcpgkeclustercore_v1_spec_proto_rawDesc 
 	"\x1ccluster_secondary_range_name\x18\x04 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB7\xbaH\x03\xc8\x01\x01\x88\xd4a\xe5\x04\x92\xd4a(status.outputs.pods_secondary_range_nameR\x19clusterSecondaryRangeName\x12\xb6\x01\n" +
 	"\x1dservices_secondary_range_name\x18\x05 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB;\xbaH\x03\xc8\x01\x01\x88\xd4a\xe5\x04\x92\xd4a,status.outputs.services_secondary_range_nameR\x1aservicesSecondaryRangeName\x12W\n" +
 	"\x16master_ipv4_cidr_block\x18\x06 \x01(\tB\"\xbaH\x1f\xc8\x01\x01r\x1a2\x18^\\d+\\.\\d+\\.\\d+\\.\\d+\\/28$R\x13masterIpv4CidrBlock\x12.\n" +
-	"\x13enable_public_nodes\x18\a \x01(\bR\x11enablePublicNodes\x12z\n" +
-	"\x0frelease_channel\x18\b \x01(\x0e2D.project.planton.provider.gcp.gcpgkeclustercore.v1.GkeReleaseChannelB\v\x8a\xa6\x1d\aREGULARR\x0ereleaseChannel\x124\n" +
+	"\x13enable_public_nodes\x18\a \x01(\bR\x11enablePublicNodes\x12\x7f\n" +
+	"\x0frelease_channel\x18\b \x01(\x0e2D.project.planton.provider.gcp.gcpgkeclustercore.v1.GkeReleaseChannelB\v\x8a\xa6\x1d\aREGULARH\x00R\x0ereleaseChannel\x88\x01\x01\x124\n" +
 	"\x16disable_network_policy\x18\t \x01(\bR\x14disableNetworkPolicy\x12:\n" +
 	"\x19disable_workload_identity\x18\n" +
 	" \x01(\bR\x17disableWorkloadIdentity\x12|\n" +
-	"\x0frouter_nat_name\x18\f \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB\x1c\xbaH\x03\xc8\x01\x01\x88\xd4a\xe6\x04\x92\xd4a\rmetadata.nameR\rrouterNatName*f\n" +
+	"\x0frouter_nat_name\x18\f \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB\x1c\xbaH\x03\xc8\x01\x01\x88\xd4a\xe6\x04\x92\xd4a\rmetadata.nameR\rrouterNatNameB\x12\n" +
+	"\x10_release_channel*f\n" +
 	"\x11GkeReleaseChannel\x12#\n" +
 	"\x1fgke_release_channel_unspecified\x10\x00\x12\t\n" +
 	"\x05RAPID\x10\x01\x12\v\n" +
@@ -282,6 +283,7 @@ func file_project_planton_provider_gcp_gcpgkeclustercore_v1_spec_proto_init() {
 	if File_project_planton_provider_gcp_gcpgkeclustercore_v1_spec_proto != nil {
 		return
 	}
+	file_project_planton_provider_gcp_gcpgkeclustercore_v1_spec_proto_msgTypes[0].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

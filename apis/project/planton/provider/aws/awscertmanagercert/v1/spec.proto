@@ -43,7 +43,7 @@ message AwsCertManagerCertSpec {
 
   // validation_method indicates how ACM verifies domain ownership.
   // By default, DNS is recommended.
-  string validation_method = 4 [
+  optional string validation_method = 4 [
     (project.planton.shared.options.default) = "DNS",
     (buf.validate.field).string = {
       in: [

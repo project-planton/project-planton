@@ -105,7 +105,7 @@ type GcpDnsRecord struct {
 	// If the record type is CNAME, each value in the list should end with a dot.
 	Values []string `protobuf:"bytes,3,rep,name=values,proto3" json:"values,omitempty"`
 	// The Time To Live (TTL) for the DNS record, in seconds.
-	TtlSeconds    int32 `protobuf:"varint,4,opt,name=ttl_seconds,json=ttlSeconds,proto3" json:"ttl_seconds,omitempty"`
+	TtlSeconds    *int32 `protobuf:"varint,4,opt,name=ttl_seconds,json=ttlSeconds,proto3,oneof" json:"ttl_seconds,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -162,8 +162,8 @@ func (x *GcpDnsRecord) GetValues() []string {
 }
 
 func (x *GcpDnsRecord) GetTtlSeconds() int32 {
-	if x != nil {
-		return x.TtlSeconds
+	if x != nil && x.TtlSeconds != nil {
+		return *x.TtlSeconds
 	}
 	return 0
 }
@@ -177,15 +177,16 @@ const file_project_planton_provider_gcp_gcpdnszone_v1_spec_proto_rawDesc = "" +
 	"\n" +
 	"project_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\tprojectId\x120\n" +
 	"\x14iam_service_accounts\x18\x02 \x03(\tR\x12iamServiceAccounts\x12R\n" +
-	"\arecords\x18\x03 \x03(\v28.project.planton.provider.gcp.gcpdnszone.v1.GcpDnsRecordR\arecords\"\x8e\x03\n" +
+	"\arecords\x18\x03 \x03(\v28.project.planton.provider.gcp.gcpdnszone.v1.GcpDnsRecordR\arecords\"\xa3\x03\n" +
 	"\fGcpDnsRecord\x12m\n" +
 	"\vrecord_type\x18\x01 \x01(\x0e2D.project.planton.shared.networking.enums.dnsrecordtype.DnsRecordTypeB\x06\xbaH\x03\xc8\x01\x01R\n" +
 	"recordType\x12\xc3\x01\n" +
 	"\x04name\x18\x02 \x01(\tB\xae\x01\xbaH\xaa\x01\xba\x01\xa3\x01\n" +
 	"\x04name\x12(Name should be any valid DNS Domain Name\x1aqthis.matches('^(?:[*][.])?(?:[_a-z0-9](?:[_a-z0-9-]{0,61}[a-z0-9])?[.])+(?:[a-z](?:[a-z0-9-]{0,61}[a-z0-9])?)?$')\xc8\x01\x01R\x04name\x12 \n" +
-	"\x06values\x18\x03 \x03(\tB\b\xbaH\x05\x92\x01\x02\b\x01R\x06values\x12'\n" +
-	"\vttl_seconds\x18\x04 \x01(\x05B\x06\x8a\xa6\x1d\x0260R\n" +
-	"ttlSecondsB\xf3\x02\n" +
+	"\x06values\x18\x03 \x03(\tB\b\xbaH\x05\x92\x01\x02\b\x01R\x06values\x12,\n" +
+	"\vttl_seconds\x18\x04 \x01(\x05B\x06\x8a\xa6\x1d\x0260H\x00R\n" +
+	"ttlSeconds\x88\x01\x01B\x0e\n" +
+	"\f_ttl_secondsB\xf3\x02\n" +
 	".com.project.planton.provider.gcp.gcpdnszone.v1B\tSpecProtoP\x01Zggithub.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpdnszone/v1;gcpdnszonev1\xa2\x02\x05PPPGG\xaa\x02*Project.Planton.Provider.Gcp.Gcpdnszone.V1\xca\x02*Project\\Planton\\Provider\\Gcp\\Gcpdnszone\\V1\xe2\x026Project\\Planton\\Provider\\Gcp\\Gcpdnszone\\V1\\GPBMetadata\xea\x02/Project::Planton::Provider::Gcp::Gcpdnszone::V1b\x06proto3"
 
 var (
@@ -221,6 +222,7 @@ func file_project_planton_provider_gcp_gcpdnszone_v1_spec_proto_init() {
 	if File_project_planton_provider_gcp_gcpdnszone_v1_spec_proto != nil {
 		return
 	}
+	file_project_planton_provider_gcp_gcpdnszone_v1_spec_proto_msgTypes[1].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

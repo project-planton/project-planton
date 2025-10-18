@@ -1,0 +1,327 @@
+# Fix Proto Field Presence for Scalar Fields with Defaults
+
+**Date**: October 18, 2025  
+**Type**: Bug Fix, Breaking Change  
+**Components**: Proto Definitions, Manifest Loading, Generated Code (Go, Java, Python)
+
+## Summary
+
+Fixed a critical bug in proto field defaults implementation where users could not explicitly set scalar fields to their zero values (`0`, `""`, `false`). Added `optional` keyword to all 50 scalar fields across 23 proto files that have default values, enabling proper field presence tracking. This ensures that explicitly set zero values are preserved instead of being incorrectly replaced with defaults.
+
+## The Bug
+
+**Problem**: Proto3's implicit presence tracking cannot distinguish between "field not set" and "field set to zero value" for scalar types.
+
+**Impact**: Users experienced these issues:
+
+```yaml
+# User sets fields to zero values explicitly
+spec:
+  int32_field: 0        # BUGGY: Would be replaced with default value 42
+  string_field: ""      # BUGGY: Would be replaced with default value "default-string"
+  bool_field: false     # BUGGY: Would be replaced with default value true
+```
+
+**Root Cause**: `msgReflect.Has(field)` returns `false` for ANY scalar field set to its zero value, not just bools. The default application logic would then incorrectly apply defaults to these explicitly-set fields.
+
+**Affected Scalar Types**: `string`, `int32`, `int64`, `uint32`, `uint64`, `float`, `double`, `bool`, enum types
+
+## The Fix
+
+Added `optional` keyword to all scalar fields that have `(project.planton.shared.options.default)` defined:
+
+```protobuf
+// Before (implicit presence - BUGGY)
+string namespace = 2 [(project.planton.shared.options.default) = "external-dns"];
+int32 port = 3 [(project.planton.shared.options.default) = "443"];
+bool enabled = 4 [(project.planton.shared.options.default) = "false"];
+
+// After (explicit presence - FIXED)
+optional string namespace = 2 [(project.planton.shared.options.default) = "external-dns"];
+optional int32 port = 3 [(project.planton.shared.options.default) = "443"];
+optional bool enabled = 4 [(project.planton.shared.options.default) = "false"];
+```
+
+**Result**: `msgReflect.Has(field)` now correctly returns `true` for explicitly set zero values, preventing incorrect default application.
+
+## Breaking Changes
+
+### Go Generated Code
+
+Fields with defaults are now **pointers** instead of direct values:
+
+**Before**:
+```go
+type Spec struct {
+    Namespace string
+    Port      int32
+    Enabled   bool
+}
+
+// Direct field access
+spec.Namespace = "my-namespace"
+value := spec.Port
+```
+
+**After**:
+```go
+type Spec struct {
+    Namespace *string  // Pointer!
+    Port      *int32   // Pointer!
+    Enabled   *bool    // Pointer!
+}
+
+// Must use pointer helpers
+spec.Namespace = proto.String("my-namespace")
+if spec.Port != nil {
+    value := *spec.Port
+}
+```
+
+**Migration**:
+- Use `proto.String()`, `proto.Int32()`, `proto.Bool()`, etc. to set values
+- Check for `nil` before dereferencing pointers
+- Use generated getter methods: `spec.GetNamespace()` (handles nil automatically)
+
+### Java Generated Code
+
+**Before**:
+```java
+String namespace = spec.getNamespace();
+```
+
+**After** (backward compatible):
+```java
+// Existing methods still work
+String namespace = spec.getNamespace();
+
+// New presence checking methods
+if (spec.hasNamespace()) {  // NEW
+    String namespace = spec.getNamespace();
+}
+```
+
+**Migration**: Minimal - existing code continues to work. Optionally use `hasField()` methods for presence checks.
+
+### Python Generated Code
+
+**Before**:
+```python
+namespace = spec.namespace
+```
+
+**After** (backward compatible):
+```python
+# Existing access still works
+namespace = spec.namespace
+
+# New presence checking
+if spec.HasField('namespace'):  # NEW
+    namespace = spec.namespace
+```
+
+**Migration**: Minimal - existing code continues to work. Optionally use `HasField()` for presence checks.
+
+## Files Changed
+
+### Proto Files Updated (23 files, 50 fields)
+
+**Test Resources**:
+- `apis/project/planton/provider/_test/testcloudresourceone/v1/spec.proto` (10 fields)
+
+**Kubernetes Add-ons**:
+- `apis/project/planton/provider/kubernetes/addon/externaldnskubernetes/v1/spec.proto` (3 fields)
+- `apis/project/planton/provider/kubernetes/addon/externalsecretskubernetes/v1/spec.proto` (1 field)
+- `apis/project/planton/provider/kubernetes/addon/certmanagerkubernetes/v1/spec.proto` (1 field)
+
+**Kubernetes Workloads**:
+- `apis/project/planton/provider/kubernetes/workload/temporalkubernetes/v1/spec.proto` (3 fields)
+- `apis/project/planton/provider/kubernetes/workload/signozkubernetes/v1/spec.proto` (3 fields)
+- `apis/project/planton/provider/kubernetes/workload/kafkakubernetes/v1/spec.proto` (2 fields)
+- `apis/project/planton/provider/kubernetes/workload/cronjobkubernetes/v1/spec.proto` (7 fields)
+
+**GCP Providers**:
+- `apis/project/planton/provider/gcp/gcpgkecluster/v1/spec.proto` (2 fields)
+- `apis/project/planton/provider/gcp/gcpgkenodepool/v1/spec.proto` (4 fields)
+- `apis/project/planton/provider/gcp/gcpgkeclustercore/v1/spec.proto` (1 field)
+- `apis/project/planton/provider/gcp/gcpvpc/v1/spec.proto` (1 field)
+- `apis/project/planton/provider/gcp/gcpserviceaccount/v1/spec.proto` (1 field)
+- `apis/project/planton/provider/gcp/gcpproject/v1/spec.proto` (1 field)
+- `apis/project/planton/provider/gcp/gcpdnszone/v1/spec.proto` (1 field)
+
+**Other Cloud Providers**:
+- `apis/project/planton/provider/digitalocean/digitaloceandroplet/v1/spec.proto` (1 field)
+- `apis/project/planton/provider/azure/azurednszone/v1/spec.proto` (1 field)
+- `apis/project/planton/provider/azure/azureaksnodepool/v1/spec.proto` (1 field)
+- `apis/project/planton/provider/aws/awsecsservice/v1/spec.proto` (1 field)
+- `apis/project/planton/provider/aws/awsecrrepo/v1/spec.proto` (1 field)
+- `apis/project/planton/provider/aws/awsec2instance/v1/spec.proto` (2 fields)
+- `apis/project/planton/provider/aws/awsclientvpn/v1/spec.proto` (1 field)
+- `apis/project/planton/provider/aws/awscertmanagercert/v1/spec.proto` (1 field)
+
+### Test Updates
+
+**Updated Tests**:
+- `internal/manifest/protodefaults/applier_test.go` - All tests updated to work with pointer types
+
+**New Tests Added**:
+- `TestApplyDefaults_ZeroValuesPreserved` - Comprehensive test for zero value preservation across all scalar types
+- Sub-test for zero values in nested messages
+
+## Testing
+
+### Test Coverage
+
+**Total Tests**: 7 test functions covering:
+- ✅ Zero value preservation for all scalar types (NEW - validates the fix)
+- ✅ Zero values in nested messages (NEW - validates the fix)
+- ✅ Defaults applied to unset fields (updated for pointers)
+- ✅ Existing values preserved (updated for pointers)
+- ✅ Partial values handling (updated for pointers)
+- ✅ Nil message handling
+- ✅ Nil spec handling
+- ✅ Nested message defaults (updated for pointers)
+- ✅ Fields without defaults unchanged (updated for pointers)
+- ✅ Idempotency (updated for pointers)
+
+**Test Results**:
+```bash
+bazel test //internal/manifest/protodefaults:protodefaults_test
+✅ PASSED in 0.6s - All tests pass
+```
+
+### Critical Test Case
+
+The new `TestApplyDefaults_ZeroValuesPreserved` test validates the fix:
+
+```go
+// Explicitly set ALL fields to zero values
+StringField:  proto.String(""),     // Empty string
+Int32Field:   proto.Int32(0),       // Zero int32
+BoolField:    proto.Bool(false),    // False bool
+// ... all other scalar types
+
+// Apply defaults
+ApplyDefaults(msg)
+
+// Verify zero values PRESERVED, not replaced with defaults
+assert.Equal(t, "", *msg.Spec.StringField)        // Not "default-string"
+assert.Equal(t, int32(0), *msg.Spec.Int32Field)   // Not 42
+assert.False(t, *msg.Spec.BoolField)              // Not true
+```
+
+## Behavior Examples
+
+### Example 1: Zero Values Now Preserved
+
+**Manifest**:
+```yaml
+spec:
+  port: 0              # Explicitly set to zero
+  enabled: false       # Explicitly set to false
+  namespace: ""        # Explicitly set to empty
+```
+
+**Before Fix**:
+```yaml
+spec:
+  port: 443            # WRONG: Default applied
+  enabled: true        # WRONG: Default applied
+  namespace: "default" # WRONG: Default applied
+```
+
+**After Fix**:
+```yaml
+spec:
+  port: 0              # ✅ Preserved
+  enabled: false       # ✅ Preserved
+  namespace: ""        # ✅ Preserved
+```
+
+### Example 2: Omitted Fields Still Get Defaults
+
+**Manifest**:
+```yaml
+spec:
+  # port, enabled, namespace omitted
+  other_field: "value"
+```
+
+**After Fix** (same as before):
+```yaml
+spec:
+  port: 443            # ✅ Default applied
+  enabled: true        # ✅ Default applied
+  namespace: "default" # ✅ Default applied
+  other_field: "value"
+```
+
+## Wire Format Compatibility
+
+✅ **Wire compatible**: Old and new versions can interoperate
+- Old clients can read messages from new servers
+- New clients can read messages from old servers
+- Explicitly set zero values in new code may be interpreted as "not set" by old code (acceptable)
+
+## Next Steps
+
+### For Downstream Consumers (planton-cloud)
+
+After this PR is merged to `project-planton`, regenerate stubs:
+
+```bash
+cd /Users/swarup/scm/github.com/plantoncloud-inc/planton-cloud/apis
+buf dep update  # Update to new version
+make build      # Regenerate Go, Java, Python stubs
+```
+
+Then update code to handle pointer types:
+- Use `proto.String()`, `proto.Int32()`, etc. for setting values
+- Use getters or nil checks when reading values
+- Update tests to work with pointer types
+
+### For Go Code
+
+**Setting values**:
+```go
+// Instead of
+spec.Namespace = "my-value"
+
+// Use
+spec.Namespace = proto.String("my-value")
+```
+
+**Reading values**:
+```go
+// Instead of
+value := spec.Namespace
+
+// Use getter (handles nil)
+value := spec.GetNamespace()
+
+// Or check nil manually
+if spec.Namespace != nil {
+    value := *spec.Namespace
+}
+```
+
+## Related Issues
+
+This fixes the bug documented in the original feature changelog:
+- `changelog/2025-10-18-proto-field-defaults-support.md` - Section "Known Limitations" → "Boolean Field Limitation"
+
+The original limitation stated:
+> Proto3's `Has()` method cannot distinguish between "not set" and "set to false" for boolean fields
+
+This fix extends to ALL scalar types and resolves the issue using proto3's `optional` keyword (supported since protobuf 3.15).
+
+## References
+
+- Proto3 Optional Fields: https://protobuf.dev/programming-guides/field_presence/
+- Proto3 Editions: https://buf.build/blog/protobuf-editions-are-here
+- Generated Code Reference (Go): https://protobuf.dev/reference/go/go-generated/
+
+---
+
+**Impact**: This bug fix is critical for correctness. Users can now safely set fields to zero values without them being incorrectly replaced with defaults. The breaking changes in Go generated code require downstream migration but provide proper field presence semantics.
+

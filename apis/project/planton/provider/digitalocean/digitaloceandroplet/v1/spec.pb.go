@@ -99,8 +99,8 @@ type DigitalOceanDropletSpec struct {
 	Tags []string `protobuf:"bytes,11,rep,name=tags,proto3" json:"tags,omitempty"`
 	// cloud-init user data script (<=32 KiB)
 	UserData string `protobuf:"bytes,12,opt,name=user_data,json=userData,proto3" json:"user_data,omitempty"`
-	// timezone setting for the droplet’s clock (default: UTC)
-	Timezone      DigitalOceanDropletTimezone `protobuf:"varint,13,opt,name=timezone,proto3,enum=project.planton.provider.digitalocean.digitaloceandroplet.v1.DigitalOceanDropletTimezone" json:"timezone,omitempty"`
+	// timezone setting for the droplet's clock (default: UTC)
+	Timezone      *DigitalOceanDropletTimezone `protobuf:"varint,13,opt,name=timezone,proto3,enum=project.planton.provider.digitalocean.digitaloceandroplet.v1.DigitalOceanDropletTimezone,oneof" json:"timezone,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -213,8 +213,8 @@ func (x *DigitalOceanDropletSpec) GetUserData() string {
 }
 
 func (x *DigitalOceanDropletSpec) GetTimezone() DigitalOceanDropletTimezone {
-	if x != nil {
-		return x.Timezone
+	if x != nil && x.Timezone != nil {
+		return *x.Timezone
 	}
 	return DigitalOceanDropletTimezone_utc
 }
@@ -223,7 +223,7 @@ var File_project_planton_provider_digitalocean_digitaloceandroplet_v1_spec_proto
 
 const file_project_planton_provider_digitalocean_digitaloceandroplet_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Gproject/planton/provider/digitalocean/digitaloceandroplet/v1/spec.proto\x12<project.planton.provider.digitalocean.digitaloceandroplet.v1\x1a\x1bbuf/validate/validate.proto\x1a2project/planton/provider/digitalocean/region.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\"\xe4\x06\n" +
+	"Gproject/planton/provider/digitalocean/digitaloceandroplet/v1/spec.proto\x12<project.planton.provider.digitalocean.digitaloceandroplet.v1\x1a\x1bbuf/validate/validate.proto\x1a2project/planton/provider/digitalocean/region.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\"\xf7\x06\n" +
 	"\x17DigitalOceanDropletSpec\x12N\n" +
 	"\fdroplet_name\x18\x01 \x01(\tB+\xbaH(\xc8\x01\x01r#\x18?2\x1f^[a-z0-9]([-a-z0-9]*[a-z0-9])?$R\vdropletName\x12Y\n" +
 	"\x06region\x18\x02 \x01(\x0e29.project.planton.provider.digitalocean.DigitalOceanRegionB\x06\xbaH\x03\xc8\x01\x01R\x06region\x126\n" +
@@ -238,8 +238,9 @@ const file_project_planton_provider_digitalocean_digitaloceandroplet_v1_spec_pro
 	"volume_ids\x18\n" +
 	" \x03(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB!\x88\xd4a\xbb\t\x92\xd4a\x18status.outputs.volume_idR\tvolumeIds\x12\x1c\n" +
 	"\x04tags\x18\v \x03(\tB\b\xbaH\x05\x92\x01\x02\x18\x01R\x04tags\x12&\n" +
-	"\tuser_data\x18\f \x01(\tB\t\xbaH\x06r\x04(\x80\x80\x02R\buserData\x12~\n" +
-	"\btimezone\x18\r \x01(\x0e2Y.project.planton.provider.digitalocean.digitaloceandroplet.v1.DigitalOceanDropletTimezoneB\a\x8a\xa6\x1d\x03UTCR\btimezone*1\n" +
+	"\tuser_data\x18\f \x01(\tB\t\xbaH\x06r\x04(\x80\x80\x02R\buserData\x12\x83\x01\n" +
+	"\btimezone\x18\r \x01(\x0e2Y.project.planton.provider.digitalocean.digitaloceandroplet.v1.DigitalOceanDropletTimezoneB\a\x8a\xa6\x1d\x03UTCH\x00R\btimezone\x88\x01\x01B\v\n" +
+	"\t_timezone*1\n" +
 	"\x1bDigitalOceanDropletTimezone\x12\a\n" +
 	"\x03utc\x10\x00\x12\t\n" +
 	"\x05local\x10\x01B\xe9\x03\n" +
@@ -282,6 +283,7 @@ func file_project_planton_provider_digitalocean_digitaloceandroplet_v1_spec_prot
 	if File_project_planton_provider_digitalocean_digitaloceandroplet_v1_spec_proto != nil {
 		return
 	}
+	file_project_planton_provider_digitalocean_digitaloceandroplet_v1_spec_proto_msgTypes[0].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

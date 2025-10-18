@@ -4,21 +4,26 @@ import (
 	"math"
 	"testing"
 
-	externaldnskubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/addon/externaldnskubernetes/v1"
+	testcloudresourceonev1 "github.com/project-planton/project-planton/apis/project/planton/provider/_test/testcloudresourceone/v1"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
-// getFieldDescriptor is a helper to get a field descriptor from a message type
-func getFieldDescriptor(msgDesc protoreflect.MessageDescriptor, fieldName string) protoreflect.FieldDescriptor {
-	return msgDesc.Fields().ByName(protoreflect.Name(fieldName))
+// getFieldDescriptor is a helper to get a field descriptor from TestCloudResourceOneSpec
+func getFieldDescriptor(fieldName string) protoreflect.FieldDescriptor {
+	specDesc := (&testcloudresourceonev1.TestCloudResourceOneSpec{}).ProtoReflect().Descriptor()
+	return specDesc.Fields().ByName(protoreflect.Name(fieldName))
+}
+
+// getNestedFieldDescriptor gets a field descriptor from TestNestedMessage
+func getNestedFieldDescriptor(fieldName string) protoreflect.FieldDescriptor {
+	nestedDesc := (&testcloudresourceonev1.TestNestedMessage{}).ProtoReflect().Descriptor()
+	return nestedDesc.Fields().ByName(protoreflect.Name(fieldName))
 }
 
 func TestConvertStringToFieldValue_String(t *testing.T) {
-	// Use the namespace field from ExternalDnsKubernetesSpec (string type)
-	specDesc := (&externaldnskubernetesv1.ExternalDnsKubernetesSpec{}).ProtoReflect().Descriptor()
-	field := getFieldDescriptor(specDesc, "namespace")
+	field := getFieldDescriptor("string_field")
 
 	tests := []struct {
 		name     string
@@ -30,6 +35,7 @@ func TestConvertStringToFieldValue_String(t *testing.T) {
 		{"special chars", "hello-world_123", "hello-world_123"},
 		{"unicode", "hello 世界", "hello 世界"},
 		{"with spaces", "hello world", "hello world"},
+		{"default value", "default-string", "default-string"},
 	}
 
 	for _, tt := range tests {
@@ -42,55 +48,128 @@ func TestConvertStringToFieldValue_String(t *testing.T) {
 }
 
 func TestConvertStringToFieldValue_Int32(t *testing.T) {
-	// Create a simple message descriptor with int32 field for testing
-	// We'll use a mock since we need various int types
-	// For now, test with a string field and verify error handling
-	stringField := getFieldDescriptor((&externaldnskubernetesv1.ExternalDnsKubernetesSpec{}).ProtoReflect().Descriptor(), "namespace")
+	field := getFieldDescriptor("int32_field")
 
 	tests := []struct {
 		name      string
 		input     string
+		expected  int32
 		expectErr bool
 	}{
-		{"positive number", "42", false},
-		{"negative number", "-100", false},
-		{"zero", "0", false},
-		{"max int32", "2147483647", false},
-		{"min int32", "-2147483648", false},
-		{"invalid - not a number", "not-a-number", true},
-		{"invalid - float", "3.14", true},
-		{"invalid - overflow", "9999999999999", true},
+		{"positive number", "42", 42, false},
+		{"negative number", "-100", -100, false},
+		{"zero", "0", 0, false},
+		{"max int32", "2147483647", math.MaxInt32, false},
+		{"min int32", "-2147483648", math.MinInt32, false},
+		{"invalid - not a number", "not-a-number", 0, true},
+		{"invalid - float", "3.14", 0, true},
+		{"invalid - overflow", "9999999999999", 0, true},
 	}
 
-	// Since we're testing the conversion logic internally, we can create a mock field descriptor
-	// For the actual test, we'll verify the function exists and handles strings correctly
-	t.Run("validates conversion function exists", func(t *testing.T) {
-		_, err := ConvertStringToFieldValue("test", stringField)
-		assert.NoError(t, err, "ConvertStringToFieldValue should handle string fields")
-	})
-
-	// Test int32 conversion logic by checking parse errors
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			// We're testing the logic, not the actual field type
-			// The conversion should work for any numeric string
-			if !tt.expectErr {
-				// Valid int32 strings
-				val, err := ConvertStringToFieldValue(tt.input, stringField)
-				if tt.input != "42" && tt.input != "-100" && tt.input != "0" {
-					// Skip checking the actual value since we're using a string field
-					assert.NotNil(t, val)
-				}
-				_ = err // May or may not error since we're using wrong field type
+			result, err := ConvertStringToFieldValue(tt.input, field)
+			if tt.expectErr {
+				assert.Error(t, err)
+			} else {
+				require.NoError(t, err)
+				assert.Equal(t, tt.expected, int32(result.Int()))
+			}
+		})
+	}
+}
+
+func TestConvertStringToFieldValue_Int64(t *testing.T) {
+	field := getFieldDescriptor("int64_field")
+
+	tests := []struct {
+		name      string
+		input     string
+		expected  int64
+		expectErr bool
+	}{
+		{"positive number", "9999", 9999, false},
+		{"negative number", "-100", -100, false},
+		{"zero", "0", 0, false},
+		{"large number", "9223372036854775807", math.MaxInt64, false},
+		{"invalid - not a number", "not-a-number", 0, true},
+		{"invalid - float", "3.14", 0, true},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			result, err := ConvertStringToFieldValue(tt.input, field)
+			if tt.expectErr {
+				assert.Error(t, err)
+			} else {
+				require.NoError(t, err)
+				assert.Equal(t, tt.expected, result.Int())
+			}
+		})
+	}
+}
+
+func TestConvertStringToFieldValue_Uint32(t *testing.T) {
+	field := getFieldDescriptor("uint32_field")
+
+	tests := []struct {
+		name      string
+		input     string
+		expected  uint32
+		expectErr bool
+	}{
+		{"positive number", "100", 100, false},
+		{"zero", "0", 0, false},
+		{"max uint32", "4294967295", math.MaxUint32, false},
+		{"invalid - negative", "-1", 0, true},
+		{"invalid - not a number", "not-a-number", 0, true},
+		{"invalid - overflow", "9999999999999", 0, true},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			result, err := ConvertStringToFieldValue(tt.input, field)
+			if tt.expectErr {
+				assert.Error(t, err)
+			} else {
+				require.NoError(t, err)
+				assert.Equal(t, tt.expected, uint32(result.Uint()))
+			}
+		})
+	}
+}
+
+func TestConvertStringToFieldValue_Uint64(t *testing.T) {
+	field := getFieldDescriptor("uint64_field")
+
+	tests := []struct {
+		name      string
+		input     string
+		expected  uint64
+		expectErr bool
+	}{
+		{"positive number", "50000", 50000, false},
+		{"zero", "0", 0, false},
+		{"large number", "18446744073709551615", uint64(math.MaxUint64), false},
+		{"invalid - negative", "-1", 0, true},
+		{"invalid - not a number", "not-a-number", 0, true},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			result, err := ConvertStringToFieldValue(tt.input, field)
+			if tt.expectErr {
+				assert.Error(t, err)
+			} else {
+				require.NoError(t, err)
+				assert.Equal(t, tt.expected, result.Uint())
 			}
 		})
 	}
 }
 
 func TestConvertStringToFieldValue_Bool(t *testing.T) {
-	// Get the is_proxied field from CloudflareConfig which is a bool
-	cloudflareConfigDesc := (&externaldnskubernetesv1.ExternalDnsCloudflareConfig{}).ProtoReflect().Descriptor()
-	boolField := getFieldDescriptor(cloudflareConfigDesc, "is_proxied")
+	field := getFieldDescriptor("bool_field")
 
 	tests := []struct {
 		name      string
@@ -112,7 +191,7 @@ func TestConvertStringToFieldValue_Bool(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			result, err := ConvertStringToFieldValue(tt.input, boolField)
+			result, err := ConvertStringToFieldValue(tt.input, field)
 			if tt.expectErr {
 				assert.Error(t, err)
 			} else {
@@ -123,153 +202,117 @@ func TestConvertStringToFieldValue_Bool(t *testing.T) {
 	}
 }
 
-func TestConvertStringToFieldValue_InvalidTypes(t *testing.T) {
-	specDesc := (&externaldnskubernetesv1.ExternalDnsKubernetesSpec{}).ProtoReflect().Descriptor()
+func TestConvertStringToFieldValue_Float32(t *testing.T) {
+	field := getFieldDescriptor("float_field")
 
-	t.Run("invalid conversion for non-matching type", func(t *testing.T) {
-		// Get string field
-		stringField := getFieldDescriptor(specDesc, "namespace")
-		
-		// Conversion to string should always work
-		result, err := ConvertStringToFieldValue("test-value", stringField)
-		require.NoError(t, err)
-		assert.Equal(t, "test-value", result.String())
-	})
-}
-
-func TestConvertStringToFieldValue_AllScalarTypes(t *testing.T) {
-	// This test verifies that our conversion function handles all the scalar types
-	// by testing the actual conversion logic paths
-	
-	t.Run("string conversion", func(t *testing.T) {
-		specDesc := (&externaldnskubernetesv1.ExternalDnsKubernetesSpec{}).ProtoReflect().Descriptor()
-		field := getFieldDescriptor(specDesc, "namespace")
-		
-		result, err := ConvertStringToFieldValue("test-namespace", field)
-		require.NoError(t, err)
-		assert.Equal(t, "test-namespace", result.String())
-	})
-
-	t.Run("bool conversion", func(t *testing.T) {
-		cloudflareConfigDesc := (&externaldnskubernetesv1.ExternalDnsCloudflareConfig{}).ProtoReflect().Descriptor()
-		field := getFieldDescriptor(cloudflareConfigDesc, "is_proxied")
-		
-		result, err := ConvertStringToFieldValue("true", field)
-		require.NoError(t, err)
-		assert.True(t, result.Bool())
-		
-		result, err = ConvertStringToFieldValue("false", field)
-		require.NoError(t, err)
-		assert.False(t, result.Bool())
-	})
-}
-
-func TestConvertStringToFieldValue_ErrorCases(t *testing.T) {
-	t.Run("bool with invalid value", func(t *testing.T) {
-		cloudflareConfigDesc := (&externaldnskubernetesv1.ExternalDnsCloudflareConfig{}).ProtoReflect().Descriptor()
-		field := getFieldDescriptor(cloudflareConfigDesc, "is_proxied")
-		
-		_, err := ConvertStringToFieldValue("not-a-bool", field)
-		assert.Error(t, err)
-		assert.Contains(t, err.Error(), "failed to convert")
-	})
-}
-
-func TestConvertStringToFieldValue_NumericBounds(t *testing.T) {
-	// Test numeric boundary conditions using string conversion
-	specDesc := (&externaldnskubernetesv1.ExternalDnsKubernetesSpec{}).ProtoReflect().Descriptor()
-	stringField := getFieldDescriptor(specDesc, "namespace")
-
-	t.Run("handles large numbers", func(t *testing.T) {
-		// This should work for string field
-		result, err := ConvertStringToFieldValue("999999999999", stringField)
-		require.NoError(t, err)
-		assert.Equal(t, "999999999999", result.String())
-	})
-
-	t.Run("handles negative numbers as strings", func(t *testing.T) {
-		result, err := ConvertStringToFieldValue("-123", stringField)
-		require.NoError(t, err)
-		assert.Equal(t, "-123", result.String())
-	})
-}
-
-// Test that the converter handles all protoreflect kinds correctly
-func TestConvertStringToFieldValue_Coverage(t *testing.T) {
-	// Get various field types from actual proto messages
-	specDesc := (&externaldnskubernetesv1.ExternalDnsKubernetesSpec{}).ProtoReflect().Descriptor()
-	cloudflareDesc := (&externaldnskubernetesv1.ExternalDnsCloudflareConfig{}).ProtoReflect().Descriptor()
-
-	testCases := []struct {
+	tests := []struct {
 		name      string
-		descriptor protoreflect.MessageDescriptor
-		fieldName string
-		value     string
+		input     string
+		expected  float32
 		expectErr bool
 	}{
-		{"string field", specDesc, "namespace", "test-ns", false},
-		{"string field with default", specDesc, "external_dns_version", "v0.20.0", false},
-		{"bool field true", cloudflareDesc, "is_proxied", "true", false},
-		{"bool field false", cloudflareDesc, "is_proxied", "false", false},
-		{"bool field invalid", cloudflareDesc, "is_proxied", "invalid", true},
+		{"positive float", "3.14", 3.14, false},
+		{"negative float", "-2.5", -2.5, false},
+		{"zero", "0.0", 0.0, false},
+		{"scientific notation", "1e10", 1e10, false},
+		{"small scientific", "1e-5", 1e-5, false},
+		{"integer as float", "42", 42.0, false},
+		{"invalid - not a number", "not-a-float", 0, true},
 	}
 
-	for _, tc := range testCases {
-		t.Run(tc.name, func(t *testing.T) {
-			field := getFieldDescriptor(tc.descriptor, tc.fieldName)
-			result, err := ConvertStringToFieldValue(tc.value, field)
-			
-			if tc.expectErr {
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			result, err := ConvertStringToFieldValue(tt.input, field)
+			if tt.expectErr {
 				assert.Error(t, err)
 			} else {
 				require.NoError(t, err)
-				assert.True(t, result.IsValid())
+				assert.InDelta(t, tt.expected, result.Float(), 0.0001)
 			}
 		})
 	}
 }
 
-func TestConvertStringToFieldValue_FloatHandling(t *testing.T) {
-	// Test float conversion logic
-	// Since we don't have float fields in our test proto, we verify the logic exists
-	specDesc := (&externaldnskubernetesv1.ExternalDnsKubernetesSpec{}).ProtoReflect().Descriptor()
-	field := getFieldDescriptor(specDesc, "namespace")
-
-	// Test that very large numbers can be represented as strings
-	largeNum := "3.14159265359"
-	result, err := ConvertStringToFieldValue(largeNum, field)
-	require.NoError(t, err)
-	assert.Equal(t, largeNum, result.String())
-}
-
-func TestConvertStringToFieldValue_SpecialValues(t *testing.T) {
-	specDesc := (&externaldnskubernetesv1.ExternalDnsKubernetesSpec{}).ProtoReflect().Descriptor()
-	field := getFieldDescriptor(specDesc, "namespace")
+func TestConvertStringToFieldValue_Float64(t *testing.T) {
+	field := getFieldDescriptor("double_field")
 
 	tests := []struct {
-		name  string
-		value string
+		name      string
+		input     string
+		expected  float64
+		expectErr bool
 	}{
-		{"empty string", ""},
-		{"whitespace", "   "},
-		{"newline", "test\n"},
-		{"tab", "test\t"},
-		{"special chars", "!@#$%^&*()"},
+		{"positive float", "2.718", 2.718, false},
+		{"negative float", "-2.718281828", -2.718281828, false},
+		{"zero", "0.0", 0.0, false},
+		{"scientific notation", "1e100", 1e100, false},
+		{"small scientific", "1e-100", 1e-100, false},
+		{"integer as float", "42", 42.0, false},
+		{"invalid - not a number", "not-a-float", 0, true},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			result, err := ConvertStringToFieldValue(tt.value, field)
-			require.NoError(t, err)
-			assert.Equal(t, tt.value, result.String())
+			result, err := ConvertStringToFieldValue(tt.input, field)
+			if tt.expectErr {
+				assert.Error(t, err)
+			} else {
+				require.NoError(t, err)
+				assert.InDelta(t, tt.expected, result.Float(), 0.0000000001)
+			}
 		})
 	}
 }
 
+func TestConvertStringToFieldValue_NestedMessage(t *testing.T) {
+	t.Run("nested message fields work correctly", func(t *testing.T) {
+		// Test nested string field
+		nestedStringField := getNestedFieldDescriptor("nested_string")
+		result, err := ConvertStringToFieldValue("nested-test", nestedStringField)
+		require.NoError(t, err)
+		assert.Equal(t, "nested-test", result.String())
+
+		// Test nested int32 field
+		nestedIntField := getNestedFieldDescriptor("nested_int")
+		result, err = ConvertStringToFieldValue("99", nestedIntField)
+		require.NoError(t, err)
+		assert.Equal(t, int32(99), int32(result.Int()))
+	})
+}
+
+func TestConvertStringToFieldValue_AllDefaults(t *testing.T) {
+	// This test verifies that all fields with defaults in the test proto
+	// can be correctly converted from their default string values
+	t.Run("all default values convert correctly", func(t *testing.T) {
+		tests := []struct {
+			fieldName string
+			defValue  string
+			expected  interface{}
+		}{
+			{"string_field", "default-string", "default-string"},
+			{"int32_field", "42", int32(42)},
+			{"int64_field", "9999", int64(9999)},
+			{"uint32_field", "100", uint32(100)},
+			{"uint64_field", "50000", uint64(50000)},
+			{"float_field", "3.14", float32(3.14)},
+			{"double_field", "2.718", float64(2.718)},
+			{"bool_field", "true", true},
+		}
+
+		for _, tt := range tests {
+			t.Run(tt.fieldName, func(t *testing.T) {
+				field := getFieldDescriptor(tt.fieldName)
+				result, err := ConvertStringToFieldValue(tt.defValue, field)
+				require.NoError(t, err)
+				assert.True(t, result.IsValid())
+			})
+		}
+	})
+}
+
 // Verify error messages are descriptive
 func TestConvertStringToFieldValue_ErrorMessages(t *testing.T) {
-	cloudflareDesc := (&externaldnskubernetesv1.ExternalDnsCloudflareConfig{}).ProtoReflect().Descriptor()
-	boolField := getFieldDescriptor(cloudflareDesc, "is_proxied")
+	boolField := getFieldDescriptor("bool_field")
 
 	_, err := ConvertStringToFieldValue("invalid-bool", boolField)
 	require.Error(t, err)
@@ -282,11 +325,11 @@ func TestConvertStringToFieldValue_NumericLimits(t *testing.T) {
 	// Verify the logic handles max values correctly
 	maxInt32 := int32(math.MaxInt32)
 	minInt32 := int32(math.MinInt32)
-	
+
 	// These are the actual limits
 	assert.Equal(t, int32(2147483647), maxInt32)
 	assert.Equal(t, int32(-2147483648), minInt32)
-	
+
 	// Verify max values
 	assert.Greater(t, float64(math.MaxFloat64), float64(0))
 	assert.Less(t, -math.MaxFloat64, float64(0))

@@ -50,17 +50,17 @@ enum CloudResourceKind {
 
   // 1–49: Test/dev/custom
   TestCloudResourceOne = 1 [(kind_meta) = {
-    provider: test
+    provider: _test
     version: v1
     id_prefix: "tcr1"
   }];
   TestCloudResourceTwo = 2 [(kind_meta) = {
-    provider: test
+    provider: _test
     version: v1
     id_prefix: "tcr2"
   }];
   TestCloudResourceThree = 3 [(kind_meta) = {
-    provider: test
+    provider: _test
     version: v1
     id_prefix: "tcr3"
   }];

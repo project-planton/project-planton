@@ -105,16 +105,19 @@ func run() error {
 
 	for _, cloudResourceKind := range crkreflect.KindsList() {
 		provider := crkreflect.GetProvider(cloudResourceKind)
-		if provider == cloudresourcekind.CloudResourceProvider_cloud_resource_provider_unspecified ||
-			provider == cloudresourcekind.CloudResourceProvider_test {
-			// skip test values
+		if provider == cloudresourcekind.CloudResourceProvider_cloud_resource_provider_unspecified {
+			// skip unspecified
 			continue
 		}
 
 		kindName := cloudResourceKind.String() // e.g. AwsAlb
 
-		provRaw := provider.String()                     // "digital_ocean"
-		provSlug := strings.ReplaceAll(provRaw, "_", "") // "digitalocean"
+		provRaw := provider.String() // "digital_ocean" or "_test"
+		// Keep leading underscore for test provider, remove underscores for others
+		provSlug := provRaw
+		if !strings.HasPrefix(provRaw, "_") {
+			provSlug = strings.ReplaceAll(provRaw, "_", "") // "digitalocean"
+		}
 
 		lowerKind := lowerNoSep(kindName) // awsalb
 		importAlias := lowerKind + "v1"   // awsalbv1

@@ -16,11 +16,11 @@ message GcpGkeClusterSpec {
   // The GCP region where the GKE cluster will be created.
   // **Warning:** The GKE cluster will be recreated if this value is updated.
   // Refer to: https://cloud.google.com/compute/docs/regions-zones
-  string region = 2 [(project.planton.shared.options.default) = "us-central1"];
+  optional string region = 2 [(project.planton.shared.options.default) = "us-central1"];
 
   // The GCP zone where the GKE cluster will be created.
   // Refer to: https://cloud.google.com/compute/docs/regions-zones
-  string zone = 3 [(project.planton.shared.options.default) = "us-central1-a"];
+  optional string zone = 3 [(project.planton.shared.options.default) = "us-central1-a"];
 
   GcpGkeClusterSharedVpcConfig shared_vpc_config = 4;
 

@@ -53,7 +53,7 @@ message TemporalKubernetesSpec {
   bool enable_monitoring_stack = 4;
   //number of cassandra nodes to be deployed
   //this is only honored when the backend is cassandra, and no external database is provided.
-  int32 cassandra_replicas = 5 [(project.planton.shared.options.default) = "1"];
+  optional int32 cassandra_replicas = 5 [(project.planton.shared.options.default) = "1"];
   //The ingress configuration for the temporal deployment.
   //if enabled, the frontend will be exposed using a load-balancer
   // and also if web ui is enabled it will be exposed using the kubernetes ingress controller.
@@ -78,10 +78,10 @@ message TemporalKubernetesDatabaseConfig {
   TemporalKubernetesExternalDatabase external_database = 2;
 
   // primary database or keyspace name
-  string database_name = 6 [(project.planton.shared.options.default) = "temporal"];
+  optional string database_name = 6 [(project.planton.shared.options.default) = "temporal"];
 
   // visibility database or keyspace name
-  string visibility_name = 7 [(project.planton.shared.options.default) = "temporal_visibility"];
+  optional string visibility_name = 7 [(project.planton.shared.options.default) = "temporal_visibility"];
 
   // disables automatic schema creation
   bool disable_auto_schema_setup = 8;

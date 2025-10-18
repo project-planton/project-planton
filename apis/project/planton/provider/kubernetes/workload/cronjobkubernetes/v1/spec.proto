@@ -54,7 +54,7 @@ message CronJobKubernetesSpec {
    * Optional deadline in seconds for starting the job if it misses its scheduled time.
    * If set to 0, no deadline is enforced.
    */
-  uint64 starting_deadline_seconds = 5 [
+  optional uint64 starting_deadline_seconds = 5 [
     (project.planton.shared.options.default) = "0",
     (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE
   ];
@@ -64,7 +64,7 @@ message CronJobKubernetesSpec {
    * Allowed values are: "Allow", "Forbid", "Replace".
    * Default is "Forbid".
    */
-  string concurrency_policy = 6 [
+  optional string concurrency_policy = 6 [
     (project.planton.shared.options.default) = "Forbid",
     (buf.validate.field).string = {
       in: [
@@ -79,32 +79,32 @@ message CronJobKubernetesSpec {
    * If true, no subsequent runs are scheduled.
    * Default is false.
    */
-  bool suspend = 7 [(project.planton.shared.options.default) = "false"];
+  optional bool suspend = 7 [(project.planton.shared.options.default) = "false"];
 
   /**
    * Number of successful finished jobs to retain.
    * Default is 3.
    */
-  uint32 successful_jobs_history_limit = 8 [(project.planton.shared.options.default) = "3"];
+  optional uint32 successful_jobs_history_limit = 8 [(project.planton.shared.options.default) = "3"];
 
   /**
    * Number of failed finished jobs to retain.
    * Default is 1.
    */
-  uint32 failed_jobs_history_limit = 9 [(project.planton.shared.options.default) = "1"];
+  optional uint32 failed_jobs_history_limit = 9 [(project.planton.shared.options.default) = "1"];
 
   /**
    * Number of retries before marking this job as failed.
    * Default is 6.
    */
-  uint32 backoff_limit = 10 [(project.planton.shared.options.default) = "6"];
+  optional uint32 backoff_limit = 10 [(project.planton.shared.options.default) = "6"];
 
   /**
    * Pod restart policy.
    * Allowed values: "Always", "OnFailure", "Never".
    * Default is "Never".
    */
-  string restart_policy = 11 [
+  optional string restart_policy = 11 [
     (project.planton.shared.options.default) = "Never",
     (buf.validate.field).string = {
       in: [

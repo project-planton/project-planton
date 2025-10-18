@@ -24,9 +24,8 @@ go_test(
     ],
     embed = [":protodefaults"],
     deps = [
-        "//apis/project/planton/provider/kubernetes/addon/externaldnskubernetes/v1:externaldnskubernetes",
+        "//apis/project/planton/provider/_test/testcloudresourceone/v1:testcloudresourceone",
         "//apis/project/planton/shared",
-        "//apis/project/planton/shared/kubernetes",
         "@com_github_stretchr_testify//assert",
         "@com_github_stretchr_testify//require",
         "@org_golang_google_protobuf//proto",

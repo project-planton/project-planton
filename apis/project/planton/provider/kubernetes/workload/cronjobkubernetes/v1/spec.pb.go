@@ -53,33 +53,33 @@ type CronJobKubernetesSpec struct {
 	// *
 	// Optional deadline in seconds for starting the job if it misses its scheduled time.
 	// If set to 0, no deadline is enforced.
-	StartingDeadlineSeconds uint64 `protobuf:"varint,5,opt,name=starting_deadline_seconds,json=startingDeadlineSeconds,proto3" json:"starting_deadline_seconds,omitempty"`
+	StartingDeadlineSeconds *uint64 `protobuf:"varint,5,opt,name=starting_deadline_seconds,json=startingDeadlineSeconds,proto3,oneof" json:"starting_deadline_seconds,omitempty"`
 	// *
 	// Concurrency policy specifies how concurrent job runs are handled.
 	// Allowed values are: "Allow", "Forbid", "Replace".
 	// Default is "Forbid".
-	ConcurrencyPolicy string `protobuf:"bytes,6,opt,name=concurrency_policy,json=concurrencyPolicy,proto3" json:"concurrency_policy,omitempty"`
+	ConcurrencyPolicy *string `protobuf:"bytes,6,opt,name=concurrency_policy,json=concurrencyPolicy,proto3,oneof" json:"concurrency_policy,omitempty"`
 	// *
 	// If true, no subsequent runs are scheduled.
 	// Default is false.
-	Suspend bool `protobuf:"varint,7,opt,name=suspend,proto3" json:"suspend,omitempty"`
+	Suspend *bool `protobuf:"varint,7,opt,name=suspend,proto3,oneof" json:"suspend,omitempty"`
 	// *
 	// Number of successful finished jobs to retain.
 	// Default is 3.
-	SuccessfulJobsHistoryLimit uint32 `protobuf:"varint,8,opt,name=successful_jobs_history_limit,json=successfulJobsHistoryLimit,proto3" json:"successful_jobs_history_limit,omitempty"`
+	SuccessfulJobsHistoryLimit *uint32 `protobuf:"varint,8,opt,name=successful_jobs_history_limit,json=successfulJobsHistoryLimit,proto3,oneof" json:"successful_jobs_history_limit,omitempty"`
 	// *
 	// Number of failed finished jobs to retain.
 	// Default is 1.
-	FailedJobsHistoryLimit uint32 `protobuf:"varint,9,opt,name=failed_jobs_history_limit,json=failedJobsHistoryLimit,proto3" json:"failed_jobs_history_limit,omitempty"`
+	FailedJobsHistoryLimit *uint32 `protobuf:"varint,9,opt,name=failed_jobs_history_limit,json=failedJobsHistoryLimit,proto3,oneof" json:"failed_jobs_history_limit,omitempty"`
 	// *
 	// Number of retries before marking this job as failed.
 	// Default is 6.
-	BackoffLimit uint32 `protobuf:"varint,10,opt,name=backoff_limit,json=backoffLimit,proto3" json:"backoff_limit,omitempty"`
+	BackoffLimit *uint32 `protobuf:"varint,10,opt,name=backoff_limit,json=backoffLimit,proto3,oneof" json:"backoff_limit,omitempty"`
 	// *
 	// Pod restart policy.
 	// Allowed values: "Always", "OnFailure", "Never".
 	// Default is "Never".
-	RestartPolicy string `protobuf:"bytes,11,opt,name=restart_policy,json=restartPolicy,proto3" json:"restart_policy,omitempty"`
+	RestartPolicy *string `protobuf:"bytes,11,opt,name=restart_policy,json=restartPolicy,proto3,oneof" json:"restart_policy,omitempty"`
 	// *
 	// An optional list of commands (equivalent to an ENTRYPOINT override) for the cron-job container.
 	// If omitted, the default ENTRYPOINT in the image will be used.
@@ -153,50 +153,50 @@ func (x *CronJobKubernetesSpec) GetSchedule() string {
 }
 
 func (x *CronJobKubernetesSpec) GetStartingDeadlineSeconds() uint64 {
-	if x != nil {
-		return x.StartingDeadlineSeconds
+	if x != nil && x.StartingDeadlineSeconds != nil {
+		return *x.StartingDeadlineSeconds
 	}
 	return 0
 }
 
 func (x *CronJobKubernetesSpec) GetConcurrencyPolicy() string {
-	if x != nil {
-		return x.ConcurrencyPolicy
+	if x != nil && x.ConcurrencyPolicy != nil {
+		return *x.ConcurrencyPolicy
 	}
 	return ""
 }
 
 func (x *CronJobKubernetesSpec) GetSuspend() bool {
-	if x != nil {
-		return x.Suspend
+	if x != nil && x.Suspend != nil {
+		return *x.Suspend
 	}
 	return false
 }
 
 func (x *CronJobKubernetesSpec) GetSuccessfulJobsHistoryLimit() uint32 {
-	if x != nil {
-		return x.SuccessfulJobsHistoryLimit
+	if x != nil && x.SuccessfulJobsHistoryLimit != nil {
+		return *x.SuccessfulJobsHistoryLimit
 	}
 	return 0
 }
 
 func (x *CronJobKubernetesSpec) GetFailedJobsHistoryLimit() uint32 {
-	if x != nil {
-		return x.FailedJobsHistoryLimit
+	if x != nil && x.FailedJobsHistoryLimit != nil {
+		return *x.FailedJobsHistoryLimit
 	}
 	return 0
 }
 
 func (x *CronJobKubernetesSpec) GetBackoffLimit() uint32 {
-	if x != nil {
-		return x.BackoffLimit
+	if x != nil && x.BackoffLimit != nil {
+		return *x.BackoffLimit
 	}
 	return 0
 }
 
 func (x *CronJobKubernetesSpec) GetRestartPolicy() string {
-	if x != nil {
-		return x.RestartPolicy
+	if x != nil && x.RestartPolicy != nil {
+		return *x.RestartPolicy
 	}
 	return ""
 }
@@ -276,7 +276,7 @@ var File_project_planton_provider_kubernetes_workload_cronjobkubernetes_v1_spec_
 
 const file_project_planton_provider_kubernetes_workload_cronjobkubernetes_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Lproject/planton/provider/kubernetes/workload/cronjobkubernetes/v1/spec.proto\x12Aproject.planton.provider.kubernetes.workload.cronjobkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\x1a,project/planton/shared/options/options.proto\"\xf0\x06\n" +
+	"Lproject/planton/provider/kubernetes/workload/cronjobkubernetes/v1/spec.proto\x12Aproject.planton.provider.kubernetes.workload.cronjobkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\x1a,project/planton/shared/options/options.proto\"\xb9\b\n" +
 	"\x15CronJobKubernetesSpec\x12G\n" +
 	"\x05image\x18\x01 \x01(\v21.project.planton.shared.kubernetes.ContainerImageR\x05image\x12v\n" +
 	"\tresources\x18\x02 \x01(\v25.project.planton.shared.kubernetes.ContainerResourcesB!\xba\xfb\xa4\x02\x1c\n" +
@@ -284,17 +284,25 @@ const file_project_planton_provider_kubernetes_workload_cronjobkubernetes_v1_spe
 	"\x051000m\x12\x031Gi\x12\f\n" +
 	"\x0350m\x12\x05100MiR\tresources\x12u\n" +
 	"\x03env\x18\x03 \x01(\v2c.project.planton.provider.kubernetes.workload.cronjobkubernetes.v1.CronJobKubernetesContainerAppEnvR\x03env\x12\"\n" +
-	"\bschedule\x18\x04 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bschedule\x12G\n" +
-	"\x19starting_deadline_seconds\x18\x05 \x01(\x04B\v\xbaH\x03\xd8\x01\x01\x8a\xa6\x1d\x010R\x17startingDeadlineSeconds\x12V\n" +
-	"\x12concurrency_policy\x18\x06 \x01(\tB'\xbaH\x1ar\x18R\x05AllowR\x06ForbidR\aReplace\x8a\xa6\x1d\x06ForbidR\x11concurrencyPolicy\x12#\n" +
-	"\asuspend\x18\a \x01(\bB\t\x8a\xa6\x1d\x05falseR\asuspend\x12H\n" +
-	"\x1dsuccessful_jobs_history_limit\x18\b \x01(\rB\x05\x8a\xa6\x1d\x013R\x1asuccessfulJobsHistoryLimit\x12@\n" +
-	"\x19failed_jobs_history_limit\x18\t \x01(\rB\x05\x8a\xa6\x1d\x011R\x16failedJobsHistoryLimit\x12*\n" +
+	"\bschedule\x18\x04 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bschedule\x12L\n" +
+	"\x19starting_deadline_seconds\x18\x05 \x01(\x04B\v\xbaH\x03\xd8\x01\x01\x8a\xa6\x1d\x010H\x00R\x17startingDeadlineSeconds\x88\x01\x01\x12[\n" +
+	"\x12concurrency_policy\x18\x06 \x01(\tB'\xbaH\x1ar\x18R\x05AllowR\x06ForbidR\aReplace\x8a\xa6\x1d\x06ForbidH\x01R\x11concurrencyPolicy\x88\x01\x01\x12(\n" +
+	"\asuspend\x18\a \x01(\bB\t\x8a\xa6\x1d\x05falseH\x02R\asuspend\x88\x01\x01\x12M\n" +
+	"\x1dsuccessful_jobs_history_limit\x18\b \x01(\rB\x05\x8a\xa6\x1d\x013H\x03R\x1asuccessfulJobsHistoryLimit\x88\x01\x01\x12E\n" +
+	"\x19failed_jobs_history_limit\x18\t \x01(\rB\x05\x8a\xa6\x1d\x011H\x04R\x16failedJobsHistoryLimit\x88\x01\x01\x12/\n" +
 	"\rbackoff_limit\x18\n" +
-	" \x01(\rB\x05\x8a\xa6\x1d\x016R\fbackoffLimit\x12O\n" +
-	"\x0erestart_policy\x18\v \x01(\tB(\xbaH\x1cr\x1aR\x06AlwaysR\tOnFailureR\x05Never\x8a\xa6\x1d\x05NeverR\rrestartPolicy\x12\x18\n" +
+	" \x01(\rB\x05\x8a\xa6\x1d\x016H\x05R\fbackoffLimit\x88\x01\x01\x12T\n" +
+	"\x0erestart_policy\x18\v \x01(\tB(\xbaH\x1cr\x1aR\x06AlwaysR\tOnFailureR\x05Never\x8a\xa6\x1d\x05NeverH\x06R\rrestartPolicy\x88\x01\x01\x12\x18\n" +
 	"\acommand\x18\f \x03(\tR\acommand\x12\x12\n" +
-	"\x04args\x18\r \x03(\tR\x04args\"\xbc\x03\n" +
+	"\x04args\x18\r \x03(\tR\x04argsB\x1c\n" +
+	"\x1a_starting_deadline_secondsB\x15\n" +
+	"\x13_concurrency_policyB\n" +
+	"\n" +
+	"\b_suspendB \n" +
+	"\x1e_successful_jobs_history_limitB\x1c\n" +
+	"\x1a_failed_jobs_history_limitB\x10\n" +
+	"\x0e_backoff_limitB\x11\n" +
+	"\x0f_restart_policy\"\xbc\x03\n" +
 	" CronJobKubernetesContainerAppEnv\x12\x90\x01\n" +
 	"\tvariables\x18\x01 \x03(\v2r.project.planton.provider.kubernetes.workload.cronjobkubernetes.v1.CronJobKubernetesContainerAppEnv.VariablesEntryR\tvariables\x12\x8a\x01\n" +
 	"\asecrets\x18\x02 \x03(\v2p.project.planton.provider.kubernetes.workload.cronjobkubernetes.v1.CronJobKubernetesContainerAppEnv.SecretsEntryR\asecrets\x1a<\n" +
@@ -345,6 +353,7 @@ func file_project_planton_provider_kubernetes_workload_cronjobkubernetes_v1_spec
 	if File_project_planton_provider_kubernetes_workload_cronjobkubernetes_v1_spec_proto != nil {
 		return
 	}
+	file_project_planton_provider_kubernetes_workload_cronjobkubernetes_v1_spec_proto_msgTypes[0].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

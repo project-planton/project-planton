@@ -42,7 +42,7 @@ type GcpServiceAccountSpec struct {
 	// create_key indicates whether a key should be automatically generated
 	// for this service account. If true, a JSON private key is created;
 	// if false, no user-managed key is created.
-	CreateKey bool `protobuf:"varint,4,opt,name=create_key,json=createKey,proto3" json:"create_key,omitempty"`
+	CreateKey *bool `protobuf:"varint,4,opt,name=create_key,json=createKey,proto3,oneof" json:"create_key,omitempty"`
 	// project_iam_roles is a list of IAM roles to be granted at the project level
 	// to this service account. For example: ["roles/logging.logWriter", "roles/storage.admin"].
 	// Each role in this list will be bound to the service account in the specified project_id.
@@ -107,8 +107,8 @@ func (x *GcpServiceAccountSpec) GetOrgId() string {
 }
 
 func (x *GcpServiceAccountSpec) GetCreateKey() bool {
-	if x != nil {
-		return x.CreateKey
+	if x != nil && x.CreateKey != nil {
+		return *x.CreateKey
 	}
 	return false
 }
@@ -131,16 +131,17 @@ var File_project_planton_provider_gcp_gcpserviceaccount_v1_spec_proto protorefle
 
 const file_project_planton_provider_gcp_gcpserviceaccount_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"<project/planton/provider/gcp/gcpserviceaccount/v1/spec.proto\x121project.planton.provider.gcp.gcpserviceaccount.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\"\x83\x02\n" +
+	"<project/planton/provider/gcp/gcpserviceaccount/v1/spec.proto\x121project.planton.provider.gcp.gcpserviceaccount.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\"\x97\x02\n" +
 	"\x15GcpServiceAccountSpec\x12:\n" +
 	"\x12service_account_id\x18\x01 \x01(\tB\f\xbaH\t\xc8\x01\x01r\x04\x10\x06\x18\x1eR\x10serviceAccountId\x12\x1d\n" +
 	"\n" +
 	"project_id\x18\x02 \x01(\tR\tprojectId\x12\x15\n" +
-	"\x06org_id\x18\x03 \x01(\tR\x05orgId\x12(\n" +
+	"\x06org_id\x18\x03 \x01(\tR\x05orgId\x12-\n" +
 	"\n" +
-	"create_key\x18\x04 \x01(\bB\t\x8a\xa6\x1d\x05falseR\tcreateKey\x12*\n" +
+	"create_key\x18\x04 \x01(\bB\t\x8a\xa6\x1d\x05falseH\x00R\tcreateKey\x88\x01\x01\x12*\n" +
 	"\x11project_iam_roles\x18\x05 \x03(\tR\x0fprojectIamRoles\x12\"\n" +
-	"\rorg_iam_roles\x18\x06 \x03(\tR\vorgIamRolesB\xa4\x03\n" +
+	"\rorg_iam_roles\x18\x06 \x03(\tR\vorgIamRolesB\r\n" +
+	"\v_create_keyB\xa4\x03\n" +
 	"5com.project.planton.provider.gcp.gcpserviceaccount.v1B\tSpecProtoP\x01Zugithub.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpserviceaccount/v1;gcpserviceaccountv1\xa2\x02\x05PPPGG\xaa\x021Project.Planton.Provider.Gcp.Gcpserviceaccount.V1\xca\x021Project\\Planton\\Provider\\Gcp\\Gcpserviceaccount\\V1\xe2\x02=Project\\Planton\\Provider\\Gcp\\Gcpserviceaccount\\V1\\GPBMetadata\xea\x026Project::Planton::Provider::Gcp::Gcpserviceaccount::V1b\x06proto3"
 
 var (
@@ -172,6 +173,7 @@ func file_project_planton_provider_gcp_gcpserviceaccount_v1_spec_proto_init() {
 	if File_project_planton_provider_gcp_gcpserviceaccount_v1_spec_proto != nil {
 		return
 	}
+	file_project_planton_provider_gcp_gcpserviceaccount_v1_spec_proto_msgTypes[0].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

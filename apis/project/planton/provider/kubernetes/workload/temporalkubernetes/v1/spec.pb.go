@@ -153,7 +153,7 @@ type TemporalKubernetesSpec struct {
 	EnableMonitoringStack bool `protobuf:"varint,4,opt,name=enable_monitoring_stack,json=enableMonitoringStack,proto3" json:"enable_monitoring_stack,omitempty"`
 	// number of cassandra nodes to be deployed
 	// this is only honored when the backend is cassandra, and no external database is provided.
-	CassandraReplicas int32 `protobuf:"varint,5,opt,name=cassandra_replicas,json=cassandraReplicas,proto3" json:"cassandra_replicas,omitempty"`
+	CassandraReplicas *int32 `protobuf:"varint,5,opt,name=cassandra_replicas,json=cassandraReplicas,proto3,oneof" json:"cassandra_replicas,omitempty"`
 	// The ingress configuration for the temporal deployment.
 	// if enabled, the frontend will be exposed using a load-balancer
 	// and also if web ui is enabled it will be exposed using the kubernetes ingress controller.
@@ -230,8 +230,8 @@ func (x *TemporalKubernetesSpec) GetEnableMonitoringStack() bool {
 }
 
 func (x *TemporalKubernetesSpec) GetCassandraReplicas() int32 {
-	if x != nil {
-		return x.CassandraReplicas
+	if x != nil && x.CassandraReplicas != nil {
+		return *x.CassandraReplicas
 	}
 	return 0
 }
@@ -272,9 +272,9 @@ type TemporalKubernetesDatabaseConfig struct {
 	// external database configuration, if this is not set, in-cluster cassandra would be created
 	ExternalDatabase *TemporalKubernetesExternalDatabase `protobuf:"bytes,2,opt,name=external_database,json=externalDatabase,proto3" json:"external_database,omitempty"`
 	// primary database or keyspace name
-	DatabaseName string `protobuf:"bytes,6,opt,name=database_name,json=databaseName,proto3" json:"database_name,omitempty"`
+	DatabaseName *string `protobuf:"bytes,6,opt,name=database_name,json=databaseName,proto3,oneof" json:"database_name,omitempty"`
 	// visibility database or keyspace name
-	VisibilityName string `protobuf:"bytes,7,opt,name=visibility_name,json=visibilityName,proto3" json:"visibility_name,omitempty"`
+	VisibilityName *string `protobuf:"bytes,7,opt,name=visibility_name,json=visibilityName,proto3,oneof" json:"visibility_name,omitempty"`
 	// disables automatic schema creation
 	DisableAutoSchemaSetup bool `protobuf:"varint,8,opt,name=disable_auto_schema_setup,json=disableAutoSchemaSetup,proto3" json:"disable_auto_schema_setup,omitempty"`
 	unknownFields          protoimpl.UnknownFields
@@ -326,15 +326,15 @@ func (x *TemporalKubernetesDatabaseConfig) GetExternalDatabase() *TemporalKubern
 }
 
 func (x *TemporalKubernetesDatabaseConfig) GetDatabaseName() string {
-	if x != nil {
-		return x.DatabaseName
+	if x != nil && x.DatabaseName != nil {
+		return *x.DatabaseName
 	}
 	return ""
 }
 
 func (x *TemporalKubernetesDatabaseConfig) GetVisibilityName() string {
-	if x != nil {
-		return x.VisibilityName
+	if x != nil && x.VisibilityName != nil {
+		return *x.VisibilityName
 	}
 	return ""
 }
@@ -501,23 +501,26 @@ const file_project_planton_provider_kubernetes_workload_temporalkubernetes_v1_sp
 	"!TemporalKubernetesSearchAttribute\x12\x1a\n" +
 	"\x04name\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\x12\xe1\x01\n" +
 	"\x04type\x18\x02 \x01(\tB\xcc\x01\xbaH\xc8\x01\xba\x01\xc1\x01\n" +
-	" type.valid_search_attribute_type\x12Ltype must be one of: Keyword, Text, Int, Double, Bool, Datetime, KeywordList\x1aOthis in ['Keyword', 'Text', 'Int', 'Double', 'Bool', 'Datetime', 'KeywordList']\xc8\x01\x01R\x04type\"\x99\x06\n" +
+	" type.valid_search_attribute_type\x12Ltype must be one of: Keyword, Text, Int, Double, Bool, Datetime, KeywordList\x1aOthis in ['Keyword', 'Text', 'Int', 'Double', 'Bool', 'Datetime', 'KeywordList']\xc8\x01\x01R\x04type\"\xb5\x06\n" +
 	"\x16TemporalKubernetesSpec\x12\x88\x01\n" +
 	"\bdatabase\x18\x01 \x01(\v2d.project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesDatabaseConfigB\x06\xbaH\x03\xc8\x01\x01R\bdatabase\x12$\n" +
 	"\x0edisable_web_ui\x18\x02 \x01(\bR\fdisableWebUi\x12B\n" +
 	"\x1denable_embedded_elasticsearch\x18\x03 \x01(\bR\x1benableEmbeddedElasticsearch\x126\n" +
-	"\x17enable_monitoring_stack\x18\x04 \x01(\bR\x15enableMonitoringStack\x124\n" +
-	"\x12cassandra_replicas\x18\x05 \x01(\x05B\x05\x8a\xa6\x1d\x011R\x11cassandraReplicas\x12H\n" +
+	"\x17enable_monitoring_stack\x18\x04 \x01(\bR\x15enableMonitoringStack\x129\n" +
+	"\x12cassandra_replicas\x18\x05 \x01(\x05B\x05\x8a\xa6\x1d\x011H\x00R\x11cassandraReplicas\x88\x01\x01\x12H\n" +
 	"\aingress\x18\x06 \x01(\v2..project.planton.shared.kubernetes.IngressSpecR\aingress\x12\xa2\x01\n" +
 	"\x16external_elasticsearch\x18\a \x01(\v2k.project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesExternalElasticsearchR\x15externalElasticsearch\x12\x92\x01\n" +
 	"\x11search_attributes\x18\b \x03(\v2e.project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesSearchAttributeR\x10searchAttributes\x12\x18\n" +
-	"\aversion\x18\t \x01(\tR\aversion\"\xf2\x03\n" +
+	"\aversion\x18\t \x01(\tR\aversionB\x15\n" +
+	"\x13_cassandra_replicas\"\xa2\x04\n" +
 	" TemporalKubernetesDatabaseConfig\x12\x87\x01\n" +
 	"\abackend\x18\x01 \x01(\x0e2e.project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesDatabaseBackendB\x06\xbaH\x03\xc8\x01\x01R\abackend\x12\x93\x01\n" +
-	"\x11external_database\x18\x02 \x01(\v2f.project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesExternalDatabaseR\x10externalDatabase\x121\n" +
-	"\rdatabase_name\x18\x06 \x01(\tB\f\x8a\xa6\x1d\btemporalR\fdatabaseName\x12@\n" +
-	"\x0fvisibility_name\x18\a \x01(\tB\x17\x8a\xa6\x1d\x13temporal_visibilityR\x0evisibilityName\x129\n" +
-	"\x19disable_auto_schema_setup\x18\b \x01(\bR\x16disableAutoSchemaSetup\"\x84\x01\n" +
+	"\x11external_database\x18\x02 \x01(\v2f.project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesExternalDatabaseR\x10externalDatabase\x126\n" +
+	"\rdatabase_name\x18\x06 \x01(\tB\f\x8a\xa6\x1d\btemporalH\x00R\fdatabaseName\x88\x01\x01\x12E\n" +
+	"\x0fvisibility_name\x18\a \x01(\tB\x17\x8a\xa6\x1d\x13temporal_visibilityH\x01R\x0evisibilityName\x88\x01\x01\x129\n" +
+	"\x19disable_auto_schema_setup\x18\b \x01(\bR\x16disableAutoSchemaSetupB\x10\n" +
+	"\x0e_database_nameB\x12\n" +
+	"\x10_visibility_name\"\x84\x01\n" +
 	"\"TemporalKubernetesExternalDatabase\x12\x12\n" +
 	"\x04host\x18\x01 \x01(\tR\x04host\x12\x12\n" +
 	"\x04port\x18\x02 \x01(\x05R\x04port\x12\x1a\n" +
@@ -580,6 +583,8 @@ func file_project_planton_provider_kubernetes_workload_temporalkubernetes_v1_spe
 	if File_project_planton_provider_kubernetes_workload_temporalkubernetes_v1_spec_proto != nil {
 		return
 	}
+	file_project_planton_provider_kubernetes_workload_temporalkubernetes_v1_spec_proto_msgTypes[1].OneofWrappers = []any{}
+	file_project_planton_provider_kubernetes_workload_temporalkubernetes_v1_spec_proto_msgTypes[2].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

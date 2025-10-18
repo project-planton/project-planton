@@ -48,7 +48,7 @@ message AzureAksNodePoolSpec {
   ];
 
   // Operating system type for nodes. Defaults to Linux. Use "WINDOWS" for a Windows node pool (requires a cluster with Windows support).
-  AzureAksNodePoolOsType os_type = 6 [(project.planton.shared.options.default) = "AZURE_AKS_NODE_POOL_OS_TYPE_LINUX"];
+  optional AzureAksNodePoolOsType os_type = 6 [(project.planton.shared.options.default) = "AZURE_AKS_NODE_POOL_OS_TYPE_LINUX"];
 
   // Use Spot (preemptible) VMs for this node pool to reduce cost. Defaults to false (regular on-demand VMs).
   bool spot_enabled = 7;

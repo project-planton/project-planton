@@ -25,6 +25,9 @@ go_library(
     importpath = "github.com/project-planton/project-planton/pkg/crkreflect",
     visibility = ["//visibility:public"],
     deps = [
+        "//apis/project/planton/provider/_test/testcloudresourceone/v1:testcloudresourceone",
+        "//apis/project/planton/provider/_test/testcloudresourcethree/v1:testcloudresourcethree",
+        "//apis/project/planton/provider/_test/testcloudresourcetwo/v1:testcloudresourcetwo",
         "//apis/project/planton/provider/atlas/mongodbatlas/v1:mongodbatlas",
         "//apis/project/planton/provider/aws/awsalb/v1:awsalb",
         "//apis/project/planton/provider/aws/awscertmanagercert/v1:awscertmanagercert",

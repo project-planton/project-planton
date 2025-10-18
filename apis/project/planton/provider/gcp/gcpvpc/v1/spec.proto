@@ -26,8 +26,8 @@ message GcpVpcSpec {
   // **Default:** false (custom mode). Auto mode is not recommended for production:contentReference[oaicite:4]{index=4}.
   bool auto_create_subnetworks = 2;
 
-  // Dynamic routing mode for the VPC’s Cloud Routers: REGIONAL or GLOBAL.
+  // Dynamic routing mode for the VPC's Cloud Routers: REGIONAL or GLOBAL.
   // **Default:** REGIONAL (Cloud Router adverts routes only in one region):contentReference[oaicite:5]{index=5}.
   // Use GLOBAL only for multi-region routing needs.
-  GcpVpcRoutingMode routing_mode = 3 [(project.planton.shared.options.default) = "REGIONAL"];
+  optional GcpVpcRoutingMode routing_mode = 3 [(project.planton.shared.options.default) = "REGIONAL"];
 }

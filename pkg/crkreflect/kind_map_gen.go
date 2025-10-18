@@ -9,6 +9,9 @@
 package crkreflect
 
 import (
+	testcloudresourceonev1 "github.com/project-planton/project-planton/apis/project/planton/provider/_test/testcloudresourceone/v1"
+	testcloudresourcethreev1 "github.com/project-planton/project-planton/apis/project/planton/provider/_test/testcloudresourcethree/v1"
+	testcloudresourcetwov1 "github.com/project-planton/project-planton/apis/project/planton/provider/_test/testcloudresourcetwo/v1"
 	mongodbatlasv1 "github.com/project-planton/project-planton/apis/project/planton/provider/atlas/mongodbatlas/v1"
 	awsalbv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awsalb/v1"
 	awscertmanagercertv1 "github.com/project-planton/project-planton/apis/project/planton/provider/aws/awscertmanagercert/v1"
@@ -143,6 +146,12 @@ func merge(maps ...map[cloudresourcekind.CloudResourceKind]proto.Message) map[cl
 		}
 	}
 	return out
+}
+
+var ProviderTestMap = map[cloudresourcekind.CloudResourceKind]proto.Message{
+	cloudresourcekind.CloudResourceKind_TestCloudResourceOne:   &testcloudresourceonev1.TestCloudResourceOne{},
+	cloudresourcekind.CloudResourceKind_TestCloudResourceThree: &testcloudresourcethreev1.TestCloudResourceThree{},
+	cloudresourcekind.CloudResourceKind_TestCloudResourceTwo:   &testcloudresourcetwov1.TestCloudResourceTwo{},
 }
 
 var ProviderAtlasMap = map[cloudresourcekind.CloudResourceKind]proto.Message{
@@ -303,6 +312,7 @@ var ProviderKubernetesWorkloadMap = map[cloudresourcekind.CloudResourceKind]prot
 var ProviderKubernetesMap = merge(ProviderKubernetesAddonMap, ProviderKubernetesWorkloadMap)
 
 var ToMessageMap = merge(
+	ProviderTestMap,
 	ProviderAtlasMap,
 	ProviderAwsMap,
 	ProviderAzureMap,

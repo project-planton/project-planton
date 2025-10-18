@@ -104,7 +104,7 @@ type AzureDnsRecord struct {
 	// The list of values for the DNS record. For example, IP addresses for A/AAAA records, or hostnames for CNAME records (each CNAME value should end with a dot).
 	Values []string `protobuf:"bytes,3,rep,name=values,proto3" json:"values,omitempty"`
 	// The Time To Live (TTL) for the DNS record, in seconds.
-	TtlSeconds    int32 `protobuf:"varint,4,opt,name=ttl_seconds,json=ttlSeconds,proto3" json:"ttl_seconds,omitempty"`
+	TtlSeconds    *int32 `protobuf:"varint,4,opt,name=ttl_seconds,json=ttlSeconds,proto3,oneof" json:"ttl_seconds,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -161,8 +161,8 @@ func (x *AzureDnsRecord) GetValues() []string {
 }
 
 func (x *AzureDnsRecord) GetTtlSeconds() int32 {
-	if x != nil {
-		return x.TtlSeconds
+	if x != nil && x.TtlSeconds != nil {
+		return *x.TtlSeconds
 	}
 	return 0
 }
@@ -176,15 +176,16 @@ const file_project_planton_provider_azure_azurednszone_v1_spec_proto_rawDesc = "
 	"\tzone_name\x18\x01 \x01(\tB}\xbaHz\xba\x01t\n" +
 	"\tzone_name\x128Zone name must be a valid DNS domain (e.g., example.com)\x1a-this.matches('^(?:[a-z0-9-]+[.])+[a-z]{2,}$')\xc8\x01\x01R\bzoneName\x12-\n" +
 	"\x0eresource_group\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\rresourceGroup\x12X\n" +
-	"\arecords\x18\x03 \x03(\v2>.project.planton.provider.azure.azurednszone.v1.AzureDnsRecordR\arecords\"\xb3\x03\n" +
+	"\arecords\x18\x03 \x03(\v2>.project.planton.provider.azure.azurednszone.v1.AzureDnsRecordR\arecords\"\xc8\x03\n" +
 	"\x0eAzureDnsRecord\x12m\n" +
 	"\vrecord_type\x18\x01 \x01(\x0e2D.project.planton.shared.networking.enums.dnsrecordtype.DnsRecordTypeB\x06\xbaH\x03\xc8\x01\x01R\n" +
 	"recordType\x12\xe6\x01\n" +
 	"\x04name\x18\x02 \x01(\tB\xd1\x01\xbaH\xcd\x01\xba\x01\xc6\x01\n" +
 	"\vrecord_name\x12DRecord name should be a valid DNS name. Use a trailing dot for FQDN.\x1aqthis.matches('^(?:[*][.])?(?:[_a-z0-9](?:[_a-z0-9-]{0,61}[a-z0-9])?[.])+(?:[a-z](?:[a-z0-9-]{0,61}[a-z0-9])?)?$')\xc8\x01\x01R\x04name\x12 \n" +
-	"\x06values\x18\x03 \x03(\tB\b\xbaH\x05\x92\x01\x02\b\x01R\x06values\x12'\n" +
-	"\vttl_seconds\x18\x04 \x01(\x05B\x06\x8a\xa6\x1d\x0260R\n" +
-	"ttlSecondsB\x8d\x03\n" +
+	"\x06values\x18\x03 \x03(\tB\b\xbaH\x05\x92\x01\x02\b\x01R\x06values\x12,\n" +
+	"\vttl_seconds\x18\x04 \x01(\x05B\x06\x8a\xa6\x1d\x0260H\x00R\n" +
+	"ttlSeconds\x88\x01\x01B\x0e\n" +
+	"\f_ttl_secondsB\x8d\x03\n" +
 	"2com.project.planton.provider.azure.azurednszone.v1B\tSpecProtoP\x01Zmgithub.com/project-planton/project-planton/apis/project/planton/provider/azure/azurednszone/v1;azurednszonev1\xa2\x02\x05PPPAA\xaa\x02.Project.Planton.Provider.Azure.Azurednszone.V1\xca\x02.Project\\Planton\\Provider\\Azure\\Azurednszone\\V1\xe2\x02:Project\\Planton\\Provider\\Azure\\Azurednszone\\V1\\GPBMetadata\xea\x023Project::Planton::Provider::Azure::Azurednszone::V1b\x06proto3"
 
 var (
@@ -220,6 +221,7 @@ func file_project_planton_provider_azure_azurednszone_v1_spec_proto_init() {
 	if File_project_planton_provider_azure_azurednszone_v1_spec_proto != nil {
 		return
 	}
+	file_project_planton_provider_azure_azurednszone_v1_spec_proto_msgTypes[1].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

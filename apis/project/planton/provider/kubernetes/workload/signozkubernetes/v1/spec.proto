@@ -124,21 +124,21 @@ message SignozKubernetesExternalClickhouse {
   string host = 1 [(buf.validate.field).required = true];
 
   // The HTTP port for ClickHouse (default is 8123).
-  int32 http_port = 2 [
+  optional int32 http_port = 2 [
     (project.planton.shared.options.default) = "8123",
     (buf.validate.field).int32.gt = 0,
     (buf.validate.field).int32.lte = 65535
   ];
 
   // The TCP port for ClickHouse native protocol (default is 9000).
-  int32 tcp_port = 3 [
+  optional int32 tcp_port = 3 [
     (project.planton.shared.options.default) = "9000",
     (buf.validate.field).int32.gt = 0,
     (buf.validate.field).int32.lte = 65535
   ];
 
   // The name of the distributed cluster in ClickHouse configuration.
-  string cluster_name = 4 [(project.planton.shared.options.default) = "cluster"];
+  optional string cluster_name = 4 [(project.planton.shared.options.default) = "cluster"];
 
   // Whether to use secure (TLS) connection to ClickHouse.
   bool is_secure = 5;

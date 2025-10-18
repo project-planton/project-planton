@@ -27,7 +27,7 @@ type CloudResourceProvider int32
 
 const (
 	CloudResourceProvider_cloud_resource_provider_unspecified CloudResourceProvider = 0
-	CloudResourceProvider_test                                CloudResourceProvider = 1
+	CloudResourceProvider__test                               CloudResourceProvider = 1
 	CloudResourceProvider_atlas                               CloudResourceProvider = 11
 	CloudResourceProvider_aws                                 CloudResourceProvider = 12
 	CloudResourceProvider_azure                               CloudResourceProvider = 13
@@ -44,7 +44,7 @@ const (
 var (
 	CloudResourceProvider_name = map[int32]string{
 		0:  "cloud_resource_provider_unspecified",
-		1:  "test",
+		1:  "_test",
 		11: "atlas",
 		12: "aws",
 		13: "azure",
@@ -58,7 +58,7 @@ var (
 	}
 	CloudResourceProvider_value = map[string]int32{
 		"cloud_resource_provider_unspecified": 0,
-		"test":                                1,
+		"_test":                               1,
 		"atlas":                               11,
 		"aws":                                 12,
 		"azure":                               13,
@@ -178,11 +178,11 @@ const file_project_planton_shared_cloudresourcekind_cloud_resource_provider_prot
 	"Fproject/planton/shared/cloudresourcekind/cloud_resource_provider.proto\x12(project.planton.shared.cloudresourcekind\x1a google/protobuf/descriptor.proto\"T\n" +
 	"\x19CloudResourceProviderMeta\x12\x14\n" +
 	"\x05group\x18\x01 \x01(\tR\x05group\x12!\n" +
-	"\fdisplay_name\x18\x02 \x01(\tR\vdisplayName*\xc4\x05\n" +
+	"\fdisplay_name\x18\x02 \x01(\tR\vdisplayName*\xc6\x05\n" +
 	"\x15CloudResourceProvider\x12'\n" +
-	"#cloud_resource_provider_unspecified\x10\x00\x12>\n" +
-	"\x04test\x10\x01\x1a4\xea\xcc'0\n" +
-	"\x18test.project-planton.org\x12\x14Test Cloud Resources\x129\n" +
+	"#cloud_resource_provider_unspecified\x10\x00\x12@\n" +
+	"\x05_test\x10\x01\x1a5\xea\xcc'1\n" +
+	"\x19_test.project-planton.org\x12\x14Test Cloud Resources\x129\n" +
 	"\x05atlas\x10\v\x1a.\xea\xcc'*\n" +
 	"\x19atlas.project-planton.org\x12\rMongoDB Atlas\x12+\n" +
 	"\x03aws\x10\f\x1a\"\xea\xcc'\x1e\n" +

@@ -338,10 +338,10 @@ type KafkaTopic struct {
 	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// The number of partitions for the topic.
 	// Recommended default is 1.
-	Partitions int32 `protobuf:"varint,2,opt,name=partitions,proto3" json:"partitions,omitempty"`
+	Partitions *int32 `protobuf:"varint,2,opt,name=partitions,proto3,oneof" json:"partitions,omitempty"`
 	// The number of replicas for the topic.
 	// Recommended default is 1.
-	Replicas int32 `protobuf:"varint,3,opt,name=replicas,proto3" json:"replicas,omitempty"`
+	Replicas *int32 `protobuf:"varint,3,opt,name=replicas,proto3,oneof" json:"replicas,omitempty"`
 	// Additional configuration for the Kafka topic.
 	// If not provided, default values will be set.
 	// For example, the default `delete.policy` is `delete`, but it can be set to `compact`.
@@ -388,15 +388,15 @@ func (x *KafkaTopic) GetName() string {
 }
 
 func (x *KafkaTopic) GetPartitions() int32 {
-	if x != nil {
-		return x.Partitions
+	if x != nil && x.Partitions != nil {
+		return *x.Partitions
 	}
 	return 0
 }
 
 func (x *KafkaTopic) GetReplicas() int32 {
-	if x != nil {
-		return x.Replicas
+	if x != nil && x.Replicas != nil {
+		return *x.Replicas
 	}
 	return 0
 }
@@ -470,7 +470,7 @@ const file_project_planton_provider_kubernetes_workload_kafkakubernetes_v1_spec_
 	"\tresources\x18\x03 \x01(\v25.project.planton.shared.kubernetes.ContainerResourcesB!\xba\xfb\xa4\x02\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
-	"\x0350m\x12\x05100MiR\tresources\"\xed\b\n" +
+	"\x0350m\x12\x05100MiR\tresources\"\x93\t\n" +
 	"\n" +
 	"KafkaTopic\x12\x93\x04\n" +
 	"\x04name\x18\x01 \x01(\tB\xfe\x03\xbaH\xfa\x03\xba\x01e\n" +
@@ -478,11 +478,11 @@ const file_project_planton_provider_kubernetes_workload_kafkakubernetes_v1_spec_
 	"\x10topic.name.chars\x12?Only alphanumeric and ('.', '_' and '-') characters are allowed\x1a!this.matches('^[a-zA-Z0-9._-]+$')\xba\x01H\n" +
 	"\x19topic.name.no_double_dots\x12\x15Must not contain '..'\x1a\x14!this.contains('..')\xba\x01^\n" +
 	"\x15topic.name.ascii_only\x12%Must not contain non-ASCII characters\x1a\x1ethis.matches('^[\\x00-\\x7F]+$')\xba\x01`\n" +
-	"\x13topic.name.endswith\x12)Should end with an alphanumeric character\x1a\x1ethis.matches('.*[a-zA-Z0-9]$')\xc8\x01\x01r\x05\x10\x01\x18\xf9\x01R\x04name\x12%\n" +
+	"\x13topic.name.endswith\x12)Should end with an alphanumeric character\x1a\x1ethis.matches('.*[a-zA-Z0-9]$')\xc8\x01\x01r\x05\x10\x01\x18\xf9\x01R\x04name\x12*\n" +
 	"\n" +
-	"partitions\x18\x02 \x01(\x05B\x05\x8a\xa6\x1d\x011R\n" +
-	"partitions\x12!\n" +
-	"\breplicas\x18\x03 \x01(\x05B\x05\x8a\xa6\x1d\x011R\breplicas\x12\xc3\x03\n" +
+	"partitions\x18\x02 \x01(\x05B\x05\x8a\xa6\x1d\x011H\x00R\n" +
+	"partitions\x88\x01\x01\x12&\n" +
+	"\breplicas\x18\x03 \x01(\x05B\x05\x8a\xa6\x1d\x011H\x01R\breplicas\x88\x01\x01\x12\xc3\x03\n" +
 	"\x06config\x18\x04 \x03(\v2W.project.planton.provider.kubernetes.workload.kafkakubernetes.v1.KafkaTopic.ConfigEntryB\xd1\x02\x9a\xa6\x1d\x18\n" +
 	"\x0ecleanup.policy\x12\x06delete\x9a\xa6\x1d\x1f\n" +
 	"\x13delete.retention.ms\x12\b86400000\x9a\xa6\x1d\x1c\n" +
@@ -499,7 +499,9 @@ const file_project_planton_provider_kubernetes_workload_kafkakubernetes_v1_spec_
 	"segment.ms\x12\t604800000R\x06config\x1a9\n" +
 	"\vConfigEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:\xba\x01\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01B\r\n" +
+	"\v_partitionsB\v\n" +
+	"\t_replicas:\xba\x01\n" +
 	"\x18default_broker_container\x12\x1d.google.protobuf.FieldOptions\x18\xe1\xfd\x1f \x01(\v2_.project.planton.provider.kubernetes.workload.kafkakubernetes.v1.KafkaKubernetesBrokerContainerR\x16defaultBrokerContainer:\xc3\x01\n" +
 	"\x1bdefault_zookeeper_container\x12\x1d.google.protobuf.FieldOptions\x18\xe2\xfd\x1f \x01(\v2b.project.planton.provider.kubernetes.workload.kafkakubernetes.v1.KafkaKubernetesZookeeperContainerR\x19defaultZookeeperContainerB\xf9\x03\n" +
 	"Ccom.project.planton.provider.kubernetes.workload.kafkakubernetes.v1B\tSpecProtoP\x01Z\x81\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/kafkakubernetes/v1;kafkakubernetesv1\xa2\x02\x06PPPKWK\xaa\x02?Project.Planton.Provider.Kubernetes.Workload.Kafkakubernetes.V1\xca\x02?Project\\Planton\\Provider\\Kubernetes\\Workload\\Kafkakubernetes\\V1\xe2\x02KProject\\Planton\\Provider\\Kubernetes\\Workload\\Kafkakubernetes\\V1\\GPBMetadata\xea\x02EProject::Planton::Provider::Kubernetes::Workload::Kafkakubernetes::V1b\x06proto3"
@@ -554,6 +556,7 @@ func file_project_planton_provider_kubernetes_workload_kafkakubernetes_v1_spec_p
 	if File_project_planton_provider_kubernetes_workload_kafkakubernetes_v1_spec_proto != nil {
 		return
 	}
+	file_project_planton_provider_kubernetes_workload_kafkakubernetes_v1_spec_proto_msgTypes[4].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

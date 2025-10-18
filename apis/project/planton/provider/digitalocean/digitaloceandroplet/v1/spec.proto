@@ -67,6 +67,6 @@ message DigitalOceanDropletSpec {
   // cloud-init user data script (<=32 KiB)
   string user_data = 12 [(buf.validate.field).string.max_bytes = 32768];
 
-  // timezone setting for the droplet’s clock (default: UTC)
-  DigitalOceanDropletTimezone timezone = 13 [(project.planton.shared.options.default) = "UTC"];
+  // timezone setting for the droplet's clock (default: UTC)
+  optional DigitalOceanDropletTimezone timezone = 13 [(project.planton.shared.options.default) = "UTC"];
 }

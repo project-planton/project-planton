@@ -174,11 +174,11 @@ message KafkaTopic {
 
   // The number of partitions for the topic.
   // Recommended default is 1.
-  int32 partitions = 2 [(project.planton.shared.options.default) = "1"];
+  optional int32 partitions = 2 [(project.planton.shared.options.default) = "1"];
 
   // The number of replicas for the topic.
   // Recommended default is 1.
-  int32 replicas = 3 [(project.planton.shared.options.default) = "1"];
+  optional int32 replicas = 3 [(project.planton.shared.options.default) = "1"];
 
   // Additional configuration for the Kafka topic.
   // If not provided, default values will be set.
