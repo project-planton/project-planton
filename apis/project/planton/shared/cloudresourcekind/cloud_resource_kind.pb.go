@@ -75,9 +75,9 @@ const (
 	// 0: Default/unspecified
 	CloudResourceKind_unspecified CloudResourceKind = 0
 	// 1–49: Test/dev/custom
-	CloudResourceKind_FirstTestCloudApiResource  CloudResourceKind = 1
-	CloudResourceKind_SecondTestCloudApiResource CloudResourceKind = 2
-	CloudResourceKind_ThirdTestCloudApiResource  CloudResourceKind = 3
+	CloudResourceKind_TestCloudResourceOne   CloudResourceKind = 1
+	CloudResourceKind_TestCloudResourceTwo   CloudResourceKind = 2
+	CloudResourceKind_TestCloudResourceThree CloudResourceKind = 3
 	// 50–199: saas platform resources
 	CloudResourceKind_ConfluentKafka    CloudResourceKind = 50
 	CloudResourceKind_MongodbAtlas      CloudResourceKind = 51
@@ -214,9 +214,9 @@ const (
 var (
 	CloudResourceKind_name = map[int32]string{
 		0:    "unspecified",
-		1:    "FirstTestCloudApiResource",
-		2:    "SecondTestCloudApiResource",
-		3:    "ThirdTestCloudApiResource",
+		1:    "TestCloudResourceOne",
+		2:    "TestCloudResourceTwo",
+		3:    "TestCloudResourceThree",
 		50:   "ConfluentKafka",
 		51:   "MongodbAtlas",
 		52:   "SnowflakeDatabase",
@@ -342,9 +342,9 @@ var (
 	}
 	CloudResourceKind_value = map[string]int32{
 		"unspecified":                          0,
-		"FirstTestCloudApiResource":            1,
-		"SecondTestCloudApiResource":           2,
-		"ThirdTestCloudApiResource":            3,
+		"TestCloudResourceOne":                 1,
+		"TestCloudResourceTwo":                 2,
+		"TestCloudResourceThree":               3,
 		"ConfluentKafka":                       50,
 		"MongodbAtlas":                         51,
 		"SnowflakeDatabase":                    52,
@@ -680,12 +680,15 @@ const file_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto_ra
 	"\bcategory\x18\x02 \x01(\x0e2I.project.planton.shared.cloudresourcekind.KubernetesCloudResourceCategoryR\bcategory*O\n" +
 	"\x18CloudResourceKindVersion\x12+\n" +
 	"'cloud_resource_kind_version_unspecified\x10\x00\x12\x06\n" +
-	"\x02v1\x10\x01*\xd1+\n" +
+	"\x02v1\x10\x01*\xc0+\n" +
 	"\x11CloudResourceKind\x12\x0f\n" +
-	"\vunspecified\x10\x00\x12.\n" +
-	"\x19FirstTestCloudApiResource\x10\x01\x1a\x0f\xa2\xf7\x04\v\b\x01\x10\x01\"\x05tcar1\x12/\n" +
-	"\x1aSecondTestCloudApiResource\x10\x02\x1a\x0f\xa2\xf7\x04\v\b\x01\x10\x01\"\x05tcar2\x12.\n" +
-	"\x19ThirdTestCloudApiResource\x10\x03\x1a\x0f\xa2\xf7\x04\v\b\x01\x10\x01\"\x05tcar3\x12$\n" +
+	"\vunspecified\x10\x00\x12(\n" +
+	"\x14TestCloudResourceOne\x10\x01\x1a\x0e\xa2\xf7\x04\n" +
+	"\b\x01\x10\x01\"\x04tcr1\x12(\n" +
+	"\x14TestCloudResourceTwo\x10\x02\x1a\x0e\xa2\xf7\x04\n" +
+	"\b\x01\x10\x01\"\x04tcr2\x12*\n" +
+	"\x16TestCloudResourceThree\x10\x03\x1a\x0e\xa2\xf7\x04\n" +
+	"\b\x01\x10\x01\"\x04tcr3\x12$\n" +
 	"\x0eConfluentKafka\x102\x1a\x10\xa2\xf7\x04\f\b\x10\x10\x01\"\x06conkaf\x12\"\n" +
 	"\fMongodbAtlas\x103\x1a\x10\xa2\xf7\x04\f\b\v\x10\x01\"\x06mdbatl\x12'\n" +
 	"\x11SnowflakeDatabase\x104\x1a\x10\xa2\xf7\x04\f\b\x14\x10\x01\"\x06snowdb\x12\x1d\n" +

@@ -14,6 +14,7 @@ go_library(
     deps = [
         "//internal/cli/workspace",
         "//internal/manifest/manifestprotobuf",
+        "//internal/manifest/protodefaults",
         "//pkg/crkreflect",
         "//pkg/ulidgen",
         "@build_buf_go_protovalidate//:protovalidate",

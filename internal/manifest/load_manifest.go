@@ -12,6 +12,7 @@ import (
 	"github.com/fatih/color"
 	"github.com/pkg/errors"
 	"github.com/project-planton/project-planton/internal/cli/workspace"
+	"github.com/project-planton/project-planton/internal/manifest/protodefaults"
 	"github.com/project-planton/project-planton/pkg/crkreflect"
 	"github.com/project-planton/project-planton/pkg/ulidgen"
 	"google.golang.org/protobuf/encoding/protojson"
@@ -58,6 +59,12 @@ func LoadManifest(manifestPath string) (proto.Message, error) {
 	if err := protojson.Unmarshal(jsonBytes, manifest); err != nil {
 		return nil, errors.Wrapf(err, "failed to load json into proto message from %s", manifestPath)
 	}
+
+	// Apply defaults from proto field options
+	if err := protodefaults.ApplyDefaults(manifest); err != nil {
+		return nil, errors.Wrap(err, "failed to apply default values")
+	}
+
 	return manifest, nil
 }
 
