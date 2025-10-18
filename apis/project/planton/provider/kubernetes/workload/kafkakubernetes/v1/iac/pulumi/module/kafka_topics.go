@@ -28,8 +28,8 @@ func kafkaTopics(ctx *pulumi.Context, locals *Locals, createdNamespace *kubernet
 				},
 				Spec: v1beta2.KafkaTopicSpecArgs{
 					Config:     convertstringmaps.ConvertGoStringMapToPulumiMap(config),
-					Partitions: pulumi.Int(kafkaTopic.Partitions),
-					Replicas:   pulumi.Int(kafkaTopic.Replicas),
+					Partitions: pulumi.Int(int(kafkaTopic.GetPartitions())),
+					Replicas:   pulumi.Int(int(kafkaTopic.GetReplicas())),
 					TopicName:  pulumi.String(kafkaTopic.Name),
 				},
 			}, pulumi.Parent(createdKafkaCluster))

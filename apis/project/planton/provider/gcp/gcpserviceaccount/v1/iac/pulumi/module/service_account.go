@@ -38,7 +38,7 @@ func serviceAccount(
 
 	// Optionally create a key.
 	var createdKey *serviceaccount.Key
-	if locals.GcpServiceAccount.Spec.CreateKey {
+	if locals.GcpServiceAccount.Spec.GetCreateKey() {
 		createdKey, err = serviceaccount.NewKey(
 			ctx,
 			fmt.Sprintf("%s-key", locals.GcpServiceAccount.Metadata.Name),

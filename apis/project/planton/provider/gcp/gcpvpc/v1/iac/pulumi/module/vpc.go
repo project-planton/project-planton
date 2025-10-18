@@ -33,7 +33,7 @@ func vpc(ctx *pulumi.Context, locals *Locals, gcpProvider *gcp.Provider) (*compu
 	}
 
 	// Map the routing mode enum to the expected GCP value if explicitly set.
-	if locals.GcpVpc.Spec.RoutingMode != gcpvpcv1.GcpVpcRoutingMode_REGIONAL {
+	if locals.GcpVpc.Spec.GetRoutingMode() != gcpvpcv1.GcpVpcRoutingMode_REGIONAL {
 		// GLOBAL is the only alternative at present.
 		networkArgs.RoutingMode = pulumi.StringPtr("GLOBAL")
 	}

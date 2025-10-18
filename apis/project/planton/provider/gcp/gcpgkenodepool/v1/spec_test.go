@@ -9,6 +9,7 @@ import (
 
 	"buf.build/go/protovalidate"
 	"github.com/project-planton/project-planton/apis/project/planton/shared"
+	"google.golang.org/protobuf/proto"
 )
 
 func TestGcpGkeNodePoolSpec(t *testing.T) {
@@ -35,7 +36,7 @@ var _ = ginkgo.Describe("GcpGkeNodePoolSpec Custom Validation Tests", func() {
 						ClusterName: &foreignkeyv1.StringValueOrRef{
 							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "test-gke-cluster"},
 						},
-						DiskType: "pd-standard", // Valid disk type
+						DiskType: proto.String("pd-standard"), // Valid disk type
 						NodePoolSize: &GcpGkeNodePoolSpec_NodeCount{
 							NodeCount: 3, // Required node pool size
 						},

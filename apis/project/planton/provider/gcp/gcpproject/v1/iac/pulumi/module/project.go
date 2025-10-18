@@ -50,7 +50,7 @@ func project(ctx *pulumi.Context, locals *Locals) (*organizations.Project, error
 		ProjectId:         projectId,
 		BillingAccount:    pulumi.String(locals.GcpProject.Spec.BillingAccountId),
 		Labels:            pulumi.ToStringMap(locals.GcpLabels),
-		AutoCreateNetwork: pulumi.Bool(!locals.GcpProject.Spec.DisableDefaultNetwork),
+		AutoCreateNetwork: pulumi.Bool(!locals.GcpProject.Spec.GetDisableDefaultNetwork()),
 	}
 
 	if locals.GcpProject.Spec.ParentType == gcpprojectv1.GcpProjectParentType_organization {

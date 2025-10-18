@@ -23,13 +23,14 @@ func Resources(ctx *pulumi.Context, stackInput *certmanagerv1.CertManagerKuberne
 
 	// pick helm chart version based on release_channel
 	chartVersion := vars.DefaultStableVersion
-	switch spec.ReleaseChannel {
+	releaseChannel := spec.GetReleaseChannel()
+	switch releaseChannel {
 	case "", "stable":
 		chartVersion = vars.DefaultStableVersion
 	case "latest", "edge", "fast":
 		chartVersion = vars.DefaultLatestVersion
 	default:
-		chartVersion = spec.ReleaseChannel // explicit tag such as v1.16.1
+		chartVersion = releaseChannel // explicit tag such as v1.16.1
 	}
 
 	// create cert‑manager namespace

@@ -17,7 +17,7 @@ func initializeLocals(stackInput *gcpgkeclustercorev1.GcpGkeClusterCoreStackInpu
 	}
 
 	// Map the proto enum to the literal string Google expects.
-	switch l.GcpGkeClusterCore.Spec.ReleaseChannel {
+	switch l.GcpGkeClusterCore.Spec.GetReleaseChannel() {
 	case gcpgkeclustercorev1.GkeReleaseChannel_RAPID:
 		l.ReleaseChannelStr = "RAPID"
 	case gcpgkeclustercorev1.GkeReleaseChannel_REGULAR:

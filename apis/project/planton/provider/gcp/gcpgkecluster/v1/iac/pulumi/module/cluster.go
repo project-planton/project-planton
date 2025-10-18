@@ -76,7 +76,7 @@ func cluster(ctx *pulumi.Context, locals *Locals, gcpProvider *gcp.Provider) (*c
 		Name:                  pulumi.String(locals.GcpGkeCluster.Metadata.Name),
 		Project:               pulumi.String(locals.GcpGkeCluster.Spec.ClusterProjectId),
 		Network:               createdNetwork.ID(),
-		Region:                pulumi.String(locals.GcpGkeCluster.Spec.Region),
+		Region:                pulumi.String(locals.GcpGkeCluster.Spec.GetRegion()),
 		IpCidrRange:           pulumi.String(vars.SubNetworkCidr),
 		PrivateIpGoogleAccess: pulumi.BoolPtr(true),
 		//these two ranges will be referred in the cluster input
@@ -132,7 +132,7 @@ func cluster(ctx *pulumi.Context, locals *Locals, gcpProvider *gcp.Provider) (*c
 		&compute.RouterArgs{
 			Name:    pulumi.String(locals.GcpGkeCluster.Metadata.Name),
 			Network: createdNetwork.SelfLink,
-			Region:  pulumi.String(locals.GcpGkeCluster.Spec.Region),
+			Region:  pulumi.String(locals.GcpGkeCluster.Spec.GetRegion()),
 			Project: pulumi.String(locals.GcpGkeCluster.Spec.ClusterProjectId),
 		}, pulumi.Parent(createdNetwork))
 	if err != nil {
@@ -209,7 +209,7 @@ func cluster(ctx *pulumi.Context, locals *Locals, gcpProvider *gcp.Provider) (*c
 		&container.ClusterArgs{
 			Name:                  pulumi.String(locals.GcpGkeCluster.Metadata.Name),
 			Project:               pulumi.String(locals.GcpGkeCluster.Spec.ClusterProjectId),
-			Location:              pulumi.String(locals.GcpGkeCluster.Spec.Zone),
+			Location:              pulumi.String(locals.GcpGkeCluster.Spec.GetZone()),
 			Network:               createdNetwork.SelfLink,
 			Subnetwork:            createdSubNetwork.SelfLink,
 			RemoveDefaultNodePool: pulumi.Bool(true),

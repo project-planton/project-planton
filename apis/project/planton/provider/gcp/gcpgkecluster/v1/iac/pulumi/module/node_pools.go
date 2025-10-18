@@ -31,7 +31,7 @@ func nodePools(ctx *pulumi.Context,
 
 	for _, nodePoolSpec := range locals.GcpGkeCluster.Spec.NodePools {
 		_, err := container.NewNodePool(ctx, nodePoolSpec.Name, &container.NodePoolArgs{
-			Location:  pulumi.String(locals.GcpGkeCluster.Spec.Zone),
+			Location:  pulumi.String(locals.GcpGkeCluster.Spec.GetZone()),
 			Project:   createdCluster.Project,
 			Cluster:   createdCluster.Name,
 			NodeCount: pulumi.Int(nodePoolSpec.MinNodeCount),

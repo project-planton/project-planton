@@ -89,7 +89,7 @@ func cronJob(ctx *pulumi.Context, locals *Locals, createdNamespace *corev1.Names
 	}
 
 	podSpecArgs := &corev1.PodSpecArgs{
-		RestartPolicy: pulumi.String(target.Spec.RestartPolicy),
+		RestartPolicy: pulumi.String(target.Spec.GetRestartPolicy()),
 		Containers: corev1.ContainerArray{
 			mainContainer,
 		},
@@ -105,13 +105,13 @@ func cronJob(ctx *pulumi.Context, locals *Locals, createdNamespace *corev1.Names
 
 	cronJobSpec := &batchv1.CronJobSpecArgs{
 		Schedule:                   pulumi.String(target.Spec.Schedule),
-		ConcurrencyPolicy:          pulumi.String(target.Spec.ConcurrencyPolicy),
-		Suspend:                    pulumi.BoolPtr(target.Spec.Suspend),
-		SuccessfulJobsHistoryLimit: pulumi.IntPtr(int(target.Spec.SuccessfulJobsHistoryLimit)),
-		FailedJobsHistoryLimit:     pulumi.IntPtr(int(target.Spec.FailedJobsHistoryLimit)),
+		ConcurrencyPolicy:          pulumi.String(target.Spec.GetConcurrencyPolicy()),
+		Suspend:                    pulumi.BoolPtr(target.Spec.GetSuspend()),
+		SuccessfulJobsHistoryLimit: pulumi.IntPtr(int(target.Spec.GetSuccessfulJobsHistoryLimit())),
+		FailedJobsHistoryLimit:     pulumi.IntPtr(int(target.Spec.GetFailedJobsHistoryLimit())),
 		JobTemplate: &batchv1.JobTemplateSpecArgs{
 			Spec: &batchv1.JobSpecArgs{
-				BackoffLimit: pulumi.IntPtr(int(target.Spec.BackoffLimit)),
+				BackoffLimit: pulumi.IntPtr(int(target.Spec.GetBackoffLimit())),
 				Template: &corev1.PodTemplateSpecArgs{
 					Spec: podSpecArgs,
 				},
@@ -119,8 +119,8 @@ func cronJob(ctx *pulumi.Context, locals *Locals, createdNamespace *corev1.Names
 		},
 	}
 
-	if target.Spec.StartingDeadlineSeconds > 0 {
-		cronJobSpec.StartingDeadlineSeconds = pulumi.IntPtr(int(target.Spec.StartingDeadlineSeconds))
+	if target.Spec.StartingDeadlineSeconds != nil && *target.Spec.StartingDeadlineSeconds > 0 {
+		cronJobSpec.StartingDeadlineSeconds = pulumi.IntPtr(int(*target.Spec.StartingDeadlineSeconds))
 	}
 
 	createdCronJob, err := batchv1.NewCronJob(ctx,

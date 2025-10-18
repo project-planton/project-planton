@@ -7,6 +7,7 @@ import (
 	"github.com/onsi/ginkgo/v2"
 	"github.com/onsi/gomega"
 	"github.com/project-planton/project-planton/apis/project/planton/shared/kubernetes"
+	"google.golang.org/protobuf/proto"
 )
 
 func TestSignozKubernetesSpec(t *testing.T) {
@@ -117,9 +118,9 @@ var _ = ginkgo.Describe("SignozKubernetesSpec validations", func() {
 					IsExternal: true,
 					ExternalDatabase: &SignozKubernetesExternalClickhouse{
 						Host:        "clickhouse.database.svc.cluster.local",
-						HttpPort:    8123,
-						TcpPort:     9000,
-						ClusterName: "cluster",
+						HttpPort:    proto.Int32(8123),
+						TcpPort:     proto.Int32(9000),
+						ClusterName: proto.String("cluster"),
 						IsSecure:    false,
 						Username:    "signoz",
 						Password:    "my-password",
@@ -181,9 +182,9 @@ var _ = ginkgo.Describe("SignozKubernetesSpec validations", func() {
 					IsExternal: true,
 					ExternalDatabase: &SignozKubernetesExternalClickhouse{
 						Host:        "clickhouse.database.svc.cluster.local",
-						HttpPort:    0,
-						TcpPort:     9000,
-						ClusterName: "cluster",
+						HttpPort:    proto.Int32(0),
+						TcpPort:     proto.Int32(9000),
+						ClusterName: proto.String("cluster"),
 						Username:    "signoz",
 						Password:    "my-password",
 					},
@@ -197,9 +198,9 @@ var _ = ginkgo.Describe("SignozKubernetesSpec validations", func() {
 					IsExternal: true,
 					ExternalDatabase: &SignozKubernetesExternalClickhouse{
 						Host:        "clickhouse.database.svc.cluster.local",
-						HttpPort:    8123,
-						TcpPort:     0,
-						ClusterName: "cluster",
+						HttpPort:    proto.Int32(8123),
+						TcpPort:     proto.Int32(0),
+						ClusterName: proto.String("cluster"),
 						Username:    "signoz",
 						Password:    "my-password",
 					},

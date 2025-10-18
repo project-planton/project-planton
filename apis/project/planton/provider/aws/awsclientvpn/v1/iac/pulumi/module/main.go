@@ -55,8 +55,8 @@ func Resources(ctx *pulumi.Context, stackInput *awsclientvpnv1.AwsClientVpnStack
 
 	// VPN port (default 443)
 	vpnPort := 443
-	if locals.AwsClientVpn.Spec.VpnPort != 0 {
-		vpnPort = int(locals.AwsClientVpn.Spec.VpnPort)
+	if locals.AwsClientVpn.Spec.VpnPort != nil && *locals.AwsClientVpn.Spec.VpnPort != 0 {
+		vpnPort = int(*locals.AwsClientVpn.Spec.VpnPort)
 	}
 
 	// Transport protocol

@@ -25,7 +25,7 @@ func ecrRepo(ctx *pulumi.Context, locals *Locals, provider *aws.Provider) error 
 		Tags:               pulumi.ToStringMap(locals.AwsTags),
 		EncryptionConfigurations: ecr.RepositoryEncryptionConfigurationArray{
 			&ecr.RepositoryEncryptionConfigurationArgs{
-				EncryptionType: pulumi.String(spec.EncryptionType),
+				EncryptionType: pulumi.String(spec.GetEncryptionType()),
 				KmsKey:         pulumi.String(spec.KmsKeyId),
 			},
 		},

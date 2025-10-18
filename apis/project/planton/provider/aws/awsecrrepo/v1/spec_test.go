@@ -7,6 +7,7 @@ import (
 	"github.com/onsi/ginkgo/v2"
 	"github.com/onsi/gomega"
 	"github.com/project-planton/project-planton/apis/project/planton/shared"
+	"google.golang.org/protobuf/proto"
 )
 
 // stringOfLength is a helper for test scenarios needing an overly long string.
@@ -38,7 +39,7 @@ var _ = ginkgo.Describe("AwsEcrRepoSpec Custom Validation Tests", func() {
 					Spec: &AwsEcrRepoSpec{
 						RepositoryName: "my-valid-repo",
 						ImageImmutable: true,
-						EncryptionType: "AES256",
+						EncryptionType: proto.String("AES256"),
 						ForceDelete:    false,
 					},
 				}
@@ -71,19 +72,19 @@ var _ = ginkgo.Describe("AwsEcrRepoSpec Custom Validation Tests", func() {
 
 			ginkgo.Context("encryption_type constraints", func() {
 				ginkgo.It("should fail if encryption_type is invalid", func() {
-					input.Spec.EncryptionType = "INVALID"
+					input.Spec.EncryptionType = proto.String("INVALID")
 					err := protovalidate.Validate(input)
 					gomega.Expect(err).NotTo(gomega.BeNil())
 				})
 
 				ginkgo.It("should succeed if encryption_type is AES256", func() {
-					input.Spec.EncryptionType = "AES256"
+					input.Spec.EncryptionType = proto.String("AES256")
 					err := protovalidate.Validate(input)
 					gomega.Expect(err).To(gomega.BeNil())
 				})
 
 				ginkgo.It("should succeed if encryption_type is KMS", func() {
-					input.Spec.EncryptionType = "KMS"
+					input.Spec.EncryptionType = proto.String("KMS")
 					err := protovalidate.Validate(input)
 					gomega.Expect(err).To(gomega.BeNil())
 				})

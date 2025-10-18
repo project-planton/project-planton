@@ -7,6 +7,7 @@ import (
 	"github.com/onsi/ginkgo/v2"
 	"github.com/onsi/gomega"
 	fk "github.com/project-planton/project-planton/apis/project/planton/shared/foreignkey/v1"
+	"google.golang.org/protobuf/proto"
 )
 
 func TestAwsEc2InstanceSpec(t *testing.T) {
@@ -38,9 +39,9 @@ var _ = ginkgo.Describe("AwsEc2InstanceSpec validations", func() {
 			SecurityGroupIds: []*fk.StringValueOrRef{
 				newSg("sg-000111222"),
 			},
-			ConnectionMethod:      AwsEc2InstanceConnectionMethod_SSM,
+			ConnectionMethod:      func() *AwsEc2InstanceConnectionMethod { v := AwsEc2InstanceConnectionMethod_SSM; return &v }(),
 			IamInstanceProfileArn: newIamProfile("arn:aws:iam::123456789012:instance-profile/ssm"),
-			RootVolumeSizeGb:      30,
+			RootVolumeSizeGb:      proto.Int32(30),
 			UserData:              "#!/bin/bash\necho hello",
 		}
 	})
@@ -75,26 +76,26 @@ var _ = ginkgo.Describe("AwsEc2InstanceSpec validations", func() {
 	})
 
 	ginkgo.It("fails when root_volume_size_gb is not greater than 0", func() {
-		spec.RootVolumeSizeGb = 0
+		spec.RootVolumeSizeGb = proto.Int32(0)
 		err := protovalidate.Validate(spec)
 		gomega.Expect(err).NotTo(gomega.BeNil())
 	})
 
 	ginkgo.It("fails when connection_method is an undefined enum value", func() {
-		spec.ConnectionMethod = AwsEc2InstanceConnectionMethod(99)
+		spec.ConnectionMethod = func() *AwsEc2InstanceConnectionMethod { v := AwsEc2InstanceConnectionMethod(99); return &v }()
 		err := protovalidate.Validate(spec)
 		gomega.Expect(err).NotTo(gomega.BeNil())
 	})
 
 	ginkgo.It("fails when connection_method is SSM and iam_instance_profile_arn is not set (CEL)", func() {
-		spec.ConnectionMethod = AwsEc2InstanceConnectionMethod_SSM
+		spec.ConnectionMethod = func() *AwsEc2InstanceConnectionMethod { v := AwsEc2InstanceConnectionMethod_SSM; return &v }()
 		spec.IamInstanceProfileArn = nil
 		err := protovalidate.Validate(spec)
 		gomega.Expect(err).NotTo(gomega.BeNil())
 	})
 
 	ginkgo.It("fails when connection_method is BASTION and key_name is empty (CEL)", func() {
-		spec.ConnectionMethod = AwsEc2InstanceConnectionMethod_BASTION
+		spec.ConnectionMethod = func() *AwsEc2InstanceConnectionMethod { v := AwsEc2InstanceConnectionMethod_BASTION; return &v }()
 		spec.IamInstanceProfileArn = nil
 		spec.KeyName = ""
 		err := protovalidate.Validate(spec)
@@ -102,7 +103,7 @@ var _ = ginkgo.Describe("AwsEc2InstanceSpec validations", func() {
 	})
 
 	ginkgo.It("accepts a valid BASTION spec with key_name set", func() {
-		spec.ConnectionMethod = AwsEc2InstanceConnectionMethod_BASTION
+		spec.ConnectionMethod = func() *AwsEc2InstanceConnectionMethod { v := AwsEc2InstanceConnectionMethod_BASTION; return &v }()
 		spec.IamInstanceProfileArn = nil
 		spec.KeyName = "my-key"
 		err := protovalidate.Validate(spec)

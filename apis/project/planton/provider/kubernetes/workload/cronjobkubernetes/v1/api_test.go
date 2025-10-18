@@ -8,6 +8,7 @@ import (
 	"github.com/onsi/gomega"
 	"github.com/project-planton/project-planton/apis/project/planton/shared"
 	"github.com/project-planton/project-planton/apis/project/planton/shared/kubernetes"
+	"google.golang.org/protobuf/proto"
 )
 
 func TestCronJobKubernetes(t *testing.T) {
@@ -49,8 +50,8 @@ var _ = ginkgo.Describe("CronJobKubernetes Custom Validation Tests", func() {
 					},
 				},
 				Schedule:          "0 0 * * *",
-				ConcurrencyPolicy: "Forbid",
-				RestartPolicy:     "Never",
+				ConcurrencyPolicy: proto.String("Forbid"),
+				RestartPolicy:     proto.String("Never"),
 			},
 		}
 	})

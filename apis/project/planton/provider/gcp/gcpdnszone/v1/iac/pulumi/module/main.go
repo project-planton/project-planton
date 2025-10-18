@@ -80,7 +80,7 @@ func Resources(ctx *pulumi.Context, stackInput *gcpdnszonev1.GcpDnsZoneStackInpu
 				Name:        pulumi.String(dnsRecord.Name),
 				Project:     createdManagedZone.Project,
 				Rrdatas:     pulumi.ToStringArray(dnsRecord.Values),
-				Ttl:         pulumi.IntPtr(int(dnsRecord.TtlSeconds)),
+				Ttl:         pulumi.IntPtr(int(dnsRecord.GetTtlSeconds())),
 				Type:        pulumi.String(dnsRecord.RecordType.String()),
 			}, pulumi.Parent(createdManagedZone))
 		if err != nil {

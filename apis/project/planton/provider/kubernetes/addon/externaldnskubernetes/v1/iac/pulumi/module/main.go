@@ -24,8 +24,8 @@ func Resources(ctx *pulumi.Context, stackInput *externaldnsv1.ExternalDnsKuberne
 	spec := stackInput.Target.Spec
 
 	// Namespace and chart version now come from spec with defaults in proto
-	namespace := spec.Namespace
-	chartVersion := spec.HelmChartVersion
+	namespace := spec.GetNamespace()
+	chartVersion := spec.GetHelmChartVersion()
 
 	// Use the resource name as the Helm release name (e.g., "external-dns-planton-cloud")
 	// This allows multiple ExternalDNS instances for different domains in the same namespace
@@ -152,9 +152,10 @@ func Resources(ctx *pulumi.Context, stackInput *externaldnsv1.ExternalDnsKuberne
 	}
 
 	// Honor an optional custom ExternalDNS version.
-	if spec.ExternalDnsVersion != "" {
+	externalDnsVersion := spec.GetExternalDnsVersion()
+	if externalDnsVersion != "" {
 		values["image"] = pulumi.Map{
-			"tag": pulumi.String(spec.ExternalDnsVersion),
+			"tag": pulumi.String(externalDnsVersion),
 		}
 	}
 

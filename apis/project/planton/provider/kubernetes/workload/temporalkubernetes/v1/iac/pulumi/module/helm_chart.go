@@ -32,14 +32,8 @@ func helmChart(ctx *pulumi.Context, locals *Locals,
 		}
 
 		// default DB names if not provided
-		defaultDB := db.DatabaseName
-		visibilityDB := db.VisibilityName
-		if defaultDB == "" {
-			defaultDB = "temporal"
-		}
-		if visibilityDB == "" {
-			visibilityDB = "temporal_visibility"
-		}
+		defaultDB := db.GetDatabaseName()
+		visibilityDB := db.GetVisibilityName()
 
 		// username field
 		user := ext.Username
