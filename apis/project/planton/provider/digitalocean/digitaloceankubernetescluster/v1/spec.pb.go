@@ -9,7 +9,6 @@ package digitaloceankubernetesclusterv1
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	digitalocean "github.com/project-planton/project-planton/apis/project/planton/provider/digitalocean"
-	_ "github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
 	v1 "github.com/project-planton/project-planton/apis/project/planton/shared/foreignkey/v1"
 	_ "github.com/project-planton/project-planton/apis/project/planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -246,7 +245,7 @@ var File_project_planton_provider_digitalocean_digitaloceankubernetescluster_v1_
 
 const file_project_planton_provider_digitalocean_digitaloceankubernetescluster_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Qproject/planton/provider/digitalocean/digitaloceankubernetescluster/v1/spec.proto\x12Fproject.planton.provider.digitalocean.digitaloceankubernetescluster.v1\x1a\x1bbuf/validate/validate.proto\x1a2project/planton/provider/digitalocean/region.proto\x1aBproject/planton/shared/cloudresourcekind/cloud_resource_kind.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\"\x94\x05\n" +
+	"Qproject/planton/provider/digitalocean/digitaloceankubernetescluster/v1/spec.proto\x12Fproject.planton.provider.digitalocean.digitaloceankubernetescluster.v1\x1a\x1bbuf/validate/validate.proto\x1a2project/planton/provider/digitalocean/region.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\"\x94\x05\n" +
 	"!DigitalOceanKubernetesClusterSpec\x12)\n" +
 	"\fcluster_name\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\vclusterName\x12Y\n" +
 	"\x06region\x18\x02 \x01(\x0e29.project.planton.provider.digitalocean.DigitalOceanRegionB\x06\xbaH\x03\xc8\x01\x01R\x06region\x125\n" +

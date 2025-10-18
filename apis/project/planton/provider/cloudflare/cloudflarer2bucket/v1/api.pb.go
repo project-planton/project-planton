@@ -157,7 +157,7 @@ var File_project_planton_provider_cloudflare_cloudflarer2bucket_v1_api_proto pro
 
 const file_project_planton_provider_cloudflare_cloudflarer2bucket_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Cproject/planton/provider/cloudflare/cloudflarer2bucket/v1/api.proto\x129project.planton.provider.cloudflare.cloudflarer2bucket.v1\x1a\x1bbuf/validate/validate.proto\x1aDproject/planton/provider/cloudflare/cloudflarer2bucket/v1/spec.proto\x1aMproject/planton/provider/cloudflare/cloudflarer2bucket/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\x1a#project/planton/shared/status.proto\"\xbb\x03\n" +
+	"Cproject/planton/provider/cloudflare/cloudflarer2bucket/v1/api.proto\x129project.planton.provider.cloudflare.cloudflarer2bucket.v1\x1a\x1bbuf/validate/validate.proto\x1aDproject/planton/provider/cloudflare/cloudflarer2bucket/v1/spec.proto\x1aMproject/planton/provider/cloudflare/cloudflarer2bucket/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xbb\x03\n" +
 	"\x12CloudflareR2Bucket\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!cloudflare.project-planton.org/v1R\n" +

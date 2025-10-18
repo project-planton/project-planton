@@ -8,9 +8,7 @@ package civokubernetesnodepoolv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	_ "github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
 	v1 "github.com/project-planton/project-planton/apis/project/planton/shared/foreignkey/v1"
-	_ "github.com/project-planton/project-planton/apis/project/planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -141,7 +139,7 @@ var File_project_planton_provider_civo_civokubernetesnodepool_v1_spec_proto prot
 
 const file_project_planton_provider_civo_civokubernetesnodepool_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Bproject/planton/provider/civo/civokubernetesnodepool/v1/spec.proto\x127project.planton.provider.civo.civokubernetesnodepool.v1\x1a\x1bbuf/validate/validate.proto\x1aBproject/planton/shared/cloudresourcekind/cloud_resource_kind.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\"\xee\x02\n" +
+	"Bproject/planton/provider/civo/civokubernetesnodepool/v1/spec.proto\x127project.planton.provider.civo.civokubernetesnodepool.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\"\xee\x02\n" +
 	"\x1aCivoKubernetesNodePoolSpec\x12,\n" +
 	"\x0enode_pool_name\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\fnodePoolName\x12n\n" +
 	"\acluster\x18\x02 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB\x1c\xbaH\x03\xc8\x01\x01\x88\xd4a\xe3\v\x92\xd4a\rmetadata.nameR\acluster\x12\x1a\n" +

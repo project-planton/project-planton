@@ -9,7 +9,6 @@ package rediskubernetesv1
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	kubernetes "github.com/project-planton/project-planton/apis/project/planton/shared/kubernetes"
-	_ "github.com/project-planton/project-planton/apis/project/planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	descriptorpb "google.golang.org/protobuf/types/descriptorpb"
@@ -239,7 +238,7 @@ var File_project_planton_provider_kubernetes_workload_rediskubernetes_v1_spec_pr
 
 const file_project_planton_provider_kubernetes_workload_rediskubernetes_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Jproject/planton/provider/kubernetes/workload/rediskubernetes/v1/spec.proto\x12?project.planton.provider.kubernetes.workload.rediskubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\x1a,project/planton/shared/options/options.proto\"\xb0\x02\n" +
+	"Jproject/planton/provider/kubernetes/workload/rediskubernetes/v1/spec.proto\x12?project.planton.provider.kubernetes.workload.rediskubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\"\xb0\x02\n" +
 	"\x13RedisKubernetesSpec\x12\xa5\x01\n" +
 	"\tcontainer\x18\x01 \x01(\v2Y.project.planton.provider.kubernetes.workload.rediskubernetes.v1.RedisKubernetesContainerB,ʚ\x86\x02'\b\x01\x12\x1c\n" +
 	"\f\n" +

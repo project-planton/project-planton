@@ -8,7 +8,6 @@ package kubernetes
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	_ "github.com/project-planton/project-planton/apis/project/planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -229,8 +228,7 @@ type ContainerPort struct {
 	// The name of the port.
 	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// The port number on the container.
-	// **Note:** The attribute names must use camel case to marshal into the Kubernetes Container spec.
-	ContainerPort int32 `protobuf:"varint,2,opt,name=containerPort,proto3" json:"containerPort,omitempty"`
+	ContainerPort int32 `protobuf:"varint,2,opt,name=container_port,json=containerPort,proto3" json:"container_port,omitempty"`
 	// The protocol used by the port (e.g., "TCP" or "UDP").
 	Protocol      string `protobuf:"bytes,3,opt,name=protocol,proto3" json:"protocol,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -523,7 +521,7 @@ var File_project_planton_shared_kubernetes_kubernetes_proto protoreflect.FileDes
 
 const file_project_planton_shared_kubernetes_kubernetes_proto_rawDesc = "" +
 	"\n" +
-	"2project/planton/shared/kubernetes/kubernetes.proto\x12!project.planton.shared.kubernetes\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\"\x98\x02\n" +
+	"2project/planton/shared/kubernetes/kubernetes.proto\x12!project.planton.shared.kubernetes\x1a\x1bbuf/validate/validate.proto\"\x98\x02\n" +
 	"\tContainer\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x14\n" +
 	"\x05image\x18\x02 \x01(\tR\x05image\x12F\n" +
@@ -535,10 +533,10 @@ const file_project_planton_shared_kubernetes_kubernetes_proto_rawDesc = "" +
 	"\brequests\x18\x02 \x01(\v2,.project.planton.shared.kubernetes.CpuMemoryR\brequests\";\n" +
 	"\x0fContainerEnvVar\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value\"e\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value\"f\n" +
 	"\rContainerPort\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\x12$\n" +
-	"\rcontainerPort\x18\x02 \x01(\x05R\rcontainerPort\x12\x1a\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x12%\n" +
+	"\x0econtainer_port\x18\x02 \x01(\x05R\rcontainerPort\x12\x1a\n" +
 	"\bprotocol\x18\x03 \x01(\tR\bprotocol\"5\n" +
 	"\tCpuMemory\x12\x10\n" +
 	"\x03cpu\x18\x01 \x01(\tR\x03cpu\x12\x16\n" +

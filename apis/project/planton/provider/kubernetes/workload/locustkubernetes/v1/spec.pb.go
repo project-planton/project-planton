@@ -288,7 +288,7 @@ var File_project_planton_provider_kubernetes_workload_locustkubernetes_v1_spec_p
 
 const file_project_planton_provider_kubernetes_workload_locustkubernetes_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Kproject/planton/provider/kubernetes/workload/locustkubernetes/v1/spec.proto\x12@project.planton.provider.kubernetes.workload.locustkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\"\x8a\x06\n" +
+	"Kproject/planton/provider/kubernetes/workload/locustkubernetes/v1/spec.proto\x12@project.planton.provider.kubernetes.workload.locustkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\"\x8a\x06\n" +
 	"\x14LocustKubernetesSpec\x12\xad\x01\n" +
 	"\x10master_container\x18\x01 \x01(\v2[.project.planton.provider.kubernetes.workload.locustkubernetes.v1.LocustKubernetesContainerB%\x8a\xe8\x81\x02 \b\x01\x12\x1c\n" +
 	"\f\n" +

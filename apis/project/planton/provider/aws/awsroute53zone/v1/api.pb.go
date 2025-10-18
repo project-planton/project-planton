@@ -157,7 +157,7 @@ var File_project_planton_provider_aws_awsroute53zone_v1_api_proto protoreflect.F
 
 const file_project_planton_provider_aws_awsroute53zone_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"8project/planton/provider/aws/awsroute53zone/v1/api.proto\x12.project.planton.provider.aws.awsroute53zone.v1\x1a\x1bbuf/validate/validate.proto\x1a9project/planton/provider/aws/awsroute53zone/v1/spec.proto\x1aBproject/planton/provider/aws/awsroute53zone/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\x1a#project/planton/shared/status.proto\"\x8e\x03\n" +
+	"8project/planton/provider/aws/awsroute53zone/v1/api.proto\x12.project.planton.provider.aws.awsroute53zone.v1\x1a\x1bbuf/validate/validate.proto\x1a9project/planton/provider/aws/awsroute53zone/v1/spec.proto\x1aBproject/planton/provider/aws/awsroute53zone/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\x8e\x03\n" +
 	"\x0eAwsRoute53Zone\x12B\n" +
 	"\vapi_version\x18\x01 \x01(\tB!\xbaH\x1er\x1c\n" +
 	"\x1aaws.project-planton.org/v1R\n" +

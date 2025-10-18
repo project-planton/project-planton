@@ -157,7 +157,7 @@ var File_project_planton_provider_civo_civodnszone_v1_api_proto protoreflect.Fil
 
 const file_project_planton_provider_civo_civodnszone_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"6project/planton/provider/civo/civodnszone/v1/api.proto\x12,project.planton.provider.civo.civodnszone.v1\x1a\x1bbuf/validate/validate.proto\x1a7project/planton/provider/civo/civodnszone/v1/spec.proto\x1a@project/planton/provider/civo/civodnszone/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\x1a#project/planton/shared/status.proto\"\xff\x02\n" +
+	"6project/planton/provider/civo/civodnszone/v1/api.proto\x12,project.planton.provider.civo.civodnszone.v1\x1a\x1bbuf/validate/validate.proto\x1a7project/planton/provider/civo/civodnszone/v1/spec.proto\x1a@project/planton/provider/civo/civodnszone/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xff\x02\n" +
 	"\vCivoDnsZone\x12C\n" +
 	"\vapi_version\x18\x01 \x01(\tB\"\xbaH\x1fr\x1d\n" +
 	"\x1bcivo.project-planton.org/v1R\n" +

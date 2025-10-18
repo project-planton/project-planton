@@ -157,7 +157,7 @@ var File_project_planton_provider_civo_civoipaddress_v1_api_proto protoreflect.F
 
 const file_project_planton_provider_civo_civoipaddress_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"8project/planton/provider/civo/civoipaddress/v1/api.proto\x12.project.planton.provider.civo.civoipaddress.v1\x1a\x1bbuf/validate/validate.proto\x1a9project/planton/provider/civo/civoipaddress/v1/spec.proto\x1aBproject/planton/provider/civo/civoipaddress/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\x1a#project/planton/shared/status.proto\"\x8b\x03\n" +
+	"8project/planton/provider/civo/civoipaddress/v1/api.proto\x12.project.planton.provider.civo.civoipaddress.v1\x1a\x1bbuf/validate/validate.proto\x1a9project/planton/provider/civo/civoipaddress/v1/spec.proto\x1aBproject/planton/provider/civo/civoipaddress/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\x8b\x03\n" +
 	"\rCivoIpAddress\x12C\n" +
 	"\vapi_version\x18\x01 \x01(\tB\"\xbaH\x1fr\x1d\n" +
 	"\x1bcivo.project-planton.org/v1R\n" +

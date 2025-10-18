@@ -7,7 +7,6 @@
 package keycloakkubernetesv1
 
 import (
-	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	kubernetes "github.com/project-planton/project-planton/apis/project/planton/shared/kubernetes"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -132,7 +131,7 @@ var File_project_planton_provider_kubernetes_workload_keycloakkubernetes_v1_spec
 
 const file_project_planton_provider_kubernetes_workload_keycloakkubernetes_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Mproject/planton/provider/kubernetes/workload/keycloakkubernetes/v1/spec.proto\x12Bproject.planton.provider.kubernetes.workload.keycloakkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\"\xe1\x01\n" +
+	"Mproject/planton/provider/kubernetes/workload/keycloakkubernetes/v1/spec.proto\x12Bproject.planton.provider.kubernetes.workload.keycloakkubernetes.v1\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\"\xe1\x01\n" +
 	"\x16KeycloakKubernetesSpec\x12}\n" +
 	"\tcontainer\x18\x01 \x01(\v2_.project.planton.provider.kubernetes.workload.keycloakkubernetes.v1.KeycloakKubernetesContainerR\tcontainer\x12H\n" +
 	"\aingress\x18\x02 \x01(\v2..project.planton.shared.kubernetes.IngressSpecR\aingress\"\x95\x01\n" +

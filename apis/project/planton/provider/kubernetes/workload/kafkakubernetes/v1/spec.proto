@@ -146,27 +146,27 @@ message KafkaTopic {
     (buf.validate.field).string.min_len = 1,
     (buf.validate.field).string.max_len = 249,
     (buf.validate.field).cel = {
-      id: "topic.name"
+      id: "topic.name.startswith"
       message: "Should start with an alphanumeric character"
       expression: "this.matches('^[a-zA-Z0-9].*$')"
     },
     (buf.validate.field).cel = {
-      id: "topic.name"
+      id: "topic.name.chars"
       message: "Only alphanumeric and ('.', '_' and '-') characters are allowed"
       expression: "this.matches('^[a-zA-Z0-9._-]+$')"
     },
     (buf.validate.field).cel = {
-      id: "topic.name"
+      id: "topic.name.no_double_dots"
       message: "Must not contain '..'"
       expression: "!this.contains('..')"
     },
     (buf.validate.field).cel = {
-      id: "topic.name"
+      id: "topic.name.ascii_only"
       message: "Must not contain non-ASCII characters"
       expression: "this.matches('^[\\x00-\\x7F]+$')"
     },
     (buf.validate.field).cel = {
-      id: "topic.name"
+      id: "topic.name.endswith"
       message: "Should end with an alphanumeric character"
       expression: "this.matches('.*[a-zA-Z0-9]$')"
     }

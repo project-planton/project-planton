@@ -3,7 +3,6 @@ syntax = "proto3";
 package project.planton.shared.kubernetes;
 
 import "buf/validate/validate.proto";
-import "project/planton/shared/options/options.proto";
 
 // **Container** defines the specifications for a container within a microservice deployment configuration.
 // This message mirrors the Kubernetes container spec (https://pkg.go.dev/k8s.io/api/core/v1#Container),
@@ -55,8 +54,7 @@ message ContainerPort {
   string name = 1;
 
   // The port number on the container.
-  // **Note:** The attribute names must use camel case to marshal into the Kubernetes Container spec.
-  int32 containerPort = 2;
+  int32 container_port = 2;
 
   // The protocol used by the port (e.g., "TCP" or "UDP").
   string protocol = 3;

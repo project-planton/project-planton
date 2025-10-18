@@ -65,10 +65,10 @@ message ExternalDnsAksConfig {
 message ExternalDnsCloudflareConfig {
   // Cloudflare API token for authentication (scoped with Zone:Zone:Read and Zone:DNS:Edit permissions).
   string api_token = 1 [(buf.validate.field).required = true];
-  
+
   // Cloudflare DNS zone ID to manage. ExternalDNS will only manage records in this zone.
   string dns_zone_id = 2 [(buf.validate.field).required = true];
-  
+
   // Enable Cloudflare proxy (orange cloud) for all managed DNS records.
   // When enabled, traffic routes through Cloudflare's edge network for DDoS protection, WAF, and CDN.
   // Default: false

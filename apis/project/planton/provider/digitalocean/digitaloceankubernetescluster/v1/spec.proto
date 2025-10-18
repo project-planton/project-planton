@@ -4,7 +4,6 @@ package project.planton.provider.digitalocean.digitaloceankubernetescluster.v1;
 
 import "buf/validate/validate.proto";
 import "project/planton/provider/digitalocean/region.proto";
-import "project/planton/shared/cloudresourcekind/cloud_resource_kind.proto";
 import "project/planton/shared/foreignkey/v1/foreign_key.proto";
 import "project/planton/shared/options/options.proto";
 

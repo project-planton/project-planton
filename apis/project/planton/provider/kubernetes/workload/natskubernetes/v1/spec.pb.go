@@ -431,7 +431,7 @@ var File_project_planton_provider_kubernetes_workload_natskubernetes_v1_spec_pro
 
 const file_project_planton_provider_kubernetes_workload_natskubernetes_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Iproject/planton/provider/kubernetes/workload/natskubernetes/v1/spec.proto\x12>project.planton.provider.kubernetes.workload.natskubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\x1a,project/planton/shared/options/options.proto\"\x9f\x04\n" +
+	"Iproject/planton/provider/kubernetes/workload/natskubernetes/v1/spec.proto\x12>project.planton.provider.kubernetes.workload.natskubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a,project/planton/shared/options/options.proto\"\x9f\x04\n" +
 	"\x12NatsKubernetesSpec\x12\xb6\x01\n" +
 	"\x10server_container\x18\x01 \x01(\v2].project.planton.provider.kubernetes.workload.natskubernetes.v1.NatsKubernetesServerContainerB,ʬ\x80\x02'\b\x01\x12\x1d\n" +
 	"\f\n" +

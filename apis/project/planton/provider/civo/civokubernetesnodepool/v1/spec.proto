@@ -3,9 +3,7 @@ syntax = "proto3";
 package project.planton.provider.civo.civokubernetesnodepool.v1;
 
 import "buf/validate/validate.proto";
-import "project/planton/shared/cloudresourcekind/cloud_resource_kind.proto";
 import "project/planton/shared/foreignkey/v1/foreign_key.proto";
-import "project/planton/shared/options/options.proto";
 
 // CivoKubernetesNodePoolSpec defines the specification for creating a node pool in an existing Civo Kubernetes cluster.
 // It focuses on essential parameters, following the 80/20 principle to expose only the most commonly used settings.

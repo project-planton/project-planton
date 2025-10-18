@@ -6,7 +6,6 @@ import "buf/validate/validate.proto";
 import "project/planton/provider/digitalocean/digitaloceankubernetescluster/v1/spec.proto";
 import "project/planton/provider/digitalocean/digitaloceankubernetescluster/v1/stack_outputs.proto";
 import "project/planton/shared/metadata.proto";
-import "project/planton/shared/status.proto";
 
 // digital-ocean-kubernetes-cluster
 message DigitalOceanKubernetesCluster {

@@ -1,5 +1,5 @@
 .PHONY: build
-build:
+build: lint fmt
 	rm -rf generated/stubs generated/docs
 	mkdir -p generated/stubs generated/docs
 	buf generate

@@ -155,7 +155,7 @@ var File_project_planton_provider_kubernetes_addon_solroperatorkubernetes_v1_api
 
 const file_project_planton_provider_kubernetes_addon_solroperatorkubernetes_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Mproject/planton/provider/kubernetes/addon/solroperatorkubernetes/v1/api.proto\x12Cproject.planton.provider.kubernetes.addon.solroperatorkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1aNproject/planton/provider/kubernetes/addon/solroperatorkubernetes/v1/spec.proto\x1aWproject/planton/provider/kubernetes/addon/solroperatorkubernetes/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\x1a#project/planton/shared/status.proto\"\xdf\x03\n" +
+	"Mproject/planton/provider/kubernetes/addon/solroperatorkubernetes/v1/api.proto\x12Cproject.planton.provider.kubernetes.addon.solroperatorkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1aNproject/planton/provider/kubernetes/addon/solroperatorkubernetes/v1/spec.proto\x1aWproject/planton/provider/kubernetes/addon/solroperatorkubernetes/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xdf\x03\n" +
 	"\x16SolrOperatorKubernetes\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!kubernetes.project-planton.org/v1R\n" +

@@ -9,7 +9,6 @@ package awssecuritygroupv1
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	v1 "github.com/project-planton/project-planton/apis/project/planton/shared/foreignkey/v1"
-	_ "github.com/project-planton/project-planton/apis/project/planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -240,7 +239,7 @@ var File_project_planton_provider_aws_awssecuritygroup_v1_spec_proto protoreflec
 
 const file_project_planton_provider_aws_awssecuritygroup_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	";project/planton/provider/aws/awssecuritygroup/v1/spec.proto\x120project.planton.provider.aws.awssecuritygroup.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\"\xce\x03\n" +
+	";project/planton/provider/aws/awssecuritygroup/v1/spec.proto\x120project.planton.provider.aws.awssecuritygroup.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\"\xce\x03\n" +
 	"\x14AwsSecurityGroupSpec\x12s\n" +
 	"\x06vpc_id\x18\x01 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB$\xbaH\x03\xc8\x01\x01\x88\xd4a\xd9\x01\x92\xd4a\x15status.outputs.vpc_idR\x05vpcId\x12\x84\x01\n" +
 	"\vdescription\x18\x02 \x01(\tBb\xbaH_\xba\x01Y\n" +

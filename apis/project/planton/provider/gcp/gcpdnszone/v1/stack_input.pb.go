@@ -81,7 +81,7 @@ var File_project_planton_provider_gcp_gcpdnszone_v1_stack_input_proto protorefle
 
 const file_project_planton_provider_gcp_gcpdnszone_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"<project/planton/provider/gcp/gcpdnszone/v1/stack_input.proto\x12*project.planton.provider.gcp.gcpdnszone.v1\x1a6project/planton/credential/gcpcredential/v1/spec.proto\x1a4project/planton/provider/gcp/gcpdnszone/v1/api.proto\x1a>project/planton/provider/gcp/gcpdnszone/v1/stack_outputs.proto\"\xd7\x01\n" +
+	"<project/planton/provider/gcp/gcpdnszone/v1/stack_input.proto\x12*project.planton.provider.gcp.gcpdnszone.v1\x1a6project/planton/credential/gcpcredential/v1/spec.proto\x1a4project/planton/provider/gcp/gcpdnszone/v1/api.proto\"\xd7\x01\n" +
 	"\x14GcpDnsZoneStackInput\x12N\n" +
 	"\x06target\x18\x01 \x01(\v26.project.planton.provider.gcp.gcpdnszone.v1.GcpDnsZoneR\x06target\x12o\n" +
 	"\x13provider_credential\x18\x02 \x01(\v2>.project.planton.credential.gcpcredential.v1.GcpCredentialSpecR\x12providerCredentialB\xf9\x02\n" +
@@ -121,7 +121,6 @@ func file_project_planton_provider_gcp_gcpdnszone_v1_stack_input_proto_init() {
 		return
 	}
 	file_project_planton_provider_gcp_gcpdnszone_v1_api_proto_init()
-	file_project_planton_provider_gcp_gcpdnszone_v1_stack_outputs_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

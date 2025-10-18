@@ -8,7 +8,6 @@ package cloudflarer2bucketv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	_ "github.com/project-planton/project-planton/apis/project/planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -172,7 +171,7 @@ var File_project_planton_provider_cloudflare_cloudflarer2bucket_v1_spec_proto pr
 
 const file_project_planton_provider_cloudflare_cloudflarer2bucket_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Dproject/planton/provider/cloudflare/cloudflarer2bucket/v1/spec.proto\x129project.planton.provider.cloudflare.cloudflarer2bucket.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\"\xf0\x02\n" +
+	"Dproject/planton/provider/cloudflare/cloudflarer2bucket/v1/spec.proto\x129project.planton.provider.cloudflare.cloudflarer2bucket.v1\x1a\x1bbuf/validate/validate.proto\"\xf0\x02\n" +
 	"\x16CloudflareR2BucketSpec\x12N\n" +
 	"\vbucket_name\x18\x01 \x01(\tB-\xbaH*\xc8\x01\x01r%\x10\x03\x18?2\x1f^[a-z0-9]([-a-z0-9]*[a-z0-9])?$R\n" +
 	"bucketName\x12=\n" +

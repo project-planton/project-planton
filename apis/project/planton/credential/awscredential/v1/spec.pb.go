@@ -130,14 +130,14 @@ var File_project_planton_credential_awscredential_v1_spec_proto protoreflect.Fil
 
 const file_project_planton_credential_awscredential_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"6project/planton/credential/awscredential/v1/spec.proto\x12+project.planton.credential.awscredential.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\"\xe1\x06\n" +
+	"6project/planton/credential/awscredential/v1/spec.proto\x12+project.planton.credential.awscredential.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\"\xef\x06\n" +
 	"\x11AwsCredentialSpec\x12w\n" +
 	"\n" +
 	"account_id\x18\x01 \x01(\tBX\xbaHU\xba\x01O\n" +
-	"\x13spec.aws.account_id\x12\x1eOnly numbers (0-9) are allowed\x1a\x18this.matches('^[0-9]+$')\xc8\x01\x01R\taccountId\x12\xa7\x02\n" +
-	"\raccess_key_id\x18\x02 \x01(\tB\x82\x02\xbaH\xfe\x01\xba\x01k\n" +
-	"\x12spec.access_key_id\x128Must start with 'AKIA' (long-term) or 'ASIA' (temporary)\x1a\x1bthis.matches('^A(K|S)IA.*')\xba\x01\x84\x01\n" +
-	"\x12spec.access_key_id\x12GMust start with 'AKIA' or 'ASIA' followed by 16 alphanumeric characters\x1a%this.matches('^.{4}[a-zA-Z0-9]{16}$')\xc8\x01\x01r\x03\x98\x01\x14R\vaccessKeyId\x12\xdc\x02\n" +
+	"\x13spec.aws.account_id\x12\x1eOnly numbers (0-9) are allowed\x1a\x18this.matches('^[0-9]+$')\xc8\x01\x01R\taccountId\x12\xb5\x02\n" +
+	"\raccess_key_id\x18\x02 \x01(\tB\x90\x02\xbaH\x8c\x02\xba\x01r\n" +
+	"\x19spec.access_key_id.prefix\x128Must start with 'AKIA' (long-term) or 'ASIA' (temporary)\x1a\x1bthis.matches('^A(K|S)IA.*')\xba\x01\x8b\x01\n" +
+	"\x19spec.access_key_id.format\x12GMust start with 'AKIA' or 'ASIA' followed by 16 alphanumeric characters\x1a%this.matches('^.{4}[a-zA-Z0-9]{16}$')\xc8\x01\x01r\x03\x98\x01\x14R\vaccessKeyId\x12\xdc\x02\n" +
 	"\x11secret_access_key\x18\x03 \x01(\tB\xaf\x02\xbaH\xab\x02\xba\x01\x9f\x02\n" +
 	"\x1aspec.aws.secret_access_key\x12\xdb\x01The provided AWS Secret Access Key is invalid. It must contain exactly 40 characters consisting of numbers, lowercase and uppercase letters, slashes (/), and plus signs (+). Please double-check your input and try again.\x1a#this.matches('^[0-9a-zA-Z/+]{40}$')\xc8\x01\x01r\x03\x98\x01(R\x0fsecretAccessKey\x12%\n" +
 	"\x06region\x18\x04 \x01(\tB\r\x8a\xa6\x1d\tus-west-2R\x06region\x12#\n" +

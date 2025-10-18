@@ -8,7 +8,6 @@ package civocertificatev1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	_ "github.com/project-planton/project-planton/apis/project/planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -317,7 +316,7 @@ var File_project_planton_provider_civo_civocertificate_v1_spec_proto protoreflec
 
 const file_project_planton_provider_civo_civocertificate_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	";project/planton/provider/civo/civocertificate/v1/spec.proto\x120project.planton.provider.civo.civocertificate.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\"\xff\x03\n" +
+	";project/planton/provider/civo/civocertificate/v1/spec.proto\x120project.planton.provider.civo.civocertificate.v1\x1a\x1bbuf/validate/validate.proto\"\xff\x03\n" +
 	"\x13CivoCertificateSpec\x127\n" +
 	"\x10certificate_name\x18\x01 \x01(\tB\f\xbaH\t\xc8\x01\x01r\x04\x10\x01\x18@R\x0fcertificateName\x12f\n" +
 	"\x04type\x18\x02 \x01(\x0e2E.project.planton.provider.civo.civocertificate.v1.CivoCertificateTypeB\v\xbaH\b\xc8\x01\x01\x82\x01\x02\x10\x01R\x04type\x12w\n" +

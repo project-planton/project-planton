@@ -47,13 +47,13 @@ message TemporalKubernetesSpec {
   bool disable_web_ui = 2;
   // enables embedded elasticsearch for temporal
   // this is ignored if external elasticsearch is set
-  bool enableEmbeddedElasticsearch = 3;
+  bool enable_embedded_elasticsearch = 3;
   // enables monitoring stack for temporal
   // enabling this will deploy prometheus and grafana
-  bool enableMonitoringStack = 4;
+  bool enable_monitoring_stack = 4;
   //number of cassandra nodes to be deployed
   //this is only honored when the backend is cassandra, and no external database is provided.
-  int32 cassandraReplicas = 5 [(project.planton.shared.options.default) = "1"];
+  int32 cassandra_replicas = 5 [(project.planton.shared.options.default) = "1"];
   //The ingress configuration for the temporal deployment.
   //if enabled, the frontend will be exposed using a load-balancer
   // and also if web ui is enabled it will be exposed using the kubernetes ingress controller.

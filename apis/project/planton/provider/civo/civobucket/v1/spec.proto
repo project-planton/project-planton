@@ -4,7 +4,6 @@ package project.planton.provider.civo.civobucket.v1;
 
 import "buf/validate/validate.proto";
 import "project/planton/provider/civo/region.proto";
-import "project/planton/shared/options/options.proto";
 
 // CivoObjectStoreBucketSpec defines the user configuration for a Civo object storage bucket.
 message CivoBucketSpec {

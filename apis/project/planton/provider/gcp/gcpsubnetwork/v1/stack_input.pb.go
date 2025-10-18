@@ -81,7 +81,7 @@ var File_project_planton_provider_gcp_gcpsubnetwork_v1_stack_input_proto protore
 
 const file_project_planton_provider_gcp_gcpsubnetwork_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"?project/planton/provider/gcp/gcpsubnetwork/v1/stack_input.proto\x12-project.planton.provider.gcp.gcpsubnetwork.v1\x1a6project/planton/credential/gcpcredential/v1/spec.proto\x1a7project/planton/provider/gcp/gcpsubnetwork/v1/api.proto\x1aAproject/planton/provider/gcp/gcpsubnetwork/v1/stack_outputs.proto\"\xe0\x01\n" +
+	"?project/planton/provider/gcp/gcpsubnetwork/v1/stack_input.proto\x12-project.planton.provider.gcp.gcpsubnetwork.v1\x1a6project/planton/credential/gcpcredential/v1/spec.proto\x1a7project/planton/provider/gcp/gcpsubnetwork/v1/api.proto\"\xe0\x01\n" +
 	"\x17GcpSubnetworkStackInput\x12T\n" +
 	"\x06target\x18\x01 \x01(\v2<.project.planton.provider.gcp.gcpsubnetwork.v1.GcpSubnetworkR\x06target\x12o\n" +
 	"\x13provider_credential\x18\x02 \x01(\v2>.project.planton.credential.gcpcredential.v1.GcpCredentialSpecR\x12providerCredentialB\x8e\x03\n" +
@@ -121,7 +121,6 @@ func file_project_planton_provider_gcp_gcpsubnetwork_v1_stack_input_proto_init()
 		return
 	}
 	file_project_planton_provider_gcp_gcpsubnetwork_v1_api_proto_init()
-	file_project_planton_provider_gcp_gcpsubnetwork_v1_stack_outputs_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

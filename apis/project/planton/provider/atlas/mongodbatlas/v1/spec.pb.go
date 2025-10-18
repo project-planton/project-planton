@@ -7,7 +7,6 @@
 package mongodbatlasv1
 
 import (
-	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -229,7 +228,7 @@ var File_project_planton_provider_atlas_mongodbatlas_v1_spec_proto protoreflect.
 
 const file_project_planton_provider_atlas_mongodbatlas_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"9project/planton/provider/atlas/mongodbatlas/v1/spec.proto\x12.project.planton.provider.atlas.mongodbatlas.v1\x1a\x1bbuf/validate/validate.proto\"\x84\x01\n" +
+	"9project/planton/provider/atlas/mongodbatlas/v1/spec.proto\x12.project.planton.provider.atlas.mongodbatlas.v1\"\x84\x01\n" +
 	"\x10MongodbAtlasSpec\x12p\n" +
 	"\x0ecluster_config\x18\x01 \x01(\v2I.project.planton.provider.atlas.mongodbatlas.v1.MongodbAtlasClusterConfigR\rclusterConfig\"\xc6\x03\n" +
 	"\x19MongodbAtlasClusterConfig\x12\x1d\n" +

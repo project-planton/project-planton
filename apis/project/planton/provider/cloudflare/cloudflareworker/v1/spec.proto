@@ -3,7 +3,6 @@ syntax = "proto3";
 package project.planton.provider.cloudflare.cloudflareworker.v1;
 
 import "buf/validate/validate.proto";
-import "project/planton/shared/cloudresourcekind/cloud_resource_kind.proto";
 import "project/planton/shared/foreignkey/v1/foreign_key.proto";
 
 // CloudflareWorkerSpec defines user-provided configuration for deploying a Cloudflare Worker.
