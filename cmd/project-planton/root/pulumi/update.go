@@ -86,10 +86,12 @@ func updateHandler(cmd *cobra.Command, args []string) {
 	}
 	cliprint.PrintSuccess("Execution prepared")
 
+	showDiff, _ := cmd.Flags().GetBool(string(flag.Diff))
+
 	cliprint.PrintHandoff("Pulumi")
 
 	err = pulumistack.Run(moduleDir, stackFqdn, targetManifestPath,
-		pulumi.PulumiOperationType_update, false, true, valueOverrides, credentialOptions...)
+		pulumi.PulumiOperationType_update, false, true, valueOverrides, showDiff, credentialOptions...)
 	if err != nil {
 		cliprint.PrintPulumiFailure()
 		os.Exit(1)
