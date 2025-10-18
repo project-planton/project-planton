@@ -154,32 +154,6 @@ func helmChart(ctx *pulumi.Context, locals *Locals,
 		values["elasticsearch"] = pulumi.Map{"enabled": pulumi.Bool(false)}
 	}
 
-	// ------------------------------------------------- search attributes
-	if len(locals.TemporalKubernetes.Spec.SearchAttributes) > 0 {
-		searchAttrsMap := pulumi.Map{}
-		for _, attr := range locals.TemporalKubernetes.Spec.SearchAttributes {
-			// attr.Type is now a string with Temporal's official naming
-			searchAttrsMap[attr.Name] = pulumi.String(attr.Type)
-		}
-
-		// Configure via server dynamic config
-		if serverCfg, ok := values["server"].(pulumi.Map); ok {
-			if configMap, ok := serverCfg["config"].(pulumi.Map); ok {
-				configMap["customSearchAttributes"] = searchAttrsMap
-			} else {
-				serverCfg["config"] = pulumi.Map{
-					"customSearchAttributes": searchAttrsMap,
-				}
-			}
-		} else {
-			values["server"] = pulumi.Map{
-				"config": pulumi.Map{
-					"customSearchAttributes": searchAttrsMap,
-				},
-			}
-		}
-	}
-
 	// ----------------------------------------------------------- version
 	// determine which version to use: spec.version if provided, otherwise default
 	chartVersion := vars.HelmChartVersion
