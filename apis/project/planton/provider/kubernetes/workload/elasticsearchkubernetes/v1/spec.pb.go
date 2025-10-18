@@ -9,7 +9,6 @@ package elasticsearchkubernetesv1
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	kubernetes "github.com/project-planton/project-planton/apis/project/planton/shared/kubernetes"
-	_ "github.com/project-planton/project-planton/apis/project/planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	descriptorpb "google.golang.org/protobuf/types/descriptorpb"
@@ -424,7 +423,7 @@ var File_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_v1
 
 const file_project_planton_provider_kubernetes_workload_elasticsearchkubernetes_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Rproject/planton/provider/kubernetes/workload/elasticsearchkubernetes/v1/spec.proto\x12Gproject.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\x1a,project/planton/shared/options/options.proto\"\x97\x03\n" +
+	"Rproject/planton/provider/kubernetes/workload/elasticsearchkubernetes/v1/spec.proto\x12Gproject.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\"\x97\x03\n" +
 	"\x1bElasticsearchKubernetesSpec\x12\xc7\x01\n" +
 	"\relasticsearch\x18\x01 \x01(\v2q.project.planton.provider.kubernetes.workload.elasticsearchkubernetes.v1.ElasticsearchKubernetesElasticsearchSpecB.\xca\xc4\xf8\x01)\n" +
 	"'\b\x01\x12\x1c\n" +

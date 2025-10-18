@@ -8,7 +8,6 @@ package azurevpcv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	_ "github.com/project-planton/project-planton/apis/project/planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -120,7 +119,7 @@ var File_project_planton_provider_azure_azurevpc_v1_spec_proto protoreflect.File
 
 const file_project_planton_provider_azure_azurevpc_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"5project/planton/provider/azure/azurevpc/v1/spec.proto\x12*project.planton.provider.azure.azurevpc.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\"\xf3\x02\n" +
+	"5project/planton/provider/azure/azurevpc/v1/spec.proto\x12*project.planton.provider.azure.azurevpc.v1\x1a\x1bbuf/validate/validate.proto\"\xf3\x02\n" +
 	"\fAzureVpcSpec\x124\n" +
 	"\x12address_space_cidr\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x10addressSpaceCidr\x122\n" +
 	"\x11nodes_subnet_cidr\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x0fnodesSubnetCidr\x123\n" +

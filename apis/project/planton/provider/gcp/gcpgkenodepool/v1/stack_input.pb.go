@@ -8,7 +8,6 @@ package gcpgkenodepoolv1
 
 import (
 	v1 "github.com/project-planton/project-planton/apis/project/planton/credential/gcpcredential/v1"
-	_ "github.com/project-planton/project-planton/apis/project/planton/credential/kubernetesclustercredential/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -82,7 +81,7 @@ var File_project_planton_provider_gcp_gcpgkenodepool_v1_stack_input_proto protor
 
 const file_project_planton_provider_gcp_gcpgkenodepool_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"@project/planton/provider/gcp/gcpgkenodepool/v1/stack_input.proto\x12.project.planton.provider.gcp.gcpgkenodepool.v1\x1a6project/planton/credential/gcpcredential/v1/spec.proto\x1aDproject/planton/credential/kubernetesclustercredential/v1/spec.proto\x1a8project/planton/provider/gcp/gcpgkenodepool/v1/api.proto\"\xe3\x01\n" +
+	"@project/planton/provider/gcp/gcpgkenodepool/v1/stack_input.proto\x12.project.planton.provider.gcp.gcpgkenodepool.v1\x1a6project/planton/credential/gcpcredential/v1/spec.proto\x1a8project/planton/provider/gcp/gcpgkenodepool/v1/api.proto\"\xe3\x01\n" +
 	"\x18GcpGkeNodePoolStackInput\x12V\n" +
 	"\x06target\x18\x01 \x01(\v2>.project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePoolR\x06target\x12o\n" +
 	"\x13provider_credential\x18\x02 \x01(\v2>.project.planton.credential.gcpcredential.v1.GcpCredentialSpecR\x12providerCredentialB\x95\x03\n" +

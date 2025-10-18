@@ -9,7 +9,6 @@ package mongodbkubernetesv1
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	kubernetes "github.com/project-planton/project-planton/apis/project/planton/shared/kubernetes"
-	_ "github.com/project-planton/project-planton/apis/project/planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	descriptorpb "google.golang.org/protobuf/types/descriptorpb"
@@ -255,7 +254,7 @@ var File_project_planton_provider_kubernetes_workload_mongodbkubernetes_v1_spec_
 
 const file_project_planton_provider_kubernetes_workload_mongodbkubernetes_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Lproject/planton/provider/kubernetes/workload/mongodbkubernetes/v1/spec.proto\x12Aproject.planton.provider.kubernetes.workload.mongodbkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\x1a,project/planton/shared/options/options.proto\"\x85\x04\n" +
+	"Lproject/planton/provider/kubernetes/workload/mongodbkubernetes/v1/spec.proto\x12Aproject.planton.provider.kubernetes.workload.mongodbkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\"\x85\x04\n" +
 	"\x15MongodbKubernetesSpec\x12\xa9\x01\n" +
 	"\tcontainer\x18\x01 \x01(\v2].project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetesContainerB,\x8a\xe5\x82\x02'\b\x01\x12\x1c\n" +
 	"\f\n" +

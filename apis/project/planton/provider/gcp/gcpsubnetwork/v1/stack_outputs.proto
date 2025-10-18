@@ -2,8 +2,6 @@ syntax = "proto3";
 
 package project.planton.provider.gcp.gcpsubnetwork.v1;
 
-import "project/planton/provider/gcp/gcpsubnetwork/v1/spec.proto";
-
 // GcpSubnetworkStackOutputs captures the key outputs after provisioning the subnet.
 message GcpSubnetworkStackOutputs {
   // Self-link URL of the created subnetwork (useful for GKE clusters or other resources that need to reference this subnet).

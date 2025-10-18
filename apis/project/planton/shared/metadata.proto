@@ -2,7 +2,6 @@ syntax = "proto3";
 
 package project.planton.shared;
 
-import "buf/validate/validate.proto";
 import "project/planton/shared/relationship/v1/relationship.proto";
 
 //metadata for all resource objects on planton-cloud

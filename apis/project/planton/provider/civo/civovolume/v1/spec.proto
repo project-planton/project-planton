@@ -4,8 +4,6 @@ package project.planton.provider.civo.civovolume.v1;
 
 import "buf/validate/validate.proto";
 import "project/planton/provider/civo/region.proto";
-import "project/planton/shared/foreignkey/v1/foreign_key.proto";
-import "project/planton/shared/options/options.proto";
 
 // CivoVolumeSpec defines the specification required to create a Civo block storage volume.
 // A block storage volume provides expandable storage that can be attached to Civo instances.

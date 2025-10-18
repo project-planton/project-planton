@@ -7,7 +7,6 @@
 package gcpcloudsqlv1
 
 import (
-	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -67,7 +66,7 @@ var File_project_planton_provider_gcp_gcpcloudsql_v1_spec_proto protoreflect.Fil
 
 const file_project_planton_provider_gcp_gcpcloudsql_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"6project/planton/provider/gcp/gcpcloudsql/v1/spec.proto\x12+project.planton.provider.gcp.gcpcloudsql.v1\x1a\x1bbuf/validate/validate.proto\"\x11\n" +
+	"6project/planton/provider/gcp/gcpcloudsql/v1/spec.proto\x12+project.planton.provider.gcp.gcpcloudsql.v1\"\x11\n" +
 	"\x0fGcpCloudSqlSpecB\xfa\x02\n" +
 	"/com.project.planton.provider.gcp.gcpcloudsql.v1B\tSpecProtoP\x01Zigithub.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpcloudsql/v1;gcpcloudsqlv1\xa2\x02\x05PPPGG\xaa\x02+Project.Planton.Provider.Gcp.Gcpcloudsql.V1\xca\x02+Project\\Planton\\Provider\\Gcp\\Gcpcloudsql\\V1\xe2\x027Project\\Planton\\Provider\\Gcp\\Gcpcloudsql\\V1\\GPBMetadata\xea\x020Project::Planton::Provider::Gcp::Gcpcloudsql::V1b\x06proto3"
 

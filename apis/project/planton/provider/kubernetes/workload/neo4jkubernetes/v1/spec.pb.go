@@ -9,7 +9,6 @@ package neo4jkubernetesv1
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	kubernetes "github.com/project-planton/project-planton/apis/project/planton/shared/kubernetes"
-	_ "github.com/project-planton/project-planton/apis/project/planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	descriptorpb "google.golang.org/protobuf/types/descriptorpb"
@@ -294,7 +293,7 @@ var File_project_planton_provider_kubernetes_workload_neo4jkubernetes_v1_spec_pr
 
 const file_project_planton_provider_kubernetes_workload_neo4jkubernetes_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Jproject/planton/provider/kubernetes/workload/neo4jkubernetes/v1/spec.proto\x12?project.planton.provider.kubernetes.workload.neo4jkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\x1a,project/planton/shared/options/options.proto\"\xb0\x03\n" +
+	"Jproject/planton/provider/kubernetes/workload/neo4jkubernetes/v1/spec.proto\x12?project.planton.provider.kubernetes.workload.neo4jkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\"\xb0\x03\n" +
 	"\x13Neo4jKubernetesSpec\x12\xa1\x01\n" +
 	"\tcontainer\x18\x01 \x01(\v2Y.project.planton.provider.kubernetes.workload.neo4jkubernetes.v1.Neo4jKubernetesContainerB(\x92\xb0\x8d\x13#\n" +
 	"\x1c\n" +

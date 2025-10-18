@@ -7,7 +7,6 @@
 package jenkinskubernetesv1
 
 import (
-	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	kubernetes "github.com/project-planton/project-planton/apis/project/planton/shared/kubernetes"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -97,7 +96,7 @@ var File_project_planton_provider_kubernetes_workload_jenkinskubernetes_v1_spec_
 
 const file_project_planton_provider_kubernetes_workload_jenkinskubernetes_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Lproject/planton/provider/kubernetes/workload/jenkinskubernetes/v1/spec.proto\x12Aproject.planton.provider.kubernetes.workload.jenkinskubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\"\xb8\x03\n" +
+	"Lproject/planton/provider/kubernetes/workload/jenkinskubernetes/v1/spec.proto\x12Aproject.planton.provider.kubernetes.workload.jenkinskubernetes.v1\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\"\xb8\x03\n" +
 	"\x15JenkinsKubernetesSpec\x12\x89\x01\n" +
 	"\x13container_resources\x18\x01 \x01(\v25.project.planton.shared.kubernetes.ContainerResourcesB!\xba\xfb\xa4\x02\x1c\n" +
 	"\f\n" +

@@ -157,7 +157,7 @@ var File_project_planton_provider_civo_civovpc_v1_api_proto protoreflect.FileDes
 
 const file_project_planton_provider_civo_civovpc_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"2project/planton/provider/civo/civovpc/v1/api.proto\x12(project.planton.provider.civo.civovpc.v1\x1a\x1bbuf/validate/validate.proto\x1a3project/planton/provider/civo/civovpc/v1/spec.proto\x1a<project/planton/provider/civo/civovpc/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\x1a#project/planton/shared/status.proto\"\xe7\x02\n" +
+	"2project/planton/provider/civo/civovpc/v1/api.proto\x12(project.planton.provider.civo.civovpc.v1\x1a\x1bbuf/validate/validate.proto\x1a3project/planton/provider/civo/civovpc/v1/spec.proto\x1a<project/planton/provider/civo/civovpc/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xe7\x02\n" +
 	"\aCivoVpc\x12C\n" +
 	"\vapi_version\x18\x01 \x01(\tB\"\xbaH\x1fr\x1d\n" +
 	"\x1bcivo.project-planton.org/v1R\n" +

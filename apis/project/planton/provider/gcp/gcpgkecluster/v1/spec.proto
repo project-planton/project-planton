@@ -87,17 +87,17 @@ message GcpGkeClusterNodePool {
     (buf.validate.field).string.min_len = 1,
     (buf.validate.field).string.max_len = 25,
     (buf.validate.field).cel = {
-      id: "gcp.node_pool.name"
+      id: "gcp.node_pool.name.chars"
       message: "Only alphanumeric characters (A-Z, a-z, 0-9) and hyphens are allowed"
       expression: "this.matches('^[A-Za-z0-9-]+$')"
     },
     (buf.validate.field).cel = {
-      id: "gcp.node_pool.name"
+      id: "gcp.node_pool.name.startswith"
       message: "Must not start with a hyphen"
       expression: "this.matches('^[^-].*$')"
     },
     (buf.validate.field).cel = {
-      id: "gcp.node_pool.name"
+      id: "gcp.node_pool.name.endswith"
       message: "Must not end with a hyphen"
       expression: "this.matches('[^-]$')"
     }

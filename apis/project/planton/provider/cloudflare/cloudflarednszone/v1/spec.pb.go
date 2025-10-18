@@ -8,7 +8,6 @@ package cloudflarednszonev1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	_ "github.com/project-planton/project-planton/apis/project/planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -171,7 +170,7 @@ var File_project_planton_provider_cloudflare_cloudflarednszone_v1_spec_proto pro
 
 const file_project_planton_provider_cloudflare_cloudflarednszone_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Cproject/planton/provider/cloudflare/cloudflarednszone/v1/spec.proto\x128project.planton.provider.cloudflare.cloudflarednszone.v1\x1a\x1bbuf/validate/validate.proto\x1a,project/planton/shared/options/options.proto\"\xb7\x03\n" +
+	"Cproject/planton/provider/cloudflare/cloudflarednszone/v1/spec.proto\x128project.planton.provider.cloudflare.cloudflarednszone.v1\x1a\x1bbuf/validate/validate.proto\"\xb7\x03\n" +
 	"\x15CloudflareDnsZoneSpec\x12\xd0\x01\n" +
 	"\tzone_name\x18\x01 \x01(\tB\xb2\x01\xbaH\xae\x01\xba\x01\xa7\x01\n" +
 	"\tzone_name\x125zone_name must be a valid fully qualified domain name\x1acthis.matches('^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?[.])+(?:[a-z](?:[a-z0-9-]{0,61}[a-z0-9])?)$')\xc8\x01\x01R\bzoneName\x12%\n" +

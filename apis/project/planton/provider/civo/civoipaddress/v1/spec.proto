@@ -4,7 +4,6 @@ package project.planton.provider.civo.civoipaddress.v1;
 
 import "buf/validate/validate.proto";
 import "project/planton/provider/civo/region.proto";
-import "project/planton/shared/options/options.proto";
 
 // CivoIpAddressSpec defines the specification for provisioning a static reserved IP in Civo Cloud.
 // A reserved IP is a persistent public IPv4 address that can be attached to an instance or load balancer in the same region.

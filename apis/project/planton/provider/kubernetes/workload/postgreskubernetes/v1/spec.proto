@@ -5,8 +5,6 @@ package project.planton.provider.kubernetes.workload.postgreskubernetes.v1;
 import "buf/validate/validate.proto";
 import "google/protobuf/descriptor.proto";
 import "project/planton/shared/kubernetes/kubernetes.proto";
-import "project/planton/shared/kubernetes/options.proto";
-import "project/planton/shared/options/options.proto";
 
 extend google.protobuf.FieldOptions {
   PostgresKubernetesContainer default_container = 534001;

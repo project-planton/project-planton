@@ -295,7 +295,7 @@ var File_project_planton_provider_kubernetes_workload_openfgakubernetes_v1_spec_
 
 const file_project_planton_provider_kubernetes_workload_openfgakubernetes_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Lproject/planton/provider/kubernetes/workload/openfgakubernetes/v1/spec.proto\x12Aproject.planton.provider.kubernetes.workload.openfgakubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\x1a/project/planton/shared/kubernetes/options.proto\"\xb9\x03\n" +
+	"Lproject/planton/provider/kubernetes/workload/openfgakubernetes/v1/spec.proto\x12Aproject.planton.provider.kubernetes.workload.openfgakubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1a2project/planton/shared/kubernetes/kubernetes.proto\"\xb9\x03\n" +
 	"\x15OpenFgaKubernetesSpec\x12\xa2\x01\n" +
 	"\tcontainer\x18\x01 \x01(\v2].project.planton.provider.kubernetes.workload.openfgakubernetes.v1.OpenFgaKubernetesContainerB%ʣ\x83\x02 \b\x01\x12\x1c\n" +
 	"\f\n" +

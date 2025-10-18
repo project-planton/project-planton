@@ -4,7 +4,6 @@ package project.planton.provider.aws.awsekscluster.v1;
 
 import "buf/validate/validate.proto";
 import "project/planton/shared/foreignkey/v1/foreign_key.proto";
-import "project/planton/shared/options/options.proto";
 
 // AwsEksClusterSpec defines the specification for an AWS EKS (Elastic Kubernetes Service) cluster control plane.
 // It captures the minimal fields needed to create a Kubernetes control plane (80/20 use-case configuration).

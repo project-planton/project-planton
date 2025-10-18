@@ -4,7 +4,6 @@ package project.planton.provider.gcp.gcpserviceaccount.v1;
 
 import "project/planton/credential/gcpcredential/v1/spec.proto";
 import "project/planton/provider/gcp/gcpserviceaccount/v1/api.proto";
-import "project/planton/provider/gcp/gcpserviceaccount/v1/stack_outputs.proto";
 
 //gcp-service-account stack-input
 message GcpServiceAccountStackInput {

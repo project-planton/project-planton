@@ -155,7 +155,7 @@ var File_project_planton_provider_kubernetes_workload_neo4jkubernetes_v1_api_pro
 
 const file_project_planton_provider_kubernetes_workload_neo4jkubernetes_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Iproject/planton/provider/kubernetes/workload/neo4jkubernetes/v1/api.proto\x12?project.planton.provider.kubernetes.workload.neo4jkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1aJproject/planton/provider/kubernetes/workload/neo4jkubernetes/v1/spec.proto\x1aSproject/planton/provider/kubernetes/workload/neo4jkubernetes/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\x1a#project/planton/shared/status.proto\"\xbb\x03\n" +
+	"Iproject/planton/provider/kubernetes/workload/neo4jkubernetes/v1/api.proto\x12?project.planton.provider.kubernetes.workload.neo4jkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1aJproject/planton/provider/kubernetes/workload/neo4jkubernetes/v1/spec.proto\x1aSproject/planton/provider/kubernetes/workload/neo4jkubernetes/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xbb\x03\n" +
 	"\x0fNeo4jKubernetes\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!kubernetes.project-planton.org/v1R\n" +

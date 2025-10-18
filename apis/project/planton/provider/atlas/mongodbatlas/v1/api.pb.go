@@ -155,7 +155,7 @@ var File_project_planton_provider_atlas_mongodbatlas_v1_api_proto protoreflect.F
 
 const file_project_planton_provider_atlas_mongodbatlas_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"8project/planton/provider/atlas/mongodbatlas/v1/api.proto\x12.project.planton.provider.atlas.mongodbatlas.v1\x1a\x1bbuf/validate/validate.proto\x1a9project/planton/provider/atlas/mongodbatlas/v1/spec.proto\x1aBproject/planton/provider/atlas/mongodbatlas/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\x1a#project/planton/shared/status.proto\"\x88\x03\n" +
+	"8project/planton/provider/atlas/mongodbatlas/v1/api.proto\x12.project.planton.provider.atlas.mongodbatlas.v1\x1a\x1bbuf/validate/validate.proto\x1a9project/planton/provider/atlas/mongodbatlas/v1/spec.proto\x1aBproject/planton/provider/atlas/mongodbatlas/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\x88\x03\n" +
 	"\fMongodbAtlas\x12D\n" +
 	"\vapi_version\x18\x01 \x01(\tB#\xbaH r\x1e\n" +
 	"\x1catlas.project-planton.org/v1R\n" +

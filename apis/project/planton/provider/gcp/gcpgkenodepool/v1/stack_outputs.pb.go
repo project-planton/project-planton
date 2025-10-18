@@ -25,15 +25,15 @@ const (
 type GcpGkeNodePoolStackOutputs struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Name of the node pool in GKE (usually same as metadata.name of the resource).
-	NodePoolName string `protobuf:"bytes,1,opt,name=nodePoolName,proto3" json:"nodePoolName,omitempty"`
+	NodePoolName string `protobuf:"bytes,1,opt,name=node_pool_name,json=nodePoolName,proto3" json:"node_pool_name,omitempty"`
 	// URLs of the Compute Instance Group(s) backing this node pool.
 	// For regional clusters, there is one managed instance group per zone.
-	InstanceGroupUrls []string `protobuf:"bytes,2,rep,name=instanceGroupUrls,proto3" json:"instanceGroupUrls,omitempty"`
+	InstanceGroupUrls []string `protobuf:"bytes,2,rep,name=instance_group_urls,json=instanceGroupUrls,proto3" json:"instance_group_urls,omitempty"`
 	// Effective minimum and maximum size of the node pool (for autoscaling).
-	MinNodes uint32 `protobuf:"varint,3,opt,name=minNodes,proto3" json:"minNodes,omitempty"`
-	MaxNodes uint32 `protobuf:"varint,4,opt,name=maxNodes,proto3" json:"maxNodes,omitempty"`
+	MinNodes uint32 `protobuf:"varint,3,opt,name=min_nodes,json=minNodes,proto3" json:"min_nodes,omitempty"`
+	MaxNodes uint32 `protobuf:"varint,4,opt,name=max_nodes,json=maxNodes,proto3" json:"max_nodes,omitempty"`
 	// Current number of nodes in this pool.
-	CurrentNodeCount uint32 `protobuf:"varint,5,opt,name=currentNodeCount,proto3" json:"currentNodeCount,omitempty"`
+	CurrentNodeCount uint32 `protobuf:"varint,5,opt,name=current_node_count,json=currentNodeCount,proto3" json:"current_node_count,omitempty"`
 	unknownFields    protoimpl.UnknownFields
 	sizeCache        protoimpl.SizeCache
 }
@@ -107,13 +107,13 @@ var File_project_planton_provider_gcp_gcpgkenodepool_v1_stack_outputs_proto prot
 
 const file_project_planton_provider_gcp_gcpgkenodepool_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Bproject/planton/provider/gcp/gcpgkenodepool/v1/stack_outputs.proto\x12.project.planton.provider.gcp.gcpgkenodepool.v1\"\xd2\x01\n" +
-	"\x1aGcpGkeNodePoolStackOutputs\x12\"\n" +
-	"\fnodePoolName\x18\x01 \x01(\tR\fnodePoolName\x12,\n" +
-	"\x11instanceGroupUrls\x18\x02 \x03(\tR\x11instanceGroupUrls\x12\x1a\n" +
-	"\bminNodes\x18\x03 \x01(\rR\bminNodes\x12\x1a\n" +
-	"\bmaxNodes\x18\x04 \x01(\rR\bmaxNodes\x12*\n" +
-	"\x10currentNodeCount\x18\x05 \x01(\rR\x10currentNodeCountB\x97\x03\n" +
+	"Bproject/planton/provider/gcp/gcpgkenodepool/v1/stack_outputs.proto\x12.project.planton.provider.gcp.gcpgkenodepool.v1\"\xda\x01\n" +
+	"\x1aGcpGkeNodePoolStackOutputs\x12$\n" +
+	"\x0enode_pool_name\x18\x01 \x01(\tR\fnodePoolName\x12.\n" +
+	"\x13instance_group_urls\x18\x02 \x03(\tR\x11instanceGroupUrls\x12\x1b\n" +
+	"\tmin_nodes\x18\x03 \x01(\rR\bminNodes\x12\x1b\n" +
+	"\tmax_nodes\x18\x04 \x01(\rR\bmaxNodes\x12,\n" +
+	"\x12current_node_count\x18\x05 \x01(\rR\x10currentNodeCountB\x97\x03\n" +
 	"2com.project.planton.provider.gcp.gcpgkenodepool.v1B\x11StackOutputsProtoP\x01Zogithub.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpgkenodepool/v1;gcpgkenodepoolv1\xa2\x02\x05PPPGG\xaa\x02.Project.Planton.Provider.Gcp.Gcpgkenodepool.V1\xca\x02.Project\\Planton\\Provider\\Gcp\\Gcpgkenodepool\\V1\xe2\x02:Project\\Planton\\Provider\\Gcp\\Gcpgkenodepool\\V1\\GPBMetadata\xea\x023Project::Planton::Provider::Gcp::Gcpgkenodepool::V1b\x06proto3"
 
 var (

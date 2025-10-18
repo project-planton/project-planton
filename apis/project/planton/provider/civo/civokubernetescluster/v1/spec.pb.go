@@ -9,7 +9,6 @@ package civokubernetesclusterv1
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	civo "github.com/project-planton/project-planton/apis/project/planton/provider/civo"
-	_ "github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
 	v1 "github.com/project-planton/project-planton/apis/project/planton/shared/foreignkey/v1"
 	_ "github.com/project-planton/project-planton/apis/project/planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -215,7 +214,7 @@ var File_project_planton_provider_civo_civokubernetescluster_v1_spec_proto proto
 
 const file_project_planton_provider_civo_civokubernetescluster_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Aproject/planton/provider/civo/civokubernetescluster/v1/spec.proto\x126project.planton.provider.civo.civokubernetescluster.v1\x1a\x1bbuf/validate/validate.proto\x1a*project/planton/provider/civo/region.proto\x1aBproject/planton/shared/cloudresourcekind/cloud_resource_kind.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\"\xf8\x04\n" +
+	"Aproject/planton/provider/civo/civokubernetescluster/v1/spec.proto\x126project.planton.provider.civo.civokubernetescluster.v1\x1a\x1bbuf/validate/validate.proto\x1a*project/planton/provider/civo/region.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\"\xf8\x04\n" +
 	"\x19CivoKubernetesClusterSpec\x12)\n" +
 	"\fcluster_name\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\vclusterName\x12I\n" +
 	"\x06region\x18\x02 \x01(\x0e2).project.planton.provider.civo.CivoRegionB\x06\xbaH\x03\xc8\x01\x01R\x06region\x125\n" +

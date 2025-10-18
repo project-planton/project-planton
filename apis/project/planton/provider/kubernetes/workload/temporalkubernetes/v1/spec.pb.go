@@ -147,13 +147,13 @@ type TemporalKubernetesSpec struct {
 	DisableWebUi bool `protobuf:"varint,2,opt,name=disable_web_ui,json=disableWebUi,proto3" json:"disable_web_ui,omitempty"`
 	// enables embedded elasticsearch for temporal
 	// this is ignored if external elasticsearch is set
-	EnableEmbeddedElasticsearch bool `protobuf:"varint,3,opt,name=enableEmbeddedElasticsearch,proto3" json:"enableEmbeddedElasticsearch,omitempty"`
+	EnableEmbeddedElasticsearch bool `protobuf:"varint,3,opt,name=enable_embedded_elasticsearch,json=enableEmbeddedElasticsearch,proto3" json:"enable_embedded_elasticsearch,omitempty"`
 	// enables monitoring stack for temporal
 	// enabling this will deploy prometheus and grafana
-	EnableMonitoringStack bool `protobuf:"varint,4,opt,name=enableMonitoringStack,proto3" json:"enableMonitoringStack,omitempty"`
+	EnableMonitoringStack bool `protobuf:"varint,4,opt,name=enable_monitoring_stack,json=enableMonitoringStack,proto3" json:"enable_monitoring_stack,omitempty"`
 	// number of cassandra nodes to be deployed
 	// this is only honored when the backend is cassandra, and no external database is provided.
-	CassandraReplicas int32 `protobuf:"varint,5,opt,name=cassandraReplicas,proto3" json:"cassandraReplicas,omitempty"`
+	CassandraReplicas int32 `protobuf:"varint,5,opt,name=cassandra_replicas,json=cassandraReplicas,proto3" json:"cassandra_replicas,omitempty"`
 	// The ingress configuration for the temporal deployment.
 	// if enabled, the frontend will be exposed using a load-balancer
 	// and also if web ui is enabled it will be exposed using the kubernetes ingress controller.
@@ -501,13 +501,13 @@ const file_project_planton_provider_kubernetes_workload_temporalkubernetes_v1_sp
 	"!TemporalKubernetesSearchAttribute\x12\x1a\n" +
 	"\x04name\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\x12\xe1\x01\n" +
 	"\x04type\x18\x02 \x01(\tB\xcc\x01\xbaH\xc8\x01\xba\x01\xc1\x01\n" +
-	" type.valid_search_attribute_type\x12Ltype must be one of: Keyword, Text, Int, Double, Bool, Datetime, KeywordList\x1aOthis in ['Keyword', 'Text', 'Int', 'Double', 'Bool', 'Datetime', 'KeywordList']\xc8\x01\x01R\x04type\"\x94\x06\n" +
+	" type.valid_search_attribute_type\x12Ltype must be one of: Keyword, Text, Int, Double, Bool, Datetime, KeywordList\x1aOthis in ['Keyword', 'Text', 'Int', 'Double', 'Bool', 'Datetime', 'KeywordList']\xc8\x01\x01R\x04type\"\x99\x06\n" +
 	"\x16TemporalKubernetesSpec\x12\x88\x01\n" +
 	"\bdatabase\x18\x01 \x01(\v2d.project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesDatabaseConfigB\x06\xbaH\x03\xc8\x01\x01R\bdatabase\x12$\n" +
-	"\x0edisable_web_ui\x18\x02 \x01(\bR\fdisableWebUi\x12@\n" +
-	"\x1benableEmbeddedElasticsearch\x18\x03 \x01(\bR\x1benableEmbeddedElasticsearch\x124\n" +
-	"\x15enableMonitoringStack\x18\x04 \x01(\bR\x15enableMonitoringStack\x123\n" +
-	"\x11cassandraReplicas\x18\x05 \x01(\x05B\x05\x8a\xa6\x1d\x011R\x11cassandraReplicas\x12H\n" +
+	"\x0edisable_web_ui\x18\x02 \x01(\bR\fdisableWebUi\x12B\n" +
+	"\x1denable_embedded_elasticsearch\x18\x03 \x01(\bR\x1benableEmbeddedElasticsearch\x126\n" +
+	"\x17enable_monitoring_stack\x18\x04 \x01(\bR\x15enableMonitoringStack\x124\n" +
+	"\x12cassandra_replicas\x18\x05 \x01(\x05B\x05\x8a\xa6\x1d\x011R\x11cassandraReplicas\x12H\n" +
 	"\aingress\x18\x06 \x01(\v2..project.planton.shared.kubernetes.IngressSpecR\aingress\x12\xa2\x01\n" +
 	"\x16external_elasticsearch\x18\a \x01(\v2k.project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesExternalElasticsearchR\x15externalElasticsearch\x12\x92\x01\n" +
 	"\x11search_attributes\x18\b \x03(\v2e.project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesSearchAttributeR\x10searchAttributes\x12\x18\n" +

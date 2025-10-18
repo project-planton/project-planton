@@ -2,8 +2,6 @@ syntax = "proto3";
 
 package project.planton.provider.snowflake.snowflakedatabase.v1;
 
-import "buf/validate/validate.proto";
-
 //snowflake-database spec
 message SnowflakeDatabaseSpec {
   //The database parameter that specifies the default catalog to use for Iceberg tables

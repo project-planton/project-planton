@@ -2,8 +2,6 @@ syntax = "proto3";
 
 package project.planton.provider.atlas.mongodbatlas.v1;
 
-import "buf/validate/validate.proto";
-
 //mongodb-atlas spec
 message MongodbAtlasSpec {
   //cluster-config

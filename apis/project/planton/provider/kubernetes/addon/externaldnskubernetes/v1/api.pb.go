@@ -155,7 +155,7 @@ var File_project_planton_provider_kubernetes_addon_externaldnskubernetes_v1_api_
 
 const file_project_planton_provider_kubernetes_addon_externaldnskubernetes_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Lproject/planton/provider/kubernetes/addon/externaldnskubernetes/v1/api.proto\x12Bproject.planton.provider.kubernetes.addon.externaldnskubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1aMproject/planton/provider/kubernetes/addon/externaldnskubernetes/v1/spec.proto\x1aVproject/planton/provider/kubernetes/addon/externaldnskubernetes/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\x1a#project/planton/shared/status.proto\"\xd9\x03\n" +
+	"Lproject/planton/provider/kubernetes/addon/externaldnskubernetes/v1/api.proto\x12Bproject.planton.provider.kubernetes.addon.externaldnskubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1aMproject/planton/provider/kubernetes/addon/externaldnskubernetes/v1/spec.proto\x1aVproject/planton/provider/kubernetes/addon/externaldnskubernetes/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xd9\x03\n" +
 	"\x15ExternalDnsKubernetes\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!kubernetes.project-planton.org/v1R\n" +

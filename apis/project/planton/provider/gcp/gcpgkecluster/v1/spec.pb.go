@@ -383,12 +383,12 @@ const file_project_planton_provider_gcp_gcpgkecluster_v1_spec_proto_rawDesc = ""
 	"\rcpu_min_cores\x18\x02 \x01(\x03R\vcpuMinCores\x12\"\n" +
 	"\rcpu_max_cores\x18\x03 \x01(\x03R\vcpuMaxCores\x12\"\n" +
 	"\rmemory_min_gb\x18\x04 \x01(\x03R\vmemoryMinGb\x12\"\n" +
-	"\rmemory_max_gb\x18\x05 \x01(\x03R\vmemoryMaxGb\"\xef\x03\n" +
-	"\x15GcpGkeClusterNodePool\x12\xb6\x02\n" +
-	"\x04name\x18\x01 \x01(\tB\xa1\x02\xbaH\x9d\x02\xba\x01{\n" +
-	"\x12gcp.node_pool.name\x12DOnly alphanumeric characters (A-Z, a-z, 0-9) and hyphens are allowed\x1a\x1fthis.matches('^[A-Za-z0-9-]+$')\xba\x01L\n" +
-	"\x12gcp.node_pool.name\x12\x1cMust not start with a hyphen\x1a\x18this.matches('^[^-].*$')\xba\x01G\n" +
-	"\x12gcp.node_pool.name\x12\x1aMust not end with a hyphen\x1a\x15this.matches('[^-]$')r\x04\x10\x01\x18\x19R\x04name\x12)\n" +
+	"\rmemory_max_gb\x18\x05 \x01(\x03R\vmemoryMaxGb\"\x8a\x04\n" +
+	"\x15GcpGkeClusterNodePool\x12\xd1\x02\n" +
+	"\x04name\x18\x01 \x01(\tB\xbc\x02\xbaH\xb8\x02\xba\x01\x81\x01\n" +
+	"\x18gcp.node_pool.name.chars\x12DOnly alphanumeric characters (A-Z, a-z, 0-9) and hyphens are allowed\x1a\x1fthis.matches('^[A-Za-z0-9-]+$')\xba\x01W\n" +
+	"\x1dgcp.node_pool.name.startswith\x12\x1cMust not start with a hyphen\x1a\x18this.matches('^[^-].*$')\xba\x01P\n" +
+	"\x1bgcp.node_pool.name.endswith\x12\x1aMust not end with a hyphen\x1a\x15this.matches('[^-]$')r\x04\x10\x01\x18\x19R\x04name\x12)\n" +
 	"\fmachine_type\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\vmachineType\x12$\n" +
 	"\x0emin_node_count\x18\x03 \x01(\x05R\fminNodeCount\x12$\n" +
 	"\x0emax_node_count\x18\x04 \x01(\x05R\fmaxNodeCount\x12&\n" +

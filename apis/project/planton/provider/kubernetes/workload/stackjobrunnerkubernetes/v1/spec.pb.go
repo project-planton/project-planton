@@ -7,7 +7,6 @@
 package stackjobrunnerkubernetesv1
 
 import (
-	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -68,7 +67,7 @@ var File_project_planton_provider_kubernetes_workload_stackjobrunnerkubernetes_v
 
 const file_project_planton_provider_kubernetes_workload_stackjobrunnerkubernetes_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Sproject/planton/provider/kubernetes/workload/stackjobrunnerkubernetes/v1/spec.proto\x12Hproject.planton.provider.kubernetes.workload.stackjobrunnerkubernetes.v1\x1a\x1bbuf/validate/validate.proto\"\x1e\n" +
+	"Sproject/planton/provider/kubernetes/workload/stackjobrunnerkubernetes/v1/spec.proto\x12Hproject.planton.provider.kubernetes.workload.stackjobrunnerkubernetes.v1\"\x1e\n" +
 	"\x1cStackJobRunnerKubernetesSpecB\xb8\x04\n" +
 	"Lcom.project.planton.provider.kubernetes.workload.stackjobrunnerkubernetes.v1B\tSpecProtoP\x01Z\x93\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/stackjobrunnerkubernetes/v1;stackjobrunnerkubernetesv1\xa2\x02\x06PPPKWS\xaa\x02HProject.Planton.Provider.Kubernetes.Workload.Stackjobrunnerkubernetes.V1\xca\x02HProject\\Planton\\Provider\\Kubernetes\\Workload\\Stackjobrunnerkubernetes\\V1\xe2\x02TProject\\Planton\\Provider\\Kubernetes\\Workload\\Stackjobrunnerkubernetes\\V1\\GPBMetadata\xea\x02NProject::Planton::Provider::Kubernetes::Workload::Stackjobrunnerkubernetes::V1b\x06proto3"
 

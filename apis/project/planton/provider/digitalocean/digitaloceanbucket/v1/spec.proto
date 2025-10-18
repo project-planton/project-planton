@@ -4,7 +4,6 @@ package project.planton.provider.digitalocean.digitaloceanbucket.v1;
 
 import "buf/validate/validate.proto";
 import "project/planton/provider/digitalocean/region.proto";
-import "project/planton/shared/options/options.proto";
 
 // DigitalOceanBucketSpec defines the user configuration for a DigitalOcean Spaces bucket.
 message DigitalOceanBucketSpec {

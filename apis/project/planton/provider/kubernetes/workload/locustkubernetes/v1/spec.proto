@@ -5,7 +5,6 @@ package project.planton.provider.kubernetes.workload.locustkubernetes.v1;
 import "buf/validate/validate.proto";
 import "google/protobuf/descriptor.proto";
 import "project/planton/shared/kubernetes/kubernetes.proto";
-import "project/planton/shared/kubernetes/options.proto";
 
 extend google.protobuf.FieldOptions {
   LocustKubernetesContainer default_master_container = 528001;

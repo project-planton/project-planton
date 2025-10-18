@@ -157,7 +157,7 @@ var File_project_planton_provider_civo_civofirewall_v1_api_proto protoreflect.Fi
 
 const file_project_planton_provider_civo_civofirewall_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"7project/planton/provider/civo/civofirewall/v1/api.proto\x12-project.planton.provider.civo.civofirewall.v1\x1a\x1bbuf/validate/validate.proto\x1a8project/planton/provider/civo/civofirewall/v1/spec.proto\x1aAproject/planton/provider/civo/civofirewall/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\x1a#project/planton/shared/status.proto\"\x85\x03\n" +
+	"7project/planton/provider/civo/civofirewall/v1/api.proto\x12-project.planton.provider.civo.civofirewall.v1\x1a\x1bbuf/validate/validate.proto\x1a8project/planton/provider/civo/civofirewall/v1/spec.proto\x1aAproject/planton/provider/civo/civofirewall/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\x85\x03\n" +
 	"\fCivoFirewall\x12C\n" +
 	"\vapi_version\x18\x01 \x01(\tB\"\xbaH\x1fr\x1d\n" +
 	"\x1bcivo.project-planton.org/v1R\n" +

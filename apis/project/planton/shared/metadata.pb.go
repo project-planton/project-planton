@@ -7,7 +7,6 @@
 package shared
 
 import (
-	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	v1 "github.com/project-planton/project-planton/apis/project/planton/shared/relationship/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -218,7 +217,7 @@ var File_project_planton_shared_metadata_proto protoreflect.FileDescriptor
 
 const file_project_planton_shared_metadata_proto_rawDesc = "" +
 	"\n" +
-	"%project/planton/shared/metadata.proto\x12\x16project.planton.shared\x1a\x1bbuf/validate/validate.proto\x1a9project/planton/shared/relationship/v1/relationship.proto\"\xe8\x04\n" +
+	"%project/planton/shared/metadata.proto\x12\x16project.planton.shared\x1a9project/planton/shared/relationship/v1/relationship.proto\"\xe8\x04\n" +
 	"\x13ApiResourceMetadata\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x12\n" +
 	"\x04slug\x18\x02 \x01(\tR\x04slug\x12\x0e\n" +

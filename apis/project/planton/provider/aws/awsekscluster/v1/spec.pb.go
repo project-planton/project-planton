@@ -9,7 +9,6 @@ package awseksclusterv1
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	v1 "github.com/project-planton/project-planton/apis/project/planton/shared/foreignkey/v1"
-	_ "github.com/project-planton/project-planton/apis/project/planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -137,7 +136,7 @@ var File_project_planton_provider_aws_awsekscluster_v1_spec_proto protoreflect.F
 
 const file_project_planton_provider_aws_awsekscluster_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"8project/planton/provider/aws/awsekscluster/v1/spec.proto\x12-project.planton.provider.aws.awsekscluster.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a,project/planton/shared/options/options.proto\"\xd9\x05\n" +
+	"8project/planton/provider/aws/awsekscluster/v1/spec.proto\x12-project.planton.provider.aws.awsekscluster.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\"\xd9\x05\n" +
 	"\x11AwsEksClusterSpec\x12\x90\x01\n" +
 	"\n" +
 	"subnet_ids\x18\x01 \x03(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB9\xbaH\b\xc8\x01\x01\x92\x01\x02\b\x02\x88\xd4a\xd9\x01\x92\xd4a%status.outputs.private_subnets.[*].idR\tsubnetIds\x12\x88\x01\n" +

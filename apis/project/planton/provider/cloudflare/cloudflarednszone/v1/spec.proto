@@ -2,7 +2,6 @@ syntax = "proto3";
 package project.planton.provider.cloudflare.cloudflarednszone.v1;
 
 import "buf/validate/validate.proto";
-import "project/planton/shared/options/options.proto";
 
 // **CloudflareDnsZoneSpec** defines the configuration for creating a Cloudflare DNS Zone.
 // This message includes parameters needed to create and manage a DNS zone on Cloudflare,

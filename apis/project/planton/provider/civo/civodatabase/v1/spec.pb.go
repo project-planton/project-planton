@@ -9,7 +9,6 @@ package civodatabasev1
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	civo "github.com/project-planton/project-planton/apis/project/planton/provider/civo"
-	_ "github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
 	v1 "github.com/project-planton/project-planton/apis/project/planton/shared/foreignkey/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -214,7 +213,7 @@ var File_project_planton_provider_civo_civodatabase_v1_spec_proto protoreflect.F
 
 const file_project_planton_provider_civo_civodatabase_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"8project/planton/provider/civo/civodatabase/v1/spec.proto\x12-project.planton.provider.civo.civodatabase.v1\x1a\x1bbuf/validate/validate.proto\x1a*project/planton/provider/civo/region.proto\x1aBproject/planton/shared/cloudresourcekind/cloud_resource_kind.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\"\xbc\x05\n" +
+	"8project/planton/provider/civo/civodatabase/v1/spec.proto\x12-project.planton.provider.civo.civodatabase.v1\x1a\x1bbuf/validate/validate.proto\x1a*project/planton/provider/civo/region.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\"\xbc\x05\n" +
 	"\x10CivoDatabaseSpec\x124\n" +
 	"\x10db_instance_name\x18\x01 \x01(\tB\n" +
 	"\xbaH\a\xc8\x01\x01r\x02\x18@R\x0edbInstanceName\x12a\n" +

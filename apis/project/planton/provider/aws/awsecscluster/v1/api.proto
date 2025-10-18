@@ -6,7 +6,6 @@ import "buf/validate/validate.proto";
 import "project/planton/provider/aws/awsecscluster/v1/spec.proto";
 import "project/planton/provider/aws/awsecscluster/v1/stack_outputs.proto";
 import "project/planton/shared/metadata.proto";
-import "project/planton/shared/status.proto";
 
 // AwsEcsCluster represents a containerized application deployed on AWS ECS.
 // This resource manages ECS services that can run on either Fargate or EC2.

@@ -2,8 +2,6 @@ syntax = "proto3";
 
 package project.planton.provider.gcp.gcpcloudsql.v1;
 
-import "buf/validate/validate.proto";
-
 // **GcpCloudSqlSpec** defines the configuration for deploying a Google Cloud SQL instance.
 // This message specifies the necessary parameters to create and manage Cloud SQL instances within a
 // specified GCP project. By configuring settings such as database versions, instance sizes, and
