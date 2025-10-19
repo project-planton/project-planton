@@ -2,13 +2,13 @@ syntax = "proto3";
 
 package project.planton.provider.snowflake.snowflakedatabase.v1;
 
-import "project/planton/credential/snowflakecredential/v1/spec.proto";
+import "project/planton/provider/snowflake/provider.proto";
 import "project/planton/provider/snowflake/snowflakedatabase/v1/api.proto";
 
 //snowflake-database stack-input
 message SnowflakeDatabaseStackInput {
   //target cloud-resource
   SnowflakeDatabase target = 1;
-  //provider-credential
-  project.planton.credential.snowflakecredential.v1.SnowflakeCredentialSpec provider_credential = 2;
+  //provider-config
+  project.planton.provider.snowflake.SnowflakeProviderConfig provider_config = 2;
 }

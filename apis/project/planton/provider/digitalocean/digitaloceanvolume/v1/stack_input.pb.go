@@ -7,7 +7,7 @@
 package digitaloceanvolumev1
 
 import (
-	v1 "github.com/project-planton/project-planton/apis/project/planton/credential/digitaloceancredential/v1"
+	digitalocean "github.com/project-planton/project-planton/apis/project/planton/provider/digitalocean"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -27,10 +27,10 @@ type DigitalOceanVolumeStackInput struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// target cloud-resource
 	Target *DigitalOceanVolume `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
-	// provider-credential
-	ProviderCredential *v1.DigitalOceanCredentialSpec `protobuf:"bytes,2,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	// provider-config
+	ProviderConfig *digitalocean.DigitalOceanProviderConfig `protobuf:"bytes,2,opt,name=provider_config,json=providerConfig,proto3" json:"provider_config,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *DigitalOceanVolumeStackInput) Reset() {
@@ -70,9 +70,9 @@ func (x *DigitalOceanVolumeStackInput) GetTarget() *DigitalOceanVolume {
 	return nil
 }
 
-func (x *DigitalOceanVolumeStackInput) GetProviderCredential() *v1.DigitalOceanCredentialSpec {
+func (x *DigitalOceanVolumeStackInput) GetProviderConfig() *digitalocean.DigitalOceanProviderConfig {
 	if x != nil {
-		return x.ProviderCredential
+		return x.ProviderConfig
 	}
 	return nil
 }
@@ -81,10 +81,10 @@ var File_project_planton_provider_digitalocean_digitaloceanvolume_v1_stack_input
 
 const file_project_planton_provider_digitalocean_digitaloceanvolume_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Mproject/planton/provider/digitalocean/digitaloceanvolume/v1/stack_input.proto\x12;project.planton.provider.digitalocean.digitaloceanvolume.v1\x1a?project/planton/credential/digitaloceancredential/v1/spec.proto\x1aEproject/planton/provider/digitalocean/digitaloceanvolume/v1/api.proto\"\x8b\x02\n" +
+	"Mproject/planton/provider/digitalocean/digitaloceanvolume/v1/stack_input.proto\x12;project.planton.provider.digitalocean.digitaloceanvolume.v1\x1aEproject/planton/provider/digitalocean/digitaloceanvolume/v1/api.proto\x1a4project/planton/provider/digitalocean/provider.proto\"\xf3\x01\n" +
 	"\x1cDigitalOceanVolumeStackInput\x12g\n" +
-	"\x06target\x18\x01 \x01(\v2O.project.planton.provider.digitalocean.digitaloceanvolume.v1.DigitalOceanVolumeR\x06target\x12\x81\x01\n" +
-	"\x13provider_credential\x18\x02 \x01(\v2P.project.planton.credential.digitaloceancredential.v1.DigitalOceanCredentialSpecR\x12providerCredentialB\xe8\x03\n" +
+	"\x06target\x18\x01 \x01(\v2O.project.planton.provider.digitalocean.digitaloceanvolume.v1.DigitalOceanVolumeR\x06target\x12j\n" +
+	"\x0fprovider_config\x18\x02 \x01(\v2A.project.planton.provider.digitalocean.DigitalOceanProviderConfigR\x0eproviderConfigB\xe8\x03\n" +
 	"?com.project.planton.provider.digitalocean.digitaloceanvolume.v1B\x0fStackInputProtoP\x01Z\x80\x01github.com/project-planton/project-planton/apis/project/planton/provider/digitalocean/digitaloceanvolume/v1;digitaloceanvolumev1\xa2\x02\x05PPPDD\xaa\x02;Project.Planton.Provider.Digitalocean.Digitaloceanvolume.V1\xca\x02;Project\\Planton\\Provider\\Digitalocean\\Digitaloceanvolume\\V1\xe2\x02GProject\\Planton\\Provider\\Digitalocean\\Digitaloceanvolume\\V1\\GPBMetadata\xea\x02@Project::Planton::Provider::Digitalocean::Digitaloceanvolume::V1b\x06proto3"
 
 var (
@@ -101,13 +101,13 @@ func file_project_planton_provider_digitalocean_digitaloceanvolume_v1_stack_inpu
 
 var file_project_planton_provider_digitalocean_digitaloceanvolume_v1_stack_input_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_digitalocean_digitaloceanvolume_v1_stack_input_proto_goTypes = []any{
-	(*DigitalOceanVolumeStackInput)(nil),  // 0: project.planton.provider.digitalocean.digitaloceanvolume.v1.DigitalOceanVolumeStackInput
-	(*DigitalOceanVolume)(nil),            // 1: project.planton.provider.digitalocean.digitaloceanvolume.v1.DigitalOceanVolume
-	(*v1.DigitalOceanCredentialSpec)(nil), // 2: project.planton.credential.digitaloceancredential.v1.DigitalOceanCredentialSpec
+	(*DigitalOceanVolumeStackInput)(nil),            // 0: project.planton.provider.digitalocean.digitaloceanvolume.v1.DigitalOceanVolumeStackInput
+	(*DigitalOceanVolume)(nil),                      // 1: project.planton.provider.digitalocean.digitaloceanvolume.v1.DigitalOceanVolume
+	(*digitalocean.DigitalOceanProviderConfig)(nil), // 2: project.planton.provider.digitalocean.DigitalOceanProviderConfig
 }
 var file_project_planton_provider_digitalocean_digitaloceanvolume_v1_stack_input_proto_depIdxs = []int32{
 	1, // 0: project.planton.provider.digitalocean.digitaloceanvolume.v1.DigitalOceanVolumeStackInput.target:type_name -> project.planton.provider.digitalocean.digitaloceanvolume.v1.DigitalOceanVolume
-	2, // 1: project.planton.provider.digitalocean.digitaloceanvolume.v1.DigitalOceanVolumeStackInput.provider_credential:type_name -> project.planton.credential.digitaloceancredential.v1.DigitalOceanCredentialSpec
+	2, // 1: project.planton.provider.digitalocean.digitaloceanvolume.v1.DigitalOceanVolumeStackInput.provider_config:type_name -> project.planton.provider.digitalocean.DigitalOceanProviderConfig
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

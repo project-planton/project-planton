@@ -7,7 +7,7 @@
 package awsrdsinstancev1
 
 import (
-	v1 "github.com/project-planton/project-planton/apis/project/planton/credential/awscredential/v1"
+	aws "github.com/project-planton/project-planton/apis/project/planton/provider/aws"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -28,9 +28,9 @@ type AwsRdsInstanceStackInput struct {
 	// target
 	Target *AwsRdsInstance `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
 	// provider-credential
-	ProviderCredential *v1.AwsCredentialSpec `protobuf:"bytes,2,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	ProviderConfig *aws.AwsProviderConfig `protobuf:"bytes,2,opt,name=provider_config,json=providerConfig,proto3" json:"provider_config,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *AwsRdsInstanceStackInput) Reset() {
@@ -70,9 +70,9 @@ func (x *AwsRdsInstanceStackInput) GetTarget() *AwsRdsInstance {
 	return nil
 }
 
-func (x *AwsRdsInstanceStackInput) GetProviderCredential() *v1.AwsCredentialSpec {
+func (x *AwsRdsInstanceStackInput) GetProviderConfig() *aws.AwsProviderConfig {
 	if x != nil {
-		return x.ProviderCredential
+		return x.ProviderConfig
 	}
 	return nil
 }
@@ -81,10 +81,10 @@ var File_project_planton_provider_aws_awsrdsinstance_v1_stack_input_proto protor
 
 const file_project_planton_provider_aws_awsrdsinstance_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"@project/planton/provider/aws/awsrdsinstance/v1/stack_input.proto\x12.project.planton.provider.aws.awsrdsinstance.v1\x1a6project/planton/credential/awscredential/v1/spec.proto\x1a8project/planton/provider/aws/awsrdsinstance/v1/api.proto\"\xe3\x01\n" +
+	"@project/planton/provider/aws/awsrdsinstance/v1/stack_input.proto\x12.project.planton.provider.aws.awsrdsinstance.v1\x1a8project/planton/provider/aws/awsrdsinstance/v1/api.proto\x1a+project/planton/provider/aws/provider.proto\"\xcc\x01\n" +
 	"\x18AwsRdsInstanceStackInput\x12V\n" +
-	"\x06target\x18\x01 \x01(\v2>.project.planton.provider.aws.awsrdsinstance.v1.AwsRdsInstanceR\x06target\x12o\n" +
-	"\x13provider_credential\x18\x02 \x01(\v2>.project.planton.credential.awscredential.v1.AwsCredentialSpecR\x12providerCredentialB\x95\x03\n" +
+	"\x06target\x18\x01 \x01(\v2>.project.planton.provider.aws.awsrdsinstance.v1.AwsRdsInstanceR\x06target\x12X\n" +
+	"\x0fprovider_config\x18\x02 \x01(\v2/.project.planton.provider.aws.AwsProviderConfigR\x0eproviderConfigB\x95\x03\n" +
 	"2com.project.planton.provider.aws.awsrdsinstance.v1B\x0fStackInputProtoP\x01Zogithub.com/project-planton/project-planton/apis/project/planton/provider/aws/awsrdsinstance/v1;awsrdsinstancev1\xa2\x02\x05PPPAA\xaa\x02.Project.Planton.Provider.Aws.Awsrdsinstance.V1\xca\x02.Project\\Planton\\Provider\\Aws\\Awsrdsinstance\\V1\xe2\x02:Project\\Planton\\Provider\\Aws\\Awsrdsinstance\\V1\\GPBMetadata\xea\x023Project::Planton::Provider::Aws::Awsrdsinstance::V1b\x06proto3"
 
 var (
@@ -103,11 +103,11 @@ var file_project_planton_provider_aws_awsrdsinstance_v1_stack_input_proto_msgTyp
 var file_project_planton_provider_aws_awsrdsinstance_v1_stack_input_proto_goTypes = []any{
 	(*AwsRdsInstanceStackInput)(nil), // 0: project.planton.provider.aws.awsrdsinstance.v1.AwsRdsInstanceStackInput
 	(*AwsRdsInstance)(nil),           // 1: project.planton.provider.aws.awsrdsinstance.v1.AwsRdsInstance
-	(*v1.AwsCredentialSpec)(nil),     // 2: project.planton.credential.awscredential.v1.AwsCredentialSpec
+	(*aws.AwsProviderConfig)(nil),    // 2: project.planton.provider.aws.AwsProviderConfig
 }
 var file_project_planton_provider_aws_awsrdsinstance_v1_stack_input_proto_depIdxs = []int32{
 	1, // 0: project.planton.provider.aws.awsrdsinstance.v1.AwsRdsInstanceStackInput.target:type_name -> project.planton.provider.aws.awsrdsinstance.v1.AwsRdsInstance
-	2, // 1: project.planton.provider.aws.awsrdsinstance.v1.AwsRdsInstanceStackInput.provider_credential:type_name -> project.planton.credential.awscredential.v1.AwsCredentialSpec
+	2, // 1: project.planton.provider.aws.awsrdsinstance.v1.AwsRdsInstanceStackInput.provider_config:type_name -> project.planton.provider.aws.AwsProviderConfig
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

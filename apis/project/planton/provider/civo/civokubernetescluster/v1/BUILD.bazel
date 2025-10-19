@@ -11,7 +11,6 @@ go_library(
     importpath = "github.com/project-planton/project-planton/apis/project/planton/provider/civo/civokubernetescluster/v1",
     visibility = ["//visibility:public"],
     deps = [
-        "//apis/project/planton/credential/civocredential/v1:civocredential",
         "//apis/project/planton/provider/civo",
         "//apis/project/planton/shared",
         "//apis/project/planton/shared/foreignkey/v1:foreignkey",

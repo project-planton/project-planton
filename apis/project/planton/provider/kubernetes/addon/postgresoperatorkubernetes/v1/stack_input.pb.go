@@ -7,7 +7,7 @@
 package postgresoperatorkubernetesv1
 
 import (
-	v1 "github.com/project-planton/project-planton/apis/project/planton/credential/kubernetesclustercredential/v1"
+	kubernetes "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -27,10 +27,10 @@ type PostgresOperatorKubernetesStackInput struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// target cloud-resource
 	Target *PostgresOperatorKubernetes `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
-	// provider-credential
-	ProviderCredential *v1.KubernetesClusterCredentialSpec `protobuf:"bytes,2,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	// provider-config
+	ProviderConfig *kubernetes.KubernetesProviderConfig `protobuf:"bytes,2,opt,name=provider_config,json=providerConfig,proto3" json:"provider_config,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *PostgresOperatorKubernetesStackInput) Reset() {
@@ -70,9 +70,9 @@ func (x *PostgresOperatorKubernetesStackInput) GetTarget() *PostgresOperatorKube
 	return nil
 }
 
-func (x *PostgresOperatorKubernetesStackInput) GetProviderCredential() *v1.KubernetesClusterCredentialSpec {
+func (x *PostgresOperatorKubernetesStackInput) GetProviderConfig() *kubernetes.KubernetesProviderConfig {
 	if x != nil {
-		return x.ProviderCredential
+		return x.ProviderConfig
 	}
 	return nil
 }
@@ -81,10 +81,10 @@ var File_project_planton_provider_kubernetes_addon_postgresoperatorkubernetes_v1
 
 const file_project_planton_provider_kubernetes_addon_postgresoperatorkubernetes_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Yproject/planton/provider/kubernetes/addon/postgresoperatorkubernetes/v1/stack_input.proto\x12Gproject.planton.provider.kubernetes.addon.postgresoperatorkubernetes.v1\x1aDproject/planton/credential/kubernetesclustercredential/v1/spec.proto\x1aQproject/planton/provider/kubernetes/addon/postgresoperatorkubernetes/v1/api.proto\"\xb1\x02\n" +
+	"Yproject/planton/provider/kubernetes/addon/postgresoperatorkubernetes/v1/stack_input.proto\x12Gproject.planton.provider.kubernetes.addon.postgresoperatorkubernetes.v1\x1aQproject/planton/provider/kubernetes/addon/postgresoperatorkubernetes/v1/api.proto\x1a2project/planton/provider/kubernetes/provider.proto\"\x8b\x02\n" +
 	"$PostgresOperatorKubernetesStackInput\x12{\n" +
-	"\x06target\x18\x01 \x01(\v2c.project.planton.provider.kubernetes.addon.postgresoperatorkubernetes.v1.PostgresOperatorKubernetesR\x06target\x12\x8b\x01\n" +
-	"\x13provider_credential\x18\x02 \x01(\v2Z.project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpecR\x12providerCredentialB\xba\x04\n" +
+	"\x06target\x18\x01 \x01(\v2c.project.planton.provider.kubernetes.addon.postgresoperatorkubernetes.v1.PostgresOperatorKubernetesR\x06target\x12f\n" +
+	"\x0fprovider_config\x18\x02 \x01(\v2=.project.planton.provider.kubernetes.KubernetesProviderConfigR\x0eproviderConfigB\xba\x04\n" +
 	"Kcom.project.planton.provider.kubernetes.addon.postgresoperatorkubernetes.v1B\x0fStackInputProtoP\x01Z\x94\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/addon/postgresoperatorkubernetes/v1;postgresoperatorkubernetesv1\xa2\x02\x06PPPKAP\xaa\x02GProject.Planton.Provider.Kubernetes.Addon.Postgresoperatorkubernetes.V1\xca\x02GProject\\Planton\\Provider\\Kubernetes\\Addon\\Postgresoperatorkubernetes\\V1\xe2\x02SProject\\Planton\\Provider\\Kubernetes\\Addon\\Postgresoperatorkubernetes\\V1\\GPBMetadata\xea\x02MProject::Planton::Provider::Kubernetes::Addon::Postgresoperatorkubernetes::V1b\x06proto3"
 
 var (
@@ -103,11 +103,11 @@ var file_project_planton_provider_kubernetes_addon_postgresoperatorkubernetes_v1
 var file_project_planton_provider_kubernetes_addon_postgresoperatorkubernetes_v1_stack_input_proto_goTypes = []any{
 	(*PostgresOperatorKubernetesStackInput)(nil), // 0: project.planton.provider.kubernetes.addon.postgresoperatorkubernetes.v1.PostgresOperatorKubernetesStackInput
 	(*PostgresOperatorKubernetes)(nil),           // 1: project.planton.provider.kubernetes.addon.postgresoperatorkubernetes.v1.PostgresOperatorKubernetes
-	(*v1.KubernetesClusterCredentialSpec)(nil),   // 2: project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec
+	(*kubernetes.KubernetesProviderConfig)(nil),  // 2: project.planton.provider.kubernetes.KubernetesProviderConfig
 }
 var file_project_planton_provider_kubernetes_addon_postgresoperatorkubernetes_v1_stack_input_proto_depIdxs = []int32{
 	1, // 0: project.planton.provider.kubernetes.addon.postgresoperatorkubernetes.v1.PostgresOperatorKubernetesStackInput.target:type_name -> project.planton.provider.kubernetes.addon.postgresoperatorkubernetes.v1.PostgresOperatorKubernetes
-	2, // 1: project.planton.provider.kubernetes.addon.postgresoperatorkubernetes.v1.PostgresOperatorKubernetesStackInput.provider_credential:type_name -> project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec
+	2, // 1: project.planton.provider.kubernetes.addon.postgresoperatorkubernetes.v1.PostgresOperatorKubernetesStackInput.provider_config:type_name -> project.planton.provider.kubernetes.KubernetesProviderConfig
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

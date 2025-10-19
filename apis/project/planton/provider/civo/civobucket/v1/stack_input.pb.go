@@ -7,7 +7,7 @@
 package civobucketv1
 
 import (
-	v1 "github.com/project-planton/project-planton/apis/project/planton/credential/civocredential/v1"
+	civo "github.com/project-planton/project-planton/apis/project/planton/provider/civo"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -27,10 +27,10 @@ type CivoBucketStackInput struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// target cloud-resource
 	Target *CivoBucket `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
-	// provider-credential
-	ProviderCredential *v1.CivoCredentialSpec `protobuf:"bytes,2,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	// provider-config
+	ProviderConfig *civo.CivoProviderConfig `protobuf:"bytes,2,opt,name=provider_config,json=providerConfig,proto3" json:"provider_config,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *CivoBucketStackInput) Reset() {
@@ -70,9 +70,9 @@ func (x *CivoBucketStackInput) GetTarget() *CivoBucket {
 	return nil
 }
 
-func (x *CivoBucketStackInput) GetProviderCredential() *v1.CivoCredentialSpec {
+func (x *CivoBucketStackInput) GetProviderConfig() *civo.CivoProviderConfig {
 	if x != nil {
-		return x.ProviderCredential
+		return x.ProviderConfig
 	}
 	return nil
 }
@@ -81,10 +81,10 @@ var File_project_planton_provider_civo_civobucket_v1_stack_input_proto protorefl
 
 const file_project_planton_provider_civo_civobucket_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"=project/planton/provider/civo/civobucket/v1/stack_input.proto\x12+project.planton.provider.civo.civobucket.v1\x1a7project/planton/credential/civocredential/v1/spec.proto\x1a5project/planton/provider/civo/civobucket/v1/api.proto\"\xda\x01\n" +
+	"=project/planton/provider/civo/civobucket/v1/stack_input.proto\x12+project.planton.provider.civo.civobucket.v1\x1a5project/planton/provider/civo/civobucket/v1/api.proto\x1a,project/planton/provider/civo/provider.proto\"\xc3\x01\n" +
 	"\x14CivoBucketStackInput\x12O\n" +
-	"\x06target\x18\x01 \x01(\v27.project.planton.provider.civo.civobucket.v1.CivoBucketR\x06target\x12q\n" +
-	"\x13provider_credential\x18\x02 \x01(\v2@.project.planton.credential.civocredential.v1.CivoCredentialSpecR\x12providerCredentialB\xff\x02\n" +
+	"\x06target\x18\x01 \x01(\v27.project.planton.provider.civo.civobucket.v1.CivoBucketR\x06target\x12Z\n" +
+	"\x0fprovider_config\x18\x02 \x01(\v21.project.planton.provider.civo.CivoProviderConfigR\x0eproviderConfigB\xff\x02\n" +
 	"/com.project.planton.provider.civo.civobucket.v1B\x0fStackInputProtoP\x01Zhgithub.com/project-planton/project-planton/apis/project/planton/provider/civo/civobucket/v1;civobucketv1\xa2\x02\x05PPPCC\xaa\x02+Project.Planton.Provider.Civo.Civobucket.V1\xca\x02+Project\\Planton\\Provider\\Civo\\Civobucket\\V1\xe2\x027Project\\Planton\\Provider\\Civo\\Civobucket\\V1\\GPBMetadata\xea\x020Project::Planton::Provider::Civo::Civobucket::V1b\x06proto3"
 
 var (
@@ -101,13 +101,13 @@ func file_project_planton_provider_civo_civobucket_v1_stack_input_proto_rawDescG
 
 var file_project_planton_provider_civo_civobucket_v1_stack_input_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_civo_civobucket_v1_stack_input_proto_goTypes = []any{
-	(*CivoBucketStackInput)(nil),  // 0: project.planton.provider.civo.civobucket.v1.CivoBucketStackInput
-	(*CivoBucket)(nil),            // 1: project.planton.provider.civo.civobucket.v1.CivoBucket
-	(*v1.CivoCredentialSpec)(nil), // 2: project.planton.credential.civocredential.v1.CivoCredentialSpec
+	(*CivoBucketStackInput)(nil),    // 0: project.planton.provider.civo.civobucket.v1.CivoBucketStackInput
+	(*CivoBucket)(nil),              // 1: project.planton.provider.civo.civobucket.v1.CivoBucket
+	(*civo.CivoProviderConfig)(nil), // 2: project.planton.provider.civo.CivoProviderConfig
 }
 var file_project_planton_provider_civo_civobucket_v1_stack_input_proto_depIdxs = []int32{
 	1, // 0: project.planton.provider.civo.civobucket.v1.CivoBucketStackInput.target:type_name -> project.planton.provider.civo.civobucket.v1.CivoBucket
-	2, // 1: project.planton.provider.civo.civobucket.v1.CivoBucketStackInput.provider_credential:type_name -> project.planton.credential.civocredential.v1.CivoCredentialSpec
+	2, // 1: project.planton.provider.civo.civobucket.v1.CivoBucketStackInput.provider_config:type_name -> project.planton.provider.civo.CivoProviderConfig
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package project.planton.provider.kubernetes.workload.clickhousekubernetes.v1;
 
-import "project/planton/credential/kubernetesclustercredential/v1/spec.proto";
+import "project/planton/provider/kubernetes/provider.proto";
 import "project/planton/provider/kubernetes/workload/clickhousekubernetes/v1/api.proto";
 
 // click-house-kubernetes stack-input
@@ -10,7 +10,7 @@ message ClickHouseKubernetesStackInput {
   // target cloud-resource
   ClickHouseKubernetes target = 1;
   // provider-credential
-  project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec provider_credential = 2;
+  project.planton.provider.kubernetes.KubernetesProviderConfig provider_config = 2;
   // kubernetes namespace
   string kubernetes_namespace = 3;
 }

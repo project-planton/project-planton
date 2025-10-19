@@ -7,7 +7,7 @@
 package digitaloceanfirewallv1
 
 import (
-	v1 "github.com/project-planton/project-planton/apis/project/planton/credential/digitaloceancredential/v1"
+	digitalocean "github.com/project-planton/project-planton/apis/project/planton/provider/digitalocean"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -27,10 +27,10 @@ type DigitalOceanFirewallStackInput struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// target cloud-resource
 	Target *DigitalOceanFirewall `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
-	// provider-credential
-	ProviderCredential *v1.DigitalOceanCredentialSpec `protobuf:"bytes,2,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	// provider-config
+	ProviderConfig *digitalocean.DigitalOceanProviderConfig `protobuf:"bytes,2,opt,name=provider_config,json=providerConfig,proto3" json:"provider_config,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *DigitalOceanFirewallStackInput) Reset() {
@@ -70,9 +70,9 @@ func (x *DigitalOceanFirewallStackInput) GetTarget() *DigitalOceanFirewall {
 	return nil
 }
 
-func (x *DigitalOceanFirewallStackInput) GetProviderCredential() *v1.DigitalOceanCredentialSpec {
+func (x *DigitalOceanFirewallStackInput) GetProviderConfig() *digitalocean.DigitalOceanProviderConfig {
 	if x != nil {
-		return x.ProviderCredential
+		return x.ProviderConfig
 	}
 	return nil
 }
@@ -81,10 +81,10 @@ var File_project_planton_provider_digitalocean_digitaloceanfirewall_v1_stack_inp
 
 const file_project_planton_provider_digitalocean_digitaloceanfirewall_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Oproject/planton/provider/digitalocean/digitaloceanfirewall/v1/stack_input.proto\x12=project.planton.provider.digitalocean.digitaloceanfirewall.v1\x1a?project/planton/credential/digitaloceancredential/v1/spec.proto\x1aGproject/planton/provider/digitalocean/digitaloceanfirewall/v1/api.proto\"\x91\x02\n" +
+	"Oproject/planton/provider/digitalocean/digitaloceanfirewall/v1/stack_input.proto\x12=project.planton.provider.digitalocean.digitaloceanfirewall.v1\x1aGproject/planton/provider/digitalocean/digitaloceanfirewall/v1/api.proto\x1a4project/planton/provider/digitalocean/provider.proto\"\xf9\x01\n" +
 	"\x1eDigitalOceanFirewallStackInput\x12k\n" +
-	"\x06target\x18\x01 \x01(\v2S.project.planton.provider.digitalocean.digitaloceanfirewall.v1.DigitalOceanFirewallR\x06target\x12\x81\x01\n" +
-	"\x13provider_credential\x18\x02 \x01(\v2P.project.planton.credential.digitaloceancredential.v1.DigitalOceanCredentialSpecR\x12providerCredentialB\xf6\x03\n" +
+	"\x06target\x18\x01 \x01(\v2S.project.planton.provider.digitalocean.digitaloceanfirewall.v1.DigitalOceanFirewallR\x06target\x12j\n" +
+	"\x0fprovider_config\x18\x02 \x01(\v2A.project.planton.provider.digitalocean.DigitalOceanProviderConfigR\x0eproviderConfigB\xf6\x03\n" +
 	"Acom.project.planton.provider.digitalocean.digitaloceanfirewall.v1B\x0fStackInputProtoP\x01Z\x84\x01github.com/project-planton/project-planton/apis/project/planton/provider/digitalocean/digitaloceanfirewall/v1;digitaloceanfirewallv1\xa2\x02\x05PPPDD\xaa\x02=Project.Planton.Provider.Digitalocean.Digitaloceanfirewall.V1\xca\x02=Project\\Planton\\Provider\\Digitalocean\\Digitaloceanfirewall\\V1\xe2\x02IProject\\Planton\\Provider\\Digitalocean\\Digitaloceanfirewall\\V1\\GPBMetadata\xea\x02BProject::Planton::Provider::Digitalocean::Digitaloceanfirewall::V1b\x06proto3"
 
 var (
@@ -101,13 +101,13 @@ func file_project_planton_provider_digitalocean_digitaloceanfirewall_v1_stack_in
 
 var file_project_planton_provider_digitalocean_digitaloceanfirewall_v1_stack_input_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_digitalocean_digitaloceanfirewall_v1_stack_input_proto_goTypes = []any{
-	(*DigitalOceanFirewallStackInput)(nil), // 0: project.planton.provider.digitalocean.digitaloceanfirewall.v1.DigitalOceanFirewallStackInput
-	(*DigitalOceanFirewall)(nil),           // 1: project.planton.provider.digitalocean.digitaloceanfirewall.v1.DigitalOceanFirewall
-	(*v1.DigitalOceanCredentialSpec)(nil),  // 2: project.planton.credential.digitaloceancredential.v1.DigitalOceanCredentialSpec
+	(*DigitalOceanFirewallStackInput)(nil),          // 0: project.planton.provider.digitalocean.digitaloceanfirewall.v1.DigitalOceanFirewallStackInput
+	(*DigitalOceanFirewall)(nil),                    // 1: project.planton.provider.digitalocean.digitaloceanfirewall.v1.DigitalOceanFirewall
+	(*digitalocean.DigitalOceanProviderConfig)(nil), // 2: project.planton.provider.digitalocean.DigitalOceanProviderConfig
 }
 var file_project_planton_provider_digitalocean_digitaloceanfirewall_v1_stack_input_proto_depIdxs = []int32{
 	1, // 0: project.planton.provider.digitalocean.digitaloceanfirewall.v1.DigitalOceanFirewallStackInput.target:type_name -> project.planton.provider.digitalocean.digitaloceanfirewall.v1.DigitalOceanFirewall
-	2, // 1: project.planton.provider.digitalocean.digitaloceanfirewall.v1.DigitalOceanFirewallStackInput.provider_credential:type_name -> project.planton.credential.digitaloceancredential.v1.DigitalOceanCredentialSpec
+	2, // 1: project.planton.provider.digitalocean.digitaloceanfirewall.v1.DigitalOceanFirewallStackInput.provider_config:type_name -> project.planton.provider.digitalocean.DigitalOceanProviderConfig
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

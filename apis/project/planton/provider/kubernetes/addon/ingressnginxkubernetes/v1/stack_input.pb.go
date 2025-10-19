@@ -7,7 +7,7 @@
 package ingressnginxkubernetesv1
 
 import (
-	v1 "github.com/project-planton/project-planton/apis/project/planton/credential/kubernetesclustercredential/v1"
+	kubernetes "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -27,10 +27,10 @@ type IngressNginxKubernetesStackInput struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// target cloud-resource
 	Target *IngressNginxKubernetes `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
-	// provider-credential
-	ProviderCredential *v1.KubernetesClusterCredentialSpec `protobuf:"bytes,2,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	// provider-config
+	ProviderConfig *kubernetes.KubernetesProviderConfig `protobuf:"bytes,2,opt,name=provider_config,json=providerConfig,proto3" json:"provider_config,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *IngressNginxKubernetesStackInput) Reset() {
@@ -70,9 +70,9 @@ func (x *IngressNginxKubernetesStackInput) GetTarget() *IngressNginxKubernetes {
 	return nil
 }
 
-func (x *IngressNginxKubernetesStackInput) GetProviderCredential() *v1.KubernetesClusterCredentialSpec {
+func (x *IngressNginxKubernetesStackInput) GetProviderConfig() *kubernetes.KubernetesProviderConfig {
 	if x != nil {
-		return x.ProviderCredential
+		return x.ProviderConfig
 	}
 	return nil
 }
@@ -81,10 +81,10 @@ var File_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v1_sta
 
 const file_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Uproject/planton/provider/kubernetes/addon/ingressnginxkubernetes/v1/stack_input.proto\x12Cproject.planton.provider.kubernetes.addon.ingressnginxkubernetes.v1\x1aDproject/planton/credential/kubernetesclustercredential/v1/spec.proto\x1aMproject/planton/provider/kubernetes/addon/ingressnginxkubernetes/v1/api.proto\"\xa5\x02\n" +
+	"Uproject/planton/provider/kubernetes/addon/ingressnginxkubernetes/v1/stack_input.proto\x12Cproject.planton.provider.kubernetes.addon.ingressnginxkubernetes.v1\x1aMproject/planton/provider/kubernetes/addon/ingressnginxkubernetes/v1/api.proto\x1a2project/planton/provider/kubernetes/provider.proto\"\xff\x01\n" +
 	" IngressNginxKubernetesStackInput\x12s\n" +
-	"\x06target\x18\x01 \x01(\v2[.project.planton.provider.kubernetes.addon.ingressnginxkubernetes.v1.IngressNginxKubernetesR\x06target\x12\x8b\x01\n" +
-	"\x13provider_credential\x18\x02 \x01(\v2Z.project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpecR\x12providerCredentialB\x9e\x04\n" +
+	"\x06target\x18\x01 \x01(\v2[.project.planton.provider.kubernetes.addon.ingressnginxkubernetes.v1.IngressNginxKubernetesR\x06target\x12f\n" +
+	"\x0fprovider_config\x18\x02 \x01(\v2=.project.planton.provider.kubernetes.KubernetesProviderConfigR\x0eproviderConfigB\x9e\x04\n" +
 	"Gcom.project.planton.provider.kubernetes.addon.ingressnginxkubernetes.v1B\x0fStackInputProtoP\x01Z\x8c\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/addon/ingressnginxkubernetes/v1;ingressnginxkubernetesv1\xa2\x02\x06PPPKAI\xaa\x02CProject.Planton.Provider.Kubernetes.Addon.Ingressnginxkubernetes.V1\xca\x02CProject\\Planton\\Provider\\Kubernetes\\Addon\\Ingressnginxkubernetes\\V1\xe2\x02OProject\\Planton\\Provider\\Kubernetes\\Addon\\Ingressnginxkubernetes\\V1\\GPBMetadata\xea\x02IProject::Planton::Provider::Kubernetes::Addon::Ingressnginxkubernetes::V1b\x06proto3"
 
 var (
@@ -101,13 +101,13 @@ func file_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v1_st
 
 var file_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v1_stack_input_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v1_stack_input_proto_goTypes = []any{
-	(*IngressNginxKubernetesStackInput)(nil),   // 0: project.planton.provider.kubernetes.addon.ingressnginxkubernetes.v1.IngressNginxKubernetesStackInput
-	(*IngressNginxKubernetes)(nil),             // 1: project.planton.provider.kubernetes.addon.ingressnginxkubernetes.v1.IngressNginxKubernetes
-	(*v1.KubernetesClusterCredentialSpec)(nil), // 2: project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec
+	(*IngressNginxKubernetesStackInput)(nil),    // 0: project.planton.provider.kubernetes.addon.ingressnginxkubernetes.v1.IngressNginxKubernetesStackInput
+	(*IngressNginxKubernetes)(nil),              // 1: project.planton.provider.kubernetes.addon.ingressnginxkubernetes.v1.IngressNginxKubernetes
+	(*kubernetes.KubernetesProviderConfig)(nil), // 2: project.planton.provider.kubernetes.KubernetesProviderConfig
 }
 var file_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v1_stack_input_proto_depIdxs = []int32{
 	1, // 0: project.planton.provider.kubernetes.addon.ingressnginxkubernetes.v1.IngressNginxKubernetesStackInput.target:type_name -> project.planton.provider.kubernetes.addon.ingressnginxkubernetes.v1.IngressNginxKubernetes
-	2, // 1: project.planton.provider.kubernetes.addon.ingressnginxkubernetes.v1.IngressNginxKubernetesStackInput.provider_credential:type_name -> project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec
+	2, // 1: project.planton.provider.kubernetes.addon.ingressnginxkubernetes.v1.IngressNginxKubernetesStackInput.provider_config:type_name -> project.planton.provider.kubernetes.KubernetesProviderConfig
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

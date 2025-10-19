@@ -7,7 +7,7 @@
 package gcpvpcv1
 
 import (
-	v1 "github.com/project-planton/project-planton/apis/project/planton/credential/gcpcredential/v1"
+	gcp "github.com/project-planton/project-planton/apis/project/planton/provider/gcp"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -27,10 +27,10 @@ type GcpVpcStackInput struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// target cloud-resource
 	Target *GcpVpc `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
-	// provider-credential
-	ProviderCredential *v1.GcpCredentialSpec `protobuf:"bytes,2,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	// provider-config
+	ProviderConfig *gcp.GcpProviderConfig `protobuf:"bytes,2,opt,name=provider_config,json=providerConfig,proto3" json:"provider_config,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *GcpVpcStackInput) Reset() {
@@ -70,9 +70,9 @@ func (x *GcpVpcStackInput) GetTarget() *GcpVpc {
 	return nil
 }
 
-func (x *GcpVpcStackInput) GetProviderCredential() *v1.GcpCredentialSpec {
+func (x *GcpVpcStackInput) GetProviderConfig() *gcp.GcpProviderConfig {
 	if x != nil {
-		return x.ProviderCredential
+		return x.ProviderConfig
 	}
 	return nil
 }
@@ -81,10 +81,10 @@ var File_project_planton_provider_gcp_gcpvpc_v1_stack_input_proto protoreflect.F
 
 const file_project_planton_provider_gcp_gcpvpc_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"8project/planton/provider/gcp/gcpvpc/v1/stack_input.proto\x12&project.planton.provider.gcp.gcpvpc.v1\x1a6project/planton/credential/gcpcredential/v1/spec.proto\x1a0project/planton/provider/gcp/gcpvpc/v1/api.proto\"\xcb\x01\n" +
+	"8project/planton/provider/gcp/gcpvpc/v1/stack_input.proto\x12&project.planton.provider.gcp.gcpvpc.v1\x1a0project/planton/provider/gcp/gcpvpc/v1/api.proto\x1a+project/planton/provider/gcp/provider.proto\"\xb4\x01\n" +
 	"\x10GcpVpcStackInput\x12F\n" +
-	"\x06target\x18\x01 \x01(\v2..project.planton.provider.gcp.gcpvpc.v1.GcpVpcR\x06target\x12o\n" +
-	"\x13provider_credential\x18\x02 \x01(\v2>.project.planton.credential.gcpcredential.v1.GcpCredentialSpecR\x12providerCredentialB\xdd\x02\n" +
+	"\x06target\x18\x01 \x01(\v2..project.planton.provider.gcp.gcpvpc.v1.GcpVpcR\x06target\x12X\n" +
+	"\x0fprovider_config\x18\x02 \x01(\v2/.project.planton.provider.gcp.GcpProviderConfigR\x0eproviderConfigB\xdd\x02\n" +
 	"*com.project.planton.provider.gcp.gcpvpc.v1B\x0fStackInputProtoP\x01Z_github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpvpc/v1;gcpvpcv1\xa2\x02\x05PPPGG\xaa\x02&Project.Planton.Provider.Gcp.Gcpvpc.V1\xca\x02&Project\\Planton\\Provider\\Gcp\\Gcpvpc\\V1\xe2\x022Project\\Planton\\Provider\\Gcp\\Gcpvpc\\V1\\GPBMetadata\xea\x02+Project::Planton::Provider::Gcp::Gcpvpc::V1b\x06proto3"
 
 var (
@@ -101,13 +101,13 @@ func file_project_planton_provider_gcp_gcpvpc_v1_stack_input_proto_rawDescGZIP()
 
 var file_project_planton_provider_gcp_gcpvpc_v1_stack_input_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_gcp_gcpvpc_v1_stack_input_proto_goTypes = []any{
-	(*GcpVpcStackInput)(nil),     // 0: project.planton.provider.gcp.gcpvpc.v1.GcpVpcStackInput
-	(*GcpVpc)(nil),               // 1: project.planton.provider.gcp.gcpvpc.v1.GcpVpc
-	(*v1.GcpCredentialSpec)(nil), // 2: project.planton.credential.gcpcredential.v1.GcpCredentialSpec
+	(*GcpVpcStackInput)(nil),      // 0: project.planton.provider.gcp.gcpvpc.v1.GcpVpcStackInput
+	(*GcpVpc)(nil),                // 1: project.planton.provider.gcp.gcpvpc.v1.GcpVpc
+	(*gcp.GcpProviderConfig)(nil), // 2: project.planton.provider.gcp.GcpProviderConfig
 }
 var file_project_planton_provider_gcp_gcpvpc_v1_stack_input_proto_depIdxs = []int32{
 	1, // 0: project.planton.provider.gcp.gcpvpc.v1.GcpVpcStackInput.target:type_name -> project.planton.provider.gcp.gcpvpc.v1.GcpVpc
-	2, // 1: project.planton.provider.gcp.gcpvpc.v1.GcpVpcStackInput.provider_credential:type_name -> project.planton.credential.gcpcredential.v1.GcpCredentialSpec
+	2, // 1: project.planton.provider.gcp.gcpvpc.v1.GcpVpcStackInput.provider_config:type_name -> project.planton.provider.gcp.GcpProviderConfig
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

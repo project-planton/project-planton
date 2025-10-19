@@ -7,7 +7,7 @@
 package digitaloceancontainerregistryv1
 
 import (
-	v1 "github.com/project-planton/project-planton/apis/project/planton/credential/digitaloceancredential/v1"
+	digitalocean "github.com/project-planton/project-planton/apis/project/planton/provider/digitalocean"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -27,10 +27,10 @@ type DigitalOceanContainerRegistryStackInput struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// target cloud-resource
 	Target *DigitalOceanContainerRegistry `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
-	// provider-credential
-	ProviderCredential *v1.DigitalOceanCredentialSpec `protobuf:"bytes,2,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	// provider-config
+	ProviderConfig *digitalocean.DigitalOceanProviderConfig `protobuf:"bytes,2,opt,name=provider_config,json=providerConfig,proto3" json:"provider_config,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *DigitalOceanContainerRegistryStackInput) Reset() {
@@ -70,9 +70,9 @@ func (x *DigitalOceanContainerRegistryStackInput) GetTarget() *DigitalOceanConta
 	return nil
 }
 
-func (x *DigitalOceanContainerRegistryStackInput) GetProviderCredential() *v1.DigitalOceanCredentialSpec {
+func (x *DigitalOceanContainerRegistryStackInput) GetProviderConfig() *digitalocean.DigitalOceanProviderConfig {
 	if x != nil {
-		return x.ProviderCredential
+		return x.ProviderConfig
 	}
 	return nil
 }
@@ -81,10 +81,10 @@ var File_project_planton_provider_digitalocean_digitaloceancontainerregistry_v1_
 
 const file_project_planton_provider_digitalocean_digitaloceancontainerregistry_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Xproject/planton/provider/digitalocean/digitaloceancontainerregistry/v1/stack_input.proto\x12Fproject.planton.provider.digitalocean.digitaloceancontainerregistry.v1\x1a?project/planton/credential/digitaloceancredential/v1/spec.proto\x1aPproject/planton/provider/digitalocean/digitaloceancontainerregistry/v1/api.proto\"\xac\x02\n" +
+	"Xproject/planton/provider/digitalocean/digitaloceancontainerregistry/v1/stack_input.proto\x12Fproject.planton.provider.digitalocean.digitaloceancontainerregistry.v1\x1aPproject/planton/provider/digitalocean/digitaloceancontainerregistry/v1/api.proto\x1a4project/planton/provider/digitalocean/provider.proto\"\x94\x02\n" +
 	"'DigitalOceanContainerRegistryStackInput\x12}\n" +
-	"\x06target\x18\x01 \x01(\v2e.project.planton.provider.digitalocean.digitaloceancontainerregistry.v1.DigitalOceanContainerRegistryR\x06target\x12\x81\x01\n" +
-	"\x13provider_credential\x18\x02 \x01(\v2P.project.planton.credential.digitaloceancredential.v1.DigitalOceanCredentialSpecR\x12providerCredentialB\xb5\x04\n" +
+	"\x06target\x18\x01 \x01(\v2e.project.planton.provider.digitalocean.digitaloceancontainerregistry.v1.DigitalOceanContainerRegistryR\x06target\x12j\n" +
+	"\x0fprovider_config\x18\x02 \x01(\v2A.project.planton.provider.digitalocean.DigitalOceanProviderConfigR\x0eproviderConfigB\xb5\x04\n" +
 	"Jcom.project.planton.provider.digitalocean.digitaloceancontainerregistry.v1B\x0fStackInputProtoP\x01Z\x96\x01github.com/project-planton/project-planton/apis/project/planton/provider/digitalocean/digitaloceancontainerregistry/v1;digitaloceancontainerregistryv1\xa2\x02\x05PPPDD\xaa\x02FProject.Planton.Provider.Digitalocean.Digitaloceancontainerregistry.V1\xca\x02FProject\\Planton\\Provider\\Digitalocean\\Digitaloceancontainerregistry\\V1\xe2\x02RProject\\Planton\\Provider\\Digitalocean\\Digitaloceancontainerregistry\\V1\\GPBMetadata\xea\x02KProject::Planton::Provider::Digitalocean::Digitaloceancontainerregistry::V1b\x06proto3"
 
 var (
@@ -103,11 +103,11 @@ var file_project_planton_provider_digitalocean_digitaloceancontainerregistry_v1_
 var file_project_planton_provider_digitalocean_digitaloceancontainerregistry_v1_stack_input_proto_goTypes = []any{
 	(*DigitalOceanContainerRegistryStackInput)(nil), // 0: project.planton.provider.digitalocean.digitaloceancontainerregistry.v1.DigitalOceanContainerRegistryStackInput
 	(*DigitalOceanContainerRegistry)(nil),           // 1: project.planton.provider.digitalocean.digitaloceancontainerregistry.v1.DigitalOceanContainerRegistry
-	(*v1.DigitalOceanCredentialSpec)(nil),           // 2: project.planton.credential.digitaloceancredential.v1.DigitalOceanCredentialSpec
+	(*digitalocean.DigitalOceanProviderConfig)(nil), // 2: project.planton.provider.digitalocean.DigitalOceanProviderConfig
 }
 var file_project_planton_provider_digitalocean_digitaloceancontainerregistry_v1_stack_input_proto_depIdxs = []int32{
 	1, // 0: project.planton.provider.digitalocean.digitaloceancontainerregistry.v1.DigitalOceanContainerRegistryStackInput.target:type_name -> project.planton.provider.digitalocean.digitaloceancontainerregistry.v1.DigitalOceanContainerRegistry
-	2, // 1: project.planton.provider.digitalocean.digitaloceancontainerregistry.v1.DigitalOceanContainerRegistryStackInput.provider_credential:type_name -> project.planton.credential.digitaloceancredential.v1.DigitalOceanCredentialSpec
+	2, // 1: project.planton.provider.digitalocean.digitaloceancontainerregistry.v1.DigitalOceanContainerRegistryStackInput.provider_config:type_name -> project.planton.provider.digitalocean.DigitalOceanProviderConfig
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

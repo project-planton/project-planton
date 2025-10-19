@@ -11,7 +11,6 @@ go_library(
     importpath = "github.com/project-planton/project-planton/apis/project/planton/provider/digitalocean/digitaloceancontainerregistry/v1",
     visibility = ["//visibility:public"],
     deps = [
-        "//apis/project/planton/credential/digitaloceancredential/v1:digitaloceancredential",
         "//apis/project/planton/provider/digitalocean",
         "//apis/project/planton/shared",
         "@build_buf_gen_go_bufbuild_protovalidate_protocolbuffers_go//buf/validate",

@@ -2,13 +2,13 @@ syntax = "proto3";
 
 package project.planton.provider.civo.civokubernetesnodepool.v1;
 
-import "project/planton/credential/civocredential/v1/spec.proto";
 import "project/planton/provider/civo/civokubernetesnodepool/v1/api.proto";
+import "project/planton/provider/civo/provider.proto";
 
 //civo-kubernetes-node-pool stack-input
 message CivoKubernetesNodePoolStackInput {
   //target cloud-resource
   CivoKubernetesNodePool target = 1;
-  //provider-credential
-  project.planton.credential.civocredential.v1.CivoCredentialSpec provider_credential = 2;
+  //provider-config
+  project.planton.provider.civo.CivoProviderConfig provider_config = 2;
 }

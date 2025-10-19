@@ -2,13 +2,13 @@ syntax = "proto3";
 
 package project.planton.provider.confluent.confluentkafka.v1;
 
-import "project/planton/credential/confluentcredential/v1/spec.proto";
 import "project/planton/provider/confluent/confluentkafka/v1/api.proto";
+import "project/planton/provider/confluent/provider.proto";
 
 //confluent-kafka stack-input
 message ConfluentKafkaStackInput {
   //target cloud-resource
   ConfluentKafka target = 1;
-  //provider-credential
-  project.planton.credential.confluentcredential.v1.ConfluentCredentialSpec provider_credential = 2;
+  //provider-config
+  project.planton.provider.confluent.ConfluentProviderConfig provider_config = 2;
 }

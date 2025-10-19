@@ -7,7 +7,7 @@
 package awss3bucketv1
 
 import (
-	v1 "github.com/project-planton/project-planton/apis/project/planton/credential/awscredential/v1"
+	aws "github.com/project-planton/project-planton/apis/project/planton/provider/aws"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -27,10 +27,10 @@ type AwsS3BucketStackInput struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// target cloud-resource
 	Target *AwsS3Bucket `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
-	// provider-credential
-	ProviderCredential *v1.AwsCredentialSpec `protobuf:"bytes,2,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	// provider-config
+	ProviderConfig *aws.AwsProviderConfig `protobuf:"bytes,2,opt,name=provider_config,json=providerConfig,proto3" json:"provider_config,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *AwsS3BucketStackInput) Reset() {
@@ -70,9 +70,9 @@ func (x *AwsS3BucketStackInput) GetTarget() *AwsS3Bucket {
 	return nil
 }
 
-func (x *AwsS3BucketStackInput) GetProviderCredential() *v1.AwsCredentialSpec {
+func (x *AwsS3BucketStackInput) GetProviderConfig() *aws.AwsProviderConfig {
 	if x != nil {
-		return x.ProviderCredential
+		return x.ProviderConfig
 	}
 	return nil
 }
@@ -81,10 +81,10 @@ var File_project_planton_provider_aws_awss3bucket_v1_stack_input_proto protorefl
 
 const file_project_planton_provider_aws_awss3bucket_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"=project/planton/provider/aws/awss3bucket/v1/stack_input.proto\x12+project.planton.provider.aws.awss3bucket.v1\x1a6project/planton/credential/awscredential/v1/spec.proto\x1a5project/planton/provider/aws/awss3bucket/v1/api.proto\"\xda\x01\n" +
+	"=project/planton/provider/aws/awss3bucket/v1/stack_input.proto\x12+project.planton.provider.aws.awss3bucket.v1\x1a5project/planton/provider/aws/awss3bucket/v1/api.proto\x1a+project/planton/provider/aws/provider.proto\"\xc3\x01\n" +
 	"\x15AwsS3BucketStackInput\x12P\n" +
-	"\x06target\x18\x01 \x01(\v28.project.planton.provider.aws.awss3bucket.v1.AwsS3BucketR\x06target\x12o\n" +
-	"\x13provider_credential\x18\x02 \x01(\v2>.project.planton.credential.awscredential.v1.AwsCredentialSpecR\x12providerCredentialB\x80\x03\n" +
+	"\x06target\x18\x01 \x01(\v28.project.planton.provider.aws.awss3bucket.v1.AwsS3BucketR\x06target\x12X\n" +
+	"\x0fprovider_config\x18\x02 \x01(\v2/.project.planton.provider.aws.AwsProviderConfigR\x0eproviderConfigB\x80\x03\n" +
 	"/com.project.planton.provider.aws.awss3bucket.v1B\x0fStackInputProtoP\x01Zigithub.com/project-planton/project-planton/apis/project/planton/provider/aws/awss3bucket/v1;awss3bucketv1\xa2\x02\x05PPPAA\xaa\x02+Project.Planton.Provider.Aws.Awss3bucket.V1\xca\x02+Project\\Planton\\Provider\\Aws\\Awss3bucket\\V1\xe2\x027Project\\Planton\\Provider\\Aws\\Awss3bucket\\V1\\GPBMetadata\xea\x020Project::Planton::Provider::Aws::Awss3bucket::V1b\x06proto3"
 
 var (
@@ -103,11 +103,11 @@ var file_project_planton_provider_aws_awss3bucket_v1_stack_input_proto_msgTypes 
 var file_project_planton_provider_aws_awss3bucket_v1_stack_input_proto_goTypes = []any{
 	(*AwsS3BucketStackInput)(nil), // 0: project.planton.provider.aws.awss3bucket.v1.AwsS3BucketStackInput
 	(*AwsS3Bucket)(nil),           // 1: project.planton.provider.aws.awss3bucket.v1.AwsS3Bucket
-	(*v1.AwsCredentialSpec)(nil),  // 2: project.planton.credential.awscredential.v1.AwsCredentialSpec
+	(*aws.AwsProviderConfig)(nil), // 2: project.planton.provider.aws.AwsProviderConfig
 }
 var file_project_planton_provider_aws_awss3bucket_v1_stack_input_proto_depIdxs = []int32{
 	1, // 0: project.planton.provider.aws.awss3bucket.v1.AwsS3BucketStackInput.target:type_name -> project.planton.provider.aws.awss3bucket.v1.AwsS3Bucket
-	2, // 1: project.planton.provider.aws.awss3bucket.v1.AwsS3BucketStackInput.provider_credential:type_name -> project.planton.credential.awscredential.v1.AwsCredentialSpec
+	2, // 1: project.planton.provider.aws.awss3bucket.v1.AwsS3BucketStackInput.provider_config:type_name -> project.planton.provider.aws.AwsProviderConfig
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

@@ -7,7 +7,7 @@
 package digitaloceandnszonev1
 
 import (
-	v1 "github.com/project-planton/project-planton/apis/project/planton/credential/digitaloceancredential/v1"
+	digitalocean "github.com/project-planton/project-planton/apis/project/planton/provider/digitalocean"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -27,10 +27,10 @@ type DigitalOceanDnsZoneStackInput struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// target cloud-resource
 	Target *DigitalOceanDnsZone `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
-	// provider-credential
-	ProviderCredential *v1.DigitalOceanCredentialSpec `protobuf:"bytes,2,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	// provider-config
+	ProviderConfig *digitalocean.DigitalOceanProviderConfig `protobuf:"bytes,2,opt,name=provider_config,json=providerConfig,proto3" json:"provider_config,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *DigitalOceanDnsZoneStackInput) Reset() {
@@ -70,9 +70,9 @@ func (x *DigitalOceanDnsZoneStackInput) GetTarget() *DigitalOceanDnsZone {
 	return nil
 }
 
-func (x *DigitalOceanDnsZoneStackInput) GetProviderCredential() *v1.DigitalOceanCredentialSpec {
+func (x *DigitalOceanDnsZoneStackInput) GetProviderConfig() *digitalocean.DigitalOceanProviderConfig {
 	if x != nil {
-		return x.ProviderCredential
+		return x.ProviderConfig
 	}
 	return nil
 }
@@ -81,10 +81,10 @@ var File_project_planton_provider_digitalocean_digitaloceandnszone_v1_stack_inpu
 
 const file_project_planton_provider_digitalocean_digitaloceandnszone_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Nproject/planton/provider/digitalocean/digitaloceandnszone/v1/stack_input.proto\x12<project.planton.provider.digitalocean.digitaloceandnszone.v1\x1a?project/planton/credential/digitaloceancredential/v1/spec.proto\x1aFproject/planton/provider/digitalocean/digitaloceandnszone/v1/api.proto\"\x8e\x02\n" +
+	"Nproject/planton/provider/digitalocean/digitaloceandnszone/v1/stack_input.proto\x12<project.planton.provider.digitalocean.digitaloceandnszone.v1\x1aFproject/planton/provider/digitalocean/digitaloceandnszone/v1/api.proto\x1a4project/planton/provider/digitalocean/provider.proto\"\xf6\x01\n" +
 	"\x1dDigitalOceanDnsZoneStackInput\x12i\n" +
-	"\x06target\x18\x01 \x01(\v2Q.project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDnsZoneR\x06target\x12\x81\x01\n" +
-	"\x13provider_credential\x18\x02 \x01(\v2P.project.planton.credential.digitaloceancredential.v1.DigitalOceanCredentialSpecR\x12providerCredentialB\xef\x03\n" +
+	"\x06target\x18\x01 \x01(\v2Q.project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDnsZoneR\x06target\x12j\n" +
+	"\x0fprovider_config\x18\x02 \x01(\v2A.project.planton.provider.digitalocean.DigitalOceanProviderConfigR\x0eproviderConfigB\xef\x03\n" +
 	"@com.project.planton.provider.digitalocean.digitaloceandnszone.v1B\x0fStackInputProtoP\x01Z\x82\x01github.com/project-planton/project-planton/apis/project/planton/provider/digitalocean/digitaloceandnszone/v1;digitaloceandnszonev1\xa2\x02\x05PPPDD\xaa\x02<Project.Planton.Provider.Digitalocean.Digitaloceandnszone.V1\xca\x02<Project\\Planton\\Provider\\Digitalocean\\Digitaloceandnszone\\V1\xe2\x02HProject\\Planton\\Provider\\Digitalocean\\Digitaloceandnszone\\V1\\GPBMetadata\xea\x02AProject::Planton::Provider::Digitalocean::Digitaloceandnszone::V1b\x06proto3"
 
 var (
@@ -101,13 +101,13 @@ func file_project_planton_provider_digitalocean_digitaloceandnszone_v1_stack_inp
 
 var file_project_planton_provider_digitalocean_digitaloceandnszone_v1_stack_input_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_digitalocean_digitaloceandnszone_v1_stack_input_proto_goTypes = []any{
-	(*DigitalOceanDnsZoneStackInput)(nil), // 0: project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDnsZoneStackInput
-	(*DigitalOceanDnsZone)(nil),           // 1: project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDnsZone
-	(*v1.DigitalOceanCredentialSpec)(nil), // 2: project.planton.credential.digitaloceancredential.v1.DigitalOceanCredentialSpec
+	(*DigitalOceanDnsZoneStackInput)(nil),           // 0: project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDnsZoneStackInput
+	(*DigitalOceanDnsZone)(nil),                     // 1: project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDnsZone
+	(*digitalocean.DigitalOceanProviderConfig)(nil), // 2: project.planton.provider.digitalocean.DigitalOceanProviderConfig
 }
 var file_project_planton_provider_digitalocean_digitaloceandnszone_v1_stack_input_proto_depIdxs = []int32{
 	1, // 0: project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDnsZoneStackInput.target:type_name -> project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDnsZone
-	2, // 1: project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDnsZoneStackInput.provider_credential:type_name -> project.planton.credential.digitaloceancredential.v1.DigitalOceanCredentialSpec
+	2, // 1: project.planton.provider.digitalocean.digitaloceandnszone.v1.DigitalOceanDnsZoneStackInput.provider_config:type_name -> project.planton.provider.digitalocean.DigitalOceanProviderConfig
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

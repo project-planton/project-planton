@@ -7,7 +7,7 @@
 package awscertmanagercertv1
 
 import (
-	v1 "github.com/project-planton/project-planton/apis/project/planton/credential/awscredential/v1"
+	aws "github.com/project-planton/project-planton/apis/project/planton/provider/aws"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -27,10 +27,10 @@ type AwsCertManagerCertStackInput struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// target cloud-resource
 	Target *AwsCertManagerCert `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
-	// provider-credential
-	ProviderCredential *v1.AwsCredentialSpec `protobuf:"bytes,2,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	// provider-config
+	ProviderConfig *aws.AwsProviderConfig `protobuf:"bytes,2,opt,name=provider_config,json=providerConfig,proto3" json:"provider_config,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *AwsCertManagerCertStackInput) Reset() {
@@ -70,9 +70,9 @@ func (x *AwsCertManagerCertStackInput) GetTarget() *AwsCertManagerCert {
 	return nil
 }
 
-func (x *AwsCertManagerCertStackInput) GetProviderCredential() *v1.AwsCredentialSpec {
+func (x *AwsCertManagerCertStackInput) GetProviderConfig() *aws.AwsProviderConfig {
 	if x != nil {
-		return x.ProviderCredential
+		return x.ProviderConfig
 	}
 	return nil
 }
@@ -81,10 +81,10 @@ var File_project_planton_provider_aws_awscertmanagercert_v1_stack_input_proto pr
 
 const file_project_planton_provider_aws_awscertmanagercert_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Dproject/planton/provider/aws/awscertmanagercert/v1/stack_input.proto\x122project.planton.provider.aws.awscertmanagercert.v1\x1a6project/planton/credential/awscredential/v1/spec.proto\x1a<project/planton/provider/aws/awscertmanagercert/v1/api.proto\"\xef\x01\n" +
+	"Dproject/planton/provider/aws/awscertmanagercert/v1/stack_input.proto\x122project.planton.provider.aws.awscertmanagercert.v1\x1a<project/planton/provider/aws/awscertmanagercert/v1/api.proto\x1a+project/planton/provider/aws/provider.proto\"\xd8\x01\n" +
 	"\x1cAwsCertManagerCertStackInput\x12^\n" +
-	"\x06target\x18\x01 \x01(\v2F.project.planton.provider.aws.awscertmanagercert.v1.AwsCertManagerCertR\x06target\x12o\n" +
-	"\x13provider_credential\x18\x02 \x01(\v2>.project.planton.credential.awscredential.v1.AwsCredentialSpecR\x12providerCredentialB\xb1\x03\n" +
+	"\x06target\x18\x01 \x01(\v2F.project.planton.provider.aws.awscertmanagercert.v1.AwsCertManagerCertR\x06target\x12X\n" +
+	"\x0fprovider_config\x18\x02 \x01(\v2/.project.planton.provider.aws.AwsProviderConfigR\x0eproviderConfigB\xb1\x03\n" +
 	"6com.project.planton.provider.aws.awscertmanagercert.v1B\x0fStackInputProtoP\x01Zwgithub.com/project-planton/project-planton/apis/project/planton/provider/aws/awscertmanagercert/v1;awscertmanagercertv1\xa2\x02\x05PPPAA\xaa\x022Project.Planton.Provider.Aws.Awscertmanagercert.V1\xca\x022Project\\Planton\\Provider\\Aws\\Awscertmanagercert\\V1\xe2\x02>Project\\Planton\\Provider\\Aws\\Awscertmanagercert\\V1\\GPBMetadata\xea\x027Project::Planton::Provider::Aws::Awscertmanagercert::V1b\x06proto3"
 
 var (
@@ -103,11 +103,11 @@ var file_project_planton_provider_aws_awscertmanagercert_v1_stack_input_proto_ms
 var file_project_planton_provider_aws_awscertmanagercert_v1_stack_input_proto_goTypes = []any{
 	(*AwsCertManagerCertStackInput)(nil), // 0: project.planton.provider.aws.awscertmanagercert.v1.AwsCertManagerCertStackInput
 	(*AwsCertManagerCert)(nil),           // 1: project.planton.provider.aws.awscertmanagercert.v1.AwsCertManagerCert
-	(*v1.AwsCredentialSpec)(nil),         // 2: project.planton.credential.awscredential.v1.AwsCredentialSpec
+	(*aws.AwsProviderConfig)(nil),        // 2: project.planton.provider.aws.AwsProviderConfig
 }
 var file_project_planton_provider_aws_awscertmanagercert_v1_stack_input_proto_depIdxs = []int32{
 	1, // 0: project.planton.provider.aws.awscertmanagercert.v1.AwsCertManagerCertStackInput.target:type_name -> project.planton.provider.aws.awscertmanagercert.v1.AwsCertManagerCert
-	2, // 1: project.planton.provider.aws.awscertmanagercert.v1.AwsCertManagerCertStackInput.provider_credential:type_name -> project.planton.credential.awscredential.v1.AwsCredentialSpec
+	2, // 1: project.planton.provider.aws.awscertmanagercert.v1.AwsCertManagerCertStackInput.provider_config:type_name -> project.planton.provider.aws.AwsProviderConfig
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

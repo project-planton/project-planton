@@ -7,7 +7,7 @@
 package gcpgcsbucketv1
 
 import (
-	v1 "github.com/project-planton/project-planton/apis/project/planton/credential/gcpcredential/v1"
+	gcp "github.com/project-planton/project-planton/apis/project/planton/provider/gcp"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -27,10 +27,10 @@ type GcpGcsBucketStackInput struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// target cloud-resource
 	Target *GcpGcsBucket `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
-	// provider-credential
-	ProviderCredential *v1.GcpCredentialSpec `protobuf:"bytes,2,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	// provider-config
+	ProviderConfig *gcp.GcpProviderConfig `protobuf:"bytes,2,opt,name=provider_config,json=providerConfig,proto3" json:"provider_config,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *GcpGcsBucketStackInput) Reset() {
@@ -70,9 +70,9 @@ func (x *GcpGcsBucketStackInput) GetTarget() *GcpGcsBucket {
 	return nil
 }
 
-func (x *GcpGcsBucketStackInput) GetProviderCredential() *v1.GcpCredentialSpec {
+func (x *GcpGcsBucketStackInput) GetProviderConfig() *gcp.GcpProviderConfig {
 	if x != nil {
-		return x.ProviderCredential
+		return x.ProviderConfig
 	}
 	return nil
 }
@@ -81,10 +81,10 @@ var File_project_planton_provider_gcp_gcpgcsbucket_v1_stack_input_proto protoref
 
 const file_project_planton_provider_gcp_gcpgcsbucket_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	">project/planton/provider/gcp/gcpgcsbucket/v1/stack_input.proto\x12,project.planton.provider.gcp.gcpgcsbucket.v1\x1a6project/planton/credential/gcpcredential/v1/spec.proto\x1a6project/planton/provider/gcp/gcpgcsbucket/v1/api.proto\"\xdd\x01\n" +
+	">project/planton/provider/gcp/gcpgcsbucket/v1/stack_input.proto\x12,project.planton.provider.gcp.gcpgcsbucket.v1\x1a6project/planton/provider/gcp/gcpgcsbucket/v1/api.proto\x1a+project/planton/provider/gcp/provider.proto\"\xc6\x01\n" +
 	"\x16GcpGcsBucketStackInput\x12R\n" +
-	"\x06target\x18\x01 \x01(\v2:.project.planton.provider.gcp.gcpgcsbucket.v1.GcpGcsBucketR\x06target\x12o\n" +
-	"\x13provider_credential\x18\x02 \x01(\v2>.project.planton.credential.gcpcredential.v1.GcpCredentialSpecR\x12providerCredentialB\x87\x03\n" +
+	"\x06target\x18\x01 \x01(\v2:.project.planton.provider.gcp.gcpgcsbucket.v1.GcpGcsBucketR\x06target\x12X\n" +
+	"\x0fprovider_config\x18\x02 \x01(\v2/.project.planton.provider.gcp.GcpProviderConfigR\x0eproviderConfigB\x87\x03\n" +
 	"0com.project.planton.provider.gcp.gcpgcsbucket.v1B\x0fStackInputProtoP\x01Zkgithub.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpgcsbucket/v1;gcpgcsbucketv1\xa2\x02\x05PPPGG\xaa\x02,Project.Planton.Provider.Gcp.Gcpgcsbucket.V1\xca\x02,Project\\Planton\\Provider\\Gcp\\Gcpgcsbucket\\V1\xe2\x028Project\\Planton\\Provider\\Gcp\\Gcpgcsbucket\\V1\\GPBMetadata\xea\x021Project::Planton::Provider::Gcp::Gcpgcsbucket::V1b\x06proto3"
 
 var (
@@ -103,11 +103,11 @@ var file_project_planton_provider_gcp_gcpgcsbucket_v1_stack_input_proto_msgTypes
 var file_project_planton_provider_gcp_gcpgcsbucket_v1_stack_input_proto_goTypes = []any{
 	(*GcpGcsBucketStackInput)(nil), // 0: project.planton.provider.gcp.gcpgcsbucket.v1.GcpGcsBucketStackInput
 	(*GcpGcsBucket)(nil),           // 1: project.planton.provider.gcp.gcpgcsbucket.v1.GcpGcsBucket
-	(*v1.GcpCredentialSpec)(nil),   // 2: project.planton.credential.gcpcredential.v1.GcpCredentialSpec
+	(*gcp.GcpProviderConfig)(nil),  // 2: project.planton.provider.gcp.GcpProviderConfig
 }
 var file_project_planton_provider_gcp_gcpgcsbucket_v1_stack_input_proto_depIdxs = []int32{
 	1, // 0: project.planton.provider.gcp.gcpgcsbucket.v1.GcpGcsBucketStackInput.target:type_name -> project.planton.provider.gcp.gcpgcsbucket.v1.GcpGcsBucket
-	2, // 1: project.planton.provider.gcp.gcpgcsbucket.v1.GcpGcsBucketStackInput.provider_credential:type_name -> project.planton.credential.gcpcredential.v1.GcpCredentialSpec
+	2, // 1: project.planton.provider.gcp.gcpgcsbucket.v1.GcpGcsBucketStackInput.provider_config:type_name -> project.planton.provider.gcp.GcpProviderConfig
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

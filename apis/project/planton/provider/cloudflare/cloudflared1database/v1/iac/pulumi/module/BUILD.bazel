@@ -11,10 +11,10 @@ go_library(
     importpath = "github.com/project-planton/project-planton/apis/project/planton/provider/cloudflare/cloudflared1database/v1/iac/pulumi/module",
     visibility = ["//visibility:public"],
     deps = [
-        "//apis/project/planton/credential/cloudflarecredential/v1:cloudflarecredential",
         "//apis/project/planton/provider/cloudflare/cloudflared1database/v1:cloudflared1database",
         "//pkg/iac/pulumi/pulumimodule/provider/cloudflare/pulumicloudflareprovider",
         "@com_github_pkg_errors//:errors",
+        "@com_github_project_planton_project_planton//apis/project/planton/credential/cloudflarecredential/v1:go_default_library",
         "@com_github_pulumi_pulumi_cloudflare_sdk_v5//go/cloudflare",
         "@com_github_pulumi_pulumi_sdk_v3//go/pulumi",
     ],

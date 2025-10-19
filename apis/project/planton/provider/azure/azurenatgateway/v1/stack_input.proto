@@ -2,13 +2,13 @@ syntax = "proto3";
 
 package project.planton.provider.azure.azurenatgateway.v1;
 
-import "project/planton/credential/azurecredential/v1/spec.proto";
 import "project/planton/provider/azure/azurenatgateway/v1/api.proto";
+import "project/planton/provider/azure/provider.proto";
 
 //azure-nat-gateway stack-input
 message AzureNatGatewayStackInput {
   //target cloud-resource
   AzureNatGateway target = 1;
-  //provider-credential
-  project.planton.credential.azurecredential.v1.AzureCredentialSpec provider_credential = 2;
+  //provider-config
+  project.planton.provider.azure.AzureProviderConfig provider_config = 2;
 }

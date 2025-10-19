@@ -7,7 +7,7 @@
 package gcpgkeclustercorev1
 
 import (
-	v1 "github.com/project-planton/project-planton/apis/project/planton/credential/gcpcredential/v1"
+	gcp "github.com/project-planton/project-planton/apis/project/planton/provider/gcp"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -27,10 +27,10 @@ type GcpGkeClusterCoreStackInput struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// target cloud-resource
 	Target *GcpGkeClusterCore `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
-	// provider-credential
-	ProviderCredential *v1.GcpCredentialSpec `protobuf:"bytes,2,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	// provider-config
+	ProviderConfig *gcp.GcpProviderConfig `protobuf:"bytes,2,opt,name=provider_config,json=providerConfig,proto3" json:"provider_config,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *GcpGkeClusterCoreStackInput) Reset() {
@@ -70,9 +70,9 @@ func (x *GcpGkeClusterCoreStackInput) GetTarget() *GcpGkeClusterCore {
 	return nil
 }
 
-func (x *GcpGkeClusterCoreStackInput) GetProviderCredential() *v1.GcpCredentialSpec {
+func (x *GcpGkeClusterCoreStackInput) GetProviderConfig() *gcp.GcpProviderConfig {
 	if x != nil {
-		return x.ProviderCredential
+		return x.ProviderConfig
 	}
 	return nil
 }
@@ -81,10 +81,10 @@ var File_project_planton_provider_gcp_gcpgkeclustercore_v1_stack_input_proto pro
 
 const file_project_planton_provider_gcp_gcpgkeclustercore_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Cproject/planton/provider/gcp/gcpgkeclustercore/v1/stack_input.proto\x121project.planton.provider.gcp.gcpgkeclustercore.v1\x1a6project/planton/credential/gcpcredential/v1/spec.proto\x1a;project/planton/provider/gcp/gcpgkeclustercore/v1/api.proto\"\xec\x01\n" +
+	"Cproject/planton/provider/gcp/gcpgkeclustercore/v1/stack_input.proto\x121project.planton.provider.gcp.gcpgkeclustercore.v1\x1a;project/planton/provider/gcp/gcpgkeclustercore/v1/api.proto\x1a+project/planton/provider/gcp/provider.proto\"\xd5\x01\n" +
 	"\x1bGcpGkeClusterCoreStackInput\x12\\\n" +
-	"\x06target\x18\x01 \x01(\v2D.project.planton.provider.gcp.gcpgkeclustercore.v1.GcpGkeClusterCoreR\x06target\x12o\n" +
-	"\x13provider_credential\x18\x02 \x01(\v2>.project.planton.credential.gcpcredential.v1.GcpCredentialSpecR\x12providerCredentialB\xaa\x03\n" +
+	"\x06target\x18\x01 \x01(\v2D.project.planton.provider.gcp.gcpgkeclustercore.v1.GcpGkeClusterCoreR\x06target\x12X\n" +
+	"\x0fprovider_config\x18\x02 \x01(\v2/.project.planton.provider.gcp.GcpProviderConfigR\x0eproviderConfigB\xaa\x03\n" +
 	"5com.project.planton.provider.gcp.gcpgkeclustercore.v1B\x0fStackInputProtoP\x01Zugithub.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpgkeclustercore/v1;gcpgkeclustercorev1\xa2\x02\x05PPPGG\xaa\x021Project.Planton.Provider.Gcp.Gcpgkeclustercore.V1\xca\x021Project\\Planton\\Provider\\Gcp\\Gcpgkeclustercore\\V1\xe2\x02=Project\\Planton\\Provider\\Gcp\\Gcpgkeclustercore\\V1\\GPBMetadata\xea\x026Project::Planton::Provider::Gcp::Gcpgkeclustercore::V1b\x06proto3"
 
 var (
@@ -103,11 +103,11 @@ var file_project_planton_provider_gcp_gcpgkeclustercore_v1_stack_input_proto_msg
 var file_project_planton_provider_gcp_gcpgkeclustercore_v1_stack_input_proto_goTypes = []any{
 	(*GcpGkeClusterCoreStackInput)(nil), // 0: project.planton.provider.gcp.gcpgkeclustercore.v1.GcpGkeClusterCoreStackInput
 	(*GcpGkeClusterCore)(nil),           // 1: project.planton.provider.gcp.gcpgkeclustercore.v1.GcpGkeClusterCore
-	(*v1.GcpCredentialSpec)(nil),        // 2: project.planton.credential.gcpcredential.v1.GcpCredentialSpec
+	(*gcp.GcpProviderConfig)(nil),       // 2: project.planton.provider.gcp.GcpProviderConfig
 }
 var file_project_planton_provider_gcp_gcpgkeclustercore_v1_stack_input_proto_depIdxs = []int32{
 	1, // 0: project.planton.provider.gcp.gcpgkeclustercore.v1.GcpGkeClusterCoreStackInput.target:type_name -> project.planton.provider.gcp.gcpgkeclustercore.v1.GcpGkeClusterCore
-	2, // 1: project.planton.provider.gcp.gcpgkeclustercore.v1.GcpGkeClusterCoreStackInput.provider_credential:type_name -> project.planton.credential.gcpcredential.v1.GcpCredentialSpec
+	2, // 1: project.planton.provider.gcp.gcpgkeclustercore.v1.GcpGkeClusterCoreStackInput.provider_config:type_name -> project.planton.provider.gcp.GcpProviderConfig
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

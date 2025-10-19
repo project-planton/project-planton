@@ -7,7 +7,7 @@
 package civocertificatev1
 
 import (
-	v1 "github.com/project-planton/project-planton/apis/project/planton/credential/civocredential/v1"
+	civo "github.com/project-planton/project-planton/apis/project/planton/provider/civo"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -27,10 +27,10 @@ type CivoCertificateStackInput struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// target cloud-resource
 	Target *CivoCertificate `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
-	// provider-credential
-	ProviderCredential *v1.CivoCredentialSpec `protobuf:"bytes,2,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	// provider-config
+	ProviderConfig *civo.CivoProviderConfig `protobuf:"bytes,2,opt,name=provider_config,json=providerConfig,proto3" json:"provider_config,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *CivoCertificateStackInput) Reset() {
@@ -70,9 +70,9 @@ func (x *CivoCertificateStackInput) GetTarget() *CivoCertificate {
 	return nil
 }
 
-func (x *CivoCertificateStackInput) GetProviderCredential() *v1.CivoCredentialSpec {
+func (x *CivoCertificateStackInput) GetProviderConfig() *civo.CivoProviderConfig {
 	if x != nil {
-		return x.ProviderCredential
+		return x.ProviderConfig
 	}
 	return nil
 }
@@ -81,10 +81,10 @@ var File_project_planton_provider_civo_civocertificate_v1_stack_input_proto prot
 
 const file_project_planton_provider_civo_civocertificate_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Bproject/planton/provider/civo/civocertificate/v1/stack_input.proto\x120project.planton.provider.civo.civocertificate.v1\x1a7project/planton/credential/civocredential/v1/spec.proto\x1a:project/planton/provider/civo/civocertificate/v1/api.proto\"\xe9\x01\n" +
+	"Bproject/planton/provider/civo/civocertificate/v1/stack_input.proto\x120project.planton.provider.civo.civocertificate.v1\x1a:project/planton/provider/civo/civocertificate/v1/api.proto\x1a,project/planton/provider/civo/provider.proto\"\xd2\x01\n" +
 	"\x19CivoCertificateStackInput\x12Y\n" +
-	"\x06target\x18\x01 \x01(\v2A.project.planton.provider.civo.civocertificate.v1.CivoCertificateR\x06target\x12q\n" +
-	"\x13provider_credential\x18\x02 \x01(\v2@.project.planton.credential.civocredential.v1.CivoCredentialSpecR\x12providerCredentialB\xa2\x03\n" +
+	"\x06target\x18\x01 \x01(\v2A.project.planton.provider.civo.civocertificate.v1.CivoCertificateR\x06target\x12Z\n" +
+	"\x0fprovider_config\x18\x02 \x01(\v21.project.planton.provider.civo.CivoProviderConfigR\x0eproviderConfigB\xa2\x03\n" +
 	"4com.project.planton.provider.civo.civocertificate.v1B\x0fStackInputProtoP\x01Zrgithub.com/project-planton/project-planton/apis/project/planton/provider/civo/civocertificate/v1;civocertificatev1\xa2\x02\x05PPPCC\xaa\x020Project.Planton.Provider.Civo.Civocertificate.V1\xca\x020Project\\Planton\\Provider\\Civo\\Civocertificate\\V1\xe2\x02<Project\\Planton\\Provider\\Civo\\Civocertificate\\V1\\GPBMetadata\xea\x025Project::Planton::Provider::Civo::Civocertificate::V1b\x06proto3"
 
 var (
@@ -103,11 +103,11 @@ var file_project_planton_provider_civo_civocertificate_v1_stack_input_proto_msgT
 var file_project_planton_provider_civo_civocertificate_v1_stack_input_proto_goTypes = []any{
 	(*CivoCertificateStackInput)(nil), // 0: project.planton.provider.civo.civocertificate.v1.CivoCertificateStackInput
 	(*CivoCertificate)(nil),           // 1: project.planton.provider.civo.civocertificate.v1.CivoCertificate
-	(*v1.CivoCredentialSpec)(nil),     // 2: project.planton.credential.civocredential.v1.CivoCredentialSpec
+	(*civo.CivoProviderConfig)(nil),   // 2: project.planton.provider.civo.CivoProviderConfig
 }
 var file_project_planton_provider_civo_civocertificate_v1_stack_input_proto_depIdxs = []int32{
 	1, // 0: project.planton.provider.civo.civocertificate.v1.CivoCertificateStackInput.target:type_name -> project.planton.provider.civo.civocertificate.v1.CivoCertificate
-	2, // 1: project.planton.provider.civo.civocertificate.v1.CivoCertificateStackInput.provider_credential:type_name -> project.planton.credential.civocredential.v1.CivoCredentialSpec
+	2, // 1: project.planton.provider.civo.civocertificate.v1.CivoCertificateStackInput.provider_config:type_name -> project.planton.provider.civo.CivoProviderConfig
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

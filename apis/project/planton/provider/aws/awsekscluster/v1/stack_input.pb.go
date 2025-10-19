@@ -7,7 +7,7 @@
 package awseksclusterv1
 
 import (
-	v1 "github.com/project-planton/project-planton/apis/project/planton/credential/awscredential/v1"
+	aws "github.com/project-planton/project-planton/apis/project/planton/provider/aws"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -27,10 +27,10 @@ type AwsEksClusterStackInput struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// target cloud-resource
 	Target *AwsEksCluster `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
-	// provider-credential
-	ProviderCredential *v1.AwsCredentialSpec `protobuf:"bytes,2,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	// provider-config
+	ProviderConfig *aws.AwsProviderConfig `protobuf:"bytes,2,opt,name=provider_config,json=providerConfig,proto3" json:"provider_config,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *AwsEksClusterStackInput) Reset() {
@@ -70,9 +70,9 @@ func (x *AwsEksClusterStackInput) GetTarget() *AwsEksCluster {
 	return nil
 }
 
-func (x *AwsEksClusterStackInput) GetProviderCredential() *v1.AwsCredentialSpec {
+func (x *AwsEksClusterStackInput) GetProviderConfig() *aws.AwsProviderConfig {
 	if x != nil {
-		return x.ProviderCredential
+		return x.ProviderConfig
 	}
 	return nil
 }
@@ -81,10 +81,10 @@ var File_project_planton_provider_aws_awsekscluster_v1_stack_input_proto protore
 
 const file_project_planton_provider_aws_awsekscluster_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"?project/planton/provider/aws/awsekscluster/v1/stack_input.proto\x12-project.planton.provider.aws.awsekscluster.v1\x1a6project/planton/credential/awscredential/v1/spec.proto\x1a7project/planton/provider/aws/awsekscluster/v1/api.proto\"\xe0\x01\n" +
+	"?project/planton/provider/aws/awsekscluster/v1/stack_input.proto\x12-project.planton.provider.aws.awsekscluster.v1\x1a7project/planton/provider/aws/awsekscluster/v1/api.proto\x1a+project/planton/provider/aws/provider.proto\"\xc9\x01\n" +
 	"\x17AwsEksClusterStackInput\x12T\n" +
-	"\x06target\x18\x01 \x01(\v2<.project.planton.provider.aws.awsekscluster.v1.AwsEksClusterR\x06target\x12o\n" +
-	"\x13provider_credential\x18\x02 \x01(\v2>.project.planton.credential.awscredential.v1.AwsCredentialSpecR\x12providerCredentialB\x8e\x03\n" +
+	"\x06target\x18\x01 \x01(\v2<.project.planton.provider.aws.awsekscluster.v1.AwsEksClusterR\x06target\x12X\n" +
+	"\x0fprovider_config\x18\x02 \x01(\v2/.project.planton.provider.aws.AwsProviderConfigR\x0eproviderConfigB\x8e\x03\n" +
 	"1com.project.planton.provider.aws.awsekscluster.v1B\x0fStackInputProtoP\x01Zmgithub.com/project-planton/project-planton/apis/project/planton/provider/aws/awsekscluster/v1;awseksclusterv1\xa2\x02\x05PPPAA\xaa\x02-Project.Planton.Provider.Aws.Awsekscluster.V1\xca\x02-Project\\Planton\\Provider\\Aws\\Awsekscluster\\V1\xe2\x029Project\\Planton\\Provider\\Aws\\Awsekscluster\\V1\\GPBMetadata\xea\x022Project::Planton::Provider::Aws::Awsekscluster::V1b\x06proto3"
 
 var (
@@ -103,11 +103,11 @@ var file_project_planton_provider_aws_awsekscluster_v1_stack_input_proto_msgType
 var file_project_planton_provider_aws_awsekscluster_v1_stack_input_proto_goTypes = []any{
 	(*AwsEksClusterStackInput)(nil), // 0: project.planton.provider.aws.awsekscluster.v1.AwsEksClusterStackInput
 	(*AwsEksCluster)(nil),           // 1: project.planton.provider.aws.awsekscluster.v1.AwsEksCluster
-	(*v1.AwsCredentialSpec)(nil),    // 2: project.planton.credential.awscredential.v1.AwsCredentialSpec
+	(*aws.AwsProviderConfig)(nil),   // 2: project.planton.provider.aws.AwsProviderConfig
 }
 var file_project_planton_provider_aws_awsekscluster_v1_stack_input_proto_depIdxs = []int32{
 	1, // 0: project.planton.provider.aws.awsekscluster.v1.AwsEksClusterStackInput.target:type_name -> project.planton.provider.aws.awsekscluster.v1.AwsEksCluster
-	2, // 1: project.planton.provider.aws.awsekscluster.v1.AwsEksClusterStackInput.provider_credential:type_name -> project.planton.credential.awscredential.v1.AwsCredentialSpec
+	2, // 1: project.planton.provider.aws.awsekscluster.v1.AwsEksClusterStackInput.provider_config:type_name -> project.planton.provider.aws.AwsProviderConfig
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

@@ -9,8 +9,8 @@ go_library(
     importpath = "github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/azure/pulumiakskubernetesprovider",
     visibility = ["//visibility:public"],
     deps = [
-        "//apis/project/planton/credential/azurecredential/v1:azurecredential",
         "@com_github_pkg_errors//:errors",
+        "@com_github_project_planton_project_planton//apis/project/planton/credential/azurecredential/v1:go_default_library",
         "@com_github_pulumi_pulumi_azure_sdk_v5//go/azure/containerservice",
         "@com_github_pulumi_pulumi_kubernetes_sdk_v4//go/kubernetes",
         "@com_github_pulumi_pulumi_sdk_v3//go/pulumi",

@@ -7,7 +7,7 @@
 package cloudflareloadbalancerv1
 
 import (
-	v1 "github.com/project-planton/project-planton/apis/project/planton/credential/cloudflarecredential/v1"
+	cloudflare "github.com/project-planton/project-planton/apis/project/planton/provider/cloudflare"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -27,10 +27,10 @@ type CloudflareLoadBalancerStackInput struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// target cloud-resource
 	Target *CloudflareLoadBalancer `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
-	// provider-credential
-	ProviderCredential *v1.CloudflareCredentialSpec `protobuf:"bytes,2,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	// provider-config
+	ProviderConfig *cloudflare.CloudflareProviderConfig `protobuf:"bytes,2,opt,name=provider_config,json=providerConfig,proto3" json:"provider_config,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *CloudflareLoadBalancerStackInput) Reset() {
@@ -70,9 +70,9 @@ func (x *CloudflareLoadBalancerStackInput) GetTarget() *CloudflareLoadBalancer {
 	return nil
 }
 
-func (x *CloudflareLoadBalancerStackInput) GetProviderCredential() *v1.CloudflareCredentialSpec {
+func (x *CloudflareLoadBalancerStackInput) GetProviderConfig() *cloudflare.CloudflareProviderConfig {
 	if x != nil {
-		return x.ProviderCredential
+		return x.ProviderConfig
 	}
 	return nil
 }
@@ -81,10 +81,10 @@ var File_project_planton_provider_cloudflare_cloudflareloadbalancer_v1_stack_inp
 
 const file_project_planton_provider_cloudflare_cloudflareloadbalancer_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Oproject/planton/provider/cloudflare/cloudflareloadbalancer/v1/stack_input.proto\x12=project.planton.provider.cloudflare.cloudflareloadbalancer.v1\x1a=project/planton/credential/cloudflarecredential/v1/spec.proto\x1aGproject/planton/provider/cloudflare/cloudflareloadbalancer/v1/api.proto\"\x90\x02\n" +
+	"Oproject/planton/provider/cloudflare/cloudflareloadbalancer/v1/stack_input.proto\x12=project.planton.provider.cloudflare.cloudflareloadbalancer.v1\x1aGproject/planton/provider/cloudflare/cloudflareloadbalancer/v1/api.proto\x1a2project/planton/provider/cloudflare/provider.proto\"\xf9\x01\n" +
 	" CloudflareLoadBalancerStackInput\x12m\n" +
-	"\x06target\x18\x01 \x01(\v2U.project.planton.provider.cloudflare.cloudflareloadbalancer.v1.CloudflareLoadBalancerR\x06target\x12}\n" +
-	"\x13provider_credential\x18\x02 \x01(\v2L.project.planton.credential.cloudflarecredential.v1.CloudflareCredentialSpecR\x12providerCredentialB\xf8\x03\n" +
+	"\x06target\x18\x01 \x01(\v2U.project.planton.provider.cloudflare.cloudflareloadbalancer.v1.CloudflareLoadBalancerR\x06target\x12f\n" +
+	"\x0fprovider_config\x18\x02 \x01(\v2=.project.planton.provider.cloudflare.CloudflareProviderConfigR\x0eproviderConfigB\xf8\x03\n" +
 	"Acom.project.planton.provider.cloudflare.cloudflareloadbalancer.v1B\x0fStackInputProtoP\x01Z\x86\x01github.com/project-planton/project-planton/apis/project/planton/provider/cloudflare/cloudflareloadbalancer/v1;cloudflareloadbalancerv1\xa2\x02\x05PPPCC\xaa\x02=Project.Planton.Provider.Cloudflare.Cloudflareloadbalancer.V1\xca\x02=Project\\Planton\\Provider\\Cloudflare\\Cloudflareloadbalancer\\V1\xe2\x02IProject\\Planton\\Provider\\Cloudflare\\Cloudflareloadbalancer\\V1\\GPBMetadata\xea\x02BProject::Planton::Provider::Cloudflare::Cloudflareloadbalancer::V1b\x06proto3"
 
 var (
@@ -101,13 +101,13 @@ func file_project_planton_provider_cloudflare_cloudflareloadbalancer_v1_stack_in
 
 var file_project_planton_provider_cloudflare_cloudflareloadbalancer_v1_stack_input_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_cloudflare_cloudflareloadbalancer_v1_stack_input_proto_goTypes = []any{
-	(*CloudflareLoadBalancerStackInput)(nil), // 0: project.planton.provider.cloudflare.cloudflareloadbalancer.v1.CloudflareLoadBalancerStackInput
-	(*CloudflareLoadBalancer)(nil),           // 1: project.planton.provider.cloudflare.cloudflareloadbalancer.v1.CloudflareLoadBalancer
-	(*v1.CloudflareCredentialSpec)(nil),      // 2: project.planton.credential.cloudflarecredential.v1.CloudflareCredentialSpec
+	(*CloudflareLoadBalancerStackInput)(nil),    // 0: project.planton.provider.cloudflare.cloudflareloadbalancer.v1.CloudflareLoadBalancerStackInput
+	(*CloudflareLoadBalancer)(nil),              // 1: project.planton.provider.cloudflare.cloudflareloadbalancer.v1.CloudflareLoadBalancer
+	(*cloudflare.CloudflareProviderConfig)(nil), // 2: project.planton.provider.cloudflare.CloudflareProviderConfig
 }
 var file_project_planton_provider_cloudflare_cloudflareloadbalancer_v1_stack_input_proto_depIdxs = []int32{
 	1, // 0: project.planton.provider.cloudflare.cloudflareloadbalancer.v1.CloudflareLoadBalancerStackInput.target:type_name -> project.planton.provider.cloudflare.cloudflareloadbalancer.v1.CloudflareLoadBalancer
-	2, // 1: project.planton.provider.cloudflare.cloudflareloadbalancer.v1.CloudflareLoadBalancerStackInput.provider_credential:type_name -> project.planton.credential.cloudflarecredential.v1.CloudflareCredentialSpec
+	2, // 1: project.planton.provider.cloudflare.cloudflareloadbalancer.v1.CloudflareLoadBalancerStackInput.provider_config:type_name -> project.planton.provider.cloudflare.CloudflareProviderConfig
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

@@ -7,7 +7,7 @@
 package azurekeyvaultv1
 
 import (
-	v1 "github.com/project-planton/project-planton/apis/project/planton/credential/azurecredential/v1"
+	azure "github.com/project-planton/project-planton/apis/project/planton/provider/azure"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -27,10 +27,10 @@ type AzureKeyVaultStackInput struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// target cloud-resource
 	Target *AzureKeyVault `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
-	// provider-credential
-	ProviderCredential *v1.AzureCredentialSpec `protobuf:"bytes,2,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	// provider-config
+	ProviderConfig *azure.AzureProviderConfig `protobuf:"bytes,2,opt,name=provider_config,json=providerConfig,proto3" json:"provider_config,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *AzureKeyVaultStackInput) Reset() {
@@ -70,9 +70,9 @@ func (x *AzureKeyVaultStackInput) GetTarget() *AzureKeyVault {
 	return nil
 }
 
-func (x *AzureKeyVaultStackInput) GetProviderCredential() *v1.AzureCredentialSpec {
+func (x *AzureKeyVaultStackInput) GetProviderConfig() *azure.AzureProviderConfig {
 	if x != nil {
-		return x.ProviderCredential
+		return x.ProviderConfig
 	}
 	return nil
 }
@@ -81,10 +81,10 @@ var File_project_planton_provider_azure_azurekeyvault_v1_stack_input_proto proto
 
 const file_project_planton_provider_azure_azurekeyvault_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Aproject/planton/provider/azure/azurekeyvault/v1/stack_input.proto\x12/project.planton.provider.azure.azurekeyvault.v1\x1a8project/planton/credential/azurecredential/v1/spec.proto\x1a9project/planton/provider/azure/azurekeyvault/v1/api.proto\"\xe6\x01\n" +
+	"Aproject/planton/provider/azure/azurekeyvault/v1/stack_input.proto\x12/project.planton.provider.azure.azurekeyvault.v1\x1a9project/planton/provider/azure/azurekeyvault/v1/api.proto\x1a-project/planton/provider/azure/provider.proto\"\xcf\x01\n" +
 	"\x17AzureKeyVaultStackInput\x12V\n" +
-	"\x06target\x18\x01 \x01(\v2>.project.planton.provider.azure.azurekeyvault.v1.AzureKeyVaultR\x06target\x12s\n" +
-	"\x13provider_credential\x18\x02 \x01(\v2B.project.planton.credential.azurecredential.v1.AzureCredentialSpecR\x12providerCredentialB\x9a\x03\n" +
+	"\x06target\x18\x01 \x01(\v2>.project.planton.provider.azure.azurekeyvault.v1.AzureKeyVaultR\x06target\x12\\\n" +
+	"\x0fprovider_config\x18\x02 \x01(\v23.project.planton.provider.azure.AzureProviderConfigR\x0eproviderConfigB\x9a\x03\n" +
 	"3com.project.planton.provider.azure.azurekeyvault.v1B\x0fStackInputProtoP\x01Zogithub.com/project-planton/project-planton/apis/project/planton/provider/azure/azurekeyvault/v1;azurekeyvaultv1\xa2\x02\x05PPPAA\xaa\x02/Project.Planton.Provider.Azure.Azurekeyvault.V1\xca\x02/Project\\Planton\\Provider\\Azure\\Azurekeyvault\\V1\xe2\x02;Project\\Planton\\Provider\\Azure\\Azurekeyvault\\V1\\GPBMetadata\xea\x024Project::Planton::Provider::Azure::Azurekeyvault::V1b\x06proto3"
 
 var (
@@ -101,13 +101,13 @@ func file_project_planton_provider_azure_azurekeyvault_v1_stack_input_proto_rawD
 
 var file_project_planton_provider_azure_azurekeyvault_v1_stack_input_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_azure_azurekeyvault_v1_stack_input_proto_goTypes = []any{
-	(*AzureKeyVaultStackInput)(nil), // 0: project.planton.provider.azure.azurekeyvault.v1.AzureKeyVaultStackInput
-	(*AzureKeyVault)(nil),           // 1: project.planton.provider.azure.azurekeyvault.v1.AzureKeyVault
-	(*v1.AzureCredentialSpec)(nil),  // 2: project.planton.credential.azurecredential.v1.AzureCredentialSpec
+	(*AzureKeyVaultStackInput)(nil),   // 0: project.planton.provider.azure.azurekeyvault.v1.AzureKeyVaultStackInput
+	(*AzureKeyVault)(nil),             // 1: project.planton.provider.azure.azurekeyvault.v1.AzureKeyVault
+	(*azure.AzureProviderConfig)(nil), // 2: project.planton.provider.azure.AzureProviderConfig
 }
 var file_project_planton_provider_azure_azurekeyvault_v1_stack_input_proto_depIdxs = []int32{
 	1, // 0: project.planton.provider.azure.azurekeyvault.v1.AzureKeyVaultStackInput.target:type_name -> project.planton.provider.azure.azurekeyvault.v1.AzureKeyVault
-	2, // 1: project.planton.provider.azure.azurekeyvault.v1.AzureKeyVaultStackInput.provider_credential:type_name -> project.planton.credential.azurecredential.v1.AzureCredentialSpec
+	2, // 1: project.planton.provider.azure.azurekeyvault.v1.AzureKeyVaultStackInput.provider_config:type_name -> project.planton.provider.azure.AzureProviderConfig
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

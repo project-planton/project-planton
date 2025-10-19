@@ -7,7 +7,7 @@
 package snowflakedatabasev1
 
 import (
-	v1 "github.com/project-planton/project-planton/apis/project/planton/credential/snowflakecredential/v1"
+	snowflake "github.com/project-planton/project-planton/apis/project/planton/provider/snowflake"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -27,10 +27,10 @@ type SnowflakeDatabaseStackInput struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// target cloud-resource
 	Target *SnowflakeDatabase `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
-	// provider-credential
-	ProviderCredential *v1.SnowflakeCredentialSpec `protobuf:"bytes,2,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	// provider-config
+	ProviderConfig *snowflake.SnowflakeProviderConfig `protobuf:"bytes,2,opt,name=provider_config,json=providerConfig,proto3" json:"provider_config,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *SnowflakeDatabaseStackInput) Reset() {
@@ -70,9 +70,9 @@ func (x *SnowflakeDatabaseStackInput) GetTarget() *SnowflakeDatabase {
 	return nil
 }
 
-func (x *SnowflakeDatabaseStackInput) GetProviderCredential() *v1.SnowflakeCredentialSpec {
+func (x *SnowflakeDatabaseStackInput) GetProviderConfig() *snowflake.SnowflakeProviderConfig {
 	if x != nil {
-		return x.ProviderCredential
+		return x.ProviderConfig
 	}
 	return nil
 }
@@ -81,10 +81,10 @@ var File_project_planton_provider_snowflake_snowflakedatabase_v1_stack_input_pro
 
 const file_project_planton_provider_snowflake_snowflakedatabase_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Iproject/planton/provider/snowflake/snowflakedatabase/v1/stack_input.proto\x127project.planton.provider.snowflake.snowflakedatabase.v1\x1a<project/planton/credential/snowflakecredential/v1/spec.proto\x1aAproject/planton/provider/snowflake/snowflakedatabase/v1/api.proto\"\xfe\x01\n" +
+	"Iproject/planton/provider/snowflake/snowflakedatabase/v1/stack_input.proto\x127project.planton.provider.snowflake.snowflakedatabase.v1\x1a1project/planton/provider/snowflake/provider.proto\x1aAproject/planton/provider/snowflake/snowflakedatabase/v1/api.proto\"\xe7\x01\n" +
 	"\x1bSnowflakeDatabaseStackInput\x12b\n" +
-	"\x06target\x18\x01 \x01(\v2J.project.planton.provider.snowflake.snowflakedatabase.v1.SnowflakeDatabaseR\x06target\x12{\n" +
-	"\x13provider_credential\x18\x02 \x01(\v2J.project.planton.credential.snowflakecredential.v1.SnowflakeCredentialSpecR\x12providerCredentialB\xce\x03\n" +
+	"\x06target\x18\x01 \x01(\v2J.project.planton.provider.snowflake.snowflakedatabase.v1.SnowflakeDatabaseR\x06target\x12d\n" +
+	"\x0fprovider_config\x18\x02 \x01(\v2;.project.planton.provider.snowflake.SnowflakeProviderConfigR\x0eproviderConfigB\xce\x03\n" +
 	";com.project.planton.provider.snowflake.snowflakedatabase.v1B\x0fStackInputProtoP\x01Z{github.com/project-planton/project-planton/apis/project/planton/provider/snowflake/snowflakedatabase/v1;snowflakedatabasev1\xa2\x02\x05PPPSS\xaa\x027Project.Planton.Provider.Snowflake.Snowflakedatabase.V1\xca\x027Project\\Planton\\Provider\\Snowflake\\Snowflakedatabase\\V1\xe2\x02CProject\\Planton\\Provider\\Snowflake\\Snowflakedatabase\\V1\\GPBMetadata\xea\x02<Project::Planton::Provider::Snowflake::Snowflakedatabase::V1b\x06proto3"
 
 var (
@@ -101,13 +101,13 @@ func file_project_planton_provider_snowflake_snowflakedatabase_v1_stack_input_pr
 
 var file_project_planton_provider_snowflake_snowflakedatabase_v1_stack_input_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_snowflake_snowflakedatabase_v1_stack_input_proto_goTypes = []any{
-	(*SnowflakeDatabaseStackInput)(nil), // 0: project.planton.provider.snowflake.snowflakedatabase.v1.SnowflakeDatabaseStackInput
-	(*SnowflakeDatabase)(nil),           // 1: project.planton.provider.snowflake.snowflakedatabase.v1.SnowflakeDatabase
-	(*v1.SnowflakeCredentialSpec)(nil),  // 2: project.planton.credential.snowflakecredential.v1.SnowflakeCredentialSpec
+	(*SnowflakeDatabaseStackInput)(nil),       // 0: project.planton.provider.snowflake.snowflakedatabase.v1.SnowflakeDatabaseStackInput
+	(*SnowflakeDatabase)(nil),                 // 1: project.planton.provider.snowflake.snowflakedatabase.v1.SnowflakeDatabase
+	(*snowflake.SnowflakeProviderConfig)(nil), // 2: project.planton.provider.snowflake.SnowflakeProviderConfig
 }
 var file_project_planton_provider_snowflake_snowflakedatabase_v1_stack_input_proto_depIdxs = []int32{
 	1, // 0: project.planton.provider.snowflake.snowflakedatabase.v1.SnowflakeDatabaseStackInput.target:type_name -> project.planton.provider.snowflake.snowflakedatabase.v1.SnowflakeDatabase
-	2, // 1: project.planton.provider.snowflake.snowflakedatabase.v1.SnowflakeDatabaseStackInput.provider_credential:type_name -> project.planton.credential.snowflakecredential.v1.SnowflakeCredentialSpec
+	2, // 1: project.planton.provider.snowflake.snowflakedatabase.v1.SnowflakeDatabaseStackInput.provider_config:type_name -> project.planton.provider.snowflake.SnowflakeProviderConfig
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

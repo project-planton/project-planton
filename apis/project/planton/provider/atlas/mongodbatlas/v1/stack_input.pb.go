@@ -7,7 +7,7 @@
 package mongodbatlasv1
 
 import (
-	v1 "github.com/project-planton/project-planton/apis/project/planton/credential/mongodbatlascredential/v1"
+	atlas "github.com/project-planton/project-planton/apis/project/planton/provider/atlas"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -27,10 +27,10 @@ type MongodbAtlasStackInput struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// target cloud-resource
 	Target *MongodbAtlas `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
-	// provider-credential
-	ProviderCredential *v1.MongodbAtlasCredentialSpec `protobuf:"bytes,2,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	// provider-config
+	ProviderConfig *atlas.AtlasProviderConfig `protobuf:"bytes,2,opt,name=provider_config,json=providerConfig,proto3" json:"provider_config,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *MongodbAtlasStackInput) Reset() {
@@ -70,9 +70,9 @@ func (x *MongodbAtlasStackInput) GetTarget() *MongodbAtlas {
 	return nil
 }
 
-func (x *MongodbAtlasStackInput) GetProviderCredential() *v1.MongodbAtlasCredentialSpec {
+func (x *MongodbAtlasStackInput) GetProviderConfig() *atlas.AtlasProviderConfig {
 	if x != nil {
-		return x.ProviderCredential
+		return x.ProviderConfig
 	}
 	return nil
 }
@@ -81,10 +81,10 @@ var File_project_planton_provider_atlas_mongodbatlas_v1_stack_input_proto protor
 
 const file_project_planton_provider_atlas_mongodbatlas_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"@project/planton/provider/atlas/mongodbatlas/v1/stack_input.proto\x12.project.planton.provider.atlas.mongodbatlas.v1\x1a?project/planton/credential/mongodbatlascredential/v1/spec.proto\x1a8project/planton/provider/atlas/mongodbatlas/v1/api.proto\"\xf2\x01\n" +
+	"@project/planton/provider/atlas/mongodbatlas/v1/stack_input.proto\x12.project.planton.provider.atlas.mongodbatlas.v1\x1a8project/planton/provider/atlas/mongodbatlas/v1/api.proto\x1a-project/planton/provider/atlas/provider.proto\"\xcc\x01\n" +
 	"\x16MongodbAtlasStackInput\x12T\n" +
-	"\x06target\x18\x01 \x01(\v2<.project.planton.provider.atlas.mongodbatlas.v1.MongodbAtlasR\x06target\x12\x81\x01\n" +
-	"\x13provider_credential\x18\x02 \x01(\v2P.project.planton.credential.mongodbatlascredential.v1.MongodbAtlasCredentialSpecR\x12providerCredentialB\x93\x03\n" +
+	"\x06target\x18\x01 \x01(\v2<.project.planton.provider.atlas.mongodbatlas.v1.MongodbAtlasR\x06target\x12\\\n" +
+	"\x0fprovider_config\x18\x02 \x01(\v23.project.planton.provider.atlas.AtlasProviderConfigR\x0eproviderConfigB\x93\x03\n" +
 	"2com.project.planton.provider.atlas.mongodbatlas.v1B\x0fStackInputProtoP\x01Zmgithub.com/project-planton/project-planton/apis/project/planton/provider/atlas/mongodbatlas/v1;mongodbatlasv1\xa2\x02\x05PPPAM\xaa\x02.Project.Planton.Provider.Atlas.Mongodbatlas.V1\xca\x02.Project\\Planton\\Provider\\Atlas\\Mongodbatlas\\V1\xe2\x02:Project\\Planton\\Provider\\Atlas\\Mongodbatlas\\V1\\GPBMetadata\xea\x023Project::Planton::Provider::Atlas::Mongodbatlas::V1b\x06proto3"
 
 var (
@@ -101,13 +101,13 @@ func file_project_planton_provider_atlas_mongodbatlas_v1_stack_input_proto_rawDe
 
 var file_project_planton_provider_atlas_mongodbatlas_v1_stack_input_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_atlas_mongodbatlas_v1_stack_input_proto_goTypes = []any{
-	(*MongodbAtlasStackInput)(nil),        // 0: project.planton.provider.atlas.mongodbatlas.v1.MongodbAtlasStackInput
-	(*MongodbAtlas)(nil),                  // 1: project.planton.provider.atlas.mongodbatlas.v1.MongodbAtlas
-	(*v1.MongodbAtlasCredentialSpec)(nil), // 2: project.planton.credential.mongodbatlascredential.v1.MongodbAtlasCredentialSpec
+	(*MongodbAtlasStackInput)(nil),    // 0: project.planton.provider.atlas.mongodbatlas.v1.MongodbAtlasStackInput
+	(*MongodbAtlas)(nil),              // 1: project.planton.provider.atlas.mongodbatlas.v1.MongodbAtlas
+	(*atlas.AtlasProviderConfig)(nil), // 2: project.planton.provider.atlas.AtlasProviderConfig
 }
 var file_project_planton_provider_atlas_mongodbatlas_v1_stack_input_proto_depIdxs = []int32{
 	1, // 0: project.planton.provider.atlas.mongodbatlas.v1.MongodbAtlasStackInput.target:type_name -> project.planton.provider.atlas.mongodbatlas.v1.MongodbAtlas
-	2, // 1: project.planton.provider.atlas.mongodbatlas.v1.MongodbAtlasStackInput.provider_credential:type_name -> project.planton.credential.mongodbatlascredential.v1.MongodbAtlasCredentialSpec
+	2, // 1: project.planton.provider.atlas.mongodbatlas.v1.MongodbAtlasStackInput.provider_config:type_name -> project.planton.provider.atlas.AtlasProviderConfig
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

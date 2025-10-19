@@ -7,7 +7,7 @@
 package istiokubernetesv1
 
 import (
-	v1 "github.com/project-planton/project-planton/apis/project/planton/credential/kubernetesclustercredential/v1"
+	kubernetes "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -27,10 +27,10 @@ type IstioKubernetesStackInput struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// target cloud-resource
 	Target *IstioKubernetes `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
-	// provider-credential
-	ProviderCredential *v1.KubernetesClusterCredentialSpec `protobuf:"bytes,2,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	// provider-config
+	ProviderConfig *kubernetes.KubernetesProviderConfig `protobuf:"bytes,2,opt,name=provider_config,json=providerConfig,proto3" json:"provider_config,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *IstioKubernetesStackInput) Reset() {
@@ -70,9 +70,9 @@ func (x *IstioKubernetesStackInput) GetTarget() *IstioKubernetes {
 	return nil
 }
 
-func (x *IstioKubernetesStackInput) GetProviderCredential() *v1.KubernetesClusterCredentialSpec {
+func (x *IstioKubernetesStackInput) GetProviderConfig() *kubernetes.KubernetesProviderConfig {
 	if x != nil {
-		return x.ProviderCredential
+		return x.ProviderConfig
 	}
 	return nil
 }
@@ -81,10 +81,10 @@ var File_project_planton_provider_kubernetes_addon_istiokubernetes_v1_stack_inpu
 
 const file_project_planton_provider_kubernetes_addon_istiokubernetes_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Nproject/planton/provider/kubernetes/addon/istiokubernetes/v1/stack_input.proto\x12<project.planton.provider.kubernetes.addon.istiokubernetes.v1\x1aDproject/planton/credential/kubernetesclustercredential/v1/spec.proto\x1aFproject/planton/provider/kubernetes/addon/istiokubernetes/v1/api.proto\"\x90\x02\n" +
+	"Nproject/planton/provider/kubernetes/addon/istiokubernetes/v1/stack_input.proto\x12<project.planton.provider.kubernetes.addon.istiokubernetes.v1\x1aFproject/planton/provider/kubernetes/addon/istiokubernetes/v1/api.proto\x1a2project/planton/provider/kubernetes/provider.proto\"\xea\x01\n" +
 	"\x19IstioKubernetesStackInput\x12e\n" +
-	"\x06target\x18\x01 \x01(\v2M.project.planton.provider.kubernetes.addon.istiokubernetes.v1.IstioKubernetesR\x06target\x12\x8b\x01\n" +
-	"\x13provider_credential\x18\x02 \x01(\v2Z.project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpecR\x12providerCredentialB\xec\x03\n" +
+	"\x06target\x18\x01 \x01(\v2M.project.planton.provider.kubernetes.addon.istiokubernetes.v1.IstioKubernetesR\x06target\x12f\n" +
+	"\x0fprovider_config\x18\x02 \x01(\v2=.project.planton.provider.kubernetes.KubernetesProviderConfigR\x0eproviderConfigB\xec\x03\n" +
 	"@com.project.planton.provider.kubernetes.addon.istiokubernetes.v1B\x0fStackInputProtoP\x01Z~github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/addon/istiokubernetes/v1;istiokubernetesv1\xa2\x02\x06PPPKAI\xaa\x02<Project.Planton.Provider.Kubernetes.Addon.Istiokubernetes.V1\xca\x02<Project\\Planton\\Provider\\Kubernetes\\Addon\\Istiokubernetes\\V1\xe2\x02HProject\\Planton\\Provider\\Kubernetes\\Addon\\Istiokubernetes\\V1\\GPBMetadata\xea\x02BProject::Planton::Provider::Kubernetes::Addon::Istiokubernetes::V1b\x06proto3"
 
 var (
@@ -101,13 +101,13 @@ func file_project_planton_provider_kubernetes_addon_istiokubernetes_v1_stack_inp
 
 var file_project_planton_provider_kubernetes_addon_istiokubernetes_v1_stack_input_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_kubernetes_addon_istiokubernetes_v1_stack_input_proto_goTypes = []any{
-	(*IstioKubernetesStackInput)(nil),          // 0: project.planton.provider.kubernetes.addon.istiokubernetes.v1.IstioKubernetesStackInput
-	(*IstioKubernetes)(nil),                    // 1: project.planton.provider.kubernetes.addon.istiokubernetes.v1.IstioKubernetes
-	(*v1.KubernetesClusterCredentialSpec)(nil), // 2: project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec
+	(*IstioKubernetesStackInput)(nil),           // 0: project.planton.provider.kubernetes.addon.istiokubernetes.v1.IstioKubernetesStackInput
+	(*IstioKubernetes)(nil),                     // 1: project.planton.provider.kubernetes.addon.istiokubernetes.v1.IstioKubernetes
+	(*kubernetes.KubernetesProviderConfig)(nil), // 2: project.planton.provider.kubernetes.KubernetesProviderConfig
 }
 var file_project_planton_provider_kubernetes_addon_istiokubernetes_v1_stack_input_proto_depIdxs = []int32{
 	1, // 0: project.planton.provider.kubernetes.addon.istiokubernetes.v1.IstioKubernetesStackInput.target:type_name -> project.planton.provider.kubernetes.addon.istiokubernetes.v1.IstioKubernetes
-	2, // 1: project.planton.provider.kubernetes.addon.istiokubernetes.v1.IstioKubernetesStackInput.provider_credential:type_name -> project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec
+	2, // 1: project.planton.provider.kubernetes.addon.istiokubernetes.v1.IstioKubernetesStackInput.provider_config:type_name -> project.planton.provider.kubernetes.KubernetesProviderConfig
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name
