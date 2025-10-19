@@ -11,12 +11,12 @@ go_library(
     importpath = "github.com/project-planton/project-planton/apis/project/planton/provider/civo/civovolume/v1/iac/pulumi/module",
     visibility = ["//visibility:public"],
     deps = [
+        "//apis/project/planton/provider/civo",
         "//apis/project/planton/provider/civo/civovolume/v1:civovolume",
         "//apis/project/planton/shared/cloudresourcekind",
         "//pkg/iac/pulumi/pulumimodule/provider/civo/civolabelkeys",
         "//pkg/iac/pulumi/pulumimodule/provider/civo/pulumicivoprovider",
         "@com_github_pkg_errors//:errors",
-        "@com_github_project_planton_project_planton//apis/project/planton/credential/civocredential/v1:go_default_library",
         "@com_github_pulumi_pulumi_civo_sdk_v2//go/civo",
         "@com_github_pulumi_pulumi_sdk_v3//go/pulumi",
     ],

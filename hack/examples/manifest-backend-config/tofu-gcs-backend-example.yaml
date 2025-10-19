@@ -10,7 +10,7 @@ metadata:
     terraform.project-planton.org/backend.type: "gcs"
     terraform.project-planton.org/backend.object: "project-terraform-state/gke/staging-cluster/default.tfstate"
 spec:
-  gcpCredentialId: gcp-staging-creds
+  gcpProviderConfigId: gcp-staging-creds
   projectId: my-project-staging
   region: us-central1
   zone: us-central1-a

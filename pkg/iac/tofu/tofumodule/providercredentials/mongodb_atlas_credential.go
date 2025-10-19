@@ -2,14 +2,14 @@ package providercredentials
 
 import (
 	"github.com/pkg/errors"
-	mongodbatlascredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/mongodbatlascredential/v1"
+	atlas"github.com/project-planton/project-planton/apis/project/planton/provider/atlas"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput/stackinputcredentials"
 )
 
 func AddMongodbAtlasCredentialEnvVars(stackInputContentMap map[string]interface{},
 	credentialEnvVars map[string]string) (map[string]string, error) {
-	credentialSpec := new(mongodbatlascredentialv1.MongodbAtlasCredentialSpec)
+	credentialSpec := new(mongodbatlascredentialv1.AtlasProviderConfig)
 
 	isCredentialLoaded, err := stackinput.LoadCredential(stackInputContentMap,
 		stackinputcredentials.MongodbAtlasCredentialKey, credentialSpec)

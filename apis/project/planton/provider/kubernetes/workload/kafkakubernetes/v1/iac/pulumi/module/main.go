@@ -13,8 +13,8 @@ func Resources(ctx *pulumi.Context, stackInput *kafkakubernetesv1.KafkaKubernete
 	locals := initializeLocals(ctx, stackInput)
 
 	//create kubernetes-provider from the credential in the stack-kowlConfigTemplateInput
-	kubernetesProvider, err := pulumikubernetesprovider.GetWithKubernetesClusterCredential(ctx,
-		stackInput.ProviderCredential, "kubernetes")
+	kubernetesProvider, err := pulumikubernetesprovider.GetWithKubernetesProviderConfig(ctx,
+		stackInput.ProviderConfig, "kubernetes")
 	if err != nil {
 		return errors.Wrap(err, "failed to create kubernetes provider")
 	}

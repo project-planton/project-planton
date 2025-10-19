@@ -11,7 +11,7 @@ enum CloudflareAuthScheme {
   legacy_api_key = 2; // Global API key + account email.
 }
 
-// CloudflareCredentialSpec defines the specification for a Cloudflare
+// CloudflareProviderConfig defines the specification for a Cloudflare
 message CloudflareProviderConfig {
   // Which authentication scheme this credential will use.
   CloudflareAuthScheme auth_scheme = 1 [

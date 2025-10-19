@@ -32,7 +32,7 @@ metadata:
   name: external-dns-planton-cloud
 spec:
   targetCluster:
-    kubernetesClusterCredentialId: k8s-cluster-01
+    kubernetesProviderConfigId: k8s-cluster-01
   namespace: external-dns
   externalDnsVersion: v0.19.0
   helmChartVersion: 1.19.0
@@ -255,7 +255,7 @@ metadata:
   name: external-dns-example
 spec:
   targetCluster:
-    kubernetesClusterCredentialId: k8s-cluster-01
+    kubernetesProviderConfigId: k8s-cluster-01
   cloudflare:
     apiToken: "YOUR_CLOUDFLARE_API_TOKEN"
     dnsZoneId: "YOUR_ZONE_ID"
@@ -273,7 +273,7 @@ metadata:
   name: external-dns-example-com
 spec:
   targetCluster:
-    kubernetesClusterCredentialId: k8s-cluster-01
+    kubernetesProviderConfigId: k8s-cluster-01
   cloudflare:
     apiToken: "TOKEN_FOR_EXAMPLE_COM"
     dnsZoneId: "ZONE_ID_EXAMPLE_COM"
@@ -287,7 +287,7 @@ metadata:
   name: external-dns-example-org
 spec:
   targetCluster:
-    kubernetesClusterCredentialId: k8s-cluster-01
+    kubernetesProviderConfigId: k8s-cluster-01
   cloudflare:
     apiToken: "TOKEN_FOR_EXAMPLE_ORG"
     dnsZoneId: "ZONE_ID_EXAMPLE_ORG"
@@ -682,7 +682,7 @@ kubectl get clusterrole -l app.kubernetes.io/name=external-dns -o yaml | grep ga
      name: external-dns-my-domain
    spec:
      targetCluster:
-       kubernetesClusterCredentialId: <your-cluster-id>
+       kubernetesProviderConfigId: <your-cluster-id>
      cloudflare:
        apiToken: "<your-token>"
        dnsZoneId: "<your-zone-id>"

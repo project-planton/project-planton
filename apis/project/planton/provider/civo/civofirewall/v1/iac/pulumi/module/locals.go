@@ -1,14 +1,14 @@
 package module
 
 import (
-	civocredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/civocredential/v1"
 	civofirewallv1 "github.com/project-planton/project-planton/apis/project/planton/provider/civo/civofirewall/v1"
+	civoprovider "github.com/project-planton/project-planton/apis/project/planton/provider/civo"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
 // Locals bundles references we need across files.
 type Locals struct {
-	CivoCredentialSpec *civocredentialv1.CivoCredentialSpec
+	CivoProviderConfig *civoprovider.CivoProviderConfig
 	CivoFirewall       *civofirewallv1.CivoFirewall
 	CivoLabels         map[string]string
 }
@@ -17,7 +17,7 @@ type Locals struct {
 func initializeLocals(_ *pulumi.Context, stackInput *civofirewallv1.CivoFirewallStackInput) *Locals {
 	locals := &Locals{}
 	locals.CivoFirewall = stackInput.Target
-	locals.CivoCredentialSpec = stackInput.ProviderCredential
+	locals.CivoProviderConfig = stackInput.ProviderConfig
 
 	// Basic labels — extend as needed for tagging conventions.
 	locals.CivoLabels = map[string]string{

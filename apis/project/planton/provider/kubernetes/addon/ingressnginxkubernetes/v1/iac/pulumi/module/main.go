@@ -15,8 +15,8 @@ func Resources(ctx *pulumi.Context,
 	stackInput *ingressnginxkubernetesv1.IngressNginxKubernetesStackInput) error {
 
 	// Build Kubernetes provider from the target‑cluster credential
-	kubeProvider, err := pulumikubernetesprovider.GetWithKubernetesClusterCredential(
-		ctx, stackInput.ProviderCredential, "kubernetes")
+	kubeProvider, err := pulumikubernetesprovider.GetWithKubernetesProviderConfig(
+		ctx, stackInput.ProviderConfig, "kubernetes")
 	if err != nil {
 		return errors.Wrap(err, "failed to set up kubernetes provider")
 	}

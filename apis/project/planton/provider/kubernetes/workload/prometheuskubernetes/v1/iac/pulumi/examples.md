@@ -10,7 +10,7 @@ kind: PrometheusKubernetes
 metadata:
   name: prometheus-instance-basic
 spec:
-  kubernetesClusterCredentialId: cluster-credential-12345
+  kubernetesProviderConfigId: cluster-credential-12345
   container:
     replicas: 1
     resources:
@@ -32,7 +32,7 @@ kind: PrometheusKubernetes
 metadata:
   name: prometheus-instance-with-persistence
 spec:
-  kubernetesClusterCredentialId: cluster-credential-67890
+  kubernetesProviderConfigId: cluster-credential-67890
   container:
     replicas: 2
     resources:
@@ -56,7 +56,7 @@ kind: PrometheusKubernetes
 metadata:
   name: prometheus-instance-with-ingress
 spec:
-  kubernetesClusterCredentialId: cluster-credential-24680
+  kubernetesProviderConfigId: cluster-credential-24680
   container:
     replicas: 1
     resources:
@@ -82,7 +82,7 @@ kind: PrometheusKubernetes
 metadata:
   name: prometheus-instance-custom-limits
 spec:
-  kubernetesClusterCredentialId: cluster-credential-112233
+  kubernetesProviderConfigId: cluster-credential-112233
   container:
     replicas: 3
     resources:

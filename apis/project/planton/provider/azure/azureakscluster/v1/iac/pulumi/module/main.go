@@ -8,15 +8,15 @@ import (
 )
 
 func Resources(ctx *pulumi.Context, stackInput *azureaksclusterv1.AzureAksClusterStackInput) error {
-	azureCredential := stackInput.ProviderCredential
+	azureProviderConfig := stackInput.ProviderConfig
 	//create azure provider using the credentials from the input
 	_, err := azure.NewProvider(ctx,
 		"azure",
 		&azure.ProviderArgs{
-			ClientId:       pulumi.String(azureCredential.ClientId),
-			ClientSecret:   pulumi.String(azureCredential.ClientSecret),
-			SubscriptionId: pulumi.String(azureCredential.SubscriptionId),
-			TenantId:       pulumi.String(azureCredential.TenantId),
+			ClientId:       pulumi.String(azureProviderConfig.ClientId),
+			ClientSecret:   pulumi.String(azureProviderConfig.ClientSecret),
+			SubscriptionId: pulumi.String(azureProviderConfig.SubscriptionId),
+			TenantId:       pulumi.String(azureProviderConfig.TenantId),
 		})
 	if err != nil {
 		return errors.Wrap(err, "failed to create azure provider")

@@ -14,7 +14,7 @@ kind: AzureAksCluster
 metadata:
   name: my-azure-aks-cluster
 spec:
-  azureCredentialId: my-azure-credential-id
+  azureProviderConfigId: my-azure-credential-id
 ```
 
 # Example with Environment Info
@@ -25,7 +25,7 @@ kind: AzureAksCluster
 metadata:
   name: my-azure-aks-cluster
 spec:
-  azureCredentialId: my-azure-credential-id
+  azureProviderConfigId: my-azure-credential-id
   environmentInfo:
     envId: production
 ```
@@ -38,7 +38,7 @@ kind: AzureAksCluster
 metadata:
   name: my-azure-aks-cluster
 spec:
-  azureCredentialId: my-azure-credential-id
+  azureProviderConfigId: my-azure-credential-id
   stackJobSettings:
     jobTimeout: 3600
 ```

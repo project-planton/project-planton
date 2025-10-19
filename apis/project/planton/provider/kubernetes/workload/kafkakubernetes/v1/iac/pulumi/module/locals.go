@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strconv"
 
-	kubernetesclustercredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/kubernetesclustercredential/v1"
 	kafkakubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/kafkakubernetes/v1"
+	kubernetes"github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes"
 	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/kuberneteslabelkeys"
 	"github.com/project-planton/project-planton/pkg/kubernetes/kuberneteslabels"
@@ -173,8 +173,8 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kafkakubernetesv1.KafkaKu
 	//ingress-domain-names for the GkeCluster/EksCluster/AksCluster spec.
 	locals.IngressCertClusterIssuerName = target.Spec.Ingress.DnsDomain
 
-	switch stackInput.ProviderCredential.Provider {
-	case kubernetesclustercredentialv1.KubernetesProvider_gcp_gke:
+	switch stackInput.ProviderConfig.Provider {
+	case kubernetes.KubernetesProvider_gcp_gke:
 		locals.KafkaIngressPrivateListenerLoadBalancerAnnotationKey = "cloud.google.com/load-balancer-type"
 		locals.KafkaIngressPrivateListenerLoadBalancerAnnotationValue = "Internal"
 		locals.KafkaIngressPublicListenerLoadBalancerAnnotationKey = "cloud.google.com/load-balancer-type"

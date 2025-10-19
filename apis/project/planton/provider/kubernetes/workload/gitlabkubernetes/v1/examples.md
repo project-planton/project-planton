@@ -6,7 +6,7 @@ kind: GitlabKubernetes
 metadata:
   name: gitlab-instance
 spec:
-  kubernetesClusterCredentialId: my-k8s-credentials
+  kubernetesProviderConfigId: my-k8s-credentials
   container:
     resources:
       requests:
@@ -27,7 +27,7 @@ kind: GitlabKubernetes
 metadata:
   name: gitlab-production
 spec:
-  kubernetesClusterCredentialId: my-k8s-credentials
+  kubernetesProviderConfigId: my-k8s-credentials
   container:
     resources:
       requests:
@@ -51,7 +51,7 @@ kind: GitlabKubernetes
 metadata:
   name: gitlab-custom
 spec:
-  kubernetesClusterCredentialId: my-k8s-credentials
+  kubernetesProviderConfigId: my-k8s-credentials
   container:
     resources:
       requests:
@@ -72,7 +72,7 @@ kind: GitlabKubernetes
 metadata:
   name: gitlab-env-vars
 spec:
-  kubernetesClusterCredentialId: my-k8s-credentials
+  kubernetesProviderConfigId: my-k8s-credentials
   container:
     env:
       variables:
@@ -98,5 +98,5 @@ kind: GitlabKubernetes
 metadata:
   name: minimal-gitlab
 spec:
-  kubernetesClusterCredentialId: my-k8s-credentials
+  kubernetesProviderConfigId: my-k8s-credentials
 ```

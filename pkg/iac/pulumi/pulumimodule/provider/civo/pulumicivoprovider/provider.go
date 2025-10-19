@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"reflect"
 
-	civocredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/civocredential/v1"
+	civoprovider "github.com/project-planton/project-planton/apis/project/planton/provider/civo"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/pulumi/pulumioutput"
 
 	"github.com/pkg/errors"
@@ -17,19 +17,19 @@ import (
 // back to environment variables (CIVO_TOKEN, .CIVO_REGION, etc.).
 func Get(
 	ctx *pulumi.Context,
-	civoCredentialSpec *civocredentialv1.CivoCredentialSpec,
+	civoProviderConfig *civoprovider.CivoProviderConfig,
 	nameSuffixes ...string,
 ) (*civo.Provider, error) {
 
 	providerArgs := &civo.ProviderArgs{}
 
 	// Map credential fields when they are present; otherwise rely on env‑vars.
-	if civoCredentialSpec != nil {
-		if civoCredentialSpec.ApiToken != "" {
-			providerArgs.Token = pulumi.StringPtr(civoCredentialSpec.ApiToken)
+	if civoProviderConfig != nil {
+		if civoProviderConfig.ApiToken != "" {
+			providerArgs.Token = pulumi.StringPtr(civoProviderConfig.ApiToken)
 		}
-		if civoCredentialSpec.DefaultRegion != 0 {
-			providerArgs.Region = pulumi.StringPtr(civoCredentialSpec.DefaultRegion.String())
+		if civoProviderConfig.DefaultRegion != 0 {
+			providerArgs.Region = pulumi.StringPtr(civoProviderConfig.DefaultRegion.String())
 		}
 	}
 

@@ -20,7 +20,7 @@ kind: SignozKubernetes
 metadata:
   name: basic-signoz
 spec:
-  kubernetesClusterCredentialId: my-cluster-credential-id
+  kubernetesProviderConfigId: my-cluster-credential-id
   signozContainer:
     replicas: 1
     resources:
@@ -71,7 +71,7 @@ kind: SignozKubernetes
 metadata:
   name: production-signoz
 spec:
-  kubernetesClusterCredentialId: my-cluster-credential-id
+  kubernetesProviderConfigId: my-cluster-credential-id
   signozContainer:
     replicas: 2
     resources:
@@ -134,7 +134,7 @@ kind: SignozKubernetes
 metadata:
   name: signoz-external-clickhouse
 spec:
-  kubernetesClusterCredentialId: my-cluster-credential-id
+  kubernetesProviderConfigId: my-cluster-credential-id
   signozContainer:
     replicas: 2
     resources:
@@ -177,7 +177,7 @@ kind: SignozKubernetes
 metadata:
   name: signoz-with-ingress
 spec:
-  kubernetesClusterCredentialId: my-cluster-credential-id
+  kubernetesProviderConfigId: my-cluster-credential-id
   signozContainer:
     replicas: 2
     resources:
@@ -235,7 +235,7 @@ kind: SignozKubernetes
 metadata:
   name: signoz-custom-images
 spec:
-  kubernetesClusterCredentialId: my-cluster-credential-id
+  kubernetesProviderConfigId: my-cluster-credential-id
   signozContainer:
     replicas: 2
     image:
@@ -295,7 +295,7 @@ kind: SignozKubernetes
 metadata:
   name: signoz-custom-helm
 spec:
-  kubernetesClusterCredentialId: my-cluster-credential-id
+  kubernetesProviderConfigId: my-cluster-credential-id
   signozContainer:
     replicas: 2
     resources:
@@ -358,7 +358,7 @@ kind: SignozKubernetes
 metadata:
   name: signoz-high-volume
 spec:
-  kubernetesClusterCredentialId: my-cluster-credential-id
+  kubernetesProviderConfigId: my-cluster-credential-id
   signozContainer:
     replicas: 3
     resources:
@@ -421,7 +421,7 @@ kind: SignozKubernetes
 metadata:
   name: signoz-dev
 spec:
-  kubernetesClusterCredentialId: my-cluster-credential-id
+  kubernetesProviderConfigId: my-cluster-credential-id
   signozContainer:
     replicas: 1
     resources:
@@ -471,7 +471,7 @@ kind: SignozKubernetes
 metadata:
   name: signoz-s3-archiving
 spec:
-  kubernetesClusterCredentialId: my-cluster-credential-id
+  kubernetesProviderConfigId: my-cluster-credential-id
   signozContainer:
     replicas: 2
     resources:

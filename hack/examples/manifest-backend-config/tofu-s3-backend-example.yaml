@@ -10,7 +10,7 @@ metadata:
     terraform.project-planton.org/backend.type: "s3"
     terraform.project-planton.org/backend.object: "my-terraform-state-bucket/eks/main-cluster/terraform.tfstate"
 spec:
-  awsCredentialId: aws-prod-creds
+  awsProviderConfigId: aws-prod-creds
   region: us-west-2
   kubernetesVersion: "1.28"
   nodeGroups:

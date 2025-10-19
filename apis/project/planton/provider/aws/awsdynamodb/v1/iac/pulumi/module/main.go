@@ -13,19 +13,19 @@ func Resources(ctx *pulumi.Context, stackInput *awsdynamodbv1.AwsDynamodbStackIn
 
 	var provider *aws.Provider
 	var err error
-	awsCredential := stackInput.ProviderCredential
+	awsProviderConfig := stackInput.ProviderConfig
 
-	if awsCredential == nil {
+	if awsProviderConfig == nil {
 		provider, err = aws.NewProvider(ctx, "classic-provider", &aws.ProviderArgs{})
 		if err != nil {
 			return errors.Wrap(err, "failed to create default AWS provider")
 		}
 	} else {
 		provider, err = aws.NewProvider(ctx, "classic-provider", &aws.ProviderArgs{
-			AccessKey: pulumi.String(awsCredential.AccessKeyId),
-			SecretKey: pulumi.String(awsCredential.SecretAccessKey),
-			Region:    pulumi.String(awsCredential.GetRegion()),
-			Token:     pulumi.StringPtr(awsCredential.SessionToken),
+			AccessKey: pulumi.String(awsProviderConfig.AccessKeyId),
+			SecretKey: pulumi.String(awsProviderConfig.SecretAccessKey),
+			Region:    pulumi.String(awsProviderConfig.GetRegion()),
+			Token:     pulumi.StringPtr(awsProviderConfig.SessionToken),
 		})
 		if err != nil {
 			return errors.Wrap(err, "failed to create AWS provider with custom credentials")

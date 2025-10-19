@@ -3,8 +3,8 @@ package module
 import (
 	"strconv"
 
-	civocredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/civocredential/v1"
 	civokubernetesnodepoolv1 "github.com/project-planton/project-planton/apis/project/planton/provider/civo/civokubernetesnodepool/v1"
+	civoprovider "github.com/project-planton/project-planton/apis/project/planton/provider/civo"
 	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
@@ -14,7 +14,7 @@ import (
 // Keeping this struct tiny and flat mirrors the way Terraform modules rely on
 // a handful of “locals” rather than deep, complex helpers.
 type Locals struct {
-	CivoCredentialSpec     *civocredentialv1.CivoCredentialSpec
+	CivoProviderConfig     *civoprovider.CivoProviderConfig
 	CivoKubernetesNodePool *civokubernetesnodepoolv1.CivoKubernetesNodePool
 	CivoLabels             map[string]string
 }
@@ -28,7 +28,7 @@ func initializeLocals(_ *pulumi.Context, stackInput *civokubernetesnodepoolv1.Ci
 	locals := &Locals{}
 
 	locals.CivoKubernetesNodePool = stackInput.Target
-	locals.CivoCredentialSpec = stackInput.ProviderCredential
+	locals.CivoProviderConfig = stackInput.ProviderConfig
 
 	// Standard Planton labels.  No external helper package required: keep it obvious.
 	locals.CivoLabels = map[string]string{

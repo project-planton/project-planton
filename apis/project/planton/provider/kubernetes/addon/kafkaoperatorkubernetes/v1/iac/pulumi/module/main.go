@@ -15,9 +15,9 @@ func Resources(
 	// ------------------------------------------------------------------
 	// Provider set‑up
 	// ------------------------------------------------------------------
-	k8sProvider, err := pulumikubernetesprovider.GetWithKubernetesClusterCredential(
+	k8sProvider, err := pulumikubernetesprovider.GetWithKubernetesProviderConfig(
 		ctx,
-		stackInput.ProviderCredential,
+		stackInput.ProviderConfig,
 		"kubernetes",
 	)
 	if err != nil {

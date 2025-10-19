@@ -3,15 +3,15 @@ package module
 import (
 	"strconv"
 
-	civocredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/civocredential/v1"
 	civodatabasev1 "github.com/project-planton/project-planton/apis/project/planton/provider/civo/civodatabase/v1"
+	civoprovider "github.com/project-planton/project-planton/apis/project/planton/provider/civo"
 	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
 // Locals groups frequently‑used values so other files stay concise.
 type Locals struct {
-	CivoCredentialSpec *civocredentialv1.CivoCredentialSpec
+	CivoProviderConfig *civoprovider.CivoProviderConfig
 	CivoDatabase       *civodatabasev1.CivoDatabase
 	CivoTags           pulumi.StringArray
 	CivoLabels         map[string]string
@@ -21,7 +21,7 @@ type Locals struct {
 func initializeLocals(_ *pulumi.Context, stackInput *civodatabasev1.CivoDatabaseStackInput) *Locals {
 	locals := &Locals{}
 	locals.CivoDatabase = stackInput.Target
-	locals.CivoCredentialSpec = stackInput.ProviderCredential
+	locals.CivoProviderConfig = stackInput.ProviderConfig
 
 	// Tags (directly from spec.tags).
 	if len(locals.CivoDatabase.Spec.Tags) > 0 {

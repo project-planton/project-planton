@@ -8,8 +8,8 @@ import (
 )
 
 const (
-	AzureCredentialKey  = "azureCredential"
-	azureCredentialYaml = "azure-credential.yaml"
+	AzureCredentialKey  = "azureProviderConfig"
+	azureProviderConfigYaml = "azure-credential.yaml"
 )
 
 func AddAzureCredential(stackInputContentMap map[string]interface{},
@@ -30,7 +30,7 @@ func AddAzureCredential(stackInputContentMap map[string]interface{},
 }
 
 func LoadAzureCredential(dir string) (string, error) {
-	path := dir + "/" + azureCredentialYaml
+	path := dir + "/" + azureProviderConfigYaml
 	isExists, err := fileutil.IsExists(path)
 	if err != nil {
 		return "", errors.Wrapf(err, "failed to check file: %s", path)

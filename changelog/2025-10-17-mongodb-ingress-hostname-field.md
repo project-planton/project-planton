@@ -544,7 +544,7 @@ kind: MongodbKubernetes
 metadata:
   name: basic-mongodb
 spec:
-  kubernetesClusterCredentialId: k8s-cluster-01
+  kubernetesProviderConfigId: k8s-cluster-01
   container:
     replicas: 1
     persistenceEnabled: true
@@ -569,7 +569,7 @@ kind: MongodbKubernetes
 metadata:
   name: prod-mongodb
 spec:
-  kubernetesClusterCredentialId: k8s-cluster-01
+  kubernetesProviderConfigId: k8s-cluster-01
   container:
     replicas: 3
     persistenceEnabled: true
@@ -743,7 +743,7 @@ kind: MongodbKubernetes
 metadata:
   name: test-mongodb
 spec:
-  kubernetesClusterCredentialId: k8s-cluster-01
+  kubernetesProviderConfigId: k8s-cluster-01
   container:
     replicas: 1
     persistenceEnabled: true

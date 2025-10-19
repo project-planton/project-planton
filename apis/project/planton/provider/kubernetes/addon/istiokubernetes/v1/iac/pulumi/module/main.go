@@ -15,8 +15,8 @@ import (
 // deployment, allowing callers to tune CPU / memory without touching Helm YAML.
 func Resources(ctx *pulumi.Context, in *istiokubernetesv1.IstioKubernetesStackInput) error {
 	// Kubernetes provider from cluster‑credential
-	kubernetesClusterCredential, err := pulumikubernetesprovider.GetWithKubernetesClusterCredential(
-		ctx, in.ProviderCredential, "kubernetes")
+	kubernetesProviderConfig, err := pulumikubernetesprovider.GetWithKubernetesProviderConfig(
+		ctx, in.ProviderConfig, "kubernetes")
 	if err != nil {
 		return errors.Wrap(err, "failed to set up kubernetes provider")
 	}
@@ -34,7 +34,7 @@ func Resources(ctx *pulumi.Context, in *istiokubernetesv1.IstioKubernetesStackIn
 				Name: pulumi.String(vars.SystemNamespace),
 			},
 		},
-		pulumi.Provider(kubernetesClusterCredential))
+		pulumi.Provider(kubernetesProviderConfig))
 	if err != nil {
 		return errors.Wrap(err, "failed to create istio-system namespace")
 	}
@@ -45,7 +45,7 @@ func Resources(ctx *pulumi.Context, in *istiokubernetesv1.IstioKubernetesStackIn
 				Name: pulumi.String(vars.GatewayNamespace),
 			},
 		},
-		pulumi.Provider(kubernetesClusterCredential))
+		pulumi.Provider(kubernetesProviderConfig))
 	if err != nil {
 		return errors.Wrap(err, "failed to create istio-ingress namespace")
 	}
@@ -67,7 +67,7 @@ func Resources(ctx *pulumi.Context, in *istiokubernetesv1.IstioKubernetesStackIn
 			Timeout:         pulumi.Int(180),
 			RepositoryOpts:  repo,
 		},
-		pulumi.Provider(kubernetesClusterCredential),
+		pulumi.Provider(kubernetesProviderConfig),
 		pulumi.Parent(sysNS))
 	if err != nil {
 		return errors.Wrap(err, "installing istio/base")
@@ -107,7 +107,7 @@ func Resources(ctx *pulumi.Context, in *istiokubernetesv1.IstioKubernetesStackIn
 			Values:          istiodValues,
 			RepositoryOpts:  repo,
 		},
-		pulumi.Provider(kubernetesClusterCredential),
+		pulumi.Provider(kubernetesProviderConfig),
 		pulumi.Parent(sysNS))
 	if err != nil {
 		return errors.Wrap(err, "installing istiod control‑plane")
@@ -132,7 +132,7 @@ func Resources(ctx *pulumi.Context, in *istiokubernetesv1.IstioKubernetesStackIn
 				},
 			},
 		},
-		pulumi.Provider(kubernetesClusterCredential),
+		pulumi.Provider(kubernetesProviderConfig),
 		pulumi.Parent(gwNS))
 	if err != nil {
 		return errors.Wrap(err, "installing istio ingress‑gateway")

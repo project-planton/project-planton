@@ -18,7 +18,7 @@ func Resources(
 	// 2. Create a Civo provider from the supplied credential.
 	civoProvider, err := pulumicivoprovider.Get(
 		ctx,
-		stackInput.ProviderCredential,
+		stackInput.ProviderConfig,
 	)
 	if err != nil {
 		return errors.Wrap(err, "failed to setup civo provider")

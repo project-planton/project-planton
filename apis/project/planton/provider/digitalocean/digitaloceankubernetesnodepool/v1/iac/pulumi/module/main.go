@@ -16,7 +16,7 @@ func Resources(
 	locals := initializeLocals(ctx, stackInput)
 
 	// 2. Create a DigitalOcean provider from the credential.
-	digitalOceanProvider, err := pulumidigitaloceanprovider.Get(ctx, stackInput.ProviderCredential)
+	digitalOceanProvider, err := pulumidigitaloceanprovider.Get(ctx, stackInput.ProviderConfig)
 	if err != nil {
 		return errors.Wrap(err, "failed to setup digitalocean provider")
 	}

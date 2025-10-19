@@ -15,9 +15,9 @@ func Resources(ctx *pulumi.Context, stackInput *neo4jkubernetesv1.Neo4JKubernete
 	locals := initializeLocals(ctx, stackInput)
 
 	// Create the kubernetes provider from the credential in the stack input.
-	createdKubernetesProvider, err := pulumikubernetesprovider.GetWithKubernetesClusterCredential(
+	createdKubernetesProvider, err := pulumikubernetesprovider.GetWithKubernetesProviderConfig(
 		ctx,
-		stackInput.ProviderCredential,
+		stackInput.ProviderConfig,
 		"kubernetes",
 	)
 	if err != nil {

@@ -25,7 +25,7 @@ func GetCredentialEnvVars(stackInputYaml, fileCacheLoc string) ([]string, error)
 		return nil, errors.Wrap(err, "failed to add Azure provider credentials")
 	}
 
-	credentialEnvVars, err = providercredentials.AddGcpCredentialEnvVars(stackInputContentMap, credentialEnvVars)
+	credentialEnvVars, err = providercredentials.AddGcpProviderConfigEnvVars(stackInputContentMap, credentialEnvVars)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to add GCP provider credentials")
 	}

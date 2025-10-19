@@ -3,8 +3,8 @@ package module
 import (
 	"strconv"
 
-	gcpcredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/gcpcredential/v1"
 	gcpsubnetworkv1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpsubnetwork/v1"
+	gcpprovider "github.com/project-planton/project-planton/apis/project/planton/provider/gcp"
 	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/gcp/gcplabelkeys"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
@@ -14,7 +14,7 @@ import (
 // can reference short paths like locals.GcpSubnetwork.Metadata.Name rather
 // than drilling into the original stackInput every time.
 type Locals struct {
-	GcpCredentialSpec *gcpcredentialv1.GcpCredentialSpec
+	GcpProviderConfig *gcpprovider.GcpProviderConfig
 	GcpSubnetwork     *gcpsubnetworkv1.GcpSubnetwork
 	GcpLabels         map[string]string
 }
@@ -47,6 +47,6 @@ func initializeLocals(_ *pulumi.Context, input *gcpsubnetworkv1.GcpSubnetworkSta
 		locals.GcpLabels[gcplabelkeys.ResourceId] = input.Target.Metadata.Id
 	}
 
-	locals.GcpCredentialSpec = input.ProviderCredential
+	locals.GcpProviderConfig = input.ProviderConfig
 	return locals
 }

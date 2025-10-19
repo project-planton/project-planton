@@ -492,7 +492,7 @@ kind: Neo4jKubernetes
 metadata:
   name: graph-db
 spec:
-  kubernetesClusterCredentialId: k8s-cluster-01
+  kubernetesProviderConfigId: k8s-cluster-01
   container:
     persistenceEnabled: true
     diskSize: 10Gi
@@ -519,7 +519,7 @@ kind: Neo4jKubernetes
 metadata:
   name: prod-graph
 spec:
-  kubernetesClusterCredentialId: k8s-cluster-01
+  kubernetesProviderConfigId: k8s-cluster-01
   container:
     persistenceEnabled: true
     diskSize: 100Gi
@@ -546,7 +546,7 @@ kind: Neo4jKubernetes
 metadata:
   name: internal-graph
 spec:
-  kubernetesClusterCredentialId: k8s-cluster-01
+  kubernetesProviderConfigId: k8s-cluster-01
   container:
     persistenceEnabled: true
     diskSize: 50Gi

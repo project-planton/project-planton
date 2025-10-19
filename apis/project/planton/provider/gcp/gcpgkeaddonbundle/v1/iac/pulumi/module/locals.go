@@ -3,7 +3,7 @@ package module
 import (
 	"strconv"
 
-	gcpcredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/gcpcredential/v1"
+	gcpprovider "github.com/project-planton/project-planton/apis/project/planton/provider/gcp"
 	gcpgkeaddonbundlev1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpgkeaddonbundle/v1"
 	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/gcp/gcplabelkeys"
@@ -12,7 +12,7 @@ import (
 )
 
 type Locals struct {
-	GcpCredentialSpec *gcpcredentialv1.GcpCredentialSpec
+	GcpProviderConfig *gcpprovider.GcpProviderConfig
 	GcpGkeAddonBundle *gcpgkeaddonbundlev1.GcpGkeAddonBundle
 	KubernetesLabels  map[string]string
 	GcpLabels         map[string]string
@@ -52,7 +52,7 @@ func initializeLocals(ctx *pulumi.Context, stackInput *gcpgkeaddonbundlev1.GcpGk
 		locals.KubernetesLabels[kuberneteslabelkeys.Environment] = target.Metadata.Env
 	}
 
-	locals.GcpCredentialSpec = stackInput.GcpCredential
+	locals.GcpProviderConfig = stackInput.ProviderConfig
 
 	return locals
 }

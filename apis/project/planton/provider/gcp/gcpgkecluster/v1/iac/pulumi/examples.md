@@ -15,7 +15,7 @@ metadata:
   name: example-gcp-gke-cluster
 spec:
   billingAccountId: 0123AB-4567CD-89EFGH
-  gcpCredentialId: gcpcred-example-credential
+  gcpProviderConfigId: gcpcred-example-credential
   region: us-central1
   zone: us-central1-a
   nodePools:

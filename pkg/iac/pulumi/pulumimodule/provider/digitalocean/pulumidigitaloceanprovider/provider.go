@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"reflect"
 
-	digitaloceancredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/digitaloceancredential/v1"
+	digitaloceanprovider "github.com/project-planton/project-planton/apis/project/planton/provider/digitalocean"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/pulumi/pulumioutput"
 
 	"github.com/pkg/errors"
@@ -18,22 +18,22 @@ import (
 // matching Terraform’s behavior.
 func Get(
 	ctx *pulumi.Context,
-	doCredentialSpec *digitaloceancredentialv1.DigitalOceanCredentialSpec,
+	digitalOceanProviderConfig *digitaloceanprovider.DigitalOceanProviderConfig,
 	nameSuffixes ...string,
 ) (*digitalocean.Provider, error) {
 
 	providerArgs := &digitalocean.ProviderArgs{}
 
 	// Map credential fields when present; leave them nil to defer to env‑vars.
-	if doCredentialSpec != nil {
-		if doCredentialSpec.ApiToken != "" {
-			providerArgs.Token = pulumi.StringPtr(doCredentialSpec.ApiToken)
+	if digitalOceanProviderConfig != nil {
+		if digitalOceanProviderConfig.ApiToken != "" {
+			providerArgs.Token = pulumi.StringPtr(digitalOceanProviderConfig.ApiToken)
 		}
-		if doCredentialSpec.SpacesAccessId != "" {
-			providerArgs.SpacesAccessId = pulumi.StringPtr(doCredentialSpec.SpacesAccessId)
+		if digitalOceanProviderConfig.SpacesAccessId != "" {
+			providerArgs.SpacesAccessId = pulumi.StringPtr(digitalOceanProviderConfig.SpacesAccessId)
 		}
-		if doCredentialSpec.SpacesSecretKey != "" {
-			providerArgs.SpacesSecretKey = pulumi.StringPtr(doCredentialSpec.SpacesSecretKey)
+		if digitalOceanProviderConfig.SpacesSecretKey != "" {
+			providerArgs.SpacesSecretKey = pulumi.StringPtr(digitalOceanProviderConfig.SpacesSecretKey)
 		}
 	}
 

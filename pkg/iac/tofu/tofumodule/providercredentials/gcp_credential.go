@@ -3,17 +3,17 @@ package providercredentials
 import (
 	"encoding/base64"
 	"github.com/pkg/errors"
-	gcpcredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/gcpcredential/v1"
+	gcpprovider "github.com/project-planton/project-planton/apis/project/planton/provider/gcp"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput/stackinputcredentials"
 )
 
-func AddGcpCredentialEnvVars(stackInputContentMap map[string]interface{},
+func AddGcpProviderConfigEnvVars(stackInputContentMap map[string]interface{},
 	credentialEnvVars map[string]string) (map[string]string, error) {
-	credentialSpec := new(gcpcredentialv1.GcpCredentialSpec)
+	credentialSpec := new(gcpprovider.GcpProviderConfig)
 
 	isCredentialLoaded, err := stackinput.LoadCredential(stackInputContentMap,
-		stackinputcredentials.GcpCredentialKey, credentialSpec)
+		stackinputcredentials.GcpProviderConfigKey, credentialSpec)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to get credential spec from stack-input content")
 	}

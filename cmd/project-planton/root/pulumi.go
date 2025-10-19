@@ -36,7 +36,7 @@ func init() {
 	Pulumi.PersistentFlags().String(string(flag.AzureCredential), "", "path of the azure-credential file")
 	Pulumi.PersistentFlags().String(string(flag.ConfluentCredential), "", "path of the confluent-credential file")
 	Pulumi.PersistentFlags().String(string(flag.DockerCredential), "", "path of the docker-credential file")
-	Pulumi.PersistentFlags().String(string(flag.GcpCredential), "", "path of the gcp-credential file")
+	Pulumi.PersistentFlags().String(string(flag.GcpProviderConfig), "", "path of the gcp-credential file")
 	Pulumi.PersistentFlags().String(string(flag.KubernetesCluster), "", "path of the yaml file containing the kubernetes cluster configuration")
 	Pulumi.PersistentFlags().String(string(flag.MongodbAtlasCredential), "", "path of the mongodb-atlas-credential file")
 	Pulumi.PersistentFlags().String(string(flag.SnowflakeCredential), "", "path of the snowflake-credential file")

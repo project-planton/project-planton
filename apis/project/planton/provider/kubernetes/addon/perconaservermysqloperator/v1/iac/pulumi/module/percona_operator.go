@@ -13,8 +13,8 @@ import (
 // Resources creates all Pulumi resources for the Percona Operator for MySQL Kubernetes add-on.
 func Resources(ctx *pulumi.Context, stackInput *perconaservermysqloperatorv1.PerconaServerMysqlOperatorStackInput) error {
 	// set up kubernetes provider from the supplied cluster credential
-	kubeProvider, err := pulumikubernetesprovider.GetWithKubernetesClusterCredential(
-		ctx, stackInput.ProviderCredential, "kubernetes")
+	kubeProvider, err := pulumikubernetesprovider.GetWithKubernetesProviderConfig(
+		ctx, stackInput.ProviderConfig, "kubernetes")
 	if err != nil {
 		return errors.Wrap(err, "failed to set up kubernetes provider")
 	}

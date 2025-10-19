@@ -39,7 +39,7 @@ kind: AwsEksCluster
 metadata:
   name: my-basic-aws-eks-cluster
 spec:
-  awsCredentialId: my-aws-credential-id
+  awsProviderConfigId: my-aws-credential-id
   region: us-west-2
   workersManagementMode: MANAGED
 ```
@@ -81,7 +81,7 @@ kind: AwsEksCluster
 metadata:
   name: my-env-aws-eks-cluster
 spec:
-  awsCredentialId: ${AWS_CREDENTIAL_ID}
+  awsProviderConfigId: ${AWS_CREDENTIAL_ID}
   region: ${AWS_REGION}
   workersManagementMode: ${WORKERS_MANAGEMENT_MODE}
 ```
@@ -98,7 +98,7 @@ kind: AwsEksCluster
 metadata:
   name: my-secret-aws-eks-cluster
 spec:
-  awsCredentialId: my-aws-credential-id
+  awsProviderConfigId: my-aws-credential-id
   region: us-west-2
   workersManagementMode: MANAGED
   someSecretConfig: ${awssm-my-org-prod-aws-secrets.secret-key}

@@ -10,7 +10,7 @@ kind: SolrKubernetes
 metadata:
   name: solr-instance-basic
 spec:
-  kubernetesClusterCredentialId: cluster-credential-12345
+  kubernetesProviderConfigId: cluster-credential-12345
   solrContainer:
     replicas: 1
     image:
@@ -46,7 +46,7 @@ kind: SolrKubernetes
 metadata:
   name: solr-instance-custom
 spec:
-  kubernetesClusterCredentialId: cluster-credential-67890
+  kubernetesProviderConfigId: cluster-credential-67890
   solrContainer:
     replicas: 3
     image:
@@ -86,7 +86,7 @@ kind: SolrKubernetes
 metadata:
   name: solr-instance-ingress
 spec:
-  kubernetesClusterCredentialId: cluster-credential-24680
+  kubernetesProviderConfigId: cluster-credential-24680
   solrContainer:
     replicas: 2
     image:
@@ -127,7 +127,7 @@ kind: SolrKubernetes
 metadata:
   name: solr-instance-no-ingress
 spec:
-  kubernetesClusterCredentialId: cluster-credential-112233
+  kubernetesProviderConfigId: cluster-credential-112233
   solrContainer:
     replicas: 1
     image:

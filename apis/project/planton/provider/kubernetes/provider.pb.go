@@ -89,14 +89,14 @@ type KubernetesProviderConfig struct {
 	Provider KubernetesProvider `protobuf:"varint,1,opt,name=provider,proto3,enum=project.planton.provider.kubernetes.KubernetesProvider" json:"provider,omitempty"`
 	// Credential specification for GCP GKE provider.
 	// This field contains detailed information for connecting to a Google Kubernetes Engine (GKE) cluster.
-	GcpGke *KubernetesClusterCredentialGcpGke `protobuf:"bytes,2,opt,name=gcp_gke,json=gcpGke,proto3" json:"gcp_gke,omitempty"`
+	GcpGke *KubernetesProviderConfigGcpGke `protobuf:"bytes,2,opt,name=gcp_gke,json=gcpGke,proto3" json:"gcp_gke,omitempty"`
 	// Credential specification for AWS EKS provider.
 	// This field contains detailed information for connecting to a Elastic Kubernetes Engine(EKS) cluster.
-	AwsEks *KubernetesClusterCredentialAwsEks `protobuf:"bytes,3,opt,name=aws_eks,json=awsEks,proto3" json:"aws_eks,omitempty"`
+	AwsEks *KubernetesProviderConfigAwsEks `protobuf:"bytes,3,opt,name=aws_eks,json=awsEks,proto3" json:"aws_eks,omitempty"`
 	// Credential specification for Azure AKS provider.
 	// This field contains detailed information for connecting to a Azure Kubernetes Service(AKS) cluster.
-	AzureAks         *KubernetesClusterCredentialAzureAks         `protobuf:"bytes,4,opt,name=azure_aks,json=azureAks,proto3" json:"azure_aks,omitempty"`
-	DigitalOceanDoks *KubernetesClusterCredentialDigitalOceanDoks `protobuf:"bytes,5,opt,name=digital_ocean_doks,json=digitalOceanDoks,proto3" json:"digital_ocean_doks,omitempty"`
+	AzureAks         *KubernetesProviderConfigAzureAks         `protobuf:"bytes,4,opt,name=azure_aks,json=azureAks,proto3" json:"azure_aks,omitempty"`
+	DigitalOceanDoks *KubernetesProviderConfigDigitalOceanDoks `protobuf:"bytes,5,opt,name=digital_ocean_doks,json=digitalOceanDoks,proto3" json:"digital_ocean_doks,omitempty"`
 	unknownFields    protoimpl.UnknownFields
 	sizeCache        protoimpl.SizeCache
 }
@@ -138,37 +138,37 @@ func (x *KubernetesProviderConfig) GetProvider() KubernetesProvider {
 	return KubernetesProvider_kubernetes_provider_unspecified
 }
 
-func (x *KubernetesProviderConfig) GetGcpGke() *KubernetesClusterCredentialGcpGke {
+func (x *KubernetesProviderConfig) GetGcpGke() *KubernetesProviderConfigGcpGke {
 	if x != nil {
 		return x.GcpGke
 	}
 	return nil
 }
 
-func (x *KubernetesProviderConfig) GetAwsEks() *KubernetesClusterCredentialAwsEks {
+func (x *KubernetesProviderConfig) GetAwsEks() *KubernetesProviderConfigAwsEks {
 	if x != nil {
 		return x.AwsEks
 	}
 	return nil
 }
 
-func (x *KubernetesProviderConfig) GetAzureAks() *KubernetesClusterCredentialAzureAks {
+func (x *KubernetesProviderConfig) GetAzureAks() *KubernetesProviderConfigAzureAks {
 	if x != nil {
 		return x.AzureAks
 	}
 	return nil
 }
 
-func (x *KubernetesProviderConfig) GetDigitalOceanDoks() *KubernetesClusterCredentialDigitalOceanDoks {
+func (x *KubernetesProviderConfig) GetDigitalOceanDoks() *KubernetesProviderConfigDigitalOceanDoks {
 	if x != nil {
 		return x.DigitalOceanDoks
 	}
 	return nil
 }
 
-// KubernetesClusterCredentialGcpGke message represents the specification required to connect to a Google Kubernetes Engine (GKE) cluster.
+// KubernetesProviderConfigGcpGke message represents the specification required to connect to a Google Kubernetes Engine (GKE) cluster.
 // This message consolidates the necessary input parameters for establishing a secure connection with a GKE cluster.
-type KubernetesClusterCredentialGcpGke struct {
+type KubernetesProviderConfigGcpGke struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// The cluster endpoint for the GKE cluster.
 	// This is a required field and must contain the URL endpoint for the GKE cluster.
@@ -183,20 +183,20 @@ type KubernetesClusterCredentialGcpGke struct {
 	sizeCache               protoimpl.SizeCache
 }
 
-func (x *KubernetesClusterCredentialGcpGke) Reset() {
-	*x = KubernetesClusterCredentialGcpGke{}
+func (x *KubernetesProviderConfigGcpGke) Reset() {
+	*x = KubernetesProviderConfigGcpGke{}
 	mi := &file_project_planton_provider_kubernetes_provider_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *KubernetesClusterCredentialGcpGke) String() string {
+func (x *KubernetesProviderConfigGcpGke) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*KubernetesClusterCredentialGcpGke) ProtoMessage() {}
+func (*KubernetesProviderConfigGcpGke) ProtoMessage() {}
 
-func (x *KubernetesClusterCredentialGcpGke) ProtoReflect() protoreflect.Message {
+func (x *KubernetesProviderConfigGcpGke) ProtoReflect() protoreflect.Message {
 	mi := &file_project_planton_provider_kubernetes_provider_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -208,54 +208,54 @@ func (x *KubernetesClusterCredentialGcpGke) ProtoReflect() protoreflect.Message 
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use KubernetesClusterCredentialGcpGke.ProtoReflect.Descriptor instead.
-func (*KubernetesClusterCredentialGcpGke) Descriptor() ([]byte, []int) {
+// Deprecated: Use KubernetesProviderConfigGcpGke.ProtoReflect.Descriptor instead.
+func (*KubernetesProviderConfigGcpGke) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_kubernetes_provider_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *KubernetesClusterCredentialGcpGke) GetClusterEndpoint() string {
+func (x *KubernetesProviderConfigGcpGke) GetClusterEndpoint() string {
 	if x != nil {
 		return x.ClusterEndpoint
 	}
 	return ""
 }
 
-func (x *KubernetesClusterCredentialGcpGke) GetClusterCaData() string {
+func (x *KubernetesProviderConfigGcpGke) GetClusterCaData() string {
 	if x != nil {
 		return x.ClusterCaData
 	}
 	return ""
 }
 
-func (x *KubernetesClusterCredentialGcpGke) GetServiceAccountKeyBase64() string {
+func (x *KubernetesProviderConfigGcpGke) GetServiceAccountKeyBase64() string {
 	if x != nil {
 		return x.ServiceAccountKeyBase64
 	}
 	return ""
 }
 
-// KubernetesClusterCredentialAwsEks message represents the specification required to connect to a Elastic Kubernetes Service (EKS) cluster.
+// KubernetesProviderConfigAwsEks message represents the specification required to connect to a Elastic Kubernetes Service (EKS) cluster.
 // This message consolidates the necessary input parameters for establishing a secure connection with a EKS cluster.
-type KubernetesClusterCredentialAwsEks struct {
+type KubernetesProviderConfigAwsEks struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *KubernetesClusterCredentialAwsEks) Reset() {
-	*x = KubernetesClusterCredentialAwsEks{}
+func (x *KubernetesProviderConfigAwsEks) Reset() {
+	*x = KubernetesProviderConfigAwsEks{}
 	mi := &file_project_planton_provider_kubernetes_provider_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *KubernetesClusterCredentialAwsEks) String() string {
+func (x *KubernetesProviderConfigAwsEks) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*KubernetesClusterCredentialAwsEks) ProtoMessage() {}
+func (*KubernetesProviderConfigAwsEks) ProtoMessage() {}
 
-func (x *KubernetesClusterCredentialAwsEks) ProtoReflect() protoreflect.Message {
+func (x *KubernetesProviderConfigAwsEks) ProtoReflect() protoreflect.Message {
 	mi := &file_project_planton_provider_kubernetes_provider_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -267,33 +267,33 @@ func (x *KubernetesClusterCredentialAwsEks) ProtoReflect() protoreflect.Message 
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use KubernetesClusterCredentialAwsEks.ProtoReflect.Descriptor instead.
-func (*KubernetesClusterCredentialAwsEks) Descriptor() ([]byte, []int) {
+// Deprecated: Use KubernetesProviderConfigAwsEks.ProtoReflect.Descriptor instead.
+func (*KubernetesProviderConfigAwsEks) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_kubernetes_provider_proto_rawDescGZIP(), []int{2}
 }
 
-// KubernetesClusterCredentialAzureEks message represents the specification required to connect to a Azure Kubernetes Service (AKS) cluster.
+// KubernetesProviderConfigAzureEks message represents the specification required to connect to a Azure Kubernetes Service (AKS) cluster.
 // This message consolidates the necessary input parameters for establishing a secure connection with a AKS cluster.
-type KubernetesClusterCredentialAzureAks struct {
+type KubernetesProviderConfigAzureAks struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *KubernetesClusterCredentialAzureAks) Reset() {
-	*x = KubernetesClusterCredentialAzureAks{}
+func (x *KubernetesProviderConfigAzureAks) Reset() {
+	*x = KubernetesProviderConfigAzureAks{}
 	mi := &file_project_planton_provider_kubernetes_provider_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *KubernetesClusterCredentialAzureAks) String() string {
+func (x *KubernetesProviderConfigAzureAks) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*KubernetesClusterCredentialAzureAks) ProtoMessage() {}
+func (*KubernetesProviderConfigAzureAks) ProtoMessage() {}
 
-func (x *KubernetesClusterCredentialAzureAks) ProtoReflect() protoreflect.Message {
+func (x *KubernetesProviderConfigAzureAks) ProtoReflect() protoreflect.Message {
 	mi := &file_project_planton_provider_kubernetes_provider_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -305,33 +305,33 @@ func (x *KubernetesClusterCredentialAzureAks) ProtoReflect() protoreflect.Messag
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use KubernetesClusterCredentialAzureAks.ProtoReflect.Descriptor instead.
-func (*KubernetesClusterCredentialAzureAks) Descriptor() ([]byte, []int) {
+// Deprecated: Use KubernetesProviderConfigAzureAks.ProtoReflect.Descriptor instead.
+func (*KubernetesProviderConfigAzureAks) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_kubernetes_provider_proto_rawDescGZIP(), []int{3}
 }
 
-// KubernetesClusterCredentialDigitalOceanDoks message represents the specification required to connect to a DigitalOcean Kubernetes Service (DOKS) cluster.
-type KubernetesClusterCredentialDigitalOceanDoks struct {
+// KubernetesProviderConfigDigitalOceanDoks message represents the specification required to connect to a DigitalOcean Kubernetes Service (DOKS) cluster.
+type KubernetesProviderConfigDigitalOceanDoks struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	KubeConfig    string                 `protobuf:"bytes,1,opt,name=kube_config,json=kubeConfig,proto3" json:"kube_config,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *KubernetesClusterCredentialDigitalOceanDoks) Reset() {
-	*x = KubernetesClusterCredentialDigitalOceanDoks{}
+func (x *KubernetesProviderConfigDigitalOceanDoks) Reset() {
+	*x = KubernetesProviderConfigDigitalOceanDoks{}
 	mi := &file_project_planton_provider_kubernetes_provider_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *KubernetesClusterCredentialDigitalOceanDoks) String() string {
+func (x *KubernetesProviderConfigDigitalOceanDoks) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*KubernetesClusterCredentialDigitalOceanDoks) ProtoMessage() {}
+func (*KubernetesProviderConfigDigitalOceanDoks) ProtoMessage() {}
 
-func (x *KubernetesClusterCredentialDigitalOceanDoks) ProtoReflect() protoreflect.Message {
+func (x *KubernetesProviderConfigDigitalOceanDoks) ProtoReflect() protoreflect.Message {
 	mi := &file_project_planton_provider_kubernetes_provider_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -343,12 +343,12 @@ func (x *KubernetesClusterCredentialDigitalOceanDoks) ProtoReflect() protoreflec
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use KubernetesClusterCredentialDigitalOceanDoks.ProtoReflect.Descriptor instead.
-func (*KubernetesClusterCredentialDigitalOceanDoks) Descriptor() ([]byte, []int) {
+// Deprecated: Use KubernetesProviderConfigDigitalOceanDoks.ProtoReflect.Descriptor instead.
+func (*KubernetesProviderConfigDigitalOceanDoks) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_kubernetes_provider_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *KubernetesClusterCredentialDigitalOceanDoks) GetKubeConfig() string {
+func (x *KubernetesProviderConfigDigitalOceanDoks) GetKubeConfig() string {
 	if x != nil {
 		return x.KubeConfig
 	}
@@ -359,20 +359,20 @@ var File_project_planton_provider_kubernetes_provider_proto protoreflect.FileDes
 
 const file_project_planton_provider_kubernetes_provider_proto_rawDesc = "" +
 	"\n" +
-	"2project/planton/provider/kubernetes/provider.proto\x12#project.planton.provider.kubernetes\x1a\x1bbuf/validate/validate.proto\"\xa0\x04\n" +
+	"2project/planton/provider/kubernetes/provider.proto\x12#project.planton.provider.kubernetes\x1a\x1bbuf/validate/validate.proto\"\x94\x04\n" +
 	"\x18KubernetesProviderConfig\x12[\n" +
-	"\bprovider\x18\x01 \x01(\x0e27.project.planton.provider.kubernetes.KubernetesProviderB\x06\xbaH\x03\xc8\x01\x01R\bprovider\x12_\n" +
-	"\agcp_gke\x18\x02 \x01(\v2F.project.planton.provider.kubernetes.KubernetesClusterCredentialGcpGkeR\x06gcpGke\x12_\n" +
-	"\aaws_eks\x18\x03 \x01(\v2F.project.planton.provider.kubernetes.KubernetesClusterCredentialAwsEksR\x06awsEks\x12e\n" +
-	"\tazure_aks\x18\x04 \x01(\v2H.project.planton.provider.kubernetes.KubernetesClusterCredentialAzureAksR\bazureAks\x12~\n" +
-	"\x12digital_ocean_doks\x18\x05 \x01(\v2P.project.planton.provider.kubernetes.KubernetesClusterCredentialDigitalOceanDoksR\x10digitalOceanDoks\"\xcb\x01\n" +
-	"!KubernetesClusterCredentialGcpGke\x121\n" +
+	"\bprovider\x18\x01 \x01(\x0e27.project.planton.provider.kubernetes.KubernetesProviderB\x06\xbaH\x03\xc8\x01\x01R\bprovider\x12\\\n" +
+	"\agcp_gke\x18\x02 \x01(\v2C.project.planton.provider.kubernetes.KubernetesProviderConfigGcpGkeR\x06gcpGke\x12\\\n" +
+	"\aaws_eks\x18\x03 \x01(\v2C.project.planton.provider.kubernetes.KubernetesProviderConfigAwsEksR\x06awsEks\x12b\n" +
+	"\tazure_aks\x18\x04 \x01(\v2E.project.planton.provider.kubernetes.KubernetesProviderConfigAzureAksR\bazureAks\x12{\n" +
+	"\x12digital_ocean_doks\x18\x05 \x01(\v2M.project.planton.provider.kubernetes.KubernetesProviderConfigDigitalOceanDoksR\x10digitalOceanDoks\"\xc8\x01\n" +
+	"\x1eKubernetesProviderConfigGcpGke\x121\n" +
 	"\x10cluster_endpoint\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x0fclusterEndpoint\x12.\n" +
 	"\x0fcluster_ca_data\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\rclusterCaData\x12C\n" +
-	"\x1aservice_account_key_base64\x18\x03 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x17serviceAccountKeyBase64\"#\n" +
-	"!KubernetesClusterCredentialAwsEks\"%\n" +
-	"#KubernetesClusterCredentialAzureAks\"V\n" +
-	"+KubernetesClusterCredentialDigitalOceanDoks\x12'\n" +
+	"\x1aservice_account_key_base64\x18\x03 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x17serviceAccountKeyBase64\" \n" +
+	"\x1eKubernetesProviderConfigAwsEks\"\"\n" +
+	" KubernetesProviderConfigAzureAks\"S\n" +
+	"(KubernetesProviderConfigDigitalOceanDoks\x12'\n" +
 	"\vkube_config\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\n" +
 	"kubeConfig*z\n" +
 	"\x12KubernetesProvider\x12#\n" +
@@ -398,19 +398,19 @@ func file_project_planton_provider_kubernetes_provider_proto_rawDescGZIP() []byt
 var file_project_planton_provider_kubernetes_provider_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_project_planton_provider_kubernetes_provider_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_project_planton_provider_kubernetes_provider_proto_goTypes = []any{
-	(KubernetesProvider)(0),                             // 0: project.planton.provider.kubernetes.KubernetesProvider
-	(*KubernetesProviderConfig)(nil),                    // 1: project.planton.provider.kubernetes.KubernetesProviderConfig
-	(*KubernetesClusterCredentialGcpGke)(nil),           // 2: project.planton.provider.kubernetes.KubernetesClusterCredentialGcpGke
-	(*KubernetesClusterCredentialAwsEks)(nil),           // 3: project.planton.provider.kubernetes.KubernetesClusterCredentialAwsEks
-	(*KubernetesClusterCredentialAzureAks)(nil),         // 4: project.planton.provider.kubernetes.KubernetesClusterCredentialAzureAks
-	(*KubernetesClusterCredentialDigitalOceanDoks)(nil), // 5: project.planton.provider.kubernetes.KubernetesClusterCredentialDigitalOceanDoks
+	(KubernetesProvider)(0),                          // 0: project.planton.provider.kubernetes.KubernetesProvider
+	(*KubernetesProviderConfig)(nil),                 // 1: project.planton.provider.kubernetes.KubernetesProviderConfig
+	(*KubernetesProviderConfigGcpGke)(nil),           // 2: project.planton.provider.kubernetes.KubernetesProviderConfigGcpGke
+	(*KubernetesProviderConfigAwsEks)(nil),           // 3: project.planton.provider.kubernetes.KubernetesProviderConfigAwsEks
+	(*KubernetesProviderConfigAzureAks)(nil),         // 4: project.planton.provider.kubernetes.KubernetesProviderConfigAzureAks
+	(*KubernetesProviderConfigDigitalOceanDoks)(nil), // 5: project.planton.provider.kubernetes.KubernetesProviderConfigDigitalOceanDoks
 }
 var file_project_planton_provider_kubernetes_provider_proto_depIdxs = []int32{
 	0, // 0: project.planton.provider.kubernetes.KubernetesProviderConfig.provider:type_name -> project.planton.provider.kubernetes.KubernetesProvider
-	2, // 1: project.planton.provider.kubernetes.KubernetesProviderConfig.gcp_gke:type_name -> project.planton.provider.kubernetes.KubernetesClusterCredentialGcpGke
-	3, // 2: project.planton.provider.kubernetes.KubernetesProviderConfig.aws_eks:type_name -> project.planton.provider.kubernetes.KubernetesClusterCredentialAwsEks
-	4, // 3: project.planton.provider.kubernetes.KubernetesProviderConfig.azure_aks:type_name -> project.planton.provider.kubernetes.KubernetesClusterCredentialAzureAks
-	5, // 4: project.planton.provider.kubernetes.KubernetesProviderConfig.digital_ocean_doks:type_name -> project.planton.provider.kubernetes.KubernetesClusterCredentialDigitalOceanDoks
+	2, // 1: project.planton.provider.kubernetes.KubernetesProviderConfig.gcp_gke:type_name -> project.planton.provider.kubernetes.KubernetesProviderConfigGcpGke
+	3, // 2: project.planton.provider.kubernetes.KubernetesProviderConfig.aws_eks:type_name -> project.planton.provider.kubernetes.KubernetesProviderConfigAwsEks
+	4, // 3: project.planton.provider.kubernetes.KubernetesProviderConfig.azure_aks:type_name -> project.planton.provider.kubernetes.KubernetesProviderConfigAzureAks
+	5, // 4: project.planton.provider.kubernetes.KubernetesProviderConfig.digital_ocean_doks:type_name -> project.planton.provider.kubernetes.KubernetesProviderConfigDigitalOceanDoks
 	5, // [5:5] is the sub-list for method output_type
 	5, // [5:5] is the sub-list for method input_type
 	5, // [5:5] is the sub-list for extension type_name

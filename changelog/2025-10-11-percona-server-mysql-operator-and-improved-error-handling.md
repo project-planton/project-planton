@@ -35,7 +35,7 @@ metadata:
   name: mysql-operator
 spec:
   targetCluster:
-    kubernetesClusterCredentialId: k8s-cluster-01
+    kubernetesProviderConfigId: k8s-cluster-01
   namespace: percona-mysql-operator
   container:
     resources:

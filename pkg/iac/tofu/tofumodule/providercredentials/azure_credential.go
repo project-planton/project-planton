@@ -2,14 +2,14 @@ package providercredentials
 
 import (
 	"github.com/pkg/errors"
-	azurecredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/azurecredential/v1"
+	azure"github.com/project-planton/project-planton/apis/project/planton/provider/azure"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput/stackinputcredentials"
 )
 
 func AddAzureCredentialEnvVars(stackInputContentMap map[string]interface{},
 	credentialEnvVars map[string]string) (map[string]string, error) {
-	credentialSpec := new(azurecredentialv1.AzureCredentialSpec)
+	credentialSpec := new(azure.AzureProviderConfig)
 
 	isCredentialLoaded, err := stackinput.LoadCredential(stackInputContentMap,
 		stackinputcredentials.AzureCredentialKey, credentialSpec)

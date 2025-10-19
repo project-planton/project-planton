@@ -2,6 +2,6 @@ go 1.24.0
 
 use (
 	.
-	./buf/lint/planton
+	./buf/lint/optional-linter
 )
 

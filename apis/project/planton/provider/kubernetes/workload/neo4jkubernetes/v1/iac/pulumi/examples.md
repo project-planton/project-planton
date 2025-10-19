@@ -20,7 +20,7 @@ kind: Neo4jKubernetes
 metadata:
   name: basic-neo4j
 spec:
-  kubernetesClusterCredentialId: my-cluster-credential-id
+  kubernetesProviderConfigId: my-cluster-credential-id
   container:
     resources:
       requests:
@@ -43,7 +43,7 @@ kind: Neo4jKubernetes
 metadata:
   name: ingress-neo4j
 spec:
-  kubernetesClusterCredentialId: my-cluster-credential-id
+  kubernetesProviderConfigId: my-cluster-credential-id
   container:
     resources:
       requests:
@@ -69,7 +69,7 @@ kind: Neo4jKubernetes
 metadata:
   name: custom-resources-neo4j
 spec:
-  kubernetesClusterCredentialId: my-cluster-credential-id
+  kubernetesProviderConfigId: my-cluster-credential-id
   container:
     resources:
       requests:
@@ -92,7 +92,7 @@ kind: Neo4jKubernetes
 metadata:
   name: minimal-neo4j
 spec:
-  kubernetesClusterCredentialId: my-cluster-credential-id
+  kubernetesProviderConfigId: my-cluster-credential-id
   container:
     resources:
       requests:

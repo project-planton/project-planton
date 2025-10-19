@@ -8,8 +8,8 @@ import (
 )
 
 const (
-	AwsCredentialKey  = "awsCredential"
-	awsCredentialYaml = "aws-credential.yaml"
+	AwsCredentialKey  = "awsProviderConfig"
+	awsProviderConfigYaml = "aws-credential.yaml"
 )
 
 func AddAwsCredential(stackInputContentMap map[string]interface{},
@@ -30,7 +30,7 @@ func AddAwsCredential(stackInputContentMap map[string]interface{},
 }
 
 func LoadAwsCredential(dir string) (string, error) {
-	path := dir + "/" + awsCredentialYaml
+	path := dir + "/" + awsProviderConfigYaml
 	isExists, err := fileutil.IsExists(path)
 	if err != nil {
 		return "", errors.Wrapf(err, "failed to check file: %s", path)

@@ -18,7 +18,7 @@ func Resources(
 	// 2. Stand‑up a Cloudflare provider from the supplied credential.
 	createdProvider, err := cloudflare.NewProvider(ctx, "cloudflare-provider",
 		&cloudflare.ProviderArgs{
-			ApiToken: pulumi.String(locals.CloudflareCredentialSpec.ApiToken),
+			ApiToken: pulumi.String(locals.CloudflareProviderConfig.ApiToken),
 		})
 	if err != nil {
 		return errors.Wrap(err, "failed to set up cloudflare provider")

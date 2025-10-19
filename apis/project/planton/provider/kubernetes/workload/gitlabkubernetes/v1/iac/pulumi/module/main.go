@@ -9,8 +9,8 @@ import (
 
 func Resources(ctx *pulumi.Context, stackInput *gitlabkubernetesv1.GitlabKubernetesStackInput) error {
 	//create kubernetes-provider from the credential in the stack-input
-	_, err := pulumikubernetesprovider.GetWithKubernetesClusterCredential(ctx,
-		stackInput.ProviderCredential, "kubernetes")
+	_, err := pulumikubernetesprovider.GetWithKubernetesProviderConfig(ctx,
+		stackInput.ProviderConfig, "kubernetes")
 	if err != nil {
 		return errors.Wrap(err, "failed to setup gcp provider")
 	}

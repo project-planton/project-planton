@@ -20,7 +20,7 @@ The AWS VPC Pulumi Module provides a standardized and efficient way to define an
 
 - **DNS Settings**: Provides options to enable or disable DNS hostnames and DNS support within the VPC, offering control over name resolution behavior.
 
-- **Credential Management**: Securely handles AWS credentials via the `awsCredentialId` field, ensuring authenticated and authorized resource deployments.
+- **Credential Management**: Securely handles AWS credentials via the `awsProviderConfigId` field, ensuring authenticated and authorized resource deployments.
 
 - **Status Reporting**: Captures and stores outputs such as VPC IDs, Internet Gateway IDs, and subnet details in `status.outputs` for easy reference and further automation.
 
@@ -32,7 +32,7 @@ The module operates by accepting an AWS VPC API resource definition as input. It
 
 - **Pulumi Module**: Written in Go, the module reads the API resource and uses Pulumi's AWS SDK to provision VPC resources based on the provided specifications.
 
-- **AWS Provider Initialization**: The module initializes the AWS provider within Pulumi using the credentials specified by `awsCredentialId`.
+- **AWS Provider Initialization**: The module initializes the AWS provider within Pulumi using the credentials specified by `awsProviderConfigId`.
 
 - **Resource Creation**: Provisions the VPC and associated resources as defined in the `spec`, including subnets, Internet Gateways, NAT Gateways, and route tables.
 

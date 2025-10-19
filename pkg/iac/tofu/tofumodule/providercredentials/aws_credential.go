@@ -2,14 +2,14 @@ package providercredentials
 
 import (
 	"github.com/pkg/errors"
-	awscredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/awscredential/v1"
+	aws"github.com/project-planton/project-planton/apis/project/planton/provider/aws"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput/stackinputcredentials"
 )
 
 func AddAwsCredentialEnvVars(stackInputContentMap map[string]interface{},
 	credentialEnvVars map[string]string) (map[string]string, error) {
-	credentialSpec := new(awscredentialv1.AwsCredentialSpec)
+	credentialSpec := new(aws.AwsProviderConfig)
 
 	isCredentialLoaded, err := stackinput.LoadCredential(stackInputContentMap,
 		stackinputcredentials.AwsCredentialKey, credentialSpec)

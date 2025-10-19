@@ -19,9 +19,9 @@ func Resources(ctx *pulumi.Context, stackInput *cronjobkubernetesv1.CronJobKuber
 	}
 
 	// Create a Pulumi Kubernetes provider from the given credentials
-	kubernetesProvider, err := pulumikubernetesprovider.GetWithKubernetesClusterCredential(
+	kubernetesProvider, err := pulumikubernetesprovider.GetWithKubernetesProviderConfig(
 		ctx,
-		stackInput.ProviderCredential,
+		stackInput.ProviderConfig,
 		"kubernetes",
 	)
 	if err != nil {

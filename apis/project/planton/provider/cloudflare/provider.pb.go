@@ -72,7 +72,7 @@ func (CloudflareAuthScheme) EnumDescriptor() ([]byte, []int) {
 	return file_project_planton_provider_cloudflare_provider_proto_rawDescGZIP(), []int{0}
 }
 
-// CloudflareCredentialSpec defines the specification for a Cloudflare
+// CloudflareProviderConfig defines the specification for a Cloudflare
 type CloudflareProviderConfig struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Which authentication scheme this credential will use.

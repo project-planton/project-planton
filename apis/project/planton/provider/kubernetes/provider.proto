@@ -24,22 +24,22 @@ message KubernetesProviderConfig {
 
   // Credential specification for GCP GKE provider.
   // This field contains detailed information for connecting to a Google Kubernetes Engine (GKE) cluster.
-  KubernetesClusterCredentialGcpGke gcp_gke = 2;
+  KubernetesProviderConfigGcpGke gcp_gke = 2;
 
   // Credential specification for AWS EKS provider.
   // This field contains detailed information for connecting to a Elastic Kubernetes Engine(EKS) cluster.
-  KubernetesClusterCredentialAwsEks aws_eks = 3;
+  KubernetesProviderConfigAwsEks aws_eks = 3;
 
   // Credential specification for Azure AKS provider.
   // This field contains detailed information for connecting to a Azure Kubernetes Service(AKS) cluster.
-  KubernetesClusterCredentialAzureAks azure_aks = 4;
+  KubernetesProviderConfigAzureAks azure_aks = 4;
 
-  KubernetesClusterCredentialDigitalOceanDoks digital_ocean_doks = 5;
+  KubernetesProviderConfigDigitalOceanDoks digital_ocean_doks = 5;
 }
 
-// KubernetesClusterCredentialGcpGke message represents the specification required to connect to a Google Kubernetes Engine (GKE) cluster.
+// KubernetesProviderConfigGcpGke message represents the specification required to connect to a Google Kubernetes Engine (GKE) cluster.
 // This message consolidates the necessary input parameters for establishing a secure connection with a GKE cluster.
-message KubernetesClusterCredentialGcpGke {
+message KubernetesProviderConfigGcpGke {
   // The cluster endpoint for the GKE cluster.
   // This is a required field and must contain the URL endpoint for the GKE cluster.
   string cluster_endpoint = 1 [(buf.validate.field).required = true];
@@ -53,15 +53,15 @@ message KubernetesClusterCredentialGcpGke {
   string service_account_key_base64 = 3 [(buf.validate.field).required = true];
 }
 
-// KubernetesClusterCredentialAwsEks message represents the specification required to connect to a Elastic Kubernetes Service (EKS) cluster.
+// KubernetesProviderConfigAwsEks message represents the specification required to connect to a Elastic Kubernetes Service (EKS) cluster.
 // This message consolidates the necessary input parameters for establishing a secure connection with a EKS cluster.
-message KubernetesClusterCredentialAwsEks {}
+message KubernetesProviderConfigAwsEks {}
 
-// KubernetesClusterCredentialAzureEks message represents the specification required to connect to a Azure Kubernetes Service (AKS) cluster.
+// KubernetesProviderConfigAzureEks message represents the specification required to connect to a Azure Kubernetes Service (AKS) cluster.
 // This message consolidates the necessary input parameters for establishing a secure connection with a AKS cluster.
-message KubernetesClusterCredentialAzureAks {}
+message KubernetesProviderConfigAzureAks {}
 
-// KubernetesClusterCredentialDigitalOceanDoks message represents the specification required to connect to a DigitalOcean Kubernetes Service (DOKS) cluster.
-message KubernetesClusterCredentialDigitalOceanDoks {
+// KubernetesProviderConfigDigitalOceanDoks message represents the specification required to connect to a DigitalOcean Kubernetes Service (DOKS) cluster.
+message KubernetesProviderConfigDigitalOceanDoks {
   string kube_config = 1 [(buf.validate.field).required = true];
 }

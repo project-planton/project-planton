@@ -14,7 +14,7 @@ kind: AwsStaticWebsite
 metadata:
   name: my-static-website
 spec:
-  awsCredentialId: my-aws-credential-id
+  awsProviderConfigId: my-aws-credential-id
 ```
 
 # Example with Environment Info
@@ -25,7 +25,7 @@ kind: AwsStaticWebsite
 metadata:
   name: my-static-website
 spec:
-  awsCredentialId: my-aws-credential-id
+  awsProviderConfigId: my-aws-credential-id
   environmentInfo:
     envId: production
 ```
@@ -38,7 +38,7 @@ kind: AwsStaticWebsite
 metadata:
   name: my-static-website
 spec:
-  awsCredentialId: my-aws-credential-id
+  awsProviderConfigId: my-aws-credential-id
   stackJobSettings:
     jobTimeout: 3600
 ```
@@ -53,7 +53,7 @@ kind: AwsStaticWebsite
 metadata:
   name: my-static-website
 spec:
-  awsCredentialId: my-aws-credential-id
+  awsProviderConfigId: my-aws-credential-id
   websiteConfig:
     indexDocument: index.html
     errorDocument: error.html

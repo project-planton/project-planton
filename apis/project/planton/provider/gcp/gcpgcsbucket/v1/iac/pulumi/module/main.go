@@ -13,7 +13,7 @@ import (
 func Resources(ctx *pulumi.Context, stackInput *gcpgcsbucketv1.GcpGcsBucketStackInput) error {
 	locals := initializeLocals(ctx, stackInput)
 
-	gcpProvider, err := pulumigoogleprovider.Get(ctx, stackInput.ProviderCredential)
+	gcpProvider, err := pulumigoogleprovider.Get(ctx, stackInput.ProviderConfig)
 	if err != nil {
 		return errors.Wrap(err, "failed to setup gcp provider")
 	}

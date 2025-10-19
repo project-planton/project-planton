@@ -18,7 +18,7 @@ The AWS AWS EKS Cluster Pulumi Module provides a standardized and efficient way 
 
 - **VPC Integration**: Offers the option to deploy the EKS cluster into an existing VPC by specifying the `vpcId`, or to create a new VPC if not specified. This ensures seamless integration with existing network infrastructures.
 
-- **Credential Management**: Securely handles AWS credentials via the `awsCredentialId` field, ensuring authenticated and authorized resource deployments without exposing sensitive information.
+- **Credential Management**: Securely handles AWS credentials via the `awsProviderConfigId` field, ensuring authenticated and authorized resource deployments without exposing sensitive information.
 
 - **Status Reporting**: Captures and stores outputs such as the cluster endpoint, certificate authority data, and VPC ID in `status.outputs`. This facilitates easy reference and integration with other systems, such as Kubernetes clients or additional automation tools.
 
@@ -32,7 +32,7 @@ The module operates by accepting an AWS AWS EKS Cluster API resource definition 
 
 - **Pulumi Module**: Written in Go, the module reads the API resource and uses Pulumi's AWS SDK to provision EKS resources based on the provided specifications. It abstracts the complexity of resource creation, update, and deletion.
 
-- **AWS Provider Initialization**: The module initializes the AWS provider within Pulumi using the credentials specified by `awsCredentialId`. This ensures that all AWS resource operations are authenticated and authorized.
+- **AWS Provider Initialization**: The module initializes the AWS provider within Pulumi using the credentials specified by `awsProviderConfigId`. This ensures that all AWS resource operations are authenticated and authorized.
 
 - **Resource Creation**: Provisions the EKS cluster and associated resources as defined in the `spec`, including VPC, subnets, security groups, IAM roles, and worker nodes. If a VPC ID is provided, the cluster is deployed into that VPC; otherwise, a new VPC is created.
 
