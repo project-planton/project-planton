@@ -6,7 +6,7 @@ go_library(
     importpath = "github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/gcp/pulumigoogleprovider",
     visibility = ["//visibility:public"],
     deps = [
-        "//apis/project/planton/credential/gcpcredential/v1:gcpcredential",
+        "//apis/project/planton/provider/gcp",
         "//pkg/iac/pulumi/pulumimodule/pulumi/pulumioutput",
         "@com_github_pkg_errors//:errors",
         "@com_github_pulumi_pulumi_gcp_sdk_v8//go/gcp",

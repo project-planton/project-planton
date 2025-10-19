@@ -10,7 +10,7 @@ kind: ArgocdKubernetes
 metadata:
   name: argocd-instance
 spec:
-  kubernetesClusterCredentialId: my-k8s-credentials
+  kubernetesProviderConfigId: my-k8s-credentials
   container:
     resources:
       requests:
@@ -31,7 +31,7 @@ kind: ArgocdKubernetes
 metadata:
   name: argocd-prod
 spec:
-  kubernetesClusterCredentialId: my-k8s-credentials
+  kubernetesProviderConfigId: my-k8s-credentials
   container:
     resources:
       requests:
@@ -55,7 +55,7 @@ kind: ArgocdKubernetes
 metadata:
   name: argocd-custom
 spec:
-  kubernetesClusterCredentialId: my-k8s-credentials
+  kubernetesProviderConfigId: my-k8s-credentials
   container:
     resources:
       requests:
@@ -76,5 +76,5 @@ kind: ArgocdKubernetes
 metadata:
   name: minimal-argocd
 spec:
-  kubernetesClusterCredentialId: my-k8s-credentials
+  kubernetesProviderConfigId: my-k8s-credentials
 ```

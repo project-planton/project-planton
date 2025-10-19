@@ -13,8 +13,8 @@ func Resources(ctx *pulumi.Context,
 
 	locals := initializeLocals(ctx, in)
 
-	k8sProvider, err := pulumikubernetesprovider.GetWithKubernetesClusterCredential(
-		ctx, in.ProviderCredential, "kubernetes")
+	k8sProvider, err := pulumikubernetesprovider.GetWithKubernetesProviderConfig(
+		ctx, in.ProviderConfig, "kubernetes")
 	if err != nil {
 		return errors.Wrap(err, "setup kubernetes provider")
 	}

@@ -2,13 +2,13 @@ syntax = "proto3";
 
 package project.planton.provider.aws.awsroute53zone.v1;
 
-import "project/planton/credential/awscredential/v1/spec.proto";
 import "project/planton/provider/aws/awsroute53zone/v1/api.proto";
+import "project/planton/provider/aws/provider.proto";
 
 //aws-route53-zone stack-input
 message AwsRoute53ZoneStackInput {
   //target cloud-resource
   AwsRoute53Zone target = 1;
-  //provider-credential
-  project.planton.credential.awscredential.v1.AwsCredentialSpec provider_credential = 2;
+  //provider-config
+  project.planton.provider.aws.AwsProviderConfig provider_config = 2;
 }

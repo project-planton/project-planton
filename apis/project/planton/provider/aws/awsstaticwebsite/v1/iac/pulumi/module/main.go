@@ -10,20 +10,20 @@ import (
 func Resources(ctx *pulumi.Context, stackInput *awsstaticwebsitev1.AwsStaticWebsiteStackInput) error {
 	locals := initializeLocals(ctx, stackInput)
 
-	awsCredential := stackInput.ProviderCredential
+	awsProviderConfig := stackInput.ProviderConfig
 
 	// initialize aws-native provider (fallback to default when credentials are not provided)
 	var provider *aws.Provider
 	var err error
-	if awsCredential == nil {
+	if awsProviderConfig == nil {
 		provider, err = aws.NewProvider(ctx, "native-provider", &aws.ProviderArgs{})
 	} else {
 		provider, err = aws.NewProvider(ctx,
 			"native-provider",
 			&aws.ProviderArgs{
-				AccessKey: pulumi.String(awsCredential.AccessKeyId),
-				SecretKey: pulumi.String(awsCredential.SecretAccessKey),
-				Region:    pulumi.String(awsCredential.GetRegion()),
+				AccessKey: pulumi.String(awsProviderConfig.AccessKeyId),
+				SecretKey: pulumi.String(awsProviderConfig.SecretAccessKey),
+				Region:    pulumi.String(awsProviderConfig.GetRegion()),
 			})
 	}
 	if err != nil {

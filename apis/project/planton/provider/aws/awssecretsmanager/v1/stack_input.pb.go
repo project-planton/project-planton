@@ -7,7 +7,7 @@
 package awssecretsmanagerv1
 
 import (
-	v1 "github.com/project-planton/project-planton/apis/project/planton/credential/awscredential/v1"
+	aws "github.com/project-planton/project-planton/apis/project/planton/provider/aws"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -27,10 +27,10 @@ type AwsSecretsManagerStackInput struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// target cloud-resource
 	Target *AwsSecretsManager `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
-	// provider-credential
-	ProviderCredential *v1.AwsCredentialSpec `protobuf:"bytes,2,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	// provider-config
+	ProviderConfig *aws.AwsProviderConfig `protobuf:"bytes,2,opt,name=provider_config,json=providerConfig,proto3" json:"provider_config,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *AwsSecretsManagerStackInput) Reset() {
@@ -70,9 +70,9 @@ func (x *AwsSecretsManagerStackInput) GetTarget() *AwsSecretsManager {
 	return nil
 }
 
-func (x *AwsSecretsManagerStackInput) GetProviderCredential() *v1.AwsCredentialSpec {
+func (x *AwsSecretsManagerStackInput) GetProviderConfig() *aws.AwsProviderConfig {
 	if x != nil {
-		return x.ProviderCredential
+		return x.ProviderConfig
 	}
 	return nil
 }
@@ -81,10 +81,10 @@ var File_project_planton_provider_aws_awssecretsmanager_v1_stack_input_proto pro
 
 const file_project_planton_provider_aws_awssecretsmanager_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Cproject/planton/provider/aws/awssecretsmanager/v1/stack_input.proto\x121project.planton.provider.aws.awssecretsmanager.v1\x1a6project/planton/credential/awscredential/v1/spec.proto\x1a;project/planton/provider/aws/awssecretsmanager/v1/api.proto\"\xec\x01\n" +
+	"Cproject/planton/provider/aws/awssecretsmanager/v1/stack_input.proto\x121project.planton.provider.aws.awssecretsmanager.v1\x1a;project/planton/provider/aws/awssecretsmanager/v1/api.proto\x1a+project/planton/provider/aws/provider.proto\"\xd5\x01\n" +
 	"\x1bAwsSecretsManagerStackInput\x12\\\n" +
-	"\x06target\x18\x01 \x01(\v2D.project.planton.provider.aws.awssecretsmanager.v1.AwsSecretsManagerR\x06target\x12o\n" +
-	"\x13provider_credential\x18\x02 \x01(\v2>.project.planton.credential.awscredential.v1.AwsCredentialSpecR\x12providerCredentialB\xaa\x03\n" +
+	"\x06target\x18\x01 \x01(\v2D.project.planton.provider.aws.awssecretsmanager.v1.AwsSecretsManagerR\x06target\x12X\n" +
+	"\x0fprovider_config\x18\x02 \x01(\v2/.project.planton.provider.aws.AwsProviderConfigR\x0eproviderConfigB\xaa\x03\n" +
 	"5com.project.planton.provider.aws.awssecretsmanager.v1B\x0fStackInputProtoP\x01Zugithub.com/project-planton/project-planton/apis/project/planton/provider/aws/awssecretsmanager/v1;awssecretsmanagerv1\xa2\x02\x05PPPAA\xaa\x021Project.Planton.Provider.Aws.Awssecretsmanager.V1\xca\x021Project\\Planton\\Provider\\Aws\\Awssecretsmanager\\V1\xe2\x02=Project\\Planton\\Provider\\Aws\\Awssecretsmanager\\V1\\GPBMetadata\xea\x026Project::Planton::Provider::Aws::Awssecretsmanager::V1b\x06proto3"
 
 var (
@@ -103,11 +103,11 @@ var file_project_planton_provider_aws_awssecretsmanager_v1_stack_input_proto_msg
 var file_project_planton_provider_aws_awssecretsmanager_v1_stack_input_proto_goTypes = []any{
 	(*AwsSecretsManagerStackInput)(nil), // 0: project.planton.provider.aws.awssecretsmanager.v1.AwsSecretsManagerStackInput
 	(*AwsSecretsManager)(nil),           // 1: project.planton.provider.aws.awssecretsmanager.v1.AwsSecretsManager
-	(*v1.AwsCredentialSpec)(nil),        // 2: project.planton.credential.awscredential.v1.AwsCredentialSpec
+	(*aws.AwsProviderConfig)(nil),       // 2: project.planton.provider.aws.AwsProviderConfig
 }
 var file_project_planton_provider_aws_awssecretsmanager_v1_stack_input_proto_depIdxs = []int32{
 	1, // 0: project.planton.provider.aws.awssecretsmanager.v1.AwsSecretsManagerStackInput.target:type_name -> project.planton.provider.aws.awssecretsmanager.v1.AwsSecretsManager
-	2, // 1: project.planton.provider.aws.awssecretsmanager.v1.AwsSecretsManagerStackInput.provider_credential:type_name -> project.planton.credential.awscredential.v1.AwsCredentialSpec
+	2, // 1: project.planton.provider.aws.awssecretsmanager.v1.AwsSecretsManagerStackInput.provider_config:type_name -> project.planton.provider.aws.AwsProviderConfig
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

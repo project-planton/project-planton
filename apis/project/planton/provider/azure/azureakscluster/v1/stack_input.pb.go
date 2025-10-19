@@ -7,7 +7,7 @@
 package azureaksclusterv1
 
 import (
-	v1 "github.com/project-planton/project-planton/apis/project/planton/credential/azurecredential/v1"
+	azure "github.com/project-planton/project-planton/apis/project/planton/provider/azure"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -27,10 +27,10 @@ type AzureAksClusterStackInput struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// target cloud-resource
 	Target *AzureAksCluster `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
-	// provider-credential
-	ProviderCredential *v1.AzureCredentialSpec `protobuf:"bytes,2,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	// provider-config
+	ProviderConfig *azure.AzureProviderConfig `protobuf:"bytes,2,opt,name=provider_config,json=providerConfig,proto3" json:"provider_config,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *AzureAksClusterStackInput) Reset() {
@@ -70,9 +70,9 @@ func (x *AzureAksClusterStackInput) GetTarget() *AzureAksCluster {
 	return nil
 }
 
-func (x *AzureAksClusterStackInput) GetProviderCredential() *v1.AzureCredentialSpec {
+func (x *AzureAksClusterStackInput) GetProviderConfig() *azure.AzureProviderConfig {
 	if x != nil {
-		return x.ProviderCredential
+		return x.ProviderConfig
 	}
 	return nil
 }
@@ -81,10 +81,10 @@ var File_project_planton_provider_azure_azureakscluster_v1_stack_input_proto pro
 
 const file_project_planton_provider_azure_azureakscluster_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Cproject/planton/provider/azure/azureakscluster/v1/stack_input.proto\x121project.planton.provider.azure.azureakscluster.v1\x1a8project/planton/credential/azurecredential/v1/spec.proto\x1a;project/planton/provider/azure/azureakscluster/v1/api.proto\"\xec\x01\n" +
+	"Cproject/planton/provider/azure/azureakscluster/v1/stack_input.proto\x121project.planton.provider.azure.azureakscluster.v1\x1a;project/planton/provider/azure/azureakscluster/v1/api.proto\x1a-project/planton/provider/azure/provider.proto\"\xd5\x01\n" +
 	"\x19AzureAksClusterStackInput\x12Z\n" +
-	"\x06target\x18\x01 \x01(\v2B.project.planton.provider.azure.azureakscluster.v1.AzureAksClusterR\x06target\x12s\n" +
-	"\x13provider_credential\x18\x02 \x01(\v2B.project.planton.credential.azurecredential.v1.AzureCredentialSpecR\x12providerCredentialB\xa8\x03\n" +
+	"\x06target\x18\x01 \x01(\v2B.project.planton.provider.azure.azureakscluster.v1.AzureAksClusterR\x06target\x12\\\n" +
+	"\x0fprovider_config\x18\x02 \x01(\v23.project.planton.provider.azure.AzureProviderConfigR\x0eproviderConfigB\xa8\x03\n" +
 	"5com.project.planton.provider.azure.azureakscluster.v1B\x0fStackInputProtoP\x01Zsgithub.com/project-planton/project-planton/apis/project/planton/provider/azure/azureakscluster/v1;azureaksclusterv1\xa2\x02\x05PPPAA\xaa\x021Project.Planton.Provider.Azure.Azureakscluster.V1\xca\x021Project\\Planton\\Provider\\Azure\\Azureakscluster\\V1\xe2\x02=Project\\Planton\\Provider\\Azure\\Azureakscluster\\V1\\GPBMetadata\xea\x026Project::Planton::Provider::Azure::Azureakscluster::V1b\x06proto3"
 
 var (
@@ -103,11 +103,11 @@ var file_project_planton_provider_azure_azureakscluster_v1_stack_input_proto_msg
 var file_project_planton_provider_azure_azureakscluster_v1_stack_input_proto_goTypes = []any{
 	(*AzureAksClusterStackInput)(nil), // 0: project.planton.provider.azure.azureakscluster.v1.AzureAksClusterStackInput
 	(*AzureAksCluster)(nil),           // 1: project.planton.provider.azure.azureakscluster.v1.AzureAksCluster
-	(*v1.AzureCredentialSpec)(nil),    // 2: project.planton.credential.azurecredential.v1.AzureCredentialSpec
+	(*azure.AzureProviderConfig)(nil), // 2: project.planton.provider.azure.AzureProviderConfig
 }
 var file_project_planton_provider_azure_azureakscluster_v1_stack_input_proto_depIdxs = []int32{
 	1, // 0: project.planton.provider.azure.azureakscluster.v1.AzureAksClusterStackInput.target:type_name -> project.planton.provider.azure.azureakscluster.v1.AzureAksCluster
-	2, // 1: project.planton.provider.azure.azureakscluster.v1.AzureAksClusterStackInput.provider_credential:type_name -> project.planton.credential.azurecredential.v1.AzureCredentialSpec
+	2, // 1: project.planton.provider.azure.azureakscluster.v1.AzureAksClusterStackInput.provider_config:type_name -> project.planton.provider.azure.AzureProviderConfig
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

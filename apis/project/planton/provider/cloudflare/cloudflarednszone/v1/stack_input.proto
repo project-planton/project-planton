@@ -2,13 +2,13 @@ syntax = "proto3";
 
 package project.planton.provider.cloudflare.cloudflarednszone.v1;
 
-import "project/planton/credential/cloudflarecredential/v1/spec.proto";
 import "project/planton/provider/cloudflare/cloudflarednszone/v1/api.proto";
+import "project/planton/provider/cloudflare/provider.proto";
 
 //cloudflare-dns-zone stack-input
 message CloudflareDnsZoneStackInput {
   //target cloud-resource
   CloudflareDnsZone target = 1;
-  //provider-credential
-  project.planton.credential.cloudflarecredential.v1.CloudflareCredentialSpec provider_credential = 2;
+  //provider-config
+  project.planton.provider.cloudflare.CloudflareProviderConfig provider_config = 2;
 }

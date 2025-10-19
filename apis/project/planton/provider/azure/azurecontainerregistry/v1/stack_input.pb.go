@@ -7,7 +7,7 @@
 package azurecontainerregistryv1
 
 import (
-	v1 "github.com/project-planton/project-planton/apis/project/planton/credential/azurecredential/v1"
+	azure "github.com/project-planton/project-planton/apis/project/planton/provider/azure"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -27,10 +27,10 @@ type AzureContainerRegistryStackInput struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// target cloud-resource
 	Target *AzureContainerRegistry `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
-	// provider-credential
-	ProviderCredential *v1.AzureCredentialSpec `protobuf:"bytes,2,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	// provider-config
+	ProviderConfig *azure.AzureProviderConfig `protobuf:"bytes,2,opt,name=provider_config,json=providerConfig,proto3" json:"provider_config,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *AzureContainerRegistryStackInput) Reset() {
@@ -70,9 +70,9 @@ func (x *AzureContainerRegistryStackInput) GetTarget() *AzureContainerRegistry {
 	return nil
 }
 
-func (x *AzureContainerRegistryStackInput) GetProviderCredential() *v1.AzureCredentialSpec {
+func (x *AzureContainerRegistryStackInput) GetProviderConfig() *azure.AzureProviderConfig {
 	if x != nil {
-		return x.ProviderCredential
+		return x.ProviderConfig
 	}
 	return nil
 }
@@ -81,10 +81,10 @@ var File_project_planton_provider_azure_azurecontainerregistry_v1_stack_input_pr
 
 const file_project_planton_provider_azure_azurecontainerregistry_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Jproject/planton/provider/azure/azurecontainerregistry/v1/stack_input.proto\x128project.planton.provider.azure.azurecontainerregistry.v1\x1a8project/planton/credential/azurecredential/v1/spec.proto\x1aBproject/planton/provider/azure/azurecontainerregistry/v1/api.proto\"\x81\x02\n" +
+	"Jproject/planton/provider/azure/azurecontainerregistry/v1/stack_input.proto\x128project.planton.provider.azure.azurecontainerregistry.v1\x1aBproject/planton/provider/azure/azurecontainerregistry/v1/api.proto\x1a-project/planton/provider/azure/provider.proto\"\xea\x01\n" +
 	" AzureContainerRegistryStackInput\x12h\n" +
-	"\x06target\x18\x01 \x01(\v2P.project.planton.provider.azure.azurecontainerregistry.v1.AzureContainerRegistryR\x06target\x12s\n" +
-	"\x13provider_credential\x18\x02 \x01(\v2B.project.planton.credential.azurecredential.v1.AzureCredentialSpecR\x12providerCredentialB\xda\x03\n" +
+	"\x06target\x18\x01 \x01(\v2P.project.planton.provider.azure.azurecontainerregistry.v1.AzureContainerRegistryR\x06target\x12\\\n" +
+	"\x0fprovider_config\x18\x02 \x01(\v23.project.planton.provider.azure.AzureProviderConfigR\x0eproviderConfigB\xda\x03\n" +
 	"<com.project.planton.provider.azure.azurecontainerregistry.v1B\x0fStackInputProtoP\x01Z\x81\x01github.com/project-planton/project-planton/apis/project/planton/provider/azure/azurecontainerregistry/v1;azurecontainerregistryv1\xa2\x02\x05PPPAA\xaa\x028Project.Planton.Provider.Azure.Azurecontainerregistry.V1\xca\x028Project\\Planton\\Provider\\Azure\\Azurecontainerregistry\\V1\xe2\x02DProject\\Planton\\Provider\\Azure\\Azurecontainerregistry\\V1\\GPBMetadata\xea\x02=Project::Planton::Provider::Azure::Azurecontainerregistry::V1b\x06proto3"
 
 var (
@@ -103,11 +103,11 @@ var file_project_planton_provider_azure_azurecontainerregistry_v1_stack_input_pr
 var file_project_planton_provider_azure_azurecontainerregistry_v1_stack_input_proto_goTypes = []any{
 	(*AzureContainerRegistryStackInput)(nil), // 0: project.planton.provider.azure.azurecontainerregistry.v1.AzureContainerRegistryStackInput
 	(*AzureContainerRegistry)(nil),           // 1: project.planton.provider.azure.azurecontainerregistry.v1.AzureContainerRegistry
-	(*v1.AzureCredentialSpec)(nil),           // 2: project.planton.credential.azurecredential.v1.AzureCredentialSpec
+	(*azure.AzureProviderConfig)(nil),        // 2: project.planton.provider.azure.AzureProviderConfig
 }
 var file_project_planton_provider_azure_azurecontainerregistry_v1_stack_input_proto_depIdxs = []int32{
 	1, // 0: project.planton.provider.azure.azurecontainerregistry.v1.AzureContainerRegistryStackInput.target:type_name -> project.planton.provider.azure.azurecontainerregistry.v1.AzureContainerRegistry
-	2, // 1: project.planton.provider.azure.azurecontainerregistry.v1.AzureContainerRegistryStackInput.provider_credential:type_name -> project.planton.credential.azurecredential.v1.AzureCredentialSpec
+	2, // 1: project.planton.provider.azure.azurecontainerregistry.v1.AzureContainerRegistryStackInput.provider_config:type_name -> project.planton.provider.azure.AzureProviderConfig
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

@@ -11,7 +11,7 @@ func Resources(ctx *pulumi.Context, stackInput *gcpartifactregistryrepov1.GcpArt
 	locals := initializeLocals(ctx, stackInput)
 
 	//create google provider using the credentials from the input
-	googleProvider, err := pulumigoogleprovider.Get(ctx, stackInput.ProviderCredential)
+	googleProvider, err := pulumigoogleprovider.Get(ctx, stackInput.ProviderConfig)
 	if err != nil {
 		return errors.Wrap(err, "failed to create google provider")
 	}

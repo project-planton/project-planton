@@ -750,7 +750,7 @@ kind: ElasticsearchKubernetes
 metadata:
   name: internal-search
 spec:
-  kubernetesClusterCredentialId: k8s-cluster-01
+  kubernetesProviderConfigId: k8s-cluster-01
   elasticsearch:
     container:
       replicas: 1
@@ -784,7 +784,7 @@ kind: ElasticsearchKubernetes
 metadata:
   name: production-search
 spec:
-  kubernetesClusterCredentialId: k8s-cluster-01
+  kubernetesProviderConfigId: k8s-cluster-01
   elasticsearch:
     container:
       replicas: 3
@@ -824,7 +824,7 @@ kind: ElasticsearchKubernetes
 metadata:
   name: logs-cluster
 spec:
-  kubernetesClusterCredentialId: k8s-cluster-01
+  kubernetesProviderConfigId: k8s-cluster-01
   elasticsearch:
     container:
       replicas: 3

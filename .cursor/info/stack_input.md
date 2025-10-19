@@ -14,15 +14,15 @@ Purpose: author `stack_input.proto` for a resource kind, defining how the CLI pa
 - `project/planton/shared/iac/terraform/terraform.proto`
 - `project/planton/provider/<provider>/<kindfolder>/v1/api.proto`
 - Provider credential spec import (choose one based on provider):
-  - aws → `project/planton/credential/awscredential/v1/spec.proto` → type `project.planton.credential.awscredential.v1.AwsCredentialSpec`
-  - gcp → `project/planton/credential/gcpcredential/v1/spec.proto` → type `project.planton.credential.gcpcredential.v1.GcpCredentialSpec`
-  - azure → `project/planton/credential/azurecredential/v1/spec.proto` → type `project.planton.credential.azurecredential.v1.AzureCredentialSpec`
-  - kubernetes → `project/planton/credential/kubernetesclustercredential/v1/spec.proto` → type `project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec`
-  - cloudflare → `project/planton/credential/cloudflarecredential/v1/spec.proto` → type `project.planton.credential.cloudflarecredential.v1.CloudflareCredentialSpec`
-  - digitalocean → `project/planton/credential/digitaloceancredential/v1/spec.proto` → type `project.planton.credential.digitaloceancredential.v1.DigitalOceanCredentialSpec`
-  - confluent → `project/planton/credential/confluentcredential/v1/spec.proto` → type `project.planton.credential.confluentcredential.v1.ConfluentCredentialSpec`
-  - snowflake → `project/planton/credential/snowflakecredential/v1/spec.proto` → type `project.planton.credential.snowflakecredential.v1.SnowflakeCredentialSpec`
-  - civo → `project/planton/credential/civocredential/v1/spec.proto` → type `project.planton.credential.civocredential.v1.CivoCredentialSpec`
+  - aws → `project/planton/credential/awscredential/v1/spec.proto` → type `project.planton.credential.awscredential.v1.AwsProviderConfig`
+  - gcp → `project/planton/credential/gcpcredential/v1/spec.proto` → type `project.planton.credential.gcpcredential.v1.GcpProviderConfig`
+  - azure → `project/planton/credential/azurecredential/v1/spec.proto` → type `project.planton.credential.azurecredential.v1.AzureProviderConfig`
+  - kubernetes → `project/planton/credential/kubernetesclustercredential/v1/spec.proto` → type `project.planton.credential.kubernetesclustercredential.v1.KubernetesProviderConfig`
+  - cloudflare → `project/planton/credential/cloudflarecredential/v1/spec.proto` → type `project.planton.credential.cloudflarecredential.v1.CloudflareProviderConfig`
+  - digitalocean → `project/planton/credential/digitaloceancredential/v1/spec.proto` → type `project.planton.credential.digitaloceancredential.v1.DigitalOceanProviderConfig`
+  - confluent → `project/planton/credential/confluentcredential/v1/spec.proto` → type `project.planton.credential.confluentcredential.v1.ConfluentProviderConfig`
+  - snowflake → `project/planton/credential/snowflakecredential/v1/spec.proto` → type `project.planton.credential.snowflakecredential.v1.SnowflakeProviderConfig`
+  - civo → `project/planton/credential/civocredential/v1/spec.proto` → type `project.planton.credential.civocredential.v1.CivoProviderConfig`
   - mongodbatlas → `project/planton/credential/mongodbatlascredential/v1/spec.proto` → type `project.planton.credential.mongodbatlascredential.v1.MongoDbAtlasCredentialSpec`
 
 ## Message

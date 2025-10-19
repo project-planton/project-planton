@@ -18,7 +18,7 @@ func Resources(
 	// 2. Create a Cloudflare provider from the supplied credential.
 	cloudflareProvider, err := pulumicloudflareprovider.Get(
 		ctx,
-		stackInput.ProviderCredential,
+		stackInput.ProviderConfig,
 	)
 	if err != nil {
 		return errors.Wrap(err, "failed to setup Cloudflare provider")

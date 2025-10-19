@@ -11,7 +11,7 @@ type StackInputCredentialOptions struct {
 	AzureCredential        string
 	ConfluentCredential    string
 	DockerCredential       string
-	GcpCredential          string
+	GcpProviderConfig          string
 	KubernetesCluster      string
 	MongodbAtlasCredential string
 	SnowflakeCredential    string
@@ -19,15 +19,15 @@ type StackInputCredentialOptions struct {
 
 type StackInputCredentialOption func(*StackInputCredentialOptions)
 
-func WithAwsCredential(awsCredential string) StackInputCredentialOption {
+func WithAwsCredential(awsProviderConfig string) StackInputCredentialOption {
 	return func(opts *StackInputCredentialOptions) {
-		opts.AwsCredential = awsCredential
+		opts.AwsCredential = awsProviderConfig
 	}
 }
 
-func WithAzureCredential(azureCredential string) StackInputCredentialOption {
+func WithAzureCredential(azureProviderConfig string) StackInputCredentialOption {
 	return func(opts *StackInputCredentialOptions) {
-		opts.AzureCredential = azureCredential
+		opts.AzureCredential = azureProviderConfig
 	}
 }
 
@@ -43,9 +43,9 @@ func WithDockerCredential(dockerCredential string) StackInputCredentialOption {
 	}
 }
 
-func WithGcpCredential(gcpCredential string) StackInputCredentialOption {
+func WithGcpProviderConfig(gcpProviderConfig string) StackInputCredentialOption {
 	return func(opts *StackInputCredentialOptions) {
-		opts.GcpCredential = gcpCredential
+		opts.GcpProviderConfig = gcpProviderConfig
 	}
 }
 
@@ -70,20 +70,20 @@ func WithSnowflakeCredential(snowflakeCredential string) StackInputCredentialOpt
 func BuildWithFlags(commandFlagSet *pflag.FlagSet) ([]StackInputCredentialOption, error) {
 	resp := make([]StackInputCredentialOption, 0)
 
-	awsCredential, err := commandFlagSet.GetString(string(flag.AwsCredential))
+	awsProviderConfig, err := commandFlagSet.GetString(string(flag.AwsCredential))
 	if err != nil {
 		return nil, errors.Wrapf(err, "failed to read %s flag", flag.AwsCredential)
 	}
-	if awsCredential != "" {
-		resp = append(resp, WithAwsCredential(awsCredential))
+	if awsProviderConfig != "" {
+		resp = append(resp, WithAwsCredential(awsProviderConfig))
 	}
 
-	azureCredential, err := commandFlagSet.GetString(string(flag.AzureCredential))
+	azureProviderConfig, err := commandFlagSet.GetString(string(flag.AzureCredential))
 	if err != nil {
 		return nil, errors.Wrapf(err, "failed to read %s flag", flag.AzureCredential)
 	}
-	if azureCredential != "" {
-		resp = append(resp, WithAzureCredential(azureCredential))
+	if azureProviderConfig != "" {
+		resp = append(resp, WithAzureCredential(azureProviderConfig))
 	}
 
 	confluentCredential, err := commandFlagSet.GetString(string(flag.ConfluentCredential))
@@ -102,12 +102,12 @@ func BuildWithFlags(commandFlagSet *pflag.FlagSet) ([]StackInputCredentialOption
 		resp = append(resp, WithDockerCredential(dockerCredential))
 	}
 
-	gcpCredential, err := commandFlagSet.GetString(string(flag.GcpCredential))
+	gcpProviderConfig, err := commandFlagSet.GetString(string(flag.GcpProviderConfig))
 	if err != nil {
-		return nil, errors.Wrapf(err, "failed to read %s flag", flag.GcpCredential)
+		return nil, errors.Wrapf(err, "failed to read %s flag", flag.GcpProviderConfig)
 	}
-	if gcpCredential != "" {
-		resp = append(resp, WithGcpCredential(gcpCredential))
+	if gcpProviderConfig != "" {
+		resp = append(resp, WithGcpProviderConfig(gcpProviderConfig))
 	}
 
 	kubernetesCluster, err := commandFlagSet.GetString(string(flag.KubernetesCluster))
@@ -139,20 +139,20 @@ func BuildWithFlags(commandFlagSet *pflag.FlagSet) ([]StackInputCredentialOption
 func BuildWithInputDir(inputDir string) ([]StackInputCredentialOption, error) {
 	resp := make([]StackInputCredentialOption, 0)
 
-	awsCredential, err := LoadAwsCredential(inputDir)
+	awsProviderConfig, err := LoadAwsCredential(inputDir)
 	if err != nil {
 		return nil, errors.Wrapf(err, "failed to look up aws-credential in %s", inputDir)
 	}
-	if awsCredential != "" {
-		resp = append(resp, WithAwsCredential(awsCredential))
+	if awsProviderConfig != "" {
+		resp = append(resp, WithAwsCredential(awsProviderConfig))
 	}
 
-	azureCredential, err := LoadAzureCredential(inputDir)
+	azureProviderConfig, err := LoadAzureCredential(inputDir)
 	if err != nil {
 		return nil, errors.Wrapf(err, "failed to look up azure-credential in %s", inputDir)
 	}
-	if azureCredential != "" {
-		resp = append(resp, WithAzureCredential(azureCredential))
+	if azureProviderConfig != "" {
+		resp = append(resp, WithAzureCredential(azureProviderConfig))
 	}
 
 	confluentCredential, err := LoadConfluentCredential(inputDir)
@@ -163,12 +163,12 @@ func BuildWithInputDir(inputDir string) ([]StackInputCredentialOption, error) {
 		resp = append(resp, WithConfluentCredential(confluentCredential))
 	}
 
-	gcpCredential, err := LoadGcpCredential(inputDir)
+	gcpProviderConfig, err := LoadGcpProviderConfig(inputDir)
 	if err != nil {
 		return nil, errors.Wrapf(err, "failed to look up gcp-credential in %s", inputDir)
 	}
-	if gcpCredential != "" {
-		resp = append(resp, WithGcpCredential(gcpCredential))
+	if gcpProviderConfig != "" {
+		resp = append(resp, WithGcpProviderConfig(gcpProviderConfig))
 	}
 
 	kubernetesCluster, err := LoadKubernetesCluster(inputDir)

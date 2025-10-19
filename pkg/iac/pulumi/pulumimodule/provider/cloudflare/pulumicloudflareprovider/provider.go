@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"reflect"
 
-	cloudflarecredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/cloudflarecredential/v1"
+	cloudflareprovider "github.com/project-planton/project-planton/apis/project/planton/provider/cloudflare"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/pulumi/pulumioutput"
 
 	"github.com/pkg/errors"
@@ -18,26 +18,26 @@ import (
 // variables (CLOUDFLARE_API_TOKEN, CLOUDFLARE_API_KEY, etc.).
 func Get(
 	ctx *pulumi.Context,
-	credentialSpec *cloudflarecredentialv1.CloudflareCredentialSpec,
+	cloudflareProviderConfig *cloudflareprovider.CloudflareProviderConfig,
 	nameSuffixes ...string,
 ) (*cloudflare.Provider, error) {
 
 	providerArgs := &cloudflare.ProviderArgs{}
 
 	// Map credential fields when present; leave them nil to defer to env-vars.
-	if credentialSpec != nil {
+	if cloudflareProviderConfig != nil {
 		// Handle authentication based on scheme
-		switch credentialSpec.AuthScheme {
-		case cloudflarecredentialv1.CloudflareAuthScheme_api_token:
-			if credentialSpec.ApiToken != "" {
-				providerArgs.ApiToken = pulumi.StringPtr(credentialSpec.ApiToken)
+		switch cloudflareProviderConfig.AuthScheme {
+		case cloudflareprovider.CloudflareAuthScheme_api_token:
+			if cloudflareProviderConfig.ApiToken != "" {
+				providerArgs.ApiToken = pulumi.StringPtr(cloudflareProviderConfig.ApiToken)
 			}
-		case cloudflarecredentialv1.CloudflareAuthScheme_legacy_api_key:
-			if credentialSpec.ApiKey != "" {
-				providerArgs.ApiKey = pulumi.StringPtr(credentialSpec.ApiKey)
+		case cloudflareprovider.CloudflareAuthScheme_legacy_api_key:
+			if cloudflareProviderConfig.ApiKey != "" {
+				providerArgs.ApiKey = pulumi.StringPtr(cloudflareProviderConfig.ApiKey)
 			}
-			if credentialSpec.Email != "" {
-				providerArgs.Email = pulumi.StringPtr(credentialSpec.Email)
+			if cloudflareProviderConfig.Email != "" {
+				providerArgs.Email = pulumi.StringPtr(cloudflareProviderConfig.Email)
 			}
 		}
 	}

@@ -12,8 +12,8 @@ func Resources(ctx *pulumi.Context, stackInput *clickhousekubernetesv1.ClickHous
 	locals := initializeLocals(ctx, stackInput)
 
 	// Create Kubernetes provider from stack-input credentials
-	kubernetesProvider, err := pulumikubernetesprovider.GetWithKubernetesClusterCredential(ctx,
-		stackInput.ProviderCredential, "kubernetes")
+	kubernetesProvider, err := pulumikubernetesprovider.GetWithKubernetesProviderConfig(ctx,
+		stackInput.ProviderConfig, "kubernetes")
 	if err != nil {
 		return errors.Wrap(err, "failed to create kubernetes provider")
 	}

@@ -2,14 +2,14 @@ package providercredentials
 
 import (
 	"github.com/pkg/errors"
-	confluentcredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/confluentcredential/v1"
+	confluent"github.com/project-planton/project-planton/apis/project/planton/provider/confluent"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput/stackinputcredentials"
 )
 
 func AddConfluentCredentialEnvVars(stackInputContentMap map[string]interface{},
 	credentialEnvVars map[string]string) (map[string]string, error) {
-	credentialSpec := new(confluentcredentialv1.ConfluentCredentialSpec)
+	credentialSpec := new(confluentcredentialv1.ConfluentProviderConfig)
 
 	isCredentialLoaded, err := stackinput.LoadCredential(stackInputContentMap,
 		stackinputcredentials.ConfluentCredentialKey, credentialSpec)

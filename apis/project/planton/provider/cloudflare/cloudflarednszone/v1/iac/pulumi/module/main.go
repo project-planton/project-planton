@@ -16,7 +16,7 @@ func Resources(
 	locals := initializeLocals(ctx, stackInput)
 
 	// 2. Build a Pulumi Cloudflare provider from the supplied credential.
-	cloudflareProvider, err := pulumicloudflareprovider.Get(ctx, stackInput.ProviderCredential)
+	cloudflareProvider, err := pulumicloudflareprovider.Get(ctx, stackInput.ProviderConfig)
 	if err != nil {
 		return errors.Wrap(err, "failed to setup cloudflare provider")
 	}

@@ -7,7 +7,7 @@
 package gcpgkeworkloadidentitybindingv1
 
 import (
-	v1 "github.com/project-planton/project-planton/apis/project/planton/credential/gcpcredential/v1"
+	gcp "github.com/project-planton/project-planton/apis/project/planton/provider/gcp"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -27,10 +27,10 @@ type GcpGkeWorkloadIdentityBindingStackInput struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// target cloud-resource
 	Target *GcpGkeWorkloadIdentityBinding `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
-	// provider-credential
-	ProviderCredential *v1.GcpCredentialSpec `protobuf:"bytes,2,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	// provider-config
+	ProviderConfig *gcp.GcpProviderConfig `protobuf:"bytes,2,opt,name=provider_config,json=providerConfig,proto3" json:"provider_config,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *GcpGkeWorkloadIdentityBindingStackInput) Reset() {
@@ -70,9 +70,9 @@ func (x *GcpGkeWorkloadIdentityBindingStackInput) GetTarget() *GcpGkeWorkloadIde
 	return nil
 }
 
-func (x *GcpGkeWorkloadIdentityBindingStackInput) GetProviderCredential() *v1.GcpCredentialSpec {
+func (x *GcpGkeWorkloadIdentityBindingStackInput) GetProviderConfig() *gcp.GcpProviderConfig {
 	if x != nil {
-		return x.ProviderCredential
+		return x.ProviderConfig
 	}
 	return nil
 }
@@ -81,10 +81,10 @@ var File_project_planton_provider_gcp_gcpgkeworkloadidentitybinding_v1_stack_inp
 
 const file_project_planton_provider_gcp_gcpgkeworkloadidentitybinding_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Oproject/planton/provider/gcp/gcpgkeworkloadidentitybinding/v1/stack_input.proto\x12=project.planton.provider.gcp.gcpgkeworkloadidentitybinding.v1\x1a6project/planton/credential/gcpcredential/v1/spec.proto\x1aGproject/planton/provider/gcp/gcpgkeworkloadidentitybinding/v1/api.proto\"\x90\x02\n" +
+	"Oproject/planton/provider/gcp/gcpgkeworkloadidentitybinding/v1/stack_input.proto\x12=project.planton.provider.gcp.gcpgkeworkloadidentitybinding.v1\x1aGproject/planton/provider/gcp/gcpgkeworkloadidentitybinding/v1/api.proto\x1a+project/planton/provider/gcp/provider.proto\"\xf9\x01\n" +
 	"'GcpGkeWorkloadIdentityBindingStackInput\x12t\n" +
-	"\x06target\x18\x01 \x01(\v2\\.project.planton.provider.gcp.gcpgkeworkloadidentitybinding.v1.GcpGkeWorkloadIdentityBindingR\x06target\x12o\n" +
-	"\x13provider_credential\x18\x02 \x01(\v2>.project.planton.credential.gcpcredential.v1.GcpCredentialSpecR\x12providerCredentialB\xff\x03\n" +
+	"\x06target\x18\x01 \x01(\v2\\.project.planton.provider.gcp.gcpgkeworkloadidentitybinding.v1.GcpGkeWorkloadIdentityBindingR\x06target\x12X\n" +
+	"\x0fprovider_config\x18\x02 \x01(\v2/.project.planton.provider.gcp.GcpProviderConfigR\x0eproviderConfigB\xff\x03\n" +
 	"Acom.project.planton.provider.gcp.gcpgkeworkloadidentitybinding.v1B\x0fStackInputProtoP\x01Z\x8d\x01github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpgkeworkloadidentitybinding/v1;gcpgkeworkloadidentitybindingv1\xa2\x02\x05PPPGG\xaa\x02=Project.Planton.Provider.Gcp.Gcpgkeworkloadidentitybinding.V1\xca\x02=Project\\Planton\\Provider\\Gcp\\Gcpgkeworkloadidentitybinding\\V1\xe2\x02IProject\\Planton\\Provider\\Gcp\\Gcpgkeworkloadidentitybinding\\V1\\GPBMetadata\xea\x02BProject::Planton::Provider::Gcp::Gcpgkeworkloadidentitybinding::V1b\x06proto3"
 
 var (
@@ -103,11 +103,11 @@ var file_project_planton_provider_gcp_gcpgkeworkloadidentitybinding_v1_stack_inp
 var file_project_planton_provider_gcp_gcpgkeworkloadidentitybinding_v1_stack_input_proto_goTypes = []any{
 	(*GcpGkeWorkloadIdentityBindingStackInput)(nil), // 0: project.planton.provider.gcp.gcpgkeworkloadidentitybinding.v1.GcpGkeWorkloadIdentityBindingStackInput
 	(*GcpGkeWorkloadIdentityBinding)(nil),           // 1: project.planton.provider.gcp.gcpgkeworkloadidentitybinding.v1.GcpGkeWorkloadIdentityBinding
-	(*v1.GcpCredentialSpec)(nil),                    // 2: project.planton.credential.gcpcredential.v1.GcpCredentialSpec
+	(*gcp.GcpProviderConfig)(nil),                   // 2: project.planton.provider.gcp.GcpProviderConfig
 }
 var file_project_planton_provider_gcp_gcpgkeworkloadidentitybinding_v1_stack_input_proto_depIdxs = []int32{
 	1, // 0: project.planton.provider.gcp.gcpgkeworkloadidentitybinding.v1.GcpGkeWorkloadIdentityBindingStackInput.target:type_name -> project.planton.provider.gcp.gcpgkeworkloadidentitybinding.v1.GcpGkeWorkloadIdentityBinding
-	2, // 1: project.planton.provider.gcp.gcpgkeworkloadidentitybinding.v1.GcpGkeWorkloadIdentityBindingStackInput.provider_credential:type_name -> project.planton.credential.gcpcredential.v1.GcpCredentialSpec
+	2, // 1: project.planton.provider.gcp.gcpgkeworkloadidentitybinding.v1.GcpGkeWorkloadIdentityBindingStackInput.provider_config:type_name -> project.planton.provider.gcp.GcpProviderConfig
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

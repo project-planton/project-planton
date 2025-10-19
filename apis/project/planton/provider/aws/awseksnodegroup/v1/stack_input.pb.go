@@ -7,7 +7,7 @@
 package awseksnodegroupv1
 
 import (
-	v1 "github.com/project-planton/project-planton/apis/project/planton/credential/awscredential/v1"
+	aws "github.com/project-planton/project-planton/apis/project/planton/provider/aws"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -27,10 +27,10 @@ type AwsEksNodeGroupStackInput struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// target cloud-resource
 	Target *AwsEksNodeGroup `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
-	// provider-credential
-	ProviderCredential *v1.AwsCredentialSpec `protobuf:"bytes,2,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	// provider-config
+	ProviderConfig *aws.AwsProviderConfig `protobuf:"bytes,2,opt,name=provider_config,json=providerConfig,proto3" json:"provider_config,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *AwsEksNodeGroupStackInput) Reset() {
@@ -70,9 +70,9 @@ func (x *AwsEksNodeGroupStackInput) GetTarget() *AwsEksNodeGroup {
 	return nil
 }
 
-func (x *AwsEksNodeGroupStackInput) GetProviderCredential() *v1.AwsCredentialSpec {
+func (x *AwsEksNodeGroupStackInput) GetProviderConfig() *aws.AwsProviderConfig {
 	if x != nil {
-		return x.ProviderCredential
+		return x.ProviderConfig
 	}
 	return nil
 }
@@ -81,10 +81,10 @@ var File_project_planton_provider_aws_awseksnodegroup_v1_stack_input_proto proto
 
 const file_project_planton_provider_aws_awseksnodegroup_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Aproject/planton/provider/aws/awseksnodegroup/v1/stack_input.proto\x12/project.planton.provider.aws.awseksnodegroup.v1\x1a6project/planton/credential/awscredential/v1/spec.proto\x1a9project/planton/provider/aws/awseksnodegroup/v1/api.proto\"\xe6\x01\n" +
+	"Aproject/planton/provider/aws/awseksnodegroup/v1/stack_input.proto\x12/project.planton.provider.aws.awseksnodegroup.v1\x1a9project/planton/provider/aws/awseksnodegroup/v1/api.proto\x1a+project/planton/provider/aws/provider.proto\"\xcf\x01\n" +
 	"\x19AwsEksNodeGroupStackInput\x12X\n" +
-	"\x06target\x18\x01 \x01(\v2@.project.planton.provider.aws.awseksnodegroup.v1.AwsEksNodeGroupR\x06target\x12o\n" +
-	"\x13provider_credential\x18\x02 \x01(\v2>.project.planton.credential.awscredential.v1.AwsCredentialSpecR\x12providerCredentialB\x9c\x03\n" +
+	"\x06target\x18\x01 \x01(\v2@.project.planton.provider.aws.awseksnodegroup.v1.AwsEksNodeGroupR\x06target\x12X\n" +
+	"\x0fprovider_config\x18\x02 \x01(\v2/.project.planton.provider.aws.AwsProviderConfigR\x0eproviderConfigB\x9c\x03\n" +
 	"3com.project.planton.provider.aws.awseksnodegroup.v1B\x0fStackInputProtoP\x01Zqgithub.com/project-planton/project-planton/apis/project/planton/provider/aws/awseksnodegroup/v1;awseksnodegroupv1\xa2\x02\x05PPPAA\xaa\x02/Project.Planton.Provider.Aws.Awseksnodegroup.V1\xca\x02/Project\\Planton\\Provider\\Aws\\Awseksnodegroup\\V1\xe2\x02;Project\\Planton\\Provider\\Aws\\Awseksnodegroup\\V1\\GPBMetadata\xea\x024Project::Planton::Provider::Aws::Awseksnodegroup::V1b\x06proto3"
 
 var (
@@ -103,11 +103,11 @@ var file_project_planton_provider_aws_awseksnodegroup_v1_stack_input_proto_msgTy
 var file_project_planton_provider_aws_awseksnodegroup_v1_stack_input_proto_goTypes = []any{
 	(*AwsEksNodeGroupStackInput)(nil), // 0: project.planton.provider.aws.awseksnodegroup.v1.AwsEksNodeGroupStackInput
 	(*AwsEksNodeGroup)(nil),           // 1: project.planton.provider.aws.awseksnodegroup.v1.AwsEksNodeGroup
-	(*v1.AwsCredentialSpec)(nil),      // 2: project.planton.credential.awscredential.v1.AwsCredentialSpec
+	(*aws.AwsProviderConfig)(nil),     // 2: project.planton.provider.aws.AwsProviderConfig
 }
 var file_project_planton_provider_aws_awseksnodegroup_v1_stack_input_proto_depIdxs = []int32{
 	1, // 0: project.planton.provider.aws.awseksnodegroup.v1.AwsEksNodeGroupStackInput.target:type_name -> project.planton.provider.aws.awseksnodegroup.v1.AwsEksNodeGroup
-	2, // 1: project.planton.provider.aws.awseksnodegroup.v1.AwsEksNodeGroupStackInput.provider_credential:type_name -> project.planton.credential.awscredential.v1.AwsCredentialSpec
+	2, // 1: project.planton.provider.aws.awseksnodegroup.v1.AwsEksNodeGroupStackInput.provider_config:type_name -> project.planton.provider.aws.AwsProviderConfig
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

@@ -7,7 +7,7 @@
 package stackjobrunnerkubernetesv1
 
 import (
-	v1 "github.com/project-planton/project-planton/apis/project/planton/credential/kubernetesclustercredential/v1"
+	kubernetes "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -27,8 +27,8 @@ type StackJobRunnerKubernetesStackInput struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// target cloud-resource
 	Target *StackJobRunnerKubernetes `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
-	// provider-credential
-	ProviderCredential *v1.KubernetesClusterCredentialSpec `protobuf:"bytes,2,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
+	// provider-config
+	ProviderConfig *kubernetes.KubernetesProviderConfig `protobuf:"bytes,2,opt,name=provider_config,json=providerConfig,proto3" json:"provider_config,omitempty"`
 	// kubernetes namespace
 	KubernetesNamespace string `protobuf:"bytes,3,opt,name=kubernetes_namespace,json=kubernetesNamespace,proto3" json:"kubernetes_namespace,omitempty"`
 	unknownFields       protoimpl.UnknownFields
@@ -72,9 +72,9 @@ func (x *StackJobRunnerKubernetesStackInput) GetTarget() *StackJobRunnerKubernet
 	return nil
 }
 
-func (x *StackJobRunnerKubernetesStackInput) GetProviderCredential() *v1.KubernetesClusterCredentialSpec {
+func (x *StackJobRunnerKubernetesStackInput) GetProviderConfig() *kubernetes.KubernetesProviderConfig {
 	if x != nil {
-		return x.ProviderCredential
+		return x.ProviderConfig
 	}
 	return nil
 }
@@ -90,10 +90,10 @@ var File_project_planton_provider_kubernetes_workload_stackjobrunnerkubernetes_v
 
 const file_project_planton_provider_kubernetes_workload_stackjobrunnerkubernetes_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Zproject/planton/provider/kubernetes/workload/stackjobrunnerkubernetes/v1/stack_input.proto\x12Hproject.planton.provider.kubernetes.workload.stackjobrunnerkubernetes.v1\x1aDproject/planton/credential/kubernetesclustercredential/v1/spec.proto\x1aRproject/planton/provider/kubernetes/workload/stackjobrunnerkubernetes/v1/api.proto\"\xe1\x02\n" +
+	"Zproject/planton/provider/kubernetes/workload/stackjobrunnerkubernetes/v1/stack_input.proto\x12Hproject.planton.provider.kubernetes.workload.stackjobrunnerkubernetes.v1\x1a2project/planton/provider/kubernetes/provider.proto\x1aRproject/planton/provider/kubernetes/workload/stackjobrunnerkubernetes/v1/api.proto\"\xbb\x02\n" +
 	"\"StackJobRunnerKubernetesStackInput\x12z\n" +
-	"\x06target\x18\x01 \x01(\v2b.project.planton.provider.kubernetes.workload.stackjobrunnerkubernetes.v1.StackJobRunnerKubernetesR\x06target\x12\x8b\x01\n" +
-	"\x13provider_credential\x18\x02 \x01(\v2Z.project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpecR\x12providerCredential\x121\n" +
+	"\x06target\x18\x01 \x01(\v2b.project.planton.provider.kubernetes.workload.stackjobrunnerkubernetes.v1.StackJobRunnerKubernetesR\x06target\x12f\n" +
+	"\x0fprovider_config\x18\x02 \x01(\v2=.project.planton.provider.kubernetes.KubernetesProviderConfigR\x0eproviderConfig\x121\n" +
 	"\x14kubernetes_namespace\x18\x03 \x01(\tR\x13kubernetesNamespaceB\xbe\x04\n" +
 	"Lcom.project.planton.provider.kubernetes.workload.stackjobrunnerkubernetes.v1B\x0fStackInputProtoP\x01Z\x93\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/stackjobrunnerkubernetes/v1;stackjobrunnerkubernetesv1\xa2\x02\x06PPPKWS\xaa\x02HProject.Planton.Provider.Kubernetes.Workload.Stackjobrunnerkubernetes.V1\xca\x02HProject\\Planton\\Provider\\Kubernetes\\Workload\\Stackjobrunnerkubernetes\\V1\xe2\x02TProject\\Planton\\Provider\\Kubernetes\\Workload\\Stackjobrunnerkubernetes\\V1\\GPBMetadata\xea\x02NProject::Planton::Provider::Kubernetes::Workload::Stackjobrunnerkubernetes::V1b\x06proto3"
 
@@ -111,13 +111,13 @@ func file_project_planton_provider_kubernetes_workload_stackjobrunnerkubernetes_
 
 var file_project_planton_provider_kubernetes_workload_stackjobrunnerkubernetes_v1_stack_input_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_kubernetes_workload_stackjobrunnerkubernetes_v1_stack_input_proto_goTypes = []any{
-	(*StackJobRunnerKubernetesStackInput)(nil), // 0: project.planton.provider.kubernetes.workload.stackjobrunnerkubernetes.v1.StackJobRunnerKubernetesStackInput
-	(*StackJobRunnerKubernetes)(nil),           // 1: project.planton.provider.kubernetes.workload.stackjobrunnerkubernetes.v1.StackJobRunnerKubernetes
-	(*v1.KubernetesClusterCredentialSpec)(nil), // 2: project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec
+	(*StackJobRunnerKubernetesStackInput)(nil),  // 0: project.planton.provider.kubernetes.workload.stackjobrunnerkubernetes.v1.StackJobRunnerKubernetesStackInput
+	(*StackJobRunnerKubernetes)(nil),            // 1: project.planton.provider.kubernetes.workload.stackjobrunnerkubernetes.v1.StackJobRunnerKubernetes
+	(*kubernetes.KubernetesProviderConfig)(nil), // 2: project.planton.provider.kubernetes.KubernetesProviderConfig
 }
 var file_project_planton_provider_kubernetes_workload_stackjobrunnerkubernetes_v1_stack_input_proto_depIdxs = []int32{
 	1, // 0: project.planton.provider.kubernetes.workload.stackjobrunnerkubernetes.v1.StackJobRunnerKubernetesStackInput.target:type_name -> project.planton.provider.kubernetes.workload.stackjobrunnerkubernetes.v1.StackJobRunnerKubernetes
-	2, // 1: project.planton.provider.kubernetes.workload.stackjobrunnerkubernetes.v1.StackJobRunnerKubernetesStackInput.provider_credential:type_name -> project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec
+	2, // 1: project.planton.provider.kubernetes.workload.stackjobrunnerkubernetes.v1.StackJobRunnerKubernetesStackInput.provider_config:type_name -> project.planton.provider.kubernetes.KubernetesProviderConfig
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

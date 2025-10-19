@@ -6,7 +6,7 @@ kind: ElasticsearchKubernetes
 metadata:
   name: logging-cluster
 spec:
-  kubernetesClusterCredentialId: my-k8s-credentials
+  kubernetesProviderConfigId: my-k8s-credentials
   elasticsearch:
     resources:
       requests:
@@ -35,7 +35,7 @@ kind: ElasticsearchKubernetes
 metadata:
   name: search-service
 spec:
-  kubernetesClusterCredentialId: my-k8s-credentials
+  kubernetesProviderConfigId: my-k8s-credentials
   elasticsearch:
     container:
       resources:
@@ -73,7 +73,7 @@ kind: ElasticsearchKubernetes
 metadata:
   name: logging-app
 spec:
-  kubernetesClusterCredentialId: my-k8s-credentials
+  kubernetesProviderConfigId: my-k8s-credentials
   elasticsearch:
     resources:
       requests:
@@ -106,5 +106,5 @@ kind: ElasticsearchKubernetes
 metadata:
   name: minimal-elasticsearch
 spec:
-  kubernetesClusterCredentialId: my-k8s-credentials
+  kubernetesProviderConfigId: my-k8s-credentials
 ```

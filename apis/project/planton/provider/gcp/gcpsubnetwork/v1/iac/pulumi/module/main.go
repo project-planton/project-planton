@@ -18,7 +18,7 @@ func Resources(ctx *pulumi.Context, stackInput *gcpsubnetworkv1.GcpSubnetworkSta
 	locals := initializeLocals(ctx, stackInput)
 
 	// (1) Provider setup – identical helper used by other Planton modules.
-	gcpProvider, err := pulumigoogleprovider.Get(ctx, stackInput.ProviderCredential)
+	gcpProvider, err := pulumigoogleprovider.Get(ctx, stackInput.ProviderConfig)
 	if err != nil {
 		return errors.Wrap(err, "failed to set up google provider")
 	}

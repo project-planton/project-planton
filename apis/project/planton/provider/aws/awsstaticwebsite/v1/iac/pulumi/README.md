@@ -26,7 +26,7 @@ Refer to the example section for usage instructions.
 
 The module expects an `api-resource.yaml` file defining the desired state of the AWS static website. The key components of this file include:
 
-- **`awsCredentialId`** (required): The identifier for the AWS credentials used to authenticate with AWS services.
+- **`awsProviderConfigId`** (required): The identifier for the AWS credentials used to authenticate with AWS services.
 - **`environmentInfo`**: Contains environment-specific information (currently not utilized).
 - **`stackJobSettings`**: Settings related to the stack job execution (currently not utilized).
 

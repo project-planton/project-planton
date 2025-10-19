@@ -7,7 +7,7 @@
 package perconapostgresqloperatorv1
 
 import (
-	v1 "github.com/project-planton/project-planton/apis/project/planton/credential/kubernetesclustercredential/v1"
+	kubernetes "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -27,10 +27,10 @@ type PerconaPostgresqlOperatorStackInput struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// target cloud-resource
 	Target *PerconaPostgresqlOperator `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
-	// provider-credential
-	ProviderCredential *v1.KubernetesClusterCredentialSpec `protobuf:"bytes,2,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	// provider-config
+	ProviderConfig *kubernetes.KubernetesProviderConfig `protobuf:"bytes,2,opt,name=provider_config,json=providerConfig,proto3" json:"provider_config,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *PerconaPostgresqlOperatorStackInput) Reset() {
@@ -70,9 +70,9 @@ func (x *PerconaPostgresqlOperatorStackInput) GetTarget() *PerconaPostgresqlOper
 	return nil
 }
 
-func (x *PerconaPostgresqlOperatorStackInput) GetProviderCredential() *v1.KubernetesClusterCredentialSpec {
+func (x *PerconaPostgresqlOperatorStackInput) GetProviderConfig() *kubernetes.KubernetesProviderConfig {
 	if x != nil {
-		return x.ProviderCredential
+		return x.ProviderConfig
 	}
 	return nil
 }
@@ -81,10 +81,10 @@ var File_project_planton_provider_kubernetes_addon_perconapostgresqloperator_v1_
 
 const file_project_planton_provider_kubernetes_addon_perconapostgresqloperator_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Xproject/planton/provider/kubernetes/addon/perconapostgresqloperator/v1/stack_input.proto\x12Fproject.planton.provider.kubernetes.addon.perconapostgresqloperator.v1\x1aDproject/planton/credential/kubernetesclustercredential/v1/spec.proto\x1aPproject/planton/provider/kubernetes/addon/perconapostgresqloperator/v1/api.proto\"\xae\x02\n" +
+	"Xproject/planton/provider/kubernetes/addon/perconapostgresqloperator/v1/stack_input.proto\x12Fproject.planton.provider.kubernetes.addon.perconapostgresqloperator.v1\x1aPproject/planton/provider/kubernetes/addon/perconapostgresqloperator/v1/api.proto\x1a2project/planton/provider/kubernetes/provider.proto\"\x88\x02\n" +
 	"#PerconaPostgresqlOperatorStackInput\x12y\n" +
-	"\x06target\x18\x01 \x01(\v2a.project.planton.provider.kubernetes.addon.perconapostgresqloperator.v1.PerconaPostgresqlOperatorR\x06target\x12\x8b\x01\n" +
-	"\x13provider_credential\x18\x02 \x01(\v2Z.project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpecR\x12providerCredentialB\xb3\x04\n" +
+	"\x06target\x18\x01 \x01(\v2a.project.planton.provider.kubernetes.addon.perconapostgresqloperator.v1.PerconaPostgresqlOperatorR\x06target\x12f\n" +
+	"\x0fprovider_config\x18\x02 \x01(\v2=.project.planton.provider.kubernetes.KubernetesProviderConfigR\x0eproviderConfigB\xb3\x04\n" +
 	"Jcom.project.planton.provider.kubernetes.addon.perconapostgresqloperator.v1B\x0fStackInputProtoP\x01Z\x92\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/addon/perconapostgresqloperator/v1;perconapostgresqloperatorv1\xa2\x02\x06PPPKAP\xaa\x02FProject.Planton.Provider.Kubernetes.Addon.Perconapostgresqloperator.V1\xca\x02FProject\\Planton\\Provider\\Kubernetes\\Addon\\Perconapostgresqloperator\\V1\xe2\x02RProject\\Planton\\Provider\\Kubernetes\\Addon\\Perconapostgresqloperator\\V1\\GPBMetadata\xea\x02LProject::Planton::Provider::Kubernetes::Addon::Perconapostgresqloperator::V1b\x06proto3"
 
 var (
@@ -103,11 +103,11 @@ var file_project_planton_provider_kubernetes_addon_perconapostgresqloperator_v1_
 var file_project_planton_provider_kubernetes_addon_perconapostgresqloperator_v1_stack_input_proto_goTypes = []any{
 	(*PerconaPostgresqlOperatorStackInput)(nil), // 0: project.planton.provider.kubernetes.addon.perconapostgresqloperator.v1.PerconaPostgresqlOperatorStackInput
 	(*PerconaPostgresqlOperator)(nil),           // 1: project.planton.provider.kubernetes.addon.perconapostgresqloperator.v1.PerconaPostgresqlOperator
-	(*v1.KubernetesClusterCredentialSpec)(nil),  // 2: project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec
+	(*kubernetes.KubernetesProviderConfig)(nil), // 2: project.planton.provider.kubernetes.KubernetesProviderConfig
 }
 var file_project_planton_provider_kubernetes_addon_perconapostgresqloperator_v1_stack_input_proto_depIdxs = []int32{
 	1, // 0: project.planton.provider.kubernetes.addon.perconapostgresqloperator.v1.PerconaPostgresqlOperatorStackInput.target:type_name -> project.planton.provider.kubernetes.addon.perconapostgresqloperator.v1.PerconaPostgresqlOperator
-	2, // 1: project.planton.provider.kubernetes.addon.perconapostgresqloperator.v1.PerconaPostgresqlOperatorStackInput.provider_credential:type_name -> project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec
+	2, // 1: project.planton.provider.kubernetes.addon.perconapostgresqloperator.v1.PerconaPostgresqlOperatorStackInput.provider_config:type_name -> project.planton.provider.kubernetes.KubernetesProviderConfig
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

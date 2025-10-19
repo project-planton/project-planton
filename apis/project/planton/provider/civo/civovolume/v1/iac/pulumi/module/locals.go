@@ -3,8 +3,8 @@ package module
 import (
 	"strconv"
 
-	civocredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/civocredential/v1"
 	civovolumev1 "github.com/project-planton/project-planton/apis/project/planton/provider/civo/civovolume/v1"
+	civoprovider "github.com/project-planton/project-planton/apis/project/planton/provider/civo"
 	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/civo/civolabelkeys"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
@@ -12,7 +12,7 @@ import (
 
 // Locals bundles handy references for the rest of the module.
 type Locals struct {
-	CivoCredentialSpec *civocredentialv1.CivoCredentialSpec
+	CivoProviderConfig *civoprovider.CivoProviderConfig
 	CivoVolume         *civovolumev1.CivoVolume
 	CivoLabels         map[string]string
 }
@@ -43,7 +43,7 @@ func initializeLocals(_ *pulumi.Context, stackInput *civovolumev1.CivoVolumeStac
 		locals.CivoLabels[civolabelkeys.ResourceId] = locals.CivoVolume.Metadata.Id
 	}
 
-	locals.CivoCredentialSpec = stackInput.ProviderCredential
+	locals.CivoProviderConfig = stackInput.ProviderConfig
 
 	return locals
 }

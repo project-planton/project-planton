@@ -15,7 +15,7 @@ func Resources(ctx *pulumi.Context,
 	locals := initializeLocals(ctx, stackInput)
 
 	// Set up the GCP provider from the supplied credential spec.
-	gcpProvider, err := pulumigoogleprovider.Get(ctx, stackInput.ProviderCredential)
+	gcpProvider, err := pulumigoogleprovider.Get(ctx, stackInput.ProviderConfig)
 	if err != nil {
 		return errors.Wrap(err, "failed to set up google provider")
 	}

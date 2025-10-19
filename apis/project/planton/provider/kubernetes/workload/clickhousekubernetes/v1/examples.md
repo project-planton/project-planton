@@ -25,7 +25,7 @@ metadata:
   name: dev-clickhouse
 spec:
   clusterName: dev-cluster
-  kubernetesClusterCredentialId: my-cluster-credential-id
+  kubernetesProviderConfigId: my-cluster-credential-id
   container:
     replicas: 1
     isPersistenceEnabled: true
@@ -55,7 +55,7 @@ metadata:
 spec:
   clusterName: production-analytics
   version: "24.8"
-  kubernetesClusterCredentialId: my-cluster-credential-id
+  kubernetesProviderConfigId: my-cluster-credential-id
   container:
     replicas: 1
     isPersistenceEnabled: true
@@ -82,7 +82,7 @@ metadata:
   name: distributed-clickhouse
 spec:
   clusterName: analytics-cluster
-  kubernetesClusterCredentialId: my-cluster-credential-id
+  kubernetesProviderConfigId: my-cluster-credential-id
   container:
     isPersistenceEnabled: true
     diskSize: 100Gi
@@ -113,7 +113,7 @@ metadata:
 spec:
   clusterName: ha-analytics
   version: "24.8"
-  kubernetesClusterCredentialId: my-cluster-credential-id
+  kubernetesProviderConfigId: my-cluster-credential-id
   container:
     isPersistenceEnabled: true
     diskSize: 150Gi
@@ -149,7 +149,7 @@ metadata:
   name: enterprise-clickhouse
 spec:
   clusterName: enterprise-cluster
-  kubernetesClusterCredentialId: my-cluster-credential-id
+  kubernetesProviderConfigId: my-cluster-credential-id
   container:
     isPersistenceEnabled: true
     diskSize: 200Gi
@@ -185,7 +185,7 @@ metadata:
   name: public-clickhouse
 spec:
   clusterName: public-cluster
-  kubernetesClusterCredentialId: my-cluster-credential-id
+  kubernetesProviderConfigId: my-cluster-credential-id
   container:
     replicas: 1
     isPersistenceEnabled: true
@@ -220,7 +220,7 @@ metadata:
   name: dev-clickhouse
 spec:
   clusterName: test-cluster
-  kubernetesClusterCredentialId: my-cluster-credential-id
+  kubernetesProviderConfigId: my-cluster-credential-id
   container:
     replicas: 1
     isPersistenceEnabled: false

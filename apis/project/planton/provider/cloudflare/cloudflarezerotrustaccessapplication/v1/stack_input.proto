@@ -2,13 +2,13 @@ syntax = "proto3";
 
 package project.planton.provider.cloudflare.cloudflarezerotrustaccessapplication.v1;
 
-import "project/planton/credential/cloudflarecredential/v1/spec.proto";
 import "project/planton/provider/cloudflare/cloudflarezerotrustaccessapplication/v1/api.proto";
+import "project/planton/provider/cloudflare/provider.proto";
 
 //cloudflare-zero-trust-access-application stack-input
 message CloudflareZeroTrustAccessApplicationStackInput {
   //target cloud-resource
   CloudflareZeroTrustAccessApplication target = 1;
-  //provider-credential
-  project.planton.credential.cloudflarecredential.v1.CloudflareCredentialSpec provider_credential = 2;
+  //provider-config
+  project.planton.provider.cloudflare.CloudflareProviderConfig provider_config = 2;
 }

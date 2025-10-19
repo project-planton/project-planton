@@ -7,7 +7,7 @@
 package confluentkafkav1
 
 import (
-	v1 "github.com/project-planton/project-planton/apis/project/planton/credential/confluentcredential/v1"
+	confluent "github.com/project-planton/project-planton/apis/project/planton/provider/confluent"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -27,10 +27,10 @@ type ConfluentKafkaStackInput struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// target cloud-resource
 	Target *ConfluentKafka `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
-	// provider-credential
-	ProviderCredential *v1.ConfluentCredentialSpec `protobuf:"bytes,2,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	// provider-config
+	ProviderConfig *confluent.ConfluentProviderConfig `protobuf:"bytes,2,opt,name=provider_config,json=providerConfig,proto3" json:"provider_config,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *ConfluentKafkaStackInput) Reset() {
@@ -70,9 +70,9 @@ func (x *ConfluentKafkaStackInput) GetTarget() *ConfluentKafka {
 	return nil
 }
 
-func (x *ConfluentKafkaStackInput) GetProviderCredential() *v1.ConfluentCredentialSpec {
+func (x *ConfluentKafkaStackInput) GetProviderConfig() *confluent.ConfluentProviderConfig {
 	if x != nil {
-		return x.ProviderCredential
+		return x.ProviderConfig
 	}
 	return nil
 }
@@ -81,10 +81,10 @@ var File_project_planton_provider_confluent_confluentkafka_v1_stack_input_proto 
 
 const file_project_planton_provider_confluent_confluentkafka_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Fproject/planton/provider/confluent/confluentkafka/v1/stack_input.proto\x124project.planton.provider.confluent.confluentkafka.v1\x1a<project/planton/credential/confluentcredential/v1/spec.proto\x1a>project/planton/provider/confluent/confluentkafka/v1/api.proto\"\xf5\x01\n" +
+	"Fproject/planton/provider/confluent/confluentkafka/v1/stack_input.proto\x124project.planton.provider.confluent.confluentkafka.v1\x1a>project/planton/provider/confluent/confluentkafka/v1/api.proto\x1a1project/planton/provider/confluent/provider.proto\"\xde\x01\n" +
 	"\x18ConfluentKafkaStackInput\x12\\\n" +
-	"\x06target\x18\x01 \x01(\v2D.project.planton.provider.confluent.confluentkafka.v1.ConfluentKafkaR\x06target\x12{\n" +
-	"\x13provider_credential\x18\x02 \x01(\v2J.project.planton.credential.confluentcredential.v1.ConfluentCredentialSpecR\x12providerCredentialB\xb9\x03\n" +
+	"\x06target\x18\x01 \x01(\v2D.project.planton.provider.confluent.confluentkafka.v1.ConfluentKafkaR\x06target\x12d\n" +
+	"\x0fprovider_config\x18\x02 \x01(\v2;.project.planton.provider.confluent.ConfluentProviderConfigR\x0eproviderConfigB\xb9\x03\n" +
 	"8com.project.planton.provider.confluent.confluentkafka.v1B\x0fStackInputProtoP\x01Zugithub.com/project-planton/project-planton/apis/project/planton/provider/confluent/confluentkafka/v1;confluentkafkav1\xa2\x02\x05PPPCC\xaa\x024Project.Planton.Provider.Confluent.Confluentkafka.V1\xca\x024Project\\Planton\\Provider\\Confluent\\Confluentkafka\\V1\xe2\x02@Project\\Planton\\Provider\\Confluent\\Confluentkafka\\V1\\GPBMetadata\xea\x029Project::Planton::Provider::Confluent::Confluentkafka::V1b\x06proto3"
 
 var (
@@ -101,13 +101,13 @@ func file_project_planton_provider_confluent_confluentkafka_v1_stack_input_proto
 
 var file_project_planton_provider_confluent_confluentkafka_v1_stack_input_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_confluent_confluentkafka_v1_stack_input_proto_goTypes = []any{
-	(*ConfluentKafkaStackInput)(nil),   // 0: project.planton.provider.confluent.confluentkafka.v1.ConfluentKafkaStackInput
-	(*ConfluentKafka)(nil),             // 1: project.planton.provider.confluent.confluentkafka.v1.ConfluentKafka
-	(*v1.ConfluentCredentialSpec)(nil), // 2: project.planton.credential.confluentcredential.v1.ConfluentCredentialSpec
+	(*ConfluentKafkaStackInput)(nil),          // 0: project.planton.provider.confluent.confluentkafka.v1.ConfluentKafkaStackInput
+	(*ConfluentKafka)(nil),                    // 1: project.planton.provider.confluent.confluentkafka.v1.ConfluentKafka
+	(*confluent.ConfluentProviderConfig)(nil), // 2: project.planton.provider.confluent.ConfluentProviderConfig
 }
 var file_project_planton_provider_confluent_confluentkafka_v1_stack_input_proto_depIdxs = []int32{
 	1, // 0: project.planton.provider.confluent.confluentkafka.v1.ConfluentKafkaStackInput.target:type_name -> project.planton.provider.confluent.confluentkafka.v1.ConfluentKafka
-	2, // 1: project.planton.provider.confluent.confluentkafka.v1.ConfluentKafkaStackInput.provider_credential:type_name -> project.planton.credential.confluentcredential.v1.ConfluentCredentialSpec
+	2, // 1: project.planton.provider.confluent.confluentkafka.v1.ConfluentKafkaStackInput.provider_config:type_name -> project.planton.provider.confluent.ConfluentProviderConfig
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

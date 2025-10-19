@@ -10,7 +10,7 @@ kind: GcpCloudCdn
 metadata:
   name: basic-cloud-cdn
 spec:
-  gcpCredentialId: my-gcp-cred
+  gcpProviderConfigId: my-gcp-cred
   gcpProjectId: my-gcp-project
 ```
 
@@ -24,7 +24,7 @@ kind: GcpCloudCdn
 metadata:
   name: custom-cloud-cdn
 spec:
-  gcpCredentialId: custom-gcp-credentials
+  gcpProviderConfigId: custom-gcp-credentials
   gcpProjectId: custom-gcp-project-id
 ```
 

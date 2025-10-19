@@ -7,13 +7,13 @@ import (
 	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/gcp/gcplabelkeys"
 
-	gcpcredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/gcpcredential/v1"
 	gcpcloudrunv1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpcloudrun/v1"
+	gcpprovider "github.com/project-planton/project-planton/apis/project/planton/provider/gcp"
 )
 
 // Locals holds handy references and derived values used across this module.
 type Locals struct {
-	GcpCredentialSpec *gcpcredentialv1.GcpCredentialSpec
+	GcpProviderConfig *gcpprovider.GcpProviderConfig
 	GcpCloudRun       *gcpcloudrunv1.GcpCloudRun
 	GcpLabels         map[string]string
 }
@@ -26,7 +26,7 @@ func initializeLocals(stackInput *gcpcloudrunv1.GcpCloudRunStackInput) *Locals {
 
 	target := stackInput.Target
 
-	locals.GcpCredentialSpec = stackInput.ProviderCredential
+	locals.GcpProviderConfig = stackInput.ProviderConfig
 
 	locals.GcpLabels = map[string]string{
 		gcplabelkeys.Resource:     strconv.FormatBool(true),

@@ -10,7 +10,7 @@ kind: StackJobRunnerKubernetes
 metadata:
   name: basic-stack-job-runner
 spec:
-  kubernetesClusterCredentialId: cluster-credential-12345
+  kubernetesProviderConfigId: cluster-credential-12345
 ```
 
 ## Example 2: Custom Kubernetes Cluster Credential
@@ -23,7 +23,7 @@ kind: StackJobRunnerKubernetes
 metadata:
   name: custom-cluster-job-runner
 spec:
-  kubernetesClusterCredentialId: cluster-credential-98765
+  kubernetesProviderConfigId: cluster-credential-98765
 ```
 
 ## Example 3: Stack Job Runner with Multiple Environments
@@ -36,7 +36,7 @@ kind: StackJobRunnerKubernetes
 metadata:
   name: multi-env-job-runner
 spec:
-  kubernetesClusterCredentialId: cluster-credential-112233
+  kubernetesProviderConfigId: cluster-credential-112233
 ```
 
 ## Example 4: Empty Spec (Not Fully Implemented)

@@ -7,7 +7,7 @@
 package natskubernetesv1
 
 import (
-	v1 "github.com/project-planton/project-planton/apis/project/planton/credential/kubernetesclustercredential/v1"
+	kubernetes "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -27,8 +27,8 @@ type NatsKubernetesStackInput struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// target cloud-resource
 	Target *NatsKubernetes `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
-	// provider-credential
-	ProviderCredential *v1.KubernetesClusterCredentialSpec `protobuf:"bytes,2,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
+	// provider-config
+	ProviderConfig *kubernetes.KubernetesProviderConfig `protobuf:"bytes,2,opt,name=provider_config,json=providerConfig,proto3" json:"provider_config,omitempty"`
 	// kubernetes namespace
 	KubernetesNamespace string `protobuf:"bytes,3,opt,name=kubernetes_namespace,json=kubernetesNamespace,proto3" json:"kubernetes_namespace,omitempty"`
 	unknownFields       protoimpl.UnknownFields
@@ -72,9 +72,9 @@ func (x *NatsKubernetesStackInput) GetTarget() *NatsKubernetes {
 	return nil
 }
 
-func (x *NatsKubernetesStackInput) GetProviderCredential() *v1.KubernetesClusterCredentialSpec {
+func (x *NatsKubernetesStackInput) GetProviderConfig() *kubernetes.KubernetesProviderConfig {
 	if x != nil {
-		return x.ProviderCredential
+		return x.ProviderConfig
 	}
 	return nil
 }
@@ -90,10 +90,10 @@ var File_project_planton_provider_kubernetes_workload_natskubernetes_v1_stack_in
 
 const file_project_planton_provider_kubernetes_workload_natskubernetes_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Pproject/planton/provider/kubernetes/workload/natskubernetes/v1/stack_input.proto\x12>project.planton.provider.kubernetes.workload.natskubernetes.v1\x1aDproject/planton/credential/kubernetesclustercredential/v1/spec.proto\x1aHproject/planton/provider/kubernetes/workload/natskubernetes/v1/api.proto\"\xc3\x02\n" +
+	"Pproject/planton/provider/kubernetes/workload/natskubernetes/v1/stack_input.proto\x12>project.planton.provider.kubernetes.workload.natskubernetes.v1\x1a2project/planton/provider/kubernetes/provider.proto\x1aHproject/planton/provider/kubernetes/workload/natskubernetes/v1/api.proto\"\x9d\x02\n" +
 	"\x18NatsKubernetesStackInput\x12f\n" +
-	"\x06target\x18\x01 \x01(\v2N.project.planton.provider.kubernetes.workload.natskubernetes.v1.NatsKubernetesR\x06target\x12\x8b\x01\n" +
-	"\x13provider_credential\x18\x02 \x01(\v2Z.project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpecR\x12providerCredential\x121\n" +
+	"\x06target\x18\x01 \x01(\v2N.project.planton.provider.kubernetes.workload.natskubernetes.v1.NatsKubernetesR\x06target\x12f\n" +
+	"\x0fprovider_config\x18\x02 \x01(\v2=.project.planton.provider.kubernetes.KubernetesProviderConfigR\x0eproviderConfig\x121\n" +
 	"\x14kubernetes_namespace\x18\x03 \x01(\tR\x13kubernetesNamespaceB\xf7\x03\n" +
 	"Bcom.project.planton.provider.kubernetes.workload.natskubernetes.v1B\x0fStackInputProtoP\x01Z\x7fgithub.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/natskubernetes/v1;natskubernetesv1\xa2\x02\x06PPPKWN\xaa\x02>Project.Planton.Provider.Kubernetes.Workload.Natskubernetes.V1\xca\x02>Project\\Planton\\Provider\\Kubernetes\\Workload\\Natskubernetes\\V1\xe2\x02JProject\\Planton\\Provider\\Kubernetes\\Workload\\Natskubernetes\\V1\\GPBMetadata\xea\x02DProject::Planton::Provider::Kubernetes::Workload::Natskubernetes::V1b\x06proto3"
 
@@ -111,13 +111,13 @@ func file_project_planton_provider_kubernetes_workload_natskubernetes_v1_stack_i
 
 var file_project_planton_provider_kubernetes_workload_natskubernetes_v1_stack_input_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_kubernetes_workload_natskubernetes_v1_stack_input_proto_goTypes = []any{
-	(*NatsKubernetesStackInput)(nil),           // 0: project.planton.provider.kubernetes.workload.natskubernetes.v1.NatsKubernetesStackInput
-	(*NatsKubernetes)(nil),                     // 1: project.planton.provider.kubernetes.workload.natskubernetes.v1.NatsKubernetes
-	(*v1.KubernetesClusterCredentialSpec)(nil), // 2: project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec
+	(*NatsKubernetesStackInput)(nil),            // 0: project.planton.provider.kubernetes.workload.natskubernetes.v1.NatsKubernetesStackInput
+	(*NatsKubernetes)(nil),                      // 1: project.planton.provider.kubernetes.workload.natskubernetes.v1.NatsKubernetes
+	(*kubernetes.KubernetesProviderConfig)(nil), // 2: project.planton.provider.kubernetes.KubernetesProviderConfig
 }
 var file_project_planton_provider_kubernetes_workload_natskubernetes_v1_stack_input_proto_depIdxs = []int32{
 	1, // 0: project.planton.provider.kubernetes.workload.natskubernetes.v1.NatsKubernetesStackInput.target:type_name -> project.planton.provider.kubernetes.workload.natskubernetes.v1.NatsKubernetes
-	2, // 1: project.planton.provider.kubernetes.workload.natskubernetes.v1.NatsKubernetesStackInput.provider_credential:type_name -> project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec
+	2, // 1: project.planton.provider.kubernetes.workload.natskubernetes.v1.NatsKubernetesStackInput.provider_config:type_name -> project.planton.provider.kubernetes.KubernetesProviderConfig
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

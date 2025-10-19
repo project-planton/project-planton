@@ -14,9 +14,9 @@ func Resources(ctx *pulumi.Context, stackInput *postgresoperatorkubernetesv1.Pos
 	locals := initializeLocals(ctx, stackInput)
 
 	// Create a Kubernetes provider from the supplied cluster credential.
-	kubernetesProvider, err := pulumikubernetesprovider.GetWithKubernetesClusterCredential(
+	kubernetesProvider, err := pulumikubernetesprovider.GetWithKubernetesProviderConfig(
 		ctx,
-		stackInput.ProviderCredential,
+		stackInput.ProviderConfig,
 		"kubernetes",
 	)
 	if err != nil {

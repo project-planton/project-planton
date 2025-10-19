@@ -20,7 +20,7 @@ kind: MongodbKubernetes
 metadata:
   name: basic-mongodb
 spec:
-  kubernetesClusterCredentialId: my-cluster-credential-id
+  kubernetesProviderConfigId: my-cluster-credential-id
   container:
     replicas: 1
     resources:
@@ -44,7 +44,7 @@ kind: MongodbKubernetes
 metadata:
   name: persistent-mongodb
 spec:
-  kubernetesClusterCredentialId: my-cluster-credential-id
+  kubernetesProviderConfigId: my-cluster-credential-id
   container:
     replicas: 3
     persistenceEnabled: true
@@ -70,7 +70,7 @@ kind: MongodbKubernetes
 metadata:
   name: custom-mongodb
 spec:
-  kubernetesClusterCredentialId: my-cluster-credential-id
+  kubernetesProviderConfigId: my-cluster-credential-id
   container:
     replicas: 2
     persistenceEnabled: true
@@ -100,7 +100,7 @@ kind: MongodbKubernetes
 metadata:
   name: ingress-mongodb
 spec:
-  kubernetesClusterCredentialId: my-cluster-credential-id
+  kubernetesProviderConfigId: my-cluster-credential-id
   container:
     replicas: 1
     persistenceEnabled: true
@@ -129,7 +129,7 @@ kind: MongodbKubernetes
 metadata:
   name: secret-mongodb
 spec:
-  kubernetesClusterCredentialId: my-cluster-credential-id
+  kubernetesProviderConfigId: my-cluster-credential-id
   container:
     replicas: 1
     persistenceEnabled: false

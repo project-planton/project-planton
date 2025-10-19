@@ -7,7 +7,7 @@ kind: GrafanaKubernetes
 metadata:
   name: grafana-instance
 spec:
-  kubernetesClusterCredentialId: my-k8s-credentials
+  kubernetesProviderConfigId: my-k8s-credentials
   container:
     resources:
       requests:
@@ -28,7 +28,7 @@ kind: GrafanaKubernetes
 metadata:
   name: grafana-prod
 spec:
-  kubernetesClusterCredentialId: my-k8s-credentials
+  kubernetesProviderConfigId: my-k8s-credentials
   container:
     resources:
       requests:
@@ -52,7 +52,7 @@ kind: GrafanaKubernetes
 metadata:
   name: grafana-with-env
 spec:
-  kubernetesClusterCredentialId: my-k8s-credentials
+  kubernetesProviderConfigId: my-k8s-credentials
   container:
     env:
       variables:
@@ -79,7 +79,7 @@ kind: GrafanaKubernetes
 metadata:
   name: grafana-secure
 spec:
-  kubernetesClusterCredentialId: my-k8s-credentials
+  kubernetesProviderConfigId: my-k8s-credentials
   container:
     env:
       secrets:
@@ -105,5 +105,5 @@ kind: GrafanaKubernetes
 metadata:
   name: minimal-grafana
 spec:
-  kubernetesClusterCredentialId: my-k8s-credentials
+  kubernetesProviderConfigId: my-k8s-credentials
 ```

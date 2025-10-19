@@ -15,7 +15,7 @@ func TestAwsEcsCluster(t *testing.T) {
 	ginkgo.RunSpecs(t, "AwsEcsCluster Suite")
 }
 
-var _ = ginkgo.Describe("KubernetesClusterCredentialSpec Custom Validation Tests", func() {
+var _ = ginkgo.Describe("KubernetesProviderConfig Custom Validation Tests", func() {
 	ginkgo.Describe("When valid input is passed", func() {
 		ginkgo.Context("aws_ecs_cluster", func() {
 			var input *AwsEcsCluster

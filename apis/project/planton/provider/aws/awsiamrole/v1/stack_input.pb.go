@@ -7,7 +7,7 @@
 package awsiamrolev1
 
 import (
-	v1 "github.com/project-planton/project-planton/apis/project/planton/credential/awscredential/v1"
+	aws "github.com/project-planton/project-planton/apis/project/planton/provider/aws"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -27,10 +27,10 @@ type AwsIamRoleStackInput struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// target cloud-resource
 	Target *AwsIamRole `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
-	// provider-credential
-	ProviderCredential *v1.AwsCredentialSpec `protobuf:"bytes,2,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	// provider-config
+	ProviderConfig *aws.AwsProviderConfig `protobuf:"bytes,2,opt,name=provider_config,json=providerConfig,proto3" json:"provider_config,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *AwsIamRoleStackInput) Reset() {
@@ -70,9 +70,9 @@ func (x *AwsIamRoleStackInput) GetTarget() *AwsIamRole {
 	return nil
 }
 
-func (x *AwsIamRoleStackInput) GetProviderCredential() *v1.AwsCredentialSpec {
+func (x *AwsIamRoleStackInput) GetProviderConfig() *aws.AwsProviderConfig {
 	if x != nil {
-		return x.ProviderCredential
+		return x.ProviderConfig
 	}
 	return nil
 }
@@ -81,10 +81,10 @@ var File_project_planton_provider_aws_awsiamrole_v1_stack_input_proto protorefle
 
 const file_project_planton_provider_aws_awsiamrole_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"<project/planton/provider/aws/awsiamrole/v1/stack_input.proto\x12*project.planton.provider.aws.awsiamrole.v1\x1a6project/planton/credential/awscredential/v1/spec.proto\x1a4project/planton/provider/aws/awsiamrole/v1/api.proto\"\xd7\x01\n" +
+	"<project/planton/provider/aws/awsiamrole/v1/stack_input.proto\x12*project.planton.provider.aws.awsiamrole.v1\x1a4project/planton/provider/aws/awsiamrole/v1/api.proto\x1a+project/planton/provider/aws/provider.proto\"\xc0\x01\n" +
 	"\x14AwsIamRoleStackInput\x12N\n" +
-	"\x06target\x18\x01 \x01(\v26.project.planton.provider.aws.awsiamrole.v1.AwsIamRoleR\x06target\x12o\n" +
-	"\x13provider_credential\x18\x02 \x01(\v2>.project.planton.credential.awscredential.v1.AwsCredentialSpecR\x12providerCredentialB\xf9\x02\n" +
+	"\x06target\x18\x01 \x01(\v26.project.planton.provider.aws.awsiamrole.v1.AwsIamRoleR\x06target\x12X\n" +
+	"\x0fprovider_config\x18\x02 \x01(\v2/.project.planton.provider.aws.AwsProviderConfigR\x0eproviderConfigB\xf9\x02\n" +
 	".com.project.planton.provider.aws.awsiamrole.v1B\x0fStackInputProtoP\x01Zggithub.com/project-planton/project-planton/apis/project/planton/provider/aws/awsiamrole/v1;awsiamrolev1\xa2\x02\x05PPPAA\xaa\x02*Project.Planton.Provider.Aws.Awsiamrole.V1\xca\x02*Project\\Planton\\Provider\\Aws\\Awsiamrole\\V1\xe2\x026Project\\Planton\\Provider\\Aws\\Awsiamrole\\V1\\GPBMetadata\xea\x02/Project::Planton::Provider::Aws::Awsiamrole::V1b\x06proto3"
 
 var (
@@ -101,13 +101,13 @@ func file_project_planton_provider_aws_awsiamrole_v1_stack_input_proto_rawDescGZ
 
 var file_project_planton_provider_aws_awsiamrole_v1_stack_input_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_aws_awsiamrole_v1_stack_input_proto_goTypes = []any{
-	(*AwsIamRoleStackInput)(nil), // 0: project.planton.provider.aws.awsiamrole.v1.AwsIamRoleStackInput
-	(*AwsIamRole)(nil),           // 1: project.planton.provider.aws.awsiamrole.v1.AwsIamRole
-	(*v1.AwsCredentialSpec)(nil), // 2: project.planton.credential.awscredential.v1.AwsCredentialSpec
+	(*AwsIamRoleStackInput)(nil),  // 0: project.planton.provider.aws.awsiamrole.v1.AwsIamRoleStackInput
+	(*AwsIamRole)(nil),            // 1: project.planton.provider.aws.awsiamrole.v1.AwsIamRole
+	(*aws.AwsProviderConfig)(nil), // 2: project.planton.provider.aws.AwsProviderConfig
 }
 var file_project_planton_provider_aws_awsiamrole_v1_stack_input_proto_depIdxs = []int32{
 	1, // 0: project.planton.provider.aws.awsiamrole.v1.AwsIamRoleStackInput.target:type_name -> project.planton.provider.aws.awsiamrole.v1.AwsIamRole
-	2, // 1: project.planton.provider.aws.awsiamrole.v1.AwsIamRoleStackInput.provider_credential:type_name -> project.planton.credential.awscredential.v1.AwsCredentialSpec
+	2, // 1: project.planton.provider.aws.awsiamrole.v1.AwsIamRoleStackInput.provider_config:type_name -> project.planton.provider.aws.AwsProviderConfig
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

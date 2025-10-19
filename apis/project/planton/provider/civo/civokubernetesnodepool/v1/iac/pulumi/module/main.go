@@ -18,7 +18,7 @@ func Resources(
 	locals := initializeLocals(ctx, stackInput)
 
 	// 2  Spin up a Civo provider from the credential.
-	civoProvider, err := pulumicivoprovider.Get(ctx, stackInput.ProviderCredential)
+	civoProvider, err := pulumicivoprovider.Get(ctx, stackInput.ProviderConfig)
 	if err != nil {
 		return errors.Wrap(err, "failed to set up civo provider")
 	}

@@ -7,7 +7,7 @@
 package digitaloceankubernetesnodepoolv1
 
 import (
-	v1 "github.com/project-planton/project-planton/apis/project/planton/credential/digitaloceancredential/v1"
+	digitalocean "github.com/project-planton/project-planton/apis/project/planton/provider/digitalocean"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -27,10 +27,10 @@ type DigitalOceanKubernetesNodePoolStackInput struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// target cloud-resource
 	Target *DigitalOceanKubernetesNodePool `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
-	// provider-credential
-	ProviderCredential *v1.DigitalOceanCredentialSpec `protobuf:"bytes,2,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	// provider-config
+	ProviderConfig *digitalocean.DigitalOceanProviderConfig `protobuf:"bytes,2,opt,name=provider_config,json=providerConfig,proto3" json:"provider_config,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *DigitalOceanKubernetesNodePoolStackInput) Reset() {
@@ -70,9 +70,9 @@ func (x *DigitalOceanKubernetesNodePoolStackInput) GetTarget() *DigitalOceanKube
 	return nil
 }
 
-func (x *DigitalOceanKubernetesNodePoolStackInput) GetProviderCredential() *v1.DigitalOceanCredentialSpec {
+func (x *DigitalOceanKubernetesNodePoolStackInput) GetProviderConfig() *digitalocean.DigitalOceanProviderConfig {
 	if x != nil {
-		return x.ProviderCredential
+		return x.ProviderConfig
 	}
 	return nil
 }
@@ -81,10 +81,10 @@ var File_project_planton_provider_digitalocean_digitaloceankubernetesnodepool_v1
 
 const file_project_planton_provider_digitalocean_digitaloceankubernetesnodepool_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Yproject/planton/provider/digitalocean/digitaloceankubernetesnodepool/v1/stack_input.proto\x12Gproject.planton.provider.digitalocean.digitaloceankubernetesnodepool.v1\x1a?project/planton/credential/digitaloceancredential/v1/spec.proto\x1aQproject/planton/provider/digitalocean/digitaloceankubernetesnodepool/v1/api.proto\"\xaf\x02\n" +
+	"Yproject/planton/provider/digitalocean/digitaloceankubernetesnodepool/v1/stack_input.proto\x12Gproject.planton.provider.digitalocean.digitaloceankubernetesnodepool.v1\x1aQproject/planton/provider/digitalocean/digitaloceankubernetesnodepool/v1/api.proto\x1a4project/planton/provider/digitalocean/provider.proto\"\x97\x02\n" +
 	"(DigitalOceanKubernetesNodePoolStackInput\x12\x7f\n" +
-	"\x06target\x18\x01 \x01(\v2g.project.planton.provider.digitalocean.digitaloceankubernetesnodepool.v1.DigitalOceanKubernetesNodePoolR\x06target\x12\x81\x01\n" +
-	"\x13provider_credential\x18\x02 \x01(\v2P.project.planton.credential.digitaloceancredential.v1.DigitalOceanCredentialSpecR\x12providerCredentialB\xbc\x04\n" +
+	"\x06target\x18\x01 \x01(\v2g.project.planton.provider.digitalocean.digitaloceankubernetesnodepool.v1.DigitalOceanKubernetesNodePoolR\x06target\x12j\n" +
+	"\x0fprovider_config\x18\x02 \x01(\v2A.project.planton.provider.digitalocean.DigitalOceanProviderConfigR\x0eproviderConfigB\xbc\x04\n" +
 	"Kcom.project.planton.provider.digitalocean.digitaloceankubernetesnodepool.v1B\x0fStackInputProtoP\x01Z\x98\x01github.com/project-planton/project-planton/apis/project/planton/provider/digitalocean/digitaloceankubernetesnodepool/v1;digitaloceankubernetesnodepoolv1\xa2\x02\x05PPPDD\xaa\x02GProject.Planton.Provider.Digitalocean.Digitaloceankubernetesnodepool.V1\xca\x02GProject\\Planton\\Provider\\Digitalocean\\Digitaloceankubernetesnodepool\\V1\xe2\x02SProject\\Planton\\Provider\\Digitalocean\\Digitaloceankubernetesnodepool\\V1\\GPBMetadata\xea\x02LProject::Planton::Provider::Digitalocean::Digitaloceankubernetesnodepool::V1b\x06proto3"
 
 var (
@@ -103,11 +103,11 @@ var file_project_planton_provider_digitalocean_digitaloceankubernetesnodepool_v1
 var file_project_planton_provider_digitalocean_digitaloceankubernetesnodepool_v1_stack_input_proto_goTypes = []any{
 	(*DigitalOceanKubernetesNodePoolStackInput)(nil), // 0: project.planton.provider.digitalocean.digitaloceankubernetesnodepool.v1.DigitalOceanKubernetesNodePoolStackInput
 	(*DigitalOceanKubernetesNodePool)(nil),           // 1: project.planton.provider.digitalocean.digitaloceankubernetesnodepool.v1.DigitalOceanKubernetesNodePool
-	(*v1.DigitalOceanCredentialSpec)(nil),            // 2: project.planton.credential.digitaloceancredential.v1.DigitalOceanCredentialSpec
+	(*digitalocean.DigitalOceanProviderConfig)(nil),  // 2: project.planton.provider.digitalocean.DigitalOceanProviderConfig
 }
 var file_project_planton_provider_digitalocean_digitaloceankubernetesnodepool_v1_stack_input_proto_depIdxs = []int32{
 	1, // 0: project.planton.provider.digitalocean.digitaloceankubernetesnodepool.v1.DigitalOceanKubernetesNodePoolStackInput.target:type_name -> project.planton.provider.digitalocean.digitaloceankubernetesnodepool.v1.DigitalOceanKubernetesNodePool
-	2, // 1: project.planton.provider.digitalocean.digitaloceankubernetesnodepool.v1.DigitalOceanKubernetesNodePoolStackInput.provider_credential:type_name -> project.planton.credential.digitaloceancredential.v1.DigitalOceanCredentialSpec
+	2, // 1: project.planton.provider.digitalocean.digitaloceankubernetesnodepool.v1.DigitalOceanKubernetesNodePoolStackInput.provider_config:type_name -> project.planton.provider.digitalocean.DigitalOceanProviderConfig
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

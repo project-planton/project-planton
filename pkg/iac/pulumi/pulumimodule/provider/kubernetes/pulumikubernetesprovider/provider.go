@@ -3,7 +3,7 @@ package pulumikubernetesprovider
 import (
 	"fmt"
 	"github.com/pkg/errors"
-	kubernetesclustercredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/kubernetesclustercredential/v1"
+	kubernetesprovider "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/gcp/pulumigkekubernetesprovider"
 	"github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
@@ -13,12 +13,12 @@ const emptyKubeConfigString = ""
 
 var UnsupportedKubernetesProviderErr = errors.New("kubernetes provider is not supported")
 
-// GetWithKubernetesClusterCredential returns kubernetes provider for the kubernetes cluster credential
-func GetWithKubernetesClusterCredential(ctx *pulumi.Context,
-	kubernetesClusterCredentialSpec *kubernetesclustercredentialv1.KubernetesClusterCredentialSpec,
+// GetWithKubernetesProviderConfig returns kubernetes provider for the kubernetes cluster credential
+func GetWithKubernetesProviderConfig(ctx *pulumi.Context,
+	kubernetesProviderConfig *kubernetesprovider.KubernetesProviderConfig,
 	providerName string) (*kubernetes.Provider, error) {
 
-	if kubernetesClusterCredentialSpec == nil {
+	if kubernetesProviderConfig == nil {
 		provider, err := kubernetes.NewProvider(ctx,
 			providerName,
 			&kubernetes.ProviderArgs{
@@ -32,15 +32,15 @@ func GetWithKubernetesClusterCredential(ctx *pulumi.Context,
 
 	kubeConfigString := ""
 
-	switch kubernetesClusterCredentialSpec.Provider {
-	case kubernetesclustercredentialv1.KubernetesProvider_aws_eks:
-		kubeConfigString = awsEks(kubernetesClusterCredentialSpec)
-	case kubernetesclustercredentialv1.KubernetesProvider_azure_aks:
-		kubeConfigString = azureAks(kubernetesClusterCredentialSpec)
-	case kubernetesclustercredentialv1.KubernetesProvider_digital_ocean_doks:
-		kubeConfigString = digitalOceanDoks(kubernetesClusterCredentialSpec)
-	case kubernetesclustercredentialv1.KubernetesProvider_gcp_gke:
-		kubeConfigString = gcpGke(kubernetesClusterCredentialSpec)
+	switch kubernetesProviderConfig.Provider {
+	case kubernetesprovider.KubernetesProvider_aws_eks:
+		kubeConfigString = awsEks(kubernetesProviderConfig)
+	case kubernetesprovider.KubernetesProvider_azure_aks:
+		kubeConfigString = azureAks(kubernetesProviderConfig)
+	case kubernetesprovider.KubernetesProvider_digital_ocean_doks:
+		kubeConfigString = digitalOceanDoks(kubernetesProviderConfig)
+	case kubernetesprovider.KubernetesProvider_gcp_gke:
+		kubeConfigString = gcpGke(kubernetesProviderConfig)
 	default:
 		return nil, UnsupportedKubernetesProviderErr
 	}
@@ -57,7 +57,7 @@ func GetWithKubernetesClusterCredential(ctx *pulumi.Context,
 	return provider, nil
 }
 
-func awsEks(spec *kubernetesclustercredentialv1.KubernetesClusterCredentialSpec) (kubeConfigString string) {
+func awsEks(spec *kubernetesprovider.KubernetesProviderConfig) (kubeConfigString string) {
 	if spec.AwsEks == nil {
 		return emptyKubeConfigString
 	}
@@ -67,7 +67,7 @@ func awsEks(spec *kubernetesclustercredentialv1.KubernetesClusterCredentialSpec)
 	return kubeConfigString
 }
 
-func azureAks(spec *kubernetesclustercredentialv1.KubernetesClusterCredentialSpec) (kubeConfigString string) {
+func azureAks(spec *kubernetesprovider.KubernetesProviderConfig) (kubeConfigString string) {
 	if spec.AzureAks == nil {
 		return emptyKubeConfigString
 	}
@@ -77,7 +77,7 @@ func azureAks(spec *kubernetesclustercredentialv1.KubernetesClusterCredentialSpe
 	return kubeConfigString
 }
 
-func digitalOceanDoks(spec *kubernetesclustercredentialv1.KubernetesClusterCredentialSpec) (kubeConfigString string) {
+func digitalOceanDoks(spec *kubernetesprovider.KubernetesProviderConfig) (kubeConfigString string) {
 	if spec.DigitalOceanDoks == nil {
 		return emptyKubeConfigString
 	}
@@ -85,7 +85,7 @@ func digitalOceanDoks(spec *kubernetesclustercredentialv1.KubernetesClusterCrede
 	return spec.DigitalOceanDoks.KubeConfig
 }
 
-func gcpGke(spec *kubernetesclustercredentialv1.KubernetesClusterCredentialSpec) (kubeConfigString string) {
+func gcpGke(spec *kubernetesprovider.KubernetesProviderConfig) (kubeConfigString string) {
 	if spec.GcpGke == nil {
 		return emptyKubeConfigString
 	}

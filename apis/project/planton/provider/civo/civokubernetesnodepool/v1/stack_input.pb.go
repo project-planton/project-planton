@@ -7,7 +7,7 @@
 package civokubernetesnodepoolv1
 
 import (
-	v1 "github.com/project-planton/project-planton/apis/project/planton/credential/civocredential/v1"
+	civo "github.com/project-planton/project-planton/apis/project/planton/provider/civo"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -27,10 +27,10 @@ type CivoKubernetesNodePoolStackInput struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// target cloud-resource
 	Target *CivoKubernetesNodePool `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
-	// provider-credential
-	ProviderCredential *v1.CivoCredentialSpec `protobuf:"bytes,2,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	// provider-config
+	ProviderConfig *civo.CivoProviderConfig `protobuf:"bytes,2,opt,name=provider_config,json=providerConfig,proto3" json:"provider_config,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *CivoKubernetesNodePoolStackInput) Reset() {
@@ -70,9 +70,9 @@ func (x *CivoKubernetesNodePoolStackInput) GetTarget() *CivoKubernetesNodePool {
 	return nil
 }
 
-func (x *CivoKubernetesNodePoolStackInput) GetProviderCredential() *v1.CivoCredentialSpec {
+func (x *CivoKubernetesNodePoolStackInput) GetProviderConfig() *civo.CivoProviderConfig {
 	if x != nil {
-		return x.ProviderCredential
+		return x.ProviderConfig
 	}
 	return nil
 }
@@ -81,10 +81,10 @@ var File_project_planton_provider_civo_civokubernetesnodepool_v1_stack_input_pro
 
 const file_project_planton_provider_civo_civokubernetesnodepool_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Iproject/planton/provider/civo/civokubernetesnodepool/v1/stack_input.proto\x127project.planton.provider.civo.civokubernetesnodepool.v1\x1a7project/planton/credential/civocredential/v1/spec.proto\x1aAproject/planton/provider/civo/civokubernetesnodepool/v1/api.proto\"\xfe\x01\n" +
+	"Iproject/planton/provider/civo/civokubernetesnodepool/v1/stack_input.proto\x127project.planton.provider.civo.civokubernetesnodepool.v1\x1aAproject/planton/provider/civo/civokubernetesnodepool/v1/api.proto\x1a,project/planton/provider/civo/provider.proto\"\xe7\x01\n" +
 	" CivoKubernetesNodePoolStackInput\x12g\n" +
-	"\x06target\x18\x01 \x01(\v2O.project.planton.provider.civo.civokubernetesnodepool.v1.CivoKubernetesNodePoolR\x06target\x12q\n" +
-	"\x13provider_credential\x18\x02 \x01(\v2@.project.planton.credential.civocredential.v1.CivoCredentialSpecR\x12providerCredentialB\xd4\x03\n" +
+	"\x06target\x18\x01 \x01(\v2O.project.planton.provider.civo.civokubernetesnodepool.v1.CivoKubernetesNodePoolR\x06target\x12Z\n" +
+	"\x0fprovider_config\x18\x02 \x01(\v21.project.planton.provider.civo.CivoProviderConfigR\x0eproviderConfigB\xd4\x03\n" +
 	";com.project.planton.provider.civo.civokubernetesnodepool.v1B\x0fStackInputProtoP\x01Z\x80\x01github.com/project-planton/project-planton/apis/project/planton/provider/civo/civokubernetesnodepool/v1;civokubernetesnodepoolv1\xa2\x02\x05PPPCC\xaa\x027Project.Planton.Provider.Civo.Civokubernetesnodepool.V1\xca\x027Project\\Planton\\Provider\\Civo\\Civokubernetesnodepool\\V1\xe2\x02CProject\\Planton\\Provider\\Civo\\Civokubernetesnodepool\\V1\\GPBMetadata\xea\x02<Project::Planton::Provider::Civo::Civokubernetesnodepool::V1b\x06proto3"
 
 var (
@@ -103,11 +103,11 @@ var file_project_planton_provider_civo_civokubernetesnodepool_v1_stack_input_pro
 var file_project_planton_provider_civo_civokubernetesnodepool_v1_stack_input_proto_goTypes = []any{
 	(*CivoKubernetesNodePoolStackInput)(nil), // 0: project.planton.provider.civo.civokubernetesnodepool.v1.CivoKubernetesNodePoolStackInput
 	(*CivoKubernetesNodePool)(nil),           // 1: project.planton.provider.civo.civokubernetesnodepool.v1.CivoKubernetesNodePool
-	(*v1.CivoCredentialSpec)(nil),            // 2: project.planton.credential.civocredential.v1.CivoCredentialSpec
+	(*civo.CivoProviderConfig)(nil),          // 2: project.planton.provider.civo.CivoProviderConfig
 }
 var file_project_planton_provider_civo_civokubernetesnodepool_v1_stack_input_proto_depIdxs = []int32{
 	1, // 0: project.planton.provider.civo.civokubernetesnodepool.v1.CivoKubernetesNodePoolStackInput.target:type_name -> project.planton.provider.civo.civokubernetesnodepool.v1.CivoKubernetesNodePool
-	2, // 1: project.planton.provider.civo.civokubernetesnodepool.v1.CivoKubernetesNodePoolStackInput.provider_credential:type_name -> project.planton.credential.civocredential.v1.CivoCredentialSpec
+	2, // 1: project.planton.provider.civo.civokubernetesnodepool.v1.CivoKubernetesNodePoolStackInput.provider_config:type_name -> project.planton.provider.civo.CivoProviderConfig
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

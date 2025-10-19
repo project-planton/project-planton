@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/google/uuid"
 	"github.com/pkg/errors"
-	kubernetesclustercredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/kubernetesclustercredential/v1"
+	kubernetesprovider "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/gcp/pulumigkekubernetesprovider"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput/stackinputcredentials"
@@ -15,7 +15,7 @@ import (
 func AddKubernetesCredentialEnvVars(stackInputContentMap map[string]interface{},
 	credentialEnvVars map[string]string,
 	fileCacheLoc string) (map[string]string, error) {
-	credentialSpec := new(kubernetesclustercredentialv1.KubernetesClusterCredentialSpec)
+	credentialSpec := new(kubernetes.KubernetesProviderConfig)
 
 	isCredentialLoaded, err := stackinput.LoadCredential(stackInputContentMap,
 		stackinputcredentials.KubernetesClusterKey, credentialSpec)
@@ -31,17 +31,17 @@ func AddKubernetesCredentialEnvVars(stackInputContentMap map[string]interface{},
 	var kubeConfig string
 
 	switch credentialSpec.Provider {
-	case kubernetesclustercredentialv1.KubernetesProvider_gcp_gke:
+	case kubernetes.KubernetesProvider_gcp_gke:
 		kubeConfig, err = buildGcpGkeKubeConfig(credentialSpec.GcpGke)
 		if err != nil {
 			return nil, errors.Wrap(err, "failed to build kube-config for GCP GKE")
 		}
-	case kubernetesclustercredentialv1.KubernetesProvider_aws_eks:
+	case kubernetes.KubernetesProvider_aws_eks:
 		kubeConfig, err = buildAwsEksKubeConfig(credentialSpec.AwsEks)
 		if err != nil {
 			return nil, errors.Wrap(err, "failed to build kube-config for AWS EKS")
 		}
-	case kubernetesclustercredentialv1.KubernetesProvider_azure_aks:
+	case kubernetes.KubernetesProvider_azure_aks:
 		kubeConfig, err = buildAzureAksKubeConfig(credentialSpec.AzureAks)
 		if err != nil {
 			return nil, errors.Wrap(err, "failed to build kube-config for Azure AKS")
@@ -57,7 +57,7 @@ func AddKubernetesCredentialEnvVars(stackInputContentMap map[string]interface{},
 	return credentialEnvVars, nil
 }
 
-func buildGcpGkeKubeConfig(c *kubernetesclustercredentialv1.KubernetesClusterCredentialGcpGke) (string, error) {
+func buildGcpGkeKubeConfig(c *kubernetes.KubernetesProviderConfigGcpGke) (string, error) {
 	kubeConfigString := ""
 
 	kubeConfigString = fmt.Sprintf(pulumigkekubernetesprovider.GcpExecPluginKubeConfigTemplate,
@@ -69,10 +69,10 @@ func buildGcpGkeKubeConfig(c *kubernetesclustercredentialv1.KubernetesClusterCre
 	return kubeConfigString, nil
 }
 
-func buildAwsEksKubeConfig(eksCredentialSpec *kubernetesclustercredentialv1.KubernetesClusterCredentialAwsEks) (string, error) {
+func buildAwsEksKubeConfig(eksCredentialSpec *kubernetes.KubernetesProviderConfigAwsEks) (string, error) {
 	return "", nil
 }
 
-func buildAzureAksKubeConfig(aksCredentialSpec *kubernetesclustercredentialv1.KubernetesClusterCredentialAzureAks) (string, error) {
+func buildAzureAksKubeConfig(aksCredentialSpec *kubernetes.KubernetesProviderConfigAzureAks) (string, error) {
 	return "", nil
 }

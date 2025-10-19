@@ -7,7 +7,7 @@
 package cronjobkubernetesv1
 
 import (
-	v1 "github.com/project-planton/project-planton/apis/project/planton/credential/kubernetesclustercredential/v1"
+	kubernetes "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -27,8 +27,8 @@ type CronJobKubernetesStackInput struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// target cloud-resource
 	Target *CronJobKubernetes `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
-	// provider-credential
-	ProviderCredential *v1.KubernetesClusterCredentialSpec `protobuf:"bytes,2,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
+	// provider-config
+	ProviderConfig *kubernetes.KubernetesProviderConfig `protobuf:"bytes,2,opt,name=provider_config,json=providerConfig,proto3" json:"provider_config,omitempty"`
 	// kubernetes namespace
 	KubernetesNamespace string `protobuf:"bytes,3,opt,name=kubernetes_namespace,json=kubernetesNamespace,proto3" json:"kubernetes_namespace,omitempty"`
 	// docker-config-json to be used for setting up image-pull-secret
@@ -74,9 +74,9 @@ func (x *CronJobKubernetesStackInput) GetTarget() *CronJobKubernetes {
 	return nil
 }
 
-func (x *CronJobKubernetesStackInput) GetProviderCredential() *v1.KubernetesClusterCredentialSpec {
+func (x *CronJobKubernetesStackInput) GetProviderConfig() *kubernetes.KubernetesProviderConfig {
 	if x != nil {
-		return x.ProviderCredential
+		return x.ProviderConfig
 	}
 	return nil
 }
@@ -99,10 +99,10 @@ var File_project_planton_provider_kubernetes_workload_cronjobkubernetes_v1_stack
 
 const file_project_planton_provider_kubernetes_workload_cronjobkubernetes_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Sproject/planton/provider/kubernetes/workload/cronjobkubernetes/v1/stack_input.proto\x12Aproject.planton.provider.kubernetes.workload.cronjobkubernetes.v1\x1aDproject/planton/credential/kubernetesclustercredential/v1/spec.proto\x1aKproject/planton/provider/kubernetes/workload/cronjobkubernetes/v1/api.proto\"\xfa\x02\n" +
+	"Sproject/planton/provider/kubernetes/workload/cronjobkubernetes/v1/stack_input.proto\x12Aproject.planton.provider.kubernetes.workload.cronjobkubernetes.v1\x1a2project/planton/provider/kubernetes/provider.proto\x1aKproject/planton/provider/kubernetes/workload/cronjobkubernetes/v1/api.proto\"\xd4\x02\n" +
 	"\x1bCronJobKubernetesStackInput\x12l\n" +
-	"\x06target\x18\x01 \x01(\v2T.project.planton.provider.kubernetes.workload.cronjobkubernetes.v1.CronJobKubernetesR\x06target\x12\x8b\x01\n" +
-	"\x13provider_credential\x18\x02 \x01(\v2Z.project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpecR\x12providerCredential\x121\n" +
+	"\x06target\x18\x01 \x01(\v2T.project.planton.provider.kubernetes.workload.cronjobkubernetes.v1.CronJobKubernetesR\x06target\x12f\n" +
+	"\x0fprovider_config\x18\x02 \x01(\v2=.project.planton.provider.kubernetes.KubernetesProviderConfigR\x0eproviderConfig\x121\n" +
 	"\x14kubernetes_namespace\x18\x03 \x01(\tR\x13kubernetesNamespace\x12,\n" +
 	"\x12docker_config_json\x18\x04 \x01(\tR\x10dockerConfigJsonB\x8d\x04\n" +
 	"Ecom.project.planton.provider.kubernetes.workload.cronjobkubernetes.v1B\x0fStackInputProtoP\x01Z\x85\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/cronjobkubernetes/v1;cronjobkubernetesv1\xa2\x02\x06PPPKWC\xaa\x02AProject.Planton.Provider.Kubernetes.Workload.Cronjobkubernetes.V1\xca\x02AProject\\Planton\\Provider\\Kubernetes\\Workload\\Cronjobkubernetes\\V1\xe2\x02MProject\\Planton\\Provider\\Kubernetes\\Workload\\Cronjobkubernetes\\V1\\GPBMetadata\xea\x02GProject::Planton::Provider::Kubernetes::Workload::Cronjobkubernetes::V1b\x06proto3"
@@ -121,13 +121,13 @@ func file_project_planton_provider_kubernetes_workload_cronjobkubernetes_v1_stac
 
 var file_project_planton_provider_kubernetes_workload_cronjobkubernetes_v1_stack_input_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_kubernetes_workload_cronjobkubernetes_v1_stack_input_proto_goTypes = []any{
-	(*CronJobKubernetesStackInput)(nil),        // 0: project.planton.provider.kubernetes.workload.cronjobkubernetes.v1.CronJobKubernetesStackInput
-	(*CronJobKubernetes)(nil),                  // 1: project.planton.provider.kubernetes.workload.cronjobkubernetes.v1.CronJobKubernetes
-	(*v1.KubernetesClusterCredentialSpec)(nil), // 2: project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec
+	(*CronJobKubernetesStackInput)(nil),         // 0: project.planton.provider.kubernetes.workload.cronjobkubernetes.v1.CronJobKubernetesStackInput
+	(*CronJobKubernetes)(nil),                   // 1: project.planton.provider.kubernetes.workload.cronjobkubernetes.v1.CronJobKubernetes
+	(*kubernetes.KubernetesProviderConfig)(nil), // 2: project.planton.provider.kubernetes.KubernetesProviderConfig
 }
 var file_project_planton_provider_kubernetes_workload_cronjobkubernetes_v1_stack_input_proto_depIdxs = []int32{
 	1, // 0: project.planton.provider.kubernetes.workload.cronjobkubernetes.v1.CronJobKubernetesStackInput.target:type_name -> project.planton.provider.kubernetes.workload.cronjobkubernetes.v1.CronJobKubernetes
-	2, // 1: project.planton.provider.kubernetes.workload.cronjobkubernetes.v1.CronJobKubernetesStackInput.provider_credential:type_name -> project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec
+	2, // 1: project.planton.provider.kubernetes.workload.cronjobkubernetes.v1.CronJobKubernetesStackInput.provider_config:type_name -> project.planton.provider.kubernetes.KubernetesProviderConfig
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

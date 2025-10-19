@@ -6,7 +6,7 @@ go_library(
     importpath = "github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/pulumikubernetesprovider",
     visibility = ["//visibility:public"],
     deps = [
-        "//apis/project/planton/credential/kubernetesclustercredential/v1:kubernetesclustercredential",
+        "//apis/project/planton/provider/kubernetes",
         "//pkg/iac/pulumi/pulumimodule/provider/gcp/pulumigkekubernetesprovider",
         "@com_github_pkg_errors//:errors",
         "@com_github_pulumi_pulumi_kubernetes_sdk_v4//go/kubernetes",

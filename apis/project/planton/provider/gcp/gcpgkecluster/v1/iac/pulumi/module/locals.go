@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strconv"
 
-	gcpcredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/gcpcredential/v1"
 	gcpgkeclusterv1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpgkecluster/v1"
+	gcpprovider "github.com/project-planton/project-planton/apis/project/planton/provider/gcp"
 	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/gcp/gcplabelkeys"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/kuberneteslabelkeys"
@@ -13,7 +13,7 @@ import (
 )
 
 type Locals struct {
-	GcpCredentialSpec                     *gcpcredentialv1.GcpCredentialSpec
+	GcpProviderConfig                     *gcpprovider.GcpProviderConfig
 	GcpGkeCluster                         *gcpgkeclusterv1.GcpGkeCluster
 	KubernetesPodSecondaryIpRangeName     string
 	KubernetesServiceSecondaryIpRangeName string
@@ -68,7 +68,7 @@ func initializeLocals(ctx *pulumi.Context, stackInput *gcpgkeclusterv1.GcpGkeClu
 			"WORKLOADS")
 	}
 
-	locals.GcpCredentialSpec = stackInput.ProviderCredential
+	locals.GcpProviderConfig = stackInput.ProviderConfig
 
 	return locals
 }

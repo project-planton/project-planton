@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"reflect"
 
-	gcpcredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/gcpcredential/v1"
+	gcpprovider "github.com/project-planton/project-planton/apis/project/planton/provider/gcp"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/pulumi/pulumioutput"
 
 	"github.com/pkg/errors"
@@ -13,13 +13,13 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-func Get(ctx *pulumi.Context, gcpCredentialSpec *gcpcredentialv1.GcpCredentialSpec,
+func Get(ctx *pulumi.Context, gcpProviderConfig *gcpprovider.GcpProviderConfig,
 	nameSuffixes ...string) (*gcp.Provider, error) {
 	gcpProviderArgs := &gcp.ProviderArgs{}
 
 	//if stack-input contains gcp-credentials, provider will be created with those credentials
-	if gcpCredentialSpec != nil {
-		serviceAccountKey, err := base64.StdEncoding.DecodeString(gcpCredentialSpec.ServiceAccountKeyBase64)
+	if gcpProviderConfig != nil {
+		serviceAccountKey, err := base64.StdEncoding.DecodeString(gcpProviderConfig.ServiceAccountKeyBase64)
 		if err != nil {
 			return nil, errors.Wrap(err, "failed to decode base64 encoded"+
 				" google service account credential")

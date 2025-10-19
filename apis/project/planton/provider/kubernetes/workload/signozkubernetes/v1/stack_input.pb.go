@@ -7,7 +7,7 @@
 package signozkubernetesv1
 
 import (
-	v1 "github.com/project-planton/project-planton/apis/project/planton/credential/kubernetesclustercredential/v1"
+	kubernetes "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -28,7 +28,7 @@ type SignozKubernetesStackInput struct {
 	// target cloud-resource
 	Target *SignozKubernetes `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
 	// provider-credential
-	ProviderCredential *v1.KubernetesClusterCredentialSpec `protobuf:"bytes,2,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
+	ProviderConfig *kubernetes.KubernetesProviderConfig `protobuf:"bytes,2,opt,name=provider_config,json=providerConfig,proto3" json:"provider_config,omitempty"`
 	// kubernetes namespace
 	KubernetesNamespace string `protobuf:"bytes,3,opt,name=kubernetes_namespace,json=kubernetesNamespace,proto3" json:"kubernetes_namespace,omitempty"`
 	unknownFields       protoimpl.UnknownFields
@@ -72,9 +72,9 @@ func (x *SignozKubernetesStackInput) GetTarget() *SignozKubernetes {
 	return nil
 }
 
-func (x *SignozKubernetesStackInput) GetProviderCredential() *v1.KubernetesClusterCredentialSpec {
+func (x *SignozKubernetesStackInput) GetProviderConfig() *kubernetes.KubernetesProviderConfig {
 	if x != nil {
-		return x.ProviderCredential
+		return x.ProviderConfig
 	}
 	return nil
 }
@@ -90,10 +90,10 @@ var File_project_planton_provider_kubernetes_workload_signozkubernetes_v1_stack_
 
 const file_project_planton_provider_kubernetes_workload_signozkubernetes_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Rproject/planton/provider/kubernetes/workload/signozkubernetes/v1/stack_input.proto\x12@project.planton.provider.kubernetes.workload.signozkubernetes.v1\x1aDproject/planton/credential/kubernetesclustercredential/v1/spec.proto\x1aJproject/planton/provider/kubernetes/workload/signozkubernetes/v1/api.proto\"\xc9\x02\n" +
+	"Rproject/planton/provider/kubernetes/workload/signozkubernetes/v1/stack_input.proto\x12@project.planton.provider.kubernetes.workload.signozkubernetes.v1\x1a2project/planton/provider/kubernetes/provider.proto\x1aJproject/planton/provider/kubernetes/workload/signozkubernetes/v1/api.proto\"\xa3\x02\n" +
 	"\x1aSignozKubernetesStackInput\x12j\n" +
-	"\x06target\x18\x01 \x01(\v2R.project.planton.provider.kubernetes.workload.signozkubernetes.v1.SignozKubernetesR\x06target\x12\x8b\x01\n" +
-	"\x13provider_credential\x18\x02 \x01(\v2Z.project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpecR\x12providerCredential\x121\n" +
+	"\x06target\x18\x01 \x01(\v2R.project.planton.provider.kubernetes.workload.signozkubernetes.v1.SignozKubernetesR\x06target\x12f\n" +
+	"\x0fprovider_config\x18\x02 \x01(\v2=.project.planton.provider.kubernetes.KubernetesProviderConfigR\x0eproviderConfig\x121\n" +
 	"\x14kubernetes_namespace\x18\x03 \x01(\tR\x13kubernetesNamespaceB\x86\x04\n" +
 	"Dcom.project.planton.provider.kubernetes.workload.signozkubernetes.v1B\x0fStackInputProtoP\x01Z\x83\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/signozkubernetes/v1;signozkubernetesv1\xa2\x02\x06PPPKWS\xaa\x02@Project.Planton.Provider.Kubernetes.Workload.Signozkubernetes.V1\xca\x02@Project\\Planton\\Provider\\Kubernetes\\Workload\\Signozkubernetes\\V1\xe2\x02LProject\\Planton\\Provider\\Kubernetes\\Workload\\Signozkubernetes\\V1\\GPBMetadata\xea\x02FProject::Planton::Provider::Kubernetes::Workload::Signozkubernetes::V1b\x06proto3"
 
@@ -111,13 +111,13 @@ func file_project_planton_provider_kubernetes_workload_signozkubernetes_v1_stack
 
 var file_project_planton_provider_kubernetes_workload_signozkubernetes_v1_stack_input_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_kubernetes_workload_signozkubernetes_v1_stack_input_proto_goTypes = []any{
-	(*SignozKubernetesStackInput)(nil),         // 0: project.planton.provider.kubernetes.workload.signozkubernetes.v1.SignozKubernetesStackInput
-	(*SignozKubernetes)(nil),                   // 1: project.planton.provider.kubernetes.workload.signozkubernetes.v1.SignozKubernetes
-	(*v1.KubernetesClusterCredentialSpec)(nil), // 2: project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec
+	(*SignozKubernetesStackInput)(nil),          // 0: project.planton.provider.kubernetes.workload.signozkubernetes.v1.SignozKubernetesStackInput
+	(*SignozKubernetes)(nil),                    // 1: project.planton.provider.kubernetes.workload.signozkubernetes.v1.SignozKubernetes
+	(*kubernetes.KubernetesProviderConfig)(nil), // 2: project.planton.provider.kubernetes.KubernetesProviderConfig
 }
 var file_project_planton_provider_kubernetes_workload_signozkubernetes_v1_stack_input_proto_depIdxs = []int32{
 	1, // 0: project.planton.provider.kubernetes.workload.signozkubernetes.v1.SignozKubernetesStackInput.target:type_name -> project.planton.provider.kubernetes.workload.signozkubernetes.v1.SignozKubernetes
-	2, // 1: project.planton.provider.kubernetes.workload.signozkubernetes.v1.SignozKubernetesStackInput.provider_credential:type_name -> project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec
+	2, // 1: project.planton.provider.kubernetes.workload.signozkubernetes.v1.SignozKubernetesStackInput.provider_config:type_name -> project.planton.provider.kubernetes.KubernetesProviderConfig
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

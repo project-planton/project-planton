@@ -11,12 +11,12 @@ fmt:
 	buf format -w
 
 .PHONY: lint
-lint: build-lint-plugin buf-lint
+lint: buf-lint
 
-.PHONY: build-lint-plugin
-build-lint-plugin:
+.PHONY: build-optional-linter-plugin
+build-optional-linter-plugin:
 	@echo "Building buf lint plugin..."
-	@cd ../buf/lint/planton && $(MAKE) build
+	@cd ../buf/lint/optional-linter && $(MAKE) build
 
 .PHONY: buf-lint
 buf-lint:

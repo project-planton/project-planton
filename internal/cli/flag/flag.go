@@ -17,7 +17,7 @@ const (
 	Diff                   Flag = "diff"
 	DockerCredential       Flag = "docker-credential"
 	Force                  Flag = "force"
-	GcpCredential          Flag = "gcp-credential"
+	GcpProviderConfig          Flag = "gcp-credential"
 	InputDir               Flag = "input-dir"
 	KubernetesCluster      Flag = "kubernetes-cluster"
 	KustomizeDir           Flag = "kustomize-dir"

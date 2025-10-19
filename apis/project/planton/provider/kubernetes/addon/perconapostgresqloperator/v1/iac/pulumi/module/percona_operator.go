@@ -13,8 +13,8 @@ import (
 // Resources creates all Pulumi resources for the Percona Operator for PostgreSQL Kubernetes add-on.
 func Resources(ctx *pulumi.Context, stackInput *perconapostgresqloperatorv1.PerconaPostgresqlOperatorStackInput) error {
 	// set up kubernetes provider from the supplied cluster credential
-	kubeProvider, err := pulumikubernetesprovider.GetWithKubernetesClusterCredential(
-		ctx, stackInput.ProviderCredential, "kubernetes")
+	kubeProvider, err := pulumikubernetesprovider.GetWithKubernetesProviderConfig(
+		ctx, stackInput.ProviderConfig, "kubernetes")
 	if err != nil {
 		return errors.Wrap(err, "failed to set up kubernetes provider")
 	}

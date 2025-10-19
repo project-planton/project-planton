@@ -12,7 +12,7 @@ func Resources(ctx *pulumi.Context, stackInput *gcpcloudrunv1.GcpCloudRunStackIn
 	locals := initializeLocals(stackInput)
 
 	// Set up the GCP provider from the supplied credential.
-	gcpProvider, err := pulumigoogleprovider.Get(ctx, stackInput.ProviderCredential)
+	gcpProvider, err := pulumigoogleprovider.Get(ctx, stackInput.ProviderConfig)
 	if err != nil {
 		return errors.Wrap(err, "failed to setup google provider")
 	}

@@ -7,7 +7,7 @@ kind: HelmRelease
 metadata:
   name: my-helm-release
 spec:
-  kubernetesClusterCredentialId: my-k8s-credentials
+  kubernetesProviderConfigId: my-k8s-credentials
   helm_chart:
     repo: https://charts.bitnami.com/bitnami
     name: nginx
@@ -25,7 +25,7 @@ kind: HelmRelease
 metadata:
   name: my-nginx-helm-release
 spec:
-  kubernetesClusterCredentialId: my-k8s-credentials
+  kubernetesProviderConfigId: my-k8s-credentials
   helm_chart:
     repo: https://charts.bitnami.com/bitnami
     name: nginx
@@ -46,7 +46,7 @@ kind: HelmRelease
 metadata:
   name: my-app-helm-release
 spec:
-  kubernetesClusterCredentialId: my-k8s-credentials
+  kubernetesProviderConfigId: my-k8s-credentials
   helm_chart:
     repo: https://charts.bitnami.com/bitnami
     name: wordpress
@@ -67,7 +67,7 @@ kind: HelmRelease
 metadata:
   name: multi-value-helm-release
 spec:
-  kubernetesClusterCredentialId: my-k8s-credentials
+  kubernetesProviderConfigId: my-k8s-credentials
   helm_chart:
     repo: https://charts.bitnami.com/bitnami
     name: redis
@@ -90,7 +90,7 @@ kind: HelmRelease
 metadata:
   name: minimal-helm-release
 spec:
-  kubernetesClusterCredentialId: my-k8s-credentials
+  kubernetesProviderConfigId: my-k8s-credentials
   helm_chart:
     repo: https://charts.bitnami.com/bitnami
     name: nginx

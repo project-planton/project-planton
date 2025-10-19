@@ -7,7 +7,7 @@
 package kuberneteshttpendpointv1
 
 import (
-	v1 "github.com/project-planton/project-planton/apis/project/planton/credential/kubernetesclustercredential/v1"
+	kubernetes "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -27,8 +27,8 @@ type KubernetesHttpEndpointStackInput struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// target cloud-resource
 	Target *KubernetesHttpEndpoint `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
-	// provider-credential
-	ProviderCredential *v1.KubernetesClusterCredentialSpec `protobuf:"bytes,2,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
+	// provider-config
+	ProviderConfig *kubernetes.KubernetesProviderConfig `protobuf:"bytes,2,opt,name=provider_config,json=providerConfig,proto3" json:"provider_config,omitempty"`
 	// kubernetes namespace
 	KubernetesNamespace string `protobuf:"bytes,3,opt,name=kubernetes_namespace,json=kubernetesNamespace,proto3" json:"kubernetes_namespace,omitempty"`
 	unknownFields       protoimpl.UnknownFields
@@ -72,9 +72,9 @@ func (x *KubernetesHttpEndpointStackInput) GetTarget() *KubernetesHttpEndpoint {
 	return nil
 }
 
-func (x *KubernetesHttpEndpointStackInput) GetProviderCredential() *v1.KubernetesClusterCredentialSpec {
+func (x *KubernetesHttpEndpointStackInput) GetProviderConfig() *kubernetes.KubernetesProviderConfig {
 	if x != nil {
-		return x.ProviderCredential
+		return x.ProviderConfig
 	}
 	return nil
 }
@@ -90,10 +90,10 @@ var File_project_planton_provider_kubernetes_workload_kuberneteshttpendpoint_v1_
 
 const file_project_planton_provider_kubernetes_workload_kuberneteshttpendpoint_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Xproject/planton/provider/kubernetes/workload/kuberneteshttpendpoint/v1/stack_input.proto\x12Fproject.planton.provider.kubernetes.workload.kuberneteshttpendpoint.v1\x1aDproject/planton/credential/kubernetesclustercredential/v1/spec.proto\x1aPproject/planton/provider/kubernetes/workload/kuberneteshttpendpoint/v1/api.proto\"\xdb\x02\n" +
+	"Xproject/planton/provider/kubernetes/workload/kuberneteshttpendpoint/v1/stack_input.proto\x12Fproject.planton.provider.kubernetes.workload.kuberneteshttpendpoint.v1\x1a2project/planton/provider/kubernetes/provider.proto\x1aPproject/planton/provider/kubernetes/workload/kuberneteshttpendpoint/v1/api.proto\"\xb5\x02\n" +
 	" KubernetesHttpEndpointStackInput\x12v\n" +
-	"\x06target\x18\x01 \x01(\v2^.project.planton.provider.kubernetes.workload.kuberneteshttpendpoint.v1.KubernetesHttpEndpointR\x06target\x12\x8b\x01\n" +
-	"\x13provider_credential\x18\x02 \x01(\v2Z.project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpecR\x12providerCredential\x121\n" +
+	"\x06target\x18\x01 \x01(\v2^.project.planton.provider.kubernetes.workload.kuberneteshttpendpoint.v1.KubernetesHttpEndpointR\x06target\x12f\n" +
+	"\x0fprovider_config\x18\x02 \x01(\v2=.project.planton.provider.kubernetes.KubernetesProviderConfigR\x0eproviderConfig\x121\n" +
 	"\x14kubernetes_namespace\x18\x03 \x01(\tR\x13kubernetesNamespaceB\xb0\x04\n" +
 	"Jcom.project.planton.provider.kubernetes.workload.kuberneteshttpendpoint.v1B\x0fStackInputProtoP\x01Z\x8f\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/kuberneteshttpendpoint/v1;kuberneteshttpendpointv1\xa2\x02\x06PPPKWK\xaa\x02FProject.Planton.Provider.Kubernetes.Workload.Kuberneteshttpendpoint.V1\xca\x02FProject\\Planton\\Provider\\Kubernetes\\Workload\\Kuberneteshttpendpoint\\V1\xe2\x02RProject\\Planton\\Provider\\Kubernetes\\Workload\\Kuberneteshttpendpoint\\V1\\GPBMetadata\xea\x02LProject::Planton::Provider::Kubernetes::Workload::Kuberneteshttpendpoint::V1b\x06proto3"
 
@@ -111,13 +111,13 @@ func file_project_planton_provider_kubernetes_workload_kuberneteshttpendpoint_v1
 
 var file_project_planton_provider_kubernetes_workload_kuberneteshttpendpoint_v1_stack_input_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_kubernetes_workload_kuberneteshttpendpoint_v1_stack_input_proto_goTypes = []any{
-	(*KubernetesHttpEndpointStackInput)(nil),   // 0: project.planton.provider.kubernetes.workload.kuberneteshttpendpoint.v1.KubernetesHttpEndpointStackInput
-	(*KubernetesHttpEndpoint)(nil),             // 1: project.planton.provider.kubernetes.workload.kuberneteshttpendpoint.v1.KubernetesHttpEndpoint
-	(*v1.KubernetesClusterCredentialSpec)(nil), // 2: project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec
+	(*KubernetesHttpEndpointStackInput)(nil),    // 0: project.planton.provider.kubernetes.workload.kuberneteshttpendpoint.v1.KubernetesHttpEndpointStackInput
+	(*KubernetesHttpEndpoint)(nil),              // 1: project.planton.provider.kubernetes.workload.kuberneteshttpendpoint.v1.KubernetesHttpEndpoint
+	(*kubernetes.KubernetesProviderConfig)(nil), // 2: project.planton.provider.kubernetes.KubernetesProviderConfig
 }
 var file_project_planton_provider_kubernetes_workload_kuberneteshttpendpoint_v1_stack_input_proto_depIdxs = []int32{
 	1, // 0: project.planton.provider.kubernetes.workload.kuberneteshttpendpoint.v1.KubernetesHttpEndpointStackInput.target:type_name -> project.planton.provider.kubernetes.workload.kuberneteshttpendpoint.v1.KubernetesHttpEndpoint
-	2, // 1: project.planton.provider.kubernetes.workload.kuberneteshttpendpoint.v1.KubernetesHttpEndpointStackInput.provider_credential:type_name -> project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec
+	2, // 1: project.planton.provider.kubernetes.workload.kuberneteshttpendpoint.v1.KubernetesHttpEndpointStackInput.provider_config:type_name -> project.planton.provider.kubernetes.KubernetesProviderConfig
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

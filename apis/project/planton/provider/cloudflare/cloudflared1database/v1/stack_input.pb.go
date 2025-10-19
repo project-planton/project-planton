@@ -7,7 +7,7 @@
 package cloudflared1databasev1
 
 import (
-	v1 "github.com/project-planton/project-planton/apis/project/planton/credential/cloudflarecredential/v1"
+	cloudflare "github.com/project-planton/project-planton/apis/project/planton/provider/cloudflare"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -27,10 +27,10 @@ type CloudflareD1DatabaseStackInput struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// target cloud-resource
 	Target *CloudflareD1Database `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
-	// provider-credential
-	ProviderCredential *v1.CloudflareCredentialSpec `protobuf:"bytes,2,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	// provider-config
+	ProviderConfig *cloudflare.CloudflareProviderConfig `protobuf:"bytes,2,opt,name=provider_config,json=providerConfig,proto3" json:"provider_config,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *CloudflareD1DatabaseStackInput) Reset() {
@@ -70,9 +70,9 @@ func (x *CloudflareD1DatabaseStackInput) GetTarget() *CloudflareD1Database {
 	return nil
 }
 
-func (x *CloudflareD1DatabaseStackInput) GetProviderCredential() *v1.CloudflareCredentialSpec {
+func (x *CloudflareD1DatabaseStackInput) GetProviderConfig() *cloudflare.CloudflareProviderConfig {
 	if x != nil {
-		return x.ProviderCredential
+		return x.ProviderConfig
 	}
 	return nil
 }
@@ -81,10 +81,10 @@ var File_project_planton_provider_cloudflare_cloudflared1database_v1_stack_input
 
 const file_project_planton_provider_cloudflare_cloudflared1database_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Mproject/planton/provider/cloudflare/cloudflared1database/v1/stack_input.proto\x12;project.planton.provider.cloudflare.cloudflared1database.v1\x1a=project/planton/credential/cloudflarecredential/v1/spec.proto\x1aEproject/planton/provider/cloudflare/cloudflared1database/v1/api.proto\"\x8a\x02\n" +
+	"Mproject/planton/provider/cloudflare/cloudflared1database/v1/stack_input.proto\x12;project.planton.provider.cloudflare.cloudflared1database.v1\x1aEproject/planton/provider/cloudflare/cloudflared1database/v1/api.proto\x1a2project/planton/provider/cloudflare/provider.proto\"\xf3\x01\n" +
 	"\x1eCloudflareD1DatabaseStackInput\x12i\n" +
-	"\x06target\x18\x01 \x01(\v2Q.project.planton.provider.cloudflare.cloudflared1database.v1.CloudflareD1DatabaseR\x06target\x12}\n" +
-	"\x13provider_credential\x18\x02 \x01(\v2L.project.planton.credential.cloudflarecredential.v1.CloudflareCredentialSpecR\x12providerCredentialB\xea\x03\n" +
+	"\x06target\x18\x01 \x01(\v2Q.project.planton.provider.cloudflare.cloudflared1database.v1.CloudflareD1DatabaseR\x06target\x12f\n" +
+	"\x0fprovider_config\x18\x02 \x01(\v2=.project.planton.provider.cloudflare.CloudflareProviderConfigR\x0eproviderConfigB\xea\x03\n" +
 	"?com.project.planton.provider.cloudflare.cloudflared1database.v1B\x0fStackInputProtoP\x01Z\x82\x01github.com/project-planton/project-planton/apis/project/planton/provider/cloudflare/cloudflared1database/v1;cloudflared1databasev1\xa2\x02\x05PPPCC\xaa\x02;Project.Planton.Provider.Cloudflare.Cloudflared1database.V1\xca\x02;Project\\Planton\\Provider\\Cloudflare\\Cloudflared1database\\V1\xe2\x02GProject\\Planton\\Provider\\Cloudflare\\Cloudflared1database\\V1\\GPBMetadata\xea\x02@Project::Planton::Provider::Cloudflare::Cloudflared1database::V1b\x06proto3"
 
 var (
@@ -101,13 +101,13 @@ func file_project_planton_provider_cloudflare_cloudflared1database_v1_stack_inpu
 
 var file_project_planton_provider_cloudflare_cloudflared1database_v1_stack_input_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_cloudflare_cloudflared1database_v1_stack_input_proto_goTypes = []any{
-	(*CloudflareD1DatabaseStackInput)(nil), // 0: project.planton.provider.cloudflare.cloudflared1database.v1.CloudflareD1DatabaseStackInput
-	(*CloudflareD1Database)(nil),           // 1: project.planton.provider.cloudflare.cloudflared1database.v1.CloudflareD1Database
-	(*v1.CloudflareCredentialSpec)(nil),    // 2: project.planton.credential.cloudflarecredential.v1.CloudflareCredentialSpec
+	(*CloudflareD1DatabaseStackInput)(nil),      // 0: project.planton.provider.cloudflare.cloudflared1database.v1.CloudflareD1DatabaseStackInput
+	(*CloudflareD1Database)(nil),                // 1: project.planton.provider.cloudflare.cloudflared1database.v1.CloudflareD1Database
+	(*cloudflare.CloudflareProviderConfig)(nil), // 2: project.planton.provider.cloudflare.CloudflareProviderConfig
 }
 var file_project_planton_provider_cloudflare_cloudflared1database_v1_stack_input_proto_depIdxs = []int32{
 	1, // 0: project.planton.provider.cloudflare.cloudflared1database.v1.CloudflareD1DatabaseStackInput.target:type_name -> project.planton.provider.cloudflare.cloudflared1database.v1.CloudflareD1Database
-	2, // 1: project.planton.provider.cloudflare.cloudflared1database.v1.CloudflareD1DatabaseStackInput.provider_credential:type_name -> project.planton.credential.cloudflarecredential.v1.CloudflareCredentialSpec
+	2, // 1: project.planton.provider.cloudflare.cloudflared1database.v1.CloudflareD1DatabaseStackInput.provider_config:type_name -> project.planton.provider.cloudflare.CloudflareProviderConfig
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

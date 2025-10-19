@@ -3,8 +3,8 @@ package module
 import (
 	"strconv"
 
-	gcpcredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/gcpcredential/v1"
 	gcpvpcv1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpvpc/v1"
+	gcpprovider "github.com/project-planton/project-planton/apis/project/planton/provider/gcp"
 	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/gcp/gcplabelkeys"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
@@ -12,7 +12,7 @@ import (
 
 // Locals keeps frequently‑used values (metadata, labels, credentials) handy for the module.
 type Locals struct {
-	GcpCredentialSpec *gcpcredentialv1.GcpCredentialSpec
+	GcpProviderConfig *gcpprovider.GcpProviderConfig
 	GcpVpc            *gcpvpcv1.GcpVpc
 	GcpLabels         map[string]string
 }
@@ -43,7 +43,7 @@ func initializeLocals(_ *pulumi.Context, stackInput *gcpvpcv1.GcpVpcStackInput) 
 		locals.GcpLabels[gcplabelkeys.ResourceId] = locals.GcpVpc.Metadata.Id
 	}
 
-	locals.GcpCredentialSpec = stackInput.ProviderCredential
+	locals.GcpProviderConfig = stackInput.ProviderConfig
 
 	return locals
 }

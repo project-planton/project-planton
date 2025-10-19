@@ -10,7 +10,7 @@ kind: GcpCloudFunction
 metadata:
   name: my-cloud-function
 spec:
-  gcpCredentialId: my-gcp-credentials
+  gcpProviderConfigId: my-gcp-credentials
   gcpProjectId: my-gcp-project
 ```
 
@@ -24,7 +24,7 @@ kind: GcpCloudFunction
 metadata:
   name: my-cloud-function-env-vars
 spec:
-  gcpCredentialId: my-gcp-credentials
+  gcpProviderConfigId: my-gcp-credentials
   gcpProjectId: my-gcp-project
   environmentVariables:
     DATABASE_NAME: my_database
@@ -41,7 +41,7 @@ kind: GcpCloudFunction
 metadata:
   name: my-cloud-function-secrets
 spec:
-  gcpCredentialId: my-gcp-credentials
+  gcpProviderConfigId: my-gcp-credentials
   gcpProjectId: my-gcp-project
   environmentSecrets:
     DATABASE_PASSWORD: ${gcpsm-my-org-prod-gcp-secrets.database-password}

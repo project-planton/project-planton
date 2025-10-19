@@ -18,14 +18,14 @@ func Resources(ctx *pulumi.Context, stackInput *awsroute53zonev1.AwsRoute53ZoneS
 	locals := initializeLocals(ctx, stackInput)
 	awsRoute53Zone := locals.AwsRoute53Zone
 
-	awsCredential := stackInput.ProviderCredential
+	awsProviderConfig := stackInput.ProviderConfig
 	var provider *aws.Provider
 	var classicProvider *awsclassic.Provider
 	var err error
 
 	// If the user didn't provide AWS credentials, create a default provider.
 	// Otherwise, inject custom credentials for the region, access key, etc.
-	if awsCredential == nil {
+	if awsProviderConfig == nil {
 		provider, err = aws.NewProvider(ctx,
 			"native-provider",
 			&aws.ProviderArgs{})
@@ -42,9 +42,9 @@ func Resources(ctx *pulumi.Context, stackInput *awsroute53zonev1.AwsRoute53ZoneS
 		provider, err = aws.NewProvider(ctx,
 			"native-provider",
 			&aws.ProviderArgs{
-				AccessKey: pulumi.String(awsCredential.AccessKeyId),
-				SecretKey: pulumi.String(awsCredential.SecretAccessKey),
-				Region:    pulumi.String(awsCredential.GetRegion()),
+				AccessKey: pulumi.String(awsProviderConfig.AccessKeyId),
+				SecretKey: pulumi.String(awsProviderConfig.SecretAccessKey),
+				Region:    pulumi.String(awsProviderConfig.GetRegion()),
 			})
 		if err != nil {
 			return errors.Wrap(err, "failed to create AWS provider with custom credentials")
@@ -52,10 +52,10 @@ func Resources(ctx *pulumi.Context, stackInput *awsroute53zonev1.AwsRoute53ZoneS
 		classicProvider, err = awsclassic.NewProvider(ctx,
 			"classic-provider",
 			&awsclassic.ProviderArgs{
-				AccessKey: pulumi.String(awsCredential.AccessKeyId),
-				SecretKey: pulumi.String(awsCredential.SecretAccessKey),
-				Region:    pulumi.String(awsCredential.GetRegion()),
-				Token:     pulumi.StringPtr(awsCredential.SessionToken),
+				AccessKey: pulumi.String(awsProviderConfig.AccessKeyId),
+				SecretKey: pulumi.String(awsProviderConfig.SecretAccessKey),
+				Region:    pulumi.String(awsProviderConfig.GetRegion()),
+				Token:     pulumi.StringPtr(awsProviderConfig.SessionToken),
 			})
 		if err != nil {
 			return errors.Wrap(err, "failed to create default AWS classic provider")

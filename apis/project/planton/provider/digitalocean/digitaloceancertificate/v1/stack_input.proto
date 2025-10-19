@@ -2,13 +2,13 @@ syntax = "proto3";
 
 package project.planton.provider.digitalocean.digitaloceancertificate.v1;
 
-import "project/planton/credential/digitaloceancredential/v1/spec.proto";
 import "project/planton/provider/digitalocean/digitaloceancertificate/v1/api.proto";
+import "project/planton/provider/digitalocean/provider.proto";
 
 //digital-ocean-certificate stack-input
 message DigitalOceanCertificateStackInput {
   //target cloud-resource
   DigitalOceanCertificate target = 1;
-  //provider-credential
-  project.planton.credential.digitaloceancredential.v1.DigitalOceanCredentialSpec provider_credential = 2;
+  //provider-config
+  project.planton.provider.digitalocean.DigitalOceanProviderConfig provider_config = 2;
 }

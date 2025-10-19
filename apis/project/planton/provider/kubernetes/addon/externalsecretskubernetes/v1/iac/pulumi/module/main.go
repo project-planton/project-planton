@@ -13,8 +13,8 @@ import (
 // Resources installs the External‑Secrets operator (ESO) into the target cluster.
 func Resources(ctx *pulumi.Context, in *externalsecretsv1.ExternalSecretsKubernetesStackInput) error {
 	// set up provider from credential
-	kubeProvider, err := pulumikubernetesprovider.GetWithKubernetesClusterCredential(
-		ctx, in.ProviderCredential, "kubernetes")
+	kubeProvider, err := pulumikubernetesprovider.GetWithKubernetesProviderConfig(
+		ctx, in.ProviderConfig, "kubernetes")
 	if err != nil {
 		return errors.Wrap(err, "failed to set up kubernetes provider")
 	}

@@ -20,7 +20,7 @@ go_library(
     importpath = "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpgkeaddonbundle/v1/iac/pulumi/module",
     visibility = ["//visibility:public"],
     deps = [
-        "//apis/project/planton/credential/gcpcredential/v1:gcpcredential",
+        "//apis/project/planton/provider/gcp",
         "//apis/project/planton/provider/gcp/gcpgkeaddonbundle/v1:gcpgkeaddonbundle",
         "//apis/project/planton/provider/gcp/gcpgkeaddonbundle/v1/iac/pulumi/module/vars",
         "//apis/project/planton/shared/cloudresourcekind",

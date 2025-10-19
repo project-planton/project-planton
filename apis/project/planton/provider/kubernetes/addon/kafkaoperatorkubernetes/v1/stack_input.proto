@@ -2,13 +2,13 @@ syntax = "proto3";
 
 package project.planton.provider.kubernetes.addon.kafkaoperatorkubernetes.v1;
 
-import "project/planton/credential/kubernetesclustercredential/v1/spec.proto";
 import "project/planton/provider/kubernetes/addon/kafkaoperatorkubernetes/v1/api.proto";
+import "project/planton/provider/kubernetes/provider.proto";
 
 //kafka-operator-kubernetes stack-input
 message KafkaOperatorKubernetesStackInput {
   //target cloud-resource
   KafkaOperatorKubernetes target = 1;
-  //provider-credential
-  project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec provider_credential = 2;
+  //provider-config
+  project.planton.provider.kubernetes.KubernetesProviderConfig provider_config = 2;
 }

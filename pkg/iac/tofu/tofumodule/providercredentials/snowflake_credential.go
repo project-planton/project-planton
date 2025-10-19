@@ -2,14 +2,14 @@ package providercredentials
 
 import (
 	"github.com/pkg/errors"
-	snowflakecredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/snowflakecredential/v1"
+	snowflake"github.com/project-planton/project-planton/apis/project/planton/provider/snowflake"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput/stackinputcredentials"
 )
 
 func AddSnowflakeCredentialEnvVars(stackInputContentMap map[string]interface{},
 	credentialEnvVars map[string]string) (map[string]string, error) {
-	credentialSpec := new(snowflakecredentialv1.SnowflakeCredentialSpec)
+	credentialSpec := new(snowflakecredentialv1.SnowflakeProviderConfig)
 
 	isCredentialLoaded, err := stackinput.LoadCredential(stackInputContentMap,
 		stackinputcredentials.SnowflakeCredentialKey, credentialSpec)

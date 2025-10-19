@@ -2,15 +2,15 @@ syntax = "proto3";
 
 package project.planton.provider.kubernetes.workload.microservicekubernetes.v1;
 
-import "project/planton/credential/kubernetesclustercredential/v1/spec.proto";
+import "project/planton/provider/kubernetes/provider.proto";
 import "project/planton/provider/kubernetes/workload/microservicekubernetes/v1/api.proto";
 
 //microservice-kubernetes stack-input
 message MicroserviceKubernetesStackInput {
   //target cloud-resource
   MicroserviceKubernetes target = 1;
-  //provider-credential
-  project.planton.credential.kubernetesclustercredential.v1.KubernetesClusterCredentialSpec provider_credential = 2;
+  //provider-config
+  project.planton.provider.kubernetes.KubernetesProviderConfig provider_config = 2;
   //kubernetes namespace
   string kubernetes_namespace = 3;
   //docker-config-json to be used for setting up image-pull-secret

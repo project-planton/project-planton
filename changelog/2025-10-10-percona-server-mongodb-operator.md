@@ -33,7 +33,7 @@ metadata:
   name: mongodb-operator
 spec:
   targetCluster:
-    kubernetesClusterCredentialId: k8s-cluster-01
+    kubernetesProviderConfigId: k8s-cluster-01
   namespace: mongodb-operator
   container:
     resources:

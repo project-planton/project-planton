@@ -15,7 +15,7 @@ metadata:
   name: example-gcp-gke-cluster
 spec:
   billingAccountId: 0123AB-4567CD-89EFGH
-  gcpCredentialId: gcpcred-example-credential
+  gcpProviderConfigId: gcpcred-example-credential
   region: us-central1
   zone: us-central1-a
   nodePools:
@@ -37,7 +37,7 @@ metadata:
   name: autoscaling-cluster
 spec:
   billingAccountId: 4567CD-89EFGH-0123AB
-  gcpCredentialId: gcpcred-autoscaling-credential
+  gcpProviderConfigId: gcpcred-autoscaling-credential
   region: europe-west1
   zone: europe-west1-b
   clusterAutoscalingConfig:
@@ -65,7 +65,7 @@ metadata:
   name: multi-nodepool-cluster
 spec:
   billingAccountId: 89EFGH-0123AB-4567CD
-  gcpCredentialId: gcpcred-multinode-credential
+  gcpProviderConfigId: gcpcred-multinode-credential
   region: asia-east1
   zone: asia-east1-a
   nodePools:

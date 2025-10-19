@@ -7,7 +7,7 @@
 package civoipaddressv1
 
 import (
-	v1 "github.com/project-planton/project-planton/apis/project/planton/credential/civocredential/v1"
+	civo "github.com/project-planton/project-planton/apis/project/planton/provider/civo"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -27,10 +27,10 @@ type CivoIpAddressStackInput struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// target cloud-resource
 	Target *CivoIpAddress `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
-	// provider-credential
-	ProviderCredential *v1.CivoCredentialSpec `protobuf:"bytes,2,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	// provider-config
+	ProviderConfig *civo.CivoProviderConfig `protobuf:"bytes,2,opt,name=provider_config,json=providerConfig,proto3" json:"provider_config,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *CivoIpAddressStackInput) Reset() {
@@ -70,9 +70,9 @@ func (x *CivoIpAddressStackInput) GetTarget() *CivoIpAddress {
 	return nil
 }
 
-func (x *CivoIpAddressStackInput) GetProviderCredential() *v1.CivoCredentialSpec {
+func (x *CivoIpAddressStackInput) GetProviderConfig() *civo.CivoProviderConfig {
 	if x != nil {
-		return x.ProviderCredential
+		return x.ProviderConfig
 	}
 	return nil
 }
@@ -81,10 +81,10 @@ var File_project_planton_provider_civo_civoipaddress_v1_stack_input_proto protor
 
 const file_project_planton_provider_civo_civoipaddress_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"@project/planton/provider/civo/civoipaddress/v1/stack_input.proto\x12.project.planton.provider.civo.civoipaddress.v1\x1a7project/planton/credential/civocredential/v1/spec.proto\x1a8project/planton/provider/civo/civoipaddress/v1/api.proto\"\xe3\x01\n" +
+	"@project/planton/provider/civo/civoipaddress/v1/stack_input.proto\x12.project.planton.provider.civo.civoipaddress.v1\x1a8project/planton/provider/civo/civoipaddress/v1/api.proto\x1a,project/planton/provider/civo/provider.proto\"\xcc\x01\n" +
 	"\x17CivoIpAddressStackInput\x12U\n" +
-	"\x06target\x18\x01 \x01(\v2=.project.planton.provider.civo.civoipaddress.v1.CivoIpAddressR\x06target\x12q\n" +
-	"\x13provider_credential\x18\x02 \x01(\v2@.project.planton.credential.civocredential.v1.CivoCredentialSpecR\x12providerCredentialB\x94\x03\n" +
+	"\x06target\x18\x01 \x01(\v2=.project.planton.provider.civo.civoipaddress.v1.CivoIpAddressR\x06target\x12Z\n" +
+	"\x0fprovider_config\x18\x02 \x01(\v21.project.planton.provider.civo.CivoProviderConfigR\x0eproviderConfigB\x94\x03\n" +
 	"2com.project.planton.provider.civo.civoipaddress.v1B\x0fStackInputProtoP\x01Zngithub.com/project-planton/project-planton/apis/project/planton/provider/civo/civoipaddress/v1;civoipaddressv1\xa2\x02\x05PPPCC\xaa\x02.Project.Planton.Provider.Civo.Civoipaddress.V1\xca\x02.Project\\Planton\\Provider\\Civo\\Civoipaddress\\V1\xe2\x02:Project\\Planton\\Provider\\Civo\\Civoipaddress\\V1\\GPBMetadata\xea\x023Project::Planton::Provider::Civo::Civoipaddress::V1b\x06proto3"
 
 var (
@@ -103,11 +103,11 @@ var file_project_planton_provider_civo_civoipaddress_v1_stack_input_proto_msgTyp
 var file_project_planton_provider_civo_civoipaddress_v1_stack_input_proto_goTypes = []any{
 	(*CivoIpAddressStackInput)(nil), // 0: project.planton.provider.civo.civoipaddress.v1.CivoIpAddressStackInput
 	(*CivoIpAddress)(nil),           // 1: project.planton.provider.civo.civoipaddress.v1.CivoIpAddress
-	(*v1.CivoCredentialSpec)(nil),   // 2: project.planton.credential.civocredential.v1.CivoCredentialSpec
+	(*civo.CivoProviderConfig)(nil), // 2: project.planton.provider.civo.CivoProviderConfig
 }
 var file_project_planton_provider_civo_civoipaddress_v1_stack_input_proto_depIdxs = []int32{
 	1, // 0: project.planton.provider.civo.civoipaddress.v1.CivoIpAddressStackInput.target:type_name -> project.planton.provider.civo.civoipaddress.v1.CivoIpAddress
-	2, // 1: project.planton.provider.civo.civoipaddress.v1.CivoIpAddressStackInput.provider_credential:type_name -> project.planton.credential.civocredential.v1.CivoCredentialSpec
+	2, // 1: project.planton.provider.civo.civoipaddress.v1.CivoIpAddressStackInput.provider_config:type_name -> project.planton.provider.civo.CivoProviderConfig
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

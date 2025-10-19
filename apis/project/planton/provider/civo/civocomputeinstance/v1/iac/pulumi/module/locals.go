@@ -1,14 +1,14 @@
 package module
 
 import (
-	civocredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/civocredential/v1"
 	civocomputeinstancev1 "github.com/project-planton/project-planton/apis/project/planton/provider/civo/civocomputeinstance/v1"
+	civoprovider "github.com/project-planton/project-planton/apis/project/planton/provider/civo"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
 // Locals bundles pointers frequently reused across the module.
 type Locals struct {
-	CivoCredentialSpec  *civocredentialv1.CivoCredentialSpec
+	CivoProviderConfig  *civoprovider.CivoProviderConfig
 	CivoComputeInstance *civocomputeinstancev1.CivoComputeInstance
 }
 
@@ -19,6 +19,6 @@ func initializeLocals(
 ) *Locals {
 	return &Locals{
 		CivoComputeInstance: stackInput.Target,
-		CivoCredentialSpec:  stackInput.ProviderCredential,
+		CivoProviderConfig:  stackInput.ProviderConfig,
 	}
 }

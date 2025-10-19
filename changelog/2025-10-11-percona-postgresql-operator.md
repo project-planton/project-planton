@@ -34,7 +34,7 @@ metadata:
   name: percona-postgresql-operator
 spec:
   targetCluster:
-    kubernetesClusterCredentialId: k8s-cluster-01
+    kubernetesProviderConfigId: k8s-cluster-01
   namespace: percona-postgresql-operator
   container:
     resources:

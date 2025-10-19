@@ -12,14 +12,14 @@ func Resources(ctx *pulumi.Context, stackInput *gcpgkeaddonbundlev1.GcpGkeAddonB
 	locals := initializeLocals(ctx, stackInput)
 
 	//create gcp-provider using the gcp-credential from input
-	gcpProvider, err := pulumigoogleprovider.Get(ctx, stackInput.GcpCredential)
+	gcpProvider, err := pulumigoogleprovider.Get(ctx, stackInput.ProviderConfig)
 	if err != nil {
 		return errors.Wrap(err, "failed to setup google provider")
 	}
 
 	//create kubernetes-provider from the credential in the stack-input
-	kubernetesProvider, err := pulumikubernetesprovider.GetWithKubernetesClusterCredential(ctx,
-		stackInput.KubernetesClusterCredential, "kubernetes")
+	kubernetesProvider, err := pulumikubernetesprovider.GetWithKubernetesProviderConfig(ctx,
+		stackInput.KubernetesProviderConfig, "kubernetes")
 	if err != nil {
 		return errors.Wrap(err, "failed to setup kubernetes provider")
 	}

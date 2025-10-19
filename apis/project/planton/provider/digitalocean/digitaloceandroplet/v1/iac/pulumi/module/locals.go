@@ -3,8 +3,8 @@ package module
 import (
 	"strconv"
 
-	digitaloceancredentialv1 "github.com/project-planton/project-planton/apis/project/planton/credential/digitaloceancredential/v1"
 	digitaloceandropletv1 "github.com/project-planton/project-planton/apis/project/planton/provider/digitalocean/digitaloceandroplet/v1"
+	digitaloceanprovider "github.com/project-planton/project-planton/apis/project/planton/provider/digitalocean"
 	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/digitalocean/digitaloceanlabelkeys"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
@@ -12,7 +12,7 @@ import (
 
 // Locals bundles common pointers and label maps used across the module.
 type Locals struct {
-	DigitalOceanCredentialSpec *digitaloceancredentialv1.DigitalOceanCredentialSpec
+	DigitalOceanProviderConfig *digitaloceanprovider.DigitalOceanProviderConfig
 	DigitalOceanDroplet        *digitaloceandropletv1.DigitalOceanDroplet
 	DigitalOceanLabels         map[string]string
 }
@@ -42,7 +42,7 @@ func initializeLocals(_ *pulumi.Context, stackInput *digitaloceandropletv1.Digit
 		locals.DigitalOceanLabels[digitaloceanlabelkeys.ResourceId] = locals.DigitalOceanDroplet.Metadata.Id
 	}
 
-	locals.DigitalOceanCredentialSpec = stackInput.ProviderCredential
+	locals.DigitalOceanProviderConfig = stackInput.ProviderConfig
 
 	return locals
 }

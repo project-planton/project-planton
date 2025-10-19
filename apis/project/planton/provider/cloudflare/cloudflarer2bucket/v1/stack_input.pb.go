@@ -7,7 +7,7 @@
 package cloudflarer2bucketv1
 
 import (
-	v1 "github.com/project-planton/project-planton/apis/project/planton/credential/cloudflarecredential/v1"
+	cloudflare "github.com/project-planton/project-planton/apis/project/planton/provider/cloudflare"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -27,10 +27,10 @@ type CloudflareR2BucketStackInput struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// target cloud-resource
 	Target *CloudflareR2Bucket `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
-	// provider-credential
-	ProviderCredential *v1.CloudflareCredentialSpec `protobuf:"bytes,2,opt,name=provider_credential,json=providerCredential,proto3" json:"provider_credential,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	// provider-config
+	ProviderConfig *cloudflare.CloudflareProviderConfig `protobuf:"bytes,2,opt,name=provider_config,json=providerConfig,proto3" json:"provider_config,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *CloudflareR2BucketStackInput) Reset() {
@@ -70,9 +70,9 @@ func (x *CloudflareR2BucketStackInput) GetTarget() *CloudflareR2Bucket {
 	return nil
 }
 
-func (x *CloudflareR2BucketStackInput) GetProviderCredential() *v1.CloudflareCredentialSpec {
+func (x *CloudflareR2BucketStackInput) GetProviderConfig() *cloudflare.CloudflareProviderConfig {
 	if x != nil {
-		return x.ProviderCredential
+		return x.ProviderConfig
 	}
 	return nil
 }
@@ -81,10 +81,10 @@ var File_project_planton_provider_cloudflare_cloudflarer2bucket_v1_stack_input_p
 
 const file_project_planton_provider_cloudflare_cloudflarer2bucket_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Kproject/planton/provider/cloudflare/cloudflarer2bucket/v1/stack_input.proto\x129project.planton.provider.cloudflare.cloudflarer2bucket.v1\x1a=project/planton/credential/cloudflarecredential/v1/spec.proto\x1aCproject/planton/provider/cloudflare/cloudflarer2bucket/v1/api.proto\"\x84\x02\n" +
+	"Kproject/planton/provider/cloudflare/cloudflarer2bucket/v1/stack_input.proto\x129project.planton.provider.cloudflare.cloudflarer2bucket.v1\x1aCproject/planton/provider/cloudflare/cloudflarer2bucket/v1/api.proto\x1a2project/planton/provider/cloudflare/provider.proto\"\xed\x01\n" +
 	"\x1cCloudflareR2BucketStackInput\x12e\n" +
-	"\x06target\x18\x01 \x01(\v2M.project.planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2BucketR\x06target\x12}\n" +
-	"\x13provider_credential\x18\x02 \x01(\v2L.project.planton.credential.cloudflarecredential.v1.CloudflareCredentialSpecR\x12providerCredentialB\xdb\x03\n" +
+	"\x06target\x18\x01 \x01(\v2M.project.planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2BucketR\x06target\x12f\n" +
+	"\x0fprovider_config\x18\x02 \x01(\v2=.project.planton.provider.cloudflare.CloudflareProviderConfigR\x0eproviderConfigB\xdb\x03\n" +
 	"=com.project.planton.provider.cloudflare.cloudflarer2bucket.v1B\x0fStackInputProtoP\x01Z~github.com/project-planton/project-planton/apis/project/planton/provider/cloudflare/cloudflarer2bucket/v1;cloudflarer2bucketv1\xa2\x02\x05PPPCC\xaa\x029Project.Planton.Provider.Cloudflare.Cloudflarer2bucket.V1\xca\x029Project\\Planton\\Provider\\Cloudflare\\Cloudflarer2bucket\\V1\xe2\x02EProject\\Planton\\Provider\\Cloudflare\\Cloudflarer2bucket\\V1\\GPBMetadata\xea\x02>Project::Planton::Provider::Cloudflare::Cloudflarer2bucket::V1b\x06proto3"
 
 var (
@@ -101,13 +101,13 @@ func file_project_planton_provider_cloudflare_cloudflarer2bucket_v1_stack_input_
 
 var file_project_planton_provider_cloudflare_cloudflarer2bucket_v1_stack_input_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_project_planton_provider_cloudflare_cloudflarer2bucket_v1_stack_input_proto_goTypes = []any{
-	(*CloudflareR2BucketStackInput)(nil), // 0: project.planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2BucketStackInput
-	(*CloudflareR2Bucket)(nil),           // 1: project.planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2Bucket
-	(*v1.CloudflareCredentialSpec)(nil),  // 2: project.planton.credential.cloudflarecredential.v1.CloudflareCredentialSpec
+	(*CloudflareR2BucketStackInput)(nil),        // 0: project.planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2BucketStackInput
+	(*CloudflareR2Bucket)(nil),                  // 1: project.planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2Bucket
+	(*cloudflare.CloudflareProviderConfig)(nil), // 2: project.planton.provider.cloudflare.CloudflareProviderConfig
 }
 var file_project_planton_provider_cloudflare_cloudflarer2bucket_v1_stack_input_proto_depIdxs = []int32{
 	1, // 0: project.planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2BucketStackInput.target:type_name -> project.planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2Bucket
-	2, // 1: project.planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2BucketStackInput.provider_credential:type_name -> project.planton.credential.cloudflarecredential.v1.CloudflareCredentialSpec
+	2, // 1: project.planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2BucketStackInput.provider_config:type_name -> project.planton.provider.cloudflare.CloudflareProviderConfig
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

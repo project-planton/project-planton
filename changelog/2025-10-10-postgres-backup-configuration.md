@@ -226,7 +226,7 @@ metadata:
   name: postgres-operator
 spec:
   target_cluster:
-    kubernetesClusterCredentialId: k8s-cluster-01
+    kubernetesProviderConfigId: k8s-cluster-01
   container:
     resources:
       limits:
