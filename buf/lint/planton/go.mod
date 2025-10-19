@@ -1,4 +1,4 @@
-module github.com/project-planton/project-planton/buf/lint/planton
+module github.com/project-planton/project-planton/buf/lint/optional-linter
 
 go 1.24.0
 

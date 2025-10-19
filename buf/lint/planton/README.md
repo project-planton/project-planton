@@ -1,10 +1,10 @@
-# Planton Custom Buf Lint Plugin
+# Optional Linter
 
-A custom [Buf](https://buf.build) lint plugin that enforces Planton-specific proto validation rules.
+A custom [Buf](https://buf.build) lint plugin that validates scalar proto fields with defaults are marked as optional.
 
 ## Overview
 
-This plugin provides custom lint rules to ensure semantic correctness and consistency across all Protocol Buffer definitions in the Project Planton monorepo.
+This plugin validates that scalar fields with `(project.planton.shared.options.default)` are marked as `optional` to enable proper field presence tracking in Protocol Buffer definitions.
 
 ## Rules
 
@@ -50,11 +50,11 @@ The plugin is automatically built and used when you run `make protos` in the `ap
 
 ### Manual Installation
 
-To install the plugin manually:
+To install the plugin manually for local development:
 
 ```bash
 cd buf/lint/planton
-go build -o $(go env GOPATH)/bin/buf-plugin-planton ./cmd/buf-plugin-planton
+make build
 ```
 
 ## Usage
@@ -67,8 +67,8 @@ lint:
   use:
     - STANDARD
     - DEFAULT_REQUIRES_OPTIONAL  # Custom rule from this plugin
-  plugins:
-    - plugin: buf-plugin-planton
+plugins:
+  - plugin: buf.build/project-planton/optional-linter:v0.1.0
 ```
 
 ### Running Lint
@@ -89,12 +89,14 @@ This will:
 ```
 buf/lint/planton/
 ├── cmd/
-│   └── buf-plugin-planton/
+│   └── optional-linter/
 │       └── main.go              # Plugin entry point
 ├── rules/
 │   └── default_requires_optional.go  # Rule implementation
 ├── go.mod                       # Plugin dependencies
 ├── go.sum
+├── Makefile                     # Build and publish automation
+├── buf.plugin.yaml              # Plugin metadata
 └── README.md                    # This file
 ```
 
@@ -125,7 +127,7 @@ To add a new custom lint rule:
    }
    ```
 
-3. Register the rule in `cmd/buf-plugin-planton/main.go`:
+3. Register the rule in `cmd/optional-linter/main.go`:
    ```go
    check.Main(&check.Spec{
        Rules: []*check.RuleSpec{
@@ -155,7 +157,8 @@ The plugin uses:
 
 ```bash
 cd buf/lint/planton
-go build ./cmd/buf-plugin-planton
+make build        # Local binary
+make build-wasm   # WebAssembly binary for BSR
 ```
 
 ### Testing
@@ -180,19 +183,19 @@ All existing proto files should pass validation (no violations).
 
 ### Plugin not found
 
-If `buf lint` reports that it cannot find `buf-plugin-planton`:
+If `buf lint` reports that it cannot find `optional-linter`:
 
 1. Ensure the plugin is built:
    ```bash
    cd buf/lint/planton
-   go build -o $(go env GOPATH)/bin/buf-plugin-planton ./cmd/buf-plugin-planton
+   make build
    ```
 
 2. Verify `$(go env GOPATH)/bin` is in your `$PATH`
 
 3. Check the plugin works:
    ```bash
-   buf-plugin-planton --protocol
+   optional-linter --protocol
    ```
    Should output: `1`
 
@@ -203,7 +206,7 @@ If the plugin fails to build, ensure you have the correct Go version (1.24.0+) a
 ```bash
 cd buf/lint/planton
 go mod tidy
-go build ./cmd/buf-plugin-planton
+make build
 ```
 
 ## Maintenance
