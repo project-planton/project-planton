@@ -1,0 +1,6 @@
+version: v1
+name: buf.build/project-planton/optional-linter
+plugin_version: v0.1.0
+source_url: https://github.com/project-planton/project-planton
+description: "Validates that scalar proto fields with (project.planton.shared.options.default) are marked as optional"
+

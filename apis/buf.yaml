@@ -3,7 +3,7 @@ name: buf.build/project-planton/apis
 deps:
   - buf.build/bufbuild/protovalidate
 plugins:
-  - plugin: buf-plugin-planton
+  - plugin: buf.build/project-planton/optional-linter:v0.1.0
 lint:
   use:
     - STANDARD
