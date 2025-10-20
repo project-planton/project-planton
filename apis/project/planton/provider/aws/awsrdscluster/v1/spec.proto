@@ -53,7 +53,7 @@ message AwsRdsClusterSpec {
   ];
 
   // username is the master database user name.
-  optional string username = 9 [(planton.shared.options.default) = "master"];
+  optional string username = 9 [(project.planton.shared.options.default) = "master"];
 
   // password is the master user password. Cannot be set when manage_master_user_password is true.
   string password = 10;
