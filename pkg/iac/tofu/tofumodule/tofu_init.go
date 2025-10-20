@@ -20,7 +20,7 @@ func TofuInit(
 	manifestObject proto.Message,
 	backendType terraform.TerraformBackendType,
 	backendConfigInput []string,
-	credentialEnvVars []string,
+	providerConfigEnvVars []string,
 	isJsonOutput bool,
 	jsonLogEventsChan chan string, // channel for streaming output
 ) (err error) {
@@ -50,7 +50,7 @@ func TofuInit(
 	tofuCmd.Dir = tofuModulePath
 	//https://stackoverflow.com/a/41133244
 	tofuCmd.Env = os.Environ()
-	tofuCmd.Env = append(tofuCmd.Env, credentialEnvVars...)
+	tofuCmd.Env = append(tofuCmd.Env, providerConfigEnvVars...)
 
 	tofuCmd.Stdin = os.Stdin
 	tofuCmd.Stderr = os.Stderr

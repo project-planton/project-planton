@@ -1,8 +1,8 @@
 package module
 
 import (
-	cloudflareloadbalancerv1 "github.com/project-planton/project-planton/apis/project/planton/provider/cloudflare/cloudflareloadbalancer/v1"
 	cloudflareprovider "github.com/project-planton/project-planton/apis/project/planton/provider/cloudflare"
+	cloudflareloadbalancerv1 "github.com/project-planton/project-planton/apis/project/planton/provider/cloudflare/cloudflareloadbalancer/v1"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 

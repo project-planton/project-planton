@@ -2,14 +2,14 @@ package pulumiakskubernetesprovider
 
 import (
 	"github.com/pkg/errors"
-	azure"github.com/project-planton/project-planton/apis/project/planton/provider/azure"
+	azure "github.com/project-planton/project-planton/apis/project/planton/provider/azure"
 	"github.com/pulumi/pulumi-azure/sdk/v5/go/azure/containerservice"
 	"github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// GetWithAddedClusterWithAzureCredentials returns kubernetes provider for the added AKS cluster based on the azure provider
-func GetWithAddedClusterWithAzureCredentials(ctx *pulumi.Context,
+// GetWithAddedClusterWithAzureProviderConfigs returns kubernetes provider for the added AKS cluster based on the azure provider
+func GetWithAddedClusterWithAzureProviderConfigs(ctx *pulumi.Context,
 	addedAksCluster *containerservice.KubernetesCluster,
 	azureProviderConfig *azure.AzureProviderConfig,
 	dependencies []pulumi.Resource,

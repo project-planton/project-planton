@@ -3,8 +3,8 @@ package module
 import (
 	"strconv"
 
-	civokubernetesnodepoolv1 "github.com/project-planton/project-planton/apis/project/planton/provider/civo/civokubernetesnodepool/v1"
 	civoprovider "github.com/project-planton/project-planton/apis/project/planton/provider/civo"
+	civokubernetesnodepoolv1 "github.com/project-planton/project-planton/apis/project/planton/provider/civo/civokubernetesnodepool/v1"
 	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )

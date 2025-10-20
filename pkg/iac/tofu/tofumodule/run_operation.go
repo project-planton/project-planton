@@ -23,7 +23,7 @@ func RunOperation(
 	isAutoApprove bool,
 	isDestroyPlan bool,
 	manifestObject proto.Message,
-	credentialEnvVars []string,
+	providerConfigEnvVars []string,
 	isJsonOutput bool,
 	jsonLogEventsChan chan string, // channel for streaming output
 ) (err error) {
@@ -59,7 +59,7 @@ func RunOperation(
 	tofuCmd.Dir = tofuModulePath
 	//https://stackoverflow.com/a/41133244
 	tofuCmd.Env = os.Environ()
-	tofuCmd.Env = append(tofuCmd.Env, credentialEnvVars...)
+	tofuCmd.Env = append(tofuCmd.Env, providerConfigEnvVars...)
 
 	// Keep stdin/stderr for interactive prompt or error streaming
 	tofuCmd.Stdin = os.Stdin

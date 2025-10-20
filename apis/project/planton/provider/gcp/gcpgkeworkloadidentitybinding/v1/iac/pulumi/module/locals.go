@@ -3,8 +3,8 @@ package module
 import (
 	"strconv"
 
-	gcpgkeworkloadidentitybindingv1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpgkeworkloadidentitybinding/v1"
 	gcpprovider "github.com/project-planton/project-planton/apis/project/planton/provider/gcp"
+	gcpgkeworkloadidentitybindingv1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpgkeworkloadidentitybinding/v1"
 	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/gcp/gcplabelkeys"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"

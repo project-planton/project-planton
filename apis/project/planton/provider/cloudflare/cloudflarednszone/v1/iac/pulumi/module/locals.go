@@ -1,8 +1,8 @@
 package module
 
 import (
-	cloudflarednszonev1 "github.com/project-planton/project-planton/apis/project/planton/provider/cloudflare/cloudflarednszone/v1"
 	cloudflareprovider "github.com/project-planton/project-planton/apis/project/planton/provider/cloudflare"
+	cloudflarednszonev1 "github.com/project-planton/project-planton/apis/project/planton/provider/cloudflare/cloudflarednszone/v1"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 

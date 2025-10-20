@@ -1,8 +1,8 @@
 package module
 
 import (
-	cloudflared1databasev1 "github.com/project-planton/project-planton/apis/project/planton/provider/cloudflare/cloudflared1database/v1"
 	cloudflareprovider "github.com/project-planton/project-planton/apis/project/planton/provider/cloudflare"
+	cloudflared1databasev1 "github.com/project-planton/project-planton/apis/project/planton/provider/cloudflare/cloudflared1database/v1"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 

@@ -10,7 +10,7 @@ import (
 	"github.com/project-planton/project-planton/internal/manifest"
 	"github.com/project-planton/project-planton/pkg/crkreflect"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput"
-	"github.com/project-planton/project-planton/pkg/iac/stackinput/stackinputcredentials"
+	"github.com/project-planton/project-planton/pkg/iac/stackinput/stackinputproviderconfig"
 	"github.com/project-planton/project-planton/pkg/iac/tofu/backendconfig"
 	"github.com/project-planton/project-planton/pkg/iac/tofu/tfbackend"
 	log "github.com/sirupsen/logrus"
@@ -20,7 +20,7 @@ func RunCommand(inputModuleDir, targetManifestPath string,
 	terraformOperation terraform.TerraformOperationType,
 	valueOverrides map[string]string,
 	isAutoApprove, isDestroyPlan bool,
-	credentialOptions ...stackinputcredentials.StackInputCredentialOption) error {
+	providerConfigOptions ...stackinputproviderconfig.StackInputProviderConfigOption) error {
 
 	manifestObject, err := manifest.LoadWithOverrides(targetManifestPath, valueOverrides)
 	if err != nil {
@@ -64,8 +64,8 @@ func RunCommand(inputModuleDir, targetManifestPath string,
 	}
 
 	// Gather credential options
-	opts := stackinputcredentials.StackInputCredentialOptions{}
-	for _, opt := range credentialOptions {
+	opts := stackinputproviderconfig.StackInputProviderConfigOptions{}
+	for _, opt := range providerConfigOptions {
 		opt(&opts)
 	}
 
@@ -79,15 +79,15 @@ func RunCommand(inputModuleDir, targetManifestPath string,
 		return errors.Wrap(err, "failed to get workspace directory")
 	}
 
-	credentialEnvVars, err := GetCredentialEnvVars(stackInputYaml, workspaceDir)
+	providerConfigEnvVars, err := GetProviderConfigEnvVars(stackInputYaml, workspaceDir)
 	if err != nil {
-		return errors.Wrap(err, "failed to get credential env vars")
+		return errors.Wrap(err, "failed to get provider config env vars")
 	}
 
 	// Initialize tofu with backend configuration
 	// This should happen before any operation to ensure backend is properly configured
 	err = TofuInit(tofuModulePath, manifestObject, backendType, backendConfigArgs,
-		credentialEnvVars, false, nil)
+		providerConfigEnvVars, false, nil)
 	if err != nil {
 		return errors.Wrap(err, "failed to initialize tofu module")
 	}
@@ -95,7 +95,7 @@ func RunCommand(inputModuleDir, targetManifestPath string,
 	err = RunOperation(tofuModulePath, terraformOperation,
 		isAutoApprove,
 		isDestroyPlan, manifestObject,
-		credentialEnvVars, false, nil)
+		providerConfigEnvVars, false, nil)
 	if err != nil {
 		return errors.Wrapf(err, "failed to run tofu operation")
 	}
