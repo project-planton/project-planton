@@ -25,7 +25,7 @@ var _ = ginkgo.Describe("AwsSecurityGroupSpec Custom Validation Tests", func() {
 				input := &AwsSecurityGroup{
 					ApiVersion: "aws.project-planton.org/v1",
 					Kind:       "AwsSecurityGroup",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-security-group",
 					},
 					Spec: &AwsSecurityGroupSpec{

@@ -20,7 +20,7 @@ func TestExtractFromManifest(t *testing.T) {
 		{
 			name: "valid s3 backend",
 			manifest: &awsvpcv1.AwsVpc{
-				Metadata: &shared.ApiResourceMetadata{
+				Metadata: &shared.CloudResourceMetadata{
 					Labels: map[string]string{
 						tofulabels.BackendTypeLabelKey:   "s3",
 						tofulabels.BackendObjectLabelKey: "my-terraform-state/aws-vpc/dev",
@@ -36,7 +36,7 @@ func TestExtractFromManifest(t *testing.T) {
 		{
 			name: "valid gcs backend",
 			manifest: &awsvpcv1.AwsVpc{
-				Metadata: &shared.ApiResourceMetadata{
+				Metadata: &shared.CloudResourceMetadata{
 					Labels: map[string]string{
 						tofulabels.BackendTypeLabelKey:   "gcs",
 						tofulabels.BackendObjectLabelKey: "my-gcs-bucket/terraform/state",
@@ -52,7 +52,7 @@ func TestExtractFromManifest(t *testing.T) {
 		{
 			name: "valid azurerm backend",
 			manifest: &awsvpcv1.AwsVpc{
-				Metadata: &shared.ApiResourceMetadata{
+				Metadata: &shared.CloudResourceMetadata{
 					Labels: map[string]string{
 						tofulabels.BackendTypeLabelKey:   "azurerm",
 						tofulabels.BackendObjectLabelKey: "my-container/terraform/state",
@@ -68,7 +68,7 @@ func TestExtractFromManifest(t *testing.T) {
 		{
 			name: "valid local backend",
 			manifest: &awsvpcv1.AwsVpc{
-				Metadata: &shared.ApiResourceMetadata{
+				Metadata: &shared.CloudResourceMetadata{
 					Labels: map[string]string{
 						tofulabels.BackendTypeLabelKey:   "local",
 						tofulabels.BackendObjectLabelKey: "/tmp/terraform.tfstate",
@@ -84,7 +84,7 @@ func TestExtractFromManifest(t *testing.T) {
 		{
 			name: "no backend labels - returns nil without error",
 			manifest: &awsvpcv1.AwsVpc{
-				Metadata: &shared.ApiResourceMetadata{
+				Metadata: &shared.CloudResourceMetadata{
 					Labels: map[string]string{
 						"other.label": "value",
 					},
@@ -96,7 +96,7 @@ func TestExtractFromManifest(t *testing.T) {
 		{
 			name: "missing backend object",
 			manifest: &awsvpcv1.AwsVpc{
-				Metadata: &shared.ApiResourceMetadata{
+				Metadata: &shared.CloudResourceMetadata{
 					Labels: map[string]string{
 						tofulabels.BackendTypeLabelKey: "s3",
 						// Missing backend object
@@ -110,7 +110,7 @@ func TestExtractFromManifest(t *testing.T) {
 		{
 			name: "missing backend type",
 			manifest: &awsvpcv1.AwsVpc{
-				Metadata: &shared.ApiResourceMetadata{
+				Metadata: &shared.CloudResourceMetadata{
 					Labels: map[string]string{
 						tofulabels.BackendObjectLabelKey: "my-bucket/state",
 						// Missing backend type
@@ -124,7 +124,7 @@ func TestExtractFromManifest(t *testing.T) {
 		{
 			name: "empty backend type",
 			manifest: &awsvpcv1.AwsVpc{
-				Metadata: &shared.ApiResourceMetadata{
+				Metadata: &shared.CloudResourceMetadata{
 					Labels: map[string]string{
 						tofulabels.BackendTypeLabelKey:   "",
 						tofulabels.BackendObjectLabelKey: "my-bucket/state",
@@ -138,7 +138,7 @@ func TestExtractFromManifest(t *testing.T) {
 		{
 			name: "empty backend object",
 			manifest: &awsvpcv1.AwsVpc{
-				Metadata: &shared.ApiResourceMetadata{
+				Metadata: &shared.CloudResourceMetadata{
 					Labels: map[string]string{
 						tofulabels.BackendTypeLabelKey:   "s3",
 						tofulabels.BackendObjectLabelKey: "",
@@ -152,7 +152,7 @@ func TestExtractFromManifest(t *testing.T) {
 		{
 			name: "unsupported backend type",
 			manifest: &awsvpcv1.AwsVpc{
-				Metadata: &shared.ApiResourceMetadata{
+				Metadata: &shared.CloudResourceMetadata{
 					Labels: map[string]string{
 						tofulabels.BackendTypeLabelKey:   "unsupported",
 						tofulabels.BackendObjectLabelKey: "some/path",
@@ -166,7 +166,7 @@ func TestExtractFromManifest(t *testing.T) {
 		{
 			name: "no labels",
 			manifest: &awsvpcv1.AwsVpc{
-				Metadata: &shared.ApiResourceMetadata{},
+				Metadata: &shared.CloudResourceMetadata{},
 			},
 			want:      nil,
 			wantError: true,

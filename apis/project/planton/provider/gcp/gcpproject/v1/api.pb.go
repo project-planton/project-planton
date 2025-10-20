@@ -31,7 +31,7 @@ type GcpProject struct {
 	// resource-kind
 	Kind string `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
 	// metadata
-	Metadata *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Metadata *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// spec
 	Spec *GcpProjectSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status
@@ -84,7 +84,7 @@ func (x *GcpProject) GetKind() string {
 	return ""
 }
 
-func (x *GcpProject) GetMetadata() *shared.ApiResourceMetadata {
+func (x *GcpProject) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
@@ -157,7 +157,7 @@ var File_project_planton_provider_gcp_gcpproject_v1_api_proto protoreflect.FileD
 
 const file_project_planton_provider_gcp_gcpproject_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"4project/planton/provider/gcp/gcpproject/v1/api.proto\x12*project.planton.provider.gcp.gcpproject.v1\x1a\x1bbuf/validate/validate.proto\x1a5project/planton/provider/gcp/gcpproject/v1/spec.proto\x1a>project/planton/provider/gcp/gcpproject/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xf6\x02\n" +
+	"4project/planton/provider/gcp/gcpproject/v1/api.proto\x12*project.planton.provider.gcp.gcpproject.v1\x1a\x1bbuf/validate/validate.proto\x1a5project/planton/provider/gcp/gcpproject/v1/spec.proto\x1a>project/planton/provider/gcp/gcpproject/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xf8\x02\n" +
 	"\n" +
 	"GcpProject\x12B\n" +
 	"\vapi_version\x18\x01 \x01(\tB!\xbaH\x1er\x1c\n" +
@@ -165,8 +165,8 @@ const file_project_planton_provider_gcp_gcpproject_v1_api_proto_rawDesc = "" +
 	"apiVersion\x12%\n" +
 	"\x04kind\x18\x02 \x01(\tB\x11\xbaH\x0er\f\n" +
 	"\n" +
-	"GcpProjectR\x04kind\x12O\n" +
-	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12V\n" +
+	"GcpProjectR\x04kind\x12Q\n" +
+	"\bmetadata\x18\x03 \x01(\v2-.project.planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12V\n" +
 	"\x04spec\x18\x04 \x01(\v2:.project.planton.provider.gcp.gcpproject.v1.GcpProjectSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12T\n" +
 	"\x06status\x18\x05 \x01(\v2<.project.planton.provider.gcp.gcpproject.v1.GcpProjectStatusR\x06status\"p\n" +
 	"\x10GcpProjectStatus\x12\\\n" +
@@ -187,14 +187,14 @@ func file_project_planton_provider_gcp_gcpproject_v1_api_proto_rawDescGZIP() []b
 
 var file_project_planton_provider_gcp_gcpproject_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_gcp_gcpproject_v1_api_proto_goTypes = []any{
-	(*GcpProject)(nil),                 // 0: project.planton.provider.gcp.gcpproject.v1.GcpProject
-	(*GcpProjectStatus)(nil),           // 1: project.planton.provider.gcp.gcpproject.v1.GcpProjectStatus
-	(*shared.ApiResourceMetadata)(nil), // 2: project.planton.shared.ApiResourceMetadata
-	(*GcpProjectSpec)(nil),             // 3: project.planton.provider.gcp.gcpproject.v1.GcpProjectSpec
-	(*GcpProjectStackOutputs)(nil),     // 4: project.planton.provider.gcp.gcpproject.v1.GcpProjectStackOutputs
+	(*GcpProject)(nil),                   // 0: project.planton.provider.gcp.gcpproject.v1.GcpProject
+	(*GcpProjectStatus)(nil),             // 1: project.planton.provider.gcp.gcpproject.v1.GcpProjectStatus
+	(*shared.CloudResourceMetadata)(nil), // 2: project.planton.shared.CloudResourceMetadata
+	(*GcpProjectSpec)(nil),               // 3: project.planton.provider.gcp.gcpproject.v1.GcpProjectSpec
+	(*GcpProjectStackOutputs)(nil),       // 4: project.planton.provider.gcp.gcpproject.v1.GcpProjectStackOutputs
 }
 var file_project_planton_provider_gcp_gcpproject_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.gcp.gcpproject.v1.GcpProject.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	2, // 0: project.planton.provider.gcp.gcpproject.v1.GcpProject.metadata:type_name -> project.planton.shared.CloudResourceMetadata
 	3, // 1: project.planton.provider.gcp.gcpproject.v1.GcpProject.spec:type_name -> project.planton.provider.gcp.gcpproject.v1.GcpProjectSpec
 	1, // 2: project.planton.provider.gcp.gcpproject.v1.GcpProject.status:type_name -> project.planton.provider.gcp.gcpproject.v1.GcpProjectStatus
 	4, // 3: project.planton.provider.gcp.gcpproject.v1.GcpProjectStatus.outputs:type_name -> project.planton.provider.gcp.gcpproject.v1.GcpProjectStackOutputs

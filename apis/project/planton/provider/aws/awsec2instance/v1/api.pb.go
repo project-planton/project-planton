@@ -33,7 +33,7 @@ type AwsEc2Instance struct {
 	Kind string `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
 	// metadata captures identifying information (name, org, version, etc.)
 	// and must pass standard validations for resource naming.
-	Metadata *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Metadata *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// spec holds the core configuration data defining how the ECS service is deployed.
 	Spec *AwsEc2InstanceSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status holds runtime or post-deployment information.
@@ -86,7 +86,7 @@ func (x *AwsEc2Instance) GetKind() string {
 	return ""
 }
 
-func (x *AwsEc2Instance) GetMetadata() *shared.ApiResourceMetadata {
+func (x *AwsEc2Instance) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
@@ -157,14 +157,14 @@ var File_project_planton_provider_aws_awsec2instance_v1_api_proto protoreflect.F
 
 const file_project_planton_provider_aws_awsec2instance_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"8project/planton/provider/aws/awsec2instance/v1/api.proto\x12.project.planton.provider.aws.awsec2instance.v1\x1a\x1bbuf/validate/validate.proto\x1a9project/planton/provider/aws/awsec2instance/v1/spec.proto\x1aBproject/planton/provider/aws/awsec2instance/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\x8e\x03\n" +
+	"8project/planton/provider/aws/awsec2instance/v1/api.proto\x12.project.planton.provider.aws.awsec2instance.v1\x1a\x1bbuf/validate/validate.proto\x1a9project/planton/provider/aws/awsec2instance/v1/spec.proto\x1aBproject/planton/provider/aws/awsec2instance/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\x90\x03\n" +
 	"\x0eAwsEc2Instance\x12B\n" +
 	"\vapi_version\x18\x01 \x01(\tB!\xbaH\x1er\x1c\n" +
 	"\x1aaws.project-planton.org/v1R\n" +
 	"apiVersion\x12)\n" +
 	"\x04kind\x18\x02 \x01(\tB\x15\xbaH\x12r\x10\n" +
-	"\x0eAwsEc2InstanceR\x04kind\x12O\n" +
-	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12^\n" +
+	"\x0eAwsEc2InstanceR\x04kind\x12Q\n" +
+	"\bmetadata\x18\x03 \x01(\v2-.project.planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12^\n" +
 	"\x04spec\x18\x04 \x01(\v2B.project.planton.provider.aws.awsec2instance.v1.AwsEc2InstanceSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12\\\n" +
 	"\x06status\x18\x05 \x01(\v2D.project.planton.provider.aws.awsec2instance.v1.AwsEc2InstanceStatusR\x06status\"|\n" +
 	"\x14AwsEc2InstanceStatus\x12d\n" +
@@ -185,14 +185,14 @@ func file_project_planton_provider_aws_awsec2instance_v1_api_proto_rawDescGZIP()
 
 var file_project_planton_provider_aws_awsec2instance_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_aws_awsec2instance_v1_api_proto_goTypes = []any{
-	(*AwsEc2Instance)(nil),             // 0: project.planton.provider.aws.awsec2instance.v1.AwsEc2Instance
-	(*AwsEc2InstanceStatus)(nil),       // 1: project.planton.provider.aws.awsec2instance.v1.AwsEc2InstanceStatus
-	(*shared.ApiResourceMetadata)(nil), // 2: project.planton.shared.ApiResourceMetadata
-	(*AwsEc2InstanceSpec)(nil),         // 3: project.planton.provider.aws.awsec2instance.v1.AwsEc2InstanceSpec
-	(*AwsEc2InstanceStackOutputs)(nil), // 4: project.planton.provider.aws.awsec2instance.v1.AwsEc2InstanceStackOutputs
+	(*AwsEc2Instance)(nil),               // 0: project.planton.provider.aws.awsec2instance.v1.AwsEc2Instance
+	(*AwsEc2InstanceStatus)(nil),         // 1: project.planton.provider.aws.awsec2instance.v1.AwsEc2InstanceStatus
+	(*shared.CloudResourceMetadata)(nil), // 2: project.planton.shared.CloudResourceMetadata
+	(*AwsEc2InstanceSpec)(nil),           // 3: project.planton.provider.aws.awsec2instance.v1.AwsEc2InstanceSpec
+	(*AwsEc2InstanceStackOutputs)(nil),   // 4: project.planton.provider.aws.awsec2instance.v1.AwsEc2InstanceStackOutputs
 }
 var file_project_planton_provider_aws_awsec2instance_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.aws.awsec2instance.v1.AwsEc2Instance.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	2, // 0: project.planton.provider.aws.awsec2instance.v1.AwsEc2Instance.metadata:type_name -> project.planton.shared.CloudResourceMetadata
 	3, // 1: project.planton.provider.aws.awsec2instance.v1.AwsEc2Instance.spec:type_name -> project.planton.provider.aws.awsec2instance.v1.AwsEc2InstanceSpec
 	1, // 2: project.planton.provider.aws.awsec2instance.v1.AwsEc2Instance.status:type_name -> project.planton.provider.aws.awsec2instance.v1.AwsEc2InstanceStatus
 	4, // 3: project.planton.provider.aws.awsec2instance.v1.AwsEc2InstanceStatus.outputs:type_name -> project.planton.provider.aws.awsec2instance.v1.AwsEc2InstanceStackOutputs

@@ -21,7 +21,7 @@ var _ = ginkgo.Describe("GitlabKubernetes Custom Validation Tests", func() {
 		input = &GitlabKubernetes{
 			ApiVersion: "kubernetes.project-planton.org/v1",
 			Kind:       "GitlabKubernetes",
-			Metadata: &shared.ApiResourceMetadata{
+			Metadata: &shared.CloudResourceMetadata{
 				Name: "test-gitlab",
 			},
 			Spec: &GitlabKubernetesSpec{

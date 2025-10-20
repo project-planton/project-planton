@@ -22,7 +22,7 @@ var _ = ginkgo.Describe("PrometheusKubernetes Custom Validation Tests", func() {
 		input = &PrometheusKubernetes{
 			ApiVersion: "kubernetes.project-planton.org/v1",
 			Kind:       "PrometheusKubernetes",
-			Metadata: &shared.ApiResourceMetadata{
+			Metadata: &shared.CloudResourceMetadata{
 				Name: "test-prom",
 			},
 			Spec: &PrometheusKubernetesSpec{

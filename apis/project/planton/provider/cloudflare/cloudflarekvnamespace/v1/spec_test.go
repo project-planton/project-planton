@@ -23,7 +23,7 @@ var _ = ginkgo.Describe("CloudflareKvNamespaceSpec Custom Validation Tests", fun
 				input := &CloudflareKvNamespace{
 					ApiVersion: "cloudflare.project-planton.org/v1",
 					Kind:       "CloudflareKvNamespace",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-kv-namespace",
 					},
 					Spec: &CloudflareKvNamespaceSpec{

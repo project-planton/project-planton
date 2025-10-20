@@ -23,7 +23,7 @@ var _ = ginkgo.Describe("AzureContainerRegistrySpec Custom Validation Tests", fu
 				input := &AzureContainerRegistry{
 					ApiVersion: "azure.project-planton.org/v1",
 					Kind:       "AzureContainerRegistry",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-container-registry",
 					},
 					Spec: &AzureContainerRegistrySpec{

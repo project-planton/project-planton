@@ -22,7 +22,7 @@ var _ = ginkgo.Describe("LocustKubernetes Custom Validation Tests", func() {
 		input = &LocustKubernetes{
 			ApiVersion: "kubernetes.project-planton.org/v1",
 			Kind:       "LocustKubernetes",
-			Metadata: &shared.ApiResourceMetadata{
+			Metadata: &shared.CloudResourceMetadata{
 				Name: "sample-locust",
 			},
 			Spec: &LocustKubernetesSpec{

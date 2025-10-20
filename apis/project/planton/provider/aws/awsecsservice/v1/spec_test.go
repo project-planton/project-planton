@@ -27,7 +27,7 @@ var _ = ginkgo.Describe("AwsEcsService Custom Validation Tests", func() {
 				validInput = &AwsEcsService{
 					ApiVersion: "aws.project-planton.org/v1",
 					Kind:       "AwsEcsService",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-service",
 					},
 					Spec: &AwsEcsServiceSpec{
@@ -78,7 +78,7 @@ var _ = ginkgo.Describe("AwsEcsService Custom Validation Tests", func() {
 			input = &AwsEcsService{
 				ApiVersion: "aws.project-planton.org/v1",
 				Kind:       "AwsEcsService",
-				Metadata: &shared.ApiResourceMetadata{
+				Metadata: &shared.CloudResourceMetadata{
 					Name: "test-service",
 				},
 				Spec: &AwsEcsServiceSpec{
@@ -119,7 +119,7 @@ var _ = ginkgo.Describe("AwsEcsService Custom Validation Tests", func() {
 			input = &AwsEcsService{
 				ApiVersion: "aws.project-planton.org/v1",
 				Kind:       "AwsEcsService",
-				Metadata: &shared.ApiResourceMetadata{
+				Metadata: &shared.CloudResourceMetadata{
 					Name: "test-service",
 				},
 				Spec: &AwsEcsServiceSpec{
@@ -160,7 +160,7 @@ var _ = ginkgo.Describe("AwsEcsService Custom Validation Tests", func() {
 			input = &AwsEcsService{
 				ApiVersion: "aws.project-planton.org/v1",
 				Kind:       "AwsEcsService",
-				Metadata: &shared.ApiResourceMetadata{
+				Metadata: &shared.CloudResourceMetadata{
 					Name: "test-service",
 				},
 				Spec: &AwsEcsServiceSpec{

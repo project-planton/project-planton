@@ -33,7 +33,7 @@ type AwsEksNodeGroup struct {
 	Kind string `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
 	// metadata captures identifying information (name, org, version, etc.)
 	// and must pass standard validations for resource naming.
-	Metadata *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Metadata *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// spec holds the core configuration data defining how the ECS service is deployed.
 	Spec *AwsEksNodeGroupSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status holds runtime or post-deployment information.
@@ -86,7 +86,7 @@ func (x *AwsEksNodeGroup) GetKind() string {
 	return ""
 }
 
-func (x *AwsEksNodeGroup) GetMetadata() *shared.ApiResourceMetadata {
+func (x *AwsEksNodeGroup) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
@@ -157,14 +157,14 @@ var File_project_planton_provider_aws_awseksnodegroup_v1_api_proto protoreflect.
 
 const file_project_planton_provider_aws_awseksnodegroup_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"9project/planton/provider/aws/awseksnodegroup/v1/api.proto\x12/project.planton.provider.aws.awseksnodegroup.v1\x1a\x1bbuf/validate/validate.proto\x1a:project/planton/provider/aws/awseksnodegroup/v1/spec.proto\x1aCproject/planton/provider/aws/awseksnodegroup/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\x94\x03\n" +
+	"9project/planton/provider/aws/awseksnodegroup/v1/api.proto\x12/project.planton.provider.aws.awseksnodegroup.v1\x1a\x1bbuf/validate/validate.proto\x1a:project/planton/provider/aws/awseksnodegroup/v1/spec.proto\x1aCproject/planton/provider/aws/awseksnodegroup/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\x96\x03\n" +
 	"\x0fAwsEksNodeGroup\x12B\n" +
 	"\vapi_version\x18\x01 \x01(\tB!\xbaH\x1er\x1c\n" +
 	"\x1aaws.project-planton.org/v1R\n" +
 	"apiVersion\x12*\n" +
 	"\x04kind\x18\x02 \x01(\tB\x16\xbaH\x13r\x11\n" +
-	"\x0fAwsEksNodeGroupR\x04kind\x12O\n" +
-	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12`\n" +
+	"\x0fAwsEksNodeGroupR\x04kind\x12Q\n" +
+	"\bmetadata\x18\x03 \x01(\v2-.project.planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12`\n" +
 	"\x04spec\x18\x04 \x01(\v2D.project.planton.provider.aws.awseksnodegroup.v1.AwsEksNodeGroupSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12^\n" +
 	"\x06status\x18\x05 \x01(\v2F.project.planton.provider.aws.awseksnodegroup.v1.AwsEksNodeGroupStatusR\x06status\"\x7f\n" +
 	"\x15AwsEksNodeGroupStatus\x12f\n" +
@@ -185,14 +185,14 @@ func file_project_planton_provider_aws_awseksnodegroup_v1_api_proto_rawDescGZIP(
 
 var file_project_planton_provider_aws_awseksnodegroup_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_aws_awseksnodegroup_v1_api_proto_goTypes = []any{
-	(*AwsEksNodeGroup)(nil),             // 0: project.planton.provider.aws.awseksnodegroup.v1.AwsEksNodeGroup
-	(*AwsEksNodeGroupStatus)(nil),       // 1: project.planton.provider.aws.awseksnodegroup.v1.AwsEksNodeGroupStatus
-	(*shared.ApiResourceMetadata)(nil),  // 2: project.planton.shared.ApiResourceMetadata
-	(*AwsEksNodeGroupSpec)(nil),         // 3: project.planton.provider.aws.awseksnodegroup.v1.AwsEksNodeGroupSpec
-	(*AwsEksNodeGroupStackOutputs)(nil), // 4: project.planton.provider.aws.awseksnodegroup.v1.AwsEksNodeGroupStackOutputs
+	(*AwsEksNodeGroup)(nil),              // 0: project.planton.provider.aws.awseksnodegroup.v1.AwsEksNodeGroup
+	(*AwsEksNodeGroupStatus)(nil),        // 1: project.planton.provider.aws.awseksnodegroup.v1.AwsEksNodeGroupStatus
+	(*shared.CloudResourceMetadata)(nil), // 2: project.planton.shared.CloudResourceMetadata
+	(*AwsEksNodeGroupSpec)(nil),          // 3: project.planton.provider.aws.awseksnodegroup.v1.AwsEksNodeGroupSpec
+	(*AwsEksNodeGroupStackOutputs)(nil),  // 4: project.planton.provider.aws.awseksnodegroup.v1.AwsEksNodeGroupStackOutputs
 }
 var file_project_planton_provider_aws_awseksnodegroup_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.aws.awseksnodegroup.v1.AwsEksNodeGroup.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	2, // 0: project.planton.provider.aws.awseksnodegroup.v1.AwsEksNodeGroup.metadata:type_name -> project.planton.shared.CloudResourceMetadata
 	3, // 1: project.planton.provider.aws.awseksnodegroup.v1.AwsEksNodeGroup.spec:type_name -> project.planton.provider.aws.awseksnodegroup.v1.AwsEksNodeGroupSpec
 	1, // 2: project.planton.provider.aws.awseksnodegroup.v1.AwsEksNodeGroup.status:type_name -> project.planton.provider.aws.awseksnodegroup.v1.AwsEksNodeGroupStatus
 	4, // 3: project.planton.provider.aws.awseksnodegroup.v1.AwsEksNodeGroupStatus.outputs:type_name -> project.planton.provider.aws.awseksnodegroup.v1.AwsEksNodeGroupStackOutputs

@@ -19,7 +19,7 @@ Purpose: author `api.proto` for a resource kind, wiring Kubernetes-style envelop
 - `<Kind>`
   - `string api_version = 1` with const `"<provider>.project-planton.org/v1"`
   - `string kind = 2` with const `<Kind>` (PascalCase)
-  - `project.planton.shared.ApiResourceMetadata metadata = 3` with `(buf.validate.field).required = true`
+  - `project.planton.shared.CloudResourceMetadata metadata = 3` with `(buf.validate.field).required = true`
   - `<Kind>Spec spec = 4` with `(buf.validate.field).required = true`
   - `<Kind>Status status = 5` (optional)
 - `<Kind>Status`

@@ -23,7 +23,7 @@ var _ = ginkgo.Describe("AwsSecretsManagerSpec Custom Validation Tests", func() 
 				input := &AwsSecretsManager{
 					ApiVersion: "aws.project-planton.org/v1",
 					Kind:       "AwsSecretsManager",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-secrets-manager",
 					},
 					Spec: &AwsSecretsManagerSpec{

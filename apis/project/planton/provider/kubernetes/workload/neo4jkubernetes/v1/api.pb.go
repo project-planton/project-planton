@@ -31,7 +31,7 @@ type Neo4JKubernetes struct {
 	// resource-kind
 	Kind string `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
 	// metadata
-	Metadata *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Metadata *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// spec
 	Spec *Neo4JKubernetesSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status
@@ -84,7 +84,7 @@ func (x *Neo4JKubernetes) GetKind() string {
 	return ""
 }
 
-func (x *Neo4JKubernetes) GetMetadata() *shared.ApiResourceMetadata {
+func (x *Neo4JKubernetes) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
@@ -155,14 +155,14 @@ var File_project_planton_provider_kubernetes_workload_neo4jkubernetes_v1_api_pro
 
 const file_project_planton_provider_kubernetes_workload_neo4jkubernetes_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Iproject/planton/provider/kubernetes/workload/neo4jkubernetes/v1/api.proto\x12?project.planton.provider.kubernetes.workload.neo4jkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1aJproject/planton/provider/kubernetes/workload/neo4jkubernetes/v1/spec.proto\x1aSproject/planton/provider/kubernetes/workload/neo4jkubernetes/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xbb\x03\n" +
+	"Iproject/planton/provider/kubernetes/workload/neo4jkubernetes/v1/api.proto\x12?project.planton.provider.kubernetes.workload.neo4jkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1aJproject/planton/provider/kubernetes/workload/neo4jkubernetes/v1/spec.proto\x1aSproject/planton/provider/kubernetes/workload/neo4jkubernetes/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xbd\x03\n" +
 	"\x0fNeo4jKubernetes\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!kubernetes.project-planton.org/v1R\n" +
 	"apiVersion\x12*\n" +
 	"\x04kind\x18\x02 \x01(\tB\x16\xbaH\x13r\x11\n" +
-	"\x0fNeo4jKubernetesR\x04kind\x12O\n" +
-	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12p\n" +
+	"\x0fNeo4jKubernetesR\x04kind\x12Q\n" +
+	"\bmetadata\x18\x03 \x01(\v2-.project.planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12p\n" +
 	"\x04spec\x18\x04 \x01(\v2T.project.planton.provider.kubernetes.workload.neo4jkubernetes.v1.Neo4jKubernetesSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12n\n" +
 	"\x06status\x18\x05 \x01(\v2V.project.planton.provider.kubernetes.workload.neo4jkubernetes.v1.Neo4jKubernetesStatusR\x06status\"\x8f\x01\n" +
 	"\x15Neo4jKubernetesStatus\x12v\n" +
@@ -183,14 +183,14 @@ func file_project_planton_provider_kubernetes_workload_neo4jkubernetes_v1_api_pr
 
 var file_project_planton_provider_kubernetes_workload_neo4jkubernetes_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_kubernetes_workload_neo4jkubernetes_v1_api_proto_goTypes = []any{
-	(*Neo4JKubernetes)(nil),             // 0: project.planton.provider.kubernetes.workload.neo4jkubernetes.v1.Neo4jKubernetes
-	(*Neo4JKubernetesStatus)(nil),       // 1: project.planton.provider.kubernetes.workload.neo4jkubernetes.v1.Neo4jKubernetesStatus
-	(*shared.ApiResourceMetadata)(nil),  // 2: project.planton.shared.ApiResourceMetadata
-	(*Neo4JKubernetesSpec)(nil),         // 3: project.planton.provider.kubernetes.workload.neo4jkubernetes.v1.Neo4jKubernetesSpec
-	(*Neo4JKubernetesStackOutputs)(nil), // 4: project.planton.provider.kubernetes.workload.neo4jkubernetes.v1.Neo4jKubernetesStackOutputs
+	(*Neo4JKubernetes)(nil),              // 0: project.planton.provider.kubernetes.workload.neo4jkubernetes.v1.Neo4jKubernetes
+	(*Neo4JKubernetesStatus)(nil),        // 1: project.planton.provider.kubernetes.workload.neo4jkubernetes.v1.Neo4jKubernetesStatus
+	(*shared.CloudResourceMetadata)(nil), // 2: project.planton.shared.CloudResourceMetadata
+	(*Neo4JKubernetesSpec)(nil),          // 3: project.planton.provider.kubernetes.workload.neo4jkubernetes.v1.Neo4jKubernetesSpec
+	(*Neo4JKubernetesStackOutputs)(nil),  // 4: project.planton.provider.kubernetes.workload.neo4jkubernetes.v1.Neo4jKubernetesStackOutputs
 }
 var file_project_planton_provider_kubernetes_workload_neo4jkubernetes_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.kubernetes.workload.neo4jkubernetes.v1.Neo4jKubernetes.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	2, // 0: project.planton.provider.kubernetes.workload.neo4jkubernetes.v1.Neo4jKubernetes.metadata:type_name -> project.planton.shared.CloudResourceMetadata
 	3, // 1: project.planton.provider.kubernetes.workload.neo4jkubernetes.v1.Neo4jKubernetes.spec:type_name -> project.planton.provider.kubernetes.workload.neo4jkubernetes.v1.Neo4jKubernetesSpec
 	1, // 2: project.planton.provider.kubernetes.workload.neo4jkubernetes.v1.Neo4jKubernetes.status:type_name -> project.planton.provider.kubernetes.workload.neo4jkubernetes.v1.Neo4jKubernetesStatus
 	4, // 3: project.planton.provider.kubernetes.workload.neo4jkubernetes.v1.Neo4jKubernetesStatus.outputs:type_name -> project.planton.provider.kubernetes.workload.neo4jkubernetes.v1.Neo4jKubernetesStackOutputs

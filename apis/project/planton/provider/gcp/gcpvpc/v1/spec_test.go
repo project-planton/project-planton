@@ -25,7 +25,7 @@ var _ = ginkgo.Describe("GcpVpcSpec Custom Validation Tests", func() {
 				input := &GcpVpc{
 					ApiVersion: "gcp.project-planton.org/v1",
 					Kind:       "GcpVpc",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-gcp-vpc",
 					},
 					Spec: &GcpVpcSpec{

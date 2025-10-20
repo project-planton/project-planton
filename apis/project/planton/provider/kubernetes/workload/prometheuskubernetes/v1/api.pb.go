@@ -31,7 +31,7 @@ type PrometheusKubernetes struct {
 	// resource-kind
 	Kind string `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
 	// metadata
-	Metadata *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Metadata *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// spec
 	Spec *PrometheusKubernetesSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status
@@ -84,7 +84,7 @@ func (x *PrometheusKubernetes) GetKind() string {
 	return ""
 }
 
-func (x *PrometheusKubernetes) GetMetadata() *shared.ApiResourceMetadata {
+func (x *PrometheusKubernetes) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
@@ -155,14 +155,14 @@ var File_project_planton_provider_kubernetes_workload_prometheuskubernetes_v1_ap
 
 const file_project_planton_provider_kubernetes_workload_prometheuskubernetes_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Nproject/planton/provider/kubernetes/workload/prometheuskubernetes/v1/api.proto\x12Dproject.planton.provider.kubernetes.workload.prometheuskubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1aOproject/planton/provider/kubernetes/workload/prometheuskubernetes/v1/spec.proto\x1aXproject/planton/provider/kubernetes/workload/prometheuskubernetes/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xd9\x03\n" +
+	"Nproject/planton/provider/kubernetes/workload/prometheuskubernetes/v1/api.proto\x12Dproject.planton.provider.kubernetes.workload.prometheuskubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1aOproject/planton/provider/kubernetes/workload/prometheuskubernetes/v1/spec.proto\x1aXproject/planton/provider/kubernetes/workload/prometheuskubernetes/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xdb\x03\n" +
 	"\x14PrometheusKubernetes\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!kubernetes.project-planton.org/v1R\n" +
 	"apiVersion\x12/\n" +
 	"\x04kind\x18\x02 \x01(\tB\x1b\xbaH\x18r\x16\n" +
-	"\x14PrometheusKubernetesR\x04kind\x12O\n" +
-	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12z\n" +
+	"\x14PrometheusKubernetesR\x04kind\x12Q\n" +
+	"\bmetadata\x18\x03 \x01(\v2-.project.planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12z\n" +
 	"\x04spec\x18\x04 \x01(\v2^.project.planton.provider.kubernetes.workload.prometheuskubernetes.v1.PrometheusKubernetesSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12x\n" +
 	"\x06status\x18\x05 \x01(\v2`.project.planton.provider.kubernetes.workload.prometheuskubernetes.v1.PrometheusKubernetesStatusR\x06status\"\x9f\x01\n" +
 	"\x1aPrometheusKubernetesStatus\x12\x80\x01\n" +
@@ -185,12 +185,12 @@ var file_project_planton_provider_kubernetes_workload_prometheuskubernetes_v1_ap
 var file_project_planton_provider_kubernetes_workload_prometheuskubernetes_v1_api_proto_goTypes = []any{
 	(*PrometheusKubernetes)(nil),             // 0: project.planton.provider.kubernetes.workload.prometheuskubernetes.v1.PrometheusKubernetes
 	(*PrometheusKubernetesStatus)(nil),       // 1: project.planton.provider.kubernetes.workload.prometheuskubernetes.v1.PrometheusKubernetesStatus
-	(*shared.ApiResourceMetadata)(nil),       // 2: project.planton.shared.ApiResourceMetadata
+	(*shared.CloudResourceMetadata)(nil),     // 2: project.planton.shared.CloudResourceMetadata
 	(*PrometheusKubernetesSpec)(nil),         // 3: project.planton.provider.kubernetes.workload.prometheuskubernetes.v1.PrometheusKubernetesSpec
 	(*PrometheusKubernetesStackOutputs)(nil), // 4: project.planton.provider.kubernetes.workload.prometheuskubernetes.v1.PrometheusKubernetesStackOutputs
 }
 var file_project_planton_provider_kubernetes_workload_prometheuskubernetes_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.kubernetes.workload.prometheuskubernetes.v1.PrometheusKubernetes.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	2, // 0: project.planton.provider.kubernetes.workload.prometheuskubernetes.v1.PrometheusKubernetes.metadata:type_name -> project.planton.shared.CloudResourceMetadata
 	3, // 1: project.planton.provider.kubernetes.workload.prometheuskubernetes.v1.PrometheusKubernetes.spec:type_name -> project.planton.provider.kubernetes.workload.prometheuskubernetes.v1.PrometheusKubernetesSpec
 	1, // 2: project.planton.provider.kubernetes.workload.prometheuskubernetes.v1.PrometheusKubernetes.status:type_name -> project.planton.provider.kubernetes.workload.prometheuskubernetes.v1.PrometheusKubernetesStatus
 	4, // 3: project.planton.provider.kubernetes.workload.prometheuskubernetes.v1.PrometheusKubernetesStatus.outputs:type_name -> project.planton.provider.kubernetes.workload.prometheuskubernetes.v1.PrometheusKubernetesStackOutputs

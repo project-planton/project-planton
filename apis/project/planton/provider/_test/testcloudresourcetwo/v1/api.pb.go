@@ -25,12 +25,12 @@ const (
 
 // test-cloud-resource-two (stub for enum consistency)
 type TestCloudResourceTwo struct {
-	state         protoimpl.MessageState      `protogen:"open.v1"`
-	ApiVersion    string                      `protobuf:"bytes,1,opt,name=api_version,json=apiVersion,proto3" json:"api_version,omitempty"`
-	Kind          string                      `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
-	Metadata      *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
-	Spec          *TestCloudResourceTwoSpec   `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
-	Status        *TestCloudResourceTwoStatus `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
+	state         protoimpl.MessageState        `protogen:"open.v1"`
+	ApiVersion    string                        `protobuf:"bytes,1,opt,name=api_version,json=apiVersion,proto3" json:"api_version,omitempty"`
+	Kind          string                        `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
+	Metadata      *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Spec          *TestCloudResourceTwoSpec     `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
+	Status        *TestCloudResourceTwoStatus   `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -79,7 +79,7 @@ func (x *TestCloudResourceTwo) GetKind() string {
 	return ""
 }
 
-func (x *TestCloudResourceTwo) GetMetadata() *shared.ApiResourceMetadata {
+func (x *TestCloudResourceTwo) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
@@ -148,14 +148,14 @@ var File_project_planton_provider__test_testcloudresourcetwo_v1_api_proto protor
 
 const file_project_planton_provider__test_testcloudresourcetwo_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"@project/planton/provider/_test/testcloudresourcetwo/v1/api.proto\x126project.planton.provider._test.testcloudresourcetwo.v1\x1a\x1bbuf/validate/validate.proto\x1aAproject/planton/provider/_test/testcloudresourcetwo/v1/spec.proto\x1aJproject/planton/provider/_test/testcloudresourcetwo/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xb0\x03\n" +
+	"@project/planton/provider/_test/testcloudresourcetwo/v1/api.proto\x126project.planton.provider._test.testcloudresourcetwo.v1\x1a\x1bbuf/validate/validate.proto\x1aAproject/planton/provider/_test/testcloudresourcetwo/v1/spec.proto\x1aJproject/planton/provider/_test/testcloudresourcetwo/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xb2\x03\n" +
 	"\x14TestCloudResourceTwo\x12D\n" +
 	"\vapi_version\x18\x01 \x01(\tB#\xbaH r\x1e\n" +
 	"\x1c_test.project-planton.org/v1R\n" +
 	"apiVersion\x12/\n" +
 	"\x04kind\x18\x02 \x01(\tB\x1b\xbaH\x18r\x16\n" +
-	"\x14TestCloudResourceTwoR\x04kind\x12O\n" +
-	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12d\n" +
+	"\x14TestCloudResourceTwoR\x04kind\x12Q\n" +
+	"\bmetadata\x18\x03 \x01(\v2-.project.planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12d\n" +
 	"\x04spec\x18\x04 \x01(\v2P.project.planton.provider._test.testcloudresourcetwo.v1.TestCloudResourceTwoSpecR\x04spec\x12j\n" +
 	"\x06status\x18\x05 \x01(\v2R.project.planton.provider._test.testcloudresourcetwo.v1.TestCloudResourceTwoStatusR\x06status\"\x90\x01\n" +
 	"\x1aTestCloudResourceTwoStatus\x12r\n" +
@@ -178,12 +178,12 @@ var file_project_planton_provider__test_testcloudresourcetwo_v1_api_proto_msgTyp
 var file_project_planton_provider__test_testcloudresourcetwo_v1_api_proto_goTypes = []any{
 	(*TestCloudResourceTwo)(nil),             // 0: project.planton.provider._test.testcloudresourcetwo.v1.TestCloudResourceTwo
 	(*TestCloudResourceTwoStatus)(nil),       // 1: project.planton.provider._test.testcloudresourcetwo.v1.TestCloudResourceTwoStatus
-	(*shared.ApiResourceMetadata)(nil),       // 2: project.planton.shared.ApiResourceMetadata
+	(*shared.CloudResourceMetadata)(nil),     // 2: project.planton.shared.CloudResourceMetadata
 	(*TestCloudResourceTwoSpec)(nil),         // 3: project.planton.provider._test.testcloudresourcetwo.v1.TestCloudResourceTwoSpec
 	(*TestCloudResourceTwoStackOutputs)(nil), // 4: project.planton.provider._test.testcloudresourcetwo.v1.TestCloudResourceTwoStackOutputs
 }
 var file_project_planton_provider__test_testcloudresourcetwo_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider._test.testcloudresourcetwo.v1.TestCloudResourceTwo.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	2, // 0: project.planton.provider._test.testcloudresourcetwo.v1.TestCloudResourceTwo.metadata:type_name -> project.planton.shared.CloudResourceMetadata
 	3, // 1: project.planton.provider._test.testcloudresourcetwo.v1.TestCloudResourceTwo.spec:type_name -> project.planton.provider._test.testcloudresourcetwo.v1.TestCloudResourceTwoSpec
 	1, // 2: project.planton.provider._test.testcloudresourcetwo.v1.TestCloudResourceTwo.status:type_name -> project.planton.provider._test.testcloudresourcetwo.v1.TestCloudResourceTwoStatus
 	4, // 3: project.planton.provider._test.testcloudresourcetwo.v1.TestCloudResourceTwoStatus.outputs:type_name -> project.planton.provider._test.testcloudresourcetwo.v1.TestCloudResourceTwoStackOutputs

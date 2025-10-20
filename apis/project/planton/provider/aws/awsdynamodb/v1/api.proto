@@ -11,7 +11,7 @@ import "project/planton/shared/metadata.proto";
 message AwsDynamodb {
   string api_version = 1 [(buf.validate.field).string.const = "aws.project-planton.org/v1"];
   string kind = 2 [(buf.validate.field).string.const = "AwsDynamodb"];
-  project.planton.shared.ApiResourceMetadata metadata = 3 [(buf.validate.field).required = true];
+  project.planton.shared.CloudResourceMetadata metadata = 3 [(buf.validate.field).required = true];
   AwsDynamodbSpec spec = 4 [(buf.validate.field).required = true];
   AwsDynamodbStatus status = 5;
 }

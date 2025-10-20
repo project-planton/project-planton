@@ -23,7 +23,7 @@ var _ = ginkgo.Describe("GcpGkeClusterSpec Custom Validation Tests", func() {
 				input := &GcpGkeCluster{
 					ApiVersion: "gcp.project-planton.org/v1",
 					Kind:       "GcpGkeCluster",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-gke-cluster",
 					},
 					Spec: &GcpGkeClusterSpec{

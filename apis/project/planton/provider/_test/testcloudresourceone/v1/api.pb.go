@@ -31,7 +31,7 @@ type TestCloudResourceOne struct {
 	// resource-kind
 	Kind string `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
 	// metadata
-	Metadata *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Metadata *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// spec
 	Spec *TestCloudResourceOneSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status
@@ -84,7 +84,7 @@ func (x *TestCloudResourceOne) GetKind() string {
 	return ""
 }
 
-func (x *TestCloudResourceOne) GetMetadata() *shared.ApiResourceMetadata {
+func (x *TestCloudResourceOne) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
@@ -155,14 +155,14 @@ var File_project_planton_provider__test_testcloudresourceone_v1_api_proto protor
 
 const file_project_planton_provider__test_testcloudresourceone_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"@project/planton/provider/_test/testcloudresourceone/v1/api.proto\x126project.planton.provider._test.testcloudresourceone.v1\x1a\x1bbuf/validate/validate.proto\x1aAproject/planton/provider/_test/testcloudresourceone/v1/spec.proto\x1aJproject/planton/provider/_test/testcloudresourceone/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xb0\x03\n" +
+	"@project/planton/provider/_test/testcloudresourceone/v1/api.proto\x126project.planton.provider._test.testcloudresourceone.v1\x1a\x1bbuf/validate/validate.proto\x1aAproject/planton/provider/_test/testcloudresourceone/v1/spec.proto\x1aJproject/planton/provider/_test/testcloudresourceone/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xb2\x03\n" +
 	"\x14TestCloudResourceOne\x12D\n" +
 	"\vapi_version\x18\x01 \x01(\tB#\xbaH r\x1e\n" +
 	"\x1c_test.project-planton.org/v1R\n" +
 	"apiVersion\x12/\n" +
 	"\x04kind\x18\x02 \x01(\tB\x1b\xbaH\x18r\x16\n" +
-	"\x14TestCloudResourceOneR\x04kind\x12O\n" +
-	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12d\n" +
+	"\x14TestCloudResourceOneR\x04kind\x12Q\n" +
+	"\bmetadata\x18\x03 \x01(\v2-.project.planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12d\n" +
 	"\x04spec\x18\x04 \x01(\v2P.project.planton.provider._test.testcloudresourceone.v1.TestCloudResourceOneSpecR\x04spec\x12j\n" +
 	"\x06status\x18\x05 \x01(\v2R.project.planton.provider._test.testcloudresourceone.v1.TestCloudResourceOneStatusR\x06status\"\x90\x01\n" +
 	"\x1aTestCloudResourceOneStatus\x12r\n" +
@@ -185,12 +185,12 @@ var file_project_planton_provider__test_testcloudresourceone_v1_api_proto_msgTyp
 var file_project_planton_provider__test_testcloudresourceone_v1_api_proto_goTypes = []any{
 	(*TestCloudResourceOne)(nil),             // 0: project.planton.provider._test.testcloudresourceone.v1.TestCloudResourceOne
 	(*TestCloudResourceOneStatus)(nil),       // 1: project.planton.provider._test.testcloudresourceone.v1.TestCloudResourceOneStatus
-	(*shared.ApiResourceMetadata)(nil),       // 2: project.planton.shared.ApiResourceMetadata
+	(*shared.CloudResourceMetadata)(nil),     // 2: project.planton.shared.CloudResourceMetadata
 	(*TestCloudResourceOneSpec)(nil),         // 3: project.planton.provider._test.testcloudresourceone.v1.TestCloudResourceOneSpec
 	(*TestCloudResourceOneStackOutputs)(nil), // 4: project.planton.provider._test.testcloudresourceone.v1.TestCloudResourceOneStackOutputs
 }
 var file_project_planton_provider__test_testcloudresourceone_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider._test.testcloudresourceone.v1.TestCloudResourceOne.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	2, // 0: project.planton.provider._test.testcloudresourceone.v1.TestCloudResourceOne.metadata:type_name -> project.planton.shared.CloudResourceMetadata
 	3, // 1: project.planton.provider._test.testcloudresourceone.v1.TestCloudResourceOne.spec:type_name -> project.planton.provider._test.testcloudresourceone.v1.TestCloudResourceOneSpec
 	1, // 2: project.planton.provider._test.testcloudresourceone.v1.TestCloudResourceOne.status:type_name -> project.planton.provider._test.testcloudresourceone.v1.TestCloudResourceOneStatus
 	4, // 3: project.planton.provider._test.testcloudresourceone.v1.TestCloudResourceOneStatus.outputs:type_name -> project.planton.provider._test.testcloudresourceone.v1.TestCloudResourceOneStackOutputs

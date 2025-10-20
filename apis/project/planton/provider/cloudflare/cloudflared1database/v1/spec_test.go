@@ -23,7 +23,7 @@ var _ = ginkgo.Describe("CloudflareD1DatabaseSpec Custom Validation Tests", func
 				input := &CloudflareD1Database{
 					ApiVersion: "cloudflare.project-planton.org/v1",
 					Kind:       "CloudflareD1Database",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-d1-database",
 					},
 					Spec: &CloudflareD1DatabaseSpec{

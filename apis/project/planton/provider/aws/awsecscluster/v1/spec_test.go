@@ -24,7 +24,7 @@ var _ = ginkgo.Describe("KubernetesProviderConfig Custom Validation Tests", func
 				input = &AwsEcsCluster{
 					ApiVersion: "aws.project-planton.org/v1",
 					Kind:       "AwsEcsCluster",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "valid-name",
 					},
 					Spec: &AwsEcsClusterSpec{

@@ -31,7 +31,7 @@ type DigitalOceanDroplet struct {
 	// resource-kind
 	Kind string `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
 	// metadata
-	Metadata *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Metadata *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// spec
 	Spec *DigitalOceanDropletSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status
@@ -84,7 +84,7 @@ func (x *DigitalOceanDroplet) GetKind() string {
 	return ""
 }
 
-func (x *DigitalOceanDroplet) GetMetadata() *shared.ApiResourceMetadata {
+func (x *DigitalOceanDroplet) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
@@ -157,14 +157,14 @@ var File_project_planton_provider_digitalocean_digitaloceandroplet_v1_api_proto 
 
 const file_project_planton_provider_digitalocean_digitaloceandroplet_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Fproject/planton/provider/digitalocean/digitaloceandroplet/v1/api.proto\x12<project.planton.provider.digitalocean.digitaloceandroplet.v1\x1a\x1bbuf/validate/validate.proto\x1aGproject/planton/provider/digitalocean/digitaloceandroplet/v1/spec.proto\x1aPproject/planton/provider/digitalocean/digitaloceandroplet/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xc8\x03\n" +
+	"Fproject/planton/provider/digitalocean/digitaloceandroplet/v1/api.proto\x12<project.planton.provider.digitalocean.digitaloceandroplet.v1\x1a\x1bbuf/validate/validate.proto\x1aGproject/planton/provider/digitalocean/digitaloceandroplet/v1/spec.proto\x1aPproject/planton/provider/digitalocean/digitaloceandroplet/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xca\x03\n" +
 	"\x13DigitalOceanDroplet\x12L\n" +
 	"\vapi_version\x18\x01 \x01(\tB+\xbaH(r&\n" +
 	"$digital-ocean.project-planton.org/v1R\n" +
 	"apiVersion\x12.\n" +
 	"\x04kind\x18\x02 \x01(\tB\x1a\xbaH\x17r\x15\n" +
-	"\x13DigitalOceanDropletR\x04kind\x12O\n" +
-	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12q\n" +
+	"\x13DigitalOceanDropletR\x04kind\x12Q\n" +
+	"\bmetadata\x18\x03 \x01(\v2-.project.planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12q\n" +
 	"\x04spec\x18\x04 \x01(\v2U.project.planton.provider.digitalocean.digitaloceandroplet.v1.DigitalOceanDropletSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12o\n" +
 	"\x06status\x18\x05 \x01(\v2W.project.planton.provider.digitalocean.digitaloceandroplet.v1.DigitalOceanDropletStatusR\x06status\"\x94\x01\n" +
 	"\x19DigitalOceanDropletStatus\x12w\n" +
@@ -187,12 +187,12 @@ var file_project_planton_provider_digitalocean_digitaloceandroplet_v1_api_proto_
 var file_project_planton_provider_digitalocean_digitaloceandroplet_v1_api_proto_goTypes = []any{
 	(*DigitalOceanDroplet)(nil),             // 0: project.planton.provider.digitalocean.digitaloceandroplet.v1.DigitalOceanDroplet
 	(*DigitalOceanDropletStatus)(nil),       // 1: project.planton.provider.digitalocean.digitaloceandroplet.v1.DigitalOceanDropletStatus
-	(*shared.ApiResourceMetadata)(nil),      // 2: project.planton.shared.ApiResourceMetadata
+	(*shared.CloudResourceMetadata)(nil),    // 2: project.planton.shared.CloudResourceMetadata
 	(*DigitalOceanDropletSpec)(nil),         // 3: project.planton.provider.digitalocean.digitaloceandroplet.v1.DigitalOceanDropletSpec
 	(*DigitalOceanDropletStackOutputs)(nil), // 4: project.planton.provider.digitalocean.digitaloceandroplet.v1.DigitalOceanDropletStackOutputs
 }
 var file_project_planton_provider_digitalocean_digitaloceandroplet_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.digitalocean.digitaloceandroplet.v1.DigitalOceanDroplet.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	2, // 0: project.planton.provider.digitalocean.digitaloceandroplet.v1.DigitalOceanDroplet.metadata:type_name -> project.planton.shared.CloudResourceMetadata
 	3, // 1: project.planton.provider.digitalocean.digitaloceandroplet.v1.DigitalOceanDroplet.spec:type_name -> project.planton.provider.digitalocean.digitaloceandroplet.v1.DigitalOceanDropletSpec
 	1, // 2: project.planton.provider.digitalocean.digitaloceandroplet.v1.DigitalOceanDroplet.status:type_name -> project.planton.provider.digitalocean.digitaloceandroplet.v1.DigitalOceanDropletStatus
 	4, // 3: project.planton.provider.digitalocean.digitaloceandroplet.v1.DigitalOceanDropletStatus.outputs:type_name -> project.planton.provider.digitalocean.digitaloceandroplet.v1.DigitalOceanDropletStackOutputs

@@ -31,7 +31,7 @@ type TemporalKubernetes struct {
 	// resource-kind
 	Kind string `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
 	// metadata
-	Metadata *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Metadata *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// spec
 	Spec *TemporalKubernetesSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status
@@ -84,7 +84,7 @@ func (x *TemporalKubernetes) GetKind() string {
 	return ""
 }
 
-func (x *TemporalKubernetes) GetMetadata() *shared.ApiResourceMetadata {
+func (x *TemporalKubernetes) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
@@ -155,14 +155,14 @@ var File_project_planton_provider_kubernetes_workload_temporalkubernetes_v1_api_
 
 const file_project_planton_provider_kubernetes_workload_temporalkubernetes_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Lproject/planton/provider/kubernetes/workload/temporalkubernetes/v1/api.proto\x12Bproject.planton.provider.kubernetes.workload.temporalkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1aMproject/planton/provider/kubernetes/workload/temporalkubernetes/v1/spec.proto\x1aVproject/planton/provider/kubernetes/workload/temporalkubernetes/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xcd\x03\n" +
+	"Lproject/planton/provider/kubernetes/workload/temporalkubernetes/v1/api.proto\x12Bproject.planton.provider.kubernetes.workload.temporalkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1aMproject/planton/provider/kubernetes/workload/temporalkubernetes/v1/spec.proto\x1aVproject/planton/provider/kubernetes/workload/temporalkubernetes/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xcf\x03\n" +
 	"\x12TemporalKubernetes\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!kubernetes.project-planton.org/v1R\n" +
 	"apiVersion\x12-\n" +
 	"\x04kind\x18\x02 \x01(\tB\x19\xbaH\x16r\x14\n" +
-	"\x12TemporalKubernetesR\x04kind\x12O\n" +
-	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12v\n" +
+	"\x12TemporalKubernetesR\x04kind\x12Q\n" +
+	"\bmetadata\x18\x03 \x01(\v2-.project.planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12v\n" +
 	"\x04spec\x18\x04 \x01(\v2Z.project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12t\n" +
 	"\x06status\x18\x05 \x01(\v2\\.project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesStatusR\x06status\"\x98\x01\n" +
 	"\x18TemporalKubernetesStatus\x12|\n" +
@@ -185,12 +185,12 @@ var file_project_planton_provider_kubernetes_workload_temporalkubernetes_v1_api_
 var file_project_planton_provider_kubernetes_workload_temporalkubernetes_v1_api_proto_goTypes = []any{
 	(*TemporalKubernetes)(nil),             // 0: project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetes
 	(*TemporalKubernetesStatus)(nil),       // 1: project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesStatus
-	(*shared.ApiResourceMetadata)(nil),     // 2: project.planton.shared.ApiResourceMetadata
+	(*shared.CloudResourceMetadata)(nil),   // 2: project.planton.shared.CloudResourceMetadata
 	(*TemporalKubernetesSpec)(nil),         // 3: project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesSpec
 	(*TemporalKubernetesStackOutputs)(nil), // 4: project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesStackOutputs
 }
 var file_project_planton_provider_kubernetes_workload_temporalkubernetes_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetes.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	2, // 0: project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetes.metadata:type_name -> project.planton.shared.CloudResourceMetadata
 	3, // 1: project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetes.spec:type_name -> project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesSpec
 	1, // 2: project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetes.status:type_name -> project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesStatus
 	4, // 3: project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesStatus.outputs:type_name -> project.planton.provider.kubernetes.workload.temporalkubernetes.v1.TemporalKubernetesStackOutputs

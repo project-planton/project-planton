@@ -16,7 +16,7 @@ message AwsRdsInstance {
   string kind = 2 [(buf.validate.field).string.const = 'AwsRdsInstance'];
 
   // metadata captures identifying information (name, org, version, etc.).
-  project.planton.shared.ApiResourceMetadata metadata = 3 [(buf.validate.field).required = true];
+  project.planton.shared.CloudResourceMetadata metadata = 3 [(buf.validate.field).required = true];
 
   // spec holds the core configuration data defining the DB instance.
   AwsRdsInstanceSpec spec = 4 [(buf.validate.field).required = true];

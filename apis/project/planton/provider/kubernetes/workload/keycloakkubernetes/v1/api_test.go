@@ -22,7 +22,7 @@ var _ = ginkgo.Describe("KeycloakKubernetes Custom Validation Tests", func() {
 		input = &KeycloakKubernetes{
 			ApiVersion: "kubernetes.project-planton.org/v1",
 			Kind:       "KeycloakKubernetes",
-			Metadata: &shared.ApiResourceMetadata{
+			Metadata: &shared.CloudResourceMetadata{
 				Name: "test-keycloak",
 			},
 			Spec: &KeycloakKubernetesSpec{

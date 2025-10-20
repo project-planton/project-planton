@@ -21,7 +21,7 @@ var _ = ginkgo.Describe("GrafanaKubernetes Custom Validation Tests", func() {
 		input = &GrafanaKubernetes{
 			ApiVersion: "kubernetes.project-planton.org/v1",
 			Kind:       "GrafanaKubernetes",
-			Metadata: &shared.ApiResourceMetadata{
+			Metadata: &shared.CloudResourceMetadata{
 				Name: "test-grafana",
 			},
 			Spec: &GrafanaKubernetesSpec{

@@ -16,7 +16,7 @@ func TestGeneratedTFVarsParsing(t *testing.T) {
 	msg := &rediskubernetesv1.RedisKubernetes{
 		ApiVersion: "kubernetes.project-planton.org/v1",
 		Kind:       "RedisKubernetes",
-		Metadata: &shared.ApiResourceMetadata{
+		Metadata: &shared.CloudResourceMetadata{
 			Name: "red-one",
 			Labels: map[string]string{
 				"env": "production",

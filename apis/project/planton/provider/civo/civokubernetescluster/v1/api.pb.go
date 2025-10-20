@@ -31,7 +31,7 @@ type CivoKubernetesCluster struct {
 	// resource-kind
 	Kind string `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
 	// metadata
-	Metadata *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Metadata *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// spec
 	Spec *CivoKubernetesClusterSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status
@@ -84,7 +84,7 @@ func (x *CivoKubernetesCluster) GetKind() string {
 	return ""
 }
 
-func (x *CivoKubernetesCluster) GetMetadata() *shared.ApiResourceMetadata {
+func (x *CivoKubernetesCluster) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
@@ -157,14 +157,14 @@ var File_project_planton_provider_civo_civokubernetescluster_v1_api_proto protor
 
 const file_project_planton_provider_civo_civokubernetescluster_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"@project/planton/provider/civo/civokubernetescluster/v1/api.proto\x126project.planton.provider.civo.civokubernetescluster.v1\x1a\x1bbuf/validate/validate.proto\x1aAproject/planton/provider/civo/civokubernetescluster/v1/spec.proto\x1aJproject/planton/provider/civo/civokubernetescluster/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xbb\x03\n" +
+	"@project/planton/provider/civo/civokubernetescluster/v1/api.proto\x126project.planton.provider.civo.civokubernetescluster.v1\x1a\x1bbuf/validate/validate.proto\x1aAproject/planton/provider/civo/civokubernetescluster/v1/spec.proto\x1aJproject/planton/provider/civo/civokubernetescluster/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xbd\x03\n" +
 	"\x15CivoKubernetesCluster\x12C\n" +
 	"\vapi_version\x18\x01 \x01(\tB\"\xbaH\x1fr\x1d\n" +
 	"\x1bcivo.project-planton.org/v1R\n" +
 	"apiVersion\x120\n" +
 	"\x04kind\x18\x02 \x01(\tB\x1c\xbaH\x19r\x17\n" +
-	"\x15CivoKubernetesClusterR\x04kind\x12O\n" +
-	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12m\n" +
+	"\x15CivoKubernetesClusterR\x04kind\x12Q\n" +
+	"\bmetadata\x18\x03 \x01(\v2-.project.planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12m\n" +
 	"\x04spec\x18\x04 \x01(\v2Q.project.planton.provider.civo.civokubernetescluster.v1.CivoKubernetesClusterSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12k\n" +
 	"\x06status\x18\x05 \x01(\v2S.project.planton.provider.civo.civokubernetescluster.v1.CivoKubernetesClusterStatusR\x06status\"\x92\x01\n" +
 	"\x1bCivoKubernetesClusterStatus\x12s\n" +
@@ -187,12 +187,12 @@ var file_project_planton_provider_civo_civokubernetescluster_v1_api_proto_msgTyp
 var file_project_planton_provider_civo_civokubernetescluster_v1_api_proto_goTypes = []any{
 	(*CivoKubernetesCluster)(nil),             // 0: project.planton.provider.civo.civokubernetescluster.v1.CivoKubernetesCluster
 	(*CivoKubernetesClusterStatus)(nil),       // 1: project.planton.provider.civo.civokubernetescluster.v1.CivoKubernetesClusterStatus
-	(*shared.ApiResourceMetadata)(nil),        // 2: project.planton.shared.ApiResourceMetadata
+	(*shared.CloudResourceMetadata)(nil),      // 2: project.planton.shared.CloudResourceMetadata
 	(*CivoKubernetesClusterSpec)(nil),         // 3: project.planton.provider.civo.civokubernetescluster.v1.CivoKubernetesClusterSpec
 	(*CivoKubernetesClusterStackOutputs)(nil), // 4: project.planton.provider.civo.civokubernetescluster.v1.CivoKubernetesClusterStackOutputs
 }
 var file_project_planton_provider_civo_civokubernetescluster_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.civo.civokubernetescluster.v1.CivoKubernetesCluster.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	2, // 0: project.planton.provider.civo.civokubernetescluster.v1.CivoKubernetesCluster.metadata:type_name -> project.planton.shared.CloudResourceMetadata
 	3, // 1: project.planton.provider.civo.civokubernetescluster.v1.CivoKubernetesCluster.spec:type_name -> project.planton.provider.civo.civokubernetescluster.v1.CivoKubernetesClusterSpec
 	1, // 2: project.planton.provider.civo.civokubernetescluster.v1.CivoKubernetesCluster.status:type_name -> project.planton.provider.civo.civokubernetescluster.v1.CivoKubernetesClusterStatus
 	4, // 3: project.planton.provider.civo.civokubernetescluster.v1.CivoKubernetesClusterStatus.outputs:type_name -> project.planton.provider.civo.civokubernetescluster.v1.CivoKubernetesClusterStackOutputs

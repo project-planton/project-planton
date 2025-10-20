@@ -22,7 +22,7 @@ var _ = ginkgo.Describe("JenkinsKubernetes Custom Validation Tests", func() {
 		input = &JenkinsKubernetes{
 			ApiVersion: "kubernetes.project-planton.org/v1",
 			Kind:       "JenkinsKubernetes",
-			Metadata: &shared.ApiResourceMetadata{
+			Metadata: &shared.CloudResourceMetadata{
 				Name: "test-jenkins",
 			},
 			Spec: &JenkinsKubernetesSpec{

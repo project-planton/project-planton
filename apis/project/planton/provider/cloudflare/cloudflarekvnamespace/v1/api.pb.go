@@ -31,7 +31,7 @@ type CloudflareKvNamespace struct {
 	// resource-kind
 	Kind string `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
 	// metadata
-	Metadata *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Metadata *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// spec
 	Spec *CloudflareKvNamespaceSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status
@@ -84,7 +84,7 @@ func (x *CloudflareKvNamespace) GetKind() string {
 	return ""
 }
 
-func (x *CloudflareKvNamespace) GetMetadata() *shared.ApiResourceMetadata {
+func (x *CloudflareKvNamespace) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
@@ -157,14 +157,14 @@ var File_project_planton_provider_cloudflare_cloudflarekvnamespace_v1_api_proto 
 
 const file_project_planton_provider_cloudflare_cloudflarekvnamespace_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Fproject/planton/provider/cloudflare/cloudflarekvnamespace/v1/api.proto\x12<project.planton.provider.cloudflare.cloudflarekvnamespace.v1\x1a\x1bbuf/validate/validate.proto\x1aGproject/planton/provider/cloudflare/cloudflarekvnamespace/v1/spec.proto\x1aPproject/planton/provider/cloudflare/cloudflarekvnamespace/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xcd\x03\n" +
+	"Fproject/planton/provider/cloudflare/cloudflarekvnamespace/v1/api.proto\x12<project.planton.provider.cloudflare.cloudflarekvnamespace.v1\x1a\x1bbuf/validate/validate.proto\x1aGproject/planton/provider/cloudflare/cloudflarekvnamespace/v1/spec.proto\x1aPproject/planton/provider/cloudflare/cloudflarekvnamespace/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xcf\x03\n" +
 	"\x15CloudflareKvNamespace\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!cloudflare.project-planton.org/v1R\n" +
 	"apiVersion\x120\n" +
 	"\x04kind\x18\x02 \x01(\tB\x1c\xbaH\x19r\x17\n" +
-	"\x15CloudflareKvNamespaceR\x04kind\x12O\n" +
-	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12s\n" +
+	"\x15CloudflareKvNamespaceR\x04kind\x12Q\n" +
+	"\bmetadata\x18\x03 \x01(\v2-.project.planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12s\n" +
 	"\x04spec\x18\x04 \x01(\v2W.project.planton.provider.cloudflare.cloudflarekvnamespace.v1.CloudflareKvNamespaceSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12q\n" +
 	"\x06status\x18\x05 \x01(\v2Y.project.planton.provider.cloudflare.cloudflarekvnamespace.v1.CloudflareKvNamespaceStatusR\x06status\"\x98\x01\n" +
 	"\x1bCloudflareKvNamespaceStatus\x12y\n" +
@@ -187,12 +187,12 @@ var file_project_planton_provider_cloudflare_cloudflarekvnamespace_v1_api_proto_
 var file_project_planton_provider_cloudflare_cloudflarekvnamespace_v1_api_proto_goTypes = []any{
 	(*CloudflareKvNamespace)(nil),             // 0: project.planton.provider.cloudflare.cloudflarekvnamespace.v1.CloudflareKvNamespace
 	(*CloudflareKvNamespaceStatus)(nil),       // 1: project.planton.provider.cloudflare.cloudflarekvnamespace.v1.CloudflareKvNamespaceStatus
-	(*shared.ApiResourceMetadata)(nil),        // 2: project.planton.shared.ApiResourceMetadata
+	(*shared.CloudResourceMetadata)(nil),      // 2: project.planton.shared.CloudResourceMetadata
 	(*CloudflareKvNamespaceSpec)(nil),         // 3: project.planton.provider.cloudflare.cloudflarekvnamespace.v1.CloudflareKvNamespaceSpec
 	(*CloudflareKvNamespaceStackOutputs)(nil), // 4: project.planton.provider.cloudflare.cloudflarekvnamespace.v1.CloudflareKvNamespaceStackOutputs
 }
 var file_project_planton_provider_cloudflare_cloudflarekvnamespace_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.cloudflare.cloudflarekvnamespace.v1.CloudflareKvNamespace.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	2, // 0: project.planton.provider.cloudflare.cloudflarekvnamespace.v1.CloudflareKvNamespace.metadata:type_name -> project.planton.shared.CloudResourceMetadata
 	3, // 1: project.planton.provider.cloudflare.cloudflarekvnamespace.v1.CloudflareKvNamespace.spec:type_name -> project.planton.provider.cloudflare.cloudflarekvnamespace.v1.CloudflareKvNamespaceSpec
 	1, // 2: project.planton.provider.cloudflare.cloudflarekvnamespace.v1.CloudflareKvNamespace.status:type_name -> project.planton.provider.cloudflare.cloudflarekvnamespace.v1.CloudflareKvNamespaceStatus
 	4, // 3: project.planton.provider.cloudflare.cloudflarekvnamespace.v1.CloudflareKvNamespaceStatus.outputs:type_name -> project.planton.provider.cloudflare.cloudflarekvnamespace.v1.CloudflareKvNamespaceStackOutputs

@@ -23,7 +23,7 @@ var _ = ginkgo.Describe("AzureVpcSpec Custom Validation Tests", func() {
 				input := &AzureVpc{
 					ApiVersion: "azure.project-planton.org/v1",
 					Kind:       "AzureVpc",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-vpc",
 					},
 					Spec: &AzureVpcSpec{

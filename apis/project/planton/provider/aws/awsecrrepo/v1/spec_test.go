@@ -33,7 +33,7 @@ var _ = ginkgo.Describe("AwsEcrRepoSpec Custom Validation Tests", func() {
 				input = &AwsEcrRepo{
 					ApiVersion: "aws.project-planton.org/v1",
 					Kind:       "AwsEcrRepo",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "valid-repo-metadata",
 					},
 					Spec: &AwsEcrRepoSpec{

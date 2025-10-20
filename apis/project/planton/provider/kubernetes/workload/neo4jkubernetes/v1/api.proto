@@ -16,7 +16,7 @@ message Neo4jKubernetes {
   string kind = 2 [(buf.validate.field).string.const = 'Neo4jKubernetes'];
 
   //metadata
-  project.planton.shared.ApiResourceMetadata metadata = 3 [(buf.validate.field).required = true];
+  project.planton.shared.CloudResourceMetadata metadata = 3 [(buf.validate.field).required = true];
 
   //spec
   Neo4jKubernetesSpec spec = 4 [(buf.validate.field).required = true];

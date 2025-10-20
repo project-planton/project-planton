@@ -24,7 +24,7 @@ var _ = ginkgo.Describe("AwsEksClusterSpec Custom Validation Tests", func() {
 				input := &AwsEksCluster{
 					ApiVersion: "aws.project-planton.org/v1",
 					Kind:       "AwsEksCluster",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-eks-cluster",
 					},
 					Spec: &AwsEksClusterSpec{

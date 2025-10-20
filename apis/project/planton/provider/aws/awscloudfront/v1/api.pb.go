@@ -25,12 +25,12 @@ const (
 
 // AwsCloudFront is the top-level API resource envelope.
 type AwsCloudFront struct {
-	state         protoimpl.MessageState      `protogen:"open.v1"`
-	ApiVersion    string                      `protobuf:"bytes,1,opt,name=api_version,json=apiVersion,proto3" json:"api_version,omitempty"`
-	Kind          string                      `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
-	Metadata      *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
-	Spec          *AwsCloudFrontSpec          `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
-	Status        *AwsCloudFrontStatus        `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
+	state         protoimpl.MessageState        `protogen:"open.v1"`
+	ApiVersion    string                        `protobuf:"bytes,1,opt,name=api_version,json=apiVersion,proto3" json:"api_version,omitempty"`
+	Kind          string                        `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
+	Metadata      *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Spec          *AwsCloudFrontSpec            `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
+	Status        *AwsCloudFrontStatus          `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -79,7 +79,7 @@ func (x *AwsCloudFront) GetKind() string {
 	return ""
 }
 
-func (x *AwsCloudFront) GetMetadata() *shared.ApiResourceMetadata {
+func (x *AwsCloudFront) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
@@ -150,14 +150,14 @@ var File_project_planton_provider_aws_awscloudfront_v1_api_proto protoreflect.Fi
 
 const file_project_planton_provider_aws_awscloudfront_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"7project/planton/provider/aws/awscloudfront/v1/api.proto\x12-project.planton.provider.aws.awscloudfront.v1\x1a\x1bbuf/validate/validate.proto\x1a8project/planton/provider/aws/awscloudfront/v1/spec.proto\x1aAproject/planton/provider/aws/awscloudfront/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\x88\x03\n" +
+	"7project/planton/provider/aws/awscloudfront/v1/api.proto\x12-project.planton.provider.aws.awscloudfront.v1\x1a\x1bbuf/validate/validate.proto\x1a8project/planton/provider/aws/awscloudfront/v1/spec.proto\x1aAproject/planton/provider/aws/awscloudfront/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\x8a\x03\n" +
 	"\rAwsCloudFront\x12B\n" +
 	"\vapi_version\x18\x01 \x01(\tB!\xbaH\x1er\x1c\n" +
 	"\x1aaws.project-planton.org/v1R\n" +
 	"apiVersion\x12(\n" +
 	"\x04kind\x18\x02 \x01(\tB\x14\xbaH\x11r\x0f\n" +
-	"\rAwsCloudFrontR\x04kind\x12O\n" +
-	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12\\\n" +
+	"\rAwsCloudFrontR\x04kind\x12Q\n" +
+	"\bmetadata\x18\x03 \x01(\v2-.project.planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12\\\n" +
 	"\x04spec\x18\x04 \x01(\v2@.project.planton.provider.aws.awscloudfront.v1.AwsCloudFrontSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12Z\n" +
 	"\x06status\x18\x05 \x01(\v2B.project.planton.provider.aws.awscloudfront.v1.AwsCloudFrontStatusR\x06status\"y\n" +
 	"\x13AwsCloudFrontStatus\x12b\n" +
@@ -178,14 +178,14 @@ func file_project_planton_provider_aws_awscloudfront_v1_api_proto_rawDescGZIP() 
 
 var file_project_planton_provider_aws_awscloudfront_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_aws_awscloudfront_v1_api_proto_goTypes = []any{
-	(*AwsCloudFront)(nil),              // 0: project.planton.provider.aws.awscloudfront.v1.AwsCloudFront
-	(*AwsCloudFrontStatus)(nil),        // 1: project.planton.provider.aws.awscloudfront.v1.AwsCloudFrontStatus
-	(*shared.ApiResourceMetadata)(nil), // 2: project.planton.shared.ApiResourceMetadata
-	(*AwsCloudFrontSpec)(nil),          // 3: project.planton.provider.aws.awscloudfront.v1.AwsCloudFrontSpec
-	(*AwsCloudFrontStackOutputs)(nil),  // 4: project.planton.provider.aws.awscloudfront.v1.AwsCloudFrontStackOutputs
+	(*AwsCloudFront)(nil),                // 0: project.planton.provider.aws.awscloudfront.v1.AwsCloudFront
+	(*AwsCloudFrontStatus)(nil),          // 1: project.planton.provider.aws.awscloudfront.v1.AwsCloudFrontStatus
+	(*shared.CloudResourceMetadata)(nil), // 2: project.planton.shared.CloudResourceMetadata
+	(*AwsCloudFrontSpec)(nil),            // 3: project.planton.provider.aws.awscloudfront.v1.AwsCloudFrontSpec
+	(*AwsCloudFrontStackOutputs)(nil),    // 4: project.planton.provider.aws.awscloudfront.v1.AwsCloudFrontStackOutputs
 }
 var file_project_planton_provider_aws_awscloudfront_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.aws.awscloudfront.v1.AwsCloudFront.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	2, // 0: project.planton.provider.aws.awscloudfront.v1.AwsCloudFront.metadata:type_name -> project.planton.shared.CloudResourceMetadata
 	3, // 1: project.planton.provider.aws.awscloudfront.v1.AwsCloudFront.spec:type_name -> project.planton.provider.aws.awscloudfront.v1.AwsCloudFrontSpec
 	1, // 2: project.planton.provider.aws.awscloudfront.v1.AwsCloudFront.status:type_name -> project.planton.provider.aws.awscloudfront.v1.AwsCloudFrontStatus
 	4, // 3: project.planton.provider.aws.awscloudfront.v1.AwsCloudFrontStatus.outputs:type_name -> project.planton.provider.aws.awscloudfront.v1.AwsCloudFrontStackOutputs

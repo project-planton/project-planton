@@ -31,7 +31,7 @@ type CivoKubernetesNodePool struct {
 	// resource-kind
 	Kind string `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
 	// metadata
-	Metadata *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Metadata *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// spec
 	Spec *CivoKubernetesNodePoolSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status
@@ -84,7 +84,7 @@ func (x *CivoKubernetesNodePool) GetKind() string {
 	return ""
 }
 
-func (x *CivoKubernetesNodePool) GetMetadata() *shared.ApiResourceMetadata {
+func (x *CivoKubernetesNodePool) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
@@ -157,14 +157,14 @@ var File_project_planton_provider_civo_civokubernetesnodepool_v1_api_proto proto
 
 const file_project_planton_provider_civo_civokubernetesnodepool_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Aproject/planton/provider/civo/civokubernetesnodepool/v1/api.proto\x127project.planton.provider.civo.civokubernetesnodepool.v1\x1a\x1bbuf/validate/validate.proto\x1aBproject/planton/provider/civo/civokubernetesnodepool/v1/spec.proto\x1aKproject/planton/provider/civo/civokubernetesnodepool/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xc1\x03\n" +
+	"Aproject/planton/provider/civo/civokubernetesnodepool/v1/api.proto\x127project.planton.provider.civo.civokubernetesnodepool.v1\x1a\x1bbuf/validate/validate.proto\x1aBproject/planton/provider/civo/civokubernetesnodepool/v1/spec.proto\x1aKproject/planton/provider/civo/civokubernetesnodepool/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xc3\x03\n" +
 	"\x16CivoKubernetesNodePool\x12C\n" +
 	"\vapi_version\x18\x01 \x01(\tB\"\xbaH\x1fr\x1d\n" +
 	"\x1bcivo.project-planton.org/v1R\n" +
 	"apiVersion\x121\n" +
 	"\x04kind\x18\x02 \x01(\tB\x1d\xbaH\x1ar\x18\n" +
-	"\x16CivoKubernetesNodePoolR\x04kind\x12O\n" +
-	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12o\n" +
+	"\x16CivoKubernetesNodePoolR\x04kind\x12Q\n" +
+	"\bmetadata\x18\x03 \x01(\v2-.project.planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12o\n" +
 	"\x04spec\x18\x04 \x01(\v2S.project.planton.provider.civo.civokubernetesnodepool.v1.CivoKubernetesNodePoolSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12m\n" +
 	"\x06status\x18\x05 \x01(\v2U.project.planton.provider.civo.civokubernetesnodepool.v1.CivoKubernetesNodePoolStatusR\x06status\"\x95\x01\n" +
 	"\x1cCivoKubernetesNodePoolStatus\x12u\n" +
@@ -187,12 +187,12 @@ var file_project_planton_provider_civo_civokubernetesnodepool_v1_api_proto_msgTy
 var file_project_planton_provider_civo_civokubernetesnodepool_v1_api_proto_goTypes = []any{
 	(*CivoKubernetesNodePool)(nil),             // 0: project.planton.provider.civo.civokubernetesnodepool.v1.CivoKubernetesNodePool
 	(*CivoKubernetesNodePoolStatus)(nil),       // 1: project.planton.provider.civo.civokubernetesnodepool.v1.CivoKubernetesNodePoolStatus
-	(*shared.ApiResourceMetadata)(nil),         // 2: project.planton.shared.ApiResourceMetadata
+	(*shared.CloudResourceMetadata)(nil),       // 2: project.planton.shared.CloudResourceMetadata
 	(*CivoKubernetesNodePoolSpec)(nil),         // 3: project.planton.provider.civo.civokubernetesnodepool.v1.CivoKubernetesNodePoolSpec
 	(*CivoKubernetesNodePoolStackOutputs)(nil), // 4: project.planton.provider.civo.civokubernetesnodepool.v1.CivoKubernetesNodePoolStackOutputs
 }
 var file_project_planton_provider_civo_civokubernetesnodepool_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.civo.civokubernetesnodepool.v1.CivoKubernetesNodePool.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	2, // 0: project.planton.provider.civo.civokubernetesnodepool.v1.CivoKubernetesNodePool.metadata:type_name -> project.planton.shared.CloudResourceMetadata
 	3, // 1: project.planton.provider.civo.civokubernetesnodepool.v1.CivoKubernetesNodePool.spec:type_name -> project.planton.provider.civo.civokubernetesnodepool.v1.CivoKubernetesNodePoolSpec
 	1, // 2: project.planton.provider.civo.civokubernetesnodepool.v1.CivoKubernetesNodePool.status:type_name -> project.planton.provider.civo.civokubernetesnodepool.v1.CivoKubernetesNodePoolStatus
 	4, // 3: project.planton.provider.civo.civokubernetesnodepool.v1.CivoKubernetesNodePoolStatus.outputs:type_name -> project.planton.provider.civo.civokubernetesnodepool.v1.CivoKubernetesNodePoolStackOutputs

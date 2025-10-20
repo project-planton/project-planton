@@ -25,7 +25,7 @@ var _ = ginkgo.Describe("AwsAlbSpec Custom Validation Tests", func() {
 				input := &AwsAlb{
 					ApiVersion: "aws.project-planton.org/v1",
 					Kind:       "AwsAlb",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-alb-resource",
 					},
 					Spec: &AwsAlbSpec{

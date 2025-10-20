@@ -23,7 +23,7 @@ var _ = ginkgo.Describe("GcpDnsZoneSpec Custom Validation Tests", func() {
 				input := &GcpDnsZone{
 					ApiVersion: "gcp.project-planton.org/v1",
 					Kind:       "GcpDnsZone",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-dns-zone",
 					},
 					Spec: &GcpDnsZoneSpec{

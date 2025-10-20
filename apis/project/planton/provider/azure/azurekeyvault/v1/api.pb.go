@@ -31,7 +31,7 @@ type AzureKeyVault struct {
 	// resource-kind
 	Kind string `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
 	// metadata
-	Metadata *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Metadata *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// spec
 	Spec *AzureKeyVaultSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status
@@ -84,7 +84,7 @@ func (x *AzureKeyVault) GetKind() string {
 	return ""
 }
 
-func (x *AzureKeyVault) GetMetadata() *shared.ApiResourceMetadata {
+func (x *AzureKeyVault) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
@@ -155,14 +155,14 @@ var File_project_planton_provider_azure_azurekeyvault_v1_api_proto protoreflect.
 
 const file_project_planton_provider_azure_azurekeyvault_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"9project/planton/provider/azure/azurekeyvault/v1/api.proto\x12/project.planton.provider.azure.azurekeyvault.v1\x1a\x1bbuf/validate/validate.proto\x1a:project/planton/provider/azure/azurekeyvault/v1/spec.proto\x1aCproject/planton/provider/azure/azurekeyvault/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\x8e\x03\n" +
+	"9project/planton/provider/azure/azurekeyvault/v1/api.proto\x12/project.planton.provider.azure.azurekeyvault.v1\x1a\x1bbuf/validate/validate.proto\x1a:project/planton/provider/azure/azurekeyvault/v1/spec.proto\x1aCproject/planton/provider/azure/azurekeyvault/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\x90\x03\n" +
 	"\rAzureKeyVault\x12D\n" +
 	"\vapi_version\x18\x01 \x01(\tB#\xbaH r\x1e\n" +
 	"\x1cazure.project-planton.org/v1R\n" +
 	"apiVersion\x12(\n" +
 	"\x04kind\x18\x02 \x01(\tB\x14\xbaH\x11r\x0f\n" +
-	"\rAzureKeyVaultR\x04kind\x12O\n" +
-	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12^\n" +
+	"\rAzureKeyVaultR\x04kind\x12Q\n" +
+	"\bmetadata\x18\x03 \x01(\v2-.project.planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12^\n" +
 	"\x04spec\x18\x04 \x01(\v2B.project.planton.provider.azure.azurekeyvault.v1.AzureKeyVaultSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12\\\n" +
 	"\x06status\x18\x05 \x01(\v2D.project.planton.provider.azure.azurekeyvault.v1.AzureKeyVaultStatusR\x06status\"{\n" +
 	"\x13AzureKeyVaultStatus\x12d\n" +
@@ -183,14 +183,14 @@ func file_project_planton_provider_azure_azurekeyvault_v1_api_proto_rawDescGZIP(
 
 var file_project_planton_provider_azure_azurekeyvault_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_azure_azurekeyvault_v1_api_proto_goTypes = []any{
-	(*AzureKeyVault)(nil),              // 0: project.planton.provider.azure.azurekeyvault.v1.AzureKeyVault
-	(*AzureKeyVaultStatus)(nil),        // 1: project.planton.provider.azure.azurekeyvault.v1.AzureKeyVaultStatus
-	(*shared.ApiResourceMetadata)(nil), // 2: project.planton.shared.ApiResourceMetadata
-	(*AzureKeyVaultSpec)(nil),          // 3: project.planton.provider.azure.azurekeyvault.v1.AzureKeyVaultSpec
-	(*AzureKeyVaultStackOutputs)(nil),  // 4: project.planton.provider.azure.azurekeyvault.v1.AzureKeyVaultStackOutputs
+	(*AzureKeyVault)(nil),                // 0: project.planton.provider.azure.azurekeyvault.v1.AzureKeyVault
+	(*AzureKeyVaultStatus)(nil),          // 1: project.planton.provider.azure.azurekeyvault.v1.AzureKeyVaultStatus
+	(*shared.CloudResourceMetadata)(nil), // 2: project.planton.shared.CloudResourceMetadata
+	(*AzureKeyVaultSpec)(nil),            // 3: project.planton.provider.azure.azurekeyvault.v1.AzureKeyVaultSpec
+	(*AzureKeyVaultStackOutputs)(nil),    // 4: project.planton.provider.azure.azurekeyvault.v1.AzureKeyVaultStackOutputs
 }
 var file_project_planton_provider_azure_azurekeyvault_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.azure.azurekeyvault.v1.AzureKeyVault.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	2, // 0: project.planton.provider.azure.azurekeyvault.v1.AzureKeyVault.metadata:type_name -> project.planton.shared.CloudResourceMetadata
 	3, // 1: project.planton.provider.azure.azurekeyvault.v1.AzureKeyVault.spec:type_name -> project.planton.provider.azure.azurekeyvault.v1.AzureKeyVaultSpec
 	1, // 2: project.planton.provider.azure.azurekeyvault.v1.AzureKeyVault.status:type_name -> project.planton.provider.azure.azurekeyvault.v1.AzureKeyVaultStatus
 	4, // 3: project.planton.provider.azure.azurekeyvault.v1.AzureKeyVaultStatus.outputs:type_name -> project.planton.provider.azure.azurekeyvault.v1.AzureKeyVaultStackOutputs

@@ -33,7 +33,7 @@ type AwsCertManagerCert struct {
 	Kind string `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
 	// metadata captures identifying information (name, org, version, etc.)
 	// and must pass standard validations for resource naming.
-	Metadata *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Metadata *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// spec holds the core configuration data defining how the ECS service is deployed.
 	Spec *AwsCertManagerCertSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status holds runtime or post-deployment information.
@@ -86,7 +86,7 @@ func (x *AwsCertManagerCert) GetKind() string {
 	return ""
 }
 
-func (x *AwsCertManagerCert) GetMetadata() *shared.ApiResourceMetadata {
+func (x *AwsCertManagerCert) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
@@ -157,14 +157,14 @@ var File_project_planton_provider_aws_awscertmanagercert_v1_api_proto protorefle
 
 const file_project_planton_provider_aws_awscertmanagercert_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"<project/planton/provider/aws/awscertmanagercert/v1/api.proto\x122project.planton.provider.aws.awscertmanagercert.v1\x1a\x1bbuf/validate/validate.proto\x1a=project/planton/provider/aws/awscertmanagercert/v1/spec.proto\x1aFproject/planton/provider/aws/awscertmanagercert/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xa6\x03\n" +
+	"<project/planton/provider/aws/awscertmanagercert/v1/api.proto\x122project.planton.provider.aws.awscertmanagercert.v1\x1a\x1bbuf/validate/validate.proto\x1a=project/planton/provider/aws/awscertmanagercert/v1/spec.proto\x1aFproject/planton/provider/aws/awscertmanagercert/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xa8\x03\n" +
 	"\x12AwsCertManagerCert\x12B\n" +
 	"\vapi_version\x18\x01 \x01(\tB!\xbaH\x1er\x1c\n" +
 	"\x1aaws.project-planton.org/v1R\n" +
 	"apiVersion\x12-\n" +
 	"\x04kind\x18\x02 \x01(\tB\x19\xbaH\x16r\x14\n" +
-	"\x12AwsCertManagerCertR\x04kind\x12O\n" +
-	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12f\n" +
+	"\x12AwsCertManagerCertR\x04kind\x12Q\n" +
+	"\bmetadata\x18\x03 \x01(\v2-.project.planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12f\n" +
 	"\x04spec\x18\x04 \x01(\v2J.project.planton.provider.aws.awscertmanagercert.v1.AwsCertManagerCertSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12d\n" +
 	"\x06status\x18\x05 \x01(\v2L.project.planton.provider.aws.awscertmanagercert.v1.AwsCertManagerCertStatusR\x06status\"\x88\x01\n" +
 	"\x18AwsCertManagerCertStatus\x12l\n" +
@@ -187,12 +187,12 @@ var file_project_planton_provider_aws_awscertmanagercert_v1_api_proto_msgTypes =
 var file_project_planton_provider_aws_awscertmanagercert_v1_api_proto_goTypes = []any{
 	(*AwsCertManagerCert)(nil),             // 0: project.planton.provider.aws.awscertmanagercert.v1.AwsCertManagerCert
 	(*AwsCertManagerCertStatus)(nil),       // 1: project.planton.provider.aws.awscertmanagercert.v1.AwsCertManagerCertStatus
-	(*shared.ApiResourceMetadata)(nil),     // 2: project.planton.shared.ApiResourceMetadata
+	(*shared.CloudResourceMetadata)(nil),   // 2: project.planton.shared.CloudResourceMetadata
 	(*AwsCertManagerCertSpec)(nil),         // 3: project.planton.provider.aws.awscertmanagercert.v1.AwsCertManagerCertSpec
 	(*AwsCertManagerCertStackOutputs)(nil), // 4: project.planton.provider.aws.awscertmanagercert.v1.AwsCertManagerCertStackOutputs
 }
 var file_project_planton_provider_aws_awscertmanagercert_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.aws.awscertmanagercert.v1.AwsCertManagerCert.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	2, // 0: project.planton.provider.aws.awscertmanagercert.v1.AwsCertManagerCert.metadata:type_name -> project.planton.shared.CloudResourceMetadata
 	3, // 1: project.planton.provider.aws.awscertmanagercert.v1.AwsCertManagerCert.spec:type_name -> project.planton.provider.aws.awscertmanagercert.v1.AwsCertManagerCertSpec
 	1, // 2: project.planton.provider.aws.awscertmanagercert.v1.AwsCertManagerCert.status:type_name -> project.planton.provider.aws.awscertmanagercert.v1.AwsCertManagerCertStatus
 	4, // 3: project.planton.provider.aws.awscertmanagercert.v1.AwsCertManagerCertStatus.outputs:type_name -> project.planton.provider.aws.awscertmanagercert.v1.AwsCertManagerCertStackOutputs

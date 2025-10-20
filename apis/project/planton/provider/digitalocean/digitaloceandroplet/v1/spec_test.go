@@ -26,7 +26,7 @@ var _ = ginkgo.Describe("DigitalOceanDropletSpec Custom Validation Tests", func(
 				input := &DigitalOceanDroplet{
 					ApiVersion: "digital-ocean.project-planton.org/v1",
 					Kind:       "DigitalOceanDroplet",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-droplet",
 					},
 					Spec: &DigitalOceanDropletSpec{

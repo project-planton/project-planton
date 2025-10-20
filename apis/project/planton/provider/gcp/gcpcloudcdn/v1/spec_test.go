@@ -23,7 +23,7 @@ var _ = ginkgo.Describe("GcpCloudCdnSpec Custom Validation Tests", func() {
 				input := &GcpCloudCdn{
 					ApiVersion: "gcp.project-planton.org/v1",
 					Kind:       "GcpCloudCdn",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-cloud-cdn",
 					},
 					Spec: &GcpCloudCdnSpec{

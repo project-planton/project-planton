@@ -24,7 +24,7 @@ var _ = ginkgo.Describe("AwsCertManagerCert", func() {
 		input = &AwsCertManagerCert{
 			ApiVersion: "aws.project-planton.org/v1",
 			Kind:       "AwsCertManagerCert",
-			Metadata: &shared.ApiResourceMetadata{
+			Metadata: &shared.CloudResourceMetadata{
 				Name: "a-test-name",
 			},
 			Spec: &AwsCertManagerCertSpec{

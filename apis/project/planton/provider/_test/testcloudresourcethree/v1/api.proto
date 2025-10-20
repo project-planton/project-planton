@@ -11,7 +11,7 @@ import "project/planton/shared/metadata.proto";
 message TestCloudResourceThree {
   string api_version = 1 [(buf.validate.field).string.const = '_test.project-planton.org/v1'];
   string kind = 2 [(buf.validate.field).string.const = 'TestCloudResourceThree'];
-  project.planton.shared.ApiResourceMetadata metadata = 3 [(buf.validate.field).required = true];
+  project.planton.shared.CloudResourceMetadata metadata = 3 [(buf.validate.field).required = true];
   TestCloudResourceThreeSpec spec = 4;
   TestCloudResourceThreeStatus status = 5;
 }

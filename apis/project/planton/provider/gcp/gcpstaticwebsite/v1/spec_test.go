@@ -23,7 +23,7 @@ var _ = ginkgo.Describe("GcpStaticWebsiteSpec Custom Validation Tests", func() {
 				input := &GcpStaticWebsite{
 					ApiVersion: "gcp.project-planton.org/v1",
 					Kind:       "GcpStaticWebsite",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-static-website",
 					},
 					Spec: &GcpStaticWebsiteSpec{

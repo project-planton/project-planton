@@ -23,7 +23,7 @@ var _ = ginkgo.Describe("CloudflareR2BucketSpec Custom Validation Tests", func()
 				input := &CloudflareR2Bucket{
 					ApiVersion: "cloudflare.project-planton.org/v1",
 					Kind:       "CloudflareR2Bucket",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-r2-bucket",
 					},
 					Spec: &CloudflareR2BucketSpec{
@@ -40,7 +40,7 @@ var _ = ginkgo.Describe("CloudflareR2BucketSpec Custom Validation Tests", func()
 				input := &CloudflareR2Bucket{
 					ApiVersion: "cloudflare.project-planton.org/v1",
 					Kind:       "CloudflareR2Bucket",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-r2-bucket-public",
 					},
 					Spec: &CloudflareR2BucketSpec{
@@ -58,7 +58,7 @@ var _ = ginkgo.Describe("CloudflareR2BucketSpec Custom Validation Tests", func()
 				input := &CloudflareR2Bucket{
 					ApiVersion: "cloudflare.project-planton.org/v1",
 					Kind:       "CloudflareR2Bucket",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-r2-bucket-versioned",
 					},
 					Spec: &CloudflareR2BucketSpec{
@@ -81,7 +81,7 @@ var _ = ginkgo.Describe("CloudflareR2BucketSpec Custom Validation Tests", func()
 				input := &CloudflareR2Bucket{
 					ApiVersion: "cloudflare.project-planton.org/v1",
 					Kind:       "CloudflareR2Bucket",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-no-account",
 					},
 					Spec: &CloudflareR2BucketSpec{
@@ -97,7 +97,7 @@ var _ = ginkgo.Describe("CloudflareR2BucketSpec Custom Validation Tests", func()
 				input := &CloudflareR2Bucket{
 					ApiVersion: "cloudflare.project-planton.org/v1",
 					Kind:       "CloudflareR2Bucket",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-short-account",
 					},
 					Spec: &CloudflareR2BucketSpec{
@@ -114,7 +114,7 @@ var _ = ginkgo.Describe("CloudflareR2BucketSpec Custom Validation Tests", func()
 				input := &CloudflareR2Bucket{
 					ApiVersion: "cloudflare.project-planton.org/v1",
 					Kind:       "CloudflareR2Bucket",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-invalid-hex",
 					},
 					Spec: &CloudflareR2BucketSpec{
@@ -134,7 +134,7 @@ var _ = ginkgo.Describe("CloudflareR2BucketSpec Custom Validation Tests", func()
 				input := &CloudflareR2Bucket{
 					ApiVersion: "cloudflare.project-planton.org/v1",
 					Kind:       "CloudflareR2Bucket",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-no-bucket-name",
 					},
 					Spec: &CloudflareR2BucketSpec{
@@ -150,7 +150,7 @@ var _ = ginkgo.Describe("CloudflareR2BucketSpec Custom Validation Tests", func()
 				input := &CloudflareR2Bucket{
 					ApiVersion: "cloudflare.project-planton.org/v1",
 					Kind:       "CloudflareR2Bucket",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-short-bucket",
 					},
 					Spec: &CloudflareR2BucketSpec{
@@ -167,7 +167,7 @@ var _ = ginkgo.Describe("CloudflareR2BucketSpec Custom Validation Tests", func()
 				input := &CloudflareR2Bucket{
 					ApiVersion: "cloudflare.project-planton.org/v1",
 					Kind:       "CloudflareR2Bucket",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-invalid-bucket",
 					},
 					Spec: &CloudflareR2BucketSpec{

@@ -31,7 +31,7 @@ type AzureNatGateway struct {
 	// resource-kind
 	Kind string `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
 	// metadata
-	Metadata *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Metadata *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// spec
 	Spec *AzureNatGatewaySpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status
@@ -84,7 +84,7 @@ func (x *AzureNatGateway) GetKind() string {
 	return ""
 }
 
-func (x *AzureNatGateway) GetMetadata() *shared.ApiResourceMetadata {
+func (x *AzureNatGateway) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
@@ -157,14 +157,14 @@ var File_project_planton_provider_azure_azurenatgateway_v1_api_proto protoreflec
 
 const file_project_planton_provider_azure_azurenatgateway_v1_api_proto_rawDesc = "" +
 	"\n" +
-	";project/planton/provider/azure/azurenatgateway/v1/api.proto\x121project.planton.provider.azure.azurenatgateway.v1\x1a\x1bbuf/validate/validate.proto\x1a<project/planton/provider/azure/azurenatgateway/v1/spec.proto\x1aEproject/planton/provider/azure/azurenatgateway/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\x9a\x03\n" +
+	";project/planton/provider/azure/azurenatgateway/v1/api.proto\x121project.planton.provider.azure.azurenatgateway.v1\x1a\x1bbuf/validate/validate.proto\x1a<project/planton/provider/azure/azurenatgateway/v1/spec.proto\x1aEproject/planton/provider/azure/azurenatgateway/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\x9c\x03\n" +
 	"\x0fAzureNatGateway\x12D\n" +
 	"\vapi_version\x18\x01 \x01(\tB#\xbaH r\x1e\n" +
 	"\x1cazure.project-planton.org/v1R\n" +
 	"apiVersion\x12*\n" +
 	"\x04kind\x18\x02 \x01(\tB\x16\xbaH\x13r\x11\n" +
-	"\x0fAzureNatGatewayR\x04kind\x12O\n" +
-	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12b\n" +
+	"\x0fAzureNatGatewayR\x04kind\x12Q\n" +
+	"\bmetadata\x18\x03 \x01(\v2-.project.planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12b\n" +
 	"\x04spec\x18\x04 \x01(\v2F.project.planton.provider.azure.azurenatgateway.v1.AzureNatGatewaySpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12`\n" +
 	"\x06status\x18\x05 \x01(\v2H.project.planton.provider.azure.azurenatgateway.v1.AzureNatGatewayStatusR\x06status\"\x81\x01\n" +
 	"\x15AzureNatGatewayStatus\x12h\n" +
@@ -185,14 +185,14 @@ func file_project_planton_provider_azure_azurenatgateway_v1_api_proto_rawDescGZI
 
 var file_project_planton_provider_azure_azurenatgateway_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_azure_azurenatgateway_v1_api_proto_goTypes = []any{
-	(*AzureNatGateway)(nil),             // 0: project.planton.provider.azure.azurenatgateway.v1.AzureNatGateway
-	(*AzureNatGatewayStatus)(nil),       // 1: project.planton.provider.azure.azurenatgateway.v1.AzureNatGatewayStatus
-	(*shared.ApiResourceMetadata)(nil),  // 2: project.planton.shared.ApiResourceMetadata
-	(*AzureNatGatewaySpec)(nil),         // 3: project.planton.provider.azure.azurenatgateway.v1.AzureNatGatewaySpec
-	(*AzureNatGatewayStackOutputs)(nil), // 4: project.planton.provider.azure.azurenatgateway.v1.AzureNatGatewayStackOutputs
+	(*AzureNatGateway)(nil),              // 0: project.planton.provider.azure.azurenatgateway.v1.AzureNatGateway
+	(*AzureNatGatewayStatus)(nil),        // 1: project.planton.provider.azure.azurenatgateway.v1.AzureNatGatewayStatus
+	(*shared.CloudResourceMetadata)(nil), // 2: project.planton.shared.CloudResourceMetadata
+	(*AzureNatGatewaySpec)(nil),          // 3: project.planton.provider.azure.azurenatgateway.v1.AzureNatGatewaySpec
+	(*AzureNatGatewayStackOutputs)(nil),  // 4: project.planton.provider.azure.azurenatgateway.v1.AzureNatGatewayStackOutputs
 }
 var file_project_planton_provider_azure_azurenatgateway_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.azure.azurenatgateway.v1.AzureNatGateway.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	2, // 0: project.planton.provider.azure.azurenatgateway.v1.AzureNatGateway.metadata:type_name -> project.planton.shared.CloudResourceMetadata
 	3, // 1: project.planton.provider.azure.azurenatgateway.v1.AzureNatGateway.spec:type_name -> project.planton.provider.azure.azurenatgateway.v1.AzureNatGatewaySpec
 	1, // 2: project.planton.provider.azure.azurenatgateway.v1.AzureNatGateway.status:type_name -> project.planton.provider.azure.azurenatgateway.v1.AzureNatGatewayStatus
 	4, // 3: project.planton.provider.azure.azurenatgateway.v1.AzureNatGatewayStatus.outputs:type_name -> project.planton.provider.azure.azurenatgateway.v1.AzureNatGatewayStackOutputs

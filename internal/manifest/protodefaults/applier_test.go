@@ -16,7 +16,7 @@ func TestApplyDefaults_AllScalarTypes(t *testing.T) {
 		msg := &testcloudresourceonev1.TestCloudResourceOne{
 			ApiVersion: "_test.project-planton.org/v1",
 			Kind:       "TestCloudResourceOne",
-			Metadata: &shared.ApiResourceMetadata{
+			Metadata: &shared.CloudResourceMetadata{
 				Name: "test-resource",
 			},
 			Spec: &testcloudresourceonev1.TestCloudResourceOneSpec{
@@ -62,7 +62,7 @@ func TestApplyDefaults_AllScalarTypes(t *testing.T) {
 		msg := &testcloudresourceonev1.TestCloudResourceOne{
 			ApiVersion: "_test.project-planton.org/v1",
 			Kind:       "TestCloudResourceOne",
-			Metadata: &shared.ApiResourceMetadata{
+			Metadata: &shared.CloudResourceMetadata{
 				Name: "test-resource",
 			},
 			Spec: &testcloudresourceonev1.TestCloudResourceOneSpec{
@@ -100,7 +100,7 @@ func TestApplyDefaults_AllScalarTypes(t *testing.T) {
 		msg := &testcloudresourceonev1.TestCloudResourceOne{
 			ApiVersion: "_test.project-planton.org/v1",
 			Kind:       "TestCloudResourceOne",
-			Metadata: &shared.ApiResourceMetadata{
+			Metadata: &shared.CloudResourceMetadata{
 				Name: "test-resource",
 			},
 			Spec: &testcloudresourceonev1.TestCloudResourceOneSpec{
@@ -135,7 +135,7 @@ func TestApplyDefaults_AllScalarTypes(t *testing.T) {
 		msg := &testcloudresourceonev1.TestCloudResourceOne{
 			ApiVersion: "_test.project-planton.org/v1",
 			Kind:       "TestCloudResourceOne",
-			Metadata: &shared.ApiResourceMetadata{
+			Metadata: &shared.CloudResourceMetadata{
 				Name: "test-resource",
 			},
 			Spec: nil,
@@ -152,7 +152,7 @@ func TestApplyDefaults_NestedMessages(t *testing.T) {
 		msg := &testcloudresourceonev1.TestCloudResourceOne{
 			ApiVersion: "_test.project-planton.org/v1",
 			Kind:       "TestCloudResourceOne",
-			Metadata: &shared.ApiResourceMetadata{
+			Metadata: &shared.CloudResourceMetadata{
 				Name: "test-resource",
 			},
 			Spec: &testcloudresourceonev1.TestCloudResourceOneSpec{
@@ -187,7 +187,7 @@ func TestApplyDefaults_FieldsWithoutDefaults(t *testing.T) {
 		msg := &testcloudresourceonev1.TestCloudResourceOne{
 			ApiVersion: "_test.project-planton.org/v1",
 			Kind:       "TestCloudResourceOne",
-			Metadata: &shared.ApiResourceMetadata{
+			Metadata: &shared.CloudResourceMetadata{
 				Name: "test-resource",
 			},
 			Spec: &testcloudresourceonev1.TestCloudResourceOneSpec{
@@ -217,7 +217,7 @@ func TestApplyDefaults_ZeroValuesPreserved(t *testing.T) {
 		msg := &testcloudresourceonev1.TestCloudResourceOne{
 			ApiVersion: "_test.project-planton.org/v1",
 			Kind:       "TestCloudResourceOne",
-			Metadata: &shared.ApiResourceMetadata{
+			Metadata: &shared.CloudResourceMetadata{
 				Name: "test-resource",
 			},
 			Spec: &testcloudresourceonev1.TestCloudResourceOneSpec{
@@ -270,7 +270,7 @@ func TestApplyDefaults_ZeroValuesPreserved(t *testing.T) {
 		msg := &testcloudresourceonev1.TestCloudResourceOne{
 			ApiVersion: "_test.project-planton.org/v1",
 			Kind:       "TestCloudResourceOne",
-			Metadata: &shared.ApiResourceMetadata{
+			Metadata: &shared.CloudResourceMetadata{
 				Name: "test-resource",
 			},
 			Spec: &testcloudresourceonev1.TestCloudResourceOneSpec{
@@ -298,7 +298,7 @@ func TestApplyDefaults_Idempotency(t *testing.T) {
 		msg := &testcloudresourceonev1.TestCloudResourceOne{
 			ApiVersion: "_test.project-planton.org/v1",
 			Kind:       "TestCloudResourceOne",
-			Metadata: &shared.ApiResourceMetadata{
+			Metadata: &shared.CloudResourceMetadata{
 				Name: "test-resource",
 			},
 			Spec: &testcloudresourceonev1.TestCloudResourceOneSpec{},

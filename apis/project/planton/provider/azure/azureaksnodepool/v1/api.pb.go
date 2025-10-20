@@ -31,7 +31,7 @@ type AzureAksNodePool struct {
 	// resource-kind
 	Kind string `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
 	// metadata
-	Metadata *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Metadata *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// spec
 	Spec *AzureAksNodePoolSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status
@@ -84,7 +84,7 @@ func (x *AzureAksNodePool) GetKind() string {
 	return ""
 }
 
-func (x *AzureAksNodePool) GetMetadata() *shared.ApiResourceMetadata {
+func (x *AzureAksNodePool) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
@@ -157,14 +157,14 @@ var File_project_planton_provider_azure_azureaksnodepool_v1_api_proto protorefle
 
 const file_project_planton_provider_azure_azureaksnodepool_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"<project/planton/provider/azure/azureaksnodepool/v1/api.proto\x122project.planton.provider.azure.azureaksnodepool.v1\x1a\x1bbuf/validate/validate.proto\x1a=project/planton/provider/azure/azureaksnodepool/v1/spec.proto\x1aFproject/planton/provider/azure/azureaksnodepool/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xa0\x03\n" +
+	"<project/planton/provider/azure/azureaksnodepool/v1/api.proto\x122project.planton.provider.azure.azureaksnodepool.v1\x1a\x1bbuf/validate/validate.proto\x1a=project/planton/provider/azure/azureaksnodepool/v1/spec.proto\x1aFproject/planton/provider/azure/azureaksnodepool/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xa2\x03\n" +
 	"\x10AzureAksNodePool\x12D\n" +
 	"\vapi_version\x18\x01 \x01(\tB#\xbaH r\x1e\n" +
 	"\x1cazure.project-planton.org/v1R\n" +
 	"apiVersion\x12+\n" +
 	"\x04kind\x18\x02 \x01(\tB\x17\xbaH\x14r\x12\n" +
-	"\x10AzureAksNodePoolR\x04kind\x12O\n" +
-	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12d\n" +
+	"\x10AzureAksNodePoolR\x04kind\x12Q\n" +
+	"\bmetadata\x18\x03 \x01(\v2-.project.planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12d\n" +
 	"\x04spec\x18\x04 \x01(\v2H.project.planton.provider.azure.azureaksnodepool.v1.AzureAksNodePoolSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12b\n" +
 	"\x06status\x18\x05 \x01(\v2J.project.planton.provider.azure.azureaksnodepool.v1.AzureAksNodePoolStatusR\x06status\"\x84\x01\n" +
 	"\x16AzureAksNodePoolStatus\x12j\n" +
@@ -187,12 +187,12 @@ var file_project_planton_provider_azure_azureaksnodepool_v1_api_proto_msgTypes =
 var file_project_planton_provider_azure_azureaksnodepool_v1_api_proto_goTypes = []any{
 	(*AzureAksNodePool)(nil),             // 0: project.planton.provider.azure.azureaksnodepool.v1.AzureAksNodePool
 	(*AzureAksNodePoolStatus)(nil),       // 1: project.planton.provider.azure.azureaksnodepool.v1.AzureAksNodePoolStatus
-	(*shared.ApiResourceMetadata)(nil),   // 2: project.planton.shared.ApiResourceMetadata
+	(*shared.CloudResourceMetadata)(nil), // 2: project.planton.shared.CloudResourceMetadata
 	(*AzureAksNodePoolSpec)(nil),         // 3: project.planton.provider.azure.azureaksnodepool.v1.AzureAksNodePoolSpec
 	(*AzureAksNodePoolStackOutputs)(nil), // 4: project.planton.provider.azure.azureaksnodepool.v1.AzureAksNodePoolStackOutputs
 }
 var file_project_planton_provider_azure_azureaksnodepool_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.azure.azureaksnodepool.v1.AzureAksNodePool.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	2, // 0: project.planton.provider.azure.azureaksnodepool.v1.AzureAksNodePool.metadata:type_name -> project.planton.shared.CloudResourceMetadata
 	3, // 1: project.planton.provider.azure.azureaksnodepool.v1.AzureAksNodePool.spec:type_name -> project.planton.provider.azure.azureaksnodepool.v1.AzureAksNodePoolSpec
 	1, // 2: project.planton.provider.azure.azureaksnodepool.v1.AzureAksNodePool.status:type_name -> project.planton.provider.azure.azureaksnodepool.v1.AzureAksNodePoolStatus
 	4, // 3: project.planton.provider.azure.azureaksnodepool.v1.AzureAksNodePoolStatus.outputs:type_name -> project.planton.provider.azure.azureaksnodepool.v1.AzureAksNodePoolStackOutputs

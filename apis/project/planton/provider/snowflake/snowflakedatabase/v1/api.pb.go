@@ -31,7 +31,7 @@ type SnowflakeDatabase struct {
 	// resource-kind
 	Kind string `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
 	// metadata
-	Metadata *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Metadata *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// spec
 	Spec *SnowflakeDatabaseSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status
@@ -84,7 +84,7 @@ func (x *SnowflakeDatabase) GetKind() string {
 	return ""
 }
 
-func (x *SnowflakeDatabase) GetMetadata() *shared.ApiResourceMetadata {
+func (x *SnowflakeDatabase) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
@@ -155,14 +155,14 @@ var File_project_planton_provider_snowflake_snowflakedatabase_v1_api_proto proto
 
 const file_project_planton_provider_snowflake_snowflakedatabase_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Aproject/planton/provider/snowflake/snowflakedatabase/v1/api.proto\x127project.planton.provider.snowflake.snowflakedatabase.v1\x1a\x1bbuf/validate/validate.proto\x1aBproject/planton/provider/snowflake/snowflakedatabase/v1/spec.proto\x1aKproject/planton/provider/snowflake/snowflakedatabase/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xb2\x03\n" +
+	"Aproject/planton/provider/snowflake/snowflakedatabase/v1/api.proto\x127project.planton.provider.snowflake.snowflakedatabase.v1\x1a\x1bbuf/validate/validate.proto\x1aBproject/planton/provider/snowflake/snowflakedatabase/v1/spec.proto\x1aKproject/planton/provider/snowflake/snowflakedatabase/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xb4\x03\n" +
 	"\x11SnowflakeDatabase\x12H\n" +
 	"\vapi_version\x18\x01 \x01(\tB'\xbaH$r\"\n" +
 	" snowflake.project-planton.org/v1R\n" +
 	"apiVersion\x12,\n" +
 	"\x04kind\x18\x02 \x01(\tB\x18\xbaH\x15r\x13\n" +
-	"\x11SnowflakeDatabaseR\x04kind\x12O\n" +
-	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12j\n" +
+	"\x11SnowflakeDatabaseR\x04kind\x12Q\n" +
+	"\bmetadata\x18\x03 \x01(\v2-.project.planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12j\n" +
 	"\x04spec\x18\x04 \x01(\v2N.project.planton.provider.snowflake.snowflakedatabase.v1.SnowflakeDatabaseSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12h\n" +
 	"\x06status\x18\x05 \x01(\v2P.project.planton.provider.snowflake.snowflakedatabase.v1.SnowflakeDatabaseStatusR\x06status\"\x8b\x01\n" +
 	"\x17SnowflakeDatabaseStatus\x12p\n" +
@@ -185,12 +185,12 @@ var file_project_planton_provider_snowflake_snowflakedatabase_v1_api_proto_msgTy
 var file_project_planton_provider_snowflake_snowflakedatabase_v1_api_proto_goTypes = []any{
 	(*SnowflakeDatabase)(nil),             // 0: project.planton.provider.snowflake.snowflakedatabase.v1.SnowflakeDatabase
 	(*SnowflakeDatabaseStatus)(nil),       // 1: project.planton.provider.snowflake.snowflakedatabase.v1.SnowflakeDatabaseStatus
-	(*shared.ApiResourceMetadata)(nil),    // 2: project.planton.shared.ApiResourceMetadata
+	(*shared.CloudResourceMetadata)(nil),  // 2: project.planton.shared.CloudResourceMetadata
 	(*SnowflakeDatabaseSpec)(nil),         // 3: project.planton.provider.snowflake.snowflakedatabase.v1.SnowflakeDatabaseSpec
 	(*SnowflakeDatabaseStackOutputs)(nil), // 4: project.planton.provider.snowflake.snowflakedatabase.v1.SnowflakeDatabaseStackOutputs
 }
 var file_project_planton_provider_snowflake_snowflakedatabase_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.snowflake.snowflakedatabase.v1.SnowflakeDatabase.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	2, // 0: project.planton.provider.snowflake.snowflakedatabase.v1.SnowflakeDatabase.metadata:type_name -> project.planton.shared.CloudResourceMetadata
 	3, // 1: project.planton.provider.snowflake.snowflakedatabase.v1.SnowflakeDatabase.spec:type_name -> project.planton.provider.snowflake.snowflakedatabase.v1.SnowflakeDatabaseSpec
 	1, // 2: project.planton.provider.snowflake.snowflakedatabase.v1.SnowflakeDatabase.status:type_name -> project.planton.provider.snowflake.snowflakedatabase.v1.SnowflakeDatabaseStatus
 	4, // 3: project.planton.provider.snowflake.snowflakedatabase.v1.SnowflakeDatabaseStatus.outputs:type_name -> project.planton.provider.snowflake.snowflakedatabase.v1.SnowflakeDatabaseStackOutputs

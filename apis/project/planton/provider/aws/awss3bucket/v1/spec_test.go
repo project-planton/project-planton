@@ -23,7 +23,7 @@ var _ = ginkgo.Describe("AwsS3BucketSpec Custom Validation Tests", func() {
 				input := &AwsS3Bucket{
 					ApiVersion: "aws.project-planton.org/v1",
 					Kind:       "AwsS3Bucket",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-s3-bucket",
 					},
 					Spec: &AwsS3BucketSpec{

@@ -31,7 +31,7 @@ type GcpCloudRun struct {
 	// resource-kind
 	Kind string `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
 	// metadata
-	Metadata *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Metadata *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// spec
 	Spec *GcpCloudRunSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status
@@ -84,7 +84,7 @@ func (x *GcpCloudRun) GetKind() string {
 	return ""
 }
 
-func (x *GcpCloudRun) GetMetadata() *shared.ApiResourceMetadata {
+func (x *GcpCloudRun) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
@@ -155,14 +155,14 @@ var File_project_planton_provider_gcp_gcpcloudrun_v1_api_proto protoreflect.File
 
 const file_project_planton_provider_gcp_gcpcloudrun_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"5project/planton/provider/gcp/gcpcloudrun/v1/api.proto\x12+project.planton.provider.gcp.gcpcloudrun.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/provider/gcp/gcpcloudrun/v1/spec.proto\x1a?project/planton/provider/gcp/gcpcloudrun/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xfc\x02\n" +
+	"5project/planton/provider/gcp/gcpcloudrun/v1/api.proto\x12+project.planton.provider.gcp.gcpcloudrun.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/provider/gcp/gcpcloudrun/v1/spec.proto\x1a?project/planton/provider/gcp/gcpcloudrun/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xfe\x02\n" +
 	"\vGcpCloudRun\x12B\n" +
 	"\vapi_version\x18\x01 \x01(\tB!\xbaH\x1er\x1c\n" +
 	"\x1agcp.project-planton.org/v1R\n" +
 	"apiVersion\x12&\n" +
 	"\x04kind\x18\x02 \x01(\tB\x12\xbaH\x0fr\r\n" +
-	"\vGcpCloudRunR\x04kind\x12O\n" +
-	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12X\n" +
+	"\vGcpCloudRunR\x04kind\x12Q\n" +
+	"\bmetadata\x18\x03 \x01(\v2-.project.planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12X\n" +
 	"\x04spec\x18\x04 \x01(\v2<.project.planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12V\n" +
 	"\x06status\x18\x05 \x01(\v2>.project.planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunStatusR\x06status\"s\n" +
 	"\x11GcpCloudRunStatus\x12^\n" +
@@ -183,14 +183,14 @@ func file_project_planton_provider_gcp_gcpcloudrun_v1_api_proto_rawDescGZIP() []
 
 var file_project_planton_provider_gcp_gcpcloudrun_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_gcp_gcpcloudrun_v1_api_proto_goTypes = []any{
-	(*GcpCloudRun)(nil),                // 0: project.planton.provider.gcp.gcpcloudrun.v1.GcpCloudRun
-	(*GcpCloudRunStatus)(nil),          // 1: project.planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunStatus
-	(*shared.ApiResourceMetadata)(nil), // 2: project.planton.shared.ApiResourceMetadata
-	(*GcpCloudRunSpec)(nil),            // 3: project.planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunSpec
-	(*GcpCloudRunStackOutputs)(nil),    // 4: project.planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunStackOutputs
+	(*GcpCloudRun)(nil),                  // 0: project.planton.provider.gcp.gcpcloudrun.v1.GcpCloudRun
+	(*GcpCloudRunStatus)(nil),            // 1: project.planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunStatus
+	(*shared.CloudResourceMetadata)(nil), // 2: project.planton.shared.CloudResourceMetadata
+	(*GcpCloudRunSpec)(nil),              // 3: project.planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunSpec
+	(*GcpCloudRunStackOutputs)(nil),      // 4: project.planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunStackOutputs
 }
 var file_project_planton_provider_gcp_gcpcloudrun_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.gcp.gcpcloudrun.v1.GcpCloudRun.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	2, // 0: project.planton.provider.gcp.gcpcloudrun.v1.GcpCloudRun.metadata:type_name -> project.planton.shared.CloudResourceMetadata
 	3, // 1: project.planton.provider.gcp.gcpcloudrun.v1.GcpCloudRun.spec:type_name -> project.planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunSpec
 	1, // 2: project.planton.provider.gcp.gcpcloudrun.v1.GcpCloudRun.status:type_name -> project.planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunStatus
 	4, // 3: project.planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunStatus.outputs:type_name -> project.planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunStackOutputs

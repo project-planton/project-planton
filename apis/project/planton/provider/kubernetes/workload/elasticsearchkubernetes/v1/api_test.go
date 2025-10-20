@@ -23,7 +23,7 @@ var _ = ginkgo.Describe("ElasticsearchKubernetes Custom Validation Tests", func(
 		input = &ElasticsearchKubernetes{
 			ApiVersion: "kubernetes.project-planton.org/v1",
 			Kind:       "ElasticsearchKubernetes",
-			Metadata: &shared.ApiResourceMetadata{
+			Metadata: &shared.CloudResourceMetadata{
 				Name: "test-es",
 			},
 			Spec: &ElasticsearchKubernetesSpec{

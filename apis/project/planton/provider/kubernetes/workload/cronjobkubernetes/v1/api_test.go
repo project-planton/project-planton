@@ -23,7 +23,7 @@ var _ = ginkgo.Describe("CronJobKubernetes Custom Validation Tests", func() {
 		input = &CronJobKubernetes{
 			ApiVersion: "kubernetes.project-planton.org/v1",
 			Kind:       "CronJobKubernetes",
-			Metadata: &shared.ApiResourceMetadata{
+			Metadata: &shared.CloudResourceMetadata{
 				Name: "my-cron-job",
 			},
 			Spec: &CronJobKubernetesSpec{

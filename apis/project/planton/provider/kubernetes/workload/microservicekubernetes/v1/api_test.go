@@ -22,7 +22,7 @@ var _ = ginkgo.Describe("MicroserviceKubernetes Custom Validation Tests", func()
 		input = &MicroserviceKubernetes{
 			ApiVersion: "kubernetes.project-planton.org/v1",
 			Kind:       "MicroserviceKubernetes",
-			Metadata: &shared.ApiResourceMetadata{
+			Metadata: &shared.CloudResourceMetadata{
 				Name: "sample-msk8s",
 			},
 			Spec: &MicroserviceKubernetesSpec{

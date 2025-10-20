@@ -31,7 +31,7 @@ type DigitalOceanVpc struct {
 	// resource-kind
 	Kind string `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
 	// metadata
-	Metadata *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Metadata *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// spec
 	Spec *DigitalOceanVpcSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status
@@ -84,7 +84,7 @@ func (x *DigitalOceanVpc) GetKind() string {
 	return ""
 }
 
-func (x *DigitalOceanVpc) GetMetadata() *shared.ApiResourceMetadata {
+func (x *DigitalOceanVpc) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
@@ -157,14 +157,14 @@ var File_project_planton_provider_digitalocean_digitaloceanvpc_v1_api_proto prot
 
 const file_project_planton_provider_digitalocean_digitaloceanvpc_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Bproject/planton/provider/digitalocean/digitaloceanvpc/v1/api.proto\x128project.planton.provider.digitalocean.digitaloceanvpc.v1\x1a\x1bbuf/validate/validate.proto\x1aCproject/planton/provider/digitalocean/digitaloceanvpc/v1/spec.proto\x1aLproject/planton/provider/digitalocean/digitaloceanvpc/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xb0\x03\n" +
+	"Bproject/planton/provider/digitalocean/digitaloceanvpc/v1/api.proto\x128project.planton.provider.digitalocean.digitaloceanvpc.v1\x1a\x1bbuf/validate/validate.proto\x1aCproject/planton/provider/digitalocean/digitaloceanvpc/v1/spec.proto\x1aLproject/planton/provider/digitalocean/digitaloceanvpc/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xb2\x03\n" +
 	"\x0fDigitalOceanVpc\x12L\n" +
 	"\vapi_version\x18\x01 \x01(\tB+\xbaH(r&\n" +
 	"$digital-ocean.project-planton.org/v1R\n" +
 	"apiVersion\x12*\n" +
 	"\x04kind\x18\x02 \x01(\tB\x16\xbaH\x13r\x11\n" +
-	"\x0fDigitalOceanVpcR\x04kind\x12O\n" +
-	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12i\n" +
+	"\x0fDigitalOceanVpcR\x04kind\x12Q\n" +
+	"\bmetadata\x18\x03 \x01(\v2-.project.planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12i\n" +
 	"\x04spec\x18\x04 \x01(\v2M.project.planton.provider.digitalocean.digitaloceanvpc.v1.DigitalOceanVpcSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12g\n" +
 	"\x06status\x18\x05 \x01(\v2O.project.planton.provider.digitalocean.digitaloceanvpc.v1.DigitalOceanVpcStatusR\x06status\"\x88\x01\n" +
 	"\x15DigitalOceanVpcStatus\x12o\n" +
@@ -185,14 +185,14 @@ func file_project_planton_provider_digitalocean_digitaloceanvpc_v1_api_proto_raw
 
 var file_project_planton_provider_digitalocean_digitaloceanvpc_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_digitalocean_digitaloceanvpc_v1_api_proto_goTypes = []any{
-	(*DigitalOceanVpc)(nil),             // 0: project.planton.provider.digitalocean.digitaloceanvpc.v1.DigitalOceanVpc
-	(*DigitalOceanVpcStatus)(nil),       // 1: project.planton.provider.digitalocean.digitaloceanvpc.v1.DigitalOceanVpcStatus
-	(*shared.ApiResourceMetadata)(nil),  // 2: project.planton.shared.ApiResourceMetadata
-	(*DigitalOceanVpcSpec)(nil),         // 3: project.planton.provider.digitalocean.digitaloceanvpc.v1.DigitalOceanVpcSpec
-	(*DigitalOceanVpcStackOutputs)(nil), // 4: project.planton.provider.digitalocean.digitaloceanvpc.v1.DigitalOceanVpcStackOutputs
+	(*DigitalOceanVpc)(nil),              // 0: project.planton.provider.digitalocean.digitaloceanvpc.v1.DigitalOceanVpc
+	(*DigitalOceanVpcStatus)(nil),        // 1: project.planton.provider.digitalocean.digitaloceanvpc.v1.DigitalOceanVpcStatus
+	(*shared.CloudResourceMetadata)(nil), // 2: project.planton.shared.CloudResourceMetadata
+	(*DigitalOceanVpcSpec)(nil),          // 3: project.planton.provider.digitalocean.digitaloceanvpc.v1.DigitalOceanVpcSpec
+	(*DigitalOceanVpcStackOutputs)(nil),  // 4: project.planton.provider.digitalocean.digitaloceanvpc.v1.DigitalOceanVpcStackOutputs
 }
 var file_project_planton_provider_digitalocean_digitaloceanvpc_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.digitalocean.digitaloceanvpc.v1.DigitalOceanVpc.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	2, // 0: project.planton.provider.digitalocean.digitaloceanvpc.v1.DigitalOceanVpc.metadata:type_name -> project.planton.shared.CloudResourceMetadata
 	3, // 1: project.planton.provider.digitalocean.digitaloceanvpc.v1.DigitalOceanVpc.spec:type_name -> project.planton.provider.digitalocean.digitaloceanvpc.v1.DigitalOceanVpcSpec
 	1, // 2: project.planton.provider.digitalocean.digitaloceanvpc.v1.DigitalOceanVpc.status:type_name -> project.planton.provider.digitalocean.digitaloceanvpc.v1.DigitalOceanVpcStatus
 	4, // 3: project.planton.provider.digitalocean.digitaloceanvpc.v1.DigitalOceanVpcStatus.outputs:type_name -> project.planton.provider.digitalocean.digitaloceanvpc.v1.DigitalOceanVpcStackOutputs

@@ -31,7 +31,7 @@ type CivoDnsZone struct {
 	// resource-kind
 	Kind string `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
 	// metadata
-	Metadata *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Metadata *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// spec
 	Spec *CivoDnsZoneSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status
@@ -84,7 +84,7 @@ func (x *CivoDnsZone) GetKind() string {
 	return ""
 }
 
-func (x *CivoDnsZone) GetMetadata() *shared.ApiResourceMetadata {
+func (x *CivoDnsZone) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
@@ -157,14 +157,14 @@ var File_project_planton_provider_civo_civodnszone_v1_api_proto protoreflect.Fil
 
 const file_project_planton_provider_civo_civodnszone_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"6project/planton/provider/civo/civodnszone/v1/api.proto\x12,project.planton.provider.civo.civodnszone.v1\x1a\x1bbuf/validate/validate.proto\x1a7project/planton/provider/civo/civodnszone/v1/spec.proto\x1a@project/planton/provider/civo/civodnszone/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xff\x02\n" +
+	"6project/planton/provider/civo/civodnszone/v1/api.proto\x12,project.planton.provider.civo.civodnszone.v1\x1a\x1bbuf/validate/validate.proto\x1a7project/planton/provider/civo/civodnszone/v1/spec.proto\x1a@project/planton/provider/civo/civodnszone/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\x81\x03\n" +
 	"\vCivoDnsZone\x12C\n" +
 	"\vapi_version\x18\x01 \x01(\tB\"\xbaH\x1fr\x1d\n" +
 	"\x1bcivo.project-planton.org/v1R\n" +
 	"apiVersion\x12&\n" +
 	"\x04kind\x18\x02 \x01(\tB\x12\xbaH\x0fr\r\n" +
-	"\vCivoDnsZoneR\x04kind\x12O\n" +
-	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12Y\n" +
+	"\vCivoDnsZoneR\x04kind\x12Q\n" +
+	"\bmetadata\x18\x03 \x01(\v2-.project.planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12Y\n" +
 	"\x04spec\x18\x04 \x01(\v2=.project.planton.provider.civo.civodnszone.v1.CivoDnsZoneSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12W\n" +
 	"\x06status\x18\x05 \x01(\v2?.project.planton.provider.civo.civodnszone.v1.CivoDnsZoneStatusR\x06status\"t\n" +
 	"\x11CivoDnsZoneStatus\x12_\n" +
@@ -185,14 +185,14 @@ func file_project_planton_provider_civo_civodnszone_v1_api_proto_rawDescGZIP() [
 
 var file_project_planton_provider_civo_civodnszone_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_civo_civodnszone_v1_api_proto_goTypes = []any{
-	(*CivoDnsZone)(nil),                // 0: project.planton.provider.civo.civodnszone.v1.CivoDnsZone
-	(*CivoDnsZoneStatus)(nil),          // 1: project.planton.provider.civo.civodnszone.v1.CivoDnsZoneStatus
-	(*shared.ApiResourceMetadata)(nil), // 2: project.planton.shared.ApiResourceMetadata
-	(*CivoDnsZoneSpec)(nil),            // 3: project.planton.provider.civo.civodnszone.v1.CivoDnsZoneSpec
-	(*CivoDnsZoneStackOutputs)(nil),    // 4: project.planton.provider.civo.civodnszone.v1.CivoDnsZoneStackOutputs
+	(*CivoDnsZone)(nil),                  // 0: project.planton.provider.civo.civodnszone.v1.CivoDnsZone
+	(*CivoDnsZoneStatus)(nil),            // 1: project.planton.provider.civo.civodnszone.v1.CivoDnsZoneStatus
+	(*shared.CloudResourceMetadata)(nil), // 2: project.planton.shared.CloudResourceMetadata
+	(*CivoDnsZoneSpec)(nil),              // 3: project.planton.provider.civo.civodnszone.v1.CivoDnsZoneSpec
+	(*CivoDnsZoneStackOutputs)(nil),      // 4: project.planton.provider.civo.civodnszone.v1.CivoDnsZoneStackOutputs
 }
 var file_project_planton_provider_civo_civodnszone_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.civo.civodnszone.v1.CivoDnsZone.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	2, // 0: project.planton.provider.civo.civodnszone.v1.CivoDnsZone.metadata:type_name -> project.planton.shared.CloudResourceMetadata
 	3, // 1: project.planton.provider.civo.civodnszone.v1.CivoDnsZone.spec:type_name -> project.planton.provider.civo.civodnszone.v1.CivoDnsZoneSpec
 	1, // 2: project.planton.provider.civo.civodnszone.v1.CivoDnsZone.status:type_name -> project.planton.provider.civo.civodnszone.v1.CivoDnsZoneStatus
 	4, // 3: project.planton.provider.civo.civodnszone.v1.CivoDnsZoneStatus.outputs:type_name -> project.planton.provider.civo.civodnszone.v1.CivoDnsZoneStackOutputs

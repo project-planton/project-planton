@@ -25,7 +25,7 @@ var _ = ginkgo.Describe("GcpGkeWorkloadIdentityBindingSpec Custom Validation Tes
 				input := &GcpGkeWorkloadIdentityBinding{
 					ApiVersion: "gcp.project-planton.org/v1",
 					Kind:       "GcpGkeWorkloadIdentityBinding",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-workload-identity-binding",
 					},
 					Spec: &GcpGkeWorkloadIdentityBindingSpec{

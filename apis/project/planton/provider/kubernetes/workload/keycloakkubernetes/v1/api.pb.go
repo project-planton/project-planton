@@ -31,7 +31,7 @@ type KeycloakKubernetes struct {
 	// resource-kind
 	Kind string `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
 	// metadata
-	Metadata *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Metadata *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// spec
 	Spec *KeycloakKubernetesSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status
@@ -84,7 +84,7 @@ func (x *KeycloakKubernetes) GetKind() string {
 	return ""
 }
 
-func (x *KeycloakKubernetes) GetMetadata() *shared.ApiResourceMetadata {
+func (x *KeycloakKubernetes) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
@@ -155,14 +155,14 @@ var File_project_planton_provider_kubernetes_workload_keycloakkubernetes_v1_api_
 
 const file_project_planton_provider_kubernetes_workload_keycloakkubernetes_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Lproject/planton/provider/kubernetes/workload/keycloakkubernetes/v1/api.proto\x12Bproject.planton.provider.kubernetes.workload.keycloakkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1aMproject/planton/provider/kubernetes/workload/keycloakkubernetes/v1/spec.proto\x1aVproject/planton/provider/kubernetes/workload/keycloakkubernetes/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xcd\x03\n" +
+	"Lproject/planton/provider/kubernetes/workload/keycloakkubernetes/v1/api.proto\x12Bproject.planton.provider.kubernetes.workload.keycloakkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1aMproject/planton/provider/kubernetes/workload/keycloakkubernetes/v1/spec.proto\x1aVproject/planton/provider/kubernetes/workload/keycloakkubernetes/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xcf\x03\n" +
 	"\x12KeycloakKubernetes\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!kubernetes.project-planton.org/v1R\n" +
 	"apiVersion\x12-\n" +
 	"\x04kind\x18\x02 \x01(\tB\x19\xbaH\x16r\x14\n" +
-	"\x12KeycloakKubernetesR\x04kind\x12O\n" +
-	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12v\n" +
+	"\x12KeycloakKubernetesR\x04kind\x12Q\n" +
+	"\bmetadata\x18\x03 \x01(\v2-.project.planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12v\n" +
 	"\x04spec\x18\x04 \x01(\v2Z.project.planton.provider.kubernetes.workload.keycloakkubernetes.v1.KeycloakKubernetesSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12t\n" +
 	"\x06status\x18\x05 \x01(\v2\\.project.planton.provider.kubernetes.workload.keycloakkubernetes.v1.KeycloakKubernetesStatusR\x06status\"\x98\x01\n" +
 	"\x18KeycloakKubernetesStatus\x12|\n" +
@@ -185,12 +185,12 @@ var file_project_planton_provider_kubernetes_workload_keycloakkubernetes_v1_api_
 var file_project_planton_provider_kubernetes_workload_keycloakkubernetes_v1_api_proto_goTypes = []any{
 	(*KeycloakKubernetes)(nil),             // 0: project.planton.provider.kubernetes.workload.keycloakkubernetes.v1.KeycloakKubernetes
 	(*KeycloakKubernetesStatus)(nil),       // 1: project.planton.provider.kubernetes.workload.keycloakkubernetes.v1.KeycloakKubernetesStatus
-	(*shared.ApiResourceMetadata)(nil),     // 2: project.planton.shared.ApiResourceMetadata
+	(*shared.CloudResourceMetadata)(nil),   // 2: project.planton.shared.CloudResourceMetadata
 	(*KeycloakKubernetesSpec)(nil),         // 3: project.planton.provider.kubernetes.workload.keycloakkubernetes.v1.KeycloakKubernetesSpec
 	(*KeycloakKubernetesStackOutputs)(nil), // 4: project.planton.provider.kubernetes.workload.keycloakkubernetes.v1.KeycloakKubernetesStackOutputs
 }
 var file_project_planton_provider_kubernetes_workload_keycloakkubernetes_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.kubernetes.workload.keycloakkubernetes.v1.KeycloakKubernetes.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	2, // 0: project.planton.provider.kubernetes.workload.keycloakkubernetes.v1.KeycloakKubernetes.metadata:type_name -> project.planton.shared.CloudResourceMetadata
 	3, // 1: project.planton.provider.kubernetes.workload.keycloakkubernetes.v1.KeycloakKubernetes.spec:type_name -> project.planton.provider.kubernetes.workload.keycloakkubernetes.v1.KeycloakKubernetesSpec
 	1, // 2: project.planton.provider.kubernetes.workload.keycloakkubernetes.v1.KeycloakKubernetes.status:type_name -> project.planton.provider.kubernetes.workload.keycloakkubernetes.v1.KeycloakKubernetesStatus
 	4, // 3: project.planton.provider.kubernetes.workload.keycloakkubernetes.v1.KeycloakKubernetesStatus.outputs:type_name -> project.planton.provider.kubernetes.workload.keycloakkubernetes.v1.KeycloakKubernetesStackOutputs

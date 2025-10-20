@@ -31,7 +31,7 @@ type IngressNginxKubernetes struct {
 	// resource-kind
 	Kind string `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
 	// metadata
-	Metadata *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Metadata *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// spec
 	Spec *IngressNginxKubernetesSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status
@@ -84,7 +84,7 @@ func (x *IngressNginxKubernetes) GetKind() string {
 	return ""
 }
 
-func (x *IngressNginxKubernetes) GetMetadata() *shared.ApiResourceMetadata {
+func (x *IngressNginxKubernetes) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
@@ -155,14 +155,14 @@ var File_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v1_api
 
 const file_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Mproject/planton/provider/kubernetes/addon/ingressnginxkubernetes/v1/api.proto\x12Cproject.planton.provider.kubernetes.addon.ingressnginxkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1aNproject/planton/provider/kubernetes/addon/ingressnginxkubernetes/v1/spec.proto\x1aWproject/planton/provider/kubernetes/addon/ingressnginxkubernetes/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xdf\x03\n" +
+	"Mproject/planton/provider/kubernetes/addon/ingressnginxkubernetes/v1/api.proto\x12Cproject.planton.provider.kubernetes.addon.ingressnginxkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1aNproject/planton/provider/kubernetes/addon/ingressnginxkubernetes/v1/spec.proto\x1aWproject/planton/provider/kubernetes/addon/ingressnginxkubernetes/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xe1\x03\n" +
 	"\x16IngressNginxKubernetes\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!kubernetes.project-planton.org/v1R\n" +
 	"apiVersion\x121\n" +
 	"\x04kind\x18\x02 \x01(\tB\x1d\xbaH\x1ar\x18\n" +
-	"\x16IngressNginxKubernetesR\x04kind\x12O\n" +
-	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12{\n" +
+	"\x16IngressNginxKubernetesR\x04kind\x12Q\n" +
+	"\bmetadata\x18\x03 \x01(\v2-.project.planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12{\n" +
 	"\x04spec\x18\x04 \x01(\v2_.project.planton.provider.kubernetes.addon.ingressnginxkubernetes.v1.IngressNginxKubernetesSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12y\n" +
 	"\x06status\x18\x05 \x01(\v2a.project.planton.provider.kubernetes.addon.ingressnginxkubernetes.v1.IngressNginxKubernetesStatusR\x06status\"\xa2\x01\n" +
 	"\x1cIngressNginxKubernetesStatus\x12\x81\x01\n" +
@@ -185,12 +185,12 @@ var file_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v1_api
 var file_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v1_api_proto_goTypes = []any{
 	(*IngressNginxKubernetes)(nil),             // 0: project.planton.provider.kubernetes.addon.ingressnginxkubernetes.v1.IngressNginxKubernetes
 	(*IngressNginxKubernetesStatus)(nil),       // 1: project.planton.provider.kubernetes.addon.ingressnginxkubernetes.v1.IngressNginxKubernetesStatus
-	(*shared.ApiResourceMetadata)(nil),         // 2: project.planton.shared.ApiResourceMetadata
+	(*shared.CloudResourceMetadata)(nil),       // 2: project.planton.shared.CloudResourceMetadata
 	(*IngressNginxKubernetesSpec)(nil),         // 3: project.planton.provider.kubernetes.addon.ingressnginxkubernetes.v1.IngressNginxKubernetesSpec
 	(*IngressNginxKubernetesStackOutputs)(nil), // 4: project.planton.provider.kubernetes.addon.ingressnginxkubernetes.v1.IngressNginxKubernetesStackOutputs
 }
 var file_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.kubernetes.addon.ingressnginxkubernetes.v1.IngressNginxKubernetes.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	2, // 0: project.planton.provider.kubernetes.addon.ingressnginxkubernetes.v1.IngressNginxKubernetes.metadata:type_name -> project.planton.shared.CloudResourceMetadata
 	3, // 1: project.planton.provider.kubernetes.addon.ingressnginxkubernetes.v1.IngressNginxKubernetes.spec:type_name -> project.planton.provider.kubernetes.addon.ingressnginxkubernetes.v1.IngressNginxKubernetesSpec
 	1, // 2: project.planton.provider.kubernetes.addon.ingressnginxkubernetes.v1.IngressNginxKubernetes.status:type_name -> project.planton.provider.kubernetes.addon.ingressnginxkubernetes.v1.IngressNginxKubernetesStatus
 	4, // 3: project.planton.provider.kubernetes.addon.ingressnginxkubernetes.v1.IngressNginxKubernetesStatus.outputs:type_name -> project.planton.provider.kubernetes.addon.ingressnginxkubernetes.v1.IngressNginxKubernetesStackOutputs

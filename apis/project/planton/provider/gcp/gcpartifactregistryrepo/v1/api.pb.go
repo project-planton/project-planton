@@ -31,7 +31,7 @@ type GcpArtifactRegistryRepo struct {
 	// resource-kind
 	Kind string `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
 	// metadata
-	Metadata *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Metadata *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// resource spec
 	Spec *GcpArtifactRegistryRepoSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// resource status
@@ -84,7 +84,7 @@ func (x *GcpArtifactRegistryRepo) GetKind() string {
 	return ""
 }
 
-func (x *GcpArtifactRegistryRepo) GetMetadata() *shared.ApiResourceMetadata {
+func (x *GcpArtifactRegistryRepo) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
@@ -155,14 +155,14 @@ var File_project_planton_provider_gcp_gcpartifactregistryrepo_v1_api_proto proto
 
 const file_project_planton_provider_gcp_gcpartifactregistryrepo_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Aproject/planton/provider/gcp/gcpartifactregistryrepo/v1/api.proto\x127project.planton.provider.gcp.gcpartifactregistryrepo.v1\x1a\x1bbuf/validate/validate.proto\x1aBproject/planton/provider/gcp/gcpartifactregistryrepo/v1/spec.proto\x1aKproject/planton/provider/gcp/gcpartifactregistryrepo/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xc4\x03\n" +
+	"Aproject/planton/provider/gcp/gcpartifactregistryrepo/v1/api.proto\x127project.planton.provider.gcp.gcpartifactregistryrepo.v1\x1a\x1bbuf/validate/validate.proto\x1aBproject/planton/provider/gcp/gcpartifactregistryrepo/v1/spec.proto\x1aKproject/planton/provider/gcp/gcpartifactregistryrepo/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xc6\x03\n" +
 	"\x17GcpArtifactRegistryRepo\x12B\n" +
 	"\vapi_version\x18\x01 \x01(\tB!\xbaH\x1er\x1c\n" +
 	"\x1agcp.project-planton.org/v1R\n" +
 	"apiVersion\x122\n" +
 	"\x04kind\x18\x02 \x01(\tB\x1e\xbaH\x1br\x19\n" +
-	"\x17GcpArtifactRegistryRepoR\x04kind\x12O\n" +
-	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12p\n" +
+	"\x17GcpArtifactRegistryRepoR\x04kind\x12Q\n" +
+	"\bmetadata\x18\x03 \x01(\v2-.project.planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12p\n" +
 	"\x04spec\x18\x04 \x01(\v2T.project.planton.provider.gcp.gcpartifactregistryrepo.v1.GcpArtifactRegistryRepoSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12n\n" +
 	"\x06status\x18\x05 \x01(\v2V.project.planton.provider.gcp.gcpartifactregistryrepo.v1.GcpArtifactRegistryRepoStatusR\x06status\"\x97\x01\n" +
 	"\x1dGcpArtifactRegistryRepoStatus\x12v\n" +
@@ -185,12 +185,12 @@ var file_project_planton_provider_gcp_gcpartifactregistryrepo_v1_api_proto_msgTy
 var file_project_planton_provider_gcp_gcpartifactregistryrepo_v1_api_proto_goTypes = []any{
 	(*GcpArtifactRegistryRepo)(nil),             // 0: project.planton.provider.gcp.gcpartifactregistryrepo.v1.GcpArtifactRegistryRepo
 	(*GcpArtifactRegistryRepoStatus)(nil),       // 1: project.planton.provider.gcp.gcpartifactregistryrepo.v1.GcpArtifactRegistryRepoStatus
-	(*shared.ApiResourceMetadata)(nil),          // 2: project.planton.shared.ApiResourceMetadata
+	(*shared.CloudResourceMetadata)(nil),        // 2: project.planton.shared.CloudResourceMetadata
 	(*GcpArtifactRegistryRepoSpec)(nil),         // 3: project.planton.provider.gcp.gcpartifactregistryrepo.v1.GcpArtifactRegistryRepoSpec
 	(*GcpArtifactRegistryRepoStackOutputs)(nil), // 4: project.planton.provider.gcp.gcpartifactregistryrepo.v1.GcpArtifactRegistryRepoStackOutputs
 }
 var file_project_planton_provider_gcp_gcpartifactregistryrepo_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.gcp.gcpartifactregistryrepo.v1.GcpArtifactRegistryRepo.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	2, // 0: project.planton.provider.gcp.gcpartifactregistryrepo.v1.GcpArtifactRegistryRepo.metadata:type_name -> project.planton.shared.CloudResourceMetadata
 	3, // 1: project.planton.provider.gcp.gcpartifactregistryrepo.v1.GcpArtifactRegistryRepo.spec:type_name -> project.planton.provider.gcp.gcpartifactregistryrepo.v1.GcpArtifactRegistryRepoSpec
 	1, // 2: project.planton.provider.gcp.gcpartifactregistryrepo.v1.GcpArtifactRegistryRepo.status:type_name -> project.planton.provider.gcp.gcpartifactregistryrepo.v1.GcpArtifactRegistryRepoStatus
 	4, // 3: project.planton.provider.gcp.gcpartifactregistryrepo.v1.GcpArtifactRegistryRepoStatus.outputs:type_name -> project.planton.provider.gcp.gcpartifactregistryrepo.v1.GcpArtifactRegistryRepoStackOutputs

@@ -4,11 +4,11 @@ package project.planton.shared;
 
 import "project/planton/shared/relationship/v1/relationship.proto";
 
-//metadata for all resource objects on planton-cloud
-message ApiResourceMetadata {
-  // name of the resource
+//metadata of a cloud-resource
+message CloudResourceMetadata {
+  // name of the cloud-resource
   string name = 1;
-  // slug for the resource
+  // slug for the cloud-resource
   string slug = 2;
   // id of the resource
   string id = 3;
@@ -22,18 +22,6 @@ message ApiResourceMetadata {
   map<string, string> annotations = 7;
   // tags for the resource
   repeated string tags = 8;
-  //metadata for resource version
-  ApiResourceMetadataVersion version = 9;
   //explicit relationships for the cloud-resource with other cloud-resources
-  repeated project.planton.shared.relationship.v1.CloudResourceRelationship relationships = 10;
-}
-
-// version information for api-resource to be used in api-resource metadata
-message ApiResourceMetadataVersion {
-  //identifier for api-resource version
-  string id = 1;
-  //message describing the version. think of commit message.
-  string message = 2;
-  //previous version-id that links this version to the previous.
-  string previous_version_id = 3;
+  repeated project.planton.shared.relationship.v1.CloudResourceRelationship relationships = 9;
 }

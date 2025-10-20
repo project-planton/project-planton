@@ -21,7 +21,7 @@ var _ = ginkgo.Describe("KubernetesHttpEndpoint Custom Validation Tests", func()
 		input = &KubernetesHttpEndpoint{
 			ApiVersion: "kubernetes.project-planton.org/v1",
 			Kind:       "KubernetesHttpEndpoint",
-			Metadata: &shared.ApiResourceMetadata{
+			Metadata: &shared.CloudResourceMetadata{
 				Name: "test-endpoint",
 			},
 			Spec: &KubernetesHttpEndpointSpec{

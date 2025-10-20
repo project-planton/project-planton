@@ -21,7 +21,7 @@ var _ = ginkgo.Describe("HelmRelease Custom Validation Tests", func() {
 		input = &HelmRelease{
 			ApiVersion: "kubernetes.project-planton.org/v1",
 			Kind:       "HelmRelease",
-			Metadata: &shared.ApiResourceMetadata{
+			Metadata: &shared.CloudResourceMetadata{
 				Name: "test-helmrelease",
 			},
 			Spec: &HelmReleaseSpec{

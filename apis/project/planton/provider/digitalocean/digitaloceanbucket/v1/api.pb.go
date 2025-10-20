@@ -31,7 +31,7 @@ type DigitalOceanBucket struct {
 	// resource-kind
 	Kind string `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
 	// metadata
-	Metadata *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Metadata *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// spec
 	Spec *DigitalOceanBucketSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status
@@ -84,7 +84,7 @@ func (x *DigitalOceanBucket) GetKind() string {
 	return ""
 }
 
-func (x *DigitalOceanBucket) GetMetadata() *shared.ApiResourceMetadata {
+func (x *DigitalOceanBucket) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
@@ -157,14 +157,14 @@ var File_project_planton_provider_digitalocean_digitaloceanbucket_v1_api_proto p
 
 const file_project_planton_provider_digitalocean_digitaloceanbucket_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Eproject/planton/provider/digitalocean/digitaloceanbucket/v1/api.proto\x12;project.planton.provider.digitalocean.digitaloceanbucket.v1\x1a\x1bbuf/validate/validate.proto\x1aFproject/planton/provider/digitalocean/digitaloceanbucket/v1/spec.proto\x1aOproject/planton/provider/digitalocean/digitaloceanbucket/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xc2\x03\n" +
+	"Eproject/planton/provider/digitalocean/digitaloceanbucket/v1/api.proto\x12;project.planton.provider.digitalocean.digitaloceanbucket.v1\x1a\x1bbuf/validate/validate.proto\x1aFproject/planton/provider/digitalocean/digitaloceanbucket/v1/spec.proto\x1aOproject/planton/provider/digitalocean/digitaloceanbucket/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xc4\x03\n" +
 	"\x12DigitalOceanBucket\x12L\n" +
 	"\vapi_version\x18\x01 \x01(\tB+\xbaH(r&\n" +
 	"$digital-ocean.project-planton.org/v1R\n" +
 	"apiVersion\x12-\n" +
 	"\x04kind\x18\x02 \x01(\tB\x19\xbaH\x16r\x14\n" +
-	"\x12DigitalOceanBucketR\x04kind\x12O\n" +
-	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12o\n" +
+	"\x12DigitalOceanBucketR\x04kind\x12Q\n" +
+	"\bmetadata\x18\x03 \x01(\v2-.project.planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12o\n" +
 	"\x04spec\x18\x04 \x01(\v2S.project.planton.provider.digitalocean.digitaloceanbucket.v1.DigitalOceanBucketSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12m\n" +
 	"\x06status\x18\x05 \x01(\v2U.project.planton.provider.digitalocean.digitaloceanbucket.v1.DigitalOceanBucketStatusR\x06status\"\x91\x01\n" +
 	"\x18DigitalOceanBucketStatus\x12u\n" +
@@ -187,12 +187,12 @@ var file_project_planton_provider_digitalocean_digitaloceanbucket_v1_api_proto_m
 var file_project_planton_provider_digitalocean_digitaloceanbucket_v1_api_proto_goTypes = []any{
 	(*DigitalOceanBucket)(nil),             // 0: project.planton.provider.digitalocean.digitaloceanbucket.v1.DigitalOceanBucket
 	(*DigitalOceanBucketStatus)(nil),       // 1: project.planton.provider.digitalocean.digitaloceanbucket.v1.DigitalOceanBucketStatus
-	(*shared.ApiResourceMetadata)(nil),     // 2: project.planton.shared.ApiResourceMetadata
+	(*shared.CloudResourceMetadata)(nil),   // 2: project.planton.shared.CloudResourceMetadata
 	(*DigitalOceanBucketSpec)(nil),         // 3: project.planton.provider.digitalocean.digitaloceanbucket.v1.DigitalOceanBucketSpec
 	(*DigitalOceanBucketStackOutputs)(nil), // 4: project.planton.provider.digitalocean.digitaloceanbucket.v1.DigitalOceanBucketStackOutputs
 }
 var file_project_planton_provider_digitalocean_digitaloceanbucket_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.digitalocean.digitaloceanbucket.v1.DigitalOceanBucket.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	2, // 0: project.planton.provider.digitalocean.digitaloceanbucket.v1.DigitalOceanBucket.metadata:type_name -> project.planton.shared.CloudResourceMetadata
 	3, // 1: project.planton.provider.digitalocean.digitaloceanbucket.v1.DigitalOceanBucket.spec:type_name -> project.planton.provider.digitalocean.digitaloceanbucket.v1.DigitalOceanBucketSpec
 	1, // 2: project.planton.provider.digitalocean.digitaloceanbucket.v1.DigitalOceanBucket.status:type_name -> project.planton.provider.digitalocean.digitaloceanbucket.v1.DigitalOceanBucketStatus
 	4, // 3: project.planton.provider.digitalocean.digitaloceanbucket.v1.DigitalOceanBucketStatus.outputs:type_name -> project.planton.provider.digitalocean.digitaloceanbucket.v1.DigitalOceanBucketStackOutputs

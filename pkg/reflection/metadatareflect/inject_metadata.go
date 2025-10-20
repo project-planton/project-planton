@@ -8,7 +8,7 @@ import (
 
 // InjectMetadata sets the metadata field of msg to meta and returns the updated message.
 // If meta is nil, msg is nil, or the message lacks a metadata field, msg is returned unchanged.
-func InjectMetadata(msg proto.Message, meta *shared.ApiResourceMetadata) proto.Message {
+func InjectMetadata(msg proto.Message, meta *shared.CloudResourceMetadata) proto.Message {
 	if meta == nil || msg == nil {
 		return msg
 	}

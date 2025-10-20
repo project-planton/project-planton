@@ -25,7 +25,7 @@ var _ = ginkgo.Describe("CloudflareLoadBalancerSpec Custom Validation Tests", fu
 				input := &CloudflareLoadBalancer{
 					ApiVersion: "cloudflare.project-planton.org/v1",
 					Kind:       "CloudflareLoadBalancer",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-load-balancer",
 					},
 					Spec: &CloudflareLoadBalancerSpec{

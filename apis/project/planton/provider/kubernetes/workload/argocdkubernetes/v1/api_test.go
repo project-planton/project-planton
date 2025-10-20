@@ -21,7 +21,7 @@ var _ = ginkgo.Describe("ArgocdKubernetes Custom Validation Tests", func() {
 		input = &ArgocdKubernetes{
 			ApiVersion: "kubernetes.project-planton.org/v1",
 			Kind:       "ArgocdKubernetes",
-			Metadata: &shared.ApiResourceMetadata{
+			Metadata: &shared.CloudResourceMetadata{
 				Name: "test-argocd",
 			},
 			Spec: &ArgocdKubernetesSpec{

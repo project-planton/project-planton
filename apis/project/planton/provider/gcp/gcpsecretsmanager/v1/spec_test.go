@@ -23,7 +23,7 @@ var _ = ginkgo.Describe("GcpSecretsManagerSpec Custom Validation Tests", func() 
 				input := &GcpSecretsManager{
 					ApiVersion: "gcp.project-planton.org/v1",
 					Kind:       "GcpSecretsManager",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-secrets-manager",
 					},
 					Spec: &GcpSecretsManagerSpec{
