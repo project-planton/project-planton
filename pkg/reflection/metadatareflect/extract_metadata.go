@@ -5,7 +5,7 @@ import (
 	"google.golang.org/protobuf/proto"
 )
 
-func ExtractMetadata(msg proto.Message) *shared.ApiResourceMetadata {
+func ExtractMetadata(msg proto.Message) *shared.CloudResourceMetadata {
 	msgReflect := msg.ProtoReflect()
 
 	// Check if the "status" field exists
@@ -23,7 +23,7 @@ func ExtractMetadata(msg proto.Message) *shared.ApiResourceMetadata {
 	}
 
 	// Unmarshal the bytes into a ResourceAudit
-	var metadata shared.ApiResourceMetadata
+	var metadata shared.CloudResourceMetadata
 	err = proto.Unmarshal(bytes, &metadata)
 	if err != nil {
 		return nil

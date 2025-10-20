@@ -31,7 +31,7 @@ type DigitalOceanCertificate struct {
 	// resource-kind
 	Kind string `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
 	// metadata
-	Metadata *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Metadata *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// spec
 	Spec *DigitalOceanCertificateSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status
@@ -84,7 +84,7 @@ func (x *DigitalOceanCertificate) GetKind() string {
 	return ""
 }
 
-func (x *DigitalOceanCertificate) GetMetadata() *shared.ApiResourceMetadata {
+func (x *DigitalOceanCertificate) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
@@ -157,14 +157,14 @@ var File_project_planton_provider_digitalocean_digitaloceancertificate_v1_api_pr
 
 const file_project_planton_provider_digitalocean_digitaloceancertificate_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Jproject/planton/provider/digitalocean/digitaloceancertificate/v1/api.proto\x12@project.planton.provider.digitalocean.digitaloceancertificate.v1\x1a\x1bbuf/validate/validate.proto\x1aKproject/planton/provider/digitalocean/digitaloceancertificate/v1/spec.proto\x1aTproject/planton/provider/digitalocean/digitaloceancertificate/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xe0\x03\n" +
+	"Jproject/planton/provider/digitalocean/digitaloceancertificate/v1/api.proto\x12@project.planton.provider.digitalocean.digitaloceancertificate.v1\x1a\x1bbuf/validate/validate.proto\x1aKproject/planton/provider/digitalocean/digitaloceancertificate/v1/spec.proto\x1aTproject/planton/provider/digitalocean/digitaloceancertificate/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xe2\x03\n" +
 	"\x17DigitalOceanCertificate\x12L\n" +
 	"\vapi_version\x18\x01 \x01(\tB+\xbaH(r&\n" +
 	"$digital-ocean.project-planton.org/v1R\n" +
 	"apiVersion\x122\n" +
 	"\x04kind\x18\x02 \x01(\tB\x1e\xbaH\x1br\x19\n" +
-	"\x17DigitalOceanCertificateR\x04kind\x12O\n" +
-	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12y\n" +
+	"\x17DigitalOceanCertificateR\x04kind\x12Q\n" +
+	"\bmetadata\x18\x03 \x01(\v2-.project.planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12y\n" +
 	"\x04spec\x18\x04 \x01(\v2].project.planton.provider.digitalocean.digitaloceancertificate.v1.DigitalOceanCertificateSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12w\n" +
 	"\x06status\x18\x05 \x01(\v2_.project.planton.provider.digitalocean.digitaloceancertificate.v1.DigitalOceanCertificateStatusR\x06status\"\xa0\x01\n" +
 	"\x1dDigitalOceanCertificateStatus\x12\x7f\n" +
@@ -187,12 +187,12 @@ var file_project_planton_provider_digitalocean_digitaloceancertificate_v1_api_pr
 var file_project_planton_provider_digitalocean_digitaloceancertificate_v1_api_proto_goTypes = []any{
 	(*DigitalOceanCertificate)(nil),             // 0: project.planton.provider.digitalocean.digitaloceancertificate.v1.DigitalOceanCertificate
 	(*DigitalOceanCertificateStatus)(nil),       // 1: project.planton.provider.digitalocean.digitaloceancertificate.v1.DigitalOceanCertificateStatus
-	(*shared.ApiResourceMetadata)(nil),          // 2: project.planton.shared.ApiResourceMetadata
+	(*shared.CloudResourceMetadata)(nil),        // 2: project.planton.shared.CloudResourceMetadata
 	(*DigitalOceanCertificateSpec)(nil),         // 3: project.planton.provider.digitalocean.digitaloceancertificate.v1.DigitalOceanCertificateSpec
 	(*DigitalOceanCertificateStackOutputs)(nil), // 4: project.planton.provider.digitalocean.digitaloceancertificate.v1.DigitalOceanCertificateStackOutputs
 }
 var file_project_planton_provider_digitalocean_digitaloceancertificate_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.digitalocean.digitaloceancertificate.v1.DigitalOceanCertificate.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	2, // 0: project.planton.provider.digitalocean.digitaloceancertificate.v1.DigitalOceanCertificate.metadata:type_name -> project.planton.shared.CloudResourceMetadata
 	3, // 1: project.planton.provider.digitalocean.digitaloceancertificate.v1.DigitalOceanCertificate.spec:type_name -> project.planton.provider.digitalocean.digitaloceancertificate.v1.DigitalOceanCertificateSpec
 	1, // 2: project.planton.provider.digitalocean.digitaloceancertificate.v1.DigitalOceanCertificate.status:type_name -> project.planton.provider.digitalocean.digitaloceancertificate.v1.DigitalOceanCertificateStatus
 	4, // 3: project.planton.provider.digitalocean.digitaloceancertificate.v1.DigitalOceanCertificateStatus.outputs:type_name -> project.planton.provider.digitalocean.digitaloceancertificate.v1.DigitalOceanCertificateStackOutputs

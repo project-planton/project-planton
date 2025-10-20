@@ -23,7 +23,7 @@ var _ = ginkgo.Describe("AwsIamUserSpec Custom Validation Tests", func() {
 				input := &AwsIamUser{
 					ApiVersion: "aws.project-planton.org/v1",
 					Kind:       "AwsIamUser",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-iam-user",
 					},
 					Spec: &AwsIamUserSpec{

@@ -23,7 +23,7 @@ var _ = ginkgo.Describe("SnowflakeDatabaseSpec Custom Validation Tests", func() 
 				input := &SnowflakeDatabase{
 					ApiVersion: "snowflake.project-planton.org/v1",
 					Kind:       "SnowflakeDatabase",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-snowflake-database",
 					},
 					Spec: &SnowflakeDatabaseSpec{

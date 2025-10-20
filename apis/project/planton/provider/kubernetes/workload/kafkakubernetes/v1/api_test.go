@@ -22,7 +22,7 @@ var _ = ginkgo.Describe("KafkaKubernetes Custom Validation Tests", func() {
 		input = &KafkaKubernetes{
 			ApiVersion: "kubernetes.project-planton.org/v1",
 			Kind:       "KafkaKubernetes",
-			Metadata: &shared.ApiResourceMetadata{
+			Metadata: &shared.CloudResourceMetadata{
 				Name: "test-kafka",
 			},
 			Spec: &KafkaKubernetesSpec{

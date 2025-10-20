@@ -23,7 +23,7 @@ var _ = ginkgo.Describe("AzureKeyVaultSpec Custom Validation Tests", func() {
 				input := &AzureKeyVault{
 					ApiVersion: "azure.project-planton.org/v1",
 					Kind:       "AzureKeyVault",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-key-vault",
 					},
 					Spec: &AzureKeyVaultSpec{

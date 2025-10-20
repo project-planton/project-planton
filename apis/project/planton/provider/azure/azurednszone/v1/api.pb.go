@@ -31,7 +31,7 @@ type AzureDnsZone struct {
 	// resource-kind
 	Kind string `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
 	// metadata
-	Metadata *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Metadata *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// spec
 	Spec *AzureDnsZoneSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status
@@ -84,7 +84,7 @@ func (x *AzureDnsZone) GetKind() string {
 	return ""
 }
 
-func (x *AzureDnsZone) GetMetadata() *shared.ApiResourceMetadata {
+func (x *AzureDnsZone) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
@@ -157,14 +157,14 @@ var File_project_planton_provider_azure_azurednszone_v1_api_proto protoreflect.F
 
 const file_project_planton_provider_azure_azurednszone_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"8project/planton/provider/azure/azurednszone/v1/api.proto\x12.project.planton.provider.azure.azurednszone.v1\x1a\x1bbuf/validate/validate.proto\x1a9project/planton/provider/azure/azurednszone/v1/spec.proto\x1aBproject/planton/provider/azure/azurednszone/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\x88\x03\n" +
+	"8project/planton/provider/azure/azurednszone/v1/api.proto\x12.project.planton.provider.azure.azurednszone.v1\x1a\x1bbuf/validate/validate.proto\x1a9project/planton/provider/azure/azurednszone/v1/spec.proto\x1aBproject/planton/provider/azure/azurednszone/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\x8a\x03\n" +
 	"\fAzureDnsZone\x12D\n" +
 	"\vapi_version\x18\x01 \x01(\tB#\xbaH r\x1e\n" +
 	"\x1cazure.project-planton.org/v1R\n" +
 	"apiVersion\x12'\n" +
 	"\x04kind\x18\x02 \x01(\tB\x13\xbaH\x10r\x0e\n" +
-	"\fAzureDnsZoneR\x04kind\x12O\n" +
-	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12\\\n" +
+	"\fAzureDnsZoneR\x04kind\x12Q\n" +
+	"\bmetadata\x18\x03 \x01(\v2-.project.planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12\\\n" +
 	"\x04spec\x18\x04 \x01(\v2@.project.planton.provider.azure.azurednszone.v1.AzureDnsZoneSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12Z\n" +
 	"\x06status\x18\x05 \x01(\v2B.project.planton.provider.azure.azurednszone.v1.AzureDnsZoneStatusR\x06status\"x\n" +
 	"\x12AzureDnsZoneStatus\x12b\n" +
@@ -185,14 +185,14 @@ func file_project_planton_provider_azure_azurednszone_v1_api_proto_rawDescGZIP()
 
 var file_project_planton_provider_azure_azurednszone_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_azure_azurednszone_v1_api_proto_goTypes = []any{
-	(*AzureDnsZone)(nil),               // 0: project.planton.provider.azure.azurednszone.v1.AzureDnsZone
-	(*AzureDnsZoneStatus)(nil),         // 1: project.planton.provider.azure.azurednszone.v1.AzureDnsZoneStatus
-	(*shared.ApiResourceMetadata)(nil), // 2: project.planton.shared.ApiResourceMetadata
-	(*AzureDnsZoneSpec)(nil),           // 3: project.planton.provider.azure.azurednszone.v1.AzureDnsZoneSpec
-	(*AzureDnsZoneStackOutputs)(nil),   // 4: project.planton.provider.azure.azurednszone.v1.AzureDnsZoneStackOutputs
+	(*AzureDnsZone)(nil),                 // 0: project.planton.provider.azure.azurednszone.v1.AzureDnsZone
+	(*AzureDnsZoneStatus)(nil),           // 1: project.planton.provider.azure.azurednszone.v1.AzureDnsZoneStatus
+	(*shared.CloudResourceMetadata)(nil), // 2: project.planton.shared.CloudResourceMetadata
+	(*AzureDnsZoneSpec)(nil),             // 3: project.planton.provider.azure.azurednszone.v1.AzureDnsZoneSpec
+	(*AzureDnsZoneStackOutputs)(nil),     // 4: project.planton.provider.azure.azurednszone.v1.AzureDnsZoneStackOutputs
 }
 var file_project_planton_provider_azure_azurednszone_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.azure.azurednszone.v1.AzureDnsZone.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	2, // 0: project.planton.provider.azure.azurednszone.v1.AzureDnsZone.metadata:type_name -> project.planton.shared.CloudResourceMetadata
 	3, // 1: project.planton.provider.azure.azurednszone.v1.AzureDnsZone.spec:type_name -> project.planton.provider.azure.azurednszone.v1.AzureDnsZoneSpec
 	1, // 2: project.planton.provider.azure.azurednszone.v1.AzureDnsZone.status:type_name -> project.planton.provider.azure.azurednszone.v1.AzureDnsZoneStatus
 	4, // 3: project.planton.provider.azure.azurednszone.v1.AzureDnsZoneStatus.outputs:type_name -> project.planton.provider.azure.azurednszone.v1.AzureDnsZoneStackOutputs

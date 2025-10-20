@@ -23,7 +23,7 @@ var _ = ginkgo.Describe("CloudflareZeroTrustAccessApplicationSpec Custom Validat
 				input := &CloudflareZeroTrustAccessApplication{
 					ApiVersion: "cloudflare.project-planton.org/v1",
 					Kind:       "CloudflareZeroTrustAccessApplication",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-access-app",
 					},
 					Spec: &CloudflareZeroTrustAccessApplicationSpec{

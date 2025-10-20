@@ -31,7 +31,7 @@ type ConfluentKafka struct {
 	// resource-kind
 	Kind string `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
 	// metadata
-	Metadata *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Metadata *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// spec
 	Spec *ConfluentKafkaSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status
@@ -84,7 +84,7 @@ func (x *ConfluentKafka) GetKind() string {
 	return ""
 }
 
-func (x *ConfluentKafka) GetMetadata() *shared.ApiResourceMetadata {
+func (x *ConfluentKafka) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
@@ -155,14 +155,14 @@ var File_project_planton_provider_confluent_confluentkafka_v1_api_proto protoref
 
 const file_project_planton_provider_confluent_confluentkafka_v1_api_proto_rawDesc = "" +
 	"\n" +
-	">project/planton/provider/confluent/confluentkafka/v1/api.proto\x124project.planton.provider.confluent.confluentkafka.v1\x1a\x1bbuf/validate/validate.proto\x1a?project/planton/provider/confluent/confluentkafka/v1/spec.proto\x1aHproject/planton/provider/confluent/confluentkafka/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xa0\x03\n" +
+	">project/planton/provider/confluent/confluentkafka/v1/api.proto\x124project.planton.provider.confluent.confluentkafka.v1\x1a\x1bbuf/validate/validate.proto\x1a?project/planton/provider/confluent/confluentkafka/v1/spec.proto\x1aHproject/planton/provider/confluent/confluentkafka/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xa2\x03\n" +
 	"\x0eConfluentKafka\x12H\n" +
 	"\vapi_version\x18\x01 \x01(\tB'\xbaH$r\"\n" +
 	" confluent.project-planton.org/v1R\n" +
 	"apiVersion\x12)\n" +
 	"\x04kind\x18\x02 \x01(\tB\x15\xbaH\x12r\x10\n" +
-	"\x0eConfluentKafkaR\x04kind\x12O\n" +
-	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12d\n" +
+	"\x0eConfluentKafkaR\x04kind\x12Q\n" +
+	"\bmetadata\x18\x03 \x01(\v2-.project.planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12d\n" +
 	"\x04spec\x18\x04 \x01(\v2H.project.planton.provider.confluent.confluentkafka.v1.ConfluentKafkaSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12b\n" +
 	"\x06status\x18\x05 \x01(\v2J.project.planton.provider.confluent.confluentkafka.v1.ConfluentKafkaStatusR\x06status\"\x82\x01\n" +
 	"\x14ConfluentKafkaStatus\x12j\n" +
@@ -183,14 +183,14 @@ func file_project_planton_provider_confluent_confluentkafka_v1_api_proto_rawDesc
 
 var file_project_planton_provider_confluent_confluentkafka_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_confluent_confluentkafka_v1_api_proto_goTypes = []any{
-	(*ConfluentKafka)(nil),             // 0: project.planton.provider.confluent.confluentkafka.v1.ConfluentKafka
-	(*ConfluentKafkaStatus)(nil),       // 1: project.planton.provider.confluent.confluentkafka.v1.ConfluentKafkaStatus
-	(*shared.ApiResourceMetadata)(nil), // 2: project.planton.shared.ApiResourceMetadata
-	(*ConfluentKafkaSpec)(nil),         // 3: project.planton.provider.confluent.confluentkafka.v1.ConfluentKafkaSpec
-	(*ConfluentKafkaStackOutputs)(nil), // 4: project.planton.provider.confluent.confluentkafka.v1.ConfluentKafkaStackOutputs
+	(*ConfluentKafka)(nil),               // 0: project.planton.provider.confluent.confluentkafka.v1.ConfluentKafka
+	(*ConfluentKafkaStatus)(nil),         // 1: project.planton.provider.confluent.confluentkafka.v1.ConfluentKafkaStatus
+	(*shared.CloudResourceMetadata)(nil), // 2: project.planton.shared.CloudResourceMetadata
+	(*ConfluentKafkaSpec)(nil),           // 3: project.planton.provider.confluent.confluentkafka.v1.ConfluentKafkaSpec
+	(*ConfluentKafkaStackOutputs)(nil),   // 4: project.planton.provider.confluent.confluentkafka.v1.ConfluentKafkaStackOutputs
 }
 var file_project_planton_provider_confluent_confluentkafka_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.confluent.confluentkafka.v1.ConfluentKafka.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	2, // 0: project.planton.provider.confluent.confluentkafka.v1.ConfluentKafka.metadata:type_name -> project.planton.shared.CloudResourceMetadata
 	3, // 1: project.planton.provider.confluent.confluentkafka.v1.ConfluentKafka.spec:type_name -> project.planton.provider.confluent.confluentkafka.v1.ConfluentKafkaSpec
 	1, // 2: project.planton.provider.confluent.confluentkafka.v1.ConfluentKafka.status:type_name -> project.planton.provider.confluent.confluentkafka.v1.ConfluentKafkaStatus
 	4, // 3: project.planton.provider.confluent.confluentkafka.v1.ConfluentKafkaStatus.outputs:type_name -> project.planton.provider.confluent.confluentkafka.v1.ConfluentKafkaStackOutputs

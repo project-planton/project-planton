@@ -23,7 +23,7 @@ var _ = ginkgo.Describe("AwsKmsKeySpec Custom Validation Tests", func() {
 				input := &AwsKmsKey{
 					ApiVersion: "aws.project-planton.org/v1",
 					Kind:       "AwsKmsKey",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-kms-key",
 					},
 					Spec: &AwsKmsKeySpec{

@@ -16,7 +16,7 @@ message CloudflareR2Bucket {
   string kind = 2 [(buf.validate.field).string.const = 'CloudflareR2Bucket'];
 
   //metadata
-  project.planton.shared.ApiResourceMetadata metadata = 3 [(buf.validate.field).required = true];
+  project.planton.shared.CloudResourceMetadata metadata = 3 [(buf.validate.field).required = true];
 
   //spec
   CloudflareR2BucketSpec spec = 4 [(buf.validate.field).required = true];

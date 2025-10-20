@@ -31,7 +31,7 @@ type AwsRdsCluster struct {
 	// resource-kind
 	Kind string `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
 	// metadata
-	Metadata *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Metadata *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// spec
 	Spec *AwsRdsClusterSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status
@@ -84,7 +84,7 @@ func (x *AwsRdsCluster) GetKind() string {
 	return ""
 }
 
-func (x *AwsRdsCluster) GetMetadata() *shared.ApiResourceMetadata {
+func (x *AwsRdsCluster) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
@@ -155,14 +155,14 @@ var File_project_planton_provider_aws_awsrdscluster_v1_api_proto protoreflect.Fi
 
 const file_project_planton_provider_aws_awsrdscluster_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"7project/planton/provider/aws/awsrdscluster/v1/api.proto\x12-project.planton.provider.aws.awsrdscluster.v1\x1a\x1bbuf/validate/validate.proto\x1a8project/planton/provider/aws/awsrdscluster/v1/spec.proto\x1aAproject/planton/provider/aws/awsrdscluster/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\x88\x03\n" +
+	"7project/planton/provider/aws/awsrdscluster/v1/api.proto\x12-project.planton.provider.aws.awsrdscluster.v1\x1a\x1bbuf/validate/validate.proto\x1a8project/planton/provider/aws/awsrdscluster/v1/spec.proto\x1aAproject/planton/provider/aws/awsrdscluster/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\x8a\x03\n" +
 	"\rAwsRdsCluster\x12B\n" +
 	"\vapi_version\x18\x01 \x01(\tB!\xbaH\x1er\x1c\n" +
 	"\x1aaws.project-planton.org/v1R\n" +
 	"apiVersion\x12(\n" +
 	"\x04kind\x18\x02 \x01(\tB\x14\xbaH\x11r\x0f\n" +
-	"\rAwsRdsClusterR\x04kind\x12O\n" +
-	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12\\\n" +
+	"\rAwsRdsClusterR\x04kind\x12Q\n" +
+	"\bmetadata\x18\x03 \x01(\v2-.project.planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12\\\n" +
 	"\x04spec\x18\x04 \x01(\v2@.project.planton.provider.aws.awsrdscluster.v1.AwsRdsClusterSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12Z\n" +
 	"\x06status\x18\x05 \x01(\v2B.project.planton.provider.aws.awsrdscluster.v1.AwsRdsClusterStatusR\x06status\"y\n" +
 	"\x13AwsRdsClusterStatus\x12b\n" +
@@ -183,14 +183,14 @@ func file_project_planton_provider_aws_awsrdscluster_v1_api_proto_rawDescGZIP() 
 
 var file_project_planton_provider_aws_awsrdscluster_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_aws_awsrdscluster_v1_api_proto_goTypes = []any{
-	(*AwsRdsCluster)(nil),              // 0: project.planton.provider.aws.awsrdscluster.v1.AwsRdsCluster
-	(*AwsRdsClusterStatus)(nil),        // 1: project.planton.provider.aws.awsrdscluster.v1.AwsRdsClusterStatus
-	(*shared.ApiResourceMetadata)(nil), // 2: project.planton.shared.ApiResourceMetadata
-	(*AwsRdsClusterSpec)(nil),          // 3: project.planton.provider.aws.awsrdscluster.v1.AwsRdsClusterSpec
-	(*AwsRdsClusterStackOutputs)(nil),  // 4: project.planton.provider.aws.awsrdscluster.v1.AwsRdsClusterStackOutputs
+	(*AwsRdsCluster)(nil),                // 0: project.planton.provider.aws.awsrdscluster.v1.AwsRdsCluster
+	(*AwsRdsClusterStatus)(nil),          // 1: project.planton.provider.aws.awsrdscluster.v1.AwsRdsClusterStatus
+	(*shared.CloudResourceMetadata)(nil), // 2: project.planton.shared.CloudResourceMetadata
+	(*AwsRdsClusterSpec)(nil),            // 3: project.planton.provider.aws.awsrdscluster.v1.AwsRdsClusterSpec
+	(*AwsRdsClusterStackOutputs)(nil),    // 4: project.planton.provider.aws.awsrdscluster.v1.AwsRdsClusterStackOutputs
 }
 var file_project_planton_provider_aws_awsrdscluster_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.aws.awsrdscluster.v1.AwsRdsCluster.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	2, // 0: project.planton.provider.aws.awsrdscluster.v1.AwsRdsCluster.metadata:type_name -> project.planton.shared.CloudResourceMetadata
 	3, // 1: project.planton.provider.aws.awsrdscluster.v1.AwsRdsCluster.spec:type_name -> project.planton.provider.aws.awsrdscluster.v1.AwsRdsClusterSpec
 	1, // 2: project.planton.provider.aws.awsrdscluster.v1.AwsRdsCluster.status:type_name -> project.planton.provider.aws.awsrdscluster.v1.AwsRdsClusterStatus
 	4, // 3: project.planton.provider.aws.awsrdscluster.v1.AwsRdsClusterStatus.outputs:type_name -> project.planton.provider.aws.awsrdscluster.v1.AwsRdsClusterStackOutputs

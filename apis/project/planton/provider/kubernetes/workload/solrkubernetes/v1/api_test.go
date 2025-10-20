@@ -22,7 +22,7 @@ var _ = ginkgo.Describe("SolrKubernetes Custom Validation Tests", func() {
 		input = &SolrKubernetes{
 			ApiVersion: "kubernetes.project-planton.org/v1",
 			Kind:       "SolrKubernetes",
-			Metadata: &shared.ApiResourceMetadata{
+			Metadata: &shared.CloudResourceMetadata{
 				Name: "test-solr",
 			},
 			Spec: &SolrKubernetesSpec{

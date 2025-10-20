@@ -26,7 +26,7 @@ var _ = ginkgo.Describe("DigitalOceanKubernetesClusterSpec Custom Validation Tes
 				input := &DigitalOceanKubernetesCluster{
 					ApiVersion: "digital-ocean.project-planton.org/v1",
 					Kind:       "DigitalOceanKubernetesCluster",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-k8s-cluster",
 					},
 					Spec: &DigitalOceanKubernetesClusterSpec{

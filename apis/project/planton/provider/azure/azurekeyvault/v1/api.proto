@@ -16,7 +16,7 @@ message AzureKeyVault {
   string kind = 2 [(buf.validate.field).string.const = 'AzureKeyVault'];
 
   //metadata
-  project.planton.shared.ApiResourceMetadata metadata = 3 [(buf.validate.field).required = true];
+  project.planton.shared.CloudResourceMetadata metadata = 3 [(buf.validate.field).required = true];
 
   //spec
   AzureKeyVaultSpec spec = 4 [(buf.validate.field).required = true];

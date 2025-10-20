@@ -31,7 +31,7 @@ type KafkaOperatorKubernetes struct {
 	// resource-kind
 	Kind string `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
 	// metadata
-	Metadata *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Metadata *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// spec
 	Spec *KafkaOperatorKubernetesSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status
@@ -84,7 +84,7 @@ func (x *KafkaOperatorKubernetes) GetKind() string {
 	return ""
 }
 
-func (x *KafkaOperatorKubernetes) GetMetadata() *shared.ApiResourceMetadata {
+func (x *KafkaOperatorKubernetes) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
@@ -155,14 +155,14 @@ var File_project_planton_provider_kubernetes_addon_kafkaoperatorkubernetes_v1_ap
 
 const file_project_planton_provider_kubernetes_addon_kafkaoperatorkubernetes_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Nproject/planton/provider/kubernetes/addon/kafkaoperatorkubernetes/v1/api.proto\x12Dproject.planton.provider.kubernetes.addon.kafkaoperatorkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1aOproject/planton/provider/kubernetes/addon/kafkaoperatorkubernetes/v1/spec.proto\x1aXproject/planton/provider/kubernetes/addon/kafkaoperatorkubernetes/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xe5\x03\n" +
+	"Nproject/planton/provider/kubernetes/addon/kafkaoperatorkubernetes/v1/api.proto\x12Dproject.planton.provider.kubernetes.addon.kafkaoperatorkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1aOproject/planton/provider/kubernetes/addon/kafkaoperatorkubernetes/v1/spec.proto\x1aXproject/planton/provider/kubernetes/addon/kafkaoperatorkubernetes/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xe7\x03\n" +
 	"\x17KafkaOperatorKubernetes\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!kubernetes.project-planton.org/v1R\n" +
 	"apiVersion\x122\n" +
 	"\x04kind\x18\x02 \x01(\tB\x1e\xbaH\x1br\x19\n" +
-	"\x17KafkaOperatorKubernetesR\x04kind\x12O\n" +
-	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12}\n" +
+	"\x17KafkaOperatorKubernetesR\x04kind\x12Q\n" +
+	"\bmetadata\x18\x03 \x01(\v2-.project.planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12}\n" +
 	"\x04spec\x18\x04 \x01(\v2a.project.planton.provider.kubernetes.addon.kafkaoperatorkubernetes.v1.KafkaOperatorKubernetesSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12{\n" +
 	"\x06status\x18\x05 \x01(\v2c.project.planton.provider.kubernetes.addon.kafkaoperatorkubernetes.v1.KafkaOperatorKubernetesStatusR\x06status\"\xa5\x01\n" +
 	"\x1dKafkaOperatorKubernetesStatus\x12\x83\x01\n" +
@@ -185,12 +185,12 @@ var file_project_planton_provider_kubernetes_addon_kafkaoperatorkubernetes_v1_ap
 var file_project_planton_provider_kubernetes_addon_kafkaoperatorkubernetes_v1_api_proto_goTypes = []any{
 	(*KafkaOperatorKubernetes)(nil),             // 0: project.planton.provider.kubernetes.addon.kafkaoperatorkubernetes.v1.KafkaOperatorKubernetes
 	(*KafkaOperatorKubernetesStatus)(nil),       // 1: project.planton.provider.kubernetes.addon.kafkaoperatorkubernetes.v1.KafkaOperatorKubernetesStatus
-	(*shared.ApiResourceMetadata)(nil),          // 2: project.planton.shared.ApiResourceMetadata
+	(*shared.CloudResourceMetadata)(nil),        // 2: project.planton.shared.CloudResourceMetadata
 	(*KafkaOperatorKubernetesSpec)(nil),         // 3: project.planton.provider.kubernetes.addon.kafkaoperatorkubernetes.v1.KafkaOperatorKubernetesSpec
 	(*KafkaOperatorKubernetesStackOutputs)(nil), // 4: project.planton.provider.kubernetes.addon.kafkaoperatorkubernetes.v1.KafkaOperatorKubernetesStackOutputs
 }
 var file_project_planton_provider_kubernetes_addon_kafkaoperatorkubernetes_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.kubernetes.addon.kafkaoperatorkubernetes.v1.KafkaOperatorKubernetes.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	2, // 0: project.planton.provider.kubernetes.addon.kafkaoperatorkubernetes.v1.KafkaOperatorKubernetes.metadata:type_name -> project.planton.shared.CloudResourceMetadata
 	3, // 1: project.planton.provider.kubernetes.addon.kafkaoperatorkubernetes.v1.KafkaOperatorKubernetes.spec:type_name -> project.planton.provider.kubernetes.addon.kafkaoperatorkubernetes.v1.KafkaOperatorKubernetesSpec
 	1, // 2: project.planton.provider.kubernetes.addon.kafkaoperatorkubernetes.v1.KafkaOperatorKubernetes.status:type_name -> project.planton.provider.kubernetes.addon.kafkaoperatorkubernetes.v1.KafkaOperatorKubernetesStatus
 	4, // 3: project.planton.provider.kubernetes.addon.kafkaoperatorkubernetes.v1.KafkaOperatorKubernetesStatus.outputs:type_name -> project.planton.provider.kubernetes.addon.kafkaoperatorkubernetes.v1.KafkaOperatorKubernetesStackOutputs

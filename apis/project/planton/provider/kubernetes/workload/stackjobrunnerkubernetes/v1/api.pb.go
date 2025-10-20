@@ -31,7 +31,7 @@ type StackJobRunnerKubernetes struct {
 	// resource-kind
 	Kind string `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
 	// metadata
-	Metadata *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Metadata *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// spec
 	Spec *StackJobRunnerKubernetesSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status
@@ -84,7 +84,7 @@ func (x *StackJobRunnerKubernetes) GetKind() string {
 	return ""
 }
 
-func (x *StackJobRunnerKubernetes) GetMetadata() *shared.ApiResourceMetadata {
+func (x *StackJobRunnerKubernetes) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
@@ -155,14 +155,14 @@ var File_project_planton_provider_kubernetes_workload_stackjobrunnerkubernetes_v
 
 const file_project_planton_provider_kubernetes_workload_stackjobrunnerkubernetes_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Rproject/planton/provider/kubernetes/workload/stackjobrunnerkubernetes/v1/api.proto\x12Hproject.planton.provider.kubernetes.workload.stackjobrunnerkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1aSproject/planton/provider/kubernetes/workload/stackjobrunnerkubernetes/v1/spec.proto\x1a\\project/planton/provider/kubernetes/workload/stackjobrunnerkubernetes/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xf3\x03\n" +
+	"Rproject/planton/provider/kubernetes/workload/stackjobrunnerkubernetes/v1/api.proto\x12Hproject.planton.provider.kubernetes.workload.stackjobrunnerkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1aSproject/planton/provider/kubernetes/workload/stackjobrunnerkubernetes/v1/spec.proto\x1a\\project/planton/provider/kubernetes/workload/stackjobrunnerkubernetes/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xf5\x03\n" +
 	"\x18StackJobRunnerKubernetes\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!kubernetes.project-planton.org/v1R\n" +
 	"apiVersion\x123\n" +
 	"\x04kind\x18\x02 \x01(\tB\x1f\xbaH\x1cr\x1a\n" +
-	"\x18StackJobRunnerKubernetesR\x04kind\x12O\n" +
-	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12\x82\x01\n" +
+	"\x18StackJobRunnerKubernetesR\x04kind\x12Q\n" +
+	"\bmetadata\x18\x03 \x01(\v2-.project.planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12\x82\x01\n" +
 	"\x04spec\x18\x04 \x01(\v2f.project.planton.provider.kubernetes.workload.stackjobrunnerkubernetes.v1.StackJobRunnerKubernetesSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12\x80\x01\n" +
 	"\x06status\x18\x05 \x01(\v2h.project.planton.provider.kubernetes.workload.stackjobrunnerkubernetes.v1.StackJobRunnerKubernetesStatusR\x06status\"\xab\x01\n" +
 	"\x1eStackJobRunnerKubernetesStatus\x12\x88\x01\n" +
@@ -185,12 +185,12 @@ var file_project_planton_provider_kubernetes_workload_stackjobrunnerkubernetes_v
 var file_project_planton_provider_kubernetes_workload_stackjobrunnerkubernetes_v1_api_proto_goTypes = []any{
 	(*StackJobRunnerKubernetes)(nil),             // 0: project.planton.provider.kubernetes.workload.stackjobrunnerkubernetes.v1.StackJobRunnerKubernetes
 	(*StackJobRunnerKubernetesStatus)(nil),       // 1: project.planton.provider.kubernetes.workload.stackjobrunnerkubernetes.v1.StackJobRunnerKubernetesStatus
-	(*shared.ApiResourceMetadata)(nil),           // 2: project.planton.shared.ApiResourceMetadata
+	(*shared.CloudResourceMetadata)(nil),         // 2: project.planton.shared.CloudResourceMetadata
 	(*StackJobRunnerKubernetesSpec)(nil),         // 3: project.planton.provider.kubernetes.workload.stackjobrunnerkubernetes.v1.StackJobRunnerKubernetesSpec
 	(*StackJobRunnerKubernetesStackOutputs)(nil), // 4: project.planton.provider.kubernetes.workload.stackjobrunnerkubernetes.v1.StackJobRunnerKubernetesStackOutputs
 }
 var file_project_planton_provider_kubernetes_workload_stackjobrunnerkubernetes_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.kubernetes.workload.stackjobrunnerkubernetes.v1.StackJobRunnerKubernetes.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	2, // 0: project.planton.provider.kubernetes.workload.stackjobrunnerkubernetes.v1.StackJobRunnerKubernetes.metadata:type_name -> project.planton.shared.CloudResourceMetadata
 	3, // 1: project.planton.provider.kubernetes.workload.stackjobrunnerkubernetes.v1.StackJobRunnerKubernetes.spec:type_name -> project.planton.provider.kubernetes.workload.stackjobrunnerkubernetes.v1.StackJobRunnerKubernetesSpec
 	1, // 2: project.planton.provider.kubernetes.workload.stackjobrunnerkubernetes.v1.StackJobRunnerKubernetes.status:type_name -> project.planton.provider.kubernetes.workload.stackjobrunnerkubernetes.v1.StackJobRunnerKubernetesStatus
 	4, // 3: project.planton.provider.kubernetes.workload.stackjobrunnerkubernetes.v1.StackJobRunnerKubernetesStatus.outputs:type_name -> project.planton.provider.kubernetes.workload.stackjobrunnerkubernetes.v1.StackJobRunnerKubernetesStackOutputs

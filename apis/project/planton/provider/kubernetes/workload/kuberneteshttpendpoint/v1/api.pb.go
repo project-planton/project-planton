@@ -31,7 +31,7 @@ type KubernetesHttpEndpoint struct {
 	// resource-kind
 	Kind string `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
 	// metadata
-	Metadata *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Metadata *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// spec
 	Spec *KubernetesHttpEndpointSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status
@@ -84,7 +84,7 @@ func (x *KubernetesHttpEndpoint) GetKind() string {
 	return ""
 }
 
-func (x *KubernetesHttpEndpoint) GetMetadata() *shared.ApiResourceMetadata {
+func (x *KubernetesHttpEndpoint) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
@@ -155,14 +155,14 @@ var File_project_planton_provider_kubernetes_workload_kuberneteshttpendpoint_v1_
 
 const file_project_planton_provider_kubernetes_workload_kuberneteshttpendpoint_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Pproject/planton/provider/kubernetes/workload/kuberneteshttpendpoint/v1/api.proto\x12Fproject.planton.provider.kubernetes.workload.kuberneteshttpendpoint.v1\x1a\x1bbuf/validate/validate.proto\x1aQproject/planton/provider/kubernetes/workload/kuberneteshttpendpoint/v1/spec.proto\x1aZproject/planton/provider/kubernetes/workload/kuberneteshttpendpoint/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xe5\x03\n" +
+	"Pproject/planton/provider/kubernetes/workload/kuberneteshttpendpoint/v1/api.proto\x12Fproject.planton.provider.kubernetes.workload.kuberneteshttpendpoint.v1\x1a\x1bbuf/validate/validate.proto\x1aQproject/planton/provider/kubernetes/workload/kuberneteshttpendpoint/v1/spec.proto\x1aZproject/planton/provider/kubernetes/workload/kuberneteshttpendpoint/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xe7\x03\n" +
 	"\x16KubernetesHttpEndpoint\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!kubernetes.project-planton.org/v1R\n" +
 	"apiVersion\x121\n" +
 	"\x04kind\x18\x02 \x01(\tB\x1d\xbaH\x1ar\x18\n" +
-	"\x16KubernetesHttpEndpointR\x04kind\x12O\n" +
-	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12~\n" +
+	"\x16KubernetesHttpEndpointR\x04kind\x12Q\n" +
+	"\bmetadata\x18\x03 \x01(\v2-.project.planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12~\n" +
 	"\x04spec\x18\x04 \x01(\v2b.project.planton.provider.kubernetes.workload.kuberneteshttpendpoint.v1.KubernetesHttpEndpointSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12|\n" +
 	"\x06status\x18\x05 \x01(\v2d.project.planton.provider.kubernetes.workload.kuberneteshttpendpoint.v1.KubernetesHttpEndpointStatusR\x06status\"\xa5\x01\n" +
 	"\x1cKubernetesHttpEndpointStatus\x12\x84\x01\n" +
@@ -185,12 +185,12 @@ var file_project_planton_provider_kubernetes_workload_kuberneteshttpendpoint_v1_
 var file_project_planton_provider_kubernetes_workload_kuberneteshttpendpoint_v1_api_proto_goTypes = []any{
 	(*KubernetesHttpEndpoint)(nil),             // 0: project.planton.provider.kubernetes.workload.kuberneteshttpendpoint.v1.KubernetesHttpEndpoint
 	(*KubernetesHttpEndpointStatus)(nil),       // 1: project.planton.provider.kubernetes.workload.kuberneteshttpendpoint.v1.KubernetesHttpEndpointStatus
-	(*shared.ApiResourceMetadata)(nil),         // 2: project.planton.shared.ApiResourceMetadata
+	(*shared.CloudResourceMetadata)(nil),       // 2: project.planton.shared.CloudResourceMetadata
 	(*KubernetesHttpEndpointSpec)(nil),         // 3: project.planton.provider.kubernetes.workload.kuberneteshttpendpoint.v1.KubernetesHttpEndpointSpec
 	(*KubernetesHttpEndpointStackOutputs)(nil), // 4: project.planton.provider.kubernetes.workload.kuberneteshttpendpoint.v1.KubernetesHttpEndpointStackOutputs
 }
 var file_project_planton_provider_kubernetes_workload_kuberneteshttpendpoint_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.kubernetes.workload.kuberneteshttpendpoint.v1.KubernetesHttpEndpoint.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	2, // 0: project.planton.provider.kubernetes.workload.kuberneteshttpendpoint.v1.KubernetesHttpEndpoint.metadata:type_name -> project.planton.shared.CloudResourceMetadata
 	3, // 1: project.planton.provider.kubernetes.workload.kuberneteshttpendpoint.v1.KubernetesHttpEndpoint.spec:type_name -> project.planton.provider.kubernetes.workload.kuberneteshttpendpoint.v1.KubernetesHttpEndpointSpec
 	1, // 2: project.planton.provider.kubernetes.workload.kuberneteshttpendpoint.v1.KubernetesHttpEndpoint.status:type_name -> project.planton.provider.kubernetes.workload.kuberneteshttpendpoint.v1.KubernetesHttpEndpointStatus
 	4, // 3: project.planton.provider.kubernetes.workload.kuberneteshttpendpoint.v1.KubernetesHttpEndpointStatus.outputs:type_name -> project.planton.provider.kubernetes.workload.kuberneteshttpendpoint.v1.KubernetesHttpEndpointStackOutputs

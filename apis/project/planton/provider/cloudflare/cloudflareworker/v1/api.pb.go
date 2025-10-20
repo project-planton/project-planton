@@ -31,7 +31,7 @@ type CloudflareWorker struct {
 	// resource-kind
 	Kind string `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
 	// metadata
-	Metadata *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Metadata *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// spec
 	Spec *CloudflareWorkerSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status
@@ -84,7 +84,7 @@ func (x *CloudflareWorker) GetKind() string {
 	return ""
 }
 
-func (x *CloudflareWorker) GetMetadata() *shared.ApiResourceMetadata {
+func (x *CloudflareWorker) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
@@ -157,14 +157,14 @@ var File_project_planton_provider_cloudflare_cloudflareworker_v1_api_proto proto
 
 const file_project_planton_provider_cloudflare_cloudflareworker_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Aproject/planton/provider/cloudflare/cloudflareworker/v1/api.proto\x127project.planton.provider.cloudflare.cloudflareworker.v1\x1a\x1bbuf/validate/validate.proto\x1aBproject/planton/provider/cloudflare/cloudflareworker/v1/spec.proto\x1aKproject/planton/provider/cloudflare/cloudflareworker/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xaf\x03\n" +
+	"Aproject/planton/provider/cloudflare/cloudflareworker/v1/api.proto\x127project.planton.provider.cloudflare.cloudflareworker.v1\x1a\x1bbuf/validate/validate.proto\x1aBproject/planton/provider/cloudflare/cloudflareworker/v1/spec.proto\x1aKproject/planton/provider/cloudflare/cloudflareworker/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xb1\x03\n" +
 	"\x10CloudflareWorker\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!cloudflare.project-planton.org/v1R\n" +
 	"apiVersion\x12+\n" +
 	"\x04kind\x18\x02 \x01(\tB\x17\xbaH\x14r\x12\n" +
-	"\x10CloudflareWorkerR\x04kind\x12O\n" +
-	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12i\n" +
+	"\x10CloudflareWorkerR\x04kind\x12Q\n" +
+	"\bmetadata\x18\x03 \x01(\v2-.project.planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12i\n" +
 	"\x04spec\x18\x04 \x01(\v2M.project.planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12g\n" +
 	"\x06status\x18\x05 \x01(\v2O.project.planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerStatusR\x06status\"\x89\x01\n" +
 	"\x16CloudflareWorkerStatus\x12o\n" +
@@ -187,12 +187,12 @@ var file_project_planton_provider_cloudflare_cloudflareworker_v1_api_proto_msgTy
 var file_project_planton_provider_cloudflare_cloudflareworker_v1_api_proto_goTypes = []any{
 	(*CloudflareWorker)(nil),             // 0: project.planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorker
 	(*CloudflareWorkerStatus)(nil),       // 1: project.planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerStatus
-	(*shared.ApiResourceMetadata)(nil),   // 2: project.planton.shared.ApiResourceMetadata
+	(*shared.CloudResourceMetadata)(nil), // 2: project.planton.shared.CloudResourceMetadata
 	(*CloudflareWorkerSpec)(nil),         // 3: project.planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerSpec
 	(*CloudflareWorkerStackOutputs)(nil), // 4: project.planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerStackOutputs
 }
 var file_project_planton_provider_cloudflare_cloudflareworker_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorker.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	2, // 0: project.planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorker.metadata:type_name -> project.planton.shared.CloudResourceMetadata
 	3, // 1: project.planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorker.spec:type_name -> project.planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerSpec
 	1, // 2: project.planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorker.status:type_name -> project.planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerStatus
 	4, // 3: project.planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerStatus.outputs:type_name -> project.planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerStackOutputs

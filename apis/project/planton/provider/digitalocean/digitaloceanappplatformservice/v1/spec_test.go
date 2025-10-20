@@ -26,7 +26,7 @@ var _ = ginkgo.Describe("DigitalOceanAppPlatformServiceSpec Custom Validation Te
 				input := &DigitalOceanAppPlatformService{
 					ApiVersion: "digital-ocean.project-planton.org/v1",
 					Kind:       "DigitalOceanAppPlatformService",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-app-service",
 					},
 					Spec: &DigitalOceanAppPlatformServiceSpec{
@@ -50,7 +50,7 @@ var _ = ginkgo.Describe("DigitalOceanAppPlatformServiceSpec Custom Validation Te
 				input := &DigitalOceanAppPlatformService{
 					ApiVersion: "digital-ocean.project-planton.org/v1",
 					Kind:       "DigitalOceanAppPlatformService",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-app-service",
 					},
 					Spec: &DigitalOceanAppPlatformServiceSpec{
@@ -77,7 +77,7 @@ var _ = ginkgo.Describe("DigitalOceanAppPlatformServiceSpec Custom Validation Te
 				input := &DigitalOceanAppPlatformService{
 					ApiVersion: "digital-ocean.project-planton.org/v1",
 					Kind:       "DigitalOceanAppPlatformService",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-app-service",
 					},
 					Spec: &DigitalOceanAppPlatformServiceSpec{

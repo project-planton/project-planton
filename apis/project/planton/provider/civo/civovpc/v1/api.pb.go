@@ -31,7 +31,7 @@ type CivoVpc struct {
 	// resource-kind
 	Kind string `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
 	// metadata
-	Metadata *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Metadata *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// spec
 	Spec *CivoVpcSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status
@@ -84,7 +84,7 @@ func (x *CivoVpc) GetKind() string {
 	return ""
 }
 
-func (x *CivoVpc) GetMetadata() *shared.ApiResourceMetadata {
+func (x *CivoVpc) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
@@ -157,14 +157,14 @@ var File_project_planton_provider_civo_civovpc_v1_api_proto protoreflect.FileDes
 
 const file_project_planton_provider_civo_civovpc_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"2project/planton/provider/civo/civovpc/v1/api.proto\x12(project.planton.provider.civo.civovpc.v1\x1a\x1bbuf/validate/validate.proto\x1a3project/planton/provider/civo/civovpc/v1/spec.proto\x1a<project/planton/provider/civo/civovpc/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xe7\x02\n" +
+	"2project/planton/provider/civo/civovpc/v1/api.proto\x12(project.planton.provider.civo.civovpc.v1\x1a\x1bbuf/validate/validate.proto\x1a3project/planton/provider/civo/civovpc/v1/spec.proto\x1a<project/planton/provider/civo/civovpc/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xe9\x02\n" +
 	"\aCivoVpc\x12C\n" +
 	"\vapi_version\x18\x01 \x01(\tB\"\xbaH\x1fr\x1d\n" +
 	"\x1bcivo.project-planton.org/v1R\n" +
 	"apiVersion\x12\"\n" +
 	"\x04kind\x18\x02 \x01(\tB\x0e\xbaH\vr\t\n" +
-	"\aCivoVpcR\x04kind\x12O\n" +
-	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12Q\n" +
+	"\aCivoVpcR\x04kind\x12Q\n" +
+	"\bmetadata\x18\x03 \x01(\v2-.project.planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12Q\n" +
 	"\x04spec\x18\x04 \x01(\v25.project.planton.provider.civo.civovpc.v1.CivoVpcSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12O\n" +
 	"\x06status\x18\x05 \x01(\v27.project.planton.provider.civo.civovpc.v1.CivoVpcStatusR\x06status\"h\n" +
 	"\rCivoVpcStatus\x12W\n" +
@@ -185,14 +185,14 @@ func file_project_planton_provider_civo_civovpc_v1_api_proto_rawDescGZIP() []byt
 
 var file_project_planton_provider_civo_civovpc_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_civo_civovpc_v1_api_proto_goTypes = []any{
-	(*CivoVpc)(nil),                    // 0: project.planton.provider.civo.civovpc.v1.CivoVpc
-	(*CivoVpcStatus)(nil),              // 1: project.planton.provider.civo.civovpc.v1.CivoVpcStatus
-	(*shared.ApiResourceMetadata)(nil), // 2: project.planton.shared.ApiResourceMetadata
-	(*CivoVpcSpec)(nil),                // 3: project.planton.provider.civo.civovpc.v1.CivoVpcSpec
-	(*CivoVpcStackOutputs)(nil),        // 4: project.planton.provider.civo.civovpc.v1.CivoVpcStackOutputs
+	(*CivoVpc)(nil),                      // 0: project.planton.provider.civo.civovpc.v1.CivoVpc
+	(*CivoVpcStatus)(nil),                // 1: project.planton.provider.civo.civovpc.v1.CivoVpcStatus
+	(*shared.CloudResourceMetadata)(nil), // 2: project.planton.shared.CloudResourceMetadata
+	(*CivoVpcSpec)(nil),                  // 3: project.planton.provider.civo.civovpc.v1.CivoVpcSpec
+	(*CivoVpcStackOutputs)(nil),          // 4: project.planton.provider.civo.civovpc.v1.CivoVpcStackOutputs
 }
 var file_project_planton_provider_civo_civovpc_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.civo.civovpc.v1.CivoVpc.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	2, // 0: project.planton.provider.civo.civovpc.v1.CivoVpc.metadata:type_name -> project.planton.shared.CloudResourceMetadata
 	3, // 1: project.planton.provider.civo.civovpc.v1.CivoVpc.spec:type_name -> project.planton.provider.civo.civovpc.v1.CivoVpcSpec
 	1, // 2: project.planton.provider.civo.civovpc.v1.CivoVpc.status:type_name -> project.planton.provider.civo.civovpc.v1.CivoVpcStatus
 	4, // 3: project.planton.provider.civo.civovpc.v1.CivoVpcStatus.outputs:type_name -> project.planton.provider.civo.civovpc.v1.CivoVpcStackOutputs

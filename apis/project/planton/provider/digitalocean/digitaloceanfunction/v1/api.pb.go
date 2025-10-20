@@ -31,7 +31,7 @@ type DigitalOceanFunction struct {
 	// resource-kind
 	Kind string `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
 	// metadata
-	Metadata *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Metadata *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// spec
 	Spec *DigitalOceanFunctionSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status
@@ -84,7 +84,7 @@ func (x *DigitalOceanFunction) GetKind() string {
 	return ""
 }
 
-func (x *DigitalOceanFunction) GetMetadata() *shared.ApiResourceMetadata {
+func (x *DigitalOceanFunction) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
@@ -157,14 +157,14 @@ var File_project_planton_provider_digitalocean_digitaloceanfunction_v1_api_proto
 
 const file_project_planton_provider_digitalocean_digitaloceanfunction_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Gproject/planton/provider/digitalocean/digitaloceanfunction/v1/api.proto\x12=project.planton.provider.digitalocean.digitaloceanfunction.v1\x1a\x1bbuf/validate/validate.proto\x1aHproject/planton/provider/digitalocean/digitaloceanfunction/v1/spec.proto\x1aQproject/planton/provider/digitalocean/digitaloceanfunction/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xce\x03\n" +
+	"Gproject/planton/provider/digitalocean/digitaloceanfunction/v1/api.proto\x12=project.planton.provider.digitalocean.digitaloceanfunction.v1\x1a\x1bbuf/validate/validate.proto\x1aHproject/planton/provider/digitalocean/digitaloceanfunction/v1/spec.proto\x1aQproject/planton/provider/digitalocean/digitaloceanfunction/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xd0\x03\n" +
 	"\x14DigitalOceanFunction\x12L\n" +
 	"\vapi_version\x18\x01 \x01(\tB+\xbaH(r&\n" +
 	"$digital-ocean.project-planton.org/v1R\n" +
 	"apiVersion\x12/\n" +
 	"\x04kind\x18\x02 \x01(\tB\x1b\xbaH\x18r\x16\n" +
-	"\x14DigitalOceanFunctionR\x04kind\x12O\n" +
-	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12s\n" +
+	"\x14DigitalOceanFunctionR\x04kind\x12Q\n" +
+	"\bmetadata\x18\x03 \x01(\v2-.project.planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12s\n" +
 	"\x04spec\x18\x04 \x01(\v2W.project.planton.provider.digitalocean.digitaloceanfunction.v1.DigitalOceanFunctionSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12q\n" +
 	"\x06status\x18\x05 \x01(\v2Y.project.planton.provider.digitalocean.digitaloceanfunction.v1.DigitalOceanFunctionStatusR\x06status\"\x97\x01\n" +
 	"\x1aDigitalOceanFunctionStatus\x12y\n" +
@@ -187,12 +187,12 @@ var file_project_planton_provider_digitalocean_digitaloceanfunction_v1_api_proto
 var file_project_planton_provider_digitalocean_digitaloceanfunction_v1_api_proto_goTypes = []any{
 	(*DigitalOceanFunction)(nil),             // 0: project.planton.provider.digitalocean.digitaloceanfunction.v1.DigitalOceanFunction
 	(*DigitalOceanFunctionStatus)(nil),       // 1: project.planton.provider.digitalocean.digitaloceanfunction.v1.DigitalOceanFunctionStatus
-	(*shared.ApiResourceMetadata)(nil),       // 2: project.planton.shared.ApiResourceMetadata
+	(*shared.CloudResourceMetadata)(nil),     // 2: project.planton.shared.CloudResourceMetadata
 	(*DigitalOceanFunctionSpec)(nil),         // 3: project.planton.provider.digitalocean.digitaloceanfunction.v1.DigitalOceanFunctionSpec
 	(*DigitalOceanFunctionStackOutputs)(nil), // 4: project.planton.provider.digitalocean.digitaloceanfunction.v1.DigitalOceanFunctionStackOutputs
 }
 var file_project_planton_provider_digitalocean_digitaloceanfunction_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.digitalocean.digitaloceanfunction.v1.DigitalOceanFunction.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	2, // 0: project.planton.provider.digitalocean.digitaloceanfunction.v1.DigitalOceanFunction.metadata:type_name -> project.planton.shared.CloudResourceMetadata
 	3, // 1: project.planton.provider.digitalocean.digitaloceanfunction.v1.DigitalOceanFunction.spec:type_name -> project.planton.provider.digitalocean.digitaloceanfunction.v1.DigitalOceanFunctionSpec
 	1, // 2: project.planton.provider.digitalocean.digitaloceanfunction.v1.DigitalOceanFunction.status:type_name -> project.planton.provider.digitalocean.digitaloceanfunction.v1.DigitalOceanFunctionStatus
 	4, // 3: project.planton.provider.digitalocean.digitaloceanfunction.v1.DigitalOceanFunctionStatus.outputs:type_name -> project.planton.provider.digitalocean.digitaloceanfunction.v1.DigitalOceanFunctionStackOutputs

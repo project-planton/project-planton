@@ -22,7 +22,7 @@ var _ = ginkgo.Describe("RedisKubernetes Custom Validation Tests", func() {
 		input = &RedisKubernetes{
 			ApiVersion: "kubernetes.project-planton.org/v1",
 			Kind:       "RedisKubernetes",
-			Metadata: &shared.ApiResourceMetadata{
+			Metadata: &shared.CloudResourceMetadata{
 				Name: "test-redis",
 			},
 			Spec: &RedisKubernetesSpec{

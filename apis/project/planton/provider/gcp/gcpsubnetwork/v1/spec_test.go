@@ -25,7 +25,7 @@ var _ = ginkgo.Describe("GcpSubnetworkSpec Custom Validation Tests", func() {
 				input := &GcpSubnetwork{
 					ApiVersion: "gcp.project-planton.org/v1",
 					Kind:       "GcpSubnetwork",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-subnetwork",
 					},
 					Spec: &GcpSubnetworkSpec{

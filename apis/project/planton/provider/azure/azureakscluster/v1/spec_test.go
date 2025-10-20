@@ -25,7 +25,7 @@ var _ = ginkgo.Describe("AzureAksClusterSpec Custom Validation Tests", func() {
 				input := &AzureAksCluster{
 					ApiVersion: "azure.project-planton.org/v1",
 					Kind:       "AzureAksCluster",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-aks-cluster",
 					},
 					Spec: &AzureAksClusterSpec{

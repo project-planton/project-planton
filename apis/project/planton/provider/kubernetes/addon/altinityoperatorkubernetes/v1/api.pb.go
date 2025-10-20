@@ -31,7 +31,7 @@ type AltinityOperatorKubernetes struct {
 	// resource-kind
 	Kind string `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
 	// metadata
-	Metadata *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Metadata *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// spec
 	Spec *AltinityOperatorKubernetesSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status
@@ -84,7 +84,7 @@ func (x *AltinityOperatorKubernetes) GetKind() string {
 	return ""
 }
 
-func (x *AltinityOperatorKubernetes) GetMetadata() *shared.ApiResourceMetadata {
+func (x *AltinityOperatorKubernetes) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
@@ -155,14 +155,14 @@ var File_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1
 
 const file_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Qproject/planton/provider/kubernetes/addon/altinityoperatorkubernetes/v1/api.proto\x12Gproject.planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1aRproject/planton/provider/kubernetes/addon/altinityoperatorkubernetes/v1/spec.proto\x1a[project/planton/provider/kubernetes/addon/altinityoperatorkubernetes/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xf9\x03\n" +
+	"Qproject/planton/provider/kubernetes/addon/altinityoperatorkubernetes/v1/api.proto\x12Gproject.planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1aRproject/planton/provider/kubernetes/addon/altinityoperatorkubernetes/v1/spec.proto\x1a[project/planton/provider/kubernetes/addon/altinityoperatorkubernetes/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xfb\x03\n" +
 	"\x1aAltinityOperatorKubernetes\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!kubernetes.project-planton.org/v1R\n" +
 	"apiVersion\x125\n" +
 	"\x04kind\x18\x02 \x01(\tB!\xbaH\x1er\x1c\n" +
-	"\x1aAltinityOperatorKubernetesR\x04kind\x12O\n" +
-	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12\x83\x01\n" +
+	"\x1aAltinityOperatorKubernetesR\x04kind\x12Q\n" +
+	"\bmetadata\x18\x03 \x01(\v2-.project.planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12\x83\x01\n" +
 	"\x04spec\x18\x04 \x01(\v2g.project.planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorKubernetesSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12\x81\x01\n" +
 	"\x06status\x18\x05 \x01(\v2i.project.planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorKubernetesStatusR\x06status\"\xae\x01\n" +
 	" AltinityOperatorKubernetesStatus\x12\x89\x01\n" +
@@ -185,12 +185,12 @@ var file_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1
 var file_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_api_proto_goTypes = []any{
 	(*AltinityOperatorKubernetes)(nil),             // 0: project.planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorKubernetes
 	(*AltinityOperatorKubernetesStatus)(nil),       // 1: project.planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorKubernetesStatus
-	(*shared.ApiResourceMetadata)(nil),             // 2: project.planton.shared.ApiResourceMetadata
+	(*shared.CloudResourceMetadata)(nil),           // 2: project.planton.shared.CloudResourceMetadata
 	(*AltinityOperatorKubernetesSpec)(nil),         // 3: project.planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorKubernetesSpec
 	(*AltinityOperatorKubernetesStackOutputs)(nil), // 4: project.planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorKubernetesStackOutputs
 }
 var file_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorKubernetes.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	2, // 0: project.planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorKubernetes.metadata:type_name -> project.planton.shared.CloudResourceMetadata
 	3, // 1: project.planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorKubernetes.spec:type_name -> project.planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorKubernetesSpec
 	1, // 2: project.planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorKubernetes.status:type_name -> project.planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorKubernetesStatus
 	4, // 3: project.planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorKubernetesStatus.outputs:type_name -> project.planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorKubernetesStackOutputs

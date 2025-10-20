@@ -20,7 +20,7 @@ func TestExtractFromManifest(t *testing.T) {
 		{
 			name: "stack.fqdn takes precedence",
 			manifest: &awsvpcv1.AwsVpc{
-				Metadata: &shared.ApiResourceMetadata{
+				Metadata: &shared.CloudResourceMetadata{
 					Labels: map[string]string{
 						pulumilabels.StackFqdnLabelKey:    "demo-org/aws-examples/dev",
 						pulumilabels.OrganizationLabelKey: "should-be-ignored",
@@ -40,7 +40,7 @@ func TestExtractFromManifest(t *testing.T) {
 		{
 			name: "individual labels when stack.fqdn not present",
 			manifest: &awsvpcv1.AwsVpc{
-				Metadata: &shared.ApiResourceMetadata{
+				Metadata: &shared.CloudResourceMetadata{
 					Labels: map[string]string{
 						pulumilabels.OrganizationLabelKey: "my-org",
 						pulumilabels.ProjectLabelKey:      "my-project",
@@ -59,7 +59,7 @@ func TestExtractFromManifest(t *testing.T) {
 		{
 			name: "invalid stack.fqdn format",
 			manifest: &awsvpcv1.AwsVpc{
-				Metadata: &shared.ApiResourceMetadata{
+				Metadata: &shared.CloudResourceMetadata{
 					Labels: map[string]string{
 						pulumilabels.StackFqdnLabelKey: "invalid-format",
 					},
@@ -72,7 +72,7 @@ func TestExtractFromManifest(t *testing.T) {
 		{
 			name: "missing required labels",
 			manifest: &awsvpcv1.AwsVpc{
-				Metadata: &shared.ApiResourceMetadata{
+				Metadata: &shared.CloudResourceMetadata{
 					Labels: map[string]string{
 						pulumilabels.OrganizationLabelKey: "my-org",
 						pulumilabels.ProjectLabelKey:      "my-project",
@@ -87,7 +87,7 @@ func TestExtractFromManifest(t *testing.T) {
 		{
 			name: "empty label values",
 			manifest: &awsvpcv1.AwsVpc{
-				Metadata: &shared.ApiResourceMetadata{
+				Metadata: &shared.CloudResourceMetadata{
 					Labels: map[string]string{
 						pulumilabels.OrganizationLabelKey: "my-org",
 						pulumilabels.ProjectLabelKey:      "",
@@ -102,7 +102,7 @@ func TestExtractFromManifest(t *testing.T) {
 		{
 			name: "no labels",
 			manifest: &awsvpcv1.AwsVpc{
-				Metadata: &shared.ApiResourceMetadata{},
+				Metadata: &shared.CloudResourceMetadata{},
 			},
 			want:      nil,
 			wantError: true,
@@ -111,7 +111,7 @@ func TestExtractFromManifest(t *testing.T) {
 		{
 			name: "empty stack.fqdn components",
 			manifest: &awsvpcv1.AwsVpc{
-				Metadata: &shared.ApiResourceMetadata{
+				Metadata: &shared.CloudResourceMetadata{
 					Labels: map[string]string{
 						pulumilabels.StackFqdnLabelKey: "org//stack", // Missing project
 					},

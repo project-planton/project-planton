@@ -31,7 +31,7 @@ type CivoVolume struct {
 	// resource-kind
 	Kind string `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
 	// metadata
-	Metadata *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Metadata *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// spec
 	Spec *CivoVolumeSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status
@@ -84,7 +84,7 @@ func (x *CivoVolume) GetKind() string {
 	return ""
 }
 
-func (x *CivoVolume) GetMetadata() *shared.ApiResourceMetadata {
+func (x *CivoVolume) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
@@ -157,7 +157,7 @@ var File_project_planton_provider_civo_civovolume_v1_api_proto protoreflect.File
 
 const file_project_planton_provider_civo_civovolume_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"5project/planton/provider/civo/civovolume/v1/api.proto\x12+project.planton.provider.civo.civovolume.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/provider/civo/civovolume/v1/spec.proto\x1a?project/planton/provider/civo/civovolume/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xf9\x02\n" +
+	"5project/planton/provider/civo/civovolume/v1/api.proto\x12+project.planton.provider.civo.civovolume.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/provider/civo/civovolume/v1/spec.proto\x1a?project/planton/provider/civo/civovolume/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xfb\x02\n" +
 	"\n" +
 	"CivoVolume\x12C\n" +
 	"\vapi_version\x18\x01 \x01(\tB\"\xbaH\x1fr\x1d\n" +
@@ -165,8 +165,8 @@ const file_project_planton_provider_civo_civovolume_v1_api_proto_rawDesc = "" +
 	"apiVersion\x12%\n" +
 	"\x04kind\x18\x02 \x01(\tB\x11\xbaH\x0er\f\n" +
 	"\n" +
-	"CivoVolumeR\x04kind\x12O\n" +
-	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12W\n" +
+	"CivoVolumeR\x04kind\x12Q\n" +
+	"\bmetadata\x18\x03 \x01(\v2-.project.planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12W\n" +
 	"\x04spec\x18\x04 \x01(\v2;.project.planton.provider.civo.civovolume.v1.CivoVolumeSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12U\n" +
 	"\x06status\x18\x05 \x01(\v2=.project.planton.provider.civo.civovolume.v1.CivoVolumeStatusR\x06status\"q\n" +
 	"\x10CivoVolumeStatus\x12]\n" +
@@ -187,14 +187,14 @@ func file_project_planton_provider_civo_civovolume_v1_api_proto_rawDescGZIP() []
 
 var file_project_planton_provider_civo_civovolume_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_civo_civovolume_v1_api_proto_goTypes = []any{
-	(*CivoVolume)(nil),                 // 0: project.planton.provider.civo.civovolume.v1.CivoVolume
-	(*CivoVolumeStatus)(nil),           // 1: project.planton.provider.civo.civovolume.v1.CivoVolumeStatus
-	(*shared.ApiResourceMetadata)(nil), // 2: project.planton.shared.ApiResourceMetadata
-	(*CivoVolumeSpec)(nil),             // 3: project.planton.provider.civo.civovolume.v1.CivoVolumeSpec
-	(*CivoVolumeStackOutputs)(nil),     // 4: project.planton.provider.civo.civovolume.v1.CivoVolumeStackOutputs
+	(*CivoVolume)(nil),                   // 0: project.planton.provider.civo.civovolume.v1.CivoVolume
+	(*CivoVolumeStatus)(nil),             // 1: project.planton.provider.civo.civovolume.v1.CivoVolumeStatus
+	(*shared.CloudResourceMetadata)(nil), // 2: project.planton.shared.CloudResourceMetadata
+	(*CivoVolumeSpec)(nil),               // 3: project.planton.provider.civo.civovolume.v1.CivoVolumeSpec
+	(*CivoVolumeStackOutputs)(nil),       // 4: project.planton.provider.civo.civovolume.v1.CivoVolumeStackOutputs
 }
 var file_project_planton_provider_civo_civovolume_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.civo.civovolume.v1.CivoVolume.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	2, // 0: project.planton.provider.civo.civovolume.v1.CivoVolume.metadata:type_name -> project.planton.shared.CloudResourceMetadata
 	3, // 1: project.planton.provider.civo.civovolume.v1.CivoVolume.spec:type_name -> project.planton.provider.civo.civovolume.v1.CivoVolumeSpec
 	1, // 2: project.planton.provider.civo.civovolume.v1.CivoVolume.status:type_name -> project.planton.provider.civo.civovolume.v1.CivoVolumeStatus
 	4, // 3: project.planton.provider.civo.civovolume.v1.CivoVolumeStatus.outputs:type_name -> project.planton.provider.civo.civovolume.v1.CivoVolumeStackOutputs

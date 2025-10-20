@@ -23,7 +23,7 @@ var _ = ginkgo.Describe("AwsRoute53ZoneSpec Custom Validation Tests", func() {
 				input := &AwsRoute53Zone{
 					ApiVersion: "aws.project-planton.org/v1",
 					Kind:       "AwsRoute53Zone",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-route53-zone",
 					},
 					Spec: &AwsRoute53ZoneSpec{

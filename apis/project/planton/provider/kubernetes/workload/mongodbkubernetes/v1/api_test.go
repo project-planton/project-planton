@@ -22,7 +22,7 @@ var _ = ginkgo.Describe("MongodbKubernetes Custom Validation Tests", func() {
 		input = &MongodbKubernetes{
 			ApiVersion: "kubernetes.project-planton.org/v1",
 			Kind:       "MongodbKubernetes",
-			Metadata: &shared.ApiResourceMetadata{
+			Metadata: &shared.CloudResourceMetadata{
 				Name: "test-mongo",
 			},
 			Spec: &MongodbKubernetesSpec{

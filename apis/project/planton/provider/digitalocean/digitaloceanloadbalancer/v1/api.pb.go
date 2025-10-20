@@ -31,7 +31,7 @@ type DigitalOceanLoadBalancer struct {
 	// resource-kind
 	Kind string `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
 	// metadata
-	Metadata *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Metadata *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// spec
 	Spec *DigitalOceanLoadBalancerSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status
@@ -84,7 +84,7 @@ func (x *DigitalOceanLoadBalancer) GetKind() string {
 	return ""
 }
 
-func (x *DigitalOceanLoadBalancer) GetMetadata() *shared.ApiResourceMetadata {
+func (x *DigitalOceanLoadBalancer) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
@@ -157,14 +157,14 @@ var File_project_planton_provider_digitalocean_digitaloceanloadbalancer_v1_api_p
 
 const file_project_planton_provider_digitalocean_digitaloceanloadbalancer_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Kproject/planton/provider/digitalocean/digitaloceanloadbalancer/v1/api.proto\x12Aproject.planton.provider.digitalocean.digitaloceanloadbalancer.v1\x1a\x1bbuf/validate/validate.proto\x1aLproject/planton/provider/digitalocean/digitaloceanloadbalancer/v1/spec.proto\x1aUproject/planton/provider/digitalocean/digitaloceanloadbalancer/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xe6\x03\n" +
+	"Kproject/planton/provider/digitalocean/digitaloceanloadbalancer/v1/api.proto\x12Aproject.planton.provider.digitalocean.digitaloceanloadbalancer.v1\x1a\x1bbuf/validate/validate.proto\x1aLproject/planton/provider/digitalocean/digitaloceanloadbalancer/v1/spec.proto\x1aUproject/planton/provider/digitalocean/digitaloceanloadbalancer/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xe8\x03\n" +
 	"\x18DigitalOceanLoadBalancer\x12L\n" +
 	"\vapi_version\x18\x01 \x01(\tB+\xbaH(r&\n" +
 	"$digital-ocean.project-planton.org/v1R\n" +
 	"apiVersion\x123\n" +
 	"\x04kind\x18\x02 \x01(\tB\x1f\xbaH\x1cr\x1a\n" +
-	"\x18DigitalOceanLoadBalancerR\x04kind\x12O\n" +
-	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12{\n" +
+	"\x18DigitalOceanLoadBalancerR\x04kind\x12Q\n" +
+	"\bmetadata\x18\x03 \x01(\v2-.project.planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12{\n" +
 	"\x04spec\x18\x04 \x01(\v2_.project.planton.provider.digitalocean.digitaloceanloadbalancer.v1.DigitalOceanLoadBalancerSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12y\n" +
 	"\x06status\x18\x05 \x01(\v2a.project.planton.provider.digitalocean.digitaloceanloadbalancer.v1.DigitalOceanLoadBalancerStatusR\x06status\"\xa4\x01\n" +
 	"\x1eDigitalOceanLoadBalancerStatus\x12\x81\x01\n" +
@@ -187,12 +187,12 @@ var file_project_planton_provider_digitalocean_digitaloceanloadbalancer_v1_api_p
 var file_project_planton_provider_digitalocean_digitaloceanloadbalancer_v1_api_proto_goTypes = []any{
 	(*DigitalOceanLoadBalancer)(nil),             // 0: project.planton.provider.digitalocean.digitaloceanloadbalancer.v1.DigitalOceanLoadBalancer
 	(*DigitalOceanLoadBalancerStatus)(nil),       // 1: project.planton.provider.digitalocean.digitaloceanloadbalancer.v1.DigitalOceanLoadBalancerStatus
-	(*shared.ApiResourceMetadata)(nil),           // 2: project.planton.shared.ApiResourceMetadata
+	(*shared.CloudResourceMetadata)(nil),         // 2: project.planton.shared.CloudResourceMetadata
 	(*DigitalOceanLoadBalancerSpec)(nil),         // 3: project.planton.provider.digitalocean.digitaloceanloadbalancer.v1.DigitalOceanLoadBalancerSpec
 	(*DigitalOceanLoadBalancerStackOutputs)(nil), // 4: project.planton.provider.digitalocean.digitaloceanloadbalancer.v1.DigitalOceanLoadBalancerStackOutputs
 }
 var file_project_planton_provider_digitalocean_digitaloceanloadbalancer_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.digitalocean.digitaloceanloadbalancer.v1.DigitalOceanLoadBalancer.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	2, // 0: project.planton.provider.digitalocean.digitaloceanloadbalancer.v1.DigitalOceanLoadBalancer.metadata:type_name -> project.planton.shared.CloudResourceMetadata
 	3, // 1: project.planton.provider.digitalocean.digitaloceanloadbalancer.v1.DigitalOceanLoadBalancer.spec:type_name -> project.planton.provider.digitalocean.digitaloceanloadbalancer.v1.DigitalOceanLoadBalancerSpec
 	1, // 2: project.planton.provider.digitalocean.digitaloceanloadbalancer.v1.DigitalOceanLoadBalancer.status:type_name -> project.planton.provider.digitalocean.digitaloceanloadbalancer.v1.DigitalOceanLoadBalancerStatus
 	4, // 3: project.planton.provider.digitalocean.digitaloceanloadbalancer.v1.DigitalOceanLoadBalancerStatus.outputs:type_name -> project.planton.provider.digitalocean.digitaloceanloadbalancer.v1.DigitalOceanLoadBalancerStackOutputs

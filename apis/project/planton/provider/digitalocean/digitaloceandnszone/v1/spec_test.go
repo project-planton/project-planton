@@ -23,7 +23,7 @@ var _ = ginkgo.Describe("DigitalOceanDnsZoneSpec Custom Validation Tests", func(
 				input := &DigitalOceanDnsZone{
 					ApiVersion: "digital-ocean.project-planton.org/v1",
 					Kind:       "DigitalOceanDnsZone",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-dns-zone",
 					},
 					Spec: &DigitalOceanDnsZoneSpec{

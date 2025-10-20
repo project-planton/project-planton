@@ -21,7 +21,7 @@ var _ = ginkgo.Describe("ConfluentKafka Custom Validation Tests", func() {
 		input = &ConfluentKafka{
 			ApiVersion: "confluent.project-planton.org/v1",
 			Kind:       "ConfluentKafka",
-			Metadata: &shared.ApiResourceMetadata{
+			Metadata: &shared.CloudResourceMetadata{
 				Name: "test-resource",
 			},
 			Spec: &ConfluentKafkaSpec{

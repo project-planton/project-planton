@@ -31,7 +31,7 @@ type SolrKubernetes struct {
 	// resource-kind
 	Kind string `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
 	// metadata
-	Metadata *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Metadata *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// spec
 	Spec *SolrKubernetesSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status
@@ -84,7 +84,7 @@ func (x *SolrKubernetes) GetKind() string {
 	return ""
 }
 
-func (x *SolrKubernetes) GetMetadata() *shared.ApiResourceMetadata {
+func (x *SolrKubernetes) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
@@ -155,14 +155,14 @@ var File_project_planton_provider_kubernetes_workload_solrkubernetes_v1_api_prot
 
 const file_project_planton_provider_kubernetes_workload_solrkubernetes_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Hproject/planton/provider/kubernetes/workload/solrkubernetes/v1/api.proto\x12>project.planton.provider.kubernetes.workload.solrkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1aIproject/planton/provider/kubernetes/workload/solrkubernetes/v1/spec.proto\x1aRproject/planton/provider/kubernetes/workload/solrkubernetes/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xb5\x03\n" +
+	"Hproject/planton/provider/kubernetes/workload/solrkubernetes/v1/api.proto\x12>project.planton.provider.kubernetes.workload.solrkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1aIproject/planton/provider/kubernetes/workload/solrkubernetes/v1/spec.proto\x1aRproject/planton/provider/kubernetes/workload/solrkubernetes/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xb7\x03\n" +
 	"\x0eSolrKubernetes\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!kubernetes.project-planton.org/v1R\n" +
 	"apiVersion\x12)\n" +
 	"\x04kind\x18\x02 \x01(\tB\x15\xbaH\x12r\x10\n" +
-	"\x0eSolrKubernetesR\x04kind\x12O\n" +
-	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12n\n" +
+	"\x0eSolrKubernetesR\x04kind\x12Q\n" +
+	"\bmetadata\x18\x03 \x01(\v2-.project.planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12n\n" +
 	"\x04spec\x18\x04 \x01(\v2R.project.planton.provider.kubernetes.workload.solrkubernetes.v1.SolrKubernetesSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12l\n" +
 	"\x06status\x18\x05 \x01(\v2T.project.planton.provider.kubernetes.workload.solrkubernetes.v1.SolrKubernetesStatusR\x06status\"\x8c\x01\n" +
 	"\x14SolrKubernetesStatus\x12t\n" +
@@ -183,14 +183,14 @@ func file_project_planton_provider_kubernetes_workload_solrkubernetes_v1_api_pro
 
 var file_project_planton_provider_kubernetes_workload_solrkubernetes_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_kubernetes_workload_solrkubernetes_v1_api_proto_goTypes = []any{
-	(*SolrKubernetes)(nil),             // 0: project.planton.provider.kubernetes.workload.solrkubernetes.v1.SolrKubernetes
-	(*SolrKubernetesStatus)(nil),       // 1: project.planton.provider.kubernetes.workload.solrkubernetes.v1.SolrKubernetesStatus
-	(*shared.ApiResourceMetadata)(nil), // 2: project.planton.shared.ApiResourceMetadata
-	(*SolrKubernetesSpec)(nil),         // 3: project.planton.provider.kubernetes.workload.solrkubernetes.v1.SolrKubernetesSpec
-	(*SolrKubernetesStackOutputs)(nil), // 4: project.planton.provider.kubernetes.workload.solrkubernetes.v1.SolrKubernetesStackOutputs
+	(*SolrKubernetes)(nil),               // 0: project.planton.provider.kubernetes.workload.solrkubernetes.v1.SolrKubernetes
+	(*SolrKubernetesStatus)(nil),         // 1: project.planton.provider.kubernetes.workload.solrkubernetes.v1.SolrKubernetesStatus
+	(*shared.CloudResourceMetadata)(nil), // 2: project.planton.shared.CloudResourceMetadata
+	(*SolrKubernetesSpec)(nil),           // 3: project.planton.provider.kubernetes.workload.solrkubernetes.v1.SolrKubernetesSpec
+	(*SolrKubernetesStackOutputs)(nil),   // 4: project.planton.provider.kubernetes.workload.solrkubernetes.v1.SolrKubernetesStackOutputs
 }
 var file_project_planton_provider_kubernetes_workload_solrkubernetes_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.kubernetes.workload.solrkubernetes.v1.SolrKubernetes.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	2, // 0: project.planton.provider.kubernetes.workload.solrkubernetes.v1.SolrKubernetes.metadata:type_name -> project.planton.shared.CloudResourceMetadata
 	3, // 1: project.planton.provider.kubernetes.workload.solrkubernetes.v1.SolrKubernetes.spec:type_name -> project.planton.provider.kubernetes.workload.solrkubernetes.v1.SolrKubernetesSpec
 	1, // 2: project.planton.provider.kubernetes.workload.solrkubernetes.v1.SolrKubernetes.status:type_name -> project.planton.provider.kubernetes.workload.solrkubernetes.v1.SolrKubernetesStatus
 	4, // 3: project.planton.provider.kubernetes.workload.solrkubernetes.v1.SolrKubernetesStatus.outputs:type_name -> project.planton.provider.kubernetes.workload.solrkubernetes.v1.SolrKubernetesStackOutputs

@@ -22,7 +22,7 @@ var _ = ginkgo.Describe("TemporalKubernetes Custom Validation Tests", func() {
 		input = &TemporalKubernetes{
 			ApiVersion: "kubernetes.project-planton.org/v1",
 			Kind:       "TemporalKubernetes",
-			Metadata: &shared.ApiResourceMetadata{
+			Metadata: &shared.CloudResourceMetadata{
 				Name: "temporal-demo",
 			},
 			Spec: &TemporalKubernetesSpec{

@@ -31,7 +31,7 @@ type GcpGkeNodePool struct {
 	// resource-kind
 	Kind string `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
 	// metadata
-	Metadata *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Metadata *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// spec
 	Spec *GcpGkeNodePoolSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status
@@ -84,7 +84,7 @@ func (x *GcpGkeNodePool) GetKind() string {
 	return ""
 }
 
-func (x *GcpGkeNodePool) GetMetadata() *shared.ApiResourceMetadata {
+func (x *GcpGkeNodePool) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
@@ -155,14 +155,14 @@ var File_project_planton_provider_gcp_gcpgkenodepool_v1_api_proto protoreflect.F
 
 const file_project_planton_provider_gcp_gcpgkenodepool_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"8project/planton/provider/gcp/gcpgkenodepool/v1/api.proto\x12.project.planton.provider.gcp.gcpgkenodepool.v1\x1a\x1bbuf/validate/validate.proto\x1a9project/planton/provider/gcp/gcpgkenodepool/v1/spec.proto\x1aBproject/planton/provider/gcp/gcpgkenodepool/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\x8e\x03\n" +
+	"8project/planton/provider/gcp/gcpgkenodepool/v1/api.proto\x12.project.planton.provider.gcp.gcpgkenodepool.v1\x1a\x1bbuf/validate/validate.proto\x1a9project/planton/provider/gcp/gcpgkenodepool/v1/spec.proto\x1aBproject/planton/provider/gcp/gcpgkenodepool/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\x90\x03\n" +
 	"\x0eGcpGkeNodePool\x12B\n" +
 	"\vapi_version\x18\x01 \x01(\tB!\xbaH\x1er\x1c\n" +
 	"\x1agcp.project-planton.org/v1R\n" +
 	"apiVersion\x12)\n" +
 	"\x04kind\x18\x02 \x01(\tB\x15\xbaH\x12r\x10\n" +
-	"\x0eGcpGkeNodePoolR\x04kind\x12O\n" +
-	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12^\n" +
+	"\x0eGcpGkeNodePoolR\x04kind\x12Q\n" +
+	"\bmetadata\x18\x03 \x01(\v2-.project.planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12^\n" +
 	"\x04spec\x18\x04 \x01(\v2B.project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePoolSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12\\\n" +
 	"\x06status\x18\x05 \x01(\v2D.project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePoolStatusR\x06status\"|\n" +
 	"\x14GcpGkeNodePoolStatus\x12d\n" +
@@ -183,14 +183,14 @@ func file_project_planton_provider_gcp_gcpgkenodepool_v1_api_proto_rawDescGZIP()
 
 var file_project_planton_provider_gcp_gcpgkenodepool_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_gcp_gcpgkenodepool_v1_api_proto_goTypes = []any{
-	(*GcpGkeNodePool)(nil),             // 0: project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePool
-	(*GcpGkeNodePoolStatus)(nil),       // 1: project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePoolStatus
-	(*shared.ApiResourceMetadata)(nil), // 2: project.planton.shared.ApiResourceMetadata
-	(*GcpGkeNodePoolSpec)(nil),         // 3: project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePoolSpec
-	(*GcpGkeNodePoolStackOutputs)(nil), // 4: project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePoolStackOutputs
+	(*GcpGkeNodePool)(nil),               // 0: project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePool
+	(*GcpGkeNodePoolStatus)(nil),         // 1: project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePoolStatus
+	(*shared.CloudResourceMetadata)(nil), // 2: project.planton.shared.CloudResourceMetadata
+	(*GcpGkeNodePoolSpec)(nil),           // 3: project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePoolSpec
+	(*GcpGkeNodePoolStackOutputs)(nil),   // 4: project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePoolStackOutputs
 }
 var file_project_planton_provider_gcp_gcpgkenodepool_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePool.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	2, // 0: project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePool.metadata:type_name -> project.planton.shared.CloudResourceMetadata
 	3, // 1: project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePool.spec:type_name -> project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePoolSpec
 	1, // 2: project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePool.status:type_name -> project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePoolStatus
 	4, // 3: project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePoolStatus.outputs:type_name -> project.planton.provider.gcp.gcpgkenodepool.v1.GcpGkeNodePoolStackOutputs

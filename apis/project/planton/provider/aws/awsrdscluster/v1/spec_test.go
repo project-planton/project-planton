@@ -24,7 +24,7 @@ var _ = ginkgo.Describe("AwsRdsClusterSpec Custom Validation Tests", func() {
 				input := &AwsRdsCluster{
 					ApiVersion: "aws.project-planton.org/v1",
 					Kind:       "AwsRdsCluster",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-rds-cluster",
 					},
 					Spec: &AwsRdsClusterSpec{

@@ -33,7 +33,7 @@ type AwsIamUser struct {
 	Kind string `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
 	// metadata captures identifying information (name, org, version, etc.)
 	// and must pass standard validations for resource naming.
-	Metadata *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Metadata *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// spec holds the core configuration data defining how the ECS service is deployed.
 	Spec *AwsIamUserSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status holds runtime or post-deployment information.
@@ -86,7 +86,7 @@ func (x *AwsIamUser) GetKind() string {
 	return ""
 }
 
-func (x *AwsIamUser) GetMetadata() *shared.ApiResourceMetadata {
+func (x *AwsIamUser) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
@@ -157,7 +157,7 @@ var File_project_planton_provider_aws_awsiamuser_v1_api_proto protoreflect.FileD
 
 const file_project_planton_provider_aws_awsiamuser_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"4project/planton/provider/aws/awsiamuser/v1/api.proto\x12*project.planton.provider.aws.awsiamuser.v1\x1a\x1bbuf/validate/validate.proto\x1a5project/planton/provider/aws/awsiamuser/v1/spec.proto\x1a>project/planton/provider/aws/awsiamuser/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xf6\x02\n" +
+	"4project/planton/provider/aws/awsiamuser/v1/api.proto\x12*project.planton.provider.aws.awsiamuser.v1\x1a\x1bbuf/validate/validate.proto\x1a5project/planton/provider/aws/awsiamuser/v1/spec.proto\x1a>project/planton/provider/aws/awsiamuser/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xf8\x02\n" +
 	"\n" +
 	"AwsIamUser\x12B\n" +
 	"\vapi_version\x18\x01 \x01(\tB!\xbaH\x1er\x1c\n" +
@@ -165,8 +165,8 @@ const file_project_planton_provider_aws_awsiamuser_v1_api_proto_rawDesc = "" +
 	"apiVersion\x12%\n" +
 	"\x04kind\x18\x02 \x01(\tB\x11\xbaH\x0er\f\n" +
 	"\n" +
-	"AwsIamUserR\x04kind\x12O\n" +
-	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12V\n" +
+	"AwsIamUserR\x04kind\x12Q\n" +
+	"\bmetadata\x18\x03 \x01(\v2-.project.planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12V\n" +
 	"\x04spec\x18\x04 \x01(\v2:.project.planton.provider.aws.awsiamuser.v1.AwsIamUserSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12T\n" +
 	"\x06status\x18\x05 \x01(\v2<.project.planton.provider.aws.awsiamuser.v1.AwsIamUserStatusR\x06status\"p\n" +
 	"\x10AwsIamUserStatus\x12\\\n" +
@@ -187,14 +187,14 @@ func file_project_planton_provider_aws_awsiamuser_v1_api_proto_rawDescGZIP() []b
 
 var file_project_planton_provider_aws_awsiamuser_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_aws_awsiamuser_v1_api_proto_goTypes = []any{
-	(*AwsIamUser)(nil),                 // 0: project.planton.provider.aws.awsiamuser.v1.AwsIamUser
-	(*AwsIamUserStatus)(nil),           // 1: project.planton.provider.aws.awsiamuser.v1.AwsIamUserStatus
-	(*shared.ApiResourceMetadata)(nil), // 2: project.planton.shared.ApiResourceMetadata
-	(*AwsIamUserSpec)(nil),             // 3: project.planton.provider.aws.awsiamuser.v1.AwsIamUserSpec
-	(*AwsIamUserStackOutputs)(nil),     // 4: project.planton.provider.aws.awsiamuser.v1.AwsIamUserStackOutputs
+	(*AwsIamUser)(nil),                   // 0: project.planton.provider.aws.awsiamuser.v1.AwsIamUser
+	(*AwsIamUserStatus)(nil),             // 1: project.planton.provider.aws.awsiamuser.v1.AwsIamUserStatus
+	(*shared.CloudResourceMetadata)(nil), // 2: project.planton.shared.CloudResourceMetadata
+	(*AwsIamUserSpec)(nil),               // 3: project.planton.provider.aws.awsiamuser.v1.AwsIamUserSpec
+	(*AwsIamUserStackOutputs)(nil),       // 4: project.planton.provider.aws.awsiamuser.v1.AwsIamUserStackOutputs
 }
 var file_project_planton_provider_aws_awsiamuser_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.aws.awsiamuser.v1.AwsIamUser.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	2, // 0: project.planton.provider.aws.awsiamuser.v1.AwsIamUser.metadata:type_name -> project.planton.shared.CloudResourceMetadata
 	3, // 1: project.planton.provider.aws.awsiamuser.v1.AwsIamUser.spec:type_name -> project.planton.provider.aws.awsiamuser.v1.AwsIamUserSpec
 	1, // 2: project.planton.provider.aws.awsiamuser.v1.AwsIamUser.status:type_name -> project.planton.provider.aws.awsiamuser.v1.AwsIamUserStatus
 	4, // 3: project.planton.provider.aws.awsiamuser.v1.AwsIamUserStatus.outputs:type_name -> project.planton.provider.aws.awsiamuser.v1.AwsIamUserStackOutputs

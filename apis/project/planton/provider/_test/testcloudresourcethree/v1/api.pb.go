@@ -28,7 +28,7 @@ type TestCloudResourceThree struct {
 	state         protoimpl.MessageState        `protogen:"open.v1"`
 	ApiVersion    string                        `protobuf:"bytes,1,opt,name=api_version,json=apiVersion,proto3" json:"api_version,omitempty"`
 	Kind          string                        `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
-	Metadata      *shared.ApiResourceMetadata   `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Metadata      *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	Spec          *TestCloudResourceThreeSpec   `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	Status        *TestCloudResourceThreeStatus `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -79,7 +79,7 @@ func (x *TestCloudResourceThree) GetKind() string {
 	return ""
 }
 
-func (x *TestCloudResourceThree) GetMetadata() *shared.ApiResourceMetadata {
+func (x *TestCloudResourceThree) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
@@ -148,14 +148,14 @@ var File_project_planton_provider__test_testcloudresourcethree_v1_api_proto prot
 
 const file_project_planton_provider__test_testcloudresourcethree_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Bproject/planton/provider/_test/testcloudresourcethree/v1/api.proto\x128project.planton.provider._test.testcloudresourcethree.v1\x1a\x1bbuf/validate/validate.proto\x1aCproject/planton/provider/_test/testcloudresourcethree/v1/spec.proto\x1aLproject/planton/provider/_test/testcloudresourcethree/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xbc\x03\n" +
+	"Bproject/planton/provider/_test/testcloudresourcethree/v1/api.proto\x128project.planton.provider._test.testcloudresourcethree.v1\x1a\x1bbuf/validate/validate.proto\x1aCproject/planton/provider/_test/testcloudresourcethree/v1/spec.proto\x1aLproject/planton/provider/_test/testcloudresourcethree/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xbe\x03\n" +
 	"\x16TestCloudResourceThree\x12D\n" +
 	"\vapi_version\x18\x01 \x01(\tB#\xbaH r\x1e\n" +
 	"\x1c_test.project-planton.org/v1R\n" +
 	"apiVersion\x121\n" +
 	"\x04kind\x18\x02 \x01(\tB\x1d\xbaH\x1ar\x18\n" +
-	"\x16TestCloudResourceThreeR\x04kind\x12O\n" +
-	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12h\n" +
+	"\x16TestCloudResourceThreeR\x04kind\x12Q\n" +
+	"\bmetadata\x18\x03 \x01(\v2-.project.planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12h\n" +
 	"\x04spec\x18\x04 \x01(\v2T.project.planton.provider._test.testcloudresourcethree.v1.TestCloudResourceThreeSpecR\x04spec\x12n\n" +
 	"\x06status\x18\x05 \x01(\v2V.project.planton.provider._test.testcloudresourcethree.v1.TestCloudResourceThreeStatusR\x06status\"\x96\x01\n" +
 	"\x1cTestCloudResourceThreeStatus\x12v\n" +
@@ -178,12 +178,12 @@ var file_project_planton_provider__test_testcloudresourcethree_v1_api_proto_msgT
 var file_project_planton_provider__test_testcloudresourcethree_v1_api_proto_goTypes = []any{
 	(*TestCloudResourceThree)(nil),             // 0: project.planton.provider._test.testcloudresourcethree.v1.TestCloudResourceThree
 	(*TestCloudResourceThreeStatus)(nil),       // 1: project.planton.provider._test.testcloudresourcethree.v1.TestCloudResourceThreeStatus
-	(*shared.ApiResourceMetadata)(nil),         // 2: project.planton.shared.ApiResourceMetadata
+	(*shared.CloudResourceMetadata)(nil),       // 2: project.planton.shared.CloudResourceMetadata
 	(*TestCloudResourceThreeSpec)(nil),         // 3: project.planton.provider._test.testcloudresourcethree.v1.TestCloudResourceThreeSpec
 	(*TestCloudResourceThreeStackOutputs)(nil), // 4: project.planton.provider._test.testcloudresourcethree.v1.TestCloudResourceThreeStackOutputs
 }
 var file_project_planton_provider__test_testcloudresourcethree_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider._test.testcloudresourcethree.v1.TestCloudResourceThree.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	2, // 0: project.planton.provider._test.testcloudresourcethree.v1.TestCloudResourceThree.metadata:type_name -> project.planton.shared.CloudResourceMetadata
 	3, // 1: project.planton.provider._test.testcloudresourcethree.v1.TestCloudResourceThree.spec:type_name -> project.planton.provider._test.testcloudresourcethree.v1.TestCloudResourceThreeSpec
 	1, // 2: project.planton.provider._test.testcloudresourcethree.v1.TestCloudResourceThree.status:type_name -> project.planton.provider._test.testcloudresourcethree.v1.TestCloudResourceThreeStatus
 	4, // 3: project.planton.provider._test.testcloudresourcethree.v1.TestCloudResourceThreeStatus.outputs:type_name -> project.planton.provider._test.testcloudresourcethree.v1.TestCloudResourceThreeStackOutputs

@@ -22,12 +22,12 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// metadata for all resource objects on planton-cloud
-type ApiResourceMetadata struct {
+// metadata of a cloud-resource
+type CloudResourceMetadata struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// name of the resource
+	// name of the cloud-resource
 	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	// slug for the resource
+	// slug for the cloud-resource
 	Slug string `protobuf:"bytes,2,opt,name=slug,proto3" json:"slug,omitempty"`
 	// id of the resource
 	Id string `protobuf:"bytes,3,opt,name=id,proto3" json:"id,omitempty"`
@@ -41,28 +41,26 @@ type ApiResourceMetadata struct {
 	Annotations map[string]string `protobuf:"bytes,7,rep,name=annotations,proto3" json:"annotations,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	// tags for the resource
 	Tags []string `protobuf:"bytes,8,rep,name=tags,proto3" json:"tags,omitempty"`
-	// metadata for resource version
-	Version *ApiResourceMetadataVersion `protobuf:"bytes,9,opt,name=version,proto3" json:"version,omitempty"`
 	// explicit relationships for the cloud-resource with other cloud-resources
-	Relationships []*v1.CloudResourceRelationship `protobuf:"bytes,10,rep,name=relationships,proto3" json:"relationships,omitempty"`
+	Relationships []*v1.CloudResourceRelationship `protobuf:"bytes,9,rep,name=relationships,proto3" json:"relationships,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ApiResourceMetadata) Reset() {
-	*x = ApiResourceMetadata{}
+func (x *CloudResourceMetadata) Reset() {
+	*x = CloudResourceMetadata{}
 	mi := &file_project_planton_shared_metadata_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ApiResourceMetadata) String() string {
+func (x *CloudResourceMetadata) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ApiResourceMetadata) ProtoMessage() {}
+func (*CloudResourceMetadata) ProtoMessage() {}
 
-func (x *ApiResourceMetadata) ProtoReflect() protoreflect.Message {
+func (x *CloudResourceMetadata) ProtoReflect() protoreflect.Message {
 	mi := &file_project_planton_shared_metadata_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -74,172 +72,95 @@ func (x *ApiResourceMetadata) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ApiResourceMetadata.ProtoReflect.Descriptor instead.
-func (*ApiResourceMetadata) Descriptor() ([]byte, []int) {
+// Deprecated: Use CloudResourceMetadata.ProtoReflect.Descriptor instead.
+func (*CloudResourceMetadata) Descriptor() ([]byte, []int) {
 	return file_project_planton_shared_metadata_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *ApiResourceMetadata) GetName() string {
+func (x *CloudResourceMetadata) GetName() string {
 	if x != nil {
 		return x.Name
 	}
 	return ""
 }
 
-func (x *ApiResourceMetadata) GetSlug() string {
+func (x *CloudResourceMetadata) GetSlug() string {
 	if x != nil {
 		return x.Slug
 	}
 	return ""
 }
 
-func (x *ApiResourceMetadata) GetId() string {
+func (x *CloudResourceMetadata) GetId() string {
 	if x != nil {
 		return x.Id
 	}
 	return ""
 }
 
-func (x *ApiResourceMetadata) GetOrg() string {
+func (x *CloudResourceMetadata) GetOrg() string {
 	if x != nil {
 		return x.Org
 	}
 	return ""
 }
 
-func (x *ApiResourceMetadata) GetEnv() string {
+func (x *CloudResourceMetadata) GetEnv() string {
 	if x != nil {
 		return x.Env
 	}
 	return ""
 }
 
-func (x *ApiResourceMetadata) GetLabels() map[string]string {
+func (x *CloudResourceMetadata) GetLabels() map[string]string {
 	if x != nil {
 		return x.Labels
 	}
 	return nil
 }
 
-func (x *ApiResourceMetadata) GetAnnotations() map[string]string {
+func (x *CloudResourceMetadata) GetAnnotations() map[string]string {
 	if x != nil {
 		return x.Annotations
 	}
 	return nil
 }
 
-func (x *ApiResourceMetadata) GetTags() []string {
+func (x *CloudResourceMetadata) GetTags() []string {
 	if x != nil {
 		return x.Tags
 	}
 	return nil
 }
 
-func (x *ApiResourceMetadata) GetVersion() *ApiResourceMetadataVersion {
-	if x != nil {
-		return x.Version
-	}
-	return nil
-}
-
-func (x *ApiResourceMetadata) GetRelationships() []*v1.CloudResourceRelationship {
+func (x *CloudResourceMetadata) GetRelationships() []*v1.CloudResourceRelationship {
 	if x != nil {
 		return x.Relationships
 	}
 	return nil
 }
 
-// version information for api-resource to be used in api-resource metadata
-type ApiResourceMetadataVersion struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// identifier for api-resource version
-	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	// message describing the version. think of commit message.
-	Message string `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
-	// previous version-id that links this version to the previous.
-	PreviousVersionId string `protobuf:"bytes,3,opt,name=previous_version_id,json=previousVersionId,proto3" json:"previous_version_id,omitempty"`
-	unknownFields     protoimpl.UnknownFields
-	sizeCache         protoimpl.SizeCache
-}
-
-func (x *ApiResourceMetadataVersion) Reset() {
-	*x = ApiResourceMetadataVersion{}
-	mi := &file_project_planton_shared_metadata_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ApiResourceMetadataVersion) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ApiResourceMetadataVersion) ProtoMessage() {}
-
-func (x *ApiResourceMetadataVersion) ProtoReflect() protoreflect.Message {
-	mi := &file_project_planton_shared_metadata_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ApiResourceMetadataVersion.ProtoReflect.Descriptor instead.
-func (*ApiResourceMetadataVersion) Descriptor() ([]byte, []int) {
-	return file_project_planton_shared_metadata_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *ApiResourceMetadataVersion) GetId() string {
-	if x != nil {
-		return x.Id
-	}
-	return ""
-}
-
-func (x *ApiResourceMetadataVersion) GetMessage() string {
-	if x != nil {
-		return x.Message
-	}
-	return ""
-}
-
-func (x *ApiResourceMetadataVersion) GetPreviousVersionId() string {
-	if x != nil {
-		return x.PreviousVersionId
-	}
-	return ""
-}
-
 var File_project_planton_shared_metadata_proto protoreflect.FileDescriptor
 
 const file_project_planton_shared_metadata_proto_rawDesc = "" +
 	"\n" +
-	"%project/planton/shared/metadata.proto\x12\x16project.planton.shared\x1a9project/planton/shared/relationship/v1/relationship.proto\"\xe8\x04\n" +
-	"\x13ApiResourceMetadata\x12\x12\n" +
+	"%project/planton/shared/metadata.proto\x12\x16project.planton.shared\x1a9project/planton/shared/relationship/v1/relationship.proto\"\xa0\x04\n" +
+	"\x15CloudResourceMetadata\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x12\n" +
 	"\x04slug\x18\x02 \x01(\tR\x04slug\x12\x0e\n" +
 	"\x02id\x18\x03 \x01(\tR\x02id\x12\x10\n" +
 	"\x03org\x18\x04 \x01(\tR\x03org\x12\x10\n" +
-	"\x03env\x18\x05 \x01(\tR\x03env\x12O\n" +
-	"\x06labels\x18\x06 \x03(\v27.project.planton.shared.ApiResourceMetadata.LabelsEntryR\x06labels\x12^\n" +
-	"\vannotations\x18\a \x03(\v2<.project.planton.shared.ApiResourceMetadata.AnnotationsEntryR\vannotations\x12\x12\n" +
-	"\x04tags\x18\b \x03(\tR\x04tags\x12L\n" +
-	"\aversion\x18\t \x01(\v22.project.planton.shared.ApiResourceMetadataVersionR\aversion\x12g\n" +
-	"\rrelationships\x18\n" +
-	" \x03(\v2A.project.planton.shared.relationship.v1.CloudResourceRelationshipR\rrelationships\x1a9\n" +
+	"\x03env\x18\x05 \x01(\tR\x03env\x12Q\n" +
+	"\x06labels\x18\x06 \x03(\v29.project.planton.shared.CloudResourceMetadata.LabelsEntryR\x06labels\x12`\n" +
+	"\vannotations\x18\a \x03(\v2>.project.planton.shared.CloudResourceMetadata.AnnotationsEntryR\vannotations\x12\x12\n" +
+	"\x04tags\x18\b \x03(\tR\x04tags\x12g\n" +
+	"\rrelationships\x18\t \x03(\v2A.project.planton.shared.relationship.v1.CloudResourceRelationshipR\rrelationships\x1a9\n" +
 	"\vLabelsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\x1a>\n" +
 	"\x10AnnotationsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"v\n" +
-	"\x1aApiResourceMetadataVersion\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
-	"\amessage\x18\x02 \x01(\tR\amessage\x12.\n" +
-	"\x13previous_version_id\x18\x03 \x01(\tR\x11previousVersionIdB\xed\x01\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01B\xed\x01\n" +
 	"\x1acom.project.planton.sharedB\rMetadataProtoP\x01ZFgithub.com/project-planton/project-planton/apis/project/planton/shared\xa2\x02\x03PPS\xaa\x02\x16Project.Planton.Shared\xca\x02\x16Project\\Planton\\Shared\xe2\x02\"Project\\Planton\\Shared\\GPBMetadata\xea\x02\x18Project::Planton::Sharedb\x06proto3"
 
 var (
@@ -254,24 +175,22 @@ func file_project_planton_shared_metadata_proto_rawDescGZIP() []byte {
 	return file_project_planton_shared_metadata_proto_rawDescData
 }
 
-var file_project_planton_shared_metadata_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_project_planton_shared_metadata_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_project_planton_shared_metadata_proto_goTypes = []any{
-	(*ApiResourceMetadata)(nil),          // 0: project.planton.shared.ApiResourceMetadata
-	(*ApiResourceMetadataVersion)(nil),   // 1: project.planton.shared.ApiResourceMetadataVersion
-	nil,                                  // 2: project.planton.shared.ApiResourceMetadata.LabelsEntry
-	nil,                                  // 3: project.planton.shared.ApiResourceMetadata.AnnotationsEntry
-	(*v1.CloudResourceRelationship)(nil), // 4: project.planton.shared.relationship.v1.CloudResourceRelationship
+	(*CloudResourceMetadata)(nil),        // 0: project.planton.shared.CloudResourceMetadata
+	nil,                                  // 1: project.planton.shared.CloudResourceMetadata.LabelsEntry
+	nil,                                  // 2: project.planton.shared.CloudResourceMetadata.AnnotationsEntry
+	(*v1.CloudResourceRelationship)(nil), // 3: project.planton.shared.relationship.v1.CloudResourceRelationship
 }
 var file_project_planton_shared_metadata_proto_depIdxs = []int32{
-	2, // 0: project.planton.shared.ApiResourceMetadata.labels:type_name -> project.planton.shared.ApiResourceMetadata.LabelsEntry
-	3, // 1: project.planton.shared.ApiResourceMetadata.annotations:type_name -> project.planton.shared.ApiResourceMetadata.AnnotationsEntry
-	1, // 2: project.planton.shared.ApiResourceMetadata.version:type_name -> project.planton.shared.ApiResourceMetadataVersion
-	4, // 3: project.planton.shared.ApiResourceMetadata.relationships:type_name -> project.planton.shared.relationship.v1.CloudResourceRelationship
-	4, // [4:4] is the sub-list for method output_type
-	4, // [4:4] is the sub-list for method input_type
-	4, // [4:4] is the sub-list for extension type_name
-	4, // [4:4] is the sub-list for extension extendee
-	0, // [0:4] is the sub-list for field type_name
+	1, // 0: project.planton.shared.CloudResourceMetadata.labels:type_name -> project.planton.shared.CloudResourceMetadata.LabelsEntry
+	2, // 1: project.planton.shared.CloudResourceMetadata.annotations:type_name -> project.planton.shared.CloudResourceMetadata.AnnotationsEntry
+	3, // 2: project.planton.shared.CloudResourceMetadata.relationships:type_name -> project.planton.shared.relationship.v1.CloudResourceRelationship
+	3, // [3:3] is the sub-list for method output_type
+	3, // [3:3] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_project_planton_shared_metadata_proto_init() }
@@ -285,7 +204,7 @@ func file_project_planton_shared_metadata_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_project_planton_shared_metadata_proto_rawDesc), len(file_project_planton_shared_metadata_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   4,
+			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

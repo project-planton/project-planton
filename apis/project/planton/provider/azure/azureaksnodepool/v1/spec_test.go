@@ -25,7 +25,7 @@ var _ = ginkgo.Describe("AzureAksNodePoolSpec Custom Validation Tests", func() {
 				input := &AzureAksNodePool{
 					ApiVersion: "azure.project-planton.org/v1",
 					Kind:       "AzureAksNodePool",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-node-pool",
 					},
 					Spec: &AzureAksNodePoolSpec{

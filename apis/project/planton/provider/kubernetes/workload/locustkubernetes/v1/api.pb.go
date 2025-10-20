@@ -31,7 +31,7 @@ type LocustKubernetes struct {
 	// resource-kind
 	Kind string `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
 	// metadata
-	Metadata *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Metadata *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// spec
 	Spec *LocustKubernetesSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status
@@ -84,7 +84,7 @@ func (x *LocustKubernetes) GetKind() string {
 	return ""
 }
 
-func (x *LocustKubernetes) GetMetadata() *shared.ApiResourceMetadata {
+func (x *LocustKubernetes) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
@@ -155,14 +155,14 @@ var File_project_planton_provider_kubernetes_workload_locustkubernetes_v1_api_pr
 
 const file_project_planton_provider_kubernetes_workload_locustkubernetes_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Jproject/planton/provider/kubernetes/workload/locustkubernetes/v1/api.proto\x12@project.planton.provider.kubernetes.workload.locustkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1aKproject/planton/provider/kubernetes/workload/locustkubernetes/v1/spec.proto\x1aTproject/planton/provider/kubernetes/workload/locustkubernetes/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xc1\x03\n" +
+	"Jproject/planton/provider/kubernetes/workload/locustkubernetes/v1/api.proto\x12@project.planton.provider.kubernetes.workload.locustkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1aKproject/planton/provider/kubernetes/workload/locustkubernetes/v1/spec.proto\x1aTproject/planton/provider/kubernetes/workload/locustkubernetes/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xc3\x03\n" +
 	"\x10LocustKubernetes\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!kubernetes.project-planton.org/v1R\n" +
 	"apiVersion\x12+\n" +
 	"\x04kind\x18\x02 \x01(\tB\x17\xbaH\x14r\x12\n" +
-	"\x10LocustKubernetesR\x04kind\x12O\n" +
-	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12r\n" +
+	"\x10LocustKubernetesR\x04kind\x12Q\n" +
+	"\bmetadata\x18\x03 \x01(\v2-.project.planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12r\n" +
 	"\x04spec\x18\x04 \x01(\v2V.project.planton.provider.kubernetes.workload.locustkubernetes.v1.LocustKubernetesSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12p\n" +
 	"\x06status\x18\x05 \x01(\v2X.project.planton.provider.kubernetes.workload.locustkubernetes.v1.LocustKubernetesStatusR\x06status\"\x92\x01\n" +
 	"\x16LocustKubernetesStatus\x12x\n" +
@@ -185,12 +185,12 @@ var file_project_planton_provider_kubernetes_workload_locustkubernetes_v1_api_pr
 var file_project_planton_provider_kubernetes_workload_locustkubernetes_v1_api_proto_goTypes = []any{
 	(*LocustKubernetes)(nil),             // 0: project.planton.provider.kubernetes.workload.locustkubernetes.v1.LocustKubernetes
 	(*LocustKubernetesStatus)(nil),       // 1: project.planton.provider.kubernetes.workload.locustkubernetes.v1.LocustKubernetesStatus
-	(*shared.ApiResourceMetadata)(nil),   // 2: project.planton.shared.ApiResourceMetadata
+	(*shared.CloudResourceMetadata)(nil), // 2: project.planton.shared.CloudResourceMetadata
 	(*LocustKubernetesSpec)(nil),         // 3: project.planton.provider.kubernetes.workload.locustkubernetes.v1.LocustKubernetesSpec
 	(*LocustKubernetesStackOutputs)(nil), // 4: project.planton.provider.kubernetes.workload.locustkubernetes.v1.LocustKubernetesStackOutputs
 }
 var file_project_planton_provider_kubernetes_workload_locustkubernetes_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.kubernetes.workload.locustkubernetes.v1.LocustKubernetes.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	2, // 0: project.planton.provider.kubernetes.workload.locustkubernetes.v1.LocustKubernetes.metadata:type_name -> project.planton.shared.CloudResourceMetadata
 	3, // 1: project.planton.provider.kubernetes.workload.locustkubernetes.v1.LocustKubernetes.spec:type_name -> project.planton.provider.kubernetes.workload.locustkubernetes.v1.LocustKubernetesSpec
 	1, // 2: project.planton.provider.kubernetes.workload.locustkubernetes.v1.LocustKubernetes.status:type_name -> project.planton.provider.kubernetes.workload.locustkubernetes.v1.LocustKubernetesStatus
 	4, // 3: project.planton.provider.kubernetes.workload.locustkubernetes.v1.LocustKubernetesStatus.outputs:type_name -> project.planton.provider.kubernetes.workload.locustkubernetes.v1.LocustKubernetesStackOutputs

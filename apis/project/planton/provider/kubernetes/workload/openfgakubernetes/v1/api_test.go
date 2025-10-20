@@ -22,7 +22,7 @@ var _ = ginkgo.Describe("OpenFgaKubernetes Custom Validation Tests", func() {
 		input = &OpenFgaKubernetes{
 			ApiVersion: "kubernetes.project-planton.org/v1",
 			Kind:       "OpenFgaKubernetes",
-			Metadata: &shared.ApiResourceMetadata{
+			Metadata: &shared.CloudResourceMetadata{
 				Name: "test-openfga",
 			},
 			Spec: &OpenFgaKubernetesSpec{

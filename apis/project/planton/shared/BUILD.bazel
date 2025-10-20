@@ -5,7 +5,6 @@ go_library(
     srcs = [
         "iac.pb.go",
         "metadata.pb.go",
-        "status.pb.go",
     ],
     importpath = "github.com/project-planton/project-planton/apis/project/planton/shared",
     visibility = ["//visibility:public"],
@@ -13,6 +12,5 @@ go_library(
         "//apis/project/planton/shared/relationship/v1:relationship",
         "@org_golang_google_protobuf//reflect/protoreflect",
         "@org_golang_google_protobuf//runtime/protoimpl",
-        "@org_golang_google_protobuf//types/known/timestamppb",
     ],
 )

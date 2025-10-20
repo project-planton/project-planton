@@ -31,7 +31,7 @@ type DigitalOceanContainerRegistry struct {
 	// resource-kind
 	Kind string `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
 	// metadata
-	Metadata *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Metadata *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// spec
 	Spec *DigitalOceanContainerRegistrySpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status
@@ -84,7 +84,7 @@ func (x *DigitalOceanContainerRegistry) GetKind() string {
 	return ""
 }
 
-func (x *DigitalOceanContainerRegistry) GetMetadata() *shared.ApiResourceMetadata {
+func (x *DigitalOceanContainerRegistry) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
@@ -157,14 +157,14 @@ var File_project_planton_provider_digitalocean_digitaloceancontainerregistry_v1_
 
 const file_project_planton_provider_digitalocean_digitaloceancontainerregistry_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Pproject/planton/provider/digitalocean/digitaloceancontainerregistry/v1/api.proto\x12Fproject.planton.provider.digitalocean.digitaloceancontainerregistry.v1\x1a\x1bbuf/validate/validate.proto\x1aQproject/planton/provider/digitalocean/digitaloceancontainerregistry/v1/spec.proto\x1aZproject/planton/provider/digitalocean/digitaloceancontainerregistry/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\x86\x04\n" +
+	"Pproject/planton/provider/digitalocean/digitaloceancontainerregistry/v1/api.proto\x12Fproject.planton.provider.digitalocean.digitaloceancontainerregistry.v1\x1a\x1bbuf/validate/validate.proto\x1aQproject/planton/provider/digitalocean/digitaloceancontainerregistry/v1/spec.proto\x1aZproject/planton/provider/digitalocean/digitaloceancontainerregistry/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\x88\x04\n" +
 	"\x1dDigitalOceanContainerRegistry\x12L\n" +
 	"\vapi_version\x18\x01 \x01(\tB+\xbaH(r&\n" +
 	"$digital-ocean.project-planton.org/v1R\n" +
 	"apiVersion\x128\n" +
 	"\x04kind\x18\x02 \x01(\tB$\xbaH!r\x1f\n" +
-	"\x1dDigitalOceanContainerRegistryR\x04kind\x12O\n" +
-	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12\x85\x01\n" +
+	"\x1dDigitalOceanContainerRegistryR\x04kind\x12Q\n" +
+	"\bmetadata\x18\x03 \x01(\v2-.project.planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12\x85\x01\n" +
 	"\x04spec\x18\x04 \x01(\v2i.project.planton.provider.digitalocean.digitaloceancontainerregistry.v1.DigitalOceanContainerRegistrySpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12\x83\x01\n" +
 	"\x06status\x18\x05 \x01(\v2k.project.planton.provider.digitalocean.digitaloceancontainerregistry.v1.DigitalOceanContainerRegistryStatusR\x06status\"\xb3\x01\n" +
 	"#DigitalOceanContainerRegistryStatus\x12\x8b\x01\n" +
@@ -187,12 +187,12 @@ var file_project_planton_provider_digitalocean_digitaloceancontainerregistry_v1_
 var file_project_planton_provider_digitalocean_digitaloceancontainerregistry_v1_api_proto_goTypes = []any{
 	(*DigitalOceanContainerRegistry)(nil),             // 0: project.planton.provider.digitalocean.digitaloceancontainerregistry.v1.DigitalOceanContainerRegistry
 	(*DigitalOceanContainerRegistryStatus)(nil),       // 1: project.planton.provider.digitalocean.digitaloceancontainerregistry.v1.DigitalOceanContainerRegistryStatus
-	(*shared.ApiResourceMetadata)(nil),                // 2: project.planton.shared.ApiResourceMetadata
+	(*shared.CloudResourceMetadata)(nil),              // 2: project.planton.shared.CloudResourceMetadata
 	(*DigitalOceanContainerRegistrySpec)(nil),         // 3: project.planton.provider.digitalocean.digitaloceancontainerregistry.v1.DigitalOceanContainerRegistrySpec
 	(*DigitalOceanContainerRegistryStackOutputs)(nil), // 4: project.planton.provider.digitalocean.digitaloceancontainerregistry.v1.DigitalOceanContainerRegistryStackOutputs
 }
 var file_project_planton_provider_digitalocean_digitaloceancontainerregistry_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.digitalocean.digitaloceancontainerregistry.v1.DigitalOceanContainerRegistry.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	2, // 0: project.planton.provider.digitalocean.digitaloceancontainerregistry.v1.DigitalOceanContainerRegistry.metadata:type_name -> project.planton.shared.CloudResourceMetadata
 	3, // 1: project.planton.provider.digitalocean.digitaloceancontainerregistry.v1.DigitalOceanContainerRegistry.spec:type_name -> project.planton.provider.digitalocean.digitaloceancontainerregistry.v1.DigitalOceanContainerRegistrySpec
 	1, // 2: project.planton.provider.digitalocean.digitaloceancontainerregistry.v1.DigitalOceanContainerRegistry.status:type_name -> project.planton.provider.digitalocean.digitaloceancontainerregistry.v1.DigitalOceanContainerRegistryStatus
 	4, // 3: project.planton.provider.digitalocean.digitaloceancontainerregistry.v1.DigitalOceanContainerRegistryStatus.outputs:type_name -> project.planton.provider.digitalocean.digitaloceancontainerregistry.v1.DigitalOceanContainerRegistryStackOutputs

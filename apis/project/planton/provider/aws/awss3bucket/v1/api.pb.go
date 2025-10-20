@@ -31,7 +31,7 @@ type AwsS3Bucket struct {
 	// resource-kind
 	Kind string `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
 	// metadata
-	Metadata *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Metadata *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// spec
 	Spec *AwsS3BucketSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status
@@ -84,7 +84,7 @@ func (x *AwsS3Bucket) GetKind() string {
 	return ""
 }
 
-func (x *AwsS3Bucket) GetMetadata() *shared.ApiResourceMetadata {
+func (x *AwsS3Bucket) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
@@ -155,14 +155,14 @@ var File_project_planton_provider_aws_awss3bucket_v1_api_proto protoreflect.File
 
 const file_project_planton_provider_aws_awss3bucket_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"5project/planton/provider/aws/awss3bucket/v1/api.proto\x12+project.planton.provider.aws.awss3bucket.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/provider/aws/awss3bucket/v1/spec.proto\x1a?project/planton/provider/aws/awss3bucket/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xfc\x02\n" +
+	"5project/planton/provider/aws/awss3bucket/v1/api.proto\x12+project.planton.provider.aws.awss3bucket.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/provider/aws/awss3bucket/v1/spec.proto\x1a?project/planton/provider/aws/awss3bucket/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xfe\x02\n" +
 	"\vAwsS3Bucket\x12B\n" +
 	"\vapi_version\x18\x01 \x01(\tB!\xbaH\x1er\x1c\n" +
 	"\x1aaws.project-planton.org/v1R\n" +
 	"apiVersion\x12&\n" +
 	"\x04kind\x18\x02 \x01(\tB\x12\xbaH\x0fr\r\n" +
-	"\vAwsS3BucketR\x04kind\x12O\n" +
-	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12X\n" +
+	"\vAwsS3BucketR\x04kind\x12Q\n" +
+	"\bmetadata\x18\x03 \x01(\v2-.project.planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12X\n" +
 	"\x04spec\x18\x04 \x01(\v2<.project.planton.provider.aws.awss3bucket.v1.AwsS3BucketSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12V\n" +
 	"\x06status\x18\x05 \x01(\v2>.project.planton.provider.aws.awss3bucket.v1.AwsS3BucketStatusR\x06status\"s\n" +
 	"\x11AwsS3BucketStatus\x12^\n" +
@@ -183,14 +183,14 @@ func file_project_planton_provider_aws_awss3bucket_v1_api_proto_rawDescGZIP() []
 
 var file_project_planton_provider_aws_awss3bucket_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_aws_awss3bucket_v1_api_proto_goTypes = []any{
-	(*AwsS3Bucket)(nil),                // 0: project.planton.provider.aws.awss3bucket.v1.AwsS3Bucket
-	(*AwsS3BucketStatus)(nil),          // 1: project.planton.provider.aws.awss3bucket.v1.AwsS3BucketStatus
-	(*shared.ApiResourceMetadata)(nil), // 2: project.planton.shared.ApiResourceMetadata
-	(*AwsS3BucketSpec)(nil),            // 3: project.planton.provider.aws.awss3bucket.v1.AwsS3BucketSpec
-	(*AwsS3BucketStackOutputs)(nil),    // 4: project.planton.provider.aws.awss3bucket.v1.AwsS3BucketStackOutputs
+	(*AwsS3Bucket)(nil),                  // 0: project.planton.provider.aws.awss3bucket.v1.AwsS3Bucket
+	(*AwsS3BucketStatus)(nil),            // 1: project.planton.provider.aws.awss3bucket.v1.AwsS3BucketStatus
+	(*shared.CloudResourceMetadata)(nil), // 2: project.planton.shared.CloudResourceMetadata
+	(*AwsS3BucketSpec)(nil),              // 3: project.planton.provider.aws.awss3bucket.v1.AwsS3BucketSpec
+	(*AwsS3BucketStackOutputs)(nil),      // 4: project.planton.provider.aws.awss3bucket.v1.AwsS3BucketStackOutputs
 }
 var file_project_planton_provider_aws_awss3bucket_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.aws.awss3bucket.v1.AwsS3Bucket.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	2, // 0: project.planton.provider.aws.awss3bucket.v1.AwsS3Bucket.metadata:type_name -> project.planton.shared.CloudResourceMetadata
 	3, // 1: project.planton.provider.aws.awss3bucket.v1.AwsS3Bucket.spec:type_name -> project.planton.provider.aws.awss3bucket.v1.AwsS3BucketSpec
 	1, // 2: project.planton.provider.aws.awss3bucket.v1.AwsS3Bucket.status:type_name -> project.planton.provider.aws.awss3bucket.v1.AwsS3BucketStatus
 	4, // 3: project.planton.provider.aws.awss3bucket.v1.AwsS3BucketStatus.outputs:type_name -> project.planton.provider.aws.awss3bucket.v1.AwsS3BucketStackOutputs

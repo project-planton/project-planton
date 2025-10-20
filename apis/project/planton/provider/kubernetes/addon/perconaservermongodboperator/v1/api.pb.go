@@ -31,7 +31,7 @@ type PerconaServerMongodbOperator struct {
 	// resource-kind
 	Kind string `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
 	// metadata
-	Metadata *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Metadata *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// spec
 	Spec *PerconaServerMongodbOperatorSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status
@@ -84,7 +84,7 @@ func (x *PerconaServerMongodbOperator) GetKind() string {
 	return ""
 }
 
-func (x *PerconaServerMongodbOperator) GetMetadata() *shared.ApiResourceMetadata {
+func (x *PerconaServerMongodbOperator) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
@@ -155,14 +155,14 @@ var File_project_planton_provider_kubernetes_addon_perconaservermongodboperator_
 
 const file_project_planton_provider_kubernetes_addon_perconaservermongodboperator_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Sproject/planton/provider/kubernetes/addon/perconaservermongodboperator/v1/api.proto\x12Iproject.planton.provider.kubernetes.addon.perconaservermongodboperator.v1\x1a\x1bbuf/validate/validate.proto\x1aTproject/planton/provider/kubernetes/addon/perconaservermongodboperator/v1/spec.proto\x1a]project/planton/provider/kubernetes/addon/perconaservermongodboperator/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\x85\x04\n" +
+	"Sproject/planton/provider/kubernetes/addon/perconaservermongodboperator/v1/api.proto\x12Iproject.planton.provider.kubernetes.addon.perconaservermongodboperator.v1\x1a\x1bbuf/validate/validate.proto\x1aTproject/planton/provider/kubernetes/addon/perconaservermongodboperator/v1/spec.proto\x1a]project/planton/provider/kubernetes/addon/perconaservermongodboperator/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\x87\x04\n" +
 	"\x1cPerconaServerMongodbOperator\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!kubernetes.project-planton.org/v1R\n" +
 	"apiVersion\x127\n" +
 	"\x04kind\x18\x02 \x01(\tB#\xbaH r\x1e\n" +
-	"\x1cPerconaServerMongodbOperatorR\x04kind\x12O\n" +
-	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12\x87\x01\n" +
+	"\x1cPerconaServerMongodbOperatorR\x04kind\x12Q\n" +
+	"\bmetadata\x18\x03 \x01(\v2-.project.planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12\x87\x01\n" +
 	"\x04spec\x18\x04 \x01(\v2k.project.planton.provider.kubernetes.addon.perconaservermongodboperator.v1.PerconaServerMongodbOperatorSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12\x85\x01\n" +
 	"\x06status\x18\x05 \x01(\v2m.project.planton.provider.kubernetes.addon.perconaservermongodboperator.v1.PerconaServerMongodbOperatorStatusR\x06status\"\xb4\x01\n" +
 	"\"PerconaServerMongodbOperatorStatus\x12\x8d\x01\n" +
@@ -185,12 +185,12 @@ var file_project_planton_provider_kubernetes_addon_perconaservermongodboperator_
 var file_project_planton_provider_kubernetes_addon_perconaservermongodboperator_v1_api_proto_goTypes = []any{
 	(*PerconaServerMongodbOperator)(nil),             // 0: project.planton.provider.kubernetes.addon.perconaservermongodboperator.v1.PerconaServerMongodbOperator
 	(*PerconaServerMongodbOperatorStatus)(nil),       // 1: project.planton.provider.kubernetes.addon.perconaservermongodboperator.v1.PerconaServerMongodbOperatorStatus
-	(*shared.ApiResourceMetadata)(nil),               // 2: project.planton.shared.ApiResourceMetadata
+	(*shared.CloudResourceMetadata)(nil),             // 2: project.planton.shared.CloudResourceMetadata
 	(*PerconaServerMongodbOperatorSpec)(nil),         // 3: project.planton.provider.kubernetes.addon.perconaservermongodboperator.v1.PerconaServerMongodbOperatorSpec
 	(*PerconaServerMongodbOperatorStackOutputs)(nil), // 4: project.planton.provider.kubernetes.addon.perconaservermongodboperator.v1.PerconaServerMongodbOperatorStackOutputs
 }
 var file_project_planton_provider_kubernetes_addon_perconaservermongodboperator_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.kubernetes.addon.perconaservermongodboperator.v1.PerconaServerMongodbOperator.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	2, // 0: project.planton.provider.kubernetes.addon.perconaservermongodboperator.v1.PerconaServerMongodbOperator.metadata:type_name -> project.planton.shared.CloudResourceMetadata
 	3, // 1: project.planton.provider.kubernetes.addon.perconaservermongodboperator.v1.PerconaServerMongodbOperator.spec:type_name -> project.planton.provider.kubernetes.addon.perconaservermongodboperator.v1.PerconaServerMongodbOperatorSpec
 	1, // 2: project.planton.provider.kubernetes.addon.perconaservermongodboperator.v1.PerconaServerMongodbOperator.status:type_name -> project.planton.provider.kubernetes.addon.perconaservermongodboperator.v1.PerconaServerMongodbOperatorStatus
 	4, // 3: project.planton.provider.kubernetes.addon.perconaservermongodboperator.v1.PerconaServerMongodbOperatorStatus.outputs:type_name -> project.planton.provider.kubernetes.addon.perconaservermongodboperator.v1.PerconaServerMongodbOperatorStackOutputs

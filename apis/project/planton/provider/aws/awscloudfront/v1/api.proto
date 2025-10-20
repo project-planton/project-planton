@@ -11,7 +11,7 @@ import "project/planton/shared/metadata.proto";
 message AwsCloudFront {
   string api_version = 1 [(buf.validate.field).string.const = "aws.project-planton.org/v1"];
   string kind = 2 [(buf.validate.field).string.const = "AwsCloudFront"];
-  project.planton.shared.ApiResourceMetadata metadata = 3 [(buf.validate.field).required = true];
+  project.planton.shared.CloudResourceMetadata metadata = 3 [(buf.validate.field).required = true];
   AwsCloudFrontSpec spec = 4 [(buf.validate.field).required = true];
   AwsCloudFrontStatus status = 5;
 }

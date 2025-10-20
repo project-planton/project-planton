@@ -23,7 +23,7 @@ var _ = ginkgo.Describe("AwsIamRole Custom Validation Tests", func() {
 				input := &AwsIamRole{
 					ApiVersion: "aws.project-planton.org/v1",
 					Kind:       "AwsIamRole",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "valid-name",
 					},
 					Spec: &AwsIamRoleSpec{

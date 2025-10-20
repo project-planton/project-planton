@@ -31,7 +31,7 @@ type DigitalOceanKubernetesNodePool struct {
 	// resource-kind
 	Kind string `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
 	// metadata
-	Metadata *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Metadata *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// spec
 	Spec *DigitalOceanKubernetesNodePoolSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status
@@ -84,7 +84,7 @@ func (x *DigitalOceanKubernetesNodePool) GetKind() string {
 	return ""
 }
 
-func (x *DigitalOceanKubernetesNodePool) GetMetadata() *shared.ApiResourceMetadata {
+func (x *DigitalOceanKubernetesNodePool) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
@@ -157,14 +157,14 @@ var File_project_planton_provider_digitalocean_digitaloceankubernetesnodepool_v1
 
 const file_project_planton_provider_digitalocean_digitaloceankubernetesnodepool_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Qproject/planton/provider/digitalocean/digitaloceankubernetesnodepool/v1/api.proto\x12Gproject.planton.provider.digitalocean.digitaloceankubernetesnodepool.v1\x1a\x1bbuf/validate/validate.proto\x1aRproject/planton/provider/digitalocean/digitaloceankubernetesnodepool/v1/spec.proto\x1a[project/planton/provider/digitalocean/digitaloceankubernetesnodepool/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\x8c\x04\n" +
+	"Qproject/planton/provider/digitalocean/digitaloceankubernetesnodepool/v1/api.proto\x12Gproject.planton.provider.digitalocean.digitaloceankubernetesnodepool.v1\x1a\x1bbuf/validate/validate.proto\x1aRproject/planton/provider/digitalocean/digitaloceankubernetesnodepool/v1/spec.proto\x1a[project/planton/provider/digitalocean/digitaloceankubernetesnodepool/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\x8e\x04\n" +
 	"\x1eDigitalOceanKubernetesNodePool\x12L\n" +
 	"\vapi_version\x18\x01 \x01(\tB+\xbaH(r&\n" +
 	"$digital-ocean.project-planton.org/v1R\n" +
 	"apiVersion\x129\n" +
 	"\x04kind\x18\x02 \x01(\tB%\xbaH\"r \n" +
-	"\x1eDigitalOceanKubernetesNodePoolR\x04kind\x12O\n" +
-	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12\x87\x01\n" +
+	"\x1eDigitalOceanKubernetesNodePoolR\x04kind\x12Q\n" +
+	"\bmetadata\x18\x03 \x01(\v2-.project.planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12\x87\x01\n" +
 	"\x04spec\x18\x04 \x01(\v2k.project.planton.provider.digitalocean.digitaloceankubernetesnodepool.v1.DigitalOceanKubernetesNodePoolSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12\x85\x01\n" +
 	"\x06status\x18\x05 \x01(\v2m.project.planton.provider.digitalocean.digitaloceankubernetesnodepool.v1.DigitalOceanKubernetesNodePoolStatusR\x06status\"\xb6\x01\n" +
 	"$DigitalOceanKubernetesNodePoolStatus\x12\x8d\x01\n" +
@@ -187,12 +187,12 @@ var file_project_planton_provider_digitalocean_digitaloceankubernetesnodepool_v1
 var file_project_planton_provider_digitalocean_digitaloceankubernetesnodepool_v1_api_proto_goTypes = []any{
 	(*DigitalOceanKubernetesNodePool)(nil),             // 0: project.planton.provider.digitalocean.digitaloceankubernetesnodepool.v1.DigitalOceanKubernetesNodePool
 	(*DigitalOceanKubernetesNodePoolStatus)(nil),       // 1: project.planton.provider.digitalocean.digitaloceankubernetesnodepool.v1.DigitalOceanKubernetesNodePoolStatus
-	(*shared.ApiResourceMetadata)(nil),                 // 2: project.planton.shared.ApiResourceMetadata
+	(*shared.CloudResourceMetadata)(nil),               // 2: project.planton.shared.CloudResourceMetadata
 	(*DigitalOceanKubernetesNodePoolSpec)(nil),         // 3: project.planton.provider.digitalocean.digitaloceankubernetesnodepool.v1.DigitalOceanKubernetesNodePoolSpec
 	(*DigitalOceanKubernetesNodePoolStackOutputs)(nil), // 4: project.planton.provider.digitalocean.digitaloceankubernetesnodepool.v1.DigitalOceanKubernetesNodePoolStackOutputs
 }
 var file_project_planton_provider_digitalocean_digitaloceankubernetesnodepool_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.digitalocean.digitaloceankubernetesnodepool.v1.DigitalOceanKubernetesNodePool.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	2, // 0: project.planton.provider.digitalocean.digitaloceankubernetesnodepool.v1.DigitalOceanKubernetesNodePool.metadata:type_name -> project.planton.shared.CloudResourceMetadata
 	3, // 1: project.planton.provider.digitalocean.digitaloceankubernetesnodepool.v1.DigitalOceanKubernetesNodePool.spec:type_name -> project.planton.provider.digitalocean.digitaloceankubernetesnodepool.v1.DigitalOceanKubernetesNodePoolSpec
 	1, // 2: project.planton.provider.digitalocean.digitaloceankubernetesnodepool.v1.DigitalOceanKubernetesNodePool.status:type_name -> project.planton.provider.digitalocean.digitaloceankubernetesnodepool.v1.DigitalOceanKubernetesNodePoolStatus
 	4, // 3: project.planton.provider.digitalocean.digitaloceankubernetesnodepool.v1.DigitalOceanKubernetesNodePoolStatus.outputs:type_name -> project.planton.provider.digitalocean.digitaloceankubernetesnodepool.v1.DigitalOceanKubernetesNodePoolStackOutputs

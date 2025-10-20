@@ -22,7 +22,7 @@ var _ = ginkgo.Describe("Neo4JKubernetes Custom Validation Tests", func() {
 		input = &Neo4JKubernetes{
 			ApiVersion: "kubernetes.project-planton.org/v1",
 			Kind:       "Neo4jKubernetes",
-			Metadata: &shared.ApiResourceMetadata{
+			Metadata: &shared.CloudResourceMetadata{
 				Name: "test-neo4j",
 			},
 			Spec: &Neo4JKubernetesSpec{

@@ -31,7 +31,7 @@ type CloudflareR2Bucket struct {
 	// resource-kind
 	Kind string `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
 	// metadata
-	Metadata *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Metadata *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// spec
 	Spec *CloudflareR2BucketSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status
@@ -84,7 +84,7 @@ func (x *CloudflareR2Bucket) GetKind() string {
 	return ""
 }
 
-func (x *CloudflareR2Bucket) GetMetadata() *shared.ApiResourceMetadata {
+func (x *CloudflareR2Bucket) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
@@ -157,14 +157,14 @@ var File_project_planton_provider_cloudflare_cloudflarer2bucket_v1_api_proto pro
 
 const file_project_planton_provider_cloudflare_cloudflarer2bucket_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Cproject/planton/provider/cloudflare/cloudflarer2bucket/v1/api.proto\x129project.planton.provider.cloudflare.cloudflarer2bucket.v1\x1a\x1bbuf/validate/validate.proto\x1aDproject/planton/provider/cloudflare/cloudflarer2bucket/v1/spec.proto\x1aMproject/planton/provider/cloudflare/cloudflarer2bucket/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xbb\x03\n" +
+	"Cproject/planton/provider/cloudflare/cloudflarer2bucket/v1/api.proto\x129project.planton.provider.cloudflare.cloudflarer2bucket.v1\x1a\x1bbuf/validate/validate.proto\x1aDproject/planton/provider/cloudflare/cloudflarer2bucket/v1/spec.proto\x1aMproject/planton/provider/cloudflare/cloudflarer2bucket/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xbd\x03\n" +
 	"\x12CloudflareR2Bucket\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!cloudflare.project-planton.org/v1R\n" +
 	"apiVersion\x12-\n" +
 	"\x04kind\x18\x02 \x01(\tB\x19\xbaH\x16r\x14\n" +
-	"\x12CloudflareR2BucketR\x04kind\x12O\n" +
-	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12m\n" +
+	"\x12CloudflareR2BucketR\x04kind\x12Q\n" +
+	"\bmetadata\x18\x03 \x01(\v2-.project.planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12m\n" +
 	"\x04spec\x18\x04 \x01(\v2Q.project.planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2BucketSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12k\n" +
 	"\x06status\x18\x05 \x01(\v2S.project.planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2BucketStatusR\x06status\"\x8f\x01\n" +
 	"\x18CloudflareR2BucketStatus\x12s\n" +
@@ -187,12 +187,12 @@ var file_project_planton_provider_cloudflare_cloudflarer2bucket_v1_api_proto_msg
 var file_project_planton_provider_cloudflare_cloudflarer2bucket_v1_api_proto_goTypes = []any{
 	(*CloudflareR2Bucket)(nil),             // 0: project.planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2Bucket
 	(*CloudflareR2BucketStatus)(nil),       // 1: project.planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2BucketStatus
-	(*shared.ApiResourceMetadata)(nil),     // 2: project.planton.shared.ApiResourceMetadata
+	(*shared.CloudResourceMetadata)(nil),   // 2: project.planton.shared.CloudResourceMetadata
 	(*CloudflareR2BucketSpec)(nil),         // 3: project.planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2BucketSpec
 	(*CloudflareR2BucketStackOutputs)(nil), // 4: project.planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2BucketStackOutputs
 }
 var file_project_planton_provider_cloudflare_cloudflarer2bucket_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2Bucket.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	2, // 0: project.planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2Bucket.metadata:type_name -> project.planton.shared.CloudResourceMetadata
 	3, // 1: project.planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2Bucket.spec:type_name -> project.planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2BucketSpec
 	1, // 2: project.planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2Bucket.status:type_name -> project.planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2BucketStatus
 	4, // 3: project.planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2BucketStatus.outputs:type_name -> project.planton.provider.cloudflare.cloudflarer2bucket.v1.CloudflareR2BucketStackOutputs

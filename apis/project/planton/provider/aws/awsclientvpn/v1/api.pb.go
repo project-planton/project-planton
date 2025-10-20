@@ -33,7 +33,7 @@ type AwsClientVpn struct {
 	Kind string `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
 	// metadata captures identifying information (name, org, version, etc.)
 	// and must pass standard validations for resource naming.
-	Metadata *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Metadata *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// spec holds the core configuration data defining how the ECS service is deployed.
 	Spec *AwsClientVpnSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status holds runtime or post-deployment information.
@@ -86,7 +86,7 @@ func (x *AwsClientVpn) GetKind() string {
 	return ""
 }
 
-func (x *AwsClientVpn) GetMetadata() *shared.ApiResourceMetadata {
+func (x *AwsClientVpn) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
@@ -157,14 +157,14 @@ var File_project_planton_provider_aws_awsclientvpn_v1_api_proto protoreflect.Fil
 
 const file_project_planton_provider_aws_awsclientvpn_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"6project/planton/provider/aws/awsclientvpn/v1/api.proto\x12,project.planton.provider.aws.awsclientvpn.v1\x1a\x1bbuf/validate/validate.proto\x1a7project/planton/provider/aws/awsclientvpn/v1/spec.proto\x1a@project/planton/provider/aws/awsclientvpn/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\x82\x03\n" +
+	"6project/planton/provider/aws/awsclientvpn/v1/api.proto\x12,project.planton.provider.aws.awsclientvpn.v1\x1a\x1bbuf/validate/validate.proto\x1a7project/planton/provider/aws/awsclientvpn/v1/spec.proto\x1a@project/planton/provider/aws/awsclientvpn/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\x84\x03\n" +
 	"\fAwsClientVpn\x12B\n" +
 	"\vapi_version\x18\x01 \x01(\tB!\xbaH\x1er\x1c\n" +
 	"\x1aaws.project-planton.org/v1R\n" +
 	"apiVersion\x12'\n" +
 	"\x04kind\x18\x02 \x01(\tB\x13\xbaH\x10r\x0e\n" +
-	"\fAwsClientVpnR\x04kind\x12O\n" +
-	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12Z\n" +
+	"\fAwsClientVpnR\x04kind\x12Q\n" +
+	"\bmetadata\x18\x03 \x01(\v2-.project.planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12Z\n" +
 	"\x04spec\x18\x04 \x01(\v2>.project.planton.provider.aws.awsclientvpn.v1.AwsClientVpnSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12X\n" +
 	"\x06status\x18\x05 \x01(\v2@.project.planton.provider.aws.awsclientvpn.v1.AwsClientVpnStatusR\x06status\"v\n" +
 	"\x12AwsClientVpnStatus\x12`\n" +
@@ -185,14 +185,14 @@ func file_project_planton_provider_aws_awsclientvpn_v1_api_proto_rawDescGZIP() [
 
 var file_project_planton_provider_aws_awsclientvpn_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_aws_awsclientvpn_v1_api_proto_goTypes = []any{
-	(*AwsClientVpn)(nil),               // 0: project.planton.provider.aws.awsclientvpn.v1.AwsClientVpn
-	(*AwsClientVpnStatus)(nil),         // 1: project.planton.provider.aws.awsclientvpn.v1.AwsClientVpnStatus
-	(*shared.ApiResourceMetadata)(nil), // 2: project.planton.shared.ApiResourceMetadata
-	(*AwsClientVpnSpec)(nil),           // 3: project.planton.provider.aws.awsclientvpn.v1.AwsClientVpnSpec
-	(*AwsClientVpnStackOutputs)(nil),   // 4: project.planton.provider.aws.awsclientvpn.v1.AwsClientVpnStackOutputs
+	(*AwsClientVpn)(nil),                 // 0: project.planton.provider.aws.awsclientvpn.v1.AwsClientVpn
+	(*AwsClientVpnStatus)(nil),           // 1: project.planton.provider.aws.awsclientvpn.v1.AwsClientVpnStatus
+	(*shared.CloudResourceMetadata)(nil), // 2: project.planton.shared.CloudResourceMetadata
+	(*AwsClientVpnSpec)(nil),             // 3: project.planton.provider.aws.awsclientvpn.v1.AwsClientVpnSpec
+	(*AwsClientVpnStackOutputs)(nil),     // 4: project.planton.provider.aws.awsclientvpn.v1.AwsClientVpnStackOutputs
 }
 var file_project_planton_provider_aws_awsclientvpn_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.aws.awsclientvpn.v1.AwsClientVpn.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	2, // 0: project.planton.provider.aws.awsclientvpn.v1.AwsClientVpn.metadata:type_name -> project.planton.shared.CloudResourceMetadata
 	3, // 1: project.planton.provider.aws.awsclientvpn.v1.AwsClientVpn.spec:type_name -> project.planton.provider.aws.awsclientvpn.v1.AwsClientVpnSpec
 	1, // 2: project.planton.provider.aws.awsclientvpn.v1.AwsClientVpn.status:type_name -> project.planton.provider.aws.awsclientvpn.v1.AwsClientVpnStatus
 	4, // 3: project.planton.provider.aws.awsclientvpn.v1.AwsClientVpnStatus.outputs:type_name -> project.planton.provider.aws.awsclientvpn.v1.AwsClientVpnStackOutputs

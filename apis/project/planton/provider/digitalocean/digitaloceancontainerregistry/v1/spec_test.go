@@ -24,7 +24,7 @@ var _ = ginkgo.Describe("DigitalOceanContainerRegistrySpec Custom Validation Tes
 				input := &DigitalOceanContainerRegistry{
 					ApiVersion: "digital-ocean.project-planton.org/v1",
 					Kind:       "DigitalOceanContainerRegistry",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-container-registry",
 					},
 					Spec: &DigitalOceanContainerRegistrySpec{

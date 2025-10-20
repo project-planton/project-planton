@@ -33,7 +33,7 @@ type AwsEcsCluster struct {
 	Kind string `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
 	// metadata captures identifying information (name, org, version, etc.)
 	// and must pass standard validations for resource naming.
-	Metadata *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Metadata *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// spec holds the core configuration data defining how the ECS service is deployed.
 	Spec *AwsEcsClusterSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status holds runtime or post-deployment information.
@@ -86,7 +86,7 @@ func (x *AwsEcsCluster) GetKind() string {
 	return ""
 }
 
-func (x *AwsEcsCluster) GetMetadata() *shared.ApiResourceMetadata {
+func (x *AwsEcsCluster) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
@@ -157,14 +157,14 @@ var File_project_planton_provider_aws_awsecscluster_v1_api_proto protoreflect.Fi
 
 const file_project_planton_provider_aws_awsecscluster_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"7project/planton/provider/aws/awsecscluster/v1/api.proto\x12-project.planton.provider.aws.awsecscluster.v1\x1a\x1bbuf/validate/validate.proto\x1a8project/planton/provider/aws/awsecscluster/v1/spec.proto\x1aAproject/planton/provider/aws/awsecscluster/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\x88\x03\n" +
+	"7project/planton/provider/aws/awsecscluster/v1/api.proto\x12-project.planton.provider.aws.awsecscluster.v1\x1a\x1bbuf/validate/validate.proto\x1a8project/planton/provider/aws/awsecscluster/v1/spec.proto\x1aAproject/planton/provider/aws/awsecscluster/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\x8a\x03\n" +
 	"\rAwsEcsCluster\x12B\n" +
 	"\vapi_version\x18\x01 \x01(\tB!\xbaH\x1er\x1c\n" +
 	"\x1aaws.project-planton.org/v1R\n" +
 	"apiVersion\x12(\n" +
 	"\x04kind\x18\x02 \x01(\tB\x14\xbaH\x11r\x0f\n" +
-	"\rAwsEcsClusterR\x04kind\x12O\n" +
-	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12\\\n" +
+	"\rAwsEcsClusterR\x04kind\x12Q\n" +
+	"\bmetadata\x18\x03 \x01(\v2-.project.planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12\\\n" +
 	"\x04spec\x18\x04 \x01(\v2@.project.planton.provider.aws.awsecscluster.v1.AwsEcsClusterSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12Z\n" +
 	"\x06status\x18\x05 \x01(\v2B.project.planton.provider.aws.awsecscluster.v1.AwsEcsClusterStatusR\x06status\"y\n" +
 	"\x13AwsEcsClusterStatus\x12b\n" +
@@ -185,14 +185,14 @@ func file_project_planton_provider_aws_awsecscluster_v1_api_proto_rawDescGZIP() 
 
 var file_project_planton_provider_aws_awsecscluster_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_aws_awsecscluster_v1_api_proto_goTypes = []any{
-	(*AwsEcsCluster)(nil),              // 0: project.planton.provider.aws.awsecscluster.v1.AwsEcsCluster
-	(*AwsEcsClusterStatus)(nil),        // 1: project.planton.provider.aws.awsecscluster.v1.AwsEcsClusterStatus
-	(*shared.ApiResourceMetadata)(nil), // 2: project.planton.shared.ApiResourceMetadata
-	(*AwsEcsClusterSpec)(nil),          // 3: project.planton.provider.aws.awsecscluster.v1.AwsEcsClusterSpec
-	(*AwsEcsClusterStackOutputs)(nil),  // 4: project.planton.provider.aws.awsecscluster.v1.AwsEcsClusterStackOutputs
+	(*AwsEcsCluster)(nil),                // 0: project.planton.provider.aws.awsecscluster.v1.AwsEcsCluster
+	(*AwsEcsClusterStatus)(nil),          // 1: project.planton.provider.aws.awsecscluster.v1.AwsEcsClusterStatus
+	(*shared.CloudResourceMetadata)(nil), // 2: project.planton.shared.CloudResourceMetadata
+	(*AwsEcsClusterSpec)(nil),            // 3: project.planton.provider.aws.awsecscluster.v1.AwsEcsClusterSpec
+	(*AwsEcsClusterStackOutputs)(nil),    // 4: project.planton.provider.aws.awsecscluster.v1.AwsEcsClusterStackOutputs
 }
 var file_project_planton_provider_aws_awsecscluster_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.aws.awsecscluster.v1.AwsEcsCluster.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	2, // 0: project.planton.provider.aws.awsecscluster.v1.AwsEcsCluster.metadata:type_name -> project.planton.shared.CloudResourceMetadata
 	3, // 1: project.planton.provider.aws.awsecscluster.v1.AwsEcsCluster.spec:type_name -> project.planton.provider.aws.awsecscluster.v1.AwsEcsClusterSpec
 	1, // 2: project.planton.provider.aws.awsecscluster.v1.AwsEcsCluster.status:type_name -> project.planton.provider.aws.awsecscluster.v1.AwsEcsClusterStatus
 	4, // 3: project.planton.provider.aws.awsecscluster.v1.AwsEcsClusterStatus.outputs:type_name -> project.planton.provider.aws.awsecscluster.v1.AwsEcsClusterStackOutputs

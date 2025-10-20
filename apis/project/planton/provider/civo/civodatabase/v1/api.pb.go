@@ -31,7 +31,7 @@ type CivoDatabase struct {
 	// resource-kind
 	Kind string `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
 	// metadata
-	Metadata *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Metadata *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// spec
 	Spec *CivoDatabaseSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status
@@ -84,7 +84,7 @@ func (x *CivoDatabase) GetKind() string {
 	return ""
 }
 
-func (x *CivoDatabase) GetMetadata() *shared.ApiResourceMetadata {
+func (x *CivoDatabase) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
@@ -157,14 +157,14 @@ var File_project_planton_provider_civo_civodatabase_v1_api_proto protoreflect.Fi
 
 const file_project_planton_provider_civo_civodatabase_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"7project/planton/provider/civo/civodatabase/v1/api.proto\x12-project.planton.provider.civo.civodatabase.v1\x1a\x1bbuf/validate/validate.proto\x1a8project/planton/provider/civo/civodatabase/v1/spec.proto\x1aAproject/planton/provider/civo/civodatabase/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\x85\x03\n" +
+	"7project/planton/provider/civo/civodatabase/v1/api.proto\x12-project.planton.provider.civo.civodatabase.v1\x1a\x1bbuf/validate/validate.proto\x1a8project/planton/provider/civo/civodatabase/v1/spec.proto\x1aAproject/planton/provider/civo/civodatabase/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\x87\x03\n" +
 	"\fCivoDatabase\x12C\n" +
 	"\vapi_version\x18\x01 \x01(\tB\"\xbaH\x1fr\x1d\n" +
 	"\x1bcivo.project-planton.org/v1R\n" +
 	"apiVersion\x12'\n" +
 	"\x04kind\x18\x02 \x01(\tB\x13\xbaH\x10r\x0e\n" +
-	"\fCivoDatabaseR\x04kind\x12O\n" +
-	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12[\n" +
+	"\fCivoDatabaseR\x04kind\x12Q\n" +
+	"\bmetadata\x18\x03 \x01(\v2-.project.planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12[\n" +
 	"\x04spec\x18\x04 \x01(\v2?.project.planton.provider.civo.civodatabase.v1.CivoDatabaseSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12Y\n" +
 	"\x06status\x18\x05 \x01(\v2A.project.planton.provider.civo.civodatabase.v1.CivoDatabaseStatusR\x06status\"w\n" +
 	"\x12CivoDatabaseStatus\x12a\n" +
@@ -185,14 +185,14 @@ func file_project_planton_provider_civo_civodatabase_v1_api_proto_rawDescGZIP() 
 
 var file_project_planton_provider_civo_civodatabase_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_civo_civodatabase_v1_api_proto_goTypes = []any{
-	(*CivoDatabase)(nil),               // 0: project.planton.provider.civo.civodatabase.v1.CivoDatabase
-	(*CivoDatabaseStatus)(nil),         // 1: project.planton.provider.civo.civodatabase.v1.CivoDatabaseStatus
-	(*shared.ApiResourceMetadata)(nil), // 2: project.planton.shared.ApiResourceMetadata
-	(*CivoDatabaseSpec)(nil),           // 3: project.planton.provider.civo.civodatabase.v1.CivoDatabaseSpec
-	(*CivoDatabaseStackOutputs)(nil),   // 4: project.planton.provider.civo.civodatabase.v1.CivoDatabaseStackOutputs
+	(*CivoDatabase)(nil),                 // 0: project.planton.provider.civo.civodatabase.v1.CivoDatabase
+	(*CivoDatabaseStatus)(nil),           // 1: project.planton.provider.civo.civodatabase.v1.CivoDatabaseStatus
+	(*shared.CloudResourceMetadata)(nil), // 2: project.planton.shared.CloudResourceMetadata
+	(*CivoDatabaseSpec)(nil),             // 3: project.planton.provider.civo.civodatabase.v1.CivoDatabaseSpec
+	(*CivoDatabaseStackOutputs)(nil),     // 4: project.planton.provider.civo.civodatabase.v1.CivoDatabaseStackOutputs
 }
 var file_project_planton_provider_civo_civodatabase_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.civo.civodatabase.v1.CivoDatabase.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	2, // 0: project.planton.provider.civo.civodatabase.v1.CivoDatabase.metadata:type_name -> project.planton.shared.CloudResourceMetadata
 	3, // 1: project.planton.provider.civo.civodatabase.v1.CivoDatabase.spec:type_name -> project.planton.provider.civo.civodatabase.v1.CivoDatabaseSpec
 	1, // 2: project.planton.provider.civo.civodatabase.v1.CivoDatabase.status:type_name -> project.planton.provider.civo.civodatabase.v1.CivoDatabaseStatus
 	4, // 3: project.planton.provider.civo.civodatabase.v1.CivoDatabaseStatus.outputs:type_name -> project.planton.provider.civo.civodatabase.v1.CivoDatabaseStackOutputs

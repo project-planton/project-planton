@@ -31,7 +31,7 @@ type GcpGkeWorkloadIdentityBinding struct {
 	// resource-kind
 	Kind string `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
 	// metadata
-	Metadata *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Metadata *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// spec
 	Spec *GcpGkeWorkloadIdentityBindingSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status
@@ -84,7 +84,7 @@ func (x *GcpGkeWorkloadIdentityBinding) GetKind() string {
 	return ""
 }
 
-func (x *GcpGkeWorkloadIdentityBinding) GetMetadata() *shared.ApiResourceMetadata {
+func (x *GcpGkeWorkloadIdentityBinding) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
@@ -157,14 +157,14 @@ var File_project_planton_provider_gcp_gcpgkeworkloadidentitybinding_v1_api_proto
 
 const file_project_planton_provider_gcp_gcpgkeworkloadidentitybinding_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Gproject/planton/provider/gcp/gcpgkeworkloadidentitybinding/v1/api.proto\x12=project.planton.provider.gcp.gcpgkeworkloadidentitybinding.v1\x1a\x1bbuf/validate/validate.proto\x1aHproject/planton/provider/gcp/gcpgkeworkloadidentitybinding/v1/spec.proto\x1aQproject/planton/provider/gcp/gcpgkeworkloadidentitybinding/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xe8\x03\n" +
+	"Gproject/planton/provider/gcp/gcpgkeworkloadidentitybinding/v1/api.proto\x12=project.planton.provider.gcp.gcpgkeworkloadidentitybinding.v1\x1a\x1bbuf/validate/validate.proto\x1aHproject/planton/provider/gcp/gcpgkeworkloadidentitybinding/v1/spec.proto\x1aQproject/planton/provider/gcp/gcpgkeworkloadidentitybinding/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xea\x03\n" +
 	"\x1dGcpGkeWorkloadIdentityBinding\x12B\n" +
 	"\vapi_version\x18\x01 \x01(\tB!\xbaH\x1er\x1c\n" +
 	"\x1agcp.project-planton.org/v1R\n" +
 	"apiVersion\x128\n" +
 	"\x04kind\x18\x02 \x01(\tB$\xbaH!r\x1f\n" +
-	"\x1dGcpGkeWorkloadIdentityBindingR\x04kind\x12O\n" +
-	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12|\n" +
+	"\x1dGcpGkeWorkloadIdentityBindingR\x04kind\x12Q\n" +
+	"\bmetadata\x18\x03 \x01(\v2-.project.planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12|\n" +
 	"\x04spec\x18\x04 \x01(\v2`.project.planton.provider.gcp.gcpgkeworkloadidentitybinding.v1.GcpGkeWorkloadIdentityBindingSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12z\n" +
 	"\x06status\x18\x05 \x01(\v2b.project.planton.provider.gcp.gcpgkeworkloadidentitybinding.v1.GcpGkeWorkloadIdentityBindingStatusR\x06status\"\xaa\x01\n" +
 	"#GcpGkeWorkloadIdentityBindingStatus\x12\x82\x01\n" +
@@ -187,12 +187,12 @@ var file_project_planton_provider_gcp_gcpgkeworkloadidentitybinding_v1_api_proto
 var file_project_planton_provider_gcp_gcpgkeworkloadidentitybinding_v1_api_proto_goTypes = []any{
 	(*GcpGkeWorkloadIdentityBinding)(nil),             // 0: project.planton.provider.gcp.gcpgkeworkloadidentitybinding.v1.GcpGkeWorkloadIdentityBinding
 	(*GcpGkeWorkloadIdentityBindingStatus)(nil),       // 1: project.planton.provider.gcp.gcpgkeworkloadidentitybinding.v1.GcpGkeWorkloadIdentityBindingStatus
-	(*shared.ApiResourceMetadata)(nil),                // 2: project.planton.shared.ApiResourceMetadata
+	(*shared.CloudResourceMetadata)(nil),              // 2: project.planton.shared.CloudResourceMetadata
 	(*GcpGkeWorkloadIdentityBindingSpec)(nil),         // 3: project.planton.provider.gcp.gcpgkeworkloadidentitybinding.v1.GcpGkeWorkloadIdentityBindingSpec
 	(*GcpGkeWorkloadIdentityBindingStackOutputs)(nil), // 4: project.planton.provider.gcp.gcpgkeworkloadidentitybinding.v1.GcpGkeWorkloadIdentityBindingStackOutputs
 }
 var file_project_planton_provider_gcp_gcpgkeworkloadidentitybinding_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.gcp.gcpgkeworkloadidentitybinding.v1.GcpGkeWorkloadIdentityBinding.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	2, // 0: project.planton.provider.gcp.gcpgkeworkloadidentitybinding.v1.GcpGkeWorkloadIdentityBinding.metadata:type_name -> project.planton.shared.CloudResourceMetadata
 	3, // 1: project.planton.provider.gcp.gcpgkeworkloadidentitybinding.v1.GcpGkeWorkloadIdentityBinding.spec:type_name -> project.planton.provider.gcp.gcpgkeworkloadidentitybinding.v1.GcpGkeWorkloadIdentityBindingSpec
 	1, // 2: project.planton.provider.gcp.gcpgkeworkloadidentitybinding.v1.GcpGkeWorkloadIdentityBinding.status:type_name -> project.planton.provider.gcp.gcpgkeworkloadidentitybinding.v1.GcpGkeWorkloadIdentityBindingStatus
 	4, // 3: project.planton.provider.gcp.gcpgkeworkloadidentitybinding.v1.GcpGkeWorkloadIdentityBindingStatus.outputs:type_name -> project.planton.provider.gcp.gcpgkeworkloadidentitybinding.v1.GcpGkeWorkloadIdentityBindingStackOutputs

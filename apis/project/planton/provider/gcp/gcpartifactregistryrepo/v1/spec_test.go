@@ -23,7 +23,7 @@ var _ = ginkgo.Describe("GcpArtifactRegistryRepo Custom Validation Tests", func(
 				input := &GcpArtifactRegistryRepo{
 					ApiVersion: "gcp.project-planton.org/v1",
 					Kind:       "GcpArtifactRegistryRepo",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-artifact-registry",
 					},
 					Spec: &GcpArtifactRegistryRepoSpec{
@@ -40,7 +40,7 @@ var _ = ginkgo.Describe("GcpArtifactRegistryRepo Custom Validation Tests", func(
 				input := &GcpArtifactRegistryRepo{
 					ApiVersion: "gcp.project-planton.org/v1",
 					Kind:       "GcpArtifactRegistryRepo",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-repo",
 					},
 					Spec: &GcpArtifactRegistryRepoSpec{

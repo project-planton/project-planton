@@ -31,7 +31,7 @@ type KafkaKubernetes struct {
 	// resource-kind
 	Kind string `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
 	// metadata
-	Metadata *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Metadata *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// spec
 	Spec *KafkaKubernetesSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status
@@ -84,7 +84,7 @@ func (x *KafkaKubernetes) GetKind() string {
 	return ""
 }
 
-func (x *KafkaKubernetes) GetMetadata() *shared.ApiResourceMetadata {
+func (x *KafkaKubernetes) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
@@ -155,14 +155,14 @@ var File_project_planton_provider_kubernetes_workload_kafkakubernetes_v1_api_pro
 
 const file_project_planton_provider_kubernetes_workload_kafkakubernetes_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Iproject/planton/provider/kubernetes/workload/kafkakubernetes/v1/api.proto\x12?project.planton.provider.kubernetes.workload.kafkakubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1aJproject/planton/provider/kubernetes/workload/kafkakubernetes/v1/spec.proto\x1aSproject/planton/provider/kubernetes/workload/kafkakubernetes/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xbb\x03\n" +
+	"Iproject/planton/provider/kubernetes/workload/kafkakubernetes/v1/api.proto\x12?project.planton.provider.kubernetes.workload.kafkakubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1aJproject/planton/provider/kubernetes/workload/kafkakubernetes/v1/spec.proto\x1aSproject/planton/provider/kubernetes/workload/kafkakubernetes/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xbd\x03\n" +
 	"\x0fKafkaKubernetes\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!kubernetes.project-planton.org/v1R\n" +
 	"apiVersion\x12*\n" +
 	"\x04kind\x18\x02 \x01(\tB\x16\xbaH\x13r\x11\n" +
-	"\x0fKafkaKubernetesR\x04kind\x12O\n" +
-	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12p\n" +
+	"\x0fKafkaKubernetesR\x04kind\x12Q\n" +
+	"\bmetadata\x18\x03 \x01(\v2-.project.planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12p\n" +
 	"\x04spec\x18\x04 \x01(\v2T.project.planton.provider.kubernetes.workload.kafkakubernetes.v1.KafkaKubernetesSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12n\n" +
 	"\x06status\x18\x05 \x01(\v2V.project.planton.provider.kubernetes.workload.kafkakubernetes.v1.KafkaKubernetesStatusR\x06status\"\x8f\x01\n" +
 	"\x15KafkaKubernetesStatus\x12v\n" +
@@ -183,14 +183,14 @@ func file_project_planton_provider_kubernetes_workload_kafkakubernetes_v1_api_pr
 
 var file_project_planton_provider_kubernetes_workload_kafkakubernetes_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_kubernetes_workload_kafkakubernetes_v1_api_proto_goTypes = []any{
-	(*KafkaKubernetes)(nil),             // 0: project.planton.provider.kubernetes.workload.kafkakubernetes.v1.KafkaKubernetes
-	(*KafkaKubernetesStatus)(nil),       // 1: project.planton.provider.kubernetes.workload.kafkakubernetes.v1.KafkaKubernetesStatus
-	(*shared.ApiResourceMetadata)(nil),  // 2: project.planton.shared.ApiResourceMetadata
-	(*KafkaKubernetesSpec)(nil),         // 3: project.planton.provider.kubernetes.workload.kafkakubernetes.v1.KafkaKubernetesSpec
-	(*KafkaKubernetesStackOutputs)(nil), // 4: project.planton.provider.kubernetes.workload.kafkakubernetes.v1.KafkaKubernetesStackOutputs
+	(*KafkaKubernetes)(nil),              // 0: project.planton.provider.kubernetes.workload.kafkakubernetes.v1.KafkaKubernetes
+	(*KafkaKubernetesStatus)(nil),        // 1: project.planton.provider.kubernetes.workload.kafkakubernetes.v1.KafkaKubernetesStatus
+	(*shared.CloudResourceMetadata)(nil), // 2: project.planton.shared.CloudResourceMetadata
+	(*KafkaKubernetesSpec)(nil),          // 3: project.planton.provider.kubernetes.workload.kafkakubernetes.v1.KafkaKubernetesSpec
+	(*KafkaKubernetesStackOutputs)(nil),  // 4: project.planton.provider.kubernetes.workload.kafkakubernetes.v1.KafkaKubernetesStackOutputs
 }
 var file_project_planton_provider_kubernetes_workload_kafkakubernetes_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.kubernetes.workload.kafkakubernetes.v1.KafkaKubernetes.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	2, // 0: project.planton.provider.kubernetes.workload.kafkakubernetes.v1.KafkaKubernetes.metadata:type_name -> project.planton.shared.CloudResourceMetadata
 	3, // 1: project.planton.provider.kubernetes.workload.kafkakubernetes.v1.KafkaKubernetes.spec:type_name -> project.planton.provider.kubernetes.workload.kafkakubernetes.v1.KafkaKubernetesSpec
 	1, // 2: project.planton.provider.kubernetes.workload.kafkakubernetes.v1.KafkaKubernetes.status:type_name -> project.planton.provider.kubernetes.workload.kafkakubernetes.v1.KafkaKubernetesStatus
 	4, // 3: project.planton.provider.kubernetes.workload.kafkakubernetes.v1.KafkaKubernetesStatus.outputs:type_name -> project.planton.provider.kubernetes.workload.kafkakubernetes.v1.KafkaKubernetesStackOutputs

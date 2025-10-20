@@ -22,7 +22,7 @@ var _ = ginkgo.Describe("PostgresKubernetes Custom Validation Tests", func() {
 		input = &PostgresKubernetes{
 			ApiVersion: "kubernetes.project-planton.org/v1",
 			Kind:       "PostgresKubernetes",
-			Metadata: &shared.ApiResourceMetadata{
+			Metadata: &shared.CloudResourceMetadata{
 				Name: "test-pg",
 			},
 			Spec: &PostgresKubernetesSpec{

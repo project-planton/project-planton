@@ -23,7 +23,7 @@ var _ = ginkgo.Describe("CloudflareDnsZoneSpec Custom Validation Tests", func() 
 				input := &CloudflareDnsZone{
 					ApiVersion: "cloudflare.project-planton.org/v1",
 					Kind:       "CloudflareDnsZone",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-dns-zone",
 					},
 					Spec: &CloudflareDnsZoneSpec{

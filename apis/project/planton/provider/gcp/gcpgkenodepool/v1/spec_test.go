@@ -26,7 +26,7 @@ var _ = ginkgo.Describe("GcpGkeNodePoolSpec Custom Validation Tests", func() {
 				input := &GcpGkeNodePool{
 					ApiVersion: "gcp.project-planton.org/v1",
 					Kind:       "GcpGkeNodePool",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-node-pool",
 					},
 					Spec: &GcpGkeNodePoolSpec{

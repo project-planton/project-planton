@@ -23,7 +23,7 @@ var _ = ginkgo.Describe("AzureDnsZoneSpec Custom Validation Tests", func() {
 				input := &AzureDnsZone{
 					ApiVersion: "azure.project-planton.org/v1",
 					Kind:       "AzureDnsZone",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-dns-zone",
 					},
 					Spec: &AzureDnsZoneSpec{

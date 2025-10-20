@@ -31,7 +31,7 @@ type CivoLoadBalancer struct {
 	// resource-kind
 	Kind string `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
 	// metadata
-	Metadata *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Metadata *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// spec
 	Spec *CivoLoadBalancerSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status
@@ -84,7 +84,7 @@ func (x *CivoLoadBalancer) GetKind() string {
 	return ""
 }
 
-func (x *CivoLoadBalancer) GetMetadata() *shared.ApiResourceMetadata {
+func (x *CivoLoadBalancer) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
@@ -157,14 +157,14 @@ var File_project_planton_provider_civo_civoloadbalancer_v1_api_proto protoreflec
 
 const file_project_planton_provider_civo_civoloadbalancer_v1_api_proto_rawDesc = "" +
 	"\n" +
-	";project/planton/provider/civo/civoloadbalancer/v1/api.proto\x121project.planton.provider.civo.civoloadbalancer.v1\x1a\x1bbuf/validate/validate.proto\x1a<project/planton/provider/civo/civoloadbalancer/v1/spec.proto\x1aEproject/planton/provider/civo/civoloadbalancer/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\x9d\x03\n" +
+	";project/planton/provider/civo/civoloadbalancer/v1/api.proto\x121project.planton.provider.civo.civoloadbalancer.v1\x1a\x1bbuf/validate/validate.proto\x1a<project/planton/provider/civo/civoloadbalancer/v1/spec.proto\x1aEproject/planton/provider/civo/civoloadbalancer/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\x9f\x03\n" +
 	"\x10CivoLoadBalancer\x12C\n" +
 	"\vapi_version\x18\x01 \x01(\tB\"\xbaH\x1fr\x1d\n" +
 	"\x1bcivo.project-planton.org/v1R\n" +
 	"apiVersion\x12+\n" +
 	"\x04kind\x18\x02 \x01(\tB\x17\xbaH\x14r\x12\n" +
-	"\x10CivoLoadBalancerR\x04kind\x12O\n" +
-	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12c\n" +
+	"\x10CivoLoadBalancerR\x04kind\x12Q\n" +
+	"\bmetadata\x18\x03 \x01(\v2-.project.planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12c\n" +
 	"\x04spec\x18\x04 \x01(\v2G.project.planton.provider.civo.civoloadbalancer.v1.CivoLoadBalancerSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12a\n" +
 	"\x06status\x18\x05 \x01(\v2I.project.planton.provider.civo.civoloadbalancer.v1.CivoLoadBalancerStatusR\x06status\"\x83\x01\n" +
 	"\x16CivoLoadBalancerStatus\x12i\n" +
@@ -187,12 +187,12 @@ var file_project_planton_provider_civo_civoloadbalancer_v1_api_proto_msgTypes = 
 var file_project_planton_provider_civo_civoloadbalancer_v1_api_proto_goTypes = []any{
 	(*CivoLoadBalancer)(nil),             // 0: project.planton.provider.civo.civoloadbalancer.v1.CivoLoadBalancer
 	(*CivoLoadBalancerStatus)(nil),       // 1: project.planton.provider.civo.civoloadbalancer.v1.CivoLoadBalancerStatus
-	(*shared.ApiResourceMetadata)(nil),   // 2: project.planton.shared.ApiResourceMetadata
+	(*shared.CloudResourceMetadata)(nil), // 2: project.planton.shared.CloudResourceMetadata
 	(*CivoLoadBalancerSpec)(nil),         // 3: project.planton.provider.civo.civoloadbalancer.v1.CivoLoadBalancerSpec
 	(*CivoLoadBalancerStackOutputs)(nil), // 4: project.planton.provider.civo.civoloadbalancer.v1.CivoLoadBalancerStackOutputs
 }
 var file_project_planton_provider_civo_civoloadbalancer_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.civo.civoloadbalancer.v1.CivoLoadBalancer.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	2, // 0: project.planton.provider.civo.civoloadbalancer.v1.CivoLoadBalancer.metadata:type_name -> project.planton.shared.CloudResourceMetadata
 	3, // 1: project.planton.provider.civo.civoloadbalancer.v1.CivoLoadBalancer.spec:type_name -> project.planton.provider.civo.civoloadbalancer.v1.CivoLoadBalancerSpec
 	1, // 2: project.planton.provider.civo.civoloadbalancer.v1.CivoLoadBalancer.status:type_name -> project.planton.provider.civo.civoloadbalancer.v1.CivoLoadBalancerStatus
 	4, // 3: project.planton.provider.civo.civoloadbalancer.v1.CivoLoadBalancerStatus.outputs:type_name -> project.planton.provider.civo.civoloadbalancer.v1.CivoLoadBalancerStackOutputs

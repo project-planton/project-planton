@@ -23,7 +23,7 @@ var _ = ginkgo.Describe("GcpGkeAddonBundleSpec Custom Validation Tests", func() 
 				input := &GcpGkeAddonBundle{
 					ApiVersion: "gcp.project-planton.org/v1",
 					Kind:       "GcpGkeAddonBundle",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-gke-addon-bundle",
 					},
 					Spec: &GcpGkeAddonBundleSpec{

@@ -31,7 +31,7 @@ type AwsRdsInstance struct {
 	// resource-kind for this resource, must be "AwsRdsInstance".
 	Kind string `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
 	// metadata captures identifying information (name, org, version, etc.).
-	Metadata *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Metadata *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// spec holds the core configuration data defining the DB instance.
 	Spec *AwsRdsInstanceSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status holds runtime or post-deployment information.
@@ -84,7 +84,7 @@ func (x *AwsRdsInstance) GetKind() string {
 	return ""
 }
 
-func (x *AwsRdsInstance) GetMetadata() *shared.ApiResourceMetadata {
+func (x *AwsRdsInstance) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
@@ -155,14 +155,14 @@ var File_project_planton_provider_aws_awsrdsinstance_v1_api_proto protoreflect.F
 
 const file_project_planton_provider_aws_awsrdsinstance_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"8project/planton/provider/aws/awsrdsinstance/v1/api.proto\x12.project.planton.provider.aws.awsrdsinstance.v1\x1a\x1bbuf/validate/validate.proto\x1a9project/planton/provider/aws/awsrdsinstance/v1/spec.proto\x1aBproject/planton/provider/aws/awsrdsinstance/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\x8e\x03\n" +
+	"8project/planton/provider/aws/awsrdsinstance/v1/api.proto\x12.project.planton.provider.aws.awsrdsinstance.v1\x1a\x1bbuf/validate/validate.proto\x1a9project/planton/provider/aws/awsrdsinstance/v1/spec.proto\x1aBproject/planton/provider/aws/awsrdsinstance/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\x90\x03\n" +
 	"\x0eAwsRdsInstance\x12B\n" +
 	"\vapi_version\x18\x01 \x01(\tB!\xbaH\x1er\x1c\n" +
 	"\x1aaws.project-planton.org/v1R\n" +
 	"apiVersion\x12)\n" +
 	"\x04kind\x18\x02 \x01(\tB\x15\xbaH\x12r\x10\n" +
-	"\x0eAwsRdsInstanceR\x04kind\x12O\n" +
-	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12^\n" +
+	"\x0eAwsRdsInstanceR\x04kind\x12Q\n" +
+	"\bmetadata\x18\x03 \x01(\v2-.project.planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12^\n" +
 	"\x04spec\x18\x04 \x01(\v2B.project.planton.provider.aws.awsrdsinstance.v1.AwsRdsInstanceSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12\\\n" +
 	"\x06status\x18\x05 \x01(\v2D.project.planton.provider.aws.awsrdsinstance.v1.AwsRdsInstanceStatusR\x06status\"|\n" +
 	"\x14AwsRdsInstanceStatus\x12d\n" +
@@ -183,14 +183,14 @@ func file_project_planton_provider_aws_awsrdsinstance_v1_api_proto_rawDescGZIP()
 
 var file_project_planton_provider_aws_awsrdsinstance_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_aws_awsrdsinstance_v1_api_proto_goTypes = []any{
-	(*AwsRdsInstance)(nil),             // 0: project.planton.provider.aws.awsrdsinstance.v1.AwsRdsInstance
-	(*AwsRdsInstanceStatus)(nil),       // 1: project.planton.provider.aws.awsrdsinstance.v1.AwsRdsInstanceStatus
-	(*shared.ApiResourceMetadata)(nil), // 2: project.planton.shared.ApiResourceMetadata
-	(*AwsRdsInstanceSpec)(nil),         // 3: project.planton.provider.aws.awsrdsinstance.v1.AwsRdsInstanceSpec
-	(*AwsRdsInstanceStackOutputs)(nil), // 4: project.planton.provider.aws.awsrdsinstance.v1.AwsRdsInstanceStackOutputs
+	(*AwsRdsInstance)(nil),               // 0: project.planton.provider.aws.awsrdsinstance.v1.AwsRdsInstance
+	(*AwsRdsInstanceStatus)(nil),         // 1: project.planton.provider.aws.awsrdsinstance.v1.AwsRdsInstanceStatus
+	(*shared.CloudResourceMetadata)(nil), // 2: project.planton.shared.CloudResourceMetadata
+	(*AwsRdsInstanceSpec)(nil),           // 3: project.planton.provider.aws.awsrdsinstance.v1.AwsRdsInstanceSpec
+	(*AwsRdsInstanceStackOutputs)(nil),   // 4: project.planton.provider.aws.awsrdsinstance.v1.AwsRdsInstanceStackOutputs
 }
 var file_project_planton_provider_aws_awsrdsinstance_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.aws.awsrdsinstance.v1.AwsRdsInstance.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	2, // 0: project.planton.provider.aws.awsrdsinstance.v1.AwsRdsInstance.metadata:type_name -> project.planton.shared.CloudResourceMetadata
 	3, // 1: project.planton.provider.aws.awsrdsinstance.v1.AwsRdsInstance.spec:type_name -> project.planton.provider.aws.awsrdsinstance.v1.AwsRdsInstanceSpec
 	1, // 2: project.planton.provider.aws.awsrdsinstance.v1.AwsRdsInstance.status:type_name -> project.planton.provider.aws.awsrdsinstance.v1.AwsRdsInstanceStatus
 	4, // 3: project.planton.provider.aws.awsrdsinstance.v1.AwsRdsInstanceStatus.outputs:type_name -> project.planton.provider.aws.awsrdsinstance.v1.AwsRdsInstanceStackOutputs

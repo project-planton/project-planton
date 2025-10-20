@@ -21,7 +21,7 @@ var _ = ginkgo.Describe("NatsKubernetes Custom Validation Tests", func() {
 		input = &NatsKubernetes{
 			ApiVersion: "kubernetes.project-planton.org/v1",
 			Kind:       "NatsKubernetes",
-			Metadata: &shared.ApiResourceMetadata{
+			Metadata: &shared.CloudResourceMetadata{
 				Name: "nats-demo",
 			},
 			Spec: &NatsKubernetesSpec{

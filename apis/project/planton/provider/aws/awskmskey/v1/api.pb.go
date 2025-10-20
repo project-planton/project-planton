@@ -33,7 +33,7 @@ type AwsKmsKey struct {
 	Kind string `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
 	// metadata captures identifying information (name, org, version, etc.)
 	// and must pass standard validations for resource naming.
-	Metadata *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Metadata *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// spec holds the core configuration data defining how the ECS service is deployed.
 	Spec *AwsKmsKeySpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status holds runtime or post-deployment information.
@@ -86,7 +86,7 @@ func (x *AwsKmsKey) GetKind() string {
 	return ""
 }
 
-func (x *AwsKmsKey) GetMetadata() *shared.ApiResourceMetadata {
+func (x *AwsKmsKey) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
@@ -157,14 +157,14 @@ var File_project_planton_provider_aws_awskmskey_v1_api_proto protoreflect.FileDe
 
 const file_project_planton_provider_aws_awskmskey_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"3project/planton/provider/aws/awskmskey/v1/api.proto\x12)project.planton.provider.aws.awskmskey.v1\x1a\x1bbuf/validate/validate.proto\x1a4project/planton/provider/aws/awskmskey/v1/spec.proto\x1a=project/planton/provider/aws/awskmskey/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xf0\x02\n" +
+	"3project/planton/provider/aws/awskmskey/v1/api.proto\x12)project.planton.provider.aws.awskmskey.v1\x1a\x1bbuf/validate/validate.proto\x1a4project/planton/provider/aws/awskmskey/v1/spec.proto\x1a=project/planton/provider/aws/awskmskey/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xf2\x02\n" +
 	"\tAwsKmsKey\x12B\n" +
 	"\vapi_version\x18\x01 \x01(\tB!\xbaH\x1er\x1c\n" +
 	"\x1aaws.project-planton.org/v1R\n" +
 	"apiVersion\x12$\n" +
 	"\x04kind\x18\x02 \x01(\tB\x10\xbaH\rr\v\n" +
-	"\tAwsKmsKeyR\x04kind\x12O\n" +
-	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12T\n" +
+	"\tAwsKmsKeyR\x04kind\x12Q\n" +
+	"\bmetadata\x18\x03 \x01(\v2-.project.planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12T\n" +
 	"\x04spec\x18\x04 \x01(\v28.project.planton.provider.aws.awskmskey.v1.AwsKmsKeySpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12R\n" +
 	"\x06status\x18\x05 \x01(\v2:.project.planton.provider.aws.awskmskey.v1.AwsKmsKeyStatusR\x06status\"m\n" +
 	"\x0fAwsKmsKeyStatus\x12Z\n" +
@@ -185,14 +185,14 @@ func file_project_planton_provider_aws_awskmskey_v1_api_proto_rawDescGZIP() []by
 
 var file_project_planton_provider_aws_awskmskey_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_aws_awskmskey_v1_api_proto_goTypes = []any{
-	(*AwsKmsKey)(nil),                  // 0: project.planton.provider.aws.awskmskey.v1.AwsKmsKey
-	(*AwsKmsKeyStatus)(nil),            // 1: project.planton.provider.aws.awskmskey.v1.AwsKmsKeyStatus
-	(*shared.ApiResourceMetadata)(nil), // 2: project.planton.shared.ApiResourceMetadata
-	(*AwsKmsKeySpec)(nil),              // 3: project.planton.provider.aws.awskmskey.v1.AwsKmsKeySpec
-	(*AwsKmsKeyStackOutputs)(nil),      // 4: project.planton.provider.aws.awskmskey.v1.AwsKmsKeyStackOutputs
+	(*AwsKmsKey)(nil),                    // 0: project.planton.provider.aws.awskmskey.v1.AwsKmsKey
+	(*AwsKmsKeyStatus)(nil),              // 1: project.planton.provider.aws.awskmskey.v1.AwsKmsKeyStatus
+	(*shared.CloudResourceMetadata)(nil), // 2: project.planton.shared.CloudResourceMetadata
+	(*AwsKmsKeySpec)(nil),                // 3: project.planton.provider.aws.awskmskey.v1.AwsKmsKeySpec
+	(*AwsKmsKeyStackOutputs)(nil),        // 4: project.planton.provider.aws.awskmskey.v1.AwsKmsKeyStackOutputs
 }
 var file_project_planton_provider_aws_awskmskey_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.aws.awskmskey.v1.AwsKmsKey.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	2, // 0: project.planton.provider.aws.awskmskey.v1.AwsKmsKey.metadata:type_name -> project.planton.shared.CloudResourceMetadata
 	3, // 1: project.planton.provider.aws.awskmskey.v1.AwsKmsKey.spec:type_name -> project.planton.provider.aws.awskmskey.v1.AwsKmsKeySpec
 	1, // 2: project.planton.provider.aws.awskmskey.v1.AwsKmsKey.status:type_name -> project.planton.provider.aws.awskmskey.v1.AwsKmsKeyStatus
 	4, // 3: project.planton.provider.aws.awskmskey.v1.AwsKmsKeyStatus.outputs:type_name -> project.planton.provider.aws.awskmskey.v1.AwsKmsKeyStackOutputs

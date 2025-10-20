@@ -24,7 +24,7 @@ var _ = ginkgo.Describe("DigitalOceanBucketSpec Custom Validation Tests", func()
 				input := &DigitalOceanBucket{
 					ApiVersion: "digital-ocean.project-planton.org/v1",
 					Kind:       "DigitalOceanBucket",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-bucket",
 					},
 					Spec: &DigitalOceanBucketSpec{

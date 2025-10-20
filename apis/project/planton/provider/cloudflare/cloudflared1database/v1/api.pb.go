@@ -31,7 +31,7 @@ type CloudflareD1Database struct {
 	// resource-kind
 	Kind string `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
 	// metadata
-	Metadata *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Metadata *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// spec
 	Spec *CloudflareD1DatabaseSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status
@@ -84,7 +84,7 @@ func (x *CloudflareD1Database) GetKind() string {
 	return ""
 }
 
-func (x *CloudflareD1Database) GetMetadata() *shared.ApiResourceMetadata {
+func (x *CloudflareD1Database) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
@@ -157,14 +157,14 @@ var File_project_planton_provider_cloudflare_cloudflared1database_v1_api_proto p
 
 const file_project_planton_provider_cloudflare_cloudflared1database_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Eproject/planton/provider/cloudflare/cloudflared1database/v1/api.proto\x12;project.planton.provider.cloudflare.cloudflared1database.v1\x1a\x1bbuf/validate/validate.proto\x1aFproject/planton/provider/cloudflare/cloudflared1database/v1/spec.proto\x1aOproject/planton/provider/cloudflare/cloudflared1database/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xc7\x03\n" +
+	"Eproject/planton/provider/cloudflare/cloudflared1database/v1/api.proto\x12;project.planton.provider.cloudflare.cloudflared1database.v1\x1a\x1bbuf/validate/validate.proto\x1aFproject/planton/provider/cloudflare/cloudflared1database/v1/spec.proto\x1aOproject/planton/provider/cloudflare/cloudflared1database/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xc9\x03\n" +
 	"\x14CloudflareD1Database\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!cloudflare.project-planton.org/v1R\n" +
 	"apiVersion\x12/\n" +
 	"\x04kind\x18\x02 \x01(\tB\x1b\xbaH\x18r\x16\n" +
-	"\x14CloudflareD1DatabaseR\x04kind\x12O\n" +
-	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12q\n" +
+	"\x14CloudflareD1DatabaseR\x04kind\x12Q\n" +
+	"\bmetadata\x18\x03 \x01(\v2-.project.planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12q\n" +
 	"\x04spec\x18\x04 \x01(\v2U.project.planton.provider.cloudflare.cloudflared1database.v1.CloudflareD1DatabaseSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12o\n" +
 	"\x06status\x18\x05 \x01(\v2W.project.planton.provider.cloudflare.cloudflared1database.v1.CloudflareD1DatabaseStatusR\x06status\"\x95\x01\n" +
 	"\x1aCloudflareD1DatabaseStatus\x12w\n" +
@@ -187,12 +187,12 @@ var file_project_planton_provider_cloudflare_cloudflared1database_v1_api_proto_m
 var file_project_planton_provider_cloudflare_cloudflared1database_v1_api_proto_goTypes = []any{
 	(*CloudflareD1Database)(nil),             // 0: project.planton.provider.cloudflare.cloudflared1database.v1.CloudflareD1Database
 	(*CloudflareD1DatabaseStatus)(nil),       // 1: project.planton.provider.cloudflare.cloudflared1database.v1.CloudflareD1DatabaseStatus
-	(*shared.ApiResourceMetadata)(nil),       // 2: project.planton.shared.ApiResourceMetadata
+	(*shared.CloudResourceMetadata)(nil),     // 2: project.planton.shared.CloudResourceMetadata
 	(*CloudflareD1DatabaseSpec)(nil),         // 3: project.planton.provider.cloudflare.cloudflared1database.v1.CloudflareD1DatabaseSpec
 	(*CloudflareD1DatabaseStackOutputs)(nil), // 4: project.planton.provider.cloudflare.cloudflared1database.v1.CloudflareD1DatabaseStackOutputs
 }
 var file_project_planton_provider_cloudflare_cloudflared1database_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.cloudflare.cloudflared1database.v1.CloudflareD1Database.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	2, // 0: project.planton.provider.cloudflare.cloudflared1database.v1.CloudflareD1Database.metadata:type_name -> project.planton.shared.CloudResourceMetadata
 	3, // 1: project.planton.provider.cloudflare.cloudflared1database.v1.CloudflareD1Database.spec:type_name -> project.planton.provider.cloudflare.cloudflared1database.v1.CloudflareD1DatabaseSpec
 	1, // 2: project.planton.provider.cloudflare.cloudflared1database.v1.CloudflareD1Database.status:type_name -> project.planton.provider.cloudflare.cloudflared1database.v1.CloudflareD1DatabaseStatus
 	4, // 3: project.planton.provider.cloudflare.cloudflared1database.v1.CloudflareD1DatabaseStatus.outputs:type_name -> project.planton.provider.cloudflare.cloudflared1database.v1.CloudflareD1DatabaseStackOutputs

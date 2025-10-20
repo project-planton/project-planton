@@ -31,7 +31,7 @@ type ArgocdKubernetes struct {
 	// resource-kind
 	Kind string `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
 	// metadata
-	Metadata *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Metadata *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// spec
 	Spec *ArgocdKubernetesSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status
@@ -84,7 +84,7 @@ func (x *ArgocdKubernetes) GetKind() string {
 	return ""
 }
 
-func (x *ArgocdKubernetes) GetMetadata() *shared.ApiResourceMetadata {
+func (x *ArgocdKubernetes) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
@@ -156,14 +156,14 @@ var File_project_planton_provider_kubernetes_workload_argocdkubernetes_v1_api_pr
 
 const file_project_planton_provider_kubernetes_workload_argocdkubernetes_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Jproject/planton/provider/kubernetes/workload/argocdkubernetes/v1/api.proto\x12@project.planton.provider.kubernetes.workload.argocdkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1aKproject/planton/provider/kubernetes/workload/argocdkubernetes/v1/spec.proto\x1aTproject/planton/provider/kubernetes/workload/argocdkubernetes/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xc1\x03\n" +
+	"Jproject/planton/provider/kubernetes/workload/argocdkubernetes/v1/api.proto\x12@project.planton.provider.kubernetes.workload.argocdkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1aKproject/planton/provider/kubernetes/workload/argocdkubernetes/v1/spec.proto\x1aTproject/planton/provider/kubernetes/workload/argocdkubernetes/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xc3\x03\n" +
 	"\x10ArgocdKubernetes\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!kubernetes.project-planton.org/v1R\n" +
 	"apiVersion\x12+\n" +
 	"\x04kind\x18\x02 \x01(\tB\x17\xbaH\x14r\x12\n" +
-	"\x10ArgocdKubernetesR\x04kind\x12O\n" +
-	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12r\n" +
+	"\x10ArgocdKubernetesR\x04kind\x12Q\n" +
+	"\bmetadata\x18\x03 \x01(\v2-.project.planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12r\n" +
 	"\x04spec\x18\x04 \x01(\v2V.project.planton.provider.kubernetes.workload.argocdkubernetes.v1.ArgocdKubernetesSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12p\n" +
 	"\x06status\x18\x05 \x01(\v2X.project.planton.provider.kubernetes.workload.argocdkubernetes.v1.ArgocdKubernetesStatusR\x06status\"\x92\x01\n" +
 	"\x16ArgocdKubernetesStatus\x12x\n" +
@@ -186,12 +186,12 @@ var file_project_planton_provider_kubernetes_workload_argocdkubernetes_v1_api_pr
 var file_project_planton_provider_kubernetes_workload_argocdkubernetes_v1_api_proto_goTypes = []any{
 	(*ArgocdKubernetes)(nil),             // 0: project.planton.provider.kubernetes.workload.argocdkubernetes.v1.ArgocdKubernetes
 	(*ArgocdKubernetesStatus)(nil),       // 1: project.planton.provider.kubernetes.workload.argocdkubernetes.v1.ArgocdKubernetesStatus
-	(*shared.ApiResourceMetadata)(nil),   // 2: project.planton.shared.ApiResourceMetadata
+	(*shared.CloudResourceMetadata)(nil), // 2: project.planton.shared.CloudResourceMetadata
 	(*ArgocdKubernetesSpec)(nil),         // 3: project.planton.provider.kubernetes.workload.argocdkubernetes.v1.ArgocdKubernetesSpec
 	(*ArgocdKubernetesStackOutputs)(nil), // 4: project.planton.provider.kubernetes.workload.argocdkubernetes.v1.ArgocdKubernetesStackOutputs
 }
 var file_project_planton_provider_kubernetes_workload_argocdkubernetes_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.kubernetes.workload.argocdkubernetes.v1.ArgocdKubernetes.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	2, // 0: project.planton.provider.kubernetes.workload.argocdkubernetes.v1.ArgocdKubernetes.metadata:type_name -> project.planton.shared.CloudResourceMetadata
 	3, // 1: project.planton.provider.kubernetes.workload.argocdkubernetes.v1.ArgocdKubernetes.spec:type_name -> project.planton.provider.kubernetes.workload.argocdkubernetes.v1.ArgocdKubernetesSpec
 	1, // 2: project.planton.provider.kubernetes.workload.argocdkubernetes.v1.ArgocdKubernetes.status:type_name -> project.planton.provider.kubernetes.workload.argocdkubernetes.v1.ArgocdKubernetesStatus
 	4, // 3: project.planton.provider.kubernetes.workload.argocdkubernetes.v1.ArgocdKubernetesStatus.outputs:type_name -> project.planton.provider.kubernetes.workload.argocdkubernetes.v1.ArgocdKubernetesStackOutputs

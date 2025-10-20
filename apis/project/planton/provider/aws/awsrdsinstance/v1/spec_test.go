@@ -24,7 +24,7 @@ var _ = ginkgo.Describe("AwsRdsInstanceSpec Custom Validation Tests", func() {
 				input := &AwsRdsInstance{
 					ApiVersion: "aws.project-planton.org/v1",
 					Kind:       "AwsRdsInstance",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-rds-instance",
 					},
 					Spec: &AwsRdsInstanceSpec{

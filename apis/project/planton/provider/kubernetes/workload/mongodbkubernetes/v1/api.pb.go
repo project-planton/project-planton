@@ -31,7 +31,7 @@ type MongodbKubernetes struct {
 	// resource-kind
 	Kind string `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
 	// metadata
-	Metadata *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Metadata *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// spec
 	Spec *MongodbKubernetesSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status
@@ -84,7 +84,7 @@ func (x *MongodbKubernetes) GetKind() string {
 	return ""
 }
 
-func (x *MongodbKubernetes) GetMetadata() *shared.ApiResourceMetadata {
+func (x *MongodbKubernetes) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
@@ -155,14 +155,14 @@ var File_project_planton_provider_kubernetes_workload_mongodbkubernetes_v1_api_p
 
 const file_project_planton_provider_kubernetes_workload_mongodbkubernetes_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Kproject/planton/provider/kubernetes/workload/mongodbkubernetes/v1/api.proto\x12Aproject.planton.provider.kubernetes.workload.mongodbkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1aLproject/planton/provider/kubernetes/workload/mongodbkubernetes/v1/spec.proto\x1aUproject/planton/provider/kubernetes/workload/mongodbkubernetes/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xc7\x03\n" +
+	"Kproject/planton/provider/kubernetes/workload/mongodbkubernetes/v1/api.proto\x12Aproject.planton.provider.kubernetes.workload.mongodbkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1aLproject/planton/provider/kubernetes/workload/mongodbkubernetes/v1/spec.proto\x1aUproject/planton/provider/kubernetes/workload/mongodbkubernetes/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xc9\x03\n" +
 	"\x11MongodbKubernetes\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!kubernetes.project-planton.org/v1R\n" +
 	"apiVersion\x12,\n" +
 	"\x04kind\x18\x02 \x01(\tB\x18\xbaH\x15r\x13\n" +
-	"\x11MongodbKubernetesR\x04kind\x12O\n" +
-	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12t\n" +
+	"\x11MongodbKubernetesR\x04kind\x12Q\n" +
+	"\bmetadata\x18\x03 \x01(\v2-.project.planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12t\n" +
 	"\x04spec\x18\x04 \x01(\v2X.project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetesSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12r\n" +
 	"\x06status\x18\x05 \x01(\v2Z.project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetesStatusR\x06status\"\x95\x01\n" +
 	"\x17MongodbKubernetesStatus\x12z\n" +
@@ -185,12 +185,12 @@ var file_project_planton_provider_kubernetes_workload_mongodbkubernetes_v1_api_p
 var file_project_planton_provider_kubernetes_workload_mongodbkubernetes_v1_api_proto_goTypes = []any{
 	(*MongodbKubernetes)(nil),             // 0: project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetes
 	(*MongodbKubernetesStatus)(nil),       // 1: project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetesStatus
-	(*shared.ApiResourceMetadata)(nil),    // 2: project.planton.shared.ApiResourceMetadata
+	(*shared.CloudResourceMetadata)(nil),  // 2: project.planton.shared.CloudResourceMetadata
 	(*MongodbKubernetesSpec)(nil),         // 3: project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetesSpec
 	(*MongodbKubernetesStackOutputs)(nil), // 4: project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetesStackOutputs
 }
 var file_project_planton_provider_kubernetes_workload_mongodbkubernetes_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetes.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	2, // 0: project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetes.metadata:type_name -> project.planton.shared.CloudResourceMetadata
 	3, // 1: project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetes.spec:type_name -> project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetesSpec
 	1, // 2: project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetes.status:type_name -> project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetesStatus
 	4, // 3: project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetesStatus.outputs:type_name -> project.planton.provider.kubernetes.workload.mongodbkubernetes.v1.MongodbKubernetesStackOutputs

@@ -25,7 +25,7 @@ var _ = ginkgo.Describe("AzureNatGatewaySpec Custom Validation Tests", func() {
 				input := &AzureNatGateway{
 					ApiVersion: "azure.project-planton.org/v1",
 					Kind:       "AzureNatGateway",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-nat-gateway",
 					},
 					Spec: &AzureNatGatewaySpec{

@@ -25,7 +25,7 @@ var _ = ginkgo.Describe("GcpRouterNatSpec Custom Validation Tests", func() {
 				input := &GcpRouterNat{
 					ApiVersion: "gcp.project-planton.org/v1",
 					Kind:       "GcpRouterNat",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-router-nat",
 					},
 					Spec: &GcpRouterNatSpec{

@@ -25,7 +25,7 @@ var _ = ginkgo.Describe("AwsLambdaSpec Custom Validation Tests", func() {
 				input := &AwsLambda{
 					ApiVersion: "aws.project-planton.org/v1",
 					Kind:       "AwsLambda",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-lambda-function",
 					},
 					Spec: &AwsLambdaSpec{

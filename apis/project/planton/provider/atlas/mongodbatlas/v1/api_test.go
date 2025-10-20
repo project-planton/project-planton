@@ -24,7 +24,7 @@ var _ = ginkgo.Describe("KubernetesProviderConfig Custom Validation Tests", func
 				input = &MongodbAtlas{
 					ApiVersion: "atlas.project-planton.org/v1",
 					Kind:       "MongodbAtlas",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-atlas-resource",
 					},
 					Spec: &MongodbAtlasSpec{

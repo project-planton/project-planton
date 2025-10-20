@@ -18,7 +18,7 @@ message AwsIamUser {
 
   // metadata captures identifying information (name, org, version, etc.)
   // and must pass standard validations for resource naming.
-  project.planton.shared.ApiResourceMetadata metadata = 3 [(buf.validate.field).required = true];
+  project.planton.shared.CloudResourceMetadata metadata = 3 [(buf.validate.field).required = true];
 
   // spec holds the core configuration data defining how the ECS service is deployed.
   AwsIamUserSpec spec = 4 [(buf.validate.field).required = true];

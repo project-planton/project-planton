@@ -25,7 +25,7 @@ var _ = ginkgo.Describe("CloudflareWorkerSpec Custom Validation Tests", func() {
 				input := &CloudflareWorker{
 					ApiVersion: "cloudflare.project-planton.org/v1",
 					Kind:       "CloudflareWorker",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-worker",
 					},
 					Spec: &CloudflareWorkerSpec{
@@ -45,7 +45,7 @@ var _ = ginkgo.Describe("CloudflareWorkerSpec Custom Validation Tests", func() {
 				input := &CloudflareWorker{
 					ApiVersion: "cloudflare.project-planton.org/v1",
 					Kind:       "CloudflareWorker",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-worker-env",
 					},
 					Spec: &CloudflareWorkerSpec{
@@ -69,7 +69,7 @@ var _ = ginkgo.Describe("CloudflareWorkerSpec Custom Validation Tests", func() {
 				input := &CloudflareWorker{
 					ApiVersion: "cloudflare.project-planton.org/v1",
 					Kind:       "CloudflareWorker",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-worker-route",
 					},
 					Spec: &CloudflareWorkerSpec{
@@ -95,7 +95,7 @@ var _ = ginkgo.Describe("CloudflareWorkerSpec Custom Validation Tests", func() {
 				input := &CloudflareWorker{
 					ApiVersion: "cloudflare.project-planton.org/v1",
 					Kind:       "CloudflareWorker",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-no-account",
 					},
 					Spec: &CloudflareWorkerSpec{
@@ -114,7 +114,7 @@ var _ = ginkgo.Describe("CloudflareWorkerSpec Custom Validation Tests", func() {
 				input := &CloudflareWorker{
 					ApiVersion: "cloudflare.project-planton.org/v1",
 					Kind:       "CloudflareWorker",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-short-account",
 					},
 					Spec: &CloudflareWorkerSpec{
@@ -134,7 +134,7 @@ var _ = ginkgo.Describe("CloudflareWorkerSpec Custom Validation Tests", func() {
 				input := &CloudflareWorker{
 					ApiVersion: "cloudflare.project-planton.org/v1",
 					Kind:       "CloudflareWorker",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-invalid-hex",
 					},
 					Spec: &CloudflareWorkerSpec{
@@ -157,7 +157,7 @@ var _ = ginkgo.Describe("CloudflareWorkerSpec Custom Validation Tests", func() {
 				input := &CloudflareWorker{
 					ApiVersion: "cloudflare.project-planton.org/v1",
 					Kind:       "CloudflareWorker",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-no-source",
 					},
 					Spec: &CloudflareWorkerSpec{
@@ -177,7 +177,7 @@ var _ = ginkgo.Describe("CloudflareWorkerSpec Custom Validation Tests", func() {
 				input := &CloudflareWorker{
 					ApiVersion: "cloudflare.project-planton.org/v1",
 					Kind:       "CloudflareWorker",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-invalid-date",
 					},
 					Spec: &CloudflareWorkerSpec{

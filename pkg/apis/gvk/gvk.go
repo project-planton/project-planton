@@ -5,7 +5,7 @@ import (
 )
 
 type GVK struct {
-	ApiVersion string                      `yaml:"apiVersion"`
-	Kind       string                      `yaml:"kind"`
-	Metadata   *shared.ApiResourceMetadata `yaml:"metadata"`
+	ApiVersion string                        `yaml:"apiVersion"`
+	Kind       string                        `yaml:"kind"`
+	Metadata   *shared.CloudResourceMetadata `yaml:"metadata"`
 }

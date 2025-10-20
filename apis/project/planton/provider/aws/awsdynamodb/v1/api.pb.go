@@ -25,12 +25,12 @@ const (
 
 // AwsDynamodb is the Kubernetes-style resource envelope for a DynamoDB table.
 type AwsDynamodb struct {
-	state         protoimpl.MessageState      `protogen:"open.v1"`
-	ApiVersion    string                      `protobuf:"bytes,1,opt,name=api_version,json=apiVersion,proto3" json:"api_version,omitempty"`
-	Kind          string                      `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
-	Metadata      *shared.ApiResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
-	Spec          *AwsDynamodbSpec            `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
-	Status        *AwsDynamodbStatus          `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
+	state         protoimpl.MessageState        `protogen:"open.v1"`
+	ApiVersion    string                        `protobuf:"bytes,1,opt,name=api_version,json=apiVersion,proto3" json:"api_version,omitempty"`
+	Kind          string                        `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
+	Metadata      *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Spec          *AwsDynamodbSpec              `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
+	Status        *AwsDynamodbStatus            `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -79,7 +79,7 @@ func (x *AwsDynamodb) GetKind() string {
 	return ""
 }
 
-func (x *AwsDynamodb) GetMetadata() *shared.ApiResourceMetadata {
+func (x *AwsDynamodb) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
@@ -150,14 +150,14 @@ var File_project_planton_provider_aws_awsdynamodb_v1_api_proto protoreflect.File
 
 const file_project_planton_provider_aws_awsdynamodb_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"5project/planton/provider/aws/awsdynamodb/v1/api.proto\x12+project.planton.provider.aws.awsdynamodb.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/provider/aws/awsdynamodb/v1/spec.proto\x1a?project/planton/provider/aws/awsdynamodb/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xfc\x02\n" +
+	"5project/planton/provider/aws/awsdynamodb/v1/api.proto\x12+project.planton.provider.aws.awsdynamodb.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/provider/aws/awsdynamodb/v1/spec.proto\x1a?project/planton/provider/aws/awsdynamodb/v1/stack_outputs.proto\x1a%project/planton/shared/metadata.proto\"\xfe\x02\n" +
 	"\vAwsDynamodb\x12B\n" +
 	"\vapi_version\x18\x01 \x01(\tB!\xbaH\x1er\x1c\n" +
 	"\x1aaws.project-planton.org/v1R\n" +
 	"apiVersion\x12&\n" +
 	"\x04kind\x18\x02 \x01(\tB\x12\xbaH\x0fr\r\n" +
-	"\vAwsDynamodbR\x04kind\x12O\n" +
-	"\bmetadata\x18\x03 \x01(\v2+.project.planton.shared.ApiResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12X\n" +
+	"\vAwsDynamodbR\x04kind\x12Q\n" +
+	"\bmetadata\x18\x03 \x01(\v2-.project.planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12X\n" +
 	"\x04spec\x18\x04 \x01(\v2<.project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12V\n" +
 	"\x06status\x18\x05 \x01(\v2>.project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbStatusR\x06status\"s\n" +
 	"\x11AwsDynamodbStatus\x12^\n" +
@@ -178,14 +178,14 @@ func file_project_planton_provider_aws_awsdynamodb_v1_api_proto_rawDescGZIP() []
 
 var file_project_planton_provider_aws_awsdynamodb_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_project_planton_provider_aws_awsdynamodb_v1_api_proto_goTypes = []any{
-	(*AwsDynamodb)(nil),                // 0: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodb
-	(*AwsDynamodbStatus)(nil),          // 1: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbStatus
-	(*shared.ApiResourceMetadata)(nil), // 2: project.planton.shared.ApiResourceMetadata
-	(*AwsDynamodbSpec)(nil),            // 3: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec
-	(*AwsDynamodbStackOutputs)(nil),    // 4: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbStackOutputs
+	(*AwsDynamodb)(nil),                  // 0: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodb
+	(*AwsDynamodbStatus)(nil),            // 1: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbStatus
+	(*shared.CloudResourceMetadata)(nil), // 2: project.planton.shared.CloudResourceMetadata
+	(*AwsDynamodbSpec)(nil),              // 3: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec
+	(*AwsDynamodbStackOutputs)(nil),      // 4: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbStackOutputs
 }
 var file_project_planton_provider_aws_awsdynamodb_v1_api_proto_depIdxs = []int32{
-	2, // 0: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodb.metadata:type_name -> project.planton.shared.ApiResourceMetadata
+	2, // 0: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodb.metadata:type_name -> project.planton.shared.CloudResourceMetadata
 	3, // 1: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodb.spec:type_name -> project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbSpec
 	1, // 2: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodb.status:type_name -> project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbStatus
 	4, // 3: project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbStatus.outputs:type_name -> project.planton.provider.aws.awsdynamodb.v1.AwsDynamodbStackOutputs

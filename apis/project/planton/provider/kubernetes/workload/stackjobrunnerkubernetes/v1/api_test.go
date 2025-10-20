@@ -21,7 +21,7 @@ var _ = ginkgo.Describe("StackJobRunnerKubernetes Custom Validation Tests", func
 		input = &StackJobRunnerKubernetes{
 			ApiVersion: "kubernetes.project-planton.org/v1",
 			Kind:       "StackJobRunnerKubernetes",
-			Metadata: &shared.ApiResourceMetadata{
+			Metadata: &shared.CloudResourceMetadata{
 				Name: "test-stack-job-runner",
 			},
 			Spec: &StackJobRunnerKubernetesSpec{},

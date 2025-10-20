@@ -23,7 +23,7 @@ var _ = ginkgo.Describe("GcpCloudFunctionSpec Custom Validation Tests", func() {
 				input := &GcpCloudFunction{
 					ApiVersion: "gcp.project-planton.org/v1",
 					Kind:       "GcpCloudFunction",
-					Metadata: &shared.ApiResourceMetadata{
+					Metadata: &shared.CloudResourceMetadata{
 						Name: "test-cloud-function",
 					},
 					Spec: &GcpCloudFunctionSpec{
