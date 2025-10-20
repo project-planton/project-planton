@@ -3,8 +3,8 @@ package module
 import (
 	"strconv"
 
-	gcpsubnetworkv1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpsubnetwork/v1"
 	gcpprovider "github.com/project-planton/project-planton/apis/project/planton/provider/gcp"
+	gcpsubnetworkv1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpsubnetwork/v1"
 	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/gcp/gcplabelkeys"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"

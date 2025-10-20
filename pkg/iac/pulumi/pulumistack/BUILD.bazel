@@ -18,7 +18,7 @@ go_library(
         "//pkg/iac/pulumi/backendconfig",
         "//pkg/iac/pulumi/pulumimodule",
         "//pkg/iac/stackinput",
-        "//pkg/iac/stackinput/stackinputcredentials",
+        "//pkg/iac/stackinput/stackinputproviderconfig",
         "@com_github_pkg_errors//:errors",
     ],
 )

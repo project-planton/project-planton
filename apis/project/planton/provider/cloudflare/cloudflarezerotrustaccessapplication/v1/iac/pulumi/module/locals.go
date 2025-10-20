@@ -1,8 +1,8 @@
 package module
 
 import (
-	cloudflarezerotrustaccessapplicationv1 "github.com/project-planton/project-planton/apis/project/planton/provider/cloudflare/cloudflarezerotrustaccessapplication/v1"
 	cloudflareprovider "github.com/project-planton/project-planton/apis/project/planton/provider/cloudflare"
+	cloudflarezerotrustaccessapplicationv1 "github.com/project-planton/project-planton/apis/project/planton/provider/cloudflare/cloudflarezerotrustaccessapplication/v1"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 

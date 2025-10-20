@@ -3,8 +3,8 @@ package module
 import (
 	"strconv"
 
-	civovpcv1 "github.com/project-planton/project-planton/apis/project/planton/provider/civo/civovpc/v1"
 	civoprovider "github.com/project-planton/project-planton/apis/project/planton/provider/civo"
+	civovpcv1 "github.com/project-planton/project-planton/apis/project/planton/provider/civo/civovpc/v1"
 	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/civo/civolabelkeys"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"

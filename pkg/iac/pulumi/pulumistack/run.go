@@ -12,14 +12,14 @@ import (
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/backendconfig"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput"
-	"github.com/project-planton/project-planton/pkg/iac/stackinput/stackinputcredentials"
+	"github.com/project-planton/project-planton/pkg/iac/stackinput/stackinputproviderconfig"
 )
 
 func Run(moduleDir, stackFqdn, targetManifestPath string, pulumiOperation pulumi.PulumiOperationType,
 	isUpdatePreview bool, isAutoApprove bool, valueOverrides map[string]string, showDiff bool,
-	credentialOptions ...stackinputcredentials.StackInputCredentialOption) error {
-	opts := stackinputcredentials.StackInputCredentialOptions{}
-	for _, opt := range credentialOptions {
+	providerConfigOptions ...stackinputproviderconfig.StackInputProviderConfigOption) error {
+	opts := stackinputproviderconfig.StackInputProviderConfigOptions{}
+	for _, opt := range providerConfigOptions {
 		opt(&opts)
 	}
 

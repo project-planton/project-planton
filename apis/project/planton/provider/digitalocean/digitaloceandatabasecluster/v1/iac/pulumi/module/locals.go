@@ -3,8 +3,8 @@ package module
 import (
 	"strconv"
 
-	digitaloceandatabaseclusterv1 "github.com/project-planton/project-planton/apis/project/planton/provider/digitalocean/digitaloceandatabasecluster/v1"
 	digitaloceanprovider "github.com/project-planton/project-planton/apis/project/planton/provider/digitalocean"
+	digitaloceandatabaseclusterv1 "github.com/project-planton/project-planton/apis/project/planton/provider/digitalocean/digitaloceandatabasecluster/v1"
 	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/digitalocean/digitaloceanlabelkeys"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"

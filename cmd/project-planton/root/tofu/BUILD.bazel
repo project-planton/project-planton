@@ -22,7 +22,7 @@ go_library(
         "//internal/manifest",
         "//pkg/crkreflect",
         "//pkg/iac/stackinput",
-        "//pkg/iac/stackinput/stackinputcredentials",
+        "//pkg/iac/stackinput/stackinputproviderconfig",
         "//pkg/iac/tofu/tfbackend",
         "//pkg/iac/tofu/tfvars",
         "//pkg/iac/tofu/tofumodule",

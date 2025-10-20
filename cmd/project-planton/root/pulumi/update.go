@@ -10,7 +10,7 @@ import (
 	climanifest "github.com/project-planton/project-planton/internal/cli/manifest"
 	"github.com/project-planton/project-planton/internal/manifest"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumistack"
-	"github.com/project-planton/project-planton/pkg/iac/stackinput/stackinputcredentials"
+	"github.com/project-planton/project-planton/pkg/iac/stackinput/stackinputproviderconfig"
 	"github.com/spf13/cobra"
 )
 
@@ -79,7 +79,7 @@ func updateHandler(cmd *cobra.Command, args []string) {
 	cliprint.PrintSuccess("Manifest validated")
 
 	cliprint.PrintStep("Preparing Pulumi execution...")
-	credentialOptions, err := stackinputcredentials.BuildWithFlags(cmd.Flags())
+	providerConfigOptions, err := stackinputproviderconfig.BuildWithFlags(cmd.Flags())
 	if err != nil {
 		cliprint.PrintError(fmt.Sprintf("Failed to build credential options: %v", err))
 		os.Exit(1)
@@ -91,7 +91,7 @@ func updateHandler(cmd *cobra.Command, args []string) {
 	cliprint.PrintHandoff("Pulumi")
 
 	err = pulumistack.Run(moduleDir, stackFqdn, targetManifestPath,
-		pulumi.PulumiOperationType_update, false, true, valueOverrides, showDiff, credentialOptions...)
+		pulumi.PulumiOperationType_update, false, true, valueOverrides, showDiff, providerConfigOptions...)
 	if err != nil {
 		cliprint.PrintPulumiFailure()
 		os.Exit(1)

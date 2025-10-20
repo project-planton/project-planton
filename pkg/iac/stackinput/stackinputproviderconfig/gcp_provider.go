@@ -1,4 +1,4 @@
-package stackinputcredentials
+package stackinputproviderconfig
 
 import (
 	"github.com/pkg/errors"
@@ -9,22 +9,22 @@ import (
 
 const (
 	GcpProviderConfigKey  = "gcpProviderConfig"
-	gcpProviderConfigYaml = "gcp-credential.yaml"
+	gcpProviderConfigYaml = "gcp-provider-config.yaml"
 )
 
 func AddGcpProviderConfig(stackInputContentMap map[string]interface{},
-	credentialOptions StackInputCredentialOptions) (map[string]interface{}, error) {
-	if credentialOptions.GcpProviderConfig != "" {
-		credentialContent, err := os.ReadFile(credentialOptions.GcpProviderConfig)
+	providerConfigOptions StackInputProviderConfigOptions) (map[string]interface{}, error) {
+	if providerConfigOptions.GcpProviderConfig != "" {
+		providerConfigContent, err := os.ReadFile(providerConfigOptions.GcpProviderConfig)
 		if err != nil {
-			return nil, errors.Wrapf(err, "failed to read file: %s", credentialOptions.GcpProviderConfig)
+			return nil, errors.Wrapf(err, "failed to read file: %s", providerConfigOptions.GcpProviderConfig)
 		}
-		var credentialContentMap map[string]interface{}
-		err = yaml.Unmarshal(credentialContent, &credentialContentMap)
+		var providerConfigContentMap map[string]interface{}
+		err = yaml.Unmarshal(providerConfigContent, &providerConfigContentMap)
 		if err != nil {
 			return nil, errors.Wrapf(err, "failed to unmarshal target manifest file")
 		}
-		stackInputContentMap[GcpProviderConfigKey] = credentialContentMap
+		stackInputContentMap[GcpProviderConfigKey] = providerConfigContentMap
 	}
 	return stackInputContentMap, nil
 }

@@ -32,14 +32,13 @@ func init() {
 	Pulumi.PersistentFlags().Bool(string(flag.Force), false, "Force removal of stack even if resources exist (use with delete/rm command)")
 	Pulumi.PersistentFlags().Bool(string(flag.Diff), false, "Show detailed resource diffs")
 
-	Pulumi.PersistentFlags().String(string(flag.AwsCredential), "", "path of the aws-credential file")
-	Pulumi.PersistentFlags().String(string(flag.AzureCredential), "", "path of the azure-credential file")
-	Pulumi.PersistentFlags().String(string(flag.ConfluentCredential), "", "path of the confluent-credential file")
-	Pulumi.PersistentFlags().String(string(flag.DockerCredential), "", "path of the docker-credential file")
+	Pulumi.PersistentFlags().String(string(flag.AwsProviderConfig), "", "path of the aws-credential file")
+	Pulumi.PersistentFlags().String(string(flag.AzureProviderConfig), "", "path of the azure-credential file")
+	Pulumi.PersistentFlags().String(string(flag.ConfluentProviderConfig), "", "path of the confluent-credential file")
 	Pulumi.PersistentFlags().String(string(flag.GcpProviderConfig), "", "path of the gcp-credential file")
-	Pulumi.PersistentFlags().String(string(flag.KubernetesCluster), "", "path of the yaml file containing the kubernetes cluster configuration")
-	Pulumi.PersistentFlags().String(string(flag.MongodbAtlasCredential), "", "path of the mongodb-atlas-credential file")
-	Pulumi.PersistentFlags().String(string(flag.SnowflakeCredential), "", "path of the snowflake-credential file")
+	Pulumi.PersistentFlags().String(string(flag.KubernetesProviderConfig), "", "path of the yaml file containing the kubernetes cluster configuration")
+	Pulumi.PersistentFlags().String(string(flag.AtlasProviderConfig), "", "path of the mongodb-atlas-credential file")
+	Pulumi.PersistentFlags().String(string(flag.SnowflakeProviderConfig), "", "path of the snowflake-credential file")
 
 	Pulumi.AddCommand(
 		pulumi.Init,

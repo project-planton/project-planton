@@ -7,7 +7,7 @@ import (
 	"github.com/project-planton/project-planton/internal/manifest"
 	"github.com/project-planton/project-planton/pkg/crkreflect"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput"
-	"github.com/project-planton/project-planton/pkg/iac/stackinput/stackinputcredentials"
+	"github.com/project-planton/project-planton/pkg/iac/stackinput/stackinputproviderconfig"
 	"github.com/project-planton/project-planton/pkg/iac/tofu/tfbackend"
 	"github.com/project-planton/project-planton/pkg/iac/tofu/tofumodule"
 	log "github.com/sirupsen/logrus"
@@ -66,7 +66,7 @@ func initHandler(cmd *cobra.Command, args []string) {
 
 	backendType := tfbackend.BackendTypeFromString(backendTypeString)
 
-	credentialOptions := make([]stackinputcredentials.StackInputCredentialOption, 0)
+	providerConfigOptions := make([]stackinputproviderconfig.StackInputProviderConfigOption, 0)
 	targetManifestPath := inputDir + "/target.yaml"
 
 	if inputDir == "" {
@@ -74,7 +74,7 @@ func initHandler(cmd *cobra.Command, args []string) {
 		flag.HandleFlagErrAndValue(err, flag.Manifest, targetManifestPath)
 	}
 
-	credentialOptions, err = stackinputcredentials.BuildWithFlags(cmd.Flags())
+	providerConfigOptions, err = stackinputproviderconfig.BuildWithFlags(cmd.Flags())
 	if err != nil {
 		log.Fatalf("failed to build credentiaal options: %v", err)
 	}
@@ -95,8 +95,8 @@ func initHandler(cmd *cobra.Command, args []string) {
 	}
 
 	// Gather credential options (currently unused, but left for future usage)
-	opts := stackinputcredentials.StackInputCredentialOptions{}
-	for _, opt := range credentialOptions {
+	opts := stackinputproviderconfig.StackInputProviderConfigOptions{}
+	for _, opt := range providerConfigOptions {
 		opt(&opts)
 	}
 
@@ -110,7 +110,7 @@ func initHandler(cmd *cobra.Command, args []string) {
 		log.Fatalf("failed to get workspace directory")
 	}
 
-	credentialEnvVars, err := tofumodule.GetCredentialEnvVars(stackInputYaml, workspaceDir)
+	providerConfigEnvVars, err := tofumodule.GetProviderConfigEnvVars(stackInputYaml, workspaceDir)
 	if err != nil {
 		log.Fatalf("failed to get credential env vars %v", err)
 	}
@@ -118,7 +118,7 @@ func initHandler(cmd *cobra.Command, args []string) {
 	err = tofumodule.TofuInit(tofuModulePath, manifestObject,
 		backendType,
 		backendConfigList,
-		credentialEnvVars,
+		providerConfigEnvVars,
 		false, nil)
 	if err != nil {
 		log.Fatalf("failed to run tofu operation: %v", err)

@@ -27,14 +27,13 @@ func init() {
 	Tofu.PersistentFlags().String(string(flag.ModuleDir), pwd, "directory containing the terraform module")
 	Tofu.PersistentFlags().StringToString(string(flag.Set), map[string]string{}, "override resource manifest values using key=value pairs")
 
-	Tofu.PersistentFlags().String(string(flag.AwsCredential), "", "path of the aws-credential file")
-	Tofu.PersistentFlags().String(string(flag.AzureCredential), "", "path of the azure-credential file")
-	Tofu.PersistentFlags().String(string(flag.ConfluentCredential), "", "path of the confluent-credential file")
-	Tofu.PersistentFlags().String(string(flag.DockerCredential), "", "path of the docker-credential file")
+	Tofu.PersistentFlags().String(string(flag.AwsProviderConfig), "", "path of the aws-credential file")
+	Tofu.PersistentFlags().String(string(flag.AzureProviderConfig), "", "path of the azure-credential file")
+	Tofu.PersistentFlags().String(string(flag.ConfluentProviderConfig), "", "path of the confluent-credential file")
 	Tofu.PersistentFlags().String(string(flag.GcpProviderConfig), "", "path of the gcp-credential file")
-	Tofu.PersistentFlags().String(string(flag.KubernetesCluster), "", "path of the yaml file containing the kubernetes cluster configuration")
-	Tofu.PersistentFlags().String(string(flag.MongodbAtlasCredential), "", "path of the mongodb-atlas-credential file")
-	Tofu.PersistentFlags().String(string(flag.SnowflakeCredential), "", "path of the snowflake-credential file")
+	Tofu.PersistentFlags().String(string(flag.KubernetesProviderConfig), "", "path of the yaml file containing the kubernetes cluster configuration")
+	Tofu.PersistentFlags().String(string(flag.AtlasProviderConfig), "", "path of the mongodb-atlas-credential file")
+	Tofu.PersistentFlags().String(string(flag.SnowflakeProviderConfig), "", "path of the snowflake-credential file")
 
 	Tofu.AddCommand(
 		tofu.Apply,

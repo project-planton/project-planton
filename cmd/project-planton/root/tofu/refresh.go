@@ -9,7 +9,7 @@ import (
 	"github.com/project-planton/project-planton/internal/cli/flag"
 	climanifest "github.com/project-planton/project-planton/internal/cli/manifest"
 	"github.com/project-planton/project-planton/internal/manifest"
-	"github.com/project-planton/project-planton/pkg/iac/stackinput/stackinputcredentials"
+	"github.com/project-planton/project-planton/pkg/iac/stackinput/stackinputproviderconfig"
 	"github.com/project-planton/project-planton/pkg/iac/tofu/tofumodule"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -74,7 +74,7 @@ func refreshHandler(cmd *cobra.Command, args []string) {
 	cliprint.PrintSuccess("Manifest validated")
 
 	cliprint.PrintStep("Preparing OpenTofu execution...")
-	credentialOptions, err := stackinputcredentials.BuildWithFlags(cmd.Flags())
+	providerConfigOptions, err := stackinputproviderconfig.BuildWithFlags(cmd.Flags())
 	if err != nil {
 		log.Fatalf("failed to build credentiaal options: %v", err)
 	}
@@ -85,7 +85,7 @@ func refreshHandler(cmd *cobra.Command, args []string) {
 	err = tofumodule.RunCommand(moduleDir, targetManifestPath, terraform.TerraformOperationType_refresh, valueOverrides,
 		true,
 		false,
-		credentialOptions...)
+		providerConfigOptions...)
 	if err != nil {
 		log.Fatalf("failed to run tofu operation: %v", err)
 	}

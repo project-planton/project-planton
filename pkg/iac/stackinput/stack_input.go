@@ -2,7 +2,7 @@ package stackinput
 
 import (
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/pkg/iac/stackinput/stackinputcredentials"
+	"github.com/project-planton/project-planton/pkg/iac/stackinput/stackinputproviderconfig"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
 	"gopkg.in/yaml.v3"
@@ -11,7 +11,7 @@ import (
 // BuildStackInputYaml reads two YAML files, combines their contents,
 // and returns a new YAML string with "target" and all the credential keys.
 func BuildStackInputYaml(manifestObject proto.Message,
-	credentialOptions stackinputcredentials.StackInputCredentialOptions) (string, error) {
+	providerConfigOptions stackinputproviderconfig.StackInputProviderConfigOptions) (string, error) {
 
 	var targetContentMap map[string]interface{}
 	targetContent, err := protojson.Marshal(manifestObject)
@@ -28,7 +28,7 @@ func BuildStackInputYaml(manifestObject proto.Message,
 		"target": targetContentMap,
 	}
 
-	stackInputContentMap, err = addCredentials(stackInputContentMap, credentialOptions)
+	stackInputContentMap, err = addProviderConfigs(stackInputContentMap, providerConfigOptions)
 	if err != nil {
 		return "", errors.Wrapf(err, "failed to add credentials to stack-input yaml")
 	}

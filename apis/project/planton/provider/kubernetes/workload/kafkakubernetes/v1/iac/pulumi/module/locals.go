@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strconv"
 
+	kubernetes "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes"
 	kafkakubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/kafkakubernetes/v1"
-	kubernetes"github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes"
 	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/kuberneteslabelkeys"
 	"github.com/project-planton/project-planton/pkg/kubernetes/kuberneteslabels"

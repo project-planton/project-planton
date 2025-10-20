@@ -1,17 +1,17 @@
 load("@rules_go//go:def.bzl", "go_library")
 
 go_library(
-    name = "providercredentials",
+    name = "providerconfig",
     srcs = [
-        "aws_credential.go",
-        "azure_credential.go",
-        "confluent_credential.go",
-        "gcp_credential.go",
-        "kubernetes_credential.go",
-        "mongodb_atlas_credential.go",
-        "snowflake_credential.go",
+        "atlas_provider.go",
+        "aws_provider.go",
+        "azure_provider.go",
+        "confluent_provider.go",
+        "gcp_provider.go",
+        "kubernetes_provider.go",
+        "snowflake_provider.go",
     ],
-    importpath = "github.com/project-planton/project-planton/pkg/iac/tofu/tofumodule/providercredentials",
+    importpath = "github.com/project-planton/project-planton/pkg/iac/tofu/tofumodule/providerconfig",
     visibility = ["//visibility:public"],
     deps = [
         "//apis/project/planton/provider/atlas",
@@ -23,7 +23,7 @@ go_library(
         "//apis/project/planton/provider/snowflake",
         "//pkg/iac/pulumi/pulumimodule/provider/gcp/pulumigkekubernetesprovider",
         "//pkg/iac/stackinput",
-        "//pkg/iac/stackinput/stackinputcredentials",
+        "//pkg/iac/stackinput/stackinputproviderconfig",
         "@com_github_google_uuid//:uuid",
         "@com_github_pkg_errors//:errors",
     ],

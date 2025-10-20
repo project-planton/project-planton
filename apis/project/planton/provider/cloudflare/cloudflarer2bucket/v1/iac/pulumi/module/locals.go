@@ -1,8 +1,8 @@
 package module
 
 import (
-	cloudflarer2bucketv1 "github.com/project-planton/project-planton/apis/project/planton/provider/cloudflare/cloudflarer2bucket/v1"
 	cloudflareprovider "github.com/project-planton/project-planton/apis/project/planton/provider/cloudflare"
+	cloudflarer2bucketv1 "github.com/project-planton/project-planton/apis/project/planton/provider/cloudflare/cloudflarer2bucket/v1"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
