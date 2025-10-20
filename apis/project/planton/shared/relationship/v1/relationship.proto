@@ -15,6 +15,10 @@ message CloudResourceRelationship {
     depends_on = 1;
     // The resource runs on the related resource.
     runs_on = 2;
+    // The resource is managed by an operator/controller.
+    managed_by = 3;
+    // The resource consumes another resource.
+    uses = 4;
   }
   // Kind of the related resource.
   project.planton.shared.cloudresourcekind.CloudResourceKind kind = 1 [(buf.validate.field).required = true];

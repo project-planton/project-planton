@@ -33,6 +33,10 @@ const (
 	CloudResourceRelationship_depends_on CloudResourceRelationship_RelationshipType = 1
 	// The resource runs on the related resource.
 	CloudResourceRelationship_runs_on CloudResourceRelationship_RelationshipType = 2
+	// The resource is managed by an operator/controller.
+	CloudResourceRelationship_managed_by CloudResourceRelationship_RelationshipType = 3
+	// The resource consumes another resource.
+	CloudResourceRelationship_uses CloudResourceRelationship_RelationshipType = 4
 )
 
 // Enum value maps for CloudResourceRelationship_RelationshipType.
@@ -41,11 +45,15 @@ var (
 		0: "unspecified",
 		1: "depends_on",
 		2: "runs_on",
+		3: "managed_by",
+		4: "uses",
 	}
 	CloudResourceRelationship_RelationshipType_value = map[string]int32{
 		"unspecified": 0,
 		"depends_on":  1,
 		"runs_on":     2,
+		"managed_by":  3,
+		"uses":        4,
 	}
 )
 
@@ -162,18 +170,21 @@ var File_project_planton_shared_relationship_v1_relationship_proto protoreflect.
 
 const file_project_planton_shared_relationship_v1_relationship_proto_rawDesc = "" +
 	"\n" +
-	"9project/planton/shared/relationship/v1/relationship.proto\x12&project.planton.shared.relationship.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1aBproject/planton/shared/cloudresourcekind/cloud_resource_kind.proto\"\xea\x02\n" +
+	"9project/planton/shared/relationship/v1/relationship.proto\x12&project.planton.shared.relationship.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/descriptor.proto\x1aBproject/planton/shared/cloudresourcekind/cloud_resource_kind.proto\"\x84\x03\n" +
 	"\x19CloudResourceRelationship\x12W\n" +
 	"\x04kind\x18\x01 \x01(\x0e2;.project.planton.shared.cloudresourcekind.CloudResourceKindB\x06\xbaH\x03\xc8\x01\x01R\x04kind\x12\x10\n" +
 	"\x03env\x18\x02 \x01(\tR\x03env\x12\x1a\n" +
 	"\x04name\x18\x03 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\x12n\n" +
 	"\x04type\x18\x04 \x01(\x0e2R.project.planton.shared.relationship.v1.CloudResourceRelationship.RelationshipTypeB\x06\xbaH\x03\xc8\x01\x01R\x04type\x12\x14\n" +
-	"\x05group\x18\x05 \x01(\tR\x05group\"@\n" +
+	"\x05group\x18\x05 \x01(\tR\x05group\"Z\n" +
 	"\x10RelationshipType\x12\x0f\n" +
 	"\vunspecified\x10\x00\x12\x0e\n" +
 	"\n" +
 	"depends_on\x10\x01\x12\v\n" +
-	"\aruns_on\x10\x02B\xe3\x02\n" +
+	"\aruns_on\x10\x02\x12\x0e\n" +
+	"\n" +
+	"managed_by\x10\x03\x12\b\n" +
+	"\x04uses\x10\x04B\xe3\x02\n" +
 	"*com.project.planton.shared.relationship.v1B\x11RelationshipProtoP\x01Zegithub.com/project-planton/project-planton/apis/project/planton/shared/relationship/v1;relationshipv1\xa2\x02\x04PPSR\xaa\x02&Project.Planton.Shared.Relationship.V1\xca\x02&Project\\Planton\\Shared\\Relationship\\V1\xe2\x022Project\\Planton\\Shared\\Relationship\\V1\\GPBMetadata\xea\x02*Project::Planton::Shared::Relationship::V1b\x06proto3"
 
 var (
