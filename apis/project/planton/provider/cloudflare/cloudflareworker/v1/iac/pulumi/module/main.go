@@ -24,13 +24,27 @@ func Resources(
 		return errors.Wrap(err, "failed to set up cloudflare provider")
 	}
 
-	// 3. Create (or update) the Worker script.
-	createdWorkerScript, err := worker_script(ctx, locals, createdProvider)
+	// 3. Create the Worker script with content from inline or R2 URL.
+	createdWorkerScript, err := createWorkerScript(ctx, locals, createdProvider)
 	if err != nil {
-		return errors.Wrap(err, "failed to create cloudflare worker script")
+		return errors.Wrap(err, "failed to create worker script")
 	}
 
-	// 4. Optionally attach the script to a route.
+	// 4. Upload secrets via Cloudflare Secrets API (if any).
+	// This must happen AFTER the worker script exists.
+	if locals.CloudflareWorker.Spec.Env != nil && len(locals.CloudflareWorker.Spec.Env.Secrets) > 0 {
+		// Use Apply to ensure secrets upload happens after worker is created
+		createdWorkerScript.ID().ApplyT(func(_ pulumi.ID) error {
+			return uploadWorkerSecrets(
+				ctx,
+				locals,
+				locals.CloudflareWorker.Spec.ScriptName,
+				locals.CloudflareWorker.Spec.Env.Secrets,
+			)
+		})
+	}
+
+	// 5. Optionally attach to a route.
 	if _, err := route(ctx, locals, createdProvider, createdWorkerScript); err != nil {
 		return errors.Wrap(err, "failed to create cloudflare worker route")
 	}

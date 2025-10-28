@@ -35,8 +35,25 @@ message CloudflareWorkerSpec {
   // (Optional) Billing/usage model for the Worker. Defaults to BUNDLED if unspecified.
   CloudflareWorkerUsageModel usage_model = 7;
 
-  // (Optional) Plaintext environment variables to provide to the Worker script.
-  map<string, string> env_vars = 8;
+  // Environment configuration supporting variables and secrets.
+  // Variables become plain-text bindings in the Worker.
+  // Secrets are uploaded via Cloudflare Workers Secrets API (encrypted at rest).
+  CloudflareWorkerEnv env = 8;
+}
+
+// CloudflareWorkerEnv defines environment variables and secrets for a CloudflareWorker.
+message CloudflareWorkerEnv {
+  // Non-sensitive configuration (becomes plain-text bindings in the Worker).
+  // Supports plain values or $variables-group/... references.
+  // Example: LOG_LEVEL: "info"
+  // Example: NAMESPACE: "$variables-group/temporal/namespace"
+  map<string, string> variables = 1;
+
+  // Sensitive configuration (uploaded via Cloudflare Secrets API, encrypted at rest).
+  // Supports plain values or $secrets-group/... references.
+  // Example: API_KEY: "$secrets-group/external-apis/stripe-key"
+  // Note: Secrets are uploaded separately from the worker version and are never logged.
+  map<string, string> secrets = 2;
 }
 
 // Supported usage models for Cloudflare Workers.

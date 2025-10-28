@@ -11,7 +11,7 @@ func route(
 	ctx *pulumi.Context,
 	locals *Locals,
 	cloudflareProvider *cloudfl.Provider,
-	_ *cloudfl.WorkerScript, // underscores silence “unused” while enforcing call‑order.
+	_ *cloudfl.WorkerScript, // underscores silence "unused" while enforcing call‑order.
 ) ([]pulumi.StringOutput, error) {
 
 	if locals.CloudflareWorker.Spec.RoutePattern == "" {
