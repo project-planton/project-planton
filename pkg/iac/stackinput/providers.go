@@ -22,6 +22,10 @@ func addProviderConfigs(stackInputContentMap map[string]interface{},
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to add azure-provider-config")
 	}
+	updatedStackInputContentMap, err = stackinputproviderconfig.AddCloudflareProviderConfig(updatedStackInputContentMap, providerConfigOptions)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to add cloudflare-provider-config")
+	}
 	updatedStackInputContentMap, err = stackinputproviderconfig.AddConfluentProviderConfig(updatedStackInputContentMap, providerConfigOptions)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to add confluent-provider-config")

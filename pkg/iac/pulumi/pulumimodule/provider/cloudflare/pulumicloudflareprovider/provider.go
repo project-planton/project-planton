@@ -8,7 +8,7 @@ import (
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/pulumi/pulumioutput"
 
 	"github.com/pkg/errors"
-	"github.com/pulumi/pulumi-cloudflare/sdk/v5/go/cloudflare"
+	"github.com/pulumi/pulumi-cloudflare/sdk/v6/go/cloudflare"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 

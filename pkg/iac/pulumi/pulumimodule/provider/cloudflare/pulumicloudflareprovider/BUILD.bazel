@@ -9,7 +9,7 @@ go_library(
         "//apis/project/planton/provider/cloudflare",
         "//pkg/iac/pulumi/pulumimodule/pulumi/pulumioutput",
         "@com_github_pkg_errors//:errors",
-        "@com_github_pulumi_pulumi_cloudflare_sdk_v5//go/cloudflare",
+        "@com_github_pulumi_pulumi_cloudflare_sdk_v6//go/cloudflare",
         "@com_github_pulumi_pulumi_sdk_v3//go/pulumi",
     ],
 )

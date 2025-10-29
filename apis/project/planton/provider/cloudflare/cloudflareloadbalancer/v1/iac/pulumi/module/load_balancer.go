@@ -3,7 +3,7 @@ package module
 import (
 	"fmt"
 
-	"github.com/pulumi/pulumi-cloudflare/sdk/v5/go/cloudflare"
+	"github.com/pulumi/pulumi-cloudflare/sdk/v6/go/cloudflare"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
@@ -83,8 +83,8 @@ func load_balancer(
 	createdLoadBalancer, err := cloudflare.NewLoadBalancer(ctx, "load_balancer", &cloudflare.LoadBalancerArgs{
 		ZoneId:          pulumi.String(locals.CloudflareLoadBalancer.Spec.ZoneId.GetValue()),
 		Name:            pulumi.String(locals.CloudflareLoadBalancer.Spec.Hostname),
-		DefaultPoolIds:  pulumi.StringArray{createdPool.ID()},
-		FallbackPoolId:  createdPool.ID(),
+		DefaultPools:    pulumi.StringArray{createdPool.ID()},
+		FallbackPool:    createdPool.ID(),
 		Proxied:         pulumi.BoolPtr(locals.CloudflareLoadBalancer.Spec.Proxied),
 		SteeringPolicy:  steering,
 		SessionAffinity: affinity,
