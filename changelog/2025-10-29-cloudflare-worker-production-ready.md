@@ -1579,3 +1579,4 @@ Built on Cloudflare's global network:
 
 **Impact**: Planton Cloud now supports edge compute deployments with complete automation from code to production URL with SSL. 🎉
 
+
