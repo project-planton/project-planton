@@ -79,7 +79,7 @@ func Resources(
 	}
 
 	// 4. Create the Worker script with content from R2 bundle.
-	_, err = createWorkerScript(ctx, locals, createdProvider, r2Provider)
+	createdWorkerScript, err := createWorkerScript(ctx, locals, createdProvider, r2Provider)
 	if err != nil {
 		return errors.Wrap(err, "failed to create worker script")
 	}
@@ -92,9 +92,9 @@ func Resources(
 	// TODO: Temporarily commented out to test worker script deployment
 	// The API token needs "Workers Routes: Edit" permission for this to work
 	// createdWorkerScript variable would be used here when route creation is re-enabled
-	// if _, err := route(ctx, locals, createdProvider, createdWorkerScript); err != nil {
-	// 	return errors.Wrap(err, "failed to create cloudflare worker route")
-	// }
+	if _, err := route(ctx, locals, createdProvider, createdWorkerScript); err != nil {
+		return errors.Wrap(err, "failed to create cloudflare worker route")
+	}
 
 	return nil
 }
