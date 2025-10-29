@@ -25,9 +25,9 @@ func route(
 	}
 
 	routeArgs := &cloudfl.WorkersRouteArgs{
-		ZoneId:     pulumi.String(locals.CloudflareWorker.Spec.ZoneId),
-		Pattern:    pulumi.String(locals.CloudflareWorker.Spec.RoutePattern),
-		ScriptName: pulumi.String(locals.CloudflareWorker.Spec.Script.Name),
+		ZoneId:  pulumi.String(locals.CloudflareWorker.Spec.ZoneId),
+		Pattern: pulumi.String(locals.CloudflareWorker.Spec.RoutePattern),
+		Script:  pulumi.String(locals.CloudflareWorker.Spec.Script.Name),
 	}
 
 	createdWorkerRoute, err := cloudfl.NewWorkersRoute(

@@ -15,32 +15,19 @@ func dnsZone(
 	cloudflareProvider *cloudflare.Provider,
 ) (*cloudflare.Zone, error) {
 
-	// 1. Convert proto enum -> provider plan string.
-	var planValue string
-	switch locals.CloudflareDnsZone.Spec.Plan {
-	case 0: // FREE
-		planValue = "free"
-	case 1: // PRO
-		planValue = "pro"
-	case 2: // BUSINESS
-		planValue = "business"
-	case 3: // ENTERPRISE
-		planValue = "enterprise"
-	default:
-		planValue = "free"
-	}
-
-	// 2. Build the arguments straight from proto fields.
+	// 1. Build the arguments straight from proto fields.
+	// Note: Plan field was removed in v6 and is now set via a separate API call or zone settings
 	zoneArgs := &cloudflare.ZoneArgs{
-		AccountId: pulumi.String(locals.CloudflareDnsZone.Spec.AccountId),
-		Zone:      pulumi.String(locals.CloudflareDnsZone.Spec.ZoneName),
-		Plan:      pulumi.StringPtr(planValue),
-		Paused:    pulumi.BoolPtr(locals.CloudflareDnsZone.Spec.Paused),
-		// NOTE: default_proxied isn't available at zone‑level in the provider,
-		// so it is intentionally ignored here.
+		Account: cloudflare.ZoneAccountArgs{
+			Id: pulumi.String(locals.CloudflareDnsZone.Spec.AccountId),
+		},
+		Name:   pulumi.String(locals.CloudflareDnsZone.Spec.ZoneName),
+		Paused: pulumi.BoolPtr(locals.CloudflareDnsZone.Spec.Paused),
+		// NOTE: default_proxied and plan are not available at zone‑level in the v6 provider.
+		// Plan is now managed separately via zone settings or account configuration.
 	}
 
-	// 3. Create the zone.
+	// 2. Create the zone.
 	createdZone, err := cloudflare.NewZone(
 		ctx,
 		// Use metadata.name as the resource label to mimic Terraform naming.
@@ -52,7 +39,7 @@ func dnsZone(
 		return nil, errors.Wrap(err, "failed to create cloudflare zone")
 	}
 
-	// 4. Export required outputs.
+	// 3. Export required outputs.
 	ctx.Export(OpZoneId, createdZone.ID())
 	ctx.Export(OpNameservers, createdZone.NameServers)
 

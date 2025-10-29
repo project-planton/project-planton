@@ -29,34 +29,37 @@ func createWorkerScript(
 
 	scriptContent := scriptObject.Body()
 
-	// Build plain-text environment variable bindings from env.variables
+	// Build bindings array (unified in v6 API)
+	// Includes both plain-text environment variables and KV namespace bindings
+	var bindings cloudfl.WorkersScriptBindingArray
+
+	// Add plain-text environment variable bindings
 	// Note: env.secrets are uploaded separately via Cloudflare Secrets API
-	var plainTextBindings cloudfl.WorkersScriptPlainTextBindingArray
 	if locals.CloudflareWorker.Spec.Env != nil {
 		for k, v := range locals.CloudflareWorker.Spec.Env.Variables {
-			plainTextBindings = append(plainTextBindings, cloudfl.WorkersScriptPlainTextBindingArgs{
+			bindings = append(bindings, cloudfl.WorkersScriptBindingArgs{
 				Name: pulumi.String(k),
+				Type: pulumi.String("plain_text"),
 				Text: pulumi.String(v),
 			})
 		}
 	}
 
-	// Build KV namespace bindings (if any)
-	var kvBindings cloudfl.WorkersScriptKvNamespaceBindingArray
+	// Add KV namespace bindings
 	for _, kvBinding := range locals.CloudflareWorker.Spec.KvBindings {
-		kvBindings = append(kvBindings, cloudfl.WorkersScriptKvNamespaceBindingArgs{
+		bindings = append(bindings, cloudfl.WorkersScriptBindingArgs{
 			Name:        pulumi.String(kvBinding.Name),
+			Type:        pulumi.String("kv_namespace"),
 			NamespaceId: pulumi.String(kvBinding.GetFieldPath()),
 		})
 	}
 
 	// Build Worker script arguments
 	scriptArgs := &cloudfl.WorkersScriptArgs{
-		AccountId:           pulumi.String(locals.CloudflareWorker.Spec.AccountId),
-		Name:                pulumi.String(locals.CloudflareWorker.Spec.Script.Name),
-		Content:             scriptContent,
-		PlainTextBindings:   plainTextBindings,
-		KvNamespaceBindings: kvBindings,
+		AccountId:  pulumi.String(locals.CloudflareWorker.Spec.AccountId),
+		ScriptName: pulumi.String(locals.CloudflareWorker.Spec.Script.Name),
+		Content:    scriptContent,
+		Bindings:   bindings,
 	}
 
 	if locals.CloudflareWorker.Spec.CompatibilityDate != "" {

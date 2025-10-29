@@ -41,25 +41,34 @@ func application(
 	}
 
 	// --- Access Policy -------------------------------------------------------
+	// Lookup zone to get account ID (required for AccessPolicy in v6)
+	zone := cloudflare.LookupZoneOutput(ctx, cloudflare.LookupZoneOutputArgs{
+		ZoneId: pulumi.String(locals.CloudflareZeroTrustAccessApplication.Spec.ZoneId),
+	}, pulumi.Provider(cloudflareProvider))
+
+	accountId := zone.Account().Id()
+
 	var includeBlocks cloudflare.AccessPolicyIncludeArray
+	// In v6, email and group are nested structures, not arrays
+	// Each email/group needs to be a separate include block
 	if len(locals.CloudflareZeroTrustAccessApplication.Spec.AllowedEmails) > 0 {
-		var emails pulumi.StringArray
 		for _, e := range locals.CloudflareZeroTrustAccessApplication.Spec.AllowedEmails {
-			emails = append(emails, pulumi.String(e))
+			includeBlocks = append(includeBlocks, &cloudflare.AccessPolicyIncludeArgs{
+				Email: &cloudflare.AccessPolicyIncludeEmailArgs{
+					Email: pulumi.String(e),
+				},
+			})
 		}
-		includeBlocks = append(includeBlocks, &cloudflare.AccessPolicyIncludeArgs{
-			Emails: emails,
-		})
 	}
 
 	if len(locals.CloudflareZeroTrustAccessApplication.Spec.AllowedGoogleGroups) > 0 {
-		var groups pulumi.StringArray
 		for _, g := range locals.CloudflareZeroTrustAccessApplication.Spec.AllowedGoogleGroups {
-			groups = append(groups, pulumi.String(g))
+			includeBlocks = append(includeBlocks, &cloudflare.AccessPolicyIncludeArgs{
+				Group: &cloudflare.AccessPolicyIncludeGroupArgs{
+					Id: pulumi.String(g),
+				},
+			})
 		}
-		includeBlocks = append(includeBlocks, &cloudflare.AccessPolicyIncludeArgs{
-			Groups: groups,
-		})
 	}
 
 	var requireBlocks cloudflare.AccessPolicyRequireArray
@@ -77,11 +86,11 @@ func application(
 		ctx,
 		"access_policy",
 		&cloudflare.AccessPolicyArgs{
-			ApplicationId: createdAccessApplication.ID(),
-			ZoneId:        pulumi.String(locals.CloudflareZeroTrustAccessApplication.Spec.ZoneId),
-			Name:          pulumi.String("default-policy"),
-			Decision:      pulumi.String(decision),
-			Precedence:    pulumi.IntPtr(1),
+			AccountId: accountId,
+			Name:      pulumi.String("default-policy"),
+			Decision:  pulumi.String(decision),
+			Includes:  includeBlocks,
+			Requires:  requireBlocks,
 		},
 		pulumi.Provider(cloudflareProvider),
 		pulumi.DependsOn([]pulumi.Resource{createdAccessApplication}),
