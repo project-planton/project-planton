@@ -55,11 +55,15 @@ func createWorkerScript(
 	}
 
 	// Build Worker script arguments
+	// Use MainModule for module syntax workers (with import/export)
+	// Content is only for service worker syntax (with addEventListener)
 	scriptArgs := &cloudfl.WorkersScriptArgs{
-		AccountId:  pulumi.String(locals.CloudflareWorker.Spec.AccountId),
-		ScriptName: pulumi.String(locals.CloudflareWorker.Spec.Script.Name),
-		Content:    scriptContent,
-		Bindings:   bindings,
+		AccountId:          pulumi.String(locals.CloudflareWorker.Spec.AccountId),
+		ScriptName:         pulumi.String(locals.CloudflareWorker.Spec.Script.Name),
+		MainModule:         pulumi.String("index.js"), // Indicates this is a module worker
+		Content:            scriptContent,             // The actual module code
+		Bindings:           bindings,
+		CompatibilityFlags: pulumi.StringArray{pulumi.String("nodejs_compat")}, // Enable Node.js compatibility
 	}
 
 	if locals.CloudflareWorker.Spec.CompatibilityDate != "" {

@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/pkg/errors"
@@ -27,7 +28,18 @@ func uploadWorkerSecrets(
 	}
 
 	accountId := locals.CloudflareWorker.Spec.AccountId
-	apiToken := locals.CloudflareProviderConfig.ApiToken
+	
+	// Get API token from provider config or environment variable
+	var apiToken string
+	if locals.CloudflareProviderConfig != nil && locals.CloudflareProviderConfig.ApiToken != "" {
+		apiToken = locals.CloudflareProviderConfig.ApiToken
+	} else {
+		// Fall back to CLOUDFLARE_API_TOKEN environment variable
+		apiToken = os.Getenv("CLOUDFLARE_API_TOKEN")
+		if apiToken == "" {
+			return errors.New("Cloudflare API token not found in provider config or CLOUDFLARE_API_TOKEN environment variable")
+		}
+	}
 
 	// Upload each secret individually (Cloudflare API requirement)
 	for key, value := range secrets {
