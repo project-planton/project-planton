@@ -86,21 +86,15 @@ Create a changelog when:
 
 ### File Naming
 ```
-YYYY-MM-DD-brief-descriptive-slug.md
-```
-
-For multiple changelogs on the same day, use numbered prefixes:
-```
-YYYY-MM-DD-01.brief-descriptive-slug.md
-YYYY-MM-DD-02.another-feature.md
+YYYY-MM-DD-HHMMSS-brief-descriptive-slug.md
 ```
 
 Examples:
-- `2025-10-18-pulumi-interactive-output-with-diff-support.md`
-- `2025-10-18-01.proto-field-defaults-support.md`
-- `2025-10-17-temporal-namespace-initialization-bug-fix.md`
+- `2025-10-18-153045-pulumi-interactive-output-with-diff-support.md`
+- `2025-10-18-091230-proto-field-defaults-support.md`
+- `2025-10-17-164500-temporal-namespace-initialization-bug-fix.md`
 
-Use current date and a clear, kebab-case slug describing the change.
+Use current date and time (24-hour format) followed by a clear, kebab-case slug describing the change. The timestamp (HHMMSS) ensures automatic chronological sorting when multiple changelogs are created on the same day.
 
 ### Required Metadata
 
