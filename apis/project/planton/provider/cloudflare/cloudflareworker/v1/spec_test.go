@@ -41,7 +41,7 @@ var _ = ginkgo.Describe("CloudflareWorkerSpec Custom Validation Tests", func() {
 				gomega.Expect(err).To(gomega.BeNil())
 			})
 
-			ginkgo.It("should not return a validation error with environment variables", func() {
+			ginkgo.It("should not return a validation error with environment variables and secrets", func() {
 				input := &CloudflareWorker{
 					ApiVersion: "cloudflare.project-planton.org/v1",
 					Kind:       "CloudflareWorker",
@@ -55,9 +55,14 @@ var _ = ginkgo.Describe("CloudflareWorkerSpec Custom Validation Tests", func() {
 						},
 						AccountId:         "00000000000000000000000000000000",
 						CompatibilityDate: "2024-01-01",
-						EnvVars: map[string]string{
-							"API_KEY": "test-key",
-							"ENV":     "production",
+						Env: &CloudflareWorkerEnv{
+							Variables: map[string]string{
+								"LOG_LEVEL": "info",
+								"ENV":       "production",
+							},
+							Secrets: map[string]string{
+								"API_KEY": "test-secret-key",
+							},
 						},
 					},
 				}

@@ -1,27 +1,20 @@
 package module
 
 import (
-	"context"
-	"io"
-	"net/http"
-	"time"
+	"strings"
 
 	"github.com/pkg/errors"
+	"github.com/pulumi/pulumi-aws/sdk/v7/go/aws"
+	"github.com/pulumi/pulumi-aws/sdk/v7/go/aws/s3"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// resolveScriptContent handles both inline content and URL references.
-// Returns pulumi.StringOutput for WorkerScript.Content field.
-//
-// Note on R2 URL accessibility:
-// - R2 URLs must be publicly accessible for Pulumi's HTTP fetch
-// - This is acceptable because worker scripts are client-side code (not sensitive)
-// - Content-hash based paths provide obscurity
-// - No directory listing enabled
-// - Alternative: use signed URLs with expiration generated during build
+// resolveScriptContent handles both inline content and R2 references.
+// Uses AWS S3 provider for IaC-native private bucket access.
 func resolveScriptContent(
 	ctx *pulumi.Context,
 	locals *Locals,
+	r2Provider *aws.Provider,
 ) pulumi.StringOutput {
 
 	scriptSource := locals.CloudflareWorker.Spec.ScriptSource
@@ -31,52 +24,46 @@ func resolveScriptContent(
 		return pulumi.String(scriptSource.GetValue()).ToStringOutput()
 	}
 
-	// Option 2: URL reference (from R2 via pipeline)
-	// Download during Pulumi apply (IaC-native approach)
+	// Option 2: R2 bucket reference (private bucket via S3 API)
+	// Format: "r2://<bucket-name>/<key-path>"
 	if scriptSource.GetValueFrom() != nil && scriptSource.GetValueFrom().FieldPath != "" {
-		url := scriptSource.GetValueFrom().FieldPath
+		ref := scriptSource.GetValueFrom().FieldPath
 
-		// Use Pulumi Apply to download during deployment
-		return pulumi.String(url).ToStringOutput().ApplyT(func(u string) (string, error) {
-			content, err := fetchScriptFromURL(u)
-			if err != nil {
-				return "", errors.Wrapf(err, "failed to fetch script from %s", u)
-			}
-			return content, nil
-		}).(pulumi.StringOutput)
+		// Parse R2 reference
+		bucketName, objectKey, err := parseR2Reference(ref)
+		if err != nil {
+			// Log error and return empty (will fail Cloudflare validation)
+			return pulumi.Sprintf("").ToStringOutput()
+		}
+
+		// Use AWS S3 LookupBucketObject (IaC-native, Terraform-compatible)
+		scriptObject := s3.LookupBucketObjectOutput(ctx, s3.LookupBucketObjectOutputArgs{
+			Bucket: pulumi.String(bucketName),
+			Key:    pulumi.String(objectKey),
+		}, pulumi.Provider(r2Provider))
+
+		// Return script body content
+		return scriptObject.Body()
 	}
 
-	// Neither provided - return empty (will fail Cloudflare validation)
+	// Neither provided
 	return pulumi.String("").ToStringOutput()
 }
 
-// fetchScriptFromURL downloads script content from a public R2 URL.
-// Simple HTTP GET - works in Pulumi and translates to Terraform (http data source).
-func fetchScriptFromURL(url string) (string, error) {
-	httpClient := &http.Client{
-		Timeout: 30 * time.Second,
+// parseR2Reference extracts bucket and key from r2://bucket/key format.
+// Example: "r2://my-artifacts/workers/abc123/script.js"
+// Returns: ("my-artifacts", "workers/abc123/script.js", nil)
+func parseR2Reference(ref string) (string, string, error) {
+	if !strings.HasPrefix(ref, "r2://") {
+		return "", "", errors.New("R2 reference must start with r2://")
 	}
 
-	req, err := http.NewRequestWithContext(context.Background(), "GET", url, nil)
-	if err != nil {
-		return "", errors.Wrap(err, "failed to create HTTP request")
+	path := strings.TrimPrefix(ref, "r2://")
+	parts := strings.SplitN(path, "/", 2)
+
+	if len(parts) != 2 {
+		return "", "", errors.New("R2 reference must be r2://bucket/key")
 	}
 
-	resp, err := httpClient.Do(req)
-	if err != nil {
-		return "", errors.Wrapf(err, "failed to fetch from URL")
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != http.StatusOK {
-		return "", errors.Errorf("HTTP %d from R2 URL", resp.StatusCode)
-	}
-
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return "", errors.Wrap(err, "failed to read response body")
-	}
-
-	return string(body), nil
+	return parts[0], parts[1], nil
 }
-

@@ -2,20 +2,22 @@ package module
 
 import (
 	"github.com/pkg/errors"
+	"github.com/pulumi/pulumi-aws/sdk/v7/go/aws"
 	cloudfl "github.com/pulumi/pulumi-cloudflare/sdk/v5/go/cloudflare"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
 // createWorkerScript creates the Worker script resource with content from inline or R2 URL.
-// Uses Pulumi's native RemoteAsset for R2 downloads (IaC-native, works in Terraform too).
+// Uses AWS S3 provider for IaC-native private R2 bucket access.
 func createWorkerScript(
 	ctx *pulumi.Context,
 	locals *Locals,
 	cloudflareProvider *cloudfl.Provider,
+	r2Provider *aws.Provider, // Can be nil if no R2 credentials
 ) (*cloudfl.WorkerScript, error) {
 
-	// Resolve script content (inline string or R2 URL via RemoteAsset)
-	scriptContent := resolveScriptContent(ctx, locals)
+	// Resolve script content (inline string or R2 URL via AWS S3 provider)
+	scriptContent := resolveScriptContent(ctx, locals, r2Provider)
 
 	// Build plain-text environment variable bindings from env.variables
 	// Note: env.secrets are uploaded separately via Cloudflare Secrets API
@@ -40,11 +42,11 @@ func createWorkerScript(
 
 	// Build Worker script arguments
 	scriptArgs := &cloudfl.WorkerScriptArgs{
-		AccountId:             pulumi.String(locals.CloudflareWorker.Spec.AccountId),
-		Name:                  pulumi.String(locals.CloudflareWorker.Spec.ScriptName),
-		Content:               scriptContent,
-		PlainTextBindings:     plainTextBindings,
-		KvNamespaceBindings:   kvBindings,
+		AccountId:           pulumi.String(locals.CloudflareWorker.Spec.AccountId),
+		Name:                pulumi.String(locals.CloudflareWorker.Spec.ScriptName),
+		Content:             scriptContent,
+		PlainTextBindings:   plainTextBindings,
+		KvNamespaceBindings: kvBindings,
 	}
 
 	if locals.CloudflareWorker.Spec.CompatibilityDate != "" {
@@ -67,4 +69,3 @@ func createWorkerScript(
 
 	return createdWorkerScript, nil
 }
-

@@ -80,4 +80,3 @@ func uploadSingleSecret(accountId, scriptName, secretName, secretValue, apiToken
 
 	return nil
 }
-
