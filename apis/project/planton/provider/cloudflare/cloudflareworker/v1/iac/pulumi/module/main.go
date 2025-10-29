@@ -5,8 +5,8 @@ import (
 
 	"github.com/pkg/errors"
 	cloudflareworkerv1 "github.com/project-planton/project-planton/apis/project/planton/provider/cloudflare/cloudflareworker/v1"
+	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/cloudflare/pulumicloudflareprovider"
 	"github.com/pulumi/pulumi-aws/sdk/v7/go/aws"
-	"github.com/pulumi/pulumi-cloudflare/sdk/v5/go/cloudflare"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
@@ -19,24 +19,66 @@ func Resources(
 	locals := initializeLocals(ctx, stackInput)
 
 	// 2. Stand‑up a Cloudflare provider from the supplied credential.
-	createdProvider, err := cloudflare.NewProvider(ctx, "cloudflare-provider",
-		&cloudflare.ProviderArgs{
-			ApiToken: pulumi.String(locals.CloudflareProviderConfig.ApiToken),
-		})
+	createdProvider, err := pulumicloudflareprovider.Get(
+		ctx,
+		locals.CloudflareProviderConfig,
+	)
 	if err != nil {
 		return errors.Wrap(err, "failed to set up cloudflare provider")
 	}
 
-	// 3. Create AWS provider for R2 (only if R2 credentials provided).
+	// 3. Create AWS provider for R2 (with explicit creds or default from env)
 	var r2Provider *aws.Provider
-	if locals.CloudflareProviderConfig.R2 != nil {
-		r2Provider, err = createR2Provider(ctx, locals)
-		if err != nil {
-			return errors.Wrap(err, "failed to create R2 provider")
+	if locals.CloudflareProviderConfig != nil && locals.CloudflareProviderConfig.R2 != nil {
+		// Use explicit R2 credentials
+		r2Creds := locals.CloudflareProviderConfig.R2
+
+		// Determine R2 endpoint (use custom if provided, otherwise derive from account ID)
+		var endpoint string
+		if r2Creds.Endpoint != "" {
+			endpoint = r2Creds.Endpoint
+		} else {
+			endpoint = fmt.Sprintf("https://%s.r2.cloudflarestorage.com", locals.CloudflareWorker.Spec.AccountId)
 		}
+
+		r2Provider, err = aws.NewProvider(ctx, "r2-provider", &aws.ProviderArgs{
+			Region:                    pulumi.String("auto"),
+			AccessKey:                 pulumi.String(r2Creds.AccessKeyId),
+			SecretKey:                 pulumi.String(r2Creds.SecretAccessKey),
+			S3UsePathStyle:            pulumi.Bool(true),
+			SkipCredentialsValidation: pulumi.Bool(true),
+			SkipMetadataApiCheck:      pulumi.Bool(true),
+			SkipRegionValidation:      pulumi.Bool(true),
+			SkipRequestingAccountId:   pulumi.Bool(true),
+			Endpoints: aws.ProviderEndpointArray{
+				aws.ProviderEndpointArgs{
+					S3: pulumi.String(endpoint),
+				},
+			},
+		})
+	} else {
+		// No explicit credentials - use AWS env vars but configure for R2
+		endpoint := fmt.Sprintf("https://%s.r2.cloudflarestorage.com", locals.CloudflareWorker.Spec.AccountId)
+
+		r2Provider, err = aws.NewProvider(ctx, "r2-provider", &aws.ProviderArgs{
+			Region:                    pulumi.String("auto"),
+			S3UsePathStyle:            pulumi.Bool(true),
+			SkipCredentialsValidation: pulumi.Bool(true),
+			SkipMetadataApiCheck:      pulumi.Bool(true),
+			SkipRegionValidation:      pulumi.Bool(true),
+			SkipRequestingAccountId:   pulumi.Bool(true),
+			Endpoints: aws.ProviderEndpointArray{
+				aws.ProviderEndpointArgs{
+					S3: pulumi.String(endpoint),
+				},
+			},
+		})
+	}
+	if err != nil {
+		return errors.Wrap(err, "failed to create R2 provider")
 	}
 
-	// 4. Create the Worker script with content from inline or R2 URL.
+	// 4. Create the Worker script with content from R2 bundle.
 	createdWorkerScript, err := createWorkerScript(ctx, locals, createdProvider, r2Provider)
 	if err != nil {
 		return errors.Wrap(err, "failed to create worker script")
@@ -50,7 +92,7 @@ func Resources(
 			return uploadWorkerSecrets(
 				ctx,
 				locals,
-				locals.CloudflareWorker.Spec.ScriptName,
+				locals.CloudflareWorker.Spec.Script.Name,
 				locals.CloudflareWorker.Spec.Env.Secrets,
 			)
 		})
@@ -62,45 +104,4 @@ func Resources(
 	}
 
 	return nil
-}
-
-// createR2Provider creates AWS provider configured for Cloudflare R2.
-// Uses credentials from CloudflareProviderConfig.r2 (already exists in proto).
-func createR2Provider(
-	ctx *pulumi.Context,
-	locals *Locals,
-) (*aws.Provider, error) {
-
-	r2Creds := locals.CloudflareProviderConfig.R2
-
-	// Determine R2 endpoint (use custom if provided, otherwise derive from account ID)
-	var endpoint string
-	if r2Creds.Endpoint != "" {
-		endpoint = r2Creds.Endpoint
-	} else {
-		// Default R2 endpoint format
-		endpoint = fmt.Sprintf("https://%s.r2.cloudflarestorage.com", locals.CloudflareWorker.Spec.AccountId)
-	}
-
-	r2Provider, err := aws.NewProvider(ctx, "r2-provider", &aws.ProviderArgs{
-		Region:                    pulumi.String("auto"),
-		AccessKey:                 pulumi.String(r2Creds.AccessKeyId),
-		SecretKey:                 pulumi.String(r2Creds.SecretAccessKey),
-		S3UsePathStyle:            pulumi.Bool(true),
-		SkipCredentialsValidation: pulumi.Bool(true),
-		SkipMetadataApiCheck:      pulumi.Bool(true),
-		SkipRegionValidation:      pulumi.Bool(true),
-		SkipRequestingAccountId:   pulumi.Bool(true),
-		Endpoints: aws.ProviderEndpointArray{
-			aws.ProviderEndpointArgs{
-				S3: pulumi.String(endpoint),
-			},
-		},
-	})
-
-	if err != nil {
-		return nil, errors.Wrap(err, "failed to create AWS provider for R2")
-	}
-
-	return r2Provider, nil
 }

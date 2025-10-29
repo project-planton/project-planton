@@ -9,6 +9,7 @@ import (
 type StackInputProviderConfigOptions struct {
 	AwsProviderConfig        string
 	AzureProviderConfig      string
+	CloudflareProviderConfig string
 	ConfluentProviderConfig  string
 	GcpProviderConfig        string
 	KubernetesProviderConfig string
@@ -27,6 +28,12 @@ func WithAwsProviderConfig(awsProviderConfig string) StackInputProviderConfigOpt
 func WithAzureProviderConfig(azureProviderConfig string) StackInputProviderConfigOption {
 	return func(opts *StackInputProviderConfigOptions) {
 		opts.AzureProviderConfig = azureProviderConfig
+	}
+}
+
+func WithCloudflareProviderConfig(cloudflareProviderConfig string) StackInputProviderConfigOption {
+	return func(opts *StackInputProviderConfigOptions) {
+		opts.CloudflareProviderConfig = cloudflareProviderConfig
 	}
 }
 
@@ -77,6 +84,14 @@ func BuildWithFlags(commandFlagSet *pflag.FlagSet) ([]StackInputProviderConfigOp
 	}
 	if azureProviderConfig != "" {
 		resp = append(resp, WithAzureProviderConfig(azureProviderConfig))
+	}
+
+	cloudflareProviderConfig, err := commandFlagSet.GetString(string(flag.CloudflareProviderConfig))
+	if err != nil {
+		return nil, errors.Wrapf(err, "failed to read %s flag", flag.CloudflareProviderConfig)
+	}
+	if cloudflareProviderConfig != "" {
+		resp = append(resp, WithCloudflareProviderConfig(cloudflareProviderConfig))
 	}
 
 	confluentProviderConfig, err := commandFlagSet.GetString(string(flag.ConfluentProviderConfig))
@@ -138,6 +153,14 @@ func BuildWithInputDir(inputDir string) ([]StackInputProviderConfigOption, error
 	}
 	if azureProviderConfig != "" {
 		resp = append(resp, WithAzureProviderConfig(azureProviderConfig))
+	}
+
+	cloudflareProviderConfig, err := LoadCloudflareProviderConfig(inputDir)
+	if err != nil {
+		return nil, errors.Wrapf(err, "failed to look up cloudflare-provider-config in %s", inputDir)
+	}
+	if cloudflareProviderConfig != "" {
+		resp = append(resp, WithCloudflareProviderConfig(cloudflareProviderConfig))
 	}
 
 	confluentProviderConfig, err := LoadConfluentProviderConfig(inputDir)

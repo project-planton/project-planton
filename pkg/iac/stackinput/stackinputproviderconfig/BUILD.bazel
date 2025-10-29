@@ -6,6 +6,7 @@ go_library(
         "atlas_provider.go",
         "aws_provider.go",
         "azure_provider.go",
+        "cloudflare_provider.go",
         "confluent_provider.go",
         "gcp_provider.go",
         "kubernetes_provider.go",

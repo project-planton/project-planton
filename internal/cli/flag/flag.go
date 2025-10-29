@@ -12,6 +12,7 @@ const (
 	AzureProviderConfig      Flag = "azure-provider-config"
 	BackendConfig            Flag = "backend-config"
 	BackendType              Flag = "backend-type"
+	CloudflareProviderConfig Flag = "cloudflare-provider-config"
 	ConfluentProviderConfig  Flag = "confluent-provider-config"
 	Destroy                  Flag = "destroy"
 	Diff                     Flag = "diff"

@@ -21,7 +21,7 @@ func route(
 
 	routeArgs := &cloudfl.WorkerRouteArgs{
 		Pattern:    pulumi.String(locals.CloudflareWorker.Spec.RoutePattern),
-		ScriptName: pulumi.String(locals.CloudflareWorker.Spec.ScriptName),
+		ScriptName: pulumi.String(locals.CloudflareWorker.Spec.Script.Name),
 	}
 
 	createdWorkerRoute, err := cloudfl.NewWorkerRoute(

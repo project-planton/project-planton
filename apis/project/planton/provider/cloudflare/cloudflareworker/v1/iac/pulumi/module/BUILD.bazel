@@ -6,7 +6,6 @@ go_library(
         "locals.go",
         "main.go",
         "outputs.go",
-        "r2_fetcher.go",
         "route.go",
         "secrets.go",
         "worker_script.go",
@@ -16,6 +15,7 @@ go_library(
     deps = [
         "//apis/project/planton/provider/cloudflare",
         "//apis/project/planton/provider/cloudflare/cloudflareworker/v1:cloudflareworker",
+        "//pkg/iac/pulumi/pulumimodule/provider/cloudflare/pulumicloudflareprovider",
         "@com_github_pkg_errors//:errors",
         "@com_github_pulumi_pulumi_aws_sdk_v7//go/aws",
         "@com_github_pulumi_pulumi_aws_sdk_v7//go/aws/s3",

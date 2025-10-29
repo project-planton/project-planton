@@ -5,7 +5,6 @@ import (
 
 	"github.com/onsi/ginkgo/v2"
 	"github.com/onsi/gomega"
-	foreignkeyv1 "github.com/project-planton/project-planton/apis/project/planton/shared/foreignkey/v1"
 
 	"buf.build/go/protovalidate"
 	"github.com/project-planton/project-planton/apis/project/planton/shared"
@@ -29,11 +28,14 @@ var _ = ginkgo.Describe("CloudflareWorkerSpec Custom Validation Tests", func() {
 						Name: "test-worker",
 					},
 					Spec: &CloudflareWorkerSpec{
-						ScriptName: "test-worker-script",
-						ScriptSource: &foreignkeyv1.StringValueOrRef{
-							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "/path/to/worker.js"},
+						AccountId: "00000000000000000000000000000000",
+						Script: &CloudflareWorkerScript{
+							Name: "test-worker-script",
+							Bundle: &CloudflareWorkerScriptBundleR2Object{
+								Bucket: "test-bucket",
+								Path:   "test/script.js",
+							},
 						},
-						AccountId:         "00000000000000000000000000000000",
 						CompatibilityDate: "2024-01-01",
 					},
 				}
@@ -49,11 +51,14 @@ var _ = ginkgo.Describe("CloudflareWorkerSpec Custom Validation Tests", func() {
 						Name: "test-worker-env",
 					},
 					Spec: &CloudflareWorkerSpec{
-						ScriptName: "test-worker-with-env",
-						ScriptSource: &foreignkeyv1.StringValueOrRef{
-							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "/path/to/worker.js"},
+						AccountId: "00000000000000000000000000000000",
+						Script: &CloudflareWorkerScript{
+							Name: "test-worker-with-env",
+							Bundle: &CloudflareWorkerScriptBundleR2Object{
+								Bucket: "test-bucket",
+								Path:   "test/script-with-env.js",
+							},
 						},
-						AccountId:         "00000000000000000000000000000000",
 						CompatibilityDate: "2024-01-01",
 						Env: &CloudflareWorkerEnv{
 							Variables: map[string]string{
@@ -78,11 +83,14 @@ var _ = ginkgo.Describe("CloudflareWorkerSpec Custom Validation Tests", func() {
 						Name: "test-worker-route",
 					},
 					Spec: &CloudflareWorkerSpec{
-						ScriptName: "test-worker-with-route",
-						ScriptSource: &foreignkeyv1.StringValueOrRef{
-							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "/path/to/worker.js"},
+						AccountId: "00000000000000000000000000000000",
+						Script: &CloudflareWorkerScript{
+							Name: "test-worker-with-route",
+							Bundle: &CloudflareWorkerScriptBundleR2Object{
+								Bucket: "test-bucket",
+								Path:   "test/script-with-route.js",
+							},
 						},
-						AccountId:         "00000000000000000000000000000000",
 						RoutePattern:      "https://example.com/*",
 						CompatibilityDate: "2024-01-01",
 					},
@@ -104,9 +112,12 @@ var _ = ginkgo.Describe("CloudflareWorkerSpec Custom Validation Tests", func() {
 						Name: "test-no-account",
 					},
 					Spec: &CloudflareWorkerSpec{
-						ScriptName: "test-worker",
-						ScriptSource: &foreignkeyv1.StringValueOrRef{
-							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "/path/to/worker.js"},
+						Script: &CloudflareWorkerScript{
+							Name: "test-worker",
+							Bundle: &CloudflareWorkerScriptBundleR2Object{
+								Bucket: "test-bucket",
+								Path:   "test/script.js",
+							},
 						},
 						CompatibilityDate: "2024-01-01",
 					},
@@ -123,11 +134,14 @@ var _ = ginkgo.Describe("CloudflareWorkerSpec Custom Validation Tests", func() {
 						Name: "test-short-account",
 					},
 					Spec: &CloudflareWorkerSpec{
-						ScriptName: "test-worker",
-						ScriptSource: &foreignkeyv1.StringValueOrRef{
-							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "/path/to/worker.js"},
+						AccountId: "123",
+						Script: &CloudflareWorkerScript{
+							Name: "test-worker",
+							Bundle: &CloudflareWorkerScriptBundleR2Object{
+								Bucket: "test-bucket",
+								Path:   "test/script.js",
+							},
 						},
-						AccountId:         "123",
 						CompatibilityDate: "2024-01-01",
 					},
 				}
@@ -143,11 +157,14 @@ var _ = ginkgo.Describe("CloudflareWorkerSpec Custom Validation Tests", func() {
 						Name: "test-invalid-hex",
 					},
 					Spec: &CloudflareWorkerSpec{
-						ScriptName: "test-worker",
-						ScriptSource: &foreignkeyv1.StringValueOrRef{
-							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "/path/to/worker.js"},
+						AccountId: "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ",
+						Script: &CloudflareWorkerScript{
+							Name: "test-worker",
+							Bundle: &CloudflareWorkerScriptBundleR2Object{
+								Bucket: "test-bucket",
+								Path:   "test/script.js",
+							},
 						},
-						AccountId:         "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ",
 						CompatibilityDate: "2024-01-01",
 					},
 				}
@@ -156,9 +173,9 @@ var _ = ginkgo.Describe("CloudflareWorkerSpec Custom Validation Tests", func() {
 			})
 		})
 
-		ginkgo.Context("script_source validation", func() {
+		ginkgo.Context("script validation", func() {
 
-			ginkgo.It("should return error if script_source is missing", func() {
+			ginkgo.It("should return error if script is missing", func() {
 				input := &CloudflareWorker{
 					ApiVersion: "cloudflare.project-planton.org/v1",
 					Kind:       "CloudflareWorker",
@@ -166,7 +183,6 @@ var _ = ginkgo.Describe("CloudflareWorkerSpec Custom Validation Tests", func() {
 						Name: "test-no-source",
 					},
 					Spec: &CloudflareWorkerSpec{
-						ScriptName:        "test-worker",
 						AccountId:         "00000000000000000000000000000000",
 						CompatibilityDate: "2024-01-01",
 					},
@@ -186,11 +202,14 @@ var _ = ginkgo.Describe("CloudflareWorkerSpec Custom Validation Tests", func() {
 						Name: "test-invalid-date",
 					},
 					Spec: &CloudflareWorkerSpec{
-						ScriptName: "test-worker",
-						ScriptSource: &foreignkeyv1.StringValueOrRef{
-							LiteralOrRef: &foreignkeyv1.StringValueOrRef_Value{Value: "/path/to/worker.js"},
+						AccountId: "00000000000000000000000000000000",
+						Script: &CloudflareWorkerScript{
+							Name: "test-worker",
+							Bundle: &CloudflareWorkerScriptBundleR2Object{
+								Bucket: "test-bucket",
+								Path:   "test/script.js",
+							},
 						},
-						AccountId:         "00000000000000000000000000000000",
 						CompatibilityDate: "2024/01/01",
 					},
 				}
