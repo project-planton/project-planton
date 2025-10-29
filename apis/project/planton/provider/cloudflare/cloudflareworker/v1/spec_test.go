@@ -91,7 +91,12 @@ var _ = ginkgo.Describe("CloudflareWorkerSpec Custom Validation Tests", func() {
 								Path:   "test/script-with-route.js",
 							},
 						},
-						RoutePattern:      "https://example.com/*",
+						Dns: &CloudflareWorkerDns{
+							Enabled:      true,
+							ZoneId:       "00000000000000000000000000000000",
+							Hostname:     "api.example.com",
+							RoutePattern: "https://example.com/*",
+						},
 						CompatibilityDate: "2024-01-01",
 					},
 				}

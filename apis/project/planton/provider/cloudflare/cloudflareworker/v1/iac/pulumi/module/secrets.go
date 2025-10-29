@@ -28,7 +28,7 @@ func uploadWorkerSecrets(
 	}
 
 	accountId := locals.CloudflareWorker.Spec.AccountId
-	
+
 	// Get API token from provider config or environment variable
 	var apiToken string
 	if locals.CloudflareProviderConfig != nil && locals.CloudflareProviderConfig.ApiToken != "" {
