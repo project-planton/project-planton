@@ -26,6 +26,10 @@ message CloudflareWorkerSpec {
   // (Optional) URL pattern to attach this Worker to (must correspond to a domain under an existing CloudflareDnsZone).
   string route_pattern = 4;
 
+  // (Optional) Cloudflare Zone ID for the route. Required when route_pattern is specified.
+  // This is the zone ID where the Worker route will be created.
+  string zone_id = 8;
+
   // (Optional) Compatibility date for the Worker script (YYYY-MM-DD). If unset, defaults to today's date.
   string compatibility_date = 5 [(buf.validate.field).string.pattern = "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"];
 

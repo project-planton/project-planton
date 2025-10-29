@@ -81,6 +81,9 @@ type CloudflareWorkerSpec struct {
 	KvBindings []*v1.ValueFromRef `protobuf:"bytes,3,rep,name=kv_bindings,json=kvBindings,proto3" json:"kv_bindings,omitempty"`
 	// (Optional) URL pattern to attach this Worker to (must correspond to a domain under an existing CloudflareDnsZone).
 	RoutePattern string `protobuf:"bytes,4,opt,name=route_pattern,json=routePattern,proto3" json:"route_pattern,omitempty"`
+	// (Optional) Cloudflare Zone ID for the route. Required when route_pattern is specified.
+	// This is the zone ID where the Worker route will be created.
+	ZoneId string `protobuf:"bytes,8,opt,name=zone_id,json=zoneId,proto3" json:"zone_id,omitempty"`
 	// (Optional) Compatibility date for the Worker script (YYYY-MM-DD). If unset, defaults to today's date.
 	CompatibilityDate string `protobuf:"bytes,5,opt,name=compatibility_date,json=compatibilityDate,proto3" json:"compatibility_date,omitempty"`
 	// (Optional) Billing/usage model for the Worker. Defaults to BUNDLED if unspecified.
@@ -147,6 +150,13 @@ func (x *CloudflareWorkerSpec) GetKvBindings() []*v1.ValueFromRef {
 func (x *CloudflareWorkerSpec) GetRoutePattern() string {
 	if x != nil {
 		return x.RoutePattern
+	}
+	return ""
+}
+
+func (x *CloudflareWorkerSpec) GetZoneId() string {
+	if x != nil {
+		return x.ZoneId
 	}
 	return ""
 }
@@ -342,14 +352,15 @@ var File_project_planton_provider_cloudflare_cloudflareworker_v1_spec_proto prot
 
 const file_project_planton_provider_cloudflare_cloudflareworker_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Bproject/planton/provider/cloudflare/cloudflareworker/v1/spec.proto\x127project.planton.provider.cloudflare.cloudflareworker.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\"\xde\x05\n" +
+	"Bproject/planton/provider/cloudflare/cloudflareworker/v1/spec.proto\x127project.planton.provider.cloudflare.cloudflareworker.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\"\xf7\x05\n" +
 	"\x14CloudflareWorkerSpec\x12=\n" +
 	"\n" +
 	"account_id\x18\x01 \x01(\tB\x1e\xbaH\x1b\xc8\x01\x01r\x162\x11^[0-9a-fA-F]{32}$\x98\x01 R\taccountId\x12o\n" +
 	"\x06script\x18\x02 \x01(\v2O.project.planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerScriptB\x06\xbaH\x03\xc8\x01\x01R\x06script\x12y\n" +
 	"\vkv_bindings\x18\x03 \x03(\v22.project.planton.shared.foreignkey.v1.ValueFromRefB$\x88\xd4a\x89\x0e\x92\xd4a\x1bstatus.outputs.namespace_idR\n" +
 	"kvBindings\x12#\n" +
-	"\rroute_pattern\x18\x04 \x01(\tR\froutePattern\x12R\n" +
+	"\rroute_pattern\x18\x04 \x01(\tR\froutePattern\x12\x17\n" +
+	"\azone_id\x18\b \x01(\tR\x06zoneId\x12R\n" +
 	"\x12compatibility_date\x18\x05 \x01(\tB#\xbaH r\x1e2\x1c^[0-9]{4}-[0-9]{2}-[0-9]{2}$R\x11compatibilityDate\x12\x89\x01\n" +
 	"\vusage_model\x18\x06 \x01(\x0e2h.project.planton.provider.cloudflare.cloudflareworker.v1.CloudflareWorkerSpec.CloudflareWorkerUsageModelR\n" +
 	"usageModel\x12^\n" +

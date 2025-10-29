@@ -4,7 +4,7 @@ import (
 	"github.com/pkg/errors"
 	"github.com/pulumi/pulumi-aws/sdk/v7/go/aws"
 	"github.com/pulumi/pulumi-aws/sdk/v7/go/aws/s3"
-	cloudfl "github.com/pulumi/pulumi-cloudflare/sdk/v5/go/cloudflare"
+	cloudfl "github.com/pulumi/pulumi-cloudflare/sdk/v6/go/cloudflare"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
@@ -15,13 +15,14 @@ func createWorkerScript(
 	locals *Locals,
 	cloudflareProvider *cloudfl.Provider,
 	r2Provider *aws.Provider,
-) (*cloudfl.WorkerScript, error) {
+) (*cloudfl.WorkersScript, error) {
 
 	// Fetch script content from R2 bundle
 	script := locals.CloudflareWorker.Spec.Script
 	bundle := script.Bundle
 
-	scriptObject := s3.LookupBucketObjectOutput(ctx, s3.LookupBucketObjectOutputArgs{
+	// Use GetObject instead of deprecated LookupBucketObject
+	scriptObject := s3.GetObjectOutput(ctx, s3.GetObjectOutputArgs{
 		Bucket: pulumi.String(bundle.Bucket),
 		Key:    pulumi.String(bundle.Path),
 	}, pulumi.Provider(r2Provider))
@@ -30,10 +31,10 @@ func createWorkerScript(
 
 	// Build plain-text environment variable bindings from env.variables
 	// Note: env.secrets are uploaded separately via Cloudflare Secrets API
-	var plainTextBindings cloudfl.WorkerScriptPlainTextBindingArray
+	var plainTextBindings cloudfl.WorkersScriptPlainTextBindingArray
 	if locals.CloudflareWorker.Spec.Env != nil {
 		for k, v := range locals.CloudflareWorker.Spec.Env.Variables {
-			plainTextBindings = append(plainTextBindings, cloudfl.WorkerScriptPlainTextBindingArgs{
+			plainTextBindings = append(plainTextBindings, cloudfl.WorkersScriptPlainTextBindingArgs{
 				Name: pulumi.String(k),
 				Text: pulumi.String(v),
 			})
@@ -41,16 +42,16 @@ func createWorkerScript(
 	}
 
 	// Build KV namespace bindings (if any)
-	var kvBindings cloudfl.WorkerScriptKvNamespaceBindingArray
+	var kvBindings cloudfl.WorkersScriptKvNamespaceBindingArray
 	for _, kvBinding := range locals.CloudflareWorker.Spec.KvBindings {
-		kvBindings = append(kvBindings, cloudfl.WorkerScriptKvNamespaceBindingArgs{
+		kvBindings = append(kvBindings, cloudfl.WorkersScriptKvNamespaceBindingArgs{
 			Name:        pulumi.String(kvBinding.Name),
 			NamespaceId: pulumi.String(kvBinding.GetFieldPath()),
 		})
 	}
 
 	// Build Worker script arguments
-	scriptArgs := &cloudfl.WorkerScriptArgs{
+	scriptArgs := &cloudfl.WorkersScriptArgs{
 		AccountId:           pulumi.String(locals.CloudflareWorker.Spec.AccountId),
 		Name:                pulumi.String(locals.CloudflareWorker.Spec.Script.Name),
 		Content:             scriptContent,
@@ -62,15 +63,15 @@ func createWorkerScript(
 		scriptArgs.CompatibilityDate = pulumi.StringPtr(locals.CloudflareWorker.Spec.CompatibilityDate)
 	}
 
-	// Create the Worker script
-	createdWorkerScript, err := cloudfl.NewWorkerScript(
+	// Create the Worker script using new WorkersScript resource
+	createdWorkerScript, err := cloudfl.NewWorkersScript(
 		ctx,
-		"worker-script",
+		"workers-script",
 		scriptArgs,
 		pulumi.Provider(cloudflareProvider),
 	)
 	if err != nil {
-		return nil, errors.Wrap(err, "failed to create cloudflare worker script")
+		return nil, errors.Wrap(err, "failed to create cloudflare workers script")
 	}
 
 	// Export stack output

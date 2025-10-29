@@ -20,7 +20,7 @@ require (
 	github.com/pulumi/pulumi-aws/sdk/v7 v7.3.0
 	github.com/pulumi/pulumi-azure/sdk/v5 v5.89.0
 	github.com/pulumi/pulumi-civo/sdk/v2 v2.4.8
-	github.com/pulumi/pulumi-cloudflare/sdk/v5 v5.49.1
+	github.com/pulumi/pulumi-cloudflare/sdk/v6 v6.10.1
 	github.com/pulumi/pulumi-digitalocean/sdk/v4 v4.49.0
 	github.com/pulumi/pulumi-gcp/sdk/v8 v8.27.0
 	github.com/pulumi/pulumi-kubernetes/sdk/v4 v4.18.4
