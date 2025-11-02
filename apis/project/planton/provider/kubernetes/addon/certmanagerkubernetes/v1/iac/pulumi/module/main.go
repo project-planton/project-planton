@@ -1,10 +1,14 @@
 package module
 
 import (
+	"fmt"
+
 	"github.com/pkg/errors"
 	certmanagerv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/addon/certmanagerkubernetes/v1"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/pulumikubernetesprovider"
+	apiextensionsv1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/apiextensions"
 	corev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
+	"github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes"
 	"github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/helm/v3"
 	metav1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/meta/v1"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
@@ -21,23 +25,25 @@ func Resources(ctx *pulumi.Context, stackInput *certmanagerv1.CertManagerKuberne
 
 	spec := stackInput.Target.Spec
 
-	// pick helm chart version based on release_channel
-	chartVersion := vars.DefaultStableVersion
-	releaseChannel := spec.GetReleaseChannel()
-	switch releaseChannel {
-	case "", "stable":
-		chartVersion = vars.DefaultStableVersion
-	case "latest", "edge", "fast":
-		chartVersion = vars.DefaultLatestVersion
-	default:
-		chartVersion = releaseChannel // explicit tag such as v1.16.1
+	// validate spec has required ACME config and at least one DNS provider
+	if spec.Acme == nil {
+		return errors.New("spec.acme is required")
+	}
+	if len(spec.DnsProviders) == 0 {
+		return errors.New("spec.dns_providers must contain at least one provider")
 	}
 
+	// get namespace from spec (proto default: "cert-manager")
+	namespace := spec.GetNamespace()
+
+	// get chart version from spec (proto default: "v1.19.1")
+	chartVersion := spec.GetHelmChartVersion()
+
 	// create cert‑manager namespace
-	ns, err := corev1.NewNamespace(ctx, vars.Namespace,
+	ns, err := corev1.NewNamespace(ctx, namespace,
 		&corev1.NamespaceArgs{
 			Metadata: &metav1.ObjectMetaArgs{
-				Name: pulumi.String(vars.Namespace),
+				Name: pulumi.String(namespace),
 			},
 		},
 		pulumi.Provider(kubeProvider))
@@ -45,23 +51,20 @@ func Resources(ctx *pulumi.Context, stackInput *certmanagerv1.CertManagerKuberne
 		return errors.Wrap(err, "failed to create namespace")
 	}
 
-	// build identity annotation map
+	// build identity annotation map for ServiceAccount
+	// multiple providers may need different identities configured
 	annotations := pulumi.StringMap{}
-	var solverIdentity pulumi.StringInput
-
-	if gke := spec.GetGke(); gke != nil {
-		annotations["iam.gke.io/gcp-service-account"] = pulumi.String(gke.GsaEmail)
-		solverIdentity = pulumi.String(gke.GsaEmail)
-	} else if eks := spec.GetEks(); eks != nil {
-		roleArn := eks.IrsaRoleArnOverride
-		if roleArn == "" {
-			return errors.New("eks.irsa_role_arn_override must be set (auto‑creation not implemented)")
+	
+	// process each DNS provider to build service account annotations
+	for _, dnsProvider := range spec.DnsProviders {
+		if gcp := dnsProvider.GetGcpCloudDns(); gcp != nil {
+			annotations["iam.gke.io/gcp-service-account"] = pulumi.String(gcp.ServiceAccountEmail)
+		} else if aws := dnsProvider.GetAwsRoute53(); aws != nil {
+			annotations["eks.amazonaws.com/role-arn"] = pulumi.String(aws.RoleArn)
+		} else if azure := dnsProvider.GetAzureDns(); azure != nil {
+			annotations["azure.workload.identity/client-id"] = pulumi.String(azure.ClientId)
 		}
-		annotations["eks.amazonaws.com/role-arn"] = pulumi.String(roleArn)
-		solverIdentity = pulumi.String(roleArn)
-	} else if aks := spec.GetAks(); aks != nil && aks.ManagedIdentityClientId != "" {
-		annotations["azure.workload.identity/client-id"] = pulumi.String(aks.ManagedIdentityClientId)
-		solverIdentity = pulumi.String(aks.ManagedIdentityClientId)
+		// Cloudflare providers don't need ServiceAccount annotations
 	}
 
 	// create a ServiceAccount with the chosen annotations
@@ -79,8 +82,8 @@ func Resources(ctx *pulumi.Context, stackInput *certmanagerv1.CertManagerKuberne
 		return errors.Wrap(err, "failed to create service account")
 	}
 
-	// deploy cert‑manager helm chart
-	_, err = helm.NewRelease(ctx, "cert-manager",
+	// deploy cert‑manager helm chart with DNS resolver configuration
+	helmRelease, err := helm.NewRelease(ctx, "cert-manager",
 		&helm.ReleaseArgs{
 			Name:            pulumi.String(vars.HelmChartName),
 			Namespace:       ns.Metadata.Name(),
@@ -97,6 +100,11 @@ func Resources(ctx *pulumi.Context, stackInput *certmanagerv1.CertManagerKuberne
 					"create": pulumi.Bool(false),
 					"name":   pulumi.String(vars.KsaName),
 				},
+				// Configure DNS resolvers for reliable DNS-01 propagation checks
+				"extraArgs": pulumi.Array{
+					pulumi.String("--dns01-recursive-nameservers-only"),
+					pulumi.String("--dns01-recursive-nameservers=1.1.1.1:53,8.8.8.8:53"),
+				},
 			},
 			RepositoryOpts: helm.RepositoryOptsArgs{
 				Repo: pulumi.String(vars.HelmChartRepo),
@@ -108,12 +116,134 @@ func Resources(ctx *pulumi.Context, stackInput *certmanagerv1.CertManagerKuberne
 		return errors.Wrap(err, "failed to install cert-manager helm release")
 	}
 
+	// create secrets for Cloudflare providers
+	cloudflareSecrets := make(map[string]pulumi.StringOutput)
+	for _, dnsProvider := range spec.DnsProviders {
+		if cf := dnsProvider.GetCloudflare(); cf != nil {
+			secretName := fmt.Sprintf("cert-manager-%s-credentials", dnsProvider.Name)
+		secret, err := corev1.NewSecret(ctx, secretName,
+			&corev1.SecretArgs{
+				Metadata: &metav1.ObjectMetaArgs{
+					Name:      pulumi.String(secretName),
+					Namespace: ns.Metadata.Name(),
+				},
+				StringData: pulumi.StringMap{
+					"api-token": pulumi.String(cf.ApiToken),
+				},
+			},
+			pulumi.Provider(kubeProvider),
+			pulumi.Parent(ns))
+		if err != nil {
+				return errors.Wrapf(err, "failed to create cloudflare secret for provider %s", dnsProvider.Name)
+			}
+			cloudflareSecrets[dnsProvider.Name] = secret.Metadata.Name().Elem()
+		}
+		}
+
+	// create one ClusterIssuer per domain for better visibility
+	clusterIssuerNames := make([]string, 0)
+	for _, dnsProvider := range spec.DnsProviders {
+		for _, dnsZone := range dnsProvider.DnsZones {
+			// Create ClusterIssuer named after the domain
+			err = createClusterIssuerForDomain(ctx, kubeProvider, helmRelease, spec, cloudflareSecrets, dnsProvider, dnsZone)
+			if err != nil {
+				return errors.Wrapf(err, "failed to create cluster issuer for domain %s", dnsZone)
+			}
+			clusterIssuerNames = append(clusterIssuerNames, dnsZone)
+		}
+	}
+
 	// export stack outputs
 	ctx.Export(OpNamespace, ns.Metadata.Name())
 	ctx.Export(OpReleaseName, pulumi.String(vars.HelmChartName))
-	if solverIdentity != nil {
-		ctx.Export(OpSolverIdentity, solverIdentity)
-	}
+	ctx.Export(OpClusterIssuerNames, pulumi.ToStringArray(clusterIssuerNames))
 
 	return nil
+}
+
+// createClusterIssuerForDomain creates a ClusterIssuer for a single domain
+func createClusterIssuerForDomain(
+	ctx *pulumi.Context,
+	kubeProvider *kubernetes.Provider,
+	helmRelease *helm.Release,
+	spec *certmanagerv1.CertManagerKubernetesSpec,
+	cloudflareSecrets map[string]pulumi.StringOutput,
+	dnsProvider *certmanagerv1.DnsProviderConfig,
+	domain string,
+) error {
+	// ClusterIssuer name is the domain itself for better visibility
+	issuerName := domain
+
+	// build the single solver for this domain
+	var solverConfig map[string]interface{}
+
+	if gcp := dnsProvider.GetGcpCloudDns(); gcp != nil {
+		solverConfig = map[string]interface{}{
+			"dns01": map[string]interface{}{
+				"cloudDNS": map[string]interface{}{
+					"project": gcp.ProjectId,
+				},
+			},
+		}
+	} else if aws := dnsProvider.GetAwsRoute53(); aws != nil {
+		solverConfig = map[string]interface{}{
+			"dns01": map[string]interface{}{
+				"route53": map[string]interface{}{
+					"region": aws.Region,
+				},
+			},
+		}
+	} else if azure := dnsProvider.GetAzureDns(); azure != nil {
+		solverConfig = map[string]interface{}{
+			"dns01": map[string]interface{}{
+				"azureDNS": map[string]interface{}{
+					"subscriptionID":    azure.SubscriptionId,
+					"resourceGroupName": azure.ResourceGroup,
+				},
+			},
+		}
+	} else if cf := dnsProvider.GetCloudflare(); cf != nil {
+		// get the secret name for this provider
+		secretName, ok := cloudflareSecrets[dnsProvider.Name]
+		if !ok {
+			return errors.Errorf("cloudflare secret not found for provider %s", dnsProvider.Name)
+		}
+
+		solverConfig = map[string]interface{}{
+			"dns01": map[string]interface{}{
+				"cloudflare": map[string]interface{}{
+					"apiTokenSecretRef": map[string]interface{}{
+						"name": secretName,
+						"key":  "api-token",
+					},
+				},
+			},
+		}
+	}
+
+	// create the ClusterIssuer for this domain
+	_, err := apiextensionsv1.NewCustomResource(ctx, issuerName,
+		&apiextensionsv1.CustomResourceArgs{
+			ApiVersion: pulumi.String("cert-manager.io/v1"),
+			Kind:       pulumi.String("ClusterIssuer"),
+			Metadata: &metav1.ObjectMetaArgs{
+				Name: pulumi.String(issuerName),
+			},
+			OtherFields: map[string]interface{}{
+				"spec": map[string]interface{}{
+					"acme": map[string]interface{}{
+						"email":  spec.Acme.Email,
+						"server": spec.Acme.GetServer(),
+						"privateKeySecretRef": map[string]interface{}{
+							"name": fmt.Sprintf("letsencrypt-%s-account-key", domain),
+						},
+						"solvers": []interface{}{solverConfig},
+					},
+				},
+			},
+		},
+		pulumi.Provider(kubeProvider),
+		pulumi.DependsOn([]pulumi.Resource{helmRelease}))
+
+	return err
 }
