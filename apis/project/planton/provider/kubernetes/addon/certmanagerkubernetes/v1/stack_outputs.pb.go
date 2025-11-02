@@ -30,8 +30,10 @@ type CertManagerKubernetesStackOutputs struct {
 	ReleaseName string `protobuf:"bytes,2,opt,name=release_name,json=releaseName,proto3" json:"release_name,omitempty"`
 	// The service account e‑mail/ARN/ClientID used for DNS‑01 solver.
 	SolverIdentity string `protobuf:"bytes,3,opt,name=solver_identity,json=solverIdentity,proto3" json:"solver_identity,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
+	// The name of the Kubernetes Secret containing the Cloudflare API token (only set for Cloudflare configs).
+	CloudflareSecretName string `protobuf:"bytes,4,opt,name=cloudflare_secret_name,json=cloudflareSecretName,proto3" json:"cloudflare_secret_name,omitempty"`
+	unknownFields        protoimpl.UnknownFields
+	sizeCache            protoimpl.SizeCache
 }
 
 func (x *CertManagerKubernetesStackOutputs) Reset() {
@@ -85,15 +87,23 @@ func (x *CertManagerKubernetesStackOutputs) GetSolverIdentity() string {
 	return ""
 }
 
+func (x *CertManagerKubernetesStackOutputs) GetCloudflareSecretName() string {
+	if x != nil {
+		return x.CloudflareSecretName
+	}
+	return ""
+}
+
 var File_project_planton_provider_kubernetes_addon_certmanagerkubernetes_v1_stack_outputs_proto protoreflect.FileDescriptor
 
 const file_project_planton_provider_kubernetes_addon_certmanagerkubernetes_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Vproject/planton/provider/kubernetes/addon/certmanagerkubernetes/v1/stack_outputs.proto\x12Bproject.planton.provider.kubernetes.addon.certmanagerkubernetes.v1\"\x8d\x01\n" +
+	"Vproject/planton/provider/kubernetes/addon/certmanagerkubernetes/v1/stack_outputs.proto\x12Bproject.planton.provider.kubernetes.addon.certmanagerkubernetes.v1\"\xc3\x01\n" +
 	"!CertManagerKubernetesStackOutputs\x12\x1c\n" +
 	"\tnamespace\x18\x01 \x01(\tR\tnamespace\x12!\n" +
 	"\frelease_name\x18\x02 \x01(\tR\vreleaseName\x12'\n" +
-	"\x0fsolver_identity\x18\x03 \x01(\tR\x0esolverIdentityB\x99\x04\n" +
+	"\x0fsolver_identity\x18\x03 \x01(\tR\x0esolverIdentity\x124\n" +
+	"\x16cloudflare_secret_name\x18\x04 \x01(\tR\x14cloudflareSecretNameB\x99\x04\n" +
 	"Fcom.project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1B\x11StackOutputsProtoP\x01Z\x8a\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/addon/certmanagerkubernetes/v1;certmanagerkubernetesv1\xa2\x02\x06PPPKAC\xaa\x02BProject.Planton.Provider.Kubernetes.Addon.Certmanagerkubernetes.V1\xca\x02BProject\\Planton\\Provider\\Kubernetes\\Addon\\Certmanagerkubernetes\\V1\xe2\x02NProject\\Planton\\Provider\\Kubernetes\\Addon\\Certmanagerkubernetes\\V1\\GPBMetadata\xea\x02HProject::Planton::Provider::Kubernetes::Addon::Certmanagerkubernetes::V1b\x06proto3"
 
 var (

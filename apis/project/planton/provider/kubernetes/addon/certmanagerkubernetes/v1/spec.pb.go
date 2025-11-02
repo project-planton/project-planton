@@ -8,7 +8,6 @@ package certmanagerkubernetesv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	v1 "github.com/project-planton/project-planton/apis/project/planton/shared/foreignkey/v1"
 	kubernetes "github.com/project-planton/project-planton/apis/project/planton/shared/kubernetes"
 	_ "github.com/project-planton/project-planton/apis/project/planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -26,24 +25,27 @@ const (
 )
 
 // CertManagerKubernetesSpec defines configuration for cert-manager on any cluster.
+// The addon automatically creates a ClusterIssuer with multiple DNS solvers based on the provided DNS provider configurations.
 type CertManagerKubernetesSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// The Kubernetes cluster to install this addon on.
 	TargetCluster *kubernetes.KubernetesAddonTargetCluster `protobuf:"bytes,1,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
-	// Upstream release channel or version tag (e.g. "v1.16").
-	ReleaseChannel *string `protobuf:"bytes,2,opt,name=release_channel,json=releaseChannel,proto3,oneof" json:"release_channel,omitempty"`
+	// Kubernetes namespace where cert-manager will be deployed.
+	Namespace *string `protobuf:"bytes,2,opt,name=namespace,proto3,oneof" json:"namespace,omitempty"`
+	// cert-manager version such as "v1.19.1". Used to set the image tag.
+	// Minimum version v1.16.4 is enforced for Cloudflare API compatibility.
+	CertManagerVersion *string `protobuf:"bytes,3,opt,name=cert_manager_version,json=certManagerVersion,proto3,oneof" json:"cert_manager_version,omitempty"`
+	// Helm chart version to deploy. If not specified, uses the default version.
+	HelmChartVersion *string `protobuf:"bytes,4,opt,name=helm_chart_version,json=helmChartVersion,proto3,oneof" json:"helm_chart_version,omitempty"`
 	// skip installation of self-signed issuer.
-	SkipInstallSelfSignedIssuer bool `protobuf:"varint,3,opt,name=skip_install_self_signed_issuer,json=skipInstallSelfSignedIssuer,proto3" json:"skip_install_self_signed_issuer,omitempty"`
-	// Provider‑specific glue. Only one may be set.
-	//
-	// Types that are valid to be assigned to ProviderConfig:
-	//
-	//	*CertManagerKubernetesSpec_Gke
-	//	*CertManagerKubernetesSpec_Eks
-	//	*CertManagerKubernetesSpec_Aks
-	ProviderConfig isCertManagerKubernetesSpec_ProviderConfig `protobuf_oneof:"provider_config"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
+	SkipInstallSelfSignedIssuer bool `protobuf:"varint,5,opt,name=skip_install_self_signed_issuer,json=skipInstallSelfSignedIssuer,proto3" json:"skip_install_self_signed_issuer,omitempty"`
+	// Global ACME configuration used for all DNS providers.
+	Acme *AcmeConfig `protobuf:"bytes,6,opt,name=acme,proto3" json:"acme,omitempty"`
+	// List of DNS provider configurations. Each provider can manage multiple DNS zones.
+	// The addon will create a single ClusterIssuer with multiple solvers based on these configurations.
+	DnsProviders  []*DnsProviderConfig `protobuf:"bytes,7,rep,name=dns_providers,json=dnsProviders,proto3" json:"dns_providers,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *CertManagerKubernetesSpec) Reset() {
@@ -83,9 +85,23 @@ func (x *CertManagerKubernetesSpec) GetTargetCluster() *kubernetes.KubernetesAdd
 	return nil
 }
 
-func (x *CertManagerKubernetesSpec) GetReleaseChannel() string {
-	if x != nil && x.ReleaseChannel != nil {
-		return *x.ReleaseChannel
+func (x *CertManagerKubernetesSpec) GetNamespace() string {
+	if x != nil && x.Namespace != nil {
+		return *x.Namespace
+	}
+	return ""
+}
+
+func (x *CertManagerKubernetesSpec) GetCertManagerVersion() string {
+	if x != nil && x.CertManagerVersion != nil {
+		return *x.CertManagerVersion
+	}
+	return ""
+}
+
+func (x *CertManagerKubernetesSpec) GetHelmChartVersion() string {
+	if x != nil && x.HelmChartVersion != nil {
+		return *x.HelmChartVersion
 	}
 	return ""
 }
@@ -97,92 +113,49 @@ func (x *CertManagerKubernetesSpec) GetSkipInstallSelfSignedIssuer() bool {
 	return false
 }
 
-func (x *CertManagerKubernetesSpec) GetProviderConfig() isCertManagerKubernetesSpec_ProviderConfig {
+func (x *CertManagerKubernetesSpec) GetAcme() *AcmeConfig {
 	if x != nil {
-		return x.ProviderConfig
+		return x.Acme
 	}
 	return nil
 }
 
-func (x *CertManagerKubernetesSpec) GetGke() *CertManagerGkeConfig {
+func (x *CertManagerKubernetesSpec) GetDnsProviders() []*DnsProviderConfig {
 	if x != nil {
-		if x, ok := x.ProviderConfig.(*CertManagerKubernetesSpec_Gke); ok {
-			return x.Gke
-		}
+		return x.DnsProviders
 	}
 	return nil
 }
 
-func (x *CertManagerKubernetesSpec) GetEks() *CertManagerEksConfig {
-	if x != nil {
-		if x, ok := x.ProviderConfig.(*CertManagerKubernetesSpec_Eks); ok {
-			return x.Eks
-		}
-	}
-	return nil
-}
-
-func (x *CertManagerKubernetesSpec) GetAks() *CertManagerAksConfig {
-	if x != nil {
-		if x, ok := x.ProviderConfig.(*CertManagerKubernetesSpec_Aks); ok {
-			return x.Aks
-		}
-	}
-	return nil
-}
-
-type isCertManagerKubernetesSpec_ProviderConfig interface {
-	isCertManagerKubernetesSpec_ProviderConfig()
-}
-
-type CertManagerKubernetesSpec_Gke struct {
-	// Google Cloud Platform (GCP) + Workload Identity.
-	Gke *CertManagerGkeConfig `protobuf:"bytes,100,opt,name=gke,proto3,oneof"`
-}
-
-type CertManagerKubernetesSpec_Eks struct {
-	// Amazon Web Services (AWS) + IAM Roles for Service Accounts (IRSA).
-	Eks *CertManagerEksConfig `protobuf:"bytes,101,opt,name=eks,proto3,oneof"`
-}
-
-type CertManagerKubernetesSpec_Aks struct {
-	// Microsoft Azure (Azure) + Managed Identity.
-	Aks *CertManagerAksConfig `protobuf:"bytes,102,opt,name=aks,proto3,oneof"`
-}
-
-func (*CertManagerKubernetesSpec_Gke) isCertManagerKubernetesSpec_ProviderConfig() {}
-
-func (*CertManagerKubernetesSpec_Eks) isCertManagerKubernetesSpec_ProviderConfig() {}
-
-func (*CertManagerKubernetesSpec_Aks) isCertManagerKubernetesSpec_ProviderConfig() {}
-
-// Google Cloud DNS + Workload Identity.
-type CertManagerGkeConfig struct {
+// AcmeConfig defines global ACME settings for certificate issuance.
+// These settings apply to all DNS providers configured in the addon.
+type AcmeConfig struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The GCP project that hosts the DNS zone and the GKE cluster.
-	ProjectId *v1.StringValueOrRef `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
-	// The GCP DNS zone ID to use for cert-manager.
-	DnsZoneId *v1.StringValueOrRef `protobuf:"bytes,2,opt,name=dns_zone_id,json=dnsZoneId,proto3" json:"dns_zone_id,omitempty"`
-	// google service account email to use for cert-manager.
-	GsaEmail      string `protobuf:"bytes,3,opt,name=gsa_email,json=gsaEmail,proto3" json:"gsa_email,omitempty"`
+	// ACME account email for registration and expiry notifications.
+	// This email will be used by the Certificate Authority (e.g., Let's Encrypt).
+	Email string `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
+	// ACME server URL.
+	// Use https://acme-v02.api.letsencrypt.org/directory for production.
+	// Use https://acme-staging-v02.api.letsencrypt.org/directory for testing.
+	Server        *string `protobuf:"bytes,2,opt,name=server,proto3,oneof" json:"server,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *CertManagerGkeConfig) Reset() {
-	*x = CertManagerGkeConfig{}
+func (x *AcmeConfig) Reset() {
+	*x = AcmeConfig{}
 	mi := &file_project_planton_provider_kubernetes_addon_certmanagerkubernetes_v1_spec_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *CertManagerGkeConfig) String() string {
+func (x *AcmeConfig) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*CertManagerGkeConfig) ProtoMessage() {}
+func (*AcmeConfig) ProtoMessage() {}
 
-func (x *CertManagerGkeConfig) ProtoReflect() protoreflect.Message {
+func (x *AcmeConfig) ProtoReflect() protoreflect.Message {
 	mi := &file_project_planton_provider_kubernetes_addon_certmanagerkubernetes_v1_spec_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -194,111 +167,196 @@ func (x *CertManagerGkeConfig) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use CertManagerGkeConfig.ProtoReflect.Descriptor instead.
-func (*CertManagerGkeConfig) Descriptor() ([]byte, []int) {
+// Deprecated: Use AcmeConfig.ProtoReflect.Descriptor instead.
+func (*AcmeConfig) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_kubernetes_addon_certmanagerkubernetes_v1_spec_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *CertManagerGkeConfig) GetProjectId() *v1.StringValueOrRef {
+func (x *AcmeConfig) GetEmail() string {
 	if x != nil {
-		return x.ProjectId
-	}
-	return nil
-}
-
-func (x *CertManagerGkeConfig) GetDnsZoneId() *v1.StringValueOrRef {
-	if x != nil {
-		return x.DnsZoneId
-	}
-	return nil
-}
-
-func (x *CertManagerGkeConfig) GetGsaEmail() string {
-	if x != nil {
-		return x.GsaEmail
+		return x.Email
 	}
 	return ""
 }
 
-// AWS Route53 + IRSA.
-type CertManagerEksConfig struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Route53ZoneId *v1.StringValueOrRef   `protobuf:"bytes,1,opt,name=route53_zone_id,json=route53ZoneId,proto3" json:"route53_zone_id,omitempty"`
-	// Optional existing IAM role ARN for IRSA; auto‑created if blank.
-	IrsaRoleArnOverride string `protobuf:"bytes,2,opt,name=irsa_role_arn_override,json=irsaRoleArnOverride,proto3" json:"irsa_role_arn_override,omitempty"`
+func (x *AcmeConfig) GetServer() string {
+	if x != nil && x.Server != nil {
+		return *x.Server
+	}
+	return ""
+}
+
+// DnsProviderConfig defines a DNS provider configuration with credentials and domain mappings.
+// Each configuration represents a single DNS provider account/identity that manages one or more DNS zones.
+type DnsProviderConfig struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Unique identifier for this provider configuration.
+	// Used for generating Kubernetes secret names (e.g., "cloudflare-prod", "gcp-internal").
+	// Must be unique within the dns_providers list.
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	// List of DNS zones this provider is responsible for managing.
+	// cert-manager will use this provider's solver for any certificate requests matching these zones.
+	// Examples: ["example.com", "example.org"] or ["internal.example.net"]
+	DnsZones []string `protobuf:"bytes,2,rep,name=dns_zones,json=dnsZones,proto3" json:"dns_zones,omitempty"`
+	// Provider-specific configuration. Exactly one must be set.
+	//
+	// Types that are valid to be assigned to Provider:
+	//
+	//	*DnsProviderConfig_GcpCloudDns
+	//	*DnsProviderConfig_AwsRoute53
+	//	*DnsProviderConfig_AzureDns
+	//	*DnsProviderConfig_Cloudflare
+	Provider      isDnsProviderConfig_Provider `protobuf_oneof:"provider"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DnsProviderConfig) Reset() {
+	*x = DnsProviderConfig{}
+	mi := &file_project_planton_provider_kubernetes_addon_certmanagerkubernetes_v1_spec_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DnsProviderConfig) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DnsProviderConfig) ProtoMessage() {}
+
+func (x *DnsProviderConfig) ProtoReflect() protoreflect.Message {
+	mi := &file_project_planton_provider_kubernetes_addon_certmanagerkubernetes_v1_spec_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DnsProviderConfig.ProtoReflect.Descriptor instead.
+func (*DnsProviderConfig) Descriptor() ([]byte, []int) {
+	return file_project_planton_provider_kubernetes_addon_certmanagerkubernetes_v1_spec_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *DnsProviderConfig) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *DnsProviderConfig) GetDnsZones() []string {
+	if x != nil {
+		return x.DnsZones
+	}
+	return nil
+}
+
+func (x *DnsProviderConfig) GetProvider() isDnsProviderConfig_Provider {
+	if x != nil {
+		return x.Provider
+	}
+	return nil
+}
+
+func (x *DnsProviderConfig) GetGcpCloudDns() *GcpCloudDnsProvider {
+	if x != nil {
+		if x, ok := x.Provider.(*DnsProviderConfig_GcpCloudDns); ok {
+			return x.GcpCloudDns
+		}
+	}
+	return nil
+}
+
+func (x *DnsProviderConfig) GetAwsRoute53() *AwsRoute53Provider {
+	if x != nil {
+		if x, ok := x.Provider.(*DnsProviderConfig_AwsRoute53); ok {
+			return x.AwsRoute53
+		}
+	}
+	return nil
+}
+
+func (x *DnsProviderConfig) GetAzureDns() *AzureDnsProvider {
+	if x != nil {
+		if x, ok := x.Provider.(*DnsProviderConfig_AzureDns); ok {
+			return x.AzureDns
+		}
+	}
+	return nil
+}
+
+func (x *DnsProviderConfig) GetCloudflare() *CloudflareProvider {
+	if x != nil {
+		if x, ok := x.Provider.(*DnsProviderConfig_Cloudflare); ok {
+			return x.Cloudflare
+		}
+	}
+	return nil
+}
+
+type isDnsProviderConfig_Provider interface {
+	isDnsProviderConfig_Provider()
+}
+
+type DnsProviderConfig_GcpCloudDns struct {
+	// Google Cloud DNS provider configuration.
+	GcpCloudDns *GcpCloudDnsProvider `protobuf:"bytes,100,opt,name=gcp_cloud_dns,json=gcpCloudDns,proto3,oneof"`
+}
+
+type DnsProviderConfig_AwsRoute53 struct {
+	// AWS Route53 provider configuration.
+	AwsRoute53 *AwsRoute53Provider `protobuf:"bytes,101,opt,name=aws_route53,json=awsRoute53,proto3,oneof"`
+}
+
+type DnsProviderConfig_AzureDns struct {
+	// Azure DNS provider configuration.
+	AzureDns *AzureDnsProvider `protobuf:"bytes,102,opt,name=azure_dns,json=azureDns,proto3,oneof"`
+}
+
+type DnsProviderConfig_Cloudflare struct {
+	// Cloudflare DNS provider configuration.
+	Cloudflare *CloudflareProvider `protobuf:"bytes,103,opt,name=cloudflare,proto3,oneof"`
+}
+
+func (*DnsProviderConfig_GcpCloudDns) isDnsProviderConfig_Provider() {}
+
+func (*DnsProviderConfig_AwsRoute53) isDnsProviderConfig_Provider() {}
+
+func (*DnsProviderConfig_AzureDns) isDnsProviderConfig_Provider() {}
+
+func (*DnsProviderConfig_Cloudflare) isDnsProviderConfig_Provider() {}
+
+// GcpCloudDnsProvider configures Google Cloud DNS with Workload Identity.
+// The addon will configure the cert-manager ServiceAccount with the appropriate Workload Identity annotation.
+type GcpCloudDnsProvider struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// GCP project ID that contains the DNS zones.
+	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
+	// GCP Service Account email for Workload Identity.
+	// This service account must have the dns.admin role on the specified project.
+	ServiceAccountEmail string `protobuf:"bytes,2,opt,name=service_account_email,json=serviceAccountEmail,proto3" json:"service_account_email,omitempty"`
 	unknownFields       protoimpl.UnknownFields
 	sizeCache           protoimpl.SizeCache
 }
 
-func (x *CertManagerEksConfig) Reset() {
-	*x = CertManagerEksConfig{}
-	mi := &file_project_planton_provider_kubernetes_addon_certmanagerkubernetes_v1_spec_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CertManagerEksConfig) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CertManagerEksConfig) ProtoMessage() {}
-
-func (x *CertManagerEksConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_project_planton_provider_kubernetes_addon_certmanagerkubernetes_v1_spec_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CertManagerEksConfig.ProtoReflect.Descriptor instead.
-func (*CertManagerEksConfig) Descriptor() ([]byte, []int) {
-	return file_project_planton_provider_kubernetes_addon_certmanagerkubernetes_v1_spec_proto_rawDescGZIP(), []int{2}
-}
-
-func (x *CertManagerEksConfig) GetRoute53ZoneId() *v1.StringValueOrRef {
-	if x != nil {
-		return x.Route53ZoneId
-	}
-	return nil
-}
-
-func (x *CertManagerEksConfig) GetIrsaRoleArnOverride() string {
-	if x != nil {
-		return x.IrsaRoleArnOverride
-	}
-	return ""
-}
-
-// Azure DNS + Managed Identity.
-type CertManagerAksConfig struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The Azure DNS zone ID to use for cert-manager.
-	DnsZoneId string `protobuf:"bytes,1,opt,name=dns_zone_id,json=dnsZoneId,proto3" json:"dns_zone_id,omitempty"`
-	// Optional existing managed identity client ID.
-	ManagedIdentityClientId string `protobuf:"bytes,2,opt,name=managed_identity_client_id,json=managedIdentityClientId,proto3" json:"managed_identity_client_id,omitempty"`
-	unknownFields           protoimpl.UnknownFields
-	sizeCache               protoimpl.SizeCache
-}
-
-func (x *CertManagerAksConfig) Reset() {
-	*x = CertManagerAksConfig{}
+func (x *GcpCloudDnsProvider) Reset() {
+	*x = GcpCloudDnsProvider{}
 	mi := &file_project_planton_provider_kubernetes_addon_certmanagerkubernetes_v1_spec_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *CertManagerAksConfig) String() string {
+func (x *GcpCloudDnsProvider) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*CertManagerAksConfig) ProtoMessage() {}
+func (*GcpCloudDnsProvider) ProtoMessage() {}
 
-func (x *CertManagerAksConfig) ProtoReflect() protoreflect.Message {
+func (x *GcpCloudDnsProvider) ProtoReflect() protoreflect.Message {
 	mi := &file_project_planton_provider_kubernetes_addon_certmanagerkubernetes_v1_spec_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -310,21 +368,193 @@ func (x *CertManagerAksConfig) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use CertManagerAksConfig.ProtoReflect.Descriptor instead.
-func (*CertManagerAksConfig) Descriptor() ([]byte, []int) {
+// Deprecated: Use GcpCloudDnsProvider.ProtoReflect.Descriptor instead.
+func (*GcpCloudDnsProvider) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_kubernetes_addon_certmanagerkubernetes_v1_spec_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *CertManagerAksConfig) GetDnsZoneId() string {
+func (x *GcpCloudDnsProvider) GetProjectId() string {
 	if x != nil {
-		return x.DnsZoneId
+		return x.ProjectId
 	}
 	return ""
 }
 
-func (x *CertManagerAksConfig) GetManagedIdentityClientId() string {
+func (x *GcpCloudDnsProvider) GetServiceAccountEmail() string {
 	if x != nil {
-		return x.ManagedIdentityClientId
+		return x.ServiceAccountEmail
+	}
+	return ""
+}
+
+// AwsRoute53Provider configures AWS Route53 with IAM Roles for Service Accounts (IRSA).
+// The addon will configure the cert-manager ServiceAccount with the appropriate IRSA annotation.
+type AwsRoute53Provider struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// AWS region where Route53 is configured.
+	Region string `protobuf:"bytes,1,opt,name=region,proto3" json:"region,omitempty"`
+	// IAM Role ARN for IRSA.
+	// This role must have permissions to modify Route53 records in the specified zones.
+	RoleArn       string `protobuf:"bytes,2,opt,name=role_arn,json=roleArn,proto3" json:"role_arn,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AwsRoute53Provider) Reset() {
+	*x = AwsRoute53Provider{}
+	mi := &file_project_planton_provider_kubernetes_addon_certmanagerkubernetes_v1_spec_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AwsRoute53Provider) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AwsRoute53Provider) ProtoMessage() {}
+
+func (x *AwsRoute53Provider) ProtoReflect() protoreflect.Message {
+	mi := &file_project_planton_provider_kubernetes_addon_certmanagerkubernetes_v1_spec_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AwsRoute53Provider.ProtoReflect.Descriptor instead.
+func (*AwsRoute53Provider) Descriptor() ([]byte, []int) {
+	return file_project_planton_provider_kubernetes_addon_certmanagerkubernetes_v1_spec_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *AwsRoute53Provider) GetRegion() string {
+	if x != nil {
+		return x.Region
+	}
+	return ""
+}
+
+func (x *AwsRoute53Provider) GetRoleArn() string {
+	if x != nil {
+		return x.RoleArn
+	}
+	return ""
+}
+
+// AzureDnsProvider configures Azure DNS with Managed Identity.
+// The addon will configure the cert-manager ServiceAccount with the appropriate Managed Identity annotation.
+type AzureDnsProvider struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Azure subscription ID that contains the DNS zones.
+	SubscriptionId string `protobuf:"bytes,1,opt,name=subscription_id,json=subscriptionId,proto3" json:"subscription_id,omitempty"`
+	// Azure resource group containing the DNS zones.
+	ResourceGroup string `protobuf:"bytes,2,opt,name=resource_group,json=resourceGroup,proto3" json:"resource_group,omitempty"`
+	// Managed Identity Client ID.
+	// This identity must have DNS Zone Contributor role on the specified resource group.
+	ClientId      string `protobuf:"bytes,3,opt,name=client_id,json=clientId,proto3" json:"client_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AzureDnsProvider) Reset() {
+	*x = AzureDnsProvider{}
+	mi := &file_project_planton_provider_kubernetes_addon_certmanagerkubernetes_v1_spec_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AzureDnsProvider) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AzureDnsProvider) ProtoMessage() {}
+
+func (x *AzureDnsProvider) ProtoReflect() protoreflect.Message {
+	mi := &file_project_planton_provider_kubernetes_addon_certmanagerkubernetes_v1_spec_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AzureDnsProvider.ProtoReflect.Descriptor instead.
+func (*AzureDnsProvider) Descriptor() ([]byte, []int) {
+	return file_project_planton_provider_kubernetes_addon_certmanagerkubernetes_v1_spec_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *AzureDnsProvider) GetSubscriptionId() string {
+	if x != nil {
+		return x.SubscriptionId
+	}
+	return ""
+}
+
+func (x *AzureDnsProvider) GetResourceGroup() string {
+	if x != nil {
+		return x.ResourceGroup
+	}
+	return ""
+}
+
+func (x *AzureDnsProvider) GetClientId() string {
+	if x != nil {
+		return x.ClientId
+	}
+	return ""
+}
+
+// CloudflareProvider configures Cloudflare DNS for DNS-01 ACME challenges.
+// The addon will create a Kubernetes Secret containing the API token in the cert-manager namespace.
+type CloudflareProvider struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Cloudflare API token for DNS-01 challenge authentication.
+	// Required permissions: Zone:Zone:Read and Zone:DNS:Edit
+	// The token should be scoped to the specific zones listed in dns_zones for security best practices.
+	ApiToken      string `protobuf:"bytes,1,opt,name=api_token,json=apiToken,proto3" json:"api_token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CloudflareProvider) Reset() {
+	*x = CloudflareProvider{}
+	mi := &file_project_planton_provider_kubernetes_addon_certmanagerkubernetes_v1_spec_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CloudflareProvider) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CloudflareProvider) ProtoMessage() {}
+
+func (x *CloudflareProvider) ProtoReflect() protoreflect.Message {
+	mi := &file_project_planton_provider_kubernetes_addon_certmanagerkubernetes_v1_spec_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CloudflareProvider.ProtoReflect.Descriptor instead.
+func (*CloudflareProvider) Descriptor() ([]byte, []int) {
+	return file_project_planton_provider_kubernetes_addon_certmanagerkubernetes_v1_spec_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *CloudflareProvider) GetApiToken() string {
+	if x != nil {
+		return x.ApiToken
 	}
 	return ""
 }
@@ -333,28 +563,49 @@ var File_project_planton_provider_kubernetes_addon_certmanagerkubernetes_v1_spec
 
 const file_project_planton_provider_kubernetes_addon_certmanagerkubernetes_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Mproject/planton/provider/kubernetes/addon/certmanagerkubernetes/v1/spec.proto\x12Bproject.planton.provider.kubernetes.addon.certmanagerkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/foreignkey/v1/foreign_key.proto\x1a6project/planton/shared/kubernetes/target_cluster.proto\x1a,project/planton/shared/options/options.proto\"\xf4\x04\n" +
+	"Mproject/planton/provider/kubernetes/addon/certmanagerkubernetes/v1/spec.proto\x12Bproject.planton.provider.kubernetes.addon.certmanagerkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a6project/planton/shared/kubernetes/target_cluster.proto\x1a,project/planton/shared/options/options.proto\"\xb3\x05\n" +
 	"\x19CertManagerKubernetesSpec\x12f\n" +
-	"\x0etarget_cluster\x18\x01 \x01(\v2?.project.planton.shared.kubernetes.KubernetesAddonTargetClusterR\rtargetCluster\x128\n" +
-	"\x0frelease_channel\x18\x02 \x01(\tB\n" +
-	"\x8a\xa6\x1d\x06stableH\x01R\x0ereleaseChannel\x88\x01\x01\x12D\n" +
-	"\x1fskip_install_self_signed_issuer\x18\x03 \x01(\bR\x1bskipInstallSelfSignedIssuer\x12l\n" +
-	"\x03gke\x18d \x01(\v2X.project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1.CertManagerGkeConfigH\x00R\x03gke\x12l\n" +
-	"\x03eks\x18e \x01(\v2X.project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1.CertManagerEksConfigH\x00R\x03eks\x12l\n" +
-	"\x03aks\x18f \x01(\v2X.project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1.CertManagerAksConfigH\x00R\x03aksB\x11\n" +
-	"\x0fprovider_configB\x12\n" +
-	"\x10_release_channel\"\xd8\x02\n" +
-	"\x14CertManagerGkeConfig\x12\x7f\n" +
+	"\x0etarget_cluster\x18\x01 \x01(\v2?.project.planton.shared.kubernetes.KubernetesAddonTargetClusterR\rtargetCluster\x123\n" +
+	"\tnamespace\x18\x02 \x01(\tB\x10\x8a\xa6\x1d\fcert-managerH\x00R\tnamespace\x88\x01\x01\x12B\n" +
+	"\x14cert_manager_version\x18\x03 \x01(\tB\v\x8a\xa6\x1d\av1.19.1H\x01R\x12certManagerVersion\x88\x01\x01\x12>\n" +
+	"\x12helm_chart_version\x18\x04 \x01(\tB\v\x8a\xa6\x1d\av1.19.1H\x02R\x10helmChartVersion\x88\x01\x01\x12D\n" +
+	"\x1fskip_install_self_signed_issuer\x18\x05 \x01(\bR\x1bskipInstallSelfSignedIssuer\x12j\n" +
+	"\x04acme\x18\x06 \x01(\v2N.project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1.AcmeConfigB\x06\xbaH\x03\xc8\x01\x01R\x04acme\x12\x84\x01\n" +
+	"\rdns_providers\x18\a \x03(\v2U.project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1.DnsProviderConfigB\b\xbaH\x05\x92\x01\x02\b\x01R\fdnsProvidersB\f\n" +
 	"\n" +
-	"project_id\x18\x01 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB(\xbaH\x03\xc8\x01\x01\x88\xd4a\xe3\x04\x92\xd4a\x19status.outputs.project_idR\tprojectId\x12}\n" +
-	"\vdns_zone_id\x18\x02 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB%\xbaH\x03\xc8\x01\x01\x88\xd4a\xdd\x04\x92\xd4a\x16status.outputs.zone_idR\tdnsZoneId\x12@\n" +
-	"\tgsa_email\x18\x03 \x01(\tB#\xbaH\x03\xc8\x01\x01\x88\xd4a\xe9\x04\x92\xd4a\x14status.outputs.emailR\bgsaEmail\"\xd3\x01\n" +
-	"\x14CertManagerEksConfig\x12\x85\x01\n" +
-	"\x0froute53_zone_id\x18\x01 \x01(\v26.project.planton.shared.foreignkey.v1.StringValueOrRefB%\xbaH\x03\xc8\x01\x01\x88\xd4a\xd4\x01\x92\xd4a\x16status.outputs.zone_idR\rroute53ZoneId\x123\n" +
-	"\x16irsa_role_arn_override\x18\x02 \x01(\tR\x13irsaRoleArnOverride\"s\n" +
-	"\x14CertManagerAksConfig\x12\x1e\n" +
-	"\vdns_zone_id\x18\x01 \x01(\tR\tdnsZoneId\x12;\n" +
-	"\x1amanaged_identity_client_id\x18\x02 \x01(\tR\x17managedIdentityClientIdB\x91\x04\n" +
+	"_namespaceB\x17\n" +
+	"\x15_cert_manager_versionB\x15\n" +
+	"\x13_helm_chart_version\"\x86\x01\n" +
+	"\n" +
+	"AcmeConfig\x12\x1c\n" +
+	"\x05email\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x05email\x12O\n" +
+	"\x06server\x18\x02 \x01(\tB2\x8a\xa6\x1d.https://acme-v02.api.letsencrypt.org/directoryH\x00R\x06server\x88\x01\x01B\t\n" +
+	"\a_server\"\xcb\x04\n" +
+	"\x11DnsProviderConfig\x12\x1a\n" +
+	"\x04name\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\x12%\n" +
+	"\tdns_zones\x18\x02 \x03(\tB\b\xbaH\x05\x92\x01\x02\b\x01R\bdnsZones\x12}\n" +
+	"\rgcp_cloud_dns\x18d \x01(\v2W.project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1.GcpCloudDnsProviderH\x00R\vgcpCloudDns\x12y\n" +
+	"\vaws_route53\x18e \x01(\v2V.project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1.AwsRoute53ProviderH\x00R\n" +
+	"awsRoute53\x12s\n" +
+	"\tazure_dns\x18f \x01(\v2T.project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1.AzureDnsProviderH\x00R\bazureDns\x12x\n" +
+	"\n" +
+	"cloudflare\x18g \x01(\v2V.project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1.CloudflareProviderH\x00R\n" +
+	"cloudflareB\n" +
+	"\n" +
+	"\bprovider\"x\n" +
+	"\x13GcpCloudDnsProvider\x12%\n" +
+	"\n" +
+	"project_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\tprojectId\x12:\n" +
+	"\x15service_account_email\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x13serviceAccountEmail\"W\n" +
+	"\x12AwsRoute53Provider\x12\x1e\n" +
+	"\x06region\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x06region\x12!\n" +
+	"\brole_arn\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\aroleArn\"\x97\x01\n" +
+	"\x10AzureDnsProvider\x12/\n" +
+	"\x0fsubscription_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x0esubscriptionId\x12-\n" +
+	"\x0eresource_group\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\rresourceGroup\x12#\n" +
+	"\tclient_id\x18\x03 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bclientId\"9\n" +
+	"\x12CloudflareProvider\x12#\n" +
+	"\tapi_token\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bapiTokenB\x91\x04\n" +
 	"Fcom.project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1B\tSpecProtoP\x01Z\x8a\x01github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/addon/certmanagerkubernetes/v1;certmanagerkubernetesv1\xa2\x02\x06PPPKAC\xaa\x02BProject.Planton.Provider.Kubernetes.Addon.Certmanagerkubernetes.V1\xca\x02BProject\\Planton\\Provider\\Kubernetes\\Addon\\Certmanagerkubernetes\\V1\xe2\x02NProject\\Planton\\Provider\\Kubernetes\\Addon\\Certmanagerkubernetes\\V1\\GPBMetadata\xea\x02HProject::Planton::Provider::Kubernetes::Addon::Certmanagerkubernetes::V1b\x06proto3"
 
 var (
@@ -369,23 +620,25 @@ func file_project_planton_provider_kubernetes_addon_certmanagerkubernetes_v1_spe
 	return file_project_planton_provider_kubernetes_addon_certmanagerkubernetes_v1_spec_proto_rawDescData
 }
 
-var file_project_planton_provider_kubernetes_addon_certmanagerkubernetes_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_project_planton_provider_kubernetes_addon_certmanagerkubernetes_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
 var file_project_planton_provider_kubernetes_addon_certmanagerkubernetes_v1_spec_proto_goTypes = []any{
 	(*CertManagerKubernetesSpec)(nil),               // 0: project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1.CertManagerKubernetesSpec
-	(*CertManagerGkeConfig)(nil),                    // 1: project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1.CertManagerGkeConfig
-	(*CertManagerEksConfig)(nil),                    // 2: project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1.CertManagerEksConfig
-	(*CertManagerAksConfig)(nil),                    // 3: project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1.CertManagerAksConfig
-	(*kubernetes.KubernetesAddonTargetCluster)(nil), // 4: project.planton.shared.kubernetes.KubernetesAddonTargetCluster
-	(*v1.StringValueOrRef)(nil),                     // 5: project.planton.shared.foreignkey.v1.StringValueOrRef
+	(*AcmeConfig)(nil),                              // 1: project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1.AcmeConfig
+	(*DnsProviderConfig)(nil),                       // 2: project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1.DnsProviderConfig
+	(*GcpCloudDnsProvider)(nil),                     // 3: project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1.GcpCloudDnsProvider
+	(*AwsRoute53Provider)(nil),                      // 4: project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1.AwsRoute53Provider
+	(*AzureDnsProvider)(nil),                        // 5: project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1.AzureDnsProvider
+	(*CloudflareProvider)(nil),                      // 6: project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1.CloudflareProvider
+	(*kubernetes.KubernetesAddonTargetCluster)(nil), // 7: project.planton.shared.kubernetes.KubernetesAddonTargetCluster
 }
 var file_project_planton_provider_kubernetes_addon_certmanagerkubernetes_v1_spec_proto_depIdxs = []int32{
-	4, // 0: project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1.CertManagerKubernetesSpec.target_cluster:type_name -> project.planton.shared.kubernetes.KubernetesAddonTargetCluster
-	1, // 1: project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1.CertManagerKubernetesSpec.gke:type_name -> project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1.CertManagerGkeConfig
-	2, // 2: project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1.CertManagerKubernetesSpec.eks:type_name -> project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1.CertManagerEksConfig
-	3, // 3: project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1.CertManagerKubernetesSpec.aks:type_name -> project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1.CertManagerAksConfig
-	5, // 4: project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1.CertManagerGkeConfig.project_id:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
-	5, // 5: project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1.CertManagerGkeConfig.dns_zone_id:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
-	5, // 6: project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1.CertManagerEksConfig.route53_zone_id:type_name -> project.planton.shared.foreignkey.v1.StringValueOrRef
+	7, // 0: project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1.CertManagerKubernetesSpec.target_cluster:type_name -> project.planton.shared.kubernetes.KubernetesAddonTargetCluster
+	1, // 1: project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1.CertManagerKubernetesSpec.acme:type_name -> project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1.AcmeConfig
+	2, // 2: project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1.CertManagerKubernetesSpec.dns_providers:type_name -> project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1.DnsProviderConfig
+	3, // 3: project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1.DnsProviderConfig.gcp_cloud_dns:type_name -> project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1.GcpCloudDnsProvider
+	4, // 4: project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1.DnsProviderConfig.aws_route53:type_name -> project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1.AwsRoute53Provider
+	5, // 5: project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1.DnsProviderConfig.azure_dns:type_name -> project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1.AzureDnsProvider
+	6, // 6: project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1.DnsProviderConfig.cloudflare:type_name -> project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1.CloudflareProvider
 	7, // [7:7] is the sub-list for method output_type
 	7, // [7:7] is the sub-list for method input_type
 	7, // [7:7] is the sub-list for extension type_name
@@ -400,10 +653,13 @@ func file_project_planton_provider_kubernetes_addon_certmanagerkubernetes_v1_spe
 	if File_project_planton_provider_kubernetes_addon_certmanagerkubernetes_v1_spec_proto != nil {
 		return
 	}
-	file_project_planton_provider_kubernetes_addon_certmanagerkubernetes_v1_spec_proto_msgTypes[0].OneofWrappers = []any{
-		(*CertManagerKubernetesSpec_Gke)(nil),
-		(*CertManagerKubernetesSpec_Eks)(nil),
-		(*CertManagerKubernetesSpec_Aks)(nil),
+	file_project_planton_provider_kubernetes_addon_certmanagerkubernetes_v1_spec_proto_msgTypes[0].OneofWrappers = []any{}
+	file_project_planton_provider_kubernetes_addon_certmanagerkubernetes_v1_spec_proto_msgTypes[1].OneofWrappers = []any{}
+	file_project_planton_provider_kubernetes_addon_certmanagerkubernetes_v1_spec_proto_msgTypes[2].OneofWrappers = []any{
+		(*DnsProviderConfig_GcpCloudDns)(nil),
+		(*DnsProviderConfig_AwsRoute53)(nil),
+		(*DnsProviderConfig_AzureDns)(nil),
+		(*DnsProviderConfig_Cloudflare)(nil),
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -411,7 +667,7 @@ func file_project_planton_provider_kubernetes_addon_certmanagerkubernetes_v1_spe
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_project_planton_provider_kubernetes_addon_certmanagerkubernetes_v1_spec_proto_rawDesc), len(file_project_planton_provider_kubernetes_addon_certmanagerkubernetes_v1_spec_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   4,
+			NumMessages:   7,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

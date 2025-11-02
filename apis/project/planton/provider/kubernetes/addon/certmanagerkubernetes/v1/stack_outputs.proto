@@ -10,4 +10,6 @@ message CertManagerKubernetesStackOutputs {
   string release_name = 2;
   // The service account e‑mail/ARN/ClientID used for DNS‑01 solver.
   string solver_identity = 3;
+  // The name of the Kubernetes Secret containing the Cloudflare API token (only set for Cloudflare configs).
+  string cloudflare_secret_name = 4;
 }
