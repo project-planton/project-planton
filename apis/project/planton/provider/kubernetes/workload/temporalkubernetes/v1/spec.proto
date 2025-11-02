@@ -97,25 +97,45 @@ message TemporalKubernetesExternalElasticsearch {
 
 // ingress configuration for temporal deployment with separate frontend and web ui endpoints
 message TemporalKubernetesIngress {
-  // frontend (gRPC) ingress configuration
-  TemporalKubernetesIngressEndpoint frontend = 1;
+  // frontend (gRPC + HTTP) ingress configuration
+  TemporalKubernetesFrontendIngressEndpoint frontend = 1;
 
   // web ui ingress configuration
-  TemporalKubernetesIngressEndpoint web_ui = 2;
+  TemporalKubernetesWebUiIngressEndpoint web_ui = 2;
 }
 
-// ingress endpoint configuration
-message TemporalKubernetesIngressEndpoint {
-  // flag to enable or disable ingress for this endpoint
+// frontend ingress endpoint configuration supporting both gRPC and HTTP protocols
+message TemporalKubernetesFrontendIngressEndpoint {
+  // flag to enable or disable frontend ingress
   bool enabled = 1;
 
-  // the full hostname for external access (e.g., "temporal-frontend.example.com")
+  // the full hostname for gRPC access via LoadBalancer (e.g., "temporal-frontend-grpc.example.com")
+  // required when enabled is true
+  string grpc_hostname = 2;
+
+  // the full hostname for HTTP access via Gateway API (e.g., "temporal-frontend-http.example.com")
+  // optional - only creates Gateway/HTTPRoute resources if provided
+  string http_hostname = 3;
+
+  option (buf.validate.message).cel = {
+    id: "spec.ingress.frontend.grpc_hostname.required"
+    expression: "!this.enabled || size(this.grpc_hostname) > 0"
+    message: "frontend.grpc_hostname is required when frontend ingress is enabled"
+  };
+}
+
+// web ui ingress endpoint configuration for HTTP-only access
+message TemporalKubernetesWebUiIngressEndpoint {
+  // flag to enable or disable web ui ingress
+  bool enabled = 1;
+
+  // the full hostname for HTTP access via Gateway API (e.g., "temporal-ui.example.com")
   // required when enabled is true
   string hostname = 2;
 
   option (buf.validate.message).cel = {
-    id: "spec.ingress.hostname.required"
+    id: "spec.ingress.web_ui.hostname.required"
     expression: "!this.enabled || size(this.hostname) > 0"
-    message: "hostname is required when ingress is enabled"
+    message: "web_ui.hostname is required when web ui ingress is enabled"
   };
 }

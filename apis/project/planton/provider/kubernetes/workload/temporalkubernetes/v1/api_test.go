@@ -28,11 +28,11 @@ var _ = ginkgo.Describe("TemporalKubernetes Custom Validation Tests", func() {
 			Spec: &TemporalKubernetesSpec{
 				DisableWebUi: false,
 				Ingress: &TemporalKubernetesIngress{
-					Frontend: &TemporalKubernetesIngressEndpoint{
-						Enabled:  true,
-						Hostname: "temporal-frontend.example.com",
+					Frontend: &TemporalKubernetesFrontendIngressEndpoint{
+						Enabled:      true,
+						GrpcHostname: "temporal-frontend.example.com",
 					},
-					WebUi: &TemporalKubernetesIngressEndpoint{
+					WebUi: &TemporalKubernetesWebUiIngressEndpoint{
 						Enabled:  true,
 						Hostname: "temporal-ui.example.com",
 					},

@@ -9,8 +9,9 @@ var vars = struct {
 	DatabasePasswordSecretKey  string
 	DatabasePasswordSecretName string
 	// Service ports
-	FrontendPort int
-	UIPort       int
+	FrontendGrpcPort int
+	FrontendHttpPort int
+	UIPort           int
 	// Istio / Gateway-API constants for UI ingress
 	IstioIngressNamespace                      string
 	GatewayIngressClassName                    string
@@ -29,8 +30,9 @@ var vars = struct {
 	DatabasePasswordSecretKey:  "password",
 	DatabasePasswordSecretName: "temporal-db-password",
 
-	FrontendPort: 7233,
-	UIPort:       8080,
+	FrontendGrpcPort: 7233,
+	FrontendHttpPort: 7243,
+	UIPort:           8080,
 
 	IstioIngressNamespace:                      "istio-ingress",
 	GatewayIngressClassName:                    "istio",

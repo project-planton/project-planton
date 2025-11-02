@@ -4,6 +4,7 @@ go_library(
     name = "module",
     srcs = [
         "db_password_secret.go",
+        "frontend_http_ingress.go",
         "frontend_ingress.go",
         "helm_chart.go",
         "locals.go",
