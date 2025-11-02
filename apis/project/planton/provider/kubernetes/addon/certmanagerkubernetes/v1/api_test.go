@@ -24,7 +24,22 @@ var _ = ginkgo.Describe("CertManagerKubernetes Custom Validation Tests", func() 
 			Metadata: &shared.CloudResourceMetadata{
 				Name: "test-cert-manager",
 			},
-			Spec: &CertManagerKubernetesSpec{},
+			Spec: &CertManagerKubernetesSpec{
+				Acme: &AcmeConfig{
+					Email: "admin@example.com",
+				},
+				DnsProviders: []*DnsProviderConfig{
+					{
+						Name:     "cloudflare-test",
+						DnsZones: []string{"example.com"},
+						Provider: &DnsProviderConfig_Cloudflare{
+							Cloudflare: &CloudflareProvider{
+								ApiToken: "test-token",
+							},
+						},
+					},
+				},
+			},
 		}
 	})
 

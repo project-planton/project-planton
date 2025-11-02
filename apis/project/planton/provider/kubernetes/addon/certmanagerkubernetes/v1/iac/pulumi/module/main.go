@@ -6,9 +6,9 @@ import (
 	"github.com/pkg/errors"
 	certmanagerv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/addon/certmanagerkubernetes/v1"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/pulumikubernetesprovider"
+	"github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes"
 	apiextensionsv1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/apiextensions"
 	corev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
-	"github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes"
 	"github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/helm/v3"
 	metav1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/meta/v1"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
@@ -54,7 +54,7 @@ func Resources(ctx *pulumi.Context, stackInput *certmanagerv1.CertManagerKuberne
 	// build identity annotation map for ServiceAccount
 	// multiple providers may need different identities configured
 	annotations := pulumi.StringMap{}
-	
+
 	// process each DNS provider to build service account annotations
 	for _, dnsProvider := range spec.DnsProviders {
 		if gcp := dnsProvider.GetGcpCloudDns(); gcp != nil {
@@ -121,24 +121,24 @@ func Resources(ctx *pulumi.Context, stackInput *certmanagerv1.CertManagerKuberne
 	for _, dnsProvider := range spec.DnsProviders {
 		if cf := dnsProvider.GetCloudflare(); cf != nil {
 			secretName := fmt.Sprintf("cert-manager-%s-credentials", dnsProvider.Name)
-		secret, err := corev1.NewSecret(ctx, secretName,
-			&corev1.SecretArgs{
-				Metadata: &metav1.ObjectMetaArgs{
-					Name:      pulumi.String(secretName),
-					Namespace: ns.Metadata.Name(),
+			secret, err := corev1.NewSecret(ctx, secretName,
+				&corev1.SecretArgs{
+					Metadata: &metav1.ObjectMetaArgs{
+						Name:      pulumi.String(secretName),
+						Namespace: ns.Metadata.Name(),
+					},
+					StringData: pulumi.StringMap{
+						"api-token": pulumi.String(cf.ApiToken),
+					},
 				},
-				StringData: pulumi.StringMap{
-					"api-token": pulumi.String(cf.ApiToken),
-				},
-			},
-			pulumi.Provider(kubeProvider),
-			pulumi.Parent(ns))
-		if err != nil {
+				pulumi.Provider(kubeProvider),
+				pulumi.Parent(ns))
+			if err != nil {
 				return errors.Wrapf(err, "failed to create cloudflare secret for provider %s", dnsProvider.Name)
 			}
 			cloudflareSecrets[dnsProvider.Name] = secret.Metadata.Name().Elem()
 		}
-		}
+	}
 
 	// create one ClusterIssuer per domain for better visibility
 	clusterIssuerNames := make([]string, 0)
