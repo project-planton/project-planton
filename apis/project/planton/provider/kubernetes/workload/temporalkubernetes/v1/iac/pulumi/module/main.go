@@ -42,7 +42,15 @@ func Resources(ctx *pulumi.Context,
 	}
 
 	if err := frontendIngress(ctx, locals, createdNamespace); err != nil {
-		return errors.Wrap(err, "failed to create frontend ingress")
+		return errors.Wrap(err, "failed to create frontend gRPC ingress")
+	}
+
+	if err := frontendHttpIngress(
+		ctx,
+		locals,
+		kubernetesProvider,
+		createdNamespace); err != nil {
+		return errors.Wrap(err, "failed to create frontend HTTP ingress")
 	}
 
 	if err := webUiIngress(

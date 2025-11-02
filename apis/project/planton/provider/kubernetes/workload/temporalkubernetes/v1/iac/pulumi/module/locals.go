@@ -14,17 +14,18 @@ import (
 // Locals keeps all frequently-used values in one place – similar to a
 // Terraform “locals {}” block.
 type Locals struct {
-	Namespace               string
-	Labels                  map[string]string
-	TemporalKubernetes      *temporalkubernetesv1.TemporalKubernetes
-	FrontendServiceName     string
-	UIServiceName           string
-	FrontendEndpoint        string
-	UIEndpoint              string
-	PortForwardFrontendCmd  string
-	PortForwardUICmd        string
-	IngressFrontendHostname string
-	IngressUIHostname       string
+	Namespace                   string
+	Labels                      map[string]string
+	TemporalKubernetes          *temporalkubernetesv1.TemporalKubernetes
+	FrontendServiceName         string
+	UIServiceName               string
+	FrontendEndpoint            string
+	UIEndpoint                  string
+	PortForwardFrontendCmd      string
+	PortForwardUICmd            string
+	IngressFrontendGrpcHostname string
+	IngressFrontendHttpHostname string
+	IngressUIHostname           string
 }
 
 // initializeLocals builds the Locals struct and immediately exports the
@@ -81,7 +82,7 @@ func initializeLocals(ctx *pulumi.Context,
 
 	// --------------------------- cluster endpoints ---------------------------
 	locals.FrontendEndpoint = fmt.Sprintf("%s.%s.svc.cluster.local:%d",
-		locals.FrontendServiceName, locals.Namespace, vars.FrontendPort)
+		locals.FrontendServiceName, locals.Namespace, vars.FrontendGrpcPort)
 	locals.UIEndpoint = fmt.Sprintf("%s.%s.svc.cluster.local:%d",
 		locals.UIServiceName, locals.Namespace, vars.UIPort)
 
@@ -103,11 +104,16 @@ func initializeLocals(ctx *pulumi.Context,
 	// Frontend ingress
 	if target.Spec.Ingress != nil &&
 		target.Spec.Ingress.Frontend != nil &&
-		target.Spec.Ingress.Frontend.Enabled &&
-		target.Spec.Ingress.Frontend.Hostname != "" {
+		target.Spec.Ingress.Frontend.Enabled {
 
-		locals.IngressFrontendHostname = target.Spec.Ingress.Frontend.Hostname
-		ctx.Export(OpExternalFrontendHostname, pulumi.String(locals.IngressFrontendHostname))
+		if target.Spec.Ingress.Frontend.GrpcHostname != "" {
+			locals.IngressFrontendGrpcHostname = target.Spec.Ingress.Frontend.GrpcHostname
+			ctx.Export(OpExternalFrontendHostname, pulumi.String(locals.IngressFrontendGrpcHostname))
+		}
+
+		if target.Spec.Ingress.Frontend.HttpHostname != "" {
+			locals.IngressFrontendHttpHostname = target.Spec.Ingress.Frontend.HttpHostname
+		}
 	}
 
 	// Web UI ingress

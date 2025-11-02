@@ -75,6 +75,14 @@ func helmChart(ctx *pulumi.Context, locals *Locals,
 
 		values["server"] = pulumi.Map{
 			"config": pulumi.Map{
+				"services": pulumi.Map{
+					"frontend": pulumi.Map{
+						"rpc": pulumi.Map{
+							"grpcPort": pulumi.Int(vars.FrontendGrpcPort),
+							"httpPort": pulumi.Int(vars.FrontendHttpPort),
+						},
+					},
+				},
 				"persistence": pulumi.Map{
 					"default":    defaultSql,
 					"visibility": visibilitySql,
