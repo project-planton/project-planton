@@ -64,6 +64,11 @@ func createWorkerScript(
 		Content:            scriptContent,             // The actual module code
 		Bindings:           bindings,
 		CompatibilityFlags: pulumi.StringArray{pulumi.String("nodejs_compat")}, // Enable Node.js compatibility
+		// Enable Workers Logs by default for observability
+		Observability: &cloudfl.WorkersScriptObservabilityArgs{
+			Enabled:          pulumi.Bool(true),
+			HeadSamplingRate: pulumi.Float64(1.0), // 100% sampling rate for full observability
+		},
 	}
 
 	if locals.CloudflareWorker.Spec.CompatibilityDate != "" {
