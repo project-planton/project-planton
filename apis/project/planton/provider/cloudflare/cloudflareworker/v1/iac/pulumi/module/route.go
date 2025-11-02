@@ -11,7 +11,7 @@ func route(
 	ctx *pulumi.Context,
 	locals *Locals,
 	cloudflareProvider *cloudfl.Provider,
-	_ *cloudfl.WorkersScript, // underscores silence "unused" while enforcing call‑order.
+	createdWorkerScript *cloudfl.WorkersScript,
 ) ([]pulumi.StringOutput, error) {
 
 	// Check if DNS configuration is provided and enabled
@@ -50,11 +50,20 @@ func route(
 		Script:  pulumi.String(locals.CloudflareWorker.Spec.Script.Name),
 	}
 
-	// Create the route, ensuring it depends on the DNS record
+	// Create the route, ensuring it depends on both DNS record and worker script
 	var routeOptions []pulumi.ResourceOption
 	routeOptions = append(routeOptions, pulumi.Provider(cloudflareProvider))
+
+	// Build dependencies list
+	var dependencies []pulumi.Resource
 	if createdDnsRecord != nil {
-		routeOptions = append(routeOptions, pulumi.DependsOn([]pulumi.Resource{createdDnsRecord}))
+		dependencies = append(dependencies, createdDnsRecord)
+	}
+	if createdWorkerScript != nil {
+		dependencies = append(dependencies, createdWorkerScript)
+	}
+	if len(dependencies) > 0 {
+		routeOptions = append(routeOptions, pulumi.DependsOn(dependencies))
 	}
 
 	createdWorkerRoute, err := cloudfl.NewWorkersRoute(
