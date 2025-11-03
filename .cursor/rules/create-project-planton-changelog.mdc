@@ -6,11 +6,11 @@ alwaysApply: false
 
 # Rule: Create Project Planton Changelog (action)
 
-Purpose: When invoked, create a comprehensive changelog document in the `changelog/` directory that captures the essence, context, and impact of recent engineering work on the Project Planton CLI. The changelog should be meaningful, well-structured, and appropriately sized based on the scope and impact of the change.
+Purpose: When invoked, create a comprehensive changelog document in the `_changelog/` directory that captures the essence, context, and impact of recent engineering work on the Project Planton CLI. The changelog should be meaningful, well-structured, and appropriately sized based on the scope and impact of the change.
 
 Usage: Invoke explicitly as `@create-project-planton-changelog` after completing meaningful work in a conversation.
 
-References: `@understand-cursor-rules`, existing changelogs in `changelog/`
+References: `@understand-cursor-rules`, existing changelogs in `_changelog/`
 
 ## ⚠️ CRITICAL: Explicit Invocation Only
 
@@ -337,7 +337,7 @@ When creating the changelog:
 3. **Determine components**: Map changes to component categories
 4. **Choose type**: Enhancement, Bug Fix, Feature, Refactoring, Breaking Change
 5. **Size appropriately**: Match detail level to impact
-6. **Write the file**: Create in `changelog/` with proper naming
+6. **Write the file**: Create in `_changelog/` with proper naming
 7. **Confirm creation**: Provide file path and next steps
 
 ## Example Invocations
