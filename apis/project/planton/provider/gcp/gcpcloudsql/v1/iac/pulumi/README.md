@@ -1,41 +1,186 @@
-# GcpCloudSql Pulumi Module
+# GCP Cloud SQL Pulumi Module
 
 ## Overview
 
-The **GcpCloudSql** Pulumi module is part of the Planton Cloud ecosystem, which provides a unified API interface for managing multi-cloud infrastructure. This module enables developers to create and manage Google Cloud SQL instances by using a Kubernetes-style API resource model. The module automates the provisioning of Cloud SQL databases and other related resources in Google Cloud, based on the specifications defined in a YAML configuration file. It simplifies complex infrastructure management, offering an abstraction layer that allows developers to focus on application logic rather than infrastructure.
+This Pulumi module provides automated deployment and management of Google Cloud SQL instances for MySQL and PostgreSQL databases. It handles instance provisioning, network configuration, high availability setup, backup configuration, and database flag management.
 
-The key benefit of this module is its seamless integration with the Planton CLI and the standardized API resource format used across the entire platform. It allows you to provide configurations in a declarative manner, automatically handles resource creation on Google Cloud, and captures all outputs, such as instance details, in the `status.outputs`. This reduces manual intervention and the complexity involved in managing cloud resources. By using this module, you can easily deploy, configure, and manage Cloud SQL instances in a consistent and predictable way across your environments.
+## Key Features
 
-## Features
+### API Resource Features
 
-- **Kubernetes-style API Resource Modeling**: Follows a Kubernetes-like structure, making it familiar for developers used to working with Kubernetes resources (with `apiVersion`, `kind`, `metadata`, `spec`, and `status` fields).
-- **Multi-Cloud Infrastructure Management**: This module is part of the broader Planton Cloud API ecosystem, which enables multi-cloud management with a unified API interface.
-- **Automated Google Cloud SQL Provisioning**: Takes an API resource as input and provisions Cloud SQL databases in Google Cloud automatically, based on the defined specification.
-- **Output Capture**: Captures important resource outputs, such as instance names, connection strings, and access details, in the `status.outputs` for later use or reference.
-- **Planton CLI Integration**: Fully integrated with the Planton CLI, allowing for easy deployment and management of infrastructure resources via the `planton pulumi up` command.
-- **Google Cloud Provider Integration**: This module directly interacts with Google Cloud using GCP credentials, ensuring secure and compliant management of infrastructure.
-- **Declarative Infrastructure**: Define your infrastructure requirements declaratively in a YAML format, enabling reproducible and version-controlled infrastructure.
+- **Standardized Structure**: The `GcpCloudSql` API resource adheres to a consistent schema with `apiVersion`, `kind`, `metadata`, `spec`, and `status` fields, ensuring compatibility and ease of integration within Kubernetes-like environments.
+  
+- **Configurable Specifications**:
+  - **GCP Project ID**: Specifies the GCP project where the Cloud SQL instance will be deployed.
+  - **Database Engine**: Support for both MySQL and PostgreSQL with configurable versions.
+  - **Instance Tier**: Flexible machine type selection from shared-core to high-memory configurations.
+  - **Storage Configuration**: Configurable SSD storage from 10GB to 65TB.
+  - **Network Settings**: Private IP via VPC peering and/or public IP with authorized network restrictions.
+  - **High Availability**: Optional regional HA with automatic failover capabilities.
+  - **Automated Backups**: Configurable backup schedules with customizable retention periods.
+  - **Database Flags**: Custom database configuration flags for fine-tuning.
 
-## GcpCloudSql API Resource
+- **Validation and Compliance**: Incorporates stringent validation rules to ensure all configurations adhere to best practices and GCP requirements.
 
-The **GcpCloudSql** resource is modeled after Kubernetes API resources, making it straightforward for developers familiar with Kubernetes to adopt. The resource includes:
+### Pulumi Module Features
 
-- **Metadata**: Metadata section for resource identification (e.g., `name`, `namespace`).
-- **Spec**: Contains details about the configuration and parameters required for provisioning Google Cloud SQL, including project ID, credentials, and other necessary configurations.
-- **Status**: Outputs the created resources and their details, such as connection information and instance identifiers.
+- **Automated GCP Provider Setup**: Leverages the provided GCP credentials to automatically configure the Pulumi GCP provider.
+  
+- **Cloud SQL Instance Management**: Streamlines the creation and management of Cloud SQL database instances based on the provided specifications.
+  
+- **Network Configuration**: Handles VPC peering for private connectivity and authorized network configuration for public access.
+  
+- **High Availability Setup**: Configures regional high availability with automatic failover when enabled.
+  
+- **Backup Configuration**: Sets up automated daily backups with point-in-time recovery capabilities.
+  
+- **Exported Stack Outputs**: Captures essential outputs such as instance name, connection name, IP addresses, and self-link in `status.outputs`.
+  
+- **Error Handling**: Implements robust error handling mechanisms to identify and report issues during deployment.
 
-## Module Structure
+## Installation
 
-This Pulumi module is written in Golang and interacts directly with Google Cloud to create the required SQL infrastructure. It handles various tasks such as:
+To integrate the GCP Cloud SQL Pulumi Module into your project, retrieve it from the GitHub repository. Ensure that you have both Pulumi and Go installed and properly configured.
 
-- Setting up the Google Cloud provider using the provided GCP credentials.
-- Provisioning Cloud SQL instances.
-- Capturing and exporting resource outputs to the status for downstream use.
-
-The module is designed to abstract the underlying complexity of managing Google Cloud infrastructure, providing a simple interface for declaratively defining and managing Cloud SQL resources.
+```shell
+git clone https://github.com/project-planton/project-planton.git
+cd project-planton/apis/project/planton/provider/gcp/gcpcloudsql/v1/iac/pulumi
+```
 
 ## Usage
 
-To use the module, define your Cloud SQL resource in a YAML file, and run the `planton pulumi up` command to deploy the resource. This will create the necessary Cloud SQL infrastructure in Google Cloud based on the defined specification.
+Refer to the [example section](examples.md) for detailed usage instructions.
 
-**Refer to the example section for usage instructions.**
+## Module Details
+
+### Input Configuration
+
+The module expects a `GcpCloudSqlStackInput` which includes:
+
+- **Target API Resource**: The `GcpCloudSql` resource defining the desired database configuration.
+- **GCP Credential**: Specifications for the GCP credentials used to authenticate and authorize Pulumi operations.
+
+### Exported Outputs
+
+Upon successful execution, the module exports the following outputs to `status.outputs`:
+
+- **instance_name**: Name of the Cloud SQL instance
+- **connection_name**: Full connection name in the format `project:region:instance`
+- **private_ip**: Private IP address (if private IP is enabled)
+- **public_ip**: Public IP address
+- **self_link**: GCP resource self link for the Cloud SQL instance
+
+These outputs facilitate integration with other infrastructure components and enable automation workflows.
+
+## Configuration Examples
+
+### Basic MySQL Instance
+
+```yaml
+apiVersion: gcp.project-planton.org/v1
+kind: GcpCloudSql
+metadata:
+  name: mysql-db
+spec:
+  project_id: my-gcp-project
+  region: us-central1
+  database_engine: MYSQL
+  database_version: MYSQL_8_0
+  tier: db-n1-standard-1
+  storage_gb: 10
+  root_password: SecurePassword123!
+```
+
+### PostgreSQL with High Availability
+
+```yaml
+apiVersion: gcp.project-planton.org/v1
+kind: GcpCloudSql
+metadata:
+  name: postgres-ha
+spec:
+  project_id: my-gcp-project
+  region: us-central1
+  database_engine: POSTGRESQL
+  database_version: POSTGRES_15
+  tier: db-n1-standard-2
+  storage_gb: 50
+  high_availability:
+    enabled: true
+    zone: us-central1-b
+  backup:
+    enabled: true
+    start_time: "03:00"
+    retention_days: 7
+  root_password: SecurePassword123!
+```
+
+## Network Configuration
+
+### Private IP
+
+To enable private IP connectivity:
+
+```yaml
+network:
+  vpc_id: projects/my-project/global/networks/my-vpc
+  private_ip_enabled: true
+```
+
+Note: VPC peering with the Cloud SQL service must be configured in advance.
+
+### Public IP with Authorized Networks
+
+To restrict public IP access to specific CIDR ranges:
+
+```yaml
+network:
+  authorized_networks:
+    - 203.0.113.0/24
+    - 198.51.100.0/24
+```
+
+## Database Flags
+
+Custom database configuration flags can be specified:
+
+```yaml
+database_flags:
+  max_connections: "200"
+  slow_query_log: "on"
+```
+
+Refer to MySQL or PostgreSQL documentation for available flags.
+
+## Deployment
+
+### Using Pulumi CLI
+
+```shell
+pulumi up --stack <org>/<stack-name>/<environment>
+```
+
+### Using Project Planton CLI
+
+```shell
+project-planton pulumi up --manifest gcpcloudsql.yaml --stack <org>/<stack-name>/<environment>
+```
+
+## Contributing
+
+We welcome contributions to enhance the GCP Cloud SQL Pulumi Module. Please refer to our contribution guidelines for more information.
+
+## License
+
+This project is licensed under the MIT License. Please review the LICENSE file for more details.
+
+## Support
+
+For support, please contact our support team at support@planton.cloud.
+
+## References
+
+- [Pulumi Documentation](https://www.pulumi.com/docs/)
+- [GCP Cloud SQL Documentation](https://cloud.google.com/sql/docs)
+- [Planton Cloud APIs](https://buf.build/project-planton/apis/docs)
+
