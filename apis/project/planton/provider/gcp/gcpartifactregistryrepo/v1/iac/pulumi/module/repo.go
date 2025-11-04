@@ -4,17 +4,14 @@ import (
 	"fmt"
 
 	pulumigcp "github.com/pulumi/pulumi-gcp/sdk/v8/go/gcp"
-	"github.com/pulumi/pulumi-gcp/sdk/v8/go/gcp/serviceaccount"
 
 	"github.com/pkg/errors"
 	"github.com/pulumi/pulumi-gcp/sdk/v8/go/gcp/artifactregistry"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// repo creates a repository and also grants reader role to the reader service account and
-// writer, admin roles to writer service account.
-func repo(ctx *pulumi.Context, locals *Locals, gcpProvider *pulumigcp.Provider,
-	readerServiceAccount *serviceaccount.Account, writerServiceAccount *serviceaccount.Account) error {
+// repo creates a repository and grants public access if enabled
+func repo(ctx *pulumi.Context, locals *Locals, gcpProvider *pulumigcp.Provider) error {
 	//create a variable with descriptive name for the api-resource in the input
 	gcpArtifactRegistryRepo := locals.GcpArtifactRegistryRepo
 
@@ -49,48 +46,8 @@ func repo(ctx *pulumi.Context, locals *Locals, gcpProvider *pulumigcp.Provider,
 				Member: pulumi.Sprintf("allUsers"),
 			}, pulumi.Provider(gcpProvider))
 		if err != nil {
-			return errors.Wrap(err, "failed to grant reader role on repo for reader service account")
+			return errors.Wrap(err, "failed to grant reader role on repo for all users")
 		}
-	} else {
-		//grant "reader" role for the writer service account on the repo
-		_, err = artifactregistry.NewRepositoryIamMember(ctx,
-			fmt.Sprintf("%s-reader", repoName),
-			&artifactregistry.RepositoryIamMemberArgs{
-				Project:    pulumi.String(gcpArtifactRegistryRepo.Spec.ProjectId),
-				Location:   pulumi.String(gcpArtifactRegistryRepo.Spec.Region),
-				Repository: createdRepo.RepositoryId,
-				Role:       pulumi.String("roles/artifactregistry.reader"),
-				Member:     pulumi.Sprintf("serviceAccount:%s", readerServiceAccount.Email),
-			}, pulumi.Provider(gcpProvider))
-		if err != nil {
-			return errors.Wrap(err, "failed to grant reader role on repo for reader service account")
-		}
-	}
-
-	//grant "writer" role for the writer service account on the repo
-	_, err = artifactregistry.NewRepositoryIamMember(ctx, fmt.Sprintf("%s-writer",
-		repoName), &artifactregistry.RepositoryIamMemberArgs{
-		Project:    pulumi.String(gcpArtifactRegistryRepo.Spec.ProjectId),
-		Location:   pulumi.String(gcpArtifactRegistryRepo.Spec.Region),
-		Repository: createdRepo.RepositoryId,
-		Role:       pulumi.String("roles/artifactregistry.writer"),
-		Member:     pulumi.Sprintf("serviceAccount:%s", writerServiceAccount.Email),
-	}, pulumi.Provider(gcpProvider))
-	if err != nil {
-		return errors.Wrap(err, "failed to grant writer role on repo for writer service account")
-	}
-
-	//grant "admin" role for writer service account on the repo
-	_, err = artifactregistry.NewRepositoryIamMember(ctx, fmt.Sprintf("%s-admin",
-		repoName), &artifactregistry.RepositoryIamMemberArgs{
-		Project:    pulumi.String(gcpArtifactRegistryRepo.Spec.ProjectId),
-		Location:   pulumi.String(gcpArtifactRegistryRepo.Spec.Region),
-		Repository: createdRepo.RepositoryId,
-		Role:       pulumi.String("roles/artifactregistry.repoAdmin"),
-		Member:     pulumi.Sprintf("serviceAccount:%s", writerServiceAccount.Email),
-	}, pulumi.Provider(gcpProvider))
-	if err != nil {
-		return errors.Wrap(err, "failed to grant admin role on repo for writer service account")
 	}
 
 	//export important attributes of the repository as outputs
