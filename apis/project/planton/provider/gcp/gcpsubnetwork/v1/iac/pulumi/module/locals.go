@@ -2,6 +2,7 @@ package module
 
 import (
 	"strconv"
+	"strings"
 
 	gcpprovider "github.com/project-planton/project-planton/apis/project/planton/provider/gcp"
 	gcpsubnetworkv1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpsubnetwork/v1"
@@ -31,7 +32,7 @@ func initializeLocals(_ *pulumi.Context, input *gcpsubnetworkv1.GcpSubnetworkSta
 	locals.GcpLabels = map[string]string{
 		gcplabelkeys.Resource:     strconv.FormatBool(true),
 		gcplabelkeys.ResourceName: input.Target.Metadata.Name,
-		gcplabelkeys.ResourceKind: cloudresourcekind.CloudResourceKind_GcpSubnetwork.String(),
+		gcplabelkeys.ResourceKind: strings.ToLower(cloudresourcekind.CloudResourceKind_GcpSubnetwork.String()),
 	}
 
 	// Optional labels copied straight from metadata if the fields are set.

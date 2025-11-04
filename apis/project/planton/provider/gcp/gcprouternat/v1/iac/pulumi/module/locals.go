@@ -2,6 +2,7 @@ package module
 
 import (
 	"strconv"
+	"strings"
 
 	gcpprovider "github.com/project-planton/project-planton/apis/project/planton/provider/gcp"
 	gcprouternatv1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcprouternat/v1"
@@ -25,7 +26,7 @@ func initializeLocals(_ *pulumi.Context, stackInput *gcprouternatv1.GcpRouterNat
 	labels := map[string]string{
 		gcplabelkeys.Resource:     strconv.FormatBool(true),
 		gcplabelkeys.ResourceName: target.Metadata.Name,
-		gcplabelkeys.ResourceKind: cloudresourcekind.CloudResourceKind_GcpRouterNat.String(),
+		gcplabelkeys.ResourceKind: strings.ToLower(cloudresourcekind.CloudResourceKind_GcpRouterNat.String()),
 	}
 
 	if target.Metadata.Org != "" {

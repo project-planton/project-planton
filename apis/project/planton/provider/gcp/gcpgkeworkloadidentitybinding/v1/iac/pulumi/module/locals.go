@@ -2,6 +2,7 @@ package module
 
 import (
 	"strconv"
+	"strings"
 
 	gcpprovider "github.com/project-planton/project-planton/apis/project/planton/provider/gcp"
 	gcpgkeworkloadidentitybindingv1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpgkeworkloadidentitybinding/v1"
@@ -28,7 +29,7 @@ func initializeLocals(_ *pulumi.Context, stackInput *gcpgkeworkloadidentitybindi
 	locals.GcpLabels = map[string]string{
 		gcplabelkeys.Resource:     strconv.FormatBool(true),
 		gcplabelkeys.ResourceName: locals.GcpGkeWorkloadIdentityBinding.Metadata.Name,
-		gcplabelkeys.ResourceKind: cloudresourcekind.CloudResourceKind_GcpGkeWorkloadIdentityBinding.String(),
+		gcplabelkeys.ResourceKind: strings.ToLower(cloudresourcekind.CloudResourceKind_GcpGkeWorkloadIdentityBinding.String()),
 	}
 
 	if locals.GcpGkeWorkloadIdentityBinding.Metadata.Org != "" {

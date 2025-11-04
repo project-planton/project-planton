@@ -345,6 +345,68 @@ project-planton stack-outputs \
   --manifest gcp-artifact-registry-repo.yaml
 ```
 
+## Follow-up Fix: GCP Label Validation Compliance
+
+After removing service account creation, deployment testing revealed a systemic GCP label validation issue affecting **12 out of 14** GCP Pulumi modules.
+
+### Issue
+
+GCP labels have strict validation requirements:
+- Label values must start with a lowercase letter
+- Can only contain lowercase letters, numbers, hyphens, and underscores
+- Values like `GcpArtifactRegistryRepo` with uppercase letters cause deployment failures
+
+**Error Example**:
+```
+Error 400: Invalid repository labels: value "GcpArtifactRegistryRepo" contains invalid character 'G' at index 0 for key "planton-ai_kind"
+```
+
+### Root Cause
+
+The `ResourceKind` label value was using the raw protobuf enum string (e.g., `GcpArtifactRegistryRepo`) without converting to lowercase, violating GCP's label value constraints.
+
+### Solution Applied
+
+Fixed all 12 affected GCP modules by:
+1. Adding `"strings"` import to each `locals.go` file
+2. Wrapping `cloudresourcekind.CloudResourceKind_*.String()` calls with `strings.ToLower()`
+
+**Before**:
+```go
+gcplabelkeys.ResourceKind: cloudresourcekind.CloudResourceKind_GcpArtifactRegistryRepo.String()
+```
+
+**After**:
+```go
+gcplabelkeys.ResourceKind: strings.ToLower(cloudresourcekind.CloudResourceKind_GcpArtifactRegistryRepo.String())
+```
+
+### Affected Modules Fixed
+
+All 12 modules updated:
+1. `gcpartifactregistryrepo/v1/iac/pulumi/module/locals.go`
+2. `gcpvpc/v1/iac/pulumi/module/locals.go`
+3. `gcpsubnetwork/v1/iac/pulumi/module/locals.go`
+4. `gcprouternat/v1/iac/pulumi/module/locals.go`
+5. `gcpgkeworkloadidentitybinding/v1/iac/pulumi/module/locals.go`
+6. `gcpgkecluster/v1/iac/pulumi/module/locals.go`
+7. `gcpgkeaddonbundle/v1/iac/pulumi/module/locals.go`
+8. `gcpsecretsmanager/v1/iac/pulumi/module/locals.go`
+9. `gcpgcsbucket/v1/iac/pulumi/module/locals.go`
+10. `gcpdnszone/v1/iac/pulumi/module/locals.go`
+11. `gcpgkenodepool/v1/iac/pulumi/module/locals.go`
+12. `gcpproject/v1/iac/pulumi/module/locals.go`
+
+**Note**: Two modules (`gcpcloudrun` and `gcpcloudsql`) already had the correct implementation.
+
+### Result
+
+Label values now comply with GCP validation:
+- Before: `GcpArtifactRegistryRepo` ❌
+- After: `gcpartifactregistryrepo` ✅
+
+This fix ensures all GCP resource deployments succeed without label validation errors.
+
 ---
 
 **Status**: ✅ Production Ready

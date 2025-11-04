@@ -2,6 +2,7 @@ package module
 
 import (
 	"strconv"
+	"strings"
 
 	gcpprojectv1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpproject/v1"
 	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
@@ -23,7 +24,7 @@ func initializeLocals(ctx *pulumi.Context, stackInput *gcpprojectv1.GcpProjectSt
 	locals.GcpLabels = map[string]string{
 		gcplabelkeys.Resource:     strconv.FormatBool(true),
 		gcplabelkeys.ResourceName: target.Metadata.Name,
-		gcplabelkeys.ResourceKind: cloudresourcekind.CloudResourceKind_GcpProject.String(),
+		gcplabelkeys.ResourceKind: strings.ToLower(cloudresourcekind.CloudResourceKind_GcpProject.String()),
 	}
 
 	if target.Metadata.Id != "" {

@@ -3,6 +3,7 @@ package module
 import (
 	"fmt"
 	"strconv"
+	"strings"
 
 	gcpgkenodepoolv1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpgkenodepool/v1"
 	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
@@ -41,12 +42,12 @@ func initializeLocals(ctx *pulumi.Context, stackInput *gcpgkenodepoolv1.GcpGkeNo
 	locals.GcpLabels = map[string]string{
 		gcplabelkeys.Resource:     strconv.FormatBool(true),
 		gcplabelkeys.ResourceName: locals.GcpGkeNodePool.Metadata.Name,
-		gcplabelkeys.ResourceKind: cloudresourcekind.CloudResourceKind_GcpGkeNodePool.String(),
+		gcplabelkeys.ResourceKind: strings.ToLower(cloudresourcekind.CloudResourceKind_GcpGkeNodePool.String()),
 	}
 	locals.KubernetesLabels = map[string]string{
 		kuberneteslabelkeys.Resource:     strconv.FormatBool(true),
 		kuberneteslabelkeys.ResourceName: locals.GcpGkeNodePool.Metadata.Name,
-		kuberneteslabelkeys.ResourceKind: cloudresourcekind.CloudResourceKind_GcpGkeNodePool.String(),
+		kuberneteslabelkeys.ResourceKind: strings.ToLower(cloudresourcekind.CloudResourceKind_GcpGkeNodePool.String()),
 	}
 
 	// Optional metadata fields
