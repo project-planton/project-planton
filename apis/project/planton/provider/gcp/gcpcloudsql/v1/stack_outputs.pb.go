@@ -21,13 +21,21 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// gcp-cloud-sql stack outputs
+// GcpCloudSqlStackOutputs captures values returned after provisioning a Cloud SQL instance.
 type GcpCloudSqlStackOutputs struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// id of the lambda function created on gcp
-	LambdaFunctionId string `protobuf:"bytes,1,opt,name=lambda_function_id,json=lambdaFunctionId,proto3" json:"lambda_function_id,omitempty"`
-	unknownFields    protoimpl.UnknownFields
-	sizeCache        protoimpl.SizeCache
+	// Name of the Cloud SQL instance.
+	InstanceName string `protobuf:"bytes,1,opt,name=instance_name,json=instanceName,proto3" json:"instance_name,omitempty"`
+	// Full connection name in the format project:region:instance.
+	ConnectionName string `protobuf:"bytes,2,opt,name=connection_name,json=connectionName,proto3" json:"connection_name,omitempty"`
+	// Private IP address of the instance (if private IP is enabled).
+	PrivateIp string `protobuf:"bytes,3,opt,name=private_ip,json=privateIp,proto3" json:"private_ip,omitempty"`
+	// Public IP address of the instance.
+	PublicIp string `protobuf:"bytes,4,opt,name=public_ip,json=publicIp,proto3" json:"public_ip,omitempty"`
+	// GCP resource self link for the Cloud SQL instance.
+	SelfLink      string `protobuf:"bytes,5,opt,name=self_link,json=selfLink,proto3" json:"self_link,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *GcpCloudSqlStackOutputs) Reset() {
@@ -60,9 +68,37 @@ func (*GcpCloudSqlStackOutputs) Descriptor() ([]byte, []int) {
 	return file_project_planton_provider_gcp_gcpcloudsql_v1_stack_outputs_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *GcpCloudSqlStackOutputs) GetLambdaFunctionId() string {
+func (x *GcpCloudSqlStackOutputs) GetInstanceName() string {
 	if x != nil {
-		return x.LambdaFunctionId
+		return x.InstanceName
+	}
+	return ""
+}
+
+func (x *GcpCloudSqlStackOutputs) GetConnectionName() string {
+	if x != nil {
+		return x.ConnectionName
+	}
+	return ""
+}
+
+func (x *GcpCloudSqlStackOutputs) GetPrivateIp() string {
+	if x != nil {
+		return x.PrivateIp
+	}
+	return ""
+}
+
+func (x *GcpCloudSqlStackOutputs) GetPublicIp() string {
+	if x != nil {
+		return x.PublicIp
+	}
+	return ""
+}
+
+func (x *GcpCloudSqlStackOutputs) GetSelfLink() string {
+	if x != nil {
+		return x.SelfLink
 	}
 	return ""
 }
@@ -71,9 +107,14 @@ var File_project_planton_provider_gcp_gcpcloudsql_v1_stack_outputs_proto protore
 
 const file_project_planton_provider_gcp_gcpcloudsql_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"?project/planton/provider/gcp/gcpcloudsql/v1/stack_outputs.proto\x12+project.planton.provider.gcp.gcpcloudsql.v1\"G\n" +
-	"\x17GcpCloudSqlStackOutputs\x12,\n" +
-	"\x12lambda_function_id\x18\x01 \x01(\tR\x10lambdaFunctionIdB\x82\x03\n" +
+	"?project/planton/provider/gcp/gcpcloudsql/v1/stack_outputs.proto\x12+project.planton.provider.gcp.gcpcloudsql.v1\"\xc0\x01\n" +
+	"\x17GcpCloudSqlStackOutputs\x12#\n" +
+	"\rinstance_name\x18\x01 \x01(\tR\finstanceName\x12'\n" +
+	"\x0fconnection_name\x18\x02 \x01(\tR\x0econnectionName\x12\x1d\n" +
+	"\n" +
+	"private_ip\x18\x03 \x01(\tR\tprivateIp\x12\x1b\n" +
+	"\tpublic_ip\x18\x04 \x01(\tR\bpublicIp\x12\x1b\n" +
+	"\tself_link\x18\x05 \x01(\tR\bselfLinkB\x82\x03\n" +
 	"/com.project.planton.provider.gcp.gcpcloudsql.v1B\x11StackOutputsProtoP\x01Zigithub.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpcloudsql/v1;gcpcloudsqlv1\xa2\x02\x05PPPGG\xaa\x02+Project.Planton.Provider.Gcp.Gcpcloudsql.V1\xca\x02+Project\\Planton\\Provider\\Gcp\\Gcpcloudsql\\V1\xe2\x027Project\\Planton\\Provider\\Gcp\\Gcpcloudsql\\V1\\GPBMetadata\xea\x020Project::Planton::Provider::Gcp::Gcpcloudsql::V1b\x06proto3"
 
 var (
