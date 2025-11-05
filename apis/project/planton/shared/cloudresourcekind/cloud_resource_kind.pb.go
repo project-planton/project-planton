@@ -134,6 +134,7 @@ const (
 	CloudResourceKind_GcpGkeNodePool                CloudResourceKind = 616
 	CloudResourceKind_GcpServiceAccount             CloudResourceKind = 617
 	CloudResourceKind_GcpGkeWorkloadIdentityBinding CloudResourceKind = 618
+	CloudResourceKind_GcpCertManagerCert            CloudResourceKind = 619
 	// 800–999: Kubernetes resources
 	CloudResourceKind_ArgocdKubernetes             CloudResourceKind = 800
 	CloudResourceKind_CronJobKubernetes            CloudResourceKind = 801
@@ -269,6 +270,7 @@ var (
 		616:  "GcpGkeNodePool",
 		617:  "GcpServiceAccount",
 		618:  "GcpGkeWorkloadIdentityBinding",
+		619:  "GcpCertManagerCert",
 		800:  "ArgocdKubernetes",
 		801:  "CronJobKubernetes",
 		802:  "ElasticsearchKubernetes",
@@ -397,6 +399,7 @@ var (
 		"GcpGkeNodePool":                       616,
 		"GcpServiceAccount":                    617,
 		"GcpGkeWorkloadIdentityBinding":        618,
+		"GcpCertManagerCert":                   619,
 		"ArgocdKubernetes":                     800,
 		"CronJobKubernetes":                    801,
 		"ElasticsearchKubernetes":              802,
@@ -680,7 +683,7 @@ const file_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto_ra
 	"\bcategory\x18\x02 \x01(\x0e2I.project.planton.shared.cloudresourcekind.KubernetesCloudResourceCategoryR\bcategory*O\n" +
 	"\x18CloudResourceKindVersion\x12+\n" +
 	"'cloud_resource_kind_version_unspecified\x10\x00\x12\x06\n" +
-	"\x02v1\x10\x01*\xc0+\n" +
+	"\x02v1\x10\x01*\xec+\n" +
 	"\x11CloudResourceKind\x12\x0f\n" +
 	"\vunspecified\x10\x00\x12(\n" +
 	"\x14TestCloudResourceOne\x10\x01\x1a\x0e\xa2\xf7\x04\n" +
@@ -747,7 +750,8 @@ const file_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto_ra
 	"\x11GcpGkeClusterCore\x10\xe7\x04\x1a\x11\xa2\xf7\x04\r\b\x12\x10\x01\"\agkecore\x12$\n" +
 	"\x0eGcpGkeNodePool\x10\xe8\x04\x1a\x0f\xa2\xf7\x04\v\b\x12\x10\x01\"\x05gkenp\x12%\n" +
 	"\x11GcpServiceAccount\x10\xe9\x04\x1a\r\xa2\xf7\x04\t\b\x12\x10\x01\"\x03gsa\x124\n" +
-	"\x1dGcpGkeWorkloadIdentityBinding\x10\xea\x04\x1a\x10\xa2\xf7\x04\f\b\x12\x10\x01\"\x06gkewib\x121\n" +
+	"\x1dGcpGkeWorkloadIdentityBinding\x10\xea\x04\x1a\x10\xa2\xf7\x04\f\b\x12\x10\x01\"\x06gkewib\x12*\n" +
+	"\x12GcpCertManagerCert\x10\xeb\x04\x1a\x11\xa2\xf7\x04\r\b\x12\x10\x01\"\agcpcert\x121\n" +
 	"\x10ArgocdKubernetes\x10\xa0\x06\x1a\x1a\xa2\xf7\x04\x16\b\x13\x10\x01\"\x06argk8s2\b\n" +
 	"\x04argo\x10\x02\x123\n" +
 	"\x11CronJobKubernetes\x10\xa1\x06\x1a\x1b\xa2\xf7\x04\x17\b\x13\x10\x01\"\acronk8s2\b\n" +
