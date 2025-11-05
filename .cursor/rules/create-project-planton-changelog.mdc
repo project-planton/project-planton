@@ -94,7 +94,7 @@ Examples:
 - `2025-10-18-091230-proto-field-defaults-support.md`
 - `2025-10-17-164500-temporal-namespace-initialization-bug-fix.md`
 
-Use current date and time (24-hour format) followed by a clear, kebab-case slug describing the change. The timestamp (HHMMSS) ensures automatic chronological sorting when multiple changelogs are created on the same day.
+**IMPORTANT**: Get the actual current timestamp by running the command `date +"%Y-%m-%d-%H%M%S"` and use that exact output as the prefix for the filename. Do NOT make up or guess the timestamp. Follow with a clear, kebab-case slug describing the change. The timestamp (HHMMSS) ensures automatic chronological sorting when multiple changelogs are created on the same day.
 
 ### Required Metadata
 
@@ -332,13 +332,14 @@ Use these component categories consistently:
 ## Automation Notes
 
 When creating the changelog:
-1. **Analyze the conversation**: Extract key decisions, changes, outcomes
-2. **Assess scope**: Count files, commands, providers affected
-3. **Determine components**: Map changes to component categories
-4. **Choose type**: Enhancement, Bug Fix, Feature, Refactoring, Breaking Change
-5. **Size appropriately**: Match detail level to impact
-6. **Write the file**: Create in `_changelog/` with proper naming
-7. **Confirm creation**: Provide file path and next steps
+1. **Get current timestamp**: Run `date +"%Y-%m-%d-%H%M%S"` to get the actual current date and time for the filename
+2. **Analyze the conversation**: Extract key decisions, changes, outcomes
+3. **Assess scope**: Count files, commands, providers affected
+4. **Determine components**: Map changes to component categories
+5. **Choose type**: Enhancement, Bug Fix, Feature, Refactoring, Breaking Change
+6. **Size appropriately**: Match detail level to impact
+7. **Write the file**: Create in `_changelog/YYYY-MM/` (year-month directory) with proper naming using the timestamp from step 1
+8. **Confirm creation**: Provide file path and next steps
 
 ## Example Invocations
 
