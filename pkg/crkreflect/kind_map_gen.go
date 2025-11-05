@@ -78,6 +78,7 @@ import (
 	digitaloceanvolumev1 "github.com/project-planton/project-planton/apis/project/planton/provider/digitalocean/digitaloceanvolume/v1"
 	digitaloceanvpcv1 "github.com/project-planton/project-planton/apis/project/planton/provider/digitalocean/digitaloceanvpc/v1"
 	gcpartifactregistryrepov1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpartifactregistryrepo/v1"
+	gcpcertmanagercertv1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpcertmanagercert/v1"
 	gcpcloudcdnv1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpcloudcdn/v1"
 	gcpcloudfunctionv1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpcloudfunction/v1"
 	gcpcloudrunv1 "github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpcloudrun/v1"
@@ -242,6 +243,7 @@ var ProviderDigitalOceanMap = map[cloudresourcekind.CloudResourceKind]proto.Mess
 
 var ProviderGcpMap = map[cloudresourcekind.CloudResourceKind]proto.Message{
 	cloudresourcekind.CloudResourceKind_GcpArtifactRegistryRepo:       &gcpartifactregistryrepov1.GcpArtifactRegistryRepo{},
+	cloudresourcekind.CloudResourceKind_GcpCertManagerCert:            &gcpcertmanagercertv1.GcpCertManagerCert{},
 	cloudresourcekind.CloudResourceKind_GcpCloudCdn:                   &gcpcloudcdnv1.GcpCloudCdn{},
 	cloudresourcekind.CloudResourceKind_GcpCloudFunction:              &gcpcloudfunctionv1.GcpCloudFunction{},
 	cloudresourcekind.CloudResourceKind_GcpCloudRun:                   &gcpcloudrunv1.GcpCloudRun{},

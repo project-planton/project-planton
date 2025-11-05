@@ -1,0 +1,206 @@
+---
+alwaysApply: false
+---
+RULE NUMBER
+019
+
+TITLE
+Forge: Test Validation (make test)
+
+ROLE
+You are the PlantonCloud Code Partner working inside the developer's local workspace in Cursor. This rule validates that all unit tests pass by running `make test` from the project root.
+
+SCOPE
+- Run `make test` from project root
+- Execute all unit tests including newly created ones
+- Validate test correctness
+- Ensure all tests pass
+- Do not modify test files or source files
+
+PREREQUISITES
+This rule should be run after:
+- Rule 017: Proto stubs generated (make protos)
+- Rule 003: spec_test.go created
+- Rule 018: Build validation passed (make build)
+
+All test files must exist and code must compile before running tests.
+
+SEQUENTIAL STEPS
+1) Verify Prerequisites:
+   - Confirm proto stubs exist (.pb.go files)
+   - Check that test files exist:
+     * `apis/project/planton/provider/<provider>/<kindfolder>/v1/spec_test.go`
+   - Confirm code compiles (rule 018 passed)
+   - Confirm you are in the project root directory
+
+2) Execute Command:
+   - Run: `make test` from project root
+   - This command runs all Go tests in the project
+   - May take 1-5 minutes depending on test suite size
+
+3) Parse Output:
+   - Check exit code (0 = all tests passed, non-zero = failures)
+   - Count total tests run
+   - Count passed tests
+   - Count failed tests
+   - Identify which tests failed
+   - Extract failure messages
+
+4) Categorize Failures:
+   - **Assertion Failures**: Expected vs actual value mismatches
+   - **Nil Pointer Errors**: Unexpected nil values
+   - **Type Errors**: Type mismatches in test setup
+   - **Timeout Errors**: Tests taking too long
+   - **Panic Errors**: Unhandled panics in code
+
+5) Report Results:
+   - Show total test count
+   - Show pass/fail counts
+   - List failed tests with error messages
+   - Provide fix suggestions for failures
+   - Show test coverage if available
+
+SUCCESS CRITERIA
+- `make test` exits with code 0
+- All tests pass (100% pass rate)
+- No test failures, errors, or panics
+- Tests complete within reasonable time
+- No skipped tests (unless intentional)
+
+COMMON ERRORS AND FIXES
+
+1. **Assertion Failure:**
+   ```
+   Error: assertion failed: expected "value1", got "value2"
+   ```
+   Fix: Check test logic, update expected values, or fix source code
+
+2. **Nil Pointer:**
+   ```
+   Error: panic: runtime error: invalid memory address or nil pointer dereference
+   ```
+   Fix: Add nil checks or ensure objects are initialized in test setup
+
+3. **Missing Test Dependency:**
+   ```
+   Error: cannot find package "github.com/stretchr/testify"
+   ```
+   Fix: Run `go mod download` or `go mod tidy` to fetch dependencies
+
+4. **Test Timeout:**
+   ```
+   Error: test timed out after 10m0s
+   ```
+   Fix: Optimize test code, reduce test scope, or increase timeout
+
+5. **Import Errors:**
+   ```
+   Error: imported and not used: "testing"
+   ```
+   Fix: Remove unused imports or use the imported package
+
+6. **Type Mismatch in Test:**
+   ```
+   Error: cannot use X (type Y) as type Z in argument
+   ```
+   Fix: Ensure test data types match function signatures
+
+7. **Validation Failure:**
+   ```
+   Error: validation failed for field X
+   ```
+   Fix: Check buf.validate rules in proto files match test expectations
+
+OUTPUT FORMAT
+Show results clearly:
+
+```
+✅ Prerequisites verified
+   - Proto stubs exist
+   - Test files exist
+   - Code compiles
+
+🧪 Running: make test
+
+⏱️  Duration: 3m 45s
+
+✅ Success: All tests passed
+
+📊 Test Results:
+   - Total tests: 156
+   - Passed: 156
+   - Failed: 0
+   - Skipped: 0
+   - Pass rate: 100%
+
+✅ Test validation complete
+```
+
+On failure:
+```
+❌ Error: Exit code 1
+
+Tests failed: 2/156 (98.7% pass rate)
+
+Failed tests:
+
+1. TestGcpCertManagerCertSpec_Validation/missing_gcp_project_id
+   File: apis/project/planton/provider/gcp/gcpcertmanagercert/v1/spec_test.go:88
+   
+   Error:
+   assertion failed: expected true, got false
+   
+   Suggested fix:
+   The test expects validation to fail when gcp_project_id is missing,
+   but the validation is not triggering. Check that:
+   - spec.proto has [(buf.validate.field).required = true] on gcp_project_id
+   - Proto stubs are regenerated (run: make protos)
+
+2. TestGcpCertManagerCertStatus_Structure
+   File: apis/project/planton/provider/gcp/gcpcertmanagercert/v1/spec_test.go:142
+   
+   Error:
+   panic: runtime error: invalid memory address or nil pointer dereference
+   
+   Suggested fix:
+   Add nil check in test or ensure test data is properly initialized:
+   require.NotNil(t, status.Outputs)
+
+Next steps:
+1. Fix the failing tests
+2. Re-run: make test
+3. Ensure 100% pass rate before proceeding
+```
+
+DEBUGGING TIPS
+1. **Run specific test**: `go test -v ./apis/project/planton/provider/gcp/gcpcertmanagercert/v1 -run TestName`
+2. **Verbose output**: `go test -v` shows more detailed test output
+3. **Check test setup**: Ensure test data is properly initialized
+4. **Verify validations**: Proto validations must match test expectations
+5. **Re-generate stubs**: If proto changed, run `make protos` before testing
+
+TEST COVERAGE
+If test coverage is reported:
+```
+📊 Coverage:
+   - spec.go: 85%
+   - api.go: 100%
+   - Overall: 87%
+```
+
+Aim for:
+- Critical paths: 100% coverage
+- Business logic: 80%+ coverage
+- Generated code: Coverage not required
+
+NOTES
+- This is a quality gate before proceeding to integration tests
+- All unit tests must pass before continuing
+- Do not skip failing tests without good reason
+- Fix test failures immediately - don't accumulate technical debt
+- Run from project root directory only
+- Tests validate both source code correctness and test quality
+- Some test failures indicate bugs in source code, others indicate incorrect tests
+- If tests fail after proto changes, regenerate stubs with `make protos`
+- Test failures can block deployment - treat them seriously
+- Consider adding more tests if coverage is low

@@ -1,0 +1,4 @@
+name: gcp-cert-manager-cert
+description: GCP Certificate Manager Cert Pulumi Module
+runtime: go
+
