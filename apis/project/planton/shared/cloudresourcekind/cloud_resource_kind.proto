@@ -631,6 +631,15 @@ enum CloudResourceKind {
     id_prefix: "percpgop"
     kubernetes_meta: {category: addon}
   }];
+  HarborKubernetes = 837 [(kind_meta) = {
+    provider: kubernetes
+    version: v1
+    id_prefix: "hrbk8s"
+    kubernetes_meta: {
+      category: workload
+      namespace_prefix: "harbor"
+    }
+  }];
 
   // 1200–1499: DigitalOcean resources
   DigitalOceanAppPlatformService = 1200 [(kind_meta) = {

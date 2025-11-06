@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package project.planton.provider.kubernetes.workload.harborkubernetes.v1;
+
+import "project/planton/provider/kubernetes/provider.proto";
+import "project/planton/provider/kubernetes/workload/harborkubernetes/v1/api.proto";
+
+// harbor-kubernetes stack-input
+message HarborKubernetesStackInput {
+  // target cloud-resource
+  HarborKubernetes target = 1;
+  // provider-credential
+  project.planton.provider.kubernetes.KubernetesProviderConfig provider_config = 2;
+  // kubernetes namespace
+  string kubernetes_namespace = 3;
+}

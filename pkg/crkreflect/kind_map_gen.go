@@ -116,6 +116,7 @@ import (
 	elasticsearchkubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/elasticsearchkubernetes/v1"
 	gitlabkubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/gitlabkubernetes/v1"
 	grafanakubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/grafanakubernetes/v1"
+	harborkubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/harborkubernetes/v1"
 	helmreleasev1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/helmrelease/v1"
 	jenkinskubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/jenkinskubernetes/v1"
 	kafkakubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/kafkakubernetes/v1"
@@ -291,6 +292,7 @@ var ProviderKubernetesWorkloadMap = map[cloudresourcekind.CloudResourceKind]prot
 	cloudresourcekind.CloudResourceKind_ElasticsearchKubernetes:  &elasticsearchkubernetesv1.ElasticsearchKubernetes{},
 	cloudresourcekind.CloudResourceKind_GitlabKubernetes:         &gitlabkubernetesv1.GitlabKubernetes{},
 	cloudresourcekind.CloudResourceKind_GrafanaKubernetes:        &grafanakubernetesv1.GrafanaKubernetes{},
+	cloudresourcekind.CloudResourceKind_HarborKubernetes:         &harborkubernetesv1.HarborKubernetes{},
 	cloudresourcekind.CloudResourceKind_HelmRelease:              &helmreleasev1.HelmRelease{},
 	cloudresourcekind.CloudResourceKind_JenkinsKubernetes:        &jenkinskubernetesv1.JenkinsKubernetes{},
 	cloudresourcekind.CloudResourceKind_KafkaKubernetes:          &kafkakubernetesv1.KafkaKubernetes{},
