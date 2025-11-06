@@ -1,0 +1,25 @@
+package module
+
+const (
+	OpNamespace                  = "namespace"
+	OpCoreService                = "core_service"
+	OpPortalService              = "portal_service"
+	OpRegistryService            = "registry_service"
+	OpJobserviceService          = "jobservice_service"
+	OpPortForwardCommand         = "port_forward_command"
+	OpInternalCoreEndpoint       = "internal_core_endpoint"
+	OpInternalRegistryEndpoint   = "internal_registry_endpoint"
+	OpExternalHostname           = "external_hostname"
+	OpRegistryExternalHostname   = "registry_external_hostname"
+	OpNotaryExternalHostname     = "notary_external_hostname"
+	OpAdminUsername              = "admin_username"
+	OpAdminPasswordSecretName    = "admin_password_secret.name"
+	OpAdminPasswordSecretKey     = "admin_password_secret.key"
+	OpDatabaseEndpoint           = "database_endpoint"
+	OpDatabaseUsername           = "database_username"
+	OpDatabasePasswordSecretName = "database_password_secret.name"
+	OpDatabasePasswordSecretKey  = "database_password_secret.key"
+	OpRedisEndpoint              = "redis_endpoint"
+	OpRedisPasswordSecretName    = "redis_password_secret.name"
+	OpRedisPasswordSecretKey     = "redis_password_secret.key"
+)

@@ -28,26 +28,9 @@ func Resources(ctx *pulumi.Context, stackInput *gcpcloudsqlv1.GcpCloudSqlStackIn
 	ctx.Export(OpConnectionName, createdInstance.ConnectionName)
 	ctx.Export(OpSelfLink, createdInstance.SelfLink)
 
-	// Export IPs if they exist
-	createdInstance.IpAddresses.ApplyT(func(ipAddresses interface{}) error {
-		if ipAddresses == nil {
-			return nil
-		}
-
-		// Export first public IP and first private IP found
-		for _, ipAddress := range ipAddresses.([]interface{}) {
-			ipMap := ipAddress.(map[string]interface{})
-			ipType := ipMap["type"].(string)
-			ipAddr := ipMap["ipAddress"].(string)
-
-			if ipType == "PRIMARY" {
-				ctx.Export(OpPublicIp, pulumi.String(ipAddr))
-			} else if ipType == "PRIVATE" {
-				ctx.Export(OpPrivateIp, pulumi.String(ipAddr))
-			}
-		}
-		return nil
-	})
+	// Export IP addresses using direct fields
+	ctx.Export(OpPublicIp, createdInstance.PublicIpAddress)
+	ctx.Export(OpPrivateIp, createdInstance.PrivateIpAddress)
 
 	return nil
 }

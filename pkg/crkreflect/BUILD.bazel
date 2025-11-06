@@ -132,6 +132,7 @@ go_library(
         "//apis/project/planton/provider/kubernetes/workload/elasticsearchkubernetes/v1:elasticsearchkubernetes",
         "//apis/project/planton/provider/kubernetes/workload/gitlabkubernetes/v1:gitlabkubernetes",
         "//apis/project/planton/provider/kubernetes/workload/grafanakubernetes/v1:grafanakubernetes",
+        "//apis/project/planton/provider/kubernetes/workload/harborkubernetes/v1:harborkubernetes",
         "//apis/project/planton/provider/kubernetes/workload/helmrelease/v1:helmrelease",
         "//apis/project/planton/provider/kubernetes/workload/jenkinskubernetes/v1:jenkinskubernetes",
         "//apis/project/planton/provider/kubernetes/workload/kafkakubernetes/v1:kafkakubernetes",

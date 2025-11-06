@@ -173,6 +173,7 @@ const (
 	CloudResourceKind_PerconaPostgresqlOperator    CloudResourceKind = 834
 	CloudResourceKind_PerconaServerMongodbOperator CloudResourceKind = 835
 	CloudResourceKind_PerconaServerMysqlOperator   CloudResourceKind = 836
+	CloudResourceKind_HarborKubernetes             CloudResourceKind = 837
 	// 1200–1499: DigitalOcean resources
 	CloudResourceKind_DigitalOceanAppPlatformService CloudResourceKind = 1200
 	CloudResourceKind_DigitalOceanBucket             CloudResourceKind = 1201
@@ -308,6 +309,7 @@ var (
 		834:  "PerconaPostgresqlOperator",
 		835:  "PerconaServerMongodbOperator",
 		836:  "PerconaServerMysqlOperator",
+		837:  "HarborKubernetes",
 		1200: "DigitalOceanAppPlatformService",
 		1201: "DigitalOceanBucket",
 		1202: "DigitalOceanContainerRegistry",
@@ -437,6 +439,7 @@ var (
 		"PerconaPostgresqlOperator":            834,
 		"PerconaServerMongodbOperator":         835,
 		"PerconaServerMysqlOperator":           836,
+		"HarborKubernetes":                     837,
 		"DigitalOceanAppPlatformService":       1200,
 		"DigitalOceanBucket":                   1201,
 		"DigitalOceanContainerRegistry":        1202,
@@ -683,7 +686,7 @@ const file_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto_ra
 	"\bcategory\x18\x02 \x01(\x0e2I.project.planton.shared.cloudresourcekind.KubernetesCloudResourceCategoryR\bcategory*O\n" +
 	"\x18CloudResourceKindVersion\x12+\n" +
 	"'cloud_resource_kind_version_unspecified\x10\x00\x12\x06\n" +
-	"\x02v1\x10\x01*\xec+\n" +
+	"\x02v1\x10\x01*\xa1,\n" +
 	"\x11CloudResourceKind\x12\x0f\n" +
 	"\vunspecified\x10\x00\x12(\n" +
 	"\x14TestCloudResourceOne\x10\x01\x1a\x0e\xa2\xf7\x04\n" +
@@ -816,7 +819,10 @@ const file_project_planton_shared_cloudresourcekind_cloud_resource_kind_proto_ra
 	"\x1aAltinityOperatorKubernetes\x10\xc1\x06\x1a\x16\xa2\xf7\x04\x12\b\x13\x10\x01\"\baltopk8s2\x02\x10\x01\x126\n" +
 	"\x19PerconaPostgresqlOperator\x10\xc2\x06\x1a\x16\xa2\xf7\x04\x12\b\x13\x10\x01\"\bpercpgop2\x02\x10\x01\x12:\n" +
 	"\x1cPerconaServerMongodbOperator\x10\xc3\x06\x1a\x17\xa2\xf7\x04\x13\b\x13\x10\x01\"\tpercmdbop2\x02\x10\x01\x127\n" +
-	"\x1aPerconaServerMysqlOperator\x10\xc4\x06\x1a\x16\xa2\xf7\x04\x12\b\x13\x10\x01\"\bpercpgop2\x02\x10\x01\x124\n" +
+	"\x1aPerconaServerMysqlOperator\x10\xc4\x06\x1a\x16\xa2\xf7\x04\x12\b\x13\x10\x01\"\bpercpgop2\x02\x10\x01\x123\n" +
+	"\x10HarborKubernetes\x10\xc5\x06\x1a\x1c\xa2\xf7\x04\x18\b\x13\x10\x01\"\x06hrbk8s2\n" +
+	"\n" +
+	"\x06harbor\x10\x02\x124\n" +
 	"\x1eDigitalOceanAppPlatformService\x10\xb0\t\x1a\x0f\xa2\xf7\x04\v\b\x11\x10\x01\"\x05doapp\x12(\n" +
 	"\x12DigitalOceanBucket\x10\xb1\t\x1a\x0f\xa2\xf7\x04\v\b\x11\x10\x01\"\x05dobkt\x122\n" +
 	"\x1dDigitalOceanContainerRegistry\x10\xb2\t\x1a\x0e\xa2\xf7\x04\n" +
