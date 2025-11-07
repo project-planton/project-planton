@@ -36,7 +36,7 @@ spec:
       limits:
         cpu: 1
         memory: 1Gi
-    is_persistence_enabled: false
+    persistence_enabled: false
 ```
 
 ---
@@ -73,7 +73,7 @@ spec:
       limits:
         cpu: 2
         memory: 2Gi
-    is_persistence_enabled: true
+    persistence_enabled: true
     disk_size: 20Gi
   ingress:
     enabled: true

@@ -32,7 +32,7 @@ Deploying Elasticsearch clusters on Kubernetes can be complex due to the intrica
     - Memory Requests: 256Mi
     - CPU Limits: 1
     - Memory Limits: 1Gi
-- **Persistence**: Enable or disable data persistence using `is_persistence_enabled`. When enabled, Elasticsearch in-memory data will be persisted to storage volumes, ensuring data durability across pod restarts.
+- **Persistence**: Enable or disable data persistence using `persistence_enabled`. When enabled, Elasticsearch in-memory data will be persisted to storage volumes, ensuring data durability across pod restarts.
 - **Disk Size**: Specify the size of the persistent volume attached to each Elasticsearch pod (e.g., "10Gi"). This is required when persistence is enabled. Note that this value cannot be modified after creation due to Kubernetes limitations.
 
 #### Kibana Container

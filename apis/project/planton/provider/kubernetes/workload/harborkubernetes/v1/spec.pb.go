@@ -543,7 +543,7 @@ type HarborKubernetesPostgresqlContainer struct {
 	// Flag to enable or disable data persistence for PostgreSQL.
 	// When enabled, data is persisted to a storage volume, allowing data to survive pod restarts.
 	// Defaults to true.
-	IsPersistenceEnabled bool `protobuf:"varint,4,opt,name=is_persistence_enabled,json=isPersistenceEnabled,proto3" json:"is_persistence_enabled,omitempty"`
+	PersistenceEnabled bool `protobuf:"varint,4,opt,name=persistence_enabled,json=persistenceEnabled,proto3" json:"persistence_enabled,omitempty"`
 	// *
 	// The size of the persistent volume attached to each PostgreSQL pod (e.g., "20Gi").
 	// This attribute is ignored when persistence is not enabled.
@@ -604,9 +604,9 @@ func (x *HarborKubernetesPostgresqlContainer) GetImage() *kubernetes.ContainerIm
 	return nil
 }
 
-func (x *HarborKubernetesPostgresqlContainer) GetIsPersistenceEnabled() bool {
+func (x *HarborKubernetesPostgresqlContainer) GetPersistenceEnabled() bool {
 	if x != nil {
-		return x.IsPersistenceEnabled
+		return x.PersistenceEnabled
 	}
 	return false
 }
@@ -858,7 +858,7 @@ type HarborKubernetesRedisContainer struct {
 	// Flag to enable or disable data persistence for Redis.
 	// When enabled, data is persisted to a storage volume, allowing data to survive pod restarts.
 	// Defaults to true.
-	IsPersistenceEnabled bool `protobuf:"varint,4,opt,name=is_persistence_enabled,json=isPersistenceEnabled,proto3" json:"is_persistence_enabled,omitempty"`
+	PersistenceEnabled bool `protobuf:"varint,4,opt,name=persistence_enabled,json=persistenceEnabled,proto3" json:"persistence_enabled,omitempty"`
 	// *
 	// The size of the persistent volume attached to each Redis pod (e.g., "8Gi").
 	// This attribute is ignored when persistence is not enabled.
@@ -918,9 +918,9 @@ func (x *HarborKubernetesRedisContainer) GetImage() *kubernetes.ContainerImage {
 	return nil
 }
 
-func (x *HarborKubernetesRedisContainer) GetIsPersistenceEnabled() bool {
+func (x *HarborKubernetesRedisContainer) GetPersistenceEnabled() bool {
 	if x != nil {
-		return x.IsPersistenceEnabled
+		return x.PersistenceEnabled
 	}
 	return false
 }
@@ -1685,14 +1685,14 @@ const file_project_planton_provider_kubernetes_workload_harborkubernetes_v1_spec
 	"\tcontainer\x18\x01 \x01(\v2e.project.planton.provider.kubernetes.workload.harborkubernetes.v1.HarborKubernetesPostgresqlContainerB.\xaa\xa9\x96\x02)\b\x01\x12\x1d\n" +
 	"\f\n" +
 	"\x051000m\x12\x032Gi\x12\r\n" +
-	"\x04200m\x12\x05512Mi \x01*\x0420GiR\tcontainer\"\xa6\x05\n" +
+	"\x04200m\x12\x05512Mi \x01*\x0420GiR\tcontainer\"\x9b\x05\n" +
 	"#HarborKubernetesPostgresqlContainer\x12#\n" +
 	"\breplicas\x18\x01 \x01(\x05B\a\xbaH\x04\x1a\x02(\x01R\breplicas\x12S\n" +
 	"\tresources\x18\x02 \x01(\v25.project.planton.shared.kubernetes.ContainerResourcesR\tresources\x12G\n" +
-	"\x05image\x18\x03 \x01(\v21.project.planton.shared.kubernetes.ContainerImageR\x05image\x124\n" +
-	"\x16is_persistence_enabled\x18\x04 \x01(\bR\x14isPersistenceEnabled\x12\x1b\n" +
-	"\tdisk_size\x18\x05 \x01(\tR\bdiskSize:\xe8\x02\xbaH\xe4\x02\x1a\xe1\x02\n" +
-	",spec.postgresql.container.disk_size.required\x12IDisk size is required and must match the format if persistence is enabled\x1a\xe5\x01((!this.is_persistence_enabled && (size(this.disk_size) == 0 || this.disk_size == '')) || (this.is_persistence_enabled && size(this.disk_size) > 0 && this.disk_size.matches('^\\\\d+(\\\\.\\\\d+)?\\\\s?(Ki|Mi|Gi|Ti|Pi|Ei|K|M|G|T|P|E)$')))\"\xe7\x03\n" +
+	"\x05image\x18\x03 \x01(\v21.project.planton.shared.kubernetes.ContainerImageR\x05image\x12/\n" +
+	"\x13persistence_enabled\x18\x04 \x01(\bR\x12persistenceEnabled\x12\x1b\n" +
+	"\tdisk_size\x18\x05 \x01(\tR\bdiskSize:\xe2\x02\xbaH\xde\x02\x1a\xdb\x02\n" +
+	",spec.postgresql.container.disk_size.required\x12IDisk size is required and must match the format if persistence is enabled\x1a\xdf\x01((!this.persistence_enabled && (size(this.disk_size) == 0 || this.disk_size == '')) || (this.persistence_enabled && size(this.disk_size) > 0 && this.disk_size.matches('^\\\\d+(\\\\.\\\\d+)?\\\\s?(Ki|Mi|Gi|Ti|Pi|Ei|K|M|G|T|P|E)$')))\"\xe7\x03\n" +
 	"\x1bHarborKubernetesCacheConfig\x12\x1f\n" +
 	"\vis_external\x18\x01 \x01(\bR\n" +
 	"isExternal\x12\x86\x01\n" +
@@ -1714,14 +1714,14 @@ const file_project_planton_provider_kubernetes_workload_harborkubernetes_v1_spec
 	"\tcontainer\x18\x01 \x01(\v2`.project.planton.provider.kubernetes.workload.harborkubernetes.v1.HarborKubernetesRedisContainerB.\xb2\xa9\x96\x02)\b\x01\x12\x1e\n" +
 	"\r\n" +
 	"\x04500m\x12\x05512Mi\x12\r\n" +
-	"\x04100m\x12\x05256Mi \x01*\x038GiR\tcontainer\"\x9c\x05\n" +
+	"\x04100m\x12\x05256Mi \x01*\x038GiR\tcontainer\"\x91\x05\n" +
 	"\x1eHarborKubernetesRedisContainer\x12#\n" +
 	"\breplicas\x18\x01 \x01(\x05B\a\xbaH\x04\x1a\x02(\x01R\breplicas\x12S\n" +
 	"\tresources\x18\x02 \x01(\v25.project.planton.shared.kubernetes.ContainerResourcesR\tresources\x12G\n" +
-	"\x05image\x18\x03 \x01(\v21.project.planton.shared.kubernetes.ContainerImageR\x05image\x124\n" +
-	"\x16is_persistence_enabled\x18\x04 \x01(\bR\x14isPersistenceEnabled\x12\x1b\n" +
-	"\tdisk_size\x18\x05 \x01(\tR\bdiskSize:\xe3\x02\xbaH\xdf\x02\x1a\xdc\x02\n" +
-	"'spec.redis.container.disk_size.required\x12IDisk size is required and must match the format if persistence is enabled\x1a\xe5\x01((!this.is_persistence_enabled && (size(this.disk_size) == 0 || this.disk_size == '')) || (this.is_persistence_enabled && size(this.disk_size) > 0 && this.disk_size.matches('^\\\\d+(\\\\.\\\\d+)?\\\\s?(Ki|Mi|Gi|Ti|Pi|Ei|K|M|G|T|P|E)$')))\"\xd9\n" +
+	"\x05image\x18\x03 \x01(\v21.project.planton.shared.kubernetes.ContainerImageR\x05image\x12/\n" +
+	"\x13persistence_enabled\x18\x04 \x01(\bR\x12persistenceEnabled\x12\x1b\n" +
+	"\tdisk_size\x18\x05 \x01(\tR\bdiskSize:\xdd\x02\xbaH\xd9\x02\x1a\xd6\x02\n" +
+	"'spec.redis.container.disk_size.required\x12IDisk size is required and must match the format if persistence is enabled\x1a\xdf\x01((!this.persistence_enabled && (size(this.disk_size) == 0 || this.disk_size == '')) || (this.persistence_enabled && size(this.disk_size) > 0 && this.disk_size.matches('^\\\\d+(\\\\.\\\\d+)?\\\\s?(Ki|Mi|Gi|Ti|Pi|Ei|K|M|G|T|P|E)$')))\"\xd9\n" +
 	"\n" +
 	"\x1dHarborKubernetesStorageConfig\x12y\n" +
 	"\x04type\x18\x01 \x01(\x0e2].project.planton.provider.kubernetes.workload.harborkubernetes.v1.HarborKubernetesStorageTypeB\x06\xbaH\x03\xc8\x01\x01R\x04type\x12k\n" +

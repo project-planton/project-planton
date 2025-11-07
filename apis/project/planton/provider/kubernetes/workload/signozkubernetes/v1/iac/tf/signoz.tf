@@ -85,7 +85,7 @@ resource "helm_release" "signoz" {
                 }
               }
               persistence = {
-                enabled = var.spec.database.managed_database.container.is_persistence_enabled
+                enabled = var.spec.database.managed_database.container.persistence_enabled
                 size    = var.spec.database.managed_database.container.disk_size
               }
             },

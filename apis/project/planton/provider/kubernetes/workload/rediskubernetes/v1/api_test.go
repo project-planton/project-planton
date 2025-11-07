@@ -27,9 +27,9 @@ var _ = ginkgo.Describe("RedisKubernetes Custom Validation Tests", func() {
 			},
 			Spec: &RedisKubernetesSpec{
 				Container: &RedisKubernetesContainer{
-					Replicas:             1,
-					IsPersistenceEnabled: true,
-					DiskSize:             "10Gi", // valid format
+					Replicas:           1,
+					PersistenceEnabled: true,
+					DiskSize:           "10Gi", // valid format
 					Resources: &kubernetes.ContainerResources{
 						Limits: &kubernetes.CpuMemory{
 							Cpu:    "1000m",

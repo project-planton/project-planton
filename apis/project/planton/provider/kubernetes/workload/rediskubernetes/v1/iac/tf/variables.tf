@@ -51,7 +51,7 @@ variable "spec" {
       # When enabled, in-memory data is persisted to a storage volume, allowing data to survive pod restarts.
       # The backup data from the persistent volume is restored into Redis memory between pod restarts.
       # Defaults to `false`.
-      is_persistence_enabled = bool
+      persistence_enabled = bool
 
       # Description for disk_size
       disk_size = string

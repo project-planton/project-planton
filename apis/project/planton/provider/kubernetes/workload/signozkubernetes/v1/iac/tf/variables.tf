@@ -141,7 +141,7 @@ variable "spec" {
 
           # Flag to enable or disable data persistence for ClickHouse.
           # When enabled, data is persisted to a storage volume, allowing data to survive pod restarts.
-          is_persistence_enabled = bool
+          persistence_enabled = bool
 
           # The size of the persistent volume attached to each ClickHouse pod (e.g., "20Gi").
           # This attribute is ignored when persistence is not enabled.

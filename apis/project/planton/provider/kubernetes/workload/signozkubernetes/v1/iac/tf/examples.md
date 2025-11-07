@@ -48,7 +48,7 @@ module "signoz_dev" {
       managed_database = {
         container = {
           replicas               = 1
-          is_persistence_enabled = true
+          persistence_enabled = true
           disk_size              = "20Gi"
           resources = {
             requests = {
@@ -123,7 +123,7 @@ module "signoz_production" {
       managed_database = {
         container = {
           replicas               = 1
-          is_persistence_enabled = true
+          persistence_enabled = true
           disk_size              = "100Gi"
           resources = {
             requests = {
@@ -275,7 +275,7 @@ module "signoz_with_ingress" {
       managed_database = {
         container = {
           replicas               = 1
-          is_persistence_enabled = true
+          persistence_enabled = true
           disk_size              = "50Gi"
           resources = {
             requests = {
@@ -369,7 +369,7 @@ module "signoz_custom_images" {
       managed_database = {
         container = {
           replicas               = 1
-          is_persistence_enabled = true
+          persistence_enabled = true
           disk_size              = "50Gi"
           resources = {
             requests = {
@@ -448,7 +448,7 @@ module "signoz_custom_helm" {
       managed_database = {
         container = {
           replicas               = 1
-          is_persistence_enabled = true
+          persistence_enabled = true
           disk_size              = "100Gi"
           resources = {
             requests = {
@@ -537,7 +537,7 @@ module "signoz_high_volume" {
       managed_database = {
         container = {
           replicas               = 1
-          is_persistence_enabled = true
+          persistence_enabled = true
           disk_size              = "500Gi"
           resources = {
             requests = {

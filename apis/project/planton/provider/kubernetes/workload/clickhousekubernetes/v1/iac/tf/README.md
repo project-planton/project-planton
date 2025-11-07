@@ -41,7 +41,7 @@ module "clickhouse" {
     
     container = {
       replicas               = 1
-      is_persistence_enabled = true
+      persistence_enabled = true
       disk_size              = "50Gi"
       resources = {
         requests = {
@@ -76,7 +76,7 @@ module "clickhouse_cluster" {
   spec = {
     container = {
       replicas               = 3
-      is_persistence_enabled = true
+      persistence_enabled = true
       disk_size              = "100Gi"
       resources = {
         requests = {

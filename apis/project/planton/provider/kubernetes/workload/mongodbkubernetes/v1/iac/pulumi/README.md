@@ -11,7 +11,7 @@ The MongoDB Kubernetes module adheres to a standard Kubernetes resource structur
 ### Key Features of the API Resource:
 - **Deployment-Agnostic Design**: The specification is designed to work with different deployment implementations (Helm charts, operators, raw manifests). Currently implemented using Percona operator CRDs.
 - **Replica Set Support**: Automatically configures MongoDB replica sets for high availability. The `replicas` field maps to Percona's replica set size.
-- **Persistence**: The `is_persistence_enabled` flag allows you to enable or disable persistence for MongoDB data. When enabled, a persistent volume is attached to each MongoDB pod to store data, which is restored after restarts.
+- **Persistence**: The `persistence_enabled` flag allows you to enable or disable persistence for MongoDB data. When enabled, a persistent volume is attached to each MongoDB pod to store data, which is restored after restarts.
 - **Resource Management**: Developers can define CPU and memory limits for MongoDB pods, ensuring that the cluster is configured with optimal resource utilization.
 - **Ingress Support**: The module provides the ability to configure ingress for MongoDB clusters, enabling external access to the MongoDB service. This can be particularly useful for hybrid cloud environments or services requiring external data access.
 - **Automated Password Generation**: A random password for MongoDB authentication is generated and securely stored in a Kubernetes secret, simplifying the process of credential management.

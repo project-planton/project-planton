@@ -50,7 +50,7 @@ Specifies the container-level configurations for Redis.
 
 - **replicas**: Number of Redis pods to deploy.
 - **resources**: CPU and memory resource allocations for each Redis container.
-- **is_persistence_enabled**: Flag to enable or disable data persistence.
+- **persistence_enabled**: Flag to enable or disable data persistence.
 - **disk_size**: Size of the persistent volume attached to each Redis pod.
 
 ### RedisKubernetesStackOutputs

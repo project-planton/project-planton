@@ -21,9 +21,9 @@ var _ = ginkgo.Describe("ClickHouseKubernetesSpec validations", func() {
 		spec = &ClickHouseKubernetesSpec{
 			ClusterName: "test-cluster",
 			Container: &ClickHouseKubernetesContainer{
-				Replicas:             1,
-				IsPersistenceEnabled: true,
-				DiskSize:             "8Gi",
+				Replicas:           1,
+				PersistenceEnabled: true,
+				DiskSize:           "8Gi",
 				Resources: &kubernetes.ContainerResources{
 					Limits: &kubernetes.CpuMemory{
 						Cpu:    "1000m",
@@ -51,7 +51,7 @@ var _ = ginkgo.Describe("ClickHouseKubernetesSpec validations", func() {
 
 		ginkgo.Context("spec with persistence disabled", func() {
 			ginkgo.It("should not return a validation error when disk_size is empty", func() {
-				spec.Container.IsPersistenceEnabled = false
+				spec.Container.PersistenceEnabled = false
 				spec.Container.DiskSize = ""
 				err := protovalidate.Validate(spec)
 				gomega.Expect(err).To(gomega.BeNil())
@@ -74,7 +74,7 @@ var _ = ginkgo.Describe("ClickHouseKubernetesSpec validations", func() {
 	ginkgo.Describe("When invalid input is passed", func() {
 		ginkgo.Context("spec with persistence enabled but no disk_size", func() {
 			ginkgo.It("should return a validation error", func() {
-				spec.Container.IsPersistenceEnabled = true
+				spec.Container.PersistenceEnabled = true
 				spec.Container.DiskSize = ""
 				err := protovalidate.Validate(spec)
 				gomega.Expect(err).NotTo(gomega.BeNil())
@@ -83,7 +83,7 @@ var _ = ginkgo.Describe("ClickHouseKubernetesSpec validations", func() {
 
 		ginkgo.Context("spec with invalid disk_size format", func() {
 			ginkgo.It("should return a validation error", func() {
-				spec.Container.IsPersistenceEnabled = true
+				spec.Container.PersistenceEnabled = true
 				spec.Container.DiskSize = "invalid"
 				err := protovalidate.Validate(spec)
 				gomega.Expect(err).NotTo(gomega.BeNil())

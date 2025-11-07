@@ -27,9 +27,9 @@ var _ = ginkgo.Describe("PrometheusKubernetes Custom Validation Tests", func() {
 			},
 			Spec: &PrometheusKubernetesSpec{
 				Container: &PrometheusKubernetesContainer{
-					Replicas:             1,
-					IsPersistenceEnabled: true,
-					DiskSize:             "10Gi",
+					Replicas:           1,
+					PersistenceEnabled: true,
+					DiskSize:           "10Gi",
 					Resources: &kubernetes.ContainerResources{
 						Limits: &kubernetes.CpuMemory{
 							Cpu:    "1000m",

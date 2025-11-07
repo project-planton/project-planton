@@ -310,7 +310,7 @@ type ClickHouseKubernetesContainer struct {
 	// A flag to enable or disable data persistence for ClickHouse.
 	// When enabled, data is persisted to a storage volume, allowing data to survive pod restarts.
 	// Defaults to `true`. Strongly recommended for production use.
-	IsPersistenceEnabled bool `protobuf:"varint,3,opt,name=is_persistence_enabled,json=isPersistenceEnabled,proto3" json:"is_persistence_enabled,omitempty"`
+	PersistenceEnabled bool `protobuf:"varint,3,opt,name=persistence_enabled,json=persistenceEnabled,proto3" json:"persistence_enabled,omitempty"`
 	// *
 	// The size of the persistent volume attached to each ClickHouse pod (e.g., "50Gi", "100Gi").
 	// If the client does not provide a value, a default value is configured.
@@ -366,9 +366,9 @@ func (x *ClickHouseKubernetesContainer) GetResources() *kubernetes.ContainerReso
 	return nil
 }
 
-func (x *ClickHouseKubernetesContainer) GetIsPersistenceEnabled() bool {
+func (x *ClickHouseKubernetesContainer) GetPersistenceEnabled() bool {
 	if x != nil {
-		return x.IsPersistenceEnabled
+		return x.PersistenceEnabled
 	}
 	return false
 }
@@ -919,13 +919,13 @@ const file_project_planton_provider_kubernetes_workload_clickhousekubernetes_v1_
 	"\aversion\x18\x05 \x01(\tR\aversion\x12\x90\x01\n" +
 	"\fcoordination\x18\x06 \x01(\v2l.project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickHouseKubernetesCoordinationConfigR\fcoordination\x12\x8b\x01\n" +
 	"\tzookeeper\x18\a \x01(\v2i.project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickHouseKubernetesZookeeperConfigB\x02\x18\x01R\tzookeeper\x12\x89\x01\n" +
-	"\alogging\x18\b \x01(\v2g.project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickHouseKubernetesLoggingConfigB\x06\xbaH\x03\xc8\x01\x01R\alogging\"\xcc\x04\n" +
+	"\alogging\x18\b \x01(\v2g.project.planton.provider.kubernetes.workload.clickhousekubernetes.v1.ClickHouseKubernetesLoggingConfigB\x06\xbaH\x03\xc8\x01\x01R\alogging\"\xc1\x04\n" +
 	"\x1dClickHouseKubernetesContainer\x12#\n" +
 	"\breplicas\x18\x01 \x01(\x05B\a\xbaH\x04\x1a\x02(\x01R\breplicas\x12S\n" +
-	"\tresources\x18\x02 \x01(\v25.project.planton.shared.kubernetes.ContainerResourcesR\tresources\x124\n" +
-	"\x16is_persistence_enabled\x18\x03 \x01(\bR\x14isPersistenceEnabled\x12\x1b\n" +
-	"\tdisk_size\x18\x04 \x01(\tR\bdiskSize:\xdd\x02\xbaH\xd9\x02\x1a\xd6\x02\n" +
-	"!spec.container.disk_size.required\x12IDisk size is required and must match the format if persistence is enabled\x1a\xe5\x01((!this.is_persistence_enabled && (size(this.disk_size) == 0 || this.disk_size == '')) || (this.is_persistence_enabled && size(this.disk_size) > 0 && this.disk_size.matches('^\\\\d+(\\\\.\\\\d+)?\\\\s?(Ki|Mi|Gi|Ti|Pi|Ei|K|M|G|T|P|E)$')))\"\xc9\x02\n" +
+	"\tresources\x18\x02 \x01(\v25.project.planton.shared.kubernetes.ContainerResourcesR\tresources\x12/\n" +
+	"\x13persistence_enabled\x18\x03 \x01(\bR\x12persistenceEnabled\x12\x1b\n" +
+	"\tdisk_size\x18\x04 \x01(\tR\bdiskSize:\xd7\x02\xbaH\xd3\x02\x1a\xd0\x02\n" +
+	"!spec.container.disk_size.required\x12IDisk size is required and must match the format if persistence is enabled\x1a\xdf\x01((!this.persistence_enabled && (size(this.disk_size) == 0 || this.disk_size == '')) || (this.persistence_enabled && size(this.disk_size) > 0 && this.disk_size.matches('^\\\\d+(\\\\.\\\\d+)?\\\\s?(Ki|Mi|Gi|Ti|Pi|Ei|K|M|G|T|P|E)$')))\"\xc9\x02\n" +
 	"!ClickHouseKubernetesClusterConfig\x12\x1d\n" +
 	"\n" +
 	"is_enabled\x18\x01 \x01(\bR\tisEnabled\x12\x1f\n" +

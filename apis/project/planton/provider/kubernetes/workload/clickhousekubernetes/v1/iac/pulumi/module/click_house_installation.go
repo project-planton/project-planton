@@ -196,7 +196,7 @@ func buildVolumeClaimTemplates(
 	spec *clickhousekubernetesv1.ClickHouseKubernetesSpec,
 ) altinityv1.ClickHouseInstallationSpecTemplatesVolumeClaimTemplatesArray {
 	diskSize := "1Gi" // minimal default
-	if spec.Container.IsPersistenceEnabled && spec.Container.DiskSize != "" {
+	if spec.Container.PersistenceEnabled && spec.Container.DiskSize != "" {
 		diskSize = spec.Container.DiskSize
 	}
 

@@ -122,7 +122,7 @@ func signoz(ctx *pulumi.Context, locals *Locals,
 					}
 
 					clickhouseValues["persistence"] = pulumi.Map{
-						"enabled": pulumi.Bool(managed.Container.IsPersistenceEnabled),
+						"enabled": pulumi.Bool(managed.Container.PersistenceEnabled),
 						"size":    pulumi.String(managed.Container.DiskSize),
 					}
 				}

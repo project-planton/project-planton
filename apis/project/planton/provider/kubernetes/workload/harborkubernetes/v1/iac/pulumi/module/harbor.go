@@ -120,7 +120,7 @@ func harbor(ctx *pulumi.Context, locals *Locals,
 							managed.Container.Resources)
 					}
 
-					if managed.Container.IsPersistenceEnabled {
+					if managed.Container.PersistenceEnabled {
 						postgresValues["persistence"] = pulumi.Map{
 							"enabled": pulumi.Bool(true),
 							"size":    pulumi.String(managed.Container.DiskSize),

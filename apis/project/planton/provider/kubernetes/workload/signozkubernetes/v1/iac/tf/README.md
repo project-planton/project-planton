@@ -114,7 +114,7 @@ module "signoz" {
       managed_database = {
         container = {
           replicas               = 1
-          is_persistence_enabled = true
+          persistence_enabled = true
           disk_size              = "20Gi"
           resources = {
             requests = { cpu = "500m", memory = "1Gi" }

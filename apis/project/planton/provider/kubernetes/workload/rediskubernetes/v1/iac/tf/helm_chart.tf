@@ -24,7 +24,7 @@ resource "helm_release" "redis" {
           }
         }
         persistence = {
-          enabled = var.spec.container.is_persistence_enabled
+          enabled = var.spec.container.persistence_enabled
           size    = var.spec.container.disk_size
         }
       }
@@ -43,7 +43,7 @@ resource "helm_release" "redis" {
           }
         }
         persistence = {
-          enabled = var.spec.container.is_persistence_enabled
+          enabled = var.spec.container.persistence_enabled
           size    = var.spec.container.disk_size
         }
       }

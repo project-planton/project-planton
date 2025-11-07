@@ -50,9 +50,9 @@ var _ = ginkgo.Describe("SignozKubernetesSpec validations", func() {
 				IsExternal: false,
 				ManagedDatabase: &SignozKubernetesManagedClickhouse{
 					Container: &SignozKubernetesClickhouseContainer{
-						Replicas:             1,
-						IsPersistenceEnabled: true,
-						DiskSize:             "20Gi",
+						Replicas:           1,
+						PersistenceEnabled: true,
+						DiskSize:           "20Gi",
 						Resources: &kubernetes.ContainerResources{
 							Limits: &kubernetes.CpuMemory{
 								Cpu:    "2000m",
@@ -133,7 +133,7 @@ var _ = ginkgo.Describe("SignozKubernetesSpec validations", func() {
 
 		ginkgo.Context("spec with ClickHouse persistence disabled", func() {
 			ginkgo.It("should not return a validation error when disk_size is empty", func() {
-				spec.Database.ManagedDatabase.Container.IsPersistenceEnabled = false
+				spec.Database.ManagedDatabase.Container.PersistenceEnabled = false
 				spec.Database.ManagedDatabase.Container.DiskSize = ""
 				err := protovalidate.Validate(spec)
 				gomega.Expect(err).To(gomega.BeNil())
@@ -212,7 +212,7 @@ var _ = ginkgo.Describe("SignozKubernetesSpec validations", func() {
 
 		ginkgo.Context("spec with ClickHouse persistence enabled but no disk_size", func() {
 			ginkgo.It("should return a validation error", func() {
-				spec.Database.ManagedDatabase.Container.IsPersistenceEnabled = true
+				spec.Database.ManagedDatabase.Container.PersistenceEnabled = true
 				spec.Database.ManagedDatabase.Container.DiskSize = ""
 				err := protovalidate.Validate(spec)
 				gomega.Expect(err).NotTo(gomega.BeNil())
@@ -221,7 +221,7 @@ var _ = ginkgo.Describe("SignozKubernetesSpec validations", func() {
 
 		ginkgo.Context("spec with invalid ClickHouse disk_size format", func() {
 			ginkgo.It("should return a validation error", func() {
-				spec.Database.ManagedDatabase.Container.IsPersistenceEnabled = true
+				spec.Database.ManagedDatabase.Container.PersistenceEnabled = true
 				spec.Database.ManagedDatabase.Container.DiskSize = "invalid"
 				err := protovalidate.Validate(spec)
 				gomega.Expect(err).NotTo(gomega.BeNil())

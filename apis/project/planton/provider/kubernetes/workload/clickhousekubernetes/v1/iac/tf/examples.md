@@ -23,7 +23,7 @@ module "clickhouse_basic" {
     
     container = {
       replicas               = 1
-      is_persistence_enabled = true
+      persistence_enabled = true
       disk_size              = "20Gi"
       resources = {
         requests = {
@@ -60,7 +60,7 @@ module "clickhouse_production" {
     
     container = {
       replicas               = 1
-      is_persistence_enabled = true
+      persistence_enabled = true
       disk_size              = "200Gi"
       resources = {
         requests = {
@@ -94,7 +94,7 @@ module "clickhouse_distributed" {
     
     container = {
       replicas               = 1
-      is_persistence_enabled = true
+      persistence_enabled = true
       disk_size              = "100Gi"
       resources = {
         requests = {
@@ -141,7 +141,7 @@ module "clickhouse_ha" {
     
     container = {
       replicas               = 1
-      is_persistence_enabled = true
+      persistence_enabled = true
       disk_size              = "150Gi"
       resources = {
         requests = {
@@ -186,7 +186,7 @@ module "clickhouse_external_zk" {
     
     container = {
       replicas               = 1
-      is_persistence_enabled = true
+      persistence_enabled = true
       disk_size              = "200Gi"
       resources = {
         requests = {
@@ -240,7 +240,7 @@ module "clickhouse_public" {
     
     container = {
       replicas               = 1
-      is_persistence_enabled = true
+      persistence_enabled = true
       disk_size              = "100Gi"
       resources = {
         requests = {

@@ -24,9 +24,9 @@ func TestGeneratedTFVarsParsing(t *testing.T) {
 		},
 		Spec: &rediskubernetesv1.RedisKubernetesSpec{
 			Container: &rediskubernetesv1.RedisKubernetesContainer{
-				DiskSize:             "2Gi",
-				IsPersistenceEnabled: true,
-				Replicas:             1,
+				DiskSize:           "2Gi",
+				PersistenceEnabled: true,
+				Replicas:           1,
 				Resources: &kubernetes.ContainerResources{
 					Limits: &kubernetes.CpuMemory{
 						Cpu:    "1000m",

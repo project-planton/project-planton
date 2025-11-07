@@ -94,10 +94,10 @@ type RedisKubernetesContainer struct {
 	// When enabled, in-memory data is persisted to a storage volume, allowing data to survive pod restarts.
 	// The backup data from the persistent volume is restored into Redis memory between pod restarts.
 	// Defaults to `false`.
-	IsPersistenceEnabled bool   `protobuf:"varint,3,opt,name=is_persistence_enabled,json=isPersistenceEnabled,proto3" json:"is_persistence_enabled,omitempty"`
-	DiskSize             string `protobuf:"bytes,4,opt,name=disk_size,json=diskSize,proto3" json:"disk_size,omitempty"`
-	unknownFields        protoimpl.UnknownFields
-	sizeCache            protoimpl.SizeCache
+	PersistenceEnabled bool   `protobuf:"varint,3,opt,name=persistence_enabled,json=persistenceEnabled,proto3" json:"persistence_enabled,omitempty"`
+	DiskSize           string `protobuf:"bytes,4,opt,name=disk_size,json=diskSize,proto3" json:"disk_size,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
 }
 
 func (x *RedisKubernetesContainer) Reset() {
@@ -144,9 +144,9 @@ func (x *RedisKubernetesContainer) GetResources() *kubernetes.ContainerResources
 	return nil
 }
 
-func (x *RedisKubernetesContainer) GetIsPersistenceEnabled() bool {
+func (x *RedisKubernetesContainer) GetPersistenceEnabled() bool {
 	if x != nil {
-		return x.IsPersistenceEnabled
+		return x.PersistenceEnabled
 	}
 	return false
 }
@@ -244,13 +244,13 @@ const file_project_planton_provider_kubernetes_workload_rediskubernetes_v1_spec_
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
 	"\x0350m\x12\x05100Mi\x18\x01\"\x031GiR\tcontainer\x12q\n" +
-	"\aingress\x18\x02 \x01(\v2W.project.planton.provider.kubernetes.workload.rediskubernetes.v1.RedisKubernetesIngressR\aingress\"\xbe\x04\n" +
+	"\aingress\x18\x02 \x01(\v2W.project.planton.provider.kubernetes.workload.rediskubernetes.v1.RedisKubernetesIngressR\aingress\"\xb3\x04\n" +
 	"\x18RedisKubernetesContainer\x12\x1a\n" +
 	"\breplicas\x18\x01 \x01(\x05R\breplicas\x12S\n" +
-	"\tresources\x18\x02 \x01(\v25.project.planton.shared.kubernetes.ContainerResourcesR\tresources\x124\n" +
-	"\x16is_persistence_enabled\x18\x03 \x01(\bR\x14isPersistenceEnabled\x12\x1b\n" +
-	"\tdisk_size\x18\x04 \x01(\tR\bdiskSize:\xdd\x02\xbaH\xd9\x02\x1a\xd6\x02\n" +
-	"!spec.container.disk_size.required\x12IDisk size is required and must match the format if persistence is enabled\x1a\xe5\x01((!this.is_persistence_enabled && (size(this.disk_size) == 0 || this.disk_size == '')) || (this.is_persistence_enabled && size(this.disk_size) > 0 && this.disk_size.matches('^\\\\d+(\\\\.\\\\d+)?\\\\s?(Ki|Mi|Gi|Ti|Pi|Ei|K|M|G|T|P|E)$')))\"\xcd\x01\n" +
+	"\tresources\x18\x02 \x01(\v25.project.planton.shared.kubernetes.ContainerResourcesR\tresources\x12/\n" +
+	"\x13persistence_enabled\x18\x03 \x01(\bR\x12persistenceEnabled\x12\x1b\n" +
+	"\tdisk_size\x18\x04 \x01(\tR\bdiskSize:\xd7\x02\xbaH\xd3\x02\x1a\xd0\x02\n" +
+	"!spec.container.disk_size.required\x12IDisk size is required and must match the format if persistence is enabled\x1a\xdf\x01((!this.persistence_enabled && (size(this.disk_size) == 0 || this.disk_size == '')) || (this.persistence_enabled && size(this.disk_size) > 0 && this.disk_size.matches('^\\\\d+(\\\\.\\\\d+)?\\\\s?(Ki|Mi|Gi|Ti|Pi|Ei|K|M|G|T|P|E)$')))\"\xcd\x01\n" +
 	"\x16RedisKubernetesIngress\x12\x18\n" +
 	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x1a\n" +
 	"\bhostname\x18\x02 \x01(\tR\bhostname:}\xbaHz\x1ax\n" +
