@@ -1,649 +1,474 @@
-# Multiple Examples for `MicroserviceKubernetes` API-Resource
+# Multiple Examples for `PostgresKubernetes` API-Resource
 
-## Example with Environment Variables
+## Example: Basic PostgreSQL Database
 
 ### Create using CLI
 
 Create a YAML file using the example shown below. After the YAML is created, use the command below to apply it.
 
 ```shell
-planton apply -f <yaml-path>
+project-planton apply -f <yaml-path>
 ```
 
 ### YAML Configuration
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: MicroserviceKubernetes
+kind: PostgresKubernetes
 metadata:
-  name: todo-list-api
+  name: my-app-db
+  org: my-org
+  env: dev
 spec:
-  version: main
   container:
-    app:
-      env:
-        variables:
-          DATABASE_NAME: todo
-          LOG_LEVEL: debug
-      image:
-        repo: nginx
-        tag: latest
-      ports:
-        - appProtocol: http
-          containerPort: 8080
-          isIngressPort: true
-          name: rest-api
-          networkProtocol: TCP
-          servicePort: 80
-      resources:
-        requests:
-          cpu: 100m
-          memory: 100Mi
-        limits:
-          cpu: 2000m
-          memory: 2Gi
+    replicas: 1
+    resources:
+      requests:
+        cpu: "250m"
+        memory: "256Mi"
+      limits:
+        cpu: "1000m"
+        memory: "1Gi"
+    disk_size: "10Gi"
 ```
 
 ---
 
-## Example with Environment Secrets
-
-*Note: This example assumes that secrets are managed by Planton Cloud's [GCP Secrets Manager](https://buf.build/project-planton/apis/docs/main:cloud.planton.apis.code2cloud.v1.gcp.gcpsecretsmanager) deployment module.*
+## Example: PostgreSQL with Ingress
 
 ### Create using CLI
 
 Create a YAML file using the example shown below. After the YAML is created, use the command below to apply it.
 
 ```shell
-planton apply -f <yaml-path>
+project-planton apply -f <yaml-path>
 ```
 
 ### YAML Configuration
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: MicroserviceKubernetes
+kind: PostgresKubernetes
 metadata:
-  name: todo-list-api
+  name: my-public-db
+  org: my-org
+  env: prod
 spec:
-  version: main
   container:
-    app:
-      env:
-        secrets:
-          # Format: ${<secret-manager-id>.<secret-key>}
-          DATABASE_PASSWORD: ${gcpsm-my-org-prod-gcp-secrets.database-password}
-        variables:
-          DATABASE_NAME: todo
-      image:
-        repo: nginx
-        tag: latest
-      ports:
-        - appProtocol: http
-          containerPort: 8080
-          isIngressPort: true
-          name: rest-api
-          networkProtocol: TCP
-          servicePort: 80
-      resources:
-        requests:
-          cpu: 100m
-          memory: 100Mi
-        limits:
-          cpu: 2000m
-          memory: 2Gi
+    replicas: 1
+    resources:
+      requests:
+        cpu: "500m"
+        memory: "512Mi"
+      limits:
+        cpu: "2000m"
+        memory: "2Gi"
+    disk_size: "50Gi"
+  
+  ingress:
+    enabled: true
+    hostname: postgres-prod.example.com
 ```
 
 ---
 
-## Example with Multiple Containers
+## Example: PostgreSQL with Custom Backup Configuration
 
 ### Create using CLI
 
 Create a YAML file using the example shown below. After the YAML is created, use the command below to apply it.
 
 ```shell
-planton apply -f <yaml-path>
+project-planton apply -f <yaml-path>
 ```
 
 ### YAML Configuration
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: MicroserviceKubernetes
+kind: PostgresKubernetes
 metadata:
-  name: multi-container-app
+  name: my-app-db
+  org: my-org
+  env: prod
 spec:
-  environmentInfo:
-    envId: my-org-staging
-  version: develop
   container:
-    app:
-      image:
-        repo: myorg/multi-container-app
-        tag: v1.2.3
-      ports:
-        - appProtocol: http
-          containerPort: 8080
-          isIngressPort: true
-          name: main-api
-          networkProtocol: TCP
-          servicePort: 80
-        - appProtocol: grpc
-          containerPort: 9090
-          isIngressPort: false
-          name: grpc-api
-          networkProtocol: TCP
-          servicePort: 9090
-      resources:
-        requests:
-          cpu: 250m
-          memory: 256Mi
-        limits:
-          cpu: 1000m
-          memory: 1Gi
-    sidecar:
-      image:
-        repo: myorg/log-collector
-        tag: stable
-      ports:
-        - appProtocol: tcp
-          containerPort: 514
-          isIngressPort: false
-          name: log-collector
-          networkProtocol: TCP
-          servicePort: 514
-      resources:
-        requests:
-          cpu: 50m
-          memory: 64Mi
-        limits:
-          cpu: 200m
-          memory: 128Mi
+    replicas: 1
+    resources:
+      requests:
+        cpu: "500m"
+        memory: "512Mi"
+      limits:
+        cpu: "2000m"
+        memory: "2Gi"
+    disk_size: "100Gi"
+  
+  # Custom backup configuration (overrides operator-level defaults)
+  backup_config:
+    # Custom S3 prefix for this database's backups
+    # $(PGVERSION) will be replaced by the PostgreSQL version
+    s3_prefix: "backups/critical/my-app-db/$(PGVERSION)"
+    
+    # Custom backup schedule (every 6 hours instead of operator default)
+    backup_schedule: "0 */6 * * *"
+    
+    # Explicitly enable backups for this database
+    enable_backup: true
 ```
 
 ---
 
-## Example with Custom Ingress Settings
+## Example: Disaster Recovery - Restore from Backup (Stage 1: Standby)
 
 ### Create using CLI
+
+This example demonstrates cross-cluster disaster recovery by restoring a database from R2/S3 backups.
 
 Create a YAML file using the example shown below. After the YAML is created, use the command below to apply it.
 
 ```shell
-planton apply -f <yaml-path>
+project-planton apply -f <yaml-path>
 ```
 
 ### YAML Configuration
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: MicroserviceKubernetes
+kind: PostgresKubernetes
 metadata:
-  name: custom-ingress-app
+  name: restored-db
+  org: my-org
+  env: prod
 spec:
-  environmentInfo:
-    envId: my-org-development
-  version: feature-branch
   container:
-    app:
-      env:
-        variables:
-          API_KEY: your-api-key
-      image:
-        repo: myorg/custom-ingress-app
-        tag: beta
-      ports:
-        - appProtocol: https
-          containerPort: 8443
-          isIngressPort: true
-          name: secure-api
-          networkProtocol: TCP
-          servicePort: 443
-      resources:
-        requests:
-          cpu: 150m
-          memory: 200Mi
-        limits:
-          cpu: 1500m
-          memory: 1.5Gi
-      ingress:
-        isEnabled: true
-        annotations:
-          kubernetes.io/ingress.class: "nginx"
-          cert-manager.io/cluster-issuer: "letsencrypt-prod"
-        hosts:
-          - host: api.dev.myorg.com
-            paths:
-              - path: /
-                pathType: Prefix
+    replicas: 1
+    resources:
+      requests:
+        cpu: "500m"
+        memory: "512Mi"
+      limits:
+        cpu: "2000m"
+        memory: "2Gi"
+    disk_size: "100Gi"
+  
+  # Disaster recovery configuration
+  backup_config:
+    restore:
+      # Stage 1: Bootstrap from backup (read-only standby)
+      enabled: true
+      
+      # S3/R2 bucket containing the backup
+      bucket_name: "my-db-backups-prod"
+      
+      # Path to backup directory (without s3:// prefix or bucket name)
+      # This path should contain basebackups_005/ and wal_005/ directories
+      s3_path: "backups/source-db-name/14"
+      
+      # R2/S3 credentials for restore access
+      # Allows independent disaster recovery without operator dependencies
+      r2_config:
+        cloudflare_account_id: "your-account-id"
+        access_key_id: "your-r2-access-key"
+        secret_access_key: "your-r2-secret-key"
+```
+
+### Verification
+
+After deployment, verify the database is in standby mode:
+
+```shell
+# Get the pod name
+POD=$(kubectl get pods -n <namespace> -l application=spilo -o jsonpath='{.items[0].metadata.name}')
+
+# Check Patroni status (should show "Standby Leader" or "Replica")
+kubectl exec -n <namespace> $POD -- patronictl list
+
+# Verify read-only mode (should return 't' for true)
+kubectl exec -n <namespace> $POD -- psql -U postgres -c "SELECT pg_is_in_recovery();"
+
+# Test read-only enforcement (should FAIL)
+kubectl exec -n <namespace> $POD -- psql -U postgres -c "CREATE TABLE test (id int);"
+# Expected: ERROR: cannot execute CREATE TABLE in a read-only transaction
 ```
 
 ---
 
-## Example with Different Datastore Configuration
+## Example: Disaster Recovery - Promote to Primary (Stage 2)
 
-### Create using CLI
+### Update Configuration
 
-Create a YAML file using the example shown below. After the YAML is created, use the command below to apply it.
-
-```shell
-planton apply -f <yaml-path>
-```
+After validating the restored data in Stage 1, promote the database to primary by updating the manifest.
 
 ### YAML Configuration
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: MicroserviceKubernetes
+kind: PostgresKubernetes
 metadata:
-  name: datastore-config-app
+  name: restored-db
+  org: my-org
+  env: prod
 spec:
-  environmentInfo:
-    envId: my-org-testing
-  version: release-1.0
   container:
-    app:
-      env:
-        variables:
-          DATABASE_NAME: testdb
-      image:
-        repo: myorg/datastore-config-app
-        tag: stable
-      ports:
-        - appProtocol: http
-          containerPort: 8000
-          isIngressPort: true
-          name: api-server
-          networkProtocol: TCP
-          servicePort: 80
-      resources:
-        requests:
-          cpu: 200m
-          memory: 256Mi
-        limits:
-          cpu: 2500m
-          memory: 2.5Gi
-      datastore:
-        engine: postgres
-        uri: postgres://user:password@postgres-service:5432/testdb
+    replicas: 1
+    resources:
+      requests:
+        cpu: "500m"
+        memory: "512Mi"
+      limits:
+        cpu: "2000m"
+        memory: "2Gi"
+    disk_size: "100Gi"
+  
+  # Disaster recovery configuration
+  backup_config:
+    restore:
+      # Stage 2: Promote to primary (read-write)
+      enabled: false  # Changed from true
+      
+      # Other fields can be kept for documentation or removed entirely
+      bucket_name: "my-db-backups-prod"
+      s3_path: "backups/source-db-name/14"
+```
+
+### Deploy Promotion
+
+```shell
+project-planton apply -f <yaml-path>
+```
+
+### Verification
+
+After promotion, verify the database is now a read-write primary:
+
+```shell
+# Get the pod name
+POD=$(kubectl get pods -n <namespace> -l application=spilo -o jsonpath='{.items[0].metadata.name}')
+
+# Check Patroni status (should show "Leader", Timeline advanced to 2)
+kubectl exec -n <namespace> $POD -- patronictl list
+
+# Verify read-write mode (should return 'f' for false)
+kubectl exec -n <namespace> $POD -- psql -U postgres -c "SELECT pg_is_in_recovery();"
+
+# Test writes (should SUCCEED)
+kubectl exec -n <namespace> $POD -- psql -U postgres -c "CREATE TABLE test (id int); INSERT INTO test VALUES (1);"
 ```
 
 ---
 
-## Example with Minimal Configuration
-
-*Note: This module is not completely implemented.*
+## Example: Disaster Recovery with Fallback to Operator Bucket
 
 ### Create using CLI
+
+This example uses operator-level bucket configuration as fallback, requiring only the S3 path to be specified.
 
 Create a YAML file using the example shown below. After the YAML is created, use the command below to apply it.
 
 ```shell
-planton apply -f <yaml-path>
+project-planton apply -f <yaml-path>
 ```
 
 ### YAML Configuration
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: MicroserviceKubernetes
+kind: PostgresKubernetes
 metadata:
-  name: minimal-app
-spec: {}
-```
-
----
-
-## Example with Advanced Resource Allocation
-
-### Create using CLI
-
-Create a YAML file using the example shown below. After the YAML is created, use the command below to apply it.
-
-```shell
-planton apply -f <yaml-path>
-```
-
-### YAML Configuration
-
-```yaml
-apiVersion: kubernetes.project-planton.org/v1
-kind: MicroserviceKubernetes
-metadata:
-  name: advanced-resources-app
+  name: restored-db-simple
+  org: my-org
+  env: prod
 spec:
-  environmentInfo:
-    envId: enterprise-prod
-  version: v2.0.1
   container:
-    app:
-      env:
-        variables:
-          SERVICE_MODE: high-performance
-          MAX_CONNECTIONS: "5000"
-      image:
-        repo: myorg/advanced-resources-app
-        tag: v2.0.1
-      ports:
-        - appProtocol: http
-          containerPort: 8080
-          isIngressPort: true
-          name: high-perf-api
-          networkProtocol: TCP
-          servicePort: 80
-      resources:
-        requests:
-          cpu: 500m
-          memory: 512Mi
-        limits:
-          cpu: 4000m
-          memory: 4Gi
+    replicas: 1
+    resources:
+      requests:
+        cpu: "500m"
+        memory: "512Mi"
+      limits:
+        cpu: "2000m"
+        memory: "2Gi"
+    disk_size: "100Gi"
+  
+  backup_config:
+    restore:
+      enabled: true
+      
+      # bucket_name not specified - will use operator-level bucket
+      # r2_config not specified - will use operator-level credentials (if supported by operator)
+      
+      # Only S3 path is required
+      s3_path: "backups/source-db-name/14"
 ```
+
+**Note**: This approach requires the PostgreSQL operator to be configured with R2/S3 credentials. If operator-level credentials are not available, provide per-database `r2_config` for complete independence.
 
 ---
 
-## Example with Multiple Ingress Hosts
+## Example: High Availability PostgreSQL with Backups
 
 ### Create using CLI
 
 Create a YAML file using the example shown below. After the YAML is created, use the command below to apply it.
 
 ```shell
-planton apply -f <yaml-path>
+project-planton apply -f <yaml-path>
 ```
 
 ### YAML Configuration
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: MicroserviceKubernetes
+kind: PostgresKubernetes
 metadata:
-  name: multi-ingress-host-app
+  name: ha-db
+  org: my-org
+  env: prod
 spec:
-  environmentInfo:
-    envId: my-org-multi
-  version: multi-ingress
   container:
-    app:
-      env:
-        variables:
-          FEATURE_FLAG: enabled
-      image:
-        repo: myorg/multi-ingress-app
-        tag: release
-      ports:
-        - appProtocol: http
-          containerPort: 8080
-          isIngressPort: true
-          name: api-http
-          networkProtocol: TCP
-          servicePort: 80
-        - appProtocol: https
-          containerPort: 8443
-          isIngressPort: true
-          name: api-https
-          networkProtocol: TCP
-          servicePort: 443
-      resources:
-        requests:
-          cpu: 300m
-          memory: 300Mi
-        limits:
-          cpu: 1500m
-          memory: 1.5Gi
-      ingress:
-        isEnabled: true
-        annotations:
-          kubernetes.io/ingress.class: "nginx"
-          cert-manager.io/cluster-issuer: "letsencrypt-staging"
-        hosts:
-          - host: api1.myorg.com
-            paths:
-              - path: /api1
-                pathType: Prefix
-          - host: api2.myorg.com
-            paths:
-              - path: /api2
-                pathType: Prefix
+    # Multiple replicas for high availability
+    replicas: 3
+    resources:
+      requests:
+        cpu: "1000m"
+        memory: "2Gi"
+      limits:
+        cpu: "4000m"
+        memory: "8Gi"
+    disk_size: "500Gi"
+  
+  # Custom backup configuration for critical database
+  backup_config:
+    # Aggressive backup schedule (every 3 hours)
+    backup_schedule: "0 */3 * * *"
+    
+    # Custom S3 prefix for critical data
+    s3_prefix: "backups/critical/ha-db/$(PGVERSION)"
+    
+    # Explicitly enable backups
+    enable_backup: true
+  
+  ingress:
+    enabled: true
+    hostname: postgres-ha-prod.example.com
 ```
 
 ---
 
-## Example with Scaling Configuration
+## Example: Development Database with Backups Disabled
 
 ### Create using CLI
 
 Create a YAML file using the example shown below. After the YAML is created, use the command below to apply it.
 
 ```shell
-planton apply -f <yaml-path>
+project-planton apply -f <yaml-path>
 ```
 
 ### YAML Configuration
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: MicroserviceKubernetes
+kind: PostgresKubernetes
 metadata:
-  name: scalable-app
+  name: dev-db
+  org: my-org
+  env: dev
 spec:
-  environmentInfo:
-    envId: my-org-scalable
-  version: scalable-v1
   container:
-    app:
-      env:
-        variables:
-          SCALABLE_FEATURE: true
-      image:
-        repo: myorg/scalable-app
-        tag: v1.0.0
-      ports:
-        - appProtocol: http
-          containerPort: 8080
-          isIngressPort: true
-          name: scalable-api
-          networkProtocol: TCP
-          servicePort: 80
-      resources:
-        requests:
-          cpu: 200m
-          memory: 256Mi
-        limits:
-          cpu: 2000m
-          memory: 2Gi
-      scaling:
-        minReplicas: 2
-        maxReplicas: 10
-        targetCPUUtilizationPercentage: 75
+    replicas: 1
+    resources:
+      requests:
+        cpu: "100m"
+        memory: "128Mi"
+      limits:
+        cpu: "500m"
+        memory: "512Mi"
+    disk_size: "5Gi"
+  
+  # Disable backups for ephemeral development database
+  backup_config:
+    enable_backup: false
 ```
 
 ---
 
-## Example with Logging and Monitoring Integration
+## Backup and Restore Best Practices
 
-### Create using CLI
+### Backup Strategy
 
-Create a YAML file using the example shown below. After the YAML is created, use the command below to apply it.
+1. **Operator-Level Configuration**: Configure R2/S3 credentials and default backup schedule at the operator level for centralized management
+2. **Per-Database Overrides**: Override backup schedule and S3 prefix for critical databases requiring more frequent backups
+3. **Backup Schedule**: Use cron format (e.g., `"0 2 * * *"` for daily at 2 AM UTC)
+4. **S3 Prefix Naming**: Use descriptive prefixes with `$(PGVERSION)` variable for automatic version separation
 
-```shell
-planton apply -f <yaml-path>
-```
+### Disaster Recovery Workflow
 
-### YAML Configuration
+**When to Use**:
+- Source cluster destroyed or inaccessible
+- Cross-cluster failover required
+- Testing backup integrity
+- Creating database copies for analytics/testing
 
+**Two-Stage Process**:
+
+1. **Stage 1 - Bootstrap as Standby** (`restore.enabled: true`)
+   - Database restores from R2/S3 backup
+   - Runs in read-only mode
+   - Allows data validation before committing to failover
+   - Zero risk of accidental writes during validation
+
+2. **Stage 2 - Promote to Primary** (`restore.enabled: false`)
+   - Controlled, deliberate promotion decision
+   - Database becomes read-write primary
+   - Clear audit trail of when failover occurred
+   - Can be automated or manual based on confidence
+
+**Expected Restore Times**:
+- Small DB (<10GB): 5-10 minutes
+- Medium DB (50GB): 20-30 minutes
+- Large DB (100GB+): 30-60+ minutes
+- Promotion time: <10 seconds (seamless)
+
+### Credentials Management
+
+**Option 1: Per-Database Credentials** (Recommended for DR)
 ```yaml
-apiVersion: kubernetes.project-planton.org/v1
-kind: MicroserviceKubernetes
-metadata:
-  name: monitoring-app
-spec:
-  environmentInfo:
-    envId: my-org-monitoring
-  version: monitoring-v2
-  container:
-    app:
-      env:
-        variables:
-          LOG_LEVEL: info
-          MONITORING_ENABLED: true
-      image:
-        repo: myorg/monitoring-app
-        tag: v2.1.0
-      ports:
-        - appProtocol: http
-          containerPort: 9090
-          isIngressPort: true
-          name: monitoring-api
-          networkProtocol: TCP
-          servicePort: 80
-      resources:
-        requests:
-          cpu: 150m
-          memory: 200Mi
-        limits:
-          cpu: 1500m
-          memory: 1.5Gi
-      logging:
-        enabled: true
-        logLevel: info
-      monitoring:
-        enabled: true
-        endpoint: /metrics
+backup_config:
+  restore:
+    enabled: true
+    bucket_name: "my-backups"
+    s3_path: "backups/db-name/14"
+    r2_config:
+      cloudflare_account_id: "xxx"
+      access_key_id: "yyy"
+      secret_access_key: "zzz"
 ```
+- Complete independence from operator configuration
+- Enables true cross-cluster disaster recovery
+- No dependencies on operator-level secrets
 
----
-
-## Example with Service Mesh Integration
-
-### Create using CLI
-
-Create a YAML file using the example shown below. After the YAML is created, use the command below to apply it.
-
-```shell
-planton apply -f <yaml-path>
-```
-
-### YAML Configuration
-
+**Option 2: Operator-Level Fallback**
 ```yaml
-apiVersion: kubernetes.project-planton.org/v1
-kind: MicroserviceKubernetes
-metadata:
-  name: service-mesh-app
-spec:
-  environmentInfo:
-    envId: my-org-mesh
-  version: mesh-v1
-  container:
-    app:
-      env:
-        variables:
-          MESH_ENABLED: true
-      image:
-        repo: myorg/service-mesh-app
-        tag: v1.0.0
-      ports:
-        - appProtocol: http
-          containerPort: 8080
-          isIngressPort: true
-          name: mesh-api
-          networkProtocol: TCP
-          servicePort: 80
-      resources:
-        requests:
-          cpu: 250m
-          memory: 256Mi
-        limits:
-          cpu: 2500m
-          memory: 2.5Gi
-      serviceMesh:
-        enabled: true
-        sidecar:
-          image: istio/proxyv2
-          resources:
-            requests:
-              cpu: 100m
-              memory: 128Mi
-            limits:
-              cpu: 500m
-              memory: 512Mi
+backup_config:
+  restore:
+    enabled: true
+    # bucket_name omitted - uses operator config
+    s3_path: "backups/db-name/14"
+    # r2_config omitted - uses operator config
 ```
+- Simpler configuration
+- Requires operator to have R2/S3 credentials configured
+- May not work for true cross-cluster scenarios
 
----
+### Operator Compatibility
 
-## Example with Feature Flags
+This API is designed to be technology-agnostic and works with multiple PostgreSQL operators:
 
-### Create using CLI
+| Operator | Restore Implementation | Status |
+|----------|------------------------|--------|
+| **Zalando** | `spec:standby` with `STANDBY_*` env vars | ✅ Implemented |
+| **Percona** | `spec:dataSource` | 🔄 Future |
+| **CloudNativePG** | `spec:bootstrap.recovery` | 🔄 Future |
 
-Create a YAML file using the example shown below. After the YAML is created, use the command below to apply it.
-
-```shell
-planton apply -f <yaml-path>
-```
-
-### YAML Configuration
-
-```yaml
-apiVersion: kubernetes.project-planton.org/v1
-kind: MicroserviceKubernetes
-metadata:
-  name: feature-flag-app
-spec:
-  environmentInfo:
-    envId: my-org-feature
-  version: feature-flags
-  container:
-    app:
-      env:
-        variables:
-          FEATURE_X_ENABLED: "true"
-          FEATURE_Y_ENABLED: "false"
-      image:
-        repo: myorg/feature-flag-app
-        tag: v1.1.0
-      ports:
-        - appProtocol: http
-          containerPort: 8081
-          isIngressPort: true
-          name: feature-api
-          networkProtocol: TCP
-          servicePort: 81
-      resources:
-        requests:
-          cpu: 120m
-          memory: 150Mi
-        limits:
-          cpu: 1800m
-          memory: 1.8Gi
-      featureFlags:
-        featureX:
-          enabled: true
-        featureY:
-          enabled: false
-```
-
----
-
-## Example with Empty Spec
-
-*Note: This module is not completely implemented.*
-
-### Create using CLI
-
-Create a YAML file using the example shown below. After the YAML is created, use the command below to apply it.
-
-```shell
-planton apply -f <yaml-path>
-```
-
-### YAML Configuration
-
-```yaml
-apiVersion: kubernetes.project-planton.org/v1
-kind: MicroserviceKubernetes
-metadata:
-  name: empty-spec-app
-spec: {}
-```
+The same API manifest works across operators - only the Pulumi module implementation differs.

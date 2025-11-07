@@ -41,22 +41,6 @@ func buildBackupEnvVars(backupConfig *postgreskubernetesv1.PostgresKubernetesBac
 		})
 	}
 
-	// Override enable_restore if specified
-	if backupConfig.EnableRestore != nil {
-		envVars = append(envVars, pulumi.Map{
-			"name":  pulumi.String("USE_WALG_RESTORE"),
-			"value": pulumi.String(boolToString(*backupConfig.EnableRestore)),
-		})
-	}
-
-	// Override enable_clone if specified
-	if backupConfig.EnableClone != nil {
-		envVars = append(envVars, pulumi.Map{
-			"name":  pulumi.String("CLONE_USE_WALG_RESTORE"),
-			"value": pulumi.String(boolToString(*backupConfig.EnableClone)),
-		})
-	}
-
 	// If no overrides specified, return nil (inherit operator settings)
 	if len(envVars) == 0 {
 		return nil
