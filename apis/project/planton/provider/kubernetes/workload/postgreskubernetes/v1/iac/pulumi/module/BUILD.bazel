@@ -8,6 +8,7 @@ go_library(
         "locals.go",
         "main.go",
         "outputs.go",
+        "restore_config.go",
         "variables.go",
     ],
     importpath = "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/postgreskubernetes/v1/iac/pulumi/module",

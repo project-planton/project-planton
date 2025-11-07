@@ -33,6 +33,9 @@ deps:
 build_darwin: vet
 	GOOS=darwin ${build_cmd} -o ${build_dir}/${name}-darwin .
 
+.PHONY: buf-generate
+buf-generate: protos
+
 .PHONY: protos
 protos:
 	pushd apis;make build;popd

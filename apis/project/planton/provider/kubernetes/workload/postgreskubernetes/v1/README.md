@@ -40,9 +40,28 @@ Deploying and managing PostgreSQL databases in Kubernetes can be complex due to 
 
 - **Ingress Spec**: Manage and control external access to the PostgreSQL instance by configuring ingress with a custom hostname. When enabled, creates a LoadBalancer service with external-dns annotations for automatic DNS configuration. Users specify the exact hostname (e.g., `postgres.example.com`) instead of auto-constructed patterns, providing full control over the ingress endpoint.
 
+### Backup Configuration
+
+- **Automatic Backups to R2/S3**: Configure automated continuous backups to Cloudflare R2 or any S3-compatible storage using WAL-G. Set custom backup schedules and S3 prefixes per database.
+- **Operator-Level Defaults**: Inherits backup configuration from the PostgreSQL operator if not specified, allowing for centralized backup management.
+- **Per-Database Overrides**: Override operator-level backup settings with custom schedules, S3 paths, or enable/disable backups on a per-database basis.
+
+### Disaster Recovery
+
+- **Cross-Cluster Restore**: Restore PostgreSQL databases from R2/S3 backups to any Kubernetes cluster, independent of source cluster availability. Enables true disaster recovery scenarios.
+- **Technology-Agnostic Design**: Restore API works with multiple PostgreSQL operators (Zalando, Percona, CloudNativePG) through a unified interface.
+- **Two-Stage Workflow**:
+  - **Stage 1 (Bootstrap)**: Set `restore.enabled: true` to create a read-only standby database restored from backup, allowing data validation before promotion.
+  - **Stage 2 (Promote)**: Set `restore.enabled: false` to promote the standby to a read-write primary database.
+- **Component Independence**: Each database can specify its own R2/S3 credentials for complete deployment independence.
+- **Graceful Fallback**: Bucket name and credentials fall back to operator-level configuration if not specified per-database.
+
 ## Benefits
 
 - **Simplified Deployment**: Reduces the complexity of deploying PostgreSQL on Kubernetes by providing an easy-to-use API resource.
 - **Consistent Configuration**: Ensures PostgreSQL deployments follow a consistent configuration across different Kubernetes clusters and environments.
 - **Resource Optimization**: Enables fine-tuning of CPU, memory, and storage allocations to optimize the performance of PostgreSQL instances.
 - **Secure Access**: Configures ingress rules to allow secure and controlled access to PostgreSQL instances.
+- **Automated Backups**: Continuous backup to R2/S3 with configurable schedules, ensuring data protection without manual intervention.
+- **Disaster Recovery Ready**: Restore databases across clusters from backup files alone, enabling recovery even when source cluster is completely destroyed.
+- **Operator Flexibility**: Technology-agnostic restore design works across different PostgreSQL operators without API changes.

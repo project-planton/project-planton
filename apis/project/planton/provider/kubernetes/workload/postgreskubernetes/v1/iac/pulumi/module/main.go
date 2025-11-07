@@ -33,6 +33,40 @@ func Resources(ctx *pulumi.Context, stackInput *postgreskubernetesv1.PostgresKub
 		return errors.Wrapf(err, "failed to create %s namespace", locals.Namespace)
 	}
 
+	// Build restore configuration (standby block + STANDBY_* env vars)
+	// Pass operator-level bucket as fallback (if available from stack input)
+	// TODO: Extract operator bucket from stackInput if operator config is available
+	operatorBucket := ""
+	var restoreConfig *postgreskubernetesv1.PostgresKubernetesRestoreConfig
+	if locals.PostgresKubernetes.Spec.BackupConfig != nil {
+		restoreConfig = locals.PostgresKubernetes.Spec.BackupConfig.Restore
+	}
+	standbyBlock, standbyEnvVars, err := buildRestoreConfig(restoreConfig, operatorBucket)
+	if err != nil {
+		return errors.Wrap(err, "failed to build restore configuration")
+	}
+
+	// Build backup environment variables (existing function)
+	backupEnvVars := buildBackupEnvVars(locals.PostgresKubernetes.Spec.BackupConfig, locals.PostgresKubernetes.Metadata.Name)
+
+	// Merge backup and restore environment variables
+	var allEnvVars pulumi.MapArrayInput
+	if standbyEnvVars != nil && backupEnvVars != nil {
+		// Both sets of env vars exist, merge them
+		backupArray, ok := backupEnvVars.(pulumi.MapArray)
+		if ok {
+			allEnvVars = pulumi.MapArray(append(standbyEnvVars, backupArray...))
+		} else {
+			allEnvVars = pulumi.MapArray(standbyEnvVars)
+		}
+	} else if standbyEnvVars != nil {
+		// Only standby env vars
+		allEnvVars = pulumi.MapArray(standbyEnvVars)
+	} else {
+		// Only backup env vars (or none)
+		allEnvVars = backupEnvVars
+	}
+
 	//create zalando postgresql resource
 	postgresqlArgs := &zalandov1.PostgresqlArgs{
 		Metadata: metav1.ObjectMetaArgs{
@@ -68,8 +102,10 @@ func Resources(ctx *pulumi.Context, stackInput *postgreskubernetesv1.PostgresKub
 			Volume: zalandov1.PostgresqlSpecVolumeArgs{
 				Size: pulumi.String(locals.PostgresKubernetes.Spec.Container.DiskSize),
 			},
-			// Add backup environment variable overrides if backup_config is specified
-			Env: buildBackupEnvVars(locals.PostgresKubernetes.Spec.BackupConfig, locals.PostgresKubernetes.Metadata.Name),
+			// Add standby block if restore is enabled (for disaster recovery)
+			Standby: standbyBlock,
+			// Merge backup and restore environment variables
+			Env: allEnvVars,
 		},
 	}
 
