@@ -3,6 +3,10 @@ name: Deploy GitHub Pages (Next.js static export)
 on:
   push:
     branches: [ "main" ]
+    paths:
+      - 'apis/project/planton/provider/**/docs/**/*.md'
+      - 'site/**'
+      - '.github/workflows/pages.yml'
   workflow_dispatch:
 
 permissions:
@@ -37,6 +41,9 @@ jobs:
           corepack enable
           corepack install
           yarn 
+
+      - name: Copy component documentation
+        run: yarn copy-docs
 
       - name: Build site
         run: |
