@@ -241,24 +241,31 @@ export const MDXRenderer: React.FC<MDXRendererProps> = ({
                   {children}
                 </pre>
               ),
-              a: ({ href, children }) => (
-                <a
-                  href={href}
-                  className="text-purple-400 hover:text-purple-300 underline"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {children}
-                </a>
-              ),
-              img: ({ src, alt }) => {
+              a: ({ href, children }) => {
+                const isExternal = href?.startsWith('http');
+                return (
+                  <a
+                    href={href}
+                    className="text-purple-400 hover:text-purple-300 underline"
+                    {...(isExternal && {
+                      target: "_blank",
+                      rel: "noopener noreferrer"
+                    })}
+                  >
+                    {children}
+                  </a>
+                );
+              },
+              img: ({ src, alt, className }) => {
                 if (!src) return null;
+                // Preserve custom classes if provided (for provider icons, etc.)
+                const finalClassName = className || "max-w-full h-auto rounded-lg shadow-lg my-6 block";
                 return (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={src}
                     alt={alt || ''}
-                    className="max-w-full h-auto rounded-lg shadow-lg my-6 block"
+                    className={finalClassName}
                   />
                 );
               },
