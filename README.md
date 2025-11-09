@@ -6,7 +6,7 @@ and [Pulumi](https://github.com/pulumi/pulumi).
 automation.**
 
 <p align="center">
-  <img src="docs/public/images/logo/logo-full.png" alt="logo-interstellar.gif">
+  <img src="site/public/logo-text.svg" alt="project-planton-logo">
 </p>
 
 ## Documentation
