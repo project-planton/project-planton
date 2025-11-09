@@ -22,14 +22,11 @@ interface MdxMetadata {
 
 interface MDXRendererProps {
   mdxContent: string;
-  markdownContent?: string;
-  title?: string;
   nextArticle?: {
     title: string;
     excerpt?: string;
     slug: string;
   };
-  path: string;
 }
 
 // NextArticle component for navigation
@@ -67,10 +64,7 @@ const NextArticle: React.FC<NextArticleProps> = ({ nextArticle }) => {
 
 export const MDXRenderer: React.FC<MDXRendererProps> = ({
   mdxContent,
-  markdownContent,
-  title,
   nextArticle,
-  path,
 }) => {
   const { data, content } = matter(mdxContent);
   const metadata: MdxMetadata = data as MdxMetadata;
@@ -116,6 +110,7 @@ export const MDXRenderer: React.FC<MDXRendererProps> = ({
           {/* Featured Image */}
           {metadata.featuredImage && (
             <div className="mb-6">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={metadata.featuredImage}
                 alt={metadata.title}
@@ -259,6 +254,7 @@ export const MDXRenderer: React.FC<MDXRendererProps> = ({
               img: ({ src, alt }) => {
                 if (!src) return null;
                 return (
+                  // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={src}
                     alt={alt || ''}

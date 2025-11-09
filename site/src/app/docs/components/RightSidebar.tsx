@@ -125,6 +125,7 @@ const RightSidebar: React.FC<RightSidebarProps> = ({ author = [], content }) => 
             {author.map((a, index) => (
               <div key={index} className="flex items-start gap-3">
                 {a.image && (
+                  // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={a.image}
                     alt={a.name}

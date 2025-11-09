@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { Github, Menu, X } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import Hero from "@/components/sections/Hero";
 import FeatureCards from "@/components/sections/FeatureCards";
 import HowItWorks from "@/components/sections/HowItWorks";
@@ -87,12 +88,12 @@ export default function HomePage() {
                 </button>
               ))}
               <div className="flex items-center gap-6">
-                <a
+                <Link
                   href="/docs"
                   className="text-sm font-medium text-slate-300 hover:text-white transition-colors"
                 >
                   Docs
-                </a>
+                </Link>
                 <a
                   href="https://github.com/project-planton/project-planton"
                   target="_blank"

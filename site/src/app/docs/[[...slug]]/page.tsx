@@ -58,8 +58,6 @@ export default async function DocsPage({ params }: { params: DocsParams }) {
       <DocsLayout author={data?.author as unknown as Author[]} content={content}>
         <MDXRenderer
           mdxContent={mdxContent}
-          markdownContent={content}
-          title={data?.title}
           nextArticle={
             nextDocItem
               ? {
@@ -69,7 +67,6 @@ export default async function DocsPage({ params }: { params: DocsParams }) {
                 }
               : undefined
           }
-          path={`/docs/${path}`}
         />
       </DocsLayout>
     );
