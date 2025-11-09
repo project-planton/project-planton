@@ -160,7 +160,7 @@ function generateProviderIndex(
   
   // Generate component list
   const componentList = sortedDocs
-    .map(doc => `- [${doc.title}](/docs/provider/${provider}/${doc.component})`)
+    .map(doc => `- [${doc.title}](/docs/${provider}/${doc.component})`)
     .join('\n');
   
   const indexContent = `---
@@ -191,7 +191,7 @@ function generateMainIndex(providers: string[], outputRoot: string): void {
   const providerList = sortedProviders
     .map(provider => {
       const title = provider.toUpperCase();
-      return `- [${title}](/docs/provider/${provider})`;
+      return `- [${title}](/docs/${provider})`;
     })
     .join('\n');
   
@@ -223,7 +223,7 @@ async function copyComponentDocs(): Promise<void> {
   const scriptDir = __dirname;
   const projectRoot = path.join(scriptDir, '../..');
   const apisRoot = path.join(projectRoot, 'apis/project/planton/provider');
-  const siteDocsRoot = path.join(scriptDir, '../public/docs/provider');
+  const siteDocsRoot = path.join(scriptDir, '../public/docs');
   
   // Clear existing generated docs
   if (fs.existsSync(siteDocsRoot)) {

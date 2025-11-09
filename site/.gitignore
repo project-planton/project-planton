@@ -41,4 +41,12 @@ yarn-error.log*
 next-env.d.ts
 
 # generated docs (copied from apis/ during build)
-public/docs/provider/
+public/docs/aws/
+public/docs/gcp/
+public/docs/azure/
+public/docs/civo/
+public/docs/cloudflare/
+public/docs/confluent/
+public/docs/digitalocean/
+public/docs/atlas/
+public/docs/kubernetes/
