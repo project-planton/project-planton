@@ -5,6 +5,8 @@
   "packageManager": "yarn@4.5.1",
   "scripts": {
     "dev": "next dev --turbopack",
+    "copy-docs": "tsx scripts/copy-component-docs.ts",
+    "prebuild": "yarn copy-docs",
     "build": "next build --turbopack",
     "start": "next start",
     "lint": "eslint"
@@ -40,6 +42,7 @@
     "eslint-config-next": "15.5.2",
     "serve": "^14.2.4",
     "tailwindcss": "^4",
+    "tsx": "^4.19.2",
     "typescript": "^5"
   }
 }
