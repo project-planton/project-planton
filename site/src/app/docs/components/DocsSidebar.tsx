@@ -43,6 +43,37 @@ const SidebarItem: FC<SidebarItemProps> = ({
 
   // Render icon based on item type and metadata
   const renderIcon = () => {
+    // Check if this is a provider under catalog/
+    const isProvider = item.path.startsWith('catalog/') && item.type === 'directory' && !item.path.includes('/', 8);
+    
+    if (isProvider) {
+      // Extract provider name from path (e.g., catalog/aws -> aws)
+      const provider = item.path.split('/')[1];
+      const providerIconMap: Record<string, string> = {
+        'aws': '/images/providers/aws.svg',
+        'gcp': '/images/providers/gcp.svg',
+        'azure': '/images/providers/azure.svg',
+        'cloudflare': '/images/providers/cloudflare.svg',
+        'civo': '/images/providers/civo.svg',
+        'digitalocean': '/images/providers/digital-ocean.svg',
+        'atlas': '/images/providers/mongodb-atlas.svg',
+        'confluent': '/images/providers/confluent.svg',
+        'kubernetes': '/images/providers/kubernetes.svg',
+        'snowflake': '/images/providers/snowflake.svg',
+      };
+      
+      const iconPath = providerIconMap[provider];
+      if (iconPath) {
+        return (
+          <img 
+            src={iconPath} 
+            alt={provider.toUpperCase()} 
+            className="w-5 h-5 object-contain" 
+          />
+        );
+      }
+    }
+    
     if (item.icon) {
       return (
         <span className="text-lg" role="img" aria-label={item.title || item.name}>

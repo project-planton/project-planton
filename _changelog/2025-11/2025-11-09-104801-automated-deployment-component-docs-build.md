@@ -243,6 +243,32 @@ on:
 
 This prevents unnecessary builds when proto files or CLI code changes.
 
+### 7. Visual Enhancements
+
+**Provider Icons Integration**:
+- Copied 35 SVG icons from planton-cloud web-console to `site/public/images/`
+  - 19 provider/tool icons (AWS, GCP, Azure, Cloudflare, Civo, DigitalOcean, Atlas, Confluent, Kubernetes, Pulumi, Terraform, etc.)
+  - 16 utility icons (deploy, rocket, thunder, code, docs, AI, lock, security, GitHub Actions)
+
+**Icons Used Throughout**:
+- GitHub Star Badge in navigation (shows live star count)
+- Provider icons in docs landing page (visual grid cards)
+- Provider icons in auto-generated catalog page
+- Provider icons in sidebar navigation (under Catalog folder)
+- GitHub icon in hero "View on GitHub" link
+
+### 8. Navigation Simplification
+
+**Removed Unnecessary Complexity**:
+- Simplified desktop navigation to just "Docs" and GitHub star badge
+- Removed hamburger menu (not needed with only 2 items)
+- Made navigation consistent across all screen sizes
+
+**Before**: 10 navigation items (Home, Why, How it works, Quickstart, Examples, CLI, CI/CD, Compare, FAQ, Docs, GitHub)  
+**After**: 2 navigation items (Docs, GitHub star badge)
+
+Users can scroll naturally through the landing page sections without cluttered navigation.
+
 ## Execution Results
 
 **Component Discovery**:
@@ -483,26 +509,59 @@ This preserves `index.md` and any other manual documentation while cleaning gene
 
 **Alternative Considered**: Flat structure at `/docs/{provider}` - rejected due to cluttered sidebar
 
+### Why Provider Icons in Sidebar?
+
+**Rationale**:
+- ✅ Visual recognition - users quickly identify providers by logo
+- ✅ Professional appearance - matches modern documentation sites
+- ✅ Consistent branding - same icons used throughout site
+- ✅ Better UX - reduces cognitive load compared to text-only
+
+**Implementation**: Dynamic detection of provider folders under `catalog/` with icon mapping in the sidebar component.
+
+### Why GitHub Star Badge vs Simple Icon?
+
+**Rationale**:
+- ✅ Social proof - shows project popularity
+- ✅ Industry standard - OpenTofu and Pulumi use similar badges
+- ✅ Encourages engagement - live star count creates FOMO
+- ✅ Better call-to-action - "Star" button vs passive icon
+
+**Implementation**: Client-side fetch from GitHub API with formatted display (e.g., "2.5k").
+
 ## Code Metrics
 
-**Files Created**: 3
-- `site/scripts/copy-component-docs.ts` (310 lines)
+**Files Created**: 5
+- `site/scripts/copy-component-docs.ts` (340 lines)
 - `site/serve.json` (5 lines)
 - `site/public/.nojekyll` (empty file for GitHub Pages)
+- `site/src/components/ui/GitHubStarBadge.tsx` (58 lines - star badge with live count)
+- `site/public/images/` (35 SVG icons copied from planton-cloud web-console)
 
-**Files Modified**: 4
+**Files Modified**: 7
 - `site/package.json` (added script + dependency)
 - `site/.gitignore` (added exclusion rule)
-- `site/public/docs/index.md` (created docs landing page)
+- `site/public/docs/index.md` (created docs landing page with provider icon cards)
 - `.github/workflows/pages.yml` (added explicit copy-docs step and path filters)
+- `site/src/components/pages/HomePage.tsx` (simplified navigation, removed hamburger menu)
+- `site/src/components/sections/Hero.tsx` (added GitHub icon to "View on GitHub" link)
+- `site/src/app/docs/components/DocsSidebar.tsx` (provider icons in sidebar)
+
+**Files Restored**: 3
+- `site/public/docs/getting-started.md` (restored from git history)
+- `site/public/docs/concepts/index.md` (restored from git history)
+- `site/public/docs/concepts/architecture.md` (restored from git history)
 
 **Documentation Generated**: 78 files
 - 69 component docs with frontmatter
 - 8 provider index pages
 - 1 catalog index page
 
-**Documentation Preserved**: 1 file
-- `site/public/docs/index.md` (manually created welcome page)
+**Documentation Preserved/Restored**: 4 files
+- `site/public/docs/index.md` (manually created welcome page with provider cards)
+- `site/public/docs/getting-started.md` (restored guide)
+- `site/public/docs/concepts/index.md` (restored overview)
+- `site/public/docs/concepts/architecture.md` (restored deep-dive)
 
 **Providers Supported**: 8
 - AWS (22 components)
@@ -554,12 +613,16 @@ This feature went through several refinements during implementation:
 3. **GitHub Pages Fix**: Added `.nojekyll` file to disable Jekyll processing
 4. **Selective Clearing**: Updated script to preserve manual docs, only clear provider directories
 5. **Catalog Organization**: Moved providers under `/docs/catalog/` for cleaner sidebar navigation
+6. **Visual Polish**: Added provider icons throughout (cards, sidebar, navigation)
+7. **Navigation Simplification**: Removed hamburger menu, just Docs + GitHub star badge
+8. **Icon Integration**: Copied and integrated 35 icons from web-console
 
 These iterations demonstrate the importance of:
 - Testing static builds with `serve` (not just dev server)
 - Understanding GitHub Pages quirks (Jekyll processing)
 - Balancing automation with manual content preservation
 - Considering sidebar UX alongside URL structure
+- Visual consistency across all touchpoints (navigation, pages, sidebar)
 
 ## Related Work
 
