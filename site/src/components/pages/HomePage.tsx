@@ -13,11 +13,18 @@ import CompareSection from "@/components/sections/CompareSection";
 import FAQ from "@/components/sections/FAQ";
 import Footer from "@/components/sections/Footer";
 
+interface NavItem {
+  id: string;
+  label: string;
+  isExternal?: boolean;
+  href?: string;
+}
+
 export default function HomePage() {
   const [activeSection, setActiveSection] = useState<string>("hero");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const navItems = [
+  const navItems: NavItem[] = [
     { id: "hero", label: "Home" },
     { id: "why", label: "Why" },
     { id: "how", label: "How it works" },
@@ -27,6 +34,11 @@ export default function HomePage() {
     { id: "cicd", label: "CI/CD" },
     { id: "compare", label: "Compare" },
     { id: "faq", label: "FAQ" },
+  ];
+
+  const mobileNavItems: NavItem[] = [
+    ...navItems,
+    { id: "docs", label: "Docs", isExternal: true, href: "/docs" },
   ];
 
   useEffect(() => {
@@ -74,7 +86,13 @@ export default function HomePage() {
                   {item.label}
                 </button>
               ))}
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-6">
+                <a
+                  href="/docs"
+                  className="text-sm font-medium text-slate-300 hover:text-white transition-colors"
+                >
+                  Docs
+                </a>
                 <a
                   href="https://github.com/project-planton/project-planton"
                   target="_blank"
@@ -93,16 +111,26 @@ export default function HomePage() {
         {mobileMenuOpen && (
           <div className="lg:hidden bg-slate-900 border-t border-slate-800">
             <div className="px-4 py-6 space-y-4">
-              {navItems.map((item) => (
-                <button
-                  key={item.id}
-                  onClick={() => scrollToSection(item.id)}
-                  className={`block w-full text-left py-2 text-base font-medium transition-colors duration-200 ${
-                    activeSection === item.id ? "text-[#7a4183]" : "text-slate-300 hover:text-white"
-                  }`}
-                >
-                  {item.label}
-                </button>
+              {mobileNavItems.map((item) => (
+                item.isExternal ? (
+                  <a
+                    key={item.id}
+                    href={item.href}
+                    className="block w-full text-left py-2 text-base font-medium text-slate-300 hover:text-white transition-colors duration-200"
+                  >
+                    {item.label}
+                  </a>
+                ) : (
+                  <button
+                    key={item.id}
+                    onClick={() => scrollToSection(item.id)}
+                    className={`block w-full text-left py-2 text-base font-medium transition-colors duration-200 ${
+                      activeSection === item.id ? "text-[#7a4183]" : "text-slate-300 hover:text-white"
+                    }`}
+                  >
+                    {item.label}
+                  </button>
+                )
               ))}
               <div className="pt-4 border-t border-slate-800 flex gap-4">
                 <a
