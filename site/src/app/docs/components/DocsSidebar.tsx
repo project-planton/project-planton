@@ -43,8 +43,24 @@ const SidebarItem: FC<SidebarItemProps> = ({
 
   // Render icon based on item type and metadata
   const renderIcon = () => {
-    // Check if this is a provider under catalog/
-    const isProvider = item.path.startsWith('catalog/') && item.type === 'directory' && !item.path.includes('/', 8);
+    // Check if this is a component page under catalog/{provider}/{component}
+    const pathParts = item.path.split('/');
+    if (pathParts.length === 3 && pathParts[0] === 'catalog' && item.type === 'file') {
+      const provider = pathParts[1];
+      const component = pathParts[2];
+      const componentIconPath = `/images/providers/${provider}/${component}/logo.svg`;
+      
+      return (
+        <img 
+          src={componentIconPath} 
+          alt={component} 
+          className="w-5 h-5 object-contain" 
+        />
+      );
+    }
+    
+    // Check if this is a provider directory under catalog/
+    const isProvider = item.path.startsWith('catalog/') && item.type === 'directory' && pathParts.length === 2;
     
     if (isProvider) {
       // Extract provider name from path (e.g., catalog/aws -> aws)
