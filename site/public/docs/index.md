@@ -23,63 +23,63 @@ Browse deployment components by cloud provider in the [Catalog](/docs/catalog):
 
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
   <a href="/docs/catalog/aws" class="flex items-center gap-3 p-4 rounded-lg border border-purple-900/30 bg-slate-900/30 hover:bg-slate-800/50 transition-colors">
-    <img src="/images/providers/aws.svg" alt="AWS" class="w-8 h-8" />
+    <img src="/images/providers/aws.svg" alt="AWS" class="w-8 h-8 object-contain" />
     <div>
       <div class="font-semibold text-white">AWS</div>
       <div class="text-sm text-slate-400">22 components</div>
     </div>
   </a>
   <a href="/docs/catalog/gcp" class="flex items-center gap-3 p-4 rounded-lg border border-purple-900/30 bg-slate-900/30 hover:bg-slate-800/50 transition-colors">
-    <img src="/images/providers/gcp.svg" alt="GCP" class="w-8 h-8" />
+    <img src="/images/providers/gcp.svg" alt="GCP" class="w-8 h-8 object-contain" />
     <div>
       <div class="font-semibold text-white">GCP</div>
       <div class="text-sm text-slate-400">5 components</div>
     </div>
   </a>
   <a href="/docs/catalog/azure" class="flex items-center gap-3 p-4 rounded-lg border border-purple-900/30 bg-slate-900/30 hover:bg-slate-800/50 transition-colors">
-    <img src="/images/providers/azure.svg" alt="Azure" class="w-8 h-8" />
+    <img src="/images/providers/azure.svg" alt="Azure" class="w-8 h-8 object-contain" />
     <div>
       <div class="font-semibold text-white">Azure</div>
       <div class="text-sm text-slate-400">7 components</div>
     </div>
   </a>
   <a href="/docs/catalog/cloudflare" class="flex items-center gap-3 p-4 rounded-lg border border-purple-900/30 bg-slate-900/30 hover:bg-slate-800/50 transition-colors">
-    <img src="/images/providers/cloudflare.svg" alt="Cloudflare" class="w-8 h-8" />
+    <img src="/images/providers/cloudflare.svg" alt="Cloudflare" class="w-8 h-8 object-contain" />
     <div>
       <div class="font-semibold text-white">Cloudflare</div>
       <div class="text-sm text-slate-400">7 components</div>
     </div>
   </a>
   <a href="/docs/catalog/civo" class="flex items-center gap-3 p-4 rounded-lg border border-purple-900/30 bg-slate-900/30 hover:bg-slate-800/50 transition-colors">
-    <img src="/images/providers/civo.svg" alt="Civo" class="w-8 h-8" />
+    <img src="/images/providers/civo.svg" alt="Civo" class="w-8 h-8 object-contain" />
     <div>
       <div class="font-semibold text-white">Civo</div>
       <div class="text-sm text-slate-400">12 components</div>
     </div>
   </a>
   <a href="/docs/catalog/digitalocean" class="flex items-center gap-3 p-4 rounded-lg border border-purple-900/30 bg-slate-900/30 hover:bg-slate-800/50 transition-colors">
-    <img src="/images/providers/digital-ocean.svg" alt="DigitalOcean" class="w-8 h-8" />
+    <img src="/images/providers/digital-ocean.svg" alt="DigitalOcean" class="w-8 h-8 object-contain" />
     <div>
       <div class="font-semibold text-white">DigitalOcean</div>
       <div class="text-sm text-slate-400">14 components</div>
     </div>
   </a>
   <a href="/docs/catalog/atlas" class="flex items-center gap-3 p-4 rounded-lg border border-purple-900/30 bg-slate-900/30 hover:bg-slate-800/50 transition-colors">
-    <img src="/images/providers/mongodb-atlas.svg" alt="MongoDB Atlas" class="w-8 h-8" />
+    <img src="/images/providers/mongodb-atlas.svg" alt="MongoDB Atlas" class="w-8 h-8 object-contain" />
     <div>
       <div class="font-semibold text-white">Atlas</div>
       <div class="text-sm text-slate-400">1 component</div>
     </div>
   </a>
   <a href="/docs/catalog/confluent" class="flex items-center gap-3 p-4 rounded-lg border border-purple-900/30 bg-slate-900/30 hover:bg-slate-800/50 transition-colors">
-    <img src="/images/providers/confluent.svg" alt="Confluent" class="w-8 h-8" />
+    <img src="/images/providers/confluent.svg" alt="Confluent" class="w-8 h-8 object-contain" />
     <div>
       <div class="font-semibold text-white">Confluent</div>
       <div class="text-sm text-slate-400">1 component</div>
     </div>
   </a>
   <a href="/docs/catalog/kubernetes" class="flex items-center gap-3 p-4 rounded-lg border border-purple-900/30 bg-slate-900/30 hover:bg-slate-800/50 transition-colors opacity-50">
-    <img src="/images/providers/kubernetes.svg" alt="Kubernetes" class="w-8 h-8" />
+    <img src="/images/providers/kubernetes.svg" alt="Kubernetes" class="w-8 h-8 object-contain" />
     <div>
       <div class="font-semibold text-white">Kubernetes</div>
       <div class="text-sm text-slate-400">Coming soon</div>

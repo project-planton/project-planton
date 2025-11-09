@@ -221,7 +221,7 @@ function generateMainIndex(providers: string[], outputRoot: string, allDocs: Map
       const icon = getProviderIcon(provider);
       const count = getProviderComponentCount(provider, allDocs);
       return `  <a href="/docs/catalog/${provider}" class="flex items-center gap-3 p-4 rounded-lg border border-purple-900/30 bg-slate-900/30 hover:bg-slate-800/50 transition-colors">
-    <img src="${icon}" alt="${title}" class="w-8 h-8" />
+    <img src="${icon}" alt="${title}" class="w-8 h-8 object-contain" />
     <div>
       <div class="font-semibold text-white">${title}</div>
       <div class="text-sm text-slate-400">${count} component${count !== 1 ? 's' : ''}</div>

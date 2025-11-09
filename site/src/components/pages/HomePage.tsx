@@ -69,12 +69,12 @@ export default function HomePage() {
               <Image src="/logo-text.svg" alt="ProjectPlanton" width={160} height={40} className="h-10 w-auto object-contain" priority />
             </div>
             <div className="flex items-center gap-4 sm:gap-6">
-              <Link
-                href="/docs"
-                className="text-sm font-medium text-slate-300 hover:text-white transition-colors"
-              >
-                Docs
-              </Link>
+                <Link
+                  href="/docs"
+                  className="text-sm font-medium text-slate-300 hover:text-white transition-colors"
+                >
+                  Docs
+                </Link>
               <GitHubStarBadge repo="project-planton/project-planton" />
             </div>
           </div>
