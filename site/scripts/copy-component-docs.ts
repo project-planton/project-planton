@@ -160,7 +160,7 @@ function generateProviderIndex(
   
   // Generate component list
   const componentList = sortedDocs
-    .map(doc => `- [${doc.title}](/docs/${provider}/${doc.component})`)
+    .map(doc => `- [${doc.title}](/docs/catalog/${provider}/${doc.component})`)
     .join('\n');
   
   const indexContent = `---
@@ -182,31 +182,68 @@ ${componentList}
 }
 
 /**
+ * Get provider icon path
+ */
+function getProviderIcon(provider: string): string {
+  const iconMap: Record<string, string> = {
+    'aws': '/images/providers/aws.svg',
+    'gcp': '/images/providers/gcp.svg',
+    'azure': '/images/providers/azure.svg',
+    'cloudflare': '/images/providers/cloudflare.svg',
+    'civo': '/images/providers/civo.svg',
+    'digitalocean': '/images/providers/digital-ocean.svg',
+    'atlas': '/images/providers/mongodb-atlas.svg',
+    'confluent': '/images/providers/confluent.svg',
+    'kubernetes': '/images/providers/kubernetes.svg',
+    'snowflake': '/images/providers/snowflake.svg',
+  };
+  return iconMap[provider] || '/images/providers/default.svg';
+}
+
+/**
+ * Get component count for a provider
+ */
+function getProviderComponentCount(provider: string, allDocs: Map<string, ComponentDoc[]>): number {
+  return allDocs.get(provider)?.length || 0;
+}
+
+/**
  * Generate main provider index page
  */
-function generateMainIndex(providers: string[], outputRoot: string): void {
+function generateMainIndex(providers: string[], outputRoot: string, allDocs: Map<string, ComponentDoc[]>): void {
   // Sort providers alphabetically
   const sortedProviders = [...providers].sort();
   
-  const providerList = sortedProviders
+  // Generate provider cards with icons
+  const providerCards = sortedProviders
     .map(provider => {
       const title = provider.toUpperCase();
-      return `- [${title}](/docs/${provider})`;
+      const icon = getProviderIcon(provider);
+      const count = getProviderComponentCount(provider, allDocs);
+      return `  <a href="/docs/catalog/${provider}" class="flex items-center gap-3 p-4 rounded-lg border border-purple-900/30 bg-slate-900/30 hover:bg-slate-800/50 transition-colors">
+    <img src="${icon}" alt="${title}" class="w-8 h-8" />
+    <div>
+      <div class="font-semibold text-white">${title}</div>
+      <div class="text-sm text-slate-400">${count} component${count !== 1 ? 's' : ''}</div>
+    </div>
+  </a>`;
     })
     .join('\n');
   
   const indexContent = `---
-title: "Deployment Components by Provider"
+title: "Catalog"
 description: "Browse deployment components organized by cloud provider"
 icon: "package"
 order: 50
 ---
 
-# Deployment Components
+# Catalog
 
-Browse deployment components by provider:
+Browse deployment components by cloud provider:
 
-${providerList}
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+${providerCards}
+</div>
 `;
 
   const indexPath = path.join(outputRoot, 'index.md');
@@ -223,7 +260,7 @@ async function copyComponentDocs(): Promise<void> {
   const scriptDir = __dirname;
   const projectRoot = path.join(scriptDir, '../..');
   const apisRoot = path.join(projectRoot, 'apis/project/planton/provider');
-  const siteDocsRoot = path.join(scriptDir, '../public/docs');
+  const siteDocsRoot = path.join(scriptDir, '../public/docs/catalog');
   
   // List of provider directories to manage (clear only these, not the entire docs directory)
   const providerDirs = [
@@ -296,8 +333,11 @@ async function copyComponentDocs(): Promise<void> {
     }
   }
   
-  // Note: Not generating main provider index to preserve docs landing page
-  // Provider directories are still accessible directly (e.g., /docs/aws, /docs/gcp)
+  // Generate catalog index (now in /docs/catalog/)
+  if (stats.providers.size > 0) {
+    generateMainIndex(Array.from(stats.providers), siteDocsRoot, docsByProvider);
+    console.log(`✓ Generated catalog index\n`);
+  }
   
   // Summary
   console.log('📊 Summary:');

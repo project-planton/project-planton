@@ -92,7 +92,7 @@ export default function Hero() {
 								rel="noopener noreferrer"
 								className="flex items-center gap-2 hover:text-white transition-colors"
 							>
-								<Github className="w-4 h-4" />
+								<img src="/images/providers/github-dark.svg" alt="GitHub" className="w-4 h-4" />
 								View on GitHub
 							</a>
 						</div>

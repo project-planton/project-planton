@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Github, Menu, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import Hero from "@/components/sections/Hero";
@@ -13,6 +12,7 @@ import CICDSection from "@/components/sections/CICDSection";
 import CompareSection from "@/components/sections/CompareSection";
 import FAQ from "@/components/sections/FAQ";
 import Footer from "@/components/sections/Footer";
+import { GitHubStarBadge } from "@/components/ui/GitHubStarBadge";
 
 interface NavItem {
   id: string;
@@ -23,7 +23,6 @@ interface NavItem {
 
 export default function HomePage() {
   const [activeSection, setActiveSection] = useState<string>("hero");
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navItems: NavItem[] = [
     { id: "hero", label: "Home" },
@@ -35,11 +34,6 @@ export default function HomePage() {
     { id: "cicd", label: "CI/CD" },
     { id: "compare", label: "Compare" },
     { id: "faq", label: "FAQ" },
-  ];
-
-  const mobileNavItems: NavItem[] = [
-    ...navItems,
-    { id: "docs", label: "Docs", isExternal: true, href: "/docs" },
   ];
 
   useEffect(() => {
@@ -62,7 +56,6 @@ export default function HomePage() {
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
-      setMobileMenuOpen(false);
     }
   };
 
@@ -75,78 +68,17 @@ export default function HomePage() {
               <Image src="/icon.png" alt="ProjectPlanton logo" width={36} height={36} className="h-9 w-auto object-contain" priority />
               <Image src="/logo-text.svg" alt="ProjectPlanton" width={160} height={40} className="h-10 w-auto object-contain" priority />
             </div>
-            <div className="hidden lg:flex items-center gap-8">
-              {navItems.map((item) => (
-                <button
-                  key={item.id}
-                  onClick={() => scrollToSection(item.id)}
-                  className={`text-sm font-medium transition-colors duration-200 ${
-                    activeSection === item.id ? "text-[#7a4183]" : "text-slate-300 hover:text-white"
-                  }`}
-                >
-                  {item.label}
-                </button>
-              ))}
-              <div className="flex items-center gap-6">
-                <Link
-                  href="/docs"
-                  className="text-sm font-medium text-slate-300 hover:text-white transition-colors"
-                >
-                  Docs
-                </Link>
-                <a
-                  href="https://github.com/project-planton/project-planton"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-slate-300 hover:text-white transition-colors"
-                >
-                  <Github className="w-5 h-5" />
-                </a>
-              </div>
+            <div className="flex items-center gap-4 sm:gap-6">
+              <Link
+                href="/docs"
+                className="text-sm font-medium text-slate-300 hover:text-white transition-colors"
+              >
+                Docs
+              </Link>
+              <GitHubStarBadge repo="project-planton/project-planton" />
             </div>
-            <button className="lg:hidden p-2" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </button>
           </div>
         </div>
-        {mobileMenuOpen && (
-          <div className="lg:hidden bg-slate-900 border-t border-slate-800">
-            <div className="px-4 py-6 space-y-4">
-              {mobileNavItems.map((item) => (
-                item.isExternal ? (
-                  <a
-                    key={item.id}
-                    href={item.href}
-                    className="block w-full text-left py-2 text-base font-medium text-slate-300 hover:text-white transition-colors duration-200"
-                  >
-                    {item.label}
-                  </a>
-                ) : (
-                  <button
-                    key={item.id}
-                    onClick={() => scrollToSection(item.id)}
-                    className={`block w-full text-left py-2 text-base font-medium transition-colors duration-200 ${
-                      activeSection === item.id ? "text-[#7a4183]" : "text-slate-300 hover:text-white"
-                    }`}
-                  >
-                    {item.label}
-                  </button>
-                )
-              ))}
-              <div className="pt-4 border-t border-slate-800 flex gap-4">
-                <a
-                  href="https://github.com/project-planton/project-planton"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-slate-300 hover:text-white transition-colors"
-                >
-                  <Github className="w-5 h-5" />
-                  GitHub
-                </a>
-              </div>
-            </div>
-          </div>
-        )}
       </nav>
 
       <main className="pt-16">

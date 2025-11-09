@@ -6,7 +6,7 @@
 
 ## Summary
 
-Implemented a comprehensive build-time automation system that copies deployment component documentation from `apis/project/planton/provider/` to the Next.js documentation site, making 69 component docs from 8 providers automatically available at `https://project-planton.org/docs/provider/{provider}/{component}`. The system generates frontmatter metadata, creates provider index pages, and integrates seamlessly with the Next.js static export for GitHub Pages deployment—all while maintaining a single source of truth in the APIs directory.
+Implemented a comprehensive build-time automation system that copies deployment component documentation from `apis/project/planton/provider/` to the Next.js documentation site, making 69 component docs from 8 providers automatically available at `https://project-planton.org/docs/catalog/{provider}/{component}`. The system generates frontmatter metadata, creates provider index pages organized under a "Catalog" section, and integrates seamlessly with the Next.js static export for GitHub Pages deployment—all while maintaining a single source of truth in the APIs directory and preserving manually created documentation.
 
 ## Problem Statement / Motivation
 
@@ -47,7 +47,8 @@ Implemented an automated build-time system that:
                  │ Script: site/scripts/copy-component-docs.ts
                  ▼
 ┌─────────────────────────────────────────────────────────────┐
-│ Generated Output: site/public/docs/provider/                │
+│ Generated Output: site/public/docs/catalog/                 │
+│ ├── index.md ("Catalog" - auto-generated)                  │
 │ ├── aws/                                                    │
 │ │   ├── index.md (auto-generated)                          │
 │ │   ├── awsalb.md (with frontmatter)                       │
@@ -55,16 +56,22 @@ Implemented an automated build-time system that:
 │ ├── gcp/                                                    │
 │ │   ├── index.md                                           │
 │ │   └── gcpcloudrun.md                                     │
-│ └── index.md (main provider index)                         │
+│ └── ... (8 providers total)                                │
+│                                                             │
+│ Manual Docs (preserved by build script):                   │
+│ └── site/public/docs/index.md (Welcome page)               │
 └────────────────┬────────────────────────────────────────────┘
                  │
                  │ Next.js Static Export
                  ▼
 ┌─────────────────────────────────────────────────────────────┐
-│ Static Site: site/out/docs/provider/                        │
-│ ├── aws/awsalb.html ➜ /docs/provider/aws/awsalb           │
-│ ├── gcp/gcpcloudrun.html ➜ /docs/provider/gcp/gcpcloudrun │
-│ └── azure/azureakscluster.html                             │
+│ Static Site: site/out/docs/                                 │
+│ ├── index.html ➜ /docs (Welcome)                           │
+│ ├── catalog/                                               │
+│ │   ├── index.html ➜ /docs/catalog                        │
+│ │   ├── aws/awsalb.html ➜ /docs/catalog/aws/awsalb       │
+│ │   └── gcp/gcpcloudrun.html ➜ /docs/catalog/gcp/gcpcloudrun │
+│ └── .nojekyll (disables Jekyll processing)                 │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -120,29 +127,31 @@ order: 10
 
 The following AWS resources can be deployed using Project Planton:
 
-- [AWS ALB](/docs/provider/aws/awsalb)
-- [AWS Route53 Zone](/docs/provider/aws/awsroute53zone)
+- [AWS ALB](/docs/catalog/aws/awsalb)
+- [AWS Route53 Zone](/docs/catalog/aws/awsroute53zone)
 ...
 ```
 
-**Main Provider Index**: Top-level index linking to all providers:
+**Catalog Index**: Top-level catalog index linking to all providers:
 
 ```markdown
 ---
-title: "Deployment Components by Provider"
+title: "Catalog"
 description: "Browse deployment components organized by cloud provider"
 icon: "package"
 order: 50
 ---
 
-# Deployment Components
+# Catalog
 
-Browse deployment components by provider:
+Browse deployment components by cloud provider:
 
-- [AWS](/docs/provider/aws)
-- [GCP](/docs/provider/gcp)
+- [AWS](/docs/catalog/aws)
+- [GCP](/docs/catalog/gcp)
 ...
 ```
+
+**Manual Documentation Preservation**: The build script only clears provider directories, preserving manually created documentation like `public/docs/index.md` (the welcome page).
 
 ### 2. Build Integration (`site/package.json`)
 
@@ -165,16 +174,18 @@ The `prebuild` hook ensures docs are copied automatically before every build, wh
 
 ### 3. Git Configuration (`site/.gitignore`)
 
-Excluded generated files from version control:
+Excluded generated files from version control while preserving manual docs:
 
 ```gitignore
 # generated docs (copied from apis/ during build)
-public/docs/provider/
+# Note: public/docs/index.md and other manual docs are committed
+public/docs/catalog/
 ```
 
 This ensures:
 - ✅ No duplication in git
-- ✅ Single source of truth in `apis/` directory
+- ✅ Single source of truth in `apis/` directory for component docs
+- ✅ Manual docs (like index.md) remain tracked
 - ✅ Fresh copy on every build
 - ✅ No merge conflicts on generated files
 
@@ -190,7 +201,47 @@ Added configuration for local static preview:
 }
 ```
 
-This ensures the `yarn serve` preview matches GitHub Pages behavior, enabling proper testing of nested routes like `/docs/provider/aws/awsalb`.
+This ensures the `yarn serve` preview matches GitHub Pages behavior, enabling proper testing of nested routes like `/docs/catalog/aws/awsalb`.
+
+### 5. GitHub Pages Configuration (`site/public/.nojekyll`)
+
+Created an empty `.nojekyll` file to disable Jekyll processing on GitHub Pages:
+
+```bash
+# This file tells GitHub Pages to skip Jekyll and serve files as-is
+# Critical for Next.js static exports
+```
+
+Without this file, GitHub Pages would process files with Jekyll, which:
+- Ignores files/folders starting with `_` (breaking `_next/`)
+- Interferes with Next.js client-side routing
+- Causes 404 errors on nested routes
+
+### 6. GitHub Actions Workflow Enhancement (`.github/workflows/pages.yml`)
+
+Updated the workflow for reliable deployment:
+
+```yaml
+- name: Copy component documentation
+  run: yarn copy-docs  # Explicit step ensures docs are copied
+
+- name: Build site
+  run: yarn build
+```
+
+Added path filters to trigger workflow only on relevant changes:
+
+```yaml
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'apis/project/planton/provider/**/docs/**/*.md'
+      - 'site/**'
+      - '.github/workflows/pages.yml'
+```
+
+This prevents unnecessary builds when proto files or CLI code changes.
 
 ## Execution Results
 
@@ -226,10 +277,11 @@ Route (app)                         Size  First Load JS
 ```
 
 **URL Structure**:
-- `/docs/provider` → Main provider index
-- `/docs/provider/aws` → AWS components index
-- `/docs/provider/aws/awsalb` → AWS ALB documentation
-- `/docs/provider/gcp/gcpcloudrun` → GCP Cloud Run documentation
+- `/docs` → Welcome landing page
+- `/docs/catalog` → Catalog index (lists all providers)
+- `/docs/catalog/aws` → AWS components index
+- `/docs/catalog/aws/awsalb` → AWS ALB documentation
+- `/docs/catalog/gcp/gcpcloudrun` → GCP Cloud Run documentation
 - And 67 more component documentation pages
 
 ## Benefits
@@ -252,9 +304,9 @@ Route (app)                         Size  First Load JS
 ### For Users
 
 ✅ **Discoverable Documentation**: Browse 69 components from 8 providers  
-✅ **Consistent Navigation**: Provider-based organization  
-✅ **Direct Links**: Share URLs like `/docs/provider/aws/awsalb`  
-✅ **GitHub Pages Ready**: Static export works perfectly  
+✅ **Organized Navigation**: All providers grouped under "Catalog" folder in sidebar  
+✅ **Clean URLs**: Share URLs like `/docs/catalog/aws/awsalb`  
+✅ **GitHub Pages Ready**: Static export works with proper Jekyll bypass  
 
 ### For CI/CD
 
@@ -335,7 +387,7 @@ cd site && yarn build
 ```
 
 3. Documentation available at:
-- `https://project-planton.org/docs/provider/aws/awsnewservice`
+- `https://project-planton.org/docs/catalog/aws/awsnewservice`
 
 ### Local Development Workflow
 
@@ -346,11 +398,11 @@ vim apis/project/planton/provider/gcp/gcpnewservice/v1/docs/README.md
 # Preview changes
 cd site
 yarn dev
-# ✓ Navigate to http://localhost:3000/docs/provider/gcp/gcpnewservice
+# ✓ Navigate to http://localhost:3000/docs/catalog/gcp/gcpnewservice
 
 # Or preview static build
 make preview-site
-# ✓ Navigate to http://localhost:3000/docs/provider/gcp/gcpnewservice
+# ✓ Navigate to http://localhost:3000/docs/catalog/gcp/gcpnewservice
 ```
 
 ### Manual Re-generation (if needed)
@@ -406,20 +458,51 @@ yarn copy-docs
 
 **Alternative Considered**: Commit generated files - rejected due to maintenance burden
 
+### Why Selective Directory Clearing?
+
+**Problem**: Initial implementation cleared the entire `site/public/docs/` directory, deleting manually created docs.
+
+**Solution**: Only clear provider directories from a predefined list:
+
+```typescript
+const providerDirs = ['aws', 'gcp', 'azure', 'kubernetes', ...];
+for (const provider of providerDirs) {
+  fs.rmSync(path.join(siteDocsRoot, provider), { recursive: true });
+}
+```
+
+This preserves `index.md` and any other manual documentation while cleaning generated content.
+
+### Why Catalog Folder Structure?
+
+**Rationale**:
+- ✅ Cleaner sidebar navigation (one "Catalog" folder vs 8 root items)
+- ✅ Clear separation between manual docs and generated component docs
+- ✅ Scalable as more providers are added
+- ✅ Matches user mental model (browsing a catalog of components)
+
+**Alternative Considered**: Flat structure at `/docs/{provider}` - rejected due to cluttered sidebar
+
 ## Code Metrics
 
-**Files Created**: 2
-- `site/scripts/copy-component-docs.ts` (360 lines)
+**Files Created**: 3
+- `site/scripts/copy-component-docs.ts` (310 lines)
 - `site/serve.json` (5 lines)
+- `site/public/.nojekyll` (empty file for GitHub Pages)
 
-**Files Modified**: 2
+**Files Modified**: 4
 - `site/package.json` (added script + dependency)
 - `site/.gitignore` (added exclusion rule)
+- `site/public/docs/index.md` (created docs landing page)
+- `.github/workflows/pages.yml` (added explicit copy-docs step and path filters)
 
 **Documentation Generated**: 78 files
 - 69 component docs with frontmatter
 - 8 provider index pages
-- 1 main provider index
+- 1 catalog index page
+
+**Documentation Preserved**: 1 file
+- `site/public/docs/index.md` (manually created welcome page)
 
 **Providers Supported**: 8
 - AWS (22 components)
@@ -462,6 +545,22 @@ yarn copy-docs
 - Show version-specific documentation
 - Provide migration guides between versions
 
+## Implementation Iterations
+
+This feature went through several refinements during implementation:
+
+1. **Initial Implementation**: URLs at `/docs/provider/{provider}/{component}`
+2. **URL Simplification**: Removed "provider" segment → `/docs/{provider}/{component}`
+3. **GitHub Pages Fix**: Added `.nojekyll` file to disable Jekyll processing
+4. **Selective Clearing**: Updated script to preserve manual docs, only clear provider directories
+5. **Catalog Organization**: Moved providers under `/docs/catalog/` for cleaner sidebar navigation
+
+These iterations demonstrate the importance of:
+- Testing static builds with `serve` (not just dev server)
+- Understanding GitHub Pages quirks (Jekyll processing)
+- Balancing automation with manual content preservation
+- Considering sidebar UX alongside URL structure
+
 ## Related Work
 
 ### Ecosystem Consistency
@@ -474,7 +573,7 @@ This implementation follows patterns established in:
 ### Prior Changelogs
 
 Related documentation infrastructure work:
-- Documentation site implementation (2025-11-09)
+- Documentation site with git-as-CMS pattern (2025-11-09-093737)
 - Next.js site setup with docs routing
 - Purple-themed UI components
 
@@ -484,6 +583,7 @@ The build script pattern can be extended to:
 - Generate API reference from proto files
 - Create provider comparison matrices
 - Build component dependency graphs
+- Extract examples from proto validation rules
 
 ---
 
