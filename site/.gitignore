@@ -41,6 +41,7 @@ yarn-error.log*
 next-env.d.ts
 
 # generated docs (copied from apis/ during build)
+# Note: public/docs/index.md is manually created and should be committed
 public/docs/aws/
 public/docs/gcp/
 public/docs/azure/
@@ -50,3 +51,4 @@ public/docs/confluent/
 public/docs/digitalocean/
 public/docs/atlas/
 public/docs/kubernetes/
+public/docs/snowflake/

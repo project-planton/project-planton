@@ -286,11 +286,8 @@ async function copyComponentDocs(): Promise<void> {
     }
   }
   
-  // Generate main provider index
-  if (stats.providers.size > 0) {
-    generateMainIndex(Array.from(stats.providers), siteDocsRoot);
-    console.log(`✓ Generated main provider index\n`);
-  }
+  // Note: Not generating main provider index to preserve docs landing page
+  // Provider directories are still accessible directly (e.g., /docs/aws, /docs/gcp)
   
   // Summary
   console.log('📊 Summary:');
