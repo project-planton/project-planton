@@ -27,7 +27,7 @@ export default function CompareSection() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="text-center mb-16">
         <h2 className="text-4xl font-bold mb-6">
-          <span className="bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">How We Compare</span>
+          <span className="bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">How Project Planton Compares</span>
         </h2>
         <p className="text-xl text-slate-400 max-w-3xl mx-auto">Short, factual comparison with other infrastructure tools</p>
       </div>
@@ -35,40 +35,40 @@ export default function CompareSection() {
       <div className="grid lg:grid-cols-3 gap-6 mb-12">
         <Card className="bg-slate-900/30 border-slate-700">
           <CardHeader>
-            <CardTitle className="text-lg text-white">vs Crossplane</CardTitle>
+            <CardTitle className="text-lg text-white">vs Cloud Provider CLIs</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-slate-400">
-              <strong className="text-blue-400">Crossplane:</strong> In‑cluster controllers
+              <strong className="text-red-400">Their way:</strong> Learn AWS, GCP, Azure CLIs separately. Different syntax, mental models, and workflows for every cloud.
             </p>
-            <p className="text-slate-400 mt-2">
-              <strong className="text-emerald-400">ProjectPlanton:</strong> Runs on‑demand via CLI with Pulumi/OpenTofu modules
+            <p className="text-slate-400 mt-4">
+              <strong className="text-emerald-400">Project Planton:</strong> One consistent YAML structure and CLI across all clouds. Same workflow everywhere.
             </p>
           </CardContent>
         </Card>
         <Card className="bg-slate-900/30 border-slate-700">
           <CardHeader>
-            <CardTitle className="text-lg text-white">vs Terraform HCL</CardTitle>
+            <CardTitle className="text-lg text-white">vs Kubernetes Controllers</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-slate-400">
-              <strong className="text-blue-400">Terraform HCL:</strong> Imperative DSL
+              <strong className="text-red-400">Crossplane:</strong> Requires running Kubernetes cluster to manage infrastructure. Controller-based reconciliation.
             </p>
-            <p className="text-slate-400 mt-2">
-              <strong className="text-emerald-400">ProjectPlanton:</strong> Declarative KRM‑style YAML with strict proto validations
+            <p className="text-slate-400 mt-4">
+              <strong className="text-emerald-400">Project Planton:</strong> CLI-driven, runs anywhere. No cluster required. You control when deployments happen.
             </p>
           </CardContent>
         </Card>
         <Card className="bg-slate-900/30 border-slate-700">
           <CardHeader>
-            <CardTitle className="text-lg text-white">vs Pulumi Code</CardTitle>
+            <CardTitle className="text-lg text-white">vs Writing Raw IaC</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-slate-400">
-              <strong className="text-blue-400">Pulumi code:</strong> App‑like programs
+              <strong className="text-red-400">Terraform/Pulumi:</strong> Write imperative code or HCL. Learn provider-specific resource syntax for every service.
             </p>
-            <p className="text-slate-400 mt-2">
-              <strong className="text-emerald-400">ProjectPlanton:</strong> Declarative manifests while Pulumi executes curated modules
+            <p className="text-slate-400 mt-4">
+              <strong className="text-emerald-400">Project Planton:</strong> Write declarative YAML. The framework maintains battle-tested Pulumi and Terraform modules for you.
             </p>
           </CardContent>
         </Card>
@@ -118,6 +118,34 @@ export default function CompareSection() {
           </div>
         </CardContent>
       </Card>
+
+      {/* Key Differentiators */}
+      <div className="grid md:grid-cols-3 gap-6 mt-12">
+        <Card className="bg-slate-900/30 border-purple-900/30">
+          <CardContent className="p-6">
+            <h4 className="text-lg font-bold text-purple-400 mb-3">🔍 Complete Transparency</h4>
+            <p className="text-slate-300">
+              All Pulumi and Terraform modules are open source. No black boxes. Audit the exact code deploying your infrastructure. Fork and customize if needed.
+            </p>
+          </CardContent>
+        </Card>
+        <Card className="bg-slate-900/30 border-purple-900/30">
+          <CardContent className="p-6">
+            <h4 className="text-lg font-bold text-purple-400 mb-3">⚡ Your Choice of Engine</h4>
+            <p className="text-slate-300">
+              Use Pulumi OR OpenTofu as your execution engine. Same manifests work with both. Switch engines anytime. Not locked to one IaC provider.
+            </p>
+          </CardContent>
+        </Card>
+        <Card className="bg-slate-900/30 border-purple-900/30">
+          <CardContent className="p-6">
+            <h4 className="text-lg font-bold text-purple-400 mb-3">🔓 Zero Vendor Lock-In</h4>
+            <p className="text-slate-300">
+              Standalone CLI with zero SaaS dependencies. Your manifests, your credentials, your infrastructure. Runs locally or in your CI/CD. You&apos;re never trapped.
+            </p>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }

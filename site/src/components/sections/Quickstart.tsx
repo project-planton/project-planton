@@ -101,8 +101,8 @@ project-planton tofu destroy --manifest manifest.yaml --auto-approve`,
         <CardContent className="p-6">
           <h3 className="text-lg font-bold text-white mb-4">Prerequisites & Notes</h3>
           <ul className="text-slate-300 space-y-2">
-            <li>• Provide credentials via files in an input dir (e.g., aws-credential.yaml, gcp-credential.yaml, kubernetes-cluster.yaml) or explicit flags</li>
-            <li>• Pulumi/OpenTofu CLIs must be installed separately</li>
+            <li>• Provider credentials are read from environment variables (AWS_ACCESS_KEY_ID, GOOGLE_APPLICATION_CREDENTIALS, KUBECONFIG, etc.)</li>
+            <li>• Pulumi and/or OpenTofu CLI must be installed separately</li>
             <li>• OpenTofu supports backends: local, s3, gcs, azurerm</li>
             <li>• Stack FQDN format is &lt;org&gt;/&lt;project&gt;/&lt;stack&gt;</li>
           </ul>

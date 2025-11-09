@@ -50,8 +50,7 @@ export default function Hero() {
 
 						{/* Subheading */}
 						<p className="text-base sm:text-xl lg:text-2xl text-slate-200/90 font-medium leading-relaxed max-w-3xl mx-auto mb-10">
-							Author KRM‑style YAML once, validate with Protobuf + Buf ProtoValidate, then execute with Pulumi or OpenTofu.
-							Consistent APIs across AWS, GCP, Azure, and Kubernetes—no provider‑specific yak‑shaving.
+						Stop learning different tools for every cloud. Write declarative YAML once, deploy to AWS, GCP, Azure, and Kubernetes with the same CLI and workflow. No vendor lock‑in, no artificial abstractions—just consistent infrastructure deployment everywhere.
 						</p>
 
 						{/* CTAs */}
@@ -80,7 +79,7 @@ export default function Hero() {
 						onClick={scrollToExample}
 						className="rounded-full border border-white/20 text-slate-100 bg-transparent hover:bg-white/5 hover:border-white/40 px-8 py-3 h-auto transform-gpu transition-all hover:-translate-y-0.5 focus-visible:ring-2 focus-visible:ring-fuchsia-400/40"
 					>
-						Try an Example
+						Browse 100+ Components
 						<ArrowDown className="w-4 h-4 ml-2" />
 					</Button>
 				</div>

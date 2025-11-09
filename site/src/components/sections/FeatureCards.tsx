@@ -5,39 +5,39 @@ import { Globe, Shield, Code, Zap, Lock, Puzzle } from "lucide-react";
 const features = [
   {
     icon: Globe,
-    title: "One model, many clouds",
+    title: "Consistent across clouds",
     description:
-      "A single CloudResourceKind enum and provider‑specific APIs (e.g., AwsStaticWebsite, GcpGkeCluster, AzureAksCluster, RedisKubernetes) with the same KRM‑style shape: apiVersion, kind, metadata, spec, status.",
+      "Same YAML structure across AWS, GCP, Azure, and Kubernetes. Provider-specific fields without artificial abstractions. Every manifest follows the Kubernetes pattern: apiVersion, kind, metadata, spec, status.",
   },
   {
     icon: Shield,
-    title: "Validation & sane defaults",
+    title: "Catch errors before deployment",
     description:
-      "Field‑level rules via Buf ProtoValidate; default/recommended_default options and message‑level CEL guardrails; manifests fail fast with clear errors before any provisioning.",
+      "Strongly-typed schemas with field-level validation and sensible defaults. Configuration errors caught immediately with clear messages—before any cloud APIs are called.",
   },
   {
     icon: Code,
-    title: "Modules under the hood",
+    title: "Battle-tested modules included",
     description:
-      "Curated Pulumi and OpenTofu modules reside alongside each API (apis/.../iac/pulumi/module, apis/.../iac/tf), so you never write raw Terraform or Pulumi code.",
+      "Curated Pulumi and Terraform modules maintained for every component. Choose your preferred execution engine—same manifests work with both. Stop writing raw IaC code.",
   },
   {
     icon: Zap,
-    title: "Dev‑grade workflow",
+    title: "Production-ready workflow",
     description:
-      "pulumi preview/update/refresh/destroy and tofu init/plan/apply/destroy/refresh through one CLI; stack FQDN <org>/<project>/<stack>; reproducible workspaces under ~/.project-planton.",
+      "Complete lifecycle management: preview, apply, refresh, destroy. Stack isolation with org/project/stack namespacing. One CLI for all operations across any cloud.",
   },
   {
     icon: Lock,
-    title: "Security & governance",
+    title: "Security built-in",
     description:
-      "Provider credentials are first‑class stack‑inputs (e.g., aws-credential.yaml, gcp-credential.yaml, kubernetes-cluster.yaml); modules apply consistent planton.org/* labels and support foreign‑key references across resources.",
+      "Standard cloud provider authentication via environment variables. Consistent resource labeling for governance. Native support for cross-resource references.",
   },
   {
     icon: Puzzle,
-    title: "Extensibility",
+    title: "Fully extensible",
     description:
-      "Add kinds and modules in‑repo; APIs generate language stubs via Buf; modules are selected per kind/provider automatically; override any manifest value at the CLI with --set key=value.",
+      "Fork and customize any module. Add new components. Generate SDKs from APIs via Buf Schema Registry. Override any field at runtime with --set flags.",
   },
 ];
 

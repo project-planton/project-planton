@@ -20,20 +20,34 @@ export default function ExampleGallery() {
   const examples = {
     aws: [
       {
-        id: "aws-website",
-        filename: "aws-static-website.yaml",
-        title: "Static Website with CDN",
+        id: "aws-rds",
+        filename: "aws-rds-instance.yaml",
+        title: "RDS PostgreSQL Instance",
         manifest: `apiVersion: aws.project-planton.org/v1
-kind: AwsStaticWebsite
+kind: AwsRdsInstance
 metadata:
-  name: my-site
-  labels:
-    env: dev
+  name: payments-db
 spec:
-  enableCdn: true
-  # Minimal example; additional fields include SPA routing, aliases, TLS, cache TTLs, and logging.`,
-        deploy: `project-planton validate aws-static-website.yaml
-project-planton pulumi up --manifest aws-static-website.yaml --stack myorg/site/dev`,
+  subnet_ids:
+    - valueFrom:
+        kind: AwsVpc
+        name: main-vpc
+        fieldPath: status.outputs.private_subnets.[0].id
+    - valueFrom:
+        kind: AwsVpc
+        name: main-vpc
+        fieldPath: status.outputs.private_subnets.[1].id
+  engine: postgres
+  engine_version: "15.4"
+  instance_class: db.t3.medium
+  allocated_storage_gb: 100
+  storage_encrypted: true
+  username: dbadmin
+  password: <secret>
+  port: 5432
+  multi_az: true`,
+        deploy: `project-planton validate aws-rds-instance.yaml
+project-planton pulumi up --manifest aws-rds-instance.yaml --stack myorg/database/prod`,
       },
       {
         id: "aws-ec2",
@@ -44,19 +58,19 @@ kind: AwsEc2Instance
 metadata:
   name: app-vm
 spec:
-  subnetId:
+  subnet_id:
     valueFrom:
       kind: AwsSubnet
       name: my-vpc-subnet
       fieldPath: status.outputs.subnet_id
-  securityGroupIds:
+  security_group_ids:
     - valueFrom:
         kind: AwsSecurityGroup
         name: app-sg
         fieldPath: status.outputs.security_group_id
-  amiId: ami-0123456789abcdef0
-  instanceType: t3.micro
-  connectionMethod: SSM`,
+  ami_id: ami-0123456789abcdef0
+  instance_type: t3.micro
+  connection_method: SSM`,
         deploy: `project-planton tofu plan --manifest aws-ec2.yaml
 project-planton tofu apply --manifest aws-ec2.yaml --auto-approve`,
       },
@@ -65,24 +79,30 @@ project-planton tofu apply --manifest aws-ec2.yaml --auto-approve`,
       {
         id: "gcp-gke",
         filename: "gcp-gke-cluster.yaml",
-        title: "GKE Cluster",
+        title: "GKE Cluster with Autoscaling",
         manifest: `apiVersion: gcp.project-planton.org/v1
 kind: GcpGkeCluster
 metadata:
   name: main-gke
 spec:
-  clusterProjectId: <project-id>
+  cluster_project_id: <project-id>
   region: us-central1
-  network: default
-  subnetwork: default
-  isWorkloadLogsEnabled: false
-  nodePools:
-    - name: default
-      machineType: e2-standard-4
-      minNodeCount: 1
-      maxNodeCount: 3`,
-        deploy: `project-planton pulumi preview --manifest gcp-gke-cluster.yaml --stack myorg/platform/dev
-project-planton pulumi up --manifest gcp-gke-cluster.yaml --stack myorg/platform/dev`,
+  zone: us-central1-a
+  is_workload_logs_enabled: false
+  cluster_autoscaling_config:
+    is_enabled: true
+    cpu_min_cores: 4
+    cpu_max_cores: 32
+    memory_min_gb: 16
+    memory_max_gb: 128
+  node_pools:
+    - name: general-pool
+      machine_type: n2-standard-8
+      min_node_count: 1
+      max_node_count: 5
+      is_spot_enabled: false`,
+        deploy: `project-planton pulumi preview --manifest gcp-gke-cluster.yaml --stack myorg/platform/prod
+project-planton pulumi up --manifest gcp-gke-cluster.yaml --stack myorg/platform/prod`,
       },
       {
         id: "gcp-cloudrun",
@@ -93,12 +113,12 @@ kind: GcpCloudRun
 metadata:
   name: hello-run
 spec:
-  projectId: <project-id>
+  project_id: <project-id>
   region: us-central1
   service:
     name: hello
     image: us-docker.pkg.dev/cloudrun/container/hello
-    allowUnauthenticated: true`,
+    allow_unauthenticated: true`,
         deploy: `project-planton tofu apply --manifest gcp-cloud-run.yaml --auto-approve`,
       },
     ],
@@ -112,14 +132,14 @@ kind: AzureAksCluster
 metadata:
   name: ops-aks
 spec:
-  subscriptionId: <subscription>
-  resourceGroupName: rg-ops
+  subscription_id: <subscription>
+  resource_group_name: rg-ops
   region: eastus
-  nodePools:
+  node_pools:
     - name: system
-      vmSize: Standard_DS2_v2
-      minNodeCount: 1
-      maxNodeCount: 3`,
+      vm_size: Standard_DS2_v2
+      min_node_count: 1
+      max_node_count: 3`,
         deploy: `project-planton pulumi up --manifest azure-aks.yaml --stack myorg/azure/dev`,
       },
       {
@@ -131,8 +151,8 @@ kind: AzureContainerRegistry
 metadata:
   name: app-registry
 spec:
-  subscriptionId: <subscription>
-  resourceGroupName: rg-ops
+  subscription_id: <subscription>
+  resource_group_name: rg-ops
   region: eastus
   sku: Basic`,
         deploy: `project-planton tofu apply --manifest azure-acr.yaml --auto-approve`,
@@ -146,22 +166,46 @@ spec:
         manifest: `apiVersion: kubernetes.project-planton.org/v1
 kind: RedisKubernetes
 metadata:
-  name: main-redis
+  name: session-cache
 spec:
   container:
     replicas: 1
     resources:
       limits:
         cpu: "1000m"
-        memory: "1Gi"
+        memory: "2Gi"
       requests:
         cpu: "50m"
         memory: "100Mi"
-    isPersistenceEnabled: true
-    diskSize: "1Gi"
-  # Optional: ingress can be specified via shared Kubernetes ingress spec`,
-        deploy: `project-planton pulumi preview --manifest redis-kubernetes.yaml --stack myorg/apps/dev
-project-planton pulumi update --manifest redis-kubernetes.yaml --stack myorg/apps/dev`,
+    persistence_enabled: true
+    disk_size: "5Gi"`,
+        deploy: `project-planton pulumi preview --manifest redis-kubernetes.yaml --stack myorg/cache/prod
+project-planton pulumi up --manifest redis-kubernetes.yaml --stack myorg/cache/prod`,
+      },
+      {
+        id: "postgres-k8s",
+        filename: "postgres-kubernetes.yaml",
+        title: "PostgreSQL on Kubernetes",
+        manifest: `apiVersion: kubernetes.project-planton.org/v1
+kind: PostgresKubernetes
+metadata:
+  name: app-db
+spec:
+  container:
+    replicas: 3
+    resources:
+      limits:
+        cpu: "2000m"
+        memory: "4Gi"
+      requests:
+        cpu: "100m"
+        memory: "256Mi"
+    disk_size: "100Gi"
+  ingress:
+    enabled: true
+    hostname: db.example.com`,
+        deploy: `project-planton tofu plan --manifest postgres-kubernetes.yaml
+project-planton tofu apply --manifest postgres-kubernetes.yaml --auto-approve`,
       },
     ],
   } as const;

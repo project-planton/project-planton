@@ -3,7 +3,9 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Hero from "@/components/sections/Hero";
+import ProblemStatement from "@/components/sections/ProblemStatement";
 import FeatureCards from "@/components/sections/FeatureCards";
+import Stats from "@/components/sections/Stats";
 import HowItWorks from "@/components/sections/HowItWorks";
 import Quickstart from "@/components/sections/Quickstart";
 import ExampleGallery from "@/components/sections/ExampleGallery";
@@ -42,8 +44,14 @@ export default function HomePage() {
         <section id="hero">
           <Hero />
         </section>
+        <section id="problem" className="py-24 bg-slate-900/30">
+          <ProblemStatement />
+        </section>
         <section id="why" className="py-24">
           <FeatureCards />
+        </section>
+        <section id="stats" className="py-24 bg-slate-900/30">
+          <Stats />
         </section>
         <section id="how" className="py-24">
           <HowItWorks />
