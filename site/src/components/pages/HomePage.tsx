@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Hero from "@/components/sections/Hero";
@@ -14,50 +14,7 @@ import FAQ from "@/components/sections/FAQ";
 import Footer from "@/components/sections/Footer";
 import { GitHubStarBadge } from "@/components/ui/GitHubStarBadge";
 
-interface NavItem {
-  id: string;
-  label: string;
-  isExternal?: boolean;
-  href?: string;
-}
-
 export default function HomePage() {
-  const [activeSection, setActiveSection] = useState<string>("hero");
-
-  const navItems: NavItem[] = [
-    { id: "hero", label: "Home" },
-    { id: "why", label: "Why" },
-    { id: "how", label: "How it works" },
-    { id: "quickstart", label: "Quickstart" },
-    { id: "examples", label: "Examples" },
-    { id: "cli", label: "CLI" },
-    { id: "cicd", label: "CI/CD" },
-    { id: "compare", label: "Compare" },
-    { id: "faq", label: "FAQ" },
-  ];
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const sections = navItems.map((item) => document.getElementById(item.id));
-      const scrollPosition = window.scrollY + 100;
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const section = sections[i];
-        if (section && section.offsetTop <= scrollPosition) {
-          setActiveSection(navItems[i].id);
-          break;
-        }
-      }
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [navItems]);
-
-  const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
-  };
 
   return (
     <div className="min-h-screen bg-slate-950 text-white overflow-x-hidden">

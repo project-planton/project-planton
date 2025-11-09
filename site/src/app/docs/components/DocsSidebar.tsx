@@ -2,6 +2,7 @@
 
 import { FC, useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { Box, Typography, Chip, IconButton } from '@mui/material';
 import {
@@ -51,9 +52,11 @@ const SidebarItem: FC<SidebarItemProps> = ({
       const componentIconPath = `/images/providers/${provider}/${component}/logo.svg`;
       
       return (
-        <img 
+        <Image 
           src={componentIconPath} 
           alt={component} 
+          width={20}
+          height={20}
           className="w-5 h-5 object-contain" 
         />
       );
@@ -81,9 +84,11 @@ const SidebarItem: FC<SidebarItemProps> = ({
       const iconPath = providerIconMap[provider];
       if (iconPath) {
         return (
-          <img 
+          <Image 
             src={iconPath} 
             alt={provider.toUpperCase()} 
+            width={20}
+            height={20}
             className="w-5 h-5 object-contain" 
           />
         );

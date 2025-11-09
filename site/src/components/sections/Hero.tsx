@@ -1,8 +1,9 @@
 "use client";
 import React, { useState } from "react";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Copy, Check, Github, ArrowDown } from "lucide-react";
+import { Copy, Check, ArrowDown } from "lucide-react";
 
 export default function Hero() {
 	const [copied, setCopied] = useState(false);
@@ -73,37 +74,36 @@ export default function Hero() {
 								)}
 							</Button>
 
-							<Button
-								size="lg"
-								variant="outline"
-								onClick={scrollToExample}
-								className="rounded-full border border-white/20 text-slate-100 bg-transparent hover:bg-white/5 hover:border-white/40 px-8 py-3 h-auto transform-gpu transition-all hover:-translate-y-0.5 focus-visible:ring-2 focus-visible:ring-fuchsia-400/40"
-							>
-								Try an Example
-								<ArrowDown className="w-4 h-4 ml-2" />
-							</Button>
-						</div>
+					<Button
+						size="lg"
+						variant="outline"
+						onClick={scrollToExample}
+						className="rounded-full border border-white/20 text-slate-100 bg-transparent hover:bg-white/5 hover:border-white/40 px-8 py-3 h-auto transform-gpu transition-all hover:-translate-y-0.5 focus-visible:ring-2 focus-visible:ring-fuchsia-400/40"
+					>
+						Try an Example
+						<ArrowDown className="w-4 h-4 ml-2" />
+					</Button>
+				</div>
 
-						{/* Tertiary link */}
-						<div className="flex flex-wrap justify-center gap-6 text-slate-300">
-							<a
-								href="https://github.com/project-planton/project-planton"
-								target="_blank"
-								rel="noopener noreferrer"
-								className="flex items-center gap-2 hover:text-white transition-colors"
-							>
-								<img src="/images/providers/github-dark.svg" alt="GitHub" className="w-4 h-4" />
-								View on GitHub
-							</a>
-						</div>
-
-						{/* Tagline */}
-						<div className="mt-16 pt-12 border-t border-white/10">
-							<p className="text-2xl sm:text-3xl font-bold text-center">
-								<span className="text-slate-300">Define once.</span>
-								<span className="ml-3 bg-gradient-to-r from-[#f0abfc] via-[#f472b6] to-[#d946ef] bg-clip-text text-transparent">Deploy anywhere.</span>
-							</p>
-						</div>
+					{/* Tagline */}
+					<div className="mt-16 pt-12 border-t border-white/10">
+						<p className="text-2xl sm:text-3xl font-bold text-center mb-8">
+							<span className="text-slate-300">Define once.</span>
+							<span className="ml-3 bg-gradient-to-r from-[#f0abfc] via-[#f472b6] to-[#d946ef] bg-clip-text text-transparent">Deploy anywhere.</span>
+						</p>
+						
+					{/* Cloud Provider Icons */}
+					<div className="flex flex-wrap items-center justify-center gap-6 sm:gap-8 mt-8">
+						<Image src="/images/providers/aws.svg" alt="AWS" width={40} height={40} className="h-8 sm:h-10 w-auto opacity-80 hover:opacity-100 transition-opacity" />
+						<Image src="/images/providers/gcp.svg" alt="GCP" width={40} height={40} className="h-8 sm:h-10 w-auto opacity-80 hover:opacity-100 transition-opacity" />
+						<Image src="/images/providers/azure.svg" alt="Azure" width={40} height={40} className="h-8 sm:h-10 w-auto opacity-80 hover:opacity-100 transition-opacity" />
+						<Image src="/images/providers/digital-ocean.svg" alt="DigitalOcean" width={40} height={40} className="h-8 sm:h-10 w-auto opacity-80 hover:opacity-100 transition-opacity" />
+						<Image src="/images/providers/civo.svg" alt="Civo" width={40} height={40} className="h-8 sm:h-10 w-auto opacity-80 hover:opacity-100 transition-opacity" />
+						<Image src="/images/providers/cloudflare.svg" alt="Cloudflare" width={40} height={40} className="h-8 sm:h-10 w-auto opacity-80 hover:opacity-100 transition-opacity" />
+						<Image src="/images/providers/confluent.svg" alt="Confluent" width={40} height={40} className="h-8 sm:h-10 w-auto opacity-80 hover:opacity-100 transition-opacity" />
+						<Image src="/images/providers/mongodb-atlas.svg" alt="MongoDB Atlas" width={40} height={40} className="h-8 sm:h-10 w-auto opacity-80 hover:opacity-100 transition-opacity" />
+					</div>
+					</div>
 					</div>
 				</div>
 			</div>
