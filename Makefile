@@ -180,6 +180,11 @@ run-site:
 	cd site && yarn 
 	cd site && yarn dev
 
+.PHONY: build-site
+build-site:
+	cd site && yarn 
+	cd site && yarn build
+
 .PHONY: preview-site
 preview-site:
 	cd site && yarn 
