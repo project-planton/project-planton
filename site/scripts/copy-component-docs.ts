@@ -225,13 +225,23 @@ async function copyComponentDocs(): Promise<void> {
   const apisRoot = path.join(projectRoot, 'apis/project/planton/provider');
   const siteDocsRoot = path.join(scriptDir, '../public/docs');
   
-  // Clear existing generated docs
-  if (fs.existsSync(siteDocsRoot)) {
-    console.log(`🗑️  Clearing existing docs at ${path.relative(projectRoot, siteDocsRoot)}`);
-    fs.rmSync(siteDocsRoot, { recursive: true });
+  // List of provider directories to manage (clear only these, not the entire docs directory)
+  const providerDirs = [
+    'aws', 'gcp', 'azure', 'kubernetes', 
+    'cloudflare', 'civo', 'digitalocean', 
+    'atlas', 'confluent', 'snowflake'
+  ];
+  
+  // Clear only provider directories (preserve manually created docs like index.md, getting-started.md, etc.)
+  for (const provider of providerDirs) {
+    const providerPath = path.join(siteDocsRoot, provider);
+    if (fs.existsSync(providerPath)) {
+      console.log(`🗑️  Clearing ${provider} docs`);
+      fs.rmSync(providerPath, { recursive: true });
+    }
   }
   
-  // Create output directory
+  // Ensure output directory exists
   fs.mkdirSync(siteDocsRoot, { recursive: true });
   
   // Stats
