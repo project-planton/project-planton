@@ -163,9 +163,9 @@ kind: CivoBucket
 metadata:
   name: myapp-dev-storage
 spec:
-  bucket_name: myapp-dev-storage
+  bucketName: myapp-dev-storage
   region: FRA1
-  versioning_enabled: false
+  versioningEnabled: false
   tags:
     - env:dev
     - team:backend
@@ -179,9 +179,9 @@ kind: CivoBucket
 metadata:
   name: acme-prod-backups
 spec:
-  bucket_name: acme-prod-backups
+  bucketName: acme-prod-backups
   region: LON1
-  versioning_enabled: true
+  versioningEnabled: true
   tags:
     - env:prod
     - criticality:high
@@ -196,9 +196,9 @@ kind: CivoBucket
 metadata:
   name: marketing-static-assets
 spec:
-  bucket_name: marketing-static-assets
+  bucketName: marketing-static-assets
   region: NYC1
-  versioning_enabled: false
+  versioningEnabled: false
   tags:
     - env:prod
     - public:true

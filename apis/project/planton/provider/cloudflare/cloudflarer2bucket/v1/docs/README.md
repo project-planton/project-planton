@@ -417,7 +417,7 @@ kind: CloudflareR2Bucket
 metadata:
   name: dev-test-uploads
 spec:
-  bucket_name: dev-test-uploads
+  bucketName: dev-test-uploads
   account_id: 1234567890abcdef1234567890abcdef
   location: WNAM
   public_access: false
@@ -440,7 +440,7 @@ kind: CloudflareR2Bucket
 metadata:
   name: staging-assets
 spec:
-  bucket_name: staging-assets
+  bucketName: staging-assets
   account_id: 1234567890abcdef1234567890abcdef
   location: WEUR
   public_access: true
@@ -471,7 +471,7 @@ kind: CloudflareR2Bucket
 metadata:
   name: prod-media
 spec:
-  bucket_name: prod-media
+  bucketName: prod-media
   account_id: 1234567890abcdef1234567890abcdef
   location: ENAM
   public_access: true
@@ -507,7 +507,7 @@ kind: CloudflareR2Bucket
 metadata:
   name: prod-user-data-eu
 spec:
-  bucket_name: prod-user-data-eu
+  bucketName: prod-user-data-eu
   account_id: 1234567890abcdef1234567890abcdef
   location: WEUR
   jurisdiction: EU  # Enforce data stays within EU

@@ -45,7 +45,7 @@ export function GitHubStarBadge({ repo, className = "" }: GitHubStarBadgeProps) 
       className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-md border border-slate-700 bg-slate-800/50 text-slate-300 hover:bg-slate-700 hover:text-white hover:border-slate-600 transition-all duration-200 ${className}`}
     >
       <Image src="/images/providers/github-dark.svg" alt="GitHub" width={16} height={16} />
-      <span className="text-sm font-medium">Star</span>
+      <span className="text-sm font-medium hidden sm:inline">Star</span>
       {!loading && stars !== null && (
         <>
           <span className="w-px h-4 bg-slate-600" />

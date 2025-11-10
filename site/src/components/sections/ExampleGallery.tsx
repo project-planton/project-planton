@@ -28,51 +28,40 @@ kind: AwsRdsInstance
 metadata:
   name: payments-db
 spec:
-  subnet_ids:
-    - valueFrom:
-        kind: AwsVpc
-        name: main-vpc
-        fieldPath: status.outputs.private_subnets.[0].id
-    - valueFrom:
-        kind: AwsVpc
-        name: main-vpc
-        fieldPath: status.outputs.private_subnets.[1].id
+  subnetIds:
+    - value: subnet-abc123
+    - value: subnet-def456
   engine: postgres
-  engine_version: "15.4"
-  instance_class: db.t3.medium
-  allocated_storage_gb: 100
-  storage_encrypted: true
+  engineVersion: "15.4"
+  instanceClass: db.t3.medium
+  allocatedStorageGb: 100
+  storageEncrypted: true
   username: dbadmin
   password: <secret>
   port: 5432
-  multi_az: true`,
+  multiAz: true`,
         deploy: `project-planton validate aws-rds-instance.yaml
 project-planton pulumi up --manifest aws-rds-instance.yaml --stack myorg/database/prod`,
       },
       {
-        id: "aws-ec2",
-        filename: "aws-ec2.yaml",
-        title: "EC2 Instance with References",
+        id: "aws-s3",
+        filename: "aws-s3-bucket.yaml",
+        title: "S3 Bucket",
         manifest: `apiVersion: aws.project-planton.org/v1
-kind: AwsEc2Instance
+kind: AwsS3Bucket
 metadata:
-  name: app-vm
+  name: app-assets
 spec:
-  subnet_id:
-    valueFrom:
-      kind: AwsSubnet
-      name: my-vpc-subnet
-      fieldPath: status.outputs.subnet_id
-  security_group_ids:
-    - valueFrom:
-        kind: AwsSecurityGroup
-        name: app-sg
-        fieldPath: status.outputs.security_group_id
-  ami_id: ami-0123456789abcdef0
-  instance_type: t3.micro
-  connection_method: SSM`,
-        deploy: `project-planton tofu plan --manifest aws-ec2.yaml
-project-planton tofu apply --manifest aws-ec2.yaml --auto-approve`,
+  bucketName: my-app-assets-bucket
+  versioningEnabled: true
+  encryptionEnabled: true
+  publicAccessBlock:
+    blockPublicAcls: true
+    blockPublicPolicy: true
+    ignorePublicAcls: true
+    restrictPublicBuckets: true`,
+        deploy: `project-planton validate aws-s3-bucket.yaml
+project-planton pulumi up --manifest aws-s3-bucket.yaml --stack myorg/storage/prod`,
       },
     ],
     gcp: [
@@ -85,22 +74,22 @@ kind: GcpGkeCluster
 metadata:
   name: main-gke
 spec:
-  cluster_project_id: <project-id>
+  clusterProjectId: <project-id>
   region: us-central1
   zone: us-central1-a
-  is_workload_logs_enabled: false
-  cluster_autoscaling_config:
-    is_enabled: true
-    cpu_min_cores: 4
-    cpu_max_cores: 32
-    memory_min_gb: 16
-    memory_max_gb: 128
-  node_pools:
+  isWorkloadLogsEnabled: false
+  clusterAutoscalingConfig:
+    isEnabled: true
+    cpuMinCores: 4
+    cpuMaxCores: 32
+    memoryMinGb: 16
+    memoryMaxGb: 128
+  nodePools:
     - name: general-pool
-      machine_type: n2-standard-8
-      min_node_count: 1
-      max_node_count: 5
-      is_spot_enabled: false`,
+      machineType: n2-standard-8
+      minNodeCount: 1
+      maxNodeCount: 5
+      isSpotEnabled: false`,
         deploy: `project-planton pulumi preview --manifest gcp-gke-cluster.yaml --stack myorg/platform/prod
 project-planton pulumi up --manifest gcp-gke-cluster.yaml --stack myorg/platform/prod`,
       },
@@ -113,12 +102,12 @@ kind: GcpCloudRun
 metadata:
   name: hello-run
 spec:
-  project_id: <project-id>
+  projectId: <project-id>
   region: us-central1
   service:
     name: hello
     image: us-docker.pkg.dev/cloudrun/container/hello
-    allow_unauthenticated: true`,
+    allowUnauthenticated: true`,
         deploy: `project-planton tofu apply --manifest gcp-cloud-run.yaml --auto-approve`,
       },
     ],
@@ -132,14 +121,14 @@ kind: AzureAksCluster
 metadata:
   name: ops-aks
 spec:
-  subscription_id: <subscription>
-  resource_group_name: rg-ops
+  subscriptionId: <subscription>
+  resourceGroupName: rg-ops
   region: eastus
-  node_pools:
+  nodePools:
     - name: system
-      vm_size: Standard_DS2_v2
-      min_node_count: 1
-      max_node_count: 3`,
+      vmSize: Standard_DS2_v2
+      minNodeCount: 1
+      maxNodeCount: 3`,
         deploy: `project-planton pulumi up --manifest azure-aks.yaml --stack myorg/azure/dev`,
       },
       {
@@ -151,8 +140,8 @@ kind: AzureContainerRegistry
 metadata:
   name: app-registry
 spec:
-  subscription_id: <subscription>
-  resource_group_name: rg-ops
+  subscriptionId: <subscription>
+  resourceGroupName: rg-ops
   region: eastus
   sku: Basic`,
         deploy: `project-planton tofu apply --manifest azure-acr.yaml --auto-approve`,
@@ -177,8 +166,8 @@ spec:
       requests:
         cpu: "50m"
         memory: "100Mi"
-    persistence_enabled: true
-    disk_size: "5Gi"`,
+    persistenceEnabled: true
+    diskSize: "5Gi"`,
         deploy: `project-planton pulumi preview --manifest redis-kubernetes.yaml --stack myorg/cache/prod
 project-planton pulumi up --manifest redis-kubernetes.yaml --stack myorg/cache/prod`,
       },
@@ -200,7 +189,7 @@ spec:
       requests:
         cpu: "100m"
         memory: "256Mi"
-    disk_size: "100Gi"
+    diskSize: "100Gi"
   ingress:
     enabled: true
     hostname: db.example.com`,

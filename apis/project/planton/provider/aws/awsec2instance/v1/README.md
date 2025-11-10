@@ -3,19 +3,19 @@
 Provision a single AWS EC2 virtual machine instance with networking, IAM, and access configuration. This resource focuses on the 80/20 fields needed for typical production instances.
 
 ## Spec fields (summary)
-- instance_name: Name of the EC2 instance.
-- ami_id: AMI ID to launch (e.g., ami-0123456789abcdef0).
-- instance_type: EC2 instance type (e.g., t3.small, m5.large).
-- subnet_id: Target subnet (usually a private subnet). Accepts literal or ref.
-- security_group_ids: One or more security groups. Accepts literal or ref.
-- connection_method: Access method. One of SSM (default), BASTION, INSTANCE_CONNECT.
+- instanceName: Name of the EC2 instance.
+- amiId: AMI ID to launch (e.g., ami-0123456789abcdef0).
+- instanceType: EC2 instance type (e.g., t3.small, m5.large).
+- subnetId: Target subnet (usually a private subnet). Accepts literal or ref.
+- securityGroupIds: One or more security groups. Accepts literal or ref.
+- connectionMethod: Access method. One of SSM (default), BASTION, INSTANCE_CONNECT.
   - If SSM: require iam_instance_profile_arn.
   - If BASTION or INSTANCE_CONNECT: require key_name.
-- iam_instance_profile_arn: IAM instance profile ARN (for SSM or other permissions).
-- key_name: EC2 key pair name (required for BASTION/INSTANCE_CONNECT).
-- root_volume_size_gb: Root volume size in GiB (default 30).
-- ebs_optimized: Enable EBS optimization when supported by the instance type.
-- disable_api_termination: Enable termination protection to prevent accidental deletion.
+- iamInstanceProfileArn: IAM instance profile ARN (for SSM or other permissions).
+- keyName: EC2 key pair name (required for BASTION/INSTANCE_CONNECT).
+- rootVolumeSizeGb: Root volume size in GiB (default 30).
+- ebsOptimized: Enable EBS optimization when supported by the instance type.
+- disableApiTermination: Enable termination protection to prevent accidental deletion.
 - tags: Map of tags to apply to the instance.
 - user_data: User data script (up to 32 KiB).
 

@@ -260,7 +260,7 @@ kind: AzureNatGateway
 metadata:
   name: dev-aks-nat-gateway
 spec:
-  subnet_id: ${ref:dev-aks-vpc.status.outputs.nodes_subnet_id}
+  subnetId: ${ref:dev-aks-vpc.status.outputs.nodes_subnet_id}
   idle_timeout_minutes: 10
   tags:
     environment: dev
@@ -282,7 +282,7 @@ kind: AzureNatGateway
 metadata:
   name: prod-aks-nat-gateway-z1
 spec:
-  subnet_id: ${ref:prod-aks-vpc-z1.status.outputs.nodes_subnet_id}
+  subnetId: ${ref:prod-aks-vpc-z1.status.outputs.nodes_subnet_id}
   idle_timeout_minutes: 30
   public_ip_prefix_length: 28  # 16 IPs, 1M+ ports
   tags:

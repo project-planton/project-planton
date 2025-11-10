@@ -1,9 +1,10 @@
 "use client";
 import React, { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Copy, Check, ArrowDown } from "lucide-react";
+import { Copy, Check, ArrowRight } from "lucide-react";
 
 export default function Hero() {
 	const [copied, setCopied] = useState(false);
@@ -13,13 +14,6 @@ export default function Hero() {
 		navigator.clipboard.writeText(installCommand);
 		setCopied(true);
 		setTimeout(() => setCopied(false), 2000);
-	};
-
-	const scrollToExample = () => {
-		const element = document.getElementById("examples");
-		if (element) {
-			element.scrollIntoView({ behavior: "smooth" });
-		}
 	};
 
 	return (
@@ -58,30 +52,31 @@ export default function Hero() {
 							<Button
 								size="lg"
 								onClick={copyToClipboard}
-								className="rounded-full bg-gradient-to-r from-[#7a4183] to-[#d946ef] text-white font-mono text-sm px-8 py-3 h-auto shadow-lg shadow-fuchsia-800/30 transform-gpu transition-all hover:brightness-110 hover:-translate-y-0.5 focus-visible:ring-2 focus-visible:ring-fuchsia-400/50"
+								className="rounded-full bg-gradient-to-r from-[#7a4183] to-[#d946ef] text-white font-mono text-xs sm:text-sm px-4 sm:px-8 py-3 h-auto shadow-lg shadow-fuchsia-800/30 transform-gpu transition-all hover:brightness-110 hover:-translate-y-0.5 focus-visible:ring-2 focus-visible:ring-fuchsia-400/50 max-w-full overflow-x-auto whitespace-nowrap"
 							>
 								{copied ? (
 									<>
-										<Check className="w-4 h-4 mr-2" />
+										<Check className="w-4 h-4 mr-2 flex-shrink-0" />
 										Copied!
 									</>
 								) : (
 									<>
-										<Copy className="w-4 h-4 mr-2" />
+										<Copy className="w-4 h-4 mr-2 flex-shrink-0" />
 										{installCommand}
 									</>
 								)}
 							</Button>
 
-					<Button
-						size="lg"
-						variant="outline"
-						onClick={scrollToExample}
-						className="rounded-full border border-white/20 text-slate-100 bg-transparent hover:bg-white/5 hover:border-white/40 px-8 py-3 h-auto transform-gpu transition-all hover:-translate-y-0.5 focus-visible:ring-2 focus-visible:ring-fuchsia-400/40"
-					>
-						Browse 100+ Components
-						<ArrowDown className="w-4 h-4 ml-2" />
-					</Button>
+					<Link href="/docs">
+						<Button
+							size="lg"
+							variant="outline"
+							className="rounded-full border border-white/20 text-slate-100 bg-transparent hover:bg-white/5 hover:border-white/40 px-8 py-3 h-auto transform-gpu transition-all hover:-translate-y-0.5 focus-visible:ring-2 focus-visible:ring-fuchsia-400/40"
+						>
+							Browse 100+ Components
+							<ArrowRight className="w-4 h-4 ml-2" />
+						</Button>
+					</Link>
 				</div>
 
 					{/* Tagline */}
@@ -92,15 +87,15 @@ export default function Hero() {
 						</p>
 						
 					{/* Cloud Provider Icons */}
-					<div className="flex flex-wrap items-center justify-center gap-6 sm:gap-8 mt-8">
-						<Image src="/images/providers/aws.svg" alt="AWS" width={40} height={40} className="h-8 sm:h-10 w-auto opacity-80 hover:opacity-100 transition-opacity" />
-						<Image src="/images/providers/gcp.svg" alt="GCP" width={40} height={40} className="h-8 sm:h-10 w-auto opacity-80 hover:opacity-100 transition-opacity" />
-						<Image src="/images/providers/azure.svg" alt="Azure" width={40} height={40} className="h-8 sm:h-10 w-auto opacity-80 hover:opacity-100 transition-opacity" />
-						<Image src="/images/providers/digital-ocean.svg" alt="DigitalOcean" width={40} height={40} className="h-8 sm:h-10 w-auto opacity-80 hover:opacity-100 transition-opacity" />
-						<Image src="/images/providers/civo.svg" alt="Civo" width={40} height={40} className="h-8 sm:h-10 w-auto opacity-80 hover:opacity-100 transition-opacity" />
-						<Image src="/images/providers/cloudflare.svg" alt="Cloudflare" width={40} height={40} className="h-8 sm:h-10 w-auto opacity-80 hover:opacity-100 transition-opacity" />
-						<Image src="/images/providers/confluent.svg" alt="Confluent" width={40} height={40} className="h-8 sm:h-10 w-auto opacity-80 hover:opacity-100 transition-opacity" />
-						<Image src="/images/providers/mongodb-atlas.svg" alt="MongoDB Atlas" width={40} height={40} className="h-8 sm:h-10 w-auto opacity-80 hover:opacity-100 transition-opacity" />
+					<div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 md:gap-8 mt-8">
+						<Image src="/images/providers/aws.svg" alt="AWS" width={40} height={40} className="h-6 sm:h-8 md:h-10 w-auto opacity-80 hover:opacity-100 transition-opacity" />
+						<Image src="/images/providers/gcp.svg" alt="GCP" width={40} height={40} className="h-6 sm:h-8 md:h-10 w-auto opacity-80 hover:opacity-100 transition-opacity" />
+						<Image src="/images/providers/azure.svg" alt="Azure" width={40} height={40} className="h-6 sm:h-8 md:h-10 w-auto opacity-80 hover:opacity-100 transition-opacity" />
+						<Image src="/images/providers/digital-ocean.svg" alt="DigitalOcean" width={40} height={40} className="h-6 sm:h-8 md:h-10 w-auto opacity-80 hover:opacity-100 transition-opacity" />
+						<Image src="/images/providers/civo.svg" alt="Civo" width={40} height={40} className="h-6 sm:h-8 md:h-10 w-auto opacity-80 hover:opacity-100 transition-opacity" />
+						<Image src="/images/providers/cloudflare.svg" alt="Cloudflare" width={40} height={40} className="h-6 sm:h-8 md:h-10 w-auto opacity-80 hover:opacity-100 transition-opacity" />
+						<Image src="/images/providers/confluent.svg" alt="Confluent" width={40} height={40} className="h-6 sm:h-8 md:h-10 w-auto opacity-80 hover:opacity-100 transition-opacity" />
+						<Image src="/images/providers/mongodb-atlas.svg" alt="MongoDB Atlas" width={40} height={40} className="h-6 sm:h-8 md:h-10 w-auto opacity-80 hover:opacity-100 transition-opacity" />
 					</div>
 					</div>
 					</div>

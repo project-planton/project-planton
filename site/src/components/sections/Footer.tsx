@@ -1,13 +1,14 @@
 import React from "react";
 import Image from "next/image";
-import { Github, Scale } from "lucide-react";
+import Link from "next/link";
+import { Github, Scale, MessageSquare, AlertCircle } from "lucide-react";
 
 export default function Footer() {
   const links = [
+    { name: "Documentation", href: "/docs", external: false },
+    { name: "Getting Started", href: "/docs/getting-started", external: false },
+    { name: "Components", href: "/docs", external: false },
     { name: "GitHub", href: "https://github.com/project-planton/project-planton", external: true },
-    { name: "Providers", href: "#", external: false },
-    { name: "CLI", href: "#cli", external: false },
-    { name: "Examples", href: "#examples", external: false },
   ];
 
   return (
@@ -31,15 +32,25 @@ export default function Footer() {
             <h3 className="font-semibold text-white mb-4">Resources</h3>
             <div className="space-y-3">
               {links.map((link) => (
-                <a
-                  key={link.name}
-                  href={link.href}
-                  className="block text-slate-400 hover:text-white transition-colors"
-                  target={link.external ? "_blank" : undefined}
-                  rel={link.external ? "noopener noreferrer" : undefined}
-                >
-                  {link.name}
-                </a>
+                link.external ? (
+                  <a
+                    key={link.name}
+                    href={link.href}
+                    className="block text-slate-400 hover:text-white transition-colors"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {link.name}
+                  </a>
+                ) : (
+                  <Link
+                    key={link.name}
+                    href={link.href}
+                    className="block text-slate-400 hover:text-white transition-colors"
+                  >
+                    {link.name}
+                  </Link>
+                )
               ))}
             </div>
           </div>
@@ -54,20 +65,36 @@ export default function Footer() {
               >
                 <div className="flex items-center gap-2">
                   <Github className="w-4 h-4" />
-                  GitHub
+                  GitHub Repository
                 </div>
               </a>
-              <a href="#" className="block text-slate-400 hover:text-white transition-colors">
-                Discussions
+              <a 
+                href="https://github.com/project-planton/project-planton/discussions"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block text-slate-400 hover:text-white transition-colors"
+              >
+                <div className="flex items-center gap-2">
+                  <MessageSquare className="w-4 h-4" />
+                  Discussions
+                </div>
               </a>
-              <a href="#" className="block text-slate-400 hover:text-white transition-colors">
-                Issues
+              <a 
+                href="https://github.com/project-planton/project-planton/issues"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block text-slate-400 hover:text-white transition-colors"
+              >
+                <div className="flex items-center gap-2">
+                  <AlertCircle className="w-4 h-4" />
+                  Issues
+                </div>
               </a>
             </div>
           </div>
         </div>
         <div className="border-t border-slate-800 mt-12 pt-8 text-center">
-          <p className="text-slate-500">© 2025 ProjectPlanton. All rights reserved.</p>
+          <p className="text-slate-500">© 2025 Project Planton. Open‑source under Apache-2.0 License.</p>
         </div>
       </div>
     </footer>

@@ -198,7 +198,7 @@ Ansible can create and delete DOKS clusters via the `community.digitalocean.digi
     oauth_token: "{{ lookup('env', 'DO_API_TOKEN') }}"
     name: "mycluster"
     region: "nyc1"
-    node_pools:
+    nodePools:
       - name: default
         size: s-1vcpu-2gb
         count: 3

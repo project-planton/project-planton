@@ -8,7 +8,7 @@ kind: GcpDnsZone
 metadata:
   name: example-com
 spec:
-  project_id: my-gcp-project
+  projectId: my-gcp-project
   records:
     - record_type: A
       name: www.example.com.
@@ -25,7 +25,7 @@ kind: GcpDnsZone
 metadata:
   name: example-com
 spec:
-  project_id: my-gcp-project
+  projectId: my-gcp-project
   records:
     - record_type: A
       name: www.example.com.
@@ -52,7 +52,7 @@ kind: GcpDnsZone
 metadata:
   name: prod-example-com
 spec:
-  project_id: prod-gcp-project
+  projectId: prod-gcp-project
   iam_service_accounts:
     - service-account1@example-project.iam.gserviceaccount.com
     - service-account2@example-project.iam.gserviceaccount.com
@@ -77,5 +77,5 @@ kind: GcpDnsZone
 metadata:
   name: dev-example-com
 spec:
-  project_id: dev-gcp-project
+  projectId: dev-gcp-project
 ```

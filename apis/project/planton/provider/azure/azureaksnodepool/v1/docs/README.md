@@ -257,7 +257,7 @@ Spot VMs cost up to 90% less but can be evicted with 30 seconds' notice.
 ```yaml
 name: systempool
 mode: System
-vm_size: Standard_D4s_v3
+vmSize: Standard_D4s_v3
 initial_node_count: 3
 availability_zones: ["1", "2", "3"]
 os_type: Linux
@@ -269,7 +269,7 @@ spot_enabled: false
 ```yaml
 name: apppool
 mode: User
-vm_size: Standard_D8s_v3
+vmSize: Standard_D8s_v3
 initial_node_count: 2
 availability_zones: ["1", "2", "3"]
 os_type: Linux
@@ -283,7 +283,7 @@ spot_enabled: false
 ```yaml
 name: spotpool
 mode: User
-vm_size: Standard_D4as_v5
+vmSize: Standard_D4as_v5
 initial_node_count: 0
 availability_zones: ["1", "2", "3"]
 os_type: Linux

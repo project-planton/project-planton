@@ -431,7 +431,7 @@ kind: AwsEksCluster
 metadata:
   name: dev-eks
 spec:
-  subnet_ids:
+  subnetIds:
     - subnet-abc123
     - subnet-def456
   cluster_role_arn: arn:aws:iam::123456789012:role/EksClusterRole
@@ -451,7 +451,7 @@ kind: AwsEksCluster
 metadata:
   name: stage-eks
 spec:
-  subnet_ids:
+  subnetIds:
     - subnet-abc123
     - subnet-def456
   cluster_role_arn: arn:aws:iam::123456789012:role/EksClusterRole
@@ -474,7 +474,7 @@ kind: AwsEksCluster
 metadata:
   name: prod-eks
 spec:
-  subnet_ids:
+  subnetIds:
     - subnet-abc123  # us-west-2a
     - subnet-def456  # us-west-2b
     - subnet-ghi789  # us-west-2c

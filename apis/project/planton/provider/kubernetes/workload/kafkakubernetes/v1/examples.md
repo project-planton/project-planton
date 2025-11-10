@@ -19,7 +19,7 @@ spec:
       limits:
         cpu: 1
         memory: 1Gi
-    disk_size: 20Gi
+    diskSize: 20Gi
   zookeeper_container:
     replicas: 3
     resources:
@@ -29,7 +29,7 @@ spec:
       limits:
         cpu: 500m
         memory: 512Mi
-    disk_size: 10Gi
+    diskSize: 10Gi
   ingress:
     enabled: false
   is_deploy_kafka_ui: false
@@ -56,7 +56,7 @@ spec:
       limits:
         cpu: 2
         memory: 2Gi
-    disk_size: 50Gi
+    diskSize: 50Gi
   zookeeper_container:
     replicas: 3
     resources:
@@ -66,9 +66,9 @@ spec:
       limits:
         cpu: 1
         memory: 1Gi
-    disk_size: 20Gi
+    diskSize: 20Gi
   schema_registry_container:
-    is_enabled: true
+    isEnabled: true
     replicas: 1
     resources:
       requests:
@@ -104,7 +104,7 @@ spec:
       limits:
         cpu: 500m
         memory: 512Mi
-    disk_size: 10Gi
+    diskSize: 10Gi
   zookeeper_container:
     replicas: 1
     resources:
@@ -114,7 +114,7 @@ spec:
       limits:
         cpu: 500m
         memory: 512Mi
-    disk_size: 10Gi
+    diskSize: 10Gi
   ingress:
     enabled: false
   is_deploy_kafka_ui: false
@@ -150,7 +150,7 @@ spec:
       limits:
         cpu: 4
         memory: 4Gi
-    disk_size: 100Gi
+    diskSize: 100Gi
   zookeeper_container:
     replicas: 3
     resources:
@@ -160,7 +160,7 @@ spec:
       limits:
         cpu: 2
         memory: 2Gi
-    disk_size: 20Gi
+    diskSize: 20Gi
   ingress:
     enabled: true
   is_deploy_kafka_ui: true
@@ -187,7 +187,7 @@ spec:
       limits:
         cpu: 2
         memory: 2Gi
-    disk_size: 50Gi
+    diskSize: 50Gi
   zookeeper_container:
     replicas: 3
     resources:
@@ -197,9 +197,9 @@ spec:
       limits:
         cpu: 1
         memory: 1Gi
-    disk_size: 20Gi
+    diskSize: 20Gi
   schema_registry_container:
-    is_enabled: true
+    isEnabled: true
     replicas: 2
     resources:
       requests:

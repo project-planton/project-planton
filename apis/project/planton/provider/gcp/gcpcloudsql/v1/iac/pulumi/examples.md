@@ -10,7 +10,7 @@ kind: GcpCloudSql
 metadata:
   name: mysql-basic
 spec:
-  project_id: my-gcp-project
+  projectId: my-gcp-project
   region: us-central1
   database_engine: MYSQL
   database_version: MYSQL_8_0
@@ -32,7 +32,7 @@ kind: GcpCloudSql
 metadata:
   name: postgres-private
 spec:
-  project_id: my-gcp-project
+  projectId: my-gcp-project
   region: us-central1
   database_engine: POSTGRESQL
   database_version: POSTGRES_15
@@ -52,7 +52,7 @@ kind: GcpCloudSql
 metadata:
   name: mysql-ha
 spec:
-  project_id: my-gcp-project
+  projectId: my-gcp-project
   region: us-central1
   database_engine: MYSQL
   database_version: MYSQL_8_0
@@ -76,7 +76,7 @@ kind: GcpCloudSql
 metadata:
   name: postgres-production
 spec:
-  project_id: my-gcp-project
+  projectId: my-gcp-project
   region: us-central1
   database_engine: POSTGRESQL
   database_version: POSTGRES_15
@@ -106,7 +106,7 @@ kind: GcpCloudSql
 metadata:
   name: mysql-public
 spec:
-  project_id: my-gcp-project
+  projectId: my-gcp-project
   region: us-central1
   database_engine: MYSQL
   database_version: MYSQL_8_0
@@ -127,7 +127,7 @@ kind: GcpCloudSql
 metadata:
   name: postgres-custom
 spec:
-  project_id: my-gcp-project
+  projectId: my-gcp-project
   region: us-central1
   database_engine: POSTGRESQL
   database_version: POSTGRES_15

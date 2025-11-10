@@ -20,7 +20,7 @@ spec:
       limits:
         cpu: 1
         memory: 1Gi
-    disk_size: 10Gi
+    diskSize: 10Gi
   ingress:
     enabled: true
     hostname: postgres-db.example.com
@@ -46,7 +46,7 @@ spec:
       limits:
         cpu: 2000m
         memory: 2Gi
-    disk_size: 20Gi
+    diskSize: 20Gi
   ingress:
     enabled: true
     hostname: postgres-prod.example.com
@@ -76,7 +76,7 @@ spec:
       limits:
         cpu: 4000m
         memory: 4Gi
-    disk_size: 50Gi
+    diskSize: 50Gi
   ingress:
     enabled: false
   env:
@@ -106,7 +106,7 @@ spec:
       limits:
         cpu: 500m
         memory: 512Mi
-    disk_size: 5Gi
+    diskSize: 5Gi
 ```
 
 ---

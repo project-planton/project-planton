@@ -136,7 +136,7 @@ Reaching "production-grade" isn't just about using an IaC tool. It's about confi
 
 **Default Security Posture:** Cloud Run services are **private by default** (`--no-allow-unauthenticated`). A private service returns a `403 Forbidden` error unless the caller is authenticated and authorized.
 
-**Making a Service Public:** Setting `allow_unauthenticated: true` grants the special `allUsers` member the `roles/run.invoker` IAM role, making the service publicly accessible.
+**Making a Service Public:** Setting `allowUnauthenticated: true` grants the special `allUsers` member the `roles/run.invoker` IAM role, making the service publicly accessible.
 
 **Service-to-Service Authentication:** For private services, the calling service must authenticate using Google-signed ID tokens:
 
@@ -197,7 +197,7 @@ Analysis of production-grade Terraform and Pulumi examples reveals a common set 
 - **image:** The container image URI (e.g., `us-docker.pkg.dev/...`). This is the central, defining field.
 - **service_account:** The IAM identity the service runs as. Essential for any service that needs to call other Google APIs.
 - **ingress:** Network access control (`ALL`, `INTERNAL_ONLY`, `INTERNAL_LOAD_BALANCER`). A top-level security decision.
-- **allow_unauthenticated:** A simplified boolean controlling the `roles/run.invoker` binding for `allUsers`.
+- **allowUnauthenticated:** A simplified boolean controlling the `roles/run.invoker` binding for `allUsers`.
 - **port:** The port the container listens on (defaults to 8080).
 - **env:** Basic, non-secret environment variables.
 - **secrets:** A first-class mechanism for mounting GCP Secret Manager secrets as environment variables or volumes. This is **part of the 80% Core**, not an advanced feature. No production application should use plaintext environment variables for sensitive data.
@@ -329,7 +329,7 @@ The API provides dedicated fields for mounting secrets from GCP Secret Manager. 
 
 ### Production-Ready Defaults
 
-- Services are **private by default** (`allow_unauthenticated: false`).
+- Services are **private by default** (`allowUnauthenticated: false`).
 - The API exposes `ingress`, `vpc_access`, `scaling`, `probes`, and `traffic` as first-class fields, recognizing that these are essential for production services, not optional extras.
 
 ### Designed for Artifact Registry

@@ -25,7 +25,7 @@ export default function HomePage() {
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center gap-3">
               <Image src="/icon.png" alt="ProjectPlanton logo" width={36} height={36} className="h-9 w-auto object-contain" priority />
-              <Image src="/logo-text.svg" alt="ProjectPlanton" width={160} height={40} className="h-10 w-auto object-contain" priority />
+              <Image src="/logo-text.svg" alt="ProjectPlanton" width={160} height={40} className="h-10 w-auto object-contain hidden sm:block" priority />
             </div>
             <div className="flex items-center gap-4 sm:gap-6">
                 <Link

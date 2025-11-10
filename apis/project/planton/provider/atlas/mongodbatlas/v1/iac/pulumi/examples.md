@@ -10,7 +10,7 @@ metadata:
 spec:
   mongodb_atlas_credential_id: my-mongodb-atlas-cred
   cluster_config:
-    project_id: my-mongodb-project
+    projectId: my-mongodb-project
     cluster_type: REPLICASET
     electable_nodes: 3
     priority: 7
@@ -34,7 +34,7 @@ metadata:
 spec:
   mongodb_atlas_credential_id: atlas-cred-123
   cluster_config:
-    project_id: my-sharded-cluster-project
+    projectId: my-sharded-cluster-project
     cluster_type: SHARDED
     electable_nodes: 5
     priority: 7
@@ -58,7 +58,7 @@ metadata:
 spec:
   mongodb_atlas_credential_id: geo-cred-567
   cluster_config:
-    project_id: geo-project-id
+    projectId: geo-project-id
     cluster_type: GEOSHARDED
     electable_nodes: 7
     priority: 7
@@ -82,7 +82,7 @@ metadata:
 spec:
   mongodb_atlas_credential_id: minimal-atlas-cred
   cluster_config:
-    project_id: minimal-project-id
+    projectId: minimal-project-id
     cluster_type: REPLICASET
     electable_nodes: 3
     priority: 7
@@ -106,7 +106,7 @@ metadata:
 spec:
   mongodb_atlas_credential_id: atlas-shard-cred
   cluster_config:
-    project_id: shard-project-id
+    projectId: shard-project-id
     cluster_type: SHARDED
     electable_nodes: 5
     priority: 7

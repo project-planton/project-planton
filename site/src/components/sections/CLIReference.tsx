@@ -31,14 +31,14 @@ export default function CLIReference() {
     { flag: "--backend-config key=value", description: "repeatable backend arguments (tofu init)", required: false },
   ];
 
-  const credentialFlags = [
-    { flag: "--aws-credential <file>", description: "AWS credential file" },
-    { flag: "--gcp-credential <file>", description: "GCP credential file" },
-    { flag: "--azure-credential <file>", description: "Azure credential file" },
-    { flag: "--kubernetes-cluster <file>", description: "Kubernetes cluster config file" },
-    { flag: "--confluent-credential <file>", description: "Confluent credential file" },
-    { flag: "--mongodb-atlas-credential <file>", description: "MongoDB Atlas credential file" },
-    { flag: "--snowflake-credential <file>", description: "Snowflake credential file" },
+  const providerConfigFlags = [
+    { flag: "--aws-provider-config <file>", description: "AWS provider configuration file" },
+    { flag: "--gcp-provider-config <file>", description: "GCP provider configuration file" },
+    { flag: "--azure-provider-config <file>", description: "Azure provider configuration file" },
+    { flag: "--kubernetes-provider-config <file>", description: "Kubernetes provider configuration file" },
+    { flag: "--confluent-provider-config <file>", description: "Confluent provider configuration file" },
+    { flag: "--mongodb-atlas-provider-config <file>", description: "MongoDB Atlas provider configuration file" },
+    { flag: "--snowflake-provider-config <file>", description: "Snowflake provider configuration file" },
   ];
 
   return (
@@ -130,12 +130,12 @@ export default function CLIReference() {
 
       <Card className="bg-slate-900/30 border-slate-700">
         <CardHeader className="pb-4">
-          <CardTitle className="text-xl text-white">Provider Credential Flags</CardTitle>
-          <p className="text-slate-400 text-sm">Supported by stackinputcredentials</p>
+          <CardTitle className="text-xl text-white">Provider Configuration Flags</CardTitle>
+          <p className="text-slate-400 text-sm">Configure cloud provider credentials and settings</p>
         </CardHeader>
         <CardContent>
           <div className="grid md:grid-cols-2 gap-4">
-            {credentialFlags.map((flag, index) => (
+            {providerConfigFlags.map((flag, index) => (
               <div key={index} className="border border-slate-800 rounded-lg p-4">
                 <code className="text-blue-400 text-sm">{flag.flag}</code>
                 <p className="text-slate-400 text-sm mt-1">{flag.description}</p>

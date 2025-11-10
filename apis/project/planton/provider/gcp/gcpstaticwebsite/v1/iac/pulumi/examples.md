@@ -10,9 +10,9 @@ kind: GcpStaticWebsite
 metadata:
   name: basic-static-website
 spec:
-  project_id: my-gcp-project
+  projectId: my-gcp-project
   bucket_config:
-    bucket_name: my-static-site
+    bucketName: my-static-site
     public_access: true
     index_page: index.html
     error_page: 404.html
@@ -30,9 +30,9 @@ kind: GcpStaticWebsite
 metadata:
   name: custom-domain-static-website
 spec:
-  project_id: my-custom-domain-project
+  projectId: my-custom-domain-project
   bucket_config:
-    bucket_name: custom-domain-static-site
+    bucketName: custom-domain-static-site
     public_access: true
     index_page: index.html
     error_page: 404.html
@@ -53,9 +53,9 @@ kind: GcpStaticWebsite
 metadata:
   name: private-static-website
 spec:
-  project_id: private-gcp-project
+  projectId: private-gcp-project
   bucket_config:
-    bucket_name: my-private-static-site
+    bucketName: my-private-static-site
     public_access: false
     index_page: index.html
     error_page: 403.html
@@ -75,13 +75,13 @@ kind: GcpStaticWebsite
 metadata:
   name: versioned-static-website
 spec:
-  project_id: versioned-site-project
+  projectId: versioned-site-project
   bucket_config:
-    bucket_name: versioned-static-site
+    bucketName: versioned-static-site
     public_access: true
     index_page: index.html
     error_page: 404.html
-    versioning_enabled: true
+    versioningEnabled: true
 ```
 
 ---
@@ -96,9 +96,9 @@ kind: GcpStaticWebsite
 metadata:
   name: cors-enabled-static-website
 spec:
-  project_id: cors-site-project
+  projectId: cors-site-project
   bucket_config:
-    bucket_name: cors-static-site
+    bucketName: cors-static-site
     public_access: true
     index_page: index.html
     error_page: 404.html
@@ -123,9 +123,9 @@ kind: GcpStaticWebsite
 metadata:
   name: lifecycle-static-website
 spec:
-  project_id: lifecycle-project
+  projectId: lifecycle-project
   bucket_config:
-    bucket_name: lifecycle-static-site
+    bucketName: lifecycle-static-site
     public_access: true
     index_page: index.html
     error_page: 404.html
@@ -146,9 +146,9 @@ kind: GcpStaticWebsite
 metadata:
   name: multi-region-static-website
 spec:
-  project_id: ha-project
+  projectId: ha-project
   bucket_config:
-    bucket_name: multi-region-static-site
+    bucketName: multi-region-static-site
     public_access: true
     index_page: index.html
     error_page: 404.html
@@ -167,9 +167,9 @@ kind: GcpStaticWebsite
 metadata:
   name: logging-enabled-static-website
 spec:
-  project_id: logging-project
+  projectId: logging-project
   bucket_config:
-    bucket_name: logging-static-site
+    bucketName: logging-static-site
     public_access: true
     index_page: index.html
     error_page: 404.html
@@ -190,9 +190,9 @@ kind: GcpStaticWebsite
 metadata:
   name: custom-error-pages-static-website
 spec:
-  project_id: custom-error-project
+  projectId: custom-error-project
   bucket_config:
-    bucket_name: custom-error-static-site
+    bucketName: custom-error-static-site
     public_access: true
     index_page: index.html
     error_page: 404.html

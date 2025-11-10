@@ -3,14 +3,14 @@
 AWS RDS Cluster (Aurora MySQL/PostgreSQL or Multi-AZ DB Cluster) resource. Defines cluster-level configuration such as networking (subnets/DB subnet group), engine/version, encryption, maintenance/backup windows, IAM DB auth, optional Data API, serverless v2 scaling, and cluster parameter group.
 
 ## Spec fields (80/20)
-- subnet_ids: Two or more subnet IDs (usually private) for the cluster. Alternative: set db_subnet_group_name instead.
-- db_subnet_group_name: Existing DB subnet group to use (instead of subnet_ids).
+- subnetIds: Two or more subnet IDs (usually private) for the cluster. Alternative: set db_subnet_group_name instead.
+- dbSubnetGroupName: Existing DB subnet group to use (instead of subnet_ids).
 - security_group_ids / associate_security_group_ids: Security groups to attach/use. Accepts literal or foreign-key references.
 - database_name: Initial DB name to create.
 - manage_master_user_password: Let RDS manage master user password via Secrets Manager (recommended default: true).
 - master_user_secret_kms_key_id: KMS key (ARN/alias) for the managed secret.
 - username/password: Master user credentials. If manage_master_user_password=true, do not set password.
-- engine / engine_version: Engine family and version (e.g., aurora-mysql, aurora-postgresql).
+- engine / engineVersion: Engine family and version (e.g., aurora-mysql, aurora-postgresql).
 - storage_encrypted / kms_key_id: Enable storage encryption and optional KMS key.
 - enabled_cloudwatch_logs_exports: Log exports; validated by engine family.
 - preferred_maintenance_window: ddd:hh:mm–ddd:hh:mm (UTC).

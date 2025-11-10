@@ -10,7 +10,7 @@ kind: GcpArtifactRegistryRepo
 metadata:
   id: my-artifact-registry
 spec:
-  project_id: your-gcp-project-id
+  projectId: your-gcp-project-id
   region: us-central1
   is_external: false
 ```

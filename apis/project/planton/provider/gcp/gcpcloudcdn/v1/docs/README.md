@@ -109,7 +109,7 @@ gcloud compute url-maps invalidate-cdn-cache my-url-map \
 - name: Create CDN-enabled backend bucket
   google.cloud.gcp_compute_backend_bucket:
     name: static-site-backend
-    bucket_name: my-static-site-bucket
+    bucketName: my-static-site-bucket
     enable_cdn: true
     cdn_policy:
       cache_mode: CACHE_ALL_STATIC

@@ -8,7 +8,7 @@ kind: GcpSecretsManager
 metadata:
   name: prod-secrets
 spec:
-  project_id: my-gcp-project
+  projectId: my-gcp-project
   secret_names:
     - database-password
     - api-key
@@ -22,7 +22,7 @@ kind: GcpSecretsManager
 metadata:
   name: dev-secrets
 spec:
-  project_id: dev-gcp-project
+  projectId: dev-gcp-project
   secret_names:
     - jwt-secret
     - database-url
@@ -37,5 +37,5 @@ kind: GcpSecretsManager
 metadata:
   name: minimal-secrets
 spec:
-  project_id: my-gcp-project
+  projectId: my-gcp-project
 ```

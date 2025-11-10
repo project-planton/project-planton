@@ -194,7 +194,7 @@ spec:
 
 ## 5. Enabling Ingress with Istio
 
-By setting `ingress.is_enabled: true` and providing `ingress.dns_domain`, the module generates an Istio Gateway,
+By setting `ingress.isEnabled: true` and providing `ingress.dns_domain`, the module generates an Istio Gateway,
 VirtualService (HTTPRoute), and TLS certificate resources (if configured). This allows external traffic to reach your
 microservice.
 
@@ -227,7 +227,7 @@ spec:
           cpu: "1"
           memory: "1Gi"
   ingress:
-    is_enabled: true
+    isEnabled: true
     dns_domain: "example.org"
 ```
 
@@ -271,7 +271,7 @@ spec:
   availability:
     minReplicas: 2
     horizontalPodAutoscaling:
-      is_enabled: true
+      isEnabled: true
       target_cpu_utilization_percent: 70.0
       target_memory_utilization: "1Gi"
 ```

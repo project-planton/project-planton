@@ -244,19 +244,19 @@ Here's what a production Spaces deployment looks like:
 
 **Dev Environment**:
 ```yaml
-bucket_name: dev-assets
+bucketName: dev-assets
 region: nyc3
 access_control: PRIVATE
-versioning_enabled: false
+versioningEnabled: false
 tags: ["environment:dev", "project:web-app"]
 ```
 
 **Production Environment**:
 ```yaml
-bucket_name: prod-media
+bucketName: prod-media
 region: sfo2
 access_control: PUBLIC_READ
-versioning_enabled: true
+versioningEnabled: true
 tags: ["environment:prod", "project:web-app", "cdn-enabled:true"]
 ```
 

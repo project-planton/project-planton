@@ -67,13 +67,13 @@ An Ansible playbook for RDS might look like:
     id: production-postgres
     state: present
     engine: postgres
-    engine_version: "15.4"
+    engineVersion: "15.4"
     db_instance_class: db.r5.xlarge
     allocated_storage: 100
     username: admin
     password: "{{ vault_db_password }}"
-    multi_az: true
-    storage_encrypted: true
+    multiAz: true
+    storageEncrypted: true
     vpc_security_group_ids:
       - sg-abc123
 ```

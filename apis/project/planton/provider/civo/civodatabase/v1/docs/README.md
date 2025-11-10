@@ -328,7 +328,7 @@ Based on comprehensive analysis of the Civo API, Terraform provider, and product
 ```yaml
 db_instance_name: "planton-dev-db"
 engine: postgres
-engine_version: "16"
+engineVersion: "16"
 size_slug: "g3.db.small"
 region: LON1
 network_id: "a1b2c3d4-dev-net-id"
@@ -341,7 +341,7 @@ replicas: 0  # Single master node
 ```yaml
 db_instance_name: "planton-staging-db"
 engine: postgres
-engine_version: "16"
+engineVersion: "16"
 size_slug: "g3.db.medium"
 region: LON1
 network_id: "b2c3d4e5-staging-net-id"
@@ -354,7 +354,7 @@ replicas: 1  # 1 master + 1 replica = 2 nodes
 ```yaml
 db_instance_name: "planton-prod-db"
 engine: postgres
-engine_version: "16"
+engineVersion: "16"
 size_slug: "g3.db.large"
 region: LON1
 network_id: "c3d4e5f6-prod-net-id"

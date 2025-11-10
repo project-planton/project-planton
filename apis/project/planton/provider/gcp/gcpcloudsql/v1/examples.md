@@ -26,7 +26,7 @@ kind: GcpCloudSql
 metadata:
   name: mysql-db
 spec:
-  project_id: my-gcp-project
+  projectId: my-gcp-project
   region: us-central1
   database_engine: MYSQL
   database_version: MYSQL_8_0
@@ -45,7 +45,7 @@ kind: GcpCloudSql
 metadata:
   name: postgres-db
 spec:
-  project_id: my-gcp-project
+  projectId: my-gcp-project
   region: us-central1
   database_engine: POSTGRESQL
   database_version: POSTGRES_15
@@ -64,7 +64,7 @@ kind: GcpCloudSql
 metadata:
   name: mysql-private
 spec:
-  project_id: my-gcp-project
+  projectId: my-gcp-project
   region: us-central1
   database_engine: MYSQL
   database_version: MYSQL_8_0
@@ -86,7 +86,7 @@ kind: GcpCloudSql
 metadata:
   name: postgres-public
 spec:
-  project_id: my-gcp-project
+  projectId: my-gcp-project
   region: us-central1
   database_engine: POSTGRESQL
   database_version: POSTGRES_15
@@ -109,7 +109,7 @@ kind: GcpCloudSql
 metadata:
   name: mysql-ha
 spec:
-  project_id: my-gcp-project
+  projectId: my-gcp-project
   region: us-central1
   database_engine: MYSQL
   database_version: MYSQL_8_0
@@ -131,7 +131,7 @@ kind: GcpCloudSql
 metadata:
   name: postgres-backup
 spec:
-  project_id: my-gcp-project
+  projectId: my-gcp-project
   region: us-central1
   database_engine: POSTGRESQL
   database_version: POSTGRES_15
@@ -154,7 +154,7 @@ kind: GcpCloudSql
 metadata:
   name: postgres-production
 spec:
-  project_id: my-gcp-project
+  projectId: my-gcp-project
   region: us-central1
   database_engine: POSTGRESQL
   database_version: POSTGRES_15
@@ -187,7 +187,7 @@ kind: GcpCloudSql
 metadata:
   name: mysql-custom
 spec:
-  project_id: my-gcp-project
+  projectId: my-gcp-project
   region: us-central1
   database_engine: MYSQL
   database_version: MYSQL_8_0
@@ -210,7 +210,7 @@ kind: GcpCloudSql
 metadata:
   name: postgres-large-storage
 spec:
-  project_id: my-gcp-project
+  projectId: my-gcp-project
   region: us-central1
   database_engine: POSTGRESQL
   database_version: POSTGRES_15
@@ -236,7 +236,7 @@ kind: GcpCloudSql
 metadata:
   name: mysql-dev
 spec:
-  project_id: my-dev-project
+  projectId: my-dev-project
   region: us-central1
   database_engine: MYSQL
   database_version: MYSQL_8_0

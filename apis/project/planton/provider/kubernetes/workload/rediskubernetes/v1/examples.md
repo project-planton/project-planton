@@ -36,7 +36,7 @@ spec:
       limits:
         cpu: 1
         memory: 1Gi
-    persistence_enabled: false
+    persistenceEnabled: false
 ```
 
 ---
@@ -73,8 +73,8 @@ spec:
       limits:
         cpu: 2
         memory: 2Gi
-    persistence_enabled: true
-    disk_size: 20Gi
+    persistenceEnabled: true
+    diskSize: 20Gi
   ingress:
     enabled: true
     hostname: redis.example.com

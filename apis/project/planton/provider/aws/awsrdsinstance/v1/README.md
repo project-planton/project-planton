@@ -3,20 +3,20 @@
 Provision a single AWS RDS DB instance (PostgreSQL, MySQL, MariaDB, Oracle, SQL Server). Focuses on essential networking, engine selection, sizing, and credentials.
 
 ## Spec fields (summary)
-- subnet_ids: Private subnets for the DB subnet group (>=2) or use db_subnet_group_name.
-- db_subnet_group_name: Existing DB subnet group name (alternative to subnet_ids).
-- security_group_ids: Security groups to associate with the instance.
+- subnetIds: Private subnets for the DB subnet group (>=2) or use db_subnet_group_name.
+- dbSubnetGroupName: Existing DB subnet group name (alternative to subnet_ids).
+- securityGroupIds: Security groups to associate with the instance.
 - engine: Database engine (e.g., postgres, mysql, mariadb, oracle-se2, sqlserver-ex).
-- engine_version: Desired engine version (e.g., 14.10 for Postgres).
-- instance_class: DB instance class (e.g., db.t3.micro, db.m6g.large).
-- allocated_storage_gb: Allocated storage for the instance in GiB (>0).
-- storage_encrypted: Enable storage encryption.
+- engineVersion: Desired engine version (e.g., 14.10 for Postgres).
+- instanceClass: DB instance class (e.g., db.t3.micro, db.m6g.large).
+- allocatedStorageGb: Allocated storage for the instance in GiB (>0).
+- storageEncrypted: Enable storage encryption.
 - kms_key_id: KMS key ARN/alias for encryption when enabled.
 - username: Master username.
 - password: Master user password.
 - port: Database port (0–65535).
-- publicly_accessible: Whether to allocate a public IP.
-- multi_az: Enable Multi-AZ deployment.
+- publiclyAccessible: Whether to allocate a public IP.
+- multiAz: Enable Multi-AZ deployment.
 - parameter_group_name: Optional DB parameter group name.
 - option_group_name: Optional option group name.
 

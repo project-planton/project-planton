@@ -3,7 +3,7 @@ kind: GcpCloudSql
 metadata:
   name: test-mysql-db
 spec:
-  project_id: project-planton-testing
+  projectId: project-planton-testing
   region: us-central1
   database_engine: MYSQL
   database_version: MYSQL_8_0

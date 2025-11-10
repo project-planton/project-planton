@@ -29,7 +29,7 @@ spec:
       limits:
         cpu: "1000m"
         memory: "1Gi"
-    disk_size: "10Gi"
+    diskSize: "10Gi"
 ```
 
 ---
@@ -63,7 +63,7 @@ spec:
       limits:
         cpu: "2000m"
         memory: "2Gi"
-    disk_size: "50Gi"
+    diskSize: "50Gi"
   
   ingress:
     enabled: true
@@ -101,7 +101,7 @@ spec:
       limits:
         cpu: "2000m"
         memory: "2Gi"
-    disk_size: "100Gi"
+    diskSize: "100Gi"
   
   # Custom backup configuration (overrides operator-level defaults)
   backup_config:
@@ -149,7 +149,7 @@ spec:
       limits:
         cpu: "2000m"
         memory: "2Gi"
-    disk_size: "100Gi"
+    diskSize: "100Gi"
   
   # Disaster recovery configuration
   backup_config:
@@ -158,7 +158,7 @@ spec:
       enabled: true
       
       # S3/R2 bucket containing the backup
-      bucket_name: "my-db-backups-prod"
+      bucketName: "my-db-backups-prod"
       
       # Path to backup directory (without s3:// prefix or bucket name)
       # This path should contain basebackups_005/ and wal_005/ directories
@@ -218,7 +218,7 @@ spec:
       limits:
         cpu: "2000m"
         memory: "2Gi"
-    disk_size: "100Gi"
+    diskSize: "100Gi"
   
   # Disaster recovery configuration
   backup_config:
@@ -227,7 +227,7 @@ spec:
       enabled: false  # Changed from true
       
       # Other fields can be kept for documentation or removed entirely
-      bucket_name: "my-db-backups-prod"
+      bucketName: "my-db-backups-prod"
       s3_path: "backups/source-db-name/14"
 ```
 
@@ -288,7 +288,7 @@ spec:
       limits:
         cpu: "2000m"
         memory: "2Gi"
-    disk_size: "100Gi"
+    diskSize: "100Gi"
   
   backup_config:
     restore:
@@ -335,7 +335,7 @@ spec:
       limits:
         cpu: "4000m"
         memory: "8Gi"
-    disk_size: "500Gi"
+    diskSize: "500Gi"
   
   # Custom backup configuration for critical database
   backup_config:
@@ -384,7 +384,7 @@ spec:
       limits:
         cpu: "500m"
         memory: "512Mi"
-    disk_size: "5Gi"
+    diskSize: "5Gi"
   
   # Disable backups for ephemeral development database
   backup_config:
@@ -437,7 +437,7 @@ spec:
 backup_config:
   restore:
     enabled: true
-    bucket_name: "my-backups"
+    bucketName: "my-backups"
     s3_path: "backups/db-name/14"
     r2_config:
       cloudflare_account_id: "xxx"

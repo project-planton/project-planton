@@ -367,7 +367,7 @@ spec:
     - "198.51.100.0/24"  # CI/CD agents
   
   system_node_pool:
-    vm_size: Standard_D4s_v5
+    vmSize: Standard_D4s_v5
     autoscaling:
       min: 3
       max: 5
@@ -375,7 +375,7 @@ spec:
   
   user_node_pools:
     - name: general
-      vm_size: Standard_D8s_v5
+      vmSize: Standard_D8s_v5
       autoscaling:
         min: 2
         max: 10
@@ -408,14 +408,14 @@ For development/staging:
 spec:
   control_plane_sku: FREE  # No SLA, cost savings
   system_node_pool:
-    vm_size: Standard_D2s_v3
+    vmSize: Standard_D2s_v3
     autoscaling:
       min: 1
       max: 2
     availability_zones: ["1"]  # Single AZ for cost
   user_node_pools:
     - name: dev
-      vm_size: Standard_D4s_v5
+      vmSize: Standard_D4s_v5
       autoscaling:
         min: 1
         max: 3

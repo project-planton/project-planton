@@ -327,14 +327,14 @@ Of the hundreds of EC2 parameters, which do users actually set?
 
 ```protobuf
 aws_ec2_instance {
-  instance_name: "dev-server"
-  ami_id: "ami-0c55b159cbfafe1f0"  // Amazon Linux 2
-  instance_type: "t3.small"
-  subnet_id: "subnet-public-us-east-1a"
-  security_group_ids: ["sg-dev-ssh-wide-open"]
-  connection_method: BASTION
-  key_name: "my-dev-key"
-  root_volume_size_gb: 20
+  instanceName: "dev-server"
+  amiId: "ami-0c55b159cbfafe1f0"  // Amazon Linux 2
+  instanceType: "t3.small"
+  subnetId: "subnet-public-us-east-1a"
+  securityGroupIds: ["sg-dev-ssh-wide-open"]
+  connectionMethod: BASTION
+  keyName: "my-dev-key"
+  rootVolumeSizeGb: 20
   tags: {"env": "dev", "owner": "dev-team"}
 }
 ```
@@ -343,16 +343,16 @@ aws_ec2_instance {
 
 ```protobuf
 aws_ec2_instance {
-  instance_name: "prod-app-server"
-  ami_id: "ami-app-v1.2.3"  // Custom Packer AMI
-  instance_type: "m5.large"
-  subnet_id: "subnet-private-app-1a"
-  security_group_ids: ["sg-app-alb-ingress", "sg-app-egress"]
-  connection_method: SSM
-  iam_instance_profile_arn: "arn:aws:iam::123456789012:instance-profile/app-ssm-role"
-  root_volume_size_gb: 40
-  ebs_optimized: true
-  disable_api_termination: true
+  instanceName: "prod-app-server"
+  amiId: "ami-app-v1.2.3"  // Custom Packer AMI
+  instanceType: "m5.large"
+  subnetId: "subnet-private-app-1a"
+  securityGroupIds: ["sg-app-alb-ingress", "sg-app-egress"]
+  connectionMethod: SSM
+  iamInstanceProfileArn: "arn:aws:iam::123456789012:instance-profile/app-ssm-role"
+  rootVolumeSizeGb: 40
+  ebsOptimized: true
+  disableApiTermination: true
   tags: {"env": "prod", "app": "billing-api"}
 }
 ```
@@ -361,16 +361,16 @@ aws_ec2_instance {
 
 ```protobuf
 aws_ec2_instance {
-  instance_name: "prod-db-node-1"
-  ami_id: "ami-db-v1.0.0"  // Custom DB AMI
-  instance_type: "r5.xlarge"  // Memory-optimized
-  subnet_id: "subnet-private-db-1b"
-  security_group_ids: ["sg-db-internal-access"]
-  connection_method: SSM
-  iam_instance_profile_arn: "arn:aws:iam::123456789012:instance-profile/db-ssm-role"
-  root_volume_size_gb: 30
-  ebs_optimized: true
-  disable_api_termination: true
+  instanceName: "prod-db-node-1"
+  amiId: "ami-db-v1.0.0"  // Custom DB AMI
+  instanceType: "r5.xlarge"  // Memory-optimized
+  subnetId: "subnet-private-db-1b"
+  securityGroupIds: ["sg-db-internal-access"]
+  connectionMethod: SSM
+  iamInstanceProfileArn: "arn:aws:iam::123456789012:instance-profile/db-ssm-role"
+  rootVolumeSizeGb: 30
+  ebsOptimized: true
+  disableApiTermination: true
   tags: {"env": "prod", "role": "database", "Backup": "Daily"}
 }
 ```

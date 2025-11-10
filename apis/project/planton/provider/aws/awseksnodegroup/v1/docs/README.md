@@ -306,10 +306,10 @@ metadata:
 spec:
   cluster_name: my-cluster
   node_role_arn: arn:aws:iam::123456789:role/EksNodeRole
-  subnet_ids:
+  subnetIds:
     - subnet-abc123
     - subnet-def456
-  instance_type: m6i.xlarge
+  instanceType: m6i.xlarge
   scaling:
     min_size: 3
     max_size: 6
