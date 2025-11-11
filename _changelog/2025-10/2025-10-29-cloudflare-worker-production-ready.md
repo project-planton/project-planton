@@ -378,7 +378,7 @@ export AWS_ACCESS_KEY_ID=<r2-access-key-id>
 export AWS_SECRET_ACCESS_KEY=<r2-secret-access-key>
 
 # Deploy
-export CLOUDFLARE_WORKER_MODULE=~/scm/github.com/project-planton/project-planton/apis/project/planton/provider/cloudflare/cloudflareworker/v1/iac/pulumi
+export CLOUDFLARE_WORKER_MODULE=~/scm/github.com/project-planton/project-planton/apis/org/project-planton/provider/cloudflare/cloudflareworker/v1/iac/pulumi
 
 project-planton pulumi up \
   --manifest worker.git-webhooks-receiver.yaml \

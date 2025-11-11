@@ -53,20 +53,20 @@ Defaults are applied **after** unmarshaling (so explicit manifest values take pr
 
 ### Defining Defaults in Proto Files
 
-Add the `(project.planton.shared.options.default)` extension to fields that should have defaults:
+Add the `(org.project_planton.shared.options.default)` extension to fields that should have defaults:
 
 ```protobuf
 syntax = "proto3";
 
-import "project/planton/shared/options/options.proto";
+import "org/project-planton/shared/options/options.proto";
 
 message ExternalDnsKubernetesSpec {
   // CRITICAL: Use 'optional' keyword for all fields with defaults
-  optional string namespace = 2 [(project.planton.shared.options.default) = "external-dns"];
-  optional string external_dns_version = 3 [(project.planton.shared.options.default) = "v0.19.0"];
-  optional string helm_chart_version = 4 [(project.planton.shared.options.default) = "1.19.0"];
-  optional int32 port = 5 [(project.planton.shared.options.default) = "443"];
-  optional bool enabled = 6 [(project.planton.shared.options.default) = "true"];
+  optional string namespace = 2 [(org.project_planton.shared.options.default) = "external-dns"];
+  optional string external_dns_version = 3 [(org.project_planton.shared.options.default) = "v0.19.0"];
+  optional string helm_chart_version = 4 [(org.project_planton.shared.options.default) = "1.19.0"];
+  optional int32 port = 5 [(org.project_planton.shared.options.default) = "443"];
+  optional bool enabled = 6 [(org.project_planton.shared.options.default) = "true"];
 }
 ```
 
@@ -108,10 +108,10 @@ A custom buf lint plugin automatically enforces the `optional` requirement. If y
 
 ```
 spec.proto:68:3:Field "region" has a default value but is not marked as optional. 
-Scalar fields with (project.planton.shared.options.default) must use the 'optional' keyword 
+Scalar fields with (org.project_planton.shared.options.default) must use the 'optional' keyword 
 to enable proper field presence detection.
 
-Fix: optional string region = 4 [(project.planton.shared.options.default) = "us-west-2"];
+Fix: optional string region = 4 [(org.project_planton.shared.options.default) = "us-west-2"];
 ```
 
 This safeguard prevents a common bug where users couldn't set fields to zero values—they would always be overridden with defaults.
@@ -153,24 +153,24 @@ See [`buf/lint/planton/README.md`](../../../buf/lint/planton/README.md) for deta
 
 **Good default** (version with stable release):
 ```protobuf
-optional string external_dns_version = 3 [(project.planton.shared.options.default) = "v0.19.0"];
+optional string external_dns_version = 3 [(org.project_planton.shared.options.default) = "v0.19.0"];
 ```
 
 **Bad default** (security-sensitive field):
 ```protobuf
 // DON'T DO THIS - API tokens should never have defaults
-optional string api_token = 5 [(project.planton.shared.options.default) = "default-token"];
+optional string api_token = 5 [(org.project_planton.shared.options.default) = "default-token"];
 ```
 
 **Good default** (namespace with standard convention):
 ```protobuf
-optional string namespace = 2 [(project.planton.shared.options.default) = "cert-manager"];
+optional string namespace = 2 [(org.project_planton.shared.options.default) = "cert-manager"];
 ```
 
 **Bad default** (unique identifier):
 ```protobuf
 // DON'T DO THIS - names should be unique and user-specified
-optional string name = 1 [(project.planton.shared.options.default) = "my-resource"];
+optional string name = 1 [(org.project_planton.shared.options.default) = "my-resource"];
 ```
 
 ## How Users Experience Defaults
@@ -230,7 +230,7 @@ project-planton deploy cert-manager.yaml \
 This package uses protobuf reflection to:
 
 1. **Traverse** the proto message recursively
-2. **Detect** fields with the `(project.planton.shared.options.default)` extension
+2. **Detect** fields with the `(org.project_planton.shared.options.default)` extension
 3. **Check** if the field is unset (using `Has()` method, which works correctly due to `optional`)
 4. **Convert** the default string to the appropriate type
 5. **Set** the field value
@@ -257,7 +257,7 @@ message Parent {
 }
 
 message NestedConfig {
-  optional string namespace = 1 [(project.planton.shared.options.default) = "default"];
+  optional string namespace = 1 [(org.project_planton.shared.options.default) = "default"];
 }
 ```
 
@@ -267,11 +267,11 @@ No. Lists (`repeated`) and maps cannot have defaults. It's unclear what a sensib
 
 ### How do I remove a default from a field?
 
-Remove the `(project.planton.shared.options.default)` extension and the `optional` keyword (if the field doesn't need presence tracking for other reasons):
+Remove the `(org.project_planton.shared.options.default)` extension and the `optional` keyword (if the field doesn't need presence tracking for other reasons):
 
 ```protobuf
 // Before
-optional string namespace = 2 [(project.planton.shared.options.default) = "default"];
+optional string namespace = 2 [(org.project_planton.shared.options.default) = "default"];
 
 // After
 string namespace = 2;  // No default
@@ -279,7 +279,7 @@ string namespace = 2;  // No default
 
 ### What if I want different defaults for different environments?
 
-Use the `(project.planton.shared.options.recommended_default)` extension for suggestions, or handle environment-specific defaults in your deployment tooling rather than in proto definitions. Proto defaults should be universal.
+Use the `(org.project_planton.shared.options.recommended_default)` extension for suggestions, or handle environment-specific defaults in your deployment tooling rather than in proto definitions. Proto defaults should be universal.
 
 ## Related Documentation
 

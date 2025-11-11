@@ -2,7 +2,7 @@ package providerconfig
 
 import (
 	"github.com/pkg/errors"
-	confluent "github.com/project-planton/project-planton/apis/project/planton/provider/confluent"
+	confluent "github.com/project-planton/project-planton/apis/org/project-planton/provider/confluent"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput/stackinputproviderconfig"
 )

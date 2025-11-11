@@ -1,7 +1,7 @@
 package crkreflect
 
 import (
-	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
+	"github.com/project-planton/project-planton/apis/org/project-planton/shared/cloudresourcekind"
 )
 
 // GetKubernetesResourceCategory returns the (kubernetes_resource_category) option

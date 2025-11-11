@@ -17,8 +17,8 @@ go_test(
     srcs = ["backend_config_test.go"],
     embed = [":backendconfig"],
     deps = [
-        "//apis/project/planton/provider/aws/awsvpc/v1:awsvpc",
-        "//apis/project/planton/shared",
+        "//apis/org/project-planton/provider/aws/awsvpc/v1:awsvpc",
+        "//apis/org/project-planton/shared",
         "//pkg/iac/tofu/tofulabels",
         "@com_github_stretchr_testify//assert",
     ],

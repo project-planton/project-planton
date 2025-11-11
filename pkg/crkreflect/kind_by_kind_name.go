@@ -2,7 +2,7 @@ package crkreflect
 
 import (
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
+	"github.com/project-planton/project-planton/apis/org/project-planton/shared/cloudresourcekind"
 )
 
 func KindByKindName(kindName string) (cloudresourcekind.CloudResourceKind, error) {

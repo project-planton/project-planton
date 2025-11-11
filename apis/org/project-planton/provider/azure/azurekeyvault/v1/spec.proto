@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package org.project_planton.provider.azure.azurekeyvault.v1;
+
+//azure-key-vault spec
+message AzureKeyVaultSpec {
+  //list of secret names to create in azure secrets-manager
+  repeated string secret_names = 1;
+}

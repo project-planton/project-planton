@@ -6,7 +6,7 @@
 
 ## Summary
 
-Published the `optional-linter` custom buf lint plugin to the Buf Schema Registry (BSR) as a public plugin under `buf.build/project-planton/optional-linter`. The plugin validates that scalar proto fields with `(project.planton.shared.options.default)` are marked as `optional`. This enables remote plugin execution, eliminates local installation requirements, and provides versioned, reproducible builds across all development and CI environments. The work included renaming the plugin from `buf-plugin-planton` to `optional-linter`, creating comprehensive build automation, and establishing a sustainable publishing workflow.
+Published the `optional-linter` custom buf lint plugin to the Buf Schema Registry (BSR) as a public plugin under `buf.build/project-planton/optional-linter`. The plugin validates that scalar proto fields with `(org.project_planton.shared.options.default)` are marked as `optional`. This enables remote plugin execution, eliminates local installation requirements, and provides versioned, reproducible builds across all development and CI environments. The work included renaming the plugin from `buf-plugin-planton` to `optional-linter`, creating comprehensive build automation, and establishing a sustainable publishing workflow.
 
 ## Motivation
 
@@ -40,7 +40,7 @@ The original name `buf-plugin-planton` was too generic and didn't communicate th
 
 **Clear Purpose**: `optional-linter` immediately communicates what it does - it's a linter that validates optional field usage. This is more discoverable than a generic name.
 
-**Reusability Across Projects**: The renamed plugin can be used in both `project-planton` and the internal planton-cloud project, since both use the same `(project.planton.shared.options.default)` extension.
+**Reusability Across Projects**: The renamed plugin can be used in both `project-planton` and the internal planton-cloud project, since both use the same `(org.project_planton.shared.options.default)` extension.
 
 ## What's New
 
@@ -81,7 +81,7 @@ version: v1
 name: buf.build/project-planton/optional-linter
 plugin_version: v0.1.0
 source_url: https://github.com/project-planton/project-planton
-description: "Validates that scalar proto fields with (project.planton.shared.options.default) are marked as optional"
+description: "Validates that scalar proto fields with (org.project_planton.shared.options.default) are marked as optional"
 ```
 
 **Key Fields**:

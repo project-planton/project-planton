@@ -4,7 +4,7 @@ A custom [Buf](https://buf.build) lint plugin that validates scalar proto fields
 
 ## Overview
 
-This plugin validates that scalar fields with `(project.planton.shared.options.default)` are marked as `optional` to enable proper field presence tracking in Protocol Buffer definitions.
+This plugin validates that scalar fields with `(org.project_planton.shared.options.default)` are marked as `optional` to enable proper field presence tracking in Protocol Buffer definitions.
 
 ## Rules
 
@@ -20,8 +20,8 @@ syntax = "proto3";
 
 message Example {
   // VIOLATION: Has default but not optional
-  string namespace = 1 [(project.planton.shared.options.default) = "external-dns"];
-  int32 port = 2 [(project.planton.shared.options.default) = "443"];
+  string namespace = 1 [(org.project_planton.shared.options.default) = "external-dns"];
+  int32 port = 2 [(org.project_planton.shared.options.default) = "443"];
 }
 ```
 
@@ -31,13 +31,13 @@ syntax = "proto3";
 
 message Example {
   // CORRECT: Has default and is optional
-  optional string namespace = 1 [(project.planton.shared.options.default) = "external-dns"];
-  optional int32 port = 2 [(project.planton.shared.options.default) = "443"];
+  optional string namespace = 1 [(org.project_planton.shared.options.default) = "external-dns"];
+  optional int32 port = 2 [(org.project_planton.shared.options.default) = "443"];
 }
 ```
 
 **What is checked**:
-- ✅ Scalar fields with `(project.planton.shared.options.default)` must be `optional`
+- ✅ Scalar fields with `(org.project_planton.shared.options.default)` must be `optional`
 - ✅ Fields without defaults can be optional or non-optional (no validation)
 - ✅ Message fields are always implicitly optional (skip validation)
 - ✅ Repeated fields (lists) cannot have defaults (skip validation)

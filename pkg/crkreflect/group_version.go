@@ -3,7 +3,7 @@ package crkreflect
 import (
 	"fmt"
 
-	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
+	"github.com/project-planton/project-planton/apis/org/project-planton/shared/cloudresourcekind"
 	log "github.com/sirupsen/logrus"
 )
 

@@ -50,7 +50,7 @@ Standard API resource structure:
 message HarborKubernetes {
   string api_version = 1 [(buf.validate.field).string.const = 'kubernetes.project-planton.org/v1'];
   string kind = 2 [(buf.validate.field).string.const = 'HarborKubernetes'];
-  project.planton.shared.CloudResourceMetadata metadata = 3;
+  org.project_planton.shared.CloudResourceMetadata metadata = 3;
   HarborKubernetesSpec spec = 4;
   HarborKubernetesStatus status = 5;
 }

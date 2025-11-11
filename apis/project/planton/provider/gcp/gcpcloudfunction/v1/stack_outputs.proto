@@ -1,6 +1,0 @@
-syntax = "proto3";
-
-package project.planton.provider.gcp.gcpcloudfunction.v1;
-
-//gcp-cloud-function stack outputs
-message GcpCloudFunctionStackOutputs {}

@@ -12,7 +12,7 @@ Refactored the SigNoz Kubernetes ingress configuration from two separate shared 
 
 ### The Problem
 
-The previous implementation used two separate shared `IngressSpec` fields from `project.planton.shared.kubernetes`:
+The previous implementation used two separate shared `IngressSpec` fields from `org.project_planton.shared.kubernetes`:
 
 ```yaml
 signozIngress:
@@ -74,8 +74,8 @@ This approach:
 **Before (Flat Structure with Two Fields)**:
 ```protobuf
 message SignozKubernetesSpec {
-  project.planton.shared.kubernetes.IngressSpec signoz_ingress = 4;
-  project.planton.shared.kubernetes.IngressSpec otel_collector_ingress = 5;
+  org.project_planton.shared.kubernetes.IngressSpec signoz_ingress = 4;
+  org.project_planton.shared.kubernetes.IngressSpec otel_collector_ingress = 5;
 }
 ```
 
@@ -343,7 +343,7 @@ output "otel_collector_external_http_hostname" {
 **File**: `apis/project/planton/provider/kubernetes/workload/signozkubernetes/v1/spec.proto`
 
 **Changes Made**:
-1. **Removed Shared IngressSpec**: No longer uses `project.planton.shared.kubernetes.IngressSpec`
+1. **Removed Shared IngressSpec**: No longer uses `org.project_planton.shared.kubernetes.IngressSpec`
 2. **Unified Ingress Field**: Replaced `signoz_ingress` and `otel_collector_ingress` with single `ingress` field
 3. **Added Custom Messages**: New `SignozKubernetesIngress` and `SignozKubernetesIngressEndpoint` messages with CEL validation
 4. **Field Number Update**: `helm_values` renumbered from 6 to 5 due to consolidation

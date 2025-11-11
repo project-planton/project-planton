@@ -29,7 +29,7 @@ import (
 	"github.com/project-planton/project-planton/pkg/crkreflect"
 
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
+	"github.com/project-planton/project-planton/apis/org/project-planton/shared/cloudresourcekind"
 )
 
 // -----------------------------------------------------------------------------
@@ -128,7 +128,7 @@ func run() error {
 			kubernetesResourceType := crkreflect.GetKubernetesResourceCategory(cloudResourceKind)
 
 			importPath = fmt.Sprintf(
-				"github.com/project-planton/project-planton/apis/project/planton/provider/%s/%s/%s/v1",
+				"github.com/project-planton/project-planton/apis/org/project-planton/provider/%s/%s/%s/v1",
 				provSlug, kubernetesResourceType, lowerKind)
 
 			putUniqueEntry(kubernetesResourceType == cloudresourcekind.KubernetesCloudResourceCategory_addon,
@@ -143,7 +143,7 @@ func run() error {
 
 		// non‑kubernetes
 		importPath = fmt.Sprintf(
-			"github.com/project-planton/project-planton/apis/project/planton/provider/%s/%s/v1",
+			"github.com/project-planton/project-planton/apis/org/project-planton/provider/%s/%s/v1",
 			provSlug, lowerKind)
 
 		alias := uniqueAlias(importPath, importAlias, &imports, aliasByPath)
@@ -249,7 +249,7 @@ var tpl = template.Must(template.New("").Funcs(template.FuncMap{
 package crkreflect
 
 import (
-	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
+	"github.com/project-planton/project-planton/apis/org/project-planton/shared/cloudresourcekind"
 	"google.golang.org/protobuf/proto"
 {{- range .Imports }}
 	{{ .Alias }} "{{ .Path }}"

@@ -184,7 +184,7 @@ perconapgrestores.pgv2.percona.com
 
 ```bash
 # Set local module path
-export PERCONA_POSTGRESQL_OPERATOR_MODULE=~/scm/github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/addon/perconapostgresqloperator/v1/iac/pulumi
+export PERCONA_POSTGRESQL_OPERATOR_MODULE=~/scm/github.com/project-planton/project-planton/apis/org/project-planton/provider/kubernetes/addon/perconapostgresqloperator/v1/iac/pulumi
 
 # Initialize Pulumi stack
 project-planton pulumi init \

@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package org.project_planton.provider.kubernetes.workload.harborkubernetes.v1;
+
+import "buf/validate/validate.proto";
+import "org/project-planton/provider/kubernetes/workload/harborkubernetes/v1/spec.proto";
+import "org/project-planton/provider/kubernetes/workload/harborkubernetes/v1/stack_outputs.proto";
+import "org/project-planton/shared/metadata.proto";
+
+// harbor-kubernetes
+message HarborKubernetes {
+  // api-version
+  string api_version = 1 [(buf.validate.field).string.const = 'kubernetes.project-planton.org/v1'];
+
+  // resource-kind
+  string kind = 2 [(buf.validate.field).string.const = 'HarborKubernetes'];
+
+  // metadata
+  org.project_planton.shared.CloudResourceMetadata metadata = 3 [(buf.validate.field).required = true];
+
+  // spec
+  HarborKubernetesSpec spec = 4 [(buf.validate.field).required = true];
+
+  // status
+  HarborKubernetesStatus status = 5;
+}
+
+// harbor-kubernetes status
+message HarborKubernetesStatus {
+  // stack-outputs
+  HarborKubernetesStackOutputs outputs = 1;
+}

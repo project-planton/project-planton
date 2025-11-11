@@ -1,9 +1,0 @@
-syntax = "proto3";
-
-package project.planton.provider.gcp.gcpgkeaddonbundle.v1;
-
-//gcp-gke-addon-bundle stack outputs
-message GcpGkeAddonBundleStackOutputs {
-  //kubernetes namespace in which gcp-gke-addon-bundle is deployed.
-  string namespace = 1;
-}

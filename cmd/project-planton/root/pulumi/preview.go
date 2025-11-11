@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/project-planton/project-planton/apis/project/planton/shared/iac/pulumi"
+	"github.com/project-planton/project-planton/apis/org/project-planton/shared/iac/pulumi"
 	"github.com/project-planton/project-planton/internal/cli/cliprint"
 	"github.com/project-planton/project-planton/internal/cli/flag"
 	climanifest "github.com/project-planton/project-planton/internal/cli/manifest"

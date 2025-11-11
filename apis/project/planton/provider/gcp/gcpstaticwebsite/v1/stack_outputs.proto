@@ -1,9 +1,0 @@
-syntax = "proto3";
-
-package project.planton.provider.gcp.gcpstaticwebsite.v1;
-
-//gcp-static-website stack outputs
-message GcpStaticWebsiteStackOutputs {
-  //id of the storage-bucket created on aws
-  string bucket_id = 1;
-}

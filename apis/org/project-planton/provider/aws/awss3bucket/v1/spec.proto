@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package org.project_planton.provider.aws.awss3bucket.v1;
+
+import "buf/validate/validate.proto";
+
+// AwsS3BucketSpec defines the specification required to deploy an AWS AWS S3 Bucket.
+// This message encapsulates all configurations necessary for setting up an S3 bucket,
+// including settings for public access and the AWS region where the bucket will be created.
+// Amazon S3 (Simple Storage Service) provides object storage through a web service interface,
+// allowing you to store and retrieve any amount of data from anywhere on the web.
+// With this specification, you can automate the creation and configuration of S3 buckets,
+// ensuring that your storage resources are correctly set up according to your requirements.
+// This is particularly useful for managing large-scale storage needs, hosting static websites,
+// or storing data for backup and archiving.
+message AwsS3BucketSpec {
+  // Flag to indicate if the S3 bucket should have external (public) access.
+  // When set to `true`, the bucket will be accessible publicly over the internet,
+  // allowing anyone to access the objects stored within it.
+  // When set to `false` (default), the bucket is private, and access is restricted
+  // based on AWS Identity and Access Management (IAM) policies and bucket policies.
+  // Public access should be used cautiously to avoid unintended data exposure.
+  bool is_public = 1;
+
+  // The AWS region where the S3 bucket will be created.
+  // This must be a valid AWS region where S3 is available.
+  // Specifying the region is important because it affects data latency and costs.
+  // For a list of AWS regions, see: https://aws.amazon.com/about-aws/global-infrastructure/regions_az/
+  string aws_region = 2 [(buf.validate.field).string.min_len = 1];
+}

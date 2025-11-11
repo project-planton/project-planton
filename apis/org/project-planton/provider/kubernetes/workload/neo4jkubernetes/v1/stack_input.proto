@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package org.project_planton.provider.kubernetes.workload.neo4jkubernetes.v1;
+
+import "org/project-planton/provider/kubernetes/provider.proto";
+import "org/project-planton/provider/kubernetes/workload/neo4jkubernetes/v1/api.proto";
+
+//neo4j-kubernetes stack-input
+message Neo4jKubernetesStackInput {
+  //target cloud-resource
+  Neo4jKubernetes target = 1;
+  //provider-config
+  org.project_planton.provider.kubernetes.KubernetesProviderConfig provider_config = 2;
+  //kubernetes namespace
+  string kubernetes_namespace = 3;
+}

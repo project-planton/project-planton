@@ -108,7 +108,7 @@ This approach:
 message ElasticsearchKubernetesSpec {
   ElasticsearchKubernetesElasticsearchContainer elasticsearch_container = 1;
   ElasticsearchKubernetesKibanaContainer kibana_container = 2;
-  project.planton.shared.kubernetes.IngressSpec ingress = 3;
+  org.project_planton.shared.kubernetes.IngressSpec ingress = 3;
 }
 
 message ElasticsearchKubernetesKibanaContainer {
