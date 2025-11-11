@@ -91,6 +91,7 @@ export default function Hero() {
 						<Image src="/images/providers/aws.svg" alt="AWS" width={40} height={40} className="h-6 sm:h-8 md:h-10 w-auto opacity-80 hover:opacity-100 transition-opacity" />
 						<Image src="/images/providers/gcp.svg" alt="GCP" width={40} height={40} className="h-6 sm:h-8 md:h-10 w-auto opacity-80 hover:opacity-100 transition-opacity" />
 						<Image src="/images/providers/azure.svg" alt="Azure" width={40} height={40} className="h-6 sm:h-8 md:h-10 w-auto opacity-80 hover:opacity-100 transition-opacity" />
+						<Image src="/images/providers/kubernetes.svg" alt="Kubernetes" width={40} height={40} className="h-6 sm:h-8 md:h-10 w-auto opacity-80 hover:opacity-100 transition-opacity" />
 						<Image src="/images/providers/digital-ocean.svg" alt="DigitalOcean" width={40} height={40} className="h-6 sm:h-8 md:h-10 w-auto opacity-80 hover:opacity-100 transition-opacity" />
 						<Image src="/images/providers/civo.svg" alt="Civo" width={40} height={40} className="h-6 sm:h-8 md:h-10 w-auto opacity-80 hover:opacity-100 transition-opacity" />
 						<Image src="/images/providers/cloudflare.svg" alt="Cloudflare" width={40} height={40} className="h-6 sm:h-8 md:h-10 w-auto opacity-80 hover:opacity-100 transition-opacity" />
