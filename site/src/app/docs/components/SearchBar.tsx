@@ -4,6 +4,7 @@ import React, { useState, useEffect, useDeferredValue, useRef } from 'react';
 import { TextField, InputAdornment, Popper, Paper, List, ListItem, ListItemButton, ListItemText, Typography, Box } from '@mui/material';
 import { Search as SearchIcon, InfoOutlined as InfoIcon } from '@mui/icons-material';
 import { useRouter } from 'next/navigation';
+import { addBasePath } from 'next/dist/client/add-base-path';
 
 // Type definitions for Pagefind
 type PagefindOptions = {
@@ -49,9 +50,10 @@ const DEV_SEARCH_NOTICE = (
 
 async function importPagefind() {
   // Dynamic import of pagefind from the built static files
-  const pagefindPath = '/_pagefind/pagefind.js';
+  // Use addBasePath to ensure correct path in production (GitHub Pages)
+  const pagefindPath = addBasePath('/_pagefind/pagefind.js');
   window.pagefind = await import(
-    /* webpackIgnore: true */ pagefindPath as string
+    /* webpackIgnore: true */ pagefindPath
   ) as typeof window.pagefind;
   await window.pagefind!.options({
     baseUrl: '/',
