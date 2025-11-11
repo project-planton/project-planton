@@ -43,3 +43,7 @@ next-env.d.ts
 # generated docs (copied from apis/ during build)
 # Note: public/docs/index.md and other manual docs are committed
 public/docs/catalog/
+
+# pagefind search index (generated at build time)
+out/_pagefind/
+public/_pagefind/
