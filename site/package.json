@@ -7,8 +7,7 @@
     "dev": "next dev --turbopack",
     "copy-docs": "tsx scripts/copy-component-docs.ts",
     "prebuild": "yarn copy-docs",
-    "build": "next build --turbopack",
-    "postbuild": "pagefind --site out --output-path out/_pagefind --exclude-selectors 'pre,code'",
+    "build": "next build --turbopack && pagefind --site out --output-path out/_pagefind --exclude-selectors 'pre,code'",
     "start": "next start",
     "lint": "eslint"
   },
