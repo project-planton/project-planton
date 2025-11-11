@@ -1,6 +1,11 @@
-# Pulumi Commands Reference
+---
+title: "Pulumi Commands Reference"
+description: "Complete guide to managing infrastructure with project-planton pulumi commands - init, preview, up, refresh, destroy, and delete"
+icon: "code"
+order: 2
+---
 
-> **📖 For the best reading experience**, view this documentation on the [Project Planton website](https://project-planton.org/docs/cli/pulumi-commands).
+# Pulumi Commands Reference
 
 Your complete guide to managing infrastructure with `project-planton pulumi` commands.
 
@@ -681,13 +686,7 @@ project-planton pulumi up \
   --overlay prod
 ```
 
-**`--input-dir <dir>`**: Directory containing `target.yaml` and credential files (legacy pattern).
-
-```bash
-project-planton pulumi up --input-dir ops/stacks/prod-database/
-```
-
-**Priority**: `--manifest` > `--input-dir` > `--kustomize-dir` + `--overlay`
+**Priority**: `--manifest` > `--kustomize-dir` + `--overlay`
 
 ### Execution Control
 
@@ -733,7 +732,7 @@ project-planton pulumi up \
 
 ### Credential Injection
 
-These flags inject provider credentials into the stack input (alternative to environment variables):
+These flags inject provider credentials (alternative to environment variables):
 
 - **`--aws-credential <file>`**: Path to AWS credential YAML
 - **`--azure-credential <file>`**: Path to Azure credential YAML
@@ -984,29 +983,6 @@ pulumi cancel --stack <stack-fqdn>
 
 # Then retry your operation
 project-planton pulumi up --manifest my-resource.yaml
-```
-
-### Error: "failed to load stack-input"
-
-**Symptom**: Module fails to load configuration from manifest.
-
-**Causes**:
-1. Manifest YAML is malformed
-2. Required fields are missing
-3. Validation constraints not met
-
-**Solution**:
-
-```bash
-# Validate manifest structure
-cat my-resource.yaml | yq .
-
-# Check for required fields
-grep -E "(apiVersion|kind|metadata|spec)" my-resource.yaml
-
-# Validate with Pulumi directly
-project-planton pulumi preview --manifest my-resource.yaml
-# Error message will show specific validation failures
 ```
 
 ### Provider Authentication Failures
@@ -1276,9 +1252,9 @@ pulumi stack import --stack <stack-fqdn> < stack-backup-20250105.json
 ## Related Documentation
 
 - [Pulumi Concepts](https://www.pulumi.com/docs/intro/concepts/) - Official Pulumi documentation
-- [Project Planton Architecture](../../README.md) - Understanding the CLI architecture
-- [Provider Configuration Guide](../../pkg/iac/pulumi/pulumimodule/provider/README.md) - Setting up cloud provider credentials
-- [Manifest Schema Reference](../../apis/README.md) - Available resource types and their schemas
+- [Manifest Structure Guide](/docs/guides/manifests) - Understanding Project Planton manifests
+- [Credentials Guide](/docs/guides/credentials) - Setting up cloud provider credentials
+- [CLI Reference](/docs/cli/cli-reference) - Complete CLI command reference
 
 ---
 
@@ -1288,7 +1264,7 @@ pulumi stack import --stack <stack-fqdn> < stack-backup-20250105.json
 
 **Need support?** Check existing issues or discussions
 
-**Contributing?** Pull requests welcome! See [CONTRIBUTING.md](../../CONTRIBUTING.md)
+**Contributing?** Pull requests welcome!
 
 ---
 
