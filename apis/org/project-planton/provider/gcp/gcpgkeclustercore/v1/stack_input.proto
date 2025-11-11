@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package org.project_planton.provider.gcp.gcpgkeclustercore.v1;
+
+import "org/project-planton/provider/gcp/gcpgkeclustercore/v1/api.proto";
+import "org/project-planton/provider/gcp/provider.proto";
+
+//input for gcp-gke-cluster-core stack
+message GcpGkeClusterCoreStackInput {
+  //target cloud-resource
+  GcpGkeClusterCore target = 1;
+  //provider-config
+  org.project_planton.provider.gcp.GcpProviderConfig provider_config = 2;
+}

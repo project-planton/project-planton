@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/google/uuid"
 	"github.com/pkg/errors"
-	kubernetesprovider "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes"
+	kubernetesprovider "github.com/project-planton/project-planton/apis/org/project-planton/provider/kubernetes"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/gcp/pulumigkekubernetesprovider"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput/stackinputproviderconfig"

@@ -4,7 +4,7 @@ import (
 	"math"
 	"testing"
 
-	testcloudresourceonev1 "github.com/project-planton/project-planton/apis/project/planton/provider/_test/testcloudresourceone/v1"
+	testcloudresourceonev1 "github.com/project-planton/project-planton/apis/org/project-planton/provider/_test/testcloudresourceone/v1"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"google.golang.org/protobuf/reflect/protoreflect"

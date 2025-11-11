@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package org.project_planton.provider.kubernetes.addon.istiokubernetes.v1;
+
+import "org/project-planton/provider/kubernetes/addon/istiokubernetes/v1/api.proto";
+import "org/project-planton/provider/kubernetes/provider.proto";
+
+//istio-kubernetes stack-input
+message IstioKubernetesStackInput {
+  //target cloud-resource
+  IstioKubernetes target = 1;
+  //provider-config
+  org.project_planton.provider.kubernetes.KubernetesProviderConfig provider_config = 2;
+}

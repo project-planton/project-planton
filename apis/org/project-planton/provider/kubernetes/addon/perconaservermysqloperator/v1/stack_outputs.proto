@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package org.project_planton.provider.kubernetes.addon.perconaservermysqloperator.v1;
+
+// percona-server-mysql-operator-kubernetes stack outputs
+message PerconaServerMysqlOperatorStackOutputs {
+  // Namespace where the operator is installed
+  string namespace = 1;
+}

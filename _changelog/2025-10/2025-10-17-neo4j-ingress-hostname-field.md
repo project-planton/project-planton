@@ -12,7 +12,7 @@ Refactored the Neo4j Kubernetes ingress configuration from a shared `IngressSpec
 
 ### The Problem
 
-The previous implementation used the shared `IngressSpec` from `project.planton.shared.kubernetes`:
+The previous implementation used the shared `IngressSpec` from `org.project_planton.shared.kubernetes`:
 
 ```yaml
 ingress:
@@ -66,7 +66,7 @@ message IngressSpec {
 }
 
 message Neo4jKubernetesSpec {
-  project.planton.shared.kubernetes.IngressSpec ingress = 4;
+  org.project_planton.shared.kubernetes.IngressSpec ingress = 4;
 }
 ```
 
@@ -235,7 +235,7 @@ container:
 **File**: `apis/project/planton/provider/kubernetes/workload/neo4jkubernetes/v1/spec.proto`
 
 **Changes Made**:
-1. **Updated Field Type**: Line 36 changed from `project.planton.shared.kubernetes.IngressSpec` to `Neo4jKubernetesIngress`
+1. **Updated Field Type**: Line 36 changed from `org.project_planton.shared.kubernetes.IngressSpec` to `Neo4jKubernetesIngress`
 2. **Added Message**: New `Neo4jKubernetesIngress` message with CEL validation (lines 66-82)
 3. **Renamed Field**: Changed `is_persistence_enabled` to `persistence_enabled` in `Neo4jKubernetesContainer` (line 48)
 

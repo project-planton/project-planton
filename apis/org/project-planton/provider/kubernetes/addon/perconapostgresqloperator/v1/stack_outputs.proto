@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package org.project_planton.provider.kubernetes.addon.perconapostgresqloperator.v1;
+
+// percona-postgresql-operator-kubernetes stack outputs
+message PerconaPostgresqlOperatorStackOutputs {
+  // Namespace where the operator is installed
+  string namespace = 1;
+}

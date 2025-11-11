@@ -12,7 +12,7 @@ Refactored the ClickHouse Kubernetes ingress configuration from a shared `Ingres
 
 ### The Problem
 
-The previous implementation used the shared `IngressSpec` from `project.planton.shared.kubernetes`:
+The previous implementation used the shared `IngressSpec` from `org.project_planton.shared.kubernetes`:
 
 ```yaml
 ingress:
@@ -63,7 +63,7 @@ message IngressSpec {
 }
 
 message ClickHouseKubernetesSpec {
-  project.planton.shared.kubernetes.IngressSpec ingress = 3;
+  org.project_planton.shared.kubernetes.IngressSpec ingress = 3;
 }
 ```
 
@@ -255,7 +255,7 @@ output "external_hostname" {
 
 **Changes Made**:
 1. **Removed Import**: No longer imports `project/planton/shared/kubernetes/kubernetes.proto`
-2. **Updated Field Type**: Line 50 changed from `project.planton.shared.kubernetes.IngressSpec` to `ClickHouseKubernetesIngress`
+2. **Updated Field Type**: Line 50 changed from `org.project_planton.shared.kubernetes.IngressSpec` to `ClickHouseKubernetesIngress`
 3. **Added Message**: New `ClickHouseKubernetesIngress` message with CEL validation (lines 346-369)
 
 **Validation Strategy**: Uses CEL (Common Expression Language) to validate that `hostname` is required when `enabled` is true, providing clear error messages and type safety.

@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+package org.project_planton.provider._test.testcloudresourcethree.v1;
+
+message TestCloudResourceThreeStackOutputs {
+  // Empty stub
+}

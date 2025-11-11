@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"reflect"
 
-	civoprovider "github.com/project-planton/project-planton/apis/project/planton/provider/civo"
+	civoprovider "github.com/project-planton/project-planton/apis/org/project-planton/provider/civo"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/pulumi/pulumioutput"
 
 	"github.com/pkg/errors"

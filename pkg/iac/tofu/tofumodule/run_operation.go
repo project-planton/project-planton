@@ -4,7 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/apis/project/planton/shared/iac/terraform"
+	"github.com/project-planton/project-planton/apis/org/project-planton/shared/iac/terraform"
 	"github.com/project-planton/project-planton/pkg/iac/tofu/tfvars"
 	"google.golang.org/protobuf/proto"
 	"os"

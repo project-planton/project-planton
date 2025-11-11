@@ -12,7 +12,7 @@ Refactored the Redis Kubernetes ingress configuration from a shared `IngressSpec
 
 ### The Problem
 
-The previous implementation used the shared `IngressSpec` from `project.planton.shared.kubernetes`:
+The previous implementation used the shared `IngressSpec` from `org.project_planton.shared.kubernetes`:
 
 ```yaml
 ingress:
@@ -63,7 +63,7 @@ message IngressSpec {
 }
 
 message RedisKubernetesSpec {
-  project.planton.shared.kubernetes.IngressSpec ingress = 2;
+  org.project_planton.shared.kubernetes.IngressSpec ingress = 2;
 }
 ```
 
@@ -274,7 +274,7 @@ output "external_hostname" {
 **File**: `apis/project/planton/provider/kubernetes/workload/rediskubernetes/v1/spec.proto`
 
 **Changes Made**:
-1. **Updated Field Type**: Line 39 changed from `project.planton.shared.kubernetes.IngressSpec` to `RedisKubernetesIngress`
+1. **Updated Field Type**: Line 39 changed from `org.project_planton.shared.kubernetes.IngressSpec` to `RedisKubernetesIngress`
 2. **Added Message**: New `RedisKubernetesIngress` message with CEL validation (lines 78-96)
 
 **Validation Strategy**: Uses CEL (Common Expression Language) to validate that `hostname` is required when `enabled` is true, providing clear error messages and type safety.

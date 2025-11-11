@@ -42,7 +42,7 @@ Purpose: add validation rules to an existing `spec.proto` without changing its s
 ## Example (adapt to your schema)
 ```proto
 syntax = "proto3";
-package project.planton.provider.aws.awscloudfront.v1;
+package org.project_planton.provider.aws.awscloudfront.v1;
 
 import "buf/validate/validate.proto";
 

@@ -1,7 +1,0 @@
-syntax = "proto3";
-
-package project.planton.provider._test.testcloudresourcetwo.v1;
-
-message TestCloudResourceTwoStackOutputs {
-  // Empty stub
-}

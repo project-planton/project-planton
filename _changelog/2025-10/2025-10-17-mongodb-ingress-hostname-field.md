@@ -12,7 +12,7 @@ Refactored the MongoDB Kubernetes ingress configuration from a shared `IngressSp
 
 ### The Problem
 
-The previous implementation used the shared `IngressSpec` from `project.planton.shared.kubernetes`:
+The previous implementation used the shared `IngressSpec` from `org.project_planton.shared.kubernetes`:
 
 ```yaml
 ingress:
@@ -66,7 +66,7 @@ message IngressSpec {
 }
 
 message MongodbKubernetesSpec {
-  project.planton.shared.kubernetes.IngressSpec ingress = 2;
+  org.project_planton.shared.kubernetes.IngressSpec ingress = 2;
 }
 ```
 
@@ -284,7 +284,7 @@ This aligns with modern Go/protobuf conventions and matches patterns used across
 
 **Changes Made**:
 1. **Added Custom Message**: New `MongodbKubernetesIngress` message with CEL validation
-2. **Updated Field Type**: Line 41 changed from `project.planton.shared.kubernetes.IngressSpec` to `MongodbKubernetesIngress`
+2. **Updated Field Type**: Line 41 changed from `org.project_planton.shared.kubernetes.IngressSpec` to `MongodbKubernetesIngress`
 3. **Renamed Persistence Field**: `is_persistence_enabled` → `persistence_enabled` (line 89)
 4. **Updated Default Values**: Changed default container options to use `persistence_enabled`
 5. **Updated Validation**: CEL expression now references `persistence_enabled`

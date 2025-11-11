@@ -104,7 +104,7 @@ message GcpCloudSqlSpec {
 message GcpCloudSql {
   string api_version = 1 [(buf.validate.field).string.const = 'gcp.project-planton.org/v1'];
   string kind = 2 [(buf.validate.field).string.const = 'GcpCloudSql'];
-  project.planton.shared.CloudResourceMetadata metadata = 3;
+  org.project_planton.shared.CloudResourceMetadata metadata = 3;
   GcpCloudSqlSpec spec = 4;
   GcpCloudSqlStatus status = 5;
 }

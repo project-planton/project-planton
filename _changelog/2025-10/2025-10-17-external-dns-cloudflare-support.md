@@ -691,7 +691,7 @@ kubectl get clusterrole -l app.kubernetes.io/name=external-dns -o yaml | grep ga
 
 3. **Deploy**:
    ```bash
-   export EXTERNAL_DNS_MODULE=~/scm/github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/addon/externaldnskubernetes/v1/iac/pulumi
+   export EXTERNAL_DNS_MODULE=~/scm/github.com/project-planton/project-planton/apis/org/project-planton/provider/kubernetes/addon/externaldnskubernetes/v1/iac/pulumi
    
    project-planton pulumi up \
      --manifest external-dns.yaml \

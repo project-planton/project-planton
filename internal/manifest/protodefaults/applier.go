@@ -2,14 +2,14 @@ package protodefaults
 
 import (
 	"github.com/pkg/errors"
-	options_pb "github.com/project-planton/project-planton/apis/project/planton/shared/options"
+	options_pb "github.com/project-planton/project-planton/apis/org/project-planton/shared/options"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
 // ApplyDefaults recursively applies default values from proto field options to a message.
 // It traverses all fields in the message and its nested messages, setting defaults
-// from the project.planton.shared.options.default option when:
+// from the org.project_planton.shared.options.default option when:
 // - The field has a default option defined
 // - The field is currently unset/empty
 //

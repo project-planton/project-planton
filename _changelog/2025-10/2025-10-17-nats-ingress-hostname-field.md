@@ -12,7 +12,7 @@ Refactored the NATS Kubernetes ingress configuration from a shared `IngressSpec`
 
 ### The Problem
 
-The previous implementation used the shared `IngressSpec` from `project.planton.shared.kubernetes`:
+The previous implementation used the shared `IngressSpec` from `org.project_planton.shared.kubernetes`:
 
 ```yaml
 ingress:
@@ -63,7 +63,7 @@ message IngressSpec {
 }
 
 message NatsKubernetesSpec {
-  project.planton.shared.kubernetes.IngressSpec ingress = 5;
+  org.project_planton.shared.kubernetes.IngressSpec ingress = 5;
 }
 ```
 
@@ -235,7 +235,7 @@ output "external_hostname" {
 **File**: `apis/project/planton/provider/kubernetes/workload/natskubernetes/v1/spec.proto`
 
 **Changes Made**:
-1. **Updated Field Type**: Line 40 changed from `project.planton.shared.kubernetes.IngressSpec` to `NatsKubernetesIngress`
+1. **Updated Field Type**: Line 40 changed from `org.project_planton.shared.kubernetes.IngressSpec` to `NatsKubernetesIngress`
 2. **Added Message**: New `NatsKubernetesIngress` message with CEL validation (lines 88-104)
 
 **Validation Strategy**: Uses CEL (Common Expression Language) to validate that `hostname` is required when `enabled` is true, providing clear error messages and type safety.

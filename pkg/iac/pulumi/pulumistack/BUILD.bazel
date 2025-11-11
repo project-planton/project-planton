@@ -12,7 +12,7 @@ go_library(
     importpath = "github.com/project-planton/project-planton/pkg/iac/pulumi/pulumistack",
     visibility = ["//visibility:public"],
     deps = [
-        "//apis/project/planton/shared/iac/pulumi",
+        "//apis/org/project-planton/shared/iac/pulumi",
         "//internal/manifest",
         "//pkg/crkreflect",
         "//pkg/iac/pulumi/backendconfig",

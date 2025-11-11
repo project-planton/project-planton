@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/apis/project/planton/shared/iac/terraform"
+	"github.com/project-planton/project-planton/apis/org/project-planton/shared/iac/terraform"
 	"github.com/project-planton/project-planton/internal/cli/workspace"
 	"github.com/project-planton/project-planton/internal/manifest"
 	"github.com/project-planton/project-planton/pkg/crkreflect"

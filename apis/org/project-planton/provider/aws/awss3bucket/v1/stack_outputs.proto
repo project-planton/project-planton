@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package org.project_planton.provider.aws.awss3bucket.v1;
+
+//aws-s3-bucket stack outputs
+message AwsS3BucketStackOutputs {
+  //id of the storage-bucket created on aws
+  string bucket_id = 1;
+}

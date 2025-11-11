@@ -5,5 +5,5 @@ go_library(
     srcs = ["value_from.go"],
     importpath = "github.com/project-planton/project-planton/internal/valuefrom",
     visibility = ["//:__subpackages__"],
-    deps = ["//apis/project/planton/shared/foreignkey/v1:foreignkey"],
+    deps = ["//apis/org/project-planton/shared/foreignkey/v1:foreignkey"],
 )

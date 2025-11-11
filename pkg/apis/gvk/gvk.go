@@ -1,7 +1,7 @@
 package gvk
 
 import (
-	"github.com/project-planton/project-planton/apis/project/planton/shared"
+	"github.com/project-planton/project-planton/apis/org/project-planton/shared"
 )
 
 type GVK struct {

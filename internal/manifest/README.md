@@ -298,8 +298,8 @@ Defaults are applied from proto field options. See `protodefaults/README.md` for
 
 ```protobuf
 message ExternalDnsKubernetesSpec {
-  optional string namespace = 1 [(project.planton.shared.options.default) = "external-dns"];
-  optional string version = 2 [(project.planton.shared.options.default) = "v0.19.0"];
+  optional string namespace = 1 [(org.project_planton.shared.options.default) = "external-dns"];
+  optional string version = 2 [(org.project_planton.shared.options.default) = "v0.19.0"];
 }
 ```
 

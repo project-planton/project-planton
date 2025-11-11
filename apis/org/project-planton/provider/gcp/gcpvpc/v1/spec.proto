@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package org.project_planton.provider.gcp.gcpvpc.v1;
+
+import "buf/validate/validate.proto";
+import "org/project-planton/shared/foreignkey/v1/foreign_key.proto";
+import "org/project-planton/shared/options/options.proto";
+
+// Allowed values for VPC dynamic routing mode.
+enum GcpVpcRoutingMode {
+  REGIONAL = 0;
+  GLOBAL = 1;
+}
+
+// GcpVpcSpec defines the essential configuration for a Google Cloud VPC (Virtual Private Cloud).
+message GcpVpcSpec {
+  // The GCP project ID in which to create this VPC network.
+  // Example: "my-prod-project-123"
+  org.project_planton.shared.foreignkey.v1.StringValueOrRef project_id = 1 [
+    (buf.validate.field).required = true,
+    (org.project_planton.shared.foreignkey.v1.default_kind) = GcpProject,
+    (org.project_planton.shared.foreignkey.v1.default_kind_field_path) = "status.outputs.project_id"
+  ];
+
+  // Whether to use auto subnet mode (true) or custom subnet mode (false).
+  // **Default:** false (custom mode). Auto mode is not recommended for production:contentReference[oaicite:4]{index=4}.
+  bool auto_create_subnetworks = 2;
+
+  // Dynamic routing mode for the VPC's Cloud Routers: REGIONAL or GLOBAL.
+  // **Default:** REGIONAL (Cloud Router adverts routes only in one region):contentReference[oaicite:5]{index=5}.
+  // Use GLOBAL only for multi-region routing needs.
+  optional GcpVpcRoutingMode routing_mode = 3 [(org.project_planton.shared.options.default) = "REGIONAL"];
+}

@@ -342,12 +342,12 @@ Many fields have sensible defaults so you don't have to specify everything.
 
 ### How Defaults Work
 
-Defaults are defined in the protobuf with the `(project.planton.shared.options.default)` extension:
+Defaults are defined in the protobuf with the `(org.project_planton.shared.options.default)` extension:
 
 ```protobuf
 message ExternalDnsKubernetesSpec {
-  optional string namespace = 1 [(project.planton.shared.options.default) = "external-dns"];
-  optional string version = 2 [(project.planton.shared.options.default) = "v0.19.0"];
+  optional string namespace = 1 [(org.project_planton.shared.options.default) = "external-dns"];
+  optional string version = 2 [(org.project_planton.shared.options.default) = "v0.19.0"];
 }
 ```
 

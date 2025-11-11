@@ -27,7 +27,7 @@ The panic occurred at line 38 of `main.go`:
 panic: interface conversion: interface {} is sql.DatabaseInstanceIpAddress, not []interface{}
 
 Stack trace snippet:
-github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpcloudsql/v1/iac/pulumi/module.Resources.func1
+github.com/project-planton/project-planton/apis/org/project-planton/provider/gcp/gcpcloudsql/v1/iac/pulumi/module.Resources.func1
     at .../gcpcloudsql/v1/iac/pulumi/module/main.go:38
 ```
 
