@@ -64,8 +64,6 @@ You can create similar manifests for [AWS VPC](https://github.com/project-planto
 project-planton pulumi up --manifest redis.yaml
 ```
 
-![pulumi-up.png](docs/public/images/provider/kubernetes/redis/pulumi-up.png)
-
 ---
 
 ## Learn More
@@ -74,10 +72,6 @@ project-planton pulumi up --manifest redis.yaml
 - **[Component Catalog](https://project-planton.org/docs/catalog)** - Browse 118+ deployment components across 10 providers
 - **[Architecture](https://project-planton.org/docs/concepts/architecture)** - How Protocol Buffers, IaC modules, and CLI work together
 - **[Planton Cloud](https://planton.cloud)** - Commercial SaaS platform with UI, CI/CD, and team features
-
-**Related Projects:**
-- [Planton Cloud](https://github.com/plantoncloud-inc) - Enterprise platform built on Project Planton (private repo)
-- [Planton.ai](https://planton.ai) - Documentation and content hub
 
 ---
 
