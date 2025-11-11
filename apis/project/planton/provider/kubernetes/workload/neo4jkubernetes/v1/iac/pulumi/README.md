@@ -36,7 +36,7 @@ Refer to the example section for usage instructions.
 
 - **Pulumi**: Ensure that Pulumi is installed and configured in your environment.
 - **Kubernetes Provider**: The Kubernetes provider is required to manage and interact with the Kubernetes cluster.
-- **Kubernetes Cluster Credential**: This credential is required to authenticate and interact with the target Kubernetes cluster where the Neo4j instance will be deployed.
+- **Kubernetes Credential**: This credential is required to authenticate and interact with the target Kubernetes cluster where the Neo4j instance will be deployed.
 - **Neo4j License**: If required, ensure that you have the necessary Neo4j license, depending on the environment and usage.
 
 ## Installation

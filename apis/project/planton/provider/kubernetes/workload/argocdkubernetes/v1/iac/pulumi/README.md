@@ -41,7 +41,7 @@ This module is built using Pulumi’s Go SDK and integrates seamlessly with Kube
 
 ### Key Pulumi Components
 
-1. **Kubernetes Provider**: The module uses the Kubernetes provider configured via the provided `kubernetes_cluster_credential_id`, ensuring that resources are created in the specified Kubernetes cluster.
+1. **Kubernetes Provider**: The module uses the Kubernetes provider configured via the provided `kubernetes_credential_id`, ensuring that resources are created in the specified Kubernetes cluster.
 
 2. **Namespace Management**: The module automatically creates or updates a Kubernetes namespace for the ArgoCD deployment, ensuring proper resource isolation.
 

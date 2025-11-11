@@ -54,7 +54,7 @@ Refer to the example section for usage instructions.
 - **Pulumi**: Ensure that Pulumi is installed and configured for your environment.
 - **Kubernetes Provider**: The Kubernetes provider is required to manage resources on the Kubernetes cluster where MongoDB will be deployed.
 - **Percona Operator**: The Percona Server for MongoDB Operator must be installed on your cluster before deploying MongoDB instances.
-- **Kubernetes Cluster Credential**: This is required to authenticate and interact with the target Kubernetes cluster.
+- **Kubernetes Credential**: This is required to authenticate and interact with the target Kubernetes cluster.
 
 ## Architecture
 

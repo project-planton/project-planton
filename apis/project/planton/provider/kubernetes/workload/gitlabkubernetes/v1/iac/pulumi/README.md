@@ -38,7 +38,7 @@ The module is built on top of Pulumi’s Go SDK, providing deep integration with
 
 ### Key Pulumi Components
 
-1. **Kubernetes Provider**: The module configures the Kubernetes provider using the `kubernetes_cluster_credential_id` provided in the API resource, ensuring that all resources are deployed in the correct Kubernetes cluster.
+1. **Kubernetes Provider**: The module configures the Kubernetes provider using the `kubernetes_credential_id` provided in the API resource, ensuring that all resources are deployed in the correct Kubernetes cluster.
 
 2. **Namespace Management**: The module creates a Kubernetes namespace for the GitLab deployment or reuses an existing namespace if specified, providing isolation for GitLab from other resources in the cluster.
 

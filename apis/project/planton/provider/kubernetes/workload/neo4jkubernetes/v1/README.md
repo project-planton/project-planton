@@ -20,7 +20,7 @@ Managing Neo4j in a Kubernetes environment can be challenging due to the complex
 
 ### Kubernetes Credential Management
 
-- **Kubernetes Cluster Credential ID**: Specifies the Kubernetes credentials (`kubernetes_cluster_credential_id`) to be used for securely setting up and managing Neo4j within Kubernetes clusters.
+- **Kubernetes Credential ID**: Specifies the Kubernetes credentials (`kubernetes_credential_id`) to be used for securely setting up and managing Neo4j within Kubernetes clusters.
 
 ### Neo4j Container Configuration
 

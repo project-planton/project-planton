@@ -20,7 +20,7 @@ Managing HTTP endpoints in Kubernetes can be complex, especially when dealing wi
 
 ### Kubernetes Credential Management
 
-- **Kubernetes Cluster Credential ID**: Utilizes the specified Kubernetes credentials (`kubernetes_cluster_credential_id`) to ensure secure and authorized operations within Kubernetes clusters.
+- **Kubernetes Credential ID**: Utilizes the specified Kubernetes credentials (`kubernetes_credential_id`) to ensure secure and authorized operations within Kubernetes clusters.
 
 ### Flexible HTTP Endpoint Configuration
 

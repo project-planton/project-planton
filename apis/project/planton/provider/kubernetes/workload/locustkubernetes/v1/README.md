@@ -20,7 +20,7 @@ Running distributed load tests using Locust in Kubernetes environments can be co
 
 ### Kubernetes Credential Management
 
-- **Kubernetes Cluster Credential ID**: Utilizes the specified Kubernetes credentials (`kubernetes_cluster_credential_id`) to ensure secure and authorized operations within Kubernetes clusters.
+- **Kubernetes Credential ID**: Utilizes the specified Kubernetes credentials (`kubernetes_credential_id`) to ensure secure and authorized operations within Kubernetes clusters.
 
 ### Customizable Locust Deployment
 

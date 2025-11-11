@@ -19,7 +19,7 @@ Deploying microservices to Kubernetes can be a complex task involving numerous c
 
 ### Credential Management
 
-- **Kubernetes Cluster Credential ID**: Specify credentials required to access and configure the target Kubernetes cluster securely.
+- **Kubernetes Credential ID**: Specify credentials required to access and configure the target Kubernetes cluster securely.
 - **Docker Credential ID**: Provide credentials for pulling container images from private Docker registries, ensuring secure and efficient image retrieval.
 
 ### Version Control

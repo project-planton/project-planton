@@ -13,7 +13,7 @@ spec:
   kubernetesProviderConfigId: cluster-credential-12345
 ```
 
-## Example 2: Custom Kubernetes Cluster Credential
+## Example 2: Custom Kubernetes Credential
 
 In this example, a custom Kubernetes cluster credential is used to set up the Kubernetes provider for running the stack job runner. This configuration allows for more control over the deployment environment.
 

@@ -20,7 +20,7 @@
 
 The module accepts the following key input parameters from the `KubernetesHttpEndpoint` API resource:
 
-- **kubernetes_cluster_credential_id**: (Required) The ID of the Kubernetes cluster credentials to authenticate and deploy resources on the target cluster.
+- **kubernetes_credential_id**: (Required) The ID of the Kubernetes cluster credentials to authenticate and deploy resources on the target cluster.
   
 - **is_tls_enabled**: (Optional) A flag to enable TLS for the HTTP endpoint. When enabled, the module provisions and manages TLS certificates using Kubernetes-native capabilities.
 

@@ -19,7 +19,7 @@ Deploying Jenkins on Kubernetes involves complex configurations, including conta
 
 ### Credential Management
 
-- **Kubernetes Cluster Credential ID**: Specify credentials required to access and configure the target Kubernetes cluster securely.
+- **Kubernetes Credential ID**: Specify credentials required to access and configure the target Kubernetes cluster securely.
 
 ### Container Specification
 

@@ -28,7 +28,7 @@ Refer to the **example section** for detailed usage instructions on how to confi
 
 The following key inputs are supported by the module from the `KeycloakKubernetes` API resource:
 
-- **kubernetes_cluster_credential_id**: (Required) The Kubernetes cluster credentials used to authenticate and deploy resources on the target cluster.
+- **kubernetes_credential_id**: (Required) The Kubernetes cluster credentials used to authenticate and deploy resources on the target cluster.
 
 - **container**: (Required) Defines the resource configuration for the Keycloak container, including CPU and memory requests and limits. This ensures the container is deployed with sufficient resources to handle the expected load.
 

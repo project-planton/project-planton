@@ -20,7 +20,7 @@ Deploying OpenFGA in Kubernetes can involve complex configurations, especially w
 
 ### Kubernetes Credential Management
 
-- **Kubernetes Cluster Credential ID**: Specifies the Kubernetes credentials (`kubernetes_cluster_credential_id`) for securely deploying and managing the OpenFGA container within a Kubernetes cluster.
+- **Kubernetes Credential ID**: Specifies the Kubernetes credentials (`kubernetes_credential_id`) for securely deploying and managing the OpenFGA container within a Kubernetes cluster.
 
 ### OpenFGA Container Configuration
 

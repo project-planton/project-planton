@@ -39,7 +39,7 @@ The module leverages Pulumi’s infrastructure-as-code capabilities to manage th
 
 ### Key Pulumi Components
 
-1. **Kubernetes Provider**: The module sets up the Kubernetes provider using the `kubernetes_cluster_credential_id` specified in the API resource, ensuring that resources are created in the correct cluster.
+1. **Kubernetes Provider**: The module sets up the Kubernetes provider using the `kubernetes_credential_id` specified in the API resource, ensuring that resources are created in the correct cluster.
 
 2. **Namespace Management**: A dedicated Kubernetes namespace is created (or reused) for the Grafana deployment, ensuring isolation and avoiding resource conflicts with other workloads in the cluster.
 

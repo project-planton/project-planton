@@ -20,7 +20,7 @@ Monitoring and visualizing system metrics are crucial for maintaining the health
 
 ### Kubernetes Credential Management
 
-- **Kubernetes Cluster Credential ID**: Utilizes specified Kubernetes credentials to ensure secure and authorized operations within Kubernetes clusters.
+- **Kubernetes Credential ID**: Utilizes specified Kubernetes credentials to ensure secure and authorized operations within Kubernetes clusters.
 
 ### Customizable Grafana Deployment
 

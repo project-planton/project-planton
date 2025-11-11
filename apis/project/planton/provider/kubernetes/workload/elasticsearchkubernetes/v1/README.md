@@ -20,7 +20,7 @@ Deploying Elasticsearch clusters on Kubernetes can be complex due to the intrica
 
 ### Kubernetes Credential Management
 
-- **Kubernetes Cluster Credential ID**: Utilizes specified Kubernetes credentials to ensure secure and authorized operations within Kubernetes clusters.
+- **Kubernetes Credential ID**: Utilizes specified Kubernetes credentials to ensure secure and authorized operations within Kubernetes clusters.
 
 ### Customizable Elasticsearch Deployment
 

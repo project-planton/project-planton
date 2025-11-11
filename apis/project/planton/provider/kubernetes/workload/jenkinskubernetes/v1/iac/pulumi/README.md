@@ -8,7 +8,7 @@
 
 - **Namespace and Kubernetes Resource Management:** The module creates a dedicated Kubernetes namespace for the Jenkins instance, ensuring proper isolation and organization of resources. It also manages other key resources like Kubernetes secrets (for admin credentials), services, and ingress controllers (if enabled).
 
-- **Kubernetes Provider Setup:** Based on the `kubernetes_cluster_credential_id` provided in the spec, the module automatically sets up the required Kubernetes provider, allowing seamless interaction with the target Kubernetes cluster. The credentials are securely handled and used to authenticate with the cluster.
+- **Kubernetes Provider Setup:** Based on the `kubernetes_credential_id` provided in the spec, the module automatically sets up the required Kubernetes provider, allowing seamless interaction with the target Kubernetes cluster. The credentials are securely handled and used to authenticate with the cluster.
 
 - **Ingress Support:** If ingress is enabled in the `JenkinsKubernetes` resource, the module sets up an ingress controller to expose Jenkins externally, allowing users to access Jenkins via a public or private URL. If ingress is disabled, the module generates a `port_forward_command` that allows developers to access Jenkins from their local machine using port forwarding.
 
@@ -30,7 +30,7 @@ Refer to the **example section** for detailed usage instructions on how to confi
 
 The Pulumi module accepts the following key input parameters from the `JenkinsKubernetes` API resource:
 
-- **kubernetes_cluster_credential_id**: (Required) The ID of the Kubernetes cluster credentials used to authenticate and deploy resources on the target cluster.
+- **kubernetes_credential_id**: (Required) The ID of the Kubernetes cluster credentials used to authenticate and deploy resources on the target cluster.
 - **container resources**: (Required) Specifies the CPU and memory limits for the Jenkins container. This ensures that Jenkins runs with the appropriate resource allocation on the Kubernetes cluster.
 - **helm_values**: (Optional) A map of key-value pairs for customizing the Jenkins Helm chart deployment. These values can be used to modify resource configurations, environment variables, and other deployment settings.
 - **ingress**: (Optional) A detailed specification for setting up Kubernetes ingress to expose Jenkins externally.

@@ -41,7 +41,7 @@ Refer to the example section for usage instructions.
 ### RedisKubernetesSpec
 Defines the desired state of the Redis deployment, including container specifications and ingress settings.
 
-- **kubernetes_cluster_credential_id**: Identifier for the Kubernetes cluster credentials to be used.
+- **kubernetes_credential_id**: Identifier for the Kubernetes cluster credentials to be used.
 - **container**: Configuration for the Redis container, including replicas, resource allocations, and persistence settings.
 - **ingress**: Ingress specifications for managing external access to Redis services.
 

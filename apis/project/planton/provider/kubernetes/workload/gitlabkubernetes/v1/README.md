@@ -20,7 +20,7 @@ Deploying GitLab on Kubernetes can be complex due to the intricacies involved in
 
 ### Kubernetes Credential Management
 
-- **Kubernetes Cluster Credential ID**: Utilizes specified Kubernetes credentials to ensure secure and authorized operations within Kubernetes clusters.
+- **Kubernetes Credential ID**: Utilizes specified Kubernetes credentials to ensure secure and authorized operations within Kubernetes clusters.
 
 ### Customizable GitLab Deployment
 

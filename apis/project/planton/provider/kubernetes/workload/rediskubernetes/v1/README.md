@@ -18,9 +18,9 @@ Deploying Redis in a Kubernetes environment can be complex, especially when deal
 - **Environment Info**: This resource integrates seamlessly with Planton Cloud’s environment management system, ensuring that Redis instances are deployed in the appropriate environment.
 - **Stack Job Settings**: Stack job settings ensure that Redis instances are deployed using consistent infrastructure-as-code approaches.
 
-### Kubernetes Cluster Credential Management
+### Kubernetes Credential Management
 
-- **Kubernetes Cluster Credential ID**: The `kubernetes_cluster_credential_id` is required to authenticate and securely manage the Kubernetes provider used during Redis deployment.
+- **Kubernetes Credential ID**: The `kubernetes_credential_id` is required to authenticate and securely manage the Kubernetes provider used during Redis deployment.
 
 ### Redis Container Configuration
 

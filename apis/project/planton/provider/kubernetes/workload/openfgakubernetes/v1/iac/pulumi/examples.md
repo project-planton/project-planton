@@ -10,7 +10,7 @@ kind: OpenFgaKubernetes
 metadata:
   name: open-fga-service
 spec:
-  kubernetes_cluster_credential_id: my-k8s-cluster-credential
+  kubernetes_credential_id: my-k8s-cluster-credential
   container:
     replicas: 3
     resources:
@@ -38,7 +38,7 @@ kind: OpenFgaKubernetes
 metadata:
   name: open-fga-service
 spec:
-  kubernetes_cluster_credential_id: another-k8s-cluster-credential
+  kubernetes_credential_id: another-k8s-cluster-credential
   container:
     replicas: 2
     resources:
@@ -65,7 +65,7 @@ kind: OpenFgaKubernetes
 metadata:
   name: basic-openfga
 spec:
-  kubernetes_cluster_credential_id: my-cluster-credential
+  kubernetes_credential_id: my-cluster-credential
   container:
     replicas: 1
     resources:
@@ -90,7 +90,7 @@ kind: OpenFgaKubernetes
 metadata:
   name: open-fga-high-availability
 spec:
-  kubernetes_cluster_credential_id: high-availability-k8s-credential
+  kubernetes_credential_id: high-availability-k8s-credential
   container:
     replicas: 5
     resources:

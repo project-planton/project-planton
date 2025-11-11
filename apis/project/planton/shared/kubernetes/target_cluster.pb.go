@@ -28,7 +28,7 @@ type KubernetesAddonTargetCluster struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Types that are valid to be assigned to CredentialSource:
 	//
-	//	*KubernetesAddonTargetCluster_KubernetesClusterCredentialId
+	//	*KubernetesAddonTargetCluster_KubernetesCredentialId
 	//	*KubernetesAddonTargetCluster_KubernetesClusterSelector
 	CredentialSource isKubernetesAddonTargetCluster_CredentialSource `protobuf_oneof:"credential_source"`
 	unknownFields    protoimpl.UnknownFields
@@ -72,10 +72,10 @@ func (x *KubernetesAddonTargetCluster) GetCredentialSource() isKubernetesAddonTa
 	return nil
 }
 
-func (x *KubernetesAddonTargetCluster) GetKubernetesClusterCredentialId() string {
+func (x *KubernetesAddonTargetCluster) GetKubernetesCredentialId() string {
 	if x != nil {
-		if x, ok := x.CredentialSource.(*KubernetesAddonTargetCluster_KubernetesClusterCredentialId); ok {
-			return x.KubernetesClusterCredentialId
+		if x, ok := x.CredentialSource.(*KubernetesAddonTargetCluster_KubernetesCredentialId); ok {
+			return x.KubernetesCredentialId
 		}
 	}
 	return ""
@@ -94,9 +94,9 @@ type isKubernetesAddonTargetCluster_CredentialSource interface {
 	isKubernetesAddonTargetCluster_CredentialSource()
 }
 
-type KubernetesAddonTargetCluster_KubernetesClusterCredentialId struct {
+type KubernetesAddonTargetCluster_KubernetesCredentialId struct {
 	// The ID of the Kubernetes cluster credential.
-	KubernetesClusterCredentialId string `protobuf:"bytes,1,opt,name=kubernetes_cluster_credential_id,json=kubernetesClusterCredentialId,proto3,oneof"`
+	KubernetesCredentialId string `protobuf:"bytes,1,opt,name=kubernetes_credential_id,json=kubernetesCredentialId,proto3,oneof"`
 }
 
 type KubernetesAddonTargetCluster_KubernetesClusterSelector struct {
@@ -104,7 +104,7 @@ type KubernetesAddonTargetCluster_KubernetesClusterSelector struct {
 	KubernetesClusterSelector *KubernetesClusterCloudResourceSelector `protobuf:"bytes,2,opt,name=kubernetes_cluster_selector,json=kubernetesClusterSelector,proto3,oneof"`
 }
 
-func (*KubernetesAddonTargetCluster_KubernetesClusterCredentialId) isKubernetesAddonTargetCluster_CredentialSource() {
+func (*KubernetesAddonTargetCluster_KubernetesCredentialId) isKubernetesAddonTargetCluster_CredentialSource() {
 }
 
 func (*KubernetesAddonTargetCluster_KubernetesClusterSelector) isKubernetesAddonTargetCluster_CredentialSource() {
@@ -172,9 +172,9 @@ var File_project_planton_shared_kubernetes_target_cluster_proto protoreflect.Fil
 
 const file_project_planton_shared_kubernetes_target_cluster_proto_rawDesc = "" +
 	"\n" +
-	"6project/planton/shared/kubernetes/target_cluster.proto\x12!project.planton.shared.kubernetes\x1a\x1bbuf/validate/validate.proto\x1aBproject/planton/shared/cloudresourcekind/cloud_resource_kind.proto\"\x8c\x02\n" +
-	"\x1cKubernetesAddonTargetCluster\x12I\n" +
-	" kubernetes_cluster_credential_id\x18\x01 \x01(\tH\x00R\x1dkubernetesClusterCredentialId\x12\x8b\x01\n" +
+	"6project/planton/shared/kubernetes/target_cluster.proto\x12!project.planton.shared.kubernetes\x1a\x1bbuf/validate/validate.proto\x1aBproject/planton/shared/cloudresourcekind/cloud_resource_kind.proto\"\xfd\x01\n" +
+	"\x1cKubernetesAddonTargetCluster\x12:\n" +
+	"\x18kubernetes_credential_id\x18\x01 \x01(\tH\x00R\x16kubernetesCredentialId\x12\x8b\x01\n" +
 	"\x1bkubernetes_cluster_selector\x18\x02 \x01(\v2I.project.planton.shared.kubernetes.KubernetesClusterCloudResourceSelectorH\x00R\x19kubernetesClusterSelectorB\x13\n" +
 	"\x11credential_source\"\xbf\x01\n" +
 	"&KubernetesClusterCloudResourceSelector\x12r\n" +
@@ -216,7 +216,7 @@ func file_project_planton_shared_kubernetes_target_cluster_proto_init() {
 		return
 	}
 	file_project_planton_shared_kubernetes_target_cluster_proto_msgTypes[0].OneofWrappers = []any{
-		(*KubernetesAddonTargetCluster_KubernetesClusterCredentialId)(nil),
+		(*KubernetesAddonTargetCluster_KubernetesCredentialId)(nil),
 		(*KubernetesAddonTargetCluster_KubernetesClusterSelector)(nil),
 	}
 	type x struct{}

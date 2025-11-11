@@ -36,7 +36,7 @@ This module is fully integrated with Pulumi’s Go SDK, enabling Helm release ma
 
 ### Key Pulumi Components
 
-1. **Kubernetes Provider**: The module configures the Kubernetes provider using the `kubernetes_cluster_credential_id` provided in the `HelmRelease` API resource. This ensures that all Helm releases are deployed in the correct Kubernetes cluster with the appropriate credentials.
+1. **Kubernetes Provider**: The module configures the Kubernetes provider using the `kubernetes_credential_id` provided in the `HelmRelease` API resource. This ensures that all Helm releases are deployed in the correct Kubernetes cluster with the appropriate credentials.
 
 2. **Namespace Management**: The module handles the creation or reuse of Kubernetes namespaces for the Helm release. It ensures that the release is properly isolated from other deployments in the cluster and stores the namespace information in the outputs.
 

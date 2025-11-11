@@ -20,7 +20,7 @@ Deploying applications using Helm charts on Kubernetes can be complex due to var
 
 ### Kubernetes Credential Management
 
-- **Kubernetes Cluster Credential ID**: Utilizes specified Kubernetes credentials (`kubernetes_cluster_credential_id`) to ensure secure and authorized operations within Kubernetes clusters.
+- **Kubernetes Credential ID**: Utilizes specified Kubernetes credentials (`kubernetes_credential_id`) to ensure secure and authorized operations within Kubernetes clusters.
 
 ### Customizable Helm Chart Deployment
 

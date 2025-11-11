@@ -33,7 +33,7 @@ The module requires an `OpenFgaKubernetesStackInput` specification to define the
 - **Replicas**: Specify the number of replicas for the OpenFGA deployment to ensure high availability and scalability.
 - **Ingress Settings**: Configure Istio ingress resources to manage external access to the OpenFGA service.
 - **Datastore Configuration**: Choose between MySQL and PostgreSQL for the datastore engine and provide the corresponding connection URI.
-- **Kubernetes Cluster Credentials**: Provide the necessary credentials to authenticate and interact with the target Kubernetes cluster.
+- **Kubernetes Credentials**: Provide the necessary credentials to authenticate and interact with the target Kubernetes cluster.
 
 ## Usage
 

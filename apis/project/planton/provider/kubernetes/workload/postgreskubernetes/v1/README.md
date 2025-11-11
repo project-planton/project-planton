@@ -20,7 +20,7 @@ Deploying and managing PostgreSQL databases in Kubernetes can be complex due to 
 
 ### Kubernetes Credential Management
 
-- **Kubernetes Cluster Credential ID**: Specifies the Kubernetes credentials (`kubernetes_cluster_credential_id`) for securely deploying and managing the PostgreSQL container in Kubernetes.
+- **Kubernetes Credential ID**: Specifies the Kubernetes credentials (`kubernetes_credential_id`) for securely deploying and managing the PostgreSQL container in Kubernetes.
 
 ### PostgreSQL Container Configuration
 

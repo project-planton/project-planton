@@ -20,7 +20,7 @@ Deploying Keycloak on Kubernetes can be challenging due to the various configura
 
 ### Kubernetes Credential Management
 
-- **Kubernetes Cluster Credential ID**: Utilizes specified Kubernetes credentials (`kubernetes_cluster_credential_id`) to ensure secure and authorized operations within Kubernetes clusters.
+- **Kubernetes Credential ID**: Utilizes specified Kubernetes credentials (`kubernetes_credential_id`) to ensure secure and authorized operations within Kubernetes clusters.
 
 ### Customizable Keycloak Deployment
 

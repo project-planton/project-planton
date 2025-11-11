@@ -9,7 +9,7 @@ import "project/planton/shared/cloudresourcekind/cloud_resource_kind.proto";
 message KubernetesAddonTargetCluster {
   oneof credential_source {
     // The ID of the Kubernetes cluster credential.
-    string kubernetes_cluster_credential_id = 1;
+    string kubernetes_credential_id = 1;
     // The selector for the Kubernetes cluster in the same environment as the addon.
     KubernetesClusterCloudResourceSelector kubernetes_cluster_selector = 2;
   }

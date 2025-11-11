@@ -38,7 +38,7 @@ The module requires a `PostgresKubernetesStackInput` specification to define the
 
 ### Key Configuration Parameters
 
-- **Kubernetes Cluster Credentials**: Provide the necessary credentials to authenticate and interact with the target Kubernetes cluster by specifying the `kubernetes_cluster_credential_id`.
+- **Kubernetes Credentials**: Provide the necessary credentials to authenticate and interact with the target Kubernetes cluster by specifying the `kubernetes_credential_id`.
 - **PostgreSQL Container Configuration**: Define the number of replicas, resource allocations (CPU and memory), and disk size for the PostgreSQL containers to ensure optimal performance and scalability.
 - **Ingress Settings**: Configure ingress specifications to manage external and internal access to the PostgreSQL service, including load balancer types and hostname configurations.
 - **Pulumi Input**: Define Pulumi-specific configurations required for the stack job, facilitating the integration between the API resource and Pulumi’s deployment processes.

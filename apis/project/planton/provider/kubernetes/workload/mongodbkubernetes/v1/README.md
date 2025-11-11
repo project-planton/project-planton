@@ -19,7 +19,7 @@ Deploying MongoDB on Kubernetes involves complex configurations, including resou
 
 ### Credential Management
 
-- **Kubernetes Cluster Credential ID**: Specify credentials required to access and configure the target Kubernetes cluster securely.
+- **Kubernetes Credential ID**: Specify credentials required to access and configure the target Kubernetes cluster securely.
 
 ### MongoDB Container Configuration
 

@@ -20,7 +20,7 @@ Deploying ClickHouse on Kubernetes requires managing complex distributed systems
 
 ### Credential Management
 
-- **Kubernetes Cluster Credential ID**: Specify credentials required to access and configure the target Kubernetes cluster securely.
+- **Kubernetes Credential ID**: Specify credentials required to access and configure the target Kubernetes cluster securely.
 
 ### Cluster Configuration
 

@@ -32,7 +32,7 @@ Refer to the **example section** for detailed usage instructions on how to confi
 
 The following key inputs are supported by the module from the `LocustKubernetes` API resource:
 
-- **kubernetes_cluster_credential_id**: (Required) The Kubernetes cluster credentials used to authenticate and deploy resources on the target cluster.
+- **kubernetes_credential_id**: (Required) The Kubernetes cluster credentials used to authenticate and deploy resources on the target cluster.
   
 - **master_container**: (Required) Defines the resource configuration for the Locust master container, including CPU and memory limits, as well as the number of replicas.
 
