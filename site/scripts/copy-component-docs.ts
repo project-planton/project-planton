@@ -30,9 +30,10 @@ interface Stats {
 /**
  * Generate human-readable title from component name
  * Examples:
- *   awsalb -> AWS ALB
- *   gcpgkecluster -> GCP GKE Cluster
- *   kuberneteshttpendpoint -> Kubernetes HTTP Endpoint
+ *   awsalb -> ALB
+ *   gcpgkecluster -> GKE Cluster
+ *   argocdkubernetes -> ArgoCD
+ *   clickhousekubernetes -> ClickHouse
  */
 function generateTitle(component: string, provider: string): string {
   // Remove provider prefix if component starts with it
@@ -40,10 +41,134 @@ function generateTitle(component: string, provider: string): string {
   if (name.toLowerCase().startsWith(provider.toLowerCase())) {
     name = name.substring(provider.length);
   }
+  
+  // For kubernetes components, also remove the "kubernetes" suffix
+  if (provider.toLowerCase() === 'kubernetes' && name.toLowerCase().endsWith('kubernetes')) {
+    name = name.substring(0, name.length - 'kubernetes'.length);
+  }
 
-  // Split camelCase/PascalCase into words
-  // Handle common acronyms: ALB, EKS, GKE, VPC, DNS, etc.
-  const acronyms = ['ALB', 'EKS', 'GKE', 'VPC', 'DNS', 'IAM', 'ACM', 'S3', 'EC2', 'ECS', 'RDS', 'CDN', 'HTTP', 'HTTPS', 'API', 'SDK', 'CLI', 'NAT', 'IP', 'SSL', 'TLS', 'WAF', 'KV', 'D1', 'R2'];
+  // Handle special cases for proper capitalization
+  const specialCases: Record<string, string> = {
+    'argocd': 'ArgoCD',
+    'mongodb': 'MongoDB',
+    'postgresql': 'PostgreSQL',
+    'mysql': 'MySQL',
+    'clickhouse': 'ClickHouse',
+    'elasticsearch': 'Elasticsearch',
+    'opensearch': 'OpenSearch',
+    'kafka': 'Kafka',
+    'redis': 'Redis',
+    'postgres': 'Postgres',
+    'gitlab': 'GitLab',
+    'jenkins': 'Jenkins',
+    'grafana': 'Grafana',
+    'prometheus': 'Prometheus',
+    'istio': 'Istio',
+    'nginx': 'Nginx',
+    'harbor': 'Harbor',
+    'keycloak': 'Keycloak',
+    'solr': 'Solr',
+    'neo4j': 'Neo4j',
+    'nats': 'NATS',
+    'openfga': 'OpenFGA',
+    'signoz': 'SigNoz',
+    'locust': 'Locust',
+    'temporal': 'Temporal',
+    'percona': 'Percona',
+    'altinity': 'Altinity',
+    'certmanager': 'Cert Manager',
+    'externaldns': 'External DNS',
+    'externalsecrets': 'External Secrets',
+    'ingressnginx': 'Ingress Nginx',
+    'helmrelease': 'Helm Release',
+    'cronjob': 'CronJob',
+    'microservice': 'Microservice',
+    'httpendpoint': 'HTTP Endpoint',
+    'jobrunnner': 'Job Runner',
+    'operator': 'Operator',
+    'cluster': 'Cluster',
+    'nodepool': 'Node Pool',
+    'workloadidentitybinding': 'Workload Identity Binding',
+    'artifactregistryrepo': 'Artifact Registry Repo',
+    'artifactregistry': 'Artifact Registry',
+    'containerregistry': 'Container Registry',
+    'secretsmanager': 'Secrets Manager',
+    'serviceaccount': 'Service Account',
+    'subnetwork': 'Subnetwork',
+    'routernat': 'Router NAT',
+    'natgateway': 'NAT Gateway',
+    'cloudfront': 'CloudFront',
+    'cloudcdn': 'Cloud CDN',
+    'cloudfunction': 'Cloud Function',
+    'cloudrun': 'Cloud Run',
+    'cloudsql': 'Cloud SQL',
+    'gcsbucket': 'GCS Bucket',
+    'ecrrepo': 'ECR Repo',
+    'clientvpn': 'Client VPN',
+    'dnszone': 'DNS Zone',
+    'keyvault': 'Key Vault',
+    'kmskey': 'KMS Key',
+    'securitygroup': 'Security Group',
+    'loadbalancer': 'Load Balancer',
+    'appplatformservice': 'App Platform Service',
+    'databasecluster': 'Database Cluster',
+    'computeinstance': 'Compute Instance',
+    'ipaddress': 'IP Address',
+    'kvnamespace': 'KV Namespace',
+    'd1database': 'D1 Database',
+    'r2bucket': 'R2 Bucket',
+    'zerotrustaccessapplication': 'Zero Trust Access Application',
+    'database': 'Database',
+    'repo': 'Repo',
+    'cert': 'Certificate',
+    'managercert': 'Manager Certificate',
+    'certificate': 'Certificate',
+    'bucket': 'Bucket',
+    'volume': 'Volume',
+    'firewall': 'Firewall',
+    'function': 'Function',
+    'worker': 'Worker',
+    'droplet': 'Droplet',
+    'lambda': 'Lambda',
+    'instance': 'Instance',
+    'role': 'Role',
+    'user': 'User',
+    'key': 'Key',
+    'zone': 'Zone',
+  };
+  
+  // Check if the entire name matches a special case
+  const lowerName = name.toLowerCase();
+  if (specialCases[lowerName]) {
+    return specialCases[lowerName];
+  }
+  
+  // Handle specific compound components that need special handling
+  const compoundSpecialCases: Record<string, string> = {
+    'certmanagercert': 'Cert Manager Certificate',
+    'perconapostgresqloperator': 'Percona PostgreSQL Operator',
+    'perconaservermongodboperator': 'Percona MongoDB Operator',
+    'perconaservermysqloperator': 'Percona MySQL Operator',
+    'postgresoperator': 'Postgres Operator',
+    'solroperator': 'Solr Operator',
+    'elasticoperator': 'Elastic Operator',
+    'kafkaoperator': 'Kafka Operator',
+    'altinityoperator': 'Altinity Operator',
+  };
+  
+  if (compoundSpecialCases[lowerName]) {
+    return compoundSpecialCases[lowerName];
+  }
+  
+  // Check for compound names (e.g., "perconapostgresqloperator")
+  for (const [key, value] of Object.entries(specialCases)) {
+    if (lowerName.includes(key)) {
+      name = name.replace(new RegExp(key, 'gi'), value);
+    }
+  }
+
+  // Handle common acronyms
+  const acronyms = ['ALB', 'EKS', 'GKE', 'VPC', 'DNS', 'IAM', 'ACM', 'S3', 'EC2', 'ECS', 'RDS', 'CDN', 'HTTP', 'HTTPS', 'API', 'SDK', 'CLI', 'NAT', 'IP', 'SSL', 'TLS', 'WAF', 'KV', 'D1', 'R2', 'GCS'];
   
   // Insert spaces before uppercase letters
   let spaced = name.replace(/([A-Z])/g, ' $1').trim();
@@ -53,11 +178,13 @@ function generateTitle(component: string, provider: string): string {
     const regex = new RegExp(`\\b${acronym}\\b`, 'gi');
     spaced = spaced.replace(regex, acronym);
   });
-
-  // Capitalize provider name
-  const providerTitle = provider.toUpperCase();
   
-  return `${providerTitle} ${spaced}`;
+  // Capitalize first letter if not already capitalized
+  if (spaced.length > 0 && spaced[0] === spaced[0].toLowerCase()) {
+    spaced = spaced.charAt(0).toUpperCase() + spaced.slice(1);
+  }
+  
+  return spaced;
 }
 
 /**
@@ -76,6 +203,7 @@ componentName: "${component}"
 
 /**
  * Scan a provider directory for components with docs
+ * Handles nested directories (e.g., kubernetes/addon/, kubernetes/workload/)
  */
 function scanProvider(providerPath: string, provider: string): ComponentDoc[] {
   const docs: ComponentDoc[] = [];
@@ -94,7 +222,7 @@ function scanProvider(providerPath: string, provider: string): ComponentDoc[] {
       continue;
     }
 
-    // Check for v1/docs/README.md
+    // Check for v1/docs/README.md at this level
     const docPath = path.join(componentPath, 'v1', 'docs', 'README.md');
     
     if (fs.existsSync(docPath)) {
@@ -108,6 +236,33 @@ function scanProvider(providerPath: string, provider: string): ComponentDoc[] {
         content,
         title,
       });
+    } else {
+      // If no docs at this level, check subdirectories (e.g., kubernetes/addon/, kubernetes/workload/)
+      // Only scan one level deeper to avoid infinite recursion
+      const subitems = fs.readdirSync(componentPath);
+      for (const subitem of subitems) {
+        const subComponentPath = path.join(componentPath, subitem);
+        const subStat = fs.statSync(subComponentPath);
+        
+        if (!subStat.isDirectory()) {
+          continue;
+        }
+        
+        const subDocPath = path.join(subComponentPath, 'v1', 'docs', 'README.md');
+        
+        if (fs.existsSync(subDocPath)) {
+          const content = fs.readFileSync(subDocPath, 'utf-8');
+          const title = generateTitle(subitem, provider);
+          
+          docs.push({
+            provider,
+            component: subitem,
+            sourcePath: subDocPath,
+            content,
+            title,
+          });
+        }
+      }
     }
   }
   

@@ -33,7 +33,7 @@ Browse deployment components by cloud provider in the [Catalog](/docs/catalog):
     <img src="/images/providers/gcp.svg" alt="GCP" class="w-8 h-8 object-contain" />
     <div>
       <div class="font-semibold text-white">GCP</div>
-      <div class="text-sm text-slate-400">5 components</div>
+      <div class="text-sm text-slate-400">17 components</div>
     </div>
   </a>
   <a href="/docs/catalog/azure" class="flex items-center gap-3 p-4 rounded-lg border border-purple-900/30 bg-slate-900/30 hover:bg-slate-800/50 transition-colors">
@@ -78,11 +78,18 @@ Browse deployment components by cloud provider in the [Catalog](/docs/catalog):
       <div class="text-sm text-slate-400">1 component</div>
     </div>
   </a>
-  <a href="/docs/catalog/kubernetes" class="flex items-center gap-3 p-4 rounded-lg border border-purple-900/30 bg-slate-900/30 hover:bg-slate-800/50 transition-colors opacity-50">
+  <a href="/docs/catalog/kubernetes" class="flex items-center gap-3 p-4 rounded-lg border border-purple-900/30 bg-slate-900/30 hover:bg-slate-800/50 transition-colors">
     <img src="/images/providers/kubernetes.svg" alt="Kubernetes" class="w-8 h-8 object-contain" />
     <div>
       <div class="font-semibold text-white">Kubernetes</div>
-      <div class="text-sm text-slate-400">Coming soon</div>
+      <div class="text-sm text-slate-400">36 components</div>
+    </div>
+  </a>
+  <a href="/docs/catalog/snowflake" class="flex items-center gap-3 p-4 rounded-lg border border-purple-900/30 bg-slate-900/30 hover:bg-slate-800/50 transition-colors">
+    <img src="/images/providers/snowflake.svg" alt="Snowflake" class="w-8 h-8 object-contain" />
+    <div>
+      <div class="font-semibold text-white">Snowflake</div>
+      <div class="text-sm text-slate-400">1 component</div>
     </div>
   </a>
 </div>
