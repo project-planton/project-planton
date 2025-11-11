@@ -1,66 +1,40 @@
-Simple, powerful and flexible `Multi-Cloud Deployments` framework with everything you love
-from [Kubernetes Resource Model (KRM)](https://github.com/kubernetes/design-proposals-archive/blob/main/architecture/resource-management.md), [Protobuf](https://protobuf.dev/), [Buf Schema Registry](https://buf.build/product/bsr)
-and [Pulumi](https://github.com/pulumi/pulumi).
+# Project Planton
 
-**Effortlessly deploy complex infrastructure across any cloud provider using simple YAML manifests and powerful
-automation.**
+> **Deploy anywhere with one workflow.** Write declarative YAML once, deploy to AWS, GCP, Azure, or Kubernetes with the same CLI and consistent experience.
 
 <p align="center">
   <img src="site/public/logo-text.svg" alt="project-planton-logo">
 </p>
 
-## Documentation
+## What is Project Planton?
 
-https://project-planton.org
+An open-source multi-cloud deployment framework that brings Kubernetes-style consistency to infrastructure deployments everywhere. No vendor lock-in, no artificial abstractions—just provider-specific configurations with a unified structure and workflow.
 
-## TL;DR
+**[Documentation](https://project-planton.org)** · **[Component Catalog](https://project-planton.org/docs/catalog)** · **[Website](https://project-planton.org)**
 
-ProjectPlanton is an open-source framework that simplifies the deployment of multi-cloud environments with
-Kubernetes-like declarative configuration. It enables you to:
+---
 
-- **Define Configuration**: Create Kubernetes-like manifests based
-  on [ProjectPlanton APIs](apis/project/planton/provider), using simple, consistent APIs written
-  in [protobuf](https://protobuf.dev/) and published on the [Buf Schema Registry](https://buf.build/product/bsr) to
-  manage resources across various cloud providers. Essentially, Kubernetes manifests for multi-cloud deployments.
+## Why Project Planton?
 
-- **Deploy Infrastructure**: Utilize
-  pre-written [Pulumi modules](https://project-planton.org/pulumi-modules) that take
-  your YAML configuration manifests as input and handle the complex infrastructure provisioning. Avoid the complexity of
-  learning intricate deployments with the `project-planton` CLI. The
-  CLI reads your manifest and determines the appropriate [Pulumi module](https://project-planton.org/pulumi-modules) for
-  deployment.
+- **One structure, any cloud** - Kubernetes Resource Model (apiVersion/kind/metadata/spec) for all deployments
+- **Validate before deploy** - Protocol Buffer validations catch errors in seconds, not minutes
+- **Zero abstraction** - Provider-specific configs preserve cloud capabilities, consistent experience across all
+- **Choose your IaC** - Built-in Pulumi and Terraform/OpenTofu modules with feature parity
+- **Build on top** - Auto-generated SDKs in Go, Python, TypeScript, Java from Protocol Buffer definitions
 
-```mermaid
-flowchart TD
-    A[User Defines YAML Manifest] --> B[Project Planton CLI]
-    B --> C{Identify Deployment Component}
-    C --> D[Fetch Corresponding Pulumi Module]
-    D --> E[Execute Pulumi Module]
-    E --> F[Provision Resources on Cloud Provider]
-    F --> G[Infrastructure & Applications Deployed]
+---
+
+## Quick Start
+
+### 1. Install the CLI
+
+```bash
+brew install project-planton/tap/project-planton
 ```
 
-**Get Started in 3 Easy Steps:**
+### 2. Create a YAML Manifest
 
-1. **Install the CLI Tool**
-
-   ```bash
-   brew install project-planton/tap/project-planton
-   ```
-
-2. **Create a YAML Manifest**
-
-   Example manifest
-   for
-   deploying [Redis On Kubernetes](https://github.com/project-planton/project-planton/tree/main/apis/project/planton/provider/kubernetes/workload/rediskubernetes/v1)
-   as per
-   the [redis-kubernetes](https://buf.build/project-planton/apis/file/main:project/planton/provider/kubernetes/workload/rediskubernetes/v1/spec.proto)
-   deployment component
-
-   You can create similar manifests
-   for [AWS VPC](https://github.com/project-planton/project-planton/tree/main/apis/project/planton/provider/aws/awsvpcv1), [GKE Cluster](https://github.com/project-planton/project-planton/tree/main/apis/project/planton/provider/gcp/gkecluster/v1), [Kafka on Kubernetes](https://github.com/project-planton/project-planton/tree/main/apis/project/planton/provider/kubernetes/kafkakubernetes/v1)
-   or [Kafka On ConfluentCloud](https://github.com/project-planton/project-planton/tree/main/apis/project/planton/provider/confluent/kafkaconfluent/v1)
-   and [many more](https://github.com/project-planton/project-planton/tree/main/apis/project/planton/provider).
+Example: Deploy Redis to Kubernetes using the [redis-kubernetes](https://buf.build/project-planton/apis/file/main:project/planton/provider/kubernetes/workload/rediskubernetes/v1/spec.proto) deployment component.
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
@@ -82,18 +56,30 @@ spec:
     diskSize: 1Gi
 ```
 
-3. **Deploy Your Infrastructure**
+You can create similar manifests for [AWS VPC](https://github.com/project-planton/project-planton/tree/main/apis/project/planton/provider/aws/awsvpc/v1), [GKE Cluster](https://github.com/project-planton/project-planton/tree/main/apis/project/planton/provider/gcp/gkecluster/v1), [Kafka on Kubernetes](https://github.com/project-planton/project-planton/tree/main/apis/project/planton/provider/kubernetes/workload/kafkakubernetes/v1), and [many more](https://github.com/project-planton/project-planton/tree/main/apis/project/planton/provider).
 
-The above manifest is the input
-for [redis-kubernetes-pulumi-module](https://github.com/project-planton/redis-kubernetes-pulumi-module). Running
-`project-planton pulumi up` command will read the manifest and set it up as input for the pulumi module and also run the
-pulumi module.
+### 3. Deploy
 
-   ```bash
-   project-planton pulumi up --manifest redis.yaml
-   ```
+```bash
+project-planton pulumi up --manifest redis.yaml
+```
 
 ![pulumi-up.png](docs/public/images/provider/kubernetes/redis/pulumi-up.png)
+
+---
+
+## Learn More
+
+- **[Getting Started Guide](https://project-planton.org/docs/getting-started)** - Your first deployment in 5 minutes
+- **[Component Catalog](https://project-planton.org/docs/catalog)** - Browse 118+ deployment components across 10 providers
+- **[Architecture](https://project-planton.org/docs/concepts/architecture)** - How Protocol Buffers, IaC modules, and CLI work together
+- **[Planton Cloud](https://planton.cloud)** - Commercial SaaS platform with UI, CI/CD, and team features
+
+**Related Projects:**
+- [Planton Cloud](https://github.com/plantoncloud-inc) - Enterprise platform built on Project Planton (private repo)
+- [Planton.ai](https://planton.ai) - Documentation and content hub
+
+---
 
 ## Contributing
 
@@ -103,16 +89,12 @@ Also, refer to this [Contributor Guide](https://project-planton.org/docs/guide/c
 
 ## License
 
-Project Planton is released under the [Apache 2.0 license](LICENSE). You are free to use, modify,
-and distribute this software in accordance with the license terms.
+Project Planton is released under the [Apache 2.0 license](LICENSE). You are free to use, modify, and distribute this software in accordance with the license terms.
 
 ## Acknowledgments
 
 - **Brian Grant & Kubernetes API team** for their foundational work on the Kubernetes Resource Model.
-- The **[Protobuf Team](https://alpha-t9kmve036m159v8u4una.sandstorm.io/)** for laying the foundation for a powerful
-  language neutral contract definition language.
-- The **[Buf](https://github.com/bufbuild/buf) Team** for their Protobuf tooling—including BSR Docs, BSR SDKs, and
-  ProtoValidate — which collectively democratized protobuf adoption and made this project possible.
-- The **[Pulumi](https://github.com/pulumi/pulumi)** team for providing a powerful infrastructure as code platform that
-  enables multi-language support.
+- The **[Protobuf Team](https://protobuf.dev/)** for laying the foundation for a powerful language neutral contract definition language.
+- The **[Buf](https://github.com/bufbuild/buf) Team** for their Protobuf tooling—including BSR Docs, BSR SDKs, and ProtoValidate — which collectively democratized protobuf adoption and made this project possible.
+- The **[Pulumi](https://github.com/pulumi/pulumi)** team for providing a powerful infrastructure as code platform that enables multi-language support.
 - The **[spf13/cobra](https://github.com/spf13/cobra)** team for making building command line tools a bliss.
