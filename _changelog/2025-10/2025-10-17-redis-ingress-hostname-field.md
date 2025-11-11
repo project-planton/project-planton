@@ -271,7 +271,7 @@ output "external_hostname" {
 
 ### Protobuf Changes
 
-**File**: `apis/project/planton/provider/kubernetes/workload/rediskubernetes/v1/spec.proto`
+**File**: `provider/kubernetes/workload/rediskubernetes/v1/spec.proto`
 
 **Changes Made**:
 1. **Updated Field Type**: Line 39 changed from `project.planton.shared.kubernetes.IngressSpec` to `RedisKubernetesIngress`
@@ -792,7 +792,7 @@ project-planton pulumi up --manifest redis-invalid.yaml
 
 ## Related Documentation
 
-- **Redis Kubernetes API**: `apis/project/planton/provider/kubernetes/workload/rediskubernetes/v1/`
+- **Redis Kubernetes API**: `provider/kubernetes/workload/rediskubernetes/v1/`
 - **External-DNS Integration**: See `ExternalDnsKubernetes` resource for DNS automation
 - **Bitnami Redis Helm Chart**: https://github.com/bitnami/charts/tree/main/bitnami/redis
 - **CEL Validation**: https://github.com/bufbuild/protovalidate

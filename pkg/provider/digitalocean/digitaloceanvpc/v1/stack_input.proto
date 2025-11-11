@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package project.planton.provider.digitalocean.digitaloceanvpc.v1;
+
+import "pkg/provider/digitalocean/digitaloceanvpc/v1/api.proto";
+import "pkg/provider/digitalocean/provider.proto";
+
+//digital-ocean-vpc stack-input
+message DigitalOceanVpcStackInput {
+  //target cloud-resource
+  DigitalOceanVpc target = 1;
+  //provider-config
+  project.planton.provider.digitalocean.DigitalOceanProviderConfig provider_config = 2;
+}

@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package project.planton.provider.kubernetes.addon.externalsecretskubernetes.v1;
+
+import "pkg/provider/kubernetes/addon/externalsecretskubernetes/v1/api.proto";
+import "pkg/provider/kubernetes/provider.proto";
+
+//external-secrets-kubernetes stack-input
+message ExternalSecretsKubernetesStackInput {
+  //target cloud-resource
+  ExternalSecretsKubernetes target = 1;
+  //provider-config
+  project.planton.provider.kubernetes.KubernetesProviderConfig provider_config = 2;
+}

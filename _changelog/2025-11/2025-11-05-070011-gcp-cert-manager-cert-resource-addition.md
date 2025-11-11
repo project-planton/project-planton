@@ -50,7 +50,7 @@ A fully-featured cloud resource that provisions SSL/TLS certificates on GCP with
 
 ### 1. Protocol Buffer Definitions
 
-**Location**: `apis/project/planton/provider/gcp/gcpcertmanagercert/v1/`
+**Location**: `provider/gcp/gcpcertmanagercert/v1/`
 
 #### api.proto
 
@@ -153,7 +153,7 @@ GcpCertManagerCert = 619 [(kind_meta) = {
 
 ### 3. Pulumi Implementation (Go)
 
-**Location**: `apis/project/planton/provider/gcp/gcpcertmanagercert/v1/iac/pulumi/`
+**Location**: `provider/gcp/gcpcertmanagercert/v1/iac/pulumi/`
 
 #### Module Structure
 
@@ -264,7 +264,7 @@ func initializeLocals(...) *Locals {
 
 ### 4. Terraform Implementation
 
-**Location**: `apis/project/planton/provider/gcp/gcpcertmanagercert/v1/iac/tf/`
+**Location**: `provider/gcp/gcpcertmanagercert/v1/iac/tf/`
 
 #### main.tf
 
@@ -315,7 +315,7 @@ resource "google_compute_managed_ssl_certificate" "lb_cert" {
 
 ### 5. Testing
 
-**File**: `apis/project/planton/provider/gcp/gcpcertmanagercert/v1/spec_test.go`
+**File**: `provider/gcp/gcpcertmanagercert/v1/spec_test.go`
 
 Comprehensive unit tests covering:
 

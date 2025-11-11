@@ -6,13 +6,13 @@ import (
 	"os/exec"
 
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/apis/project/planton/shared/iac/pulumi"
 	"github.com/project-planton/project-planton/internal/manifest"
 	"github.com/project-planton/project-planton/pkg/crkreflect"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/backendconfig"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput/stackinputproviderconfig"
+	"github.com/project-planton/project-planton/pkg/shared/iac/pulumi"
 )
 
 func Run(moduleDir, stackFqdn, targetManifestPath string, pulumiOperation pulumi.PulumiOperationType,

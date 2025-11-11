@@ -259,7 +259,7 @@ output "external_hostname" {
 
 ### Protobuf Changes
 
-**File**: `apis/project/planton/provider/kubernetes/workload/postgreskubernetes/v1/spec.proto`
+**File**: `provider/kubernetes/workload/postgreskubernetes/v1/spec.proto`
 
 **Changes Made**:
 1. **Updated Field Type**: Line 68 changed from `project.planton.shared.kubernetes.IngressSpec` to `PostgresKubernetesIngress`
@@ -323,7 +323,7 @@ All documentation files updated with correct ingress syntax:
 
 ### Stack Outputs Proto
 
-**File**: `apis/project/planton/provider/kubernetes/workload/postgreskubernetes/v1/stack_outputs.proto`
+**File**: `provider/kubernetes/workload/postgreskubernetes/v1/stack_outputs.proto`
 
 Added deprecation comment to `internal_hostname` field (line 30) for backward compatibility.
 
@@ -606,7 +606,7 @@ project-planton pulumi up --manifest postgres-invalid.yaml
 
 ## Related Documentation
 
-- **Postgres Kubernetes API**: `apis/project/planton/provider/kubernetes/workload/postgreskubernetes/v1/`
+- **Postgres Kubernetes API**: `provider/kubernetes/workload/postgreskubernetes/v1/`
 - **External-DNS Integration**: See `ExternalDnsKubernetes` resource for DNS automation
 - **Zalando PostgreSQL Operator**: https://github.com/zalando/postgres-operator
 - **CEL Validation**: https://github.com/bufbuild/protovalidate

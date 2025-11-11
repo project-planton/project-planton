@@ -25,7 +25,7 @@ SCOPE
 - Use local backend unless otherwise provided.
 
 DEFAULTS
-- Manifest: `apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/hack/manifest.yaml`
+- Manifest: `provider/<provider>/<kindfolder>/v1/iac/hack/manifest.yaml`
 
 OUTPUT
 - Show deterministic tool invocation and summarized results (make local, login, stack select, update).

@@ -17,7 +17,7 @@ TOOLS
 
 SCOPE
 - Detect provider and kind.
-- Target: `apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/pulumi/module/`
+- Target: `provider/<provider>/<kindfolder>/v1/iac/pulumi/module/`
 - Create/update typical files: `main.go`, `locals.go`, `outputs.go`, `resource_*.go` (do not add BUILD.bazel here).
 
 SEQUENTIAL STEPS

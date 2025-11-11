@@ -2,9 +2,9 @@ package providerconfig
 
 import (
 	"github.com/pkg/errors"
-	azure "github.com/project-planton/project-planton/apis/project/planton/provider/azure"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput/stackinputproviderconfig"
+	azure "github.com/project-planton/project-planton/pkg/provider/azure"
 )
 
 func AddAzureProviderConfigEnvVars(stackInputContentMap map[string]interface{},

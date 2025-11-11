@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package project.planton.provider.cloudflare.cloudflareworker.v1;
+
+import "pkg/provider/cloudflare/cloudflareworker/v1/api.proto";
+import "pkg/provider/cloudflare/provider.proto";
+
+//cloudflare-worker stack-input
+message CloudflareWorkerStackInput {
+  //target cloud-resource
+  CloudflareWorker target = 1;
+  //provider-config
+  project.planton.provider.cloudflare.CloudflareProviderConfig provider_config = 2;
+}

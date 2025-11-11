@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package project.planton.provider.aws.awsstaticwebsite.v1;
+
+import "pkg/provider/aws/awsstaticwebsite/v1/api.proto";
+import "pkg/provider/aws/provider.proto";
+
+//aws-static-website stack-input
+message AwsStaticWebsiteStackInput {
+  //target cloud-resource
+  AwsStaticWebsite target = 1;
+  //provider-config
+  project.planton.provider.aws.AwsProviderConfig provider_config = 2;
+}

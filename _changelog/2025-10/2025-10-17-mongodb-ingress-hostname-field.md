@@ -280,7 +280,7 @@ This aligns with modern Go/protobuf conventions and matches patterns used across
 
 ### Protobuf Changes
 
-**File**: `apis/project/planton/provider/kubernetes/workload/mongodbkubernetes/v1/spec.proto`
+**File**: `provider/kubernetes/workload/mongodbkubernetes/v1/spec.proto`
 
 **Changes Made**:
 1. **Added Custom Message**: New `MongodbKubernetesIngress` message with CEL validation
@@ -821,7 +821,7 @@ project-planton pulumi up --manifest mongodb-invalid.yaml
 
 ## Related Documentation
 
-- **MongoDB Kubernetes API**: `apis/project/planton/provider/kubernetes/workload/mongodbkubernetes/v1/`
+- **MongoDB Kubernetes API**: `provider/kubernetes/workload/mongodbkubernetes/v1/`
 - **External-DNS Integration**: See `ExternalDnsKubernetes` resource for DNS automation
 - **Percona MongoDB Operator**: https://docs.percona.com/percona-operator-for-mongodb/
 - **CEL Validation**: https://github.com/bufbuild/protovalidate

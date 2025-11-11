@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package project.planton.provider.gcp.gcpstaticwebsite.v1;
+
+import "pkg/provider/gcp/gcpstaticwebsite/v1/api.proto";
+import "pkg/provider/gcp/provider.proto";
+
+//gcp-static-website stack-input
+message GcpStaticWebsiteStackInput {
+  //target cloud-resource
+  GcpStaticWebsite target = 1;
+  //provider-config
+  project.planton.provider.gcp.GcpProviderConfig provider_config = 2;
+}

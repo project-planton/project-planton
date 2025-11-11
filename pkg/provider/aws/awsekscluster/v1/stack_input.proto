@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package project.planton.provider.aws.awsekscluster.v1;
+
+import "pkg/provider/aws/awsekscluster/v1/api.proto";
+import "pkg/provider/aws/provider.proto";
+
+//aws-eks-cluster stack-input
+message AwsEksClusterStackInput {
+  //target cloud-resource
+  AwsEksCluster target = 1;
+  //provider-config
+  project.planton.provider.aws.AwsProviderConfig provider_config = 2;
+}

@@ -340,7 +340,7 @@ output "otel_collector_external_http_hostname" {
 
 ### Protobuf Changes
 
-**File**: `apis/project/planton/provider/kubernetes/workload/signozkubernetes/v1/spec.proto`
+**File**: `provider/kubernetes/workload/signozkubernetes/v1/spec.proto`
 
 **Changes Made**:
 1. **Removed Shared IngressSpec**: No longer uses `project.planton.shared.kubernetes.IngressSpec`
@@ -1091,7 +1091,7 @@ project-planton pulumi up --manifest signoz-invalid.yaml
 
 ## Related Documentation
 
-- **SigNoz Kubernetes API**: `apis/project/planton/provider/kubernetes/workload/signozkubernetes/v1/`
+- **SigNoz Kubernetes API**: `provider/kubernetes/workload/signozkubernetes/v1/`
 - **SigNoz Documentation**: https://signoz.io/docs/
 - **OpenTelemetry**: https://opentelemetry.io/
 - **Gateway API**: https://gateway-api.sigs.k8s.io/

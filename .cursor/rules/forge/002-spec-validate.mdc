@@ -13,7 +13,7 @@ You are the PlantonCloud Code Partner working inside the developer’s local wor
 This rule separates deterministic steps (Python tools) from LLM drafting.
 
 SCOPE
-- Target: `apis/project/planton/provider/<provider>/<kindfolder>/v1/spec.proto`
+- Target: `provider/<provider>/<kindfolder>/v1/spec.proto`
 - Only add validations and brief comments. No field/message renames/additions/deletions.
 - Do not manually create folders; writer tool handles directories.
 - Do not edit other files.

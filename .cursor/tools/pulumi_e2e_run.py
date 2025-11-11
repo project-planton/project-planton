@@ -11,7 +11,7 @@ Steps performed:
 Usage examples:
   python3 .cursor/tools/pulumi_e2e_run.py \
     --provider aws --kindfolder awscloudfront \
-    --manifest ./apis/project/planton/provider/aws/awscloudfront/v1/iac/hack/manifest.yaml \
+    --manifest ./provider/aws/awscloudfront/v1/iac/hack/manifest.yaml \
     --stack org/project/stack \
     --pulumi-login file://${HOME}/.pulumi
 

@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package project.planton.provider.gcp.gcpartifactregistryrepo.v1;
+
+import "pkg/provider/gcp/gcpartifactregistryrepo/v1/api.proto";
+import "pkg/provider/gcp/provider.proto";
+
+//gcp-artifact-registry-repo stack-input
+message GcpArtifactRegistryRepoStackInput {
+  //target cloud-resource
+  GcpArtifactRegistryRepo target = 1;
+  //provider-config
+  project.planton.provider.gcp.GcpProviderConfig provider_config = 2;
+}

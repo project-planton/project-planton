@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package project.planton.provider.digitalocean.digitaloceanloadbalancer.v1;
+
+import "pkg/provider/digitalocean/digitaloceanloadbalancer/v1/api.proto";
+import "pkg/provider/digitalocean/provider.proto";
+
+//digital-ocean-load-balancer stack-input
+message DigitalOceanLoadBalancerStackInput {
+  //target cloud-resource
+  DigitalOceanLoadBalancer target = 1;
+  //provider-config
+  project.planton.provider.digitalocean.DigitalOceanProviderConfig provider_config = 2;
+}

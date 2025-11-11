@@ -5,7 +5,6 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/apis/project/planton/shared/iac/terraform"
 	"github.com/project-planton/project-planton/internal/cli/workspace"
 	"github.com/project-planton/project-planton/internal/manifest"
 	"github.com/project-planton/project-planton/pkg/crkreflect"
@@ -13,6 +12,7 @@ import (
 	"github.com/project-planton/project-planton/pkg/iac/stackinput/stackinputproviderconfig"
 	"github.com/project-planton/project-planton/pkg/iac/tofu/backendconfig"
 	"github.com/project-planton/project-planton/pkg/iac/tofu/tfbackend"
+	"github.com/project-planton/project-planton/pkg/shared/iac/terraform"
 	log "github.com/sirupsen/logrus"
 )
 

@@ -12,8 +12,6 @@ go_library(
     importpath = "github.com/project-planton/project-planton/pkg/iac/tofu/tofumodule",
     visibility = ["//visibility:public"],
     deps = [
-        "//apis/project/planton/shared/cloudresourcekind",
-        "//apis/project/planton/shared/iac/terraform",
         "//internal/cli/version",
         "//internal/cli/workspace",
         "//internal/manifest",
@@ -26,6 +24,8 @@ go_library(
         "//pkg/iac/tofu/tfbackend",
         "//pkg/iac/tofu/tfvars",
         "//pkg/iac/tofu/tofumodule/providerconfig",
+        "//pkg/shared/cloudresourcekind",
+        "//pkg/shared/iac/terraform",
         "@com_github_pkg_errors//:errors",
         "@com_github_sirupsen_logrus//:logrus",
         "@in_gopkg_yaml_v3//:yaml_v3",

@@ -43,7 +43,7 @@ Created a complete, production-ready API resource following established patterns
 
 ### HarborKubernetes Proto API
 
-**File**: `apis/project/planton/provider/kubernetes/workload/harborkubernetes/v1/api.proto`
+**File**: `provider/kubernetes/workload/harborkubernetes/v1/api.proto`
 
 Standard API resource structure:
 ```proto
@@ -56,7 +56,7 @@ message HarborKubernetes {
 }
 ```
 
-**File**: `apis/project/planton/provider/kubernetes/workload/harborkubernetes/v1/spec.proto`
+**File**: `provider/kubernetes/workload/harborkubernetes/v1/spec.proto`
 
 The spec includes 6 custom field option extensions (570001-570006) providing defaults for:
 - `default_harbor_core_container`: 1 replica, 200m/1000m CPU, 512Mi/2Gi memory
@@ -123,7 +123,7 @@ message HarborKubernetesExternalRedis {
 
 ### Pulumi IaC Module
 
-**File**: `apis/project/planton/provider/kubernetes/workload/harborkubernetes/v1/iac/pulumi/module/main.go`
+**File**: `provider/kubernetes/workload/harborkubernetes/v1/iac/pulumi/module/main.go`
 
 Orchestration flow:
 1. Initialize locals with namespace, labels, service names
@@ -160,7 +160,7 @@ Pattern follows SignozKubernetes with variables for:
 
 ### Terraform Module
 
-**File**: `apis/project/planton/provider/kubernetes/workload/harborkubernetes/v1/iac/tf/variables.tf`
+**File**: `provider/kubernetes/workload/harborkubernetes/v1/iac/tf/variables.tf`
 
 Comprehensive variable definition supporting:
 - All container configurations
@@ -205,7 +205,7 @@ Created 4 asset files in `planton-cloud/apis/cloud/planton/apis/infrahub/cloudre
 
 ### GCP Cloud SQL Panic Fix
 
-**File Modified**: `apis/project/planton/provider/gcp/gcpcloudsql/v1/iac/pulumi/module/main.go`
+**File Modified**: `provider/gcp/gcpcloudsql/v1/iac/pulumi/module/main.go`
 
 **Root Cause**: The Pulumi GCP SDK v8 changed the structure of `IpAddresses` field. The code attempted to iterate it as `[]interface{}` but the actual type was incompatible, causing a type assertion panic.
 
@@ -491,16 +491,16 @@ certmanagerv1.NewCertificate(ctx, "ingress-certificate", &certmanagerv1.Certific
 ### Project Planton Repository
 
 **HarborKubernetes - Proto API (8 files)**:
-- `apis/project/planton/provider/kubernetes/workload/harborkubernetes/v1/api.proto`
-- `apis/project/planton/provider/kubernetes/workload/harborkubernetes/v1/spec.proto`
-- `apis/project/planton/provider/kubernetes/workload/harborkubernetes/v1/stack_outputs.proto`
-- `apis/project/planton/provider/kubernetes/workload/harborkubernetes/v1/stack_input.proto`
-- `apis/project/planton/provider/kubernetes/workload/harborkubernetes/v1/*.pb.go` (4 generated files)
+- `provider/kubernetes/workload/harborkubernetes/v1/api.proto`
+- `provider/kubernetes/workload/harborkubernetes/v1/spec.proto`
+- `provider/kubernetes/workload/harborkubernetes/v1/stack_outputs.proto`
+- `provider/kubernetes/workload/harborkubernetes/v1/stack_input.proto`
+- `provider/kubernetes/workload/harborkubernetes/v1/*.pb.go` (4 generated files)
 
 **HarborKubernetes - Documentation (3 files)**:
-- `apis/project/planton/provider/kubernetes/workload/harborkubernetes/v1/README.md` (232 lines)
-- `apis/project/planton/provider/kubernetes/workload/harborkubernetes/v1/examples.md` (567 lines)
-- `apis/project/planton/provider/kubernetes/workload/harborkubernetes/v1/iac/hack/manifest.yaml`
+- `provider/kubernetes/workload/harborkubernetes/v1/README.md` (232 lines)
+- `provider/kubernetes/workload/harborkubernetes/v1/examples.md` (567 lines)
+- `provider/kubernetes/workload/harborkubernetes/v1/iac/hack/manifest.yaml`
 
 **HarborKubernetes - Pulumi Module (9 files)**:
 - `iac/pulumi/main.go`
@@ -564,11 +564,11 @@ buf generate --path project/planton/provider/kubernetes/workload/harborkubernete
 # ✅ Generated BUILD.bazel in v1/ and module/ directories
 
 # API package build
-./bazelw build //apis/project/planton/provider/kubernetes/workload/harborkubernetes/v1:harborkubernetes
+./bazelw build //provider/kubernetes/workload/harborkubernetes/v1:harborkubernetes
 # ✅ Build completed successfully
 
 # Pulumi module build
-./bazelw build //apis/project/planton/provider/kubernetes/workload/harborkubernetes/v1/iac/pulumi/module:module
+./bazelw build //provider/kubernetes/workload/harborkubernetes/v1/iac/pulumi/module:module
 # ✅ Build completed successfully
 ```
 
@@ -782,11 +782,11 @@ buf generate --path project/planton/provider/kubernetes/workload/harborkubernete
 
 # Verify Go builds
 cd /Users/swarup/scm/github.com/project-planton/project-planton
-./bazelw build //apis/project/planton/provider/kubernetes/workload/harborkubernetes/v1:harborkubernetes
-./bazelw build //apis/project/planton/provider/kubernetes/workload/harborkubernetes/v1/iac/pulumi/module:module
+./bazelw build //provider/kubernetes/workload/harborkubernetes/v1:harborkubernetes
+./bazelw build //provider/kubernetes/workload/harborkubernetes/v1/iac/pulumi/module:module
 
 # Verify GCP Cloud SQL fix
-./bazelw build //apis/project/planton/provider/gcp/gcpcloudsql/v1/iac/pulumi/module:module
+./bazelw build //provider/gcp/gcpcloudsql/v1/iac/pulumi/module:module
 
 # Verify cloud resource kind
 grep -A 8 "HarborKubernetes = 837" apis/project/planton/shared/cloudresourcekind/cloud_resource_kind.proto
@@ -880,8 +880,8 @@ N/A - New resource, no migration needed.
 - Temporal Kubernetes Gateway API: `2025-11-02-071814-temporal-kubernetes-http-ingress-gateway-api.md`
 
 **Proto Patterns**:
-- SignozKubernetes: `apis/project/planton/provider/kubernetes/workload/signozkubernetes/v1/spec.proto`
-- TemporalKubernetes: `apis/project/planton/provider/kubernetes/workload/temporalkubernetes/v1/spec.proto`
+- SignozKubernetes: `provider/kubernetes/workload/signozkubernetes/v1/spec.proto`
+- TemporalKubernetes: `provider/kubernetes/workload/temporalkubernetes/v1/spec.proto`
 
 ---
 

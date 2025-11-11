@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package project.planton.provider.civo.civokubernetescluster.v1;
+
+import "pkg/provider/civo/civokubernetescluster/v1/api.proto";
+import "pkg/provider/civo/provider.proto";
+
+//civo-kubernetes-cluster stack-input
+message CivoKubernetesClusterStackInput {
+  //target cloud-resource
+  CivoKubernetesCluster target = 1;
+  //provider-config
+  project.planton.provider.civo.CivoProviderConfig provider_config = 2;
+}

@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package project.planton.provider.aws.awsrdsinstance.v1;
+
+import "pkg/provider/aws/awsrdsinstance/v1/api.proto";
+import "pkg/provider/aws/provider.proto";
+
+// AwsRdsInstanceStackInput defines the inputs the CLI passes to provision the RDS instance.
+message AwsRdsInstanceStackInput {
+  // target
+  AwsRdsInstance target = 1;
+
+  // provider-credential
+  project.planton.provider.aws.AwsProviderConfig provider_config = 2;
+}

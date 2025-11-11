@@ -14,7 +14,6 @@ go_library(
     importpath = "github.com/project-planton/project-planton/cmd/project-planton/root/tofu",
     visibility = ["//visibility:public"],
     deps = [
-        "//apis/project/planton/shared/iac/terraform",
         "//internal/cli/cliprint",
         "//internal/cli/flag",
         "//internal/cli/manifest",
@@ -27,6 +26,7 @@ go_library(
         "//pkg/iac/tofu/tfvars",
         "//pkg/iac/tofu/tofumodule",
         "//pkg/iac/tofu/variablestf",
+        "//pkg/shared/iac/terraform",
         "@com_github_sirupsen_logrus//:logrus",
         "@com_github_spf13_cobra//:cobra",
     ],

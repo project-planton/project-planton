@@ -548,7 +548,7 @@ grep -A 4 "GcpCertManagerCert" \
 **Rule 017**:
 ```bash
 # Verified proto stubs generated
-ls apis/project/planton/provider/gcp/gcpcertmanagercert/v1/*.pb.go
+ls provider/gcp/gcpcertmanagercert/v1/*.pb.go
 # Result: 4 files generated successfully
 ```
 

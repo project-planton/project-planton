@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package project.planton.provider.azure.azurecontainerregistry.v1;
+
+import "pkg/provider/azure/azurecontainerregistry/v1/api.proto";
+import "pkg/provider/azure/provider.proto";
+
+//azure-container-registry stack-input
+message AzureContainerRegistryStackInput {
+  //target cloud-resource
+  AzureContainerRegistry target = 1;
+  //provider-config
+  project.planton.provider.azure.AzureProviderConfig provider_config = 2;
+}

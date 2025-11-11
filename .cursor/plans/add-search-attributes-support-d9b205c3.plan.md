@@ -26,7 +26,7 @@ Enable users to configure custom search attributes in Temporal deployments. Sear
 
 ### 1. Update Protobuf Contract (`spec.proto`)
 
-**File**: `apis/project/planton/provider/kubernetes/workload/temporalkubernetes/v1/spec.proto`
+**File**: `provider/kubernetes/workload/temporalkubernetes/v1/spec.proto`
 
 **Add new enum and message** after line 22 (after `TemporalKubernetesDatabaseBackend`):
 
@@ -92,7 +92,7 @@ This generates updated `spec.pb.go` with the new enum and message types.
 
 ### 3. Update Pulumi Module (Helm Chart Configuration)
 
-**File**: `apis/project/planton/provider/kubernetes/workload/temporalkubernetes/v1/iac/pulumi/module/helm_chart.go`
+**File**: `provider/kubernetes/workload/temporalkubernetes/v1/iac/pulumi/module/helm_chart.go`
 
 **After line 155** (after elasticsearch configuration, before chart installation), add:
 
@@ -152,7 +152,7 @@ func mapSearchAttributeType(attrType temporalkubernetesv1.TemporalKubernetesSear
 
 ### 4. Update Documentation
 
-**File**: `apis/project/planton/provider/kubernetes/workload/temporalkubernetes/v1/README.md`
+**File**: `provider/kubernetes/workload/temporalkubernetes/v1/README.md`
 
 **Add new section** after "Observability and Monitoring" (around line 35):
 
@@ -210,7 +210,7 @@ spec:
 
 ### 5. Update Examples File
 
-**File**: `apis/project/planton/provider/kubernetes/workload/temporalkubernetes/v1/examples.md`
+**File**: `provider/kubernetes/workload/temporalkubernetes/v1/examples.md`
 
 Add the same search attributes example from step 4.
 

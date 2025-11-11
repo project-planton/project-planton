@@ -1,5 +1,7 @@
 # Pulumi Commands Reference
 
+> **📖 For the best reading experience**, view this documentation on the [Project Planton website](https://project-planton.org/docs/cli/pulumi-commands).
+
 Your complete guide to managing infrastructure with `project-planton pulumi` commands.
 
 ---

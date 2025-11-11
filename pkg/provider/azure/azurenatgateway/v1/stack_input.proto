@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package project.planton.provider.azure.azurenatgateway.v1;
+
+import "pkg/provider/azure/azurenatgateway/v1/api.proto";
+import "pkg/provider/azure/provider.proto";
+
+//azure-nat-gateway stack-input
+message AzureNatGatewayStackInput {
+  //target cloud-resource
+  AzureNatGateway target = 1;
+  //provider-config
+  project.planton.provider.azure.AzureProviderConfig provider_config = 2;
+}

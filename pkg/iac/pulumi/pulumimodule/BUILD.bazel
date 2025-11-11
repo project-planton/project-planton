@@ -6,12 +6,12 @@ go_library(
     importpath = "github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule",
     visibility = ["//visibility:public"],
     deps = [
-        "//apis/project/planton/shared/cloudresourcekind",
         "//internal/cli/version",
         "//internal/cli/workspace",
         "//pkg/crkreflect",
         "//pkg/fileutil",
         "//pkg/iac/gitrepo",
+        "//pkg/shared/cloudresourcekind",
         "@com_github_pkg_errors//:errors",
     ],
 )

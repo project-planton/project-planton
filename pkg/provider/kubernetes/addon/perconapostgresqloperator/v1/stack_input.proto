@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package project.planton.provider.kubernetes.addon.perconapostgresqloperator.v1;
+
+import "pkg/provider/kubernetes/addon/perconapostgresqloperator/v1/api.proto";
+import "pkg/provider/kubernetes/provider.proto";
+
+//percona-postgresql-operator-kubernetes stack-input
+message PerconaPostgresqlOperatorStackInput {
+  //target cloud-resource
+  PerconaPostgresqlOperator target = 1;
+  //provider-config
+  project.planton.provider.kubernetes.KubernetesProviderConfig provider_config = 2;
+}

@@ -16,7 +16,7 @@ TOOLS
 - Authoring guide: `.cursor/info/hack_manifest.md`.
 
 SCOPE
-- Target: `apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/hack/manifest.yaml`
+- Target: `provider/<provider>/<kindfolder>/v1/iac/hack/manifest.yaml`
 - Create/update a minimal YAML manifest with safe defaults.
 
 SEQUENTIAL STEPS

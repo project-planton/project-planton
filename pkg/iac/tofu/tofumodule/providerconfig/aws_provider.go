@@ -2,9 +2,9 @@ package providerconfig
 
 import (
 	"github.com/pkg/errors"
-	aws "github.com/project-planton/project-planton/apis/project/planton/provider/aws"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput/stackinputproviderconfig"
+	aws "github.com/project-planton/project-planton/pkg/provider/aws"
 )
 
 func AddAwsProviderConfigEnvVars(stackInputContentMap map[string]interface{},

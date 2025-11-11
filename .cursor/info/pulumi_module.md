@@ -7,7 +7,7 @@ Purpose: implement the Pulumi module under `iac/pulumi/module` for a resource ki
 - Provider credential proto referenced by `stack_input.proto`
 
 ## Target directory
-- `apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/pulumi/module/`
+- `provider/<provider>/<kindfolder>/v1/iac/pulumi/module/`
 
 ## Files (typical)
 - `main.go` — controller function `Resources(ctx *pulumi.Context, in *<pkg>.<Kind>StackInput) error`

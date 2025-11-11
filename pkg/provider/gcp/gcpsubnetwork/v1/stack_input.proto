@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package project.planton.provider.gcp.gcpsubnetwork.v1;
+
+import "pkg/provider/gcp/gcpsubnetwork/v1/api.proto";
+import "pkg/provider/gcp/provider.proto";
+
+//gcp-subnetwork stack-input
+message GcpSubnetworkStackInput {
+  //target cloud-resource
+  GcpSubnetwork target = 1;
+  //provider-config
+  project.planton.provider.gcp.GcpProviderConfig provider_config = 2;
+}

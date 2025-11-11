@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package project.planton.provider.kubernetes.addon.kafkaoperatorkubernetes.v1;
+
+import "pkg/provider/kubernetes/addon/kafkaoperatorkubernetes/v1/api.proto";
+import "pkg/provider/kubernetes/provider.proto";
+
+//kafka-operator-kubernetes stack-input
+message KafkaOperatorKubernetesStackInput {
+  //target cloud-resource
+  KafkaOperatorKubernetes target = 1;
+  //provider-config
+  project.planton.provider.kubernetes.KubernetesProviderConfig provider_config = 2;
+}

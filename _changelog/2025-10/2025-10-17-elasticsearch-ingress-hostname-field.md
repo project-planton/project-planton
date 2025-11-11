@@ -377,7 +377,7 @@ locals {
 
 ### Protobuf Changes
 
-**File**: `apis/project/planton/provider/kubernetes/workload/elasticsearchkubernetes/v1/spec.proto`
+**File**: `provider/kubernetes/workload/elasticsearchkubernetes/v1/spec.proto`
 
 **Changes Made**:
 1. **Restructured ElasticsearchKubernetesSpec**: Replaced flat container fields with hierarchical `elasticsearch` and `kibana` groupings
@@ -1121,7 +1121,7 @@ project-planton pulumi up --manifest elasticsearch-invalid.yaml
 
 ## Related Documentation
 
-- **Elasticsearch Kubernetes API**: `apis/project/planton/provider/kubernetes/workload/elasticsearchkubernetes/v1/`
+- **Elasticsearch Kubernetes API**: `provider/kubernetes/workload/elasticsearchkubernetes/v1/`
 - **Elastic Cloud on Kubernetes**: https://www.elastic.co/guide/en/cloud-on-k8s/current/index.html
 - **Gateway API**: https://gateway-api.sigs.k8s.io/
 - **CEL Validation**: https://github.com/bufbuild/protovalidate

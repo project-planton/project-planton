@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package project.planton.provider.digitalocean.digitaloceandroplet.v1;
+
+import "pkg/provider/digitalocean/digitaloceandroplet/v1/api.proto";
+import "pkg/provider/digitalocean/provider.proto";
+
+//digital-ocean-droplet stack-input
+message DigitalOceanDropletStackInput {
+  //target cloud-resource
+  DigitalOceanDroplet target = 1;
+  //provider-config
+  project.planton.provider.digitalocean.DigitalOceanProviderConfig provider_config = 2;
+}

@@ -3,7 +3,7 @@
 Purpose: author `README.md` and `examples.md` for the Terraform module under `iac/tf/`.
 
 ## Target directory
-- `apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/tf/`
+- `provider/<provider>/<kindfolder>/v1/iac/tf/`
 
 ## Files
 - `README.md` — CLI flows using ProjectPlanton tofu with default local backend

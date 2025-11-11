@@ -74,7 +74,7 @@ gRPC Traffic:                      HTTP Traffic:
 
 ### 1. API Definition Changes
 
-Updated `apis/project/planton/provider/kubernetes/workload/temporalkubernetes/v1/spec.proto`:
+Updated `provider/kubernetes/workload/temporalkubernetes/v1/spec.proto`:
 
 **Before**:
 ```protobuf
@@ -338,17 +338,17 @@ func Resources(ctx *pulumi.Context, stackInput *temporalkubernetesv1.TemporalKub
 ### 3. Files Modified
 
 **API Layer**:
-- `apis/project/planton/provider/kubernetes/workload/temporalkubernetes/v1/spec.proto` - updated field definitions
-- `apis/project/planton/provider/kubernetes/workload/temporalkubernetes/v1/spec.pb.go` - regenerated from proto
-- `apis/project/planton/provider/kubernetes/workload/temporalkubernetes/v1/api_test.go` - updated test fixtures
+- `provider/kubernetes/workload/temporalkubernetes/v1/spec.proto` - updated field definitions
+- `provider/kubernetes/workload/temporalkubernetes/v1/spec.pb.go` - regenerated from proto
+- `provider/kubernetes/workload/temporalkubernetes/v1/api_test.go` - updated test fixtures
 
 **Pulumi Module**:
-- `apis/project/planton/provider/kubernetes/workload/temporalkubernetes/v1/iac/pulumi/module/locals.go` - added HTTP hostname tracking
-- `apis/project/planton/provider/kubernetes/workload/temporalkubernetes/v1/iac/pulumi/module/frontend_ingress.go` - removed HTTP port, uses GrpcHostname
-- `apis/project/planton/provider/kubernetes/workload/temporalkubernetes/v1/iac/pulumi/module/frontend_http_ingress.go` - **new file** for HTTP Gateway API ingress
-- `apis/project/planton/provider/kubernetes/workload/temporalkubernetes/v1/iac/pulumi/module/web_ui_ingress.go` - updated to use GrpcHostname field
-- `apis/project/planton/provider/kubernetes/workload/temporalkubernetes/v1/iac/pulumi/module/main.go` - wired up HTTP ingress
-- `apis/project/planton/provider/kubernetes/workload/temporalkubernetes/v1/iac/pulumi/module/BUILD.bazel` - auto-updated by Gazelle
+- `provider/kubernetes/workload/temporalkubernetes/v1/iac/pulumi/module/locals.go` - added HTTP hostname tracking
+- `provider/kubernetes/workload/temporalkubernetes/v1/iac/pulumi/module/frontend_ingress.go` - removed HTTP port, uses GrpcHostname
+- `provider/kubernetes/workload/temporalkubernetes/v1/iac/pulumi/module/frontend_http_ingress.go` - **new file** for HTTP Gateway API ingress
+- `provider/kubernetes/workload/temporalkubernetes/v1/iac/pulumi/module/web_ui_ingress.go` - updated to use GrpcHostname field
+- `provider/kubernetes/workload/temporalkubernetes/v1/iac/pulumi/module/main.go` - wired up HTTP ingress
+- `provider/kubernetes/workload/temporalkubernetes/v1/iac/pulumi/module/BUILD.bazel` - auto-updated by Gazelle
 
 **Total**: 8 files modified, 1 file created, ~220 lines of new code
 

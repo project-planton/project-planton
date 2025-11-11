@@ -6,7 +6,7 @@ Purpose: implement the Terraform module under `iac/tf/` for a resource kind usin
 - `api.proto`, `spec.proto`, `stack_input.proto`, `stack_outputs.proto`
 
 ## Target directory
-- `apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/tf/`
+- `provider/<provider>/<kindfolder>/v1/iac/tf/`
 
 ## Files (typical)
 - `variables.tf` — generated via CLI (do not hand-edit)

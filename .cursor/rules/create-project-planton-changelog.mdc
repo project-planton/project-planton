@@ -286,7 +286,7 @@ When referencing code, use actual project-planton paths:
 **File**: `pkg/iac/pulumi/pulumistack/run.go`
 **File**: `internal/cli/flag/flag.go`
 **File**: `pkg/kubernetes/workload/postgres/provider.go`
-**File**: `apis/project/planton/provider/kubernetes/workload/postgreskubernetes/v1/api.proto`
+**File**: `provider/kubernetes/workload/postgreskubernetes/v1/api.proto`
 ```
 
 ### CLI Command Examples

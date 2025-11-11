@@ -3,7 +3,7 @@
 Purpose: define `stack_outputs.proto` for a resource with observable, non-secret outputs.
 
 ## Folder and Naming
-- Path: `apis/project/planton/provider/<provider>/<kindfolder>/v1/stack_outputs.proto`
+- Path: `provider/<provider>/<kindfolder>/v1/stack_outputs.proto`
 - Kind (PascalCase), folder `<kindfolder>` lowercased, no underscores.
 
 ## Syntax and Package

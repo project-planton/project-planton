@@ -155,7 +155,7 @@ for _, attr := range locals.TemporalKubernetes.Spec.SearchAttributes {
 
 ### Protobuf Changes
 
-**File**: `apis/project/planton/provider/kubernetes/workload/temporalkubernetes/v1/spec.proto`
+**File**: `provider/kubernetes/workload/temporalkubernetes/v1/spec.proto`
 
 1. **Removed**: `TemporalKubernetesSearchAttributeType` enum (26 lines)
 2. **Updated**: `TemporalKubernetesSearchAttribute.type` to validated string
@@ -165,7 +165,7 @@ for _, attr := range locals.TemporalKubernetes.Spec.SearchAttributes {
 
 ### Pulumi Module Updates
 
-**File**: `apis/project/planton/provider/kubernetes/workload/temporalkubernetes/v1/iac/pulumi/module/helm_chart.go`
+**File**: `provider/kubernetes/workload/temporalkubernetes/v1/iac/pulumi/module/helm_chart.go`
 
 **Changes**:
 1. **Removed**: `mapSearchAttributeType()` function (21 lines)
@@ -466,7 +466,7 @@ spec:
 - **Temporal Search Attributes**: https://docs.temporal.io/visibility#search-attribute
 - **Temporal Type System**: https://docs.temporal.io/workflows#search-attributes
 - **CEL Validation**: https://github.com/bufbuild/protovalidate
-- **TemporalKubernetes API**: `apis/project/planton/provider/kubernetes/workload/temporalkubernetes/v1/`
+- **TemporalKubernetes API**: `provider/kubernetes/workload/temporalkubernetes/v1/`
 
 ## Testing
 
@@ -474,7 +474,7 @@ spec:
 
 Comprehensive unit tests have been added to validate the CEL validation rules:
 
-**File**: `apis/project/planton/provider/kubernetes/workload/temporalkubernetes/v1/api_test.go`
+**File**: `provider/kubernetes/workload/temporalkubernetes/v1/api_test.go`
 
 **Test Coverage** (16 new test cases):
 
@@ -500,7 +500,7 @@ Comprehensive unit tests have been added to validate the CEL validation rules:
 
 **Test Results**:
 ```bash
-cd apis/project/planton/provider/kubernetes/workload/temporalkubernetes/v1
+cd provider/kubernetes/workload/temporalkubernetes/v1
 go test -v
 
 Running Suite: TemporalKubernetes Suite

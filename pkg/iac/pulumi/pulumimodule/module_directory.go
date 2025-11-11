@@ -7,12 +7,12 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
 	"github.com/project-planton/project-planton/internal/cli/version"
 	"github.com/project-planton/project-planton/internal/cli/workspace"
 	"github.com/project-planton/project-planton/pkg/crkreflect"
 	"github.com/project-planton/project-planton/pkg/fileutil"
 	"github.com/project-planton/project-planton/pkg/iac/gitrepo"
+	"github.com/project-planton/project-planton/pkg/shared/cloudresourcekind"
 )
 
 func GetPath(moduleDir string, stackFqdn, kindName string) (string, error) {

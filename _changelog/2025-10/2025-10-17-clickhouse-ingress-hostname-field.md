@@ -251,7 +251,7 @@ output "external_hostname" {
 
 ### Protobuf Changes
 
-**File**: `apis/project/planton/provider/kubernetes/workload/clickhousekubernetes/v1/spec.proto`
+**File**: `provider/kubernetes/workload/clickhousekubernetes/v1/spec.proto`
 
 **Changes Made**:
 1. **Removed Import**: No longer imports `project/planton/shared/kubernetes/kubernetes.proto`
@@ -808,7 +808,7 @@ project-planton pulumi up --manifest clickhouse-invalid.yaml
 
 ## Related Documentation
 
-- **ClickHouse Kubernetes API**: `apis/project/planton/provider/kubernetes/workload/clickhousekubernetes/v1/`
+- **ClickHouse Kubernetes API**: `provider/kubernetes/workload/clickhousekubernetes/v1/`
 - **External-DNS Integration**: See `ExternalDnsKubernetes` resource for DNS automation
 - **Altinity ClickHouse Operator**: https://github.com/Altinity/clickhouse-operator
 - **CEL Validation**: https://github.com/bufbuild/protovalidate

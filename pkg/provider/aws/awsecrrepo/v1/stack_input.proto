@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package project.planton.provider.aws.awsecrrepo.v1;
+
+import "pkg/provider/aws/awsecrrepo/v1/api.proto";
+import "pkg/provider/aws/provider.proto";
+
+//aws-ecr-repo stack-input
+message AwsEcrRepoStackInput {
+  //target cloud-resource
+  AwsEcrRepo target = 1;
+  //provider-config
+  project.planton.provider.aws.AwsProviderConfig provider_config = 2;
+}

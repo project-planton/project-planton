@@ -81,7 +81,7 @@ Split `bucket_name` and `s3_path` instead of full S3 URI:
 
 ### API Changes
 
-**File**: `apis/project/planton/provider/kubernetes/workload/postgreskubernetes/v1/spec.proto`
+**File**: `provider/kubernetes/workload/postgreskubernetes/v1/spec.proto`
 
 **Added Messages**:
 
@@ -126,7 +126,7 @@ message PostgresKubernetesBackupConfig {
 
 ### Pulumi Module Implementation
 
-**File**: `apis/project/planton/provider/kubernetes/workload/postgreskubernetes/v1/iac/pulumi/module/restore_config.go` (new)
+**File**: `provider/kubernetes/workload/postgreskubernetes/v1/iac/pulumi/module/restore_config.go` (new)
 
 ```go
 // buildRestoreConfig generates Zalando operator's spec:standby configuration
@@ -187,7 +187,7 @@ func buildRestoreConfig(
 }
 ```
 
-**File**: `apis/project/planton/provider/kubernetes/workload/postgreskubernetes/v1/iac/pulumi/module/main.go`
+**File**: `provider/kubernetes/workload/postgreskubernetes/v1/iac/pulumi/module/main.go`
 
 **Integration Logic**:
 
@@ -228,7 +228,7 @@ postgresqlArgs := &zalandov1.PostgresqlArgs{
 }
 ```
 
-**File**: `apis/project/planton/provider/kubernetes/workload/postgreskubernetes/v1/iac/pulumi/module/backup_config.go`
+**File**: `provider/kubernetes/workload/postgreskubernetes/v1/iac/pulumi/module/backup_config.go`
 
 **Removed Ghost Field Handling**:
 
@@ -302,7 +302,7 @@ spec:
 ```bash
 cd ops/organizations/planton-cloud/infra-hub/cloud-resources/app-prod/kubernetes/workload/app/dependencies/databases
 
-export POSTGRES_MODULE=~/scm/github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/postgreskubernetes/v1/iac/pulumi
+export POSTGRES_MODULE=~/scm/github.com/project-planton/project-planton/pkg/provider/kubernetes/workload/postgreskubernetes/v1/iac/pulumi
 
 # Preview changes
 project-planton pulumi preview --manifest postgres-api-resources.yaml --module-dir ${POSTGRES_MODULE}

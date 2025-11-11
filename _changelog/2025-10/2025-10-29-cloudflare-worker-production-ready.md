@@ -131,7 +131,7 @@ Built a complete CloudflareWorker implementation that automates the entire deplo
 
 ### 1. Protobuf API Definition
 
-**File**: `apis/project/planton/provider/cloudflare/cloudflareworker/v1/spec.proto`
+**File**: `provider/cloudflare/cloudflareworker/v1/spec.proto`
 
 ```protobuf
 message CloudflareWorkerSpec {
@@ -378,7 +378,7 @@ export AWS_ACCESS_KEY_ID=<r2-access-key-id>
 export AWS_SECRET_ACCESS_KEY=<r2-secret-access-key>
 
 # Deploy
-export CLOUDFLARE_WORKER_MODULE=~/scm/github.com/project-planton/project-planton/apis/project/planton/provider/cloudflare/cloudflareworker/v1/iac/pulumi
+export CLOUDFLARE_WORKER_MODULE=~/scm/github.com/project-planton/project-planton/pkg/provider/cloudflare/cloudflareworker/v1/iac/pulumi
 
 project-planton pulumi up \
   --manifest worker.git-webhooks-receiver.yaml \
@@ -505,7 +505,7 @@ All 7 Cloudflare provider modules upgraded from v5.49.1 to v6.10.1:
 
 Created comprehensive migration guide:
 
-**File**: `apis/project/planton/provider/cloudflare/CLOUDFLARE_V6_MIGRATION.md`
+**File**: `provider/cloudflare/CLOUDFLARE_V6_MIGRATION.md`
 - Complete list of breaking changes per module
 - Before/after code examples
 - Common patterns in v6
@@ -515,7 +515,7 @@ Created comprehensive migration guide:
 
 ```
 go.mod (updated dependency)
-apis/project/planton/provider/cloudflare/
+provider/cloudflare/
   ├─ cloudflareworker/v1/iac/pulumi/module/
   │  ├─ worker_script.go (v6 API)
   │  └─ route.go (v6 API)
@@ -685,7 +685,7 @@ Pulumi enforces:
 
 Created comprehensive guide:
 
-**File**: `apis/project/planton/provider/cloudflare/cloudflareworker/v1/iac/pulumi/API_TOKEN_PERMISSIONS.md`
+**File**: `provider/cloudflare/cloudflareworker/v1/iac/pulumi/API_TOKEN_PERMISSIONS.md`
 
 Contents:
 - Step-by-step token creation
@@ -1175,7 +1175,7 @@ This enables globally distributed webhook processing with centralized workflow o
 ### Files Created
 
 ```
-apis/project/planton/provider/cloudflare/cloudflareworker/v1/
+provider/cloudflare/cloudflareworker/v1/
 ├─ iac/pulumi/module/
 │  ├─ dns_record.go          (NEW - 56 lines)
 │  ├─ worker_script.go       (MODIFIED - 82 lines)
@@ -1215,13 +1215,13 @@ Build files updated: 7 (via Gazelle)
 ### Build Verification
 
 ```bash
-go vet ./apis/project/planton/provider/cloudflare/...
+go vet ./provider/cloudflare/...
 # ✅ No errors
 
-go test ./apis/project/planton/provider/cloudflare/cloudflareworker/v1/...
+go test ./provider/cloudflare/cloudflareworker/v1/...
 # ✅ ok  0.378s
 
-go build ./apis/project/planton/provider/cloudflare/cloudflareworker/...
+go build ./provider/cloudflare/cloudflareworker/...
 # ✅ Build successful
 ```
 

@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package project.planton.provider.kubernetes.addon.solroperatorkubernetes.v1;
+
+import "pkg/provider/kubernetes/addon/solroperatorkubernetes/v1/api.proto";
+import "pkg/provider/kubernetes/provider.proto";
+
+//solr-operator-kubernetes stack-input
+message SolrOperatorKubernetesStackInput {
+  //target cloud-resource
+  SolrOperatorKubernetes target = 1;
+  //provider-config
+  project.planton.provider.kubernetes.KubernetesProviderConfig provider_config = 2;
+}

@@ -27,7 +27,7 @@ The panic occurred at line 38 of `main.go`:
 panic: interface conversion: interface {} is sql.DatabaseInstanceIpAddress, not []interface{}
 
 Stack trace snippet:
-github.com/project-planton/project-planton/apis/project/planton/provider/gcp/gcpcloudsql/v1/iac/pulumi/module.Resources.func1
+github.com/project-planton/project-planton/pkg/provider/gcp/gcpcloudsql/v1/iac/pulumi/module.Resources.func1
     at .../gcpcloudsql/v1/iac/pulumi/module/main.go:38
 ```
 
@@ -81,7 +81,7 @@ ctx.Export(OpPrivateIp, createdInstance.PrivateIpAddress)
 
 ## Implementation Details
 
-**File Modified**: `apis/project/planton/provider/gcp/gcpcloudsql/v1/iac/pulumi/module/main.go`
+**File Modified**: `provider/gcp/gcpcloudsql/v1/iac/pulumi/module/main.go`
 
 ### Changes Made
 
@@ -140,7 +140,7 @@ All verification steps passed:
 
 ```bash
 # Build verification
-cd apis/project/planton/provider/gcp/gcpcloudsql/v1/iac/pulumi
+cd provider/gcp/gcpcloudsql/v1/iac/pulumi
 go build -v ./...
 # ✅ Success
 
@@ -181,7 +181,7 @@ spec:
 ## Related Work
 
 - Original GCP Cloud SQL API resource implementation ([2025-11-04-150549-gcp-cloud-sql-api-resource.md](2025-11-04-150549-gcp-cloud-sql-api-resource.md))
-- Terraform implementation in `apis/project/planton/provider/gcp/gcpcloudsql/v1/iac/tf/`
+- Terraform implementation in `provider/gcp/gcpcloudsql/v1/iac/tf/`
 
 ## Future Considerations
 

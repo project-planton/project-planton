@@ -3,7 +3,7 @@
 Purpose: author `stack_input.proto` for a resource kind, defining how the CLI passes inputs to IaC modules.
 
 ## Location and Package
-- Path: `apis/project/planton/provider/<provider>/<kindfolder>/v1/stack_input.proto`
+- Path: `provider/<provider>/<kindfolder>/v1/stack_input.proto`
 - `syntax = "proto3";`
 - `package project.planton.provider.<provider>.<kindfolder>.v1;`
 - Do NOT include `go_package`.

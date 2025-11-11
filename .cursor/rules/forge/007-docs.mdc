@@ -16,7 +16,7 @@ TOOLS
 - Authoring guide: `.cursor/info/docs.md`.
 
 SCOPE
-- Target: `apis/project/planton/provider/<provider>/<kindfolder>/v1/`
+- Target: `provider/<provider>/<kindfolder>/v1/`
 - Create/update `README.md` and `examples.md`.
 
 SEQUENTIAL STEPS

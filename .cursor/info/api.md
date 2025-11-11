@@ -3,7 +3,7 @@
 Purpose: author `api.proto` for a resource kind, wiring Kubernetes-style envelope and linking existing `spec.proto` and `stack_outputs.proto`.
 
 ## Location and Package
-- Path: `apis/project/planton/provider/<provider>/<kindfolder>/v1/api.proto`
+- Path: `provider/<provider>/<kindfolder>/v1/api.proto`
 - `syntax = "proto3";`
 - `package project.planton.provider.<provider>.<kindfolder>.v1;`
 - Do NOT include `go_package`.

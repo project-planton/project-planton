@@ -3,7 +3,7 @@
 Purpose: create Go tests that exercise `spec.proto` validations (field options and CEL) for a resource kind.
 
 ## Scope
-- File: `apis/project/planton/provider/<provider>/<kindfolder>/v1/spec_test.go`
+- File: `provider/<provider>/<kindfolder>/v1/spec_test.go`
 - Package: `package <kindfolder>v1`
 - Use Ginkgo v2 and Gomega with protovalidate-go.
 
@@ -11,7 +11,7 @@ Purpose: create Go tests that exercise `spec.proto` validations (field options a
 - `buf.build/go/protovalidate`
 - `. "github.com/onsi/ginkgo/v2"`
 - `. "github.com/onsi/gomega"`
-- Optionally: `github.com/project-planton/project-planton/apis/project/planton/shared/validateutil`
+- Optionally: `github.com/project-planton/project-planton/pkg/shared/validateutil`
 
 ## Test Coverage
 - Positive: minimal valid `<Kind>Spec` passes.

@@ -73,7 +73,7 @@ if stackInput.KubernetesNamespace != "" {
 
 ### Modified
 
-- `apis/project/planton/provider/kubernetes/workload/temporalkubernetes/v1/iac/pulumi/module/locals.go`
+- `provider/kubernetes/workload/temporalkubernetes/v1/iac/pulumi/module/locals.go`
   - Lines 56-73: Updated namespace initialization logic
   - Added priority order comments
   - Changed `else` to separate conditional check

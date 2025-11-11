@@ -3,8 +3,8 @@ package pulumikubernetesprovider
 import (
 	"fmt"
 	"github.com/pkg/errors"
-	kubernetesprovider "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/gcp/pulumigkekubernetesprovider"
+	kubernetesprovider "github.com/project-planton/project-planton/pkg/provider/kubernetes"
 	"github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )

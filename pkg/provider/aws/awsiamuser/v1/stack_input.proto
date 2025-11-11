@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package project.planton.provider.aws.awsiamuser.v1;
+
+import "pkg/provider/aws/awsiamuser/v1/api.proto";
+import "pkg/provider/aws/provider.proto";
+
+//aws-iam-user stack-input
+message AwsIamUserStackInput {
+  //target cloud-resource
+  AwsIamUser target = 1;
+  //provider-config
+  project.planton.provider.aws.AwsProviderConfig provider_config = 2;
+}

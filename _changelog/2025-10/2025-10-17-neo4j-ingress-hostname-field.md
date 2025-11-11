@@ -232,7 +232,7 @@ container:
 
 ### Protobuf Changes
 
-**File**: `apis/project/planton/provider/kubernetes/workload/neo4jkubernetes/v1/spec.proto`
+**File**: `provider/kubernetes/workload/neo4jkubernetes/v1/spec.proto`
 
 **Changes Made**:
 1. **Updated Field Type**: Line 36 changed from `project.planton.shared.kubernetes.IngressSpec` to `Neo4jKubernetesIngress`
@@ -792,7 +792,7 @@ project-planton pulumi up --manifest neo4j-invalid.yaml
 
 ## Related Documentation
 
-- **Neo4j Kubernetes API**: `apis/project/planton/provider/kubernetes/workload/neo4jkubernetes/v1/`
+- **Neo4j Kubernetes API**: `provider/kubernetes/workload/neo4jkubernetes/v1/`
 - **External-DNS Integration**: See `ExternalDnsKubernetes` resource for DNS automation
 - **Neo4j Helm Chart**: https://github.com/neo4j/helm-charts
 - **CEL Validation**: https://github.com/bufbuild/protovalidate

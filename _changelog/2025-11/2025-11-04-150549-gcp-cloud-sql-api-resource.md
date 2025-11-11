@@ -65,7 +65,7 @@ Created a complete, production-ready GCP Cloud SQL API resource following Projec
 
 ### 1. Protobuf API Definitions
 
-**File**: `apis/project/planton/provider/gcp/gcpcloudsql/v1/spec.proto`
+**File**: `provider/gcp/gcpcloudsql/v1/spec.proto`
 
 Created comprehensive message definitions:
 
@@ -98,7 +98,7 @@ message GcpCloudSqlSpec {
 - HA requires zone specification: `!this.enabled || size(this.zone) > 0`
 - Backup requires complete configuration: `!this.enabled || (size(this.start_time) > 0 && this.retention_days > 0)`
 
-**File**: `apis/project/planton/provider/gcp/gcpcloudsql/v1/api.proto`
+**File**: `provider/gcp/gcpcloudsql/v1/api.proto`
 
 ```protobuf
 message GcpCloudSql {
@@ -110,7 +110,7 @@ message GcpCloudSql {
 }
 ```
 
-**File**: `apis/project/planton/provider/gcp/gcpcloudsql/v1/stack_outputs.proto`
+**File**: `provider/gcp/gcpcloudsql/v1/stack_outputs.proto`
 
 ```protobuf
 message GcpCloudSqlStackOutputs {
@@ -124,7 +124,7 @@ message GcpCloudSqlStackOutputs {
 
 ### 2. Pulumi Module Implementation
 
-**File**: `apis/project/planton/provider/gcp/gcpcloudsql/v1/iac/pulumi/module/database.go`
+**File**: `provider/gcp/gcpcloudsql/v1/iac/pulumi/module/database.go`
 
 Core database instance creation logic:
 
@@ -184,7 +184,7 @@ func databaseInstance(ctx *pulumi.Context, locals *Locals, gcpProvider *gcp.Prov
 
 ### 3. Terraform Module Implementation
 
-**File**: `apis/project/planton/provider/gcp/gcpcloudsql/v1/iac/tf/main.tf`
+**File**: `provider/gcp/gcpcloudsql/v1/iac/tf/main.tf`
 
 ```hcl
 resource "google_sql_database_instance" "instance" {
@@ -237,7 +237,7 @@ resource "google_sql_database_instance" "instance" {
 }
 ```
 
-**File**: `apis/project/planton/provider/gcp/gcpcloudsql/v1/iac/tf/locals.tf`
+**File**: `provider/gcp/gcpcloudsql/v1/iac/tf/locals.tf`
 
 ```hcl
 locals {

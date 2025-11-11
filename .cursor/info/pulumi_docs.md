@@ -3,7 +3,7 @@
 Purpose: author `README.md`, `examples.md`, and `debug.sh` for the Pulumi package under `iac/pulumi/`.
 
 ## Target directory
-- `apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/pulumi/`
+- `provider/<provider>/<kindfolder>/v1/iac/pulumi/`
 
 ## Files
 - `README.md` — overview of the Pulumi program and how it wires the resource

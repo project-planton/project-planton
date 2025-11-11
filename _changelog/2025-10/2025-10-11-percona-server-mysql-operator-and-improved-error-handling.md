@@ -101,7 +101,7 @@ The Percona Server for MySQL Operator manages:
 
 #### Pulumi Module
 
-**Location**: `apis/project/planton/provider/kubernetes/addon/perconaservermysqloperator/v1/iac/pulumi`
+**Location**: `provider/kubernetes/addon/perconaservermysqloperator/v1/iac/pulumi`
 
 **Key Files**:
 - `main.go` - Main Pulumi program
@@ -117,7 +117,7 @@ The Percona Server for MySQL Operator manages:
 
 #### Terraform Module
 
-**Location**: `apis/project/planton/provider/kubernetes/addon/perconaservermysqloperator/v1/iac/tf`
+**Location**: `provider/kubernetes/addon/perconaservermysqloperator/v1/iac/tf`
 
 Provides alternative Terraform-based deployment option for teams using Terraform workflows.
 
@@ -146,7 +146,7 @@ The operator installs three Custom Resource Definitions:
 
 ```bash
 # Set local module path
-export PERCONA_SERVER_MYSQL_OPERATOR_MODULE=~/scm/github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/addon/perconaservermysqloperator/v1/iac/pulumi
+export PERCONA_SERVER_MYSQL_OPERATOR_MODULE=~/scm/github.com/project-planton/project-planton/pkg/provider/kubernetes/addon/perconaservermysqloperator/v1/iac/pulumi
 
 # Deploy operator
 project-planton pulumi up \

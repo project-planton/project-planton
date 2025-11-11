@@ -2,8 +2,8 @@ package crkreflect
 
 import (
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/apis/project/planton/shared/cloudresourcekind"
 	"github.com/project-planton/project-planton/pkg/apis/gvk"
+	"github.com/project-planton/project-planton/pkg/shared/cloudresourcekind"
 	log "github.com/sirupsen/logrus"
 	goyaml "gopkg.in/yaml.v3"
 )

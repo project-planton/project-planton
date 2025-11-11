@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package project.planton.provider.civo.civocomputeinstance.v1;
+
+import "pkg/provider/civo/civocomputeinstance/v1/api.proto";
+import "pkg/provider/civo/provider.proto";
+
+//civo-compute-instance stack-input
+message CivoComputeInstanceStackInput {
+  //target cloud-resource
+  CivoComputeInstance target = 1;
+  //provider-config
+  project.planton.provider.civo.CivoProviderConfig provider_config = 2;
+}

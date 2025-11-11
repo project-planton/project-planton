@@ -2,9 +2,9 @@ package providerconfig
 
 import (
 	"github.com/pkg/errors"
-	snowflake "github.com/project-planton/project-planton/apis/project/planton/provider/snowflake"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput/stackinputproviderconfig"
+	snowflake "github.com/project-planton/project-planton/pkg/provider/snowflake"
 )
 
 func AddSnowflakeProviderConfigEnvVars(stackInputContentMap map[string]interface{},

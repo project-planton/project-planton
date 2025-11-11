@@ -6,11 +6,11 @@
 
 ## Summary
 
-Implemented a comprehensive build-time automation system that copies deployment component documentation from `apis/project/planton/provider/` to the Next.js documentation site, making 69 component docs from 8 providers automatically available at `https://project-planton.org/docs/catalog/{provider}/{component}`. The system generates frontmatter metadata, creates provider index pages organized under a "Catalog" section, and integrates seamlessly with the Next.js static export for GitHub Pages deployment—all while maintaining a single source of truth in the APIs directory and preserving manually created documentation.
+Implemented a comprehensive build-time automation system that copies deployment component documentation from `provider/` to the Next.js documentation site, making 69 component docs from 8 providers automatically available at `https://project-planton.org/docs/catalog/{provider}/{component}`. The system generates frontmatter metadata, creates provider index pages organized under a "Catalog" section, and integrates seamlessly with the Next.js static export for GitHub Pages deployment—all while maintaining a single source of truth in the APIs directory and preserving manually created documentation.
 
 ## Problem Statement / Motivation
 
-The project-planton repository contains comprehensive deployment component documentation in `apis/project/planton/provider/{provider}/{component}/v1/docs/README.md` files. These docs are created using the research-driven workflow (`@generate-deployment-component-research-prompt` → deep research → `@write-docs-slash-readme-from-research-report`), resulting in high-quality, detailed documentation for each deployment component.
+The project-planton repository contains comprehensive deployment component documentation in `provider/{provider}/{component}/v1/docs/README.md` files. These docs are created using the research-driven workflow (`@generate-deployment-component-research-prompt` → deep research → `@write-docs-slash-readme-from-research-report`), resulting in high-quality, detailed documentation for each deployment component.
 
 However, these docs were isolated in the APIs directory and not accessible via the project-planton.org documentation site. Users visiting the site couldn't browse available deployment components or read comprehensive deployment guides.
 
@@ -37,7 +37,7 @@ Implemented an automated build-time system that:
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│ Source of Truth: apis/project/planton/provider/            │
+│ Source of Truth: provider/            │
 │ ├── aws/awsalb/v1/docs/README.md                          │
 │ ├── gcp/gcpcloudrun/v1/docs/README.md                     │
 │ └── azure/azureakscluster/v1/docs/README.md               │
@@ -236,7 +236,7 @@ on:
   push:
     branches: [ "main" ]
     paths:
-      - 'apis/project/planton/provider/**/docs/**/*.md'
+      - 'provider/**/docs/**/*.md'
       - 'site/**'
       - '.github/workflows/pages.yml'
 ```
@@ -399,8 +399,8 @@ Route (app)                         Size  First Load JS
 1. Create documentation:
 ```bash
 # Create docs for new component
-mkdir -p apis/project/planton/provider/aws/awsnewservice/v1/docs/
-vim apis/project/planton/provider/aws/awsnewservice/v1/docs/README.md
+mkdir -p provider/aws/awsnewservice/v1/docs/
+vim provider/aws/awsnewservice/v1/docs/README.md
 ```
 
 2. Build automatically picks it up:
@@ -419,7 +419,7 @@ cd site && yarn build
 
 ```bash
 # Edit documentation
-vim apis/project/planton/provider/gcp/gcpnewservice/v1/docs/README.md
+vim provider/gcp/gcpnewservice/v1/docs/README.md
 
 # Preview changes
 cd site

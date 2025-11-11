@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package project.planton.provider.kubernetes.addon.postgresoperatorkubernetes.v1;
+
+import "pkg/provider/kubernetes/addon/postgresoperatorkubernetes/v1/api.proto";
+import "pkg/provider/kubernetes/provider.proto";
+
+//postgres-operator-kubernetes stack-input
+message PostgresOperatorKubernetesStackInput {
+  //target cloud-resource
+  PostgresOperatorKubernetes target = 1;
+  //provider-config
+  project.planton.provider.kubernetes.KubernetesProviderConfig provider_config = 2;
+}

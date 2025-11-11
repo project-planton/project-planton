@@ -1,7 +1,7 @@
 package metadatareflect
 
 import (
-	"github.com/project-planton/project-planton/apis/project/planton/shared"
+	"github.com/project-planton/project-planton/pkg/shared"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
 )

@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package project.planton.provider.digitalocean.digitaloceanvolume.v1;
+
+import "pkg/provider/digitalocean/digitaloceanvolume/v1/api.proto";
+import "pkg/provider/digitalocean/provider.proto";
+
+//digital-ocean-volume stack-input
+message DigitalOceanVolumeStackInput {
+  //target cloud-resource
+  DigitalOceanVolume target = 1;
+  //provider-config
+  project.planton.provider.digitalocean.DigitalOceanProviderConfig provider_config = 2;
+}

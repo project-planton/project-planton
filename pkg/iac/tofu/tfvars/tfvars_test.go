@@ -1,9 +1,9 @@
 package tfvars
 
 import (
-	rediskubernetesv1 "github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/workload/rediskubernetes/v1"
-	"github.com/project-planton/project-planton/apis/project/planton/shared"
-	"github.com/project-planton/project-planton/apis/project/planton/shared/kubernetes"
+	rediskubernetesv1 "github.com/project-planton/project-planton/pkg/provider/kubernetes/workload/rediskubernetes/v1"
+	"github.com/project-planton/project-planton/pkg/shared"
+	"github.com/project-planton/project-planton/pkg/shared/kubernetes"
 	"testing"
 
 	"github.com/hashicorp/hcl/v2/hcldec"

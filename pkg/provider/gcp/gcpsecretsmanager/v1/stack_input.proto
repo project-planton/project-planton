@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package project.planton.provider.gcp.gcpsecretsmanager.v1;
+
+import "pkg/provider/gcp/gcpsecretsmanager/v1/api.proto";
+import "pkg/provider/gcp/provider.proto";
+
+//gcp-secrets-manager stack-input
+message GcpSecretsManagerStackInput {
+  //target cloud-resource
+  GcpSecretsManager target = 1;
+  //provider-config
+  project.planton.provider.gcp.GcpProviderConfig provider_config = 2;
+}

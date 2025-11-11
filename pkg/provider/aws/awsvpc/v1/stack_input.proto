@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package project.planton.provider.aws.awsvpc.v1;
+
+import "pkg/provider/aws/awsvpc/v1/api.proto";
+import "pkg/provider/aws/provider.proto";
+
+//aws-vpc stack-input
+message AwsVpcStackInput {
+  //target cloud-resource
+  AwsVpc target = 1;
+  //provider-config
+  project.planton.provider.aws.AwsProviderConfig provider_config = 2;
+}

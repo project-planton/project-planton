@@ -7,7 +7,7 @@ Purpose: create a minimal top-level `iac/hack/manifest.yaml` for a resource to t
 - `spec.proto` — key required fields and safe defaults
 
 ## Path
-- `apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/hack/manifest.yaml`
+- `provider/<provider>/<kindfolder>/v1/iac/hack/manifest.yaml`
 
 ## Manifest skeleton
 ```yaml

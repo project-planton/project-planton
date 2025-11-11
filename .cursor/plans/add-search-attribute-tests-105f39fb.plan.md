@@ -5,7 +5,7 @@
 
 The `TemporalKubernetesSearchAttribute` message in `spec.proto` (lines 24-40) now has a custom CEL validation on the `type` field:
 
-```32:39:apis/project/planton/provider/kubernetes/workload/temporalkubernetes/v1/spec.proto
+```32:39:provider/kubernetes/workload/temporalkubernetes/v1/spec.proto
 string type = 2 [
   (buf.validate.field).required = true,
   (buf.validate.field).cel = {
@@ -20,7 +20,7 @@ This validation ensures that the `type` field only accepts the exact strings: `K
 
 ## Test Cases to Add
 
-Add to `apis/project/planton/provider/kubernetes/workload/temporalkubernetes/v1/api_test.go`:
+Add to `provider/kubernetes/workload/temporalkubernetes/v1/api_test.go`:
 
 ### 1. Valid Search Attribute Types Test
 

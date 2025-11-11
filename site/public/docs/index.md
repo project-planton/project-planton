@@ -17,6 +17,23 @@ New to ProjectPlanton? Start here:
 - Validate your first manifest
 - Deploy to your cloud provider or Kubernetes cluster
 
+## CLI Reference
+
+Master the Project Planton command-line interface:
+
+- **[Complete CLI Reference](/docs/cli/cli-reference)** - All commands, flags, and options
+- **[Pulumi Commands](/docs/cli/pulumi-commands)** - Deploy with Pulumi (init, preview, up, refresh, destroy)
+- **[OpenTofu Commands](/docs/cli/tofu-commands)** - Deploy with OpenTofu (init, plan, apply, refresh, destroy)
+
+## Guides
+
+In-depth guides for common scenarios:
+
+- **[Manifest Structure](/docs/guides/manifests)** - Understanding and writing manifests
+- **[Credentials Management](/docs/guides/credentials)** - Setting up cloud provider authentication
+- **[Kustomize Integration](/docs/guides/kustomize)** - Multi-environment deployments
+- **[Advanced Usage](/docs/guides/advanced-usage)** - Runtime overrides, URL manifests, and power techniques
+
 ## Deployment Components
 
 Browse deployment components by cloud provider in the [Catalog](/docs/catalog):
@@ -121,6 +138,15 @@ spec:
 project-planton validate redis.yaml
 project-planton pulumi up --manifest redis.yaml --stack myorg/project/dev
 ```
+
+## Troubleshooting
+
+Having issues? Check our **[Troubleshooting Guide](/docs/troubleshooting)** for solutions to common problems:
+
+- Manifest validation errors
+- Authentication and credentials
+- Pulumi/OpenTofu-specific issues
+- Network and connectivity problems
 
 ## Resources
 

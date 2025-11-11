@@ -36,14 +36,23 @@ build_darwin: vet
 .PHONY: buf-generate
 buf-generate: protos
 
-.PHONY: protos
-protos:
-	pushd apis;make build;popd
-	${BAZEL} run //:gazelle
+.PHONY: buf-fmt
+buf-fmt:
+	buf format -w --disable-symlinks
 
 .PHONY: buf-lint
 buf-lint:
-	$(MAKE) -C apis buf-lint
+	buf lint --disable-symlinks
+
+.PHONY: protos
+protos: buf-lint buf-fmt
+	rm -rf generated/stubs generated/docs
+	mkdir -p generated/stubs generated/docs
+	buf generate --disable-symlinks
+	cp -R generated/stubs/go/github.com/project-planton/project-planton/pkg/provider/. pkg/provider/
+	cp -R generated/stubs/go/github.com/project-planton/project-planton/pkg/shared/. pkg/shared/
+	rm -rf generated/stubs
+	${BAZEL} run //:gazelle
 
 .PHONY: bazel-mod-tidy
 bazel-mod-tidy:
@@ -190,3 +199,8 @@ preview-site:
 	cd site && yarn 
 	cd site && yarn build
 	cd site && make preview-site
+
+.PHONY: build-optional-linter-plugin
+build-optional-linter-plugin:
+	@echo "Building buf lint plugin..."
+	@cd buf/lint/optional-linter && $(MAKE) build

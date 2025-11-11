@@ -102,7 +102,7 @@ The Percona Distribution for PostgreSQL Operator manages:
 
 ### Pulumi Module
 
-**Location**: `apis/project/planton/provider/kubernetes/addon/perconapostgresqloperator/v1/iac/pulumi`
+**Location**: `provider/kubernetes/addon/perconapostgresqloperator/v1/iac/pulumi`
 
 **Key Files**:
 - `main.go` - Main Pulumi program
@@ -118,7 +118,7 @@ The Percona Distribution for PostgreSQL Operator manages:
 
 ### Terraform Module
 
-**Location**: `apis/project/planton/provider/kubernetes/addon/perconapostgresqloperator/v1/iac/tf`
+**Location**: `provider/kubernetes/addon/perconapostgresqloperator/v1/iac/tf`
 
 **Resources**:
 - Kubernetes namespace
@@ -184,7 +184,7 @@ perconapgrestores.pgv2.percona.com
 
 ```bash
 # Set local module path
-export PERCONA_POSTGRESQL_OPERATOR_MODULE=~/scm/github.com/project-planton/project-planton/apis/project/planton/provider/kubernetes/addon/perconapostgresqloperator/v1/iac/pulumi
+export PERCONA_POSTGRESQL_OPERATOR_MODULE=~/scm/github.com/project-planton/project-planton/pkg/provider/kubernetes/addon/perconapostgresqloperator/v1/iac/pulumi
 
 # Initialize Pulumi stack
 project-planton pulumi init \

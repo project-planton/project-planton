@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package project.planton.provider.kubernetes.addon.elasticoperatorkubernetes.v1;
+
+import "pkg/provider/kubernetes/addon/elasticoperatorkubernetes/v1/api.proto";
+import "pkg/provider/kubernetes/provider.proto";
+
+//elastic-operator-kubernetes stack-input
+message ElasticOperatorKubernetesStackInput {
+  //target cloud-resource
+  ElasticOperatorKubernetes target = 1;
+  //provider-config
+  project.planton.provider.kubernetes.KubernetesProviderConfig provider_config = 2;
+}

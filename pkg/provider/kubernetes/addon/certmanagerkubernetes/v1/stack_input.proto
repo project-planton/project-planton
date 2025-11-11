@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package project.planton.provider.kubernetes.addon.certmanagerkubernetes.v1;
+
+import "pkg/provider/kubernetes/addon/certmanagerkubernetes/v1/api.proto";
+import "pkg/provider/kubernetes/provider.proto";
+
+//input for cert-manager-kubernetes stack
+message CertManagerKubernetesStackInput {
+  //target cloud-resource
+  CertManagerKubernetes target = 1;
+  //provider-config
+  project.planton.provider.kubernetes.KubernetesProviderConfig provider_config = 2;
+}

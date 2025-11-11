@@ -6,8 +6,8 @@ go_library(
     importpath = "github.com/project-planton/project-planton/pkg/crkreflect/codegen",
     visibility = ["//visibility:private"],
     deps = [
-        "//apis/project/planton/shared/cloudresourcekind",
         "//pkg/crkreflect",
+        "//pkg/shared/cloudresourcekind",
         "@com_github_pkg_errors//:errors",
     ],
 )

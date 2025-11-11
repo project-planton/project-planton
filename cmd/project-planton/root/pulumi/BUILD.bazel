@@ -14,13 +14,13 @@ go_library(
     importpath = "github.com/project-planton/project-planton/cmd/project-planton/root/pulumi",
     visibility = ["//visibility:public"],
     deps = [
-        "//apis/project/planton/shared/iac/pulumi",
         "//internal/cli/cliprint",
         "//internal/cli/flag",
         "//internal/cli/manifest",
         "//internal/manifest",
         "//pkg/iac/pulumi/pulumistack",
         "//pkg/iac/stackinput/stackinputproviderconfig",
+        "//pkg/shared/iac/pulumi",
         "@com_github_spf13_cobra//:cobra",
     ],
 )

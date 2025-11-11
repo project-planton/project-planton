@@ -6,7 +6,7 @@ import * as path from 'path';
 /**
  * Build script to copy deployment component documentation from apis/ to site/public/docs/provider/
  * 
- * Scans: apis/project/planton/provider/{provider}/{component}/v1/docs/README.md
+ * Scans: provider/{provider}/{component}/v1/docs/README.md
  * Outputs: site/public/docs/provider/{provider}/{component}.md
  * 
  * Generates frontmatter for each component and creates provider index pages.

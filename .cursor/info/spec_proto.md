@@ -6,7 +6,7 @@ This document describes how to author or update `spec.proto` for a Planton resou
 - Kind (PascalCase): e.g., AwsCloudFront, GcpPubsubTopic, AzureKeyVault
 - Kind keyword (snake_case): aws_cloudfront, gcp_pubsub_topic, azure_key_vault
 - Folder name (lowercase, no underscores): awscloudfront, gcppubsubtopic, azurekeyvault
-- Path: `apis/project/planton/provider/<provider>/<kindfolder>/v1/spec.proto`
+- Path: `provider/<provider>/<kindfolder>/v1/spec.proto`
 
 ## Syntax and Package
 - `syntax = "proto3";`

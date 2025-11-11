@@ -232,7 +232,7 @@ output "external_hostname" {
 
 ### Protobuf Changes
 
-**File**: `apis/project/planton/provider/kubernetes/workload/natskubernetes/v1/spec.proto`
+**File**: `provider/kubernetes/workload/natskubernetes/v1/spec.proto`
 
 **Changes Made**:
 1. **Updated Field Type**: Line 40 changed from `project.planton.shared.kubernetes.IngressSpec` to `NatsKubernetesIngress`
@@ -735,7 +735,7 @@ project-planton pulumi up --manifest nats-invalid.yaml
 
 ## Related Documentation
 
-- **NATS Kubernetes API**: `apis/project/planton/provider/kubernetes/workload/natskubernetes/v1/`
+- **NATS Kubernetes API**: `provider/kubernetes/workload/natskubernetes/v1/`
 - **External-DNS Integration**: See `ExternalDnsKubernetes` resource for DNS automation
 - **NATS Helm Chart**: https://github.com/nats-io/k8s/tree/main/helm/charts/nats
 - **CEL Validation**: https://github.com/bufbuild/protovalidate

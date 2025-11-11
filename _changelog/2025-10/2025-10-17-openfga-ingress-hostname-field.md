@@ -304,7 +304,7 @@ output "external_hostname" {
 
 ### Protobuf Changes
 
-**File**: `apis/project/planton/provider/kubernetes/workload/openfgakubernetes/v1/spec.proto`
+**File**: `provider/kubernetes/workload/openfgakubernetes/v1/spec.proto`
 
 **Changes Made**:
 1. **Updated Field Type**: Line 39 changed from `project.planton.shared.kubernetes.IngressSpec` to `OpenFgaKubernetesIngress`
@@ -857,7 +857,7 @@ project-planton pulumi up --manifest openfga-invalid.yaml
 
 ## Related Documentation
 
-- **OpenFGA Kubernetes API**: `apis/project/planton/provider/kubernetes/workload/openfgakubernetes/v1/`
+- **OpenFGA Kubernetes API**: `provider/kubernetes/workload/openfgakubernetes/v1/`
 - **OpenFGA Official Documentation**: https://openfga.dev/
 - **Gateway API**: https://gateway-api.sigs.k8s.io/
 - **CEL Validation**: https://github.com/bufbuild/protovalidate

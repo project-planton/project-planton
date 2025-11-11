@@ -3,7 +3,7 @@
 Purpose: scaffold entrypoint and project files under `iac/pulumi/` (outside module/).
 
 ## Target directory
-- `apis/project/planton/provider/<provider>/<kindfolder>/v1/iac/pulumi/`
+- `provider/<provider>/<kindfolder>/v1/iac/pulumi/`
 
 ## Files
 - `main.go` — loads `<Kind>StackInput` via `stackinput.LoadStackInput` and calls `module.Resources`

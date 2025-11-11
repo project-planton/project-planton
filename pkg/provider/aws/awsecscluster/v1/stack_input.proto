@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package project.planton.provider.aws.awsecscluster.v1;
+
+import "pkg/provider/aws/awsecscluster/v1/api.proto";
+import "pkg/provider/aws/provider.proto";
+
+//aws-ecs-cluster stack-input
+message AwsEcsClusterStackInput {
+  //target cloud-resource
+  AwsEcsCluster target = 1;
+  //provider-config
+  project.planton.provider.aws.AwsProviderConfig provider_config = 2;
+}

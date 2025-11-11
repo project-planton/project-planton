@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package project.planton.provider.gcp.gcpserviceaccount.v1;
+
+import "buf/validate/validate.proto";
+import "pkg/provider/gcp/gcpserviceaccount/v1/spec.proto";
+import "pkg/provider/gcp/gcpserviceaccount/v1/stack_outputs.proto";
+import "pkg/shared/metadata.proto";
+
+//gcp-service-account
+message GcpServiceAccount {
+  //api-version
+  string api_version = 1 [(buf.validate.field).string.const = 'gcp.project-planton.org/v1'];
+
+  //resource-kind
+  string kind = 2 [(buf.validate.field).string.const = 'GcpServiceAccount'];
+
+  //metadata
+  project.planton.shared.CloudResourceMetadata metadata = 3 [(buf.validate.field).required = true];
+
+  //spec
+  GcpServiceAccountSpec spec = 4 [(buf.validate.field).required = true];
+
+  //status
+  GcpServiceAccountStatus status = 5;
+}
+
+//gcp-service-account status
+message GcpServiceAccountStatus {
+  //stack-outputs
+  //  stack outputs
+  GcpServiceAccountStackOutputs outputs = 1;
+}

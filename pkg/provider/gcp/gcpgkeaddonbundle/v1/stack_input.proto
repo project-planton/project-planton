@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package project.planton.provider.gcp.gcpgkeaddonbundle.v1;
+
+import "pkg/provider/gcp/gcpgkeaddonbundle/v1/api.proto";
+import "pkg/provider/gcp/provider.proto";
+import "pkg/provider/kubernetes/provider.proto";
+
+//input for gcp-gke-addon-bundle stack
+message GcpGkeAddonBundleStackInput {
+  //target cloud-resource
+  GcpGkeAddonBundle target = 1;
+  //gcp-provider config
+  project.planton.provider.gcp.GcpProviderConfig provider_config = 7;
+  //kubernetes-provider config
+  project.planton.provider.kubernetes.KubernetesProviderConfig kubernetes_provider_config = 6;
+}

@@ -1,7 +1,6 @@
 package tofu
 
 import (
-	"github.com/project-planton/project-planton/apis/project/planton/shared/iac/terraform"
 	"github.com/project-planton/project-planton/internal/cli/flag"
 	"github.com/project-planton/project-planton/internal/cli/workspace"
 	"github.com/project-planton/project-planton/internal/manifest"
@@ -10,6 +9,7 @@ import (
 	"github.com/project-planton/project-planton/pkg/iac/stackinput/stackinputproviderconfig"
 	"github.com/project-planton/project-planton/pkg/iac/tofu/tfbackend"
 	"github.com/project-planton/project-planton/pkg/iac/tofu/tofumodule"
+	"github.com/project-planton/project-planton/pkg/shared/iac/terraform"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )

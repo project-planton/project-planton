@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package project.planton.provider.civo.civoipaddress.v1;
+
+import "pkg/provider/civo/civoipaddress/v1/api.proto";
+import "pkg/provider/civo/provider.proto";
+
+//civo-ip-address stack-input
+message CivoIpAddressStackInput {
+  //target cloud-resource
+  CivoIpAddress target = 1;
+  //provider-config
+  project.planton.provider.civo.CivoProviderConfig provider_config = 2;
+}
