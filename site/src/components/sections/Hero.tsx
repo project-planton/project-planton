@@ -25,7 +25,7 @@ export default function Hero() {
 
 			<div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 				<div className="min-h-[calc(100vh-64px)] flex items-center justify-center">
-					<div className="text-center max-w-4xl mx-auto w-full px-2">
+					<div className="text-center max-w-4xl mx-auto w-full px-2 pt-20">
 						{/* Badges */}
 						<div className="flex flex-wrap justify-center gap-2 mb-10">
 							<Badge variant="outline" className="rounded-full border-white/15 text-white/80 bg-white/10">Apache-2.0</Badge>
@@ -51,8 +51,9 @@ export default function Hero() {
 							<Button
 								size="lg"
 								onClick={copyToClipboard}
-								className="rounded-full bg-gradient-to-r from-[#7a4183] to-[#d946ef] text-white font-mono text-xs sm:text-sm px-4 sm:px-8 py-3 h-auto shadow-lg shadow-fuchsia-800/30 transform-gpu transition-all hover:brightness-110 hover:-translate-y-0.5 focus-visible:ring-2 focus-visible:ring-fuchsia-400/50 max-w-full overflow-x-auto whitespace-nowrap"
+								className="rounded-full bg-gradient-to-r from-[#7a4183] to-[#d946ef] text-white font-mono text-xs sm:text-sm px-4 sm:px-8 py-3 h-auto shadow-lg shadow-fuchsia-800/30 transform-gpu transition-all hover:brightness-110 hover:-translate-y-0.5 focus-visible:ring-2 focus-visible:ring-fuchsia-400/50 w-full sm:w-auto"
 							>
+								<span className="flex items-center whitespace-nowrap overflow-hidden text-ellipsis">
 								{copied ? (
 									<>
 										<Check className="w-4 h-4 mr-2 flex-shrink-0" />
@@ -61,9 +62,10 @@ export default function Hero() {
 								) : (
 									<>
 										<Copy className="w-4 h-4 mr-2 flex-shrink-0" />
-										{installCommand}
+										<span className="whitespace-nowrap overflow-hidden text-ellipsis">{installCommand}</span>
 									</>
 								)}
+								</span>
 							</Button>
 
 					<Link href="/docs">
