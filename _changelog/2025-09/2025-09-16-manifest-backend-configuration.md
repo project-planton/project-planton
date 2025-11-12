@@ -119,7 +119,7 @@ No breaking changes. Existing workflows continue to function as before. To adopt
 ### Pulumi Example
 
 ```yaml
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: code2ai.planton.cloud/v1
 kind: MicroserviceKubernetes
 metadata:
   labels:

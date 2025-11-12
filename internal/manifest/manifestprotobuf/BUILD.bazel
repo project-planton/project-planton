@@ -18,7 +18,7 @@ go_test(
     srcs = ["field_setter_test.go"],
     embed = [":manifestprotobuf"],
     deps = [
-        "//apis/org/project-planton/provider/kubernetes/workload/rediskubernetes/v1:rediskubernetes",
+        "//apis/org/project_planton/provider/kubernetes/workload/rediskubernetes/v1:rediskubernetes",
         "@com_github_stretchr_testify//assert",
         "@org_golang_google_protobuf//proto",
     ],

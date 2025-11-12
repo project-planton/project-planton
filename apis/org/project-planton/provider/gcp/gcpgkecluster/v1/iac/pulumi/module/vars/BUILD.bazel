@@ -1,8 +1,0 @@
-load("@rules_go//go:def.bzl", "go_library")
-
-go_library(
-    name = "vars",
-    srcs = ["vars.go"],
-    importpath = "github.com/project-planton/project-planton/apis/org/project-planton/provider/gcp/gcpgkecluster/v1/iac/pulumi/module/vars",
-    visibility = ["//visibility:public"],
-)

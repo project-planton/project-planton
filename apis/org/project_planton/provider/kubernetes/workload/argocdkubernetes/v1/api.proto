@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package org.project_planton.provider.kubernetes.workload.argocdkubernetes.v1;
+
+import "buf/validate/validate.proto";
+import "org/project_planton/provider/kubernetes/workload/argocdkubernetes/v1/spec.proto";
+import "org/project_planton/provider/kubernetes/workload/argocdkubernetes/v1/stack_outputs.proto";
+import "org/project_planton/shared/metadata.proto";
+
+//argocd-kubernetes
+message ArgocdKubernetes {
+  //api-version
+  string api_version = 1 [(buf.validate.field).string.const = 'kubernetes.project-planton.org/v1'];
+
+  //resource-kind
+  string kind = 2 [(buf.validate.field).string.const = 'ArgocdKubernetes'];
+
+  //metadata
+  org.project_planton.shared.CloudResourceMetadata metadata = 3 [(buf.validate.field).required = true];
+
+  //spec
+  ArgocdKubernetesSpec spec = 4 [(buf.validate.field).required = true];
+
+  //status
+  ArgocdKubernetesStatus status = 5;
+}
+
+//argocd-kubernetes status.
+message ArgocdKubernetesStatus {
+  //stack-outputs
+  // argocd-kubernetes stack-outputs
+  ArgocdKubernetesStackOutputs outputs = 1;
+}

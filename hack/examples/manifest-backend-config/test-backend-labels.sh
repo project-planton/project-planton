@@ -59,7 +59,7 @@ test_command \
 # Test 4: Validate fallback when no labels present
 echo "Testing: Fallback to CLI flags when no backend labels present"
 cat > /tmp/test-no-labels.yaml << EOF
-apiVersion: code2cloud.planton.cloud/v1
+apiVersion: code2ai.planton.cloud/v1
 kind: MicroserviceKubernetes
 metadata:
   id: test-service

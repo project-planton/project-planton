@@ -1,0 +1,107 @@
+syntax = "proto3";
+
+package org.project_planton.provider.aws.awsstaticwebsite.v1;
+
+import "buf/validate/validate.proto";
+import "org/project_planton/shared/foreignkey/v1/foreign_key.proto";
+import "org/project_planton/shared/options/options.proto";
+
+// AwsStaticWebsiteSpec defines an 80/20 specification for deploying a production-ready static website on AWS,
+// backed by S3 and optionally fronted by CloudFront with Route53 DNS and ACM TLS. We intentionally expose the
+// most common knobs developers modify: domain aliases, TLS, cache TTLs, SPA routing, index/error pages, logging,
+// and minimal S3 and CloudFront settings, while hiding long-tail settings.
+message AwsStaticWebsiteSpec {
+  // Enable a CloudFront CDN in front of the S3 website. Recommended for production.
+  bool enable_cdn = 1 [(org.project_planton.shared.options.recommended_default) = "true"];
+
+  // Route53 hosted zone where DNS records will be created for the specified domain aliases.
+  org.project_planton.shared.foreignkey.v1.StringValueOrRef route53_zone_id = 2 [
+    (org.project_planton.shared.foreignkey.v1.default_kind) = AwsRoute53Zone,
+    (org.project_planton.shared.foreignkey.v1.default_kind_field_path) = "status.outputs.zone_id"
+  ];
+
+  // Domain names (aliases) for the website (e.g., "app.example.com"). When provided with enable_cdn=true,
+  // a certificate is required (from ACM) and DNS records are created in the zone.
+  repeated string domain_aliases = 3 [(buf.validate.field).repeated.unique = true];
+
+  // ACM certificate ARN used for TLS on CloudFront when domain_aliases are set.
+  org.project_planton.shared.foreignkey.v1.StringValueOrRef certificate_arn = 4 [
+    (org.project_planton.shared.foreignkey.v1.default_kind) = AwsCertManagerCert,
+    (org.project_planton.shared.foreignkey.v1.default_kind_field_path) = "status.outputs.cert_arn"
+  ];
+
+  // S3 bucket to host website content. If omitted, a bucket will be created with a context-derived name.
+  org.project_planton.shared.foreignkey.v1.StringValueOrRef content_bucket_arn = 5 [
+    (org.project_planton.shared.foreignkey.v1.default_kind) = AwsS3Bucket,
+    (org.project_planton.shared.foreignkey.v1.default_kind_field_path) = "status.outputs.bucket_arn"
+  ];
+
+  // Optional prefix in the content bucket where website assets are located (e.g., "site/").
+  string content_prefix = 6;
+
+  // Treat the site as a Single Page Application: rewrite all 404s to index_document.
+  bool is_spa = 7;
+
+  // Index and error documents for the website.
+  string index_document = 8 [(org.project_planton.shared.options.recommended_default) = "index.html"];
+  string error_document = 9 [(org.project_planton.shared.options.recommended_default) = "error.html"];
+
+  // Simple global cache TTL overrides for CDN. These map to default behavior TTLs.
+  int32 default_ttl_seconds = 10 [
+    (org.project_planton.shared.options.recommended_default) = "300",
+    (buf.validate.field).int32.gte = 0
+  ];
+  int32 max_ttl_seconds = 11 [
+    (org.project_planton.shared.options.recommended_default) = "86400",
+    (buf.validate.field).int32.gte = 0
+  ];
+  int32 min_ttl_seconds = 12 [
+    (org.project_planton.shared.options.recommended_default) = "0",
+    (buf.validate.field).int32.gte = 0
+  ];
+
+  // Enable gzip/brotli compression and IPv6 on the CDN when enabled.
+  bool compress = 13 [(org.project_planton.shared.options.recommended_default) = "true"];
+  bool ipv6_enabled = 14 [(org.project_planton.shared.options.recommended_default) = "true"];
+
+  // Price class for CloudFront. Controls the set of edge locations used.
+  string price_class = 15 [
+    (org.project_planton.shared.options.recommended_default) = "PriceClass_100",
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
+    (buf.validate.field).string = {
+      in: [
+        "PriceClass_100",
+        "PriceClass_200",
+        "PriceClass_All"
+      ]
+    }
+  ];
+
+  // Access logging for S3 and CDN.
+  AwsStaticWebsiteLogging logging = 16;
+
+  // Optional tags applied to created resources (bucket, distribution).
+  map<string, string> tags = 17;
+
+  // Ensure certificate is present when using custom domains with CDN enabled.
+  option (buf.validate.message).cel = {
+    id: "cdn_aliases_require_cert"
+    message: "certificate_arn must be set when enable_cdn is true and domain_aliases are provided"
+    expression: "!this.enable_cdn || this.domain_aliases.size() == 0 || has(this.certificate_arn)"
+  };
+}
+
+// AwsStaticWebsiteLogging configures server access logging destinations.
+message AwsStaticWebsiteLogging {
+  // Enable access logging for S3 website bucket requests.
+  bool s3_enabled = 1;
+  org.project_planton.shared.foreignkey.v1.StringValueOrRef s3_target_bucket_arn = 2 [
+    (org.project_planton.shared.foreignkey.v1.default_kind) = AwsS3Bucket,
+    (org.project_planton.shared.foreignkey.v1.default_kind_field_path) = "status.outputs.bucket_arn"
+  ];
+  string s3_target_prefix = 3;
+
+  // Enable access logging for CloudFront requests.
+  bool cdn_enabled = 4;
+  // If needed in future, we can support S3 destination for CF logs similarly.
+}

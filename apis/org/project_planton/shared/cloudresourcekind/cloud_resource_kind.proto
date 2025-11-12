@@ -1,0 +1,814 @@
+syntax = "proto3";
+
+package org.project_planton.shared.cloudresourcekind;
+
+import "google/protobuf/descriptor.proto";
+import "org/project_planton/shared/cloudresourcekind/cloud_resource_provider.proto";
+import "org/project_planton/shared/cloudresourcekind/kubernetes.proto";
+
+//enum value options for api-resource-kind
+extend google.protobuf.EnumValueOptions {
+  CloudResourceKindMeta kind_meta = 10100;
+}
+
+//cloud-resource-kind version
+enum CloudResourceKindVersion {
+  cloud_resource_kind_version_unspecified = 0;
+  v1 = 1;
+}
+
+//api-resource-kind cloud-resource meta
+message CloudResourceKindMeta {
+  //cloud-resource provider
+  CloudResourceProvider provider = 1;
+  //cloud-resource kind version
+  CloudResourceKindVersion version = 2;
+  //name of the kind. this might be different from the enum value.
+  // ex: AwsVpcV2 enum will still have "kind: AwsVpc" but groupVersion will have "aws.project-planton.org/v2".
+  //this is only set in options when the name is different from enum value.
+  string name = 3;
+  //cloud-resource id-prefix
+  string id_prefix = 4;
+  //flag indicating whether the cloud-resource kind can be used to launch a service.
+  bool is_service_kind = 5;
+  //kubernetes metadata. only applicable when provider is kubernetes
+  KubernetesCloudResourceKindMeta kubernetes_meta = 6;
+}
+
+// kubernetes cloud-resource kind meta
+message KubernetesCloudResourceKindMeta {
+  //prefix to be used for kubernetes namespace
+  //this is only applicable when provider is kubernetes
+  string namespace_prefix = 1;
+  //category of the kubernetes cloud-resource kind
+  KubernetesCloudResourceCategory category = 2;
+}
+
+enum CloudResourceKind {
+  // 0: Default/unspecified
+  unspecified = 0;
+
+  // 1–49: Test/dev/custom
+  TestCloudResourceOne = 1 [(kind_meta) = {
+    provider: _test
+    version: v1
+    id_prefix: "tcr1"
+  }];
+  TestCloudResourceTwo = 2 [(kind_meta) = {
+    provider: _test
+    version: v1
+    id_prefix: "tcr2"
+  }];
+  TestCloudResourceThree = 3 [(kind_meta) = {
+    provider: _test
+    version: v1
+    id_prefix: "tcr3"
+  }];
+
+  // 50–199: saas platform resources
+  ConfluentKafka = 50 [(kind_meta) = {
+    provider: confluent
+    version: v1
+    id_prefix: "conkaf"
+  }];
+  MongodbAtlas = 51 [(kind_meta) = {
+    provider: atlas
+    version: v1
+    id_prefix: "mdbatl"
+  }];
+  SnowflakeDatabase = 52 [(kind_meta) = {
+    provider: snowflake
+    version: v1
+    id_prefix: "snowdb"
+  }];
+
+  // 200–399: AWS resources
+  AwsAlb = 200 [(kind_meta) = {
+    provider: aws
+    version: v1
+    id_prefix: "awsalb"
+  }];
+  AwsCertManagerCert = 201 [(kind_meta) = {
+    provider: aws
+    version: v1
+    id_prefix: "acmcert"
+  }];
+  AwsCloudFront = 202 [(kind_meta) = {
+    provider: aws
+    version: v1
+    id_prefix: "awscf"
+  }];
+  AwsDynamodb = 203 [(kind_meta) = {
+    provider: aws
+    version: v1
+    id_prefix: "awsdyn"
+  }];
+  AwsEcrRepo = 204 [(kind_meta) = {
+    provider: aws
+    version: v1
+    id_prefix: "ecr"
+  }];
+  AwsEcsCluster = 205 [(kind_meta) = {
+    provider: aws
+    version: v1
+    id_prefix: "ecsclu"
+  }];
+  AwsEcsService = 206 [(kind_meta) = {
+    provider: aws
+    version: v1
+    id_prefix: "ecssvc"
+  }];
+  AwsEksCluster = 207 [(kind_meta) = {
+    provider: aws
+    version: v1
+    id_prefix: "eks"
+  }];
+  AwsIamRole = 208 [(kind_meta) = {
+    provider: aws
+    version: v1
+    id_prefix: "air"
+  }];
+  AwsLambda = 209 [(kind_meta) = {
+    provider: aws
+    version: v1
+    id_prefix: "lambda"
+  }];
+  AwsRdsCluster = 210 [(kind_meta) = {
+    provider: aws
+    version: v1
+    id_prefix: "rdsclu"
+  }];
+  AwsRdsInstance = 211 [(kind_meta) = {
+    provider: aws
+    version: v1
+    id_prefix: "rdsins"
+  }];
+  AwsRoute53Zone = 212 [(kind_meta) = {
+    provider: aws
+    version: v1
+    id_prefix: "r53z"
+  }];
+  AwsS3Bucket = 213 [(kind_meta) = {
+    provider: aws
+    version: v1
+    id_prefix: "s3bkt"
+  }];
+  AwsSecretsManager = 214 [(kind_meta) = {
+    provider: aws
+    version: v1
+    id_prefix: "awssm"
+  }];
+  AwsSecurityGroup = 215 [(kind_meta) = {
+    provider: aws
+    version: v1
+    id_prefix: "awssg"
+  }];
+  AwsStaticWebsite = 216 [(kind_meta) = {
+    provider: aws
+    version: v1
+    id_prefix: "awsweb"
+  }];
+  AwsVpc = 217 [(kind_meta) = {
+    provider: aws
+    version: v1
+    id_prefix: "awsvpc"
+  }];
+  AwsEksNodeGroup = 218 [(kind_meta) = {
+    provider: aws
+    version: v1
+    id_prefix: "eksng"
+  }];
+  AwsIamUser = 219 [(kind_meta) = {
+    provider: aws
+    version: v1
+    id_prefix: "awsuser"
+  }];
+  AwsKmsKey = 220 [(kind_meta) = {
+    provider: aws
+    version: v1
+    id_prefix: "awskms"
+  }];
+  AwsEc2Instance = 221 [(kind_meta) = {
+    provider: aws
+    version: v1
+    id_prefix: "ec2inst"
+  }];
+  AwsClientVpn = 222 [(kind_meta) = {
+    provider: aws
+    version: v1
+    id_prefix: "awsvpn"
+  }];
+
+  // 400–599: Azure resources
+  AzureAksCluster = 400 [(kind_meta) = {
+    provider: azure
+    version: v1
+    id_prefix: "aks"
+  }];
+  AzureAksNodePool = 401 [(kind_meta) = {
+    provider: azure
+    version: v1
+    id_prefix: "aksnp"
+  }];
+  AzureContainerRegistry = 402 [(kind_meta) = {
+    provider: azure
+    version: v1
+    id_prefix: "acr"
+  }];
+  AzureDnsZone = 403 [(kind_meta) = {
+    provider: azure
+    version: v1
+    id_prefix: "azdns"
+  }];
+  AzureKeyVault = 404 [(kind_meta) = {
+    provider: azure
+    version: v1
+    id_prefix: "azkv"
+  }];
+  AzureVpc = 405 [(kind_meta) = {
+    provider: azure
+    version: v1
+    id_prefix: "azvpc"
+  }];
+  AzureNatGateway = 406 [(kind_meta) = {
+    provider: azure
+    version: v1
+    id_prefix: "aznat"
+  }];
+
+  // 600–799: GCP resources
+  GcpArtifactRegistryRepo = 600 [(kind_meta) = {
+    provider: gcp
+    version: v1
+    id_prefix: "gcpart"
+  }];
+  GcpCloudCdn = 601 [(kind_meta) = {
+    provider: gcp
+    version: v1
+    id_prefix: "gcpcdn"
+  }];
+  GcpCloudFunction = 602 [(kind_meta) = {
+    provider: gcp
+    version: v1
+    id_prefix: "cldfunc"
+  }];
+  GcpCloudRun = 603 [(kind_meta) = {
+    provider: gcp
+    version: v1
+    id_prefix: "cldrun"
+  }];
+  GcpCloudSql = 604 [(kind_meta) = {
+    provider: gcp
+    version: v1
+    id_prefix: "gcpsql"
+  }];
+  GcpDnsZone = 605 [(kind_meta) = {
+    provider: gcp
+    version: v1
+    id_prefix: "gcpdns"
+  }];
+  GcpGcsBucket = 606 [(kind_meta) = {
+    provider: gcp
+    version: v1
+    id_prefix: "gcsbkt"
+  }];
+  GcpGkeAddonBundle = 607 [(kind_meta) = {
+    provider: gcp
+    version: v1
+    id_prefix: "gkeadd"
+  }];
+  GcpGkeCluster = 608 [(kind_meta) = {
+    provider: gcp
+    version: v1
+    id_prefix: "gke"
+  }];
+  GcpSecretsManager = 609 [(kind_meta) = {
+    provider: gcp
+    version: v1
+    id_prefix: "gcpsm"
+  }];
+  GcpStaticWebsite = 610 [(kind_meta) = {
+    provider: gcp
+    version: v1
+    id_prefix: "gcpweb"
+  }];
+  GcpProject = 611 [(kind_meta) = {
+    provider: gcp
+    version: v1
+    id_prefix: "gcpprj"
+  }];
+  GcpVpc = 612 [(kind_meta) = {
+    provider: gcp
+    version: v1
+    id_prefix: "gcpvpc"
+  }];
+  GcpSubnetwork = 613 [(kind_meta) = {
+    provider: gcp
+    version: v1
+    id_prefix: "gcpsnw"
+  }];
+  GcpRouterNat = 614 [(kind_meta) = {
+    provider: gcp
+    version: v1
+    id_prefix: "gcprnat"
+  }];
+  GcpGkeClusterCore = 615 [(kind_meta) = {
+    provider: gcp
+    version: v1
+    id_prefix: "gkecore"
+  }];
+  GcpGkeNodePool = 616 [(kind_meta) = {
+    provider: gcp
+    version: v1
+    id_prefix: "gkenp"
+  }];
+  GcpServiceAccount = 617 [(kind_meta) = {
+    provider: gcp
+    version: v1
+    id_prefix: "gsa"
+  }];
+  GcpGkeWorkloadIdentityBinding = 618 [(kind_meta) = {
+    provider: gcp
+    version: v1
+    id_prefix: "gkewib"
+  }];
+  GcpCertManagerCert = 619 [(kind_meta) = {
+    provider: gcp
+    version: v1
+    id_prefix: "gcpcert"
+  }];
+
+  // 800–999: Kubernetes resources
+  ArgocdKubernetes = 800 [(kind_meta) = {
+    provider: kubernetes
+    version: v1
+    id_prefix: "argk8s"
+    kubernetes_meta: {
+      category: workload
+      namespace_prefix: "argo"
+    }
+  }];
+  CronJobKubernetes = 801 [(kind_meta) = {
+    provider: kubernetes
+    version: v1
+    id_prefix: "cronk8s"
+    kubernetes_meta: {
+      category: workload
+      namespace_prefix: "cron"
+    }
+  }];
+  ElasticsearchKubernetes = 802 [(kind_meta) = {
+    provider: kubernetes
+    version: v1
+    id_prefix: "elak8s"
+    kubernetes_meta: {
+      category: workload
+      namespace_prefix: "elasticsearch"
+    }
+  }];
+  GitlabKubernetes = 803 [(kind_meta) = {
+    provider: kubernetes
+    version: v1
+    id_prefix: "glk8s"
+    kubernetes_meta: {
+      category: workload
+      namespace_prefix: "gitlab"
+    }
+  }];
+  GrafanaKubernetes = 804 [(kind_meta) = {
+    provider: kubernetes
+    version: v1
+    id_prefix: "grak8s"
+    kubernetes_meta: {
+      category: workload
+      namespace_prefix: "grafana"
+    }
+  }];
+  HelmRelease = 805 [(kind_meta) = {
+    provider: kubernetes
+    version: v1
+    id_prefix: "hlmk8s"
+    kubernetes_meta: {
+      category: workload
+      namespace_prefix: "helm"
+    }
+  }];
+  JenkinsKubernetes = 806 [(kind_meta) = {
+    provider: kubernetes
+    version: v1
+    id_prefix: "jenk8s"
+    kubernetes_meta: {
+      category: workload
+      namespace_prefix: "jenkins"
+    }
+  }];
+  KafkaKubernetes = 807 [(kind_meta) = {
+    provider: kubernetes
+    version: v1
+    id_prefix: "kafk8s"
+    kubernetes_meta: {
+      category: workload
+      namespace_prefix: "kafka"
+    }
+  }];
+  KeycloakKubernetes = 808 [(kind_meta) = {
+    provider: kubernetes
+    version: v1
+    id_prefix: "keyk8s"
+    kubernetes_meta: {
+      category: workload
+      namespace_prefix: "keycloak"
+    }
+  }];
+  KubernetesHttpEndpoint = 809 [(kind_meta) = {
+    provider: kubernetes
+    version: v1
+    id_prefix: "k8shttp"
+    kubernetes_meta: {category: workload}
+  }];
+  LocustKubernetes = 810 [(kind_meta) = {
+    provider: kubernetes
+    version: v1
+    id_prefix: "lock8s"
+    kubernetes_meta: {
+      category: workload
+      namespace_prefix: "locust"
+    }
+  }];
+  MicroserviceKubernetes = 811 [(kind_meta) = {
+    provider: kubernetes
+    version: v1
+    id_prefix: "msk8s"
+    is_service_kind: true
+    kubernetes_meta: {
+      category: workload
+      namespace_prefix: "service"
+    }
+  }];
+  MongodbKubernetes = 812 [(kind_meta) = {
+    provider: kubernetes
+    version: v1
+    id_prefix: "mdbk8s"
+    kubernetes_meta: {
+      category: workload
+      namespace_prefix: "mongo"
+    }
+  }];
+  Neo4jKubernetes = 813 [(kind_meta) = {
+    provider: kubernetes
+    version: v1
+    id_prefix: "neok8s"
+    kubernetes_meta: {
+      category: workload
+      namespace_prefix: "neo4j"
+    }
+  }];
+  OpenFgaKubernetes = 814 [(kind_meta) = {
+    provider: kubernetes
+    version: v1
+    id_prefix: "fgak8s"
+    kubernetes_meta: {
+      category: workload
+      namespace_prefix: "openfga"
+    }
+  }];
+  PostgresKubernetes = 815 [(kind_meta) = {
+    provider: kubernetes
+    version: v1
+    id_prefix: "pgk8s"
+    kubernetes_meta: {
+      category: workload
+      namespace_prefix: "postgres"
+    }
+  }];
+  PrometheusKubernetes = 816 [(kind_meta) = {
+    provider: kubernetes
+    version: v1
+    id_prefix: "pmtk8s"
+    kubernetes_meta: {
+      category: workload
+      namespace_prefix: "prometheus"
+    }
+  }];
+  RedisKubernetes = 817 [(kind_meta) = {
+    provider: kubernetes
+    version: v1
+    id_prefix: "redk8s"
+    kubernetes_meta: {
+      category: workload
+      namespace_prefix: "redis"
+    }
+  }];
+  SignozKubernetes = 818 [(kind_meta) = {
+    provider: kubernetes
+    version: v1
+    id_prefix: "sigk8s"
+    kubernetes_meta: {
+      category: workload
+      namespace_prefix: "signoz"
+    }
+  }];
+  SolrKubernetes = 819 [(kind_meta) = {
+    provider: kubernetes
+    version: v1
+    id_prefix: "solk8s"
+    kubernetes_meta: {
+      category: workload
+      namespace_prefix: "solr"
+    }
+  }];
+  StackJobRunnerKubernetes = 820 [(kind_meta) = {
+    provider: kubernetes
+    version: v1
+    id_prefix: "sjrk8s"
+    kubernetes_meta: {
+      category: workload
+      namespace_prefix: "sjr"
+    }
+  }];
+  TemporalKubernetes = 821 [(kind_meta) = {
+    provider: kubernetes
+    version: v1
+    id_prefix: "tprlk8s"
+    kubernetes_meta: {
+      category: workload
+      namespace_prefix: "temporal"
+    }
+  }];
+  NatsKubernetes = 822 [(kind_meta) = {
+    provider: kubernetes
+    version: v1
+    id_prefix: "natsk8s"
+    kubernetes_meta: {
+      category: workload
+      namespace_prefix: "nats"
+    }
+  }];
+  CertManagerKubernetes = 823 [(kind_meta) = {
+    provider: kubernetes
+    version: v1
+    id_prefix: "cmk8s"
+    kubernetes_meta: {category: addon}
+  }];
+  ElasticOperatorKubernetes = 824 [(kind_meta) = {
+    provider: kubernetes
+    version: v1
+    id_prefix: "elaopk8s"
+    kubernetes_meta: {category: addon}
+  }];
+  ExternalDnsKubernetes = 825 [(kind_meta) = {
+    provider: kubernetes
+    version: v1
+    id_prefix: "extdnsk8s"
+    kubernetes_meta: {category: addon}
+  }];
+  IngressNginxKubernetes = 826 [(kind_meta) = {
+    provider: kubernetes
+    version: v1
+    id_prefix: "ngxk8s"
+    kubernetes_meta: {category: addon}
+  }];
+  IstioKubernetes = 827 [(kind_meta) = {
+    provider: kubernetes
+    version: v1
+    id_prefix: "istk8s"
+    kubernetes_meta: {category: addon}
+  }];
+  KafkaOperatorKubernetes = 828 [(kind_meta) = {
+    provider: kubernetes
+    version: v1
+    id_prefix: "kfkopk8s"
+    kubernetes_meta: {category: addon}
+  }];
+  PostgresOperatorKubernetes = 829 [(kind_meta) = {
+    provider: kubernetes
+    version: v1
+    id_prefix: "pgopk8s"
+    kubernetes_meta: {category: addon}
+  }];
+  SolrOperatorKubernetes = 830 [(kind_meta) = {
+    provider: kubernetes
+    version: v1
+    id_prefix: "slropk8s"
+    kubernetes_meta: {category: addon}
+  }];
+  ExternalSecretsKubernetes = 831 [(kind_meta) = {
+    provider: kubernetes
+    version: v1
+    id_prefix: "extseck8s"
+    kubernetes_meta: {category: addon}
+  }];
+  ClickHouseKubernetes = 832 [(kind_meta) = {
+    provider: kubernetes
+    version: v1
+    id_prefix: "chk8s"
+    kubernetes_meta: {
+      category: workload
+      namespace_prefix: "clickhouse"
+    }
+  }];
+  AltinityOperatorKubernetes = 833 [(kind_meta) = {
+    provider: kubernetes
+    version: v1
+    id_prefix: "altopk8s"
+    kubernetes_meta: {category: addon}
+  }];
+  PerconaPostgresqlOperator = 834 [(kind_meta) = {
+    provider: kubernetes
+    version: v1
+    id_prefix: "percpgop"
+    kubernetes_meta: {category: addon}
+  }];
+  PerconaServerMongodbOperator = 835 [(kind_meta) = {
+    provider: kubernetes
+    version: v1
+    id_prefix: "percmdbop"
+    kubernetes_meta: {category: addon}
+  }];
+  PerconaServerMysqlOperator = 836 [(kind_meta) = {
+    provider: kubernetes
+    version: v1
+    id_prefix: "percpgop"
+    kubernetes_meta: {category: addon}
+  }];
+  HarborKubernetes = 837 [(kind_meta) = {
+    provider: kubernetes
+    version: v1
+    id_prefix: "hrbk8s"
+    kubernetes_meta: {
+      category: workload
+      namespace_prefix: "harbor"
+    }
+  }];
+
+  // 1200–1499: DigitalOcean resources
+  DigitalOceanAppPlatformService = 1200 [(kind_meta) = {
+    provider: digital_ocean
+    version: v1
+    id_prefix: "doapp"
+  }];
+  DigitalOceanBucket = 1201 [(kind_meta) = {
+    provider: digital_ocean
+    version: v1
+    id_prefix: "dobkt"
+  }];
+  DigitalOceanContainerRegistry = 1202 [(kind_meta) = {
+    provider: digital_ocean
+    version: v1
+    id_prefix: "docr"
+  }];
+  DigitalOceanDatabaseCluster = 1203 [(kind_meta) = {
+    provider: digital_ocean
+    version: v1
+    id_prefix: "dodb"
+  }];
+  DigitalOceanDnsZone = 1204 [(kind_meta) = {
+    provider: digital_ocean
+    version: v1
+    id_prefix: "dodns"
+  }];
+  DigitalOceanDroplet = 1205 [(kind_meta) = {
+    provider: digital_ocean
+    version: v1
+    id_prefix: "dodrop"
+  }];
+  DigitalOceanFirewall = 1206 [(kind_meta) = {
+    provider: digital_ocean
+    version: v1
+    id_prefix: "dofw"
+  }];
+  DigitalOceanFunction = 1207 [(kind_meta) = {
+    provider: digital_ocean
+    version: v1
+    id_prefix: "dofn"
+  }];
+  DigitalOceanKubernetesCluster = 1208 [(kind_meta) = {
+    provider: digital_ocean
+    version: v1
+    id_prefix: "dokc"
+  }];
+  DigitalOceanKubernetesNodePool = 1209 [(kind_meta) = {
+    provider: digital_ocean
+    version: v1
+    id_prefix: "doknp"
+  }];
+  DigitalOceanLoadBalancer = 1210 [(kind_meta) = {
+    provider: digital_ocean
+    version: v1
+    id_prefix: "dolb"
+  }];
+  DigitalOceanVolume = 1211 [(kind_meta) = {
+    provider: digital_ocean
+    version: v1
+    id_prefix: "dovol"
+  }];
+  DigitalOceanVpc = 1212 [(kind_meta) = {
+    provider: digital_ocean
+    version: v1
+    id_prefix: "dovpc"
+  }];
+  DigitalOceanCertificate = 1213 [(kind_meta) = {
+    provider: digital_ocean
+    version: v1
+    id_prefix: "docert"
+  }];
+
+  // 1500–1799: Civo resources
+  CivoBucket = 1500 [(kind_meta) = {
+    provider: civo
+    version: v1
+    id_prefix: "cibkt"
+  }];
+  CivoCertificate = 1501 [(kind_meta) = {
+    provider: civo
+    version: v1
+    id_prefix: "cicert"
+  }];
+  CivoComputeInstance = 1502 [(kind_meta) = {
+    provider: civo
+    version: v1
+    id_prefix: "ciinst"
+  }];
+  CivoDatabase = 1503 [(kind_meta) = {
+    provider: civo
+    version: v1
+    id_prefix: "cidb"
+  }];
+  CivoDnsZone = 1504 [(kind_meta) = {
+    provider: civo
+    version: v1
+    id_prefix: "cidns"
+  }];
+  CivoFirewall = 1505 [(kind_meta) = {
+    provider: civo
+    version: v1
+    id_prefix: "cifw"
+  }];
+  CivoIpAddress = 1506 [(kind_meta) = {
+    provider: civo
+    version: v1
+    id_prefix: "ciip"
+  }];
+  CivoKubernetesCluster = 1507 [(kind_meta) = {
+    provider: civo
+    version: v1
+    id_prefix: "cikc"
+  }];
+  CivoKubernetesNodePool = 1508 [(kind_meta) = {
+    provider: civo
+    version: v1
+    id_prefix: "ciknp"
+  }];
+  CivoLoadBalancer = 1509 [(kind_meta) = {
+    provider: civo
+    version: v1
+    id_prefix: "cilb"
+  }];
+  CivoVolume = 1510 [(kind_meta) = {
+    provider: civo
+    version: v1
+    id_prefix: "civol"
+  }];
+  CivoVpc = 1511 [(kind_meta) = {
+    provider: civo
+    version: v1
+    id_prefix: "civpc"
+  }];
+
+  // 1800–2099: Cloudflare resources
+  CloudflareDnsZone = 1800 [(kind_meta) = {
+    provider: cloudflare
+    version: v1
+    id_prefix: "cfdns"
+  }];
+  CloudflareKvNamespace = 1801 [(kind_meta) = {
+    provider: cloudflare
+    version: v1
+    id_prefix: "cfkvn"
+  }];
+  CloudflareR2Bucket = 1802 [(kind_meta) = {
+    provider: cloudflare
+    version: v1
+    id_prefix: "cfr2b"
+  }];
+  CloudflareWorker = 1803 [(kind_meta) = {
+    provider: cloudflare
+    version: v1
+    id_prefix: "cfwrk"
+  }];
+  CloudflareLoadBalancer = 1804 [(kind_meta) = {
+    provider: cloudflare
+    version: v1
+    id_prefix: "cflb"
+  }];
+  CloudflareD1Database = 1805 [(kind_meta) = {
+    provider: cloudflare
+    version: v1
+    id_prefix: "cfd1db"
+  }];
+  CloudflareZeroTrustAccessApplication = 1806 [(kind_meta) = {
+    provider: cloudflare
+    version: v1
+    id_prefix: "cfzta"
+  }];
+}

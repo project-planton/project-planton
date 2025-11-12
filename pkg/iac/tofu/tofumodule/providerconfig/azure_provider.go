@@ -2,7 +2,7 @@ package providerconfig
 
 import (
 	"github.com/pkg/errors"
-	azure "github.com/project-planton/project-planton/apis/org/project-planton/provider/azure"
+	azure "github.com/project-planton/project-planton/apis/org/project_planton/provider/azure"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput"
 	"github.com/project-planton/project-planton/pkg/iac/stackinput/stackinputproviderconfig"
 )

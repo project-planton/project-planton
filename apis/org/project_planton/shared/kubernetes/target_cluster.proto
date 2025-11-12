@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package org.project_planton.shared.kubernetes;
+
+import "buf/validate/validate.proto";
+import "org/project_planton/shared/cloudresourcekind/cloud_resource_kind.proto";
+
+// **KubernetesAddonTargetCluster** defines the target cluster for a Kubernetes addon.
+message KubernetesAddonTargetCluster {
+  oneof credential_source {
+    // The ID of the Kubernetes cluster credential.
+    string kubernetes_credential_id = 1;
+    // The selector for the Kubernetes cluster in the same environment as the addon.
+    KubernetesClusterCloudResourceSelector kubernetes_cluster_selector = 2;
+  }
+}
+
+// **KubernetesClusterCloudResourceSelector** defines a selector for a Kubernetes cluster in the same environment as the addon.
+message KubernetesClusterCloudResourceSelector {
+  //can be either gcp-gke-cluster-core
+  org.project_planton.shared.cloudresourcekind.CloudResourceKind cluster_kind = 1 [(buf.validate.field).enum = {
+    in: [
+      400, //AzureAksCluster
+      615, //GcpGkeClusterCore
+      218, //AwsEksClusterCore
+      1208 //DigitalOceanKubernetesCluster
+    ]
+  }];
+  //name of the kubernetes cluster in the same environment as the addon
+  // if the name is different from slug, use the value of slug here.
+  // for the purposes of readbility, this field is named as cluster_name vs cluster_slug but the expected value is always slug.
+  // the provided value is automatically converted to slug for example Prod Cluster -> prod-cluster.
+  string cluster_name = 2;
+}

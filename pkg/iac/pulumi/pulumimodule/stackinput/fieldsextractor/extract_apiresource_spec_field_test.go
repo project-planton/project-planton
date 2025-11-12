@@ -3,7 +3,7 @@ package fieldsextractor
 import (
 	"testing"
 
-	awslambdav1 "github.com/project-planton/project-planton/apis/org/project-planton/provider/aws/awslambda/v1"
+	awslambdav1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awslambda/v1"
 	"google.golang.org/protobuf/proto"
 
 	"github.com/stretchr/testify/assert"

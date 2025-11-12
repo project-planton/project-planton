@@ -3,8 +3,8 @@ package backendconfig
 import (
 	"testing"
 
-	awsvpcv1 "github.com/project-planton/project-planton/apis/org/project-planton/provider/aws/awsvpc/v1"
-	"github.com/project-planton/project-planton/apis/org/project-planton/shared"
+	awsvpcv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awsvpc/v1"
+	"github.com/project-planton/project-planton/apis/org/project_planton/shared"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumilabels"
 	"github.com/stretchr/testify/assert"
 )

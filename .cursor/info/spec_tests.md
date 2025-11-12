@@ -11,7 +11,7 @@ Purpose: create Go tests that exercise `spec.proto` validations (field options a
 - `buf.build/go/protovalidate`
 - `. "github.com/onsi/ginkgo/v2"`
 - `. "github.com/onsi/gomega"`
-- Optionally: `github.com/project-planton/project-planton/apis/org/project-planton/shared/validateutil`
+- Optionally: `github.com/project-planton/project-planton/apis/org/project_planton/shared/validateutil`
 
 ## Test Coverage
 - Positive: minimal valid `<Kind>Spec` passes.

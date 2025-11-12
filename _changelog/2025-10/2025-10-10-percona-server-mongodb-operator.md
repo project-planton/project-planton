@@ -163,7 +163,7 @@ perconaservermongodbrestores.psmdb.percona.com
 
 ```bash
 # Set local module path
-export PERCONA_SERVER_MONGODB_OPERATOR_MODULE=~/scm/github.com/project-planton/project-planton/apis/org/project-planton/provider/kubernetes/addon/perconaservermongodboperator/v1/iac/pulumi
+export PERCONA_SERVER_MONGODB_OPERATOR_MODULE=~/scm/github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/perconaservermongodboperator/v1/iac/pulumi
 
 # Initialize Pulumi stack
 project-planton pulumi init \

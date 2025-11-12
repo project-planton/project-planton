@@ -1,6 +1,6 @@
 package crkreflect
 
-import "github.com/project-planton/project-planton/apis/org/project-planton/shared/cloudresourcekind"
+import "github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind"
 
 func KindsList() []cloudresourcekind.CloudResourceKind {
 	resp := make([]cloudresourcekind.CloudResourceKind, 0)

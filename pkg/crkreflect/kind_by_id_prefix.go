@@ -2,7 +2,7 @@ package crkreflect
 
 import (
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/apis/org/project-planton/shared/cloudresourcekind"
+	"github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind"
 )
 
 // KindByIdPrefix takes an id prefix as input and returns the corresponding CloudResourceKind.

@@ -1,0 +1,103 @@
+syntax = "proto3";
+
+package org.project_planton.provider.kubernetes.workload.openfgakubernetes.v1;
+
+import "buf/validate/validate.proto";
+import "google/protobuf/descriptor.proto";
+import "org/project_planton/shared/kubernetes/kubernetes.proto";
+
+extend google.protobuf.FieldOptions {
+  OpenFgaKubernetesContainer default_container = 531001;
+}
+
+/**
+ * **OpenFgaKubernetesSpec** defines the configuration for deploying OpenFGA on a Kubernetes cluster.
+ * This message specifies the parameters needed to create and manage an OpenFGA deployment within a Kubernetes environment.
+ * It includes container specifications, ingress settings, and data store configurations to control resource allocation,
+ * external access, and backend storage options.
+ */
+message OpenFgaKubernetesSpec {
+  // The container specifications for the OpenFGA deployment.
+  OpenFgaKubernetesContainer container = 1 [(default_container) = {
+    replicas: 1
+    resources: {
+      limits: {
+        cpu: "1000m"
+        memory: "1Gi"
+      }
+      requests: {
+        cpu: "50m"
+        memory: "100Mi"
+      }
+    }
+  }];
+
+  /**
+   * The ingress configuration for the OpenFGA deployment.
+   */
+  OpenFgaKubernetesIngress ingress = 2;
+
+  /**
+   * The data store configuration for OpenFGA.
+   * This specifies the backend database engine and connection details.
+   */
+  OpenFgaKubernetesDataStore datastore = 3 [(buf.validate.field).required = true];
+}
+
+/**
+ * **OpenFgaKubernetesContainer** specifies the container configuration for the OpenFGA application.
+ * It includes resource allocations for CPU and memory to ensure the application runs efficiently,
+ * and the number of replicas for scaling purposes.
+ * Recommended defaults: CPU requests - 50m, Memory requests - 256Mi, CPU limits - 1, Memory limits - 1Gi.
+ */
+message OpenFgaKubernetesContainer {
+  // The number of OpenFGA replicas to deploy. This determines the level of concurrency and availability.
+  int32 replicas = 1;
+  //The CPU and memory resources allocated to the OpenFGA container.
+  org.project_planton.shared.kubernetes.ContainerResources resources = 2;
+}
+
+/**
+ * **OpenFgaKubernetesDataStore** represents the configuration for the OpenFGA data store in a Kubernetes deployment.
+ * It specifies the type of database engine to use and the URI for connecting to the database.
+ */
+message OpenFgaKubernetesDataStore {
+  /**
+   * Specifies the type of data store engine to use.
+   * Allowed values are "mysql" for MySQL database and "postgres" for PostgreSQL database.
+   */
+  string engine = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).cel = {
+      id: "spec.datastore.engine"
+      message: 'The datastore engine must be one of "postgres" and "mysql".'
+      expression: 'this in ["postgres", "mysql"]'
+    }
+  ];
+
+  /**
+   * Specifies the URI to connect to the selected data store engine.
+   * The URI format should be appropriate for the specified engine:
+   * - For MySQL: `mysql://user:password@host:port/database`
+   * - For PostgreSQL: `postgres://user:password@host:port/database`
+   */
+  string uri = 2 [(buf.validate.field).required = true];
+}
+
+/**
+ * OpenFgaKubernetesIngress defines the ingress configuration for OpenFGA.
+ */
+message OpenFgaKubernetesIngress {
+  // Flag to enable or disable ingress.
+  bool enabled = 1;
+
+  // The full hostname for external access (e.g., "openfga.example.com").
+  // Required when enabled is true.
+  string hostname = 2;
+
+  option (buf.validate.message).cel = {
+    id: "spec.ingress.hostname.required"
+    expression: "!this.enabled || size(this.hostname) > 0"
+    message: "hostname is required when ingress is enabled"
+  };
+}

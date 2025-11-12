@@ -6,7 +6,7 @@ import (
 	"os/exec"
 
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/apis/org/project-planton/shared/iac/pulumi"
+	"github.com/project-planton/project-planton/apis/org/project_planton/shared/iac/pulumi"
 	"github.com/project-planton/project-planton/internal/manifest"
 	"github.com/project-planton/project-planton/pkg/crkreflect"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/backendconfig"

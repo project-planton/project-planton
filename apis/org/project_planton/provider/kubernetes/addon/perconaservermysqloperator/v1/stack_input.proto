@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package org.project_planton.provider.kubernetes.addon.perconaservermysqloperator.v1;
+
+import "org/project_planton/provider/kubernetes/addon/perconaservermysqloperator/v1/api.proto";
+import "org/project_planton/provider/kubernetes/provider.proto";
+
+//percona-server-mysql-operator-kubernetes stack-input
+message PerconaServerMysqlOperatorStackInput {
+  //target cloud-resource
+  PerconaServerMysqlOperator target = 1;
+  //provider-config
+  org.project_planton.provider.kubernetes.KubernetesProviderConfig provider_config = 2;
+}

@@ -196,7 +196,7 @@ This enables:
 
 ### Planton Cloud Asset Files
 
-Created 4 asset files in `planton-cloud/apis/cloud/planton/apis/infrahub/cloudresource/v1/assets/provider/kubernetes/workload/harborkubernetes/v1/`:
+Created 4 asset files in `planton-cloud/apis/ai/planton/infrahub/cloudresource/v1/assets/provider/kubernetes/workload/harborkubernetes/v1/`:
 
 1. **deployment-component.yaml**: Deployment metadata with tags (container-registry, artifact-registry, security, vulnerability-scanning)
 2. **iac-modules.yaml**: References to both Pulumi and Terraform modules in project-planton repo
@@ -534,10 +534,10 @@ certmanagerv1.NewCertificate(ctx, "ingress-certificate", &certmanagerv1.Certific
 ### Planton Cloud Repository
 
 **HarborKubernetes Assets (4 files)**:
-- `apis/cloud/planton/apis/infrahub/cloudresource/v1/assets/provider/kubernetes/workload/harborkubernetes/v1/deployment-component.yaml`
-- `apis/cloud/planton/apis/infrahub/cloudresource/v1/assets/provider/kubernetes/workload/harborkubernetes/v1/iac-modules.yaml`
-- `apis/cloud/planton/apis/infrahub/cloudresource/v1/assets/provider/kubernetes/workload/harborkubernetes/v1/quick-actions.yaml`
-- `apis/cloud/planton/apis/infrahub/cloudresource/v1/assets/provider/kubernetes/workload/harborkubernetes/v1/logo.svg`
+- `apis/ai/planton/infrahub/cloudresource/v1/assets/provider/kubernetes/workload/harborkubernetes/v1/deployment-component.yaml`
+- `apis/ai/planton/infrahub/cloudresource/v1/assets/provider/kubernetes/workload/harborkubernetes/v1/iac-modules.yaml`
+- `apis/ai/planton/infrahub/cloudresource/v1/assets/provider/kubernetes/workload/harborkubernetes/v1/quick-actions.yaml`
+- `apis/ai/planton/infrahub/cloudresource/v1/assets/provider/kubernetes/workload/harborkubernetes/v1/logo.svg`
 
 **Total**: 31 files created, 2 files modified
 

@@ -58,7 +58,7 @@ Add the `(org.project_planton.shared.options.default)` extension to fields that 
 ```protobuf
 syntax = "proto3";
 
-import "org/project-planton/shared/options/options.proto";
+import "org/project_planton/shared/options/options.proto";
 
 message ExternalDnsKubernetesSpec {
   // CRITICAL: Use 'optional' keyword for all fields with defaults

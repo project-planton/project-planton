@@ -146,7 +146,7 @@ The operator installs three Custom Resource Definitions:
 
 ```bash
 # Set local module path
-export PERCONA_SERVER_MYSQL_OPERATOR_MODULE=~/scm/github.com/project-planton/project-planton/apis/org/project-planton/provider/kubernetes/addon/perconaservermysqloperator/v1/iac/pulumi
+export PERCONA_SERVER_MYSQL_OPERATOR_MODULE=~/scm/github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/perconaservermysqloperator/v1/iac/pulumi
 
 # Deploy operator
 project-planton pulumi up \

@@ -16,7 +16,7 @@ package crkreflect
 
 import (
 	"github.com/pkg/errors"
-	"github.com/project-planton/project-planton/apis/org/project-planton/shared/cloudresourcekind"
+	"github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind"
 	"google.golang.org/protobuf/proto"
 )
 

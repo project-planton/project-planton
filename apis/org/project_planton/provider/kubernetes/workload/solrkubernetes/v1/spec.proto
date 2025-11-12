@@ -1,0 +1,124 @@
+syntax = "proto3";
+
+package org.project_planton.provider.kubernetes.workload.solrkubernetes.v1;
+
+import "buf/validate/validate.proto";
+import "google/protobuf/descriptor.proto";
+import "org/project_planton/shared/kubernetes/kubernetes.proto";
+
+extend google.protobuf.FieldOptions {
+  SolrKubernetesSolrContainer default_solr_container = 540001;
+  SolrKubernetesSolrContainer default_zookeeper_container = 540002;
+}
+
+/**
+ * **SolrKubernetesSpec** defines the configuration for deploying Apache Solr on a Kubernetes cluster.
+ * This message includes specifications for the Solr container, Zookeeper container, and ingress settings.
+ * By configuring these parameters, you can set up a Solr deployment tailored to your application's needs,
+ * including resource allocation, data persistence, and external access through ingress.
+ */
+message SolrKubernetesSpec {
+  // The specifications for the Solr container deployment.
+  SolrKubernetesSolrContainer solr_container = 1 [(default_solr_container) = {
+    replicas: 1
+    resources: {
+      limits: {
+        cpu: "1000m"
+        memory: "1Gi"
+      }
+      requests: {
+        cpu: "50m"
+        memory: "100Mi"
+      }
+    }
+    disk_size: "1Gi"
+    image: {
+      repo: "solr"
+      tag: "8.7.0"
+    }
+  }];
+
+  //The Solr-specific configuration options.
+  SolrKubernetesSolrConfig config = 2;
+
+  // The specifications for the Zookeeper container deployment.
+  SolrKubernetesZookeeperContainer zookeeper_container = 3 [(default_zookeeper_container) = {
+    replicas: 1
+    resources: {
+      limits: {
+        cpu: "1000m"
+        memory: "1Gi"
+      }
+      requests: {
+        cpu: "50m"
+        memory: "100Mi"
+      }
+    }
+    disk_size: "1Gi"
+  }];
+
+  //The ingress configuration for the Solr deployment.
+  org.project_planton.shared.kubernetes.IngressSpec ingress = 4;
+}
+
+/**
+ * **SolrKubernetesSolrContainer** specifies the configuration for the Solr container.
+ * It includes settings such as the number of replicas, container image, resource allocations,
+ * disk size for data persistence, and Solr-specific configurations.
+ * Proper configuration ensures optimal performance and data reliability for your Solr deployment.
+ */
+message SolrKubernetesSolrContainer {
+  // The number of Solr pods in the Solr Kubernetes deployment.
+  int32 replicas = 1;
+
+  // The CPU and memory resources allocated to the Solr container.
+  org.project_planton.shared.kubernetes.ContainerResources resources = 2;
+
+  //The size of the persistent volume attached to each Solr pod (e.g., "1Gi").
+  string disk_size = 3 [(buf.validate.field).cel = {
+    id: "spec.container.disk_size.required"
+    message: "Disk size value is invalid"
+    // Regex to validate disk size format (e.g., "10Gi", "500Mi")
+    expression: "this.matches('^\\\\d+(\\\\.\\\\d+)?\\\\s?(Ki|Mi|Gi|Ti|Pi|Ei|K|M|G|T|P|E)$') && size(this) > 0"
+  }];
+
+  //The container image for the Solr deployment.
+  //Example repository: "solr", example tag: "8.7.0".
+  org.project_planton.shared.kubernetes.ContainerImage image = 4;
+}
+
+/**
+ * **SolrKubernetesSolrConfig** specifies the configuration settings for Solr.
+ * It includes JVM memory settings, custom Solr options, and garbage collection tuning parameters.
+ */
+message SolrKubernetesSolrConfig {
+  //JVM memory settings for Solr.
+  string java_mem = 1;
+
+  //Custom Solr options (e.g., "-Dsolr.autoSoftCommit.maxTime=10000").
+  string opts = 2;
+
+  //Solr garbage collection tuning configuration (e.g., "-XX:SurvivorRatio=4 -XX:TargetSurvivorRatio=90 -XX:MaxTenuringThreshold=8").
+  string garbage_collection_tuning = 3;
+}
+
+/**
+ * **SolrKubernetesZookeeperContainer** specifies the configuration for the Zookeeper container used by Solr.
+ * It includes settings such as the number of replicas, resource allocations, and disk size for data persistence.
+ * Proper configuration ensures high availability and reliability for your Solr cluster.
+ */
+message SolrKubernetesZookeeperContainer {
+  // The number of Zookeeper pods in the Zookeeper cluster.
+  int32 replicas = 1;
+
+  // The CPU and memory resources allocated to the Zookeeper container.
+  org.project_planton.shared.kubernetes.ContainerResources resources = 2;
+
+  //The size of the persistent volume attached to each Zookeeper pod (e.g., "1Gi").
+  string disk_size = 3 [(buf.validate.field).cel = {
+    id: "spec.container.disk_size.required"
+    message: "Disk size value is invalid"
+    // Regex to validate disk size format (e.g., "10Gi", "500Mi")
+    expression: "this.matches('^\\\\d+(\\\\.\\\\d+)?\\\\s?(Ki|Mi|Gi|Ti|Pi|Ei|K|M|G|T|P|E)$') && size(this) > 0"
+  }];
+}

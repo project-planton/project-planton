@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package org.project_planton.provider.azure.azureakscluster.v1;
+
+import "buf/validate/validate.proto";
+import "org/project_planton/shared/foreignkey/v1/foreign_key.proto";
+import "org/project_planton/shared/options/options.proto";
+
+// AzureAksClusterSpec defines the specification required to deploy an Azure Kubernetes Service (AKS) cluster.
+// This minimal spec covers essential configurations to achieve a production-ready environment while avoiding extraneous complexity.
+message AzureAksClusterSpec {
+  // Azure region in which to create the AKS cluster (e.g., "eastus").
+  string region = 1 [(buf.validate.field).required = true];
+
+  // The Azure resource ID of the Virtual Network subnet to use for cluster nodes.
+  // This should reference the subnet created by an AzureVirtualNetwork resource.
+  org.project_planton.shared.foreignkey.v1.StringValueOrRef vnet_subnet_id = 2 [
+    (buf.validate.field).required = true,
+    (org.project_planton.shared.foreignkey.v1.default_kind) = AzureVpc,
+    (org.project_planton.shared.foreignkey.v1.default_kind_field_path) = "status.outputs.nodes_subnet_id"
+  ];
+
+  // Networking plugin for the AKS cluster: "azure_cni" for Azure CNI (advanced networking) or "kubenet" for basic networking.
+  // Defaults to Azure CNI if not specified.
+  AzureAksClusterNetworkPlugin network_plugin = 3;
+
+  // Kubernetes version for the cluster control plane.
+  // If not specified, Azure will default to a supported version. It is recommended to explicitly set a version (e.g., "1.30") for production clusters.
+  string kubernetes_version = 4 [(org.project_planton.shared.options.recommended_default) = "1.30"];
+
+  // Deploy the cluster as a private cluster (no public API server endpoint).
+  // When set to true, the API server endpoint will be private. When false (default), a public endpoint is created.
+  bool private_cluster_enabled = 5;
+
+  // Authorized IP address ranges (CIDR blocks) that are allowed to access the API server.
+  // This is applicable only if the cluster has a public endpoint. Leave empty to allow all (0.0.0.0/0) or for private clusters.
+  repeated string authorized_ip_ranges = 6 [(buf.validate.field).repeated.items.string.pattern = "^(?:25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])(?:\\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])){3}(?:\\/(?:3[0-2]|[12]?[0-9]))?$"];
+
+  // Disable Azure Active Directory integration for Kubernetes RBAC.
+  // By default, AKS clusters have Azure AD integration enabled (this field is false). Set to true to disable Azure AD RBAC integration.
+  bool disable_azure_ad_rbac = 7;
+
+  // The Azure resource ID of a Log Analytics Workspace for AKS monitoring integration.
+  // If provided, the AKS cluster will send logs and metrics to this Log Analytics workspace.
+  string log_analytics_workspace_id = 8;
+}
+
+// Possible network plugin options for the AKS cluster.
+enum AzureAksClusterNetworkPlugin {
+  AZURE_CNI = 0;
+  KUBENET = 1;
+}

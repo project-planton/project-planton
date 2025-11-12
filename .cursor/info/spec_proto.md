@@ -16,7 +16,7 @@ This document describes how to author or update `spec.proto` for a Planton resou
 ## Imports
 - No validations in this step (do not import `buf/validate/validate.proto`).
 - Optional when needed for value-or-reference fields:
-  - `import "org/project-planton/shared/foreignkey/v1/foreign_key.proto";`
+  - `import "org/project_planton/shared/foreignkey/v1/foreign_key.proto";`
 
 ## Message Structure
 - Define a single top-level message named `<Kind>Spec`.
@@ -48,7 +48,7 @@ syntax = "proto3";
 package org.project_planton.provider.aws.awscloudfront.v1;
 
 // Optional if you need value-or-ref wrappers
-// import "org/project-planton/shared/foreignkey/v1/foreign_key.proto";
+// import "org/project_planton/shared/foreignkey/v1/foreign_key.proto";
 
 message AwsCloudFrontSpec {
   // Add essential 80/20 fields here

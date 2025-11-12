@@ -17,7 +17,7 @@ go_test(
     srcs = ["extract_apiresource_spec_field_test.go"],
     embed = [":fieldsextractor"],
     deps = [
-        "//apis/org/project-planton/provider/aws/awslambda/v1:awslambda",
+        "//apis/org/project_planton/provider/aws/awslambda/v1:awslambda",
         "@com_github_stretchr_testify//assert",
         "@org_golang_google_protobuf//proto",
     ],

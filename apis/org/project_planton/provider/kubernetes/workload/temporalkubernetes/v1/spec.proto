@@ -1,0 +1,141 @@
+syntax = "proto3";
+
+package org.project_planton.provider.kubernetes.workload.temporalkubernetes.v1;
+
+import "buf/validate/validate.proto";
+import "org/project_planton/shared/options/options.proto";
+
+// temporal kubernetes database backend enumerates the supported databases.
+enum TemporalKubernetesDatabaseBackend {
+  // unspecified should not be used
+  temporal_kubernetes_database_backend_unspecified = 0;
+
+  // uses cassandra
+  cassandra = 1;
+
+  // uses postgresql
+  postgresql = 2;
+
+  // uses mysql
+  mysql = 3;
+}
+
+// temporal kubernetes spec defines minimal fields for deploying temporal on kubernetes.
+message TemporalKubernetesSpec {
+  // database configuration
+  TemporalKubernetesDatabaseConfig database = 1 [(buf.validate.field).required = true];
+  // disables temporal web ui
+  bool disable_web_ui = 2;
+  // enables embedded elasticsearch for temporal
+  // this is ignored if external elasticsearch is set
+  bool enable_embedded_elasticsearch = 3;
+  // enables monitoring stack for temporal
+  // enabling this will deploy prometheus and grafana
+  bool enable_monitoring_stack = 4;
+  //number of cassandra nodes to be deployed
+  //this is only honored when the backend is cassandra, and no external database is provided.
+  optional int32 cassandra_replicas = 5 [(org.project_planton.shared.options.default) = "1"];
+  //The ingress configuration for the temporal deployment.
+  //if enabled, the frontend will be exposed using a load-balancer
+  // and also if web ui is enabled it will be exposed using the kubernetes ingress controller.
+  TemporalKubernetesIngress ingress = 6;
+  // external elasticsearch configuration to be used by temporal for configuring observability.
+  TemporalKubernetesExternalElasticsearch external_elasticsearch = 7;
+  // version of the Temporal Helm chart to deploy (e.g., "0.62.0")
+  // if not specified, the default version configured in the Pulumi module will be used
+  string version = 8;
+}
+
+// groups database configuration settings.
+message TemporalKubernetesDatabaseConfig {
+  // selected database backend
+  TemporalKubernetesDatabaseBackend backend = 1 [(buf.validate.field).required = true];
+
+  // external database configuration, if this is not set, in-cluster cassandra would be created
+  TemporalKubernetesExternalDatabase external_database = 2;
+
+  // primary database or keyspace name
+  optional string database_name = 6 [(org.project_planton.shared.options.default) = "temporal"];
+
+  // visibility database or keyspace name
+  optional string visibility_name = 7 [(org.project_planton.shared.options.default) = "temporal_visibility"];
+
+  // disables automatic schema creation
+  bool disable_auto_schema_setup = 8;
+}
+
+// describes an external database that temporal can use
+message TemporalKubernetesExternalDatabase {
+  // hostname for external database
+  string host = 1;
+
+  // port for external database
+  int32 port = 2;
+
+  // username for database
+  string username = 3;
+
+  // password for database
+  string password = 4;
+}
+
+// describes an external elasticsearch cluster that temporal can use
+// for advanced visibility instead of deploying an in-cluster es chart.
+message TemporalKubernetesExternalElasticsearch {
+  // the host address of the existing elasticsearch cluster
+  string host = 1;
+
+  // the port for the existing elasticsearch cluster
+  int32 port = 2;
+
+  // optional username, if the external cluster requires auth
+  string user = 3;
+
+  // optional password, if the external cluster requires auth
+  string password = 4;
+}
+
+// ingress configuration for temporal deployment with separate frontend and web ui endpoints
+message TemporalKubernetesIngress {
+  // frontend (gRPC + HTTP) ingress configuration
+  TemporalKubernetesFrontendIngressEndpoint frontend = 1;
+
+  // web ui ingress configuration
+  TemporalKubernetesWebUiIngressEndpoint web_ui = 2;
+}
+
+// frontend ingress endpoint configuration supporting both gRPC and HTTP protocols
+message TemporalKubernetesFrontendIngressEndpoint {
+  // flag to enable or disable frontend ingress
+  bool enabled = 1;
+
+  // the full hostname for gRPC access via LoadBalancer (e.g., "temporal-frontend-grpc.example.com")
+  // required when enabled is true
+  string grpc_hostname = 2;
+
+  // the full hostname for HTTP access via Gateway API (e.g., "temporal-frontend-http.example.com")
+  // optional - only creates Gateway/HTTPRoute resources if provided
+  string http_hostname = 3;
+
+  option (buf.validate.message).cel = {
+    id: "spec.ingress.frontend.grpc_hostname.required"
+    expression: "!this.enabled || size(this.grpc_hostname) > 0"
+    message: "frontend.grpc_hostname is required when frontend ingress is enabled"
+  };
+}
+
+// web ui ingress endpoint configuration for HTTP-only access
+message TemporalKubernetesWebUiIngressEndpoint {
+  // flag to enable or disable web ui ingress
+  bool enabled = 1;
+
+  // the full hostname for HTTP access via Gateway API (e.g., "temporal-ui.example.com")
+  // required when enabled is true
+  string hostname = 2;
+
+  option (buf.validate.message).cel = {
+    id: "spec.ingress.web_ui.hostname.required"
+    expression: "!this.enabled || size(this.hostname) > 0"
+    message: "web_ui.hostname is required when web ui ingress is enabled"
+  };
+}

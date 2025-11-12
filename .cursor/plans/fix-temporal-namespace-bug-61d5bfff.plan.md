@@ -24,7 +24,7 @@ Change the `else` to a separate `if` statement with a non-empty check, matching 
 
 ## Files to Modify
 
-- `/Users/suresh/scm/github.com/project-planton/project-planton/apis/org/project-planton/provider/kubernetes/workload/temporalkubernetes/v1/iac/pulumi/module/locals.go`
+- `/Users/suresh/scm/github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/workload/temporalkubernetes/v1/iac/pulumi/module/locals.go`
 
 ## Changes
 
