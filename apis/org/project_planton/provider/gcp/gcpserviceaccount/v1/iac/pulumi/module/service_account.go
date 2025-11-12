@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/pkg/errors"
+	"github.com/pulumi/pulumi-gcp/sdk/v8/go/gcp"
 	"github.com/pulumi/pulumi-gcp/sdk/v8/go/gcp/serviceaccount"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
@@ -13,24 +14,19 @@ import (
 func serviceAccount(
 	ctx *pulumi.Context,
 	locals *Locals,
+	gcpProvider *gcp.Provider,
 ) (*serviceaccount.Account, *serviceaccount.Key, error) {
-
-	// Build arguments for the account.
-	accountArgs := &serviceaccount.AccountArgs{
-		AccountId:   pulumi.String(locals.GcpServiceAccount.Spec.ServiceAccountId),
-		DisplayName: pulumi.String(locals.GcpServiceAccount.Metadata.Name),
-	}
-
-	// project_id is optional in the spec.
-	if locals.GcpServiceAccount.Spec.ProjectId != "" {
-		accountArgs.Project = pulumi.StringPtr(locals.GcpServiceAccount.Spec.ProjectId)
-	}
 
 	// Create the service account.
 	createdServiceAccount, err := serviceaccount.NewAccount(
 		ctx,
 		locals.GcpServiceAccount.Metadata.Name,
-		accountArgs,
+		&serviceaccount.AccountArgs{
+			AccountId:   pulumi.String(locals.GcpServiceAccount.Spec.ServiceAccountId),
+			DisplayName: pulumi.String(locals.GcpServiceAccount.Metadata.Name),
+			Project:     pulumi.String(locals.GcpServiceAccount.Spec.ProjectId),
+		},
+		pulumi.Provider(gcpProvider),
 	)
 	if err != nil {
 		return nil, nil, errors.Wrap(err, "failed to create service account")
@@ -45,6 +41,7 @@ func serviceAccount(
 			&serviceaccount.KeyArgs{
 				ServiceAccountId: createdServiceAccount.Name,
 			},
+			pulumi.Provider(gcpProvider),
 			pulumi.DependsOn([]pulumi.Resource{createdServiceAccount}),
 		)
 		if err != nil {

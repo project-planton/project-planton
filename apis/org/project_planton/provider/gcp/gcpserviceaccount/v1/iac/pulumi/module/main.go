@@ -3,6 +3,7 @@ package module
 import (
 	"github.com/pkg/errors"
 	gcpserviceaccountv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpserviceaccount/v1"
+	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/gcp/pulumigoogleprovider"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
@@ -15,14 +16,20 @@ func Resources(
 	// Gather "locals" (mirrors Terraform locals {} convention).
 	locals := initializeLocals(ctx, stackInput)
 
+	// Create gcp provider using credentials from the input
+	gcpProvider, err := pulumigoogleprovider.Get(ctx, stackInput.ProviderConfig)
+	if err != nil {
+		return errors.Wrap(err, "failed to setup gcp provider")
+	}
+
 	// Create the account (and key if requested).
-	createdServiceAccount, createdKey, err := serviceAccount(ctx, locals)
+	createdServiceAccount, createdKey, err := serviceAccount(ctx, locals, gcpProvider)
 	if err != nil {
 		return errors.Wrap(err, "failed to create service account")
 	}
 
 	// Attach IAM roles at project/org scopes.
-	if err := iam(ctx, locals, createdServiceAccount); err != nil {
+	if err := iam(ctx, locals, createdServiceAccount, gcpProvider); err != nil {
 		return errors.Wrap(err, "failed to create IAM bindings")
 	}
 

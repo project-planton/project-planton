@@ -14,6 +14,7 @@ go_library(
         "//apis/org/project_planton/provider/gcp/gcpcertmanagercert/v1:gcpcertmanagercert",
         "//apis/org/project_planton/shared/cloudresourcekind",
         "//pkg/iac/pulumi/pulumimodule/provider/gcp/gcplabelkeys",
+        "//pkg/iac/pulumi/pulumimodule/provider/gcp/pulumigoogleprovider",
         "@com_github_pkg_errors//:errors",
         "@com_github_pulumi_pulumi_gcp_sdk_v8//go/gcp",
         "@com_github_pulumi_pulumi_gcp_sdk_v8//go/gcp/certificatemanager",

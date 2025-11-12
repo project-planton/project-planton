@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/pkg/errors"
+	"github.com/pulumi/pulumi-gcp/sdk/v8/go/gcp"
 	"github.com/pulumi/pulumi-gcp/sdk/v8/go/gcp/organizations"
 	"github.com/pulumi/pulumi-gcp/sdk/v8/go/gcp/projects"
 	"github.com/pulumi/pulumi-gcp/sdk/v8/go/gcp/serviceaccount"
@@ -15,6 +16,7 @@ func iam(
 	ctx *pulumi.Context,
 	locals *Locals,
 	createdServiceAccount *serviceaccount.Account,
+	gcpProvider *gcp.Provider,
 ) error {
 
 	// === Project-level roles ===
@@ -29,6 +31,7 @@ func iam(
 				Role:    pulumi.String(role),
 				Member:  pulumi.Sprintf("serviceAccount:%s", createdServiceAccount.Email),
 			},
+			pulumi.Provider(gcpProvider),
 			pulumi.DependsOn([]pulumi.Resource{createdServiceAccount}),
 		)
 		if err != nil {
@@ -54,6 +57,7 @@ func iam(
 					Role:   pulumi.String(role),
 					Member: pulumi.Sprintf("serviceAccount:%s", createdServiceAccount.Email),
 				},
+				pulumi.Provider(gcpProvider),
 				pulumi.DependsOn([]pulumi.Resource{createdServiceAccount}),
 			)
 			if err != nil {

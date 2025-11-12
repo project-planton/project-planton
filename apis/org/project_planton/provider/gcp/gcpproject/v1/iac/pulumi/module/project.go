@@ -6,12 +6,13 @@ import (
 
 	"github.com/pkg/errors"
 	gcpprojectv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpproject/v1"
+	"github.com/pulumi/pulumi-gcp/sdk/v8/go/gcp"
 	"github.com/pulumi/pulumi-gcp/sdk/v8/go/gcp/organizations"
 	"github.com/pulumi/pulumi-random/sdk/v4/go/random"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-func project(ctx *pulumi.Context, locals *Locals) (*organizations.Project, error) {
+func project(ctx *pulumi.Context, locals *Locals, gcpProvider *gcp.Provider) (*organizations.Project, error) {
 	// Create a random 3-char suffix
 	createdRand, err := random.NewRandomString(ctx,
 		fmt.Sprintf("%s-suffix", locals.GcpProject.Metadata.Name),
@@ -61,7 +62,7 @@ func project(ctx *pulumi.Context, locals *Locals) (*organizations.Project, error
 	}
 
 	// Create the GCP project using the generated projectId
-	createdProject, err := organizations.NewProject(ctx, locals.GcpProject.Metadata.Name, projectArgs)
+	createdProject, err := organizations.NewProject(ctx, locals.GcpProject.Metadata.Name, projectArgs, pulumi.Provider(gcpProvider))
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to create GCP project")
 	}

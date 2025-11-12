@@ -25,7 +25,7 @@ export default function Hero() {
 
 			<div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 				<div className="min-h-[calc(100vh-64px)] flex items-center justify-center">
-					<div className="text-center max-w-4xl mx-auto">
+					<div className="text-center max-w-4xl mx-auto w-full px-2">
 						{/* Badges */}
 						<div className="flex flex-wrap justify-center gap-2 mb-10">
 							<Badge variant="outline" className="rounded-full border-white/15 text-white/80 bg-white/10">Apache-2.0</Badge>
@@ -36,10 +36,9 @@ export default function Hero() {
 						</div>
 
 						{/* Heading */}
-						<h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6">
-							<span className="text-white">Open‑Source Multi‑Cloud</span>
-							<br />
-							<span className="bg-gradient-to-r from-[#f0abfc] via-[#f472b6] to-[#d946ef] bg-clip-text text-transparent">Infrastructure Framework</span>
+						<h1 className="text-3xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6 w-full break-words">
+							<span className="text-white block">Open‑Source Multi‑Cloud</span>
+							<span className="bg-gradient-to-r from-[#f0abfc] via-[#f472b6] to-[#d946ef] bg-clip-text text-transparent block">Infrastructure Framework</span>
 						</h1>
 
 						{/* Subheading */}

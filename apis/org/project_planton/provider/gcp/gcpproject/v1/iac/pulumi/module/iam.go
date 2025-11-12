@@ -4,12 +4,13 @@ import (
 	"fmt"
 
 	"github.com/pkg/errors"
+	"github.com/pulumi/pulumi-gcp/sdk/v8/go/gcp"
 	"github.com/pulumi/pulumi-gcp/sdk/v8/go/gcp/organizations"
 	"github.com/pulumi/pulumi-gcp/sdk/v8/go/gcp/projects"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-func iam(ctx *pulumi.Context, locals *Locals, createdProject *organizations.Project) error {
+func iam(ctx *pulumi.Context, locals *Locals, createdProject *organizations.Project, gcpProvider *gcp.Provider) error {
 	// Create IAM roles and bindings
 	// Optionally assign an owner IAM member
 	if locals.GcpProject.Spec.OwnerMember != "" {
@@ -20,6 +21,7 @@ func iam(ctx *pulumi.Context, locals *Locals, createdProject *organizations.Proj
 				Role:    pulumi.String("roles/owner"),
 				Member:  pulumi.String("user:" + locals.GcpProject.Spec.OwnerMember),
 			},
+			pulumi.Provider(gcpProvider),
 			pulumi.DependsOn([]pulumi.Resource{createdProject}),
 		)
 		if iamErr != nil {
