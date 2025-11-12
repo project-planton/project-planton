@@ -397,7 +397,7 @@ project-planton pulumi up \
 ```bash
 # 1. Clone or fork a module
 git clone https://github.com/project-planton/project-planton
-cd apis/project/planton/provider/kubernetes/postgresqk8s/v1/iac/pulumi
+cd apis/org/project_planton/provider/kubernetes/postgresqk8s/v1/iac/pulumi
 
 # 2. Make changes to module code
 vim main.go
@@ -423,7 +423,7 @@ project-planton pulumi up \
 
 ```bash
 # 1. Fork the default module
-cp -r apis/project/planton/provider/aws/awss3bucket/v1/iac/pulumi \
+cp -r apis/org/project_planton/provider/aws/awss3bucket/v1/iac/pulumi \
       ~/custom-modules/my-s3-module
 
 # 2. Customize

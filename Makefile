@@ -177,16 +177,12 @@ build-docs:
 # ── website (site/) ────────────────────────────────────────────────────────────
 .PHONY: run-site
 run-site:
-	cd site && yarn 
-	cd site && yarn dev
+	$(MAKE) -C site dev
 
 .PHONY: build-site
 build-site:
-	cd site && yarn 
-	cd site && yarn build
+	$(MAKE) -C site build
 
 .PHONY: preview-site
 preview-site:
-	cd site && yarn 
-	cd site && yarn build
-	cd site && make preview-site
+	$(MAKE) -C site preview-site

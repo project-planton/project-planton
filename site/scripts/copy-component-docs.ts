@@ -6,7 +6,7 @@ import * as path from 'path';
 /**
  * Build script to copy deployment component documentation from apis/ to site/public/docs/provider/
  * 
- * Scans: apis/project/planton/provider/{provider}/{component}/v1/docs/README.md
+ * Scans: apis/org/project_planton/provider/{provider}/{component}/v1/docs/README.md
  * Outputs: site/public/docs/provider/{provider}/{component}.md
  * 
  * Generates frontmatter for each component and creates provider index pages.
@@ -414,7 +414,7 @@ async function copyComponentDocs(): Promise<void> {
   // Paths
   const scriptDir = __dirname;
   const projectRoot = path.join(scriptDir, '../..');
-  const apisRoot = path.join(projectRoot, 'apis/project/planton/provider');
+  const apisRoot = path.join(projectRoot, 'apis/org/project_planton/provider');
   const siteDocsRoot = path.join(scriptDir, '../public/docs/catalog');
   
   // List of provider directories to manage (clear only these, not the entire docs directory)

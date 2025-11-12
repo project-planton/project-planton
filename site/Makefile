@@ -12,7 +12,10 @@ dev:
 
 run: dev
 
-build: deps
+copy-docs:
+	yarn copy-docs
+
+build: deps copy-docs
 	yarn build
 
 start:
