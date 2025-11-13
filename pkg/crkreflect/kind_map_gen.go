@@ -93,7 +93,7 @@ import (
 	gcpserviceaccountv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpserviceaccount/v1"
 	gcpsubnetworkv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpsubnetwork/v1"
 	gcpvpcv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpvpc/v1"
-	altinityoperatorkubernetesv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/altinityoperatorkubernetes/v1"
+	altinityoperatorv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/altinityoperator/v1"
 	certmanagerkubernetesv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/certmanagerkubernetes/v1"
 	elasticoperatorkubernetesv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/elasticoperatorkubernetes/v1"
 	externaldnskubernetesv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/externaldnskubernetes/v1"
@@ -260,7 +260,7 @@ var ProviderSnowflakeMap = map[cloudresourcekind.CloudResourceKind]proto.Message
 }
 
 var ProviderKubernetesAddonMap = map[cloudresourcekind.CloudResourceKind]proto.Message{
-	cloudresourcekind.CloudResourceKind_AltinityOperatorKubernetes:   &altinityoperatorkubernetesv1.AltinityOperatorKubernetes{},
+	cloudresourcekind.CloudResourceKind_AltinityOperator:             &altinityoperatorv1.AltinityOperator{},
 	cloudresourcekind.CloudResourceKind_CertManagerKubernetes:        &certmanagerkubernetesv1.CertManagerKubernetes{},
 	cloudresourcekind.CloudResourceKind_ElasticOperatorKubernetes:    &elasticoperatorkubernetesv1.ElasticOperatorKubernetes{},
 	cloudresourcekind.CloudResourceKind_ExternalDnsKubernetes:        &externaldnskubernetesv1.ExternalDnsKubernetes{},
