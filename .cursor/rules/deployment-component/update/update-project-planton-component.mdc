@@ -402,8 +402,16 @@ Run without --dry-run to apply changes.
 ### Validation Checkpoints
 Update validates after each major change:
 - After proto regeneration → verify build
-- After IaC updates → verify tests pass
+- After test changes → verify component tests pass (`go test ./apis/.../v1/`)
+- After IaC updates → verify full test suite passes (`make test`)
 - After doc updates → verify examples work
+
+**Component-Specific Test Execution:**
+Update always runs the component-specific tests to validate buf.validate rules:
+```bash
+go test ./apis/org/project_planton/provider/<provider>/<component>/v1/
+```
+This ensures spec_test.go validates all validation rules correctly.
 
 ## Progress Tracking
 

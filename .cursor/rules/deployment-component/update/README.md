@@ -308,9 +308,18 @@ Update validates after major changes:
 | Checkpoint | Validates | Fails If |
 |------------|-----------|----------|
 | After proto regen | Build succeeds | Import errors, syntax errors |
-| After IaC update | Tests pass | Logic errors, config errors |
+| After test changes | Component tests pass | Validation test failures |
+| After IaC update | Full test suite passes | Logic errors, config errors |
 | After doc update | Examples work | Invalid YAML, wrong fields |
-| Final validation | All tests pass | Any test failure |
+| Component tests | `go test ./apis/.../v1/` | Any spec_test.go failure |
+| Final validation | `make test` passes | Any test failure |
+
+**Component Test Execution:**
+Update always runs component-specific tests to validate buf.validate rules:
+```bash
+go test ./apis/org/project_planton/provider/<provider>/<component>/v1/
+```
+This ensures spec_test.go correctly validates all validation rules in spec.proto.
 
 ### 4. Automatic Retry
 
@@ -602,6 +611,8 @@ Good update outcomes:
 
 - `@forge-project-planton-component` - Create new component
 - `@audit-project-planton-component` - Check completion status
+- `@complete-project-planton-component` - Auto-improve to 95%+ (audit + update + audit)
+- `@fix-project-planton-component` - Targeted fixes with cascading updates
 - `@delete-project-planton-component` - Remove component
 
 ## Questions?

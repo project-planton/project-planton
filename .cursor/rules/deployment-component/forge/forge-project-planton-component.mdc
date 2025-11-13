@@ -83,6 +83,9 @@ The following 21 rules execute in order. Each rule is atomic and can be run indi
 
 20. **018-build-validation** - Run make build (verify Go code compiles)
 21. **019-test-validation** - Run make test (verify all tests pass)
+    - Includes component-specific test: `go test ./apis/.../v1/`
+    - Validates spec_test.go tests all buf.validate rules
+    - Ensures validation rules are syntactically and semantically correct
 
 ## Error Handling
 
@@ -138,14 +141,15 @@ After forge completes, the component should have:
 
 ✅ All 4 proto files with validations
 ✅ Generated .pb.go stubs
-✅ Unit tests that pass
+✅ spec_test.go with validation tests
+✅ **Component tests execute and pass** (validates buf.validate rules)
 ✅ Registered in cloud_resource_kind.proto
 ✅ Complete user-facing documentation (README.md, examples.md)
 ✅ Comprehensive research documentation (docs/README.md)
 ✅ Pulumi module that compiles and works
 ✅ Terraform module that validates and works
 ✅ Supporting files (manifests, debug scripts, module overviews)
-✅ Build validation passed
-✅ Test validation passed
+✅ Build validation passed (`make build`)
+✅ Full test validation passed (`make test`)
 
-**Result:** A production-ready deployment component matching 95-100% of ideal state!
+**Result:** A production-ready deployment component matching 95-100% of ideal state with all tests passing!

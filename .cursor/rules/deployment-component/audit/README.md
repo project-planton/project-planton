@@ -79,22 +79,32 @@ Audit evaluates **9 categories** against the ideal state:
 - [ ] Lowercase folder naming
 - [ ] v1/ subfolder exists
 
-### 3. Protobuf API Definitions (Critical - 17.76%)
+### 3. Protobuf API Definitions (Critical - 22.20%)
 
-**Proto Files:**
+**Proto Files (13.32%):**
 - [ ] `api.proto` exists (>500 bytes)
 - [ ] `spec.proto` exists (>500 bytes)
 - [ ] `stack_input.proto` exists (>300 bytes)
 - [ ] `stack_outputs.proto` exists (>300 bytes)
 
-**Generated Stubs:**
+**Generated Stubs (3.33%):**
 - [ ] `api.pb.go` exists
 - [ ] `spec.pb.go` exists
 - [ ] `stack_input.pb.go` exists
 - [ ] `stack_outputs.pb.go` exists
 
-**Tests:**
+**Test File Presence (2.77%):**
 - [ ] `spec_test.go` exists (>500 bytes)
+- [ ] File contains actual test functions
+- [ ] File imports testing framework
+
+**Test Execution (2.78%):**
+- [ ] Tests compile without errors
+- [ ] Tests execute when running: `go test ./apis/.../provider/<provider>/<component>/v1/`
+- [ ] All tests pass (no failures)
+- [ ] Tests validate all buf.validate rules are correct
+
+**Critical:** Components with failing tests are considered incomplete. Test execution is mandatory for production-readiness.
 
 ### 4. IaC Modules - Pulumi (Critical - 13.32%)
 
@@ -686,6 +696,8 @@ Good audit outcomes:
 
 - `@forge-project-planton-component` - Create new component
 - `@update-project-planton-component` - Fill gaps, enhance component
+- `@complete-project-planton-component` - Auto-improve to 95%+ (audit + update + audit)
+- `@fix-project-planton-component` - Targeted fixes with cascading updates
 - `@delete-project-planton-component` - Remove component
 
 ## Reference

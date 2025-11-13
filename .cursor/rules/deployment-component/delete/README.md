@@ -680,6 +680,8 @@ Successful deletion:
 ## Related Commands
 
 - `@audit-project-planton-component` - Check component status before deletion
+- `@complete-project-planton-component` - Auto-improve to 95%+ (consider before deleting)
+- `@fix-project-planton-component` - Fix specific issues (consider before deleting)
 - `@forge-project-planton-component` - Create new component
 - `@update-project-planton-component` - Update existing component
 

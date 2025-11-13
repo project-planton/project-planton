@@ -4,18 +4,24 @@
 
 This directory contains the complete rule system for managing deployment components in Project Planton. These rules handle the entire lifecycle from creation to deletion, ensuring components match the **ideal state** defined in `architecture/deployment-component.md`.
 
-## The Four Lifecycle Operations
+## The Six Lifecycle Operations
 
-Project Planton provides four atomic operations for deployment components:
+Project Planton provides six operations for deployment components:
 
 | Operation | Purpose | When to Use |
 |-----------|---------|-------------|
 | **🔨 Forge** | Create new components | Component doesn't exist |
 | **🔍 Audit** | Assess completeness | Check status, find gaps |
-| **🔄 Update** | Enhance existing components | Fill gaps, add features, fix issues |
+| **🔄 Update** | Enhance existing components | Fill gaps, refresh docs, general improvements |
+| **✨ Complete** | Auto-improve to target | One-command: audit + fill gaps + verify |
+| **🔧 Fix** | Targeted fixes with propagation | Specific bugs, sync issues, consistency fixes |
 | **🗑️ Delete** | Remove components | Obsolete, deprecated, consolidating |
 
-**Key Principle:** Each operation is atomic, well-documented, and follows the ideal state standard.
+**Key Principles:** 
+- Each operation is atomic, well-documented, and follows the ideal state standard
+- **Source code is the ultimate source of truth** - documentation must match implementation
+- Complete is a convenience wrapper (audit + update + audit)
+- Fix ensures consistency across all artifacts (code, docs, examples, tests)
 
 ---
 
@@ -37,9 +43,20 @@ Need to work with a deployment component?
 │     │     Shows completion %, identifies gaps
 │     │     Generates timestamped report
 │     │
-│     ├─ Need to improve/fix?
+│     ├─ Make it production-ready quickly?
+│     │  └─ Use @complete-project-planton-component
+│     │     Audits + fills all gaps + verifies
+│     │     One command to 95%+ completion
+│     │
+│     ├─ Have specific bug/issue to fix?
+│     │  └─ Use @fix-project-planton-component
+│     │     Targeted fix with cascading updates
+│     │     Ensures code, docs, examples, tests all match
+│     │     Source code is truth, docs updated to match
+│     │
+│     ├─ Need general improvements?
 │     │  └─ Use @update-project-planton-component
-│     │     Fills gaps, adds features, fixes issues
+│     │     Fills gaps, refreshes docs, updates IaC
 │     │     6 scenarios: fill-gaps, proto-changed, etc.
 │     │
 │     └─ Want to remove?
@@ -207,7 +224,165 @@ Improve existing components by filling gaps, adding features, refreshing docs, o
 
 ---
 
-## 4. Delete: Remove Components Safely
+## 4. Complete: Auto-Improve to Production-Ready
+
+### Purpose
+One-command workflow that audits a component and automatically fills all gaps to reach target completion score (default 95%).
+
+### When to Use
+- Making component production-ready quickly
+- Batch improving multiple components
+- Quality gates before releases
+- Onboarding legacy components
+- Following up after forge
+
+### What It Does
+
+**Three-Step Automated Workflow:**
+1. **Audit** - Assess current state and identify all gaps
+2. **Fill Gaps** - Automatically run update --fill-gaps
+3. **Verify** - Re-audit to confirm improvement
+
+**Result:** Before/after comparison showing improvement
+
+### Usage
+
+```bash
+@complete-project-planton-component <ComponentName> [flags]
+```
+
+**Examples:**
+```bash
+# Basic usage (target: 95%)
+@complete-project-planton-component MongodbAtlas
+
+# Preview without changes
+@complete-project-planton-component MongodbAtlas --dry-run
+
+# Custom target score
+@complete-project-planton-component PostgresKubernetes --target-score 100
+
+# Batch processing
+for component in Comp1 Comp2 Comp3; do
+  @complete-project-planton-component $component
+done
+```
+
+### What Gets Filled
+
+Automatically creates missing items:
+- ✅ Terraform module (if missing)
+- ✅ Research documentation (if missing)
+- ✅ User-facing docs (if missing/incomplete)
+- ✅ Examples (if missing/incomplete)
+- ✅ Pulumi overview (if missing)
+- ✅ Supporting files (manifests, debug scripts)
+
+**Note:** Only fills gaps, doesn't modify existing files
+
+### Typical Results
+
+| Starting Score | Target | Duration | Result |
+|----------------|--------|----------|--------|
+| 40-60% | 95% | 30-40 min | 95-98% |
+| 60-80% | 95% | 15-25 min | 95-98% |
+| 80-94% | 95% | 5-15 min | 95-100% |
+| 95%+ | 95% | 30 sec | Already complete |
+
+### Learn More
+- **README:** [`complete/README.md`](complete/README.md)
+- **Rule:** [`complete/complete-project-planton-component.mdc`](complete/complete-project-planton-component.mdc)
+
+---
+
+## 5. Fix: Targeted Fixes with Cascading Updates
+
+### Purpose
+Make targeted fixes to components and automatically propagate changes to all related artifacts (documentation, examples, tests, IaC modules) to ensure complete consistency.
+
+### Core Philosophy
+**Source code is the ultimate source of truth.** Documentation describes code, code doesn't describe documentation.
+
+### When to Use
+- Fixing specific bugs in proto schema, IaC modules, or validation logic
+- Correcting incorrect behavior with documentation updates
+- Synchronizing artifacts when they've drifted (examples out of date)
+- Fixing test failures and validation logic
+- Restoring feature parity between Pulumi and Terraform
+
+### What It Does
+
+**Six-Step Workflow:**
+1. **Analyze** - Understand the fix needed and read current source code
+2. **Fix Source Code** - Make changes to proto, IaC modules, tests
+3. **Propagate to Docs** - Update all documentation to match new code
+4. **Validate Consistency** - Run 5 consistency checks
+5. **Execute Tests** - Component tests, build, full suite
+6. **Report** - Show what was fixed and what was propagated
+
+**Five Consistency Checks:**
+- Proto ↔ Terraform variables
+- Proto ↔ Examples (examples must validate)
+- Pulumi ↔ Terraform (feature parity)
+- Validations ↔ Tests (every rule tested)
+- Documentation ↔ Implementation (docs match reality)
+
+### Usage
+
+```bash
+@fix-project-planton-component <ComponentName> --explain "<detailed fix description>"
+```
+
+**Examples:**
+```bash
+# Fix validation logic
+@fix-project-planton-component GcpCertManagerCert --explain "primaryDomainName validation should allow wildcards like *.example.com"
+
+# Fix IaC implementation
+@fix-project-planton-component AwsRdsInstance --explain "Pulumi hardcodes backup_retention_period instead of using spec field"
+
+# Fix documentation drift
+@fix-project-planton-component PostgresKubernetes --explain "examples use deprecated 'database_name' field, should be 'db_identifier'"
+
+# Fix test failures
+@fix-project-planton-component MongodbAtlas --explain "spec_test.go expects validation on cluster_tier but spec.proto has no validation rule"
+```
+
+### What Gets Updated
+
+**Source Code (if needed):**
+- spec.proto (validation rules, fields)
+- Pulumi module (deployment logic)
+- Terraform module (to maintain parity)
+- spec_test.go (validation tests)
+
+**Documentation (always):**
+- examples.md (match current API)
+- README.md (match current behavior)
+- docs/README.md (if architectural)
+- IaC READMEs (if usage changed)
+
+**Validation:**
+- Component tests: `go test ./apis/.../v1/`
+- Build: `make build`
+- Full suite: `make test`
+- Example validation
+- Consistency checks
+
+### Typical Duration
+
+- Documentation-only fix: 2-5 minutes
+- Proto + docs fix: 5-10 minutes
+- IaC + docs fix: 10-20 minutes
+- Complex multi-artifact fix: 20-30 minutes
+
+### Learn More
+- **README:** [`fix/README.md`](fix/README.md)
+- **Rule:** [`fix/fix-project-planton-component.mdc`](fix/fix-project-planton-component.mdc)
+
+---
+
+## 6. Delete: Remove Components Safely
 
 ### Purpose
 Completely remove deployment components with safety features to prevent accidents.
@@ -266,6 +441,7 @@ make build && make test
 
 ### Workflow 1: Create and Validate
 
+**Option A: Manual (More Control)**
 ```bash
 # 1. Create new component
 @forge-project-planton-component NewComponent --provider aws
@@ -282,8 +458,34 @@ make build && make test
 # Expected: 100% complete
 ```
 
+**Option B: Automated (Faster)**
+```bash
+# 1. Create new component
+@forge-project-planton-component NewComponent --provider aws
+
+# 2. Auto-complete if any gaps
+@complete-project-planton-component NewComponent
+# Audits, fills gaps, verifies automatically
+# Result: 95-100% complete
+```
+
 ### Workflow 2: Improve Existing Component
 
+**Option A: Automated (Recommended)**
+```bash
+# One command to production-ready
+@complete-project-planton-component ExistingComponent
+
+# Automatically:
+# - Audits current state (65%)
+# - Fills all gaps (Terraform, docs, etc.)
+# - Re-audits (98%)
+# - Reports improvement (+33%)
+
+# Duration: ~18 minutes
+```
+
+**Option B: Manual (More Control)**
 ```bash
 # 1. Check current state
 @audit-project-planton-component ExistingComponent
@@ -634,5 +836,7 @@ When adding new rules or improving existing ones:
 | **Forge** | `@forge-project-planton-component <Name> --provider <provider>` |
 | **Audit** | `@audit-project-planton-component <Name>` |
 | **Update** | `@update-project-planton-component <Name> [--scenario <type>]` |
+| **Complete** | `@complete-project-planton-component <Name> [--target-score <pct>]` |
+| **Fix** | `@fix-project-planton-component <Name> --explain "<fix description>"` |
 | **Delete** | `@delete-project-planton-component <Name> --backup` |
 

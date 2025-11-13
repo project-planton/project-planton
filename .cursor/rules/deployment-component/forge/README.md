@@ -16,7 +16,8 @@ When you run forge, you get a fully-implemented deployment component:
 - ✅ `stack_outputs.proto` - Deployment outputs
 - ✅ `api.proto` - KRM wiring (apiVersion, kind, metadata, spec, status)
 - ✅ Generated `.pb.go` stubs for all proto files
-- ✅ `spec_test.go` - Unit tests for validation rules
+- ✅ `spec_test.go` - Unit tests for ALL validation rules
+- ✅ **Tests execute and pass** - Validates buf.validate rules work correctly
 
 ### IaC Modules - Pulumi
 - ✅ Module files: `main.go`, `locals.go`, `outputs.go`, resource-specific files
@@ -239,16 +240,19 @@ If a rule fails after 3 attempts:
 
 After forge completes, validate the component:
 
-```
+**Option 1: Manual Audit**
+```bash
 @audit-project-planton-component <ComponentName>
 ```
-
 **Expected Result:** 95-100% completion score
 
-If score is lower, the audit report shows:
-- What's missing
-- Why it matters
-- How to fix it
+If score is lower, the audit report shows what's missing, why it matters, and how to fix it.
+
+**Option 2: Auto-Complete (Recommended)**
+```bash
+@complete-project-planton-component <ComponentName>
+```
+Automatically audits and fills any remaining gaps to reach 95%+. Useful if forge had partial failures.
 
 ## Customization After Forge
 

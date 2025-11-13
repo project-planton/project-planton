@@ -80,22 +80,35 @@ For each category, check files and record results. Use the following structure t
 
 **Scoring:** Pass all checks = 4.44%, partial = proportional, fail all = 0%
 
-#### Category 3: Protobuf API Definitions (Critical - 17.76% total)
+#### Category 3: Protobuf API Definitions (Critical - 22.20% total)
 
-**Proto Files (4.44% each):**
+**Proto Files (3.33% each = 13.32% total):**
 - [ ] `api.proto` exists and is non-empty (>500 bytes)
 - [ ] `spec.proto` exists and is non-empty (>500 bytes)
 - [ ] `stack_input.proto` exists and is non-empty (>300 bytes)
 - [ ] `stack_outputs.proto` exists and is non-empty (>300 bytes)
 
-**Generated Stubs (4.44%):**
+**Generated Stubs (3.33%):**
 - [ ] `api.pb.go` exists
 - [ ] `spec.pb.go` exists
 - [ ] `stack_input.pb.go` exists
 - [ ] `stack_outputs.pb.go` exists
 
-**Unit Tests (4.44%):**
+**Unit Tests - File Presence (2.77%):**
 - [ ] `spec_test.go` exists and is non-empty (>500 bytes)
+- [ ] File contains test functions for validation rules
+- [ ] File imports testing framework (testing, testify, etc.)
+
+**Unit Tests - Execution (2.78%):**
+- [ ] Tests compile (no syntax errors)
+- [ ] Tests execute successfully when running:
+  ```bash
+  go test ./apis/org/project_planton/provider/<provider>/<component>/v1/
+  ```
+- [ ] All tests pass (no failures)
+- [ ] Tests validate buf.validate rules are correct
+
+**Critical:** A component with failing tests is considered incomplete. Test execution is mandatory for production-readiness.
 
 **Scoring:** Each sub-category scored independently
 
@@ -192,17 +205,29 @@ For each category, check files and record results. Use the following structure t
 Total Score = (Critical Items Score) + (Important Items Score) + (Nice to Have Score)
 
 Where:
-- Critical Items = 40% weight (9 items × 4.44% each)
-- Important Items = 40% weight (6 items × 6.67% each)
-- Nice to Have = 20% weight (3 items × 6.67% each)
+- Critical Items = 48.64% weight:
+  - Cloud Resource Registry: 4.44%
+  - Folder Structure: 4.44%
+  - Protobuf API Definitions: 22.20% (includes test execution)
+  - IaC Modules - Pulumi: 13.32%
+  - IaC Modules - Terraform: 4.24%
+  
+- Important Items = 36.36% weight:
+  - Documentation - Research: 13.18%
+  - Documentation - User-Facing: 13.09%
+  - Supporting Files: 10.09%
+  
+- Nice to Have = 15% weight
 ```
 
 **Interpretation:**
-- **100%** - Fully complete, production-ready
+- **100%** - Fully complete, production-ready, all tests passing
 - **80-99%** - Functionally complete, minor improvements needed
 - **60-79%** - Partially complete, significant work remaining
 - **40-59%** - Skeleton exists, major implementation needed
 - **<40%** - Early stage or abandoned
+
+**Critical Change:** Test execution (2.78%) is now part of the critical path. Components with failing tests cannot be considered complete.
 
 ### Step 4: Generate Audit Report
 

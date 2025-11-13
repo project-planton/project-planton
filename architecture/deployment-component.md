@@ -395,15 +395,30 @@ message GcpCertManagerCertStackOutputs {
 
 **Location:** `v1/spec_test.go`
 
+**Purpose:** Validate that all buf.validate rules in spec.proto are syntactically and semantically correct
+
 **Requirements:**
 
 - [ ] **File Exists** - `v1/spec_test.go` is present
-- [ ] **Validation Tests** - Tests for validation rules in `spec.proto`:
+- [ ] **Substantial Content** - File is non-empty (>500 bytes indicates real tests)
+- [ ] **Validation Tests** - Tests for ALL validation rules in `spec.proto`:
   - Test that required fields trigger validation errors when missing
-  - Test that pattern validations work correctly
-  - Test that range validations enforce limits
-- [ ] **Tests Pass** - All tests pass when running `make test`
-- [ ] **Meaningful Coverage** - Tests cover critical validation paths (not just happy path)
+  - Test that pattern validations work correctly (string patterns, regex)
+  - Test that range validations enforce limits (min/max, gte/lte)
+  - Test that enum validations reject invalid values
+  - Test that custom CEL validations work as expected
+- [ ] **Tests Execute** - All tests run successfully (no compilation errors)
+- [ ] **Tests Pass** - All tests pass when running component-specific test:
+  ```bash
+  go test ./apis/org/project_planton/provider/<provider>/<component>/v1/
+  ```
+- [ ] **Meaningful Coverage** - Tests cover critical validation paths:
+  - Happy path (valid configurations)
+  - Error paths (missing required fields, invalid patterns)
+  - Edge cases (boundary values, special characters)
+  - Each validation rule has at least one test
+
+**Critical:** Test execution is part of completeness. A component with tests that fail is considered incomplete.
 
 **Example:**
 ```go
@@ -767,47 +782,58 @@ variable "alternate_domain_names" {
 
 When evaluating whether a deployment component is "complete," assess each category:
 
-### Critical (Must Have)
+### Critical (Must Have - 48.64%)
 
 These are non-negotiable for a component to be considered functional:
 
-1. ✅ Entry in `cloud_resource_kind.proto`
-2. ✅ Correct folder structure
-3. ✅ All four proto files (api, spec, stack_input, stack_outputs)
-4. ✅ Generated proto stubs (.pb.go files)
-5. ✅ Pulumi module with main.go, locals.go, outputs.go
-6. ✅ Pulumi entrypoint (main.go, Pulumi.yaml, Makefile)
-7. ✅ Terraform module with all 5 core files (variables.tf, provider.tf, locals.tf, main.tf, outputs.tf)
-8. ✅ Both IaC modules compile/validate successfully
-9. ✅ Basic README.md explaining the component
+1. ✅ Entry in `cloud_resource_kind.proto` (4.44%)
+2. ✅ Correct folder structure (4.44%)
+3. ✅ All four proto files (api, spec, stack_input, stack_outputs) (13.32%)
+4. ✅ Generated proto stubs (.pb.go files) (3.33%)
+5. ✅ spec_test.go with validation tests (2.77%)
+6. ✅ **Tests execute and pass** (2.78%) - Component-specific `go test` succeeds
+7. ✅ Pulumi module with main.go, locals.go, outputs.go (6.66%)
+8. ✅ Pulumi entrypoint (main.go, Pulumi.yaml, Makefile) (6.66%)
+9. ✅ Terraform module with all 5 core files (variables.tf, provider.tf, locals.tf, main.tf, outputs.tf) (4.24%)
 
-### Important (Should Have)
+**Note:** Test execution is now explicitly part of critical items. Failing tests = incomplete component.
+
+### Important (Should Have - 36.36%)
 
 These significantly improve quality and usability:
 
-10. ✅ Comprehensive research document (docs/README.md)
-11. ✅ Working examples (examples.md)
-12. ✅ Proto validation rules with unit tests
-13. ✅ Proper documentation in proto files
-14. ✅ Feature parity between Pulumi and Terraform
-15. ✅ Supporting documentation (Pulumi README, TF README, overview)
+10. ✅ Comprehensive research document (docs/README.md) (13.18%)
+11. ✅ Working examples (examples.md) (6.55%)
+12. ✅ User-facing README (v1/README.md) (6.54%)
+13. ✅ Pulumi supporting documentation (README, overview) (5.05%)
+14. ✅ Terraform supporting documentation (README) (2.52%)
+15. ✅ Supporting files (hack manifest, debug scripts) (2.52%)
 
-### Nice to Have (Polish)
+### Nice to Have (Polish - 15%)
 
 These add polish and maintainability:
 
-16. ✅ Hack manifest for testing
-17. ✅ Debug scripts
-18. ✅ Extensive examples covering edge cases
-19. ✅ Detailed architecture documentation
+16. ✅ Extensive examples covering edge cases (5%)
+17. ✅ Additional architecture documentation (5%)
+18. ✅ Extra supporting files and helpers (5%)
 
 ### Percentage Calculation
 
 **Completion Score:**
 
-- Critical items: 40% weight (9 items × 4.44% each)
-- Important items: 40% weight (6 items × 6.67% each)
-- Nice to Have: 20% weight (3 items × 6.67% each)
+- Critical items: **48.64%** weight
+  - Registry: 4.44%
+  - Folder: 4.44%
+  - Proto files: 13.32%
+  - Generated stubs: 3.33%
+  - Test file: 2.77%
+  - **Test execution: 2.78%** ← Now explicit
+  - Pulumi module: 6.66%
+  - Pulumi entrypoint: 6.66%
+  - Terraform module: 4.24%
+  
+- Important items: **36.36%** weight (6 major items)
+- Nice to Have: **15%** weight (polish items)
 
 **Interpretation:**
 - 100% - Fully complete, production-ready
