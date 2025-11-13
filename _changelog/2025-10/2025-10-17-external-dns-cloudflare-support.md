@@ -103,7 +103,7 @@ spec:
 
 ### Protobuf Specification
 
-**File**: `apis/project/planton/provider/kubernetes/addon/externaldnskubernetes/v1/spec.proto`
+**File**: `apis/project/planton/provider/kubernetes/addon/externaldns/v1/spec.proto`
 
 ```protobuf
 message ExternalDnsCloudflareConfig {
@@ -126,7 +126,7 @@ message ExternalDnsCloudflareConfig {
 
 ### Pulumi Module Implementation
 
-**File**: `apis/project/planton/provider/kubernetes/addon/externaldnskubernetes/v1/iac/pulumi/module/main.go`
+**File**: `apis/project/planton/provider/kubernetes/addon/externaldns/v1/iac/pulumi/module/main.go`
 
 **Key Features**:
 
@@ -225,7 +225,7 @@ This enables managing multiple Cloudflare zones (different domains) in the same 
 
 ### Simplified Configuration Variables
 
-**File**: `apis/project/planton/provider/kubernetes/addon/externaldnskubernetes/v1/iac/pulumi/module/vars.go`
+**File**: `apis/project/planton/provider/kubernetes/addon/externaldns/v1/iac/pulumi/module/vars.go`
 
 Removed hardcoded defaults in favor of protobuf-defined defaults:
 
@@ -691,7 +691,7 @@ kubectl get clusterrole -l app.kubernetes.io/name=external-dns -o yaml | grep ga
 
 3. **Deploy**:
    ```bash
-   export EXTERNAL_DNS_MODULE=~/scm/github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/externaldnskubernetes/v1/iac/pulumi
+   export EXTERNAL_DNS_MODULE=~/scm/github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/externaldns/v1/iac/pulumi
    
    project-planton pulumi up \
      --manifest external-dns.yaml \
@@ -716,7 +716,7 @@ kubectl get clusterrole -l app.kubernetes.io/name=external-dns -o yaml | grep ga
 
 Created test manifest for verification:
 
-**File**: `apis/project/planton/provider/kubernetes/addon/externaldnskubernetes/v1/_cursor/lb-service.yaml`
+**File**: `apis/project/planton/provider/kubernetes/addon/externaldns/v1/_cursor/lb-service.yaml`
 
 ```yaml
 apiVersion: v1
@@ -775,7 +775,7 @@ Future enhancement: Support secret references for automated rotation.
 - **Cloudflare Provider Guide**: https://kubernetes-sigs.github.io/external-dns/latest/docs/tutorials/cloudflare/
 - **Cloudflare API Tokens**: https://developers.cloudflare.com/fundamentals/api/get-started/create-token/
 - **Cloudflare Proxy Status**: https://developers.cloudflare.com/dns/proxy-status/
-- **Research Document**: `apis/project/planton/provider/kubernetes/addon/externaldnskubernetes/v1/_cursor/external-dns.cloudflare.research.md`
+- **Research Document**: `apis/project/planton/provider/kubernetes/addon/externaldns/v1/_cursor/external-dns.cloudflare.research.md`
 
 ## Breaking Changes
 

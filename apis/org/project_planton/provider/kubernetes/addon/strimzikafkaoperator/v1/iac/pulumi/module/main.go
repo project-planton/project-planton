@@ -2,7 +2,7 @@ package module
 
 import (
 	"github.com/pkg/errors"
-	kafkaoperatorkubernetesv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/kafkaoperatorkubernetes/v1"
+	strimzikafkaoperatorv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/strimzikafkaoperator/v1"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/pulumikubernetesprovider"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
@@ -10,7 +10,7 @@ import (
 // Resources is the entry‑point called by the Project Planton engine.
 func Resources(
 	ctx *pulumi.Context,
-	stackInput *kafkaoperatorkubernetesv1.KafkaOperatorKubernetesStackInput,
+	stackInput *strimzikafkaoperatorv1.KafkaOperatorKubernetesStackInput,
 ) error {
 	// ------------------------------------------------------------------
 	// Provider set‑up

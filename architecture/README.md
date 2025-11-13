@@ -281,7 +281,7 @@ project-planton/
 │                   │   ├── rediskubernetes/v1/
 │                   │   └── ...
 │                   └── addon/
-│                       ├── certmanagerkubernetes/v1/
+│                       ├── certmanager/v1/
 │                       └── ...
 ├── architecture/                # Architecture documentation
 │   ├── README.md               # This file

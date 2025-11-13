@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package org.project_planton.provider.kubernetes.addon.kafkaoperatorkubernetes.v1;
+package org.project_planton.provider.kubernetes.addon.strimzikafkaoperator.v1;
 
 //kafka-operator-kubernetes stack outputs
 message KafkaOperatorKubernetesStackOutputs {

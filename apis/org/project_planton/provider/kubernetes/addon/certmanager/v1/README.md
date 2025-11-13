@@ -62,7 +62,7 @@ spec:
 Deploy it:
 
 ```bash
-export CERT_MANAGER_MODULE=/path/to/apis/.../certmanagerkubernetes/v1/iac/pulumi
+export CERT_MANAGER_MODULE=/path/to/apis/.../certmanager/v1/iac/pulumi
 
 project-planton pulumi up \
   --manifest cert-manager.yaml \

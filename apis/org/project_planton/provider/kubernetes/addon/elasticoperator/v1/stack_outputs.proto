@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package org.project_planton.provider.kubernetes.addon.elasticoperatorkubernetes.v1;
+package org.project_planton.provider.kubernetes.addon.elasticoperator.v1;
 
 //elastic-operator-kubernetes stack outputs
 message ElasticOperatorKubernetesStackOutputs {

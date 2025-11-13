@@ -2,9 +2,9 @@
 // versions:
 // 	protoc-gen-go v1.36.6
 // 	protoc        (unknown)
-// source: org/project_planton/provider/kubernetes/addon/altinityoperatorkubernetes/v1/spec.proto
+// source: org/project_planton/provider/kubernetes/addon/altinityoperator/v1/spec.proto
 
-package altinityoperatorkubernetesv1
+package altinityoperatorv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
@@ -41,7 +41,7 @@ type AltinityOperatorSpec struct {
 
 func (x *AltinityOperatorSpec) Reset() {
 	*x = AltinityOperatorSpec{}
-	mi := &file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_spec_proto_msgTypes[0]
+	mi := &file_org_project_planton_provider_kubernetes_addon_altinityoperator_v1_spec_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -53,7 +53,7 @@ func (x *AltinityOperatorSpec) String() string {
 func (*AltinityOperatorSpec) ProtoMessage() {}
 
 func (x *AltinityOperatorSpec) ProtoReflect() protoreflect.Message {
-	mi := &file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_spec_proto_msgTypes[0]
+	mi := &file_org_project_planton_provider_kubernetes_addon_altinityoperator_v1_spec_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -66,7 +66,7 @@ func (x *AltinityOperatorSpec) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AltinityOperatorSpec.ProtoReflect.Descriptor instead.
 func (*AltinityOperatorSpec) Descriptor() ([]byte, []int) {
-	return file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_spec_proto_rawDescGZIP(), []int{0}
+	return file_org_project_planton_provider_kubernetes_addon_altinityoperator_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *AltinityOperatorSpec) GetTargetCluster() *kubernetes.KubernetesAddonTargetCluster {
@@ -102,7 +102,7 @@ type AltinityOperatorSpecContainer struct {
 
 func (x *AltinityOperatorSpecContainer) Reset() {
 	*x = AltinityOperatorSpecContainer{}
-	mi := &file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_spec_proto_msgTypes[1]
+	mi := &file_org_project_planton_provider_kubernetes_addon_altinityoperator_v1_spec_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -114,7 +114,7 @@ func (x *AltinityOperatorSpecContainer) String() string {
 func (*AltinityOperatorSpecContainer) ProtoMessage() {}
 
 func (x *AltinityOperatorSpecContainer) ProtoReflect() protoreflect.Message {
-	mi := &file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_spec_proto_msgTypes[1]
+	mi := &file_org_project_planton_provider_kubernetes_addon_altinityoperator_v1_spec_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -127,7 +127,7 @@ func (x *AltinityOperatorSpecContainer) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AltinityOperatorSpecContainer.ProtoReflect.Descriptor instead.
 func (*AltinityOperatorSpecContainer) Descriptor() ([]byte, []int) {
-	return file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_spec_proto_rawDescGZIP(), []int{1}
+	return file_org_project_planton_provider_kubernetes_addon_altinityoperator_v1_spec_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *AltinityOperatorSpecContainer) GetResources() *kubernetes.ContainerResources {
@@ -137,45 +137,45 @@ func (x *AltinityOperatorSpecContainer) GetResources() *kubernetes.ContainerReso
 	return nil
 }
 
-var File_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_spec_proto protoreflect.FileDescriptor
+var File_org_project_planton_provider_kubernetes_addon_altinityoperator_v1_spec_proto protoreflect.FileDescriptor
 
-const file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_spec_proto_rawDesc = "" +
+const file_org_project_planton_provider_kubernetes_addon_altinityoperator_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Vorg/project_planton/provider/kubernetes/addon/altinityoperatorkubernetes/v1/spec.proto\x12Korg.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\x1a3org/project_planton/shared/kubernetes/options.proto\x1a:org/project_planton/shared/kubernetes/target_cluster.proto\"\xdb\x02\n" +
+	"Lorg/project_planton/provider/kubernetes/addon/altinityoperator/v1/spec.proto\x12Aorg.project_planton.provider.kubernetes.addon.altinityoperator.v1\x1a\x1bbuf/validate/validate.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\x1a3org/project_planton/shared/kubernetes/options.proto\x1a:org/project_planton/shared/kubernetes/target_cluster.proto\"\xd1\x02\n" +
 	"\x14AltinityOperatorSpec\x12j\n" +
 	"\x0etarget_cluster\x18\x01 \x01(\v2C.org.project_planton.shared.kubernetes.KubernetesAddonTargetClusterR\rtargetCluster\x12D\n" +
-	"\tnamespace\x18\x02 \x01(\tB&\xbaH#r!2\x1f^[a-z0-9]([-a-z0-9]*[a-z0-9])?$R\tnamespace\x12\x90\x01\n" +
-	"\tcontainer\x18\x03 \x01(\v2j.org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorSpecContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\"\x9c\x01\n" +
+	"\tnamespace\x18\x02 \x01(\tB&\xbaH#r!2\x1f^[a-z0-9]([-a-z0-9]*[a-z0-9])?$R\tnamespace\x12\x86\x01\n" +
+	"\tcontainer\x18\x03 \x01(\v2`.org.project_planton.provider.kubernetes.addon.altinityoperator.v1.AltinityOperatorSpecContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\"\x9c\x01\n" +
 	"\x1dAltinityOperatorSpecContainer\x12{\n" +
 	"\tresources\x18\x01 \x01(\v29.org.project_planton.shared.kubernetes.ContainerResourcesB\"\xba\xfb\xa4\x02\x1d\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\r\n" +
-	"\x04100m\x12\x05256MiR\tresourcesB\xc8\x04\n" +
-	"Ocom.org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1B\tSpecProtoP\x01Z\x98\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/altinityoperatorkubernetes/v1;altinityoperatorkubernetesv1\xa2\x02\x06OPPKAA\xaa\x02JOrg.ProjectPlanton.Provider.Kubernetes.Addon.Altinityoperatorkubernetes.V1\xca\x02JOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Altinityoperatorkubernetes\\V1\xe2\x02VOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Altinityoperatorkubernetes\\V1\\GPBMetadata\xea\x02POrg::ProjectPlanton::Provider::Kubernetes::Addon::Altinityoperatorkubernetes::V1b\x06proto3"
+	"\x04100m\x12\x05256MiR\tresourcesB\x82\x04\n" +
+	"Ecom.org.project_planton.provider.kubernetes.addon.altinityoperator.v1B\tSpecProtoP\x01Z\x84\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/altinityoperator/v1;altinityoperatorv1\xa2\x02\x06OPPKAA\xaa\x02@Org.ProjectPlanton.Provider.Kubernetes.Addon.Altinityoperator.V1\xca\x02@Org\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Altinityoperator\\V1\xe2\x02LOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Altinityoperator\\V1\\GPBMetadata\xea\x02FOrg::ProjectPlanton::Provider::Kubernetes::Addon::Altinityoperator::V1b\x06proto3"
 
 var (
-	file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_spec_proto_rawDescOnce sync.Once
-	file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_spec_proto_rawDescData []byte
+	file_org_project_planton_provider_kubernetes_addon_altinityoperator_v1_spec_proto_rawDescOnce sync.Once
+	file_org_project_planton_provider_kubernetes_addon_altinityoperator_v1_spec_proto_rawDescData []byte
 )
 
-func file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_spec_proto_rawDescGZIP() []byte {
-	file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_spec_proto_rawDescOnce.Do(func() {
-		file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_spec_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_spec_proto_rawDesc), len(file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_spec_proto_rawDesc)))
+func file_org_project_planton_provider_kubernetes_addon_altinityoperator_v1_spec_proto_rawDescGZIP() []byte {
+	file_org_project_planton_provider_kubernetes_addon_altinityoperator_v1_spec_proto_rawDescOnce.Do(func() {
+		file_org_project_planton_provider_kubernetes_addon_altinityoperator_v1_spec_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_org_project_planton_provider_kubernetes_addon_altinityoperator_v1_spec_proto_rawDesc), len(file_org_project_planton_provider_kubernetes_addon_altinityoperator_v1_spec_proto_rawDesc)))
 	})
-	return file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_spec_proto_rawDescData
+	return file_org_project_planton_provider_kubernetes_addon_altinityoperator_v1_spec_proto_rawDescData
 }
 
-var file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
-var file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_spec_proto_goTypes = []any{
-	(*AltinityOperatorSpec)(nil),                    // 0: org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorSpec
-	(*AltinityOperatorSpecContainer)(nil),           // 1: org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorSpecContainer
+var file_org_project_planton_provider_kubernetes_addon_altinityoperator_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_org_project_planton_provider_kubernetes_addon_altinityoperator_v1_spec_proto_goTypes = []any{
+	(*AltinityOperatorSpec)(nil),                    // 0: org.project_planton.provider.kubernetes.addon.altinityoperator.v1.AltinityOperatorSpec
+	(*AltinityOperatorSpecContainer)(nil),           // 1: org.project_planton.provider.kubernetes.addon.altinityoperator.v1.AltinityOperatorSpecContainer
 	(*kubernetes.KubernetesAddonTargetCluster)(nil), // 2: org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
 	(*kubernetes.ContainerResources)(nil),           // 3: org.project_planton.shared.kubernetes.ContainerResources
 }
-var file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_spec_proto_depIdxs = []int32{
-	2, // 0: org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorSpec.target_cluster:type_name -> org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
-	1, // 1: org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorSpec.container:type_name -> org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorSpecContainer
-	3, // 2: org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorSpecContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
+var file_org_project_planton_provider_kubernetes_addon_altinityoperator_v1_spec_proto_depIdxs = []int32{
+	2, // 0: org.project_planton.provider.kubernetes.addon.altinityoperator.v1.AltinityOperatorSpec.target_cluster:type_name -> org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
+	1, // 1: org.project_planton.provider.kubernetes.addon.altinityoperator.v1.AltinityOperatorSpec.container:type_name -> org.project_planton.provider.kubernetes.addon.altinityoperator.v1.AltinityOperatorSpecContainer
+	3, // 2: org.project_planton.provider.kubernetes.addon.altinityoperator.v1.AltinityOperatorSpecContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
 	3, // [3:3] is the sub-list for method output_type
 	3, // [3:3] is the sub-list for method input_type
 	3, // [3:3] is the sub-list for extension type_name
@@ -183,28 +183,26 @@ var file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernete
 	0, // [0:3] is the sub-list for field type_name
 }
 
-func init() {
-	file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_spec_proto_init()
-}
-func file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_spec_proto_init() {
-	if File_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_spec_proto != nil {
+func init() { file_org_project_planton_provider_kubernetes_addon_altinityoperator_v1_spec_proto_init() }
+func file_org_project_planton_provider_kubernetes_addon_altinityoperator_v1_spec_proto_init() {
+	if File_org_project_planton_provider_kubernetes_addon_altinityoperator_v1_spec_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_spec_proto_rawDesc), len(file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_spec_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_org_project_planton_provider_kubernetes_addon_altinityoperator_v1_spec_proto_rawDesc), len(file_org_project_planton_provider_kubernetes_addon_altinityoperator_v1_spec_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_spec_proto_goTypes,
-		DependencyIndexes: file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_spec_proto_depIdxs,
-		MessageInfos:      file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_spec_proto_msgTypes,
+		GoTypes:           file_org_project_planton_provider_kubernetes_addon_altinityoperator_v1_spec_proto_goTypes,
+		DependencyIndexes: file_org_project_planton_provider_kubernetes_addon_altinityoperator_v1_spec_proto_depIdxs,
+		MessageInfos:      file_org_project_planton_provider_kubernetes_addon_altinityoperator_v1_spec_proto_msgTypes,
 	}.Build()
-	File_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_spec_proto = out.File
-	file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_spec_proto_goTypes = nil
-	file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_spec_proto_depIdxs = nil
+	File_org_project_planton_provider_kubernetes_addon_altinityoperator_v1_spec_proto = out.File
+	file_org_project_planton_provider_kubernetes_addon_altinityoperator_v1_spec_proto_goTypes = nil
+	file_org_project_planton_provider_kubernetes_addon_altinityoperator_v1_spec_proto_depIdxs = nil
 }

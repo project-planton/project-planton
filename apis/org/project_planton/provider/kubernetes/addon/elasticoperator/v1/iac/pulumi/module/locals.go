@@ -3,18 +3,18 @@ package module
 import (
 	"strconv"
 
-	elasticoperatorkubernetesv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/elasticoperatorkubernetes/v1"
+	elasticoperatorv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/elasticoperator/v1"
 	"github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/kuberneteslabelkeys"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
 type Locals struct {
-	ElasticOperatorKubernetes *elasticoperatorkubernetesv1.ElasticOperatorKubernetes
+	ElasticOperatorKubernetes *elasticoperatorv1.ElasticOperatorKubernetes
 	KubeLabels                map[string]string
 }
 
-func initializeLocals(_ *pulumi.Context, in *elasticoperatorkubernetesv1.ElasticOperatorKubernetesStackInput) *Locals {
+func initializeLocals(_ *pulumi.Context, in *elasticoperatorv1.ElasticOperatorKubernetesStackInput) *Locals {
 	var l Locals
 	l.ElasticOperatorKubernetes = in.Target
 

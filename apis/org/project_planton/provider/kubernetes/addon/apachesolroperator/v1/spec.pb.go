@@ -2,9 +2,9 @@
 // versions:
 // 	protoc-gen-go v1.36.6
 // 	protoc        (unknown)
-// source: org/project_planton/provider/kubernetes/addon/solroperatorkubernetes/v1/spec.proto
+// source: org/project_planton/provider/kubernetes/addon/apachesolroperator/v1/spec.proto
 
-package solroperatorkubernetesv1
+package apachesolroperatorv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
@@ -38,7 +38,7 @@ type SolrOperatorKubernetesSpec struct {
 
 func (x *SolrOperatorKubernetesSpec) Reset() {
 	*x = SolrOperatorKubernetesSpec{}
-	mi := &file_org_project_planton_provider_kubernetes_addon_solroperatorkubernetes_v1_spec_proto_msgTypes[0]
+	mi := &file_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_spec_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -50,7 +50,7 @@ func (x *SolrOperatorKubernetesSpec) String() string {
 func (*SolrOperatorKubernetesSpec) ProtoMessage() {}
 
 func (x *SolrOperatorKubernetesSpec) ProtoReflect() protoreflect.Message {
-	mi := &file_org_project_planton_provider_kubernetes_addon_solroperatorkubernetes_v1_spec_proto_msgTypes[0]
+	mi := &file_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_spec_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -63,7 +63,7 @@ func (x *SolrOperatorKubernetesSpec) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SolrOperatorKubernetesSpec.ProtoReflect.Descriptor instead.
 func (*SolrOperatorKubernetesSpec) Descriptor() ([]byte, []int) {
-	return file_org_project_planton_provider_kubernetes_addon_solroperatorkubernetes_v1_spec_proto_rawDescGZIP(), []int{0}
+	return file_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *SolrOperatorKubernetesSpec) GetTargetCluster() *kubernetes.KubernetesAddonTargetCluster {
@@ -92,7 +92,7 @@ type SolrOperatorKubernetesSpecContainer struct {
 
 func (x *SolrOperatorKubernetesSpecContainer) Reset() {
 	*x = SolrOperatorKubernetesSpecContainer{}
-	mi := &file_org_project_planton_provider_kubernetes_addon_solroperatorkubernetes_v1_spec_proto_msgTypes[1]
+	mi := &file_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_spec_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -104,7 +104,7 @@ func (x *SolrOperatorKubernetesSpecContainer) String() string {
 func (*SolrOperatorKubernetesSpecContainer) ProtoMessage() {}
 
 func (x *SolrOperatorKubernetesSpecContainer) ProtoReflect() protoreflect.Message {
-	mi := &file_org_project_planton_provider_kubernetes_addon_solroperatorkubernetes_v1_spec_proto_msgTypes[1]
+	mi := &file_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_spec_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -117,7 +117,7 @@ func (x *SolrOperatorKubernetesSpecContainer) ProtoReflect() protoreflect.Messag
 
 // Deprecated: Use SolrOperatorKubernetesSpecContainer.ProtoReflect.Descriptor instead.
 func (*SolrOperatorKubernetesSpecContainer) Descriptor() ([]byte, []int) {
-	return file_org_project_planton_provider_kubernetes_addon_solroperatorkubernetes_v1_spec_proto_rawDescGZIP(), []int{1}
+	return file_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_spec_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *SolrOperatorKubernetesSpecContainer) GetResources() *kubernetes.ContainerResources {
@@ -127,44 +127,44 @@ func (x *SolrOperatorKubernetesSpecContainer) GetResources() *kubernetes.Contain
 	return nil
 }
 
-var File_org_project_planton_provider_kubernetes_addon_solroperatorkubernetes_v1_spec_proto protoreflect.FileDescriptor
+var File_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_spec_proto protoreflect.FileDescriptor
 
-const file_org_project_planton_provider_kubernetes_addon_solroperatorkubernetes_v1_spec_proto_rawDesc = "" +
+const file_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Rorg/project_planton/provider/kubernetes/addon/solroperatorkubernetes/v1/spec.proto\x12Gorg.project_planton.provider.kubernetes.addon.solroperatorkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\x1a3org/project_planton/shared/kubernetes/options.proto\x1a:org/project_planton/shared/kubernetes/target_cluster.proto\"\x9d\x02\n" +
+	"Norg/project_planton/provider/kubernetes/addon/apachesolroperator/v1/spec.proto\x12Corg.project_planton.provider.kubernetes.addon.apachesolroperator.v1\x1a\x1bbuf/validate/validate.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\x1a3org/project_planton/shared/kubernetes/options.proto\x1a:org/project_planton/shared/kubernetes/target_cluster.proto\"\x99\x02\n" +
 	"\x1aSolrOperatorKubernetesSpec\x12j\n" +
-	"\x0etarget_cluster\x18\x01 \x01(\v2C.org.project_planton.shared.kubernetes.KubernetesAddonTargetClusterR\rtargetCluster\x12\x92\x01\n" +
-	"\tcontainer\x18\x02 \x01(\v2l.org.project_planton.provider.kubernetes.addon.solroperatorkubernetes.v1.SolrOperatorKubernetesSpecContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\"\xa1\x01\n" +
+	"\x0etarget_cluster\x18\x01 \x01(\v2C.org.project_planton.shared.kubernetes.KubernetesAddonTargetClusterR\rtargetCluster\x12\x8e\x01\n" +
+	"\tcontainer\x18\x02 \x01(\v2h.org.project_planton.provider.kubernetes.addon.apachesolroperator.v1.SolrOperatorKubernetesSpecContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\"\xa1\x01\n" +
 	"#SolrOperatorKubernetesSpecContainer\x12z\n" +
 	"\tresources\x18\x01 \x01(\v29.org.project_planton.shared.kubernetes.ContainerResourcesB!\xba\xfb\xa4\x02\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
-	"\x0350m\x12\x05100MiR\tresourcesB\xac\x04\n" +
-	"Kcom.org.project_planton.provider.kubernetes.addon.solroperatorkubernetes.v1B\tSpecProtoP\x01Z\x90\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/solroperatorkubernetes/v1;solroperatorkubernetesv1\xa2\x02\x06OPPKAS\xaa\x02FOrg.ProjectPlanton.Provider.Kubernetes.Addon.Solroperatorkubernetes.V1\xca\x02FOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Solroperatorkubernetes\\V1\xe2\x02ROrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Solroperatorkubernetes\\V1\\GPBMetadata\xea\x02LOrg::ProjectPlanton::Provider::Kubernetes::Addon::Solroperatorkubernetes::V1b\x06proto3"
+	"\x0350m\x12\x05100MiR\tresourcesB\x90\x04\n" +
+	"Gcom.org.project_planton.provider.kubernetes.addon.apachesolroperator.v1B\tSpecProtoP\x01Z\x88\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/apachesolroperator/v1;apachesolroperatorv1\xa2\x02\x06OPPKAA\xaa\x02BOrg.ProjectPlanton.Provider.Kubernetes.Addon.Apachesolroperator.V1\xca\x02BOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Apachesolroperator\\V1\xe2\x02NOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Apachesolroperator\\V1\\GPBMetadata\xea\x02HOrg::ProjectPlanton::Provider::Kubernetes::Addon::Apachesolroperator::V1b\x06proto3"
 
 var (
-	file_org_project_planton_provider_kubernetes_addon_solroperatorkubernetes_v1_spec_proto_rawDescOnce sync.Once
-	file_org_project_planton_provider_kubernetes_addon_solroperatorkubernetes_v1_spec_proto_rawDescData []byte
+	file_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_spec_proto_rawDescOnce sync.Once
+	file_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_spec_proto_rawDescData []byte
 )
 
-func file_org_project_planton_provider_kubernetes_addon_solroperatorkubernetes_v1_spec_proto_rawDescGZIP() []byte {
-	file_org_project_planton_provider_kubernetes_addon_solroperatorkubernetes_v1_spec_proto_rawDescOnce.Do(func() {
-		file_org_project_planton_provider_kubernetes_addon_solroperatorkubernetes_v1_spec_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_org_project_planton_provider_kubernetes_addon_solroperatorkubernetes_v1_spec_proto_rawDesc), len(file_org_project_planton_provider_kubernetes_addon_solroperatorkubernetes_v1_spec_proto_rawDesc)))
+func file_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_spec_proto_rawDescGZIP() []byte {
+	file_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_spec_proto_rawDescOnce.Do(func() {
+		file_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_spec_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_spec_proto_rawDesc), len(file_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_spec_proto_rawDesc)))
 	})
-	return file_org_project_planton_provider_kubernetes_addon_solroperatorkubernetes_v1_spec_proto_rawDescData
+	return file_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_spec_proto_rawDescData
 }
 
-var file_org_project_planton_provider_kubernetes_addon_solroperatorkubernetes_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
-var file_org_project_planton_provider_kubernetes_addon_solroperatorkubernetes_v1_spec_proto_goTypes = []any{
-	(*SolrOperatorKubernetesSpec)(nil),              // 0: org.project_planton.provider.kubernetes.addon.solroperatorkubernetes.v1.SolrOperatorKubernetesSpec
-	(*SolrOperatorKubernetesSpecContainer)(nil),     // 1: org.project_planton.provider.kubernetes.addon.solroperatorkubernetes.v1.SolrOperatorKubernetesSpecContainer
+var file_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_spec_proto_goTypes = []any{
+	(*SolrOperatorKubernetesSpec)(nil),              // 0: org.project_planton.provider.kubernetes.addon.apachesolroperator.v1.SolrOperatorKubernetesSpec
+	(*SolrOperatorKubernetesSpecContainer)(nil),     // 1: org.project_planton.provider.kubernetes.addon.apachesolroperator.v1.SolrOperatorKubernetesSpecContainer
 	(*kubernetes.KubernetesAddonTargetCluster)(nil), // 2: org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
 	(*kubernetes.ContainerResources)(nil),           // 3: org.project_planton.shared.kubernetes.ContainerResources
 }
-var file_org_project_planton_provider_kubernetes_addon_solroperatorkubernetes_v1_spec_proto_depIdxs = []int32{
-	2, // 0: org.project_planton.provider.kubernetes.addon.solroperatorkubernetes.v1.SolrOperatorKubernetesSpec.target_cluster:type_name -> org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
-	1, // 1: org.project_planton.provider.kubernetes.addon.solroperatorkubernetes.v1.SolrOperatorKubernetesSpec.container:type_name -> org.project_planton.provider.kubernetes.addon.solroperatorkubernetes.v1.SolrOperatorKubernetesSpecContainer
-	3, // 2: org.project_planton.provider.kubernetes.addon.solroperatorkubernetes.v1.SolrOperatorKubernetesSpecContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
+var file_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_spec_proto_depIdxs = []int32{
+	2, // 0: org.project_planton.provider.kubernetes.addon.apachesolroperator.v1.SolrOperatorKubernetesSpec.target_cluster:type_name -> org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
+	1, // 1: org.project_planton.provider.kubernetes.addon.apachesolroperator.v1.SolrOperatorKubernetesSpec.container:type_name -> org.project_planton.provider.kubernetes.addon.apachesolroperator.v1.SolrOperatorKubernetesSpecContainer
+	3, // 2: org.project_planton.provider.kubernetes.addon.apachesolroperator.v1.SolrOperatorKubernetesSpecContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
 	3, // [3:3] is the sub-list for method output_type
 	3, // [3:3] is the sub-list for method input_type
 	3, // [3:3] is the sub-list for extension type_name
@@ -173,27 +173,27 @@ var file_org_project_planton_provider_kubernetes_addon_solroperatorkubernetes_v1
 }
 
 func init() {
-	file_org_project_planton_provider_kubernetes_addon_solroperatorkubernetes_v1_spec_proto_init()
+	file_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_spec_proto_init()
 }
-func file_org_project_planton_provider_kubernetes_addon_solroperatorkubernetes_v1_spec_proto_init() {
-	if File_org_project_planton_provider_kubernetes_addon_solroperatorkubernetes_v1_spec_proto != nil {
+func file_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_spec_proto_init() {
+	if File_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_spec_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_org_project_planton_provider_kubernetes_addon_solroperatorkubernetes_v1_spec_proto_rawDesc), len(file_org_project_planton_provider_kubernetes_addon_solroperatorkubernetes_v1_spec_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_spec_proto_rawDesc), len(file_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_spec_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_org_project_planton_provider_kubernetes_addon_solroperatorkubernetes_v1_spec_proto_goTypes,
-		DependencyIndexes: file_org_project_planton_provider_kubernetes_addon_solroperatorkubernetes_v1_spec_proto_depIdxs,
-		MessageInfos:      file_org_project_planton_provider_kubernetes_addon_solroperatorkubernetes_v1_spec_proto_msgTypes,
+		GoTypes:           file_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_spec_proto_goTypes,
+		DependencyIndexes: file_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_spec_proto_depIdxs,
+		MessageInfos:      file_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_spec_proto_msgTypes,
 	}.Build()
-	File_org_project_planton_provider_kubernetes_addon_solroperatorkubernetes_v1_spec_proto = out.File
-	file_org_project_planton_provider_kubernetes_addon_solroperatorkubernetes_v1_spec_proto_goTypes = nil
-	file_org_project_planton_provider_kubernetes_addon_solroperatorkubernetes_v1_spec_proto_depIdxs = nil
+	File_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_spec_proto = out.File
+	file_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_spec_proto_goTypes = nil
+	file_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_spec_proto_depIdxs = nil
 }

@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1;
+package org.project_planton.provider.kubernetes.addon.altinityoperator.v1;
 
-import "org/project_planton/provider/kubernetes/addon/altinityoperatorkubernetes/v1/api.proto";
+import "org/project_planton/provider/kubernetes/addon/altinityoperator/v1/api.proto";
 import "org/project_planton/provider/kubernetes/provider.proto";
 
 //altinity-operator stack-input

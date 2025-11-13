@@ -2,9 +2,9 @@
 // versions:
 // 	protoc-gen-go v1.36.6
 // 	protoc        (unknown)
-// source: org/project_planton/provider/kubernetes/addon/postgresoperatorkubernetes/v1/api.proto
+// source: org/project_planton/provider/kubernetes/addon/zalandopostgresoperator/v1/api.proto
 
-package postgresoperatorkubernetesv1
+package zalandopostgresoperatorv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
@@ -42,7 +42,7 @@ type PostgresOperatorKubernetes struct {
 
 func (x *PostgresOperatorKubernetes) Reset() {
 	*x = PostgresOperatorKubernetes{}
-	mi := &file_org_project_planton_provider_kubernetes_addon_postgresoperatorkubernetes_v1_api_proto_msgTypes[0]
+	mi := &file_org_project_planton_provider_kubernetes_addon_zalandopostgresoperator_v1_api_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -54,7 +54,7 @@ func (x *PostgresOperatorKubernetes) String() string {
 func (*PostgresOperatorKubernetes) ProtoMessage() {}
 
 func (x *PostgresOperatorKubernetes) ProtoReflect() protoreflect.Message {
-	mi := &file_org_project_planton_provider_kubernetes_addon_postgresoperatorkubernetes_v1_api_proto_msgTypes[0]
+	mi := &file_org_project_planton_provider_kubernetes_addon_zalandopostgresoperator_v1_api_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -67,7 +67,7 @@ func (x *PostgresOperatorKubernetes) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PostgresOperatorKubernetes.ProtoReflect.Descriptor instead.
 func (*PostgresOperatorKubernetes) Descriptor() ([]byte, []int) {
-	return file_org_project_planton_provider_kubernetes_addon_postgresoperatorkubernetes_v1_api_proto_rawDescGZIP(), []int{0}
+	return file_org_project_planton_provider_kubernetes_addon_zalandopostgresoperator_v1_api_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *PostgresOperatorKubernetes) GetApiVersion() string {
@@ -116,7 +116,7 @@ type PostgresOperatorKubernetesStatus struct {
 
 func (x *PostgresOperatorKubernetesStatus) Reset() {
 	*x = PostgresOperatorKubernetesStatus{}
-	mi := &file_org_project_planton_provider_kubernetes_addon_postgresoperatorkubernetes_v1_api_proto_msgTypes[1]
+	mi := &file_org_project_planton_provider_kubernetes_addon_zalandopostgresoperator_v1_api_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -128,7 +128,7 @@ func (x *PostgresOperatorKubernetesStatus) String() string {
 func (*PostgresOperatorKubernetesStatus) ProtoMessage() {}
 
 func (x *PostgresOperatorKubernetesStatus) ProtoReflect() protoreflect.Message {
-	mi := &file_org_project_planton_provider_kubernetes_addon_postgresoperatorkubernetes_v1_api_proto_msgTypes[1]
+	mi := &file_org_project_planton_provider_kubernetes_addon_zalandopostgresoperator_v1_api_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -141,7 +141,7 @@ func (x *PostgresOperatorKubernetesStatus) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PostgresOperatorKubernetesStatus.ProtoReflect.Descriptor instead.
 func (*PostgresOperatorKubernetesStatus) Descriptor() ([]byte, []int) {
-	return file_org_project_planton_provider_kubernetes_addon_postgresoperatorkubernetes_v1_api_proto_rawDescGZIP(), []int{1}
+	return file_org_project_planton_provider_kubernetes_addon_zalandopostgresoperator_v1_api_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *PostgresOperatorKubernetesStatus) GetOutputs() *PostgresOperatorKubernetesStackOutputs {
@@ -151,49 +151,49 @@ func (x *PostgresOperatorKubernetesStatus) GetOutputs() *PostgresOperatorKuberne
 	return nil
 }
 
-var File_org_project_planton_provider_kubernetes_addon_postgresoperatorkubernetes_v1_api_proto protoreflect.FileDescriptor
+var File_org_project_planton_provider_kubernetes_addon_zalandopostgresoperator_v1_api_proto protoreflect.FileDescriptor
 
-const file_org_project_planton_provider_kubernetes_addon_postgresoperatorkubernetes_v1_api_proto_rawDesc = "" +
+const file_org_project_planton_provider_kubernetes_addon_zalandopostgresoperator_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Uorg/project_planton/provider/kubernetes/addon/postgresoperatorkubernetes/v1/api.proto\x12Korg.project_planton.provider.kubernetes.addon.postgresoperatorkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1aVorg/project_planton/provider/kubernetes/addon/postgresoperatorkubernetes/v1/spec.proto\x1a_org/project_planton/provider/kubernetes/addon/postgresoperatorkubernetes/v1/stack_outputs.proto\x1a)org/project_planton/shared/metadata.proto\"\x87\x04\n" +
+	"Rorg/project_planton/provider/kubernetes/addon/zalandopostgresoperator/v1/api.proto\x12Horg.project_planton.provider.kubernetes.addon.zalandopostgresoperator.v1\x1a\x1bbuf/validate/validate.proto\x1aSorg/project_planton/provider/kubernetes/addon/zalandopostgresoperator/v1/spec.proto\x1a\\org/project_planton/provider/kubernetes/addon/zalandopostgresoperator/v1/stack_outputs.proto\x1a)org/project_planton/shared/metadata.proto\"\x81\x04\n" +
 	"\x1aPostgresOperatorKubernetes\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!kubernetes.project-planton.org/v1R\n" +
 	"apiVersion\x125\n" +
 	"\x04kind\x18\x02 \x01(\tB!\xbaH\x1er\x1c\n" +
 	"\x1aPostgresOperatorKubernetesR\x04kind\x12U\n" +
-	"\bmetadata\x18\x03 \x01(\v21.org.project_planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12\x87\x01\n" +
-	"\x04spec\x18\x04 \x01(\v2k.org.project_planton.provider.kubernetes.addon.postgresoperatorkubernetes.v1.PostgresOperatorKubernetesSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12\x85\x01\n" +
-	"\x06status\x18\x05 \x01(\v2m.org.project_planton.provider.kubernetes.addon.postgresoperatorkubernetes.v1.PostgresOperatorKubernetesStatusR\x06status\"\xb2\x01\n" +
-	" PostgresOperatorKubernetesStatus\x12\x8d\x01\n" +
-	"\aoutputs\x18\x01 \x01(\v2s.org.project_planton.provider.kubernetes.addon.postgresoperatorkubernetes.v1.PostgresOperatorKubernetesStackOutputsR\aoutputsB\xc7\x04\n" +
-	"Ocom.org.project_planton.provider.kubernetes.addon.postgresoperatorkubernetes.v1B\bApiProtoP\x01Z\x98\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/postgresoperatorkubernetes/v1;postgresoperatorkubernetesv1\xa2\x02\x06OPPKAP\xaa\x02JOrg.ProjectPlanton.Provider.Kubernetes.Addon.Postgresoperatorkubernetes.V1\xca\x02JOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Postgresoperatorkubernetes\\V1\xe2\x02VOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Postgresoperatorkubernetes\\V1\\GPBMetadata\xea\x02POrg::ProjectPlanton::Provider::Kubernetes::Addon::Postgresoperatorkubernetes::V1b\x06proto3"
+	"\bmetadata\x18\x03 \x01(\v21.org.project_planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12\x84\x01\n" +
+	"\x04spec\x18\x04 \x01(\v2h.org.project_planton.provider.kubernetes.addon.zalandopostgresoperator.v1.PostgresOperatorKubernetesSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12\x82\x01\n" +
+	"\x06status\x18\x05 \x01(\v2j.org.project_planton.provider.kubernetes.addon.zalandopostgresoperator.v1.PostgresOperatorKubernetesStatusR\x06status\"\xaf\x01\n" +
+	" PostgresOperatorKubernetesStatus\x12\x8a\x01\n" +
+	"\aoutputs\x18\x01 \x01(\v2p.org.project_planton.provider.kubernetes.addon.zalandopostgresoperator.v1.PostgresOperatorKubernetesStackOutputsR\aoutputsB\xb2\x04\n" +
+	"Lcom.org.project_planton.provider.kubernetes.addon.zalandopostgresoperator.v1B\bApiProtoP\x01Z\x92\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/zalandopostgresoperator/v1;zalandopostgresoperatorv1\xa2\x02\x06OPPKAZ\xaa\x02GOrg.ProjectPlanton.Provider.Kubernetes.Addon.Zalandopostgresoperator.V1\xca\x02GOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Zalandopostgresoperator\\V1\xe2\x02SOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Zalandopostgresoperator\\V1\\GPBMetadata\xea\x02MOrg::ProjectPlanton::Provider::Kubernetes::Addon::Zalandopostgresoperator::V1b\x06proto3"
 
 var (
-	file_org_project_planton_provider_kubernetes_addon_postgresoperatorkubernetes_v1_api_proto_rawDescOnce sync.Once
-	file_org_project_planton_provider_kubernetes_addon_postgresoperatorkubernetes_v1_api_proto_rawDescData []byte
+	file_org_project_planton_provider_kubernetes_addon_zalandopostgresoperator_v1_api_proto_rawDescOnce sync.Once
+	file_org_project_planton_provider_kubernetes_addon_zalandopostgresoperator_v1_api_proto_rawDescData []byte
 )
 
-func file_org_project_planton_provider_kubernetes_addon_postgresoperatorkubernetes_v1_api_proto_rawDescGZIP() []byte {
-	file_org_project_planton_provider_kubernetes_addon_postgresoperatorkubernetes_v1_api_proto_rawDescOnce.Do(func() {
-		file_org_project_planton_provider_kubernetes_addon_postgresoperatorkubernetes_v1_api_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_org_project_planton_provider_kubernetes_addon_postgresoperatorkubernetes_v1_api_proto_rawDesc), len(file_org_project_planton_provider_kubernetes_addon_postgresoperatorkubernetes_v1_api_proto_rawDesc)))
+func file_org_project_planton_provider_kubernetes_addon_zalandopostgresoperator_v1_api_proto_rawDescGZIP() []byte {
+	file_org_project_planton_provider_kubernetes_addon_zalandopostgresoperator_v1_api_proto_rawDescOnce.Do(func() {
+		file_org_project_planton_provider_kubernetes_addon_zalandopostgresoperator_v1_api_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_org_project_planton_provider_kubernetes_addon_zalandopostgresoperator_v1_api_proto_rawDesc), len(file_org_project_planton_provider_kubernetes_addon_zalandopostgresoperator_v1_api_proto_rawDesc)))
 	})
-	return file_org_project_planton_provider_kubernetes_addon_postgresoperatorkubernetes_v1_api_proto_rawDescData
+	return file_org_project_planton_provider_kubernetes_addon_zalandopostgresoperator_v1_api_proto_rawDescData
 }
 
-var file_org_project_planton_provider_kubernetes_addon_postgresoperatorkubernetes_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
-var file_org_project_planton_provider_kubernetes_addon_postgresoperatorkubernetes_v1_api_proto_goTypes = []any{
-	(*PostgresOperatorKubernetes)(nil),             // 0: org.project_planton.provider.kubernetes.addon.postgresoperatorkubernetes.v1.PostgresOperatorKubernetes
-	(*PostgresOperatorKubernetesStatus)(nil),       // 1: org.project_planton.provider.kubernetes.addon.postgresoperatorkubernetes.v1.PostgresOperatorKubernetesStatus
+var file_org_project_planton_provider_kubernetes_addon_zalandopostgresoperator_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_org_project_planton_provider_kubernetes_addon_zalandopostgresoperator_v1_api_proto_goTypes = []any{
+	(*PostgresOperatorKubernetes)(nil),             // 0: org.project_planton.provider.kubernetes.addon.zalandopostgresoperator.v1.PostgresOperatorKubernetes
+	(*PostgresOperatorKubernetesStatus)(nil),       // 1: org.project_planton.provider.kubernetes.addon.zalandopostgresoperator.v1.PostgresOperatorKubernetesStatus
 	(*shared.CloudResourceMetadata)(nil),           // 2: org.project_planton.shared.CloudResourceMetadata
-	(*PostgresOperatorKubernetesSpec)(nil),         // 3: org.project_planton.provider.kubernetes.addon.postgresoperatorkubernetes.v1.PostgresOperatorKubernetesSpec
-	(*PostgresOperatorKubernetesStackOutputs)(nil), // 4: org.project_planton.provider.kubernetes.addon.postgresoperatorkubernetes.v1.PostgresOperatorKubernetesStackOutputs
+	(*PostgresOperatorKubernetesSpec)(nil),         // 3: org.project_planton.provider.kubernetes.addon.zalandopostgresoperator.v1.PostgresOperatorKubernetesSpec
+	(*PostgresOperatorKubernetesStackOutputs)(nil), // 4: org.project_planton.provider.kubernetes.addon.zalandopostgresoperator.v1.PostgresOperatorKubernetesStackOutputs
 }
-var file_org_project_planton_provider_kubernetes_addon_postgresoperatorkubernetes_v1_api_proto_depIdxs = []int32{
-	2, // 0: org.project_planton.provider.kubernetes.addon.postgresoperatorkubernetes.v1.PostgresOperatorKubernetes.metadata:type_name -> org.project_planton.shared.CloudResourceMetadata
-	3, // 1: org.project_planton.provider.kubernetes.addon.postgresoperatorkubernetes.v1.PostgresOperatorKubernetes.spec:type_name -> org.project_planton.provider.kubernetes.addon.postgresoperatorkubernetes.v1.PostgresOperatorKubernetesSpec
-	1, // 2: org.project_planton.provider.kubernetes.addon.postgresoperatorkubernetes.v1.PostgresOperatorKubernetes.status:type_name -> org.project_planton.provider.kubernetes.addon.postgresoperatorkubernetes.v1.PostgresOperatorKubernetesStatus
-	4, // 3: org.project_planton.provider.kubernetes.addon.postgresoperatorkubernetes.v1.PostgresOperatorKubernetesStatus.outputs:type_name -> org.project_planton.provider.kubernetes.addon.postgresoperatorkubernetes.v1.PostgresOperatorKubernetesStackOutputs
+var file_org_project_planton_provider_kubernetes_addon_zalandopostgresoperator_v1_api_proto_depIdxs = []int32{
+	2, // 0: org.project_planton.provider.kubernetes.addon.zalandopostgresoperator.v1.PostgresOperatorKubernetes.metadata:type_name -> org.project_planton.shared.CloudResourceMetadata
+	3, // 1: org.project_planton.provider.kubernetes.addon.zalandopostgresoperator.v1.PostgresOperatorKubernetes.spec:type_name -> org.project_planton.provider.kubernetes.addon.zalandopostgresoperator.v1.PostgresOperatorKubernetesSpec
+	1, // 2: org.project_planton.provider.kubernetes.addon.zalandopostgresoperator.v1.PostgresOperatorKubernetes.status:type_name -> org.project_planton.provider.kubernetes.addon.zalandopostgresoperator.v1.PostgresOperatorKubernetesStatus
+	4, // 3: org.project_planton.provider.kubernetes.addon.zalandopostgresoperator.v1.PostgresOperatorKubernetesStatus.outputs:type_name -> org.project_planton.provider.kubernetes.addon.zalandopostgresoperator.v1.PostgresOperatorKubernetesStackOutputs
 	4, // [4:4] is the sub-list for method output_type
 	4, // [4:4] is the sub-list for method input_type
 	4, // [4:4] is the sub-list for extension type_name
@@ -202,29 +202,29 @@ var file_org_project_planton_provider_kubernetes_addon_postgresoperatorkubernete
 }
 
 func init() {
-	file_org_project_planton_provider_kubernetes_addon_postgresoperatorkubernetes_v1_api_proto_init()
+	file_org_project_planton_provider_kubernetes_addon_zalandopostgresoperator_v1_api_proto_init()
 }
-func file_org_project_planton_provider_kubernetes_addon_postgresoperatorkubernetes_v1_api_proto_init() {
-	if File_org_project_planton_provider_kubernetes_addon_postgresoperatorkubernetes_v1_api_proto != nil {
+func file_org_project_planton_provider_kubernetes_addon_zalandopostgresoperator_v1_api_proto_init() {
+	if File_org_project_planton_provider_kubernetes_addon_zalandopostgresoperator_v1_api_proto != nil {
 		return
 	}
-	file_org_project_planton_provider_kubernetes_addon_postgresoperatorkubernetes_v1_spec_proto_init()
-	file_org_project_planton_provider_kubernetes_addon_postgresoperatorkubernetes_v1_stack_outputs_proto_init()
+	file_org_project_planton_provider_kubernetes_addon_zalandopostgresoperator_v1_spec_proto_init()
+	file_org_project_planton_provider_kubernetes_addon_zalandopostgresoperator_v1_stack_outputs_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_org_project_planton_provider_kubernetes_addon_postgresoperatorkubernetes_v1_api_proto_rawDesc), len(file_org_project_planton_provider_kubernetes_addon_postgresoperatorkubernetes_v1_api_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_org_project_planton_provider_kubernetes_addon_zalandopostgresoperator_v1_api_proto_rawDesc), len(file_org_project_planton_provider_kubernetes_addon_zalandopostgresoperator_v1_api_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_org_project_planton_provider_kubernetes_addon_postgresoperatorkubernetes_v1_api_proto_goTypes,
-		DependencyIndexes: file_org_project_planton_provider_kubernetes_addon_postgresoperatorkubernetes_v1_api_proto_depIdxs,
-		MessageInfos:      file_org_project_planton_provider_kubernetes_addon_postgresoperatorkubernetes_v1_api_proto_msgTypes,
+		GoTypes:           file_org_project_planton_provider_kubernetes_addon_zalandopostgresoperator_v1_api_proto_goTypes,
+		DependencyIndexes: file_org_project_planton_provider_kubernetes_addon_zalandopostgresoperator_v1_api_proto_depIdxs,
+		MessageInfos:      file_org_project_planton_provider_kubernetes_addon_zalandopostgresoperator_v1_api_proto_msgTypes,
 	}.Build()
-	File_org_project_planton_provider_kubernetes_addon_postgresoperatorkubernetes_v1_api_proto = out.File
-	file_org_project_planton_provider_kubernetes_addon_postgresoperatorkubernetes_v1_api_proto_goTypes = nil
-	file_org_project_planton_provider_kubernetes_addon_postgresoperatorkubernetes_v1_api_proto_depIdxs = nil
+	File_org_project_planton_provider_kubernetes_addon_zalandopostgresoperator_v1_api_proto = out.File
+	file_org_project_planton_provider_kubernetes_addon_zalandopostgresoperator_v1_api_proto_goTypes = nil
+	file_org_project_planton_provider_kubernetes_addon_zalandopostgresoperator_v1_api_proto_depIdxs = nil
 }

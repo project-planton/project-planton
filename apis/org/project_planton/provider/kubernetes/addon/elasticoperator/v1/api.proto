@@ -1,10 +1,10 @@
 syntax = "proto3";
 
-package org.project_planton.provider.kubernetes.addon.elasticoperatorkubernetes.v1;
+package org.project_planton.provider.kubernetes.addon.elasticoperator.v1;
 
 import "buf/validate/validate.proto";
-import "org/project_planton/provider/kubernetes/addon/elasticoperatorkubernetes/v1/spec.proto";
-import "org/project_planton/provider/kubernetes/addon/elasticoperatorkubernetes/v1/stack_outputs.proto";
+import "org/project_planton/provider/kubernetes/addon/elasticoperator/v1/spec.proto";
+import "org/project_planton/provider/kubernetes/addon/elasticoperator/v1/stack_outputs.proto";
 import "org/project_planton/shared/metadata.proto";
 
 //elastic-operator-kubernetes

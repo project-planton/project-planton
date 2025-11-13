@@ -2,9 +2,9 @@
 // versions:
 // 	protoc-gen-go v1.36.6
 // 	protoc        (unknown)
-// source: org/project_planton/provider/kubernetes/addon/altinityoperatorkubernetes/v1/api.proto
+// source: org/project_planton/provider/kubernetes/addon/altinityoperator/v1/api.proto
 
-package altinityoperatorkubernetesv1
+package altinityoperatorv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
@@ -42,7 +42,7 @@ type AltinityOperator struct {
 
 func (x *AltinityOperator) Reset() {
 	*x = AltinityOperator{}
-	mi := &file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_api_proto_msgTypes[0]
+	mi := &file_org_project_planton_provider_kubernetes_addon_altinityoperator_v1_api_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -54,7 +54,7 @@ func (x *AltinityOperator) String() string {
 func (*AltinityOperator) ProtoMessage() {}
 
 func (x *AltinityOperator) ProtoReflect() protoreflect.Message {
-	mi := &file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_api_proto_msgTypes[0]
+	mi := &file_org_project_planton_provider_kubernetes_addon_altinityoperator_v1_api_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -67,7 +67,7 @@ func (x *AltinityOperator) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AltinityOperator.ProtoReflect.Descriptor instead.
 func (*AltinityOperator) Descriptor() ([]byte, []int) {
-	return file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_api_proto_rawDescGZIP(), []int{0}
+	return file_org_project_planton_provider_kubernetes_addon_altinityoperator_v1_api_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *AltinityOperator) GetApiVersion() string {
@@ -116,7 +116,7 @@ type AltinityOperatorStatus struct {
 
 func (x *AltinityOperatorStatus) Reset() {
 	*x = AltinityOperatorStatus{}
-	mi := &file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_api_proto_msgTypes[1]
+	mi := &file_org_project_planton_provider_kubernetes_addon_altinityoperator_v1_api_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -128,7 +128,7 @@ func (x *AltinityOperatorStatus) String() string {
 func (*AltinityOperatorStatus) ProtoMessage() {}
 
 func (x *AltinityOperatorStatus) ProtoReflect() protoreflect.Message {
-	mi := &file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_api_proto_msgTypes[1]
+	mi := &file_org_project_planton_provider_kubernetes_addon_altinityoperator_v1_api_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -141,7 +141,7 @@ func (x *AltinityOperatorStatus) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AltinityOperatorStatus.ProtoReflect.Descriptor instead.
 func (*AltinityOperatorStatus) Descriptor() ([]byte, []int) {
-	return file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_api_proto_rawDescGZIP(), []int{1}
+	return file_org_project_planton_provider_kubernetes_addon_altinityoperator_v1_api_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *AltinityOperatorStatus) GetOutputs() *AltinityOperatorStackOutputs {
@@ -151,49 +151,49 @@ func (x *AltinityOperatorStatus) GetOutputs() *AltinityOperatorStackOutputs {
 	return nil
 }
 
-var File_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_api_proto protoreflect.FileDescriptor
+var File_org_project_planton_provider_kubernetes_addon_altinityoperator_v1_api_proto protoreflect.FileDescriptor
 
-const file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_api_proto_rawDesc = "" +
+const file_org_project_planton_provider_kubernetes_addon_altinityoperator_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Uorg/project_planton/provider/kubernetes/addon/altinityoperatorkubernetes/v1/api.proto\x12Korg.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1aVorg/project_planton/provider/kubernetes/addon/altinityoperatorkubernetes/v1/spec.proto\x1a_org/project_planton/provider/kubernetes/addon/altinityoperatorkubernetes/v1/stack_outputs.proto\x1a)org/project_planton/shared/metadata.proto\"\xdd\x03\n" +
+	"Korg/project_planton/provider/kubernetes/addon/altinityoperator/v1/api.proto\x12Aorg.project_planton.provider.kubernetes.addon.altinityoperator.v1\x1a\x1bbuf/validate/validate.proto\x1aLorg/project_planton/provider/kubernetes/addon/altinityoperator/v1/spec.proto\x1aUorg/project_planton/provider/kubernetes/addon/altinityoperator/v1/stack_outputs.proto\x1a)org/project_planton/shared/metadata.proto\"\xc9\x03\n" +
 	"\x10AltinityOperator\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!kubernetes.project-planton.org/v1R\n" +
 	"apiVersion\x12+\n" +
 	"\x04kind\x18\x02 \x01(\tB\x17\xbaH\x14r\x12\n" +
 	"\x10AltinityOperatorR\x04kind\x12U\n" +
-	"\bmetadata\x18\x03 \x01(\v21.org.project_planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12}\n" +
-	"\x04spec\x18\x04 \x01(\v2a.org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12{\n" +
-	"\x06status\x18\x05 \x01(\v2c.org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorStatusR\x06status\"\x9e\x01\n" +
-	"\x16AltinityOperatorStatus\x12\x83\x01\n" +
-	"\aoutputs\x18\x01 \x01(\v2i.org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorStackOutputsR\aoutputsB\xc7\x04\n" +
-	"Ocom.org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1B\bApiProtoP\x01Z\x98\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/altinityoperatorkubernetes/v1;altinityoperatorkubernetesv1\xa2\x02\x06OPPKAA\xaa\x02JOrg.ProjectPlanton.Provider.Kubernetes.Addon.Altinityoperatorkubernetes.V1\xca\x02JOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Altinityoperatorkubernetes\\V1\xe2\x02VOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Altinityoperatorkubernetes\\V1\\GPBMetadata\xea\x02POrg::ProjectPlanton::Provider::Kubernetes::Addon::Altinityoperatorkubernetes::V1b\x06proto3"
+	"\bmetadata\x18\x03 \x01(\v21.org.project_planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12s\n" +
+	"\x04spec\x18\x04 \x01(\v2W.org.project_planton.provider.kubernetes.addon.altinityoperator.v1.AltinityOperatorSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12q\n" +
+	"\x06status\x18\x05 \x01(\v2Y.org.project_planton.provider.kubernetes.addon.altinityoperator.v1.AltinityOperatorStatusR\x06status\"\x93\x01\n" +
+	"\x16AltinityOperatorStatus\x12y\n" +
+	"\aoutputs\x18\x01 \x01(\v2_.org.project_planton.provider.kubernetes.addon.altinityoperator.v1.AltinityOperatorStackOutputsR\aoutputsB\x81\x04\n" +
+	"Ecom.org.project_planton.provider.kubernetes.addon.altinityoperator.v1B\bApiProtoP\x01Z\x84\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/altinityoperator/v1;altinityoperatorv1\xa2\x02\x06OPPKAA\xaa\x02@Org.ProjectPlanton.Provider.Kubernetes.Addon.Altinityoperator.V1\xca\x02@Org\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Altinityoperator\\V1\xe2\x02LOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Altinityoperator\\V1\\GPBMetadata\xea\x02FOrg::ProjectPlanton::Provider::Kubernetes::Addon::Altinityoperator::V1b\x06proto3"
 
 var (
-	file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_api_proto_rawDescOnce sync.Once
-	file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_api_proto_rawDescData []byte
+	file_org_project_planton_provider_kubernetes_addon_altinityoperator_v1_api_proto_rawDescOnce sync.Once
+	file_org_project_planton_provider_kubernetes_addon_altinityoperator_v1_api_proto_rawDescData []byte
 )
 
-func file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_api_proto_rawDescGZIP() []byte {
-	file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_api_proto_rawDescOnce.Do(func() {
-		file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_api_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_api_proto_rawDesc), len(file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_api_proto_rawDesc)))
+func file_org_project_planton_provider_kubernetes_addon_altinityoperator_v1_api_proto_rawDescGZIP() []byte {
+	file_org_project_planton_provider_kubernetes_addon_altinityoperator_v1_api_proto_rawDescOnce.Do(func() {
+		file_org_project_planton_provider_kubernetes_addon_altinityoperator_v1_api_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_org_project_planton_provider_kubernetes_addon_altinityoperator_v1_api_proto_rawDesc), len(file_org_project_planton_provider_kubernetes_addon_altinityoperator_v1_api_proto_rawDesc)))
 	})
-	return file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_api_proto_rawDescData
+	return file_org_project_planton_provider_kubernetes_addon_altinityoperator_v1_api_proto_rawDescData
 }
 
-var file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
-var file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_api_proto_goTypes = []any{
-	(*AltinityOperator)(nil),             // 0: org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperator
-	(*AltinityOperatorStatus)(nil),       // 1: org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorStatus
+var file_org_project_planton_provider_kubernetes_addon_altinityoperator_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_org_project_planton_provider_kubernetes_addon_altinityoperator_v1_api_proto_goTypes = []any{
+	(*AltinityOperator)(nil),             // 0: org.project_planton.provider.kubernetes.addon.altinityoperator.v1.AltinityOperator
+	(*AltinityOperatorStatus)(nil),       // 1: org.project_planton.provider.kubernetes.addon.altinityoperator.v1.AltinityOperatorStatus
 	(*shared.CloudResourceMetadata)(nil), // 2: org.project_planton.shared.CloudResourceMetadata
-	(*AltinityOperatorSpec)(nil),         // 3: org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorSpec
-	(*AltinityOperatorStackOutputs)(nil), // 4: org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorStackOutputs
+	(*AltinityOperatorSpec)(nil),         // 3: org.project_planton.provider.kubernetes.addon.altinityoperator.v1.AltinityOperatorSpec
+	(*AltinityOperatorStackOutputs)(nil), // 4: org.project_planton.provider.kubernetes.addon.altinityoperator.v1.AltinityOperatorStackOutputs
 }
-var file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_api_proto_depIdxs = []int32{
-	2, // 0: org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperator.metadata:type_name -> org.project_planton.shared.CloudResourceMetadata
-	3, // 1: org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperator.spec:type_name -> org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorSpec
-	1, // 2: org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperator.status:type_name -> org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorStatus
-	4, // 3: org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorStatus.outputs:type_name -> org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorStackOutputs
+var file_org_project_planton_provider_kubernetes_addon_altinityoperator_v1_api_proto_depIdxs = []int32{
+	2, // 0: org.project_planton.provider.kubernetes.addon.altinityoperator.v1.AltinityOperator.metadata:type_name -> org.project_planton.shared.CloudResourceMetadata
+	3, // 1: org.project_planton.provider.kubernetes.addon.altinityoperator.v1.AltinityOperator.spec:type_name -> org.project_planton.provider.kubernetes.addon.altinityoperator.v1.AltinityOperatorSpec
+	1, // 2: org.project_planton.provider.kubernetes.addon.altinityoperator.v1.AltinityOperator.status:type_name -> org.project_planton.provider.kubernetes.addon.altinityoperator.v1.AltinityOperatorStatus
+	4, // 3: org.project_planton.provider.kubernetes.addon.altinityoperator.v1.AltinityOperatorStatus.outputs:type_name -> org.project_planton.provider.kubernetes.addon.altinityoperator.v1.AltinityOperatorStackOutputs
 	4, // [4:4] is the sub-list for method output_type
 	4, // [4:4] is the sub-list for method input_type
 	4, // [4:4] is the sub-list for extension type_name
@@ -201,30 +201,28 @@ var file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernete
 	0, // [0:4] is the sub-list for field type_name
 }
 
-func init() {
-	file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_api_proto_init()
-}
-func file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_api_proto_init() {
-	if File_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_api_proto != nil {
+func init() { file_org_project_planton_provider_kubernetes_addon_altinityoperator_v1_api_proto_init() }
+func file_org_project_planton_provider_kubernetes_addon_altinityoperator_v1_api_proto_init() {
+	if File_org_project_planton_provider_kubernetes_addon_altinityoperator_v1_api_proto != nil {
 		return
 	}
-	file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_spec_proto_init()
-	file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_stack_outputs_proto_init()
+	file_org_project_planton_provider_kubernetes_addon_altinityoperator_v1_spec_proto_init()
+	file_org_project_planton_provider_kubernetes_addon_altinityoperator_v1_stack_outputs_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_api_proto_rawDesc), len(file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_api_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_org_project_planton_provider_kubernetes_addon_altinityoperator_v1_api_proto_rawDesc), len(file_org_project_planton_provider_kubernetes_addon_altinityoperator_v1_api_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_api_proto_goTypes,
-		DependencyIndexes: file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_api_proto_depIdxs,
-		MessageInfos:      file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_api_proto_msgTypes,
+		GoTypes:           file_org_project_planton_provider_kubernetes_addon_altinityoperator_v1_api_proto_goTypes,
+		DependencyIndexes: file_org_project_planton_provider_kubernetes_addon_altinityoperator_v1_api_proto_depIdxs,
+		MessageInfos:      file_org_project_planton_provider_kubernetes_addon_altinityoperator_v1_api_proto_msgTypes,
 	}.Build()
-	File_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_api_proto = out.File
-	file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_api_proto_goTypes = nil
-	file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_api_proto_depIdxs = nil
+	File_org_project_planton_provider_kubernetes_addon_altinityoperator_v1_api_proto = out.File
+	file_org_project_planton_provider_kubernetes_addon_altinityoperator_v1_api_proto_goTypes = nil
+	file_org_project_planton_provider_kubernetes_addon_altinityoperator_v1_api_proto_depIdxs = nil
 }

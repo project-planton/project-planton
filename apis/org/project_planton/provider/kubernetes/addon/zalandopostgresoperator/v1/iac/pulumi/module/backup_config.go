@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/pkg/errors"
-	postgresoperatorkubernetesv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/postgresoperatorkubernetes/v1"
+	zalandopostgresoperatorv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/zalandopostgresoperator/v1"
 	pulumikubernetes "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes"
 	corev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
 	metav1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/meta/v1"
@@ -20,7 +20,7 @@ const (
 // Returns the ConfigMap name if backup is configured, empty string otherwise.
 func createBackupResources(
 	ctx *pulumi.Context,
-	backupConfig *postgresoperatorkubernetesv1.PostgresOperatorKubernetesBackupConfig,
+	backupConfig *zalandopostgresoperatorv1.PostgresOperatorKubernetesBackupConfig,
 	namespace pulumi.StringInput,
 	kubernetesProvider *pulumikubernetes.Provider,
 	labels map[string]string,

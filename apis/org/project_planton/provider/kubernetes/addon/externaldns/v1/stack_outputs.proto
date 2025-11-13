@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package org.project_planton.provider.kubernetes.addon.externaldnskubernetes.v1;
+package org.project_planton.provider.kubernetes.addon.externaldns.v1;
 
 //stack outputs for external-dns-kubernetes
 message ExternalDnsKubernetesStackOutputs {

@@ -2,9 +2,9 @@
 // versions:
 // 	protoc-gen-go v1.36.6
 // 	protoc        (unknown)
-// source: org/project_planton/provider/kubernetes/addon/elasticoperatorkubernetes/v1/stack_outputs.proto
+// source: org/project_planton/provider/kubernetes/addon/elasticoperator/v1/stack_outputs.proto
 
-package elasticoperatorkubernetesv1
+package elasticoperatorv1
 
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -48,7 +48,7 @@ type ElasticOperatorKubernetesStackOutputs struct {
 
 func (x *ElasticOperatorKubernetesStackOutputs) Reset() {
 	*x = ElasticOperatorKubernetesStackOutputs{}
-	mi := &file_org_project_planton_provider_kubernetes_addon_elasticoperatorkubernetes_v1_stack_outputs_proto_msgTypes[0]
+	mi := &file_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_stack_outputs_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -60,7 +60,7 @@ func (x *ElasticOperatorKubernetesStackOutputs) String() string {
 func (*ElasticOperatorKubernetesStackOutputs) ProtoMessage() {}
 
 func (x *ElasticOperatorKubernetesStackOutputs) ProtoReflect() protoreflect.Message {
-	mi := &file_org_project_planton_provider_kubernetes_addon_elasticoperatorkubernetes_v1_stack_outputs_proto_msgTypes[0]
+	mi := &file_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_stack_outputs_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -73,7 +73,7 @@ func (x *ElasticOperatorKubernetesStackOutputs) ProtoReflect() protoreflect.Mess
 
 // Deprecated: Use ElasticOperatorKubernetesStackOutputs.ProtoReflect.Descriptor instead.
 func (*ElasticOperatorKubernetesStackOutputs) Descriptor() ([]byte, []int) {
-	return file_org_project_planton_provider_kubernetes_addon_elasticoperatorkubernetes_v1_stack_outputs_proto_rawDescGZIP(), []int{0}
+	return file_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_stack_outputs_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *ElasticOperatorKubernetesStackOutputs) GetNamespace() string {
@@ -111,36 +111,36 @@ func (x *ElasticOperatorKubernetesStackOutputs) GetIngressEndpoint() string {
 	return ""
 }
 
-var File_org_project_planton_provider_kubernetes_addon_elasticoperatorkubernetes_v1_stack_outputs_proto protoreflect.FileDescriptor
+var File_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_stack_outputs_proto protoreflect.FileDescriptor
 
-const file_org_project_planton_provider_kubernetes_addon_elasticoperatorkubernetes_v1_stack_outputs_proto_rawDesc = "" +
+const file_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"^org/project_planton/provider/kubernetes/addon/elasticoperatorkubernetes/v1/stack_outputs.proto\x12Jorg.project_planton.provider.kubernetes.addon.elasticoperatorkubernetes.v1\"\xe1\x01\n" +
+	"Torg/project_planton/provider/kubernetes/addon/elasticoperator/v1/stack_outputs.proto\x12@org.project_planton.provider.kubernetes.addon.elasticoperator.v1\"\xe1\x01\n" +
 	"%ElasticOperatorKubernetesStackOutputs\x12\x1c\n" +
 	"\tnamespace\x18\x01 \x01(\tR\tnamespace\x12\x18\n" +
 	"\aservice\x18\x02 \x01(\tR\aservice\x120\n" +
 	"\x14port_forward_command\x18\x03 \x01(\tR\x12portForwardCommand\x12#\n" +
 	"\rkube_endpoint\x18\x04 \x01(\tR\fkubeEndpoint\x12)\n" +
-	"\x10ingress_endpoint\x18\x05 \x01(\tR\x0fingressEndpointB\xc9\x04\n" +
-	"Ncom.org.project_planton.provider.kubernetes.addon.elasticoperatorkubernetes.v1B\x11StackOutputsProtoP\x01Z\x96\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/elasticoperatorkubernetes/v1;elasticoperatorkubernetesv1\xa2\x02\x06OPPKAE\xaa\x02IOrg.ProjectPlanton.Provider.Kubernetes.Addon.Elasticoperatorkubernetes.V1\xca\x02IOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Elasticoperatorkubernetes\\V1\xe2\x02UOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Elasticoperatorkubernetes\\V1\\GPBMetadata\xea\x02OOrg::ProjectPlanton::Provider::Kubernetes::Addon::Elasticoperatorkubernetes::V1b\x06proto3"
+	"\x10ingress_endpoint\x18\x05 \x01(\tR\x0fingressEndpointB\x83\x04\n" +
+	"Dcom.org.project_planton.provider.kubernetes.addon.elasticoperator.v1B\x11StackOutputsProtoP\x01Z\x82\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/elasticoperator/v1;elasticoperatorv1\xa2\x02\x06OPPKAE\xaa\x02?Org.ProjectPlanton.Provider.Kubernetes.Addon.Elasticoperator.V1\xca\x02?Org\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Elasticoperator\\V1\xe2\x02KOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Elasticoperator\\V1\\GPBMetadata\xea\x02EOrg::ProjectPlanton::Provider::Kubernetes::Addon::Elasticoperator::V1b\x06proto3"
 
 var (
-	file_org_project_planton_provider_kubernetes_addon_elasticoperatorkubernetes_v1_stack_outputs_proto_rawDescOnce sync.Once
-	file_org_project_planton_provider_kubernetes_addon_elasticoperatorkubernetes_v1_stack_outputs_proto_rawDescData []byte
+	file_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_stack_outputs_proto_rawDescOnce sync.Once
+	file_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_stack_outputs_proto_rawDescData []byte
 )
 
-func file_org_project_planton_provider_kubernetes_addon_elasticoperatorkubernetes_v1_stack_outputs_proto_rawDescGZIP() []byte {
-	file_org_project_planton_provider_kubernetes_addon_elasticoperatorkubernetes_v1_stack_outputs_proto_rawDescOnce.Do(func() {
-		file_org_project_planton_provider_kubernetes_addon_elasticoperatorkubernetes_v1_stack_outputs_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_org_project_planton_provider_kubernetes_addon_elasticoperatorkubernetes_v1_stack_outputs_proto_rawDesc), len(file_org_project_planton_provider_kubernetes_addon_elasticoperatorkubernetes_v1_stack_outputs_proto_rawDesc)))
+func file_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_stack_outputs_proto_rawDescGZIP() []byte {
+	file_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_stack_outputs_proto_rawDescOnce.Do(func() {
+		file_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_stack_outputs_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_stack_outputs_proto_rawDesc), len(file_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_stack_outputs_proto_rawDesc)))
 	})
-	return file_org_project_planton_provider_kubernetes_addon_elasticoperatorkubernetes_v1_stack_outputs_proto_rawDescData
+	return file_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_stack_outputs_proto_rawDescData
 }
 
-var file_org_project_planton_provider_kubernetes_addon_elasticoperatorkubernetes_v1_stack_outputs_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
-var file_org_project_planton_provider_kubernetes_addon_elasticoperatorkubernetes_v1_stack_outputs_proto_goTypes = []any{
-	(*ElasticOperatorKubernetesStackOutputs)(nil), // 0: org.project_planton.provider.kubernetes.addon.elasticoperatorkubernetes.v1.ElasticOperatorKubernetesStackOutputs
+var file_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_stack_outputs_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+var file_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_stack_outputs_proto_goTypes = []any{
+	(*ElasticOperatorKubernetesStackOutputs)(nil), // 0: org.project_planton.provider.kubernetes.addon.elasticoperator.v1.ElasticOperatorKubernetesStackOutputs
 }
-var file_org_project_planton_provider_kubernetes_addon_elasticoperatorkubernetes_v1_stack_outputs_proto_depIdxs = []int32{
+var file_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_stack_outputs_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type
 	0, // [0:0] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
@@ -149,27 +149,27 @@ var file_org_project_planton_provider_kubernetes_addon_elasticoperatorkubernetes
 }
 
 func init() {
-	file_org_project_planton_provider_kubernetes_addon_elasticoperatorkubernetes_v1_stack_outputs_proto_init()
+	file_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_stack_outputs_proto_init()
 }
-func file_org_project_planton_provider_kubernetes_addon_elasticoperatorkubernetes_v1_stack_outputs_proto_init() {
-	if File_org_project_planton_provider_kubernetes_addon_elasticoperatorkubernetes_v1_stack_outputs_proto != nil {
+func file_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_stack_outputs_proto_init() {
+	if File_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_stack_outputs_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_org_project_planton_provider_kubernetes_addon_elasticoperatorkubernetes_v1_stack_outputs_proto_rawDesc), len(file_org_project_planton_provider_kubernetes_addon_elasticoperatorkubernetes_v1_stack_outputs_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_stack_outputs_proto_rawDesc), len(file_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_stack_outputs_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   1,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_org_project_planton_provider_kubernetes_addon_elasticoperatorkubernetes_v1_stack_outputs_proto_goTypes,
-		DependencyIndexes: file_org_project_planton_provider_kubernetes_addon_elasticoperatorkubernetes_v1_stack_outputs_proto_depIdxs,
-		MessageInfos:      file_org_project_planton_provider_kubernetes_addon_elasticoperatorkubernetes_v1_stack_outputs_proto_msgTypes,
+		GoTypes:           file_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_stack_outputs_proto_goTypes,
+		DependencyIndexes: file_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_stack_outputs_proto_depIdxs,
+		MessageInfos:      file_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_stack_outputs_proto_msgTypes,
 	}.Build()
-	File_org_project_planton_provider_kubernetes_addon_elasticoperatorkubernetes_v1_stack_outputs_proto = out.File
-	file_org_project_planton_provider_kubernetes_addon_elasticoperatorkubernetes_v1_stack_outputs_proto_goTypes = nil
-	file_org_project_planton_provider_kubernetes_addon_elasticoperatorkubernetes_v1_stack_outputs_proto_depIdxs = nil
+	File_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_stack_outputs_proto = out.File
+	file_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_stack_outputs_proto_goTypes = nil
+	file_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_stack_outputs_proto_depIdxs = nil
 }

@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/pkg/errors"
-	externaldnsv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/externaldnskubernetes/v1"
+	externaldnsv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/externaldns/v1"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/pulumikubernetesprovider"
 	corev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
 	"github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/helm/v3"

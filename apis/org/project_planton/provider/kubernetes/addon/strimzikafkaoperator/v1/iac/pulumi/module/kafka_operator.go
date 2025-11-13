@@ -2,7 +2,7 @@ package module
 
 import (
 	"github.com/pkg/errors"
-	kafkaoperatorkubernetesv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/kafkaoperatorkubernetes/v1"
+	strimzikafkaoperatorv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/strimzikafkaoperator/v1"
 	pulumikubernetes "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes"
 	corev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
 	"github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/helm/v3"
@@ -19,7 +19,7 @@ import (
 //  3. Exports the namespace name so other stacks can import it later.
 func kafkaOperator(
 	ctx *pulumi.Context,
-	target *kafkaoperatorkubernetesv1.KafkaOperatorKubernetes,
+	target *strimzikafkaoperatorv1.KafkaOperatorKubernetes,
 	kubernetesProvider *pulumikubernetes.Provider,
 ) error {
 	// ---------------------------------------------------------------------

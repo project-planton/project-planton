@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package org.project_planton.provider.kubernetes.addon.certmanagerkubernetes.v1;
+package org.project_planton.provider.kubernetes.addon.certmanager.v1;
 
 // Outputs emitted after cert‑manager installation.
 message CertManagerKubernetesStackOutputs {

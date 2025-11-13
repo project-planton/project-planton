@@ -2,7 +2,7 @@ package module
 
 import (
 	"github.com/pkg/errors"
-	istiokubernetesv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/istiokubernetes/v1"
+	kubernetesistiov1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/kubernetesistio/v1"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/pulumikubernetesprovider"
 	corev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
 	"github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/helm/v3"
@@ -13,7 +13,7 @@ import (
 // Resources wires up Istio (base, control‑plane & ingress gateway) on the target
 // Kubernetes cluster.  It honours spec.container.resources for the Istiod
 // deployment, allowing callers to tune CPU / memory without touching Helm YAML.
-func Resources(ctx *pulumi.Context, in *istiokubernetesv1.IstioKubernetesStackInput) error {
+func Resources(ctx *pulumi.Context, in *kubernetesistiov1.KubernetesIstioStackInput) error {
 	// Kubernetes provider from cluster‑credential
 	kubernetesProviderConfig, err := pulumikubernetesprovider.GetWithKubernetesProviderConfig(
 		ctx, in.ProviderConfig, "kubernetes")

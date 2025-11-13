@@ -2,7 +2,7 @@ package module
 
 import (
 	"github.com/pkg/errors"
-	solroperatorkubernetesv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/solroperatorkubernetes/v1"
+	apachesolroperatorv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/apachesolroperator/v1"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/pulumikubernetesprovider"
 	corev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
 	"github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/helm/v3"
@@ -12,7 +12,7 @@ import (
 )
 
 // Resources creates all Pulumi resources for the Solr‑Operator Kubernetes add‑on.
-func Resources(ctx *pulumi.Context, stackInput *solroperatorkubernetesv1.SolrOperatorKubernetesStackInput) error {
+func Resources(ctx *pulumi.Context, stackInput *apachesolroperatorv1.SolrOperatorKubernetesStackInput) error {
 	// set up kubernetes provider from the supplied cluster credential
 	kubeProvider, err := pulumikubernetesprovider.GetWithKubernetesProviderConfig(
 		ctx, stackInput.ProviderConfig, "kubernetes")

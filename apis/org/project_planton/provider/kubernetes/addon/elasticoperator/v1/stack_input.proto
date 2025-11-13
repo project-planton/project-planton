@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package org.project_planton.provider.kubernetes.addon.elasticoperatorkubernetes.v1;
+package org.project_planton.provider.kubernetes.addon.elasticoperator.v1;
 
-import "org/project_planton/provider/kubernetes/addon/elasticoperatorkubernetes/v1/api.proto";
+import "org/project_planton/provider/kubernetes/addon/elasticoperator/v1/api.proto";
 import "org/project_planton/provider/kubernetes/provider.proto";
 
 //elastic-operator-kubernetes stack-input

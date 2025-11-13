@@ -20,7 +20,7 @@ The Altinity ClickHouse Operator resource was originally named `AltinityOperator
 - **Code Verbosity**: Proto message types like `AltinityOperatorKubernetesSpec` and `AltinityOperatorKubernetesStackInput` were excessively long
 - **Poor Developer Experience**: The redundancy made code harder to read and type
 
-The provider namespace (`org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1`) already clearly indicates this is a Kubernetes component, so including "Kubernetes" in every message name adds noise without value.
+The provider namespace (`org.project_planton.provider.kubernetes.addon.altinityoperator.v1`) already clearly indicates this is a Kubernetes component, so including "Kubernetes" in every message name adds noise without value.
 
 ## Solution / What's New
 
@@ -46,13 +46,13 @@ apiVersion: kubernetes.project-planton.org/v1
 kind: AltinityOperator
 ```
 
-The provider path remains unchanged (`provider/kubernetes/addon/altinityoperatorkubernetes/`) to avoid breaking existing directory structures and import paths.
+The provider path remains unchanged (`provider/kubernetes/addon/altinityoperator/`) to avoid breaking existing directory structures and import paths.
 
 ## Implementation Details
 
 ### Proto File Changes
 
-**File**: `apis/org/project_planton/provider/kubernetes/addon/altinityoperatorkubernetes/v1/api.proto`
+**File**: `apis/org/project_planton/provider/kubernetes/addon/altinityoperator/v1/api.proto`
 
 ```protobuf
 // Before
@@ -70,7 +70,7 @@ message AltinityOperator {
 }
 ```
 
-**File**: `apis/org/project_planton/provider/kubernetes/addon/altinityoperatorkubernetes/v1/spec.proto`
+**File**: `apis/org/project_planton/provider/kubernetes/addon/altinityoperator/v1/spec.proto`
 
 ```protobuf
 // Before
@@ -82,7 +82,7 @@ message AltinityOperatorSpec { ... }
 message AltinityOperatorSpecContainer { ... }
 ```
 
-**File**: `apis/org/project_planton/provider/kubernetes/addon/altinityoperatorkubernetes/v1/stack_input.proto`
+**File**: `apis/org/project_planton/provider/kubernetes/addon/altinityoperator/v1/stack_input.proto`
 
 ```protobuf
 // Before
@@ -96,7 +96,7 @@ message AltinityOperatorStackInput {
 }
 ```
 
-**File**: `apis/org/project_planton/provider/kubernetes/addon/altinityoperatorkubernetes/v1/stack_outputs.proto`
+**File**: `apis/org/project_planton/provider/kubernetes/addon/altinityoperator/v1/stack_outputs.proto`
 
 ```protobuf
 // Before
@@ -130,24 +130,24 @@ AltinityOperator = 831 [(kind_meta) = {
 
 ### Implementation Code Changes
 
-**File**: `apis/org/project_planton/provider/kubernetes/addon/altinityoperatorkubernetes/v1/iac/pulumi/main.go`
+**File**: `apis/org/project_planton/provider/kubernetes/addon/altinityoperator/v1/iac/pulumi/main.go`
 
 ```go
 // Before
-stackInput := &altinityoperatorkubernetesv1.AltinityOperatorKubernetesStackInput{}
+stackInput := &altinityoperatorv1.AltinityOperatorKubernetesStackInput{}
 
 // After
-stackInput := &altinityoperatorkubernetesv1.AltinityOperatorStackInput{}
+stackInput := &altinityoperatorv1.AltinityOperatorStackInput{}
 ```
 
-**File**: `apis/org/project_planton/provider/kubernetes/addon/altinityoperatorkubernetes/v1/iac/pulumi/module/altinity_operator.go`
+**File**: `apis/org/project_planton/provider/kubernetes/addon/altinityoperator/v1/iac/pulumi/module/altinity_operator.go`
 
 ```go
 // Before
-func Resources(ctx *pulumi.Context, stackInput *altinityoperatorkubernetesv1.AltinityOperatorKubernetesStackInput) error
+func Resources(ctx *pulumi.Context, stackInput *altinityoperatorv1.AltinityOperatorKubernetesStackInput) error
 
 // After
-func Resources(ctx *pulumi.Context, stackInput *altinityoperatorkubernetesv1.AltinityOperatorStackInput) error
+func Resources(ctx *pulumi.Context, stackInput *altinityoperatorv1.AltinityOperatorStackInput) error
 ```
 
 ### Documentation Updates
@@ -187,7 +187,7 @@ Proto message names are now more concise:
 ### Naming Consistency
 
 Aligns with the pattern where the provider namespace provides sufficient context:
-- Package: `org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1`
+- Package: `org.project_planton.provider.kubernetes.addon.altinityoperator.v1`
 - Kind: `AltinityOperator` (context is already clear from package)
 
 ### Developer Experience
@@ -217,8 +217,8 @@ spec:
 
 ### Non-Breaking Aspects
 
-- **Directory structure**: Unchanged (`provider/kubernetes/addon/altinityoperatorkubernetes/`)
-- **Package namespace**: Unchanged (`org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1`)
+- **Directory structure**: Unchanged (`provider/kubernetes/addon/altinityoperator/`)
+- **Package namespace**: Unchanged (`org.project_planton.provider.kubernetes.addon.altinityoperator.v1`)
 - **Import paths**: Unchanged in Go code
 - **Functionality**: Zero behavioral changes
 - **ID prefix**: Unchanged (`altopk8s`)

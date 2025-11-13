@@ -2,9 +2,9 @@
 // versions:
 // 	protoc-gen-go v1.36.6
 // 	protoc        (unknown)
-// source: org/project_planton/provider/kubernetes/addon/kafkaoperatorkubernetes/v1/api.proto
+// source: org/project_planton/provider/kubernetes/addon/strimzikafkaoperator/v1/api.proto
 
-package kafkaoperatorkubernetesv1
+package strimzikafkaoperatorv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
@@ -42,7 +42,7 @@ type KafkaOperatorKubernetes struct {
 
 func (x *KafkaOperatorKubernetes) Reset() {
 	*x = KafkaOperatorKubernetes{}
-	mi := &file_org_project_planton_provider_kubernetes_addon_kafkaoperatorkubernetes_v1_api_proto_msgTypes[0]
+	mi := &file_org_project_planton_provider_kubernetes_addon_strimzikafkaoperator_v1_api_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -54,7 +54,7 @@ func (x *KafkaOperatorKubernetes) String() string {
 func (*KafkaOperatorKubernetes) ProtoMessage() {}
 
 func (x *KafkaOperatorKubernetes) ProtoReflect() protoreflect.Message {
-	mi := &file_org_project_planton_provider_kubernetes_addon_kafkaoperatorkubernetes_v1_api_proto_msgTypes[0]
+	mi := &file_org_project_planton_provider_kubernetes_addon_strimzikafkaoperator_v1_api_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -67,7 +67,7 @@ func (x *KafkaOperatorKubernetes) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use KafkaOperatorKubernetes.ProtoReflect.Descriptor instead.
 func (*KafkaOperatorKubernetes) Descriptor() ([]byte, []int) {
-	return file_org_project_planton_provider_kubernetes_addon_kafkaoperatorkubernetes_v1_api_proto_rawDescGZIP(), []int{0}
+	return file_org_project_planton_provider_kubernetes_addon_strimzikafkaoperator_v1_api_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *KafkaOperatorKubernetes) GetApiVersion() string {
@@ -116,7 +116,7 @@ type KafkaOperatorKubernetesStatus struct {
 
 func (x *KafkaOperatorKubernetesStatus) Reset() {
 	*x = KafkaOperatorKubernetesStatus{}
-	mi := &file_org_project_planton_provider_kubernetes_addon_kafkaoperatorkubernetes_v1_api_proto_msgTypes[1]
+	mi := &file_org_project_planton_provider_kubernetes_addon_strimzikafkaoperator_v1_api_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -128,7 +128,7 @@ func (x *KafkaOperatorKubernetesStatus) String() string {
 func (*KafkaOperatorKubernetesStatus) ProtoMessage() {}
 
 func (x *KafkaOperatorKubernetesStatus) ProtoReflect() protoreflect.Message {
-	mi := &file_org_project_planton_provider_kubernetes_addon_kafkaoperatorkubernetes_v1_api_proto_msgTypes[1]
+	mi := &file_org_project_planton_provider_kubernetes_addon_strimzikafkaoperator_v1_api_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -141,7 +141,7 @@ func (x *KafkaOperatorKubernetesStatus) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use KafkaOperatorKubernetesStatus.ProtoReflect.Descriptor instead.
 func (*KafkaOperatorKubernetesStatus) Descriptor() ([]byte, []int) {
-	return file_org_project_planton_provider_kubernetes_addon_kafkaoperatorkubernetes_v1_api_proto_rawDescGZIP(), []int{1}
+	return file_org_project_planton_provider_kubernetes_addon_strimzikafkaoperator_v1_api_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *KafkaOperatorKubernetesStatus) GetOutputs() *KafkaOperatorKubernetesStackOutputs {
@@ -151,49 +151,49 @@ func (x *KafkaOperatorKubernetesStatus) GetOutputs() *KafkaOperatorKubernetesSta
 	return nil
 }
 
-var File_org_project_planton_provider_kubernetes_addon_kafkaoperatorkubernetes_v1_api_proto protoreflect.FileDescriptor
+var File_org_project_planton_provider_kubernetes_addon_strimzikafkaoperator_v1_api_proto protoreflect.FileDescriptor
 
-const file_org_project_planton_provider_kubernetes_addon_kafkaoperatorkubernetes_v1_api_proto_rawDesc = "" +
+const file_org_project_planton_provider_kubernetes_addon_strimzikafkaoperator_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Rorg/project_planton/provider/kubernetes/addon/kafkaoperatorkubernetes/v1/api.proto\x12Horg.project_planton.provider.kubernetes.addon.kafkaoperatorkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1aSorg/project_planton/provider/kubernetes/addon/kafkaoperatorkubernetes/v1/spec.proto\x1a\\org/project_planton/provider/kubernetes/addon/kafkaoperatorkubernetes/v1/stack_outputs.proto\x1a)org/project_planton/shared/metadata.proto\"\xf4\x03\n" +
+	"Oorg/project_planton/provider/kubernetes/addon/strimzikafkaoperator/v1/api.proto\x12Eorg.project_planton.provider.kubernetes.addon.strimzikafkaoperator.v1\x1a\x1bbuf/validate/validate.proto\x1aPorg/project_planton/provider/kubernetes/addon/strimzikafkaoperator/v1/spec.proto\x1aYorg/project_planton/provider/kubernetes/addon/strimzikafkaoperator/v1/stack_outputs.proto\x1a)org/project_planton/shared/metadata.proto\"\xed\x03\n" +
 	"\x17KafkaOperatorKubernetes\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!kubernetes.project-planton.org/v1R\n" +
 	"apiVersion\x122\n" +
 	"\x04kind\x18\x02 \x01(\tB\x1e\xbaH\x1br\x19\n" +
 	"\x17KafkaOperatorKubernetesR\x04kind\x12U\n" +
-	"\bmetadata\x18\x03 \x01(\v21.org.project_planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12\x81\x01\n" +
-	"\x04spec\x18\x04 \x01(\v2e.org.project_planton.provider.kubernetes.addon.kafkaoperatorkubernetes.v1.KafkaOperatorKubernetesSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12\x7f\n" +
-	"\x06status\x18\x05 \x01(\v2g.org.project_planton.provider.kubernetes.addon.kafkaoperatorkubernetes.v1.KafkaOperatorKubernetesStatusR\x06status\"\xa9\x01\n" +
-	"\x1dKafkaOperatorKubernetesStatus\x12\x87\x01\n" +
-	"\aoutputs\x18\x01 \x01(\v2m.org.project_planton.provider.kubernetes.addon.kafkaoperatorkubernetes.v1.KafkaOperatorKubernetesStackOutputsR\aoutputsB\xb2\x04\n" +
-	"Lcom.org.project_planton.provider.kubernetes.addon.kafkaoperatorkubernetes.v1B\bApiProtoP\x01Z\x92\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/kafkaoperatorkubernetes/v1;kafkaoperatorkubernetesv1\xa2\x02\x06OPPKAK\xaa\x02GOrg.ProjectPlanton.Provider.Kubernetes.Addon.Kafkaoperatorkubernetes.V1\xca\x02GOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Kafkaoperatorkubernetes\\V1\xe2\x02SOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Kafkaoperatorkubernetes\\V1\\GPBMetadata\xea\x02MOrg::ProjectPlanton::Provider::Kubernetes::Addon::Kafkaoperatorkubernetes::V1b\x06proto3"
+	"\bmetadata\x18\x03 \x01(\v21.org.project_planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12~\n" +
+	"\x04spec\x18\x04 \x01(\v2b.org.project_planton.provider.kubernetes.addon.strimzikafkaoperator.v1.KafkaOperatorKubernetesSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12|\n" +
+	"\x06status\x18\x05 \x01(\v2d.org.project_planton.provider.kubernetes.addon.strimzikafkaoperator.v1.KafkaOperatorKubernetesStatusR\x06status\"\xa6\x01\n" +
+	"\x1dKafkaOperatorKubernetesStatus\x12\x84\x01\n" +
+	"\aoutputs\x18\x01 \x01(\v2j.org.project_planton.provider.kubernetes.addon.strimzikafkaoperator.v1.KafkaOperatorKubernetesStackOutputsR\aoutputsB\x9d\x04\n" +
+	"Icom.org.project_planton.provider.kubernetes.addon.strimzikafkaoperator.v1B\bApiProtoP\x01Z\x8c\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/strimzikafkaoperator/v1;strimzikafkaoperatorv1\xa2\x02\x06OPPKAS\xaa\x02DOrg.ProjectPlanton.Provider.Kubernetes.Addon.Strimzikafkaoperator.V1\xca\x02DOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Strimzikafkaoperator\\V1\xe2\x02POrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Strimzikafkaoperator\\V1\\GPBMetadata\xea\x02JOrg::ProjectPlanton::Provider::Kubernetes::Addon::Strimzikafkaoperator::V1b\x06proto3"
 
 var (
-	file_org_project_planton_provider_kubernetes_addon_kafkaoperatorkubernetes_v1_api_proto_rawDescOnce sync.Once
-	file_org_project_planton_provider_kubernetes_addon_kafkaoperatorkubernetes_v1_api_proto_rawDescData []byte
+	file_org_project_planton_provider_kubernetes_addon_strimzikafkaoperator_v1_api_proto_rawDescOnce sync.Once
+	file_org_project_planton_provider_kubernetes_addon_strimzikafkaoperator_v1_api_proto_rawDescData []byte
 )
 
-func file_org_project_planton_provider_kubernetes_addon_kafkaoperatorkubernetes_v1_api_proto_rawDescGZIP() []byte {
-	file_org_project_planton_provider_kubernetes_addon_kafkaoperatorkubernetes_v1_api_proto_rawDescOnce.Do(func() {
-		file_org_project_planton_provider_kubernetes_addon_kafkaoperatorkubernetes_v1_api_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_org_project_planton_provider_kubernetes_addon_kafkaoperatorkubernetes_v1_api_proto_rawDesc), len(file_org_project_planton_provider_kubernetes_addon_kafkaoperatorkubernetes_v1_api_proto_rawDesc)))
+func file_org_project_planton_provider_kubernetes_addon_strimzikafkaoperator_v1_api_proto_rawDescGZIP() []byte {
+	file_org_project_planton_provider_kubernetes_addon_strimzikafkaoperator_v1_api_proto_rawDescOnce.Do(func() {
+		file_org_project_planton_provider_kubernetes_addon_strimzikafkaoperator_v1_api_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_org_project_planton_provider_kubernetes_addon_strimzikafkaoperator_v1_api_proto_rawDesc), len(file_org_project_planton_provider_kubernetes_addon_strimzikafkaoperator_v1_api_proto_rawDesc)))
 	})
-	return file_org_project_planton_provider_kubernetes_addon_kafkaoperatorkubernetes_v1_api_proto_rawDescData
+	return file_org_project_planton_provider_kubernetes_addon_strimzikafkaoperator_v1_api_proto_rawDescData
 }
 
-var file_org_project_planton_provider_kubernetes_addon_kafkaoperatorkubernetes_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
-var file_org_project_planton_provider_kubernetes_addon_kafkaoperatorkubernetes_v1_api_proto_goTypes = []any{
-	(*KafkaOperatorKubernetes)(nil),             // 0: org.project_planton.provider.kubernetes.addon.kafkaoperatorkubernetes.v1.KafkaOperatorKubernetes
-	(*KafkaOperatorKubernetesStatus)(nil),       // 1: org.project_planton.provider.kubernetes.addon.kafkaoperatorkubernetes.v1.KafkaOperatorKubernetesStatus
+var file_org_project_planton_provider_kubernetes_addon_strimzikafkaoperator_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_org_project_planton_provider_kubernetes_addon_strimzikafkaoperator_v1_api_proto_goTypes = []any{
+	(*KafkaOperatorKubernetes)(nil),             // 0: org.project_planton.provider.kubernetes.addon.strimzikafkaoperator.v1.KafkaOperatorKubernetes
+	(*KafkaOperatorKubernetesStatus)(nil),       // 1: org.project_planton.provider.kubernetes.addon.strimzikafkaoperator.v1.KafkaOperatorKubernetesStatus
 	(*shared.CloudResourceMetadata)(nil),        // 2: org.project_planton.shared.CloudResourceMetadata
-	(*KafkaOperatorKubernetesSpec)(nil),         // 3: org.project_planton.provider.kubernetes.addon.kafkaoperatorkubernetes.v1.KafkaOperatorKubernetesSpec
-	(*KafkaOperatorKubernetesStackOutputs)(nil), // 4: org.project_planton.provider.kubernetes.addon.kafkaoperatorkubernetes.v1.KafkaOperatorKubernetesStackOutputs
+	(*KafkaOperatorKubernetesSpec)(nil),         // 3: org.project_planton.provider.kubernetes.addon.strimzikafkaoperator.v1.KafkaOperatorKubernetesSpec
+	(*KafkaOperatorKubernetesStackOutputs)(nil), // 4: org.project_planton.provider.kubernetes.addon.strimzikafkaoperator.v1.KafkaOperatorKubernetesStackOutputs
 }
-var file_org_project_planton_provider_kubernetes_addon_kafkaoperatorkubernetes_v1_api_proto_depIdxs = []int32{
-	2, // 0: org.project_planton.provider.kubernetes.addon.kafkaoperatorkubernetes.v1.KafkaOperatorKubernetes.metadata:type_name -> org.project_planton.shared.CloudResourceMetadata
-	3, // 1: org.project_planton.provider.kubernetes.addon.kafkaoperatorkubernetes.v1.KafkaOperatorKubernetes.spec:type_name -> org.project_planton.provider.kubernetes.addon.kafkaoperatorkubernetes.v1.KafkaOperatorKubernetesSpec
-	1, // 2: org.project_planton.provider.kubernetes.addon.kafkaoperatorkubernetes.v1.KafkaOperatorKubernetes.status:type_name -> org.project_planton.provider.kubernetes.addon.kafkaoperatorkubernetes.v1.KafkaOperatorKubernetesStatus
-	4, // 3: org.project_planton.provider.kubernetes.addon.kafkaoperatorkubernetes.v1.KafkaOperatorKubernetesStatus.outputs:type_name -> org.project_planton.provider.kubernetes.addon.kafkaoperatorkubernetes.v1.KafkaOperatorKubernetesStackOutputs
+var file_org_project_planton_provider_kubernetes_addon_strimzikafkaoperator_v1_api_proto_depIdxs = []int32{
+	2, // 0: org.project_planton.provider.kubernetes.addon.strimzikafkaoperator.v1.KafkaOperatorKubernetes.metadata:type_name -> org.project_planton.shared.CloudResourceMetadata
+	3, // 1: org.project_planton.provider.kubernetes.addon.strimzikafkaoperator.v1.KafkaOperatorKubernetes.spec:type_name -> org.project_planton.provider.kubernetes.addon.strimzikafkaoperator.v1.KafkaOperatorKubernetesSpec
+	1, // 2: org.project_planton.provider.kubernetes.addon.strimzikafkaoperator.v1.KafkaOperatorKubernetes.status:type_name -> org.project_planton.provider.kubernetes.addon.strimzikafkaoperator.v1.KafkaOperatorKubernetesStatus
+	4, // 3: org.project_planton.provider.kubernetes.addon.strimzikafkaoperator.v1.KafkaOperatorKubernetesStatus.outputs:type_name -> org.project_planton.provider.kubernetes.addon.strimzikafkaoperator.v1.KafkaOperatorKubernetesStackOutputs
 	4, // [4:4] is the sub-list for method output_type
 	4, // [4:4] is the sub-list for method input_type
 	4, // [4:4] is the sub-list for extension type_name
@@ -202,29 +202,29 @@ var file_org_project_planton_provider_kubernetes_addon_kafkaoperatorkubernetes_v
 }
 
 func init() {
-	file_org_project_planton_provider_kubernetes_addon_kafkaoperatorkubernetes_v1_api_proto_init()
+	file_org_project_planton_provider_kubernetes_addon_strimzikafkaoperator_v1_api_proto_init()
 }
-func file_org_project_planton_provider_kubernetes_addon_kafkaoperatorkubernetes_v1_api_proto_init() {
-	if File_org_project_planton_provider_kubernetes_addon_kafkaoperatorkubernetes_v1_api_proto != nil {
+func file_org_project_planton_provider_kubernetes_addon_strimzikafkaoperator_v1_api_proto_init() {
+	if File_org_project_planton_provider_kubernetes_addon_strimzikafkaoperator_v1_api_proto != nil {
 		return
 	}
-	file_org_project_planton_provider_kubernetes_addon_kafkaoperatorkubernetes_v1_spec_proto_init()
-	file_org_project_planton_provider_kubernetes_addon_kafkaoperatorkubernetes_v1_stack_outputs_proto_init()
+	file_org_project_planton_provider_kubernetes_addon_strimzikafkaoperator_v1_spec_proto_init()
+	file_org_project_planton_provider_kubernetes_addon_strimzikafkaoperator_v1_stack_outputs_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_org_project_planton_provider_kubernetes_addon_kafkaoperatorkubernetes_v1_api_proto_rawDesc), len(file_org_project_planton_provider_kubernetes_addon_kafkaoperatorkubernetes_v1_api_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_org_project_planton_provider_kubernetes_addon_strimzikafkaoperator_v1_api_proto_rawDesc), len(file_org_project_planton_provider_kubernetes_addon_strimzikafkaoperator_v1_api_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_org_project_planton_provider_kubernetes_addon_kafkaoperatorkubernetes_v1_api_proto_goTypes,
-		DependencyIndexes: file_org_project_planton_provider_kubernetes_addon_kafkaoperatorkubernetes_v1_api_proto_depIdxs,
-		MessageInfos:      file_org_project_planton_provider_kubernetes_addon_kafkaoperatorkubernetes_v1_api_proto_msgTypes,
+		GoTypes:           file_org_project_planton_provider_kubernetes_addon_strimzikafkaoperator_v1_api_proto_goTypes,
+		DependencyIndexes: file_org_project_planton_provider_kubernetes_addon_strimzikafkaoperator_v1_api_proto_depIdxs,
+		MessageInfos:      file_org_project_planton_provider_kubernetes_addon_strimzikafkaoperator_v1_api_proto_msgTypes,
 	}.Build()
-	File_org_project_planton_provider_kubernetes_addon_kafkaoperatorkubernetes_v1_api_proto = out.File
-	file_org_project_planton_provider_kubernetes_addon_kafkaoperatorkubernetes_v1_api_proto_goTypes = nil
-	file_org_project_planton_provider_kubernetes_addon_kafkaoperatorkubernetes_v1_api_proto_depIdxs = nil
+	File_org_project_planton_provider_kubernetes_addon_strimzikafkaoperator_v1_api_proto = out.File
+	file_org_project_planton_provider_kubernetes_addon_strimzikafkaoperator_v1_api_proto_goTypes = nil
+	file_org_project_planton_provider_kubernetes_addon_strimzikafkaoperator_v1_api_proto_depIdxs = nil
 }

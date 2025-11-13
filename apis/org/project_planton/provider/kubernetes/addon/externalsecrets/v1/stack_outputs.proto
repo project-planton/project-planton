@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package org.project_planton.provider.kubernetes.addon.externalsecretskubernetes.v1;
+package org.project_planton.provider.kubernetes.addon.externalsecrets.v1;
 
 //external-secrets-kubernetes stack outputs
 message ExternalSecretsKubernetesStackOutputs {

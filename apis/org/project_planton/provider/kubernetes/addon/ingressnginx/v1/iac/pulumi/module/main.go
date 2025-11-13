@@ -2,7 +2,7 @@ package module
 
 import (
 	"github.com/pkg/errors"
-	ingressnginxkubernetesv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/ingressnginxkubernetes/v1"
+	ingressnginxv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/ingressnginx/v1"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/pulumikubernetesprovider"
 	corev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
 	"github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/helm/v3"
@@ -12,7 +12,7 @@ import (
 
 // Resources creates all Pulumi resources for the Ingress‑Nginx Kubernetes add‑on.
 func Resources(ctx *pulumi.Context,
-	stackInput *ingressnginxkubernetesv1.IngressNginxKubernetesStackInput) error {
+	stackInput *ingressnginxv1.IngressNginxKubernetesStackInput) error {
 
 	// Build Kubernetes provider from the target‑cluster credential
 	kubeProvider, err := pulumikubernetesprovider.GetWithKubernetesProviderConfig(

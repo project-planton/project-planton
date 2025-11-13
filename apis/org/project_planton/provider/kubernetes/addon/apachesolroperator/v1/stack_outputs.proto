@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package org.project_planton.provider.kubernetes.addon.solroperatorkubernetes.v1;
+package org.project_planton.provider.kubernetes.addon.apachesolroperator.v1;
 
 //solr-operator-kubernetes stack outputs
 message SolrOperatorKubernetesStackOutputs {

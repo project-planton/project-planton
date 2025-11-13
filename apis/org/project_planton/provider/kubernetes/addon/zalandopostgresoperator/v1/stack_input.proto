@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package org.project_planton.provider.kubernetes.addon.postgresoperatorkubernetes.v1;
+package org.project_planton.provider.kubernetes.addon.zalandopostgresoperator.v1;
 
-import "org/project_planton/provider/kubernetes/addon/postgresoperatorkubernetes/v1/api.proto";
+import "org/project_planton/provider/kubernetes/addon/zalandopostgresoperator/v1/api.proto";
 import "org/project_planton/provider/kubernetes/provider.proto";
 
 //postgres-operator-kubernetes stack-input

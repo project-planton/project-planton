@@ -138,7 +138,7 @@ All ClusterIssuers use the same email and ACME server, simplifying management.
 
 ### Protobuf Schema Redesign
 
-**File**: `apis/project/planton/provider/kubernetes/addon/certmanagerkubernetes/v1/spec.proto`
+**File**: `apis/project/planton/provider/kubernetes/addon/certmanager/v1/spec.proto`
 
 1. **Added `AcmeConfig` message**:
    - `email`: ACME account email (required)
@@ -161,7 +161,7 @@ All ClusterIssuers use the same email and ACME server, simplifying management.
 
 ### Pulumi Implementation
 
-**File**: `apis/project/planton/provider/kubernetes/addon/certmanagerkubernetes/v1/iac/pulumi/module/main.go`
+**File**: `apis/project/planton/provider/kubernetes/addon/certmanager/v1/iac/pulumi/module/main.go`
 
 **Key Changes**:
 
@@ -256,7 +256,7 @@ func createClusterIssuerForDomain(
 
 ### Documentation Overhaul
 
-**File**: `apis/project/planton/provider/kubernetes/addon/certmanagerkubernetes/v1/README.md`
+**File**: `apis/project/planton/provider/kubernetes/addon/certmanager/v1/README.md`
 
 Complete rewrite (600+ lines) covering:
 - Multi-provider configuration examples

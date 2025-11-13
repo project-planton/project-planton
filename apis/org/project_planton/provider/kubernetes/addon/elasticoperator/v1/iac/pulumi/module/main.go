@@ -2,14 +2,14 @@ package module
 
 import (
 	"github.com/pkg/errors"
-	elasticoperatorkubernetesv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/elasticoperatorkubernetes/v1"
+	elasticoperatorv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/elasticoperator/v1"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/pulumikubernetesprovider"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
 // Resources is the Pulumi entry‑point.
 func Resources(ctx *pulumi.Context,
-	in *elasticoperatorkubernetesv1.ElasticOperatorKubernetesStackInput) error {
+	in *elasticoperatorv1.ElasticOperatorKubernetesStackInput) error {
 
 	locals := initializeLocals(ctx, in)
 

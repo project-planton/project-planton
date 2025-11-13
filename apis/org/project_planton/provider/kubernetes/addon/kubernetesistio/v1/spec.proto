@@ -1,25 +1,25 @@
 syntax = "proto3";
 
-package org.project_planton.provider.kubernetes.addon.istiokubernetes.v1;
+package org.project_planton.provider.kubernetes.addon.kubernetesistio.v1;
 
 import "buf/validate/validate.proto";
 import "org/project_planton/shared/kubernetes/kubernetes.proto";
 import "org/project_planton/shared/kubernetes/options.proto";
 import "org/project_planton/shared/kubernetes/target_cluster.proto";
 
-// **IstioKubernetesSpec** defines the configuration for deploying GitLab on a Kubernetes cluster.
+// **KubernetesIstioSpec** defines the configuration for deploying GitLab on a Kubernetes cluster.
 // This message specifies the parameters needed to create and manage a GitLab deployment within a Kubernetes environment.
 // It includes container specifications and ingress settings to control resource allocation and external access.
-message IstioKubernetesSpec {
+message KubernetesIstioSpec {
   // The Kubernetes cluster to install this addon on.
   org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster target_cluster = 1;
   // The container specifications for the GitLab deployment.
-  IstioKubernetesSpecContainer container = 2 [(buf.validate.field).required = true];
+  KubernetesIstioSpecContainer container = 2 [(buf.validate.field).required = true];
 }
 
-// **IstioKubernetesSpecContainer** specifies the container configuration for the GitLab application.
+// **KubernetesIstioSpecContainer** specifies the container configuration for the GitLab application.
 // It includes resource allocations for CPU and memory to ensure the application runs efficiently.
-message IstioKubernetesSpecContainer {
+message KubernetesIstioSpecContainer {
   // The CPU and memory resources allocated to the GitLab container.
   org.project_planton.shared.kubernetes.ContainerResources resources = 1 [(org.project_planton.shared.kubernetes.default_container_resources) = {
     limits: {

@@ -2,7 +2,7 @@ package module
 
 import (
 	"github.com/pkg/errors"
-	altinityoperatorkubernetesv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/altinityoperatorkubernetes/v1"
+	altinityoperatorv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/altinityoperator/v1"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/pulumikubernetesprovider"
 	corev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
 	"github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/helm/v3"
@@ -11,7 +11,7 @@ import (
 )
 
 // Resources creates all Pulumi resources for the Altinity ClickHouse Operator Kubernetes add-on.
-func Resources(ctx *pulumi.Context, stackInput *altinityoperatorkubernetesv1.AltinityOperatorStackInput) error {
+func Resources(ctx *pulumi.Context, stackInput *altinityoperatorv1.AltinityOperatorStackInput) error {
 	// set up kubernetes provider from the supplied cluster credential
 	kubeProvider, err := pulumikubernetesprovider.GetWithKubernetesProviderConfig(
 		ctx, stackInput.ProviderConfig, "kubernetes")

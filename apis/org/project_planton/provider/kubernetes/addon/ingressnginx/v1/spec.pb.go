@@ -2,9 +2,9 @@
 // versions:
 // 	protoc-gen-go v1.36.6
 // 	protoc        (unknown)
-// source: org/project_planton/provider/kubernetes/addon/ingressnginxkubernetes/v1/spec.proto
+// source: org/project_planton/provider/kubernetes/addon/ingressnginx/v1/spec.proto
 
-package ingressnginxkubernetesv1
+package ingressnginxv1
 
 import (
 	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
@@ -47,7 +47,7 @@ type IngressNginxKubernetesSpec struct {
 
 func (x *IngressNginxKubernetesSpec) Reset() {
 	*x = IngressNginxKubernetesSpec{}
-	mi := &file_org_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v1_spec_proto_msgTypes[0]
+	mi := &file_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_spec_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -59,7 +59,7 @@ func (x *IngressNginxKubernetesSpec) String() string {
 func (*IngressNginxKubernetesSpec) ProtoMessage() {}
 
 func (x *IngressNginxKubernetesSpec) ProtoReflect() protoreflect.Message {
-	mi := &file_org_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v1_spec_proto_msgTypes[0]
+	mi := &file_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_spec_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -72,7 +72,7 @@ func (x *IngressNginxKubernetesSpec) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IngressNginxKubernetesSpec.ProtoReflect.Descriptor instead.
 func (*IngressNginxKubernetesSpec) Descriptor() ([]byte, []int) {
-	return file_org_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v1_spec_proto_rawDescGZIP(), []int{0}
+	return file_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *IngressNginxKubernetesSpec) GetTargetCluster() *kubernetes.KubernetesAddonTargetCluster {
@@ -168,7 +168,7 @@ type IngressNginxGkeConfig struct {
 
 func (x *IngressNginxGkeConfig) Reset() {
 	*x = IngressNginxGkeConfig{}
-	mi := &file_org_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v1_spec_proto_msgTypes[1]
+	mi := &file_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_spec_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -180,7 +180,7 @@ func (x *IngressNginxGkeConfig) String() string {
 func (*IngressNginxGkeConfig) ProtoMessage() {}
 
 func (x *IngressNginxGkeConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_org_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v1_spec_proto_msgTypes[1]
+	mi := &file_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_spec_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -193,7 +193,7 @@ func (x *IngressNginxGkeConfig) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IngressNginxGkeConfig.ProtoReflect.Descriptor instead.
 func (*IngressNginxGkeConfig) Descriptor() ([]byte, []int) {
-	return file_org_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v1_spec_proto_rawDescGZIP(), []int{1}
+	return file_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_spec_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *IngressNginxGkeConfig) GetStaticIpName() string {
@@ -230,7 +230,7 @@ type IngressNginxEksConfig struct {
 
 func (x *IngressNginxEksConfig) Reset() {
 	*x = IngressNginxEksConfig{}
-	mi := &file_org_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v1_spec_proto_msgTypes[2]
+	mi := &file_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_spec_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -242,7 +242,7 @@ func (x *IngressNginxEksConfig) String() string {
 func (*IngressNginxEksConfig) ProtoMessage() {}
 
 func (x *IngressNginxEksConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_org_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v1_spec_proto_msgTypes[2]
+	mi := &file_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_spec_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -255,7 +255,7 @@ func (x *IngressNginxEksConfig) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IngressNginxEksConfig.ProtoReflect.Descriptor instead.
 func (*IngressNginxEksConfig) Descriptor() ([]byte, []int) {
-	return file_org_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v1_spec_proto_rawDescGZIP(), []int{2}
+	return file_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_spec_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *IngressNginxEksConfig) GetAdditionalSecurityGroupIds() []*v1.StringValueOrRef {
@@ -295,7 +295,7 @@ type IngressNginxAksConfig struct {
 
 func (x *IngressNginxAksConfig) Reset() {
 	*x = IngressNginxAksConfig{}
-	mi := &file_org_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v1_spec_proto_msgTypes[3]
+	mi := &file_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_spec_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -307,7 +307,7 @@ func (x *IngressNginxAksConfig) String() string {
 func (*IngressNginxAksConfig) ProtoMessage() {}
 
 func (x *IngressNginxAksConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_org_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v1_spec_proto_msgTypes[3]
+	mi := &file_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_spec_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -320,7 +320,7 @@ func (x *IngressNginxAksConfig) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IngressNginxAksConfig.ProtoReflect.Descriptor instead.
 func (*IngressNginxAksConfig) Descriptor() ([]byte, []int) {
-	return file_org_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v1_spec_proto_rawDescGZIP(), []int{3}
+	return file_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_spec_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *IngressNginxAksConfig) GetManagedIdentityClientId() string {
@@ -337,18 +337,18 @@ func (x *IngressNginxAksConfig) GetPublicIpName() string {
 	return ""
 }
 
-var File_org_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v1_spec_proto protoreflect.FileDescriptor
+var File_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_spec_proto protoreflect.FileDescriptor
 
-const file_org_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v1_spec_proto_rawDesc = "" +
+const file_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Rorg/project_planton/provider/kubernetes/addon/ingressnginxkubernetes/v1/spec.proto\x12Gorg.project_planton.provider.kubernetes.addon.ingressnginxkubernetes.v1\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a:org/project_planton/shared/kubernetes/target_cluster.proto\"\xb8\x04\n" +
+	"Horg/project_planton/provider/kubernetes/addon/ingressnginx/v1/spec.proto\x12=org.project_planton.provider.kubernetes.addon.ingressnginx.v1\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a:org/project_planton/shared/kubernetes/target_cluster.proto\"\x9a\x04\n" +
 	"\x1aIngressNginxKubernetesSpec\x12j\n" +
 	"\x0etarget_cluster\x18\x01 \x01(\v2C.org.project_planton.shared.kubernetes.KubernetesAddonTargetClusterR\rtargetCluster\x12#\n" +
 	"\rchart_version\x18\x02 \x01(\tR\fchartVersion\x12\x1a\n" +
-	"\binternal\x18\x03 \x01(\bR\binternal\x12r\n" +
-	"\x03gke\x18d \x01(\v2^.org.project_planton.provider.kubernetes.addon.ingressnginxkubernetes.v1.IngressNginxGkeConfigH\x00R\x03gke\x12r\n" +
-	"\x03eks\x18e \x01(\v2^.org.project_planton.provider.kubernetes.addon.ingressnginxkubernetes.v1.IngressNginxEksConfigH\x00R\x03eks\x12r\n" +
-	"\x03aks\x18f \x01(\v2^.org.project_planton.provider.kubernetes.addon.ingressnginxkubernetes.v1.IngressNginxAksConfigH\x00R\x03aksB\x11\n" +
+	"\binternal\x18\x03 \x01(\bR\binternal\x12h\n" +
+	"\x03gke\x18d \x01(\v2T.org.project_planton.provider.kubernetes.addon.ingressnginx.v1.IngressNginxGkeConfigH\x00R\x03gke\x12h\n" +
+	"\x03eks\x18e \x01(\v2T.org.project_planton.provider.kubernetes.addon.ingressnginx.v1.IngressNginxEksConfigH\x00R\x03eks\x12h\n" +
+	"\x03aks\x18f \x01(\v2T.org.project_planton.provider.kubernetes.addon.ingressnginx.v1.IngressNginxAksConfigH\x00R\x03aksB\x11\n" +
 	"\x0fprovider_config\"o\n" +
 	"\x15IngressNginxGkeConfig\x12$\n" +
 	"\x0estatic_ip_name\x18\x01 \x01(\tR\fstaticIpName\x120\n" +
@@ -360,37 +360,37 @@ const file_org_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_
 	"\x16irsa_role_arn_override\x18\x03 \x01(\tR\x13irsaRoleArnOverride\"z\n" +
 	"\x15IngressNginxAksConfig\x12;\n" +
 	"\x1amanaged_identity_client_id\x18\x01 \x01(\tR\x17managedIdentityClientId\x12$\n" +
-	"\x0epublic_ip_name\x18\x02 \x01(\tR\fpublicIpNameB\xac\x04\n" +
-	"Kcom.org.project_planton.provider.kubernetes.addon.ingressnginxkubernetes.v1B\tSpecProtoP\x01Z\x90\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/ingressnginxkubernetes/v1;ingressnginxkubernetesv1\xa2\x02\x06OPPKAI\xaa\x02FOrg.ProjectPlanton.Provider.Kubernetes.Addon.Ingressnginxkubernetes.V1\xca\x02FOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Ingressnginxkubernetes\\V1\xe2\x02ROrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Ingressnginxkubernetes\\V1\\GPBMetadata\xea\x02LOrg::ProjectPlanton::Provider::Kubernetes::Addon::Ingressnginxkubernetes::V1b\x06proto3"
+	"\x0epublic_ip_name\x18\x02 \x01(\tR\fpublicIpNameB\xe5\x03\n" +
+	"Acom.org.project_planton.provider.kubernetes.addon.ingressnginx.v1B\tSpecProtoP\x01Z|github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/ingressnginx/v1;ingressnginxv1\xa2\x02\x06OPPKAI\xaa\x02<Org.ProjectPlanton.Provider.Kubernetes.Addon.Ingressnginx.V1\xca\x02<Org\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Ingressnginx\\V1\xe2\x02HOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Ingressnginx\\V1\\GPBMetadata\xea\x02BOrg::ProjectPlanton::Provider::Kubernetes::Addon::Ingressnginx::V1b\x06proto3"
 
 var (
-	file_org_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v1_spec_proto_rawDescOnce sync.Once
-	file_org_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v1_spec_proto_rawDescData []byte
+	file_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_spec_proto_rawDescOnce sync.Once
+	file_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_spec_proto_rawDescData []byte
 )
 
-func file_org_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v1_spec_proto_rawDescGZIP() []byte {
-	file_org_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v1_spec_proto_rawDescOnce.Do(func() {
-		file_org_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v1_spec_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_org_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v1_spec_proto_rawDesc), len(file_org_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v1_spec_proto_rawDesc)))
+func file_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_spec_proto_rawDescGZIP() []byte {
+	file_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_spec_proto_rawDescOnce.Do(func() {
+		file_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_spec_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_spec_proto_rawDesc), len(file_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_spec_proto_rawDesc)))
 	})
-	return file_org_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v1_spec_proto_rawDescData
+	return file_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_spec_proto_rawDescData
 }
 
-var file_org_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
-var file_org_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v1_spec_proto_goTypes = []any{
-	(*IngressNginxKubernetesSpec)(nil),              // 0: org.project_planton.provider.kubernetes.addon.ingressnginxkubernetes.v1.IngressNginxKubernetesSpec
-	(*IngressNginxGkeConfig)(nil),                   // 1: org.project_planton.provider.kubernetes.addon.ingressnginxkubernetes.v1.IngressNginxGkeConfig
-	(*IngressNginxEksConfig)(nil),                   // 2: org.project_planton.provider.kubernetes.addon.ingressnginxkubernetes.v1.IngressNginxEksConfig
-	(*IngressNginxAksConfig)(nil),                   // 3: org.project_planton.provider.kubernetes.addon.ingressnginxkubernetes.v1.IngressNginxAksConfig
+var file_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_spec_proto_goTypes = []any{
+	(*IngressNginxKubernetesSpec)(nil),              // 0: org.project_planton.provider.kubernetes.addon.ingressnginx.v1.IngressNginxKubernetesSpec
+	(*IngressNginxGkeConfig)(nil),                   // 1: org.project_planton.provider.kubernetes.addon.ingressnginx.v1.IngressNginxGkeConfig
+	(*IngressNginxEksConfig)(nil),                   // 2: org.project_planton.provider.kubernetes.addon.ingressnginx.v1.IngressNginxEksConfig
+	(*IngressNginxAksConfig)(nil),                   // 3: org.project_planton.provider.kubernetes.addon.ingressnginx.v1.IngressNginxAksConfig
 	(*kubernetes.KubernetesAddonTargetCluster)(nil), // 4: org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
 	(*v1.StringValueOrRef)(nil),                     // 5: org.project_planton.shared.foreignkey.v1.StringValueOrRef
 }
-var file_org_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v1_spec_proto_depIdxs = []int32{
-	4, // 0: org.project_planton.provider.kubernetes.addon.ingressnginxkubernetes.v1.IngressNginxKubernetesSpec.target_cluster:type_name -> org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
-	1, // 1: org.project_planton.provider.kubernetes.addon.ingressnginxkubernetes.v1.IngressNginxKubernetesSpec.gke:type_name -> org.project_planton.provider.kubernetes.addon.ingressnginxkubernetes.v1.IngressNginxGkeConfig
-	2, // 2: org.project_planton.provider.kubernetes.addon.ingressnginxkubernetes.v1.IngressNginxKubernetesSpec.eks:type_name -> org.project_planton.provider.kubernetes.addon.ingressnginxkubernetes.v1.IngressNginxEksConfig
-	3, // 3: org.project_planton.provider.kubernetes.addon.ingressnginxkubernetes.v1.IngressNginxKubernetesSpec.aks:type_name -> org.project_planton.provider.kubernetes.addon.ingressnginxkubernetes.v1.IngressNginxAksConfig
-	5, // 4: org.project_planton.provider.kubernetes.addon.ingressnginxkubernetes.v1.IngressNginxEksConfig.additional_security_group_ids:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
-	5, // 5: org.project_planton.provider.kubernetes.addon.ingressnginxkubernetes.v1.IngressNginxEksConfig.subnet_ids:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
+var file_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_spec_proto_depIdxs = []int32{
+	4, // 0: org.project_planton.provider.kubernetes.addon.ingressnginx.v1.IngressNginxKubernetesSpec.target_cluster:type_name -> org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
+	1, // 1: org.project_planton.provider.kubernetes.addon.ingressnginx.v1.IngressNginxKubernetesSpec.gke:type_name -> org.project_planton.provider.kubernetes.addon.ingressnginx.v1.IngressNginxGkeConfig
+	2, // 2: org.project_planton.provider.kubernetes.addon.ingressnginx.v1.IngressNginxKubernetesSpec.eks:type_name -> org.project_planton.provider.kubernetes.addon.ingressnginx.v1.IngressNginxEksConfig
+	3, // 3: org.project_planton.provider.kubernetes.addon.ingressnginx.v1.IngressNginxKubernetesSpec.aks:type_name -> org.project_planton.provider.kubernetes.addon.ingressnginx.v1.IngressNginxAksConfig
+	5, // 4: org.project_planton.provider.kubernetes.addon.ingressnginx.v1.IngressNginxEksConfig.additional_security_group_ids:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	5, // 5: org.project_planton.provider.kubernetes.addon.ingressnginx.v1.IngressNginxEksConfig.subnet_ids:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
 	6, // [6:6] is the sub-list for method output_type
 	6, // [6:6] is the sub-list for method input_type
 	6, // [6:6] is the sub-list for extension type_name
@@ -398,14 +398,12 @@ var file_org_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v1
 	0, // [0:6] is the sub-list for field type_name
 }
 
-func init() {
-	file_org_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v1_spec_proto_init()
-}
-func file_org_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v1_spec_proto_init() {
-	if File_org_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v1_spec_proto != nil {
+func init() { file_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_spec_proto_init() }
+func file_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_spec_proto_init() {
+	if File_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_spec_proto != nil {
 		return
 	}
-	file_org_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v1_spec_proto_msgTypes[0].OneofWrappers = []any{
+	file_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_spec_proto_msgTypes[0].OneofWrappers = []any{
 		(*IngressNginxKubernetesSpec_Gke)(nil),
 		(*IngressNginxKubernetesSpec_Eks)(nil),
 		(*IngressNginxKubernetesSpec_Aks)(nil),
@@ -414,17 +412,17 @@ func file_org_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_org_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v1_spec_proto_rawDesc), len(file_org_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v1_spec_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_spec_proto_rawDesc), len(file_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_spec_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_org_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v1_spec_proto_goTypes,
-		DependencyIndexes: file_org_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v1_spec_proto_depIdxs,
-		MessageInfos:      file_org_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v1_spec_proto_msgTypes,
+		GoTypes:           file_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_spec_proto_goTypes,
+		DependencyIndexes: file_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_spec_proto_depIdxs,
+		MessageInfos:      file_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_spec_proto_msgTypes,
 	}.Build()
-	File_org_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v1_spec_proto = out.File
-	file_org_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v1_spec_proto_goTypes = nil
-	file_org_project_planton_provider_kubernetes_addon_ingressnginxkubernetes_v1_spec_proto_depIdxs = nil
+	File_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_spec_proto = out.File
+	file_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_spec_proto_goTypes = nil
+	file_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_spec_proto_depIdxs = nil
 }

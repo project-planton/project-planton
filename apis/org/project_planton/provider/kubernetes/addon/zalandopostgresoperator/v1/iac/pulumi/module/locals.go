@@ -3,19 +3,19 @@ package module
 import (
 	"strconv"
 
-	postgresoperatorkubernetesv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/postgresoperatorkubernetes/v1"
+	zalandopostgresoperatorv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/zalandopostgresoperator/v1"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/kuberneteslabelkeys"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
 // Locals collect computed values that are reused across resources.
 type Locals struct {
-	PostgresOperatorKubernetes *postgresoperatorkubernetesv1.PostgresOperatorKubernetes
+	PostgresOperatorKubernetes *zalandopostgresoperatorv1.PostgresOperatorKubernetes
 	KubernetesLabels           map[string]string
 }
 
 // initializeLocals builds the Locals struct once and re‑uses it elsewhere.
-func initializeLocals(_ *pulumi.Context, stackInput *postgresoperatorkubernetesv1.PostgresOperatorKubernetesStackInput) *Locals {
+func initializeLocals(_ *pulumi.Context, stackInput *zalandopostgresoperatorv1.PostgresOperatorKubernetesStackInput) *Locals {
 	target := stackInput.Target
 
 	kubeLabels := map[string]string{

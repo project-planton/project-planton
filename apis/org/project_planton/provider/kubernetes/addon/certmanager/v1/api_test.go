@@ -1,4 +1,4 @@
-package certmanagerkubernetesv1
+package certmanagerv1
 
 import (
 	"testing"
