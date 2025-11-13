@@ -9,7 +9,7 @@ import "org/project_planton/shared/kubernetes/target_cluster.proto";
 
 // Cloudflare R2-specific storage configuration for PostgreSQL backups.
 // This is separate to allow future support for other S3-compatible backends.
-message PostgresOperatorKubernetesBackupR2Config {
+message ZalandoPostgresOperatorBackupR2Config {
   // Cloudflare R2 account ID (used to construct endpoint URL)
   // The endpoint will be: https://<account_id>.r2.cloudflarestorage.com
   string cloudflare_account_id = 1 [
@@ -41,9 +41,9 @@ message PostgresOperatorKubernetesBackupR2Config {
 // Zalando-specific backup configuration for all PostgreSQL databases managed by this operator.
 // This configures the pod_environment_configmap used by Zalando operator for WAL-G backups.
 // The Pulumi module will automatically create a Kubernetes Secret from the R2 credentials.
-message PostgresOperatorKubernetesBackupConfig {
+message ZalandoPostgresOperatorBackupConfig {
   // Cloudflare R2 storage configuration (includes credentials)
-  PostgresOperatorKubernetesBackupR2Config r2_config = 1 [(buf.validate.field).required = true];
+  ZalandoPostgresOperatorBackupR2Config r2_config = 1 [(buf.validate.field).required = true];
 
   // Optional: Custom S3 prefix template for WAL-G
   // Default: "backups/$(SCOPE)/$(PGVERSION)"
@@ -70,22 +70,22 @@ message PostgresOperatorKubernetesBackupConfig {
   bool enable_clone_wal_g_restore = 6;
 }
 
-// **PostgresOperatorKubernetesSpec** defines the configuration for deploying GitLab on a Kubernetes cluster.
-// This message specifies the parameters needed to create and manage a GitLab deployment within a Kubernetes environment.
-// It includes container specifications and ingress settings to control resource allocation and external access.
-message PostgresOperatorKubernetesSpec {
+// **ZalandoPostgresOperatorSpec** defines the configuration for deploying the Zalando Postgres Operator on a Kubernetes cluster.
+// This message specifies the parameters needed to create and manage the operator deployment within a Kubernetes environment.
+// It includes container specifications and backup configuration settings to control resource allocation and data protection.
+message ZalandoPostgresOperatorSpec {
   // The Kubernetes cluster to install this addon on.
   org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster target_cluster = 1;
-  // The container specifications for the GitLab deployment.
-  PostgresOperatorKubernetesSpecContainer container = 2 [(buf.validate.field).required = true];
+  // The container specifications for the operator deployment.
+  ZalandoPostgresOperatorSpecContainer container = 2 [(buf.validate.field).required = true];
   // Optional: Backup configuration for all databases managed by this operator
-  PostgresOperatorKubernetesBackupConfig backup_config = 3;
+  ZalandoPostgresOperatorBackupConfig backup_config = 3;
 }
 
-// **PostgresOperatorKubernetesSpecContainer** specifies the container configuration for the GitLab application.
-// It includes resource allocations for CPU and memory to ensure the application runs efficiently.
-message PostgresOperatorKubernetesSpecContainer {
-  // The CPU and memory resources allocated to the GitLab container.
+// **ZalandoPostgresOperatorSpecContainer** specifies the container configuration for the Zalando Postgres Operator.
+// It includes resource allocations for CPU and memory to ensure the operator runs efficiently.
+message ZalandoPostgresOperatorSpecContainer {
+  // The CPU and memory resources allocated to the operator container.
   org.project_planton.shared.kubernetes.ContainerResources resources = 1 [(org.project_planton.shared.kubernetes.default_container_resources) = {
     limits: {
       cpu: "1000m"

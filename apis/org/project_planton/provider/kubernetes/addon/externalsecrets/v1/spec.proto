@@ -9,9 +9,9 @@ import "org/project_planton/shared/kubernetes/options.proto";
 import "org/project_planton/shared/kubernetes/target_cluster.proto";
 import "org/project_planton/shared/options/options.proto";
 
-// ExternalSecretsKubernetesSpec defines configuration for the External Secrets
+// ExternalSecretsSpec defines configuration for the External Secrets
 // Operator (ESO) on any Kubernetes cluster.
-message ExternalSecretsKubernetesSpec {
+message ExternalSecretsSpec {
   // The Kubernetes cluster on which to install this add‑on.
   org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster target_cluster = 1;
 
@@ -23,7 +23,7 @@ message ExternalSecretsKubernetesSpec {
   ];
 
   // CPU / memory tuning for the ESO controller container.
-  ExternalSecretsKubernetesSpecContainer container = 3 [(buf.validate.field).required = true];
+  ExternalSecretsSpecContainer container = 3 [(buf.validate.field).required = true];
 
   // Provider‑specific glue.  Exactly one block should be set.
   oneof provider_config {
@@ -39,7 +39,7 @@ message ExternalSecretsKubernetesSpec {
 }
 
 // Resource limits / requests for the controller container.
-message ExternalSecretsKubernetesSpecContainer {
+message ExternalSecretsSpecContainer {
   org.project_planton.shared.kubernetes.ContainerResources resources = 1 [(org.project_planton.shared.kubernetes.default_container_resources) = {
     limits: {
       cpu: "1000m"

@@ -23,8 +23,8 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// external-dns-kubernetes
-type ExternalDnsKubernetes struct {
+// external-dns
+type ExternalDns struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// api-version
 	ApiVersion string `protobuf:"bytes,1,opt,name=api_version,json=apiVersion,proto3" json:"api_version,omitempty"`
@@ -33,27 +33,27 @@ type ExternalDnsKubernetes struct {
 	// metadata
 	Metadata *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// spec
-	Spec *ExternalDnsKubernetesSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
+	Spec *ExternalDnsSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status
-	Status        *ExternalDnsKubernetesStatus `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
+	Status        *ExternalDnsStatus `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ExternalDnsKubernetes) Reset() {
-	*x = ExternalDnsKubernetes{}
+func (x *ExternalDns) Reset() {
+	*x = ExternalDns{}
 	mi := &file_org_project_planton_provider_kubernetes_addon_externaldns_v1_api_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ExternalDnsKubernetes) String() string {
+func (x *ExternalDns) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ExternalDnsKubernetes) ProtoMessage() {}
+func (*ExternalDns) ProtoMessage() {}
 
-func (x *ExternalDnsKubernetes) ProtoReflect() protoreflect.Message {
+func (x *ExternalDns) ProtoReflect() protoreflect.Message {
 	mi := &file_org_project_planton_provider_kubernetes_addon_externaldns_v1_api_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -65,69 +65,69 @@ func (x *ExternalDnsKubernetes) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ExternalDnsKubernetes.ProtoReflect.Descriptor instead.
-func (*ExternalDnsKubernetes) Descriptor() ([]byte, []int) {
+// Deprecated: Use ExternalDns.ProtoReflect.Descriptor instead.
+func (*ExternalDns) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_kubernetes_addon_externaldns_v1_api_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *ExternalDnsKubernetes) GetApiVersion() string {
+func (x *ExternalDns) GetApiVersion() string {
 	if x != nil {
 		return x.ApiVersion
 	}
 	return ""
 }
 
-func (x *ExternalDnsKubernetes) GetKind() string {
+func (x *ExternalDns) GetKind() string {
 	if x != nil {
 		return x.Kind
 	}
 	return ""
 }
 
-func (x *ExternalDnsKubernetes) GetMetadata() *shared.CloudResourceMetadata {
+func (x *ExternalDns) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
 	return nil
 }
 
-func (x *ExternalDnsKubernetes) GetSpec() *ExternalDnsKubernetesSpec {
+func (x *ExternalDns) GetSpec() *ExternalDnsSpec {
 	if x != nil {
 		return x.Spec
 	}
 	return nil
 }
 
-func (x *ExternalDnsKubernetes) GetStatus() *ExternalDnsKubernetesStatus {
+func (x *ExternalDns) GetStatus() *ExternalDnsStatus {
 	if x != nil {
 		return x.Status
 	}
 	return nil
 }
 
-// external-dns-kubernetes status.
-type ExternalDnsKubernetesStatus struct {
+// external-dns status.
+type ExternalDnsStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// stack-outputs
-	Outputs       *ExternalDnsKubernetesStackOutputs `protobuf:"bytes,1,opt,name=outputs,proto3" json:"outputs,omitempty"`
+	Outputs       *ExternalDnsStackOutputs `protobuf:"bytes,1,opt,name=outputs,proto3" json:"outputs,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ExternalDnsKubernetesStatus) Reset() {
-	*x = ExternalDnsKubernetesStatus{}
+func (x *ExternalDnsStatus) Reset() {
+	*x = ExternalDnsStatus{}
 	mi := &file_org_project_planton_provider_kubernetes_addon_externaldns_v1_api_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ExternalDnsKubernetesStatus) String() string {
+func (x *ExternalDnsStatus) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ExternalDnsKubernetesStatus) ProtoMessage() {}
+func (*ExternalDnsStatus) ProtoMessage() {}
 
-func (x *ExternalDnsKubernetesStatus) ProtoReflect() protoreflect.Message {
+func (x *ExternalDnsStatus) ProtoReflect() protoreflect.Message {
 	mi := &file_org_project_planton_provider_kubernetes_addon_externaldns_v1_api_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -139,12 +139,12 @@ func (x *ExternalDnsKubernetesStatus) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ExternalDnsKubernetesStatus.ProtoReflect.Descriptor instead.
-func (*ExternalDnsKubernetesStatus) Descriptor() ([]byte, []int) {
+// Deprecated: Use ExternalDnsStatus.ProtoReflect.Descriptor instead.
+func (*ExternalDnsStatus) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_kubernetes_addon_externaldns_v1_api_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *ExternalDnsKubernetesStatus) GetOutputs() *ExternalDnsKubernetesStackOutputs {
+func (x *ExternalDnsStatus) GetOutputs() *ExternalDnsStackOutputs {
 	if x != nil {
 		return x.Outputs
 	}
@@ -155,18 +155,18 @@ var File_org_project_planton_provider_kubernetes_addon_externaldns_v1_api_proto 
 
 const file_org_project_planton_provider_kubernetes_addon_externaldns_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Forg/project_planton/provider/kubernetes/addon/externaldns/v1/api.proto\x12<org.project_planton.provider.kubernetes.addon.externaldns.v1\x1a\x1bbuf/validate/validate.proto\x1aGorg/project_planton/provider/kubernetes/addon/externaldns/v1/spec.proto\x1aPorg/project_planton/provider/kubernetes/addon/externaldns/v1/stack_outputs.proto\x1a)org/project_planton/shared/metadata.proto\"\xd3\x03\n" +
-	"\x15ExternalDnsKubernetes\x12I\n" +
+	"Forg/project_planton/provider/kubernetes/addon/externaldns/v1/api.proto\x12<org.project_planton.provider.kubernetes.addon.externaldns.v1\x1a\x1bbuf/validate/validate.proto\x1aGorg/project_planton/provider/kubernetes/addon/externaldns/v1/spec.proto\x1aPorg/project_planton/provider/kubernetes/addon/externaldns/v1/stack_outputs.proto\x1a)org/project_planton/shared/metadata.proto\"\xab\x03\n" +
+	"\vExternalDns\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!kubernetes.project-planton.org/v1R\n" +
-	"apiVersion\x120\n" +
-	"\x04kind\x18\x02 \x01(\tB\x1c\xbaH\x19r\x17\n" +
-	"\x15ExternalDnsKubernetesR\x04kind\x12U\n" +
-	"\bmetadata\x18\x03 \x01(\v21.org.project_planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12s\n" +
-	"\x04spec\x18\x04 \x01(\v2W.org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDnsKubernetesSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12q\n" +
-	"\x06status\x18\x05 \x01(\v2Y.org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDnsKubernetesStatusR\x06status\"\x98\x01\n" +
-	"\x1bExternalDnsKubernetesStatus\x12y\n" +
-	"\aoutputs\x18\x01 \x01(\v2_.org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDnsKubernetesStackOutputsR\aoutputsB\xdd\x03\n" +
+	"apiVersion\x12&\n" +
+	"\x04kind\x18\x02 \x01(\tB\x12\xbaH\x0fr\r\n" +
+	"\vExternalDnsR\x04kind\x12U\n" +
+	"\bmetadata\x18\x03 \x01(\v21.org.project_planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12i\n" +
+	"\x04spec\x18\x04 \x01(\v2M.org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDnsSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12g\n" +
+	"\x06status\x18\x05 \x01(\v2O.org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDnsStatusR\x06status\"\x84\x01\n" +
+	"\x11ExternalDnsStatus\x12o\n" +
+	"\aoutputs\x18\x01 \x01(\v2U.org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDnsStackOutputsR\aoutputsB\xdd\x03\n" +
 	"@com.org.project_planton.provider.kubernetes.addon.externaldns.v1B\bApiProtoP\x01Zzgithub.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/externaldns/v1;externaldnsv1\xa2\x02\x06OPPKAE\xaa\x02;Org.ProjectPlanton.Provider.Kubernetes.Addon.Externaldns.V1\xca\x02;Org\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Externaldns\\V1\xe2\x02GOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Externaldns\\V1\\GPBMetadata\xea\x02AOrg::ProjectPlanton::Provider::Kubernetes::Addon::Externaldns::V1b\x06proto3"
 
 var (
@@ -183,17 +183,17 @@ func file_org_project_planton_provider_kubernetes_addon_externaldns_v1_api_proto
 
 var file_org_project_planton_provider_kubernetes_addon_externaldns_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_org_project_planton_provider_kubernetes_addon_externaldns_v1_api_proto_goTypes = []any{
-	(*ExternalDnsKubernetes)(nil),             // 0: org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDnsKubernetes
-	(*ExternalDnsKubernetesStatus)(nil),       // 1: org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDnsKubernetesStatus
-	(*shared.CloudResourceMetadata)(nil),      // 2: org.project_planton.shared.CloudResourceMetadata
-	(*ExternalDnsKubernetesSpec)(nil),         // 3: org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDnsKubernetesSpec
-	(*ExternalDnsKubernetesStackOutputs)(nil), // 4: org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDnsKubernetesStackOutputs
+	(*ExternalDns)(nil),                  // 0: org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDns
+	(*ExternalDnsStatus)(nil),            // 1: org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDnsStatus
+	(*shared.CloudResourceMetadata)(nil), // 2: org.project_planton.shared.CloudResourceMetadata
+	(*ExternalDnsSpec)(nil),              // 3: org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDnsSpec
+	(*ExternalDnsStackOutputs)(nil),      // 4: org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDnsStackOutputs
 }
 var file_org_project_planton_provider_kubernetes_addon_externaldns_v1_api_proto_depIdxs = []int32{
-	2, // 0: org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDnsKubernetes.metadata:type_name -> org.project_planton.shared.CloudResourceMetadata
-	3, // 1: org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDnsKubernetes.spec:type_name -> org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDnsKubernetesSpec
-	1, // 2: org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDnsKubernetes.status:type_name -> org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDnsKubernetesStatus
-	4, // 3: org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDnsKubernetesStatus.outputs:type_name -> org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDnsKubernetesStackOutputs
+	2, // 0: org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDns.metadata:type_name -> org.project_planton.shared.CloudResourceMetadata
+	3, // 1: org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDns.spec:type_name -> org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDnsSpec
+	1, // 2: org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDns.status:type_name -> org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDnsStatus
+	4, // 3: org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDnsStatus.outputs:type_name -> org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDnsStackOutputs
 	4, // [4:4] is the sub-list for method output_type
 	4, // [4:4] is the sub-list for method input_type
 	4, // [4:4] is the sub-list for extension type_name

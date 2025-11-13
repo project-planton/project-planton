@@ -6,9 +6,9 @@ import "buf/validate/validate.proto";
 import "org/project_planton/shared/kubernetes/target_cluster.proto";
 import "org/project_planton/shared/options/options.proto";
 
-// CertManagerKubernetesSpec defines configuration for cert-manager on any cluster.
+// CertManagerSpec defines configuration for cert-manager on any cluster.
 // The addon automatically creates a ClusterIssuer with multiple DNS solvers based on the provided DNS provider configurations.
-message CertManagerKubernetesSpec {
+message CertManagerSpec {
   // The Kubernetes cluster to install this addon on.
   org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster target_cluster = 1;
 

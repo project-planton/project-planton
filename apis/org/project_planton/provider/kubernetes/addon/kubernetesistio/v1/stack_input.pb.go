@@ -22,31 +22,31 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// istio-kubernetes stack-input
-type IstioKubernetesStackInput struct {
+// kubernetes-istio stack-input
+type KubernetesIstioStackInput struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// target cloud-resource
-	Target *IstioKubernetes `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
+	Target *KubernetesIstio `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
 	// provider-config
 	ProviderConfig *kubernetes.KubernetesProviderConfig `protobuf:"bytes,2,opt,name=provider_config,json=providerConfig,proto3" json:"provider_config,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
 
-func (x *IstioKubernetesStackInput) Reset() {
-	*x = IstioKubernetesStackInput{}
+func (x *KubernetesIstioStackInput) Reset() {
+	*x = KubernetesIstioStackInput{}
 	mi := &file_org_project_planton_provider_kubernetes_addon_kubernetesistio_v1_stack_input_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *IstioKubernetesStackInput) String() string {
+func (x *KubernetesIstioStackInput) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*IstioKubernetesStackInput) ProtoMessage() {}
+func (*KubernetesIstioStackInput) ProtoMessage() {}
 
-func (x *IstioKubernetesStackInput) ProtoReflect() protoreflect.Message {
+func (x *KubernetesIstioStackInput) ProtoReflect() protoreflect.Message {
 	mi := &file_org_project_planton_provider_kubernetes_addon_kubernetesistio_v1_stack_input_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -58,19 +58,19 @@ func (x *IstioKubernetesStackInput) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use IstioKubernetesStackInput.ProtoReflect.Descriptor instead.
-func (*IstioKubernetesStackInput) Descriptor() ([]byte, []int) {
+// Deprecated: Use KubernetesIstioStackInput.ProtoReflect.Descriptor instead.
+func (*KubernetesIstioStackInput) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_kubernetes_addon_kubernetesistio_v1_stack_input_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *IstioKubernetesStackInput) GetTarget() *IstioKubernetes {
+func (x *KubernetesIstioStackInput) GetTarget() *KubernetesIstio {
 	if x != nil {
 		return x.Target
 	}
 	return nil
 }
 
-func (x *IstioKubernetesStackInput) GetProviderConfig() *kubernetes.KubernetesProviderConfig {
+func (x *KubernetesIstioStackInput) GetProviderConfig() *kubernetes.KubernetesProviderConfig {
 	if x != nil {
 		return x.ProviderConfig
 	}
@@ -82,8 +82,8 @@ var File_org_project_planton_provider_kubernetes_addon_kubernetesistio_v1_stack_
 const file_org_project_planton_provider_kubernetes_addon_kubernetesistio_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
 	"Rorg/project_planton/provider/kubernetes/addon/kubernetesistio/v1/stack_input.proto\x12@org.project_planton.provider.kubernetes.addon.kubernetesistio.v1\x1aJorg/project_planton/provider/kubernetes/addon/kubernetesistio/v1/api.proto\x1a6org/project_planton/provider/kubernetes/provider.proto\"\xf2\x01\n" +
-	"\x19IstioKubernetesStackInput\x12i\n" +
-	"\x06target\x18\x01 \x01(\v2Q.org.project_planton.provider.kubernetes.addon.kubernetesistio.v1.IstioKubernetesR\x06target\x12j\n" +
+	"\x19KubernetesIstioStackInput\x12i\n" +
+	"\x06target\x18\x01 \x01(\v2Q.org.project_planton.provider.kubernetes.addon.kubernetesistio.v1.KubernetesIstioR\x06target\x12j\n" +
 	"\x0fprovider_config\x18\x02 \x01(\v2A.org.project_planton.provider.kubernetes.KubernetesProviderConfigR\x0eproviderConfigB\x81\x04\n" +
 	"Dcom.org.project_planton.provider.kubernetes.addon.kubernetesistio.v1B\x0fStackInputProtoP\x01Z\x82\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/kubernetesistio/v1;kubernetesistiov1\xa2\x02\x06OPPKAK\xaa\x02?Org.ProjectPlanton.Provider.Kubernetes.Addon.Kubernetesistio.V1\xca\x02?Org\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Kubernetesistio\\V1\xe2\x02KOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Kubernetesistio\\V1\\GPBMetadata\xea\x02EOrg::ProjectPlanton::Provider::Kubernetes::Addon::Kubernetesistio::V1b\x06proto3"
 
@@ -101,13 +101,13 @@ func file_org_project_planton_provider_kubernetes_addon_kubernetesistio_v1_stack
 
 var file_org_project_planton_provider_kubernetes_addon_kubernetesistio_v1_stack_input_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_org_project_planton_provider_kubernetes_addon_kubernetesistio_v1_stack_input_proto_goTypes = []any{
-	(*IstioKubernetesStackInput)(nil),           // 0: org.project_planton.provider.kubernetes.addon.kubernetesistio.v1.IstioKubernetesStackInput
-	(*IstioKubernetes)(nil),                     // 1: org.project_planton.provider.kubernetes.addon.kubernetesistio.v1.IstioKubernetes
+	(*KubernetesIstioStackInput)(nil),           // 0: org.project_planton.provider.kubernetes.addon.kubernetesistio.v1.KubernetesIstioStackInput
+	(*KubernetesIstio)(nil),                     // 1: org.project_planton.provider.kubernetes.addon.kubernetesistio.v1.KubernetesIstio
 	(*kubernetes.KubernetesProviderConfig)(nil), // 2: org.project_planton.provider.kubernetes.KubernetesProviderConfig
 }
 var file_org_project_planton_provider_kubernetes_addon_kubernetesistio_v1_stack_input_proto_depIdxs = []int32{
-	1, // 0: org.project_planton.provider.kubernetes.addon.kubernetesistio.v1.IstioKubernetesStackInput.target:type_name -> org.project_planton.provider.kubernetes.addon.kubernetesistio.v1.IstioKubernetes
-	2, // 1: org.project_planton.provider.kubernetes.addon.kubernetesistio.v1.IstioKubernetesStackInput.provider_config:type_name -> org.project_planton.provider.kubernetes.KubernetesProviderConfig
+	1, // 0: org.project_planton.provider.kubernetes.addon.kubernetesistio.v1.KubernetesIstioStackInput.target:type_name -> org.project_planton.provider.kubernetes.addon.kubernetesistio.v1.KubernetesIstio
+	2, // 1: org.project_planton.provider.kubernetes.addon.kubernetesistio.v1.KubernetesIstioStackInput.provider_config:type_name -> org.project_planton.provider.kubernetes.KubernetesProviderConfig
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

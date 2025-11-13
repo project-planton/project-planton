@@ -3,7 +3,7 @@ syntax = "proto3";
 package org.project_planton.provider.kubernetes.addon.certmanager.v1;
 
 // Outputs emitted after cert‑manager installation.
-message CertManagerKubernetesStackOutputs {
+message CertManagerStackOutputs {
   // Kubernetes namespace where cert‑manager was deployed.
   string namespace = 1;
   // Helm release name (useful for upgrades).

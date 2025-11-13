@@ -11,8 +11,8 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// Resources creates all Pulumi resources for the Solr‑Operator Kubernetes add‑on.
-func Resources(ctx *pulumi.Context, stackInput *apachesolroperatorv1.SolrOperatorKubernetesStackInput) error {
+// Resources creates all Pulumi resources for the Apache Solr Operator Kubernetes add‑on.
+func Resources(ctx *pulumi.Context, stackInput *apachesolroperatorv1.ApacheSolrOperatorStackInput) error {
 	// set up kubernetes provider from the supplied cluster credential
 	kubeProvider, err := pulumikubernetesprovider.GetWithKubernetesProviderConfig(
 		ctx, stackInput.ProviderConfig, "kubernetes")

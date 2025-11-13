@@ -7,26 +7,26 @@ import "org/project_planton/provider/kubernetes/addon/zalandopostgresoperator/v1
 import "org/project_planton/provider/kubernetes/addon/zalandopostgresoperator/v1/stack_outputs.proto";
 import "org/project_planton/shared/metadata.proto";
 
-//postgres-operator-kubernetes
-message PostgresOperatorKubernetes {
+//zalando-postgres-operator
+message ZalandoPostgresOperator {
   //api-version
   string api_version = 1 [(buf.validate.field).string.const = 'kubernetes.project-planton.org/v1'];
 
   //resource-kind
-  string kind = 2 [(buf.validate.field).string.const = 'PostgresOperatorKubernetes'];
+  string kind = 2 [(buf.validate.field).string.const = 'ZalandoPostgresOperator'];
 
   //metadata
   org.project_planton.shared.CloudResourceMetadata metadata = 3 [(buf.validate.field).required = true];
 
   //spec
-  PostgresOperatorKubernetesSpec spec = 4 [(buf.validate.field).required = true];
+  ZalandoPostgresOperatorSpec spec = 4 [(buf.validate.field).required = true];
 
   //status
-  PostgresOperatorKubernetesStatus status = 5;
+  ZalandoPostgresOperatorStatus status = 5;
 }
 
-//postgres-operator-kubernetes status.
-message PostgresOperatorKubernetesStatus {
+//zalando-postgres-operator status.
+message ZalandoPostgresOperatorStatus {
   //stack-outputs
-  PostgresOperatorKubernetesStackOutputs outputs = 1;
+  ZalandoPostgresOperatorStackOutputs outputs = 1;
 }

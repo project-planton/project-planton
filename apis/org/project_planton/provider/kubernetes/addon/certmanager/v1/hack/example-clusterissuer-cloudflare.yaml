@@ -1,7 +1,7 @@
-# ClusterIssuers Created Automatically by CertManagerKubernetes Addon
+# ClusterIssuers Created Automatically by CertManager Addon
 #
-# The CertManagerKubernetes addon automatically creates ONE ClusterIssuer PER DOMAIN
-# based on the dns_providers configuration in the CertManagerKubernetesSpec.
+# The CertManager addon automatically creates ONE ClusterIssuer PER DOMAIN
+# based on the dns_providers configuration in the CertManagerSpec.
 # Each ClusterIssuer is named after the domain for better visibility.
 #
 # You DO NOT need to manually create ClusterIssuers when using this addon.

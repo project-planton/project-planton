@@ -21,45 +21,45 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// solr-operator-kubernetes stack outputs
-type SolrOperatorKubernetesStackOutputs struct {
+// apache-solr-operator stack outputs
+type ApacheSolrOperatorStackOutputs struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// kubernetes namespace in which solr-operator-kubernetes is created.
+	// kubernetes namespace in which apache-solr-operator is created.
 	Namespace string `protobuf:"bytes,1,opt,name=namespace,proto3" json:"namespace,omitempty"`
-	// kubernetes service name for solr-operator-kubernetes.
-	// ex: main-solr-operator-kubernetes
-	// in the above example, "main" is the name of the solr-operator-kubernetes
+	// kubernetes service name for apache-solr-operator.
+	// ex: main-apache-solr-operator
+	// in the above example, "main" is the name of the apache-solr-operator
 	Service string `protobuf:"bytes,2,opt,name=service,proto3" json:"service,omitempty"`
-	// command to setup port-forwarding to open solr-operator-kubernetes from developers laptop.
-	// this might come handy when solr-operator-kubernetes ingress is disabled for security reasons.
-	// this is rendered by combining solr_operator_kubernetes_kubernetes_service and kubernetes_namespace
-	// ex: kubectl port-forward svc/solr_operator_kubernetes_kubernetes_service -n kubernetes_namespace 6379:6379
-	// running the command from this attribute makes it possible to access solr-operator-kubernetes using http://localhost:8080/gitlab
+	// command to setup port-forwarding to open apache-solr-operator from developers laptop.
+	// this might come handy when apache-solr-operator ingress is disabled for security reasons.
+	// this is rendered by combining apache_solr_operator_kubernetes_service and kubernetes_namespace
+	// ex: kubectl port-forward svc/apache_solr_operator_kubernetes_service -n kubernetes_namespace 6379:6379
+	// running the command from this attribute makes it possible to access apache-solr-operator using http://localhost:8080
 	PortForwardCommand string `protobuf:"bytes,3,opt,name=port_forward_command,json=portForwardCommand,proto3" json:"port_forward_command,omitempty"`
-	// kubernetes endpoint to connect to solr-operator-kubernetes from the web browser.
-	// ex: main-solr-operator-kubernetes.namespace.svc.cluster.local:6379
+	// kubernetes endpoint to connect to apache-solr-operator from the web browser.
+	// ex: main-apache-solr-operator.namespace.svc.cluster.local:6379
 	KubeEndpoint string `protobuf:"bytes,4,opt,name=kube_endpoint,json=kubeEndpoint,proto3" json:"kube_endpoint,omitempty"`
-	// public endpoint to open solr-operator-kubernetes from clients outside kubernetes.
-	// ex: https://gls-planton-pcs-dev-main.data.dev.planton.live:6379/gitlab
+	// public endpoint to open apache-solr-operator from clients outside kubernetes.
+	// ex: https://gls-planton-pcs-dev-main.data.dev.planton.live:6379
 	IngressEndpoint string `protobuf:"bytes,5,opt,name=ingress_endpoint,json=ingressEndpoint,proto3" json:"ingress_endpoint,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
 
-func (x *SolrOperatorKubernetesStackOutputs) Reset() {
-	*x = SolrOperatorKubernetesStackOutputs{}
+func (x *ApacheSolrOperatorStackOutputs) Reset() {
+	*x = ApacheSolrOperatorStackOutputs{}
 	mi := &file_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_stack_outputs_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *SolrOperatorKubernetesStackOutputs) String() string {
+func (x *ApacheSolrOperatorStackOutputs) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*SolrOperatorKubernetesStackOutputs) ProtoMessage() {}
+func (*ApacheSolrOperatorStackOutputs) ProtoMessage() {}
 
-func (x *SolrOperatorKubernetesStackOutputs) ProtoReflect() protoreflect.Message {
+func (x *ApacheSolrOperatorStackOutputs) ProtoReflect() protoreflect.Message {
 	mi := &file_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_stack_outputs_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -71,40 +71,40 @@ func (x *SolrOperatorKubernetesStackOutputs) ProtoReflect() protoreflect.Message
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use SolrOperatorKubernetesStackOutputs.ProtoReflect.Descriptor instead.
-func (*SolrOperatorKubernetesStackOutputs) Descriptor() ([]byte, []int) {
+// Deprecated: Use ApacheSolrOperatorStackOutputs.ProtoReflect.Descriptor instead.
+func (*ApacheSolrOperatorStackOutputs) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_stack_outputs_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *SolrOperatorKubernetesStackOutputs) GetNamespace() string {
+func (x *ApacheSolrOperatorStackOutputs) GetNamespace() string {
 	if x != nil {
 		return x.Namespace
 	}
 	return ""
 }
 
-func (x *SolrOperatorKubernetesStackOutputs) GetService() string {
+func (x *ApacheSolrOperatorStackOutputs) GetService() string {
 	if x != nil {
 		return x.Service
 	}
 	return ""
 }
 
-func (x *SolrOperatorKubernetesStackOutputs) GetPortForwardCommand() string {
+func (x *ApacheSolrOperatorStackOutputs) GetPortForwardCommand() string {
 	if x != nil {
 		return x.PortForwardCommand
 	}
 	return ""
 }
 
-func (x *SolrOperatorKubernetesStackOutputs) GetKubeEndpoint() string {
+func (x *ApacheSolrOperatorStackOutputs) GetKubeEndpoint() string {
 	if x != nil {
 		return x.KubeEndpoint
 	}
 	return ""
 }
 
-func (x *SolrOperatorKubernetesStackOutputs) GetIngressEndpoint() string {
+func (x *ApacheSolrOperatorStackOutputs) GetIngressEndpoint() string {
 	if x != nil {
 		return x.IngressEndpoint
 	}
@@ -115,8 +115,8 @@ var File_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_sta
 
 const file_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Worg/project_planton/provider/kubernetes/addon/apachesolroperator/v1/stack_outputs.proto\x12Corg.project_planton.provider.kubernetes.addon.apachesolroperator.v1\"\xde\x01\n" +
-	"\"SolrOperatorKubernetesStackOutputs\x12\x1c\n" +
+	"Worg/project_planton/provider/kubernetes/addon/apachesolroperator/v1/stack_outputs.proto\x12Corg.project_planton.provider.kubernetes.addon.apachesolroperator.v1\"\xda\x01\n" +
+	"\x1eApacheSolrOperatorStackOutputs\x12\x1c\n" +
 	"\tnamespace\x18\x01 \x01(\tR\tnamespace\x12\x18\n" +
 	"\aservice\x18\x02 \x01(\tR\aservice\x120\n" +
 	"\x14port_forward_command\x18\x03 \x01(\tR\x12portForwardCommand\x12#\n" +
@@ -138,7 +138,7 @@ func file_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_st
 
 var file_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_stack_outputs_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_stack_outputs_proto_goTypes = []any{
-	(*SolrOperatorKubernetesStackOutputs)(nil), // 0: org.project_planton.provider.kubernetes.addon.apachesolroperator.v1.SolrOperatorKubernetesStackOutputs
+	(*ApacheSolrOperatorStackOutputs)(nil), // 0: org.project_planton.provider.kubernetes.addon.apachesolroperator.v1.ApacheSolrOperatorStackOutputs
 }
 var file_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_stack_outputs_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type

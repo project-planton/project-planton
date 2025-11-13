@@ -22,7 +22,7 @@ const (
 )
 
 // Outputs emitted after cert‑manager installation.
-type CertManagerKubernetesStackOutputs struct {
+type CertManagerStackOutputs struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Kubernetes namespace where cert‑manager was deployed.
 	Namespace string `protobuf:"bytes,1,opt,name=namespace,proto3" json:"namespace,omitempty"`
@@ -36,20 +36,20 @@ type CertManagerKubernetesStackOutputs struct {
 	sizeCache            protoimpl.SizeCache
 }
 
-func (x *CertManagerKubernetesStackOutputs) Reset() {
-	*x = CertManagerKubernetesStackOutputs{}
+func (x *CertManagerStackOutputs) Reset() {
+	*x = CertManagerStackOutputs{}
 	mi := &file_org_project_planton_provider_kubernetes_addon_certmanager_v1_stack_outputs_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *CertManagerKubernetesStackOutputs) String() string {
+func (x *CertManagerStackOutputs) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*CertManagerKubernetesStackOutputs) ProtoMessage() {}
+func (*CertManagerStackOutputs) ProtoMessage() {}
 
-func (x *CertManagerKubernetesStackOutputs) ProtoReflect() protoreflect.Message {
+func (x *CertManagerStackOutputs) ProtoReflect() protoreflect.Message {
 	mi := &file_org_project_planton_provider_kubernetes_addon_certmanager_v1_stack_outputs_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -61,33 +61,33 @@ func (x *CertManagerKubernetesStackOutputs) ProtoReflect() protoreflect.Message 
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use CertManagerKubernetesStackOutputs.ProtoReflect.Descriptor instead.
-func (*CertManagerKubernetesStackOutputs) Descriptor() ([]byte, []int) {
+// Deprecated: Use CertManagerStackOutputs.ProtoReflect.Descriptor instead.
+func (*CertManagerStackOutputs) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_kubernetes_addon_certmanager_v1_stack_outputs_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *CertManagerKubernetesStackOutputs) GetNamespace() string {
+func (x *CertManagerStackOutputs) GetNamespace() string {
 	if x != nil {
 		return x.Namespace
 	}
 	return ""
 }
 
-func (x *CertManagerKubernetesStackOutputs) GetReleaseName() string {
+func (x *CertManagerStackOutputs) GetReleaseName() string {
 	if x != nil {
 		return x.ReleaseName
 	}
 	return ""
 }
 
-func (x *CertManagerKubernetesStackOutputs) GetSolverIdentity() string {
+func (x *CertManagerStackOutputs) GetSolverIdentity() string {
 	if x != nil {
 		return x.SolverIdentity
 	}
 	return ""
 }
 
-func (x *CertManagerKubernetesStackOutputs) GetCloudflareSecretName() string {
+func (x *CertManagerStackOutputs) GetCloudflareSecretName() string {
 	if x != nil {
 		return x.CloudflareSecretName
 	}
@@ -98,8 +98,8 @@ var File_org_project_planton_provider_kubernetes_addon_certmanager_v1_stack_outp
 
 const file_org_project_planton_provider_kubernetes_addon_certmanager_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Porg/project_planton/provider/kubernetes/addon/certmanager/v1/stack_outputs.proto\x12<org.project_planton.provider.kubernetes.addon.certmanager.v1\"\xc3\x01\n" +
-	"!CertManagerKubernetesStackOutputs\x12\x1c\n" +
+	"Porg/project_planton/provider/kubernetes/addon/certmanager/v1/stack_outputs.proto\x12<org.project_planton.provider.kubernetes.addon.certmanager.v1\"\xb9\x01\n" +
+	"\x17CertManagerStackOutputs\x12\x1c\n" +
 	"\tnamespace\x18\x01 \x01(\tR\tnamespace\x12!\n" +
 	"\frelease_name\x18\x02 \x01(\tR\vreleaseName\x12'\n" +
 	"\x0fsolver_identity\x18\x03 \x01(\tR\x0esolverIdentity\x124\n" +
@@ -120,7 +120,7 @@ func file_org_project_planton_provider_kubernetes_addon_certmanager_v1_stack_out
 
 var file_org_project_planton_provider_kubernetes_addon_certmanager_v1_stack_outputs_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_org_project_planton_provider_kubernetes_addon_certmanager_v1_stack_outputs_proto_goTypes = []any{
-	(*CertManagerKubernetesStackOutputs)(nil), // 0: org.project_planton.provider.kubernetes.addon.certmanager.v1.CertManagerKubernetesStackOutputs
+	(*CertManagerStackOutputs)(nil), // 0: org.project_planton.provider.kubernetes.addon.certmanager.v1.CertManagerStackOutputs
 }
 var file_org_project_planton_provider_kubernetes_addon_certmanager_v1_stack_outputs_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type

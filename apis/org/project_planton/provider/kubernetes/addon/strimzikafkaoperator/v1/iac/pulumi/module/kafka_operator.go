@@ -19,7 +19,7 @@ import (
 //  3. Exports the namespace name so other stacks can import it later.
 func kafkaOperator(
 	ctx *pulumi.Context,
-	target *strimzikafkaoperatorv1.KafkaOperatorKubernetes,
+	target *strimzikafkaoperatorv1.StrimziKafkaOperator,
 	kubernetesProvider *pulumikubernetes.Provider,
 ) error {
 	// ---------------------------------------------------------------------

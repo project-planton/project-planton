@@ -94,18 +94,18 @@ import (
 	gcpsubnetworkv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpsubnetwork/v1"
 	gcpvpcv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpvpc/v1"
 	altinityoperatorv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/altinityoperator/v1"
-	certmanagerkubernetesv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/certmanagerkubernetes/v1"
-	elasticoperatorkubernetesv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/elasticoperatorkubernetes/v1"
-	externaldnskubernetesv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/externaldnskubernetes/v1"
-	externalsecretskubernetesv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/externalsecretskubernetes/v1"
-	ingressnginxkubernetesv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/ingressnginxkubernetes/v1"
-	istiokubernetesv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/istiokubernetes/v1"
-	kafkaoperatorkubernetesv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/kafkaoperatorkubernetes/v1"
+	apachesolroperatorv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/apachesolroperator/v1"
+	certmanagerv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/certmanager/v1"
+	elasticoperatorv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/elasticoperator/v1"
+	externaldnsv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/externaldns/v1"
+	externalsecretsv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/externalsecrets/v1"
+	ingressnginxv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/ingressnginx/v1"
+	kubernetesistiov1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/kubernetesistio/v1"
 	perconapostgresqloperatorv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/perconapostgresqloperator/v1"
 	perconaservermongodboperatorv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/perconaservermongodboperator/v1"
 	perconaservermysqloperatorv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/perconaservermysqloperator/v1"
-	postgresoperatorkubernetesv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/postgresoperatorkubernetes/v1"
-	solroperatorkubernetesv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/solroperatorkubernetes/v1"
+	strimzikafkaoperatorv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/strimzikafkaoperator/v1"
+	zalandopostgresoperatorv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/zalandopostgresoperator/v1"
 	argocdkubernetesv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/workload/argocdkubernetes/v1"
 	clickhousekubernetesv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/workload/clickhousekubernetes/v1"
 	cronjobkubernetesv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/workload/cronjobkubernetes/v1"
@@ -261,18 +261,18 @@ var ProviderSnowflakeMap = map[cloudresourcekind.CloudResourceKind]proto.Message
 
 var ProviderKubernetesAddonMap = map[cloudresourcekind.CloudResourceKind]proto.Message{
 	cloudresourcekind.CloudResourceKind_AltinityOperator:             &altinityoperatorv1.AltinityOperator{},
-	cloudresourcekind.CloudResourceKind_CertManagerKubernetes:        &certmanagerkubernetesv1.CertManagerKubernetes{},
-	cloudresourcekind.CloudResourceKind_ElasticOperatorKubernetes:    &elasticoperatorkubernetesv1.ElasticOperatorKubernetes{},
-	cloudresourcekind.CloudResourceKind_ExternalDnsKubernetes:        &externaldnskubernetesv1.ExternalDnsKubernetes{},
-	cloudresourcekind.CloudResourceKind_ExternalSecretsKubernetes:    &externalsecretskubernetesv1.ExternalSecretsKubernetes{},
-	cloudresourcekind.CloudResourceKind_IngressNginxKubernetes:       &ingressnginxkubernetesv1.IngressNginxKubernetes{},
-	cloudresourcekind.CloudResourceKind_IstioKubernetes:              &istiokubernetesv1.IstioKubernetes{},
-	cloudresourcekind.CloudResourceKind_KafkaOperatorKubernetes:      &kafkaoperatorkubernetesv1.KafkaOperatorKubernetes{},
+	cloudresourcekind.CloudResourceKind_ApacheSolrOperator:           &apachesolroperatorv1.ApacheSolrOperator{},
+	cloudresourcekind.CloudResourceKind_CertManager:                  &certmanagerv1.CertManager{},
+	cloudresourcekind.CloudResourceKind_ElasticOperator:              &elasticoperatorv1.ElasticOperator{},
+	cloudresourcekind.CloudResourceKind_ExternalDns:                  &externaldnsv1.ExternalDns{},
+	cloudresourcekind.CloudResourceKind_ExternalSecrets:              &externalsecretsv1.ExternalSecrets{},
+	cloudresourcekind.CloudResourceKind_IngressNginx:                 &ingressnginxv1.IngressNginx{},
+	cloudresourcekind.CloudResourceKind_KubernetesIstio:              &kubernetesistiov1.KubernetesIstio{},
 	cloudresourcekind.CloudResourceKind_PerconaPostgresqlOperator:    &perconapostgresqloperatorv1.PerconaPostgresqlOperator{},
 	cloudresourcekind.CloudResourceKind_PerconaServerMongodbOperator: &perconaservermongodboperatorv1.PerconaServerMongodbOperator{},
 	cloudresourcekind.CloudResourceKind_PerconaServerMysqlOperator:   &perconaservermysqloperatorv1.PerconaServerMysqlOperator{},
-	cloudresourcekind.CloudResourceKind_PostgresOperatorKubernetes:   &postgresoperatorkubernetesv1.PostgresOperatorKubernetes{},
-	cloudresourcekind.CloudResourceKind_SolrOperatorKubernetes:       &solroperatorkubernetesv1.SolrOperatorKubernetes{},
+	cloudresourcekind.CloudResourceKind_StrimziKafkaOperator:         &strimzikafkaoperatorv1.StrimziKafkaOperator{},
+	cloudresourcekind.CloudResourceKind_ZalandoPostgresOperator:      &zalandopostgresoperatorv1.ZalandoPostgresOperator{},
 }
 
 var ProviderKubernetesWorkloadMap = map[cloudresourcekind.CloudResourceKind]proto.Message{

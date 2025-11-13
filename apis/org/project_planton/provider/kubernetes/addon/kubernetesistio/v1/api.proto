@@ -7,13 +7,13 @@ import "org/project_planton/provider/kubernetes/addon/kubernetesistio/v1/spec.pr
 import "org/project_planton/provider/kubernetes/addon/kubernetesistio/v1/stack_outputs.proto";
 import "org/project_planton/shared/metadata.proto";
 
-//istio-kubernetes
-message IstioKubernetes {
+//kubernetes-istio
+message KubernetesIstio {
   //api-version
   string api_version = 1 [(buf.validate.field).string.const = 'kubernetes.project-planton.org/v1'];
 
   //resource-kind
-  string kind = 2 [(buf.validate.field).string.const = 'IstioKubernetes'];
+  string kind = 2 [(buf.validate.field).string.const = 'KubernetesIstio'];
 
   //metadata
   org.project_planton.shared.CloudResourceMetadata metadata = 3 [(buf.validate.field).required = true];
@@ -22,11 +22,11 @@ message IstioKubernetes {
   KubernetesIstioSpec spec = 4 [(buf.validate.field).required = true];
 
   //status
-  IstioKubernetesStatus status = 5;
+  KubernetesIstioStatus status = 5;
 }
 
-//istio-kubernetes status.
-message IstioKubernetesStatus {
+//kubernetes-istio status.
+message KubernetesIstioStatus {
   //stack-outputs
   KubernetesIstioStackOutputs outputs = 1;
 }

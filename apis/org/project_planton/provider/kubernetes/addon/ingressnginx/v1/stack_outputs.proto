@@ -2,8 +2,8 @@ syntax = "proto3";
 
 package org.project_planton.provider.kubernetes.addon.ingressnginx.v1;
 
-// IngressNginxKubernetesStackOutputs defines the outputs for the Ingress Nginx Kubernetes stack.
-message IngressNginxKubernetesStackOutputs {
+// IngressNginxStackOutputs defines the outputs for the Ingress Nginx stack.
+message IngressNginxStackOutputs {
   // The namespace where the Ingress Nginx is deployed.
   string namespace = 1;
   // The name of the release, typically the Helm release name.

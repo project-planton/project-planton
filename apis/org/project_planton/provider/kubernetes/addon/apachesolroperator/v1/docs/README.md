@@ -1,4 +1,4 @@
-# Deploying Apache Solr on Kubernetes: From Anti-Patterns to Production-Ready Operators
+# Deploying Apache Solr Operator on Kubernetes: From Anti-Patterns to Production-Ready Operators
 
 ## Introduction
 
@@ -132,7 +132,7 @@ For a comprehensive guide to production operations, see the Apache Solr Operator
 
 ## The 80/20 Configuration Principle
 
-When designing the Project Planton API for SolrOperatorKubernetes, we apply the **80/20 principle**: focus on the 20% of configuration parameters that 80% of users need to make informed decisions.
+When designing the Project Planton API for ApacheSolrOperator, we apply the **80/20 principle**: focus on the 20% of configuration parameters that 80% of users need to make informed decisions.
 
 **Essential Configuration Fields**:
 1. **Cluster Identity**: Name and namespace for the SolrCloud instance
@@ -152,7 +152,7 @@ When designing the Project Planton API for SolrOperatorKubernetes, we apply the 
 - Backup scheduling (handled separately from deployment)
 - Multi-zone topology spread constraints (basic anti-affinity covers most cases)
 
-This minimal API surface makes SolrOperatorKubernetes approachable without sacrificing flexibility. Power users needing advanced tuning can access the full Solr Operator CRD directly, but the Project Planton abstraction covers the typical production scenario.
+This minimal API surface makes ApacheSolrOperator approachable without sacrificing flexibility. Power users needing advanced tuning can access the full Solr Operator CRD directly, but the Project Planton abstraction covers the typical production scenario.
 
 ## Project Planton's Choice
 

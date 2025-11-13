@@ -21,8 +21,8 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// IngressNginxKubernetesStackOutputs defines the outputs for the Ingress Nginx Kubernetes stack.
-type IngressNginxKubernetesStackOutputs struct {
+// IngressNginxStackOutputs defines the outputs for the Ingress Nginx stack.
+type IngressNginxStackOutputs struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// The namespace where the Ingress Nginx is deployed.
 	Namespace string `protobuf:"bytes,1,opt,name=namespace,proto3" json:"namespace,omitempty"`
@@ -36,20 +36,20 @@ type IngressNginxKubernetesStackOutputs struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *IngressNginxKubernetesStackOutputs) Reset() {
-	*x = IngressNginxKubernetesStackOutputs{}
+func (x *IngressNginxStackOutputs) Reset() {
+	*x = IngressNginxStackOutputs{}
 	mi := &file_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_stack_outputs_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *IngressNginxKubernetesStackOutputs) String() string {
+func (x *IngressNginxStackOutputs) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*IngressNginxKubernetesStackOutputs) ProtoMessage() {}
+func (*IngressNginxStackOutputs) ProtoMessage() {}
 
-func (x *IngressNginxKubernetesStackOutputs) ProtoReflect() protoreflect.Message {
+func (x *IngressNginxStackOutputs) ProtoReflect() protoreflect.Message {
 	mi := &file_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_stack_outputs_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -61,33 +61,33 @@ func (x *IngressNginxKubernetesStackOutputs) ProtoReflect() protoreflect.Message
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use IngressNginxKubernetesStackOutputs.ProtoReflect.Descriptor instead.
-func (*IngressNginxKubernetesStackOutputs) Descriptor() ([]byte, []int) {
+// Deprecated: Use IngressNginxStackOutputs.ProtoReflect.Descriptor instead.
+func (*IngressNginxStackOutputs) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_stack_outputs_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *IngressNginxKubernetesStackOutputs) GetNamespace() string {
+func (x *IngressNginxStackOutputs) GetNamespace() string {
 	if x != nil {
 		return x.Namespace
 	}
 	return ""
 }
 
-func (x *IngressNginxKubernetesStackOutputs) GetReleaseName() string {
+func (x *IngressNginxStackOutputs) GetReleaseName() string {
 	if x != nil {
 		return x.ReleaseName
 	}
 	return ""
 }
 
-func (x *IngressNginxKubernetesStackOutputs) GetServiceName() string {
+func (x *IngressNginxStackOutputs) GetServiceName() string {
 	if x != nil {
 		return x.ServiceName
 	}
 	return ""
 }
 
-func (x *IngressNginxKubernetesStackOutputs) GetServiceType() string {
+func (x *IngressNginxStackOutputs) GetServiceType() string {
 	if x != nil {
 		return x.ServiceType
 	}
@@ -98,8 +98,8 @@ var File_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_stack_out
 
 const file_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Qorg/project_planton/provider/kubernetes/addon/ingressnginx/v1/stack_outputs.proto\x12=org.project_planton.provider.kubernetes.addon.ingressnginx.v1\"\xab\x01\n" +
-	"\"IngressNginxKubernetesStackOutputs\x12\x1c\n" +
+	"Qorg/project_planton/provider/kubernetes/addon/ingressnginx/v1/stack_outputs.proto\x12=org.project_planton.provider.kubernetes.addon.ingressnginx.v1\"\xa1\x01\n" +
+	"\x18IngressNginxStackOutputs\x12\x1c\n" +
 	"\tnamespace\x18\x01 \x01(\tR\tnamespace\x12!\n" +
 	"\frelease_name\x18\x02 \x01(\tR\vreleaseName\x12!\n" +
 	"\fservice_name\x18\x03 \x01(\tR\vserviceName\x12!\n" +
@@ -120,7 +120,7 @@ func file_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_stack_ou
 
 var file_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_stack_outputs_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_stack_outputs_proto_goTypes = []any{
-	(*IngressNginxKubernetesStackOutputs)(nil), // 0: org.project_planton.provider.kubernetes.addon.ingressnginx.v1.IngressNginxKubernetesStackOutputs
+	(*IngressNginxStackOutputs)(nil), // 0: org.project_planton.provider.kubernetes.addon.ingressnginx.v1.IngressNginxStackOutputs
 }
 var file_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_stack_outputs_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type

@@ -13,7 +13,7 @@ import (
 )
 
 // Resources creates all Pulumi resources for the ExternalDNS Kubernetes add‑on.
-func Resources(ctx *pulumi.Context, stackInput *externaldnsv1.ExternalDnsKubernetesStackInput) error {
+func Resources(ctx *pulumi.Context, stackInput *externaldnsv1.ExternalDnsStackInput) error {
 	// Set up the Kubernetes provider from the supplied cluster credential.
 	kubeProvider, err := pulumikubernetesprovider.GetWithKubernetesProviderConfig(
 		ctx, stackInput.ProviderConfig, "kubernetes")

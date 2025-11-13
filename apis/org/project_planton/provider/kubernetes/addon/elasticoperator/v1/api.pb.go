@@ -23,8 +23,8 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// elastic-operator-kubernetes
-type ElasticOperatorKubernetes struct {
+// elastic-operator
+type ElasticOperator struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// api-version
 	ApiVersion string `protobuf:"bytes,1,opt,name=api_version,json=apiVersion,proto3" json:"api_version,omitempty"`
@@ -33,27 +33,27 @@ type ElasticOperatorKubernetes struct {
 	// metadata
 	Metadata *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// spec
-	Spec *ElasticOperatorKubernetesSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
+	Spec *ElasticOperatorSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status
-	Status        *ElasticOperatorKubernetesStatus `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
+	Status        *ElasticOperatorStatus `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ElasticOperatorKubernetes) Reset() {
-	*x = ElasticOperatorKubernetes{}
+func (x *ElasticOperator) Reset() {
+	*x = ElasticOperator{}
 	mi := &file_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_api_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ElasticOperatorKubernetes) String() string {
+func (x *ElasticOperator) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ElasticOperatorKubernetes) ProtoMessage() {}
+func (*ElasticOperator) ProtoMessage() {}
 
-func (x *ElasticOperatorKubernetes) ProtoReflect() protoreflect.Message {
+func (x *ElasticOperator) ProtoReflect() protoreflect.Message {
 	mi := &file_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_api_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -65,69 +65,69 @@ func (x *ElasticOperatorKubernetes) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ElasticOperatorKubernetes.ProtoReflect.Descriptor instead.
-func (*ElasticOperatorKubernetes) Descriptor() ([]byte, []int) {
+// Deprecated: Use ElasticOperator.ProtoReflect.Descriptor instead.
+func (*ElasticOperator) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_api_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *ElasticOperatorKubernetes) GetApiVersion() string {
+func (x *ElasticOperator) GetApiVersion() string {
 	if x != nil {
 		return x.ApiVersion
 	}
 	return ""
 }
 
-func (x *ElasticOperatorKubernetes) GetKind() string {
+func (x *ElasticOperator) GetKind() string {
 	if x != nil {
 		return x.Kind
 	}
 	return ""
 }
 
-func (x *ElasticOperatorKubernetes) GetMetadata() *shared.CloudResourceMetadata {
+func (x *ElasticOperator) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
 	return nil
 }
 
-func (x *ElasticOperatorKubernetes) GetSpec() *ElasticOperatorKubernetesSpec {
+func (x *ElasticOperator) GetSpec() *ElasticOperatorSpec {
 	if x != nil {
 		return x.Spec
 	}
 	return nil
 }
 
-func (x *ElasticOperatorKubernetes) GetStatus() *ElasticOperatorKubernetesStatus {
+func (x *ElasticOperator) GetStatus() *ElasticOperatorStatus {
 	if x != nil {
 		return x.Status
 	}
 	return nil
 }
 
-// elastic-operator-kubernetes status.
-type ElasticOperatorKubernetesStatus struct {
+// elastic-operator status.
+type ElasticOperatorStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// stack-outputs
-	Outputs       *ElasticOperatorKubernetesStackOutputs `protobuf:"bytes,1,opt,name=outputs,proto3" json:"outputs,omitempty"`
+	Outputs       *ElasticOperatorStackOutputs `protobuf:"bytes,1,opt,name=outputs,proto3" json:"outputs,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ElasticOperatorKubernetesStatus) Reset() {
-	*x = ElasticOperatorKubernetesStatus{}
+func (x *ElasticOperatorStatus) Reset() {
+	*x = ElasticOperatorStatus{}
 	mi := &file_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_api_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ElasticOperatorKubernetesStatus) String() string {
+func (x *ElasticOperatorStatus) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ElasticOperatorKubernetesStatus) ProtoMessage() {}
+func (*ElasticOperatorStatus) ProtoMessage() {}
 
-func (x *ElasticOperatorKubernetesStatus) ProtoReflect() protoreflect.Message {
+func (x *ElasticOperatorStatus) ProtoReflect() protoreflect.Message {
 	mi := &file_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_api_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -139,12 +139,12 @@ func (x *ElasticOperatorKubernetesStatus) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ElasticOperatorKubernetesStatus.ProtoReflect.Descriptor instead.
-func (*ElasticOperatorKubernetesStatus) Descriptor() ([]byte, []int) {
+// Deprecated: Use ElasticOperatorStatus.ProtoReflect.Descriptor instead.
+func (*ElasticOperatorStatus) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_api_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *ElasticOperatorKubernetesStatus) GetOutputs() *ElasticOperatorKubernetesStackOutputs {
+func (x *ElasticOperatorStatus) GetOutputs() *ElasticOperatorStackOutputs {
 	if x != nil {
 		return x.Outputs
 	}
@@ -155,18 +155,18 @@ var File_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_api_pr
 
 const file_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Jorg/project_planton/provider/kubernetes/addon/elasticoperator/v1/api.proto\x12@org.project_planton.provider.kubernetes.addon.elasticoperator.v1\x1a\x1bbuf/validate/validate.proto\x1aKorg/project_planton/provider/kubernetes/addon/elasticoperator/v1/spec.proto\x1aTorg/project_planton/provider/kubernetes/addon/elasticoperator/v1/stack_outputs.proto\x1a)org/project_planton/shared/metadata.proto\"\xeb\x03\n" +
-	"\x19ElasticOperatorKubernetes\x12I\n" +
+	"Jorg/project_planton/provider/kubernetes/addon/elasticoperator/v1/api.proto\x12@org.project_planton.provider.kubernetes.addon.elasticoperator.v1\x1a\x1bbuf/validate/validate.proto\x1aKorg/project_planton/provider/kubernetes/addon/elasticoperator/v1/spec.proto\x1aTorg/project_planton/provider/kubernetes/addon/elasticoperator/v1/stack_outputs.proto\x1a)org/project_planton/shared/metadata.proto\"\xc3\x03\n" +
+	"\x0fElasticOperator\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!kubernetes.project-planton.org/v1R\n" +
-	"apiVersion\x124\n" +
-	"\x04kind\x18\x02 \x01(\tB \xbaH\x1dr\x1b\n" +
-	"\x19ElasticOperatorKubernetesR\x04kind\x12U\n" +
-	"\bmetadata\x18\x03 \x01(\v21.org.project_planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12{\n" +
-	"\x04spec\x18\x04 \x01(\v2_.org.project_planton.provider.kubernetes.addon.elasticoperator.v1.ElasticOperatorKubernetesSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12y\n" +
-	"\x06status\x18\x05 \x01(\v2a.org.project_planton.provider.kubernetes.addon.elasticoperator.v1.ElasticOperatorKubernetesStatusR\x06status\"\xa5\x01\n" +
-	"\x1fElasticOperatorKubernetesStatus\x12\x81\x01\n" +
-	"\aoutputs\x18\x01 \x01(\v2g.org.project_planton.provider.kubernetes.addon.elasticoperator.v1.ElasticOperatorKubernetesStackOutputsR\aoutputsB\xfa\x03\n" +
+	"apiVersion\x12*\n" +
+	"\x04kind\x18\x02 \x01(\tB\x16\xbaH\x13r\x11\n" +
+	"\x0fElasticOperatorR\x04kind\x12U\n" +
+	"\bmetadata\x18\x03 \x01(\v21.org.project_planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12q\n" +
+	"\x04spec\x18\x04 \x01(\v2U.org.project_planton.provider.kubernetes.addon.elasticoperator.v1.ElasticOperatorSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12o\n" +
+	"\x06status\x18\x05 \x01(\v2W.org.project_planton.provider.kubernetes.addon.elasticoperator.v1.ElasticOperatorStatusR\x06status\"\x90\x01\n" +
+	"\x15ElasticOperatorStatus\x12w\n" +
+	"\aoutputs\x18\x01 \x01(\v2].org.project_planton.provider.kubernetes.addon.elasticoperator.v1.ElasticOperatorStackOutputsR\aoutputsB\xfa\x03\n" +
 	"Dcom.org.project_planton.provider.kubernetes.addon.elasticoperator.v1B\bApiProtoP\x01Z\x82\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/elasticoperator/v1;elasticoperatorv1\xa2\x02\x06OPPKAE\xaa\x02?Org.ProjectPlanton.Provider.Kubernetes.Addon.Elasticoperator.V1\xca\x02?Org\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Elasticoperator\\V1\xe2\x02KOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Elasticoperator\\V1\\GPBMetadata\xea\x02EOrg::ProjectPlanton::Provider::Kubernetes::Addon::Elasticoperator::V1b\x06proto3"
 
 var (
@@ -183,17 +183,17 @@ func file_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_api_p
 
 var file_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_api_proto_goTypes = []any{
-	(*ElasticOperatorKubernetes)(nil),             // 0: org.project_planton.provider.kubernetes.addon.elasticoperator.v1.ElasticOperatorKubernetes
-	(*ElasticOperatorKubernetesStatus)(nil),       // 1: org.project_planton.provider.kubernetes.addon.elasticoperator.v1.ElasticOperatorKubernetesStatus
-	(*shared.CloudResourceMetadata)(nil),          // 2: org.project_planton.shared.CloudResourceMetadata
-	(*ElasticOperatorKubernetesSpec)(nil),         // 3: org.project_planton.provider.kubernetes.addon.elasticoperator.v1.ElasticOperatorKubernetesSpec
-	(*ElasticOperatorKubernetesStackOutputs)(nil), // 4: org.project_planton.provider.kubernetes.addon.elasticoperator.v1.ElasticOperatorKubernetesStackOutputs
+	(*ElasticOperator)(nil),              // 0: org.project_planton.provider.kubernetes.addon.elasticoperator.v1.ElasticOperator
+	(*ElasticOperatorStatus)(nil),        // 1: org.project_planton.provider.kubernetes.addon.elasticoperator.v1.ElasticOperatorStatus
+	(*shared.CloudResourceMetadata)(nil), // 2: org.project_planton.shared.CloudResourceMetadata
+	(*ElasticOperatorSpec)(nil),          // 3: org.project_planton.provider.kubernetes.addon.elasticoperator.v1.ElasticOperatorSpec
+	(*ElasticOperatorStackOutputs)(nil),  // 4: org.project_planton.provider.kubernetes.addon.elasticoperator.v1.ElasticOperatorStackOutputs
 }
 var file_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_api_proto_depIdxs = []int32{
-	2, // 0: org.project_planton.provider.kubernetes.addon.elasticoperator.v1.ElasticOperatorKubernetes.metadata:type_name -> org.project_planton.shared.CloudResourceMetadata
-	3, // 1: org.project_planton.provider.kubernetes.addon.elasticoperator.v1.ElasticOperatorKubernetes.spec:type_name -> org.project_planton.provider.kubernetes.addon.elasticoperator.v1.ElasticOperatorKubernetesSpec
-	1, // 2: org.project_planton.provider.kubernetes.addon.elasticoperator.v1.ElasticOperatorKubernetes.status:type_name -> org.project_planton.provider.kubernetes.addon.elasticoperator.v1.ElasticOperatorKubernetesStatus
-	4, // 3: org.project_planton.provider.kubernetes.addon.elasticoperator.v1.ElasticOperatorKubernetesStatus.outputs:type_name -> org.project_planton.provider.kubernetes.addon.elasticoperator.v1.ElasticOperatorKubernetesStackOutputs
+	2, // 0: org.project_planton.provider.kubernetes.addon.elasticoperator.v1.ElasticOperator.metadata:type_name -> org.project_planton.shared.CloudResourceMetadata
+	3, // 1: org.project_planton.provider.kubernetes.addon.elasticoperator.v1.ElasticOperator.spec:type_name -> org.project_planton.provider.kubernetes.addon.elasticoperator.v1.ElasticOperatorSpec
+	1, // 2: org.project_planton.provider.kubernetes.addon.elasticoperator.v1.ElasticOperator.status:type_name -> org.project_planton.provider.kubernetes.addon.elasticoperator.v1.ElasticOperatorStatus
+	4, // 3: org.project_planton.provider.kubernetes.addon.elasticoperator.v1.ElasticOperatorStatus.outputs:type_name -> org.project_planton.provider.kubernetes.addon.elasticoperator.v1.ElasticOperatorStackOutputs
 	4, // [4:4] is the sub-list for method output_type
 	4, // [4:4] is the sub-list for method input_type
 	4, // [4:4] is the sub-list for extension type_name

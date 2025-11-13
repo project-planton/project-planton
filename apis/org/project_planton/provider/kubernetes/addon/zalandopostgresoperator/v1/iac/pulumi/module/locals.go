@@ -10,18 +10,18 @@ import (
 
 // Locals collect computed values that are reused across resources.
 type Locals struct {
-	PostgresOperatorKubernetes *zalandopostgresoperatorv1.PostgresOperatorKubernetes
-	KubernetesLabels           map[string]string
+	ZalandoPostgresOperator *zalandopostgresoperatorv1.ZalandoPostgresOperator
+	KubernetesLabels        map[string]string
 }
 
 // initializeLocals builds the Locals struct once and re‑uses it elsewhere.
-func initializeLocals(_ *pulumi.Context, stackInput *zalandopostgresoperatorv1.PostgresOperatorKubernetesStackInput) *Locals {
+func initializeLocals(_ *pulumi.Context, stackInput *zalandopostgresoperatorv1.ZalandoPostgresOperatorStackInput) *Locals {
 	target := stackInput.Target
 
 	kubeLabels := map[string]string{
 		kuberneteslabelkeys.Resource:     strconv.FormatBool(true),
 		kuberneteslabelkeys.ResourceName: target.Metadata.Name,
-		kuberneteslabelkeys.ResourceKind: "PostgresOperatorKubernetes",
+		kuberneteslabelkeys.ResourceKind: "ZalandoPostgresOperator",
 	}
 
 	if target.Metadata.Id != "" {
@@ -35,7 +35,7 @@ func initializeLocals(_ *pulumi.Context, stackInput *zalandopostgresoperatorv1.P
 	}
 
 	return &Locals{
-		PostgresOperatorKubernetes: target,
-		KubernetesLabels:           kubeLabels,
+		ZalandoPostgresOperator: target,
+		KubernetesLabels:        kubeLabels,
 	}
 }

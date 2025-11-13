@@ -23,8 +23,8 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// ingress-nginx-kubernetes
-type IngressNginxKubernetes struct {
+// ingress-nginx
+type IngressNginx struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// api-version
 	ApiVersion string `protobuf:"bytes,1,opt,name=api_version,json=apiVersion,proto3" json:"api_version,omitempty"`
@@ -33,27 +33,27 @@ type IngressNginxKubernetes struct {
 	// metadata
 	Metadata *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// spec
-	Spec *IngressNginxKubernetesSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
+	Spec *IngressNginxSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status
-	Status        *IngressNginxKubernetesStatus `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
+	Status        *IngressNginxStatus `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *IngressNginxKubernetes) Reset() {
-	*x = IngressNginxKubernetes{}
+func (x *IngressNginx) Reset() {
+	*x = IngressNginx{}
 	mi := &file_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_api_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *IngressNginxKubernetes) String() string {
+func (x *IngressNginx) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*IngressNginxKubernetes) ProtoMessage() {}
+func (*IngressNginx) ProtoMessage() {}
 
-func (x *IngressNginxKubernetes) ProtoReflect() protoreflect.Message {
+func (x *IngressNginx) ProtoReflect() protoreflect.Message {
 	mi := &file_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_api_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -65,69 +65,69 @@ func (x *IngressNginxKubernetes) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use IngressNginxKubernetes.ProtoReflect.Descriptor instead.
-func (*IngressNginxKubernetes) Descriptor() ([]byte, []int) {
+// Deprecated: Use IngressNginx.ProtoReflect.Descriptor instead.
+func (*IngressNginx) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_api_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *IngressNginxKubernetes) GetApiVersion() string {
+func (x *IngressNginx) GetApiVersion() string {
 	if x != nil {
 		return x.ApiVersion
 	}
 	return ""
 }
 
-func (x *IngressNginxKubernetes) GetKind() string {
+func (x *IngressNginx) GetKind() string {
 	if x != nil {
 		return x.Kind
 	}
 	return ""
 }
 
-func (x *IngressNginxKubernetes) GetMetadata() *shared.CloudResourceMetadata {
+func (x *IngressNginx) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
 	return nil
 }
 
-func (x *IngressNginxKubernetes) GetSpec() *IngressNginxKubernetesSpec {
+func (x *IngressNginx) GetSpec() *IngressNginxSpec {
 	if x != nil {
 		return x.Spec
 	}
 	return nil
 }
 
-func (x *IngressNginxKubernetes) GetStatus() *IngressNginxKubernetesStatus {
+func (x *IngressNginx) GetStatus() *IngressNginxStatus {
 	if x != nil {
 		return x.Status
 	}
 	return nil
 }
 
-// ingress-nginx-kubernetes status.
-type IngressNginxKubernetesStatus struct {
+// ingress-nginx status.
+type IngressNginxStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// stack-outputs
-	Outputs       *IngressNginxKubernetesStackOutputs `protobuf:"bytes,1,opt,name=outputs,proto3" json:"outputs,omitempty"`
+	Outputs       *IngressNginxStackOutputs `protobuf:"bytes,1,opt,name=outputs,proto3" json:"outputs,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *IngressNginxKubernetesStatus) Reset() {
-	*x = IngressNginxKubernetesStatus{}
+func (x *IngressNginxStatus) Reset() {
+	*x = IngressNginxStatus{}
 	mi := &file_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_api_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *IngressNginxKubernetesStatus) String() string {
+func (x *IngressNginxStatus) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*IngressNginxKubernetesStatus) ProtoMessage() {}
+func (*IngressNginxStatus) ProtoMessage() {}
 
-func (x *IngressNginxKubernetesStatus) ProtoReflect() protoreflect.Message {
+func (x *IngressNginxStatus) ProtoReflect() protoreflect.Message {
 	mi := &file_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_api_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -139,12 +139,12 @@ func (x *IngressNginxKubernetesStatus) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use IngressNginxKubernetesStatus.ProtoReflect.Descriptor instead.
-func (*IngressNginxKubernetesStatus) Descriptor() ([]byte, []int) {
+// Deprecated: Use IngressNginxStatus.ProtoReflect.Descriptor instead.
+func (*IngressNginxStatus) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_api_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *IngressNginxKubernetesStatus) GetOutputs() *IngressNginxKubernetesStackOutputs {
+func (x *IngressNginxStatus) GetOutputs() *IngressNginxStackOutputs {
 	if x != nil {
 		return x.Outputs
 	}
@@ -155,18 +155,18 @@ var File_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_api_proto
 
 const file_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Gorg/project_planton/provider/kubernetes/addon/ingressnginx/v1/api.proto\x12=org.project_planton.provider.kubernetes.addon.ingressnginx.v1\x1a\x1bbuf/validate/validate.proto\x1aHorg/project_planton/provider/kubernetes/addon/ingressnginx/v1/spec.proto\x1aQorg/project_planton/provider/kubernetes/addon/ingressnginx/v1/stack_outputs.proto\x1a)org/project_planton/shared/metadata.proto\"\xd9\x03\n" +
-	"\x16IngressNginxKubernetes\x12I\n" +
+	"Gorg/project_planton/provider/kubernetes/addon/ingressnginx/v1/api.proto\x12=org.project_planton.provider.kubernetes.addon.ingressnginx.v1\x1a\x1bbuf/validate/validate.proto\x1aHorg/project_planton/provider/kubernetes/addon/ingressnginx/v1/spec.proto\x1aQorg/project_planton/provider/kubernetes/addon/ingressnginx/v1/stack_outputs.proto\x1a)org/project_planton/shared/metadata.proto\"\xb1\x03\n" +
+	"\fIngressNginx\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!kubernetes.project-planton.org/v1R\n" +
-	"apiVersion\x121\n" +
-	"\x04kind\x18\x02 \x01(\tB\x1d\xbaH\x1ar\x18\n" +
-	"\x16IngressNginxKubernetesR\x04kind\x12U\n" +
-	"\bmetadata\x18\x03 \x01(\v21.org.project_planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12u\n" +
-	"\x04spec\x18\x04 \x01(\v2Y.org.project_planton.provider.kubernetes.addon.ingressnginx.v1.IngressNginxKubernetesSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12s\n" +
-	"\x06status\x18\x05 \x01(\v2[.org.project_planton.provider.kubernetes.addon.ingressnginx.v1.IngressNginxKubernetesStatusR\x06status\"\x9b\x01\n" +
-	"\x1cIngressNginxKubernetesStatus\x12{\n" +
-	"\aoutputs\x18\x01 \x01(\v2a.org.project_planton.provider.kubernetes.addon.ingressnginx.v1.IngressNginxKubernetesStackOutputsR\aoutputsB\xe4\x03\n" +
+	"apiVersion\x12'\n" +
+	"\x04kind\x18\x02 \x01(\tB\x13\xbaH\x10r\x0e\n" +
+	"\fIngressNginxR\x04kind\x12U\n" +
+	"\bmetadata\x18\x03 \x01(\v21.org.project_planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12k\n" +
+	"\x04spec\x18\x04 \x01(\v2O.org.project_planton.provider.kubernetes.addon.ingressnginx.v1.IngressNginxSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12i\n" +
+	"\x06status\x18\x05 \x01(\v2Q.org.project_planton.provider.kubernetes.addon.ingressnginx.v1.IngressNginxStatusR\x06status\"\x87\x01\n" +
+	"\x12IngressNginxStatus\x12q\n" +
+	"\aoutputs\x18\x01 \x01(\v2W.org.project_planton.provider.kubernetes.addon.ingressnginx.v1.IngressNginxStackOutputsR\aoutputsB\xe4\x03\n" +
 	"Acom.org.project_planton.provider.kubernetes.addon.ingressnginx.v1B\bApiProtoP\x01Z|github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/ingressnginx/v1;ingressnginxv1\xa2\x02\x06OPPKAI\xaa\x02<Org.ProjectPlanton.Provider.Kubernetes.Addon.Ingressnginx.V1\xca\x02<Org\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Ingressnginx\\V1\xe2\x02HOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Ingressnginx\\V1\\GPBMetadata\xea\x02BOrg::ProjectPlanton::Provider::Kubernetes::Addon::Ingressnginx::V1b\x06proto3"
 
 var (
@@ -183,17 +183,17 @@ func file_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_api_prot
 
 var file_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_api_proto_goTypes = []any{
-	(*IngressNginxKubernetes)(nil),             // 0: org.project_planton.provider.kubernetes.addon.ingressnginx.v1.IngressNginxKubernetes
-	(*IngressNginxKubernetesStatus)(nil),       // 1: org.project_planton.provider.kubernetes.addon.ingressnginx.v1.IngressNginxKubernetesStatus
-	(*shared.CloudResourceMetadata)(nil),       // 2: org.project_planton.shared.CloudResourceMetadata
-	(*IngressNginxKubernetesSpec)(nil),         // 3: org.project_planton.provider.kubernetes.addon.ingressnginx.v1.IngressNginxKubernetesSpec
-	(*IngressNginxKubernetesStackOutputs)(nil), // 4: org.project_planton.provider.kubernetes.addon.ingressnginx.v1.IngressNginxKubernetesStackOutputs
+	(*IngressNginx)(nil),                 // 0: org.project_planton.provider.kubernetes.addon.ingressnginx.v1.IngressNginx
+	(*IngressNginxStatus)(nil),           // 1: org.project_planton.provider.kubernetes.addon.ingressnginx.v1.IngressNginxStatus
+	(*shared.CloudResourceMetadata)(nil), // 2: org.project_planton.shared.CloudResourceMetadata
+	(*IngressNginxSpec)(nil),             // 3: org.project_planton.provider.kubernetes.addon.ingressnginx.v1.IngressNginxSpec
+	(*IngressNginxStackOutputs)(nil),     // 4: org.project_planton.provider.kubernetes.addon.ingressnginx.v1.IngressNginxStackOutputs
 }
 var file_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_api_proto_depIdxs = []int32{
-	2, // 0: org.project_planton.provider.kubernetes.addon.ingressnginx.v1.IngressNginxKubernetes.metadata:type_name -> org.project_planton.shared.CloudResourceMetadata
-	3, // 1: org.project_planton.provider.kubernetes.addon.ingressnginx.v1.IngressNginxKubernetes.spec:type_name -> org.project_planton.provider.kubernetes.addon.ingressnginx.v1.IngressNginxKubernetesSpec
-	1, // 2: org.project_planton.provider.kubernetes.addon.ingressnginx.v1.IngressNginxKubernetes.status:type_name -> org.project_planton.provider.kubernetes.addon.ingressnginx.v1.IngressNginxKubernetesStatus
-	4, // 3: org.project_planton.provider.kubernetes.addon.ingressnginx.v1.IngressNginxKubernetesStatus.outputs:type_name -> org.project_planton.provider.kubernetes.addon.ingressnginx.v1.IngressNginxKubernetesStackOutputs
+	2, // 0: org.project_planton.provider.kubernetes.addon.ingressnginx.v1.IngressNginx.metadata:type_name -> org.project_planton.shared.CloudResourceMetadata
+	3, // 1: org.project_planton.provider.kubernetes.addon.ingressnginx.v1.IngressNginx.spec:type_name -> org.project_planton.provider.kubernetes.addon.ingressnginx.v1.IngressNginxSpec
+	1, // 2: org.project_planton.provider.kubernetes.addon.ingressnginx.v1.IngressNginx.status:type_name -> org.project_planton.provider.kubernetes.addon.ingressnginx.v1.IngressNginxStatus
+	4, // 3: org.project_planton.provider.kubernetes.addon.ingressnginx.v1.IngressNginxStatus.outputs:type_name -> org.project_planton.provider.kubernetes.addon.ingressnginx.v1.IngressNginxStackOutputs
 	4, // [4:4] is the sub-list for method output_type
 	4, // [4:4] is the sub-list for method input_type
 	4, // [4:4] is the sub-list for extension type_name

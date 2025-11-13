@@ -21,10 +21,10 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// stack outputs for external-dns-kubernetes
-type ExternalDnsKubernetesStackOutputs struct {
+// stack outputs for external-dns
+type ExternalDnsStackOutputs struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// kubernetes namespace where the external-dns-kubernetes is deployed
+	// kubernetes namespace where the external-dns is deployed
 	Namespace string `protobuf:"bytes,1,opt,name=namespace,proto3" json:"namespace,omitempty"`
 	// kubernetes release name
 	ReleaseName string `protobuf:"bytes,2,opt,name=release_name,json=releaseName,proto3" json:"release_name,omitempty"`
@@ -34,20 +34,20 @@ type ExternalDnsKubernetesStackOutputs struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ExternalDnsKubernetesStackOutputs) Reset() {
-	*x = ExternalDnsKubernetesStackOutputs{}
+func (x *ExternalDnsStackOutputs) Reset() {
+	*x = ExternalDnsStackOutputs{}
 	mi := &file_org_project_planton_provider_kubernetes_addon_externaldns_v1_stack_outputs_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ExternalDnsKubernetesStackOutputs) String() string {
+func (x *ExternalDnsStackOutputs) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ExternalDnsKubernetesStackOutputs) ProtoMessage() {}
+func (*ExternalDnsStackOutputs) ProtoMessage() {}
 
-func (x *ExternalDnsKubernetesStackOutputs) ProtoReflect() protoreflect.Message {
+func (x *ExternalDnsStackOutputs) ProtoReflect() protoreflect.Message {
 	mi := &file_org_project_planton_provider_kubernetes_addon_externaldns_v1_stack_outputs_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -59,26 +59,26 @@ func (x *ExternalDnsKubernetesStackOutputs) ProtoReflect() protoreflect.Message 
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ExternalDnsKubernetesStackOutputs.ProtoReflect.Descriptor instead.
-func (*ExternalDnsKubernetesStackOutputs) Descriptor() ([]byte, []int) {
+// Deprecated: Use ExternalDnsStackOutputs.ProtoReflect.Descriptor instead.
+func (*ExternalDnsStackOutputs) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_kubernetes_addon_externaldns_v1_stack_outputs_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *ExternalDnsKubernetesStackOutputs) GetNamespace() string {
+func (x *ExternalDnsStackOutputs) GetNamespace() string {
 	if x != nil {
 		return x.Namespace
 	}
 	return ""
 }
 
-func (x *ExternalDnsKubernetesStackOutputs) GetReleaseName() string {
+func (x *ExternalDnsStackOutputs) GetReleaseName() string {
 	if x != nil {
 		return x.ReleaseName
 	}
 	return ""
 }
 
-func (x *ExternalDnsKubernetesStackOutputs) GetSolverSa() string {
+func (x *ExternalDnsStackOutputs) GetSolverSa() string {
 	if x != nil {
 		return x.SolverSa
 	}
@@ -89,8 +89,8 @@ var File_org_project_planton_provider_kubernetes_addon_externaldns_v1_stack_outp
 
 const file_org_project_planton_provider_kubernetes_addon_externaldns_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Porg/project_planton/provider/kubernetes/addon/externaldns/v1/stack_outputs.proto\x12<org.project_planton.provider.kubernetes.addon.externaldns.v1\"\x81\x01\n" +
-	"!ExternalDnsKubernetesStackOutputs\x12\x1c\n" +
+	"Porg/project_planton/provider/kubernetes/addon/externaldns/v1/stack_outputs.proto\x12<org.project_planton.provider.kubernetes.addon.externaldns.v1\"w\n" +
+	"\x17ExternalDnsStackOutputs\x12\x1c\n" +
 	"\tnamespace\x18\x01 \x01(\tR\tnamespace\x12!\n" +
 	"\frelease_name\x18\x02 \x01(\tR\vreleaseName\x12\x1b\n" +
 	"\tsolver_sa\x18\x03 \x01(\tR\bsolverSaB\xe6\x03\n" +
@@ -110,7 +110,7 @@ func file_org_project_planton_provider_kubernetes_addon_externaldns_v1_stack_out
 
 var file_org_project_planton_provider_kubernetes_addon_externaldns_v1_stack_outputs_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_org_project_planton_provider_kubernetes_addon_externaldns_v1_stack_outputs_proto_goTypes = []any{
-	(*ExternalDnsKubernetesStackOutputs)(nil), // 0: org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDnsKubernetesStackOutputs
+	(*ExternalDnsStackOutputs)(nil), // 0: org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDnsStackOutputs
 }
 var file_org_project_planton_provider_kubernetes_addon_externaldns_v1_stack_outputs_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type

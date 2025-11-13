@@ -22,31 +22,31 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// input for cert-manager-kubernetes stack
-type CertManagerKubernetesStackInput struct {
+// input for cert-manager stack
+type CertManagerStackInput struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// target cloud-resource
-	Target *CertManagerKubernetes `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
+	Target *CertManager `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
 	// provider-config
 	ProviderConfig *kubernetes.KubernetesProviderConfig `protobuf:"bytes,2,opt,name=provider_config,json=providerConfig,proto3" json:"provider_config,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
 
-func (x *CertManagerKubernetesStackInput) Reset() {
-	*x = CertManagerKubernetesStackInput{}
+func (x *CertManagerStackInput) Reset() {
+	*x = CertManagerStackInput{}
 	mi := &file_org_project_planton_provider_kubernetes_addon_certmanager_v1_stack_input_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *CertManagerKubernetesStackInput) String() string {
+func (x *CertManagerStackInput) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*CertManagerKubernetesStackInput) ProtoMessage() {}
+func (*CertManagerStackInput) ProtoMessage() {}
 
-func (x *CertManagerKubernetesStackInput) ProtoReflect() protoreflect.Message {
+func (x *CertManagerStackInput) ProtoReflect() protoreflect.Message {
 	mi := &file_org_project_planton_provider_kubernetes_addon_certmanager_v1_stack_input_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -58,19 +58,19 @@ func (x *CertManagerKubernetesStackInput) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use CertManagerKubernetesStackInput.ProtoReflect.Descriptor instead.
-func (*CertManagerKubernetesStackInput) Descriptor() ([]byte, []int) {
+// Deprecated: Use CertManagerStackInput.ProtoReflect.Descriptor instead.
+func (*CertManagerStackInput) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_kubernetes_addon_certmanager_v1_stack_input_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *CertManagerKubernetesStackInput) GetTarget() *CertManagerKubernetes {
+func (x *CertManagerStackInput) GetTarget() *CertManager {
 	if x != nil {
 		return x.Target
 	}
 	return nil
 }
 
-func (x *CertManagerKubernetesStackInput) GetProviderConfig() *kubernetes.KubernetesProviderConfig {
+func (x *CertManagerStackInput) GetProviderConfig() *kubernetes.KubernetesProviderConfig {
 	if x != nil {
 		return x.ProviderConfig
 	}
@@ -81,9 +81,9 @@ var File_org_project_planton_provider_kubernetes_addon_certmanager_v1_stack_inpu
 
 const file_org_project_planton_provider_kubernetes_addon_certmanager_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Norg/project_planton/provider/kubernetes/addon/certmanager/v1/stack_input.proto\x12<org.project_planton.provider.kubernetes.addon.certmanager.v1\x1aForg/project_planton/provider/kubernetes/addon/certmanager/v1/api.proto\x1a6org/project_planton/provider/kubernetes/provider.proto\"\xfa\x01\n" +
-	"\x1fCertManagerKubernetesStackInput\x12k\n" +
-	"\x06target\x18\x01 \x01(\v2S.org.project_planton.provider.kubernetes.addon.certmanager.v1.CertManagerKubernetesR\x06target\x12j\n" +
+	"Norg/project_planton/provider/kubernetes/addon/certmanager/v1/stack_input.proto\x12<org.project_planton.provider.kubernetes.addon.certmanager.v1\x1aForg/project_planton/provider/kubernetes/addon/certmanager/v1/api.proto\x1a6org/project_planton/provider/kubernetes/provider.proto\"\xe6\x01\n" +
+	"\x15CertManagerStackInput\x12a\n" +
+	"\x06target\x18\x01 \x01(\v2I.org.project_planton.provider.kubernetes.addon.certmanager.v1.CertManagerR\x06target\x12j\n" +
 	"\x0fprovider_config\x18\x02 \x01(\v2A.org.project_planton.provider.kubernetes.KubernetesProviderConfigR\x0eproviderConfigB\xe4\x03\n" +
 	"@com.org.project_planton.provider.kubernetes.addon.certmanager.v1B\x0fStackInputProtoP\x01Zzgithub.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/certmanager/v1;certmanagerv1\xa2\x02\x06OPPKAC\xaa\x02;Org.ProjectPlanton.Provider.Kubernetes.Addon.Certmanager.V1\xca\x02;Org\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Certmanager\\V1\xe2\x02GOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Certmanager\\V1\\GPBMetadata\xea\x02AOrg::ProjectPlanton::Provider::Kubernetes::Addon::Certmanager::V1b\x06proto3"
 
@@ -101,13 +101,13 @@ func file_org_project_planton_provider_kubernetes_addon_certmanager_v1_stack_inp
 
 var file_org_project_planton_provider_kubernetes_addon_certmanager_v1_stack_input_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_org_project_planton_provider_kubernetes_addon_certmanager_v1_stack_input_proto_goTypes = []any{
-	(*CertManagerKubernetesStackInput)(nil),     // 0: org.project_planton.provider.kubernetes.addon.certmanager.v1.CertManagerKubernetesStackInput
-	(*CertManagerKubernetes)(nil),               // 1: org.project_planton.provider.kubernetes.addon.certmanager.v1.CertManagerKubernetes
+	(*CertManagerStackInput)(nil),               // 0: org.project_planton.provider.kubernetes.addon.certmanager.v1.CertManagerStackInput
+	(*CertManager)(nil),                         // 1: org.project_planton.provider.kubernetes.addon.certmanager.v1.CertManager
 	(*kubernetes.KubernetesProviderConfig)(nil), // 2: org.project_planton.provider.kubernetes.KubernetesProviderConfig
 }
 var file_org_project_planton_provider_kubernetes_addon_certmanager_v1_stack_input_proto_depIdxs = []int32{
-	1, // 0: org.project_planton.provider.kubernetes.addon.certmanager.v1.CertManagerKubernetesStackInput.target:type_name -> org.project_planton.provider.kubernetes.addon.certmanager.v1.CertManagerKubernetes
-	2, // 1: org.project_planton.provider.kubernetes.addon.certmanager.v1.CertManagerKubernetesStackInput.provider_config:type_name -> org.project_planton.provider.kubernetes.KubernetesProviderConfig
+	1, // 0: org.project_planton.provider.kubernetes.addon.certmanager.v1.CertManagerStackInput.target:type_name -> org.project_planton.provider.kubernetes.addon.certmanager.v1.CertManager
+	2, // 1: org.project_planton.provider.kubernetes.addon.certmanager.v1.CertManagerStackInput.provider_config:type_name -> org.project_planton.provider.kubernetes.KubernetesProviderConfig
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

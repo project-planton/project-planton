@@ -21,45 +21,45 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// postgres-operator-kubernetes stack outputs
-type PostgresOperatorKubernetesStackOutputs struct {
+// zalando-postgres-operator stack outputs
+type ZalandoPostgresOperatorStackOutputs struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// kubernetes namespace in which postgres-operator-kubernetes is created.
+	// kubernetes namespace in which zalando-postgres-operator is created.
 	Namespace string `protobuf:"bytes,1,opt,name=namespace,proto3" json:"namespace,omitempty"`
-	// kubernetes service name for postgres-operator-kubernetes.
-	// ex: main-postgres-operator-kubernetes
-	// in the above example, "main" is the name of the postgres-operator-kubernetes
+	// kubernetes service name for zalando-postgres-operator.
+	// ex: main-zalando-postgres-operator
+	// in the above example, "main" is the name of the zalando-postgres-operator
 	Service string `protobuf:"bytes,2,opt,name=service,proto3" json:"service,omitempty"`
-	// command to setup port-forwarding to open postgres-operator-kubernetes from developers laptop.
-	// this might come handy when postgres-operator-kubernetes ingress is disabled for security reasons.
-	// this is rendered by combining postgres_operator_kubernetes_kubernetes_service and kubernetes_namespace
-	// ex: kubectl port-forward svc/postgres_operator_kubernetes_kubernetes_service -n kubernetes_namespace 6379:6379
-	// running the command from this attribute makes it possible to access postgres-operator-kubernetes using http://localhost:8080/gitlab
+	// command to setup port-forwarding to open zalando-postgres-operator from developers laptop.
+	// this might come handy when zalando-postgres-operator ingress is disabled for security reasons.
+	// this is rendered by combining zalando_postgres_operator_kubernetes_service and kubernetes_namespace
+	// ex: kubectl port-forward svc/zalando_postgres_operator_kubernetes_service -n kubernetes_namespace 6379:6379
+	// running the command from this attribute makes it possible to access zalando-postgres-operator using http://localhost:8080
 	PortForwardCommand string `protobuf:"bytes,3,opt,name=port_forward_command,json=portForwardCommand,proto3" json:"port_forward_command,omitempty"`
-	// kubernetes endpoint to connect to postgres-operator-kubernetes from the web browser.
-	// ex: main-postgres-operator-kubernetes.namespace.svc.cluster.local:6379
+	// kubernetes endpoint to connect to zalando-postgres-operator from the web browser.
+	// ex: main-zalando-postgres-operator.namespace.svc.cluster.local:6379
 	KubeEndpoint string `protobuf:"bytes,4,opt,name=kube_endpoint,json=kubeEndpoint,proto3" json:"kube_endpoint,omitempty"`
-	// public endpoint to open postgres-operator-kubernetes from clients outside kubernetes.
-	// ex: https://gls-planton-pcs-dev-main.data.dev.planton.live:6379/gitlab
+	// public endpoint to open zalando-postgres-operator from clients outside kubernetes.
+	// ex: https://zalando-postgres-operator.example.com
 	IngressEndpoint string `protobuf:"bytes,5,opt,name=ingress_endpoint,json=ingressEndpoint,proto3" json:"ingress_endpoint,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
 
-func (x *PostgresOperatorKubernetesStackOutputs) Reset() {
-	*x = PostgresOperatorKubernetesStackOutputs{}
+func (x *ZalandoPostgresOperatorStackOutputs) Reset() {
+	*x = ZalandoPostgresOperatorStackOutputs{}
 	mi := &file_org_project_planton_provider_kubernetes_addon_zalandopostgresoperator_v1_stack_outputs_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *PostgresOperatorKubernetesStackOutputs) String() string {
+func (x *ZalandoPostgresOperatorStackOutputs) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*PostgresOperatorKubernetesStackOutputs) ProtoMessage() {}
+func (*ZalandoPostgresOperatorStackOutputs) ProtoMessage() {}
 
-func (x *PostgresOperatorKubernetesStackOutputs) ProtoReflect() protoreflect.Message {
+func (x *ZalandoPostgresOperatorStackOutputs) ProtoReflect() protoreflect.Message {
 	mi := &file_org_project_planton_provider_kubernetes_addon_zalandopostgresoperator_v1_stack_outputs_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -71,40 +71,40 @@ func (x *PostgresOperatorKubernetesStackOutputs) ProtoReflect() protoreflect.Mes
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use PostgresOperatorKubernetesStackOutputs.ProtoReflect.Descriptor instead.
-func (*PostgresOperatorKubernetesStackOutputs) Descriptor() ([]byte, []int) {
+// Deprecated: Use ZalandoPostgresOperatorStackOutputs.ProtoReflect.Descriptor instead.
+func (*ZalandoPostgresOperatorStackOutputs) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_kubernetes_addon_zalandopostgresoperator_v1_stack_outputs_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *PostgresOperatorKubernetesStackOutputs) GetNamespace() string {
+func (x *ZalandoPostgresOperatorStackOutputs) GetNamespace() string {
 	if x != nil {
 		return x.Namespace
 	}
 	return ""
 }
 
-func (x *PostgresOperatorKubernetesStackOutputs) GetService() string {
+func (x *ZalandoPostgresOperatorStackOutputs) GetService() string {
 	if x != nil {
 		return x.Service
 	}
 	return ""
 }
 
-func (x *PostgresOperatorKubernetesStackOutputs) GetPortForwardCommand() string {
+func (x *ZalandoPostgresOperatorStackOutputs) GetPortForwardCommand() string {
 	if x != nil {
 		return x.PortForwardCommand
 	}
 	return ""
 }
 
-func (x *PostgresOperatorKubernetesStackOutputs) GetKubeEndpoint() string {
+func (x *ZalandoPostgresOperatorStackOutputs) GetKubeEndpoint() string {
 	if x != nil {
 		return x.KubeEndpoint
 	}
 	return ""
 }
 
-func (x *PostgresOperatorKubernetesStackOutputs) GetIngressEndpoint() string {
+func (x *ZalandoPostgresOperatorStackOutputs) GetIngressEndpoint() string {
 	if x != nil {
 		return x.IngressEndpoint
 	}
@@ -115,8 +115,8 @@ var File_org_project_planton_provider_kubernetes_addon_zalandopostgresoperator_v
 
 const file_org_project_planton_provider_kubernetes_addon_zalandopostgresoperator_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"\\org/project_planton/provider/kubernetes/addon/zalandopostgresoperator/v1/stack_outputs.proto\x12Horg.project_planton.provider.kubernetes.addon.zalandopostgresoperator.v1\"\xe2\x01\n" +
-	"&PostgresOperatorKubernetesStackOutputs\x12\x1c\n" +
+	"\\org/project_planton/provider/kubernetes/addon/zalandopostgresoperator/v1/stack_outputs.proto\x12Horg.project_planton.provider.kubernetes.addon.zalandopostgresoperator.v1\"\xdf\x01\n" +
+	"#ZalandoPostgresOperatorStackOutputs\x12\x1c\n" +
 	"\tnamespace\x18\x01 \x01(\tR\tnamespace\x12\x18\n" +
 	"\aservice\x18\x02 \x01(\tR\aservice\x120\n" +
 	"\x14port_forward_command\x18\x03 \x01(\tR\x12portForwardCommand\x12#\n" +
@@ -138,7 +138,7 @@ func file_org_project_planton_provider_kubernetes_addon_zalandopostgresoperator_
 
 var file_org_project_planton_provider_kubernetes_addon_zalandopostgresoperator_v1_stack_outputs_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_org_project_planton_provider_kubernetes_addon_zalandopostgresoperator_v1_stack_outputs_proto_goTypes = []any{
-	(*PostgresOperatorKubernetesStackOutputs)(nil), // 0: org.project_planton.provider.kubernetes.addon.zalandopostgresoperator.v1.PostgresOperatorKubernetesStackOutputs
+	(*ZalandoPostgresOperatorStackOutputs)(nil), // 0: org.project_planton.provider.kubernetes.addon.zalandopostgresoperator.v1.ZalandoPostgresOperatorStackOutputs
 }
 var file_org_project_planton_provider_kubernetes_addon_zalandopostgresoperator_v1_stack_outputs_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type

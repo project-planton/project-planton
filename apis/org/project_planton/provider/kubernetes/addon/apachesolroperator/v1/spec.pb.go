@@ -23,33 +23,33 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// **SolrOperatorKubernetesSpec** defines the configuration for deploying GitLab on a Kubernetes cluster.
-// This message specifies the parameters needed to create and manage a GitLab deployment within a Kubernetes environment.
-// It includes container specifications and ingress settings to control resource allocation and external access.
-type SolrOperatorKubernetesSpec struct {
+// **ApacheSolrOperatorSpec** defines the configuration for deploying Apache Solr Operator on a Kubernetes cluster.
+// This message specifies the parameters needed to create and manage an Apache Solr Operator deployment within a Kubernetes environment.
+// It includes container specifications to control resource allocation.
+type ApacheSolrOperatorSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// The Kubernetes cluster to install this addon on.
 	TargetCluster *kubernetes.KubernetesAddonTargetCluster `protobuf:"bytes,1,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
-	// The container specifications for the GitLab deployment.
-	Container     *SolrOperatorKubernetesSpecContainer `protobuf:"bytes,2,opt,name=container,proto3" json:"container,omitempty"`
+	// The container specifications for the Apache Solr Operator deployment.
+	Container     *ApacheSolrOperatorSpecContainer `protobuf:"bytes,2,opt,name=container,proto3" json:"container,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *SolrOperatorKubernetesSpec) Reset() {
-	*x = SolrOperatorKubernetesSpec{}
+func (x *ApacheSolrOperatorSpec) Reset() {
+	*x = ApacheSolrOperatorSpec{}
 	mi := &file_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_spec_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *SolrOperatorKubernetesSpec) String() string {
+func (x *ApacheSolrOperatorSpec) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*SolrOperatorKubernetesSpec) ProtoMessage() {}
+func (*ApacheSolrOperatorSpec) ProtoMessage() {}
 
-func (x *SolrOperatorKubernetesSpec) ProtoReflect() protoreflect.Message {
+func (x *ApacheSolrOperatorSpec) ProtoReflect() protoreflect.Message {
 	mi := &file_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_spec_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -61,49 +61,49 @@ func (x *SolrOperatorKubernetesSpec) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use SolrOperatorKubernetesSpec.ProtoReflect.Descriptor instead.
-func (*SolrOperatorKubernetesSpec) Descriptor() ([]byte, []int) {
+// Deprecated: Use ApacheSolrOperatorSpec.ProtoReflect.Descriptor instead.
+func (*ApacheSolrOperatorSpec) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *SolrOperatorKubernetesSpec) GetTargetCluster() *kubernetes.KubernetesAddonTargetCluster {
+func (x *ApacheSolrOperatorSpec) GetTargetCluster() *kubernetes.KubernetesAddonTargetCluster {
 	if x != nil {
 		return x.TargetCluster
 	}
 	return nil
 }
 
-func (x *SolrOperatorKubernetesSpec) GetContainer() *SolrOperatorKubernetesSpecContainer {
+func (x *ApacheSolrOperatorSpec) GetContainer() *ApacheSolrOperatorSpecContainer {
 	if x != nil {
 		return x.Container
 	}
 	return nil
 }
 
-// **SolrOperatorKubernetesSpecContainer** specifies the container configuration for the GitLab application.
+// **ApacheSolrOperatorSpecContainer** specifies the container configuration for the Apache Solr Operator application.
 // It includes resource allocations for CPU and memory to ensure the application runs efficiently.
-type SolrOperatorKubernetesSpecContainer struct {
+type ApacheSolrOperatorSpecContainer struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The CPU and memory resources allocated to the GitLab container.
+	// The CPU and memory resources allocated to the Apache Solr Operator container.
 	Resources     *kubernetes.ContainerResources `protobuf:"bytes,1,opt,name=resources,proto3" json:"resources,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *SolrOperatorKubernetesSpecContainer) Reset() {
-	*x = SolrOperatorKubernetesSpecContainer{}
+func (x *ApacheSolrOperatorSpecContainer) Reset() {
+	*x = ApacheSolrOperatorSpecContainer{}
 	mi := &file_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_spec_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *SolrOperatorKubernetesSpecContainer) String() string {
+func (x *ApacheSolrOperatorSpecContainer) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*SolrOperatorKubernetesSpecContainer) ProtoMessage() {}
+func (*ApacheSolrOperatorSpecContainer) ProtoMessage() {}
 
-func (x *SolrOperatorKubernetesSpecContainer) ProtoReflect() protoreflect.Message {
+func (x *ApacheSolrOperatorSpecContainer) ProtoReflect() protoreflect.Message {
 	mi := &file_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_spec_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -115,12 +115,12 @@ func (x *SolrOperatorKubernetesSpecContainer) ProtoReflect() protoreflect.Messag
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use SolrOperatorKubernetesSpecContainer.ProtoReflect.Descriptor instead.
-func (*SolrOperatorKubernetesSpecContainer) Descriptor() ([]byte, []int) {
+// Deprecated: Use ApacheSolrOperatorSpecContainer.ProtoReflect.Descriptor instead.
+func (*ApacheSolrOperatorSpecContainer) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_spec_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *SolrOperatorKubernetesSpecContainer) GetResources() *kubernetes.ContainerResources {
+func (x *ApacheSolrOperatorSpecContainer) GetResources() *kubernetes.ContainerResources {
 	if x != nil {
 		return x.Resources
 	}
@@ -131,11 +131,11 @@ var File_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_spe
 
 const file_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Norg/project_planton/provider/kubernetes/addon/apachesolroperator/v1/spec.proto\x12Corg.project_planton.provider.kubernetes.addon.apachesolroperator.v1\x1a\x1bbuf/validate/validate.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\x1a3org/project_planton/shared/kubernetes/options.proto\x1a:org/project_planton/shared/kubernetes/target_cluster.proto\"\x99\x02\n" +
-	"\x1aSolrOperatorKubernetesSpec\x12j\n" +
-	"\x0etarget_cluster\x18\x01 \x01(\v2C.org.project_planton.shared.kubernetes.KubernetesAddonTargetClusterR\rtargetCluster\x12\x8e\x01\n" +
-	"\tcontainer\x18\x02 \x01(\v2h.org.project_planton.provider.kubernetes.addon.apachesolroperator.v1.SolrOperatorKubernetesSpecContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\"\xa1\x01\n" +
-	"#SolrOperatorKubernetesSpecContainer\x12z\n" +
+	"Norg/project_planton/provider/kubernetes/addon/apachesolroperator/v1/spec.proto\x12Corg.project_planton.provider.kubernetes.addon.apachesolroperator.v1\x1a\x1bbuf/validate/validate.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\x1a3org/project_planton/shared/kubernetes/options.proto\x1a:org/project_planton/shared/kubernetes/target_cluster.proto\"\x91\x02\n" +
+	"\x16ApacheSolrOperatorSpec\x12j\n" +
+	"\x0etarget_cluster\x18\x01 \x01(\v2C.org.project_planton.shared.kubernetes.KubernetesAddonTargetClusterR\rtargetCluster\x12\x8a\x01\n" +
+	"\tcontainer\x18\x02 \x01(\v2d.org.project_planton.provider.kubernetes.addon.apachesolroperator.v1.ApacheSolrOperatorSpecContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\"\x9d\x01\n" +
+	"\x1fApacheSolrOperatorSpecContainer\x12z\n" +
 	"\tresources\x18\x01 \x01(\v29.org.project_planton.shared.kubernetes.ContainerResourcesB!\xba\xfb\xa4\x02\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
@@ -156,15 +156,15 @@ func file_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_sp
 
 var file_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_spec_proto_goTypes = []any{
-	(*SolrOperatorKubernetesSpec)(nil),              // 0: org.project_planton.provider.kubernetes.addon.apachesolroperator.v1.SolrOperatorKubernetesSpec
-	(*SolrOperatorKubernetesSpecContainer)(nil),     // 1: org.project_planton.provider.kubernetes.addon.apachesolroperator.v1.SolrOperatorKubernetesSpecContainer
+	(*ApacheSolrOperatorSpec)(nil),                  // 0: org.project_planton.provider.kubernetes.addon.apachesolroperator.v1.ApacheSolrOperatorSpec
+	(*ApacheSolrOperatorSpecContainer)(nil),         // 1: org.project_planton.provider.kubernetes.addon.apachesolroperator.v1.ApacheSolrOperatorSpecContainer
 	(*kubernetes.KubernetesAddonTargetCluster)(nil), // 2: org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
 	(*kubernetes.ContainerResources)(nil),           // 3: org.project_planton.shared.kubernetes.ContainerResources
 }
 var file_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_spec_proto_depIdxs = []int32{
-	2, // 0: org.project_planton.provider.kubernetes.addon.apachesolroperator.v1.SolrOperatorKubernetesSpec.target_cluster:type_name -> org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
-	1, // 1: org.project_planton.provider.kubernetes.addon.apachesolroperator.v1.SolrOperatorKubernetesSpec.container:type_name -> org.project_planton.provider.kubernetes.addon.apachesolroperator.v1.SolrOperatorKubernetesSpecContainer
-	3, // 2: org.project_planton.provider.kubernetes.addon.apachesolroperator.v1.SolrOperatorKubernetesSpecContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
+	2, // 0: org.project_planton.provider.kubernetes.addon.apachesolroperator.v1.ApacheSolrOperatorSpec.target_cluster:type_name -> org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
+	1, // 1: org.project_planton.provider.kubernetes.addon.apachesolroperator.v1.ApacheSolrOperatorSpec.container:type_name -> org.project_planton.provider.kubernetes.addon.apachesolroperator.v1.ApacheSolrOperatorSpecContainer
+	3, // 2: org.project_planton.provider.kubernetes.addon.apachesolroperator.v1.ApacheSolrOperatorSpecContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
 	3, // [3:3] is the sub-list for method output_type
 	3, // [3:3] is the sub-list for method input_type
 	3, // [3:3] is the sub-list for extension type_name

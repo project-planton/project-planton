@@ -7,26 +7,26 @@ import "org/project_planton/provider/kubernetes/addon/externalsecrets/v1/spec.pr
 import "org/project_planton/provider/kubernetes/addon/externalsecrets/v1/stack_outputs.proto";
 import "org/project_planton/shared/metadata.proto";
 
-//external-secrets-kubernetes
-message ExternalSecretsKubernetes {
+//external-secrets
+message ExternalSecrets {
   //api-version
   string api_version = 1 [(buf.validate.field).string.const = 'kubernetes.project-planton.org/v1'];
 
   //resource-kind
-  string kind = 2 [(buf.validate.field).string.const = 'ExternalSecretsKubernetes'];
+  string kind = 2 [(buf.validate.field).string.const = 'ExternalSecrets'];
 
   //metadata
   org.project_planton.shared.CloudResourceMetadata metadata = 3 [(buf.validate.field).required = true];
 
   //spec
-  ExternalSecretsKubernetesSpec spec = 4 [(buf.validate.field).required = true];
+  ExternalSecretsSpec spec = 4 [(buf.validate.field).required = true];
 
   //status
-  ExternalSecretsKubernetesStatus status = 5;
+  ExternalSecretsStatus status = 5;
 }
 
-//external-secrets-kubernetes status.
-message ExternalSecretsKubernetesStatus {
+//external-secrets status.
+message ExternalSecretsStatus {
   //stack-outputs
-  ExternalSecretsKubernetesStackOutputs outputs = 1;
+  ExternalSecretsStackOutputs outputs = 1;
 }

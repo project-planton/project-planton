@@ -194,7 +194,7 @@ This prevents cross-cluster interference and limits the blast radius of misconfi
 
 ## The Project Planton Approach
 
-Project Planton's `ExternalDnsKubernetes` module encapsulates the production patterns described above:
+Project Planton's `ExternalDns` module encapsulates the production patterns described above:
 
 **Deployment Method:** Helm (official kubernetes-sigs chart) deployed via Pulumi/Terraform, with GitOps-friendly output.
 

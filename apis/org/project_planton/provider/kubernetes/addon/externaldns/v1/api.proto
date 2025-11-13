@@ -7,26 +7,26 @@ import "org/project_planton/provider/kubernetes/addon/externaldns/v1/spec.proto"
 import "org/project_planton/provider/kubernetes/addon/externaldns/v1/stack_outputs.proto";
 import "org/project_planton/shared/metadata.proto";
 
-//external-dns-kubernetes
-message ExternalDnsKubernetes {
+//external-dns
+message ExternalDns {
   //api-version
   string api_version = 1 [(buf.validate.field).string.const = 'kubernetes.project-planton.org/v1'];
 
   //resource-kind
-  string kind = 2 [(buf.validate.field).string.const = 'ExternalDnsKubernetes'];
+  string kind = 2 [(buf.validate.field).string.const = 'ExternalDns'];
 
   //metadata
   org.project_planton.shared.CloudResourceMetadata metadata = 3 [(buf.validate.field).required = true];
 
   //spec
-  ExternalDnsKubernetesSpec spec = 4 [(buf.validate.field).required = true];
+  ExternalDnsSpec spec = 4 [(buf.validate.field).required = true];
 
   //status
-  ExternalDnsKubernetesStatus status = 5;
+  ExternalDnsStatus status = 5;
 }
 
-//external-dns-kubernetes status.
-message ExternalDnsKubernetesStatus {
+//external-dns status.
+message ExternalDnsStatus {
   //stack-outputs
-  ExternalDnsKubernetesStackOutputs outputs = 1;
+  ExternalDnsStackOutputs outputs = 1;
 }

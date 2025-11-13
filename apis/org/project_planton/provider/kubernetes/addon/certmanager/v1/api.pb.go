@@ -23,8 +23,8 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// cert-manager-kubernetes
-type CertManagerKubernetes struct {
+// cert-manager
+type CertManager struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// api-version
 	ApiVersion string `protobuf:"bytes,1,opt,name=api_version,json=apiVersion,proto3" json:"api_version,omitempty"`
@@ -33,27 +33,27 @@ type CertManagerKubernetes struct {
 	// metadata
 	Metadata *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// spec
-	Spec *CertManagerKubernetesSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
+	Spec *CertManagerSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status
-	Status        *CertManagerKubernetesStatus `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
+	Status        *CertManagerStatus `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *CertManagerKubernetes) Reset() {
-	*x = CertManagerKubernetes{}
+func (x *CertManager) Reset() {
+	*x = CertManager{}
 	mi := &file_org_project_planton_provider_kubernetes_addon_certmanager_v1_api_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *CertManagerKubernetes) String() string {
+func (x *CertManager) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*CertManagerKubernetes) ProtoMessage() {}
+func (*CertManager) ProtoMessage() {}
 
-func (x *CertManagerKubernetes) ProtoReflect() protoreflect.Message {
+func (x *CertManager) ProtoReflect() protoreflect.Message {
 	mi := &file_org_project_planton_provider_kubernetes_addon_certmanager_v1_api_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -65,69 +65,69 @@ func (x *CertManagerKubernetes) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use CertManagerKubernetes.ProtoReflect.Descriptor instead.
-func (*CertManagerKubernetes) Descriptor() ([]byte, []int) {
+// Deprecated: Use CertManager.ProtoReflect.Descriptor instead.
+func (*CertManager) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_kubernetes_addon_certmanager_v1_api_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *CertManagerKubernetes) GetApiVersion() string {
+func (x *CertManager) GetApiVersion() string {
 	if x != nil {
 		return x.ApiVersion
 	}
 	return ""
 }
 
-func (x *CertManagerKubernetes) GetKind() string {
+func (x *CertManager) GetKind() string {
 	if x != nil {
 		return x.Kind
 	}
 	return ""
 }
 
-func (x *CertManagerKubernetes) GetMetadata() *shared.CloudResourceMetadata {
+func (x *CertManager) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
 	return nil
 }
 
-func (x *CertManagerKubernetes) GetSpec() *CertManagerKubernetesSpec {
+func (x *CertManager) GetSpec() *CertManagerSpec {
 	if x != nil {
 		return x.Spec
 	}
 	return nil
 }
 
-func (x *CertManagerKubernetes) GetStatus() *CertManagerKubernetesStatus {
+func (x *CertManager) GetStatus() *CertManagerStatus {
 	if x != nil {
 		return x.Status
 	}
 	return nil
 }
 
-// cert-manager-kubernetes status.
-type CertManagerKubernetesStatus struct {
+// cert-manager status.
+type CertManagerStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// stack-outputs
-	Outputs       *CertManagerKubernetesStackOutputs `protobuf:"bytes,1,opt,name=outputs,proto3" json:"outputs,omitempty"`
+	Outputs       *CertManagerStackOutputs `protobuf:"bytes,1,opt,name=outputs,proto3" json:"outputs,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *CertManagerKubernetesStatus) Reset() {
-	*x = CertManagerKubernetesStatus{}
+func (x *CertManagerStatus) Reset() {
+	*x = CertManagerStatus{}
 	mi := &file_org_project_planton_provider_kubernetes_addon_certmanager_v1_api_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *CertManagerKubernetesStatus) String() string {
+func (x *CertManagerStatus) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*CertManagerKubernetesStatus) ProtoMessage() {}
+func (*CertManagerStatus) ProtoMessage() {}
 
-func (x *CertManagerKubernetesStatus) ProtoReflect() protoreflect.Message {
+func (x *CertManagerStatus) ProtoReflect() protoreflect.Message {
 	mi := &file_org_project_planton_provider_kubernetes_addon_certmanager_v1_api_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -139,12 +139,12 @@ func (x *CertManagerKubernetesStatus) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use CertManagerKubernetesStatus.ProtoReflect.Descriptor instead.
-func (*CertManagerKubernetesStatus) Descriptor() ([]byte, []int) {
+// Deprecated: Use CertManagerStatus.ProtoReflect.Descriptor instead.
+func (*CertManagerStatus) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_kubernetes_addon_certmanager_v1_api_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *CertManagerKubernetesStatus) GetOutputs() *CertManagerKubernetesStackOutputs {
+func (x *CertManagerStatus) GetOutputs() *CertManagerStackOutputs {
 	if x != nil {
 		return x.Outputs
 	}
@@ -155,18 +155,18 @@ var File_org_project_planton_provider_kubernetes_addon_certmanager_v1_api_proto 
 
 const file_org_project_planton_provider_kubernetes_addon_certmanager_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Forg/project_planton/provider/kubernetes/addon/certmanager/v1/api.proto\x12<org.project_planton.provider.kubernetes.addon.certmanager.v1\x1a\x1bbuf/validate/validate.proto\x1aGorg/project_planton/provider/kubernetes/addon/certmanager/v1/spec.proto\x1aPorg/project_planton/provider/kubernetes/addon/certmanager/v1/stack_outputs.proto\x1a)org/project_planton/shared/metadata.proto\"\xd3\x03\n" +
-	"\x15CertManagerKubernetes\x12I\n" +
+	"Forg/project_planton/provider/kubernetes/addon/certmanager/v1/api.proto\x12<org.project_planton.provider.kubernetes.addon.certmanager.v1\x1a\x1bbuf/validate/validate.proto\x1aGorg/project_planton/provider/kubernetes/addon/certmanager/v1/spec.proto\x1aPorg/project_planton/provider/kubernetes/addon/certmanager/v1/stack_outputs.proto\x1a)org/project_planton/shared/metadata.proto\"\xab\x03\n" +
+	"\vCertManager\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!kubernetes.project-planton.org/v1R\n" +
-	"apiVersion\x120\n" +
-	"\x04kind\x18\x02 \x01(\tB\x1c\xbaH\x19r\x17\n" +
-	"\x15CertManagerKubernetesR\x04kind\x12U\n" +
-	"\bmetadata\x18\x03 \x01(\v21.org.project_planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12s\n" +
-	"\x04spec\x18\x04 \x01(\v2W.org.project_planton.provider.kubernetes.addon.certmanager.v1.CertManagerKubernetesSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12q\n" +
-	"\x06status\x18\x05 \x01(\v2Y.org.project_planton.provider.kubernetes.addon.certmanager.v1.CertManagerKubernetesStatusR\x06status\"\x98\x01\n" +
-	"\x1bCertManagerKubernetesStatus\x12y\n" +
-	"\aoutputs\x18\x01 \x01(\v2_.org.project_planton.provider.kubernetes.addon.certmanager.v1.CertManagerKubernetesStackOutputsR\aoutputsB\xdd\x03\n" +
+	"apiVersion\x12&\n" +
+	"\x04kind\x18\x02 \x01(\tB\x12\xbaH\x0fr\r\n" +
+	"\vCertManagerR\x04kind\x12U\n" +
+	"\bmetadata\x18\x03 \x01(\v21.org.project_planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12i\n" +
+	"\x04spec\x18\x04 \x01(\v2M.org.project_planton.provider.kubernetes.addon.certmanager.v1.CertManagerSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12g\n" +
+	"\x06status\x18\x05 \x01(\v2O.org.project_planton.provider.kubernetes.addon.certmanager.v1.CertManagerStatusR\x06status\"\x84\x01\n" +
+	"\x11CertManagerStatus\x12o\n" +
+	"\aoutputs\x18\x01 \x01(\v2U.org.project_planton.provider.kubernetes.addon.certmanager.v1.CertManagerStackOutputsR\aoutputsB\xdd\x03\n" +
 	"@com.org.project_planton.provider.kubernetes.addon.certmanager.v1B\bApiProtoP\x01Zzgithub.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/certmanager/v1;certmanagerv1\xa2\x02\x06OPPKAC\xaa\x02;Org.ProjectPlanton.Provider.Kubernetes.Addon.Certmanager.V1\xca\x02;Org\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Certmanager\\V1\xe2\x02GOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Certmanager\\V1\\GPBMetadata\xea\x02AOrg::ProjectPlanton::Provider::Kubernetes::Addon::Certmanager::V1b\x06proto3"
 
 var (
@@ -183,17 +183,17 @@ func file_org_project_planton_provider_kubernetes_addon_certmanager_v1_api_proto
 
 var file_org_project_planton_provider_kubernetes_addon_certmanager_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_org_project_planton_provider_kubernetes_addon_certmanager_v1_api_proto_goTypes = []any{
-	(*CertManagerKubernetes)(nil),             // 0: org.project_planton.provider.kubernetes.addon.certmanager.v1.CertManagerKubernetes
-	(*CertManagerKubernetesStatus)(nil),       // 1: org.project_planton.provider.kubernetes.addon.certmanager.v1.CertManagerKubernetesStatus
-	(*shared.CloudResourceMetadata)(nil),      // 2: org.project_planton.shared.CloudResourceMetadata
-	(*CertManagerKubernetesSpec)(nil),         // 3: org.project_planton.provider.kubernetes.addon.certmanager.v1.CertManagerKubernetesSpec
-	(*CertManagerKubernetesStackOutputs)(nil), // 4: org.project_planton.provider.kubernetes.addon.certmanager.v1.CertManagerKubernetesStackOutputs
+	(*CertManager)(nil),                  // 0: org.project_planton.provider.kubernetes.addon.certmanager.v1.CertManager
+	(*CertManagerStatus)(nil),            // 1: org.project_planton.provider.kubernetes.addon.certmanager.v1.CertManagerStatus
+	(*shared.CloudResourceMetadata)(nil), // 2: org.project_planton.shared.CloudResourceMetadata
+	(*CertManagerSpec)(nil),              // 3: org.project_planton.provider.kubernetes.addon.certmanager.v1.CertManagerSpec
+	(*CertManagerStackOutputs)(nil),      // 4: org.project_planton.provider.kubernetes.addon.certmanager.v1.CertManagerStackOutputs
 }
 var file_org_project_planton_provider_kubernetes_addon_certmanager_v1_api_proto_depIdxs = []int32{
-	2, // 0: org.project_planton.provider.kubernetes.addon.certmanager.v1.CertManagerKubernetes.metadata:type_name -> org.project_planton.shared.CloudResourceMetadata
-	3, // 1: org.project_planton.provider.kubernetes.addon.certmanager.v1.CertManagerKubernetes.spec:type_name -> org.project_planton.provider.kubernetes.addon.certmanager.v1.CertManagerKubernetesSpec
-	1, // 2: org.project_planton.provider.kubernetes.addon.certmanager.v1.CertManagerKubernetes.status:type_name -> org.project_planton.provider.kubernetes.addon.certmanager.v1.CertManagerKubernetesStatus
-	4, // 3: org.project_planton.provider.kubernetes.addon.certmanager.v1.CertManagerKubernetesStatus.outputs:type_name -> org.project_planton.provider.kubernetes.addon.certmanager.v1.CertManagerKubernetesStackOutputs
+	2, // 0: org.project_planton.provider.kubernetes.addon.certmanager.v1.CertManager.metadata:type_name -> org.project_planton.shared.CloudResourceMetadata
+	3, // 1: org.project_planton.provider.kubernetes.addon.certmanager.v1.CertManager.spec:type_name -> org.project_planton.provider.kubernetes.addon.certmanager.v1.CertManagerSpec
+	1, // 2: org.project_planton.provider.kubernetes.addon.certmanager.v1.CertManager.status:type_name -> org.project_planton.provider.kubernetes.addon.certmanager.v1.CertManagerStatus
+	4, // 3: org.project_planton.provider.kubernetes.addon.certmanager.v1.CertManagerStatus.outputs:type_name -> org.project_planton.provider.kubernetes.addon.certmanager.v1.CertManagerStackOutputs
 	4, // [4:4] is the sub-list for method output_type
 	4, // [4:4] is the sub-list for method input_type
 	4, // [4:4] is the sub-list for extension type_name

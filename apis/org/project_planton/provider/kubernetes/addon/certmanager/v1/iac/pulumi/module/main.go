@@ -15,7 +15,7 @@ import (
 )
 
 // Resources create all Pulumi resources for the Cert‑Manager Kubernetes add‑on.
-func Resources(ctx *pulumi.Context, stackInput *certmanagerv1.CertManagerKubernetesStackInput) error {
+func Resources(ctx *pulumi.Context, stackInput *certmanagerv1.CertManagerStackInput) error {
 	// set up a kubernetes provider from the supplied cluster credential
 	kubeProvider, err := pulumikubernetesprovider.GetWithKubernetesProviderConfig(
 		ctx, stackInput.ProviderConfig, "kubernetes")
@@ -166,7 +166,7 @@ func createClusterIssuerForDomain(
 	ctx *pulumi.Context,
 	kubeProvider *kubernetes.Provider,
 	helmRelease *helm.Release,
-	spec *certmanagerv1.CertManagerKubernetesSpec,
+	spec *certmanagerv1.CertManagerSpec,
 	cloudflareSecrets map[string]pulumi.StringOutput,
 	dnsProvider *certmanagerv1.DnsProviderConfig,
 	domain string,

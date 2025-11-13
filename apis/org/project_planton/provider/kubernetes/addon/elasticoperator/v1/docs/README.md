@@ -203,7 +203,7 @@ Project Planton defaults to **Helm-based ECK installation** for the operator its
 
 ### What Project Planton Abstracts
 
-The `ElasticOperatorKubernetes` API in Project Planton focuses on the essential configuration needed to deploy the ECK operator:
+The `ElasticOperator` API in Project Planton focuses on the essential configuration needed to deploy the ECK operator:
 
 - **Operator namespace and scope**: Whether the operator watches all namespaces (cluster-wide) or specific namespaces (multi-tenant).
 - **High availability**: Replica count and resource requests/limits for the operator pod.

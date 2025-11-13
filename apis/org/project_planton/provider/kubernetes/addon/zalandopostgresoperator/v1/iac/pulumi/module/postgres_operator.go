@@ -30,7 +30,7 @@ func postgresOperator(ctx *pulumi.Context, locals *Locals, kubernetesProvider *p
 	// 2. Create backup Secret and ConfigMap if backup_config is specified
 	backupConfigMapName, err := createBackupResources(
 		ctx,
-		locals.PostgresOperatorKubernetes.Spec.BackupConfig,
+		locals.ZalandoPostgresOperator.Spec.BackupConfig,
 		createdNamespace.Metadata.Name().Elem(),
 		kubernetesProvider,
 		locals.KubernetesLabels,

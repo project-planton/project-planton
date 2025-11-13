@@ -13,7 +13,7 @@ import (
 
 func Resources(ctx *pulumi.Context, stackInput *azureaksclusterv1.AzureAksClusterStackInput) error {
 	azureProviderConfig := stackInput.ProviderConfig
-	
+
 	// Create Azure provider using the credentials from the input
 	provider, err := azurenative.NewProvider(ctx,
 		"azure",
@@ -30,10 +30,10 @@ func Resources(ctx *pulumi.Context, stackInput *azureaksclusterv1.AzureAksCluste
 	// Get inputs
 	target := stackInput.Target
 	spec := target.Spec
-	
+
 	// Create resource group name from metadata
 	resourceGroupName := fmt.Sprintf("rg-%s", target.Metadata.Name)
-	
+
 	// Create Resource Group
 	resourceGroup, err := resources.NewResourceGroup(ctx, resourceGroupName, &resources.ResourceGroupArgs{
 		ResourceGroupName: pulumi.String(resourceGroupName),
@@ -58,31 +58,44 @@ func Resources(ctx *pulumi.Context, stackInput *azureaksclusterv1.AzureAksCluste
 	// Determine AAD RBAC configuration
 	aadEnabled := !spec.DisableAzureAdRbac
 
+	// Build addon profiles
+	addonProfiles := containerservice.ManagedClusterAddonProfileMap{}
+
+	// Add monitoring addon if Log Analytics workspace is provided
+	if spec.LogAnalyticsWorkspaceId != "" {
+		addonProfiles["omsagent"] = &containerservice.ManagedClusterAddonProfileArgs{
+			Enabled: pulumi.Bool(true),
+			Config: pulumi.StringMap{
+				"logAnalyticsWorkspaceResourceID": pulumi.String(spec.LogAnalyticsWorkspaceId),
+			},
+		}
+	}
+
 	// Build AKS cluster arguments
 	aksClusterArgs := &containerservice.ManagedClusterArgs{
 		ResourceGroupName: resourceGroup.Name,
 		ResourceName:      pulumi.String(target.Metadata.Name),
 		Location:          pulumi.String(spec.Region),
-		
+
 		// Kubernetes version
 		KubernetesVersion: pulumi.String(spec.KubernetesVersion),
-		
+
 		// DNS prefix
 		DnsPrefix: pulumi.Sprintf("%s-dns", target.Metadata.Name),
-		
+
 		// Identity - Use System-Assigned Managed Identity
 		Identity: &containerservice.ManagedClusterIdentityArgs{
-			Type: pulumi.String("SystemAssigned"),
+			Type: containerservice.ResourceIdentityTypeSystemAssigned,
 		},
-		
+
 		// Network Profile
 		NetworkProfile: &containerservice.ContainerServiceNetworkProfileArgs{
-			NetworkPlugin: pulumi.String(networkPlugin),
+			NetworkPlugin:   pulumi.String(networkPlugin),
 			LoadBalancerSku: pulumi.String("standard"),
-			ServiceCidr: pulumi.String("10.0.0.0/16"),
-			DnsServiceIp: pulumi.String("10.0.0.10"),
+			ServiceCidr:     pulumi.String("10.0.0.0/16"),
+			DnsServiceIP:    pulumi.String("10.0.0.10"),
 		},
-		
+
 		// Default node pool (system pool)
 		AgentPoolProfiles: containerservice.ManagedClusterAgentPoolProfileArray{
 			&containerservice.ManagedClusterAgentPoolProfileArgs{
@@ -97,32 +110,22 @@ func Resources(ctx *pulumi.Context, stackInput *azureaksclusterv1.AzureAksCluste
 				MaxCount:          pulumi.Int(5),
 			},
 		},
-		
+
 		// API Server Access Profile
 		ApiServerAccessProfile: &containerservice.ManagedClusterAPIServerAccessProfileArgs{
-			EnablePrivateCluster:       pulumi.Bool(spec.PrivateClusterEnabled),
-			AuthorizedIPRanges:         authorizedIpRanges,
+			EnablePrivateCluster:           pulumi.Bool(spec.PrivateClusterEnabled),
+			AuthorizedIPRanges:             authorizedIpRanges,
 			EnablePrivateClusterPublicFQDN: pulumi.Bool(!spec.PrivateClusterEnabled),
 		},
-		
+
 		// Azure AD Integration
 		AadProfile: &containerservice.ManagedClusterAADProfileArgs{
-			Managed:           pulumi.Bool(aadEnabled),
-			EnableAzureRBAC:   pulumi.Bool(aadEnabled),
+			Managed:         pulumi.Bool(aadEnabled),
+			EnableAzureRBAC: pulumi.Bool(aadEnabled),
 		},
-		
-		// Add-ons
-		AddonProfiles: containerservice.ManagedClusterAddonProfileMap{},
-	}
 
-	// Add monitoring addon if Log Analytics workspace is provided
-	if spec.LogAnalyticsWorkspaceId != "" {
-		aksClusterArgs.AddonProfiles["omsagent"] = &containerservice.ManagedClusterAddonProfileArgs{
-			Enabled: pulumi.Bool(true),
-			Config: pulumi.StringMap{
-				"logAnalyticsWorkspaceResourceID": pulumi.String(spec.LogAnalyticsWorkspaceId),
-			},
-		}
+		// Add-ons
+		AddonProfiles: addonProfiles,
 	}
 
 	// Create AKS cluster
@@ -143,7 +146,7 @@ func Resources(ctx *pulumi.Context, stackInput *azureaksclusterv1.AzureAksCluste
 	ctx.Export(OpApiServerEndpoint, aksCluster.Fqdn)
 	ctx.Export(OpClusterResourceId, aksCluster.ID())
 	ctx.Export(OpClusterKubeconfig, kubeconfig)
-	ctx.Export(OpManagedIdentityPrincipalId, aksCluster.IdentityProfile.MapIndex(pulumi.String("kubeletidentity")).ObjectID())
+	ctx.Export(OpManagedIdentityPrincipalId, aksCluster.IdentityProfile.MapIndex(pulumi.String("kubeletidentity")).ObjectId())
 
 	return nil
 }

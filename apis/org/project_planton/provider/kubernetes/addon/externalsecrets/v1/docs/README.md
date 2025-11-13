@@ -132,10 +132,10 @@ Developers get standard Kubernetes Secret objects that work with any Helm chart 
 
 **Project Planton Abstractions**:
 
-The `ExternalSecretsKubernetes` API focuses on the essential 20%:
+The `ExternalSecrets` API focuses on the essential 20%:
 
 ```protobuf
-message ExternalSecretsKubernetesSpec {
+message ExternalSecretsSpec {
   // Target cluster (any K8s cluster—EKS, GKE, AKS, or on-prem)
   KubernetesAddonTargetCluster target_cluster = 1;
   
@@ -143,7 +143,7 @@ message ExternalSecretsKubernetesSpec {
   uint32 poll_interval_seconds = 2;  // default: 10 seconds
   
   // Resource tuning (CPU/memory for controller)
-  ExternalSecretsKubernetesSpecContainer container = 3;
+  ExternalSecretsSpecContainer container = 3;
   
   // Provider-specific configuration (exactly one)
   oneof provider_config {

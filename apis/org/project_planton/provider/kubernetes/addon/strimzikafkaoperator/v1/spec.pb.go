@@ -23,33 +23,33 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// **KafkaOperatorKubernetesSpec** defines the configuration for deploying GitLab on a Kubernetes cluster.
-// This message specifies the parameters needed to create and manage a GitLab deployment within a Kubernetes environment.
-// It includes container specifications and ingress settings to control resource allocation and external access.
-type KafkaOperatorKubernetesSpec struct {
+// **StrimziKafkaOperatorSpec** defines the configuration for deploying the Strimzi Kafka Operator on a Kubernetes cluster.
+// This message specifies the parameters needed to create and manage the operator deployment within a Kubernetes environment.
+// It includes container specifications to control resource allocation.
+type StrimziKafkaOperatorSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// The Kubernetes cluster to install this addon on.
 	TargetCluster *kubernetes.KubernetesAddonTargetCluster `protobuf:"bytes,1,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
-	// The container specifications for the GitLab deployment.
-	Container     *KafkaOperatorKubernetesSpecContainer `protobuf:"bytes,2,opt,name=container,proto3" json:"container,omitempty"`
+	// The container specifications for the Strimzi Kafka Operator deployment.
+	Container     *StrimziKafkaOperatorSpecContainer `protobuf:"bytes,2,opt,name=container,proto3" json:"container,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *KafkaOperatorKubernetesSpec) Reset() {
-	*x = KafkaOperatorKubernetesSpec{}
+func (x *StrimziKafkaOperatorSpec) Reset() {
+	*x = StrimziKafkaOperatorSpec{}
 	mi := &file_org_project_planton_provider_kubernetes_addon_strimzikafkaoperator_v1_spec_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *KafkaOperatorKubernetesSpec) String() string {
+func (x *StrimziKafkaOperatorSpec) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*KafkaOperatorKubernetesSpec) ProtoMessage() {}
+func (*StrimziKafkaOperatorSpec) ProtoMessage() {}
 
-func (x *KafkaOperatorKubernetesSpec) ProtoReflect() protoreflect.Message {
+func (x *StrimziKafkaOperatorSpec) ProtoReflect() protoreflect.Message {
 	mi := &file_org_project_planton_provider_kubernetes_addon_strimzikafkaoperator_v1_spec_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -61,49 +61,49 @@ func (x *KafkaOperatorKubernetesSpec) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use KafkaOperatorKubernetesSpec.ProtoReflect.Descriptor instead.
-func (*KafkaOperatorKubernetesSpec) Descriptor() ([]byte, []int) {
+// Deprecated: Use StrimziKafkaOperatorSpec.ProtoReflect.Descriptor instead.
+func (*StrimziKafkaOperatorSpec) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_kubernetes_addon_strimzikafkaoperator_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *KafkaOperatorKubernetesSpec) GetTargetCluster() *kubernetes.KubernetesAddonTargetCluster {
+func (x *StrimziKafkaOperatorSpec) GetTargetCluster() *kubernetes.KubernetesAddonTargetCluster {
 	if x != nil {
 		return x.TargetCluster
 	}
 	return nil
 }
 
-func (x *KafkaOperatorKubernetesSpec) GetContainer() *KafkaOperatorKubernetesSpecContainer {
+func (x *StrimziKafkaOperatorSpec) GetContainer() *StrimziKafkaOperatorSpecContainer {
 	if x != nil {
 		return x.Container
 	}
 	return nil
 }
 
-// **KafkaOperatorKubernetesSpecContainer** specifies the container configuration for the GitLab application.
-// It includes resource allocations for CPU and memory to ensure the application runs efficiently.
-type KafkaOperatorKubernetesSpecContainer struct {
+// **StrimziKafkaOperatorSpecContainer** specifies the container configuration for the Strimzi Kafka Operator.
+// It includes resource allocations for CPU and memory to ensure the operator runs efficiently.
+type StrimziKafkaOperatorSpecContainer struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The CPU and memory resources allocated to the GitLab container.
+	// The CPU and memory resources allocated to the Strimzi Kafka Operator container.
 	Resources     *kubernetes.ContainerResources `protobuf:"bytes,1,opt,name=resources,proto3" json:"resources,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *KafkaOperatorKubernetesSpecContainer) Reset() {
-	*x = KafkaOperatorKubernetesSpecContainer{}
+func (x *StrimziKafkaOperatorSpecContainer) Reset() {
+	*x = StrimziKafkaOperatorSpecContainer{}
 	mi := &file_org_project_planton_provider_kubernetes_addon_strimzikafkaoperator_v1_spec_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *KafkaOperatorKubernetesSpecContainer) String() string {
+func (x *StrimziKafkaOperatorSpecContainer) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*KafkaOperatorKubernetesSpecContainer) ProtoMessage() {}
+func (*StrimziKafkaOperatorSpecContainer) ProtoMessage() {}
 
-func (x *KafkaOperatorKubernetesSpecContainer) ProtoReflect() protoreflect.Message {
+func (x *StrimziKafkaOperatorSpecContainer) ProtoReflect() protoreflect.Message {
 	mi := &file_org_project_planton_provider_kubernetes_addon_strimzikafkaoperator_v1_spec_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -115,12 +115,12 @@ func (x *KafkaOperatorKubernetesSpecContainer) ProtoReflect() protoreflect.Messa
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use KafkaOperatorKubernetesSpecContainer.ProtoReflect.Descriptor instead.
-func (*KafkaOperatorKubernetesSpecContainer) Descriptor() ([]byte, []int) {
+// Deprecated: Use StrimziKafkaOperatorSpecContainer.ProtoReflect.Descriptor instead.
+func (*StrimziKafkaOperatorSpecContainer) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_kubernetes_addon_strimzikafkaoperator_v1_spec_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *KafkaOperatorKubernetesSpecContainer) GetResources() *kubernetes.ContainerResources {
+func (x *StrimziKafkaOperatorSpecContainer) GetResources() *kubernetes.ContainerResources {
 	if x != nil {
 		return x.Resources
 	}
@@ -131,11 +131,11 @@ var File_org_project_planton_provider_kubernetes_addon_strimzikafkaoperator_v1_s
 
 const file_org_project_planton_provider_kubernetes_addon_strimzikafkaoperator_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Porg/project_planton/provider/kubernetes/addon/strimzikafkaoperator/v1/spec.proto\x12Eorg.project_planton.provider.kubernetes.addon.strimzikafkaoperator.v1\x1a\x1bbuf/validate/validate.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\x1a3org/project_planton/shared/kubernetes/options.proto\x1a:org/project_planton/shared/kubernetes/target_cluster.proto\"\x9d\x02\n" +
-	"\x1bKafkaOperatorKubernetesSpec\x12j\n" +
-	"\x0etarget_cluster\x18\x01 \x01(\v2C.org.project_planton.shared.kubernetes.KubernetesAddonTargetClusterR\rtargetCluster\x12\x91\x01\n" +
-	"\tcontainer\x18\x02 \x01(\v2k.org.project_planton.provider.kubernetes.addon.strimzikafkaoperator.v1.KafkaOperatorKubernetesSpecContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\"\xa2\x01\n" +
-	"$KafkaOperatorKubernetesSpecContainer\x12z\n" +
+	"Porg/project_planton/provider/kubernetes/addon/strimzikafkaoperator/v1/spec.proto\x12Eorg.project_planton.provider.kubernetes.addon.strimzikafkaoperator.v1\x1a\x1bbuf/validate/validate.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\x1a3org/project_planton/shared/kubernetes/options.proto\x1a:org/project_planton/shared/kubernetes/target_cluster.proto\"\x97\x02\n" +
+	"\x18StrimziKafkaOperatorSpec\x12j\n" +
+	"\x0etarget_cluster\x18\x01 \x01(\v2C.org.project_planton.shared.kubernetes.KubernetesAddonTargetClusterR\rtargetCluster\x12\x8e\x01\n" +
+	"\tcontainer\x18\x02 \x01(\v2h.org.project_planton.provider.kubernetes.addon.strimzikafkaoperator.v1.StrimziKafkaOperatorSpecContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\"\x9f\x01\n" +
+	"!StrimziKafkaOperatorSpecContainer\x12z\n" +
 	"\tresources\x18\x01 \x01(\v29.org.project_planton.shared.kubernetes.ContainerResourcesB!\xba\xfb\xa4\x02\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
@@ -156,15 +156,15 @@ func file_org_project_planton_provider_kubernetes_addon_strimzikafkaoperator_v1_
 
 var file_org_project_planton_provider_kubernetes_addon_strimzikafkaoperator_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_org_project_planton_provider_kubernetes_addon_strimzikafkaoperator_v1_spec_proto_goTypes = []any{
-	(*KafkaOperatorKubernetesSpec)(nil),             // 0: org.project_planton.provider.kubernetes.addon.strimzikafkaoperator.v1.KafkaOperatorKubernetesSpec
-	(*KafkaOperatorKubernetesSpecContainer)(nil),    // 1: org.project_planton.provider.kubernetes.addon.strimzikafkaoperator.v1.KafkaOperatorKubernetesSpecContainer
+	(*StrimziKafkaOperatorSpec)(nil),                // 0: org.project_planton.provider.kubernetes.addon.strimzikafkaoperator.v1.StrimziKafkaOperatorSpec
+	(*StrimziKafkaOperatorSpecContainer)(nil),       // 1: org.project_planton.provider.kubernetes.addon.strimzikafkaoperator.v1.StrimziKafkaOperatorSpecContainer
 	(*kubernetes.KubernetesAddonTargetCluster)(nil), // 2: org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
 	(*kubernetes.ContainerResources)(nil),           // 3: org.project_planton.shared.kubernetes.ContainerResources
 }
 var file_org_project_planton_provider_kubernetes_addon_strimzikafkaoperator_v1_spec_proto_depIdxs = []int32{
-	2, // 0: org.project_planton.provider.kubernetes.addon.strimzikafkaoperator.v1.KafkaOperatorKubernetesSpec.target_cluster:type_name -> org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
-	1, // 1: org.project_planton.provider.kubernetes.addon.strimzikafkaoperator.v1.KafkaOperatorKubernetesSpec.container:type_name -> org.project_planton.provider.kubernetes.addon.strimzikafkaoperator.v1.KafkaOperatorKubernetesSpecContainer
-	3, // 2: org.project_planton.provider.kubernetes.addon.strimzikafkaoperator.v1.KafkaOperatorKubernetesSpecContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
+	2, // 0: org.project_planton.provider.kubernetes.addon.strimzikafkaoperator.v1.StrimziKafkaOperatorSpec.target_cluster:type_name -> org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
+	1, // 1: org.project_planton.provider.kubernetes.addon.strimzikafkaoperator.v1.StrimziKafkaOperatorSpec.container:type_name -> org.project_planton.provider.kubernetes.addon.strimzikafkaoperator.v1.StrimziKafkaOperatorSpecContainer
+	3, // 2: org.project_planton.provider.kubernetes.addon.strimzikafkaoperator.v1.StrimziKafkaOperatorSpecContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
 	3, // [3:3] is the sub-list for method output_type
 	3, // [3:3] is the sub-list for method input_type
 	3, // [3:3] is the sub-list for extension type_name

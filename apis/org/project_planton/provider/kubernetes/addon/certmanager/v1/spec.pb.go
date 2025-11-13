@@ -24,9 +24,9 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// CertManagerKubernetesSpec defines configuration for cert-manager on any cluster.
+// CertManagerSpec defines configuration for cert-manager on any cluster.
 // The addon automatically creates a ClusterIssuer with multiple DNS solvers based on the provided DNS provider configurations.
-type CertManagerKubernetesSpec struct {
+type CertManagerSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// The Kubernetes cluster to install this addon on.
 	TargetCluster *kubernetes.KubernetesAddonTargetCluster `protobuf:"bytes,1,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
@@ -48,20 +48,20 @@ type CertManagerKubernetesSpec struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *CertManagerKubernetesSpec) Reset() {
-	*x = CertManagerKubernetesSpec{}
+func (x *CertManagerSpec) Reset() {
+	*x = CertManagerSpec{}
 	mi := &file_org_project_planton_provider_kubernetes_addon_certmanager_v1_spec_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *CertManagerKubernetesSpec) String() string {
+func (x *CertManagerSpec) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*CertManagerKubernetesSpec) ProtoMessage() {}
+func (*CertManagerSpec) ProtoMessage() {}
 
-func (x *CertManagerKubernetesSpec) ProtoReflect() protoreflect.Message {
+func (x *CertManagerSpec) ProtoReflect() protoreflect.Message {
 	mi := &file_org_project_planton_provider_kubernetes_addon_certmanager_v1_spec_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -73,54 +73,54 @@ func (x *CertManagerKubernetesSpec) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use CertManagerKubernetesSpec.ProtoReflect.Descriptor instead.
-func (*CertManagerKubernetesSpec) Descriptor() ([]byte, []int) {
+// Deprecated: Use CertManagerSpec.ProtoReflect.Descriptor instead.
+func (*CertManagerSpec) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_kubernetes_addon_certmanager_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *CertManagerKubernetesSpec) GetTargetCluster() *kubernetes.KubernetesAddonTargetCluster {
+func (x *CertManagerSpec) GetTargetCluster() *kubernetes.KubernetesAddonTargetCluster {
 	if x != nil {
 		return x.TargetCluster
 	}
 	return nil
 }
 
-func (x *CertManagerKubernetesSpec) GetNamespace() string {
+func (x *CertManagerSpec) GetNamespace() string {
 	if x != nil && x.Namespace != nil {
 		return *x.Namespace
 	}
 	return ""
 }
 
-func (x *CertManagerKubernetesSpec) GetCertManagerVersion() string {
+func (x *CertManagerSpec) GetCertManagerVersion() string {
 	if x != nil && x.CertManagerVersion != nil {
 		return *x.CertManagerVersion
 	}
 	return ""
 }
 
-func (x *CertManagerKubernetesSpec) GetHelmChartVersion() string {
+func (x *CertManagerSpec) GetHelmChartVersion() string {
 	if x != nil && x.HelmChartVersion != nil {
 		return *x.HelmChartVersion
 	}
 	return ""
 }
 
-func (x *CertManagerKubernetesSpec) GetSkipInstallSelfSignedIssuer() bool {
+func (x *CertManagerSpec) GetSkipInstallSelfSignedIssuer() bool {
 	if x != nil {
 		return x.SkipInstallSelfSignedIssuer
 	}
 	return false
 }
 
-func (x *CertManagerKubernetesSpec) GetAcme() *AcmeConfig {
+func (x *CertManagerSpec) GetAcme() *AcmeConfig {
 	if x != nil {
 		return x.Acme
 	}
 	return nil
 }
 
-func (x *CertManagerKubernetesSpec) GetDnsProviders() []*DnsProviderConfig {
+func (x *CertManagerSpec) GetDnsProviders() []*DnsProviderConfig {
 	if x != nil {
 		return x.DnsProviders
 	}
@@ -563,8 +563,8 @@ var File_org_project_planton_provider_kubernetes_addon_certmanager_v1_spec_proto
 
 const file_org_project_planton_provider_kubernetes_addon_certmanager_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Gorg/project_planton/provider/kubernetes/addon/certmanager/v1/spec.proto\x12<org.project_planton.provider.kubernetes.addon.certmanager.v1\x1a\x1bbuf/validate/validate.proto\x1a:org/project_planton/shared/kubernetes/target_cluster.proto\x1a0org/project_planton/shared/options/options.proto\"\xaa\x05\n" +
-	"\x19CertManagerKubernetesSpec\x12j\n" +
+	"Gorg/project_planton/provider/kubernetes/addon/certmanager/v1/spec.proto\x12<org.project_planton.provider.kubernetes.addon.certmanager.v1\x1a\x1bbuf/validate/validate.proto\x1a:org/project_planton/shared/kubernetes/target_cluster.proto\x1a0org/project_planton/shared/options/options.proto\"\xa0\x05\n" +
+	"\x0fCertManagerSpec\x12j\n" +
 	"\x0etarget_cluster\x18\x01 \x01(\v2C.org.project_planton.shared.kubernetes.KubernetesAddonTargetClusterR\rtargetCluster\x123\n" +
 	"\tnamespace\x18\x02 \x01(\tB\x10\x8a\xa6\x1d\fcert-managerH\x00R\tnamespace\x88\x01\x01\x12B\n" +
 	"\x14cert_manager_version\x18\x03 \x01(\tB\v\x8a\xa6\x1d\av1.19.1H\x01R\x12certManagerVersion\x88\x01\x01\x12>\n" +
@@ -622,7 +622,7 @@ func file_org_project_planton_provider_kubernetes_addon_certmanager_v1_spec_prot
 
 var file_org_project_planton_provider_kubernetes_addon_certmanager_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
 var file_org_project_planton_provider_kubernetes_addon_certmanager_v1_spec_proto_goTypes = []any{
-	(*CertManagerKubernetesSpec)(nil),               // 0: org.project_planton.provider.kubernetes.addon.certmanager.v1.CertManagerKubernetesSpec
+	(*CertManagerSpec)(nil),                         // 0: org.project_planton.provider.kubernetes.addon.certmanager.v1.CertManagerSpec
 	(*AcmeConfig)(nil),                              // 1: org.project_planton.provider.kubernetes.addon.certmanager.v1.AcmeConfig
 	(*DnsProviderConfig)(nil),                       // 2: org.project_planton.provider.kubernetes.addon.certmanager.v1.DnsProviderConfig
 	(*GcpCloudDnsProvider)(nil),                     // 3: org.project_planton.provider.kubernetes.addon.certmanager.v1.GcpCloudDnsProvider
@@ -632,9 +632,9 @@ var file_org_project_planton_provider_kubernetes_addon_certmanager_v1_spec_proto
 	(*kubernetes.KubernetesAddonTargetCluster)(nil), // 7: org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
 }
 var file_org_project_planton_provider_kubernetes_addon_certmanager_v1_spec_proto_depIdxs = []int32{
-	7, // 0: org.project_planton.provider.kubernetes.addon.certmanager.v1.CertManagerKubernetesSpec.target_cluster:type_name -> org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
-	1, // 1: org.project_planton.provider.kubernetes.addon.certmanager.v1.CertManagerKubernetesSpec.acme:type_name -> org.project_planton.provider.kubernetes.addon.certmanager.v1.AcmeConfig
-	2, // 2: org.project_planton.provider.kubernetes.addon.certmanager.v1.CertManagerKubernetesSpec.dns_providers:type_name -> org.project_planton.provider.kubernetes.addon.certmanager.v1.DnsProviderConfig
+	7, // 0: org.project_planton.provider.kubernetes.addon.certmanager.v1.CertManagerSpec.target_cluster:type_name -> org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
+	1, // 1: org.project_planton.provider.kubernetes.addon.certmanager.v1.CertManagerSpec.acme:type_name -> org.project_planton.provider.kubernetes.addon.certmanager.v1.AcmeConfig
+	2, // 2: org.project_planton.provider.kubernetes.addon.certmanager.v1.CertManagerSpec.dns_providers:type_name -> org.project_planton.provider.kubernetes.addon.certmanager.v1.DnsProviderConfig
 	3, // 3: org.project_planton.provider.kubernetes.addon.certmanager.v1.DnsProviderConfig.gcp_cloud_dns:type_name -> org.project_planton.provider.kubernetes.addon.certmanager.v1.GcpCloudDnsProvider
 	4, // 4: org.project_planton.provider.kubernetes.addon.certmanager.v1.DnsProviderConfig.aws_route53:type_name -> org.project_planton.provider.kubernetes.addon.certmanager.v1.AwsRoute53Provider
 	5, // 5: org.project_planton.provider.kubernetes.addon.certmanager.v1.DnsProviderConfig.azure_dns:type_name -> org.project_planton.provider.kubernetes.addon.certmanager.v1.AzureDnsProvider

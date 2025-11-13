@@ -25,8 +25,8 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// ExternalDnsKubernetesSpec defines configuration for ExternalDNS on any cluster.
-type ExternalDnsKubernetesSpec struct {
+// ExternalDnsSpec defines configuration for ExternalDNS on any cluster.
+type ExternalDnsSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// The Kubernetes cluster to install this addon on.
 	TargetCluster *kubernetes.KubernetesAddonTargetCluster `protobuf:"bytes,1,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
@@ -40,29 +40,29 @@ type ExternalDnsKubernetesSpec struct {
 	//
 	// Types that are valid to be assigned to ProviderConfig:
 	//
-	//	*ExternalDnsKubernetesSpec_Gke
-	//	*ExternalDnsKubernetesSpec_Eks
-	//	*ExternalDnsKubernetesSpec_Aks
-	//	*ExternalDnsKubernetesSpec_Cloudflare
-	ProviderConfig isExternalDnsKubernetesSpec_ProviderConfig `protobuf_oneof:"provider_config"`
+	//	*ExternalDnsSpec_Gke
+	//	*ExternalDnsSpec_Eks
+	//	*ExternalDnsSpec_Aks
+	//	*ExternalDnsSpec_Cloudflare
+	ProviderConfig isExternalDnsSpec_ProviderConfig `protobuf_oneof:"provider_config"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
 
-func (x *ExternalDnsKubernetesSpec) Reset() {
-	*x = ExternalDnsKubernetesSpec{}
+func (x *ExternalDnsSpec) Reset() {
+	*x = ExternalDnsSpec{}
 	mi := &file_org_project_planton_provider_kubernetes_addon_externaldns_v1_spec_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ExternalDnsKubernetesSpec) String() string {
+func (x *ExternalDnsSpec) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ExternalDnsKubernetesSpec) ProtoMessage() {}
+func (*ExternalDnsSpec) ProtoMessage() {}
 
-func (x *ExternalDnsKubernetesSpec) ProtoReflect() protoreflect.Message {
+func (x *ExternalDnsSpec) ProtoReflect() protoreflect.Message {
 	mi := &file_org_project_planton_provider_kubernetes_addon_externaldns_v1_spec_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -74,109 +74,109 @@ func (x *ExternalDnsKubernetesSpec) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ExternalDnsKubernetesSpec.ProtoReflect.Descriptor instead.
-func (*ExternalDnsKubernetesSpec) Descriptor() ([]byte, []int) {
+// Deprecated: Use ExternalDnsSpec.ProtoReflect.Descriptor instead.
+func (*ExternalDnsSpec) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_kubernetes_addon_externaldns_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *ExternalDnsKubernetesSpec) GetTargetCluster() *kubernetes.KubernetesAddonTargetCluster {
+func (x *ExternalDnsSpec) GetTargetCluster() *kubernetes.KubernetesAddonTargetCluster {
 	if x != nil {
 		return x.TargetCluster
 	}
 	return nil
 }
 
-func (x *ExternalDnsKubernetesSpec) GetNamespace() string {
+func (x *ExternalDnsSpec) GetNamespace() string {
 	if x != nil && x.Namespace != nil {
 		return *x.Namespace
 	}
 	return ""
 }
 
-func (x *ExternalDnsKubernetesSpec) GetExternalDnsVersion() string {
+func (x *ExternalDnsSpec) GetExternalDnsVersion() string {
 	if x != nil && x.ExternalDnsVersion != nil {
 		return *x.ExternalDnsVersion
 	}
 	return ""
 }
 
-func (x *ExternalDnsKubernetesSpec) GetHelmChartVersion() string {
+func (x *ExternalDnsSpec) GetHelmChartVersion() string {
 	if x != nil && x.HelmChartVersion != nil {
 		return *x.HelmChartVersion
 	}
 	return ""
 }
 
-func (x *ExternalDnsKubernetesSpec) GetProviderConfig() isExternalDnsKubernetesSpec_ProviderConfig {
+func (x *ExternalDnsSpec) GetProviderConfig() isExternalDnsSpec_ProviderConfig {
 	if x != nil {
 		return x.ProviderConfig
 	}
 	return nil
 }
 
-func (x *ExternalDnsKubernetesSpec) GetGke() *ExternalDnsGkeConfig {
+func (x *ExternalDnsSpec) GetGke() *ExternalDnsGkeConfig {
 	if x != nil {
-		if x, ok := x.ProviderConfig.(*ExternalDnsKubernetesSpec_Gke); ok {
+		if x, ok := x.ProviderConfig.(*ExternalDnsSpec_Gke); ok {
 			return x.Gke
 		}
 	}
 	return nil
 }
 
-func (x *ExternalDnsKubernetesSpec) GetEks() *ExternalDnsEksConfig {
+func (x *ExternalDnsSpec) GetEks() *ExternalDnsEksConfig {
 	if x != nil {
-		if x, ok := x.ProviderConfig.(*ExternalDnsKubernetesSpec_Eks); ok {
+		if x, ok := x.ProviderConfig.(*ExternalDnsSpec_Eks); ok {
 			return x.Eks
 		}
 	}
 	return nil
 }
 
-func (x *ExternalDnsKubernetesSpec) GetAks() *ExternalDnsAksConfig {
+func (x *ExternalDnsSpec) GetAks() *ExternalDnsAksConfig {
 	if x != nil {
-		if x, ok := x.ProviderConfig.(*ExternalDnsKubernetesSpec_Aks); ok {
+		if x, ok := x.ProviderConfig.(*ExternalDnsSpec_Aks); ok {
 			return x.Aks
 		}
 	}
 	return nil
 }
 
-func (x *ExternalDnsKubernetesSpec) GetCloudflare() *ExternalDnsCloudflareConfig {
+func (x *ExternalDnsSpec) GetCloudflare() *ExternalDnsCloudflareConfig {
 	if x != nil {
-		if x, ok := x.ProviderConfig.(*ExternalDnsKubernetesSpec_Cloudflare); ok {
+		if x, ok := x.ProviderConfig.(*ExternalDnsSpec_Cloudflare); ok {
 			return x.Cloudflare
 		}
 	}
 	return nil
 }
 
-type isExternalDnsKubernetesSpec_ProviderConfig interface {
-	isExternalDnsKubernetesSpec_ProviderConfig()
+type isExternalDnsSpec_ProviderConfig interface {
+	isExternalDnsSpec_ProviderConfig()
 }
 
-type ExternalDnsKubernetesSpec_Gke struct {
+type ExternalDnsSpec_Gke struct {
 	Gke *ExternalDnsGkeConfig `protobuf:"bytes,200,opt,name=gke,proto3,oneof"`
 }
 
-type ExternalDnsKubernetesSpec_Eks struct {
+type ExternalDnsSpec_Eks struct {
 	Eks *ExternalDnsEksConfig `protobuf:"bytes,201,opt,name=eks,proto3,oneof"`
 }
 
-type ExternalDnsKubernetesSpec_Aks struct {
+type ExternalDnsSpec_Aks struct {
 	Aks *ExternalDnsAksConfig `protobuf:"bytes,202,opt,name=aks,proto3,oneof"`
 }
 
-type ExternalDnsKubernetesSpec_Cloudflare struct {
+type ExternalDnsSpec_Cloudflare struct {
 	Cloudflare *ExternalDnsCloudflareConfig `protobuf:"bytes,203,opt,name=cloudflare,proto3,oneof"`
 }
 
-func (*ExternalDnsKubernetesSpec_Gke) isExternalDnsKubernetesSpec_ProviderConfig() {}
+func (*ExternalDnsSpec_Gke) isExternalDnsSpec_ProviderConfig() {}
 
-func (*ExternalDnsKubernetesSpec_Eks) isExternalDnsKubernetesSpec_ProviderConfig() {}
+func (*ExternalDnsSpec_Eks) isExternalDnsSpec_ProviderConfig() {}
 
-func (*ExternalDnsKubernetesSpec_Aks) isExternalDnsKubernetesSpec_ProviderConfig() {}
+func (*ExternalDnsSpec_Aks) isExternalDnsSpec_ProviderConfig() {}
 
-func (*ExternalDnsKubernetesSpec_Cloudflare) isExternalDnsKubernetesSpec_ProviderConfig() {}
+func (*ExternalDnsSpec_Cloudflare) isExternalDnsSpec_ProviderConfig() {}
 
 // ExternalDnsGkeConfig defines configuration for ExternalDNS on GKE with Google Cloud DNS.
 type ExternalDnsGkeConfig struct {
@@ -412,8 +412,8 @@ var File_org_project_planton_provider_kubernetes_addon_externaldns_v1_spec_proto
 
 const file_org_project_planton_provider_kubernetes_addon_externaldns_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Gorg/project_planton/provider/kubernetes/addon/externaldns/v1/spec.proto\x12<org.project_planton.provider.kubernetes.addon.externaldns.v1\x1a\x1bbuf/validate/validate.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a:org/project_planton/shared/kubernetes/target_cluster.proto\x1a0org/project_planton/shared/options/options.proto\"\xc9\x06\n" +
-	"\x19ExternalDnsKubernetesSpec\x12j\n" +
+	"Gorg/project_planton/provider/kubernetes/addon/externaldns/v1/spec.proto\x12<org.project_planton.provider.kubernetes.addon.externaldns.v1\x1a\x1bbuf/validate/validate.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a:org/project_planton/shared/kubernetes/target_cluster.proto\x1a0org/project_planton/shared/options/options.proto\"\xbf\x06\n" +
+	"\x0fExternalDnsSpec\x12j\n" +
 	"\x0etarget_cluster\x18\x01 \x01(\v2C.org.project_planton.shared.kubernetes.KubernetesAddonTargetClusterR\rtargetCluster\x123\n" +
 	"\tnamespace\x18\x02 \x01(\tB\x10\x8a\xa6\x1d\fexternal-dnsH\x01R\tnamespace\x88\x01\x01\x12B\n" +
 	"\x14external_dns_version\x18\x03 \x01(\tB\v\x8a\xa6\x1d\av0.19.0H\x02R\x12externalDnsVersion\x88\x01\x01\x12=\n" +
@@ -461,7 +461,7 @@ func file_org_project_planton_provider_kubernetes_addon_externaldns_v1_spec_prot
 
 var file_org_project_planton_provider_kubernetes_addon_externaldns_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_org_project_planton_provider_kubernetes_addon_externaldns_v1_spec_proto_goTypes = []any{
-	(*ExternalDnsKubernetesSpec)(nil),               // 0: org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDnsKubernetesSpec
+	(*ExternalDnsSpec)(nil),                         // 0: org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDnsSpec
 	(*ExternalDnsGkeConfig)(nil),                    // 1: org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDnsGkeConfig
 	(*ExternalDnsEksConfig)(nil),                    // 2: org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDnsEksConfig
 	(*ExternalDnsAksConfig)(nil),                    // 3: org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDnsAksConfig
@@ -470,11 +470,11 @@ var file_org_project_planton_provider_kubernetes_addon_externaldns_v1_spec_proto
 	(*v1.StringValueOrRef)(nil),                     // 6: org.project_planton.shared.foreignkey.v1.StringValueOrRef
 }
 var file_org_project_planton_provider_kubernetes_addon_externaldns_v1_spec_proto_depIdxs = []int32{
-	5, // 0: org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDnsKubernetesSpec.target_cluster:type_name -> org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
-	1, // 1: org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDnsKubernetesSpec.gke:type_name -> org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDnsGkeConfig
-	2, // 2: org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDnsKubernetesSpec.eks:type_name -> org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDnsEksConfig
-	3, // 3: org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDnsKubernetesSpec.aks:type_name -> org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDnsAksConfig
-	4, // 4: org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDnsKubernetesSpec.cloudflare:type_name -> org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDnsCloudflareConfig
+	5, // 0: org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDnsSpec.target_cluster:type_name -> org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
+	1, // 1: org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDnsSpec.gke:type_name -> org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDnsGkeConfig
+	2, // 2: org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDnsSpec.eks:type_name -> org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDnsEksConfig
+	3, // 3: org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDnsSpec.aks:type_name -> org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDnsAksConfig
+	4, // 4: org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDnsSpec.cloudflare:type_name -> org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDnsCloudflareConfig
 	6, // 5: org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDnsGkeConfig.project_id:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
 	6, // 6: org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDnsGkeConfig.dns_zone_id:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
 	6, // 7: org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDnsEksConfig.route53_zone_id:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
@@ -491,10 +491,10 @@ func file_org_project_planton_provider_kubernetes_addon_externaldns_v1_spec_prot
 		return
 	}
 	file_org_project_planton_provider_kubernetes_addon_externaldns_v1_spec_proto_msgTypes[0].OneofWrappers = []any{
-		(*ExternalDnsKubernetesSpec_Gke)(nil),
-		(*ExternalDnsKubernetesSpec_Eks)(nil),
-		(*ExternalDnsKubernetesSpec_Aks)(nil),
-		(*ExternalDnsKubernetesSpec_Cloudflare)(nil),
+		(*ExternalDnsSpec_Gke)(nil),
+		(*ExternalDnsSpec_Eks)(nil),
+		(*ExternalDnsSpec_Aks)(nil),
+		(*ExternalDnsSpec_Cloudflare)(nil),
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{

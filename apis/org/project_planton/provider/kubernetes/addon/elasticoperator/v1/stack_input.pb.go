@@ -22,31 +22,31 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// elastic-operator-kubernetes stack-input
-type ElasticOperatorKubernetesStackInput struct {
+// elastic-operator stack-input
+type ElasticOperatorStackInput struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// target cloud-resource
-	Target *ElasticOperatorKubernetes `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
+	Target *ElasticOperator `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
 	// provider-config
 	ProviderConfig *kubernetes.KubernetesProviderConfig `protobuf:"bytes,2,opt,name=provider_config,json=providerConfig,proto3" json:"provider_config,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
 
-func (x *ElasticOperatorKubernetesStackInput) Reset() {
-	*x = ElasticOperatorKubernetesStackInput{}
+func (x *ElasticOperatorStackInput) Reset() {
+	*x = ElasticOperatorStackInput{}
 	mi := &file_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_stack_input_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ElasticOperatorKubernetesStackInput) String() string {
+func (x *ElasticOperatorStackInput) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ElasticOperatorKubernetesStackInput) ProtoMessage() {}
+func (*ElasticOperatorStackInput) ProtoMessage() {}
 
-func (x *ElasticOperatorKubernetesStackInput) ProtoReflect() protoreflect.Message {
+func (x *ElasticOperatorStackInput) ProtoReflect() protoreflect.Message {
 	mi := &file_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_stack_input_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -58,19 +58,19 @@ func (x *ElasticOperatorKubernetesStackInput) ProtoReflect() protoreflect.Messag
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ElasticOperatorKubernetesStackInput.ProtoReflect.Descriptor instead.
-func (*ElasticOperatorKubernetesStackInput) Descriptor() ([]byte, []int) {
+// Deprecated: Use ElasticOperatorStackInput.ProtoReflect.Descriptor instead.
+func (*ElasticOperatorStackInput) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_stack_input_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *ElasticOperatorKubernetesStackInput) GetTarget() *ElasticOperatorKubernetes {
+func (x *ElasticOperatorStackInput) GetTarget() *ElasticOperator {
 	if x != nil {
 		return x.Target
 	}
 	return nil
 }
 
-func (x *ElasticOperatorKubernetesStackInput) GetProviderConfig() *kubernetes.KubernetesProviderConfig {
+func (x *ElasticOperatorStackInput) GetProviderConfig() *kubernetes.KubernetesProviderConfig {
 	if x != nil {
 		return x.ProviderConfig
 	}
@@ -81,9 +81,9 @@ var File_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_stack_
 
 const file_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Rorg/project_planton/provider/kubernetes/addon/elasticoperator/v1/stack_input.proto\x12@org.project_planton.provider.kubernetes.addon.elasticoperator.v1\x1aJorg/project_planton/provider/kubernetes/addon/elasticoperator/v1/api.proto\x1a6org/project_planton/provider/kubernetes/provider.proto\"\x86\x02\n" +
-	"#ElasticOperatorKubernetesStackInput\x12s\n" +
-	"\x06target\x18\x01 \x01(\v2[.org.project_planton.provider.kubernetes.addon.elasticoperator.v1.ElasticOperatorKubernetesR\x06target\x12j\n" +
+	"Rorg/project_planton/provider/kubernetes/addon/elasticoperator/v1/stack_input.proto\x12@org.project_planton.provider.kubernetes.addon.elasticoperator.v1\x1aJorg/project_planton/provider/kubernetes/addon/elasticoperator/v1/api.proto\x1a6org/project_planton/provider/kubernetes/provider.proto\"\xf2\x01\n" +
+	"\x19ElasticOperatorStackInput\x12i\n" +
+	"\x06target\x18\x01 \x01(\v2Q.org.project_planton.provider.kubernetes.addon.elasticoperator.v1.ElasticOperatorR\x06target\x12j\n" +
 	"\x0fprovider_config\x18\x02 \x01(\v2A.org.project_planton.provider.kubernetes.KubernetesProviderConfigR\x0eproviderConfigB\x81\x04\n" +
 	"Dcom.org.project_planton.provider.kubernetes.addon.elasticoperator.v1B\x0fStackInputProtoP\x01Z\x82\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/elasticoperator/v1;elasticoperatorv1\xa2\x02\x06OPPKAE\xaa\x02?Org.ProjectPlanton.Provider.Kubernetes.Addon.Elasticoperator.V1\xca\x02?Org\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Elasticoperator\\V1\xe2\x02KOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Elasticoperator\\V1\\GPBMetadata\xea\x02EOrg::ProjectPlanton::Provider::Kubernetes::Addon::Elasticoperator::V1b\x06proto3"
 
@@ -101,13 +101,13 @@ func file_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_stack
 
 var file_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_stack_input_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_stack_input_proto_goTypes = []any{
-	(*ElasticOperatorKubernetesStackInput)(nil), // 0: org.project_planton.provider.kubernetes.addon.elasticoperator.v1.ElasticOperatorKubernetesStackInput
-	(*ElasticOperatorKubernetes)(nil),           // 1: org.project_planton.provider.kubernetes.addon.elasticoperator.v1.ElasticOperatorKubernetes
+	(*ElasticOperatorStackInput)(nil),           // 0: org.project_planton.provider.kubernetes.addon.elasticoperator.v1.ElasticOperatorStackInput
+	(*ElasticOperator)(nil),                     // 1: org.project_planton.provider.kubernetes.addon.elasticoperator.v1.ElasticOperator
 	(*kubernetes.KubernetesProviderConfig)(nil), // 2: org.project_planton.provider.kubernetes.KubernetesProviderConfig
 }
 var file_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_stack_input_proto_depIdxs = []int32{
-	1, // 0: org.project_planton.provider.kubernetes.addon.elasticoperator.v1.ElasticOperatorKubernetesStackInput.target:type_name -> org.project_planton.provider.kubernetes.addon.elasticoperator.v1.ElasticOperatorKubernetes
-	2, // 1: org.project_planton.provider.kubernetes.addon.elasticoperator.v1.ElasticOperatorKubernetesStackInput.provider_config:type_name -> org.project_planton.provider.kubernetes.KubernetesProviderConfig
+	1, // 0: org.project_planton.provider.kubernetes.addon.elasticoperator.v1.ElasticOperatorStackInput.target:type_name -> org.project_planton.provider.kubernetes.addon.elasticoperator.v1.ElasticOperator
+	2, // 1: org.project_planton.provider.kubernetes.addon.elasticoperator.v1.ElasticOperatorStackInput.provider_config:type_name -> org.project_planton.provider.kubernetes.KubernetesProviderConfig
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

@@ -1,4 +1,4 @@
-# CertManager Kubernetes
+# CertManager
 
 > Automated TLS certificate management for your Kubernetes clusters with multi-provider DNS support
 
@@ -6,7 +6,7 @@
 
 Think of cert-manager as your cluster's personal certificate authority liaison. It watches your Certificate resources, talks to Let's Encrypt (or other ACME servers) on your behalf, proves you own the domains using DNS challenges, and keeps your TLS certificates fresh and valid—all automatically.
 
-The `CertManagerKubernetes` addon deploys and configures cert-manager with **automatic ClusterIssuer creation** based on your DNS provider configurations. Whether you're managing domains across Cloudflare, Google Cloud DNS, AWS Route53, or Azure DNS—or even a mix of multiple providers—this addon handles the entire DNS provider integration and ClusterIssuer setup for you.
+The `CertManager` addon deploys and configures cert-manager with **automatic ClusterIssuer creation** based on your DNS provider configurations. Whether you're managing domains across Cloudflare, Google Cloud DNS, AWS Route53, or Azure DNS—or even a mix of multiple providers—this addon handles the entire DNS provider integration and ClusterIssuer setup for you.
 
 ### Why DNS-01 Challenges?
 
@@ -37,7 +37,7 @@ Here's the minimal configuration to get cert-manager running with Cloudflare:
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: CertManagerKubernetes
+kind: CertManager
 metadata:
   name: cert-manager
 spec:
@@ -210,7 +210,7 @@ The real power comes from combining multiple providers in a single deployment:
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: CertManagerKubernetes
+kind: CertManager
 metadata:
   name: cert-manager-multi
 spec:
@@ -541,7 +541,7 @@ kubectl logs -n cert-manager deployment/cert-manager | grep -i dns
 **Why**: The domain in your Certificate doesn't match any `dnsZones` in your `dnsProviders` configuration.
 
 **Fix**: Either:
-- Add the domain to a provider's `dnsZones` list in your CertManagerKubernetes spec
+- Add the domain to a provider's `dnsZones` list in your CertManager spec
 - Create a new `dnsProvider` entry for that domain's DNS provider
 
 Example:
@@ -628,7 +628,7 @@ No need to manually create the Certificate resource—cert-manager detects the a
 If changing DNS providers (e.g., GCP → Cloudflare):
 
 1. **Move DNS first**: Update nameservers, wait for full propagation (24-48h)
-2. **Update addon config**: Modify your CertManagerKubernetes spec to add new provider
+2. **Update addon config**: Modify your CertManager spec to add new provider
 3. **Redeploy addon**: The ClusterIssuer is automatically updated with new solver
 4. **Force certificate renewal**: Delete existing certificates to trigger reissuance with new provider
 5. **Cleanup**: Remove old provider from `dnsProviders` list
@@ -647,7 +647,7 @@ A: Yes! This is the primary use case. Configure multiple entries in the `dnsProv
 
 **Q: What if I need staging AND production issuers?**
 
-A: Deploy two instances of the CertManagerKubernetes addon with different names and different `acme.server` URLs. Each creates its own set of domain-named ClusterIssuers.
+A: Deploy two instances of the CertManager addon with different names and different `acme.server` URLs. Each creates its own set of domain-named ClusterIssuers.
 
 **Q: Can I use the same Cloudflare API token for multiple provider entries?**
 
@@ -663,7 +663,7 @@ A: This addon is specifically designed for DNS-01 challenges and automatically c
 
 **Q: What happens if DNS provider credentials expire?**
 
-A: Certificate renewals will fail. cert-manager will log errors. For Cloudflare, update the token in your CertManagerKubernetes spec and redeploy. For cloud providers, fix the workload identity configuration.
+A: Certificate renewals will fail. cert-manager will log errors. For Cloudflare, update the token in your CertManager spec and redeploy. For cloud providers, fix the workload identity configuration.
 
 ## References
 

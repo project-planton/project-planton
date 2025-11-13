@@ -23,8 +23,8 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// solr-operator-kubernetes
-type SolrOperatorKubernetes struct {
+// apache-solr-operator
+type ApacheSolrOperator struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// api-version
 	ApiVersion string `protobuf:"bytes,1,opt,name=api_version,json=apiVersion,proto3" json:"api_version,omitempty"`
@@ -33,27 +33,27 @@ type SolrOperatorKubernetes struct {
 	// metadata
 	Metadata *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// spec
-	Spec *SolrOperatorKubernetesSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
+	Spec *ApacheSolrOperatorSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status
-	Status        *SolrOperatorKubernetesStatus `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
+	Status        *ApacheSolrOperatorStatus `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *SolrOperatorKubernetes) Reset() {
-	*x = SolrOperatorKubernetes{}
+func (x *ApacheSolrOperator) Reset() {
+	*x = ApacheSolrOperator{}
 	mi := &file_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_api_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *SolrOperatorKubernetes) String() string {
+func (x *ApacheSolrOperator) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*SolrOperatorKubernetes) ProtoMessage() {}
+func (*ApacheSolrOperator) ProtoMessage() {}
 
-func (x *SolrOperatorKubernetes) ProtoReflect() protoreflect.Message {
+func (x *ApacheSolrOperator) ProtoReflect() protoreflect.Message {
 	mi := &file_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_api_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -65,69 +65,69 @@ func (x *SolrOperatorKubernetes) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use SolrOperatorKubernetes.ProtoReflect.Descriptor instead.
-func (*SolrOperatorKubernetes) Descriptor() ([]byte, []int) {
+// Deprecated: Use ApacheSolrOperator.ProtoReflect.Descriptor instead.
+func (*ApacheSolrOperator) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_api_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *SolrOperatorKubernetes) GetApiVersion() string {
+func (x *ApacheSolrOperator) GetApiVersion() string {
 	if x != nil {
 		return x.ApiVersion
 	}
 	return ""
 }
 
-func (x *SolrOperatorKubernetes) GetKind() string {
+func (x *ApacheSolrOperator) GetKind() string {
 	if x != nil {
 		return x.Kind
 	}
 	return ""
 }
 
-func (x *SolrOperatorKubernetes) GetMetadata() *shared.CloudResourceMetadata {
+func (x *ApacheSolrOperator) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
 	return nil
 }
 
-func (x *SolrOperatorKubernetes) GetSpec() *SolrOperatorKubernetesSpec {
+func (x *ApacheSolrOperator) GetSpec() *ApacheSolrOperatorSpec {
 	if x != nil {
 		return x.Spec
 	}
 	return nil
 }
 
-func (x *SolrOperatorKubernetes) GetStatus() *SolrOperatorKubernetesStatus {
+func (x *ApacheSolrOperator) GetStatus() *ApacheSolrOperatorStatus {
 	if x != nil {
 		return x.Status
 	}
 	return nil
 }
 
-// solr-operator-kubernetes status.
-type SolrOperatorKubernetesStatus struct {
+// apache-solr-operator status.
+type ApacheSolrOperatorStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// stack-outputs
-	Outputs       *SolrOperatorKubernetesStackOutputs `protobuf:"bytes,1,opt,name=outputs,proto3" json:"outputs,omitempty"`
+	Outputs       *ApacheSolrOperatorStackOutputs `protobuf:"bytes,1,opt,name=outputs,proto3" json:"outputs,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *SolrOperatorKubernetesStatus) Reset() {
-	*x = SolrOperatorKubernetesStatus{}
+func (x *ApacheSolrOperatorStatus) Reset() {
+	*x = ApacheSolrOperatorStatus{}
 	mi := &file_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_api_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *SolrOperatorKubernetesStatus) String() string {
+func (x *ApacheSolrOperatorStatus) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*SolrOperatorKubernetesStatus) ProtoMessage() {}
+func (*ApacheSolrOperatorStatus) ProtoMessage() {}
 
-func (x *SolrOperatorKubernetesStatus) ProtoReflect() protoreflect.Message {
+func (x *ApacheSolrOperatorStatus) ProtoReflect() protoreflect.Message {
 	mi := &file_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_api_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -139,12 +139,12 @@ func (x *SolrOperatorKubernetesStatus) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use SolrOperatorKubernetesStatus.ProtoReflect.Descriptor instead.
-func (*SolrOperatorKubernetesStatus) Descriptor() ([]byte, []int) {
+// Deprecated: Use ApacheSolrOperatorStatus.ProtoReflect.Descriptor instead.
+func (*ApacheSolrOperatorStatus) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_api_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *SolrOperatorKubernetesStatus) GetOutputs() *SolrOperatorKubernetesStackOutputs {
+func (x *ApacheSolrOperatorStatus) GetOutputs() *ApacheSolrOperatorStackOutputs {
 	if x != nil {
 		return x.Outputs
 	}
@@ -155,18 +155,18 @@ var File_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_api
 
 const file_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Morg/project_planton/provider/kubernetes/addon/apachesolroperator/v1/api.proto\x12Corg.project_planton.provider.kubernetes.addon.apachesolroperator.v1\x1a\x1bbuf/validate/validate.proto\x1aNorg/project_planton/provider/kubernetes/addon/apachesolroperator/v1/spec.proto\x1aWorg/project_planton/provider/kubernetes/addon/apachesolroperator/v1/stack_outputs.proto\x1a)org/project_planton/shared/metadata.proto\"\xe5\x03\n" +
-	"\x16SolrOperatorKubernetes\x12I\n" +
+	"Morg/project_planton/provider/kubernetes/addon/apachesolroperator/v1/api.proto\x12Corg.project_planton.provider.kubernetes.addon.apachesolroperator.v1\x1a\x1bbuf/validate/validate.proto\x1aNorg/project_planton/provider/kubernetes/addon/apachesolroperator/v1/spec.proto\x1aWorg/project_planton/provider/kubernetes/addon/apachesolroperator/v1/stack_outputs.proto\x1a)org/project_planton/shared/metadata.proto\"\xd5\x03\n" +
+	"\x12ApacheSolrOperator\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!kubernetes.project-planton.org/v1R\n" +
-	"apiVersion\x121\n" +
-	"\x04kind\x18\x02 \x01(\tB\x1d\xbaH\x1ar\x18\n" +
-	"\x16SolrOperatorKubernetesR\x04kind\x12U\n" +
-	"\bmetadata\x18\x03 \x01(\v21.org.project_planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12{\n" +
-	"\x04spec\x18\x04 \x01(\v2_.org.project_planton.provider.kubernetes.addon.apachesolroperator.v1.SolrOperatorKubernetesSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12y\n" +
-	"\x06status\x18\x05 \x01(\v2a.org.project_planton.provider.kubernetes.addon.apachesolroperator.v1.SolrOperatorKubernetesStatusR\x06status\"\xa2\x01\n" +
-	"\x1cSolrOperatorKubernetesStatus\x12\x81\x01\n" +
-	"\aoutputs\x18\x01 \x01(\v2g.org.project_planton.provider.kubernetes.addon.apachesolroperator.v1.SolrOperatorKubernetesStackOutputsR\aoutputsB\x8f\x04\n" +
+	"apiVersion\x12-\n" +
+	"\x04kind\x18\x02 \x01(\tB\x19\xbaH\x16r\x14\n" +
+	"\x12ApacheSolrOperatorR\x04kind\x12U\n" +
+	"\bmetadata\x18\x03 \x01(\v21.org.project_planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12w\n" +
+	"\x04spec\x18\x04 \x01(\v2[.org.project_planton.provider.kubernetes.addon.apachesolroperator.v1.ApacheSolrOperatorSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12u\n" +
+	"\x06status\x18\x05 \x01(\v2].org.project_planton.provider.kubernetes.addon.apachesolroperator.v1.ApacheSolrOperatorStatusR\x06status\"\x99\x01\n" +
+	"\x18ApacheSolrOperatorStatus\x12}\n" +
+	"\aoutputs\x18\x01 \x01(\v2c.org.project_planton.provider.kubernetes.addon.apachesolroperator.v1.ApacheSolrOperatorStackOutputsR\aoutputsB\x8f\x04\n" +
 	"Gcom.org.project_planton.provider.kubernetes.addon.apachesolroperator.v1B\bApiProtoP\x01Z\x88\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/apachesolroperator/v1;apachesolroperatorv1\xa2\x02\x06OPPKAA\xaa\x02BOrg.ProjectPlanton.Provider.Kubernetes.Addon.Apachesolroperator.V1\xca\x02BOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Apachesolroperator\\V1\xe2\x02NOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Apachesolroperator\\V1\\GPBMetadata\xea\x02HOrg::ProjectPlanton::Provider::Kubernetes::Addon::Apachesolroperator::V1b\x06proto3"
 
 var (
@@ -183,17 +183,17 @@ func file_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_ap
 
 var file_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_api_proto_goTypes = []any{
-	(*SolrOperatorKubernetes)(nil),             // 0: org.project_planton.provider.kubernetes.addon.apachesolroperator.v1.SolrOperatorKubernetes
-	(*SolrOperatorKubernetesStatus)(nil),       // 1: org.project_planton.provider.kubernetes.addon.apachesolroperator.v1.SolrOperatorKubernetesStatus
-	(*shared.CloudResourceMetadata)(nil),       // 2: org.project_planton.shared.CloudResourceMetadata
-	(*SolrOperatorKubernetesSpec)(nil),         // 3: org.project_planton.provider.kubernetes.addon.apachesolroperator.v1.SolrOperatorKubernetesSpec
-	(*SolrOperatorKubernetesStackOutputs)(nil), // 4: org.project_planton.provider.kubernetes.addon.apachesolroperator.v1.SolrOperatorKubernetesStackOutputs
+	(*ApacheSolrOperator)(nil),             // 0: org.project_planton.provider.kubernetes.addon.apachesolroperator.v1.ApacheSolrOperator
+	(*ApacheSolrOperatorStatus)(nil),       // 1: org.project_planton.provider.kubernetes.addon.apachesolroperator.v1.ApacheSolrOperatorStatus
+	(*shared.CloudResourceMetadata)(nil),   // 2: org.project_planton.shared.CloudResourceMetadata
+	(*ApacheSolrOperatorSpec)(nil),         // 3: org.project_planton.provider.kubernetes.addon.apachesolroperator.v1.ApacheSolrOperatorSpec
+	(*ApacheSolrOperatorStackOutputs)(nil), // 4: org.project_planton.provider.kubernetes.addon.apachesolroperator.v1.ApacheSolrOperatorStackOutputs
 }
 var file_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_api_proto_depIdxs = []int32{
-	2, // 0: org.project_planton.provider.kubernetes.addon.apachesolroperator.v1.SolrOperatorKubernetes.metadata:type_name -> org.project_planton.shared.CloudResourceMetadata
-	3, // 1: org.project_planton.provider.kubernetes.addon.apachesolroperator.v1.SolrOperatorKubernetes.spec:type_name -> org.project_planton.provider.kubernetes.addon.apachesolroperator.v1.SolrOperatorKubernetesSpec
-	1, // 2: org.project_planton.provider.kubernetes.addon.apachesolroperator.v1.SolrOperatorKubernetes.status:type_name -> org.project_planton.provider.kubernetes.addon.apachesolroperator.v1.SolrOperatorKubernetesStatus
-	4, // 3: org.project_planton.provider.kubernetes.addon.apachesolroperator.v1.SolrOperatorKubernetesStatus.outputs:type_name -> org.project_planton.provider.kubernetes.addon.apachesolroperator.v1.SolrOperatorKubernetesStackOutputs
+	2, // 0: org.project_planton.provider.kubernetes.addon.apachesolroperator.v1.ApacheSolrOperator.metadata:type_name -> org.project_planton.shared.CloudResourceMetadata
+	3, // 1: org.project_planton.provider.kubernetes.addon.apachesolroperator.v1.ApacheSolrOperator.spec:type_name -> org.project_planton.provider.kubernetes.addon.apachesolroperator.v1.ApacheSolrOperatorSpec
+	1, // 2: org.project_planton.provider.kubernetes.addon.apachesolroperator.v1.ApacheSolrOperator.status:type_name -> org.project_planton.provider.kubernetes.addon.apachesolroperator.v1.ApacheSolrOperatorStatus
+	4, // 3: org.project_planton.provider.kubernetes.addon.apachesolroperator.v1.ApacheSolrOperatorStatus.outputs:type_name -> org.project_planton.provider.kubernetes.addon.apachesolroperator.v1.ApacheSolrOperatorStackOutputs
 	4, // [4:4] is the sub-list for method output_type
 	4, // [4:4] is the sub-list for method input_type
 	4, // [4:4] is the sub-list for extension type_name

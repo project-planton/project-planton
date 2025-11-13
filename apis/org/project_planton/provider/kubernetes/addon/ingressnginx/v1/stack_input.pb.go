@@ -22,31 +22,31 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// input for ingress-nginx-kubernetes stack
-type IngressNginxKubernetesStackInput struct {
+// input for ingress-nginx stack
+type IngressNginxStackInput struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// target cloud-resource
-	Target *IngressNginxKubernetes `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
+	Target *IngressNginx `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
 	// provider-config
 	ProviderConfig *kubernetes.KubernetesProviderConfig `protobuf:"bytes,2,opt,name=provider_config,json=providerConfig,proto3" json:"provider_config,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
 
-func (x *IngressNginxKubernetesStackInput) Reset() {
-	*x = IngressNginxKubernetesStackInput{}
+func (x *IngressNginxStackInput) Reset() {
+	*x = IngressNginxStackInput{}
 	mi := &file_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_stack_input_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *IngressNginxKubernetesStackInput) String() string {
+func (x *IngressNginxStackInput) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*IngressNginxKubernetesStackInput) ProtoMessage() {}
+func (*IngressNginxStackInput) ProtoMessage() {}
 
-func (x *IngressNginxKubernetesStackInput) ProtoReflect() protoreflect.Message {
+func (x *IngressNginxStackInput) ProtoReflect() protoreflect.Message {
 	mi := &file_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_stack_input_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -58,19 +58,19 @@ func (x *IngressNginxKubernetesStackInput) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use IngressNginxKubernetesStackInput.ProtoReflect.Descriptor instead.
-func (*IngressNginxKubernetesStackInput) Descriptor() ([]byte, []int) {
+// Deprecated: Use IngressNginxStackInput.ProtoReflect.Descriptor instead.
+func (*IngressNginxStackInput) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_stack_input_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *IngressNginxKubernetesStackInput) GetTarget() *IngressNginxKubernetes {
+func (x *IngressNginxStackInput) GetTarget() *IngressNginx {
 	if x != nil {
 		return x.Target
 	}
 	return nil
 }
 
-func (x *IngressNginxKubernetesStackInput) GetProviderConfig() *kubernetes.KubernetesProviderConfig {
+func (x *IngressNginxStackInput) GetProviderConfig() *kubernetes.KubernetesProviderConfig {
 	if x != nil {
 		return x.ProviderConfig
 	}
@@ -81,9 +81,9 @@ var File_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_stack_inp
 
 const file_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Oorg/project_planton/provider/kubernetes/addon/ingressnginx/v1/stack_input.proto\x12=org.project_planton.provider.kubernetes.addon.ingressnginx.v1\x1aGorg/project_planton/provider/kubernetes/addon/ingressnginx/v1/api.proto\x1a6org/project_planton/provider/kubernetes/provider.proto\"\xfd\x01\n" +
-	" IngressNginxKubernetesStackInput\x12m\n" +
-	"\x06target\x18\x01 \x01(\v2U.org.project_planton.provider.kubernetes.addon.ingressnginx.v1.IngressNginxKubernetesR\x06target\x12j\n" +
+	"Oorg/project_planton/provider/kubernetes/addon/ingressnginx/v1/stack_input.proto\x12=org.project_planton.provider.kubernetes.addon.ingressnginx.v1\x1aGorg/project_planton/provider/kubernetes/addon/ingressnginx/v1/api.proto\x1a6org/project_planton/provider/kubernetes/provider.proto\"\xe9\x01\n" +
+	"\x16IngressNginxStackInput\x12c\n" +
+	"\x06target\x18\x01 \x01(\v2K.org.project_planton.provider.kubernetes.addon.ingressnginx.v1.IngressNginxR\x06target\x12j\n" +
 	"\x0fprovider_config\x18\x02 \x01(\v2A.org.project_planton.provider.kubernetes.KubernetesProviderConfigR\x0eproviderConfigB\xeb\x03\n" +
 	"Acom.org.project_planton.provider.kubernetes.addon.ingressnginx.v1B\x0fStackInputProtoP\x01Z|github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/ingressnginx/v1;ingressnginxv1\xa2\x02\x06OPPKAI\xaa\x02<Org.ProjectPlanton.Provider.Kubernetes.Addon.Ingressnginx.V1\xca\x02<Org\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Ingressnginx\\V1\xe2\x02HOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Ingressnginx\\V1\\GPBMetadata\xea\x02BOrg::ProjectPlanton::Provider::Kubernetes::Addon::Ingressnginx::V1b\x06proto3"
 
@@ -101,13 +101,13 @@ func file_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_stack_in
 
 var file_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_stack_input_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_stack_input_proto_goTypes = []any{
-	(*IngressNginxKubernetesStackInput)(nil),    // 0: org.project_planton.provider.kubernetes.addon.ingressnginx.v1.IngressNginxKubernetesStackInput
-	(*IngressNginxKubernetes)(nil),              // 1: org.project_planton.provider.kubernetes.addon.ingressnginx.v1.IngressNginxKubernetes
+	(*IngressNginxStackInput)(nil),              // 0: org.project_planton.provider.kubernetes.addon.ingressnginx.v1.IngressNginxStackInput
+	(*IngressNginx)(nil),                        // 1: org.project_planton.provider.kubernetes.addon.ingressnginx.v1.IngressNginx
 	(*kubernetes.KubernetesProviderConfig)(nil), // 2: org.project_planton.provider.kubernetes.KubernetesProviderConfig
 }
 var file_org_project_planton_provider_kubernetes_addon_ingressnginx_v1_stack_input_proto_depIdxs = []int32{
-	1, // 0: org.project_planton.provider.kubernetes.addon.ingressnginx.v1.IngressNginxKubernetesStackInput.target:type_name -> org.project_planton.provider.kubernetes.addon.ingressnginx.v1.IngressNginxKubernetes
-	2, // 1: org.project_planton.provider.kubernetes.addon.ingressnginx.v1.IngressNginxKubernetesStackInput.provider_config:type_name -> org.project_planton.provider.kubernetes.KubernetesProviderConfig
+	1, // 0: org.project_planton.provider.kubernetes.addon.ingressnginx.v1.IngressNginxStackInput.target:type_name -> org.project_planton.provider.kubernetes.addon.ingressnginx.v1.IngressNginx
+	2, // 1: org.project_planton.provider.kubernetes.addon.ingressnginx.v1.IngressNginxStackInput.provider_config:type_name -> org.project_planton.provider.kubernetes.KubernetesProviderConfig
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

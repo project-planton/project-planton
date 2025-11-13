@@ -509,31 +509,31 @@ enum CloudResourceKind {
       namespace_prefix: "nats"
     }
   }];
-  CertManagerKubernetes = 821 [(kind_meta) = {
+  CertManager = 821 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "cmk8s"
     kubernetes_meta: {category: addon}
   }];
-  ElasticOperatorKubernetes = 822 [(kind_meta) = {
+  ElasticOperator = 822 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "elaopk8s"
     kubernetes_meta: {category: addon}
   }];
-  ExternalDnsKubernetes = 823 [(kind_meta) = {
+  ExternalDns = 823 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "extdnsk8s"
     kubernetes_meta: {category: addon}
   }];
-  IngressNginxKubernetes = 824 [(kind_meta) = {
+  IngressNginx = 824 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "ngxk8s"
     kubernetes_meta: {category: addon}
   }];
-  IstioKubernetes = 825 [(kind_meta) = {
+  KubernetesIstio = 825 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "istk8s"
@@ -545,7 +545,7 @@ enum CloudResourceKind {
     id_prefix: "kfkopk8s"
     kubernetes_meta: {category: addon}
   }];
-  PostgresOperatorKubernetes = 827 [(kind_meta) = {
+  ZalandoPostgresOperator = 827 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "pgopk8s"

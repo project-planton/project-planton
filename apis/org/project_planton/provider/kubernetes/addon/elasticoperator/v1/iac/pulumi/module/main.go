@@ -9,7 +9,7 @@ import (
 
 // Resources is the Pulumi entry‑point.
 func Resources(ctx *pulumi.Context,
-	in *elasticoperatorv1.ElasticOperatorKubernetesStackInput) error {
+	in *elasticoperatorv1.ElasticOperatorStackInput) error {
 
 	locals := initializeLocals(ctx, in)
 

@@ -23,33 +23,33 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// **ElasticOperatorKubernetesSpec** defines the configuration for deploying GitLab on a Kubernetes cluster.
-// This message specifies the parameters needed to create and manage a GitLab deployment within a Kubernetes environment.
-// It includes container specifications and ingress settings to control resource allocation and external access.
-type ElasticOperatorKubernetesSpec struct {
+// **ElasticOperatorSpec** defines the configuration for deploying Elastic Operator on a Kubernetes cluster.
+// This message specifies the parameters needed to create and manage an Elastic Operator deployment within a Kubernetes environment.
+// It includes container specifications to control resource allocation.
+type ElasticOperatorSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// The Kubernetes cluster to install this addon on.
 	TargetCluster *kubernetes.KubernetesAddonTargetCluster `protobuf:"bytes,1,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
-	// The container specifications for the GitLab deployment.
-	Container     *ElasticOperatorKubernetesSpecContainer `protobuf:"bytes,2,opt,name=container,proto3" json:"container,omitempty"`
+	// The container specifications for the Elastic Operator deployment.
+	Container     *ElasticOperatorSpecContainer `protobuf:"bytes,2,opt,name=container,proto3" json:"container,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ElasticOperatorKubernetesSpec) Reset() {
-	*x = ElasticOperatorKubernetesSpec{}
+func (x *ElasticOperatorSpec) Reset() {
+	*x = ElasticOperatorSpec{}
 	mi := &file_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_spec_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ElasticOperatorKubernetesSpec) String() string {
+func (x *ElasticOperatorSpec) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ElasticOperatorKubernetesSpec) ProtoMessage() {}
+func (*ElasticOperatorSpec) ProtoMessage() {}
 
-func (x *ElasticOperatorKubernetesSpec) ProtoReflect() protoreflect.Message {
+func (x *ElasticOperatorSpec) ProtoReflect() protoreflect.Message {
 	mi := &file_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_spec_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -61,49 +61,49 @@ func (x *ElasticOperatorKubernetesSpec) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ElasticOperatorKubernetesSpec.ProtoReflect.Descriptor instead.
-func (*ElasticOperatorKubernetesSpec) Descriptor() ([]byte, []int) {
+// Deprecated: Use ElasticOperatorSpec.ProtoReflect.Descriptor instead.
+func (*ElasticOperatorSpec) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *ElasticOperatorKubernetesSpec) GetTargetCluster() *kubernetes.KubernetesAddonTargetCluster {
+func (x *ElasticOperatorSpec) GetTargetCluster() *kubernetes.KubernetesAddonTargetCluster {
 	if x != nil {
 		return x.TargetCluster
 	}
 	return nil
 }
 
-func (x *ElasticOperatorKubernetesSpec) GetContainer() *ElasticOperatorKubernetesSpecContainer {
+func (x *ElasticOperatorSpec) GetContainer() *ElasticOperatorSpecContainer {
 	if x != nil {
 		return x.Container
 	}
 	return nil
 }
 
-// **ElasticOperatorKubernetesSpecContainer** specifies the container configuration for the GitLab application.
+// **ElasticOperatorSpecContainer** specifies the container configuration for the Elastic Operator application.
 // It includes resource allocations for CPU and memory to ensure the application runs efficiently.
-type ElasticOperatorKubernetesSpecContainer struct {
+type ElasticOperatorSpecContainer struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The CPU and memory resources allocated to the GitLab container.
+	// The CPU and memory resources allocated to the Elastic Operator container.
 	Resources     *kubernetes.ContainerResources `protobuf:"bytes,1,opt,name=resources,proto3" json:"resources,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ElasticOperatorKubernetesSpecContainer) Reset() {
-	*x = ElasticOperatorKubernetesSpecContainer{}
+func (x *ElasticOperatorSpecContainer) Reset() {
+	*x = ElasticOperatorSpecContainer{}
 	mi := &file_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_spec_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ElasticOperatorKubernetesSpecContainer) String() string {
+func (x *ElasticOperatorSpecContainer) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ElasticOperatorKubernetesSpecContainer) ProtoMessage() {}
+func (*ElasticOperatorSpecContainer) ProtoMessage() {}
 
-func (x *ElasticOperatorKubernetesSpecContainer) ProtoReflect() protoreflect.Message {
+func (x *ElasticOperatorSpecContainer) ProtoReflect() protoreflect.Message {
 	mi := &file_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_spec_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -115,12 +115,12 @@ func (x *ElasticOperatorKubernetesSpecContainer) ProtoReflect() protoreflect.Mes
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ElasticOperatorKubernetesSpecContainer.ProtoReflect.Descriptor instead.
-func (*ElasticOperatorKubernetesSpecContainer) Descriptor() ([]byte, []int) {
+// Deprecated: Use ElasticOperatorSpecContainer.ProtoReflect.Descriptor instead.
+func (*ElasticOperatorSpecContainer) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_spec_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *ElasticOperatorKubernetesSpecContainer) GetResources() *kubernetes.ContainerResources {
+func (x *ElasticOperatorSpecContainer) GetResources() *kubernetes.ContainerResources {
 	if x != nil {
 		return x.Resources
 	}
@@ -131,11 +131,11 @@ var File_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_spec_p
 
 const file_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Korg/project_planton/provider/kubernetes/addon/elasticoperator/v1/spec.proto\x12@org.project_planton.provider.kubernetes.addon.elasticoperator.v1\x1a\x1bbuf/validate/validate.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\x1a3org/project_planton/shared/kubernetes/options.proto\x1a:org/project_planton/shared/kubernetes/target_cluster.proto\"\x9c\x02\n" +
-	"\x1dElasticOperatorKubernetesSpec\x12j\n" +
-	"\x0etarget_cluster\x18\x01 \x01(\v2C.org.project_planton.shared.kubernetes.KubernetesAddonTargetClusterR\rtargetCluster\x12\x8e\x01\n" +
-	"\tcontainer\x18\x02 \x01(\v2h.org.project_planton.provider.kubernetes.addon.elasticoperator.v1.ElasticOperatorKubernetesSpecContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\"\xa4\x01\n" +
-	"&ElasticOperatorKubernetesSpecContainer\x12z\n" +
+	"Korg/project_planton/provider/kubernetes/addon/elasticoperator/v1/spec.proto\x12@org.project_planton.provider.kubernetes.addon.elasticoperator.v1\x1a\x1bbuf/validate/validate.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\x1a3org/project_planton/shared/kubernetes/options.proto\x1a:org/project_planton/shared/kubernetes/target_cluster.proto\"\x88\x02\n" +
+	"\x13ElasticOperatorSpec\x12j\n" +
+	"\x0etarget_cluster\x18\x01 \x01(\v2C.org.project_planton.shared.kubernetes.KubernetesAddonTargetClusterR\rtargetCluster\x12\x84\x01\n" +
+	"\tcontainer\x18\x02 \x01(\v2^.org.project_planton.provider.kubernetes.addon.elasticoperator.v1.ElasticOperatorSpecContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\"\x9a\x01\n" +
+	"\x1cElasticOperatorSpecContainer\x12z\n" +
 	"\tresources\x18\x01 \x01(\v29.org.project_planton.shared.kubernetes.ContainerResourcesB!\xba\xfb\xa4\x02\x1c\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\f\n" +
@@ -156,15 +156,15 @@ func file_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_spec_
 
 var file_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_spec_proto_goTypes = []any{
-	(*ElasticOperatorKubernetesSpec)(nil),           // 0: org.project_planton.provider.kubernetes.addon.elasticoperator.v1.ElasticOperatorKubernetesSpec
-	(*ElasticOperatorKubernetesSpecContainer)(nil),  // 1: org.project_planton.provider.kubernetes.addon.elasticoperator.v1.ElasticOperatorKubernetesSpecContainer
+	(*ElasticOperatorSpec)(nil),                     // 0: org.project_planton.provider.kubernetes.addon.elasticoperator.v1.ElasticOperatorSpec
+	(*ElasticOperatorSpecContainer)(nil),            // 1: org.project_planton.provider.kubernetes.addon.elasticoperator.v1.ElasticOperatorSpecContainer
 	(*kubernetes.KubernetesAddonTargetCluster)(nil), // 2: org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
 	(*kubernetes.ContainerResources)(nil),           // 3: org.project_planton.shared.kubernetes.ContainerResources
 }
 var file_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_spec_proto_depIdxs = []int32{
-	2, // 0: org.project_planton.provider.kubernetes.addon.elasticoperator.v1.ElasticOperatorKubernetesSpec.target_cluster:type_name -> org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
-	1, // 1: org.project_planton.provider.kubernetes.addon.elasticoperator.v1.ElasticOperatorKubernetesSpec.container:type_name -> org.project_planton.provider.kubernetes.addon.elasticoperator.v1.ElasticOperatorKubernetesSpecContainer
-	3, // 2: org.project_planton.provider.kubernetes.addon.elasticoperator.v1.ElasticOperatorKubernetesSpecContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
+	2, // 0: org.project_planton.provider.kubernetes.addon.elasticoperator.v1.ElasticOperatorSpec.target_cluster:type_name -> org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
+	1, // 1: org.project_planton.provider.kubernetes.addon.elasticoperator.v1.ElasticOperatorSpec.container:type_name -> org.project_planton.provider.kubernetes.addon.elasticoperator.v1.ElasticOperatorSpecContainer
+	3, // 2: org.project_planton.provider.kubernetes.addon.elasticoperator.v1.ElasticOperatorSpecContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
 	3, // [3:3] is the sub-list for method output_type
 	3, // [3:3] is the sub-list for method input_type
 	3, // [3:3] is the sub-list for extension type_name

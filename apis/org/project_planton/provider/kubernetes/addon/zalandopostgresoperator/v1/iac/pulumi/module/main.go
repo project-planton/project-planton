@@ -8,7 +8,7 @@ import (
 )
 
 // Resources is the Pulumi entry‑point invoked by the Project‑Planton CLI.
-func Resources(ctx *pulumi.Context, stackInput *zalandopostgresoperatorv1.PostgresOperatorKubernetesStackInput) error {
+func Resources(ctx *pulumi.Context, stackInput *zalandopostgresoperatorv1.ZalandoPostgresOperatorStackInput) error {
 	// Translate incoming protobuf‑generated types into helper data we
 	//                need throughout the module (labels, metadata, etc.).
 	locals := initializeLocals(ctx, stackInput)

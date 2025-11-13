@@ -10,6 +10,8 @@ For PostgreSQL specifically, operators have reached production maturity. They ha
 
 This document explores the landscape of deploying PostgreSQL operators on Kubernetes, with a focus on the **Zalando Postgres Operator**—one of the most battle-tested solutions in the ecosystem. We'll examine deployment methods from anti-patterns to production-ready approaches, understand the operator's architecture and capabilities, and explain why it remains a strong choice for teams building database services on Kubernetes.
 
+The Project Planton `ZalandoPostgresOperator` resource provides a declarative API for deploying and managing the Zalando Postgres Operator across Kubernetes clusters.
+
 ## The Deployment Landscape
 
 Deploying a PostgreSQL operator isn't fundamentally different from deploying any other Kubernetes workload, but the stakes are higher. Get it wrong, and you're managing stateful infrastructure with potential data loss exposure. Get it right, and you have a self-healing database platform.
@@ -60,7 +62,7 @@ Deploying a PostgreSQL operator isn't fundamentally different from deploying any
 
 **Approach:** Manage operator deployment through Terraform, Pulumi, Crossplane, or similar IaC tools.
 
-**What it solves:** Integration with broader infrastructure management. Enforce dependencies (e.g., operator must be present before database clusters). Fits teams already standardized on Terraform or Pulumi for all infrastructure. Project Planton's approach of wrapping the operator in a `PostgresOperatorKubernetes` CRD exemplifies this pattern—operators become composable infrastructure components.
+**What it solves:** Integration with broader infrastructure management. Enforce dependencies (e.g., operator must be present before database clusters). Fits teams already standardized on Terraform or Pulumi for all infrastructure. Project Planton's approach of wrapping the operator in a `ZalandoPostgresOperator` CRD exemplifies this pattern—operators become composable infrastructure components.
 
 **What it doesn't solve:** Added abstraction layer means debugging complexity (chase issues through IaC state, Kubernetes resources, and operator logs). Module/provider version compatibility lag (IaC modules might not expose the latest operator features immediately).
 
@@ -193,7 +195,7 @@ For a platform like Project Planton—building multi-cloud IaC abstractions over
 
 5. **Open source alignment:** No licensing concerns means Project Planton can package and distribute this freely, whether for public cloud, private cloud, or on-premises deployments.
 
-The abstraction layer—Project Planton's `PostgresOperatorKubernetes` API—wraps deployment complexity (Helm charts, RBAC, namespace setup) into a declarative interface. Teams using Project Planton don't need to understand operator internals; they declare intent via protobuf APIs, and the platform handles the rest.
+The abstraction layer—Project Planton's `ZalandoPostgresOperator` API—wraps deployment complexity (Helm charts, RBAC, namespace setup) into a declarative interface. Teams using Project Planton don't need to understand operator internals; they declare intent via protobuf APIs, and the platform handles the rest.
 
 This is the promise of modern infrastructure platforms: take battle-tested open source components (like Zalando's operator), wrap them in ergonomic APIs, and deliver them consistently across clouds.
 

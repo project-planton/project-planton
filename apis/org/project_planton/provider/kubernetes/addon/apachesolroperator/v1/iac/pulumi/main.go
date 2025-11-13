@@ -10,7 +10,7 @@ import (
 
 func main() {
 	pulumi.Run(func(ctx *pulumi.Context) error {
-		stackInput := &apachesolroperatorv1.SolrOperatorKubernetesStackInput{}
+		stackInput := &apachesolroperatorv1.ApacheSolrOperatorStackInput{}
 
 		if err := stackinput.LoadStackInput(ctx, stackInput); err != nil {
 			return errors.Wrap(err, "failed to load stack-input")

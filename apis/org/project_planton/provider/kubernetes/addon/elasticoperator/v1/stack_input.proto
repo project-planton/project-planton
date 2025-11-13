@@ -5,10 +5,10 @@ package org.project_planton.provider.kubernetes.addon.elasticoperator.v1;
 import "org/project_planton/provider/kubernetes/addon/elasticoperator/v1/api.proto";
 import "org/project_planton/provider/kubernetes/provider.proto";
 
-//elastic-operator-kubernetes stack-input
-message ElasticOperatorKubernetesStackInput {
+//elastic-operator stack-input
+message ElasticOperatorStackInput {
   //target cloud-resource
-  ElasticOperatorKubernetes target = 1;
+  ElasticOperator target = 1;
   //provider-config
   org.project_planton.provider.kubernetes.KubernetesProviderConfig provider_config = 2;
 }

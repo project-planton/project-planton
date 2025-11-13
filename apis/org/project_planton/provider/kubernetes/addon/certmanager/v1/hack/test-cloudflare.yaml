@@ -1,5 +1,5 @@
 apiVersion: kubernetes.project-planton.org/v1
-kind: CertManagerKubernetes
+kind: CertManager
 metadata:
   name: test-cert-manager-multi-provider
 spec:

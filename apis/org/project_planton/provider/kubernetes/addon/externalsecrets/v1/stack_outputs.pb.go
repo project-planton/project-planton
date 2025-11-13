@@ -21,45 +21,45 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// external-secrets-kubernetes stack outputs
-type ExternalSecretsKubernetesStackOutputs struct {
+// external-secrets stack outputs
+type ExternalSecretsStackOutputs struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// kubernetes namespace in which external-secrets-kubernetes is created.
+	// kubernetes namespace in which external-secrets is created.
 	Namespace string `protobuf:"bytes,1,opt,name=namespace,proto3" json:"namespace,omitempty"`
-	// kubernetes service name for external-secrets-kubernetes.
-	// ex: main-external-secrets-kubernetes
-	// in the above example, "main" is the name of the external-secrets-kubernetes
+	// kubernetes service name for external-secrets.
+	// ex: main-external-secrets
+	// in the above example, "main" is the name of the external-secrets
 	Service string `protobuf:"bytes,2,opt,name=service,proto3" json:"service,omitempty"`
-	// command to setup port-forwarding to open external-secrets-kubernetes from developers laptop.
-	// this might come handy when external-secrets-kubernetes ingress is disabled for security reasons.
-	// this is rendered by combining external_secrets_kubernetes_kubernetes_service and kubernetes_namespace
-	// ex: kubectl port-forward svc/external_secrets_kubernetes_kubernetes_service -n kubernetes_namespace 6379:6379
-	// running the command from this attribute makes it possible to access external-secrets-kubernetes using http://localhost:8080/gitlab
+	// command to setup port-forwarding to open external-secrets from developers laptop.
+	// this might come handy when external-secrets ingress is disabled for security reasons.
+	// this is rendered by combining external_secrets_kubernetes_service and kubernetes_namespace
+	// ex: kubectl port-forward svc/external_secrets_kubernetes_service -n kubernetes_namespace 6379:6379
+	// running the command from this attribute makes it possible to access external-secrets using http://localhost:8080/gitlab
 	PortForwardCommand string `protobuf:"bytes,3,opt,name=port_forward_command,json=portForwardCommand,proto3" json:"port_forward_command,omitempty"`
-	// kubernetes endpoint to connect to external-secrets-kubernetes from the web browser.
-	// ex: main-external-secrets-kubernetes.namespace.svc.cluster.local:6379
+	// kubernetes endpoint to connect to external-secrets from the web browser.
+	// ex: main-external-secrets.namespace.svc.cluster.local:6379
 	KubeEndpoint string `protobuf:"bytes,4,opt,name=kube_endpoint,json=kubeEndpoint,proto3" json:"kube_endpoint,omitempty"`
-	// public endpoint to open external-secrets-kubernetes from clients outside kubernetes.
+	// public endpoint to open external-secrets from clients outside kubernetes.
 	// ex: https://gls-planton-pcs-dev-main.data.dev.planton.live:6379/gitlab
 	IngressEndpoint string `protobuf:"bytes,5,opt,name=ingress_endpoint,json=ingressEndpoint,proto3" json:"ingress_endpoint,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
 
-func (x *ExternalSecretsKubernetesStackOutputs) Reset() {
-	*x = ExternalSecretsKubernetesStackOutputs{}
+func (x *ExternalSecretsStackOutputs) Reset() {
+	*x = ExternalSecretsStackOutputs{}
 	mi := &file_org_project_planton_provider_kubernetes_addon_externalsecrets_v1_stack_outputs_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ExternalSecretsKubernetesStackOutputs) String() string {
+func (x *ExternalSecretsStackOutputs) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ExternalSecretsKubernetesStackOutputs) ProtoMessage() {}
+func (*ExternalSecretsStackOutputs) ProtoMessage() {}
 
-func (x *ExternalSecretsKubernetesStackOutputs) ProtoReflect() protoreflect.Message {
+func (x *ExternalSecretsStackOutputs) ProtoReflect() protoreflect.Message {
 	mi := &file_org_project_planton_provider_kubernetes_addon_externalsecrets_v1_stack_outputs_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -71,40 +71,40 @@ func (x *ExternalSecretsKubernetesStackOutputs) ProtoReflect() protoreflect.Mess
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ExternalSecretsKubernetesStackOutputs.ProtoReflect.Descriptor instead.
-func (*ExternalSecretsKubernetesStackOutputs) Descriptor() ([]byte, []int) {
+// Deprecated: Use ExternalSecretsStackOutputs.ProtoReflect.Descriptor instead.
+func (*ExternalSecretsStackOutputs) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_kubernetes_addon_externalsecrets_v1_stack_outputs_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *ExternalSecretsKubernetesStackOutputs) GetNamespace() string {
+func (x *ExternalSecretsStackOutputs) GetNamespace() string {
 	if x != nil {
 		return x.Namespace
 	}
 	return ""
 }
 
-func (x *ExternalSecretsKubernetesStackOutputs) GetService() string {
+func (x *ExternalSecretsStackOutputs) GetService() string {
 	if x != nil {
 		return x.Service
 	}
 	return ""
 }
 
-func (x *ExternalSecretsKubernetesStackOutputs) GetPortForwardCommand() string {
+func (x *ExternalSecretsStackOutputs) GetPortForwardCommand() string {
 	if x != nil {
 		return x.PortForwardCommand
 	}
 	return ""
 }
 
-func (x *ExternalSecretsKubernetesStackOutputs) GetKubeEndpoint() string {
+func (x *ExternalSecretsStackOutputs) GetKubeEndpoint() string {
 	if x != nil {
 		return x.KubeEndpoint
 	}
 	return ""
 }
 
-func (x *ExternalSecretsKubernetesStackOutputs) GetIngressEndpoint() string {
+func (x *ExternalSecretsStackOutputs) GetIngressEndpoint() string {
 	if x != nil {
 		return x.IngressEndpoint
 	}
@@ -115,8 +115,8 @@ var File_org_project_planton_provider_kubernetes_addon_externalsecrets_v1_stack_
 
 const file_org_project_planton_provider_kubernetes_addon_externalsecrets_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Torg/project_planton/provider/kubernetes/addon/externalsecrets/v1/stack_outputs.proto\x12@org.project_planton.provider.kubernetes.addon.externalsecrets.v1\"\xe1\x01\n" +
-	"%ExternalSecretsKubernetesStackOutputs\x12\x1c\n" +
+	"Torg/project_planton/provider/kubernetes/addon/externalsecrets/v1/stack_outputs.proto\x12@org.project_planton.provider.kubernetes.addon.externalsecrets.v1\"\xd7\x01\n" +
+	"\x1bExternalSecretsStackOutputs\x12\x1c\n" +
 	"\tnamespace\x18\x01 \x01(\tR\tnamespace\x12\x18\n" +
 	"\aservice\x18\x02 \x01(\tR\aservice\x120\n" +
 	"\x14port_forward_command\x18\x03 \x01(\tR\x12portForwardCommand\x12#\n" +
@@ -138,7 +138,7 @@ func file_org_project_planton_provider_kubernetes_addon_externalsecrets_v1_stack
 
 var file_org_project_planton_provider_kubernetes_addon_externalsecrets_v1_stack_outputs_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_org_project_planton_provider_kubernetes_addon_externalsecrets_v1_stack_outputs_proto_goTypes = []any{
-	(*ExternalSecretsKubernetesStackOutputs)(nil), // 0: org.project_planton.provider.kubernetes.addon.externalsecrets.v1.ExternalSecretsKubernetesStackOutputs
+	(*ExternalSecretsStackOutputs)(nil), // 0: org.project_planton.provider.kubernetes.addon.externalsecrets.v1.ExternalSecretsStackOutputs
 }
 var file_org_project_planton_provider_kubernetes_addon_externalsecrets_v1_stack_outputs_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type

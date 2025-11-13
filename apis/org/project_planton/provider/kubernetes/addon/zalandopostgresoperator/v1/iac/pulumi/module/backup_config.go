@@ -20,7 +20,7 @@ const (
 // Returns the ConfigMap name if backup is configured, empty string otherwise.
 func createBackupResources(
 	ctx *pulumi.Context,
-	backupConfig *zalandopostgresoperatorv1.PostgresOperatorKubernetesBackupConfig,
+	backupConfig *zalandopostgresoperatorv1.ZalandoPostgresOperatorBackupConfig,
 	namespace pulumi.StringInput,
 	kubernetesProvider *pulumikubernetes.Provider,
 	labels map[string]string,

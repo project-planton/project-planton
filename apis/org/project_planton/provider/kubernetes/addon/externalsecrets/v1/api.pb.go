@@ -23,8 +23,8 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// external-secrets-kubernetes
-type ExternalSecretsKubernetes struct {
+// external-secrets
+type ExternalSecrets struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// api-version
 	ApiVersion string `protobuf:"bytes,1,opt,name=api_version,json=apiVersion,proto3" json:"api_version,omitempty"`
@@ -33,27 +33,27 @@ type ExternalSecretsKubernetes struct {
 	// metadata
 	Metadata *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// spec
-	Spec *ExternalSecretsKubernetesSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
+	Spec *ExternalSecretsSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status
-	Status        *ExternalSecretsKubernetesStatus `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
+	Status        *ExternalSecretsStatus `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ExternalSecretsKubernetes) Reset() {
-	*x = ExternalSecretsKubernetes{}
+func (x *ExternalSecrets) Reset() {
+	*x = ExternalSecrets{}
 	mi := &file_org_project_planton_provider_kubernetes_addon_externalsecrets_v1_api_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ExternalSecretsKubernetes) String() string {
+func (x *ExternalSecrets) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ExternalSecretsKubernetes) ProtoMessage() {}
+func (*ExternalSecrets) ProtoMessage() {}
 
-func (x *ExternalSecretsKubernetes) ProtoReflect() protoreflect.Message {
+func (x *ExternalSecrets) ProtoReflect() protoreflect.Message {
 	mi := &file_org_project_planton_provider_kubernetes_addon_externalsecrets_v1_api_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -65,69 +65,69 @@ func (x *ExternalSecretsKubernetes) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ExternalSecretsKubernetes.ProtoReflect.Descriptor instead.
-func (*ExternalSecretsKubernetes) Descriptor() ([]byte, []int) {
+// Deprecated: Use ExternalSecrets.ProtoReflect.Descriptor instead.
+func (*ExternalSecrets) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_kubernetes_addon_externalsecrets_v1_api_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *ExternalSecretsKubernetes) GetApiVersion() string {
+func (x *ExternalSecrets) GetApiVersion() string {
 	if x != nil {
 		return x.ApiVersion
 	}
 	return ""
 }
 
-func (x *ExternalSecretsKubernetes) GetKind() string {
+func (x *ExternalSecrets) GetKind() string {
 	if x != nil {
 		return x.Kind
 	}
 	return ""
 }
 
-func (x *ExternalSecretsKubernetes) GetMetadata() *shared.CloudResourceMetadata {
+func (x *ExternalSecrets) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
 	return nil
 }
 
-func (x *ExternalSecretsKubernetes) GetSpec() *ExternalSecretsKubernetesSpec {
+func (x *ExternalSecrets) GetSpec() *ExternalSecretsSpec {
 	if x != nil {
 		return x.Spec
 	}
 	return nil
 }
 
-func (x *ExternalSecretsKubernetes) GetStatus() *ExternalSecretsKubernetesStatus {
+func (x *ExternalSecrets) GetStatus() *ExternalSecretsStatus {
 	if x != nil {
 		return x.Status
 	}
 	return nil
 }
 
-// external-secrets-kubernetes status.
-type ExternalSecretsKubernetesStatus struct {
+// external-secrets status.
+type ExternalSecretsStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// stack-outputs
-	Outputs       *ExternalSecretsKubernetesStackOutputs `protobuf:"bytes,1,opt,name=outputs,proto3" json:"outputs,omitempty"`
+	Outputs       *ExternalSecretsStackOutputs `protobuf:"bytes,1,opt,name=outputs,proto3" json:"outputs,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ExternalSecretsKubernetesStatus) Reset() {
-	*x = ExternalSecretsKubernetesStatus{}
+func (x *ExternalSecretsStatus) Reset() {
+	*x = ExternalSecretsStatus{}
 	mi := &file_org_project_planton_provider_kubernetes_addon_externalsecrets_v1_api_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ExternalSecretsKubernetesStatus) String() string {
+func (x *ExternalSecretsStatus) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ExternalSecretsKubernetesStatus) ProtoMessage() {}
+func (*ExternalSecretsStatus) ProtoMessage() {}
 
-func (x *ExternalSecretsKubernetesStatus) ProtoReflect() protoreflect.Message {
+func (x *ExternalSecretsStatus) ProtoReflect() protoreflect.Message {
 	mi := &file_org_project_planton_provider_kubernetes_addon_externalsecrets_v1_api_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -139,12 +139,12 @@ func (x *ExternalSecretsKubernetesStatus) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ExternalSecretsKubernetesStatus.ProtoReflect.Descriptor instead.
-func (*ExternalSecretsKubernetesStatus) Descriptor() ([]byte, []int) {
+// Deprecated: Use ExternalSecretsStatus.ProtoReflect.Descriptor instead.
+func (*ExternalSecretsStatus) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_kubernetes_addon_externalsecrets_v1_api_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *ExternalSecretsKubernetesStatus) GetOutputs() *ExternalSecretsKubernetesStackOutputs {
+func (x *ExternalSecretsStatus) GetOutputs() *ExternalSecretsStackOutputs {
 	if x != nil {
 		return x.Outputs
 	}
@@ -155,18 +155,18 @@ var File_org_project_planton_provider_kubernetes_addon_externalsecrets_v1_api_pr
 
 const file_org_project_planton_provider_kubernetes_addon_externalsecrets_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Jorg/project_planton/provider/kubernetes/addon/externalsecrets/v1/api.proto\x12@org.project_planton.provider.kubernetes.addon.externalsecrets.v1\x1a\x1bbuf/validate/validate.proto\x1aKorg/project_planton/provider/kubernetes/addon/externalsecrets/v1/spec.proto\x1aTorg/project_planton/provider/kubernetes/addon/externalsecrets/v1/stack_outputs.proto\x1a)org/project_planton/shared/metadata.proto\"\xeb\x03\n" +
-	"\x19ExternalSecretsKubernetes\x12I\n" +
+	"Jorg/project_planton/provider/kubernetes/addon/externalsecrets/v1/api.proto\x12@org.project_planton.provider.kubernetes.addon.externalsecrets.v1\x1a\x1bbuf/validate/validate.proto\x1aKorg/project_planton/provider/kubernetes/addon/externalsecrets/v1/spec.proto\x1aTorg/project_planton/provider/kubernetes/addon/externalsecrets/v1/stack_outputs.proto\x1a)org/project_planton/shared/metadata.proto\"\xc3\x03\n" +
+	"\x0fExternalSecrets\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!kubernetes.project-planton.org/v1R\n" +
-	"apiVersion\x124\n" +
-	"\x04kind\x18\x02 \x01(\tB \xbaH\x1dr\x1b\n" +
-	"\x19ExternalSecretsKubernetesR\x04kind\x12U\n" +
-	"\bmetadata\x18\x03 \x01(\v21.org.project_planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12{\n" +
-	"\x04spec\x18\x04 \x01(\v2_.org.project_planton.provider.kubernetes.addon.externalsecrets.v1.ExternalSecretsKubernetesSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12y\n" +
-	"\x06status\x18\x05 \x01(\v2a.org.project_planton.provider.kubernetes.addon.externalsecrets.v1.ExternalSecretsKubernetesStatusR\x06status\"\xa5\x01\n" +
-	"\x1fExternalSecretsKubernetesStatus\x12\x81\x01\n" +
-	"\aoutputs\x18\x01 \x01(\v2g.org.project_planton.provider.kubernetes.addon.externalsecrets.v1.ExternalSecretsKubernetesStackOutputsR\aoutputsB\xfa\x03\n" +
+	"apiVersion\x12*\n" +
+	"\x04kind\x18\x02 \x01(\tB\x16\xbaH\x13r\x11\n" +
+	"\x0fExternalSecretsR\x04kind\x12U\n" +
+	"\bmetadata\x18\x03 \x01(\v21.org.project_planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12q\n" +
+	"\x04spec\x18\x04 \x01(\v2U.org.project_planton.provider.kubernetes.addon.externalsecrets.v1.ExternalSecretsSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12o\n" +
+	"\x06status\x18\x05 \x01(\v2W.org.project_planton.provider.kubernetes.addon.externalsecrets.v1.ExternalSecretsStatusR\x06status\"\x90\x01\n" +
+	"\x15ExternalSecretsStatus\x12w\n" +
+	"\aoutputs\x18\x01 \x01(\v2].org.project_planton.provider.kubernetes.addon.externalsecrets.v1.ExternalSecretsStackOutputsR\aoutputsB\xfa\x03\n" +
 	"Dcom.org.project_planton.provider.kubernetes.addon.externalsecrets.v1B\bApiProtoP\x01Z\x82\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/externalsecrets/v1;externalsecretsv1\xa2\x02\x06OPPKAE\xaa\x02?Org.ProjectPlanton.Provider.Kubernetes.Addon.Externalsecrets.V1\xca\x02?Org\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Externalsecrets\\V1\xe2\x02KOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Externalsecrets\\V1\\GPBMetadata\xea\x02EOrg::ProjectPlanton::Provider::Kubernetes::Addon::Externalsecrets::V1b\x06proto3"
 
 var (
@@ -183,17 +183,17 @@ func file_org_project_planton_provider_kubernetes_addon_externalsecrets_v1_api_p
 
 var file_org_project_planton_provider_kubernetes_addon_externalsecrets_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_org_project_planton_provider_kubernetes_addon_externalsecrets_v1_api_proto_goTypes = []any{
-	(*ExternalSecretsKubernetes)(nil),             // 0: org.project_planton.provider.kubernetes.addon.externalsecrets.v1.ExternalSecretsKubernetes
-	(*ExternalSecretsKubernetesStatus)(nil),       // 1: org.project_planton.provider.kubernetes.addon.externalsecrets.v1.ExternalSecretsKubernetesStatus
-	(*shared.CloudResourceMetadata)(nil),          // 2: org.project_planton.shared.CloudResourceMetadata
-	(*ExternalSecretsKubernetesSpec)(nil),         // 3: org.project_planton.provider.kubernetes.addon.externalsecrets.v1.ExternalSecretsKubernetesSpec
-	(*ExternalSecretsKubernetesStackOutputs)(nil), // 4: org.project_planton.provider.kubernetes.addon.externalsecrets.v1.ExternalSecretsKubernetesStackOutputs
+	(*ExternalSecrets)(nil),              // 0: org.project_planton.provider.kubernetes.addon.externalsecrets.v1.ExternalSecrets
+	(*ExternalSecretsStatus)(nil),        // 1: org.project_planton.provider.kubernetes.addon.externalsecrets.v1.ExternalSecretsStatus
+	(*shared.CloudResourceMetadata)(nil), // 2: org.project_planton.shared.CloudResourceMetadata
+	(*ExternalSecretsSpec)(nil),          // 3: org.project_planton.provider.kubernetes.addon.externalsecrets.v1.ExternalSecretsSpec
+	(*ExternalSecretsStackOutputs)(nil),  // 4: org.project_planton.provider.kubernetes.addon.externalsecrets.v1.ExternalSecretsStackOutputs
 }
 var file_org_project_planton_provider_kubernetes_addon_externalsecrets_v1_api_proto_depIdxs = []int32{
-	2, // 0: org.project_planton.provider.kubernetes.addon.externalsecrets.v1.ExternalSecretsKubernetes.metadata:type_name -> org.project_planton.shared.CloudResourceMetadata
-	3, // 1: org.project_planton.provider.kubernetes.addon.externalsecrets.v1.ExternalSecretsKubernetes.spec:type_name -> org.project_planton.provider.kubernetes.addon.externalsecrets.v1.ExternalSecretsKubernetesSpec
-	1, // 2: org.project_planton.provider.kubernetes.addon.externalsecrets.v1.ExternalSecretsKubernetes.status:type_name -> org.project_planton.provider.kubernetes.addon.externalsecrets.v1.ExternalSecretsKubernetesStatus
-	4, // 3: org.project_planton.provider.kubernetes.addon.externalsecrets.v1.ExternalSecretsKubernetesStatus.outputs:type_name -> org.project_planton.provider.kubernetes.addon.externalsecrets.v1.ExternalSecretsKubernetesStackOutputs
+	2, // 0: org.project_planton.provider.kubernetes.addon.externalsecrets.v1.ExternalSecrets.metadata:type_name -> org.project_planton.shared.CloudResourceMetadata
+	3, // 1: org.project_planton.provider.kubernetes.addon.externalsecrets.v1.ExternalSecrets.spec:type_name -> org.project_planton.provider.kubernetes.addon.externalsecrets.v1.ExternalSecretsSpec
+	1, // 2: org.project_planton.provider.kubernetes.addon.externalsecrets.v1.ExternalSecrets.status:type_name -> org.project_planton.provider.kubernetes.addon.externalsecrets.v1.ExternalSecretsStatus
+	4, // 3: org.project_planton.provider.kubernetes.addon.externalsecrets.v1.ExternalSecretsStatus.outputs:type_name -> org.project_planton.provider.kubernetes.addon.externalsecrets.v1.ExternalSecretsStackOutputs
 	4, // [4:4] is the sub-list for method output_type
 	4, // [4:4] is the sub-list for method input_type
 	4, // [4:4] is the sub-list for extension type_name

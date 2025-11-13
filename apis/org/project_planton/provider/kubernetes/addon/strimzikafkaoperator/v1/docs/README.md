@@ -186,7 +186,7 @@ Strimzi's defaults are **production-oriented**. For example, it uses pod anti-af
 
 ### Operator as Infrastructure, Not Configuration
 
-Project Planton's `KafkaOperatorKubernetes` resource deploys **the operator itself**—not a Kafka cluster. This separation is intentional. The operator is infrastructure: install it once per cluster, configure it for high availability (multiple replicas with leader election), allocate resources, and let it run.
+Project Planton's `StrimziKafkaOperator` resource deploys **the operator itself**—not a Kafka cluster. This separation is intentional. The operator is infrastructure: install it once per cluster, configure it for high availability (multiple replicas with leader election), allocate resources, and let it run.
 
 The Strimzi operator is stable, lightweight, and designed to watch multiple namespaces. One operator instance can manage many Kafka clusters across different namespaces or teams, enabling multi-tenancy without operator proliferation.
 
@@ -215,7 +215,7 @@ A common point of confusion: **What does the operator manage, and what does a Ka
 
 ### Operator Configuration (Day-0 Setup)
 
-The **operator deployment** (`KafkaOperatorKubernetes` in Project Planton) is about installing the controller itself. Configuration includes:
+The **operator deployment** (`StrimziKafkaOperator` in Project Planton) is about installing the controller itself. Configuration includes:
 
 - **Target namespace and watch scope**: Where the operator runs and which namespaces it monitors for Kafka CRs.
 - **Operator image version**: Pinning to a stable Strimzi release (e.g., `0.34.0`) for reproducibility.
@@ -249,7 +249,7 @@ Separating operator config from cluster config enables:
 
 In Project Planton terms:
 
-- **`KafkaOperatorKubernetes`** = "Ensure the Strimzi operator is running on this cluster with these settings."
+- **`StrimziKafkaOperator`** = "Ensure the Strimzi operator is running on this cluster with these settings."
 - **`KafkaKubernetes`** (or direct `Kafka` CRs) = "Deploy a Kafka cluster with X brokers, Y storage, Z security settings."
 
 This mirrors the distinction between "installing Docker" (enabling containerization) and "running containers" (deploying applications).
@@ -262,7 +262,7 @@ Not every configuration knob matters equally. Here's what most teams **actually 
 
 ### Essential Operator Settings (80% of deployments)
 
-When deploying `KafkaOperatorKubernetes`:
+When deploying `StrimziKafkaOperator`:
 
 - **Replicas**: `1` for dev/test, `2-3` for production (with leader election for HA).
 - **Image version**: Pin to a stable Strimzi release (e.g., `quay.io/strimzi/operator:0.34.0`).
@@ -370,7 +370,7 @@ The journey from "Kafka doesn't belong on Kubernetes" to "Kafka operators make K
 
 Kafka operators—especially Strimzi—provide that automation. They transform Kafka from a complex, script-dependent system into a **declarative, self-healing workload** that benefits from Kubernetes' strengths: declarative APIs, reconciliation loops, RBAC, GitOps workflows, and cloud portability.
 
-Project Planton's `KafkaOperatorKubernetes` resource makes deploying Strimzi straightforward: define the operator configuration, deploy it via Pulumi-backed IaC, and let the operator handle the rest. From there, Kafka clusters, topics, and users become Kubernetes-native resources—manageable via YAML, version-controlled in Git, and automatically reconciled to their desired state.
+Project Planton's `StrimziKafkaOperator` resource makes deploying Strimzi straightforward: define the operator configuration, deploy it via Pulumi-backed IaC, and let the operator handle the rest. From there, Kafka clusters, topics, and users become Kubernetes-native resources—manageable via YAML, version-controlled in Git, and automatically reconciled to their desired state.
 
 For teams building streaming platforms, event-driven architectures, or any workload that depends on Kafka, operators are no longer optional—they're the **production-ready path forward**.
 

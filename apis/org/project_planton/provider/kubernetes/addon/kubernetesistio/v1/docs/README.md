@@ -124,7 +124,7 @@ When deploying Istio in production, two approaches dominate: **istioctl** and **
 
 As Istio maintainer @howardjohn notes: *"Istioctl and Helm are roughly equivalent in stability; use whichever fits best... Helm tends to integrate much better with other tooling like Terraform, ArgoCD, etc., so is a reasonable first choice."*
 
-**Project Planton's choice**: We use Helm under the hood because it integrates naturally with Pulumi and supports declarative, version-controlled deployments. The IstioKubernetes API abstracts away Helm's complexity while exposing the 20% of configuration that 80% of users need.
+**Project Planton's choice**: We use Helm under the hood because it integrates naturally with Pulumi and supports declarative, version-controlled deployments. The KubernetesIstio API abstracts away Helm's complexity while exposing the 20% of configuration that 80% of users need.
 
 ### Installation Profiles: Choosing the Right Starting Point
 
@@ -373,7 +373,7 @@ Project Planton provides a Kubernetes-like API for deploying Istio that hides lo
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: IstioKubernetes
+kind: KubernetesIstio
 metadata:
   name: production-mesh
 spec:

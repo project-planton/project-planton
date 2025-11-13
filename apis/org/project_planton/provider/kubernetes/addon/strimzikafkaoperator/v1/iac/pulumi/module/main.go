@@ -10,7 +10,7 @@ import (
 // Resources is the entry‑point called by the Project Planton engine.
 func Resources(
 	ctx *pulumi.Context,
-	stackInput *strimzikafkaoperatorv1.KafkaOperatorKubernetesStackInput,
+	stackInput *strimzikafkaoperatorv1.StrimziKafkaOperatorStackInput,
 ) error {
 	// ------------------------------------------------------------------
 	// Provider set‑up

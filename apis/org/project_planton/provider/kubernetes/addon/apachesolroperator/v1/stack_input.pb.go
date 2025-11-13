@@ -22,31 +22,31 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// solr-operator-kubernetes stack-input
-type SolrOperatorKubernetesStackInput struct {
+// apache-solr-operator stack-input
+type ApacheSolrOperatorStackInput struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// target cloud-resource
-	Target *SolrOperatorKubernetes `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
+	Target *ApacheSolrOperator `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
 	// provider-config
 	ProviderConfig *kubernetes.KubernetesProviderConfig `protobuf:"bytes,2,opt,name=provider_config,json=providerConfig,proto3" json:"provider_config,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
 
-func (x *SolrOperatorKubernetesStackInput) Reset() {
-	*x = SolrOperatorKubernetesStackInput{}
+func (x *ApacheSolrOperatorStackInput) Reset() {
+	*x = ApacheSolrOperatorStackInput{}
 	mi := &file_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_stack_input_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *SolrOperatorKubernetesStackInput) String() string {
+func (x *ApacheSolrOperatorStackInput) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*SolrOperatorKubernetesStackInput) ProtoMessage() {}
+func (*ApacheSolrOperatorStackInput) ProtoMessage() {}
 
-func (x *SolrOperatorKubernetesStackInput) ProtoReflect() protoreflect.Message {
+func (x *ApacheSolrOperatorStackInput) ProtoReflect() protoreflect.Message {
 	mi := &file_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_stack_input_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -58,19 +58,19 @@ func (x *SolrOperatorKubernetesStackInput) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use SolrOperatorKubernetesStackInput.ProtoReflect.Descriptor instead.
-func (*SolrOperatorKubernetesStackInput) Descriptor() ([]byte, []int) {
+// Deprecated: Use ApacheSolrOperatorStackInput.ProtoReflect.Descriptor instead.
+func (*ApacheSolrOperatorStackInput) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_stack_input_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *SolrOperatorKubernetesStackInput) GetTarget() *SolrOperatorKubernetes {
+func (x *ApacheSolrOperatorStackInput) GetTarget() *ApacheSolrOperator {
 	if x != nil {
 		return x.Target
 	}
 	return nil
 }
 
-func (x *SolrOperatorKubernetesStackInput) GetProviderConfig() *kubernetes.KubernetesProviderConfig {
+func (x *ApacheSolrOperatorStackInput) GetProviderConfig() *kubernetes.KubernetesProviderConfig {
 	if x != nil {
 		return x.ProviderConfig
 	}
@@ -81,9 +81,9 @@ var File_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_sta
 
 const file_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Uorg/project_planton/provider/kubernetes/addon/apachesolroperator/v1/stack_input.proto\x12Corg.project_planton.provider.kubernetes.addon.apachesolroperator.v1\x1aMorg/project_planton/provider/kubernetes/addon/apachesolroperator/v1/api.proto\x1a6org/project_planton/provider/kubernetes/provider.proto\"\x83\x02\n" +
-	" SolrOperatorKubernetesStackInput\x12s\n" +
-	"\x06target\x18\x01 \x01(\v2[.org.project_planton.provider.kubernetes.addon.apachesolroperator.v1.SolrOperatorKubernetesR\x06target\x12j\n" +
+	"Uorg/project_planton/provider/kubernetes/addon/apachesolroperator/v1/stack_input.proto\x12Corg.project_planton.provider.kubernetes.addon.apachesolroperator.v1\x1aMorg/project_planton/provider/kubernetes/addon/apachesolroperator/v1/api.proto\x1a6org/project_planton/provider/kubernetes/provider.proto\"\xfb\x01\n" +
+	"\x1cApacheSolrOperatorStackInput\x12o\n" +
+	"\x06target\x18\x01 \x01(\v2W.org.project_planton.provider.kubernetes.addon.apachesolroperator.v1.ApacheSolrOperatorR\x06target\x12j\n" +
 	"\x0fprovider_config\x18\x02 \x01(\v2A.org.project_planton.provider.kubernetes.KubernetesProviderConfigR\x0eproviderConfigB\x96\x04\n" +
 	"Gcom.org.project_planton.provider.kubernetes.addon.apachesolroperator.v1B\x0fStackInputProtoP\x01Z\x88\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/apachesolroperator/v1;apachesolroperatorv1\xa2\x02\x06OPPKAA\xaa\x02BOrg.ProjectPlanton.Provider.Kubernetes.Addon.Apachesolroperator.V1\xca\x02BOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Apachesolroperator\\V1\xe2\x02NOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Apachesolroperator\\V1\\GPBMetadata\xea\x02HOrg::ProjectPlanton::Provider::Kubernetes::Addon::Apachesolroperator::V1b\x06proto3"
 
@@ -101,13 +101,13 @@ func file_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_st
 
 var file_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_stack_input_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_stack_input_proto_goTypes = []any{
-	(*SolrOperatorKubernetesStackInput)(nil),    // 0: org.project_planton.provider.kubernetes.addon.apachesolroperator.v1.SolrOperatorKubernetesStackInput
-	(*SolrOperatorKubernetes)(nil),              // 1: org.project_planton.provider.kubernetes.addon.apachesolroperator.v1.SolrOperatorKubernetes
+	(*ApacheSolrOperatorStackInput)(nil),        // 0: org.project_planton.provider.kubernetes.addon.apachesolroperator.v1.ApacheSolrOperatorStackInput
+	(*ApacheSolrOperator)(nil),                  // 1: org.project_planton.provider.kubernetes.addon.apachesolroperator.v1.ApacheSolrOperator
 	(*kubernetes.KubernetesProviderConfig)(nil), // 2: org.project_planton.provider.kubernetes.KubernetesProviderConfig
 }
 var file_org_project_planton_provider_kubernetes_addon_apachesolroperator_v1_stack_input_proto_depIdxs = []int32{
-	1, // 0: org.project_planton.provider.kubernetes.addon.apachesolroperator.v1.SolrOperatorKubernetesStackInput.target:type_name -> org.project_planton.provider.kubernetes.addon.apachesolroperator.v1.SolrOperatorKubernetes
-	2, // 1: org.project_planton.provider.kubernetes.addon.apachesolroperator.v1.SolrOperatorKubernetesStackInput.provider_config:type_name -> org.project_planton.provider.kubernetes.KubernetesProviderConfig
+	1, // 0: org.project_planton.provider.kubernetes.addon.apachesolroperator.v1.ApacheSolrOperatorStackInput.target:type_name -> org.project_planton.provider.kubernetes.addon.apachesolroperator.v1.ApacheSolrOperator
+	2, // 1: org.project_planton.provider.kubernetes.addon.apachesolroperator.v1.ApacheSolrOperatorStackInput.provider_config:type_name -> org.project_planton.provider.kubernetes.KubernetesProviderConfig
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

@@ -21,45 +21,45 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// elastic-operator-kubernetes stack outputs
-type ElasticOperatorKubernetesStackOutputs struct {
+// elastic-operator stack outputs
+type ElasticOperatorStackOutputs struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// kubernetes namespace in which elastic-operator-kubernetes is created.
+	// kubernetes namespace in which elastic-operator is created.
 	Namespace string `protobuf:"bytes,1,opt,name=namespace,proto3" json:"namespace,omitempty"`
-	// kubernetes service name for elastic-operator-kubernetes.
-	// ex: main-elastic-operator-kubernetes
-	// in the above example, "main" is the name of the elastic-operator-kubernetes
+	// kubernetes service name for elastic-operator.
+	// ex: main-elastic-operator
+	// in the above example, "main" is the name of the elastic-operator
 	Service string `protobuf:"bytes,2,opt,name=service,proto3" json:"service,omitempty"`
-	// command to setup port-forwarding to open elastic-operator-kubernetes from developers laptop.
-	// this might come handy when elastic-operator-kubernetes ingress is disabled for security reasons.
-	// this is rendered by combining elastic_operator_kubernetes_kubernetes_service and kubernetes_namespace
-	// ex: kubectl port-forward svc/elastic_operator_kubernetes_kubernetes_service -n kubernetes_namespace 6379:6379
-	// running the command from this attribute makes it possible to access elastic-operator-kubernetes using http://localhost:8080/gitlab
+	// command to setup port-forwarding to open elastic-operator from developers laptop.
+	// this might come handy when elastic-operator ingress is disabled for security reasons.
+	// this is rendered by combining elastic_operator_kubernetes_service and kubernetes_namespace
+	// ex: kubectl port-forward svc/elastic_operator_kubernetes_service -n kubernetes_namespace 6379:6379
+	// running the command from this attribute makes it possible to access elastic-operator using http://localhost:8080
 	PortForwardCommand string `protobuf:"bytes,3,opt,name=port_forward_command,json=portForwardCommand,proto3" json:"port_forward_command,omitempty"`
-	// kubernetes endpoint to connect to elastic-operator-kubernetes from the web browser.
-	// ex: main-elastic-operator-kubernetes.namespace.svc.cluster.local:6379
+	// kubernetes endpoint to connect to elastic-operator from the web browser.
+	// ex: main-elastic-operator.namespace.svc.cluster.local:6379
 	KubeEndpoint string `protobuf:"bytes,4,opt,name=kube_endpoint,json=kubeEndpoint,proto3" json:"kube_endpoint,omitempty"`
-	// public endpoint to open elastic-operator-kubernetes from clients outside kubernetes.
-	// ex: https://gls-planton-pcs-dev-main.data.dev.planton.live:6379/gitlab
+	// public endpoint to open elastic-operator from clients outside kubernetes.
+	// ex: https://gls-planton-pcs-dev-main.data.dev.planton.live:6379
 	IngressEndpoint string `protobuf:"bytes,5,opt,name=ingress_endpoint,json=ingressEndpoint,proto3" json:"ingress_endpoint,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
 
-func (x *ElasticOperatorKubernetesStackOutputs) Reset() {
-	*x = ElasticOperatorKubernetesStackOutputs{}
+func (x *ElasticOperatorStackOutputs) Reset() {
+	*x = ElasticOperatorStackOutputs{}
 	mi := &file_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_stack_outputs_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ElasticOperatorKubernetesStackOutputs) String() string {
+func (x *ElasticOperatorStackOutputs) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ElasticOperatorKubernetesStackOutputs) ProtoMessage() {}
+func (*ElasticOperatorStackOutputs) ProtoMessage() {}
 
-func (x *ElasticOperatorKubernetesStackOutputs) ProtoReflect() protoreflect.Message {
+func (x *ElasticOperatorStackOutputs) ProtoReflect() protoreflect.Message {
 	mi := &file_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_stack_outputs_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -71,40 +71,40 @@ func (x *ElasticOperatorKubernetesStackOutputs) ProtoReflect() protoreflect.Mess
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ElasticOperatorKubernetesStackOutputs.ProtoReflect.Descriptor instead.
-func (*ElasticOperatorKubernetesStackOutputs) Descriptor() ([]byte, []int) {
+// Deprecated: Use ElasticOperatorStackOutputs.ProtoReflect.Descriptor instead.
+func (*ElasticOperatorStackOutputs) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_stack_outputs_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *ElasticOperatorKubernetesStackOutputs) GetNamespace() string {
+func (x *ElasticOperatorStackOutputs) GetNamespace() string {
 	if x != nil {
 		return x.Namespace
 	}
 	return ""
 }
 
-func (x *ElasticOperatorKubernetesStackOutputs) GetService() string {
+func (x *ElasticOperatorStackOutputs) GetService() string {
 	if x != nil {
 		return x.Service
 	}
 	return ""
 }
 
-func (x *ElasticOperatorKubernetesStackOutputs) GetPortForwardCommand() string {
+func (x *ElasticOperatorStackOutputs) GetPortForwardCommand() string {
 	if x != nil {
 		return x.PortForwardCommand
 	}
 	return ""
 }
 
-func (x *ElasticOperatorKubernetesStackOutputs) GetKubeEndpoint() string {
+func (x *ElasticOperatorStackOutputs) GetKubeEndpoint() string {
 	if x != nil {
 		return x.KubeEndpoint
 	}
 	return ""
 }
 
-func (x *ElasticOperatorKubernetesStackOutputs) GetIngressEndpoint() string {
+func (x *ElasticOperatorStackOutputs) GetIngressEndpoint() string {
 	if x != nil {
 		return x.IngressEndpoint
 	}
@@ -115,8 +115,8 @@ var File_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_stack_
 
 const file_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Torg/project_planton/provider/kubernetes/addon/elasticoperator/v1/stack_outputs.proto\x12@org.project_planton.provider.kubernetes.addon.elasticoperator.v1\"\xe1\x01\n" +
-	"%ElasticOperatorKubernetesStackOutputs\x12\x1c\n" +
+	"Torg/project_planton/provider/kubernetes/addon/elasticoperator/v1/stack_outputs.proto\x12@org.project_planton.provider.kubernetes.addon.elasticoperator.v1\"\xd7\x01\n" +
+	"\x1bElasticOperatorStackOutputs\x12\x1c\n" +
 	"\tnamespace\x18\x01 \x01(\tR\tnamespace\x12\x18\n" +
 	"\aservice\x18\x02 \x01(\tR\aservice\x120\n" +
 	"\x14port_forward_command\x18\x03 \x01(\tR\x12portForwardCommand\x12#\n" +
@@ -138,7 +138,7 @@ func file_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_stack
 
 var file_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_stack_outputs_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_stack_outputs_proto_goTypes = []any{
-	(*ElasticOperatorKubernetesStackOutputs)(nil), // 0: org.project_planton.provider.kubernetes.addon.elasticoperator.v1.ElasticOperatorKubernetesStackOutputs
+	(*ElasticOperatorStackOutputs)(nil), // 0: org.project_planton.provider.kubernetes.addon.elasticoperator.v1.ElasticOperatorStackOutputs
 }
 var file_org_project_planton_provider_kubernetes_addon_elasticoperator_v1_stack_outputs_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type

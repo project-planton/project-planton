@@ -22,31 +22,31 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// input for external-dns-kubernetes stack
-type ExternalDnsKubernetesStackInput struct {
+// input for external-dns stack
+type ExternalDnsStackInput struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// target cloud-resource
-	Target *ExternalDnsKubernetes `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
+	Target *ExternalDns `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
 	// provider-config
 	ProviderConfig *kubernetes.KubernetesProviderConfig `protobuf:"bytes,2,opt,name=provider_config,json=providerConfig,proto3" json:"provider_config,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
 
-func (x *ExternalDnsKubernetesStackInput) Reset() {
-	*x = ExternalDnsKubernetesStackInput{}
+func (x *ExternalDnsStackInput) Reset() {
+	*x = ExternalDnsStackInput{}
 	mi := &file_org_project_planton_provider_kubernetes_addon_externaldns_v1_stack_input_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ExternalDnsKubernetesStackInput) String() string {
+func (x *ExternalDnsStackInput) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ExternalDnsKubernetesStackInput) ProtoMessage() {}
+func (*ExternalDnsStackInput) ProtoMessage() {}
 
-func (x *ExternalDnsKubernetesStackInput) ProtoReflect() protoreflect.Message {
+func (x *ExternalDnsStackInput) ProtoReflect() protoreflect.Message {
 	mi := &file_org_project_planton_provider_kubernetes_addon_externaldns_v1_stack_input_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -58,19 +58,19 @@ func (x *ExternalDnsKubernetesStackInput) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ExternalDnsKubernetesStackInput.ProtoReflect.Descriptor instead.
-func (*ExternalDnsKubernetesStackInput) Descriptor() ([]byte, []int) {
+// Deprecated: Use ExternalDnsStackInput.ProtoReflect.Descriptor instead.
+func (*ExternalDnsStackInput) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_kubernetes_addon_externaldns_v1_stack_input_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *ExternalDnsKubernetesStackInput) GetTarget() *ExternalDnsKubernetes {
+func (x *ExternalDnsStackInput) GetTarget() *ExternalDns {
 	if x != nil {
 		return x.Target
 	}
 	return nil
 }
 
-func (x *ExternalDnsKubernetesStackInput) GetProviderConfig() *kubernetes.KubernetesProviderConfig {
+func (x *ExternalDnsStackInput) GetProviderConfig() *kubernetes.KubernetesProviderConfig {
 	if x != nil {
 		return x.ProviderConfig
 	}
@@ -81,9 +81,9 @@ var File_org_project_planton_provider_kubernetes_addon_externaldns_v1_stack_inpu
 
 const file_org_project_planton_provider_kubernetes_addon_externaldns_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"Norg/project_planton/provider/kubernetes/addon/externaldns/v1/stack_input.proto\x12<org.project_planton.provider.kubernetes.addon.externaldns.v1\x1aForg/project_planton/provider/kubernetes/addon/externaldns/v1/api.proto\x1a6org/project_planton/provider/kubernetes/provider.proto\"\xfa\x01\n" +
-	"\x1fExternalDnsKubernetesStackInput\x12k\n" +
-	"\x06target\x18\x01 \x01(\v2S.org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDnsKubernetesR\x06target\x12j\n" +
+	"Norg/project_planton/provider/kubernetes/addon/externaldns/v1/stack_input.proto\x12<org.project_planton.provider.kubernetes.addon.externaldns.v1\x1aForg/project_planton/provider/kubernetes/addon/externaldns/v1/api.proto\x1a6org/project_planton/provider/kubernetes/provider.proto\"\xe6\x01\n" +
+	"\x15ExternalDnsStackInput\x12a\n" +
+	"\x06target\x18\x01 \x01(\v2I.org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDnsR\x06target\x12j\n" +
 	"\x0fprovider_config\x18\x02 \x01(\v2A.org.project_planton.provider.kubernetes.KubernetesProviderConfigR\x0eproviderConfigB\xe4\x03\n" +
 	"@com.org.project_planton.provider.kubernetes.addon.externaldns.v1B\x0fStackInputProtoP\x01Zzgithub.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/externaldns/v1;externaldnsv1\xa2\x02\x06OPPKAE\xaa\x02;Org.ProjectPlanton.Provider.Kubernetes.Addon.Externaldns.V1\xca\x02;Org\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Externaldns\\V1\xe2\x02GOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Externaldns\\V1\\GPBMetadata\xea\x02AOrg::ProjectPlanton::Provider::Kubernetes::Addon::Externaldns::V1b\x06proto3"
 
@@ -101,13 +101,13 @@ func file_org_project_planton_provider_kubernetes_addon_externaldns_v1_stack_inp
 
 var file_org_project_planton_provider_kubernetes_addon_externaldns_v1_stack_input_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_org_project_planton_provider_kubernetes_addon_externaldns_v1_stack_input_proto_goTypes = []any{
-	(*ExternalDnsKubernetesStackInput)(nil),     // 0: org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDnsKubernetesStackInput
-	(*ExternalDnsKubernetes)(nil),               // 1: org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDnsKubernetes
+	(*ExternalDnsStackInput)(nil),               // 0: org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDnsStackInput
+	(*ExternalDns)(nil),                         // 1: org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDns
 	(*kubernetes.KubernetesProviderConfig)(nil), // 2: org.project_planton.provider.kubernetes.KubernetesProviderConfig
 }
 var file_org_project_planton_provider_kubernetes_addon_externaldns_v1_stack_input_proto_depIdxs = []int32{
-	1, // 0: org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDnsKubernetesStackInput.target:type_name -> org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDnsKubernetes
-	2, // 1: org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDnsKubernetesStackInput.provider_config:type_name -> org.project_planton.provider.kubernetes.KubernetesProviderConfig
+	1, // 0: org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDnsStackInput.target:type_name -> org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDns
+	2, // 1: org.project_planton.provider.kubernetes.addon.externaldns.v1.ExternalDnsStackInput.provider_config:type_name -> org.project_planton.provider.kubernetes.KubernetesProviderConfig
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

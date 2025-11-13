@@ -10,9 +10,9 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// Resources creates all Pulumi resources for the Ingress‑Nginx Kubernetes add‑on.
+// Resources creates all Pulumi resources for the Ingress‑Nginx add‑on.
 func Resources(ctx *pulumi.Context,
-	stackInput *ingressnginxv1.IngressNginxKubernetesStackInput) error {
+	stackInput *ingressnginxv1.IngressNginxStackInput) error {
 
 	// Build Kubernetes provider from the target‑cluster credential
 	kubeProvider, err := pulumikubernetesprovider.GetWithKubernetesProviderConfig(

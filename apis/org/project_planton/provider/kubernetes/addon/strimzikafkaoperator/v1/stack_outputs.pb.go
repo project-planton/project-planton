@@ -21,45 +21,45 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// kafka-operator-kubernetes stack outputs
-type KafkaOperatorKubernetesStackOutputs struct {
+// strimzi-kafka-operator stack outputs
+type StrimziKafkaOperatorStackOutputs struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// kubernetes namespace in which kafka-operator-kubernetes is created.
+	// kubernetes namespace in which strimzi-kafka-operator is created.
 	Namespace string `protobuf:"bytes,1,opt,name=namespace,proto3" json:"namespace,omitempty"`
-	// kubernetes service name for kafka-operator-kubernetes.
-	// ex: main-kafka-operator-kubernetes
-	// in the above example, "main" is the name of the kafka-operator-kubernetes
+	// kubernetes service name for strimzi-kafka-operator.
+	// ex: main-strimzi-kafka-operator
+	// in the above example, "main" is the name of the strimzi-kafka-operator
 	Service string `protobuf:"bytes,2,opt,name=service,proto3" json:"service,omitempty"`
-	// command to setup port-forwarding to open kafka-operator-kubernetes from developers laptop.
-	// this might come handy when kafka-operator-kubernetes ingress is disabled for security reasons.
-	// this is rendered by combining kafka_operator_kubernetes_kubernetes_service and kubernetes_namespace
-	// ex: kubectl port-forward svc/kafka_operator_kubernetes_kubernetes_service -n kubernetes_namespace 6379:6379
-	// running the command from this attribute makes it possible to access kafka-operator-kubernetes using http://localhost:8080/gitlab
+	// command to setup port-forwarding to open strimzi-kafka-operator from developers laptop.
+	// this might come handy when strimzi-kafka-operator ingress is disabled for security reasons.
+	// this is rendered by combining strimzi_kafka_operator_kubernetes_service and kubernetes_namespace
+	// ex: kubectl port-forward svc/strimzi_kafka_operator_kubernetes_service -n kubernetes_namespace 6379:6379
+	// running the command from this attribute makes it possible to access strimzi-kafka-operator using http://localhost:8080
 	PortForwardCommand string `protobuf:"bytes,3,opt,name=port_forward_command,json=portForwardCommand,proto3" json:"port_forward_command,omitempty"`
-	// kubernetes endpoint to connect to kafka-operator-kubernetes from the web browser.
-	// ex: main-kafka-operator-kubernetes.namespace.svc.cluster.local:6379
+	// kubernetes endpoint to connect to strimzi-kafka-operator from the web browser.
+	// ex: main-strimzi-kafka-operator.namespace.svc.cluster.local:6379
 	KubeEndpoint string `protobuf:"bytes,4,opt,name=kube_endpoint,json=kubeEndpoint,proto3" json:"kube_endpoint,omitempty"`
-	// public endpoint to open kafka-operator-kubernetes from clients outside kubernetes.
-	// ex: https://gls-planton-pcs-dev-main.data.dev.planton.live:6379/gitlab
+	// public endpoint to open strimzi-kafka-operator from clients outside kubernetes.
+	// ex: https://gls-planton-pcs-dev-main.data.dev.planton.live:6379
 	IngressEndpoint string `protobuf:"bytes,5,opt,name=ingress_endpoint,json=ingressEndpoint,proto3" json:"ingress_endpoint,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
 
-func (x *KafkaOperatorKubernetesStackOutputs) Reset() {
-	*x = KafkaOperatorKubernetesStackOutputs{}
+func (x *StrimziKafkaOperatorStackOutputs) Reset() {
+	*x = StrimziKafkaOperatorStackOutputs{}
 	mi := &file_org_project_planton_provider_kubernetes_addon_strimzikafkaoperator_v1_stack_outputs_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *KafkaOperatorKubernetesStackOutputs) String() string {
+func (x *StrimziKafkaOperatorStackOutputs) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*KafkaOperatorKubernetesStackOutputs) ProtoMessage() {}
+func (*StrimziKafkaOperatorStackOutputs) ProtoMessage() {}
 
-func (x *KafkaOperatorKubernetesStackOutputs) ProtoReflect() protoreflect.Message {
+func (x *StrimziKafkaOperatorStackOutputs) ProtoReflect() protoreflect.Message {
 	mi := &file_org_project_planton_provider_kubernetes_addon_strimzikafkaoperator_v1_stack_outputs_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -71,40 +71,40 @@ func (x *KafkaOperatorKubernetesStackOutputs) ProtoReflect() protoreflect.Messag
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use KafkaOperatorKubernetesStackOutputs.ProtoReflect.Descriptor instead.
-func (*KafkaOperatorKubernetesStackOutputs) Descriptor() ([]byte, []int) {
+// Deprecated: Use StrimziKafkaOperatorStackOutputs.ProtoReflect.Descriptor instead.
+func (*StrimziKafkaOperatorStackOutputs) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_kubernetes_addon_strimzikafkaoperator_v1_stack_outputs_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *KafkaOperatorKubernetesStackOutputs) GetNamespace() string {
+func (x *StrimziKafkaOperatorStackOutputs) GetNamespace() string {
 	if x != nil {
 		return x.Namespace
 	}
 	return ""
 }
 
-func (x *KafkaOperatorKubernetesStackOutputs) GetService() string {
+func (x *StrimziKafkaOperatorStackOutputs) GetService() string {
 	if x != nil {
 		return x.Service
 	}
 	return ""
 }
 
-func (x *KafkaOperatorKubernetesStackOutputs) GetPortForwardCommand() string {
+func (x *StrimziKafkaOperatorStackOutputs) GetPortForwardCommand() string {
 	if x != nil {
 		return x.PortForwardCommand
 	}
 	return ""
 }
 
-func (x *KafkaOperatorKubernetesStackOutputs) GetKubeEndpoint() string {
+func (x *StrimziKafkaOperatorStackOutputs) GetKubeEndpoint() string {
 	if x != nil {
 		return x.KubeEndpoint
 	}
 	return ""
 }
 
-func (x *KafkaOperatorKubernetesStackOutputs) GetIngressEndpoint() string {
+func (x *StrimziKafkaOperatorStackOutputs) GetIngressEndpoint() string {
 	if x != nil {
 		return x.IngressEndpoint
 	}
@@ -115,8 +115,8 @@ var File_org_project_planton_provider_kubernetes_addon_strimzikafkaoperator_v1_s
 
 const file_org_project_planton_provider_kubernetes_addon_strimzikafkaoperator_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Yorg/project_planton/provider/kubernetes/addon/strimzikafkaoperator/v1/stack_outputs.proto\x12Eorg.project_planton.provider.kubernetes.addon.strimzikafkaoperator.v1\"\xdf\x01\n" +
-	"#KafkaOperatorKubernetesStackOutputs\x12\x1c\n" +
+	"Yorg/project_planton/provider/kubernetes/addon/strimzikafkaoperator/v1/stack_outputs.proto\x12Eorg.project_planton.provider.kubernetes.addon.strimzikafkaoperator.v1\"\xdc\x01\n" +
+	" StrimziKafkaOperatorStackOutputs\x12\x1c\n" +
 	"\tnamespace\x18\x01 \x01(\tR\tnamespace\x12\x18\n" +
 	"\aservice\x18\x02 \x01(\tR\aservice\x120\n" +
 	"\x14port_forward_command\x18\x03 \x01(\tR\x12portForwardCommand\x12#\n" +
@@ -138,7 +138,7 @@ func file_org_project_planton_provider_kubernetes_addon_strimzikafkaoperator_v1_
 
 var file_org_project_planton_provider_kubernetes_addon_strimzikafkaoperator_v1_stack_outputs_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_org_project_planton_provider_kubernetes_addon_strimzikafkaoperator_v1_stack_outputs_proto_goTypes = []any{
-	(*KafkaOperatorKubernetesStackOutputs)(nil), // 0: org.project_planton.provider.kubernetes.addon.strimzikafkaoperator.v1.KafkaOperatorKubernetesStackOutputs
+	(*StrimziKafkaOperatorStackOutputs)(nil), // 0: org.project_planton.provider.kubernetes.addon.strimzikafkaoperator.v1.StrimziKafkaOperatorStackOutputs
 }
 var file_org_project_planton_provider_kubernetes_addon_strimzikafkaoperator_v1_stack_outputs_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type

@@ -42,7 +42,7 @@ func elasticOperator(ctx *pulumi.Context, locals *Locals,
 		},
 	}
 
-	if cr := locals.ElasticOperatorKubernetes.Spec.GetContainer().GetResources(); cr != nil {
+	if cr := locals.ElasticOperator.Spec.GetContainer().GetResources(); cr != nil {
 		res := pulumi.Map{}
 		if lim := cr.GetLimits(); lim != nil &&
 			(lim.Cpu != "" || lim.Memory != "") {

@@ -10,7 +10,7 @@ import (
 
 func main() {
 	pulumi.Run(func(ctx *pulumi.Context) error {
-		stackInput := &elasticoperatorv1.ElasticOperatorKubernetesStackInput{}
+		stackInput := &elasticoperatorv1.ElasticOperatorStackInput{}
 
 		if err := stackinput.LoadStackInput(ctx, stackInput); err != nil {
 			return errors.Wrap(err, "failed to load stack-input")

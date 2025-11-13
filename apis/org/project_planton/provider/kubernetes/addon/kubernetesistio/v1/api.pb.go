@@ -23,8 +23,8 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// istio-kubernetes
-type IstioKubernetes struct {
+// kubernetes-istio
+type KubernetesIstio struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// api-version
 	ApiVersion string `protobuf:"bytes,1,opt,name=api_version,json=apiVersion,proto3" json:"api_version,omitempty"`
@@ -35,25 +35,25 @@ type IstioKubernetes struct {
 	// spec
 	Spec *KubernetesIstioSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status
-	Status        *IstioKubernetesStatus `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
+	Status        *KubernetesIstioStatus `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *IstioKubernetes) Reset() {
-	*x = IstioKubernetes{}
+func (x *KubernetesIstio) Reset() {
+	*x = KubernetesIstio{}
 	mi := &file_org_project_planton_provider_kubernetes_addon_kubernetesistio_v1_api_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *IstioKubernetes) String() string {
+func (x *KubernetesIstio) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*IstioKubernetes) ProtoMessage() {}
+func (*KubernetesIstio) ProtoMessage() {}
 
-func (x *IstioKubernetes) ProtoReflect() protoreflect.Message {
+func (x *KubernetesIstio) ProtoReflect() protoreflect.Message {
 	mi := &file_org_project_planton_provider_kubernetes_addon_kubernetesistio_v1_api_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -65,48 +65,48 @@ func (x *IstioKubernetes) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use IstioKubernetes.ProtoReflect.Descriptor instead.
-func (*IstioKubernetes) Descriptor() ([]byte, []int) {
+// Deprecated: Use KubernetesIstio.ProtoReflect.Descriptor instead.
+func (*KubernetesIstio) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_kubernetes_addon_kubernetesistio_v1_api_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *IstioKubernetes) GetApiVersion() string {
+func (x *KubernetesIstio) GetApiVersion() string {
 	if x != nil {
 		return x.ApiVersion
 	}
 	return ""
 }
 
-func (x *IstioKubernetes) GetKind() string {
+func (x *KubernetesIstio) GetKind() string {
 	if x != nil {
 		return x.Kind
 	}
 	return ""
 }
 
-func (x *IstioKubernetes) GetMetadata() *shared.CloudResourceMetadata {
+func (x *KubernetesIstio) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
 	return nil
 }
 
-func (x *IstioKubernetes) GetSpec() *KubernetesIstioSpec {
+func (x *KubernetesIstio) GetSpec() *KubernetesIstioSpec {
 	if x != nil {
 		return x.Spec
 	}
 	return nil
 }
 
-func (x *IstioKubernetes) GetStatus() *IstioKubernetesStatus {
+func (x *KubernetesIstio) GetStatus() *KubernetesIstioStatus {
 	if x != nil {
 		return x.Status
 	}
 	return nil
 }
 
-// istio-kubernetes status.
-type IstioKubernetesStatus struct {
+// kubernetes-istio status.
+type KubernetesIstioStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// stack-outputs
 	Outputs       *KubernetesIstioStackOutputs `protobuf:"bytes,1,opt,name=outputs,proto3" json:"outputs,omitempty"`
@@ -114,20 +114,20 @@ type IstioKubernetesStatus struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *IstioKubernetesStatus) Reset() {
-	*x = IstioKubernetesStatus{}
+func (x *KubernetesIstioStatus) Reset() {
+	*x = KubernetesIstioStatus{}
 	mi := &file_org_project_planton_provider_kubernetes_addon_kubernetesistio_v1_api_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *IstioKubernetesStatus) String() string {
+func (x *KubernetesIstioStatus) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*IstioKubernetesStatus) ProtoMessage() {}
+func (*KubernetesIstioStatus) ProtoMessage() {}
 
-func (x *IstioKubernetesStatus) ProtoReflect() protoreflect.Message {
+func (x *KubernetesIstioStatus) ProtoReflect() protoreflect.Message {
 	mi := &file_org_project_planton_provider_kubernetes_addon_kubernetesistio_v1_api_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -139,12 +139,12 @@ func (x *IstioKubernetesStatus) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use IstioKubernetesStatus.ProtoReflect.Descriptor instead.
-func (*IstioKubernetesStatus) Descriptor() ([]byte, []int) {
+// Deprecated: Use KubernetesIstioStatus.ProtoReflect.Descriptor instead.
+func (*KubernetesIstioStatus) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_kubernetes_addon_kubernetesistio_v1_api_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *IstioKubernetesStatus) GetOutputs() *KubernetesIstioStackOutputs {
+func (x *KubernetesIstioStatus) GetOutputs() *KubernetesIstioStackOutputs {
 	if x != nil {
 		return x.Outputs
 	}
@@ -156,16 +156,16 @@ var File_org_project_planton_provider_kubernetes_addon_kubernetesistio_v1_api_pr
 const file_org_project_planton_provider_kubernetes_addon_kubernetesistio_v1_api_proto_rawDesc = "" +
 	"\n" +
 	"Jorg/project_planton/provider/kubernetes/addon/kubernetesistio/v1/api.proto\x12@org.project_planton.provider.kubernetes.addon.kubernetesistio.v1\x1a\x1bbuf/validate/validate.proto\x1aKorg/project_planton/provider/kubernetes/addon/kubernetesistio/v1/spec.proto\x1aTorg/project_planton/provider/kubernetes/addon/kubernetesistio/v1/stack_outputs.proto\x1a)org/project_planton/shared/metadata.proto\"\xc3\x03\n" +
-	"\x0fIstioKubernetes\x12I\n" +
+	"\x0fKubernetesIstio\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!kubernetes.project-planton.org/v1R\n" +
 	"apiVersion\x12*\n" +
 	"\x04kind\x18\x02 \x01(\tB\x16\xbaH\x13r\x11\n" +
-	"\x0fIstioKubernetesR\x04kind\x12U\n" +
+	"\x0fKubernetesIstioR\x04kind\x12U\n" +
 	"\bmetadata\x18\x03 \x01(\v21.org.project_planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12q\n" +
 	"\x04spec\x18\x04 \x01(\v2U.org.project_planton.provider.kubernetes.addon.kubernetesistio.v1.KubernetesIstioSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12o\n" +
-	"\x06status\x18\x05 \x01(\v2W.org.project_planton.provider.kubernetes.addon.kubernetesistio.v1.IstioKubernetesStatusR\x06status\"\x90\x01\n" +
-	"\x15IstioKubernetesStatus\x12w\n" +
+	"\x06status\x18\x05 \x01(\v2W.org.project_planton.provider.kubernetes.addon.kubernetesistio.v1.KubernetesIstioStatusR\x06status\"\x90\x01\n" +
+	"\x15KubernetesIstioStatus\x12w\n" +
 	"\aoutputs\x18\x01 \x01(\v2].org.project_planton.provider.kubernetes.addon.kubernetesistio.v1.KubernetesIstioStackOutputsR\aoutputsB\xfa\x03\n" +
 	"Dcom.org.project_planton.provider.kubernetes.addon.kubernetesistio.v1B\bApiProtoP\x01Z\x82\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/kubernetesistio/v1;kubernetesistiov1\xa2\x02\x06OPPKAK\xaa\x02?Org.ProjectPlanton.Provider.Kubernetes.Addon.Kubernetesistio.V1\xca\x02?Org\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Kubernetesistio\\V1\xe2\x02KOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Kubernetesistio\\V1\\GPBMetadata\xea\x02EOrg::ProjectPlanton::Provider::Kubernetes::Addon::Kubernetesistio::V1b\x06proto3"
 
@@ -183,17 +183,17 @@ func file_org_project_planton_provider_kubernetes_addon_kubernetesistio_v1_api_p
 
 var file_org_project_planton_provider_kubernetes_addon_kubernetesistio_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_org_project_planton_provider_kubernetes_addon_kubernetesistio_v1_api_proto_goTypes = []any{
-	(*IstioKubernetes)(nil),              // 0: org.project_planton.provider.kubernetes.addon.kubernetesistio.v1.IstioKubernetes
-	(*IstioKubernetesStatus)(nil),        // 1: org.project_planton.provider.kubernetes.addon.kubernetesistio.v1.IstioKubernetesStatus
+	(*KubernetesIstio)(nil),              // 0: org.project_planton.provider.kubernetes.addon.kubernetesistio.v1.KubernetesIstio
+	(*KubernetesIstioStatus)(nil),        // 1: org.project_planton.provider.kubernetes.addon.kubernetesistio.v1.KubernetesIstioStatus
 	(*shared.CloudResourceMetadata)(nil), // 2: org.project_planton.shared.CloudResourceMetadata
 	(*KubernetesIstioSpec)(nil),          // 3: org.project_planton.provider.kubernetes.addon.kubernetesistio.v1.KubernetesIstioSpec
 	(*KubernetesIstioStackOutputs)(nil),  // 4: org.project_planton.provider.kubernetes.addon.kubernetesistio.v1.KubernetesIstioStackOutputs
 }
 var file_org_project_planton_provider_kubernetes_addon_kubernetesistio_v1_api_proto_depIdxs = []int32{
-	2, // 0: org.project_planton.provider.kubernetes.addon.kubernetesistio.v1.IstioKubernetes.metadata:type_name -> org.project_planton.shared.CloudResourceMetadata
-	3, // 1: org.project_planton.provider.kubernetes.addon.kubernetesistio.v1.IstioKubernetes.spec:type_name -> org.project_planton.provider.kubernetes.addon.kubernetesistio.v1.KubernetesIstioSpec
-	1, // 2: org.project_planton.provider.kubernetes.addon.kubernetesistio.v1.IstioKubernetes.status:type_name -> org.project_planton.provider.kubernetes.addon.kubernetesistio.v1.IstioKubernetesStatus
-	4, // 3: org.project_planton.provider.kubernetes.addon.kubernetesistio.v1.IstioKubernetesStatus.outputs:type_name -> org.project_planton.provider.kubernetes.addon.kubernetesistio.v1.KubernetesIstioStackOutputs
+	2, // 0: org.project_planton.provider.kubernetes.addon.kubernetesistio.v1.KubernetesIstio.metadata:type_name -> org.project_planton.shared.CloudResourceMetadata
+	3, // 1: org.project_planton.provider.kubernetes.addon.kubernetesistio.v1.KubernetesIstio.spec:type_name -> org.project_planton.provider.kubernetes.addon.kubernetesistio.v1.KubernetesIstioSpec
+	1, // 2: org.project_planton.provider.kubernetes.addon.kubernetesistio.v1.KubernetesIstio.status:type_name -> org.project_planton.provider.kubernetes.addon.kubernetesistio.v1.KubernetesIstioStatus
+	4, // 3: org.project_planton.provider.kubernetes.addon.kubernetesistio.v1.KubernetesIstioStatus.outputs:type_name -> org.project_planton.provider.kubernetes.addon.kubernetesistio.v1.KubernetesIstioStackOutputs
 	4, // [4:4] is the sub-list for method output_type
 	4, // [4:4] is the sub-list for method input_type
 	4, // [4:4] is the sub-list for extension type_name

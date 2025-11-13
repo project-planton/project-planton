@@ -10,18 +10,18 @@ import (
 )
 
 type Locals struct {
-	ElasticOperatorKubernetes *elasticoperatorv1.ElasticOperatorKubernetes
-	KubeLabels                map[string]string
+	ElasticOperator *elasticoperatorv1.ElasticOperator
+	KubeLabels      map[string]string
 }
 
-func initializeLocals(_ *pulumi.Context, in *elasticoperatorv1.ElasticOperatorKubernetesStackInput) *Locals {
+func initializeLocals(_ *pulumi.Context, in *elasticoperatorv1.ElasticOperatorStackInput) *Locals {
 	var l Locals
-	l.ElasticOperatorKubernetes = in.Target
+	l.ElasticOperator = in.Target
 
 	l.KubeLabels = map[string]string{
 		kuberneteslabelkeys.Resource:     strconv.FormatBool(true),
 		kuberneteslabelkeys.ResourceName: in.Target.Metadata.Name,
-		kuberneteslabelkeys.ResourceKind: cloudresourcekind.CloudResourceKind_ElasticOperatorKubernetes.String(),
+		kuberneteslabelkeys.ResourceKind: cloudresourcekind.CloudResourceKind_ElasticOperator.String(),
 	}
 
 	if id := in.Target.Metadata.Id; id != "" {
