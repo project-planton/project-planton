@@ -8,6 +8,7 @@ package gcpgkeclusterv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
+	v1 "github.com/project-planton/project-planton/apis/org/project_planton/shared/foreignkey/v1"
 	_ "github.com/project-planton/project-planton/apis/org/project_planton/shared/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -23,30 +24,87 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// **GcpGkeClusterSpec** defines the specifications for a Google Kubernetes Engine (GKE) cluster.
-// This message includes necessary parameters to create and manage a GKE cluster within a specified GCP project.
-// It covers details like project IDs, region, zone, networking configurations, logging options, autoscaling settings,
-// node pools, Kubernetes addons, and ingress DNS domains.
+// Enum for available GKE release channels.
+type GkeReleaseChannel int32
+
+const (
+	GkeReleaseChannel_gke_release_channel_unspecified GkeReleaseChannel = 0
+	GkeReleaseChannel_RAPID                           GkeReleaseChannel = 1
+	GkeReleaseChannel_REGULAR                         GkeReleaseChannel = 2
+	GkeReleaseChannel_STABLE                          GkeReleaseChannel = 3
+	GkeReleaseChannel_NONE                            GkeReleaseChannel = 4
+)
+
+// Enum value maps for GkeReleaseChannel.
+var (
+	GkeReleaseChannel_name = map[int32]string{
+		0: "gke_release_channel_unspecified",
+		1: "RAPID",
+		2: "REGULAR",
+		3: "STABLE",
+		4: "NONE",
+	}
+	GkeReleaseChannel_value = map[string]int32{
+		"gke_release_channel_unspecified": 0,
+		"RAPID":                           1,
+		"REGULAR":                         2,
+		"STABLE":                          3,
+		"NONE":                            4,
+	}
+)
+
+func (x GkeReleaseChannel) Enum() *GkeReleaseChannel {
+	p := new(GkeReleaseChannel)
+	*p = x
+	return p
+}
+
+func (x GkeReleaseChannel) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (GkeReleaseChannel) Descriptor() protoreflect.EnumDescriptor {
+	return file_org_project_planton_provider_gcp_gcpgkecluster_v1_spec_proto_enumTypes[0].Descriptor()
+}
+
+func (GkeReleaseChannel) Type() protoreflect.EnumType {
+	return &file_org_project_planton_provider_gcp_gcpgkecluster_v1_spec_proto_enumTypes[0]
+}
+
+func (x GkeReleaseChannel) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use GkeReleaseChannel.Descriptor instead.
+func (GkeReleaseChannel) EnumDescriptor() ([]byte, []int) {
+	return file_org_project_planton_provider_gcp_gcpgkecluster_v1_spec_proto_rawDescGZIP(), []int{0}
+}
+
+// GcpGkeClusterSpec defines the key configuration for a GKE control-plane (private cluster).
 type GcpGkeClusterSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The GCP project ID in which the GKE cluster will be created.
-	ClusterProjectId string `protobuf:"bytes,1,opt,name=cluster_project_id,json=clusterProjectId,proto3" json:"cluster_project_id,omitempty"`
-	// The GCP region where the GKE cluster will be created.
-	// **Warning:** The GKE cluster will be recreated if this value is updated.
-	// Refer to: https://cloud.google.com/compute/docs/regions-zones
-	Region *string `protobuf:"bytes,2,opt,name=region,proto3,oneof" json:"region,omitempty"`
-	// The GCP zone where the GKE cluster will be created.
-	// Refer to: https://cloud.google.com/compute/docs/regions-zones
-	Zone            *string                       `protobuf:"bytes,3,opt,name=zone,proto3,oneof" json:"zone,omitempty"`
-	SharedVpcConfig *GcpGkeClusterSharedVpcConfig `protobuf:"bytes,4,opt,name=shared_vpc_config,json=sharedVpcConfig,proto3" json:"shared_vpc_config,omitempty"`
-	// A flag to toggle workload logs for the GKE cluster environment.
-	// When enabled, logs from Kubernetes pods will be sent to Google Cloud Logging.
-	// **Warning:** Enabling log forwarding may increase cloud bills depending on the log volume.
-	IsWorkloadLogsEnabled bool `protobuf:"varint,5,opt,name=is_workload_logs_enabled,json=isWorkloadLogsEnabled,proto3" json:"is_workload_logs_enabled,omitempty"`
-	// Configuration for cluster autoscaling.
-	ClusterAutoscalingConfig *GcpGkeClusterAutoscalingConfig `protobuf:"bytes,6,opt,name=cluster_autoscaling_config,json=clusterAutoscalingConfig,proto3" json:"cluster_autoscaling_config,omitempty"`
-	// A list of node pools for the GKE cluster.
-	NodePools     []*GcpGkeClusterNodePool `protobuf:"bytes,7,rep,name=node_pools,json=nodePools,proto3" json:"node_pools,omitempty"`
+	// GCP project in which to create the cluster (reference to GcpProject resource).
+	ProjectId *v1.StringValueOrRef `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
+	// Location for the cluster: region (for regional) or zone (for zonal).
+	Location string `protobuf:"bytes,2,opt,name=location,proto3" json:"location,omitempty"`
+	// VPC Subnetwork to attach this cluster (must exist; carries primary & secondary IP ranges).
+	SubnetworkSelfLink *v1.StringValueOrRef `protobuf:"bytes,3,opt,name=subnetwork_self_link,json=subnetworkSelfLink,proto3" json:"subnetwork_self_link,omitempty"`
+	// Name of the secondary range on the subnetwork for Pod IPs (VPC-native aliasing).
+	ClusterSecondaryRangeName *v1.StringValueOrRef `protobuf:"bytes,4,opt,name=cluster_secondary_range_name,json=clusterSecondaryRangeName,proto3" json:"cluster_secondary_range_name,omitempty"`
+	// Name of the secondary range on the subnetwork for Service IPs.
+	ServicesSecondaryRangeName *v1.StringValueOrRef `protobuf:"bytes,5,opt,name=services_secondary_range_name,json=servicesSecondaryRangeName,proto3" json:"services_secondary_range_name,omitempty"`
+	// RFC1918 /28 CIDR block for the Kubernetes control-plane masters (private endpoint range).
+	MasterIpv4CidrBlock string `protobuf:"bytes,6,opt,name=master_ipv4_cidr_block,json=masterIpv4CidrBlock,proto3" json:"master_ipv4_cidr_block,omitempty"`
+	// Whether nodes should be created with public IPs
+	EnablePublicNodes bool `protobuf:"varint,7,opt,name=enable_public_nodes,json=enablePublicNodes,proto3" json:"enable_public_nodes,omitempty"`
+	// Kubernetes release channel for auto-upgrades (Rapid, Regular, Stable, or NONE).
+	ReleaseChannel *GkeReleaseChannel `protobuf:"varint,8,opt,name=release_channel,json=releaseChannel,proto3,enum=org.project_planton.provider.gcp.gcpgkecluster.v1.GkeReleaseChannel,oneof" json:"release_channel,omitempty"`
+	// Disable network policy enforcement (Calico)
+	DisableNetworkPolicy bool `protobuf:"varint,9,opt,name=disable_network_policy,json=disableNetworkPolicy,proto3" json:"disable_network_policy,omitempty"`
+	// Disable Workload Identity for pods (mapping KSA to GCP service accounts).
+	DisableWorkloadIdentity bool `protobuf:"varint,10,opt,name=disable_workload_identity,json=disableWorkloadIdentity,proto3" json:"disable_workload_identity,omitempty"`
+	// Reference to a Cloud NAT configuration to allow outbound internet for private nodes.
+	RouterNatName *v1.StringValueOrRef `protobuf:"bytes,12,opt,name=router_nat_name,json=routerNatName,proto3" json:"router_nat_name,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -81,320 +139,110 @@ func (*GcpGkeClusterSpec) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_gcp_gcpgkecluster_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *GcpGkeClusterSpec) GetClusterProjectId() string {
+func (x *GcpGkeClusterSpec) GetProjectId() *v1.StringValueOrRef {
 	if x != nil {
-		return x.ClusterProjectId
-	}
-	return ""
-}
-
-func (x *GcpGkeClusterSpec) GetRegion() string {
-	if x != nil && x.Region != nil {
-		return *x.Region
-	}
-	return ""
-}
-
-func (x *GcpGkeClusterSpec) GetZone() string {
-	if x != nil && x.Zone != nil {
-		return *x.Zone
-	}
-	return ""
-}
-
-func (x *GcpGkeClusterSpec) GetSharedVpcConfig() *GcpGkeClusterSharedVpcConfig {
-	if x != nil {
-		return x.SharedVpcConfig
+		return x.ProjectId
 	}
 	return nil
 }
 
-func (x *GcpGkeClusterSpec) GetIsWorkloadLogsEnabled() bool {
+func (x *GcpGkeClusterSpec) GetLocation() string {
 	if x != nil {
-		return x.IsWorkloadLogsEnabled
+		return x.Location
 	}
-	return false
+	return ""
 }
 
-func (x *GcpGkeClusterSpec) GetClusterAutoscalingConfig() *GcpGkeClusterAutoscalingConfig {
+func (x *GcpGkeClusterSpec) GetSubnetworkSelfLink() *v1.StringValueOrRef {
 	if x != nil {
-		return x.ClusterAutoscalingConfig
+		return x.SubnetworkSelfLink
 	}
 	return nil
 }
 
-func (x *GcpGkeClusterSpec) GetNodePools() []*GcpGkeClusterNodePool {
+func (x *GcpGkeClusterSpec) GetClusterSecondaryRangeName() *v1.StringValueOrRef {
 	if x != nil {
-		return x.NodePools
+		return x.ClusterSecondaryRangeName
 	}
 	return nil
 }
 
-// **GcpGkeClusterSharedVpcConfig** specifies the shared VPC network settings for GKE clusters.
-// This message includes the project ID for the shared VPC network where the GKE cluster is created.
-// For more details, visit: https://cloud.google.com/kubernetes-engine/docs/how-to/cluster-shared-vpc
-type GcpGkeClusterSharedVpcConfig struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// A flag indicating whether the cluster should be created in a shared VPC network.
-	// **Warning:** The GKE cluster will be recreated if this is updated.
-	IsEnabled     bool   `protobuf:"varint,1,opt,name=is_enabled,json=isEnabled,proto3" json:"is_enabled,omitempty"`
-	VpcProjectId  string `protobuf:"bytes,2,opt,name=vpc_project_id,json=vpcProjectId,proto3" json:"vpc_project_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GcpGkeClusterSharedVpcConfig) Reset() {
-	*x = GcpGkeClusterSharedVpcConfig{}
-	mi := &file_org_project_planton_provider_gcp_gcpgkecluster_v1_spec_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GcpGkeClusterSharedVpcConfig) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GcpGkeClusterSharedVpcConfig) ProtoMessage() {}
-
-func (x *GcpGkeClusterSharedVpcConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_org_project_planton_provider_gcp_gcpgkecluster_v1_spec_proto_msgTypes[1]
+func (x *GcpGkeClusterSpec) GetServicesSecondaryRangeName() *v1.StringValueOrRef {
 	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
+		return x.ServicesSecondaryRangeName
 	}
-	return mi.MessageOf(x)
+	return nil
 }
 
-// Deprecated: Use GcpGkeClusterSharedVpcConfig.ProtoReflect.Descriptor instead.
-func (*GcpGkeClusterSharedVpcConfig) Descriptor() ([]byte, []int) {
-	return file_org_project_planton_provider_gcp_gcpgkecluster_v1_spec_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *GcpGkeClusterSharedVpcConfig) GetIsEnabled() bool {
+func (x *GcpGkeClusterSpec) GetMasterIpv4CidrBlock() string {
 	if x != nil {
-		return x.IsEnabled
-	}
-	return false
-}
-
-func (x *GcpGkeClusterSharedVpcConfig) GetVpcProjectId() string {
-	if x != nil {
-		return x.VpcProjectId
+		return x.MasterIpv4CidrBlock
 	}
 	return ""
 }
 
-// **GcpGkeClusterAutoscalingConfig** specifies the autoscaling settings for GKE clusters.
-// For more details, visit: https://cloud.google.com/kubernetes-engine/docs/how-to/node-auto-provisioning
-type GcpGkeClusterAutoscalingConfig struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// A flag to enable or disable autoscaling of Kubernetes worker nodes.
-	// When set to true, the cluster will automatically scale up or down based on resource requirements.
-	IsEnabled bool `protobuf:"varint,1,opt,name=is_enabled,json=isEnabled,proto3" json:"is_enabled,omitempty"`
-	// The minimum number of CPU cores the cluster can scale down to when autoscaling is enabled.
-	// This is the total number of CPU cores across all nodes in the cluster.
-	CpuMinCores int64 `protobuf:"varint,2,opt,name=cpu_min_cores,json=cpuMinCores,proto3" json:"cpu_min_cores,omitempty"`
-	// The maximum number of CPU cores the cluster can scale up to when autoscaling is enabled.
-	// This is the total number of CPU cores across all nodes in the cluster.
-	CpuMaxCores int64 `protobuf:"varint,3,opt,name=cpu_max_cores,json=cpuMaxCores,proto3" json:"cpu_max_cores,omitempty"`
-	// The minimum amount of memory in gigabytes (GB) the cluster can scale down to when autoscaling is enabled.
-	// This is the total memory across all nodes in the cluster.
-	MemoryMinGb int64 `protobuf:"varint,4,opt,name=memory_min_gb,json=memoryMinGb,proto3" json:"memory_min_gb,omitempty"`
-	// The maximum amount of memory in gigabytes (GB) the cluster can scale up to when autoscaling is enabled.
-	// This is the total memory across all nodes in the cluster.
-	MemoryMaxGb   int64 `protobuf:"varint,5,opt,name=memory_max_gb,json=memoryMaxGb,proto3" json:"memory_max_gb,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GcpGkeClusterAutoscalingConfig) Reset() {
-	*x = GcpGkeClusterAutoscalingConfig{}
-	mi := &file_org_project_planton_provider_gcp_gcpgkecluster_v1_spec_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GcpGkeClusterAutoscalingConfig) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GcpGkeClusterAutoscalingConfig) ProtoMessage() {}
-
-func (x *GcpGkeClusterAutoscalingConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_org_project_planton_provider_gcp_gcpgkecluster_v1_spec_proto_msgTypes[2]
+func (x *GcpGkeClusterSpec) GetEnablePublicNodes() bool {
 	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GcpGkeClusterAutoscalingConfig.ProtoReflect.Descriptor instead.
-func (*GcpGkeClusterAutoscalingConfig) Descriptor() ([]byte, []int) {
-	return file_org_project_planton_provider_gcp_gcpgkecluster_v1_spec_proto_rawDescGZIP(), []int{2}
-}
-
-func (x *GcpGkeClusterAutoscalingConfig) GetIsEnabled() bool {
-	if x != nil {
-		return x.IsEnabled
+		return x.EnablePublicNodes
 	}
 	return false
 }
 
-func (x *GcpGkeClusterAutoscalingConfig) GetCpuMinCores() int64 {
-	if x != nil {
-		return x.CpuMinCores
+func (x *GcpGkeClusterSpec) GetReleaseChannel() GkeReleaseChannel {
+	if x != nil && x.ReleaseChannel != nil {
+		return *x.ReleaseChannel
 	}
-	return 0
+	return GkeReleaseChannel_gke_release_channel_unspecified
 }
 
-func (x *GcpGkeClusterAutoscalingConfig) GetCpuMaxCores() int64 {
+func (x *GcpGkeClusterSpec) GetDisableNetworkPolicy() bool {
 	if x != nil {
-		return x.CpuMaxCores
-	}
-	return 0
-}
-
-func (x *GcpGkeClusterAutoscalingConfig) GetMemoryMinGb() int64 {
-	if x != nil {
-		return x.MemoryMinGb
-	}
-	return 0
-}
-
-func (x *GcpGkeClusterAutoscalingConfig) GetMemoryMaxGb() int64 {
-	if x != nil {
-		return x.MemoryMaxGb
-	}
-	return 0
-}
-
-// **GcpGkeClusterNodePool** defines a node pool within the GKE cluster.
-type GcpGkeClusterNodePool struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The name of the node pool.
-	// This name is added as a label to the node pool and can be used to schedule workloads.
-	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	// The machine type for the node pool (e.g., 'n2-custom-8-16234').
-	MachineType string `protobuf:"bytes,2,opt,name=machine_type,json=machineType,proto3" json:"machine_type,omitempty"`
-	// The minimum number of nodes in the node pool. Defaults to 1.
-	MinNodeCount int32 `protobuf:"varint,3,opt,name=min_node_count,json=minNodeCount,proto3" json:"min_node_count,omitempty"`
-	// The maximum number of nodes in the node pool. Defaults to 1.
-	MaxNodeCount int32 `protobuf:"varint,4,opt,name=max_node_count,json=maxNodeCount,proto3" json:"max_node_count,omitempty"`
-	// A flag to enable spot instances on the node pool. Defaults to false.
-	IsSpotEnabled bool `protobuf:"varint,5,opt,name=is_spot_enabled,json=isSpotEnabled,proto3" json:"is_spot_enabled,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GcpGkeClusterNodePool) Reset() {
-	*x = GcpGkeClusterNodePool{}
-	mi := &file_org_project_planton_provider_gcp_gcpgkecluster_v1_spec_proto_msgTypes[3]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GcpGkeClusterNodePool) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GcpGkeClusterNodePool) ProtoMessage() {}
-
-func (x *GcpGkeClusterNodePool) ProtoReflect() protoreflect.Message {
-	mi := &file_org_project_planton_provider_gcp_gcpgkecluster_v1_spec_proto_msgTypes[3]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GcpGkeClusterNodePool.ProtoReflect.Descriptor instead.
-func (*GcpGkeClusterNodePool) Descriptor() ([]byte, []int) {
-	return file_org_project_planton_provider_gcp_gcpgkecluster_v1_spec_proto_rawDescGZIP(), []int{3}
-}
-
-func (x *GcpGkeClusterNodePool) GetName() string {
-	if x != nil {
-		return x.Name
-	}
-	return ""
-}
-
-func (x *GcpGkeClusterNodePool) GetMachineType() string {
-	if x != nil {
-		return x.MachineType
-	}
-	return ""
-}
-
-func (x *GcpGkeClusterNodePool) GetMinNodeCount() int32 {
-	if x != nil {
-		return x.MinNodeCount
-	}
-	return 0
-}
-
-func (x *GcpGkeClusterNodePool) GetMaxNodeCount() int32 {
-	if x != nil {
-		return x.MaxNodeCount
-	}
-	return 0
-}
-
-func (x *GcpGkeClusterNodePool) GetIsSpotEnabled() bool {
-	if x != nil {
-		return x.IsSpotEnabled
+		return x.DisableNetworkPolicy
 	}
 	return false
+}
+
+func (x *GcpGkeClusterSpec) GetDisableWorkloadIdentity() bool {
+	if x != nil {
+		return x.DisableWorkloadIdentity
+	}
+	return false
+}
+
+func (x *GcpGkeClusterSpec) GetRouterNatName() *v1.StringValueOrRef {
+	if x != nil {
+		return x.RouterNatName
+	}
+	return nil
 }
 
 var File_org_project_planton_provider_gcp_gcpgkecluster_v1_spec_proto protoreflect.FileDescriptor
 
 const file_org_project_planton_provider_gcp_gcpgkecluster_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"<org/project_planton/provider/gcp/gcpgkecluster/v1/spec.proto\x121org.project_planton.provider.gcp.gcpgkecluster.v1\x1a\x1bbuf/validate/validate.proto\x1a0org/project_planton/shared/options/options.proto\"\xe8\x04\n" +
-	"\x11GcpGkeClusterSpec\x124\n" +
-	"\x12cluster_project_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x10clusterProjectId\x12,\n" +
-	"\x06region\x18\x02 \x01(\tB\x0f\x8a\xa6\x1d\vus-central1H\x00R\x06region\x88\x01\x01\x12*\n" +
-	"\x04zone\x18\x03 \x01(\tB\x11\x8a\xa6\x1d\rus-central1-aH\x01R\x04zone\x88\x01\x01\x12{\n" +
-	"\x11shared_vpc_config\x18\x04 \x01(\v2O.org.project_planton.provider.gcp.gcpgkecluster.v1.GcpGkeClusterSharedVpcConfigR\x0fsharedVpcConfig\x127\n" +
-	"\x18is_workload_logs_enabled\x18\x05 \x01(\bR\x15isWorkloadLogsEnabled\x12\x8f\x01\n" +
-	"\x1acluster_autoscaling_config\x18\x06 \x01(\v2Q.org.project_planton.provider.gcp.gcpgkecluster.v1.GcpGkeClusterAutoscalingConfigR\x18clusterAutoscalingConfig\x12g\n" +
+	"<org/project_planton/provider/gcp/gcpgkecluster/v1/spec.proto\x121org.project_planton.provider.gcp.gcpgkecluster.v1\x1a\x1bbuf/validate/validate.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a0org/project_planton/shared/options/options.proto\"\xfd\t\n" +
+	"\x11GcpGkeClusterSpec\x12\x83\x01\n" +
 	"\n" +
-	"node_pools\x18\a \x03(\v2H.org.project_planton.provider.gcp.gcpgkecluster.v1.GcpGkeClusterNodePoolR\tnodePoolsB\t\n" +
-	"\a_regionB\a\n" +
-	"\x05_zone\"\x8e\x02\n" +
-	"\x1cGcpGkeClusterSharedVpcConfig\x12\x1d\n" +
+	"project_id\x18\x01 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB(\xbaH\x03\xc8\x01\x01\x88\xd4a\xe1\x04\x92\xd4a\x19status.outputs.project_idR\tprojectId\x12C\n" +
+	"\blocation\x18\x02 \x01(\tB'\xbaH$\xc8\x01\x01r\x1f2\x1d^[a-z]+-[a-z]+[0-9](-[a-z])?$R\blocation\x12\x95\x01\n" +
+	"\x14subnetwork_self_link\x18\x03 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB'\xbaH\x03\xc8\x01\x01\x88\xd4a\xe3\x04\x92\xd4a\x18status.outputs.self_linkR\x12subnetworkSelfLink\x12\xb4\x01\n" +
+	"\x1ccluster_secondary_range_name\x18\x04 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB7\xbaH\x03\xc8\x01\x01\x88\xd4a\xe3\x04\x92\xd4a(status.outputs.pods_secondary_range_nameR\x19clusterSecondaryRangeName\x12\xba\x01\n" +
+	"\x1dservices_secondary_range_name\x18\x05 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB;\xbaH\x03\xc8\x01\x01\x88\xd4a\xe3\x04\x92\xd4a,status.outputs.services_secondary_range_nameR\x1aservicesSecondaryRangeName\x12W\n" +
+	"\x16master_ipv4_cidr_block\x18\x06 \x01(\tB\"\xbaH\x1f\xc8\x01\x01r\x1a2\x18^\\d+\\.\\d+\\.\\d+\\.\\d+\\/28$R\x13masterIpv4CidrBlock\x12.\n" +
+	"\x13enable_public_nodes\x18\a \x01(\bR\x11enablePublicNodes\x12\x7f\n" +
+	"\x0frelease_channel\x18\b \x01(\x0e2D.org.project_planton.provider.gcp.gcpgkecluster.v1.GkeReleaseChannelB\v\x8a\xa6\x1d\aREGULARH\x00R\x0ereleaseChannel\x88\x01\x01\x124\n" +
+	"\x16disable_network_policy\x18\t \x01(\bR\x14disableNetworkPolicy\x12:\n" +
+	"\x19disable_workload_identity\x18\n" +
+	" \x01(\bR\x17disableWorkloadIdentity\x12\x80\x01\n" +
+	"\x0frouter_nat_name\x18\f \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x1c\xbaH\x03\xc8\x01\x01\x88\xd4a\xe4\x04\x92\xd4a\rmetadata.nameR\rrouterNatNameB\x12\n" +
+	"\x10_release_channel*f\n" +
+	"\x11GkeReleaseChannel\x12#\n" +
+	"\x1fgke_release_channel_unspecified\x10\x00\x12\t\n" +
+	"\x05RAPID\x10\x01\x12\v\n" +
+	"\aREGULAR\x10\x02\x12\n" +
 	"\n" +
-	"is_enabled\x18\x01 \x01(\bR\tisEnabled\x12,\n" +
-	"\x0evpc_project_id\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\fvpcProjectId:\xa0\x01\xbaH\x9c\x01\x1a\x99\x01\n" +
-	".spec.shared_vpc_config.vpc_project_id.required\x1agthis.is_enabled && size(this.vpc_project_id) == 0? 'VPC Project Id is required to setup shared-vpc': ''\"\xcf\x01\n" +
-	"\x1eGcpGkeClusterAutoscalingConfig\x12\x1d\n" +
-	"\n" +
-	"is_enabled\x18\x01 \x01(\bR\tisEnabled\x12\"\n" +
-	"\rcpu_min_cores\x18\x02 \x01(\x03R\vcpuMinCores\x12\"\n" +
-	"\rcpu_max_cores\x18\x03 \x01(\x03R\vcpuMaxCores\x12\"\n" +
-	"\rmemory_min_gb\x18\x04 \x01(\x03R\vmemoryMinGb\x12\"\n" +
-	"\rmemory_max_gb\x18\x05 \x01(\x03R\vmemoryMaxGb\"\x8a\x04\n" +
-	"\x15GcpGkeClusterNodePool\x12\xd1\x02\n" +
-	"\x04name\x18\x01 \x01(\tB\xbc\x02\xbaH\xb8\x02\xba\x01\x81\x01\n" +
-	"\x18gcp.node_pool.name.chars\x12DOnly alphanumeric characters (A-Z, a-z, 0-9) and hyphens are allowed\x1a\x1fthis.matches('^[A-Za-z0-9-]+$')\xba\x01W\n" +
-	"\x1dgcp.node_pool.name.startswith\x12\x1cMust not start with a hyphen\x1a\x18this.matches('^[^-].*$')\xba\x01P\n" +
-	"\x1bgcp.node_pool.name.endswith\x12\x1aMust not end with a hyphen\x1a\x15this.matches('[^-]$')r\x04\x10\x01\x18\x19R\x04name\x12)\n" +
-	"\fmachine_type\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\vmachineType\x12$\n" +
-	"\x0emin_node_count\x18\x03 \x01(\x05R\fminNodeCount\x12$\n" +
-	"\x0emax_node_count\x18\x04 \x01(\x05R\fmaxNodeCount\x12&\n" +
-	"\x0fis_spot_enabled\x18\x05 \x01(\bR\risSpotEnabledB\x9c\x03\n" +
+	"\x06STABLE\x10\x03\x12\b\n" +
+	"\x04NONE\x10\x04B\x9c\x03\n" +
 	"5com.org.project_planton.provider.gcp.gcpgkecluster.v1B\tSpecProtoP\x01Zqgithub.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpgkecluster/v1;gcpgkeclusterv1\xa2\x02\x05OPPGG\xaa\x020Org.ProjectPlanton.Provider.Gcp.Gcpgkecluster.V1\xca\x020Org\\ProjectPlanton\\Provider\\Gcp\\Gcpgkecluster\\V1\xe2\x02<Org\\ProjectPlanton\\Provider\\Gcp\\Gcpgkecluster\\V1\\GPBMetadata\xea\x025Org::ProjectPlanton::Provider::Gcp::Gcpgkecluster::V1b\x06proto3"
 
 var (
@@ -409,22 +257,25 @@ func file_org_project_planton_provider_gcp_gcpgkecluster_v1_spec_proto_rawDescGZ
 	return file_org_project_planton_provider_gcp_gcpgkecluster_v1_spec_proto_rawDescData
 }
 
-var file_org_project_planton_provider_gcp_gcpgkecluster_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_org_project_planton_provider_gcp_gcpgkecluster_v1_spec_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_org_project_planton_provider_gcp_gcpgkecluster_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_org_project_planton_provider_gcp_gcpgkecluster_v1_spec_proto_goTypes = []any{
-	(*GcpGkeClusterSpec)(nil),              // 0: org.project_planton.provider.gcp.gcpgkecluster.v1.GcpGkeClusterSpec
-	(*GcpGkeClusterSharedVpcConfig)(nil),   // 1: org.project_planton.provider.gcp.gcpgkecluster.v1.GcpGkeClusterSharedVpcConfig
-	(*GcpGkeClusterAutoscalingConfig)(nil), // 2: org.project_planton.provider.gcp.gcpgkecluster.v1.GcpGkeClusterAutoscalingConfig
-	(*GcpGkeClusterNodePool)(nil),          // 3: org.project_planton.provider.gcp.gcpgkecluster.v1.GcpGkeClusterNodePool
+	(GkeReleaseChannel)(0),      // 0: org.project_planton.provider.gcp.gcpgkecluster.v1.GkeReleaseChannel
+	(*GcpGkeClusterSpec)(nil),   // 1: org.project_planton.provider.gcp.gcpgkecluster.v1.GcpGkeClusterSpec
+	(*v1.StringValueOrRef)(nil), // 2: org.project_planton.shared.foreignkey.v1.StringValueOrRef
 }
 var file_org_project_planton_provider_gcp_gcpgkecluster_v1_spec_proto_depIdxs = []int32{
-	1, // 0: org.project_planton.provider.gcp.gcpgkecluster.v1.GcpGkeClusterSpec.shared_vpc_config:type_name -> org.project_planton.provider.gcp.gcpgkecluster.v1.GcpGkeClusterSharedVpcConfig
-	2, // 1: org.project_planton.provider.gcp.gcpgkecluster.v1.GcpGkeClusterSpec.cluster_autoscaling_config:type_name -> org.project_planton.provider.gcp.gcpgkecluster.v1.GcpGkeClusterAutoscalingConfig
-	3, // 2: org.project_planton.provider.gcp.gcpgkecluster.v1.GcpGkeClusterSpec.node_pools:type_name -> org.project_planton.provider.gcp.gcpgkecluster.v1.GcpGkeClusterNodePool
-	3, // [3:3] is the sub-list for method output_type
-	3, // [3:3] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	2, // 0: org.project_planton.provider.gcp.gcpgkecluster.v1.GcpGkeClusterSpec.project_id:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	2, // 1: org.project_planton.provider.gcp.gcpgkecluster.v1.GcpGkeClusterSpec.subnetwork_self_link:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	2, // 2: org.project_planton.provider.gcp.gcpgkecluster.v1.GcpGkeClusterSpec.cluster_secondary_range_name:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	2, // 3: org.project_planton.provider.gcp.gcpgkecluster.v1.GcpGkeClusterSpec.services_secondary_range_name:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	0, // 4: org.project_planton.provider.gcp.gcpgkecluster.v1.GcpGkeClusterSpec.release_channel:type_name -> org.project_planton.provider.gcp.gcpgkecluster.v1.GkeReleaseChannel
+	2, // 5: org.project_planton.provider.gcp.gcpgkecluster.v1.GcpGkeClusterSpec.router_nat_name:type_name -> org.project_planton.shared.foreignkey.v1.StringValueOrRef
+	6, // [6:6] is the sub-list for method output_type
+	6, // [6:6] is the sub-list for method input_type
+	6, // [6:6] is the sub-list for extension type_name
+	6, // [6:6] is the sub-list for extension extendee
+	0, // [0:6] is the sub-list for field type_name
 }
 
 func init() { file_org_project_planton_provider_gcp_gcpgkecluster_v1_spec_proto_init() }
@@ -438,13 +289,14 @@ func file_org_project_planton_provider_gcp_gcpgkecluster_v1_spec_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_org_project_planton_provider_gcp_gcpgkecluster_v1_spec_proto_rawDesc), len(file_org_project_planton_provider_gcp_gcpgkecluster_v1_spec_proto_rawDesc)),
-			NumEnums:      0,
-			NumMessages:   4,
+			NumEnums:      1,
+			NumMessages:   1,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
 		GoTypes:           file_org_project_planton_provider_gcp_gcpgkecluster_v1_spec_proto_goTypes,
 		DependencyIndexes: file_org_project_planton_provider_gcp_gcpgkecluster_v1_spec_proto_depIdxs,
+		EnumInfos:         file_org_project_planton_provider_gcp_gcpgkecluster_v1_spec_proto_enumTypes,
 		MessageInfos:      file_org_project_planton_provider_gcp_gcpgkecluster_v1_spec_proto_msgTypes,
 	}.Build()
 	File_org_project_planton_provider_gcp_gcpgkecluster_v1_spec_proto = out.File

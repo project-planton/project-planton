@@ -274,7 +274,7 @@ const file_org_project_planton_provider_aws_awsec2instance_v1_spec_proto_rawDesc
 	"\x06ami_id\x18\x02 \x01(\tB\x11\xbaH\x0e\xc8\x01\x01r\t\x10\x012\x05^ami-R\x05amiId\x12/\n" +
 	"\rinstance_type\x18\x03 \x01(\tB\n" +
 	"\xbaH\a\xc8\x01\x01r\x02\x10\x01R\finstanceType\x12\x89\x01\n" +
-	"\tsubnet_id\x18\x04 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB0\xbaH\x03\xc8\x01\x01\x88\xd4a\xd9\x01\x92\xd4a!status.outputs.private_subnets.idR\bsubnetId\x12\x9e\x01\n" +
+	"\tsubnet_id\x18\x04 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB0\xbaH\x03\xc8\x01\x01\x88\xd4a\xd8\x01\x92\xd4a!status.outputs.private_subnets.idR\bsubnetId\x12\x9e\x01\n" +
 	"\x12security_group_ids\x18\x05 \x03(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB4\xbaH\b\xc8\x01\x01\x92\x01\x02\b\x01\x88\xd4a\xd7\x01\x92\xd4a status.outputs.security_group_idR\x10securityGroupIds\x12\x95\x01\n" +
 	"\x11connection_method\x18\x06 \x01(\x0e2R.org.project_planton.provider.aws.awsec2instance.v1.AwsEc2InstanceConnectionMethodB\x0f\xbaH\x05\x82\x01\x02\x10\x01\x8a\xa6\x1d\x03SSMH\x00R\x10connectionMethod\x88\x01\x01\x12\x95\x01\n" +
 	"\x18iam_instance_profile_arn\x18\a \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB \x88\xd4a\xd0\x01\x92\xd4a\x17status.outputs.role_arnR\x15iamInstanceProfileArn\x12\x19\n" +

@@ -432,7 +432,7 @@ const file_org_project_planton_provider_kubernetes_addon_externaldnskubernetes_v
 	"\x13_helm_chart_version\"\xa0\x02\n" +
 	"\x14ExternalDnsGkeConfig\x12\x83\x01\n" +
 	"\n" +
-	"project_id\x18\x01 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB(\xbaH\x03\xc8\x01\x01\x88\xd4a\xe3\x04\x92\xd4a\x19status.outputs.project_idR\tprojectId\x12\x81\x01\n" +
+	"project_id\x18\x01 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB(\xbaH\x03\xc8\x01\x01\x88\xd4a\xe1\x04\x92\xd4a\x19status.outputs.project_idR\tprojectId\x12\x81\x01\n" +
 	"\vdns_zone_id\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB%\xbaH\x03\xc8\x01\x01\x88\xd4a\xdd\x04\x92\xd4a\x16status.outputs.zone_idR\tdnsZoneId\"\xd7\x01\n" +
 	"\x14ExternalDnsEksConfig\x12\x89\x01\n" +
 	"\x0froute53_zone_id\x18\x01 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB%\xbaH\x03\xc8\x01\x01\x88\xd4a\xd4\x01\x92\xd4a\x16status.outputs.zone_idR\rroute53ZoneId\x123\n" +

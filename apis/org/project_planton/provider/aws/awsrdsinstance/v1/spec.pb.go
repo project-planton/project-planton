@@ -214,7 +214,7 @@ const file_org_project_planton_provider_aws_awsrdsinstance_v1_spec_proto_rawDesc
 	"=org/project_planton/provider/aws/awsrdsinstance/v1/spec.proto\x122org.project_planton.provider.aws.awsrdsinstance.v1\x1a\x1bbuf/validate/validate.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\xb9\t\n" +
 	"\x12AwsRdsInstanceSpec\x12\x89\x01\n" +
 	"\n" +
-	"subnet_ids\x18\x01 \x03(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB.\x88\xd4a\xd9\x01\x92\xd4a%status.outputs.private_subnets.[*].idR\tsubnetIds\x12k\n" +
+	"subnet_ids\x18\x01 \x03(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB.\x88\xd4a\xd8\x01\x92\xd4a%status.outputs.private_subnets.[*].idR\tsubnetIds\x12k\n" +
 	"\x14db_subnet_group_name\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefR\x11dbSubnetGroupName\x12\x93\x01\n" +
 	"\x12security_group_ids\x18\x03 \x03(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB)\x88\xd4a\xd7\x01\x92\xd4a status.outputs.security_group_idR\x10securityGroupIds\x12\x1f\n" +
 	"\x06engine\x18\x04 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06engine\x12.\n" +
@@ -223,7 +223,7 @@ const file_org_project_planton_provider_aws_awsrdsinstance_v1_spec_proto_rawDesc
 	"\x14allocated_storage_gb\x18\a \x01(\x05B\a\xbaH\x04\x1a\x02 \x00R\x12allocatedStorageGb\x12+\n" +
 	"\x11storage_encrypted\x18\b \x01(\bR\x10storageEncrypted\x12y\n" +
 	"\n" +
-	"kms_key_id\x18\t \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x1f\x88\xd4a\xdc\x01\x92\xd4a\x16status.outputs.key_arnR\bkmsKeyId\x12#\n" +
+	"kms_key_id\x18\t \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x1f\x88\xd4a\xdb\x01\x92\xd4a\x16status.outputs.key_arnR\bkmsKeyId\x12#\n" +
 	"\busername\x18\n" +
 	" \x01(\tB\a\xbaH\x04r\x02\x10\x01R\busername\x12#\n" +
 	"\bpassword\x18\v \x01(\tB\a\xbaH\x04r\x02\x10\x01R\bpassword\x12\x1f\n" +

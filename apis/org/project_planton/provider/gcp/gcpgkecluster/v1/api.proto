@@ -7,7 +7,7 @@ import "org/project_planton/provider/gcp/gcpgkecluster/v1/spec.proto";
 import "org/project_planton/provider/gcp/gcpgkecluster/v1/stack_outputs.proto";
 import "org/project_planton/shared/metadata.proto";
 
-// gcp-gke-cluster
+//gcp-gke-cluster
 message GcpGkeCluster {
   //api-version
   string api_version = 1 [(buf.validate.field).string.const = 'gcp.project-planton.org/v1'];
@@ -25,7 +25,7 @@ message GcpGkeCluster {
   GcpGkeClusterStatus status = 5;
 }
 
-// gcp-gke-cluster status
+//gcp-gke-cluster status.
 message GcpGkeClusterStatus {
   //stack-outputs
   GcpGkeClusterStackOutputs outputs = 1;

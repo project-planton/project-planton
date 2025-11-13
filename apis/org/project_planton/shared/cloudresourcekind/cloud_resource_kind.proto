@@ -163,37 +163,32 @@ enum CloudResourceKind {
     version: v1
     id_prefix: "awssg"
   }];
-  AwsStaticWebsite = 216 [(kind_meta) = {
-    provider: aws
-    version: v1
-    id_prefix: "awsweb"
-  }];
-  AwsVpc = 217 [(kind_meta) = {
+  AwsVpc = 216 [(kind_meta) = {
     provider: aws
     version: v1
     id_prefix: "awsvpc"
   }];
-  AwsEksNodeGroup = 218 [(kind_meta) = {
+  AwsEksNodeGroup = 217 [(kind_meta) = {
     provider: aws
     version: v1
     id_prefix: "eksng"
   }];
-  AwsIamUser = 219 [(kind_meta) = {
+  AwsIamUser = 218 [(kind_meta) = {
     provider: aws
     version: v1
     id_prefix: "awsuser"
   }];
-  AwsKmsKey = 220 [(kind_meta) = {
+  AwsKmsKey = 219 [(kind_meta) = {
     provider: aws
     version: v1
     id_prefix: "awskms"
   }];
-  AwsEc2Instance = 221 [(kind_meta) = {
+  AwsEc2Instance = 220 [(kind_meta) = {
     provider: aws
     version: v1
     id_prefix: "ec2inst"
   }];
-  AwsClientVpn = 222 [(kind_meta) = {
+  AwsClientVpn = 221 [(kind_meta) = {
     provider: aws
     version: v1
     id_prefix: "awsvpn"
@@ -272,67 +267,52 @@ enum CloudResourceKind {
     version: v1
     id_prefix: "gcsbkt"
   }];
-  GcpGkeAddonBundle = 607 [(kind_meta) = {
-    provider: gcp
-    version: v1
-    id_prefix: "gkeadd"
-  }];
-  GcpGkeCluster = 608 [(kind_meta) = {
+  GcpGkeCluster = 607 [(kind_meta) = {
     provider: gcp
     version: v1
     id_prefix: "gke"
   }];
-  GcpSecretsManager = 609 [(kind_meta) = {
+  GcpSecretsManager = 608 [(kind_meta) = {
     provider: gcp
     version: v1
     id_prefix: "gcpsm"
   }];
-  GcpStaticWebsite = 610 [(kind_meta) = {
-    provider: gcp
-    version: v1
-    id_prefix: "gcpweb"
-  }];
-  GcpProject = 611 [(kind_meta) = {
+  GcpProject = 609 [(kind_meta) = {
     provider: gcp
     version: v1
     id_prefix: "gcpprj"
   }];
-  GcpVpc = 612 [(kind_meta) = {
+  GcpVpc = 610 [(kind_meta) = {
     provider: gcp
     version: v1
     id_prefix: "gcpvpc"
   }];
-  GcpSubnetwork = 613 [(kind_meta) = {
+  GcpSubnetwork = 611 [(kind_meta) = {
     provider: gcp
     version: v1
     id_prefix: "gcpsnw"
   }];
-  GcpRouterNat = 614 [(kind_meta) = {
+  GcpRouterNat = 612 [(kind_meta) = {
     provider: gcp
     version: v1
     id_prefix: "gcprnat"
   }];
-  GcpGkeClusterCore = 615 [(kind_meta) = {
-    provider: gcp
-    version: v1
-    id_prefix: "gkecore"
-  }];
-  GcpGkeNodePool = 616 [(kind_meta) = {
+  GcpGkeNodePool = 613 [(kind_meta) = {
     provider: gcp
     version: v1
     id_prefix: "gkenp"
   }];
-  GcpServiceAccount = 617 [(kind_meta) = {
+  GcpServiceAccount = 614 [(kind_meta) = {
     provider: gcp
     version: v1
     id_prefix: "gsa"
   }];
-  GcpGkeWorkloadIdentityBinding = 618 [(kind_meta) = {
+  GcpGkeWorkloadIdentityBinding = 615 [(kind_meta) = {
     provider: gcp
     version: v1
     id_prefix: "gkewib"
   }];
-  GcpCertManagerCert = 619 [(kind_meta) = {
+  GcpCertManagerCert = 616 [(kind_meta) = {
     provider: gcp
     version: v1
     id_prefix: "gcpcert"
@@ -420,13 +400,7 @@ enum CloudResourceKind {
       namespace_prefix: "keycloak"
     }
   }];
-  KubernetesHttpEndpoint = 809 [(kind_meta) = {
-    provider: kubernetes
-    version: v1
-    id_prefix: "k8shttp"
-    kubernetes_meta: {category: workload}
-  }];
-  LocustKubernetes = 810 [(kind_meta) = {
+  LocustKubernetes = 809 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "lock8s"
@@ -435,7 +409,7 @@ enum CloudResourceKind {
       namespace_prefix: "locust"
     }
   }];
-  MicroserviceKubernetes = 811 [(kind_meta) = {
+  MicroserviceKubernetes = 810 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "msk8s"
@@ -445,7 +419,7 @@ enum CloudResourceKind {
       namespace_prefix: "service"
     }
   }];
-  MongodbKubernetes = 812 [(kind_meta) = {
+  MongodbKubernetes = 811 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "mdbk8s"
@@ -454,7 +428,7 @@ enum CloudResourceKind {
       namespace_prefix: "mongo"
     }
   }];
-  Neo4jKubernetes = 813 [(kind_meta) = {
+  Neo4jKubernetes = 812 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "neok8s"
@@ -463,7 +437,7 @@ enum CloudResourceKind {
       namespace_prefix: "neo4j"
     }
   }];
-  OpenFgaKubernetes = 814 [(kind_meta) = {
+  OpenFgaKubernetes = 813 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "fgak8s"
@@ -472,7 +446,7 @@ enum CloudResourceKind {
       namespace_prefix: "openfga"
     }
   }];
-  PostgresKubernetes = 815 [(kind_meta) = {
+  PostgresKubernetes = 814 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "pgk8s"
@@ -481,7 +455,7 @@ enum CloudResourceKind {
       namespace_prefix: "postgres"
     }
   }];
-  PrometheusKubernetes = 816 [(kind_meta) = {
+  PrometheusKubernetes = 815 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "pmtk8s"
@@ -490,7 +464,7 @@ enum CloudResourceKind {
       namespace_prefix: "prometheus"
     }
   }];
-  RedisKubernetes = 817 [(kind_meta) = {
+  RedisKubernetes = 816 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "redk8s"
@@ -499,7 +473,7 @@ enum CloudResourceKind {
       namespace_prefix: "redis"
     }
   }];
-  SignozKubernetes = 818 [(kind_meta) = {
+  SignozKubernetes = 817 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "sigk8s"
@@ -508,7 +482,7 @@ enum CloudResourceKind {
       namespace_prefix: "signoz"
     }
   }];
-  SolrKubernetes = 819 [(kind_meta) = {
+  SolrKubernetes = 818 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "solk8s"
@@ -517,16 +491,7 @@ enum CloudResourceKind {
       namespace_prefix: "solr"
     }
   }];
-  StackJobRunnerKubernetes = 820 [(kind_meta) = {
-    provider: kubernetes
-    version: v1
-    id_prefix: "sjrk8s"
-    kubernetes_meta: {
-      category: workload
-      namespace_prefix: "sjr"
-    }
-  }];
-  TemporalKubernetes = 821 [(kind_meta) = {
+  TemporalKubernetes = 819 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "tprlk8s"
@@ -535,7 +500,7 @@ enum CloudResourceKind {
       namespace_prefix: "temporal"
     }
   }];
-  NatsKubernetes = 822 [(kind_meta) = {
+  NatsKubernetes = 820 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "natsk8s"
@@ -544,61 +509,61 @@ enum CloudResourceKind {
       namespace_prefix: "nats"
     }
   }];
-  CertManagerKubernetes = 823 [(kind_meta) = {
+  CertManagerKubernetes = 821 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "cmk8s"
     kubernetes_meta: {category: addon}
   }];
-  ElasticOperatorKubernetes = 824 [(kind_meta) = {
+  ElasticOperatorKubernetes = 822 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "elaopk8s"
     kubernetes_meta: {category: addon}
   }];
-  ExternalDnsKubernetes = 825 [(kind_meta) = {
+  ExternalDnsKubernetes = 823 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "extdnsk8s"
     kubernetes_meta: {category: addon}
   }];
-  IngressNginxKubernetes = 826 [(kind_meta) = {
+  IngressNginxKubernetes = 824 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "ngxk8s"
     kubernetes_meta: {category: addon}
   }];
-  IstioKubernetes = 827 [(kind_meta) = {
+  IstioKubernetes = 825 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "istk8s"
     kubernetes_meta: {category: addon}
   }];
-  KafkaOperatorKubernetes = 828 [(kind_meta) = {
+  KafkaOperatorKubernetes = 826 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "kfkopk8s"
     kubernetes_meta: {category: addon}
   }];
-  PostgresOperatorKubernetes = 829 [(kind_meta) = {
+  PostgresOperatorKubernetes = 827 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "pgopk8s"
     kubernetes_meta: {category: addon}
   }];
-  SolrOperatorKubernetes = 830 [(kind_meta) = {
+  SolrOperatorKubernetes = 828 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "slropk8s"
     kubernetes_meta: {category: addon}
   }];
-  ExternalSecretsKubernetes = 831 [(kind_meta) = {
+  ExternalSecretsKubernetes = 829 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "extseck8s"
     kubernetes_meta: {category: addon}
   }];
-  ClickHouseKubernetes = 832 [(kind_meta) = {
+  ClickHouseKubernetes = 830 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "chk8s"
@@ -607,31 +572,31 @@ enum CloudResourceKind {
       namespace_prefix: "clickhouse"
     }
   }];
-  AltinityOperatorKubernetes = 833 [(kind_meta) = {
+  AltinityOperatorKubernetes = 831 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "altopk8s"
     kubernetes_meta: {category: addon}
   }];
-  PerconaPostgresqlOperator = 834 [(kind_meta) = {
+  PerconaPostgresqlOperator = 832 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "percpgop"
     kubernetes_meta: {category: addon}
   }];
-  PerconaServerMongodbOperator = 835 [(kind_meta) = {
+  PerconaServerMongodbOperator = 833 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "percmdbop"
     kubernetes_meta: {category: addon}
   }];
-  PerconaServerMysqlOperator = 836 [(kind_meta) = {
+  PerconaServerMysqlOperator = 834 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "percpgop"
     kubernetes_meta: {category: addon}
   }];
-  HarborKubernetes = 837 [(kind_meta) = {
+  HarborKubernetes = 835 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "hrbk8s"

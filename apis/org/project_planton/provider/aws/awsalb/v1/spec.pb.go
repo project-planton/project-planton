@@ -272,7 +272,7 @@ const file_org_project_planton_provider_aws_awsalb_v1_spec_proto_rawDesc = "" +
 	"5org/project_planton/provider/aws/awsalb/v1/spec.proto\x12*org.project_planton.provider.aws.awsalb.v1\x1a\x1bbuf/validate/validate.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a0org/project_planton/shared/options/options.proto\"\xa9\x04\n" +
 	"\n" +
 	"AwsAlbSpec\x12f\n" +
-	"\asubnets\x18\x01 \x03(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x10\xbaH\b\xc8\x01\x01\x92\x01\x02\b\x02\x88\xd4a\xd9\x01R\asubnets\x12\x8e\x01\n" +
+	"\asubnets\x18\x01 \x03(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x10\xbaH\b\xc8\x01\x01\x92\x01\x02\b\x02\x88\xd4a\xd8\x01R\asubnets\x12\x8e\x01\n" +
 	"\x0fsecurity_groups\x18\x02 \x03(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB)\x88\xd4a\xd7\x01\x92\xd4a status.outputs.security_group_idR\x0esecurityGroups\x12\x1a\n" +
 	"\binternal\x18\x03 \x01(\bR\binternal\x12:\n" +
 	"\x19delete_protection_enabled\x18\x05 \x01(\bR\x17deleteProtectionEnabled\x128\n" +

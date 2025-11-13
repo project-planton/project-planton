@@ -102,7 +102,7 @@ const file_org_project_planton_provider_gcp_gcprouternat_v1_spec_proto_rawDesc =
 	"\n" +
 	";org/project_planton/provider/gcp/gcprouternat/v1/spec.proto\x120org.project_planton.provider.gcp.gcprouternat.v1\x1a\x1bbuf/validate/validate.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\x92\x03\n" +
 	"\x10GcpRouterNatSpec\x12\x8f\x01\n" +
-	"\rvpc_self_link\x18\x01 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB/\xbaH\x03\xc8\x01\x01\x88\xd4a\xe4\x04\x92\xd4a status.outputs.network_self_linkR\vvpcSelfLink\x12\x1e\n" +
+	"\rvpc_self_link\x18\x01 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB/\xbaH\x03\xc8\x01\x01\x88\xd4a\xe2\x04\x92\xd4a status.outputs.network_self_linkR\vvpcSelfLink\x12\x1e\n" +
 	"\x06region\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x06region\x12n\n" +
 	"\x15subnetwork_self_links\x18\x03 \x03(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefR\x13subnetworkSelfLinks\x12\\\n" +
 	"\fnat_ip_names\x18\x04 \x03(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefR\n" +

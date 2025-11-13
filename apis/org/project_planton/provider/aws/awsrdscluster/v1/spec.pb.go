@@ -491,14 +491,14 @@ const file_org_project_planton_provider_aws_awsrdscluster_v1_spec_proto_rawDesc 
 	"<org/project_planton/provider/aws/awsrdscluster/v1/spec.proto\x121org.project_planton.provider.aws.awsrdscluster.v1\x1a\x1bbuf/validate/validate.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a0org/project_planton/shared/options/options.proto\"\xcf\x1e\n" +
 	"\x11AwsRdsClusterSpec\x12\x89\x01\n" +
 	"\n" +
-	"subnet_ids\x18\x01 \x03(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB.\x88\xd4a\xd9\x01\x92\xd4a%status.outputs.private_subnets.[*].idR\tsubnetIds\x12k\n" +
+	"subnet_ids\x18\x01 \x03(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB.\x88\xd4a\xd8\x01\x92\xd4a%status.outputs.private_subnets.[*].idR\tsubnetIds\x12k\n" +
 	"\x14db_subnet_group_name\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefR\x11dbSubnetGroupName\x12\x93\x01\n" +
 	"\x12security_group_ids\x18\x03 \x03(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB)\x88\xd4a\xd7\x01\x92\xd4a status.outputs.security_group_idR\x10securityGroupIds\x12\xa1\x01\n" +
 	"\x13allowed_cidr_blocks\x18\x04 \x03(\tBq\xbaHn\x92\x01k\x18\x01\"gre2c^(?:25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)(?:\\.(?:25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)){3}/(?:[0-9]|[12]\\d|3[0-2])$R\x11allowedCidrBlocks\x12\xa6\x01\n" +
 	"\x1cassociate_security_group_ids\x18\x05 \x03(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB)\x88\xd4a\xd7\x01\x92\xd4a status.outputs.security_group_idR\x19associateSecurityGroupIds\x12#\n" +
 	"\rdatabase_name\x18\x06 \x01(\tR\fdatabaseName\x12G\n" +
 	"\x1bmanage_master_user_password\x18\a \x01(\bB\b\x92\xa6\x1d\x04trueR\x18manageMasterUserPassword\x12\x9c\x01\n" +
-	"\x1dmaster_user_secret_kms_key_id\x18\b \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x1f\x88\xd4a\xdc\x01\x92\xd4a\x16status.outputs.key_arnR\x18masterUserSecretKmsKeyId\x12+\n" +
+	"\x1dmaster_user_secret_kms_key_id\x18\b \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x1f\x88\xd4a\xdb\x01\x92\xd4a\x16status.outputs.key_arnR\x18masterUserSecretKmsKeyId\x12+\n" +
 	"\busername\x18\t \x01(\tB\n" +
 	"\x8a\xa6\x1d\x06masterH\x00R\busername\x88\x01\x01\x12\x1a\n" +
 	"\bpassword\x18\n" +
@@ -508,7 +508,7 @@ const file_org_project_planton_provider_aws_awsrdscluster_v1_spec_proto_rawDesc 
 	"\x0eengine_version\x18\r \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\rengineVersion\x12+\n" +
 	"\x11storage_encrypted\x18\x0e \x01(\bR\x10storageEncrypted\x12y\n" +
 	"\n" +
-	"kms_key_id\x18\x0f \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x1f\x88\xd4a\xdc\x01\x92\xd4a\x16status.outputs.key_arnR\bkmsKeyId\x12O\n" +
+	"kms_key_id\x18\x0f \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x1f\x88\xd4a\xdb\x01\x92\xd4a\x16status.outputs.key_arnR\bkmsKeyId\x12O\n" +
 	"\x1fenabled_cloudwatch_logs_exports\x18\x10 \x03(\tB\b\xbaH\x05\x92\x01\x02\x18\x01R\x1cenabledCloudwatchLogsExports\x12/\n" +
 	"\x13deletion_protection\x18\x11 \x01(\bR\x12deletionProtection\x12\xc3\x01\n" +
 	"\x1cpreferred_maintenance_window\x18\x12 \x01(\tB\x80\x01\xbaH}r{2y^(mon|tue|wed|thu|fri|sat|sun):([01][0-9]|2[0-3]):[0-5][0-9]-(mon|tue|wed|thu|fri|sat|sun):([01][0-9]|2[0-3]):[0-5][0-9]$R\x1apreferredMaintenanceWindow\x12A\n" +
@@ -526,7 +526,7 @@ const file_org_project_planton_provider_aws_awsrdscluster_v1_spec_proto_rawDesc 
 	"\n" +
 	"parameters\x18\x1e \x03(\v2I.org.project_planton.provider.aws.awsrdscluster.v1.AwsRdsClusterParameterR\n" +
 	"parameters\x12q\n" +
-	"\x06vpc_id\x18\x1f \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x1e\x88\xd4a\xd9\x01\x92\xd4a\x15status.outputs.vpc_idR\x05vpcId\x12\x1f\n" +
+	"\x06vpc_id\x18\x1f \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x1e\x88\xd4a\xd8\x01\x92\xd4a\x15status.outputs.vpc_idR\x05vpcId\x12\x1f\n" +
 	"\vengine_mode\x18  \x01(\tR\n" +
 	"engineMode\x12A\n" +
 	"\fstorage_type\x18! \x01(\tB\x1e\xbaH\x1b\xd8\x01\x01r\x16R\x06auroraR\faurora-iopt1R\vstorageType:\xa5\b\xbaH\xa1\b\x1a\xbf\x01\n" +

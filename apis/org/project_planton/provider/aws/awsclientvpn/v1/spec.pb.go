@@ -316,8 +316,8 @@ const file_org_project_planton_provider_aws_awsclientvpn_v1_spec_proto_rawDesc =
 	";org/project_planton/provider/aws/awsclientvpn/v1/spec.proto\x120org.project_planton.provider.aws.awsclientvpn.v1\x1a\x1bbuf/validate/validate.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a0org/project_planton/shared/options/options.proto\"\xa9\x10\n" +
 	"\x10AwsClientVpnSpec\x12 \n" +
 	"\vdescription\x18\x01 \x01(\tR\vdescription\x12w\n" +
-	"\x06vpc_id\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB$\xbaH\x03\xc8\x01\x01\x88\xd4a\xd9\x01\x92\xd4a\x15status.outputs.vpc_idR\x05vpcId\x12f\n" +
-	"\asubnets\x18\x03 \x03(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x10\xbaH\b\xc8\x01\x01\x92\x01\x02\b\x01\x88\xd4a\xd9\x01R\asubnets\x12m\n" +
+	"\x06vpc_id\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB$\xbaH\x03\xc8\x01\x01\x88\xd4a\xd8\x01\x92\xd4a\x15status.outputs.vpc_idR\x05vpcId\x12f\n" +
+	"\asubnets\x18\x03 \x03(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x10\xbaH\b\xc8\x01\x01\x92\x01\x02\b\x01\x88\xd4a\xd8\x01R\asubnets\x12m\n" +
 	"\x11client_cidr_block\x18\x04 \x01(\tBA\xbaH>\xc8\x01\x01r927^([0-9]{1,3}\\.){3}[0-9]{1,3}/([0-9]|[1-2][0-9]|3[0-2])$R\x0fclientCidrBlock\x12\x8b\x01\n" +
 	"\x13authentication_type\x18\x05 \x01(\x0e2P.org.project_planton.provider.aws.awsclientvpn.v1.AwsClientVpnAuthenticationTypeB\b\xbaH\x05\x82\x01\x02\x10\x01R\x12authenticationType\x12\x98\x01\n" +
 	"\x16server_certificate_arn\x18\x06 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB&\xbaH\x03\xc8\x01\x01\x88\xd4a\xc9\x01\x92\xd4a\x17status.outputs.cert_arnR\x14serverCertificateArn\x12B\n" +

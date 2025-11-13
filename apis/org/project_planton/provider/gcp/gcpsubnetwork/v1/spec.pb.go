@@ -183,8 +183,8 @@ const file_org_project_planton_provider_gcp_gcpsubnetwork_v1_spec_proto_rawDesc 
 	"<org/project_planton/provider/gcp/gcpsubnetwork/v1/spec.proto\x121org.project_planton.provider.gcp.gcpsubnetwork.v1\x1a\x1bbuf/validate/validate.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\xec\x04\n" +
 	"\x11GcpSubnetworkSpec\x12\x83\x01\n" +
 	"\n" +
-	"project_id\x18\x01 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB(\xbaH\x03\xc8\x01\x01\x88\xd4a\xe3\x04\x92\xd4a\x19status.outputs.project_idR\tprojectId\x12\x8f\x01\n" +
-	"\rvpc_self_link\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB/\xbaH\x03\xc8\x01\x01\x88\xd4a\xe4\x04\x92\xd4a status.outputs.network_self_linkR\vvpcSelfLink\x12>\n" +
+	"project_id\x18\x01 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB(\xbaH\x03\xc8\x01\x01\x88\xd4a\xe1\x04\x92\xd4a\x19status.outputs.project_idR\tprojectId\x12\x8f\x01\n" +
+	"\rvpc_self_link\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB/\xbaH\x03\xc8\x01\x01\x88\xd4a\xe2\x04\x92\xd4a status.outputs.network_self_linkR\vvpcSelfLink\x12>\n" +
 	"\x06region\x18\x03 \x01(\tB&\xbaH#\xc8\x01\x01r\x1e2\x1c^[a-z]([-a-z0-9]*[a-z0-9])?$R\x06region\x12F\n" +
 	"\rip_cidr_range\x18\x04 \x01(\tB\"\xbaH\x1f\xc8\x01\x01r\x1a2\x18^\\d+\\.\\d+\\.\\d+\\.\\d+/\\d+$R\vipCidrRange\x12~\n" +
 	"\x13secondary_ip_ranges\x18\x05 \x03(\v2N.org.project_planton.provider.gcp.gcpsubnetwork.v1.GcpSubnetworkSecondaryRangeR\x11secondaryIpRanges\x127\n" +

@@ -281,7 +281,7 @@ const file_org_project_planton_provider_aws_awseksnodegroup_v1_spec_proto_rawDes
 	"\fcluster_name\x18\x01 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x1c\xbaH\x03\xc8\x01\x01\x88\xd4a\xcf\x01\x92\xd4a\rmetadata.nameR\vclusterName\x12\x86\x01\n" +
 	"\rnode_role_arn\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB&\xbaH\x03\xc8\x01\x01\x88\xd4a\xd0\x01\x92\xd4a\x17status.outputs.role_arnR\vnodeRoleArn\x12\x94\x01\n" +
 	"\n" +
-	"subnet_ids\x18\x03 \x03(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB9\xbaH\b\xc8\x01\x01\x92\x01\x02\b\x02\x88\xd4a\xd9\x01\x92\xd4a%status.outputs.private_subnets.[*].idR\tsubnetIds\x12+\n" +
+	"subnet_ids\x18\x03 \x03(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB9\xbaH\b\xc8\x01\x01\x92\x01\x02\b\x02\x88\xd4a\xd8\x01\x92\xd4a%status.outputs.private_subnets.[*].idR\tsubnetIds\x12+\n" +
 	"\rinstance_type\x18\x04 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\finstanceType\x12s\n" +
 	"\ascaling\x18\x05 \x01(\v2Q.org.project_planton.provider.aws.awseksnodegroup.v1.AwsEksNodeGroupScalingConfigB\x06\xbaH\x03\xc8\x01\x01R\ascaling\x12\x84\x01\n" +
 	"\rcapacity_type\x18\x06 \x01(\x0e2P.org.project_planton.provider.aws.awseksnodegroup.v1.AwsEksNodeGroupCapacityTypeB\r\x92\xa6\x1d\ton_demandR\fcapacityType\x12)\n" +

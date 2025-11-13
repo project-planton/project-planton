@@ -331,8 +331,8 @@ const file_org_project_planton_provider_gcp_gcpgkenodepool_v1_spec_proto_rawDesc
 	"\n" +
 	"=org/project_planton/provider/gcp/gcpgkenodepool/v1/spec.proto\x122org.project_planton.provider.gcp.gcpgkenodepool.v1\x1a\x1bbuf/validate/validate.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\x1a0org/project_planton/shared/options/options.proto\"\xd1\b\n" +
 	"\x12GcpGkeNodePoolSpec\x12\x88\x01\n" +
-	"\x12cluster_project_id\x18\x01 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x1e\xbaH\x03\xc8\x01\x01\x88\xd4a\xe7\x04\x92\xd4a\x0fspec.project_idR\x10clusterProjectId\x12{\n" +
-	"\fcluster_name\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x1c\xbaH\x03\xc8\x01\x01\x88\xd4a\xe7\x04\x92\xd4a\rmetadata.nameR\vclusterName\x125\n" +
+	"\x12cluster_project_id\x18\x01 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x1e\xbaH\x03\xc8\x01\x01\x88\xd4a\xdf\x04\x92\xd4a\x0fspec.project_idR\x10clusterProjectId\x12{\n" +
+	"\fcluster_name\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x1c\xbaH\x03\xc8\x01\x01\x88\xd4a\xdf\x04\x92\xd4a\rmetadata.nameR\vclusterName\x125\n" +
 	"\fmachine_type\x18\x03 \x01(\tB\r\x8a\xa6\x1d\te2-mediumH\x01R\vmachineType\x88\x01\x01\x12 \n" +
 	"\fdisk_size_gb\x18\x04 \x01(\rR\n" +
 	"diskSizeGb\x12X\n" +

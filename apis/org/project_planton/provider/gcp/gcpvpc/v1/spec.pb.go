@@ -147,7 +147,7 @@ const file_org_project_planton_provider_gcp_gcpvpc_v1_spec_proto_rawDesc = "" +
 	"\n" +
 	"GcpVpcSpec\x12\x83\x01\n" +
 	"\n" +
-	"project_id\x18\x01 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB(\xbaH\x03\xc8\x01\x01\x88\xd4a\xe3\x04\x92\xd4a\x19status.outputs.project_idR\tprojectId\x126\n" +
+	"project_id\x18\x01 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB(\xbaH\x03\xc8\x01\x01\x88\xd4a\xe1\x04\x92\xd4a\x19status.outputs.project_idR\tprojectId\x126\n" +
 	"\x17auto_create_subnetworks\x18\x02 \x01(\bR\x15autoCreateSubnetworks\x12s\n" +
 	"\frouting_mode\x18\x03 \x01(\x0e2=.org.project_planton.provider.gcp.gcpvpc.v1.GcpVpcRoutingModeB\f\x8a\xa6\x1d\bREGIONALH\x00R\vroutingMode\x88\x01\x01B\x0f\n" +
 	"\r_routing_mode*-\n" +

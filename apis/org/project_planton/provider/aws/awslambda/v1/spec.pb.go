@@ -447,12 +447,12 @@ const file_org_project_planton_provider_aws_awslambda_v1_spec_proto_rawDesc = ""
 	"\x14reserved_concurrency\x18\b \x01(\x05R\x13reservedConcurrency\x12o\n" +
 	"\venvironment\x18\t \x03(\v2M.org.project_planton.provider.aws.awslambda.v1.AwsLambdaSpec.EnvironmentEntryR\venvironment\x12[\n" +
 	"\asubnets\x18\n" +
-	" \x03(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x05\x88\xd4a\xd9\x01R\asubnets\x12\x8e\x01\n" +
+	" \x03(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x05\x88\xd4a\xd8\x01R\asubnets\x12\x8e\x01\n" +
 	"\x0fsecurity_groups\x18\v \x03(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB)\x88\xd4a\xd7\x01\x92\xd4a status.outputs.security_group_idR\x0esecurityGroups\x12i\n" +
 	"\farchitecture\x18\f \x01(\x0e2;.org.project_planton.provider.aws.awslambda.v1.ArchitectureB\b\xbaH\x05\x82\x01\x02\x10\x01R\farchitecture\x12Y\n" +
 	"\n" +
 	"layer_arns\x18\r \x03(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefR\tlayerArns\x12{\n" +
-	"\vkms_key_arn\x18\x0e \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x1f\x88\xd4a\xdc\x01\x92\xd4a\x16status.outputs.key_arnR\tkmsKeyArn\x12q\n" +
+	"\vkms_key_arn\x18\x0e \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x1f\x88\xd4a\xdb\x01\x92\xd4a\x16status.outputs.key_arnR\tkmsKeyArn\x12q\n" +
 	"\x10code_source_type\x18\x0f \x01(\x0e2=.org.project_planton.provider.aws.awslambda.v1.CodeSourceTypeB\b\xbaH\x05\x82\x01\x02\x10\x01R\x0ecodeSourceType\x12E\n" +
 	"\x02s3\x18\x10 \x01(\v25.org.project_planton.provider.aws.awslambda.v1.S3CodeR\x02s3\x12\x1b\n" +
 	"\timage_uri\x18\x11 \x01(\tR\bimageUri\x1a>\n" +
