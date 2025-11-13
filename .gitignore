@@ -25,6 +25,6 @@ test-*.log
 .cursor/workspace/
 cursor/
 .git-ignored/
-apis/project/planton/provider/kubernetes/workload/clickhousekubernetes/v1/iac/pulumi/pulumi
+**/iac/pulumi/pulumi
 _cursor/
 _a-gitignored-workspace
