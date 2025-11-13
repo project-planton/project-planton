@@ -1,0 +1,34 @@
+apiVersion: azure.project-planton.org/v1
+kind: AzureAksCluster
+metadata:
+  name: example-aks-cluster
+spec:
+  # Required: Azure region
+  region: eastus
+  
+  # Required: VNet subnet ID for AKS nodes
+  # Replace with your actual subnet ID
+  vnetSubnetId:
+    value: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-network/providers/Microsoft.Network/virtualNetworks/my-vnet/subnets/aks-subnet
+  
+  # Optional: Network plugin (AZURE_CNI or KUBENET)
+  networkPlugin: AZURE_CNI
+  
+  # Optional: Kubernetes version
+  kubernetesVersion: "1.30"
+  
+  # Optional: Deploy as private cluster
+  privateClusterEnabled: false
+  
+  # Optional: Authorized IP ranges (CIDR blocks) allowed to access API server
+  # Leave empty for public access or when using private cluster
+  authorizedIpRanges:
+    - "203.0.113.0/24"  # Example: Office network
+  
+  # Optional: Disable Azure AD RBAC (not recommended for production)
+  disableAzureAdRbac: false
+  
+  # Optional: Log Analytics Workspace ID for monitoring
+  # Replace with your actual workspace ID or leave empty to skip monitoring
+  logAnalyticsWorkspaceId: ""
+
