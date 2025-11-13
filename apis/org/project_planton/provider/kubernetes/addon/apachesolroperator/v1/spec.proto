@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package org.project_planton.provider.kubernetes.addon.apachesolroperator.v1;
+
+import "buf/validate/validate.proto";
+import "org/project_planton/shared/kubernetes/kubernetes.proto";
+import "org/project_planton/shared/kubernetes/options.proto";
+import "org/project_planton/shared/kubernetes/target_cluster.proto";
+
+// **ApacheSolrOperatorSpec** defines the configuration for deploying Apache Solr Operator on a Kubernetes cluster.
+// This message specifies the parameters needed to create and manage an Apache Solr Operator deployment within a Kubernetes environment.
+// It includes container specifications to control resource allocation.
+message ApacheSolrOperatorSpec {
+  // The Kubernetes cluster to install this addon on.
+  org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster target_cluster = 1;
+  // The container specifications for the Apache Solr Operator deployment.
+  ApacheSolrOperatorSpecContainer container = 2 [(buf.validate.field).required = true];
+}
+
+// **ApacheSolrOperatorSpecContainer** specifies the container configuration for the Apache Solr Operator application.
+// It includes resource allocations for CPU and memory to ensure the application runs efficiently.
+message ApacheSolrOperatorSpecContainer {
+  // The CPU and memory resources allocated to the Apache Solr Operator container.
+  org.project_planton.shared.kubernetes.ContainerResources resources = 1 [(org.project_planton.shared.kubernetes.default_container_resources) = {
+    limits: {
+      cpu: "1000m"
+      memory: "1Gi"
+    }
+    requests: {
+      cpu: "50m"
+      memory: "100Mi"
+    }
+  }];
+}

@@ -10,7 +10,7 @@ Integrated Kubernetes (36 components) and Snowflake (1 component) into the Proje
 
 ## Problem Statement / Motivation
 
-The Project Planton documentation site was showing Kubernetes as "Coming soon" despite having 36 fully-documented components available (13 addons and 23 workloads). Snowflake database documentation was completely missing from the catalog. Additionally, all component titles were displaying with redundant provider prefixes (e.g., "KUBERNETES altinityoperatorkubernetes" instead of "Altinity Operator"), creating poor user experience in navigation.
+The Project Planton documentation site was showing Kubernetes as "Coming soon" despite having 36 fully-documented components available (13 addons and 23 workloads). Snowflake database documentation was completely missing from the catalog. Additionally, all component titles were displaying with redundant provider prefixes (e.g., "KUBERNETES altinityoperator" instead of "Altinity Operator"), creating poor user experience in navigation.
 
 ### Pain Points
 
@@ -129,7 +129,7 @@ function generateTitle(component: string, provider: string): string {
 
 | Before | After |
 |--------|-------|
-| KUBERNETES altinityoperatorkubernetes | Altinity Operator |
+| KUBERNETES altinityoperator | Altinity Operator |
 | KUBERNETES argocdkubernetes | ArgoCD |
 | KUBERNETES perconapostgresqloperator | Percona PostgreSQL Operator |
 | GCP cloudcdn | Cloud CDN |
@@ -244,7 +244,7 @@ cd site && npm run copy-docs
 
 # Output:
 # 📦 KUBERNETES: Found 36 components
-#    ✓ altinityoperatorkubernetes
+#    ✓ altinityoperator
 #    ✓ argocdkubernetes
 #    ... (34 more)
 #    ✓ Generated index page

@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package org.project_planton.provider.kubernetes.addon.elasticoperator.v1;
+
+import "buf/validate/validate.proto";
+import "org/project_planton/shared/kubernetes/kubernetes.proto";
+import "org/project_planton/shared/kubernetes/options.proto";
+import "org/project_planton/shared/kubernetes/target_cluster.proto";
+
+// **ElasticOperatorSpec** defines the configuration for deploying Elastic Operator on a Kubernetes cluster.
+// This message specifies the parameters needed to create and manage an Elastic Operator deployment within a Kubernetes environment.
+// It includes container specifications to control resource allocation.
+message ElasticOperatorSpec {
+  // The Kubernetes cluster to install this addon on.
+  org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster target_cluster = 1;
+  // The container specifications for the Elastic Operator deployment.
+  ElasticOperatorSpecContainer container = 2 [(buf.validate.field).required = true];
+}
+
+// **ElasticOperatorSpecContainer** specifies the container configuration for the Elastic Operator application.
+// It includes resource allocations for CPU and memory to ensure the application runs efficiently.
+message ElasticOperatorSpecContainer {
+  // The CPU and memory resources allocated to the Elastic Operator container.
+  org.project_planton.shared.kubernetes.ContainerResources resources = 1 [(org.project_planton.shared.kubernetes.default_container_resources) = {
+    limits: {
+      cpu: "1000m"
+      memory: "1Gi"
+    }
+    requests: {
+      cpu: "50m"
+      memory: "100Mi"
+    }
+  }];
+}

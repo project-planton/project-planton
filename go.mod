@@ -18,6 +18,9 @@ require (
 	github.com/pseudomuto/protoc-gen-doc v1.5.1
 	github.com/pulumi/pulumi-aws-native/sdk v1.14.0
 	github.com/pulumi/pulumi-aws/sdk/v7 v7.3.0
+	github.com/pulumi/pulumi-azure-native-sdk/containerservice/v3 v3.10.1
+	github.com/pulumi/pulumi-azure-native-sdk/resources/v3 v3.10.1
+	github.com/pulumi/pulumi-azure-native-sdk/v3 v3.10.1
 	github.com/pulumi/pulumi-azure/sdk/v5 v5.89.0
 	github.com/pulumi/pulumi-civo/sdk/v2 v2.4.8
 	github.com/pulumi/pulumi-cloudflare/sdk/v6 v6.10.1
@@ -27,7 +30,7 @@ require (
 	github.com/pulumi/pulumi-random/sdk/v4 v4.16.7
 	github.com/pulumi/pulumi-tls/sdk/v4 v4.11.1
 	github.com/pulumi/pulumi-tls/sdk/v5 v5.2.1
-	github.com/pulumi/pulumi/sdk/v3 v3.205.0
+	github.com/pulumi/pulumi/sdk/v3 v3.206.0
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/cobra v1.10.1
 	github.com/spf13/pflag v1.0.9

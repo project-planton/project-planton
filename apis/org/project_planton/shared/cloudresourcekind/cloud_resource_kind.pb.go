@@ -153,17 +153,17 @@ const (
 	CloudResourceKind_SolrKubernetes               CloudResourceKind = 818
 	CloudResourceKind_TemporalKubernetes           CloudResourceKind = 819
 	CloudResourceKind_NatsKubernetes               CloudResourceKind = 820
-	CloudResourceKind_CertManagerKubernetes        CloudResourceKind = 821
-	CloudResourceKind_ElasticOperatorKubernetes    CloudResourceKind = 822
-	CloudResourceKind_ExternalDnsKubernetes        CloudResourceKind = 823
-	CloudResourceKind_IngressNginxKubernetes       CloudResourceKind = 824
-	CloudResourceKind_IstioKubernetes              CloudResourceKind = 825
-	CloudResourceKind_KafkaOperatorKubernetes      CloudResourceKind = 826
-	CloudResourceKind_PostgresOperatorKubernetes   CloudResourceKind = 827
-	CloudResourceKind_SolrOperatorKubernetes       CloudResourceKind = 828
-	CloudResourceKind_ExternalSecretsKubernetes    CloudResourceKind = 829
+	CloudResourceKind_CertManager                  CloudResourceKind = 821
+	CloudResourceKind_ElasticOperator              CloudResourceKind = 822
+	CloudResourceKind_ExternalDns                  CloudResourceKind = 823
+	CloudResourceKind_IngressNginx                 CloudResourceKind = 824
+	CloudResourceKind_KubernetesIstio              CloudResourceKind = 825
+	CloudResourceKind_StrimziKafkaOperator         CloudResourceKind = 826
+	CloudResourceKind_ZalandoPostgresOperator      CloudResourceKind = 827
+	CloudResourceKind_ApacheSolrOperator           CloudResourceKind = 828
+	CloudResourceKind_ExternalSecrets              CloudResourceKind = 829
 	CloudResourceKind_ClickHouseKubernetes         CloudResourceKind = 830
-	CloudResourceKind_AltinityOperatorKubernetes   CloudResourceKind = 831
+	CloudResourceKind_AltinityOperator             CloudResourceKind = 831
 	CloudResourceKind_PerconaPostgresqlOperator    CloudResourceKind = 832
 	CloudResourceKind_PerconaServerMongodbOperator CloudResourceKind = 833
 	CloudResourceKind_PerconaServerMysqlOperator   CloudResourceKind = 834
@@ -283,17 +283,17 @@ var (
 		818:  "SolrKubernetes",
 		819:  "TemporalKubernetes",
 		820:  "NatsKubernetes",
-		821:  "CertManagerKubernetes",
-		822:  "ElasticOperatorKubernetes",
-		823:  "ExternalDnsKubernetes",
-		824:  "IngressNginxKubernetes",
-		825:  "IstioKubernetes",
-		826:  "KafkaOperatorKubernetes",
-		827:  "PostgresOperatorKubernetes",
-		828:  "SolrOperatorKubernetes",
-		829:  "ExternalSecretsKubernetes",
+		821:  "CertManager",
+		822:  "ElasticOperator",
+		823:  "ExternalDns",
+		824:  "IngressNginx",
+		825:  "KubernetesIstio",
+		826:  "StrimziKafkaOperator",
+		827:  "ZalandoPostgresOperator",
+		828:  "ApacheSolrOperator",
+		829:  "ExternalSecrets",
 		830:  "ClickHouseKubernetes",
-		831:  "AltinityOperatorKubernetes",
+		831:  "AltinityOperator",
 		832:  "PerconaPostgresqlOperator",
 		833:  "PerconaServerMongodbOperator",
 		834:  "PerconaServerMysqlOperator",
@@ -407,17 +407,17 @@ var (
 		"SolrKubernetes":                       818,
 		"TemporalKubernetes":                   819,
 		"NatsKubernetes":                       820,
-		"CertManagerKubernetes":                821,
-		"ElasticOperatorKubernetes":            822,
-		"ExternalDnsKubernetes":                823,
-		"IngressNginxKubernetes":               824,
-		"IstioKubernetes":                      825,
-		"KafkaOperatorKubernetes":              826,
-		"PostgresOperatorKubernetes":           827,
-		"SolrOperatorKubernetes":               828,
-		"ExternalSecretsKubernetes":            829,
+		"CertManager":                          821,
+		"ElasticOperator":                      822,
+		"ExternalDns":                          823,
+		"IngressNginx":                         824,
+		"KubernetesIstio":                      825,
+		"StrimziKafkaOperator":                 826,
+		"ZalandoPostgresOperator":              827,
+		"ApacheSolrOperator":                   828,
+		"ExternalSecrets":                      829,
 		"ClickHouseKubernetes":                 830,
-		"AltinityOperatorKubernetes":           831,
+		"AltinityOperator":                     831,
 		"PerconaPostgresqlOperator":            832,
 		"PerconaServerMongodbOperator":         833,
 		"PerconaServerMysqlOperator":           834,
@@ -668,7 +668,7 @@ const file_org_project_planton_shared_cloudresourcekind_cloud_resource_kind_prot
 	"\bcategory\x18\x02 \x01(\x0e2M.org.project_planton.shared.cloudresourcekind.KubernetesCloudResourceCategoryR\bcategory*O\n" +
 	"\x18CloudResourceKindVersion\x12+\n" +
 	"'cloud_resource_kind_version_unspecified\x10\x00\x12\x06\n" +
-	"\x02v1\x10\x01*\x8c*\n" +
+	"\x02v1\x10\x01*\xc6)\n" +
 	"\x11CloudResourceKind\x12\x0f\n" +
 	"\vunspecified\x10\x00\x12(\n" +
 	"\x14TestCloudResourceOne\x10\x01\x1a\x0e\xa2\xf7\x04\n" +
@@ -778,20 +778,20 @@ const file_org_project_planton_shared_cloudresourcekind_cloud_resource_kind_prot
 	"\x12TemporalKubernetes\x10\xb3\x06\x1a\x1f\xa2\xf7\x04\x1b\b\x13\x10\x01\"\atprlk8s2\f\n" +
 	"\btemporal\x10\x02\x120\n" +
 	"\x0eNatsKubernetes\x10\xb4\x06\x1a\x1b\xa2\xf7\x04\x17\b\x13\x10\x01\"\anatsk8s2\b\n" +
-	"\x04nats\x10\x02\x12/\n" +
-	"\x15CertManagerKubernetes\x10\xb5\x06\x1a\x13\xa2\xf7\x04\x0f\b\x13\x10\x01\"\x05cmk8s2\x02\x10\x01\x126\n" +
-	"\x19ElasticOperatorKubernetes\x10\xb6\x06\x1a\x16\xa2\xf7\x04\x12\b\x13\x10\x01\"\belaopk8s2\x02\x10\x01\x123\n" +
-	"\x15ExternalDnsKubernetes\x10\xb7\x06\x1a\x17\xa2\xf7\x04\x13\b\x13\x10\x01\"\textdnsk8s2\x02\x10\x01\x121\n" +
-	"\x16IngressNginxKubernetes\x10\xb8\x06\x1a\x14\xa2\xf7\x04\x10\b\x13\x10\x01\"\x06ngxk8s2\x02\x10\x01\x12*\n" +
-	"\x0fIstioKubernetes\x10\xb9\x06\x1a\x14\xa2\xf7\x04\x10\b\x13\x10\x01\"\x06istk8s2\x02\x10\x01\x124\n" +
-	"\x17KafkaOperatorKubernetes\x10\xba\x06\x1a\x16\xa2\xf7\x04\x12\b\x13\x10\x01\"\bkfkopk8s2\x02\x10\x01\x126\n" +
-	"\x1aPostgresOperatorKubernetes\x10\xbb\x06\x1a\x15\xa2\xf7\x04\x11\b\x13\x10\x01\"\apgopk8s2\x02\x10\x01\x123\n" +
-	"\x16SolrOperatorKubernetes\x10\xbc\x06\x1a\x16\xa2\xf7\x04\x12\b\x13\x10\x01\"\bslropk8s2\x02\x10\x01\x127\n" +
-	"\x19ExternalSecretsKubernetes\x10\xbd\x06\x1a\x17\xa2\xf7\x04\x13\b\x13\x10\x01\"\textseck8s2\x02\x10\x01\x12:\n" +
+	"\x04nats\x10\x02\x12%\n" +
+	"\vCertManager\x10\xb5\x06\x1a\x13\xa2\xf7\x04\x0f\b\x13\x10\x01\"\x05cmk8s2\x02\x10\x01\x12,\n" +
+	"\x0fElasticOperator\x10\xb6\x06\x1a\x16\xa2\xf7\x04\x12\b\x13\x10\x01\"\belaopk8s2\x02\x10\x01\x12)\n" +
+	"\vExternalDns\x10\xb7\x06\x1a\x17\xa2\xf7\x04\x13\b\x13\x10\x01\"\textdnsk8s2\x02\x10\x01\x12'\n" +
+	"\fIngressNginx\x10\xb8\x06\x1a\x14\xa2\xf7\x04\x10\b\x13\x10\x01\"\x06ngxk8s2\x02\x10\x01\x12*\n" +
+	"\x0fKubernetesIstio\x10\xb9\x06\x1a\x14\xa2\xf7\x04\x10\b\x13\x10\x01\"\x06istk8s2\x02\x10\x01\x121\n" +
+	"\x14StrimziKafkaOperator\x10\xba\x06\x1a\x16\xa2\xf7\x04\x12\b\x13\x10\x01\"\bkfkopk8s2\x02\x10\x01\x123\n" +
+	"\x17ZalandoPostgresOperator\x10\xbb\x06\x1a\x15\xa2\xf7\x04\x11\b\x13\x10\x01\"\apgopk8s2\x02\x10\x01\x12/\n" +
+	"\x12ApacheSolrOperator\x10\xbc\x06\x1a\x16\xa2\xf7\x04\x12\b\x13\x10\x01\"\bslropk8s2\x02\x10\x01\x12-\n" +
+	"\x0fExternalSecrets\x10\xbd\x06\x1a\x17\xa2\xf7\x04\x13\b\x13\x10\x01\"\textseck8s2\x02\x10\x01\x12:\n" +
 	"\x14ClickHouseKubernetes\x10\xbe\x06\x1a\x1f\xa2\xf7\x04\x1b\b\x13\x10\x01\"\x05chk8s2\x0e\n" +
 	"\n" +
-	"clickhouse\x10\x02\x127\n" +
-	"\x1aAltinityOperatorKubernetes\x10\xbf\x06\x1a\x16\xa2\xf7\x04\x12\b\x13\x10\x01\"\baltopk8s2\x02\x10\x01\x126\n" +
+	"clickhouse\x10\x02\x12-\n" +
+	"\x10AltinityOperator\x10\xbf\x06\x1a\x16\xa2\xf7\x04\x12\b\x13\x10\x01\"\baltopk8s2\x02\x10\x01\x126\n" +
 	"\x19PerconaPostgresqlOperator\x10\xc0\x06\x1a\x16\xa2\xf7\x04\x12\b\x13\x10\x01\"\bpercpgop2\x02\x10\x01\x12:\n" +
 	"\x1cPerconaServerMongodbOperator\x10\xc1\x06\x1a\x17\xa2\xf7\x04\x13\b\x13\x10\x01\"\tpercmdbop2\x02\x10\x01\x127\n" +
 	"\x1aPerconaServerMysqlOperator\x10\xc2\x06\x1a\x16\xa2\xf7\x04\x12\b\x13\x10\x01\"\bpercpgop2\x02\x10\x01\x123\n" +
