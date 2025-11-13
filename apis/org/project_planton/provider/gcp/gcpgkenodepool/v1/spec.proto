@@ -12,14 +12,14 @@ message GcpGkeNodePoolSpec {
   // Must refer to an existing GcpGkeCluster resource in the same environment.
   org.project_planton.shared.foreignkey.v1.StringValueOrRef cluster_project_id = 1 [
     (buf.validate.field).required = true,
-    (org.project_planton.shared.foreignkey.v1.default_kind) = GcpGkeClusterCore,
+    (org.project_planton.shared.foreignkey.v1.default_kind) = GcpGkeCluster,
     (org.project_planton.shared.foreignkey.v1.default_kind_field_path) = "spec.project_id"
   ];
   // Reference to the parent GKE cluster (by name).
   // Must refer to an existing GcpGkeCluster resource in the same environment.
   org.project_planton.shared.foreignkey.v1.StringValueOrRef cluster_name = 2 [
     (buf.validate.field).required = true,
-    (org.project_planton.shared.foreignkey.v1.default_kind) = GcpGkeClusterCore,
+    (org.project_planton.shared.foreignkey.v1.default_kind) = GcpGkeCluster,
     (org.project_planton.shared.foreignkey.v1.default_kind_field_path) = "metadata.name"
   ];
 

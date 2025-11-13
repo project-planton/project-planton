@@ -139,13 +139,13 @@ const file_org_project_planton_provider_aws_awsekscluster_v1_spec_proto_rawDesc 
 	"<org/project_planton/provider/aws/awsekscluster/v1/spec.proto\x121org.project_planton.provider.aws.awsekscluster.v1\x1a\x1bbuf/validate/validate.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\xe5\x05\n" +
 	"\x11AwsEksClusterSpec\x12\x94\x01\n" +
 	"\n" +
-	"subnet_ids\x18\x01 \x03(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB9\xbaH\b\xc8\x01\x01\x92\x01\x02\b\x02\x88\xd4a\xd9\x01\x92\xd4a%status.outputs.private_subnets.[*].idR\tsubnetIds\x12\x8c\x01\n" +
+	"subnet_ids\x18\x01 \x03(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB9\xbaH\b\xc8\x01\x01\x92\x01\x02\b\x02\x88\xd4a\xd8\x01\x92\xd4a%status.outputs.private_subnets.[*].idR\tsubnetIds\x12\x8c\x01\n" +
 	"\x10cluster_role_arn\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB&\xbaH\x03\xc8\x01\x01\x88\xd4a\xd0\x01\x92\xd4a\x17status.outputs.role_arnR\x0eclusterRoleArn\x12\x18\n" +
 	"\aversion\x18\x03 \x01(\tR\aversion\x126\n" +
 	"\x17disable_public_endpoint\x18\x04 \x01(\bR\x15disablePublicEndpoint\x12\x9f\x01\n" +
 	"\x13public_access_cidrs\x18\x05 \x03(\tBo\xbaHl\x92\x01i\"gre2c^(?:25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)(?:\\.(?:25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)){3}/(?:[0-9]|[12]\\d|3[0-2])$R\x11publicAccessCidrs\x129\n" +
 	"\x19enable_control_plane_logs\x18\x06 \x01(\bR\x16enableControlPlaneLogs\x12{\n" +
-	"\vkms_key_arn\x18\a \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x1f\x88\xd4a\xdc\x01\x92\xd4a\x16status.outputs.key_arnR\tkmsKeyArnB\x9c\x03\n" +
+	"\vkms_key_arn\x18\a \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\x1f\x88\xd4a\xdb\x01\x92\xd4a\x16status.outputs.key_arnR\tkmsKeyArnB\x9c\x03\n" +
 	"5com.org.project_planton.provider.aws.awsekscluster.v1B\tSpecProtoP\x01Zqgithub.com/project-planton/project-planton/apis/org/project_planton/provider/aws/awsekscluster/v1;awseksclusterv1\xa2\x02\x05OPPAA\xaa\x020Org.ProjectPlanton.Provider.Aws.Awsekscluster.V1\xca\x020Org\\ProjectPlanton\\Provider\\Aws\\Awsekscluster\\V1\xe2\x02<Org\\ProjectPlanton\\Provider\\Aws\\Awsekscluster\\V1\\GPBMetadata\xea\x025Org::ProjectPlanton::Provider::Aws::Awsekscluster::V1b\x06proto3"
 
 var (

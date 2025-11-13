@@ -7,8 +7,8 @@ PORT ?= 3000
 deps:
 	yarn install
 
-dev:
-	yarn dev -- --port $(PORT)
+dev: copy-docs
+	yarn dev --port $(PORT)
 
 run: dev
 

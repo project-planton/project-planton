@@ -107,8 +107,8 @@ const file_org_project_planton_provider_gcp_gcpgkeworkloadidentitybinding_v1_spe
 	"Lorg/project_planton/provider/gcp/gcpgkeworkloadidentitybinding/v1/spec.proto\x12Aorg.project_planton.provider.gcp.gcpgkeworkloadidentitybinding.v1\x1a\x1bbuf/validate/validate.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\x8f\x03\n" +
 	"!GcpGkeWorkloadIdentityBindingSpec\x12\x83\x01\n" +
 	"\n" +
-	"project_id\x18\x01 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB(\xbaH\x03\xc8\x01\x01\x88\xd4a\xe3\x04\x92\xd4a\x19status.outputs.project_idR\tprojectId\x12\x93\x01\n" +
-	"\x15service_account_email\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB#\xbaH\x03\xc8\x01\x01\x88\xd4a\xe9\x04\x92\xd4a\x14status.outputs.emailR\x13serviceAccountEmail\x12+\n" +
+	"project_id\x18\x01 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB(\xbaH\x03\xc8\x01\x01\x88\xd4a\xe1\x04\x92\xd4a\x19status.outputs.project_idR\tprojectId\x12\x93\x01\n" +
+	"\x15service_account_email\x18\x02 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB#\xbaH\x03\xc8\x01\x01\x88\xd4a\xe6\x04\x92\xd4a\x14status.outputs.emailR\x13serviceAccountEmail\x12+\n" +
 	"\rksa_namespace\x18\x03 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\fksaNamespace\x12!\n" +
 	"\bksa_name\x18\x04 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\aksaNameB\x8d\x04\n" +
 	"Ecom.org.project_planton.provider.gcp.gcpgkeworkloadidentitybinding.v1B\tSpecProtoP\x01Z\x91\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpgkeworkloadidentitybinding/v1;gcpgkeworkloadidentitybindingv1\xa2\x02\x05OPPGG\xaa\x02@Org.ProjectPlanton.Provider.Gcp.Gcpgkeworkloadidentitybinding.V1\xca\x02@Org\\ProjectPlanton\\Provider\\Gcp\\Gcpgkeworkloadidentitybinding\\V1\xe2\x02LOrg\\ProjectPlanton\\Provider\\Gcp\\Gcpgkeworkloadidentitybinding\\V1\\GPBMetadata\xea\x02EOrg::ProjectPlanton::Provider::Gcp::Gcpgkeworkloadidentitybinding::V1b\x06proto3"

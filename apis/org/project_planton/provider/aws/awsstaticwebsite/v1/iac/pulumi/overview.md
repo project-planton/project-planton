@@ -1,5 +1,0 @@
-# Overview
-
-The provided Pulumi module is designed to automate the deployment of static websites on AWS using our Unified APIs that mimic Kubernetes' resource modeling. It accepts an `AwsStaticWebsite` API resource as input, focusing on the `spec` section, which includes the required `aws_credential_id`. The module initializes an AWS provider within the Pulumi context using the supplied AWS credentials, preparing the environment for resource creation.
-
-Currently, the module sets up the AWS provider but does not implement the actual creation of AWS resources like S3 buckets or CloudFront distributions needed for hosting a static website. This initial setup is essential for any future enhancements where resource provisioning will be based on the specifications provided in the YAML configuration. By integrating with our CLI command `planton pulumi up`, developers can define their infrastructure configurations in a single YAML file, simplifying the deployment process and ensuring consistency across multi-cloud environments.

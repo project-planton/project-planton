@@ -241,7 +241,7 @@ const file_org_project_planton_provider_aws_awssecuritygroup_v1_spec_proto_rawDe
 	"\n" +
 	"?org/project_planton/provider/aws/awssecuritygroup/v1/spec.proto\x124org.project_planton.provider.aws.awssecuritygroup.v1\x1a\x1bbuf/validate/validate.proto\x1a:org/project_planton/shared/foreignkey/v1/foreign_key.proto\"\xda\x03\n" +
 	"\x14AwsSecurityGroupSpec\x12w\n" +
-	"\x06vpc_id\x18\x01 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB$\xbaH\x03\xc8\x01\x01\x88\xd4a\xd9\x01\x92\xd4a\x15status.outputs.vpc_idR\x05vpcId\x12\x84\x01\n" +
+	"\x06vpc_id\x18\x01 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB$\xbaH\x03\xc8\x01\x01\x88\xd4a\xd8\x01\x92\xd4a\x15status.outputs.vpc_idR\x05vpcId\x12\x84\x01\n" +
 	"\vdescription\x18\x02 \x01(\tBb\xbaH_\xba\x01Y\n" +
 	"\x18description_length_check\x12*Description must not exceed 255 characters\x1a\x11size(this) <= 255\xc8\x01\x01R\vdescription\x12a\n" +
 	"\aingress\x18\x03 \x03(\v2G.org.project_planton.provider.aws.awssecuritygroup.v1.SecurityGroupRuleR\aingress\x12_\n" +

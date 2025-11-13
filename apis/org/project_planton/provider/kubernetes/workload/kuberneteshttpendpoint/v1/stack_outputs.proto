@@ -1,9 +1,0 @@
-syntax = "proto3";
-
-package org.project_planton.provider.kubernetes.workload.kuberneteshttpendpoint.v1;
-
-//kubernetes-http-endpoint stack outputs
-message KubernetesHttpEndpointStackOutputs {
-  //kubernetes namespace in which kubernetes-http-endpoint is deployed.
-  string namespace = 1;
-}

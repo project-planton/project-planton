@@ -105,7 +105,7 @@ func (x *GcpGkeCluster) GetStatus() *GcpGkeClusterStatus {
 	return nil
 }
 
-// gcp-gke-cluster status
+// gcp-gke-cluster status.
 type GcpGkeClusterStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// stack-outputs

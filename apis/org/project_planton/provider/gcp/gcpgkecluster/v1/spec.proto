@@ -3,115 +3,81 @@ syntax = "proto3";
 package org.project_planton.provider.gcp.gcpgkecluster.v1;
 
 import "buf/validate/validate.proto";
+import "org/project_planton/shared/foreignkey/v1/foreign_key.proto";
 import "org/project_planton/shared/options/options.proto";
 
-// **GcpGkeClusterSpec** defines the specifications for a Google Kubernetes Engine (GKE) cluster.
-// This message includes necessary parameters to create and manage a GKE cluster within a specified GCP project.
-// It covers details like project IDs, region, zone, networking configurations, logging options, autoscaling settings,
-// node pools, Kubernetes addons, and ingress DNS domains.
+// GcpGkeClusterSpec defines the key configuration for a GKE control-plane (private cluster).
 message GcpGkeClusterSpec {
-  // The GCP project ID in which the GKE cluster will be created.
-  string cluster_project_id = 1 [(buf.validate.field).required = true];
-
-  // The GCP region where the GKE cluster will be created.
-  // **Warning:** The GKE cluster will be recreated if this value is updated.
-  // Refer to: https://cloud.google.com/compute/docs/regions-zones
-  optional string region = 2 [(org.project_planton.shared.options.default) = "us-central1"];
-
-  // The GCP zone where the GKE cluster will be created.
-  // Refer to: https://cloud.google.com/compute/docs/regions-zones
-  optional string zone = 3 [(org.project_planton.shared.options.default) = "us-central1-a"];
-
-  GcpGkeClusterSharedVpcConfig shared_vpc_config = 4;
-
-  // A flag to toggle workload logs for the GKE cluster environment.
-  // When enabled, logs from Kubernetes pods will be sent to Google Cloud Logging.
-  // **Warning:** Enabling log forwarding may increase cloud bills depending on the log volume.
-  bool is_workload_logs_enabled = 5;
-
-  // Configuration for cluster autoscaling.
-  GcpGkeClusterAutoscalingConfig cluster_autoscaling_config = 6;
-
-  // A list of node pools for the GKE cluster.
-  repeated GcpGkeClusterNodePool node_pools = 7;
-}
-
-// **GcpGkeClusterSharedVpcConfig** specifies the shared VPC network settings for GKE clusters.
-// This message includes the project ID for the shared VPC network where the GKE cluster is created.
-// For more details, visit: https://cloud.google.com/kubernetes-engine/docs/how-to/cluster-shared-vpc
-message GcpGkeClusterSharedVpcConfig {
-  // A flag indicating whether the cluster should be created in a shared VPC network.
-  // **Warning:** The GKE cluster will be recreated if this is updated.
-  bool is_enabled = 1;
-
-  // The GCP project ID in which the GKE cluster will be created.
-  option (buf.validate.message).cel = {
-    id: "spec.shared_vpc_config.vpc_project_id.required"
-    expression:
-      "this.is_enabled && size(this.vpc_project_id) == 0"
-      "? 'VPC Project Id is required to setup shared-vpc'"
-      ": ''"
-  };
-  string vpc_project_id = 2 [(buf.validate.field).required = true];
-}
-
-// **GcpGkeClusterAutoscalingConfig** specifies the autoscaling settings for GKE clusters.
-// For more details, visit: https://cloud.google.com/kubernetes-engine/docs/how-to/node-auto-provisioning
-message GcpGkeClusterAutoscalingConfig {
-  // A flag to enable or disable autoscaling of Kubernetes worker nodes.
-  // When set to true, the cluster will automatically scale up or down based on resource requirements.
-  bool is_enabled = 1;
-
-  // The minimum number of CPU cores the cluster can scale down to when autoscaling is enabled.
-  // This is the total number of CPU cores across all nodes in the cluster.
-  int64 cpu_min_cores = 2;
-
-  // The maximum number of CPU cores the cluster can scale up to when autoscaling is enabled.
-  // This is the total number of CPU cores across all nodes in the cluster.
-  int64 cpu_max_cores = 3;
-
-  // The minimum amount of memory in gigabytes (GB) the cluster can scale down to when autoscaling is enabled.
-  // This is the total memory across all nodes in the cluster.
-  int64 memory_min_gb = 4;
-
-  // The maximum amount of memory in gigabytes (GB) the cluster can scale up to when autoscaling is enabled.
-  // This is the total memory across all nodes in the cluster.
-  int64 memory_max_gb = 5;
-}
-
-// **GcpGkeClusterNodePool** defines a node pool within the GKE cluster.
-message GcpGkeClusterNodePool {
-  // The name of the node pool.
-  // This name is added as a label to the node pool and can be used to schedule workloads.
-  string name = 1 [
-    (buf.validate.field).string.min_len = 1,
-    (buf.validate.field).string.max_len = 25,
-    (buf.validate.field).cel = {
-      id: "gcp.node_pool.name.chars"
-      message: "Only alphanumeric characters (A-Z, a-z, 0-9) and hyphens are allowed"
-      expression: "this.matches('^[A-Za-z0-9-]+$')"
-    },
-    (buf.validate.field).cel = {
-      id: "gcp.node_pool.name.startswith"
-      message: "Must not start with a hyphen"
-      expression: "this.matches('^[^-].*$')"
-    },
-    (buf.validate.field).cel = {
-      id: "gcp.node_pool.name.endswith"
-      message: "Must not end with a hyphen"
-      expression: "this.matches('[^-]$')"
-    }
+  // GCP project in which to create the cluster (reference to GcpProject resource).
+  org.project_planton.shared.foreignkey.v1.StringValueOrRef project_id = 1 [
+    (buf.validate.field).required = true,
+    (org.project_planton.shared.foreignkey.v1.default_kind) = GcpProject,
+    (org.project_planton.shared.foreignkey.v1.default_kind_field_path) = "status.outputs.project_id"
   ];
 
-  // The machine type for the node pool (e.g., 'n2-custom-8-16234').
-  string machine_type = 2 [(buf.validate.field).required = true];
+  // Location for the cluster: region (for regional) or zone (for zonal).
+  string location = 2 [
+    (buf.validate.field).required = true,
+    // e.g. "us-central1" or "us-central1-a"
+    (buf.validate.field).string.pattern = "^[a-z]+-[a-z]+[0-9](-[a-z])?$"
+  ];
 
-  // The minimum number of nodes in the node pool. Defaults to 1.
-  int32 min_node_count = 3;
+  // VPC Subnetwork to attach this cluster (must exist; carries primary & secondary IP ranges).
+  org.project_planton.shared.foreignkey.v1.StringValueOrRef subnetwork_self_link = 3 [
+    (buf.validate.field).required = true,
+    (org.project_planton.shared.foreignkey.v1.default_kind) = GcpSubnetwork,
+    (org.project_planton.shared.foreignkey.v1.default_kind_field_path) = "status.outputs.self_link"
+  ];
 
-  // The maximum number of nodes in the node pool. Defaults to 1.
-  int32 max_node_count = 4;
+  // Name of the secondary range on the subnetwork for Pod IPs (VPC-native aliasing).
+  org.project_planton.shared.foreignkey.v1.StringValueOrRef cluster_secondary_range_name = 4 [
+    (buf.validate.field).required = true,
+    (org.project_planton.shared.foreignkey.v1.default_kind) = GcpSubnetwork,
+    (org.project_planton.shared.foreignkey.v1.default_kind_field_path) = "status.outputs.pods_secondary_range_name"
+  ];
 
-  // A flag to enable spot instances on the node pool. Defaults to false.
-  bool is_spot_enabled = 5;
+  // Name of the secondary range on the subnetwork for Service IPs.
+  org.project_planton.shared.foreignkey.v1.StringValueOrRef services_secondary_range_name = 5 [
+    (buf.validate.field).required = true,
+    (org.project_planton.shared.foreignkey.v1.default_kind) = GcpSubnetwork,
+    (org.project_planton.shared.foreignkey.v1.default_kind_field_path) = "status.outputs.services_secondary_range_name"
+  ];
+
+  // RFC1918 /28 CIDR block for the Kubernetes control-plane masters (private endpoint range).
+  string master_ipv4_cidr_block = 6 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.pattern = "^\\d+\\.\\d+\\.\\d+\\.\\d+\\/28$"
+    // e.g. "172.16.0.16/28"; must be /28 and non-overlapping.
+  ];
+
+  // Whether nodes should be created with public IPs
+  bool enable_public_nodes = 7;
+
+  // Kubernetes release channel for auto-upgrades (Rapid, Regular, Stable, or NONE).
+  optional GkeReleaseChannel release_channel = 8 [(org.project_planton.shared.options.default) = "REGULAR"];
+
+  // Disable network policy enforcement (Calico)
+  bool disable_network_policy = 9;
+
+  // Disable Workload Identity for pods (mapping KSA to GCP service accounts).
+  bool disable_workload_identity = 10;
+
+  // Optionally, could add a field to specify a non-default Workload Identity Pool:
+  // string workload_pool = 11 [(buf.validate.field).string.pattern = ".+\\.svc\\.id\\.goog$"];
+
+  // Reference to a Cloud NAT configuration to allow outbound internet for private nodes.
+  org.project_planton.shared.foreignkey.v1.StringValueOrRef router_nat_name = 12 [
+    (buf.validate.field).required = true,
+    (org.project_planton.shared.foreignkey.v1.default_kind) = GcpRouterNat,
+    (org.project_planton.shared.foreignkey.v1.default_kind_field_path) = "metadata.name"
+  ];
+}
+
+// Enum for available GKE release channels.
+enum GkeReleaseChannel {
+  gke_release_channel_unspecified = 0;
+  RAPID = 1;
+  REGULAR = 2;
+  STABLE = 3;
+  NONE = 4;
 }

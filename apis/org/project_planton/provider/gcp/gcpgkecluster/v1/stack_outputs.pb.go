@@ -7,7 +7,6 @@
 package gcpgkeclusterv1
 
 import (
-	gcp "github.com/project-planton/project-planton/apis/org/project_planton/shared/gcp"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -22,33 +21,19 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// status of the gcp-gke-cluster in gcp
+// GcpGkeClusterStackOutputs captures key info after provisioning a GKE cluster.
 type GcpGkeClusterStackOutputs struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// gcp-gke-cluster endpoint.
-	ClusterEndpoint string `protobuf:"bytes,1,opt,name=cluster_endpoint,json=clusterEndpoint,proto3" json:"cluster_endpoint,omitempty"`
-	// gcp-gke-cluster certificate-authority-data.
-	// this value is updated upon successful gcp-gke-cluster creation stack-job.
-	ClusterCaData string `protobuf:"bytes,2,opt,name=cluster_ca_data,json=clusterCaData,proto3" json:"cluster_ca_data,omitempty"`
-	// ip address of the NAT for egress traffic.
-	// this is the ip addresses attached to all network requests originating from the gcp-gke-cluster.
-	// if server receiving requires the exact ip of the microservice to add it the firewall rules, this is the one.
-	// this value is updated upon successful gcp-gke-cluster creation stack-job.
-	ExternalNatIp string `protobuf:"bytes,3,opt,name=external_nat_ip,json=externalNatIp,proto3" json:"external_nat_ip,omitempty"`
-	// Self-link URL for firewall rules related to GKE webhooks.
-	GkeWebhooksFirewallSelfLink string `protobuf:"bytes,4,opt,name=gke_webhooks_firewall_self_link,json=gkeWebhooksFirewallSelfLink,proto3" json:"gke_webhooks_firewall_self_link,omitempty"`
-	// Self-link URL for the VPC network associated with the cluster.
-	NetworkSelfLink string `protobuf:"bytes,5,opt,name=network_self_link,json=networkSelfLink,proto3" json:"network_self_link,omitempty"`
-	// Self-link URL for the subnetwork associated with the cluster.
-	SubNetworkSelfLink string `protobuf:"bytes,6,opt,name=sub_network_self_link,json=subNetworkSelfLink,proto3" json:"sub_network_self_link,omitempty"`
-	// Name of the Cloud Router NAT configuration used by the cluster.
-	RouterNatName string `protobuf:"bytes,7,opt,name=router_nat_name,json=routerNatName,proto3" json:"router_nat_name,omitempty"`
-	// Self-link URL for the Cloud Router associated with the cluster.
-	RouterSelfLink string `protobuf:"bytes,8,opt,name=router_self_link,json=routerSelfLink,proto3" json:"router_self_link,omitempty"`
-	// google service account created for deploying workloads to the gcp-gke-cluster.
-	WorkloadDeployerServiceAccount *gcp.GoogleServiceAccount `protobuf:"bytes,9,opt,name=workload_deployer_service_account,json=workloadDeployerServiceAccount,proto3" json:"workload_deployer_service_account,omitempty"`
-	unknownFields                  protoimpl.UnknownFields
-	sizeCache                      protoimpl.SizeCache
+	// Kubernetes API server endpoint for the cluster.
+	// For a private cluster, this will be an internal/private endpoint URL or IP.
+	Endpoint string `protobuf:"bytes,1,opt,name=endpoint,proto3" json:"endpoint,omitempty"`
+	// Base64-encoded CA certificate for the cluster’s API server.
+	// Clients need this to authenticate the cluster’s TLS cert.
+	ClusterCaCertificate string `protobuf:"bytes,2,opt,name=cluster_ca_certificate,json=clusterCaCertificate,proto3" json:"cluster_ca_certificate,omitempty"`
+	// Workload Identity Pool identifier used by this cluster (e.g. "PROJECT_ID.svc.id.goog").
+	WorkloadIdentityPool string `protobuf:"bytes,3,opt,name=workload_identity_pool,json=workloadIdentityPool,proto3" json:"workload_identity_pool,omitempty"`
+	unknownFields        protoimpl.UnknownFields
+	sizeCache            protoimpl.SizeCache
 }
 
 func (x *GcpGkeClusterStackOutputs) Reset() {
@@ -81,84 +66,36 @@ func (*GcpGkeClusterStackOutputs) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_gcp_gcpgkecluster_v1_stack_outputs_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *GcpGkeClusterStackOutputs) GetClusterEndpoint() string {
+func (x *GcpGkeClusterStackOutputs) GetEndpoint() string {
 	if x != nil {
-		return x.ClusterEndpoint
+		return x.Endpoint
 	}
 	return ""
 }
 
-func (x *GcpGkeClusterStackOutputs) GetClusterCaData() string {
+func (x *GcpGkeClusterStackOutputs) GetClusterCaCertificate() string {
 	if x != nil {
-		return x.ClusterCaData
+		return x.ClusterCaCertificate
 	}
 	return ""
 }
 
-func (x *GcpGkeClusterStackOutputs) GetExternalNatIp() string {
+func (x *GcpGkeClusterStackOutputs) GetWorkloadIdentityPool() string {
 	if x != nil {
-		return x.ExternalNatIp
+		return x.WorkloadIdentityPool
 	}
 	return ""
-}
-
-func (x *GcpGkeClusterStackOutputs) GetGkeWebhooksFirewallSelfLink() string {
-	if x != nil {
-		return x.GkeWebhooksFirewallSelfLink
-	}
-	return ""
-}
-
-func (x *GcpGkeClusterStackOutputs) GetNetworkSelfLink() string {
-	if x != nil {
-		return x.NetworkSelfLink
-	}
-	return ""
-}
-
-func (x *GcpGkeClusterStackOutputs) GetSubNetworkSelfLink() string {
-	if x != nil {
-		return x.SubNetworkSelfLink
-	}
-	return ""
-}
-
-func (x *GcpGkeClusterStackOutputs) GetRouterNatName() string {
-	if x != nil {
-		return x.RouterNatName
-	}
-	return ""
-}
-
-func (x *GcpGkeClusterStackOutputs) GetRouterSelfLink() string {
-	if x != nil {
-		return x.RouterSelfLink
-	}
-	return ""
-}
-
-func (x *GcpGkeClusterStackOutputs) GetWorkloadDeployerServiceAccount() *gcp.GoogleServiceAccount {
-	if x != nil {
-		return x.WorkloadDeployerServiceAccount
-	}
-	return nil
 }
 
 var File_org_project_planton_provider_gcp_gcpgkecluster_v1_stack_outputs_proto protoreflect.FileDescriptor
 
 const file_org_project_planton_provider_gcp_gcpgkecluster_v1_stack_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Eorg/project_planton/provider/gcp/gcpgkecluster/v1/stack_outputs.proto\x121org.project_planton.provider.gcp.gcpgkecluster.v1\x1a(org/project_planton/shared/gcp/gcp.proto\"\x8e\x04\n" +
-	"\x19GcpGkeClusterStackOutputs\x12)\n" +
-	"\x10cluster_endpoint\x18\x01 \x01(\tR\x0fclusterEndpoint\x12&\n" +
-	"\x0fcluster_ca_data\x18\x02 \x01(\tR\rclusterCaData\x12&\n" +
-	"\x0fexternal_nat_ip\x18\x03 \x01(\tR\rexternalNatIp\x12D\n" +
-	"\x1fgke_webhooks_firewall_self_link\x18\x04 \x01(\tR\x1bgkeWebhooksFirewallSelfLink\x12*\n" +
-	"\x11network_self_link\x18\x05 \x01(\tR\x0fnetworkSelfLink\x121\n" +
-	"\x15sub_network_self_link\x18\x06 \x01(\tR\x12subNetworkSelfLink\x12&\n" +
-	"\x0frouter_nat_name\x18\a \x01(\tR\rrouterNatName\x12(\n" +
-	"\x10router_self_link\x18\b \x01(\tR\x0erouterSelfLink\x12\x7f\n" +
-	"!workload_deployer_service_account\x18\t \x01(\v24.org.project_planton.shared.gcp.GoogleServiceAccountR\x1eworkloadDeployerServiceAccountB\xa4\x03\n" +
+	"Eorg/project_planton/provider/gcp/gcpgkecluster/v1/stack_outputs.proto\x121org.project_planton.provider.gcp.gcpgkecluster.v1\"\xa3\x01\n" +
+	"\x19GcpGkeClusterStackOutputs\x12\x1a\n" +
+	"\bendpoint\x18\x01 \x01(\tR\bendpoint\x124\n" +
+	"\x16cluster_ca_certificate\x18\x02 \x01(\tR\x14clusterCaCertificate\x124\n" +
+	"\x16workload_identity_pool\x18\x03 \x01(\tR\x14workloadIdentityPoolB\xa4\x03\n" +
 	"5com.org.project_planton.provider.gcp.gcpgkecluster.v1B\x11StackOutputsProtoP\x01Zqgithub.com/project-planton/project-planton/apis/org/project_planton/provider/gcp/gcpgkecluster/v1;gcpgkeclusterv1\xa2\x02\x05OPPGG\xaa\x020Org.ProjectPlanton.Provider.Gcp.Gcpgkecluster.V1\xca\x020Org\\ProjectPlanton\\Provider\\Gcp\\Gcpgkecluster\\V1\xe2\x02<Org\\ProjectPlanton\\Provider\\Gcp\\Gcpgkecluster\\V1\\GPBMetadata\xea\x025Org::ProjectPlanton::Provider::Gcp::Gcpgkecluster::V1b\x06proto3"
 
 var (
@@ -176,15 +113,13 @@ func file_org_project_planton_provider_gcp_gcpgkecluster_v1_stack_outputs_proto_
 var file_org_project_planton_provider_gcp_gcpgkecluster_v1_stack_outputs_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_org_project_planton_provider_gcp_gcpgkecluster_v1_stack_outputs_proto_goTypes = []any{
 	(*GcpGkeClusterStackOutputs)(nil), // 0: org.project_planton.provider.gcp.gcpgkecluster.v1.GcpGkeClusterStackOutputs
-	(*gcp.GoogleServiceAccount)(nil),  // 1: org.project_planton.shared.gcp.GoogleServiceAccount
 }
 var file_org_project_planton_provider_gcp_gcpgkecluster_v1_stack_outputs_proto_depIdxs = []int32{
-	1, // 0: org.project_planton.provider.gcp.gcpgkecluster.v1.GcpGkeClusterStackOutputs.workload_deployer_service_account:type_name -> org.project_planton.shared.gcp.GoogleServiceAccount
-	1, // [1:1] is the sub-list for method output_type
-	1, // [1:1] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	0, // [0:0] is the sub-list for method output_type
+	0, // [0:0] is the sub-list for method input_type
+	0, // [0:0] is the sub-list for extension type_name
+	0, // [0:0] is the sub-list for extension extendee
+	0, // [0:0] is the sub-list for field type_name
 }
 
 func init() { file_org_project_planton_provider_gcp_gcpgkecluster_v1_stack_outputs_proto_init() }

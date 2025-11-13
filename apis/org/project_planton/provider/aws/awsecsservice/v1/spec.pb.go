@@ -752,7 +752,7 @@ const file_org_project_planton_provider_aws_awsecsservice_v1_spec_proto_rawDesc 
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\x8a\x02\n" +
 	"\x14AwsEcsServiceNetwork\x12a\n" +
-	"\asubnets\x18\x01 \x03(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\v\xbaH\x03\xc8\x01\x01\x88\xd4a\xd9\x01R\asubnets\x12\x8e\x01\n" +
+	"\asubnets\x18\x01 \x03(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB\v\xbaH\x03\xc8\x01\x01\x88\xd4a\xd8\x01R\asubnets\x12\x8e\x01\n" +
 	"\x0fsecurity_groups\x18\x02 \x03(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB)\x88\xd4a\xd7\x01\x92\xd4a status.outputs.security_group_idR\x0esecurityGroups\"\xab\x02\n" +
 	"\x10AwsEcsServiceIam\x12\x93\x01\n" +
 	"\x17task_execution_role_arn\x18\x01 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB \x88\xd4a\xd0\x01\x92\xd4a\x17status.outputs.role_arnR\x14taskExecutionRoleArn\x12\x80\x01\n" +

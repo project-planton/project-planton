@@ -389,8 +389,8 @@ const file_org_project_planton_provider_kubernetes_addon_externalsecretskubernet
 	"\x0350m\x12\x05100MiR\tresources\"\xe2\x01\n" +
 	"\x18ExternalSecretsGkeConfig\x12\x83\x01\n" +
 	"\n" +
-	"project_id\x18\x01 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB(\xbaH\x03\xc8\x01\x01\x88\xd4a\xe3\x04\x92\xd4a\x19status.outputs.project_idR\tprojectId\x12@\n" +
-	"\tgsa_email\x18\x02 \x01(\tB#\xbaH\x03\xc8\x01\x01\x88\xd4a\xe9\x04\x92\xd4a\x14status.outputs.emailR\bgsaEmail\"g\n" +
+	"project_id\x18\x01 \x01(\v2:.org.project_planton.shared.foreignkey.v1.StringValueOrRefB(\xbaH\x03\xc8\x01\x01\x88\xd4a\xe1\x04\x92\xd4a\x19status.outputs.project_idR\tprojectId\x12@\n" +
+	"\tgsa_email\x18\x02 \x01(\tB#\xbaH\x03\xc8\x01\x01\x88\xd4a\xe6\x04\x92\xd4a\x14status.outputs.emailR\bgsaEmail\"g\n" +
 	"\x18ExternalSecretsEksConfig\x12\x16\n" +
 	"\x06region\x18\x01 \x01(\tR\x06region\x123\n" +
 	"\x16irsa_role_arn_override\x18\x02 \x01(\tR\x13irsaRoleArnOverride\"\x8a\x01\n" +
