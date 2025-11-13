@@ -238,7 +238,90 @@ date +"%Y-%m-%d-%H%M%S"
 
 This produces format like: `2025-11-13-143022`
 
+---
+
+**CRITICAL: Markdown Formatting Requirements**
+
+The audit report MUST use proper markdown formatting for excellent readability:
+
+**1. Headings:**
+- Use `#` for main title (Audit Report)
+- Use `##` for major sections (Summary, Detailed Findings, etc.)
+- Use `###` for subsections (1., 2., 3., etc.)
+- Use `####` for sub-subsections if needed
+- **Always add blank line before and after headings**
+
+**2. Tables:**
+- Use proper markdown table syntax with alignment
+- Always include header separator line with `|---|---|---|`
+- Align columns using spaces for readability
+- Example:
+  ```markdown
+  | Category | Weight | Score | Status |
+  |----------|--------|-------|--------|
+  | Cloud Resource Registry | 4.44% | 4.44% | ✅ |
+  | Protobuf API Definitions | 17.76% | 15.20% | ⚠️ |
+  ```
+
+**3. Lists:**
+- Use `-` for unordered lists (not `*` or `+`)
+- Use `1.`, `2.`, `3.` for ordered lists
+- Indent nested lists with 2 spaces
+- **Always add blank line before and after lists**
+
+**4. Code Blocks:**
+- Use triple backticks with language identifier
+- Examples: ``` ```typescript ```, ``` ```bash ```, ``` ```protobuf ```
+- **Always add blank line before and after code blocks**
+
+**5. Emphasis:**
+- Use `**bold**` for critical items and scores
+- Use `*italic*` sparingly
+- Use `✅`, `⚠️`, `❌` for visual status indicators
+
+**6. Horizontal Rules:**
+- Use `---` (three dashes) on its own line
+- **Always add blank line before and after**
+
+**7. Links:**
+- Use proper markdown links: `[text](url)`
+- For file paths, use inline code: `` `path/to/file.ts` ``
+
+**8. Blockquotes (for important notes):**
+- Use `>` for important warnings or notes
+- Example:
+  ```markdown
+  > **Critical:** Tests are failing. Component cannot be marked production-ready.
+  ```
+
+**9. Spacing:**
+- **One blank line** between paragraphs
+- **One blank line** before and after sections
+- **One blank line** before and after tables, lists, code blocks
+
+**10. Escaping:**
+- Escape special characters in regular text if needed
+- Don't escape inside code blocks
+
+**VALIDATION BEFORE WRITING:**
+Before writing the report file, verify:
+- [ ] All tables have proper header separators
+- [ ] All headings have blank lines around them
+- [ ] All code blocks specify language
+- [ ] All lists have blank lines around them
+- [ ] Status indicators (✅⚠️❌) are used consistently
+- [ ] Section structure is hierarchical (##, ###, ####)
+
+---
+
 **Report Structure:**
+
+**IMPORTANT:** Follow the markdown formatting requirements above. Every section below must have:
+- Blank lines before and after headings
+- Blank lines before and after tables
+- Blank lines before and after code blocks
+- Blank lines before and after lists
+- Proper table header separators
 
 ```markdown
 # Audit Report: <ComponentName>
@@ -287,9 +370,20 @@ This produces format like: `2025-11-13-143022`
 
 Items that are easy to fix and would improve the score:
 
-1. **<Item>** - <Why it's important> - <How to fix>
-2. **<Item>** - <Why it's important> - <How to fix>
-3. **<Item>** - <Why it's important> - <How to fix>
+1. **<Item>**
+   - **Why:** <Importance>
+   - **How:** <Steps or command>
+   - **File:** `<path>`
+
+2. **<Item>**
+   - **Why:** <Importance>
+   - **How:** <Steps or command>
+   - **File:** `<path>`
+
+3. **<Item>**
+   - **Why:** <Importance>
+   - **How:** <Steps or command>
+   - **File:** `<path>`
 
 ---
 
@@ -297,8 +391,15 @@ Items that are easy to fix and would improve the score:
 
 Blocking issues that prevent production readiness:
 
-1. **<Item>** - <Why it's blocking> - <What needs to be done>
-2. **<Item>** - <Why it's blocking> - <What needs to be done>
+1. **<Item>**
+   - **Why it blocks:** <Explanation>
+   - **What to do:** <Action>
+   - **File:** `<path>`
+
+2. **<Item>**
+   - **Why it blocks:** <Explanation>
+   - **What to do:** <Action>
+   - **File:** `<path>`
 
 ---
 
@@ -307,13 +408,18 @@ Blocking issues that prevent production readiness:
 ### 1. Cloud Resource Registry (4.44%)
 
 ✅ **Passed:**
-- <List items that passed>
+
+- Enum entry exists in `cloud_resource_kind.proto`
+- Enum value 51 is in correct range for provider (atlas: 50-199)
+- ID prefix `mongodb-atlas` is unique
 
 ❌ **Failed:**
-- <List items that failed with explanation>
 
-⚠️ **Partial:**
-- <List items that partially passed>
+- Missing `kubernetes_meta` field (only applicable to Kubernetes components)
+
+⚠️ **Warnings:**
+
+- None
 
 **Score:** X.XX% / 4.44%
 
@@ -321,25 +427,131 @@ Blocking issues that prevent production readiness:
 
 ### 2. Folder Structure (4.44%)
 
-<Same structure as above for each category>
+✅ **Passed:**
+
+- Folder exists: `apis/org/project_planton/provider/atlas/mongodbatlas/v1/`
+- Folder name matches lowercase enum name
+- `v1/` subfolder exists
+
+❌ **Failed:**
+
+- None
+
+**Score:** X.XX% / 4.44%
 
 ---
 
 ### 3. Protobuf API Definitions (17.76%)
 
-<Same structure>
+#### 3.1 Proto Files (13.32%)
+
+✅ **Passed:**
+
+- `api.proto` exists (2.5 KB)
+- `spec.proto` exists (8.3 KB)
+- `stack_input.proto` exists (450 bytes)
+- `stack_outputs.proto` exists (1.2 KB)
+
+❌ **Failed:**
+
+- None
+
+**Score:** X.XX% / 13.32%
+
+#### 3.2 Generated Stubs (3.33%)
+
+✅ **Passed:**
+
+- All `.pb.go` files exist and are up-to-date
+
+**Score:** X.XX% / 3.33%
+
+#### 3.3 Unit Tests - Presence (2.77%)
+
+✅ **Passed:**
+
+- `spec_test.go` exists (3.2 KB)
+- Contains test functions
+- Imports testing framework
+
+**Score:** X.XX% / 2.77%
+
+#### 3.4 Unit Tests - Execution (2.78%)
+
+To verify tests, run:
+
+```bash
+cd apis/org/project_planton/provider/atlas/mongodbatlas/v1/
+go test -v
+```
+
+✅ **Passed:**
+
+- Tests compile without errors
+- All 15 tests pass
+- Validation rules verified
+
+❌ **Failed:**
+
+- None
+
+> **Note:** Test execution is mandatory for production-readiness. Failing tests block completion.
+
+**Score:** X.XX% / 2.78%
+
+**Total Protobuf API Score:** X.XX% / 17.76%
 
 ---
 
 ### 4. IaC Modules - Pulumi (13.32%)
 
-<Same structure>
+#### 4.1 Module Files (6.66%)
+
+✅ **Passed:**
+
+- `iac/pulumi/module/main.go` exists (12.4 KB)
+- `iac/pulumi/module/locals.go` exists (2.1 KB)
+- `iac/pulumi/module/outputs.go` exists (1.8 KB)
+
+❌ **Failed:**
+
+- None
+
+**Score:** X.XX% / 6.66%
+
+#### 4.2 Entrypoint Files (6.66%)
+
+✅ **Passed:**
+
+- `iac/pulumi/main.go` exists
+- `iac/pulumi/Pulumi.yaml` exists
+- `iac/pulumi/Makefile` exists
+
+❌ **Failed:**
+
+- None
+
+**Score:** X.XX% / 6.66%
+
+**Total Pulumi Score:** X.XX% / 13.32%
 
 ---
 
 ### 5. IaC Modules - Terraform (4.44%)
 
-<Same structure>
+✅ **Passed:**
+
+- `iac/tf/variables.tf` exists (5.2 KB)
+- `iac/tf/provider.tf` exists
+- `iac/tf/locals.tf` exists (3.8 KB)
+- `iac/tf/main.tf` exists (18.5 KB)
+- `iac/tf/outputs.tf` exists (2.1 KB)
+
+❌ **Failed:**
+
+- None
+
+**Score:** X.XX% / 4.44%
 
 ---
 
@@ -502,6 +714,7 @@ Run `@forge` rules to complete missing items, or view full report for detailed r
 5. **Handle edge cases** - Component might be partially implemented, completely missing, or in unusual state
 6. **Use accurate timestamps** - Always run `date` command, never hardcode or guess
 7. **Create directories as needed** - Don't fail if `docs/audit/` doesn't exist yet
+8. **Follow markdown formatting** - Use proper tables, code blocks, spacing, and hierarchy as defined in Step 4
 
 ## Error Handling
 
