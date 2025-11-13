@@ -5,9 +5,9 @@ import (
 
 	"github.com/pkg/errors"
 	azureaksclusterv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/azure/azureakscluster/v1"
-	"github.com/pulumi/pulumi-azure-native-sdk/containerservice/v2"
-	"github.com/pulumi/pulumi-azure-native-sdk/resources/v2"
-	azurenative "github.com/pulumi/pulumi-azure-native-sdk/sdk/v2/go/azure"
+	"github.com/pulumi/pulumi-azure-native-sdk/containerservice/v3"
+	"github.com/pulumi/pulumi-azure-native-sdk/resources/v3"
+	azurenative "github.com/pulumi/pulumi-azure-native-sdk/v3"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 

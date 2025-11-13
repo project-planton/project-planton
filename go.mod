@@ -27,7 +27,7 @@ require (
 	github.com/pulumi/pulumi-random/sdk/v4 v4.16.7
 	github.com/pulumi/pulumi-tls/sdk/v4 v4.11.1
 	github.com/pulumi/pulumi-tls/sdk/v5 v5.2.1
-	github.com/pulumi/pulumi/sdk/v3 v3.205.0
+	github.com/pulumi/pulumi/sdk/v3 v3.206.0
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/cobra v1.10.1
 	github.com/spf13/pflag v1.0.9
@@ -122,6 +122,9 @@ require (
 	github.com/pseudomuto/protokit v0.2.0 // indirect
 	github.com/pulumi/appdash v0.0.0-20231130102222-75f619a67231 // indirect
 	github.com/pulumi/esc v0.17.0 // indirect
+	github.com/pulumi/pulumi-azure-native-sdk/containerservice/v3 v3.10.1 // indirect
+	github.com/pulumi/pulumi-azure-native-sdk/resources/v3 v3.10.1 // indirect
+	github.com/pulumi/pulumi-azure-native-sdk/v3 v3.10.1 // indirect
 	github.com/rivo/uniseg v0.4.4 // indirect
 	github.com/rogpeppe/go-internal v1.13.1 // indirect
 	github.com/santhosh-tekuri/jsonschema/v5 v5.0.0 // indirect

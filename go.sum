@@ -235,6 +235,12 @@ github.com/pulumi/pulumi-aws-native/sdk v1.14.0 h1:4REFro0ak20+jO++hgBBkQcjEUuFc
 github.com/pulumi/pulumi-aws-native/sdk v1.14.0/go.mod h1:Ol8812Sy9/cBb4gbfspau/cg7ezFJ6kzjTn6I/Ahcvk=
 github.com/pulumi/pulumi-aws/sdk/v7 v7.3.0 h1:gPA0pBbQsbqegOrEEndz+6px8VhOdiB+sfJySztTjrU=
 github.com/pulumi/pulumi-aws/sdk/v7 v7.3.0/go.mod h1:od9x4x3RWuqTpd4MQ7temdMT3MWr3kR4c78JSenxxPc=
+github.com/pulumi/pulumi-azure-native-sdk/containerservice/v3 v3.10.1 h1:lreJYi8A8rwAD37uR5fZnb6T39z+FBV8EAtAv4Gg1vA=
+github.com/pulumi/pulumi-azure-native-sdk/containerservice/v3 v3.10.1/go.mod h1:dcmO7IXy5hJRwWcDkPEQHFiRmKPhYX4naRQn3RjbWw8=
+github.com/pulumi/pulumi-azure-native-sdk/resources/v3 v3.10.1 h1:QkhJQ3JYPipw6Wk61EjU1wkoIgIz+hNqXlRKp+Cq6s0=
+github.com/pulumi/pulumi-azure-native-sdk/resources/v3 v3.10.1/go.mod h1:8Y+u2B5bou0UvCCit9N8cWQ0klQLH1nYKokyTY7Yhm0=
+github.com/pulumi/pulumi-azure-native-sdk/v3 v3.10.1 h1:INfe+W85JMlYYtckL6WOKk2uIbUjBzqNxHgoL7aaiTY=
+github.com/pulumi/pulumi-azure-native-sdk/v3 v3.10.1/go.mod h1:Upo8fO/emGtgS6nyRajUVcgxOwboJk17JfwnHa38F/o=
 github.com/pulumi/pulumi-azure/sdk/v5 v5.89.0 h1:pFvMC1CxlBMyuGfFjkUQa6IOf7gDLdCSlm403mvalSw=
 github.com/pulumi/pulumi-azure/sdk/v5 v5.89.0/go.mod h1:tLdvJc363F0C07LR1BEs24Vh5g/yMno1atVIIjOuZms=
 github.com/pulumi/pulumi-civo/sdk/v2 v2.4.8 h1:zRGPgqNtOS6Ij5tnthDRxS3f8SNxXIyGTOLCwpvrkqU=
@@ -255,6 +261,8 @@ github.com/pulumi/pulumi-tls/sdk/v5 v5.2.1 h1:aCGQS3XM39kJDzdukzpcrPTX5YAOIjqqaI
 github.com/pulumi/pulumi-tls/sdk/v5 v5.2.1/go.mod h1:5EqVUb6gBc/8Qx5cY1OdXKnU/T6jv470ZJBAn5F+8W4=
 github.com/pulumi/pulumi/sdk/v3 v3.205.0 h1:Cuev0D3nBUqnFnFzWsO6M5XtOdGCe7lpgSds80yROyQ=
 github.com/pulumi/pulumi/sdk/v3 v3.205.0/go.mod h1:aV0+c5xpSYccWKmOjTZS9liYCqh7+peu3cQgSXu7CJw=
+github.com/pulumi/pulumi/sdk/v3 v3.206.0 h1:DvEn8GiYwSCraOv+RkGHYFOvA2m7Y3peWAdgmuYknUY=
+github.com/pulumi/pulumi/sdk/v3 v3.206.0/go.mod h1:UsBMdaUQ+WoKoQtF2PYbQIbo8ZRJuAo1axkyit9IQVE=
 github.com/rivo/uniseg v0.1.0/go.mod h1:J6wj4VEh+S6ZtnVlnTBMWIodfgj8LQOQFoIToxlJtxc=
 github.com/rivo/uniseg v0.2.0/go.mod h1:J6wj4VEh+S6ZtnVlnTBMWIodfgj8LQOQFoIToxlJtxc=
 github.com/rivo/uniseg v0.4.4 h1:8TfxU8dW6PdqD27gjM8MVNuicgxIjxpm4K7x4jp8sis=

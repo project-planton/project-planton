@@ -7,26 +7,26 @@ import "org/project_planton/provider/kubernetes/addon/strimzikafkaoperator/v1/sp
 import "org/project_planton/provider/kubernetes/addon/strimzikafkaoperator/v1/stack_outputs.proto";
 import "org/project_planton/shared/metadata.proto";
 
-//kafka-operator-kubernetes
-message KafkaOperatorKubernetes {
+//strimzi-kafka-operator
+message StrimziKafkaOperator {
   //api-version
   string api_version = 1 [(buf.validate.field).string.const = 'kubernetes.project-planton.org/v1'];
 
   //resource-kind
-  string kind = 2 [(buf.validate.field).string.const = 'KafkaOperatorKubernetes'];
+  string kind = 2 [(buf.validate.field).string.const = 'StrimziKafkaOperator'];
 
   //metadata
   org.project_planton.shared.CloudResourceMetadata metadata = 3 [(buf.validate.field).required = true];
 
   //spec
-  KafkaOperatorKubernetesSpec spec = 4 [(buf.validate.field).required = true];
+  StrimziKafkaOperatorSpec spec = 4 [(buf.validate.field).required = true];
 
   //status
-  KafkaOperatorKubernetesStatus status = 5;
+  StrimziKafkaOperatorStatus status = 5;
 }
 
-//kafka-operator-kubernetes status.
-message KafkaOperatorKubernetesStatus {
+//strimzi-kafka-operator status.
+message StrimziKafkaOperatorStatus {
   //stack-outputs
-  KafkaOperatorKubernetesStackOutputs outputs = 1;
+  StrimziKafkaOperatorStackOutputs outputs = 1;
 }

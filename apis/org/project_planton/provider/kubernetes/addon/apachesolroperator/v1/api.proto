@@ -7,26 +7,26 @@ import "org/project_planton/provider/kubernetes/addon/apachesolroperator/v1/spec
 import "org/project_planton/provider/kubernetes/addon/apachesolroperator/v1/stack_outputs.proto";
 import "org/project_planton/shared/metadata.proto";
 
-//solr-operator-kubernetes
-message SolrOperatorKubernetes {
+//apache-solr-operator
+message ApacheSolrOperator {
   //api-version
   string api_version = 1 [(buf.validate.field).string.const = 'kubernetes.project-planton.org/v1'];
 
   //resource-kind
-  string kind = 2 [(buf.validate.field).string.const = 'SolrOperatorKubernetes'];
+  string kind = 2 [(buf.validate.field).string.const = 'ApacheSolrOperator'];
 
   //metadata
   org.project_planton.shared.CloudResourceMetadata metadata = 3 [(buf.validate.field).required = true];
 
   //spec
-  SolrOperatorKubernetesSpec spec = 4 [(buf.validate.field).required = true];
+  ApacheSolrOperatorSpec spec = 4 [(buf.validate.field).required = true];
 
   //status
-  SolrOperatorKubernetesStatus status = 5;
+  ApacheSolrOperatorStatus status = 5;
 }
 
-//solr-operator-kubernetes status.
-message SolrOperatorKubernetesStatus {
+//apache-solr-operator status.
+message ApacheSolrOperatorStatus {
   //stack-outputs
-  SolrOperatorKubernetesStackOutputs outputs = 1;
+  ApacheSolrOperatorStackOutputs outputs = 1;
 }

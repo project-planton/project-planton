@@ -539,7 +539,7 @@ enum CloudResourceKind {
     id_prefix: "istk8s"
     kubernetes_meta: {category: addon}
   }];
-  KafkaOperatorKubernetes = 826 [(kind_meta) = {
+  StrimziKafkaOperator = 826 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "kfkopk8s"
@@ -551,13 +551,13 @@ enum CloudResourceKind {
     id_prefix: "pgopk8s"
     kubernetes_meta: {category: addon}
   }];
-  SolrOperatorKubernetes = 828 [(kind_meta) = {
+  ApacheSolrOperator = 828 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "slropk8s"
     kubernetes_meta: {category: addon}
   }];
-  ExternalSecretsKubernetes = 829 [(kind_meta) = {
+  ExternalSecrets = 829 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "extseck8s"
