@@ -1,4 +1,4 @@
-# AltinityOperatorKubernetes Pulumi Module
+# AltinityOperator Pulumi Module
 
 ## Key Features
 
@@ -32,7 +32,7 @@
 
 ## Installation
 
-To use the AltinityOperatorKubernetes Pulumi module, ensure that you have:
+To use the AltinityOperator Pulumi module, ensure that you have:
 - Pulumi CLI installed
 - Access to a Kubernetes cluster
 - Valid Kubernetes cluster credentials configured in Planton Cloud
@@ -61,20 +61,20 @@ Refer to the examples section for detailed usage instructions.
 
 ## API Reference
 
-### AltinityOperatorKubernetesSpec
+### AltinityOperatorSpec
 Defines the desired state of the operator deployment.
 
 - **target_cluster**: Target Kubernetes cluster configuration with credential reference
 - **container**: Container resource specifications for the operator pod
 
-### AltinityOperatorKubernetesSpecContainer
+### AltinityOperatorSpecContainer
 Specifies the container-level configurations for the operator.
 
 - **resources**: CPU and memory resource allocations
   - **requests**: Guaranteed resources (default: 100m CPU, 256Mi memory)
   - **limits**: Maximum resources (default: 1000m CPU, 1Gi memory)
 
-### AltinityOperatorKubernetesStackOutputs
+### AltinityOperatorStackOutputs
 Provides outputs from the deployed operator infrastructure.
 
 - **namespace**: Kubernetes namespace where the operator is deployed (always `altinity-operator`)

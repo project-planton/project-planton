@@ -22,31 +22,31 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// altinity-operator-kubernetes stack-input
-type AltinityOperatorKubernetesStackInput struct {
+// altinity-operator stack-input
+type AltinityOperatorStackInput struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// target cloud-resource
-	Target *AltinityOperatorKubernetes `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
+	Target *AltinityOperator `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
 	// provider-config
 	ProviderConfig *kubernetes.KubernetesProviderConfig `protobuf:"bytes,2,opt,name=provider_config,json=providerConfig,proto3" json:"provider_config,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
 
-func (x *AltinityOperatorKubernetesStackInput) Reset() {
-	*x = AltinityOperatorKubernetesStackInput{}
+func (x *AltinityOperatorStackInput) Reset() {
+	*x = AltinityOperatorStackInput{}
 	mi := &file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_stack_input_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *AltinityOperatorKubernetesStackInput) String() string {
+func (x *AltinityOperatorStackInput) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*AltinityOperatorKubernetesStackInput) ProtoMessage() {}
+func (*AltinityOperatorStackInput) ProtoMessage() {}
 
-func (x *AltinityOperatorKubernetesStackInput) ProtoReflect() protoreflect.Message {
+func (x *AltinityOperatorStackInput) ProtoReflect() protoreflect.Message {
 	mi := &file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_stack_input_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -58,19 +58,19 @@ func (x *AltinityOperatorKubernetesStackInput) ProtoReflect() protoreflect.Messa
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use AltinityOperatorKubernetesStackInput.ProtoReflect.Descriptor instead.
-func (*AltinityOperatorKubernetesStackInput) Descriptor() ([]byte, []int) {
+// Deprecated: Use AltinityOperatorStackInput.ProtoReflect.Descriptor instead.
+func (*AltinityOperatorStackInput) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_stack_input_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *AltinityOperatorKubernetesStackInput) GetTarget() *AltinityOperatorKubernetes {
+func (x *AltinityOperatorStackInput) GetTarget() *AltinityOperator {
 	if x != nil {
 		return x.Target
 	}
 	return nil
 }
 
-func (x *AltinityOperatorKubernetesStackInput) GetProviderConfig() *kubernetes.KubernetesProviderConfig {
+func (x *AltinityOperatorStackInput) GetProviderConfig() *kubernetes.KubernetesProviderConfig {
 	if x != nil {
 		return x.ProviderConfig
 	}
@@ -81,9 +81,9 @@ var File_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernete
 
 const file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_stack_input_proto_rawDesc = "" +
 	"\n" +
-	"]org/project_planton/provider/kubernetes/addon/altinityoperatorkubernetes/v1/stack_input.proto\x12Korg.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1\x1aUorg/project_planton/provider/kubernetes/addon/altinityoperatorkubernetes/v1/api.proto\x1a6org/project_planton/provider/kubernetes/provider.proto\"\x93\x02\n" +
-	"$AltinityOperatorKubernetesStackInput\x12\x7f\n" +
-	"\x06target\x18\x01 \x01(\v2g.org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorKubernetesR\x06target\x12j\n" +
+	"]org/project_planton/provider/kubernetes/addon/altinityoperatorkubernetes/v1/stack_input.proto\x12Korg.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1\x1aUorg/project_planton/provider/kubernetes/addon/altinityoperatorkubernetes/v1/api.proto\x1a6org/project_planton/provider/kubernetes/provider.proto\"\xff\x01\n" +
+	"\x1aAltinityOperatorStackInput\x12u\n" +
+	"\x06target\x18\x01 \x01(\v2].org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorR\x06target\x12j\n" +
 	"\x0fprovider_config\x18\x02 \x01(\v2A.org.project_planton.provider.kubernetes.KubernetesProviderConfigR\x0eproviderConfigB\xce\x04\n" +
 	"Ocom.org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1B\x0fStackInputProtoP\x01Z\x98\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/altinityoperatorkubernetes/v1;altinityoperatorkubernetesv1\xa2\x02\x06OPPKAA\xaa\x02JOrg.ProjectPlanton.Provider.Kubernetes.Addon.Altinityoperatorkubernetes.V1\xca\x02JOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Altinityoperatorkubernetes\\V1\xe2\x02VOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Altinityoperatorkubernetes\\V1\\GPBMetadata\xea\x02POrg::ProjectPlanton::Provider::Kubernetes::Addon::Altinityoperatorkubernetes::V1b\x06proto3"
 
@@ -101,13 +101,13 @@ func file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernet
 
 var file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_stack_input_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_stack_input_proto_goTypes = []any{
-	(*AltinityOperatorKubernetesStackInput)(nil), // 0: org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorKubernetesStackInput
-	(*AltinityOperatorKubernetes)(nil),           // 1: org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorKubernetes
-	(*kubernetes.KubernetesProviderConfig)(nil),  // 2: org.project_planton.provider.kubernetes.KubernetesProviderConfig
+	(*AltinityOperatorStackInput)(nil),          // 0: org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorStackInput
+	(*AltinityOperator)(nil),                    // 1: org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperator
+	(*kubernetes.KubernetesProviderConfig)(nil), // 2: org.project_planton.provider.kubernetes.KubernetesProviderConfig
 }
 var file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_stack_input_proto_depIdxs = []int32{
-	1, // 0: org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorKubernetesStackInput.target:type_name -> org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorKubernetes
-	2, // 1: org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorKubernetesStackInput.provider_config:type_name -> org.project_planton.provider.kubernetes.KubernetesProviderConfig
+	1, // 0: org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorStackInput.target:type_name -> org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperator
+	2, // 1: org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorStackInput.provider_config:type_name -> org.project_planton.provider.kubernetes.KubernetesProviderConfig
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

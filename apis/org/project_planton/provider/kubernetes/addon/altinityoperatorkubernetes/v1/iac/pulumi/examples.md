@@ -1,4 +1,4 @@
-# AltinityOperatorKubernetes Pulumi Module Examples
+# AltinityOperator Pulumi Module Examples
 
 This document provides examples of deploying the Altinity ClickHouse Operator using the Pulumi module.
 
@@ -22,7 +22,7 @@ Create a file named `altinity-operator-default.yaml`:
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: AltinityOperatorKubernetes
+kind: AltinityOperator
 metadata:
   name: altinity-operator-default
 spec:
@@ -72,7 +72,7 @@ Create a file named `altinity-operator-large.yaml`:
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: AltinityOperatorKubernetes
+kind: AltinityOperator
 metadata:
   name: altinity-operator-large
 spec:
@@ -109,7 +109,7 @@ Create a file named `altinity-operator-dev.yaml`:
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: AltinityOperatorKubernetes
+kind: AltinityOperator
 metadata:
   name: altinity-operator-dev
 spec:
@@ -182,7 +182,7 @@ If you need to customize the deployment beyond the standard configuration, you c
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: AltinityOperatorKubernetes
+kind: AltinityOperator
 metadata:
   name: altinity-operator-custom
 spec:

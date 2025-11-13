@@ -23,10 +23,10 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// **AltinityOperatorKubernetesSpec** defines the configuration for deploying the Altinity ClickHouse Operator
+// **AltinityOperatorSpec** defines the configuration for deploying the Altinity ClickHouse Operator
 // on a Kubernetes cluster. This message specifies the parameters needed to create and manage the operator
 // deployment within a Kubernetes environment. It includes container specifications to control resource allocation.
-type AltinityOperatorKubernetesSpec struct {
+type AltinityOperatorSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// The Kubernetes cluster to install this operator on.
 	TargetCluster *kubernetes.KubernetesAddonTargetCluster `protobuf:"bytes,1,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
@@ -34,25 +34,25 @@ type AltinityOperatorKubernetesSpec struct {
 	// If not provided, defaults to "altinity-operator"
 	Namespace string `protobuf:"bytes,2,opt,name=namespace,proto3" json:"namespace,omitempty"`
 	// Container resource specifications for the operator
-	Container     *AltinityOperatorKubernetesSpecContainer `protobuf:"bytes,3,opt,name=container,proto3" json:"container,omitempty"`
+	Container     *AltinityOperatorSpecContainer `protobuf:"bytes,3,opt,name=container,proto3" json:"container,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *AltinityOperatorKubernetesSpec) Reset() {
-	*x = AltinityOperatorKubernetesSpec{}
+func (x *AltinityOperatorSpec) Reset() {
+	*x = AltinityOperatorSpec{}
 	mi := &file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_spec_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *AltinityOperatorKubernetesSpec) String() string {
+func (x *AltinityOperatorSpec) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*AltinityOperatorKubernetesSpec) ProtoMessage() {}
+func (*AltinityOperatorSpec) ProtoMessage() {}
 
-func (x *AltinityOperatorKubernetesSpec) ProtoReflect() protoreflect.Message {
+func (x *AltinityOperatorSpec) ProtoReflect() protoreflect.Message {
 	mi := &file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_spec_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -64,35 +64,35 @@ func (x *AltinityOperatorKubernetesSpec) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use AltinityOperatorKubernetesSpec.ProtoReflect.Descriptor instead.
-func (*AltinityOperatorKubernetesSpec) Descriptor() ([]byte, []int) {
+// Deprecated: Use AltinityOperatorSpec.ProtoReflect.Descriptor instead.
+func (*AltinityOperatorSpec) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_spec_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *AltinityOperatorKubernetesSpec) GetTargetCluster() *kubernetes.KubernetesAddonTargetCluster {
+func (x *AltinityOperatorSpec) GetTargetCluster() *kubernetes.KubernetesAddonTargetCluster {
 	if x != nil {
 		return x.TargetCluster
 	}
 	return nil
 }
 
-func (x *AltinityOperatorKubernetesSpec) GetNamespace() string {
+func (x *AltinityOperatorSpec) GetNamespace() string {
 	if x != nil {
 		return x.Namespace
 	}
 	return ""
 }
 
-func (x *AltinityOperatorKubernetesSpec) GetContainer() *AltinityOperatorKubernetesSpecContainer {
+func (x *AltinityOperatorSpec) GetContainer() *AltinityOperatorSpecContainer {
 	if x != nil {
 		return x.Container
 	}
 	return nil
 }
 
-// **AltinityOperatorKubernetesSpecContainer** specifies the container configuration for the Altinity operator.
+// **AltinityOperatorSpecContainer** specifies the container configuration for the Altinity operator.
 // It includes resource allocations for CPU and memory to ensure the operator runs efficiently.
-type AltinityOperatorKubernetesSpecContainer struct {
+type AltinityOperatorSpecContainer struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// CPU and memory resources for the operator pod
 	Resources     *kubernetes.ContainerResources `protobuf:"bytes,1,opt,name=resources,proto3" json:"resources,omitempty"`
@@ -100,20 +100,20 @@ type AltinityOperatorKubernetesSpecContainer struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *AltinityOperatorKubernetesSpecContainer) Reset() {
-	*x = AltinityOperatorKubernetesSpecContainer{}
+func (x *AltinityOperatorSpecContainer) Reset() {
+	*x = AltinityOperatorSpecContainer{}
 	mi := &file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_spec_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *AltinityOperatorKubernetesSpecContainer) String() string {
+func (x *AltinityOperatorSpecContainer) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*AltinityOperatorKubernetesSpecContainer) ProtoMessage() {}
+func (*AltinityOperatorSpecContainer) ProtoMessage() {}
 
-func (x *AltinityOperatorKubernetesSpecContainer) ProtoReflect() protoreflect.Message {
+func (x *AltinityOperatorSpecContainer) ProtoReflect() protoreflect.Message {
 	mi := &file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_spec_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -125,12 +125,12 @@ func (x *AltinityOperatorKubernetesSpecContainer) ProtoReflect() protoreflect.Me
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use AltinityOperatorKubernetesSpecContainer.ProtoReflect.Descriptor instead.
-func (*AltinityOperatorKubernetesSpecContainer) Descriptor() ([]byte, []int) {
+// Deprecated: Use AltinityOperatorSpecContainer.ProtoReflect.Descriptor instead.
+func (*AltinityOperatorSpecContainer) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_spec_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *AltinityOperatorKubernetesSpecContainer) GetResources() *kubernetes.ContainerResources {
+func (x *AltinityOperatorSpecContainer) GetResources() *kubernetes.ContainerResources {
 	if x != nil {
 		return x.Resources
 	}
@@ -141,12 +141,12 @@ var File_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernete
 
 const file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Vorg/project_planton/provider/kubernetes/addon/altinityoperatorkubernetes/v1/spec.proto\x12Korg.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\x1a3org/project_planton/shared/kubernetes/options.proto\x1a:org/project_planton/shared/kubernetes/target_cluster.proto\"\xef\x02\n" +
-	"\x1eAltinityOperatorKubernetesSpec\x12j\n" +
+	"Vorg/project_planton/provider/kubernetes/addon/altinityoperatorkubernetes/v1/spec.proto\x12Korg.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1a6org/project_planton/shared/kubernetes/kubernetes.proto\x1a3org/project_planton/shared/kubernetes/options.proto\x1a:org/project_planton/shared/kubernetes/target_cluster.proto\"\xdb\x02\n" +
+	"\x14AltinityOperatorSpec\x12j\n" +
 	"\x0etarget_cluster\x18\x01 \x01(\v2C.org.project_planton.shared.kubernetes.KubernetesAddonTargetClusterR\rtargetCluster\x12D\n" +
-	"\tnamespace\x18\x02 \x01(\tB&\xbaH#r!2\x1f^[a-z0-9]([-a-z0-9]*[a-z0-9])?$R\tnamespace\x12\x9a\x01\n" +
-	"\tcontainer\x18\x03 \x01(\v2t.org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorKubernetesSpecContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\"\xa6\x01\n" +
-	"'AltinityOperatorKubernetesSpecContainer\x12{\n" +
+	"\tnamespace\x18\x02 \x01(\tB&\xbaH#r!2\x1f^[a-z0-9]([-a-z0-9]*[a-z0-9])?$R\tnamespace\x12\x90\x01\n" +
+	"\tcontainer\x18\x03 \x01(\v2j.org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorSpecContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\"\x9c\x01\n" +
+	"\x1dAltinityOperatorSpecContainer\x12{\n" +
 	"\tresources\x18\x01 \x01(\v29.org.project_planton.shared.kubernetes.ContainerResourcesB\"\xba\xfb\xa4\x02\x1d\n" +
 	"\f\n" +
 	"\x051000m\x12\x031Gi\x12\r\n" +
@@ -167,15 +167,15 @@ func file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernet
 
 var file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_spec_proto_goTypes = []any{
-	(*AltinityOperatorKubernetesSpec)(nil),          // 0: org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorKubernetesSpec
-	(*AltinityOperatorKubernetesSpecContainer)(nil), // 1: org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorKubernetesSpecContainer
+	(*AltinityOperatorSpec)(nil),                    // 0: org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorSpec
+	(*AltinityOperatorSpecContainer)(nil),           // 1: org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorSpecContainer
 	(*kubernetes.KubernetesAddonTargetCluster)(nil), // 2: org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
 	(*kubernetes.ContainerResources)(nil),           // 3: org.project_planton.shared.kubernetes.ContainerResources
 }
 var file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_spec_proto_depIdxs = []int32{
-	2, // 0: org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorKubernetesSpec.target_cluster:type_name -> org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
-	1, // 1: org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorKubernetesSpec.container:type_name -> org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorKubernetesSpecContainer
-	3, // 2: org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorKubernetesSpecContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
+	2, // 0: org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorSpec.target_cluster:type_name -> org.project_planton.shared.kubernetes.KubernetesAddonTargetCluster
+	1, // 1: org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorSpec.container:type_name -> org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorSpecContainer
+	3, // 2: org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorSpecContainer.resources:type_name -> org.project_planton.shared.kubernetes.ContainerResources
 	3, // [3:3] is the sub-list for method output_type
 	3, // [3:3] is the sub-list for method input_type
 	3, // [3:3] is the sub-list for extension type_name

@@ -1,5 +1,5 @@
 apiVersion: kubernetes.project-planton.org/v1
-kind: AltinityOperatorKubernetes
+kind: AltinityOperator
 metadata:
   name: altinity-operator-test
 spec:

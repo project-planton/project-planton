@@ -1,4 +1,4 @@
-# AltinityOperatorKubernetes Terraform Module
+# AltinityOperator Terraform Module
 
 ## Overview
 

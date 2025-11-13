@@ -1,4 +1,4 @@
-# AltinityOperatorKubernetes Terraform Module Examples
+# AltinityOperator Terraform Module Examples
 
 This document provides practical examples for deploying the Altinity ClickHouse Operator using Terraform.
 

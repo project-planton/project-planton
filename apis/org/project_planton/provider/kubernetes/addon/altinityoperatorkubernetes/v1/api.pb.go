@@ -23,8 +23,8 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// altinity-operator-kubernetes
-type AltinityOperatorKubernetes struct {
+// altinity-operator
+type AltinityOperator struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// api-version
 	ApiVersion string `protobuf:"bytes,1,opt,name=api_version,json=apiVersion,proto3" json:"api_version,omitempty"`
@@ -33,27 +33,27 @@ type AltinityOperatorKubernetes struct {
 	// metadata
 	Metadata *shared.CloudResourceMetadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// spec
-	Spec *AltinityOperatorKubernetesSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
+	Spec *AltinityOperatorSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
 	// status
-	Status        *AltinityOperatorKubernetesStatus `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
+	Status        *AltinityOperatorStatus `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *AltinityOperatorKubernetes) Reset() {
-	*x = AltinityOperatorKubernetes{}
+func (x *AltinityOperator) Reset() {
+	*x = AltinityOperator{}
 	mi := &file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_api_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *AltinityOperatorKubernetes) String() string {
+func (x *AltinityOperator) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*AltinityOperatorKubernetes) ProtoMessage() {}
+func (*AltinityOperator) ProtoMessage() {}
 
-func (x *AltinityOperatorKubernetes) ProtoReflect() protoreflect.Message {
+func (x *AltinityOperator) ProtoReflect() protoreflect.Message {
 	mi := &file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_api_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -65,69 +65,69 @@ func (x *AltinityOperatorKubernetes) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use AltinityOperatorKubernetes.ProtoReflect.Descriptor instead.
-func (*AltinityOperatorKubernetes) Descriptor() ([]byte, []int) {
+// Deprecated: Use AltinityOperator.ProtoReflect.Descriptor instead.
+func (*AltinityOperator) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_api_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *AltinityOperatorKubernetes) GetApiVersion() string {
+func (x *AltinityOperator) GetApiVersion() string {
 	if x != nil {
 		return x.ApiVersion
 	}
 	return ""
 }
 
-func (x *AltinityOperatorKubernetes) GetKind() string {
+func (x *AltinityOperator) GetKind() string {
 	if x != nil {
 		return x.Kind
 	}
 	return ""
 }
 
-func (x *AltinityOperatorKubernetes) GetMetadata() *shared.CloudResourceMetadata {
+func (x *AltinityOperator) GetMetadata() *shared.CloudResourceMetadata {
 	if x != nil {
 		return x.Metadata
 	}
 	return nil
 }
 
-func (x *AltinityOperatorKubernetes) GetSpec() *AltinityOperatorKubernetesSpec {
+func (x *AltinityOperator) GetSpec() *AltinityOperatorSpec {
 	if x != nil {
 		return x.Spec
 	}
 	return nil
 }
 
-func (x *AltinityOperatorKubernetes) GetStatus() *AltinityOperatorKubernetesStatus {
+func (x *AltinityOperator) GetStatus() *AltinityOperatorStatus {
 	if x != nil {
 		return x.Status
 	}
 	return nil
 }
 
-// altinity-operator-kubernetes status
-type AltinityOperatorKubernetesStatus struct {
+// altinity-operator status
+type AltinityOperatorStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// stack-outputs
-	Outputs       *AltinityOperatorKubernetesStackOutputs `protobuf:"bytes,1,opt,name=outputs,proto3" json:"outputs,omitempty"`
+	Outputs       *AltinityOperatorStackOutputs `protobuf:"bytes,1,opt,name=outputs,proto3" json:"outputs,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *AltinityOperatorKubernetesStatus) Reset() {
-	*x = AltinityOperatorKubernetesStatus{}
+func (x *AltinityOperatorStatus) Reset() {
+	*x = AltinityOperatorStatus{}
 	mi := &file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_api_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *AltinityOperatorKubernetesStatus) String() string {
+func (x *AltinityOperatorStatus) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*AltinityOperatorKubernetesStatus) ProtoMessage() {}
+func (*AltinityOperatorStatus) ProtoMessage() {}
 
-func (x *AltinityOperatorKubernetesStatus) ProtoReflect() protoreflect.Message {
+func (x *AltinityOperatorStatus) ProtoReflect() protoreflect.Message {
 	mi := &file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_api_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -139,12 +139,12 @@ func (x *AltinityOperatorKubernetesStatus) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use AltinityOperatorKubernetesStatus.ProtoReflect.Descriptor instead.
-func (*AltinityOperatorKubernetesStatus) Descriptor() ([]byte, []int) {
+// Deprecated: Use AltinityOperatorStatus.ProtoReflect.Descriptor instead.
+func (*AltinityOperatorStatus) Descriptor() ([]byte, []int) {
 	return file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_api_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *AltinityOperatorKubernetesStatus) GetOutputs() *AltinityOperatorKubernetesStackOutputs {
+func (x *AltinityOperatorStatus) GetOutputs() *AltinityOperatorStackOutputs {
 	if x != nil {
 		return x.Outputs
 	}
@@ -155,18 +155,18 @@ var File_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernete
 
 const file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"Uorg/project_planton/provider/kubernetes/addon/altinityoperatorkubernetes/v1/api.proto\x12Korg.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1aVorg/project_planton/provider/kubernetes/addon/altinityoperatorkubernetes/v1/spec.proto\x1a_org/project_planton/provider/kubernetes/addon/altinityoperatorkubernetes/v1/stack_outputs.proto\x1a)org/project_planton/shared/metadata.proto\"\x87\x04\n" +
-	"\x1aAltinityOperatorKubernetes\x12I\n" +
+	"Uorg/project_planton/provider/kubernetes/addon/altinityoperatorkubernetes/v1/api.proto\x12Korg.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1\x1a\x1bbuf/validate/validate.proto\x1aVorg/project_planton/provider/kubernetes/addon/altinityoperatorkubernetes/v1/spec.proto\x1a_org/project_planton/provider/kubernetes/addon/altinityoperatorkubernetes/v1/stack_outputs.proto\x1a)org/project_planton/shared/metadata.proto\"\xdd\x03\n" +
+	"\x10AltinityOperator\x12I\n" +
 	"\vapi_version\x18\x01 \x01(\tB(\xbaH%r#\n" +
 	"!kubernetes.project-planton.org/v1R\n" +
-	"apiVersion\x125\n" +
-	"\x04kind\x18\x02 \x01(\tB!\xbaH\x1er\x1c\n" +
-	"\x1aAltinityOperatorKubernetesR\x04kind\x12U\n" +
-	"\bmetadata\x18\x03 \x01(\v21.org.project_planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12\x87\x01\n" +
-	"\x04spec\x18\x04 \x01(\v2k.org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorKubernetesSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12\x85\x01\n" +
-	"\x06status\x18\x05 \x01(\v2m.org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorKubernetesStatusR\x06status\"\xb2\x01\n" +
-	" AltinityOperatorKubernetesStatus\x12\x8d\x01\n" +
-	"\aoutputs\x18\x01 \x01(\v2s.org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorKubernetesStackOutputsR\aoutputsB\xc7\x04\n" +
+	"apiVersion\x12+\n" +
+	"\x04kind\x18\x02 \x01(\tB\x17\xbaH\x14r\x12\n" +
+	"\x10AltinityOperatorR\x04kind\x12U\n" +
+	"\bmetadata\x18\x03 \x01(\v21.org.project_planton.shared.CloudResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12}\n" +
+	"\x04spec\x18\x04 \x01(\v2a.org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12{\n" +
+	"\x06status\x18\x05 \x01(\v2c.org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorStatusR\x06status\"\x9e\x01\n" +
+	"\x16AltinityOperatorStatus\x12\x83\x01\n" +
+	"\aoutputs\x18\x01 \x01(\v2i.org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorStackOutputsR\aoutputsB\xc7\x04\n" +
 	"Ocom.org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1B\bApiProtoP\x01Z\x98\x01github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/addon/altinityoperatorkubernetes/v1;altinityoperatorkubernetesv1\xa2\x02\x06OPPKAA\xaa\x02JOrg.ProjectPlanton.Provider.Kubernetes.Addon.Altinityoperatorkubernetes.V1\xca\x02JOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Altinityoperatorkubernetes\\V1\xe2\x02VOrg\\ProjectPlanton\\Provider\\Kubernetes\\Addon\\Altinityoperatorkubernetes\\V1\\GPBMetadata\xea\x02POrg::ProjectPlanton::Provider::Kubernetes::Addon::Altinityoperatorkubernetes::V1b\x06proto3"
 
 var (
@@ -183,17 +183,17 @@ func file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernet
 
 var file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_api_proto_goTypes = []any{
-	(*AltinityOperatorKubernetes)(nil),             // 0: org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorKubernetes
-	(*AltinityOperatorKubernetesStatus)(nil),       // 1: org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorKubernetesStatus
-	(*shared.CloudResourceMetadata)(nil),           // 2: org.project_planton.shared.CloudResourceMetadata
-	(*AltinityOperatorKubernetesSpec)(nil),         // 3: org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorKubernetesSpec
-	(*AltinityOperatorKubernetesStackOutputs)(nil), // 4: org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorKubernetesStackOutputs
+	(*AltinityOperator)(nil),             // 0: org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperator
+	(*AltinityOperatorStatus)(nil),       // 1: org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorStatus
+	(*shared.CloudResourceMetadata)(nil), // 2: org.project_planton.shared.CloudResourceMetadata
+	(*AltinityOperatorSpec)(nil),         // 3: org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorSpec
+	(*AltinityOperatorStackOutputs)(nil), // 4: org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorStackOutputs
 }
 var file_org_project_planton_provider_kubernetes_addon_altinityoperatorkubernetes_v1_api_proto_depIdxs = []int32{
-	2, // 0: org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorKubernetes.metadata:type_name -> org.project_planton.shared.CloudResourceMetadata
-	3, // 1: org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorKubernetes.spec:type_name -> org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorKubernetesSpec
-	1, // 2: org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorKubernetes.status:type_name -> org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorKubernetesStatus
-	4, // 3: org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorKubernetesStatus.outputs:type_name -> org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorKubernetesStackOutputs
+	2, // 0: org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperator.metadata:type_name -> org.project_planton.shared.CloudResourceMetadata
+	3, // 1: org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperator.spec:type_name -> org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorSpec
+	1, // 2: org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperator.status:type_name -> org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorStatus
+	4, // 3: org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorStatus.outputs:type_name -> org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1.AltinityOperatorStackOutputs
 	4, // [4:4] is the sub-list for method output_type
 	4, // [4:4] is the sub-list for method input_type
 	4, // [4:4] is the sub-list for extension type_name

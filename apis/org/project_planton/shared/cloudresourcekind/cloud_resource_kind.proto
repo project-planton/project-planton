@@ -572,7 +572,7 @@ enum CloudResourceKind {
       namespace_prefix: "clickhouse"
     }
   }];
-  AltinityOperatorKubernetes = 831 [(kind_meta) = {
+  AltinityOperator = 831 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "altopk8s"

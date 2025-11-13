@@ -5,10 +5,10 @@ package org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes
 import "org/project_planton/provider/kubernetes/addon/altinityoperatorkubernetes/v1/api.proto";
 import "org/project_planton/provider/kubernetes/provider.proto";
 
-//altinity-operator-kubernetes stack-input
-message AltinityOperatorKubernetesStackInput {
+//altinity-operator stack-input
+message AltinityOperatorStackInput {
   //target cloud-resource
-  AltinityOperatorKubernetes target = 1;
+  AltinityOperator target = 1;
   //provider-config
   org.project_planton.provider.kubernetes.KubernetesProviderConfig provider_config = 2;
 }

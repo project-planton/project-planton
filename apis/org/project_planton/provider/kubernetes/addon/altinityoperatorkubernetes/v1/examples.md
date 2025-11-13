@@ -1,6 +1,6 @@
-# AltinityOperatorKubernetes API Resource Examples
+# AltinityOperator API Resource Examples
 
-Below are examples demonstrating how to configure and deploy the `AltinityOperatorKubernetes` API resource using various specifications. Follow the instructions to create and apply each YAML configuration using the Planton CLI.
+Below are examples demonstrating how to configure and deploy the `AltinityOperator` API resource using various specifications. Follow the instructions to create and apply each YAML configuration using the Planton CLI.
 
 ---
 
@@ -23,7 +23,7 @@ This example demonstrates a basic deployment of the Altinity ClickHouse Operator
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: AltinityOperatorKubernetes
+kind: AltinityOperator
 metadata:
   name: altinity-operator-prod
 spec:
@@ -61,7 +61,7 @@ This example illustrates how to deploy the Altinity ClickHouse Operator with cus
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: AltinityOperatorKubernetes
+kind: AltinityOperator
 metadata:
   name: altinity-operator-large
 spec:
@@ -99,7 +99,7 @@ This example shows a minimal resource configuration suitable for development or 
 
 ```yaml
 apiVersion: kubernetes.project-planton.org/v1
-kind: AltinityOperatorKubernetes
+kind: AltinityOperator
 metadata:
   name: altinity-operator-dev
 spec:

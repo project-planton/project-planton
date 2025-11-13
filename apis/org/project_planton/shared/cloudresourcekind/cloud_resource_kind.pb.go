@@ -163,7 +163,7 @@ const (
 	CloudResourceKind_SolrOperatorKubernetes       CloudResourceKind = 828
 	CloudResourceKind_ExternalSecretsKubernetes    CloudResourceKind = 829
 	CloudResourceKind_ClickHouseKubernetes         CloudResourceKind = 830
-	CloudResourceKind_AltinityOperatorKubernetes   CloudResourceKind = 831
+	CloudResourceKind_AltinityOperator             CloudResourceKind = 831
 	CloudResourceKind_PerconaPostgresqlOperator    CloudResourceKind = 832
 	CloudResourceKind_PerconaServerMongodbOperator CloudResourceKind = 833
 	CloudResourceKind_PerconaServerMysqlOperator   CloudResourceKind = 834
@@ -293,7 +293,7 @@ var (
 		828:  "SolrOperatorKubernetes",
 		829:  "ExternalSecretsKubernetes",
 		830:  "ClickHouseKubernetes",
-		831:  "AltinityOperatorKubernetes",
+		831:  "AltinityOperator",
 		832:  "PerconaPostgresqlOperator",
 		833:  "PerconaServerMongodbOperator",
 		834:  "PerconaServerMysqlOperator",
@@ -417,7 +417,7 @@ var (
 		"SolrOperatorKubernetes":               828,
 		"ExternalSecretsKubernetes":            829,
 		"ClickHouseKubernetes":                 830,
-		"AltinityOperatorKubernetes":           831,
+		"AltinityOperator":                     831,
 		"PerconaPostgresqlOperator":            832,
 		"PerconaServerMongodbOperator":         833,
 		"PerconaServerMysqlOperator":           834,
@@ -668,7 +668,7 @@ const file_org_project_planton_shared_cloudresourcekind_cloud_resource_kind_prot
 	"\bcategory\x18\x02 \x01(\x0e2M.org.project_planton.shared.cloudresourcekind.KubernetesCloudResourceCategoryR\bcategory*O\n" +
 	"\x18CloudResourceKindVersion\x12+\n" +
 	"'cloud_resource_kind_version_unspecified\x10\x00\x12\x06\n" +
-	"\x02v1\x10\x01*\x8c*\n" +
+	"\x02v1\x10\x01*\x82*\n" +
 	"\x11CloudResourceKind\x12\x0f\n" +
 	"\vunspecified\x10\x00\x12(\n" +
 	"\x14TestCloudResourceOne\x10\x01\x1a\x0e\xa2\xf7\x04\n" +
@@ -790,8 +790,8 @@ const file_org_project_planton_shared_cloudresourcekind_cloud_resource_kind_prot
 	"\x19ExternalSecretsKubernetes\x10\xbd\x06\x1a\x17\xa2\xf7\x04\x13\b\x13\x10\x01\"\textseck8s2\x02\x10\x01\x12:\n" +
 	"\x14ClickHouseKubernetes\x10\xbe\x06\x1a\x1f\xa2\xf7\x04\x1b\b\x13\x10\x01\"\x05chk8s2\x0e\n" +
 	"\n" +
-	"clickhouse\x10\x02\x127\n" +
-	"\x1aAltinityOperatorKubernetes\x10\xbf\x06\x1a\x16\xa2\xf7\x04\x12\b\x13\x10\x01\"\baltopk8s2\x02\x10\x01\x126\n" +
+	"clickhouse\x10\x02\x12-\n" +
+	"\x10AltinityOperator\x10\xbf\x06\x1a\x16\xa2\xf7\x04\x12\b\x13\x10\x01\"\baltopk8s2\x02\x10\x01\x126\n" +
 	"\x19PerconaPostgresqlOperator\x10\xc0\x06\x1a\x16\xa2\xf7\x04\x12\b\x13\x10\x01\"\bpercpgop2\x02\x10\x01\x12:\n" +
 	"\x1cPerconaServerMongodbOperator\x10\xc1\x06\x1a\x17\xa2\xf7\x04\x13\b\x13\x10\x01\"\tpercmdbop2\x02\x10\x01\x127\n" +
 	"\x1aPerconaServerMysqlOperator\x10\xc2\x06\x1a\x16\xa2\xf7\x04\x12\b\x13\x10\x01\"\bpercpgop2\x02\x10\x01\x123\n" +

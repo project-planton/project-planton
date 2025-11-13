@@ -11,7 +11,7 @@ import (
 )
 
 // Resources creates all Pulumi resources for the Altinity ClickHouse Operator Kubernetes add-on.
-func Resources(ctx *pulumi.Context, stackInput *altinityoperatorkubernetesv1.AltinityOperatorKubernetesStackInput) error {
+func Resources(ctx *pulumi.Context, stackInput *altinityoperatorkubernetesv1.AltinityOperatorStackInput) error {
 	// set up kubernetes provider from the supplied cluster credential
 	kubeProvider, err := pulumikubernetesprovider.GetWithKubernetesProviderConfig(
 		ctx, stackInput.ProviderConfig, "kubernetes")

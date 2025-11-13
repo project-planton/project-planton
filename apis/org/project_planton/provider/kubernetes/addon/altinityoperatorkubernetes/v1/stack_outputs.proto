@@ -2,8 +2,8 @@ syntax = "proto3";
 
 package org.project_planton.provider.kubernetes.addon.altinityoperatorkubernetes.v1;
 
-// altinity-operator-kubernetes stack outputs
-message AltinityOperatorKubernetesStackOutputs {
+// altinity-operator stack outputs
+message AltinityOperatorStackOutputs {
   // Namespace where the operator is installed
   string namespace = 1;
 }
