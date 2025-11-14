@@ -322,7 +322,7 @@ enum CloudResourceKind {
   KubernetesArgocd = 800 [(kind_meta) = {
     provider: kubernetes
     version: v1
-    id_prefix: "argk8s"
+    id_prefix: "k8sargo"
     kubernetes_meta: {
       category: workload
       namespace_prefix: "argo"
@@ -331,7 +331,7 @@ enum CloudResourceKind {
   KubernetesCronJob = 801 [(kind_meta) = {
     provider: kubernetes
     version: v1
-    id_prefix: "cronk8s"
+    id_prefix: "k8scron"
     kubernetes_meta: {
       category: workload
       namespace_prefix: "cron"
@@ -340,7 +340,7 @@ enum CloudResourceKind {
   KubernetesElasticsearch = 802 [(kind_meta) = {
     provider: kubernetes
     version: v1
-    id_prefix: "elak8s"
+    id_prefix: "k8ses"
     kubernetes_meta: {
       category: workload
       namespace_prefix: "elasticsearch"
@@ -349,7 +349,7 @@ enum CloudResourceKind {
   KubernetesGitlab = 803 [(kind_meta) = {
     provider: kubernetes
     version: v1
-    id_prefix: "glk8s"
+    id_prefix: "k8sgl"
     kubernetes_meta: {
       category: workload
       namespace_prefix: "gitlab"
@@ -358,7 +358,7 @@ enum CloudResourceKind {
   KubernetesGrafana = 804 [(kind_meta) = {
     provider: kubernetes
     version: v1
-    id_prefix: "grak8s"
+    id_prefix: "k8sgfn"
     kubernetes_meta: {
       category: workload
       namespace_prefix: "grafana"
@@ -367,7 +367,7 @@ enum CloudResourceKind {
   KubernetesHelmRelease = 805 [(kind_meta) = {
     provider: kubernetes
     version: v1
-    id_prefix: "hlmk8s"
+    id_prefix: "k8shelm"
     kubernetes_meta: {
       category: workload
       namespace_prefix: "helm"
@@ -376,7 +376,7 @@ enum CloudResourceKind {
   KubernetesJenkins = 806 [(kind_meta) = {
     provider: kubernetes
     version: v1
-    id_prefix: "jenk8s"
+    id_prefix: "k8sjkn"
     kubernetes_meta: {
       category: workload
       namespace_prefix: "jenkins"
@@ -385,7 +385,7 @@ enum CloudResourceKind {
   KubernetesKafka = 807 [(kind_meta) = {
     provider: kubernetes
     version: v1
-    id_prefix: "kafk8s"
+    id_prefix: "k8skaf"
     kubernetes_meta: {
       category: workload
       namespace_prefix: "kafka"
@@ -394,7 +394,7 @@ enum CloudResourceKind {
   KubernetesKeycloak = 808 [(kind_meta) = {
     provider: kubernetes
     version: v1
-    id_prefix: "keyk8s"
+    id_prefix: "k8skc"
     kubernetes_meta: {
       category: workload
       namespace_prefix: "keycloak"
@@ -403,7 +403,7 @@ enum CloudResourceKind {
   KubernetesLocust = 809 [(kind_meta) = {
     provider: kubernetes
     version: v1
-    id_prefix: "lock8s"
+    id_prefix: "k8sloc"
     kubernetes_meta: {
       category: workload
       namespace_prefix: "locust"
@@ -412,7 +412,7 @@ enum CloudResourceKind {
   KubernetesMicroservice = 810 [(kind_meta) = {
     provider: kubernetes
     version: v1
-    id_prefix: "msk8s"
+    id_prefix: "k8sms"
     is_service_kind: true
     kubernetes_meta: {
       category: workload
@@ -422,7 +422,7 @@ enum CloudResourceKind {
   KubernetesMongodb = 811 [(kind_meta) = {
     provider: kubernetes
     version: v1
-    id_prefix: "mdbk8s"
+    id_prefix: "k8smdb"
     kubernetes_meta: {
       category: workload
       namespace_prefix: "mongo"
@@ -431,7 +431,7 @@ enum CloudResourceKind {
   KubernetesNeo4j = 812 [(kind_meta) = {
     provider: kubernetes
     version: v1
-    id_prefix: "neok8s"
+    id_prefix: "k8sneo"
     kubernetes_meta: {
       category: workload
       namespace_prefix: "neo4j"
@@ -440,7 +440,7 @@ enum CloudResourceKind {
   KubernetesOpenFga = 813 [(kind_meta) = {
     provider: kubernetes
     version: v1
-    id_prefix: "fgak8s"
+    id_prefix: "k8sfga"
     kubernetes_meta: {
       category: workload
       namespace_prefix: "openfga"
@@ -449,7 +449,7 @@ enum CloudResourceKind {
   KubernetesPostgres = 814 [(kind_meta) = {
     provider: kubernetes
     version: v1
-    id_prefix: "pgk8s"
+    id_prefix: "k8spg"
     kubernetes_meta: {
       category: workload
       namespace_prefix: "postgres"
@@ -458,7 +458,7 @@ enum CloudResourceKind {
   KubernetesPrometheus = 815 [(kind_meta) = {
     provider: kubernetes
     version: v1
-    id_prefix: "pmtk8s"
+    id_prefix: "k8sprom"
     kubernetes_meta: {
       category: workload
       namespace_prefix: "prometheus"
@@ -467,7 +467,7 @@ enum CloudResourceKind {
   KubernetesRedis = 816 [(kind_meta) = {
     provider: kubernetes
     version: v1
-    id_prefix: "redk8s"
+    id_prefix: "k8sred"
     kubernetes_meta: {
       category: workload
       namespace_prefix: "redis"
@@ -476,7 +476,7 @@ enum CloudResourceKind {
   KubernetesSignoz = 817 [(kind_meta) = {
     provider: kubernetes
     version: v1
-    id_prefix: "sigk8s"
+    id_prefix: "k8ssgz"
     kubernetes_meta: {
       category: workload
       namespace_prefix: "signoz"
@@ -485,7 +485,7 @@ enum CloudResourceKind {
   KubernetesSolr = 818 [(kind_meta) = {
     provider: kubernetes
     version: v1
-    id_prefix: "solk8s"
+    id_prefix: "k8ssolr"
     kubernetes_meta: {
       category: workload
       namespace_prefix: "solr"
@@ -494,7 +494,7 @@ enum CloudResourceKind {
   KubernetesTemporal = 819 [(kind_meta) = {
     provider: kubernetes
     version: v1
-    id_prefix: "tprlk8s"
+    id_prefix: "k8stprl"
     kubernetes_meta: {
       category: workload
       namespace_prefix: "temporal"
@@ -503,7 +503,7 @@ enum CloudResourceKind {
   KubernetesNats = 820 [(kind_meta) = {
     provider: kubernetes
     version: v1
-    id_prefix: "natsk8s"
+    id_prefix: "k8snats"
     kubernetes_meta: {
       category: workload
       namespace_prefix: "nats"
@@ -512,61 +512,61 @@ enum CloudResourceKind {
   CertManager = 821 [(kind_meta) = {
     provider: kubernetes
     version: v1
-    id_prefix: "cmk8s"
+    id_prefix: "k8scm"
     kubernetes_meta: {category: addon}
   }];
   ElasticOperator = 822 [(kind_meta) = {
     provider: kubernetes
     version: v1
-    id_prefix: "elaopk8s"
+    id_prefix: "k8selaop"
     kubernetes_meta: {category: addon}
   }];
   ExternalDns = 823 [(kind_meta) = {
     provider: kubernetes
     version: v1
-    id_prefix: "extdnsk8s"
+    id_prefix: "k8sextdns"
     kubernetes_meta: {category: addon}
   }];
   IngressNginx = 824 [(kind_meta) = {
     provider: kubernetes
     version: v1
-    id_prefix: "ngxk8s"
+    id_prefix: "k8sngx"
     kubernetes_meta: {category: addon}
   }];
   KubernetesIstio = 825 [(kind_meta) = {
     provider: kubernetes
     version: v1
-    id_prefix: "istk8s"
+    id_prefix: "k8sist"
     kubernetes_meta: {category: addon}
   }];
   StrimziKafkaOperator = 826 [(kind_meta) = {
     provider: kubernetes
     version: v1
-    id_prefix: "kfkopk8s"
+    id_prefix: "k8sstzop"
     kubernetes_meta: {category: addon}
   }];
   ZalandoPostgresOperator = 827 [(kind_meta) = {
     provider: kubernetes
     version: v1
-    id_prefix: "pgopk8s"
+    id_prefix: "k8szlop"
     kubernetes_meta: {category: addon}
   }];
   ApacheSolrOperator = 828 [(kind_meta) = {
     provider: kubernetes
     version: v1
-    id_prefix: "slropk8s"
+    id_prefix: "k8sslrop"
     kubernetes_meta: {category: addon}
   }];
   ExternalSecrets = 829 [(kind_meta) = {
     provider: kubernetes
     version: v1
-    id_prefix: "extseck8s"
+    id_prefix: "k8sextsec"
     kubernetes_meta: {category: addon}
   }];
   KubernetesClickHouse = 830 [(kind_meta) = {
     provider: kubernetes
     version: v1
-    id_prefix: "chk8s"
+    id_prefix: "k8sclkhs"
     kubernetes_meta: {
       category: workload
       namespace_prefix: "clickhouse"
@@ -575,31 +575,31 @@ enum CloudResourceKind {
   AltinityOperator = 831 [(kind_meta) = {
     provider: kubernetes
     version: v1
-    id_prefix: "altopk8s"
+    id_prefix: "k8saltop"
     kubernetes_meta: {category: addon}
   }];
   PerconaPostgresqlOperator = 832 [(kind_meta) = {
     provider: kubernetes
     version: v1
-    id_prefix: "percpgop"
+    id_prefix: "k8sprcnpgop"
     kubernetes_meta: {category: addon}
   }];
   PerconaServerMongodbOperator = 833 [(kind_meta) = {
     provider: kubernetes
     version: v1
-    id_prefix: "percmdbop"
+    id_prefix: "k8sprcnmdbop"
     kubernetes_meta: {category: addon}
   }];
   PerconaServerMysqlOperator = 834 [(kind_meta) = {
     provider: kubernetes
     version: v1
-    id_prefix: "percpgop"
+    id_prefix: "k8sprcnpgop"
     kubernetes_meta: {category: addon}
   }];
   KubernetesHarbor = 835 [(kind_meta) = {
     provider: kubernetes
     version: v1
-    id_prefix: "hrbk8s"
+    id_prefix: "k8shrbr"
     kubernetes_meta: {
       category: workload
       namespace_prefix: "harbor"
