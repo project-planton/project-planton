@@ -21,7 +21,7 @@ var _ = ginkgo.Describe("KubernetesNeo4J Custom Validation Tests", func() {
 	ginkgo.BeforeEach(func() {
 		input = &KubernetesNeo4J{
 			ApiVersion: "kubernetes.project-planton.org/v1",
-			Kind:       "KubernetesNeo4J",
+			Kind:       "KubernetesNeo4j",
 			Metadata: &shared.CloudResourceMetadata{
 				Name: "test-neo4j",
 			},
