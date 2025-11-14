@@ -212,7 +212,7 @@ Rule 016 documents the following provider ranges for cloud resource kinds:
 | AWS | 200-399 | `aws*`, 3-char | awsvpc, ecr, s3bkt |
 | Azure | 400-599 | `az*` | aks, azdns, azkv |
 | GCP | 600-799 | `gcp*` | gcpdns, gcpsql, gcpcert |
-| Kubernetes | 800-999 | `*k8s` | msk8s, pgk8s, cmk8s |
+| Kubernetes | 800-999 | `*k8s` | k8sms, pgk8s, cmk8s |
 | DigitalOcean | 1200-1499 | `do*` | doapp, dodns, docert |
 | Civo | 1500-1799 | `ci*` | cidns, cidb, cicert |
 | Cloudflare | 1800-2099 | `cf*` | cfdns, cfkvn, cfr2b |

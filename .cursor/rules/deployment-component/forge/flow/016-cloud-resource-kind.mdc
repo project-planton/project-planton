@@ -32,7 +32,7 @@ ID PREFIX PATTERNS
 - AWS: typically "aws" prefix + 2-6 char abbreviation (e.g., "awsvpc", "ecr", "s3bkt")
 - Azure: typically "az" prefix + 2-6 char abbreviation (e.g., "aks", "azdns", "azkv")
 - GCP: typically "gcp" prefix + 3-7 char abbreviation (e.g., "gcpdns", "gcpsql", "gcpcert")
-- Kubernetes: descriptive + "k8s" suffix (e.g., "msk8s", "pgk8s", "cmk8s")
+- Kubernetes: descriptive + "k8s" suffix (e.g., "k8sms", "pgk8s", "cmk8s")
 - DigitalOcean: "do" prefix + abbreviation (e.g., "doapp", "dodns", "docert")
 - Civo: "ci" prefix + abbreviation (e.g., "cidns", "cidb", "cicert")
 - Cloudflare: "cf" prefix + abbreviation (e.g., "cfdns", "cfkvn", "cfr2b")

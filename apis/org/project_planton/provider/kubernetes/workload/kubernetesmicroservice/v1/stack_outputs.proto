@@ -24,10 +24,10 @@ message KubernetesMicroserviceStackOutputs {
   string kube_endpoint = 4;
 
   //public endpoint to open microservice-kubernetes from clients outside kubernetes.
-  //ex: https://msk8s-planton-pcs-dev-account.dev.planton.live:8080
+  //ex: https://k8sms-planton-pcs-dev-account.dev.planton.live:8080
   string external_hostname = 5;
 
   //internal endpoint to open microservice-kubernetes from clients inside kubernetes.
-  //ex: https://msk8s-planton-pcs-dev-account-internal.dev.planton.live:8080
+  //ex: https://k8sms-planton-pcs-dev-account-internal.dev.planton.live:8080
   string internal_hostname = 6;
 }

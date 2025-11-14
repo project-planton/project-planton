@@ -40,10 +40,10 @@ type KubernetesMicroserviceStackOutputs struct {
 	// ex: main-microservice-kubernetes.namespace.svc.instance.local:8080
 	KubeEndpoint string `protobuf:"bytes,4,opt,name=kube_endpoint,json=kubeEndpoint,proto3" json:"kube_endpoint,omitempty"`
 	// public endpoint to open microservice-kubernetes from clients outside kubernetes.
-	// ex: https://msk8s-planton-pcs-dev-account.dev.planton.live:8080
+	// ex: https://k8sms-planton-pcs-dev-account.dev.planton.live:8080
 	ExternalHostname string `protobuf:"bytes,5,opt,name=external_hostname,json=externalHostname,proto3" json:"external_hostname,omitempty"`
 	// internal endpoint to open microservice-kubernetes from clients inside kubernetes.
-	// ex: https://msk8s-planton-pcs-dev-account-internal.dev.planton.live:8080
+	// ex: https://k8sms-planton-pcs-dev-account-internal.dev.planton.live:8080
 	InternalHostname string `protobuf:"bytes,6,opt,name=internal_hostname,json=internalHostname,proto3" json:"internal_hostname,omitempty"`
 	unknownFields    protoimpl.UnknownFields
 	sizeCache        protoimpl.SizeCache

@@ -578,14 +578,14 @@ msg := &kubernetesredisv1.KubernetesRedis{
 // Before
 {
 	name:     "Microservice Kubernetes",
-	idPrefix: "msk8s",
+	idPrefix: "k8sms",
 	want:     cloudresourcekind.CloudResourceKind_MicroserviceKubernetes,
 },
 
 // After
 {
 	name:     "Kubernetes Microservice",
-	idPrefix: "msk8s",
+	idPrefix: "k8sms",
 	want:     cloudresourcekind.CloudResourceKind_KubernetesMicroservice,
 }
 ```
@@ -1354,7 +1354,7 @@ This is a **service kind** (flagged with `is_service_kind: true` in registry):
 KubernetesMicroservice = 810 [(kind_meta) = {
   provider: kubernetes
   version: v1
-  id_prefix: "msk8s"
+  id_prefix: "k8sms"
   is_service_kind: true          // Special flag for service resources
   kubernetes_meta: {
     category: workload
