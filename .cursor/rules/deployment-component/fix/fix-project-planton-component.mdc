@@ -112,28 +112,32 @@ Use fix when you need to:
 1. **Fix Proto Schema** (if proto change needed)
    - Update spec.proto with the fix
    - Add/modify buf.validate rules
-   - Regenerate stubs: `make protos`
+   - **Must execute**: `make protos` from project root to regenerate Go stubs
+   - **Must execute**: `go test ./apis/org/project_planton/provider/<provider>/<component>/v1/` to validate spec tests
 
 2. **Fix IaC Modules** (if deployment logic change needed)
    - Update Pulumi module (main.go, locals.go, resource files)
    - Update Terraform module to maintain feature parity
    - Ensure both implement the same behavior
+   - **Must execute**: `make build` from project root to validate complete build
 
 3. **Fix Tests** (if test logic change needed)
    - Update spec_test.go to validate new behavior
    - Add tests for the fix
-   - Run component tests: `go test ./apis/.../v1/`
+   - Run component tests: `go test ./apis/org/project_planton/provider/<provider>/<component>/v1/`
 
-**Validation After Source Code Fix:**
+**Validation After Source Code Fix (Execute in Sequence):**
 ```bash
-# Verify proto compiles
+# 1. If proto changed: Regenerate stubs
 make protos
 
-# Verify Go code compiles  
+# 2. Always: Validate component tests (validates buf.validate rules)
+go test ./apis/org/project_planton/provider/<provider>/<component>/v1/
+
+# 3. If Go/Pulumi code changed: Verify complete build
 make build
 
-# Verify tests pass
-go test ./apis/org/project_planton/provider/<provider>/<component>/v1/
+# 4. Always: Verify all tests pass
 make test
 ```
 
@@ -210,20 +214,24 @@ make test
 
 ### Step 5: Run Comprehensive Validation
 
-**Execute in order:**
+**Execute in order (based on what was changed):**
 
 ```bash
-# 1. Component-specific tests (validates buf.validate rules)
+# 1. If proto files changed: Regenerate Go stubs
+make protos
+# Must succeed - ensures .pb.go files are up to date
+
+# 2. Component-specific tests (validates buf.validate rules)
 go test ./apis/org/project_planton/provider/<provider>/<component>/v1/
-# Must pass - validates validation logic is correct
+# Must pass - validates validation logic is correct in spec.proto
 
-# 2. Build validation (validates Go compiles)
+# 3. If Pulumi/Go code changed: Build validation
 make build
-# Must pass - validates no syntax/import errors
+# Must pass - validates no syntax/import/compilation errors
 
-# 3. Full test suite (validates all tests)
+# 4. Full test suite (validates all tests)
 make test
-# Must pass - validates no regressions anywhere
+# Must pass - validates no regressions anywhere in the codebase
 ```
 
 **If any validation fails:**
@@ -311,12 +319,15 @@ Next Steps:
 
 **Actions:**
 1. Update spec.proto (int32 → int64)
-2. Regenerate stubs (make protos)
-3. Update spec_test.go (test with large values)
-4. Update Terraform variables.tf (int → number)
-5. Update examples.md (show large disk example)
-6. Update README.md (mention TB-scale support)
-7. Validate consistency and run tests
+2. Regenerate stubs: `make protos`
+3. Run component tests: `go test ./apis/org/project_planton/provider/gcp/gcpcloudsql/v1/`
+4. Update spec_test.go (test with large values)
+5. Update Terraform variables.tf (int → number)
+6. Update examples.md (show large disk example)
+7. Update README.md (mention TB-scale support)
+8. Run build: `make build`
+9. Run all tests: `make test`
+10. Validate consistency
 
 ### Scenario 2: IaC Implementation Fix
 
@@ -330,11 +341,14 @@ Next Steps:
 **Actions:**
 1. Update Pulumi module/main.go (use spec.BackupRetentionPeriod)
 2. Update Terraform main.tf (ensure same logic)
-3. Update spec_test.go (test backup retention values)
-4. Update examples.md (show backup retention usage)
-5. Update iac/pulumi/overview.md (document backup behavior)
-6. Run E2E tests to verify fix works
-7. Validate consistency and run tests
+3. Run build: `make build`
+4. Update spec_test.go (test backup retention values)
+5. Run component tests: `go test ./apis/org/project_planton/provider/aws/awsrdsinstance/v1/`
+6. Update examples.md (show backup retention usage)
+7. Update iac/pulumi/overview.md (document backup behavior)
+8. Run E2E tests to verify fix works
+9. Run all tests: `make test`
+10. Validate consistency
 
 ### Scenario 3: Documentation Out of Sync
 
@@ -370,10 +384,12 @@ Next Steps:
 2. **Decision point:**
    - If validation SHOULD exist: Add to spec.proto, fix test
    - If validation SHOULDN'T exist: Fix test to not expect error
-3. Regenerate stubs if proto changed
-4. Run component tests to verify
-5. Update examples if validation behavior changed
-6. Update README if validation rules mentioned
+3. If proto changed: Run `make protos` to regenerate stubs
+4. Run component tests: `go test ./apis/org/project_planton/provider/atlas/mongodbatlas/v1/`
+5. Run build: `make build`
+6. Update examples if validation behavior changed
+7. Update README if validation rules mentioned
+8. Run all tests: `make test`
 
 ### Scenario 5: Feature Parity Fix
 
@@ -404,12 +420,14 @@ Next Steps:
 
 **Actions:**
 1. Update spec.proto (fix regex pattern)
-2. Regenerate stubs (make protos)
-3. Update spec_test.go (test 10.0.0.0/8 is now valid)
-4. Update examples.md (show 10.0.0.0/8 example)
-5. Update docs/README.md (document valid CIDR ranges)
-6. Run component tests to verify
-7. Validate consistency
+2. Regenerate stubs: `make protos`
+3. Run component tests: `go test ./apis/org/project_planton/provider/aws/awsvpc/v1/`
+4. Update spec_test.go (test 10.0.0.0/8 is now valid)
+5. Update examples.md (show 10.0.0.0/8 example)
+6. Update docs/README.md (document valid CIDR ranges)
+7. Run build: `make build`
+8. Run all tests: `make test`
+9. Validate consistency
 
 ## Consistency Enforcement
 

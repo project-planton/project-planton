@@ -108,9 +108,10 @@ Phase 3: Enhance Examples
 [10/10] ✅ Added 3 more examples to examples.md
 
 Phase 4: Final Validation
-[11/12] ✅ Component tests passed (go test ./apis/.../v1/)
-[12/13] ✅ Build validation passed (make build)
-[13/13] ✅ Full test suite passed (make test)
+[11/14] ✅ Proto stubs regenerated (make protos)
+[12/14] ✅ Component tests passed (go test ./apis/.../v1/)
+[13/14] ✅ Build validation passed (make build)
+[14/14] ✅ Full test suite passed (make test)
 ```
 
 **What Gets Created:**
@@ -121,16 +122,18 @@ The update --fill-gaps scenario will run appropriate forge flow rules to create:
 - Missing documentation (research, user-facing, examples)
 - Missing supporting files (manifests, debug scripts, overviews)
 
-**Validation:**
-- After each creation, validates build and tests
-- Runs component-specific tests: `go test ./apis/.../provider/<provider>/<component>/v1/`
-- Validates spec_test.go tests pass (buf.validate rules are correct)
-- Runs full build validation: `make build`
-- Runs full test suite: `make test`
+**Validation (Execute in Sequence):**
+- After proto file creation/changes: Run `make protos` to regenerate Go stubs
+- After each creation: Validate builds and tests pass
+- Run component-specific tests: `go test ./apis/org/project_planton/provider/<provider>/<component>/v1/`
+  - Validates buf.validate rules in spec.proto are correct
+  - Validates spec_test.go tests pass with current validation logic
+- After Pulumi/Go code changes: Run `make build` to validate complete build
+- Run full test suite: `make test` to validate all tests pass
 - Retries up to 3 times on fixable errors
 - Reports progress in real-time
 
-**Critical:** Component tests (spec_test.go) must pass for component to be considered complete. Failing tests indicate validation rules are incorrect.
+**Critical:** Component tests (spec_test.go) must pass for component to be considered complete. Failing tests indicate validation rules are incorrect or need updating.
 
 ### Step 3: Final Audit
 
@@ -663,9 +666,10 @@ Phase 2: Documentation
   [9/9] ✅ Pulumi overview
 
 Phase 3: Validation
-  [10/11] ✅ Component tests passed (spec_test.go)
-  [11/12] ✅ Build passed (make build)
-  [12/12] ✅ Full test suite passed (make test)
+  [10/13] ✅ Proto stubs regenerated (make protos)
+  [11/13] ✅ Component tests passed (spec_test.go)
+  [12/13] ✅ Build passed (make build)
+  [13/13] ✅ Full test suite passed (make test)
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -767,6 +771,7 @@ After complete finishes successfully:
 ✅ All critical gaps filled
 ✅ All important gaps filled (unless target <95%)
 ✅ spec_test.go exists with validation tests
+✅ Proto stubs regenerated if proto files changed (`make protos`)
 ✅ Component tests execute and pass (`go test ./apis/.../v1/`)
 ✅ Build validation passed (`make build`)
 ✅ Full test suite passed (`make test`)
@@ -774,7 +779,7 @@ After complete finishes successfully:
 ✅ Summary report shows improvement
 ✅ Files ready to commit
 
-**Critical:** Tests must pass for component to be considered complete. The complete operation validates test execution as part of the workflow.
+**Critical:** All validation steps must pass for component to be considered complete. The complete operation executes `make protos`, component tests, `make build`, and `make test` as part of the validation workflow.
 
 ## Examples
 

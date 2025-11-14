@@ -66,11 +66,12 @@ Use update when you need to:
 ```
 
 **What it does:**
-1. Regenerates proto stubs (rule 017)
-2. Updates Terraform variables.tf to match spec.proto
-3. Updates examples.md with new fields
-4. Runs build validation (rule 018)
-5. Runs test validation (rule 019)
+1. Regenerates proto stubs: `make protos` (rule 017)
+2. Validates component tests: `go test ./apis/org/project_planton/provider/<provider>/<component>/v1/`
+3. Updates Terraform variables.tf to match spec.proto
+4. Updates examples.md with new fields
+5. Runs build validation: `make build` (rule 018)
+6. Runs full test validation: `make test` (rule 019)
 
 **Use when:**
 - Added new fields to spec.proto
@@ -110,8 +111,9 @@ Use update when you need to:
 1. Updates Pulumi module based on your explanation
 2. Updates Terraform module to maintain feature parity
 3. Updates tests if needed
-4. Runs E2E tests (rules 011, 014)
-5. Runs build and test validation (rules 018, 019)
+4. Runs build validation: `make build` (rule 018)
+5. Runs E2E tests (rules 011, 014)
+6. Runs full test validation: `make test` (rule 019)
 
 **Use when:**
 - Adding new resources to deployment
@@ -186,6 +188,9 @@ Based on scenario:
 - Consult docs/README.md to understand which fields are essential
 - Identify dependent files that need updating
 - Plan regeneration sequence
+- **Must execute**: `make protos` to regenerate Go stubs
+- **Must execute**: `go test ./apis/org/project_planton/provider/<provider>/<component>/v1/` to validate spec tests
+- **Must execute**: `make build` for complete build validation
 
 **Refresh Docs:**
 - Read existing docs/README.md to understand current state
@@ -224,12 +229,16 @@ For each identified update:
 
 ### Step 4: Final Validation
 
-After all updates:
+After all updates, **execute validation commands in sequence**:
 
-1. Run build validation (rule 018)
-2. Run test validation (rule 019)
-3. Generate update report
-4. Recommend running audit to verify improvements
+1. **If proto files changed**: Run `make protos` to regenerate Go stubs
+2. **Always run component tests**: `go test ./apis/org/project_planton/provider/<provider>/<component>/v1/`
+   - This validates buf.validate rules in spec.proto
+   - Ensures spec_test.go passes with current validation logic
+3. **If Pulumi/Go code changed**: Run `make build` to validate complete build (rule 018)
+4. **Always run full test suite**: Run `make test` to validate all tests (rule 019)
+5. Generate update report
+6. Recommend running audit to verify improvements
 
 ### Step 5: Report Results
 
@@ -274,10 +283,12 @@ Show:
 @update-project-planton-component GcpCloudSql --scenario proto-changed
 
 # Update executes:
-# - Regenerate proto stubs
+# - make protos (regenerate proto stubs)
+# - go test ./apis/org/project_planton/provider/gcp/gcpcloudsql/v1/ (validate spec tests)
 # - Update Terraform variables.tf (add enable_ssl variable)
 # - Update examples.md (show enable_ssl usage)
-# - Validate build and tests
+# - make build (validate complete build)
+# - make test (validate all tests)
 
 # Result: All files consistent with new schema
 ```
@@ -401,17 +412,23 @@ Run without --dry-run to apply changes.
 
 ### Validation Checkpoints
 Update validates after each major change:
-- After proto regeneration → verify build
-- After test changes → verify component tests pass (`go test ./apis/.../v1/`)
-- After IaC updates → verify full test suite passes (`make test`)
-- After doc updates → verify examples work
 
-**Component-Specific Test Execution:**
-Update always runs the component-specific tests to validate buf.validate rules:
-```bash
-go test ./apis/org/project_planton/provider/<provider>/<component>/v1/
-```
-This ensures spec_test.go validates all validation rules correctly.
+**After Proto Changes:**
+1. Run `make protos` from project root to regenerate Go stubs
+2. Run component tests: `go test ./apis/org/project_planton/provider/<provider>/<component>/v1/`
+   - Validates buf.validate rules in spec.proto are correct
+   - Ensures spec_test.go passes with current validation logic
+3. Run `make build` to validate complete build
+
+**After Pulumi/Go Code Changes:**
+1. Run `make build` from project root to validate complete build
+2. Run component tests: `go test ./apis/org/project_planton/provider/<provider>/<component>/v1/`
+
+**Always (Final Validation):**
+1. Run full test suite: `make test` to validate all tests pass
+2. Verify examples work with current schema
+
+**Critical:** Component-specific tests must pass before proceeding. These tests validate that buf.validate rules work correctly.
 
 ## Progress Tracking
 

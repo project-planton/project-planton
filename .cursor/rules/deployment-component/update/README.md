@@ -66,15 +66,19 @@ Update handles six distinct scenarios, each with its own workflow:
 ```
 
 **Process:**
-1. Regenerates proto stubs (.pb.go files)
-2. Updates Terraform variables.tf to match spec.proto
-3. Updates examples.md to use new fields
-4. Runs build and test validation
+1. Regenerates proto stubs: `make protos` (.pb.go files)
+2. Validates component tests: `go test ./apis/org/project_planton/provider/<provider>/<component>/v1/`
+3. Updates Terraform variables.tf to match spec.proto
+4. Updates examples.md to use new fields
+5. Runs build validation: `make build`
+6. Runs full test validation: `make test`
 
 **Example:** Added `enable_ssl` field to spec.proto
-- Regenerates stubs with new field
+- Runs `make protos` to regenerate stubs with new field
+- Runs component tests to validate buf.validate rules
 - Adds `enable_ssl` variable to Terraform
 - Updates examples to show SSL usage
+- Runs `make build` and `make test` for full validation
 - Result: Everything consistent with new schema
 
 ### 3. Refresh Documentation
@@ -109,13 +113,17 @@ Update handles six distinct scenarios, each with its own workflow:
 1. Analyzes current implementation
 2. Updates Pulumi module based on explanation
 3. Updates Terraform module for feature parity
-4. Updates tests
-5. Runs E2E tests and validation
+4. Runs build validation: `make build`
+5. Updates tests
+6. Runs E2E tests
+7. Runs full test validation: `make test`
 
 **Example:** Adding multi-region support
 - Modifies Pulumi to create regional resources
+- Runs `make build` to validate compilation
 - Mirrors changes in Terraform
 - Updates tests for multi-region scenarios
+- Runs `make test` for full validation
 - Result: Both IaC modules support multi-region
 
 ### 5. Fix Specific Issue
@@ -303,23 +311,32 @@ cp -r .backup-2025-11-13-143022/* .
 
 ### 3. Validation Checkpoints
 
-Update validates after major changes:
+Update validates after major changes with specific commands:
 
-| Checkpoint | Validates | Fails If |
-|------------|-----------|----------|
-| After proto regen | Build succeeds | Import errors, syntax errors |
-| After test changes | Component tests pass | Validation test failures |
-| After IaC update | Full test suite passes | Logic errors, config errors |
-| After doc update | Examples work | Invalid YAML, wrong fields |
-| Component tests | `go test ./apis/.../v1/` | Any spec_test.go failure |
-| Final validation | `make test` passes | Any test failure |
+| Checkpoint | Command | Validates | Fails If |
+|------------|---------|-----------|----------|
+| After proto changes | `make protos` | Proto compiles, stubs generated | Import errors, syntax errors |
+| Component tests | `go test ./apis/.../v1/` | buf.validate rules work | Any spec_test.go failure |
+| After Go/Pulumi changes | `make build` | Complete build succeeds | Compilation errors |
+| After doc updates | Validation | Examples work | Invalid YAML, wrong fields |
+| Final validation | `make test` | Full test suite passes | Any test failure |
 
-**Component Test Execution:**
-Update always runs component-specific tests to validate buf.validate rules:
+**Build and Test Execution:**
+Update always runs these commands in sequence:
 ```bash
+# 1. If proto changed: Regenerate stubs
+make protos
+
+# 2. Always: Validate component tests (validates buf.validate rules)
 go test ./apis/org/project_planton/provider/<provider>/<component>/v1/
+
+# 3. If Go/Pulumi code changed: Verify complete build
+make build
+
+# 4. Always: Verify all tests pass
+make test
 ```
-This ensures spec_test.go correctly validates all validation rules in spec.proto.
+This ensures spec_test.go correctly validates all validation rules in spec.proto and the complete build succeeds.
 
 ### 4. Automatic Retry
 
