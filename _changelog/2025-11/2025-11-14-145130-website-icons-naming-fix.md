@@ -57,7 +57,7 @@ Renamed all 33 icon directories to match the new API naming convention:
 | `kafkakubernetes/` | `kuberneteskafka/` |
 | `keycloakkubernetes/` | `kuberneteskeycloak/` |
 | `locustkubernetes/` | `kuberneteslocust/` |
-| `microservicekubernetes/` | `kubernetesmicroservice/` |
+| `kubernetesmicroservice/` | `kubernetesmicroservice/` |
 | `mongodbkubernetes/` | `kubernetesmongodb/` |
 | `natskubernetes/` | `kubernetesnats/` |
 | `neo4jkubernetes/` | `kubernetesneo4j/` |
@@ -192,7 +192,7 @@ This fix is a direct consequence of the Kubernetes naming refactoring completed 
 18. `kafkakubernetes/` → `kuberneteskafka/`
 19. `keycloakkubernetes/` → `kuberneteskeycloak/`
 20. `locustkubernetes/` → `kuberneteslocust/`
-21. `microservicekubernetes/` → `kubernetesmicroservice/`
+21. `kubernetesmicroservice/` → `kubernetesmicroservice/`
 22. `mongodbkubernetes/` → `kubernetesmongodb/`
 23. `natskubernetes/` → `kubernetesnats/`
 24. `neo4jkubernetes/` → `kubernetesneo4j/`

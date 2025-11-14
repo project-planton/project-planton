@@ -120,7 +120,7 @@ if stackInput.KubernetesNamespace != "" {
 
 The corrected pattern is consistent with namespace initialization in:
 - `postgreskubernetes/v1/iac/pulumi/module/locals.go` (lines 50-64)
-- `microservicekubernetes/v1/iac/pulumi/module/locals.go` (lines 68-82)
+- `kubernetesmicroservice/v1/iac/pulumi/module/locals.go` (lines 68-82)
 - `clickhousekubernetes/v1/iac/pulumi/module/locals.go` (lines 51-65)
 - `kafkakubernetes/v1/iac/pulumi/module/locals.go` (lines 72-86)
 - `mongodbkubernetes/v1/iac/pulumi/module/locals.go` (lines 51-65)
