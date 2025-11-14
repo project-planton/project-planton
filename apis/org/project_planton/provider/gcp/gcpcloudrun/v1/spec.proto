@@ -26,10 +26,13 @@ message GcpCloudRunSpec {
 
   // Name of the Cloud Run service to create on GCP.
   // If not specified, defaults to metadata.name.
-  string service_name = 7 [(buf.validate.field).string = {
-    pattern: "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"
-    max_len: 63
-  }];
+  string service_name = 7 [
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
+    (buf.validate.field).string = {
+      pattern: "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"
+      max_len: 63
+    }
+  ];
 
   // Container configuration for the Cloud Run service.
   GcpCloudRunContainer container = 3 [(buf.validate.field).required = true];
