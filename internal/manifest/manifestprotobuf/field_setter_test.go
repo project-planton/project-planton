@@ -1,7 +1,7 @@
 package manifestprotobuf
 
 import (
-	rediskubernetesv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/workload/rediskubernetes/v1"
+	kubernetesredisv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/workload/kubernetesredis/v1"
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/protobuf/proto"
 	"testing"
@@ -18,15 +18,15 @@ func TestSetProtoField(t *testing.T) {
 	}{
 		{
 			name: "Set existing string field in snake case",
-			message: &rediskubernetesv1.RedisKubernetes{Spec: &rediskubernetesv1.RedisKubernetesSpec{
-				Container: &rediskubernetesv1.RedisKubernetesContainer{
+			message: &kubernetesredisv1.KubernetesRedis{Spec: &kubernetesredisv1.KubernetesRedisSpec{
+				Container: &kubernetesredisv1.KubernetesRedisContainer{
 					DiskSize: "1Gi",
 				},
 			}},
 			fieldPath: "spec.container.disk_size",
 			value:     "2Gi",
-			expected: &rediskubernetesv1.RedisKubernetes{Spec: &rediskubernetesv1.RedisKubernetesSpec{
-				Container: &rediskubernetesv1.RedisKubernetesContainer{
+			expected: &kubernetesredisv1.KubernetesRedis{Spec: &kubernetesredisv1.KubernetesRedisSpec{
+				Container: &kubernetesredisv1.KubernetesRedisContainer{
 					DiskSize: "2Gi",
 				},
 			}},
@@ -34,15 +34,15 @@ func TestSetProtoField(t *testing.T) {
 		},
 		{
 			name: "Set existing string field in camel case",
-			message: &rediskubernetesv1.RedisKubernetes{Spec: &rediskubernetesv1.RedisKubernetesSpec{
-				Container: &rediskubernetesv1.RedisKubernetesContainer{
+			message: &kubernetesredisv1.KubernetesRedis{Spec: &kubernetesredisv1.KubernetesRedisSpec{
+				Container: &kubernetesredisv1.KubernetesRedisContainer{
 					DiskSize: "1Gi",
 				},
 			}},
 			fieldPath: "spec.container.diskSize",
 			value:     "2Gi",
-			expected: &rediskubernetesv1.RedisKubernetes{Spec: &rediskubernetesv1.RedisKubernetesSpec{
-				Container: &rediskubernetesv1.RedisKubernetesContainer{
+			expected: &kubernetesredisv1.KubernetesRedis{Spec: &kubernetesredisv1.KubernetesRedisSpec{
+				Container: &kubernetesredisv1.KubernetesRedisContainer{
 					DiskSize: "2Gi",
 				},
 			}},

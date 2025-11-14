@@ -1,0 +1,103 @@
+syntax = "proto3";
+
+package org.project_planton.provider.kubernetes.workload.kubernetesnats.v1;
+
+import "buf/validate/validate.proto";
+import "google/protobuf/descriptor.proto";
+import "org/project_planton/shared/kubernetes/kubernetes.proto";
+import "org/project_planton/shared/options/options.proto";
+
+// custom option to store default values for the server container message
+extend google.protobuf.FieldOptions {
+  KubernetesNatsServerContainer default_server_container = 525001;
+}
+
+// NatsKubernetes spec holds the 80-20 configuration for a nats cluster on kubernetes.
+message KubernetesNatsSpec {
+  // server container settings (replicas, resources, disk).
+  KubernetesNatsServerContainer server_container = 1 [(default_server_container) = {
+    replicas: 1
+    resources: {
+      limits: {
+        cpu: "1000m"
+        memory: "2Gi"
+      }
+      requests: {
+        cpu: "100m"
+        memory: "256Mi"
+      }
+    }
+    disk_size: "10Gi"
+  }];
+  // disable jet-stream persistence
+  bool disable_jet_stream = 2;
+  // authentication settings for the nats cluster.
+  KubernetesNatsAuth auth = 3;
+  // tls settings for the nats cluster.
+  bool tls_enabled = 4;
+  // optional ingress configuration for external access.
+  KubernetesNatsIngress ingress = 5;
+  // toggle to deploy the nats-box utility pod.
+  bool disable_nats_box = 6;
+}
+
+// server container settings for the nats stateful-set.
+message KubernetesNatsServerContainer {
+  // number of nats replicas; use an odd value for quorum.
+  int32 replicas = 1 [(buf.validate.field).int32 = {gt: 0}];
+
+  // cpu and memory resources for each pod.
+  org.project_planton.shared.kubernetes.ContainerResources resources = 2;
+
+  // pvc size for jet-stream file store (e.g. "10Gi").
+  string disk_size = 3 [
+    (buf.validate.field).required = true,
+    (org.project_planton.shared.options.recommended_default) = "1Gi"
+  ];
+}
+
+// KubernetesNatsAuthScheme is the authentication scheme for the nats cluster.
+enum KubernetesNatsAuthScheme {
+  nats_kubernetes_auth_scheme_unspecified = 0;
+  // bearer token authentication
+  bearer_token = 1;
+  // basic auth authentication
+  basic_auth = 2;
+}
+
+// configuration for an unauthenticated ("no-auth") user.
+message KubernetesNatsNoAuthUser {
+  // enables the unauthenticated user when true.
+  bool enabled = 1;
+  // subjects on which the unauthenticated user may publish.
+  // at least one subject must be specified when enabled is true.
+  repeated string publish_subjects = 2;
+}
+
+// KubernetesNatsAuth holds the authentication configuration for the nats cluster.
+message KubernetesNatsAuth {
+  // toggle to enable authentication for the nats cluster.
+  bool enabled = 1;
+  // authentication scheme for the nats cluster.
+  KubernetesNatsAuthScheme scheme = 2;
+  // optional no-auth user configuration.
+  KubernetesNatsNoAuthUser no_auth_user = 3;
+}
+
+// KubernetesNatsIngress defines ingress configuration for NATS external access.
+message KubernetesNatsIngress {
+  // Flag to enable or disable ingress.
+  // When enabled, creates a LoadBalancer service for external access.
+  bool enabled = 1;
+
+  // The full hostname for external access (e.g., "nats.example.com").
+  // This hostname will be configured via external-dns annotations.
+  // Required when enabled is true.
+  string hostname = 2;
+
+  option (buf.validate.message).cel = {
+    id: "spec.ingress.hostname.required"
+    expression: "!this.enabled || size(this.hostname) > 0"
+    message: "hostname is required when ingress is enabled"
+  };
+}

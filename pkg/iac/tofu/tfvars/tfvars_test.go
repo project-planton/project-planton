@@ -1,7 +1,7 @@
 package tfvars
 
 import (
-	rediskubernetesv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/workload/rediskubernetes/v1"
+	kubernetesredisv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/workload/kubernetesredis/v1"
 	"github.com/project-planton/project-planton/apis/org/project_planton/shared"
 	"github.com/project-planton/project-planton/apis/org/project_planton/shared/kubernetes"
 	"testing"
@@ -13,17 +13,17 @@ import (
 
 func TestGeneratedTFVarsParsing(t *testing.T) {
 	// Create a test proto message with some fields.
-	msg := &rediskubernetesv1.RedisKubernetes{
+	msg := &kubernetesredisv1.KubernetesRedis{
 		ApiVersion: "kubernetes.project-planton.org/v1",
-		Kind:       "RedisKubernetes",
+		Kind:       "KubernetesRedis",
 		Metadata: &shared.CloudResourceMetadata{
 			Name: "red-one",
 			Labels: map[string]string{
 				"env": "production",
 			},
 		},
-		Spec: &rediskubernetesv1.RedisKubernetesSpec{
-			Container: &rediskubernetesv1.RedisKubernetesContainer{
+		Spec: &kubernetesredisv1.KubernetesRedisSpec{
+			Container: &kubernetesredisv1.KubernetesRedisContainer{
 				DiskSize:           "2Gi",
 				PersistenceEnabled: true,
 				Replicas:           1,
@@ -49,7 +49,7 @@ func TestGeneratedTFVarsParsing(t *testing.T) {
 	// For demonstration, let's assume got looks like:
 	got = `
 apiVersion = "kubernetes.project-planton.org/v1"
-kind = "RedisKubernetes"
+kind = "KubernetesRedis"
 metadata = {
   name = "red-one"
   labels = {
@@ -105,8 +105,8 @@ spec = {
 	}
 
 	kind := val.GetAttr("kind").AsString()
-	if kind != "RedisKubernetes" {
-		t.Errorf("expected kind = 'RedisKubernetes', got %q", kind)
+	if kind != "KubernetesRedis" {
+		t.Errorf("expected kind = 'KubernetesRedis', got %q", kind)
 	}
 
 	// metadata check

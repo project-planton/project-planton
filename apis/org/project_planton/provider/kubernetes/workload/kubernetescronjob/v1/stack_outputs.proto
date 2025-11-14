@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package org.project_planton.provider.kubernetes.workload.kubernetescronjob.v1;
+
+//cron-job-kubernetes-stack outputs
+message KubernetesCronJobStackOutputs {
+  //kubernetes namespace in which cron-job-kubernetes is created.
+  string namespace = 1;
+}

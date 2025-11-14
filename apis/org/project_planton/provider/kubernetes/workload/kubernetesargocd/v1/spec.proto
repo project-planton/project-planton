@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package org.project_planton.provider.kubernetes.workload.kubernetesargocd.v1;
+
+import "buf/validate/validate.proto";
+import "org/project_planton/shared/kubernetes/kubernetes.proto";
+import "org/project_planton/shared/kubernetes/options.proto";
+
+// **KubernetesArgocdSpec** defines the configuration for deploying Argo CD on a Kubernetes cluster.
+// This message specifies the parameters needed to create and manage an Argo CD deployment within a Kubernetes environment.
+// It includes container specifications and ingress settings to control resource allocation and external access.
+message KubernetesArgocdSpec {
+  // The container specifications for the Argo CD deployment.
+  KubernetesArgocdContainer container = 1 [(buf.validate.field).required = true];
+
+  // The ingress configuration for the Argo CD deployment.
+  org.project_planton.shared.kubernetes.IngressSpec ingress = 3;
+}
+
+// **KubernetesArgocdContainer** specifies the container configuration for the Argo CD application.
+// It includes resource allocations for CPU and memory to ensure the application runs efficiently.
+// Recommended defaults: CPU requests - 50m, Memory requests - 256Mi, CPU limits - 1, Memory limits - 1Gi.
+message KubernetesArgocdContainer {
+  // The CPU and memory resources allocated to the Argo CD container.
+  org.project_planton.shared.kubernetes.ContainerResources resources = 1 [(org.project_planton.shared.kubernetes.default_container_resources) = {
+    limits: {
+      cpu: "1000m"
+      memory: "1Gi"
+    }
+    requests: {
+      cpu: "50m"
+      memory: "100Mi"
+    }
+  }];
+}
