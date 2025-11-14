@@ -6,6 +6,7 @@ spec:
   # ——— core GCP context ———
   projectId: planton-cloud-testing
   region: us-central1            # pick the closest GCP region
+  # serviceName: custom-service-name  # optional: customize Cloud Run service name
 
   # ——— container runtime ———
   container:

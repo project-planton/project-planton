@@ -33,6 +33,9 @@ type GcpCloudRunSpec struct {
 	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	// Region where the service is deployed, for example "us-central1".
 	Region string `protobuf:"bytes,2,opt,name=region,proto3" json:"region,omitempty"`
+	// Name of the Cloud Run service to create on GCP.
+	// If not specified, defaults to metadata.name.
+	ServiceName string `protobuf:"bytes,7,opt,name=service_name,json=serviceName,proto3" json:"service_name,omitempty"`
 	// Container configuration for the Cloud Run service.
 	Container *GcpCloudRunContainer `protobuf:"bytes,3,opt,name=container,proto3" json:"container,omitempty"`
 	// Maximum concurrent requests handled by one instance.
@@ -85,6 +88,13 @@ func (x *GcpCloudRunSpec) GetProjectId() string {
 func (x *GcpCloudRunSpec) GetRegion() string {
 	if x != nil {
 		return x.Region
+	}
+	return ""
+}
+
+func (x *GcpCloudRunSpec) GetServiceName() string {
+	if x != nil {
+		return x.ServiceName
 	}
 	return ""
 }
@@ -443,11 +453,12 @@ var File_org_project_planton_provider_gcp_gcpcloudrun_v1_spec_proto protoreflect
 
 const file_org_project_planton_provider_gcp_gcpcloudrun_v1_spec_proto_rawDesc = "" +
 	"\n" +
-	":org/project_planton/provider/gcp/gcpcloudrun/v1/spec.proto\x12/org.project_planton.provider.gcp.gcpcloudrun.v1\x1a\x1bbuf/validate/validate.proto\x1a0org/project_planton/shared/options/options.proto\"\xcc\x03\n" +
+	":org/project_planton/provider/gcp/gcpcloudrun/v1/spec.proto\x12/org.project_planton.provider.gcp.gcpcloudrun.v1\x1a\x1bbuf/validate/validate.proto\x1a0org/project_planton/shared/options/options.proto\"\x99\x04\n" +
 	"\x0fGcpCloudRunSpec\x12G\n" +
 	"\n" +
 	"project_id\x18\x01 \x01(\tB(\xbaH%\xc8\x01\x01r 2\x1e^[a-z][a-z0-9-]{4,28}[a-z0-9]$R\tprojectId\x126\n" +
-	"\x06region\x18\x02 \x01(\tB\x1e\xbaH\x1b\xc8\x01\x01r\x162\x14^[a-z]+-[a-z]+[0-9]$R\x06region\x12k\n" +
+	"\x06region\x18\x02 \x01(\tB\x1e\xbaH\x1b\xc8\x01\x01r\x162\x14^[a-z]+-[a-z]+[0-9]$R\x06region\x12K\n" +
+	"\fservice_name\x18\a \x01(\tB(\xbaH%r#\x18?2\x1f^[a-z0-9]([-a-z0-9]*[a-z0-9])?$R\vserviceName\x12k\n" +
 	"\tcontainer\x18\x03 \x01(\v2E.org.project_planton.provider.gcp.gcpcloudrun.v1.GcpCloudRunContainerB\x06\xbaH\x03\xc8\x01\x01R\tcontainer\x129\n" +
 	"\x0fmax_concurrency\x18\x04 \x01(\x05B\x10\xbaH\a\x1a\x05\x18\xe8\a(\x01\x92\xa6\x1d\x0280R\x0emaxConcurrency\x12=\n" +
 	"\x15allow_unauthenticated\x18\x05 \x01(\bB\b\x92\xa6\x1d\x04trueR\x14allowUnauthenticated\x12Q\n" +

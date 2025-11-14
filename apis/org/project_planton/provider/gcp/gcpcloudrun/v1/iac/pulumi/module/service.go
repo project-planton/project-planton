@@ -29,13 +29,19 @@ func service(
 		port = locals.GcpCloudRun.Spec.Container.Port
 	}
 
+	// Determine service name: use spec.service_name if provided, otherwise metadata.name
+	serviceName := locals.GcpCloudRun.Metadata.Name
+	if locals.GcpCloudRun.Spec.ServiceName != "" {
+		serviceName = locals.GcpCloudRun.Spec.ServiceName
+	}
+
 	createdService, err := cloudrunv2.NewService(ctx,
 		locals.GcpCloudRun.Metadata.Name,
 		&cloudrunv2.ServiceArgs{
 			Project:  pulumi.String(locals.GcpCloudRun.Spec.ProjectId),
 			Location: pulumi.String(locals.GcpCloudRun.Spec.Region),
 
-			Name: pulumi.String(locals.GcpCloudRun.Metadata.Name),
+			Name: pulumi.String(serviceName),
 
 			// Public access → disable Invoker IAM check
 			InvokerIamDisabled: pulumi.BoolPtr(locals.GcpCloudRun.Spec.AllowUnauthenticated),
