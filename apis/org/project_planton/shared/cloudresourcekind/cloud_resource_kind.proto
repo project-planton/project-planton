@@ -319,7 +319,7 @@ enum CloudResourceKind {
   }];
 
   // 800–999: Kubernetes resources
-  ArgocdKubernetes = 800 [(kind_meta) = {
+  KubernetesArgocd = 800 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "argk8s"
@@ -328,7 +328,7 @@ enum CloudResourceKind {
       namespace_prefix: "argo"
     }
   }];
-  CronJobKubernetes = 801 [(kind_meta) = {
+  KubernetesCronJob = 801 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "cronk8s"
@@ -337,7 +337,7 @@ enum CloudResourceKind {
       namespace_prefix: "cron"
     }
   }];
-  ElasticsearchKubernetes = 802 [(kind_meta) = {
+  KubernetesElasticsearch = 802 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "elak8s"
@@ -346,7 +346,7 @@ enum CloudResourceKind {
       namespace_prefix: "elasticsearch"
     }
   }];
-  GitlabKubernetes = 803 [(kind_meta) = {
+  KubernetesGitlab = 803 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "glk8s"
@@ -355,7 +355,7 @@ enum CloudResourceKind {
       namespace_prefix: "gitlab"
     }
   }];
-  GrafanaKubernetes = 804 [(kind_meta) = {
+  KubernetesGrafana = 804 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "grak8s"
@@ -364,7 +364,7 @@ enum CloudResourceKind {
       namespace_prefix: "grafana"
     }
   }];
-  HelmRelease = 805 [(kind_meta) = {
+  KubernetesHelmRelease = 805 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "hlmk8s"
@@ -373,7 +373,7 @@ enum CloudResourceKind {
       namespace_prefix: "helm"
     }
   }];
-  JenkinsKubernetes = 806 [(kind_meta) = {
+  KubernetesJenkins = 806 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "jenk8s"
@@ -382,7 +382,7 @@ enum CloudResourceKind {
       namespace_prefix: "jenkins"
     }
   }];
-  KafkaKubernetes = 807 [(kind_meta) = {
+  KubernetesKafka = 807 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "kafk8s"
@@ -391,7 +391,7 @@ enum CloudResourceKind {
       namespace_prefix: "kafka"
     }
   }];
-  KeycloakKubernetes = 808 [(kind_meta) = {
+  KubernetesKeycloak = 808 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "keyk8s"
@@ -400,7 +400,7 @@ enum CloudResourceKind {
       namespace_prefix: "keycloak"
     }
   }];
-  LocustKubernetes = 809 [(kind_meta) = {
+  KubernetesLocust = 809 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "lock8s"
@@ -409,7 +409,7 @@ enum CloudResourceKind {
       namespace_prefix: "locust"
     }
   }];
-  MicroserviceKubernetes = 810 [(kind_meta) = {
+  KubernetesMicroservice = 810 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "msk8s"
@@ -419,7 +419,7 @@ enum CloudResourceKind {
       namespace_prefix: "service"
     }
   }];
-  MongodbKubernetes = 811 [(kind_meta) = {
+  KubernetesMongodb = 811 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "mdbk8s"
@@ -428,7 +428,7 @@ enum CloudResourceKind {
       namespace_prefix: "mongo"
     }
   }];
-  Neo4jKubernetes = 812 [(kind_meta) = {
+  KubernetesNeo4j = 812 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "neok8s"
@@ -437,7 +437,7 @@ enum CloudResourceKind {
       namespace_prefix: "neo4j"
     }
   }];
-  OpenFgaKubernetes = 813 [(kind_meta) = {
+  KubernetesOpenFga = 813 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "fgak8s"
@@ -446,7 +446,7 @@ enum CloudResourceKind {
       namespace_prefix: "openfga"
     }
   }];
-  PostgresKubernetes = 814 [(kind_meta) = {
+  KubernetesPostgres = 814 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "pgk8s"
@@ -455,7 +455,7 @@ enum CloudResourceKind {
       namespace_prefix: "postgres"
     }
   }];
-  PrometheusKubernetes = 815 [(kind_meta) = {
+  KubernetesPrometheus = 815 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "pmtk8s"
@@ -464,7 +464,7 @@ enum CloudResourceKind {
       namespace_prefix: "prometheus"
     }
   }];
-  RedisKubernetes = 816 [(kind_meta) = {
+  KubernetesRedis = 816 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "redk8s"
@@ -473,7 +473,7 @@ enum CloudResourceKind {
       namespace_prefix: "redis"
     }
   }];
-  SignozKubernetes = 817 [(kind_meta) = {
+  KubernetesSignoz = 817 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "sigk8s"
@@ -482,7 +482,7 @@ enum CloudResourceKind {
       namespace_prefix: "signoz"
     }
   }];
-  SolrKubernetes = 818 [(kind_meta) = {
+  KubernetesSolr = 818 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "solk8s"
@@ -491,7 +491,7 @@ enum CloudResourceKind {
       namespace_prefix: "solr"
     }
   }];
-  TemporalKubernetes = 819 [(kind_meta) = {
+  KubernetesTemporal = 819 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "tprlk8s"
@@ -500,7 +500,7 @@ enum CloudResourceKind {
       namespace_prefix: "temporal"
     }
   }];
-  NatsKubernetes = 820 [(kind_meta) = {
+  KubernetesNats = 820 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "natsk8s"
@@ -563,7 +563,7 @@ enum CloudResourceKind {
     id_prefix: "extseck8s"
     kubernetes_meta: {category: addon}
   }];
-  ClickHouseKubernetes = 830 [(kind_meta) = {
+  KubernetesClickHouse = 830 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "chk8s"
@@ -596,7 +596,7 @@ enum CloudResourceKind {
     id_prefix: "percpgop"
     kubernetes_meta: {category: addon}
   }];
-  HarborKubernetes = 835 [(kind_meta) = {
+  KubernetesHarbor = 835 [(kind_meta) = {
     provider: kubernetes
     version: v1
     id_prefix: "hrbk8s"
