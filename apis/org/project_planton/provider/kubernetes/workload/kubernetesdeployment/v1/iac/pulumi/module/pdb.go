@@ -14,7 +14,7 @@ func podDisruptionBudget(ctx *pulumi.Context, locals *Locals,
 	createdNamespace *kubernetescorev1.Namespace) error {
 
 	// Check if PDB is enabled
-	pdbConfig := locals.KubernetesMicroservice.Spec.Availability.PodDisruptionBudget
+	pdbConfig := locals.KubernetesDeployment.Spec.Availability.PodDisruptionBudget
 	if pdbConfig == nil || !pdbConfig.Enabled {
 		return nil
 	}
@@ -39,7 +39,7 @@ func podDisruptionBudget(ctx *pulumi.Context, locals *Locals,
 		"pdb",
 		&policyv1.PodDisruptionBudgetArgs{
 			Metadata: &metav1.ObjectMetaArgs{
-				Name:      pulumi.String(locals.KubernetesMicroservice.Metadata.Name),
+				Name:      pulumi.String(locals.KubernetesDeployment.Metadata.Name),
 				Namespace: createdNamespace.Metadata.Name(),
 				Labels:    pulumi.ToStringMap(locals.Labels),
 			},

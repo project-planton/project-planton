@@ -109,6 +109,7 @@ import (
 	kubernetesargocdv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/workload/kubernetesargocd/v1"
 	kubernetesclickhousev1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/workload/kubernetesclickhouse/v1"
 	kubernetescronjobv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/workload/kubernetescronjob/v1"
+	kubernetesdeploymentv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/workload/kubernetesdeployment/v1"
 	kuberneteselasticsearchv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/workload/kuberneteselasticsearch/v1"
 	kubernetesgitlabv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/workload/kubernetesgitlab/v1"
 	kubernetesgrafanav1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/workload/kubernetesgrafana/v1"
@@ -118,7 +119,6 @@ import (
 	kuberneteskafkav1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/workload/kuberneteskafka/v1"
 	kuberneteskeycloakv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/workload/kuberneteskeycloak/v1"
 	kuberneteslocustv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/workload/kuberneteslocust/v1"
-	kubernetesmicroservicev1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/workload/kubernetesmicroservice/v1"
 	kubernetesmongodbv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/workload/kubernetesmongodb/v1"
 	kubernetesnatsv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/workload/kubernetesnats/v1"
 	kubernetesneo4jv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/workload/kubernetesneo4j/v1"
@@ -279,6 +279,7 @@ var ProviderKubernetesWorkloadMap = map[cloudresourcekind.CloudResourceKind]prot
 	cloudresourcekind.CloudResourceKind_KubernetesArgocd:        &kubernetesargocdv1.KubernetesArgocd{},
 	cloudresourcekind.CloudResourceKind_KubernetesClickHouse:    &kubernetesclickhousev1.KubernetesClickHouse{},
 	cloudresourcekind.CloudResourceKind_KubernetesCronJob:       &kubernetescronjobv1.KubernetesCronJob{},
+	cloudresourcekind.CloudResourceKind_KubernetesDeployment:    &kubernetesdeploymentv1.KubernetesDeployment{},
 	cloudresourcekind.CloudResourceKind_KubernetesElasticsearch: &kuberneteselasticsearchv1.KubernetesElasticsearch{},
 	cloudresourcekind.CloudResourceKind_KubernetesGitlab:        &kubernetesgitlabv1.KubernetesGitlab{},
 	cloudresourcekind.CloudResourceKind_KubernetesGrafana:       &kubernetesgrafanav1.KubernetesGrafana{},
@@ -288,7 +289,6 @@ var ProviderKubernetesWorkloadMap = map[cloudresourcekind.CloudResourceKind]prot
 	cloudresourcekind.CloudResourceKind_KubernetesKafka:         &kuberneteskafkav1.KubernetesKafka{},
 	cloudresourcekind.CloudResourceKind_KubernetesKeycloak:      &kuberneteskeycloakv1.KubernetesKeycloak{},
 	cloudresourcekind.CloudResourceKind_KubernetesLocust:        &kuberneteslocustv1.KubernetesLocust{},
-	cloudresourcekind.CloudResourceKind_KubernetesMicroservice:  &kubernetesmicroservicev1.KubernetesMicroservice{},
 	cloudresourcekind.CloudResourceKind_KubernetesMongodb:       &kubernetesmongodbv1.KubernetesMongodb{},
 	cloudresourcekind.CloudResourceKind_KubernetesNats:          &kubernetesnatsv1.KubernetesNats{},
 	cloudresourcekind.CloudResourceKind_KubernetesNeo4j:         &kubernetesneo4jv1.KubernetesNeo4J{},

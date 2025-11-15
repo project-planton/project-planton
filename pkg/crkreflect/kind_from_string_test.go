@@ -12,36 +12,36 @@ func TestKindFromString(t *testing.T) {
 		input    string
 		expected cloudresourcekind.CloudResourceKind
 	}{
-		// KubernetesMicroservice tests
+		// KubernetesDeployment tests
 		{
-			name:     "KubernetesMicroservice - PascalCase",
-			input:    "KubernetesMicroservice",
-			expected: cloudresourcekind.CloudResourceKind_KubernetesMicroservice,
+			name:     "KubernetesDeployment - PascalCase",
+			input:    "KubernetesDeployment",
+			expected: cloudresourcekind.CloudResourceKind_KubernetesDeployment,
 		},
 		{
-			name:     "KubernetesMicroservice - kebab-case",
-			input:    "kubernetes-microservice",
-			expected: cloudresourcekind.CloudResourceKind_KubernetesMicroservice,
+			name:     "KubernetesDeployment - kebab-case",
+			input:    "kubernetes-deployment",
+			expected: cloudresourcekind.CloudResourceKind_KubernetesDeployment,
 		},
 		{
-			name:     "KubernetesMicroservice - snake_case",
-			input:    "kubernetes_microservice",
-			expected: cloudresourcekind.CloudResourceKind_KubernetesMicroservice,
+			name:     "KubernetesDeployment - snake_case",
+			input:    "kubernetes_deployment",
+			expected: cloudresourcekind.CloudResourceKind_KubernetesDeployment,
 		},
 		{
-			name:     "KubernetesMicroservice - UPPERCASE",
-			input:    "KUBERNETESMICROSERVICE",
-			expected: cloudresourcekind.CloudResourceKind_KubernetesMicroservice,
+			name:     "KubernetesDeployment - UPPERCASE",
+			input:    "KUBERNETESDEPLOYMENT",
+			expected: cloudresourcekind.CloudResourceKind_KubernetesDeployment,
 		},
 		{
-			name:     "KubernetesMicroservice - mixed case with hyphens",
-			input:    "Kubernetes-Microservice",
-			expected: cloudresourcekind.CloudResourceKind_KubernetesMicroservice,
+			name:     "KubernetesDeployment - mixed case with hyphens",
+			input:    "Kubernetes-Deployment",
+			expected: cloudresourcekind.CloudResourceKind_KubernetesDeployment,
 		},
 		{
-			name:     "KubernetesMicroservice - mixed case with underscores",
-			input:    "Kubernetes_Microservice",
-			expected: cloudresourcekind.CloudResourceKind_KubernetesMicroservice,
+			name:     "KubernetesDeployment - mixed case with underscores",
+			input:    "Kubernetes_Deployment",
+			expected: cloudresourcekind.CloudResourceKind_KubernetesDeployment,
 		},
 
 		// AwsEcsService tests
@@ -134,15 +134,15 @@ func TestKindFromStringNormalization(t *testing.T) {
 	// Test that all different representations of the same kind resolve to the same value
 	testCases := [][]string{
 		{
-			"KubernetesMicroservice",
-			"kubernetesmicroservice",
-			"KUBERNETESMICROSERVICE",
-			"kubernetes-microservice",
-			"kubernetes_microservice",
-			"Kubernetes-Microservice",
-			"Kubernetes_Microservice",
-			"KUBERNETES-MICROSERVICE",
-			"KUBERNETES_MICROSERVICE",
+			"KubernetesDeployment",
+			"kubernetesdeployment",
+			"KUBERNETESDEPLOYMENT",
+			"kubernetes-deployment",
+			"kubernetes_deployment",
+			"Kubernetes-Deployment",
+			"Kubernetes_Deployment",
+			"KUBERNETES-DEPLOYMENT",
+			"KUBERNETES_DEPLOYMENT",
 		},
 		{
 			"AwsEcsService",

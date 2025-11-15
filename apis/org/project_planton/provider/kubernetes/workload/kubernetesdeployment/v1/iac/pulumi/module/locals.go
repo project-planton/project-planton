@@ -9,7 +9,7 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
-	kubernetesmicroservicev1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/workload/kubernetesmicroservice/v1"
+	kubernetesdeploymentv1 "github.com/project-planton/project-planton/apis/org/project_planton/provider/kubernetes/workload/kubernetesdeployment/v1"
 	"github.com/project-planton/project-planton/apis/org/project_planton/shared/cloudresourcekind"
 	"github.com/project-planton/project-planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/kuberneteslabelkeys"
 	"github.com/project-planton/project-planton/pkg/kubernetes/kuberneteslabels"
@@ -26,16 +26,16 @@ type Locals struct {
 	KubeServiceFqdn              string
 	KubeServiceName              string
 	Namespace                    string
-	KubernetesMicroservice       *kubernetesmicroservicev1.KubernetesMicroservice
+	KubernetesDeployment         *kubernetesdeploymentv1.KubernetesDeployment
 	ImagePullSecretData          map[string]string
 	Labels                       map[string]string
 	SelectorLabels               map[string]string
 }
 
-func initializeLocals(ctx *pulumi.Context, stackInput *kubernetesmicroservicev1.KubernetesMicroserviceStackInput) (*Locals, error) {
+func initializeLocals(ctx *pulumi.Context, stackInput *kubernetesdeploymentv1.KubernetesDeploymentStackInput) (*Locals, error) {
 	locals := &Locals{}
 
-	locals.KubernetesMicroservice = stackInput.Target
+	locals.KubernetesDeployment = stackInput.Target
 
 	target := stackInput.Target
 
@@ -50,7 +50,7 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kubernetesmicroservicev1.
 		"app":                            "microservice", // Include selector label
 		kuberneteslabelkeys.Resource:     strconv.FormatBool(true),
 		kuberneteslabelkeys.ResourceName: target.Metadata.Name,
-		kuberneteslabelkeys.ResourceKind: cloudresourcekind.CloudResourceKind_KubernetesMicroservice.String(),
+		kuberneteslabelkeys.ResourceKind: cloudresourcekind.CloudResourceKind_KubernetesDeployment.String(),
 	}
 
 	if target.Metadata.Id != "" {
@@ -146,12 +146,12 @@ func initializeLocals(ctx *pulumi.Context, stackInput *kubernetesmicroservicev1.
 
 	locals.IngressCertSecretName = locals.Namespace
 
-	if locals.KubernetesMicroservice.Spec.Container.App.Image == nil {
+	if locals.KubernetesDeployment.Spec.Container.App.Image == nil {
 		return nil, errors.New("spec.container.app.image is required")
 	}
 
-	if locals.KubernetesMicroservice.Spec.Availability == nil {
-		locals.KubernetesMicroservice.Spec.Availability = &kubernetesmicroservicev1.KubernetesMicroserviceAvailability{
+	if locals.KubernetesDeployment.Spec.Availability == nil {
+		locals.KubernetesDeployment.Spec.Availability = &kubernetesdeploymentv1.KubernetesDeploymentAvailability{
 			MinReplicas: 1,
 		}
 	}

@@ -409,10 +409,10 @@ enum CloudResourceKind {
       namespace_prefix: "locust"
     }
   }];
-  KubernetesMicroservice = 810 [(kind_meta) = {
+  KubernetesDeployment = 810 [(kind_meta) = {
     provider: kubernetes
     version: v1
-    id_prefix: "k8sms"
+    id_prefix: "k8sdpl"
     is_service_kind: true
     kubernetes_meta: {
       category: workload

@@ -32,9 +32,9 @@ func TestKindByIdPrefix(t *testing.T) {
 			wantErr:  false,
 		},
 		{
-			name:     "Kubernetes Microservice",
-			idPrefix: "k8sms",
-			want:     cloudresourcekind.CloudResourceKind_KubernetesMicroservice,
+			name:     "Kubernetes Deployment",
+			idPrefix: "k8sdpl",
+			want:     cloudresourcekind.CloudResourceKind_KubernetesDeployment,
 			wantErr:  false,
 		},
 		{
