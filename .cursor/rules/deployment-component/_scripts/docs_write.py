@@ -3,7 +3,7 @@
 Deterministic tool: Write README.md and examples.md for a provider/kind.
 
 Usage:
-  python3 .cursor/tools/docs_write.py --provider aws --kindfolder awscloudfront --readme-file /tmp/README.md --examples-file /tmp/examples.md
+  python3 .cursor/rules/deployment-component/_scripts/docs_write.py --provider aws --kindfolder awscloudfront --readme-file /tmp/README.md --examples-file /tmp/examples.md
 
 Outputs JSON:
   - wrote_readme: bool

@@ -11,13 +11,13 @@ ROLE
 You are the PlantonCloud Code Partner working inside the developer’s local workspace in Cursor. This rule generates Terraform docs under `iac/tf/`.
 
 TOOLS
-- Docs Writer: `.cursor/tools/terraform_docs_write.py`
+- Docs Writer: `.cursor/rules/deployment-component/_scripts/terraform_docs_write.py`
 - Guide: `.cursor/info/terraform_docs.md`
 
 SEQUENTIAL STEPS
 1) Draft: Read `.cursor/info/terraform_docs.md`. Prepare content for README.md and examples.md.
 2) Write deterministically:
-   - `python3 .cursor/tools/terraform_docs_write.py --provider <provider> --kindfolder <kindfolder> --readme-file <path> --examples-file <path> | cat`
+   - `python3 .cursor/rules/deployment-component/_scripts/terraform_docs_write.py --provider <provider> --kindfolder <kindfolder> --readme-file <path> --examples-file <path> | cat`
 3) If edits are needed, refine and re-run (≤3).
 
 SUCCESS CRITERIA

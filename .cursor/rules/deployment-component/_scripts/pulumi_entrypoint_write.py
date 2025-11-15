@@ -1,37 +1,20 @@
 #!/usr/bin/env python3
 """
-Deterministic tool: Write multiple files into iac/pulumi/module for a provider/kind.
+Deterministic tool: Write Pulumi entrypoint files (main.go, Pulumi.yaml, Makefile) under iac/pulumi/.
 
-Inputs are provided as a JSON manifest containing an array of files with name and content.
+Usage (stdin JSON):
+  cat files.json | python3 .cursor/rules/deployment-component/_scripts/pulumi_entrypoint_write.py --provider aws --kindfolder awscloudfront --stdin --build
 
-Manifest JSON shape:
+JSON shape:
 {
   "files": [
     {"name": "main.go", "content": "..."},
-    {"name": "locals.go", "content": "..."},
-    {"name": "resources/security_group.go", "content": "..."}
+    {"name": "Pulumi.yaml", "content": "..."},
+    {"name": "Makefile", "content": "..."}
   ]
 }
 
-Usage examples:
-  # Read manifest from stdin and build afterwards
-  cat manifest.json | python3 .cursor/tools/pulumi_module_write.py --provider aws --kindfolder awscloudfront --stdin --build
-
-  # Or provide a manifest file without building
-  python3 .cursor/tools/pulumi_module_write.py --provider aws --kindfolder awscloudfront --manifest-file /tmp/manifest.json
-
-Outputs JSON:
-  - wrote: bool
-  - base_path: absolute module directory
-  - base_relative_path: repo-relative module directory
-  - files: array of {name, path, relative_path, bytes_written, sha256}
-  - created_dirs: list
-  - build_ran: bool
-  - build_succeeded: bool
-  - build_exit_code: int
-  - build_stdout: string
-  - build_stderr: string
-  - error: optional string
+Outputs JSON similar to pulumi_module_write.py.
 """
 
 import argparse
@@ -54,7 +37,7 @@ def find_repo_root(start_dir: str) -> str:
         current = parent
 
 
-def module_base_paths(repo_root: str, provider: str, kind_folder: str) -> Tuple[str, str]:
+def base_paths(repo_root: str, provider: str, kind_folder: str) -> Tuple[str, str]:
     rel = os.path.join(
         "apis",
         "project",
@@ -65,7 +48,6 @@ def module_base_paths(repo_root: str, provider: str, kind_folder: str) -> Tuple[
         "v1",
         "iac",
         "pulumi",
-        "module",
     )
     return os.path.join(repo_root, rel), rel
 
@@ -76,10 +58,10 @@ def ensure_dir(path: str, created: List[str]) -> None:
         created.append(path)
 
 
-def norm_segment(seg: str) -> str:
-    s = seg.strip()
+def norm_name(name: str) -> str:
+    s = name.strip()
     if s.startswith("/") or s.startswith("~") or ".." in s:
-        raise ValueError("invalid filename: path traversal not allowed")
+        raise ValueError("invalid name")
     return s
 
 
@@ -88,11 +70,9 @@ def write_files(base_abs: str, base_rel: str, files: List[Dict[str, str]]) -> Tu
     results: List[Dict[str, str]] = []
     ensure_dir(base_abs, created_dirs)
     for f in files:
-        name = norm_segment(f["name"])  # may include subdirs like "resources/sg.go"
+        name = norm_name(f["name"])  # do not allow subdirs here
         content = f.get("content", "")
         target_abs = os.path.join(base_abs, name)
-        target_dir = os.path.dirname(target_abs)
-        ensure_dir(target_dir, created_dirs)
         with open(target_abs, "w", encoding="utf-8", newline="\n") as out:
             out.write(content)
         results.append(
@@ -108,29 +88,21 @@ def write_files(base_abs: str, base_rel: str, files: List[Dict[str, str]]) -> Tu
 
 
 def run_go_build(repo_root: str, base_rel: str) -> Tuple[int, str, str]:
-    # Build the module directory; user requested not to create BUILD.bazel here.
     try:
-        p = subprocess.run(
-            ["go", "build", "./" + base_rel],
-            cwd=repo_root,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            text=True,
-            check=False,
-        )
+        p = subprocess.run(["go", "build", "./" + base_rel + "/..."], cwd=repo_root, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=False)
         return p.returncode, p.stdout, p.stderr
     except Exception as exc:
         return 127, "", str(exc)
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Write multiple Pulumi module files deterministically")
+    parser = argparse.ArgumentParser(description="Write Pulumi entrypoint files deterministically")
     parser.add_argument("--provider", required=True)
     parser.add_argument("--kindfolder", required=True)
-    group = parser.add_mutually_exclusive_group(required=True)
-    group.add_argument("--stdin", action="store_true", help="Read manifest JSON from STDIN")
-    group.add_argument("--manifest-file", help="Path to manifest JSON file")
-    parser.add_argument("--build", action="store_true", help="Run 'go build' on the module directory after writing")
+    g = parser.add_mutually_exclusive_group(required=True)
+    g.add_argument("--stdin", action="store_true")
+    g.add_argument("--manifest-file")
+    parser.add_argument("--build", action="store_true")
     args = parser.parse_args()
 
     try:
@@ -154,13 +126,13 @@ def main() -> int:
             raise ValueError("manifest.files must be a non-empty array")
         for f in files:
             if not isinstance(f, dict) or "name" not in f or "content" not in f:
-                raise ValueError("each file must be an object with 'name' and 'content'")
+                raise ValueError("each file must include 'name' and 'content'")
     except Exception as exc:
         print(json.dumps({"wrote": False, "error": f"failed to parse manifest: {exc}"}))
         return 3
 
     repo_root = os.environ.get("REPO_ROOT", find_repo_root(os.getcwd()))
-    base_abs, base_rel = module_base_paths(repo_root, provider, kind)
+    base_abs, base_rel = base_paths(repo_root, provider, kind)
 
     result = {
         "wrote": False,

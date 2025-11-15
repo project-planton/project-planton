@@ -4,10 +4,10 @@ Deterministic tool: Write spec.proto content and run the API build.
 
 Usage examples:
   # Read content from stdin
-  cat my_spec.proto | python3 .cursor/tools/spec_proto_write_and_build.py --provider aws --kindfolder awslambda --stdin
+  cat my_spec.proto | python3 .cursor/rules/deployment-component/_scripts/spec_proto_write_and_build.py --provider aws --kindfolder awslambda --stdin
 
   # Or provide a file path
-  python3 .cursor/tools/spec_proto_write_and_build.py --provider aws --kindfolder awslambda --content-file /tmp/spec.proto
+  python3 .cursor/rules/deployment-component/_scripts/spec_proto_write_and_build.py --provider aws --kindfolder awslambda --content-file /tmp/spec.proto
 
 Outputs a JSON object to stdout with keys:
   - wrote: bool

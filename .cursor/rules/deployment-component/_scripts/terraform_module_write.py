@@ -16,7 +16,7 @@ Manifest JSON shape (stdin or file):
 
 Usage examples:
   # Write files, run make local, generate variables.tf, and validate
-  cat manifest.json | python3 .cursor/tools/terraform_module_write.py \
+  cat manifest.json | python3 .cursor/rules/deployment-component/_scripts/terraform_module_write.py \
     --provider aws --kindfolder awscloudfront --kind AwsCloudFront \
     --stdin --make-local --generate-variables --validate
 

@@ -11,14 +11,14 @@ ROLE
 You are the PlantonCloud Code Partner working inside the developer’s local workspace in Cursor. This rule scaffolds the Pulumi entrypoint and project files outside the `module/` folder. It wires `main.go` to load `<Kind>StackInput` and invoke `module.Resources`, and adds `Pulumi.yaml` and `Makefile`.
 
 TOOLS
-- Entrypoint Writer: `.cursor/tools/pulumi_entrypoint_write.py`
+- Entrypoint Writer: `.cursor/rules/deployment-component/_scripts/pulumi_entrypoint_write.py`
 - Authoring guide: `.cursor/info/pulumi_entrypoint.md`
 
 SEQUENTIAL STEPS
 1) Read: Confirm proto context from earlier steps (provider, kind) if needed.
 2) Draft: Read `.cursor/info/pulumi_entrypoint.md`. Prepare a files JSON with `main.go`, `Pulumi.yaml`, `Makefile` content.
 3) Write (+optional build):
-   - `cat <<'JSON' | python3 .cursor/tools/pulumi_entrypoint_write.py --provider <provider> --kindfolder <kindfolder> --stdin --build | cat`
+   - `cat <<'JSON' | python3 .cursor/rules/deployment-component/_scripts/pulumi_entrypoint_write.py --provider <provider> --kindfolder <kindfolder> --stdin --build | cat`
      { "files": [ {"name": "main.go", "content": "..."}, {"name": "Pulumi.yaml", "content": "..."}, {"name": "Makefile", "content": "..."} ] }
      JSON
    - If build fails, refine and re-run (≤3).

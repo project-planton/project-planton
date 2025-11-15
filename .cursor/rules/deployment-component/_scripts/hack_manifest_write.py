@@ -3,10 +3,10 @@
 Deterministic tool: Write top-level iac/hack/manifest.yaml for a provider/kind.
 
 Usage (stdin):
-  cat manifest.yaml | python3 .cursor/tools/hack_manifest_write.py --provider aws --kindfolder awscloudfront --stdin
+  cat manifest.yaml | python3 .cursor/rules/deployment-component/_scripts/hack_manifest_write.py --provider aws --kindfolder awscloudfront --stdin
 
 Usage (file):
-  python3 .cursor/tools/hack_manifest_write.py --provider aws --kindfolder awscloudfront --content-file /tmp/manifest.yaml
+  python3 .cursor/rules/deployment-component/_scripts/hack_manifest_write.py --provider aws --kindfolder awscloudfront --content-file /tmp/manifest.yaml
 
 Outputs JSON:
   - wrote: bool

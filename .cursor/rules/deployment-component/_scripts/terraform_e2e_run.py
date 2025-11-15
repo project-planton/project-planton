@@ -10,7 +10,7 @@ Steps:
   5) project-planton tofu destroy --manifest <manifest> --auto-approve
 
 Usage:
-  python3 .cursor/tools/terraform_e2e_run.py --provider aws --kindfolder awscloudfront --manifest <path>
+  python3 .cursor/rules/deployment-component/_scripts/terraform_e2e_run.py --provider aws --kindfolder awscloudfront --manifest <path>
 
 Outputs JSON with each step's exit_code/stdout/stderr and success booleans.
 """

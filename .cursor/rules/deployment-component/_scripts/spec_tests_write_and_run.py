@@ -4,10 +4,10 @@ Deterministic tool: Write spec_test.go for a provider/kind and run `go test`.
 
 Usage examples:
   # From stdin
-  cat spec_test.go | python3 .cursor/tools/spec_tests_write_and_run.py --provider aws --kindfolder awscloudfront --stdin
+  cat spec_test.go | python3 .cursor/rules/deployment-component/_scripts/spec_tests_write_and_run.py --provider aws --kindfolder awscloudfront --stdin
 
   # From file
-  python3 .cursor/tools/spec_tests_write_and_run.py --provider aws --kindfolder awscloudfront --content-file /tmp/spec_test.go
+  python3 .cursor/rules/deployment-component/_scripts/spec_tests_write_and_run.py --provider aws --kindfolder awscloudfront --content-file /tmp/spec_test.go
 
 Outputs JSON:
   - wrote: bool
