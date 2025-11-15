@@ -11,13 +11,13 @@ ROLE
 You are the PlantonCloud Code Partner working inside the developer’s local workspace in Cursor. This rule runs an end-to-end update using the local CLI and the resource’s Pulumi module.
 
 TOOLS
-- E2E Runner: `.cursor/tools/pulumi_e2e_run.py`
+- E2E Runner: `.cursor/rules/deployment-component/_scripts/pulumi_e2e_run.py`
 - Guide: `.cursor/info/pulumi_e2e.md`
 
 SEQUENTIAL STEPS
 1) Draft: Read `.cursor/info/pulumi_e2e.md` and decide `--manifest`, `--stack` (use `organization/<project>/<stack>` for local), and optional `--pulumi-login`.
 2) Run deterministically:
-   - `python3 .cursor/tools/pulumi_e2e_run.py --provider <provider> --kindfolder <kindfolder> --manifest <path> --stack <org/project/stack> [--pulumi-login <url>] | cat`
+   - `python3 .cursor/rules/deployment-component/_scripts/pulumi_e2e_run.py --provider <provider> --kindfolder <kindfolder> --manifest <path> --stack <org/project/stack> [--pulumi-login <url>] | cat`
 3) If update fails, refine Pulumi module and retry (≤3).
 
 SCOPE

@@ -3,7 +3,7 @@
 Deterministic tool: Write stack_outputs.proto and run apis build.
 
 Usage:
-  cat stack_outputs.proto | python3 .cursor/tools/stack_outputs_write_and_build.py --provider aws --kindfolder awscloudfront --stdin
+  cat stack_outputs.proto | python3 .cursor/rules/deployment-component/_scripts/stack_outputs_write_and_build.py --provider aws --kindfolder awscloudfront --stdin
 
 Outputs JSON:
   - wrote: bool

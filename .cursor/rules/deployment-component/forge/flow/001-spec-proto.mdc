@@ -18,14 +18,14 @@ SCOPE
 - No validations in this rule.
 
 TOOLS
-- Reader: `.cursor/tools/spec_proto_reader.py`
-- Writer+Build: `.cursor/tools/spec_proto_write_and_build.py`
+- Reader: `.cursor/rules/deployment-component/_scripts/spec_proto_reader.py`
+- Writer+Build: `.cursor/rules/deployment-component/_scripts/spec_proto_write_and_build.py`
 - Authoring guide: `.cursor/info/spec_proto.md`
 
 SEQUENTIAL STEPS
-1) Read: `python3 .cursor/tools/spec_proto_reader.py --provider <provider> --kindfolder <kindfolder>`
+1) Read: `python3 .cursor/rules/deployment-component/_scripts/spec_proto_reader.py --provider <provider> --kindfolder <kindfolder>`
 2) Draft: Read `.cursor/info/spec_proto.md`, then create or minimally update `spec.proto` content accordingly.
-3) Write+Build: `cat <<'PROTO' | python3 .cursor/tools/spec_proto_write_and_build.py --provider <provider> --kindfolder <kindfolder> --stdin | cat`
+3) Write+Build: `cat <<'PROTO' | python3 .cursor/rules/deployment-component/_scripts/spec_proto_write_and_build.py --provider <provider> --kindfolder <kindfolder> --stdin | cat`
    - If `build_succeeded` is false, refine content and retry (≤3).
 
 OUTPUT

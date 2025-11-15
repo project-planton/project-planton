@@ -17,14 +17,14 @@ SCOPE
 - Do not create/modify other files.
 
 TOOLS
-- Reader: `.cursor/tools/api_reader.py`
-- Writer+Build: `.cursor/tools/api_write_and_build.py`
+- Reader: `.cursor/rules/deployment-component/_scripts/api_reader.py`
+- Writer+Build: `.cursor/rules/deployment-component/_scripts/api_write_and_build.py`
 - Authoring guide: `.cursor/info/api.md`
 
 SEQUENTIAL STEPS
-1) Read: `python3 .cursor/tools/api_reader.py --provider <provider> --kindfolder <kindfolder>`
+1) Read: `python3 .cursor/rules/deployment-component/_scripts/api_reader.py --provider <provider> --kindfolder <kindfolder>`
 2) Draft: Read `.cursor/info/api.md`, then author `api.proto` content (imports, package, `<Kind>`, `<Kind>Status`).
-3) Write+Build: `cat <<'PROTO' | python3 .cursor/tools/api_write_and_build.py --provider <provider> --kindfolder <kindfolder> --stdin | cat`
+3) Write+Build: `cat <<'PROTO' | python3 .cursor/rules/deployment-component/_scripts/api_write_and_build.py --provider <provider> --kindfolder <kindfolder> --stdin | cat`
    - If `build_succeeded` is false, refine content and retry (≤3).
 
 SUCCESS

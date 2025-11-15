@@ -11,8 +11,8 @@ ROLE
 You are the PlantonCloud Code Partner working inside the developer’s local workspace in Cursor. This rule generates a minimal `iac/hack/manifest.yaml` for quick testing.
 
 TOOLS
-- Proto Readers: reuse `.cursor/tools/spec_proto_reader.py` and `.cursor/tools/api_reader.py`.
-- Writer: `.cursor/tools/hack_manifest_write.py` writes the manifest deterministically.
+- Proto Readers: reuse `.cursor/rules/deployment-component/_scripts/spec_proto_reader.py` and `.cursor/rules/deployment-component/_scripts/api_reader.py`.
+- Writer: `.cursor/rules/deployment-component/_scripts/hack_manifest_write.py` writes the manifest deterministically.
 - Authoring guide: `.cursor/info/hack_manifest.md`.
 
 SCOPE
@@ -22,7 +22,7 @@ SCOPE
 SEQUENTIAL STEPS
 1) Read: Use proto readers to obtain `<Kind>`, `api_version`, and essential fields from `<Kind>Spec`.
 2) Draft: Read `.cursor/info/hack_manifest.md`. Generate minimal manifest YAML.
-3) Write: `cat <<'YAML' | python3 .cursor/tools/hack_manifest_write.py --provider <provider> --kindfolder <kindfolder> --stdin | cat`
+3) Write: `cat <<'YAML' | python3 .cursor/rules/deployment-component/_scripts/hack_manifest_write.py --provider <provider> --kindfolder <kindfolder> --stdin | cat`
    - If edits are needed, refine and re-run (≤3).
 
 SUCCESS CRITERIA

@@ -4,9 +4,9 @@
 
 This directory contains the complete rule system for managing deployment components in Project Planton. These rules handle the entire lifecycle from creation to deletion, ensuring components match the **ideal state** defined in `architecture/deployment-component.md`.
 
-## The Six Lifecycle Operations
+## The Seven Lifecycle Operations
 
-Project Planton provides six operations for deployment components:
+Project Planton provides seven operations for deployment components:
 
 | Operation | Purpose | When to Use |
 |-----------|---------|-------------|
@@ -15,6 +15,7 @@ Project Planton provides six operations for deployment components:
 | **🔄 Update** | Enhance existing components | Fill gaps, refresh docs, general improvements |
 | **✨ Complete** | Auto-improve to target | One-command: audit + fill gaps + verify |
 | **🔧 Fix** | Targeted fixes with propagation | Specific bugs, sync issues, consistency fixes |
+| **✏️ Rename** | Systematically rename components | Name clarity, remove abstractions, consistency |
 | **🗑️ Delete** | Remove components | Obsolete, deprecated, consolidating |
 
 **Key Principles:** 
@@ -58,6 +59,12 @@ Need to work with a deployment component?
 │     │  └─ Use @update-project-planton-component
 │     │     Fills gaps, refreshes docs, updates IaC
 │     │     6 scenarios: fill-gaps, proto-changed, etc.
+│     │
+│     ├─ Need to rename component?
+│     │  └─ Use @rename-project-planton-component
+│     │     Systematic rename across entire codebase
+│     │     7 naming patterns, build verification
+│     │     Name clarity, remove abstractions
 │     │
 │     └─ Want to remove?
 │        └─ Use @delete-project-planton-component
@@ -382,7 +389,122 @@ Make targeted fixes to components and automatically propagate changes to all rel
 
 ---
 
-## 6. Delete: Remove Components Safely
+## 6. Rename: Systematically Rename Components
+
+### Purpose
+Rename deployment components across the entire codebase with comprehensive find-replace patterns, registry updates, and build verification.
+
+### When to Use
+- Removing abstractions (e.g., `KubernetesMicroservice` → `KubernetesDeployment`)
+- Improving name clarity and accuracy
+- Establishing naming consistency
+- Preparing for component expansion
+- When component name doesn't reflect actual behavior
+
+### Philosophy
+**Rename is about semantic truth, not functionality changes.**
+
+Component rename updates names everywhere while preserving all functionality, enum values, and behavior. It ensures names accurately reflect what components do.
+
+### The Seven Naming Patterns
+
+Rename applies comprehensive replacement patterns:
+
+1. **PascalCase** - `KubernetesMicroservice` → `KubernetesDeployment`
+2. **camelCase** - `kubernetesMicroservice` → `kubernetesDeployment`
+3. **UPPER_SNAKE_CASE** - `KUBERNETES_MICROSERVICE` → `KUBERNETES_DEPLOYMENT`
+4. **snake_case** - `kubernetes_microservice` → `kubernetes_deployment`
+5. **kebab-case** - `kubernetes-microservice` → `kubernetes-deployment`
+6. **Space separated** - `"kubernetes microservice"` → `"kubernetes deployment"`
+7. **lowercase** - `kubernetesmicroservice` → `kubernetesdeployment`
+
+### Usage
+
+```bash
+@rename-project-planton-component
+```
+
+The rule will interactively ask for:
+1. Old component name (PascalCase)
+2. New component name (PascalCase)
+3. New ID prefix (optional, press Enter to keep existing)
+
+**Example:**
+```bash
+@rename-project-planton-component
+
+Old component name: KubernetesMicroservice
+New component name: KubernetesDeployment
+New ID prefix (current: k8sms): k8sdpl
+```
+
+### What Gets Updated
+
+✅ **Component directory** - Copied to new name, old deleted
+✅ **All code references** - 7 patterns applied to all files
+✅ **Registry** - Enum name and optional ID prefix updated
+✅ **Documentation** - All references in `site/public/docs/`
+✅ **Build artifacts** - Proto stubs regenerated
+
+### What Gets Preserved
+
+✅ **Enum value** - Registry number unchanged (e.g., 810)
+✅ **Provider** - Provider field preserved
+✅ **Version** - Remains v1
+✅ **Flags** - Special flags like `is_service_kind` preserved
+✅ **Metadata** - All other metadata unchanged
+✅ **Functionality** - Zero behavioral changes
+
+### Build Pipeline
+
+Rename isn't complete until all phases pass:
+1. `make protos` - Regenerate proto stubs
+2. `make build` - Verify compilation
+3. `make test` - Validate behavior unchanged
+
+**Stops on first failure** for fast feedback.
+
+### Post-Rename
+
+If all tests pass:
+- ✅ Automatically invokes `@create-project-planton-changelog`
+- ✅ Provides commit message template
+- ✅ Shows next steps
+
+### Safety
+
+**Git-based safety** - No backups created, relies on git:
+```bash
+git status  # Check before
+git diff    # Review after
+git reset --hard HEAD  # Rollback if needed
+```
+
+**Target handling** - Automatically deletes target directory if it exists.
+
+### Real-World Example
+
+November 2025: All 23 Kubernetes workload components renamed from suffix to prefix pattern:
+- `PostgresKubernetes` → `KubernetesPostgres`
+- `RedisKubernetes` → `KubernetesRedis`
+- ~500 files modified, all builds passed, zero behavioral changes
+
+See: `_changelog/2025-11/2025-11-14-072635-kubernetes-workload-naming-consistency.md`
+
+### Typical Duration
+
+- Simple rename: 1-3 minutes
+- Complex rename (large component): 3-7 minutes
+- Build pipeline: 30-90 seconds
+
+### Learn More
+- **README:** [`rename/README.md`](rename/README.md)
+- **Rule:** [`rename/rename-project-planton-component.mdc`](rename/rename-project-planton-component.mdc)
+- **Script:** [`_scripts/rename_deployment_component.py`](_scripts/rename_deployment_component.py)
+
+---
+
+## 7. Delete: Remove Components Safely
 
 ### Purpose
 Completely remove deployment components with safety features to prevent accidents.

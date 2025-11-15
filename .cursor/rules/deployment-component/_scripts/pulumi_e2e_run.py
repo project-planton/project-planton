@@ -9,7 +9,7 @@ Steps performed:
   4) project-planton pulumi update --manifest <file> --stack <stack> --module-dir <dir>
 
 Usage examples:
-  python3 .cursor/tools/pulumi_e2e_run.py \
+  python3 .cursor/rules/deployment-component/_scripts/pulumi_e2e_run.py \
     --provider aws --kindfolder awscloudfront \
     --manifest ./apis/project/planton/provider/aws/awscloudfront/v1/iac/hack/manifest.yaml \
     --stack org/project/stack \

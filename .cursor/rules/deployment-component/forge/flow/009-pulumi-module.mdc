@@ -12,7 +12,7 @@ You are the PlantonCloud Code Partner working inside the developer’s local wor
 
 TOOLS
 - Proto Readers: reuse readers for `api.proto`, `spec.proto`, `stack_input.proto`, `stack_outputs.proto`.
-- Module Writer: `.cursor/tools/pulumi_module_write.py` writes multiple files to the module directory.
+- Module Writer: `.cursor/rules/deployment-component/_scripts/pulumi_module_write.py` writes multiple files to the module directory.
 - Authoring guide: `.cursor/info/pulumi_module.md`.
 
 SCOPE
@@ -24,7 +24,7 @@ SEQUENTIAL STEPS
 1) Read: Use proto readers to derive package paths, `<Kind>`, `<Kind>Spec`, `<Kind>StackInput`, `<Kind>StackOutputs`, and credential type.
 2) Draft: Read `.cursor/info/pulumi_module.md`. Generate content for module files (controller, locals, outputs, resource_*.go) according to the guide.
 3) Write: Provide a JSON manifest to the module writer tool:
-   - `cat <<'JSON' | python3 .cursor/tools/pulumi_module_write.py --provider <provider> --kindfolder <kindfolder> --stdin --build | cat`
+   - `cat <<'JSON' | python3 .cursor/rules/deployment-component/_scripts/pulumi_module_write.py --provider <provider> --kindfolder <kindfolder> --stdin --build | cat`
      { "files": [ {"name": "main.go", "content": "..."}, {"name": "locals.go", "content": "..."} ] }
      JSON
    - If build fails, refine content and re-run (≤3).

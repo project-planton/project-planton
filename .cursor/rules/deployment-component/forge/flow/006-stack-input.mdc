@@ -16,14 +16,14 @@ SCOPE
 - Generate `<Kind>StackInput` with provisioner, pulumi, terraform, target, and provider_credential.
 
 TOOLS
-- Reader: `.cursor/tools/stack_input_reader.py`
-- Writer+Build: `.cursor/tools/stack_input_write_and_build.py`
+- Reader: `.cursor/rules/deployment-component/_scripts/stack_input_reader.py`
+- Writer+Build: `.cursor/rules/deployment-component/_scripts/stack_input_write_and_build.py`
 - Authoring guide: `.cursor/info/stack_input.md`
 
 SEQUENTIAL STEPS
-1) Read: `python3 .cursor/tools/stack_input_reader.py --provider <provider> --kindfolder <kindfolder>`
+1) Read: `python3 .cursor/rules/deployment-component/_scripts/stack_input_reader.py --provider <provider> --kindfolder <kindfolder>`
 2) Draft: Read `.cursor/info/stack_input.md`, then author `stack_input.proto` content accordingly (imports and fields).
-3) Write+Build: `cat <<'PROTO' | python3 .cursor/tools/stack_input_write_and_build.py --provider <provider> --kindfolder <kindfolder> --stdin | cat`
+3) Write+Build: `cat <<'PROTO' | python3 .cursor/rules/deployment-component/_scripts/stack_input_write_and_build.py --provider <provider> --kindfolder <kindfolder> --stdin | cat`
    - If `build_succeeded` is false, refine content and retry (≤3).
 4) Generate Go stubs: After ALL proto files (spec.proto, stack_outputs.proto, api.proto, stack_input.proto) are created, run:
    - `cd /path/to/project-planton && make protos` OR
